@@ -1,8 +1,8 @@
 @interface MTRThermostatClusterAtomicRequestParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRThermostatClusterAtomicRequestParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -19,9 +19,9 @@
     requestType = v2->_requestType;
     v2->_requestType = &unk_284C3E4C8;
 
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     attributeRequests = v3->_attributeRequests;
-    v3->_attributeRequests = v5;
+    v3->_attributeRequests = array;
 
     timeout = v3->_timeout;
     v3->_timeout = 0;
@@ -36,23 +36,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterAtomicRequestParams);
-  v5 = [(MTRThermostatClusterAtomicRequestParams *)self requestType];
-  [(MTRThermostatClusterAtomicRequestParams *)v4 setRequestType:v5];
+  requestType = [(MTRThermostatClusterAtomicRequestParams *)self requestType];
+  [(MTRThermostatClusterAtomicRequestParams *)v4 setRequestType:requestType];
 
-  v6 = [(MTRThermostatClusterAtomicRequestParams *)self attributeRequests];
-  [(MTRThermostatClusterAtomicRequestParams *)v4 setAttributeRequests:v6];
+  attributeRequests = [(MTRThermostatClusterAtomicRequestParams *)self attributeRequests];
+  [(MTRThermostatClusterAtomicRequestParams *)v4 setAttributeRequests:attributeRequests];
 
-  v7 = [(MTRThermostatClusterAtomicRequestParams *)self timeout];
-  [(MTRThermostatClusterAtomicRequestParams *)v4 setTimeout:v7];
+  timeout = [(MTRThermostatClusterAtomicRequestParams *)self timeout];
+  [(MTRThermostatClusterAtomicRequestParams *)v4 setTimeout:timeout];
 
-  v8 = [(MTRThermostatClusterAtomicRequestParams *)self timedInvokeTimeoutMs];
-  [(MTRThermostatClusterAtomicRequestParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTRThermostatClusterAtomicRequestParams *)self timedInvokeTimeoutMs];
+  [(MTRThermostatClusterAtomicRequestParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v9 = [(MTRThermostatClusterAtomicRequestParams *)self serverSideProcessingTimeout];
-  [(MTRThermostatClusterAtomicRequestParams *)v4 setServerSideProcessingTimeout:v9];
+  serverSideProcessingTimeout = [(MTRThermostatClusterAtomicRequestParams *)self serverSideProcessingTimeout];
+  [(MTRThermostatClusterAtomicRequestParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -67,7 +67,7 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v33 = *MEMORY[0x277D85DE8];
   v23[0] = 0;
@@ -77,11 +77,11 @@
   v22[0] = 0;
   v22[1] = 0;
   v21 = v22;
-  v5 = [(MTRThermostatClusterAtomicRequestParams *)self requestType];
-  v23[0] = [v5 unsignedCharValue];
+  requestType = [(MTRThermostatClusterAtomicRequestParams *)self requestType];
+  v23[0] = [requestType unsignedCharValue];
 
-  v6 = [(MTRThermostatClusterAtomicRequestParams *)self attributeRequests];
-  v7 = [v6 count] == 0;
+  attributeRequests = [(MTRThermostatClusterAtomicRequestParams *)self attributeRequests];
+  v7 = [attributeRequests count] == 0;
 
   if (!v7)
   {
@@ -90,15 +90,15 @@
 
   v24 = 0;
   v25 = 0;
-  v8 = [(MTRThermostatClusterAtomicRequestParams *)self timeout];
-  v9 = v8 == 0;
+  timeout = [(MTRThermostatClusterAtomicRequestParams *)self timeout];
+  v9 = timeout == 0;
 
   if (!v9)
   {
     v26 = 1;
-    v27 = 0;
-    v10 = [(MTRThermostatClusterAtomicRequestParams *)self timeout];
-    v27 = [v10 unsignedShortValue];
+    unsignedShortValue = 0;
+    timeout2 = [(MTRThermostatClusterAtomicRequestParams *)self timeout];
+    unsignedShortValue = [timeout2 unsignedShortValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v20);
@@ -120,8 +120,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v20);
-      v11 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v20);
+      v11 = sub_2393C7114(reader, 21, 256);
       v14 = v19;
       v13 = v11;
     }
@@ -150,19 +150,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRThermostatClusterAtomicRequestParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -173,7 +173,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x608300000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

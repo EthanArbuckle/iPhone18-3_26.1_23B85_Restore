@@ -1,9 +1,9 @@
 @interface WFSerializableContentProvider
 + (id)sharedProvider;
 - (WFSerializableContentProvider)init;
-- (id)entryConsideringSuperclassesForClass:(Class)a3;
-- (id)objectOfClass:(Class)a3 withSerializedRepresentation:(id)a4;
-- (id)serializedRepresentationForObject:(id)a3;
+- (id)entryConsideringSuperclassesForClass:(Class)class;
+- (id)objectOfClass:(Class)class withSerializedRepresentation:(id)representation;
+- (id)serializedRepresentationForObject:(id)object;
 - (void)registerSerializableContentClasses;
 @end
 
@@ -32,28 +32,28 @@
   v12[5] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:6];
 
-  v10 = [(WFSerializableContentProvider *)self entriesForClassNames];
-  [v10 addEntriesFromDictionary:v9];
+  entriesForClassNames = [(WFSerializableContentProvider *)self entriesForClassNames];
+  [entriesForClassNames addEntriesFromDictionary:v9];
 }
 
-- (id)entryConsideringSuperclassesForClass:(Class)a3
+- (id)entryConsideringSuperclassesForClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
-    v3 = a3;
+    classCopy = class;
     do
     {
-      v5 = [(WFSerializableContentProvider *)self entriesForClassNames];
-      v6 = NSStringFromClass(v3);
-      v7 = [v5 objectForKeyedSubscript:v6];
+      entriesForClassNames = [(WFSerializableContentProvider *)self entriesForClassNames];
+      v6 = NSStringFromClass(classCopy);
+      v7 = [entriesForClassNames objectForKeyedSubscript:v6];
 
-      v8 = [(objc_class *)v3 superclass];
+      v8 = [(objc_class *)classCopy superclass];
       if (!v8)
       {
         break;
       }
 
-      v3 = v8;
+      classCopy = v8;
     }
 
     while (!v7);
@@ -67,30 +67,30 @@
   return v7;
 }
 
-- (id)objectOfClass:(Class)a3 withSerializedRepresentation:(id)a4
+- (id)objectOfClass:(Class)class withSerializedRepresentation:(id)representation
 {
-  v7 = a4;
-  if (!a3)
+  representationCopy = representation;
+  if (!class)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFSerializableContentProvider.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"class"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSerializableContentProvider.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"class"}];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(objc_class *)a3 objectWithWFSerializedRepresentation:v7];
+    v8 = [(objc_class *)class objectWithWFSerializedRepresentation:representationCopy];
   }
 
   else
   {
-    v9 = NSStringFromClass(a3);
-    v10 = [(WFSerializableContentProvider *)self entriesForClassNames];
-    v11 = [v10 objectForKeyedSubscript:v9];
+    v9 = NSStringFromClass(class);
+    entriesForClassNames = [(WFSerializableContentProvider *)self entriesForClassNames];
+    v11 = [entriesForClassNames objectForKeyedSubscript:v9];
 
     if (v11)
     {
-      v12 = [v11 deserializationBlock];
-      v8 = (v12)[2](v12, v7);
+      deserializationBlock = [v11 deserializationBlock];
+      v8 = (deserializationBlock)[2](deserializationBlock, representationCopy);
     }
 
     else
@@ -102,18 +102,18 @@
   return v8;
 }
 
-- (id)serializedRepresentationForObject:(id)a3
+- (id)serializedRepresentationForObject:(id)object
 {
-  v5 = a3;
-  if (!v5)
+  objectCopy = object;
+  if (!objectCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFSerializableContentProvider.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"object"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSerializableContentProvider.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"object"}];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 wfSerializedRepresentation];
+    wfSerializedRepresentation = [objectCopy wfSerializedRepresentation];
   }
 
   else
@@ -122,17 +122,17 @@
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 serializationBlock];
-      v6 = (v9)[2](v9, v5);
+      serializationBlock = [v7 serializationBlock];
+      wfSerializedRepresentation = (serializationBlock)[2](serializationBlock, objectCopy);
     }
 
     else
     {
-      v6 = 0;
+      wfSerializedRepresentation = 0;
     }
   }
 
-  return v6;
+  return wfSerializedRepresentation;
 }
 
 - (WFSerializableContentProvider)init

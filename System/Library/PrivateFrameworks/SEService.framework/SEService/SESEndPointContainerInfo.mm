@@ -1,44 +1,44 @@
 @interface SESEndPointContainerInfo
-+ (id)withAppletAID:(id)a3 isSuspended:(BOOL)a4;
-- (SESEndPointContainerInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)withAppletAID:(id)d isSuspended:(BOOL)suspended;
+- (SESEndPointContainerInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SESEndPointContainerInfo
 
-+ (id)withAppletAID:(id)a3 isSuspended:(BOOL)a4
++ (id)withAppletAID:(id)d isSuspended:(BOOL)suspended
 {
-  v5 = a3;
+  dCopy = d;
   v6 = objc_opt_new();
   v7 = *(v6 + 16);
-  *(v6 + 16) = v5;
+  *(v6 + 16) = dCopy;
 
-  *(v6 + 8) = a4;
+  *(v6 + 8) = suspended;
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appletAID = self->_appletAID;
-  v5 = a3;
-  [v5 encodeObject:appletAID forKey:@"appletAID"];
-  [v5 encodeInt:self->_isSuspended forKey:@"isSuspended"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appletAID forKey:@"appletAID"];
+  [coderCopy encodeInt:self->_isSuspended forKey:@"isSuspended"];
 }
 
-- (SESEndPointContainerInfo)initWithCoder:(id)a3
+- (SESEndPointContainerInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SESEndPointContainerInfo;
   v5 = [(SESEndPointContainerInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appletAID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appletAID"];
     appletAID = v5->_appletAID;
     v5->_appletAID = v6;
 
-    v5->_isSuspended = [v4 decodeIntForKey:@"isSuspended"] != 0;
+    v5->_isSuspended = [coderCopy decodeIntForKey:@"isSuspended"] != 0;
   }
 
   return v5;

@@ -1,49 +1,49 @@
 @interface LargeTextLargeMonthViewController
-- (id)nextLevelWeekViewControllerWithDate:(id)a3;
-- (id)pushedWeekViewControllerWithDate:(id)a3 animated:(BOOL)a4;
+- (id)nextLevelWeekViewControllerWithDate:(id)date;
+- (id)pushedWeekViewControllerWithDate:(id)date animated:(BOOL)animated;
 - (void)didScroll;
 - (void)updateNavigationBarDisplayedDateString;
-- (void)updatePalette:(id)a3;
+- (void)updatePalette:(id)palette;
 @end
 
 @implementation LargeTextLargeMonthViewController
 
-- (id)pushedWeekViewControllerWithDate:(id)a3 animated:(BOOL)a4
+- (id)pushedWeekViewControllerWithDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(LargeTextLargeMonthViewController *)self nextLevelWeekViewControllerWithDate:a3];
-  v7 = [(LargeTextLargeMonthViewController *)self navigationController];
-  [v7 pushViewController:v6 animated:v4];
+  animatedCopy = animated;
+  v6 = [(LargeTextLargeMonthViewController *)self nextLevelWeekViewControllerWithDate:date];
+  navigationController = [(LargeTextLargeMonthViewController *)self navigationController];
+  [navigationController pushViewController:v6 animated:animatedCopy];
 
   return v6;
 }
 
-- (id)nextLevelWeekViewControllerWithDate:(id)a3
+- (id)nextLevelWeekViewControllerWithDate:(id)date
 {
-  [(CUIKCalendarModel *)self->super.super.super.super.super._model setSelectedDate:a3];
+  [(CUIKCalendarModel *)self->super.super.super.super.super._model setSelectedDate:date];
   v4 = [WeekViewContainerViewController alloc];
   model = self->super.super.super.super.super._model;
-  v6 = [(MainViewController *)self window];
-  v7 = [(MainViewControllerContainer *)v4 initWithModel:model window:v6];
+  window = [(MainViewController *)self window];
+  v7 = [(MainViewControllerContainer *)v4 initWithModel:model window:window];
 
   return v7;
 }
 
-- (void)updatePalette:(id)a3
+- (void)updatePalette:(id)palette
 {
   v4.receiver = self;
   v4.super_class = LargeTextLargeMonthViewController;
-  v3 = a3;
-  [(CompactWidthMonthViewController *)&v4 updatePalette:v3];
-  [v3 setTodayButtonVisible:{1, v4.receiver, v4.super_class}];
-  [v3 setDateStringVisible:1];
+  paletteCopy = palette;
+  [(CompactWidthMonthViewController *)&v4 updatePalette:paletteCopy];
+  [paletteCopy setTodayButtonVisible:{1, v4.receiver, v4.super_class}];
+  [paletteCopy setDateStringVisible:1];
 }
 
 - (void)updateNavigationBarDisplayedDateString
 {
-  v4 = [(InfiniteScrollViewController *)self dateOfCenterViewOnScreen];
-  v3 = [(LargeTextLargeMonthViewController *)self navigationController];
-  [v3 setNavBarStringFromDate:v4 includeMonth:1 includeYear:1];
+  dateOfCenterViewOnScreen = [(InfiniteScrollViewController *)self dateOfCenterViewOnScreen];
+  navigationController = [(LargeTextLargeMonthViewController *)self navigationController];
+  [navigationController setNavBarStringFromDate:dateOfCenterViewOnScreen includeMonth:1 includeYear:1];
 }
 
 - (void)didScroll
@@ -51,19 +51,19 @@
   v8.receiver = self;
   v8.super_class = LargeTextLargeMonthViewController;
   [(CompactWidthMonthViewController *)&v8 didScroll];
-  v3 = [(CompactWidthMonthViewController *)self targetCalendarDate];
-  if (v3)
+  targetCalendarDate = [(CompactWidthMonthViewController *)self targetCalendarDate];
+  if (targetCalendarDate)
   {
-    v4 = [(LargeTextLargeMonthViewController *)self navigationController];
-    v5 = [v4 topMainViewControllerContainer];
-    if ([v5 currentChildViewControllerIsLoaded])
+    navigationController = [(LargeTextLargeMonthViewController *)self navigationController];
+    topMainViewControllerContainer = [navigationController topMainViewControllerContainer];
+    if ([topMainViewControllerContainer currentChildViewControllerIsLoaded])
     {
-      v6 = [v4 topMainViewControllerContainer];
-      v7 = [v6 currentChildViewController];
+      topMainViewControllerContainer2 = [navigationController topMainViewControllerContainer];
+      currentChildViewController = [topMainViewControllerContainer2 currentChildViewController];
 
-      if (v7 == self)
+      if (currentChildViewController == self)
       {
-        [v4 setNavBarStringFromDate:v3 includeMonth:1 includeYear:1];
+        [navigationController setNavBarStringFromDate:targetCalendarDate includeMonth:1 includeYear:1];
       }
     }
 

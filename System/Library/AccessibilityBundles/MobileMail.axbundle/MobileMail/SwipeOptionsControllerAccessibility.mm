@@ -1,20 +1,20 @@
 @interface SwipeOptionsControllerAccessibility
-- (void)_configureSwipeDiagramInCell:(id)a3 atIndexPath:(id)a4;
+- (void)_configureSwipeDiagramInCell:(id)cell atIndexPath:(id)path;
 @end
 
 @implementation SwipeOptionsControllerAccessibility
 
-- (void)_configureSwipeDiagramInCell:(id)a3 atIndexPath:(id)a4
+- (void)_configureSwipeDiagramInCell:(id)cell atIndexPath:(id)path
 {
-  v6 = a3;
+  cellCopy = cell;
   v13.receiver = self;
   v13.super_class = SwipeOptionsControllerAccessibility;
-  v7 = a4;
-  [(SwipeOptionsControllerAccessibility *)&v13 _configureSwipeDiagramInCell:v6 atIndexPath:v7];
-  v8 = [v7 section];
+  pathCopy = path;
+  [(SwipeOptionsControllerAccessibility *)&v13 _configureSwipeDiagramInCell:cellCopy atIndexPath:pathCopy];
+  section = [pathCopy section];
 
   v9 = @"right";
-  if (!v8)
+  if (!section)
   {
     v9 = @"left";
   }
@@ -25,7 +25,7 @@
     v11 = @"diagram.swipe.left";
 LABEL_7:
     v12 = accessibilityLocalizedString(v11);
-    [v6 setAccessibilityLabel:v12];
+    [cellCopy setAccessibilityLabel:v12];
 
     goto LABEL_8;
   }
@@ -37,8 +37,8 @@ LABEL_7:
   }
 
 LABEL_8:
-  [v6 setIsAccessibilityElement:1];
-  [v6 setAccessibilityTraits:*MEMORY[0x29EDC7F88]];
+  [cellCopy setIsAccessibilityElement:1];
+  [cellCopy setAccessibilityTraits:*MEMORY[0x29EDC7F88]];
 }
 
 @end

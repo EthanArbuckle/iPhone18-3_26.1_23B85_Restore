@@ -29,22 +29,22 @@
 {
   v3 = MEMORY[0x1E696AFB0];
   v4 = a3;
-  v5 = [v4 bytes];
+  bytes = [v4 bytes];
   v6 = [v4 length];
 
-  return [v3 _IF_UUIDWithBytes:v5 size:v6];
+  return [v3 _IF_UUIDWithBytes:bytes size:v6];
 }
 
 + (id)_IF_UUIDWithString:()IconFoundationAdditions
 {
   v3 = a3;
   v4 = v3;
-  if (!v3 || (v5 = [v3 UTF8String]) == 0 || (v6 = v5, (v7 = strlen(v5)) == 0) || (objc_msgSend(MEMORY[0x1E696AFB0], "_IF_UUIDWithBytes:size:", v6, v7), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v3 || (v5 = [v3 UTF8String]) == 0 || (v6 = v5, (v7 = strlen(v5)) == 0) || (objc_msgSend(MEMORY[0x1E696AFB0], "_IF_UUIDWithBytes:size:", v6, v7), (_IF_nullUUID = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v8 = [MEMORY[0x1E696AFB0] _IF_nullUUID];
+    _IF_nullUUID = [MEMORY[0x1E696AFB0] _IF_nullUUID];
   }
 
-  return v8;
+  return _IF_nullUUID;
 }
 
 + (id)_IF_UUIDWithInt64:()IconFoundationAdditions
@@ -57,8 +57,8 @@
 
 + (id)_IF_UUIDWithDouble:()IconFoundationAdditions
 {
-  v3 = a1;
-  v1 = [MEMORY[0x1E696AFB0] _IF_UUIDWithBytes:&v3 size:8];
+  selfCopy = self;
+  v1 = [MEMORY[0x1E696AFB0] _IF_UUIDWithBytes:&selfCopy size:8];
 
   return v1;
 }
@@ -128,7 +128,7 @@
     [NSUUID(IconFoundationAdditions) _IF_getUUIDBytes:hash64:];
   }
 
-  result = [a1 getUUIDBytes:?];
+  result = [self getUUIDBytes:?];
   if (a4)
   {
     *a4 = a3[1] ^ *a3;

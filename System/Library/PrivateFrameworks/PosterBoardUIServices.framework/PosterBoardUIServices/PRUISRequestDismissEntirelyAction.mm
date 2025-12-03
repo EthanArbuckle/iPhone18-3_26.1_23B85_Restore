@@ -1,33 +1,33 @@
 @interface PRUISRequestDismissEntirelyAction
-+ (id)actionActivatingCurrentPoster:(BOOL)a3;
++ (id)actionActivatingCurrentPoster:(BOOL)poster;
 - (BOOL)shouldActivateCurrentPoster;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 @end
 
 @implementation PRUISRequestDismissEntirelyAction
 
-+ (id)actionActivatingCurrentPoster:(BOOL)a3
++ (id)actionActivatingCurrentPoster:(BOOL)poster
 {
   v4 = objc_alloc_init(MEMORY[0x1E698E700]);
   [v4 setFlag:BSSettingFlagForBool() forSetting:1];
-  v5 = [[a1 alloc] initWithInfo:v4 responder:0];
+  v5 = [[self alloc] initWithInfo:v4 responder:0];
 
   return v5;
 }
 
 - (BOOL)shouldActivateCurrentPoster
 {
-  v2 = [(PRUISRequestDismissEntirelyAction *)self info];
-  [v2 flagForSetting:1];
+  info = [(PRUISRequestDismissEntirelyAction *)self info];
+  [info flagForSetting:1];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"shouldActivateCurrentPoster";
   }
@@ -38,9 +38,9 @@
   }
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  if (a5 == 1)
+  if (setting == 1)
   {
     v6 = BSSettingFlagDescription();
   }

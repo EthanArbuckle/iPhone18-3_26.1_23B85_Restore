@@ -4,56 +4,56 @@
 - (MRNowPlayingControllerDestination)destination;
 - (MRNowPlayingControllerHelper)helper;
 - (MRNowPlayingPlayerResponse)response;
-- (MRV3NowPlayingController)initWithConfiguration:(id)a3;
+- (MRV3NowPlayingController)initWithConfiguration:(id)configuration;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)_loadNowPlayingStateForPlayerPath:(id)a3 error:(id *)a4;
-- (void)_handleClientPropertiesDidChange:(id)a3;
-- (void)_handlePlaybackQueueChangedNotification:(id)a3;
-- (void)_handlePlaybackQueueContentItemsArtworkChangedNotification:(id)a3;
-- (void)_handlePlaybackQueueContentItemsChangedNotification:(id)a3;
-- (void)_handlePlaybackStateChangedNotification:(id)a3;
-- (void)_handleSupportedCommandsChangedNotification:(id)a3;
-- (void)_notifyDelegateOfError:(id)a3;
+- (id)_loadNowPlayingStateForPlayerPath:(id)path error:(id *)error;
+- (void)_handleClientPropertiesDidChange:(id)change;
+- (void)_handlePlaybackQueueChangedNotification:(id)notification;
+- (void)_handlePlaybackQueueContentItemsArtworkChangedNotification:(id)notification;
+- (void)_handlePlaybackQueueContentItemsChangedNotification:(id)notification;
+- (void)_handlePlaybackStateChangedNotification:(id)notification;
+- (void)_handleSupportedCommandsChangedNotification:(id)notification;
+- (void)_notifyDelegateOfError:(id)error;
 - (void)_notifyDelegateOfInvalidation;
-- (void)_notifyDelegateOfNewResponse:(id)a3;
-- (void)_notifyDelegateOfPlaybackQueueChange:(id)a3;
-- (void)_notifyDelegateOfPlayerPathChange:(id)a3;
-- (void)_notifyDelegateOfSupportedCommandsChange:(id)a3;
-- (void)_notifyDelegateOfUpdatedArtwork:(id)a3;
-- (void)_notifyDelegateOfUpdatedClientProperties:(id)a3;
-- (void)_notifyDelegateOfUpdatedContentItemsWithContentItems:(id)a3;
-- (void)_notifyDelegateOfUpdatedPlayerLastPlayingDate:(id)a3;
+- (void)_notifyDelegateOfNewResponse:(id)response;
+- (void)_notifyDelegateOfPlaybackQueueChange:(id)change;
+- (void)_notifyDelegateOfPlayerPathChange:(id)change;
+- (void)_notifyDelegateOfSupportedCommandsChange:(id)change;
+- (void)_notifyDelegateOfUpdatedArtwork:(id)artwork;
+- (void)_notifyDelegateOfUpdatedClientProperties:(id)properties;
+- (void)_notifyDelegateOfUpdatedContentItemsWithContentItems:(id)items;
+- (void)_notifyDelegateOfUpdatedPlayerLastPlayingDate:(id)date;
 - (void)_onQueue_clearStateForResolvedPlayerPath;
-- (void)_registerNotificationHandlersForResolvedPlayerPath:(id)a3;
-- (void)_reloadWithReason:(id)a3;
-- (void)_requestClientPropertiesForPlayerPath:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)_requestContentItemArtwork:(id)a3 forPlayerPath:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)_requestPlaybackQueueForPlayerPath:(id)a3 request:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)_requestPlayerLastPlayingDateForPlayerPath:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)_requestSupportedCommandsForPlayerPath:(id)a3 queue:(id)a4 completion:(id)a5;
+- (void)_registerNotificationHandlersForResolvedPlayerPath:(id)path;
+- (void)_reloadWithReason:(id)reason;
+- (void)_requestClientPropertiesForPlayerPath:(id)path queue:(id)queue completion:(id)completion;
+- (void)_requestContentItemArtwork:(id)artwork forPlayerPath:(id)path queue:(id)queue completion:(id)completion;
+- (void)_requestPlaybackQueueForPlayerPath:(id)path request:(id)request queue:(id)queue completion:(id)completion;
+- (void)_requestPlayerLastPlayingDateForPlayerPath:(id)path queue:(id)queue completion:(id)completion;
+- (void)_requestSupportedCommandsForPlayerPath:(id)path queue:(id)queue completion:(id)completion;
 - (void)_unregisterNotificationHandlers;
 - (void)beginLoadingUpdates;
 - (void)beginResolving;
 - (void)dealloc;
-- (void)destinationResolver:(id)a3 playerPathDidChange:(id)a4;
-- (void)destinationResolverDestinationDidInvalidate:(id)a3;
-- (void)destinationWithCompletion:(id)a3;
+- (void)destinationResolver:(id)resolver playerPathDidChange:(id)change;
+- (void)destinationResolverDestinationDidInvalidate:(id)invalidate;
+- (void)destinationWithCompletion:(id)completion;
 - (void)endLoadingUpdates;
-- (void)sendCommand:(unsigned int)a3 options:(id)a4 appOptions:(unsigned int)a5 completion:(id)a6;
+- (void)sendCommand:(unsigned int)command options:(id)options appOptions:(unsigned int)appOptions completion:(id)completion;
 @end
 
 @implementation MRV3NowPlayingController
 
-- (MRV3NowPlayingController)initWithConfiguration:(id)a3
+- (MRV3NowPlayingController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = MRV3NowPlayingController;
   v5 = [(MRV3NowPlayingController *)&v14 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     configuration = v5->_configuration;
     v5->_configuration = v6;
 
@@ -77,16 +77,16 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[MRV3NowPlayingController] <%@> Deallocating.", buf, 0xCu);
   }
 
-  v4 = [(MRV3NowPlayingController *)self queue];
+  queue = [(MRV3NowPlayingController *)self queue];
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __35__MRV3NowPlayingController_dealloc__block_invoke;
   v10 = &unk_1E769A228;
-  v11 = self;
+  selfCopy2 = self;
   msv_dispatch_sync_on_queue();
 
   v6.receiver = self;
@@ -99,8 +99,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MRV3NowPlayingController *)self destinationResolver];
-  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, v5];
+  destinationResolver = [(MRV3NowPlayingController *)self destinationResolver];
+  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, destinationResolver];
 
   return v6;
 }
@@ -109,8 +109,8 @@
 {
   v14 = objc_alloc(MEMORY[0x1E696AEC0]);
   v3 = objc_opt_class();
-  v4 = [(MRV3NowPlayingController *)self destinationResolver];
-  v5 = MRCreateIndentedDebugDescriptionFromObject(v4);
+  destinationResolver = [(MRV3NowPlayingController *)self destinationResolver];
+  v5 = MRCreateIndentedDebugDescriptionFromObject(destinationResolver);
   if ([(MRV3NowPlayingController *)self isResolving])
   {
     v6 = @"YES";
@@ -131,10 +131,10 @@
     v7 = @"NO";
   }
 
-  v8 = [(MSVVariableIntervalTimer *)self->_loadRetryTimer remainingIntervals];
-  v9 = MRCreateIndentedDebugDescriptionFromObject(v8);
-  v10 = [(MRV3NowPlayingController *)self response];
-  v11 = MRCreateIndentedDebugDescriptionFromObject(v10);
+  remainingIntervals = [(MSVVariableIntervalTimer *)self->_loadRetryTimer remainingIntervals];
+  v9 = MRCreateIndentedDebugDescriptionFromObject(remainingIntervals);
+  response = [(MRV3NowPlayingController *)self response];
+  v11 = MRCreateIndentedDebugDescriptionFromObject(response);
   v12 = [v14 initWithFormat:@"<%@ %p {\n   resolver=%@\n   resolving=%@\n    updating=%@\n   loadRetryTimer = %@\n   response=%@\n}>\n", v3, self, v5, v6, v7, v9, v11];
 
   return v12;
@@ -142,7 +142,7 @@
 
 - (void)beginResolving
 {
-  v2 = [(MRV3NowPlayingController *)self queue];
+  queue = [(MRV3NowPlayingController *)self queue];
   msv_dispatch_sync_on_queue();
 }
 
@@ -171,7 +171,7 @@ void __42__MRV3NowPlayingController_beginResolving__block_invoke(uint64_t a1)
 
 - (void)beginLoadingUpdates
 {
-  v2 = [(MRV3NowPlayingController *)self queue];
+  queue = [(MRV3NowPlayingController *)self queue];
   msv_dispatch_sync_on_queue();
 }
 
@@ -202,13 +202,13 @@ uint64_t __47__MRV3NowPlayingController_beginLoadingUpdates__block_invoke(uint64
 
 - (void)endLoadingUpdates
 {
-  v3 = [(MRV3NowPlayingController *)self queue];
+  queue = [(MRV3NowPlayingController *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__MRV3NowPlayingController_endLoadingUpdates__block_invoke;
   block[3] = &unk_1E769A228;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __45__MRV3NowPlayingController_endLoadingUpdates__block_invoke(uint64_t a1)
@@ -250,43 +250,43 @@ void __45__MRV3NowPlayingController_endLoadingUpdates__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendCommand:(unsigned int)a3 options:(id)a4 appOptions:(unsigned int)a5 completion:(id)a6
+- (void)sendCommand:(unsigned int)command options:(id)options appOptions:(unsigned int)appOptions completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
+  optionsCopy = options;
+  completionCopy = completion;
   [(MRV3NowPlayingController *)self beginResolving];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __70__MRV3NowPlayingController_sendCommand_options_appOptions_completion___block_invoke;
   v25[3] = &unk_1E769F248;
-  v26 = v11;
-  v12 = v11;
+  v26 = completionCopy;
+  v12 = completionCopy;
   v13 = MEMORY[0x1A58E3570](v25);
-  v14 = [(MRV3NowPlayingController *)self destination];
-  v15 = [v14 playerPath];
-  if ([v15 isResolved])
+  destination = [(MRV3NowPlayingController *)self destination];
+  playerPath = [destination playerPath];
+  if ([playerPath isResolved])
   {
-    v16 = [(MRV3NowPlayingController *)self destination];
+    destination2 = [(MRV3NowPlayingController *)self destination];
   }
 
   else
   {
-    v17 = [(MRV3NowPlayingController *)self configuration];
-    v16 = [v17 destination];
+    configuration = [(MRV3NowPlayingController *)self configuration];
+    destination2 = [configuration destination];
   }
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __70__MRV3NowPlayingController_sendCommand_options_appOptions_completion___block_invoke_2;
   v20[3] = &unk_1E76A3F80;
-  v21 = v10;
+  v21 = optionsCopy;
   v22 = v13;
   v20[4] = self;
-  v23 = a3;
-  v24 = a5;
-  v18 = v10;
+  commandCopy = command;
+  appOptionsCopy = appOptions;
+  v18 = optionsCopy;
   v19 = v13;
-  [MRDestinationResolver resolvePartialDestination:v16 level:2 timeout:v20 completion:15.0];
+  [MRDestinationResolver resolvePartialDestination:destination2 level:2 timeout:v20 completion:15.0];
 }
 
 uint64_t __70__MRV3NowPlayingController_sendCommand_options_appOptions_completion___block_invoke(uint64_t a1)
@@ -334,17 +334,17 @@ void __70__MRV3NowPlayingController_sendCommand_options_appOptions_completion___
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)destinationWithCompletion:(id)a3
+- (void)destinationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MRV3NowPlayingController *)self destination];
+  completionCopy = completion;
+  destination = [(MRV3NowPlayingController *)self destination];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__MRV3NowPlayingController_destinationWithCompletion___block_invoke;
   v7[3] = &unk_1E769E5A0;
-  v8 = v4;
-  v6 = v4;
-  [MRDestinationResolver resolvePartialDestination:v5 level:2 timeout:v7 completion:15.0];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [MRDestinationResolver resolvePartialDestination:destination level:2 timeout:v7 completion:15.0];
 }
 
 void __54__MRV3NowPlayingController_destinationWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -357,24 +357,24 @@ void __54__MRV3NowPlayingController_destinationWithCompletion___block_invoke(uin
 
 - (MRNowPlayingControllerDestination)destination
 {
-  v2 = [(MRV3NowPlayingController *)self destinationResolver];
-  v3 = [v2 destination];
+  destinationResolver = [(MRV3NowPlayingController *)self destinationResolver];
+  destination = [destinationResolver destination];
 
-  return v3;
+  return destination;
 }
 
-- (void)_reloadWithReason:(id)a3
+- (void)_reloadWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(MRV3NowPlayingController *)self queue];
+  reasonCopy = reason;
+  queue = [(MRV3NowPlayingController *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__MRV3NowPlayingController__reloadWithReason___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = reasonCopy;
+  v6 = reasonCopy;
+  dispatch_async(queue, v7);
 }
 
 void __46__MRV3NowPlayingController__reloadWithReason___block_invoke(uint64_t a1)
@@ -503,9 +503,9 @@ void __46__MRV3NowPlayingController__reloadWithReason___block_invoke_36(uint64_t
   }
 }
 
-- (id)_loadNowPlayingStateForPlayerPath:(id)a3 error:(id *)a4
+- (id)_loadNowPlayingStateForPlayerPath:(id)path error:(id *)error
 {
-  v6 = a3;
+  pathCopy = path;
   v70 = 0;
   v71 = &v70;
   v72 = 0x2020000000;
@@ -560,7 +560,7 @@ void __46__MRV3NowPlayingController__reloadWithReason___block_invoke_36(uint64_t
     v32 = &v52;
     v33 = &v46;
     v31 = v7;
-    [(MRV3NowPlayingController *)self _requestSupportedCommandsForPlayerPath:v6 queue:v9 completion:v30];
+    [(MRV3NowPlayingController *)self _requestSupportedCommandsForPlayerPath:pathCopy queue:v9 completion:v30];
   }
 
   if ([(MRNowPlayingControllerConfiguration *)self->_configuration requestPlaybackState])
@@ -572,15 +572,15 @@ void __46__MRV3NowPlayingController__reloadWithReason___block_invoke_36(uint64_t
     v27[3] = &unk_1E769C180;
     v29 = &v70;
     v28 = v7;
-    MRMediaRemoteGetPlaybackStateForPlayer(v6, v9, v27);
+    MRMediaRemoteGetPlaybackStateForPlayer(pathCopy, v9, v27);
   }
 
-  v10 = [(MRNowPlayingControllerConfiguration *)self->_configuration playbackQueueRequest];
+  playbackQueueRequest = [(MRNowPlayingControllerConfiguration *)self->_configuration playbackQueueRequest];
 
-  if (v10)
+  if (playbackQueueRequest)
   {
     dispatch_group_enter(v7);
-    v11 = [(MRNowPlayingControllerConfiguration *)self->_configuration playbackQueueRequest];
+    playbackQueueRequest2 = [(MRNowPlayingControllerConfiguration *)self->_configuration playbackQueueRequest];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __68__MRV3NowPlayingController__loadNowPlayingStateForPlayerPath_error___block_invoke_3;
@@ -588,7 +588,7 @@ void __46__MRV3NowPlayingController__reloadWithReason___block_invoke_36(uint64_t
     v25 = &v64;
     v26 = &v58;
     v24 = v7;
-    [(MRV3NowPlayingController *)self _requestPlaybackQueueForPlayerPath:v6 request:v11 queue:v9 completion:v23];
+    [(MRV3NowPlayingController *)self _requestPlaybackQueueForPlayerPath:pathCopy request:playbackQueueRequest2 queue:v9 completion:v23];
   }
 
   if ([(MRNowPlayingControllerConfiguration *)self->_configuration requestLastPlayingDate])
@@ -600,7 +600,7 @@ void __46__MRV3NowPlayingController__reloadWithReason___block_invoke_36(uint64_t
     v20[3] = &unk_1E769C1D0;
     v22 = &v40;
     v21 = v7;
-    [(MRV3NowPlayingController *)self _requestPlayerLastPlayingDateForPlayerPath:v6 queue:v9 completion:v20];
+    [(MRV3NowPlayingController *)self _requestPlayerLastPlayingDateForPlayerPath:pathCopy queue:v9 completion:v20];
   }
 
   if ([(MRNowPlayingControllerConfiguration *)self->_configuration requestClientProperties])
@@ -612,18 +612,18 @@ void __46__MRV3NowPlayingController__reloadWithReason___block_invoke_36(uint64_t
     v17[3] = &unk_1E76A3FA8;
     v19 = &v34;
     v18 = v7;
-    [(MRV3NowPlayingController *)self _requestClientPropertiesForPlayerPath:v6 queue:v9 completion:v17];
+    [(MRV3NowPlayingController *)self _requestClientPropertiesForPlayerPath:pathCopy queue:v9 completion:v17];
   }
 
   v12 = dispatch_time(0, 5000000000);
   if (dispatch_group_wait(v7, v12))
   {
-    if (a4)
+    if (error)
     {
       v13 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithMRError:26];
 LABEL_18:
       v15 = 0;
-      *a4 = v13;
+      *error = v13;
       goto LABEL_20;
     }
 
@@ -635,7 +635,7 @@ LABEL_19:
   v14 = v59[5];
   if (v14 || (v14 = v47[5]) != 0)
   {
-    if (a4)
+    if (error)
     {
       v13 = v14;
       goto LABEL_18;
@@ -714,26 +714,26 @@ void __68__MRV3NowPlayingController__loadNowPlayingStateForPlayerPath_error___bl
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)_requestPlaybackQueueForPlayerPath:(id)a3 request:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)_requestPlaybackQueueForPlayerPath:(id)path request:(id)request queue:(id)queue completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  requestCopy = request;
+  pathCopy = path;
   [(MRV3NowPlayingController *)self setRequestingQueue:1];
-  v14 = [v12 copy];
+  v14 = [requestCopy copy];
   [v14 setCachingPolicy:2];
-  v15 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __88__MRV3NowPlayingController__requestPlaybackQueueForPlayerPath_request_queue_completion___block_invoke;
   v18[3] = &unk_1E769F820;
   v18[4] = self;
-  v19 = v15;
-  v20 = v10;
-  v16 = v10;
-  v17 = v15;
-  MRMediaRemoteRequestNowPlayingPlaybackQueueForPlayerSync(v12, v13, v11, v18);
+  v19 = date;
+  v20 = completionCopy;
+  v16 = completionCopy;
+  v17 = date;
+  MRMediaRemoteRequestNowPlayingPlaybackQueueForPlayerSync(requestCopy, pathCopy, queueCopy, v18);
 }
 
 void __88__MRV3NowPlayingController__requestPlaybackQueueForPlayerPath_request_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -798,13 +798,13 @@ LABEL_3:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_requestContentItemArtwork:(id)a3 forPlayerPath:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)_requestContentItemArtwork:(id)artwork forPlayerPath:(id)path queue:(id)queue completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[MRPlaybackQueueRequest alloc] initWithIdentifiers:v12];
+  completionCopy = completion;
+  queueCopy = queue;
+  pathCopy = path;
+  artworkCopy = artwork;
+  v13 = [[MRPlaybackQueueRequest alloc] initWithIdentifiers:artworkCopy];
 
   [(MRPlaybackQueueRequest *)v13 setArtworkHeight:600.0];
   [(MRPlaybackQueueRequest *)v13 setArtworkWidth:600.0];
@@ -812,38 +812,38 @@ LABEL_3:
   v15[1] = 3221225472;
   v15[2] = __86__MRV3NowPlayingController__requestContentItemArtwork_forPlayerPath_queue_completion___block_invoke;
   v15[3] = &unk_1E769C298;
-  v16 = v9;
-  v14 = v9;
-  MRMediaRemoteRequestNowPlayingPlaybackQueueForPlayerSync(v13, v11, v10, v15);
+  v16 = completionCopy;
+  v14 = completionCopy;
+  MRMediaRemoteRequestNowPlayingPlaybackQueueForPlayerSync(v13, pathCopy, queueCopy, v15);
 }
 
-- (void)_requestSupportedCommandsForPlayerPath:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)_requestSupportedCommandsForPlayerPath:(id)path queue:(id)queue completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __84__MRV3NowPlayingController__requestSupportedCommandsForPlayerPath_queue_completion___block_invoke;
   v9[3] = &unk_1E769B228;
-  v10 = v7;
-  v8 = v7;
-  MRMediaRemoteGetSupportedCommandsForPlayer(a3, a4, v9);
+  v10 = completionCopy;
+  v8 = completionCopy;
+  MRMediaRemoteGetSupportedCommandsForPlayer(path, queue, v9);
 }
 
-- (void)_requestPlayerLastPlayingDateForPlayerPath:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)_requestPlayerLastPlayingDateForPlayerPath:(id)path queue:(id)queue completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[MRNowPlayingRequest alloc] initWithPlayerPath:v10];
+  completionCopy = completion;
+  queueCopy = queue;
+  pathCopy = path;
+  v11 = [[MRNowPlayingRequest alloc] initWithPlayerPath:pathCopy];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __88__MRV3NowPlayingController__requestPlayerLastPlayingDateForPlayerPath_queue_completion___block_invoke;
   v13[3] = &unk_1E769E2D0;
   v13[4] = self;
-  v14 = v8;
-  v12 = v8;
-  [(MRNowPlayingRequest *)v11 requestLastPlayingDateOnQueue:v9 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(MRNowPlayingRequest *)v11 requestLastPlayingDateOnQueue:queueCopy completion:v13];
 }
 
 void __88__MRV3NowPlayingController__requestPlayerLastPlayingDateForPlayerPath_queue_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -868,32 +868,32 @@ void __88__MRV3NowPlayingController__requestPlayerLastPlayingDateForPlayerPath_q
   }
 }
 
-- (void)_requestClientPropertiesForPlayerPath:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)_requestClientPropertiesForPlayerPath:(id)path queue:(id)queue completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 client];
-  v11 = [v9 origin];
+  completionCopy = completion;
+  queueCopy = queue;
+  pathCopy = path;
+  client = [pathCopy client];
+  origin = [pathCopy origin];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __83__MRV3NowPlayingController__requestClientPropertiesForPlayerPath_queue_completion___block_invoke;
   v13[3] = &unk_1E769D570;
-  v14 = v7;
-  v12 = v7;
-  MRMediaRemoteGetClientProperties(v10, v11, v8, v13);
+  v14 = completionCopy;
+  v12 = completionCopy;
+  MRMediaRemoteGetClientProperties(client, origin, queueCopy, v13);
 }
 
-- (void)destinationResolverDestinationDidInvalidate:(id)a3
+- (void)destinationResolverDestinationDidInvalidate:(id)invalidate
 {
-  v4 = [(MRV3NowPlayingController *)self queue];
+  queue = [(MRV3NowPlayingController *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__MRV3NowPlayingController_destinationResolverDestinationDidInvalidate___block_invoke;
   block[3] = &unk_1E769A228;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __72__MRV3NowPlayingController_destinationResolverDestinationDidInvalidate___block_invoke(uint64_t a1)
@@ -904,23 +904,23 @@ uint64_t __72__MRV3NowPlayingController_destinationResolverDestinationDidInvalid
   return [v2 _notifyDelegateOfInvalidation];
 }
 
-- (void)destinationResolver:(id)a3 playerPathDidChange:(id)a4
+- (void)destinationResolver:(id)resolver playerPathDidChange:(id)change
 {
-  v5 = [a3 destination];
-  v6 = [v5 playerPath];
-  [(MRV3NowPlayingController *)self _notifyDelegateOfPlayerPathChange:v6];
+  destination = [resolver destination];
+  playerPath = [destination playerPath];
+  [(MRV3NowPlayingController *)self _notifyDelegateOfPlayerPathChange:playerPath];
 
   [(MRV3NowPlayingController *)self _reloadWithReason:@"playerPath Invalidation"];
 }
 
 - (void)_onQueue_clearStateForResolvedPlayerPath
 {
-  v3 = [(MRV3NowPlayingController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MRV3NowPlayingController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(MRV3NowPlayingController *)self _unregisterNotificationHandlers];
-  v4 = [(MRV3NowPlayingController *)self deferredContentItemsToMerge];
-  [v4 removeAllObjects];
+  deferredContentItemsToMerge = [(MRV3NowPlayingController *)self deferredContentItemsToMerge];
+  [deferredContentItemsToMerge removeAllObjects];
 }
 
 - (MRNowPlayingControllerHelper)helper
@@ -938,147 +938,147 @@ uint64_t __72__MRV3NowPlayingController_destinationResolverDestinationDidInvalid
   return helper;
 }
 
-- (void)_notifyDelegateOfNewResponse:(id)a3
+- (void)_notifyDelegateOfNewResponse:(id)response
 {
-  v7 = a3;
-  v4 = [(MRV3NowPlayingController *)self helper];
+  responseCopy = response;
+  helper = [(MRV3NowPlayingController *)self helper];
 
-  if (v4)
+  if (helper)
   {
-    v5 = [(MRV3NowPlayingController *)self helper];
-    v6 = [v5 didLoadResponse];
-    (v6)[2](v6, v7);
+    helper2 = [(MRV3NowPlayingController *)self helper];
+    didLoadResponse = [helper2 didLoadResponse];
+    (didLoadResponse)[2](didLoadResponse, responseCopy);
   }
 }
 
-- (void)_notifyDelegateOfPlaybackQueueChange:(id)a3
+- (void)_notifyDelegateOfPlaybackQueueChange:(id)change
 {
-  v7 = a3;
-  v4 = [(MRV3NowPlayingController *)self helper];
+  changeCopy = change;
+  helper = [(MRV3NowPlayingController *)self helper];
 
-  if (v4)
+  if (helper)
   {
-    v5 = [(MRV3NowPlayingController *)self helper];
-    v6 = [v5 playbackQueueDidChange];
-    (v6)[2](v6, v7);
+    helper2 = [(MRV3NowPlayingController *)self helper];
+    playbackQueueDidChange = [helper2 playbackQueueDidChange];
+    (playbackQueueDidChange)[2](playbackQueueDidChange, changeCopy);
   }
 }
 
-- (void)_notifyDelegateOfUpdatedContentItemsWithContentItems:(id)a3
+- (void)_notifyDelegateOfUpdatedContentItemsWithContentItems:(id)items
 {
-  v7 = a3;
-  v4 = [(MRV3NowPlayingController *)self helper];
+  itemsCopy = items;
+  helper = [(MRV3NowPlayingController *)self helper];
 
-  if (v4)
+  if (helper)
   {
-    v5 = [(MRV3NowPlayingController *)self helper];
-    v6 = [v5 contentItemsDidUpdate];
-    (v6)[2](v6, v7);
+    helper2 = [(MRV3NowPlayingController *)self helper];
+    contentItemsDidUpdate = [helper2 contentItemsDidUpdate];
+    (contentItemsDidUpdate)[2](contentItemsDidUpdate, itemsCopy);
   }
 }
 
-- (void)_notifyDelegateOfUpdatedArtwork:(id)a3
+- (void)_notifyDelegateOfUpdatedArtwork:(id)artwork
 {
-  v7 = a3;
-  v4 = [(MRV3NowPlayingController *)self helper];
+  artworkCopy = artwork;
+  helper = [(MRV3NowPlayingController *)self helper];
 
-  if (v4)
+  if (helper)
   {
-    v5 = [(MRV3NowPlayingController *)self helper];
-    v6 = [v5 contentItemsDidLoadArtwork];
-    (v6)[2](v6, v7);
+    helper2 = [(MRV3NowPlayingController *)self helper];
+    contentItemsDidLoadArtwork = [helper2 contentItemsDidLoadArtwork];
+    (contentItemsDidLoadArtwork)[2](contentItemsDidLoadArtwork, artworkCopy);
   }
 }
 
-- (void)_notifyDelegateOfSupportedCommandsChange:(id)a3
+- (void)_notifyDelegateOfSupportedCommandsChange:(id)change
 {
-  v7 = a3;
-  v4 = [(MRV3NowPlayingController *)self helper];
+  changeCopy = change;
+  helper = [(MRV3NowPlayingController *)self helper];
 
-  if (v4)
+  if (helper)
   {
-    v5 = [(MRV3NowPlayingController *)self helper];
-    v6 = [v5 supportedCommandsDidChange];
-    (v6)[2](v6, v7);
+    helper2 = [(MRV3NowPlayingController *)self helper];
+    supportedCommandsDidChange = [helper2 supportedCommandsDidChange];
+    (supportedCommandsDidChange)[2](supportedCommandsDidChange, changeCopy);
   }
 }
 
-- (void)_notifyDelegateOfUpdatedPlayerLastPlayingDate:(id)a3
+- (void)_notifyDelegateOfUpdatedPlayerLastPlayingDate:(id)date
 {
-  v7 = a3;
-  v4 = [(MRV3NowPlayingController *)self helper];
+  dateCopy = date;
+  helper = [(MRV3NowPlayingController *)self helper];
 
-  if (v4)
+  if (helper)
   {
-    v5 = [(MRV3NowPlayingController *)self helper];
-    v6 = [v5 playerLastPlayingDateDidChange];
-    (v6)[2](v6, v7);
+    helper2 = [(MRV3NowPlayingController *)self helper];
+    playerLastPlayingDateDidChange = [helper2 playerLastPlayingDateDidChange];
+    (playerLastPlayingDateDidChange)[2](playerLastPlayingDateDidChange, dateCopy);
   }
 }
 
-- (void)_notifyDelegateOfUpdatedClientProperties:(id)a3
+- (void)_notifyDelegateOfUpdatedClientProperties:(id)properties
 {
-  v7 = a3;
-  v4 = [(MRV3NowPlayingController *)self helper];
+  propertiesCopy = properties;
+  helper = [(MRV3NowPlayingController *)self helper];
 
-  if (v4)
+  if (helper)
   {
-    v5 = [(MRV3NowPlayingController *)self helper];
-    v6 = [v5 clientPropertiesDidChange];
-    (v6)[2](v6, v7);
+    helper2 = [(MRV3NowPlayingController *)self helper];
+    clientPropertiesDidChange = [helper2 clientPropertiesDidChange];
+    (clientPropertiesDidChange)[2](clientPropertiesDidChange, propertiesCopy);
   }
 }
 
-- (void)_notifyDelegateOfPlayerPathChange:(id)a3
+- (void)_notifyDelegateOfPlayerPathChange:(id)change
 {
-  v7 = a3;
-  v4 = [(MRV3NowPlayingController *)self helper];
+  changeCopy = change;
+  helper = [(MRV3NowPlayingController *)self helper];
 
-  if (v4)
+  if (helper)
   {
-    v5 = [(MRV3NowPlayingController *)self helper];
-    v6 = [v5 playerPathDidChange];
-    (v6)[2](v6, v7);
+    helper2 = [(MRV3NowPlayingController *)self helper];
+    playerPathDidChange = [helper2 playerPathDidChange];
+    (playerPathDidChange)[2](playerPathDidChange, changeCopy);
   }
 }
 
 - (void)_notifyDelegateOfInvalidation
 {
-  v3 = [(MRV3NowPlayingController *)self helper];
+  helper = [(MRV3NowPlayingController *)self helper];
 
-  if (v3)
+  if (helper)
   {
-    v5 = [(MRV3NowPlayingController *)self helper];
-    v4 = [v5 didInvalidate];
-    v4[2]();
+    helper2 = [(MRV3NowPlayingController *)self helper];
+    didInvalidate = [helper2 didInvalidate];
+    didInvalidate[2]();
   }
 }
 
-- (void)_notifyDelegateOfError:(id)a3
+- (void)_notifyDelegateOfError:(id)error
 {
-  v7 = a3;
-  v4 = [(MRV3NowPlayingController *)self helper];
+  errorCopy = error;
+  helper = [(MRV3NowPlayingController *)self helper];
 
-  if (v4)
+  if (helper)
   {
-    v5 = [(MRV3NowPlayingController *)self helper];
-    v6 = [v5 didFailWithError];
-    (v6)[2](v6, v7);
+    helper2 = [(MRV3NowPlayingController *)self helper];
+    didFailWithError = [helper2 didFailWithError];
+    (didFailWithError)[2](didFailWithError, errorCopy);
   }
 }
 
-- (void)_handlePlaybackQueueChangedNotification:(id)a3
+- (void)_handlePlaybackQueueChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(MRV3NowPlayingController *)self queue];
+  notificationCopy = notification;
+  queue = [(MRV3NowPlayingController *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__MRV3NowPlayingController__handlePlaybackQueueChangedNotification___block_invoke;
   v7[3] = &unk_1E769A4A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __68__MRV3NowPlayingController__handlePlaybackQueueChangedNotification___block_invoke(uint64_t a1)
@@ -1150,18 +1150,18 @@ uint64_t __68__MRV3NowPlayingController__handlePlaybackQueueChangedNotification_
   }
 }
 
-- (void)_handlePlaybackQueueContentItemsChangedNotification:(id)a3
+- (void)_handlePlaybackQueueContentItemsChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(MRV3NowPlayingController *)self queue];
+  notificationCopy = notification;
+  queue = [(MRV3NowPlayingController *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __80__MRV3NowPlayingController__handlePlaybackQueueContentItemsChangedNotification___block_invoke;
   v7[3] = &unk_1E769A4A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __80__MRV3NowPlayingController__handlePlaybackQueueContentItemsChangedNotification___block_invoke(uint64_t a1)
@@ -1218,18 +1218,18 @@ void __80__MRV3NowPlayingController__handlePlaybackQueueContentItemsChangedNotif
 LABEL_13:
 }
 
-- (void)_handlePlaybackQueueContentItemsArtworkChangedNotification:(id)a3
+- (void)_handlePlaybackQueueContentItemsArtworkChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(MRV3NowPlayingController *)self queue];
+  notificationCopy = notification;
+  queue = [(MRV3NowPlayingController *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __87__MRV3NowPlayingController__handlePlaybackQueueContentItemsArtworkChangedNotification___block_invoke;
   v7[3] = &unk_1E769A4A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __87__MRV3NowPlayingController__handlePlaybackQueueContentItemsArtworkChangedNotification___block_invoke(uint64_t a1)
@@ -1310,18 +1310,18 @@ void __87__MRV3NowPlayingController__handlePlaybackQueueContentItemsArtworkChang
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handlePlaybackStateChangedNotification:(id)a3
+- (void)_handlePlaybackStateChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(MRV3NowPlayingController *)self queue];
+  notificationCopy = notification;
+  queue = [(MRV3NowPlayingController *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__MRV3NowPlayingController__handlePlaybackStateChangedNotification___block_invoke;
   v7[3] = &unk_1E769A4A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __68__MRV3NowPlayingController__handlePlaybackStateChangedNotification___block_invoke(uint64_t a1)
@@ -1382,18 +1382,18 @@ LABEL_10:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleSupportedCommandsChangedNotification:(id)a3
+- (void)_handleSupportedCommandsChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(MRV3NowPlayingController *)self queue];
+  notificationCopy = notification;
+  queue = [(MRV3NowPlayingController *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__MRV3NowPlayingController__handleSupportedCommandsChangedNotification___block_invoke;
   v7[3] = &unk_1E769A4A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __72__MRV3NowPlayingController__handleSupportedCommandsChangedNotification___block_invoke(uint64_t a1)
@@ -1454,18 +1454,18 @@ uint64_t __72__MRV3NowPlayingController__handleSupportedCommandsChangedNotificat
   }
 }
 
-- (void)_handleClientPropertiesDidChange:(id)a3
+- (void)_handleClientPropertiesDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(MRV3NowPlayingController *)self queue];
+  changeCopy = change;
+  queue = [(MRV3NowPlayingController *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__MRV3NowPlayingController__handleClientPropertiesDidChange___block_invoke;
   v7[3] = &unk_1E769A4A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
+  dispatch_async(queue, v7);
 }
 
 void __61__MRV3NowPlayingController__handleClientPropertiesDidChange___block_invoke(uint64_t a1)
@@ -1528,41 +1528,41 @@ uint64_t __61__MRV3NowPlayingController__handleClientPropertiesDidChange___block
   }
 }
 
-- (void)_registerNotificationHandlersForResolvedPlayerPath:(id)a3
+- (void)_registerNotificationHandlersForResolvedPlayerPath:(id)path
 {
   if (![(MRV3NowPlayingController *)self registeredForNotifications])
   {
     MRMediaRemoteSetWantsNowPlayingNotifications(1);
-    v4 = [(MRNowPlayingControllerConfiguration *)self->_configuration playbackQueueRequest];
+    playbackQueueRequest = [(MRNowPlayingControllerConfiguration *)self->_configuration playbackQueueRequest];
 
-    if (v4)
+    if (playbackQueueRequest)
     {
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v5 addObserver:self selector:sel__handlePlaybackQueueChangedNotification_ name:@"kMRPlayerPlaybackQueueChangedNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__handlePlaybackQueueChangedNotification_ name:@"kMRPlayerPlaybackQueueChangedNotification" object:0];
 
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 addObserver:self selector:sel__handlePlaybackQueueContentItemsChangedNotification_ name:@"kMRPlayerPlaybackQueueContentItemsChangedNotification" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__handlePlaybackQueueContentItemsChangedNotification_ name:@"kMRPlayerPlaybackQueueContentItemsChangedNotification" object:0];
 
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 addObserver:self selector:sel__handlePlaybackQueueContentItemsArtworkChangedNotification_ name:@"kMRPlayerPlaybackQueueContentItemArtworkChangedNotification" object:0];
+      defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter3 addObserver:self selector:sel__handlePlaybackQueueContentItemsArtworkChangedNotification_ name:@"kMRPlayerPlaybackQueueContentItemArtworkChangedNotification" object:0];
     }
 
     if ([(MRNowPlayingControllerConfiguration *)self->_configuration requestPlaybackState])
     {
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 addObserver:self selector:sel__handlePlaybackStateChangedNotification_ name:@"_kMRMediaRemotePlayerPlaybackStateDidChangeNotification" object:0];
+      defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter4 addObserver:self selector:sel__handlePlaybackStateChangedNotification_ name:@"_kMRMediaRemotePlayerPlaybackStateDidChangeNotification" object:0];
     }
 
     if ([(MRNowPlayingControllerConfiguration *)self->_configuration requestSupportedCommands])
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 addObserver:self selector:sel__handleSupportedCommandsChangedNotification_ name:@"kMRMediaRemotePlayerSupportedCommandsDidChangeNotification" object:0];
+      defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter5 addObserver:self selector:sel__handleSupportedCommandsChangedNotification_ name:@"kMRMediaRemotePlayerSupportedCommandsDidChangeNotification" object:0];
     }
 
     if ([(MRNowPlayingControllerConfiguration *)self->_configuration requestClientProperties])
     {
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v10 addObserver:self selector:sel__handleClientPropertiesDidChange_ name:@"kMRMediaRemoteApplicationClientStateDidChange" object:0];
+      defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter6 addObserver:self selector:sel__handleClientPropertiesDidChange_ name:@"kMRMediaRemoteApplicationClientStateDidChange" object:0];
     }
 
     [(MRV3NowPlayingController *)self setRegisteredForNotifications:1];
@@ -1574,36 +1574,36 @@ uint64_t __61__MRV3NowPlayingController__handleClientPropertiesDidChange___block
   if ([(MRV3NowPlayingController *)self registeredForNotifications])
   {
     MRMediaRemoteSetWantsNowPlayingNotifications(0);
-    v3 = [(MRNowPlayingControllerConfiguration *)self->_configuration playbackQueueRequest];
+    playbackQueueRequest = [(MRNowPlayingControllerConfiguration *)self->_configuration playbackQueueRequest];
 
-    if (v3)
+    if (playbackQueueRequest)
     {
-      v4 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v4 removeObserver:self name:@"kMRPlayerPlaybackQueueChangedNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:@"kMRPlayerPlaybackQueueChangedNotification" object:0];
 
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v5 removeObserver:self name:@"kMRPlayerPlaybackQueueContentItemsChangedNotification" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 removeObserver:self name:@"kMRPlayerPlaybackQueueContentItemsChangedNotification" object:0];
 
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 removeObserver:self name:@"kMRPlayerPlaybackQueueContentItemArtworkChangedNotification" object:0];
+      defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter3 removeObserver:self name:@"kMRPlayerPlaybackQueueContentItemArtworkChangedNotification" object:0];
     }
 
     if ([(MRNowPlayingControllerConfiguration *)self->_configuration requestPlaybackState])
     {
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 removeObserver:self name:@"_kMRMediaRemotePlayerPlaybackStateDidChangeNotification" object:0];
+      defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter4 removeObserver:self name:@"_kMRMediaRemotePlayerPlaybackStateDidChangeNotification" object:0];
     }
 
     if ([(MRNowPlayingControllerConfiguration *)self->_configuration requestSupportedCommands])
     {
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 removeObserver:self name:@"kMRMediaRemotePlayerSupportedCommandsDidChangeNotification" object:0];
+      defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter5 removeObserver:self name:@"kMRMediaRemotePlayerSupportedCommandsDidChangeNotification" object:0];
     }
 
     if ([(MRNowPlayingControllerConfiguration *)self->_configuration requestClientProperties])
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 removeObserver:self name:@"kMRMediaRemoteApplicationClientStateDidChange" object:0];
+      defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter6 removeObserver:self name:@"kMRMediaRemoteApplicationClientStateDidChange" object:0];
     }
 
     [(MRV3NowPlayingController *)self setRegisteredForNotifications:0];
@@ -1616,7 +1616,7 @@ uint64_t __61__MRV3NowPlayingController__handleClientPropertiesDidChange___block
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(MRV3NowPlayingController *)self queue];
+  queue = [(MRV3NowPlayingController *)self queue];
   msv_dispatch_sync_on_queue();
 
   v3 = *(v6 + 24);
@@ -1632,14 +1632,14 @@ uint64_t __61__MRV3NowPlayingController__handleClientPropertiesDidChange___block
   v10 = __Block_byref_object_copy__45;
   v11 = __Block_byref_object_dispose__45;
   v12 = 0;
-  v3 = [(MRV3NowPlayingController *)self queue];
+  queue = [(MRV3NowPlayingController *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__MRV3NowPlayingController_response__block_invoke;
   v6[3] = &unk_1E769A2A0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);

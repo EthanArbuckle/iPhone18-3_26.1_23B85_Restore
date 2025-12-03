@@ -1,22 +1,22 @@
 @interface SSURLBagContext
-+ (SSURLBagContext)contextWithBagType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (SSURLBagContext)contextWithBagType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)allHTTPHeaders;
 - (NSNumber)userIdentifier;
 - (NSString)cacheKey;
 - (NSString)clientBundleIdentifier;
 - (NSString)description;
 - (SSURLBagContext)init;
-- (SSURLBagContext)initWithXPCEncoding:(id)a3;
+- (SSURLBagContext)initWithXPCEncoding:(id)encoding;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
-- (id)valueForHTTPHeaderField:(id)a3;
+- (id)valueForHTTPHeaderField:(id)field;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setAllHTTPHeaders:(id)a3;
-- (void)setUserIdentifier:(id)a3;
-- (void)setValue:(id)a3 forHTTPHeaderField:(id)a4;
+- (void)setAllHTTPHeaders:(id)headers;
+- (void)setUserIdentifier:(id)identifier;
+- (void)setValue:(id)value forHTTPHeaderField:(id)field;
 @end
 
 @implementation SSURLBagContext
@@ -39,10 +39,10 @@
   [(SSURLBagContext *)&v3 dealloc];
 }
 
-+ (SSURLBagContext)contextWithBagType:(int64_t)a3
++ (SSURLBagContext)contextWithBagType:(int64_t)type
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setBagType:a3];
+  v4 = objc_alloc_init(self);
+  [v4 setBagType:type];
 
   return v4;
 }
@@ -58,15 +58,15 @@
 {
   v3 = [(NSMutableDictionary *)self->_httpHeaders objectForKey:@"X-Apple-Store-Front"];
   v4 = [(NSMutableDictionary *)self->_httpHeaders objectForKey:@"User-Agent"];
-  v5 = [(SSURLBagContext *)self userIdentifier];
+  userIdentifier = [(SSURLBagContext *)self userIdentifier];
   if (!v3)
   {
     v9 = +[SSAccountStore defaultStore];
     v10 = v9;
-    if (v5)
+    if (userIdentifier)
     {
-      v11 = [v9 accountWithUniqueIdentifier:v5];
-      if (v11)
+      activeAccount = [v9 accountWithUniqueIdentifier:userIdentifier];
+      if (activeAccount)
       {
         goto LABEL_8;
       }
@@ -74,11 +74,11 @@
 
     else
     {
-      v11 = [v9 activeAccount];
-      if (v11)
+      activeAccount = [v9 activeAccount];
+      if (activeAccount)
       {
 LABEL_8:
-        v3 = SSVStoreFrontIdentifierForAccount(v11);
+        v3 = SSVStoreFrontIdentifierForAccount(activeAccount);
         if (v4)
         {
           goto LABEL_3;
@@ -88,7 +88,7 @@ LABEL_8:
       }
     }
 
-    v11 = [v10 localiTunesAccount];
+    activeAccount = [v10 localiTunesAccount];
     goto LABEL_8;
   }
 
@@ -101,15 +101,15 @@ LABEL_9:
   v4 = SSVDefaultUserAgent();
 LABEL_3:
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(SSURLBagContext *)self bagType];
-  if (v5)
+  bagType = [(SSURLBagContext *)self bagType];
+  if (userIdentifier)
   {
-    v8 = [(NSNumber *)v5 stringValue];
+    stringValue = [(NSNumber *)userIdentifier stringValue];
   }
 
   else
   {
-    v8 = @"nil";
+    stringValue = @"nil";
   }
 
   if (v4)
@@ -142,7 +142,7 @@ LABEL_3:
     v14 = @"nonBinCompat";
   }
 
-  return [v6 stringWithFormat:@"%ld-%@-%@-%@-%@", v7, v8, v12, v13, v14];
+  return [v6 stringWithFormat:@"%ld-%@-%@-%@-%@", bagType, stringValue, v12, v13, v14];
 }
 
 - (NSString)clientBundleIdentifier
@@ -156,20 +156,20 @@ LABEL_3:
   return CPCopyBundleIdentifierFromAuditToken();
 }
 
-- (void)setAllHTTPHeaders:(id)a3
+- (void)setAllHTTPHeaders:(id)headers
 {
   httpHeaders = self->_httpHeaders;
-  if (httpHeaders != a3)
+  if (httpHeaders != headers)
   {
 
-    self->_httpHeaders = [a3 copy];
+    self->_httpHeaders = [headers copy];
   }
 }
 
-- (void)setValue:(id)a3 forHTTPHeaderField:(id)a4
+- (void)setValue:(id)value forHTTPHeaderField:(id)field
 {
   httpHeaders = self->_httpHeaders;
-  if (a3)
+  if (value)
   {
     if (!httpHeaders)
     {
@@ -177,19 +177,19 @@ LABEL_3:
       self->_httpHeaders = httpHeaders;
     }
 
-    [(NSMutableDictionary *)httpHeaders setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)httpHeaders setObject:value forKey:field];
   }
 
   else
   {
 
-    [(NSMutableDictionary *)httpHeaders removeObjectForKey:a4];
+    [(NSMutableDictionary *)httpHeaders removeObjectForKey:field];
   }
 }
 
-- (id)valueForHTTPHeaderField:(id)a3
+- (id)valueForHTTPHeaderField:(id)field
 {
-  v3 = [(NSMutableDictionary *)self->_httpHeaders objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_httpHeaders objectForKey:field];
 
   return v3;
 }
@@ -218,7 +218,7 @@ LABEL_3:
   return userIdentifier;
 }
 
-- (void)setUserIdentifier:(id)a3
+- (void)setUserIdentifier:(id)identifier
 {
   [(NSLock *)self->_lock lock];
   userIdentifier = self->_userIdentifier;
@@ -228,7 +228,7 @@ LABEL_3:
     self->_userIdentifier = 0;
   }
 
-  self->_userIdentifier = a3;
+  self->_userIdentifier = identifier;
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
@@ -249,19 +249,19 @@ LABEL_3:
   return v5 + [(NSMutableDictionary *)self->_httpHeaders hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
-  if (v5 == objc_opt_class() && self->_allowedRetryCount == *(a3 + 1) && self->_allowsBootstrapCellularData == *(a3 + 16) && self->_allowsExpiredBags == *(a3 + 17) && self->_bagType == *(a3 + 3) && self->_ignoresCaches == *(a3 + 48) && self->_usesCachedBagsOnly == *(a3 + 72) && self->_useBinCompatBag == *(a3 + 49))
+  if (v5 == objc_opt_class() && self->_allowedRetryCount == *(equal + 1) && self->_allowsBootstrapCellularData == *(equal + 16) && self->_allowsExpiredBags == *(equal + 17) && self->_bagType == *(equal + 3) && self->_ignoresCaches == *(equal + 48) && self->_usesCachedBagsOnly == *(equal + 72) && self->_useBinCompatBag == *(equal + 49))
   {
     clientAuditTokenData = self->_clientAuditTokenData;
-    if (clientAuditTokenData == *(a3 + 4) || (v7 = [(NSData *)clientAuditTokenData isEqual:?]) != 0)
+    if (clientAuditTokenData == *(equal + 4) || (v7 = [(NSData *)clientAuditTokenData isEqual:?]) != 0)
     {
-      v8 = [(SSURLBagContext *)self userIdentifier];
-      if (v8 == [a3 userIdentifier] || (v7 = -[NSNumber isEqual:](-[SSURLBagContext userIdentifier](self, "userIdentifier"), "isEqual:", objc_msgSend(a3, "userIdentifier"))) != 0)
+      userIdentifier = [(SSURLBagContext *)self userIdentifier];
+      if (userIdentifier == [equal userIdentifier] || (v7 = -[NSNumber isEqual:](-[SSURLBagContext userIdentifier](self, "userIdentifier"), "isEqual:", objc_msgSend(equal, "userIdentifier"))) != 0)
       {
         httpHeaders = self->_httpHeaders;
-        if (httpHeaders == *(a3 + 5))
+        if (httpHeaders == *(equal + 5))
         {
           LOBYTE(v7) = 1;
         }
@@ -283,54 +283,54 @@ LABEL_3:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_allowedRetryCount;
   *(v5 + 16) = self->_allowsBootstrapCellularData;
   *(v5 + 17) = self->_allowsExpiredBags;
   *(v5 + 24) = self->_bagType;
-  *(v5 + 32) = [(NSData *)self->_clientAuditTokenData copyWithZone:a3];
-  *(v5 + 40) = [(NSMutableDictionary *)self->_httpHeaders mutableCopyWithZone:a3];
+  *(v5 + 32) = [(NSData *)self->_clientAuditTokenData copyWithZone:zone];
+  *(v5 + 40) = [(NSMutableDictionary *)self->_httpHeaders mutableCopyWithZone:zone];
   *(v5 + 48) = self->_ignoresCaches;
-  *(v5 + 64) = [(NSNumber *)self->_userIdentifier copyWithZone:a3];
+  *(v5 + 64) = [(NSNumber *)self->_userIdentifier copyWithZone:zone];
   *(v5 + 72) = self->_usesCachedBagsOnly;
   *(v5 + 49) = self->_useBinCompatBag;
   return v5;
 }
 
-- (SSURLBagContext)initWithXPCEncoding:(id)a3
+- (SSURLBagContext)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
-    v5 = [(SSURLBagContext *)self _init];
-    if (!v5)
+    _init = [(SSURLBagContext *)self _init];
+    if (!_init)
     {
-      return v5;
+      return _init;
     }
 
-    v5->_allowedRetryCount = xpc_dictionary_get_int64(a3, "4");
-    v5->_allowsBootstrapCellularData = xpc_dictionary_get_BOOL(a3, "7");
-    v5->_allowsExpiredBags = xpc_dictionary_get_BOOL(a3, "5");
-    v5->_bagType = xpc_dictionary_get_int64(a3, "0");
+    _init->_allowedRetryCount = xpc_dictionary_get_int64(encoding, "4");
+    _init->_allowsBootstrapCellularData = xpc_dictionary_get_BOOL(encoding, "7");
+    _init->_allowsExpiredBags = xpc_dictionary_get_BOOL(encoding, "5");
+    _init->_bagType = xpc_dictionary_get_int64(encoding, "0");
     objc_opt_class();
-    v5->_clientAuditTokenData = SSXPCDictionaryCopyCFObjectWithClass(a3, "8");
-    v5->_ignoresCaches = xpc_dictionary_get_BOOL(a3, "3");
+    _init->_clientAuditTokenData = SSXPCDictionaryCopyCFObjectWithClass(encoding, "8");
+    _init->_ignoresCaches = xpc_dictionary_get_BOOL(encoding, "3");
     objc_opt_class();
-    v5->_userIdentifier = SSXPCDictionaryCopyCFObjectWithClass(a3, "2");
-    v5->_usesCachedBagsOnly = xpc_dictionary_get_BOOL(a3, "6");
-    v5->_useBinCompatBag = xpc_dictionary_get_BOOL(a3, "9");
+    _init->_userIdentifier = SSXPCDictionaryCopyCFObjectWithClass(encoding, "2");
+    _init->_usesCachedBagsOnly = xpc_dictionary_get_BOOL(encoding, "6");
+    _init->_useBinCompatBag = xpc_dictionary_get_BOOL(encoding, "9");
     objc_opt_class();
-    self = SSXPCDictionaryCopyCFObjectWithClass(a3, "1");
-    v5->_httpHeaders = [(SSURLBagContext *)self mutableCopy];
+    self = SSXPCDictionaryCopyCFObjectWithClass(encoding, "1");
+    _init->_httpHeaders = [(SSURLBagContext *)self mutableCopy];
   }
 
   else
   {
-    v5 = 0;
+    _init = 0;
   }
 
-  return v5;
+  return _init;
 }
 
 - (id)copyXPCEncoding

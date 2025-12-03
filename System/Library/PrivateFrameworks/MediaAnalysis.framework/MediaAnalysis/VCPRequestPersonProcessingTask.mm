@@ -1,32 +1,32 @@
 @interface VCPRequestPersonProcessingTask
-+ (id)taskWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
-- (BOOL)run:(id *)a3;
-- (VCPRequestPersonProcessingTask)initWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
++ (id)taskWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (BOOL)run:(id *)run;
+- (VCPRequestPersonProcessingTask)initWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation VCPRequestPersonProcessingTask
 
-- (VCPRequestPersonProcessingTask)initWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (VCPRequestPersonProcessingTask)initWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  librariesCopy = libraries;
+  blockCopy = block;
+  handlerCopy = handler;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10017D284;
   v23[3] = &unk_100284038;
-  v14 = a6;
-  v24 = v14;
+  completionHandlerCopy = completionHandler;
+  v24 = completionHandlerCopy;
   v22.receiver = self;
   v22.super_class = VCPRequestPersonProcessingTask;
   v15 = [(VCPRequestPersonProcessingTask *)&v22 initWithCompletionHandler:v23];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_photoLibraries, a3);
-    if (v13)
+    objc_storeStrong(&v15->_photoLibraries, libraries);
+    if (handlerCopy)
     {
-      v17 = v13;
+      v17 = handlerCopy;
     }
 
     else
@@ -38,9 +38,9 @@
     progressHandler = v16->_progressHandler;
     v16->_progressHandler = v18;
 
-    if (v12)
+    if (blockCopy)
     {
-      v20 = v12;
+      v20 = blockCopy;
     }
 
     else
@@ -54,25 +54,25 @@
   return v16;
 }
 
-+ (id)taskWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
++ (id)taskWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:v9 cancelBlock:v10 progressHandler:v11 completionHandler:v12];
+  librariesCopy = libraries;
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v13 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:librariesCopy cancelBlock:blockCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy];
 
   return v13;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   if (![(NSArray *)self->_photoLibraries count])
   {
     v4 = +[VCPPhotoLibraryManager sharedManager];
-    v5 = [v4 allPhotoLibraries];
+    allPhotoLibraries = [v4 allPhotoLibraries];
     photoLibraries = self->_photoLibraries;
-    self->_photoLibraries = v5;
+    self->_photoLibraries = allPhotoLibraries;
   }
 
   if (MediaAnalysisLogLevel() >= 6)
@@ -96,8 +96,8 @@
     {
       v10 = objc_autoreleasePoolPush();
       v11 = [(NSArray *)self->_photoLibraries objectAtIndexedSubscript:v9];
-      v12 = [v11 vcp_description];
-      v45 = [NSString stringWithFormat:@"[VCPRequestPersonProcessingTask][%@]", v12];
+      vcp_description = [v11 vcp_description];
+      v45 = [NSString stringWithFormat:@"[VCPRequestPersonProcessingTask][%@]", vcp_description];
 
       if ([(VCPRequestPersonProcessingTask *)self isCanceled])
       {
@@ -111,20 +111,20 @@
       if ([v11 vcp_isSyndicationLibrary])
       {
         v15 = +[PHPhotoLibrary vcp_defaultPhotoLibrary];
-        v16 = [v15 vcp_visionCacheStorageDirectoryURL];
+        vcp_visionCacheStorageDirectoryURL = [v15 vcp_visionCacheStorageDirectoryURL];
 
         v17 = 1;
       }
 
       else
       {
-        v16 = [v11 vcp_visionCacheStorageDirectoryURL];
+        vcp_visionCacheStorageDirectoryURL = [v11 vcp_visionCacheStorageDirectoryURL];
         v17 = 0;
       }
 
       v18 = [VUWGallery alloc];
       v48 = 0;
-      v19 = [v18 initWithClient:v17 path:v16 error:&v48];
+      v19 = [v18 initWithClient:v17 path:vcp_visionCacheStorageDirectoryURL error:&v48];
       v44 = v48;
       if (v19)
       {
@@ -148,15 +148,15 @@
               _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ User cancelled", buf, 0xCu);
             }
 
-            if (a3)
+            if (run)
             {
               v51 = NSLocalizedDescriptionKey;
               v22 = [NSString stringWithFormat:@"[VCPRequestPersonProcessingTask] User cancelled"];
               v52 = v22;
               v23 = [NSDictionary dictionaryWithObjects:&v52 forKeys:&v51 count:1];
               v24 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v23];
-              v25 = *a3;
-              *a3 = v24;
+              v25 = *run;
+              *run = v24;
             }
 
             v26 = 1;
@@ -191,15 +191,15 @@
                 _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ User cancelled", buf, 0xCu);
               }
 
-              if (a3)
+              if (run)
               {
                 v49 = NSLocalizedDescriptionKey;
                 v38 = [NSString stringWithFormat:@"[VCPRequestPersonProcessingTask] User cancelled"];
                 v50 = v38;
                 v29 = [NSDictionary dictionaryWithObjects:&v50 forKeys:&v49 count:1];
                 v30 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v29];
-                v31 = *a3;
-                *a3 = v30;
+                v31 = *run;
+                *run = v30;
               }
 
               v26 = 1;
@@ -265,15 +265,15 @@
       _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ User cancelled", buf, 0xCu);
     }
 
-    if (a3)
+    if (run)
     {
       v57 = NSLocalizedDescriptionKey;
       v34 = [NSString stringWithFormat:@"%@ User cancelled", v45];
       v58 = v34;
       v35 = [NSDictionary dictionaryWithObjects:&v58 forKeys:&v57 count:1];
       v36 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v35];
-      v37 = *a3;
-      *a3 = v36;
+      v37 = *run;
+      *run = v36;
     }
 
     objc_autoreleasePoolPop(v10);
@@ -283,8 +283,8 @@
   else
   {
 LABEL_48:
-    v32 = [(VCPRequestPersonProcessingTask *)self completionHandler];
-    v32[2](v32, 0, 0);
+    completionHandler = [(VCPRequestPersonProcessingTask *)self completionHandler];
+    completionHandler[2](completionHandler, 0, 0);
 
     return 1;
   }

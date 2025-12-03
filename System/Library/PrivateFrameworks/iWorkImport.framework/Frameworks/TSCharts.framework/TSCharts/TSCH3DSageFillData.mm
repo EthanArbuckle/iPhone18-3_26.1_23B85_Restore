@@ -1,41 +1,41 @@
 @interface TSCH3DSageFillData
-+ (id)TSPImageDataFromTexture:(id)a3;
-+ (id)dataWithFillSetIdentifier:(id)a3;
-+ (id)dataWithFillSetIdentifier:(id)a3 isLowRes:(BOOL)a4;
-+ (id)dataWithProperties:(id)a3 layersProperties:(id)a4 identifier:(id)a5 imageSource:(id)a6;
-+ (id)dataWithProperties:(id)a3 layersProperties:(id)a4 identifier:(id)a5 imageSource:(id)a6 isLowRes:(BOOL)a7;
-+ (id)textureWithImageData:(id)a3;
-- (BOOL)isLayerEnabledForIndex:(unint64_t)a3;
-- (BOOL)layerIsEnvironmentMapForIndex:(unint64_t)a3;
-- (Color)colorFromRedKey:(id)a3 greenKey:(id)a4 blueKey:(id)a5 defaultGray:(float)a6;
++ (id)TSPImageDataFromTexture:(id)texture;
++ (id)dataWithFillSetIdentifier:(id)identifier;
++ (id)dataWithFillSetIdentifier:(id)identifier isLowRes:(BOOL)res;
++ (id)dataWithProperties:(id)properties layersProperties:(id)layersProperties identifier:(id)identifier imageSource:(id)source;
++ (id)dataWithProperties:(id)properties layersProperties:(id)layersProperties identifier:(id)identifier imageSource:(id)source isLowRes:(BOOL)res;
++ (id)textureWithImageData:(id)data;
+- (BOOL)isLayerEnabledForIndex:(unint64_t)index;
+- (BOOL)layerIsEnvironmentMapForIndex:(unint64_t)index;
+- (Color)colorFromRedKey:(id)key greenKey:(id)greenKey blueKey:(id)blueKey defaultGray:(float)gray;
 - (Color)diffuse;
 - (Color)emissive;
-- (Color)makeGray:(float)a3;
+- (Color)makeGray:(float)gray;
 - (Color)specular;
-- (ColorResult)colorFromRedKey:(SEL)a3 greenKey:(id)a4 blueKey:(id)a5;
-- (TSCH3DSageFillData)initWithProperties:(id)a3 layersProperties:(id)a4 identifier:(id)a5 imageSource:(id)a6 isLowRes:(BOOL)a7;
-- (float)layerRotationForIndex:(unint64_t)a3;
-- (float)layerScaleForIndex:(unint64_t)a3;
+- (ColorResult)colorFromRedKey:(SEL)key greenKey:(id)greenKey blueKey:(id)blueKey;
+- (TSCH3DSageFillData)initWithProperties:(id)properties layersProperties:(id)layersProperties identifier:(id)identifier imageSource:(id)source isLowRes:(BOOL)res;
+- (float)layerRotationForIndex:(unint64_t)index;
+- (float)layerScaleForIndex:(unint64_t)index;
 - (float)opacity;
 - (float)shininess;
-- (id)objectForKey:(id)a3 index:(unint64_t)a4;
-- (id)textureForIndex:(unint64_t)a3;
-- (int)layerTilingModeForIndex:(unint64_t)a3;
-- (int64_t)layerBlendModeForIndex:(unint64_t)a3;
+- (id)objectForKey:(id)key index:(unint64_t)index;
+- (id)textureForIndex:(unint64_t)index;
+- (int)layerTilingModeForIndex:(unint64_t)index;
+- (int64_t)layerBlendModeForIndex:(unint64_t)index;
 @end
 
 @implementation TSCH3DSageFillData
 
-+ (id)textureWithImageData:(id)a3
++ (id)textureWithImageData:(id)data
 {
-  v6 = objc_msgSend_textureWithImageData_colorFill_optimizedMipmapData_textureSetId_imageName_(TSCH3DTSPImageDataTexture, a2, v3, v4, v5, a3, 0, 0, 0, 0);
+  v6 = objc_msgSend_textureWithImageData_colorFill_optimizedMipmapData_textureSetId_imageName_(TSCH3DTSPImageDataTexture, a2, v3, v4, v5, data, 0, 0, 0, 0);
 
   return v6;
 }
 
-+ (id)TSPImageDataFromTexture:(id)a3
++ (id)TSPImageDataFromTexture:(id)texture
 {
-  v3 = a3;
+  textureCopy = texture;
   objc_opt_class();
   v4 = TSUDynamicCast();
   v9 = objc_msgSend_imageData(v4, v5, v6, v7, v8);
@@ -43,15 +43,15 @@
   return v9;
 }
 
-+ (id)dataWithFillSetIdentifier:(id)a3 isLowRes:(BOOL)a4
++ (id)dataWithFillSetIdentifier:(id)identifier isLowRes:(BOOL)res
 {
-  v4 = a4;
-  v6 = a3;
-  v11 = objc_msgSend_loadPropertiesDictionary(v6, v7, v8, v9, v10);
+  resCopy = res;
+  identifierCopy = identifier;
+  v11 = objc_msgSend_loadPropertiesDictionary(identifierCopy, v7, v8, v9, v10);
   v17 = objc_msgSend_objectForKey_(v11, v12, v13, v14, v15, @"SFCTextureLayersArrayKey");
   if (v17)
   {
-    v21 = objc_msgSend_dataWithProperties_layersProperties_identifier_imageSource_isLowRes_(a1, v16, v18, v19, v20, v11, v17, v6, 0, v4);
+    v21 = objc_msgSend_dataWithProperties_layersProperties_identifier_imageSource_isLowRes_(self, v16, v18, v19, v20, v11, v17, identifierCopy, 0, resCopy);
   }
 
   else
@@ -68,67 +68,67 @@
   return v21;
 }
 
-+ (id)dataWithFillSetIdentifier:(id)a3
++ (id)dataWithFillSetIdentifier:(id)identifier
 {
-  v6 = objc_msgSend_dataWithFillSetIdentifier_isLowRes_(a1, a2, v3, v4, v5, a3, 0);
+  v6 = objc_msgSend_dataWithFillSetIdentifier_isLowRes_(self, a2, v3, v4, v5, identifier, 0);
 
   return v6;
 }
 
-+ (id)dataWithProperties:(id)a3 layersProperties:(id)a4 identifier:(id)a5 imageSource:(id)a6
++ (id)dataWithProperties:(id)properties layersProperties:(id)layersProperties identifier:(id)identifier imageSource:(id)source
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [a1 alloc];
-  isLowRes = objc_msgSend_initWithProperties_layersProperties_identifier_imageSource_isLowRes_(v14, v15, v16, v17, v18, v10, v11, v12, v13, 0);
+  propertiesCopy = properties;
+  layersPropertiesCopy = layersProperties;
+  identifierCopy = identifier;
+  sourceCopy = source;
+  v14 = [self alloc];
+  isLowRes = objc_msgSend_initWithProperties_layersProperties_identifier_imageSource_isLowRes_(v14, v15, v16, v17, v18, propertiesCopy, layersPropertiesCopy, identifierCopy, sourceCopy, 0);
 
   return isLowRes;
 }
 
-+ (id)dataWithProperties:(id)a3 layersProperties:(id)a4 identifier:(id)a5 imageSource:(id)a6 isLowRes:(BOOL)a7
++ (id)dataWithProperties:(id)properties layersProperties:(id)layersProperties identifier:(id)identifier imageSource:(id)source isLowRes:(BOOL)res
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [a1 alloc];
-  isLowRes = objc_msgSend_initWithProperties_layersProperties_identifier_imageSource_isLowRes_(v16, v17, v18, v19, v20, v12, v13, v14, v15, v7);
+  resCopy = res;
+  propertiesCopy = properties;
+  layersPropertiesCopy = layersProperties;
+  identifierCopy = identifier;
+  sourceCopy = source;
+  v16 = [self alloc];
+  isLowRes = objc_msgSend_initWithProperties_layersProperties_identifier_imageSource_isLowRes_(v16, v17, v18, v19, v20, propertiesCopy, layersPropertiesCopy, identifierCopy, sourceCopy, resCopy);
 
   return isLowRes;
 }
 
-- (TSCH3DSageFillData)initWithProperties:(id)a3 layersProperties:(id)a4 identifier:(id)a5 imageSource:(id)a6 isLowRes:(BOOL)a7
+- (TSCH3DSageFillData)initWithProperties:(id)properties layersProperties:(id)layersProperties identifier:(id)identifier imageSource:(id)source isLowRes:(BOOL)res
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  propertiesCopy = properties;
+  layersPropertiesCopy = layersProperties;
+  identifierCopy = identifier;
+  sourceCopy = source;
   v20.receiver = self;
   v20.super_class = TSCH3DSageFillData;
   v17 = [(TSCH3DSageFillData *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_properties, a3);
-    objc_storeStrong(&v18->_layersProperties, a4);
-    objc_storeStrong(&v18->_identifier, a5);
-    objc_storeStrong(&v18->_imageSource, a6);
-    v18->_isLowRes = a7;
+    objc_storeStrong(&v17->_properties, properties);
+    objc_storeStrong(&v18->_layersProperties, layersProperties);
+    objc_storeStrong(&v18->_identifier, identifier);
+    objc_storeStrong(&v18->_imageSource, source);
+    v18->_isLowRes = res;
   }
 
   return v18;
 }
 
-- (ColorResult)colorFromRedKey:(SEL)a3 greenKey:(id)a4 blueKey:(id)a5
+- (ColorResult)colorFromRedKey:(SEL)key greenKey:(id)greenKey blueKey:(id)blueKey
 {
-  v44 = a4;
-  v10 = a5;
+  greenKeyCopy = greenKey;
+  blueKeyCopy = blueKey;
   v11 = a6;
-  v16 = objc_msgSend_objectForKey_(self->_properties, v12, v13, v14, v15, v44);
-  v21 = objc_msgSend_objectForKey_(self->_properties, v17, v18, v19, v20, v10);
+  v16 = objc_msgSend_objectForKey_(self->_properties, v12, v13, v14, v15, greenKeyCopy);
+  v21 = objc_msgSend_objectForKey_(self->_properties, v17, v18, v19, v20, blueKeyCopy);
   v26 = objc_msgSend_objectForKey_(self->_properties, v22, v23, v24, v25, v11);
   v31 = v26;
   if (v16 && v21 && v26)
@@ -155,13 +155,13 @@
   return result;
 }
 
-- (Color)makeGray:(float)a3
+- (Color)makeGray:(float)gray
 {
   v3 = 1.0;
   result.var3 = v3;
-  result.var2 = a3;
-  result.var1 = a3;
-  result.var0 = a3;
+  result.var2 = gray;
+  result.var1 = gray;
+  result.var0 = gray;
   return result;
 }
 
@@ -201,12 +201,12 @@
   return v12;
 }
 
-- (Color)colorFromRedKey:(id)a3 greenKey:(id)a4 blueKey:(id)a5 defaultGray:(float)a6
+- (Color)colorFromRedKey:(id)key greenKey:(id)greenKey blueKey:(id)blueKey defaultGray:(float)gray
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  objc_msgSend_colorFromRedKey_greenKey_blueKey_(self, v13, v14, v15, v16, v10, v11, v12);
+  keyCopy = key;
+  greenKeyCopy = greenKey;
+  blueKeyCopy = blueKey;
+  objc_msgSend_colorFromRedKey_greenKey_blueKey_(self, v13, v14, v15, v16, keyCopy, greenKeyCopy, blueKeyCopy);
   if (v33)
   {
     v21 = v34;
@@ -217,7 +217,7 @@
 
   else
   {
-    *&v18 = a6;
+    *&v18 = gray;
     objc_msgSend_makeGray_(self, v17, v18, v19, v20);
     v21 = v25;
     v22 = v26;
@@ -268,28 +268,28 @@
   return result;
 }
 
-- (id)objectForKey:(id)a3 index:(unint64_t)a4
+- (id)objectForKey:(id)key index:(unint64_t)index
 {
-  v6 = a3;
-  v11 = objc_msgSend_objectAtIndexedSubscript_(self->_layersProperties, v7, v8, v9, v10, a4);
-  v16 = objc_msgSend_objectForKey_(v11, v12, v13, v14, v15, v6);
+  keyCopy = key;
+  v11 = objc_msgSend_objectAtIndexedSubscript_(self->_layersProperties, v7, v8, v9, v10, index);
+  v16 = objc_msgSend_objectForKey_(v11, v12, v13, v14, v15, keyCopy);
 
   return v16;
 }
 
-- (BOOL)isLayerEnabledForIndex:(unint64_t)a3
+- (BOOL)isLayerEnabledForIndex:(unint64_t)index
 {
   objc_opt_class();
-  v9 = objc_msgSend_objectForKey_index_(self, v5, v6, v7, v8, @"SFCTextureLayerEnabledKey", a3);
+  v9 = objc_msgSend_objectForKey_index_(self, v5, v6, v7, v8, @"SFCTextureLayerEnabledKey", index);
   v10 = TSUCheckedDynamicCast();
   v15 = objc_msgSend_BOOLValue(v10, v11, v12, v13, v14);
 
   return v15;
 }
 
-- (float)layerScaleForIndex:(unint64_t)a3
+- (float)layerScaleForIndex:(unint64_t)index
 {
-  v6 = objc_msgSend_objectForKey_index_(self, a2, v3, v4, v5, @"SFCTextureLayerScaleXKey", a3);
+  v6 = objc_msgSend_objectForKey_index_(self, a2, v3, v4, v5, @"SFCTextureLayerScaleXKey", index);
   v11 = v6;
   if (v6)
   {
@@ -305,9 +305,9 @@
   return v13;
 }
 
-- (float)layerRotationForIndex:(unint64_t)a3
+- (float)layerRotationForIndex:(unint64_t)index
 {
-  v6 = objc_msgSend_objectForKey_index_(self, a2, v3, v4, v5, @"SFCTextureLayerRotationKey", a3);
+  v6 = objc_msgSend_objectForKey_index_(self, a2, v3, v4, v5, @"SFCTextureLayerRotationKey", index);
   v11 = v6;
   if (v6)
   {
@@ -323,19 +323,19 @@
   return v13;
 }
 
-- (BOOL)layerIsEnvironmentMapForIndex:(unint64_t)a3
+- (BOOL)layerIsEnvironmentMapForIndex:(unint64_t)index
 {
   objc_opt_class();
-  v9 = objc_msgSend_objectForKey_index_(self, v5, v6, v7, v8, @"SFCTextureLayerIsEnvironmentMapKey", a3);
+  v9 = objc_msgSend_objectForKey_index_(self, v5, v6, v7, v8, @"SFCTextureLayerIsEnvironmentMapKey", index);
   v10 = TSUCheckedDynamicCast();
   v15 = objc_msgSend_BOOLValue(v10, v11, v12, v13, v14);
 
   return v15;
 }
 
-- (int64_t)layerBlendModeForIndex:(unint64_t)a3
+- (int64_t)layerBlendModeForIndex:(unint64_t)index
 {
-  v6 = objc_msgSend_objectForKey_index_(self, a2, v3, v4, v5, @"SFCTextureLayerBlendModeKey", a3);
+  v6 = objc_msgSend_objectForKey_index_(self, a2, v3, v4, v5, @"SFCTextureLayerBlendModeKey", index);
   v11 = v6;
   if (v6)
   {
@@ -362,21 +362,21 @@
   return v14;
 }
 
-- (int)layerTilingModeForIndex:(unint64_t)a3
+- (int)layerTilingModeForIndex:(unint64_t)index
 {
-  v6 = objc_msgSend_objectForKey_index_(self, a2, v3, v4, v5, @"SFCTextureLayerTilingModeKey", a3);
+  v6 = objc_msgSend_objectForKey_index_(self, a2, v3, v4, v5, @"SFCTextureLayerTilingModeKey", index);
   v11 = v6;
   v12 = v6 && objc_msgSend_intValue(v6, v7, v8, v9, v10) != 2;
 
   return v12;
 }
 
-- (id)textureForIndex:(unint64_t)a3
+- (id)textureForIndex:(unint64_t)index
 {
   imageSource = self->_imageSource;
   if (imageSource)
   {
-    v9 = objc_msgSend_textureForIndex_(imageSource, a2, v3, v4, v5, a3);
+    v9 = objc_msgSend_textureForIndex_(imageSource, a2, v3, v4, v5, index);
   }
 
   else
@@ -391,7 +391,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
     }
 
-    v29 = objc_msgSend_objectForKey_index_(self, v10, v11, v12, v13, @"SFCTextureLayerImageKey", a3);
+    v29 = objc_msgSend_objectForKey_index_(self, v10, v11, v12, v13, @"SFCTextureLayerImageKey", index);
     if (!v29)
     {
       goto LABEL_31;
@@ -434,9 +434,9 @@
       v81 = objc_msgSend_sharedInstance(TSCHAssetColorMap, v77, v78, v79, v80);
       v86 = objc_msgSend_colorForFilename_fillSetIdentifier_(v81, v82, v83, v84, v85, v34, self->_identifier);
 
-      if (objc_msgSend_layerIsEnvironmentMapForIndex_(self, v87, v88, v89, v90, a3))
+      if (objc_msgSend_layerIsEnvironmentMapForIndex_(self, v87, v88, v89, v90, index))
       {
-        if (objc_msgSend_layerBlendModeForIndex_(self, v91, v92, v93, v94, a3) == 1)
+        if (objc_msgSend_layerBlendModeForIndex_(self, v91, v92, v93, v94, index) == 1)
         {
           v97 = 1.0;
         }

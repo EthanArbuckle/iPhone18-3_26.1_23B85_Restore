@@ -13,8 +13,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [a1 relationships];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  relationships = [self relationships];
+  v5 = [relationships countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -25,17 +25,17 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(relationships);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
         if ([v9 type] == 1015)
         {
-          v10 = [v9 destination];
-          v11 = [v10 identifier];
-          v12 = [v11 rawIdentifier];
+          destination = [v9 destination];
+          identifier = [destination identifier];
+          rawIdentifier = [identifier rawIdentifier];
 
-          if (v12 == a3)
+          if (rawIdentifier == a3)
           {
             v13 = 1;
             goto LABEL_12;
@@ -43,7 +43,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [relationships countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         continue;
@@ -62,18 +62,18 @@ LABEL_12:
 
 - (id)meds_preferredNameForFirstObjectOfRelationshipType:()Medications
 {
-  v1 = [a1 firstConceptOfRelationshipType:?];
-  v2 = [v1 localizedPreferredName];
+  v1 = [self firstConceptOfRelationshipType:?];
+  localizedPreferredName = [v1 localizedPreferredName];
 
-  return v2;
+  return localizedPreferredName;
 }
 
 - (id)meds_englishUSName
 {
-  v1 = [a1 firstAttributeForType:960];
-  v2 = [v1 stringValue];
+  v1 = [self firstAttributeForType:960];
+  stringValue = [v1 stringValue];
 
-  return v2;
+  return stringValue;
 }
 
 @end

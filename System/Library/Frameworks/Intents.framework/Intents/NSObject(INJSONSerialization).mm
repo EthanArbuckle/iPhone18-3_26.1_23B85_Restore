@@ -54,7 +54,7 @@
 
   else if (objc_opt_respondsToSelector())
   {
-    v5 = [a1 _isValidKey:v4];
+    v5 = [self _isValidKey:v4];
   }
 
   else

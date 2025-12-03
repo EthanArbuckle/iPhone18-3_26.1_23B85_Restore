@@ -1,157 +1,157 @@
 @interface WFPBRunActionEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
 - (NSString)runSource;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCompleteFailReason:(id)a3;
-- (int)StringAsRegionEligibility:(id)a3;
-- (int)StringAsRequestType:(id)a3;
-- (int)StringAsResultType:(id)a3;
+- (int)StringAsCompleteFailReason:(id)reason;
+- (int)StringAsRegionEligibility:(id)eligibility;
+- (int)StringAsRequestType:(id)type;
+- (int)StringAsResultType:(id)type;
 - (int)completeFailReason;
 - (int)regionEligibility;
 - (int)requestType;
 - (int)resultType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCompleted:(BOOL)a3;
-- (void)setHasDidRunRemotely:(BOOL)a3;
-- (void)setHasInputTokenLength:(BOOL)a3;
-- (void)setHasIsInvalidatedSystemAction:(BOOL)a3;
-- (void)setHasNumFollowUp:(BOOL)a3;
-- (void)setHasOutputTokenLength:(BOOL)a3;
-- (void)setHasRegionEligibility:(BOOL)a3;
-- (void)setHasRequestType:(BOOL)a3;
-- (void)setHasResultType:(BOOL)a3;
-- (void)setHasRunErrorCode:(BOOL)a3;
-- (void)setHasRunLatency:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCompleted:(BOOL)completed;
+- (void)setHasDidRunRemotely:(BOOL)remotely;
+- (void)setHasInputTokenLength:(BOOL)length;
+- (void)setHasIsInvalidatedSystemAction:(BOOL)action;
+- (void)setHasNumFollowUp:(BOOL)up;
+- (void)setHasOutputTokenLength:(BOOL)length;
+- (void)setHasRegionEligibility:(BOOL)eligibility;
+- (void)setHasRequestType:(BOOL)type;
+- (void)setHasResultType:(BOOL)type;
+- (void)setHasRunErrorCode:(BOOL)code;
+- (void)setHasRunLatency:(BOOL)latency;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFPBRunActionEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 10))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 10))
   {
     [(WFPBRunActionEvent *)self setKey:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(WFPBRunActionEvent *)self setRunSource:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if ((*(v4 + 86) & 0x200) != 0)
+  if ((*(fromCopy + 86) & 0x200) != 0)
   {
-    self->_completed = *(v4 + 168);
+    self->_completed = *(fromCopy + 168);
     *&self->_has |= 0x200u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(WFPBRunActionEvent *)self setActionIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 19))
+  if (*(fromCopy + 19))
   {
     [(WFPBRunActionEvent *)self setShortcutSource:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(WFPBRunActionEvent *)self setAutomationType:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 86);
+  v5 = *(fromCopy + 86);
   if ((v5 & 0x400) != 0)
   {
-    self->_didRunRemotely = *(v4 + 169);
+    self->_didRunRemotely = *(fromCopy + 169);
     *&self->_has |= 0x400u;
-    v5 = *(v4 + 86);
+    v5 = *(fromCopy + 86);
   }
 
   if ((v5 & 0x800) != 0)
   {
-    self->_isInvalidatedSystemAction = *(v4 + 170);
+    self->_isInvalidatedSystemAction = *(fromCopy + 170);
     *&self->_has |= 0x800u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(WFPBRunActionEvent *)self setGalleryIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(WFPBRunActionEvent *)self setExternalBundleIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(WFPBRunActionEvent *)self setExternalActionIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
     [(WFPBRunActionEvent *)self setShortcutsId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 86))
+  if (*(fromCopy + 86))
   {
-    self->_completeFailReason = *(v4 + 10);
+    self->_completeFailReason = *(fromCopy + 10);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(WFPBRunActionEvent *)self setBaseModel:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(WFPBRunActionEvent *)self setAdapterModel:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(WFPBRunActionEvent *)self setSafetyModel:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(WFPBRunActionEvent *)self setModelDestination:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(WFPBRunActionEvent *)self setRunErrorDomain:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 86);
+  v6 = *(fromCopy + 86);
   if ((v6 & 0x80) != 0)
   {
-    self->_runErrorCode = *(v4 + 29);
+    self->_runErrorCode = *(fromCopy + 29);
     *&self->_has |= 0x80u;
-    v6 = *(v4 + 86);
+    v6 = *(fromCopy + 86);
     if ((v6 & 0x100) == 0)
     {
 LABEL_39:
@@ -164,14 +164,14 @@ LABEL_39:
     }
   }
 
-  else if ((*(v4 + 86) & 0x100) == 0)
+  else if ((*(fromCopy + 86) & 0x100) == 0)
   {
     goto LABEL_39;
   }
 
-  self->_runLatency = *(v4 + 32);
+  self->_runLatency = *(fromCopy + 32);
   *&self->_has |= 0x100u;
-  v6 = *(v4 + 86);
+  v6 = *(fromCopy + 86);
   if ((v6 & 2) == 0)
   {
 LABEL_40:
@@ -184,9 +184,9 @@ LABEL_40:
   }
 
 LABEL_51:
-  self->_inputTokenLength = *(v4 + 18);
+  self->_inputTokenLength = *(fromCopy + 18);
   *&self->_has |= 2u;
-  v6 = *(v4 + 86);
+  v6 = *(fromCopy + 86);
   if ((v6 & 8) == 0)
   {
 LABEL_41:
@@ -199,9 +199,9 @@ LABEL_41:
   }
 
 LABEL_52:
-  self->_outputTokenLength = *(v4 + 25);
+  self->_outputTokenLength = *(fromCopy + 25);
   *&self->_has |= 8u;
-  v6 = *(v4 + 86);
+  v6 = *(fromCopy + 86);
   if ((v6 & 0x20) == 0)
   {
 LABEL_42:
@@ -214,9 +214,9 @@ LABEL_42:
   }
 
 LABEL_53:
-  self->_requestType = *(v4 + 27);
+  self->_requestType = *(fromCopy + 27);
   *&self->_has |= 0x20u;
-  v6 = *(v4 + 86);
+  v6 = *(fromCopy + 86);
   if ((v6 & 0x10) == 0)
   {
 LABEL_43:
@@ -229,9 +229,9 @@ LABEL_43:
   }
 
 LABEL_54:
-  self->_regionEligibility = *(v4 + 26);
+  self->_regionEligibility = *(fromCopy + 26);
   *&self->_has |= 0x10u;
-  v6 = *(v4 + 86);
+  v6 = *(fromCopy + 86);
   if ((v6 & 0x40) == 0)
   {
 LABEL_44:
@@ -244,12 +244,12 @@ LABEL_44:
   }
 
 LABEL_55:
-  self->_resultType = *(v4 + 28);
+  self->_resultType = *(fromCopy + 28);
   *&self->_has |= 0x40u;
-  if ((*(v4 + 86) & 4) != 0)
+  if ((*(fromCopy + 86) & 4) != 0)
   {
 LABEL_45:
-    self->_numFollowUp = *(v4 + 24);
+    self->_numFollowUp = *(fromCopy + 24);
     *&self->_has |= 4u;
   }
 
@@ -441,16 +441,16 @@ LABEL_26:
   return v34 ^ v35 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v14 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
   key = self->_key;
-  if (key | *(v4 + 10))
+  if (key | *(equalCopy + 10))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -459,7 +459,7 @@ LABEL_26:
   }
 
   runSource = self->_runSource;
-  if (runSource | *(v4 + 17))
+  if (runSource | *(equalCopy + 17))
   {
     if (![(NSString *)runSource isEqual:?])
     {
@@ -467,42 +467,42 @@ LABEL_26:
     }
   }
 
-  v7 = *(v4 + 86);
+  v7 = *(equalCopy + 86);
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 86) & 0x200) == 0)
+    if ((*(equalCopy + 86) & 0x200) == 0)
     {
       goto LABEL_30;
     }
 
-    v19 = *(v4 + 168);
+    v19 = *(equalCopy + 168);
     if (self->_completed)
     {
-      if ((*(v4 + 168) & 1) == 0)
+      if ((*(equalCopy + 168) & 1) == 0)
       {
         goto LABEL_30;
       }
     }
 
-    else if (*(v4 + 168))
+    else if (*(equalCopy + 168))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 86) & 0x200) != 0)
+  else if ((*(equalCopy + 86) & 0x200) != 0)
   {
     goto LABEL_30;
   }
 
   actionIdentifier = self->_actionIdentifier;
-  if (actionIdentifier | *(v4 + 1) && ![(NSString *)actionIdentifier isEqual:?])
+  if (actionIdentifier | *(equalCopy + 1) && ![(NSString *)actionIdentifier isEqual:?])
   {
     goto LABEL_30;
   }
 
   shortcutSource = self->_shortcutSource;
-  if (shortcutSource | *(v4 + 19))
+  if (shortcutSource | *(equalCopy + 19))
   {
     if (![(NSString *)shortcutSource isEqual:?])
     {
@@ -511,7 +511,7 @@ LABEL_26:
   }
 
   automationType = self->_automationType;
-  if (automationType | *(v4 + 3))
+  if (automationType | *(equalCopy + 3))
   {
     if (![(NSString *)automationType isEqual:?])
     {
@@ -519,69 +519,69 @@ LABEL_26:
     }
   }
 
-  v11 = *(v4 + 86);
+  v11 = *(equalCopy + 86);
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 86) & 0x400) == 0)
+    if ((*(equalCopy + 86) & 0x400) == 0)
     {
       goto LABEL_30;
     }
 
-    v20 = *(v4 + 169);
+    v20 = *(equalCopy + 169);
     if (self->_didRunRemotely)
     {
-      if ((*(v4 + 169) & 1) == 0)
+      if ((*(equalCopy + 169) & 1) == 0)
       {
         goto LABEL_30;
       }
     }
 
-    else if (*(v4 + 169))
+    else if (*(equalCopy + 169))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 86) & 0x400) != 0)
+  else if ((*(equalCopy + 86) & 0x400) != 0)
   {
     goto LABEL_30;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 86) & 0x800) == 0)
+    if ((*(equalCopy + 86) & 0x800) == 0)
     {
       goto LABEL_30;
     }
 
-    v21 = *(v4 + 170);
+    v21 = *(equalCopy + 170);
     if (self->_isInvalidatedSystemAction)
     {
-      if ((*(v4 + 170) & 1) == 0)
+      if ((*(equalCopy + 170) & 1) == 0)
       {
         goto LABEL_30;
       }
     }
 
-    else if (*(v4 + 170))
+    else if (*(equalCopy + 170))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 86) & 0x800) != 0)
+  else if ((*(equalCopy + 86) & 0x800) != 0)
   {
     goto LABEL_30;
   }
 
   galleryIdentifier = self->_galleryIdentifier;
-  if (galleryIdentifier | *(v4 + 8) && ![(NSString *)galleryIdentifier isEqual:?])
+  if (galleryIdentifier | *(equalCopy + 8) && ![(NSString *)galleryIdentifier isEqual:?])
   {
     goto LABEL_30;
   }
 
   externalBundleIdentifier = self->_externalBundleIdentifier;
-  if (externalBundleIdentifier | *(v4 + 7))
+  if (externalBundleIdentifier | *(equalCopy + 7))
   {
     if (![(NSString *)externalBundleIdentifier isEqual:?])
     {
@@ -590,7 +590,7 @@ LABEL_26:
   }
 
   externalActionIdentifier = self->_externalActionIdentifier;
-  if (externalActionIdentifier | *(v4 + 6))
+  if (externalActionIdentifier | *(equalCopy + 6))
   {
     if (![(NSString *)externalActionIdentifier isEqual:?])
     {
@@ -599,7 +599,7 @@ LABEL_26:
   }
 
   shortcutsId = self->_shortcutsId;
-  if (shortcutsId | *(v4 + 20))
+  if (shortcutsId | *(equalCopy + 20))
   {
     if (![(NSString *)shortcutsId isEqual:?])
     {
@@ -607,10 +607,10 @@ LABEL_26:
     }
   }
 
-  v16 = *(v4 + 86);
+  v16 = *(equalCopy + 86);
   if (*&self->_has)
   {
-    if ((v16 & 1) == 0 || self->_completeFailReason != *(v4 + 10))
+    if ((v16 & 1) == 0 || self->_completeFailReason != *(equalCopy + 10))
     {
       goto LABEL_30;
     }
@@ -622,13 +622,13 @@ LABEL_26:
   }
 
   baseModel = self->_baseModel;
-  if (baseModel | *(v4 + 4) && ![(NSString *)baseModel isEqual:?])
+  if (baseModel | *(equalCopy + 4) && ![(NSString *)baseModel isEqual:?])
   {
     goto LABEL_30;
   }
 
   adapterModel = self->_adapterModel;
-  if (adapterModel | *(v4 + 2))
+  if (adapterModel | *(equalCopy + 2))
   {
     if (![(NSString *)adapterModel isEqual:?])
     {
@@ -637,7 +637,7 @@ LABEL_26:
   }
 
   safetyModel = self->_safetyModel;
-  if (safetyModel | *(v4 + 18))
+  if (safetyModel | *(equalCopy + 18))
   {
     if (![(NSString *)safetyModel isEqual:?])
     {
@@ -646,7 +646,7 @@ LABEL_26:
   }
 
   modelDestination = self->_modelDestination;
-  if (modelDestination | *(v4 + 11))
+  if (modelDestination | *(equalCopy + 11))
   {
     if (![(NSString *)modelDestination isEqual:?])
     {
@@ -655,7 +655,7 @@ LABEL_26:
   }
 
   runErrorDomain = self->_runErrorDomain;
-  if (runErrorDomain | *(v4 + 15))
+  if (runErrorDomain | *(equalCopy + 15))
   {
     if (![(NSString *)runErrorDomain isEqual:?])
     {
@@ -664,10 +664,10 @@ LABEL_26:
   }
 
   has = self->_has;
-  v28 = *(v4 + 86);
+  v28 = *(equalCopy + 86);
   if ((has & 0x80) != 0)
   {
-    if ((v28 & 0x80) == 0 || self->_runErrorCode != *(v4 + 29))
+    if ((v28 & 0x80) == 0 || self->_runErrorCode != *(equalCopy + 29))
     {
       goto LABEL_30;
     }
@@ -680,20 +680,20 @@ LABEL_26:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 86) & 0x100) == 0 || self->_runLatency != *(v4 + 32))
+    if ((*(equalCopy + 86) & 0x100) == 0 || self->_runLatency != *(equalCopy + 32))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 86) & 0x100) != 0)
+  else if ((*(equalCopy + 86) & 0x100) != 0)
   {
     goto LABEL_30;
   }
 
   if ((has & 2) != 0)
   {
-    if ((v28 & 2) == 0 || self->_inputTokenLength != *(v4 + 18))
+    if ((v28 & 2) == 0 || self->_inputTokenLength != *(equalCopy + 18))
     {
       goto LABEL_30;
     }
@@ -706,7 +706,7 @@ LABEL_26:
 
   if ((has & 8) != 0)
   {
-    if ((v28 & 8) == 0 || self->_outputTokenLength != *(v4 + 25))
+    if ((v28 & 8) == 0 || self->_outputTokenLength != *(equalCopy + 25))
     {
       goto LABEL_30;
     }
@@ -719,7 +719,7 @@ LABEL_26:
 
   if ((has & 0x20) != 0)
   {
-    if ((v28 & 0x20) == 0 || self->_requestType != *(v4 + 27))
+    if ((v28 & 0x20) == 0 || self->_requestType != *(equalCopy + 27))
     {
       goto LABEL_30;
     }
@@ -732,7 +732,7 @@ LABEL_26:
 
   if ((has & 0x10) != 0)
   {
-    if ((v28 & 0x10) == 0 || self->_regionEligibility != *(v4 + 26))
+    if ((v28 & 0x10) == 0 || self->_regionEligibility != *(equalCopy + 26))
     {
       goto LABEL_30;
     }
@@ -745,7 +745,7 @@ LABEL_26:
 
   if ((has & 0x40) != 0)
   {
-    if ((v28 & 0x40) == 0 || self->_resultType != *(v4 + 28))
+    if ((v28 & 0x40) == 0 || self->_resultType != *(equalCopy + 28))
     {
       goto LABEL_30;
     }
@@ -762,7 +762,7 @@ LABEL_26:
     goto LABEL_31;
   }
 
-  if ((v28 & 4) != 0 && self->_numFollowUp == *(v4 + 24))
+  if ((v28 & 4) != 0 && self->_numFollowUp == *(equalCopy + 24))
   {
     v17 = 1;
     goto LABEL_31;
@@ -775,14 +775,14 @@ LABEL_31:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 80);
   *(v5 + 80) = v6;
 
-  v8 = [(NSString *)self->_runSource copyWithZone:a3];
+  v8 = [(NSString *)self->_runSource copyWithZone:zone];
   v9 = *(v5 + 136);
   *(v5 + 136) = v8;
 
@@ -792,15 +792,15 @@ LABEL_31:
     *(v5 + 172) |= 0x200u;
   }
 
-  v10 = [(NSString *)self->_actionIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_actionIdentifier copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
-  v12 = [(NSString *)self->_shortcutSource copyWithZone:a3];
+  v12 = [(NSString *)self->_shortcutSource copyWithZone:zone];
   v13 = *(v5 + 152);
   *(v5 + 152) = v12;
 
-  v14 = [(NSString *)self->_automationType copyWithZone:a3];
+  v14 = [(NSString *)self->_automationType copyWithZone:zone];
   v15 = *(v5 + 24);
   *(v5 + 24) = v14;
 
@@ -818,19 +818,19 @@ LABEL_31:
     *(v5 + 172) |= 0x800u;
   }
 
-  v17 = [(NSString *)self->_galleryIdentifier copyWithZone:a3];
+  v17 = [(NSString *)self->_galleryIdentifier copyWithZone:zone];
   v18 = *(v5 + 64);
   *(v5 + 64) = v17;
 
-  v19 = [(NSString *)self->_externalBundleIdentifier copyWithZone:a3];
+  v19 = [(NSString *)self->_externalBundleIdentifier copyWithZone:zone];
   v20 = *(v5 + 56);
   *(v5 + 56) = v19;
 
-  v21 = [(NSString *)self->_externalActionIdentifier copyWithZone:a3];
+  v21 = [(NSString *)self->_externalActionIdentifier copyWithZone:zone];
   v22 = *(v5 + 48);
   *(v5 + 48) = v21;
 
-  v23 = [(NSString *)self->_shortcutsId copyWithZone:a3];
+  v23 = [(NSString *)self->_shortcutsId copyWithZone:zone];
   v24 = *(v5 + 160);
   *(v5 + 160) = v23;
 
@@ -840,23 +840,23 @@ LABEL_31:
     *(v5 + 172) |= 1u;
   }
 
-  v25 = [(NSString *)self->_baseModel copyWithZone:a3];
+  v25 = [(NSString *)self->_baseModel copyWithZone:zone];
   v26 = *(v5 + 32);
   *(v5 + 32) = v25;
 
-  v27 = [(NSString *)self->_adapterModel copyWithZone:a3];
+  v27 = [(NSString *)self->_adapterModel copyWithZone:zone];
   v28 = *(v5 + 16);
   *(v5 + 16) = v27;
 
-  v29 = [(NSString *)self->_safetyModel copyWithZone:a3];
+  v29 = [(NSString *)self->_safetyModel copyWithZone:zone];
   v30 = *(v5 + 144);
   *(v5 + 144) = v29;
 
-  v31 = [(NSString *)self->_modelDestination copyWithZone:a3];
+  v31 = [(NSString *)self->_modelDestination copyWithZone:zone];
   v32 = *(v5 + 88);
   *(v5 + 88) = v31;
 
-  v33 = [(NSString *)self->_runErrorDomain copyWithZone:a3];
+  v33 = [(NSString *)self->_runErrorDomain copyWithZone:zone];
   v34 = *(v5 + 120);
   *(v5 + 120) = v33;
 
@@ -970,125 +970,125 @@ LABEL_17:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v7;
+    [toCopy setKey:?];
+    toCopy = v7;
   }
 
   if (self->_runSource)
   {
     [v7 setRunSource:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    *(v4 + 168) = self->_completed;
-    *(v4 + 86) |= 0x200u;
+    *(toCopy + 168) = self->_completed;
+    *(toCopy + 86) |= 0x200u;
   }
 
   if (self->_actionIdentifier)
   {
     [v7 setActionIdentifier:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_shortcutSource)
   {
     [v7 setShortcutSource:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_automationType)
   {
     [v7 setAutomationType:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 0x400) != 0)
   {
-    *(v4 + 169) = self->_didRunRemotely;
-    *(v4 + 86) |= 0x400u;
+    *(toCopy + 169) = self->_didRunRemotely;
+    *(toCopy + 86) |= 0x400u;
     has = self->_has;
   }
 
   if ((has & 0x800) != 0)
   {
-    *(v4 + 170) = self->_isInvalidatedSystemAction;
-    *(v4 + 86) |= 0x800u;
+    *(toCopy + 170) = self->_isInvalidatedSystemAction;
+    *(toCopy + 86) |= 0x800u;
   }
 
   if (self->_galleryIdentifier)
   {
     [v7 setGalleryIdentifier:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_externalBundleIdentifier)
   {
     [v7 setExternalBundleIdentifier:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_externalActionIdentifier)
   {
     [v7 setExternalActionIdentifier:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_shortcutsId)
   {
     [v7 setShortcutsId:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 10) = self->_completeFailReason;
-    *(v4 + 86) |= 1u;
+    *(toCopy + 10) = self->_completeFailReason;
+    *(toCopy + 86) |= 1u;
   }
 
   if (self->_baseModel)
   {
     [v7 setBaseModel:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_adapterModel)
   {
     [v7 setAdapterModel:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_safetyModel)
   {
     [v7 setSafetyModel:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_modelDestination)
   {
     [v7 setModelDestination:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_runErrorDomain)
   {
     [v7 setRunErrorDomain:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x80) != 0)
   {
-    *(v4 + 29) = self->_runErrorCode;
-    *(v4 + 86) |= 0x80u;
+    *(toCopy + 29) = self->_runErrorCode;
+    *(toCopy + 86) |= 0x80u;
     v6 = self->_has;
     if ((v6 & 0x100) == 0)
     {
@@ -1107,8 +1107,8 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  *(v4 + 32) = LODWORD(self->_runLatency);
-  *(v4 + 86) |= 0x100u;
+  *(toCopy + 32) = LODWORD(self->_runLatency);
+  *(toCopy + 86) |= 0x100u;
   v6 = self->_has;
   if ((v6 & 2) == 0)
   {
@@ -1122,8 +1122,8 @@ LABEL_40:
   }
 
 LABEL_51:
-  *(v4 + 18) = self->_inputTokenLength;
-  *(v4 + 86) |= 2u;
+  *(toCopy + 18) = self->_inputTokenLength;
+  *(toCopy + 86) |= 2u;
   v6 = self->_has;
   if ((v6 & 8) == 0)
   {
@@ -1137,8 +1137,8 @@ LABEL_41:
   }
 
 LABEL_52:
-  *(v4 + 25) = self->_outputTokenLength;
-  *(v4 + 86) |= 8u;
+  *(toCopy + 25) = self->_outputTokenLength;
+  *(toCopy + 86) |= 8u;
   v6 = self->_has;
   if ((v6 & 0x20) == 0)
   {
@@ -1152,8 +1152,8 @@ LABEL_42:
   }
 
 LABEL_53:
-  *(v4 + 27) = self->_requestType;
-  *(v4 + 86) |= 0x20u;
+  *(toCopy + 27) = self->_requestType;
+  *(toCopy + 86) |= 0x20u;
   v6 = self->_has;
   if ((v6 & 0x10) == 0)
   {
@@ -1167,8 +1167,8 @@ LABEL_43:
   }
 
 LABEL_54:
-  *(v4 + 26) = self->_regionEligibility;
-  *(v4 + 86) |= 0x10u;
+  *(toCopy + 26) = self->_regionEligibility;
+  *(toCopy + 86) |= 0x10u;
   v6 = self->_has;
   if ((v6 & 0x40) == 0)
   {
@@ -1182,57 +1182,57 @@ LABEL_44:
   }
 
 LABEL_55:
-  *(v4 + 28) = self->_resultType;
-  *(v4 + 86) |= 0x40u;
+  *(toCopy + 28) = self->_resultType;
+  *(toCopy + 86) |= 0x40u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_45:
-    *(v4 + 24) = self->_numFollowUp;
-    *(v4 + 86) |= 4u;
+    *(toCopy + 24) = self->_numFollowUp;
+    *(toCopy + 86) |= 4u;
   }
 
 LABEL_46:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v19 = v4;
+  toCopy = to;
+  v19 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_runSource)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
     completed = self->_completed;
     PBDataWriterWriteBOOLField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_actionIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_shortcutSource)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_automationType)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   has = self->_has;
@@ -1240,7 +1240,7 @@ LABEL_46:
   {
     didRunRemotely = self->_didRunRemotely;
     PBDataWriterWriteBOOLField();
-    v4 = v19;
+    toCopy = v19;
     has = self->_has;
   }
 
@@ -1248,68 +1248,68 @@ LABEL_46:
   {
     isInvalidatedSystemAction = self->_isInvalidatedSystemAction;
     PBDataWriterWriteBOOLField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_galleryIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_externalBundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_externalActionIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_shortcutsId)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (*&self->_has)
   {
     completeFailReason = self->_completeFailReason;
     PBDataWriterWriteInt32Field();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_baseModel)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_adapterModel)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_safetyModel)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_modelDestination)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_runErrorDomain)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   v10 = self->_has;
@@ -1317,7 +1317,7 @@ LABEL_46:
   {
     runErrorCode = self->_runErrorCode;
     PBDataWriterWriteInt32Field();
-    v4 = v19;
+    toCopy = v19;
     v10 = self->_has;
     if ((v10 & 0x100) == 0)
     {
@@ -1338,7 +1338,7 @@ LABEL_39:
 
   runLatency = self->_runLatency;
   PBDataWriterWriteFloatField();
-  v4 = v19;
+  toCopy = v19;
   v10 = self->_has;
   if ((v10 & 2) == 0)
   {
@@ -1354,7 +1354,7 @@ LABEL_40:
 LABEL_51:
   inputTokenLength = self->_inputTokenLength;
   PBDataWriterWriteUint32Field();
-  v4 = v19;
+  toCopy = v19;
   v10 = self->_has;
   if ((v10 & 8) == 0)
   {
@@ -1370,7 +1370,7 @@ LABEL_41:
 LABEL_52:
   outputTokenLength = self->_outputTokenLength;
   PBDataWriterWriteUint32Field();
-  v4 = v19;
+  toCopy = v19;
   v10 = self->_has;
   if ((v10 & 0x20) == 0)
   {
@@ -1386,7 +1386,7 @@ LABEL_42:
 LABEL_53:
   requestType = self->_requestType;
   PBDataWriterWriteInt32Field();
-  v4 = v19;
+  toCopy = v19;
   v10 = self->_has;
   if ((v10 & 0x10) == 0)
   {
@@ -1402,7 +1402,7 @@ LABEL_43:
 LABEL_54:
   regionEligibility = self->_regionEligibility;
   PBDataWriterWriteInt32Field();
-  v4 = v19;
+  toCopy = v19;
   v10 = self->_has;
   if ((v10 & 0x40) == 0)
   {
@@ -1418,13 +1418,13 @@ LABEL_44:
 LABEL_55:
   resultType = self->_resultType;
   PBDataWriterWriteInt32Field();
-  v4 = v19;
+  toCopy = v19;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_45:
     numFollowUp = self->_numFollowUp;
     PBDataWriterWriteUint32Field();
-    v4 = v19;
+    toCopy = v19;
   }
 
 LABEL_46:
@@ -1432,12 +1432,12 @@ LABEL_46:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   runSource = self->_runSource;
@@ -1720,15 +1720,15 @@ LABEL_49:
   v8.receiver = self;
   v8.super_class = WFPBRunActionEvent;
   v4 = [(WFPBRunActionEvent *)&v8 description];
-  v5 = [(WFPBRunActionEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFPBRunActionEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasNumFollowUp:(BOOL)a3
+- (void)setHasNumFollowUp:(BOOL)up
 {
-  if (a3)
+  if (up)
   {
     v3 = 4;
   }
@@ -1741,45 +1741,45 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (int)StringAsResultType:(id)a3
+- (int)StringAsResultType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UseModelResultTypeAutomatic"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UseModelResultTypeAutomatic"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"UseModelResultTypeText"])
+  else if ([typeCopy isEqualToString:@"UseModelResultTypeText"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UseModelResultTypeNumber"])
+  else if ([typeCopy isEqualToString:@"UseModelResultTypeNumber"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"UseModelResultTypeDate"])
+  else if ([typeCopy isEqualToString:@"UseModelResultTypeDate"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"UseModelResultTypeBoolean"])
+  else if ([typeCopy isEqualToString:@"UseModelResultTypeBoolean"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"UseModelResultTypeList"])
+  else if ([typeCopy isEqualToString:@"UseModelResultTypeList"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"UseModelResultTypeDictionary"])
+  else if ([typeCopy isEqualToString:@"UseModelResultTypeDictionary"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"UseModelResultTypeEntities"])
+  else if ([typeCopy isEqualToString:@"UseModelResultTypeEntities"])
   {
     v4 = 7;
   }
@@ -1792,9 +1792,9 @@ LABEL_49:
   return v4;
 }
 
-- (void)setHasResultType:(BOOL)a3
+- (void)setHasResultType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -1820,25 +1820,25 @@ LABEL_49:
   }
 }
 
-- (int)StringAsRegionEligibility:(id)a3
+- (int)StringAsRegionEligibility:(id)eligibility
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UseModelRegionEligibilityDefault"])
+  eligibilityCopy = eligibility;
+  if ([eligibilityCopy isEqualToString:@"UseModelRegionEligibilityDefault"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"UseModelRegionEligibilityChina"];
+    v4 = [eligibilityCopy isEqualToString:@"UseModelRegionEligibilityChina"];
   }
 
   return v4;
 }
 
-- (void)setHasRegionEligibility:(BOOL)a3
+- (void)setHasRegionEligibility:(BOOL)eligibility
 {
-  if (a3)
+  if (eligibility)
   {
     v3 = 16;
   }
@@ -1864,25 +1864,25 @@ LABEL_49:
   }
 }
 
-- (int)StringAsRequestType:(id)a3
+- (int)StringAsRequestType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UseModelRequestTypeTextOnly"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UseModelRequestTypeTextOnly"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"UseModelRequestTypeMultimodalImage"])
+  else if ([typeCopy isEqualToString:@"UseModelRequestTypeMultimodalImage"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UseModelRequestTypeMultimodalDocument"])
+  else if ([typeCopy isEqualToString:@"UseModelRequestTypeMultimodalDocument"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"UseModelRequestTypeMultimodalBoth"])
+  else if ([typeCopy isEqualToString:@"UseModelRequestTypeMultimodalBoth"])
   {
     v4 = 3;
   }
@@ -1895,9 +1895,9 @@ LABEL_49:
   return v4;
 }
 
-- (void)setHasRequestType:(BOOL)a3
+- (void)setHasRequestType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -1923,9 +1923,9 @@ LABEL_49:
   }
 }
 
-- (void)setHasOutputTokenLength:(BOOL)a3
+- (void)setHasOutputTokenLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 8;
   }
@@ -1938,9 +1938,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasInputTokenLength:(BOOL)a3
+- (void)setHasInputTokenLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 2;
   }
@@ -1953,9 +1953,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasRunLatency:(BOOL)a3
+- (void)setHasRunLatency:(BOOL)latency
 {
-  if (a3)
+  if (latency)
   {
     v3 = 256;
   }
@@ -1968,9 +1968,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasRunErrorCode:(BOOL)a3
+- (void)setHasRunErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 128;
   }
@@ -1983,55 +1983,55 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (int)StringAsCompleteFailReason:(id)a3
+- (int)StringAsCompleteFailReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"RunActionFailReasonUnknown"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"RunActionFailReasonUnknown"])
   {
     v4 = -1;
   }
 
-  else if ([v3 isEqualToString:@"RunActionFailReasonModelGeneratedUnsafeV1"])
+  else if ([reasonCopy isEqualToString:@"RunActionFailReasonModelGeneratedUnsafeV1"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"RunActionFailReasonModelGeneratedUnsafeV2"])
+  else if ([reasonCopy isEqualToString:@"RunActionFailReasonModelGeneratedUnsafeV2"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"RunActionFailReasonModelGeneratedHandleWithCareV2"])
+  else if ([reasonCopy isEqualToString:@"RunActionFailReasonModelGeneratedHandleWithCareV2"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RunActionFailReasonSafetyGuardrail"])
+  else if ([reasonCopy isEqualToString:@"RunActionFailReasonSafetyGuardrail"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RunActionFailReasonDenyList"])
+  else if ([reasonCopy isEqualToString:@"RunActionFailReasonDenyList"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RunActionFailReasonScriptValidator"])
+  else if ([reasonCopy isEqualToString:@"RunActionFailReasonScriptValidator"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"RunActionFailReasonLanguageRecognizer"])
+  else if ([reasonCopy isEqualToString:@"RunActionFailReasonLanguageRecognizer"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"RunActionFailReasonInputImageSanitizer"])
+  else if ([reasonCopy isEqualToString:@"RunActionFailReasonInputImageSanitizer"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"RunActionFailReasonInputTextSCMLAdapterViolation"])
+  else if ([reasonCopy isEqualToString:@"RunActionFailReasonInputTextSCMLAdapterViolation"])
   {
     v4 = 8;
   }
@@ -2057,9 +2057,9 @@ LABEL_49:
   }
 }
 
-- (void)setHasIsInvalidatedSystemAction:(BOOL)a3
+- (void)setHasIsInvalidatedSystemAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 2048;
   }
@@ -2072,9 +2072,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasDidRunRemotely:(BOOL)a3
+- (void)setHasDidRunRemotely:(BOOL)remotely
 {
-  if (a3)
+  if (remotely)
   {
     v3 = 1024;
   }
@@ -2087,9 +2087,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasCompleted:(BOOL)a3
+- (void)setHasCompleted:(BOOL)completed
 {
-  if (a3)
+  if (completed)
   {
     v3 = 512;
   }

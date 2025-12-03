@@ -1,99 +1,99 @@
 @interface PKPaymentAuthorizationStateMachine
-- (BOOL)_canUpdateWithAutomaticReloadPaymentRequest:(id)a3 error:(id *)a4;
-- (BOOL)_canUpdateWithBillingAgreement:(id)a3 oldAgreement:(id)a4 error:(id *)a5;
-- (BOOL)_canUpdateWithDeferredPaymentRequest:(id)a3 error:(id *)a4;
-- (BOOL)_canUpdateWithMultiTokenContexts:(id)a3 error:(id *)a4;
-- (BOOL)_canUpdateWithRecurringPaymentRequest:(id)a3 error:(id *)a4;
+- (BOOL)_canUpdateWithAutomaticReloadPaymentRequest:(id)request error:(id *)error;
+- (BOOL)_canUpdateWithBillingAgreement:(id)agreement oldAgreement:(id)oldAgreement error:(id *)error;
+- (BOOL)_canUpdateWithDeferredPaymentRequest:(id)request error:(id *)error;
+- (BOOL)_canUpdateWithMultiTokenContexts:(id)contexts error:(id *)error;
+- (BOOL)_canUpdateWithRecurringPaymentRequest:(id)request error:(id *)error;
 - (BOOL)_isDeviceTransactionAssessmentEnabled;
 - (BOOL)_isMerchantTokensSupported;
 - (BOOL)_isMultiTokenContextsSupported;
 - (BOOL)_isRequestUsedForTransactionAssessment;
 - (BOOL)_purchaseSupportsPaymentOffers;
 - (BOOL)canSelectPaymentOptions;
-- (BOOL)isErrorAboutPostalAddressField:(id)a3;
+- (BOOL)isErrorAboutPostalAddressField:(id)field;
 - (NSString)description;
 - (PKBluetoothMonitorer)bluetoothMonitor;
 - (PKPaymentAuthorizationStateMachine)init;
 - (PKPaymentAuthorizationStateMachineDelegate)delegate;
 - (PKPaymentSheetExperiment)paymentSheetExperiment;
-- (id)_billingInformationFromPaymentRequest:(id)a3;
+- (id)_billingInformationFromPaymentRequest:(id)request;
 - (id)_createNewRemotePaymentRequest;
 - (id)_dequeuePendingCallbackParam;
 - (id)_inAppSessionAuthorizationRequest;
-- (id)_pendingTransactionOnAlternateFundingSourceForAutorizedPeerPaymentQuote:(id)a3;
-- (id)_pendingTransactionOnPeerPaymentPassForAuthorizedPeerPaymentQuote:(id)a3;
-- (id)_rewrapCompleteSessionRequestWithParam:(id)a3 serviceURL:(id *)a4;
-- (id)_transactionWithPaymentToken:(id)a3;
-- (id)_transactionWithPurchase:(id)a3 paymentHash:(id)a4;
-- (id)_updateRewrapBaseRequest:(id)a3 param:(id)a4;
-- (id)acceptedPassForProvisionedPass:(id)a3;
-- (int64_t)statusFromPaymentError:(id)a3;
+- (id)_pendingTransactionOnAlternateFundingSourceForAutorizedPeerPaymentQuote:(id)quote;
+- (id)_pendingTransactionOnPeerPaymentPassForAuthorizedPeerPaymentQuote:(id)quote;
+- (id)_rewrapCompleteSessionRequestWithParam:(id)param serviceURL:(id *)l;
+- (id)_transactionWithPaymentToken:(id)token;
+- (id)_transactionWithPurchase:(id)purchase paymentHash:(id)hash;
+- (id)_updateRewrapBaseRequest:(id)request param:(id)param;
+- (id)acceptedPassForProvisionedPass:(id)pass;
+- (int64_t)statusFromPaymentError:(id)error;
 - (unint64_t)_adamIdentifier;
-- (void)__setState:(unint64_t)a3 param:(id)a4;
-- (void)_advanceToNextStateFromResolveError:(BOOL)a3;
-- (void)_applyBillingInformationToAuthorizedQuote:(id)a3;
-- (void)_applyBillingInformationToPayment:(id)a3;
-- (void)_applyFulfillmentMethodToPayment:(id)a3;
-- (void)_applyShippingInformationToPayment:(id)a3;
+- (void)__setState:(unint64_t)state param:(id)param;
+- (void)_advanceToNextStateFromResolveError:(BOOL)error;
+- (void)_applyBillingInformationToAuthorizedQuote:(id)quote;
+- (void)_applyBillingInformationToPayment:(id)payment;
+- (void)_applyFulfillmentMethodToPayment:(id)payment;
+- (void)_applyShippingInformationToPayment:(id)payment;
 - (void)_applyWebServiceConfigurationIfNeeded;
-- (void)_augmentBaseRequestWithCompletion:(id)a3;
-- (void)_augmentSessionResponseWithCompletion:(id)a3;
+- (void)_augmentBaseRequestWithCompletion:(id)completion;
+- (void)_augmentSessionResponseWithCompletion:(id)completion;
 - (void)_cancelClientCallbackTimer;
 - (void)_clientCallbackTimedOut;
 - (void)_computeAssessmentIfNecessary;
 - (void)_configurePaymentOffersIfNeeded;
-- (void)_deviceUpdateDidFailWithNoEiligbleRemoteDevices:(id)a3;
+- (void)_deviceUpdateDidFailWithNoEiligbleRemoteDevices:(id)devices;
 - (void)_dispatchNextCallbackParam;
-- (void)_emitSignpostEvent:(unint64_t)a3;
-- (void)_enqeueDidAuthorizePurchaseWithParam:(id)a3;
-- (void)_enqueueCallbackOfKind:(int64_t)a3 withObject:(id)a4;
-- (void)_enqueueDidAuthorizePaymentWithByPassPayment:(id)a3 rewrapResponse:(id)a4;
-- (void)_enqueueDidAuthorizePaymentWithInstallmentAuthorizationToken:(id)a3 rewrapResponse:(id)a4;
-- (void)_enqueueDidAuthorizePaymentWithPayment:(id)a3 rewrapResponse:(id)a4;
-- (void)_enqueueDidAuthorizePaymentWithRemotePayment:(id)a3 rewrapResponse:(id)a4;
-- (void)_enqueueDidAuthorizePaymentWithToken:(id)a3 rewrapResponse:(id)a4;
-- (void)_enqueueDidAuthorizePeerPaymentQuoteWithAuthorizedQuote:(id)a3;
-- (void)_enqueueDidSelectBankAccount:(id)a3;
-- (void)_enqueueDidSelectPaymentMethodWithBindToken:(id)a3;
-- (void)_enqueueDidSelectPaymentMethodWithQuote:(id)a3;
-- (void)_enqueueDidSelectPaymentPass:(id)a3 paymentApplication:(id)a4 subCredential:(id)a5;
-- (void)_enqueueDidSelectRemotePaymentInstrument:(id)a3;
-- (void)_enqueueDidSelectRemotePaymentInstrument:(id)a3 paymentApplication:(id)a4;
-- (void)_enqueueDidSelectShippingContact:(id)a3;
+- (void)_emitSignpostEvent:(unint64_t)event;
+- (void)_enqeueDidAuthorizePurchaseWithParam:(id)param;
+- (void)_enqueueCallbackOfKind:(int64_t)kind withObject:(id)object;
+- (void)_enqueueDidAuthorizePaymentWithByPassPayment:(id)payment rewrapResponse:(id)response;
+- (void)_enqueueDidAuthorizePaymentWithInstallmentAuthorizationToken:(id)token rewrapResponse:(id)response;
+- (void)_enqueueDidAuthorizePaymentWithPayment:(id)payment rewrapResponse:(id)response;
+- (void)_enqueueDidAuthorizePaymentWithRemotePayment:(id)payment rewrapResponse:(id)response;
+- (void)_enqueueDidAuthorizePaymentWithToken:(id)token rewrapResponse:(id)response;
+- (void)_enqueueDidAuthorizePeerPaymentQuoteWithAuthorizedQuote:(id)quote;
+- (void)_enqueueDidSelectBankAccount:(id)account;
+- (void)_enqueueDidSelectPaymentMethodWithBindToken:(id)token;
+- (void)_enqueueDidSelectPaymentMethodWithQuote:(id)quote;
+- (void)_enqueueDidSelectPaymentPass:(id)pass paymentApplication:(id)application subCredential:(id)credential;
+- (void)_enqueueDidSelectRemotePaymentInstrument:(id)instrument;
+- (void)_enqueueDidSelectRemotePaymentInstrument:(id)instrument paymentApplication:(id)application;
+- (void)_enqueueDidSelectShippingContact:(id)contact;
 - (void)_enqueueInitialCallbacks;
-- (void)_enrichPaymentRewardsRedemptionWithPaymentTransaction:(id)a3 usingPass:(id)a4;
+- (void)_enrichPaymentRewardsRedemptionWithPaymentTransaction:(id)transaction usingPass:(id)pass;
 - (void)_fetchPaymentOffersIfNeeded;
-- (void)_handleStateMachineWillStartNotification:(id)a3;
-- (void)_insertPendingOrderDetails:(BOOL *)a3;
-- (void)_insertPendingPaymentTransactionsWithParam:(id)a3;
+- (void)_handleStateMachineWillStartNotification:(id)notification;
+- (void)_insertPendingOrderDetails:(BOOL *)details;
+- (void)_insertPendingPaymentTransactionsWithParam:(id)param;
 - (void)_insertPendingTransactionRegistration;
-- (void)_nonceResponseWithCompletion:(id)a3;
-- (void)_performAuthorizationWithParam:(id)a3;
-- (void)_performDataProcessingWithParam:(id)a3;
-- (void)_performDidAuthorizeCallbackWithParam:(id)a3;
+- (void)_nonceResponseWithCompletion:(id)completion;
+- (void)_performAuthorizationWithParam:(id)param;
+- (void)_performDataProcessingWithParam:(id)param;
+- (void)_performDidAuthorizeCallbackWithParam:(id)param;
 - (void)_performInstallmentBind;
-- (void)_performNonceRequestWithParam:(id)a3;
-- (void)_performPassRewardsUpdateForCooldownLevel:(unint64_t)a3 ignoreErrorBackoff:(BOOL)a4 merchantIdentifier:(id)a5;
-- (void)_performPrepareTransactionDetailsRequestWithParam:(id)a3;
-- (void)_performRewrapRequestImplWithParam:(id)a3;
-- (void)_performRewrapRequestWithParam:(id)a3;
-- (void)_performSendClientUpdateWithShippingMethods:(id)a3 paymentSummaryItems:(id)a4 multiTokenContexts:(id)a5 recurringPaymentRequest:(id)a6 automaticReloadPaymentRequest:(id)a7 deferredPaymentRequest:(id)a8 paymentApplication:(id)a9 status:(int64_t)a10;
-- (void)_performSendPaymentResult:(id)a3;
+- (void)_performNonceRequestWithParam:(id)param;
+- (void)_performPassRewardsUpdateForCooldownLevel:(unint64_t)level ignoreErrorBackoff:(BOOL)backoff merchantIdentifier:(id)identifier;
+- (void)_performPrepareTransactionDetailsRequestWithParam:(id)param;
+- (void)_performRewrapRequestImplWithParam:(id)param;
+- (void)_performRewrapRequestWithParam:(id)param;
+- (void)_performSendClientUpdateWithShippingMethods:(id)methods paymentSummaryItems:(id)items multiTokenContexts:(id)contexts recurringPaymentRequest:(id)request automaticReloadPaymentRequest:(id)paymentRequest deferredPaymentRequest:(id)deferredPaymentRequest paymentApplication:(id)application status:(int64_t)self0;
+- (void)_performSendPaymentResult:(id)result;
 - (void)_performSendRemotePaymentRequest;
 - (void)_performUpdatePaymentDevices;
 - (void)_postStateMachineWillStartNotification;
-- (void)_processBluetoothState:(int64_t)a3;
-- (void)_processErrorsForDataType:(int64_t)a3;
-- (void)_processPaymentRewardsRedemption:(id)a3;
+- (void)_processBluetoothState:(int64_t)state;
+- (void)_processErrorsForDataType:(int64_t)type;
+- (void)_processPaymentRewardsRedemption:(id)redemption;
 - (void)_promptTapToRadar;
-- (void)_purchaseMerchantIdentifier:(id *)a3 originURL:(id *)a4 webMerchantIdentifier:(id *)a5 webMerchantName:(id *)a6 adamIdentifier:(id *)a7 isMerchantTokenRequest:(BOOL *)a8 isMultiTokenRequest:(BOOL *)a9;
+- (void)_purchaseMerchantIdentifier:(id *)identifier originURL:(id *)l webMerchantIdentifier:(id *)merchantIdentifier webMerchantName:(id *)name adamIdentifier:(id *)adamIdentifier isMerchantTokenRequest:(BOOL *)request isMultiTokenRequest:(BOOL *)tokenRequest;
 - (void)_registerForNotifications;
 - (void)_removeWebServiceConfigurationIfNeeded;
-- (void)_reportAnalyticsTransactionAuthorizationWithAdditionalDictionary:(id)a3 eventType:(id)a4;
-- (void)_reportToAutoBugCapture:(id)a3;
+- (void)_reportAnalyticsTransactionAuthorizationWithAdditionalDictionary:(id)dictionary eventType:(id)type;
+- (void)_reportToAutoBugCapture:(id)capture;
 - (void)_retrieveVPANPaymentSession;
-- (void)_sendDidTransitionFromState:(unint64_t)a3 toState:(unint64_t)a4 withParam:(id)a5;
-- (void)_setState:(unint64_t)a3 param:(id)a4;
+- (void)_sendDidTransitionFromState:(unint64_t)state toState:(unint64_t)toState withParam:(id)param;
+- (void)_setState:(unint64_t)state param:(id)param;
 - (void)_simulatePayment;
 - (void)_start;
 - (void)_startAssessmentIfNecessary;
@@ -101,77 +101,77 @@
 - (void)_startHandoff;
 - (void)_startPayment;
 - (void)_startRemoteDeviceUpdate;
-- (void)_trackCouponCodeOutcomeWithError:(id)a3;
+- (void)_trackCouponCodeOutcomeWithError:(id)error;
 - (void)_unregisterForNotifications;
 - (void)_updateAssessmentAttributes;
-- (void)_updateModelBillingAddressIfNeededForPass:(id)a3;
+- (void)_updateModelBillingAddressIfNeededForPass:(id)pass;
 - (void)_updateModelCanAddPasses;
-- (void)_updateModelWithPaymentSummaryItems:(id)a3;
-- (void)_updateModelWithRemoteDevices:(id)a3;
-- (void)_updateModelWithShippingMethods:(id)a3 paymentSummaryItems:(id)a4 multiTokenContexts:(id)a5 recurringPaymentRequest:(id)a6 automaticReloadPaymentRequest:(id)a7 deferredPaymentRequest:(id)a8 contentItems:(id)a9;
+- (void)_updateModelWithPaymentSummaryItems:(id)items;
+- (void)_updateModelWithRemoteDevices:(id)devices;
+- (void)_updateModelWithShippingMethods:(id)methods paymentSummaryItems:(id)items multiTokenContexts:(id)contexts recurringPaymentRequest:(id)request automaticReloadPaymentRequest:(id)paymentRequest deferredPaymentRequest:(id)deferredPaymentRequest contentItems:(id)contentItems;
 - (void)_updatePassRewardsInfo;
-- (void)_updatePaymentRequestBillingAddressWithPaymentMethod:(id)a3;
-- (void)_updateRewrapRequest:(id)a3 param:(id)a4 serviceURL:(id *)a5;
-- (void)continuityPaymentCoordinator:(id)a3 didReceivePayment:(id)a4;
-- (void)continuityPaymentCoordinator:(id)a3 didReceiveUpdatedPaymentDevices:(id)a4;
-- (void)continuityPaymentCoordinator:(id)a3 didTimeoutTotalWithPaymentDevices:(id)a4;
-- (void)continuityPaymentCoordinatorDidReceiveCancellation:(id)a3;
-- (void)continuityPaymentCoordinatorDidTimeoutUpdatePaymentDevices:(id)a3;
+- (void)_updatePaymentRequestBillingAddressWithPaymentMethod:(id)method;
+- (void)_updateRewrapRequest:(id)request param:(id)param serviceURL:(id *)l;
+- (void)continuityPaymentCoordinator:(id)coordinator didReceivePayment:(id)payment;
+- (void)continuityPaymentCoordinator:(id)coordinator didReceiveUpdatedPaymentDevices:(id)devices;
+- (void)continuityPaymentCoordinator:(id)coordinator didTimeoutTotalWithPaymentDevices:(id)devices;
+- (void)continuityPaymentCoordinatorDidReceiveCancellation:(id)cancellation;
+- (void)continuityPaymentCoordinatorDidTimeoutUpdatePaymentDevices:(id)devices;
 - (void)dealloc;
-- (void)delayAuthorizedStateByDuration:(double)a3;
-- (void)didAuthenticateWithAuthenticatorEvaluationResponse:(id)a3;
-- (void)didAuthenticateWithCredential:(id)a3;
-- (void)didBecomeActive:(BOOL)a3;
-- (void)didBecomeArmable:(BOOL)a3;
-- (void)didBecomeOccluded:(BOOL)a3;
+- (void)delayAuthorizedStateByDuration:(double)duration;
+- (void)didAuthenticateWithAuthenticatorEvaluationResponse:(id)response;
+- (void)didAuthenticateWithCredential:(id)credential;
+- (void)didBecomeActive:(BOOL)active;
+- (void)didBecomeArmable:(BOOL)armable;
+- (void)didBecomeOccluded:(BOOL)occluded;
 - (void)didCancel;
-- (void)didChangeCouponCode:(id)a3;
-- (void)didChangeFundingMode:(int64_t)a3;
-- (void)didChangePeerPaymentUsage:(BOOL)a3;
-- (void)didEncounterError:(id)a3;
-- (void)didEncounterFatalError:(id)a3;
-- (void)didEncounterShippingEmailError:(id)a3;
-- (void)didReceiveCouponCodeCompleteWithUpdate:(id)a3;
-- (void)didReceiveMerchantSessionCompleteWithSession:(id)a3 error:(id)a4;
-- (void)didReceiveMerchantSessionCompleteWithUpdate:(id)a3;
-- (void)didReceivePaymentAuthorizationResult:(id)a3;
-- (void)didReceivePaymentAuthorizationStatus:(int64_t)a3;
-- (void)didReceivePaymentMethodCompleteWithSummaryItems:(id)a3;
-- (void)didReceivePaymentMethodCompleteWithUpdate:(id)a3;
-- (void)didReceiveShippingContactCompleteWithStatus:(int64_t)a3 shippingMethods:(id)a4 paymentSummaryItems:(id)a5;
-- (void)didReceiveShippingContactCompleteWithUpdate:(id)a3;
-- (void)didReceiveShippingMethodCompleteWithStatus:(int64_t)a3 paymentSummaryItems:(id)a4;
-- (void)didReceiveShippingMethodCompleteWithUpdate:(id)a3;
-- (void)didReceiveUpdateAccountServicePaymentMethodCompleteWithUpdate:(id)a3 signatureRequest:(id)a4;
+- (void)didChangeCouponCode:(id)code;
+- (void)didChangeFundingMode:(int64_t)mode;
+- (void)didChangePeerPaymentUsage:(BOOL)usage;
+- (void)didEncounterError:(id)error;
+- (void)didEncounterFatalError:(id)error;
+- (void)didEncounterShippingEmailError:(id)error;
+- (void)didReceiveCouponCodeCompleteWithUpdate:(id)update;
+- (void)didReceiveMerchantSessionCompleteWithSession:(id)session error:(id)error;
+- (void)didReceiveMerchantSessionCompleteWithUpdate:(id)update;
+- (void)didReceivePaymentAuthorizationResult:(id)result;
+- (void)didReceivePaymentAuthorizationStatus:(int64_t)status;
+- (void)didReceivePaymentMethodCompleteWithSummaryItems:(id)items;
+- (void)didReceivePaymentMethodCompleteWithUpdate:(id)update;
+- (void)didReceiveShippingContactCompleteWithStatus:(int64_t)status shippingMethods:(id)methods paymentSummaryItems:(id)items;
+- (void)didReceiveShippingContactCompleteWithUpdate:(id)update;
+- (void)didReceiveShippingMethodCompleteWithStatus:(int64_t)status paymentSummaryItems:(id)items;
+- (void)didReceiveShippingMethodCompleteWithUpdate:(id)update;
+- (void)didReceiveUpdateAccountServicePaymentMethodCompleteWithUpdate:(id)update signatureRequest:(id)request;
 - (void)didRequestRefreshPaymentMethods;
-- (void)didResignActive:(BOOL)a3;
+- (void)didResignActive:(BOOL)active;
 - (void)didResolveError;
 - (void)didResolveLoadingState;
-- (void)didSelectBankAccount:(id)a3;
-- (void)didSelectBillingAddress:(id)a3;
-- (void)didSelectPaymentOffer:(id)a3 updateReason:(unint64_t)a4;
-- (void)didSelectPaymentPass:(id)a3 paymentApplication:(id)a4;
-- (void)didSelectPaymentPass:(id)a3 paymentApplication:(id)a4 subCredential:(id)a5;
-- (void)didSelectRemotePaymentInstrument:(id)a3;
-- (void)didSelectRemotePaymentInstrument:(id)a3 paymentApplication:(id)a4;
-- (void)didSelectShippingContact:(id)a3;
-- (void)didSelectShippingEmail:(id)a3;
-- (void)didSelectShippingName:(id)a3;
-- (void)didSelectShippingPhoneNumber:(id)a3;
+- (void)didSelectBankAccount:(id)account;
+- (void)didSelectBillingAddress:(id)address;
+- (void)didSelectPaymentOffer:(id)offer updateReason:(unint64_t)reason;
+- (void)didSelectPaymentPass:(id)pass paymentApplication:(id)application;
+- (void)didSelectPaymentPass:(id)pass paymentApplication:(id)application subCredential:(id)credential;
+- (void)didSelectRemotePaymentInstrument:(id)instrument;
+- (void)didSelectRemotePaymentInstrument:(id)instrument paymentApplication:(id)application;
+- (void)didSelectShippingContact:(id)contact;
+- (void)didSelectShippingEmail:(id)email;
+- (void)didSelectShippingName:(id)name;
+- (void)didSelectShippingPhoneNumber:(id)number;
 - (void)invalidate;
-- (void)paymentOfferActionsChanged:(id)a3;
-- (void)paymentOfferCatalogChanged:(id)a3;
-- (void)paymentOfferDynamicContentChanged:(id)a3;
-- (void)paymentOfferMerchandisingChanged:(id)a3;
-- (void)paymentOffersChanged:(id)a3 forPassUniqueIdentifier:(id)a4;
-- (void)selectedPaymentOfferChanged:(id)a3 forPassUniqueIdentifier:(id)a4;
-- (void)setAccountService:(id)a3;
-- (void)setBluetoothMonitor:(id)a3;
-- (void)setCancelReason:(int64_t)a3;
-- (void)setModel:(id)a3;
-- (void)setPaymentService:(id)a3;
-- (void)setPaymentWebService:(id)a3;
-- (void)setPeerPaymentService:(id)a3;
+- (void)paymentOfferActionsChanged:(id)changed;
+- (void)paymentOfferCatalogChanged:(id)changed;
+- (void)paymentOfferDynamicContentChanged:(id)changed;
+- (void)paymentOfferMerchandisingChanged:(id)changed;
+- (void)paymentOffersChanged:(id)changed forPassUniqueIdentifier:(id)identifier;
+- (void)selectedPaymentOfferChanged:(id)changed forPassUniqueIdentifier:(id)identifier;
+- (void)setAccountService:(id)service;
+- (void)setBluetoothMonitor:(id)monitor;
+- (void)setCancelReason:(int64_t)reason;
+- (void)setModel:(id)model;
+- (void)setPaymentService:(id)service;
+- (void)setPaymentWebService:(id)service;
+- (void)setPeerPaymentService:(id)service;
 - (void)start;
 @end
 
@@ -187,10 +187,10 @@
   {
     v2->_state = 0;
     v2->_updatePaymentDeviceTimeout = 10.0;
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     instanceIdentifier = v3->_instanceIdentifier;
-    v3->_instanceIdentifier = v5;
+    v3->_instanceIdentifier = uUIDString;
 
     v7 = dispatch_group_create();
     delayAuthorizedStateGroup = v3->_delayAuthorizedStateGroup;
@@ -219,10 +219,10 @@
   [(PKPaymentAuthorizationStateMachine *)&v3 dealloc];
 }
 
-- (void)_setState:(unint64_t)a3 param:(id)a4
+- (void)_setState:(unint64_t)state param:(id)param
 {
-  v6 = a4;
-  if (a3 == 12)
+  paramCopy = param;
+  if (state == 12)
   {
     objc_initWeak(&location, self);
     delayAuthorizedStateGroup = self->_delayAuthorizedStateGroup;
@@ -232,7 +232,7 @@
     v8[3] = &unk_1E79CE020;
     objc_copyWeak(v10, &location);
     v10[1] = 12;
-    v9 = v6;
+    v9 = paramCopy;
     dispatch_group_notify(delayAuthorizedStateGroup, MEMORY[0x1E69E96A0], v8);
 
     objc_destroyWeak(v10);
@@ -241,7 +241,7 @@
 
   else
   {
-    [(PKPaymentAuthorizationStateMachine *)self __setState:a3 param:v6];
+    [(PKPaymentAuthorizationStateMachine *)self __setState:state param:paramCopy];
   }
 }
 
@@ -251,23 +251,23 @@ void __54__PKPaymentAuthorizationStateMachine__setState_param___block_invoke(uin
   [WeakRetained __setState:*(a1 + 48) param:*(a1 + 32)];
 }
 
-- (void)__setState:(unint64_t)a3 param:(id)a4
+- (void)__setState:(unint64_t)state param:(id)param
 {
   v76[5] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  paramCopy = param;
   state = self->_state;
-  self->_state = a3;
-  [(PKPaymentAuthorizationStateMachine *)self _sendDidTransitionFromState:state toState:a3 withParam:v6];
-  v8 = 0;
-  if (a3 > 11)
+  self->_state = state;
+  [(PKPaymentAuthorizationStateMachine *)self _sendDidTransitionFromState:state toState:state withParam:paramCopy];
+  error = 0;
+  if (state > 11)
   {
-    if (a3 > 15)
+    if (state > 15)
     {
-      switch(a3)
+      switch(state)
       {
         case 0x10uLL:
           [(PKPaymentAuthorizationStateMachine *)self _removeWebServiceConfigurationIfNeeded];
-          [(PKPaymentAuthorizationStateMachine *)self _insertPendingPaymentTransactionsWithParam:v6];
+          [(PKPaymentAuthorizationStateMachine *)self _insertPendingPaymentTransactionsWithParam:paramCopy];
           v69 = 0;
           [(PKPaymentAuthorizationStateMachine *)self _insertPendingOrderDetails:&v69];
           if ((v69 & 1) == 0)
@@ -277,7 +277,7 @@ void __54__PKPaymentAuthorizationStateMachine__setState_param___block_invoke(uin
 
           break;
         case 0x11uLL:
-          [(PKPaymentAuthorizationStateMachine *)self _performDataProcessingWithParam:v6];
+          [(PKPaymentAuthorizationStateMachine *)self _performDataProcessingWithParam:paramCopy];
           break;
         case 0x12uLL:
           goto LABEL_26;
@@ -286,115 +286,115 @@ void __54__PKPaymentAuthorizationStateMachine__setState_param___block_invoke(uin
 
     else
     {
-      if (a3 - 14 < 2)
+      if (state - 14 < 2)
       {
-        v8 = [v6 error];
+        error = [paramCopy error];
         goto LABEL_26;
       }
 
-      if (a3 == 12)
+      if (state == 12)
       {
-        [(PKPaymentAuthorizationStateMachine *)self _performDidAuthorizeCallbackWithParam:v6];
+        [(PKPaymentAuthorizationStateMachine *)self _performDidAuthorizeCallbackWithParam:paramCopy];
       }
     }
   }
 
-  else if (a3 > 8)
+  else if (state > 8)
   {
-    if (a3 == 9)
+    if (state == 9)
     {
-      [(PKPaymentAuthorizationStateMachine *)self _performNonceRequestWithParam:v6];
+      [(PKPaymentAuthorizationStateMachine *)self _performNonceRequestWithParam:paramCopy];
     }
 
-    else if (a3 == 10)
+    else if (state == 10)
     {
-      [(PKPaymentAuthorizationStateMachine *)self _performAuthorizationWithParam:v6];
+      [(PKPaymentAuthorizationStateMachine *)self _performAuthorizationWithParam:paramCopy];
     }
 
     else
     {
-      [(PKPaymentAuthorizationStateMachine *)self _performRewrapRequestWithParam:v6];
+      [(PKPaymentAuthorizationStateMachine *)self _performRewrapRequestWithParam:paramCopy];
     }
   }
 
   else
   {
-    switch(a3)
+    switch(state)
     {
       case 3uLL:
-        v8 = [v6 error];
-        -[PKPaymentAuthorizationDataModel setStatus:forItemWithType:](self->_model, "setStatus:forItemWithType:", [v6 status], objc_msgSend(v6, "dataType"));
+        error = [paramCopy error];
+        -[PKPaymentAuthorizationDataModel setStatus:forItemWithType:](self->_model, "setStatus:forItemWithType:", [paramCopy status], objc_msgSend(paramCopy, "dataType"));
         goto LABEL_26;
       case 5uLL:
         goto LABEL_26;
       case 8uLL:
-        [(PKPaymentAuthorizationStateMachine *)self _performPrepareTransactionDetailsRequestWithParam:v6];
+        [(PKPaymentAuthorizationStateMachine *)self _performPrepareTransactionDetailsRequestWithParam:paramCopy];
         break;
     }
   }
 
-  v8 = 0;
+  error = 0;
 LABEL_26:
-  v9 = [v8 domain];
-  v10 = [v9 isEqualToString:@"PKPassKitErrorDomain"];
+  domain = [error domain];
+  v10 = [domain isEqualToString:@"PKPassKitErrorDomain"];
 
   if (v10)
   {
-    v59 = v6;
-    v60 = [v8 domain];
-    v11 = [v8 code];
-    v12 = [v8 userInfo];
-    v13 = [v12 PKBoolForKey:@"PKPaymentErrorIsFieldEmpty"];
+    v59 = paramCopy;
+    domain2 = [error domain];
+    code = [error code];
+    userInfo = [error userInfo];
+    v13 = [userInfo PKBoolForKey:@"PKPaymentErrorIsFieldEmpty"];
 
-    v14 = [v8 localizedFailureReason];
-    if (!v14)
+    localizedFailureReason = [error localizedFailureReason];
+    if (!localizedFailureReason)
     {
-      v14 = [v8 localizedDescription];
+      localizedFailureReason = [error localizedDescription];
     }
 
-    v15 = [v8 userInfo];
-    v16 = [v15 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    userInfo2 = [error userInfo];
+    v16 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
-    v17 = [v16 domain];
-    v18 = [v17 isEqualToString:@"PKPassKitErrorDomain"];
+    domain3 = [v16 domain];
+    v18 = [domain3 isEqualToString:@"PKPassKitErrorDomain"];
 
-    v57 = v8;
+    v57 = error;
     v58 = v16;
     if (v18)
     {
-      v19 = [v16 domain];
+      domain4 = [v16 domain];
 
-      v20 = [v16 code];
-      v21 = [v8 userInfo];
-      v22 = [v21 PKBoolForKey:@"PKPaymentErrorIsFieldEmpty"];
+      code2 = [v16 code];
+      userInfo3 = [error userInfo];
+      v22 = [userInfo3 PKBoolForKey:@"PKPaymentErrorIsFieldEmpty"];
 
-      v23 = [v16 localizedFailureReason];
+      localizedFailureReason2 = [v16 localizedFailureReason];
 
-      if (v23)
+      if (localizedFailureReason2)
       {
-        v14 = v23;
+        localizedFailureReason = localizedFailureReason2;
       }
 
       else
       {
-        v14 = [v16 localizedDescription];
+        localizedFailureReason = [v16 localizedDescription];
       }
 
-      v60 = v19;
+      domain2 = domain4;
     }
 
     else
     {
       v22 = v13;
-      v20 = v11;
+      code2 = code;
     }
 
-    v6 = v59;
-    v64 = [PKAnalyticsErrorTextClassifier analyticsValueForResult:[PKAnalyticsErrorTextClassifier classifyErrorText:v14]];
+    paramCopy = v59;
+    v64 = [PKAnalyticsErrorTextClassifier analyticsValueForResult:[PKAnalyticsErrorTextClassifier classifyErrorText:localizedFailureReason]];
     has_internal_ui = os_variant_has_internal_ui();
     if (has_internal_ui)
     {
-      v24 = v14;
+      v24 = localizedFailureReason;
     }
 
     else
@@ -403,9 +403,9 @@ LABEL_26:
     }
 
     v75[0] = @"authorizationError";
-    if (v20 > -2017)
+    if (code2 > -2017)
     {
-      switch(v20)
+      switch(code2)
       {
         case -2016:
           v25 = @"provisioningError";
@@ -449,14 +449,14 @@ LABEL_26:
           v25 = @"unknownError";
           break;
         default:
-          if (v20 == -1001)
+          if (code2 == -1001)
           {
             v25 = @"extensionNotFound";
           }
 
           else
           {
-            if (v20 != -1002)
+            if (code2 != -1002)
             {
               goto LABEL_127;
             }
@@ -468,9 +468,9 @@ LABEL_26:
       }
     }
 
-    else if (v20 > -3018)
+    else if (code2 > -3018)
     {
-      switch(v20)
+      switch(code2)
       {
         case -3017:
           v25 = @"verificationRequiredError";
@@ -528,9 +528,9 @@ LABEL_26:
       }
     }
 
-    else if (v20 <= -5001)
+    else if (code2 <= -5001)
     {
-      switch(v20)
+      switch(code2)
       {
         case -6000:
           v25 = @"signatureCheckUnreachableError";
@@ -550,7 +550,7 @@ LABEL_127:
 
     else
     {
-      switch(v20)
+      switch(code2)
       {
         case -4013:
           v25 = @"cloudStoreQueryCancelled";
@@ -595,7 +595,7 @@ LABEL_127:
           v25 = @"cloudStoreUnknownError";
           break;
         default:
-          if (v20 != -5000)
+          if (code2 != -5000)
           {
             goto LABEL_127;
           }
@@ -605,8 +605,8 @@ LABEL_127:
       }
     }
 
-    v26 = v60;
-    if (!v60)
+    v26 = domain2;
+    if (!domain2)
     {
       v26 = &stru_1F227FD28;
     }
@@ -615,7 +615,7 @@ LABEL_127:
     v76[1] = v26;
     v75[1] = @"errorDomain";
     v75[2] = @"errorCode";
-    v27 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%ld", v20];
+    v27 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%ld", code2];
     v28 = v27;
     if (v24)
     {
@@ -647,14 +647,14 @@ LABEL_127:
       v74[0] = @"fieldEmpty";
       v73[0] = @"eventType";
       v73[1] = @"errorType";
-      if ((v20 + 3007) > 5)
+      if ((code2 + 3007) > 5)
       {
         v33 = @"unknown";
       }
 
       else
       {
-        v33 = off_1E79CE6C8[v20 + 3007];
+        v33 = off_1E79CE6C8[code2 + 3007];
       }
 
       v74[1] = v33;
@@ -662,7 +662,7 @@ LABEL_127:
       [PKAnalyticsReporter subject:@"inApp" sendEvent:v34];
     }
 
-    if (a3 == 3)
+    if (state == 3)
     {
       [v59 clientErrors];
       v65 = 0u;
@@ -686,26 +686,26 @@ LABEL_127:
             }
 
             v39 = *(*(&v65 + 1) + 8 * v38);
-            v40 = [v39 domain];
-            v41 = [v40 isEqualToString:@"PKPaymentErrorDomain"];
+            domain5 = [v39 domain];
+            v41 = [domain5 isEqualToString:@"PKPaymentErrorDomain"];
 
             if (v41)
             {
-              v42 = [v39 code];
-              v43 = [v39 localizedFailureReason];
+              code3 = [v39 code];
+              localizedFailureReason3 = [v39 localizedFailureReason];
 
-              v44 = v43;
-              if (!v43)
+              localizedDescription = localizedFailureReason3;
+              if (!localizedFailureReason3)
               {
-                v44 = [v39 localizedDescription];
+                localizedDescription = [v39 localizedDescription];
               }
 
-              v45 = [PKAnalyticsErrorTextClassifier analyticsValueForResult:[PKAnalyticsErrorTextClassifier classifyErrorText:v44]];
+              v45 = [PKAnalyticsErrorTextClassifier analyticsValueForResult:[PKAnalyticsErrorTextClassifier classifyErrorText:localizedDescription]];
 
-              v46 = v44;
+              v46 = localizedDescription;
               if (has_internal_ui)
               {
-                v47 = v44;
+                v47 = localizedDescription;
               }
 
               else
@@ -717,18 +717,18 @@ LABEL_127:
               v70[0] = @"eventType";
               v70[1] = @"authorizationError";
               v48 = @"unknown";
-              if ((v42 - 1) <= 2)
+              if ((code3 - 1) <= 2)
               {
-                v48 = off_1E79CE6F8[v42 - 1];
+                v48 = off_1E79CE6F8[code3 - 1];
               }
 
               v71[1] = v48;
               v70[2] = @"errorDomain";
-              v49 = [v39 domain];
-              v50 = v49;
-              if (v49)
+              domain6 = [v39 domain];
+              v50 = domain6;
+              if (domain6)
               {
-                v51 = v49;
+                v51 = domain6;
               }
 
               else
@@ -738,7 +738,7 @@ LABEL_127:
 
               v71[2] = v51;
               v70[3] = @"errorCode";
-              v52 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%ld", v42];
+              v52 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%ld", code3];
               v53 = v52;
               if (v47)
               {
@@ -770,7 +770,7 @@ LABEL_127:
 
               v64 = v45;
               v24 = v47;
-              v14 = v46;
+              localizedFailureReason = v46;
               v36 = v62;
             }
 
@@ -785,10 +785,10 @@ LABEL_127:
       }
 
       v32 = v58;
-      v6 = v59;
+      paramCopy = v59;
     }
 
-    v8 = v57;
+    error = v57;
   }
 }
 
@@ -823,58 +823,58 @@ LABEL_127:
   return bluetoothMonitor;
 }
 
-- (void)setBluetoothMonitor:(id)a3
+- (void)setBluetoothMonitor:(id)monitor
 {
-  v4 = a3;
+  monitorCopy = monitor;
   [(PKBluetoothMonitorer *)self->_bluetoothMonitor setDelegate:0];
-  [(PKBluetoothMonitorer *)v4 setDelegate:self];
+  [(PKBluetoothMonitorer *)monitorCopy setDelegate:self];
   bluetoothMonitor = self->_bluetoothMonitor;
-  self->_bluetoothMonitor = v4;
+  self->_bluetoothMonitor = monitorCopy;
 }
 
-- (void)setPaymentService:(id)a3
+- (void)setPaymentService:(id)service
 {
-  objc_storeStrong(&self->_paymentService, a3);
+  objc_storeStrong(&self->_paymentService, service);
 
   [(PKPaymentAuthorizationStateMachine *)self _configureAdditionalPaymentMethodsIfNeeeded];
 }
 
-- (void)setPaymentWebService:(id)a3
+- (void)setPaymentWebService:(id)service
 {
-  objc_storeStrong(&self->_paymentWebService, a3);
+  objc_storeStrong(&self->_paymentWebService, service);
   [(PKPaymentAuthorizationStateMachine *)self _applyWebServiceConfigurationIfNeeded];
 
   [(PKPaymentAuthorizationStateMachine *)self _configureAdditionalPaymentMethodsIfNeeeded];
 }
 
-- (void)setAccountService:(id)a3
+- (void)setAccountService:(id)service
 {
-  objc_storeStrong(&self->_accountService, a3);
+  objc_storeStrong(&self->_accountService, service);
 
   [(PKPaymentAuthorizationStateMachine *)self _configureAdditionalPaymentMethodsIfNeeeded];
 }
 
-- (void)setPeerPaymentService:(id)a3
+- (void)setPeerPaymentService:(id)service
 {
-  objc_storeStrong(&self->_peerPaymentService, a3);
+  objc_storeStrong(&self->_peerPaymentService, service);
 
   [(PKPaymentAuthorizationStateMachine *)self _configureAdditionalPaymentMethodsIfNeeeded];
 }
 
-- (void)setModel:(id)a3
+- (void)setModel:(id)model
 {
-  objc_storeStrong(&self->_model, a3);
+  objc_storeStrong(&self->_model, model);
 
   [(PKPaymentAuthorizationStateMachine *)self _configureAdditionalPaymentMethodsIfNeeeded];
 }
 
 - (void)_applyWebServiceConfigurationIfNeeded
 {
-  v3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
   paymentWebService = self->_paymentWebService;
   if (paymentWebService)
   {
-    v5 = v3 == 0;
+    v5 = paymentRequest == 0;
   }
 
   else
@@ -884,11 +884,11 @@ LABEL_127:
 
   if (!v5)
   {
-    v6 = [(PKWebService *)paymentWebService sessionConfiguration];
-    v7 = [v3 sourceApplicationBundleIdentifier];
+    sessionConfiguration = [(PKWebService *)paymentWebService sessionConfiguration];
+    sourceApplicationBundleIdentifier = [paymentRequest sourceApplicationBundleIdentifier];
 
-    v8 = v7 != 0;
-    if (v7)
+    v8 = sourceApplicationBundleIdentifier != 0;
+    if (sourceApplicationBundleIdentifier)
     {
       v9 = PKLogFacilityTypeGetObject(8uLL);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -897,13 +897,13 @@ LABEL_127:
         _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Request has source application bundle, applying network configuration", buf, 2u);
       }
 
-      v10 = [v3 sourceApplicationBundleIdentifier];
-      [v6 set_sourceApplicationBundleIdentifier:v10];
+      sourceApplicationBundleIdentifier2 = [paymentRequest sourceApplicationBundleIdentifier];
+      [sessionConfiguration set_sourceApplicationBundleIdentifier:sourceApplicationBundleIdentifier2];
     }
 
-    v11 = [v3 sourceApplicationSecondaryIdentifier];
+    sourceApplicationSecondaryIdentifier = [paymentRequest sourceApplicationSecondaryIdentifier];
 
-    if (v11)
+    if (sourceApplicationSecondaryIdentifier)
     {
       v12 = PKLogFacilityTypeGetObject(8uLL);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -912,18 +912,18 @@ LABEL_127:
         _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Request has secondary application identifier, applying network configuration", v16, 2u);
       }
 
-      v13 = [v3 sourceApplicationSecondaryIdentifier];
-      [v6 set_sourceApplicationSecondaryIdentifier:v13];
+      sourceApplicationSecondaryIdentifier2 = [paymentRequest sourceApplicationSecondaryIdentifier];
+      [sessionConfiguration set_sourceApplicationSecondaryIdentifier:sourceApplicationSecondaryIdentifier2];
 
       v8 = 1;
     }
 
-    v14 = [v3 CTDataConnectionServiceType];
+    cTDataConnectionServiceType = [paymentRequest CTDataConnectionServiceType];
 
-    if (v14)
+    if (cTDataConnectionServiceType)
     {
-      v15 = [v3 CTDataConnectionServiceType];
-      [v6 set_CTDataConnectionServiceType:v15];
+      cTDataConnectionServiceType2 = [paymentRequest CTDataConnectionServiceType];
+      [sessionConfiguration set_CTDataConnectionServiceType:cTDataConnectionServiceType2];
     }
 
     else if (!v8)
@@ -933,21 +933,21 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    [(PKWebService *)self->_paymentWebService refreshSessionWithConfiguration:v6];
+    [(PKWebService *)self->_paymentWebService refreshSessionWithConfiguration:sessionConfiguration];
     goto LABEL_17;
   }
 
 LABEL_18:
 }
 
-- (void)_purchaseMerchantIdentifier:(id *)a3 originURL:(id *)a4 webMerchantIdentifier:(id *)a5 webMerchantName:(id *)a6 adamIdentifier:(id *)a7 isMerchantTokenRequest:(BOOL *)a8 isMultiTokenRequest:(BOOL *)a9
+- (void)_purchaseMerchantIdentifier:(id *)identifier originURL:(id *)l webMerchantIdentifier:(id *)merchantIdentifier webMerchantName:(id *)name adamIdentifier:(id *)adamIdentifier isMerchantTokenRequest:(BOOL *)request isMultiTokenRequest:(BOOL *)tokenRequest
 {
-  v37 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v13 = [v37 merchantSession];
-  v14 = [v37 originatingURL];
-  v15 = [v14 host];
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  merchantSession = [paymentRequest merchantSession];
+  originatingURL = [paymentRequest originatingURL];
+  host = [originatingURL host];
 
-  v16 = [v37 merchantIdentifier];
+  merchantIdentifier = [paymentRequest merchantIdentifier];
   if ([(PKPaymentAuthorizationStateMachine *)self _adamIdentifier])
   {
     v32 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PKPaymentAuthorizationStateMachine _adamIdentifier](self, "_adamIdentifier")}];
@@ -958,108 +958,108 @@ LABEL_18:
     v32 = 0;
   }
 
-  v34 = a6;
-  v35 = a8;
-  if (v15)
+  nameCopy = name;
+  requestCopy = request;
+  if (host)
   {
-    v17 = [v13 merchantIdentifier];
+    merchantIdentifier2 = [merchantSession merchantIdentifier];
 
-    v18 = [v13 domain];
-    v15 = [v13 merchantIdentifier];
-    v19 = [v13 displayName];
-    v16 = v17;
+    domain = [merchantSession domain];
+    host = [merchantSession merchantIdentifier];
+    displayName = [merchantSession displayName];
+    merchantIdentifier = merchantIdentifier2;
   }
 
   else
   {
-    v19 = 0;
-    v18 = 0;
+    displayName = 0;
+    domain = 0;
   }
 
-  v20 = [v37 recurringPaymentRequest];
-  v21 = [v37 automaticReloadPaymentRequest];
-  if (v20 | v21)
+  recurringPaymentRequest = [paymentRequest recurringPaymentRequest];
+  automaticReloadPaymentRequest = [paymentRequest automaticReloadPaymentRequest];
+  if (recurringPaymentRequest | automaticReloadPaymentRequest)
   {
-    v30 = [(PKPaymentAuthorizationStateMachine *)self _isMerchantTokensSupported];
+    _isMerchantTokensSupported = [(PKPaymentAuthorizationStateMachine *)self _isMerchantTokensSupported];
   }
 
   else
   {
-    v30 = 0;
+    _isMerchantTokensSupported = 0;
   }
 
-  if ([v37 isMultiTokenRequest])
+  if ([paymentRequest isMultiTokenRequest])
   {
-    v22 = [(PKPaymentAuthorizationStateMachine *)self _isMultiTokenContextsSupported];
+    _isMultiTokenContextsSupported = [(PKPaymentAuthorizationStateMachine *)self _isMultiTokenContextsSupported];
   }
 
   else
   {
-    v22 = 0;
+    _isMultiTokenContextsSupported = 0;
   }
 
-  v23 = a4;
-  if (a3)
+  lCopy2 = l;
+  if (identifier)
   {
-    v24 = v16;
-    v23 = a4;
-    *a3 = v16;
+    v24 = merchantIdentifier;
+    lCopy2 = l;
+    *identifier = merchantIdentifier;
   }
 
-  if (v23)
+  if (lCopy2)
   {
-    v25 = v23;
-    v26 = v18;
-    *v25 = v18;
+    v25 = lCopy2;
+    v26 = domain;
+    *v25 = domain;
   }
 
-  if (a5)
+  if (merchantIdentifier)
   {
-    v27 = v15;
-    *a5 = v15;
+    v27 = host;
+    *merchantIdentifier = host;
   }
 
-  if (v34)
+  if (nameCopy)
   {
-    v28 = v19;
-    *v34 = v19;
+    v28 = displayName;
+    *nameCopy = displayName;
   }
 
-  if (a7)
+  if (adamIdentifier)
   {
     v29 = v32;
-    *a7 = v32;
+    *adamIdentifier = v32;
   }
 
-  if (v35)
+  if (requestCopy)
   {
-    *v35 = v30;
+    *requestCopy = _isMerchantTokensSupported;
   }
 
-  if (a9)
+  if (tokenRequest)
   {
-    *a9 = v22;
+    *tokenRequest = _isMultiTokenContextsSupported;
   }
 }
 
 - (void)_removeWebServiceConfigurationIfNeeded
 {
-  v5 = [(PKWebService *)self->_paymentWebService sessionConfiguration];
-  v3 = [v5 _sourceApplicationBundleIdentifier];
-  if (v3 || ([v5 _sourceApplicationSecondaryIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  sessionConfiguration = [(PKWebService *)self->_paymentWebService sessionConfiguration];
+  _sourceApplicationBundleIdentifier = [sessionConfiguration _sourceApplicationBundleIdentifier];
+  if (_sourceApplicationBundleIdentifier || ([sessionConfiguration _sourceApplicationSecondaryIdentifier], (_sourceApplicationBundleIdentifier = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_4:
-    [v5 set_sourceApplicationBundleIdentifier:0];
-    [v5 set_sourceApplicationSecondaryIdentifier:0];
-    [v5 set_CTDataConnectionServiceType:0];
-    [(PKWebService *)self->_paymentWebService refreshSessionWithConfiguration:v5];
+    [sessionConfiguration set_sourceApplicationBundleIdentifier:0];
+    [sessionConfiguration set_sourceApplicationSecondaryIdentifier:0];
+    [sessionConfiguration set_CTDataConnectionServiceType:0];
+    [(PKWebService *)self->_paymentWebService refreshSessionWithConfiguration:sessionConfiguration];
     goto LABEL_5;
   }
 
-  v4 = [v5 _CTDataConnectionServiceType];
+  _CTDataConnectionServiceType = [sessionConfiguration _CTDataConnectionServiceType];
 
-  if (v4)
+  if (_CTDataConnectionServiceType)
   {
     goto LABEL_4;
   }
@@ -1092,7 +1092,7 @@ LABEL_5:
     v11[2] = __49__PKPaymentAuthorizationStateMachine_description__block_invoke;
     v11[3] = &unk_1E79CE048;
     v12 = v7;
-    v13 = self;
+    selfCopy = self;
     [(NSMutableArray *)callbackQueue enumerateObjectsUsingBlock:v11];
   }
 
@@ -1123,8 +1123,8 @@ unint64_t __49__PKPaymentAuthorizationStateMachine_description__block_invoke(uin
 {
   if ([(PKPaymentAuthorizationStateMachine *)self _purchaseSupportsPaymentOffers])
   {
-    v28 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    v3 = [(PKPaymentAuthorizationDataModel *)self->_model totalSummaryItem];
+    paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    totalSummaryItem = [(PKPaymentAuthorizationDataModel *)self->_model totalSummaryItem];
     *v35 = 0;
     v33 = 0;
     v34 = 0;
@@ -1137,11 +1137,11 @@ unint64_t __49__PKPaymentAuthorizationStateMachine_description__block_invoke(uin
     v5 = v32;
     v6 = v31;
     v27 = v30;
-    v7 = [(PKPaymentOffersController *)self->_paymentOffersController configuration];
-    if (v7)
+    configuration = [(PKPaymentOffersController *)self->_paymentOffersController configuration];
+    if (configuration)
     {
-      v8 = v7;
-      [(PKPaymentOffersSessionDetails *)v7 updateMerchantIdentifier:v4 originURL:v29 webMerchantIdentifier:v5 webMerchantName:v6];
+      v8 = configuration;
+      [(PKPaymentOffersSessionDetails *)configuration updateMerchantIdentifier:v4 originURL:v29 webMerchantIdentifier:v5 webMerchantName:v6];
     }
 
     else
@@ -1172,22 +1172,22 @@ unint64_t __49__PKPaymentAuthorizationStateMachine_description__block_invoke(uin
       }
 
       v24 = [PKPaymentOffersSessionDetails alloc];
-      v23 = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
-      v22 = [(PKPaymentAuthorizationDataModel *)self->_model currencyCode];
-      v12 = [v28 countryCode];
-      v20 = [(PKPaymentAuthorizationDataModel *)self->_model merchantName];
+      transactionAmount = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
+      currencyCode = [(PKPaymentAuthorizationDataModel *)self->_model currencyCode];
+      countryCode = [paymentRequest countryCode];
+      merchantName = [(PKPaymentAuthorizationDataModel *)self->_model merchantName];
       [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-      v21 = v26 = v3;
-      v19 = [v21 shouldUseMerchantSession];
-      v13 = [v28 merchantCategoryCode];
-      v14 = [v28 supportedNetworks];
-      WORD1(v18) = v13;
+      v21 = v26 = totalSummaryItem;
+      shouldUseMerchantSession = [v21 shouldUseMerchantSession];
+      merchantCategoryCode = [paymentRequest merchantCategoryCode];
+      supportedNetworks = [paymentRequest supportedNetworks];
+      WORD1(v18) = merchantCategoryCode;
       v4 = v25;
-      LOBYTE(v18) = v19;
-      v15 = v12;
-      v8 = -[PKPaymentOffersSessionDetails initWithTransactionAmount:currencyCode:merchantCountryCode:merchantIdentifier:originURL:webMerchantIdentifier:webMerchantName:merchantName:adamIdentifier:shouldUseMerchantSession:merchantCategoryCode:supportedNetworks:merchantCapabilities:payLaterSuppressionMode:options:](v24, "initWithTransactionAmount:currencyCode:merchantCountryCode:merchantIdentifier:originURL:webMerchantIdentifier:webMerchantName:merchantName:adamIdentifier:shouldUseMerchantSession:merchantCategoryCode:supportedNetworks:merchantCapabilities:payLaterSuppressionMode:options:", v23, v22, v12, v25, v29, v5, v6, v20, v27, v18, v14, [v28 merchantCapabilities], objc_msgSend(v28, "applePayLaterAvailability"), v11);
+      LOBYTE(v18) = shouldUseMerchantSession;
+      v15 = countryCode;
+      v8 = -[PKPaymentOffersSessionDetails initWithTransactionAmount:currencyCode:merchantCountryCode:merchantIdentifier:originURL:webMerchantIdentifier:webMerchantName:merchantName:adamIdentifier:shouldUseMerchantSession:merchantCategoryCode:supportedNetworks:merchantCapabilities:payLaterSuppressionMode:options:](v24, "initWithTransactionAmount:currencyCode:merchantCountryCode:merchantIdentifier:originURL:webMerchantIdentifier:webMerchantName:merchantName:adamIdentifier:shouldUseMerchantSession:merchantCategoryCode:supportedNetworks:merchantCapabilities:payLaterSuppressionMode:options:", transactionAmount, currencyCode, countryCode, v25, v29, v5, v6, merchantName, v27, v18, supportedNetworks, [paymentRequest merchantCapabilities], objc_msgSend(paymentRequest, "applePayLaterAvailability"), v11);
 
-      v3 = v26;
+      totalSummaryItem = v26;
     }
 
     if (!self->_paymentOffersController)
@@ -1207,23 +1207,23 @@ unint64_t __49__PKPaymentAuthorizationStateMachine_description__block_invoke(uin
   v27 = *MEMORY[0x1E69E9840];
   if (self->_paymentOffersController && [(PKPaymentAuthorizationDataModel *)self->_model mode]== 1)
   {
-    v3 = [(PKPaymentOffersController *)self->_paymentOffersController configuration];
-    v4 = [v3 transactionAmount];
+    configuration = [(PKPaymentOffersController *)self->_paymentOffersController configuration];
+    transactionAmount = [configuration transactionAmount];
 
-    v5 = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
-    v6 = v5;
-    if (v4 && v5)
+    transactionAmount2 = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
+    v6 = transactionAmount2;
+    if (transactionAmount && transactionAmount2)
     {
-      v7 = [v4 isEqual:v5];
+      v7 = [transactionAmount isEqual:transactionAmount2];
     }
 
     else
     {
-      v7 = v4 == v5;
+      v7 = transactionAmount == transactionAmount2;
     }
 
-    v8 = [(PKPaymentOffersController *)self->_paymentOffersController configuration];
-    [v8 updateTransactionAmount:v6];
+    configuration2 = [(PKPaymentOffersController *)self->_paymentOffersController configuration];
+    [configuration2 updateTransactionAmount:v6];
 
     if ((v7 & 1) == 0)
     {
@@ -1237,32 +1237,32 @@ unint64_t __49__PKPaymentAuthorizationStateMachine_description__block_invoke(uin
     {
       if (![(PKPaymentOffersController *)self->_paymentOffersController hasFetchedCatalogFromServer])
       {
-        v10 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
-        v11 = [v10 uniqueID];
+        pass = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+        uniqueID = [pass uniqueID];
 
-        [(PKPaymentOffersController *)self->_paymentOffersController setSelectedPassUniqueID:v11];
+        [(PKPaymentOffersController *)self->_paymentOffersController setSelectedPassUniqueID:uniqueID];
         [(PKPaymentOffersController *)self->_paymentOffersController updatePaymentOfferCatalogWithReason:4 completion:0];
       }
 
       if ((v7 & 1) == 0 && [(PKPaymentOffersController *)self->_paymentOffersController hasFetchedCatalogFromServer])
       {
-        v12 = [(PKPaymentOffersController *)self->_paymentOffersController fetchedAndInflightMerchandisingIdentifiers];
-        [(PKPaymentOffersController *)self->_paymentOffersController updateMerchandisingDetailsIfNecessaryForMerchandisingIdentifiers:v12];
+        fetchedAndInflightMerchandisingIdentifiers = [(PKPaymentOffersController *)self->_paymentOffersController fetchedAndInflightMerchandisingIdentifiers];
+        [(PKPaymentOffersController *)self->_paymentOffersController updateMerchandisingDetailsIfNecessaryForMerchandisingIdentifiers:fetchedAndInflightMerchandisingIdentifiers];
       }
 
-      v13 = [(PKPaymentAuthorizationDataModel *)self->_model selectedPaymentOffer];
-      v14 = [(PKPaymentAuthorizationDataModel *)self->_model fundingMode];
-      if (v14 == 2)
+      selectedPaymentOffer = [(PKPaymentAuthorizationDataModel *)self->_model selectedPaymentOffer];
+      fundingMode = [(PKPaymentAuthorizationDataModel *)self->_model fundingMode];
+      if (fundingMode == 2)
       {
-        if (!((v13 == 0) | v7 & 1))
+        if (!((selectedPaymentOffer == 0) | v7 & 1))
         {
-          if ([v13 type] == 1)
+          if ([selectedPaymentOffer type] == 1)
           {
             v15 = PKLogFacilityTypeGetObject(8uLL);
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v24 = v4;
+              v24 = transactionAmount;
               v25 = 2112;
               v26 = v6;
               _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "Payment sheet total amount has changed from %@ to %@. Updating payment offers now.", buf, 0x16u);
@@ -1270,18 +1270,18 @@ unint64_t __49__PKPaymentAuthorizationStateMachine_description__block_invoke(uin
 
             [(PKPaymentAuthorizationStateMachine *)self _setState:18 param:0];
             paymentOffersController = self->_paymentOffersController;
-            v17 = [v13 criteriaIdentifier];
-            v18 = [v13 passDetails];
-            [(PKPaymentOffersController *)paymentOffersController updatePaymentOffersForCriteriaIdentifier:v17 selectedPassDetails:v18 reason:5 completion:0];
+            criteriaIdentifier = [selectedPaymentOffer criteriaIdentifier];
+            passDetails = [selectedPaymentOffer passDetails];
+            [(PKPaymentOffersController *)paymentOffersController updatePaymentOffersForCriteriaIdentifier:criteriaIdentifier selectedPassDetails:passDetails reason:5 completion:0];
           }
 
-          if ([v13 type] == 2)
+          if ([selectedPaymentOffer type] == 2)
           {
-            v19 = [v13 rewardsRedemptionIntent];
-            v20 = [v19 monetaryValue];
-            v21 = [v20 amount];
+            rewardsRedemptionIntent = [selectedPaymentOffer rewardsRedemptionIntent];
+            monetaryValue = [rewardsRedemptionIntent monetaryValue];
+            amount = [monetaryValue amount];
 
-            if (v19 && [v6 compare:v21] == -1)
+            if (rewardsRedemptionIntent && [v6 compare:amount] == -1)
             {
               [(PKPaymentOffersController *)self->_paymentOffersController clearCurrentSelectedPaymentOfferDetails];
               [(PKPaymentAuthorizationStateMachine *)self didChangeFundingMode:0];
@@ -1290,7 +1290,7 @@ unint64_t __49__PKPaymentAuthorizationStateMachine_description__block_invoke(uin
         }
       }
 
-      else if (!v14 && (v7 & 1) == 0)
+      else if (!fundingMode && (v7 & 1) == 0)
       {
         [(PKPaymentOffersController *)self->_paymentOffersController removeCachedPaymentOffers];
         [(PKPaymentOffersController *)self->_paymentOffersController updatePreconfiguredOfferStateForAllPasses];
@@ -1301,12 +1301,12 @@ unint64_t __49__PKPaymentAuthorizationStateMachine_description__block_invoke(uin
 
 - (BOOL)_purchaseSupportsPaymentOffers
 {
-  v3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v4 = v3;
-  if (self->_paymentWebService && self->_model && self->_paymentService && ![v3 requestType] && (objc_msgSend(v4, "_isAMPPayment") & 1) == 0 && -[PKPaymentAuthorizationDataModel mode](self->_model, "mode") == 1)
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  v4 = paymentRequest;
+  if (self->_paymentWebService && self->_model && self->_paymentService && ![paymentRequest requestType] && (objc_msgSend(v4, "_isAMPPayment") & 1) == 0 && -[PKPaymentAuthorizationDataModel mode](self->_model, "mode") == 1)
   {
-    v5 = [(PKPaymentAuthorizationDataModel *)self->_model remoteDevice];
-    v6 = v5 == 0;
+    remoteDevice = [(PKPaymentAuthorizationDataModel *)self->_model remoteDevice];
+    v6 = remoteDevice == 0;
   }
 
   else
@@ -1317,16 +1317,16 @@ unint64_t __49__PKPaymentAuthorizationStateMachine_description__block_invoke(uin
   return v6;
 }
 
-- (void)paymentOfferCatalogChanged:(id)a3
+- (void)paymentOfferCatalogChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__PKPaymentAuthorizationStateMachine_paymentOfferCatalogChanged___block_invoke;
   v6[3] = &unk_1E79C4DD8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = changedCopy;
+  selfCopy = self;
+  v5 = changedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -1353,16 +1353,16 @@ uint64_t __65__PKPaymentAuthorizationStateMachine_paymentOfferCatalogChanged___b
   return result;
 }
 
-- (void)paymentOffersChanged:(id)a3 forPassUniqueIdentifier:(id)a4
+- (void)paymentOffersChanged:(id)changed forPassUniqueIdentifier:(id)identifier
 {
-  v5 = a3;
+  changedCopy = changed;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __83__PKPaymentAuthorizationStateMachine_paymentOffersChanged_forPassUniqueIdentifier___block_invoke;
   v7[3] = &unk_1E79C4DD8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -1389,16 +1389,16 @@ uint64_t __83__PKPaymentAuthorizationStateMachine_paymentOffersChanged_forPassUn
   return result;
 }
 
-- (void)paymentOfferActionsChanged:(id)a3
+- (void)paymentOfferActionsChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__PKPaymentAuthorizationStateMachine_paymentOfferActionsChanged___block_invoke;
   v6[3] = &unk_1E79C4DD8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = changedCopy;
+  selfCopy = self;
+  v5 = changedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -1425,19 +1425,19 @@ uint64_t __65__PKPaymentAuthorizationStateMachine_paymentOfferActionsChanged___b
   return result;
 }
 
-- (void)selectedPaymentOfferChanged:(id)a3 forPassUniqueIdentifier:(id)a4
+- (void)selectedPaymentOfferChanged:(id)changed forPassUniqueIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  identifierCopy = identifier;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __90__PKPaymentAuthorizationStateMachine_selectedPaymentOfferChanged_forPassUniqueIdentifier___block_invoke;
   block[3] = &unk_1E79C4E00;
   block[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = identifierCopy;
+  v12 = changedCopy;
+  v8 = changedCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -1503,7 +1503,7 @@ LABEL_10:
 LABEL_13:
 }
 
-- (void)paymentOfferDynamicContentChanged:(id)a3
+- (void)paymentOfferDynamicContentChanged:(id)changed
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1523,7 +1523,7 @@ uint64_t __72__PKPaymentAuthorizationStateMachine_paymentOfferDynamicContentChan
   return [v2 _advanceToNextState];
 }
 
-- (void)paymentOfferMerchandisingChanged:(id)a3
+- (void)paymentOfferMerchandisingChanged:(id)changed
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1597,10 +1597,10 @@ uint64_t __71__PKPaymentAuthorizationStateMachine_paymentOfferMerchandisingChang
     while (v6);
   }
 
-  v12 = [(PKPaymentAuthorizationDataModel *)self->_model mode];
-  if ((v12 - 3) >= 2 && v12 != 1)
+  mode = [(PKPaymentAuthorizationDataModel *)self->_model mode];
+  if ((mode - 3) >= 2 && mode != 1)
   {
-    if (v12 == 2)
+    if (mode == 2)
     {
       if (self->_continuityPaymentService)
       {
@@ -1624,22 +1624,22 @@ uint64_t __71__PKPaymentAuthorizationStateMachine_paymentOfferMerchandisingChang
     }
   }
 
-  v15 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v16 = [PKPaymentRequestValidator validatorWithObject:v15];
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  v16 = [PKPaymentRequestValidator validatorWithObject:paymentRequest];
   v40 = 0;
   v17 = [v16 isValidWithError:&v40];
   v18 = v40;
 
   if (v17)
   {
-    if ([v15 _isAMPPayment])
+    if ([paymentRequest _isAMPPayment])
     {
       v19 = PKAggDKeyPaymentiTunesPurchasePresented;
     }
 
     else
     {
-      if ([v15 requestType])
+      if ([paymentRequest requestType])
       {
 LABEL_30:
         [(PKPaymentAuthorizationStateMachine *)self _start];
@@ -1668,19 +1668,19 @@ LABEL_30:
 
 LABEL_31:
   [(PKPaymentAuthorizationStateMachine *)self _startAssessmentIfNecessary];
-  v23 = [v15 multiTokenContexts];
-  if ([v23 count] && !-[PKPaymentAuthorizationStateMachine _isMultiTokenContextsSupported](self, "_isMultiTokenContextsSupported"))
+  multiTokenContexts = [paymentRequest multiTokenContexts];
+  if ([multiTokenContexts count] && !-[PKPaymentAuthorizationStateMachine _isMultiTokenContextsSupported](self, "_isMultiTokenContextsSupported"))
   {
     [(PKPaymentAuthorizationDataModel *)self->_model beginUpdates];
     [(PKPaymentAuthorizationDataModel *)self->_model setMultiTokenContexts:MEMORY[0x1E695E0F0]];
     [(PKPaymentAuthorizationDataModel *)self->_model endUpdates];
   }
 
-  v24 = [v15 recurringPaymentRequest];
-  v25 = [v15 automaticReloadPaymentRequest];
-  v26 = [v15 deferredPaymentRequest];
+  recurringPaymentRequest = [paymentRequest recurringPaymentRequest];
+  automaticReloadPaymentRequest = [paymentRequest automaticReloadPaymentRequest];
+  deferredPaymentRequest = [paymentRequest deferredPaymentRequest];
 
-  if ((v24 || v25 || v26) && ![(PKPaymentAuthorizationStateMachine *)self _isMerchantTokensSupported])
+  if ((recurringPaymentRequest || automaticReloadPaymentRequest || deferredPaymentRequest) && ![(PKPaymentAuthorizationStateMachine *)self _isMerchantTokensSupported])
   {
     [(PKPaymentAuthorizationDataModel *)self->_model beginUpdates];
     [(PKPaymentAuthorizationDataModel *)self->_model setRecurringPaymentRequest:0];
@@ -1688,8 +1688,8 @@ LABEL_31:
     [(PKPaymentAuthorizationDataModel *)self->_model endUpdates];
   }
 
-  v27 = [v15 thumbnailURLs];
-  v28 = [v27 count];
+  thumbnailURLs = [paymentRequest thumbnailURLs];
+  v28 = [thumbnailURLs count];
 
   if (v28)
   {
@@ -1697,10 +1697,10 @@ LABEL_31:
     [(PKAggregateDictionaryProtocol *)self->_aggregateDictionary addValueForScalarKey:@"com.apple.passbook.payment.in-app.thumbnail" value:1];
   }
 
-  if (![v15 requestType])
+  if (![paymentRequest requestType])
   {
-    v29 = [v15 merchantSession];
-    if (v29)
+    merchantSession = [paymentRequest merchantSession];
+    if (merchantSession)
     {
 
       v30 = PKAggDKeyPaymentInAppUsesMerchantSession;
@@ -1708,9 +1708,9 @@ LABEL_31:
 
     else
     {
-      v31 = [v15 shouldUseMerchantSession];
+      shouldUseMerchantSession = [paymentRequest shouldUseMerchantSession];
       v30 = PKAggDKeyPaymentInAppUsesMerchantIdentifier;
-      if (v31)
+      if (shouldUseMerchantSession)
       {
         v30 = PKAggDKeyPaymentInAppUsesMerchantSession;
       }
@@ -1723,12 +1723,12 @@ LABEL_31:
 
   aggregateDictionary = self->_aggregateDictionary;
   v34 = MEMORY[0x1E696AEC0];
-  v35 = PKAggDKeyForPaymentRequestAPIType([v15 APIType]);
+  v35 = PKAggDKeyForPaymentRequestAPIType([paymentRequest APIType]);
   v36 = [v34 stringWithFormat:@"%@.%@", @"com.apple.passbook.payment.api", v35];
   [(PKAggregateDictionaryProtocol *)aggregateDictionary addValueForScalarKey:v36 value:1];
 
   v45 = @"api";
-  v37 = PKAggDKeyForPaymentRequestAPIType([v15 APIType]);
+  v37 = PKAggDKeyForPaymentRequestAPIType([paymentRequest APIType]);
   v46 = v37;
   v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
   AnalyticsSendEvent();
@@ -1776,8 +1776,8 @@ LABEL_31:
       }
 
       v9 = self->_odiTransactionAssessment;
-      v10 = [(PKPaymentAuthorizationDataModel *)self->_model bundleIdentifier];
-      [(PKODIAssessment *)v9 startAssessmentWithHostBundleIdentifier:v10];
+      bundleIdentifier = [(PKPaymentAuthorizationDataModel *)self->_model bundleIdentifier];
+      [(PKODIAssessment *)v9 startAssessmentWithHostBundleIdentifier:bundleIdentifier];
     }
   }
 }
@@ -1798,10 +1798,10 @@ LABEL_31:
   return state == 7 && [(PKPaymentAuthorizationClientCallbackStateParam *)self->_mostRecentClientCallback kind:v2]!= 5;
 }
 
-- (void)didResignActive:(BOOL)a3
+- (void)didResignActive:(BOOL)active
 {
   v3 = 1;
-  if (!a3)
+  if (!active)
   {
     v3 = 2;
   }
@@ -1813,10 +1813,10 @@ LABEL_31:
   }
 }
 
-- (void)didBecomeActive:(BOOL)a3
+- (void)didBecomeActive:(BOOL)active
 {
   v3 = -4;
-  if (!a3)
+  if (!active)
   {
     v3 = -3;
   }
@@ -1831,10 +1831,10 @@ LABEL_31:
   }
 }
 
-- (void)didBecomeOccluded:(BOOL)a3
+- (void)didBecomeOccluded:(BOOL)occluded
 {
   hostApplicationState = self->_hostApplicationState;
-  if (a3)
+  if (occluded)
   {
     self->_hostApplicationState = hostApplicationState | 4;
   }
@@ -1857,10 +1857,10 @@ LABEL_31:
   }
 }
 
-- (void)didBecomeArmable:(BOOL)a3
+- (void)didBecomeArmable:(BOOL)armable
 {
   hostApplicationState = self->_hostApplicationState;
-  if (a3)
+  if (armable)
   {
     self->_hostApplicationState = hostApplicationState & 0xFFFFFFFFFFFFFFF7;
     if ((hostApplicationState & 8) == 0)
@@ -1883,19 +1883,19 @@ LABEL_31:
   }
 }
 
-- (void)setCancelReason:(int64_t)a3
+- (void)setCancelReason:(int64_t)reason
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = PKLogFacilityTypeGetObject(8uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = PKPaymentAuthorizationStateMachineCancelReasonToString(a3);
+    v6 = PKPaymentAuthorizationStateMachineCancelReasonToString(reason);
     v7 = 138412290;
     v8 = v6;
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Setting state machine cancel reason to %@", &v7, 0xCu);
   }
 
-  self->_cancelReason = a3;
+  self->_cancelReason = reason;
 }
 
 - (void)didCancel
@@ -1913,23 +1913,23 @@ LABEL_31:
   if (v5 || v6 == 0)
   {
     [(PKPaymentAuthorizationStateMachine *)self _reportAnalyticsTransactionAuthorizationWithAdditionalDictionary:0 eventType:@"transactionAuthorizationCanceled"];
-    v8 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    v9 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    v10 = [v9 _isAMPPayment];
+    paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    paymentRequest2 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    _isAMPPayment = [paymentRequest2 _isAMPPayment];
 
-    if (v10)
+    if (_isAMPPayment)
     {
       v11 = PKAggDKeyPaymentiTunesPurchaseCancel;
     }
 
     else
     {
-      if ([v8 requestType])
+      if ([paymentRequest requestType])
       {
 LABEL_13:
-        v13 = [(PKContinuityPaymentCoordinator *)self->_continuityPaymentCoordinator currentRemotePaymentRequest];
+        currentRemotePaymentRequest = [(PKContinuityPaymentCoordinator *)self->_continuityPaymentCoordinator currentRemotePaymentRequest];
 
-        if (v13)
+        if (currentRemotePaymentRequest)
         {
           [(PKPaymentAuthorizationStateMachine *)self _performCancelRemotePaymentRequest];
         }
@@ -1955,15 +1955,15 @@ LABEL_13:
   }
 }
 
-- (void)didEncounterError:(id)a3
+- (void)didEncounterError:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = PKLogFacilityTypeGetObject(8uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = errorCopy;
     _os_log_error_impl(&dword_1AD337000, v5, OS_LOG_TYPE_ERROR, "Received error from client: %@", &v11, 0xCu);
   }
 
@@ -1972,20 +1972,20 @@ LABEL_13:
   v8 = (1 << state) & 0x1A000;
   if (v7 || v8 == 0)
   {
-    v10 = [PKPaymentAuthorizationErrorStateParam paramWithError:v4];
+    v10 = [PKPaymentAuthorizationErrorStateParam paramWithError:errorCopy];
     [(PKPaymentAuthorizationStateMachine *)self _setState:14 param:v10];
   }
 }
 
-- (void)didEncounterFatalError:(id)a3
+- (void)didEncounterFatalError:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = PKLogFacilityTypeGetObject(8uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = errorCopy;
     _os_log_error_impl(&dword_1AD337000, v5, OS_LOG_TYPE_ERROR, "Received fatal error from client: %@", &v11, 0xCu);
   }
 
@@ -1994,7 +1994,7 @@ LABEL_13:
   v8 = (1 << state) & 0x1A000;
   if (v7 || v8 == 0)
   {
-    v10 = [PKPaymentAuthorizationErrorStateParam paramWithError:v4];
+    v10 = [PKPaymentAuthorizationErrorStateParam paramWithError:errorCopy];
     [(PKPaymentAuthorizationStateMachine *)self _setState:15 param:v10];
   }
 }
@@ -2034,11 +2034,11 @@ LABEL_13:
   }
 }
 
-- (void)didReceiveMerchantSessionCompleteWithSession:(id)a3 error:(id)a4
+- (void)didReceiveMerchantSessionCompleteWithSession:(id)session error:(id)error
 {
-  if (a3)
+  if (session)
   {
-    v5 = a4 == 0;
+    v5 = error == 0;
   }
 
   else
@@ -2047,28 +2047,28 @@ LABEL_13:
   }
 
   v6 = !v5;
-  v7 = a3;
-  v8 = [[PKPaymentRequestMerchantSessionUpdate alloc] initWithStatus:v6 merchantSession:v7];
+  sessionCopy = session;
+  v8 = [[PKPaymentRequestMerchantSessionUpdate alloc] initWithStatus:v6 merchantSession:sessionCopy];
 
   [(PKPaymentAuthorizationStateMachine *)self didReceiveMerchantSessionCompleteWithUpdate:v8];
 }
 
-- (void)didReceiveMerchantSessionCompleteWithUpdate:(id)a3
+- (void)didReceiveMerchantSessionCompleteWithUpdate:(id)update
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updateCopy = update;
   v5 = PKLogFacilityTypeGetObject(8uLL);
   if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     goto LABEL_23;
   }
 
-  v6 = [v4 status];
-  if (v6 <= 3)
+  status = [updateCopy status];
+  if (status <= 3)
   {
-    if (v6 > 1)
+    if (status > 1)
     {
-      if (v6 == 2)
+      if (status == 2)
       {
         v7 = @"PKPaymentAuthorizationStatusInvalidBillingPostalAddress";
       }
@@ -2081,13 +2081,13 @@ LABEL_13:
       goto LABEL_22;
     }
 
-    if (!v6)
+    if (!status)
     {
       v7 = @"PKPaymentAuthorizationStatusSuccess";
       goto LABEL_22;
     }
 
-    if (v6 == 1)
+    if (status == 1)
     {
       v7 = @"PKPaymentAuthorizationStatusFailure";
       goto LABEL_22;
@@ -2098,9 +2098,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (v6 <= 5)
+  if (status <= 5)
   {
-    if (v6 == 4)
+    if (status == 4)
     {
       v7 = @"PKPaymentAuthorizationStatusInvalidShippingContact";
     }
@@ -2113,30 +2113,30 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (v6 == 6)
+  if (status == 6)
   {
     v7 = @"PKPaymentAuthorizationStatusPINIncorrect";
     goto LABEL_22;
   }
 
-  if (v6 == 7)
+  if (status == 7)
   {
     v7 = @"PKPaymentAuthorizationStatusPINLockout";
     goto LABEL_22;
   }
 
-  if (v6 != 1000)
+  if (status != 1000)
   {
     goto LABEL_21;
   }
 
   v7 = @"PKPaymentAuthorizationStatusTryAgain";
 LABEL_22:
-  v8 = [v4 session];
+  session = [updateCopy session];
   *buf = 138412546;
   v42 = v7;
   v43 = 2112;
-  v44 = v8;
+  v44 = session;
   _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Received merchant session update with status:%@ session:%@", buf, 0x16u);
 
 LABEL_23:
@@ -2153,14 +2153,14 @@ LABEL_23:
     aBlock[3] = &unk_1E79C4E28;
     aBlock[4] = self;
     v13 = _Block_copy(aBlock);
-    if ([v4 status] || (objc_msgSend(v4, "session"), v14 = objc_claimAutoreleasedReturnValue(), v14, !v14))
+    if ([updateCopy status] || (objc_msgSend(updateCopy, "session"), v14 = objc_claimAutoreleasedReturnValue(), v14, !v14))
     {
       v13[2](v13);
     }
 
     else
     {
-      v15 = [v4 session];
+      session2 = [updateCopy session];
       if (PKBypassCertValidation())
       {
         v16 = 0;
@@ -2168,25 +2168,25 @@ LABEL_23:
 
       else
       {
-        v17 = PKValidatePaymentMerchantSession(v15);
+        v17 = PKValidatePaymentMerchantSession(session2);
         v16 = v17 != 0;
       }
 
-      v18 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-      v19 = [v18 APIType];
+      paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+      aPIType = [paymentRequest APIType];
 
-      if ((v19 - 1) > 1)
+      if ((aPIType - 1) > 1)
       {
         v22 = 0;
       }
 
       else
       {
-        v20 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-        v21 = [v20 originatingURL];
+        paymentRequest2 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+        originatingURL = [paymentRequest2 originatingURL];
 
-        LODWORD(v20) = [v15 supportsURL:v21];
-        v22 = v20 ^ 1;
+        LODWORD(paymentRequest2) = [session2 supportsURL:originatingURL];
+        v22 = paymentRequest2 ^ 1;
       }
 
       if ((v16 | v22))
@@ -2197,18 +2197,18 @@ LABEL_23:
       else
       {
         [(PKPaymentAuthorizationDataModel *)self->_model beginUpdates];
-        v23 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-        [v23 setMerchantSession:v15];
+        paymentRequest3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+        [paymentRequest3 setMerchantSession:session2];
 
         [(PKPaymentAuthorizationDataModel *)self->_model endUpdates];
-        v24 = [v15 merchantIdentifier];
-        v25 = v24;
-        if (v24)
+        merchantIdentifier = [session2 merchantIdentifier];
+        v25 = merchantIdentifier;
+        if (merchantIdentifier)
         {
           v39[0] = @"eventType";
           v39[1] = @"merchantIdentifier";
           v40[0] = @"stateChange";
-          v40[1] = v24;
+          v40[1] = merchantIdentifier;
           [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:2];
           v27 = v26 = v25;
           [PKAnalyticsReporter subject:@"inApp" sendEvent:v27];
@@ -2216,20 +2216,20 @@ LABEL_23:
           v25 = v26;
         }
 
-        v28 = [v15 operationalAnalyticsIdentifier];
-        if (v28)
+        operationalAnalyticsIdentifier = [session2 operationalAnalyticsIdentifier];
+        if (operationalAnalyticsIdentifier)
         {
           v36 = v25;
           v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
           [v29 setObject:@"stateChange" forKeyedSubscript:@"eventType"];
-          [v29 setObject:v28 forKeyedSubscript:@"analyticsIdentifier"];
-          v30 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-          v31 = [v30 originatingURL];
+          [v29 setObject:operationalAnalyticsIdentifier forKeyedSubscript:@"analyticsIdentifier"];
+          paymentRequest4 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+          originatingURL2 = [paymentRequest4 originatingURL];
 
-          if (v31)
+          if (originatingURL2)
           {
-            v32 = [v31 host];
-            [v29 setObject:v32 forKeyedSubscript:@"merchantDomain"];
+            host = [originatingURL2 host];
+            [v29 setObject:host forKeyedSubscript:@"merchantDomain"];
           }
 
           v33 = [v29 copy];
@@ -2238,10 +2238,10 @@ LABEL_23:
           v25 = v37;
         }
 
-        v34 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-        v35 = [v34 requestType];
+        paymentRequest5 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+        requestType = [paymentRequest5 requestType];
 
-        if (v35 == 5)
+        if (requestType == 5)
         {
           [(PKPaymentAuthorizationStateMachine *)self _performInstallmentBind];
         }
@@ -2275,12 +2275,12 @@ void __82__PKPaymentAuthorizationStateMachine_didReceiveMerchantSessionCompleteW
   [v4 _setState:15 param:v5];
 }
 
-- (void)didChangeCouponCode:(id)a3
+- (void)didChangeCouponCode:(id)code
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationDataModel *)self->_model couponCode];
-  v8 = v4;
-  v6 = v5;
+  codeCopy = code;
+  couponCode = [(PKPaymentAuthorizationDataModel *)self->_model couponCode];
+  v8 = codeCopy;
+  v6 = couponCode;
   if (v6 == v8)
   {
 
@@ -2308,21 +2308,21 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)didReceiveCouponCodeCompleteWithUpdate:(id)a3
+- (void)didReceiveCouponCodeCompleteWithUpdate:(id)update
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 status];
+  updateCopy = update;
+  status = [updateCopy status];
   v7 = PKLogFacilityTypeGetObject(8uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     v9 = v8;
-    if (v6 <= 3)
+    if (status <= 3)
     {
-      if (v6 > 1)
+      if (status > 1)
       {
-        if (v6 == 2)
+        if (status == 2)
         {
           v10 = @"PKPaymentAuthorizationStatusInvalidBillingPostalAddress";
         }
@@ -2335,13 +2335,13 @@ LABEL_9:
         goto LABEL_22;
       }
 
-      if (!v6)
+      if (!status)
       {
         v10 = @"PKPaymentAuthorizationStatusSuccess";
         goto LABEL_22;
       }
 
-      if (v6 == 1)
+      if (status == 1)
       {
         v10 = @"PKPaymentAuthorizationStatusFailure";
         goto LABEL_22;
@@ -2350,9 +2350,9 @@ LABEL_9:
 
     else
     {
-      if (v6 <= 5)
+      if (status <= 5)
       {
-        if (v6 == 4)
+        if (status == 4)
         {
           v10 = @"PKPaymentAuthorizationStatusInvalidShippingContact";
         }
@@ -2365,7 +2365,7 @@ LABEL_9:
         goto LABEL_22;
       }
 
-      switch(v6)
+      switch(status)
       {
         case 6:
           v10 = @"PKPaymentAuthorizationStatusPINIncorrect";
@@ -2394,13 +2394,13 @@ LABEL_23:
 
   [(PKPaymentAuthorizationDataModel *)self->_model beginUpdates];
   [(PKPaymentAuthorizationDataModel *)self->_model setNumberOfOutstandingCouponCodeUpdates:[(PKPaymentAuthorizationDataModel *)self->_model numberOfOutstandingCouponCodeUpdates]- 1];
-  v11 = [v5 errors];
-  [(PKPaymentAuthorizationDataModel *)self->_model setCouponCodeErrors:v11];
+  errors = [updateCopy errors];
+  [(PKPaymentAuthorizationDataModel *)self->_model setCouponCodeErrors:errors];
   [(PKPaymentAuthorizationDataModel *)self->_model endUpdates];
   if (![(PKPaymentAuthorizationDataModel *)self->_model numberOfOutstandingCouponCodeUpdates])
   {
-    v12 = [v11 firstObject];
-    [(PKPaymentAuthorizationStateMachine *)self _trackCouponCodeOutcomeWithError:v12];
+    firstObject = [errors firstObject];
+    [(PKPaymentAuthorizationStateMachine *)self _trackCouponCodeOutcomeWithError:firstObject];
   }
 
   state = self->_state;
@@ -2408,7 +2408,7 @@ LABEL_23:
   {
     self->_awaitingClientCallbackReply = 0;
     [(PKPaymentAuthorizationStateMachine *)self _cancelClientCallbackTimer];
-    if (v6)
+    if (status)
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
@@ -2416,84 +2416,84 @@ LABEL_23:
         _os_log_error_impl(&dword_1AD337000, v7, OS_LOG_TYPE_ERROR, "Application failed to process coupon code change. This means that the coupon code and summary items are out of sync. We can't proceed to authorize the transaction.", buf, 2u);
       }
 
-      v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:0];
-      v15 = [PKPaymentAuthorizationErrorStateParam paramWithError:v14];
-      [(PKPaymentAuthorizationStateMachine *)self _setState:15 param:v15];
+      availableShippingMethods = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:0];
+      paymentSummaryItems = [PKPaymentAuthorizationErrorStateParam paramWithError:availableShippingMethods];
+      [(PKPaymentAuthorizationStateMachine *)self _setState:15 param:paymentSummaryItems];
     }
 
     else
     {
-      v14 = [v5 availableShippingMethods];
-      v15 = [v5 paymentSummaryItems];
-      v16 = [v5 multiTokenContexts];
-      v17 = [v5 recurringPaymentRequest];
-      v18 = [v5 automaticReloadPaymentRequest];
-      v19 = [v5 deferredPaymentRequest];
-      v20 = [v5 contentItems];
-      [(PKPaymentAuthorizationStateMachine *)self _updateModelWithShippingMethods:v14 paymentSummaryItems:v15 multiTokenContexts:v16 recurringPaymentRequest:v17 automaticReloadPaymentRequest:v18 deferredPaymentRequest:v19 contentItems:v20];
+      availableShippingMethods = [updateCopy availableShippingMethods];
+      paymentSummaryItems = [updateCopy paymentSummaryItems];
+      multiTokenContexts = [updateCopy multiTokenContexts];
+      recurringPaymentRequest = [updateCopy recurringPaymentRequest];
+      automaticReloadPaymentRequest = [updateCopy automaticReloadPaymentRequest];
+      deferredPaymentRequest = [updateCopy deferredPaymentRequest];
+      contentItems = [updateCopy contentItems];
+      [(PKPaymentAuthorizationStateMachine *)self _updateModelWithShippingMethods:availableShippingMethods paymentSummaryItems:paymentSummaryItems multiTokenContexts:multiTokenContexts recurringPaymentRequest:recurringPaymentRequest automaticReloadPaymentRequest:automaticReloadPaymentRequest deferredPaymentRequest:deferredPaymentRequest contentItems:contentItems];
     }
   }
 }
 
-- (void)didEncounterShippingEmailError:(id)a3
+- (void)didEncounterShippingEmailError:(id)error
 {
-  [(PKPaymentAuthorizationDataModel *)self->_model setShippingEmailError:a3];
+  [(PKPaymentAuthorizationDataModel *)self->_model setShippingEmailError:error];
 
   [(PKPaymentAuthorizationStateMachine *)self _processErrorsForDataType:7];
 }
 
-- (void)didSelectShippingEmail:(id)a3
+- (void)didSelectShippingEmail:(id)email
 {
-  v6 = a3;
-  v4 = [(PKPaymentAuthorizationDataModel *)self->_model shippingEmail];
+  emailCopy = email;
+  shippingEmail = [(PKPaymentAuthorizationDataModel *)self->_model shippingEmail];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = emailCopy;
+  if (shippingEmail != emailCopy)
   {
-    [(PKPaymentAuthorizationDataModel *)self->_model setShippingEmail:v6];
+    [(PKPaymentAuthorizationDataModel *)self->_model setShippingEmail:emailCopy];
     [(PKPaymentAuthorizationStateMachine *)self _processErrorsForDataType:7];
     [(PKPaymentAuthorizationStateMachine *)self _updateAssessmentAttributes];
-    v5 = v6;
+    v5 = emailCopy;
   }
 }
 
-- (void)didSelectShippingPhoneNumber:(id)a3
+- (void)didSelectShippingPhoneNumber:(id)number
 {
-  v6 = a3;
-  v4 = [(PKPaymentAuthorizationDataModel *)self->_model shippingPhone];
+  numberCopy = number;
+  shippingPhone = [(PKPaymentAuthorizationDataModel *)self->_model shippingPhone];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = numberCopy;
+  if (shippingPhone != numberCopy)
   {
-    [(PKPaymentAuthorizationDataModel *)self->_model setShippingPhone:v6];
+    [(PKPaymentAuthorizationDataModel *)self->_model setShippingPhone:numberCopy];
     [(PKPaymentAuthorizationStateMachine *)self _processErrorsForDataType:7];
     [(PKPaymentAuthorizationStateMachine *)self _updateAssessmentAttributes];
-    v5 = v6;
+    v5 = numberCopy;
   }
 }
 
-- (void)didSelectShippingName:(id)a3
+- (void)didSelectShippingName:(id)name
 {
-  v6 = a3;
-  v4 = [(PKPaymentAuthorizationDataModel *)self->_model shippingName];
+  nameCopy = name;
+  shippingName = [(PKPaymentAuthorizationDataModel *)self->_model shippingName];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = nameCopy;
+  if (shippingName != nameCopy)
   {
-    [(PKPaymentAuthorizationDataModel *)self->_model setShippingName:v6];
+    [(PKPaymentAuthorizationDataModel *)self->_model setShippingName:nameCopy];
     [(PKPaymentAuthorizationStateMachine *)self _processErrorsForDataType:7];
     [(PKPaymentAuthorizationStateMachine *)self _updateAssessmentAttributes];
-    v5 = v6;
+    v5 = nameCopy;
   }
 }
 
-- (void)didSelectBillingAddress:(id)a3
+- (void)didSelectBillingAddress:(id)address
 {
-  v14 = a3;
-  v4 = [(PKPaymentAuthorizationDataModel *)self->_model billingAddress];
+  addressCopy = address;
+  billingAddress = [(PKPaymentAuthorizationDataModel *)self->_model billingAddress];
 
-  v5 = v14;
-  if (v4 != v14)
+  v5 = addressCopy;
+  if (billingAddress != addressCopy)
   {
     [(PKPaymentAuthorizationDataModel *)self->_model setBillingAddress:?];
     if ([(PKPaymentAuthorizationDataModel *)self->_model mode]== 2)
@@ -2507,9 +2507,9 @@ LABEL_23:
     }
 
     [(PKPaymentAuthorizationStateMachine *)self _processErrorsForDataType:v6];
-    v7 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    v8 = [v7 requiredShippingContactFields];
-    v9 = [v8 containsObject:@"post"];
+    paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    requiredShippingContactFields = [paymentRequest requiredShippingContactFields];
+    v9 = [requiredShippingContactFields containsObject:@"post"];
 
     if ((v9 & 1) != 0 || ([(PKPaymentAuthorizationDataModel *)self->_model fundingMode]| 2) != 2)
     {
@@ -2518,8 +2518,8 @@ LABEL_23:
 
     if ([(PKPaymentAuthorizationDataModel *)self->_model mode]== 2 && ([(PKPaymentAuthorizationDataModel *)self->_model remotePaymentInstrument], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
     {
-      v11 = [(PKPaymentAuthorizationDataModel *)self->_model remotePaymentInstrument];
-      [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectRemotePaymentInstrument:v11];
+      remotePaymentInstrument = [(PKPaymentAuthorizationDataModel *)self->_model remotePaymentInstrument];
+      [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectRemotePaymentInstrument:remotePaymentInstrument];
     }
 
     else
@@ -2529,34 +2529,34 @@ LABEL_23:
         goto LABEL_14;
       }
 
-      v12 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+      pass = [(PKPaymentAuthorizationDataModel *)self->_model pass];
 
-      if (!v12)
+      if (!pass)
       {
         goto LABEL_14;
       }
 
-      v11 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
-      v13 = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
-      [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectPaymentPass:v11 paymentApplication:v13];
+      remotePaymentInstrument = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+      paymentApplication = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
+      [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectPaymentPass:remotePaymentInstrument paymentApplication:paymentApplication];
     }
 
 LABEL_14:
     [(PKPaymentAuthorizationStateMachine *)self _updateAssessmentAttributes];
-    v5 = v14;
+    v5 = addressCopy;
   }
 }
 
-- (void)didSelectPaymentOffer:(id)a3 updateReason:(unint64_t)a4
+- (void)didSelectPaymentOffer:(id)offer updateReason:(unint64_t)reason
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PKPaymentOffersController *)self->_paymentOffersController selectedOfferDetails];
-  v8 = [(PKPaymentAuthorizationDataModel *)self->_model selectedPaymentOffer];
-  v9 = v8;
-  if (v6 && v8)
+  offerCopy = offer;
+  selectedOfferDetails = [(PKPaymentOffersController *)self->_paymentOffersController selectedOfferDetails];
+  selectedPaymentOffer = [(PKPaymentAuthorizationDataModel *)self->_model selectedPaymentOffer];
+  v9 = selectedPaymentOffer;
+  if (offerCopy && selectedPaymentOffer)
   {
-    if ([v8 isEqual:v6])
+    if ([selectedPaymentOffer isEqual:offerCopy])
     {
       goto LABEL_4;
     }
@@ -2566,15 +2566,15 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v8 != v6)
+  if (selectedPaymentOffer != offerCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  v10 = [v7 requiresUserAction];
+  requiresUserAction = [selectedOfferDetails requiresUserAction];
 
-  if ((v10 & 1) == 0)
+  if ((requiresUserAction & 1) == 0)
   {
     goto LABEL_34;
   }
@@ -2584,25 +2584,25 @@ LABEL_8:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412290;
-    v20 = v6;
+    v20 = offerCopy;
     _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "didSelectPaymentOffer called with offer %@", &v19, 0xCu);
   }
 
-  v12 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
-  v13 = [v12 uniqueID];
+  pass = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+  uniqueID = [pass uniqueID];
 
-  if (v6)
+  if (offerCopy)
   {
-    v14 = [v6 passUniqueID];
-    v15 = v13;
+    passUniqueID = [offerCopy passUniqueID];
+    v15 = uniqueID;
     v16 = v15;
-    if (v14 == v15)
+    if (passUniqueID == v15)
     {
     }
 
     else
     {
-      if (!v15 || !v14)
+      if (!v15 || !passUniqueID)
       {
 
 LABEL_26:
@@ -2616,7 +2616,7 @@ LABEL_26:
         goto LABEL_33;
       }
 
-      v17 = [v14 isEqualToString:v15];
+      v17 = [passUniqueID isEqualToString:v15];
 
       if ((v17 & 1) == 0)
       {
@@ -2625,23 +2625,23 @@ LABEL_26:
     }
   }
 
-  if (a4 != 2)
+  if (reason != 2)
   {
-    [(PKPaymentOffersController *)self->_paymentOffersController updateCurrentSelectedPaymentOffer:v6 updateReason:a4];
+    [(PKPaymentOffersController *)self->_paymentOffersController updateCurrentSelectedPaymentOffer:offerCopy updateReason:reason];
   }
 
   [(PKPaymentAuthorizationDataModel *)self->_model beginUpdates];
-  [(PKPaymentAuthorizationDataModel *)self->_model setSelectedPaymentOffer:v6];
+  [(PKPaymentAuthorizationDataModel *)self->_model setSelectedPaymentOffer:offerCopy];
   if (_os_feature_enabled_impl())
   {
-    if (a4 == 1)
+    if (reason == 1)
     {
       [(PKPaymentOffersController *)self->_paymentOffersController clearCurrentSelectedPaymentOfferDetails];
     }
 
-    if (([v7 requiresUserAction] & 1) == 0)
+    if (([selectedOfferDetails requiresUserAction] & 1) == 0)
     {
-      if (v6)
+      if (offerCopy)
       {
         v18 = 2;
 LABEL_31:
@@ -2665,7 +2665,7 @@ LABEL_33:
 LABEL_34:
 }
 
-- (void)_processErrorsForDataType:(int64_t)a3
+- (void)_processErrorsForDataType:(int64_t)type
 {
   v23[6] = *MEMORY[0x1E69E9840];
   if (self->_state == 3)
@@ -2679,20 +2679,20 @@ LABEL_34:
       v7 = v21;
       if ((v6 & 1) == 0)
       {
-        v8 = [(PKPaymentAuthorizationDataModel *)self->_model paymentErrors];
-        v20 = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:a3 status:1 error:v7 clientErrors:v8];
+        paymentErrors = [(PKPaymentAuthorizationDataModel *)self->_model paymentErrors];
+        v20 = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:type status:1 error:v7 clientErrors:paymentErrors];
 
         v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%ld", objc_msgSend(v7, "code")];
-        v10 = [v7 localizedFailureReason];
-        if (!v10)
+        localizedFailureReason = [v7 localizedFailureReason];
+        if (!localizedFailureReason)
         {
-          v10 = [v7 localizedDescription];
+          localizedFailureReason = [v7 localizedDescription];
         }
 
-        v11 = [PKAnalyticsErrorTextClassifier analyticsValueForResult:[PKAnalyticsErrorTextClassifier classifyErrorText:v10]];
+        v11 = [PKAnalyticsErrorTextClassifier analyticsValueForResult:[PKAnalyticsErrorTextClassifier classifyErrorText:localizedFailureReason]];
         if (os_variant_has_internal_ui())
         {
-          v12 = v10;
+          v12 = localizedFailureReason;
         }
 
         else
@@ -2703,24 +2703,24 @@ LABEL_34:
         v23[0] = @"preferenceError";
         v22[0] = @"eventType";
         v22[1] = @"preferenceType";
-        if (a3 > 0x10)
+        if (type > 0x10)
         {
           v13 = @"unknown";
         }
 
         else
         {
-          v13 = off_1E79CE738[a3];
+          v13 = off_1E79CE738[type];
         }
 
         v23[1] = v13;
         v22[2] = @"errorDomain";
-        v14 = [v7 domain];
-        v15 = v14;
+        domain = [v7 domain];
+        v15 = domain;
         v16 = &stru_1F227FD28;
-        if (v14)
+        if (domain)
         {
-          v17 = v14;
+          v17 = domain;
         }
 
         else
@@ -2768,19 +2768,19 @@ LABEL_23:
   }
 }
 
-- (void)didSelectShippingContact:(id)a3
+- (void)didSelectShippingContact:(id)contact
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactCopy = contact;
   model = self->_model;
-  if (v4)
+  if (contactCopy)
   {
-    [(PKPaymentAuthorizationDataModel *)model setShippingAddress:v4];
+    [(PKPaymentAuthorizationDataModel *)model setShippingAddress:contactCopy];
     v6 = [(PKPaymentAuthorizationDataModel *)self->_model itemForType:5];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 isValidWithError:0])
     {
-      [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectShippingContact:v4];
+      [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectShippingContact:contactCopy];
     }
 
     else
@@ -2795,16 +2795,16 @@ LABEL_23:
       v8 = MEMORY[0x1E696ABC0];
       v19 = *MEMORY[0x1E696A588];
       v9 = MEMORY[0x1E696AEC0];
-      v10 = [(PKPaymentAuthorizationStateMachine *)self model];
-      v11 = [v10 shippingType];
-      v12 = [v9 stringWithFormat:@"IN_APP_PAYMENT_%@_ADDRESS_INCOMPLETE_REASON", v11];
+      model = [(PKPaymentAuthorizationStateMachine *)self model];
+      shippingType = [model shippingType];
+      v12 = [v9 stringWithFormat:@"IN_APP_PAYMENT_%@_ADDRESS_INCOMPLETE_REASON", shippingType];
       v13 = PKLocalizedPaymentString(v12, 0);
       v20[0] = v13;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
       v15 = [v8 errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v14];
 
-      v16 = [(PKPaymentAuthorizationDataModel *)self->_model paymentErrors];
-      v17 = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:5 status:1 error:v15 clientErrors:v16];
+      paymentErrors = [(PKPaymentAuthorizationDataModel *)self->_model paymentErrors];
+      v17 = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:5 status:1 error:v15 clientErrors:paymentErrors];
 
       [(PKPaymentAuthorizationStateMachine *)self _setState:3 param:v17];
     }
@@ -2816,22 +2816,22 @@ LABEL_23:
   }
 }
 
-- (void)didChangePeerPaymentUsage:(BOOL)a3
+- (void)didChangePeerPaymentUsage:(BOOL)usage
 {
-  v3 = a3;
-  v5 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v6 = [v5 requestType];
+  usageCopy = usage;
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  requestType = [paymentRequest requestType];
 
-  if (v6 == 2)
+  if (requestType == 2)
   {
     [(PKPaymentAuthorizationDataModel *)self->_model beginUpdates];
     model = self->_model;
-    if (v3)
+    if (usageCopy)
     {
-      v9 = [(PKPaymentAuthorizationDataModel *)model peerPaymentAccount];
-      v28 = [v9 currentBalance];
+      peerPaymentAccount = [(PKPaymentAuthorizationDataModel *)model peerPaymentAccount];
+      currentBalance = [peerPaymentAccount currentBalance];
 
-      [(PKPaymentAuthorizationDataModel *)self->_model setPeerPaymentBalanceForAccountPayment:v28];
+      [(PKPaymentAuthorizationDataModel *)self->_model setPeerPaymentBalanceForAccountPayment:currentBalance];
       v10 = self->_model;
       v11 = [(PKPaymentAuthorizationDataModel *)v10 itemForType:2];
       [(PKPaymentAuthorizationDataModel *)v10 setUsePeerPaymentBalance:v11 != 0];
@@ -2841,32 +2841,32 @@ LABEL_23:
     {
       [(PKPaymentAuthorizationDataModel *)model setPeerPaymentBalanceForAccountPayment:0];
       [(PKPaymentAuthorizationDataModel *)self->_model setUsePeerPaymentBalance:0];
-      v28 = 0;
+      currentBalance = 0;
     }
 
     [(PKPaymentAuthorizationDataModel *)self->_model endUpdates];
-    v7 = [(PKPaymentAuthorizationDataModel *)self->_model itemForType:2];
+    pass2 = [(PKPaymentAuthorizationDataModel *)self->_model itemForType:2];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 isValidWithError:0])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [pass2 isValidWithError:0])
     {
-      v13 = [v7 pass];
-      [v13 setPeerPaymentBalance:v28];
+      pass = [pass2 pass];
+      [pass setPeerPaymentBalance:currentBalance];
 
-      if (v3)
+      if (usageCopy)
       {
-        v14 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-        v15 = [v14 accountServiceTransferRequest];
-        v16 = [v15 supportsSplitPayment];
+        paymentRequest2 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+        accountServiceTransferRequest = [paymentRequest2 accountServiceTransferRequest];
+        supportsSplitPayment = [accountServiceTransferRequest supportsSplitPayment];
 
-        if (v16)
+        if (supportsSplitPayment)
         {
-          v17 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-          v18 = [v17 paymentSummaryItems];
-          v19 = [v18 lastObject];
-          v20 = [v19 amount];
+          paymentRequest3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+          paymentSummaryItems = [paymentRequest3 paymentSummaryItems];
+          lastObject = [paymentSummaryItems lastObject];
+          amount = [lastObject amount];
 
-          v21 = [v28 amount];
-          v22 = [v20 compare:v21];
+          amount2 = [currentBalance amount];
+          v22 = [amount compare:amount2];
 
           if (v22 == 1)
           {
@@ -2891,9 +2891,9 @@ LABEL_23:
       }
 
       v24 = [PKAccountServicePaymentMethod alloc];
-      v25 = [(PKPaymentAuthorizationDataModel *)self->_model bankAccount];
-      v26 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-      v27 = -[PKAccountServicePaymentMethod initWithBankAccountInformation:peerPaymentBalance:deviceSupportsPeerPaymentAccountPayment:selectedMethods:](v24, "initWithBankAccountInformation:peerPaymentBalance:deviceSupportsPeerPaymentAccountPayment:selectedMethods:", v25, v28, [v26 deviceSupportsPeerPaymentAccountPayment], v23);
+      bankAccount = [(PKPaymentAuthorizationDataModel *)self->_model bankAccount];
+      paymentRequest4 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+      v27 = -[PKAccountServicePaymentMethod initWithBankAccountInformation:peerPaymentBalance:deviceSupportsPeerPaymentAccountPayment:selectedMethods:](v24, "initWithBankAccountInformation:peerPaymentBalance:deviceSupportsPeerPaymentAccountPayment:selectedMethods:", bankAccount, currentBalance, [paymentRequest4 deviceSupportsPeerPaymentAccountPayment], v23);
 
       [(PKPaymentAuthorizationStateMachine *)self _enqueueDidUpdateAccountServicePaymentMethod:v27];
     }
@@ -2901,15 +2901,15 @@ LABEL_23:
     goto LABEL_21;
   }
 
-  if (v6 == 9)
+  if (requestType == 9)
   {
     [(PKPaymentAuthorizationDataModel *)self->_model beginUpdates];
-    [(PKPaymentAuthorizationDataModel *)self->_model setUsePeerPaymentBalance:v3];
+    [(PKPaymentAuthorizationDataModel *)self->_model setUsePeerPaymentBalance:usageCopy];
     [(PKPaymentAuthorizationDataModel *)self->_model endUpdates];
-    v28 = [(PKPaymentAuthorizationDataModel *)self->_model peerPaymentPass];
-    PKUpdatePeerPaymentBalanceUsagePreference(v28, v3);
-    v7 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
-    [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectPaymentPass:v7];
+    currentBalance = [(PKPaymentAuthorizationDataModel *)self->_model peerPaymentPass];
+    PKUpdatePeerPaymentBalanceUsagePreference(currentBalance, usageCopy);
+    pass2 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+    [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectPaymentPass:pass2];
 LABEL_21:
 
     return;
@@ -2923,16 +2923,16 @@ LABEL_21:
   }
 }
 
-- (void)didSelectBankAccount:(id)a3
+- (void)didSelectBankAccount:(id)account
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationStateMachine *)self model];
-  [v5 setBankAccount:v4];
-  v6 = [v4 identifier];
-  PKSharedCacheSetObjectForKey(v6, @"LastBankAccountIdentifier");
+  accountCopy = account;
+  model = [(PKPaymentAuthorizationStateMachine *)self model];
+  [model setBankAccount:accountCopy];
+  identifier = [accountCopy identifier];
+  PKSharedCacheSetObjectForKey(identifier, @"LastBankAccountIdentifier");
 
-  v7 = [v5 itemForType:9];
+  v7 = [model itemForType:9];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2944,27 +2944,27 @@ LABEL_21:
     v8 = 0;
   }
 
-  v9 = [v5 paymentRequest];
-  v10 = [v9 accountServiceTransferRequest];
+  paymentRequest = [model paymentRequest];
+  accountServiceTransferRequest = [paymentRequest accountServiceTransferRequest];
 
-  v11 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v12 = [v11 accountServiceTransferRequest];
-  v13 = [v12 supportsSplitPayment];
+  paymentRequest2 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  accountServiceTransferRequest2 = [paymentRequest2 accountServiceTransferRequest];
+  supportsSplitPayment = [accountServiceTransferRequest2 supportsSplitPayment];
 
-  if (v10)
+  if (accountServiceTransferRequest)
   {
-    v14 = [v10 account];
-    v15 = [v14 accountIdentifier];
-    v16 = [v4 identifier];
-    PKSetLastBankAccountIdentifierForAccountTransfer(v15, v16);
+    account = [accountServiceTransferRequest account];
+    accountIdentifier = [account accountIdentifier];
+    identifier2 = [accountCopy identifier];
+    PKSetLastBankAccountIdentifierForAccountTransfer(accountIdentifier, identifier2);
   }
 
-  v17 = [v5 itemForType:2];
+  v17 = [model itemForType:2];
   v18 = v17;
   if (v8)
   {
     v19 = 3;
-    if (!v13)
+    if (!supportsSplitPayment)
     {
       v19 = 1;
     }
@@ -2982,29 +2982,29 @@ LABEL_21:
     goto LABEL_23;
   }
 
-  v21 = [v5 peerPaymentBalanceForAccountPayment];
-  v22 = [v21 amount];
+  peerPaymentBalanceForAccountPayment = [model peerPaymentBalanceForAccountPayment];
+  amount = [peerPaymentBalanceForAccountPayment amount];
 
-  if (v18 && v22)
+  if (v18 && amount)
   {
-    if (!((v10 == 0) | v13 & 1))
+    if (!((accountServiceTransferRequest == 0) | supportsSplitPayment & 1))
     {
 
 LABEL_22:
       v20 = 2;
 LABEL_23:
-      v36 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-      if ([v36 deviceSupportsPeerPaymentAccountPayment] && objc_msgSend(v36, "accountPaymentUsePeerPaymentBalance"))
+      paymentRequest3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+      if ([paymentRequest3 deviceSupportsPeerPaymentAccountPayment] && objc_msgSend(paymentRequest3, "accountPaymentUsePeerPaymentBalance"))
       {
-        v38 = [(PKPaymentAuthorizationDataModel *)self->_model peerPaymentBalanceForAccountPayment];
+        peerPaymentBalanceForAccountPayment2 = [(PKPaymentAuthorizationDataModel *)self->_model peerPaymentBalanceForAccountPayment];
       }
 
       else
       {
-        v38 = 0;
+        peerPaymentBalanceForAccountPayment2 = 0;
       }
 
-      if (v10)
+      if (accountServiceTransferRequest)
       {
         v39 = v18 == 0;
       }
@@ -3015,10 +3015,10 @@ LABEL_23:
       }
 
       v40 = v39;
-      if ((v40 | v13))
+      if ((v40 | supportsSplitPayment))
       {
         v41 = v7;
-        v42 = -[PKAccountServicePaymentMethod initWithBankAccountInformation:peerPaymentBalance:deviceSupportsPeerPaymentAccountPayment:selectedMethods:]([PKAccountServicePaymentMethod alloc], "initWithBankAccountInformation:peerPaymentBalance:deviceSupportsPeerPaymentAccountPayment:selectedMethods:", v4, v38, [v36 deviceSupportsPeerPaymentAccountPayment], v20);
+        v42 = -[PKAccountServicePaymentMethod initWithBankAccountInformation:peerPaymentBalance:deviceSupportsPeerPaymentAccountPayment:selectedMethods:]([PKAccountServicePaymentMethod alloc], "initWithBankAccountInformation:peerPaymentBalance:deviceSupportsPeerPaymentAccountPayment:selectedMethods:", accountCopy, peerPaymentBalanceForAccountPayment2, [paymentRequest3 deviceSupportsPeerPaymentAccountPayment], v20);
         [(PKPaymentAuthorizationStateMachine *)self _enqueueDidUpdateAccountServicePaymentMethod:v42];
 
         v7 = v41;
@@ -3037,13 +3037,13 @@ LABEL_23:
       goto LABEL_38;
     }
 
-    v44 = [v5 paymentRequest];
-    v23 = [v44 paymentSummaryItems];
-    [v23 lastObject];
+    paymentRequest4 = [model paymentRequest];
+    paymentSummaryItems = [paymentRequest4 paymentSummaryItems];
+    [paymentSummaryItems lastObject];
     v24 = v45 = v7;
-    v25 = [v24 amount];
+    amount2 = [v24 amount];
 
-    v26 = [v25 compare:v22];
+    v26 = [amount2 compare:amount];
     v39 = v26 == 1;
     v7 = v45;
     if (!v39)
@@ -3066,34 +3066,34 @@ LABEL_23:
 
   v28 = MEMORY[0x1E696ABC0];
   v48 = *MEMORY[0x1E696A588];
-  v34 = PKLocalizedFeatureString(@"IN_APP_PAYMENT_BANK_ACCOUNT_INCOMPLETE_REASON", 2, 0, v29, v30, v31, v32, v33, v44);
+  v34 = PKLocalizedFeatureString(@"IN_APP_PAYMENT_BANK_ACCOUNT_INCOMPLETE_REASON", 2, 0, v29, v30, v31, v32, v33, paymentRequest4);
   v49[0] = v34;
   v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:&v48 count:1];
-  v36 = [v28 errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v35];
+  paymentRequest3 = [v28 errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v35];
 
-  v37 = [(PKPaymentAuthorizationDataModel *)self->_model paymentErrors];
-  v38 = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:9 status:1 error:v36 clientErrors:v37];
+  paymentErrors = [(PKPaymentAuthorizationDataModel *)self->_model paymentErrors];
+  peerPaymentBalanceForAccountPayment2 = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:9 status:1 error:paymentRequest3 clientErrors:paymentErrors];
 
-  [(PKPaymentAuthorizationStateMachine *)self _setState:3 param:v38];
+  [(PKPaymentAuthorizationStateMachine *)self _setState:3 param:peerPaymentBalanceForAccountPayment2];
   v7 = v46;
 LABEL_38:
 }
 
-- (void)didReceiveShippingContactCompleteWithUpdate:(id)a3
+- (void)didReceiveShippingContactCompleteWithUpdate:(id)update
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 status];
+  updateCopy = update;
+  status = [updateCopy status];
   v7 = PKLogFacilityTypeGetObject(8uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     v9 = v8;
-    if (v6 <= 3)
+    if (status <= 3)
     {
-      if (v6 > 1)
+      if (status > 1)
       {
-        if (v6 == 2)
+        if (status == 2)
         {
           v10 = @"PKPaymentAuthorizationStatusInvalidBillingPostalAddress";
         }
@@ -3106,13 +3106,13 @@ LABEL_38:
         goto LABEL_22;
       }
 
-      if (!v6)
+      if (!status)
       {
         v10 = @"PKPaymentAuthorizationStatusSuccess";
         goto LABEL_22;
       }
 
-      if (v6 == 1)
+      if (status == 1)
       {
         v10 = @"PKPaymentAuthorizationStatusFailure";
         goto LABEL_22;
@@ -3121,9 +3121,9 @@ LABEL_38:
 
     else
     {
-      if (v6 <= 5)
+      if (status <= 5)
       {
-        if (v6 == 4)
+        if (status == 4)
         {
           v10 = @"PKPaymentAuthorizationStatusInvalidShippingContact";
         }
@@ -3136,7 +3136,7 @@ LABEL_38:
         goto LABEL_22;
       }
 
-      switch(v6)
+      switch(status)
       {
         case 6:
           v10 = @"PKPaymentAuthorizationStatusPINIncorrect";
@@ -3163,13 +3163,13 @@ LABEL_22:
 
 LABEL_23:
 
-  v11 = [v5 errors];
-  v12 = [(PKPaymentAuthorizationStateMachine *)self sanitizeClientErrors:v11];
+  errors = [updateCopy errors];
+  v12 = [(PKPaymentAuthorizationStateMachine *)self sanitizeClientErrors:errors];
 
-  if (![v12 count] && v6 == 3)
+  if (![v12 count] && status == 3)
   {
-    v13 = [(PKPaymentAuthorizationStateMachine *)self model];
-    v14 = [v13 paymentErrorsFromLegacyStatus:3];
+    model = [(PKPaymentAuthorizationStateMachine *)self model];
+    v14 = [model paymentErrorsFromLegacyStatus:3];
 
     v12 = v14;
   }
@@ -3195,26 +3195,26 @@ LABEL_23:
   {
     self->_awaitingClientCallbackReply = 0;
     [(PKPaymentAuthorizationStateMachine *)self _cancelClientCallbackTimer];
-    if (v6)
+    if (status)
     {
-      if (v6 == 3)
+      if (status == 3)
       {
 LABEL_37:
         v20 = MEMORY[0x1E696ABC0];
         v35 = *MEMORY[0x1E696A588];
         v21 = MEMORY[0x1E696AEC0];
-        v22 = [(PKPaymentAuthorizationStateMachine *)self model];
-        v23 = [v22 shippingType];
-        v24 = [v21 stringWithFormat:@"IN_APP_PAYMENT_%@_ADDRESS_INCOMPLETE_REASON", v23];
+        model2 = [(PKPaymentAuthorizationStateMachine *)self model];
+        shippingType = [model2 shippingType];
+        v24 = [v21 stringWithFormat:@"IN_APP_PAYMENT_%@_ADDRESS_INCOMPLETE_REASON", shippingType];
         v25 = PKLocalizedPaymentString(v24, 0);
         v36 = v25;
         v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-        v27 = [v20 errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v26];
+        availableShippingMethods = [v20 errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v26];
 
-        v28 = [(PKPaymentAuthorizationDataModel *)self->_model paymentErrors];
-        v29 = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:5 status:1 error:v27 clientErrors:v28];
+        paymentErrors = [(PKPaymentAuthorizationDataModel *)self->_model paymentErrors];
+        paymentSummaryItems = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:5 status:1 error:availableShippingMethods clientErrors:paymentErrors];
 
-        [(PKPaymentAuthorizationStateMachine *)self _setState:3 param:v29];
+        [(PKPaymentAuthorizationStateMachine *)self _setState:3 param:paymentSummaryItems];
         [(PKPaymentAuthorizationStateMachine *)self _advanceToNextState];
 LABEL_42:
 
@@ -3224,14 +3224,14 @@ LABEL_42:
 
     else if (![v18 count])
     {
-      v27 = [v5 availableShippingMethods];
-      v29 = [v5 paymentSummaryItems];
-      v30 = [v5 multiTokenContexts];
-      v31 = [v5 recurringPaymentRequest];
-      v32 = [v5 automaticReloadPaymentRequest];
-      v33 = [v5 deferredPaymentRequest];
-      v34 = [v5 contentItems];
-      [(PKPaymentAuthorizationStateMachine *)self _updateModelWithShippingMethods:v27 paymentSummaryItems:v29 multiTokenContexts:v30 recurringPaymentRequest:v31 automaticReloadPaymentRequest:v32 deferredPaymentRequest:v33 contentItems:v34];
+      availableShippingMethods = [updateCopy availableShippingMethods];
+      paymentSummaryItems = [updateCopy paymentSummaryItems];
+      multiTokenContexts = [updateCopy multiTokenContexts];
+      recurringPaymentRequest = [updateCopy recurringPaymentRequest];
+      automaticReloadPaymentRequest = [updateCopy automaticReloadPaymentRequest];
+      deferredPaymentRequest = [updateCopy deferredPaymentRequest];
+      contentItems = [updateCopy contentItems];
+      [(PKPaymentAuthorizationStateMachine *)self _updateModelWithShippingMethods:availableShippingMethods paymentSummaryItems:paymentSummaryItems multiTokenContexts:multiTokenContexts recurringPaymentRequest:recurringPaymentRequest automaticReloadPaymentRequest:automaticReloadPaymentRequest deferredPaymentRequest:deferredPaymentRequest contentItems:contentItems];
 
       goto LABEL_42;
     }
@@ -3244,9 +3244,9 @@ LABEL_42:
         _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Application failed to process shipping address change. This means that the user's shipping address selection and summary items are out of sync, or inappropriate errors have been provided. We can't proceed to authorize the transaction.", buf, 2u);
       }
 
-      v27 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:0];
-      v29 = [PKPaymentAuthorizationErrorStateParam paramWithError:v27];
-      [(PKPaymentAuthorizationStateMachine *)self _setState:15 param:v29];
+      availableShippingMethods = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:0];
+      paymentSummaryItems = [PKPaymentAuthorizationErrorStateParam paramWithError:availableShippingMethods];
+      [(PKPaymentAuthorizationStateMachine *)self _setState:15 param:paymentSummaryItems];
       goto LABEL_42;
     }
 
@@ -3256,23 +3256,23 @@ LABEL_42:
 LABEL_43:
 }
 
-- (void)didReceiveShippingContactCompleteWithStatus:(int64_t)a3 shippingMethods:(id)a4 paymentSummaryItems:(id)a5
+- (void)didReceiveShippingContactCompleteWithStatus:(int64_t)status shippingMethods:(id)methods paymentSummaryItems:(id)items
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(PKPaymentAuthorizationStateMachine *)self model];
-  v12 = [v10 paymentErrorsFromLegacyStatus:a3];
+  itemsCopy = items;
+  methodsCopy = methods;
+  model = [(PKPaymentAuthorizationStateMachine *)self model];
+  v12 = [model paymentErrorsFromLegacyStatus:status];
 
-  v11 = [[PKPaymentRequestShippingContactUpdate alloc] initWithErrors:v12 paymentSummaryItems:v8 shippingMethods:v9];
-  [(PKPaymentRequestUpdate *)v11 setStatus:a3];
+  v11 = [[PKPaymentRequestShippingContactUpdate alloc] initWithErrors:v12 paymentSummaryItems:itemsCopy shippingMethods:methodsCopy];
+  [(PKPaymentRequestUpdate *)v11 setStatus:status];
   [(PKPaymentAuthorizationStateMachine *)self didReceiveShippingContactCompleteWithUpdate:v11];
 }
 
-- (void)didReceiveShippingMethodCompleteWithUpdate:(id)a3
+- (void)didReceiveShippingMethodCompleteWithUpdate:(id)update
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 status];
+  updateCopy = update;
+  status = [updateCopy status];
   v7 = PKLogFacilityTypeGetObject(8uLL);
   if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -3281,11 +3281,11 @@ LABEL_43:
 
   v8 = NSStringFromSelector(a2);
   v9 = v8;
-  if (v6 <= 3)
+  if (status <= 3)
   {
-    if (v6 > 1)
+    if (status > 1)
     {
-      if (v6 == 2)
+      if (status == 2)
       {
         v10 = @"PKPaymentAuthorizationStatusInvalidBillingPostalAddress";
       }
@@ -3298,13 +3298,13 @@ LABEL_43:
       goto LABEL_22;
     }
 
-    if (!v6)
+    if (!status)
     {
       v10 = @"PKPaymentAuthorizationStatusSuccess";
       goto LABEL_22;
     }
 
-    if (v6 == 1)
+    if (status == 1)
     {
       v10 = @"PKPaymentAuthorizationStatusFailure";
       goto LABEL_22;
@@ -3315,9 +3315,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (v6 <= 5)
+  if (status <= 5)
   {
-    if (v6 == 4)
+    if (status == 4)
     {
       v10 = @"PKPaymentAuthorizationStatusInvalidShippingContact";
     }
@@ -3330,19 +3330,19 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (v6 == 6)
+  if (status == 6)
   {
     v10 = @"PKPaymentAuthorizationStatusPINIncorrect";
     goto LABEL_22;
   }
 
-  if (v6 == 7)
+  if (status == 7)
   {
     v10 = @"PKPaymentAuthorizationStatusPINLockout";
     goto LABEL_22;
   }
 
-  if (v6 != 1000)
+  if (status != 1000)
   {
     goto LABEL_21;
   }
@@ -3363,7 +3363,7 @@ LABEL_23:
   {
     self->_awaitingClientCallbackReply = 0;
     [(PKPaymentAuthorizationStateMachine *)self _cancelClientCallbackTimer];
-    if (v6)
+    if (status)
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
@@ -3371,35 +3371,35 @@ LABEL_23:
         _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Application failed to process shipping method change. This means that the user's shipping method selection and summary items are out of sync. We can't proceed to authorize the transaction.", buf, 2u);
       }
 
-      v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:0];
-      v16 = [PKPaymentAuthorizationErrorStateParam paramWithError:v15];
-      [(PKPaymentAuthorizationStateMachine *)self _setState:15 param:v16];
+      availableShippingMethods = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:0];
+      paymentSummaryItems = [PKPaymentAuthorizationErrorStateParam paramWithError:availableShippingMethods];
+      [(PKPaymentAuthorizationStateMachine *)self _setState:15 param:paymentSummaryItems];
     }
 
     else
     {
-      v15 = [v5 availableShippingMethods];
-      v16 = [v5 paymentSummaryItems];
-      v17 = [v5 multiTokenContexts];
-      v18 = [v5 recurringPaymentRequest];
-      v19 = [v5 automaticReloadPaymentRequest];
-      v20 = [v5 deferredPaymentRequest];
-      v21 = [v5 contentItems];
-      [(PKPaymentAuthorizationStateMachine *)self _updateModelWithShippingMethods:v15 paymentSummaryItems:v16 multiTokenContexts:v17 recurringPaymentRequest:v18 automaticReloadPaymentRequest:v19 deferredPaymentRequest:v20 contentItems:v21];
+      availableShippingMethods = [updateCopy availableShippingMethods];
+      paymentSummaryItems = [updateCopy paymentSummaryItems];
+      multiTokenContexts = [updateCopy multiTokenContexts];
+      recurringPaymentRequest = [updateCopy recurringPaymentRequest];
+      automaticReloadPaymentRequest = [updateCopy automaticReloadPaymentRequest];
+      deferredPaymentRequest = [updateCopy deferredPaymentRequest];
+      contentItems = [updateCopy contentItems];
+      [(PKPaymentAuthorizationStateMachine *)self _updateModelWithShippingMethods:availableShippingMethods paymentSummaryItems:paymentSummaryItems multiTokenContexts:multiTokenContexts recurringPaymentRequest:recurringPaymentRequest automaticReloadPaymentRequest:automaticReloadPaymentRequest deferredPaymentRequest:deferredPaymentRequest contentItems:contentItems];
     }
   }
 }
 
-- (void)didReceiveUpdateAccountServicePaymentMethodCompleteWithUpdate:(id)a3 signatureRequest:(id)a4
+- (void)didReceiveUpdateAccountServicePaymentMethodCompleteWithUpdate:(id)update signatureRequest:(id)request
 {
-  v8 = a4;
-  v6 = [a3 paymentSummaryItems];
+  requestCopy = request;
+  paymentSummaryItems = [update paymentSummaryItems];
   [(PKPaymentAuthorizationDataModel *)self->_model beginUpdates];
-  [(PKPaymentAuthorizationStateMachine *)self _updateModelWithPaymentSummaryItems:v6];
-  if (v8)
+  [(PKPaymentAuthorizationStateMachine *)self _updateModelWithPaymentSummaryItems:paymentSummaryItems];
+  if (requestCopy)
   {
-    v7 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    [v7 setApplePayTrustSignatureRequest:v8];
+    paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    [paymentRequest setApplePayTrustSignatureRequest:requestCopy];
   }
 
   [(PKPaymentAuthorizationDataModel *)self->_model endUpdates];
@@ -3408,48 +3408,48 @@ LABEL_23:
   [(PKPaymentAuthorizationStateMachine *)self _advanceToNextState];
 }
 
-- (void)didReceiveShippingMethodCompleteWithStatus:(int64_t)a3 paymentSummaryItems:(id)a4
+- (void)didReceiveShippingMethodCompleteWithStatus:(int64_t)status paymentSummaryItems:(id)items
 {
-  v6 = a4;
+  itemsCopy = items;
   v7 = objc_alloc_init(PKPaymentRequestShippingMethodUpdate);
-  [(PKPaymentRequestUpdate *)v7 setStatus:a3];
-  [(PKPaymentRequestUpdate *)v7 setPaymentSummaryItems:v6];
+  [(PKPaymentRequestUpdate *)v7 setStatus:status];
+  [(PKPaymentRequestUpdate *)v7 setPaymentSummaryItems:itemsCopy];
 
   [(PKPaymentAuthorizationStateMachine *)self didReceiveShippingMethodCompleteWithUpdate:v7];
 }
 
-- (void)didSelectPaymentPass:(id)a3 paymentApplication:(id)a4
+- (void)didSelectPaymentPass:(id)pass paymentApplication:(id)application
 {
-  [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectPaymentPass:a3 paymentApplication:a4];
-  if (a3 && _os_feature_enabled_impl())
+  [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectPaymentPass:pass paymentApplication:application];
+  if (pass && _os_feature_enabled_impl())
   {
 
     [(PKPaymentAuthorizationStateMachine *)self didChangeFundingMode:0];
   }
 }
 
-- (void)didSelectPaymentPass:(id)a3 paymentApplication:(id)a4 subCredential:(id)a5
+- (void)didSelectPaymentPass:(id)pass paymentApplication:(id)application subCredential:(id)credential
 {
-  [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectPaymentPass:a3 paymentApplication:a4 subCredential:a5];
-  if (a3)
+  [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectPaymentPass:pass paymentApplication:application subCredential:credential];
+  if (pass)
   {
 
     [(PKPaymentAuthorizationStateMachine *)self didChangeFundingMode:0];
   }
 }
 
-- (void)didSelectRemotePaymentInstrument:(id)a3
+- (void)didSelectRemotePaymentInstrument:(id)instrument
 {
-  v4 = a3;
-  v5 = [v4 primaryPaymentApplication];
-  [(PKPaymentAuthorizationStateMachine *)self didSelectRemotePaymentInstrument:v4 paymentApplication:v5];
+  instrumentCopy = instrument;
+  primaryPaymentApplication = [instrumentCopy primaryPaymentApplication];
+  [(PKPaymentAuthorizationStateMachine *)self didSelectRemotePaymentInstrument:instrumentCopy paymentApplication:primaryPaymentApplication];
 }
 
-- (void)didSelectRemotePaymentInstrument:(id)a3 paymentApplication:(id)a4
+- (void)didSelectRemotePaymentInstrument:(id)instrument paymentApplication:(id)application
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  instrumentCopy = instrument;
+  applicationCopy = application;
   v9 = PKLogFacilityTypeGetObject(8uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -3457,44 +3457,44 @@ LABEL_23:
     *buf = 138412546;
     v31 = v10;
     v32 = 2112;
-    v33 = v7;
+    v33 = instrumentCopy;
     _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "State machine %@: %@", buf, 0x16u);
   }
 
   if (self->_hasReceivedRemoteDeviceUpdate)
   {
-    v11 = [(PKPaymentAuthorizationStateMachine *)self continuityPaymentCoordinator];
-    v12 = [v11 currentRemotePaymentRequest];
+    continuityPaymentCoordinator = [(PKPaymentAuthorizationStateMachine *)self continuityPaymentCoordinator];
+    currentRemotePaymentRequest = [continuityPaymentCoordinator currentRemotePaymentRequest];
 
-    v13 = [v12 device];
-    v14 = [(PKPaymentAuthorizationStateMachine *)self model];
-    v15 = [v14 remoteDevice];
-    v16 = [v13 isEqual:v15];
+    device = [currentRemotePaymentRequest device];
+    model = [(PKPaymentAuthorizationStateMachine *)self model];
+    remoteDevice = [model remoteDevice];
+    v16 = [device isEqual:remoteDevice];
 
     if (v16)
     {
-      v29 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-      v26 = [v29 availableShippingMethods];
-      v17 = [(PKPaymentAuthorizationDataModel *)self->_model paymentSummaryItems];
-      v28 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-      v18 = [v28 multiTokenContexts];
-      v27 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-      v19 = [v27 recurringPaymentRequest];
-      v20 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-      v21 = [v20 automaticReloadPaymentRequest];
+      paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+      availableShippingMethods = [paymentRequest availableShippingMethods];
+      paymentSummaryItems = [(PKPaymentAuthorizationDataModel *)self->_model paymentSummaryItems];
+      paymentRequest2 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+      multiTokenContexts = [paymentRequest2 multiTokenContexts];
+      paymentRequest3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+      recurringPaymentRequest = [paymentRequest3 recurringPaymentRequest];
+      paymentRequest4 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+      automaticReloadPaymentRequest = [paymentRequest4 automaticReloadPaymentRequest];
       [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-      v22 = v25 = v12;
-      v23 = [v22 deferredPaymentRequest];
-      [(PKPaymentAuthorizationStateMachine *)self _performSendClientUpdateWithShippingMethods:v26 paymentSummaryItems:v17 multiTokenContexts:v18 recurringPaymentRequest:v19 automaticReloadPaymentRequest:v21 deferredPaymentRequest:v23 paymentApplication:v8 status:0];
+      v22 = v25 = currentRemotePaymentRequest;
+      deferredPaymentRequest = [v22 deferredPaymentRequest];
+      [(PKPaymentAuthorizationStateMachine *)self _performSendClientUpdateWithShippingMethods:availableShippingMethods paymentSummaryItems:paymentSummaryItems multiTokenContexts:multiTokenContexts recurringPaymentRequest:recurringPaymentRequest automaticReloadPaymentRequest:automaticReloadPaymentRequest deferredPaymentRequest:deferredPaymentRequest paymentApplication:applicationCopy status:0];
 
-      v12 = v25;
+      currentRemotePaymentRequest = v25;
     }
 
     else
     {
-      v24 = [(PKContinuityPaymentCoordinator *)self->_continuityPaymentCoordinator currentRemotePaymentRequest];
+      currentRemotePaymentRequest2 = [(PKContinuityPaymentCoordinator *)self->_continuityPaymentCoordinator currentRemotePaymentRequest];
 
-      if (v24)
+      if (currentRemotePaymentRequest2)
       {
         [(PKPaymentAuthorizationStateMachine *)self _performCancelRemotePaymentRequest];
       }
@@ -3502,26 +3502,26 @@ LABEL_23:
       [(PKPaymentAuthorizationStateMachine *)self _advanceToNextState];
     }
 
-    [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectRemotePaymentInstrument:v7 paymentApplication:v8];
+    [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectRemotePaymentInstrument:instrumentCopy paymentApplication:applicationCopy];
   }
 }
 
-- (void)didReceivePaymentMethodCompleteWithUpdate:(id)a3
+- (void)didReceivePaymentMethodCompleteWithUpdate:(id)update
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 status];
+  updateCopy = update;
+  status = [updateCopy status];
   v6 = PKLogFacilityTypeGetObject(8uLL);
   if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     goto LABEL_23;
   }
 
-  if (v5 <= 3)
+  if (status <= 3)
   {
-    if (v5 > 1)
+    if (status > 1)
     {
-      if (v5 == 2)
+      if (status == 2)
       {
         v7 = @"PKPaymentAuthorizationStatusInvalidBillingPostalAddress";
       }
@@ -3534,13 +3534,13 @@ LABEL_23:
       goto LABEL_22;
     }
 
-    if (!v5)
+    if (!status)
     {
       v7 = @"PKPaymentAuthorizationStatusSuccess";
       goto LABEL_22;
     }
 
-    if (v5 == 1)
+    if (status == 1)
     {
       v7 = @"PKPaymentAuthorizationStatusFailure";
       goto LABEL_22;
@@ -3551,9 +3551,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (v5 <= 5)
+  if (status <= 5)
   {
-    if (v5 == 4)
+    if (status == 4)
     {
       v7 = @"PKPaymentAuthorizationStatusInvalidShippingContact";
     }
@@ -3566,19 +3566,19 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (v5 == 6)
+  if (status == 6)
   {
     v7 = @"PKPaymentAuthorizationStatusPINIncorrect";
     goto LABEL_22;
   }
 
-  if (v5 == 7)
+  if (status == 7)
   {
     v7 = @"PKPaymentAuthorizationStatusPINLockout";
     goto LABEL_22;
   }
 
-  if (v5 != 1000)
+  if (status != 1000)
   {
     goto LABEL_21;
   }
@@ -3597,19 +3597,19 @@ LABEL_23:
   {
     self->_awaitingClientCallbackReply = 0;
     [(PKPaymentAuthorizationStateMachine *)self _cancelClientCallbackTimer];
-    if (v5 || ([v4 errors], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v13))
+    if (status || ([updateCopy errors], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v13))
     {
-      v14 = [v4 errors];
-      v15 = [v14 count];
+      errors = [updateCopy errors];
+      v15 = [errors count];
 
       v16 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
       if (v15)
       {
         if (v16)
         {
-          v17 = [v4 errors];
+          errors2 = [updateCopy errors];
           *buf = 138543362;
-          v45 = v17;
+          v45 = errors2;
           _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Application failed to process billing address with errors: %{public}@", buf, 0xCu);
         }
 
@@ -3619,12 +3619,12 @@ LABEL_23:
         v20 = PKLocalizedPaymentString(v19, 0);
         v43 = v20;
         v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-        v22 = [v18 errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v21];
+        availableShippingMethods = [v18 errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v21];
 
-        v23 = [(PKPaymentAuthorizationDataModel *)self->_model paymentErrors];
-        v24 = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:3 status:1 error:v22 clientErrors:v23];
+        paymentErrors = [(PKPaymentAuthorizationDataModel *)self->_model paymentErrors];
+        paymentSummaryItems = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:3 status:1 error:availableShippingMethods clientErrors:paymentErrors];
 
-        [(PKPaymentAuthorizationStateMachine *)self _setState:3 param:v24];
+        [(PKPaymentAuthorizationStateMachine *)self _setState:3 param:paymentSummaryItems];
         [(PKPaymentAuthorizationStateMachine *)self _advanceToNextState];
       }
 
@@ -3641,25 +3641,25 @@ LABEL_23:
         v26 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr_8.isa, 0);
         v41 = v26;
         v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-        v22 = [v25 errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:v27];
+        availableShippingMethods = [v25 errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:v27];
 
-        v24 = [PKPaymentAuthorizationErrorStateParam paramWithError:v22];
-        [(PKPaymentAuthorizationStateMachine *)self _setState:15 param:v24];
+        paymentSummaryItems = [PKPaymentAuthorizationErrorStateParam paramWithError:availableShippingMethods];
+        [(PKPaymentAuthorizationStateMachine *)self _setState:15 param:paymentSummaryItems];
       }
 
       goto LABEL_45;
     }
 
-    v28 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    if ([v28 isPeerPaymentRequest])
+    paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    if ([paymentRequest isPeerPaymentRequest])
     {
-      v29 = [v4 peerPaymentQuote];
+      peerPaymentQuote = [updateCopy peerPaymentQuote];
 
-      if (v29)
+      if (peerPaymentQuote)
       {
         model = self->_model;
-        v31 = [v4 peerPaymentQuote];
-        [(PKPaymentAuthorizationDataModel *)model setPeerPaymentQuote:v31];
+        peerPaymentQuote2 = [updateCopy peerPaymentQuote];
+        [(PKPaymentAuthorizationDataModel *)model setPeerPaymentQuote:peerPaymentQuote2];
         goto LABEL_43;
       }
     }
@@ -3668,28 +3668,28 @@ LABEL_23:
     {
     }
 
-    v32 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    v33 = [v32 requestType];
+    paymentRequest2 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    requestType = [paymentRequest2 requestType];
 
-    if (v33 != 5)
+    if (requestType != 5)
     {
 LABEL_44:
-      v22 = [v4 availableShippingMethods];
-      v24 = [v4 paymentSummaryItems];
-      v35 = [v4 multiTokenContexts];
-      v36 = [v4 recurringPaymentRequest];
-      v37 = [v4 automaticReloadPaymentRequest];
-      v38 = [v4 deferredPaymentRequest];
-      v39 = [v4 contentItems];
-      [(PKPaymentAuthorizationStateMachine *)self _updateModelWithShippingMethods:v22 paymentSummaryItems:v24 multiTokenContexts:v35 recurringPaymentRequest:v36 automaticReloadPaymentRequest:v37 deferredPaymentRequest:v38 contentItems:v39];
+      availableShippingMethods = [updateCopy availableShippingMethods];
+      paymentSummaryItems = [updateCopy paymentSummaryItems];
+      multiTokenContexts = [updateCopy multiTokenContexts];
+      recurringPaymentRequest = [updateCopy recurringPaymentRequest];
+      automaticReloadPaymentRequest = [updateCopy automaticReloadPaymentRequest];
+      deferredPaymentRequest = [updateCopy deferredPaymentRequest];
+      contentItems = [updateCopy contentItems];
+      [(PKPaymentAuthorizationStateMachine *)self _updateModelWithShippingMethods:availableShippingMethods paymentSummaryItems:paymentSummaryItems multiTokenContexts:multiTokenContexts recurringPaymentRequest:recurringPaymentRequest automaticReloadPaymentRequest:automaticReloadPaymentRequest deferredPaymentRequest:deferredPaymentRequest contentItems:contentItems];
 
 LABEL_45:
       goto LABEL_46;
     }
 
     v34 = self->_model;
-    v31 = [v4 installmentGroupIdentifier];
-    [(PKPaymentAuthorizationDataModel *)v34 setInstallmentGroupIdentifier:v31];
+    peerPaymentQuote2 = [updateCopy installmentGroupIdentifier];
+    [(PKPaymentAuthorizationDataModel *)v34 setInstallmentGroupIdentifier:peerPaymentQuote2];
 LABEL_43:
 
     goto LABEL_44;
@@ -3698,11 +3698,11 @@ LABEL_43:
 LABEL_46:
 }
 
-- (void)didReceivePaymentMethodCompleteWithSummaryItems:(id)a3
+- (void)didReceivePaymentMethodCompleteWithSummaryItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(PKPaymentRequestPaymentMethodUpdate);
-  [(PKPaymentRequestUpdate *)v5 setPaymentSummaryItems:v4];
+  [(PKPaymentRequestUpdate *)v5 setPaymentSummaryItems:itemsCopy];
 
   [(PKPaymentAuthorizationStateMachine *)self didReceivePaymentMethodCompleteWithUpdate:v5];
 }
@@ -3711,19 +3711,19 @@ LABEL_46:
 {
   v10[4] = *MEMORY[0x1E69E9840];
   [(PKPaymentAuthorizationDataModel *)self->_model refreshPaymentMethods];
-  v3 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+  pass = [(PKPaymentAuthorizationDataModel *)self->_model pass];
 
-  if (!v3)
+  if (!pass)
   {
-    v4 = [(PKPaymentAuthorizationDataModel *)self->_model acceptedPasses];
-    v5 = [v4 firstObject];
+    acceptedPasses = [(PKPaymentAuthorizationDataModel *)self->_model acceptedPasses];
+    firstObject = [acceptedPasses firstObject];
 
-    if (v5)
+    if (firstObject)
     {
-      v6 = [(PKPaymentAuthorizationDataModel *)self->_model defaultSelectedPaymentApplicationForPass:v5];
-      [(PKPaymentAuthorizationDataModel *)self->_model setPass:v5];
+      v6 = [(PKPaymentAuthorizationDataModel *)self->_model defaultSelectedPaymentApplicationForPass:firstObject];
+      [(PKPaymentAuthorizationDataModel *)self->_model setPass:firstObject];
       [(PKPaymentAuthorizationDataModel *)self->_model setPaymentApplication:v6];
-      [(PKPaymentAuthorizationStateMachine *)self didSelectPaymentPass:v5 paymentApplication:v6];
+      [(PKPaymentAuthorizationStateMachine *)self didSelectPaymentPass:firstObject paymentApplication:v6];
       v9[0] = @"eventType";
       v9[1] = @"pageTag";
       v10[0] = @"stateChange";
@@ -3736,7 +3736,7 @@ LABEL_46:
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:4];
       [PKAnalyticsReporter subject:@"inApp" sendEvent:v8];
 
-      [(PKPaymentAuthorizationStateMachine *)self _updateModelBillingAddressIfNeededForPass:v5];
+      [(PKPaymentAuthorizationStateMachine *)self _updateModelBillingAddressIfNeededForPass:firstObject];
       [(PKPaymentAuthorizationStateMachine *)self _updateModelCanAddPasses];
     }
 
@@ -3744,18 +3744,18 @@ LABEL_46:
   }
 }
 
-- (id)acceptedPassForProvisionedPass:(id)a3
+- (id)acceptedPassForProvisionedPass:(id)pass
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  passCopy = pass;
   [(PKPaymentAuthorizationDataModel *)self->_model resetPaymentMethods];
-  v5 = [v4 uniqueID];
+  uniqueID = [passCopy uniqueID];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(PKPaymentAuthorizationDataModel *)self->_model acceptedPasses];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  acceptedPasses = [(PKPaymentAuthorizationDataModel *)self->_model acceptedPasses];
+  v7 = [acceptedPasses countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -3765,12 +3765,12 @@ LABEL_46:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(acceptedPasses);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 uniqueID];
-        v12 = [v11 isEqualToString:v5];
+        uniqueID2 = [v10 uniqueID];
+        v12 = [uniqueID2 isEqualToString:uniqueID];
 
         if (v12)
         {
@@ -3779,7 +3779,7 @@ LABEL_46:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [acceptedPasses countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -3794,27 +3794,27 @@ LABEL_11:
   return v7;
 }
 
-- (void)didAuthenticateWithCredential:(id)a3
+- (void)didAuthenticateWithCredential:(id)credential
 {
-  v9 = a3;
+  credentialCopy = credential;
   if ([(PKPaymentAuthorizationDataModel *)self->_model mode]== 3 || [(PKPaymentAuthorizationDataModel *)self->_model mode]== 4)
   {
     v4 = objc_alloc_init(PKPayment);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-      v6 = [v5 requestType];
+      paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+      requestType = [paymentRequest requestType];
 
-      if (v6 == 15)
+      if (requestType == 15)
       {
-        v7 = [MEMORY[0x1E695DEF0] data];
-        [(PKPayment *)v4 setCredential:v7];
+        data = [MEMORY[0x1E695DEF0] data];
+        [(PKPayment *)v4 setCredential:data];
       }
 
       else
       {
-        [(PKPayment *)v4 setCredential:v9];
+        [(PKPayment *)v4 setCredential:credentialCopy];
       }
     }
 
@@ -3823,7 +3823,7 @@ LABEL_11:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(PKPayment *)v4 setAuthKitAuthenticationResults:v9];
+        [(PKPayment *)v4 setAuthKitAuthenticationResults:credentialCopy];
       }
     }
 
@@ -3833,7 +3833,7 @@ LABEL_11:
 
   else
   {
-    v4 = [PKPaymentAuthorizationNonceStateParam paramWithCredential:v9];
+    v4 = [PKPaymentAuthorizationNonceStateParam paramWithCredential:credentialCopy];
     [(PKPaymentAuthorizationStateMachine *)self _setState:9 param:v4];
     if ([(PKPaymentAuthorizationDataModel *)self->_model mode]== 1)
     {
@@ -3842,25 +3842,25 @@ LABEL_11:
   }
 }
 
-- (void)didAuthenticateWithAuthenticatorEvaluationResponse:(id)a3
+- (void)didAuthenticateWithAuthenticatorEvaluationResponse:(id)response
 {
-  v4 = [PKPaymentAuthorizationNonceStateParam paramWithAuthenticatorEvaluationResponse:a3];
+  v4 = [PKPaymentAuthorizationNonceStateParam paramWithAuthenticatorEvaluationResponse:response];
   [(PKPaymentAuthorizationStateMachine *)self _setState:9 param:v4];
 }
 
-- (void)didReceivePaymentAuthorizationResult:(id)a3
+- (void)didReceivePaymentAuthorizationResult:(id)result
 {
   v169 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 status];
+  resultCopy = result;
+  status = [resultCopy status];
   v6 = PKLogFacilityTypeGetObject(8uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    if (v5 <= 3)
+    if (status <= 3)
     {
-      if (v5 > 1)
+      if (status > 1)
       {
-        if (v5 == 2)
+        if (status == 2)
         {
           v7 = @"PKPaymentAuthorizationStatusInvalidBillingPostalAddress";
         }
@@ -3873,13 +3873,13 @@ LABEL_11:
         goto LABEL_22;
       }
 
-      if (!v5)
+      if (!status)
       {
         v7 = @"PKPaymentAuthorizationStatusSuccess";
         goto LABEL_22;
       }
 
-      if (v5 == 1)
+      if (status == 1)
       {
         v7 = @"PKPaymentAuthorizationStatusFailure";
         goto LABEL_22;
@@ -3888,9 +3888,9 @@ LABEL_11:
 
     else
     {
-      if (v5 <= 5)
+      if (status <= 5)
       {
-        if (v5 == 4)
+        if (status == 4)
         {
           v7 = @"PKPaymentAuthorizationStatusInvalidShippingContact";
         }
@@ -3903,7 +3903,7 @@ LABEL_11:
         goto LABEL_22;
       }
 
-      switch(v5)
+      switch(status)
       {
         case 6:
           v7 = @"PKPaymentAuthorizationStatusPINIncorrect";
@@ -3929,9 +3929,9 @@ LABEL_23:
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 errors];
+    errors = [resultCopy errors];
     *buf = 138412290;
-    v168 = v8;
+    v168 = errors;
     _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Client errors: %@", buf, 0xCu);
   }
 
@@ -3941,11 +3941,11 @@ LABEL_23:
     self->_awaitingClientCallbackReply = 0;
     [(PKPaymentAuthorizationStateMachine *)self _cancelClientCallbackTimer];
     model = self->_model;
-    v17 = [v4 orderDetails];
-    [(PKPaymentAuthorizationDataModel *)model setPendingOrderDetails:v17];
+    orderDetails = [resultCopy orderDetails];
+    [(PKPaymentAuthorizationDataModel *)model setPendingOrderDetails:orderDetails];
 
-    v18 = [v4 errors];
-    v19 = [(PKPaymentAuthorizationStateMachine *)self sanitizeClientErrors:v18];
+    errors2 = [resultCopy errors];
+    v19 = [(PKPaymentAuthorizationStateMachine *)self sanitizeClientErrors:errors2];
 
     if (![v19 count])
     {
@@ -3955,43 +3955,43 @@ LABEL_23:
         _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Checking for errors based on legacy status", buf, 2u);
       }
 
-      v20 = [(PKPaymentAuthorizationStateMachine *)self model];
-      v35 = [v20 paymentErrorsFromLegacyStatus:v5];
+      model = [(PKPaymentAuthorizationStateMachine *)self model];
+      v35 = [model paymentErrorsFromLegacyStatus:status];
       v24 = 0;
       v36 = v19;
       v19 = v35;
       goto LABEL_79;
     }
 
-    v20 = [v19 firstObject];
-    v21 = [v20 domain];
-    v22 = [v21 isEqualToString:@"PKPaymentErrorDomain"];
+    model = [v19 firstObject];
+    domain = [model domain];
+    v22 = [domain isEqualToString:@"PKPaymentErrorDomain"];
 
-    v23 = [v20 domain];
-    v24 = [v23 isEqualToString:@"PKDisbursementErrorDomain"];
+    domain2 = [model domain];
+    v24 = [domain2 isEqualToString:@"PKDisbursementErrorDomain"];
 
     if ((v22 & 1) == 0 && !v24)
     {
 LABEL_80:
 
       [(PKPaymentAuthorizationDataModel *)self->_model setPaymentErrors:v19];
-      v37 = [v19 firstObject];
-      v137 = v37;
-      if (v37)
+      firstObject = [v19 firstObject];
+      v137 = firstObject;
+      if (firstObject)
       {
-        v38 = v37;
+        v38 = firstObject;
         v134 = v24;
-        v39 = [v37 localizedFailureReason];
-        if (!v39)
+        localizedFailureReason = [firstObject localizedFailureReason];
+        if (!localizedFailureReason)
         {
-          v39 = [v38 localizedDescription];
+          localizedFailureReason = [v38 localizedDescription];
         }
 
         v135 = v19;
-        v133 = [PKAnalyticsErrorTextClassifier analyticsValueForResult:[PKAnalyticsErrorTextClassifier classifyErrorText:v39]];
+        v133 = [PKAnalyticsErrorTextClassifier analyticsValueForResult:[PKAnalyticsErrorTextClassifier classifyErrorText:localizedFailureReason]];
         if (os_variant_has_internal_ui())
         {
-          v40 = v39;
+          v40 = localizedFailureReason;
         }
 
         else
@@ -3999,26 +3999,26 @@ LABEL_80:
           v40 = 0;
         }
 
-        v42 = self;
+        selfCopy2 = self;
         v165[0] = @"authorizationStatus";
-        v43 = v4;
-        if (v5 > 7)
+        v43 = resultCopy;
+        if (status > 7)
         {
           v44 = @"unknown";
         }
 
         else
         {
-          v44 = off_1E79CE7C0[v5];
+          v44 = off_1E79CE7C0[status];
         }
 
         v166[0] = v44;
         v165[1] = @"errorDomain";
-        v45 = [v38 domain];
-        v46 = v45;
-        if (v45)
+        domain3 = [v38 domain];
+        v46 = domain3;
+        if (domain3)
         {
-          v47 = v45;
+          v47 = domain3;
         }
 
         else
@@ -4056,47 +4056,47 @@ LABEL_80:
 
         v166[4] = v51;
         v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v166 forKeys:v165 count:5];
-        [(PKPaymentAuthorizationStateMachine *)v42 _reportAnalyticsTransactionAuthorizationWithAdditionalDictionary:v52 eventType:@"transactionAuthorizationStatusUpdated"];
+        [(PKPaymentAuthorizationStateMachine *)selfCopy2 _reportAnalyticsTransactionAuthorizationWithAdditionalDictionary:v52 eventType:@"transactionAuthorizationStatusUpdated"];
 
         v19 = v135;
-        v4 = v43;
+        resultCopy = v43;
         v24 = v134;
       }
 
       else
       {
         v163 = @"authorizationStatus";
-        if (v5 > 7)
+        if (status > 7)
         {
           v41 = @"unknown";
         }
 
         else
         {
-          v41 = off_1E79CE7C0[v5];
+          v41 = off_1E79CE7C0[status];
         }
 
         v164 = v41;
-        v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v164 forKeys:&v163 count:1];
-        v42 = self;
-        [(PKPaymentAuthorizationStateMachine *)self _reportAnalyticsTransactionAuthorizationWithAdditionalDictionary:v39 eventType:@"transactionAuthorizationStatusUpdated"];
+        localizedFailureReason = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v164 forKeys:&v163 count:1];
+        selfCopy2 = self;
+        [(PKPaymentAuthorizationStateMachine *)self _reportAnalyticsTransactionAuthorizationWithAdditionalDictionary:localizedFailureReason eventType:@"transactionAuthorizationStatusUpdated"];
       }
 
-      if (v5 > 4)
+      if (status > 4)
       {
-        v53 = v42;
-        if (v5 <= 6)
+        v53 = selfCopy2;
+        if (status <= 6)
         {
-          if (v5 == 5)
+          if (status == 5)
           {
-            v105 = [(PKPaymentAuthorizationStateMachine *)v42 model];
-            [v105 setStatus:3 forItemWithType:3];
+            model2 = [(PKPaymentAuthorizationStateMachine *)selfCopy2 model];
+            [model2 setStatus:3 forItemWithType:3];
 
             v106 = MEMORY[0x1E696ABC0];
             v151 = *MEMORY[0x1E696A588];
-            v80 = [v4 localizedErrorMessageOverride];
-            v81 = v80;
-            if (!v80)
+            localizedErrorMessageOverride = [resultCopy localizedErrorMessageOverride];
+            v81 = localizedErrorMessageOverride;
+            if (!localizedErrorMessageOverride)
             {
               v81 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr_10.isa, 0);
             }
@@ -4109,14 +4109,14 @@ LABEL_80:
 
           else
           {
-            v78 = [(PKPaymentAuthorizationStateMachine *)v42 model];
-            [v78 setStatus:2 forItemWithType:3];
+            model3 = [(PKPaymentAuthorizationStateMachine *)selfCopy2 model];
+            [model3 setStatus:2 forItemWithType:3];
 
             v79 = MEMORY[0x1E696ABC0];
             v149 = *MEMORY[0x1E696A588];
-            v80 = [v4 localizedErrorMessageOverride];
-            v81 = v80;
-            if (!v80)
+            localizedErrorMessageOverride = [resultCopy localizedErrorMessageOverride];
+            v81 = localizedErrorMessageOverride;
+            if (!localizedErrorMessageOverride)
             {
               v81 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr_10.isa, 0);
             }
@@ -4127,22 +4127,22 @@ LABEL_80:
             v84 = -3011;
           }
 
-          v11 = [v83 errorWithDomain:@"PKPassKitErrorDomain" code:v84 userInfo:v82];
+          firstObject2 = [v83 errorWithDomain:@"PKPassKitErrorDomain" code:v84 userInfo:v82];
 
-          if (!v80)
+          if (!localizedErrorMessageOverride)
           {
           }
 
-          v54 = [PKPaymentAuthorizationErrorStateParam paramWithError:v11];
-          v103 = v42;
+          paymentRequest = [PKPaymentAuthorizationErrorStateParam paramWithError:firstObject2];
+          v103 = selfCopy2;
           v104 = 14;
         }
 
         else
         {
-          if (v5 != 7)
+          if (status != 7)
           {
-            if (v5 == 1000)
+            if (status == 1000)
             {
               v107 = v24;
               if (v24)
@@ -4154,48 +4154,48 @@ LABEL_80:
               {
                 PKLocalizedPaymentString(&cfstr_InAppPaymentTr.isa, 0);
               }
-              v54 = ;
+              paymentRequest = ;
               v112 = MEMORY[0x1E696ABC0];
               v161 = *MEMORY[0x1E696A588];
-              v113 = [v4 localizedErrorMessageOverride];
-              v114 = v113;
-              if (v113)
+              localizedErrorMessageOverride2 = [resultCopy localizedErrorMessageOverride];
+              v114 = localizedErrorMessageOverride2;
+              if (localizedErrorMessageOverride2)
               {
-                v115 = v113;
+                v115 = localizedErrorMessageOverride2;
               }
 
               else
               {
-                v115 = v54;
+                v115 = paymentRequest;
               }
 
               v162 = v115;
               v116 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v162 forKeys:&v161 count:1];
-              v11 = [v112 errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v116];
+              firstObject2 = [v112 errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v116];
 
-              v117 = [PKPaymentAuthorizationErrorStateParam paramWithError:v11 clientFailure:v107];
+              v117 = [PKPaymentAuthorizationErrorStateParam paramWithError:firstObject2 clientFailure:v107];
               [(PKPaymentAuthorizationStateMachine *)v53 _setState:14 param:v117];
 
               goto LABEL_194;
             }
 
-            if (v5 == 1001)
+            if (status == 1001)
             {
-              v54 = [(PKPaymentAuthorizationDataModel *)v42->_model paymentRequest];
-              v55 = [v4 localizedErrorMessageOverride];
-              v56 = v55;
-              if (v55)
+              paymentRequest = [(PKPaymentAuthorizationDataModel *)selfCopy2->_model paymentRequest];
+              localizedErrorMessageOverride3 = [resultCopy localizedErrorMessageOverride];
+              v56 = localizedErrorMessageOverride3;
+              if (localizedErrorMessageOverride3)
               {
-                v57 = v55;
+                v57 = localizedErrorMessageOverride3;
               }
 
               else
               {
-                v118 = [v54 localizedErrorMessage];
-                v119 = v118;
-                if (v118)
+                localizedErrorMessage = [paymentRequest localizedErrorMessage];
+                v119 = localizedErrorMessage;
+                if (localizedErrorMessage)
                 {
-                  v120 = v118;
+                  v120 = localizedErrorMessage;
                 }
 
                 else
@@ -4210,10 +4210,10 @@ LABEL_80:
               v159 = *MEMORY[0x1E696A588];
               v160 = v57;
               v127 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v160 forKeys:&v159 count:1];
-              v11 = [v126 errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v127];
+              firstObject2 = [v126 errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v127];
 
-              v128 = [PKPaymentAuthorizationErrorStateParam paramWithError:v11 clientFailure:1];
-              v129 = v42;
+              v128 = [PKPaymentAuthorizationErrorStateParam paramWithError:firstObject2 clientFailure:1];
+              v129 = selfCopy2;
               v130 = 14;
 LABEL_193:
               [(PKPaymentAuthorizationStateMachine *)v129 _setState:v130 param:v128];
@@ -4230,17 +4230,17 @@ LABEL_165:
 
             ++v53->_failureStatusCount;
             [(PKPaymentAuthorizationStateMachine *)v53 _promptTapToRadar];
-            v54 = [(PKPaymentAuthorizationDataModel *)v53->_model paymentRequest];
-            v108 = [(PKPaymentAuthorizationDataModel *)v53->_model paymentRequest];
+            paymentRequest = [(PKPaymentAuthorizationDataModel *)v53->_model paymentRequest];
+            paymentRequest2 = [(PKPaymentAuthorizationDataModel *)v53->_model paymentRequest];
 
-            if (v108)
+            if (paymentRequest2)
             {
               v109 = PKAggDKeyPaymentiTunesPurchaseAuthorizationFail;
             }
 
             else
             {
-              if ([v54 requestType])
+              if ([paymentRequest requestType])
               {
                 goto LABEL_182;
               }
@@ -4251,20 +4251,20 @@ LABEL_165:
 
             [(PKAggregateDictionaryProtocol *)v53->_aggregateDictionary addValueForScalarKey:*v109 value:1];
 LABEL_182:
-            v121 = [v4 localizedErrorMessageOverride];
-            v122 = v121;
-            if (v121)
+            localizedErrorMessageOverride4 = [resultCopy localizedErrorMessageOverride];
+            v122 = localizedErrorMessageOverride4;
+            if (localizedErrorMessageOverride4)
             {
-              v57 = v121;
+              v57 = localizedErrorMessageOverride4;
             }
 
             else
             {
-              v123 = [v54 localizedErrorMessage];
-              v124 = v123;
-              if (v123)
+              localizedErrorMessage2 = [paymentRequest localizedErrorMessage];
+              v124 = localizedErrorMessage2;
+              if (localizedErrorMessage2)
               {
-                v125 = v123;
+                v125 = localizedErrorMessage2;
               }
 
               else
@@ -4279,10 +4279,10 @@ LABEL_182:
             v145 = *MEMORY[0x1E696A588];
             v146 = v57;
             v132 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v146 forKeys:&v145 count:1];
-            v11 = [v131 errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:v132];
+            firstObject2 = [v131 errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:v132];
 
             [(PKPaymentAuthorizationStateMachine *)v53 _reportToAutoBugCapture:v57];
-            v128 = [PKPaymentAuthorizationErrorStateParam paramWithError:v11];
+            v128 = [PKPaymentAuthorizationErrorStateParam paramWithError:firstObject2];
             v129 = v53;
             v130 = 15;
             goto LABEL_193;
@@ -4290,64 +4290,64 @@ LABEL_182:
 
           v98 = MEMORY[0x1E696ABC0];
           v147 = *MEMORY[0x1E696A588];
-          v99 = [v4 localizedErrorMessageOverride];
-          v100 = v99;
-          if (!v99)
+          localizedErrorMessageOverride5 = [resultCopy localizedErrorMessageOverride];
+          v100 = localizedErrorMessageOverride5;
+          if (!localizedErrorMessageOverride5)
           {
             v100 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr_6.isa, 0);
           }
 
           v148 = v100;
           v101 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v148 forKeys:&v147 count:1];
-          v11 = [v98 errorWithDomain:@"PKPassKitErrorDomain" code:-3001 userInfo:v101];
+          firstObject2 = [v98 errorWithDomain:@"PKPassKitErrorDomain" code:-3001 userInfo:v101];
 
-          if (!v99)
+          if (!localizedErrorMessageOverride5)
           {
           }
 
-          v102 = [(PKPaymentAuthorizationDataModel *)v42->_model paymentErrors];
-          v54 = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:3 status:4 error:v11 clientErrors:v102];
+          paymentErrors = [(PKPaymentAuthorizationDataModel *)selfCopy2->_model paymentErrors];
+          paymentRequest = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:3 status:4 error:firstObject2 clientErrors:paymentErrors];
 
-          v103 = v42;
+          v103 = selfCopy2;
           v104 = 3;
         }
 
-        [(PKPaymentAuthorizationStateMachine *)v103 _setState:v104 param:v54];
+        [(PKPaymentAuthorizationStateMachine *)v103 _setState:v104 param:paymentRequest];
 LABEL_194:
-        v12 = 0;
+        localizedFailureReason2 = 0;
         goto LABEL_195;
       }
 
-      v53 = v42;
-      if (v5 > 2)
+      v53 = selfCopy2;
+      if (status > 2)
       {
-        if (v5 == 3)
+        if (status == 3)
         {
-          v88 = [(PKPaymentAuthorizationDataModel *)v42->_model itemForType:5];
+          v88 = [(PKPaymentAuthorizationDataModel *)selfCopy2->_model itemForType:5];
           v139 = 0;
           v89 = [v88 isValidWithError:&v139];
-          v12 = v139;
+          localizedFailureReason2 = v139;
 
-          if ((v89 & 1) != 0 || ([v12 localizedFailureReason], (v70 = objc_claimAutoreleasedReturnValue()) == 0))
+          if ((v89 & 1) != 0 || ([localizedFailureReason2 localizedFailureReason], (v70 = objc_claimAutoreleasedReturnValue()) == 0))
           {
             v90 = MEMORY[0x1E696AEC0];
-            v91 = [(PKPaymentAuthorizationDataModel *)v42->_model shippingType];
-            v92 = [v90 stringWithFormat:@"IN_APP_PAYMENT_%@_ADDRESS_INCOMPLETE_REASON", v91];
+            shippingType = [(PKPaymentAuthorizationDataModel *)selfCopy2->_model shippingType];
+            v92 = [v90 stringWithFormat:@"IN_APP_PAYMENT_%@_ADDRESS_INCOMPLETE_REASON", shippingType];
             v70 = PKLocalizedPaymentString(v92, 0);
           }
 
-          if (!v12)
+          if (!localizedFailureReason2)
           {
-            v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-3003 userInfo:0];
+            localizedFailureReason2 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-3003 userInfo:0];
           }
 
           v93 = MEMORY[0x1E696ABC0];
           v155[0] = *MEMORY[0x1E696A588];
-          v94 = [v4 localizedErrorMessageOverride];
-          v95 = v94;
-          if (v94)
+          localizedErrorMessageOverride6 = [resultCopy localizedErrorMessageOverride];
+          v95 = localizedErrorMessageOverride6;
+          if (localizedErrorMessageOverride6)
           {
-            v96 = v94;
+            v96 = localizedErrorMessageOverride6;
           }
 
           else
@@ -4357,38 +4357,38 @@ LABEL_194:
 
           v155[1] = *MEMORY[0x1E696AA08];
           v156[0] = v96;
-          v156[1] = v12;
+          v156[1] = localizedFailureReason2;
           v97 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v156 forKeys:v155 count:2];
-          v11 = [v93 errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v97];
+          firstObject2 = [v93 errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v97];
 
-          v76 = [(PKPaymentAuthorizationDataModel *)v53->_model paymentErrors];
+          paymentErrors2 = [(PKPaymentAuthorizationDataModel *)v53->_model paymentErrors];
           v77 = 5;
         }
 
         else
         {
-          v68 = [(PKPaymentAuthorizationDataModel *)v42->_model itemForType:7];
+          v68 = [(PKPaymentAuthorizationDataModel *)selfCopy2->_model itemForType:7];
           v138 = 0;
           v69 = [v68 isValidWithError:&v138];
-          v12 = v138;
+          localizedFailureReason2 = v138;
 
-          if ((v69 & 1) != 0 || ([v12 localizedFailureReason], (v70 = objc_claimAutoreleasedReturnValue()) == 0))
+          if ((v69 & 1) != 0 || ([localizedFailureReason2 localizedFailureReason], (v70 = objc_claimAutoreleasedReturnValue()) == 0))
           {
             v70 = PKLocalizedPaymentString(&cfstr_InAppPaymentSh_0.isa, 0);
           }
 
-          if (!v12)
+          if (!localizedFailureReason2)
           {
-            v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-3010 userInfo:0];
+            localizedFailureReason2 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-3010 userInfo:0];
           }
 
           v71 = MEMORY[0x1E696ABC0];
           v153[0] = *MEMORY[0x1E696A588];
-          v72 = [v4 localizedErrorMessageOverride];
-          v73 = v72;
-          if (v72)
+          localizedErrorMessageOverride7 = [resultCopy localizedErrorMessageOverride];
+          v73 = localizedErrorMessageOverride7;
+          if (localizedErrorMessageOverride7)
           {
-            v74 = v72;
+            v74 = localizedErrorMessageOverride7;
           }
 
           else
@@ -4398,25 +4398,25 @@ LABEL_194:
 
           v153[1] = *MEMORY[0x1E696AA08];
           v154[0] = v74;
-          v154[1] = v12;
+          v154[1] = localizedFailureReason2;
           v75 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v154 forKeys:v153 count:2];
-          v11 = [v71 errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v75];
+          firstObject2 = [v71 errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v75];
 
-          v76 = [(PKPaymentAuthorizationDataModel *)v53->_model paymentErrors];
+          paymentErrors2 = [(PKPaymentAuthorizationDataModel *)v53->_model paymentErrors];
           v77 = 7;
         }
 
-        v54 = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:v77 status:1 error:v11 clientErrors:v76];
+        paymentRequest = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:v77 status:1 error:firstObject2 clientErrors:paymentErrors2];
 
-        [(PKPaymentAuthorizationStateMachine *)v53 _setState:3 param:v54];
+        [(PKPaymentAuthorizationStateMachine *)v53 _setState:3 param:paymentRequest];
         goto LABEL_195;
       }
 
-      if (v5)
+      if (status)
       {
-        if (v5 == 2)
+        if (status == 2)
         {
-          if ([(PKPaymentAuthorizationDataModel *)v42->_model mode]== 2)
+          if ([(PKPaymentAuthorizationDataModel *)selfCopy2->_model mode]== 2)
           {
             v58 = 4;
           }
@@ -4426,29 +4426,29 @@ LABEL_194:
             v58 = 3;
           }
 
-          v59 = [(PKPaymentAuthorizationDataModel *)v42->_model itemForType:v58];
+          v59 = [(PKPaymentAuthorizationDataModel *)selfCopy2->_model itemForType:v58];
           v140 = 0;
           v60 = [v59 isValidWithError:&v140];
-          v12 = v140;
+          localizedFailureReason2 = v140;
 
-          if ((v60 & 1) != 0 || ([v12 localizedFailureReason], (v61 = objc_claimAutoreleasedReturnValue()) == 0))
+          if ((v60 & 1) != 0 || ([localizedFailureReason2 localizedFailureReason], (v61 = objc_claimAutoreleasedReturnValue()) == 0))
           {
             v61 = PKLocalizedPaymentString(&cfstr_InAppPaymentBi_1.isa, 0);
           }
 
           v136 = v19;
-          if (!v12)
+          if (!localizedFailureReason2)
           {
-            v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-3002 userInfo:0];
+            localizedFailureReason2 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-3002 userInfo:0];
           }
 
           v62 = MEMORY[0x1E696ABC0];
           v157[0] = *MEMORY[0x1E696A588];
-          v63 = [v4 localizedErrorMessageOverride];
-          v64 = v63;
-          if (v63)
+          localizedErrorMessageOverride8 = [resultCopy localizedErrorMessageOverride];
+          v64 = localizedErrorMessageOverride8;
+          if (localizedErrorMessageOverride8)
           {
-            v65 = v63;
+            v65 = localizedErrorMessageOverride8;
           }
 
           else
@@ -4458,14 +4458,14 @@ LABEL_194:
 
           v157[1] = *MEMORY[0x1E696AA08];
           v158[0] = v65;
-          v158[1] = v12;
+          v158[1] = localizedFailureReason2;
           v66 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v158 forKeys:v157 count:2];
-          v11 = [v62 errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v66];
+          firstObject2 = [v62 errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v66];
 
-          v67 = [(PKPaymentAuthorizationDataModel *)v53->_model paymentErrors];
-          v54 = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:v58 status:1 error:v11 clientErrors:v67];
+          paymentErrors3 = [(PKPaymentAuthorizationDataModel *)v53->_model paymentErrors];
+          paymentRequest = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:v58 status:1 error:firstObject2 clientErrors:paymentErrors3];
 
-          [(PKPaymentAuthorizationStateMachine *)v53 _setState:3 param:v54];
+          [(PKPaymentAuthorizationStateMachine *)v53 _setState:3 param:paymentRequest];
           v19 = v136;
           goto LABEL_195;
         }
@@ -4473,26 +4473,26 @@ LABEL_194:
         goto LABEL_165;
       }
 
-      v54 = [(PKPaymentAuthorizationDataModel *)v42->_model paymentRequest];
-      v85 = [(PKPaymentAuthorizationDataModel *)v42->_model paymentRequest];
-      v86 = [v85 _isAMPPayment];
+      paymentRequest = [(PKPaymentAuthorizationDataModel *)selfCopy2->_model paymentRequest];
+      paymentRequest3 = [(PKPaymentAuthorizationDataModel *)selfCopy2->_model paymentRequest];
+      _isAMPPayment = [paymentRequest3 _isAMPPayment];
 
-      if (v86)
+      if (_isAMPPayment)
       {
         v87 = PKAggDKeyPaymentiTunesPurchaseAuthorizationSuccess;
       }
 
       else
       {
-        if ([v54 requestType])
+        if ([paymentRequest requestType])
         {
 LABEL_173:
-          v110 = [v4 peerPaymentTransactionMetadata];
-          v111 = [PKPaymentAuthorizationSuccessStateParam paramWithPeerPaymentTransactionMetadata:v110];
-          [(PKPaymentAuthorizationStateMachine *)v42 _setState:16 param:v111];
+          peerPaymentTransactionMetadata = [resultCopy peerPaymentTransactionMetadata];
+          v111 = [PKPaymentAuthorizationSuccessStateParam paramWithPeerPaymentTransactionMetadata:peerPaymentTransactionMetadata];
+          [(PKPaymentAuthorizationStateMachine *)selfCopy2 _setState:16 param:v111];
 
-          v12 = 0;
-          v11 = 0;
+          localizedFailureReason2 = 0;
+          firstObject2 = 0;
 LABEL_195:
 
           [(PKPaymentAuthorizationDataModel *)v53->_model setPendingTransactions:0];
@@ -4505,11 +4505,11 @@ LABEL_195:
         v87 = PKAggDKeyPaymentInAppPaymentAuthorizationSuccess;
       }
 
-      [(PKAggregateDictionaryProtocol *)v42->_aggregateDictionary addValueForScalarKey:*v87 value:1];
+      [(PKAggregateDictionaryProtocol *)selfCopy2->_aggregateDictionary addValueForScalarKey:*v87 value:1];
       goto LABEL_173;
     }
 
-    v5 = [(PKPaymentAuthorizationStateMachine *)self statusFromPaymentError:v20];
+    status = [(PKPaymentAuthorizationStateMachine *)self statusFromPaymentError:model];
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
 LABEL_78:
@@ -4519,11 +4519,11 @@ LABEL_79:
       goto LABEL_80;
     }
 
-    if (v5 <= 3)
+    if (status <= 3)
     {
-      if (v5 > 1)
+      if (status > 1)
       {
-        if (v5 == 2)
+        if (status == 2)
         {
           v25 = @"PKPaymentAuthorizationStatusInvalidBillingPostalAddress";
         }
@@ -4536,13 +4536,13 @@ LABEL_79:
         goto LABEL_77;
       }
 
-      if (!v5)
+      if (!status)
       {
         v25 = @"PKPaymentAuthorizationStatusSuccess";
         goto LABEL_77;
       }
 
-      if (v5 == 1)
+      if (status == 1)
       {
         v25 = @"PKPaymentAuthorizationStatusFailure";
         goto LABEL_77;
@@ -4551,9 +4551,9 @@ LABEL_79:
 
     else
     {
-      if (v5 <= 5)
+      if (status <= 5)
       {
-        if (v5 == 4)
+        if (status == 4)
         {
           v25 = @"PKPaymentAuthorizationStatusInvalidShippingContact";
         }
@@ -4566,7 +4566,7 @@ LABEL_79:
         goto LABEL_77;
       }
 
-      switch(v5)
+      switch(status)
       {
         case 6:
           v25 = @"PKPaymentAuthorizationStatusPINIncorrect";
@@ -4588,21 +4588,21 @@ LABEL_77:
     goto LABEL_77;
   }
 
-  v10 = [v4 errors];
-  v11 = [v10 firstObject];
+  errors3 = [resultCopy errors];
+  firstObject2 = [errors3 firstObject];
 
-  if (v11)
+  if (firstObject2)
   {
-    v12 = [v11 localizedFailureReason];
-    if (!v12)
+    localizedFailureReason2 = [firstObject2 localizedFailureReason];
+    if (!localizedFailureReason2)
     {
-      v12 = [v11 localizedDescription];
+      localizedFailureReason2 = [firstObject2 localizedDescription];
     }
 
-    v13 = [PKAnalyticsErrorTextClassifier analyticsValueForResult:[PKAnalyticsErrorTextClassifier classifyErrorText:v12]];
+    v13 = [PKAnalyticsErrorTextClassifier analyticsValueForResult:[PKAnalyticsErrorTextClassifier classifyErrorText:localizedFailureReason2]];
     if (os_variant_has_internal_ui())
     {
-      v14 = v12;
+      v14 = localizedFailureReason2;
     }
 
     else
@@ -4611,23 +4611,23 @@ LABEL_77:
     }
 
     v143[0] = @"authorizationStatus";
-    if (v5 > 7)
+    if (status > 7)
     {
       v26 = @"unknown";
     }
 
     else
     {
-      v26 = off_1E79CE7C0[v5];
+      v26 = off_1E79CE7C0[status];
     }
 
     v144[0] = v26;
     v143[1] = @"errorDomain";
-    v27 = [v11 domain];
-    v28 = v27;
-    if (v27)
+    domain4 = [firstObject2 domain];
+    v28 = domain4;
+    if (domain4)
     {
-      v29 = v27;
+      v29 = domain4;
     }
 
     else
@@ -4637,7 +4637,7 @@ LABEL_77:
 
     v144[1] = v29;
     v143[2] = @"errorCode";
-    v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%ld", objc_msgSend(v11, "code")];
+    v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%ld", objc_msgSend(firstObject2, "code")];
     v31 = v30;
     if (v14)
     {
@@ -4671,20 +4671,20 @@ LABEL_77:
   else
   {
     v141 = @"authorizationStatus";
-    if (v5 > 7)
+    if (status > 7)
     {
       v15 = @"unknown";
     }
 
     else
     {
-      v15 = off_1E79CE7C0[v5];
+      v15 = off_1E79CE7C0[status];
     }
 
     v142 = v15;
-    v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v142 forKeys:&v141 count:1];
-    [(PKPaymentAuthorizationStateMachine *)self _reportAnalyticsTransactionAuthorizationWithAdditionalDictionary:v12 eventType:@"transactionAuthorizationStatusUpdated"];
-    v11 = 0;
+    localizedFailureReason2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v142 forKeys:&v141 count:1];
+    [(PKPaymentAuthorizationStateMachine *)self _reportAnalyticsTransactionAuthorizationWithAdditionalDictionary:localizedFailureReason2 eventType:@"transactionAuthorizationStatusUpdated"];
+    firstObject2 = 0;
   }
 
 LABEL_196:
@@ -4706,24 +4706,24 @@ id __59__PKPaymentAuthorizationStateMachine_sanitizeClientErrors___block_invoke(
   return v8;
 }
 
-- (int64_t)statusFromPaymentError:(id)a3
+- (int64_t)statusFromPaymentError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:@"PKPaymentErrorDomain"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:@"PKPaymentErrorDomain"];
 
   if (v6)
   {
-    v7 = [v4 code];
-    v8 = v7;
-    if ((v7 - 2) < 2)
+    code = [errorCopy code];
+    v8 = code;
+    if ((code - 2) < 2)
     {
       goto LABEL_18;
     }
 
-    if (v7 == 1)
+    if (code == 1)
     {
-      v11 = ![(PKPaymentAuthorizationStateMachine *)self isErrorAboutPostalAddressField:v4];
+      v11 = ![(PKPaymentAuthorizationStateMachine *)self isErrorAboutPostalAddressField:errorCopy];
       v12 = 3;
 LABEL_15:
       if (v11)
@@ -4739,12 +4739,12 @@ LABEL_15:
       goto LABEL_18;
     }
 
-    if (v7 == -1)
+    if (code == -1)
     {
-      v9 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-      v10 = [v9 requestType];
+      paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+      requestType = [paymentRequest requestType];
 
-      v11 = v10 == 0;
+      v11 = requestType == 0;
       v12 = 1000;
       goto LABEL_15;
     }
@@ -4754,24 +4754,24 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  v13 = [v4 domain];
-  v14 = [v13 isEqualToString:@"PKDisbursementErrorDomain"];
+  domain2 = [errorCopy domain];
+  v14 = [domain2 isEqualToString:@"PKDisbursementErrorDomain"];
 
   if (!v14)
   {
     goto LABEL_13;
   }
 
-  v15 = [v4 code];
+  code2 = [errorCopy code];
   v8 = 1000;
-  if (v15 != -1 && v15 != 1)
+  if (code2 != -1 && code2 != 1)
   {
-    if (v15 != 2)
+    if (code2 != 2)
     {
       goto LABEL_13;
     }
 
-    if ([(PKPaymentAuthorizationStateMachine *)self isErrorAboutPostalAddressField:v4])
+    if ([(PKPaymentAuthorizationStateMachine *)self isErrorAboutPostalAddressField:errorCopy])
     {
       v8 = 2;
     }
@@ -4787,11 +4787,11 @@ LABEL_18:
   return v8;
 }
 
-- (BOOL)isErrorAboutPostalAddressField:(id)a3
+- (BOOL)isErrorAboutPostalAddressField:(id)field
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:@"PKDisbursementErrorDomain"];
+  fieldCopy = field;
+  domain = [fieldCopy domain];
+  v6 = [domain isEqualToString:@"PKDisbursementErrorDomain"];
 
   v7 = &PKDisbursementErrorContactFieldUserInfoKey;
   if (!v6)
@@ -4800,9 +4800,9 @@ LABEL_18:
   }
 
   v8 = *v7;
-  v9 = [v4 userInfo];
+  userInfo = [fieldCopy userInfo];
 
-  v10 = [v9 objectForKey:v8];
+  v10 = [userInfo objectForKey:v8];
 
   v11 = [v10 isEqualToString:@"post"];
   if ([v10 isEqualToString:@"name"])
@@ -4815,12 +4815,12 @@ LABEL_18:
     v12 = [v10 isEqualToString:@"phoneticName"];
   }
 
-  v13 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v14 = [v13 requiredShippingContactFields];
-  v15 = [v14 containsObject:@"post"];
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  requiredShippingContactFields = [paymentRequest requiredShippingContactFields];
+  v15 = [requiredShippingContactFields containsObject:@"post"];
 
-  v16 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v17 = [v16 isShippingEditable];
+  paymentRequest2 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  isShippingEditable = [paymentRequest2 isShippingEditable];
 
   if (v11)
   {
@@ -4829,24 +4829,24 @@ LABEL_18:
 
   else
   {
-    v18 = v12 & v17 & v15;
+    v18 = v12 & isShippingEditable & v15;
   }
 
   return v18;
 }
 
-- (void)didReceivePaymentAuthorizationStatus:(int64_t)a3
+- (void)didReceivePaymentAuthorizationStatus:(int64_t)status
 {
   v5 = objc_alloc_init(PKPaymentAuthorizationResult);
-  [(PKPaymentAuthorizationResult *)v5 setStatus:a3];
+  [(PKPaymentAuthorizationResult *)v5 setStatus:status];
   [(PKPaymentAuthorizationStateMachine *)self didReceivePaymentAuthorizationResult:v5];
 }
 
-- (void)delayAuthorizedStateByDuration:(double)a3
+- (void)delayAuthorizedStateByDuration:(double)duration
 {
   dispatch_group_enter(self->_delayAuthorizedStateGroup);
   objc_initWeak(&location, self->_delayAuthorizedStateGroup);
-  v5 = dispatch_time(0, (a3 * 1000000000.0));
+  v5 = dispatch_time(0, (duration * 1000000000.0));
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__PKPaymentAuthorizationStateMachine_delayAuthorizedStateByDuration___block_invoke;
@@ -4868,7 +4868,7 @@ void __69__PKPaymentAuthorizationStateMachine_delayAuthorizedStateByDuration___b
   }
 }
 
-- (void)didChangeFundingMode:(int64_t)a3
+- (void)didChangeFundingMode:(int64_t)mode
 {
   v23 = *MEMORY[0x1E69E9840];
   state = self->_state;
@@ -4876,23 +4876,23 @@ void __69__PKPaymentAuthorizationStateMachine_delayAuthorizedStateByDuration___b
   v7 = (1 << state) & 0x1A000;
   if (v6 || v7 == 0)
   {
-    v14 = [(PKPaymentAuthorizationDataModel *)self->_model fundingMode];
-    [(PKPaymentAuthorizationDataModel *)self->_model setFundingMode:a3];
+    fundingMode = [(PKPaymentAuthorizationDataModel *)self->_model fundingMode];
+    [(PKPaymentAuthorizationDataModel *)self->_model setFundingMode:mode];
     if (_os_feature_enabled_impl())
     {
-      if (a3 == 2)
+      if (mode == 2)
       {
-        v17 = [(PKPaymentAuthorizationDataModel *)self->_model selectedPaymentOffer];
-        v18 = [(PKPaymentOffersController *)self->_paymentOffersController selectedOfferDetails];
-        -[PKPaymentAuthorizationStateMachine didSelectPaymentOffer:updateReason:](self, "didSelectPaymentOffer:updateReason:", v17, [v18 updateReason]);
+        selectedPaymentOffer = [(PKPaymentAuthorizationDataModel *)self->_model selectedPaymentOffer];
+        selectedOfferDetails = [(PKPaymentOffersController *)self->_paymentOffersController selectedOfferDetails];
+        -[PKPaymentAuthorizationStateMachine didSelectPaymentOffer:updateReason:](self, "didSelectPaymentOffer:updateReason:", selectedPaymentOffer, [selectedOfferDetails updateReason]);
       }
 
-      else if (!a3 && v14)
+      else if (!mode && fundingMode)
       {
         [(PKPaymentAuthorizationStateMachine *)self didSelectPaymentOffer:0 updateReason:1];
-        v15 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
-        v16 = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
-        [(PKPaymentAuthorizationStateMachine *)self didSelectPaymentPass:v15 paymentApplication:v16];
+        pass = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+        paymentApplication = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
+        [(PKPaymentAuthorizationStateMachine *)self didSelectPaymentPass:pass paymentApplication:paymentApplication];
 
         [(PKPaymentAuthorizationDataModel *)self->_model refreshBillingAddressErrors];
       }
@@ -4906,7 +4906,7 @@ void __69__PKPaymentAuthorizationStateMachine_delayAuthorizedStateByDuration___b
     v9 = PKLogFacilityTypeGetObject(8uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = PKPaymentAuthorizationFundingModeToString(a3);
+      v10 = PKPaymentAuthorizationFundingModeToString(mode);
       v11 = v10;
       v12 = self->_state;
       if (v12 > 0x14)
@@ -4928,7 +4928,7 @@ void __69__PKPaymentAuthorizationStateMachine_delayAuthorizedStateByDuration___b
   }
 }
 
-- (void)continuityPaymentCoordinatorDidTimeoutUpdatePaymentDevices:(id)a3
+- (void)continuityPaymentCoordinatorDidTimeoutUpdatePaymentDevices:(id)devices
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -4952,16 +4952,16 @@ void *__97__PKPaymentAuthorizationStateMachine_continuityPaymentCoordinatorDidTi
   return result;
 }
 
-- (void)continuityPaymentCoordinator:(id)a3 didTimeoutTotalWithPaymentDevices:(id)a4
+- (void)continuityPaymentCoordinator:(id)coordinator didTimeoutTotalWithPaymentDevices:(id)devices
 {
-  v5 = a4;
+  devicesCopy = devices;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __101__PKPaymentAuthorizationStateMachine_continuityPaymentCoordinator_didTimeoutTotalWithPaymentDevices___block_invoke;
   v7[3] = &unk_1E79C4DD8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = devicesCopy;
+  v6 = devicesCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -4983,16 +4983,16 @@ void __101__PKPaymentAuthorizationStateMachine_continuityPaymentCoordinator_didT
   }
 }
 
-- (void)continuityPaymentCoordinator:(id)a3 didReceiveUpdatedPaymentDevices:(id)a4
+- (void)continuityPaymentCoordinator:(id)coordinator didReceiveUpdatedPaymentDevices:(id)devices
 {
-  v5 = a4;
+  devicesCopy = devices;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __99__PKPaymentAuthorizationStateMachine_continuityPaymentCoordinator_didReceiveUpdatedPaymentDevices___block_invoke;
   v7[3] = &unk_1E79C4DD8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = devicesCopy;
+  v6 = devicesCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -5095,16 +5095,16 @@ LABEL_20:
   }
 }
 
-- (void)continuityPaymentCoordinator:(id)a3 didReceivePayment:(id)a4
+- (void)continuityPaymentCoordinator:(id)coordinator didReceivePayment:(id)payment
 {
-  v5 = a4;
+  paymentCopy = payment;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __85__PKPaymentAuthorizationStateMachine_continuityPaymentCoordinator_didReceivePayment___block_invoke;
   v7[3] = &unk_1E79C4DD8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = paymentCopy;
+  selfCopy = self;
+  v6 = paymentCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -5135,7 +5135,7 @@ void __85__PKPaymentAuthorizationStateMachine_continuityPaymentCoordinator_didRe
   }
 }
 
-- (void)continuityPaymentCoordinatorDidReceiveCancellation:(id)a3
+- (void)continuityPaymentCoordinatorDidReceiveCancellation:(id)cancellation
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -5159,7 +5159,7 @@ void *__89__PKPaymentAuthorizationStateMachine_continuityPaymentCoordinatorDidRe
   return result;
 }
 
-- (void)_processBluetoothState:(int64_t)a3
+- (void)_processBluetoothState:(int64_t)state
 {
   v15 = *MEMORY[0x1E69E9840];
   state = self->_state;
@@ -5174,22 +5174,22 @@ void *__89__PKPaymentAuthorizationStateMachine_continuityPaymentCoordinatorDidRe
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v14[0] = 67109120;
-    v14[1] = a3;
+    v14[1] = state;
     _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Processing bluetooth state: %d", v14, 8u);
   }
 
-  if ((a3 - 2) < 2)
+  if ((state - 2) < 2)
   {
     goto LABEL_14;
   }
 
-  if (a3 == 4)
+  if (state == 4)
   {
     if (!self->_detectedBluetoothOn)
     {
       v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-2015 userInfo:0];
       v11 = [PKPaymentAuthorizationErrorStateParam paramWithError:v10];
-      v12 = self;
+      selfCopy2 = self;
       v13 = 14;
       goto LABEL_15;
     }
@@ -5197,28 +5197,28 @@ void *__89__PKPaymentAuthorizationStateMachine_continuityPaymentCoordinatorDidRe
 LABEL_14:
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-2015 userInfo:0];
     v11 = [PKPaymentAuthorizationErrorStateParam paramWithError:v10];
-    v12 = self;
+    selfCopy2 = self;
     v13 = 15;
 LABEL_15:
-    [(PKPaymentAuthorizationStateMachine *)v12 _setState:v13 param:v11];
+    [(PKPaymentAuthorizationStateMachine *)selfCopy2 _setState:v13 param:v11];
 
     return;
   }
 
-  if (a3 == 5 && !self->_detectedBluetoothOn)
+  if (state == 5 && !self->_detectedBluetoothOn)
   {
     self->_detectedBluetoothOn = 1;
     [(PKPaymentAuthorizationStateMachine *)self _startRemoteDeviceUpdate];
   }
 }
 
-- (void)_updateModelWithRemoteDevices:(id)a3
+- (void)_updateModelWithRemoteDevices:(id)devices
 {
-  v5 = a3;
-  v4 = [v5 pk_containsObjectPassingTest:&__block_literal_global_186];
-  if ([v5 count] && (v4 & 1) != 0)
+  devicesCopy = devices;
+  v4 = [devicesCopy pk_containsObjectPassingTest:&__block_literal_global_186];
+  if ([devicesCopy count] && (v4 & 1) != 0)
   {
-    [(PKPaymentAuthorizationDataModel *)self->_model updateRemoteDevices:v5 ignoreProximity:0];
+    [(PKPaymentAuthorizationDataModel *)self->_model updateRemoteDevices:devicesCopy ignoreProximity:0];
 
     if (self->_hasReceivedRemoteDeviceUpdate)
     {
@@ -5236,22 +5236,22 @@ LABEL_15:
 
   else
   {
-    [(PKPaymentAuthorizationStateMachine *)self _deviceUpdateDidFailWithNoEiligbleRemoteDevices:v5];
+    [(PKPaymentAuthorizationStateMachine *)self _deviceUpdateDidFailWithNoEiligbleRemoteDevices:devicesCopy];
   }
 }
 
-- (void)_deviceUpdateDidFailWithNoEiligbleRemoteDevices:(id)a3
+- (void)_deviceUpdateDidFailWithNoEiligbleRemoteDevices:(id)devices
 {
   v12[1] = *MEMORY[0x1E69E9840];
   model = self->_model;
-  v5 = a3;
-  v6 = [(PKPaymentAuthorizationDataModel *)model remoteDevice];
-  v7 = [v6 deviceName];
+  devicesCopy = devices;
+  remoteDevice = [(PKPaymentAuthorizationDataModel *)model remoteDevice];
+  deviceName = [remoteDevice deviceName];
 
-  if (v7)
+  if (deviceName)
   {
     v11 = @"PKContinuityDeviceNameKey";
-    v12[0] = v7;
+    v12[0] = deviceName;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   }
 
@@ -5264,7 +5264,7 @@ LABEL_15:
   v10 = [PKPaymentAuthorizationErrorStateParam paramWithError:v9];
   [(PKPaymentAuthorizationStateMachine *)self _setState:14 param:v10];
 
-  [(PKPaymentAuthorizationDataModel *)self->_model updateRemoteDevices:v5 ignoreProximity:0];
+  [(PKPaymentAuthorizationDataModel *)self->_model updateRemoteDevices:devicesCopy ignoreProximity:0];
 }
 
 - (void)_performUpdatePaymentDevices
@@ -5281,13 +5281,13 @@ LABEL_15:
 
 - (void)_performSendRemotePaymentRequest
 {
-  v3 = [(PKPaymentAuthorizationStateMachine *)self _createNewRemotePaymentRequest];
-  v4 = [PKPaymentAuthorizationContinuitySendParam paramWithRemotePaymentRequest:v3];
+  _createNewRemotePaymentRequest = [(PKPaymentAuthorizationStateMachine *)self _createNewRemotePaymentRequest];
+  v4 = [PKPaymentAuthorizationContinuitySendParam paramWithRemotePaymentRequest:_createNewRemotePaymentRequest];
   [(PKPaymentAuthorizationStateMachine *)self _setState:4 param:v4];
 
   objc_initWeak(&location, self);
-  v5 = [v3 device];
-  v6 = [v5 deviceName];
+  device = [_createNewRemotePaymentRequest device];
+  deviceName = [device deviceName];
 
   continuityPaymentCoordinator = self->_continuityPaymentCoordinator;
   v9[0] = MEMORY[0x1E69E9820];
@@ -5295,9 +5295,9 @@ LABEL_15:
   v9[2] = __70__PKPaymentAuthorizationStateMachine__performSendRemotePaymentRequest__block_invoke;
   v9[3] = &unk_1E79CE0D8;
   objc_copyWeak(&v11, &location);
-  v8 = v6;
+  v8 = deviceName;
   v10 = v8;
-  [(PKContinuityPaymentCoordinator *)continuityPaymentCoordinator sendRemotePaymentRequest:v3 completion:v9];
+  [(PKContinuityPaymentCoordinator *)continuityPaymentCoordinator sendRemotePaymentRequest:_createNewRemotePaymentRequest completion:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -5352,31 +5352,31 @@ void __70__PKPaymentAuthorizationStateMachine__performSendRemotePaymentRequest__
   }
 }
 
-- (void)_performSendClientUpdateWithShippingMethods:(id)a3 paymentSummaryItems:(id)a4 multiTokenContexts:(id)a5 recurringPaymentRequest:(id)a6 automaticReloadPaymentRequest:(id)a7 deferredPaymentRequest:(id)a8 paymentApplication:(id)a9 status:(int64_t)a10
+- (void)_performSendClientUpdateWithShippingMethods:(id)methods paymentSummaryItems:(id)items multiTokenContexts:(id)contexts recurringPaymentRequest:(id)request automaticReloadPaymentRequest:(id)paymentRequest deferredPaymentRequest:(id)deferredPaymentRequest paymentApplication:(id)application status:(int64_t)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
+  methodsCopy = methods;
+  itemsCopy = items;
+  contextsCopy = contexts;
+  requestCopy = request;
+  paymentRequestCopy = paymentRequest;
+  deferredPaymentRequestCopy = deferredPaymentRequest;
+  applicationCopy = application;
   v23 = [PKPaymentClientUpdate alloc];
-  v24 = [v22 applicationIdentifier];
-  v25 = [v22 paymentType];
-  v35 = v17;
-  v36 = v16;
-  v26 = v17;
-  v27 = v18;
-  v28 = [(PKPaymentClientUpdate *)v23 initWithPaymentSummaryItems:v26 shippingMethods:v16 multiTokenContexts:v18 recurringPaymentRequest:v19 automaticReloadPaymentRequest:v20 deferredPaymentRequest:v21 status:a10 selectedAID:v24 selectedPaymentMethodType:v25];
+  applicationIdentifier = [applicationCopy applicationIdentifier];
+  paymentType = [applicationCopy paymentType];
+  v35 = itemsCopy;
+  v36 = methodsCopy;
+  v26 = itemsCopy;
+  v27 = contextsCopy;
+  v28 = [(PKPaymentClientUpdate *)v23 initWithPaymentSummaryItems:v26 shippingMethods:methodsCopy multiTokenContexts:contextsCopy recurringPaymentRequest:requestCopy automaticReloadPaymentRequest:paymentRequestCopy deferredPaymentRequest:deferredPaymentRequestCopy status:status selectedAID:applicationIdentifier selectedPaymentMethodType:paymentType];
 
   v29 = +[(PKPaymentAuthorizationStateParam *)PKPaymentAuthorizationContinuitySendParam];
   [(PKPaymentAuthorizationStateMachine *)self _setState:4 param:v29];
 
   objc_initWeak(&location, self);
-  v30 = [(PKContinuityPaymentCoordinator *)self->_continuityPaymentCoordinator currentRemotePaymentRequest];
-  v31 = [v30 device];
-  v32 = [v31 deviceName];
+  currentRemotePaymentRequest = [(PKContinuityPaymentCoordinator *)self->_continuityPaymentCoordinator currentRemotePaymentRequest];
+  device = [currentRemotePaymentRequest device];
+  deviceName = [device deviceName];
 
   continuityPaymentCoordinator = self->_continuityPaymentCoordinator;
   v37[0] = MEMORY[0x1E69E9820];
@@ -5384,7 +5384,7 @@ void __70__PKPaymentAuthorizationStateMachine__performSendRemotePaymentRequest__
   v37[2] = __224__PKPaymentAuthorizationStateMachine__performSendClientUpdateWithShippingMethods_paymentSummaryItems_multiTokenContexts_recurringPaymentRequest_automaticReloadPaymentRequest_deferredPaymentRequest_paymentApplication_status___block_invoke;
   v37[3] = &unk_1E79CE0D8;
   objc_copyWeak(&v39, &location);
-  v34 = v32;
+  v34 = deviceName;
   v38 = v34;
   [(PKContinuityPaymentCoordinator *)continuityPaymentCoordinator sendPaymentClientUpdate:v28 completion:v37];
 
@@ -5441,27 +5441,27 @@ void __224__PKPaymentAuthorizationStateMachine__performSendClientUpdateWithShipp
   }
 }
 
-- (void)_performSendPaymentResult:(id)a3
+- (void)_performSendPaymentResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = +[(PKPaymentAuthorizationStateParam *)PKPaymentAuthorizationContinuitySendParam];
   [(PKPaymentAuthorizationStateMachine *)self _setState:4 param:v5];
 
   objc_initWeak(&location, self);
-  v6 = [(PKContinuityPaymentCoordinator *)self->_continuityPaymentCoordinator currentRemotePaymentRequest];
-  v7 = [v6 device];
+  currentRemotePaymentRequest = [(PKContinuityPaymentCoordinator *)self->_continuityPaymentCoordinator currentRemotePaymentRequest];
+  device = [currentRemotePaymentRequest device];
 
-  v8 = [v7 deviceName];
+  deviceName = [device deviceName];
   continuityPaymentCoordinator = self->_continuityPaymentCoordinator;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __64__PKPaymentAuthorizationStateMachine__performSendPaymentResult___block_invoke;
   v12[3] = &unk_1E79CE128;
   objc_copyWeak(&v16, &location);
-  v10 = v8;
+  v10 = deviceName;
   v13 = v10;
-  v14 = self;
-  v11 = v4;
+  selfCopy = self;
+  v11 = resultCopy;
   v15 = v11;
   [(PKContinuityPaymentCoordinator *)continuityPaymentCoordinator sendPaymentResult:v11 completion:v12];
 
@@ -5525,44 +5525,44 @@ void __64__PKPaymentAuthorizationStateMachine__performSendPaymentResult___block_
 
 - (id)_createNewRemotePaymentRequest
 {
-  v3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
   v4 = [(PKPaymentAuthorizationDataModel *)self->_model itemForType:4];
-  v5 = [v4 paymentApplication];
-  v6 = [v4 remoteDevice];
-  v7 = [v6 type];
-  v8 = [v6 majorOperatingSystemVersion];
-  v9 = v8;
-  v10 = v7 == 1 && v8 < 16;
-  if (v10 || (!v7 ? (v11 = v8 <= 8) : (v11 = 0), v11))
+  paymentApplication = [v4 paymentApplication];
+  remoteDevice = [v4 remoteDevice];
+  type = [remoteDevice type];
+  majorOperatingSystemVersion = [remoteDevice majorOperatingSystemVersion];
+  v9 = majorOperatingSystemVersion;
+  v10 = type == 1 && majorOperatingSystemVersion < 16;
+  if (v10 || (!type ? (v11 = majorOperatingSystemVersion <= 8) : (v11 = 0), v11))
   {
     v12 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{@"Bancomat", @"Bancontact", 0}];
-    v13 = [v3 supportedNetworks];
+    supportedNetworks = [paymentRequest supportedNetworks];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __68__PKPaymentAuthorizationStateMachine__createNewRemotePaymentRequest__block_invoke;
     v22[3] = &unk_1E79C4340;
     v23 = v12;
     v14 = v12;
-    v15 = [v13 pk_objectsPassingTest:v22];
+    v15 = [supportedNetworks pk_objectsPassingTest:v22];
 
-    [v3 setSupportedNetworks:v15];
+    [paymentRequest setSupportedNetworks:v15];
   }
 
-  v16 = v7 == 1 && v9 < 17;
-  if (v16 || !v7 && v9 <= 9)
+  v16 = type == 1 && v9 < 17;
+  if (v16 || !type && v9 <= 9)
   {
-    v17 = [v3 supportedNetworks];
-    v18 = [v17 pk_objectsPassingTest:&__block_literal_global_193_0];
+    supportedNetworks2 = [paymentRequest supportedNetworks];
+    v18 = [supportedNetworks2 pk_objectsPassingTest:&__block_literal_global_193_0];
 
-    [v3 setSupportedNetworks:v18];
+    [paymentRequest setSupportedNetworks:v18];
   }
 
-  v19 = [[PKRemotePaymentRequest alloc] initWithDevice:v6];
-  [(PKRemotePaymentRequest *)v19 setPaymentRequest:v3];
-  v20 = [v5 applicationIdentifier];
-  [(PKRemotePaymentRequest *)v19 setSelectedApplicationIdentifier:v20];
+  v19 = [[PKRemotePaymentRequest alloc] initWithDevice:remoteDevice];
+  [(PKRemotePaymentRequest *)v19 setPaymentRequest:paymentRequest];
+  applicationIdentifier = [paymentApplication applicationIdentifier];
+  [(PKRemotePaymentRequest *)v19 setSelectedApplicationIdentifier:applicationIdentifier];
 
-  -[PKRemotePaymentRequest setSelectedPaymentMethodType:](v19, "setSelectedPaymentMethodType:", [v5 paymentType]);
+  -[PKRemotePaymentRequest setSelectedPaymentMethodType:](v19, "setSelectedPaymentMethodType:", [paymentApplication paymentType]);
 
   return v19;
 }
@@ -5584,8 +5584,8 @@ void __64__PKPaymentAuthorizationStateMachine__performSendPaymentResult___block_
 
 - (void)_startHandoff
 {
-  v3 = [(PKPaymentAuthorizationStateMachine *)self bluetoothMonitor];
-  -[PKPaymentAuthorizationStateMachine _processBluetoothState:](self, "_processBluetoothState:", [v3 state]);
+  bluetoothMonitor = [(PKPaymentAuthorizationStateMachine *)self bluetoothMonitor];
+  -[PKPaymentAuthorizationStateMachine _processBluetoothState:](self, "_processBluetoothState:", [bluetoothMonitor state]);
 }
 
 - (void)_startRemoteDeviceUpdate
@@ -5597,23 +5597,23 @@ void __64__PKPaymentAuthorizationStateMachine__performSendPaymentResult___block_
 
 - (void)_startPayment
 {
-  v4 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v3 = [v4 merchantSession];
-  if (v3)
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  merchantSession = [paymentRequest merchantSession];
+  if (merchantSession)
   {
 
     goto LABEL_6;
   }
 
-  if (![v4 shouldUseMerchantSession])
+  if (![paymentRequest shouldUseMerchantSession])
   {
 LABEL_6:
-    if ([v4 requestType] == 5)
+    if ([paymentRequest requestType] == 5)
     {
       [(PKPaymentAuthorizationStateMachine *)self _performInstallmentBind];
     }
 
-    else if ([v4 requestType] == 4)
+    else if ([paymentRequest requestType] == 4)
     {
       [(PKPaymentAuthorizationStateMachine *)self _advanceToNextState];
     }
@@ -5627,7 +5627,7 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  if ([v4 isVirtualCardRequest])
+  if ([paymentRequest isVirtualCardRequest])
   {
     [(PKPaymentAuthorizationStateMachine *)self _retrieveVPANPaymentSession];
   }
@@ -5643,17 +5643,17 @@ LABEL_12:
 - (void)_performInstallmentBind
 {
   self->_awaitingWebServiceResponse = 1;
-  v3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v4 = [v3 installmentConfiguration];
-  v5 = [v4 feature];
-  if (v5 == 2)
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  installmentConfiguration = [paymentRequest installmentConfiguration];
+  feature = [installmentConfiguration feature];
+  if (feature == 2)
   {
     v6 = 4;
   }
 
   else
   {
-    v6 = 2 * (v5 == 1);
+    v6 = 2 * (feature == 1);
   }
 
   v7 = +[PKAccountService sharedInstance];
@@ -5661,9 +5661,9 @@ LABEL_12:
   v9[1] = 3221225472;
   v9[2] = __61__PKPaymentAuthorizationStateMachine__performInstallmentBind__block_invoke;
   v9[3] = &unk_1E79CE198;
-  v10 = v3;
-  v11 = self;
-  v8 = v3;
+  v10 = paymentRequest;
+  selfCopy = self;
+  v8 = paymentRequest;
   [v7 defaultAccountForFeature:v6 completion:v9];
 }
 
@@ -5782,21 +5782,21 @@ void __61__PKPaymentAuthorizationStateMachine__performInstallmentBind__block_inv
 
 - (void)_enqueueInitialCallbacks
 {
-  v34 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  if ([v34 shippingAddress])
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  if ([paymentRequest shippingAddress])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [v34 shippingContact];
-    v5 = [v4 postalAddress];
-    v3 = v5 != 0;
+    shippingContact = [paymentRequest shippingContact];
+    postalAddress = [shippingContact postalAddress];
+    v3 = postalAddress != 0;
   }
 
-  v6 = [v34 requiredShippingContactFields];
-  if ([v6 containsObject:@"post"] && !v3)
+  requiredShippingContactFields = [paymentRequest requiredShippingContactFields];
+  if ([requiredShippingContactFields containsObject:@"post"] && !v3)
   {
     v7 = [(PKPaymentAuthorizationDataModel *)self->_model itemForType:5];
     v8 = [v7 isValidWithError:0];
@@ -5806,15 +5806,15 @@ void __61__PKPaymentAuthorizationStateMachine__performInstallmentBind__block_inv
       goto LABEL_9;
     }
 
-    v6 = [(PKPaymentAuthorizationDataModel *)self->_model shippingAddress];
-    [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectShippingContact:v6];
+    requiredShippingContactFields = [(PKPaymentAuthorizationDataModel *)self->_model shippingAddress];
+    [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectShippingContact:requiredShippingContactFields];
   }
 
 LABEL_9:
-  v9 = [(PKPaymentAuthorizationDataModel *)self->_model mode];
-  if (v9 != 2)
+  mode = [(PKPaymentAuthorizationDataModel *)self->_model mode];
+  if (mode != 2)
   {
-    if (v9 != 1)
+    if (mode != 1)
     {
       goto LABEL_59;
     }
@@ -5829,15 +5829,15 @@ LABEL_9:
       v10 = 1;
     }
 
-    v11 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    v12 = [v11 requestType];
-    v13 = [(PKPaymentAuthorizationDataModel *)self->_model peerPaymentQuote];
-    v14 = v13;
+    paymentRequest2 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    requestType = [paymentRequest2 requestType];
+    peerPaymentQuote = [(PKPaymentAuthorizationDataModel *)self->_model peerPaymentQuote];
+    v14 = peerPaymentQuote;
     if (v10)
     {
-      if (v13)
+      if (peerPaymentQuote)
       {
-        v15 = [v13 firstQuoteItemOfType:1];
+        v15 = [peerPaymentQuote firstQuoteItemOfType:1];
         v16 = v15 != 0;
       }
 
@@ -5846,25 +5846,25 @@ LABEL_9:
         v16 = 1;
       }
 
-      v17 = v12 != 1 && v12 != 4 && v16;
-      if (v12 == 2)
+      v17 = requestType != 1 && requestType != 4 && v16;
+      if (requestType == 2)
       {
 LABEL_28:
-        v19 = [v11 deviceSupportsPeerPaymentAccountPayment];
-        if (v19 && [v11 accountPaymentUsePeerPaymentBalance])
+        deviceSupportsPeerPaymentAccountPayment = [paymentRequest2 deviceSupportsPeerPaymentAccountPayment];
+        if (deviceSupportsPeerPaymentAccountPayment && [paymentRequest2 accountPaymentUsePeerPaymentBalance])
         {
-          v20 = [(PKPaymentAuthorizationDataModel *)self->_model peerPaymentBalanceForAccountPayment];
+          peerPaymentBalanceForAccountPayment = [(PKPaymentAuthorizationDataModel *)self->_model peerPaymentBalanceForAccountPayment];
         }
 
         else
         {
-          v20 = 0;
+          peerPaymentBalanceForAccountPayment = 0;
         }
 
-        if ([v11 isAccountServiceTransferRequest])
+        if ([paymentRequest2 isAccountServiceTransferRequest])
         {
-          v23 = [v11 accountServiceTransferRequest];
-          v24 = [v23 supportsSplitPayment];
+          accountServiceTransferRequest = [paymentRequest2 accountServiceTransferRequest];
+          supportsSplitPayment = [accountServiceTransferRequest supportsSplitPayment];
 
           v25 = [(PKPaymentAuthorizationDataModel *)self->_model itemForType:2];
 
@@ -5879,7 +5879,7 @@ LABEL_28:
             v27 = 0;
           }
 
-          if ((v27 & v24) != 0)
+          if ((v27 & supportsSplitPayment) != 0)
           {
             v28 = 3;
           }
@@ -5906,8 +5906,8 @@ LABEL_28:
         }
 
         v30 = [PKAccountServicePaymentMethod alloc];
-        v31 = [(PKPaymentAuthorizationDataModel *)self->_model bankAccount];
-        v32 = [(PKAccountServicePaymentMethod *)v30 initWithBankAccountInformation:v31 peerPaymentBalance:v20 deviceSupportsPeerPaymentAccountPayment:v19 selectedMethods:v29];
+        bankAccount = [(PKPaymentAuthorizationDataModel *)self->_model bankAccount];
+        v32 = [(PKAccountServicePaymentMethod *)v30 initWithBankAccountInformation:bankAccount peerPaymentBalance:peerPaymentBalanceForAccountPayment deviceSupportsPeerPaymentAccountPayment:deviceSupportsPeerPaymentAccountPayment selectedMethods:v29];
 
         [(PKPaymentAuthorizationStateMachine *)self _enqueueDidUpdateAccountServicePaymentMethod:v32];
         goto LABEL_51;
@@ -5916,7 +5916,7 @@ LABEL_28:
 
     else
     {
-      if (v12 == 2)
+      if (requestType == 2)
       {
         goto LABEL_28;
       }
@@ -5924,15 +5924,15 @@ LABEL_28:
       v17 = 0;
     }
 
-    v21 = v12 == 5;
-    v22 = v12 != 5 && v17;
+    v21 = requestType == 5;
+    v22 = requestType != 5 && v17;
     if (!v21)
     {
       goto LABEL_52;
     }
 
-    v20 = [(PKPaymentAuthorizationDataModel *)self->_model installmentBindToken];
-    [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectPaymentMethodWithBindToken:v20];
+    peerPaymentBalanceForAccountPayment = [(PKPaymentAuthorizationDataModel *)self->_model installmentBindToken];
+    [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectPaymentMethodWithBindToken:peerPaymentBalanceForAccountPayment];
 LABEL_51:
 
     v22 = 0;
@@ -5944,52 +5944,52 @@ LABEL_52:
 
     if (v22)
     {
-      v33 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
-      [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectPaymentPass:v33];
+      pass = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+      [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectPaymentPass:pass];
     }
 
     goto LABEL_58;
   }
 
-  v11 = [(PKPaymentAuthorizationDataModel *)self->_model remotePaymentInstrument];
-  [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectRemotePaymentInstrument:v11];
+  paymentRequest2 = [(PKPaymentAuthorizationDataModel *)self->_model remotePaymentInstrument];
+  [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectRemotePaymentInstrument:paymentRequest2];
 LABEL_58:
 
 LABEL_59:
 }
 
-- (void)_sendDidTransitionFromState:(unint64_t)a3 toState:(unint64_t)a4 withParam:(id)a5
+- (void)_sendDidTransitionFromState:(unint64_t)state toState:(unint64_t)toState withParam:(id)param
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  paramCopy = param;
   v9 = PKLogFacilityTypeGetObject(8uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 0x14)
+    if (state > 0x14)
     {
       v10 = @"unknown";
     }
 
     else
     {
-      v10 = off_1E79CE800[a3];
+      v10 = off_1E79CE800[state];
     }
 
-    if (a4 > 0x14)
+    if (toState > 0x14)
     {
       v11 = @"unknown";
     }
 
     else
     {
-      v11 = off_1E79CE800[a4];
+      v11 = off_1E79CE800[toState];
     }
 
     v12 = @"<none>";
     v14 = 138412802;
-    if (v8)
+    if (paramCopy)
     {
-      v12 = v8;
+      v12 = paramCopy;
     }
 
     v15 = v10;
@@ -6000,14 +6000,14 @@ LABEL_59:
     _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "State machine change state from %@ to %@ with param: %@", &v14, 0x20u);
   }
 
-  [(PKPaymentAuthorizationStateMachine *)self _emitSignpostEvent:a4];
-  v13 = [(PKPaymentAuthorizationStateMachine *)self delegate];
-  [v13 paymentAuthorizationStateMachine:self didTransitionFromState:a3 toState:a4 withParam:v8];
+  [(PKPaymentAuthorizationStateMachine *)self _emitSignpostEvent:toState];
+  delegate = [(PKPaymentAuthorizationStateMachine *)self delegate];
+  [delegate paymentAuthorizationStateMachine:self didTransitionFromState:state toState:toState withParam:paramCopy];
 }
 
-- (void)_emitSignpostEvent:(unint64_t)a3
+- (void)_emitSignpostEvent:(unint64_t)event
 {
-  switch(a3)
+  switch(event)
   {
     case 0uLL:
       v4 = PKLogFacilityTypeGetObject(8uLL);
@@ -6357,9 +6357,9 @@ LABEL_59:
 LABEL_63:
 }
 
-- (void)_advanceToNextStateFromResolveError:(BOOL)a3
+- (void)_advanceToNextStateFromResolveError:(BOOL)error
 {
-  v4 = a3;
+  errorCopy = error;
   v49 = *MEMORY[0x1E69E9840];
   v6 = 1;
   v46 = 0;
@@ -6369,9 +6369,9 @@ LABEL_63:
   paymentOffersController = self->_paymentOffersController;
   if (paymentOffersController)
   {
-    v3 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
-    v10 = [v3 uniqueID];
-    v6 = [(PKPaymentOffersController *)paymentOffersController preconfiguredInstallmentOfferStateForPassUniqueID:v10]- 5 < 0xFFFFFFFFFFFFFFFELL;
+    pass = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+    uniqueID = [pass uniqueID];
+    v6 = [(PKPaymentOffersController *)paymentOffersController preconfiguredInstallmentOfferStateForPassUniqueID:uniqueID]- 5 < 0xFFFFFFFFFFFFFFFELL;
   }
 
   if (self->_awaitingClientCallbackReply || self->_awaitingWebServiceResponse || !v7 && self->_state == 3)
@@ -6384,10 +6384,10 @@ LABEL_63:
     state = self->_state;
     if (state - 9 >= 4 && state != 17)
     {
-      v17 = self;
+      selfCopy7 = self;
       v18 = 6;
 LABEL_62:
-      [(PKPaymentAuthorizationStateMachine *)v17 _setState:v18 param:0];
+      [(PKPaymentAuthorizationStateMachine *)selfCopy7 _setState:v18 param:0];
       goto LABEL_63;
     }
   }
@@ -6400,30 +6400,30 @@ LABEL_62:
 
   if ([(PKPaymentAuthorizationDataModel *)self->_model fundingMode]== 2 && v47 == 10 && !v7)
   {
-    v17 = self;
+    selfCopy7 = self;
     v18 = 18;
     goto LABEL_62;
   }
 
   if ([(PKPaymentAuthorizationDataModel *)self->_model fundingMode]== 2 && v47 == 11 && !v7)
   {
-    if (v4)
+    if (errorCopy)
     {
-      v19 = [(PKPaymentAuthorizationDataModel *)self->_model selectedPaymentOffer];
-      v20 = [v19 criteriaIdentifier];
-      v21 = [v19 passUniqueID];
-      [(PKPaymentOffersController *)self->_paymentOffersController resetLoadingDetailsForPaymentOffersForCriteriaIdentifier:v20 passUniqueID:v21];
+      selectedPaymentOffer = [(PKPaymentAuthorizationDataModel *)self->_model selectedPaymentOffer];
+      criteriaIdentifier = [selectedPaymentOffer criteriaIdentifier];
+      passUniqueID = [selectedPaymentOffer passUniqueID];
+      [(PKPaymentOffersController *)self->_paymentOffersController resetLoadingDetailsForPaymentOffersForCriteriaIdentifier:criteriaIdentifier passUniqueID:passUniqueID];
       [(PKPaymentAuthorizationStateMachine *)self didChangeFundingMode:0];
 
 LABEL_47:
       goto LABEL_63;
     }
 
-    v19 = [PKPaymentAuthorizationErrorStateParam paramWithError:v8 paymentOffersError:1];
-    v23 = self;
+    selectedPaymentOffer = [PKPaymentAuthorizationErrorStateParam paramWithError:v8 paymentOffersError:1];
+    selfCopy8 = self;
     v24 = 14;
 LABEL_46:
-    [(PKPaymentAuthorizationStateMachine *)v23 _setState:v24 param:v19];
+    [(PKPaymentAuthorizationStateMachine *)selfCopy8 _setState:v24 param:selectedPaymentOffer];
     goto LABEL_47;
   }
 
@@ -6436,22 +6436,22 @@ LABEL_46:
       _os_log_impl(&dword_1AD337000, v22, OS_LOG_TYPE_DEFAULT, "The previously selected payment offer is no longer valid. User needs to take action.", buf, 2u);
     }
 
-    v19 = [PKPaymentAuthorizationErrorStateParam paramWithError:v8 paymentOffersError:1];
-    v23 = self;
+    selectedPaymentOffer = [PKPaymentAuthorizationErrorStateParam paramWithError:v8 paymentOffersError:1];
+    selfCopy8 = self;
     v24 = 19;
     goto LABEL_46;
   }
 
   if ([(PKPaymentAuthorizationDataModel *)self->_model fundingMode]== 0 && !v6)
   {
-    v17 = self;
+    selfCopy7 = self;
     v18 = 20;
     goto LABEL_62;
   }
 
-  v15 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v16 = [v15 isVirtualCardRequest];
-  if (v16)
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  isVirtualCardRequest = [paymentRequest isVirtualCardRequest];
+  if (isVirtualCardRequest)
   {
     if (!self->_state)
     {
@@ -6463,20 +6463,20 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  v3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  if ([v3 requestType] != 1 || self->_state)
+  pass = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  if ([pass requestType] != 1 || self->_state)
   {
 
     goto LABEL_42;
   }
 
 LABEL_53:
-  v28 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v29 = [v28 merchantSession];
-  if (v29 && [(PKPaymentAuthorizationDataModel *)self->_model wantsInstructions])
+  paymentRequest2 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  merchantSession = [paymentRequest2 merchantSession];
+  if (merchantSession && [(PKPaymentAuthorizationDataModel *)self->_model wantsInstructions])
   {
-    v30 = [(PKPaymentAuthorizationDataModel *)self->_model instructions];
-    v31 = v30 == 0;
+    instructions = [(PKPaymentAuthorizationDataModel *)self->_model instructions];
+    v31 = instructions == 0;
   }
 
   else
@@ -6484,7 +6484,7 @@ LABEL_53:
     v31 = 0;
   }
 
-  if (v16)
+  if (isVirtualCardRequest)
   {
 
     if (v31)
@@ -6499,7 +6499,7 @@ LABEL_53:
     if (v31)
     {
 LABEL_61:
-      v17 = self;
+      selfCopy7 = self;
       v18 = 8;
       goto LABEL_62;
     }
@@ -6508,19 +6508,19 @@ LABEL_61:
 LABEL_43:
   if (v7)
   {
-    v17 = self;
+    selfCopy7 = self;
     v18 = 5;
     goto LABEL_62;
   }
 
   if (self->_state != 3 && ![(PKPaymentAuthorizationDataModel *)self->_model isHideMyEmailLoading])
   {
-    v25 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
-    if (!v25)
+    pass2 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+    if (!pass2)
     {
-      v32 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-      v33 = [v32 originatingURL];
-      v34 = PKPaymentSheetShowExpressProvisioning(v33);
+      paymentRequest3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+      originatingURL = [paymentRequest3 originatingURL];
+      v34 = PKPaymentSheetShowExpressProvisioning(originatingURL);
 
       if (!v34)
       {
@@ -6531,8 +6531,8 @@ LABEL_43:
       v44 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v25 = [(PKPaymentAuthorizationDataModel *)self->_model unavailablePasses];
-      v35 = [v25 countByEnumeratingWithState:&v41 objects:v48 count:16];
+      pass2 = [(PKPaymentAuthorizationDataModel *)self->_model unavailablePasses];
+      v35 = [pass2 countByEnumeratingWithState:&v41 objects:v48 count:16];
       if (v35)
       {
         v36 = v35;
@@ -6543,20 +6543,20 @@ LABEL_43:
           {
             if (*v42 != v37)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(pass2);
             }
 
-            v39 = [*(*(&v41 + 1) + 8 * i) secureElementPass];
-            v40 = [v39 passActivationState];
+            secureElementPass = [*(*(&v41 + 1) + 8 * i) secureElementPass];
+            passActivationState = [secureElementPass passActivationState];
 
-            if (v40 == 1)
+            if (passActivationState == 1)
             {
               v47 = 8;
               goto LABEL_51;
             }
           }
 
-          v36 = [v25 countByEnumeratingWithState:&v41 objects:v48 count:16];
+          v36 = [pass2 countByEnumeratingWithState:&v41 objects:v48 count:16];
           if (v36)
           {
             continue;
@@ -6571,10 +6571,10 @@ LABEL_51:
 
 LABEL_52:
     v26 = v47;
-    v27 = [(PKPaymentAuthorizationDataModel *)self->_model paymentErrors];
-    v19 = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:0 status:v26 error:v8 clientErrors:v27];
+    paymentErrors = [(PKPaymentAuthorizationDataModel *)self->_model paymentErrors];
+    selectedPaymentOffer = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:0 status:v26 error:v8 clientErrors:paymentErrors];
 
-    v23 = self;
+    selfCopy8 = self;
     v24 = 3;
     goto LABEL_46;
   }
@@ -6582,26 +6582,26 @@ LABEL_52:
 LABEL_63:
 }
 
-- (void)_updateModelWithPaymentSummaryItems:(id)a3
+- (void)_updateModelWithPaymentSummaryItems:(id)items
 {
   v17 = *MEMORY[0x1E69E9840];
   model = self->_model;
-  v5 = a3;
-  v6 = [(PKPaymentAuthorizationDataModel *)model transactionAmount];
-  [(PKPaymentAuthorizationDataModel *)self->_model setPaymentSummaryItems:v5];
+  itemsCopy = items;
+  transactionAmount = [(PKPaymentAuthorizationDataModel *)model transactionAmount];
+  [(PKPaymentAuthorizationDataModel *)self->_model setPaymentSummaryItems:itemsCopy];
 
-  v7 = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
-  v8 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v9 = [PKPaymentRequestValidator validatorWithObject:v8];
+  transactionAmount2 = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  v9 = [PKPaymentRequestValidator validatorWithObject:paymentRequest];
   v14 = 0;
   v10 = [v9 isValidWithError:&v14];
   v11 = v14;
 
   if (v10)
   {
-    if (v6 && v7)
+    if (transactionAmount && transactionAmount2)
     {
-      if ([v6 isEqual:v7])
+      if ([transactionAmount isEqual:transactionAmount2])
       {
         goto LABEL_11;
       }
@@ -6609,7 +6609,7 @@ LABEL_63:
       goto LABEL_10;
     }
 
-    if (v6 != v7)
+    if (transactionAmount != transactionAmount2)
     {
 LABEL_10:
       [(PKPaymentAuthorizationStateMachine *)self _fetchAdditionalPaymentMethodDataIfNeeded];
@@ -6635,35 +6635,35 @@ LABEL_11:
 
 - (BOOL)_isMultiTokenContextsSupported
 {
-  v2 = self;
-  v3 = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
-  v4 = [v3 paymentWebService:v2->_paymentWebService supportedRegionFeatureOfType:4];
-  LOBYTE(v2) = v4 != 0;
+  selfCopy = self;
+  targetDevice = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
+  v4 = [targetDevice paymentWebService:selfCopy->_paymentWebService supportedRegionFeatureOfType:4];
+  LOBYTE(selfCopy) = v4 != 0;
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)_canUpdateWithMultiTokenContexts:(id)a3 error:(id *)a4
+- (BOOL)_canUpdateWithMultiTokenContexts:(id)contexts error:(id *)error
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v8 = [v7 multiTokenContexts];
+  contextsCopy = contexts;
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  multiTokenContexts = [paymentRequest multiTokenContexts];
 
-  if ([v8 count])
+  if ([multiTokenContexts count])
   {
-    v26 = v8;
-    v27 = v6;
+    v26 = multiTokenContexts;
+    v27 = contextsCopy;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v9 = v6;
+    v9 = contextsCopy;
     v10 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v10)
     {
       v11 = v10;
-      v25 = a4;
+      errorCopy = error;
       v12 = 0;
       v13 = *v30;
       while (2)
@@ -6677,22 +6677,22 @@ LABEL_11:
             objc_enumerationMutation(v9);
           }
 
-          v16 = [PKPaymentTokenContextValidator validatorWithObject:*(*(&v29 + 1) + 8 * v14), v25];
-          v17 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-          v18 = [v17 currencyCode];
-          [v16 setCurrencyCode:v18];
+          errorCopy = [PKPaymentTokenContextValidator validatorWithObject:*(*(&v29 + 1) + 8 * v14), errorCopy];
+          paymentRequest2 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+          currencyCode = [paymentRequest2 currencyCode];
+          [errorCopy setCurrencyCode:currencyCode];
 
-          v19 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-          v20 = [v19 APIType];
+          paymentRequest3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+          aPIType = [paymentRequest3 APIType];
           v28 = v15;
-          v21 = [v16 isValidWithAPIType:v20 withError:&v28];
+          v21 = [errorCopy isValidWithAPIType:aPIType withError:&v28];
           v12 = v28;
 
           if (!v21)
           {
-            v8 = v26;
-            v6 = v27;
-            a4 = v25;
+            multiTokenContexts = v26;
+            contextsCopy = v27;
+            error = errorCopy;
             goto LABEL_13;
           }
 
@@ -6717,8 +6717,8 @@ LABEL_11:
     }
 
     v23 = 1;
-    v8 = v26;
-    v6 = v27;
+    multiTokenContexts = v26;
+    contextsCopy = v27;
   }
 
   else
@@ -6729,11 +6729,11 @@ LABEL_11:
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v9];
 LABEL_13:
 
-    if (a4)
+    if (error)
     {
       v22 = v12;
       v23 = 0;
-      *a4 = v12;
+      *error = v12;
     }
 
     else
@@ -6754,11 +6754,11 @@ LABEL_13:
 
   if (PKHasSeenDeviceAssessmentEducation())
   {
-    v3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
-    if (v3)
+    paymentApplication = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
+    if (paymentApplication)
     {
-      v4 = v3;
-      v5 = [v3 supportsDeviceAssessmentAccordingToService:self->_paymentWebService];
+      v4 = paymentApplication;
+      v5 = [paymentApplication supportsDeviceAssessmentAccordingToService:self->_paymentWebService];
     }
 
     else
@@ -6792,44 +6792,44 @@ LABEL_13:
 
 - (BOOL)_isRequestUsedForTransactionAssessment
 {
-  v3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v4 = [v3 isPeerPaymentRequest];
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  isPeerPaymentRequest = [paymentRequest isPeerPaymentRequest];
 
-  if (v4)
+  if (isPeerPaymentRequest)
   {
     return 0;
   }
 
-  v6 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v7 = [v6 isAccountServiceTransferRequest];
+  paymentRequest2 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  isAccountServiceTransferRequest = [paymentRequest2 isAccountServiceTransferRequest];
 
-  return v7 ^ 1;
+  return isAccountServiceTransferRequest ^ 1;
 }
 
 - (BOOL)_isMerchantTokensSupported
 {
-  v2 = self;
-  v3 = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
-  v4 = [v3 paymentWebService:v2->_paymentWebService supportedRegionFeatureOfType:3];
-  LOBYTE(v2) = v4 != 0;
+  selfCopy = self;
+  targetDevice = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
+  v4 = [targetDevice paymentWebService:selfCopy->_paymentWebService supportedRegionFeatureOfType:3];
+  LOBYTE(selfCopy) = v4 != 0;
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)_canUpdateWithRecurringPaymentRequest:(id)a3 error:(id *)a4
+- (BOOL)_canUpdateWithRecurringPaymentRequest:(id)request error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v8 = [v7 recurringPaymentRequest];
+  requestCopy = request;
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  recurringPaymentRequest = [paymentRequest recurringPaymentRequest];
 
-  if (v8)
+  if (recurringPaymentRequest)
   {
-    [v6 sanitize];
-    v9 = [v6 billingAgreement];
-    v10 = [v8 billingAgreement];
+    [requestCopy sanitize];
+    billingAgreement = [requestCopy billingAgreement];
+    billingAgreement2 = [recurringPaymentRequest billingAgreement];
     v15 = 0;
-    v11 = [(PKPaymentAuthorizationStateMachine *)self _canUpdateWithBillingAgreement:v9 oldAgreement:v10 error:&v15];
+    v11 = [(PKPaymentAuthorizationStateMachine *)self _canUpdateWithBillingAgreement:billingAgreement oldAgreement:billingAgreement2 error:&v15];
     v12 = v15;
   }
 
@@ -6837,34 +6837,34 @@ LABEL_13:
   {
     v16 = *MEMORY[0x1E696A578];
     v17[0] = @"The original payment request didn't have a recurring payment request";
-    v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v9];
+    billingAgreement = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
+    v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:billingAgreement];
     v11 = 0;
   }
 
-  if (a4 && !v11)
+  if (error && !v11)
   {
     v13 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (BOOL)_canUpdateWithAutomaticReloadPaymentRequest:(id)a3 error:(id *)a4
+- (BOOL)_canUpdateWithAutomaticReloadPaymentRequest:(id)request error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v8 = [v7 automaticReloadPaymentRequest];
+  requestCopy = request;
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  automaticReloadPaymentRequest = [paymentRequest automaticReloadPaymentRequest];
 
-  if (v8)
+  if (automaticReloadPaymentRequest)
   {
-    [v6 sanitize];
-    v9 = [v6 billingAgreement];
-    v10 = [v8 billingAgreement];
+    [requestCopy sanitize];
+    billingAgreement = [requestCopy billingAgreement];
+    billingAgreement2 = [automaticReloadPaymentRequest billingAgreement];
     v15 = 0;
-    v11 = [(PKPaymentAuthorizationStateMachine *)self _canUpdateWithBillingAgreement:v9 oldAgreement:v10 error:&v15];
+    v11 = [(PKPaymentAuthorizationStateMachine *)self _canUpdateWithBillingAgreement:billingAgreement oldAgreement:billingAgreement2 error:&v15];
     v12 = v15;
   }
 
@@ -6872,40 +6872,40 @@ LABEL_13:
   {
     v16 = *MEMORY[0x1E696A578];
     v17[0] = @"The original payment request didn't have an automatic reload payment request";
-    v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v9];
+    billingAgreement = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
+    v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:billingAgreement];
     v11 = 0;
   }
 
-  if (a4 && !v11)
+  if (error && !v11)
   {
     v13 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (BOOL)_canUpdateWithBillingAgreement:(id)a3 oldAgreement:(id)a4 error:(id *)a5
+- (BOOL)_canUpdateWithBillingAgreement:(id)agreement oldAgreement:(id)oldAgreement error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  agreementCopy = agreement;
+  oldAgreementCopy = oldAgreement;
+  v9 = agreementCopy;
   v10 = v9;
-  if (v8 == v9)
+  if (oldAgreementCopy == v9)
   {
 
     goto LABEL_7;
   }
 
-  if (!v9 || !v8)
+  if (!v9 || !oldAgreementCopy)
   {
 
     goto LABEL_9;
   }
 
-  v11 = [v8 isEqualToString:v9];
+  v11 = [oldAgreementCopy isEqualToString:v9];
 
   if (v11)
   {
@@ -6921,11 +6921,11 @@ LABEL_9:
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
   v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v14];
 
-  if (a5)
+  if (error)
   {
     v15 = v12;
     v13 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
   else
@@ -6938,20 +6938,20 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)_canUpdateWithDeferredPaymentRequest:(id)a3 error:(id *)a4
+- (BOOL)_canUpdateWithDeferredPaymentRequest:(id)request error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v8 = [v7 deferredPaymentRequest];
+  requestCopy = request;
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  deferredPaymentRequest = [paymentRequest deferredPaymentRequest];
 
-  if (v8)
+  if (deferredPaymentRequest)
   {
-    [v6 sanitize];
-    v9 = [v6 billingAgreement];
-    v10 = [v8 billingAgreement];
+    [requestCopy sanitize];
+    billingAgreement = [requestCopy billingAgreement];
+    billingAgreement2 = [deferredPaymentRequest billingAgreement];
     v15 = 0;
-    v11 = [(PKPaymentAuthorizationStateMachine *)self _canUpdateWithBillingAgreement:v9 oldAgreement:v10 error:&v15];
+    v11 = [(PKPaymentAuthorizationStateMachine *)self _canUpdateWithBillingAgreement:billingAgreement oldAgreement:billingAgreement2 error:&v15];
     v12 = v15;
   }
 
@@ -6959,72 +6959,72 @@ LABEL_12:
   {
     v16 = *MEMORY[0x1E696A578];
     v17[0] = @"The original payment request didn't have a deferred payment request";
-    v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v9];
+    billingAgreement = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
+    v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:billingAgreement];
     v11 = 0;
   }
 
-  if (a4 && !v11)
+  if (error && !v11)
   {
     v13 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (void)_updateModelWithShippingMethods:(id)a3 paymentSummaryItems:(id)a4 multiTokenContexts:(id)a5 recurringPaymentRequest:(id)a6 automaticReloadPaymentRequest:(id)a7 deferredPaymentRequest:(id)a8 contentItems:(id)a9
+- (void)_updateModelWithShippingMethods:(id)methods paymentSummaryItems:(id)items multiTokenContexts:(id)contexts recurringPaymentRequest:(id)request automaticReloadPaymentRequest:(id)paymentRequest deferredPaymentRequest:(id)deferredPaymentRequest contentItems:(id)contentItems
 {
   v113[1] = *MEMORY[0x1E69E9840];
-  v107 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v106 = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
+  methodsCopy = methods;
+  itemsCopy = items;
+  contextsCopy = contexts;
+  requestCopy = request;
+  paymentRequestCopy = paymentRequest;
+  deferredPaymentRequestCopy = deferredPaymentRequest;
+  contentItemsCopy = contentItems;
+  transactionAmount = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
   [(PKPaymentAuthorizationDataModel *)self->_model beginUpdates];
-  v105 = v20;
-  if ([v16 count] && -[PKPaymentAuthorizationStateMachine _isMultiTokenContextsSupported](self, "_isMultiTokenContextsSupported"))
+  v105 = contentItemsCopy;
+  if ([contextsCopy count] && -[PKPaymentAuthorizationStateMachine _isMultiTokenContextsSupported](self, "_isMultiTokenContextsSupported"))
   {
     v111 = 0;
-    v21 = [(PKPaymentAuthorizationStateMachine *)self _canUpdateWithMultiTokenContexts:v16 error:&v111];
+    v21 = [(PKPaymentAuthorizationStateMachine *)self _canUpdateWithMultiTokenContexts:contextsCopy error:&v111];
     v22 = v111;
     if (!v21)
     {
       v53 = objc_alloc_init(MEMORY[0x1E695DF90]);
       [v53 setObject:v22 forKeyedSubscript:*MEMORY[0x1E696AA08]];
       [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v53];
-      v55 = v54 = v19;
+      v55 = v54 = deferredPaymentRequestCopy;
       v56 = [PKPaymentAuthorizationErrorStateParam paramWithError:v55];
       goto LABEL_35;
     }
 
-    [(PKPaymentAuthorizationDataModel *)self->_model setMultiTokenContexts:v16];
+    [(PKPaymentAuthorizationDataModel *)self->_model setMultiTokenContexts:contextsCopy];
   }
 
-  if (v17 && [(PKPaymentAuthorizationStateMachine *)self _isMerchantTokensSupported])
+  if (requestCopy && [(PKPaymentAuthorizationStateMachine *)self _isMerchantTokensSupported])
   {
     v110 = 0;
-    v23 = [(PKPaymentAuthorizationStateMachine *)self _canUpdateWithRecurringPaymentRequest:v17 error:&v110];
+    v23 = [(PKPaymentAuthorizationStateMachine *)self _canUpdateWithRecurringPaymentRequest:requestCopy error:&v110];
     v24 = v110;
     if (!v23)
     {
       goto LABEL_33;
     }
 
-    [(PKPaymentAuthorizationDataModel *)self->_model setRecurringPaymentRequest:v17];
+    [(PKPaymentAuthorizationDataModel *)self->_model setRecurringPaymentRequest:requestCopy];
   }
 
-  if (v18 && [(PKPaymentAuthorizationStateMachine *)self _isMerchantTokensSupported])
+  if (paymentRequestCopy && [(PKPaymentAuthorizationStateMachine *)self _isMerchantTokensSupported])
   {
     v109 = 0;
-    v25 = [(PKPaymentAuthorizationStateMachine *)self _canUpdateWithAutomaticReloadPaymentRequest:v18 error:&v109];
+    v25 = [(PKPaymentAuthorizationStateMachine *)self _canUpdateWithAutomaticReloadPaymentRequest:paymentRequestCopy error:&v109];
     v24 = v109;
     if (v25)
     {
-      [(PKPaymentAuthorizationDataModel *)self->_model setAutomaticReloadPaymentRequest:v18];
+      [(PKPaymentAuthorizationDataModel *)self->_model setAutomaticReloadPaymentRequest:paymentRequestCopy];
 
       goto LABEL_13;
     }
@@ -7033,7 +7033,7 @@ LABEL_33:
     v53 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v53 setObject:v24 forKeyedSubscript:*MEMORY[0x1E696AA08]];
     [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-2001 userInfo:v53];
-    v55 = v54 = v19;
+    v55 = v54 = deferredPaymentRequestCopy;
     v56 = [PKPaymentAuthorizationErrorStateParam paramWithError:v55];
     v22 = v24;
 LABEL_35:
@@ -7044,19 +7044,19 @@ LABEL_35:
     v59 = v54;
 
 LABEL_59:
-    v85 = v106;
+    v85 = transactionAmount;
     goto LABEL_60;
   }
 
 LABEL_13:
-  if (v19 && [(PKPaymentAuthorizationStateMachine *)self _isMerchantTokensSupported])
+  if (deferredPaymentRequestCopy && [(PKPaymentAuthorizationStateMachine *)self _isMerchantTokensSupported])
   {
     v108 = 0;
-    v26 = [(PKPaymentAuthorizationStateMachine *)self _canUpdateWithDeferredPaymentRequest:v19 error:&v108];
+    v26 = [(PKPaymentAuthorizationStateMachine *)self _canUpdateWithDeferredPaymentRequest:deferredPaymentRequestCopy error:&v108];
     v24 = v108;
     if (v26)
     {
-      [(PKPaymentAuthorizationDataModel *)self->_model setDeferredPaymentRequest:v19];
+      [(PKPaymentAuthorizationDataModel *)self->_model setDeferredPaymentRequest:deferredPaymentRequestCopy];
 
       goto LABEL_17;
     }
@@ -7065,73 +7065,73 @@ LABEL_13:
   }
 
 LABEL_17:
-  v103 = v19;
-  v27 = [v107 methods];
-  v28 = [v27 count];
+  v103 = deferredPaymentRequestCopy;
+  methods = [methodsCopy methods];
+  v28 = [methods count];
 
   if (v28)
   {
-    v29 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    [v29 setAvailableShippingMethods:v107];
+    paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    [paymentRequest setAvailableShippingMethods:methodsCopy];
 
     model = self->_model;
-    v31 = [v107 defaultMethod];
-    [(PKPaymentAuthorizationDataModel *)model setShippingMethod:v31];
+    defaultMethod = [methodsCopy defaultMethod];
+    [(PKPaymentAuthorizationDataModel *)model setShippingMethod:defaultMethod];
   }
 
-  v32 = [v15 count];
+  v32 = [itemsCopy count];
   if (v32)
   {
     v33 = v32;
-    v34 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    v35 = [v34 requestType];
+    paymentRequest2 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    requestType = [paymentRequest2 requestType];
 
     v36 = v33 - 1;
-    if (v36 && v35 == 5)
+    if (v36 && requestType == 5)
     {
-      v37 = [v15 lastObject];
-      v38 = [v37 amount];
+      lastObject = [itemsCopy lastObject];
+      amount = [lastObject amount];
 
-      v39 = [v15 subarrayWithRange:{0, v36}];
+      v39 = [itemsCopy subarrayWithRange:{0, v36}];
 
-      [(PKPaymentAuthorizationDataModel *)self->_model setInstallmentAuthorizationAmount:v38];
-      v15 = v39;
+      [(PKPaymentAuthorizationDataModel *)self->_model setInstallmentAuthorizationAmount:amount];
+      itemsCopy = v39;
     }
 
-    [(PKPaymentAuthorizationStateMachine *)self _updateModelWithPaymentSummaryItems:v15];
+    [(PKPaymentAuthorizationStateMachine *)self _updateModelWithPaymentSummaryItems:itemsCopy];
   }
 
-  if ([v20 count])
+  if ([contentItemsCopy count])
   {
-    [(PKPaymentAuthorizationDataModel *)self->_model setPaymentContentItems:v20];
+    [(PKPaymentAuthorizationDataModel *)self->_model setPaymentContentItems:contentItemsCopy];
   }
 
   [(PKPaymentAuthorizationDataModel *)self->_model endUpdates];
   [(PKPaymentAuthorizationStateMachine *)self _updateAssessmentAttributes];
-  v40 = [(PKPaymentAuthorizationDataModel *)self->_model paymentSummaryItems];
-  v104 = [v40 lastObject];
+  paymentSummaryItems = [(PKPaymentAuthorizationDataModel *)self->_model paymentSummaryItems];
+  lastObject2 = [paymentSummaryItems lastObject];
 
-  v102 = v18;
+  v102 = paymentRequestCopy;
   if ([(PKPaymentAuthorizationDataModel *)self->_model mode]== 1)
   {
-    v41 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
-    if (![v41 hasAssociatedPeerPaymentAccount])
+    pass = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+    if (![pass hasAssociatedPeerPaymentAccount])
     {
 LABEL_30:
 
       goto LABEL_31;
     }
 
-    v42 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    if ([v42 requestType] == 10)
+    paymentRequest3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    if ([paymentRequest3 requestType] == 10)
     {
 
       goto LABEL_30;
     }
 
-    v60 = [(PKPaymentAuthorizationDataModel *)self->_model fundingMode];
+    fundingMode = [(PKPaymentAuthorizationDataModel *)self->_model fundingMode];
 
-    if (!v60)
+    if (!fundingMode)
     {
       v100 = [(PKPaymentAuthorizationDataModel *)self->_model itemForType:3];
       if ([v100 status] == 5)
@@ -7139,39 +7139,39 @@ LABEL_30:
         [(PKPaymentAuthorizationDataModel *)self->_model setStatus:0 forItemWithType:3];
       }
 
-      v61 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
-      v62 = [v61 peerPaymentBalance];
+      pass2 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+      peerPaymentBalance = [pass2 peerPaymentBalance];
 
-      v63 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-      v64 = [v62 currency];
-      v65 = v63;
-      v66 = [v63 currencyCode];
-      v67 = [v64 caseInsensitiveCompare:v66];
+      paymentRequest4 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+      currency = [peerPaymentBalance currency];
+      v65 = paymentRequest4;
+      currencyCode = [paymentRequest4 currencyCode];
+      v67 = [currency caseInsensitiveCompare:currencyCode];
 
       if (v67)
       {
-        v68 = v62;
+        v68 = peerPaymentBalance;
         v69 = 1;
       }
 
       else
       {
-        v70 = [v62 amount];
-        v71 = [v104 amount];
-        v68 = v62;
-        v69 = [v70 compare:v71] != -1;
+        amount2 = [peerPaymentBalance amount];
+        amount3 = [lastObject2 amount];
+        v68 = peerPaymentBalance;
+        v69 = [amount2 compare:amount3] != -1;
       }
 
       v98 = v68;
-      v72 = [v68 amount];
-      v73 = [MEMORY[0x1E696AB90] zero];
-      v74 = [v72 compare:v73];
+      amount4 = [v68 amount];
+      zero = [MEMORY[0x1E696AB90] zero];
+      v74 = [amount4 compare:zero];
 
-      v75 = [v65 requestType];
-      v76 = [v65 requestType];
-      if (!v69 || !v74 && v75 != 3 && v76 != 12)
+      requestType2 = [v65 requestType];
+      requestType3 = [v65 requestType];
+      if (!v69 || !v74 && requestType2 != 3 && requestType3 != 12)
       {
-        v77 = v17;
+        v77 = requestCopy;
         v78 = MEMORY[0x1E696ABC0];
         v112 = *MEMORY[0x1E696A588];
         v79 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr.isa, 0);
@@ -7179,8 +7179,8 @@ LABEL_30:
         v80 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v113 forKeys:&v112 count:1];
         v81 = [v78 errorWithDomain:@"PKPassKitErrorDomain" code:-3009 userInfo:v80];
 
-        v82 = [(PKPaymentAuthorizationDataModel *)self->_model paymentErrors];
-        v83 = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:3 status:5 error:v81 clientErrors:v82];
+        paymentErrors = [(PKPaymentAuthorizationDataModel *)self->_model paymentErrors];
+        v83 = [PKPaymentAuthorizationInvalidDataStateParam paramWithDataType:3 status:5 error:v81 clientErrors:paymentErrors];
 
         [(PKPaymentAuthorizationStateMachine *)self _setState:3 param:v83];
         if ([(PKPaymentAuthorizationStateMachine *)self hasPendingCallbacks])
@@ -7188,7 +7188,7 @@ LABEL_30:
           [(PKPaymentAuthorizationStateMachine *)self _advanceToNextState];
         }
 
-        v17 = v77;
+        requestCopy = v77;
         goto LABEL_58;
       }
 
@@ -7197,33 +7197,33 @@ LABEL_30:
   }
 
 LABEL_31:
-  v43 = [(PKContinuityPaymentCoordinator *)self->_continuityPaymentCoordinator currentRemotePaymentRequest];
+  currentRemotePaymentRequest = [(PKContinuityPaymentCoordinator *)self->_continuityPaymentCoordinator currentRemotePaymentRequest];
 
-  if (v43)
+  if (currentRemotePaymentRequest)
   {
-    v99 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    v96 = [v99 multiTokenContexts];
-    v97 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    v44 = [v97 recurringPaymentRequest];
-    v45 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    v46 = [v45 automaticReloadPaymentRequest];
-    v47 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    [v47 deferredPaymentRequest];
-    v48 = v17;
-    v50 = v49 = v15;
+    paymentRequest5 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    multiTokenContexts = [paymentRequest5 multiTokenContexts];
+    paymentRequest6 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    recurringPaymentRequest = [paymentRequest6 recurringPaymentRequest];
+    paymentRequest7 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    automaticReloadPaymentRequest = [paymentRequest7 automaticReloadPaymentRequest];
+    paymentRequest8 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    [paymentRequest8 deferredPaymentRequest];
+    v48 = requestCopy;
+    v50 = v49 = itemsCopy;
     [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
-    v52 = v51 = v16;
-    [(PKPaymentAuthorizationStateMachine *)self _performSendClientUpdateWithShippingMethods:v107 paymentSummaryItems:v49 multiTokenContexts:v96 recurringPaymentRequest:v44 automaticReloadPaymentRequest:v46 deferredPaymentRequest:v50 paymentApplication:v52 status:0];
+    v52 = v51 = contextsCopy;
+    [(PKPaymentAuthorizationStateMachine *)self _performSendClientUpdateWithShippingMethods:methodsCopy paymentSummaryItems:v49 multiTokenContexts:multiTokenContexts recurringPaymentRequest:recurringPaymentRequest automaticReloadPaymentRequest:automaticReloadPaymentRequest deferredPaymentRequest:v50 paymentApplication:v52 status:0];
 
-    v16 = v51;
-    v15 = v49;
-    v17 = v48;
+    contextsCopy = v51;
+    itemsCopy = v49;
+    requestCopy = v48;
 
 LABEL_57:
-    v18 = v102;
+    paymentRequestCopy = v102;
 LABEL_58:
     v59 = v103;
-    v58 = v104;
+    v58 = lastObject2;
     goto LABEL_59;
   }
 
@@ -7234,18 +7234,18 @@ LABEL_50:
     goto LABEL_57;
   }
 
-  v84 = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
-  v85 = v106;
-  v86 = [v84 isEqualToValue:v106];
+  transactionAmount2 = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
+  v85 = transactionAmount;
+  v86 = [transactionAmount2 isEqualToValue:transactionAmount];
 
   v59 = v103;
-  v58 = v104;
+  v58 = lastObject2;
   if ((v86 & 1) == 0)
   {
     [(PKPaymentAuthorizationDataModel *)self->_model setInstructions:0];
   }
 
-  v18 = v102;
+  paymentRequestCopy = v102;
   if ([(PKPaymentAuthorizationStateMachine *)self hasPendingCallbacks]|| ([(PKPaymentAuthorizationDataModel *)self->_model instructions], v87 = objc_claimAutoreleasedReturnValue(), v87, v87))
   {
     [(PKPaymentAuthorizationStateMachine *)self _advanceToNextState];
@@ -7253,24 +7253,24 @@ LABEL_50:
 
   else
   {
-    v88 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    v89 = [v88 merchantSession];
+    paymentRequest9 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    merchantSession = [paymentRequest9 merchantSession];
     [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
-    v90 = v101 = v15;
-    v91 = [v90 secureElementIdentifier];
-    v92 = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
+    v90 = v101 = itemsCopy;
+    secureElementIdentifier = [v90 secureElementIdentifier];
+    transactionAmount3 = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
     [(PKPaymentAuthorizationDataModel *)self->_model currencyCode];
-    v94 = v93 = v17;
-    v95 = [PKPaymentAuthorizationPrepareTransactionDetailsStateParam paramWithMerchantSession:v89 secureElementIdentifier:v91 transactionAmount:v92 currencyCode:v94];
+    v94 = v93 = requestCopy;
+    v95 = [PKPaymentAuthorizationPrepareTransactionDetailsStateParam paramWithMerchantSession:merchantSession secureElementIdentifier:secureElementIdentifier transactionAmount:transactionAmount3 currencyCode:v94];
 
-    v17 = v93;
+    requestCopy = v93;
     v59 = v103;
 
-    v58 = v104;
-    v85 = v106;
+    v58 = lastObject2;
+    v85 = transactionAmount;
 
-    v15 = v101;
-    v18 = v102;
+    itemsCopy = v101;
+    paymentRequestCopy = v102;
 
     [(PKPaymentAuthorizationStateMachine *)self _setState:8 param:v95];
   }
@@ -7302,15 +7302,15 @@ LABEL_60:
 {
   if (PKIsPhone())
   {
-    v3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    if ([v3 requestType] || -[PKPaymentAuthorizationDataModel mode](self->_model, "mode") != 1 || !self->_accountService)
+    paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    if ([paymentRequest requestType] || -[PKPaymentAuthorizationDataModel mode](self->_model, "mode") != 1 || !self->_accountService)
     {
       goto LABEL_21;
     }
 
-    v4 = [(PKPaymentAuthorizationDataModel *)self->_model appleCardPass];
-    v5 = [v4 associatedAccountServiceAccountIdentifier];
-    if (![v5 length])
+    appleCardPass = [(PKPaymentAuthorizationDataModel *)self->_model appleCardPass];
+    associatedAccountServiceAccountIdentifier = [appleCardPass associatedAccountServiceAccountIdentifier];
+    if (![associatedAccountServiceAccountIdentifier length])
     {
 LABEL_20:
 
@@ -7318,8 +7318,8 @@ LABEL_21:
       return;
     }
 
-    v6 = [v3 hashedMerchantIdentifier];
-    if (!v6)
+    hashedMerchantIdentifier = [paymentRequest hashedMerchantIdentifier];
+    if (!hashedMerchantIdentifier)
     {
 LABEL_19:
 
@@ -7329,7 +7329,7 @@ LABEL_19:
     objc_initWeak(location, self);
     if (!self->_enhancedMerchantsFetcher)
     {
-      v7 = [[PKAccountEnhancedMerchantsFetcher alloc] initWithAccountIdentifier:v5 accountService:self->_accountService];
+      v7 = [[PKAccountEnhancedMerchantsFetcher alloc] initWithAccountIdentifier:associatedAccountServiceAccountIdentifier accountService:self->_accountService];
       enhancedMerchantsFetcher = self->_enhancedMerchantsFetcher;
       self->_enhancedMerchantsFetcher = v7;
 
@@ -7352,18 +7352,18 @@ LABEL_19:
     aBlock[3] = &unk_1E79C9528;
     objc_copyWeak(&v22, location);
     aBlock[4] = self;
-    v21 = v6;
+    v21 = hashedMerchantIdentifier;
     v12 = _Block_copy(aBlock);
-    v13 = [(PKAccount *)self->_appleCardAccount accountIdentifier];
-    v14 = v5;
+    accountIdentifier = [(PKAccount *)self->_appleCardAccount accountIdentifier];
+    v14 = associatedAccountServiceAccountIdentifier;
     v15 = v14;
-    if (v13 == v14)
+    if (accountIdentifier == v14)
     {
     }
 
     else
     {
-      if (!v14 || !v13)
+      if (!v14 || !accountIdentifier)
       {
 
 LABEL_17:
@@ -7379,7 +7379,7 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v16 = [v13 isEqualToString:v14];
+      v16 = [accountIdentifier isEqualToString:v14];
 
       if (!v16)
       {
@@ -7423,11 +7423,11 @@ void __60__PKPaymentAuthorizationStateMachine__updatePassRewardsInfo__block_invo
   }
 }
 
-- (void)_performPassRewardsUpdateForCooldownLevel:(unint64_t)a3 ignoreErrorBackoff:(BOOL)a4 merchantIdentifier:(id)a5
+- (void)_performPassRewardsUpdateForCooldownLevel:(unint64_t)level ignoreErrorBackoff:(BOOL)backoff merchantIdentifier:(id)identifier
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(PKPaymentAuthorizationDataModel *)self->_model appleCardPass];
+  backoffCopy = backoff;
+  identifierCopy = identifier;
+  appleCardPass = [(PKPaymentAuthorizationDataModel *)self->_model appleCardPass];
   objc_initWeak(&location, self);
   enhancedMerchantsFetcher = self->_enhancedMerchantsFetcher;
   v13[0] = MEMORY[0x1E69E9820];
@@ -7435,12 +7435,12 @@ void __60__PKPaymentAuthorizationStateMachine__updatePassRewardsInfo__block_invo
   v13[2] = __118__PKPaymentAuthorizationStateMachine__performPassRewardsUpdateForCooldownLevel_ignoreErrorBackoff_merchantIdentifier___block_invoke;
   v13[3] = &unk_1E79CE1C0;
   objc_copyWeak(v16, &location);
-  v11 = v9;
+  v11 = appleCardPass;
   v14 = v11;
-  v16[1] = a3;
-  v12 = v8;
+  v16[1] = level;
+  v12 = identifierCopy;
   v15 = v12;
-  [(PKAccountEnhancedMerchantsFetcher *)enhancedMerchantsFetcher updateDataWithCooldownLevel:a3 ignoreErrorBackoff:v5 completion:v13];
+  [(PKAccountEnhancedMerchantsFetcher *)enhancedMerchantsFetcher updateDataWithCooldownLevel:level ignoreErrorBackoff:backoffCopy completion:v13];
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
@@ -7495,19 +7495,19 @@ LABEL_13:
 - (void)_dispatchNextCallbackParam
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentAuthorizationStateMachine *)self _dequeuePendingCallbackParam];
+  _dequeuePendingCallbackParam = [(PKPaymentAuthorizationStateMachine *)self _dequeuePendingCallbackParam];
   v4 = PKLogFacilityTypeGetObject(8uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(PKPaymentAuthorizationClientCallbackStateParam *)v3 kind];
-    if (v5 > 0xA)
+    kind = [(PKPaymentAuthorizationClientCallbackStateParam *)_dequeuePendingCallbackParam kind];
+    if (kind > 0xA)
     {
       v6 = @"unknown";
     }
 
     else
     {
-      v6 = off_1E79CE8A8[v5];
+      v6 = off_1E79CE8A8[kind];
     }
 
     v9 = 138412290;
@@ -7517,48 +7517,48 @@ LABEL_13:
 
   self->_awaitingClientCallbackReply = 1;
   mostRecentClientCallback = self->_mostRecentClientCallback;
-  self->_mostRecentClientCallback = v3;
-  v8 = v3;
+  self->_mostRecentClientCallback = _dequeuePendingCallbackParam;
+  v8 = _dequeuePendingCallbackParam;
 
   [(PKPaymentAuthorizationStateMachine *)self _startClientCallbackTimer];
   [(PKPaymentAuthorizationStateMachine *)self _setState:7 param:v8];
 }
 
-- (void)_enqueueCallbackOfKind:(int64_t)a3 withObject:(id)a4
+- (void)_enqueueCallbackOfKind:(int64_t)kind withObject:(id)object
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  objectCopy = object;
   v7 = PKLogFacilityTypeGetObject(8uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 0xA)
+    if (kind > 0xA)
     {
       v8 = @"unknown";
     }
 
     else
     {
-      v8 = off_1E79CE8A8[a3];
+      v8 = off_1E79CE8A8[kind];
     }
 
     v13 = 138412546;
     v14 = v8;
     v15 = 2112;
-    v16 = v6;
+    v16 = objectCopy;
     _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "State machine enqueueing callback kind: %@ object: %@", &v13, 0x16u);
   }
 
   callbackQueue = self->_callbackQueue;
   if (!callbackQueue)
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v11 = self->_callbackQueue;
-    self->_callbackQueue = v10;
+    self->_callbackQueue = array;
 
     callbackQueue = self->_callbackQueue;
   }
 
-  v12 = [PKPaymentAuthorizationClientCallbackStateParam paramWithCallbackKind:a3 object:v6];
+  v12 = [PKPaymentAuthorizationClientCallbackStateParam paramWithCallbackKind:kind object:objectCopy];
   [(NSMutableArray *)callbackQueue addObject:v12];
 
   if (!self->_awaitingClientCallbackReply)
@@ -7569,21 +7569,21 @@ LABEL_13:
 
 - (id)_dequeuePendingCallbackParam
 {
-  v3 = [(NSMutableArray *)self->_callbackQueue firstObject];
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_callbackQueue firstObject];
+  if (firstObject)
   {
     [(NSMutableArray *)self->_callbackQueue removeObjectAtIndex:0];
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (void)_startClientCallbackTimer
 {
   v17 = *MEMORY[0x1E69E9840];
   [(PKPaymentAuthorizationStateMachine *)self _cancelClientCallbackTimer];
-  v3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  [v3 clientCallbackTimeout];
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  [paymentRequest clientCallbackTimeout];
   v5 = v4;
 
   if (v5 <= 0.0)
@@ -7674,54 +7674,54 @@ void __63__PKPaymentAuthorizationStateMachine__startClientCallbackTimer__block_i
   }
 }
 
-- (void)_enqueueDidSelectShippingContact:(id)a3
+- (void)_enqueueDidSelectShippingContact:(id)contact
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v5 = [a3 sanitizedContact];
-  v6 = [v5 postalAddresses];
-  v7 = [v6 firstObject];
+  sanitizedContact = [contact sanitizedContact];
+  postalAddresses = [sanitizedContact postalAddresses];
+  firstObject = [postalAddresses firstObject];
 
-  v8 = [v7 value];
-  v9 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v10 = [v9 requiresAddressPrecision];
-  if (v10)
+  value = [firstObject value];
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  requiresAddressPrecision = [paymentRequest requiresAddressPrecision];
+  if (requiresAddressPrecision)
   {
-    v3 = [(PKPaymentAuthorizationDataModel *)self->_model hostApplicationIdentifier];
-    if ([v3 isEqualToString:@"W74U47NE8E.com.apple.store.Jolly"])
+    hostApplicationIdentifier = [(PKPaymentAuthorizationDataModel *)self->_model hostApplicationIdentifier];
+    if ([hostApplicationIdentifier isEqualToString:@"W74U47NE8E.com.apple.store.Jolly"])
     {
 LABEL_5:
 
       goto LABEL_10;
     }
 
-    v11 = [(PKPaymentAuthorizationDataModel *)self->_model hostApplicationIdentifier];
-    if ([v11 isEqualToString:@"MT9US5E2G8.com.apple.store.Jolly.MessagesExtension"])
+    hostApplicationIdentifier2 = [(PKPaymentAuthorizationDataModel *)self->_model hostApplicationIdentifier];
+    if ([hostApplicationIdentifier2 isEqualToString:@"MT9US5E2G8.com.apple.store.Jolly.MessagesExtension"])
     {
 
       goto LABEL_5;
     }
 
-    v20 = v11;
+    v20 = hostApplicationIdentifier2;
   }
 
-  v12 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v13 = [v12 originatingURL];
-  v14 = [v13 isAppleURL];
+  paymentRequest2 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  originatingURL = [paymentRequest2 originatingURL];
+  isAppleURL = [originatingURL isAppleURL];
 
-  if (v10)
+  if (requiresAddressPrecision)
   {
   }
 
-  if ((v14 & 1) == 0)
+  if ((isAppleURL & 1) == 0)
   {
-    v15 = [v8 redactedPostalAddress];
+    redactedPostalAddress = [value redactedPostalAddress];
     goto LABEL_12;
   }
 
 LABEL_10:
-  v15 = [v8 redactedStreetAddress];
+  redactedPostalAddress = [value redactedStreetAddress];
 LABEL_12:
-  v16 = v15;
+  v16 = redactedPostalAddress;
 
   v22 = *MEMORY[0x1E695C360];
   v17 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:@"Shipping" value:v16];
@@ -7732,18 +7732,18 @@ LABEL_12:
   [(PKPaymentAuthorizationStateMachine *)self _enqueueCallbackOfKind:1 withObject:v19];
 }
 
-- (void)_enqueueDidSelectPaymentMethodWithBindToken:(id)a3
+- (void)_enqueueDidSelectPaymentMethodWithBindToken:(id)token
 {
-  v4 = a3;
-  v5 = [[PKPaymentMethod alloc] initWithBindToken:v4];
+  tokenCopy = token;
+  v5 = [[PKPaymentMethod alloc] initWithBindToken:tokenCopy];
 
   [(PKPaymentAuthorizationStateMachine *)self _enqueueCallbackOfKind:3 withObject:v5];
 }
 
-- (void)_enqueueDidSelectPaymentMethodWithQuote:(id)a3
+- (void)_enqueueDidSelectPaymentMethodWithQuote:(id)quote
 {
-  v4 = a3;
-  v5 = [[PKPaymentMethod alloc] initWithPeerPaymentQuote:v4];
+  quoteCopy = quote;
+  v5 = [[PKPaymentMethod alloc] initWithPeerPaymentQuote:quoteCopy];
 
   if ([(PKPaymentAuthorizationDataModel *)self->_model supportsPreservePeerPaymentBalance])
   {
@@ -7754,59 +7754,59 @@ LABEL_12:
   [(PKPaymentAuthorizationStateMachine *)self _enqueueCallbackOfKind:3 withObject:v5];
 }
 
-- (void)_enqueueDidSelectBankAccount:(id)a3
+- (void)_enqueueDidSelectBankAccount:(id)account
 {
-  v4 = a3;
-  v5 = [[PKPaymentMethod alloc] initWithBankAccount:v4];
+  accountCopy = account;
+  v5 = [[PKPaymentMethod alloc] initWithBankAccount:accountCopy];
 
   [(PKPaymentAuthorizationStateMachine *)self _enqueueCallbackOfKind:3 withObject:v5];
 }
 
-- (void)_enqueueDidSelectPaymentPass:(id)a3 paymentApplication:(id)a4 subCredential:(id)a5
+- (void)_enqueueDidSelectPaymentPass:(id)pass paymentApplication:(id)application subCredential:(id)credential
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!(v8 | v10))
+  passCopy = pass;
+  applicationCopy = application;
+  credentialCopy = credential;
+  if (!(passCopy | credentialCopy))
   {
     [(PKPaymentAuthorizationStateMachine *)self _enqueueCallbackOfKind:3 withObject:0];
     goto LABEL_16;
   }
 
-  v11 = [[PKPaymentMethod alloc] initWithPaymentPass:v8 paymentApplication:v9 subCredential:v10 obfuscateNetworks:1];
-  if (v10)
+  v11 = [[PKPaymentMethod alloc] initWithPaymentPass:passCopy paymentApplication:applicationCopy subCredential:credentialCopy obfuscateNetworks:1];
+  if (credentialCopy)
   {
     v12 = PKLogFacilityTypeGetObject(8uLL);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v10 identifier];
+      identifier = [credentialCopy identifier];
       *buf = 138412290;
-      v26 = v13;
+      v26 = identifier;
       _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Enqueuing subcredential %@ with PKPaymentmethod", buf, 0xCu);
     }
   }
 
-  v14 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v15 = [v8 associatedApplicationIdentifiers];
-  v16 = [(PKPaymentAuthorizationDataModel *)self->_model hostApplicationIdentifier];
-  if ([v15 containsObject:v16])
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  associatedApplicationIdentifiers = [passCopy associatedApplicationIdentifiers];
+  hostApplicationIdentifier = [(PKPaymentAuthorizationDataModel *)self->_model hostApplicationIdentifier];
+  if ([associatedApplicationIdentifiers containsObject:hostApplicationIdentifier])
   {
     goto LABEL_9;
   }
 
-  v24 = v9;
-  v17 = [v8 associatedWebDomains];
-  v18 = [v14 merchantSession];
-  v19 = [v18 domain];
-  if ([v17 containsObject:v19])
+  v24 = applicationCopy;
+  associatedWebDomains = [passCopy associatedWebDomains];
+  merchantSession = [paymentRequest merchantSession];
+  domain = [merchantSession domain];
+  if ([associatedWebDomains containsObject:domain])
   {
 
-    v9 = v24;
+    applicationCopy = v24;
 LABEL_9:
 
 LABEL_10:
-    v20 = [v8 copy];
+    v20 = [passCopy copy];
     [v20 sanitizePaymentApplications];
     [(PKPaymentMethod *)v11 setPaymentPass:v20];
 
@@ -7814,19 +7814,19 @@ LABEL_10:
   }
 
   [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v21 = v23 = v14;
-  v22 = [v21 isPeerPaymentRequest];
+  v21 = v23 = paymentRequest;
+  isPeerPaymentRequest = [v21 isPeerPaymentRequest];
 
-  v14 = v23;
-  v9 = v24;
-  if (v22)
+  paymentRequest = v23;
+  applicationCopy = v24;
+  if (isPeerPaymentRequest)
   {
     goto LABEL_10;
   }
 
 LABEL_11:
   [(PKPaymentAuthorizationStateMachine *)self _updatePaymentRequestBillingAddressWithPaymentMethod:v11];
-  if ([v14 isPeerPaymentRequest] && -[PKPaymentAuthorizationDataModel supportsPreservePeerPaymentBalance](self->_model, "supportsPreservePeerPaymentBalance"))
+  if ([paymentRequest isPeerPaymentRequest] && -[PKPaymentAuthorizationDataModel supportsPreservePeerPaymentBalance](self->_model, "supportsPreservePeerPaymentBalance"))
   {
     [(PKPaymentMethod *)v11 setUsePeerPaymentBalance:[(PKPaymentAuthorizationDataModel *)self->_model usePeerPaymentBalance]];
   }
@@ -7836,182 +7836,182 @@ LABEL_11:
 LABEL_16:
 }
 
-- (void)_enqueueDidSelectRemotePaymentInstrument:(id)a3
+- (void)_enqueueDidSelectRemotePaymentInstrument:(id)instrument
 {
-  v4 = a3;
-  v5 = [v4 primaryPaymentApplication];
-  [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectRemotePaymentInstrument:v4 paymentApplication:v5];
+  instrumentCopy = instrument;
+  primaryPaymentApplication = [instrumentCopy primaryPaymentApplication];
+  [(PKPaymentAuthorizationStateMachine *)self _enqueueDidSelectRemotePaymentInstrument:instrumentCopy paymentApplication:primaryPaymentApplication];
 }
 
-- (void)_enqueueDidSelectRemotePaymentInstrument:(id)a3 paymentApplication:(id)a4
+- (void)_enqueueDidSelectRemotePaymentInstrument:(id)instrument paymentApplication:(id)application
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [[PKPaymentMethod alloc] initWithRemotePaymentInstrument:v13 paymentApplication:v6];
+  instrumentCopy = instrument;
+  applicationCopy = application;
+  v7 = [[PKPaymentMethod alloc] initWithRemotePaymentInstrument:instrumentCopy paymentApplication:applicationCopy];
 
-  v8 = [v13 associatedWebDomains];
-  v9 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v10 = [v9 merchantSession];
-  v11 = [v10 domain];
-  v12 = [v8 containsObject:v11];
+  associatedWebDomains = [instrumentCopy associatedWebDomains];
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  merchantSession = [paymentRequest merchantSession];
+  domain = [merchantSession domain];
+  v12 = [associatedWebDomains containsObject:domain];
 
   if (v12)
   {
-    [(PKPaymentMethod *)v7 setRemoteInstrument:v13];
+    [(PKPaymentMethod *)v7 setRemoteInstrument:instrumentCopy];
   }
 
   [(PKPaymentAuthorizationStateMachine *)self _enqueueCallbackOfKind:3 withObject:v7];
 }
 
-- (void)_enqueueDidAuthorizePaymentWithInstallmentAuthorizationToken:(id)a3 rewrapResponse:(id)a4
+- (void)_enqueueDidAuthorizePaymentWithInstallmentAuthorizationToken:(id)token rewrapResponse:(id)response
 {
-  v6 = a4;
-  v7 = a3;
+  responseCopy = response;
+  tokenCopy = token;
   v8 = objc_alloc_init(PKPayment);
-  [(PKPayment *)v8 setInstallmentAuthorizationToken:v7];
+  [(PKPayment *)v8 setInstallmentAuthorizationToken:tokenCopy];
 
   [(PKPaymentAuthorizationStateMachine *)self _applyBillingInformationToPayment:v8];
   [(PKPaymentAuthorizationStateMachine *)self _applyFulfillmentMethodToPayment:v8];
   [(PKPaymentAuthorizationStateMachine *)self _applyShippingInformationToPayment:v8];
-  [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePaymentWithPayment:v8 rewrapResponse:v6];
+  [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePaymentWithPayment:v8 rewrapResponse:responseCopy];
 }
 
-- (void)_enqueueDidAuthorizePaymentWithToken:(id)a3 rewrapResponse:(id)a4
+- (void)_enqueueDidAuthorizePaymentWithToken:(id)token rewrapResponse:(id)response
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PKPayment alloc] initWithToken:v7];
+  responseCopy = response;
+  tokenCopy = token;
+  v8 = [[PKPayment alloc] initWithToken:tokenCopy];
 
   [(PKPaymentAuthorizationStateMachine *)self _applyBillingInformationToPayment:v8];
   [(PKPaymentAuthorizationStateMachine *)self _applyFulfillmentMethodToPayment:v8];
   [(PKPaymentAuthorizationStateMachine *)self _applyShippingInformationToPayment:v8];
-  [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePaymentWithPayment:v8 rewrapResponse:v6];
+  [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePaymentWithPayment:v8 rewrapResponse:responseCopy];
 }
 
-- (void)_enqueueDidAuthorizePaymentWithByPassPayment:(id)a3 rewrapResponse:(id)a4
+- (void)_enqueueDidAuthorizePaymentWithByPassPayment:(id)payment rewrapResponse:(id)response
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentAuthorizationStateMachine *)self _applyBillingInformationToPayment:v7];
-  [(PKPaymentAuthorizationStateMachine *)self _applyFulfillmentMethodToPayment:v7];
-  [(PKPaymentAuthorizationStateMachine *)self _applyShippingInformationToPayment:v7];
-  [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePaymentWithPayment:v7 rewrapResponse:v6];
+  responseCopy = response;
+  paymentCopy = payment;
+  [(PKPaymentAuthorizationStateMachine *)self _applyBillingInformationToPayment:paymentCopy];
+  [(PKPaymentAuthorizationStateMachine *)self _applyFulfillmentMethodToPayment:paymentCopy];
+  [(PKPaymentAuthorizationStateMachine *)self _applyShippingInformationToPayment:paymentCopy];
+  [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePaymentWithPayment:paymentCopy rewrapResponse:responseCopy];
 }
 
-- (void)_enqueueDidAuthorizePaymentWithRemotePayment:(id)a3 rewrapResponse:(id)a4
+- (void)_enqueueDidAuthorizePaymentWithRemotePayment:(id)payment rewrapResponse:(id)response
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentAuthorizationStateMachine *)self _applyBillingInformationToPayment:v7];
-  [(PKPaymentAuthorizationStateMachine *)self _applyFulfillmentMethodToPayment:v7];
-  [(PKPaymentAuthorizationStateMachine *)self _applyShippingInformationToPayment:v7];
-  [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePaymentWithPayment:v7 rewrapResponse:v6];
+  responseCopy = response;
+  paymentCopy = payment;
+  [(PKPaymentAuthorizationStateMachine *)self _applyBillingInformationToPayment:paymentCopy];
+  [(PKPaymentAuthorizationStateMachine *)self _applyFulfillmentMethodToPayment:paymentCopy];
+  [(PKPaymentAuthorizationStateMachine *)self _applyShippingInformationToPayment:paymentCopy];
+  [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePaymentWithPayment:paymentCopy rewrapResponse:responseCopy];
 }
 
-- (void)_enqueueDidAuthorizePaymentWithPayment:(id)a3 rewrapResponse:(id)a4
+- (void)_enqueueDidAuthorizePaymentWithPayment:(id)payment rewrapResponse:(id)response
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  paymentCopy = payment;
+  responseCopy = response;
   if ([(PKPaymentAuthorizationDataModel *)self->_model mode]!= 3 && [(PKPaymentAuthorizationDataModel *)self->_model mode]!= 4)
   {
-    v8 = [v6 token];
-    v9 = [(PKPaymentAuthorizationStateMachine *)self _transactionWithPaymentToken:v8];
+    token = [paymentCopy token];
+    v9 = [(PKPaymentAuthorizationStateMachine *)self _transactionWithPaymentToken:token];
 
-    v10 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
-    v11 = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
-    v12 = v11;
-    if (v9 && v10 && v11)
+    pass = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+    paymentApplication = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
+    v12 = paymentApplication;
+    if (v9 && pass && paymentApplication)
     {
-      v13 = [[PKPendingPaymentTransaction alloc] initWithTransaction:v9 pass:v10 paymentApplication:v11];
+      v13 = [[PKPendingPaymentTransaction alloc] initWithTransaction:v9 pass:pass paymentApplication:paymentApplication];
       model = self->_model;
       v29[0] = v13;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
       [(PKPaymentAuthorizationDataModel *)model setPendingTransactions:v15];
 
-      [(PKPaymentAuthorizationStateMachine *)self _enrichPaymentRewardsRedemptionWithPaymentTransaction:v9 usingPass:v10];
-      v16 = [v7 issuerInstallmentManagementURL];
-      [v9 setIssuerInstallmentManagementURL:v16];
+      [(PKPaymentAuthorizationStateMachine *)self _enrichPaymentRewardsRedemptionWithPaymentTransaction:v9 usingPass:pass];
+      issuerInstallmentManagementURL = [responseCopy issuerInstallmentManagementURL];
+      [v9 setIssuerInstallmentManagementURL:issuerInstallmentManagementURL];
     }
 
     v28 = v12;
     v17 = +[PKPaymentOptionsDefaults defaults];
-    if (v10)
+    if (pass)
     {
-      v18 = [(PKPaymentAuthorizationDataModel *)self->_model billingAddress];
-      if (v18)
+      billingAddress = [(PKPaymentAuthorizationDataModel *)self->_model billingAddress];
+      if (billingAddress)
       {
-        v19 = v18;
+        v19 = billingAddress;
         v20 = +[PKPaymentOptionsDefaults defaults];
-        v21 = [v20 defaultBillingAddressForPaymentPass:v10];
+        v21 = [v20 defaultBillingAddressForPaymentPass:pass];
 
         if (!v21)
         {
-          v22 = [(PKPaymentAuthorizationDataModel *)self->_model billingAddress];
-          [v17 setDefaultBillingAddress:v22 forPaymentPass:v10];
+          billingAddress2 = [(PKPaymentAuthorizationDataModel *)self->_model billingAddress];
+          [v17 setDefaultBillingAddress:billingAddress2 forPaymentPass:pass];
         }
       }
     }
 
-    v23 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    v24 = [v23 requiredShippingContactFields];
+    paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    requiredShippingContactFields = [paymentRequest requiredShippingContactFields];
 
-    v25 = [(PKPaymentAuthorizationDataModel *)self->_model shippingName];
-    if ((([v24 containsObject:@"name"] & 1) != 0 || objc_msgSend(v24, "containsObject:", @"phoneticName")) && (objc_msgSend(v24, "containsObject:", @"post") & 1) == 0)
+    shippingName = [(PKPaymentAuthorizationDataModel *)self->_model shippingName];
+    if ((([requiredShippingContactFields containsObject:@"name"] & 1) != 0 || objc_msgSend(requiredShippingContactFields, "containsObject:", @"phoneticName")) && (objc_msgSend(requiredShippingContactFields, "containsObject:", @"post") & 1) == 0)
     {
-      if (v25)
+      if (shippingName)
       {
-        v26 = [v17 defaultContactName];
-        v27 = [v25 isEqualIgnoringIdentifiers:v26];
+        defaultContactName = [v17 defaultContactName];
+        v27 = [shippingName isEqualIgnoringIdentifiers:defaultContactName];
 
         if ((v27 & 1) == 0)
         {
-          [v17 setDefaultContactName:v25];
+          [v17 setDefaultContactName:shippingName];
         }
       }
     }
   }
 
-  [(PKPaymentAuthorizationDataModel *)self->_model setPayment:v6];
-  [(PKPaymentAuthorizationStateMachine *)self _enqueueCallbackOfKind:5 withObject:v6];
+  [(PKPaymentAuthorizationDataModel *)self->_model setPayment:paymentCopy];
+  [(PKPaymentAuthorizationStateMachine *)self _enqueueCallbackOfKind:5 withObject:paymentCopy];
 }
 
-- (void)_enqeueDidAuthorizePurchaseWithParam:(id)a3
+- (void)_enqeueDidAuthorizePurchaseWithParam:(id)param
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 purchase];
-  v6 = [v4 purchaseTransactionIdentifier];
+  paramCopy = param;
+  purchase = [paramCopy purchase];
+  purchaseTransactionIdentifier = [paramCopy purchaseTransactionIdentifier];
 
-  v7 = [(PKPaymentAuthorizationStateMachine *)self _transactionWithPurchase:v5 paymentHash:v6];
+  v7 = [(PKPaymentAuthorizationStateMachine *)self _transactionWithPurchase:purchase paymentHash:purchaseTransactionIdentifier];
 
-  v8 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
-  v9 = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
-  v10 = v9;
-  if (v7 && v8 && v9)
+  pass = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+  paymentApplication = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
+  v10 = paymentApplication;
+  if (v7 && pass && paymentApplication)
   {
-    v11 = [[PKPendingPaymentTransaction alloc] initWithTransaction:v7 pass:v8 paymentApplication:v9];
+    v11 = [[PKPendingPaymentTransaction alloc] initWithTransaction:v7 pass:pass paymentApplication:paymentApplication];
     model = self->_model;
     v14[0] = v11;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
     [(PKPaymentAuthorizationDataModel *)model setPendingTransactions:v13];
   }
 
-  [(PKPaymentAuthorizationStateMachine *)self _enqueueCallbackOfKind:6 withObject:v5];
+  [(PKPaymentAuthorizationStateMachine *)self _enqueueCallbackOfKind:6 withObject:purchase];
 }
 
-- (void)_enqueueDidAuthorizePeerPaymentQuoteWithAuthorizedQuote:(id)a3
+- (void)_enqueueDidAuthorizePeerPaymentQuoteWithAuthorizedQuote:(id)quote
 {
-  v11 = a3;
+  quoteCopy = quote;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [v11 peerPaymentQuote];
-  v6 = [v5 isRecurringPayment];
+  peerPaymentQuote = [quoteCopy peerPaymentQuote];
+  isRecurringPayment = [peerPaymentQuote isRecurringPayment];
 
-  if ((v6 & 1) == 0)
+  if ((isRecurringPayment & 1) == 0)
   {
-    v7 = [(PKPaymentAuthorizationStateMachine *)self _pendingTransactionOnPeerPaymentPassForAuthorizedPeerPaymentQuote:v11];
+    v7 = [(PKPaymentAuthorizationStateMachine *)self _pendingTransactionOnPeerPaymentPassForAuthorizedPeerPaymentQuote:quoteCopy];
     [v4 safelyAddObject:v7];
-    v8 = [(PKPaymentAuthorizationStateMachine *)self _pendingTransactionOnAlternateFundingSourceForAutorizedPeerPaymentQuote:v11];
+    v8 = [(PKPaymentAuthorizationStateMachine *)self _pendingTransactionOnAlternateFundingSourceForAutorizedPeerPaymentQuote:quoteCopy];
     [v4 safelyAddObject:v8];
   }
 
@@ -8019,41 +8019,41 @@ LABEL_16:
   v10 = [v4 copy];
   [(PKPaymentAuthorizationDataModel *)model setPendingTransactions:v10];
 
-  [(PKPaymentAuthorizationStateMachine *)self _applyBillingInformationToAuthorizedQuote:v11];
-  [(PKPaymentAuthorizationStateMachine *)self _enqueueCallbackOfKind:7 withObject:v11];
+  [(PKPaymentAuthorizationStateMachine *)self _applyBillingInformationToAuthorizedQuote:quoteCopy];
+  [(PKPaymentAuthorizationStateMachine *)self _enqueueCallbackOfKind:7 withObject:quoteCopy];
 }
 
-- (void)_updatePaymentRequestBillingAddressWithPaymentMethod:(id)a3
+- (void)_updatePaymentRequestBillingAddressWithPaymentMethod:(id)method
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v6 = [v5 requiredBillingContactFields];
-  if ([v6 count])
+  methodCopy = method;
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  requiredBillingContactFields = [paymentRequest requiredBillingContactFields];
+  if ([requiredBillingContactFields count])
   {
-    v7 = [v5 requiredShippingContactFields];
-    v8 = [v7 containsObject:@"post"];
+    requiredShippingContactFields = [paymentRequest requiredShippingContactFields];
+    v8 = [requiredShippingContactFields containsObject:@"post"];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(PKPaymentAuthorizationDataModel *)self->_model billingAddress];
-      v10 = [v9 sanitizedContact];
+      billingAddress = [(PKPaymentAuthorizationDataModel *)self->_model billingAddress];
+      sanitizedContact = [billingAddress sanitizedContact];
 
-      v11 = [v10 postalAddresses];
-      v12 = [v11 firstObject];
+      postalAddresses = [sanitizedContact postalAddresses];
+      firstObject = [postalAddresses firstObject];
 
-      v13 = [v12 value];
-      v14 = [v13 redactedPostalAddress];
+      value = [firstObject value];
+      redactedPostalAddress = [value redactedPostalAddress];
 
-      if (v14)
+      if (redactedPostalAddress)
       {
         v18 = *MEMORY[0x1E695C360];
-        v15 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:@"Billing" value:v14];
+        v15 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:@"Billing" value:redactedPostalAddress];
         v19[0] = v15;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
 
         v17 = [MEMORY[0x1E695CD58] pkContactWithNameComponents:0 labeledValues:v16];
-        [v4 setBillingAddress:v17];
+        [methodCopy setBillingAddress:v17];
       }
     }
   }
@@ -8063,13 +8063,13 @@ LABEL_16:
   }
 }
 
-- (id)_pendingTransactionOnPeerPaymentPassForAuthorizedPeerPaymentQuote:(id)a3
+- (id)_pendingTransactionOnPeerPaymentPassForAuthorizedPeerPaymentQuote:(id)quote
 {
-  v4 = a3;
+  quoteCopy = quote;
   v5 = [(PKPaymentAuthorizationDataModel *)self->_model itemForType:2];
-  v6 = [v5 pass];
+  pass = [v5 pass];
 
-  if (!v6)
+  if (!pass)
   {
     v7 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -8079,16 +8079,16 @@ LABEL_16:
     }
 
     v8 = +[PKPassLibrary sharedInstance];
-    v9 = [v8 peerPaymentPassUniqueID];
-    v10 = [v8 passWithUniqueID:v9];
-    v6 = [v10 paymentPass];
+    peerPaymentPassUniqueID = [v8 peerPaymentPassUniqueID];
+    v10 = [v8 passWithUniqueID:peerPaymentPassUniqueID];
+    pass = [v10 paymentPass];
   }
 
-  v11 = [v6 devicePrimaryInAppPaymentApplication];
-  v12 = v11;
-  if (v6)
+  devicePrimaryInAppPaymentApplication = [pass devicePrimaryInAppPaymentApplication];
+  v12 = devicePrimaryInAppPaymentApplication;
+  if (pass)
   {
-    v13 = v11 == 0;
+    v13 = devicePrimaryInAppPaymentApplication == 0;
   }
 
   else
@@ -8098,26 +8098,26 @@ LABEL_16:
 
   if (!v13)
   {
-    v15 = [v4 peerPaymentQuote];
-    v54 = [v15 firstQuoteItemOfType:2];
-    v16 = [v15 firstQuoteItemOfType:1];
-    v17 = [v15 firstQuoteItemOfType:3];
-    v53 = [v15 firstQuoteItemOfType:4];
-    v18 = [v15 recipient];
+    peerPaymentQuote = [quoteCopy peerPaymentQuote];
+    v54 = [peerPaymentQuote firstQuoteItemOfType:2];
+    v16 = [peerPaymentQuote firstQuoteItemOfType:1];
+    v17 = [peerPaymentQuote firstQuoteItemOfType:3];
+    v53 = [peerPaymentQuote firstQuoteItemOfType:4];
+    recipient = [peerPaymentQuote recipient];
     v19 = objc_alloc_init(PKPaymentTransaction);
     [(PKPaymentTransaction *)v19 setOriginatedByDevice:1];
-    v20 = [MEMORY[0x1E695DF00] date];
-    [(PKPaymentTransaction *)v19 setTransactionDate:v20];
+    date = [MEMORY[0x1E695DF00] date];
+    [(PKPaymentTransaction *)v19 setTransactionDate:date];
 
     [(PKPaymentTransaction *)v19 addUpdateReasons:2];
     [(PKPaymentTransaction *)v19 setTransactionSource:2];
     [(PKPaymentTransaction *)v19 setTechnologyType:2];
-    if (v18)
+    if (recipient)
     {
       [(PKPaymentTransaction *)v19 setTransactionType:3];
       [(PKPaymentTransaction *)v19 setPeerPaymentType:1];
-      v21 = [v18 conversationAddress];
-      [(PKPaymentTransaction *)v19 setPeerPaymentCounterpartHandle:v21];
+      conversationAddress = [recipient conversationAddress];
+      [(PKPaymentTransaction *)v19 setPeerPaymentCounterpartHandle:conversationAddress];
 LABEL_15:
 
       goto LABEL_36;
@@ -8134,27 +8134,27 @@ LABEL_15:
       v45 = v16;
       [(PKPaymentTransaction *)v19 setTransactionType:5];
       [(PKPaymentTransaction *)v19 setSecondaryFundingSourceType:1];
-      v22 = [v15 bankName];
-      v23 = [v15 accountNumber];
-      v48 = v23;
+      bankName = [peerPaymentQuote bankName];
+      accountNumber = [peerPaymentQuote accountNumber];
+      v48 = accountNumber;
       v50 = v17;
-      if ([v23 length] < 4)
+      if ([accountNumber length] < 4)
       {
         v27 = 0;
       }
 
       else
       {
-        [v23 substringFromIndex:{objc_msgSend(v23, "length") - 4}];
-        v25 = v24 = v22;
+        [accountNumber substringFromIndex:{objc_msgSend(accountNumber, "length") - 4}];
+        v25 = v24 = bankName;
         v26 = PKMaskedPaymentPAN(v25);
 
-        v22 = v24;
+        bankName = v24;
         v27 = v26;
       }
 
-      v52 = v22;
-      v32 = [v22 length];
+      v52 = bankName;
+      v32 = [bankName length];
       v33 = [v27 length];
       v16 = v45;
       v44 = v27;
@@ -8193,15 +8193,15 @@ LABEL_35:
 
       v17 = v50;
 LABEL_36:
-      v37 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
-      v38 = v37;
-      if (v37)
+      pass2 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+      v38 = pass2;
+      if (pass2)
       {
-        v39 = [v37 localizedDescription];
-        [(PKPaymentTransaction *)v19 setSecondaryFundingSourceDescription:v39];
+        localizedDescription = [pass2 localizedDescription];
+        [(PKPaymentTransaction *)v19 setSecondaryFundingSourceDescription:localizedDescription];
 
-        v40 = [v38 primaryAccountIdentifier];
-        [(PKPaymentTransaction *)v19 setSecondaryFundingSourceFPANIdentifier:v40];
+        primaryAccountIdentifier = [v38 primaryAccountIdentifier];
+        [(PKPaymentTransaction *)v19 setSecondaryFundingSourceFPANIdentifier:primaryAccountIdentifier];
       }
 
       else
@@ -8211,16 +8211,16 @@ LABEL_36:
           goto LABEL_39;
         }
 
-        v40 = PKLogFacilityTypeGetObject(0xCuLL);
-        if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
+        primaryAccountIdentifier = PKLogFacilityTypeGetObject(0xCuLL);
+        if (os_log_type_enabled(primaryAccountIdentifier, OS_LOG_TYPE_DEFAULT))
         {
           *v55 = 0;
-          _os_log_impl(&dword_1AD337000, v40, OS_LOG_TYPE_DEFAULT, "Could not find secondary funding source pass, pending transaction will not contain pass description.", v55, 2u);
+          _os_log_impl(&dword_1AD337000, primaryAccountIdentifier, OS_LOG_TYPE_DEFAULT, "Could not find secondary funding source pass, pending transaction will not contain pass description.", v55, 2u);
         }
       }
 
 LABEL_39:
-      v14 = [[PKPendingPaymentTransaction alloc] initWithTransaction:v19 pass:v6 paymentApplication:v12];
+      v14 = [[PKPendingPaymentTransaction alloc] initWithTransaction:v19 pass:pass paymentApplication:v12];
 LABEL_40:
 
       goto LABEL_41;
@@ -8241,23 +8241,23 @@ LABEL_40:
 
     [(PKPaymentTransaction *)v19 setTransactionType:5];
     [(PKPaymentTransaction *)v19 setSecondaryFundingSourceType:2];
-    v28 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
-    v51 = v28;
-    if (!v28)
+    pass3 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+    v51 = pass3;
+    if (!pass3)
     {
-      v21 = 0;
+      conversationAddress = 0;
 LABEL_57:
-      [(PKPaymentTransaction *)v19 setSecondaryFundingSourceDescription:v21];
+      [(PKPaymentTransaction *)v19 setSecondaryFundingSourceDescription:conversationAddress];
 
       goto LABEL_15;
     }
 
-    v29 = v28;
-    v46 = [v28 devicePrimaryPaymentApplication];
-    v49 = PKDisplayablePaymentNetworkNameForPaymentCredentialType([v46 paymentNetworkIdentifier]);
+    v29 = pass3;
+    devicePrimaryPaymentApplication = [pass3 devicePrimaryPaymentApplication];
+    v49 = PKDisplayablePaymentNetworkNameForPaymentCredentialType([devicePrimaryPaymentApplication paymentNetworkIdentifier]);
 
-    v47 = [v29 primaryAccountNumberSuffix];
-    v30 = PKMaskedPaymentPAN(v47);
+    primaryAccountNumberSuffix = [v29 primaryAccountNumberSuffix];
+    v30 = PKMaskedPaymentPAN(primaryAccountNumberSuffix);
     v43 = v30;
     if (v49 && v30)
     {
@@ -8274,7 +8274,7 @@ LABEL_57:
 
       if (!v30)
       {
-        v21 = 0;
+        conversationAddress = 0;
         goto LABEL_56;
       }
 
@@ -8282,18 +8282,18 @@ LABEL_57:
     }
     v31 = ;
 LABEL_55:
-    v21 = v31;
+    conversationAddress = v31;
     v30 = v43;
 LABEL_56:
 
     goto LABEL_57;
   }
 
-  v15 = PKLogFacilityTypeGetObject(0xCuLL);
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  peerPaymentQuote = PKLogFacilityTypeGetObject(0xCuLL);
+  if (os_log_type_enabled(peerPaymentQuote, OS_LOG_TYPE_DEFAULT))
   {
     *v57 = 0;
-    _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "Could not find peer payment pass. Not creating pending transaction.", v57, 2u);
+    _os_log_impl(&dword_1AD337000, peerPaymentQuote, OS_LOG_TYPE_DEFAULT, "Could not find peer payment pass. Not creating pending transaction.", v57, 2u);
   }
 
   v14 = 0;
@@ -8302,16 +8302,16 @@ LABEL_41:
   return v14;
 }
 
-- (id)_pendingTransactionOnAlternateFundingSourceForAutorizedPeerPaymentQuote:(id)a3
+- (id)_pendingTransactionOnAlternateFundingSourceForAutorizedPeerPaymentQuote:(id)quote
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
-  v6 = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
-  v7 = v6;
-  if (v5)
+  quoteCopy = quote;
+  pass = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+  paymentApplication = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
+  v7 = paymentApplication;
+  if (pass)
   {
-    v8 = v6 == 0;
+    v8 = paymentApplication == 0;
   }
 
   else
@@ -8326,22 +8326,22 @@ LABEL_41:
 
   else
   {
-    v10 = [v6 dpanIdentifier];
-    v11 = [v4 peerPaymentQuote];
-    v12 = [v11 items];
+    dpanIdentifier = [paymentApplication dpanIdentifier];
+    peerPaymentQuote = [quoteCopy peerPaymentQuote];
+    items = [peerPaymentQuote items];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v13 = [v12 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    v13 = [items countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (!v13)
     {
       goto LABEL_18;
     }
 
     v14 = v13;
-    v26 = v11;
-    v27 = v4;
+    v26 = peerPaymentQuote;
+    v27 = quoteCopy;
     v15 = 0;
     v16 = *v30;
     do
@@ -8350,12 +8350,12 @@ LABEL_41:
       {
         if (*v30 != v16)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(items);
         }
 
         v18 = *(*(&v29 + 1) + 8 * i);
-        v19 = [v18 dpanIdentifier];
-        if ([v19 isEqualToString:v10])
+        dpanIdentifier2 = [v18 dpanIdentifier];
+        if ([dpanIdentifier2 isEqualToString:dpanIdentifier])
         {
           v20 = v18;
 
@@ -8363,31 +8363,31 @@ LABEL_41:
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v14 = [items countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v14);
-    v11 = v26;
-    v4 = v27;
+    peerPaymentQuote = v26;
+    quoteCopy = v27;
     if (v15)
     {
       v21 = objc_alloc_init(PKPaymentTransaction);
       [(PKPaymentTransaction *)v21 setOriginatedByDevice:1];
       [(PKPaymentTransaction *)v21 addUpdateReasons:2];
-      v22 = [MEMORY[0x1E695DF00] date];
-      [(PKPaymentTransaction *)v21 setTransactionDate:v22];
+      date = [MEMORY[0x1E695DF00] date];
+      [(PKPaymentTransaction *)v21 setTransactionDate:date];
 
       [(PKPaymentTransaction *)v21 setTransactionType:0];
       [(PKPaymentTransaction *)v21 setTransactionSource:2];
       [(PKPaymentTransaction *)v21 setTechnologyType:2];
-      v23 = [v15 totalAmount];
-      [(PKPaymentTransaction *)v21 setAmount:v23];
+      totalAmount = [v15 totalAmount];
+      [(PKPaymentTransaction *)v21 setAmount:totalAmount];
 
-      v24 = [v15 totalAmountCurrency];
-      [(PKPaymentTransaction *)v21 setCurrencyCode:v24];
+      totalAmountCurrency = [v15 totalAmountCurrency];
+      [(PKPaymentTransaction *)v21 setCurrencyCode:totalAmountCurrency];
 
       [(PKPaymentTransaction *)v21 setAssociatedFeatureIdentifier:1];
-      v9 = [[PKPendingPaymentTransaction alloc] initWithTransaction:v21 pass:v5 paymentApplication:v7];
+      v9 = [[PKPendingPaymentTransaction alloc] initWithTransaction:v21 pass:pass paymentApplication:v7];
     }
 
     else
@@ -8407,21 +8407,21 @@ LABEL_18:
   return v9;
 }
 
-- (void)_performNonceRequestWithParam:(id)a3
+- (void)_performNonceRequestWithParam:(id)param
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  paramCopy = param;
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
   [(PKPaymentAuthorizationStateMachine *)self _computeAssessmentIfNecessary];
   objc_initWeak(&location, self);
-  v6 = [v5 merchantSession];
+  merchantSession = [paymentRequest merchantSession];
   if (!PKHandsOnDemoModeEnabled() && !PKUIOnlyDemoModeEnabled())
   {
-    if ([v5 requestType] == 2 || objc_msgSend(v5, "requestType") == 4 || objc_msgSend(v5, "requestType") == 5)
+    if ([paymentRequest requestType] == 2 || objc_msgSend(paymentRequest, "requestType") == 4 || objc_msgSend(paymentRequest, "requestType") == 5)
     {
       goto LABEL_7;
     }
 
-    if (v6)
+    if (merchantSession)
     {
       self->_awaitingWebServiceResponse = 1;
       v27[0] = MEMORY[0x1E69E9820];
@@ -8429,8 +8429,8 @@ LABEL_18:
       v27[2] = __68__PKPaymentAuthorizationStateMachine__performNonceRequestWithParam___block_invoke_2;
       v27[3] = &unk_1E79CE210;
       objc_copyWeak(&v30, &location);
-      v28 = v6;
-      v29 = v4;
+      v28 = merchantSession;
+      v29 = paramCopy;
       [(PKPaymentAuthorizationStateMachine *)self _augmentSessionResponseWithCompletion:v27];
 
       v23 = &v30;
@@ -8438,11 +8438,11 @@ LABEL_18:
 
     else
     {
-      if ([v5 isPeerPaymentRequest])
+      if ([paymentRequest isPeerPaymentRequest])
       {
 LABEL_7:
-        v21 = [v4 credential];
-        v22 = [PKPaymentAuthorizationAuthorizeStateParam paramWithCredential:v21];
+        credential = [paramCopy credential];
+        v22 = [PKPaymentAuthorizationAuthorizeStateParam paramWithCredential:credential];
 
         [(PKPaymentAuthorizationStateMachine *)self _setState:10 param:v22];
         goto LABEL_8;
@@ -8454,7 +8454,7 @@ LABEL_7:
       v24[2] = __68__PKPaymentAuthorizationStateMachine__performNonceRequestWithParam___block_invoke_4;
       v24[3] = &unk_1E79CE238;
       objc_copyWeak(&v26, &location);
-      v25 = v4;
+      v25 = paramCopy;
       [(PKPaymentAuthorizationStateMachine *)self _nonceResponseWithCompletion:v24];
 
       v23 = &v26;
@@ -8464,10 +8464,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
-  v8 = [v7 paymentNetworkIdentifier];
+  paymentApplication = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
+  paymentNetworkIdentifier = [paymentApplication paymentNetworkIdentifier];
 
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PKPaymentToken_%d", v8];
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PKPaymentToken_%d", paymentNetworkIdentifier];
   v10 = MEMORY[0x1E695DEF0];
   v11 = PKPassKitCoreBundle();
   v12 = [v11 pathForResource:v9 ofType:@"archive"];
@@ -8476,10 +8476,10 @@ LABEL_7:
   v14 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v13 error:0];
   v34 = arc4random();
   v15 = [MEMORY[0x1E695DEF0] dataWithBytes:&v34 length:4];
-  v16 = [v15 SHA256Hash];
-  v17 = [v16 hexEncoding];
+  sHA256Hash = [v15 SHA256Hash];
+  hexEncoding = [sHA256Hash hexEncoding];
 
-  [v14 setTransactionIdentifier:v17];
+  [v14 setTransactionIdentifier:hexEncoding];
   v18 = arc4random_uniform(0xAu);
   v19 = dispatch_time(0, ((1.0 / (v18 + 1) + 1.0) * 1000000000.0));
   block[0] = MEMORY[0x1E69E9820];
@@ -8649,26 +8649,26 @@ void __68__PKPaymentAuthorizationStateMachine__performNonceRequestWithParam___bl
 - (void)_computeAssessmentIfNecessary
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentAuthorizationStateMachine *)self _activeODIAssessment];
-  if (v3)
+  _activeODIAssessment = [(PKPaymentAuthorizationStateMachine *)self _activeODIAssessment];
+  if (_activeODIAssessment)
   {
     v4 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138412290;
-      v6 = v3;
+      v6 = _activeODIAssessment;
       _os_log_impl(&dword_1AD337000, v4, OS_LOG_TYPE_DEFAULT, "Computing CoreODI assessment %@", &v5, 0xCu);
     }
 
     self->_odiAssessmentInFlight = 1;
-    [v3 computeAssessment];
+    [_activeODIAssessment computeAssessment];
   }
 }
 
-- (void)_augmentSessionResponseWithCompletion:(id)a3
+- (void)_augmentSessionResponseWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(&location, self);
     v5[0] = MEMORY[0x1E69E9820];
@@ -8676,7 +8676,7 @@ void __68__PKPaymentAuthorizationStateMachine__performNonceRequestWithParam___bl
     v5[2] = __76__PKPaymentAuthorizationStateMachine__augmentSessionResponseWithCompletion___block_invoke;
     v5[3] = &unk_1E79CE288;
     objc_copyWeak(&v7, &location);
-    v6 = v4;
+    v6 = completionCopy;
     [(PKPaymentAuthorizationStateMachine *)self _augmentBaseRequestWithCompletion:v5];
 
     objc_destroyWeak(&v7);
@@ -8744,10 +8744,10 @@ void __76__PKPaymentAuthorizationStateMachine__augmentSessionResponseWithComplet
   }
 }
 
-- (void)_nonceResponseWithCompletion:(id)a3
+- (void)_nonceResponseWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(&location, self);
     v5[0] = MEMORY[0x1E69E9820];
@@ -8755,7 +8755,7 @@ void __76__PKPaymentAuthorizationStateMachine__augmentSessionResponseWithComplet
     v5[2] = __67__PKPaymentAuthorizationStateMachine__nonceResponseWithCompletion___block_invoke;
     v5[3] = &unk_1E79CE288;
     objc_copyWeak(&v7, &location);
-    v6 = v4;
+    v6 = completionCopy;
     [(PKPaymentAuthorizationStateMachine *)self _augmentBaseRequestWithCompletion:v5];
 
     objc_destroyWeak(&v7);
@@ -8823,37 +8823,37 @@ void __67__PKPaymentAuthorizationStateMachine__nonceResponseWithCompletion___blo
   }
 }
 
-- (void)_augmentBaseRequestWithCompletion:(id)a3
+- (void)_augmentBaseRequestWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v6 = [v5 currencyCode];
-  v7 = [v5 countryCode];
-  v8 = [v5 boundInterfaceIdentifier];
-  v9 = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
+  completionCopy = completion;
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  currencyCode = [paymentRequest currencyCode];
+  countryCode = [paymentRequest countryCode];
+  boundInterfaceIdentifier = [paymentRequest boundInterfaceIdentifier];
+  paymentApplication = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
   v10 = [(PKPaymentAuthorizationDataModel *)self->_model itemForType:3];
-  v11 = [v10 pass];
+  pass = [v10 pass];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__PKPaymentAuthorizationStateMachine__augmentBaseRequestWithCompletion___block_invoke;
   aBlock[3] = &unk_1E79CE2B0;
   v34 = 0;
-  v27 = v11;
-  v12 = v9;
+  v27 = pass;
+  v12 = paymentApplication;
   v28 = v12;
-  v29 = v7;
-  v30 = v6;
-  v31 = v8;
+  v29 = countryCode;
+  v30 = currencyCode;
+  v31 = boundInterfaceIdentifier;
   v32 = 0;
-  v33 = v4;
-  v22 = v4;
-  v21 = v8;
-  v13 = v6;
-  v14 = v7;
-  v15 = v11;
+  v33 = completionCopy;
+  v22 = completionCopy;
+  v21 = boundInterfaceIdentifier;
+  v13 = currencyCode;
+  v14 = countryCode;
+  v15 = pass;
   v16 = _Block_copy(aBlock);
   secureElement = self->_secureElement;
-  v18 = [v12 applicationIdentifier];
+  applicationIdentifier = [v12 applicationIdentifier];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __72__PKPaymentAuthorizationStateMachine__augmentBaseRequestWithCompletion___block_invoke_2;
@@ -8862,7 +8862,7 @@ void __67__PKPaymentAuthorizationStateMachine__nonceResponseWithCompletion___blo
   v25 = v16;
   v19 = v16;
   v20 = v12;
-  [(PKSecureElement *)secureElement appletWithIdentifier:v18 completion:v23];
+  [(PKSecureElement *)secureElement appletWithIdentifier:applicationIdentifier completion:v23];
 }
 
 void __72__PKPaymentAuthorizationStateMachine__augmentBaseRequestWithCompletion___block_invoke(void *a1, void *a2, void *a3)
@@ -8906,9 +8906,9 @@ void __72__PKPaymentAuthorizationStateMachine__augmentBaseRequestWithCompletion_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_performPrepareTransactionDetailsRequestWithParam:(id)a3
+- (void)_performPrepareTransactionDetailsRequestWithParam:(id)param
 {
-  v4 = a3;
+  paramCopy = param;
   objc_initWeak(&location, self);
   if (PKHandsOnDemoModeEnabled() || PKUIOnlyDemoModeEnabled())
   {
@@ -8927,18 +8927,18 @@ void __72__PKPaymentAuthorizationStateMachine__augmentBaseRequestWithCompletion_
     self->_prepareTransactionDetailsCounter = v6;
     self->_awaitingWebServiceResponse = 1;
     paymentWebService = self->_paymentWebService;
-    v7 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    v8 = [v7 merchantSession];
-    v9 = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
-    v10 = [v9 secureElementIdentifier];
-    v11 = v10;
-    if (!v10)
+    paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    merchantSession = [paymentRequest merchantSession];
+    paymentApplication = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
+    secureElementIdentifier = [paymentApplication secureElementIdentifier];
+    primarySecureElementIdentifier = secureElementIdentifier;
+    if (!secureElementIdentifier)
     {
-      v11 = [(PKSecureElement *)self->_secureElement primarySecureElementIdentifier];
+      primarySecureElementIdentifier = [(PKSecureElement *)self->_secureElement primarySecureElementIdentifier];
     }
 
-    v12 = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
-    v13 = [(PKPaymentAuthorizationDataModel *)self->_model currencyCode];
+    transactionAmount = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
+    currencyCode = [(PKPaymentAuthorizationDataModel *)self->_model currencyCode];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __88__PKPaymentAuthorizationStateMachine__performPrepareTransactionDetailsRequestWithParam___block_invoke_2_285;
@@ -8946,9 +8946,9 @@ void __72__PKPaymentAuthorizationStateMachine__augmentBaseRequestWithCompletion_
     v5 = v16;
     objc_copyWeak(v16, &location);
     v16[1] = v6;
-    [(PKPaymentWebService *)paymentWebService prepareTransactionDetailsForMerchantSession:v8 secureElementIdentifier:v11 amount:v12 currencyCode:v13 completion:v15];
+    [(PKPaymentWebService *)paymentWebService prepareTransactionDetailsForMerchantSession:merchantSession secureElementIdentifier:primarySecureElementIdentifier amount:transactionAmount currencyCode:currencyCode completion:v15];
 
-    if (!v10)
+    if (!secureElementIdentifier)
     {
     }
   }
@@ -9085,14 +9085,14 @@ void __88__PKPaymentAuthorizationStateMachine__performPrepareTransactionDetailsR
 LABEL_6:
 }
 
-- (void)_performRewrapRequestWithParam:(id)a3
+- (void)_performRewrapRequestWithParam:(id)param
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationStateMachine *)self _activeODIAssessment];
-  v6 = [(PKPaymentAuthorizationDataModel *)self->_model mode]!= 1 || v5 == 0;
-  if (v6 || ([v5 currentAssessment], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  paramCopy = param;
+  _activeODIAssessment = [(PKPaymentAuthorizationStateMachine *)self _activeODIAssessment];
+  v6 = [(PKPaymentAuthorizationDataModel *)self->_model mode]!= 1 || _activeODIAssessment == 0;
+  if (v6 || ([_activeODIAssessment currentAssessment], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    [(PKPaymentAuthorizationStateMachine *)self _performRewrapRequestImplWithParam:v4];
+    [(PKPaymentAuthorizationStateMachine *)self _performRewrapRequestImplWithParam:paramCopy];
   }
 
   else
@@ -9102,8 +9102,8 @@ LABEL_6:
     v8[2] = __69__PKPaymentAuthorizationStateMachine__performRewrapRequestWithParam___block_invoke;
     v8[3] = &unk_1E79CE378;
     v8[4] = self;
-    v9 = v4;
-    [v5 waitForAssessmentWithContinueBlock:v8];
+    v9 = paramCopy;
+    [_activeODIAssessment waitForAssessmentWithContinueBlock:v8];
   }
 }
 
@@ -9119,11 +9119,11 @@ void __69__PKPaymentAuthorizationStateMachine__performRewrapRequestWithParam___b
   dispatch_async(MEMORY[0x1E69E96A0], v2);
 }
 
-- (void)_performRewrapRequestImplWithParam:(id)a3
+- (void)_performRewrapRequestImplWithParam:(id)param
 {
   v74 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 credential];
+  paramCopy = param;
+  credential = [paramCopy credential];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -9131,28 +9131,28 @@ void __69__PKPaymentAuthorizationStateMachine__performRewrapRequestWithParam___b
   aBlock[3] = &unk_1E79CE3A0;
   objc_copyWeak(&v71, &location);
   aBlock[4] = self;
-  v6 = v5;
+  v6 = credential;
   v70 = v6;
   v7 = _Block_copy(aBlock);
   v8 = [(PKPaymentAuthorizationDataModel *)self->_model itemForType:3];
-  v9 = [v8 pass];
-  v60 = [v9 paymentPass];
+  pass = [v8 pass];
+  paymentPass = [pass paymentPass];
 
-  v59 = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
-  v10 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v11 = [v10 merchantSession];
+  paymentApplication = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  merchantSession = [paymentRequest merchantSession];
 
-  if (!v11)
+  if (!merchantSession)
   {
-    v15 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    v16 = [v15 serviceProviderPaymentRequest];
+    paymentRequest2 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    serviceProviderPaymentRequest = [paymentRequest2 serviceProviderPaymentRequest];
 
-    if (!v16)
+    if (!serviceProviderPaymentRequest)
     {
       self->_awaitingWebServiceResponse = 1;
       *buf = 0;
       v40 = objc_alloc_init(PKPaymentRewrapRequest);
-      [(PKPaymentAuthorizationStateMachine *)self _updateRewrapRequest:v40 param:v4 serviceURL:buf];
+      [(PKPaymentAuthorizationStateMachine *)self _updateRewrapRequest:v40 param:paramCopy serviceURL:buf];
       paymentWebService = self->_paymentWebService;
       v42 = *buf;
       v61[0] = MEMORY[0x1E69E9820];
@@ -9165,67 +9165,67 @@ void __69__PKPaymentAuthorizationStateMachine__performRewrapRequestWithParam___b
       goto LABEL_35;
     }
 
-    v17 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    v18 = [v17 serviceProviderPaymentRequest];
-    v58 = [v18 serviceProviderOrder];
+    paymentRequest3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    serviceProviderPaymentRequest2 = [paymentRequest3 serviceProviderPaymentRequest];
+    serviceProviderOrder = [serviceProviderPaymentRequest2 serviceProviderOrder];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v58 serviceProviderData];
-      v20 = [v19 mutableCopy];
+      serviceProviderData = [serviceProviderOrder serviceProviderData];
+      v20 = [serviceProviderData mutableCopy];
 
-      v21 = [v60 primaryAccountIdentifier];
-      [v20 safelySetObject:v21 forKey:@"primaryAccountIdentifier"];
+      primaryAccountIdentifier = [paymentPass primaryAccountIdentifier];
+      [v20 safelySetObject:primaryAccountIdentifier forKey:@"primaryAccountIdentifier"];
 
-      v22 = [v59 dpanIdentifier];
-      [v20 safelySetObject:v22 forKey:@"selectedDpanId"];
+      dpanIdentifier = [paymentApplication dpanIdentifier];
+      [v20 safelySetObject:dpanIdentifier forKey:@"selectedDpanId"];
 
       v23 = [v20 objectForKey:@"requestMPAN"];
-      v24 = [v23 BOOLValue];
+      bOOLValue = [v23 BOOLValue];
 
-      if (v24)
+      if (bOOLValue)
       {
-        v25 = [v60 devicePrimaryPaymentApplication];
-        v26 = [v25 dpanIdentifier];
-        [v20 safelySetObject:v26 forKey:@"devicePrimaryAccountIdentifier"];
+        devicePrimaryPaymentApplication = [paymentPass devicePrimaryPaymentApplication];
+        dpanIdentifier2 = [devicePrimaryPaymentApplication dpanIdentifier];
+        [v20 safelySetObject:dpanIdentifier2 forKey:@"devicePrimaryAccountIdentifier"];
 
-        v27 = [v60 issuerCountryCode];
-        [v20 safelySetObject:v27 forKey:@"issuerCountryCode"];
+        issuerCountryCode = [paymentPass issuerCountryCode];
+        [v20 safelySetObject:issuerCountryCode forKey:@"issuerCountryCode"];
       }
 
       v28 = [v20 copy];
-      [v58 setServiceProviderData:v28];
+      [serviceProviderOrder setServiceProviderData:v28];
     }
 
-    [v58 setPaymentInstrumentType:1];
-    v29 = [v4 wrappedPayment];
-    v30 = [v29 transactionData];
-    [v58 setAppletValue:v30];
+    [serviceProviderOrder setPaymentInstrumentType:1];
+    wrappedPayment = [paramCopy wrappedPayment];
+    transactionData = [wrappedPayment transactionData];
+    [serviceProviderOrder setAppletValue:transactionData];
 
-    if ([v59 supportsBarcodePayment] && (objc_msgSend(v59, "supportsContactlessPayment") & 1) == 0)
+    if ([paymentApplication supportsBarcodePayment] && (objc_msgSend(paymentApplication, "supportsContactlessPayment") & 1) == 0)
     {
-      v31 = [v4 wrappedPayment];
-      v32 = [v31 transactionIdentifier];
-      [v58 setTransactionIdentifier:v32];
+      wrappedPayment2 = [paramCopy wrappedPayment];
+      transactionIdentifier = [wrappedPayment2 transactionIdentifier];
+      [serviceProviderOrder setTransactionIdentifier:transactionIdentifier];
     }
 
     v33 = objc_alloc_init(PKPaymentServiceProviderPerformPaymentRequest);
-    [(PKPaymentServiceProviderPerformPaymentRequest *)v33 setPass:v60];
-    [(PKPaymentServiceProviderPerformPaymentRequest *)v33 setServiceProviderOrder:v58];
-    v34 = [v4 nonceData];
-    [(PKPaymentServiceProviderPerformPaymentRequest *)v33 setNonce:v34];
+    [(PKPaymentServiceProviderPerformPaymentRequest *)v33 setPass:paymentPass];
+    [(PKPaymentServiceProviderPerformPaymentRequest *)v33 setServiceProviderOrder:serviceProviderOrder];
+    nonceData = [paramCopy nonceData];
+    [(PKPaymentServiceProviderPerformPaymentRequest *)v33 setNonce:nonceData];
 
-    v35 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    v36 = [v35 serviceProviderPaymentRequest];
-    v37 = [v36 targetDeviceSerialNumber];
-    [(PKPaymentServiceProviderPerformPaymentRequest *)v33 setTargetDeviceSerialNumber:v37];
+    paymentRequest4 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    serviceProviderPaymentRequest3 = [paymentRequest4 serviceProviderPaymentRequest];
+    targetDeviceSerialNumber = [serviceProviderPaymentRequest3 targetDeviceSerialNumber];
+    [(PKPaymentServiceProviderPerformPaymentRequest *)v33 setTargetDeviceSerialNumber:targetDeviceSerialNumber];
 
-    -[PKPaymentServiceProviderPerformPaymentRequest setCryptogramType:](v33, "setCryptogramType:", [v4 cryptogramType]);
+    -[PKPaymentServiceProviderPerformPaymentRequest setCryptogramType:](v33, "setCryptogramType:", [paramCopy cryptogramType]);
     if (!_os_feature_enabled_impl())
     {
       v43 = PKLogFacilityTypeGetObject(7uLL);
-      v57 = v43;
+      _activeODIAssessment = v43;
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
@@ -9235,10 +9235,10 @@ void __69__PKPaymentAuthorizationStateMachine__performRewrapRequestWithParam___b
       goto LABEL_34;
     }
 
-    v57 = [(PKPaymentAuthorizationStateMachine *)self _activeODIAssessment];
-    if (v57)
+    _activeODIAssessment = [(PKPaymentAuthorizationStateMachine *)self _activeODIAssessment];
+    if (_activeODIAssessment)
     {
-      if (![v60 supportsDeviceAssessmentAccordingToService:self->_paymentWebService])
+      if (![paymentPass supportsDeviceAssessmentAccordingToService:self->_paymentWebService])
       {
         v44 = PKLogFacilityTypeGetObject(7uLL);
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
@@ -9247,42 +9247,42 @@ void __69__PKPaymentAuthorizationStateMachine__performRewrapRequestWithParam___b
           _os_log_impl(&dword_1AD337000, v44, OS_LOG_TYPE_DEFAULT, "Not attaching device assessment to service provider payment request, as pass does not support assessments (assessment was probably generated for a supported pass, but payment is being made with an unsupported pass)", buf, 2u);
         }
 
-        [v57 provideSessionFeedback:1];
+        [_activeODIAssessment provideSessionFeedback:1];
         goto LABEL_26;
       }
 
-      v38 = [v57 currentAssessment];
+      currentAssessment = [_activeODIAssessment currentAssessment];
       v39 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *&buf[4] = v57;
+        *&buf[4] = _activeODIAssessment;
         _os_log_impl(&dword_1AD337000, v39, OS_LOG_TYPE_DEFAULT, "Attaching device assessment to service provider payment request %@", buf, 0xCu);
       }
 
-      [(PKPaymentServiceProviderPerformPaymentRequest *)v33 setDeviceAssessments:v38];
-      [v57 provideSessionFeedback:0];
+      [(PKPaymentServiceProviderPerformPaymentRequest *)v33 setDeviceAssessments:currentAssessment];
+      [_activeODIAssessment provideSessionFeedback:0];
     }
 
     else
     {
-      v38 = PKLogFacilityTypeGetObject(7uLL);
-      if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
+      currentAssessment = PKLogFacilityTypeGetObject(7uLL);
+      if (os_log_type_enabled(currentAssessment, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_1AD337000, v38, OS_LOG_TYPE_DEFAULT, "No device assessment generated for service provider payment request", buf, 2u);
+        _os_log_impl(&dword_1AD337000, currentAssessment, OS_LOG_TYPE_DEFAULT, "No device assessment generated for service provider payment request", buf, 2u);
       }
     }
 
 LABEL_26:
-    v45 = [(PKPaymentAuthorizationDataModel *)self->_model shippingAddress];
-    if (!v45 || ([v60 shippingAddressSeed], v46 = objc_claimAutoreleasedReturnValue(), v47 = v46 == 0, v46, v45, v47))
+    shippingAddress = [(PKPaymentAuthorizationDataModel *)self->_model shippingAddress];
+    if (!shippingAddress || ([paymentPass shippingAddressSeed], v46 = objc_claimAutoreleasedReturnValue(), v47 = v46 == 0, v46, shippingAddress, v47))
     {
-      v52 = PKLogFacilityTypeGetObject(7uLL);
-      if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
+      value = PKLogFacilityTypeGetObject(7uLL);
+      if (os_log_type_enabled(value, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_1AD337000, v52, OS_LOG_TYPE_DEFAULT, "Address seed: Pass has no seed, skipping", buf, 2u);
+        _os_log_impl(&dword_1AD337000, value, OS_LOG_TYPE_DEFAULT, "Address seed: Pass has no seed, skipping", buf, 2u);
       }
     }
 
@@ -9295,13 +9295,13 @@ LABEL_26:
         _os_log_impl(&dword_1AD337000, v48, OS_LOG_TYPE_DEFAULT, "Address seed: Pass has seed, hashing", buf, 2u);
       }
 
-      v49 = [(PKPaymentAuthorizationDataModel *)self->_model shippingAddress];
-      v50 = [v49 postalAddresses];
-      v51 = [v50 firstObject];
-      v52 = [v51 value];
+      shippingAddress2 = [(PKPaymentAuthorizationDataModel *)self->_model shippingAddress];
+      postalAddresses = [shippingAddress2 postalAddresses];
+      firstObject = [postalAddresses firstObject];
+      value = [firstObject value];
 
-      v53 = [v60 shippingAddressSeed];
-      v54 = PKPostalAddressHash(v52, v53);
+      shippingAddressSeed = [paymentPass shippingAddressSeed];
+      v54 = PKPostalAddressHash(value, shippingAddressSeed);
 
       v55 = [v54 base64EncodedStringWithOptions:0];
       [(PKPaymentServiceProviderPerformPaymentRequest *)v33 setShippingAddressHash:v55];
@@ -9315,7 +9315,7 @@ LABEL_34:
     v63[2] = __73__PKPaymentAuthorizationStateMachine__performRewrapRequestImplWithParam___block_invoke_296;
     v63[3] = &unk_1E79CE3F0;
     v65 = v7;
-    v64 = v4;
+    v64 = paramCopy;
     [(PKPaymentWebService *)v56 performServiceProviderPayment:v33 completion:v63];
 
     goto LABEL_35;
@@ -9323,14 +9323,14 @@ LABEL_34:
 
   self->_awaitingWebServiceResponse = 1;
   *buf = 0;
-  v12 = [(PKPaymentAuthorizationStateMachine *)self _rewrapCompleteSessionRequestWithParam:v4 serviceURL:buf];
+  v12 = [(PKPaymentAuthorizationStateMachine *)self _rewrapCompleteSessionRequestWithParam:paramCopy serviceURL:buf];
   v13 = self->_paymentWebService;
   v14 = *buf;
   v66[0] = MEMORY[0x1E69E9820];
   v66[1] = 3221225472;
   v66[2] = __73__PKPaymentAuthorizationStateMachine__performRewrapRequestImplWithParam___block_invoke_292;
   v66[3] = &unk_1E79CE3C8;
-  v67 = v11;
+  v67 = merchantSession;
   v68 = v7;
   [(PKPaymentWebService *)v13 completeSessionWithRequest:v12 serviceURL:v14 completion:v66];
 
@@ -9615,65 +9615,65 @@ void __73__PKPaymentAuthorizationStateMachine__performRewrapRequestImplWithParam
   }
 }
 
-- (void)_updateRewrapRequest:(id)a3 param:(id)a4 serviceURL:(id *)a5
+- (void)_updateRewrapRequest:(id)request param:(id)param serviceURL:(id *)l
 {
   model = self->_model;
-  v9 = a4;
-  v10 = a3;
-  v15 = [(PKPaymentAuthorizationDataModel *)model paymentRequest];
-  v11 = [(PKPaymentAuthorizationStateMachine *)self _updateRewrapBaseRequest:v10 param:v9];
+  paramCopy = param;
+  requestCopy = request;
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)model paymentRequest];
+  v11 = [(PKPaymentAuthorizationStateMachine *)self _updateRewrapBaseRequest:requestCopy param:paramCopy];
 
-  v12 = [v15 merchantIdentifier];
-  [v10 setMerchantIdentifier:v12];
+  merchantIdentifier = [paymentRequest merchantIdentifier];
+  [requestCopy setMerchantIdentifier:merchantIdentifier];
 
-  v13 = [(PKPaymentAuthorizationDataModel *)self->_model hostApplicationIdentifier];
-  [v10 setHostApplicationIdentifier:v13];
+  hostApplicationIdentifier = [(PKPaymentAuthorizationDataModel *)self->_model hostApplicationIdentifier];
+  [requestCopy setHostApplicationIdentifier:hostApplicationIdentifier];
 
-  v14 = [(PKPaymentAuthorizationDataModel *)self->_model merchantName];
-  [v10 setMerchantDisplayName:v14];
+  merchantName = [(PKPaymentAuthorizationDataModel *)self->_model merchantName];
+  [requestCopy setMerchantDisplayName:merchantName];
 
-  if (a5)
+  if (l)
   {
-    objc_storeStrong(a5, v11);
+    objc_storeStrong(l, v11);
   }
 }
 
-- (id)_rewrapCompleteSessionRequestWithParam:(id)a3 serviceURL:(id *)a4
+- (id)_rewrapCompleteSessionRequestWithParam:(id)param serviceURL:(id *)l
 {
   model = self->_model;
-  v7 = a3;
-  v8 = [(PKPaymentAuthorizationDataModel *)model paymentRequest];
-  v9 = [v8 merchantSession];
+  paramCopy = param;
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)model paymentRequest];
+  merchantSession = [paymentRequest merchantSession];
   v10 = objc_alloc_init(PKPaymentCompleteSessionRequest);
-  v11 = [(PKPaymentAuthorizationStateMachine *)self _updateRewrapBaseRequest:v10 param:v7];
+  v11 = [(PKPaymentAuthorizationStateMachine *)self _updateRewrapBaseRequest:v10 param:paramCopy];
 
-  [(PKPaymentCompleteSessionRequest *)v10 setMerchantSession:v9];
-  if (a4)
+  [(PKPaymentCompleteSessionRequest *)v10 setMerchantSession:merchantSession];
+  if (l)
   {
-    objc_storeStrong(a4, v11);
+    objc_storeStrong(l, v11);
   }
 
   return v10;
 }
 
-- (id)_updateRewrapBaseRequest:(id)a3 param:(id)a4
+- (id)_updateRewrapBaseRequest:(id)request param:(id)param
 {
   v104 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  requestCopy = request;
   model = self->_model;
-  v91 = a4;
-  v8 = [(PKPaymentAuthorizationDataModel *)model paymentRequest];
-  v100 = [(PKPaymentAuthorizationDataModel *)self->_model currencyCode];
-  v99 = [v8 boundInterfaceIdentifier];
-  v98 = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
+  paramCopy = param;
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)model paymentRequest];
+  currencyCode = [(PKPaymentAuthorizationDataModel *)self->_model currencyCode];
+  boundInterfaceIdentifier = [paymentRequest boundInterfaceIdentifier];
+  paymentApplication = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
   v88 = [(PKPaymentAuthorizationDataModel *)self->_model itemForType:3];
-  v9 = [v88 pass];
-  v10 = [v8 applicationData];
+  pass = [v88 pass];
+  applicationData = [paymentRequest applicationData];
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if ([(PKPaymentAuthorizationDataModel *)self->_model mode]== 1)
   {
-    v12 = [(PKPaymentAuthorizationDataModel *)self->_model remoteDevice];
-    v89 = v12 != 0;
+    remoteDevice = [(PKPaymentAuthorizationDataModel *)self->_model remoteDevice];
+    v89 = remoteDevice != 0;
   }
 
   else
@@ -9682,20 +9682,20 @@ void __73__PKPaymentAuthorizationStateMachine__performRewrapRequestImplWithParam
   }
 
   v94 = v11;
-  v13 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v14 = [v13 isVirtualCardEnrollmentRequest];
+  paymentRequest2 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  isVirtualCardEnrollmentRequest = [paymentRequest2 isVirtualCardEnrollmentRequest];
 
-  if (v14)
+  if (isVirtualCardEnrollmentRequest)
   {
     v15 = 1;
   }
 
   else
   {
-    v16 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-    v17 = [v16 isVirtualCardRefreshRequest];
+    paymentRequest3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+    isVirtualCardRefreshRequest = [paymentRequest3 isVirtualCardRefreshRequest];
 
-    if (v17)
+    if (isVirtualCardRefreshRequest)
     {
       v15 = 2;
     }
@@ -9706,70 +9706,70 @@ void __73__PKPaymentAuthorizationStateMachine__performRewrapRequestImplWithParam
     }
   }
 
-  v18 = [(PKPaymentAuthorizationDataModel *)self->_model selectedPaymentOffer];
-  v19 = [(PKPaymentAuthorizationDataModel *)self->_model paymentOffersController];
-  v20 = [v9 uniqueID];
-  v21 = [v19 paymentOfferCriteriaForPassUniqueID:v20];
+  selectedPaymentOffer = [(PKPaymentAuthorizationDataModel *)self->_model selectedPaymentOffer];
+  paymentOffersController = [(PKPaymentAuthorizationDataModel *)self->_model paymentOffersController];
+  uniqueID = [pass uniqueID];
+  v21 = [paymentOffersController paymentOfferCriteriaForPassUniqueID:uniqueID];
   v95 = [v21 pk_firstObjectPassingTest:&__block_literal_global_304];
 
-  v22 = v18;
+  v22 = selectedPaymentOffer;
   paymentOffersController = self->_paymentOffersController;
-  v24 = [v18 passUniqueID];
-  v101 = v9;
-  v93 = v18;
-  if (v24)
+  passUniqueID = [selectedPaymentOffer passUniqueID];
+  v101 = pass;
+  v93 = selectedPaymentOffer;
+  if (passUniqueID)
   {
-    v25 = [(PKPaymentOffersController *)paymentOffersController merchandisingOfferForPassUniqueID:v24];
+    v25 = [(PKPaymentOffersController *)paymentOffersController merchandisingOfferForPassUniqueID:passUniqueID];
   }
 
   else
   {
-    v26 = [v9 uniqueID];
-    v25 = [(PKPaymentOffersController *)paymentOffersController merchandisingOfferForPassUniqueID:v26];
+    uniqueID2 = [pass uniqueID];
+    v25 = [(PKPaymentOffersController *)paymentOffersController merchandisingOfferForPassUniqueID:uniqueID2];
 
     v22 = v93;
   }
 
-  v27 = [v25 allIdentifiers];
-  v97 = [v27 allObjects];
+  allIdentifiers = [v25 allIdentifiers];
+  allObjects = [allIdentifiers allObjects];
 
-  v96 = v10;
+  v96 = applicationData;
   if ([(PKPaymentAuthorizationDataModel *)self->_model fundingMode]== 2 && v22)
   {
-    v28 = [v22 type];
+    type = [v22 type];
     v29 = v94;
-    if (v28 == 2)
+    if (type == 2)
     {
-      v32 = [v22 rewardsRedemptionIntent];
-      v35 = [v32 dictionaryRepresentation];
-      [v94 safelySetObject:v35 forKey:@"rewardsRedemptionIntent"];
+      rewardsRedemptionIntent = [v22 rewardsRedemptionIntent];
+      dictionaryRepresentation = [rewardsRedemptionIntent dictionaryRepresentation];
+      [v94 safelySetObject:dictionaryRepresentation forKey:@"rewardsRedemptionIntent"];
 
       v15 = 4;
     }
 
     else
     {
-      if (v28 != 1)
+      if (type != 1)
       {
 LABEL_22:
-        v36 = [v22 serviceProviderData];
-        [v94 addEntriesFromDictionary:v36];
+        serviceProviderData = [v22 serviceProviderData];
+        [v94 addEntriesFromDictionary:serviceProviderData];
 
-        v37 = [v22 sessionIdentifier];
-        [v94 safelySetObject:v37 forKey:@"sessionIdentifier"];
+        sessionIdentifier = [v22 sessionIdentifier];
+        [v94 safelySetObject:sessionIdentifier forKey:@"sessionIdentifier"];
 
-        v38 = [v22 selectedOfferIdentifier];
-        [v94 safelySetObject:v38 forKey:@"selectedOfferIdentifier"];
+        selectedOfferIdentifier = [v22 selectedOfferIdentifier];
+        [v94 safelySetObject:selectedOfferIdentifier forKey:@"selectedOfferIdentifier"];
 
-        v33 = [v22 criteriaIdentifier];
+        criteriaIdentifier = [v22 criteriaIdentifier];
         goto LABEL_23;
       }
 
-      v30 = [v22 installmentAssessment];
-      v31 = [v30 offers];
-      v32 = [v31 pk_createArrayBySafelyApplyingBlock:&__block_literal_global_307];
+      installmentAssessment = [v22 installmentAssessment];
+      offers = [installmentAssessment offers];
+      rewardsRedemptionIntent = [offers pk_createArrayBySafelyApplyingBlock:&__block_literal_global_307];
 
-      [v94 safelySetObject:v32 forKey:@"allOfferIdentifiers"];
+      [v94 safelySetObject:rewardsRedemptionIntent forKey:@"allOfferIdentifiers"];
       v15 = 3;
     }
 
@@ -9779,147 +9779,147 @@ LABEL_22:
   v29 = v94;
   if (!v95)
   {
-    v34 = v9;
+    v34 = pass;
     goto LABEL_24;
   }
 
-  v33 = [v95 identifier];
+  criteriaIdentifier = [v95 identifier];
 LABEL_23:
-  v39 = v33;
-  v34 = v9;
-  [v29 safelySetObject:v33 forKey:@"criteriaIdentifier"];
+  v39 = criteriaIdentifier;
+  v34 = pass;
+  [v29 safelySetObject:criteriaIdentifier forKey:@"criteriaIdentifier"];
 
 LABEL_24:
-  if ([v97 count])
+  if ([allObjects count])
   {
-    [v29 safelySetObject:v97 forKey:@"merchandisingOfferIdentifiers"];
+    [v29 safelySetObject:allObjects forKey:@"merchandisingOfferIdentifiers"];
   }
 
   v87 = v25;
-  [v6 setType:v15];
-  v40 = [v91 wrappedPayment];
-  [v6 setWrappedPayment:v40];
+  [requestCopy setType:v15];
+  wrappedPayment = [paramCopy wrappedPayment];
+  [requestCopy setWrappedPayment:wrappedPayment];
 
-  [v6 setPass:v34];
-  [v6 setPaymentApplication:v98];
-  [v6 setApplicationData:v96];
-  [v6 setBoundInterfaceIdentifier:v99];
-  v41 = [v91 cryptogramType];
+  [requestCopy setPass:v34];
+  [requestCopy setPaymentApplication:paymentApplication];
+  [requestCopy setApplicationData:v96];
+  [requestCopy setBoundInterfaceIdentifier:boundInterfaceIdentifier];
+  cryptogramType = [paramCopy cryptogramType];
 
-  [v6 setCryptogramType:v41];
-  [v6 setCurrencyCode:v100];
+  [requestCopy setCryptogramType:cryptogramType];
+  [requestCopy setCurrencyCode:currencyCode];
   if ([v29 count])
   {
     v42 = [v29 copy];
-    [v6 setServiceProviderData:v42];
+    [requestCopy setServiceProviderData:v42];
   }
 
   else
   {
-    [v6 setServiceProviderData:0];
+    [requestCopy setServiceProviderData:0];
   }
 
   if (v89)
   {
-    v43 = [(PKPaymentAuthorizationDataModel *)self->_model remoteDevice];
-    v44 = [v43 modelIdentifier];
+    remoteDevice2 = [(PKPaymentAuthorizationDataModel *)self->_model remoteDevice];
+    modelIdentifier = [remoteDevice2 modelIdentifier];
 
-    if ([v44 length])
+    if ([modelIdentifier length])
     {
-      [v6 setRemoteDeviceModel:v44];
+      [requestCopy setRemoteDeviceModel:modelIdentifier];
     }
   }
 
-  v45 = [v8 remoteNetworkRequestPaymentTopicID];
-  v46 = [v45 length];
+  remoteNetworkRequestPaymentTopicID = [paymentRequest remoteNetworkRequestPaymentTopicID];
+  v46 = [remoteNetworkRequestPaymentTopicID length];
 
   if (v46)
   {
-    v47 = [v8 remoteNetworkRequestPaymentTopicID];
-    [v6 setRemoteNetworkRequestPaymentTopicID:v47];
+    remoteNetworkRequestPaymentTopicID2 = [paymentRequest remoteNetworkRequestPaymentTopicID];
+    [requestCopy setRemoteNetworkRequestPaymentTopicID:remoteNetworkRequestPaymentTopicID2];
 
-    v48 = [v8 userAgent];
-    [v6 setRemoteNetworkRequestInitiatingUserAgent:v48];
+    userAgent = [paymentRequest userAgent];
+    [requestCopy setRemoteNetworkRequestInitiatingUserAgent:userAgent];
   }
 
   else
   {
-    v48 = [v8 userAgent];
-    [v6 setUserAgent:v48];
+    userAgent = [paymentRequest userAgent];
+    [requestCopy setUserAgent:userAgent];
   }
 
-  v49 = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
-  v50 = [v49 paymentWebService:self->_paymentWebService supportedRegionFeatureOfType:4];
+  targetDevice = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
+  v50 = [targetDevice paymentWebService:self->_paymentWebService supportedRegionFeatureOfType:4];
 
-  if ([v8 isMultiTokenRequest] && v50)
+  if ([paymentRequest isMultiTokenRequest] && v50)
   {
-    [v6 setInitiative:@"multi_token"];
-    v51 = [v8 multiTokenContexts];
-    [v6 setMultiTokenContexts:v51];
+    [requestCopy setInitiative:@"multi_token"];
+    multiTokenContexts = [paymentRequest multiTokenContexts];
+    [requestCopy setMultiTokenContexts:multiTokenContexts];
   }
 
-  v52 = [v8 recurringPaymentRequest];
-  v53 = [v8 automaticReloadPaymentRequest];
-  v92 = [v8 deferredPaymentRequest];
-  v54 = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
-  v55 = [v54 paymentWebService:self->_paymentWebService supportedRegionFeatureOfType:3];
+  recurringPaymentRequest = [paymentRequest recurringPaymentRequest];
+  automaticReloadPaymentRequest = [paymentRequest automaticReloadPaymentRequest];
+  deferredPaymentRequest = [paymentRequest deferredPaymentRequest];
+  targetDevice2 = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
+  v55 = [targetDevice2 paymentWebService:self->_paymentWebService supportedRegionFeatureOfType:3];
 
   v90 = v55;
-  if (v52 && v55)
+  if (recurringPaymentRequest && v55)
   {
-    [v6 setInitiative:@"merchant_token"];
-    v56 = [v52 tokenNotificationURL];
-    v57 = [v56 absoluteString];
-    [v6 setInitiativeContext:v57];
+    [requestCopy setInitiative:@"merchant_token"];
+    tokenNotificationURL = [recurringPaymentRequest tokenNotificationURL];
+    absoluteString = [tokenNotificationURL absoluteString];
+    [requestCopy setInitiativeContext:absoluteString];
 
-    v58 = [v52 managementURL];
-    v59 = [v58 absoluteString];
-    [v6 setMerchantTokenManagementURL:v59];
+    managementURL = [recurringPaymentRequest managementURL];
+    absoluteString2 = [managementURL absoluteString];
+    [requestCopy setMerchantTokenManagementURL:absoluteString2];
 
     v60 = PKMerchantTokenRequestUseCaseRecurring;
 LABEL_45:
-    [v6 setMerchantTokenUseCase:*v60];
+    [requestCopy setMerchantTokenUseCase:*v60];
     goto LABEL_46;
   }
 
-  if (v53 && v55)
+  if (automaticReloadPaymentRequest && v55)
   {
-    [v6 setInitiative:@"merchant_token"];
-    v61 = [v53 tokenNotificationURL];
-    v62 = [v61 absoluteString];
-    [v6 setInitiativeContext:v62];
+    [requestCopy setInitiative:@"merchant_token"];
+    tokenNotificationURL2 = [automaticReloadPaymentRequest tokenNotificationURL];
+    absoluteString3 = [tokenNotificationURL2 absoluteString];
+    [requestCopy setInitiativeContext:absoluteString3];
 
-    v63 = [v53 managementURL];
-    v64 = [v63 absoluteString];
-    [v6 setMerchantTokenManagementURL:v64];
+    managementURL2 = [automaticReloadPaymentRequest managementURL];
+    absoluteString4 = [managementURL2 absoluteString];
+    [requestCopy setMerchantTokenManagementURL:absoluteString4];
 
     v60 = PKMerchantTokenRequestUseCaseAutomaticReload;
     goto LABEL_45;
   }
 
-  if (v92 && v55)
+  if (deferredPaymentRequest && v55)
   {
-    [v6 setInitiative:@"merchant_token"];
-    v82 = [v92 tokenNotificationURL];
-    v83 = [v82 absoluteString];
-    [v6 setInitiativeContext:v83];
+    [requestCopy setInitiative:@"merchant_token"];
+    tokenNotificationURL3 = [deferredPaymentRequest tokenNotificationURL];
+    absoluteString5 = [tokenNotificationURL3 absoluteString];
+    [requestCopy setInitiativeContext:absoluteString5];
 
-    v84 = [v92 managementURL];
-    v85 = [v84 absoluteString];
-    [v6 setMerchantTokenManagementURL:v85];
+    managementURL3 = [deferredPaymentRequest managementURL];
+    absoluteString6 = [managementURL3 absoluteString];
+    [requestCopy setMerchantTokenManagementURL:absoluteString6];
 
-    [v6 setMerchantTokenUseCase:@"merchant_token_deferred"];
-    [v6 setIsDeferredPayment:1];
+    [requestCopy setMerchantTokenUseCase:@"merchant_token_deferred"];
+    [requestCopy setIsDeferredPayment:1];
   }
 
 LABEL_46:
-  if ([v8 requestType] == 10)
+  if ([paymentRequest requestType] == 10)
   {
-    [v6 setInitiative:@"transfer_funds"];
+    [requestCopy setInitiative:@"transfer_funds"];
   }
 
-  v65 = [(PKPaymentAuthorizationDataModel *)self->_model shippingAddress];
-  if (v65 && (v66 = v65, [v9 shippingAddressSeed], v67 = objc_claimAutoreleasedReturnValue(), v67, v66, v67))
+  shippingAddress = [(PKPaymentAuthorizationDataModel *)self->_model shippingAddress];
+  if (shippingAddress && (v66 = shippingAddress, [pass shippingAddressSeed], v67 = objc_claimAutoreleasedReturnValue(), v67, v66, v67))
   {
     v68 = v50;
     v69 = PKLogFacilityTypeGetObject(8uLL);
@@ -9929,16 +9929,16 @@ LABEL_46:
       _os_log_impl(&dword_1AD337000, v69, OS_LOG_TYPE_DEFAULT, "Address seed: Pass has seed, hashing", buf, 2u);
     }
 
-    v70 = [(PKPaymentAuthorizationDataModel *)self->_model shippingAddress];
-    v71 = [v70 postalAddresses];
-    v72 = [v71 firstObject];
-    v73 = [v72 value];
+    shippingAddress2 = [(PKPaymentAuthorizationDataModel *)self->_model shippingAddress];
+    postalAddresses = [shippingAddress2 postalAddresses];
+    firstObject = [postalAddresses firstObject];
+    value = [firstObject value];
 
-    v74 = [v101 shippingAddressSeed];
-    v75 = PKPostalAddressHash(v73, v74);
+    shippingAddressSeed = [v101 shippingAddressSeed];
+    v75 = PKPostalAddressHash(value, shippingAddressSeed);
 
     v76 = [v75 base64EncodedStringWithOptions:0];
-    [v6 setShippingAddressHash:v76];
+    [requestCopy setShippingAddressHash:v76];
 
     v77 = v101;
     v29 = v94;
@@ -9947,41 +9947,41 @@ LABEL_46:
   else
   {
     v68 = v50;
-    v73 = PKLogFacilityTypeGetObject(8uLL);
-    if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
+    value = PKLogFacilityTypeGetObject(8uLL);
+    if (os_log_type_enabled(value, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1AD337000, v73, OS_LOG_TYPE_DEFAULT, "Address seed: Pass has no seed, skipping", buf, 2u);
+      _os_log_impl(&dword_1AD337000, value, OS_LOG_TYPE_DEFAULT, "Address seed: Pass has no seed, skipping", buf, 2u);
     }
 
-    v77 = v9;
+    v77 = pass;
   }
 
-  v78 = [(PKPaymentAuthorizationStateMachine *)self _activeODIAssessment];
-  if (v78)
+  _activeODIAssessment = [(PKPaymentAuthorizationStateMachine *)self _activeODIAssessment];
+  if (_activeODIAssessment)
   {
     if ([v77 supportsDeviceAssessmentAccordingToService:self->_paymentWebService])
     {
-      v79 = [v78 currentAssessment];
+      currentAssessment = [_activeODIAssessment currentAssessment];
       v80 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v103 = v78;
+        v103 = _activeODIAssessment;
         _os_log_impl(&dword_1AD337000, v80, OS_LOG_TYPE_DEFAULT, "Setting device assessment %@", buf, 0xCu);
       }
 
-      [v6 setDeviceAssessments:v79];
+      [requestCopy setDeviceAssessments:currentAssessment];
       v77 = v101;
     }
 
     else
     {
-      v79 = PKLogFacilityTypeGetObject(7uLL);
-      if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
+      currentAssessment = PKLogFacilityTypeGetObject(7uLL);
+      if (os_log_type_enabled(currentAssessment, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_1AD337000, v79, OS_LOG_TYPE_DEFAULT, "Not attaching device assessment to rewrap request, as pass does not support assessments (assessment was probably generated for a supported pass, but payment is being made with an unsupported pass)", buf, 2u);
+        _os_log_impl(&dword_1AD337000, currentAssessment, OS_LOG_TYPE_DEFAULT, "Not attaching device assessment to rewrap request, as pass does not support assessments (assessment was probably generated for a supported pass, but payment is being made with an unsupported pass)", buf, 2u);
       }
     }
   }
@@ -9989,155 +9989,155 @@ LABEL_46:
   return 0;
 }
 
-- (void)_performDataProcessingWithParam:(id)a3
+- (void)_performDataProcessingWithParam:(id)param
 {
-  v4 = a3;
+  paramCopy = param;
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __70__PKPaymentAuthorizationStateMachine__performDataProcessingWithParam___block_invoke;
   v14 = &unk_1E79C4DD8;
-  v15 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = paramCopy;
   v16 = v5;
   v6 = _Block_copy(&v11);
-  v7 = [v5 rewrapResponse];
-  v8 = v7;
-  if (v7)
+  rewrapResponse = [v5 rewrapResponse];
+  v8 = rewrapResponse;
+  if (rewrapResponse)
   {
-    v9 = [v7 redemption];
+    redemption = [rewrapResponse redemption];
 
-    if (v9)
+    if (redemption)
     {
-      v10 = [v8 redemption];
-      [(PKPaymentAuthorizationStateMachine *)self _processPaymentRewardsRedemption:v10];
+      redemption2 = [v8 redemption];
+      [(PKPaymentAuthorizationStateMachine *)self _processPaymentRewardsRedemption:redemption2];
     }
   }
 
   v6[2](v6);
 }
 
-- (void)_processPaymentRewardsRedemption:(id)a3
+- (void)_processPaymentRewardsRedemption:(id)redemption
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  redemptionCopy = redemption;
   v5 = PKLogFacilityTypeGetObject(8uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v4;
+    v18 = redemptionCopy;
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Got payment rewards redemption details %@", &v17, 0xCu);
   }
 
-  v6 = [(PKPaymentAuthorizationDataModel *)self->_model pass];
-  v7 = [v6 uniqueID];
+  pass = [(PKPaymentAuthorizationDataModel *)self->_model pass];
+  uniqueID = [pass uniqueID];
 
-  if (v7)
+  if (uniqueID)
   {
-    v8 = [(PKPaymentAuthorizationDataModel *)self->_model selectedPaymentOffer];
-    if ([v8 type] == 2)
+    selectedPaymentOffer = [(PKPaymentAuthorizationDataModel *)self->_model selectedPaymentOffer];
+    if ([selectedPaymentOffer type] == 2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v8 rewardsRedemptionIntent];
-        v10 = v9;
-        if (v9 && ([v9 isEmptyValued] & 1) == 0)
+        rewardsRedemptionIntent = [selectedPaymentOffer rewardsRedemptionIntent];
+        v10 = rewardsRedemptionIntent;
+        if (rewardsRedemptionIntent && ([rewardsRedemptionIntent isEmptyValued] & 1) == 0)
         {
           v11 = [PKPaymentRewardsRedemptionUnit alloc];
-          v12 = [v10 rewardsType];
-          v13 = [v10 monetaryValue];
-          v14 = [v10 value];
-          v15 = [(PKPaymentRewardsRedemptionUnit *)v11 initWithType:v12 monetaryValue:v13 value:v14];
+          rewardsType = [v10 rewardsType];
+          monetaryValue = [v10 monetaryValue];
+          value = [v10 value];
+          v15 = [(PKPaymentRewardsRedemptionUnit *)v11 initWithType:rewardsType monetaryValue:monetaryValue value:value];
 
           v16 = [[PKPaymentRewardsRedemptionDetails alloc] initWithIntended:v15 redeemed:0 originalTransactionDetails:0];
-          [v4 setDetails:v16];
+          [redemptionCopy setDetails:v16];
         }
       }
     }
 
-    [(PKPaymentService *)self->_paymentService insertOrUpdatePaymentRewardsRedemption:v4 withPassUniqueIdentifier:v7];
+    [(PKPaymentService *)self->_paymentService insertOrUpdatePaymentRewardsRedemption:redemptionCopy withPassUniqueIdentifier:uniqueID];
     PKSharedCacheSetBoolForKey(1, @"PKSharedCacheHasEverMadeIssuerInstallmentTransaction");
   }
 }
 
-- (void)_enrichPaymentRewardsRedemptionWithPaymentTransaction:(id)a3 usingPass:(id)a4
+- (void)_enrichPaymentRewardsRedemptionWithPaymentTransaction:(id)transaction usingPass:(id)pass
 {
-  v21 = a3;
-  v6 = a4;
+  transactionCopy = transaction;
+  passCopy = pass;
   if (!PKHideCardBenefitRewards())
   {
     paymentService = self->_paymentService;
-    v8 = [v21 paymentHash];
-    v9 = [(PKPaymentService *)paymentService paymentRewardsRedemptionForPaymentHash:v8];
+    paymentHash = [transactionCopy paymentHash];
+    v9 = [(PKPaymentService *)paymentService paymentRewardsRedemptionForPaymentHash:paymentHash];
 
     if (v9)
     {
-      v10 = [v21 merchant];
+      merchant = [transactionCopy merchant];
       v11 = objc_alloc_init(PKPaymentRewardsRedemptionTransactionDetails);
-      v12 = [v21 identifier];
-      [(PKPaymentRewardsRedemptionTransactionDetails *)v11 setIdentifier:v12];
+      identifier = [transactionCopy identifier];
+      [(PKPaymentRewardsRedemptionTransactionDetails *)v11 setIdentifier:identifier];
 
-      v13 = [v21 merchantProvidedDescription];
-      [(PKPaymentRewardsRedemptionTransactionDetails *)v11 setDescriptionText:v13];
+      merchantProvidedDescription = [transactionCopy merchantProvidedDescription];
+      [(PKPaymentRewardsRedemptionTransactionDetails *)v11 setDescriptionText:merchantProvidedDescription];
 
-      v14 = [v10 name];
-      [(PKPaymentRewardsRedemptionTransactionDetails *)v11 setMerchantRawName:v14];
+      name = [merchant name];
+      [(PKPaymentRewardsRedemptionTransactionDetails *)v11 setMerchantRawName:name];
 
-      v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v10, "category")}];
+      v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(merchant, "category")}];
       [(PKPaymentRewardsRedemptionTransactionDetails *)v11 setMerchantCategoryCode:v15];
 
-      v16 = [v21 transactionDate];
-      [(PKPaymentRewardsRedemptionTransactionDetails *)v11 setTimestamp:v16];
+      transactionDate = [transactionCopy transactionDate];
+      [(PKPaymentRewardsRedemptionTransactionDetails *)v11 setTimestamp:transactionDate];
 
-      v17 = [v21 currencyAmount];
-      [(PKPaymentRewardsRedemptionTransactionDetails *)v11 setMonetaryValue:v17];
+      currencyAmount = [transactionCopy currencyAmount];
+      [(PKPaymentRewardsRedemptionTransactionDetails *)v11 setMonetaryValue:currencyAmount];
 
-      v18 = [v9 details];
-      if (!v18)
+      details = [v9 details];
+      if (!details)
       {
-        v18 = objc_alloc_init(PKPaymentRewardsRedemptionDetails);
+        details = objc_alloc_init(PKPaymentRewardsRedemptionDetails);
       }
 
-      [(PKPaymentRewardsRedemptionDetails *)v18 setOriginalTransaction:v11];
-      [v9 setDetails:v18];
+      [(PKPaymentRewardsRedemptionDetails *)details setOriginalTransaction:v11];
+      [v9 setDetails:details];
       v19 = self->_paymentService;
-      v20 = [v6 uniqueID];
-      [(PKPaymentService *)v19 insertOrUpdatePaymentRewardsRedemption:v9 withPassUniqueIdentifier:v20];
+      uniqueID = [passCopy uniqueID];
+      [(PKPaymentService *)v19 insertOrUpdatePaymentRewardsRedemption:v9 withPassUniqueIdentifier:uniqueID];
     }
   }
 }
 
-- (void)_performDidAuthorizeCallbackWithParam:(id)a3
+- (void)_performDidAuthorizeCallbackWithParam:(id)param
 {
-  v8 = a3;
-  v4 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v5 = [v4 requestType];
-  if ([v4 isServiceProviderPaymentRequest])
+  paramCopy = param;
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  requestType = [paymentRequest requestType];
+  if ([paymentRequest isServiceProviderPaymentRequest])
   {
-    [(PKPaymentAuthorizationStateMachine *)self _enqeueDidAuthorizePurchaseWithParam:v8];
+    [(PKPaymentAuthorizationStateMachine *)self _enqeueDidAuthorizePurchaseWithParam:paramCopy];
     goto LABEL_14;
   }
 
-  if ([v4 isPeerPaymentRequest])
+  if ([paymentRequest isPeerPaymentRequest])
   {
-    v6 = [v8 authorizedPeerPaymentQuote];
-    [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePeerPaymentQuoteWithAuthorizedQuote:v6];
+    authorizedPeerPaymentQuote = [paramCopy authorizedPeerPaymentQuote];
+    [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePeerPaymentQuoteWithAuthorizedQuote:authorizedPeerPaymentQuote];
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  switch(v5)
+  switch(requestType)
   {
     case 2uLL:
 LABEL_8:
-      v6 = [v8 applePayTrustSignature];
-      [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizeAccountServicePaymentRequestWithApplePayTrustSignature:v6];
+      authorizedPeerPaymentQuote = [paramCopy applePayTrustSignature];
+      [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizeAccountServicePaymentRequestWithApplePayTrustSignature:authorizedPeerPaymentQuote];
       goto LABEL_13;
     case 5uLL:
-      v6 = [v8 installmentAuthorizationToken];
-      v7 = [v8 rewrapResponse];
-      [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePaymentWithInstallmentAuthorizationToken:v6 rewrapResponse:v7];
+      authorizedPeerPaymentQuote = [paramCopy installmentAuthorizationToken];
+      rewrapResponse = [paramCopy rewrapResponse];
+      [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePaymentWithInstallmentAuthorizationToken:authorizedPeerPaymentQuote rewrapResponse:rewrapResponse];
 LABEL_12:
 
       goto LABEL_13;
@@ -10147,25 +10147,25 @@ LABEL_12:
 
   if ([(PKPaymentAuthorizationStateMachine *)self useSecureElement])
   {
-    v6 = [v8 paymentToken];
-    v7 = [v8 rewrapResponse];
-    [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePaymentWithToken:v6 rewrapResponse:v7];
+    authorizedPeerPaymentQuote = [paramCopy paymentToken];
+    rewrapResponse = [paramCopy rewrapResponse];
+    [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePaymentWithToken:authorizedPeerPaymentQuote rewrapResponse:rewrapResponse];
     goto LABEL_12;
   }
 
   if ([(PKPaymentAuthorizationDataModel *)self->_model mode]!= 3 && [(PKPaymentAuthorizationDataModel *)self->_model mode]!= 4)
   {
-    v6 = [v8 payment];
-    v7 = [v8 rewrapResponse];
-    [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePaymentWithRemotePayment:v6 rewrapResponse:v7];
+    authorizedPeerPaymentQuote = [paramCopy payment];
+    rewrapResponse = [paramCopy rewrapResponse];
+    [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePaymentWithRemotePayment:authorizedPeerPaymentQuote rewrapResponse:rewrapResponse];
     goto LABEL_12;
   }
 
-  if (v5 > 0xD || ((1 << v5) & 0x20C0) == 0)
+  if (requestType > 0xD || ((1 << requestType) & 0x20C0) == 0)
   {
-    v6 = [v8 payment];
-    v7 = [v8 rewrapResponse];
-    [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePaymentWithByPassPayment:v6 rewrapResponse:v7];
+    authorizedPeerPaymentQuote = [paramCopy payment];
+    rewrapResponse = [paramCopy rewrapResponse];
+    [(PKPaymentAuthorizationStateMachine *)self _enqueueDidAuthorizePaymentWithByPassPayment:authorizedPeerPaymentQuote rewrapResponse:rewrapResponse];
     goto LABEL_12;
   }
 
@@ -10173,10 +10173,10 @@ LABEL_12:
 LABEL_14:
 }
 
-- (void)_insertPendingPaymentTransactionsWithParam:(id)a3
+- (void)_insertPendingPaymentTransactionsWithParam:(id)param
 {
   v39 = *MEMORY[0x1E69E9840];
-  v27 = a3;
+  paramCopy = param;
   if ([(PKPaymentAuthorizationDataModel *)self->_model mode]== 1)
   {
     [(PKPaymentAuthorizationDataModel *)self->_model pendingTransactions];
@@ -10201,48 +10201,48 @@ LABEL_14:
           }
 
           v9 = *(*(&v28 + 1) + 8 * i);
-          v10 = [v9 paymentApplication];
-          v11 = [v10 dpanIdentifier];
+          paymentApplication = [v9 paymentApplication];
+          dpanIdentifier = [paymentApplication dpanIdentifier];
 
-          v12 = [v27 peerPaymentTransactionMetadata];
-          v13 = v12;
-          if (v12)
+          peerPaymentTransactionMetadata = [paramCopy peerPaymentTransactionMetadata];
+          v13 = peerPaymentTransactionMetadata;
+          if (peerPaymentTransactionMetadata)
           {
-            v14 = [v12 dpanIdentifier];
-            v15 = [v14 isEqual:v11];
+            dpanIdentifier2 = [peerPaymentTransactionMetadata dpanIdentifier];
+            v15 = [dpanIdentifier2 isEqual:dpanIdentifier];
 
             if (v15)
             {
-              v16 = [v9 transaction];
-              v17 = [v13 serviceIdentifier];
-              [v16 setServiceIdentifier:v17];
+              transaction = [v9 transaction];
+              serviceIdentifier = [v13 serviceIdentifier];
+              [transaction setServiceIdentifier:serviceIdentifier];
 
-              v18 = [v13 requestDeviceScoreIdentifier];
-              [v16 setRequestDeviceScoreIdentifier:v18];
+              requestDeviceScoreIdentifier = [v13 requestDeviceScoreIdentifier];
+              [transaction setRequestDeviceScoreIdentifier:requestDeviceScoreIdentifier];
 
-              v19 = [v13 sendDeviceScoreIdentifier];
-              [v16 setSendDeviceScoreIdentifier:v19];
+              sendDeviceScoreIdentifier = [v13 sendDeviceScoreIdentifier];
+              [transaction setSendDeviceScoreIdentifier:sendDeviceScoreIdentifier];
             }
           }
 
-          v20 = [v9 transaction];
-          v21 = [v9 paymentApplication];
-          v22 = [v9 pass];
-          v23 = [v22 uniqueID];
+          transaction2 = [v9 transaction];
+          paymentApplication2 = [v9 paymentApplication];
+          pass = [v9 pass];
+          uniqueID = [pass uniqueID];
 
           v24 = PKLogFacilityTypeGetObject(0x18uLL);
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v25;
-            v33 = v20;
+            v33 = transaction2;
             v34 = 2112;
-            v35 = v23;
+            v35 = uniqueID;
             v36 = 2112;
-            v37 = v21;
+            v37 = paymentApplication2;
             _os_log_impl(&dword_1AD337000, v24, OS_LOG_TYPE_DEFAULT, "Inserting transaction: %@ for pass: %@ paymentApplication: %@", buf, 0x20u);
           }
 
-          [(PKPaymentService *)self->_paymentService insertOrUpdatePaymentTransaction:v20 forPassUniqueIdentifier:v23 paymentApplication:v21 completion:&__block_literal_global_332];
+          [(PKPaymentService *)self->_paymentService insertOrUpdatePaymentTransaction:transaction2 forPassUniqueIdentifier:uniqueID paymentApplication:paymentApplication2 completion:&__block_literal_global_332];
         }
 
         v6 = [obj countByEnumeratingWithState:&v28 objects:v38 count:16];
@@ -10270,17 +10270,17 @@ void __81__PKPaymentAuthorizationStateMachine__insertPendingPaymentTransactionsW
   {
     if (PKDocumentDeliveryEnabled())
     {
-      v3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-      v4 = [v3 requestType];
+      paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+      requestType = [paymentRequest requestType];
 
-      if ((v4 - 1) >= 0xA && (v4 - 12) >= 4 && [(PKPaymentAuthorizationDataModel *)self->_model mode]== 1 && [PKWebServiceDocumentDeliveryFeature isEnabledWithWebService:self->_paymentWebService])
+      if ((requestType - 1) >= 0xA && (requestType - 12) >= 4 && [(PKPaymentAuthorizationDataModel *)self->_model mode]== 1 && [PKWebServiceDocumentDeliveryFeature isEnabledWithWebService:self->_paymentWebService])
       {
         v18 = 0u;
         v19 = 0u;
         v16 = 0u;
         v17 = 0u;
-        v5 = [(PKPaymentAuthorizationDataModel *)self->_model pendingTransactions];
-        v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        pendingTransactions = [(PKPaymentAuthorizationDataModel *)self->_model pendingTransactions];
+        v6 = [pendingTransactions countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v6)
         {
           v7 = v6;
@@ -10292,7 +10292,7 @@ void __81__PKPaymentAuthorizationStateMachine__insertPendingPaymentTransactionsW
             {
               if (*v17 != v8)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(pendingTransactions);
               }
 
               v10 = *(*(&v16 + 1) + 8 * v9);
@@ -10304,15 +10304,15 @@ void __81__PKPaymentAuthorizationStateMachine__insertPendingPaymentTransactionsW
                 _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Inserting pending transaction registration", v15, 2u);
               }
 
-              v13 = [v10 transaction];
-              v14 = [v13 fkPaymentTransaction];
-              [v11 registerPaymentTransaction:v14];
+              transaction = [v10 transaction];
+              fkPaymentTransaction = [transaction fkPaymentTransaction];
+              [v11 registerPaymentTransaction:fkPaymentTransaction];
 
               ++v9;
             }
 
             while (v7 != v9);
-            v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+            v7 = [pendingTransactions countByEnumeratingWithState:&v16 objects:v20 count:16];
           }
 
           while (v7);
@@ -10322,15 +10322,15 @@ void __81__PKPaymentAuthorizationStateMachine__insertPendingPaymentTransactionsW
   }
 }
 
-- (void)_insertPendingOrderDetails:(BOOL *)a3
+- (void)_insertPendingOrderDetails:(BOOL *)details
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [(PKPaymentAuthorizationDataModel *)self->_model payment];
-  v6 = [(PKPaymentAuthorizationDataModel *)self->_model pendingOrderDetails];
-  v7 = v6;
-  if (v5)
+  payment = [(PKPaymentAuthorizationDataModel *)self->_model payment];
+  pendingOrderDetails = [(PKPaymentAuthorizationDataModel *)self->_model pendingOrderDetails];
+  v7 = pendingOrderDetails;
+  if (payment)
   {
-    v8 = v6 == 0;
+    v8 = pendingOrderDetails == 0;
   }
 
   else
@@ -10341,7 +10341,7 @@ void __81__PKPaymentAuthorizationStateMachine__insertPendingPaymentTransactionsW
   if (v8)
   {
 LABEL_9:
-    *a3 = 0;
+    *details = 0;
     goto LABEL_13;
   }
 
@@ -10357,15 +10357,15 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v10 = [v5 token];
-  v11 = [v10 transactionIdentifier];
+  token = [payment token];
+  transactionIdentifier = [token transactionIdentifier];
 
   v12 = objc_alloc(MEMORY[0x1E6967E40]);
-  v13 = [v7 orderTypeIdentifier];
-  v14 = [v7 orderIdentifier];
-  v15 = [v7 webServiceURL];
-  v16 = [v7 authenticationToken];
-  v17 = [v12 initWithTransactionIdentifier:v11 orderTypeIdentifier:v13 orderIdentifier:v14 webServiceBaseURL:v15 authenticationToken:v16];
+  orderTypeIdentifier = [v7 orderTypeIdentifier];
+  orderIdentifier = [v7 orderIdentifier];
+  webServiceURL = [v7 webServiceURL];
+  authenticationToken = [v7 authenticationToken];
+  v17 = [v12 initWithTransactionIdentifier:transactionIdentifier orderTypeIdentifier:orderTypeIdentifier orderIdentifier:orderIdentifier webServiceBaseURL:webServiceURL authenticationToken:authenticationToken];
 
   v18 = objc_alloc_init(MEMORY[0x1E6967E48]);
   v19 = PKLogFacilityTypeGetObject(8uLL);
@@ -10377,17 +10377,17 @@ LABEL_9:
   }
 
   [v18 insertOrUpdatePendingApplePayOrder:v17];
-  *a3 = 1;
+  *details = 1;
 
 LABEL_13:
 }
 
 - (void)_updateModelCanAddPasses
 {
-  v3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v4 = [v3 _isAMPPayment];
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  _isAMPPayment = [paymentRequest _isAMPPayment];
 
-  if (v4)
+  if (_isAMPPayment)
   {
     if ([(PKPaymentAuthorizationDataModel *)self->_model canAddPasses])
     {
@@ -10420,26 +10420,26 @@ uint64_t __62__PKPaymentAuthorizationStateMachine__updateModelCanAddPasses__bloc
   return [v4 endUpdates];
 }
 
-- (void)_updateModelBillingAddressIfNeededForPass:(id)a3
+- (void)_updateModelBillingAddressIfNeededForPass:(id)pass
 {
-  v8 = a3;
-  v4 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v5 = [v4 requiredBillingContactFields];
-  if ([v5 containsObject:@"post"])
+  passCopy = pass;
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  requiredBillingContactFields = [paymentRequest requiredBillingContactFields];
+  if ([requiredBillingContactFields containsObject:@"post"])
   {
-    v6 = [(PKPaymentAuthorizationDataModel *)self->_model billingAddress];
+    billingAddress = [(PKPaymentAuthorizationDataModel *)self->_model billingAddress];
 
-    if (v6)
+    if (billingAddress)
     {
       goto LABEL_7;
     }
 
     v7 = +[PKPaymentOptionsDefaults defaults];
-    v4 = [v7 defaultBillingAddressForPaymentPass:v8];
+    paymentRequest = [v7 defaultBillingAddressForPaymentPass:passCopy];
 
-    if (v4)
+    if (paymentRequest)
     {
-      [(PKPaymentAuthorizationDataModel *)self->_model setBillingAddress:v4];
+      [(PKPaymentAuthorizationDataModel *)self->_model setBillingAddress:paymentRequest];
     }
   }
 
@@ -10498,25 +10498,25 @@ void __65__PKPaymentAuthorizationStateMachine__retrieveVPANPaymentSession__block
 
 - (void)_registerForNotifications
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 addObserver:self selector:sel__handleStateMachineWillStartNotification_ name:@"PKPaymentAuthorizationStateMachineWillStartNotification" object:0 suspensionBehavior:4];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleStateMachineWillStartNotification_ name:@"PKPaymentAuthorizationStateMachineWillStartNotification" object:0 suspensionBehavior:4];
 }
 
 - (void)_unregisterForNotifications
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)_postStateMachineWillStartNotification
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 postNotificationName:@"PKPaymentAuthorizationStateMachineWillStartNotification" object:self->_instanceIdentifier userInfo:0 options:1];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter postNotificationName:@"PKPaymentAuthorizationStateMachineWillStartNotification" object:self->_instanceIdentifier userInfo:0 options:1];
 }
 
-- (void)_handleStateMachineWillStartNotification:(id)a3
+- (void)_handleStateMachineWillStartNotification:(id)notification
 {
-  v10 = a3;
+  notificationCopy = notification;
   if ((PKSupportsNestedInAppPaymentSheet() & 1) == 0)
   {
     state = self->_state;
@@ -10524,8 +10524,8 @@ void __65__PKPaymentAuthorizationStateMachine__retrieveVPANPaymentSession__block
     v6 = (1 << state) & 0x1A000;
     if (v5 || v6 == 0)
     {
-      v8 = [v10 object];
-      v9 = [v8 isEqual:self->_instanceIdentifier];
+      object = [notificationCopy object];
+      v9 = [object isEqual:self->_instanceIdentifier];
 
       if ((v9 & 1) == 0)
       {
@@ -10535,29 +10535,29 @@ void __65__PKPaymentAuthorizationStateMachine__retrieveVPANPaymentSession__block
   }
 }
 
-- (void)_performAuthorizationWithParam:(id)a3
+- (void)_performAuthorizationWithParam:(id)param
 {
-  v4 = a3;
+  paramCopy = param;
   objc_initWeak(location, self);
-  v5 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v6 = [v5 requestType];
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  requestType = [paymentRequest requestType];
 
-  v7 = [v4 credential];
-  v8 = [v4 nonceData];
-  v9 = [v4 cryptogramType];
-  v10 = [v4 networkMerchantIdentifier];
+  credential = [paramCopy credential];
+  nonceData = [paramCopy nonceData];
+  cryptogramType = [paramCopy cryptogramType];
+  networkMerchantIdentifier = [paramCopy networkMerchantIdentifier];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__PKPaymentAuthorizationStateMachine__performAuthorizationWithParam___block_invoke;
   aBlock[3] = &unk_1E79CE518;
   objc_copyWeak(v64, location);
-  v11 = v8;
+  v11 = nonceData;
   v61 = v11;
-  v12 = v7;
-  v64[1] = v9;
-  v64[2] = v6;
+  v12 = credential;
+  v64[1] = cryptogramType;
+  v64[2] = requestType;
   v62 = v12;
-  v63 = self;
+  selfCopy = self;
   v13 = _Block_copy(aBlock);
   v52[0] = MEMORY[0x1E69E9820];
   v52[1] = 3221225472;
@@ -10567,16 +10567,16 @@ void __65__PKPaymentAuthorizationStateMachine__retrieveVPANPaymentSession__block
   v53 = v35;
   v14 = v12;
   v54 = v14;
-  v59[1] = v9;
-  v33 = v10;
+  v59[1] = cryptogramType;
+  v33 = networkMerchantIdentifier;
   v55 = v33;
-  v56 = self;
-  v34 = v4;
+  selfCopy2 = self;
+  v34 = paramCopy;
   v57 = v34;
   v15 = v13;
   v58 = v15;
   objc_copyWeak(v59, location);
-  v59[2] = v6;
+  v59[2] = requestType;
   v36 = _Block_copy(v52);
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
@@ -10613,8 +10613,8 @@ void __65__PKPaymentAuthorizationStateMachine__retrieveVPANPaymentSession__block
   v21 = v18;
   v41 = v21;
   v22 = _Block_copy(v40);
-  v23 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  if ([v23 isPeerPaymentRequest])
+  paymentRequest2 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  if ([paymentRequest2 isPeerPaymentRequest])
   {
     peerPaymentSession = self->_peerPaymentSession;
     v25 = v20;
@@ -10635,9 +10635,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v26 = [v23 requestType];
+  requestType2 = [paymentRequest2 requestType];
   v27 = v22;
-  if (v26 == 2 || (v28 = [v23 requestType], v27 = v22, v28 == 4) || (v29 = objc_msgSend(v23, "requestType"), v27 = v37, v29 == 5))
+  if (requestType2 == 2 || (v28 = [paymentRequest2 requestType], v27 = v22, v28 == 4) || (v29 = objc_msgSend(paymentRequest2, "requestType"), v27 = v37, v29 == 5))
   {
     v27[2]();
     goto LABEL_10;
@@ -11415,58 +11415,58 @@ void __69__PKPaymentAuthorizationStateMachine__performAuthorizationWithParam___b
 
 - (id)_inAppSessionAuthorizationRequest
 {
-  v3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
   v4 = [(PKPaymentAuthorizationDataModel *)self->_model itemForType:3];
-  v5 = [v4 paymentApplication];
+  paymentApplication = [v4 paymentApplication];
 
-  v6 = [v3 currencyCode];
-  v7 = [v3 countryCode];
-  v8 = [v3 _transactionAmount];
-  v9 = [v3 merchantCapabilities];
-  v10 = [v3 supportedNetworks];
+  currencyCode = [paymentRequest currencyCode];
+  countryCode = [paymentRequest countryCode];
+  _transactionAmount = [paymentRequest _transactionAmount];
+  merchantCapabilities = [paymentRequest merchantCapabilities];
+  supportedNetworks = [paymentRequest supportedNetworks];
   v11 = objc_alloc_init(PKInAppPaymentSessionAuthorizationRequest);
-  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setPaymentApplication:v5];
-  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setCurrencyCode:v6];
-  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setCountryCode:v7];
-  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setTransactionAmount:v8];
-  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setMerchantCapabilities:v9];
-  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setSupportedNetworks:v10];
-  v12 = [v3 merchantIdentifier];
-  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setMerchantIdentifier:v12];
+  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setPaymentApplication:paymentApplication];
+  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setCurrencyCode:currencyCode];
+  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setCountryCode:countryCode];
+  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setTransactionAmount:_transactionAmount];
+  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setMerchantCapabilities:merchantCapabilities];
+  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setSupportedNetworks:supportedNetworks];
+  merchantIdentifier = [paymentRequest merchantIdentifier];
+  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setMerchantIdentifier:merchantIdentifier];
 
-  v13 = [v3 applicationData];
-  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setApplicationData:v13];
+  applicationData = [paymentRequest applicationData];
+  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setApplicationData:applicationData];
 
-  v14 = [v3 merchantSession];
-  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setMerchantSession:v14];
+  merchantSession = [paymentRequest merchantSession];
+  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setMerchantSession:merchantSession];
 
   return v11;
 }
 
-- (void)_applyShippingInformationToPayment:(id)a3
+- (void)_applyShippingInformationToPayment:(id)payment
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  if ([v5 requestType] != 10)
+  paymentCopy = payment;
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  if ([paymentRequest requestType] != 10)
   {
-    v6 = [v5 requiredShippingContactFields];
-    v7 = [v6 count];
+    requiredShippingContactFields = [paymentRequest requiredShippingContactFields];
+    v7 = [requiredShippingContactFields count];
 
     if (v7)
     {
-      v8 = [v5 requiredShippingContactFields];
-      v9 = [v8 containsObject:@"email"];
+      requiredShippingContactFields2 = [paymentRequest requiredShippingContactFields];
+      v9 = [requiredShippingContactFields2 containsObject:@"email"];
 
       if (v9)
       {
-        v10 = [(PKPaymentAuthorizationDataModel *)self->_model shippingEmail];
-        v11 = [v10 emailAddresses];
-        v12 = [v11 firstObject];
+        shippingEmail = [(PKPaymentAuthorizationDataModel *)self->_model shippingEmail];
+        emailAddresses = [shippingEmail emailAddresses];
+        firstObject = [emailAddresses firstObject];
 
         v13 = MEMORY[0x1E695CEE0];
-        v14 = [v12 value];
-        v15 = [v13 labeledValueWithLabel:@"Shipping" value:v14];
+        value = [firstObject value];
+        v15 = [v13 labeledValueWithLabel:@"Shipping" value:value];
         v42[0] = v15;
         v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:1];
       }
@@ -11476,18 +11476,18 @@ void __69__PKPaymentAuthorizationStateMachine__performAuthorizationWithParam___b
         v16 = 0;
       }
 
-      v17 = [v5 requiredShippingContactFields];
-      v18 = [v17 containsObject:@"phone"];
+      requiredShippingContactFields3 = [paymentRequest requiredShippingContactFields];
+      v18 = [requiredShippingContactFields3 containsObject:@"phone"];
 
       if (v18)
       {
-        v19 = [(PKPaymentAuthorizationDataModel *)self->_model shippingPhone];
-        v20 = [v19 phoneNumbers];
-        v21 = [v20 firstObject];
+        shippingPhone = [(PKPaymentAuthorizationDataModel *)self->_model shippingPhone];
+        phoneNumbers = [shippingPhone phoneNumbers];
+        firstObject2 = [phoneNumbers firstObject];
 
         v22 = MEMORY[0x1E695CEE0];
-        v23 = [v21 value];
-        v24 = [v22 labeledValueWithLabel:@"Shipping" value:v23];
+        value2 = [firstObject2 value];
+        v24 = [v22 labeledValueWithLabel:@"Shipping" value:value2];
         v41 = v24;
         v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v41 count:1];
       }
@@ -11497,82 +11497,82 @@ void __69__PKPaymentAuthorizationStateMachine__performAuthorizationWithParam___b
         v25 = 0;
       }
 
-      v26 = [v5 isShippingEditable];
-      v27 = [v5 requiredShippingContactFields];
-      v28 = [v27 containsObject:@"post"];
+      isShippingEditable = [paymentRequest isShippingEditable];
+      requiredShippingContactFields4 = [paymentRequest requiredShippingContactFields];
+      v28 = [requiredShippingContactFields4 containsObject:@"post"];
 
-      v29 = [v5 requiredShippingContactFields];
-      v30 = [v29 containsObject:@"name"];
+      requiredShippingContactFields5 = [paymentRequest requiredShippingContactFields];
+      v30 = [requiredShippingContactFields5 containsObject:@"name"];
 
-      v31 = v28 & v26;
+      v31 = v28 & isShippingEditable;
       if (v28)
       {
-        v32 = [(PKPaymentAuthorizationDataModel *)self->_model shippingAddress];
-        v33 = [(PKPaymentAuthorizationDataModel *)self->_model shippingAddress];
+        shippingAddress = [(PKPaymentAuthorizationDataModel *)self->_model shippingAddress];
+        shippingAddress2 = [(PKPaymentAuthorizationDataModel *)self->_model shippingAddress];
       }
 
       else
       {
-        v32 = 0;
-        v33 = 0;
+        shippingAddress = 0;
+        shippingAddress2 = 0;
       }
 
       if (!(v31 & 1 | ((v30 & 1) == 0)))
       {
-        v34 = [(PKPaymentAuthorizationDataModel *)self->_model shippingName];
+        shippingName = [(PKPaymentAuthorizationDataModel *)self->_model shippingName];
 
-        v33 = v34;
+        shippingAddress2 = shippingName;
       }
 
       v35 = MEMORY[0x1E695CD58];
-      v36 = [v33 nameComponents];
-      v37 = [v32 postalAddresses];
-      v38 = [v35 pkContactWithNameComponents:v36 postalAddresses:v37 emailAddresses:v16 phoneNumbers:v25];
-      v39 = [v38 sanitizedContact];
+      nameComponents = [shippingAddress2 nameComponents];
+      postalAddresses = [shippingAddress postalAddresses];
+      v38 = [v35 pkContactWithNameComponents:nameComponents postalAddresses:postalAddresses emailAddresses:v16 phoneNumbers:v25];
+      sanitizedContact = [v38 sanitizedContact];
 
-      v40 = [[PKContact alloc] initWithCNContact:v39];
-      [v4 setShippingContact:v40];
+      v40 = [[PKContact alloc] initWithCNContact:sanitizedContact];
+      [paymentCopy setShippingContact:v40];
     }
   }
 }
 
-- (void)_applyFulfillmentMethodToPayment:(id)a3
+- (void)_applyFulfillmentMethodToPayment:(id)payment
 {
-  v6 = a3;
-  v4 = [(PKPaymentAuthorizationDataModel *)self->_model shippingMethod];
+  paymentCopy = payment;
+  shippingMethod = [(PKPaymentAuthorizationDataModel *)self->_model shippingMethod];
 
-  if (v4)
+  if (shippingMethod)
   {
-    v5 = [(PKPaymentAuthorizationDataModel *)self->_model shippingMethod];
-    [v6 setShippingMethod:v5];
+    shippingMethod2 = [(PKPaymentAuthorizationDataModel *)self->_model shippingMethod];
+    [paymentCopy setShippingMethod:shippingMethod2];
   }
 }
 
-- (void)_applyBillingInformationToPayment:(id)a3
+- (void)_applyBillingInformationToPayment:(id)payment
 {
   model = self->_model;
-  v5 = a3;
-  v7 = [(PKPaymentAuthorizationDataModel *)model paymentRequest];
-  v6 = [(PKPaymentAuthorizationStateMachine *)self _billingInformationFromPaymentRequest:v7];
-  [v5 setBillingContact:v6];
+  paymentCopy = payment;
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)model paymentRequest];
+  v6 = [(PKPaymentAuthorizationStateMachine *)self _billingInformationFromPaymentRequest:paymentRequest];
+  [paymentCopy setBillingContact:v6];
 }
 
-- (void)_applyBillingInformationToAuthorizedQuote:(id)a3
+- (void)_applyBillingInformationToAuthorizedQuote:(id)quote
 {
   model = self->_model;
-  v5 = a3;
-  v7 = [(PKPaymentAuthorizationDataModel *)model paymentRequest];
-  v6 = [(PKPaymentAuthorizationStateMachine *)self _billingInformationFromPaymentRequest:v7];
-  [v5 setContact:v6];
+  quoteCopy = quote;
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)model paymentRequest];
+  v6 = [(PKPaymentAuthorizationStateMachine *)self _billingInformationFromPaymentRequest:paymentRequest];
+  [quoteCopy setContact:v6];
 }
 
-- (id)_billingInformationFromPaymentRequest:(id)a3
+- (id)_billingInformationFromPaymentRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 requiredBillingContactFields];
-  v6 = [v5 count];
+  requestCopy = request;
+  requiredBillingContactFields = [requestCopy requiredBillingContactFields];
+  v6 = [requiredBillingContactFields count];
 
-  if ([v4 requestType] != 10)
+  if ([requestCopy requestType] != 10)
   {
     if (!v6)
     {
@@ -11580,83 +11580,83 @@ void __69__PKPaymentAuthorizationStateMachine__performAuthorizationWithParam___b
     }
 
 LABEL_5:
-    v10 = [v4 requiredBillingContactFields];
-    v11 = [v10 containsObject:@"post"];
+    requiredBillingContactFields2 = [requestCopy requiredBillingContactFields];
+    v11 = [requiredBillingContactFields2 containsObject:@"post"];
 
     if (v11)
     {
-      v12 = [(PKPaymentAuthorizationDataModel *)self->_model billingAddress];
+      billingAddress = [(PKPaymentAuthorizationDataModel *)self->_model billingAddress];
     }
 
     else
     {
-      v12 = 0;
+      billingAddress = 0;
     }
 
-    if ([v4 requestType] == 10)
+    if ([requestCopy requestType] == 10)
     {
-      v13 = [v12 nameComponents];
-      v14 = v13;
-      if (v13)
+      nameComponents = [billingAddress nameComponents];
+      v14 = nameComponents;
+      if (nameComponents)
       {
-        v15 = v13;
+        nameComponents2 = nameComponents;
       }
 
       else
       {
-        v20 = [(PKPaymentAuthorizationDataModel *)self->_model shippingName];
-        v15 = [v20 nameComponents];
+        shippingName = [(PKPaymentAuthorizationDataModel *)self->_model shippingName];
+        nameComponents2 = [shippingName nameComponents];
       }
 
-      v21 = [v4 requiredShippingContactFields];
-      v22 = [v21 containsObject:@"email"];
+      requiredShippingContactFields = [requestCopy requiredShippingContactFields];
+      v22 = [requiredShippingContactFields containsObject:@"email"];
 
       if (v22)
       {
-        v23 = [(PKPaymentAuthorizationDataModel *)self->_model shippingEmail];
-        v17 = [v23 emailAddresses];
+        shippingEmail = [(PKPaymentAuthorizationDataModel *)self->_model shippingEmail];
+        emailAddresses = [shippingEmail emailAddresses];
       }
 
       else
       {
-        v17 = 0;
+        emailAddresses = 0;
       }
 
-      v24 = [v4 requiredShippingContactFields];
-      v25 = [v24 containsObject:@"phone"];
+      requiredShippingContactFields2 = [requestCopy requiredShippingContactFields];
+      v25 = [requiredShippingContactFields2 containsObject:@"phone"];
 
       if (v25)
       {
-        v26 = [(PKPaymentAuthorizationDataModel *)self->_model shippingPhone];
-        v18 = [v26 phoneNumbers];
+        shippingPhone = [(PKPaymentAuthorizationDataModel *)self->_model shippingPhone];
+        phoneNumbers = [shippingPhone phoneNumbers];
       }
 
       else
       {
-        v18 = 0;
+        phoneNumbers = 0;
       }
 
       v27 = MEMORY[0x1E695CD58];
-      v28 = [v12 postalAddresses];
-      v29 = [v27 pkContactWithNameComponents:v15 postalAddresses:v28 emailAddresses:v17 phoneNumbers:v18];
-      v19 = [v29 sanitizedContact];
+      postalAddresses = [billingAddress postalAddresses];
+      v29 = [v27 pkContactWithNameComponents:nameComponents2 postalAddresses:postalAddresses emailAddresses:emailAddresses phoneNumbers:phoneNumbers];
+      sanitizedContact = [v29 sanitizedContact];
     }
 
     else
     {
       v16 = MEMORY[0x1E695CD58];
-      v15 = [v12 nameComponents];
-      v17 = [v12 postalAddresses];
-      v18 = [v16 pkContactWithNameComponents:v15 postalAddresses:v17 emailAddresses:0 phoneNumbers:0];
-      v19 = [v18 sanitizedContact];
+      nameComponents2 = [billingAddress nameComponents];
+      emailAddresses = [billingAddress postalAddresses];
+      phoneNumbers = [v16 pkContactWithNameComponents:nameComponents2 postalAddresses:emailAddresses emailAddresses:0 phoneNumbers:0];
+      sanitizedContact = [phoneNumbers sanitizedContact];
     }
 
-    v9 = [[PKContact alloc] initWithCNContact:v19];
+    v9 = [[PKContact alloc] initWithCNContact:sanitizedContact];
     goto LABEL_21;
   }
 
-  v7 = [v4 requiredShippingContactFields];
-  v8 = [v7 count] | v6;
+  requiredShippingContactFields3 = [requestCopy requiredShippingContactFields];
+  v8 = [requiredShippingContactFields3 count] | v6;
 
   if (v8)
   {
@@ -11670,14 +11670,14 @@ LABEL_21:
   return v9;
 }
 
-- (id)_transactionWithPaymentToken:(id)a3
+- (id)_transactionWithPaymentToken:(id)token
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  v6 = [v5 APIType];
-  v7 = v6;
-  v8 = v6 - 1;
-  if ((v6 - 1) >= 2)
+  tokenCopy = token;
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  aPIType = [paymentRequest APIType];
+  v7 = aPIType;
+  v8 = aPIType - 1;
+  if ((aPIType - 1) >= 2)
   {
     v9 = 2;
   }
@@ -11687,11 +11687,11 @@ LABEL_21:
     v9 = 3;
   }
 
-  if (!v6)
+  if (!aPIType)
   {
-    v10 = [v5 merchantSession];
+    merchantSession = [paymentRequest merchantSession];
 
-    if (v10)
+    if (merchantSession)
     {
       v9 = 3;
     }
@@ -11704,24 +11704,24 @@ LABEL_21:
 
   v11 = [PKPaymentTransaction paymentTransactionWithSource:v9];
   [v11 setOriginatedByDevice:1];
-  v12 = [v4 transactionIdentifier];
-  [v11 setPaymentHash:v12];
+  transactionIdentifier = [tokenCopy transactionIdentifier];
+  [v11 setPaymentHash:transactionIdentifier];
 
-  v13 = [MEMORY[0x1E695DF00] date];
-  [v11 setTransactionDate:v13];
+  date = [MEMORY[0x1E695DF00] date];
+  [v11 setTransactionDate:date];
 
   [v11 setTechnologyType:2];
-  v14 = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
-  [v11 setAmount:v14];
+  transactionAmount = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
+  [v11 setAmount:transactionAmount];
 
-  v15 = [(PKPaymentAuthorizationDataModel *)self->_model currencyCode];
-  [v11 setCurrencyCode:v15];
+  currencyCode = [(PKPaymentAuthorizationDataModel *)self->_model currencyCode];
+  [v11 setCurrencyCode:currencyCode];
 
   [v11 addUpdateReasons:2];
   if ([(PKPaymentAuthorizationDataModel *)self->_model fundingMode]== 2)
   {
-    v16 = [(PKPaymentAuthorizationDataModel *)self->_model selectedPaymentOffer];
-    [v11 setIsIssuerInstallmentTransaction:{objc_msgSend(v16, "type") == 1}];
+    selectedPaymentOffer = [(PKPaymentAuthorizationDataModel *)self->_model selectedPaymentOffer];
+    [v11 setIsIssuerInstallmentTransaction:{objc_msgSend(selectedPaymentOffer, "type") == 1}];
   }
 
   else
@@ -11729,39 +11729,39 @@ LABEL_21:
     [v11 setIsIssuerInstallmentTransaction:0];
   }
 
-  v17 = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
-  v18 = [v17 dpanIdentifier];
-  [v11 setDPANIdentifier:v18];
+  paymentApplication = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
+  dpanIdentifier = [paymentApplication dpanIdentifier];
+  [v11 setDPANIdentifier:dpanIdentifier];
 
-  [v11 setPaymentNetworkIdentifier:{objc_msgSend(v17, "paymentNetworkIdentifier")}];
+  [v11 setPaymentNetworkIdentifier:{objc_msgSend(paymentApplication, "paymentNetworkIdentifier")}];
   v19 = objc_alloc_init(PKMerchant);
-  v20 = [(PKPaymentAuthorizationDataModel *)self->_model merchantName];
-  [(PKMerchant *)v19 setName:v20];
+  merchantName = [(PKPaymentAuthorizationDataModel *)self->_model merchantName];
+  [(PKMerchant *)v19 setName:merchantName];
 
   if (v8 >= 2)
   {
     if (!v7)
     {
-      v27 = [(PKPaymentAuthorizationStateMachine *)self _adamIdentifier];
-      if (v27)
+      _adamIdentifier = [(PKPaymentAuthorizationStateMachine *)self _adamIdentifier];
+      if (_adamIdentifier)
       {
-        [(PKMerchant *)v19 setAdamIdentifier:v27];
+        [(PKMerchant *)v19 setAdamIdentifier:_adamIdentifier];
       }
     }
   }
 
   else
   {
-    v21 = [v5 merchantSession];
-    v22 = [v21 merchantIdentifier];
-    [(PKMerchant *)v19 setWebMerchantIdentifier:v22];
+    merchantSession2 = [paymentRequest merchantSession];
+    merchantIdentifier = [merchantSession2 merchantIdentifier];
+    [(PKMerchant *)v19 setWebMerchantIdentifier:merchantIdentifier];
 
-    v23 = [v21 displayName];
-    [(PKMerchant *)v19 setWebMerchantName:v23];
+    displayName = [merchantSession2 displayName];
+    [(PKMerchant *)v19 setWebMerchantName:displayName];
 
     v24 = MEMORY[0x1E695DFF8];
-    v25 = [v21 domain];
-    v26 = [v24 URLWithString:v25];
+    domain = [merchantSession2 domain];
+    v26 = [v24 URLWithString:domain];
     [(PKMerchant *)v19 setOriginURL:v26];
   }
 
@@ -11773,30 +11773,30 @@ LABEL_21:
 - (unint64_t)_adamIdentifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
-  if (![v3 APIType])
+  paymentRequest = [(PKPaymentAuthorizationDataModel *)self->_model paymentRequest];
+  if (![paymentRequest APIType])
   {
-    v5 = [(PKPaymentAuthorizationDataModel *)self->_model hostApplicationIdentifier];
-    v6 = [v5 rangeOfString:@"."];
+    hostApplicationIdentifier = [(PKPaymentAuthorizationDataModel *)self->_model hostApplicationIdentifier];
+    v6 = [hostApplicationIdentifier rangeOfString:@"."];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = PKLogFacilityTypeGetObject(8uLL);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412290;
-        v14 = v5;
+        v14 = hostApplicationIdentifier;
         _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "No bundle ID in app identifier %@", &v13, 0xCu);
       }
     }
 
     else
     {
-      v8 = [v5 substringFromIndex:v6 + v7];
+      v8 = [hostApplicationIdentifier substringFromIndex:v6 + v7];
       v9 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v8 allowPlaceholder:1 error:0];
-      v10 = [v9 iTunesMetadata];
-      v4 = [v10 storeItemIdentifier];
+      iTunesMetadata = [v9 iTunesMetadata];
+      storeItemIdentifier = [iTunesMetadata storeItemIdentifier];
 
-      if (v4)
+      if (storeItemIdentifier)
       {
 
 LABEL_12:
@@ -11812,37 +11812,37 @@ LABEL_12:
       }
     }
 
-    v4 = 0;
+    storeItemIdentifier = 0;
     goto LABEL_12;
   }
 
-  v4 = 0;
+  storeItemIdentifier = 0;
 LABEL_13:
 
-  return v4;
+  return storeItemIdentifier;
 }
 
-- (id)_transactionWithPurchase:(id)a3 paymentHash:(id)a4
+- (id)_transactionWithPurchase:(id)purchase paymentHash:(id)hash
 {
-  v5 = a4;
+  hashCopy = hash;
   v6 = [PKPaymentTransaction paymentTransactionWithSource:2];
   [v6 setOriginatedByDevice:1];
-  [v6 setPaymentHash:v5];
+  [v6 setPaymentHash:hashCopy];
 
-  v7 = [MEMORY[0x1E695DF00] date];
-  [v6 setTransactionDate:v7];
+  date = [MEMORY[0x1E695DF00] date];
+  [v6 setTransactionDate:date];
 
   [v6 setTechnologyType:2];
-  v8 = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
-  [v6 setAmount:v8];
+  transactionAmount = [(PKPaymentAuthorizationDataModel *)self->_model transactionAmount];
+  [v6 setAmount:transactionAmount];
 
-  v9 = [(PKPaymentAuthorizationDataModel *)self->_model currencyCode];
-  [v6 setCurrencyCode:v9];
+  currencyCode = [(PKPaymentAuthorizationDataModel *)self->_model currencyCode];
+  [v6 setCurrencyCode:currencyCode];
 
   [v6 addUpdateReasons:2];
   v10 = objc_alloc_init(PKMerchant);
-  v11 = [(PKPaymentAuthorizationDataModel *)self->_model merchantName];
-  [(PKMerchant *)v10 setName:v11];
+  merchantName = [(PKPaymentAuthorizationDataModel *)self->_model merchantName];
+  [(PKMerchant *)v10 setName:merchantName];
 
   [v6 setMerchant:v10];
 
@@ -11855,13 +11855,13 @@ LABEL_13:
   {
     v9 = objc_alloc_init(PKTapToRadarRequest);
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [(PKPaymentAuthorizationDataModel *)self->_model merchantName];
-    v5 = [v3 stringWithFormat:@"Apple Pay failed in %@", v4];
+    merchantName = [(PKPaymentAuthorizationDataModel *)self->_model merchantName];
+    v5 = [v3 stringWithFormat:@"Apple Pay failed in %@", merchantName];
     [(PKTapToRadarRequest *)v9 setReason:v5];
 
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [(PKPaymentAuthorizationDataModel *)self->_model merchantName];
-    v8 = [v6 stringWithFormat:@"Apple Pay failure detected in %@", v7];
+    merchantName2 = [(PKPaymentAuthorizationDataModel *)self->_model merchantName];
+    v8 = [v6 stringWithFormat:@"Apple Pay failure detected in %@", merchantName2];
     [(PKTapToRadarRequest *)v9 setAlertHeader:v8];
 
     [(PKTapToRadarRequest *)v9 setAlertMessage:@"Help improve Apple Pay by reporting this problem."];
@@ -11869,20 +11869,20 @@ LABEL_13:
   }
 }
 
-- (void)_reportToAutoBugCapture:(id)a3
+- (void)_reportToAutoBugCapture:(id)capture
 {
-  v5 = a3;
+  captureCopy = capture;
   if (os_variant_has_internal_ui() && self->_failureStatusCount == 1)
   {
     v4 = objc_alloc_init(PKAutoBugCaptureReporter);
-    [(PKAutoBugCaptureReporter *)v4 reportIssueWithDomain:@"Wallet" type:@"PKPaymentAuthorization" subtype:@"StatusFailure" subtypeContext:v5 payload:0];
+    [(PKAutoBugCaptureReporter *)v4 reportIssueWithDomain:@"Wallet" type:@"PKPaymentAuthorization" subtype:@"StatusFailure" subtypeContext:captureCopy payload:0];
   }
 }
 
 - (void)_simulatePayment
 {
-  v3 = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
-  v4 = PKPaymentNetworkNameForPaymentCredentialType([v3 paymentNetworkIdentifier]);
+  paymentApplication = [(PKPaymentAuthorizationDataModel *)self->_model paymentApplication];
+  v4 = PKPaymentNetworkNameForPaymentCredentialType([paymentApplication paymentNetworkIdentifier]);
 
   v5 = [PKPaymentToken simulatedTokenForNetwork:v4];
   objc_initWeak(&location, self);
@@ -11908,19 +11908,19 @@ void __54__PKPaymentAuthorizationStateMachine__simulatePayment__block_invoke(uin
   [WeakRetained _setState:12 param:v2];
 }
 
-- (void)_reportAnalyticsTransactionAuthorizationWithAdditionalDictionary:(id)a3 eventType:(id)a4
+- (void)_reportAnalyticsTransactionAuthorizationWithAdditionalDictionary:(id)dictionary eventType:(id)type
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  typeCopy = type;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [v8 addObject:@"inApp"];
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v9 addEntriesFromDictionary:v6];
-  v10 = [(PKPaymentAuthorizationStateMachine *)self _additionalRelevantAnalyticsDictionary];
-  [v9 addEntriesFromDictionary:v10];
+  [v9 addEntriesFromDictionary:dictionaryCopy];
+  _additionalRelevantAnalyticsDictionary = [(PKPaymentAuthorizationStateMachine *)self _additionalRelevantAnalyticsDictionary];
+  [v9 addEntriesFromDictionary:_additionalRelevantAnalyticsDictionary];
 
-  [v9 setObject:v7 forKey:@"eventType"];
+  [v9 setObject:typeCopy forKey:@"eventType"];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -11952,15 +11952,15 @@ void __54__PKPaymentAuthorizationStateMachine__simulatePayment__block_invoke(uin
   }
 }
 
-- (void)_trackCouponCodeOutcomeWithError:(id)a3
+- (void)_trackCouponCodeOutcomeWithError:(id)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (!errorCopy)
   {
-    v9 = [(PKPaymentAuthorizationDataModel *)self->_model couponCode];
-    v10 = [v9 length];
+    couponCode = [(PKPaymentAuthorizationDataModel *)self->_model couponCode];
+    v10 = [couponCode length];
 
     if (v10)
     {
@@ -11985,8 +11985,8 @@ void __54__PKPaymentAuthorizationStateMachine__simulatePayment__block_invoke(uin
     goto LABEL_13;
   }
 
-  v6 = [v4 domain];
-  v7 = [v6 isEqualToString:@"PKPaymentErrorDomain"];
+  domain = [errorCopy domain];
+  v7 = [domain isEqualToString:@"PKPaymentErrorDomain"];
 
   if (v7)
   {
@@ -12009,8 +12009,8 @@ void __54__PKPaymentAuthorizationStateMachine__simulatePayment__block_invoke(uin
     if (v14)
     {
       v15 = v14;
-      v16 = [v5 userInfo];
-      v17 = [v16 PKStringForKey:*MEMORY[0x1E696A578]];
+      userInfo = [v5 userInfo];
+      v17 = [userInfo PKStringForKey:*MEMORY[0x1E696A578]];
 
       v21[0] = v15;
       v20[0] = @"eventType";

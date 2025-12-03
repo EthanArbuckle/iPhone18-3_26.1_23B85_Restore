@@ -3,17 +3,17 @@
 - (NSArray)circleItemElements;
 - (SKUILabelViewElement)subtitleElement;
 - (SKUILabelViewElement)titleElement;
-- (SKUIPhysicalCirclesTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (void)dispatchRemovedEventWithChildViewElement:(id)a3;
+- (SKUIPhysicalCirclesTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (void)dispatchRemovedEventWithChildViewElement:(id)element;
 @end
 
 @implementation SKUIPhysicalCirclesTemplateViewElement
 
-- (SKUIPhysicalCirclesTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIPhysicalCirclesTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIPhysicalCirclesTemplateViewElement initWithDOMElement:parent:elementFactory:];
@@ -21,7 +21,7 @@
 
   v16.receiver = self;
   v16.super_class = SKUIPhysicalCirclesTemplateViewElement;
-  v11 = [(SKUIViewElement *)&v16 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v16 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   v12 = v11;
   if (v11)
   {
@@ -35,12 +35,12 @@
 
 - (NSArray)circleItemElements
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__SKUIPhysicalCirclesTemplateViewElement_circleItemElements__block_invoke;
   v6[3] = &unk_2781F9640;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(SKUIViewElement *)self enumerateChildrenUsingBlock:v6];
 
@@ -56,21 +56,21 @@ void __60__SKUIPhysicalCirclesTemplateViewElement_circleItemElements__block_invo
   }
 }
 
-- (void)dispatchRemovedEventWithChildViewElement:(id)a3
+- (void)dispatchRemovedEventWithChildViewElement:(id)element
 {
-  v4 = a3;
-  v5 = [(SKUIPhysicalCirclesTemplateDOMFeature *)self->_scriptInterface appContext];
-  v6 = [(SKUIPhysicalCirclesTemplateViewElement *)self appDocument];
+  elementCopy = element;
+  appContext = [(SKUIPhysicalCirclesTemplateDOMFeature *)self->_scriptInterface appContext];
+  appDocument = [(SKUIPhysicalCirclesTemplateViewElement *)self appDocument];
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __83__SKUIPhysicalCirclesTemplateViewElement_dispatchRemovedEventWithChildViewElement___block_invoke;
   v10[3] = &unk_2781FC9D8;
-  v7 = v6;
+  v7 = appDocument;
   v11 = v7;
-  v8 = v4;
+  v8 = elementCopy;
   v12 = v8;
-  v9 = v5;
+  v9 = appContext;
   v13 = v9;
   objc_copyWeak(&v14, &location);
   [v9 evaluate:v10 completionBlock:0];

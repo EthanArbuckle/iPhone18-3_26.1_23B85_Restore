@@ -1,41 +1,41 @@
 @interface TSUPerformanceTest
 - (TSUOpstat_s)timing;
-- (TSUPerformanceTest)initWithName:(id)a3 selector:(SEL)a4 target:(id)a5 goalTime:(double)a6;
+- (TSUPerformanceTest)initWithName:(id)name selector:(SEL)selector target:(id)target goalTime:(double)time;
 - (id)csvString;
 - (void)dealloc;
 - (void)report;
 - (void)run;
-- (void)setTiming:(TSUOpstat_s *)a3;
+- (void)setTiming:(TSUOpstat_s *)timing;
 @end
 
 @implementation TSUPerformanceTest
 
-- (TSUPerformanceTest)initWithName:(id)a3 selector:(SEL)a4 target:(id)a5 goalTime:(double)a6
+- (TSUPerformanceTest)initWithName:(id)name selector:(SEL)selector target:(id)target goalTime:(double)time
 {
   v13.receiver = self;
   v13.super_class = TSUPerformanceTest;
   v10 = [(TSUPerformanceTest *)&v13 init];
   if (v10)
   {
-    *(v10 + 1) = [a3 copy];
-    if (a4)
+    *(v10 + 1) = [name copy];
+    if (selector)
     {
-      v11 = a4;
+      selectorCopy = selector;
     }
 
     else
     {
-      v11 = 0;
+      selectorCopy = 0;
     }
 
-    *(v10 + 2) = v11;
-    *(v10 + 3) = a5;
+    *(v10 + 2) = selectorCopy;
+    *(v10 + 3) = target;
     *(v10 + 56) = 0u;
     *(v10 + 72) = 0u;
     *(v10 + 88) = 0u;
     *(v10 + 104) = 0u;
     *(v10 + 120) = 0u;
-    *(v10 + 4) = a6;
+    *(v10 + 4) = time;
     v10[48] = 0;
     v10[136] = 0;
     *(v10 + 5) = 0x3FA999999999999ALL;
@@ -270,7 +270,7 @@ LABEL_44:
 - (id)csvString
 {
   v3 = +[TSULocale currentLocale];
-  v4 = [(TSULocale *)v3 listSeparator];
+  listSeparator = [(TSULocale *)v3 listSeparator];
   v5 = MEMORY[0x277CCACA8];
   v6 = [(NSString *)self->mName tsu_stringByAddingCSVEscapesForLocale:v3];
   if (self->mPassed)
@@ -283,7 +283,7 @@ LABEL_44:
     v7 = @"FALSE";
   }
 
-  return [v5 stringWithFormat:@"%@%@%.06f%@%qi%@%.06f%@%f%@%@", v6, v4, self->mTiming.total_time.tv_usec / 1000000.0 + self->mTiming.total_time.tv_sec, v4, self->mTiming.count, v4, *&self->mGoalTime, v4, *&self->mPrecision, v4, v7];
+  return [v5 stringWithFormat:@"%@%@%.06f%@%qi%@%.06f%@%f%@%@", v6, listSeparator, self->mTiming.total_time.tv_usec / 1000000.0 + self->mTiming.total_time.tv_sec, listSeparator, self->mTiming.count, listSeparator, *&self->mGoalTime, listSeparator, *&self->mPrecision, listSeparator, v7];
 }
 
 - (TSUOpstat_s)timing
@@ -298,13 +298,13 @@ LABEL_44:
   return self;
 }
 
-- (void)setTiming:(TSUOpstat_s *)a3
+- (void)setTiming:(TSUOpstat_s *)timing
 {
-  *&self->mTiming.running = *&a3->running;
-  min_time = a3->min_time;
-  max_time = a3->max_time;
-  total_time = a3->total_time;
-  self->mTiming.last_time = a3->last_time;
+  *&self->mTiming.running = *&timing->running;
+  min_time = timing->min_time;
+  max_time = timing->max_time;
+  total_time = timing->total_time;
+  self->mTiming.last_time = timing->last_time;
   self->mTiming.total_time = total_time;
   self->mTiming.max_time = max_time;
   self->mTiming.min_time = min_time;

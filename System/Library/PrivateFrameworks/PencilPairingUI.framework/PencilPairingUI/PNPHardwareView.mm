@@ -1,8 +1,8 @@
 @interface PNPHardwareView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PNPHardwareView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PNPHardwareView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAnimationType:(unint64_t)a3;
+- (void)setAnimationType:(unint64_t)type;
 @end
 
 @implementation PNPHardwareView
@@ -15,23 +15,23 @@
   [(PNPPencilView *)pencilView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PNPPencilView *)self->_pencilView sizeThatFits:a3.width, a3.height];
+  [(PNPPencilView *)self->_pencilView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setAnimationType:(unint64_t)a3
+- (void)setAnimationType:(unint64_t)type
 {
-  if (self->_animationType != a3)
+  if (self->_animationType != type)
   {
-    self->_animationType = a3;
+    self->_animationType = type;
     [(PNPSyntheticPencilInteractionEventSource *)self->_eventSource stop];
     [(PNPSyntheticPencilInteractionEventSource *)self->_eventSource setEventDestination:0];
     v6 = 0;
-    if (a3 == 1)
+    if (type == 1)
     {
       v6 = objc_alloc_init(PNPQuickSwapEventSource);
     }
@@ -45,11 +45,11 @@
   }
 }
 
-- (PNPHardwareView)initWithFrame:(CGRect)a3
+- (PNPHardwareView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PNPHardwareView;
-  v3 = [(PNPHardwareView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PNPHardwareView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = [[PNPPencilView alloc] initWithVariant:1];
   pencilView = v3->_pencilView;
   v3->_pencilView = v4;

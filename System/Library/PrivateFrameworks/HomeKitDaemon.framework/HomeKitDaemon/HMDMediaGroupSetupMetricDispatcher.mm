@@ -1,15 +1,15 @@
 @interface HMDMediaGroupSetupMetricDispatcher
 + (id)logCategory;
-- (HMDMediaGroupSetupMetricDispatcher)initWithDataSource:(id)a3 logEventSubmitter:(id)a4 currentUpTicksFactory:(id)a5 submissionTimerFactory:(id)a6;
+- (HMDMediaGroupSetupMetricDispatcher)initWithDataSource:(id)source logEventSubmitter:(id)submitter currentUpTicksFactory:(id)factory submissionTimerFactory:(id)timerFactory;
 - (HMDMediaGroupSetupMetricDispatcherDataSource)dataSource;
 - (HMMLogEventSubmitting)logEventSubmitter;
-- (id)setupLatencyLogEvent:(unint64_t)a3 groupIdentifier:(id)a4 isController:(BOOL)a5 isPrimaryResident:(BOOL)a6 totalDuration:(unint64_t)a7 setupSessionIdentifier:(id)a8 setupRequestOption:(unint64_t)a9 totalDurationSinceSetupSessionStart:(unint64_t)a10 errorStage:(id)a11;
+- (id)setupLatencyLogEvent:(unint64_t)event groupIdentifier:(id)identifier isController:(BOOL)controller isPrimaryResident:(BOOL)resident totalDuration:(unint64_t)duration setupSessionIdentifier:(id)sessionIdentifier setupRequestOption:(unint64_t)option totalDurationSinceSetupSessionStart:(unint64_t)self0 errorStage:(id)self1;
 - (void)_resetActiveTracking;
-- (void)_submitLogEvent:(id)a3 error:(id)a4;
-- (void)_submitLogEventWithTotalDuration:(unint64_t)a3 totalDurationSinceSetupSessionStart:(unint64_t)a4 error:(id)a5;
-- (void)markRequestCommittedForGroupIdentifier:(id)a3 metricType:(unint64_t)a4 error:(id)a5;
-- (void)markRequestReceivedForGroupIdentifier:(id)a3 metricType:(unint64_t)a4 setupSessionIdentifier:(id)a5 setupRequestOption:(unint64_t)a6 setupSessionStartTimeMS:(unint64_t)a7;
-- (void)timerDidFire:(id)a3;
+- (void)_submitLogEvent:(id)event error:(id)error;
+- (void)_submitLogEventWithTotalDuration:(unint64_t)duration totalDurationSinceSetupSessionStart:(unint64_t)start error:(id)error;
+- (void)markRequestCommittedForGroupIdentifier:(id)identifier metricType:(unint64_t)type error:(id)error;
+- (void)markRequestReceivedForGroupIdentifier:(id)identifier metricType:(unint64_t)type setupSessionIdentifier:(id)sessionIdentifier setupRequestOption:(unint64_t)option setupSessionStartTimeMS:(unint64_t)s;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDMediaGroupSetupMetricDispatcher
@@ -28,18 +28,18 @@
   return WeakRetained;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDMediaGroupSetupMetricDispatcher *)self activeGroupIdentifier];
+  activeGroupIdentifier = [(HMDMediaGroupSetupMetricDispatcher *)self activeGroupIdentifier];
 
-  if (v5)
+  if (activeGroupIdentifier)
   {
     v6 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:13 reason:@"Timeout in getting commited group"];
-    v7 = [(HMDMediaGroupSetupMetricDispatcher *)self currentUpTicksFactory];
-    v8 = v7[2]();
+    currentUpTicksFactory = [(HMDMediaGroupSetupMetricDispatcher *)self currentUpTicksFactory];
+    v8 = currentUpTicksFactory[2]();
 
     requestReceivedTimeMS = self->_requestReceivedTimeMS;
     if (v8 <= requestReceivedTimeMS || requestReceivedTimeMS == 0)
@@ -63,7 +63,7 @@
     }
 
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -78,14 +78,14 @@
     }
 
     objc_autoreleasePoolPop(v17);
-    [(HMDMediaGroupSetupMetricDispatcher *)v18 _submitLogEventWithTotalDuration:v11 totalDurationSinceSetupSessionStart:v12 error:v6];
-    [(HMDMediaGroupSetupMetricDispatcher *)v18 _resetActiveTracking];
+    [(HMDMediaGroupSetupMetricDispatcher *)selfCopy _submitLogEventWithTotalDuration:v11 totalDurationSinceSetupSessionStart:v12 error:v6];
+    [(HMDMediaGroupSetupMetricDispatcher *)selfCopy _resetActiveTracking];
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -96,7 +96,7 @@
     }
 
     objc_autoreleasePoolPop(v13);
-    [(HMDMediaGroupSetupMetricDispatcher *)v14 _resetActiveTracking];
+    [(HMDMediaGroupSetupMetricDispatcher *)selfCopy2 _resetActiveTracking];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -104,31 +104,31 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)setupLatencyLogEvent:(unint64_t)a3 groupIdentifier:(id)a4 isController:(BOOL)a5 isPrimaryResident:(BOOL)a6 totalDuration:(unint64_t)a7 setupSessionIdentifier:(id)a8 setupRequestOption:(unint64_t)a9 totalDurationSinceSetupSessionStart:(unint64_t)a10 errorStage:(id)a11
+- (id)setupLatencyLogEvent:(unint64_t)event groupIdentifier:(id)identifier isController:(BOOL)controller isPrimaryResident:(BOOL)resident totalDuration:(unint64_t)duration setupSessionIdentifier:(id)sessionIdentifier setupRequestOption:(unint64_t)option totalDurationSinceSetupSessionStart:(unint64_t)self0 errorStage:(id)self1
 {
-  v12 = a6;
-  v13 = a5;
-  v16 = a11;
-  v17 = a8;
-  v18 = a4;
+  residentCopy = resident;
+  controllerCopy = controller;
+  stageCopy = stage;
+  sessionIdentifierCopy = sessionIdentifier;
+  identifierCopy = identifier;
   v19 = [HMDMediaGroupSetupLatencyLogEvent alloc];
-  if (a3 - 1 > 3)
+  if (event - 1 > 3)
   {
     v20 = @"Unknown Metric Type";
   }
 
   else
   {
-    v20 = off_278677CE8[a3 - 1];
+    v20 = off_278677CE8[event - 1];
   }
 
   v21 = @"Unknown Role";
-  if (v12)
+  if (residentCopy)
   {
     v21 = @"Primary Resident";
   }
 
-  if (v13)
+  if (controllerCopy)
   {
     v22 = @"Controller";
   }
@@ -138,53 +138,53 @@
     v22 = v21;
   }
 
-  v23 = [v18 UUIDString];
+  uUIDString = [identifierCopy UUIDString];
 
-  v24 = [v17 UUIDString];
+  uUIDString2 = [sessionIdentifierCopy UUIDString];
 
-  v25 = [(HMDMediaGroupSetupLatencyLogEvent *)v19 initWithRequestType:v20 systemUUID:v23 deviceRole:v22 totalDurationMS:a7 setupSessionIdentifier:v24 setupRequestOption:a9 totalDurationSinceAccessorySetupStartMS:a10 errorStage:v16];
+  v25 = [(HMDMediaGroupSetupLatencyLogEvent *)v19 initWithRequestType:v20 systemUUID:uUIDString deviceRole:v22 totalDurationMS:duration setupSessionIdentifier:uUIDString2 setupRequestOption:option totalDurationSinceAccessorySetupStartMS:start errorStage:stageCopy];
 
   return v25;
 }
 
-- (void)_submitLogEvent:(id)a3 error:(id)a4
+- (void)_submitLogEvent:(id)event error:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  errorCopy = error;
   os_unfair_lock_assert_owner(&self->_lock);
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v6 coreAnalyticsEventDictionary];
+    coreAnalyticsEventDictionary = [eventCopy coreAnalyticsEventDictionary];
     v15 = 138543618;
     v16 = v11;
     v17 = 2112;
-    v18 = v12;
+    v18 = coreAnalyticsEventDictionary;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Submitting log event: %@", &v15, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMDMediaGroupSetupMetricDispatcher *)v9 logEventSubmitter];
-  [v13 submitLogEvent:v6 error:v7];
+  logEventSubmitter = [(HMDMediaGroupSetupMetricDispatcher *)selfCopy logEventSubmitter];
+  [logEventSubmitter submitLogEvent:eventCopy error:errorCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_submitLogEventWithTotalDuration:(unint64_t)a3 totalDurationSinceSetupSessionStart:(unint64_t)a4 error:(id)a5
+- (void)_submitLogEventWithTotalDuration:(unint64_t)duration totalDurationSinceSetupSessionStart:(unint64_t)start error:(id)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  errorCopy = error;
   os_unfair_lock_assert_owner(&self->_lock);
-  v9 = [(HMDMediaGroupSetupMetricDispatcher *)self dataSource];
+  dataSource = [(HMDMediaGroupSetupMetricDispatcher *)self dataSource];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   v13 = v12;
-  if (v9)
+  if (dataSource)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -192,21 +192,21 @@
       *buf = 138543874;
       v24 = v14;
       v25 = 2048;
-      v26 = a3;
+      durationCopy = duration;
       v27 = 2112;
-      v28 = v8;
+      v28 = errorCopy;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Submitting log event: %llu error: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v10);
-    v15 = [v9 isCurrentDeviceIOSDevice];
-    v16 = [v9 isPrimaryResidentDevice];
-    v17 = [(HMDMediaGroupSetupMetricDispatcher *)v11 metricType];
-    v18 = [(HMDMediaGroupSetupMetricDispatcher *)v11 activeGroupIdentifier];
-    v19 = [(HMDMediaGroupSetupMetricDispatcher *)v11 setupSessionIdentifier];
-    v20 = [(HMDMediaGroupSetupMetricDispatcher *)v11 setupLatencyLogEvent:v17 groupIdentifier:v18 isController:v15 isPrimaryResident:v16 totalDuration:a3 setupSessionIdentifier:v19 setupRequestOption:[(HMDMediaGroupSetupMetricDispatcher *)v11 setupRequestOption] totalDurationSinceSetupSessionStart:a4 errorStage:@"Committed Group"];
+    isCurrentDeviceIOSDevice = [dataSource isCurrentDeviceIOSDevice];
+    isPrimaryResidentDevice = [dataSource isPrimaryResidentDevice];
+    metricType = [(HMDMediaGroupSetupMetricDispatcher *)selfCopy metricType];
+    activeGroupIdentifier = [(HMDMediaGroupSetupMetricDispatcher *)selfCopy activeGroupIdentifier];
+    setupSessionIdentifier = [(HMDMediaGroupSetupMetricDispatcher *)selfCopy setupSessionIdentifier];
+    v20 = [(HMDMediaGroupSetupMetricDispatcher *)selfCopy setupLatencyLogEvent:metricType groupIdentifier:activeGroupIdentifier isController:isCurrentDeviceIOSDevice isPrimaryResident:isPrimaryResidentDevice totalDuration:duration setupSessionIdentifier:setupSessionIdentifier setupRequestOption:[(HMDMediaGroupSetupMetricDispatcher *)selfCopy setupRequestOption] totalDurationSinceSetupSessionStart:start errorStage:@"Committed Group"];
 
-    [(HMDMediaGroupSetupMetricDispatcher *)v11 _submitLogEvent:v20 error:v8];
+    [(HMDMediaGroupSetupMetricDispatcher *)selfCopy _submitLogEvent:v20 error:errorCopy];
   }
 
   else
@@ -220,29 +220,29 @@
     }
 
     objc_autoreleasePoolPop(v10);
-    [(HMDMediaGroupSetupMetricDispatcher *)v11 _resetActiveTracking];
+    [(HMDMediaGroupSetupMetricDispatcher *)selfCopy _resetActiveTracking];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markRequestCommittedForGroupIdentifier:(id)a3 metricType:(unint64_t)a4 error:(id)a5
+- (void)markRequestCommittedForGroupIdentifier:(id)identifier metricType:(unint64_t)type error:(id)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (a4)
+  identifierCopy = identifier;
+  errorCopy = error;
+  if (type)
   {
     os_unfair_lock_lock_with_options();
     activeGroupIdentifier = self->_activeGroupIdentifier;
     if (activeGroupIdentifier)
     {
-      if (([(NSUUID *)activeGroupIdentifier hmf_isEqualToUUID:v8]& 1) != 0)
+      if (([(NSUUID *)activeGroupIdentifier hmf_isEqualToUUID:identifierCopy]& 1) != 0)
       {
         metricType = self->_metricType;
         v12 = objc_autoreleasePoolPush();
-        v13 = self;
-        if (metricType == a4)
+        selfCopy = self;
+        if (metricType == type)
         {
           v14 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -250,14 +250,14 @@
             v15 = HMFGetLogIdentifier();
             v16 = v15;
             v17 = self->_activeGroupIdentifier;
-            if (a4 > 4)
+            if (type > 4)
             {
               v18 = @"Unknown Metric Type";
             }
 
             else
             {
-              v18 = off_278677CE8[a4 - 1];
+              v18 = off_278677CE8[type - 1];
             }
 
             v45 = 138543874;
@@ -270,13 +270,13 @@
           }
 
           objc_autoreleasePoolPop(v12);
-          v36 = [(HMDMediaGroupSetupMetricDispatcher *)v13 currentUpTicksFactory];
-          v13->_requestCommittedTimeMS = v36[2]();
+          currentUpTicksFactory = [(HMDMediaGroupSetupMetricDispatcher *)selfCopy currentUpTicksFactory];
+          selfCopy->_requestCommittedTimeMS = currentUpTicksFactory[2]();
 
-          requestReceivedTimeMS = v13->_requestReceivedTimeMS;
+          requestReceivedTimeMS = selfCopy->_requestReceivedTimeMS;
           if (requestReceivedTimeMS)
           {
-            requestCommittedTimeMS = v13->_requestCommittedTimeMS;
+            requestCommittedTimeMS = selfCopy->_requestCommittedTimeMS;
             v39 = requestCommittedTimeMS >= requestReceivedTimeMS;
             v40 = requestCommittedTimeMS - requestReceivedTimeMS;
             if (v39)
@@ -295,9 +295,9 @@
             v41 = 0;
           }
 
-          if (v13->_setupSessionIdentifier)
+          if (selfCopy->_setupSessionIdentifier)
           {
-            v42 = v13->_requestCommittedTimeMS - v13->_setupSessionStartTimeMS;
+            v42 = selfCopy->_requestCommittedTimeMS - selfCopy->_setupSessionStartTimeMS;
           }
 
           else
@@ -305,8 +305,8 @@
             v42 = 0;
           }
 
-          [(HMDMediaGroupSetupMetricDispatcher *)v13 _submitLogEventWithTotalDuration:v41 totalDurationSinceSetupSessionStart:v42 error:v9];
-          [(HMDMediaGroupSetupMetricDispatcher *)v13 _resetActiveTracking];
+          [(HMDMediaGroupSetupMetricDispatcher *)selfCopy _submitLogEventWithTotalDuration:v41 totalDurationSinceSetupSessionStart:v42 error:errorCopy];
+          [(HMDMediaGroupSetupMetricDispatcher *)selfCopy _resetActiveTracking];
           goto LABEL_38;
         }
 
@@ -326,14 +326,14 @@
             v35 = off_278677CE8[v34];
           }
 
-          if (a4 > 4)
+          if (type > 4)
           {
             v43 = @"Unknown Metric Type";
           }
 
           else
           {
-            v43 = off_278677CE8[a4 - 1];
+            v43 = off_278677CE8[type - 1];
           }
 
           v45 = 138543874;
@@ -349,7 +349,7 @@
       else
       {
         v12 = objc_autoreleasePoolPush();
-        v29 = self;
+        selfCopy2 = self;
         v24 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
@@ -358,7 +358,7 @@
           v45 = 138543874;
           v46 = v30;
           v47 = 2112;
-          v48 = v8;
+          v48 = identifierCopy;
           v49 = 2112;
           v50 = v31;
           _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_ERROR, "%{public}@Tracking different group identifier: %@ active group identifier: %@", &v45, 0x20u);
@@ -369,13 +369,13 @@
     else
     {
       v12 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy3 = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         v25 = HMFGetLogIdentifier();
         v26 = v25;
-        v27 = v23->_metricType - 1;
+        v27 = selfCopy3->_metricType - 1;
         if (v27 > 3)
         {
           v28 = @"Unknown Metric Type";
@@ -401,7 +401,7 @@ LABEL_38:
   }
 
   v19 = objc_autoreleasePoolPush();
-  v20 = self;
+  selfCopy4 = self;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
@@ -417,25 +417,25 @@ LABEL_39:
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markRequestReceivedForGroupIdentifier:(id)a3 metricType:(unint64_t)a4 setupSessionIdentifier:(id)a5 setupRequestOption:(unint64_t)a6 setupSessionStartTimeMS:(unint64_t)a7
+- (void)markRequestReceivedForGroupIdentifier:(id)identifier metricType:(unint64_t)type setupSessionIdentifier:(id)sessionIdentifier setupRequestOption:(unint64_t)option setupSessionStartTimeMS:(unint64_t)s
 {
   v59 = *MEMORY[0x277D85DE8];
-  v47 = a3;
-  v48 = a5;
-  if (a4)
+  identifierCopy = identifier;
+  sessionIdentifierCopy = sessionIdentifier;
+  if (type)
   {
     os_unfair_lock_lock_with_options();
     if (self->_activeGroupIdentifier)
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v16 = HMFGetLogIdentifier();
         v17 = v16;
         activeGroupIdentifier = self->_activeGroupIdentifier;
-        v19 = v14->_metricType - 1;
+        v19 = selfCopy->_metricType - 1;
         if (v19 > 3)
         {
           v20 = @"Unknown Metric Type";
@@ -460,47 +460,47 @@ LABEL_39:
     {
       metricType = self->_metricType;
       v13 = objc_autoreleasePoolPush();
-      v26 = self;
+      selfCopy2 = self;
       if (!metricType)
       {
         v31 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
         {
           v32 = HMFGetLogIdentifier();
-          if (a4 > 4)
+          if (type > 4)
           {
             v33 = @"Unknown Metric Type";
           }
 
           else
           {
-            v33 = off_278677CE8[a4 - 1];
+            v33 = off_278677CE8[type - 1];
           }
 
           *buf = 138544386;
           v50 = v32;
           v51 = 2112;
-          v52 = v47;
+          v52 = identifierCopy;
           v53 = 2112;
           v54 = v33;
           v55 = 2112;
-          v56 = v48;
+          v56 = sessionIdentifierCopy;
           v57 = 2048;
-          v58 = a7;
+          sCopy = s;
           v46 = v32;
           _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_INFO, "%{public}@Request received for group identifier %@ metric type: %@ session identifier: %@ setup start time: %llu", buf, 0x34u);
         }
 
         objc_autoreleasePoolPop(v13);
-        submissionTimer = v26->_submissionTimer;
+        submissionTimer = selfCopy2->_submissionTimer;
         if (submissionTimer)
         {
           [(HMFTimer *)submissionTimer cancel];
-          v36 = v26->_submissionTimer;
-          v26->_submissionTimer = 0;
+          v36 = selfCopy2->_submissionTimer;
+          selfCopy2->_submissionTimer = 0;
 
           context = objc_autoreleasePoolPush();
-          v37 = v26;
+          v37 = selfCopy2;
           v38 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
           {
@@ -514,25 +514,25 @@ LABEL_39:
           objc_autoreleasePoolPop(context);
         }
 
-        objc_storeStrong(&self->_activeGroupIdentifier, a3);
-        self->_metricType = a4;
-        v40 = [(HMDMediaGroupSetupMetricDispatcher *)v26 currentUpTicksFactory];
-        v26->_requestReceivedTimeMS = v40[2]();
+        objc_storeStrong(&self->_activeGroupIdentifier, identifier);
+        self->_metricType = type;
+        currentUpTicksFactory = [(HMDMediaGroupSetupMetricDispatcher *)selfCopy2 currentUpTicksFactory];
+        selfCopy2->_requestReceivedTimeMS = currentUpTicksFactory[2]();
 
-        if (v48)
+        if (sessionIdentifierCopy)
         {
-          objc_storeStrong(&v26->_setupSessionIdentifier, a5);
-          v26->_setupSessionStartTimeMS = a7;
+          objc_storeStrong(&selfCopy2->_setupSessionIdentifier, sessionIdentifier);
+          selfCopy2->_setupSessionStartTimeMS = s;
         }
 
-        v26->_setupRequestOption = a6;
-        v41 = [(HMDMediaGroupSetupMetricDispatcher *)v26 submissionTimerFactory];
-        v42 = v41[2]();
-        v43 = v26->_submissionTimer;
-        v26->_submissionTimer = v42;
+        selfCopy2->_setupRequestOption = option;
+        submissionTimerFactory = [(HMDMediaGroupSetupMetricDispatcher *)selfCopy2 submissionTimerFactory];
+        v42 = submissionTimerFactory[2]();
+        v43 = selfCopy2->_submissionTimer;
+        selfCopy2->_submissionTimer = v42;
 
-        [(HMFTimer *)v26->_submissionTimer setDelegate:v26];
-        [(HMFTimer *)v26->_submissionTimer resume];
+        [(HMFTimer *)selfCopy2->_submissionTimer setDelegate:selfCopy2];
+        [(HMFTimer *)selfCopy2->_submissionTimer resume];
         goto LABEL_21;
       }
 
@@ -567,7 +567,7 @@ LABEL_21:
   }
 
   v21 = objc_autoreleasePoolPush();
-  v22 = self;
+  selfCopy3 = self;
   v23 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
@@ -588,12 +588,12 @@ LABEL_22:
   v16 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_lock);
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    activeGroupIdentifier = v4->_activeGroupIdentifier;
+    activeGroupIdentifier = selfCopy->_activeGroupIdentifier;
     v12 = 138543618;
     v13 = v6;
     v14 = 2112;
@@ -602,20 +602,20 @@ LABEL_22:
   }
 
   objc_autoreleasePoolPop(v3);
-  v4->_metricType = 0;
-  v8 = v4->_activeGroupIdentifier;
-  v4->_activeGroupIdentifier = 0;
+  selfCopy->_metricType = 0;
+  v8 = selfCopy->_activeGroupIdentifier;
+  selfCopy->_activeGroupIdentifier = 0;
 
-  v4->_requestReceivedTimeMS = 0;
-  v4->_requestCommittedTimeMS = 0;
-  submissionTimer = v4->_submissionTimer;
-  v4->_submissionTimer = 0;
+  selfCopy->_requestReceivedTimeMS = 0;
+  selfCopy->_requestCommittedTimeMS = 0;
+  submissionTimer = selfCopy->_submissionTimer;
+  selfCopy->_submissionTimer = 0;
 
-  setupSessionIdentifier = v4->_setupSessionIdentifier;
-  v4->_setupSessionIdentifier = 0;
+  setupSessionIdentifier = selfCopy->_setupSessionIdentifier;
+  selfCopy->_setupSessionIdentifier = 0;
 
-  v4->_setupRequestOption = 0;
-  v4->_setupSessionStartTimeMS = 0;
+  selfCopy->_setupRequestOption = 0;
+  selfCopy->_setupSessionStartTimeMS = 0;
   v11 = *MEMORY[0x277D85DE8];
 }
 
@@ -626,12 +626,12 @@ id __75__HMDMediaGroupSetupMetricDispatcher_initWithDataSource_logEventSubmitter
   return v0;
 }
 
-- (HMDMediaGroupSetupMetricDispatcher)initWithDataSource:(id)a3 logEventSubmitter:(id)a4 currentUpTicksFactory:(id)a5 submissionTimerFactory:(id)a6
+- (HMDMediaGroupSetupMetricDispatcher)initWithDataSource:(id)source logEventSubmitter:(id)submitter currentUpTicksFactory:(id)factory submissionTimerFactory:(id)timerFactory
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sourceCopy = source;
+  submitterCopy = submitter;
+  factoryCopy = factory;
+  timerFactoryCopy = timerFactory;
   v21.receiver = self;
   v21.super_class = HMDMediaGroupSetupMetricDispatcher;
   v14 = [(HMDMediaGroupSetupMetricDispatcher *)&v21 init];
@@ -639,14 +639,14 @@ id __75__HMDMediaGroupSetupMetricDispatcher_initWithDataSource_logEventSubmitter
   if (v14)
   {
     v14->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v14->_dataSource, v10);
+    objc_storeWeak(&v14->_dataSource, sourceCopy);
     v15->_metricType = 0;
-    v16 = _Block_copy(v12);
+    v16 = _Block_copy(factoryCopy);
     currentUpTicksFactory = v15->_currentUpTicksFactory;
     v15->_currentUpTicksFactory = v16;
 
-    objc_storeWeak(&v15->_logEventSubmitter, v11);
-    v18 = _Block_copy(v13);
+    objc_storeWeak(&v15->_logEventSubmitter, submitterCopy);
+    v18 = _Block_copy(timerFactoryCopy);
     submissionTimerFactory = v15->_submissionTimerFactory;
     v15->_submissionTimerFactory = v18;
   }

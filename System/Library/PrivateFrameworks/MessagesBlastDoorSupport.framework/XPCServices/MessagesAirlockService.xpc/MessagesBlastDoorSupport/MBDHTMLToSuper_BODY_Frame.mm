@@ -1,13 +1,13 @@
 @interface MBDHTMLToSuper_BODY_Frame
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8;
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation MBDHTMLToSuper_BODY_Frame
 
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v13 = a4;
-  v9 = MBDIMCopyNormalizedAttributes(a8, 1, 0);
+  contextCopy = context;
+  v9 = MBDIMCopyNormalizedAttributes(attributes, 1, 0);
   v10 = [v9 objectForKey:@"dir"];
   v11 = v10;
   if (!v10)
@@ -33,7 +33,7 @@ LABEL_4:
   }
 
 LABEL_6:
-  [v13 setBaseWritingDirection:v12];
+  [contextCopy setBaseWritingDirection:v12];
 }
 
 @end

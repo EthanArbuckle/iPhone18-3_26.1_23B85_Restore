@@ -1,7 +1,7 @@
 @interface SCUIAccountHelper
 + (BOOL)isiMessageLoggedIn;
-+ (id)_getValidAccountAlias:(id)a3;
-+ (id)bestHandleID:(id)a3;
++ (id)_getValidAccountAlias:(id)alias;
++ (id)bestHandleID:(id)d;
 + (id)bestiMessageServiceHandle;
 @end
 
@@ -9,8 +9,8 @@
 
 + (BOOL)isiMessageLoggedIn
 {
-  v2 = [a1 bestiMessageServiceHandle];
-  v3 = v2 != 0;
+  bestiMessageServiceHandle = [self bestiMessageServiceHandle];
+  v3 = bestiMessageServiceHandle != 0;
 
   return v3;
 }
@@ -36,8 +36,8 @@
 
   v4 = v3;
   _Block_object_dispose(&v29, 8);
-  v5 = [v3 iMessageService];
-  if (v5)
+  iMessageService = [v3 iMessageService];
+  if (iMessageService)
   {
     v29 = 0;
     v30 = &v29;
@@ -57,8 +57,8 @@
 
     v7 = v6;
     _Block_object_dispose(&v29, 8);
-    v8 = [v6 sharedInstance];
-    v9 = [v8 activeAccountsForService:v5];
+    sharedInstance = [v6 sharedInstance];
+    v9 = [sharedInstance activeAccountsForService:iMessageService];
 
     v22 = 0u;
     v23 = 0u;
@@ -79,12 +79,12 @@
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [a1 _getValidAccountAlias:{v14, v20}];
+          v15 = [self _getValidAccountAlias:{v14, v20}];
           v16 = v15 == 0;
 
           if (!v16)
           {
-            v17 = [v14 loginIMHandle];
+            loginIMHandle = [v14 loginIMHandle];
             goto LABEL_16;
           }
         }
@@ -99,24 +99,24 @@
       }
     }
 
-    v17 = 0;
+    loginIMHandle = 0;
 LABEL_16:
   }
 
   else
   {
-    v17 = 0;
+    loginIMHandle = 0;
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return loginIMHandle;
 }
 
-+ (id)_getValidAccountAlias:(id)a3
++ (id)_getValidAccountAlias:(id)alias
 {
   v15 = *MEMORY[0x1E69E9840];
-  [a3 aliases];
+  [alias aliases];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -159,18 +159,18 @@ LABEL_11:
   return v4;
 }
 
-+ (id)bestHandleID:(id)a3
++ (id)bestHandleID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 account];
-  if (v5)
+  dCopy = d;
+  account = [dCopy account];
+  if (account)
   {
-    [a1 _getValidAccountAlias:v5];
+    [self _getValidAccountAlias:account];
   }
 
   else
   {
-    [v4 ID];
+    [dCopy ID];
   }
   v6 = ;
 

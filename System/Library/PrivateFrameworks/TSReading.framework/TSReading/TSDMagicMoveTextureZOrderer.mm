@@ -1,31 +1,31 @@
 @interface TSDMagicMoveTextureZOrderer
 - (NSArray)flattenableAnimationMatches;
 - (TSDMagicMoveTextureZOrderer)init;
-- (TSDMagicMoveTextureZOrderer)initWithAnimationMatches:(id)a3;
+- (TSDMagicMoveTextureZOrderer)initWithAnimationMatches:(id)matches;
 - (id)p_debugDescription;
-- (id)p_newArrayBySortingMatches:(id)a3 withInterpolatedPercent:(double)a4;
-- (id)texturedRectanglesAtPercent:(double)a3;
-- (unint64_t)p_bestZIndexForUnassignedMatch:(id)a3 inMatchArray:(id)a4;
-- (unint64_t)p_zIntersectionsBetweenZOrdererMatches:(id)a3;
+- (id)p_newArrayBySortingMatches:(id)matches withInterpolatedPercent:(double)percent;
+- (id)texturedRectanglesAtPercent:(double)percent;
+- (unint64_t)p_bestZIndexForUnassignedMatch:(id)match inMatchArray:(id)array;
+- (unint64_t)p_zIntersectionsBetweenZOrdererMatches:(id)matches;
 - (void)dealloc;
-- (void)p_addFlattenableAnimationMatches:(id)a3 toArray:(id)a4;
-- (void)p_addVisibleTexturesFromMatches:(id)a3 toArray:(id)a4 interpolatedPercent:(double)a5;
-- (void)p_adjustZOrdererMatchesZIndexByTextureType:(id)a3;
+- (void)p_addFlattenableAnimationMatches:(id)matches toArray:(id)array;
+- (void)p_addVisibleTexturesFromMatches:(id)matches toArray:(id)array interpolatedPercent:(double)percent;
+- (void)p_adjustZOrdererMatchesZIndexByTextureType:(id)type;
 - (void)p_calculateTextureArraysFromIntersections;
-- (void)p_setupZOrderMatchesWithAnimationMatches:(id)a3;
+- (void)p_setupZOrderMatchesWithAnimationMatches:(id)matches;
 @end
 
 @implementation TSDMagicMoveTextureZOrderer
 
 - (TSDMagicMoveTextureZOrderer)init
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMagicMoveTextureZOrderer init]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 1113, @"Do not call method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 1113, @"Do not call method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Do not call method", "-[TSDMagicMoveTextureZOrderer init]"), 0}]);
 }
 
-- (TSDMagicMoveTextureZOrderer)initWithAnimationMatches:(id)a3
+- (TSDMagicMoveTextureZOrderer)initWithAnimationMatches:(id)matches
 {
   v7.receiver = self;
   v7.super_class = TSDMagicMoveTextureZOrderer;
@@ -33,7 +33,7 @@
   v5 = v4;
   if (v4)
   {
-    [(TSDMagicMoveTextureZOrderer *)v4 p_setupZOrderMatchesWithAnimationMatches:a3];
+    [(TSDMagicMoveTextureZOrderer *)v4 p_setupZOrderMatchesWithAnimationMatches:matches];
     [(TSDMagicMoveTextureZOrderer *)v5 p_calculateTextureArraysFromIntersections];
   }
 
@@ -49,27 +49,27 @@
   [(TSDMagicMoveTextureZOrderer *)&v3 dealloc];
 }
 
-- (id)texturedRectanglesAtPercent:(double)a3
+- (id)texturedRectanglesAtPercent:(double)percent
 {
-  if (a3 == 0.0)
+  if (percent == 0.0)
   {
     return self->_outgoingTexturesInZOrder;
   }
 
-  if (a3 == 1.0)
+  if (percent == 1.0)
   {
     return self->_incomingTexturesInZOrder;
   }
 
   v6 = [(NSArray *)self->_percentTextures count];
-  if (v6 && (percentTexturesTimes = self->_percentTexturesTimes, *percentTexturesTimes <= a3))
+  if (v6 && (percentTexturesTimes = self->_percentTexturesTimes, *percentTexturesTimes <= percent))
   {
     v8 = v6 - 1;
     v10 = 1;
     while (v6 != v10)
     {
       v11 = percentTexturesTimes[v10++];
-      if (v11 > a3)
+      if (v11 > percent)
       {
         v8 = v10 - 2;
         break;
@@ -87,15 +87,15 @@
   return [(NSArray *)percentTextures objectAtIndexedSubscript:v8];
 }
 
-- (void)p_addVisibleTexturesFromMatches:(id)a3 toArray:(id)a4 interpolatedPercent:(double)a5
+- (void)p_addVisibleTexturesFromMatches:(id)matches toArray:(id)array interpolatedPercent:(double)percent
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:a3];
+  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:matches];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __91__TSDMagicMoveTextureZOrderer_p_addVisibleTexturesFromMatches_toArray_interpolatedPercent___block_invoke;
   v21[3] = &__block_descriptor_40_e79_q24__0__TSDMagicMoveTextureZOrdererMatch_8__TSDMagicMoveTextureZOrdererMatch_16l;
-  *&v21[4] = a5;
+  *&v21[4] = percent;
   [v7 sortUsingComparator:v21];
   v19 = 0u;
   v20 = 0u;
@@ -124,7 +124,7 @@
           {
             v15 = v14;
 LABEL_10:
-            [a4 addObject:v15];
+            [array addObject:v15];
             goto LABEL_11;
           }
 
@@ -142,7 +142,7 @@ LABEL_11:
             {
               if (v16 != v15)
               {
-                [a4 addObject:v16];
+                [array addObject:v16];
               }
             }
           }
@@ -197,15 +197,15 @@ LABEL_6:
   }
 }
 
-- (id)p_newArrayBySortingMatches:(id)a3 withInterpolatedPercent:(double)a4
+- (id)p_newArrayBySortingMatches:(id)matches withInterpolatedPercent:(double)percent
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:a3];
+  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:matches];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __82__TSDMagicMoveTextureZOrderer_p_newArrayBySortingMatches_withInterpolatedPercent___block_invoke;
   v22[3] = &__block_descriptor_40_e79_q24__0__TSDMagicMoveTextureZOrdererMatch_8__TSDMagicMoveTextureZOrdererMatch_16l;
-  *&v22[4] = a4;
+  *&v22[4] = percent;
   [v6 sortUsingComparator:v22];
   v7 = objc_opt_new();
   v8 = objc_opt_new();
@@ -233,10 +233,10 @@ LABEL_6:
         {
           [objc_msgSend(v8 "lastObject")];
           v15 = v14;
-          [v13 interpolatedZIndexAtPercent:a4];
+          [v13 interpolatedZIndexAtPercent:percent];
           if (vabdd_f64(v15, v16) >= 0.00999999978)
           {
-            [(TSDMagicMoveTextureZOrderer *)self p_addVisibleTexturesFromMatches:v8 toArray:v7 interpolatedPercent:a4];
+            [(TSDMagicMoveTextureZOrderer *)self p_addVisibleTexturesFromMatches:v8 toArray:v7 interpolatedPercent:percent];
             [v8 removeAllObjects];
           }
         }
@@ -252,7 +252,7 @@ LABEL_6:
     while (v10);
   }
 
-  [(TSDMagicMoveTextureZOrderer *)self p_addVisibleTexturesFromMatches:v8 toArray:v7 interpolatedPercent:a4];
+  [(TSDMagicMoveTextureZOrderer *)self p_addVisibleTexturesFromMatches:v8 toArray:v7 interpolatedPercent:percent];
 
   return v7;
 }
@@ -273,7 +273,7 @@ uint64_t __82__TSDMagicMoveTextureZOrderer_p_newArrayBySortingMatches_withInterp
   }
 }
 
-- (void)p_adjustZOrdererMatchesZIndexByTextureType:(id)a3
+- (void)p_adjustZOrdererMatchesZIndexByTextureType:(id)type
 {
   v67 = *MEMORY[0x277D85DE8];
   v43 = objc_opt_new();
@@ -287,7 +287,7 @@ uint64_t __82__TSDMagicMoveTextureZOrderer_p_newArrayBySortingMatches_withInterp
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v59 objects:v66 count:16];
+    v6 = [type countByEnumeratingWithState:&v59 objects:v66 count:16];
     if (v6)
     {
       v7 = v6;
@@ -298,24 +298,24 @@ uint64_t __82__TSDMagicMoveTextureZOrderer_p_newArrayBySortingMatches_withInterp
         {
           if (*v60 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(type);
           }
 
           v10 = *(*(&v59 + 1) + 8 * i);
           if (v5)
           {
-            v11 = [v10 outgoingZIndex];
+            outgoingZIndex = [v10 outgoingZIndex];
           }
 
           else
           {
-            v11 = [v10 incomingZIndex];
+            outgoingZIndex = [v10 incomingZIndex];
           }
 
-          v12 = v11;
-          if (v11 != -1)
+          v12 = outgoingZIndex;
+          if (outgoingZIndex != -1)
           {
-            v13 = [v43 objectForKey:{objc_msgSend(*(v4 + 2992), "numberWithInteger:", v11)}];
+            v13 = [v43 objectForKey:{objc_msgSend(*(v4 + 2992), "numberWithInteger:", outgoingZIndex)}];
             if (!v13)
             {
               v13 = objc_opt_new();
@@ -326,13 +326,13 @@ uint64_t __82__TSDMagicMoveTextureZOrderer_p_newArrayBySortingMatches_withInterp
           }
         }
 
-        v7 = [a3 countByEnumeratingWithState:&v59 objects:v66 count:16];
+        v7 = [type countByEnumeratingWithState:&v59 objects:v66 count:16];
       }
 
       while (v7);
     }
 
-    v14 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:{objc_msgSend(v43, "allKeys")}];
     [v15 sortUsingSelector:sel_compare_];
     v57 = 0u;
@@ -357,7 +357,7 @@ uint64_t __82__TSDMagicMoveTextureZOrderer_p_newArrayBySortingMatches_withInterp
 
           v44 = v16;
           v17 = [v43 objectForKey:*(*(&v55 + 1) + 8 * v16)];
-          [v14 removeAllObjects];
+          [orderedSet removeAllObjects];
           v53 = 0u;
           v54 = 0u;
           v51 = 0u;
@@ -379,19 +379,19 @@ uint64_t __82__TSDMagicMoveTextureZOrderer_p_newArrayBySortingMatches_withInterp
                 v22 = *(*(&v51 + 1) + 8 * j);
                 if ((v5 & 1) == 0)
                 {
-                  v23 = [v22 incomingTexture];
-                  if (!v23)
+                  incomingTexture = [v22 incomingTexture];
+                  if (!incomingTexture)
                   {
                     continue;
                   }
 
 LABEL_30:
-                  [v14 addObject:{objc_msgSend(*(v4 + 2992), "numberWithUnsignedInt:", objc_msgSend(objc_msgSend(objc_msgSend(v23, "visibleTextures"), "firstObject"), "textureType"))}];
+                  [orderedSet addObject:{objc_msgSend(*(v4 + 2992), "numberWithUnsignedInt:", objc_msgSend(objc_msgSend(objc_msgSend(incomingTexture, "visibleTextures"), "firstObject"), "textureType"))}];
                   continue;
                 }
 
-                v23 = [v22 outgoingTexture];
-                if (v23)
+                incomingTexture = [v22 outgoingTexture];
+                if (incomingTexture)
                 {
                   goto LABEL_30;
                 }
@@ -403,7 +403,7 @@ LABEL_30:
             while (v19);
           }
 
-          [v14 sortUsingComparator:&__block_literal_global_433];
+          [orderedSet sortUsingComparator:&__block_literal_global_433];
           v49 = 0u;
           v50 = 0u;
           v47 = 0u;
@@ -426,27 +426,27 @@ LABEL_30:
                 v28 = *(*(&v47 + 1) + 8 * k);
                 if (v5)
                 {
-                  v29 = [v28 outgoingTexture];
+                  outgoingTexture = [v28 outgoingTexture];
                 }
 
                 else
                 {
-                  v29 = [v28 incomingTexture];
+                  outgoingTexture = [v28 incomingTexture];
                 }
 
-                v30 = [v14 indexOfObject:{objc_msgSend(*(v4 + 2992), "numberWithUnsignedInt:", objc_msgSend(objc_msgSend(objc_msgSend(v29, "visibleTextures"), "firstObject"), "textureType"))}];
+                v30 = [orderedSet indexOfObject:{objc_msgSend(*(v4 + 2992), "numberWithUnsignedInt:", objc_msgSend(objc_msgSend(objc_msgSend(outgoingTexture, "visibleTextures"), "firstObject"), "textureType"))}];
                 if (v30 == 0x7FFFFFFFFFFFFFFFLL)
                 {
                   v31 = v17;
                   v32 = v5;
-                  v33 = v14;
+                  v33 = orderedSet;
                   v34 = v4;
-                  v35 = [MEMORY[0x277D6C290] currentHandler];
+                  currentHandler = [MEMORY[0x277D6C290] currentHandler];
                   v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMagicMoveTextureZOrderer p_adjustZOrdererMatchesZIndexByTextureType:]"];
                   v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"];
-                  v38 = v35;
+                  v38 = currentHandler;
                   v4 = v34;
-                  v14 = v33;
+                  orderedSet = v33;
                   v5 = v32;
                   v17 = v31;
                   v26 = v45;
@@ -473,7 +473,7 @@ LABEL_30:
             while (v25);
           }
 
-          v46 = v46 + [v14 count] - 1;
+          v46 = v46 + [orderedSet count] - 1;
           v16 = v44 + 1;
         }
 
@@ -490,7 +490,7 @@ LABEL_30:
   while ((v5 & 1) != 0);
 }
 
-- (void)p_setupZOrderMatchesWithAnimationMatches:(id)a3
+- (void)p_setupZOrderMatchesWithAnimationMatches:(id)matches
 {
   v102 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
@@ -498,7 +498,7 @@ LABEL_30:
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v90 objects:v101 count:16];
+  v5 = [matches countByEnumeratingWithState:&v90 objects:v101 count:16];
   if (v5)
   {
     v6 = v5;
@@ -509,14 +509,14 @@ LABEL_30:
       {
         if (*v91 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(matches);
         }
 
         v9 = [[TSDMagicMoveTextureZOrdererMatch alloc] initWithAnimationMatch:*(*(&v90 + 1) + 8 * i)];
         [(NSArray *)v4 addObject:v9];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v90 objects:v101 count:16];
+      v6 = [matches countByEnumeratingWithState:&v90 objects:v101 count:16];
     }
 
     while (v6);
@@ -531,8 +531,8 @@ LABEL_30:
   if (v10)
   {
     v11 = v10;
-    v12 = 0;
-    v13 = 0;
+    incomingZIndex = 0;
+    outgoingZIndex = 0;
     v14 = *v87;
     do
     {
@@ -544,14 +544,14 @@ LABEL_30:
         }
 
         v16 = *(*(&v86 + 1) + 8 * j);
-        if (v13 <= [v16 outgoingZIndex])
+        if (outgoingZIndex <= [v16 outgoingZIndex])
         {
-          v13 = [v16 outgoingZIndex];
+          outgoingZIndex = [v16 outgoingZIndex];
         }
 
-        if (v12 <= [v16 incomingZIndex])
+        if (incomingZIndex <= [v16 incomingZIndex])
         {
-          v12 = [v16 incomingZIndex];
+          incomingZIndex = [v16 incomingZIndex];
         }
       }
 
@@ -563,13 +563,13 @@ LABEL_30:
 
   else
   {
-    v12 = 0;
-    v13 = 0;
+    incomingZIndex = 0;
+    outgoingZIndex = 0;
   }
 
   v55 = objc_opt_new();
   v54 = objc_opt_new();
-  if ((v13 & 0x8000000000000000) == 0)
+  if ((outgoingZIndex & 0x8000000000000000) == 0)
   {
     v17 = 0;
     do
@@ -611,13 +611,13 @@ LABEL_30:
         [v55 addObject:v18];
       }
 
-      v24 = v17++ == v13;
+      v24 = v17++ == outgoingZIndex;
     }
 
     while (!v24);
   }
 
-  if ((v12 & 0x8000000000000000) == 0)
+  if ((incomingZIndex & 0x8000000000000000) == 0)
   {
     v25 = 0;
     do
@@ -659,7 +659,7 @@ LABEL_30:
         [v54 addObject:v26];
       }
 
-      v24 = v25++ == v12;
+      v24 = v25++ == incomingZIndex;
     }
 
     while (!v24);
@@ -692,15 +692,15 @@ LABEL_30:
           v60 = v34;
           if (v33)
           {
-            v36 = [v35 outgoingZIndex];
+            outgoingZIndex2 = [v35 outgoingZIndex];
           }
 
           else
           {
-            v36 = [v35 incomingZIndex];
+            outgoingZIndex2 = [v35 incomingZIndex];
           }
 
-          if (v36 == -1)
+          if (outgoingZIndex2 == -1)
           {
             v61 = v35;
             v37 = [(TSDMagicMoveTextureZOrderer *)self p_bestZIndexForUnassignedMatch:v35 inMatchArray:v59];
@@ -844,9 +844,9 @@ LABEL_30:
   self->_incomingTexturesInZOrder = [(TSDMagicMoveTextureZOrderer *)self p_newArrayBySortingMatches:v4 withInterpolatedPercent:1.0];
 }
 
-- (unint64_t)p_zIntersectionsBetweenZOrdererMatches:(id)a3
+- (unint64_t)p_zIntersectionsBetweenZOrdererMatches:(id)matches
 {
-  v4 = [a3 count];
+  v4 = [matches count];
   if (!v4)
   {
     return 0;
@@ -857,14 +857,14 @@ LABEL_30:
   v7 = 0;
   do
   {
-    v8 = [a3 objectAtIndexedSubscript:v7++];
+    v8 = [matches objectAtIndexedSubscript:v7++];
     if (v7 < v5)
     {
       v9 = v8;
       v10 = v7;
       do
       {
-        v6 += [v9 intersectsZOrdererMatch:{objc_msgSend(a3, "objectAtIndexedSubscript:", v10++)}];
+        v6 += [v9 intersectsZOrdererMatch:{objc_msgSend(matches, "objectAtIndexedSubscript:", v10++)}];
       }
 
       while (v5 != v10);
@@ -900,9 +900,9 @@ LABEL_30:
 
         v9 = *(*(&v63 + 1) + 8 * i);
         v10 = -[__CFString length](TSDStringFromTextureType([v9 textureType]), "length");
-        v11 = [v9 textureType];
+        textureType = [v9 textureType];
         v12 = v10 + 5;
-        if (v11 != 6)
+        if (textureType != 6)
         {
           v12 = v10;
         }
@@ -1022,8 +1022,8 @@ LABEL_35:
                 v52 = 0u;
                 v53 = 0u;
                 v54 = 0u;
-                v28 = [v27 visibleTextures];
-                v29 = [v28 countByEnumeratingWithState:&v51 objects:v67 count:16];
+                visibleTextures = [v27 visibleTextures];
+                v29 = [visibleTextures countByEnumeratingWithState:&v51 objects:v67 count:16];
                 if (v29)
                 {
                   v30 = v29;
@@ -1034,7 +1034,7 @@ LABEL_35:
                     {
                       if (*v52 != v31)
                       {
-                        objc_enumerationMutation(v28);
+                        objc_enumerationMutation(visibleTextures);
                       }
 
                       v33 = *(*(&v51 + 1) + 8 * j);
@@ -1045,7 +1045,7 @@ LABEL_35:
                       }
                     }
 
-                    v30 = [v28 countByEnumeratingWithState:&v51 objects:v67 count:16];
+                    v30 = [visibleTextures countByEnumeratingWithState:&v51 objects:v67 count:16];
                     if (v30)
                     {
                       continue;
@@ -1085,7 +1085,7 @@ LABEL_48:
         while (v46);
       }
 
-      v34 = [v20 outgoingZIndex];
+      outgoingZIndex = [v20 outgoingZIndex];
       if ([v20 isOutgoingZIndexUnmatched])
       {
         v35 = @"*";
@@ -1096,7 +1096,7 @@ LABEL_48:
         v35 = @" ";
       }
 
-      v36 = [v20 incomingZIndex];
+      incomingZIndex = [v20 incomingZIndex];
       if ([v20 isIncomingZIndexUnmatched])
       {
         v37 = @"*";
@@ -1109,7 +1109,7 @@ LABEL_48:
 
       v40 = v35;
       v13 = v41;
-      [v41 appendFormat:@"%@ %2d(z:%2d%@->%2d%@):", v43, v14, v34, v40, v36, v37];
+      [v41 appendFormat:@"%@ %2d(z:%2d%@->%2d%@):", v43, v14, outgoingZIndex, v40, incomingZIndex, v37];
       if ([(NSArray *)self->_percentTextures count]>= 1)
       {
         v38 = 0;
@@ -1131,22 +1131,22 @@ LABEL_48:
   return v13;
 }
 
-- (unint64_t)p_bestZIndexForUnassignedMatch:(id)a3 inMatchArray:(id)a4
+- (unint64_t)p_bestZIndexForUnassignedMatch:(id)match inMatchArray:(id)array
 {
   v38 = *MEMORY[0x277D85DE8];
-  if ([a3 outgoingZIndex] != -1 && objc_msgSend(a3, "incomingZIndex") != -1)
+  if ([match outgoingZIndex] != -1 && objc_msgSend(match, "incomingZIndex") != -1)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMagicMoveTextureZOrderer p_bestZIndexForUnassignedMatch:inMatchArray:]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 1507, @"This match is already assigned!"}];
+    [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 1507, @"This match is already assigned!"}];
   }
 
-  v8 = [a3 outgoingZIndex];
+  outgoingZIndex = [match outgoingZIndex];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v9 = [a4 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  v9 = [array countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1158,18 +1158,18 @@ LABEL_48:
       {
         if (*v33 != v12)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(array);
         }
 
         v14 = *(*(&v32 + 1) + 8 * i);
-        if (v8 == -1)
+        if (outgoingZIndex == -1)
         {
           if (v11 > [v14 outgoingZIndex])
           {
             continue;
           }
 
-          v15 = [v14 outgoingZIndex];
+          outgoingZIndex2 = [v14 outgoingZIndex];
         }
 
         else
@@ -1179,13 +1179,13 @@ LABEL_48:
             continue;
           }
 
-          v15 = [v14 incomingZIndex];
+          outgoingZIndex2 = [v14 incomingZIndex];
         }
 
-        v11 = v15;
+        v11 = outgoingZIndex2;
       }
 
-      v10 = [a4 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      v10 = [array countByEnumeratingWithState:&v32 objects:v37 count:16];
       if (!v10)
       {
         v16 = v11 + 1;
@@ -1196,8 +1196,8 @@ LABEL_48:
 
   v16 = 1;
 LABEL_19:
-  v17 = [a4 count];
-  v18 = [objc_msgSend(a3 "outgoingTexture")];
+  v17 = [array count];
+  v18 = [objc_msgSend(match "outgoingTexture")];
   v19 = v18 == 0;
   if (__PAIR128__(v16, v18) >= 1)
   {
@@ -1208,7 +1208,7 @@ LABEL_19:
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v21 = [a4 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v21 = [array countByEnumeratingWithState:&v28 objects:v36 count:16];
       if (v21)
       {
         v22 = v21;
@@ -1220,13 +1220,13 @@ LABEL_19:
           {
             if (*v29 != v24)
             {
-              objc_enumerationMutation(a4);
+              objc_enumerationMutation(array);
             }
 
-            v23 += [a3 intersectsZOrdererMatch:*(*(&v28 + 1) + 8 * j) withAttemptedZIndex:v16];
+            v23 += [match intersectsZOrdererMatch:*(*(&v28 + 1) + 8 * j) withAttemptedZIndex:v16];
           }
 
-          v22 = [a4 countByEnumeratingWithState:&v28 objects:v36 count:16];
+          v22 = [array countByEnumeratingWithState:&v28 objects:v36 count:16];
         }
 
         while (v22);
@@ -1335,16 +1335,16 @@ LABEL_19:
 
   if ([v16 count] != v14)
   {
-    v23 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMagicMoveTextureZOrderer p_calculateTextureArraysFromIntersections]"];
-    [v23 handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 1593, @"percentTexturesTimes.count(%d) != percentTextureCount(%d)!", objc_msgSend(v16, "count"), v14}];
+    [currentHandler handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 1593, @"percentTexturesTimes.count(%d) != percentTextureCount(%d)!", objc_msgSend(v16, "count"), v14}];
   }
 
   if ([(NSArray *)v15 count]!= v14)
   {
-    v25 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMagicMoveTextureZOrderer p_calculateTextureArraysFromIntersections]"];
-    [v25 handleFailureInFunction:v26 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 1594, @"percentTextures.count(%d) != percentTextureCount(%d)!", -[NSArray count](v15, "count"), v14}];
+    [currentHandler2 handleFailureInFunction:v26 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 1594, @"percentTextures.count(%d) != percentTextureCount(%d)!", -[NSArray count](v15, "count"), v14}];
   }
 
   free(self->_percentTexturesTimes);
@@ -1398,18 +1398,18 @@ LABEL_19:
   self->_zOrderIntersectionsCount = [v13 count];
 }
 
-- (void)p_addFlattenableAnimationMatches:(id)a3 toArray:(id)a4
+- (void)p_addFlattenableAnimationMatches:(id)matches toArray:(id)array
 {
   v68 = *MEMORY[0x277D85DE8];
-  if ([a3 count] >= 2)
+  if ([matches count] >= 2)
   {
-    v42 = self;
+    selfCopy = self;
     v7 = objc_opt_new();
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v8 = [a3 countByEnumeratingWithState:&v60 objects:v67 count:16];
+    v8 = [matches countByEnumeratingWithState:&v60 objects:v67 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1420,7 +1420,7 @@ LABEL_19:
         {
           if (*v61 != v10)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(matches);
           }
 
           v12 = *(*(&v60 + 1) + 8 * i);
@@ -1453,7 +1453,7 @@ LABEL_19:
           }
         }
 
-        v9 = [a3 countByEnumeratingWithState:&v60 objects:v67 count:16];
+        v9 = [matches countByEnumeratingWithState:&v60 objects:v67 count:16];
       }
 
       while (v9);
@@ -1468,7 +1468,7 @@ LABEL_19:
     {
       v19 = v18;
       v20 = *v53;
-      v41 = a4;
+      arrayCopy = array;
       while (2)
       {
         for (k = 0; k != v19; ++k)
@@ -1483,7 +1483,7 @@ LABEL_19:
           v49 = 0u;
           v50 = 0u;
           v51 = 0u;
-          v23 = [v7 countByEnumeratingWithState:&v48 objects:v64 count:{16, v41}];
+          v23 = [v7 countByEnumeratingWithState:&v48 objects:v64 count:{16, arrayCopy}];
           if (v23)
           {
             v24 = v23;
@@ -1536,23 +1536,23 @@ LABEL_23:
             v47[1] = 3221225472;
             v47[2] = __72__TSDMagicMoveTextureZOrderer_p_addFlattenableAnimationMatches_toArray___block_invoke;
             v47[3] = &unk_279D49108;
-            v47[4] = v42;
+            v47[4] = selfCopy;
             [v7 sortUsingComparator:v47];
             v43[0] = MEMORY[0x277D85DD0];
             v43[1] = 3221225472;
             v44 = __72__TSDMagicMoveTextureZOrderer_p_addFlattenableAnimationMatches_toArray___block_invoke_2;
             v45 = &unk_279D49130;
             v46 = v7;
-            if ((__72__TSDMagicMoveTextureZOrderer_p_addFlattenableAnimationMatches_toArray___block_invoke_2(v43, v42->_outgoingTexturesInZOrder) & 1) == 0)
+            if ((__72__TSDMagicMoveTextureZOrderer_p_addFlattenableAnimationMatches_toArray___block_invoke_2(v43, selfCopy->_outgoingTexturesInZOrder) & 1) == 0)
             {
               goto LABEL_36;
             }
 
-            v40 = v44(v43, v42->_incomingTexturesInZOrder);
+            v40 = v44(v43, selfCopy->_incomingTexturesInZOrder);
 
             if (v40)
             {
-              [v41 addObject:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithArray:", objc_msgSend(a3, "array"))}];
+              [arrayCopy addObject:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithArray:", objc_msgSend(matches, "array"))}];
             }
 
             return;
@@ -1653,7 +1653,7 @@ uint64_t __72__TSDMagicMoveTextureZOrderer_p_addFlattenableAnimationMatches_toAr
 {
   v53 = *MEMORY[0x277D85DE8];
   v32 = objc_opt_new();
-  v3 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
@@ -1718,26 +1718,26 @@ LABEL_8:
         }
 
 LABEL_17:
-        v14 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMagicMoveTextureZOrderer flattenableAnimationMatches]"];
-        [v14 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 1702, @"invalid nil value for '%s'", "zOrdererMatch"}];
+        [currentHandler handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 1702, @"invalid nil value for '%s'", "zOrdererMatch"}];
         v13 = 0;
 LABEL_18:
         if ([objc_msgSend(v13 "animationMatch")])
         {
-          [(TSDMagicMoveTextureZOrderer *)self p_addFlattenableAnimationMatches:v3 toArray:v32];
-          [v3 removeAllObjects];
+          [(TSDMagicMoveTextureZOrderer *)self p_addFlattenableAnimationMatches:orderedSet toArray:v32];
+          [orderedSet removeAllObjects];
         }
 
         else
         {
-          if ([v3 count] && (objc_msgSend(objc_msgSend(objc_msgSend(v3, "firstObject"), "animationMatch"), "outgoingTexture") || objc_msgSend(objc_msgSend(v13, "animationMatch"), "outgoingTexture")) && (objc_msgSend(objc_msgSend(objc_msgSend(v3, "firstObject"), "animationMatch"), "incomingTexture") || objc_msgSend(objc_msgSend(v13, "animationMatch"), "incomingTexture")))
+          if ([orderedSet count] && (objc_msgSend(objc_msgSend(objc_msgSend(orderedSet, "firstObject"), "animationMatch"), "outgoingTexture") || objc_msgSend(objc_msgSend(v13, "animationMatch"), "outgoingTexture")) && (objc_msgSend(objc_msgSend(objc_msgSend(orderedSet, "firstObject"), "animationMatch"), "incomingTexture") || objc_msgSend(objc_msgSend(v13, "animationMatch"), "incomingTexture")))
           {
-            [(TSDMagicMoveTextureZOrderer *)self p_addFlattenableAnimationMatches:v3 toArray:v32];
-            [v3 removeAllObjects];
+            [(TSDMagicMoveTextureZOrderer *)self p_addFlattenableAnimationMatches:orderedSet toArray:v32];
+            [orderedSet removeAllObjects];
           }
 
-          [v3 addObject:v13];
+          [orderedSet addObject:v13];
         }
       }
 
@@ -1747,8 +1747,8 @@ LABEL_18:
     while (v5);
   }
 
-  [(TSDMagicMoveTextureZOrderer *)self p_addFlattenableAnimationMatches:v3 toArray:v32];
-  v31 = [MEMORY[0x277CBEB18] array];
+  [(TSDMagicMoveTextureZOrderer *)self p_addFlattenableAnimationMatches:orderedSet toArray:v32];
+  array = [MEMORY[0x277CBEB18] array];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -1768,8 +1768,8 @@ LABEL_18:
         }
 
         v20 = *(*(&v37 + 1) + 8 * j);
-        v21 = [MEMORY[0x277CBEB18] array];
-        [(TSDMagicMoveTextureZOrderer *)self p_addVisibleTexturesFromMatches:v20 toArray:v21 interpolatedPercent:0.0];
+        array2 = [MEMORY[0x277CBEB18] array];
+        [(TSDMagicMoveTextureZOrderer *)self p_addVisibleTexturesFromMatches:v20 toArray:array2 interpolatedPercent:0.0];
         v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v20, "count")}];
         v33 = 0u;
         v34 = 0u;
@@ -1800,8 +1800,8 @@ LABEL_18:
 
         v27 = objc_opt_new();
         [v27 setAnimationMatches:v22];
-        [v27 setTexturesInZOrder:v21];
-        [(NSArray *)v31 addObject:v27];
+        [v27 setTexturesInZOrder:array2];
+        [(NSArray *)array addObject:v27];
       }
 
       v17 = [v32 countByEnumeratingWithState:&v37 objects:v50 count:16];
@@ -1810,7 +1810,7 @@ LABEL_18:
     while (v17);
   }
 
-  return v31;
+  return array;
 }
 
 @end

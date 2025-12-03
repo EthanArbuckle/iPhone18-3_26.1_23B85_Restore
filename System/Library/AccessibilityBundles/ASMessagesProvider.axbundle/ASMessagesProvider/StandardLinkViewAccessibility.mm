@@ -1,15 +1,15 @@
 @interface StandardLinkViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation StandardLinkViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ASMessagesProvider.StandardLinkView" hasInstanceMethod:@"accessibilityDescriptionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASMessagesProvider.StandardLinkView" hasInstanceMethod:@"accessibilitySummaryLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ASMessagesProvider.StandardLinkView" hasInstanceMethod:@"accessibilityDescriptionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASMessagesProvider.StandardLinkView" hasInstanceMethod:@"accessibilitySummaryLabel" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits

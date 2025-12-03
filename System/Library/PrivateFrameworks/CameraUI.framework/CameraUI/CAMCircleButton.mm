@@ -1,27 +1,27 @@
 @interface CAMCircleButton
-- (CAMCircleButton)initWithFrame:(CGRect)a3;
-- (id)_createCircleImageForContentSize:(id)a3;
+- (CAMCircleButton)initWithFrame:(CGRect)frame;
+- (id)_createCircleImageForContentSize:(id)size;
 - (id)imageNameForCurrentState;
 - (int64_t)orientation;
 - (void)_preferredContentSizeCategoryDidChange;
 - (void)_updateBackgroundImage;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
 - (void)updateImage;
-- (void)updateSlashAnimated:(BOOL)a3;
+- (void)updateSlashAnimated:(BOOL)animated;
 - (void)updateTintColors;
 @end
 
 @implementation CAMCircleButton
 
-- (CAMCircleButton)initWithFrame:(CGRect)a3
+- (CAMCircleButton)initWithFrame:(CGRect)frame
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = CAMCircleButton;
-  v3 = [(CAMCircleButton *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMCircleButton *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -40,10 +40,10 @@
     [(CAMSlashContainer *)v3->__slashView setContentView:v3->__imageView];
     if ([(CAMCircleButton *)v3 useThinMaterialBackground])
     {
-      v11 = [MEMORY[0x1E69DD250] thinMaterialView];
+      thinMaterialView = [MEMORY[0x1E69DD250] thinMaterialView];
       p_backgroundView = &v3->__materialEffectBackgroundView;
       materialEffectBackgroundView = v3->__materialEffectBackgroundView;
-      v3->__materialEffectBackgroundView = v11;
+      v3->__materialEffectBackgroundView = thinMaterialView;
 
       [(UIView *)v3->__materialEffectBackgroundView setClipsToBounds:1];
       [(UIView *)v3->__materialEffectBackgroundView setUserInteractionEnabled:0];
@@ -69,8 +69,8 @@
   [(CAMCircleButton *)&v26 layoutSubviews];
   [(CAMCircleButton *)self bounds];
   UIRectGetCenter();
-  v3 = [(CAMCircleButton *)self _backgroundView];
-  [v3 intrinsicContentSize];
+  _backgroundView = [(CAMCircleButton *)self _backgroundView];
+  [_backgroundView intrinsicContentSize];
   CEKRectWithSize();
   v5 = v4;
   UIRectCenteredAboutPointScale();
@@ -78,17 +78,17 @@
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(CAMCircleButton *)self _materialEffectBackgroundView];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  _materialEffectBackgroundView = [(CAMCircleButton *)self _materialEffectBackgroundView];
+  [_materialEffectBackgroundView setFrame:{v7, v9, v11, v13}];
 
-  v15 = [(CAMCircleButton *)self _materialEffectBackgroundView];
-  v16 = [v15 layer];
-  [v16 setCornerRadius:v5 * 0.5];
+  _materialEffectBackgroundView2 = [(CAMCircleButton *)self _materialEffectBackgroundView];
+  layer = [_materialEffectBackgroundView2 layer];
+  [layer setCornerRadius:v5 * 0.5];
 
   UIRectCenteredAboutPointScale();
-  [v3 setFrame:?];
-  v17 = [(CAMCircleButton *)self _slashView];
-  CAMViewAlignmentSize(v17);
+  [_backgroundView setFrame:?];
+  _slashView = [(CAMCircleButton *)self _slashView];
+  CAMViewAlignmentSize(_slashView);
   CEKRectWithSize();
   v19 = v18;
   v21 = v20;
@@ -96,8 +96,8 @@
   v25 = v24;
   UIRectCenteredAboutPointScale();
   UIRectGetCenter();
-  [v17 setCenter:?];
-  [v17 setBounds:{v19, v21, v23, v25}];
+  [_slashView setCenter:?];
+  [_slashView setBounds:{v19, v21, v23, v25}];
 }
 
 - (void)_preferredContentSizeCategoryDidChange
@@ -107,60 +107,60 @@
   [(CAMCircleButton *)self _updateBackgroundImage];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(CAMCircleButton *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(CAMCircleButton *)self isHighlighted];
   v8.receiver = self;
   v8.super_class = CAMCircleButton;
-  [(CAMCircleButton *)&v8 setHighlighted:v3];
-  if (v5 != v3)
+  [(CAMCircleButton *)&v8 setHighlighted:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
-    v6 = [(CAMCircleButton *)self _slashView];
-    v7 = [v6 layer];
-    [CAMAnimationHelper animateLayer:v7 forButtonHighlighted:v3 layoutStyle:3];
+    _slashView = [(CAMCircleButton *)self _slashView];
+    layer = [_slashView layer];
+    [CAMAnimationHelper animateLayer:layer forButtonHighlighted:highlightedCopy layoutStyle:3];
   }
 }
 
 - (void)_updateBackgroundImage
 {
-  v3 = [(CAMCircleButton *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  v7 = [(CAMCircleButton *)self _createCircleImageForContentSize:v4];
+  traitCollection = [(CAMCircleButton *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v7 = [(CAMCircleButton *)self _createCircleImageForContentSize:preferredContentSizeCategory];
 
   v5 = [v7 imageWithRenderingMode:2];
-  v6 = [(CAMCircleButton *)self _backgroundView];
-  [v6 setImage:v5];
+  _backgroundView = [(CAMCircleButton *)self _backgroundView];
+  [_backgroundView setImage:v5];
 
   [(CAMCircleButton *)self setNeedsLayout];
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  v4 = [(CAMCircleButton *)self _slashView];
-  [v4 setOrientation:a3];
+  _slashView = [(CAMCircleButton *)self _slashView];
+  [_slashView setOrientation:orientation];
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(CAMCircleButton *)self _slashView];
-  [v6 setOrientation:a3 animated:v4];
+  animatedCopy = animated;
+  _slashView = [(CAMCircleButton *)self _slashView];
+  [_slashView setOrientation:orientation animated:animatedCopy];
 }
 
 - (int64_t)orientation
 {
-  v2 = [(CAMCircleButton *)self _slashView];
-  v3 = [v2 orientation];
+  _slashView = [(CAMCircleButton *)self _slashView];
+  orientation = [_slashView orientation];
 
-  return v3;
+  return orientation;
 }
 
 - (void)updateImage
 {
-  v3 = [(CAMCircleButton *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = [CAMZoomButton shouldUseLargeButtonSizeForContentSize:v4];
+  traitCollection = [(CAMCircleButton *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v5 = [CAMZoomButton shouldUseLargeButtonSizeForContentSize:preferredContentSizeCategory];
 
   if (v5)
   {
@@ -173,17 +173,17 @@
   }
 
   v12 = [MEMORY[0x1E69DCAD8] configurationWithScale:v6];
-  v7 = [(CAMCircleButton *)self imageNameForCurrentState];
-  v8 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v7 withConfiguration:v12];
+  imageNameForCurrentState = [(CAMCircleButton *)self imageNameForCurrentState];
+  v8 = [MEMORY[0x1E69DCAB8] _systemImageNamed:imageNameForCurrentState withConfiguration:v12];
   if (!v8)
   {
     v9 = MEMORY[0x1E69DCAB8];
     v10 = CAMCameraUIFrameworkBundle();
-    v8 = [v9 imageNamed:v7 inBundle:v10];
+    v8 = [v9 imageNamed:imageNameForCurrentState inBundle:v10];
   }
 
-  v11 = [(CAMCircleButton *)self _imageView];
-  [v11 setImage:v8];
+  _imageView = [(CAMCircleButton *)self _imageView];
+  [_imageView setImage:v8];
 
   [(CAMCircleButton *)self setNeedsLayout];
 }
@@ -192,9 +192,9 @@
 {
   if ([(CAMCircleButton *)self shouldUseActiveTintForCurrentState])
   {
-    v3 = [MEMORY[0x1E69DC888] systemYellowColor];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
     [(CAMCircleButton *)self activeTintAlphaForCurrentState];
-    v7 = [v3 colorWithAlphaComponent:?];
+    v7 = [systemYellowColor colorWithAlphaComponent:?];
 
     [MEMORY[0x1E69DC888] blackColor];
   }
@@ -205,18 +205,18 @@
     [MEMORY[0x1E69DC888] whiteColor];
   }
   v4 = ;
-  v5 = [(CAMCircleButton *)self _backgroundView];
-  [v5 setTintColor:v7];
+  _backgroundView = [(CAMCircleButton *)self _backgroundView];
+  [_backgroundView setTintColor:v7];
 
-  v6 = [(CAMCircleButton *)self _slashView];
-  [v6 setTintColor:v4];
+  _slashView = [(CAMCircleButton *)self _slashView];
+  [_slashView setTintColor:v4];
 }
 
-- (void)updateSlashAnimated:(BOOL)a3
+- (void)updateSlashAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMCircleButton *)self _slashView];
-  [v5 setSlashed:-[CAMCircleButton shouldShowSlashForCurrentState](self animated:{"shouldShowSlashForCurrentState"), v3}];
+  animatedCopy = animated;
+  _slashView = [(CAMCircleButton *)self _slashView];
+  [_slashView setSlashed:-[CAMCircleButton shouldShowSlashForCurrentState](self animated:{"shouldShowSlashForCurrentState"), animatedCopy}];
 }
 
 - (id)imageNameForCurrentState
@@ -229,9 +229,9 @@
   return 0;
 }
 
-- (id)_createCircleImageForContentSize:(id)a3
+- (id)_createCircleImageForContentSize:(id)size
 {
-  [CAMZoomButton circleDiameterForContentSize:a3];
+  [CAMZoomButton circleDiameterForContentSize:size];
   width = v11.width;
   v11.height = v11.width;
   UIGraphicsBeginImageContextWithOptions(v11, 0, 0.0);

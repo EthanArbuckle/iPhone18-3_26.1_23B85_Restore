@@ -1,13 +1,13 @@
 @interface BSLHWatchdogTimer
 - (BOOL)hasSleepBeenImminentSinceScheduled;
 - (BOOL)isInvalidated;
-- (BSLHWatchdogTimer)initWithExplanation:(id)a3 delegate:(id)a4 provider:(id)a5;
+- (BSLHWatchdogTimer)initWithExplanation:(id)explanation delegate:(id)delegate provider:(id)provider;
 - (NSString)description;
 - (unint64_t)invalidationReason;
 - (void)dealloc;
-- (void)invalidate:(unint64_t)a3;
-- (void)scheduleWithTimeout:(double)a3;
-- (void)setSleepImminentSinceScheduled:(BOOL)a3;
+- (void)invalidate:(unint64_t)invalidate;
+- (void)scheduleWithTimeout:(double)timeout;
+- (void)setSleepImminentSinceScheduled:(BOOL)scheduled;
 - (void)timerFired;
 @end
 
@@ -15,7 +15,7 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"must be invalidated before release: %@", a1];
+  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"must be invalidated before release: %@", self];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v4 = NSStringFromSelector(a2);
@@ -35,23 +35,23 @@
   __break(0);
 }
 
-- (BSLHWatchdogTimer)initWithExplanation:(id)a3 delegate:(id)a4 provider:(id)a5
+- (BSLHWatchdogTimer)initWithExplanation:(id)explanation delegate:(id)delegate provider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  explanationCopy = explanation;
+  delegateCopy = delegate;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = BSLHWatchdogTimer;
   v11 = [(BSLHWatchdogTimer *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [explanationCopy copy];
     explanation = v11->_explanation;
     v11->_explanation = v12;
 
-    objc_storeWeak(&v11->_delegate, v9);
-    objc_storeStrong(&v11->_provider, a5);
-    v14 = [objc_alloc(MEMORY[0x277CF0B50]) initWithIdentifier:v8];
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v11->_provider, provider);
+    v14 = [objc_alloc(MEMORY[0x277CF0B50]) initWithIdentifier:explanationCopy];
     timer = v11->_timer;
     v11->_timer = v14;
 
@@ -81,12 +81,12 @@
     [v3 appendString:v5 withName:@"invalidationReason"];
   }
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (void)scheduleWithTimeout:(double)a3
+- (void)scheduleWithTimeout:(double)timeout
 {
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
@@ -94,20 +94,20 @@
     [BSLHWatchdogTimer scheduleWithTimeout:a2];
   }
 
-  self->_lock_timeout = a3;
+  self->_lock_timeout = timeout;
   BSContinuousMachTimeNow();
   self->_lock_watchdogStart = v6;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [WeakRetained osInterfaceProvider];
-  v9 = [v8 systemSleepMonitor];
-  v10 = [v9 isSleepImminent];
+  osInterfaceProvider = [WeakRetained osInterfaceProvider];
+  systemSleepMonitor = [osInterfaceProvider systemSleepMonitor];
+  isSleepImminent = [systemSleepMonitor isSleepImminent];
 
-  if (v10)
+  if (isSleepImminent)
   {
     self->_lock_sleepImminentSinceScheduled = 1;
-    v11 = [WeakRetained osInterfaceProvider];
-    v12 = [v11 systemSleepMonitor];
-    [v12 addObserver:self];
+    osInterfaceProvider2 = [WeakRetained osInterfaceProvider];
+    systemSleepMonitor2 = [osInterfaceProvider2 systemSleepMonitor];
+    [systemSleepMonitor2 addObserver:self];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -120,7 +120,7 @@
   v16[2] = __41__BSLHWatchdogTimer_scheduleWithTimeout___block_invoke;
   v16[3] = &unk_27841FDD0;
   objc_copyWeak(&v17, &location);
-  [(BSAbsoluteMachTimer *)timer scheduleWithFireInterval:v14 leewayInterval:v16 queue:a3 handler:1.0];
+  [(BSAbsoluteMachTimer *)timer scheduleWithFireInterval:v14 leewayInterval:v16 queue:timeout handler:1.0];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -152,12 +152,12 @@ void __41__BSLHWatchdogTimer_scheduleWithTimeout___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)invalidate:(unint64_t)a3
+- (void)invalidate:(unint64_t)invalidate
 {
   [(BSAbsoluteMachTimer *)self->_timer invalidate];
   os_unfair_lock_lock(&self->_lock);
   self->_lock_invalidated = 1;
-  self->_lock_invalidationReason = a3;
+  self->_lock_invalidationReason = invalidate;
   lock_timeout = self->_lock_timeout;
   BSContinuousMachTimeNow();
   v7 = v6 - self->_lock_watchdogStart;
@@ -166,7 +166,7 @@ void __41__BSLHWatchdogTimer_scheduleWithTimeout___block_invoke(uint64_t a1, voi
   provider = self->_provider;
   explanation = self->_explanation;
 
-  [(BLSHWatchdogProvider *)provider clearWatchdogWithExplanation:explanation reason:a3 timeout:lock_timeout elapsedTime:v7];
+  [(BLSHWatchdogProvider *)provider clearWatchdogWithExplanation:explanation reason:invalidate timeout:lock_timeout elapsedTime:v7];
 }
 
 - (BOOL)isInvalidated
@@ -196,26 +196,26 @@ void __41__BSLHWatchdogTimer_scheduleWithTimeout___block_invoke(uint64_t a1, voi
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained osInterfaceProvider];
-  v6 = [v5 systemSleepMonitor];
-  v7 = [v6 isSleepImminent];
+  osInterfaceProvider = [WeakRetained osInterfaceProvider];
+  systemSleepMonitor = [osInterfaceProvider systemSleepMonitor];
+  isSleepImminent = [systemSleepMonitor isSleepImminent];
 
-  return v7;
+  return isSleepImminent;
 }
 
-- (void)setSleepImminentSinceScheduled:(BOOL)a3
+- (void)setSleepImminentSinceScheduled:(BOOL)scheduled
 {
-  v3 = a3;
+  scheduledCopy = scheduled;
   os_unfair_lock_lock(&self->_lock);
   lock_sleepImminentSinceScheduled = self->_lock_sleepImminentSinceScheduled;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  self->_lock_sleepImminentSinceScheduled = v3;
+  self->_lock_sleepImminentSinceScheduled = scheduledCopy;
   os_unfair_lock_unlock(&self->_lock);
-  if (!v3 && lock_sleepImminentSinceScheduled)
+  if (!scheduledCopy && lock_sleepImminentSinceScheduled)
   {
-    v6 = [WeakRetained osInterfaceProvider];
-    v7 = [v6 systemSleepMonitor];
-    [v7 removeObserver:self];
+    osInterfaceProvider = [WeakRetained osInterfaceProvider];
+    systemSleepMonitor = [osInterfaceProvider systemSleepMonitor];
+    [systemSleepMonitor removeObserver:self];
   }
 }
 

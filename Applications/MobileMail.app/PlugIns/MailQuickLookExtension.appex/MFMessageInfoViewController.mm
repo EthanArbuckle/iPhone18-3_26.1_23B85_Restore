@@ -1,30 +1,30 @@
 @interface MFMessageInfoViewController
 + (id)log;
 - (BOOL)_shouldDisplayContact;
-- (MFMessageInfoViewController)initWithCoder:(id)a3;
-- (MFMessageInfoViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (MFMessageInfoViewController)initWithViewModel:(id)a3 contactsStore:(id)a4;
-- (MFMessageInfoViewController)initWithViewModel:(id)a3 contactsStore:(id)a4 attachmentURLs:(id)a5 richLinkURLs:(id)a6 numberOfMessagesInConversation:(int64_t)a7;
+- (MFMessageInfoViewController)initWithCoder:(id)coder;
+- (MFMessageInfoViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (MFMessageInfoViewController)initWithViewModel:(id)model contactsStore:(id)store;
+- (MFMessageInfoViewController)initWithViewModel:(id)model contactsStore:(id)store attachmentURLs:(id)ls richLinkURLs:(id)rLs numberOfMessagesInConversation:(int64_t)conversation;
 - (MFMessageInfoViewControllerDelegate)delegate;
-- (id)_URLForAttachmentURL:(id)a3;
+- (id)_URLForAttachmentURL:(id)l;
 - (id)_attachmentSectionLayout;
-- (id)_contactToDisplayForRichLink:(id)a3;
-- (id)_contactToDisplayForURL:(id)a3;
-- (id)_contactViewControllerForAddress:(id)a3;
-- (id)_dateToDisplayForURL:(id)a3;
+- (id)_contactToDisplayForRichLink:(id)link;
+- (id)_contactToDisplayForURL:(id)l;
+- (id)_contactViewControllerForAddress:(id)address;
+- (id)_dateToDisplayForURL:(id)l;
 - (id)_linkSectionLayout;
 - (id)_photoSectionLayout;
 - (id)_subjectToDisplay;
 - (id)createCollectionViewLayout;
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
-- (unint64_t)_atomTypeForEmailAddress:(id)a3;
-- (void)_generateQuickLookThumbnail:(id)a3 indexPath:(id)a4 item:(id)a5;
-- (void)_generateRichLink:(id)a3 item:(id)a4;
-- (void)_openAttachmentWithPreview:(id)a3;
-- (void)_openContactCard:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)messageViewControllerDidChooseAddress:(id)a3 contactViewController:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
+- (unint64_t)_atomTypeForEmailAddress:(id)address;
+- (void)_generateQuickLookThumbnail:(id)thumbnail indexPath:(id)path item:(id)item;
+- (void)_generateRichLink:(id)link item:(id)item;
+- (void)_openAttachmentWithPreview:(id)preview;
+- (void)_openContactCard:(id)card;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)messageViewControllerDidChooseAddress:(id)address contactViewController:(id)controller;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = sub_100012054;
   block[3] = &unk_1000348C8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10003DF80 != -1)
   {
     dispatch_once(&qword_10003DF80, block);
@@ -47,55 +47,55 @@
   return v2;
 }
 
-- (MFMessageInfoViewController)initWithCoder:(id)a3
+- (MFMessageInfoViewController)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   [(MFMessageInfoViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MFMessageInfoViewController initWithCoder:]", "MFMessageInfoViewController.m", 104, "0");
 }
 
-- (MFMessageInfoViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MFMessageInfoViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   [(MFMessageInfoViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MFMessageInfoViewController initWithNibName:bundle:]", "MFMessageInfoViewController.m", 105, "0");
 }
 
-- (MFMessageInfoViewController)initWithViewModel:(id)a3 contactsStore:(id)a4
+- (MFMessageInfoViewController)initWithViewModel:(id)model contactsStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = MFMessageInfoViewController;
   v9 = [(MFMessageInfoViewController *)&v12 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_viewModel, a3);
-    objc_storeStrong(&v10->_contactStore, a4);
+    objc_storeStrong(&v9->_viewModel, model);
+    objc_storeStrong(&v10->_contactStore, store);
   }
 
   return v10;
 }
 
-- (MFMessageInfoViewController)initWithViewModel:(id)a3 contactsStore:(id)a4 attachmentURLs:(id)a5 richLinkURLs:(id)a6 numberOfMessagesInConversation:(int64_t)a7
+- (MFMessageInfoViewController)initWithViewModel:(id)model contactsStore:(id)store attachmentURLs:(id)ls richLinkURLs:(id)rLs numberOfMessagesInConversation:(int64_t)conversation
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  modelCopy = model;
+  storeCopy = store;
+  lsCopy = ls;
+  rLsCopy = rLs;
   v20.receiver = self;
   v20.super_class = MFMessageInfoViewController;
   v17 = [(MFMessageInfoViewController *)&v20 initWithNibName:0 bundle:0];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_viewModel, a3);
-    objc_storeStrong(&v18->_contactStore, a4);
-    v18->_numberOfMessagesInConversation = a7;
-    objc_storeStrong(&v18->_conversationAttachmentURLs, a5);
-    objc_storeStrong(&v18->_richLinkURLs, a6);
+    objc_storeStrong(&v17->_viewModel, model);
+    objc_storeStrong(&v18->_contactStore, store);
+    v18->_numberOfMessagesInConversation = conversation;
+    objc_storeStrong(&v18->_conversationAttachmentURLs, ls);
+    objc_storeStrong(&v18->_richLinkURLs, rLs);
   }
 
   return v18;
@@ -109,12 +109,12 @@
   v3 = _EFLocalizedString();
   [(MFMessageInfoViewController *)self setTitle:v3];
 
-  v4 = [(MFMessageInfoViewController *)self navigationItem];
-  [v4 setStyle:0];
+  navigationItem = [(MFMessageInfoViewController *)self navigationItem];
+  [navigationItem setStyle:0];
 
   v5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:24 target:self action:"_close:"];
-  v6 = [(MFMessageInfoViewController *)self navigationItem];
-  [v6 setLeftBarButtonItem:v5];
+  navigationItem2 = [(MFMessageInfoViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v5];
 
   v7 = objc_alloc_init(NSCache);
   [(MFMessageInfoViewController *)self setImageCache:v7];
@@ -125,12 +125,12 @@
   v9 = objc_alloc_init(NSDateFormatter);
   [(MFMessageInfoViewController *)self setDateFormatter:v9];
 
-  v10 = [(MFMessageInfoViewController *)self dateFormatter];
-  [v10 setDateStyle:1];
+  dateFormatter = [(MFMessageInfoViewController *)self dateFormatter];
+  [dateFormatter setDateStyle:1];
 
   v11 = [UICollectionView alloc];
-  v12 = [(MFMessageInfoViewController *)self createCollectionViewLayout];
-  v13 = [v11 initWithFrame:v12 collectionViewLayout:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+  createCollectionViewLayout = [(MFMessageInfoViewController *)self createCollectionViewLayout];
+  v13 = [v11 initWithFrame:createCollectionViewLayout collectionViewLayout:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
 
   [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
   v14 = +[UIColor systemGroupedBackgroundColor];
@@ -213,35 +213,35 @@
   sub_100013F08(self);
   for (i = 0; ; ++i)
   {
-    v22 = [(MFMessageInfoViewController *)self sections];
-    v23 = i < [v22 count];
+    sections = [(MFMessageInfoViewController *)self sections];
+    v23 = i < [sections count];
 
     if (!v23)
     {
       break;
     }
 
-    v24 = [(MFMessageInfoViewController *)self sections];
-    v25 = [v24 objectAtIndexedSubscript:i];
+    sections2 = [(MFMessageInfoViewController *)self sections];
+    v25 = [sections2 objectAtIndexedSubscript:i];
     v68 = v25;
     v26 = [NSArray arrayWithObjects:&v68 count:1];
     [v20 appendSectionsWithIdentifiers:v26];
 
-    v27 = [(MFMessageInfoViewController *)self items];
-    v28 = [v27 objectAtIndexedSubscript:i];
-    v29 = [(MFMessageInfoViewController *)self sections];
-    v30 = [v29 objectAtIndexedSubscript:i];
+    items = [(MFMessageInfoViewController *)self items];
+    v28 = [items objectAtIndexedSubscript:i];
+    sections3 = [(MFMessageInfoViewController *)self sections];
+    v30 = [sections3 objectAtIndexedSubscript:i];
     [v20 appendItemsWithIdentifiers:v28 intoSectionWithIdentifier:v30];
   }
 
   [v46 applySnapshotUsingReloadData:v20];
   [v19 setDataSource:v46];
   [v19 setDelegate:self];
-  v31 = [(MFMessageInfoViewController *)self view];
-  [v31 addSubview:v19];
+  view = [(MFMessageInfoViewController *)self view];
+  [view addSubview:v19];
 
-  v32 = [(MFMessageInfoViewController *)self view];
-  [v19 mf_pinToView:v32 usingLayoutMargins:0];
+  view2 = [(MFMessageInfoViewController *)self view];
+  [v19 mf_pinToView:view2 usingLayoutMargins:0];
 
   [(MFMessageInfoViewController *)self setCollectionView:v19];
   [(MFMessageInfoViewController *)self setDataSource:v46];
@@ -251,16 +251,16 @@
   objc_destroyWeak(&location);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = MFMessageInfoViewController;
-  [(MFMessageInfoViewController *)&v6 viewDidDisappear:a3];
-  v4 = [(MFMessageInfoViewController *)self viewDidDisappearBlock];
-  v5 = v4;
-  if (v4)
+  [(MFMessageInfoViewController *)&v6 viewDidDisappear:disappear];
+  viewDidDisappearBlock = [(MFMessageInfoViewController *)self viewDidDisappearBlock];
+  v5 = viewDidDisappearBlock;
+  if (viewDidDisappearBlock)
   {
-    (*(v4 + 16))(v4);
+    (*(viewDidDisappearBlock + 16))(viewDidDisappearBlock);
   }
 }
 
@@ -273,13 +273,13 @@
   v9 = 3221225472;
   v10 = sub_100014EA4;
   v11 = &unk_100034E20;
-  v12 = self;
+  selfCopy = self;
   v5 = v3;
   v13 = v5;
   v6 = [v4 initWithSectionProvider:&v8];
   if (_os_feature_enabled_impl())
   {
-    [v6 registerClass:objc_opt_class() forDecorationViewOfKind:{@"section-background-element-kind", v8, v9, v10, v11, v12}];
+    [v6 registerClass:objc_opt_class() forDecorationViewOfKind:{@"section-background-element-kind", v8, v9, v10, v11, selfCopy}];
   }
 
   return v6;
@@ -326,8 +326,8 @@
 - (id)_photoSectionLayout
 {
   v3 = [NSCollectionLayoutDimension fractionalWidthDimension:0.333333333];
-  v4 = [(MFMessageInfoViewController *)self view];
-  [v4 frame];
+  view = [(MFMessageInfoViewController *)self view];
+  [view frame];
   v6 = [NSCollectionLayoutDimension fractionalHeightDimension:v5 * 0.4 / 400.0];
   v7 = [NSCollectionLayoutSize sizeWithWidthDimension:v3 heightDimension:v6];
 
@@ -367,8 +367,8 @@
 - (id)_linkSectionLayout
 {
   v3 = [NSCollectionLayoutDimension fractionalWidthDimension:0.5];
-  v4 = [(MFMessageInfoViewController *)self view];
-  [v4 frame];
+  view = [(MFMessageInfoViewController *)self view];
+  [view frame];
   v6 = [NSCollectionLayoutDimension fractionalHeightDimension:v5 * 0.5 / 400.0];
   v7 = [NSCollectionLayoutSize sizeWithWidthDimension:v3 heightDimension:v6];
 
@@ -406,56 +406,56 @@
   return v14;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v28 = a4;
-  v5 = [(MFMessageInfoViewController *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v28, "section")}];
+  pathCopy = path;
+  sections = [(MFMessageInfoViewController *)self sections];
+  v6 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
   v7 = [v6 isEqual:@"Subject"];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(MFMessageInfoViewController *)self sections];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v28, "section")}];
+    sections2 = [(MFMessageInfoViewController *)self sections];
+    v9 = [sections2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
     if ([v9 isEqual:@"Documents"])
     {
     }
 
     else
     {
-      v10 = [(MFMessageInfoViewController *)self sections];
-      v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v28, "section")}];
+      sections3 = [(MFMessageInfoViewController *)self sections];
+      v11 = [sections3 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
       v12 = [v11 isEqual:@"Photos"];
 
       if (!v12)
       {
-        v18 = [(MFMessageInfoViewController *)self sections];
-        v19 = [v18 objectAtIndexedSubscript:{objc_msgSend(v28, "section")}];
+        sections4 = [(MFMessageInfoViewController *)self sections];
+        v19 = [sections4 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
         v20 = [v19 isEqual:@"Links"];
 
         if (v20)
         {
-          v21 = [(MFMessageInfoViewController *)self items];
-          v22 = [v21 objectAtIndexedSubscript:{objc_msgSend(v28, "section")}];
-          v23 = [v22 objectAtIndexedSubscript:{objc_msgSend(v28, "item")}];
-          v13 = [v23 richLink];
+          items = [(MFMessageInfoViewController *)self items];
+          v22 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+          v23 = [v22 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
+          richLink = [v23 richLink];
 
-          v14 = +[UIApplication sharedApplication];
-          [v14 openURL:v13 options:&__NSDictionary0__struct completionHandler:0];
+          delegate = +[UIApplication sharedApplication];
+          [delegate openURL:richLink options:&__NSDictionary0__struct completionHandler:0];
         }
 
         else
         {
-          v24 = [(MFMessageInfoViewController *)self items];
-          v25 = [v24 objectAtIndexedSubscript:{objc_msgSend(v28, "section")}];
-          v26 = [v25 objectAtIndexedSubscript:{objc_msgSend(v28, "item")}];
-          v13 = [v26 emailAddress];
+          items2 = [(MFMessageInfoViewController *)self items];
+          v25 = [items2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+          v26 = [v25 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
+          richLink = [v26 emailAddress];
 
-          v27 = [(MFMessageInfoViewController *)self _atomTypeForEmailAddress:v13];
-          v14 = [(MFMessageInfoViewController *)self delegate];
+          v27 = [(MFMessageInfoViewController *)self _atomTypeForEmailAddress:richLink];
+          delegate = [(MFMessageInfoViewController *)self delegate];
           if (objc_opt_respondsToSelector())
           {
-            [v14 messageInfoViewController:self didSelectAddress:v13 forAtomType:v27];
+            [delegate messageInfoViewController:self didSelectAddress:richLink forAtomType:v27];
           }
         }
 
@@ -463,24 +463,24 @@
       }
     }
 
-    v13 = [(MFMessageInfoViewController *)self items];
-    v14 = [v13 objectAtIndexedSubscript:{objc_msgSend(v28, "section")}];
-    v15 = [v14 objectAtIndexedSubscript:{objc_msgSend(v28, "item")}];
-    v16 = [v15 attachment];
-    [(MFMessageInfoViewController *)self _openAttachmentWithPreview:v16];
+    richLink = [(MFMessageInfoViewController *)self items];
+    delegate = [richLink objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+    v15 = [delegate objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
+    attachment = [v15 attachment];
+    [(MFMessageInfoViewController *)self _openAttachmentWithPreview:attachment];
 
 LABEL_6:
-    v17 = [(MFMessageInfoViewController *)self collectionView];
-    [v17 deselectItemAtIndexPath:v28 animated:0];
+    collectionView = [(MFMessageInfoViewController *)self collectionView];
+    [collectionView deselectItemAtIndexPath:pathCopy animated:0];
   }
 }
 
-- (unint64_t)_atomTypeForEmailAddress:(id)a3
+- (unint64_t)_atomTypeForEmailAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(MFMessageInfoViewController *)self viewModel];
-  v6 = [v5 senderList];
-  v7 = [v6 containsObject:v4];
+  addressCopy = address;
+  viewModel = [(MFMessageInfoViewController *)self viewModel];
+  senderList = [viewModel senderList];
+  v7 = [senderList containsObject:addressCopy];
 
   if (v7)
   {
@@ -489,9 +489,9 @@ LABEL_6:
 
   else
   {
-    v9 = [(MFMessageInfoViewController *)self viewModel];
-    v10 = [v9 replyToList];
-    v11 = [v10 containsObject:v4];
+    viewModel2 = [(MFMessageInfoViewController *)self viewModel];
+    replyToList = [viewModel2 replyToList];
+    v11 = [replyToList containsObject:addressCopy];
 
     if (v11)
     {
@@ -507,14 +507,14 @@ LABEL_6:
   return v8;
 }
 
-- (void)_generateQuickLookThumbnail:(id)a3 indexPath:(id)a4 item:(id)a5
+- (void)_generateQuickLookThumbnail:(id)thumbnail indexPath:(id)path item:(id)item
 {
-  v7 = a3;
-  v8 = a5;
+  thumbnailCopy = thumbnail;
+  itemCopy = item;
   v9 = +[QLThumbnailGenerator sharedGenerator];
   v10 = [QLThumbnailGenerationRequest alloc];
-  v11 = [v8 attachment];
-  v12 = [v11 url];
+  attachment = [itemCopy attachment];
+  v12 = [attachment url];
   v13 = +[UIScreen mainScreen];
   [v13 scale];
   v15 = [v10 initWithFileAtURL:v12 size:-1 scale:100.0 representationTypes:{100.0, v14}];
@@ -524,61 +524,61 @@ LABEL_6:
   v18[2] = sub_1000164BC;
   v18[3] = &unk_100034E70;
   v18[4] = self;
-  v16 = v8;
+  v16 = itemCopy;
   v19 = v16;
-  v17 = v7;
+  v17 = thumbnailCopy;
   v20 = v17;
   [v9 generateBestRepresentationForRequest:v15 completionHandler:v18];
 }
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
   v5 = [AttachmentPreviewItem alloc];
-  v6 = [(MFMessageInfoViewController *)self fileURL];
-  v7 = [(MFMessageInfoViewController *)self fileTitle];
-  v8 = [(AttachmentPreviewItem *)v5 initWithUrl:v6 title:v7];
+  fileURL = [(MFMessageInfoViewController *)self fileURL];
+  fileTitle = [(MFMessageInfoViewController *)self fileTitle];
+  v8 = [(AttachmentPreviewItem *)v5 initWithUrl:fileURL title:fileTitle];
 
   return v8;
 }
 
-- (void)_openAttachmentWithPreview:(id)a3
+- (void)_openAttachmentWithPreview:(id)preview
 {
-  v7 = a3;
+  previewCopy = preview;
   v4 = objc_alloc_init(QLPreviewController);
   [v4 setDataSource:self];
-  v5 = [v7 url];
+  v5 = [previewCopy url];
   [(MFMessageInfoViewController *)self setFileURL:v5];
 
-  v6 = [v7 displayName];
-  [(MFMessageInfoViewController *)self setFileTitle:v6];
+  displayName = [previewCopy displayName];
+  [(MFMessageInfoViewController *)self setFileTitle:displayName];
 
   [(MFMessageInfoViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)_openContactCard:(id)a3
+- (void)_openContactCard:(id)card
 {
-  v11 = [(MFMessageInfoViewController *)self _contactViewControllerForAddress:a3];
+  v11 = [(MFMessageInfoViewController *)self _contactViewControllerForAddress:card];
   if (v11)
   {
-    v4 = [(MFMessageInfoViewController *)self view];
-    [v4 frame];
+    view = [(MFMessageInfoViewController *)self view];
+    [view frame];
     v6 = v5;
-    v7 = [(MFMessageInfoViewController *)self navigationController];
-    [v7 setPreferredContentSize:{320.0, v6}];
+    navigationController = [(MFMessageInfoViewController *)self navigationController];
+    [navigationController setPreferredContentSize:{320.0, v6}];
 
-    v8 = [(MFMessageInfoViewController *)self view];
-    [v8 frame];
+    view2 = [(MFMessageInfoViewController *)self view];
+    [view2 frame];
     [v11 setPreferredContentSize:{320.0, v9}];
 
-    v10 = [(MFMessageInfoViewController *)self navigationController];
-    [v10 pushViewController:v11 animated:1];
+    navigationController2 = [(MFMessageInfoViewController *)self navigationController];
+    [navigationController2 pushViewController:v11 animated:1];
   }
 }
 
-- (id)_contactViewControllerForAddress:(id)a3
+- (id)_contactViewControllerForAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(MFMessageInfoViewController *)self contactStore];
+  addressCopy = address;
+  contactStore = [(MFMessageInfoViewController *)self contactStore];
   v6 = +[CNContactViewController descriptorForRequiredKeys];
   v7 = +[MFMessageInfoViewController log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -588,36 +588,36 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Load contact view controller using key descriptors: %@", buf, 0xCu);
   }
 
-  v8 = [v4 stringValue];
+  stringValue = [addressCopy stringValue];
   v24 = v6;
   v9 = [NSArray arrayWithObjects:&v24 count:1];
-  v10 = [v5 em_fetchContactForEmailAddress:v8 keysToFetch:v9 createIfNeeded:1];
+  v10 = [contactStore em_fetchContactForEmailAddress:stringValue keysToFetch:v9 createIfNeeded:1];
 
   if (v10)
   {
     if ([v10 hasBeenPersisted] && +[MFContactsManager isAuthorizedToUseContacts](MFContactsManager, "isAuthorizedToUseContacts"))
     {
       v11 = [CNContactViewController viewControllerForContact:v10];
-      v12 = [v4 emailAddressValue];
-      if (v12)
+      emailAddressValue = [addressCopy emailAddressValue];
+      if (emailAddressValue)
       {
-        v13 = [v10 emailAddresses];
+        emailAddresses = [v10 emailAddresses];
         v20[0] = _NSConcreteStackBlock;
         v20[1] = 3221225472;
         v20[2] = sub_100016EC4;
         v20[3] = &unk_100034E98;
-        v21 = v12;
-        v14 = [v13 ef_firstObjectPassingTest:v20];
+        v21 = emailAddressValue;
+        v14 = [emailAddresses ef_firstObjectPassingTest:v20];
 
-        v15 = [v14 identifier];
+        identifier = [v14 identifier];
       }
 
       else
       {
-        v15 = 0;
+        identifier = 0;
       }
 
-      [v11 highlightPropertyWithKey:CNContactEmailAddressesKey identifier:v15];
+      [v11 highlightPropertyWithKey:CNContactEmailAddressesKey identifier:identifier];
 
       v16 = v11;
     }
@@ -632,7 +632,7 @@ LABEL_6:
       [v16 setActions:{objc_msgSend(v16, "actions") & 0xFFFFFFFFFFFFFFDFLL}];
     }
 
-    [v16 setContactStore:v5];
+    [v16 setContactStore:contactStore];
   }
 
   else
@@ -640,8 +640,8 @@ LABEL_6:
     v17 = +[MFMessageInfoViewController log];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v4 stringValue];
-      sub_10001AD9C(v18, v6, buf, v17);
+      stringValue2 = [addressCopy stringValue];
+      sub_10001AD9C(stringValue2, v6, buf, v17);
     }
 
     v16 = 0;
@@ -650,40 +650,40 @@ LABEL_6:
   return v16;
 }
 
-- (void)_generateRichLink:(id)a3 item:(id)a4
+- (void)_generateRichLink:(id)link item:(id)item
 {
-  v31 = a3;
-  v6 = a4;
-  v7 = [(MFMessageInfoViewController *)self richLinkCache];
-  v8 = [v6 richLink];
-  v9 = [v7 objectForKey:v8];
+  linkCopy = link;
+  itemCopy = item;
+  richLinkCache = [(MFMessageInfoViewController *)self richLinkCache];
+  richLink = [itemCopy richLink];
+  v9 = [richLinkCache objectForKey:richLink];
 
   if (!v9)
   {
     v10 = objc_alloc_init(LPLinkMetadata);
-    v11 = [v6 richLink];
-    v12 = [v11 absoluteString];
-    [v10 setTitle:v12];
+    richLink2 = [itemCopy richLink];
+    absoluteString = [richLink2 absoluteString];
+    [v10 setTitle:absoluteString];
 
-    v13 = [v6 richLink];
-    [v10 setURL:v13];
+    richLink3 = [itemCopy richLink];
+    [v10 setURL:richLink3];
 
     v14 = [UIImage systemImageNamed:MFImageGlyphSearchDefaultLink];
     v15 = [[LPImage alloc] initWithPlatformImage:v14];
     [v10 setImage:v15];
 
-    v16 = [(MFMessageInfoViewController *)self richLinkCache];
-    v17 = [v6 richLink];
-    [v16 setObject:v10 forKey:v17];
+    richLinkCache2 = [(MFMessageInfoViewController *)self richLinkCache];
+    richLink4 = [itemCopy richLink];
+    [richLinkCache2 setObject:v10 forKey:richLink4];
   }
 
   v18 = [LPLinkView alloc];
-  v19 = [v6 richLink];
-  v20 = [v18 initWithURL:v19];
+  richLink5 = [itemCopy richLink];
+  v20 = [v18 initWithURL:richLink5];
 
-  v21 = [(MFMessageInfoViewController *)self richLinkCache];
-  v22 = [v6 richLink];
-  v23 = [v21 objectForKey:v22];
+  richLinkCache3 = [(MFMessageInfoViewController *)self richLinkCache];
+  richLink6 = [itemCopy richLink];
+  v23 = [richLinkCache3 objectForKey:richLink6];
   [v20 setMetadata:v23];
 
   [v20 _setApplyCornerRadius:1];
@@ -692,47 +692,47 @@ LABEL_6:
   [v20 _setOverrideBackgroundColor:v24];
 
   [v20 _setDisableTapGesture:1];
-  [v31 setLinkView:v20];
-  v25 = [v31 contentView];
-  [v25 addSubview:v20];
+  [linkCopy setLinkView:v20];
+  contentView = [linkCopy contentView];
+  [contentView addSubview:v20];
 
   if ([(MFMessageInfoViewController *)self _shouldDisplayContact])
   {
-    v26 = [v31 avatarView];
-    v27 = [v6 richLink];
-    v28 = [(MFMessageInfoViewController *)self _contactToDisplayForRichLink:v27];
-    v29 = [(MFMessageInfoViewController *)self contactStore];
-    v30 = [v26 displayPersonForEmailAddress:v28 usingContactStore:v29];
+    avatarView = [linkCopy avatarView];
+    richLink7 = [itemCopy richLink];
+    v28 = [(MFMessageInfoViewController *)self _contactToDisplayForRichLink:richLink7];
+    contactStore = [(MFMessageInfoViewController *)self contactStore];
+    v30 = [avatarView displayPersonForEmailAddress:v28 usingContactStore:contactStore];
   }
 
   else
   {
-    v26 = [v31 avatarView];
-    [v26 setHidden:1];
+    avatarView = [linkCopy avatarView];
+    [avatarView setHidden:1];
   }
 
-  [v31 setNeedsLayout];
+  [linkCopy setNeedsLayout];
 }
 
-- (void)messageViewControllerDidChooseAddress:(id)a3 contactViewController:(id)a4
+- (void)messageViewControllerDidChooseAddress:(id)address contactViewController:(id)controller
 {
-  v12 = a4;
-  if (v12)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v5 = [(MFMessageInfoViewController *)self view];
-    [v5 frame];
+    view = [(MFMessageInfoViewController *)self view];
+    [view frame];
     v7 = v6;
-    v8 = [(MFMessageInfoViewController *)self navigationController];
-    [v8 setPreferredContentSize:{320.0, v7}];
+    navigationController = [(MFMessageInfoViewController *)self navigationController];
+    [navigationController setPreferredContentSize:{320.0, v7}];
 
-    v9 = [(MFMessageInfoViewController *)self view];
-    [v9 frame];
-    [v12 setPreferredContentSize:{320.0, v10}];
+    view2 = [(MFMessageInfoViewController *)self view];
+    [view2 frame];
+    [controllerCopy setPreferredContentSize:{320.0, v10}];
 
-    v11 = [(MFMessageInfoViewController *)self navigationController];
-    [v11 pushViewController:v12 animated:1];
+    navigationController2 = [(MFMessageInfoViewController *)self navigationController];
+    [navigationController2 pushViewController:controllerCopy animated:1];
 
-    [(MFMessageInfoViewController *)self setContactViewController:v12];
+    [(MFMessageInfoViewController *)self setContactViewController:controllerCopy];
   }
 }
 
@@ -743,53 +743,53 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(MFMessageInfoViewController *)self participants];
-  v4 = [v3 count] > 2;
+  participants = [(MFMessageInfoViewController *)self participants];
+  v4 = [participants count] > 2;
 
   return v4;
 }
 
-- (id)_contactToDisplayForURL:(id)a3
+- (id)_contactToDisplayForURL:(id)l
 {
-  v3 = [SYDocumentAttributes documentAttributesForFileAtURL:a3];
-  v4 = [v3 sender];
-  v5 = [v4 handle];
+  v3 = [SYDocumentAttributes documentAttributesForFileAtURL:l];
+  sender = [v3 sender];
+  handle = [sender handle];
 
-  return v5;
+  return handle;
 }
 
-- (id)_contactToDisplayForRichLink:(id)a3
+- (id)_contactToDisplayForRichLink:(id)link
 {
-  v3 = [SYDocumentAttributes documentAttributesForFileAtURL:a3];
-  v4 = [v3 sender];
-  v5 = [v4 handle];
+  v3 = [SYDocumentAttributes documentAttributesForFileAtURL:link];
+  sender = [v3 sender];
+  handle = [sender handle];
 
-  return v5;
+  return handle;
 }
 
-- (id)_dateToDisplayForURL:(id)a3
+- (id)_dateToDisplayForURL:(id)l
 {
-  v3 = [SYDocumentAttributes documentAttributesForFileAtURL:a3];
-  v4 = [v3 receivedDate];
+  v3 = [SYDocumentAttributes documentAttributesForFileAtURL:l];
+  receivedDate = [v3 receivedDate];
 
-  return v4;
+  return receivedDate;
 }
 
-- (id)_URLForAttachmentURL:(id)a3
+- (id)_URLForAttachmentURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 absoluteString];
-  v5 = [v4 rangeOfString:@"Mail/"];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  v5 = [absoluteString rangeOfString:@"Mail/"];
   v7 = v6;
 
-  v8 = [v3 absoluteString];
-  v9 = [v8 substringToIndex:&v5[v7]];
+  absoluteString2 = [lCopy absoluteString];
+  v9 = [absoluteString2 substringToIndex:&v5[v7]];
 
-  v10 = [v3 absoluteString];
-  v11 = [v10 rangeOfString:@"AttachmentData/"];
+  absoluteString3 = [lCopy absoluteString];
+  v11 = [absoluteString3 rangeOfString:@"AttachmentData/"];
 
-  v12 = [v3 absoluteString];
-  v13 = [v12 substringFromIndex:v11];
+  absoluteString4 = [lCopy absoluteString];
+  v13 = [absoluteString4 substringFromIndex:v11];
 
   v14 = [v9 stringByAppendingString:v13];
   v15 = [NSURL fileURLWithPath:v14];
@@ -801,11 +801,11 @@ LABEL_6:
 
 - (id)_subjectToDisplay
 {
-  v2 = [(MFMessageInfoViewController *)self viewModel];
-  v3 = [v2 subject];
-  v4 = [v3 subjectWithoutPrefix];
+  viewModel = [(MFMessageInfoViewController *)self viewModel];
+  subject = [viewModel subject];
+  subjectWithoutPrefix = [subject subjectWithoutPrefix];
 
-  return v4;
+  return subjectWithoutPrefix;
 }
 
 - (MFMessageInfoViewControllerDelegate)delegate

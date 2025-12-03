@@ -1,10 +1,10 @@
 @interface ICNotesInvernessClientObjc
 - (ICNotesInvernessClientObjc)init;
-- (ICNotesInvernessClientObjc)initWithContainer:(id)a3 environment:(int64_t)a4 localURLString:(id)a5;
+- (ICNotesInvernessClientObjc)initWithContainer:(id)container environment:(int64_t)environment localURLString:(id)string;
 - (NSString)localURLString;
-- (void)didCompleteInstallOrUpdateWithPreviousBuildNumber:(id)a3 previousVersion:(id)a4 currentBuildNumber:(id)a5 currentVersion:(id)a6 platformName:(id)a7 continuationToken:(id)a8 callback:(id)a9;
-- (void)runGarbageCollectorWithProgress:(id)a3 callback:(id)a4;
-- (void)sendMentionNotificationWithRecipientUserId:(id)a3 senderName:(id)a4 noteTitle:(id)a5 mentionSnippet:(id)a6 shareRecordName:(id)a7 shareOwnerUserId:(id)a8 noteRecordName:(id)a9 inlineAttachmentRecordName:(id)a10 callback:(id)a11;
+- (void)didCompleteInstallOrUpdateWithPreviousBuildNumber:(id)number previousVersion:(id)version currentBuildNumber:(id)buildNumber currentVersion:(id)currentVersion platformName:(id)name continuationToken:(id)token callback:(id)callback;
+- (void)runGarbageCollectorWithProgress:(id)progress callback:(id)callback;
+- (void)sendMentionNotificationWithRecipientUserId:(id)id senderName:(id)name noteTitle:(id)title mentionSnippet:(id)snippet shareRecordName:(id)recordName shareOwnerUserId:(id)userId noteRecordName:(id)noteRecordName inlineAttachmentRecordName:(id)self0 callback:(id)self1;
 @end
 
 @implementation ICNotesInvernessClientObjc
@@ -17,28 +17,28 @@
   return v2;
 }
 
-- (ICNotesInvernessClientObjc)initWithContainer:(id)a3 environment:(int64_t)a4 localURLString:(id)a5
+- (ICNotesInvernessClientObjc)initWithContainer:(id)container environment:(int64_t)environment localURLString:(id)string
 {
   v8 = sub_2150A4AD0();
-  *(self + OBJC_IVAR___ICNotesInvernessClientObjc_container) = a3;
-  *(self + OBJC_IVAR___ICNotesInvernessClientObjc_environment) = a4;
+  *(self + OBJC_IVAR___ICNotesInvernessClientObjc_container) = container;
+  *(self + OBJC_IVAR___ICNotesInvernessClientObjc_environment) = environment;
   v9 = (self + OBJC_IVAR___ICNotesInvernessClientObjc_localURLString);
   *v9 = v8;
   v9[1] = v10;
   v13.receiver = self;
   v13.super_class = type metadata accessor for NotesInvernessClient();
-  v11 = a3;
+  containerCopy = container;
   return [(ICNotesInvernessClientObjc *)&v13 init];
 }
 
-- (void)sendMentionNotificationWithRecipientUserId:(id)a3 senderName:(id)a4 noteTitle:(id)a5 mentionSnippet:(id)a6 shareRecordName:(id)a7 shareOwnerUserId:(id)a8 noteRecordName:(id)a9 inlineAttachmentRecordName:(id)a10 callback:(id)a11
+- (void)sendMentionNotificationWithRecipientUserId:(id)id senderName:(id)name noteTitle:(id)title mentionSnippet:(id)snippet shareRecordName:(id)recordName shareOwnerUserId:(id)userId noteRecordName:(id)noteRecordName inlineAttachmentRecordName:(id)self0 callback:(id)self1
 {
-  v48 = self;
-  v45 = a10;
+  selfCopy = self;
+  attachmentRecordNameCopy = attachmentRecordName;
   v46 = type metadata accessor for MentionNotificationRequestV2(0);
   MEMORY[0x28223BE20](v46);
   v47 = &v33 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v44 = _Block_copy(a11);
+  v44 = _Block_copy(callback);
   v42 = sub_2150A4AD0();
   v13 = v12;
   v39 = sub_2150A4AD0();
@@ -58,7 +58,7 @@
   v25 = v24;
   v26 = sub_2150A4AD0();
   v28 = v27;
-  v45 = v27;
+  attachmentRecordNameCopy = v27;
   v29 = swift_allocObject();
   *(v29 + 16) = v44;
   v49 = v42;
@@ -78,7 +78,7 @@
   v63 = v26;
   v64 = v28;
   sub_215007384(&qword_27CA432C8, type metadata accessor for MentionNotificationRequestV2);
-  v30 = v48;
+  v30 = selfCopy;
   v31 = v47;
   sub_2150A3DB0();
 
@@ -92,13 +92,13 @@
   sub_215008A3C(v31, type metadata accessor for MentionNotificationRequestV2);
 }
 
-- (void)didCompleteInstallOrUpdateWithPreviousBuildNumber:(id)a3 previousVersion:(id)a4 currentBuildNumber:(id)a5 currentVersion:(id)a6 platformName:(id)a7 continuationToken:(id)a8 callback:(id)a9
+- (void)didCompleteInstallOrUpdateWithPreviousBuildNumber:(id)number previousVersion:(id)version currentBuildNumber:(id)buildNumber currentVersion:(id)currentVersion platformName:(id)name continuationToken:(id)token callback:(id)callback
 {
-  v37 = self;
+  selfCopy = self;
   updated = type metadata accessor for DidCompleteInstallOrUpdateRequest(0);
   MEMORY[0x28223BE20](updated);
   v39 = &v32 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v35 = _Block_copy(a9);
+  v35 = _Block_copy(callback);
   v34 = sub_2150A4AD0();
   v12 = v11;
   v33 = sub_2150A4AD0();
@@ -109,10 +109,10 @@
   v19 = v18;
   v20 = sub_2150A4AD0();
   v22 = v21;
-  v23 = a8;
-  v36 = v37;
+  tokenCopy = token;
+  v36 = selfCopy;
   v24 = sub_2150A37B0();
-  v37 = v24;
+  selfCopy = v24;
   v26 = v25;
 
   v27 = swift_allocObject();
@@ -142,17 +142,17 @@
 
   sub_214FC9984(v29);
 
-  sub_214F7EDE4(v37, v26);
+  sub_214F7EDE4(selfCopy, v26);
   sub_215008A3C(v29, type metadata accessor for DidCompleteInstallOrUpdateRequest);
 }
 
-- (void)runGarbageCollectorWithProgress:(id)a3 callback:(id)a4
+- (void)runGarbageCollectorWithProgress:(id)progress callback:(id)callback
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(callback);
   _Block_copy(v6);
-  v8 = a3;
-  v7 = self;
-  sub_2150085D4(a3, 0, 0xF000000000000000, v7, v6);
+  progressCopy = progress;
+  selfCopy = self;
+  sub_2150085D4(progress, 0, 0xF000000000000000, selfCopy, v6);
   _Block_release(v6);
 
   _Block_release(v6);

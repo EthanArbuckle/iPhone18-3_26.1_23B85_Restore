@@ -1,10 +1,10 @@
 @interface PKDashboardSearchSeeAllHeaderItemPresenter
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKDashboardSearchSeeAllHeaderItemPresenter)init;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)_updateCell:(id)a3 withHeaderItem:(id)a4;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
+- (void)_updateCell:(id)cell withHeaderItem:(id)item;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
 @end
 
 @implementation PKDashboardSearchSeeAllHeaderItemPresenter
@@ -35,24 +35,24 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(PKDashboardSearchSeeAllHeaderItemPresenter *)self _identifierForItem:v8];
-  v12 = [v10 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v9];
+  itemCopy = item;
+  pathCopy = path;
+  viewCopy = view;
+  v11 = [(PKDashboardSearchSeeAllHeaderItemPresenter *)self _identifierForItem:itemCopy];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
-  [(PKDashboardSearchSeeAllHeaderItemPresenter *)self _updateCell:v12 withHeaderItem:v8];
+  [(PKDashboardSearchSeeAllHeaderItemPresenter *)self _updateCell:v12 withHeaderItem:itemCopy];
 
   return v12;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  [(PKDashboardSearchSeeAllHeaderItemPresenter *)self _updateCell:self->_sampleCell withHeaderItem:a3, a6];
+  [(PKDashboardSearchSeeAllHeaderItemPresenter *)self _updateCell:self->_sampleCell withHeaderItem:item, path];
   +[PKDashboardCollectionViewCell defaultHorizontalInset];
-  v9 = a5 + v8 * -2.0;
+  v9 = width + v8 * -2.0;
   [(PKTransactionHistoryTransactionGroupHeaderCell *)self->_sampleCell sizeThatFits:v9, 1.79769313e308];
   v11 = v10;
   [(PKDashboardCollectionViewCell *)self->_sampleCell prepareForReuse];
@@ -63,17 +63,17 @@
   return result;
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  if (a3)
+  if (trait)
   {
-    if (a4)
+    if (toTrait)
     {
-      v7 = a4;
-      v8 = [a3 preferredContentSizeCategory];
-      v9 = [v7 preferredContentSizeCategory];
+      toTraitCopy = toTrait;
+      preferredContentSizeCategory = [trait preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
 
-      v10 = UIContentSizeCategoryCompareToCategory(v8, v9);
+      v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
       if (v10)
       {
         v11 = [PKTransactionHistoryTransactionGroupHeaderCell alloc];
@@ -85,62 +85,62 @@
   }
 }
 
-- (void)_updateCell:(id)a3 withHeaderItem:(id)a4
+- (void)_updateCell:(id)cell withHeaderItem:(id)item
 {
-  v27 = a3;
-  v5 = a4;
-  v6 = [v5 results];
-  v7 = [v6 count];
+  cellCopy = cell;
+  itemCopy = item;
+  results = [itemCopy results];
+  v7 = [results count];
 
-  v8 = [v5 query];
+  query = [itemCopy query];
 
-  v9 = [v8 type];
-  v10 = [v8 text];
-  v11 = [v10 length];
+  type = [query type];
+  text = [query text];
+  v11 = [text length];
 
   if (v11)
   {
-    v12 = [v8 text];
-    v13 = PKLocalizedString(&cfstr_SearchTextResu.isa, &stru_1F3BD5BF0.isa, v12);
+    text2 = [query text];
+    v13 = PKLocalizedString(&cfstr_SearchTextResu.isa, &stru_1F3BD5BF0.isa, text2);
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v14 = [v8 displayNameToken];
-  v15 = [v14 displayName];
-  v16 = [v15 length];
+  displayNameToken = [query displayNameToken];
+  displayName = [displayNameToken displayName];
+  v16 = [displayName length];
 
   if (v16)
   {
-    v12 = [v8 displayNameToken];
-    v17 = [v12 displayName];
-    v13 = PKLocalizedString(&cfstr_SearchTextResu.isa, &stru_1F3BD5BF0.isa, v17);
+    text2 = [query displayNameToken];
+    displayName2 = [text2 displayName];
+    v13 = PKLocalizedString(&cfstr_SearchTextResu.isa, &stru_1F3BD5BF0.isa, displayName2);
 
     goto LABEL_5;
   }
 
   v13 = PKLocalizedString(&cfstr_SearchResults.isa);
 LABEL_6:
-  [v27 setTitle:v13];
+  [cellCopy setTitle:v13];
   if (v7)
   {
     v18 = 0;
-    if (v9 > 8)
+    if (type > 8)
     {
-      if (v9 == 9)
+      if (type == 9)
       {
         PKLocalizedString(&cfstr_PaymentSetupPr.isa, &cfstr_Lu.isa, v7);
         goto LABEL_21;
       }
 
-      if (v9 == 13)
+      if (type == 13)
       {
         PKLocalizedString(&cfstr_PendingPeerPay.isa, &cfstr_Lu.isa, v7);
         goto LABEL_21;
       }
 
-      if (v9 != 14)
+      if (type != 14)
       {
         goto LABEL_23;
       }
@@ -148,15 +148,15 @@ LABEL_6:
 
     else
     {
-      if ((v9 - 1) < 2)
+      if ((type - 1) < 2)
       {
         PKLocalizedString(&cfstr_CardsCount.isa, &cfstr_Lu.isa, v7);
         goto LABEL_21;
       }
 
-      if (v9 != 3)
+      if (type != 3)
       {
-        if (v9 != 8)
+        if (type != 8)
         {
           goto LABEL_23;
         }
@@ -175,18 +175,18 @@ LABEL_6:
 LABEL_22:
   v18 = v19;
 LABEL_23:
-  [v27 setSubtitle:v18];
+  [cellCopy setSubtitle:v18];
   v20 = MEMORY[0x1E69DCAB8];
   v21 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:70.0];
   v22 = [v20 systemImageNamed:@"magnifyingglass" withConfiguration:v21];
-  v23 = [MEMORY[0x1E69DC888] whiteColor];
-  v24 = [v22 imageWithTintColor:v23];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v24 = [v22 imageWithTintColor:whiteColor];
 
-  v25 = [MEMORY[0x1E69DC888] blackColor];
-  v26 = PKUIImageWithBackgroundAndCornerRadius(v24, v25, 100.0, 100.0, 0.0);
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v26 = PKUIImageWithBackgroundAndCornerRadius(v24, blackColor, 100.0, 100.0, 0.0);
 
-  [v27 setImage:v26 animated:0];
-  [v27 setStrokeImage:1];
+  [cellCopy setImage:v26 animated:0];
+  [cellCopy setStrokeImage:1];
 }
 
 @end

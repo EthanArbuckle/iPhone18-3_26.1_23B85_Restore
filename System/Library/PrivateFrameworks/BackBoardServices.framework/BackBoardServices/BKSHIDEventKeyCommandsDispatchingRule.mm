@@ -1,40 +1,40 @@
 @interface BKSHIDEventKeyCommandsDispatchingRule
-+ (id)ruleForDispatchingKeyCommandsMatchingPredicate:(id)a3 toTargets:(id)a4;
++ (id)ruleForDispatchingKeyCommandsMatchingPredicate:(id)predicate toTargets:(id)targets;
 - (BKSHIDEventKeyCommandsDispatchingRule)init;
-- (BKSHIDEventKeyCommandsDispatchingRule)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithPredicate:(id)a3 targets:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BKSHIDEventKeyCommandsDispatchingRule)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithPredicate:(id)predicate targets:(id)targets;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventKeyCommandsDispatchingRule
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(BKSHIDEventKeyCommandsDispatchingRule *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(BKSHIDEventKeyCommandsDispatchingRule *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __79__BKSHIDEventKeyCommandsDispatchingRule_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E6F47C78;
-  v5 = v4;
+  v5 = succinctDescriptionBuilder;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = [v5 modifyBody:v9];
   v7 = v5;
 
   return v5;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKSHIDEventKeyCommandsDispatchingRule *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKSHIDEventKeyCommandsDispatchingRule *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -47,16 +47,16 @@
 
 - (id)succinctDescription
 {
-  v2 = [(BKSHIDEventKeyCommandsDispatchingRule *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKSHIDEventKeyCommandsDispatchingRule *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -64,10 +64,10 @@
   else
   {
     v5 = objc_opt_class();
-    if (v5 == objc_opt_class() && (predicate = self->_predicate, v7 = v4->_predicate, BSEqualObjects()))
+    if (v5 == objc_opt_class() && (predicate = self->_predicate, v7 = equalCopy->_predicate, BSEqualObjects()))
     {
       targets = self->_targets;
-      v9 = v4->_targets;
+      v9 = equalCopy->_targets;
       v10 = BSEqualObjects();
     }
 
@@ -80,25 +80,25 @@
   return v10;
 }
 
-- (BKSHIDEventKeyCommandsDispatchingRule)initWithCoder:(id)a3
+- (BKSHIDEventKeyCommandsDispatchingRule)initWithCoder:(id)coder
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v13 forKey:@"targets"];
+    v9 = [coderCopy decodeObjectOfClasses:v13 forKey:@"targets"];
 
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       if (![v9 bs_containsObjectPassingTest:&__block_literal_global_29])
       {
         self = [(BKSHIDEventKeyCommandsDispatchingRule *)self _initWithPredicate:v8 targets:v9];
-        v22 = self;
+        selfCopy = self;
         goto LABEL_10;
       }
 
@@ -126,7 +126,7 @@
 
     v20 = [v17 dictionaryWithObjects:v18 forKeys:v19 count:1];
     v21 = [v14 errorWithDomain:v15 code:4866 userInfo:v20];
-    [v4 failWithError:v21];
+    [coderCopy failWithError:v21];
   }
 
   else
@@ -138,14 +138,14 @@
     v26 = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v10 = [v6 errorWithDomain:v7 code:4866 userInfo:v9];
-    [v4 failWithError:v10];
+    [coderCopy failWithError:v10];
   }
 
-  v22 = 0;
+  selfCopy = 0;
 LABEL_10:
 
   v23 = *MEMORY[0x1E69E9840];
-  return v22;
+  return selfCopy;
 }
 
 BOOL __55__BKSHIDEventKeyCommandsDispatchingRule_initWithCoder___block_invoke(uint64_t a1, void *a2)
@@ -157,19 +157,19 @@ BOOL __55__BKSHIDEventKeyCommandsDispatchingRule_initWithCoder___block_invoke(ui
   return (isKindOfClass & 1) == 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   predicate = self->_predicate;
-  v5 = a3;
-  [v5 encodeObject:predicate forKey:@"predicate"];
-  [v5 encodeObject:self->_targets forKey:@"targets"];
+  coderCopy = coder;
+  [coderCopy encodeObject:predicate forKey:@"predicate"];
+  [coderCopy encodeObject:self->_targets forKey:@"targets"];
 }
 
-- (id)_initWithPredicate:(id)a3 targets:(id)a4
+- (id)_initWithPredicate:(id)predicate targets:(id)targets
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  predicateCopy = predicate;
+  targetsCopy = targets;
   v9 = objc_opt_class();
   if (v9 != objc_opt_class())
   {
@@ -184,7 +184,7 @@ BOOL __55__BKSHIDEventKeyCommandsDispatchingRule_initWithCoder___block_invoke(ui
       v24 = 2114;
       v25 = v20;
       v26 = 2048;
-      v27 = self;
+      selfCopy = self;
       v28 = 2114;
       v29 = @"BKSHIDEventKeyCommandsDispatchingRule.m";
       v30 = 1024;
@@ -205,11 +205,11 @@ BOOL __55__BKSHIDEventKeyCommandsDispatchingRule_initWithCoder___block_invoke(ui
   v10 = [(BKSHIDEventKeyCommandsDispatchingRule *)&v21 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [predicateCopy copy];
     predicate = v10->_predicate;
     v10->_predicate = v11;
 
-    v13 = [v8 copy];
+    v13 = [targetsCopy copy];
     targets = v10->_targets;
     v10->_targets = v13;
   }
@@ -231,7 +231,7 @@ BOOL __55__BKSHIDEventKeyCommandsDispatchingRule_initWithCoder___block_invoke(ui
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventKeyCommandsDispatchingRule.m";
     v17 = 1024;
@@ -247,12 +247,12 @@ BOOL __55__BKSHIDEventKeyCommandsDispatchingRule_initWithCoder___block_invoke(ui
   return result;
 }
 
-+ (id)ruleForDispatchingKeyCommandsMatchingPredicate:(id)a3 toTargets:(id)a4
++ (id)ruleForDispatchingKeyCommandsMatchingPredicate:(id)predicate toTargets:(id)targets
 {
   v64 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  predicateCopy = predicate;
+  targetsCopy = targets;
+  v9 = predicateCopy;
   if (!v9)
   {
     v16 = MEMORY[0x1E696AEC0];
@@ -270,7 +270,7 @@ BOOL __55__BKSHIDEventKeyCommandsDispatchingRule_initWithCoder___block_invoke(ui
       v54 = 2114;
       v55 = v22;
       v56 = 2048;
-      v57 = a1;
+      selfCopy5 = self;
       v58 = 2114;
       v59 = @"BKSHIDEventKeyCommandsDispatchingRule.m";
       v60 = 1024;
@@ -291,13 +291,13 @@ BOOL __55__BKSHIDEventKeyCommandsDispatchingRule_initWithCoder___block_invoke(ui
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v23 = MEMORY[0x1E696AEC0];
-    v24 = [v10 classForCoder];
-    if (!v24)
+    classForCoder = [v10 classForCoder];
+    if (!classForCoder)
     {
-      v24 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v25 = NSStringFromClass(v24);
+    v25 = NSStringFromClass(classForCoder);
     v26 = objc_opt_class();
     v27 = NSStringFromClass(v26);
     v28 = [v23 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"predicate", v25, v27];
@@ -312,7 +312,7 @@ BOOL __55__BKSHIDEventKeyCommandsDispatchingRule_initWithCoder___block_invoke(ui
       v54 = 2114;
       v55 = v31;
       v56 = 2048;
-      v57 = a1;
+      selfCopy5 = self;
       v58 = 2114;
       v59 = @"BKSHIDEventKeyCommandsDispatchingRule.m";
       v60 = 1024;
@@ -328,7 +328,7 @@ BOOL __55__BKSHIDEventKeyCommandsDispatchingRule_initWithCoder___block_invoke(ui
     JUMPOUT(0x1863793CCLL);
   }
 
-  v11 = v8;
+  v11 = targetsCopy;
   if (!v11)
   {
     v32 = MEMORY[0x1E696AEC0];
@@ -346,7 +346,7 @@ BOOL __55__BKSHIDEventKeyCommandsDispatchingRule_initWithCoder___block_invoke(ui
       v54 = 2114;
       v55 = v38;
       v56 = 2048;
-      v57 = a1;
+      selfCopy5 = self;
       v58 = 2114;
       v59 = @"BKSHIDEventKeyCommandsDispatchingRule.m";
       v60 = 1024;
@@ -367,13 +367,13 @@ BOOL __55__BKSHIDEventKeyCommandsDispatchingRule_initWithCoder___block_invoke(ui
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v39 = MEMORY[0x1E696AEC0];
-    v40 = [v12 classForCoder];
-    if (!v40)
+    classForCoder2 = [v12 classForCoder];
+    if (!classForCoder2)
     {
-      v40 = objc_opt_class();
+      classForCoder2 = objc_opt_class();
     }
 
-    v41 = NSStringFromClass(v40);
+    v41 = NSStringFromClass(classForCoder2);
     v42 = objc_opt_class();
     v43 = NSStringFromClass(v42);
     v44 = [v39 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"targets", v41, v43];
@@ -388,7 +388,7 @@ BOOL __55__BKSHIDEventKeyCommandsDispatchingRule_initWithCoder___block_invoke(ui
       v54 = 2114;
       v55 = v47;
       v56 = 2048;
-      v57 = a1;
+      selfCopy5 = self;
       v58 = 2114;
       v59 = @"BKSHIDEventKeyCommandsDispatchingRule.m";
       v60 = 1024;
@@ -417,7 +417,7 @@ BOOL __55__BKSHIDEventKeyCommandsDispatchingRule_initWithCoder___block_invoke(ui
       v54 = 2114;
       v55 = v51;
       v56 = 2048;
-      v57 = a1;
+      selfCopy5 = self;
       v58 = 2114;
       v59 = @"BKSHIDEventKeyCommandsDispatchingRule.m";
       v60 = 1024;

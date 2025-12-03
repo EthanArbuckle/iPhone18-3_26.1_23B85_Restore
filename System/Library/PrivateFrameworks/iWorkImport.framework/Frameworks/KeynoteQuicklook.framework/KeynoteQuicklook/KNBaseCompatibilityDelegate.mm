@@ -1,20 +1,20 @@
 @interface KNBaseCompatibilityDelegate
-- (BOOL)isSageDocumentType:(id)a3;
+- (BOOL)isSageDocumentType:(id)type;
 - (Class)exportOptionsControllerClass;
-- (Class)exporterClassForType:(id)a3 options:(id)a4;
-- (Class)pdfExporterClassForOptions:(id)a3;
-- (id)backwardsCompatibleTypeForType:(id)a3;
+- (Class)exporterClassForType:(id)type options:(id)options;
+- (Class)pdfExporterClassForOptions:(id)options;
+- (id)backwardsCompatibleTypeForType:(id)type;
 - (id)exportableTypes;
-- (id)newExportableDocumentTypesForFlag:(unint64_t)a3;
+- (id)newExportableDocumentTypesForFlag:(unint64_t)flag;
 @end
 
 @implementation KNBaseCompatibilityDelegate
 
-- (id)newExportableDocumentTypesForFlag:(unint64_t)a3
+- (id)newExportableDocumentTypesForFlag:(unint64_t)flag
 {
-  v3 = a3;
+  flagCopy = flag;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v3)
+  if (flagCopy)
   {
     v18 = objc_msgSend_tsa_sharedPropertiesProvider(MEMORY[0x277D7FF90], v4, v5);
     v19 = MEMORY[0x277D7FFB0];
@@ -23,10 +23,10 @@
     v27 = objc_msgSend_exportableTypeWithType_localizedName_exportProgressMessage_(v19, v26, v22, v25, 0);
     objc_msgSend_addObject_(v6, v28, v27);
 
-    if ((v3 & 4) == 0)
+    if ((flagCopy & 4) == 0)
     {
 LABEL_3:
-      if ((v3 & 8) == 0)
+      if ((flagCopy & 8) == 0)
       {
         goto LABEL_4;
       }
@@ -35,7 +35,7 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 4) == 0)
+  else if ((flagCopy & 4) == 0)
   {
     goto LABEL_3;
   }
@@ -49,10 +49,10 @@ LABEL_3:
   v38 = objc_msgSend_exportableTypeWithType_localizedName_exportProgressMessage_(v29, v37, v30, v33, v36);
   objc_msgSend_addObject_(v6, v39, v38);
 
-  if ((v3 & 8) == 0)
+  if ((flagCopy & 8) == 0)
   {
 LABEL_4:
-    if ((v3 & 0x10) == 0)
+    if ((flagCopy & 0x10) == 0)
     {
       goto LABEL_5;
     }
@@ -69,10 +69,10 @@ LABEL_14:
   v48 = objc_msgSend_exportableTypeWithType_localizedName_exportProgressMessage_(v40, v47, @"org.openxmlformats.presentationml.presentation", v43, v46);
   objc_msgSend_addObject_(v6, v49, v48);
 
-  if ((v3 & 0x10) == 0)
+  if ((flagCopy & 0x10) == 0)
   {
 LABEL_5:
-    if ((v3 & 0x100) == 0)
+    if ((flagCopy & 0x100) == 0)
     {
       goto LABEL_6;
     }
@@ -90,10 +90,10 @@ LABEL_15:
   v59 = objc_msgSend_exportableTypeWithType_localizedName_exportProgressMessage_(v50, v58, v51, v54, v57);
   objc_msgSend_addObject_(v6, v60, v59);
 
-  if ((v3 & 0x100) == 0)
+  if ((flagCopy & 0x100) == 0)
   {
 LABEL_6:
-    if ((v3 & 0x40) == 0)
+    if ((flagCopy & 0x40) == 0)
     {
       goto LABEL_7;
     }
@@ -111,10 +111,10 @@ LABEL_16:
   v70 = objc_msgSend_exportableTypeWithType_localizedName_exportProgressMessage_(v61, v69, v62, v65, v68);
   objc_msgSend_addObject_(v6, v71, v70);
 
-  if ((v3 & 0x40) == 0)
+  if ((flagCopy & 0x40) == 0)
   {
 LABEL_7:
-    if ((v3 & 0x20) == 0)
+    if ((flagCopy & 0x20) == 0)
     {
       goto LABEL_8;
     }
@@ -132,10 +132,10 @@ LABEL_17:
   v81 = objc_msgSend_exportableTypeWithType_localizedName_exportProgressMessage_(v72, v80, v73, v76, v79);
   objc_msgSend_addObject_(v6, v82, v81);
 
-  if ((v3 & 0x20) == 0)
+  if ((flagCopy & 0x20) == 0)
   {
 LABEL_8:
-    if ((v3 & 2) == 0)
+    if ((flagCopy & 2) == 0)
     {
       goto LABEL_9;
     }
@@ -149,7 +149,7 @@ LABEL_19:
     v101 = objc_msgSend_exportableTypeWithType_localizedName_exportProgressMessage_(v93, v100, @"com.apple.iwork.keynote.sffkey", v96, v99);
     objc_msgSend_addObject_(v6, v102, v101);
 
-    if ((v3 & 0x80) == 0)
+    if ((flagCopy & 0x80) == 0)
     {
       return v6;
     }
@@ -166,13 +166,13 @@ LABEL_18:
   v91 = objc_msgSend_exportableTypeWithType_localizedName_exportProgressMessage_(v83, v90, @"com.apple.iwork.keynote.kpf-html", v86, v89);
   objc_msgSend_addObject_(v6, v92, v91);
 
-  if ((v3 & 2) != 0)
+  if ((flagCopy & 2) != 0)
   {
     goto LABEL_19;
   }
 
 LABEL_9:
-  if ((v3 & 0x80) != 0)
+  if ((flagCopy & 0x80) != 0)
   {
 LABEL_10:
     v7 = MEMORY[0x277D7FFB0];
@@ -187,11 +187,11 @@ LABEL_10:
   return v6;
 }
 
-- (Class)exporterClassForType:(id)a3 options:(id)a4
+- (Class)exporterClassForType:(id)type options:(id)options
 {
-  v5 = a3;
-  v8 = a4;
-  if (v5 && (objc_msgSend_identifier(*MEMORY[0x277CE1E08], v6, v7), v9 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend_tsu_conformsToUTI_(v5, v10, v9), v9, v11))
+  typeCopy = type;
+  optionsCopy = options;
+  if (typeCopy && (objc_msgSend_identifier(*MEMORY[0x277CE1E08], v6, v7), v9 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend_tsu_conformsToUTI_(typeCopy, v10, v9), v9, v11))
   {
     v12 = objc_opt_class();
   }
@@ -206,9 +206,9 @@ LABEL_10:
   return v12;
 }
 
-- (Class)pdfExporterClassForOptions:(id)a3
+- (Class)pdfExporterClassForOptions:(id)options
 {
-  v3 = objc_msgSend_objectForKey_(a3, a2, @"KNPrintLayoutKey");
+  v3 = objc_msgSend_objectForKey_(options, a2, @"KNPrintLayoutKey");
   v6 = v3;
   if (!v3 || (objc_msgSend_integerValue(v3, v4, v5), (v7 = objc_opt_class()) == 0))
   {
@@ -264,22 +264,22 @@ LABEL_10:
   objc_exception_throw(v19);
 }
 
-- (BOOL)isSageDocumentType:(id)a3
+- (BOOL)isSageDocumentType:(id)type
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v9[0] = @"com.apple.iwork.keynote.key";
   v9[1] = @"com.apple.iwork.keynote.sffkey";
   v3 = MEMORY[0x277CBEA60];
-  v4 = a3;
+  typeCopy = type;
   v6 = objc_msgSend_arrayWithObjects_count_(v3, v5, v9, 2);
-  LOBYTE(v3) = objc_msgSend_tsu_conformsToAnyUTI_(v4, v7, v6);
+  LOBYTE(v3) = objc_msgSend_tsu_conformsToAnyUTI_(typeCopy, v7, v6);
 
   return v3;
 }
 
-- (id)backwardsCompatibleTypeForType:(id)a3
+- (id)backwardsCompatibleTypeForType:(id)type
 {
-  if (objc_msgSend_isEqualToString_(a3, a2, @"org.openxmlformats.presentationml.presentation"))
+  if (objc_msgSend_isEqualToString_(type, a2, @"org.openxmlformats.presentationml.presentation"))
   {
     v3 = @"com.microsoft.powerpoint.ppt";
   }

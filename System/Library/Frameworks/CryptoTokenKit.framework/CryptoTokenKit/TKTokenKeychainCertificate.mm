@@ -1,6 +1,6 @@
 @interface TKTokenKeychainCertificate
 - (TKTokenKeychainCertificate)initWithCertificate:(SecCertificateRef)certificateRef objectID:(TKTokenObjectID)objectID;
-- (TKTokenKeychainCertificate)initWithItemInfo:(id)a3;
+- (TKTokenKeychainCertificate)initWithItemInfo:(id)info;
 - (id)encodedObjectID;
 - (id)keychainAttributes;
 @end
@@ -81,49 +81,49 @@
 
 - (id)encodedObjectID
 {
-  v2 = [(TKTokenKeychainItem *)self objectID];
-  v3 = [TKTokenID encodedCertificateID:v2];
+  objectID = [(TKTokenKeychainItem *)self objectID];
+  v3 = [TKTokenID encodedCertificateID:objectID];
 
   return v3;
 }
 
-- (TKTokenKeychainCertificate)initWithItemInfo:(id)a3
+- (TKTokenKeychainCertificate)initWithItemInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v23.receiver = self;
   v23.super_class = TKTokenKeychainCertificate;
-  v5 = [(TKTokenKeychainItem *)&v23 initWithItemInfo:v4];
+  v5 = [(TKTokenKeychainItem *)&v23 initWithItemInfo:infoCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:*MEMORY[0x1E697B3C0]];
+    v6 = [infoCopy objectForKey:*MEMORY[0x1E697B3C0]];
     data = v5->_data;
     v5->_data = v6;
 
-    v8 = [v4 objectForKey:*MEMORY[0x1E697ACC0]];
+    v8 = [infoCopy objectForKey:*MEMORY[0x1E697ACC0]];
     certificateType = v5->_certificateType;
     v5->_certificateType = v8;
 
-    v10 = [v4 objectForKey:*MEMORY[0x1E697ACB8]];
+    v10 = [infoCopy objectForKey:*MEMORY[0x1E697ACB8]];
     certificateEncoding = v5->_certificateEncoding;
     v5->_certificateEncoding = v10;
 
-    v12 = [v4 objectForKey:*MEMORY[0x1E697AE98]];
+    v12 = [infoCopy objectForKey:*MEMORY[0x1E697AE98]];
     subject = v5->_subject;
     v5->_subject = v12;
 
-    v14 = [v4 objectForKey:*MEMORY[0x1E697AD28]];
+    v14 = [infoCopy objectForKey:*MEMORY[0x1E697AD28]];
     issuer = v5->_issuer;
     v5->_issuer = v14;
 
-    v16 = [v4 objectForKey:*MEMORY[0x1E697AE78]];
+    v16 = [infoCopy objectForKey:*MEMORY[0x1E697AE78]];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v16;
 
-    v18 = [v4 objectForKey:*MEMORY[0x1E697AEA0]];
+    v18 = [infoCopy objectForKey:*MEMORY[0x1E697AEA0]];
     subjectKeyID = v5->_subjectKeyID;
     v5->_subjectKeyID = v18;
 
-    v20 = [v4 objectForKey:*MEMORY[0x1E697AE60]];
+    v20 = [infoCopy objectForKey:*MEMORY[0x1E697AE60]];
     publicKeyHash = v5->_publicKeyHash;
     v5->_publicKeyHash = v20;
   }
@@ -135,33 +135,33 @@
 {
   v13.receiver = self;
   v13.super_class = TKTokenKeychainCertificate;
-  v3 = [(TKTokenKeychainItem *)&v13 keychainAttributes];
-  [v3 setObject:*MEMORY[0x1E697B000] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
-  v4 = [(TKTokenKeychainCertificate *)self data];
-  [v3 setObject:v4 forKeyedSubscript:*MEMORY[0x1E697B3C0]];
+  keychainAttributes = [(TKTokenKeychainItem *)&v13 keychainAttributes];
+  [keychainAttributes setObject:*MEMORY[0x1E697B000] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
+  data = [(TKTokenKeychainCertificate *)self data];
+  [keychainAttributes setObject:data forKeyedSubscript:*MEMORY[0x1E697B3C0]];
 
-  v5 = [(TKTokenKeychainCertificate *)self subject];
-  [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x1E697AE98]];
+  subject = [(TKTokenKeychainCertificate *)self subject];
+  [keychainAttributes setObject:subject forKeyedSubscript:*MEMORY[0x1E697AE98]];
 
-  v6 = [(TKTokenKeychainCertificate *)self issuer];
-  [v3 setObject:v6 forKeyedSubscript:*MEMORY[0x1E697AD28]];
+  issuer = [(TKTokenKeychainCertificate *)self issuer];
+  [keychainAttributes setObject:issuer forKeyedSubscript:*MEMORY[0x1E697AD28]];
 
-  v7 = [(TKTokenKeychainCertificate *)self serialNumber];
-  [v3 setObject:v7 forKeyedSubscript:*MEMORY[0x1E697AE78]];
+  serialNumber = [(TKTokenKeychainCertificate *)self serialNumber];
+  [keychainAttributes setObject:serialNumber forKeyedSubscript:*MEMORY[0x1E697AE78]];
 
-  v8 = [(TKTokenKeychainCertificate *)self subjectKeyID];
-  [v3 setObject:v8 forKeyedSubscript:*MEMORY[0x1E697AEA0]];
+  subjectKeyID = [(TKTokenKeychainCertificate *)self subjectKeyID];
+  [keychainAttributes setObject:subjectKeyID forKeyedSubscript:*MEMORY[0x1E697AEA0]];
 
-  v9 = [(TKTokenKeychainCertificate *)self publicKeyHash];
-  [v3 setObject:v9 forKeyedSubscript:*MEMORY[0x1E697AE60]];
+  publicKeyHash = [(TKTokenKeychainCertificate *)self publicKeyHash];
+  [keychainAttributes setObject:publicKeyHash forKeyedSubscript:*MEMORY[0x1E697AE60]];
 
-  v10 = [(TKTokenKeychainCertificate *)self certificateType];
-  [v3 setObject:v10 forKeyedSubscript:*MEMORY[0x1E697ACC0]];
+  certificateType = [(TKTokenKeychainCertificate *)self certificateType];
+  [keychainAttributes setObject:certificateType forKeyedSubscript:*MEMORY[0x1E697ACC0]];
 
-  v11 = [(TKTokenKeychainCertificate *)self certificateEncoding];
-  [v3 setObject:v11 forKeyedSubscript:*MEMORY[0x1E697ACB8]];
+  certificateEncoding = [(TKTokenKeychainCertificate *)self certificateEncoding];
+  [keychainAttributes setObject:certificateEncoding forKeyedSubscript:*MEMORY[0x1E697ACB8]];
 
-  return v3;
+  return keychainAttributes;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface PostbackDatabaseTransaction
 - (_TtC20AttributionKitDaemon27PostbackDatabaseTransaction)init;
-- (_TtC20AttributionKitDaemon27PostbackDatabaseTransaction)initWithConnection:(id)a3;
+- (_TtC20AttributionKitDaemon27PostbackDatabaseTransaction)initWithConnection:(id)connection;
 @end
 
 @implementation PostbackDatabaseTransaction
@@ -12,11 +12,11 @@
   return [(PostbackDatabaseSession *)&v3 init];
 }
 
-- (_TtC20AttributionKitDaemon27PostbackDatabaseTransaction)initWithConnection:(id)a3
+- (_TtC20AttributionKitDaemon27PostbackDatabaseTransaction)initWithConnection:(id)connection
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
-  return [(PostbackDatabaseSession *)&v5 initWithConnection:a3];
+  return [(PostbackDatabaseSession *)&v5 initWithConnection:connection];
 }
 
 @end

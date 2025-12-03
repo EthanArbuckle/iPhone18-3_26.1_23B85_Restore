@@ -1,34 +1,34 @@
 @interface PKPaymentSetupProductsSectionNearbyFactory
-+ (BOOL)_itemsContainRegionData:(id)a3;
-+ (id)_createNearbySectionFromCandidates:(id)a3;
-+ (id)_polygonFromListItem:(id)a3;
-+ (id)_regionalListItemsUsingContext:(id)a3 listItems:(id)a4;
-+ (id)_sortedItemsBasedUponProximityUsingContext:(id)a3 listItems:(id)a4;
-+ (id)generateSectionWithDefaultSortingForItems:(id)a3 withContext:(id)a4;
-+ (void)_sortExternalProducts:(id)a3 withMapping:(id)a4;
++ (BOOL)_itemsContainRegionData:(id)data;
++ (id)_createNearbySectionFromCandidates:(id)candidates;
++ (id)_polygonFromListItem:(id)item;
++ (id)_regionalListItemsUsingContext:(id)context listItems:(id)items;
++ (id)_sortedItemsBasedUponProximityUsingContext:(id)context listItems:(id)items;
++ (id)generateSectionWithDefaultSortingForItems:(id)items withContext:(id)context;
++ (void)_sortExternalProducts:(id)products withMapping:(id)mapping;
 @end
 
 @implementation PKPaymentSetupProductsSectionNearbyFactory
 
-+ (id)generateSectionWithDefaultSortingForItems:(id)a3 withContext:(id)a4
++ (id)generateSectionWithDefaultSortingForItems:(id)items withContext:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 location];
-  if (v8 && (v9 = v8, v10 = [a1 _itemsContainRegionData:v6], v9, v10))
+  itemsCopy = items;
+  contextCopy = context;
+  location = [contextCopy location];
+  if (location && (v9 = location, v10 = [self _itemsContainRegionData:itemsCopy], v9, v10))
   {
     v11 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v19 = 138412290;
-      v20 = v7;
+      v20 = contextCopy;
       _os_log_debug_impl(&dword_1BD026000, v11, OS_LOG_TYPE_DEBUG, "Nearby: Calculating nearby products for %@", &v19, 0xCu);
     }
 
     v12 = PKLocalizedString(&cfstr_Nearby.isa);
     v13 = [[PKPaymentSetupProductsSectionListSection alloc] initWithIdentifier:v12];
-    v14 = [a1 _regionalListItemsUsingContext:v7 listItems:v6];
+    v14 = [self _regionalListItemsUsingContext:contextCopy listItems:itemsCopy];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v17 = [v14 count];
@@ -37,7 +37,7 @@
       _os_log_debug_impl(&dword_1BD026000, v11, OS_LOG_TYPE_DEBUG, "Nearby: Found %lu products in user's current region", &v19, 0xCu);
     }
 
-    v15 = [a1 _sortedItemsBasedUponProximityUsingContext:v7 listItems:v14];
+    v15 = [self _sortedItemsBasedUponProximityUsingContext:contextCopy listItems:v14];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v18 = [v15 count];
@@ -57,20 +57,20 @@
   return v13;
 }
 
-+ (id)_sortedItemsBasedUponProximityUsingContext:(id)a3 listItems:(id)a4
++ (id)_sortedItemsBasedUponProximityUsingContext:(id)context listItems:(id)items
 {
   v71 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a4 pk_objectsPassingTest:&__block_literal_global_258];
+  contextCopy = context;
+  v7 = [items pk_objectsPassingTest:&__block_literal_global_258];
   v8 = [v7 pk_objectsPassingTest:&__block_literal_global_18_1];
   v9 = [v8 mutableCopy];
-  [a1 _sortContainedProducts:v9];
+  [self _sortContainedProducts:v9];
   if ([v9 count] < 3)
   {
     v46 = v8;
-    v48 = v6;
-    v11 = [v6 location];
-    [v11 coordinate];
+    v48 = contextCopy;
+    location = [contextCopy location];
+    [location coordinate];
     v13 = v12;
     v15 = v14;
 
@@ -97,9 +97,9 @@
           }
 
           v23 = *(*(&v63 + 1) + 8 * i);
-          v24 = [v23 identifier];
-          v25 = [a1 _polygonFromListItem:v23];
-          [v17 safelySetObject:v25 forKey:v24];
+          identifier = [v23 identifier];
+          v25 = [self _polygonFromListItem:v23];
+          [v17 safelySetObject:v25 forKey:identifier];
         }
 
         v20 = [v18 countByEnumeratingWithState:&v63 objects:v70 count:16];
@@ -123,7 +123,7 @@
 LABEL_28:
 
       v39 = [v52 mutableCopy];
-      [a1 _sortContainedProducts:v39];
+      [self _sortContainedProducts:v39];
       v9 = v45;
       [v45 addObjectsFromArray:v39];
       if ([v45 count] < 3)
@@ -140,18 +140,18 @@ LABEL_28:
         v41 = v40;
         v42 = [v26 pk_objectsPassingTest:v53];
         v43 = [v42 mutableCopy];
-        [a1 _sortExternalProducts:v43 withMapping:v41];
+        [self _sortExternalProducts:v43 withMapping:v41];
         [v45 addObjectsFromArray:v43];
-        v10 = [a1 _createNearbySectionFromCandidates:v45];
+        v10 = [self _createNearbySectionFromCandidates:v45];
       }
 
       else
       {
-        v10 = [a1 _createNearbySectionFromCandidates:v45];
+        v10 = [self _createNearbySectionFromCandidates:v45];
       }
 
       v7 = v47;
-      v6 = v48;
+      contextCopy = v48;
       v8 = v46;
 
       goto LABEL_32;
@@ -169,8 +169,8 @@ LABEL_12:
       }
 
       v32 = *(*(&v59 + 1) + 8 * v31);
-      v33 = [v32 identifier];
-      v34 = [v17 objectForKey:v33];
+      identifier2 = [v32 identifier];
+      v34 = [v17 objectForKey:identifier2];
 
       v58 = 0;
       if (v34)
@@ -180,10 +180,10 @@ LABEL_12:
           v35 = PKLogFacilityTypeGetObject();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
           {
-            v50 = [v32 product];
-            v49 = [v50 productIdentifier];
+            product = [v32 product];
+            productIdentifier = [product productIdentifier];
             *buf = 138412290;
-            v68 = v49;
+            v68 = productIdentifier;
             _os_log_debug_impl(&dword_1BD026000, v35, OS_LOG_TYPE_DEBUG, "Nearby: Product inside inside region - %@", buf, 0xCu);
           }
 
@@ -196,10 +196,10 @@ LABEL_12:
           v37 = PKLogFacilityTypeGetObject();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
           {
-            v51 = [v32 product];
-            v38 = [v51 productIdentifier];
+            product2 = [v32 product];
+            productIdentifier2 = [product2 productIdentifier];
             *buf = 138412290;
-            v68 = v38;
+            v68 = productIdentifier2;
             _os_log_debug_impl(&dword_1BD026000, v37, OS_LOG_TYPE_DEBUG, "Nearby: Product inside exclusionary region - %@", buf, 0xCu);
           }
 
@@ -225,7 +225,7 @@ LABEL_26:
     }
   }
 
-  v10 = [a1 _createNearbySectionFromCandidates:v9];
+  v10 = [self _createNearbySectionFromCandidates:v9];
 LABEL_32:
 
   return v10;
@@ -339,16 +339,16 @@ uint64_t __69__PKPaymentSetupProductsSectionNearbyFactory__sortContainedProducts
   return v10;
 }
 
-+ (void)_sortExternalProducts:(id)a3 withMapping:(id)a4
++ (void)_sortExternalProducts:(id)products withMapping:(id)mapping
 {
-  v5 = a4;
+  mappingCopy = mapping;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __80__PKPaymentSetupProductsSectionNearbyFactory__sortExternalProducts_withMapping___block_invoke;
   v7[3] = &unk_1E8013810;
-  v8 = v5;
-  v6 = v5;
-  [a3 sortUsingComparator:v7];
+  v8 = mappingCopy;
+  v6 = mappingCopy;
+  [products sortUsingComparator:v7];
 }
 
 uint64_t __80__PKPaymentSetupProductsSectionNearbyFactory__sortExternalProducts_withMapping___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -402,15 +402,15 @@ uint64_t __80__PKPaymentSetupProductsSectionNearbyFactory__sortExternalProducts_
   return v21;
 }
 
-+ (BOOL)_itemsContainRegionData:(id)a3
++ (BOOL)_itemsContainRegionData:(id)data
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  dataCopy = data;
+  v4 = [dataCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -420,20 +420,20 @@ uint64_t __80__PKPaymentSetupProductsSectionNearbyFactory__sortExternalProducts_
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dataCopy);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) product];
-        v8 = [v7 regionData];
+        product = [*(*(&v10 + 1) + 8 * i) product];
+        regionData = [product regionData];
 
-        if (v8)
+        if (regionData)
         {
           LOBYTE(v4) = 1;
           goto LABEL_11;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [dataCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -448,30 +448,30 @@ LABEL_11:
   return v4;
 }
 
-+ (id)_polygonFromListItem:(id)a3
++ (id)_polygonFromListItem:(id)item
 {
-  v3 = [a3 product];
-  v4 = [v3 regionData];
+  product = [item product];
+  regionData = [product regionData];
 
-  if (([v4 isPersistent] & 1) != 0 || (objc_msgSend(v4, "inclusionaryZones"), v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  if (([regionData isPersistent] & 1) != 0 || (objc_msgSend(regionData, "inclusionaryZones"), v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     v10 = 0;
   }
 
   else
   {
-    v6 = [v4 inclusionaryZones];
-    v7 = [v6 pk_arrayByApplyingBlock:&__block_literal_global_28];
+    inclusionaryZones = [regionData inclusionaryZones];
+    v7 = [inclusionaryZones pk_arrayByApplyingBlock:&__block_literal_global_28];
 
-    v8 = [v4 exclusionaryZones];
+    exclusionaryZones = [regionData exclusionaryZones];
 
-    if (v8)
+    if (exclusionaryZones)
     {
-      v9 = [v4 exclusionaryZones];
-      v8 = [v9 pk_arrayByApplyingBlock:&__block_literal_global_34];
+      exclusionaryZones2 = [regionData exclusionaryZones];
+      exclusionaryZones = [exclusionaryZones2 pk_arrayByApplyingBlock:&__block_literal_global_34];
     }
 
-    v10 = [[PKPaymentSetupProductRegionDataComplexPolygon alloc] initWithInclusionaryZones:v7 exclusionaryZones:v8];
+    v10 = [[PKPaymentSetupProductRegionDataComplexPolygon alloc] initWithInclusionaryZones:v7 exclusionaryZones:exclusionaryZones];
   }
 
   return v10;
@@ -503,12 +503,12 @@ uint64_t __67__PKPaymentSetupProductsSectionNearbyFactory__polygonFromListItem__
   return [v7 valueWithCGPoint:{v4, v6}];
 }
 
-+ (id)_createNearbySectionFromCandidates:(id)a3
++ (id)_createNearbySectionFromCandidates:(id)candidates
 {
-  v3 = a3;
-  if ([v3 count] <= 3)
+  candidatesCopy = candidates;
+  if ([candidatesCopy count] <= 3)
   {
-    v4 = [v3 count];
+    v4 = [candidatesCopy count];
   }
 
   else
@@ -516,28 +516,28 @@ uint64_t __67__PKPaymentSetupProductsSectionNearbyFactory__polygonFromListItem__
     v4 = 3;
   }
 
-  v5 = [v3 subarrayWithRange:{0, v4}];
+  v5 = [candidatesCopy subarrayWithRange:{0, v4}];
   v6 = [v5 mutableCopy];
 
   return v6;
 }
 
-+ (id)_regionalListItemsUsingContext:(id)a3 listItems:(id)a4
++ (id)_regionalListItemsUsingContext:(id)context listItems:(id)items
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 primaryRegion];
-  v8 = [v6 secondaryRegion];
+  itemsCopy = items;
+  contextCopy = context;
+  primaryRegion = [contextCopy primaryRegion];
+  secondaryRegion = [contextCopy secondaryRegion];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __87__PKPaymentSetupProductsSectionNearbyFactory__regionalListItemsUsingContext_listItems___block_invoke;
   v13[3] = &unk_1E8027028;
-  v14 = v7;
-  v15 = v8;
-  v9 = v8;
-  v10 = v7;
-  v11 = [v5 pk_objectsPassingTest:v13];
+  v14 = primaryRegion;
+  v15 = secondaryRegion;
+  v9 = secondaryRegion;
+  v10 = primaryRegion;
+  v11 = [itemsCopy pk_objectsPassingTest:v13];
 
   return v11;
 }

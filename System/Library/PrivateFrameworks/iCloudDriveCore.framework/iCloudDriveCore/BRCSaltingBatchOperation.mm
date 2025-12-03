@@ -1,19 +1,19 @@
 @interface BRCSaltingBatchOperation
-- (BRCSaltingBatchOperation)initWithParentItem:(id)a3 sessionContext:(id)a4;
+- (BRCSaltingBatchOperation)initWithParentItem:(id)item sessionContext:(id)context;
 - (id)_createStructureRecordForParentItem;
-- (id)_createStructureRecordForServerItem:(id)a3 salt:(id)a4;
-- (id)_createStructureRecordWithRecordID:(id)a3 serverItem:(id)a4;
+- (id)_createStructureRecordForServerItem:(id)item salt:(id)salt;
+- (id)_createStructureRecordWithRecordID:(id)d serverItem:(id)item;
 - (id)getOrGenerateChildBasehashSaltingKey;
-- (void)_buildRecordsWithCompletion:(id)a3;
-- (void)_createCKOperationForRecords:(id)a3 completion:(id)a4;
-- (void)_saltChildRecordFields:(id)a3 serverItem:(id)a4 basehashSalt:(id)a5;
-- (void)_sendRecordBatch:(id)a3 completion:(id)a4;
+- (void)_buildRecordsWithCompletion:(id)completion;
+- (void)_createCKOperationForRecords:(id)records completion:(id)completion;
+- (void)_saltChildRecordFields:(id)fields serverItem:(id)item basehashSalt:(id)salt;
+- (void)_sendRecordBatch:(id)batch completion:(id)completion;
 - (void)_updateRootItemInClientDB;
 - (void)_updateRootItemInServerDB;
-- (void)_updateSaltingInfoInClientDBWithRecords:(id)a3;
-- (void)_updateSaltingInfoInServerDBWithRecords:(id)a3;
-- (void)_updateServerTruthForItemID:(id)a3;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)_updateSaltingInfoInClientDBWithRecords:(id)records;
+- (void)_updateSaltingInfoInServerDBWithRecords:(id)records;
+- (void)_updateServerTruthForItemID:(id)d;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
@@ -25,8 +25,8 @@
   v3 = [(BRCClientZone *)self->_parentClientZone childBaseSaltForItemID:self->_parentItemID];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEA90] brc_generateBogusKey];
-    v5 = [v3 isEqualToData:v4];
+    brc_generateBogusKey = [MEMORY[0x277CBEA90] brc_generateBogusKey];
+    v5 = [v3 isEqualToData:brc_generateBogusKey];
 
     if (v5)
     {
@@ -37,68 +37,68 @@
       self->_parentPluginFields = v6;
     }
 
-    v8 = v3;
+    brc_generateSaltingKey = v3;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEA90] brc_generateSaltingKey];
+    brc_generateSaltingKey = [MEMORY[0x277CBEA90] brc_generateSaltingKey];
   }
 
-  v9 = v8;
+  v9 = brc_generateSaltingKey;
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (BRCSaltingBatchOperation)initWithParentItem:(id)a3 sessionContext:(id)a4
+- (BRCSaltingBatchOperation)initWithParentItem:(id)item sessionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  itemCopy = item;
+  contextCopy = context;
+  if (itemCopy)
   {
-    if ([v6 isDirectory])
+    if ([itemCopy isDirectory])
     {
-      v8 = [v6 itemID];
-      v9 = [v8 debugItemIDStringWithVerbose:1];
+      itemID = [itemCopy itemID];
+      v9 = [itemID debugItemIDStringWithVerbose:1];
       v10 = [@"metadata-salting/" stringByAppendingString:v9];
 
-      v11 = [v6 serverZone];
-      v12 = [v11 metadataSyncContext];
+      serverZone = [itemCopy serverZone];
+      metadataSyncContext = [serverZone metadataSyncContext];
       v28.receiver = self;
       v28.super_class = BRCSaltingBatchOperation;
-      v13 = [(_BRCOperation *)&v28 initWithName:v10 syncContext:v12 sessionContext:v7];
+      v13 = [(_BRCOperation *)&v28 initWithName:v10 syncContext:metadataSyncContext sessionContext:contextCopy];
 
       if (v13)
       {
-        v14 = [v6 itemID];
+        itemID2 = [itemCopy itemID];
         parentItemID = v13->_parentItemID;
-        v13->_parentItemID = v14;
+        v13->_parentItemID = itemID2;
 
         if ([(BRCItemID *)v13->_parentItemID isNonDesktopRoot])
         {
-          v16 = [v6 folderAppLibraryRootRecord];
+          folderAppLibraryRootRecord = [itemCopy folderAppLibraryRootRecord];
           appLibraryRootRecord = v13->_appLibraryRootRecord;
-          v13->_appLibraryRootRecord = v16;
+          v13->_appLibraryRootRecord = folderAppLibraryRootRecord;
         }
 
-        v18 = [v6 itemID];
-        v19 = [v6 serverZone];
-        v20 = [v18 directoryStructureRecordIDInZone:v19];
+        itemID3 = [itemCopy itemID];
+        serverZone2 = [itemCopy serverZone];
+        v20 = [itemID3 directoryStructureRecordIDInZone:serverZone2];
         parentRecordID = v13->_parentRecordID;
         v13->_parentRecordID = v20;
 
-        v22 = [v6 clientZone];
+        clientZone = [itemCopy clientZone];
         parentClientZone = v13->_parentClientZone;
-        v13->_parentClientZone = v22;
+        v13->_parentClientZone = clientZone;
 
         v24 = [BRCUserDefaults defaultsForMangledID:0];
         v13->_batchSize = [v24 enhancedDrivePrivacyBasehashSaltingBatchSize];
       }
 
       self = v13;
-      v25 = self;
+      selfCopy = self;
       goto LABEL_12;
     }
   }
@@ -115,18 +115,18 @@
     [BRCSaltingBatchOperation initWithParentItem:sessionContext:];
   }
 
-  v25 = 0;
+  selfCopy = 0;
 LABEL_12:
 
-  return v25;
+  return selfCopy;
 }
 
-- (void)_createCKOperationForRecords:(id)a3 completion:(id)a4
+- (void)_createCKOperationForRecords:(id)records completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x277CBC4A0];
-  v8 = a3;
-  v9 = [[v7 alloc] initWithRecordsToSave:v8 recordIDsToDelete:0];
+  recordsCopy = records;
+  v9 = [[v7 alloc] initWithRecordsToSave:recordsCopy recordIDsToDelete:0];
 
   [v9 setSavePolicy:0];
   [v9 setAtomic:1];
@@ -140,8 +140,8 @@ LABEL_12:
   v12 = 3221225472;
   v13 = __68__BRCSaltingBatchOperation__createCKOperationForRecords_completion___block_invoke_5;
   v14 = &unk_278503070;
-  v15 = v6;
-  v10 = v6;
+  v15 = completionCopy;
+  v10 = completionCopy;
   [v9 setModifyRecordsCompletionBlock:&v11];
   [(_BRCOperation *)self addSubOperation:v9, v11, v12, v13, v14];
 }
@@ -173,32 +173,32 @@ void __68__BRCSaltingBatchOperation__createCKOperationForRecords_completion___bl
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendRecordBatch:(id)a3 completion:(id)a4
+- (void)_sendRecordBatch:(id)batch completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  batchCopy = batch;
+  completionCopy = completion;
+  if ([batchCopy count])
   {
-    [(BRCSaltingBatchOperation *)self _createCKOperationForRecords:v6 completion:v7];
+    [(BRCSaltingBatchOperation *)self _createCKOperationForRecords:batchCopy completion:completionCopy];
   }
 
   else
   {
-    v8 = [(_BRCOperation *)self callbackQueue];
+    callbackQueue = [(_BRCOperation *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56__BRCSaltingBatchOperation__sendRecordBatch_completion___block_invoke;
     block[3] = &unk_278501520;
-    v10 = v7;
-    dispatch_async(v8, block);
+    v10 = completionCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 
-- (id)_createStructureRecordWithRecordID:(id)a3 serverItem:(id)a4
+- (id)_createStructureRecordWithRecordID:(id)d serverItem:(id)item
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isBRAlias])
+  dCopy = d;
+  itemCopy = item;
+  if ([itemCopy isBRAlias])
   {
     v7 = brc_bread_crumbs();
     v8 = brc_default_log();
@@ -212,96 +212,96 @@ void __68__BRCSaltingBatchOperation__createCKOperationForRecords_completion___bl
 
   else
   {
-    v9 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"structure" recordID:v5];
-    if ([v6 isSharedToMeTopLevelItem])
+    v9 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"structure" recordID:dCopy];
+    if ([itemCopy isSharedToMeTopLevelItem])
     {
-      v10 = [v6 asSharedItem];
-      v11 = [v10 originalSt];
-      v12 = [v11 ckInfo];
+      asSharedItem = [itemCopy asSharedItem];
+      originalSt = [asSharedItem originalSt];
+      ckInfo = [originalSt ckInfo];
     }
 
     else
     {
-      v10 = [v6 st];
-      v12 = [v10 ckInfo];
+      asSharedItem = [itemCopy st];
+      ckInfo = [asSharedItem ckInfo];
     }
 
-    [v9 serializeSystemFields:v12];
+    [v9 serializeSystemFields:ckInfo];
   }
 
   return v9;
 }
 
-- (void)_saltChildRecordFields:(id)a3 serverItem:(id)a4 basehashSalt:(id)a5
+- (void)_saltChildRecordFields:(id)fields serverItem:(id)item basehashSalt:(id)salt
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  fieldsCopy = fields;
+  itemCopy = item;
+  saltCopy = salt;
+  if (!saltCopy)
   {
     [BRCSaltingBatchOperation _saltChildRecordFields:serverItem:basehashSalt:];
   }
 
   if ([(BRCItemID *)self->_parentItemID isNonDesktopRoot])
   {
-    v11 = [(BRCSessionContext *)self->super._sessionContext zoneAppRetriever];
-    v12 = [(BRCItemID *)self->_parentItemID appLibraryRowID];
-    v13 = [v11 appLibraryByRowID:v12];
-    v14 = [v13 isCloudDocsAppLibrary];
+    zoneAppRetriever = [(BRCSessionContext *)self->super._sessionContext zoneAppRetriever];
+    appLibraryRowID = [(BRCItemID *)self->_parentItemID appLibraryRowID];
+    v13 = [zoneAppRetriever appLibraryByRowID:appLibraryRowID];
+    isCloudDocsAppLibrary = [v13 isCloudDocsAppLibrary];
   }
 
   else
   {
-    v14 = 0;
+    isCloudDocsAppLibrary = 0;
   }
 
-  v15 = [(BRCItemID *)self->_parentItemID isDocumentsFolder];
-  v16 = [v9 st];
-  v17 = [v16 logicalName];
+  isDocumentsFolder = [(BRCItemID *)self->_parentItemID isDocumentsFolder];
+  v16 = [itemCopy st];
+  logicalName = [v16 logicalName];
 
-  [v8 serializeFilename:v17 forCreation:0 basehashSalt:v10 parentIDIsCloudDocsRoot:v14 parentIDIsDocumentsFolder:v15];
+  [fieldsCopy serializeFilename:logicalName forCreation:0 basehashSalt:saltCopy parentIDIsCloudDocsRoot:isCloudDocsAppLibrary parentIDIsDocumentsFolder:isDocumentsFolder];
   v29 = 0;
-  v18 = [v17 br_stringByDeletingPathBounceNo:0 andPathExtension:&v29];
+  v18 = [logicalName br_stringByDeletingPathBounceNo:0 andPathExtension:&v29];
   v19 = v29;
   v30 = @"br_saltingUpdate";
-  v20 = [v18 brc_SHA256];
-  v31[0] = v20;
+  brc_SHA256 = [v18 brc_SHA256];
+  v31[0] = brc_SHA256;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
-  [v8 setPluginFields:v21];
+  [fieldsCopy setPluginFields:v21];
 
-  v22 = [v9 st];
-  [v8 seralizeBirthtime:{objc_msgSend(v22, "birthtime")}];
+  v22 = [itemCopy st];
+  [fieldsCopy seralizeBirthtime:{objc_msgSend(v22, "birthtime")}];
 
-  v23 = [v9 st];
-  v24 = [v23 logicalName];
-  [v8 serializeSpecialIdentityForFilename:v24 parentIDIsCloudDocsRoot:v14 parentIDisDocumentsFolder:v15];
+  v23 = [itemCopy st];
+  logicalName2 = [v23 logicalName];
+  [fieldsCopy serializeSpecialIdentityForFilename:logicalName2 parentIDIsCloudDocsRoot:isCloudDocsAppLibrary parentIDisDocumentsFolder:isDocumentsFolder];
 
-  v25 = [v9 parentItemIDOnServer];
-  v26 = [v9 serverZone];
-  v27 = [v25 validatingDirectoryReferenceInZone:v26];
-  [v8 setObject:v27 forKeyedSubscript:@"parent"];
+  parentItemIDOnServer = [itemCopy parentItemIDOnServer];
+  serverZone = [itemCopy serverZone];
+  v27 = [parentItemIDOnServer validatingDirectoryReferenceInZone:serverZone];
+  [fieldsCopy setObject:v27 forKeyedSubscript:@"parent"];
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createStructureRecordForServerItem:(id)a3 salt:(id)a4
+- (id)_createStructureRecordForServerItem:(id)item salt:(id)salt
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  itemCopy = item;
+  saltCopy = salt;
+  if (!itemCopy)
   {
     [BRCSaltingBatchOperation _createStructureRecordForServerItem:salt:];
   }
 
-  v8 = [v6 itemID];
-  v9 = [v6 st];
-  v10 = [v9 type];
-  v11 = [(BRCClientZone *)self->_parentClientZone serverZone];
-  v12 = [v8 structureRecordIDForItemType:v10 zone:v11 aliasTargetZoneIsShared:{objc_msgSend(v6, "aliasTargetIsShared")}];
+  itemID = [itemCopy itemID];
+  v9 = [itemCopy st];
+  type = [v9 type];
+  serverZone = [(BRCClientZone *)self->_parentClientZone serverZone];
+  v12 = [itemID structureRecordIDForItemType:type zone:serverZone aliasTargetZoneIsShared:{objc_msgSend(itemCopy, "aliasTargetIsShared")}];
 
-  v13 = [(BRCSaltingBatchOperation *)self _createStructureRecordWithRecordID:v12 serverItem:v6];
-  [(BRCSaltingBatchOperation *)self _saltChildRecordFields:v13 serverItem:v6 basehashSalt:v7];
+  v13 = [(BRCSaltingBatchOperation *)self _createStructureRecordWithRecordID:v12 serverItem:itemCopy];
+  [(BRCSaltingBatchOperation *)self _saltChildRecordFields:v13 serverItem:itemCopy basehashSalt:saltCopy];
 
   return v13;
 }
@@ -342,11 +342,11 @@ void __68__BRCSaltingBatchOperation__createCKOperationForRecords_completion___bl
 
   if (self->_parentPluginFields)
   {
-    v7 = [(CKRecord *)v4 pluginFields];
-    if (v7)
+    pluginFields = [(CKRecord *)v4 pluginFields];
+    if (pluginFields)
     {
-      v8 = [(CKRecord *)v4 pluginFields];
-      v9 = [v8 mutableCopy];
+      pluginFields2 = [(CKRecord *)v4 pluginFields];
+      v9 = [pluginFields2 mutableCopy];
     }
 
     else
@@ -365,13 +365,13 @@ void __68__BRCSaltingBatchOperation__createCKOperationForRecords_completion___bl
 {
   if (![(BRCItemID *)self->_parentItemID isNonDesktopRoot])
   {
-    v8 = [(BRCClientZone *)self->_parentClientZone serverZone];
-    v3 = [v8 db];
+    serverZone = [(BRCClientZone *)self->_parentClientZone serverZone];
+    v3 = [serverZone db];
     childBaseSalt = self->_childBaseSalt;
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_parentSaltingState];
     parentItemID = self->_parentItemID;
-    v7 = [(BRCClientZone *)self->_parentClientZone dbRowID];
-    [v3 execute:{@"UPDATE server_items SET child_basehash_salt = %@, salting_state = %@ WHERE item_id = %@ AND zone_rowid = %@ ", childBaseSalt, v5, parentItemID, v7}];
+    dbRowID = [(BRCClientZone *)self->_parentClientZone dbRowID];
+    [v3 execute:{@"UPDATE server_items SET child_basehash_salt = %@, salting_state = %@ WHERE item_id = %@ AND zone_rowid = %@ ", childBaseSalt, v5, parentItemID, dbRowID}];
   }
 }
 
@@ -382,40 +382,40 @@ void __68__BRCSaltingBatchOperation__createCKOperationForRecords_completion___bl
     v6 = [(BRCClientZone *)self->_parentClientZone db];
     childBaseSalt = self->_childBaseSalt;
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_parentSaltingState];
-    v5 = [(BRCItemID *)self->_parentItemID appLibraryRowID];
-    [v6 execute:{@"UPDATE app_libraries SET child_basehash_salt = %@, salting_state = %@ WHERE rowid = %@ ", childBaseSalt, v4, v5}];
+    appLibraryRowID = [(BRCItemID *)self->_parentItemID appLibraryRowID];
+    [v6 execute:{@"UPDATE app_libraries SET child_basehash_salt = %@, salting_state = %@ WHERE rowid = %@ ", childBaseSalt, v4, appLibraryRowID}];
   }
 }
 
-- (void)_updateServerTruthForItemID:(id)a3
+- (void)_updateServerTruthForItemID:(id)d
 {
-  v6 = a3;
-  if ([v6 isEqualToItemID:self->_parentItemID])
+  dCopy = d;
+  if ([dCopy isEqualToItemID:self->_parentItemID])
   {
     [(BRCSaltingBatchOperation *)self _updateRootItemInServerDB];
   }
 
   else
   {
-    v4 = [(BRCClientZone *)self->_parentClientZone serverZone];
-    v5 = [v4 db];
-    [v5 execute:{@"UPDATE server_items SET basehash_salt_validation_key = %@  WHERE item_id = %@", self->_baseHashSaltValidationKey, v6}];
+    serverZone = [(BRCClientZone *)self->_parentClientZone serverZone];
+    v5 = [serverZone db];
+    [v5 execute:{@"UPDATE server_items SET basehash_salt_validation_key = %@  WHERE item_id = %@", self->_baseHashSaltValidationKey, dCopy}];
   }
 }
 
-- (void)_buildRecordsWithCompletion:(id)a3
+- (void)_buildRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
-  v6 = [v5 workloop];
+  completionCopy = completion;
+  clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
+  workloop = [clientReadWriteDatabaseFacade workloop];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__BRCSaltingBatchOperation__buildRecordsWithCompletion___block_invoke;
   v8[3] = &unk_278500048;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(workloop, v8);
 }
 
 void __56__BRCSaltingBatchOperation__buildRecordsWithCompletion___block_invoke(uint64_t a1)
@@ -583,35 +583,35 @@ LABEL_26:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   metadataCompletionBlock = self->_metadataCompletionBlock;
   if (metadataCompletionBlock)
   {
-    metadataCompletionBlock[2](metadataCompletionBlock, [v6 BOOLValue], self->_parentItemEncounteredValidationError, v7);
+    metadataCompletionBlock[2](metadataCompletionBlock, [resultCopy BOOLValue], self->_parentItemEncounteredValidationError, errorCopy);
     v9 = self->_metadataCompletionBlock;
     self->_metadataCompletionBlock = 0;
   }
 
   v10.receiver = self;
   v10.super_class = BRCSaltingBatchOperation;
-  [(_BRCOperation *)&v10 finishWithResult:v6 error:v7];
+  [(_BRCOperation *)&v10 finishWithResult:resultCopy error:errorCopy];
 }
 
-- (void)_updateSaltingInfoInServerDBWithRecords:(id)a3
+- (void)_updateSaltingInfoInServerDBWithRecords:(id)records
 {
-  v4 = a3;
-  v5 = [(BRCClientZone *)self->_parentClientZone serverZone];
-  v6 = [v5 db];
+  recordsCopy = records;
+  serverZone = [(BRCClientZone *)self->_parentClientZone serverZone];
+  v6 = [serverZone db];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __68__BRCSaltingBatchOperation__updateSaltingInfoInServerDBWithRecords___block_invoke;
   v8[3] = &unk_278500FA8;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = recordsCopy;
+  selfCopy = self;
+  v7 = recordsCopy;
   [v6 performWithFlags:25 action:v8];
 }
 
@@ -682,17 +682,17 @@ LABEL_12:
   return 1;
 }
 
-- (void)_updateSaltingInfoInClientDBWithRecords:(id)a3
+- (void)_updateSaltingInfoInClientDBWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   v5 = [(BRCClientZone *)self->_parentClientZone db];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__BRCSaltingBatchOperation__updateSaltingInfoInClientDBWithRecords___block_invoke;
   v7[3] = &unk_278500FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = recordsCopy;
+  v6 = recordsCopy;
   [v5 performWithFlags:25 action:v7];
 }
 

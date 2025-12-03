@@ -1,5 +1,5 @@
 @interface _NTKEFaceChoice
-- (_NTKEFaceChoice)initWithFace:(id)a3;
+- (_NTKEFaceChoice)initWithFace:(id)face;
 - (_NTKEFaceChoiceDelegate)delegate;
 - (void)_selected;
 - (void)_updateTitle;
@@ -9,16 +9,16 @@
 
 @implementation _NTKEFaceChoice
 
-- (_NTKEFaceChoice)initWithFace:(id)a3
+- (_NTKEFaceChoice)initWithFace:(id)face
 {
-  v52 = a3;
+  faceCopy = face;
   v53.receiver = self;
   v53.super_class = _NTKEFaceChoice;
   v4 = [(_NTKEFaceChoice *)&v53 initWithFrame:CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height];
   v5 = v4;
   if (v4)
   {
-    [(_NTKEFaceChoice *)v4 setFace:v52];
+    [(_NTKEFaceChoice *)v4 setFace:faceCopy];
     v59 = 0;
     v60 = &v59;
     v61 = 0x2050000000;
@@ -81,8 +81,8 @@
     {
     }
 
-    v18 = [(NTKCompanionFaceViewController *)v5->_faceVC view];
-    [(NTKCFaceContainerView *)v5->_faceContainer setFaceView:v18];
+    view = [(NTKCompanionFaceViewController *)v5->_faceVC view];
+    [(NTKCFaceContainerView *)v5->_faceContainer setFaceView:view];
 
     LODWORD(v19) = 1148846080;
     [(NTKCFaceContainerView *)v5->_faceContainer setContentHuggingPriority:1 forAxis:v19];
@@ -153,28 +153,28 @@
     [(_NTKEFaceChoice *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(NTKCFaceContainerView *)v5->_faceContainer setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v5->_title setTranslatesAutoresizingMaskIntoConstraints:0];
-    v34 = [(UILabel *)v5->_title firstBaselineAnchor];
-    v35 = [(NTKCFaceContainerView *)v5->_faceContainer bottomAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35 constant:0.0];
+    firstBaselineAnchor = [(UILabel *)v5->_title firstBaselineAnchor];
+    bottomAnchor = [(NTKCFaceContainerView *)v5->_faceContainer bottomAnchor];
+    v36 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:0.0];
     [(_NTKEFaceChoice *)v5 setTitleBaselineConstraint:v36];
 
     [(_NTKEFaceChoice *)v5 _updateTitle];
-    v51 = [(NTKCFaceContainerView *)v5->_faceContainer topAnchor];
-    v50 = [(_NTKEFaceChoice *)v5 topAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    topAnchor = [(NTKCFaceContainerView *)v5->_faceContainer topAnchor];
+    topAnchor2 = [(_NTKEFaceChoice *)v5 topAnchor];
+    v49 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v63[0] = v49;
-    v48 = [(NTKCFaceContainerView *)v5->_faceContainer centerXAnchor];
-    v37 = [(_NTKEFaceChoice *)v5 centerXAnchor];
-    v38 = [v48 constraintEqualToAnchor:v37];
+    centerXAnchor = [(NTKCFaceContainerView *)v5->_faceContainer centerXAnchor];
+    centerXAnchor2 = [(_NTKEFaceChoice *)v5 centerXAnchor];
+    v38 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v63[1] = v38;
-    v39 = [(UILabel *)v5->_title centerXAnchor];
-    v40 = [(NTKCFaceContainerView *)v5->_faceContainer centerXAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    centerXAnchor3 = [(UILabel *)v5->_title centerXAnchor];
+    centerXAnchor4 = [(NTKCFaceContainerView *)v5->_faceContainer centerXAnchor];
+    v41 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v63[2] = v41;
     v63[3] = v5->_titleBaselineConstraint;
-    v42 = [(UILabel *)v5->_title bottomAnchor];
-    v43 = [(_NTKEFaceChoice *)v5 bottomAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
+    bottomAnchor2 = [(UILabel *)v5->_title bottomAnchor];
+    bottomAnchor3 = [(_NTKEFaceChoice *)v5 bottomAnchor];
+    v44 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v63[4] = v44;
     v45 = [NSArray arrayWithObjects:v63 count:5];
 
@@ -212,9 +212,9 @@
   v3 = sub_10000392C();
   if (sub_100002F10())
   {
-    v8 = [(NTKFace *)self->_face name];
+    name = [(NTKFace *)self->_face name];
     v4 = 44.0;
-    [(UILabel *)self->_title setText:v8];
+    [(UILabel *)self->_title setText:name];
   }
 
   else
@@ -222,8 +222,8 @@
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"FORMAT_WATCH_FACE" value:&stru_10000C548 table:0];
 
-    v7 = [(NTKFace *)self->_face name];
-    v8 = [NSString stringWithFormat:v6, v7];
+    name2 = [(NTKFace *)self->_face name];
+    name = [NSString stringWithFormat:v6, name2];
 
     if (v3 == -1)
     {
@@ -235,7 +235,7 @@
       v4 = 36.0;
     }
 
-    [(UILabel *)self->_title setText:v8];
+    [(UILabel *)self->_title setText:name];
   }
 
   [(NSLayoutConstraint *)self->_titleBaselineConstraint setConstant:v4];
@@ -243,8 +243,8 @@
 
 - (void)_selected
 {
-  v3 = [(_NTKEFaceChoice *)self delegate];
-  [v3 didChooseFace:self->_face];
+  delegate = [(_NTKEFaceChoice *)self delegate];
+  [delegate didChooseFace:self->_face];
 }
 
 - (_NTKEFaceChoiceDelegate)delegate

@@ -1,16 +1,16 @@
 @interface LocationDetectionManagerObserverProxy
-- (void)locationDetectionManager:(id)a3 didChangeAuthorizationStatus:(int)a4;
+- (void)locationDetectionManager:(id)manager didChangeAuthorizationStatus:(int)status;
 @end
 
 @implementation LocationDetectionManagerObserverProxy
 
-- (void)locationDetectionManager:(id)a3 didChangeAuthorizationStatus:(int)a4
+- (void)locationDetectionManager:(id)manager didChangeAuthorizationStatus:(int)status
 {
-  v4 = *&a4;
+  v4 = *&status;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    [Strong locationDetectionManager:a3 didChangeAuthorizationStatus:v4];
+    [Strong locationDetectionManager:manager didChangeAuthorizationStatus:v4];
 
     swift_unknownObjectRelease();
   }

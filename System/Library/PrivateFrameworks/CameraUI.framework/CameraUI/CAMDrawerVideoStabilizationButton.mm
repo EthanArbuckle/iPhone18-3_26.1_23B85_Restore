@@ -1,28 +1,28 @@
 @interface CAMDrawerVideoStabilizationButton
-- (BOOL)isMenuItemSelected:(id)a3;
+- (BOOL)isMenuItemSelected:(id)selected;
 - (id)loadMenuItems;
-- (void)didSelectMenuItem:(id)a3;
-- (void)setVideoStabilizationMode:(int64_t)a3 animated:(BOOL)a4;
+- (void)didSelectMenuItem:(id)item;
+- (void)setVideoStabilizationMode:(int64_t)mode animated:(BOOL)animated;
 @end
 
 @implementation CAMDrawerVideoStabilizationButton
 
-- (void)setVideoStabilizationMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setVideoStabilizationMode:(int64_t)mode animated:(BOOL)animated
 {
-  if (self->_videoStabilizationMode != a3)
+  if (self->_videoStabilizationMode != mode)
   {
-    self->_videoStabilizationMode = a3;
-    [(CAMControlDrawerButton *)self updateImageAnimated:a4];
+    self->_videoStabilizationMode = mode;
+    [(CAMControlDrawerButton *)self updateImageAnimated:animated];
 
     [(CAMControlDrawerMenuButton *)self updateLabelsIfNeeded];
   }
 }
 
-- (BOOL)isMenuItemSelected:(id)a3
+- (BOOL)isMenuItemSelected:(id)selected
 {
-  v4 = [a3 value];
-  v5 = [v4 integerValue];
-  LOBYTE(self) = v5 == [(CAMDrawerVideoStabilizationButton *)self videoStabilizationMode];
+  value = [selected value];
+  integerValue = [value integerValue];
+  LOBYTE(self) = integerValue == [(CAMDrawerVideoStabilizationButton *)self videoStabilizationMode];
 
   return self;
 }
@@ -47,16 +47,16 @@
   return v10;
 }
 
-- (void)didSelectMenuItem:(id)a3
+- (void)didSelectMenuItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CAMDrawerVideoStabilizationButton *)self videoStabilizationMode];
-  v6 = [v4 value];
+  itemCopy = item;
+  videoStabilizationMode = [(CAMDrawerVideoStabilizationButton *)self videoStabilizationMode];
+  value = [itemCopy value];
 
-  v7 = [v6 integerValue];
-  if (v5 != v7)
+  integerValue = [value integerValue];
+  if (videoStabilizationMode != integerValue)
   {
-    [(CAMDrawerVideoStabilizationButton *)self setVideoStabilizationMode:v7 animated:1];
+    [(CAMDrawerVideoStabilizationButton *)self setVideoStabilizationMode:integerValue animated:1];
 
     [(CAMDrawerVideoStabilizationButton *)self sendActionsForControlEvents:4096];
   }

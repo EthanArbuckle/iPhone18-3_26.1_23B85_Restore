@@ -1,6 +1,6 @@
 @interface MTRCommissionerControlClusterCommissioningRequestResultEvent
 - (MTRCommissionerControlClusterCommissioningRequestResultEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommissionerControlClusterCommissioningRequestResultEvent);
-  v5 = [(MTRCommissionerControlClusterCommissioningRequestResultEvent *)self requestID];
-  [(MTRCommissionerControlClusterCommissioningRequestResultEvent *)v4 setRequestID:v5];
+  requestID = [(MTRCommissionerControlClusterCommissioningRequestResultEvent *)self requestID];
+  [(MTRCommissionerControlClusterCommissioningRequestResultEvent *)v4 setRequestID:requestID];
 
-  v6 = [(MTRCommissionerControlClusterCommissioningRequestResultEvent *)self clientNodeID];
-  [(MTRCommissionerControlClusterCommissioningRequestResultEvent *)v4 setClientNodeID:v6];
+  clientNodeID = [(MTRCommissionerControlClusterCommissioningRequestResultEvent *)self clientNodeID];
+  [(MTRCommissionerControlClusterCommissioningRequestResultEvent *)v4 setClientNodeID:clientNodeID];
 
-  v7 = [(MTRCommissionerControlClusterCommissioningRequestResultEvent *)self statusCode];
-  [(MTRCommissionerControlClusterCommissioningRequestResultEvent *)v4 setStatusCode:v7];
+  statusCode = [(MTRCommissionerControlClusterCommissioningRequestResultEvent *)self statusCode];
+  [(MTRCommissionerControlClusterCommissioningRequestResultEvent *)v4 setStatusCode:statusCode];
 
-  v8 = [(MTRCommissionerControlClusterCommissioningRequestResultEvent *)self fabricIndex];
-  [(MTRCommissionerControlClusterCommissioningRequestResultEvent *)v4 setFabricIndex:v8];
+  fabricIndex = [(MTRCommissionerControlClusterCommissioningRequestResultEvent *)self fabricIndex];
+  [(MTRCommissionerControlClusterCommissioningRequestResultEvent *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

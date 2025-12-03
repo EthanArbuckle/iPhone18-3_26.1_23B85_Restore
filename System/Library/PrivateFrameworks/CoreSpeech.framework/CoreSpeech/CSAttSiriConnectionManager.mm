@@ -1,22 +1,22 @@
 @interface CSAttSiriConnectionManager
 - (CSAttSiriConnectionManager)init;
-- (void)_setupEndpointListenerWithEndpointerNode:(id)a3;
-- (void)_setupRCProcessingListenerWithRCHandler:(id)a3;
-- (void)_setupSSRListenerWithSSRNode:(id)a3;
-- (void)setupAttSiriServiceListenerWithAttSiriController:(id)a3;
-- (void)setupAudioMessageServiceListnerWithProxy:(id)a3;
-- (void)setupListenersForEndpointerNode:(id)a3 asrNode:(id)a4 ssrNode:(id)a5 rcHandler:(id)a6;
-- (void)setupLocalSpeechRecognitionListenerWithXPCListener:(id)a3 machService:(id)a4 asrNode:(id)a5 ssrNode:(id)a6;
+- (void)_setupEndpointListenerWithEndpointerNode:(id)node;
+- (void)_setupRCProcessingListenerWithRCHandler:(id)handler;
+- (void)_setupSSRListenerWithSSRNode:(id)node;
+- (void)setupAttSiriServiceListenerWithAttSiriController:(id)controller;
+- (void)setupAudioMessageServiceListnerWithProxy:(id)proxy;
+- (void)setupListenersForEndpointerNode:(id)node asrNode:(id)asrNode ssrNode:(id)ssrNode rcHandler:(id)handler;
+- (void)setupLocalSpeechRecognitionListenerWithXPCListener:(id)listener machService:(id)service asrNode:(id)node ssrNode:(id)ssrNode;
 @end
 
 @implementation CSAttSiriConnectionManager
 
-- (void)_setupRCProcessingListenerWithRCHandler:(id)a3
+- (void)_setupRCProcessingListenerWithRCHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CSRCHandlingXPCService];
   v6 = [CSUtils getSerialQueue:@"com.apple.CoreSpeech.Connection.Listener.rchandling" qualityOfService:33];
-  v7 = [[CSConnectionListener alloc] initWithMachService:@"com.apple.corespeech.corespeechd.rchandling.service" withServiceInterface:v5 withServiceObject:v4 withDelegateInterface:0 queue:v6];
+  v7 = [[CSConnectionListener alloc] initWithMachService:@"com.apple.corespeech.corespeechd.rchandling.service" withServiceInterface:v5 withServiceObject:handlerCopy withDelegateInterface:0 queue:v6];
 
   rcProcessingListener = self->_rcProcessingListener;
   self->_rcProcessingListener = v7;
@@ -31,9 +31,9 @@
   }
 }
 
-- (void)_setupSSRListenerWithSSRNode:(id)a3
+- (void)_setupSSRListenerWithSSRNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   if (!CSIsCommunalDevice())
   {
 LABEL_5:
@@ -64,11 +64,11 @@ LABEL_5:
   v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CSSSRXPCService];
   v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CSSSRXPCServiceDelegate];
   v9 = [CSUtils getSerialQueue:@"com.apple.CoreSpeech.Connection.Listener.ssr" qualityOfService:33];
-  v10 = [[CSConnectionListener alloc] initWithMachService:@"com.apple.corespeech.corespeechd.ssr.service" withServiceInterface:v7 withServiceObject:v4 withDelegateInterface:v8 queue:v9];
+  v10 = [[CSConnectionListener alloc] initWithMachService:@"com.apple.corespeech.corespeechd.ssr.service" withServiceInterface:v7 withServiceObject:nodeCopy withDelegateInterface:v8 queue:v9];
   ssrListener = self->_ssrListener;
   self->_ssrListener = v10;
 
-  [v4 setSsrListener:self->_ssrListener];
+  [nodeCopy setSsrListener:self->_ssrListener];
   [(CSConnectionListener *)self->_ssrListener resumeConnection];
   v12 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -81,17 +81,17 @@ LABEL_5:
 LABEL_10:
 }
 
-- (void)_setupEndpointListenerWithEndpointerNode:(id)a3
+- (void)_setupEndpointListenerWithEndpointerNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CSEndpointerXPCService];
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CSEndpointerXPCServiceDelegate];
   v7 = [CSUtils getSerialQueue:@"com.apple.CoreSpeech.Connection.Listener.endpointer" qualityOfService:33];
-  v8 = [[CSConnectionListener alloc] initWithMachService:@"com.apple.corespeech.corespeechd.endpointer.service" withServiceInterface:v5 withServiceObject:v4 withDelegateInterface:v6 queue:v7];
+  v8 = [[CSConnectionListener alloc] initWithMachService:@"com.apple.corespeech.corespeechd.endpointer.service" withServiceInterface:v5 withServiceObject:nodeCopy withDelegateInterface:v6 queue:v7];
   endpointerListener = self->_endpointerListener;
   self->_endpointerListener = v8;
 
-  [v4 setEndpointerListener:self->_endpointerListener];
+  [nodeCopy setEndpointerListener:self->_endpointerListener];
   [(CSConnectionListener *)self->_endpointerListener resumeConnection];
   v10 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -102,12 +102,12 @@ LABEL_10:
   }
 }
 
-- (void)setupAudioMessageServiceListnerWithProxy:(id)a3
+- (void)setupAudioMessageServiceListnerWithProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CSSiriAudioMessageRequestService];
   v5 = [CSUtils getSerialQueue:@"AudioMessageServiceListener" qualityOfService:33];
-  v6 = [[CSConnectionListener alloc] initWithMachService:@"com.apple.siri.audio_message_service.xpc" withServiceInterface:v8 withServiceObject:v4 withDelegateInterface:0 queue:v5];
+  v6 = [[CSConnectionListener alloc] initWithMachService:@"com.apple.siri.audio_message_service.xpc" withServiceInterface:v8 withServiceObject:proxyCopy withDelegateInterface:0 queue:v5];
 
   audioMessageServiceListener = self->_audioMessageServiceListener;
   self->_audioMessageServiceListener = v6;
@@ -115,33 +115,33 @@ LABEL_10:
   [(CSConnectionListener *)self->_audioMessageServiceListener resumeConnection];
 }
 
-- (void)setupLocalSpeechRecognitionListenerWithXPCListener:(id)a3 machService:(id)a4 asrNode:(id)a5 ssrNode:(id)a6
+- (void)setupLocalSpeechRecognitionListenerWithXPCListener:(id)listener machService:(id)service asrNode:(id)node ssrNode:(id)ssrNode
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  listenerCopy = listener;
+  serviceCopy = service;
+  nodeCopy = node;
+  ssrNodeCopy = ssrNode;
   if ((+[CSUtils supportsSpeechRecognitionOnDevice](CSUtils, "supportsSpeechRecognitionOnDevice") & 1) != 0 || (+[CSUtils supportsHybridUnderstandingOnDevice](CSUtils, "supportsHybridUnderstandingOnDevice") & 1) != 0 || (+[CSUtils supportVoiceID]& 1) != 0)
   {
     v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___LBLocalSpeechService];
     v15 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___LBLocalSpeechServiceDelegate];
     v16 = [CSUtils getSerialQueue:@"com.apple.CoreSpeech.Connection.Listener.asr" qualityOfService:33];
     v17 = [CSConnectionListener alloc];
-    if (v10)
+    if (listenerCopy)
     {
-      v18 = [(CSConnectionListener *)v17 initWithXpcListener:v10 withMachService:v11 withServiceInterface:v14 withServiceObject:v12 withDelegateInterface:v15 queue:v16];
+      v18 = [(CSConnectionListener *)v17 initWithXpcListener:listenerCopy withMachService:serviceCopy withServiceInterface:v14 withServiceObject:nodeCopy withDelegateInterface:v15 queue:v16];
     }
 
     else
     {
-      v18 = [(CSConnectionListener *)v17 initWithMachService:v11 withServiceInterface:v14 withServiceObject:v12 withDelegateInterface:v15 queue:v16];
+      v18 = [(CSConnectionListener *)v17 initWithMachService:serviceCopy withServiceInterface:v14 withServiceObject:nodeCopy withDelegateInterface:v15 queue:v16];
     }
 
     localSpeechRecognitionListener = self->_localSpeechRecognitionListener;
     self->_localSpeechRecognitionListener = v18;
 
-    [v12 setLocalSRBridgeListener:self->_localSpeechRecognitionListener];
-    [v13 setLocalSRBridgeListener:self->_localSpeechRecognitionListener];
+    [nodeCopy setLocalSRBridgeListener:self->_localSpeechRecognitionListener];
+    [ssrNodeCopy setLocalSRBridgeListener:self->_localSpeechRecognitionListener];
     [(CSConnectionListener *)self->_localSpeechRecognitionListener resumeConnection];
     v20 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -164,16 +164,16 @@ LABEL_10:
   }
 }
 
-- (void)setupAttSiriServiceListenerWithAttSiriController:(id)a3
+- (void)setupAttSiriServiceListenerWithAttSiriController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CSAttSiriServiceProtocol];
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CSAttSiriServiceDelegate];
-  v7 = [[CSConnectionListener alloc] initWithMachService:@"com.apple.corespeech.corespeechd.attsiri.service" withServiceInterface:v5 withServiceObject:v4 withDelegateInterface:v6];
+  v7 = [[CSConnectionListener alloc] initWithMachService:@"com.apple.corespeech.corespeechd.attsiri.service" withServiceInterface:v5 withServiceObject:controllerCopy withDelegateInterface:v6];
   attSiriSvcListener = self->_attSiriSvcListener;
   self->_attSiriSvcListener = v7;
 
-  [v4 setAttSiriSvcListener:self->_attSiriSvcListener];
+  [controllerCopy setAttSiriSvcListener:self->_attSiriSvcListener];
   [(CSConnectionListener *)self->_attSiriSvcListener resumeConnection];
   v9 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -187,16 +187,16 @@ LABEL_10:
   }
 }
 
-- (void)setupListenersForEndpointerNode:(id)a3 asrNode:(id)a4 ssrNode:(id)a5 rcHandler:(id)a6
+- (void)setupListenersForEndpointerNode:(id)node asrNode:(id)asrNode ssrNode:(id)ssrNode rcHandler:(id)handler
 {
-  v12 = a6;
-  v10 = a5;
-  v11 = a4;
-  [(CSAttSiriConnectionManager *)self _setupEndpointListenerWithEndpointerNode:a3];
-  [(CSAttSiriConnectionManager *)self setupLocalSpeechRecognitionListenerWithXPCListener:0 machService:LBLocalSpeechServiceName asrNode:v11 ssrNode:v10];
+  handlerCopy = handler;
+  ssrNodeCopy = ssrNode;
+  asrNodeCopy = asrNode;
+  [(CSAttSiriConnectionManager *)self _setupEndpointListenerWithEndpointerNode:node];
+  [(CSAttSiriConnectionManager *)self setupLocalSpeechRecognitionListenerWithXPCListener:0 machService:LBLocalSpeechServiceName asrNode:asrNodeCopy ssrNode:ssrNodeCopy];
 
-  [(CSAttSiriConnectionManager *)self _setupSSRListenerWithSSRNode:v10];
-  [(CSAttSiriConnectionManager *)self _setupRCProcessingListenerWithRCHandler:v12];
+  [(CSAttSiriConnectionManager *)self _setupSSRListenerWithSSRNode:ssrNodeCopy];
+  [(CSAttSiriConnectionManager *)self _setupRCProcessingListenerWithRCHandler:handlerCopy];
 }
 
 - (CSAttSiriConnectionManager)init

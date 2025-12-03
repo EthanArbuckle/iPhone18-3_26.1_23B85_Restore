@@ -1,5 +1,5 @@
 @interface SUUILoadingViewController
-- (SUUILoadingViewController)initWithClientContext:(id)a3;
+- (SUUILoadingViewController)initWithClientContext:(id)context;
 - (void)_initializeLoadingView;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -7,16 +7,16 @@
 
 @implementation SUUILoadingViewController
 
-- (SUUILoadingViewController)initWithClientContext:(id)a3
+- (SUUILoadingViewController)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = SUUILoadingViewController;
   v6 = [(SUUILoadingViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
   }
 
   return v7;
@@ -27,74 +27,74 @@
   v7.receiver = self;
   v7.super_class = SUUILoadingViewController;
   [(SUUILoadingViewController *)&v7 viewDidLoad];
-  v3 = [(SUUILoadingViewController *)self backgroundColor];
-  v4 = v3;
-  if (!v3)
+  backgroundColor = [(SUUILoadingViewController *)self backgroundColor];
+  systemBackgroundColor = backgroundColor;
+  if (!backgroundColor)
   {
-    v4 = [MEMORY[0x277D75348] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
   }
 
-  v5 = [(SUUILoadingViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  view = [(SUUILoadingViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  if (!v3)
+  if (!backgroundColor)
   {
   }
 
-  v6 = [(SUUILoadingViewController *)self view];
-  [v6 setAccessibilityIgnoresInvertColors:1];
+  view2 = [(SUUILoadingViewController *)self view];
+  [view2 setAccessibilityIgnoresInvertColors:1];
 
   [(SUUILoadingViewController *)self _initializeLoadingView];
 }
 
 - (void)_initializeLoadingView
 {
-  v3 = 0x2798F3000uLL;
+  clientContext = 0x2798F3000uLL;
   v4 = objc_alloc_init(SUUILoadingView);
   [(SUUILoadingViewController *)self setLoadingView:v4];
 
-  v5 = [(SUUILoadingViewController *)self loadingText];
-  if (v5)
+  loadingText = [(SUUILoadingViewController *)self loadingText];
+  if (loadingText)
   {
     [(SUUILoadingViewController *)self loadingText];
   }
 
   else
   {
-    v3 = [(SUUILoadingViewController *)self clientContext];
-    [SUUILoadingView defaultLoadingTextWithClientContext:v3];
+    clientContext = [(SUUILoadingViewController *)self clientContext];
+    [SUUILoadingView defaultLoadingTextWithClientContext:clientContext];
   }
   v6 = ;
-  v7 = [(SUUILoadingViewController *)self loadingView];
-  [v7 setLoadingText:v6];
+  loadingView = [(SUUILoadingViewController *)self loadingView];
+  [loadingView setLoadingText:v6];
 
-  if (!v5)
+  if (!loadingText)
   {
 
-    v6 = v3;
+    v6 = clientContext;
   }
 
-  v8 = [(SUUILoadingViewController *)self view];
-  v9 = [v8 backgroundColor];
-  v10 = [(SUUILoadingViewController *)self loadingView];
-  [v10 setBackgroundColor:v9];
+  view = [(SUUILoadingViewController *)self view];
+  backgroundColor = [view backgroundColor];
+  loadingView2 = [(SUUILoadingViewController *)self loadingView];
+  [loadingView2 setBackgroundColor:backgroundColor];
 
-  v11 = [(SUUILoadingViewController *)self spinnerColorScheme];
-  v12 = [(SUUILoadingViewController *)self loadingView];
-  [v12 setColorScheme:v11];
+  spinnerColorScheme = [(SUUILoadingViewController *)self spinnerColorScheme];
+  loadingView3 = [(SUUILoadingViewController *)self loadingView];
+  [loadingView3 setColorScheme:spinnerColorScheme];
 
-  v13 = [(SUUILoadingViewController *)self loadingView];
-  [v13 sizeToFit];
+  loadingView4 = [(SUUILoadingViewController *)self loadingView];
+  [loadingView4 sizeToFit];
 
-  v15 = [(SUUILoadingViewController *)self view];
-  v14 = [(SUUILoadingViewController *)self loadingView];
-  [v15 addSubview:v14];
+  view2 = [(SUUILoadingViewController *)self view];
+  loadingView5 = [(SUUILoadingViewController *)self loadingView];
+  [view2 addSubview:loadingView5];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(SUUILoadingViewController *)self view];
-  [v3 bounds];
+  view = [(SUUILoadingViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -102,8 +102,8 @@
 
   v12 = *(MEMORY[0x277CBF3A0] + 8);
   rect.origin.x = *MEMORY[0x277CBF3A0];
-  v13 = [(SUUILoadingViewController *)self loadingView];
-  [v13 bounds];
+  loadingView = [(SUUILoadingViewController *)self loadingView];
+  [loadingView bounds];
   v15 = v14;
   v17 = v16;
 
@@ -127,8 +127,8 @@
   v27.size.width = v15;
   v27.size.height = v17;
   v21 = floor(v20 - CGRectGetHeight(v27));
-  v22 = [(SUUILoadingViewController *)self loadingView];
-  [v22 setFrame:{v19, v21, v15, v17}];
+  loadingView2 = [(SUUILoadingViewController *)self loadingView];
+  [loadingView2 setFrame:{v19, v21, v15, v17}];
 
   *&rect.origin.y = self;
   *&rect.size.width = SUUILoadingViewController;

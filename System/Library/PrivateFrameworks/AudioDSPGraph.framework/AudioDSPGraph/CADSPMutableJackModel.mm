@@ -1,29 +1,29 @@
 @interface CADSPMutableJackModel
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)setName:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)setName:(id)name;
 @end
 
 @implementation CADSPMutableJackModel
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = CADSPMutableJackModel;
-  return [(CADSPJackModel *)&v4 mutableCopyWithZone:a3];
+  return [(CADSPJackModel *)&v4 mutableCopyWithZone:zone];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CADSPJackModel allocWithZone:a3];
+  v4 = [CADSPJackModel allocWithZone:zone];
   std::string::operator=(&v4->_this, &self->super._this);
   return v4;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  std::string::__assign_external(&self->super._this, [v4 UTF8String]);
+  nameCopy = name;
+  std::string::__assign_external(&self->super._this, [nameCopy UTF8String]);
 }
 
 @end

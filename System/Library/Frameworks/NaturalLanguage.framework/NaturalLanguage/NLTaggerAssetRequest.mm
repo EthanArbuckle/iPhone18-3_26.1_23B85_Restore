@@ -1,11 +1,11 @@
 @interface NLTaggerAssetRequest
 + (void)checkAssetRequests;
-+ (void)checkAssetRequestsTimerFired:(id)a3;
++ (void)checkAssetRequestsTimerFired:(id)fired;
 + (void)startTimer;
 - (BOOL)hasExpired;
 - (BOOL)isFulfilled;
-- (NLTaggerAssetRequest)initWithLanguage:(id)a3 assetIdentifier:(id)a4 tagScheme:(id)a5 completionHandler:(id)a6;
-- (void)completeWithResult:(int64_t)a3 error:(id)a4;
+- (NLTaggerAssetRequest)initWithLanguage:(id)language assetIdentifier:(id)identifier tagScheme:(id)scheme completionHandler:(id)handler;
+- (void)completeWithResult:(int64_t)result error:(id)error;
 - (void)waitForFulfillment;
 @end
 
@@ -16,16 +16,16 @@
   if ([@"ContextualEmbedding" isEqualToString:self->_tagScheme])
   {
     v3 = [NLContextualEmbedding contextualEmbeddingWithModelIdentifier:self->_assetIdentifier];
-    v4 = [v3 hasAvailableAssets];
+    hasAvailableAssets = [v3 hasAvailableAssets];
   }
 
   else
   {
     v3 = [NLTagger availableTagSchemesForLanguage:self->_language];
-    v4 = [v3 containsObject:self->_tagScheme];
+    hasAvailableAssets = [v3 containsObject:self->_tagScheme];
   }
 
-  v5 = v4;
+  v5 = hasAvailableAssets;
 
   return v5;
 }
@@ -50,20 +50,20 @@
     v53 = 0x3032000000;
     v54 = __Block_byref_object_copy__1;
     v55 = __Block_byref_object_dispose__1;
-    v56 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v45 = 0;
     v46 = &v45;
     v47 = 0x3032000000;
     v48 = __Block_byref_object_copy__1;
     v49 = __Block_byref_object_dispose__1;
-    v50 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __42__NLTaggerAssetRequest_checkAssetRequests__block_invoke;
     block[3] = &unk_1E7629468;
     block[4] = &v51;
     block[5] = &v45;
-    block[6] = a1;
+    block[6] = self;
     dispatch_sync(_assetRequestQueue, block);
     v42 = 0u;
     v43 = 0u;
@@ -86,21 +86,21 @@
 
           v7 = *(*(&v40 + 1) + 8 * i);
           v8 = objc_autoreleasePoolPush();
-          v9 = NLGetLogCategory(a1);
-          v10 = [v9 internal];
+          v9 = NLGetLogCategory(self);
+          internal = [v9 internal];
 
-          if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(internal, OS_LOG_TYPE_DEFAULT))
           {
-            v11 = NLGetLogIdentifier(a1);
+            v11 = NLGetLogIdentifier(self);
             v12 = MEMORY[0x1E696AEC0];
-            v13 = [v7 tagScheme];
-            v14 = [v7 language];
-            v15 = [v12 stringWithFormat:@"'%@' - '%@' asset download complete", v13, v14];
+            tagScheme = [v7 tagScheme];
+            language = [v7 language];
+            v15 = [v12 stringWithFormat:@"'%@' - '%@' asset download complete", tagScheme, language];
             *buf = 138543618;
             v61 = v11;
             v62 = 2114;
             v63 = v15;
-            _os_log_impl(&dword_19D48F000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
+            _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v8);
@@ -134,21 +134,21 @@
 
           v18 = *(*(&v36 + 1) + 8 * j);
           v19 = objc_autoreleasePoolPush();
-          v20 = NLGetLogCategory(a1);
-          v21 = [v20 internal];
+          v20 = NLGetLogCategory(self);
+          internal2 = [v20 internal];
 
-          if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(internal2, OS_LOG_TYPE_DEFAULT))
           {
-            v22 = NLGetLogIdentifier(a1);
+            v22 = NLGetLogIdentifier(self);
             v23 = MEMORY[0x1E696AEC0];
-            v24 = [v18 tagScheme];
-            v25 = [v18 language];
-            v26 = [v23 stringWithFormat:@"'%@' - '%@' asset download request timed out", v24, v25];
+            tagScheme2 = [v18 tagScheme];
+            language2 = [v18 language];
+            v26 = [v23 stringWithFormat:@"'%@' - '%@' asset download request timed out", tagScheme2, language2];
             *buf = 138543618;
             v61 = v22;
             v62 = 2114;
             v63 = v26;
-            _os_log_impl(&dword_19D48F000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
+            _os_log_impl(&dword_19D48F000, internal2, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v19);
@@ -252,7 +252,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __34__NLTaggerAssetRequest_startTimer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -284,46 +284,46 @@ id __34__NLTaggerAssetRequest_startTimer__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (void)checkAssetRequestsTimerFired:(id)a3
++ (void)checkAssetRequestsTimerFired:(id)fired
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  firedCopy = fired;
   v5 = objc_autoreleasePoolPush();
-  v6 = NLGetLogCategory(a1);
-  v7 = [v6 internal];
+  v6 = NLGetLogCategory(self);
+  internal = [v6 internal];
 
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(internal, OS_LOG_TYPE_DEBUG))
   {
-    v8 = NLGetLogIdentifier(a1);
+    v8 = NLGetLogIdentifier(self);
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Timer fired"];
     v11 = 138543618;
     v12 = v8;
     v13 = 2114;
     v14 = v9;
-    _os_log_impl(&dword_19D48F000, v7, OS_LOG_TYPE_DEBUG, "%{public}@%{public}@", &v11, 0x16u);
+    _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_DEBUG, "%{public}@%{public}@", &v11, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  [a1 checkAssetRequests];
+  [self checkAssetRequests];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (NLTaggerAssetRequest)initWithLanguage:(id)a3 assetIdentifier:(id)a4 tagScheme:(id)a5 completionHandler:(id)a6
+- (NLTaggerAssetRequest)initWithLanguage:(id)language assetIdentifier:(id)identifier tagScheme:(id)scheme completionHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v11 || !v13 || !v14)
+  languageCopy = language;
+  identifierCopy = identifier;
+  schemeCopy = scheme;
+  handlerCopy = handler;
+  v15 = handlerCopy;
+  if (!languageCopy || !schemeCopy || !handlerCopy)
   {
     v17 = objc_autoreleasePoolPush();
     v22 = NLGetLogCategory(0);
-    v19 = [v22 internal];
+    internal = [v22 internal];
 
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(internal, OS_LOG_TYPE_ERROR))
     {
       v20 = NLGetLogIdentifier(0);
       v23 = "present";
@@ -332,7 +332,7 @@ id __34__NLTaggerAssetRequest_startTimer__block_invoke(uint64_t a1)
         v23 = "missing";
       }
 
-      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to init NLTaggerAssetRequest, language: %@, tagScheme: %@, completion: %s", v11, v13, v23];
+      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to init NLTaggerAssetRequest, language: %@, tagScheme: %@, completion: %s", languageCopy, schemeCopy, v23];
       *buf = 138543618;
       v35 = v20;
       v36 = 2114;
@@ -343,18 +343,18 @@ id __34__NLTaggerAssetRequest_startTimer__block_invoke(uint64_t a1)
 LABEL_13:
 
     objc_autoreleasePoolPop(v17);
-    v24 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
   v16 = [@"ContextualEmbedding" isEqualToString:self->_tagScheme];
-  if (!v12 && v16)
+  if (!identifierCopy && v16)
   {
     v17 = objc_autoreleasePoolPush();
     v18 = NLGetLogCategory(0);
-    v19 = [v18 internal];
+    internal = [v18 internal];
 
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(internal, OS_LOG_TYPE_ERROR))
     {
       v20 = NLGetLogIdentifier(0);
       v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to init NLTaggerAssetRequest: missing contextual embedding model identifier"];
@@ -363,7 +363,7 @@ LABEL_13:
       v36 = 2114;
       v37 = v21;
 LABEL_12:
-      _os_log_impl(&dword_19D48F000, v19, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", buf, 0x16u);
+      _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", buf, 0x16u);
 
       goto LABEL_13;
     }
@@ -377,31 +377,31 @@ LABEL_12:
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_language, a3);
-    objc_storeStrong(&v26->_assetIdentifier, a4);
-    objc_storeStrong(&v26->_tagScheme, a5);
+    objc_storeStrong(&v25->_language, language);
+    objc_storeStrong(&v26->_assetIdentifier, identifier);
+    objc_storeStrong(&v26->_tagScheme, scheme);
     v27 = MEMORY[0x19EAFC6F0](v15);
     completionHandler = v26->_completionHandler;
     v26->_completionHandler = v27;
 
-    v29 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     creationTime = v26->_creationTime;
-    v26->_creationTime = v29;
+    v26->_creationTime = date;
   }
 
   self = v26;
-  v24 = self;
+  selfCopy = self;
 LABEL_17:
 
   v31 = *MEMORY[0x1E69E9840];
-  return v24;
+  return selfCopy;
 }
 
 - (BOOL)hasExpired
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF00] date];
-  [v3 timeIntervalSinceDate:self->_creationTime];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:self->_creationTime];
   v5 = v4;
 
   +[NLTagger assetRequestTimeoutInterval];
@@ -410,20 +410,20 @@ LABEL_17:
   {
     v8 = objc_autoreleasePoolPush();
     v9 = NLGetLogCategory(self);
-    v10 = [v9 internal];
+    internal = [v9 internal];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(internal, OS_LOG_TYPE_DEBUG))
     {
       v11 = NLGetLogIdentifier(self);
       v12 = MEMORY[0x1E696AEC0];
-      v13 = [(NLTaggerAssetRequest *)self tagScheme];
-      v14 = [(NLTaggerAssetRequest *)self language];
-      v15 = [v12 stringWithFormat:@"Asset '%@' -'%@' expired after %f seconds", v13, v14, *&v5];
+      tagScheme = [(NLTaggerAssetRequest *)self tagScheme];
+      language = [(NLTaggerAssetRequest *)self language];
+      v15 = [v12 stringWithFormat:@"Asset '%@' -'%@' expired after %f seconds", tagScheme, language, *&v5];
       *buf = 138543618;
       v19 = v11;
       v20 = 2114;
       v21 = v15;
-      _os_log_impl(&dword_19D48F000, v10, OS_LOG_TYPE_DEBUG, "%{public}@%{public}@", buf, 0x16u);
+      _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_DEBUG, "%{public}@%{public}@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
@@ -434,65 +434,65 @@ LABEL_17:
   return result;
 }
 
-- (void)completeWithResult:(int64_t)a3 error:(id)a4
+- (void)completeWithResult:(int64_t)result error:(id)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3)
+  errorCopy = error;
+  if (result)
   {
     goto LABEL_8;
   }
 
-  v7 = [(NLTaggerAssetRequest *)self tagScheme];
-  if (([@"ContextualEmbedding" isEqualToString:v7] & 1) == 0)
+  tagScheme = [(NLTaggerAssetRequest *)self tagScheme];
+  if (([@"ContextualEmbedding" isEqualToString:tagScheme] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v8 = [(NLTaggerAssetRequest *)self assetIdentifier];
-  v9 = [NLContextualEmbedding contextualEmbeddingWithModelIdentifier:v8];
-  v10 = [v9 requiresCompilation];
+  assetIdentifier = [(NLTaggerAssetRequest *)self assetIdentifier];
+  v9 = [NLContextualEmbedding contextualEmbeddingWithModelIdentifier:assetIdentifier];
+  requiresCompilation = [v9 requiresCompilation];
 
-  if ((v10 & 1) == 0)
+  if ((requiresCompilation & 1) == 0)
   {
 LABEL_8:
     (*(self->_completionHandler + 2))();
     goto LABEL_9;
   }
 
-  v11 = [(NLTaggerAssetRequest *)self assetIdentifier];
-  v12 = [NLContextualEmbedding contextualEmbeddingWithModelIdentifier:v11];
+  assetIdentifier2 = [(NLTaggerAssetRequest *)self assetIdentifier];
+  v12 = [NLContextualEmbedding contextualEmbeddingWithModelIdentifier:assetIdentifier2];
 
   v13 = objc_autoreleasePoolPush();
   v14 = NLGetLogCategory(self);
-  v15 = [v14 internal];
+  internal = [v14 internal];
 
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(internal, OS_LOG_TYPE_DEFAULT))
   {
     v16 = NLGetLogIdentifier(self);
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [(NLTaggerAssetRequest *)self language];
-    v19 = [(NLTaggerAssetRequest *)self assetIdentifier];
-    v20 = [v17 stringWithFormat:@"Requested compilation for embedding model '%@' - '%@'", v18, v19];
+    language = [(NLTaggerAssetRequest *)self language];
+    assetIdentifier3 = [(NLTaggerAssetRequest *)self assetIdentifier];
+    v20 = [v17 stringWithFormat:@"Requested compilation for embedding model '%@' - '%@'", language, assetIdentifier3];
     *buf = 138543618;
     v30 = v16;
     v31 = 2114;
     v32 = v20;
-    _os_log_impl(&dword_19D48F000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
+    _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v13);
-  v21 = [(NLTaggerAssetRequest *)self assetIdentifier];
+  assetIdentifier4 = [(NLTaggerAssetRequest *)self assetIdentifier];
   v22 = MEMORY[0x19EAFC6F0](self->_completionHandler);
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __49__NLTaggerAssetRequest_completeWithResult_error___block_invoke;
   v26[3] = &unk_1E7629490;
-  v27 = v21;
+  v27 = assetIdentifier4;
   v28 = v22;
   v23 = v22;
-  v24 = v21;
+  v24 = assetIdentifier4;
   [v12 requestModelCompilationWithCompletionHandler:v26];
 
 LABEL_9:

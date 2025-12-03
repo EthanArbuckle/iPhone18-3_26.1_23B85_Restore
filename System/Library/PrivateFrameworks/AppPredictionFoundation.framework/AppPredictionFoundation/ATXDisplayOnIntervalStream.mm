@@ -1,20 +1,20 @@
 @interface ATXDisplayOnIntervalStream
-- (BOOL)displayStateAtTime:(id)a3;
-- (id)_displayBacklightPublisherWithStartDate:(id)a3 endDate:(id)a4;
-- (void)enumerateDisplayOnIntervalsFromStartDate:(id)a3 endDate:(id)a4 block:(id)a5;
-- (void)enumerateDisplayStateEventsFromStartDate:(id)a3 endDate:(id)a4 block:(id)a5;
+- (BOOL)displayStateAtTime:(id)time;
+- (id)_displayBacklightPublisherWithStartDate:(id)date endDate:(id)endDate;
+- (void)enumerateDisplayOnIntervalsFromStartDate:(id)date endDate:(id)endDate block:(id)block;
+- (void)enumerateDisplayStateEventsFromStartDate:(id)date endDate:(id)endDate block:(id)block;
 @end
 
 @implementation ATXDisplayOnIntervalStream
 
-- (void)enumerateDisplayOnIntervalsFromStartDate:(id)a3 endDate:(id)a4 block:(id)a5
+- (void)enumerateDisplayOnIntervalsFromStartDate:(id)date endDate:(id)endDate block:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 compare:v10] != -1)
+  dateCopy = date;
+  endDateCopy = endDate;
+  blockCopy = block;
+  if ([dateCopy compare:endDateCopy] != -1)
   {
-    [(ATXDisplayOnIntervalStream *)a2 enumerateDisplayOnIntervalsFromStartDate:v9 endDate:v10 block:?];
+    [(ATXDisplayOnIntervalStream *)a2 enumerateDisplayOnIntervalsFromStartDate:dateCopy endDate:endDateCopy block:?];
   }
 
   v12 = objc_autoreleasePoolPush();
@@ -24,13 +24,13 @@
   v19[3] = __Block_byref_object_copy_;
   v19[4] = __Block_byref_object_dispose_;
   v20 = 0;
-  v13 = [(ATXDisplayOnIntervalStream *)self _displayBacklightPublisherWithStartDate:v9 endDate:v10];
+  v13 = [(ATXDisplayOnIntervalStream *)self _displayBacklightPublisherWithStartDate:dateCopy endDate:endDateCopy];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __85__ATXDisplayOnIntervalStream_enumerateDisplayOnIntervalsFromStartDate_endDate_block___block_invoke_17;
   v16[3] = &unk_27858FCA0;
   v18 = v19;
-  v14 = v11;
+  v14 = blockCopy;
   v17 = v14;
   v15 = [v13 sinkWithCompletion:&__block_literal_global shouldContinue:v16];
 
@@ -117,23 +117,23 @@ LABEL_10:
   return v9;
 }
 
-- (void)enumerateDisplayStateEventsFromStartDate:(id)a3 endDate:(id)a4 block:(id)a5
+- (void)enumerateDisplayStateEventsFromStartDate:(id)date endDate:(id)endDate block:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 compare:v10] != -1)
+  dateCopy = date;
+  endDateCopy = endDate;
+  blockCopy = block;
+  if ([dateCopy compare:endDateCopy] != -1)
   {
     [ATXDisplayOnIntervalStream enumerateDisplayStateEventsFromStartDate:a2 endDate:self block:?];
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = [(ATXDisplayOnIntervalStream *)self _displayBacklightPublisherWithStartDate:v9 endDate:v10];
+  v13 = [(ATXDisplayOnIntervalStream *)self _displayBacklightPublisherWithStartDate:dateCopy endDate:endDateCopy];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __85__ATXDisplayOnIntervalStream_enumerateDisplayStateEventsFromStartDate_endDate_block___block_invoke_26;
   v16[3] = &unk_27858FCC8;
-  v14 = v11;
+  v14 = blockCopy;
   v17 = v14;
   v15 = [v13 sinkWithCompletion:&__block_literal_global_25 shouldContinue:v16];
 
@@ -170,14 +170,14 @@ uint64_t __85__ATXDisplayOnIntervalStream_enumerateDisplayStateEventsFromStartDa
   return v10;
 }
 
-- (BOOL)displayStateAtTime:(id)a3
+- (BOOL)displayStateAtTime:(id)time
 {
-  v3 = a3;
+  timeCopy = time;
   v4 = BiomeLibrary();
-  v5 = [v4 Device];
-  v6 = [v5 Display];
-  v7 = [v6 Backlight];
-  v8 = [v7 atx_publisherWithStartDate:0 endDate:v3 maxEvents:&unk_283988EE8 lastN:&unk_283988EE8 reversed:0];
+  device = [v4 Device];
+  display = [device Display];
+  backlight = [display Backlight];
+  v8 = [backlight atx_publisherWithStartDate:0 endDate:timeCopy maxEvents:&unk_283988EE8 lastN:&unk_283988EE8 reversed:0];
 
   v15 = 0;
   v16 = &v15;
@@ -187,7 +187,7 @@ uint64_t __85__ATXDisplayOnIntervalStream_enumerateDisplayStateEventsFromStartDa
   v12[1] = 3221225472;
   v12[2] = __49__ATXDisplayOnIntervalStream_displayStateAtTime___block_invoke_31;
   v12[3] = &unk_27858FCF0;
-  v9 = v3;
+  v9 = timeCopy;
   v13 = v9;
   v14 = &v15;
   v10 = [v8 sinkWithCompletion:&__block_literal_global_30 receiveInput:v12];
@@ -227,15 +227,15 @@ void __49__ATXDisplayOnIntervalStream_displayStateAtTime___block_invoke_31(uint6
   }
 }
 
-- (id)_displayBacklightPublisherWithStartDate:(id)a3 endDate:(id)a4
+- (id)_displayBacklightPublisherWithStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a4;
-  v6 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v7 = BiomeLibrary();
-  v8 = [v7 Device];
-  v9 = [v8 Display];
-  v10 = [v9 Backlight];
-  v11 = [v10 atx_publisherWithStartDate:v6 endDate:v5 maxEvents:0 lastN:0 reversed:0];
+  device = [v7 Device];
+  display = [device Display];
+  backlight = [display Backlight];
+  v11 = [backlight atx_publisherWithStartDate:dateCopy endDate:endDateCopy maxEvents:0 lastN:0 reversed:0];
 
   return v11;
 }

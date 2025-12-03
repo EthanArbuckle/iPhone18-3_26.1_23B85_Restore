@@ -1,12 +1,12 @@
 @interface ColorConvertStageShaders
-- (ColorConvertStageShaders)initWithMetal:(id)a3;
+- (ColorConvertStageShaders)initWithMetal:(id)metal;
 @end
 
 @implementation ColorConvertStageShaders
 
-- (ColorConvertStageShaders)initWithMetal:(id)a3
+- (ColorConvertStageShaders)initWithMetal:(id)metal
 {
-  v4 = a3;
+  metalCopy = metal;
   v14.receiver = self;
   v14.super_class = ColorConvertStageShaders;
   v6 = [(ColorConvertStageShaders *)&v14 init];
@@ -15,7 +15,7 @@
     goto LABEL_4;
   }
 
-  v7 = objc_msgSend_computePipelineStateFor_constants_(v4, v5, @"convertColor", 0);
+  v7 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v5, @"convertColor", 0);
   convertColor = v6->_convertColor;
   v6->_convertColor = v7;
 
@@ -27,7 +27,7 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  v10 = objc_msgSend_computePipelineStateFor_constants_(v4, v9, @"convertColorYCbCr", 0);
+  v10 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v9, @"convertColorYCbCr", 0);
   convertColorYCbCr = v6->_convertColorYCbCr;
   v6->_convertColorYCbCr = v10;
 

@@ -1,18 +1,18 @@
 @interface CTXPCLoadSimSetupInfoRequest
 + (id)allowedClassesForArguments;
-- (CTXPCLoadSimSetupInfoRequest)initWithInfo:(id)a3;
+- (CTXPCLoadSimSetupInfoRequest)initWithInfo:(id)info;
 - (id)infoKey;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCLoadSimSetupInfoRequest
 
-- (CTXPCLoadSimSetupInfoRequest)initWithInfo:(id)a3
+- (CTXPCLoadSimSetupInfoRequest)initWithInfo:(id)info
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v10 = @"infoKey";
-  v11[0] = v4;
+  v11[0] = infoCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9.receiver = self;
   v9.super_class = CTXPCLoadSimSetupInfoRequest;
@@ -22,18 +22,18 @@
   return v6;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCLoadSimSetupInfoRequest *)self infoKey];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  infoKey = [(CTXPCLoadSimSetupInfoRequest *)self infoKey];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __76__CTXPCLoadSimSetupInfoRequest_performRequestWithHandler_completionHandler___block_invoke;
   v10[3] = &unk_1E6A46040;
-  v9 = v7;
+  v9 = completionHandlerCopy;
   v11 = v9;
-  [v6 loadSimSetupInfo:v8 completion:v10];
+  [handlerCopy loadSimSetupInfo:infoKey completion:v10];
 }
 
 void __76__CTXPCLoadSimSetupInfoRequest_performRequestWithHandler_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -47,7 +47,7 @@ void __76__CTXPCLoadSimSetupInfoRequest_performRequestWithHandler_completionHand
 + (id)allowedClassesForArguments
 {
   v8[4] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CTXPCLoadSimSetupInfoRequest;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClassesForArguments);
   v8[0] = objc_opt_class();
@@ -64,8 +64,8 @@ void __76__CTXPCLoadSimSetupInfoRequest_performRequestWithHandler_completionHand
 
 - (id)infoKey
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"infoKey"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"infoKey"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;

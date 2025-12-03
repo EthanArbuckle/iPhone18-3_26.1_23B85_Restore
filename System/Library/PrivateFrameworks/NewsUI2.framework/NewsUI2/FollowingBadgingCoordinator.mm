@@ -1,9 +1,9 @@
 @interface FollowingBadgingCoordinator
 - (_TtC7NewsUI227FollowingBadgingCoordinator)init;
-- (void)readingHistory:(id)a3 didChangeFeaturesForArticles:(id)a4;
-- (void)readingList:(id)a3 didAddArticles:(id)a4 removeArticles:(id)a5 eventInitiationLevel:(int64_t)a6;
-- (void)userInfoDidChangeDateLastViewedSaved:(id)a3 fromCloud:(BOOL)a4;
-- (void)userInfoDidChangeDateLastViewedSharedWithYou:(id)a3 fromCloud:(BOOL)a4;
+- (void)readingHistory:(id)history didChangeFeaturesForArticles:(id)articles;
+- (void)readingList:(id)list didAddArticles:(id)articles removeArticles:(id)removeArticles eventInitiationLevel:(int64_t)level;
+- (void)userInfoDidChangeDateLastViewedSaved:(id)saved fromCloud:(BOOL)cloud;
+- (void)userInfoDidChangeDateLastViewedSharedWithYou:(id)you fromCloud:(BOOL)cloud;
 @end
 
 @implementation FollowingBadgingCoordinator
@@ -15,34 +15,34 @@
   return result;
 }
 
-- (void)readingList:(id)a3 didAddArticles:(id)a4 removeArticles:(id)a5 eventInitiationLevel:(int64_t)a6
+- (void)readingList:(id)list didAddArticles:(id)articles removeArticles:(id)removeArticles eventInitiationLevel:(int64_t)level
 {
   v9 = sub_219BF5924();
-  v10 = a3;
-  v11 = self;
-  sub_21980A2DC(v9, a6);
+  listCopy = list;
+  selfCopy = self;
+  sub_21980A2DC(v9, level);
 }
 
-- (void)userInfoDidChangeDateLastViewedSaved:(id)a3 fromCloud:(BOOL)a4
+- (void)userInfoDidChangeDateLastViewedSaved:(id)saved fromCloud:(BOOL)cloud
 {
-  v5 = a3;
-  v6 = self;
+  savedCopy = saved;
+  selfCopy = self;
   sub_21980A3BC();
 }
 
-- (void)userInfoDidChangeDateLastViewedSharedWithYou:(id)a3 fromCloud:(BOOL)a4
+- (void)userInfoDidChangeDateLastViewedSharedWithYou:(id)you fromCloud:(BOOL)cloud
 {
-  v5 = a3;
-  v6 = self;
+  youCopy = you;
+  selfCopy = self;
   sub_21980A184();
 }
 
-- (void)readingHistory:(id)a3 didChangeFeaturesForArticles:(id)a4
+- (void)readingHistory:(id)history didChangeFeaturesForArticles:(id)articles
 {
   sub_21870AD58();
   v6 = sub_219BF5214();
-  v7 = a3;
-  v8 = self;
+  historyCopy = history;
+  selfCopy = self;
   sub_21980A48C(v6);
 }
 

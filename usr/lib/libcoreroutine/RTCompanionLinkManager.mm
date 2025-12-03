@@ -1,37 +1,37 @@
 @interface RTCompanionLinkManager
 - (BOOL)companionLinkConnected;
-- (RTCompanionLinkManager)initWithCompanionLinkClient:(id)a3 dailyBlueSkyMetrics:(id)a4 defaultsManager:(id)a5;
-- (RTCompanionLinkManager)initWithDefaultsManager:(id)a3;
-- (id)decodeEvent:(id)a3;
-- (id)encodeEvent:(id)a3 identifier:(id)a4 error:(id *)a5;
+- (RTCompanionLinkManager)initWithCompanionLinkClient:(id)client dailyBlueSkyMetrics:(id)metrics defaultsManager:(id)manager;
+- (RTCompanionLinkManager)initWithDefaultsManager:(id)manager;
+- (id)decodeEvent:(id)event;
+- (id)encodeEvent:(id)event identifier:(id)identifier error:(id *)error;
 - (void)_handleCompanionAwake;
-- (void)_notifyIdentifier:(id)a3 event:(id)a4;
-- (void)_onDailyMetricsNotification:(id)a3;
-- (void)_registerForEventWithIdentifier:(id)a3 handler:(id)a4;
-- (void)_sendEvent:(id)a3 identifier:(id)a4 handler:(id)a5;
+- (void)_notifyIdentifier:(id)identifier event:(id)event;
+- (void)_onDailyMetricsNotification:(id)notification;
+- (void)_registerForEventWithIdentifier:(id)identifier handler:(id)handler;
+- (void)_sendEvent:(id)event identifier:(id)identifier handler:(id)handler;
 - (void)_setup;
-- (void)_updatePendingSyncMetrics:(id)a3;
-- (void)_updateSyncCachedMetrics:(id)a3;
-- (void)_updateSyncMetrics:(id)a3;
-- (void)_updateSyncSuccessMetrics:(id)a3 waitRequired:(BOOL)a4;
-- (void)onDailyMetricsNotification:(id)a3;
+- (void)_updatePendingSyncMetrics:(id)metrics;
+- (void)_updateSyncCachedMetrics:(id)metrics;
+- (void)_updateSyncMetrics:(id)metrics;
+- (void)_updateSyncSuccessMetrics:(id)metrics waitRequired:(BOOL)required;
+- (void)onDailyMetricsNotification:(id)notification;
 - (void)registerCompanionLinkEventHandler;
-- (void)registerForEventWithIdentifier:(id)a3 handler:(id)a4;
-- (void)sendEvent:(id)a3 identifier:(id)a4 handler:(id)a5;
+- (void)registerForEventWithIdentifier:(id)identifier handler:(id)handler;
+- (void)sendEvent:(id)event identifier:(id)identifier handler:(id)handler;
 @end
 
 @implementation RTCompanionLinkManager
 
-- (RTCompanionLinkManager)initWithDefaultsManager:(id)a3
+- (RTCompanionLinkManager)initWithDefaultsManager:(id)manager
 {
-  v4 = a3;
-  if (v4)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x277D44160]);
-    v6 = [[RTBlueSkyDailyMetrics alloc] initWithDefaultsManager:v4];
-    self = [(RTCompanionLinkManager *)self initWithCompanionLinkClient:v5 dailyBlueSkyMetrics:v6 defaultsManager:v4];
+    v6 = [[RTBlueSkyDailyMetrics alloc] initWithDefaultsManager:managerCopy];
+    self = [(RTCompanionLinkManager *)self initWithCompanionLinkClient:v5 dailyBlueSkyMetrics:v6 defaultsManager:managerCopy];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -43,19 +43,19 @@
       _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", v10, 2u);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (RTCompanionLinkManager)initWithCompanionLinkClient:(id)a3 dailyBlueSkyMetrics:(id)a4 defaultsManager:(id)a5
+- (RTCompanionLinkManager)initWithCompanionLinkClient:(id)client dailyBlueSkyMetrics:(id)metrics defaultsManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  clientCopy = client;
+  metricsCopy = metrics;
+  managerCopy = manager;
+  v12 = managerCopy;
+  if (!clientCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -70,7 +70,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v10)
+  if (!metricsCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -83,7 +83,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v11)
+  if (!managerCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -95,7 +95,7 @@ LABEL_13:
 
 LABEL_14:
 
-    v24 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
@@ -105,18 +105,18 @@ LABEL_14:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_client, a3);
+    objc_storeStrong(&v13->_client, client);
     [(RPCompanionLinkClient *)v14->_client setControlFlags:32];
-    v15 = [(RTNotifier *)v14 queue];
-    [(RPCompanionLinkClient *)v14->_client setDispatchQueue:v15];
+    queue = [(RTNotifier *)v14 queue];
+    [(RPCompanionLinkClient *)v14->_client setDispatchQueue:queue];
 
     v14->_companionAwake = 0;
     v16 = objc_opt_new();
     companionLinkEventHandlerDictionary = v14->_companionLinkEventHandlerDictionary;
     v14->_companionLinkEventHandlerDictionary = v16;
 
-    objc_storeStrong(&v14->_dailyBlueSkyMetrics, a4);
-    objc_storeStrong(&v14->_defaultsManager, a5);
+    objc_storeStrong(&v14->_dailyBlueSkyMetrics, metrics);
+    objc_storeStrong(&v14->_defaultsManager, manager);
     v18 = objc_opt_new();
     sleepCacheDictionary = v14->_sleepCacheDictionary;
     v14->_sleepCacheDictionary = v18;
@@ -127,28 +127,28 @@ LABEL_14:
     v32[2] = __90__RTCompanionLinkManager_initWithCompanionLinkClient_dailyBlueSkyMetrics_defaultsManager___block_invoke;
     v32[3] = &unk_2788D3580;
     objc_copyWeak(&v33, location);
-    v20 = [(RTCompanionLinkManager *)v14 client];
-    [v20 setDeviceFoundHandler:v32];
+    client = [(RTCompanionLinkManager *)v14 client];
+    [client setDeviceFoundHandler:v32];
 
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __90__RTCompanionLinkManager_initWithCompanionLinkClient_dailyBlueSkyMetrics_defaultsManager___block_invoke_30;
     v30[3] = &unk_2788D3580;
     objc_copyWeak(&v31, location);
-    v21 = [(RTCompanionLinkManager *)v14 client];
-    [v21 setDeviceLostHandler:v30];
+    client2 = [(RTCompanionLinkManager *)v14 client];
+    [client2 setDeviceLostHandler:v30];
 
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __90__RTCompanionLinkManager_initWithCompanionLinkClient_dailyBlueSkyMetrics_defaultsManager___block_invoke_31;
     v28[3] = &unk_2788D35A8;
     objc_copyWeak(&v29, location);
-    v22 = [(RTCompanionLinkManager *)v14 client];
-    [v22 setDeviceChangedHandler:v28];
+    client3 = [(RTCompanionLinkManager *)v14 client];
+    [client3 setDeviceChangedHandler:v28];
 
     [(RTCompanionLinkManager *)v14 registerCompanionLinkEventHandler];
-    v23 = [(RTCompanionLinkManager *)v14 client];
-    [v23 activateWithCompletion:&__block_literal_global_157];
+    client4 = [(RTCompanionLinkManager *)v14 client];
+    [client4 activateWithCompletion:&__block_literal_global_157];
 
     [(RTService *)v14 setup];
     objc_destroyWeak(&v29);
@@ -158,10 +158,10 @@ LABEL_14:
   }
 
   self = v14;
-  v24 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v24;
+  return selfCopy;
 }
 
 void __90__RTCompanionLinkManager_initWithCompanionLinkClient_dailyBlueSkyMetrics_defaultsManager___block_invoke(uint64_t a1, void *a2)
@@ -305,28 +305,28 @@ void __90__RTCompanionLinkManager_initWithCompanionLinkClient_dailyBlueSkyMetric
 
 - (void)_setup
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
 }
 
-- (void)onDailyMetricsNotification:(id)a3
+- (void)onDailyMetricsNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__RTCompanionLinkManager_onDailyMetricsNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onDailyMetricsNotification:(id)a3
+- (void)_onDailyMetricsNotification:(id)notification
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityCompanionLink);
@@ -336,21 +336,21 @@ void __90__RTCompanionLinkManager_initWithCompanionLinkClient_dailyBlueSkyMetric
       v9 = 138412546;
       v10 = v7;
       v11 = 2112;
-      v12 = v5;
+      v12 = notificationCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, received notification, %@", &v9, 0x16u);
     }
   }
 
-  v8 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
-  [v8 submit];
+  dailyBlueSkyMetrics = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
+  [dailyBlueSkyMetrics submit];
 }
 
-- (id)encodeEvent:(id)a3 identifier:(id)a4 error:(id *)a5
+- (id)encodeEvent:(id)event identifier:(id)identifier error:(id *)error
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  eventCopy = event;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -364,23 +364,23 @@ void __90__RTCompanionLinkManager_initWithCompanionLinkClient_dailyBlueSkyMetric
   }
 
   v10 = objc_opt_new();
-  if (!v7)
+  if (!eventCopy)
   {
     v11 = 0;
 LABEL_18:
-    [v10 setObject:v8 forKeyedSubscript:@"payloadType"];
+    [v10 setObject:identifierCopy forKeyedSubscript:@"payloadType"];
     v16 = v10;
     v13 = 0;
     goto LABEL_25;
   }
 
-  if (([v8 isEqualToString:@"labeledVisit"] & 1) == 0 && (objc_msgSend(v8, "isEqualToString:", @"POIUpdate") & 1) == 0 && (objc_msgSend(v8, "isEqualToString:", @"POIArrayUpdate") & 1) == 0 && !objc_msgSend(v8, "isEqualToString:", @"vehicleEvent"))
+  if (([identifierCopy isEqualToString:@"labeledVisit"] & 1) == 0 && (objc_msgSend(identifierCopy, "isEqualToString:", @"POIUpdate") & 1) == 0 && (objc_msgSend(identifierCopy, "isEqualToString:", @"POIArrayUpdate") & 1) == 0 && !objc_msgSend(identifierCopy, "isEqualToString:", @"vehicleEvent"))
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityCompanionLink);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v25 = v8;
+      v25 = identifierCopy;
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "encoding unsupported eventId: %@", buf, 0xCu);
     }
 
@@ -391,7 +391,7 @@ LABEL_18:
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
     v13 = [v18 errorWithDomain:v19 code:7 userInfo:v20];
 
-    if (a5)
+    if (error)
     {
       v21 = v13;
       v11 = 0;
@@ -403,7 +403,7 @@ LABEL_18:
   }
 
   v23 = 0;
-  v11 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v23];
+  v11 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:eventCopy requiringSecureCoding:1 error:&v23];
   v12 = v23;
   if (!v12)
   {
@@ -418,16 +418,16 @@ LABEL_18:
     *buf = 138412546;
     v25 = v13;
     v26 = 2112;
-    v27 = v8;
+    v27 = identifierCopy;
     _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "encoding error, %@ for eventId: %@", buf, 0x16u);
   }
 
-  if (a5)
+  if (error)
   {
     v15 = v13;
 LABEL_15:
     v16 = 0;
-    *a5 = v13;
+    *error = v13;
     goto LABEL_25;
   }
 
@@ -438,11 +438,11 @@ LABEL_25:
   return v16;
 }
 
-- (id)decodeEvent:(id)a3
+- (id)decodeEvent:(id)event
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  eventCopy = event;
+  if (!eventCopy)
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -455,8 +455,8 @@ LABEL_25:
     }
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"payloadType"];
-  v6 = [v3 objectForKeyedSubscript:@"payload"];
+  v5 = [eventCopy objectForKeyedSubscript:@"payloadType"];
+  v6 = [eventCopy objectForKeyedSubscript:@"payload"];
   if ([v5 isEqualToString:@"labeledVisit"])
   {
     v18 = 0;
@@ -619,10 +619,10 @@ LABEL_6:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(RTCompanionLinkManager *)self client];
-  v3 = [v2 activeDevices];
+  client = [(RTCompanionLinkManager *)self client];
+  activeDevices = [client activeDevices];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v15 count:16];
+  v4 = [activeDevices countByEnumeratingWithState:&v9 objects:v15 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -632,7 +632,7 @@ LABEL_6:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activeDevices);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -656,7 +656,7 @@ LABEL_6:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v15 count:16];
+      v4 = [activeDevices countByEnumeratingWithState:&v9 objects:v15 count:16];
       if (v4)
       {
         continue;
@@ -671,34 +671,34 @@ LABEL_14:
   return v4;
 }
 
-- (void)sendEvent:(id)a3 identifier:(id)a4 handler:(id)a5
+- (void)sendEvent:(id)event identifier:(id)identifier handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  eventCopy = event;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __55__RTCompanionLinkManager_sendEvent_identifier_handler___block_invoke;
   v15[3] = &unk_2788C5530;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = eventCopy;
+  v17 = identifierCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = identifierCopy;
+  v14 = eventCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)_sendEvent:(id)a3 identifier:(id)a4 handler:(id)a5
+- (void)_sendEvent:(id)event identifier:(id)identifier handler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  eventCopy = event;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (!identifierCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -715,7 +715,7 @@ LABEL_25:
     goto LABEL_10;
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -731,39 +731,39 @@ LABEL_25:
   if ([(RTCompanionLinkManager *)self companionLinkConnected])
   {
     v28 = 0;
-    v12 = [(RTCompanionLinkManager *)self encodeEvent:v8 identifier:v9 error:&v28];
+    v12 = [(RTCompanionLinkManager *)self encodeEvent:eventCopy identifier:identifierCopy error:&v28];
     v13 = v28;
     if (v12)
     {
-      [(RTCompanionLinkManager *)self _updateSyncMetrics:v9];
+      [(RTCompanionLinkManager *)self _updateSyncMetrics:identifierCopy];
       if ([(RTCompanionLinkManager *)self companionAwake])
       {
-        v14 = [(RTCompanionLinkManager *)self client];
+        client = [(RTCompanionLinkManager *)self client];
         v15 = *MEMORY[0x277D44230];
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
         v24[2] = __56__RTCompanionLinkManager__sendEvent_identifier_handler___block_invoke;
         v24[3] = &unk_2788C4EC8;
-        v25 = v9;
-        v26 = self;
+        v25 = identifierCopy;
+        selfCopy = self;
         v27 = v11;
-        [v14 sendEventID:@"com.apple.routined.rapport.companionLinkEventUpdate" event:v12 destinationID:v15 options:0 completion:v24];
+        [client sendEventID:@"com.apple.routined.rapport.companionLinkEventUpdate" event:v12 destinationID:v15 options:0 completion:v24];
       }
 
       else
       {
         v20 = [v12 objectForKeyedSubscript:@"payload"];
-        v21 = [(RTCompanionLinkManager *)self sleepCacheDictionary];
-        [v21 setObject:v20 forKeyedSubscript:v9];
+        sleepCacheDictionary = [(RTCompanionLinkManager *)self sleepCacheDictionary];
+        [sleepCacheDictionary setObject:v20 forKeyedSubscript:identifierCopy];
 
-        [(RTCompanionLinkManager *)self _updateSyncCachedMetrics:v9];
+        [(RTCompanionLinkManager *)self _updateSyncCachedMetrics:identifierCopy];
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v22 = _rt_log_facility_get_os_log(RTLogFacilityCompanionLink);
           if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v30 = v9;
+            v30 = identifierCopy;
             _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_INFO, "send event identifier %@ to paired companion device, caching for future", buf, 0xCu);
           }
         }
@@ -780,7 +780,7 @@ LABEL_25:
         *buf = 138412547;
         v30 = v13;
         v31 = 2117;
-        v32 = v8;
+        v32 = eventCopy;
         _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "encoding error %@, for event, %{sensitive}@", buf, 0x16u);
       }
 
@@ -793,9 +793,9 @@ LABEL_25:
     v18 = _rt_log_facility_get_os_log(RTLogFacilityCompanionLink);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v23 = [(RPCompanionLinkClient *)self->_client activeDevices];
+      activeDevices = [(RPCompanionLinkClient *)self->_client activeDevices];
       *buf = 138412290;
-      v30 = v23;
+      v30 = activeDevices;
       _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "no connected clients, %@", buf, 0xCu);
     }
 
@@ -831,30 +831,30 @@ void __56__RTCompanionLinkManager__sendEvent_identifier_handler___block_invoke(u
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)registerForEventWithIdentifier:(id)a3 handler:(id)a4
+- (void)registerForEventWithIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__RTCompanionLinkManager_registerForEventWithIdentifier_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_registerForEventWithIdentifier:(id)a3 handler:(id)a4
+- (void)_registerForEventWithIdentifier:(id)identifier handler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (!identifierCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -869,7 +869,7 @@ LABEL_9:
     goto LABEL_15;
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -882,7 +882,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v10 = [(NSMutableDictionary *)self->_companionLinkEventHandlerDictionary objectForKey:v7];
+  v10 = [(NSMutableDictionary *)self->_companionLinkEventHandlerDictionary objectForKey:identifierCopy];
   if (v10)
   {
     v11 = v10;
@@ -897,7 +897,7 @@ LABEL_9:
     v11 = [v14 arrayWithObject:v12];
   }
 
-  [(NSMutableDictionary *)self->_companionLinkEventHandlerDictionary setObject:v11 forKey:v7];
+  [(NSMutableDictionary *)self->_companionLinkEventHandlerDictionary setObject:v11 forKey:identifierCopy];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityCompanionLink);
@@ -914,7 +914,7 @@ LABEL_9:
       v24 = 2048;
       v25 = v19;
       v26 = 2112;
-      v27 = v7;
+      v27 = identifierCopy;
       _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "%@, %@, number of events registered, %lu, for identifier %@", &v20, 0x2Au);
     }
   }
@@ -922,14 +922,14 @@ LABEL_9:
 LABEL_15:
 }
 
-- (void)_notifyIdentifier:(id)a3 event:(id)a4
+- (void)_notifyIdentifier:(id)identifier event:(id)event
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  eventCopy = event;
+  if (identifierCopy)
   {
-    v8 = [(NSMutableDictionary *)self->_companionLinkEventHandlerDictionary objectForKey:v6];
+    v8 = [(NSMutableDictionary *)self->_companionLinkEventHandlerDictionary objectForKey:identifierCopy];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v9 = _rt_log_facility_get_os_log(RTLogFacilityCompanionLink);
@@ -966,7 +966,7 @@ LABEL_15:
             v14 = *(*(&v16 + 1) + 8 * v13);
             if (v14)
             {
-              (*(v14 + 16))(v14, v7, 0);
+              (*(v14 + 16))(v14, eventCopy, 0);
             }
 
             else
@@ -975,7 +975,7 @@ LABEL_15:
               if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
-                v22 = v6;
+                v22 = identifierCopy;
                 _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "failed to find valid handler for client identifier, %@", buf, 0xCu);
               }
             }
@@ -1005,13 +1005,13 @@ LABEL_15:
 
 - (void)_handleCompanionAwake
 {
-  v3 = [(RTCompanionLinkManager *)self sleepCacheDictionary];
+  sleepCacheDictionary = [(RTCompanionLinkManager *)self sleepCacheDictionary];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __47__RTCompanionLinkManager__handleCompanionAwake__block_invoke;
   v4[3] = &unk_2788C5890;
   v4[4] = self;
-  [v3 enumerateKeysAndObjectsUsingBlock:v4];
+  [sleepCacheDictionary enumerateKeysAndObjectsUsingBlock:v4];
 }
 
 void __47__RTCompanionLinkManager__handleCompanionAwake__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1084,119 +1084,119 @@ void __47__RTCompanionLinkManager__handleCompanionAwake__block_invoke_3(uint64_t
   }
 }
 
-- (void)_updateSyncMetrics:(id)a3
+- (void)_updateSyncMetrics:(id)metrics
 {
-  v4 = a3;
-  if (v4 == @"labeledVisit")
+  metricsCopy = metrics;
+  if (metricsCopy == @"labeledVisit")
   {
-    v7 = v4;
+    v7 = metricsCopy;
     v5 = @"BlueSkyDailyQualifiedVisits";
   }
 
   else
   {
-    if (v4 != @"POIArrayUpdate")
+    if (metricsCopy != @"POIArrayUpdate")
     {
       goto LABEL_6;
     }
 
-    v7 = v4;
+    v7 = metricsCopy;
     v5 = @"BlueSkyDailyQualifiedPlaceInferences";
   }
 
-  v6 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
-  [v6 increaseCountForKey:v5];
+  dailyBlueSkyMetrics = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
+  [dailyBlueSkyMetrics increaseCountForKey:v5];
 
-  v4 = v7;
+  metricsCopy = v7;
 LABEL_6:
 }
 
-- (void)_updateSyncCachedMetrics:(id)a3
+- (void)_updateSyncCachedMetrics:(id)metrics
 {
-  v4 = a3;
-  if (v4 == @"labeledVisit")
+  metricsCopy = metrics;
+  if (metricsCopy == @"labeledVisit")
   {
-    v6 = v4;
+    v6 = metricsCopy;
     v5 = [MEMORY[0x277CBEAA8] now];
     [(RTCompanionLinkManager *)self setLastVisitSyncAttemptDate:v5];
   }
 
   else
   {
-    if (v4 != @"POIArrayUpdate")
+    if (metricsCopy != @"POIArrayUpdate")
     {
       goto LABEL_6;
     }
 
-    v6 = v4;
+    v6 = metricsCopy;
     v5 = [MEMORY[0x277CBEAA8] now];
     [(RTCompanionLinkManager *)self setLastPlaceInferenceSyncAttemptDate:v5];
   }
 
-  v4 = v6;
+  metricsCopy = v6;
 LABEL_6:
 }
 
-- (void)_updateSyncSuccessMetrics:(id)a3 waitRequired:(BOOL)a4
+- (void)_updateSyncSuccessMetrics:(id)metrics waitRequired:(BOOL)required
 {
-  v6 = a3;
-  v11 = v6;
-  if (v6 == @"labeledVisit")
+  metricsCopy = metrics;
+  v11 = metricsCopy;
+  if (metricsCopy == @"labeledVisit")
   {
-    v7 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
-    v8 = v7;
+    dailyBlueSkyMetrics = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
+    v8 = dailyBlueSkyMetrics;
     v9 = @"BlueSkyDailyQualifiedVisitsSent";
   }
 
   else
   {
-    if (v6 != @"POIArrayUpdate")
+    if (metricsCopy != @"POIArrayUpdate")
     {
       goto LABEL_7;
     }
 
-    v7 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
-    v8 = v7;
+    dailyBlueSkyMetrics = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
+    v8 = dailyBlueSkyMetrics;
     v9 = @"BlueSkyDailyQualifiedPlaceInferencesSent";
   }
 
-  [v7 increaseCountForKey:v9];
+  [dailyBlueSkyMetrics increaseCountForKey:v9];
 
-  v6 = v11;
-  if (!a4)
+  metricsCopy = v11;
+  if (!required)
   {
-    v10 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
-    [v10 increaseCountForKey:@"BlueSkyDailyNumSyncsRequiringNoWait"];
+    dailyBlueSkyMetrics2 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
+    [dailyBlueSkyMetrics2 increaseCountForKey:@"BlueSkyDailyNumSyncsRequiringNoWait"];
 
-    v6 = v11;
+    metricsCopy = v11;
   }
 
 LABEL_7:
 }
 
-- (void)_updatePendingSyncMetrics:(id)a3
+- (void)_updatePendingSyncMetrics:(id)metrics
 {
   v5 = [MEMORY[0x277CBEAA8] now];
-  if (a3 == @"labeledVisit")
+  if (metrics == @"labeledVisit")
   {
     v15 = v5;
-    v8 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
-    [v8 increaseCountForKey:@"BlueSkyDailyQualifiedVisitsSent"];
+    dailyBlueSkyMetrics = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
+    [dailyBlueSkyMetrics increaseCountForKey:@"BlueSkyDailyQualifiedVisitsSent"];
 
-    v7 = [(RTCompanionLinkManager *)self lastVisitSyncAttemptDate];
+    lastVisitSyncAttemptDate = [(RTCompanionLinkManager *)self lastVisitSyncAttemptDate];
     goto LABEL_5;
   }
 
-  if (a3 == @"POIArrayUpdate")
+  if (metrics == @"POIArrayUpdate")
   {
     v15 = v5;
-    v6 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
-    [v6 increaseCountForKey:@"BlueSkyDailyQualifiedPlaceInferencesSent"];
+    dailyBlueSkyMetrics2 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
+    [dailyBlueSkyMetrics2 increaseCountForKey:@"BlueSkyDailyQualifiedPlaceInferencesSent"];
 
-    v7 = [(RTCompanionLinkManager *)self lastPlaceInferenceSyncAttemptDate];
+    lastVisitSyncAttemptDate = [(RTCompanionLinkManager *)self lastPlaceInferenceSyncAttemptDate];
 LABEL_5:
-    v9 = v7;
-    [v15 timeIntervalSinceDate:v7];
+    v9 = lastVisitSyncAttemptDate;
+    [v15 timeIntervalSinceDate:lastVisitSyncAttemptDate];
     v11 = v10;
     if (v10 >= 10.0)
     {
@@ -1208,8 +1208,8 @@ LABEL_5:
           {
             if (v10 >= 120.0)
             {
-              v12 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
-              v13 = v12;
+              dailyBlueSkyMetrics3 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
+              v13 = dailyBlueSkyMetrics3;
               if (v11 >= 600.0)
               {
                 v14 = @"BlueSkyDailyNumSyncsRequiring5MinPlusWait";
@@ -1223,44 +1223,44 @@ LABEL_5:
 
             else
             {
-              v12 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
-              v13 = v12;
+              dailyBlueSkyMetrics3 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
+              v13 = dailyBlueSkyMetrics3;
               v14 = @"BlueSkyDailyNumSyncsRequiring2MinWait";
             }
           }
 
           else
           {
-            v12 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
-            v13 = v12;
+            dailyBlueSkyMetrics3 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
+            v13 = dailyBlueSkyMetrics3;
             v14 = @"BlueSkyDailyNumSyncsRequiring1MinWait";
           }
         }
 
         else
         {
-          v12 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
-          v13 = v12;
+          dailyBlueSkyMetrics3 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
+          v13 = dailyBlueSkyMetrics3;
           v14 = @"BlueSkyDailyNumSyncsRequiring30SecWait";
         }
       }
 
       else
       {
-        v12 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
-        v13 = v12;
+        dailyBlueSkyMetrics3 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
+        v13 = dailyBlueSkyMetrics3;
         v14 = @"BlueSkyDailyNumSyncsRequiring20SecWait";
       }
     }
 
     else
     {
-      v12 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
-      v13 = v12;
+      dailyBlueSkyMetrics3 = [(RTCompanionLinkManager *)self dailyBlueSkyMetrics];
+      v13 = dailyBlueSkyMetrics3;
       v14 = @"BlueSkyDailyNumSyncsRequiring10SecWait";
     }
 
-    [v12 increaseCountForKey:v14];
+    [dailyBlueSkyMetrics3 increaseCountForKey:v14];
 
     v5 = v15;
   }

@@ -1,41 +1,41 @@
 @interface FKPerson
-+ (id)_allEmailValuesForRecord:(void *)a3;
-+ (id)_allEmailValuesInSet:(id)a3;
-+ (id)_allPhoneValuesForRecord:(void *)a3;
-+ (id)_allPhoneValuesInSet:(id)a3;
-+ (id)allValuesForPerson:(void *)a3;
-+ (id)preferredNameForPerson:(void *)a3;
++ (id)_allEmailValuesForRecord:(void *)record;
++ (id)_allEmailValuesInSet:(id)set;
++ (id)_allPhoneValuesForRecord:(void *)record;
++ (id)_allPhoneValuesInSet:(id)set;
++ (id)allValuesForPerson:(void *)person;
++ (id)preferredNameForPerson:(void *)person;
 + (id)sharedMetadataQueue;
-+ (int)addValue:(void *)a3 withLabel:(__CFString *)a4 toPerson:(void *)a5 property:(int)a6;
-- (BOOL)_updateFromDictionaryRepresentation:(id)a3 shouldLogUpdates:(BOOL)a4;
-- (BOOL)isEqualToDictionaryRepresentation:(id)a3;
-- (BOOL)isLikePerson:(id)a3;
++ (int)addValue:(void *)value withLabel:(__CFString *)label toPerson:(void *)person property:(int)property;
+- (BOOL)_updateFromDictionaryRepresentation:(id)representation shouldLogUpdates:(BOOL)updates;
+- (BOOL)isEqualToDictionaryRepresentation:(id)representation;
+- (BOOL)isLikePerson:(id)person;
 - (FKPerson)init;
-- (FKPerson)initWithABRecordGUID:(id)a3 addressBook:(void *)a4;
-- (FKPerson)initWithCoder:(id)a3;
-- (FKPerson)initWithDestinations:(id)a3 addressBook:(void *)a4;
-- (FKPerson)initWithDictionaryRepresentation:(id)a3 addressBook:(void *)a4;
-- (FKPerson)initWithFavorite:(id)a3 addressBook:(void *)a4;
+- (FKPerson)initWithABRecordGUID:(id)d addressBook:(void *)book;
+- (FKPerson)initWithCoder:(id)coder;
+- (FKPerson)initWithDestinations:(id)destinations addressBook:(void *)book;
+- (FKPerson)initWithDictionaryRepresentation:(id)representation addressBook:(void *)book;
+- (FKPerson)initWithFavorite:(id)favorite addressBook:(void *)book;
 - (NSDictionary)metadata;
-- (float)_allValuesMatchScore:(id)a3;
-- (id)_recordMatchDictionaryFromCFArray:(__CFArray *)a3 followLinks:(BOOL)a4 addressBook:(void *)a5;
+- (float)_allValuesMatchScore:(id)score;
+- (id)_recordMatchDictionaryFromCFArray:(__CFArray *)array followLinks:(BOOL)links addressBook:(void *)book;
 - (id)allValues;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)displayName;
 - (id)initials;
-- (id)metadataValueForKey:(id)a3;
+- (id)metadataValueForKey:(id)key;
 - (id)primaryDestination;
-- (void)_bestRecordMatchFromDictionary:(id)a3 addressBook:(void *)a4;
+- (void)_bestRecordMatchFromDictionary:(id)dictionary addressBook:(void *)book;
 - (void)_postChangeNotification;
-- (void)_reconcile:(void *)a3 canPostChangeNotification:(BOOL)a4 shouldLogUpdates:(BOOL)a5;
-- (void)_setABRecordGUID:(id)a3;
-- (void)addMetadataEntriesFromDictionary:(id)a3;
-- (void)copyABPersonWithAddressBook:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_reconcile:(void *)_reconcile canPostChangeNotification:(BOOL)notification shouldLogUpdates:(BOOL)updates;
+- (void)_setABRecordGUID:(id)d;
+- (void)addMetadataEntriesFromDictionary:(id)dictionary;
+- (void)copyABPersonWithAddressBook:(void *)book;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeAllMetadataValues;
-- (void)setMetadataValue:(id)a3 forKey:(id)a4;
-- (void)setPreferredReplyAs:(id)a3;
+- (void)setMetadataValue:(id)value forKey:(id)key;
+- (void)setPreferredReplyAs:(id)as;
 @end
 
 @implementation FKPerson
@@ -70,68 +70,68 @@ uint64_t __31__FKPerson_sharedMetadataQueue__block_invoke()
   if (v2)
   {
     v2->_abRecordID = -1;
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     metadata = v3->_metadata;
-    v3->_metadata = v4;
+    v3->_metadata = dictionary;
   }
 
   return v3;
 }
 
-- (FKPerson)initWithDictionaryRepresentation:(id)a3 addressBook:(void *)a4
+- (FKPerson)initWithDictionaryRepresentation:(id)representation addressBook:(void *)book
 {
-  v5 = a3;
+  representationCopy = representation;
   v6 = [(FKPerson *)self init];
   v7 = v6;
   if (v6)
   {
-    [(FKPerson *)v6 _updateFromDictionaryRepresentation:v5 shouldLogUpdates:0];
+    [(FKPerson *)v6 _updateFromDictionaryRepresentation:representationCopy shouldLogUpdates:0];
   }
 
   return v7;
 }
 
-- (FKPerson)initWithDestinations:(id)a3 addressBook:(void *)a4
+- (FKPerson)initWithDestinations:(id)destinations addressBook:(void *)book
 {
-  v6 = a3;
+  destinationsCopy = destinations;
   v7 = [(FKPerson *)self init];
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEB98] setWithArray:v6];
+    v8 = [MEMORY[0x277CBEB98] setWithArray:destinationsCopy];
     allValues = v7->_allValues;
     v7->_allValues = v8;
 
-    [(FKPerson *)v7 _reconcile:a4 canPostChangeNotification:0 shouldLogUpdates:0];
+    [(FKPerson *)v7 _reconcile:book canPostChangeNotification:0 shouldLogUpdates:0];
   }
 
   return v7;
 }
 
-- (FKPerson)initWithABRecordGUID:(id)a3 addressBook:(void *)a4
+- (FKPerson)initWithABRecordGUID:(id)d addressBook:(void *)book
 {
-  v7 = a3;
+  dCopy = d;
   v8 = [(FKPerson *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_abRecordGUID, a3);
-    [(FKPerson *)v9 _reconcile:a4 canPostChangeNotification:0 shouldLogUpdates:0];
+    objc_storeStrong(&v8->_abRecordGUID, d);
+    [(FKPerson *)v9 _reconcile:book canPostChangeNotification:0 shouldLogUpdates:0];
   }
 
   return v9;
 }
 
-- (FKPerson)initWithFavorite:(id)a3 addressBook:(void *)a4
+- (FKPerson)initWithFavorite:(id)favorite addressBook:(void *)book
 {
-  v6 = a3;
+  favoriteCopy = favorite;
   v7 = [(FKPerson *)self init];
   if (v7)
   {
-    v8 = [v6 _abUid];
-    PersonWithRecordID = ABAddressBookGetPersonWithRecordID(a4, v8);
+    _abUid = [favoriteCopy _abUid];
+    PersonWithRecordID = ABAddressBookGetPersonWithRecordID(book, _abUid);
     if (PersonWithRecordID)
     {
-      v7->_abRecordID = v8;
+      v7->_abRecordID = _abUid;
       v10 = ABRecordCopyValue(PersonWithRecordID, *MEMORY[0x277CE9950]);
       abRecordGUID = v7->_abRecordGUID;
       v7->_abRecordGUID = v10;
@@ -140,19 +140,19 @@ uint64_t __31__FKPerson_sharedMetadataQueue__block_invoke()
       abDatabaseUID = v7->_abDatabaseUID;
       v7->_abDatabaseUID = v12;
 
-      [(FKPerson *)v7 _reconcile:a4 canPostChangeNotification:0 shouldLogUpdates:0];
+      [(FKPerson *)v7 _reconcile:book canPostChangeNotification:0 shouldLogUpdates:0];
     }
 
     else
     {
-      v14 = [v6 displayName];
+      displayName = [favoriteCopy displayName];
       name = v7->_name;
-      v7->_name = v14;
+      v7->_name = displayName;
 
-      v16 = [v6 value];
-      v17 = [v16 fkMessageCanonicalRawAddress];
+      value = [favoriteCopy value];
+      fkMessageCanonicalRawAddress = [value fkMessageCanonicalRawAddress];
 
-      v18 = [MEMORY[0x277CBEB98] setWithObject:v17];
+      v18 = [MEMORY[0x277CBEB98] setWithObject:fkMessageCanonicalRawAddress];
       allValues = v7->_allValues;
       v7->_allValues = v18;
     }
@@ -161,55 +161,55 @@ uint64_t __31__FKPerson_sharedMetadataQueue__block_invoke()
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   primaryDestination = self->_primaryDestination;
-  v5 = a3;
-  [v5 encodeObject:primaryDestination forKey:@"pd"];
-  [v5 encodeObject:self->_initials forKey:@"i"];
-  [v5 encodeObject:self->_phoneNumberCount forKey:@"pnc"];
-  [v5 encodeObject:self->_emailAddressCount forKey:@"eac"];
-  [v5 encodeInt64:self->_abRecordID forKey:@"abid"];
-  [v5 encodeObject:self->_abRecordGUID forKey:@"abguid"];
-  [v5 encodeObject:self->_abDatabaseUID forKey:@"abdbuid"];
-  [v5 encodeObject:self->_name forKey:@"n"];
-  [v5 encodeObject:self->_allValues forKey:@"av"];
-  [v5 encodeObject:self->_metadata forKey:@"m"];
+  coderCopy = coder;
+  [coderCopy encodeObject:primaryDestination forKey:@"pd"];
+  [coderCopy encodeObject:self->_initials forKey:@"i"];
+  [coderCopy encodeObject:self->_phoneNumberCount forKey:@"pnc"];
+  [coderCopy encodeObject:self->_emailAddressCount forKey:@"eac"];
+  [coderCopy encodeInt64:self->_abRecordID forKey:@"abid"];
+  [coderCopy encodeObject:self->_abRecordGUID forKey:@"abguid"];
+  [coderCopy encodeObject:self->_abDatabaseUID forKey:@"abdbuid"];
+  [coderCopy encodeObject:self->_name forKey:@"n"];
+  [coderCopy encodeObject:self->_allValues forKey:@"av"];
+  [coderCopy encodeObject:self->_metadata forKey:@"m"];
 }
 
-- (FKPerson)initWithCoder:(id)a3
+- (FKPerson)initWithCoder:(id)coder
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(FKPerson *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pd"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pd"];
     primaryDestination = v5->_primaryDestination;
     v5->_primaryDestination = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"i"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"i"];
     initials = v5->_initials;
     v5->_initials = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pnc"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pnc"];
     phoneNumberCount = v5->_phoneNumberCount;
     v5->_phoneNumberCount = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eac"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eac"];
     emailAddressCount = v5->_emailAddressCount;
     v5->_emailAddressCount = v12;
 
-    v5->_abRecordID = [v4 decodeInt64ForKey:@"abid"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"abguid"];
+    v5->_abRecordID = [coderCopy decodeInt64ForKey:@"abid"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"abguid"];
     abRecordGUID = v5->_abRecordGUID;
     v5->_abRecordGUID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"abdbuid"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"abdbuid"];
     abDatabaseUID = v5->_abDatabaseUID;
     v5->_abDatabaseUID = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"n"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"n"];
     name = v5->_name;
     v5->_name = v18;
 
@@ -218,7 +218,7 @@ uint64_t __31__FKPerson_sharedMetadataQueue__block_invoke()
     v35[1] = objc_opt_class();
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:2];
     v22 = [v20 setWithArray:v21];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"av"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"av"];
     allValues = v5->_allValues;
     v5->_allValues = v23;
 
@@ -232,7 +232,7 @@ uint64_t __31__FKPerson_sharedMetadataQueue__block_invoke()
     v34[5] = objc_opt_class();
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:6];
     v28 = [v26 setWithArray:v27];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"m"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"m"];
     v30 = [v25 dictionaryWithDictionary:v29];
     metadata = v5->_metadata;
     v5->_metadata = v30;
@@ -242,41 +242,41 @@ uint64_t __31__FKPerson_sharedMetadataQueue__block_invoke()
   return v5;
 }
 
-- (BOOL)_updateFromDictionaryRepresentation:(id)a3 shouldLogUpdates:(BOOL)a4
+- (BOOL)_updateFromDictionaryRepresentation:(id)representation shouldLogUpdates:(BOOL)updates
 {
-  v43 = a4;
+  updatesCopy = updates;
   v63 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKey:@"ABRecordID"];
-  v7 = [v6 intValue];
+  representationCopy = representation;
+  v6 = [representationCopy objectForKey:@"ABRecordID"];
+  intValue = [v6 intValue];
 
-  v44 = [v5 objectForKey:@"ABRecordGUID"];
-  v8 = [v5 objectForKey:@"ABDatabaseUID"];
-  v9 = [v5 objectForKey:@"Name"];
+  v44 = [representationCopy objectForKey:@"ABRecordGUID"];
+  v8 = [representationCopy objectForKey:@"ABDatabaseUID"];
+  v9 = [representationCopy objectForKey:@"Name"];
   v10 = MEMORY[0x277CBEB98];
-  v11 = [v5 objectForKey:@"AllValues"];
+  v11 = [representationCopy objectForKey:@"AllValues"];
   v42 = [v10 setWithArray:v11];
 
-  v12 = [v5 objectForKey:@"ReplyAs"];
-  v13 = [v5 objectForKey:@"Monogram"];
+  v12 = [representationCopy objectForKey:@"ReplyAs"];
+  v13 = [representationCopy objectForKey:@"Monogram"];
   v14 = MEMORY[0x277CBEB38];
-  v15 = [v5 objectForKey:@"Metadata"];
+  v15 = [representationCopy objectForKey:@"Metadata"];
   v40 = [v14 dictionaryWithDictionary:v15];
 
   v49 = 0;
   v50 = &v49;
   v51 = 0x2020000000;
   v52 = 0;
-  if (self->_abRecordID != v7)
+  if (self->_abRecordID != intValue)
   {
-    self->_abRecordID = v7;
+    self->_abRecordID = intValue;
     v52 = 1;
   }
 
   abRecordGUID = self->_abRecordGUID;
   if (abRecordGUID | v44 && ![(NSString *)abRecordGUID isEqualToString:v44])
   {
-    if (v43)
+    if (updatesCopy)
     {
       v17 = _FKGetLogSystem();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -287,7 +287,7 @@ uint64_t __31__FKPerson_sharedMetadataQueue__block_invoke()
         v55 = 1024;
         v56 = 195;
         v57 = 2112;
-        v58 = self;
+        selfCopy6 = self;
         v59 = 2112;
         v60 = v18;
         v61 = 2112;
@@ -303,7 +303,7 @@ uint64_t __31__FKPerson_sharedMetadataQueue__block_invoke()
   abDatabaseUID = self->_abDatabaseUID;
   if (abDatabaseUID | v8 && ![(NSString *)abDatabaseUID isEqualToString:v8])
   {
-    if (v43)
+    if (updatesCopy)
     {
       v20 = _FKGetLogSystem();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -314,7 +314,7 @@ uint64_t __31__FKPerson_sharedMetadataQueue__block_invoke()
         v55 = 1024;
         v56 = 201;
         v57 = 2112;
-        v58 = self;
+        selfCopy6 = self;
         v59 = 2112;
         v60 = v21;
         v61 = 2112;
@@ -330,7 +330,7 @@ uint64_t __31__FKPerson_sharedMetadataQueue__block_invoke()
   name = self->_name;
   if (name | v9 && ![(NSString *)name isEqualToString:v9])
   {
-    if (v43)
+    if (updatesCopy)
     {
       v23 = _FKGetLogSystem();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -341,7 +341,7 @@ uint64_t __31__FKPerson_sharedMetadataQueue__block_invoke()
         v55 = 1024;
         v56 = 207;
         v57 = 2112;
-        v58 = self;
+        selfCopy6 = self;
         v59 = 2112;
         v60 = v24;
         v61 = 2112;
@@ -354,11 +354,11 @@ uint64_t __31__FKPerson_sharedMetadataQueue__block_invoke()
     *(v50 + 24) = 1;
   }
 
-  v25 = [v42 fkSanitizedDestinationSet];
+  fkSanitizedDestinationSet = [v42 fkSanitizedDestinationSet];
   allValues = self->_allValues;
-  if (allValues | v25 && ![(NSSet *)allValues isEqualToSet:v25])
+  if (allValues | fkSanitizedDestinationSet && ![(NSSet *)allValues isEqualToSet:fkSanitizedDestinationSet])
   {
-    if (v43)
+    if (updatesCopy)
     {
       v27 = _FKGetLogSystem();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -369,24 +369,24 @@ uint64_t __31__FKPerson_sharedMetadataQueue__block_invoke()
         v55 = 1024;
         v56 = 216;
         v57 = 2112;
-        v58 = self;
+        selfCopy6 = self;
         v59 = 2112;
         v60 = v28;
         v61 = 2112;
-        v62 = v25;
+        v62 = fkSanitizedDestinationSet;
         _os_log_impl(&dword_24BC19000, v27, OS_LOG_TYPE_DEFAULT, "%s (%d) %@ is being marked as updated due to allValues: %@ -> %@", buf, 0x30u);
       }
     }
 
-    objc_storeStrong(&self->_allValues, v25);
+    objc_storeStrong(&self->_allValues, fkSanitizedDestinationSet);
     *(v50 + 24) = 1;
-    self->_needsSave = [v42 isEqualToSet:v25] ^ 1;
+    self->_needsSave = [v42 isEqualToSet:fkSanitizedDestinationSet] ^ 1;
   }
 
   preferredReplyAs = self->_preferredReplyAs;
   if (preferredReplyAs | v12 && ![(NSString *)preferredReplyAs isEqualToString:v12])
   {
-    if (v43)
+    if (updatesCopy)
     {
       v30 = _FKGetLogSystem();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -397,7 +397,7 @@ uint64_t __31__FKPerson_sharedMetadataQueue__block_invoke()
         v55 = 1024;
         v56 = 225;
         v57 = 2112;
-        v58 = self;
+        selfCopy6 = self;
         v59 = 2112;
         v60 = v31;
         v61 = 2112;
@@ -428,7 +428,7 @@ uint64_t __31__FKPerson_sharedMetadataQueue__block_invoke()
   initials = self->_initials;
   if (v13 | initials && !v32 && ![(NSString *)initials isEqualToString:v13])
   {
-    if (v43)
+    if (updatesCopy)
     {
       v34 = _FKGetLogSystem();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -439,7 +439,7 @@ uint64_t __31__FKPerson_sharedMetadataQueue__block_invoke()
         v55 = 1024;
         v56 = 234;
         v57 = 2112;
-        v58 = self;
+        selfCopy6 = self;
         v59 = 2112;
         v60 = v35;
         v61 = 2112;
@@ -459,7 +459,7 @@ uint64_t __31__FKPerson_sharedMetadataQueue__block_invoke()
   block[3] = &unk_27916A658;
   block[4] = self;
   v46 = v41;
-  v48 = v43;
+  v48 = updatesCopy;
   v47 = &v49;
   v37 = v41;
   dispatch_sync(v36, block);
@@ -556,8 +556,8 @@ void __65__FKPerson__updateFromDictionaryRepresentation_shouldLogUpdates___block
   allValues = self->_allValues;
   if (allValues)
   {
-    v10 = [(NSSet *)allValues allObjects];
-    [v5 setObject:v10 forKey:@"AllValues"];
+    allObjects = [(NSSet *)allValues allObjects];
+    [v5 setObject:allObjects forKey:@"AllValues"];
   }
 
   preferredReplyAs = self->_preferredReplyAs;
@@ -607,21 +607,21 @@ void __36__FKPerson_dictionaryRepresentation__block_invoke(uint64_t a1)
 {
   if ([(NSString *)self->_name length])
   {
-    v3 = [(NSString *)self->_name copy];
+    primaryDestination = [(NSString *)self->_name copy];
   }
 
   else
   {
-    v3 = [(FKPerson *)self primaryDestination];
-    if ([v3 fkMessageDestinationType] == 1)
+    primaryDestination = [(FKPerson *)self primaryDestination];
+    if ([primaryDestination fkMessageDestinationType] == 1)
     {
-      v4 = [FKUtility compressPhoneNumberString:v3];
+      v4 = [FKUtility compressPhoneNumberString:primaryDestination];
 
-      v3 = v4;
+      primaryDestination = v4;
     }
   }
 
-  return v3;
+  return primaryDestination;
 }
 
 - (id)primaryDestination
@@ -665,12 +665,12 @@ void __36__FKPerson_dictionaryRepresentation__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setPreferredReplyAs:(id)a3
+- (void)setPreferredReplyAs:(id)as
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  asCopy = as;
   preferredReplyAs = self->_preferredReplyAs;
-  if (v5 | preferredReplyAs && ![(NSString *)preferredReplyAs isEqualToString:v5])
+  if (asCopy | preferredReplyAs && ![(NSString *)preferredReplyAs isEqualToString:asCopy])
   {
     v7 = _FKGetLogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -689,11 +689,11 @@ void __36__FKPerson_dictionaryRepresentation__block_invoke(uint64_t a1)
       v20 = 2112;
       v21 = v10;
       v22 = 2112;
-      v23 = v5;
+      v23 = asCopy;
       _os_log_impl(&dword_24BC19000, v7, OS_LOG_TYPE_DEFAULT, "%s (%d) updating preferredReplyAs for [%@] (GUID %@): %@ -> %@", &v12, 0x3Au);
     }
 
-    objc_storeStrong(&self->_preferredReplyAs, a3);
+    objc_storeStrong(&self->_preferredReplyAs, as);
     self->_needsSave = 1;
     [(FKPerson *)self _postChangeNotification];
   }
@@ -701,9 +701,9 @@ void __36__FKPerson_dictionaryRepresentation__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)metadataValueForKey:(id)a3
+- (id)metadataValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -715,10 +715,10 @@ void __36__FKPerson_dictionaryRepresentation__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __32__FKPerson_metadataValueForKey___block_invoke;
   block[3] = &unk_27916A680;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(v5, block);
 
   v7 = v13[5];
@@ -737,10 +737,10 @@ uint64_t __32__FKPerson_metadataValueForKey___block_invoke(void *a1)
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)setMetadataValue:(id)a3 forKey:(id)a4
+- (void)setMetadataValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   objc_initWeak(&location, self);
   v8 = +[FKPerson sharedMetadataQueue];
   v11[0] = MEMORY[0x277D85DD0];
@@ -748,10 +748,10 @@ uint64_t __32__FKPerson_metadataValueForKey___block_invoke(void *a1)
   v11[2] = __36__FKPerson_setMetadataValue_forKey___block_invoke;
   v11[3] = &unk_27916A460;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = valueCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = valueCopy;
   dispatch_barrier_async(v8, v11);
 
   objc_destroyWeak(&v14);
@@ -771,10 +771,10 @@ void __36__FKPerson_setMetadataValue_forKey___block_invoke(uint64_t a1)
   [v5 _postChangeNotification];
 }
 
-- (void)addMetadataEntriesFromDictionary:(id)a3
+- (void)addMetadataEntriesFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionaryCopy];
   objc_initWeak(&location, self);
   v6 = +[FKPerson sharedMetadataQueue];
   block[0] = MEMORY[0x277D85DD0];
@@ -869,14 +869,14 @@ uint64_t __20__FKPerson_metadata__block_invoke(uint64_t a1)
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(FKPerson *)self displayName];
-  v7 = [(FKPerson *)self primaryDestination];
-  v8 = [v3 stringWithFormat:@"<%@: %p [%@]:%@>", v5, self, v6, v7];
+  displayName = [(FKPerson *)self displayName];
+  primaryDestination = [(FKPerson *)self primaryDestination];
+  v8 = [v3 stringWithFormat:@"<%@: %p [%@]:%@>", v5, self, displayName, primaryDestination];
 
   return v8;
 }
 
-- (void)copyABPersonWithAddressBook:(void *)a3
+- (void)copyABPersonWithAddressBook:(void *)book
 {
   result = [(NSString *)self->_abRecordGUID length];
   if (result)
@@ -889,15 +889,15 @@ uint64_t __20__FKPerson_metadata__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_setABRecordGUID:(id)a3
+- (void)_setABRecordGUID:(id)d
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  dCopy = d;
+  v5 = dCopy;
   abRecordGUID = self->_abRecordGUID;
   if (abRecordGUID)
   {
-    if ([(NSString *)v4 length])
+    if ([(NSString *)dCopy length])
     {
       v7 = v5;
     }
@@ -947,11 +947,11 @@ void __29__FKPerson__setABRecordGUID___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)isEqualToDictionaryRepresentation:(id)a3
+- (BOOL)isEqualToDictionaryRepresentation:(id)representation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"ABRecordGUID"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKey:@"ABRecordGUID"];
   abRecordGUID = self->_abRecordGUID;
   if ((v5 == 0) == (abRecordGUID != 0))
   {
@@ -965,7 +965,7 @@ void __29__FKPerson__setABRecordGUID___block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [v4 objectForKey:@"AllValues"];
+    v8 = [representationCopy objectForKey:@"AllValues"];
     if ([v8 count])
     {
       v18 = 0u;
@@ -1018,17 +1018,17 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)isLikePerson:(id)a3
+- (BOOL)isLikePerson:(id)person
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  personCopy = person;
+  v5 = personCopy;
+  if (personCopy)
   {
-    v6 = [v4 abRecordGUID];
+    abRecordGUID = [personCopy abRecordGUID];
     abRecordGUID = self->_abRecordGUID;
     if (abRecordGUID)
     {
-      v8 = v6 == 0;
+      v8 = abRecordGUID == 0;
     }
 
     else
@@ -1036,11 +1036,11 @@ LABEL_16:
       v8 = 1;
     }
 
-    if (v8 || ![(NSString *)abRecordGUID isEqualToString:v6])
+    if (v8 || ![(NSString *)abRecordGUID isEqualToString:abRecordGUID])
     {
-      v10 = [v5 allValues];
+      allValues = [v5 allValues];
       allValues = self->_allValues;
-      v9 = allValues && v10 && [(NSSet *)allValues intersectsSet:v10];
+      v9 = allValues && allValues && [(NSSet *)allValues intersectsSet:allValues];
     }
 
     else
@@ -1077,16 +1077,16 @@ void __35__FKPerson__postChangeNotification__block_invoke(uint64_t a1)
   [v3 postNotificationName:@"FKPersonValuesChangedNotification" object:WeakRetained];
 }
 
-- (void)_reconcile:(void *)a3 canPostChangeNotification:(BOOL)a4 shouldLogUpdates:(BOOL)a5
+- (void)_reconcile:(void *)_reconcile canPostChangeNotification:(BOOL)notification shouldLogUpdates:(BOOL)updates
 {
   v50 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!_reconcile)
   {
     goto LABEL_58;
   }
 
-  v5 = a5;
-  v6 = a4;
+  updatesCopy = updates;
+  notificationCopy = notification;
   v8 = ABAddressBookCopyUniqueIdentifier();
   if (v8 && ![(NSString *)self->_abDatabaseUID isEqualToString:v8])
   {
@@ -1107,7 +1107,7 @@ void __35__FKPerson__postChangeNotification__block_invoke(uint64_t a1)
     if (self->_abRecordID != RecordID)
     {
       v13 = RecordID;
-      if (v5)
+      if (updatesCopy)
       {
         v14 = _FKGetLogSystem();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1137,7 +1137,7 @@ void __35__FKPerson__postChangeNotification__block_invoke(uint64_t a1)
     name = self->_name;
     if (name | v17 && ![(NSString *)name isEqualToString:v17])
     {
-      if (v5)
+      if (updatesCopy)
       {
         v19 = _FKGetLogSystem();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -1167,7 +1167,7 @@ void __35__FKPerson__postChangeNotification__block_invoke(uint64_t a1)
     allValues = self->_allValues;
     if (allValues | v22 && ![(NSSet *)allValues isEqualToSet:v22])
     {
-      if (v5)
+      if (updatesCopy)
       {
         v24 = _FKGetLogSystem();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -1278,7 +1278,7 @@ void __35__FKPerson__postChangeNotification__block_invoke(uint64_t a1)
 LABEL_47:
     if (([v30 isEqualToString:self->_initials] & 1) == 0)
     {
-      if (v5)
+      if (updatesCopy)
       {
         v37 = _FKGetLogSystem();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -1311,7 +1311,7 @@ LABEL_53:
     CFRelease(v11);
   }
 
-  if ((v9 & v6) == 1)
+  if ((v9 & notificationCopy) == 1)
   {
     [(FKPerson *)self _postChangeNotification];
   }
@@ -1320,20 +1320,20 @@ LABEL_58:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)preferredNameForPerson:(void *)a3
++ (id)preferredNameForPerson:(void *)person
 {
-  if (a3)
+  if (person)
   {
     v4 = ABPersonCopyPreferredLinkedPersonForName();
     v5 = v4;
     if (v4)
     {
-      v6 = v4;
+      personCopy = v4;
     }
 
     else
     {
-      v6 = a3;
+      personCopy = person;
     }
 
     if (ABPersonGetShortNameFormatEnabled())
@@ -1348,7 +1348,7 @@ LABEL_58:
 
     if (ABPersonGetShortNamePreferNicknames())
     {
-      v9 = ABRecordCopyValue(v6, *MEMORY[0x277CE99B0]);
+      v9 = ABRecordCopyValue(personCopy, *MEMORY[0x277CE99B0]);
     }
 
     else
@@ -1388,24 +1388,24 @@ LABEL_58:
   return v8;
 }
 
-+ (id)allValuesForPerson:(void *)a3
++ (id)allValuesForPerson:(void *)person
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (person)
   {
     v4 = [MEMORY[0x277CBEB58] set];
-    v5 = [FKPerson _allEmailValuesForRecord:a3];
-    v6 = [FKPerson _allPhoneValuesForRecord:a3];
+    v5 = [FKPerson _allEmailValuesForRecord:person];
+    v6 = [FKPerson _allPhoneValuesForRecord:person];
     [v4 addObjectsFromArray:v5];
     [v4 addObjectsFromArray:v6];
-    if ([FKUtility personHasLinkages:a3])
+    if ([FKUtility personHasLinkages:person])
     {
       v17 = v5;
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v7 = ABPersonCopyArrayOfAllLinkedPeople(a3);
+      v7 = ABPersonCopyArrayOfAllLinkedPeople(person);
       v8 = [(__CFArray *)v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v8)
       {
@@ -1421,7 +1421,7 @@ LABEL_58:
             }
 
             v12 = *(*(&v18 + 1) + 8 * i);
-            if (v12 != a3)
+            if (v12 != person)
             {
               v13 = [FKPerson _allEmailValuesForRecord:*(*(&v18 + 1) + 8 * i)];
               v14 = [FKPerson _allPhoneValuesForRecord:v12];
@@ -1450,29 +1450,29 @@ LABEL_58:
   return v4;
 }
 
-- (id)_recordMatchDictionaryFromCFArray:(__CFArray *)a3 followLinks:(BOOL)a4 addressBook:(void *)a5
+- (id)_recordMatchDictionaryFromCFArray:(__CFArray *)array followLinks:(BOOL)links addressBook:(void *)book
 {
-  v6 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  Count = CFArrayGetCount(a3);
+  linksCopy = links;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  Count = CFArrayGetCount(array);
   if (Count >= 1)
   {
     v10 = Count;
     for (i = 0; i != v10; ++i)
     {
-      ValueAtIndex = CFArrayGetValueAtIndex(a3, i);
+      ValueAtIndex = CFArrayGetValueAtIndex(array, i);
       if (ValueAtIndex)
       {
         PersonWithRecordID = ValueAtIndex;
         RecordID = ABRecordGetRecordID(ValueAtIndex);
-        if (v6)
+        if (linksCopy)
         {
           v15 = *MEMORY[0x277CE9988];
           IntValue = ABRecordGetIntValue();
           if (IntValue != -1)
           {
             v17 = IntValue;
-            PersonWithRecordID = ABAddressBookGetPersonWithRecordID(a5, IntValue);
+            PersonWithRecordID = ABAddressBookGetPersonWithRecordID(book, IntValue);
             RecordID = v17;
           }
         }
@@ -1480,40 +1480,40 @@ LABEL_58:
         v18 = [MEMORY[0x277CCABB0] numberWithInt:RecordID];
         if (PersonWithRecordID)
         {
-          v19 = [v8 objectForKey:v18];
+          v19 = [dictionary objectForKey:v18];
 
           if (!v19)
           {
             v20 = [FKPerson allValuesForPerson:PersonWithRecordID];
-            [v8 setObject:v20 forKey:v18];
+            [dictionary setObject:v20 forKey:v18];
           }
         }
       }
     }
   }
 
-  return v8;
+  return dictionary;
 }
 
-- (float)_allValuesMatchScore:(id)a3
+- (float)_allValuesMatchScore:(id)score
 {
-  v4 = a3;
+  scoreCopy = score;
   v5 = [(NSSet *)self->_allValues mutableCopy];
-  [v5 intersectSet:v4];
+  [v5 intersectSet:scoreCopy];
   v6 = [v5 count];
   v7 = [(NSSet *)self->_allValues count];
   v8 = v6 / v7;
   if (v6 == v7)
   {
-    v8 = v8 + (([v4 count] - v6) * (1.0 / v7));
+    v8 = v8 + (([scoreCopy count] - v6) * (1.0 / v7));
   }
 
   return v8;
 }
 
-- (void)_bestRecordMatchFromDictionary:(id)a3 addressBook:(void *)a4
+- (void)_bestRecordMatchFromDictionary:(id)dictionary addressBook:(void *)book
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1529,7 +1529,7 @@ LABEL_58:
   v10[4] = self;
   v10[5] = v11;
   v10[6] = &v13;
-  [v6 enumerateKeysAndObjectsUsingBlock:v10];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v10];
   v7 = *(v14 + 6);
   if (v7 == -1)
   {
@@ -1538,7 +1538,7 @@ LABEL_58:
 
   else
   {
-    PersonWithRecordID = ABAddressBookGetPersonWithRecordID(a4, v7);
+    PersonWithRecordID = ABAddressBookGetPersonWithRecordID(book, v7);
   }
 
   _Block_object_dispose(v11, 8);
@@ -1559,26 +1559,26 @@ void __55__FKPerson__bestRecordMatchFromDictionary_addressBook___block_invoke(ui
   }
 }
 
-+ (id)_allPhoneValuesForRecord:(void *)a3
++ (id)_allPhoneValuesForRecord:(void *)record
 {
-  if (a3)
+  if (record)
   {
-    v3 = ABRecordCopyValue(a3, *MEMORY[0x277CE9A18]);
+    v3 = ABRecordCopyValue(record, *MEMORY[0x277CE9A18]);
     v4 = v3;
     if (v3)
     {
-      v5 = ABMultiValueCopyArrayOfAllValues(v3);
+      array = ABMultiValueCopyArrayOfAllValues(v3);
     }
 
     else
     {
-      v5 = [MEMORY[0x277CBEA60] array];
+      array = [MEMORY[0x277CBEA60] array];
     }
 
-    v7 = v5;
-    v8 = [MEMORY[0x277CBEB98] setWithArray:v5];
-    v9 = [v8 fkSanitizedDestinationSet];
-    v6 = [v9 allObjects];
+    v7 = array;
+    v8 = [MEMORY[0x277CBEB98] setWithArray:array];
+    fkSanitizedDestinationSet = [v8 fkSanitizedDestinationSet];
+    allObjects = [fkSanitizedDestinationSet allObjects];
 
     if (v4)
     {
@@ -1588,24 +1588,24 @@ void __55__FKPerson__bestRecordMatchFromDictionary_addressBook___block_invoke(ui
 
   else
   {
-    v6 = 0;
+    allObjects = 0;
   }
 
-  return v6;
+  return allObjects;
 }
 
-+ (id)_allPhoneValuesInSet:(id)a3
++ (id)_allPhoneValuesInSet:(id)set
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  setCopy = set;
+  if (setCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = setCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -1644,26 +1644,26 @@ void __55__FKPerson__bestRecordMatchFromDictionary_addressBook___block_invoke(ui
   return v4;
 }
 
-+ (id)_allEmailValuesForRecord:(void *)a3
++ (id)_allEmailValuesForRecord:(void *)record
 {
-  if (a3)
+  if (record)
   {
-    v3 = ABRecordCopyValue(a3, *MEMORY[0x277CE9888]);
+    v3 = ABRecordCopyValue(record, *MEMORY[0x277CE9888]);
     v4 = v3;
     if (v3)
     {
-      v5 = ABMultiValueCopyArrayOfAllValues(v3);
+      array = ABMultiValueCopyArrayOfAllValues(v3);
     }
 
     else
     {
-      v5 = [MEMORY[0x277CBEA60] array];
+      array = [MEMORY[0x277CBEA60] array];
     }
 
-    v7 = v5;
-    v8 = [MEMORY[0x277CBEB98] setWithArray:v5];
-    v9 = [v8 fkSanitizedDestinationSet];
-    v6 = [v9 allObjects];
+    v7 = array;
+    v8 = [MEMORY[0x277CBEB98] setWithArray:array];
+    fkSanitizedDestinationSet = [v8 fkSanitizedDestinationSet];
+    allObjects = [fkSanitizedDestinationSet allObjects];
 
     if (v4)
     {
@@ -1673,24 +1673,24 @@ void __55__FKPerson__bestRecordMatchFromDictionary_addressBook___block_invoke(ui
 
   else
   {
-    v6 = 0;
+    allObjects = 0;
   }
 
-  return v6;
+  return allObjects;
 }
 
-+ (id)_allEmailValuesInSet:(id)a3
++ (id)_allEmailValuesInSet:(id)set
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  setCopy = set;
+  if (setCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = setCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -1729,12 +1729,12 @@ void __55__FKPerson__bestRecordMatchFromDictionary_addressBook___block_invoke(ui
   return v4;
 }
 
-+ (int)addValue:(void *)a3 withLabel:(__CFString *)a4 toPerson:(void *)a5 property:(int)a6
++ (int)addValue:(void *)value withLabel:(__CFString *)label toPerson:(void *)person property:(int)property
 {
   outIdentifier = -1;
-  if ((ABPersonGetTypeOfProperty(a6) & 0x100) != 0)
+  if ((ABPersonGetTypeOfProperty(property) & 0x100) != 0)
   {
-    v11 = ABRecordCopyValue(a5, a6);
+    v11 = ABRecordCopyValue(person, property);
     if (v11)
     {
       v12 = v11;
@@ -1744,19 +1744,19 @@ void __55__FKPerson__bestRecordMatchFromDictionary_addressBook___block_invoke(ui
 
     else
     {
-      TypeOfProperty = ABPersonGetTypeOfProperty(a6);
+      TypeOfProperty = ABPersonGetTypeOfProperty(property);
       MutableCopy = ABMultiValueCreateMutable(TypeOfProperty);
     }
 
-    ABMultiValueAddValueAndLabel(MutableCopy, a3, a4, &outIdentifier);
-    ABRecordSetValue(a5, a6, MutableCopy, 0);
+    ABMultiValueAddValueAndLabel(MutableCopy, value, label, &outIdentifier);
+    ABRecordSetValue(person, property, MutableCopy, 0);
     CFRelease(MutableCopy);
     return outIdentifier;
   }
 
   else
   {
-    ABRecordSetValue(a5, a6, a3, 0);
+    ABRecordSetValue(person, property, value, 0);
     return -1;
   }
 }

@@ -4,20 +4,20 @@
 + (NSPredicate)predicateForSubgroupsInGroupWithIdentifier:(NSString *)parentGroupIdentifier;
 + (id)identifierProvider;
 + (id)makeIdentifierString;
-+ (id)predicateForGroupsWithMemberContact:(id)a3 includeAllParentGroups:(BOOL)a4;
-+ (id)predicateForGroupsWithMemberGroup:(id)a3 includeAllParentGroups:(BOOL)a4;
-+ (id)predicateForGroupsWithNameMatching:(id)a3;
-+ (id)predicateForiOSLegacyIdentifier:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (CNGroup)initWithCoder:(id)a3;
-- (CNGroup)initWithGroup:(id)a3;
-- (CNGroup)initWithIdentifier:(id)a3 name:(id)a4 creationDate:(id)a5 modificationDate:(id)a6 iOSLegacyIdentifier:(int)a7;
-- (CNGroup)initWithName:(id)a3;
++ (id)predicateForGroupsWithMemberContact:(id)contact includeAllParentGroups:(BOOL)groups;
++ (id)predicateForGroupsWithMemberGroup:(id)group includeAllParentGroups:(BOOL)groups;
++ (id)predicateForGroupsWithNameMatching:(id)matching;
++ (id)predicateForiOSLegacyIdentifier:(int)identifier;
+- (BOOL)isEqual:(id)equal;
+- (CNGroup)initWithCoder:(id)coder;
+- (CNGroup)initWithGroup:(id)group;
+- (CNGroup)initWithIdentifier:(id)identifier name:(id)name creationDate:(id)date modificationDate:(id)modificationDate iOSLegacyIdentifier:(int)legacyIdentifier;
+- (CNGroup)initWithName:(id)name;
 - (CNGroup)snapshot;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNGroup
@@ -45,110 +45,110 @@ uint64_t __29__CNGroup_identifierProvider__block_invoke()
 
 + (id)makeIdentifierString
 {
-  v2 = [a1 identifierProvider];
-  v3 = [v2 makeIdentifier];
+  identifierProvider = [self identifierProvider];
+  makeIdentifier = [identifierProvider makeIdentifier];
 
-  return v3;
+  return makeIdentifier;
 }
 
-- (CNGroup)initWithName:(id)a3
+- (CNGroup)initWithName:(id)name
 {
-  v4 = a3;
-  v5 = [objc_opt_class() makeIdentifier];
-  v6 = [(CNGroup *)self initWithIdentifier:v5 name:v4];
+  nameCopy = name;
+  makeIdentifier = [objc_opt_class() makeIdentifier];
+  v6 = [(CNGroup *)self initWithIdentifier:makeIdentifier name:nameCopy];
 
   return v6;
 }
 
-- (CNGroup)initWithIdentifier:(id)a3 name:(id)a4 creationDate:(id)a5 modificationDate:(id)a6 iOSLegacyIdentifier:(int)a7
+- (CNGroup)initWithIdentifier:(id)identifier name:(id)name creationDate:(id)date modificationDate:(id)modificationDate iOSLegacyIdentifier:(int)legacyIdentifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  dateCopy = date;
+  modificationDateCopy = modificationDate;
   v29.receiver = self;
   v29.super_class = CNGroup;
   v16 = [(CNGroup *)&v29 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [identifierCopy copy];
     identifier = v16->_identifier;
     v16->_identifier = v17;
 
     v19 = *MEMORY[0x1E69964C0];
-    v20 = [v13 copy];
+    v20 = [nameCopy copy];
     v21 = (*(v19 + 16))(v19, v20);
     name = v16->_name;
     v16->_name = v21;
 
-    v23 = [v14 copy];
+    v23 = [dateCopy copy];
     creationDate = v16->_creationDate;
     v16->_creationDate = v23;
 
-    v25 = [v15 copy];
+    v25 = [modificationDateCopy copy];
     modificationDate = v16->_modificationDate;
     v16->_modificationDate = v25;
 
-    v16->_iOSLegacyIdentifier = a7;
+    v16->_iOSLegacyIdentifier = legacyIdentifier;
     v27 = v16;
   }
 
   return v16;
 }
 
-- (CNGroup)initWithGroup:(id)a3
+- (CNGroup)initWithGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v37.receiver = self;
   v37.super_class = CNGroup;
   v5 = [(CNGroup *)&v37 init];
   if (v5)
   {
-    v6 = [v4 identifier];
-    v7 = [v6 copy];
+    identifier = [groupCopy identifier];
+    v7 = [identifier copy];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
     v9 = *MEMORY[0x1E69964C0];
-    v10 = [v4 name];
-    v11 = [v10 copy];
+    name = [groupCopy name];
+    v11 = [name copy];
     v12 = (*(v9 + 16))(v9, v11);
     name = v5->_name;
     v5->_name = v12;
 
-    v5->_iOSLegacyIdentifier = [v4 iOSLegacyIdentifier];
-    v14 = [v4 creationDate];
-    v15 = [v14 copy];
+    v5->_iOSLegacyIdentifier = [groupCopy iOSLegacyIdentifier];
+    creationDate = [groupCopy creationDate];
+    v15 = [creationDate copy];
     creationDate = v5->_creationDate;
     v5->_creationDate = v15;
 
-    v17 = [v4 modificationDate];
-    v18 = [v17 copy];
+    modificationDate = [groupCopy modificationDate];
+    v18 = [modificationDate copy];
     modificationDate = v5->_modificationDate;
     v5->_modificationDate = v18;
 
-    v20 = [v4 externalIdentifier];
-    v21 = [v20 copy];
+    externalIdentifier = [groupCopy externalIdentifier];
+    v21 = [externalIdentifier copy];
     externalIdentifier = v5->_externalIdentifier;
     v5->_externalIdentifier = v21;
 
-    v23 = [v4 externalRepresentation];
-    v24 = [v23 copy];
+    externalRepresentation = [groupCopy externalRepresentation];
+    v24 = [externalRepresentation copy];
     externalRepresentation = v5->_externalRepresentation;
     v5->_externalRepresentation = v24;
 
-    v26 = [v4 externalModificationTag];
-    v27 = [v26 copy];
+    externalModificationTag = [groupCopy externalModificationTag];
+    v27 = [externalModificationTag copy];
     externalModificationTag = v5->_externalModificationTag;
     v5->_externalModificationTag = v27;
 
-    v29 = [v4 externalUUID];
-    v30 = [v29 copy];
+    externalUUID = [groupCopy externalUUID];
+    v30 = [externalUUID copy];
     externalUUID = v5->_externalUUID;
     v5->_externalUUID = v30;
 
-    v32 = [v4 snapshot];
-    v33 = [v32 copy];
+    snapshot = [groupCopy snapshot];
+    v33 = [snapshot copy];
     snapshot = v5->_snapshot;
     v5->_snapshot = v33;
 
@@ -158,20 +158,20 @@ uint64_t __29__CNGroup_identifierProvider__block_invoke()
   return v5;
 }
 
-- (CNGroup)initWithCoder:(id)a3
+- (CNGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v37.receiver = self;
   v37.super_class = CNGroup;
   v5 = [(CNGroup *)&v37 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     v7 = [v6 copy];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     v10 = [v9 copy];
     name = v5->_name;
     v5->_name = v10;
@@ -181,32 +181,32 @@ uint64_t __29__CNGroup_identifierProvider__block_invoke()
       v5->_name = &stru_1F094DAB0;
     }
 
-    v5->_iOSLegacyIdentifier = [v4 decodeInt32ForKey:@"iOSLegacyIdentifier"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v5->_iOSLegacyIdentifier = [coderCopy decodeInt32ForKey:@"iOSLegacyIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     v13 = [v12 copy];
     creationDate = v5->_creationDate;
     v5->_creationDate = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modificationDate"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modificationDate"];
     v16 = [v15 copy];
     modificationDate = v5->_modificationDate;
     v5->_modificationDate = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalIdentifier"];
     externalIdentifier = v5->_externalIdentifier;
     v5->_externalIdentifier = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalRepresentation"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalRepresentation"];
     v21 = [v20 copy];
     externalRepresentation = v5->_externalRepresentation;
     v5->_externalRepresentation = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalModificationTag"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalModificationTag"];
     v24 = [v23 copy];
     externalModificationTag = v5->_externalModificationTag;
     v5->_externalModificationTag = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalUUID"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalUUID"];
     v27 = [v26 copy];
     externalUUID = v5->_externalUUID;
     v5->_externalUUID = v27;
@@ -214,7 +214,7 @@ uint64_t __29__CNGroup_identifierProvider__block_invoke()
     v29 = MEMORY[0x1E695DFD8];
     v30 = objc_opt_class();
     v31 = [v29 setWithObjects:{v30, objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"snapshot"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"snapshot"];
     v33 = [v32 copy];
     snapshot = v5->_snapshot;
     v5->_snapshot = v33;
@@ -225,29 +225,29 @@ uint64_t __29__CNGroup_identifierProvider__block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_name forKey:@"_name"];
-  [v5 encodeInt32:self->_iOSLegacyIdentifier forKey:@"iOSLegacyIdentifier"];
-  [v5 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v5 encodeObject:self->_modificationDate forKey:@"modificationDate"];
-  [v5 encodeObject:self->_externalIdentifier forKey:@"externalIdentifier"];
-  [v5 encodeObject:self->_externalRepresentation forKey:@"externalRepresentation"];
-  [v5 encodeObject:self->_externalModificationTag forKey:@"externalModificationTag"];
-  [v5 encodeObject:self->_externalUUID forKey:@"externalUUID"];
-  [v5 encodeObject:self->_snapshot forKey:@"snapshot"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_name forKey:@"_name"];
+  [coderCopy encodeInt32:self->_iOSLegacyIdentifier forKey:@"iOSLegacyIdentifier"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeObject:self->_modificationDate forKey:@"modificationDate"];
+  [coderCopy encodeObject:self->_externalIdentifier forKey:@"externalIdentifier"];
+  [coderCopy encodeObject:self->_externalRepresentation forKey:@"externalRepresentation"];
+  [coderCopy encodeObject:self->_externalModificationTag forKey:@"externalModificationTag"];
+  [coderCopy encodeObject:self->_externalUUID forKey:@"externalUUID"];
+  [coderCopy encodeObject:self->_snapshot forKey:@"snapshot"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(CNGroup *)[CNMutableGroup alloc] initWithGroup:self];
   snapshot = self->_snapshot;
-  v6 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (snapshot == v6)
+  if (snapshot == null)
   {
     [(CNMutableGroup *)v4 setSnapshot:self];
   }
@@ -258,13 +258,13 @@ uint64_t __29__CNGroup_identifierProvider__block_invoke()
 - (CNGroup)snapshot
 {
   v3 = self->_snapshot;
-  v4 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v3 == v4)
+  if (v3 == null)
   {
-    v5 = self;
+    selfCopy = self;
 
-    v3 = v5;
+    v3 = selfCopy;
   }
 
   return v3;
@@ -284,14 +284,14 @@ uint64_t __29__CNGroup_identifierProvider__block_invoke()
   v11 = [v3 appendObject:self->_externalRepresentation withName:@"externalRepresentation"];
   v12 = [v3 appendObject:self->_externalModificationTag withName:@"externalModificationTag"];
   v13 = [v3 appendObject:self->_externalUUID withName:@"externalUUID"];
-  v14 = [v3 build];
+  build = [v3 build];
 
-  return v14;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v23 = MEMORY[0x1E69966F0];
   v22 = objc_opt_class();
   v40[0] = MEMORY[0x1E69E9820];
@@ -299,7 +299,7 @@ uint64_t __29__CNGroup_identifierProvider__block_invoke()
   v40[2] = __19__CNGroup_isEqual___block_invoke;
   v40[3] = &unk_1E7412228;
   v40[4] = self;
-  v41 = v4;
+  v41 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __19__CNGroup_isEqual___block_invoke_2;
@@ -614,35 +614,35 @@ uint64_t __15__CNGroup_hash__block_invoke_9(uint64_t a1)
   return v4;
 }
 
-+ (id)predicateForGroupsWithMemberContact:(id)a3 includeAllParentGroups:(BOOL)a4
++ (id)predicateForGroupsWithMemberContact:(id)contact includeAllParentGroups:(BOOL)groups
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[CNiOSABGroupsWithMembersPredicate alloc] initWithContact:v5 includeAllParentGroups:v4];
+  groupsCopy = groups;
+  contactCopy = contact;
+  v6 = [[CNiOSABGroupsWithMembersPredicate alloc] initWithContact:contactCopy includeAllParentGroups:groupsCopy];
 
   return v6;
 }
 
-+ (id)predicateForGroupsWithMemberGroup:(id)a3 includeAllParentGroups:(BOOL)a4
++ (id)predicateForGroupsWithMemberGroup:(id)group includeAllParentGroups:(BOOL)groups
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[CNiOSABGroupsWithMembersPredicate alloc] initWithGroup:v5 includeAllParentGroups:v4];
+  groupsCopy = groups;
+  groupCopy = group;
+  v6 = [[CNiOSABGroupsWithMembersPredicate alloc] initWithGroup:groupCopy includeAllParentGroups:groupsCopy];
 
   return v6;
 }
 
-+ (id)predicateForGroupsWithNameMatching:(id)a3
++ (id)predicateForGroupsWithNameMatching:(id)matching
 {
-  v3 = a3;
-  v4 = [[CNiOSABGroupNameMatchingPredicate alloc] initWithName:v3];
+  matchingCopy = matching;
+  v4 = [[CNiOSABGroupNameMatchingPredicate alloc] initWithName:matchingCopy];
 
   return v4;
 }
 
-+ (id)predicateForiOSLegacyIdentifier:(int)a3
++ (id)predicateForiOSLegacyIdentifier:(int)identifier
 {
-  v3 = [[CNiOSABGroupiOSLegacyIdentifierPredicate alloc] initWithiOSLegacyIdentifier:*&a3];
+  v3 = [[CNiOSABGroupiOSLegacyIdentifierPredicate alloc] initWithiOSLegacyIdentifier:*&identifier];
 
   return v3;
 }

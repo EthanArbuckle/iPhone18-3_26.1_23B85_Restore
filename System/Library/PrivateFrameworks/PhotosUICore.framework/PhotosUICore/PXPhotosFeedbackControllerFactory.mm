@@ -6,13 +6,13 @@
 
 + (id)makeFeedbackController
 {
-  v2 = NSClassFromString(&cfstr_Photosfeedback.isa);
-  if (v2)
+  makeFeedbackController = NSClassFromString(&cfstr_Photosfeedback.isa);
+  if (makeFeedbackController)
   {
-    v2 = [v2 makeFeedbackController];
+    makeFeedbackController = [makeFeedbackController makeFeedbackController];
   }
 
-  return v2;
+  return makeFeedbackController;
 }
 
 @end

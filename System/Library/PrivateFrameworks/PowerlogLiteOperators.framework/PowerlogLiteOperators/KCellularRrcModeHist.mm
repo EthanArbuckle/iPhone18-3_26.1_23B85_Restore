@@ -1,47 +1,47 @@
 @interface KCellularRrcModeHist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConnDurBin0:(BOOL)a3;
-- (void)setHasConnDurBin10:(BOOL)a3;
-- (void)setHasConnDurBin11:(BOOL)a3;
-- (void)setHasConnDurBin12:(BOOL)a3;
-- (void)setHasConnDurBin1:(BOOL)a3;
-- (void)setHasConnDurBin2:(BOOL)a3;
-- (void)setHasConnDurBin3:(BOOL)a3;
-- (void)setHasConnDurBin4:(BOOL)a3;
-- (void)setHasConnDurBin5:(BOOL)a3;
-- (void)setHasConnDurBin6:(BOOL)a3;
-- (void)setHasConnDurBin7:(BOOL)a3;
-- (void)setHasConnDurBin8:(BOOL)a3;
-- (void)setHasConnDurBin9:(BOOL)a3;
-- (void)setHasDurationMs:(BOOL)a3;
-- (void)setHasIdleDurBin0:(BOOL)a3;
-- (void)setHasIdleDurBin10:(BOOL)a3;
-- (void)setHasIdleDurBin11:(BOOL)a3;
-- (void)setHasIdleDurBin12:(BOOL)a3;
-- (void)setHasIdleDurBin1:(BOOL)a3;
-- (void)setHasIdleDurBin2:(BOOL)a3;
-- (void)setHasIdleDurBin3:(BOOL)a3;
-- (void)setHasIdleDurBin4:(BOOL)a3;
-- (void)setHasIdleDurBin5:(BOOL)a3;
-- (void)setHasIdleDurBin6:(BOOL)a3;
-- (void)setHasIdleDurBin7:(BOOL)a3;
-- (void)setHasIdleDurBin8:(BOOL)a3;
-- (void)setHasIdleDurBin9:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasConnDurBin0:(BOOL)bin0;
+- (void)setHasConnDurBin10:(BOOL)bin10;
+- (void)setHasConnDurBin11:(BOOL)bin11;
+- (void)setHasConnDurBin12:(BOOL)bin12;
+- (void)setHasConnDurBin1:(BOOL)bin1;
+- (void)setHasConnDurBin2:(BOOL)bin2;
+- (void)setHasConnDurBin3:(BOOL)bin3;
+- (void)setHasConnDurBin4:(BOOL)bin4;
+- (void)setHasConnDurBin5:(BOOL)bin5;
+- (void)setHasConnDurBin6:(BOOL)bin6;
+- (void)setHasConnDurBin7:(BOOL)bin7;
+- (void)setHasConnDurBin8:(BOOL)bin8;
+- (void)setHasConnDurBin9:(BOOL)bin9;
+- (void)setHasDurationMs:(BOOL)ms;
+- (void)setHasIdleDurBin0:(BOOL)bin0;
+- (void)setHasIdleDurBin10:(BOOL)bin10;
+- (void)setHasIdleDurBin11:(BOOL)bin11;
+- (void)setHasIdleDurBin12:(BOOL)bin12;
+- (void)setHasIdleDurBin1:(BOOL)bin1;
+- (void)setHasIdleDurBin2:(BOOL)bin2;
+- (void)setHasIdleDurBin3:(BOOL)bin3;
+- (void)setHasIdleDurBin4:(BOOL)bin4;
+- (void)setHasIdleDurBin5:(BOOL)bin5;
+- (void)setHasIdleDurBin6:(BOOL)bin6;
+- (void)setHasIdleDurBin7:(BOOL)bin7;
+- (void)setHasIdleDurBin8:(BOOL)bin8;
+- (void)setHasIdleDurBin9:(BOOL)bin9;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularRrcModeHist
 
-- (void)setHasDurationMs:(BOOL)a3
+- (void)setHasDurationMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x4000;
   }
@@ -54,9 +54,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasIdleDurBin0:(BOOL)a3
+- (void)setHasIdleDurBin0:(BOOL)bin0
 {
-  if (a3)
+  if (bin0)
   {
     v3 = 0x8000;
   }
@@ -69,9 +69,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasIdleDurBin1:(BOOL)a3
+- (void)setHasIdleDurBin1:(BOOL)bin1
 {
-  if (a3)
+  if (bin1)
   {
     v3 = 0x10000;
   }
@@ -84,9 +84,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasIdleDurBin2:(BOOL)a3
+- (void)setHasIdleDurBin2:(BOOL)bin2
 {
-  if (a3)
+  if (bin2)
   {
     v3 = 0x100000;
   }
@@ -99,9 +99,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasIdleDurBin3:(BOOL)a3
+- (void)setHasIdleDurBin3:(BOOL)bin3
 {
-  if (a3)
+  if (bin3)
   {
     v3 = 0x200000;
   }
@@ -114,9 +114,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasIdleDurBin4:(BOOL)a3
+- (void)setHasIdleDurBin4:(BOOL)bin4
 {
-  if (a3)
+  if (bin4)
   {
     v3 = 0x400000;
   }
@@ -129,9 +129,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasIdleDurBin5:(BOOL)a3
+- (void)setHasIdleDurBin5:(BOOL)bin5
 {
-  if (a3)
+  if (bin5)
   {
     v3 = 0x800000;
   }
@@ -144,9 +144,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasIdleDurBin6:(BOOL)a3
+- (void)setHasIdleDurBin6:(BOOL)bin6
 {
-  if (a3)
+  if (bin6)
   {
     v3 = 0x1000000;
   }
@@ -159,9 +159,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasIdleDurBin7:(BOOL)a3
+- (void)setHasIdleDurBin7:(BOOL)bin7
 {
-  if (a3)
+  if (bin7)
   {
     v3 = 0x2000000;
   }
@@ -174,9 +174,9 @@
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasIdleDurBin8:(BOOL)a3
+- (void)setHasIdleDurBin8:(BOOL)bin8
 {
-  if (a3)
+  if (bin8)
   {
     v3 = 0x4000000;
   }
@@ -189,9 +189,9 @@
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasIdleDurBin9:(BOOL)a3
+- (void)setHasIdleDurBin9:(BOOL)bin9
 {
-  if (a3)
+  if (bin9)
   {
     v3 = 0x8000000;
   }
@@ -204,9 +204,9 @@
   self->_has = (*&self->_has & 0xF7FFFFFF | v3);
 }
 
-- (void)setHasIdleDurBin10:(BOOL)a3
+- (void)setHasIdleDurBin10:(BOOL)bin10
 {
-  if (a3)
+  if (bin10)
   {
     v3 = 0x20000;
   }
@@ -219,9 +219,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasIdleDurBin11:(BOOL)a3
+- (void)setHasIdleDurBin11:(BOOL)bin11
 {
-  if (a3)
+  if (bin11)
   {
     v3 = 0x40000;
   }
@@ -234,9 +234,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasIdleDurBin12:(BOOL)a3
+- (void)setHasIdleDurBin12:(BOOL)bin12
 {
-  if (a3)
+  if (bin12)
   {
     v3 = 0x80000;
   }
@@ -249,9 +249,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasConnDurBin0:(BOOL)a3
+- (void)setHasConnDurBin0:(BOOL)bin0
 {
-  if (a3)
+  if (bin0)
   {
     v3 = 2;
   }
@@ -264,9 +264,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasConnDurBin1:(BOOL)a3
+- (void)setHasConnDurBin1:(BOOL)bin1
 {
-  if (a3)
+  if (bin1)
   {
     v3 = 4;
   }
@@ -279,9 +279,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasConnDurBin2:(BOOL)a3
+- (void)setHasConnDurBin2:(BOOL)bin2
 {
-  if (a3)
+  if (bin2)
   {
     v3 = 64;
   }
@@ -294,9 +294,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasConnDurBin3:(BOOL)a3
+- (void)setHasConnDurBin3:(BOOL)bin3
 {
-  if (a3)
+  if (bin3)
   {
     v3 = 128;
   }
@@ -309,9 +309,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasConnDurBin4:(BOOL)a3
+- (void)setHasConnDurBin4:(BOOL)bin4
 {
-  if (a3)
+  if (bin4)
   {
     v3 = 256;
   }
@@ -324,9 +324,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasConnDurBin5:(BOOL)a3
+- (void)setHasConnDurBin5:(BOOL)bin5
 {
-  if (a3)
+  if (bin5)
   {
     v3 = 512;
   }
@@ -339,9 +339,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasConnDurBin6:(BOOL)a3
+- (void)setHasConnDurBin6:(BOOL)bin6
 {
-  if (a3)
+  if (bin6)
   {
     v3 = 1024;
   }
@@ -354,9 +354,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasConnDurBin7:(BOOL)a3
+- (void)setHasConnDurBin7:(BOOL)bin7
 {
-  if (a3)
+  if (bin7)
   {
     v3 = 2048;
   }
@@ -369,9 +369,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasConnDurBin8:(BOOL)a3
+- (void)setHasConnDurBin8:(BOOL)bin8
 {
-  if (a3)
+  if (bin8)
   {
     v3 = 4096;
   }
@@ -384,9 +384,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasConnDurBin9:(BOOL)a3
+- (void)setHasConnDurBin9:(BOOL)bin9
 {
-  if (a3)
+  if (bin9)
   {
     v3 = 0x2000;
   }
@@ -399,9 +399,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasConnDurBin10:(BOOL)a3
+- (void)setHasConnDurBin10:(BOOL)bin10
 {
-  if (a3)
+  if (bin10)
   {
     v3 = 8;
   }
@@ -414,9 +414,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasConnDurBin11:(BOOL)a3
+- (void)setHasConnDurBin11:(BOOL)bin11
 {
-  if (a3)
+  if (bin11)
   {
     v3 = 16;
   }
@@ -429,9 +429,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasConnDurBin12:(BOOL)a3
+- (void)setHasConnDurBin12:(BOOL)bin12
 {
-  if (a3)
+  if (bin12)
   {
     v3 = 32;
   }
@@ -444,9 +444,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 0x10000000;
   }
@@ -465,20 +465,20 @@
   v8.receiver = self;
   v8.super_class = KCellularRrcModeHist;
   v4 = [(KCellularRrcModeHist *)&v8 description];
-  v5 = [(KCellularRrcModeHist *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(KCellularRrcModeHist *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (*&has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v7 forKey:@"timestamp"];
+    [dictionary setObject:v7 forKey:@"timestamp"];
 
     has = self->_has;
     if ((*&has & 0x4000) == 0)
@@ -499,7 +499,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_durationMs];
-  [v3 setObject:v8 forKey:@"duration_ms"];
+  [dictionary setObject:v8 forKey:@"duration_ms"];
 
   has = self->_has;
   if ((*&has & 0x8000) == 0)
@@ -515,7 +515,7 @@ LABEL_4:
 
 LABEL_36:
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_idleDurBin0];
-  [v3 setObject:v9 forKey:@"idle_dur_bin_0"];
+  [dictionary setObject:v9 forKey:@"idle_dur_bin_0"];
 
   has = self->_has;
   if ((*&has & 0x10000) == 0)
@@ -531,7 +531,7 @@ LABEL_5:
 
 LABEL_37:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_idleDurBin1];
-  [v3 setObject:v10 forKey:@"idle_dur_bin_1"];
+  [dictionary setObject:v10 forKey:@"idle_dur_bin_1"];
 
   has = self->_has;
   if ((*&has & 0x100000) == 0)
@@ -547,7 +547,7 @@ LABEL_6:
 
 LABEL_38:
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_idleDurBin2];
-  [v3 setObject:v11 forKey:@"idle_dur_bin_2"];
+  [dictionary setObject:v11 forKey:@"idle_dur_bin_2"];
 
   has = self->_has;
   if ((*&has & 0x200000) == 0)
@@ -563,7 +563,7 @@ LABEL_7:
 
 LABEL_39:
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_idleDurBin3];
-  [v3 setObject:v12 forKey:@"idle_dur_bin_3"];
+  [dictionary setObject:v12 forKey:@"idle_dur_bin_3"];
 
   has = self->_has;
   if ((*&has & 0x400000) == 0)
@@ -579,7 +579,7 @@ LABEL_8:
 
 LABEL_40:
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_idleDurBin4];
-  [v3 setObject:v13 forKey:@"idle_dur_bin_4"];
+  [dictionary setObject:v13 forKey:@"idle_dur_bin_4"];
 
   has = self->_has;
   if ((*&has & 0x800000) == 0)
@@ -595,7 +595,7 @@ LABEL_9:
 
 LABEL_41:
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_idleDurBin5];
-  [v3 setObject:v14 forKey:@"idle_dur_bin_5"];
+  [dictionary setObject:v14 forKey:@"idle_dur_bin_5"];
 
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
@@ -611,7 +611,7 @@ LABEL_10:
 
 LABEL_42:
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_idleDurBin6];
-  [v3 setObject:v15 forKey:@"idle_dur_bin_6"];
+  [dictionary setObject:v15 forKey:@"idle_dur_bin_6"];
 
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
@@ -627,7 +627,7 @@ LABEL_11:
 
 LABEL_43:
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_idleDurBin7];
-  [v3 setObject:v16 forKey:@"idle_dur_bin_7"];
+  [dictionary setObject:v16 forKey:@"idle_dur_bin_7"];
 
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
@@ -643,7 +643,7 @@ LABEL_12:
 
 LABEL_44:
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_idleDurBin8];
-  [v3 setObject:v17 forKey:@"idle_dur_bin_8"];
+  [dictionary setObject:v17 forKey:@"idle_dur_bin_8"];
 
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
@@ -659,7 +659,7 @@ LABEL_13:
 
 LABEL_45:
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_idleDurBin9];
-  [v3 setObject:v18 forKey:@"idle_dur_bin_9"];
+  [dictionary setObject:v18 forKey:@"idle_dur_bin_9"];
 
   has = self->_has;
   if ((*&has & 0x20000) == 0)
@@ -675,7 +675,7 @@ LABEL_14:
 
 LABEL_46:
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_idleDurBin10];
-  [v3 setObject:v19 forKey:@"idle_dur_bin_10"];
+  [dictionary setObject:v19 forKey:@"idle_dur_bin_10"];
 
   has = self->_has;
   if ((*&has & 0x40000) == 0)
@@ -691,7 +691,7 @@ LABEL_15:
 
 LABEL_47:
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_idleDurBin11];
-  [v3 setObject:v20 forKey:@"idle_dur_bin_11"];
+  [dictionary setObject:v20 forKey:@"idle_dur_bin_11"];
 
   has = self->_has;
   if ((*&has & 0x80000) == 0)
@@ -707,7 +707,7 @@ LABEL_16:
 
 LABEL_48:
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_idleDurBin12];
-  [v3 setObject:v21 forKey:@"idle_dur_bin_12"];
+  [dictionary setObject:v21 forKey:@"idle_dur_bin_12"];
 
   has = self->_has;
   if ((*&has & 2) == 0)
@@ -723,7 +723,7 @@ LABEL_17:
 
 LABEL_49:
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_connDurBin0];
-  [v3 setObject:v22 forKey:@"conn_dur_bin_0"];
+  [dictionary setObject:v22 forKey:@"conn_dur_bin_0"];
 
   has = self->_has;
   if ((*&has & 4) == 0)
@@ -739,7 +739,7 @@ LABEL_18:
 
 LABEL_50:
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_connDurBin1];
-  [v3 setObject:v23 forKey:@"conn_dur_bin_1"];
+  [dictionary setObject:v23 forKey:@"conn_dur_bin_1"];
 
   has = self->_has;
   if ((*&has & 0x40) == 0)
@@ -755,7 +755,7 @@ LABEL_19:
 
 LABEL_51:
   v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_connDurBin2];
-  [v3 setObject:v24 forKey:@"conn_dur_bin_2"];
+  [dictionary setObject:v24 forKey:@"conn_dur_bin_2"];
 
   has = self->_has;
   if ((*&has & 0x80) == 0)
@@ -771,7 +771,7 @@ LABEL_20:
 
 LABEL_52:
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_connDurBin3];
-  [v3 setObject:v25 forKey:@"conn_dur_bin_3"];
+  [dictionary setObject:v25 forKey:@"conn_dur_bin_3"];
 
   has = self->_has;
   if ((*&has & 0x100) == 0)
@@ -787,7 +787,7 @@ LABEL_21:
 
 LABEL_53:
   v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_connDurBin4];
-  [v3 setObject:v26 forKey:@"conn_dur_bin_4"];
+  [dictionary setObject:v26 forKey:@"conn_dur_bin_4"];
 
   has = self->_has;
   if ((*&has & 0x200) == 0)
@@ -803,7 +803,7 @@ LABEL_22:
 
 LABEL_54:
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_connDurBin5];
-  [v3 setObject:v27 forKey:@"conn_dur_bin_5"];
+  [dictionary setObject:v27 forKey:@"conn_dur_bin_5"];
 
   has = self->_has;
   if ((*&has & 0x400) == 0)
@@ -819,7 +819,7 @@ LABEL_23:
 
 LABEL_55:
   v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_connDurBin6];
-  [v3 setObject:v28 forKey:@"conn_dur_bin_6"];
+  [dictionary setObject:v28 forKey:@"conn_dur_bin_6"];
 
   has = self->_has;
   if ((*&has & 0x800) == 0)
@@ -835,7 +835,7 @@ LABEL_24:
 
 LABEL_56:
   v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_connDurBin7];
-  [v3 setObject:v29 forKey:@"conn_dur_bin_7"];
+  [dictionary setObject:v29 forKey:@"conn_dur_bin_7"];
 
   has = self->_has;
   if ((*&has & 0x1000) == 0)
@@ -851,7 +851,7 @@ LABEL_25:
 
 LABEL_57:
   v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_connDurBin8];
-  [v3 setObject:v30 forKey:@"conn_dur_bin_8"];
+  [dictionary setObject:v30 forKey:@"conn_dur_bin_8"];
 
   has = self->_has;
   if ((*&has & 0x2000) == 0)
@@ -867,7 +867,7 @@ LABEL_26:
 
 LABEL_58:
   v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_connDurBin9];
-  [v3 setObject:v31 forKey:@"conn_dur_bin_9"];
+  [dictionary setObject:v31 forKey:@"conn_dur_bin_9"];
 
   has = self->_has;
   if ((*&has & 8) == 0)
@@ -883,7 +883,7 @@ LABEL_27:
 
 LABEL_59:
   v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_connDurBin10];
-  [v3 setObject:v32 forKey:@"conn_dur_bin_10"];
+  [dictionary setObject:v32 forKey:@"conn_dur_bin_10"];
 
   has = self->_has;
   if ((*&has & 0x10) == 0)
@@ -899,7 +899,7 @@ LABEL_28:
 
 LABEL_60:
   v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_connDurBin11];
-  [v3 setObject:v33 forKey:@"conn_dur_bin_11"];
+  [dictionary setObject:v33 forKey:@"conn_dur_bin_11"];
 
   has = self->_has;
   if ((*&has & 0x20) == 0)
@@ -915,23 +915,23 @@ LABEL_29:
 
 LABEL_61:
   v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_connDurBin12];
-  [v3 setObject:v34 forKey:@"conn_dur_bin_12"];
+  [dictionary setObject:v34 forKey:@"conn_dur_bin_12"];
 
   if ((*&self->_has & 0x10000000) != 0)
   {
 LABEL_30:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-    [v3 setObject:v5 forKey:@"subs_id"];
+    [dictionary setObject:v5 forKey:@"subs_id"];
   }
 
 LABEL_31:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v34 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
@@ -1357,14 +1357,14 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 32) |= 1u;
     has = self->_has;
     if ((*&has & 0x4000) == 0)
     {
@@ -1383,8 +1383,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 17) = self->_durationMs;
-  *(v4 + 32) |= 0x4000u;
+  *(toCopy + 17) = self->_durationMs;
+  *(toCopy + 32) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1398,8 +1398,8 @@ LABEL_4:
   }
 
 LABEL_36:
-  *(v4 + 18) = self->_idleDurBin0;
-  *(v4 + 32) |= 0x8000u;
+  *(toCopy + 18) = self->_idleDurBin0;
+  *(toCopy + 32) |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1413,8 +1413,8 @@ LABEL_5:
   }
 
 LABEL_37:
-  *(v4 + 19) = self->_idleDurBin1;
-  *(v4 + 32) |= 0x10000u;
+  *(toCopy + 19) = self->_idleDurBin1;
+  *(toCopy + 32) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -1428,8 +1428,8 @@ LABEL_6:
   }
 
 LABEL_38:
-  *(v4 + 23) = self->_idleDurBin2;
-  *(v4 + 32) |= 0x100000u;
+  *(toCopy + 23) = self->_idleDurBin2;
+  *(toCopy + 32) |= 0x100000u;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -1443,8 +1443,8 @@ LABEL_7:
   }
 
 LABEL_39:
-  *(v4 + 24) = self->_idleDurBin3;
-  *(v4 + 32) |= 0x200000u;
+  *(toCopy + 24) = self->_idleDurBin3;
+  *(toCopy + 32) |= 0x200000u;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -1458,8 +1458,8 @@ LABEL_8:
   }
 
 LABEL_40:
-  *(v4 + 25) = self->_idleDurBin4;
-  *(v4 + 32) |= 0x400000u;
+  *(toCopy + 25) = self->_idleDurBin4;
+  *(toCopy + 32) |= 0x400000u;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -1473,8 +1473,8 @@ LABEL_9:
   }
 
 LABEL_41:
-  *(v4 + 26) = self->_idleDurBin5;
-  *(v4 + 32) |= 0x800000u;
+  *(toCopy + 26) = self->_idleDurBin5;
+  *(toCopy + 32) |= 0x800000u;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -1488,8 +1488,8 @@ LABEL_10:
   }
 
 LABEL_42:
-  *(v4 + 27) = self->_idleDurBin6;
-  *(v4 + 32) |= 0x1000000u;
+  *(toCopy + 27) = self->_idleDurBin6;
+  *(toCopy + 32) |= 0x1000000u;
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -1503,8 +1503,8 @@ LABEL_11:
   }
 
 LABEL_43:
-  *(v4 + 28) = self->_idleDurBin7;
-  *(v4 + 32) |= 0x2000000u;
+  *(toCopy + 28) = self->_idleDurBin7;
+  *(toCopy + 32) |= 0x2000000u;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -1518,8 +1518,8 @@ LABEL_12:
   }
 
 LABEL_44:
-  *(v4 + 29) = self->_idleDurBin8;
-  *(v4 + 32) |= 0x4000000u;
+  *(toCopy + 29) = self->_idleDurBin8;
+  *(toCopy + 32) |= 0x4000000u;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -1533,8 +1533,8 @@ LABEL_13:
   }
 
 LABEL_45:
-  *(v4 + 30) = self->_idleDurBin9;
-  *(v4 + 32) |= 0x8000000u;
+  *(toCopy + 30) = self->_idleDurBin9;
+  *(toCopy + 32) |= 0x8000000u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1548,8 +1548,8 @@ LABEL_14:
   }
 
 LABEL_46:
-  *(v4 + 20) = self->_idleDurBin10;
-  *(v4 + 32) |= 0x20000u;
+  *(toCopy + 20) = self->_idleDurBin10;
+  *(toCopy + 32) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1563,8 +1563,8 @@ LABEL_15:
   }
 
 LABEL_47:
-  *(v4 + 21) = self->_idleDurBin11;
-  *(v4 + 32) |= 0x40000u;
+  *(toCopy + 21) = self->_idleDurBin11;
+  *(toCopy + 32) |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1578,8 +1578,8 @@ LABEL_16:
   }
 
 LABEL_48:
-  *(v4 + 22) = self->_idleDurBin12;
-  *(v4 + 32) |= 0x80000u;
+  *(toCopy + 22) = self->_idleDurBin12;
+  *(toCopy + 32) |= 0x80000u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1593,8 +1593,8 @@ LABEL_17:
   }
 
 LABEL_49:
-  *(v4 + 4) = self->_connDurBin0;
-  *(v4 + 32) |= 2u;
+  *(toCopy + 4) = self->_connDurBin0;
+  *(toCopy + 32) |= 2u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1608,8 +1608,8 @@ LABEL_18:
   }
 
 LABEL_50:
-  *(v4 + 5) = self->_connDurBin1;
-  *(v4 + 32) |= 4u;
+  *(toCopy + 5) = self->_connDurBin1;
+  *(toCopy + 32) |= 4u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1623,8 +1623,8 @@ LABEL_19:
   }
 
 LABEL_51:
-  *(v4 + 9) = self->_connDurBin2;
-  *(v4 + 32) |= 0x40u;
+  *(toCopy + 9) = self->_connDurBin2;
+  *(toCopy + 32) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1638,8 +1638,8 @@ LABEL_20:
   }
 
 LABEL_52:
-  *(v4 + 10) = self->_connDurBin3;
-  *(v4 + 32) |= 0x80u;
+  *(toCopy + 10) = self->_connDurBin3;
+  *(toCopy + 32) |= 0x80u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1653,8 +1653,8 @@ LABEL_21:
   }
 
 LABEL_53:
-  *(v4 + 11) = self->_connDurBin4;
-  *(v4 + 32) |= 0x100u;
+  *(toCopy + 11) = self->_connDurBin4;
+  *(toCopy + 32) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1668,8 +1668,8 @@ LABEL_22:
   }
 
 LABEL_54:
-  *(v4 + 12) = self->_connDurBin5;
-  *(v4 + 32) |= 0x200u;
+  *(toCopy + 12) = self->_connDurBin5;
+  *(toCopy + 32) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1683,8 +1683,8 @@ LABEL_23:
   }
 
 LABEL_55:
-  *(v4 + 13) = self->_connDurBin6;
-  *(v4 + 32) |= 0x400u;
+  *(toCopy + 13) = self->_connDurBin6;
+  *(toCopy + 32) |= 0x400u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1698,8 +1698,8 @@ LABEL_24:
   }
 
 LABEL_56:
-  *(v4 + 14) = self->_connDurBin7;
-  *(v4 + 32) |= 0x800u;
+  *(toCopy + 14) = self->_connDurBin7;
+  *(toCopy + 32) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1713,8 +1713,8 @@ LABEL_25:
   }
 
 LABEL_57:
-  *(v4 + 15) = self->_connDurBin8;
-  *(v4 + 32) |= 0x1000u;
+  *(toCopy + 15) = self->_connDurBin8;
+  *(toCopy + 32) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1728,8 +1728,8 @@ LABEL_26:
   }
 
 LABEL_58:
-  *(v4 + 16) = self->_connDurBin9;
-  *(v4 + 32) |= 0x2000u;
+  *(toCopy + 16) = self->_connDurBin9;
+  *(toCopy + 32) |= 0x2000u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1743,8 +1743,8 @@ LABEL_27:
   }
 
 LABEL_59:
-  *(v4 + 6) = self->_connDurBin10;
-  *(v4 + 32) |= 8u;
+  *(toCopy + 6) = self->_connDurBin10;
+  *(toCopy + 32) |= 8u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1758,8 +1758,8 @@ LABEL_28:
   }
 
 LABEL_60:
-  *(v4 + 7) = self->_connDurBin11;
-  *(v4 + 32) |= 0x10u;
+  *(toCopy + 7) = self->_connDurBin11;
+  *(toCopy + 32) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1773,21 +1773,21 @@ LABEL_29:
   }
 
 LABEL_61:
-  *(v4 + 8) = self->_connDurBin12;
-  *(v4 + 32) |= 0x20u;
+  *(toCopy + 8) = self->_connDurBin12;
+  *(toCopy + 32) |= 0x20u;
   if ((*&self->_has & 0x10000000) != 0)
   {
 LABEL_30:
-    *(v4 + 31) = self->_subsId;
-    *(v4 + 32) |= 0x10000000u;
+    *(toCopy + 31) = self->_subsId;
+    *(toCopy + 32) |= 0x10000000u;
   }
 
 LABEL_31:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (*&has)
   {
@@ -2214,19 +2214,19 @@ LABEL_30:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_147;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_147;
     }
@@ -2241,7 +2241,7 @@ LABEL_147:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v6 & 0x4000) == 0 || self->_durationMs != *(v4 + 17))
+    if ((v6 & 0x4000) == 0 || self->_durationMs != *(equalCopy + 17))
     {
       goto LABEL_147;
     }
@@ -2254,7 +2254,7 @@ LABEL_147:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v6 & 0x8000) == 0 || self->_idleDurBin0 != *(v4 + 18))
+    if ((v6 & 0x8000) == 0 || self->_idleDurBin0 != *(equalCopy + 18))
     {
       goto LABEL_147;
     }
@@ -2267,7 +2267,7 @@ LABEL_147:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_idleDurBin1 != *(v4 + 19))
+    if ((v6 & 0x10000) == 0 || self->_idleDurBin1 != *(equalCopy + 19))
     {
       goto LABEL_147;
     }
@@ -2280,7 +2280,7 @@ LABEL_147:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v6 & 0x100000) == 0 || self->_idleDurBin2 != *(v4 + 23))
+    if ((v6 & 0x100000) == 0 || self->_idleDurBin2 != *(equalCopy + 23))
     {
       goto LABEL_147;
     }
@@ -2293,7 +2293,7 @@ LABEL_147:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v6 & 0x200000) == 0 || self->_idleDurBin3 != *(v4 + 24))
+    if ((v6 & 0x200000) == 0 || self->_idleDurBin3 != *(equalCopy + 24))
     {
       goto LABEL_147;
     }
@@ -2306,7 +2306,7 @@ LABEL_147:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v6 & 0x400000) == 0 || self->_idleDurBin4 != *(v4 + 25))
+    if ((v6 & 0x400000) == 0 || self->_idleDurBin4 != *(equalCopy + 25))
     {
       goto LABEL_147;
     }
@@ -2319,7 +2319,7 @@ LABEL_147:
 
   if ((*&has & 0x800000) != 0)
   {
-    if ((v6 & 0x800000) == 0 || self->_idleDurBin5 != *(v4 + 26))
+    if ((v6 & 0x800000) == 0 || self->_idleDurBin5 != *(equalCopy + 26))
     {
       goto LABEL_147;
     }
@@ -2332,7 +2332,7 @@ LABEL_147:
 
   if ((*&has & 0x1000000) != 0)
   {
-    if ((v6 & 0x1000000) == 0 || self->_idleDurBin6 != *(v4 + 27))
+    if ((v6 & 0x1000000) == 0 || self->_idleDurBin6 != *(equalCopy + 27))
     {
       goto LABEL_147;
     }
@@ -2345,7 +2345,7 @@ LABEL_147:
 
   if ((*&has & 0x2000000) != 0)
   {
-    if ((v6 & 0x2000000) == 0 || self->_idleDurBin7 != *(v4 + 28))
+    if ((v6 & 0x2000000) == 0 || self->_idleDurBin7 != *(equalCopy + 28))
     {
       goto LABEL_147;
     }
@@ -2358,7 +2358,7 @@ LABEL_147:
 
   if ((*&has & 0x4000000) != 0)
   {
-    if ((v6 & 0x4000000) == 0 || self->_idleDurBin8 != *(v4 + 29))
+    if ((v6 & 0x4000000) == 0 || self->_idleDurBin8 != *(equalCopy + 29))
     {
       goto LABEL_147;
     }
@@ -2371,7 +2371,7 @@ LABEL_147:
 
   if ((*&has & 0x8000000) != 0)
   {
-    if ((v6 & 0x8000000) == 0 || self->_idleDurBin9 != *(v4 + 30))
+    if ((v6 & 0x8000000) == 0 || self->_idleDurBin9 != *(equalCopy + 30))
     {
       goto LABEL_147;
     }
@@ -2384,7 +2384,7 @@ LABEL_147:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_idleDurBin10 != *(v4 + 20))
+    if ((v6 & 0x20000) == 0 || self->_idleDurBin10 != *(equalCopy + 20))
     {
       goto LABEL_147;
     }
@@ -2397,7 +2397,7 @@ LABEL_147:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v6 & 0x40000) == 0 || self->_idleDurBin11 != *(v4 + 21))
+    if ((v6 & 0x40000) == 0 || self->_idleDurBin11 != *(equalCopy + 21))
     {
       goto LABEL_147;
     }
@@ -2410,7 +2410,7 @@ LABEL_147:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v6 & 0x80000) == 0 || self->_idleDurBin12 != *(v4 + 22))
+    if ((v6 & 0x80000) == 0 || self->_idleDurBin12 != *(equalCopy + 22))
     {
       goto LABEL_147;
     }
@@ -2423,7 +2423,7 @@ LABEL_147:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_connDurBin0 != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_connDurBin0 != *(equalCopy + 4))
     {
       goto LABEL_147;
     }
@@ -2436,7 +2436,7 @@ LABEL_147:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_connDurBin1 != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_connDurBin1 != *(equalCopy + 5))
     {
       goto LABEL_147;
     }
@@ -2449,7 +2449,7 @@ LABEL_147:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_connDurBin2 != *(v4 + 9))
+    if ((v6 & 0x40) == 0 || self->_connDurBin2 != *(equalCopy + 9))
     {
       goto LABEL_147;
     }
@@ -2462,7 +2462,7 @@ LABEL_147:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_connDurBin3 != *(v4 + 10))
+    if ((v6 & 0x80) == 0 || self->_connDurBin3 != *(equalCopy + 10))
     {
       goto LABEL_147;
     }
@@ -2475,7 +2475,7 @@ LABEL_147:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_connDurBin4 != *(v4 + 11))
+    if ((v6 & 0x100) == 0 || self->_connDurBin4 != *(equalCopy + 11))
     {
       goto LABEL_147;
     }
@@ -2488,7 +2488,7 @@ LABEL_147:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_connDurBin5 != *(v4 + 12))
+    if ((v6 & 0x200) == 0 || self->_connDurBin5 != *(equalCopy + 12))
     {
       goto LABEL_147;
     }
@@ -2501,7 +2501,7 @@ LABEL_147:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_connDurBin6 != *(v4 + 13))
+    if ((v6 & 0x400) == 0 || self->_connDurBin6 != *(equalCopy + 13))
     {
       goto LABEL_147;
     }
@@ -2514,7 +2514,7 @@ LABEL_147:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_connDurBin7 != *(v4 + 14))
+    if ((v6 & 0x800) == 0 || self->_connDurBin7 != *(equalCopy + 14))
     {
       goto LABEL_147;
     }
@@ -2527,7 +2527,7 @@ LABEL_147:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v6 & 0x1000) == 0 || self->_connDurBin8 != *(v4 + 15))
+    if ((v6 & 0x1000) == 0 || self->_connDurBin8 != *(equalCopy + 15))
     {
       goto LABEL_147;
     }
@@ -2540,7 +2540,7 @@ LABEL_147:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v6 & 0x2000) == 0 || self->_connDurBin9 != *(v4 + 16))
+    if ((v6 & 0x2000) == 0 || self->_connDurBin9 != *(equalCopy + 16))
     {
       goto LABEL_147;
     }
@@ -2553,7 +2553,7 @@ LABEL_147:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_connDurBin10 != *(v4 + 6))
+    if ((v6 & 8) == 0 || self->_connDurBin10 != *(equalCopy + 6))
     {
       goto LABEL_147;
     }
@@ -2566,7 +2566,7 @@ LABEL_147:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_connDurBin11 != *(v4 + 7))
+    if ((v6 & 0x10) == 0 || self->_connDurBin11 != *(equalCopy + 7))
     {
       goto LABEL_147;
     }
@@ -2579,7 +2579,7 @@ LABEL_147:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_connDurBin12 != *(v4 + 8))
+    if ((v6 & 0x20) == 0 || self->_connDurBin12 != *(equalCopy + 8))
     {
       goto LABEL_147;
     }
@@ -2592,7 +2592,7 @@ LABEL_147:
 
   if ((*&has & 0x10000000) != 0)
   {
-    if ((v6 & 0x10000000) == 0 || self->_subsId != *(v4 + 31))
+    if ((v6 & 0x10000000) == 0 || self->_subsId != *(equalCopy + 31))
     {
       goto LABEL_147;
     }
@@ -3015,15 +3015,15 @@ LABEL_30:
   return v31 ^ v32 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 0x4000) == 0)
     {
 LABEL_3:
@@ -3041,9 +3041,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_durationMs = *(v4 + 17);
+  self->_durationMs = *(fromCopy + 17);
   *&self->_has |= 0x4000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_4:
@@ -3056,9 +3056,9 @@ LABEL_4:
   }
 
 LABEL_36:
-  self->_idleDurBin0 = *(v4 + 18);
+  self->_idleDurBin0 = *(fromCopy + 18);
   *&self->_has |= 0x8000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_5:
@@ -3071,9 +3071,9 @@ LABEL_5:
   }
 
 LABEL_37:
-  self->_idleDurBin1 = *(v4 + 19);
+  self->_idleDurBin1 = *(fromCopy + 19);
   *&self->_has |= 0x10000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x100000) == 0)
   {
 LABEL_6:
@@ -3086,9 +3086,9 @@ LABEL_6:
   }
 
 LABEL_38:
-  self->_idleDurBin2 = *(v4 + 23);
+  self->_idleDurBin2 = *(fromCopy + 23);
   *&self->_has |= 0x100000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x200000) == 0)
   {
 LABEL_7:
@@ -3101,9 +3101,9 @@ LABEL_7:
   }
 
 LABEL_39:
-  self->_idleDurBin3 = *(v4 + 24);
+  self->_idleDurBin3 = *(fromCopy + 24);
   *&self->_has |= 0x200000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x400000) == 0)
   {
 LABEL_8:
@@ -3116,9 +3116,9 @@ LABEL_8:
   }
 
 LABEL_40:
-  self->_idleDurBin4 = *(v4 + 25);
+  self->_idleDurBin4 = *(fromCopy + 25);
   *&self->_has |= 0x400000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x800000) == 0)
   {
 LABEL_9:
@@ -3131,9 +3131,9 @@ LABEL_9:
   }
 
 LABEL_41:
-  self->_idleDurBin5 = *(v4 + 26);
+  self->_idleDurBin5 = *(fromCopy + 26);
   *&self->_has |= 0x800000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x1000000) == 0)
   {
 LABEL_10:
@@ -3146,9 +3146,9 @@ LABEL_10:
   }
 
 LABEL_42:
-  self->_idleDurBin6 = *(v4 + 27);
+  self->_idleDurBin6 = *(fromCopy + 27);
   *&self->_has |= 0x1000000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x2000000) == 0)
   {
 LABEL_11:
@@ -3161,9 +3161,9 @@ LABEL_11:
   }
 
 LABEL_43:
-  self->_idleDurBin7 = *(v4 + 28);
+  self->_idleDurBin7 = *(fromCopy + 28);
   *&self->_has |= 0x2000000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x4000000) == 0)
   {
 LABEL_12:
@@ -3176,9 +3176,9 @@ LABEL_12:
   }
 
 LABEL_44:
-  self->_idleDurBin8 = *(v4 + 29);
+  self->_idleDurBin8 = *(fromCopy + 29);
   *&self->_has |= 0x4000000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x8000000) == 0)
   {
 LABEL_13:
@@ -3191,9 +3191,9 @@ LABEL_13:
   }
 
 LABEL_45:
-  self->_idleDurBin9 = *(v4 + 30);
+  self->_idleDurBin9 = *(fromCopy + 30);
   *&self->_has |= 0x8000000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_14:
@@ -3206,9 +3206,9 @@ LABEL_14:
   }
 
 LABEL_46:
-  self->_idleDurBin10 = *(v4 + 20);
+  self->_idleDurBin10 = *(fromCopy + 20);
   *&self->_has |= 0x20000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x40000) == 0)
   {
 LABEL_15:
@@ -3221,9 +3221,9 @@ LABEL_15:
   }
 
 LABEL_47:
-  self->_idleDurBin11 = *(v4 + 21);
+  self->_idleDurBin11 = *(fromCopy + 21);
   *&self->_has |= 0x40000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_16:
@@ -3236,9 +3236,9 @@ LABEL_16:
   }
 
 LABEL_48:
-  self->_idleDurBin12 = *(v4 + 22);
+  self->_idleDurBin12 = *(fromCopy + 22);
   *&self->_has |= 0x80000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 2) == 0)
   {
 LABEL_17:
@@ -3251,9 +3251,9 @@ LABEL_17:
   }
 
 LABEL_49:
-  self->_connDurBin0 = *(v4 + 4);
+  self->_connDurBin0 = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 4) == 0)
   {
 LABEL_18:
@@ -3266,9 +3266,9 @@ LABEL_18:
   }
 
 LABEL_50:
-  self->_connDurBin1 = *(v4 + 5);
+  self->_connDurBin1 = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x40) == 0)
   {
 LABEL_19:
@@ -3281,9 +3281,9 @@ LABEL_19:
   }
 
 LABEL_51:
-  self->_connDurBin2 = *(v4 + 9);
+  self->_connDurBin2 = *(fromCopy + 9);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x80) == 0)
   {
 LABEL_20:
@@ -3296,9 +3296,9 @@ LABEL_20:
   }
 
 LABEL_52:
-  self->_connDurBin3 = *(v4 + 10);
+  self->_connDurBin3 = *(fromCopy + 10);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x100) == 0)
   {
 LABEL_21:
@@ -3311,9 +3311,9 @@ LABEL_21:
   }
 
 LABEL_53:
-  self->_connDurBin4 = *(v4 + 11);
+  self->_connDurBin4 = *(fromCopy + 11);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x200) == 0)
   {
 LABEL_22:
@@ -3326,9 +3326,9 @@ LABEL_22:
   }
 
 LABEL_54:
-  self->_connDurBin5 = *(v4 + 12);
+  self->_connDurBin5 = *(fromCopy + 12);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x400) == 0)
   {
 LABEL_23:
@@ -3341,9 +3341,9 @@ LABEL_23:
   }
 
 LABEL_55:
-  self->_connDurBin6 = *(v4 + 13);
+  self->_connDurBin6 = *(fromCopy + 13);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x800) == 0)
   {
 LABEL_24:
@@ -3356,9 +3356,9 @@ LABEL_24:
   }
 
 LABEL_56:
-  self->_connDurBin7 = *(v4 + 14);
+  self->_connDurBin7 = *(fromCopy + 14);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_25:
@@ -3371,9 +3371,9 @@ LABEL_25:
   }
 
 LABEL_57:
-  self->_connDurBin8 = *(v4 + 15);
+  self->_connDurBin8 = *(fromCopy + 15);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_26:
@@ -3386,9 +3386,9 @@ LABEL_26:
   }
 
 LABEL_58:
-  self->_connDurBin9 = *(v4 + 16);
+  self->_connDurBin9 = *(fromCopy + 16);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 8) == 0)
   {
 LABEL_27:
@@ -3401,9 +3401,9 @@ LABEL_27:
   }
 
 LABEL_59:
-  self->_connDurBin10 = *(v4 + 6);
+  self->_connDurBin10 = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x10) == 0)
   {
 LABEL_28:
@@ -3416,9 +3416,9 @@ LABEL_28:
   }
 
 LABEL_60:
-  self->_connDurBin11 = *(v4 + 7);
+  self->_connDurBin11 = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x20) == 0)
   {
 LABEL_29:
@@ -3431,12 +3431,12 @@ LABEL_29:
   }
 
 LABEL_61:
-  self->_connDurBin12 = *(v4 + 8);
+  self->_connDurBin12 = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 32) & 0x10000000) != 0)
+  if ((*(fromCopy + 32) & 0x10000000) != 0)
   {
 LABEL_30:
-    self->_subsId = *(v4 + 31);
+    self->_subsId = *(fromCopy + 31);
     *&self->_has |= 0x10000000u;
   }
 

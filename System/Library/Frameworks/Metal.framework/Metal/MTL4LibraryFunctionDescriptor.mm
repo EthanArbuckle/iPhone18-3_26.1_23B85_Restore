@@ -1,7 +1,7 @@
 @interface MTL4LibraryFunctionDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4LibraryFunctionDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -22,19 +22,19 @@
   [(MTL4FunctionDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MTL4LibraryFunctionDescriptor;
-  v4 = [(MTL4FunctionDescriptor *)&v6 copyWithZone:a3];
+  v4 = [(MTL4FunctionDescriptor *)&v6 copyWithZone:zone];
   [v4 setLibrary:{-[MTL4LibraryFunctionDescriptor library](self, "library")}];
   [v4 setName:{-[MTL4LibraryFunctionDescriptor name](self, "name")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
   }
@@ -44,17 +44,17 @@
     v12 = v3;
     v13 = v4;
     Class = object_getClass(self);
-    if (Class == object_getClass(a3))
+    if (Class == object_getClass(equal))
     {
       v11.receiver = self;
       v11.super_class = MTL4LibraryFunctionDescriptor;
-      v8 = [(MTL4FunctionDescriptor *)&v11 isEqual:a3];
+      v8 = [(MTL4FunctionDescriptor *)&v11 isEqual:equal];
       if (v8)
       {
         name = self->_name;
-        if (name == *(a3 + 2) || (v8 = [(NSString *)name isEqual:?]) != 0)
+        if (name == *(equal + 2) || (v8 = [(NSString *)name isEqual:?]) != 0)
         {
-          LOBYTE(v8) = [objc_msgSend(*(a3 + 3) "libraryIdentifier")] == 0;
+          LOBYTE(v8) = [objc_msgSend(*(equal + 3) "libraryIdentifier")] == 0;
         }
       }
     }

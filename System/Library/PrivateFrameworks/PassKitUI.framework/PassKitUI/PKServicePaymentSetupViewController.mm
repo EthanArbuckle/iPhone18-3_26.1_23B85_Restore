@@ -1,9 +1,9 @@
 @interface PKServicePaymentSetupViewController
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_handleError:(id)a3 completion:(id)a4;
-- (void)configureWithPaymentSetupRequest:(id)a3 completion:(id)a4;
-- (void)paymentSetupDidFinish:(id)a3 withError:(id)a4;
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4;
+- (void)_handleError:(id)error completion:(id)completion;
+- (void)configureWithPaymentSetupRequest:(id)request completion:(id)completion;
+- (void)paymentSetupDidFinish:(id)finish withError:(id)error;
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation PKServicePaymentSetupViewController
@@ -21,10 +21,10 @@
   }
 }
 
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v13 = *MEMORY[0x1E69E9840];
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -35,18 +35,18 @@
     v9 = 138543618;
     v10 = v8;
     v11 = 2048;
-    v12 = a4;
+    scaleCopy = scale;
     _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Setting display properties with screenSize=%{public}@ scale=%.f", &v9, 0x16u);
   }
 
   PKSetDisplayProperties();
 }
 
-- (void)configureWithPaymentSetupRequest:(id)a3 completion:(id)a4
+- (void)configureWithPaymentSetupRequest:(id)request completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   [(PKServicePaymentSetupViewController *)self _hostAuditToken];
   v8 = SecTaskCreateWithAuditToken(0, &token);
   if (v8)
@@ -59,22 +59,22 @@
 
 LABEL_5:
       v13 = objc_alloc(MEMORY[0x1E69B8D48]);
-      v14 = [MEMORY[0x1E69B8EF8] sharedService];
-      v15 = [v13 initWithWebService:v14 paymentSetupRequest:v6];
+      mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+      v15 = [v13 initWithWebService:mEMORY[0x1E69B8EF8] paymentSetupRequest:requestCopy];
       provisioningController = self->_provisioningController;
       self->_provisioningController = v15;
 
-      v17 = [v6 paymentSetupFeatures];
-      v18 = [v17 count];
+      paymentSetupFeatures = [requestCopy paymentSetupFeatures];
+      v18 = [paymentSetupFeatures count];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __83__PKServicePaymentSetupViewController_configureWithPaymentSetupRequest_completion___block_invoke;
       aBlock[3] = &unk_1E8010B00;
       aBlock[4] = self;
       v33 = v18;
-      v19 = v17;
+      v19 = paymentSetupFeatures;
       v31 = v19;
-      v32 = v7;
+      v32 = completionCopy;
       v20 = _Block_copy(aBlock);
       v21 = self->_provisioningController;
       v26[0] = MEMORY[0x1E69E9820];
@@ -93,10 +93,10 @@ LABEL_5:
     }
 
     v11 = SecTaskCopyValueForEntitlement(v9, *MEMORY[0x1E69B9368], 0);
-    v12 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
 
     CFRelease(v9);
-    if (v12)
+    if (bOOLValue)
     {
       goto LABEL_5;
     }
@@ -105,15 +105,15 @@ LABEL_5:
   v24 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
-    v25 = [(PKServicePaymentSetupViewController *)self _hostApplicationBundleIdentifier];
+    _hostApplicationBundleIdentifier = [(PKServicePaymentSetupViewController *)self _hostApplicationBundleIdentifier];
     token.val[0] = 138543362;
-    *&token.val[1] = v25;
+    *&token.val[1] = _hostApplicationBundleIdentifier;
     _os_log_error_impl(&dword_1BD026000, v24, OS_LOG_TYPE_ERROR, "%{public}@ missing entitlement", &token, 0xCu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v23 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69B9E70] code:0 userInfo:0];
@@ -229,17 +229,17 @@ uint64_t __83__PKServicePaymentSetupViewController_configureWithPaymentSetupRequ
   return result;
 }
 
-- (void)paymentSetupDidFinish:(id)a3 withError:(id)a4
+- (void)paymentSetupDidFinish:(id)finish withError:(id)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  finishCopy = finish;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (errorCopy)
   {
-    v9 = [v7 domain];
+    domain = [errorCopy domain];
     v10 = *MEMORY[0x1E69B9E70];
-    v11 = [v9 isEqualToString:*MEMORY[0x1E69B9E70]];
+    v11 = [domain isEqualToString:*MEMORY[0x1E69B9E70]];
 
     v12 = v8;
     if ((v11 & 1) == 0)
@@ -263,14 +263,14 @@ uint64_t __83__PKServicePaymentSetupViewController_configureWithPaymentSetupRequ
     _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "PKServicePaymentSetupViewController did show error: %@ (original error: %@)", buf, 0x16u);
   }
 
-  v14 = [(PKServicePaymentSetupViewController *)self _remoteViewControllerProxy];
+  _remoteViewControllerProxy = [(PKServicePaymentSetupViewController *)self _remoteViewControllerProxy];
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v16 = [(PKPaymentProvisioningController *)self->_provisioningController provisionedPasses];
-  v17 = [v16 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  provisionedPasses = [(PKPaymentProvisioningController *)self->_provisioningController provisionedPasses];
+  v17 = [provisionedPasses countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v17)
   {
     v18 = v17;
@@ -281,32 +281,32 @@ uint64_t __83__PKServicePaymentSetupViewController_configureWithPaymentSetupRequ
       {
         if (*v23 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(provisionedPasses);
         }
 
-        v21 = [*(*(&v22 + 1) + 8 * i) secureElementPass];
-        if (v21)
+        secureElementPass = [*(*(&v22 + 1) + 8 * i) secureElementPass];
+        if (secureElementPass)
         {
-          [v15 addObject:v21];
+          [v15 addObject:secureElementPass];
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v18 = [provisionedPasses countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v18);
   }
 
-  [v14 didFinishWithPasses:v15 error:v8];
+  [_remoteViewControllerProxy didFinishWithPasses:v15 error:v8];
 }
 
-- (void)_handleError:(id)a3 completion:(id)a4
+- (void)_handleError:(id)error completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  errorCopy = error;
+  completionCopy = completion;
+  if (!errorCopy)
   {
-    v6 = PKDisplayableErrorForCommonType();
+    errorCopy = PKDisplayableErrorForCommonType();
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -315,20 +315,20 @@ uint64_t __83__PKServicePaymentSetupViewController_configureWithPaymentSetupRequ
   aBlock[3] = &unk_1E8010970;
   aBlock[4] = self;
   v8 = _Block_copy(aBlock);
-  v9 = PKAlertForDisplayableErrorWithHandlers(v6, 0, v8, v8);
+  v9 = PKAlertForDisplayableErrorWithHandlers(errorCopy, 0, v8, v8);
   if (v9)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __63__PKServicePaymentSetupViewController__handleError_completion___block_invoke_2;
     v10[3] = &unk_1E8010B50;
-    v11 = v7;
+    v11 = completionCopy;
     [(PKServicePaymentSetupViewController *)self presentViewController:v9 animated:1 completion:v10];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

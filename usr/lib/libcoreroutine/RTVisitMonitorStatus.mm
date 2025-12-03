@@ -1,20 +1,20 @@
 @interface RTVisitMonitorStatus
 - (BOOL)invalid;
-- (RTVisitMonitorStatus)initWithMonitoringVisitIncidents:(BOOL)a3 monitoringLeechedVisitIncidents:(BOOL)a4 monitoringLowConfidenceVisitIncidents:(BOOL)a5 feedBufferReferenceCounter:(unint64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RTVisitMonitorStatus)initWithMonitoringVisitIncidents:(BOOL)incidents monitoringLeechedVisitIncidents:(BOOL)visitIncidents monitoringLowConfidenceVisitIncidents:(BOOL)confidenceVisitIncidents feedBufferReferenceCounter:(unint64_t)counter;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation RTVisitMonitorStatus
 
-- (RTVisitMonitorStatus)initWithMonitoringVisitIncidents:(BOOL)a3 monitoringLeechedVisitIncidents:(BOOL)a4 monitoringLowConfidenceVisitIncidents:(BOOL)a5 feedBufferReferenceCounter:(unint64_t)a6
+- (RTVisitMonitorStatus)initWithMonitoringVisitIncidents:(BOOL)incidents monitoringLeechedVisitIncidents:(BOOL)visitIncidents monitoringLowConfidenceVisitIncidents:(BOOL)confidenceVisitIncidents feedBufferReferenceCounter:(unint64_t)counter
 {
   v18 = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = RTVisitMonitorStatus;
   v10 = [(RTVisitMonitorStatus *)&v15 init];
   v11 = v10;
-  if (v10 && (v10->_monitoringVisitIncidents = a3, v10->_monitoringLeechedVisitIncidents = a4, v10->_monitoringLowConfidenceVisitIncidents = a5, v10->_feedBufferReferenceCounter = a6, [(RTVisitMonitorStatus *)v10 invalid]))
+  if (v10 && (v10->_monitoringVisitIncidents = incidents, v10->_monitoringLeechedVisitIncidents = visitIncidents, v10->_monitoringLowConfidenceVisitIncidents = confidenceVisitIncidents, v10->_feedBufferReferenceCounter = counter, [(RTVisitMonitorStatus *)v10 invalid]))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -43,7 +43,7 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(RTVisitMonitorStatus *)self feedBufferReferenceCounter];
+  feedBufferReferenceCounter = [(RTVisitMonitorStatus *)self feedBufferReferenceCounter];
   if ([(RTVisitMonitorStatus *)self monitoringVisitIncidents])
   {
     v7 = @"YES";
@@ -74,7 +74,7 @@
     v9 = @"NO";
   }
 
-  v10 = [v3 stringWithFormat:@"%@, feedBufferReferenceCounter, %lu, monitoringVisitIncidents, %@, monitoringLeechedVisitIncidents, %@, monitoringLowConfVisitIncidents, %@", v5, v6, v7, v8, v9];
+  v10 = [v3 stringWithFormat:@"%@, feedBufferReferenceCounter, %lu, monitoringVisitIncidents, %@, monitoringLeechedVisitIncidents, %@, monitoringLowConfVisitIncidents, %@", v5, feedBufferReferenceCounter, v7, v8, v9];
 
   return v10;
 }
@@ -124,15 +124,15 @@
   return (v4 || v3) | v5 | v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(RTVisitMonitorStatus *)self monitoringVisitIncidents];
-  v6 = [(RTVisitMonitorStatus *)self monitoringLeechedVisitIncidents];
-  v7 = [(RTVisitMonitorStatus *)self monitoringLowConfidenceVisitIncidents];
-  v8 = [(RTVisitMonitorStatus *)self feedBufferReferenceCounter];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  monitoringVisitIncidents = [(RTVisitMonitorStatus *)self monitoringVisitIncidents];
+  monitoringLeechedVisitIncidents = [(RTVisitMonitorStatus *)self monitoringLeechedVisitIncidents];
+  monitoringLowConfidenceVisitIncidents = [(RTVisitMonitorStatus *)self monitoringLowConfidenceVisitIncidents];
+  feedBufferReferenceCounter = [(RTVisitMonitorStatus *)self feedBufferReferenceCounter];
 
-  return [v4 initWithMonitoringVisitIncidents:v5 monitoringLeechedVisitIncidents:v6 monitoringLowConfidenceVisitIncidents:v7 feedBufferReferenceCounter:v8];
+  return [v4 initWithMonitoringVisitIncidents:monitoringVisitIncidents monitoringLeechedVisitIncidents:monitoringLeechedVisitIncidents monitoringLowConfidenceVisitIncidents:monitoringLowConfidenceVisitIncidents feedBufferReferenceCounter:feedBufferReferenceCounter];
 }
 
 @end

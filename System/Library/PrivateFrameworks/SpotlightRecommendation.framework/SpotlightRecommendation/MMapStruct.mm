@@ -1,29 +1,29 @@
 @interface MMapStruct
-+ (id)mMapStructWithFilepath:(id)a3;
-- (MMapStruct)initWithBuffer:(void *)a3 size:(unint64_t)a4;
++ (id)mMapStructWithFilepath:(id)filepath;
+- (MMapStruct)initWithBuffer:(void *)buffer size:(unint64_t)size;
 - (void)dealloc;
 @end
 
 @implementation MMapStruct
 
-- (MMapStruct)initWithBuffer:(void *)a3 size:(unint64_t)a4
+- (MMapStruct)initWithBuffer:(void *)buffer size:(unint64_t)size
 {
   v7.receiver = self;
   v7.super_class = MMapStruct;
   result = [(MMapStruct *)&v7 init];
   if (result)
   {
-    result->_buffer = a3;
-    result->_size = a4;
+    result->_buffer = buffer;
+    result->_size = size;
   }
 
   return result;
 }
 
-+ (id)mMapStructWithFilepath:(id)a3
++ (id)mMapStructWithFilepath:(id)filepath
 {
-  v3 = a3;
-  v4 = open([v3 UTF8String], 0);
+  filepathCopy = filepath;
+  v4 = open([filepathCopy UTF8String], 0);
   if (v4 < 0)
   {
     v10 = logForCSLogCategoryRecs();

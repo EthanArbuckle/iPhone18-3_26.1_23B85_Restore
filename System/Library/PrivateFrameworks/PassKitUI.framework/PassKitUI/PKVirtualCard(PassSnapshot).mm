@@ -29,18 +29,18 @@
   v8 = a5;
   if (v8)
   {
-    v9 = [a1 type];
-    switch(v9)
+    type = [self type];
+    switch(type)
     {
       case 0:
-        v13 = [a1 _genericCardIcon];
-        v8[2](v8, v13);
+        _genericCardIcon = [self _genericCardIcon];
+        v8[2](v8, _genericCardIcon);
 LABEL_11:
 
         break;
       case 2:
         v10 = +[PKPassSnapshotter sharedInstance];
-        v11 = [MEMORY[0x1E69B8DB8] paymentService];
+        paymentService = [MEMORY[0x1E69B8DB8] paymentService];
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __62__PKVirtualCard_PassSnapshot__cardArtworkWithSize_completion___block_invoke;
@@ -48,24 +48,24 @@ LABEL_11:
         v15 = v10;
         v18 = a2;
         v19 = a3;
-        v16 = a1;
+        selfCopy = self;
         v17 = v8;
         v12 = v10;
-        [v11 paymentPassForVirtualCard:a1 completion:v14];
+        [paymentService paymentPassForVirtualCard:self completion:v14];
 
         break;
       case 1:
         if (a2 <= 40.0)
         {
-          [a1 _smallAppleCardIcon];
+          [self _smallAppleCardIcon];
         }
 
         else
         {
-          [a1 _largeAppleCardIcon];
+          [self _largeAppleCardIcon];
         }
-        v13 = ;
-        v8[2](v8, v13);
+        _genericCardIcon = ;
+        v8[2](v8, _genericCardIcon);
         goto LABEL_11;
     }
   }

@@ -1,39 +1,39 @@
 @interface ATXAppPredictorFeedback
-+ (double)_bucketize:(double)result bucketSize:(double)a4;
-+ (id)_appDictionaryForFeedbackItem:(id)a3;
-+ (id)_getLastAppIntentsWithEngagedAction:(id)a3 combinedIntentStream:(id)a4 limit:(int)a5;
-+ (id)_getLastAppsWithEngagedApp:(id)a3 limit:(int)a4;
-+ (id)constructFeatureDictionaryWithFeedbackItems:(id)a3 engagedItem:(id)a4 shownItemIndexes:(id)a5 consumerType:(unint64_t)a6 histogramBundleIdTable:(id)a7;
-+ (int64_t)getEngagedItemIndexWithFeedbackItems:(id)a3 engagedItem:(id)a4;
-+ (unint64_t)_outcomeForEngagementType:(unint64_t)a3;
-+ (void)checkFeedbackContainsUninstalledApps:(id)a3 consumerSubType:(unsigned __int8)a4 aggregateLogger:(id)a5;
-+ (void)logEngagedMMMetricsEntryForBundle:(id)a3 anchorType:(int64_t)a4 consumerSubType:(unsigned __int8)a5 score:(double)a6;
-+ (void)logShownMMMetricsEntryForBundle:(id)a3 anchorType:(int64_t)a4 consumerSubType:(unsigned __int8)a5 score:(double)a6;
-+ (void)receiveFeedbackForConsumerType:(unint64_t)a3 consumerSubType:(unsigned __int8)a4 feedbackItemsForResponse:(id)a5 engagementType:(unint64_t)a6 engagedBundleId:(id)a7 bundleIdsShown:(id)a8 explicitlyRejectedBundleIds:(id)a9 abGroupIdentifier:(id)a10 context:(id)a11;
++ (double)_bucketize:(double)result bucketSize:(double)size;
++ (id)_appDictionaryForFeedbackItem:(id)item;
++ (id)_getLastAppIntentsWithEngagedAction:(id)action combinedIntentStream:(id)stream limit:(int)limit;
++ (id)_getLastAppsWithEngagedApp:(id)app limit:(int)limit;
++ (id)constructFeatureDictionaryWithFeedbackItems:(id)items engagedItem:(id)item shownItemIndexes:(id)indexes consumerType:(unint64_t)type histogramBundleIdTable:(id)table;
++ (int64_t)getEngagedItemIndexWithFeedbackItems:(id)items engagedItem:(id)item;
++ (unint64_t)_outcomeForEngagementType:(unint64_t)type;
++ (void)checkFeedbackContainsUninstalledApps:(id)apps consumerSubType:(unsigned __int8)type aggregateLogger:(id)logger;
++ (void)logEngagedMMMetricsEntryForBundle:(id)bundle anchorType:(int64_t)type consumerSubType:(unsigned __int8)subType score:(double)score;
++ (void)logShownMMMetricsEntryForBundle:(id)bundle anchorType:(int64_t)type consumerSubType:(unsigned __int8)subType score:(double)score;
++ (void)receiveFeedbackForConsumerType:(unint64_t)type consumerSubType:(unsigned __int8)subType feedbackItemsForResponse:(id)response engagementType:(unint64_t)engagementType engagedBundleId:(id)id bundleIdsShown:(id)shown explicitlyRejectedBundleIds:(id)ids abGroupIdentifier:(id)self0 context:(id)self1;
 - (ATXAppPredictorFeedback)init;
-- (ATXAppPredictorFeedback)initWithPredictionContextBuilder:(id)a3 feedbackInstance:(id)a4 aggregateLogger:(id)a5 petTracker:(id)a6;
-- (id)_engagedBundleIdFromEngagedSuggestion:(id)a3 feedbackSession:(id)a4;
+- (ATXAppPredictorFeedback)initWithPredictionContextBuilder:(id)builder feedbackInstance:(id)instance aggregateLogger:(id)logger petTracker:(id)tracker;
+- (id)_engagedBundleIdFromEngagedSuggestion:(id)suggestion feedbackSession:(id)session;
 - (id)clientModelIds;
-- (unint64_t)_engagementTypeFromEngagedSuggestion:(id)a3 engagedBundleId:(id)a4 shownBundleIds:(id)a5 didSearchDuringSession:(BOOL)a6;
-- (unint64_t)_engagementTypeFromUIFeedbackResult:(id)a3 engagedSuggestion:(id)a4 engagedBundleId:(id)a5 shownBundleIds:(id)a6;
-- (void)receiveUIFeedbackResult:(id)a3;
+- (unint64_t)_engagementTypeFromEngagedSuggestion:(id)suggestion engagedBundleId:(id)id shownBundleIds:(id)ids didSearchDuringSession:(BOOL)session;
+- (unint64_t)_engagementTypeFromUIFeedbackResult:(id)result engagedSuggestion:(id)suggestion engagedBundleId:(id)id shownBundleIds:(id)ids;
+- (void)receiveUIFeedbackResult:(id)result;
 @end
 
 @implementation ATXAppPredictorFeedback
 
-+ (void)checkFeedbackContainsUninstalledApps:(id)a3 consumerSubType:(unsigned __int8)a4 aggregateLogger:(id)a5
++ (void)checkFeedbackContainsUninstalledApps:(id)apps consumerSubType:(unsigned __int8)type aggregateLogger:(id)logger
 {
-  v7 = a3;
-  v8 = a5;
+  appsCopy = apps;
+  loggerCopy = logger;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __96__ATXAppPredictorFeedback_checkFeedbackContainsUninstalledApps_consumerSubType_aggregateLogger___block_invoke;
   aBlock[3] = &unk_278598A00;
-  v17 = v7;
-  v18 = v8;
-  v19 = a4;
-  v9 = v8;
-  v10 = v7;
+  v17 = appsCopy;
+  v18 = loggerCopy;
+  typeCopy = type;
+  v9 = loggerCopy;
+  v10 = appsCopy;
   v11 = _Block_copy(aBlock);
   v12 = dispatch_get_global_queue(9, 0);
   v14[0] = MEMORY[0x277D85DD0];
@@ -108,11 +108,11 @@ void __96__ATXAppPredictorFeedback_checkFeedbackContainsUninstalledApps_consumer
   return v7;
 }
 
-- (ATXAppPredictorFeedback)initWithPredictionContextBuilder:(id)a3 feedbackInstance:(id)a4 aggregateLogger:(id)a5 petTracker:(id)a6
+- (ATXAppPredictorFeedback)initWithPredictionContextBuilder:(id)builder feedbackInstance:(id)instance aggregateLogger:(id)logger petTracker:(id)tracker
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  instanceCopy = instance;
+  loggerCopy = logger;
+  trackerCopy = tracker;
   v21.receiver = self;
   v21.super_class = ATXAppPredictorFeedback;
   v13 = [(ATXAppPredictorFeedback *)&v21 init];
@@ -120,32 +120,32 @@ void __96__ATXAppPredictorFeedback_checkFeedbackContainsUninstalledApps_consumer
   {
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [v15 UTF8String];
+    uTF8String = [v15 UTF8String];
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v18 = dispatch_queue_create(v16, v17);
+    v18 = dispatch_queue_create(uTF8String, v17);
     queue = v13->_queue;
     v13->_queue = v18;
 
-    objc_storeStrong(&v13->_feedbackInstance, a4);
-    objc_storeStrong(&v13->_aggregateLogger, a5);
-    objc_storeStrong(&v13->_petTracker, a6);
+    objc_storeStrong(&v13->_feedbackInstance, instance);
+    objc_storeStrong(&v13->_aggregateLogger, logger);
+    objc_storeStrong(&v13->_petTracker, tracker);
   }
 
   return v13;
 }
 
-- (unint64_t)_engagementTypeFromEngagedSuggestion:(id)a3 engagedBundleId:(id)a4 shownBundleIds:(id)a5 didSearchDuringSession:(BOOL)a6
+- (unint64_t)_engagementTypeFromEngagedSuggestion:(id)suggestion engagedBundleId:(id)id shownBundleIds:(id)ids didSearchDuringSession:(BOOL)session
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  sessionCopy = session;
+  suggestionCopy = suggestion;
+  idCopy = id;
+  idsCopy = ids;
+  v12 = idsCopy;
+  if (idCopy)
   {
-    v13 = [v11 containsObject:v10];
+    v13 = [idsCopy containsObject:idCopy];
     v14 = v13;
-    if (v9)
+    if (suggestionCopy)
     {
       if (v13)
       {
@@ -158,7 +158,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    if ([v12 containsObject:v10])
+    if ([v12 containsObject:idCopy])
     {
       v15 = 3;
     }
@@ -174,7 +174,7 @@ LABEL_12:
     }
   }
 
-  else if (v6)
+  else if (sessionCopy)
   {
     v15 = 4;
   }
@@ -189,17 +189,17 @@ LABEL_13:
   return v15;
 }
 
-- (unint64_t)_engagementTypeFromUIFeedbackResult:(id)a3 engagedSuggestion:(id)a4 engagedBundleId:(id)a5 shownBundleIds:(id)a6
+- (unint64_t)_engagementTypeFromUIFeedbackResult:(id)result engagedSuggestion:(id)suggestion engagedBundleId:(id)id shownBundleIds:(id)ids
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a3 session];
-  v14 = [v13 sessionMetadata];
+  suggestionCopy = suggestion;
+  idCopy = id;
+  idsCopy = ids;
+  session = [result session];
+  sessionMetadata = [session sessionMetadata];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v16 = [v13 sessionMetadata];
+  sessionMetadata2 = [session sessionMetadata];
   if (isKindOfClass)
   {
     goto LABEL_2;
@@ -210,11 +210,11 @@ LABEL_13:
 
   if (v18)
   {
-    v17 = [(ATXAppPredictorFeedback *)self _engagementTypeFromEngagedSuggestion:v10 engagedBundleId:v11 shownBundleIds:v12 didSearchDuringSession:0];
+    v17 = [(ATXAppPredictorFeedback *)self _engagementTypeFromEngagedSuggestion:suggestionCopy engagedBundleId:idCopy shownBundleIds:idsCopy didSearchDuringSession:0];
     goto LABEL_11;
   }
 
-  v19 = [v13 sessionMetadata];
+  sessionMetadata3 = [session sessionMetadata];
   objc_opt_class();
   v20 = objc_opt_isKindOfClass();
 
@@ -224,18 +224,18 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  v16 = [v13 sessionMetadata];
-  v21 = [v16 engagedBundleId];
+  sessionMetadata2 = [session sessionMetadata];
+  engagedBundleId = [sessionMetadata2 engagedBundleId];
 
-  if (!v21)
+  if (!engagedBundleId)
   {
     goto LABEL_2;
   }
 
-  v22 = [v16 engagedBundleIdInTopAppsVisible];
-  v23 = [v22 BOOLValue];
+  engagedBundleIdInTopAppsVisible = [sessionMetadata2 engagedBundleIdInTopAppsVisible];
+  bOOLValue = [engagedBundleIdInTopAppsVisible BOOLValue];
 
-  if (v23)
+  if (bOOLValue)
   {
     v17 = 6;
   }
@@ -243,29 +243,29 @@ LABEL_13:
   else
   {
 LABEL_2:
-    v17 = -[ATXAppPredictorFeedback _engagementTypeFromEngagedSuggestion:engagedBundleId:shownBundleIds:didSearchDuringSession:](self, "_engagementTypeFromEngagedSuggestion:engagedBundleId:shownBundleIds:didSearchDuringSession:", v10, v11, v12, [v16 didSearchDuringSession]);
+    v17 = -[ATXAppPredictorFeedback _engagementTypeFromEngagedSuggestion:engagedBundleId:shownBundleIds:didSearchDuringSession:](self, "_engagementTypeFromEngagedSuggestion:engagedBundleId:shownBundleIds:didSearchDuringSession:", suggestionCopy, idCopy, idsCopy, [sessionMetadata2 didSearchDuringSession]);
   }
 
 LABEL_11:
   return v17;
 }
 
-- (id)_engagedBundleIdFromEngagedSuggestion:(id)a3 feedbackSession:(id)a4
+- (id)_engagedBundleIdFromEngagedSuggestion:(id)suggestion feedbackSession:(id)session
 {
-  v5 = a4;
-  v6 = [a3 bundleIdExecutableObject];
-  v7 = v6;
-  if (v6)
+  sessionCopy = session;
+  bundleIdExecutableObject = [suggestion bundleIdExecutableObject];
+  v7 = bundleIdExecutableObject;
+  if (bundleIdExecutableObject)
   {
-    v8 = v6;
+    v8 = bundleIdExecutableObject;
     goto LABEL_10;
   }
 
-  v9 = [v5 sessionMetadata];
+  sessionMetadata = [sessionCopy sessionMetadata];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 engagedAppString];
+    engagedAppString = [sessionMetadata engagedAppString];
   }
 
   else
@@ -277,10 +277,10 @@ LABEL_11:
       goto LABEL_9;
     }
 
-    v10 = [v9 engagedBundleId];
+    engagedAppString = [sessionMetadata engagedBundleId];
   }
 
-  v8 = v10;
+  v8 = engagedAppString;
 LABEL_9:
 
 LABEL_10:
@@ -298,46 +298,46 @@ LABEL_10:
   return v5;
 }
 
-- (void)receiveUIFeedbackResult:(id)a3
+- (void)receiveUIFeedbackResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v6 = __atxlog_handle_feedback();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(ATXAppPredictorFeedback *)v5 receiveUIFeedbackResult:v6];
+    [(ATXAppPredictorFeedback *)resultCopy receiveUIFeedbackResult:v6];
   }
 
-  v7 = [v5 shownSuggestions];
-  v8 = [v7 count];
+  shownSuggestions = [resultCopy shownSuggestions];
+  v8 = [shownSuggestions count];
 
   if (v8)
   {
-    v9 = [v5 consumerSubType];
-    v10 = [MEMORY[0x277CEBCF0] consumerTypeForSubType:v9];
-    if (!v9 || (v11 = v10) == 0)
+    consumerSubType = [resultCopy consumerSubType];
+    v10 = [MEMORY[0x277CEBCF0] consumerTypeForSubType:consumerSubType];
+    if (!consumerSubType || (v11 = v10) == 0)
     {
-      v13 = __atxlog_handle_feedback();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      firstObject = __atxlog_handle_feedback();
+      if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
       {
-        [ATXAppPredictorFeedback receiveUIFeedbackResult:v13];
+        [ATXAppPredictorFeedback receiveUIFeedbackResult:firstObject];
       }
 
       goto LABEL_24;
     }
 
-    v12 = [v5 engagedSuggestions];
-    v13 = [v12 firstObject];
+    engagedSuggestions = [resultCopy engagedSuggestions];
+    firstObject = [engagedSuggestions firstObject];
 
-    v14 = [v5 session];
-    v15 = [(ATXAppPredictorFeedback *)self _engagedBundleIdFromEngagedSuggestion:v13 feedbackSession:v14];
+    session = [resultCopy session];
+    v15 = [(ATXAppPredictorFeedback *)self _engagedBundleIdFromEngagedSuggestion:firstObject feedbackSession:session];
 
-    v16 = [v5 shownSuggestions];
-    v17 = [(ATXAppPredictorFeedback *)self _bundleIdsFromProactiveSuggestions:v16];
+    shownSuggestions2 = [resultCopy shownSuggestions];
+    v17 = [(ATXAppPredictorFeedback *)self _bundleIdsFromProactiveSuggestions:shownSuggestions2];
 
-    v18 = [v5 rejectedSuggestions];
-    v19 = [(ATXAppPredictorFeedback *)self _bundleIdsFromProactiveSuggestions:v18];
+    rejectedSuggestions = [resultCopy rejectedSuggestions];
+    v19 = [(ATXAppPredictorFeedback *)self _bundleIdsFromProactiveSuggestions:rejectedSuggestions];
 
-    v20 = [(ATXAppPredictorFeedback *)self _engagementTypeFromUIFeedbackResult:v5 engagedSuggestion:v13 engagedBundleId:v15 shownBundleIds:v17];
+    v20 = [(ATXAppPredictorFeedback *)self _engagementTypeFromUIFeedbackResult:resultCopy engagedSuggestion:firstObject engagedBundleId:v15 shownBundleIds:v17];
     if (!v20)
     {
 LABEL_23:
@@ -350,9 +350,9 @@ LABEL_24:
     v36 = v15;
     v37 = v19;
     v35 = v17;
-    v22 = [v5 clientCacheUpdate];
-    v23 = [v22 feedbackMetadata];
-    v24 = [ATXAppPredictionFeedbackItem feedbackItemsForCacheFileData:v23];
+    clientCacheUpdate = [resultCopy clientCacheUpdate];
+    feedbackMetadata = [clientCacheUpdate feedbackMetadata];
+    v24 = [ATXAppPredictionFeedbackItem feedbackItemsForCacheFileData:feedbackMetadata];
 
     v34 = v24;
     if (![v24 count])
@@ -371,11 +371,11 @@ LABEL_24:
     }
 
     v25 = +[_ATXAppPredictor sharedInstance];
-    v26 = [v25 abGroupIdentifiers];
-    v33 = [v26 objectAtIndexedSubscript:v9];
+    abGroupIdentifiers = [v25 abGroupIdentifiers];
+    v33 = [abGroupIdentifiers objectAtIndexedSubscript:consumerSubType];
 
-    v27 = [v5 context];
-    if (v27)
+    context = [resultCopy context];
+    if (context)
     {
       objc_opt_class();
       v17 = v35;
@@ -391,7 +391,7 @@ LABEL_24:
         block[3] = &unk_27859BF10;
         block[4] = self;
         v46 = v11;
-        v48 = v9;
+        v48 = consumerSubType;
         v29 = v34;
         v39 = v34;
         v47 = v21;
@@ -400,7 +400,7 @@ LABEL_24:
         v42 = v37;
         v30 = v33;
         v43 = v33;
-        v44 = v27;
+        v44 = context;
         v45 = v28;
         v31 = v28;
         dispatch_sync(queue, block);
@@ -415,7 +415,7 @@ LABEL_22:
       v31 = __atxlog_handle_feedback();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
       {
-        [(ATXAppPredictorFeedback *)v27 receiveUIFeedbackResult:v31];
+        [(ATXAppPredictorFeedback *)context receiveUIFeedbackResult:v31];
       }
     }
 
@@ -448,72 +448,72 @@ id __51__ATXAppPredictorFeedback_receiveUIFeedbackResult___block_invoke(uint64_t
   return objc_opt_self();
 }
 
-+ (void)receiveFeedbackForConsumerType:(unint64_t)a3 consumerSubType:(unsigned __int8)a4 feedbackItemsForResponse:(id)a5 engagementType:(unint64_t)a6 engagedBundleId:(id)a7 bundleIdsShown:(id)a8 explicitlyRejectedBundleIds:(id)a9 abGroupIdentifier:(id)a10 context:(id)a11
++ (void)receiveFeedbackForConsumerType:(unint64_t)type consumerSubType:(unsigned __int8)subType feedbackItemsForResponse:(id)response engagementType:(unint64_t)engagementType engagedBundleId:(id)id bundleIdsShown:(id)shown explicitlyRejectedBundleIds:(id)ids abGroupIdentifier:(id)self0 context:(id)self1
 {
-  v24 = a4;
-  v15 = a11;
-  v16 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a5;
+  subTypeCopy = subType;
+  contextCopy = context;
+  identifierCopy = identifier;
+  idsCopy = ids;
+  shownCopy = shown;
+  idCopy = id;
+  responseCopy = response;
   v21 = objc_opt_class();
   v26 = +[_ATXFeedback sharedInstance];
   v22 = +[_ATXAggregateLogger sharedInstance];
   v23 = objc_opt_new();
-  [v21 receiveFeedbackForConsumerType:a3 consumerSubType:v24 feedbackItemsForResponse:v20 engagementType:a6 engagedBundleId:v19 bundleIdsShown:v18 explicitlyRejectedBundleIds:v17 abGroupIdentifier:v16 context:v15 feedbackInstance:v26 aggregateLogger:v22 petTracker:v23];
+  [v21 receiveFeedbackForConsumerType:type consumerSubType:subTypeCopy feedbackItemsForResponse:responseCopy engagementType:engagementType engagedBundleId:idCopy bundleIdsShown:shownCopy explicitlyRejectedBundleIds:idsCopy abGroupIdentifier:identifierCopy context:contextCopy feedbackInstance:v26 aggregateLogger:v22 petTracker:v23];
 }
 
-+ (void)logShownMMMetricsEntryForBundle:(id)a3 anchorType:(int64_t)a4 consumerSubType:(unsigned __int8)a5 score:(double)a6
++ (void)logShownMMMetricsEntryForBundle:(id)bundle anchorType:(int64_t)type consumerSubType:(unsigned __int8)subType score:(double)score
 {
-  if (a5 == 35)
+  if (subType == 35)
   {
-    v9 = a3;
+    bundleCopy = bundle;
     v15 = objc_opt_new();
-    [v15 setBundleId:v9];
+    [v15 setBundleId:bundleCopy];
 
-    [v15 setAnchor:{+[ATXMMAppPredictionExpert mmAnchorTypeToMMProtobufAnchor:](ATXMMAppPredictionExpert, "mmAnchorTypeToMMProtobufAnchor:", a4)}];
+    [v15 setAnchor:{+[ATXMMAppPredictionExpert mmAnchorTypeToMMProtobufAnchor:](ATXMMAppPredictionExpert, "mmAnchorTypeToMMProtobufAnchor:", type)}];
     v10 = +[_ATXAppPredictor sharedInstance];
-    v11 = [v10 abGroupIdentifiers];
-    v12 = [v11 objectAtIndexedSubscript:16];
+    abGroupIdentifiers = [v10 abGroupIdentifiers];
+    v12 = [abGroupIdentifiers objectAtIndexedSubscript:16];
 
     [v15 setAbGroup:v12];
     v13 = [MEMORY[0x277CEBCF0] stringForConsumerSubtype:35];
     [v15 setConsumerSubType:v13];
 
-    v14 = [MEMORY[0x277D41DA8] sharedInstance];
-    [v14 trackDistributionForMessage:v15 value:a6];
+    mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+    [mEMORY[0x277D41DA8] trackDistributionForMessage:v15 value:score];
   }
 }
 
-+ (void)logEngagedMMMetricsEntryForBundle:(id)a3 anchorType:(int64_t)a4 consumerSubType:(unsigned __int8)a5 score:(double)a6
++ (void)logEngagedMMMetricsEntryForBundle:(id)bundle anchorType:(int64_t)type consumerSubType:(unsigned __int8)subType score:(double)score
 {
-  if (a5 == 35)
+  if (subType == 35)
   {
-    v9 = a3;
+    bundleCopy = bundle;
     v15 = objc_opt_new();
-    [v15 setAnchor:{+[ATXMMAppPredictionExpert mmAnchorTypeToMMProtobufAnchor:](ATXMMAppPredictionExpert, "mmAnchorTypeToMMProtobufAnchor:", a4)}];
-    [v15 setBundleId:v9];
+    [v15 setAnchor:{+[ATXMMAppPredictionExpert mmAnchorTypeToMMProtobufAnchor:](ATXMMAppPredictionExpert, "mmAnchorTypeToMMProtobufAnchor:", type)}];
+    [v15 setBundleId:bundleCopy];
 
     v10 = +[_ATXAppPredictor sharedInstance];
-    v11 = [v10 abGroupIdentifiers];
-    v12 = [v11 objectAtIndexedSubscript:16];
+    abGroupIdentifiers = [v10 abGroupIdentifiers];
+    v12 = [abGroupIdentifiers objectAtIndexedSubscript:16];
 
     [v15 setAbGroup:v12];
     v13 = [MEMORY[0x277CEBCF0] stringForConsumerSubtype:35];
     [v15 setConsumerSubType:v13];
 
-    v14 = [MEMORY[0x277D41DA8] sharedInstance];
-    [v14 trackDistributionForMessage:v15 value:a6];
+    mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+    [mEMORY[0x277D41DA8] trackDistributionForMessage:v15 value:score];
   }
 }
 
-+ (unint64_t)_outcomeForEngagementType:(unint64_t)a3
++ (unint64_t)_outcomeForEngagementType:(unint64_t)type
 {
   result = 0;
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    switch(a3)
+    switch(type)
     {
       case 2uLL:
         return 3;
@@ -524,10 +524,10 @@ LABEL_18:
         v5 = __atxlog_handle_default();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
         {
-          [(ATXAppPredictorFeedback *)a3 _outcomeForEngagementType:v5];
+          [(ATXAppPredictorFeedback *)type _outcomeForEngagementType:v5];
         }
 
-        result = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Invalid ATXEngagementType value of %lu received in feedback", a3}];
+        result = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Invalid ATXEngagementType value of %lu received in feedback", type}];
         __break(1u);
         break;
     }
@@ -535,9 +535,9 @@ LABEL_18:
 
   else
   {
-    if (a3 <= 5)
+    if (type <= 5)
     {
-      if (a3 == 5)
+      if (type == 5)
       {
         v4 = 5;
       }
@@ -547,7 +547,7 @@ LABEL_18:
         v4 = 0;
       }
 
-      if (a3 == 4)
+      if (type == 4)
       {
         return 4;
       }
@@ -558,12 +558,12 @@ LABEL_18:
       }
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
       return 6;
     }
 
-    if (a3 == 7)
+    if (type == 7)
     {
       goto LABEL_18;
     }
@@ -572,25 +572,25 @@ LABEL_18:
   return result;
 }
 
-+ (int64_t)getEngagedItemIndexWithFeedbackItems:(id)a3 engagedItem:(id)a4
++ (int64_t)getEngagedItemIndexWithFeedbackItems:(id)items engagedItem:(id)item
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  itemsCopy = items;
+  itemCopy = item;
+  if ([itemsCopy count])
   {
     v7 = 0;
     while (1)
     {
-      v8 = [v5 objectAtIndexedSubscript:v7];
-      v9 = [v8 bundleId];
-      v10 = [v6 isEqualToString:v9];
+      v8 = [itemsCopy objectAtIndexedSubscript:v7];
+      bundleId = [v8 bundleId];
+      v10 = [itemCopy isEqualToString:bundleId];
 
       if (v10)
       {
         break;
       }
 
-      if (++v7 >= [v5 count])
+      if (++v7 >= [itemsCopy count])
       {
         goto LABEL_5;
       }
@@ -606,34 +606,34 @@ LABEL_5:
   return v7;
 }
 
-+ (id)constructFeatureDictionaryWithFeedbackItems:(id)a3 engagedItem:(id)a4 shownItemIndexes:(id)a5 consumerType:(unint64_t)a6 histogramBundleIdTable:(id)a7
++ (id)constructFeatureDictionaryWithFeedbackItems:(id)items engagedItem:(id)item shownItemIndexes:(id)indexes consumerType:(unint64_t)type histogramBundleIdTable:(id)table
 {
   v97 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = [v11 count];
+  itemsCopy = items;
+  itemCopy = item;
+  indexesCopy = indexes;
+  tableCopy = table;
+  v15 = [itemsCopy count];
   if (v15)
   {
-    v16 = [v13 count];
+    v16 = [indexesCopy count];
     v17 = +[_ATXGlobals sharedInstance];
     v18 = v17;
-    v71 = v13;
-    v72 = v12;
-    v70 = v14;
-    v66 = a6;
-    if (a6 == 8)
+    v71 = indexesCopy;
+    v72 = itemCopy;
+    v70 = tableCopy;
+    typeCopy = type;
+    if (type == 8)
     {
-      v19 = [v17 extraIntentsToLog];
+      extraIntentsToLog = [v17 extraIntentsToLog];
     }
 
     else
     {
-      v19 = [v17 extraAppsToLog];
+      extraIntentsToLog = [v17 extraAppsToLog];
     }
 
-    v20 = v19;
+    v20 = extraIntentsToLog;
 
     if (v16 + v20 >= v15)
     {
@@ -650,7 +650,7 @@ LABEL_5:
     v91 = 0u;
     v92 = 0u;
     v93 = 0u;
-    v23 = v11;
+    v23 = itemsCopy;
     v24 = [v23 countByEnumeratingWithState:&v90 objects:v96 count:16];
     if (v24)
     {
@@ -666,8 +666,8 @@ LABEL_5:
           }
 
           v28 = *(*(&v90 + 1) + 8 * i);
-          v29 = [v28 bundleId];
-          [v22 setObject:v28 forKeyedSubscript:v29];
+          bundleId = [v28 bundleId];
+          [v22 setObject:v28 forKeyedSubscript:bundleId];
         }
 
         v25 = [v23 countByEnumeratingWithState:&v90 objects:v96 count:16];
@@ -676,12 +676,12 @@ LABEL_5:
       while (v25);
     }
 
-    v68 = v11;
+    v68 = itemsCopy;
 
     v30 = objc_opt_new();
     v31 = objc_alloc(MEMORY[0x277CBEB58]);
-    v32 = [v22 allKeys];
-    v33 = [v31 initWithArray:v32];
+    allKeys = [v22 allKeys];
+    v33 = [v31 initWithArray:allKeys];
 
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -772,7 +772,7 @@ LABEL_26:
     }
 
     v50 = v69;
-    if (v66 == 8 && v64 != -1)
+    if (typeCopy == 8 && v64 != -1)
     {
       v74[0] = MEMORY[0x277D85DD0];
       v74[1] = 3221225472;
@@ -783,15 +783,15 @@ LABEL_26:
       v77 = v73;
       v51 = _Block_copy(v74);
       v52 = [v23 objectAtIndexedSubscript:v64];
-      v53 = [v52 bundleId];
-      v54 = [_ATXActionUtils getBundleIdAndActionTypeFromActionKey:v53];
+      bundleId2 = [v52 bundleId];
+      v54 = [_ATXActionUtils getBundleIdAndActionTypeFromActionKey:bundleId2];
 
       if (v54)
       {
-        v65 = [v54 first];
+        first = [v54 first];
         [v54 second];
         v55 = v67 = v52;
-        v56 = [MEMORY[0x277CBEB58] setWithObject:v65];
+        v56 = [MEMORY[0x277CBEB58] setWithObject:first];
         v57 = [_ATXActionUtils actionKeyFilterForCandidateBundleIds:v56 candidateActionTypes:0 blacklist:0];
         v58 = [v70 allKeysFilteredBy:v57];
 
@@ -809,10 +809,10 @@ LABEL_26:
 
     v15 = v73;
 
-    v11 = v68;
-    v13 = v71;
-    v12 = v72;
-    v14 = v70;
+    itemsCopy = v68;
+    indexesCopy = v71;
+    itemCopy = v72;
+    tableCopy = v70;
   }
 
   v62 = *MEMORY[0x277D85DE8];
@@ -883,20 +883,20 @@ void __136__ATXAppPredictorFeedback_constructFeatureDictionaryWithFeedbackItems_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (double)_bucketize:(double)result bucketSize:(double)a4
++ (double)_bucketize:(double)result bucketSize:(double)size
 {
   if (result >= 0.0)
   {
-    return (result / a4) * a4;
+    return (result / size) * size;
   }
 
   return result;
 }
 
-+ (id)_getLastAppsWithEngagedApp:(id)a3 limit:(int)a4
++ (id)_getLastAppsWithEngagedApp:(id)app limit:(int)limit
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  appCopy = app;
   v6 = objc_opt_new();
   v7 = [v6 dateByAddingTimeInterval:-7200.0];
   v8 = objc_opt_new();
@@ -911,10 +911,10 @@ void __136__ATXAppPredictorFeedback_constructFeatureDictionaryWithFeedbackItems_
   [v9 enumerateAppLaunchSessionsBetweenStartDate:v7 endDate:v6 shouldReverse:0 bundleIDFilter:0 block:v42];
 
   objc_autoreleasePoolPop(v10);
-  if (!v5 || ([(__CFString *)v5 isEqualToString:&stru_2839A6058]& 1) != 0)
+  if (!appCopy || ([(__CFString *)appCopy isEqualToString:&stru_2839A6058]& 1) != 0)
   {
-    v12 = v5;
-    v5 = @"NONE";
+    v12 = appCopy;
+    appCopy = @"NONE";
 LABEL_4:
 
     goto LABEL_5;
@@ -926,29 +926,29 @@ LABEL_4:
   }
 
   v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v11, "count") - 1}];
-  v20 = [v12 bundleID];
-  v21 = [v20 isEqualToString:v5];
+  bundleID = [v12 bundleID];
+  v21 = [bundleID isEqualToString:appCopy];
 
   if (!v21)
   {
     goto LABEL_4;
   }
 
-  v22 = [v12 appSessionEndTime];
+  appSessionEndTime = [v12 appSessionEndTime];
 
-  if (!v22)
+  if (!appSessionEndTime)
   {
     goto LABEL_6;
   }
 
-  v23 = [v12 appSessionEndTime];
-  [v6 timeIntervalSinceDate:v23];
+  appSessionEndTime2 = [v12 appSessionEndTime];
+  [v6 timeIntervalSinceDate:appSessionEndTime2];
   v25 = v24;
 
   if (v25 > 300.0)
   {
 LABEL_5:
-    v12 = [objc_alloc(MEMORY[0x277CEBBD8]) initWithBundleId:v5 type:1 parentBundleID:0 extensionHostID:0 appSessionStartTime:v6 appSessionEndTime:v6 launchReason:0];
+    v12 = [objc_alloc(MEMORY[0x277CEBBD8]) initWithBundleId:appCopy type:1 parentBundleID:0 extensionHostID:0 appSessionStartTime:v6 appSessionEndTime:v6 launchReason:0];
     [v11 addObject:v12];
 LABEL_6:
   }
@@ -958,9 +958,9 @@ LABEL_6:
   v15 = [v11 count];
   v36 = v9;
   v37 = v7;
-  if (v14 <= a4)
+  if (v14 <= limit)
   {
-    if (v15 >= a4)
+    if (v15 >= limit)
     {
       v17 = v11;
     }
@@ -968,7 +968,7 @@ LABEL_6:
     else
     {
       v17 = objc_opt_new();
-      if ([v11 count] != a4)
+      if ([v11 count] != limit)
       {
         v18 = 0;
         do
@@ -979,7 +979,7 @@ LABEL_6:
           ++v18;
         }
 
-        while (a4 - [v11 count] > v18);
+        while (limit - [v11 count] > v18);
       }
 
       [v17 addObjectsFromArray:v11];
@@ -988,7 +988,7 @@ LABEL_6:
 
   else
   {
-    v16 = [v11 subarrayWithRange:{v15 - a4, a4}];
+    v16 = [v11 subarrayWithRange:{v15 - limit, limit}];
     v17 = [v16 mutableCopy];
   }
 
@@ -1014,8 +1014,8 @@ LABEL_6:
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v38 + 1) + 8 * i) bundleID];
-        [v26 addObject:v33];
+        bundleID2 = [*(*(&v38 + 1) + 8 * i) bundleID];
+        [v26 addObject:bundleID2];
       }
 
       v30 = [v28 countByEnumeratingWithState:&v38 objects:v44 count:16];
@@ -1030,22 +1030,22 @@ LABEL_6:
   return v26;
 }
 
-+ (id)_getLastAppIntentsWithEngagedAction:(id)a3 combinedIntentStream:(id)a4 limit:(int)a5
++ (id)_getLastAppIntentsWithEngagedAction:(id)action combinedIntentStream:(id)stream limit:(int)limit
 {
   v66 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  actionCopy = action;
+  streamCopy = stream;
   v9 = objc_opt_new();
   v57 = [v9 dateByAddingTimeInterval:-14400.0];
-  v10 = [v8 getCombinedIntentEventsBetweenStartDate:? endDate:? ascending:?];
+  v10 = [streamCopy getCombinedIntentEventsBetweenStartDate:? endDate:? ascending:?];
   v11 = [v10 mutableCopy];
 
-  v12 = [v7 actionKey];
-  if (v12)
+  actionKey = [actionCopy actionKey];
+  if (actionKey)
   {
-    v13 = v12;
-    v14 = [v7 actionKey];
-    v15 = [v14 isEqualToString:&stru_2839A6058];
+    v13 = actionKey;
+    actionKey2 = [actionCopy actionKey];
+    v15 = [actionKey2 isEqualToString:&stru_2839A6058];
 
     if ((v15 & 1) == 0)
     {
@@ -1053,16 +1053,16 @@ LABEL_6:
       {
         v55 = v9;
         v16 = [v11 objectAtIndexedSubscript:0];
-        v17 = [v16 action];
-        v18 = [v17 actionKey];
-        v19 = [v7 actionKey];
-        v20 = [v18 isEqualToString:v19];
+        action = [v16 action];
+        actionKey3 = [action actionKey];
+        actionKey4 = [actionCopy actionKey];
+        v20 = [actionKey3 isEqualToString:actionKey4];
 
         if (v20)
         {
-          v21 = [v16 endDate];
+          endDate = [v16 endDate];
           v9 = v55;
-          [v55 timeIntervalSinceDate:v21];
+          [v55 timeIntervalSinceDate:endDate];
           v23 = v22;
 
           if (v23 <= 30.0)
@@ -1078,7 +1078,7 @@ LABEL_6:
         }
       }
 
-      v24 = [objc_alloc(MEMORY[0x277CEB5D8]) initWithBundleId:@"NONE" intentType:@"NONE" dateInterval:0 action:v7];
+      v24 = [objc_alloc(MEMORY[0x277CEB5D8]) initWithBundleId:@"NONE" intentType:@"NONE" dateInterval:0 action:actionCopy];
       [v11 insertObject:v24 atIndex:0];
     }
   }
@@ -1094,16 +1094,16 @@ LABEL_9:
   if (v26)
   {
     v27 = v26;
-    v54 = v7;
+    v54 = actionCopy;
     v56 = v9;
-    v53 = v8;
+    v53 = streamCopy;
     v28 = 0;
     v29 = 0;
     v30 = *v62;
-    v31 = a5;
+    limitCopy = limit;
     v32 = &stru_2839A6058;
     obj = v25;
-    v60 = v31;
+    v60 = limitCopy;
     while (2)
     {
       for (i = 0; i != v27; ++i)
@@ -1113,12 +1113,12 @@ LABEL_9:
           objc_enumerationMutation(obj);
         }
 
-        if (v28 == v31)
+        if (v28 == limitCopy)
         {
           v43 = obj;
 
-          v8 = v53;
-          v7 = v54;
+          streamCopy = v53;
+          actionCopy = v54;
           v9 = v56;
           v44 = v57;
           v46 = v58;
@@ -1126,19 +1126,19 @@ LABEL_9:
         }
 
         v34 = *(*(&v61 + 1) + 8 * i);
-        v35 = [v34 action];
-        v36 = [v35 actionKey];
+        action2 = [v34 action];
+        actionKey5 = [action2 actionKey];
 
-        if (v36)
+        if (actionKey5)
         {
-          v37 = [v34 action];
-          v38 = [v37 actionKey];
-          v39 = [v38 isEqualToString:v32];
+          action3 = [v34 action];
+          actionKey6 = [action3 actionKey];
+          v39 = [actionKey6 isEqualToString:v32];
 
           if (v39)
           {
             ++v29;
-            v31 = v60;
+            limitCopy = v60;
           }
 
           else
@@ -1151,11 +1151,11 @@ LABEL_9:
               ++v28;
             }
 
-            v31 = v60;
-            v41 = [v34 action];
-            v42 = [v41 actionKey];
+            limitCopy = v60;
+            action4 = [v34 action];
+            actionKey7 = [action4 actionKey];
 
-            v32 = v42;
+            v32 = actionKey7;
             v29 = 1;
           }
         }
@@ -1175,10 +1175,10 @@ LABEL_9:
     if (v29)
     {
       v44 = v57;
-      if (v28 == v31)
+      if (v28 == limitCopy)
       {
-        v8 = v53;
-        v7 = v54;
+        streamCopy = v53;
+        actionCopy = v54;
         v9 = v56;
         v46 = v58;
       }
@@ -1190,19 +1190,19 @@ LABEL_9:
         [v58 addObject:v45];
 
         ++v28;
-        v8 = v53;
-        v7 = v54;
+        streamCopy = v53;
+        actionCopy = v54;
         v9 = v56;
       }
 
-      v47 = v60;
+      limitCopy2 = v60;
     }
 
     else
     {
-      v47 = v31;
-      v8 = v53;
-      v7 = v54;
+      limitCopy2 = limitCopy;
+      streamCopy = v53;
+      actionCopy = v54;
       v9 = v56;
       v44 = v57;
       v46 = v58;
@@ -1213,15 +1213,15 @@ LABEL_9:
   {
 
     v28 = 0;
-    v47 = a5;
+    limitCopy2 = limit;
     v32 = &stru_2839A6058;
     v44 = v57;
     v46 = v58;
     v43 = v25;
   }
 
-  v48 = v47 - v28;
-  if (v47 > v28)
+  v48 = limitCopy2 - v28;
+  if (limitCopy2 > v28)
   {
     do
     {
@@ -1233,21 +1233,21 @@ LABEL_9:
   }
 
 LABEL_30:
-  v49 = [v46 reverseObjectEnumerator];
-  v50 = [v49 allObjects];
+  reverseObjectEnumerator = [v46 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v51 = *MEMORY[0x277D85DE8];
 
-  return v50;
+  return allObjects;
 }
 
-+ (id)_appDictionaryForFeedbackItem:(id)a3
++ (id)_appDictionaryForFeedbackItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:829];
   for (i = 0; i != 828; ++i)
   {
-    v6 = *([v3 scoreInputs] + 4 * i);
+    v6 = *([itemCopy scoreInputs] + 4 * i);
     if ((*&v6 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
     {
       v6 = -31337.0;
@@ -1259,15 +1259,15 @@ LABEL_30:
   }
 
   v9 = +[_ATXAppInfoManager sharedInstance];
-  v10 = [v3 bundleId];
-  v11 = [v9 genreIdForBundleId:v10];
+  bundleId = [itemCopy bundleId];
+  v11 = [v9 genreIdForBundleId:bundleId];
   [v4 setObject:v11 forKeyedSubscript:@"GenreId"];
 
-  v12 = [v3 bundleId];
-  v13 = [v9 subGenreIdsForBundleId:v12];
+  bundleId2 = [itemCopy bundleId];
+  v13 = [v9 subGenreIdsForBundleId:bundleId2];
   [v4 setObject:v13 forKeyedSubscript:@"SubGenreIds"];
 
-  [v3 totalScore];
+  [itemCopy totalScore];
   v15 = v14;
   if ((*&v15 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
@@ -1277,8 +1277,8 @@ LABEL_30:
   v16 = [MEMORY[0x277CCABB0] numberWithDouble:v15];
   [v4 setObject:v16 forKeyedSubscript:@"Score"];
 
-  v17 = [v3 bundleId];
-  [v4 setObject:v17 forKeyedSubscript:@"BundleId"];
+  bundleId3 = [itemCopy bundleId];
+  [v4 setObject:bundleId3 forKeyedSubscript:@"BundleId"];
 
   return v4;
 }

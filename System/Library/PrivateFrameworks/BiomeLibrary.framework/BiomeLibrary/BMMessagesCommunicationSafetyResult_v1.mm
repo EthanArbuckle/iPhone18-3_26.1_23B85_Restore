@@ -10,10 +10,10 @@
 {
   v4.receiver = self;
   v4.super_class = BMMessagesCommunicationSafetyResult_v1;
-  v2 = [(BMMessagesCommunicationSafetyResult *)&v4 eventDirection];
-  if (v2 < 3)
+  eventDirection = [(BMMessagesCommunicationSafetyResult *)&v4 eventDirection];
+  if (eventDirection < 3)
   {
-    return v2 + 1;
+    return eventDirection + 1;
   }
 
   else
@@ -26,10 +26,10 @@
 {
   v4.receiver = self;
   v4.super_class = BMMessagesCommunicationSafetyResult_v1;
-  v2 = [(BMMessagesCommunicationSafetyResult *)&v4 contentType];
-  if (v2 < 3)
+  contentType = [(BMMessagesCommunicationSafetyResult *)&v4 contentType];
+  if (contentType < 3)
   {
-    return v2 + 1;
+    return contentType + 1;
   }
 
   else
@@ -42,10 +42,10 @@
 {
   v4.receiver = self;
   v4.super_class = BMMessagesCommunicationSafetyResult_v1;
-  v2 = [(BMMessagesCommunicationSafetyResult *)&v4 eventType];
-  if (v2 < 4)
+  eventType = [(BMMessagesCommunicationSafetyResult *)&v4 eventType];
+  if (eventType < 4)
   {
-    return v2 + 1;
+    return eventType + 1;
   }
 
   else

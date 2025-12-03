@@ -1,33 +1,33 @@
 @interface VCAudioCaptionsSpeechAnalyzer
-- (BOOL)analyzerSetupWithError:(id *)a3;
+- (BOOL)analyzerSetupWithError:(id *)error;
 - (BOOL)configureAnalyzerOptions;
-- (BOOL)enableLanguageDetector:(BOOL)a3;
-- (BOOL)setUpCaptionsWithError:(id *)a3;
+- (BOOL)enableLanguageDetector:(BOOL)detector;
+- (BOOL)setUpCaptionsWithError:(id *)error;
 - (BOOL)shouldPushSamples;
-- (BOOL)startCaptionsWithError:(id *)a3;
-- (VCAudioCaptionsSpeechAnalyzer)initWithDelegate:(id)a3 isLocal:(BOOL)a4 taskIdentifier:(id)a5 reportingAgent:(opaqueRTCReporting *)a6;
+- (BOOL)startCaptionsWithError:(id *)error;
+- (VCAudioCaptionsSpeechAnalyzer)initWithDelegate:(id)delegate isLocal:(BOOL)local taskIdentifier:(id)identifier reportingAgent:(opaqueRTCReporting *)agent;
 - (void)analyzerTeardown;
 - (void)configureAnalyzerOptions;
 - (void)dealloc;
 - (void)destroyAnalyzer;
 - (void)destroyCaptions;
 - (void)finishCaptions;
-- (void)packageAndSendTranscriberResult:(id)a3 withTask:(id)a4 final:(BOOL)a5;
-- (void)pushSamples:(char *)a3 numSamples:(int)a4 hostTime:(double)a5;
-- (void)speechAnalyzer:(id)a3 didProduceSpeechDetectorResult:(id)a4;
-- (void)speechAnalyzer:(id)a3 didProduceTranscriberResult:(id)a4;
-- (void)speechAnalyzer:(id)a3 didStopSpeechDetectorWithError:(id)a4;
-- (void)speechAnalyzer:(id)a3 didStopTranscriptionWithError:(id)a4;
-- (void)speechAnalyzerDidProduceAllTranscriberResults:(id)a3;
+- (void)packageAndSendTranscriberResult:(id)result withTask:(id)task final:(BOOL)final;
+- (void)pushSamples:(char *)samples numSamples:(int)numSamples hostTime:(double)time;
+- (void)speechAnalyzer:(id)analyzer didProduceSpeechDetectorResult:(id)result;
+- (void)speechAnalyzer:(id)analyzer didProduceTranscriberResult:(id)result;
+- (void)speechAnalyzer:(id)analyzer didStopSpeechDetectorWithError:(id)error;
+- (void)speechAnalyzer:(id)analyzer didStopTranscriptionWithError:(id)error;
+- (void)speechAnalyzerDidProduceAllTranscriberResults:(id)results;
 - (void)stopCaptions;
 - (void)updateCurrentTaskInfo;
 @end
 
 @implementation VCAudioCaptionsSpeechAnalyzer
 
-- (VCAudioCaptionsSpeechAnalyzer)initWithDelegate:(id)a3 isLocal:(BOOL)a4 taskIdentifier:(id)a5 reportingAgent:(opaqueRTCReporting *)a6
+- (VCAudioCaptionsSpeechAnalyzer)initWithDelegate:(id)delegate isLocal:(BOOL)local taskIdentifier:(id)identifier reportingAgent:(opaqueRTCReporting *)agent
 {
-  v8 = a4;
+  localCopy = local;
   v114 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ VCAudioCaptionsSpeechAnalyzer-init");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -50,7 +50,7 @@
 
   v100.receiver = self;
   v100.super_class = VCAudioCaptionsSpeechAnalyzer;
-  v13 = [(VCAudioCaptions *)&v100 initWithDelegate:a3 isLocal:v8 taskIdentifier:a5 reportingAgent:a6];
+  v13 = [(VCAudioCaptions *)&v100 initWithDelegate:delegate isLocal:localCopy taskIdentifier:identifier reportingAgent:agent];
   v14 = v13;
   if (v13)
   {
@@ -216,10 +216,10 @@ LABEL_16:
       }
     }
 
-    v36 = [(AVAudioFormat *)v14->super._frameworkAudioFormat streamDescription];
-    v99 = *(v36 + 32);
-    v97 = *v36;
-    v98 = *(v36 + 16);
+    streamDescription = [(AVAudioFormat *)v14->super._frameworkAudioFormat streamDescription];
+    v99 = *(streamDescription + 32);
+    v97 = *streamDescription;
+    v98 = *(streamDescription + 16);
     captionsFormat = v14->super._captionsFormat;
     *buf = v97;
     *&buf[16] = v98;
@@ -529,7 +529,7 @@ LABEL_11:
         v18 = 2112;
         v19 = v3;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) VCAudioCaptionsSpeechAnalyzer-dealloc";
         v7 = v10;
         v8 = 48;
@@ -641,7 +641,7 @@ LABEL_11:
     v18 = 2112;
     v19 = v3;
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v6 = " [%s] %s:%d %@(%p) ";
     v7 = v10;
     v8 = 48;
@@ -734,7 +734,7 @@ LABEL_11:
         WORD2(v16) = 2112;
         *(&v16 + 6) = v3;
         HIWORD(v16) = 2048;
-        v17 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -794,7 +794,7 @@ void __49__VCAudioCaptionsSpeechAnalyzer_analyzerTeardown__block_invoke()
   }
 }
 
-- (BOOL)analyzerSetupWithError:(id *)a3
+- (BOOL)analyzerSetupWithError:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -847,7 +847,7 @@ LABEL_11:
         WORD2(v42) = 2112;
         *(&v42 + 6) = v5;
         HIWORD(v42) = 2048;
-        v43 = self;
+        selfCopy5 = self;
         v8 = " [%s] %s:%d %@(%p) ";
         v9 = v12;
         v10 = 48;
@@ -916,7 +916,7 @@ LABEL_11:
       WORD2(v42) = 2112;
       *(&v42 + 6) = v13;
       HIWORD(v42) = 2048;
-      v43 = self;
+      selfCopy5 = self;
       v23 = " [%s] %s:%d %@(%p) The speech analyzer already exists!!";
       v24 = v27;
       v25 = 48;
@@ -938,25 +938,25 @@ LABEL_11:
     if (self->super._languageDetectorEnabled)
     {
       languageDetectorOptions = self->_languageDetectorOptions;
-      v20 = self;
+      selfCopy3 = self;
     }
 
     else
     {
-      v20 = 0;
+      selfCopy3 = 0;
       languageDetectorOptions = 0;
     }
 
-    v39 = a3;
+    errorCopy = error;
     if (self->super._enableSpeechDetector)
     {
       speechDetectorOptions = self->_speechDetectorOptions;
-      v29 = self;
+      selfCopy4 = self;
     }
 
     else
     {
-      v29 = 0;
+      selfCopy4 = 0;
       speechDetectorOptions = 0;
     }
 
@@ -965,8 +965,8 @@ LABEL_11:
     *&buf[8] = frameworkAudioFormat;
     *&buf[16] = self;
     *&v42 = 0;
-    *(&v42 + 1) = v20;
-    v43 = v29;
+    *(&v42 + 1) = selfCopy3;
+    selfCopy5 = selfCopy4;
     *&v44 = operationQueue;
     *(&v44 + 1) = transcriberOptions;
     v45 = analyzerOptions;
@@ -987,7 +987,7 @@ LABEL_11:
 
     v33 = @"SpeechAnalyzer _analyzer failed to init";
     v34 = 3;
-    a3 = v39;
+    error = errorCopy;
   }
 
   else
@@ -1004,7 +1004,7 @@ LABEL_11:
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
       {
         [VCAudioCaptionsSpeechAnalyzer analyzerSetupWithError:];
-        if (!a3)
+        if (!error)
         {
           goto LABEL_48;
         }
@@ -1041,11 +1041,11 @@ LABEL_11:
         WORD2(v42) = 2112;
         *(&v42 + 6) = v35;
         HIWORD(v42) = 2048;
-        v43 = self;
+        selfCopy5 = self;
         LOWORD(v44) = 2112;
         *(&v44 + 2) = v33;
         _os_log_error_impl(&dword_1DB56E000, v37, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) error=%@", buf, 0x3Au);
-        if (!a3)
+        if (!error)
         {
           goto LABEL_48;
         }
@@ -1055,10 +1055,10 @@ LABEL_11:
     }
   }
 
-  if (a3)
+  if (error)
   {
 LABEL_47:
-    *a3 = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 7, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptionsSpeechAnalyzer.m", 218], v34);
+    *error = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 7, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptionsSpeechAnalyzer.m", 218], v34);
   }
 
 LABEL_48:
@@ -1075,7 +1075,7 @@ LABEL_48:
 
 - (void)updateCurrentTaskInfo
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 5)
     {
@@ -1115,29 +1115,29 @@ LABEL_10:
   }
 }
 
-- (void)packageAndSendTranscriberResult:(id)a3 withTask:(id)a4 final:(BOOL)a5
+- (void)packageAndSendTranscriberResult:(id)result withTask:(id)task final:(BOOL)final
 {
-  v5 = a5;
+  finalCopy = final;
   v51 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->super._captionsQueue);
-  if ([objc_msgSend(a3 "segments")] && -[VCAudioCaptions delegate](self, "delegate"))
+  if ([objc_msgSend(result "segments")] && -[VCAudioCaptions delegate](self, "delegate"))
   {
-    v9 = [(VCAudioCaptions *)self taskInfoForTask:a4];
+    v9 = [(VCAudioCaptions *)self taskInfoForTask:task];
     if (!v9)
     {
       [VCAudioCaptionsSpeechAnalyzer packageAndSendTranscriberResult:? withTask:? final:?];
       goto LABEL_29;
     }
 
-    v10 = [[VCCaptionsTranscription alloc] initWithSTTranscriberMultisegmentResult:a3 taskInfo:v9 isLocal:self->super._isLocal isFinal:v5];
+    v10 = [[VCCaptionsTranscription alloc] initWithSTTranscriberMultisegmentResult:result taskInfo:v9 isLocal:self->super._isLocal isFinal:finalCopy];
     if (v10)
     {
       v11 = v10;
       [(VCAudioCaptions *)self sendTranscriptionResult:v10 taskInfo:v9];
     }
 
-    v12 = !self->super._enableSpeechDetector || !v5;
-    if (!v12 && self->_analyzer == a4)
+    v12 = !self->super._enableSpeechDetector || !finalCopy;
+    if (!v12 && self->_analyzer == task)
     {
       [(NSMutableArray *)self->super._captionTasks removeObject:v9];
       ++self->super._captionTaskCount;
@@ -1176,11 +1176,11 @@ LABEL_10:
           v41 = 1024;
           *v42 = v13;
           *&v42[4] = 2112;
-          *&v42[6] = a4;
+          *&v42[6] = task;
           *&v42[14] = 2112;
           *&v42[16] = analyzer;
           v43 = 2112;
-          v44 = v9;
+          taskCopy2 = v9;
           v45 = 2112;
           v46 = currentTaskInfo;
           v20 = " [%s] %s:%d didUpdateTaskInfo=%{BOOL}d, task=%@, analyzer=%@, fetchedInfo=%@, newInfo=%@";
@@ -1211,11 +1211,11 @@ LABEL_29:
       v41 = 1024;
       *v42 = v13;
       *&v42[4] = 2112;
-      *&v42[6] = a4;
+      *&v42[6] = task;
       *&v42[14] = 2112;
       *&v42[16] = v33;
       v43 = 2112;
-      v44 = v9;
+      taskCopy2 = v9;
       v45 = 2112;
       v46 = v34;
       v30 = " [%s] %s:%d didUpdateTaskInfo=%{BOOL}d, task=%@, analyzer=%@, fetchedInfo=%@, newInfo=%@";
@@ -1262,7 +1262,7 @@ LABEL_29:
           *&v42[18] = 1024;
           *&v42[20] = v13;
           v43 = 2112;
-          v44 = a4;
+          taskCopy2 = task;
           v45 = 2112;
           v46 = v26;
           v47 = 2112;
@@ -1298,7 +1298,7 @@ LABEL_29:
       *&v42[18] = 1024;
       *&v42[20] = v13;
       v43 = 2112;
-      v44 = a4;
+      taskCopy2 = task;
       v45 = 2112;
       v46 = v28;
       v47 = 2112;
@@ -1315,9 +1315,9 @@ LABEL_29:
   }
 }
 
-- (BOOL)enableLanguageDetector:(BOOL)a3
+- (BOOL)enableLanguageDetector:(BOOL)detector
 {
-  if (!a3)
+  if (!detector)
   {
     return 1;
   }
@@ -1329,17 +1329,17 @@ LABEL_29:
   v5 = +[VCSpeechFrameworkWrapper defaultSpeechFrameworkWrapper];
   if (languageDetectorReportingFrequency)
   {
-    v6 = [v5 newSFSpeechAnalyzerLanguageDetectorOptionsWithResultReportingFrequency:{-[NSNumber unsignedIntegerValue](self->super._languageDetectorReportingFrequency, "unsignedIntegerValue")}];
+    newSFSpeechAnalyzerLanguageDetectorOptions = [v5 newSFSpeechAnalyzerLanguageDetectorOptionsWithResultReportingFrequency:{-[NSNumber unsignedIntegerValue](self->super._languageDetectorReportingFrequency, "unsignedIntegerValue")}];
   }
 
   else
   {
-    v6 = [v5 newSFSpeechAnalyzerLanguageDetectorOptions];
+    newSFSpeechAnalyzerLanguageDetectorOptions = [v5 newSFSpeechAnalyzerLanguageDetectorOptions];
   }
 
-  self->_languageDetectorOptions = v6;
+  self->_languageDetectorOptions = newSFSpeechAnalyzerLanguageDetectorOptions;
   v7 = 1;
-  [(SFSpeechAnalyzerLanguageDetectorOptions *)v6 setUseVAD:1];
+  [(SFSpeechAnalyzerLanguageDetectorOptions *)newSFSpeechAnalyzerLanguageDetectorOptions setUseVAD:1];
   if (!self->_languageDetectorOptions)
   {
     [VCAudioCaptionsSpeechAnalyzer enableLanguageDetector:];
@@ -1349,7 +1349,7 @@ LABEL_29:
   return v7;
 }
 
-- (BOOL)startCaptionsWithError:(id *)a3
+- (BOOL)startCaptionsWithError:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1402,7 +1402,7 @@ LABEL_11:
         WORD2(v15) = 2112;
         *(&v15 + 6) = v5;
         HIWORD(v15) = 2048;
-        v16 = self;
+        selfCopy = self;
         v8 = " [%s] %s:%d %@(%p) ";
         v9 = v12;
         v10 = 48;
@@ -1411,7 +1411,7 @@ LABEL_11:
     }
   }
 
-  return [(VCAudioCaptionsSpeechAnalyzer *)self analyzerSetupWithError:a3, *v14, *&v14[16], v15, v16];
+  return [(VCAudioCaptionsSpeechAnalyzer *)self analyzerSetupWithError:error, *v14, *&v14[16], v15, selfCopy];
 }
 
 - (void)destroyCaptions
@@ -1467,7 +1467,7 @@ LABEL_11:
         WORD2(v12) = 2112;
         *(&v12 + 6) = v3;
         HIWORD(v12) = 2048;
-        v13 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -1479,7 +1479,7 @@ LABEL_11:
   [(VCAudioCaptionsSpeechAnalyzer *)self destroyAnalyzer:*v11];
 }
 
-- (BOOL)setUpCaptionsWithError:(id *)a3
+- (BOOL)setUpCaptionsWithError:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() != self)
@@ -1515,7 +1515,7 @@ LABEL_11:
     v21 = 2112;
     v22 = v5;
     v23 = 2048;
-    v24 = self;
+    selfCopy = self;
     v8 = " [%s] %s:%d %@(%p) ";
     v9 = v12;
     v10 = 48;
@@ -1543,18 +1543,18 @@ LABEL_11:
   }
 
 LABEL_12:
-  v13 = [(VCAudioCaptionsSpeechAnalyzer *)self configureAnalyzerOptions];
-  if (v13)
+  configureAnalyzerOptions = [(VCAudioCaptionsSpeechAnalyzer *)self configureAnalyzerOptions];
+  if (configureAnalyzerOptions)
   {
     self->super._recognizerState = 1;
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 2, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptionsSpeechAnalyzer.m", 322], 9);
+    *error = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 2, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptionsSpeechAnalyzer.m", 322], 9);
   }
 
-  return v13;
+  return configureAnalyzerOptions;
 }
 
 - (BOOL)shouldPushSamples
@@ -1631,7 +1631,7 @@ LABEL_12:
       v21 = 2112;
       v22 = v5;
       v23 = 2048;
-      v24 = self;
+      selfCopy = self;
       v25 = 1024;
       v26 = v14;
       v9 = " [%s] %s:%d %@(%p) Will not push samples; Recognizer state=%d";
@@ -1648,11 +1648,11 @@ LABEL_5:
   return result;
 }
 
-- (void)pushSamples:(char *)a3 numSamples:(int)a4 hostTime:(double)a5
+- (void)pushSamples:(char *)samples numSamples:(int)numSamples hostTime:(double)time
 {
   v23 = *MEMORY[0x1E69E9840];
   VCCaptionTaskInfo_HostTime(self->super._currentTaskInfo);
-  v8 = VCAudioCaptions_ConvertSamplesToPCM(self, a3, a4);
+  v8 = VCAudioCaptions_ConvertSamplesToPCM(self, samples, numSamples);
   self->super._isAudioConverterActive = 1;
   v12 = v8;
   if (v8)
@@ -1700,7 +1700,7 @@ LABEL_5:
         v19 = 2112;
         v20 = v9;
         v21 = 2048;
-        v22 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Sample PCM buffer is nil", buf, 0x30u);
       }
     }
@@ -1761,7 +1761,7 @@ LABEL_5:
       v20 = 2112;
       v21 = v3;
       v22 = 2048;
-      v23 = self;
+      selfCopy = self;
       v6 = " [%s] %s:%d %@(%p) ";
       v7 = v10;
       v8 = 48;
@@ -1895,7 +1895,7 @@ LABEL_11:
         WORD2(v12) = 2112;
         *(&v12 + 6) = v3;
         HIWORD(v12) = 2048;
-        v13 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -1907,14 +1907,14 @@ LABEL_11:
   [(VCAudioCaptionsSpeechAnalyzer *)self analyzerTeardown:*v11];
 }
 
-- (void)speechAnalyzer:(id)a3 didProduceTranscriberResult:(id)a4
+- (void)speechAnalyzer:(id)analyzer didProduceTranscriberResult:(id)result
 {
   v63 = *MEMORY[0x1E69E9840];
-  v6 = [a4 contextualizedTranscriberMultisegmentResult];
-  if (v6)
+  contextualizedTranscriberMultisegmentResult = [result contextualizedTranscriberMultisegmentResult];
+  if (contextualizedTranscriberMultisegmentResult)
   {
-    v7 = v6;
-    v8 = [v6 earResultType] == 4 || objc_msgSend(v7, "earResultType") == 3 || objc_msgSend(v7, "earResultType") == 1;
+    v7 = contextualizedTranscriberMultisegmentResult;
+    v8 = [contextualizedTranscriberMultisegmentResult earResultType] == 4 || objc_msgSend(v7, "earResultType") == 3 || objc_msgSend(v7, "earResultType") == 1;
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() < 8)
@@ -1933,7 +1933,7 @@ LABEL_11:
           [v7 recognitionAudioRange];
           time = v50;
           Seconds = CMTimeGetSeconds(&time);
-          v15 = [v7 earResultType];
+          earResultType = [v7 earResultType];
           LODWORD(time.value) = 136316930;
           *(&time.value + 4) = v10;
           LOWORD(time.flags) = 2080;
@@ -1941,7 +1941,7 @@ LABEL_11:
           HIWORD(time.epoch) = 1024;
           v52 = 394;
           v53 = 2112;
-          v54 = a3;
+          analyzerCopy3 = analyzer;
           v55 = 1024;
           *v56 = v8;
           *&v56[4] = 1024;
@@ -1949,7 +1949,7 @@ LABEL_11:
           *v57 = 2048;
           *&v57[2] = Seconds;
           *v58 = 2048;
-          *&v58[2] = v15;
+          *&v58[2] = earResultType;
           v16 = " [%s] %s:%d speechAnalyzer=%@ didProduceTranscriberResult isFinal=%d, count=%d, duration=%f, earResultType=%lu";
           v17 = v11;
           v18 = 70;
@@ -1965,7 +1965,7 @@ LABEL_22:
         v45[3] = &unk_1E85F5E38;
         v45[4] = self;
         v45[5] = v7;
-        v45[6] = a3;
+        v45[6] = analyzer;
         v46 = v8;
         dispatch_async(captionsQueue, v45);
         return;
@@ -1980,7 +1980,7 @@ LABEL_22:
       [v7 recognitionAudioRange];
       time = v49;
       v33 = CMTimeGetSeconds(&time);
-      v34 = [v7 earResultType];
+      earResultType2 = [v7 earResultType];
       LODWORD(time.value) = 136316930;
       *(&time.value + 4) = v10;
       LOWORD(time.flags) = 2080;
@@ -1988,7 +1988,7 @@ LABEL_22:
       HIWORD(time.epoch) = 1024;
       v52 = 394;
       v53 = 2112;
-      v54 = a3;
+      analyzerCopy3 = analyzer;
       v55 = 1024;
       *v56 = v8;
       *&v56[4] = 1024;
@@ -1996,7 +1996,7 @@ LABEL_22:
       *v57 = 2048;
       *&v57[2] = v33;
       *v58 = 2048;
-      *&v58[2] = v34;
+      *&v58[2] = earResultType2;
       v28 = " [%s] %s:%d speechAnalyzer=%@ didProduceTranscriberResult isFinal=%d, count=%d, duration=%f, earResultType=%lu";
       v29 = v11;
       v30 = 70;
@@ -2030,7 +2030,7 @@ LABEL_22:
           [v7 recognitionAudioRange];
           time = v48;
           v23 = CMTimeGetSeconds(&time);
-          v24 = [v7 earResultType];
+          earResultType3 = [v7 earResultType];
           LODWORD(time.value) = 136317442;
           *(&time.value + 4) = v19;
           LOWORD(time.flags) = 2080;
@@ -2038,11 +2038,11 @@ LABEL_22:
           HIWORD(time.epoch) = 1024;
           v52 = 394;
           v53 = 2112;
-          v54 = v9;
+          analyzerCopy3 = v9;
           v55 = 2048;
           *v56 = self;
           *&v56[8] = 2112;
-          *v57 = a3;
+          *v57 = analyzer;
           *&v57[8] = 1024;
           *v58 = v8;
           *&v58[4] = 1024;
@@ -2050,7 +2050,7 @@ LABEL_22:
           v59 = 2048;
           v60 = v23;
           v61 = 2048;
-          v62 = v24;
+          v62 = earResultType3;
           v16 = " [%s] %s:%d %@(%p) speechAnalyzer=%@ didProduceTranscriberResult isFinal=%d, count=%d, duration=%f, earResultType=%lu";
           v17 = v20;
           v18 = 90;
@@ -2069,7 +2069,7 @@ LABEL_22:
       [v7 recognitionAudioRange];
       time = v47;
       v26 = CMTimeGetSeconds(&time);
-      v27 = [v7 earResultType];
+      earResultType4 = [v7 earResultType];
       LODWORD(time.value) = 136317442;
       *(&time.value + 4) = v19;
       LOWORD(time.flags) = 2080;
@@ -2077,11 +2077,11 @@ LABEL_22:
       HIWORD(time.epoch) = 1024;
       v52 = 394;
       v53 = 2112;
-      v54 = v9;
+      analyzerCopy3 = v9;
       v55 = 2048;
       *v56 = self;
       *&v56[8] = 2112;
-      *v57 = a3;
+      *v57 = analyzer;
       *&v57[8] = 1024;
       *v58 = v8;
       *&v58[4] = 1024;
@@ -2089,7 +2089,7 @@ LABEL_22:
       v59 = 2048;
       v60 = v26;
       v61 = 2048;
-      v62 = v27;
+      v62 = earResultType4;
       v28 = " [%s] %s:%d %@(%p) speechAnalyzer=%@ didProduceTranscriberResult isFinal=%d, count=%d, duration=%f, earResultType=%lu";
       v29 = v20;
       v30 = 90;
@@ -2117,7 +2117,7 @@ LABEL_22:
           HIWORD(time.epoch) = 1024;
           v52 = 390;
           v53 = 2112;
-          v54 = a3;
+          analyzerCopy3 = analyzer;
           v39 = " [%s] %s:%d speechAnalyzer=%@ nil contextualized transcriber result";
           v40 = v37;
           v41 = 38;
@@ -2161,11 +2161,11 @@ LABEL_38:
           HIWORD(time.epoch) = 1024;
           v52 = 390;
           v53 = 2112;
-          v54 = v35;
+          analyzerCopy3 = v35;
           v55 = 2048;
           *v56 = self;
           *&v56[8] = 2112;
-          *v57 = a3;
+          *v57 = analyzer;
           v39 = " [%s] %s:%d %@(%p) speechAnalyzer=%@ nil contextualized transcriber result";
           v40 = v43;
           v41 = 58;
@@ -2182,18 +2182,18 @@ LABEL_38:
         HIWORD(time.epoch) = 1024;
         v52 = 390;
         v53 = 2112;
-        v54 = v35;
+        analyzerCopy3 = v35;
         v55 = 2048;
         *v56 = self;
         *&v56[8] = 2112;
-        *v57 = a3;
+        *v57 = analyzer;
         _os_log_debug_impl(&dword_1DB56E000, v43, OS_LOG_TYPE_DEBUG, " [%s] %s:%d %@(%p) speechAnalyzer=%@ nil contextualized transcriber result", &time, 0x3Au);
       }
     }
   }
 }
 
-- (void)speechAnalyzer:(id)a3 didStopTranscriptionWithError:(id)a4
+- (void)speechAnalyzer:(id)analyzer didStopTranscriptionWithError:(id)error
 {
   v34 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -2211,9 +2211,9 @@ LABEL_38:
         v24 = 1024;
         v25 = 405;
         v26 = 2112;
-        v27 = a3;
+        analyzerCopy = analyzer;
         v28 = 2112;
-        v29 = [a4 localizedDescription];
+        selfCopy2 = [error localizedDescription];
         v10 = " [%s] %s:%d speechAnalyzer=%@ didStopTranscriptionWithError=%@";
         v11 = v9;
         v12 = 48;
@@ -2248,13 +2248,13 @@ LABEL_11:
         v24 = 1024;
         v25 = 405;
         v26 = 2112;
-        v27 = v7;
+        analyzerCopy = v7;
         v28 = 2048;
-        v29 = self;
+        selfCopy2 = self;
         v30 = 2112;
-        v31 = a3;
+        errorCopy = analyzer;
         v32 = 2112;
-        v33 = [a4 localizedDescription];
+        localizedDescription = [error localizedDescription];
         v10 = " [%s] %s:%d %@(%p) speechAnalyzer=%@ didStopTranscriptionWithError=%@";
         v11 = v14;
         v12 = 68;
@@ -2263,7 +2263,7 @@ LABEL_11:
     }
   }
 
-  if (a4)
+  if (error)
   {
     if (objc_opt_class() == self)
     {
@@ -2302,11 +2302,11 @@ LABEL_11:
           v24 = 1024;
           v25 = 407;
           v26 = 2112;
-          v27 = v15;
+          analyzerCopy = v15;
           v28 = 2048;
-          v29 = self;
+          selfCopy2 = self;
           v30 = 2112;
-          v31 = a4;
+          errorCopy = error;
           _os_log_error_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Analyzer failed with error=%@", buf, 0x3Au);
         }
       }
@@ -2319,7 +2319,7 @@ LABEL_11:
   v19[2] = __78__VCAudioCaptionsSpeechAnalyzer_speechAnalyzer_didStopTranscriptionWithError___block_invoke;
   v19[3] = &unk_1E85F37F0;
   v19[4] = self;
-  v19[5] = a3;
+  v19[5] = analyzer;
   dispatch_async(captionsQueue, v19);
 }
 
@@ -2331,7 +2331,7 @@ uint64_t __78__VCAudioCaptionsSpeechAnalyzer_speechAnalyzer_didStopTranscription
   return [v1 removeObject:v2];
 }
 
-- (void)speechAnalyzerDidProduceAllTranscriberResults:(id)a3
+- (void)speechAnalyzerDidProduceAllTranscriberResults:(id)results
 {
   v27 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -2349,7 +2349,7 @@ uint64_t __78__VCAudioCaptionsSpeechAnalyzer_speechAnalyzer_didStopTranscription
         v19 = 1024;
         v20 = 416;
         v21 = 2112;
-        v22 = a3;
+        resultsCopy = results;
         v8 = " [%s] %s:%d speechAnalyzer=%@ speechAnalyzerDidProduceAllTranscriberResults";
         v9 = v7;
         v10 = 38;
@@ -2384,11 +2384,11 @@ LABEL_11:
         v19 = 1024;
         v20 = 416;
         v21 = 2112;
-        v22 = v5;
+        resultsCopy = v5;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v25 = 2112;
-        v26 = a3;
+        resultsCopy2 = results;
         v8 = " [%s] %s:%d %@(%p) speechAnalyzer=%@ speechAnalyzerDidProduceAllTranscriberResults";
         v9 = v12;
         v10 = 58;
@@ -2403,7 +2403,7 @@ LABEL_11:
   v14[2] = __79__VCAudioCaptionsSpeechAnalyzer_speechAnalyzerDidProduceAllTranscriberResults___block_invoke;
   v14[3] = &unk_1E85F37F0;
   v14[4] = self;
-  v14[5] = a3;
+  v14[5] = results;
   dispatch_async(captionsQueue, v14);
 }
 
@@ -2415,7 +2415,7 @@ uint64_t __79__VCAudioCaptionsSpeechAnalyzer_speechAnalyzerDidProduceAllTranscri
   return [v1 removeObject:v2];
 }
 
-- (void)speechAnalyzer:(id)a3 didProduceSpeechDetectorResult:(id)a4
+- (void)speechAnalyzer:(id)analyzer didProduceSpeechDetectorResult:(id)result
 {
   v48 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -2435,12 +2435,12 @@ uint64_t __79__VCAudioCaptionsSpeechAnalyzer_speechAnalyzerDidProduceAllTranscri
         return;
       }
 
-      if (a4)
+      if (result)
       {
-        [a4 range];
+        [result range];
         time = v35;
         Seconds = CMTimeGetSeconds(&time);
-        [a4 range];
+        [result range];
       }
 
       else
@@ -2459,9 +2459,9 @@ uint64_t __79__VCAudioCaptionsSpeechAnalyzer_speechAnalyzerDidProduceAllTranscri
       HIWORD(time.epoch) = 1024;
       v37 = 425;
       v38 = 2112;
-      v39 = a3;
+      analyzerCopy2 = analyzer;
       v40 = 2048;
-      v41 = *&Seconds;
+      selfCopy2 = *&Seconds;
       v42 = 2048;
       v43 = v22;
       v19 = " [%s] %s:%d speechAnalyzer=%@ didProduceSpeechDetectorResult start=%f duration=%f";
@@ -2477,12 +2477,12 @@ LABEL_25:
       return;
     }
 
-    if (a4)
+    if (result)
     {
-      [a4 range];
+      [result range];
       time = v33;
       v17 = CMTimeGetSeconds(&time);
-      [a4 range];
+      [result range];
     }
 
     else
@@ -2501,9 +2501,9 @@ LABEL_25:
     HIWORD(time.epoch) = 1024;
     v37 = 425;
     v38 = 2112;
-    v39 = a3;
+    analyzerCopy2 = analyzer;
     v40 = 2048;
-    v41 = *&v17;
+    selfCopy2 = *&v17;
     v42 = 2048;
     v43 = v27;
     v24 = " [%s] %s:%d speechAnalyzer=%@ didProduceSpeechDetectorResult start=%f duration=%f";
@@ -2536,12 +2536,12 @@ LABEL_31:
         return;
       }
 
-      if (a4)
+      if (result)
       {
-        [a4 range];
+        [result range];
         time = v31;
         v15 = CMTimeGetSeconds(&time);
-        [a4 range];
+        [result range];
       }
 
       else
@@ -2560,11 +2560,11 @@ LABEL_31:
       HIWORD(time.epoch) = 1024;
       v37 = 425;
       v38 = 2112;
-      v39 = v7;
+      analyzerCopy2 = v7;
       v40 = 2048;
-      v41 = self;
+      selfCopy2 = self;
       v42 = 2112;
-      v43 = *&a3;
+      v43 = *&analyzer;
       v44 = 2048;
       v45 = v15;
       v46 = 2048;
@@ -2580,12 +2580,12 @@ LABEL_31:
       return;
     }
 
-    if (a4)
+    if (result)
     {
-      [a4 range];
+      [result range];
       time = v29;
       v16 = CMTimeGetSeconds(&time);
-      [a4 range];
+      [result range];
     }
 
     else
@@ -2604,11 +2604,11 @@ LABEL_31:
     HIWORD(time.epoch) = 1024;
     v37 = 425;
     v38 = 2112;
-    v39 = v7;
+    analyzerCopy2 = v7;
     v40 = 2048;
-    v41 = self;
+    selfCopy2 = self;
     v42 = 2112;
-    v43 = *&a3;
+    v43 = *&analyzer;
     v44 = 2048;
     v45 = v16;
     v46 = 2048;
@@ -2620,7 +2620,7 @@ LABEL_31:
   }
 }
 
-- (void)speechAnalyzer:(id)a3 didStopSpeechDetectorWithError:(id)a4
+- (void)speechAnalyzer:(id)analyzer didStopSpeechDetectorWithError:(id)error
 {
   v29 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -2638,9 +2638,9 @@ LABEL_31:
         v19 = 1024;
         v20 = 429;
         v21 = 2112;
-        v22 = a3;
+        analyzerCopy = analyzer;
         v23 = 2112;
-        v24 = [a4 localizedDescription];
+        selfCopy = [error localizedDescription];
         v10 = " [%s] %s:%d speechAnalyzer=%@ didStopSpeechDetectorWithError=%@";
         v11 = v9;
         v12 = 48;
@@ -2675,13 +2675,13 @@ LABEL_11:
         v19 = 1024;
         v20 = 429;
         v21 = 2112;
-        v22 = v7;
+        analyzerCopy = v7;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v25 = 2112;
-        v26 = a3;
+        analyzerCopy2 = analyzer;
         v27 = 2112;
-        v28 = [a4 localizedDescription];
+        localizedDescription = [error localizedDescription];
         v10 = " [%s] %s:%d %@(%p) speechAnalyzer=%@ didStopSpeechDetectorWithError=%@";
         v11 = v14;
         v12 = 68;

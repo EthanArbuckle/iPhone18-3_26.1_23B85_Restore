@@ -1,11 +1,11 @@
 @interface SyncCoordinator
-+ (BOOL)deleteLocalDataAndReturnError:(id *)a3;
++ (BOOL)deleteLocalDataAndReturnError:(id *)error;
 + (NSString)privateEngineDidIdleNotificationName;
-+ (void)deleteExpiredDataWithZoneNames:(id)a3;
-+ (void)downloadWithCompletionHandler:(id)a3;
++ (void)deleteExpiredDataWithZoneNames:(id)names;
++ (void)downloadWithCompletionHandler:(id)handler;
 + (void)resetSharingPermissions;
 + (void)startSyncing;
-+ (void)uploadLocalDataWithCompletionHandler:(id)a3;
++ (void)uploadLocalDataWithCompletionHandler:(id)handler;
 - (_TtC18UsageTrackingAgent15SyncCoordinator)init;
 @end
 
@@ -41,9 +41,9 @@
   sub_1000366AC(0, 0);
 }
 
-+ (void)uploadLocalDataWithCompletionHandler:(id)a3
++ (void)uploadLocalDataWithCompletionHandler:(id)handler
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(handler);
   type metadata accessor for DeviceActivityAuthorization();
   _Block_copy(v3);
   if (static DeviceActivityAuthorization.sharingEnabled.getter())
@@ -70,7 +70,7 @@
   _Block_release(v3);
 }
 
-+ (BOOL)deleteLocalDataAndReturnError:(id *)a3
++ (BOOL)deleteLocalDataAndReturnError:(id *)error
 {
   if (qword_100090D38 != -1)
   {
@@ -83,7 +83,7 @@
   return 1;
 }
 
-+ (void)deleteExpiredDataWithZoneNames:(id)a3
++ (void)deleteExpiredDataWithZoneNames:(id)names
 {
   v3 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
   if (qword_100090D38 != -1)
@@ -98,13 +98,13 @@
   CKSyncEngine.State.add(pendingDatabaseChanges:)(v5);
 }
 
-+ (void)downloadWithCompletionHandler:(id)a3
++ (void)downloadWithCompletionHandler:(id)handler
 {
   v4 = sub_100020818(&qword_1000913B8, &qword_10006DC30);
   v5 = *(*(v4 - 8) + 64);
   __chkstk_darwin(v4 - 8, v6);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   if (qword_100090D38 != -1)

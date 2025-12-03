@@ -1,10 +1,10 @@
 @interface _MPCQueueControllerBehaviorEmpty
-+ (BOOL)canLoadQueue:(id)a3 reason:(id *)a4;
-- (BOOL)canJumpToContentItemID:(id)a3 reason:(id *)a4;
-- (BOOL)canNextItemFromContentItemID:(id)a3 reason:(id *)a4;
-- (BOOL)canPreviousItemFromContentItemID:(id)a3 reason:(id *)a4;
++ (BOOL)canLoadQueue:(id)queue reason:(id *)reason;
+- (BOOL)canJumpToContentItemID:(id)d reason:(id *)reason;
+- (BOOL)canNextItemFromContentItemID:(id)d reason:(id *)reason;
+- (BOOL)canPreviousItemFromContentItemID:(id)d reason:(id *)reason;
 - (MPCQueueControllerBehaviorHost)host;
-- (_MPCQueueControllerBehaviorEmpty)initWithSessionID:(id)a3;
+- (_MPCQueueControllerBehaviorEmpty)initWithSessionID:(id)d;
 @end
 
 @implementation _MPCQueueControllerBehaviorEmpty
@@ -16,52 +16,52 @@
   return WeakRetained;
 }
 
-- (BOOL)canNextItemFromContentItemID:(id)a3 reason:(id *)a4
+- (BOOL)canNextItemFromContentItemID:(id)d reason:(id *)reason
 {
-  if (a4)
+  if (reason)
   {
-    *a4 = @"Empty Queue Behavior";
+    *reason = @"Empty Queue Behavior";
   }
 
   return 0;
 }
 
-- (BOOL)canPreviousItemFromContentItemID:(id)a3 reason:(id *)a4
+- (BOOL)canPreviousItemFromContentItemID:(id)d reason:(id *)reason
 {
-  if (a4)
+  if (reason)
   {
-    *a4 = @"Empty Queue Behavior";
+    *reason = @"Empty Queue Behavior";
   }
 
   return 0;
 }
 
-- (BOOL)canJumpToContentItemID:(id)a3 reason:(id *)a4
+- (BOOL)canJumpToContentItemID:(id)d reason:(id *)reason
 {
-  if (a4)
+  if (reason)
   {
-    *a4 = @"Empty Queue Behavior";
+    *reason = @"Empty Queue Behavior";
   }
 
   return 0;
 }
 
-- (_MPCQueueControllerBehaviorEmpty)initWithSessionID:(id)a3
+- (_MPCQueueControllerBehaviorEmpty)initWithSessionID:(id)d
 {
   v4.receiver = self;
   v4.super_class = _MPCQueueControllerBehaviorEmpty;
   return [(_MPCQueueControllerBehaviorEmpty *)&v4 init];
 }
 
-+ (BOOL)canLoadQueue:(id)a3 reason:(id *)a4
++ (BOOL)canLoadQueue:(id)queue reason:(id *)reason
 {
-  v5 = a3;
+  queueCopy = queue;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v7 = isKindOfClass;
-  if (a4 && (isKindOfClass & 1) == 0)
+  if (reason && (isKindOfClass & 1) == 0)
   {
-    *a4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot populate empty behavior with %@", v5];
+    *reason = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot populate empty behavior with %@", queueCopy];
   }
 
   return v7 & 1;

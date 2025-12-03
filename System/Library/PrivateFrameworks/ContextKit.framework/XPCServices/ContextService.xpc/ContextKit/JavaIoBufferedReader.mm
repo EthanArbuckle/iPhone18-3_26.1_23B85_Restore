@@ -3,7 +3,7 @@
 - (id)readChar;
 - (id)readLine;
 - (int)read;
-- (int64_t)skipWithLong:(int64_t)a3;
+- (int64_t)skipWithLong:(int64_t)long;
 - (uint64_t)checkNotClosed;
 - (void)close;
 - (void)dealloc;
@@ -62,16 +62,16 @@
 
 - (id)readChar
 {
-  if (*(a1 + 32) < *(a1 + 36) || (result = sub_1001BE54C(a1), result != -1))
+  if (*(self + 32) < *(self + 36) || (result = sub_1001BE54C(self), result != -1))
   {
-    v3 = *(a1 + 24);
+    v3 = *(self + 24);
     if (!v3)
     {
       JreThrowNullPointerException();
     }
 
-    v4 = *(a1 + 32);
-    *(a1 + 32) = v4 + 1;
+    v4 = *(self + 32);
+    *(self + 32) = v4 + 1;
     v5 = *(v3 + 8);
     if (v4 < 0 || v4 >= v5)
     {
@@ -238,16 +238,16 @@ LABEL_45:
       JreThrowNullPointerException();
     }
 
-    v4 = [(JavaIoReader *)in ready];
+    ready = [(JavaIoReader *)in ready];
   }
 
   else
   {
-    v4 = 1;
+    ready = 1;
   }
 
   objc_sync_exit(lock);
-  return v4;
+  return ready;
 }
 
 - (void)reset
@@ -268,12 +268,12 @@ LABEL_45:
   objc_sync_exit(lock);
 }
 
-- (int64_t)skipWithLong:(int64_t)a3
+- (int64_t)skipWithLong:(int64_t)long
 {
-  v8 = a3;
-  if (a3 < 0)
+  longCopy = long;
+  if (long < 0)
   {
-    v17 = JreStrcat("$J", a2, a3, v3, v4, v5, v6, v7, @"charCount < 0: ");
+    v17 = JreStrcat("$J", a2, long, v3, v4, v5, v6, v7, @"charCount < 0: ");
     v18 = new_JavaLangIllegalArgumentException_initWithNSString_(v17);
     objc_exception_throw(v18);
   }
@@ -284,8 +284,8 @@ LABEL_45:
   end = self->end_;
   pos = self->pos_;
   v13 = end - pos;
-  v14 = v8;
-  if (v13 >= v8)
+  v14 = longCopy;
+  if (v13 >= longCopy)
   {
 LABEL_8:
     self->pos_ = pos + v14;
@@ -298,26 +298,26 @@ LABEL_8:
     {
       v15 = self->end_;
       pos = self->pos_;
-      v14 = v8 - v13;
-      if (v8 - v13 <= v15 - pos)
+      v14 = longCopy - v13;
+      if (longCopy - v13 <= v15 - pos)
       {
         goto LABEL_8;
       }
 
       v13 += v15 - pos;
       self->pos_ = v15;
-      if (v13 >= v8)
+      if (v13 >= longCopy)
       {
         goto LABEL_10;
       }
     }
 
-    v8 = v13;
+    longCopy = v13;
   }
 
 LABEL_10:
   objc_sync_exit(lock);
-  return v8;
+  return longCopy;
 }
 
 - (void)dealloc

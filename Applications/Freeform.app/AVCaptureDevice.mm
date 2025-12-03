@@ -1,19 +1,19 @@
 @interface AVCaptureDevice
-+ (void)crl_checkAuthorizationForMediaType:(id)a3 completion:(id)a4;
++ (void)crl_checkAuthorizationForMediaType:(id)type completion:(id)completion;
 @end
 
 @implementation AVCaptureDevice
 
-+ (void)crl_checkAuthorizationForMediaType:(id)a3 completion:(id)a4
++ (void)crl_checkAuthorizationForMediaType:(id)type completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 authorizationStatusForMediaType:v6];
+  typeCopy = type;
+  completionCopy = completion;
+  v8 = [self authorizationStatusForMediaType:typeCopy];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10010BA08;
   v13[3] = &unk_10183D168;
-  v9 = v7;
+  v9 = completionCopy;
   v14 = v9;
   v10 = objc_retainBlock(v13);
   v11 = v10;
@@ -25,7 +25,7 @@
 
   if (!v8)
   {
-    [AVCaptureDevice requestAccessForMediaType:v6 completionHandler:v10];
+    [AVCaptureDevice requestAccessForMediaType:typeCopy completionHandler:v10];
     goto LABEL_8;
   }
 

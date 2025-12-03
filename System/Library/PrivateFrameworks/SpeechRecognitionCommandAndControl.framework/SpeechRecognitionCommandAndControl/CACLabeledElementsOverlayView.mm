@@ -1,17 +1,17 @@
 @interface CACLabeledElementsOverlayView
-- (CACLabeledElementsOverlayView)initWithFrame:(CGRect)a3;
-- (id)_viewShowingDebuggingRect:(CGRect)a3;
-- (void)addLabeledElements:(id)a3;
+- (CACLabeledElementsOverlayView)initWithFrame:(CGRect)frame;
+- (id)_viewShowingDebuggingRect:(CGRect)rect;
+- (void)addLabeledElements:(id)elements;
 - (void)clearLabeledElements;
 @end
 
 @implementation CACLabeledElementsOverlayView
 
-- (CACLabeledElementsOverlayView)initWithFrame:(CGRect)a3
+- (CACLabeledElementsOverlayView)initWithFrame:(CGRect)frame
 {
   v51[8] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v6 = v5;
   v8 = v7;
 
@@ -22,8 +22,8 @@
   v11 = [(CACLabeledElementsOverlayView *)&v50 initWithFrame:v9, v10, 160.0, 160.0];
   if (v11)
   {
-    v12 = [MEMORY[0x277D75348] clearColor];
-    [(CACLabeledElementsOverlayView *)v11 setBackgroundColor:v12];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(CACLabeledElementsOverlayView *)v11 setBackgroundColor:clearColor];
 
     v13 = [CACOverlayContainerView badgeViewContainerWithFrame:0 usingContrast:v9, v10, 160.0, 160.0];
     badgesContainer = v11->_badgesContainer;
@@ -33,11 +33,11 @@
     contrastBadgesContainer = v11->_contrastBadgesContainer;
     v11->_contrastBadgesContainer = v15;
 
-    v17 = [(CACLabeledElementsOverlayView *)v11 contrastBadgesContainer];
-    [(CACLabeledElementsOverlayView *)v11 addSubview:v17];
+    contrastBadgesContainer = [(CACLabeledElementsOverlayView *)v11 contrastBadgesContainer];
+    [(CACLabeledElementsOverlayView *)v11 addSubview:contrastBadgesContainer];
 
-    v18 = [(CACLabeledElementsOverlayView *)v11 badgesContainer];
-    [(CACLabeledElementsOverlayView *)v11 addSubview:v18];
+    badgesContainer = [(CACLabeledElementsOverlayView *)v11 badgesContainer];
+    [(CACLabeledElementsOverlayView *)v11 addSubview:badgesContainer];
 
     keyExistsAndHasValidFormat = 0;
     AppBooleanValue = CFPreferencesGetAppBooleanValue(@"CACShowElementRectanglesWithNumbers", @"com.apple.speech.SpeechRecognitionCommandAndControl.Log", &keyExistsAndHasValidFormat);
@@ -54,37 +54,37 @@
     v21 = !v20;
     [(CACLabeledElementsOverlayView *)v11 setDisplayElementRectangles:v21];
     v39 = MEMORY[0x277CCAAD0];
-    v48 = [(UIView *)v11->_badgesContainer topAnchor];
-    v47 = [(CACLabeledElementsOverlayView *)v11 topAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    topAnchor = [(UIView *)v11->_badgesContainer topAnchor];
+    topAnchor2 = [(CACLabeledElementsOverlayView *)v11 topAnchor];
+    v46 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v51[0] = v46;
-    v45 = [(UIView *)v11->_badgesContainer bottomAnchor];
-    v44 = [(CACLabeledElementsOverlayView *)v11 bottomAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    bottomAnchor = [(UIView *)v11->_badgesContainer bottomAnchor];
+    bottomAnchor2 = [(CACLabeledElementsOverlayView *)v11 bottomAnchor];
+    v43 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v51[1] = v43;
-    v42 = [(UIView *)v11->_badgesContainer leadingAnchor];
-    v41 = [(CACLabeledElementsOverlayView *)v11 leadingAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    leadingAnchor = [(UIView *)v11->_badgesContainer leadingAnchor];
+    leadingAnchor2 = [(CACLabeledElementsOverlayView *)v11 leadingAnchor];
+    v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v51[2] = v40;
-    v38 = [(UIView *)v11->_badgesContainer trailingAnchor];
-    v37 = [(CACLabeledElementsOverlayView *)v11 trailingAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37];
+    trailingAnchor = [(UIView *)v11->_badgesContainer trailingAnchor];
+    trailingAnchor2 = [(CACLabeledElementsOverlayView *)v11 trailingAnchor];
+    v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v51[3] = v36;
-    v35 = [(UIView *)v11->_contrastBadgesContainer topAnchor];
-    v34 = [(CACLabeledElementsOverlayView *)v11 topAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    topAnchor3 = [(UIView *)v11->_contrastBadgesContainer topAnchor];
+    topAnchor4 = [(CACLabeledElementsOverlayView *)v11 topAnchor];
+    v33 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v51[4] = v33;
-    v32 = [(UIView *)v11->_contrastBadgesContainer bottomAnchor];
-    v22 = [(CACLabeledElementsOverlayView *)v11 bottomAnchor];
-    v23 = [v32 constraintEqualToAnchor:v22];
+    bottomAnchor3 = [(UIView *)v11->_contrastBadgesContainer bottomAnchor];
+    bottomAnchor4 = [(CACLabeledElementsOverlayView *)v11 bottomAnchor];
+    v23 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v51[5] = v23;
-    v24 = [(UIView *)v11->_contrastBadgesContainer leadingAnchor];
-    v25 = [(CACLabeledElementsOverlayView *)v11 leadingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    leadingAnchor3 = [(UIView *)v11->_contrastBadgesContainer leadingAnchor];
+    leadingAnchor4 = [(CACLabeledElementsOverlayView *)v11 leadingAnchor];
+    v26 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v51[6] = v26;
-    v27 = [(UIView *)v11->_contrastBadgesContainer trailingAnchor];
-    v28 = [(CACLabeledElementsOverlayView *)v11 trailingAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    trailingAnchor3 = [(UIView *)v11->_contrastBadgesContainer trailingAnchor];
+    trailingAnchor4 = [(CACLabeledElementsOverlayView *)v11 trailingAnchor];
+    v29 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v51[7] = v29;
     v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:8];
     [v39 activateConstraints:v30];
@@ -95,9 +95,9 @@
 
 - (void)clearLabeledElements
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  labeledElements = v2->_labeledElements;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  labeledElements = selfCopy->_labeledElements;
   if (labeledElements)
   {
     [(NSMutableArray *)labeledElements removeAllObjects];
@@ -106,17 +106,17 @@
   else
   {
     v4 = objc_opt_new();
-    v5 = v2->_labeledElements;
-    v2->_labeledElements = v4;
+    v5 = selfCopy->_labeledElements;
+    selfCopy->_labeledElements = v4;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__CACLabeledElementsOverlayView_clearLabeledElements__block_invoke;
   block[3] = &unk_279CEB2D0;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -188,20 +188,20 @@ void __53__CACLabeledElementsOverlayView_clearLabeledElements__block_invoke(uint
   }
 }
 
-- (void)addLabeledElements:(id)a3
+- (void)addLabeledElements:(id)elements
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 mutableCopy];
-  [(NSMutableArray *)v5->_labeledElements addObjectsFromArray:v6];
+  elementsCopy = elements;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [elementsCopy mutableCopy];
+  [(NSMutableArray *)selfCopy->_labeledElements addObjectsFromArray:v6];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__CACLabeledElementsOverlayView_addLabeledElements___block_invoke;
   block[3] = &unk_279CEB2D0;
-  block[4] = v5;
+  block[4] = selfCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -287,28 +287,28 @@ void __52__CACLabeledElementsOverlayView_addLabeledElements___block_invoke(uint6
   }
 }
 
-- (id)_viewShowingDebuggingRect:(CGRect)a3
+- (id)_viewShowingDebuggingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 scale];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v9 = v8;
   v17.width = width;
   v17.height = height;
   UIGraphicsBeginImageContextWithOptions(v17, 0, v9);
 
-  v10 = [MEMORY[0x277D75208] bezierPath];
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
   v11 = [MEMORY[0x277D75208] bezierPathWithRect:{0.0, 0.0, width, height}];
-  [v10 appendPath:v11];
+  [bezierPath appendPath:v11];
 
-  [v10 closePath];
-  v12 = [MEMORY[0x277D75348] redColor];
-  [v12 set];
+  [bezierPath closePath];
+  redColor = [MEMORY[0x277D75348] redColor];
+  [redColor set];
 
-  [v10 stroke];
+  [bezierPath stroke];
   v13 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   v14 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v13];

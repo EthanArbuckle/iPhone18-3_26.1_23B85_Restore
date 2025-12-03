@@ -1,13 +1,13 @@
 @interface PXImageLayerGainMapOrderInAction
-- (void)runActionForKey:(id)a3 object:(id)a4 arguments:(id)a5;
+- (void)runActionForKey:(id)key object:(id)object arguments:(id)arguments;
 @end
 
 @implementation PXImageLayerGainMapOrderInAction
 
-- (void)runActionForKey:(id)a3 object:(id)a4 arguments:(id)a5
+- (void)runActionForKey:(id)key object:(id)object arguments:(id)arguments
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  objectCopy = object;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -28,15 +28,15 @@
         }
 
         v11 = *(*(&v19 + 1) + 8 * v10);
-        v12 = [MEMORY[0x1E69793C0] animation];
-        [v12 setDelegate:self];
-        v13 = [v6 superlayer];
-        [v12 setSourceLayer:v13];
+        animation = [MEMORY[0x1E69793C0] animation];
+        [animation setDelegate:self];
+        superlayer = [objectCopy superlayer];
+        [animation setSourceLayer:superlayer];
 
-        [v12 setKeyPath:v11];
-        [v12 setDuration:INFINITY];
+        [animation setKeyPath:v11];
+        [animation setDuration:INFINITY];
         v14 = [v11 stringByAppendingString:@"Animation"];
-        [v6 addAnimation:v12 forKey:v14];
+        [objectCopy addAnimation:animation forKey:v14];
 
         ++v10;
       }
@@ -48,21 +48,21 @@
     while (v8);
   }
 
-  v15 = [MEMORY[0x1E69793B8] animation];
-  [v15 setDelegate:self];
-  v16 = [v6 superlayer];
-  [v15 setSourceLayer:v16];
+  animation2 = [MEMORY[0x1E69793B8] animation];
+  [animation2 setDelegate:self];
+  superlayer2 = [objectCopy superlayer];
+  [animation2 setSourceLayer:superlayer2];
 
-  [v15 setUsesNormalizedCoordinates:1];
-  [v15 setAppliesScale:0];
-  [v15 setAppliesRotation:0];
-  [v15 setDuration:INFINITY];
+  [animation2 setUsesNormalizedCoordinates:1];
+  [animation2 setAppliesScale:0];
+  [animation2 setAppliesRotation:0];
+  [animation2 setDuration:INFINITY];
   v17 = [MEMORY[0x1E696B098] valueWithCGPoint:{0.5, 0.5}];
   v23 = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
-  [v15 setSourcePoints:v18];
+  [animation2 setSourcePoints:v18];
 
-  [v6 addAnimation:v15 forKey:@"positionAnimation"];
+  [objectCopy addAnimation:animation2 forKey:@"positionAnimation"];
 }
 
 @end

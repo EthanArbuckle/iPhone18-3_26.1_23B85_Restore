@@ -1,17 +1,17 @@
 @interface SiriCoreZlibDataDecompressor
 - (SiriCoreZlibDataDecompressor)init;
-- (id)decompressedDataForData:(id)a3 error:(id *)a4;
+- (id)decompressedDataForData:(id)data error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation SiriCoreZlibDataDecompressor
 
-- (id)decompressedDataForData:(id)a3 error:(id *)a4
+- (id)decompressedDataForData:(id)data error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || !dispatch_data_get_size(v6))
+  dataCopy = data;
+  v7 = dataCopy;
+  if (!dataCopy || !dispatch_data_get_size(dataCopy))
   {
     v12 = MEMORY[0x277D85CC8];
     v13 = MEMORY[0x277D85CC8];
@@ -66,7 +66,7 @@
     v33 = 2080;
     v34 = msg;
     _os_log_error_impl(&dword_2669D1000, v14, OS_LOG_TYPE_ERROR, "%s Inflate finished with unexpected status %{public}d %s", buf, 0x1Cu);
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -74,10 +74,10 @@
     goto LABEL_10;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_10:
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SiriCoreDataCompressorErrorDomain" code:*(v20 + 6) userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"SiriCoreDataCompressorErrorDomain" code:*(v20 + 6) userInfo:0];
   }
 
 LABEL_11:

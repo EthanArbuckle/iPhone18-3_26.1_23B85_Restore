@@ -1,14 +1,14 @@
 @interface PKAdjustedImageView
-- (void)updateViewForAssetType:(int)a3 adjustmentsURL:(id)a4;
+- (void)updateViewForAssetType:(int)type adjustmentsURL:(id)l;
 @end
 
 @implementation PKAdjustedImageView
 
-- (void)updateViewForAssetType:(int)a3 adjustmentsURL:(id)a4
+- (void)updateViewForAssetType:(int)type adjustmentsURL:(id)l
 {
-  v6 = PKAdjustmentFiltersForAssetTypeAndURL(a3, a4);
-  v5 = [(PKAdjustedImageView *)self layer];
-  [v5 setFilters:v6];
+  v6 = PKAdjustmentFiltersForAssetTypeAndURL(type, l);
+  layer = [(PKAdjustedImageView *)self layer];
+  [layer setFilters:v6];
 }
 
 @end

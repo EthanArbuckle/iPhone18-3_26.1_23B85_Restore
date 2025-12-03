@@ -1,5 +1,5 @@
 @interface NIServerSpatialBrowsingSession
-- (NIServerSpatialBrowsingSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5;
+- (NIServerSpatialBrowsingSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error;
 - (id).cxx_construct;
 - (id)configure;
 - (id)run;
@@ -8,10 +8,10 @@
 
 @implementation NIServerSpatialBrowsingSession
 
-- (NIServerSpatialBrowsingSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5
+- (NIServerSpatialBrowsingSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  managerCopy = manager;
+  configurationCopy = configuration;
   v11 = objc_opt_class();
   if (v11 != objc_opt_class())
   {
@@ -19,9 +19,9 @@
     [v25 handleFailureInMethod:a2 object:self file:@"NIServerSpatialBrowsingSession.mm" lineNumber:33 description:@"NIServerSpatialBrowsingSession given invalid configuration."];
   }
 
-  v12 = [v9 serverSessionIdentifier];
+  serverSessionIdentifier = [managerCopy serverSessionIdentifier];
 
-  if (!v12)
+  if (!serverSessionIdentifier)
   {
     v26 = +[NSAssertionHandler currentHandler];
     [v26 handleFailureInMethod:a2 object:self file:@"NIServerSpatialBrowsingSession.mm" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"resourcesManager.serverSessionIdentifier"}];
@@ -29,16 +29,16 @@
 
   v28.receiver = self;
   v28.super_class = NIServerSpatialBrowsingSession;
-  v13 = [(NIServerBaseSession *)&v28 initWithResourcesManager:v9 configuration:v10 error:a5];
+  v13 = [(NIServerBaseSession *)&v28 initWithResourcesManager:managerCopy configuration:configurationCopy error:error];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [configurationCopy copy];
     v15 = *(v13 + 10);
     *(v13 + 10) = v14;
 
-    if (v9)
+    if (managerCopy)
     {
-      [v9 protobufLogger];
+      [managerCopy protobufLogger];
       v16 = v27;
     }
 
@@ -54,14 +54,14 @@
       sub_10000AD84(v17);
     }
 
-    v18 = [v9 clientConnectionQueue];
+    clientConnectionQueue = [managerCopy clientConnectionQueue];
     v19 = *(v13 + 8);
-    *(v13 + 8) = v18;
+    *(v13 + 8) = clientConnectionQueue;
 
-    v20 = [v9 serverSessionIdentifier];
-    v21 = [v20 UUIDString];
+    serverSessionIdentifier2 = [managerCopy serverSessionIdentifier];
+    uUIDString = [serverSessionIdentifier2 UUIDString];
     v22 = *(v13 + 9);
-    *(v13 + 9) = v21;
+    *(v13 + 9) = uUIDString;
 
     v23 = v13;
   }
@@ -94,13 +94,13 @@
   dispatch_assert_queue_V2(self->_clientQueue);
   v24.receiver = self;
   v24.super_class = NIServerSpatialBrowsingSession;
-  v20 = [(NIServerBaseSession *)&v24 resourcesManager];
-  v3 = [v20 recentlyObservedObjectsCache];
-  if (v3)
+  resourcesManager = [(NIServerBaseSession *)&v24 resourcesManager];
+  recentlyObservedObjectsCache = [resourcesManager recentlyObservedObjectsCache];
+  if (recentlyObservedObjectsCache)
   {
     [(NISpatialBrowsingConfiguration *)self->_configuration maxNearbyObjectAge];
     v5 = v4;
-    v6 = [v3 getMostRecentObjectsWithMaxAge:?];
+    v6 = [recentlyObservedObjectsCache getMostRecentObjectsWithMaxAge:?];
     for (i = 0; [v6 count] > i; ++i)
     {
       v8 = [NSNumber numberWithInt:(i + 1)];
@@ -108,8 +108,8 @@
       [v9 overrideSpatialScore:v8];
 
       v10 = [v6 objectAtIndexedSubscript:i];
-      v11 = [v10 bluetoothAdvertisingAddress];
-      v12 = sub_1002561E4(v11);
+      bluetoothAdvertisingAddress = [v10 bluetoothAdvertisingAddress];
+      v12 = sub_1002561E4(bluetoothAdvertisingAddress);
 
       if (v12)
       {
@@ -133,7 +133,7 @@
     block[1] = 3221225472;
     block[2] = sub_10034806C;
     block[3] = &unk_10098A2E8;
-    v22 = v20;
+    v22 = resourcesManager;
     v23 = v6;
     v16 = v6;
     dispatch_async(clientQueue, block);

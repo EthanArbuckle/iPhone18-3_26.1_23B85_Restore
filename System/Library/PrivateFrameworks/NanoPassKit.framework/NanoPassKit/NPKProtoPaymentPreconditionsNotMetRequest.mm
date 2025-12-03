@@ -1,31 +1,31 @@
 @interface NPKProtoPaymentPreconditionsNotMetRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsFailedPrecondition:(id)a3;
-- (void)addPassIDs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (int)StringAsFailedPrecondition:(id)precondition;
+- (void)addPassIDs:(id)ds;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoPaymentPreconditionsNotMetRequest
 
-- (int)StringAsFailedPrecondition:(id)a3
+- (int)StringAsFailedPrecondition:(id)precondition
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Passcode"])
+  preconditionCopy = precondition;
+  if ([preconditionCopy isEqualToString:@"Passcode"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"WristDetection"])
+  else if ([preconditionCopy isEqualToString:@"WristDetection"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AppleAccount"])
+  else if ([preconditionCopy isEqualToString:@"AppleAccount"])
   {
     v4 = 2;
   }
@@ -38,22 +38,22 @@
   return v4;
 }
 
-- (void)addPassIDs:(id)a3
+- (void)addPassIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   passIDs = self->_passIDs;
-  v8 = v4;
+  v8 = dsCopy;
   if (!passIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_passIDs;
     self->_passIDs = v6;
 
-    v4 = v8;
+    dsCopy = v8;
     passIDs = self->_passIDs;
   }
 
-  [(NSMutableArray *)passIDs addObject:v4];
+  [(NSMutableArray *)passIDs addObject:dsCopy];
 }
 
 - (id)description
@@ -62,15 +62,15 @@
   v8.receiver = self;
   v8.super_class = NPKProtoPaymentPreconditionsNotMetRequest;
   v4 = [(NPKProtoPaymentPreconditionsNotMetRequest *)&v8 description];
-  v5 = [(NPKProtoPaymentPreconditionsNotMetRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoPaymentPreconditionsNotMetRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   failedPrecondition = self->_failedPrecondition;
   if (failedPrecondition >= 3)
   {
@@ -82,21 +82,21 @@
     v5 = off_27994B1D8[failedPrecondition];
   }
 
-  [v3 setObject:v5 forKey:@"failedPrecondition"];
+  [dictionary setObject:v5 forKey:@"failedPrecondition"];
 
   passIDs = self->_passIDs;
   if (passIDs)
   {
-    [v3 setObject:passIDs forKey:@"passIDs"];
+    [dictionary setObject:passIDs forKey:@"passIDs"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   failedPrecondition = self->_failedPrecondition;
   PBDataWriterWriteInt32Field();
   v15 = 0u;
@@ -134,30 +134,30 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  v8[2] = self->_failedPrecondition;
+  toCopy = to;
+  toCopy[2] = self->_failedPrecondition;
   if ([(NPKProtoPaymentPreconditionsNotMetRequest *)self passIDsCount])
   {
-    [v8 clearPassIDs];
-    v4 = [(NPKProtoPaymentPreconditionsNotMetRequest *)self passIDsCount];
-    if (v4)
+    [toCopy clearPassIDs];
+    passIDsCount = [(NPKProtoPaymentPreconditionsNotMetRequest *)self passIDsCount];
+    if (passIDsCount)
     {
-      v5 = v4;
+      v5 = passIDsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoPaymentPreconditionsNotMetRequest *)self passIDsAtIndex:i];
-        [v8 addPassIDs:v7];
+        [toCopy addPassIDs:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[2] = self->_failedPrecondition;
   v14 = 0u;
   v15 = 0u;
@@ -179,7 +179,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addPassIDs:v11];
 
         ++v10;
@@ -196,13 +196,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_failedPrecondition == *(v4 + 2))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_failedPrecondition == *(equalCopy + 2))
   {
     passIDs = self->_passIDs;
-    if (passIDs | v4[2])
+    if (passIDs | equalCopy[2])
     {
       v6 = [(NSMutableArray *)passIDs isEqual:?];
     }
@@ -221,16 +221,16 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  self->_failedPrecondition = *(v4 + 2);
+  fromCopy = from;
+  self->_failedPrecondition = *(fromCopy + 2);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

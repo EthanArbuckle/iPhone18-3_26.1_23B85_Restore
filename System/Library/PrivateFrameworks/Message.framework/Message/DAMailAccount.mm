@@ -1,130 +1,130 @@
 @interface DAMailAccount
-+ (id)accountIDForDirectoryName:(id)a3 isAccountDirectory:(BOOL *)a4;
-+ (id)legacyPathForAccountIdentifier:(id)a3 withHostname:(id)a4 username:(id)a5;
-- (BOOL)_deleteMailbox:(id)a3 reflectToServer:(BOOL)a4;
-- (BOOL)addRequest:(id)a3 consumer:(id)a4 mailbox:(id)a5;
-- (BOOL)isEnabledForDataclass:(id)a3;
-- (BOOL)isMailboxLocalForType:(int64_t)a3;
++ (id)accountIDForDirectoryName:(id)name isAccountDirectory:(BOOL *)directory;
++ (id)legacyPathForAccountIdentifier:(id)identifier withHostname:(id)hostname username:(id)username;
+- (BOOL)_deleteMailbox:(id)mailbox reflectToServer:(BOOL)server;
+- (BOOL)addRequest:(id)request consumer:(id)consumer mailbox:(id)mailbox;
+- (BOOL)isEnabledForDataclass:(id)dataclass;
+- (BOOL)isMailboxLocalForType:(int64_t)type;
 - (BOOL)isRunningInDisallowedBundle;
-- (BOOL)moveSupportedFromMailboxURL:(id)a3 toURL:(id)a4;
-- (BOOL)newMailboxNameIsAcceptable:(id)a3 reasonForFailure:(id *)a4;
-- (BOOL)perMessageEncryptionEnabledForAddress:(id)a3;
-- (BOOL)performRequests:(id)a3 mailbox:(id)a4;
-- (BOOL)reconstituteOrphanedMeetingInMessage:(id)a3;
-- (BOOL)renameMailbox:(id)a3 newName:(id)a4 parent:(id)a5;
+- (BOOL)moveSupportedFromMailboxURL:(id)l toURL:(id)rL;
+- (BOOL)newMailboxNameIsAcceptable:(id)acceptable reasonForFailure:(id *)failure;
+- (BOOL)perMessageEncryptionEnabledForAddress:(id)address;
+- (BOOL)performRequests:(id)requests mailbox:(id)mailbox;
+- (BOOL)reconstituteOrphanedMeetingInMessage:(id)message;
+- (BOOL)renameMailbox:(id)mailbox newName:(id)name parent:(id)parent;
 - (BOOL)supportsServerDrafts;
 - (BOOL)supportsUniqueServerId;
-- (DAMailAccount)initWithDAAccount:(id)a3;
-- (DAMailAccount)initWithLibrary:(id)a3 persistentAccount:(id)a4;
+- (DAMailAccount)initWithDAAccount:(id)account;
+- (DAMailAccount)initWithLibrary:(id)library persistentAccount:(id)account;
 - (MFMailboxUid)virtualAllSearchMailbox;
-- (id)URLStringFromLegacyURLString:(id)a3;
+- (id)URLStringFromLegacyURLString:(id)string;
 - (id)_URLScheme;
-- (id)_copyMailboxUidWithParent:(id)a3 name:(id)a4 attributes:(unint64_t)a5 existingMailboxUid:(id)a6 dictionary:(id)a7;
-- (id)_copyMailboxWithParent:(id)a3 name:(id)a4 attributes:(unint64_t)a5 dictionary:(id)a6;
-- (id)_folderIdsForMailboxUids:(id)a3;
+- (id)_copyMailboxUidWithParent:(id)parent name:(id)name attributes:(unint64_t)attributes existingMailboxUid:(id)uid dictionary:(id)dictionary;
+- (id)_copyMailboxWithParent:(id)parent name:(id)name attributes:(unint64_t)attributes dictionary:(id)dictionary;
+- (id)_folderIdsForMailboxUids:(id)uids;
 - (id)_inboxFolderID;
-- (id)_infoForMatchingURL:(id)a3;
-- (id)_relativePathForType:(int64_t)a3;
-- (id)_remoteIDsForFlagChangeAction:(id)a3;
-- (id)_updateWatchedFolderIdsAndNotify:(BOOL)a3;
+- (id)_infoForMatchingURL:(id)l;
+- (id)_relativePathForType:(int64_t)type;
+- (id)_remoteIDsForFlagChangeAction:(id)action;
+- (id)_updateWatchedFolderIdsAndNotify:(BOOL)notify;
 - (id)_watchedFolderIds;
 - (id)accountConduit;
 - (id)accountForRenewingCredentials;
-- (id)accountPropertyForKey:(id)a3;
+- (id)accountPropertyForKey:(id)key;
 - (id)allMailboxUids;
-- (id)copyDataForRemoteEncryptionCertificatesForAddresses:(id)a3 errors:(id *)a4;
+- (id)copyDataForRemoteEncryptionCertificatesForAddresses:(id)addresses errors:(id *)errors;
 - (id)deliveryAccount;
 - (id)displayName;
-- (id)encryptionIdentityPersistentReferenceForAddress:(id)a3;
+- (id)encryptionIdentityPersistentReferenceForAddress:(id)address;
 - (id)fetchLimits;
-- (id)folderIDForMailbox:(id)a3;
+- (id)folderIDForMailbox:(id)mailbox;
 - (id)hostname;
 - (id)iconString;
-- (id)mailboxForFolderID:(id)a3;
-- (id)mailboxUidForInfo:(id)a3;
+- (id)mailboxForFolderID:(id)d;
+- (id)mailboxUidForInfo:(id)info;
 - (id)meetingStorePersistentID;
-- (id)messageDataForMessage:(id)a3;
+- (id)messageDataForMessage:(id)message;
 - (id)primaryMailboxUid;
 - (id)pushedMailboxUids;
-- (id)replayAction:(id)a3;
-- (id)signingIdentityPersistentReferenceForAddress:(id)a3;
+- (id)replayAction:(id)action;
+- (id)signingIdentityPersistentReferenceForAddress:(id)address;
 - (id)statisticsKind;
-- (id)syncAnchorForFolderID:(id)a3 mailbox:(id *)a4;
-- (id)unactionableInvitationICSRepresentationInMessage:(id)a3 summary:(id *)a4;
+- (id)syncAnchorForFolderID:(id)d mailbox:(id *)mailbox;
+- (id)unactionableInvitationICSRepresentationInMessage:(id)message summary:(id *)summary;
 - (id)uniqueID;
-- (id)uniqueServerIdForMessage:(id)a3;
+- (id)uniqueServerIdForMessage:(id)message;
 - (id)unsupportedHandoffTypes;
 - (id)username;
-- (int)emptyFrequencyForMailboxType:(int64_t)a3;
-- (int64_t)secureCompositionEncryptionPolicyForAddress:(id)a3;
-- (int64_t)secureCompositionSigningPolicyForAddress:(id)a3;
+- (int)emptyFrequencyForMailboxType:(int64_t)type;
+- (int64_t)secureCompositionEncryptionPolicyForAddress:(id)address;
+- (int64_t)secureCompositionSigningPolicyForAddress:(id)address;
 - (void)_ensureWeHaveLoadedInitialMailboxList;
-- (void)_loadChildrenForParent:(id)a3 fromMap:(id)a4 intoArray:(id)a5 replacingInbox:(id)a6 withID:(id)a7;
-- (void)_performFolderChange:(id)a3 completion:(id)a4;
-- (void)_reachabilityChanged:(id)a3;
-- (void)accountHierarchyChanged:(id)a3;
-- (void)cancelSearchQuery:(id)a3;
-- (void)changePushedMailboxUidsAdded:(id)a3 deleted:(id)a4;
+- (void)_loadChildrenForParent:(id)parent fromMap:(id)map intoArray:(id)array replacingInbox:(id)inbox withID:(id)d;
+- (void)_performFolderChange:(id)change completion:(id)completion;
+- (void)_reachabilityChanged:(id)changed;
+- (void)accountHierarchyChanged:(id)changed;
+- (void)cancelSearchQuery:(id)query;
+- (void)changePushedMailboxUidsAdded:(id)added deleted:(id)deleted;
 - (void)dealloc;
 - (void)fetchMailboxListExplicit;
-- (void)foldersContentsChanged:(id)a3;
+- (void)foldersContentsChanged:(id)changed;
 - (void)invalidate;
-- (void)performSearchQuery:(id)a3;
-- (void)pushedFoldersPrefsChanged:(id)a3;
+- (void)performSearchQuery:(id)query;
+- (void)pushedFoldersPrefsChanged:(id)changed;
 - (void)resetSpecialMailboxes;
-- (void)setDAAccount:(id)a3;
-- (void)setEncryptionIdentityPersistentReference:(id)a3 forAddress:(id)a4;
-- (void)setSigningIdentityPersistentReference:(id)a3 forAddress:(id)a4;
-- (void)setSyncAnchor:(id)a3 forFolderID:(id)a4 mailbox:(id *)a5;
+- (void)setDAAccount:(id)account;
+- (void)setEncryptionIdentityPersistentReference:(id)reference forAddress:(id)address;
+- (void)setSigningIdentityPersistentReference:(id)reference forAddress:(id)address;
+- (void)setSyncAnchor:(id)anchor forFolderID:(id)d mailbox:(id *)mailbox;
 - (void)startListeningForNotifications;
 - (void)stopListeningForNotifications;
 @end
 
 @implementation DAMailAccount
 
-+ (id)legacyPathForAccountIdentifier:(id)a3 withHostname:(id)a4 username:(id)a5
++ (id)legacyPathForAccountIdentifier:(id)identifier withHostname:(id)hostname username:(id)username
 {
-  v6 = a3;
-  v7 = [a1 defaultAccountDirectory];
+  identifierCopy = identifier;
+  defaultAccountDirectory = [self defaultAccountDirectory];
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [a1 accountTypeString];
-  v10 = [v8 stringWithFormat:@"%@%@", v9, v6];
+  accountTypeString = [self accountTypeString];
+  identifierCopy = [v8 stringWithFormat:@"%@%@", accountTypeString, identifierCopy];
 
-  v11 = [v7 stringByAppendingPathComponent:v10];
-  v12 = [v11 mf_betterStringByResolvingSymlinksInPath];
+  v11 = [defaultAccountDirectory stringByAppendingPathComponent:identifierCopy];
+  mf_betterStringByResolvingSymlinksInPath = [v11 mf_betterStringByResolvingSymlinksInPath];
 
-  return v12;
+  return mf_betterStringByResolvingSymlinksInPath;
 }
 
-- (id)URLStringFromLegacyURLString:(id)a3
+- (id)URLStringFromLegacyURLString:(id)string
 {
-  v4 = [MEMORY[0x1E696AF20] componentsWithString:a3];
-  v5 = [(DAMailAccount *)self uniqueID];
-  [v4 setHost:v5];
+  v4 = [MEMORY[0x1E696AF20] componentsWithString:string];
+  uniqueID = [(DAMailAccount *)self uniqueID];
+  [v4 setHost:uniqueID];
 
   [v4 setUser:0];
   [v4 setPort:0];
   v6 = [v4 URL];
-  v7 = [v6 absoluteString];
+  absoluteString = [v6 absoluteString];
 
-  return v7;
+  return absoluteString;
 }
 
-+ (id)accountIDForDirectoryName:(id)a3 isAccountDirectory:(BOOL *)a4
++ (id)accountIDForDirectoryName:(id)name isAccountDirectory:(BOOL *)directory
 {
-  v6 = a3;
-  v7 = [a1 accountTypeString];
-  if ([v6 hasPrefix:v7])
+  nameCopy = name;
+  accountTypeString = [self accountTypeString];
+  if ([nameCopy hasPrefix:accountTypeString])
   {
-    v8 = [v6 length];
-    v9 = [a1 accountTypeString];
-    v10 = [v9 length];
+    v8 = [nameCopy length];
+    accountTypeString2 = [self accountTypeString];
+    v10 = [accountTypeString2 length];
 
     if (v8 > v10)
     {
-      *a4 = 1;
-      v11 = [a1 accountTypeString];
-      v12 = [v6 substringFromIndex:{objc_msgSend(v11, "length")}];
+      *directory = 1;
+      accountTypeString3 = [self accountTypeString];
+      v12 = [nameCopy substringFromIndex:{objc_msgSend(accountTypeString3, "length")}];
 
       goto LABEL_6;
     }
@@ -135,19 +135,19 @@
   }
 
   v12 = 0;
-  *a4 = 0;
+  *directory = 0;
 LABEL_6:
 
   return v12;
 }
 
-- (DAMailAccount)initWithLibrary:(id)a3 persistentAccount:(id)a4
+- (DAMailAccount)initWithLibrary:(id)library persistentAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  accountCopy = account;
   v17.receiver = self;
   v17.super_class = DAMailAccount;
-  v8 = [(MailAccount *)&v17 initWithLibrary:v6 persistentAccount:v7];
+  v8 = [(MailAccount *)&v17 initWithLibrary:libraryCopy persistentAccount:accountCopy];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x1E696AD10]);
@@ -160,25 +160,25 @@ LABEL_6:
 
     v8->_supportsUniqueServerIdLock._os_unfair_lock_opaque = 0;
     v13 = MFUserAgent();
-    v14 = [v13 isMobileMail];
+    isMobileMail = [v13 isMobileMail];
 
-    if (v14)
+    if (isMobileMail)
     {
-      v15 = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
-      [v15 addNetworkReachableObserver:v8 selector:sel__reachabilityChanged_];
-      v8->_isNetworkReachable = [v15 isNetworkReachable];
+      mEMORY[0x1E698B6A0] = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
+      [mEMORY[0x1E698B6A0] addNetworkReachableObserver:v8 selector:sel__reachabilityChanged_];
+      v8->_isNetworkReachable = [mEMORY[0x1E698B6A0] isNetworkReachable];
     }
   }
 
   return v8;
 }
 
-- (DAMailAccount)initWithDAAccount:(id)a3
+- (DAMailAccount)initWithDAAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [v4 accountID];
-  v7 = [v5 stringWithFormat:@"%@", v6];
+  accountID = [accountCopy accountID];
+  v7 = [v5 stringWithFormat:@"%@", accountID];
 
   v8 = MFMailDirectory();
   v9 = [v8 stringByAppendingPathComponent:v7];
@@ -189,7 +189,7 @@ LABEL_6:
   v11 = v10;
   if (v10)
   {
-    [(DAMailAccount *)v10 setDAAccount:v4];
+    [(DAMailAccount *)v10 setDAAccount:accountCopy];
   }
 
   return v11;
@@ -210,16 +210,16 @@ LABEL_6:
   return *v2;
 }
 
-- (void)foldersContentsChanged:(id)a3
+- (void)foldersContentsChanged:(id)changed
 {
   v31 = *MEMORY[0x1E69E9840];
-  v21 = a3;
+  changedCopy = changed;
   if ([(DAMailAccount *)self isActive])
   {
-    if (!v21 || ([v21 object], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", self->_cachedAccountID), v4, v5))
+    if (!changedCopy || ([changedCopy object], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", self->_cachedAccountID), v4, v5))
     {
-      v6 = [v21 userInfo];
-      v7 = [v6 objectForKey:@"DAChangedFolders"];
+      userInfo = [changedCopy userInfo];
+      v7 = [userInfo objectForKey:@"DAChangedFolders"];
 
       if (v7)
       {
@@ -229,8 +229,8 @@ LABEL_6:
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v9 = [v21 userInfo];
-        v10 = [v9 objectForKey:@"DAChangedFolders"];
+        userInfo2 = [changedCopy userInfo];
+        v10 = [userInfo2 objectForKey:@"DAChangedFolders"];
 
         v11 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v11)
@@ -258,7 +258,7 @@ LABEL_6:
                 if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412546;
-                  v27 = self;
+                  selfCopy = self;
                   v28 = 2114;
                   v29 = v14;
                   _os_log_impl(&dword_1B0389000, v16, OS_LOG_TYPE_DEFAULT, "#Warning warning, %@ got ping for folder ID %{public}@, but can't find mailboxUid with that ID.", buf, 0x16u);
@@ -280,8 +280,8 @@ LABEL_6:
         v17 = 0;
       }
 
-      v18 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v18 postNotificationName:@"MailAccountContentsDidChange" object:self userInfo:v17];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"MailAccountContentsDidChange" object:self userInfo:v17];
     }
   }
 
@@ -292,17 +292,17 @@ LABEL_6:
 {
   if ([(NSString *)self->_cachedDisplayName length])
   {
-    v3 = self->_cachedDisplayName;
+    displayName = self->_cachedDisplayName;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = DAMailAccount;
-    v3 = [(MailAccount *)&v5 displayName];
+    displayName = [(MailAccount *)&v5 displayName];
   }
 
-  return v3;
+  return displayName;
 }
 
 - (id)accountForRenewingCredentials
@@ -310,9 +310,9 @@ LABEL_6:
   [(DAMailAccount *)self mf_lock];
   v3 = self->_daAccount;
   [(DAMailAccount *)self mf_unlock];
-  v4 = [(DAAccount *)v3 backingAccountInfo];
+  backingAccountInfo = [(DAAccount *)v3 backingAccountInfo];
 
-  return v4;
+  return backingAccountInfo;
 }
 
 - (id)username
@@ -375,15 +375,15 @@ LABEL_6:
   {
     v4.receiver = self;
     v4.super_class = DAMailAccount;
-    v2 = [(MailAccount *)&v4 allMailboxUids];
+    allMailboxUids = [(MailAccount *)&v4 allMailboxUids];
   }
 
   else
   {
-    v2 = [MEMORY[0x1E695DEC8] array];
+    allMailboxUids = [MEMORY[0x1E695DEC8] array];
   }
 
-  return v2;
+  return allMailboxUids;
 }
 
 - (void)resetSpecialMailboxes
@@ -406,8 +406,8 @@ LABEL_6:
     {
       v4 = MFLookupLocalizedString(@"SEARCH_ALL_MAILBOXES", @"Search", @"Delayed");
       v5 = [[MFDAMailbox alloc] initWithName:v4 attributes:0 account:self folderID:@"kDAMailAccountAllMailboxesFolderID"];
-      v6 = [(MailAccount *)self rootMailbox];
-      [(MFMailboxUid *)v5 setParent:v6];
+      rootMailbox = [(MailAccount *)self rootMailbox];
+      [(MFMailboxUid *)v5 setParent:rootMailbox];
 
       v7 = self->_virtualAllSearchMailbox;
       self->_virtualAllSearchMailbox = &v5->super;
@@ -420,9 +420,9 @@ LABEL_6:
   return virtualAllSearchMailbox;
 }
 
-- (int)emptyFrequencyForMailboxType:(int64_t)a3
+- (int)emptyFrequencyForMailboxType:(int64_t)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     return -1;
   }
@@ -436,29 +436,29 @@ LABEL_6:
 
 - (BOOL)isRunningInDisallowedBundle
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [&unk_1F2774C38 containsObject:v3];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [&unk_1F2774C38 containsObject:bundleIdentifier];
 
   return v4;
 }
 
-- (void)_loadChildrenForParent:(id)a3 fromMap:(id)a4 intoArray:(id)a5 replacingInbox:(id)a6 withID:(id)a7
+- (void)_loadChildrenForParent:(id)parent fromMap:(id)map intoArray:(id)array replacingInbox:(id)inbox withID:(id)d
 {
   v37 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v28 = a5;
-  v13 = a6;
-  v30 = v12;
-  v31 = a7;
-  v24 = v11;
+  parentCopy = parent;
+  mapCopy = map;
+  arrayCopy = array;
+  inboxCopy = inbox;
+  v30 = mapCopy;
+  dCopy = d;
+  v24 = parentCopy;
   v29 = [MEMORY[0x1E696AD98] numberWithInt:0];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = [v12 objectForKey:v11];
+  obj = [mapCopy objectForKey:parentCopy];
   v14 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v14)
   {
@@ -475,25 +475,25 @@ LABEL_6:
 
         v16 = *(*(&v32 + 1) + 8 * v15);
         v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        v18 = [v16 folderID];
-        [(DAMailAccount *)self _loadChildrenForParent:v18 fromMap:v30 intoArray:v17 replacingInbox:v13 withID:v31];
+        folderID = [v16 folderID];
+        [(DAMailAccount *)self _loadChildrenForParent:folderID fromMap:v30 intoArray:v17 replacingInbox:inboxCopy withID:dCopy];
 
-        v19 = [v16 folderName];
-        if ([v13 isEqual:v16])
+        folderName = [v16 folderName];
+        if ([inboxCopy isEqual:v16])
         {
-          v20 = v31;
+          v20 = dCopy;
 
-          v19 = v20;
+          folderName = v20;
         }
 
         v21 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        [v21 setValue:v19 forKey:@"MailboxName"];
+        [v21 setValue:folderName forKey:@"MailboxName"];
         [v21 setValue:v17 forKey:@"MailboxChildren"];
         [v21 setValue:v29 forKey:@"MailboxAttributes"];
-        v22 = [v16 folderID];
-        [v21 setValue:v22 forKey:@"DAFolderID"];
+        folderID2 = [v16 folderID];
+        [v21 setValue:folderID2 forKey:@"DAFolderID"];
 
-        [v28 addObject:v21];
+        [arrayCopy addObject:v21];
         ++v15;
       }
 
@@ -507,26 +507,26 @@ LABEL_6:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)accountHierarchyChanged:(id)a3
+- (void)accountHierarchyChanged:(id)changed
 {
   v77 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v54 = self;
+  changedCopy = changed;
+  selfCopy = self;
   if (![(DAMailAccount *)self isRunningInDisallowedBundle])
   {
     if ([(DAMailAccount *)self isActive])
     {
-      if (!v5 || ([v5 object], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", v54->_cachedAccountID), v6, (v7 & 1) != 0))
+      if (!changedCopy || ([changedCopy object], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", selfCopy->_cachedAccountID), v6, (v7 & 1) != 0))
       {
-        v8 = [MEMORY[0x1E696AF00] currentThread];
-        if ([v8 isMainThread])
+        currentThread = [MEMORY[0x1E696AF00] currentThread];
+        if ([currentThread isMainThread])
         {
-          v9 = [(DAMailAccount *)v54 _isUnitTesting];
+          _isUnitTesting = [(DAMailAccount *)selfCopy _isUnitTesting];
 
-          if (!v9)
+          if (!_isUnitTesting)
           {
             v10 = +[MFInvocationQueue sharedInvocationQueue];
-            v11 = [(NSInvocation *)MFMonitoredInvocation mf_invocationWithSelector:a2 target:v54 object:v5];
+            v11 = [(NSInvocation *)MFMonitoredInvocation mf_invocationWithSelector:a2 target:selfCopy object:changedCopy];
             [v10 addInvocation:v11];
 
             goto LABEL_96;
@@ -537,24 +537,24 @@ LABEL_6:
         {
         }
 
-        v48 = v5;
+        v48 = changedCopy;
         v12 = MFLogGeneral();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [(MFAccount *)v54 ef_publicDescription];
+          ef_publicDescription = [(MFAccount *)selfCopy ef_publicDescription];
           *buf = 138543362;
-          v76 = v13;
+          v76 = ef_publicDescription;
           _os_log_impl(&dword_1B0389000, v12, OS_LOG_TYPE_DEFAULT, "mailbox listing has changed for account %{public}@", buf, 0xCu);
         }
 
-        v49 = [(DAMailAccount *)v54 accountConduit];
-        v50 = [v49 mailboxes];
-        v62 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v50, "count")}];
+        accountConduit = [(DAMailAccount *)selfCopy accountConduit];
+        mailboxes = [accountConduit mailboxes];
+        v62 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(mailboxes, "count")}];
         v71 = 0u;
         v72 = 0u;
         v69 = 0u;
         v70 = 0u;
-        obj = v50;
+        obj = mailboxes;
         v14 = [obj countByEnumeratingWithState:&v69 objects:v74 count:16];
         if (v14)
         {
@@ -569,8 +569,8 @@ LABEL_6:
               }
 
               v17 = *(*(&v69 + 1) + 8 * i);
-              v18 = [v17 folderID];
-              [v62 setObject:v17 forKey:v18];
+              folderID = [v17 folderID];
+              [v62 setObject:v17 forKey:folderID];
             }
 
             v14 = [obj countByEnumeratingWithState:&v69 objects:v74 count:16];
@@ -581,16 +581,16 @@ LABEL_6:
 
         v64 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(obj, "count")}];
         v51 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        v58 = [v49 inboxFolder];
-        v55 = [v49 sentItemsFolder];
-        v56 = [v49 deletedItemsFolder];
-        v57 = [v49 draftsFolder];
+        inboxFolder = [accountConduit inboxFolder];
+        sentItemsFolder = [accountConduit sentItemsFolder];
+        deletedItemsFolder = [accountConduit deletedItemsFolder];
+        draftsFolder = [accountConduit draftsFolder];
         v67 = 0u;
         v68 = 0u;
         v65 = 0u;
         v66 = 0u;
-        v19 = [v62 allValues];
-        v20 = [v19 countByEnumeratingWithState:&v65 objects:v73 count:16];
+        allValues = [v62 allValues];
+        v20 = [allValues countByEnumeratingWithState:&v65 objects:v73 count:16];
         v21 = 0;
         if (v20)
         {
@@ -601,7 +601,7 @@ LABEL_6:
           LOBYTE(v25) = 0;
           v52 = 0;
           v61 = *v66;
-          v59 = v19;
+          v59 = allValues;
           while (1)
           {
             v63 = v20;
@@ -624,7 +624,7 @@ LABEL_6:
 
               else
               {
-                v25 = [v58 isEqual:*(*(&v65 + 1) + 8 * j)];
+                v25 = [inboxFolder isEqual:*(*(&v65 + 1) + 8 * j)];
                 if (v24)
                 {
 LABEL_25:
@@ -638,7 +638,7 @@ LABEL_25:
                 }
               }
 
-              v24 = [v55 isEqual:v27];
+              v24 = [sentItemsFolder isEqual:v27];
               if (v21)
               {
 LABEL_26:
@@ -652,16 +652,16 @@ LABEL_26:
               }
 
 LABEL_30:
-              v21 = [v56 isEqual:v27];
+              v21 = [deletedItemsFolder isEqual:v27];
               if (v23)
               {
                 goto LABEL_33;
               }
 
 LABEL_31:
-              if ([v57 isEqual:v27])
+              if ([draftsFolder isEqual:v27])
               {
-                if (![(DAMailAccount *)v54 supportsServerDrafts])
+                if (![(DAMailAccount *)selfCopy supportsServerDrafts])
                 {
                   v23 = 0;
                   continue;
@@ -674,22 +674,22 @@ LABEL_33:
 
               v23 = 0;
 LABEL_35:
-              v28 = [v27 parentFolderID];
-              if (v28)
+              parentFolderID = [v27 parentFolderID];
+              if (parentFolderID)
               {
-                v29 = [v27 parentFolderID];
+                parentFolderID2 = [v27 parentFolderID];
               }
 
               else
               {
-                v29 = @"0";
+                parentFolderID2 = @"0";
               }
 
-              v30 = [v64 objectForKey:v29];
+              v30 = [v64 objectForKey:parentFolderID2];
               if (!v30)
               {
                 v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
-                [v64 setValue:v30 forKey:v29];
+                [v64 setValue:v30 forKey:parentFolderID2];
               }
 
               [v30 addObject:v27];
@@ -700,13 +700,13 @@ LABEL_35:
 
               else
               {
-                if ([@"0" isEqualToString:v29])
+                if ([@"0" isEqualToString:parentFolderID2])
                 {
-                  v31 = [v27 folderName];
-                  v32 = v31;
-                  if (v31)
+                  folderName = [v27 folderName];
+                  v32 = folderName;
+                  if (folderName)
                   {
-                    v33 = [v31 caseInsensitiveCompare:@"junk"];
+                    v33 = [folderName caseInsensitiveCompare:@"junk"];
                     v22 = v33 == 0;
                     if (v33)
                     {
@@ -745,7 +745,7 @@ LABEL_55:
 LABEL_56:
             }
 
-            v19 = v59;
+            allValues = v59;
             v20 = [v59 countByEnumeratingWithState:&v65 objects:v73 count:16];
             if (!v20)
             {
@@ -762,120 +762,120 @@ LABEL_56:
         v52 = 0;
 LABEL_61:
 
-        [(DAMailAccount *)v54 _loadChildrenForParent:@"0" fromMap:v64 intoArray:v51 replacingInbox:v58 withID:@"70FB9178-576E-4CAA-A08E-F68D57BFD01E"];
-        [(DAMailAccount *)v54 mf_lock];
+        [(DAMailAccount *)selfCopy _loadChildrenForParent:@"0" fromMap:v64 intoArray:v51 replacingInbox:inboxFolder withID:@"70FB9178-576E-4CAA-A08E-F68D57BFD01E"];
+        [(DAMailAccount *)selfCopy mf_lock];
         if (v25)
         {
-          v36 = [v58 folderID];
+          folderID2 = [inboxFolder folderID];
         }
 
         else
         {
-          v36 = 0;
+          folderID2 = 0;
         }
 
-        objc_storeStrong(&v54->_cachedInboxFolderID, v36);
+        objc_storeStrong(&selfCopy->_cachedInboxFolderID, folderID2);
         if (v25)
         {
         }
 
         if (v24)
         {
-          v37 = [v55 folderID];
+          folderID3 = [sentItemsFolder folderID];
         }
 
         else
         {
-          v37 = 0;
+          folderID3 = 0;
         }
 
-        objc_storeStrong(&v54->_cachedSentMessagesFolderID, v37);
+        objc_storeStrong(&selfCopy->_cachedSentMessagesFolderID, folderID3);
         if (v24)
         {
         }
 
         if (v21)
         {
-          v38 = [v56 folderID];
+          folderID4 = [deletedItemsFolder folderID];
         }
 
         else
         {
-          v38 = 0;
+          folderID4 = 0;
         }
 
-        objc_storeStrong(&v54->_cachedTrashFolderID, v38);
+        objc_storeStrong(&selfCopy->_cachedTrashFolderID, folderID4);
         if (v21)
         {
         }
 
         if (v35)
         {
-          v39 = [v52 folderID];
+          folderID5 = [v52 folderID];
         }
 
         else
         {
-          v39 = 0;
+          folderID5 = 0;
         }
 
-        objc_storeStrong(&v54->_cachedJunkFolderID, v39);
+        objc_storeStrong(&selfCopy->_cachedJunkFolderID, folderID5);
         if (v35)
         {
         }
 
         if (v23)
         {
-          v40 = [v57 folderID];
+          folderID6 = [draftsFolder folderID];
         }
 
         else
         {
-          v40 = 0;
+          folderID6 = 0;
         }
 
-        objc_storeStrong(&v54->_cachedDraftsFolderID, v40);
+        objc_storeStrong(&selfCopy->_cachedDraftsFolderID, folderID6);
         if (v23)
         {
         }
 
-        v41 = [(MailAccount *)v54 rootMailbox];
-        v42 = [(MailAccount *)v54 _loadMailboxListingIntoCache:0 attributes:0 children:v51 parent:v41];
+        rootMailbox = [(MailAccount *)selfCopy rootMailbox];
+        v42 = [(MailAccount *)selfCopy _loadMailboxListingIntoCache:0 attributes:0 children:v51 parent:rootMailbox];
 
-        receivedInitialMailboxUpdate = v54->_receivedInitialMailboxUpdate;
+        receivedInitialMailboxUpdate = selfCopy->_receivedInitialMailboxUpdate;
         if (!((v48 == 0) | receivedInitialMailboxUpdate & 1))
         {
           receivedInitialMailboxUpdate = 1;
-          v54->_receivedInitialMailboxUpdate = 1;
+          selfCopy->_receivedInitialMailboxUpdate = 1;
         }
 
-        v44 = receivedInitialMailboxUpdate & v25 & !v54->_doneInitialInboxCheck;
+        v44 = receivedInitialMailboxUpdate & v25 & !selfCopy->_doneInitialInboxCheck;
         if (v44)
         {
-          v54->_doneInitialInboxCheck = 1;
+          selfCopy->_doneInitialInboxCheck = 1;
         }
 
-        [(DAMailAccount *)v54 mf_unlock];
-        [(DAMailAccount *)v54 resetSpecialMailboxes];
+        [(DAMailAccount *)selfCopy mf_unlock];
+        [(DAMailAccount *)selfCopy resetSpecialMailboxes];
         if (v42)
         {
-          flags = v54->super._flags;
+          flags = selfCopy->super._flags;
           if ((*&flags & 0x20000) == 0)
           {
-            v54->super._flags = (*&flags & 0xFFFD0000 | (*&flags + 1));
-            [(MailAccount *)v54 _writeMailboxCacheWithPrejudice:1];
+            selfCopy->super._flags = (*&flags & 0xFFFD0000 | (*&flags + 1));
+            [(MailAccount *)selfCopy _writeMailboxCacheWithPrejudice:1];
           }
         }
 
-        [(DAMailAccount *)v54 startListeningForNotifications];
+        [(DAMailAccount *)selfCopy startListeningForNotifications];
         if (v44)
         {
-          [(DAMailAccount *)v54 foldersContentsChanged:0];
+          [(DAMailAccount *)selfCopy foldersContentsChanged:0];
         }
 
-        v46 = [(MailAccount *)v54 mailboxUidOfType:5 createIfNeeded:0];
+        v46 = [(MailAccount *)selfCopy mailboxUidOfType:5 createIfNeeded:0];
 
-        v5 = v48;
+        changedCopy = v48;
       }
     }
   }
@@ -892,21 +892,21 @@ LABEL_96:
   {
     if ([(DAMailAccount *)self isRunningInDisallowedBundle])
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      v11 = [MEMORY[0x1E696AAE8] mainBundle];
-      v12 = [v11 bundleIdentifier];
-      [v10 handleFailureInMethod:a2 object:self file:@"DAMailAccount.m" lineNumber:609 description:{@"should never make account conduits in %@.", v12}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"DAMailAccount.m" lineNumber:609 description:{@"should never make account conduits in %@.", bundleIdentifier}];
     }
 
     v4 = [objc_alloc(objc_msgSend(objc_opt_class() "_accountConduitClass"))];
     accountConduit = self->_accountConduit;
     self->_accountConduit = v4;
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:self selector:sel_foldersContentsChanged_ name:*MEMORY[0x1E6999810] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_foldersContentsChanged_ name:*MEMORY[0x1E6999810] object:0];
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:self selector:sel_accountHierarchyChanged_ name:*MEMORY[0x1E6999818] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_accountHierarchyChanged_ name:*MEMORY[0x1E6999818] object:0];
   }
 
   [(DAMailAccount *)self mf_unlock];
@@ -915,16 +915,16 @@ LABEL_96:
   return v8;
 }
 
-- (void)pushedFoldersPrefsChanged:(id)a3
+- (void)pushedFoldersPrefsChanged:(id)changed
 {
-  v9 = a3;
-  v5 = [MEMORY[0x1E696AF00] currentThread];
-  v6 = [v5 isMainThread];
+  changedCopy = changed;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  isMainThread = [currentThread isMainThread];
 
-  if (v6)
+  if (isMainThread)
   {
     v7 = +[MFInvocationQueue sharedInvocationQueue];
-    v8 = [(NSInvocation *)MFMonitoredInvocation mf_invocationWithSelector:a2 target:self object:v9];
+    v8 = [(NSInvocation *)MFMonitoredInvocation mf_invocationWithSelector:a2 target:self object:changedCopy];
     [v7 addInvocation:v8];
   }
 
@@ -945,50 +945,50 @@ LABEL_96:
       [(DAMailAccount *)self accountHierarchyChanged:0];
     }
 
-    v3 = [(DAMailAccount *)self uniqueID];
-    if (v3)
+    uniqueID = [(DAMailAccount *)self uniqueID];
+    if (uniqueID)
     {
-      v5 = v3;
-      v4 = [MEMORY[0x1E69998A8] sharedConnection];
-      [v4 updateFolderListForAccountID:v5 andDataclasses:1];
+      v5 = uniqueID;
+      mEMORY[0x1E69998A8] = [MEMORY[0x1E69998A8] sharedConnection];
+      [mEMORY[0x1E69998A8] updateFolderListForAccountID:v5 andDataclasses:1];
 
-      v3 = v5;
+      uniqueID = v5;
     }
   }
 }
 
-- (id)_copyMailboxWithParent:(id)a3 name:(id)a4 attributes:(unint64_t)a5 dictionary:(id)a6
+- (id)_copyMailboxWithParent:(id)parent name:(id)name attributes:(unint64_t)attributes dictionary:(id)dictionary
 {
-  v9 = a4;
-  v10 = [a6 objectForKey:@"DAFolderID"];
-  v11 = [objc_allocWithZone(MFDAMailbox) initWithName:v9 attributes:a5 account:self folderID:v10];
+  nameCopy = name;
+  v10 = [dictionary objectForKey:@"DAFolderID"];
+  v11 = [objc_allocWithZone(MFDAMailbox) initWithName:nameCopy attributes:attributes account:self folderID:v10];
 
   return v11;
 }
 
-- (id)_copyMailboxUidWithParent:(id)a3 name:(id)a4 attributes:(unint64_t)a5 existingMailboxUid:(id)a6 dictionary:(id)a7
+- (id)_copyMailboxUidWithParent:(id)parent name:(id)name attributes:(unint64_t)attributes existingMailboxUid:(id)uid dictionary:(id)dictionary
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  parentCopy = parent;
+  nameCopy = name;
+  uidCopy = uid;
+  dictionaryCopy = dictionary;
   [(DAMailAccount *)self _ensureWeHaveLoadedInitialMailboxList];
   v21.receiver = self;
   v21.super_class = DAMailAccount;
-  v16 = [(MailAccount *)&v21 _copyMailboxUidWithParent:v12 name:v13 attributes:a5 existingMailboxUid:v14 dictionary:v15];
-  v17 = [v15 objectForKey:@"DAFolderID"];
-  v18 = [v16 folderID];
-  v19 = v18;
-  if (v14 && v18)
+  v16 = [(MailAccount *)&v21 _copyMailboxUidWithParent:parentCopy name:nameCopy attributes:attributes existingMailboxUid:uidCopy dictionary:dictionaryCopy];
+  v17 = [dictionaryCopy objectForKey:@"DAFolderID"];
+  folderID = [v16 folderID];
+  v19 = folderID;
+  if (uidCopy && folderID)
   {
-    if (([v18 isEqualToString:v17] & 1) == 0)
+    if (([folderID isEqualToString:v17] & 1) == 0)
     {
 
       v16 = 0;
     }
   }
 
-  else if (!v18 && v17)
+  else if (!folderID && v17)
   {
     [v16 setFolderID:v17];
   }
@@ -996,27 +996,27 @@ LABEL_96:
   return v16;
 }
 
-- (id)folderIDForMailbox:(id)a3
+- (id)folderIDForMailbox:(id)mailbox
 {
-  v4 = a3;
-  v5 = [(MailAccount *)self rootMailbox];
+  mailboxCopy = mailbox;
+  rootMailbox = [(MailAccount *)self rootMailbox];
 
-  if (v5 == v4)
+  if (rootMailbox == mailboxCopy)
   {
-    v6 = @"0";
+    folderID = @"0";
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 folderID];
+    folderID = [mailboxCopy folderID];
   }
 
   else
   {
-    v6 = 0;
+    folderID = 0;
   }
 
-  return v6;
+  return folderID;
 }
 
 void __85__DAMailAccount__newMailboxWithParent_name_attributes_dictionary_withCreationOption___block_invoke(uint64_t a1, void *a2)
@@ -1061,37 +1061,37 @@ void __85__DAMailAccount__newMailboxWithParent_name_attributes_dictionary_withCr
   }
 }
 
-- (BOOL)renameMailbox:(id)a3 newName:(id)a4 parent:(id)a5
+- (BOOL)renameMailbox:(id)mailbox newName:(id)name parent:(id)parent
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  mailboxCopy = mailbox;
+  nameCopy = name;
+  parentCopy = parent;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
-  v11 = [(DAMailAccount *)self folderIDForMailbox:v10];
-  v12 = v9;
-  v13 = v12;
+  v11 = [(DAMailAccount *)self folderIDForMailbox:parentCopy];
+  v12 = nameCopy;
+  displayName = v12;
   if (!v12)
   {
-    v13 = [v8 displayName];
+    displayName = [mailboxCopy displayName];
   }
 
   v14 = objc_alloc(MEMORY[0x1E69998B0]);
-  v15 = [(DAMailAccount *)self folderIDForMailbox:v8];
-  v16 = [v14 initFolderChangeWithChangeType:1 folderId:v15 parentFolderId:v11 displayName:v13 dataclass:1 consumer:0];
+  v15 = [(DAMailAccount *)self folderIDForMailbox:mailboxCopy];
+  v16 = [v14 initFolderChangeWithChangeType:1 folderId:v15 parentFolderId:v11 displayName:displayName dataclass:1 consumer:0];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __46__DAMailAccount_renameMailbox_newName_parent___block_invoke;
   v21[3] = &unk_1E7AA2500;
   v25 = &v26;
-  v17 = v8;
+  v17 = mailboxCopy;
   v22 = v17;
-  v18 = v10;
+  v18 = parentCopy;
   v23 = v18;
-  v24 = self;
+  selfCopy = self;
   [(DAMailAccount *)self _performFolderChange:v16 completion:v21];
   v19 = *(v27 + 24);
 
@@ -1114,18 +1114,18 @@ void __46__DAMailAccount_renameMailbox_newName_parent___block_invoke(void *a1, v
   }
 }
 
-- (BOOL)_deleteMailbox:(id)a3 reflectToServer:(BOOL)a4
+- (BOOL)_deleteMailbox:(id)mailbox reflectToServer:(BOOL)server
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  serverCopy = server;
+  mailboxCopy = mailbox;
+  if (serverCopy)
   {
     v13 = 0;
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 0;
     v7 = objc_alloc(MEMORY[0x1E69998B0]);
-    v8 = [(DAMailAccount *)self folderIDForMailbox:v6];
+    v8 = [(DAMailAccount *)self folderIDForMailbox:mailboxCopy];
     v9 = [v7 initFolderChangeWithChangeType:2 folderId:v8 parentFolderId:0 displayName:0 dataclass:1 consumer:0];
 
     v12[0] = MEMORY[0x1E69E9820];
@@ -1153,39 +1153,39 @@ void __48__DAMailAccount__deleteMailbox_reflectToServer___block_invoke(uint64_t 
   *(*(*(a1 + 32) + 8) + 24) = [v3 wasSuccessful];
 }
 
-- (void)_performFolderChange:(id)a3 completion:(id)a4
+- (void)_performFolderChange:(id)change completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
+  changeCopy = change;
+  completionCopy = completion;
   v7 = objc_alloc_init(MFDAFolderChangeConsumer);
-  [v10 setConsumer:v7];
-  v8 = [(DAMailAccount *)self accountConduit];
-  [v8 performFolderChange:v10 isUserRequested:1];
+  [changeCopy setConsumer:v7];
+  accountConduit = [(DAMailAccount *)self accountConduit];
+  [accountConduit performFolderChange:changeCopy isUserRequested:1];
 
-  v9 = [(MFDAFolderChangeConsumer *)v7 waitForResult];
-  v6[2](v6, v9);
+  waitForResult = [(MFDAFolderChangeConsumer *)v7 waitForResult];
+  completionCopy[2](completionCopy, waitForResult);
 }
 
-- (BOOL)newMailboxNameIsAcceptable:(id)a3 reasonForFailure:(id *)a4
+- (BOOL)newMailboxNameIsAcceptable:(id)acceptable reasonForFailure:(id *)failure
 {
-  v6 = a3;
+  acceptableCopy = acceptable;
   v14.receiver = self;
   v14.super_class = DAMailAccount;
-  if ([(MailAccount *)&v14 newMailboxNameIsAcceptable:v6 reasonForFailure:a4])
+  if ([(MailAccount *)&v14 newMailboxNameIsAcceptable:acceptableCopy reasonForFailure:failure])
   {
     if (self->_cachedIsHotmailAccount)
     {
       v7 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"&<>:/()+'\"\\""];;
-      v8 = [v6 rangeOfCharacterFromSet:v7];
+      v8 = [acceptableCopy rangeOfCharacterFromSet:v7];
       v9 = v8 == 0x7FFFFFFFFFFFFFFFLL;
       if (v8 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v10 = [v6 substringWithRange:{v8, 1}];
-        if (a4)
+        v10 = [acceptableCopy substringWithRange:{v8, 1}];
+        if (failure)
         {
           v11 = MEMORY[0x1E696AEC0];
           v12 = MFLookupLocalizedString(@"MAILBOX_NAME_INCLUDES_SPECIAL_CHARACTERS", @"This account does not allow mailbox names containing “%@”.", @"Delayed");
-          *a4 = [v11 stringWithFormat:v12, v10];
+          *failure = [v11 stringWithFormat:v12, v10];
         }
       }
     }
@@ -1211,52 +1211,52 @@ void __48__DAMailAccount__deleteMailbox_reflectToServer___block_invoke(uint64_t 
   return [v2 _URLScheme];
 }
 
-- (void)setDAAccount:(id)a3
+- (void)setDAAccount:(id)account
 {
-  v31 = a3;
+  accountCopy = account;
   [(DAMailAccount *)self mf_lock];
   accountConduit = self->_accountConduit;
   if (accountConduit)
   {
-    [(ASAccountActorMessages *)accountConduit setAccount:v31];
+    [(ASAccountActorMessages *)accountConduit setAccount:accountCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->_daAccount, a3);
+    objc_storeStrong(&self->_daAccount, account);
   }
 
-  v6 = [v31 accountPropertyForKey:@"mcProfileUUID"];
+  v6 = [accountCopy accountPropertyForKey:@"mcProfileUUID"];
   self->_cachedIsManaged = [v6 length] != 0;
 
-  v7 = [v31 backingAccountInfo];
-  self->_cachedIsManaged = [MFAccount accountIsManaged:v7];
+  backingAccountInfo = [accountCopy backingAccountInfo];
+  self->_cachedIsManaged = [MFAccount accountIsManaged:backingAccountInfo];
 
-  v8 = [v31 backingAccountInfo];
-  self->_cachedSourceIsManaged = [MFAccount accountSourceIsManaged:v8];
+  backingAccountInfo2 = [accountCopy backingAccountInfo];
+  self->_cachedSourceIsManaged = [MFAccount accountSourceIsManaged:backingAccountInfo2];
 
-  v9 = [v31 backingAccountInfo];
-  self->_cachedRestrictSendingFromExternalProcesses = [(MFAccount *)MailAccount accountIsPreventedFromSendingFromExternalProcesses:v9];
+  backingAccountInfo3 = [accountCopy backingAccountInfo];
+  self->_cachedRestrictSendingFromExternalProcesses = [(MFAccount *)MailAccount accountIsPreventedFromSendingFromExternalProcesses:backingAccountInfo3];
 
-  v10 = [v31 backingAccountInfo];
-  self->_cachedRestrictMessageTransfersToOtherAccounts = [(MFAccount *)MailAccount accountIsRestrictedFromTransfersToOtherAccounts:v10];
+  backingAccountInfo4 = [accountCopy backingAccountInfo];
+  self->_cachedRestrictMessageTransfersToOtherAccounts = [(MFAccount *)MailAccount accountIsRestrictedFromTransfersToOtherAccounts:backingAccountInfo4];
 
-  v11 = [v31 backingAccountInfo];
-  self->_cachedRestrictSyncingRecents = [(MFAccount *)MailAccount accountRestrictsRecentsSyncing:v11];
+  backingAccountInfo5 = [accountCopy backingAccountInfo];
+  self->_cachedRestrictSyncingRecents = [(MFAccount *)MailAccount accountRestrictsRecentsSyncing:backingAccountInfo5];
 
-  v12 = [v31 accountPropertyForKey:@"SMIMESigningEnabled"];
+  v12 = [accountCopy accountPropertyForKey:@"SMIMESigningEnabled"];
   self->_cachedSecureMIMEShouldSign = [v12 BOOLValue];
 
-  v13 = [v31 accountPropertyForKey:@"SMIMEEncryptionEnabled"];
+  v13 = [accountCopy accountPropertyForKey:@"SMIMEEncryptionEnabled"];
   self->_cachedSecureMIMEShouldEncrypt = [v13 BOOLValue];
 
-  v14 = [v31 encryptionIdentityPersistentReference];
+  encryptionIdentityPersistentReference = [accountCopy encryptionIdentityPersistentReference];
 
-  if (v14)
+  if (encryptionIdentityPersistentReference)
   {
     if (self->_cachedIsManaged)
     {
-      v15 = [v31 accountBoolPropertyForKey:@"PerMessageSMIMEEnabled"];
+      v15 = [accountCopy accountBoolPropertyForKey:@"PerMessageSMIMEEnabled"];
     }
 
     else
@@ -1271,92 +1271,92 @@ void __48__DAMailAccount__deleteMailbox_reflectToServer___block_invoke(uint64_t 
   }
 
   self->_cachedPerMessageEncryptionEnabled = v15;
-  v16 = [v31 accountPropertyForKey:@"MFAccountSupportsMailDrop"];
+  v16 = [accountCopy accountPropertyForKey:@"MFAccountSupportsMailDrop"];
   self->_cachedSupportsMailDrop = [v16 BOOLValue];
 
-  v17 = [v31 accountPropertyForKey:@"ArchiveMessages"];
+  v17 = [accountCopy accountPropertyForKey:@"ArchiveMessages"];
   self->_cachedArchiveByDefault = [v17 BOOLValue];
 
-  self->_cachedIsHotmailAccount = [v31 isHotmailAccount];
+  self->_cachedIsHotmailAccount = [accountCopy isHotmailAccount];
   self->_supportsServerDrafts = 0;
-  v18 = [v31 accountPropertyForKey:@"ASStoreDraftsOnServer"];
+  v18 = [accountCopy accountPropertyForKey:@"ASStoreDraftsOnServer"];
   v19 = v18;
   if (v18)
   {
-    v20 = [v18 BOOLValue];
+    bOOLValue = [v18 BOOLValue];
   }
 
   else
   {
-    v20 = 1;
+    bOOLValue = 1;
   }
 
-  self->_cachedStoreDraftsOnServer = v20;
-  v21 = [v31 accountID];
+  self->_cachedStoreDraftsOnServer = bOOLValue;
+  accountID = [accountCopy accountID];
   cachedAccountID = self->_cachedAccountID;
-  self->_cachedAccountID = v21;
+  self->_cachedAccountID = accountID;
 
-  v23 = [v31 persistentUUID];
+  persistentUUID = [accountCopy persistentUUID];
   cachedAccountPersistentUUID = self->_cachedAccountPersistentUUID;
-  self->_cachedAccountPersistentUUID = v23;
+  self->_cachedAccountPersistentUUID = persistentUUID;
 
-  self->_cachedIsActive = [v31 enabledForDADataclass:1];
-  v25 = [v31 accountDescription];
+  self->_cachedIsActive = [accountCopy enabledForDADataclass:1];
+  accountDescription = [accountCopy accountDescription];
   cachedDisplayName = self->_cachedDisplayName;
-  self->_cachedDisplayName = v25;
+  self->_cachedDisplayName = accountDescription;
 
-  v27 = [v31 emailAddress];
+  emailAddress = [accountCopy emailAddress];
   cachedEmailAddress = self->_cachedEmailAddress;
-  self->_cachedEmailAddress = v27;
+  self->_cachedEmailAddress = emailAddress;
 
-  v29 = [v31 emailAddresses];
+  emailAddresses = [accountCopy emailAddresses];
   cachedEmailAddresses = self->_cachedEmailAddresses;
-  self->_cachedEmailAddresses = v29;
+  self->_cachedEmailAddresses = emailAddresses;
 
-  if (self->_cachedCalendarEnabled != [v31 enabledForDADataclass:4])
+  if (self->_cachedCalendarEnabled != [accountCopy enabledForDADataclass:4])
   {
-    self->_cachedCalendarEnabled = [v31 enabledForDADataclass:4];
+    self->_cachedCalendarEnabled = [accountCopy enabledForDADataclass:4];
   }
 
-  self->_supportsServerSearch = [v31 supportsMailboxSearch];
-  self->_supportsMessageFlagging = [v31 supportsEmailFlagging];
-  self->_daysToSync = [v31 mailNumberOfPastDaysToSync];
+  self->_supportsServerSearch = [accountCopy supportsMailboxSearch];
+  self->_supportsMessageFlagging = [accountCopy supportsEmailFlagging];
+  self->_daysToSync = [accountCopy mailNumberOfPastDaysToSync];
   [(DAMailAccount *)self mf_unlock];
 }
 
-- (id)_infoForMatchingURL:(id)a3
+- (id)_infoForMatchingURL:(id)l
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  [v5 setObject:self forKey:@"Account"];
-  v6 = [v4 pathComponents];
-  v7 = [v6 count];
+  lCopy = l;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self forKey:@"Account"];
+  pathComponents = [lCopy pathComponents];
+  v7 = [pathComponents count];
 
   if (v7 >= 3)
   {
-    v8 = [v4 pathComponents];
-    v9 = [v8 mutableCopy];
+    pathComponents2 = [lCopy pathComponents];
+    v9 = [pathComponents2 mutableCopy];
 
     [v9 removeObjectsInRange:{0, 2}];
     v10 = [MEMORY[0x1E696AEC0] pathWithComponents:v9];
     if ([v10 length])
     {
-      [v5 setObject:v10 forKey:@"FolderID"];
+      [dictionary setObject:v10 forKey:@"FolderID"];
     }
   }
 
-  return v5;
+  return dictionary;
 }
 
-- (id)mailboxForFolderID:(id)a3
+- (id)mailboxForFolderID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(DAMailAccount *)self mf_lock];
-  v5 = [(MailAccount *)self rootMailbox];
+  rootMailbox = [(MailAccount *)self rootMailbox];
   [(DAMailAccount *)self mf_unlock];
-  if (v5)
+  if (rootMailbox)
   {
-    v6 = _MFDescendantWithPredicate(v5, mailboxHasFolderID, v4);
+    v6 = _MFDescendantWithPredicate(rootMailbox, mailboxHasFolderID, dCopy);
   }
 
   else
@@ -1367,36 +1367,36 @@ void __48__DAMailAccount__deleteMailbox_reflectToServer___block_invoke(uint64_t 
   return v6;
 }
 
-- (id)mailboxUidForInfo:(id)a3
+- (id)mailboxUidForInfo:(id)info
 {
-  v4 = [a3 objectForKey:@"FolderID"];
+  v4 = [info objectForKey:@"FolderID"];
   v5 = [(DAMailAccount *)self mailboxForFolderID:v4];
 
   return v5;
 }
 
-- (BOOL)addRequest:(id)a3 consumer:(id)a4 mailbox:(id)a5
+- (BOOL)addRequest:(id)request consumer:(id)consumer mailbox:(id)mailbox
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E699B848] pairWithFirst:v8 second:v9];
+  requestCopy = request;
+  consumerCopy = consumer;
+  mailboxCopy = mailbox;
+  v11 = [MEMORY[0x1E699B848] pairWithFirst:requestCopy second:consumerCopy];
   v15[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  LOBYTE(self) = [(DAMailAccount *)self addRequests:v12 mailbox:v10];
+  LOBYTE(self) = [(DAMailAccount *)self addRequests:v12 mailbox:mailboxCopy];
 
   v13 = *MEMORY[0x1E69E9840];
   return self;
 }
 
-- (BOOL)performRequests:(id)a3 mailbox:(id)a4
+- (BOOL)performRequests:(id)requests mailbox:(id)mailbox
 {
   v68 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  v6 = a4;
+  requestsCopy = requests;
+  mailboxCopy = mailbox;
   v57 = 0;
-  v44 = [(DAMailAccount *)self syncAnchorForFolderID:v6 mailbox:&v57];
+  v44 = [(DAMailAccount *)self syncAnchorForFolderID:mailboxCopy mailbox:&v57];
   v7 = v57;
   v53 = 0;
   v54 = &v53;
@@ -1410,13 +1410,13 @@ void __48__DAMailAccount__deleteMailbox_reflectToServer___block_invoke(uint64_t 
   v45 = v8;
   v51 = v45;
   v52 = &v53;
-  [v43 enumerateObjectsUsingBlock:v50];
+  [requestsCopy enumerateObjectsUsingBlock:v50];
   v9 = DALoggingwithCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = [v45 count];
-    v11 = [(MFAccount *)self ef_publicDescription];
-    v12 = v11;
+    ef_publicDescription = [(MFAccount *)self ef_publicDescription];
+    v12 = ef_publicDescription;
     if (*(v54 + 24))
     {
       v13 = "YES";
@@ -1430,9 +1430,9 @@ void __48__DAMailAccount__deleteMailbox_reflectToServer___block_invoke(uint64_t 
     *buf = 134219010;
     v59 = v10;
     v60 = 2114;
-    v61 = v11;
+    v61 = ef_publicDescription;
     v62 = 2114;
-    v63 = v6;
+    v63 = mailboxCopy;
     v64 = 2112;
     v65 = v44;
     v66 = 2080;
@@ -1448,27 +1448,27 @@ void __48__DAMailAccount__deleteMailbox_reflectToServer___block_invoke(uint64_t 
     v15 = DALoggingwithCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(MFAccount *)self ef_publicDescription];
+      ef_publicDescription2 = [(MFAccount *)self ef_publicDescription];
       *buf = 138543618;
-      v59 = v16;
+      v59 = ef_publicDescription2;
       v60 = 2114;
-      v61 = v6;
+      v61 = mailboxCopy;
       _os_log_impl(&dword_1B0389000, v15, OS_LOG_TYPE_DEFAULT, "Mail db had no sync anchor for %{public}@, folderID %{public}@.  Will erase local messages, perform full sync.", buf, 0x16u);
     }
   }
 
   v17 = [MFDAMailAccountSyncConsumer alloc];
-  v18 = [(DAMailAccount *)self uniqueID];
-  v19 = [(MFDAMailAccountSyncConsumer *)v17 initWithCurrentTag:v44 accountID:v18 requests:v43];
+  uniqueID = [(DAMailAccount *)self uniqueID];
+  v19 = [(MFDAMailAccountSyncConsumer *)v17 initWithCurrentTag:v44 accountID:uniqueID requests:requestsCopy];
 
   do
   {
     [(MFDAMailAccountSyncConsumer *)v19 tag];
 
     v20 = objc_autoreleasePoolPush();
-    v21 = [(DAMailAccount *)self accountConduit];
+    accountConduit = [(DAMailAccount *)self accountConduit];
     v22 = [(MFDAMailAccountSyncConsumer *)v19 tag];
-    v23 = [v21 performMailboxRequests:v45 mailbox:v6 previousTag:v22 clientWinsOnSyncConflict:1 isUserRequested:*(v54 + 24) consumer:v19];
+    v23 = [accountConduit performMailboxRequests:v45 mailbox:mailboxCopy previousTag:v22 clientWinsOnSyncConflict:1 isUserRequested:*(v54 + 24) consumer:v19];
 
     v24 = +[MFActivityMonitor currentMonitor];
     v25 = MEMORY[0x1E699B7F8];
@@ -1476,7 +1476,7 @@ void __48__DAMailAccount__deleteMailbox_reflectToServer___block_invoke(uint64_t 
     v47[1] = 3221225472;
     v47[2] = __41__DAMailAccount_performRequests_mailbox___block_invoke_160;
     v47[3] = &unk_1E7AA2578;
-    v26 = v21;
+    v26 = accountConduit;
     v48 = v26;
     v49 = v23;
     v27 = [v25 tokenWithCancelationBlock:v47];
@@ -1493,11 +1493,11 @@ void __48__DAMailAccount__deleteMailbox_reflectToServer___block_invoke(uint64_t 
       v29 = DALoggingwithCategory();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [(MFAccount *)self ef_publicDescription];
+        ef_publicDescription3 = [(MFAccount *)self ef_publicDescription];
         *buf = 138543618;
-        v59 = v30;
+        v59 = ef_publicDescription3;
         v60 = 2114;
-        v61 = v6;
+        v61 = mailboxCopy;
         _os_log_impl(&dword_1B0389000, v29, OS_LOG_TYPE_DEFAULT, "server returned null sync key for sync of %{public}@, folderID %{public}@.  Will erase local messages, perform full sync.", buf, 0x16u);
       }
     }
@@ -1509,13 +1509,13 @@ void __48__DAMailAccount__deleteMailbox_reflectToServer___block_invoke(uint64_t 
       *buf = 138412546;
       v59 = v32;
       v60 = 2114;
-      v61 = v6;
+      v61 = mailboxCopy;
       _os_log_impl(&dword_1B0389000, v31, OS_LOG_TYPE_INFO, "setting sync key %@ for mailbox %{public}@", buf, 0x16u);
     }
 
     v33 = [(MFDAMailAccountSyncConsumer *)v19 tag];
     v46 = v7;
-    [(DAMailAccount *)self setSyncAnchor:v33 forFolderID:v6 mailbox:&v46];
+    [(DAMailAccount *)self setSyncAnchor:v33 forFolderID:mailboxCopy mailbox:&v46];
     v34 = v46;
 
     v7 = v34;
@@ -1529,33 +1529,33 @@ void __48__DAMailAccount__deleteMailbox_reflectToServer___block_invoke(uint64_t 
       v36 = DALoggingwithCategory();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
-        v37 = [(MFAccount *)self ef_publicDescription];
+        ef_publicDescription4 = [(MFAccount *)self ef_publicDescription];
         *buf = 138543618;
-        v59 = v37;
+        v59 = ef_publicDescription4;
         v60 = 2114;
-        v61 = v6;
+        v61 = mailboxCopy;
         _os_log_impl(&dword_1B0389000, v36, OS_LOG_TYPE_INFO, "canceled mailbox request for %{public}@, folderID %{public}@", buf, 0x16u);
       }
 
-      v38 = 0;
+      moreAvailable = 0;
     }
 
     else
     {
-      v38 = [(MFDAMailAccountSyncConsumer *)v19 moreAvailable];
+      moreAvailable = [(MFDAMailAccountSyncConsumer *)v19 moreAvailable];
     }
 
     [(MFDAMailAccountSyncConsumer *)v19 reset];
   }
 
-  while (v38);
-  v39 = [(MFDAMailAccountConsumer *)v19 shouldRetryRequest];
+  while (moreAvailable);
+  shouldRetryRequest = [(MFDAMailAccountConsumer *)v19 shouldRetryRequest];
   v40 = MFUserAgent();
   [v40 networkActivityEnded:self];
 
   _Block_object_dispose(&v53, 8);
   v41 = *MEMORY[0x1E69E9840];
-  return !v39;
+  return !shouldRetryRequest;
 }
 
 void __41__DAMailAccount_performRequests_mailbox___block_invoke(uint64_t a1, void *a2)
@@ -1568,27 +1568,27 @@ void __41__DAMailAccount_performRequests_mailbox___block_invoke(uint64_t a1, voi
   }
 }
 
-- (id)_relativePathForType:(int64_t)a3
+- (id)_relativePathForType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return @"Archive";
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"Junk";
   }
 
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"DAMailAccount.m" lineNumber:1034 description:{@"requested relative path for unsupported mailbox type %ld", a3}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DAMailAccount.m" lineNumber:1034 description:{@"requested relative path for unsupported mailbox type %ld", type}];
 
   return 0;
 }
 
-- (BOOL)isMailboxLocalForType:(int64_t)a3
+- (BOOL)isMailboxLocalForType:(int64_t)type
 {
-  if (a3 == 5)
+  if (type == 5)
   {
     return ![(DAMailAccount *)self supportsServerDrafts]|| !self->_cachedStoreDraftsOnServer;
   }
@@ -1613,9 +1613,9 @@ void __41__DAMailAccount_performRequests_mailbox___block_invoke(uint64_t a1, voi
   [(DAMailAccount *)self _ensureWeHaveLoadedInitialMailboxList];
   v5.receiver = self;
   v5.super_class = DAMailAccount;
-  v3 = [(MailAccount *)&v5 primaryMailboxUid];
+  primaryMailboxUid = [(MailAccount *)&v5 primaryMailboxUid];
 
-  return v3;
+  return primaryMailboxUid;
 }
 
 - (BOOL)supportsUniqueServerId
@@ -1624,8 +1624,8 @@ void __41__DAMailAccount_performRequests_mailbox___block_invoke(uint64_t a1, voi
   supportsUniqueServerId = self->_supportsUniqueServerId;
   if (!supportsUniqueServerId)
   {
-    v4 = [(DAMailAccount *)self accountConduit];
-    supportsUniqueServerId = [v4 supportsUniqueServerId];
+    accountConduit = [(DAMailAccount *)self accountConduit];
+    supportsUniqueServerId = [accountConduit supportsUniqueServerId];
 
     if (supportsUniqueServerId)
     {
@@ -1641,39 +1641,39 @@ void __41__DAMailAccount_performRequests_mailbox___block_invoke(uint64_t a1, voi
 {
   if (![(DAMailAccount *)self isRunningInDisallowedBundle]&& !self->_supportsServerDrafts)
   {
-    v3 = [(DAMailAccount *)self accountConduit];
-    self->_supportsServerDrafts = [v3 supportsDraftFolderSync];
+    accountConduit = [(DAMailAccount *)self accountConduit];
+    self->_supportsServerDrafts = [accountConduit supportsDraftFolderSync];
   }
 
   return self->_supportsServerDrafts == 1;
 }
 
-- (id)uniqueServerIdForMessage:(id)a3
+- (id)uniqueServerIdForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if ([(DAMailAccount *)self supportsUniqueServerId])
   {
-    v5 = [v4 remoteID];
+    remoteID = [messageCopy remoteID];
   }
 
   else
   {
-    v5 = 0;
+    remoteID = 0;
   }
 
-  return v5;
+  return remoteID;
 }
 
-- (id)accountPropertyForKey:(id)a3
+- (id)accountPropertyForKey:(id)key
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   [(DAMailAccount *)self mf_lock];
   v5 = self->_cachedEmailAddress;
   v6 = self->_cachedEmailAddresses;
   v7 = self->_cachedAccountID;
   [(DAMailAccount *)self mf_unlock];
-  if ([v4 isEqual:@"EmailAddresses"])
+  if ([keyCopy isEqual:@"EmailAddresses"])
   {
     if (v5)
     {
@@ -1686,9 +1686,9 @@ LABEL_20:
     goto LABEL_19;
   }
 
-  if (![v4 isEqual:@"ReceiveEmailAliasAddresses"])
+  if (![keyCopy isEqual:@"ReceiveEmailAliasAddresses"])
   {
-    v15 = [v4 isEqual:*MEMORY[0x1E6959720]];
+    v15 = [keyCopy isEqual:*MEMORY[0x1E6959720]];
     if (v7)
     {
       v16 = v15;
@@ -1708,7 +1708,7 @@ LABEL_20:
 LABEL_19:
     v19.receiver = self;
     v19.super_class = DAMailAccount;
-    v8 = [(MFAccount *)&v19 accountPropertyForKey:v4];
+    v8 = [(MFAccount *)&v19 accountPropertyForKey:keyCopy];
     goto LABEL_20;
   }
 
@@ -1724,7 +1724,7 @@ LABEL_19:
     goto LABEL_25;
   }
 
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -1742,7 +1742,7 @@ LABEL_19:
         objc_enumerationMutation(v10);
       }
 
-      [v9 addObject:v13];
+      [array addObject:v13];
       if (!--v11)
       {
         v11 = [(NSArray *)v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -1754,7 +1754,7 @@ LABEL_19:
     }
   }
 
-  v14 = [MEMORY[0x1E695DF90] dictionaryWithObjects:v9 forKeys:v10];
+  v14 = [MEMORY[0x1E695DF90] dictionaryWithObjects:array forKeys:v10];
 
   if (v5)
   {
@@ -1776,7 +1776,7 @@ LABEL_21:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B0389000, v3, OS_LOG_TYPE_INFO, "DAMAilAccount %p is invalidating", buf, 0xCu);
   }
 
@@ -1799,16 +1799,16 @@ LABEL_21:
 
     else if ([MEMORY[0x1E6999898] isAppleInternalInstall])
     {
-      v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v6 = [v5 BOOLForKey:@"HatesAppleDesign"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v6 = [standardUserDefaults BOOLForKey:@"HatesAppleDesign"];
 
       v4 = @"exchangeAccountIcon";
       if ((v6 & 1) == 0)
       {
-        v7 = [(MFAccount *)self baseAccount];
-        v8 = [v7 isAppleEmployeeAccount];
+        baseAccount = [(MFAccount *)self baseAccount];
+        isAppleEmployeeAccount = [baseAccount isAppleEmployeeAccount];
 
-        if (v8)
+        if (isAppleEmployeeAccount)
         {
           v4 = @"appleAccountIcon";
         }
@@ -1829,20 +1829,20 @@ LABEL_21:
   return cachedIconString;
 }
 
-- (BOOL)isEnabledForDataclass:(id)a3
+- (BOOL)isEnabledForDataclass:(id)dataclass
 {
-  v4 = a3;
-  if ([*MEMORY[0x1E6959B28] isEqualToString:v4])
+  dataclassCopy = dataclass;
+  if ([*MEMORY[0x1E6959B28] isEqualToString:dataclassCopy])
   {
-    v5 = [(DAMailAccount *)self isActive];
+    isActive = [(DAMailAccount *)self isActive];
   }
 
   else
   {
-    v5 = 0;
+    isActive = 0;
   }
 
-  return v5;
+  return isActive;
 }
 
 - (void)dealloc
@@ -1852,12 +1852,12 @@ LABEL_21:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B0389000, v3, OS_LOG_TYPE_INFO, "DAMailAccount %p is deallocating", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
-  [v4 removeNetworkReachableObserver:self];
+  mEMORY[0x1E698B6A0] = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
+  [mEMORY[0x1E698B6A0] removeNetworkReachableObserver:self];
 
   v5 = +[MFInvocationQueue sharedInvocationQueue];
   v6 = [(NSInvocation *)MFMonitoredInvocation mf_invocationWithSelector:sel_invalidate target:self->_temporaryInbox];
@@ -1870,20 +1870,20 @@ LABEL_21:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)reconstituteOrphanedMeetingInMessage:(id)a3
+- (BOOL)reconstituteOrphanedMeetingInMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 loadMeetingData];
-  if (v5)
+  messageCopy = message;
+  loadMeetingData = [messageCopy loadMeetingData];
+  if (loadMeetingData)
   {
-    v6 = [v4 messageStore];
-    v7 = [v6 mailbox];
+    messageStore = [messageCopy messageStore];
+    mailbox = [messageStore mailbox];
 
-    v8 = [(DAMailAccount *)self folderIDForMailbox:v7];
+    v8 = [(DAMailAccount *)self folderIDForMailbox:mailbox];
     if (v8)
     {
-      v9 = [(DAMailAccount *)self accountConduit];
-      v10 = [v9 reattemptInvitationLinkageForMetaData:v5 inFolderWithId:v8];
+      accountConduit = [(DAMailAccount *)self accountConduit];
+      v10 = [accountConduit reattemptInvitationLinkageForMetaData:loadMeetingData inFolderWithId:v8];
     }
 
     else
@@ -1900,20 +1900,20 @@ LABEL_21:
   return v10;
 }
 
-- (id)unactionableInvitationICSRepresentationInMessage:(id)a3 summary:(id *)a4
+- (id)unactionableInvitationICSRepresentationInMessage:(id)message summary:(id *)summary
 {
-  v6 = a3;
-  v7 = [v6 loadMeetingData];
-  if (v7)
+  messageCopy = message;
+  loadMeetingData = [messageCopy loadMeetingData];
+  if (loadMeetingData)
   {
-    v8 = [v6 messageStore];
-    v9 = [v8 mailbox];
+    messageStore = [messageCopy messageStore];
+    mailbox = [messageStore mailbox];
 
-    v10 = [(DAMailAccount *)self folderIDForMailbox:v9];
+    v10 = [(DAMailAccount *)self folderIDForMailbox:mailbox];
     if (v10)
     {
-      v11 = [(DAMailAccount *)self accountConduit];
-      v12 = [v11 unactionableICSRepresentationForMetaData:v7 inFolderWithId:v10 outSummary:a4];
+      accountConduit = [(DAMailAccount *)self accountConduit];
+      v12 = [accountConduit unactionableICSRepresentationForMetaData:loadMeetingData inFolderWithId:v10 outSummary:summary];
     }
 
     else
@@ -1947,10 +1947,10 @@ LABEL_21:
 
 - (id)_inboxFolderID
 {
-  v3 = [(DAMailAccount *)self primaryMailboxUid];
-  if (v3)
+  primaryMailboxUid = [(DAMailAccount *)self primaryMailboxUid];
+  if (primaryMailboxUid)
   {
-    v4 = [(DAMailAccount *)self folderIDForMailbox:v3];
+    v4 = [(DAMailAccount *)self folderIDForMailbox:primaryMailboxUid];
   }
 
   else
@@ -1961,13 +1961,13 @@ LABEL_21:
   return v4;
 }
 
-- (id)_updateWatchedFolderIdsAndNotify:(BOOL)a3
+- (id)_updateWatchedFolderIdsAndNotify:(BOOL)notify
 {
-  v3 = a3;
+  notifyCopy = notify;
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [(DAMailAccount *)self accountConduit];
+  accountConduit = [(DAMailAccount *)self accountConduit];
   v20 = 0;
-  v6 = [v5 folderIDsThatExternalClientsCareAboutForDataclasses:1 withTag:&v20];
+  v6 = [accountConduit folderIDsThatExternalClientsCareAboutForDataclasses:1 withTag:&v20];
   v7 = v20;
   v8 = [v6 mutableCopy];
 
@@ -1983,10 +1983,10 @@ LABEL_21:
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   }
 
-  v11 = [(DAMailAccount *)self _inboxFolderID];
-  if (v11)
+  _inboxFolderID = [(DAMailAccount *)self _inboxFolderID];
+  if (_inboxFolderID)
   {
-    [v8 addObject:v11];
+    [v8 addObject:_inboxFolderID];
   }
 
   v12 = [(MailAccount *)self mailboxUidOfType:4 createIfNeeded:0];
@@ -2001,10 +2001,10 @@ LABEL_21:
   v14 = self->_watchedFolderIds;
   objc_storeStrong(&self->_watchedFolderIds, v8);
   [(NSLock *)self->_watchedFolderIdsLock unlock];
-  if (v3)
+  if (notifyCopy)
   {
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 postNotificationName:@"MFMailAccountPushedMailboxUidsDidChange" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MFMailAccountPushedMailboxUidsDidChange" object:self userInfo:0];
   }
 
   if (![(NSSet *)v14 isEqualToSet:v8])
@@ -2028,39 +2028,39 @@ LABEL_21:
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = MFUserAgent();
-  v4 = [v3 isMaild];
+  isMaild = [v3 isMaild];
 
-  if (v4)
+  if (isMaild)
   {
     v5 = +[MFPowerController sharedInstance];
-    v6 = [v5 isBatterySaverModeEnabled];
+    isBatterySaverModeEnabled = [v5 isBatterySaverModeEnabled];
 
-    if (v6)
+    if (isBatterySaverModeEnabled)
     {
-      v7 = MFLogGeneral();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+      allObjects = MFLogGeneral();
+      if (os_log_type_enabled(allObjects, OS_LOG_TYPE_INFO))
       {
-        v8 = [(MFAccount *)self ef_publicDescription];
+        ef_publicDescription = [(MFAccount *)self ef_publicDescription];
         v18 = 138543362;
-        v19 = v8;
-        _os_log_impl(&dword_1B0389000, v7, OS_LOG_TYPE_INFO, "account %{public}@ will NOT start listening for notifications: battery-saver mode is ON", &v18, 0xCu);
+        v19 = ef_publicDescription;
+        _os_log_impl(&dword_1B0389000, allObjects, OS_LOG_TYPE_INFO, "account %{public}@ will NOT start listening for notifications: battery-saver mode is ON", &v18, 0xCu);
       }
     }
 
     else
     {
       v11 = +[MFPowerController sharedInstance];
-      v12 = [v11 gameModeEnabled];
+      gameModeEnabled = [v11 gameModeEnabled];
 
-      if (v12)
+      if (gameModeEnabled)
       {
-        v7 = MFLogGeneral();
-        if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+        allObjects = MFLogGeneral();
+        if (os_log_type_enabled(allObjects, OS_LOG_TYPE_INFO))
         {
-          v13 = [(MFAccount *)self ef_publicDescription];
+          ef_publicDescription2 = [(MFAccount *)self ef_publicDescription];
           v18 = 138543362;
-          v19 = v13;
-          _os_log_impl(&dword_1B0389000, v7, OS_LOG_TYPE_INFO, "account %{public}@ will NOT start listening for notifications: Game Mode is ON", &v18, 0xCu);
+          v19 = ef_publicDescription2;
+          _os_log_impl(&dword_1B0389000, allObjects, OS_LOG_TYPE_INFO, "account %{public}@ will NOT start listening for notifications: Game Mode is ON", &v18, 0xCu);
         }
       }
 
@@ -2068,27 +2068,27 @@ LABEL_21:
       {
         if (!self->_observingPushedFoldersPrefsChanged)
         {
-          v14 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v14 addObserver:self selector:sel_pushedFoldersPrefsChanged_ name:*MEMORY[0x1E6999820] object:0];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter addObserver:self selector:sel_pushedFoldersPrefsChanged_ name:*MEMORY[0x1E6999820] object:0];
 
           self->_observingPushedFoldersPrefsChanged = 1;
         }
 
         v15 = [(DAMailAccount *)self _updateWatchedFolderIdsAndNotify:1];
-        v7 = [v15 allObjects];
+        allObjects = [v15 allObjects];
 
         v16 = MFLogGeneral();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
           v18 = 138412290;
-          v19 = v7;
+          v19 = allObjects;
           _os_log_impl(&dword_1B0389000, v16, OS_LOG_TYPE_INFO, "Requesting push for folders: %@", &v18, 0xCu);
         }
 
-        if ([v7 count]&& [(DAMailAccount *)self canReceiveNewMailNotifications])
+        if ([allObjects count]&& [(DAMailAccount *)self canReceiveNewMailNotifications])
         {
-          v17 = [(DAMailAccount *)self accountConduit];
-          [v17 monitorFoldersForUpdates:v7 persistent:1];
+          accountConduit = [(DAMailAccount *)self accountConduit];
+          [accountConduit monitorFoldersForUpdates:allObjects persistent:1];
         }
       }
     }
@@ -2096,13 +2096,13 @@ LABEL_21:
 
   else
   {
-    v7 = MFLogGeneral();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    allObjects = MFLogGeneral();
+    if (os_log_type_enabled(allObjects, OS_LOG_TYPE_INFO))
     {
-      v9 = [(MFAccount *)self ef_publicDescription];
+      ef_publicDescription3 = [(MFAccount *)self ef_publicDescription];
       v18 = 138543362;
-      v19 = v9;
-      _os_log_impl(&dword_1B0389000, v7, OS_LOG_TYPE_INFO, "account %{public}@ will NOT start listening for notifications: Not in maild", &v18, 0xCu);
+      v19 = ef_publicDescription3;
+      _os_log_impl(&dword_1B0389000, allObjects, OS_LOG_TYPE_INFO, "account %{public}@ will NOT start listening for notifications: Not in maild", &v18, 0xCu);
     }
   }
 
@@ -2111,36 +2111,36 @@ LABEL_21:
 
 - (void)stopListeningForNotifications
 {
-  v2 = [(DAMailAccount *)self accountConduit];
-  [v2 stopMonitoringAllFolders];
+  accountConduit = [(DAMailAccount *)self accountConduit];
+  [accountConduit stopMonitoringAllFolders];
 }
 
-- (id)syncAnchorForFolderID:(id)a3 mailbox:(id *)a4
+- (id)syncAnchorForFolderID:(id)d mailbox:(id *)mailbox
 {
-  v6 = a3;
-  if (a4)
+  dCopy = d;
+  if (mailbox)
   {
-    v7 = *a4;
+    v7 = *mailbox;
     if (v7)
     {
       goto LABEL_6;
     }
   }
 
-  v8 = [(DAMailAccount *)self mailboxForFolderID:v6];
+  v8 = [(DAMailAccount *)self mailboxForFolderID:dCopy];
   v7 = v8;
-  if (a4)
+  if (mailbox)
   {
     v9 = v8;
-    *a4 = v7;
+    *mailbox = v7;
   }
 
   if (v7)
   {
 LABEL_6:
-    v10 = [(MailAccount *)self library];
-    v11 = [v7 URLString];
-    v12 = [v10 sequenceIdentifierForMailbox:v11];
+    library = [(MailAccount *)self library];
+    uRLString = [v7 URLString];
+    v12 = [library sequenceIdentifierForMailbox:uRLString];
   }
 
   else
@@ -2151,77 +2151,77 @@ LABEL_6:
   return v12;
 }
 
-- (void)setSyncAnchor:(id)a3 forFolderID:(id)a4 mailbox:(id *)a5
+- (void)setSyncAnchor:(id)anchor forFolderID:(id)d mailbox:(id *)mailbox
 {
-  v17 = a3;
-  v8 = a4;
-  if (a5)
+  anchorCopy = anchor;
+  dCopy = d;
+  if (mailbox)
   {
-    v9 = *a5;
+    v9 = *mailbox;
     if (v9)
     {
       goto LABEL_6;
     }
   }
 
-  v10 = [(DAMailAccount *)self mailboxForFolderID:v8];
+  v10 = [(DAMailAccount *)self mailboxForFolderID:dCopy];
   v9 = v10;
-  if (a5)
+  if (mailbox)
   {
     v11 = v10;
-    *a5 = v9;
+    *mailbox = v9;
   }
 
   if (v9)
   {
 LABEL_6:
-    v12 = [(MailAccount *)self library];
-    v13 = [v9 URLString];
-    [v12 setSequenceIdentifier:v17 forMailbox:v13];
+    library = [(MailAccount *)self library];
+    uRLString = [v9 URLString];
+    [library setSequenceIdentifier:anchorCopy forMailbox:uRLString];
   }
 
-  if (v17 && !self->_supportsServerSearch)
+  if (anchorCopy && !self->_supportsServerSearch)
   {
-    v14 = [(DAMailAccount *)self accountConduit];
-    self->_supportsServerSearch = [v14 supportsMailboxSearch];
+    accountConduit = [(DAMailAccount *)self accountConduit];
+    self->_supportsServerSearch = [accountConduit supportsMailboxSearch];
   }
 
-  if (v17 && !self->_supportsMessageFlagging)
+  if (anchorCopy && !self->_supportsMessageFlagging)
   {
-    v15 = [(DAMailAccount *)self accountConduit];
-    self->_supportsMessageFlagging = [v15 supportsEmailFlagging];
+    accountConduit2 = [(DAMailAccount *)self accountConduit];
+    self->_supportsMessageFlagging = [accountConduit2 supportsEmailFlagging];
   }
 
-  if (v17 && !self->_supportsConversations)
+  if (anchorCopy && !self->_supportsConversations)
   {
-    v16 = [(DAMailAccount *)self accountConduit];
-    self->_supportsConversations = [v16 supportsConversations];
+    accountConduit3 = [(DAMailAccount *)self accountConduit];
+    self->_supportsConversations = [accountConduit3 supportsConversations];
   }
 
   [(DAMailAccount *)self supportsUniqueServerId];
 }
 
-- (void)performSearchQuery:(id)a3
+- (void)performSearchQuery:(id)query
 {
-  v5 = a3;
-  v4 = [(DAMailAccount *)self accountConduit];
-  [v4 performSearchQuery:v5];
+  queryCopy = query;
+  accountConduit = [(DAMailAccount *)self accountConduit];
+  [accountConduit performSearchQuery:queryCopy];
 }
 
-- (void)cancelSearchQuery:(id)a3
+- (void)cancelSearchQuery:(id)query
 {
-  v5 = a3;
-  v4 = [(DAMailAccount *)self accountConduit];
-  [v4 cancelSearchQuery:v5];
+  queryCopy = query;
+  accountConduit = [(DAMailAccount *)self accountConduit];
+  [accountConduit cancelSearchQuery:queryCopy];
 }
 
 - (id)pushedMailboxUids
 {
   v21 = *MEMORY[0x1E69E9840];
-  v13 = [(DAMailAccount *)self _watchedFolderIds];
-  if (!v13)
+  _watchedFolderIds = [(DAMailAccount *)self _watchedFolderIds];
+  if (!_watchedFolderIds)
   {
-    v13 = [(DAMailAccount *)self _updateWatchedFolderIdsAndNotify:0];
+    _watchedFolderIds = [(DAMailAccount *)self _updateWatchedFolderIdsAndNotify:0];
   }
 
   v3 = [MEMORY[0x1E695DFA8] set];
@@ -2229,7 +2229,7 @@ LABEL_6:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v13;
+  v4 = _watchedFolderIds;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v5)
   {
@@ -2273,9 +2273,9 @@ LABEL_6:
   return v3;
 }
 
-- (id)_folderIdsForMailboxUids:(id)a3
+- (id)_folderIdsForMailboxUids:(id)uids
 {
-  v3 = [a3 ef_compactMap:&__block_literal_global_3];
+  v3 = [uids ef_compactMap:&__block_literal_global_3];
 
   return v3;
 }
@@ -2311,15 +2311,15 @@ LABEL_7:
   return v3;
 }
 
-- (void)changePushedMailboxUidsAdded:(id)a3 deleted:(id)a4
+- (void)changePushedMailboxUidsAdded:(id)added deleted:(id)deleted
 {
-  v9 = a4;
-  v6 = [(DAMailAccount *)self _folderIdsForMailboxUids:a3];
-  v7 = [(DAMailAccount *)self _folderIdsForMailboxUids:v9];
+  deletedCopy = deleted;
+  v6 = [(DAMailAccount *)self _folderIdsForMailboxUids:added];
+  v7 = [(DAMailAccount *)self _folderIdsForMailboxUids:deletedCopy];
   if (v6 | v7)
   {
-    v8 = [(DAMailAccount *)self accountConduit];
-    [v8 setFolderIdsThatExternalClientsCareAboutAdded:v6 deleted:v7 foldersTag:self->_folderTag];
+    accountConduit = [(DAMailAccount *)self accountConduit];
+    [accountConduit setFolderIdsThatExternalClientsCareAboutAdded:v6 deleted:v7 foldersTag:self->_folderTag];
   }
 }
 
@@ -2332,17 +2332,17 @@ LABEL_7:
   return v3;
 }
 
-- (void)_reachabilityChanged:(id)a3
+- (void)_reachabilityChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E698B608]];
+  changedCopy = changed;
+  name = [changedCopy name];
+  v6 = [name isEqualToString:*MEMORY[0x1E698B608]];
 
   if (v6)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E698B610]];
-    v9 = [v8 BOOLValue];
+    userInfo = [changedCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E698B610]];
+    bOOLValue = [v8 BOOLValue];
 
     v10 = dispatch_get_global_queue(0, 0);
     v11[0] = MEMORY[0x1E69E9820];
@@ -2350,7 +2350,7 @@ LABEL_7:
     v11[2] = __38__DAMailAccount__reachabilityChanged___block_invoke;
     v11[3] = &unk_1E7AA25E8;
     v11[4] = self;
-    v12 = v9;
+    v12 = bOOLValue;
     dispatch_async(v10, v11);
   }
 }
@@ -2400,37 +2400,37 @@ void __38__DAMailAccount__reachabilityChanged___block_invoke_203(uint64_t a1)
   [v1 connectionEstablished];
 }
 
-- (id)signingIdentityPersistentReferenceForAddress:(id)a3
+- (id)signingIdentityPersistentReferenceForAddress:(id)address
 {
-  v3 = [(DAMailAccount *)self accountConduit];
-  v4 = [v3 signingIdentityPersistentReference];
+  accountConduit = [(DAMailAccount *)self accountConduit];
+  signingIdentityPersistentReference = [accountConduit signingIdentityPersistentReference];
 
-  return v4;
+  return signingIdentityPersistentReference;
 }
 
-- (void)setSigningIdentityPersistentReference:(id)a3 forAddress:(id)a4
+- (void)setSigningIdentityPersistentReference:(id)reference forAddress:(id)address
 {
-  v6 = a3;
-  v5 = [(DAMailAccount *)self accountConduit];
-  [v5 setSigningIdentityPersistentReference:v6];
+  referenceCopy = reference;
+  accountConduit = [(DAMailAccount *)self accountConduit];
+  [accountConduit setSigningIdentityPersistentReference:referenceCopy];
 }
 
-- (id)encryptionIdentityPersistentReferenceForAddress:(id)a3
+- (id)encryptionIdentityPersistentReferenceForAddress:(id)address
 {
-  v3 = [(DAMailAccount *)self accountConduit];
-  v4 = [v3 encryptionIdentityPersistentReference];
+  accountConduit = [(DAMailAccount *)self accountConduit];
+  encryptionIdentityPersistentReference = [accountConduit encryptionIdentityPersistentReference];
 
-  return v4;
+  return encryptionIdentityPersistentReference;
 }
 
-- (void)setEncryptionIdentityPersistentReference:(id)a3 forAddress:(id)a4
+- (void)setEncryptionIdentityPersistentReference:(id)reference forAddress:(id)address
 {
-  v6 = a3;
-  v5 = [(DAMailAccount *)self accountConduit];
-  [v5 setEncryptionIdentityPersistentReference:v6];
+  referenceCopy = reference;
+  accountConduit = [(DAMailAccount *)self accountConduit];
+  [accountConduit setEncryptionIdentityPersistentReference:referenceCopy];
 }
 
-- (BOOL)perMessageEncryptionEnabledForAddress:(id)a3
+- (BOOL)perMessageEncryptionEnabledForAddress:(id)address
 {
   [(DAMailAccount *)self mf_lock];
   cachedPerMessageEncryptionEnabled = self->_cachedPerMessageEncryptionEnabled;
@@ -2438,7 +2438,7 @@ void __38__DAMailAccount__reachabilityChanged___block_invoke_203(uint64_t a1)
   return cachedPerMessageEncryptionEnabled;
 }
 
-- (int64_t)secureCompositionSigningPolicyForAddress:(id)a3
+- (int64_t)secureCompositionSigningPolicyForAddress:(id)address
 {
   [(DAMailAccount *)self mf_lock];
   cachedSecureMIMEShouldSign = self->_cachedSecureMIMEShouldSign;
@@ -2446,7 +2446,7 @@ void __38__DAMailAccount__reachabilityChanged___block_invoke_203(uint64_t a1)
   return cachedSecureMIMEShouldSign;
 }
 
-- (int64_t)secureCompositionEncryptionPolicyForAddress:(id)a3
+- (int64_t)secureCompositionEncryptionPolicyForAddress:(id)address
 {
   [(DAMailAccount *)self mf_lock];
   cachedSecureMIMEShouldEncrypt = self->_cachedSecureMIMEShouldEncrypt;
@@ -2454,9 +2454,9 @@ void __38__DAMailAccount__reachabilityChanged___block_invoke_203(uint64_t a1)
   return cachedSecureMIMEShouldEncrypt;
 }
 
-- (id)copyDataForRemoteEncryptionCertificatesForAddresses:(id)a3 errors:(id *)a4
+- (id)copyDataForRemoteEncryptionCertificatesForAddresses:(id)addresses errors:(id *)errors
 {
-  v6 = a3;
+  addressesCopy = addresses;
   v7 = MFUserAgent();
   [v7 networkActivityStarted:self];
 
@@ -2479,13 +2479,13 @@ void __38__DAMailAccount__reachabilityChanged___block_invoke_203(uint64_t a1)
   v11[4] = self;
   v11[5] = &v18;
   v11[6] = &v12;
-  [v6 ef_enumerateObjectsInBatchesOfSize:80 block:v11];
+  [addressesCopy ef_enumerateObjectsInBatchesOfSize:80 block:v11];
   v8 = MFUserAgent();
   [v8 networkActivityEnded:self];
 
-  if (a4 && [v13[5] count])
+  if (errors && [v13[5] count])
   {
-    *a4 = v13[5];
+    *errors = v13[5];
   }
 
   v9 = v19[5];
@@ -2634,11 +2634,11 @@ LABEL_30:
 - (id)fetchLimits
 {
   v2 = +[MFNetworkController sharedInstance];
-  v3 = [v2 isFatPipe];
+  isFatPipe = [v2 isFatPipe];
   v4 = +[MFPowerController sharedInstance];
-  v5 = [v4 isPluggedIn];
+  isPluggedIn = [v4 isPluggedIn];
 
-  if (v3 & v5)
+  if (isFatPipe & isPluggedIn)
   {
     v6 = 209715200;
   }
@@ -2674,18 +2674,18 @@ LABEL_30:
   return v2;
 }
 
-- (id)replayAction:(id)a3
+- (id)replayAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 mailboxURL];
-    v6 = [v5 absoluteString];
-    v7 = [(MailAccount *)self mailboxUidForURL:v6];
+    mailboxURL = [actionCopy mailboxURL];
+    absoluteString = [mailboxURL absoluteString];
+    v7 = [(MailAccount *)self mailboxUidForURL:absoluteString];
 
     v8 = [(MailAccount *)self storeForMailboxUid:v7];
-    v9 = [(ECLocalActionReplayer *)[MFDATransferActionReplayer alloc] initWithAction:v4];
+    v9 = [(ECLocalActionReplayer *)[MFDATransferActionReplayer alloc] initWithAction:actionCopy];
     [(ECLocalActionReplayer *)v9 setDelegate:self];
     v10 = [(MFDATransferActionReplayer *)v9 replayActionUsingStore:v8];
   }
@@ -2699,17 +2699,17 @@ LABEL_30:
       goto LABEL_13;
     }
 
-    v7 = v4;
-    v11 = [v7 mailboxURL];
-    v12 = [v11 absoluteString];
-    v8 = [(MailAccount *)self mailboxUidForURL:v12];
+    v7 = actionCopy;
+    mailboxURL2 = [v7 mailboxURL];
+    absoluteString2 = [mailboxURL2 absoluteString];
+    v8 = [(MailAccount *)self mailboxUidForURL:absoluteString2];
 
     v9 = [(MailAccount *)self storeForMailboxUid:v8];
     v13 = [(DAMailAccount *)self _remoteIDsForFlagChangeAction:v7];
     v21 = -86;
-    v14 = [v7 flagChange];
+    flagChange = [v7 flagChange];
     v20 = 0;
-    v15 = [(MFDATransferActionReplayer *)v9 replayFlagChange:v14 forRemoteIDs:v13 error:&v20 completed:&v21];
+    v15 = [(MFDATransferActionReplayer *)v9 replayFlagChange:flagChange forRemoteIDs:v13 error:&v20 completed:&v21];
     v16 = v20;
 
     if (v21)
@@ -2739,19 +2739,19 @@ LABEL_13:
   return v10;
 }
 
-- (id)_remoteIDsForFlagChangeAction:(id)a3
+- (id)_remoteIDsForFlagChangeAction:(id)action
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 remoteIDs];
-  v5 = [v4 mutableCopy];
+  actionCopy = action;
+  remoteIDs = [actionCopy remoteIDs];
+  v5 = [remoteIDs mutableCopy];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v3 messages];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  messages = [actionCopy messages];
+  v7 = [messages countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -2761,20 +2761,20 @@ LABEL_13:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(messages);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 remoteID];
+        remoteID = [v10 remoteID];
 
-        if (v11)
+        if (remoteID)
         {
-          v12 = [v10 remoteID];
-          [v5 addObject:v12];
+          remoteID2 = [v10 remoteID];
+          [v5 addObject:remoteID2];
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [messages countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -2785,26 +2785,26 @@ LABEL_13:
   return v5;
 }
 
-- (id)messageDataForMessage:(id)a3
+- (id)messageDataForMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"DAMailAccount.m" lineNumber:1808 description:{@"Invalid parameter not satisfying: %@", @"[message isKindOfClass:[MFMailMessage class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"DAMailAccount.m" lineNumber:1808 description:{@"Invalid parameter not satisfying: %@", @"[message isKindOfClass:[MFMailMessage class]]"}];
   }
 
-  v6 = [v5 messageDataIsComplete:0 downloadIfNecessary:0];
+  v6 = [messageCopy messageDataIsComplete:0 downloadIfNecessary:0];
 
   return v6;
 }
 
-- (BOOL)moveSupportedFromMailboxURL:(id)a3 toURL:(id)a4
+- (BOOL)moveSupportedFromMailboxURL:(id)l toURL:(id)rL
 {
-  v5 = a4;
-  v6 = [MailAccount accountWithURL:a3];
-  v7 = [MailAccount accountWithURL:v5];
+  rLCopy = rL;
+  v6 = [MailAccount accountWithURL:l];
+  v7 = [MailAccount accountWithURL:rLCopy];
   v8 = v6 == v7;
 
   return v8;

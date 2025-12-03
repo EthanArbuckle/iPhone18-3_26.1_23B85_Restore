@@ -1,24 +1,24 @@
 @interface MRAudioFadeMessage
-- (MRAudioFadeMessage)initWithPlayerPath:(id)a3 fadeType:(int64_t)a4;
+- (MRAudioFadeMessage)initWithPlayerPath:(id)path fadeType:(int64_t)type;
 - (MRPlayerPath)playerPath;
 - (int64_t)fadeType;
 @end
 
 @implementation MRAudioFadeMessage
 
-- (MRAudioFadeMessage)initWithPlayerPath:(id)a3 fadeType:(int64_t)a4
+- (MRAudioFadeMessage)initWithPlayerPath:(id)path fadeType:(int64_t)type
 {
-  v6 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = MRAudioFadeMessage;
   v7 = [(MRProtocolMessage *)&v11 init];
   if (v7)
   {
     v8 = objc_alloc_init(_MRAudioFadeMessageProtobuf);
-    v9 = [v6 protobuf];
-    [(_MRAudioFadeMessageProtobuf *)v8 setPlayerPath:v9];
+    protobuf = [pathCopy protobuf];
+    [(_MRAudioFadeMessageProtobuf *)v8 setPlayerPath:protobuf];
 
-    [(_MRAudioFadeMessageProtobuf *)v8 setFadeType:a4];
+    [(_MRAudioFadeMessageProtobuf *)v8 setFadeType:type];
     [(MRProtocolMessage *)v7 setUnderlyingCodableMessage:v8];
   }
 
@@ -28,19 +28,19 @@
 - (MRPlayerPath)playerPath
 {
   v3 = [MRPlayerPath alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 playerPath];
-  v6 = [(MRPlayerPath *)v3 initWithProtobuf:v5];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  playerPath = [underlyingCodableMessage playerPath];
+  v6 = [(MRPlayerPath *)v3 initWithProtobuf:playerPath];
 
   return v6;
 }
 
 - (int64_t)fadeType
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 fadeType];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  fadeType = [underlyingCodableMessage fadeType];
 
-  return v3;
+  return fadeType;
 }
 
 @end

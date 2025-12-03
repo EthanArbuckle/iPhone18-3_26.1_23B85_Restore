@@ -1,7 +1,7 @@
 @interface ML3DatabaseStatementCache
-- (ML3DatabaseStatementCache)initWithCacheSize:(unint64_t)a3;
-- (id)cachedStatementForSQL:(id)a3;
-- (void)cacheStatement:(id)a3;
+- (ML3DatabaseStatementCache)initWithCacheSize:(unint64_t)size;
+- (id)cachedStatementForSQL:(id)l;
+- (void)cacheStatement:(id)statement;
 - (void)clearCache;
 - (void)dealloc;
 - (void)pruneCache;
@@ -14,8 +14,8 @@
   v20 = *MEMORY[0x277D85DE8];
   cacheSize = self->_cacheSize;
   v4 = [(ML3StatementCacheList *)self->_nodeList count];
-  v5 = [(NSMutableDictionary *)self->_statementsDictionary allValues];
-  v6 = [v5 msv_firstWhere:&__block_literal_global_6];
+  allValues = [(NSMutableDictionary *)self->_statementsDictionary allValues];
+  v6 = [allValues msv_firstWhere:&__block_literal_global_6];
 
   if (v6)
   {
@@ -38,21 +38,21 @@
         break;
       }
 
-      v10 = [(ML3StatementCacheList *)self->_nodeList oldestNode];
-      v11 = [v10 dictionaryKey];
-      v12 = [(NSMutableDictionary *)self->_statementsDictionary objectForKey:v11];
-      v13 = [v12 isExecuting];
+      oldestNode = [(ML3StatementCacheList *)self->_nodeList oldestNode];
+      dictionaryKey = [oldestNode dictionaryKey];
+      v12 = [(NSMutableDictionary *)self->_statementsDictionary objectForKey:dictionaryKey];
+      isExecuting = [v12 isExecuting];
       nodeList = self->_nodeList;
-      if (v13)
+      if (isExecuting)
       {
-        [(ML3StatementCacheList *)nodeList promoteNodeWithDictionaryKey:v11];
+        [(ML3StatementCacheList *)nodeList promoteNodeWithDictionaryKey:dictionaryKey];
       }
 
       else
       {
         [(ML3StatementCacheList *)nodeList deleteOldestNode];
         [v12 finalizeStatement];
-        [(NSMutableDictionary *)self->_statementsDictionary removeObjectForKey:v11];
+        [(NSMutableDictionary *)self->_statementsDictionary removeObjectForKey:dictionaryKey];
       }
 
       --v9;
@@ -76,12 +76,12 @@
 - (void)clearCache
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(NSMutableDictionary *)self->_statementsDictionary allValues];
+  allValues = [(NSMutableDictionary *)self->_statementsDictionary allValues];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -93,14 +93,14 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) finalizeStatement];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -110,47 +110,47 @@
   [(ML3StatementCacheList *)self->_nodeList deleteAllNodes];
 }
 
-- (void)cacheStatement:(id)a3
+- (void)cacheStatement:(id)statement
 {
-  v13 = a3;
-  v4 = [v13 sql];
-  [(NSMutableDictionary *)self->_statementsDictionary setObject:v13 forKey:v4];
+  statementCopy = statement;
+  v4 = [statementCopy sql];
+  [(NSMutableDictionary *)self->_statementsDictionary setObject:statementCopy forKey:v4];
   v5 = [[ML3StatementCacheNode alloc] initWithDictionaryKey:v4];
   [(ML3StatementCacheList *)self->_nodeList appendNode:v5];
-  v6 = [(NSMutableDictionary *)self->_statementsDictionary allValues];
-  v7 = [v6 msv_firstWhere:&__block_literal_global_11132];
+  allValues = [(NSMutableDictionary *)self->_statementsDictionary allValues];
+  v7 = [allValues msv_firstWhere:&__block_literal_global_11132];
 
   if (v7)
   {
     while ([(ML3StatementCacheList *)self->_nodeList count]> self->_cacheSize)
     {
-      v8 = [(ML3StatementCacheList *)self->_nodeList oldestNode];
-      v9 = [v8 dictionaryKey];
-      v10 = [(NSMutableDictionary *)self->_statementsDictionary objectForKey:v9];
-      v11 = [v10 isExecuting];
+      oldestNode = [(ML3StatementCacheList *)self->_nodeList oldestNode];
+      dictionaryKey = [oldestNode dictionaryKey];
+      v10 = [(NSMutableDictionary *)self->_statementsDictionary objectForKey:dictionaryKey];
+      isExecuting = [v10 isExecuting];
       nodeList = self->_nodeList;
-      if (v11)
+      if (isExecuting)
       {
-        [(ML3StatementCacheList *)nodeList promoteNodeWithDictionaryKey:v9];
+        [(ML3StatementCacheList *)nodeList promoteNodeWithDictionaryKey:dictionaryKey];
       }
 
       else
       {
         [(ML3StatementCacheList *)nodeList deleteOldestNode];
         [v10 finalizeStatement];
-        [(NSMutableDictionary *)self->_statementsDictionary removeObjectForKey:v9];
+        [(NSMutableDictionary *)self->_statementsDictionary removeObjectForKey:dictionaryKey];
       }
     }
   }
 }
 
-- (id)cachedStatementForSQL:(id)a3
+- (id)cachedStatementForSQL:(id)l
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_statementsDictionary objectForKey:v4];
+  lCopy = l;
+  v5 = [(NSMutableDictionary *)self->_statementsDictionary objectForKey:lCopy];
   if (v5)
   {
-    [(ML3StatementCacheList *)self->_nodeList promoteNodeWithDictionaryKey:v4];
+    [(ML3StatementCacheList *)self->_nodeList promoteNodeWithDictionaryKey:lCopy];
   }
 
   return v5;
@@ -164,7 +164,7 @@
   [(ML3DatabaseStatementCache *)&v3 dealloc];
 }
 
-- (ML3DatabaseStatementCache)initWithCacheSize:(unint64_t)a3
+- (ML3DatabaseStatementCache)initWithCacheSize:(unint64_t)size
 {
   v11.receiver = self;
   v11.super_class = ML3DatabaseStatementCache;
@@ -172,7 +172,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_cacheSize = a3;
+    v4->_cacheSize = size;
     v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v4->_cacheSize];
     statementsDictionary = v5->_statementsDictionary;
     v5->_statementsDictionary = v6;

@@ -1,11 +1,11 @@
 @interface PLSAssetProperties
 + (id)assetProperties;
-- (BOOL)readPropertiesFromAssetURL:(id)a3 error:(id *)a4;
+- (BOOL)readPropertiesFromAssetURL:(id)l error:(id *)error;
 - (PLSAssetProperties)init;
-- (PLSAssetProperties)initWithCoder:(id)a3;
-- (id)initFromPropertyList:(id)a3;
+- (PLSAssetProperties)initWithCoder:(id)coder;
+- (id)initFromPropertyList:(id)list;
 - (id)propertyList;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLSAssetProperties
@@ -13,48 +13,48 @@
 - (id)propertyList
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(PLSAssetProperties *)self imageProperties];
+  imageProperties = [(PLSAssetProperties *)self imageProperties];
 
-  if (v4)
+  if (imageProperties)
   {
-    v5 = [(PLSAssetProperties *)self imageProperties];
-    [v3 setObject:v5 forKey:@"imageProperties"];
+    imageProperties2 = [(PLSAssetProperties *)self imageProperties];
+    [v3 setObject:imageProperties2 forKey:@"imageProperties"];
   }
 
-  v6 = [(PLSAssetProperties *)self fileSystemProperties];
+  fileSystemProperties = [(PLSAssetProperties *)self fileSystemProperties];
 
-  if (v6)
+  if (fileSystemProperties)
   {
-    v7 = [(PLSAssetProperties *)self fileSystemProperties];
-    [v3 setObject:v7 forKey:@"fileProperties"];
+    fileSystemProperties2 = [(PLSAssetProperties *)self fileSystemProperties];
+    [v3 setObject:fileSystemProperties2 forKey:@"fileProperties"];
   }
 
-  v8 = [(PLSAssetProperties *)self fileName];
+  fileName = [(PLSAssetProperties *)self fileName];
 
-  if (v8)
+  if (fileName)
   {
-    v9 = [(PLSAssetProperties *)self fileName];
-    [v3 setObject:v9 forKey:@"fileName"];
+    fileName2 = [(PLSAssetProperties *)self fileName];
+    [v3 setObject:fileName2 forKey:@"fileName"];
   }
 
   return v3;
 }
 
-- (id)initFromPropertyList:(id)a3
+- (id)initFromPropertyList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = [(PLSAssetProperties *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"imageProperties"];
+    v6 = [listCopy objectForKey:@"imageProperties"];
     imageProperties = v5->_imageProperties;
     v5->_imageProperties = v6;
 
-    v8 = [v4 objectForKey:@"fileProperties"];
+    v8 = [listCopy objectForKey:@"fileProperties"];
     fileSystemProperties = v5->_fileSystemProperties;
     v5->_fileSystemProperties = v8;
 
-    v10 = [v4 objectForKey:@"fileName"];
+    v10 = [listCopy objectForKey:@"fileName"];
     fileName = v5->_fileName;
     v5->_fileName = v10;
   }
@@ -62,36 +62,36 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PLSAssetProperties *)self fileName];
-  [v4 encodeObject:v5 forKey:@"fileName"];
+  coderCopy = coder;
+  fileName = [(PLSAssetProperties *)self fileName];
+  [coderCopy encodeObject:fileName forKey:@"fileName"];
 
-  v6 = [(PLSAssetProperties *)self imageProperties];
-  [v4 encodeObject:v6 forKey:@"imageProperties"];
+  imageProperties = [(PLSAssetProperties *)self imageProperties];
+  [coderCopy encodeObject:imageProperties forKey:@"imageProperties"];
 
-  v7 = [(PLSAssetProperties *)self fileSystemProperties];
-  [v4 encodeObject:v7 forKey:@"fileProperties"];
+  fileSystemProperties = [(PLSAssetProperties *)self fileSystemProperties];
+  [coderCopy encodeObject:fileSystemProperties forKey:@"fileProperties"];
 }
 
-- (PLSAssetProperties)initWithCoder:(id)a3
+- (PLSAssetProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PLSAssetProperties;
   v5 = [(PLSAssetProperties *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodePropertyListForKey:@"imageProperties"];
+    v6 = [coderCopy decodePropertyListForKey:@"imageProperties"];
     imageProperties = v5->_imageProperties;
     v5->_imageProperties = v6;
 
-    v8 = [v4 decodePropertyListForKey:@"fileProperties"];
+    v8 = [coderCopy decodePropertyListForKey:@"fileProperties"];
     fileSystemProperties = v5->_fileSystemProperties;
     v5->_fileSystemProperties = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileName"];
     fileName = v5->_fileName;
     v5->_fileName = v10;
   }
@@ -99,10 +99,10 @@
   return v5;
 }
 
-- (BOOL)readPropertiesFromAssetURL:(id)a3 error:(id *)a4
+- (BOOL)readPropertiesFromAssetURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = CGImageSourceCreateWithURL(v5, 0);
+  lCopy = l;
+  v6 = CGImageSourceCreateWithURL(lCopy, 0);
   if (v6)
   {
     v7 = v6;
@@ -116,14 +116,14 @@
       v12 = CGImageSourceGetType(v7);
       [v11 setObject:v12 forKey:@"RKFileUTType"];
       v13 = +[NSFileManager defaultManager];
-      v14 = [(__CFURL *)v5 path];
+      path = [(__CFURL *)lCopy path];
       v18 = 0;
-      v15 = [v13 attributesOfItemAtPath:v14 error:&v18];
+      v15 = [v13 attributesOfItemAtPath:path error:&v18];
 
       [(PLSAssetProperties *)self setImageProperties:v11];
       [(PLSAssetProperties *)self setFileSystemProperties:v15];
-      v16 = [(__CFURL *)v5 lastPathComponent];
-      [(PLSAssetProperties *)self setFileName:v16];
+      lastPathComponent = [(__CFURL *)lCopy lastPathComponent];
+      [(PLSAssetProperties *)self setFileName:lastPathComponent];
     }
 
     CFRelease(v7);

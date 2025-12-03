@@ -1,10 +1,10 @@
 @interface RecipeTimerManager
-- (void)timersUpdated:(id)a3;
+- (void)timersUpdated:(id)updated;
 @end
 
 @implementation RecipeTimerManager
 
-- (void)timersUpdated:(id)a3
+- (void)timersUpdated:(id)updated
 {
   v4 = sub_21A176C98(&qword_27CCFEB08);
   MEMORY[0x28223BE20](v4 - 8, v5);

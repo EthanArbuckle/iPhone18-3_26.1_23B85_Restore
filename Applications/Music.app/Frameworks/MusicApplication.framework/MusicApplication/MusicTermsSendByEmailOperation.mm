@@ -1,18 +1,18 @@
 @interface MusicTermsSendByEmailOperation
-- (MusicTermsSendByEmailOperation)initWithEmailAddress:(id)a3;
+- (MusicTermsSendByEmailOperation)initWithEmailAddress:(id)address;
 - (id)error;
 - (void)main;
 @end
 
 @implementation MusicTermsSendByEmailOperation
 
-- (MusicTermsSendByEmailOperation)initWithEmailAddress:(id)a3
+- (MusicTermsSendByEmailOperation)initWithEmailAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v5 = [(MusicTermsSendByEmailOperation *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [addressCopy copy];
     emailAddress = v5->_emailAddress;
     v5->_emailAddress = v6;
   }
@@ -31,7 +31,7 @@
   if ([(MusicTermsSendByEmailOperation *)self isCancelled])
   {
     v3 = SSError();
-    v4 = v15[5];
+    uRLBagDictionary = v15[5];
     v15[5] = v3;
 LABEL_11:
 
@@ -40,8 +40,8 @@ LABEL_11:
 
   if ([(NSString *)self->_emailAddress length])
   {
-    v4 = [(MusicTermsSendByEmailOperation *)self URLBagDictionary];
-    v5 = [v4 objectForKey:@"email-terms"];
+    uRLBagDictionary = [(MusicTermsSendByEmailOperation *)self URLBagDictionary];
+    v5 = [uRLBagDictionary objectForKey:@"email-terms"];
     if (_NSIsNSString())
     {
       if (v5)

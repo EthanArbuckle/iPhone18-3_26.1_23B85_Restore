@@ -3,15 +3,15 @@
 - (NSIndexPath)firstItemIndexPath;
 - (NSIndexPath)lastItemIndexPath;
 - (PUAssetReference)startingAssetReference;
-- (id)assetAtIndexPath:(id)a3;
-- (id)assetCollectionAtIndexPath:(id)a3;
-- (id)assetReferenceAtIndexPath:(id)a3;
-- (id)assetReferenceForAssetReference:(id)a3;
-- (id)badgeInfoPromiseForAssetAtIndexPath:(id)a3 spatialPresentationEnabled:(BOOL)a4;
-- (id)convertIndexPath:(id)a3 fromAssetsDataSource:(id)a4;
-- (id)indexPathForAssetCollection:(id)a3;
-- (id)indexPathForAssetReference:(id)a3;
-- (int64_t)numberOfAssetsWithMaximum:(int64_t)a3;
+- (id)assetAtIndexPath:(id)path;
+- (id)assetCollectionAtIndexPath:(id)path;
+- (id)assetReferenceAtIndexPath:(id)path;
+- (id)assetReferenceForAssetReference:(id)reference;
+- (id)badgeInfoPromiseForAssetAtIndexPath:(id)path spatialPresentationEnabled:(BOOL)enabled;
+- (id)convertIndexPath:(id)path fromAssetsDataSource:(id)source;
+- (id)indexPathForAssetCollection:(id)collection;
+- (id)indexPathForAssetReference:(id)reference;
+- (int64_t)numberOfAssetsWithMaximum:(int64_t)maximum;
 @end
 
 @implementation PUAssetsDataSource
@@ -37,7 +37,7 @@ uint64_t __37__PUAssetsDataSource_emptyDataSource__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (int64_t)numberOfAssetsWithMaximum:(int64_t)a3
+- (int64_t)numberOfAssetsWithMaximum:(int64_t)maximum
 {
   v9 = 0;
   v10 = &v9;
@@ -49,7 +49,7 @@ uint64_t __37__PUAssetsDataSource_emptyDataSource__block_invoke()
   v8[2] = __48__PUAssetsDataSource_numberOfAssetsWithMaximum___block_invoke;
   v8[3] = &unk_1E7B75820;
   v8[4] = &v9;
-  v8[5] = a3;
+  v8[5] = maximum;
   [(PUTilingDataSource *)self enumerateIndexPathsStartingAtIndexPath:v5 reverseDirection:0 usingBlock:v8];
 
   v6 = v10[3];
@@ -69,8 +69,8 @@ uint64_t __48__PUAssetsDataSource_numberOfAssetsWithMaximum___block_invoke(uint6
 
 - (NSIndexPath)lastItemIndexPath
 {
-  v3 = [MEMORY[0x1E696AC88] pu_rootIndexPath];
-  v4 = [(PUTilingDataSource *)self numberOfSubItemsAtIndexPath:v3];
+  pu_rootIndexPath = [MEMORY[0x1E696AC88] pu_rootIndexPath];
+  v4 = [(PUTilingDataSource *)self numberOfSubItemsAtIndexPath:pu_rootIndexPath];
 
   while (v4-- >= 1)
   {
@@ -143,13 +143,13 @@ LABEL_6:
   return v4;
 }
 
-- (id)convertIndexPath:(id)a3 fromAssetsDataSource:(id)a4
+- (id)convertIndexPath:(id)path fromAssetsDataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] == 1)
+  pathCopy = path;
+  sourceCopy = source;
+  if ([pathCopy length] == 1)
   {
-    v8 = [v7 assetCollectionAtIndexPath:v6];
+    v8 = [sourceCopy assetCollectionAtIndexPath:pathCopy];
     if (v8)
     {
       v9 = [(PUAssetsDataSource *)self indexPathForAssetCollection:v8];
@@ -163,9 +163,9 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if ([v6 length] == 2)
+  if ([pathCopy length] == 2)
   {
-    v8 = [v7 assetReferenceAtIndexPath:v6];
+    v8 = [sourceCopy assetReferenceAtIndexPath:pathCopy];
     if (v8)
     {
       v9 = [(PUAssetsDataSource *)self indexPathForAssetReference:v8];
@@ -183,19 +183,19 @@ LABEL_11:
   return v10;
 }
 
-- (id)assetAtIndexPath:(id)a3
+- (id)assetAtIndexPath:(id)path
 {
-  v3 = [(PUAssetsDataSource *)self assetReferenceAtIndexPath:a3];
-  v4 = [v3 asset];
+  v3 = [(PUAssetsDataSource *)self assetReferenceAtIndexPath:path];
+  asset = [v3 asset];
 
-  return v4;
+  return asset;
 }
 
-- (id)assetReferenceForAssetReference:(id)a3
+- (id)assetReferenceForAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 dataSourceIdentifier], v6 = objc_claimAutoreleasedReturnValue(), -[PUTilingDataSource identifier](self, "identifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isEqual:", v7), v7, v6, !v8))
+  referenceCopy = reference;
+  v5 = referenceCopy;
+  if (referenceCopy && ([referenceCopy dataSourceIdentifier], v6 = objc_claimAutoreleasedReturnValue(), -[PUTilingDataSource identifier](self, "identifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isEqual:", v7), v7, v6, !v8))
   {
     v10 = [(PUAssetsDataSource *)self indexPathForAssetReference:v5];
     if (v10)
@@ -217,47 +217,47 @@ LABEL_11:
   return v9;
 }
 
-- (id)badgeInfoPromiseForAssetAtIndexPath:(id)a3 spatialPresentationEnabled:(BOOL)a4
+- (id)badgeInfoPromiseForAssetAtIndexPath:(id)path spatialPresentationEnabled:(BOOL)enabled
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = NSStringFromSelector(a2);
-  [v6 handleFailureInMethod:a2 object:self file:@"PUAssetsDataSource.m" lineNumber:63 description:{@"Concrete subclass must implement %@", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetsDataSource.m" lineNumber:63 description:{@"Concrete subclass must implement %@", v7}];
 
   return 0;
 }
 
-- (id)indexPathForAssetCollection:(id)a3
+- (id)indexPathForAssetCollection:(id)collection
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = NSStringFromSelector(a2);
-  [v5 handleFailureInMethod:a2 object:self file:@"PUAssetsDataSource.m" lineNumber:58 description:{@"Concrete subclass must implement %@", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetsDataSource.m" lineNumber:58 description:{@"Concrete subclass must implement %@", v6}];
 
   return 0;
 }
 
-- (id)assetCollectionAtIndexPath:(id)a3
+- (id)assetCollectionAtIndexPath:(id)path
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = NSStringFromSelector(a2);
-  [v5 handleFailureInMethod:a2 object:self file:@"PUAssetsDataSource.m" lineNumber:53 description:{@"Concrete subclass must implement %@", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetsDataSource.m" lineNumber:53 description:{@"Concrete subclass must implement %@", v6}];
 
   return 0;
 }
 
-- (id)indexPathForAssetReference:(id)a3
+- (id)indexPathForAssetReference:(id)reference
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = NSStringFromSelector(a2);
-  [v5 handleFailureInMethod:a2 object:self file:@"PUAssetsDataSource.m" lineNumber:48 description:{@"Concrete subclass must implement %@", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetsDataSource.m" lineNumber:48 description:{@"Concrete subclass must implement %@", v6}];
 
   return 0;
 }
 
-- (id)assetReferenceAtIndexPath:(id)a3
+- (id)assetReferenceAtIndexPath:(id)path
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = NSStringFromSelector(a2);
-  [v5 handleFailureInMethod:a2 object:self file:@"PUAssetsDataSource.m" lineNumber:43 description:{@"Concrete subclass must implement %@", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetsDataSource.m" lineNumber:43 description:{@"Concrete subclass must implement %@", v6}];
 
   return 0;
 }

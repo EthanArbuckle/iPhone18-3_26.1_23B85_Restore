@@ -1,11 +1,11 @@
 @interface SFSafariCreditCardStore
-+ (id)savedCreditCardsWithError:(id *)a3;
++ (id)savedCreditCardsWithError:(id *)error;
 + (void)showCreditCardSettings;
 @end
 
 @implementation SFSafariCreditCardStore
 
-+ (id)savedCreditCardsWithError:(id *)a3
++ (id)savedCreditCardsWithError:(id *)error
 {
   v18[7] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CDC140];
@@ -46,9 +46,9 @@
       [(SFSafariCreditCardStore *)v10 savedCreditCardsWithError:v13];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = SecCopyLastError();
+      *error = SecCopyLastError();
     }
   }
 
@@ -132,17 +132,17 @@ id __53__SFSafariCreditCardStore_savedCreditCardsWithError___block_invoke(uint64
     v4 = objc_alloc_init(v2);
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 urlToListOfCards];
-      v6 = [MEMORY[0x277CC1E80] defaultWorkspace];
-      [v6 openSensitiveURL:v5 withOptions:0];
+      urlToListOfCards = [v4 urlToListOfCards];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+      [defaultWorkspace openSensitiveURL:urlToListOfCards withOptions:0];
     }
   }
 
   else
   {
     v8 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=SAFARI&path=AUTO_FILL/CreditCardList"];
-    v7 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v7 openSensitiveURL:v8 withOptions:0];
+    defaultWorkspace2 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace2 openSensitiveURL:v8 withOptions:0];
   }
 }
 

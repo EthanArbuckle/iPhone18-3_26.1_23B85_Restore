@@ -1,19 +1,19 @@
 @interface MADAutoAssetDescriptor
-+ (BOOL)doesMetatadaIndicateEmptyEntry:(id)a3;
-+ (BOOL)isMorePreferredAssetFormat:(id)a3 comparedTo:(id)a4;
-+ (id)typeAndSpecifierKeyForAssetType:(id)a3 andAssetSpecifier:(id)a4;
-+ (int64_t)totalFilesystemSpaceForAutoAssetDescriptors:(id)a3;
++ (BOOL)doesMetatadaIndicateEmptyEntry:(id)entry;
++ (BOOL)isMorePreferredAssetFormat:(id)format comparedTo:(id)to;
++ (id)typeAndSpecifierKeyForAssetType:(id)type andAssetSpecifier:(id)specifier;
++ (int64_t)totalFilesystemSpaceForAutoAssetDescriptors:(id)descriptors;
 - (BOOL)existsOnFilesystem;
 - (BOOL)isBlankEntry;
-- (BOOL)isEqualSelector:(id)a3;
+- (BOOL)isEqualSelector:(id)selector;
 - (BOOL)isPreSUStagingRequired;
 - (BOOL)isRamped;
-- (BOOL)wasBuiltForOSBuild:(id)a3;
-- (MADAutoAssetDescriptor)initWithCoder:(id)a3;
+- (BOOL)wasBuiltForOSBuild:(id)build;
+- (MADAutoAssetDescriptor)initWithCoder:(id)coder;
 - (id)assetBuild;
 - (id)description;
 - (id)initBlankEntry;
-- (id)initForAssetType:(id)a3 fromMetadata:(id)a4 fromBaseDescriptor:(id)a5 substitutingAssetVersion:(id)a6 invalidReasons:(id *)a7;
+- (id)initForAssetType:(id)type fromMetadata:(id)metadata fromBaseDescriptor:(id)descriptor substitutingAssetVersion:(id)version invalidReasons:(id *)reasons;
 - (id)localContentURLOfAssetDescriptor;
 - (id)newSummaryWithoutSelector;
 - (id)selectorName;
@@ -21,17 +21,17 @@
 - (id)summary;
 - (id)typeAndSpecifierKey;
 - (int64_t)totalFilesystemSpace;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADAutoAssetDescriptor
 
-- (id)initForAssetType:(id)a3 fromMetadata:(id)a4 fromBaseDescriptor:(id)a5 substitutingAssetVersion:(id)a6 invalidReasons:(id *)a7
+- (id)initForAssetType:(id)type fromMetadata:(id)metadata fromBaseDescriptor:(id)descriptor substitutingAssetVersion:(id)version invalidReasons:(id *)reasons
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  typeCopy = type;
+  metadataCopy = metadata;
+  descriptorCopy = descriptor;
+  versionCopy = version;
   v67.receiver = self;
   v67.super_class = MADAutoAssetDescriptor;
   v17 = [(MADAutoAssetDescriptor *)&v67 init];
@@ -40,9 +40,9 @@
     goto LABEL_33;
   }
 
-  obj = a4;
+  obj = metadata;
   v18 = [[NSMutableString alloc] initWithString:@"|INVALID_METADATA:"];
-  objc_storeStrong(v17 + 3, a3);
+  objc_storeStrong(v17 + 3, type);
   v19 = *(v17 + 3);
   v20 = v19 != 0;
   if (!v19)
@@ -50,38 +50,38 @@
     [v18 appendFormat:@"MISSING:%@|", @"assetType"];
   }
 
-  v21 = getAssetIdFromDict(v13, v14);
+  v21 = getAssetIdFromDict(typeCopy, metadataCopy);
   v22 = *(v17 + 4);
   *(v17 + 4) = v21;
 
   if (*(v17 + 4))
   {
-    if (v15)
+    if (descriptorCopy)
     {
 LABEL_6:
-      v17[13] = [v15 isOnFilesystem];
-      v17[14] = [v15 neverBeenLocked];
-      v17[15] = [v15 secureOperationInProgress];
-      v17[16] = [v15 secureOperationEliminating];
-      v17[17] = [v15 downloadUserInitiated];
-      *(v17 + 13) = [v15 downloadedNetworkBytes];
-      *(v17 + 14) = [v15 downloadedFilesystemBytes];
-      v23 = [v15 patchedFromBaseSelector];
+      v17[13] = [descriptorCopy isOnFilesystem];
+      v17[14] = [descriptorCopy neverBeenLocked];
+      v17[15] = [descriptorCopy secureOperationInProgress];
+      v17[16] = [descriptorCopy secureOperationEliminating];
+      v17[17] = [descriptorCopy downloadUserInitiated];
+      *(v17 + 13) = [descriptorCopy downloadedNetworkBytes];
+      *(v17 + 14) = [descriptorCopy downloadedFilesystemBytes];
+      patchedFromBaseSelector = [descriptorCopy patchedFromBaseSelector];
       v24 = *(v17 + 15);
-      *(v17 + 15) = v23;
+      *(v17 + 15) = patchedFromBaseSelector;
 
-      *(v17 + 16) = [v15 patchedFromBaseFilesystemBytes];
-      v17[18] = [v15 patchingAttempted];
-      v17[19] = [v15 stagedPriorToAvailable];
-      v25 = [v15 stagedFromOSVersion];
+      *(v17 + 16) = [descriptorCopy patchedFromBaseFilesystemBytes];
+      v17[18] = [descriptorCopy patchingAttempted];
+      v17[19] = [descriptorCopy stagedPriorToAvailable];
+      stagedFromOSVersion = [descriptorCopy stagedFromOSVersion];
       v26 = *(v17 + 17);
-      *(v17 + 17) = v25;
+      *(v17 + 17) = stagedFromOSVersion;
 
-      v27 = [v15 stagedFromBuildVersion];
+      stagedFromBuildVersion = [descriptorCopy stagedFromBuildVersion];
       v28 = *(v17 + 18);
-      *(v17 + 18) = v27;
+      *(v17 + 18) = stagedFromBuildVersion;
 
-      v29 = [v15 patchingAttemptError];
+      patchingAttemptError = [descriptorCopy patchingAttemptError];
       goto LABEL_9;
     }
   }
@@ -90,7 +90,7 @@ LABEL_6:
   {
     [v18 appendString:@"FORMAT:assetId|"];
     v20 = 0;
-    if (v15)
+    if (descriptorCopy)
     {
       goto LABEL_6;
     }
@@ -111,12 +111,12 @@ LABEL_6:
   v32 = *(v17 + 18);
   *(v17 + 18) = 0;
 
-  v29 = 0;
+  patchingAttemptError = 0;
 LABEL_9:
   v33 = *(v17 + 19);
-  *(v17 + 19) = v29;
+  *(v17 + 19) = patchingAttemptError;
 
-  v34 = [v14 safeBooleanForKey:@"_IsMAAutoAsset"];
+  v34 = [metadataCopy safeBooleanForKey:@"_IsMAAutoAsset"];
   v17[8] = v34;
   if ((v34 & 1) == 0)
   {
@@ -125,16 +125,16 @@ LABEL_9:
   }
 
   *(v17 + 9) = 0;
-  v35 = [v14 safeStringForKey:@"AssetSpecifier"];
+  v35 = [metadataCopy safeStringForKey:@"AssetSpecifier"];
   v36 = *(v17 + 5);
   *(v17 + 5) = v35;
 
   if (*(v17 + 5))
   {
-    if (v16)
+    if (versionCopy)
     {
 LABEL_13:
-      objc_storeStrong(v17 + 6, a6);
+      objc_storeStrong(v17 + 6, version);
       goto LABEL_17;
     }
   }
@@ -143,13 +143,13 @@ LABEL_13:
   {
     [v18 appendFormat:@"MISSING:%@|", @"AssetSpecifier"];
     v20 = 0;
-    if (v16)
+    if (versionCopy)
     {
       goto LABEL_13;
     }
   }
 
-  v37 = [v14 safeStringForKey:@"AssetVersion"];
+  v37 = [metadataCopy safeStringForKey:@"AssetVersion"];
   v38 = *(v17 + 6);
   *(v17 + 6) = v37;
 
@@ -160,7 +160,7 @@ LABEL_13:
   }
 
 LABEL_17:
-  v39 = [v14 safeStringForKey:@"AssetFormat"];
+  v39 = [metadataCopy safeStringForKey:@"AssetFormat"];
   v40 = *(v17 + 7);
   *(v17 + 7) = v39;
 
@@ -169,29 +169,29 @@ LABEL_17:
     *(v17 + 7) = @"StreamingZip";
   }
 
-  v41 = [v14 safeStringForKey:@"Build"];
+  v41 = [metadataCopy safeStringForKey:@"Build"];
   v42 = *(v17 + 8);
   *(v17 + 8) = v41;
 
-  v43 = [v14 safeStringForKey:@"_MinOSVersion"];
+  v43 = [metadataCopy safeStringForKey:@"_MinOSVersion"];
   v44 = *(v17 + 9);
   *(v17 + 9) = v43;
 
-  v45 = [v14 safeStringForKey:@"_MaxOSVersion"];
+  v45 = [metadataCopy safeStringForKey:@"_MaxOSVersion"];
   v46 = *(v17 + 10);
   *(v17 + 10) = v45;
 
-  v47 = [v14 safeObjectForKey:@"PrerequisiteAssetBuilds" ofClass:objc_opt_class()];
+  v47 = [metadataCopy safeObjectForKey:@"PrerequisiteAssetBuilds" ofClass:objc_opt_class()];
   v48 = *(v17 + 11);
   *(v17 + 11) = v47;
 
   v49 = *(v17 + 11);
   if (v49)
   {
-    v58 = v16;
+    v58 = versionCopy;
     v59 = v17;
-    v60 = v14;
-    v61 = v13;
+    v60 = metadataCopy;
+    v61 = typeCopy;
     v17[12] = 1;
     v65 = 0u;
     v66 = 0u;
@@ -226,9 +226,9 @@ LABEL_17:
       while (v52);
     }
 
-    v14 = v60;
-    v13 = v61;
-    v16 = v58;
+    metadataCopy = v60;
+    typeCopy = v61;
+    versionCopy = v58;
     v17 = v59;
   }
 
@@ -237,7 +237,7 @@ LABEL_17:
     v17[12] = 0;
   }
 
-  v17[11] = [v14 safeBooleanForKey:@"_PreSoftwareUpdateAssetStaging"];
+  v17[11] = [metadataCopy safeBooleanForKey:@"_PreSoftwareUpdateAssetStaging"];
   objc_storeStrong(v17 + 12, obj);
   if (v20)
   {
@@ -247,10 +247,10 @@ LABEL_33:
     goto LABEL_37;
   }
 
-  if (a7)
+  if (reasons)
   {
     v56 = v18;
-    *a7 = v18;
+    *reasons = v18;
   }
 
   v55 = 0;
@@ -324,9 +324,9 @@ LABEL_37:
   return v3;
 }
 
-- (MADAutoAssetDescriptor)initWithCoder:(id)a3
+- (MADAutoAssetDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = MADAutoAssetDescriptor;
   v5 = [(MADAutoAssetDescriptor *)&v41 init];
@@ -360,74 +360,74 @@ LABEL_37:
     v9 = [NSArray arrayWithObjects:v42 count:9];
     v10 = [NSSet setWithArray:v9];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetType"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetType"];
     assetType = v5->_assetType;
     v5->_assetType = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetID"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetID"];
     assetId = v5->_assetId;
     v5->_assetId = v13;
 
-    v5->_isMAAutoAsset = [v4 decodeBoolForKey:@"_IsMAAutoAsset"];
-    v5->_foundByLookupWithoutAssetVersion = [v4 decodeBoolForKey:@"foundByLookupWithoutAssetVersion"];
-    v5->_foundAsPreInstalled = [v4 decodeBoolForKey:@"foundAsPreInstalled"];
-    v5->_preSoftwareUpdateAssetStaging = [v4 decodeBoolForKey:@"_PreSoftwareUpdateAssetStaging"];
-    v5->_isPatch = [v4 decodeBoolForKey:@"isPatch"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AssetSpecifier"];
+    v5->_isMAAutoAsset = [coderCopy decodeBoolForKey:@"_IsMAAutoAsset"];
+    v5->_foundByLookupWithoutAssetVersion = [coderCopy decodeBoolForKey:@"foundByLookupWithoutAssetVersion"];
+    v5->_foundAsPreInstalled = [coderCopy decodeBoolForKey:@"foundAsPreInstalled"];
+    v5->_preSoftwareUpdateAssetStaging = [coderCopy decodeBoolForKey:@"_PreSoftwareUpdateAssetStaging"];
+    v5->_isPatch = [coderCopy decodeBoolForKey:@"isPatch"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AssetSpecifier"];
     assetSpecifier = v5->_assetSpecifier;
     v5->_assetSpecifier = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AssetVersion"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AssetVersion"];
     assetVersion = v5->_assetVersion;
     v5->_assetVersion = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AssetFormat"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AssetFormat"];
     assetFormat = v5->_assetFormat;
     v5->_assetFormat = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Build"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Build"];
     build = v5->_build;
     v5->_build = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_MinOSVersion"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_MinOSVersion"];
     minOSVersion = v5->_minOSVersion;
     v5->_minOSVersion = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_MaxOSVersion"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_MaxOSVersion"];
     maxOSVersion = v5->_maxOSVersion;
     v5->_maxOSVersion = v25;
 
-    v27 = [v4 decodeObjectOfClasses:v40 forKey:@"PrerequisiteAssetBuilds"];
+    v27 = [coderCopy decodeObjectOfClasses:v40 forKey:@"PrerequisiteAssetBuilds"];
     prerequisiteAssetBuilds = v5->_prerequisiteAssetBuilds;
     v5->_prerequisiteAssetBuilds = v27;
 
-    v29 = [v4 decodeObjectOfClasses:v8 forKey:@"metadata"];
+    v29 = [coderCopy decodeObjectOfClasses:v8 forKey:@"metadata"];
     metadata = v5->_metadata;
     v5->_metadata = v29;
 
-    v5->_isOnFilesystem = [v4 decodeBoolForKey:@"isOnFilesystem"];
-    v5->_neverBeenLocked = [v4 decodeBoolForKey:@"neverBeenLocked"];
-    v5->_secureOperationInProgress = [v4 decodeBoolForKey:@"secureOperationInProgress"];
-    v5->_secureOperationEliminating = [v4 decodeBoolForKey:@"secureOperationEliminating"];
-    v5->_downloadUserInitiated = [v4 decodeBoolForKey:@"downloadUserInitiated"];
-    v5->_downloadedNetworkBytes = [v4 decodeIntegerForKey:@"downloadedNetworkBytes"];
-    v5->_downloadedFilesystemBytes = [v4 decodeIntegerForKey:@"downloadedFilesystemBytes"];
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"patchedFromBaseSelector"];
+    v5->_isOnFilesystem = [coderCopy decodeBoolForKey:@"isOnFilesystem"];
+    v5->_neverBeenLocked = [coderCopy decodeBoolForKey:@"neverBeenLocked"];
+    v5->_secureOperationInProgress = [coderCopy decodeBoolForKey:@"secureOperationInProgress"];
+    v5->_secureOperationEliminating = [coderCopy decodeBoolForKey:@"secureOperationEliminating"];
+    v5->_downloadUserInitiated = [coderCopy decodeBoolForKey:@"downloadUserInitiated"];
+    v5->_downloadedNetworkBytes = [coderCopy decodeIntegerForKey:@"downloadedNetworkBytes"];
+    v5->_downloadedFilesystemBytes = [coderCopy decodeIntegerForKey:@"downloadedFilesystemBytes"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"patchedFromBaseSelector"];
     patchedFromBaseSelector = v5->_patchedFromBaseSelector;
     v5->_patchedFromBaseSelector = v31;
 
-    v5->_patchedFromBaseFilesystemBytes = [v4 decodeIntegerForKey:@"patchedFromBaseFilesystemBytes"];
-    v5->_patchingAttempted = [v4 decodeBoolForKey:@"patchingAttempted"];
-    v5->_stagedPriorToAvailable = [v4 decodeBoolForKey:@"stagedPriorToAvailable"];
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagedFromOSVersion"];
+    v5->_patchedFromBaseFilesystemBytes = [coderCopy decodeIntegerForKey:@"patchedFromBaseFilesystemBytes"];
+    v5->_patchingAttempted = [coderCopy decodeBoolForKey:@"patchingAttempted"];
+    v5->_stagedPriorToAvailable = [coderCopy decodeBoolForKey:@"stagedPriorToAvailable"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagedFromOSVersion"];
     stagedFromOSVersion = v5->_stagedFromOSVersion;
     v5->_stagedFromOSVersion = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagedFromBuildVersion"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagedFromBuildVersion"];
     stagedFromBuildVersion = v5->_stagedFromBuildVersion;
     v5->_stagedFromBuildVersion = v35;
 
-    v37 = [v4 decodeObjectOfClasses:v10 forKey:@"patchingAttemptError"];
+    v37 = [coderCopy decodeObjectOfClasses:v10 forKey:@"patchingAttemptError"];
     patchingAttemptError = v5->_patchingAttemptError;
     v5->_patchingAttemptError = v37;
   }
@@ -435,79 +435,79 @@ LABEL_37:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetDescriptor *)self assetType];
-  [v4 encodeObject:v5 forKey:@"assetType"];
+  coderCopy = coder;
+  assetType = [(MADAutoAssetDescriptor *)self assetType];
+  [coderCopy encodeObject:assetType forKey:@"assetType"];
 
-  v6 = [(MADAutoAssetDescriptor *)self assetId];
-  [v4 encodeObject:v6 forKey:@"assetID"];
+  assetId = [(MADAutoAssetDescriptor *)self assetId];
+  [coderCopy encodeObject:assetId forKey:@"assetID"];
 
-  [v4 encodeBool:-[MADAutoAssetDescriptor isMAAutoAsset](self forKey:{"isMAAutoAsset"), @"_IsMAAutoAsset"}];
-  [v4 encodeBool:-[MADAutoAssetDescriptor foundByLookupWithoutAssetVersion](self forKey:{"foundByLookupWithoutAssetVersion"), @"foundByLookupWithoutAssetVersion"}];
-  [v4 encodeBool:-[MADAutoAssetDescriptor foundAsPreInstalled](self forKey:{"foundAsPreInstalled"), @"foundAsPreInstalled"}];
-  [v4 encodeBool:-[MADAutoAssetDescriptor preSoftwareUpdateAssetStaging](self forKey:{"preSoftwareUpdateAssetStaging"), @"_PreSoftwareUpdateAssetStaging"}];
-  [v4 encodeBool:-[MADAutoAssetDescriptor isPatch](self forKey:{"isPatch"), @"isPatch"}];
-  v7 = [(MADAutoAssetDescriptor *)self assetSpecifier];
-  [v4 encodeObject:v7 forKey:@"AssetSpecifier"];
+  [coderCopy encodeBool:-[MADAutoAssetDescriptor isMAAutoAsset](self forKey:{"isMAAutoAsset"), @"_IsMAAutoAsset"}];
+  [coderCopy encodeBool:-[MADAutoAssetDescriptor foundByLookupWithoutAssetVersion](self forKey:{"foundByLookupWithoutAssetVersion"), @"foundByLookupWithoutAssetVersion"}];
+  [coderCopy encodeBool:-[MADAutoAssetDescriptor foundAsPreInstalled](self forKey:{"foundAsPreInstalled"), @"foundAsPreInstalled"}];
+  [coderCopy encodeBool:-[MADAutoAssetDescriptor preSoftwareUpdateAssetStaging](self forKey:{"preSoftwareUpdateAssetStaging"), @"_PreSoftwareUpdateAssetStaging"}];
+  [coderCopy encodeBool:-[MADAutoAssetDescriptor isPatch](self forKey:{"isPatch"), @"isPatch"}];
+  assetSpecifier = [(MADAutoAssetDescriptor *)self assetSpecifier];
+  [coderCopy encodeObject:assetSpecifier forKey:@"AssetSpecifier"];
 
-  v8 = [(MADAutoAssetDescriptor *)self assetVersion];
-  [v4 encodeObject:v8 forKey:@"AssetVersion"];
+  assetVersion = [(MADAutoAssetDescriptor *)self assetVersion];
+  [coderCopy encodeObject:assetVersion forKey:@"AssetVersion"];
 
-  v9 = [(MADAutoAssetDescriptor *)self assetFormat];
-  [v4 encodeObject:v9 forKey:@"AssetFormat"];
+  assetFormat = [(MADAutoAssetDescriptor *)self assetFormat];
+  [coderCopy encodeObject:assetFormat forKey:@"AssetFormat"];
 
-  v10 = [(MADAutoAssetDescriptor *)self build];
-  [v4 encodeObject:v10 forKey:@"Build"];
+  build = [(MADAutoAssetDescriptor *)self build];
+  [coderCopy encodeObject:build forKey:@"Build"];
 
-  v11 = [(MADAutoAssetDescriptor *)self minOSVersion];
-  [v4 encodeObject:v11 forKey:@"_MinOSVersion"];
+  minOSVersion = [(MADAutoAssetDescriptor *)self minOSVersion];
+  [coderCopy encodeObject:minOSVersion forKey:@"_MinOSVersion"];
 
-  v12 = [(MADAutoAssetDescriptor *)self maxOSVersion];
-  [v4 encodeObject:v12 forKey:@"_MaxOSVersion"];
+  maxOSVersion = [(MADAutoAssetDescriptor *)self maxOSVersion];
+  [coderCopy encodeObject:maxOSVersion forKey:@"_MaxOSVersion"];
 
-  v13 = [(MADAutoAssetDescriptor *)self prerequisiteAssetBuilds];
-  [v4 encodeObject:v13 forKey:@"PrerequisiteAssetBuilds"];
+  prerequisiteAssetBuilds = [(MADAutoAssetDescriptor *)self prerequisiteAssetBuilds];
+  [coderCopy encodeObject:prerequisiteAssetBuilds forKey:@"PrerequisiteAssetBuilds"];
 
-  v14 = [(MADAutoAssetDescriptor *)self metadata];
-  [v4 encodeObject:v14 forKey:@"metadata"];
+  metadata = [(MADAutoAssetDescriptor *)self metadata];
+  [coderCopy encodeObject:metadata forKey:@"metadata"];
 
-  [v4 encodeBool:-[MADAutoAssetDescriptor isOnFilesystem](self forKey:{"isOnFilesystem"), @"isOnFilesystem"}];
-  [v4 encodeBool:-[MADAutoAssetDescriptor neverBeenLocked](self forKey:{"neverBeenLocked"), @"neverBeenLocked"}];
-  [v4 encodeBool:-[MADAutoAssetDescriptor secureOperationInProgress](self forKey:{"secureOperationInProgress"), @"secureOperationInProgress"}];
-  [v4 encodeBool:-[MADAutoAssetDescriptor secureOperationEliminating](self forKey:{"secureOperationEliminating"), @"secureOperationEliminating"}];
-  [v4 encodeBool:-[MADAutoAssetDescriptor downloadUserInitiated](self forKey:{"downloadUserInitiated"), @"downloadUserInitiated"}];
-  [v4 encodeInteger:-[MADAutoAssetDescriptor downloadedNetworkBytes](self forKey:{"downloadedNetworkBytes"), @"downloadedNetworkBytes"}];
-  [v4 encodeInteger:-[MADAutoAssetDescriptor downloadedFilesystemBytes](self forKey:{"downloadedFilesystemBytes"), @"downloadedFilesystemBytes"}];
-  v15 = [(MADAutoAssetDescriptor *)self patchedFromBaseSelector];
-  [v4 encodeObject:v15 forKey:@"patchedFromBaseSelector"];
+  [coderCopy encodeBool:-[MADAutoAssetDescriptor isOnFilesystem](self forKey:{"isOnFilesystem"), @"isOnFilesystem"}];
+  [coderCopy encodeBool:-[MADAutoAssetDescriptor neverBeenLocked](self forKey:{"neverBeenLocked"), @"neverBeenLocked"}];
+  [coderCopy encodeBool:-[MADAutoAssetDescriptor secureOperationInProgress](self forKey:{"secureOperationInProgress"), @"secureOperationInProgress"}];
+  [coderCopy encodeBool:-[MADAutoAssetDescriptor secureOperationEliminating](self forKey:{"secureOperationEliminating"), @"secureOperationEliminating"}];
+  [coderCopy encodeBool:-[MADAutoAssetDescriptor downloadUserInitiated](self forKey:{"downloadUserInitiated"), @"downloadUserInitiated"}];
+  [coderCopy encodeInteger:-[MADAutoAssetDescriptor downloadedNetworkBytes](self forKey:{"downloadedNetworkBytes"), @"downloadedNetworkBytes"}];
+  [coderCopy encodeInteger:-[MADAutoAssetDescriptor downloadedFilesystemBytes](self forKey:{"downloadedFilesystemBytes"), @"downloadedFilesystemBytes"}];
+  patchedFromBaseSelector = [(MADAutoAssetDescriptor *)self patchedFromBaseSelector];
+  [coderCopy encodeObject:patchedFromBaseSelector forKey:@"patchedFromBaseSelector"];
 
-  [v4 encodeInteger:-[MADAutoAssetDescriptor patchedFromBaseFilesystemBytes](self forKey:{"patchedFromBaseFilesystemBytes"), @"patchedFromBaseFilesystemBytes"}];
-  [v4 encodeBool:-[MADAutoAssetDescriptor patchingAttempted](self forKey:{"patchingAttempted"), @"patchingAttempted"}];
-  [v4 encodeBool:-[MADAutoAssetDescriptor stagedPriorToAvailable](self forKey:{"stagedPriorToAvailable"), @"stagedPriorToAvailable"}];
-  v16 = [(MADAutoAssetDescriptor *)self stagedFromOSVersion];
-  [v4 encodeObject:v16 forKey:@"stagedFromOSVersion"];
+  [coderCopy encodeInteger:-[MADAutoAssetDescriptor patchedFromBaseFilesystemBytes](self forKey:{"patchedFromBaseFilesystemBytes"), @"patchedFromBaseFilesystemBytes"}];
+  [coderCopy encodeBool:-[MADAutoAssetDescriptor patchingAttempted](self forKey:{"patchingAttempted"), @"patchingAttempted"}];
+  [coderCopy encodeBool:-[MADAutoAssetDescriptor stagedPriorToAvailable](self forKey:{"stagedPriorToAvailable"), @"stagedPriorToAvailable"}];
+  stagedFromOSVersion = [(MADAutoAssetDescriptor *)self stagedFromOSVersion];
+  [coderCopy encodeObject:stagedFromOSVersion forKey:@"stagedFromOSVersion"];
 
-  v17 = [(MADAutoAssetDescriptor *)self stagedFromBuildVersion];
-  [v4 encodeObject:v17 forKey:@"stagedFromBuildVersion"];
+  stagedFromBuildVersion = [(MADAutoAssetDescriptor *)self stagedFromBuildVersion];
+  [coderCopy encodeObject:stagedFromBuildVersion forKey:@"stagedFromBuildVersion"];
 
-  v18 = [(MADAutoAssetDescriptor *)self patchingAttemptError];
-  [v4 encodeObject:v18 forKey:@"patchingAttemptError"];
+  patchingAttemptError = [(MADAutoAssetDescriptor *)self patchingAttemptError];
+  [coderCopy encodeObject:patchingAttemptError forKey:@"patchingAttemptError"];
 }
 
 - (id)description
 {
-  v3 = [(MADAutoAssetDescriptor *)self prerequisiteAssetBuilds];
+  prerequisiteAssetBuilds = [(MADAutoAssetDescriptor *)self prerequisiteAssetBuilds];
 
-  if (v3)
+  if (prerequisiteAssetBuilds)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = [(MADAutoAssetDescriptor *)self prerequisiteAssetBuilds];
-    v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    prerequisiteAssetBuilds2 = [(MADAutoAssetDescriptor *)self prerequisiteAssetBuilds];
+    v5 = [prerequisiteAssetBuilds2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v5)
     {
       v6 = v5;
@@ -519,7 +519,7 @@ LABEL_37:
         {
           if (*v18 != v8)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(prerequisiteAssetBuilds2);
           }
 
           v10 = *(*(&v17 + 1) + 8 * i);
@@ -536,7 +536,7 @@ LABEL_37:
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v6 = [prerequisiteAssetBuilds2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v6);
@@ -553,21 +553,21 @@ LABEL_37:
     v7 = @"NONE";
   }
 
-  v12 = [(MADAutoAssetDescriptor *)self summary];
-  v13 = [(MADAutoAssetDescriptor *)self metadata];
-  v14 = [v13 safeSummary];
-  v15 = [NSString stringWithFormat:@"[AutoAsset(%@)>>>\n[patch] prerequisistedBuilds: %@\n[metadata]       rawMetadata: %@\n<<<]", v12, v7, v14];
+  summary = [(MADAutoAssetDescriptor *)self summary];
+  metadata = [(MADAutoAssetDescriptor *)self metadata];
+  safeSummary = [metadata safeSummary];
+  v15 = [NSString stringWithFormat:@"[AutoAsset(%@)>>>\n[patch] prerequisistedBuilds: %@\n[metadata]       rawMetadata: %@\n<<<]", summary, v7, safeSummary];
 
   return v15;
 }
 
 - (id)summary
 {
-  v3 = [(MADAutoAssetDescriptor *)self assetType];
-  v4 = [(MADAutoAssetDescriptor *)self assetSpecifier];
-  v5 = [(MADAutoAssetDescriptor *)self assetVersion];
-  v6 = [(MADAutoAssetDescriptor *)self newSummaryWithoutSelector];
-  v7 = [NSString stringWithFormat:@"[assetType:%@|specifier:%@|version:%@|%@]", v3, v4, v5, v6];
+  assetType = [(MADAutoAssetDescriptor *)self assetType];
+  assetSpecifier = [(MADAutoAssetDescriptor *)self assetSpecifier];
+  assetVersion = [(MADAutoAssetDescriptor *)self assetVersion];
+  newSummaryWithoutSelector = [(MADAutoAssetDescriptor *)self newSummaryWithoutSelector];
+  v7 = [NSString stringWithFormat:@"[assetType:%@|specifier:%@|version:%@|%@]", assetType, assetSpecifier, assetVersion, newSummaryWithoutSelector];
 
   return v7;
 }
@@ -575,8 +575,8 @@ LABEL_37:
 - (id)newSummaryWithoutSelector
 {
   v46 = [NSString alloc];
-  v3 = [(MADAutoAssetDescriptor *)self assetId];
-  v4 = @"N";
+  assetId = [(MADAutoAssetDescriptor *)self assetId];
+  stagedFromOSVersion2 = @"N";
   if ([(MADAutoAssetDescriptor *)self foundByLookupWithoutAssetVersion])
   {
     v5 = @"Y";
@@ -599,8 +599,8 @@ LABEL_37:
   }
 
   v42 = v6;
-  v48 = [(MADAutoAssetDescriptor *)self metadata];
-  if (v48)
+  metadata = [(MADAutoAssetDescriptor *)self metadata];
+  if (metadata)
   {
     v7 = @"Y";
   }
@@ -666,10 +666,10 @@ LABEL_37:
   }
 
   v35 = v12;
-  v13 = [(MADAutoAssetDescriptor *)self assetFormat];
-  v14 = [(MADAutoAssetDescriptor *)self build];
-  v44 = [(MADAutoAssetDescriptor *)self minOSVersion];
-  v15 = [(MADAutoAssetDescriptor *)self maxOSVersion];
+  assetFormat = [(MADAutoAssetDescriptor *)self assetFormat];
+  build = [(MADAutoAssetDescriptor *)self build];
+  minOSVersion = [(MADAutoAssetDescriptor *)self minOSVersion];
+  maxOSVersion = [(MADAutoAssetDescriptor *)self maxOSVersion];
   if ([(MADAutoAssetDescriptor *)self preSoftwareUpdateAssetStaging])
   {
     v16 = @"Y";
@@ -692,22 +692,22 @@ LABEL_37:
   }
 
   v33 = v17;
-  v31 = [(MADAutoAssetDescriptor *)self downloadedNetworkBytes];
-  v30 = [(MADAutoAssetDescriptor *)self downloadedFilesystemBytes];
-  v38 = [(MADAutoAssetDescriptor *)self patchedFromBaseSelector];
-  v45 = v14;
-  if (v38)
+  downloadedNetworkBytes = [(MADAutoAssetDescriptor *)self downloadedNetworkBytes];
+  downloadedFilesystemBytes = [(MADAutoAssetDescriptor *)self downloadedFilesystemBytes];
+  patchedFromBaseSelector = [(MADAutoAssetDescriptor *)self patchedFromBaseSelector];
+  v45 = build;
+  if (patchedFromBaseSelector)
   {
-    v27 = [(MADAutoAssetDescriptor *)self patchedFromBaseSelector];
-    v49 = [v27 summary];
+    patchedFromBaseSelector2 = [(MADAutoAssetDescriptor *)self patchedFromBaseSelector];
+    summary = [patchedFromBaseSelector2 summary];
   }
 
   else
   {
-    v49 = &stru_4BD3F0;
+    summary = &stru_4BD3F0;
   }
 
-  v29 = [(MADAutoAssetDescriptor *)self patchedFromBaseFilesystemBytes];
+  patchedFromBaseFilesystemBytes = [(MADAutoAssetDescriptor *)self patchedFromBaseFilesystemBytes];
   if ([(MADAutoAssetDescriptor *)self patchingAttempted])
   {
     v18 = @"Y";
@@ -719,7 +719,7 @@ LABEL_37:
   }
 
   v28 = v18;
-  v32 = [(MADAutoAssetDescriptor *)self patchingAttemptError];
+  patchingAttemptError = [(MADAutoAssetDescriptor *)self patchingAttemptError];
   v50 = [MADAutoAssetClientRequest responseErrorSummary:?];
   if ([(MADAutoAssetDescriptor *)self isPreSUStagingRequired])
   {
@@ -741,22 +741,22 @@ LABEL_37:
     v20 = @"N";
   }
 
-  v21 = [(MADAutoAssetDescriptor *)self stagedFromOSVersion];
-  v47 = v3;
-  if (v21)
+  stagedFromOSVersion = [(MADAutoAssetDescriptor *)self stagedFromOSVersion];
+  v47 = assetId;
+  if (stagedFromOSVersion)
   {
-    v4 = [(MADAutoAssetDescriptor *)self stagedFromOSVersion];
+    stagedFromOSVersion2 = [(MADAutoAssetDescriptor *)self stagedFromOSVersion];
   }
 
-  v22 = [(MADAutoAssetDescriptor *)self stagedFromBuildVersion];
-  if (v22)
+  stagedFromBuildVersion = [(MADAutoAssetDescriptor *)self stagedFromBuildVersion];
+  if (stagedFromBuildVersion)
   {
-    v23 = [(MADAutoAssetDescriptor *)self stagedFromBuildVersion];
+    stagedFromBuildVersion2 = [(MADAutoAssetDescriptor *)self stagedFromBuildVersion];
   }
 
   else
   {
-    v23 = @"N";
+    stagedFromBuildVersion2 = @"N";
   }
 
   if ([(MADAutoAssetDescriptor *)self isBlankEntry])
@@ -769,16 +769,16 @@ LABEL_37:
     v24 = @"N";
   }
 
-  v25 = [v46 initWithFormat:@"ID:%@|lookupWithoutAssetVersion:%@|preInstalled:%@|metadata:%@|patch:%@|filesystem:%@|neverBeenLocked:%@|(secureOperation)inProgress:%@, eliminating:%@|format:%@|build:%@|[OS]min:%@, max:%@|preStaging:%@|(downloaded)user:%@, network:%ld, filesystem:%ld|(patched)base:%@, baseBytes:%ld, attempted:%@, error:%@|(staged)required:%@, prior:%@, fromOSVersion:%@, fromBuild:%@|isBlankEntry:%@", v47, v43, v42, v41, v40, v39, v37, v36, v35, v13, v45, v44, v15, v34, v33, v31, v30, v49, v29, v28, v50, v19, v20, v4, v23, v24];
-  if (v22)
+  v25 = [v46 initWithFormat:@"ID:%@|lookupWithoutAssetVersion:%@|preInstalled:%@|metadata:%@|patch:%@|filesystem:%@|neverBeenLocked:%@|(secureOperation)inProgress:%@, eliminating:%@|format:%@|build:%@|[OS]min:%@, max:%@|preStaging:%@|(downloaded)user:%@, network:%ld, filesystem:%ld|(patched)base:%@, baseBytes:%ld, attempted:%@, error:%@|(staged)required:%@, prior:%@, fromOSVersion:%@, fromBuild:%@|isBlankEntry:%@", v47, v43, v42, v41, v40, v39, v37, v36, v35, assetFormat, v45, minOSVersion, maxOSVersion, v34, v33, downloadedNetworkBytes, downloadedFilesystemBytes, summary, patchedFromBaseFilesystemBytes, v28, v50, v19, v20, stagedFromOSVersion2, stagedFromBuildVersion2, v24];
+  if (stagedFromBuildVersion)
   {
   }
 
-  if (v21)
+  if (stagedFromOSVersion)
   {
   }
 
-  if (v38)
+  if (patchedFromBaseSelector)
   {
   }
 
@@ -787,29 +787,29 @@ LABEL_37:
 
 - (BOOL)isBlankEntry
 {
-  v3 = [(MADAutoAssetDescriptor *)self assetType];
-  if ([SUCore stringIsEqual:v3 to:@"Empty"])
+  assetType = [(MADAutoAssetDescriptor *)self assetType];
+  if ([SUCore stringIsEqual:assetType to:@"Empty"])
   {
-    v4 = [(MADAutoAssetDescriptor *)self assetId];
-    if ([SUCore stringIsEqual:v4 to:@"Empty"])
+    assetId = [(MADAutoAssetDescriptor *)self assetId];
+    if ([SUCore stringIsEqual:assetId to:@"Empty"])
     {
-      v5 = [(MADAutoAssetDescriptor *)self assetSpecifier];
-      if ([SUCore stringIsEqual:v5 to:@"Empty"])
+      assetSpecifier = [(MADAutoAssetDescriptor *)self assetSpecifier];
+      if ([SUCore stringIsEqual:assetSpecifier to:@"Empty"])
       {
-        v6 = [(MADAutoAssetDescriptor *)self assetVersion];
-        if ([SUCore stringIsEqual:v6 to:@"Empty"])
+        assetVersion = [(MADAutoAssetDescriptor *)self assetVersion];
+        if ([SUCore stringIsEqual:assetVersion to:@"Empty"])
         {
-          v7 = [(MADAutoAssetDescriptor *)self assetFormat];
-          if ([SUCore stringIsEqual:v7 to:@"Empty"])
+          assetFormat = [(MADAutoAssetDescriptor *)self assetFormat];
+          if ([SUCore stringIsEqual:assetFormat to:@"Empty"])
           {
-            v8 = [(MADAutoAssetDescriptor *)self build];
-            if ([SUCore stringIsEqual:v8 to:@"Empty"])
+            build = [(MADAutoAssetDescriptor *)self build];
+            if ([SUCore stringIsEqual:build to:@"Empty"])
             {
-              v9 = [(MADAutoAssetDescriptor *)self minOSVersion];
-              if ([SUCore stringIsEqual:v9 to:@"Empty"])
+              minOSVersion = [(MADAutoAssetDescriptor *)self minOSVersion];
+              if ([SUCore stringIsEqual:minOSVersion to:@"Empty"])
               {
-                v10 = [(MADAutoAssetDescriptor *)self maxOSVersion];
-                v11 = [SUCore stringIsEqual:v10 to:@"Empty"];
+                maxOSVersion = [(MADAutoAssetDescriptor *)self maxOSVersion];
+                v11 = [SUCore stringIsEqual:maxOSVersion to:@"Empty"];
               }
 
               else
@@ -856,9 +856,9 @@ LABEL_37:
   return v11;
 }
 
-+ (BOOL)doesMetatadaIndicateEmptyEntry:(id)a3
++ (BOOL)doesMetatadaIndicateEmptyEntry:(id)entry
 {
-  v3 = [a3 safeStringForKey:@"__Empty"];
+  v3 = [entry safeStringForKey:@"__Empty"];
   if (v3)
   {
     v4 = [SUCore stringIsEqual:v3 to:@"Empty"];
@@ -872,20 +872,20 @@ LABEL_37:
   return v4;
 }
 
-- (BOOL)isEqualSelector:(id)a3
+- (BOOL)isEqualSelector:(id)selector
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetDescriptor *)self assetType];
-  v6 = [v4 assetType];
-  if ([SUCore stringIsEqual:v5 to:v6])
+  selectorCopy = selector;
+  assetType = [(MADAutoAssetDescriptor *)self assetType];
+  assetType2 = [selectorCopy assetType];
+  if ([SUCore stringIsEqual:assetType to:assetType2])
   {
-    v7 = [(MADAutoAssetDescriptor *)self assetSpecifier];
-    v8 = [v4 assetSpecifier];
-    if ([SUCore stringIsEqual:v7 to:v8])
+    assetSpecifier = [(MADAutoAssetDescriptor *)self assetSpecifier];
+    assetSpecifier2 = [selectorCopy assetSpecifier];
+    if ([SUCore stringIsEqual:assetSpecifier to:assetSpecifier2])
     {
-      v9 = [(MADAutoAssetDescriptor *)self assetVersion];
-      v10 = [v4 assetVersion];
-      v11 = [SUCore stringIsEqual:v9 to:v10];
+      assetVersion = [(MADAutoAssetDescriptor *)self assetVersion];
+      assetVersion2 = [selectorCopy assetVersion];
+      v11 = [SUCore stringIsEqual:assetVersion to:assetVersion2];
     }
 
     else
@@ -904,29 +904,29 @@ LABEL_37:
 
 - (BOOL)isRamped
 {
-  v2 = [(MADAutoAssetDescriptor *)self metadata];
-  v3 = [v2 safeBooleanForKey:@"Ramp"];
+  metadata = [(MADAutoAssetDescriptor *)self metadata];
+  v3 = [metadata safeBooleanForKey:@"Ramp"];
 
   return v3;
 }
 
 - (BOOL)isPreSUStagingRequired
 {
-  v2 = [(MADAutoAssetDescriptor *)self metadata];
-  v3 = [v2 safeStringForKey:@"_PreSoftwareUpdateAssetStagingPolicy"];
+  metadata = [(MADAutoAssetDescriptor *)self metadata];
+  v3 = [metadata safeStringForKey:@"_PreSoftwareUpdateAssetStagingPolicy"];
 
-  LOBYTE(v2) = [SUCore stringIsEqual:v3 to:@"Required"];
-  return v2;
+  LOBYTE(metadata) = [SUCore stringIsEqual:v3 to:@"Required"];
+  return metadata;
 }
 
 - (BOOL)existsOnFilesystem
 {
-  v2 = [(MADAutoAssetDescriptor *)self localContentURLOfAssetDescriptor];
-  if (v2)
+  localContentURLOfAssetDescriptor = [(MADAutoAssetDescriptor *)self localContentURLOfAssetDescriptor];
+  if (localContentURLOfAssetDescriptor)
   {
     v3 = +[NSFileManager defaultManager];
-    v4 = [v2 path];
-    v5 = [v3 fileExistsAtPath:v4];
+    path = [localContentURLOfAssetDescriptor path];
+    v5 = [v3 fileExistsAtPath:path];
   }
 
   else
@@ -937,16 +937,16 @@ LABEL_37:
   return v5;
 }
 
-- (BOOL)wasBuiltForOSBuild:(id)a3
+- (BOOL)wasBuiltForOSBuild:(id)build
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetDescriptor *)self metadata];
-  v6 = [v5 safeStringForKey:@"Build"];
+  buildCopy = build;
+  metadata = [(MADAutoAssetDescriptor *)self metadata];
+  v6 = [metadata safeStringForKey:@"Build"];
 
   v7 = 0;
-  if (v4 && v6)
+  if (buildCopy && v6)
   {
-    v7 = [SUCore stringIsEqual:v6 to:v4];
+    v7 = [SUCore stringIsEqual:v6 to:buildCopy];
   }
 
   return v7;
@@ -954,17 +954,17 @@ LABEL_37:
 
 - (id)assetBuild
 {
-  v2 = [(MADAutoAssetDescriptor *)self metadata];
-  v3 = [v2 safeStringForKey:@"Build"];
+  metadata = [(MADAutoAssetDescriptor *)self metadata];
+  v3 = [metadata safeStringForKey:@"Build"];
 
   return v3;
 }
 
 - (id)typeAndSpecifierKey
 {
-  v3 = [(MADAutoAssetDescriptor *)self assetType];
-  v4 = [(MADAutoAssetDescriptor *)self assetSpecifier];
-  v5 = [MADAutoAssetDescriptor typeAndSpecifierKeyForAssetType:v3 andAssetSpecifier:v4];
+  assetType = [(MADAutoAssetDescriptor *)self assetType];
+  assetSpecifier = [(MADAutoAssetDescriptor *)self assetSpecifier];
+  v5 = [MADAutoAssetDescriptor typeAndSpecifierKeyForAssetType:assetType andAssetSpecifier:assetSpecifier];
 
   return v5;
 }
@@ -994,21 +994,21 @@ LABEL_37:
 
 - (id)selectorName
 {
-  v3 = [(MADAutoAssetDescriptor *)self assetVersion];
+  assetVersion = [(MADAutoAssetDescriptor *)self assetVersion];
 
   v4 = [NSString alloc];
-  v5 = [(MADAutoAssetDescriptor *)self assetType];
-  v6 = [(MADAutoAssetDescriptor *)self assetSpecifier];
-  v7 = v6;
-  if (v3)
+  assetType = [(MADAutoAssetDescriptor *)self assetType];
+  assetSpecifier = [(MADAutoAssetDescriptor *)self assetSpecifier];
+  v7 = assetSpecifier;
+  if (assetVersion)
   {
-    v8 = [(MADAutoAssetDescriptor *)self assetVersion];
-    v9 = [v4 initWithFormat:@"%@^%@^%@", v5, v7, v8];
+    assetVersion2 = [(MADAutoAssetDescriptor *)self assetVersion];
+    v9 = [v4 initWithFormat:@"%@^%@^%@", assetType, v7, assetVersion2];
   }
 
   else
   {
-    v9 = [v4 initWithFormat:@"%@^%@", v5, v6];
+    v9 = [v4 initWithFormat:@"%@^%@", assetType, assetSpecifier];
   }
 
   return v9;
@@ -1016,33 +1016,33 @@ LABEL_37:
 
 - (id)selectorNameWithoutAssetType
 {
-  v3 = [(MADAutoAssetDescriptor *)self assetVersion];
+  assetVersion = [(MADAutoAssetDescriptor *)self assetVersion];
 
-  if (v3)
+  if (assetVersion)
   {
     v4 = [NSString alloc];
-    v5 = [(MADAutoAssetDescriptor *)self assetSpecifier];
-    v6 = [(MADAutoAssetDescriptor *)self assetVersion];
-    v7 = [v4 initWithFormat:@"%@^%@", v5, v6];
+    assetSpecifier = [(MADAutoAssetDescriptor *)self assetSpecifier];
+    assetVersion2 = [(MADAutoAssetDescriptor *)self assetVersion];
+    assetSpecifier2 = [v4 initWithFormat:@"%@^%@", assetSpecifier, assetVersion2];
   }
 
   else
   {
-    v7 = [(MADAutoAssetDescriptor *)self assetSpecifier];
+    assetSpecifier2 = [(MADAutoAssetDescriptor *)self assetSpecifier];
   }
 
-  return v7;
+  return assetSpecifier2;
 }
 
-+ (id)typeAndSpecifierKeyForAssetType:(id)a3 andAssetSpecifier:(id)a4
++ (id)typeAndSpecifierKeyForAssetType:(id)type andAssetSpecifier:(id)specifier
 {
-  v5 = a4;
-  v6 = a3;
+  specifierCopy = specifier;
+  typeCopy = type;
   v7 = [NSString alloc];
   v8 = @"Empty";
-  if (v6)
+  if (typeCopy)
   {
-    v9 = v6;
+    v9 = typeCopy;
   }
 
   else
@@ -1050,9 +1050,9 @@ LABEL_37:
     v9 = @"Empty";
   }
 
-  if (v5)
+  if (specifierCopy)
   {
-    v8 = v5;
+    v8 = specifierCopy;
   }
 
   v10 = [v7 initWithFormat:@"%@|%@", v9, v8];
@@ -1060,14 +1060,14 @@ LABEL_37:
   return v10;
 }
 
-+ (int64_t)totalFilesystemSpaceForAutoAssetDescriptors:(id)a3
++ (int64_t)totalFilesystemSpaceForAutoAssetDescriptors:(id)descriptors
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [a3 allValues];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [descriptors allValues];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1079,13 +1079,13 @@ LABEL_37:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v6 += [*(*(&v10 + 1) + 8 * i) totalFilesystemSpace];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -1101,17 +1101,17 @@ LABEL_37:
 
 - (id)localContentURLOfAssetDescriptor
 {
-  v3 = [(MADAutoAssetDescriptor *)self assetType];
-  v4 = [(MADAutoAssetDescriptor *)self assetId];
-  v5 = getAutoLocalUrlFromTypeAndIdWithPurpose(v3, v4, 2, @"auto");
+  assetType = [(MADAutoAssetDescriptor *)self assetType];
+  assetId = [(MADAutoAssetDescriptor *)self assetId];
+  v5 = getAutoLocalUrlFromTypeAndIdWithPurpose(assetType, assetId, 2, @"auto");
 
   return v5;
 }
 
-+ (BOOL)isMorePreferredAssetFormat:(id)a3 comparedTo:(id)a4
++ (BOOL)isMorePreferredAssetFormat:(id)format comparedTo:(id)to
 {
-  v5 = a3;
-  v6 = a4;
+  formatCopy = format;
+  toCopy = to;
   supportedAssetFormatsArray();
   v16 = 0u;
   v17 = 0u;
@@ -1132,8 +1132,8 @@ LABEL_37:
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [SUCore stringIsEqual:v6 to:v12, v16];
-        if ((v13 & 1) != 0 || ([SUCore stringIsEqual:v5 to:v12]& 1) != 0)
+        v13 = [SUCore stringIsEqual:toCopy to:v12, v16];
+        if ((v13 & 1) != 0 || ([SUCore stringIsEqual:formatCopy to:v12]& 1) != 0)
         {
           v14 = v13 ^ 1;
           goto LABEL_13;

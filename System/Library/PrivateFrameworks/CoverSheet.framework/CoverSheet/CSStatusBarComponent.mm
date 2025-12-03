@@ -1,7 +1,7 @@
 @interface CSStatusBarComponent
 - (CSStatusBarComponent)init;
-- (void)setFakeStatusBar:(int64_t)a3;
-- (void)setFakeStatusBarLevel:(id)a3;
+- (void)setFakeStatusBar:(int64_t)bar;
+- (void)setFakeStatusBarLevel:(id)level;
 @end
 
 @implementation CSStatusBarComponent
@@ -21,25 +21,25 @@
   return v3;
 }
 
-- (void)setFakeStatusBar:(int64_t)a3
+- (void)setFakeStatusBar:(int64_t)bar
 {
-  if ([(CSComponent *)self flag]!= a3)
+  if ([(CSComponent *)self flag]!= bar)
   {
 
-    [(CSComponent *)self setFlag:a3];
+    [(CSComponent *)self setFlag:bar];
   }
 }
 
-- (void)setFakeStatusBarLevel:(id)a3
+- (void)setFakeStatusBarLevel:(id)level
 {
-  v6 = a3;
-  v4 = [(CSComponent *)self value];
+  levelCopy = level;
+  value = [(CSComponent *)self value];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = levelCopy;
+  if (value != levelCopy)
   {
-    [(CSComponent *)self setValue:v6];
-    v5 = v6;
+    [(CSComponent *)self setValue:levelCopy];
+    v5 = levelCopy;
   }
 }
 

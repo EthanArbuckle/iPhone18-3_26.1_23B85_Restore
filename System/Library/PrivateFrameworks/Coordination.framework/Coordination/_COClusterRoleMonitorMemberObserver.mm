@@ -1,30 +1,30 @@
 @interface _COClusterRoleMonitorMemberObserver
-- (_COClusterRoleMonitorMemberObserver)initWithMember:(id)a3 inCluster:(id)a4 queue:(id)a5 block:(id)a6;
+- (_COClusterRoleMonitorMemberObserver)initWithMember:(id)member inCluster:(id)cluster queue:(id)queue block:(id)block;
 - (id)description;
-- (void)notify:(id)a3;
+- (void)notify:(id)notify;
 @end
 
 @implementation _COClusterRoleMonitorMemberObserver
 
-- (_COClusterRoleMonitorMemberObserver)initWithMember:(id)a3 inCluster:(id)a4 queue:(id)a5 block:(id)a6
+- (_COClusterRoleMonitorMemberObserver)initWithMember:(id)member inCluster:(id)cluster queue:(id)queue block:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  memberCopy = member;
+  clusterCopy = cluster;
+  queueCopy = queue;
+  blockCopy = block;
   v23.receiver = self;
   v23.super_class = _COClusterRoleMonitorMemberObserver;
   v15 = [(_COClusterRoleMonitorMemberObserver *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_member, a3);
-    v17 = [v12 copy];
+    objc_storeStrong(&v15->_member, member);
+    v17 = [clusterCopy copy];
     cluster = v16->_cluster;
     v16->_cluster = v17;
 
-    objc_storeStrong(&v16->_queue, a5);
-    v19 = [v14 copy];
+    objc_storeStrong(&v16->_queue, queue);
+    v19 = [blockCopy copy];
     block = v16->_block;
     v16->_block = v19;
 
@@ -40,19 +40,19 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_COClusterRoleMonitorMemberObserver *)self member];
-  v7 = [(_COClusterRoleMonitorMemberObserver *)self cluster];
-  v8 = [v3 stringWithFormat:@"<%@: %p, member = %@, cluster = %@>", v5, self, v6, v7];
+  member = [(_COClusterRoleMonitorMemberObserver *)self member];
+  cluster = [(_COClusterRoleMonitorMemberObserver *)self cluster];
+  v8 = [v3 stringWithFormat:@"<%@: %p, member = %@, cluster = %@>", v5, self, member, cluster];
 
   return v8;
 }
 
-- (void)notify:(id)a3
+- (void)notify:(id)notify
 {
-  v4 = a3;
-  v5 = [(_COClusterRoleMonitorMemberObserver *)self lastValue];
+  notifyCopy = notify;
+  lastValue = [(_COClusterRoleMonitorMemberObserver *)self lastValue];
 
-  if (!v5)
+  if (!lastValue)
   {
     v8 = COLogForCategory(2);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -63,8 +63,8 @@
     goto LABEL_10;
   }
 
-  v6 = [(_COClusterRoleMonitorMemberObserver *)self lastValue];
-  v7 = [v4 isEqual:v6];
+  lastValue2 = [(_COClusterRoleMonitorMemberObserver *)self lastValue];
+  v7 = [notifyCopy isEqual:lastValue2];
 
   v8 = COLogForCategory(2);
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -77,15 +77,15 @@
 
 LABEL_10:
 
-    [(_COClusterRoleMonitorMemberObserver *)self setLastValue:v4];
-    v10 = [(_COClusterRoleMonitorMemberObserver *)self queue];
+    [(_COClusterRoleMonitorMemberObserver *)self setLastValue:notifyCopy];
+    queue = [(_COClusterRoleMonitorMemberObserver *)self queue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __46___COClusterRoleMonitorMemberObserver_notify___block_invoke;
     v11[3] = &unk_278E12368;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v10, v11);
+    v12 = notifyCopy;
+    dispatch_async(queue, v11);
 
     goto LABEL_11;
   }

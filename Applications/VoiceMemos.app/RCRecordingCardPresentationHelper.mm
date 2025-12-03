@@ -1,33 +1,33 @@
 @interface RCRecordingCardPresentationHelper
 - (UISheetPresentationController)sheetPresentationController;
 - (_TtC10VoiceMemos33RCRecordingCardPresentationHelper)init;
-- (_TtC10VoiceMemos33RCRecordingCardPresentationHelper)initWithSplitViewController:(id)a3 browseFoldersViewController:(id)a4 playbackViewController:(id)a5;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (void)dismissCardWithCompletion:(id)a3;
-- (void)presentCardFrom:(id)a3 isEditMode:(BOOL)a4 completion:(id)a5;
-- (void)recordingView:(id)a3 didUpdateViewHeight:(double)a4;
+- (_TtC10VoiceMemos33RCRecordingCardPresentationHelper)initWithSplitViewController:(id)controller browseFoldersViewController:(id)viewController playbackViewController:(id)playbackViewController;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (void)dismissCardWithCompletion:(id)completion;
+- (void)presentCardFrom:(id)from isEditMode:(BOOL)mode completion:(id)completion;
+- (void)recordingView:(id)view didUpdateViewHeight:(double)height;
 - (void)restyleRecordingCardSheetPresentationController;
 - (void)selectLargeDetent;
-- (void)setPresentedCardViewController:(id)a3;
-- (void)setPresentedViewController:(id)a3;
+- (void)setPresentedCardViewController:(id)controller;
+- (void)setPresentedViewController:(id)controller;
 - (void)updateSelectedDetent;
 @end
 
 @implementation RCRecordingCardPresentationHelper
 
-- (void)setPresentedCardViewController:(id)a3
+- (void)setPresentedCardViewController:(id)controller
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC10VoiceMemos33RCRecordingCardPresentationHelper_presentedCardViewController);
-  *(&self->super.isa + OBJC_IVAR____TtC10VoiceMemos33RCRecordingCardPresentationHelper_presentedCardViewController) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC10VoiceMemos33RCRecordingCardPresentationHelper_presentedCardViewController) = controller;
+  controllerCopy = controller;
 }
 
-- (void)setPresentedViewController:(id)a3
+- (void)setPresentedViewController:(id)controller
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC10VoiceMemos33RCRecordingCardPresentationHelper_presentedViewController);
-  *(&self->super.isa + OBJC_IVAR____TtC10VoiceMemos33RCRecordingCardPresentationHelper_presentedViewController) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC10VoiceMemos33RCRecordingCardPresentationHelper_presentedViewController) = controller;
+  controllerCopy = controller;
 }
 
 - (UISheetPresentationController)sheetPresentationController
@@ -38,9 +38,9 @@
     goto LABEL_5;
   }
 
-  v3 = self;
-  v4 = [v2 presentationController];
-  if (!v4 || (v5 = v4, objc_opt_self(), v6 = swift_dynamicCastObjCClass(), v3, v7 = v6, v3 = v5, !v6))
+  selfCopy = self;
+  presentationController = [v2 presentationController];
+  if (!presentationController || (v5 = presentationController, objc_opt_self(), v6 = swift_dynamicCastObjCClass(), selfCopy, v7 = v6, selfCopy = v5, !v6))
   {
 
 LABEL_5:
@@ -50,17 +50,17 @@ LABEL_5:
   return v7;
 }
 
-- (_TtC10VoiceMemos33RCRecordingCardPresentationHelper)initWithSplitViewController:(id)a3 browseFoldersViewController:(id)a4 playbackViewController:(id)a5
+- (_TtC10VoiceMemos33RCRecordingCardPresentationHelper)initWithSplitViewController:(id)controller browseFoldersViewController:(id)viewController playbackViewController:(id)playbackViewController
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  return sub_100157D4C(v7, v8, a5);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  playbackViewControllerCopy = playbackViewController;
+  return sub_100157D4C(controllerCopy, viewControllerCopy, playbackViewController);
 }
 
-- (void)presentCardFrom:(id)a3 isEditMode:(BOOL)a4 completion:(id)a5
+- (void)presentCardFrom:(id)from isEditMode:(BOOL)mode completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -73,15 +73,15 @@ LABEL_5:
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = self;
-  sub_100157E78(v10, a4, v8, v9);
+  fromCopy = from;
+  selfCopy = self;
+  sub_100157E78(fromCopy, mode, v8, v9);
   sub_1000338B4(v8);
 }
 
-- (void)dismissCardWithCompletion:(id)a3
+- (void)dismissCardWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -96,51 +96,51 @@ LABEL_5:
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_100158554(v7, v6);
   sub_1000338B4(v7);
 }
 
 - (void)restyleRecordingCardSheetPresentationController
 {
-  v2 = self;
+  selfCopy = self;
   sub_100158864();
 }
 
 - (void)updateSelectedDetent
 {
-  v2 = self;
+  selfCopy = self;
   sub_100158994();
 }
 
 - (void)selectLargeDetent
 {
-  v2 = self;
+  selfCopy = self;
   sub_100158ACC();
 }
 
-- (void)recordingView:(id)a3 didUpdateViewHeight:(double)a4
+- (void)recordingView:(id)view didUpdateViewHeight:(double)height
 {
-  v5 = a3;
-  v6 = self;
-  sub_10015AEB0(v5);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10015AEB0(viewCopy);
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = sub_10015A554(v9, a3);
+  controllerCopy = controller;
+  presentingControllerCopy = presentingController;
+  selfCopy = self;
+  v11 = sub_10015A554(presentingControllerCopy, controller);
 
   return v11;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10015A554(v4, 0);
+  controllerCopy = controller;
+  selfCopy = self;
+  v6 = sub_10015A554(controllerCopy, 0);
 
   return v6;
 }

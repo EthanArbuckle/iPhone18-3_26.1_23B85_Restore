@@ -1,28 +1,28 @@
 @interface CKBadgeView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKBadgeView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKBadgeView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setValue:(unint64_t)a3;
+- (void)setValue:(unint64_t)value;
 @end
 
 @implementation CKBadgeView
 
-- (CKBadgeView)initWithFrame:(CGRect)a3
+- (CKBadgeView)initWithFrame:(CGRect)frame
 {
   v26[1] = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = CKBadgeView;
-  v3 = [(CKBadgeView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKBadgeView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CKBadgeView *)v3 layer];
-    [v5 setCornerRadius:7.0];
+    layer = [(CKBadgeView *)v3 layer];
+    [layer setCornerRadius:7.0];
 
-    v6 = [MEMORY[0x1E69DC888] systemRedColor];
-    v7 = [v6 CGColor];
-    v8 = [(CKBadgeView *)v4 layer];
-    [v8 setBackgroundColor:v7];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+    cGColor = [systemRedColor CGColor];
+    layer2 = [(CKBadgeView *)v4 layer];
+    [layer2 setBackgroundColor:cGColor];
 
     v9 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [(UILabel *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -43,8 +43,8 @@
 
     v16 = [MEMORY[0x1E69DB878] fontWithDescriptor:v15 size:11.0];
     [(UILabel *)v9 setFont:v16];
-    v17 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v9 setTextColor:v17];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v9 setTextColor:whiteColor];
 
     [(UILabel *)v9 setTextAlignment:1];
     [(UILabel *)v9 setLineBreakMode:4];
@@ -63,17 +63,17 @@
   v4.receiver = self;
   v4.super_class = CKBadgeView;
   [(CKBadgeView *)&v4 layoutSubviews];
-  v3 = [(CKBadgeView *)self countLabel];
+  countLabel = [(CKBadgeView *)self countLabel];
   [(CKBadgeView *)self bounds];
-  [v3 setFrame:?];
+  [countLabel setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CKBadgeView *)self countLabel];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  countLabel = [(CKBadgeView *)self countLabel];
+  [countLabel sizeThatFits:{width, height}];
   v7 = v6;
 
   v8 = 14.0;
@@ -88,12 +88,12 @@
   return result;
 }
 
-- (void)setValue:(unint64_t)a3
+- (void)setValue:(unint64_t)value
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
-    self->_value = a3;
-    if (a3)
+    self->_value = value;
+    if (value)
     {
       v4 = MEMORY[0x1E696ADA0];
       v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];

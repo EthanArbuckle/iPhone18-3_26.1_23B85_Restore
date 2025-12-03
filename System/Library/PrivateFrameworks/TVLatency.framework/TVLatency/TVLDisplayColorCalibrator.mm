@@ -1,25 +1,25 @@
 @interface TVLDisplayColorCalibrator
-- (TVLDisplayColorCalibrator)initWithMessageSession:(id)a3;
-- (void)_initWithMessageSession:(id)a3;
-- (void)_invalidateWithError:(id)a3;
-- (void)_postProgressEvent:(unint64_t)a3 withInfo:(id)a4;
-- (void)_respondAndInvalidateWithError:(id)a3 responseHandler:(id)a4;
-- (void)_sendMessage:(id)a3 withResponse:(id)a4;
+- (TVLDisplayColorCalibrator)initWithMessageSession:(id)session;
+- (void)_initWithMessageSession:(id)session;
+- (void)_invalidateWithError:(id)error;
+- (void)_postProgressEvent:(unint64_t)event withInfo:(id)info;
+- (void)_respondAndInvalidateWithError:(id)error responseHandler:(id)handler;
+- (void)_sendMessage:(id)message withResponse:(id)response;
 - (void)_startPositioning;
 - (void)_startReadings;
 - (void)_tearDown;
 - (void)activate;
 - (void)calibrate;
-- (void)colorDetector:(id)a3 backlightStateChanged:(BOOL)a4;
-- (void)colorDetector:(id)a3 metThresholdConditionsWithColor:(id)a4;
-- (void)colorDetector:(id)a3 movementDetected:(double)a4;
+- (void)colorDetector:(id)detector backlightStateChanged:(BOOL)changed;
+- (void)colorDetector:(id)detector metThresholdConditionsWithColor:(id)color;
+- (void)colorDetector:(id)detector movementDetected:(double)detected;
 @end
 
 @implementation TVLDisplayColorCalibrator
 
-- (TVLDisplayColorCalibrator)initWithMessageSession:(id)a3
+- (TVLDisplayColorCalibrator)initWithMessageSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v14.receiver = self;
   v14.super_class = TVLDisplayColorCalibrator;
   v5 = [(TVLDisplayColorCalibrator *)&v14 init];
@@ -47,26 +47,26 @@
     v6->_stationaryFrames = &unk_287E0EA18;
 
     v6->_useSlowALS = 0;
-    [(TVLDisplayColorCalibrator *)v6 _initWithMessageSession:v4];
+    [(TVLDisplayColorCalibrator *)v6 _initWithMessageSession:sessionCopy];
   }
 
   return v6;
 }
 
-- (void)_initWithMessageSession:(id)a3
+- (void)_initWithMessageSession:(id)session
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277D02880]) initWithTemplate:v4];
+  sessionCopy = session;
+  v5 = [objc_alloc(MEMORY[0x277D02880]) initWithTemplate:sessionCopy];
   [(TVLDisplayColorCalibrator *)self setSession:v5];
 
   objc_initWeak(&location, self);
-  v6 = [(TVLDisplayColorCalibrator *)self session];
+  session = [(TVLDisplayColorCalibrator *)self session];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__TVLDisplayColorCalibrator__initWithMessageSession___block_invoke;
   v7[3] = &unk_279D6BBD8;
   objc_copyWeak(&v8, &location);
-  [v6 registerRequestID:@"com.apple.tvlatency" options:0 handler:v7];
+  [session registerRequestID:@"com.apple.tvlatency" options:0 handler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -287,8 +287,8 @@ void __53__TVLDisplayColorCalibrator__initWithMessageSession___block_invoke_2(ui
 
 - (void)activate
 {
-  v2 = [(TVLDisplayColorCalibrator *)self session];
-  [v2 activate];
+  session = [(TVLDisplayColorCalibrator *)self session];
+  [session activate];
 }
 
 - (void)calibrate
@@ -334,8 +334,8 @@ void __53__TVLDisplayColorCalibrator__initWithMessageSession___block_invoke_2(ui
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"ALS_CALIBRATION_DATA"];
+    dictionaryRepresentation = [v7 dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"ALS_CALIBRATION_DATA"];
   }
 
   objc_initWeak(buf, self);
@@ -499,8 +499,8 @@ void __38__TVLDisplayColorCalibrator_calibrate__block_invoke_98(uint64_t a1)
     v15 = self->_colorDetector;
     self->_colorDetector = v14;
 
-    v16 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    if ([v16 BOOLForKey:@"TVLatencyAutomationMode"])
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    if ([standardUserDefaults BOOLForKey:@"TVLatencyAutomationMode"])
     {
       if (_TVLLogDefault_onceToken_4 != -1)
       {
@@ -591,15 +591,15 @@ void __43__TVLDisplayColorCalibrator__startReadings__block_invoke(uint64_t a1)
   WeakRetained = objc_loadWeakRetained((a1 + 32));
 }
 
-- (void)_invalidateWithError:(id)a3
+- (void)_invalidateWithError:(id)error
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   [(TVLDisplayColorCalibrator *)self _tearDown];
-  if (v4)
+  if (errorCopy)
   {
     v7 = @"TVLDisplayColorCalibratorProgressEventErrorObjectKey";
-    v8[0] = v4;
+    v8[0] = errorCopy;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
     [(TVLDisplayColorCalibrator *)self _postProgressEvent:2 withInfo:v5];
   }
@@ -619,11 +619,11 @@ void __43__TVLDisplayColorCalibrator__startReadings__block_invoke(uint64_t a1)
   self->_colorDetector = 0;
 }
 
-- (void)_sendMessage:(id)a3 withResponse:(id)a4
+- (void)_sendMessage:(id)message withResponse:(id)response
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  responseCopy = response;
   if (_TVLLogDefault_onceToken_4 != -1)
   {
     __53__TVLDisplayColorCalibrator__initWithMessageSession___block_invoke_cold_1();
@@ -633,22 +633,22 @@ void __43__TVLDisplayColorCalibrator__startReadings__block_invoke(uint64_t a1)
   if (os_log_type_enabled(_TVLLogDefault_log_4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = v6;
+    v18 = messageCopy;
     _os_log_impl(&dword_26CD78000, v8, OS_LOG_TYPE_DEFAULT, "Outgoing Message: %{public}@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v9 = [(TVLDisplayColorCalibrator *)self session];
+  session = [(TVLDisplayColorCalibrator *)self session];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __55__TVLDisplayColorCalibrator__sendMessage_withResponse___block_invoke;
   v13[3] = &unk_279D6BF50;
   objc_copyWeak(&v16, buf);
-  v10 = v6;
+  v10 = messageCopy;
   v14 = v10;
-  v11 = v7;
+  v11 = responseCopy;
   v15 = v11;
-  [v9 sendRequestID:@"com.apple.tvlatency" options:0 request:v10 responseHandler:v13];
+  [session sendRequestID:@"com.apple.tvlatency" options:0 request:v10 responseHandler:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -753,7 +753,7 @@ LABEL_15:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_respondAndInvalidateWithError:(id)a3 responseHandler:(id)a4
+- (void)_respondAndInvalidateWithError:(id)error responseHandler:(id)handler
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v17[0] = @"MESSAGE";
@@ -761,26 +761,26 @@ LABEL_15:
   v18[0] = @"FAILURE";
   v15[0] = @"ERROR_CODE";
   v7 = MEMORY[0x277CCABB0];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 numberWithInteger:{objc_msgSend(v9, "code")}];
+  handlerCopy = handler;
+  errorCopy = error;
+  v10 = [v7 numberWithInteger:{objc_msgSend(errorCopy, "code")}];
   v15[1] = @"ERROR_DOMAIN";
   v16[0] = v10;
-  v11 = [v9 domain];
-  v16[1] = v11;
+  domain = [errorCopy domain];
+  v16[1] = domain;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
   v18[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
-  (*(a4 + 2))(v8, 0, 0, v13);
+  (*(handler + 2))(handlerCopy, 0, 0, v13);
 
-  [(TVLDisplayColorCalibrator *)self _invalidateWithError:v9];
+  [(TVLDisplayColorCalibrator *)self _invalidateWithError:errorCopy];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postProgressEvent:(unint64_t)a3 withInfo:(id)a4
+- (void)_postProgressEvent:(unint64_t)event withInfo:(id)info
 {
-  v6 = a4;
-  if (a3 == 4 || a3 == 2)
+  infoCopy = info;
+  if (event == 4 || event == 2)
   {
     v7 = objc_alloc_init(MEMORY[0x277D757B8]);
     [v7 prepare];
@@ -796,11 +796,11 @@ LABEL_15:
   v10[2] = __57__TVLDisplayColorCalibrator__postProgressEvent_withInfo___block_invoke;
   v10[3] = &unk_279D6C130;
   v10[4] = self;
-  v11 = v6;
+  v11 = infoCopy;
   v12 = v7;
-  v13 = a3;
+  eventCopy = event;
   v8 = v7;
-  v9 = v6;
+  v9 = infoCopy;
   dispatch_async(MEMORY[0x277D85CD0], v10);
 }
 
@@ -874,20 +874,20 @@ uint64_t __57__TVLDisplayColorCalibrator__postProgressEvent_withInfo___block_inv
   return result;
 }
 
-- (void)colorDetector:(id)a3 metThresholdConditionsWithColor:(id)a4
+- (void)colorDetector:(id)detector metThresholdConditionsWithColor:(id)color
 {
   v24 = *MEMORY[0x277D85DE8];
   if (self->_state == 1)
   {
     v5 = MEMORY[0x277D757B8];
-    v6 = a4;
+    colorCopy = color;
     v7 = objc_alloc_init(v5);
     [v7 prepare];
     v16 = 0.0;
     v17 = 0.0;
     v14 = 0;
     v15 = 0.0;
-    [v6 getHue:&v17 saturation:&v16 brightness:&v15 alpha:&v14];
+    [colorCopy getHue:&v17 saturation:&v16 brightness:&v15 alpha:&v14];
 
     if (_TVLLogDefault_onceToken_4 != -1)
     {
@@ -911,7 +911,7 @@ uint64_t __57__TVLDisplayColorCalibrator__postProgressEvent_withInfo___block_inv
     v11[2] = __75__TVLDisplayColorCalibrator_colorDetector_metThresholdConditionsWithColor___block_invoke;
     v11[3] = &unk_279D6C158;
     v12 = v7;
-    v13 = self;
+    selfCopy = self;
     v9 = v7;
     dispatch_async(MEMORY[0x277D85CD0], v11);
   }
@@ -927,12 +927,12 @@ uint64_t __75__TVLDisplayColorCalibrator_colorDetector_metThresholdConditionsWit
   return [v2 _startReadings];
 }
 
-- (void)colorDetector:(id)a3 backlightStateChanged:(BOOL)a4
+- (void)colorDetector:(id)detector backlightStateChanged:(BOOL)changed
 {
-  v4 = a4;
+  changedCopy = changed;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v4)
+  detectorCopy = detector;
+  if (changedCopy)
   {
     if (self->_state == 2)
     {
@@ -949,7 +949,7 @@ uint64_t __75__TVLDisplayColorCalibrator_colorDetector_metThresholdConditionsWit
       }
 
       self->_state = 0;
-      [v6 endDetection];
+      [detectorCopy endDetection];
       objc_initWeak(&buf, self);
       v8 = dispatch_time(0, 1000000000);
       block[0] = MEMORY[0x277D85DD0];
@@ -1020,10 +1020,10 @@ void __65__TVLDisplayColorCalibrator_colorDetector_backlightStateChanged___block
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)colorDetector:(id)a3 movementDetected:(double)a4
+- (void)colorDetector:(id)detector movementDetected:(double)detected
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  detectorCopy = detector;
   if (self->_state == 2)
   {
     if (_TVLLogDefault_onceToken_4 != -1)
@@ -1035,12 +1035,12 @@ void __65__TVLDisplayColorCalibrator_colorDetector_backlightStateChanged___block
     if (os_log_type_enabled(_TVLLogDefault_log_4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v13 = a4;
+      detectedCopy = detected;
       _os_log_impl(&dword_26CD78000, v7, OS_LOG_TYPE_DEFAULT, "TVLDisplayColorCalibrator:movementDetected %f during TVLDisplayColorCalibratorStateReadings", buf, 0xCu);
     }
 
     self->_state = 0;
-    [v6 endDetection];
+    [detectorCopy endDetection];
     objc_initWeak(buf, self);
     v8 = dispatch_time(0, 1000000000);
     block[0] = MEMORY[0x277D85DD0];

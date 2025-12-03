@@ -1,16 +1,16 @@
 @interface UISApplicationInitializationContext
 + (id)defaultContext;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (UISApplicationInitializationContext)initWithBSXPCCoder:(id)a3;
-- (UISApplicationInitializationContext)initWithDisplayContext:(id)a3 deviceContext:(id)a4 persistedSceneIdentifiers:(id)a5;
-- (UISApplicationInitializationContext)initWithMainDisplayContext:(id)a3 launchDisplayContext:(id)a4 deviceContext:(id)a5 persistedSceneIdentifiers:(id)a6 supportAppSceneRequests:(BOOL)a7;
-- (UISApplicationInitializationContext)initWithUISApplicationInitializationContext:(id)a3;
-- (UISApplicationInitializationContext)initWithXPCDictionary:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (UISApplicationInitializationContext)initWithBSXPCCoder:(id)coder;
+- (UISApplicationInitializationContext)initWithDisplayContext:(id)context deviceContext:(id)deviceContext persistedSceneIdentifiers:(id)identifiers;
+- (UISApplicationInitializationContext)initWithMainDisplayContext:(id)context launchDisplayContext:(id)displayContext deviceContext:(id)deviceContext persistedSceneIdentifiers:(id)identifiers supportAppSceneRequests:(BOOL)requests;
+- (UISApplicationInitializationContext)initWithUISApplicationInitializationContext:(id)context;
+- (UISApplicationInitializationContext)initWithXPCDictionary:(id)dictionary;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation UISApplicationInitializationContext
@@ -18,7 +18,7 @@
 + (id)defaultContext
 {
   v3 = +[UISDeviceContext defaultContext];
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   v5 = +[UISDisplayContext defaultContext];
   v6 = v3;
   v7 = v6;
@@ -46,12 +46,12 @@
   return v10;
 }
 
-- (UISApplicationInitializationContext)initWithDisplayContext:(id)a3 deviceContext:(id)a4 persistedSceneIdentifiers:(id)a5
+- (UISApplicationInitializationContext)initWithDisplayContext:(id)context deviceContext:(id)deviceContext persistedSceneIdentifiers:(id)identifiers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
+  contextCopy = context;
+  deviceContextCopy = deviceContext;
+  identifiersCopy = identifiers;
+  v11 = deviceContextCopy;
   v12 = v11;
   if (v11 && (v13 = [v11 deviceInfoIntegerValueForKey:@"UISDeviceContextDeviceClassKey"] + 1, v13 <= 4))
   {
@@ -63,20 +63,20 @@
     LOBYTE(v14) = 0;
   }
 
-  v15 = [(UISApplicationInitializationContext *)self initWithMainDisplayContext:v8 launchDisplayContext:0 deviceContext:v12 persistedSceneIdentifiers:v10 supportAppSceneRequests:v14 & 1];
+  v15 = [(UISApplicationInitializationContext *)self initWithMainDisplayContext:contextCopy launchDisplayContext:0 deviceContext:v12 persistedSceneIdentifiers:identifiersCopy supportAppSceneRequests:v14 & 1];
   return v15;
 }
 
-- (UISApplicationInitializationContext)initWithMainDisplayContext:(id)a3 launchDisplayContext:(id)a4 deviceContext:(id)a5 persistedSceneIdentifiers:(id)a6 supportAppSceneRequests:(BOOL)a7
+- (UISApplicationInitializationContext)initWithMainDisplayContext:(id)context launchDisplayContext:(id)displayContext deviceContext:(id)deviceContext persistedSceneIdentifiers:(id)identifiers supportAppSceneRequests:(BOOL)requests
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (!v13 && v14)
+  contextCopy = context;
+  displayContextCopy = displayContext;
+  deviceContextCopy = deviceContext;
+  identifiersCopy = identifiers;
+  if (!contextCopy && displayContextCopy)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"UISApplicationInitializationContext.m" lineNumber:116 description:{@"%s: Invalid display contexts specified. Providing a launch display context without an initial display context is not supported: mainDisplayContext: %@; launchDisplayContext: %@", "-[UISApplicationInitializationContext initWithMainDisplayContext:launchDisplayContext:deviceContext:persistedSceneIdentifiers:supportAppSceneRequests:]", 0, v14}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationInitializationContext.m" lineNumber:116 description:{@"%s: Invalid display contexts specified. Providing a launch display context without an initial display context is not supported: mainDisplayContext: %@; launchDisplayContext: %@", "-[UISApplicationInitializationContext initWithMainDisplayContext:launchDisplayContext:deviceContext:persistedSceneIdentifiers:supportAppSceneRequests:]", 0, displayContextCopy}];
   }
 
   v28.receiver = self;
@@ -84,90 +84,90 @@
   v17 = [(UISApplicationInitializationContext *)&v28 init];
   if (v17)
   {
-    v18 = [v13 copy];
+    v18 = [contextCopy copy];
     mainDisplayContext = v17->_mainDisplayContext;
     v17->_mainDisplayContext = v18;
 
-    v20 = [v14 copy];
+    v20 = [displayContextCopy copy];
     launchDisplayContext = v17->_launchDisplayContext;
     v17->_launchDisplayContext = v20;
 
-    v22 = [v15 copy];
+    v22 = [deviceContextCopy copy];
     deviceContext = v17->_deviceContext;
     v17->_deviceContext = v22;
 
-    v24 = [v16 copy];
+    v24 = [identifiersCopy copy];
     persistedSceneIdentifiers = v17->_persistedSceneIdentifiers;
     v17->_persistedSceneIdentifiers = v24;
 
-    v17->_supportAppSceneRequests = a7;
+    v17->_supportAppSceneRequests = requests;
   }
 
   return v17;
 }
 
-- (UISApplicationInitializationContext)initWithUISApplicationInitializationContext:(id)a3
+- (UISApplicationInitializationContext)initWithUISApplicationInitializationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = UISApplicationInitializationContext;
   v5 = [(UISApplicationInitializationContext *)&v19 init];
   if (v5)
   {
-    v6 = [*(v4 + 1) copy];
+    v6 = [*(contextCopy + 1) copy];
     mainDisplayContext = v5->_mainDisplayContext;
     v5->_mainDisplayContext = v6;
 
-    v8 = [*(v4 + 2) copy];
+    v8 = [*(contextCopy + 2) copy];
     launchDisplayContext = v5->_launchDisplayContext;
     v5->_launchDisplayContext = v8;
 
-    v10 = [*(v4 + 3) copy];
+    v10 = [*(contextCopy + 3) copy];
     deviceContext = v5->_deviceContext;
     v5->_deviceContext = v10;
 
-    v12 = [*(v4 + 4) copy];
+    v12 = [*(contextCopy + 4) copy];
     compatibilityContext = v5->_compatibilityContext;
     v5->_compatibilityContext = v12;
 
-    v14 = [*(v4 + 5) copy];
+    v14 = [*(contextCopy + 5) copy];
     persistedSceneIdentifiers = v5->_persistedSceneIdentifiers;
     v5->_persistedSceneIdentifiers = v14;
 
-    v16 = [*(v4 + 6) copy];
+    v16 = [*(contextCopy + 6) copy];
     defaultSceneToken = v5->_defaultSceneToken;
     v5->_defaultSceneToken = v16;
 
-    v5->_supportAppSceneRequests = *(v4 + 56);
+    v5->_supportAppSceneRequests = *(contextCopy + 56);
   }
 
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   mainDisplayContext = self->_mainDisplayContext;
-  v5 = a3;
-  [v5 encodeObject:mainDisplayContext forKey:@"_UISMainDisplayContextKey"];
-  [v5 encodeObject:self->_launchDisplayContext forKey:@"_UISLaunchDisplayContextKey"];
-  [v5 encodeObject:self->_deviceContext forKey:@"_UISDeviceContextKey"];
-  [v5 encodeObject:self->_compatibilityContext forKey:@"_UISCompatibilityContextKey"];
-  [v5 encodeCollection:self->_persistedSceneIdentifiers forKey:@"_UISPersistedSceneIdentifiersKey"];
-  [v5 encodeObject:self->_defaultSceneToken forKey:@"_UISDefaultSceneTokenKey"];
-  [v5 encodeBool:self->_supportAppSceneRequests forKey:@"_UISSupportAppSceneRequestsKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:mainDisplayContext forKey:@"_UISMainDisplayContextKey"];
+  [coderCopy encodeObject:self->_launchDisplayContext forKey:@"_UISLaunchDisplayContextKey"];
+  [coderCopy encodeObject:self->_deviceContext forKey:@"_UISDeviceContextKey"];
+  [coderCopy encodeObject:self->_compatibilityContext forKey:@"_UISCompatibilityContextKey"];
+  [coderCopy encodeCollection:self->_persistedSceneIdentifiers forKey:@"_UISPersistedSceneIdentifiersKey"];
+  [coderCopy encodeObject:self->_defaultSceneToken forKey:@"_UISDefaultSceneTokenKey"];
+  [coderCopy encodeBool:self->_supportAppSceneRequests forKey:@"_UISSupportAppSceneRequestsKey"];
 }
 
-- (UISApplicationInitializationContext)initWithBSXPCCoder:(id)a3
+- (UISApplicationInitializationContext)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_UISMainDisplayContextKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_UISLaunchDisplayContextKey"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_UISDeviceContextKey"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_UISCompatibilityContextKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_UISMainDisplayContextKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_UISLaunchDisplayContextKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_UISDeviceContextKey"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_UISCompatibilityContextKey"];
   v9 = objc_opt_class();
-  v10 = [v4 decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"_UISPersistedSceneIdentifiersKey"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_UISDefaultSceneTokenKey"];
-  v12 = [v4 decodeBoolForKey:@"_UISSupportAppSceneRequestsKey"];
+  v10 = [coderCopy decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"_UISPersistedSceneIdentifiersKey"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_UISDefaultSceneTokenKey"];
+  v12 = [coderCopy decodeBoolForKey:@"_UISSupportAppSceneRequestsKey"];
 
   v13 = [(UISApplicationInitializationContext *)self initWithMainDisplayContext:v5 launchDisplayContext:v6 deviceContext:v7 persistedSceneIdentifiers:v10 supportAppSceneRequests:v12];
   v14 = v13;
@@ -180,37 +180,37 @@
   return v14;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UISApplicationInitializationContext.m" lineNumber:205 description:{@"%s is not supported", "-[UISApplicationInitializationContext encodeWithXPCDictionary:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationInitializationContext.m" lineNumber:205 description:{@"%s is not supported", "-[UISApplicationInitializationContext encodeWithXPCDictionary:]"}];
 }
 
-- (UISApplicationInitializationContext)initWithXPCDictionary:(id)a3
+- (UISApplicationInitializationContext)initWithXPCDictionary:(id)dictionary
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UISApplicationInitializationContext.m" lineNumber:209 description:{@"%s is not supported", "-[UISApplicationInitializationContext initWithXPCDictionary:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationInitializationContext.m" lineNumber:209 description:{@"%s is not supported", "-[UISApplicationInitializationContext initWithXPCDictionary:]"}];
 
   return 0;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [UISMutableApplicationInitializationContext alloc];
 
   return [(UISApplicationInitializationContext *)v4 initWithUISApplicationInitializationContext:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_9;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     LOBYTE(v15) = 1;
     goto LABEL_22;
@@ -220,31 +220,31 @@
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
-    v7 = [(UISApplicationInitializationContext *)self mainDisplayContext];
-    v8 = [(UISApplicationInitializationContext *)v6 mainDisplayContext];
+    mainDisplayContext = [(UISApplicationInitializationContext *)self mainDisplayContext];
+    mainDisplayContext2 = [(UISApplicationInitializationContext *)v6 mainDisplayContext];
     if (BSEqualObjects())
     {
-      v9 = [(UISApplicationInitializationContext *)self launchDisplayContext];
-      v10 = [(UISApplicationInitializationContext *)v6 launchDisplayContext];
+      launchDisplayContext = [(UISApplicationInitializationContext *)self launchDisplayContext];
+      launchDisplayContext2 = [(UISApplicationInitializationContext *)v6 launchDisplayContext];
       if (BSEqualObjects())
       {
-        v11 = [(UISApplicationInitializationContext *)self compatibilityContext];
-        v12 = [(UISApplicationInitializationContext *)v6 compatibilityContext];
+        compatibilityContext = [(UISApplicationInitializationContext *)self compatibilityContext];
+        compatibilityContext2 = [(UISApplicationInitializationContext *)v6 compatibilityContext];
         if (BSEqualObjects())
         {
-          v13 = [(UISApplicationInitializationContext *)self deviceContext];
-          v14 = [(UISApplicationInitializationContext *)v6 deviceContext];
-          v22 = v13;
-          if (v13 == v14)
+          deviceContext = [(UISApplicationInitializationContext *)self deviceContext];
+          deviceContext2 = [(UISApplicationInitializationContext *)v6 deviceContext];
+          v22 = deviceContext;
+          if (deviceContext == deviceContext2)
           {
-            v21 = v14;
-            v16 = [(UISApplicationInitializationContext *)self defaultSceneToken];
+            v21 = deviceContext2;
+            defaultSceneToken = [(UISApplicationInitializationContext *)self defaultSceneToken];
             [(UISApplicationInitializationContext *)v6 defaultSceneToken];
-            v17 = v20 = v16;
+            v17 = v20 = defaultSceneToken;
             if (BSEqualObjects())
             {
-              v18 = [(UISApplicationInitializationContext *)self supportAppSceneRequests];
-              v15 = v18 ^ [(UISApplicationInitializationContext *)v6 supportAppSceneRequests]^ 1;
+              supportAppSceneRequests = [(UISApplicationInitializationContext *)self supportAppSceneRequests];
+              v15 = supportAppSceneRequests ^ [(UISApplicationInitializationContext *)v6 supportAppSceneRequests]^ 1;
             }
 
             else
@@ -252,7 +252,7 @@
               LOBYTE(v15) = 0;
             }
 
-            v14 = v21;
+            deviceContext2 = v21;
           }
 
           else
@@ -294,14 +294,14 @@ LABEL_22:
 {
   v3 = [(FBSSceneIdentityToken *)self->_defaultSceneToken hash];
   supportAppSceneRequests = self->_supportAppSceneRequests;
-  v5 = [(UISApplicationInitializationContext *)self mainDisplayContext];
-  v6 = [v5 hash];
-  v7 = [(UISApplicationInitializationContext *)self launchDisplayContext];
-  v8 = [v7 hash] ^ v6;
-  v9 = [(UISApplicationInitializationContext *)self deviceContext];
-  v10 = [v9 hash];
-  v11 = [(UISApplicationInitializationContext *)self compatibilityContext];
-  v12 = supportAppSceneRequests + (v8 ^ v10 ^ [v11 hash]);
+  mainDisplayContext = [(UISApplicationInitializationContext *)self mainDisplayContext];
+  v6 = [mainDisplayContext hash];
+  launchDisplayContext = [(UISApplicationInitializationContext *)self launchDisplayContext];
+  v8 = [launchDisplayContext hash] ^ v6;
+  deviceContext = [(UISApplicationInitializationContext *)self deviceContext];
+  v10 = [deviceContext hash];
+  compatibilityContext = [(UISApplicationInitializationContext *)self compatibilityContext];
+  v12 = supportAppSceneRequests + (v8 ^ v10 ^ [compatibilityContext hash]);
 
   return v3 + v12;
 }
@@ -315,9 +315,9 @@ LABEL_22:
   v7 = [v3 appendObject:self->_compatibilityContext withName:@"CompatibilityContext"];
   v8 = [v3 appendObject:self->_defaultSceneToken withName:@"DefaultSceneToken"];
   v9 = [v3 appendBool:self->_supportAppSceneRequests withName:@"SupportAppSceneRequests"];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 @end

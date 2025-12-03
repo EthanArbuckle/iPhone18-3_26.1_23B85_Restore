@@ -19,8 +19,8 @@
     [(DSWelcomeTableViewCell *)v3 constrainImageViews];
     [(DSWelcomeTableViewCell *)v3 constrainTextLabels];
     v4 = MEMORY[0x277CCAAD0];
-    v5 = [(DSWelcomeTableViewCell *)v3 constraints];
-    [v4 activateConstraints:v5];
+    constraints = [(DSWelcomeTableViewCell *)v3 constraints];
+    [v4 activateConstraints:constraints];
   }
 
   return v3;
@@ -32,131 +32,131 @@
   constraints = self->_constraints;
   self->_constraints = v3;
 
-  v5 = [(DSWelcomeTableViewCell *)self textLabel];
-  [v5 setNumberOfLines:0];
+  textLabel = [(DSWelcomeTableViewCell *)self textLabel];
+  [textLabel setNumberOfLines:0];
 
-  v6 = [(DSWelcomeTableViewCell *)self textLabel];
-  [v6 setLineBreakMode:0];
+  textLabel2 = [(DSWelcomeTableViewCell *)self textLabel];
+  [textLabel2 setLineBreakMode:0];
 
-  v7 = [(DSWelcomeTableViewCell *)self textLabel];
+  textLabel3 = [(DSWelcomeTableViewCell *)self textLabel];
   v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-  [v7 setFont:v8];
+  [textLabel3 setFont:v8];
 
-  v9 = [(DSWelcomeTableViewCell *)self detailTextLabel];
+  detailTextLabel = [(DSWelcomeTableViewCell *)self detailTextLabel];
   v10 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76920]];
-  [v9 setFont:v10];
+  [detailTextLabel setFont:v10];
 
-  v11 = [(DSWelcomeTableViewCell *)self detailTextLabel];
-  v12 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v11 setTextColor:v12];
+  detailTextLabel2 = [(DSWelcomeTableViewCell *)self detailTextLabel];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [detailTextLabel2 setTextColor:secondaryLabelColor];
 
-  v13 = [(DSWelcomeTableViewCell *)self detailTextLabel];
-  [v13 setNumberOfLines:0];
+  detailTextLabel3 = [(DSWelcomeTableViewCell *)self detailTextLabel];
+  [detailTextLabel3 setNumberOfLines:0];
 
-  v14 = [(DSWelcomeTableViewCell *)self detailTextLabel];
-  [v14 setLineBreakMode:0];
+  detailTextLabel4 = [(DSWelcomeTableViewCell *)self detailTextLabel];
+  [detailTextLabel4 setLineBreakMode:0];
 
-  v15 = [(DSWelcomeTableViewCell *)self detailTextLabel];
-  [v15 sizeToFit];
+  detailTextLabel5 = [(DSWelcomeTableViewCell *)self detailTextLabel];
+  [detailTextLabel5 sizeToFit];
 
   [(DSWelcomeTableViewCell *)self setAccessoryType:1];
-  v16 = [MEMORY[0x277D75348] tertiarySystemFillColor];
-  [(DSWelcomeTableViewCell *)self setBackgroundColor:v16];
+  tertiarySystemFillColor = [MEMORY[0x277D75348] tertiarySystemFillColor];
+  [(DSWelcomeTableViewCell *)self setBackgroundColor:tertiarySystemFillColor];
 
-  v17 = [(DSWelcomeTableViewCell *)self imageView];
-  [v17 setContentMode:1];
+  imageView = [(DSWelcomeTableViewCell *)self imageView];
+  [imageView setContentMode:1];
 }
 
 - (void)constrainImageViews
 {
-  v3 = [(DSWelcomeTableViewCell *)self imageView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  imageView = [(DSWelcomeTableViewCell *)self imageView];
+  [imageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(DSWelcomeTableViewCell *)self constraints];
-  v5 = [(DSWelcomeTableViewCell *)self imageView];
-  v6 = [v5 widthAnchor];
-  v7 = [v6 constraintEqualToConstant:40.0];
-  [v4 addObject:v7];
+  constraints = [(DSWelcomeTableViewCell *)self constraints];
+  imageView2 = [(DSWelcomeTableViewCell *)self imageView];
+  widthAnchor = [imageView2 widthAnchor];
+  v7 = [widthAnchor constraintEqualToConstant:40.0];
+  [constraints addObject:v7];
 
-  v8 = [(DSWelcomeTableViewCell *)self constraints];
-  v9 = [(DSWelcomeTableViewCell *)self imageView];
-  v10 = [v9 heightAnchor];
-  v11 = [v10 constraintEqualToConstant:40.0];
-  [v8 addObject:v11];
+  constraints2 = [(DSWelcomeTableViewCell *)self constraints];
+  imageView3 = [(DSWelcomeTableViewCell *)self imageView];
+  heightAnchor = [imageView3 heightAnchor];
+  v11 = [heightAnchor constraintEqualToConstant:40.0];
+  [constraints2 addObject:v11];
 
-  v12 = [(DSWelcomeTableViewCell *)self constraints];
-  v13 = [(DSWelcomeTableViewCell *)self imageView];
-  v14 = [v13 centerYAnchor];
-  v15 = [(DSWelcomeTableViewCell *)self contentView];
-  v16 = [v15 centerYAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
-  [v12 addObject:v17];
+  constraints3 = [(DSWelcomeTableViewCell *)self constraints];
+  imageView4 = [(DSWelcomeTableViewCell *)self imageView];
+  centerYAnchor = [imageView4 centerYAnchor];
+  contentView = [(DSWelcomeTableViewCell *)self contentView];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+  [constraints3 addObject:v17];
 
-  v23 = [(DSWelcomeTableViewCell *)self constraints];
-  v18 = [(DSWelcomeTableViewCell *)self imageView];
-  v19 = [v18 leadingAnchor];
-  v20 = [(DSWelcomeTableViewCell *)self layoutMarginsGuide];
-  v21 = [v20 leadingAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
-  [v23 addObject:v22];
+  constraints4 = [(DSWelcomeTableViewCell *)self constraints];
+  imageView5 = [(DSWelcomeTableViewCell *)self imageView];
+  leadingAnchor = [imageView5 leadingAnchor];
+  layoutMarginsGuide = [(DSWelcomeTableViewCell *)self layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [constraints4 addObject:v22];
 }
 
 - (void)constrainTextLabels
 {
-  v3 = [(DSWelcomeTableViewCell *)self textLabel];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textLabel = [(DSWelcomeTableViewCell *)self textLabel];
+  [textLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(DSWelcomeTableViewCell *)self constraints];
-  v5 = [(DSWelcomeTableViewCell *)self textLabel];
-  v6 = [v5 topAnchor];
-  v7 = [(DSWelcomeTableViewCell *)self contentView];
-  v8 = [v7 layoutMarginsGuide];
-  v9 = [v8 topAnchor];
-  v10 = [v6 constraintEqualToAnchor:v9];
-  [v4 addObject:v10];
+  constraints = [(DSWelcomeTableViewCell *)self constraints];
+  textLabel2 = [(DSWelcomeTableViewCell *)self textLabel];
+  topAnchor = [textLabel2 topAnchor];
+  contentView = [(DSWelcomeTableViewCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [constraints addObject:v10];
 
-  v11 = [(DSWelcomeTableViewCell *)self constraints];
-  v12 = [(DSWelcomeTableViewCell *)self textLabel];
-  v13 = [v12 leadingAnchor];
-  v14 = [(DSWelcomeTableViewCell *)self imageView];
-  v15 = [v14 trailingAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15 constant:10.0];
-  [v11 addObject:v16];
+  constraints2 = [(DSWelcomeTableViewCell *)self constraints];
+  textLabel3 = [(DSWelcomeTableViewCell *)self textLabel];
+  leadingAnchor = [textLabel3 leadingAnchor];
+  imageView = [(DSWelcomeTableViewCell *)self imageView];
+  trailingAnchor = [imageView trailingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:10.0];
+  [constraints2 addObject:v16];
 
-  v17 = [(DSWelcomeTableViewCell *)self constraints];
-  v18 = [(DSWelcomeTableViewCell *)self textLabel];
-  v19 = [v18 widthAnchor];
-  v20 = [(DSWelcomeTableViewCell *)self contentView];
-  v21 = [v20 widthAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21 multiplier:0.8];
-  [v17 addObject:v22];
+  constraints3 = [(DSWelcomeTableViewCell *)self constraints];
+  textLabel4 = [(DSWelcomeTableViewCell *)self textLabel];
+  widthAnchor = [textLabel4 widthAnchor];
+  contentView2 = [(DSWelcomeTableViewCell *)self contentView];
+  widthAnchor2 = [contentView2 widthAnchor];
+  v22 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.8];
+  [constraints3 addObject:v22];
 
-  v23 = [(DSWelcomeTableViewCell *)self detailTextLabel];
-  [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+  detailTextLabel = [(DSWelcomeTableViewCell *)self detailTextLabel];
+  [detailTextLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v24 = [(DSWelcomeTableViewCell *)self constraints];
-  v25 = [(DSWelcomeTableViewCell *)self detailTextLabel];
-  v26 = [v25 leadingAnchor];
-  v27 = [(DSWelcomeTableViewCell *)self textLabel];
-  v28 = [v27 leadingAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
-  [v24 addObject:v29];
+  constraints4 = [(DSWelcomeTableViewCell *)self constraints];
+  detailTextLabel2 = [(DSWelcomeTableViewCell *)self detailTextLabel];
+  leadingAnchor2 = [detailTextLabel2 leadingAnchor];
+  textLabel5 = [(DSWelcomeTableViewCell *)self textLabel];
+  leadingAnchor3 = [textLabel5 leadingAnchor];
+  v29 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
+  [constraints4 addObject:v29];
 
-  v30 = [(DSWelcomeTableViewCell *)self constraints];
-  v31 = [(DSWelcomeTableViewCell *)self detailTextLabel];
-  v32 = [v31 topAnchor];
-  v33 = [(DSWelcomeTableViewCell *)self textLabel];
-  v34 = [v33 bottomAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34];
-  [v30 addObject:v35];
+  constraints5 = [(DSWelcomeTableViewCell *)self constraints];
+  detailTextLabel3 = [(DSWelcomeTableViewCell *)self detailTextLabel];
+  topAnchor3 = [detailTextLabel3 topAnchor];
+  textLabel6 = [(DSWelcomeTableViewCell *)self textLabel];
+  bottomAnchor = [textLabel6 bottomAnchor];
+  v35 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
+  [constraints5 addObject:v35];
 
-  v41 = [(DSWelcomeTableViewCell *)self constraints];
-  v36 = [(DSWelcomeTableViewCell *)self detailTextLabel];
-  v37 = [v36 widthAnchor];
-  v38 = [(DSWelcomeTableViewCell *)self contentView];
-  v39 = [v38 widthAnchor];
-  v40 = [v37 constraintEqualToAnchor:v39 multiplier:0.8];
-  [v41 addObject:v40];
+  constraints6 = [(DSWelcomeTableViewCell *)self constraints];
+  detailTextLabel4 = [(DSWelcomeTableViewCell *)self detailTextLabel];
+  widthAnchor3 = [detailTextLabel4 widthAnchor];
+  contentView3 = [(DSWelcomeTableViewCell *)self contentView];
+  widthAnchor4 = [contentView3 widthAnchor];
+  v40 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 multiplier:0.8];
+  [constraints6 addObject:v40];
 }
 
 @end

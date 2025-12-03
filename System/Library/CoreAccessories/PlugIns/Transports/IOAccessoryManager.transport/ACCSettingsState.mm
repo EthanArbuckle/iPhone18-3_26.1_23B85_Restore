@@ -1,5 +1,5 @@
 @interface ACCSettingsState
-- (ACCSettingsState)initWithKey:(id)a3 applicationID:(id)a4 notification:(id)a5 defaultValue:(int64_t)a6 invalidValue:(int64_t)a7;
+- (ACCSettingsState)initWithKey:(id)key applicationID:(id)d notification:(id)notification defaultValue:(int64_t)value invalidValue:(int64_t)invalidValue;
 - (id)description;
 - (void)_readLoggingPrefs;
 - (void)_registerForLoggingPrefsNotification;
@@ -8,22 +8,22 @@
 
 @implementation ACCSettingsState
 
-- (ACCSettingsState)initWithKey:(id)a3 applicationID:(id)a4 notification:(id)a5 defaultValue:(int64_t)a6 invalidValue:(int64_t)a7
+- (ACCSettingsState)initWithKey:(id)key applicationID:(id)d notification:(id)notification defaultValue:(int64_t)value invalidValue:(int64_t)invalidValue
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  keyCopy = key;
+  dCopy = d;
+  notificationCopy = notification;
   v19.receiver = self;
   v19.super_class = ACCSettingsState;
   v16 = [(ACCSettingsState *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_key, a3);
-    objc_storeStrong(&v17->_applicationID, a4);
-    objc_storeStrong(&v17->_notificationName, a5);
-    v17->_defaultValue = a6;
-    v17->_invalidValue = a7;
+    objc_storeStrong(&v16->_key, key);
+    objc_storeStrong(&v17->_applicationID, d);
+    objc_storeStrong(&v17->_notificationName, notification);
+    v17->_defaultValue = value;
+    v17->_invalidValue = invalidValue;
     [(ACCSettingsState *)v17 _readLoggingPrefs];
     [(ACCSettingsState *)v17 _registerForLoggingPrefsNotification];
   }

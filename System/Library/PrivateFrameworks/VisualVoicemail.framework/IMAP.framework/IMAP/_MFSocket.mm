@@ -1,33 +1,33 @@
 @interface _MFSocket
-- (BOOL)_startSSLHandshakeWithProtocol:(id)a3 errorPtr:(id *)a4;
+- (BOOL)_startSSLHandshakeWithProtocol:(id)protocol errorPtr:(id *)ptr;
 - (BOOL)_waitForSocketOpenAndFlag;
-- (BOOL)connectToHost:(id)a3 withPort:(unsigned int)a4;
+- (BOOL)connectToHost:(id)host withPort:(unsigned int)port;
 - (BOOL)isCellularConnection;
 - (BOOL)isValid;
-- (BOOL)setSecurityProtocol:(id)a3;
+- (BOOL)setSecurityProtocol:(id)protocol;
 - (NSArray)serverCertificates;
 - (NSString)remoteHostname;
-- (_MFSocket)initWithMambaID:(const char *)a3 rumba:(id)a4;
+- (_MFSocket)initWithMambaID:(const char *)d rumba:(id)rumba;
 - (__CFString)getConnectionServiceType;
 - (id)_negotiatedProtocolVersion;
 - (id)getClosingEventHandler;
 - (id)getEventHandler;
 - (id)securityProtocol;
 - (int)timeout;
-- (int64_t)readBytes:(char *)a3 length:(unint64_t)a4;
-- (int64_t)writeBytes:(const char *)a3 length:(unint64_t)a4;
+- (int64_t)readBytes:(char *)bytes length:(unint64_t)length;
+- (int64_t)writeBytes:(const char *)bytes length:(unint64_t)length;
 - (unsigned)remotePortNumber;
 - (unsigned)threadsafe_bufferedByteCount;
 - (void)__abort;
 - (void)abort;
 - (void)dealloc;
-- (void)enableThroughputMonitoring:(BOOL)a3;
-- (void)performAtomicAccessorBlock:(id)a3;
-- (void)setClosingEventHandler:(id)a3;
-- (void)setConnectionServiceType:(__CFString *)a3;
-- (void)setEventHandler:(id)a3;
-- (void)setSettings:(id)a3;
-- (void)setTimeout:(int)a3;
+- (void)enableThroughputMonitoring:(BOOL)monitoring;
+- (void)performAtomicAccessorBlock:(id)block;
+- (void)setClosingEventHandler:(id)handler;
+- (void)setConnectionServiceType:(__CFString *)type;
+- (void)setEventHandler:(id)handler;
+- (void)setSettings:(id)settings;
+- (void)setTimeout:(int)timeout;
 @end
 
 @implementation _MFSocket
@@ -35,51 +35,51 @@
 - (id)_negotiatedProtocolVersion
 {
   protocol = kSSLProtocolUnknown;
-  v2 = [(_MFSocket *)self stream];
-  v3 = [v2 propertyForKey:*MEMORY[0x277CBAE58]];
+  stream = [(_MFSocket *)self stream];
+  v3 = [stream propertyForKey:*MEMORY[0x277CBAE58]];
 
   if (SSLGetNegotiatedProtocolVersion(v3, &protocol))
   {
     protocol = kSSLProtocolUnknown;
-    v4 = @"kSSLProtocolUnknown";
+    protocol = @"kSSLProtocolUnknown";
   }
 
   else if (protocol >= kTLSProtocol13)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"unknown-protocol-version(%d)", protocol];
+    protocol = [MEMORY[0x277CCACA8] stringWithFormat:@"unknown-protocol-version(%d)", protocol];
   }
 
   else
   {
-    v4 = off_279E34660[protocol];
+    protocol = off_279E34660[protocol];
   }
 
-  return v4;
+  return protocol;
 }
 
-- (BOOL)_startSSLHandshakeWithProtocol:(id)a3 errorPtr:(id *)a4
+- (BOOL)_startSSLHandshakeWithProtocol:(id)protocol errorPtr:(id *)ptr
 {
   v78 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(_MFSocket *)self stream];
-  if (!v7)
+  protocolCopy = protocol;
+  stream = [(_MFSocket *)self stream];
+  if (!stream)
   {
     v19 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:54 localizedDescription:0];
-    v20 = v19;
-    if (a4)
+    streamError = v19;
+    if (ptr)
     {
       v21 = v19;
-      *a4 = v20;
+      *ptr = streamError;
     }
 
     if (self)
     {
-      v13 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      clientCertificates = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
+      if (os_log_type_enabled(clientCertificates, OS_LOG_TYPE_ERROR))
       {
         mambaID = self->mambaID;
         rumbaID = self->rumbaID;
-        v24 = [v20 domain];
+        domain = [streamError domain];
         *buf = 136316930;
         *v75 = mambaID;
         *&v75[8] = 2080;
@@ -93,28 +93,28 @@
         *&v77[4] = 2080;
         *&v77[6] = "start SSL";
         *&v77[14] = 2112;
-        *&v77[16] = v24;
+        *&v77[16] = domain;
         *&v77[24] = 2048;
         *&v77[26] = 54;
-        _os_log_error_impl(&dword_2720B1000, v13, OS_LOG_TYPE_ERROR, "#E %s%s%{public}@%s*** _NSSocket.m:%d (%s) failed; error=(%@, %ld)", buf, 0x4Eu);
+        _os_log_error_impl(&dword_2720B1000, clientCertificates, OS_LOG_TYPE_ERROR, "#E %s%s%{public}@%s*** _NSSocket.m:%d (%s) failed; error=(%@, %ld)", buf, 0x4Eu);
       }
     }
 
     else
     {
-      v13 = vm_vmd_log();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      clientCertificates = vm_vmd_log();
+      if (os_log_type_enabled(clientCertificates, OS_LOG_TYPE_DEFAULT))
       {
-        v48 = [v20 domain];
+        domain2 = [streamError domain];
         *buf = 67109890;
         *v75 = 1025;
         *&v75[4] = 2080;
         *&v75[6] = "start SSL";
         *&v75[14] = 2112;
-        *&v75[16] = v48;
+        *&v75[16] = domain2;
         *&v75[24] = 2048;
         *&v75[26] = 54;
-        _os_log_impl(&dword_2720B1000, v13, OS_LOG_TYPE_DEFAULT, "*** _NSSocket.m:%d (%s) failed; error=(%@, %ld)", buf, 0x26u);
+        _os_log_impl(&dword_2720B1000, clientCertificates, OS_LOG_TYPE_DEFAULT, "*** _NSSocket.m:%d (%s) failed; error=(%@, %ld)", buf, 0x26u);
       }
     }
 
@@ -122,7 +122,7 @@
   }
 
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-  v9 = [v6 isEqualToString:*MEMORY[0x277CBF098]];
+  v9 = [protocolCopy isEqualToString:*MEMORY[0x277CBF098]];
   v10 = *MEMORY[0x277CBAED8];
   if (v9)
   {
@@ -131,16 +131,16 @@
 
   else
   {
-    v11 = v6;
+    v11 = protocolCopy;
   }
 
   CFDictionarySetValue(Mutable, *MEMORY[0x277CBAEB0], v11);
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{-[_MFSocket disableEphemeralDiffieHellmanCiphers](self, "disableEphemeralDiffieHellmanCiphers")}];
   CFDictionarySetValue(Mutable, *MEMORY[0x277CBACC0], v12);
-  v13 = [(_MFSocket *)self clientCertificates];
-  if (v13)
+  clientCertificates = [(_MFSocket *)self clientCertificates];
+  if (clientCertificates)
   {
-    CFDictionarySetValue(Mutable, *MEMORY[0x277CBAE98], v13);
+    CFDictionarySetValue(Mutable, *MEMORY[0x277CBAE98], clientCertificates);
   }
 
   CFDictionarySetValue(Mutable, *MEMORY[0x277CBAED0], *MEMORY[0x277CBED10]);
@@ -148,27 +148,27 @@
   *&self->_socketCanRead = 0;
   [(NSCondition *)self->_rw_condition unlock];
   v14 = *MEMORY[0x277CBAE68];
-  v15 = [v7 setProperty:Mutable forKey:*MEMORY[0x277CBAE68]];
+  v15 = [stream setProperty:Mutable forKey:*MEMORY[0x277CBAE68]];
   CFRelease(Mutable);
   if (v15)
   {
-    v16 = [(_MFSocket *)self _waitForSocketOpenAndFlag];
+    _waitForSocketOpenAndFlag = [(_MFSocket *)self _waitForSocketOpenAndFlag];
     [(NSCondition *)self->_rw_condition lock];
     if (self->_socketCanWrite)
     {
-      v17 = [(_MFSocket *)self stream];
-      v18 = [v17 isOpen];
+      stream2 = [(_MFSocket *)self stream];
+      isOpen = [stream2 isOpen];
     }
 
     else
     {
-      v18 = 0;
+      isOpen = 0;
     }
 
     [(NSCondition *)self->_rw_condition unlock];
-    if (v18)
+    if (isOpen)
     {
-      v29 = [v7 propertyForKey:*MEMORY[0x277CBAE60]];
+      v29 = [stream propertyForKey:*MEMORY[0x277CBAE60]];
       if (v29)
       {
         error = 0;
@@ -193,9 +193,9 @@
             _os_log_impl(&dword_2720B1000, v31, OS_LOG_TYPE_DEFAULT, "#W %s%s%{public}@%suntrusted certificate, error: %@", buf, 0x34u);
           }
 
-          if (a4)
+          if (ptr)
           {
-            *a4 = error;
+            *ptr = error;
           }
         }
 
@@ -211,9 +211,9 @@
           {
             v36 = self->mambaID;
             v35 = self->rumbaID;
-            v37 = [(_MFSocket *)self securityProtocol];
-            v38 = [(_MFSocket *)self _negotiatedProtocolVersion];
-            v39 = [v7 propertyForKey:v14];
+            securityProtocol = [(_MFSocket *)self securityProtocol];
+            _negotiatedProtocolVersion = [(_MFSocket *)self _negotiatedProtocolVersion];
+            v39 = [stream propertyForKey:v14];
             *buf = 136316674;
             *v75 = v36;
             *&v75[8] = 2080;
@@ -223,15 +223,15 @@
             *&v75[28] = 2080;
             *&v75[30] = " ";
             v76 = 2114;
-            *v77 = v37;
+            *v77 = securityProtocol;
             *&v77[8] = 2114;
-            *&v77[10] = v38;
+            *&v77[10] = _negotiatedProtocolVersion;
             *&v77[18] = 2112;
             *&v77[20] = v39;
             _os_log_impl(&dword_2720B1000, v34, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%sSSL handshake completed successfully: %{public}@ %{public}@, %@", buf, 0x48u);
           }
 
-          v20 = 0;
+          streamError = 0;
           v40 = 1;
 LABEL_56:
 
@@ -239,23 +239,23 @@ LABEL_56:
         }
       }
 
-      v20 = 0;
+      streamError = 0;
       goto LABEL_44;
     }
 
-    v20 = [v7 streamError];
-    v41 = [v20 domain];
+    streamError = [stream streamError];
+    domain3 = [streamError domain];
     v42 = *MEMORY[0x277CCA670];
-    v43 = [v41 isEqualToString:*MEMORY[0x277CCA670]];
+    v43 = [domain3 isEqualToString:*MEMORY[0x277CCA670]];
 
     if (v43)
     {
-      v44 = [MEMORY[0x277CCA9B8] errorWithDomain:v42 code:objc_msgSend(v20 localizedDescription:{"code"), 0}];
+      v44 = [MEMORY[0x277CCA9B8] errorWithDomain:v42 code:objc_msgSend(streamError localizedDescription:{"code"), 0}];
       v26 = v44;
-      if (a4)
+      if (ptr)
       {
         v45 = v44;
-        *a4 = v26;
+        *ptr = v26;
       }
 
       v28 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
@@ -263,7 +263,7 @@ LABEL_56:
       {
         v46 = self->mambaID;
         v47 = self->rumbaID;
-        v72 = [v26 domain];
+        domain4 = [v26 domain];
         *buf = 136316930;
         *v75 = v46;
         *&v75[8] = 2080;
@@ -277,26 +277,26 @@ LABEL_56:
         *&v77[4] = 2080;
         *&v77[6] = "SSL negotiation failed";
         *&v77[14] = 2112;
-        *&v77[16] = v72;
+        *&v77[16] = domain4;
         *&v77[24] = 2048;
-        *&v77[26] = [v20 code];
+        *&v77[26] = [streamError code];
         _os_log_error_impl(&dword_2720B1000, v28, OS_LOG_TYPE_ERROR, "#E %s%s%{public}@%s*** _NSSocket.m:%d (%s) failed; error=(%@, %ld)", buf, 0x4Eu);
       }
     }
 
     else
     {
-      if (v16)
+      if (_waitForSocketOpenAndFlag)
       {
         goto LABEL_44;
       }
 
       v57 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:60 localizedDescription:0];
       v26 = v57;
-      if (a4)
+      if (ptr)
       {
         v58 = v57;
-        *a4 = v26;
+        *ptr = v26;
       }
 
       v28 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
@@ -330,10 +330,10 @@ LABEL_56:
   {
     v25 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA670] code:1029 localizedDescription:0];
     v26 = v25;
-    if (a4)
+    if (ptr)
     {
       v27 = v25;
-      *a4 = v26;
+      *ptr = v26;
     }
 
     v28 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
@@ -341,7 +341,7 @@ LABEL_56:
     {
       v63 = self->mambaID;
       v62 = self->rumbaID;
-      v64 = [v26 domain];
+      domain5 = [v26 domain];
       *buf = 136316930;
       *v75 = v63;
       *&v75[8] = 2080;
@@ -355,33 +355,33 @@ LABEL_56:
       *&v77[4] = 2080;
       *&v77[6] = "Failed to set SSL properties";
       *&v77[14] = 2112;
-      *&v77[16] = v64;
+      *&v77[16] = domain5;
       *&v77[24] = 2048;
       *&v77[26] = 1029;
       _os_log_error_impl(&dword_2720B1000, v28, OS_LOG_TYPE_ERROR, "#E %s%s%{public}@%s*** _NSSocket.m:%d (%s) failed; error=(%@, %ld)", buf, 0x4Eu);
     }
 
-    v20 = 0;
+    streamError = 0;
   }
 
 LABEL_44:
-  if (a4 && !*a4)
+  if (ptr && !*ptr)
   {
     v51 = MEMORY[0x277CCA9B8];
-    if (v20)
+    if (streamError)
     {
-      v52 = [v20 domain];
-      v34 = [v51 errorWithDomain:v52 code:objc_msgSend(v20 localizedDescription:{"code"), 0}];
+      domain6 = [streamError domain];
+      v34 = [v51 errorWithDomain:domain6 code:objc_msgSend(streamError localizedDescription:{"code"), 0}];
 
       v53 = v34;
-      *a4 = v34;
+      *ptr = v34;
       v54 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
       if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
       {
         v66 = self->mambaID;
         v65 = self->rumbaID;
-        v67 = [v34 domain];
-        v68 = [v20 code];
+        domain7 = [v34 domain];
+        code = [streamError code];
         *buf = 136316930;
         *v75 = v66;
         *&v75[8] = 2080;
@@ -395,9 +395,9 @@ LABEL_44:
         *&v77[4] = 2080;
         *&v77[6] = "CFReadStreamSetProperty()";
         *&v77[14] = 2112;
-        *&v77[16] = v67;
+        *&v77[16] = domain7;
         *&v77[24] = 2048;
-        *&v77[26] = v68;
+        *&v77[26] = code;
         _os_log_error_impl(&dword_2720B1000, v54, OS_LOG_TYPE_ERROR, "#E %s%s%{public}@%s*** _NSSocket.m:%d (%s) failed; error=(%@, %ld)", buf, 0x4Eu);
       }
     }
@@ -406,13 +406,13 @@ LABEL_44:
     {
       v34 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1029 localizedDescription:0];
       v55 = v34;
-      *a4 = v34;
+      *ptr = v34;
       v56 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
       if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
       {
         v70 = self->mambaID;
         v69 = self->rumbaID;
-        v71 = [v34 domain];
+        domain8 = [v34 domain];
         *buf = 136316930;
         *v75 = v70;
         *&v75[8] = 2080;
@@ -426,13 +426,13 @@ LABEL_44:
         *&v77[4] = 2080;
         *&v77[6] = "CFReadStreamSetProperty()";
         *&v77[14] = 2112;
-        *&v77[16] = v71;
+        *&v77[16] = domain8;
         *&v77[24] = 2048;
         *&v77[26] = 1029;
         _os_log_error_impl(&dword_2720B1000, v56, OS_LOG_TYPE_ERROR, "#E %s%s%{public}@%s*** _NSSocket.m:%d (%s) failed; error=(%@, %ld)", buf, 0x4Eu);
       }
 
-      v20 = 0;
+      streamError = 0;
     }
 
     v40 = 0;
@@ -452,10 +452,10 @@ LABEL_47:
   [(NSCondition *)self->_rw_condition lock];
   while (!self->_socketCanWrite)
   {
-    v3 = [(_MFSocket *)self stream];
-    v4 = [v3 isOpen];
+    stream = [(_MFSocket *)self stream];
+    isOpen = [stream isOpen];
 
-    if (!v4)
+    if (!isOpen)
     {
       break;
     }
@@ -479,8 +479,8 @@ LABEL_7:
 
 - (id)securityProtocol
 {
-  v2 = [(_MFSocket *)self stream];
-  v3 = [v2 propertyForKey:*MEMORY[0x277CBF090]];
+  stream = [(_MFSocket *)self stream];
+  v3 = [stream propertyForKey:*MEMORY[0x277CBF090]];
 
   if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -492,31 +492,31 @@ LABEL_7:
   return v3;
 }
 
-- (BOOL)setSecurityProtocol:(id)a3
+- (BOOL)setSecurityProtocol:(id)protocol
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_MFSocket *)self protocol];
-  if ([v5 isEqualToString:v4])
+  protocolCopy = protocol;
+  protocol = [(_MFSocket *)self protocol];
+  if ([protocol isEqualToString:protocolCopy])
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = v5;
-    [(_MFSocket *)self setProtocol:v4];
+    v6 = protocol;
+    [(_MFSocket *)self setProtocol:protocolCopy];
   }
 
-  v7 = [(_MFSocket *)self stream];
-  v8 = v7;
-  if (!v7 || !v4 || v6 == v4)
+  stream = [(_MFSocket *)self stream];
+  v8 = stream;
+  if (!stream || !protocolCopy || v6 == protocolCopy)
   {
 
     goto LABEL_14;
   }
 
-  v9 = [v4 isEqualToString:*MEMORY[0x277CBF0A0]];
+  v9 = [protocolCopy isEqualToString:*MEMORY[0x277CBF0A0]];
 
   if (v9)
   {
@@ -526,7 +526,7 @@ LABEL_14:
   }
 
   v21 = 0;
-  v10 = [(_MFSocket *)self _startSSLHandshakeWithProtocol:v4 errorPtr:&v21];
+  v10 = [(_MFSocket *)self _startSSLHandshakeWithProtocol:protocolCopy errorPtr:&v21];
   v11 = v21;
   v12 = v11;
   if (!v10)
@@ -541,7 +541,7 @@ LABEL_14:
         {
           mambaID = self->mambaID;
           rumbaID = self->rumbaID;
-          v16 = [v12 domain];
+          domain = [v12 domain];
           *buf = 136316930;
           *v23 = mambaID;
           *&v23[8] = 2080;
@@ -555,7 +555,7 @@ LABEL_14:
           v26 = 2080;
           v27 = "set security protocol";
           v28 = 2112;
-          v29 = v16;
+          v29 = domain;
           v30 = 2048;
           v31 = 1029;
           _os_log_error_impl(&dword_2720B1000, v13, OS_LOG_TYPE_ERROR, "#E %s%s%{public}@%s*** _NSSocket.m:%d (%s) failed; error=(%@, %ld)", buf, 0x4Eu);
@@ -567,13 +567,13 @@ LABEL_14:
         v13 = vm_vmd_log();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [v12 domain];
+          domain2 = [v12 domain];
           *buf = 67109890;
           *v23 = 1171;
           *&v23[4] = 2080;
           *&v23[6] = "set security protocol";
           *&v23[14] = 2112;
-          *&v23[16] = v19;
+          *&v23[16] = domain2;
           *&v23[24] = 2048;
           *&v23[26] = 1029;
           _os_log_impl(&dword_2720B1000, v13, OS_LOG_TYPE_DEFAULT, "*** _NSSocket.m:%d (%s) failed; error=(%@, %ld)", buf, 0x26u);
@@ -611,16 +611,16 @@ LABEL_15:
   return v2;
 }
 
-- (void)setConnectionServiceType:(__CFString *)a3
+- (void)setConnectionServiceType:(__CFString *)type
 {
-  v4 = a3;
+  typeCopy = type;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38___MFSocket_setConnectionServiceType___block_invoke;
   v6[3] = &unk_279E34500;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = typeCopy;
+  v5 = typeCopy;
   [(_MFSocket *)self performAtomicAccessorBlock:v6];
 }
 
@@ -642,10 +642,10 @@ LABEL_15:
   return v2;
 }
 
-- (void)setSettings:(id)a3
+- (void)setSettings:(id)settings
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -660,33 +660,33 @@ LABEL_15:
     v20 = 2080;
     v21 = " ";
     v22 = 2048;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
-    v25 = v4;
+    v25 = settingsCopy;
     _os_log_impl(&dword_2720B1000, v5, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%ssocket (%p) setSettings:%@", &v14, 0x3Eu);
   }
 
-  -[_MFSocket setConnectionServiceType:](self, "setConnectionServiceType:", [v4 connectionServiceType]);
-  -[_MFSocket setUsesOpportunisticSockets:](self, "setUsesOpportunisticSockets:", [v4 usesOpportunisticSockets]);
-  v8 = [v4 sourceApplicationBundleIdentifier];
-  [(_MFSocket *)self setSourceApplicationBundleIdentifier:v8];
+  -[_MFSocket setConnectionServiceType:](self, "setConnectionServiceType:", [settingsCopy connectionServiceType]);
+  -[_MFSocket setUsesOpportunisticSockets:](self, "setUsesOpportunisticSockets:", [settingsCopy usesOpportunisticSockets]);
+  sourceApplicationBundleIdentifier = [settingsCopy sourceApplicationBundleIdentifier];
+  [(_MFSocket *)self setSourceApplicationBundleIdentifier:sourceApplicationBundleIdentifier];
 
-  v9 = [v4 accountIdentifier];
-  [(_MFSocket *)self setAccountIdentifier:v9];
+  accountIdentifier = [settingsCopy accountIdentifier];
+  [(_MFSocket *)self setAccountIdentifier:accountIdentifier];
 
-  v10 = [v4 networkAccountIdentifier];
-  [(_MFSocket *)self setNetworkAccountIdentifier:v10];
+  networkAccountIdentifier = [settingsCopy networkAccountIdentifier];
+  [(_MFSocket *)self setNetworkAccountIdentifier:networkAccountIdentifier];
 
-  v11 = [v4 clientCertificates];
-  LOBYTE(v10) = v11 == 0;
+  clientCertificates = [settingsCopy clientCertificates];
+  LOBYTE(networkAccountIdentifier) = clientCertificates == 0;
 
-  if ((v10 & 1) == 0)
+  if ((networkAccountIdentifier & 1) == 0)
   {
-    v12 = [v4 clientCertificates];
-    [(_MFSocket *)self setClientCertificates:v12];
+    clientCertificates2 = [settingsCopy clientCertificates];
+    [(_MFSocket *)self setClientCertificates:clientCertificates2];
   }
 
-  if ([v4 tryDirectSSL])
+  if ([settingsCopy tryDirectSSL])
   {
     [(_MFSocket *)self setSecurityProtocol:*MEMORY[0x277CBF098]];
   }
@@ -694,14 +694,14 @@ LABEL_15:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTimeout:(int)a3
+- (void)setTimeout:(int)timeout
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __24___MFSocket_setTimeout___block_invoke;
   v3[3] = &unk_279E345C8;
   v3[4] = self;
-  v4 = a3;
+  timeoutCopy = timeout;
   [(_MFSocket *)self performAtomicAccessorBlock:v3];
 }
 
@@ -723,10 +723,10 @@ LABEL_15:
   return v2;
 }
 
-- (_MFSocket)initWithMambaID:(const char *)a3 rumba:(id)a4
+- (_MFSocket)initWithMambaID:(const char *)d rumba:(id)rumba
 {
   v9 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  rumbaCopy = rumba;
   v8.receiver = self;
   v8.super_class = _MFSocket;
   if ([(_MFSocket *)&v8 init])
@@ -762,7 +762,7 @@ LABEL_15:
     v15 = 2080;
     v16 = " ";
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2720B1000, v3, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%ssocket (%p) deleted", buf, 0x34u);
   }
 
@@ -775,13 +775,13 @@ LABEL_15:
 - (void)__abort
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(_MFSocket *)self stream];
+  stream = [(_MFSocket *)self stream];
 
-  if (v3)
+  if (stream)
   {
-    v4 = [(_MFSocket *)self stream];
+    stream2 = [(_MFSocket *)self stream];
     [(_MFSocket *)self setStream:0];
-    [v4 close];
+    [stream2 close];
     [(NSCondition *)self->_rw_condition lock];
     *&self->_socketCanRead = 0;
     [(NSCondition *)self->_rw_condition broadcast];
@@ -803,15 +803,15 @@ LABEL_15:
       v18 = 2080;
       v19 = " ";
       v20 = 2048;
-      v21 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_2720B1000, v6, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%ssocket (%p) aborted, stream closed", &v12, 0x34u);
     }
   }
 
   else
   {
-    v4 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    stream2 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
+    if (os_log_type_enabled(stream2, OS_LOG_TYPE_DEFAULT))
     {
       v9 = self->mambaID;
       v10 = self->rumbaID;
@@ -824,8 +824,8 @@ LABEL_15:
       v18 = 2080;
       v19 = " ";
       v20 = 2048;
-      v21 = self;
-      _os_log_impl(&dword_2720B1000, v4, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%ssocket (%p) unexpected abort, stream already closed", &v12, 0x34u);
+      selfCopy2 = self;
+      _os_log_impl(&dword_2720B1000, stream2, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%ssocket (%p) unexpected abort, stream already closed", &v12, 0x34u);
     }
   }
 
@@ -844,16 +844,16 @@ LABEL_15:
 
 - (BOOL)isValid
 {
-  v2 = [(_MFSocket *)self stream];
-  v3 = [v2 isOpen];
+  stream = [(_MFSocket *)self stream];
+  isOpen = [stream isOpen];
 
-  return v3;
+  return isOpen;
 }
 
-- (BOOL)connectToHost:(id)a3 withPort:(unsigned int)a4
+- (BOOL)connectToHost:(id)host withPort:(unsigned int)port
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  hostCopy = host;
   v7 = MFUserAgent();
   [v7 networkActivityStarted:self];
 
@@ -868,11 +868,11 @@ LABEL_15:
   v46[4] = self;
   v11 = [(MFStream *)v8 initWithMambaID:mambaID rumba:rumbaID callBack:v46 onDispatchQueue:self->_socket_from_stream_callback_queue];
   [(_MFSocket *)self setStream:v11];
-  v12 = [(_MFSocket *)self getConnectionServiceType];
+  getConnectionServiceType = [(_MFSocket *)self getConnectionServiceType];
   v13 = MEMORY[0x277CBED28];
-  if (v12)
+  if (getConnectionServiceType)
   {
-    [(MFStream *)v11 setProperty:v12 forKey:*MEMORY[0x277CBADD0]];
+    [(MFStream *)v11 setProperty:getConnectionServiceType forKey:*MEMORY[0x277CBADD0]];
     [(MFStream *)v11 setProperty:*v13 forKey:*MEMORY[0x277CBADD8]];
   }
 
@@ -893,22 +893,22 @@ LABEL_15:
   v16 = [v42 copy];
   [(MFStream *)v11 setProperty:v16 forKey:*MEMORY[0x277CBAC98]];
 
-  v17 = [(_MFSocket *)self sourceApplicationBundleIdentifier];
-  LOBYTE(v16) = v17 == 0;
+  sourceApplicationBundleIdentifier = [(_MFSocket *)self sourceApplicationBundleIdentifier];
+  LOBYTE(v16) = sourceApplicationBundleIdentifier == 0;
 
   if ((v16 & 1) == 0)
   {
-    v18 = [(_MFSocket *)self sourceApplicationBundleIdentifier];
-    [(MFStream *)v11 setProperty:v18 forKey:*MEMORY[0x277CBAE78]];
+    sourceApplicationBundleIdentifier2 = [(_MFSocket *)self sourceApplicationBundleIdentifier];
+    [(MFStream *)v11 setProperty:sourceApplicationBundleIdentifier2 forKey:*MEMORY[0x277CBAE78]];
   }
 
-  v19 = [(_MFSocket *)self networkAccountIdentifier];
-  v20 = v19 == 0;
+  networkAccountIdentifier = [(_MFSocket *)self networkAccountIdentifier];
+  v20 = networkAccountIdentifier == 0;
 
   if (!v20)
   {
-    v21 = [(_MFSocket *)self networkAccountIdentifier];
-    [(MFStream *)v11 setProperty:v21 forKey:*MEMORY[0x277CBADA0]];
+    networkAccountIdentifier2 = [(_MFSocket *)self networkAccountIdentifier];
+    [(MFStream *)v11 setProperty:networkAccountIdentifier2 forKey:*MEMORY[0x277CBADA0]];
   }
 
   v22 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
@@ -916,7 +916,7 @@ LABEL_15:
   {
     v24 = self->mambaID;
     v23 = self->rumbaID;
-    v25 = [(_MFSocket *)self networkAccountIdentifier];
+    networkAccountIdentifier3 = [(_MFSocket *)self networkAccountIdentifier];
     *buf = 136316930;
     v48 = v24;
     v49 = 2080;
@@ -930,17 +930,17 @@ LABEL_15:
     *&v56[8] = 2048;
     *&v56[10] = v11;
     *&v56[18] = 2112;
-    *&v56[20] = v6;
+    *&v56[20] = hostCopy;
     *&v56[28] = 2112;
-    *&v56[30] = v25;
+    *&v56[30] = networkAccountIdentifier3;
     _os_log_impl(&dword_2720B1000, v22, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%ssocket %p (stream %p) opening connection to %@ (network account id: %@)", buf, 0x52u);
   }
 
-  v26 = [VCIDNAEncoder stringByEncodingDomainName:v6];
-  [(MFStream *)v11 openToHostName:v26 port:a4];
-  v27 = [(_MFSocket *)self protocol];
-  v28 = v27;
-  if (!v27 || ([v27 isEqualToString:*MEMORY[0x277CBF0A0]] & 1) != 0)
+  v26 = [VCIDNAEncoder stringByEncodingDomainName:hostCopy];
+  [(MFStream *)v11 openToHostName:v26 port:port];
+  protocol = [(_MFSocket *)self protocol];
+  v28 = protocol;
+  if (!protocol || ([protocol isEqualToString:*MEMORY[0x277CBF0A0]] & 1) != 0)
   {
     v29 = 0;
 LABEL_14:
@@ -956,8 +956,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v35 = [v15 error];
-  v30 = v35 == 0;
+  error = [v15 error];
+  v30 = error == 0;
 
   if (v30)
   {
@@ -969,7 +969,7 @@ LABEL_14:
       {
         v37 = self->mambaID;
         v40 = self->rumbaID;
-        v38 = [v29 domain];
+        domain = [v29 domain];
         *buf = 136316930;
         v48 = v37;
         v49 = 2080;
@@ -983,10 +983,10 @@ LABEL_14:
         *&v56[4] = 2080;
         *&v56[6] = "connect";
         *&v56[14] = 2112;
-        *&v56[16] = v38;
+        *&v56[16] = domain;
         *&v56[24] = 2048;
         *&v56[26] = 1029;
-        v39 = v38;
+        v39 = domain;
         _os_log_error_impl(&dword_2720B1000, v36, OS_LOG_TYPE_ERROR, "#E %s%s%{public}@%s*** _NSSocket.m:%d (%s) failed; error=(%@, %ld)", buf, 0x4Eu);
       }
     }
@@ -1024,23 +1024,23 @@ LABEL_15:
   return v2;
 }
 
-- (int64_t)writeBytes:(const char *)a3 length:(unint64_t)a4
+- (int64_t)writeBytes:(const char *)bytes length:(unint64_t)length
 {
   v48 = *MEMORY[0x277D85DE8];
   v7 = MFUserAgent();
   [v7 networkActivityStarted:self];
 
   MFAssertNetworkActivityAllowed();
-  v8 = [(_MFSocket *)self threadsafe_bufferedByteCount];
+  threadsafe_bufferedByteCount = [(_MFSocket *)self threadsafe_bufferedByteCount];
   [(NSCondition *)self->_rw_condition lock];
-  v9 = [(_MFSocket *)self stream];
-  while (!self->_socketCanWrite && [v9 isOpen])
+  stream = [(_MFSocket *)self stream];
+  while (!self->_socketCanWrite && [stream isOpen])
   {
     rw_condition = self->_rw_condition;
     v11 = MEMORY[0x277CBEAA8];
-    v12 = [(_MFSocket *)self timeout];
-    v13 = v12;
-    if (!v12)
+    timeout = [(_MFSocket *)self timeout];
+    v13 = timeout;
+    if (!timeout)
     {
       v13 = 1.79769313e308;
     }
@@ -1050,9 +1050,9 @@ LABEL_15:
 
     if (!v15)
     {
-      v16 = [(_MFSocket *)self threadsafe_bufferedByteCount];
-      v17 = v8 == v16;
-      v8 = v16;
+      threadsafe_bufferedByteCount2 = [(_MFSocket *)self threadsafe_bufferedByteCount];
+      v17 = threadsafe_bufferedByteCount == threadsafe_bufferedByteCount2;
+      threadsafe_bufferedByteCount = threadsafe_bufferedByteCount2;
       if (v17)
       {
         break;
@@ -1060,11 +1060,11 @@ LABEL_15:
     }
   }
 
-  if (self->_socketCanWrite && [v9 isOpen])
+  if (self->_socketCanWrite && [stream isOpen])
   {
     self->_socketCanWrite = 0;
     [(NSCondition *)self->_rw_condition unlock];
-    v18 = [v9 write:a3 maxLength:a4];
+    v18 = [stream write:bytes maxLength:length];
     if ((v18 & 0x8000000000000000) == 0)
     {
       goto LABEL_19;
@@ -1077,15 +1077,15 @@ LABEL_15:
     v18 = -1;
   }
 
-  v19 = [v9 streamError];
-  if (!v19)
+  streamError = [stream streamError];
+  if (!streamError)
   {
-    v19 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:60 userInfo:0];
+    streamError = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:60 userInfo:0];
   }
 
   v20 = MEMORY[0x277CCA9B8];
-  v21 = [v19 domain];
-  v22 = [v20 errorWithDomain:v21 code:objc_msgSend(v19 localizedDescription:{"code"), 0}];
+  domain = [streamError domain];
+  v22 = [v20 errorWithDomain:domain code:objc_msgSend(streamError localizedDescription:{"code"), 0}];
 
   v23 = v22;
   v24 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
@@ -1093,7 +1093,7 @@ LABEL_15:
   {
     mambaID = self->mambaID;
     rumbaID = self->rumbaID;
-    v31 = [v23 domain];
+    domain2 = [v23 domain];
     v32 = 136316930;
     v33 = mambaID;
     v34 = 2080;
@@ -1107,9 +1107,9 @@ LABEL_15:
     v42 = 2080;
     v43 = "write";
     v44 = 2112;
-    v45 = v31;
+    v45 = domain2;
     v46 = 2048;
-    v47 = [v19 code];
+    code = [streamError code];
     _os_log_error_impl(&dword_2720B1000, v24, OS_LOG_TYPE_ERROR, "#E %s%s%{public}@%s*** _NSSocket.m:%d (%s) failed; error=(%@, %ld)", &v32, 0x4Eu);
   }
 
@@ -1124,7 +1124,7 @@ LABEL_19:
   return v18;
 }
 
-- (int64_t)readBytes:(char *)a3 length:(unint64_t)a4
+- (int64_t)readBytes:(char *)bytes length:(unint64_t)length
 {
   v49 = *MEMORY[0x277D85DE8];
   v7 = +[MFActivityMonitor currentMonitor];
@@ -1134,16 +1134,16 @@ LABEL_19:
     [v13 networkActivityStarted:self];
 
     MFAssertNetworkActivityAllowed();
-    v14 = [(_MFSocket *)self threadsafe_bufferedByteCount];
+    threadsafe_bufferedByteCount = [(_MFSocket *)self threadsafe_bufferedByteCount];
     [(NSCondition *)self->_rw_condition lock];
-    v8 = [(_MFSocket *)self stream];
-    while (!self->_socketCanRead && [v8 isOpen])
+    stream = [(_MFSocket *)self stream];
+    while (!self->_socketCanRead && [stream isOpen])
     {
       rw_condition = self->_rw_condition;
       v16 = MEMORY[0x277CBEAA8];
-      v17 = [(_MFSocket *)self timeout];
-      v18 = v17;
-      if (!v17)
+      timeout = [(_MFSocket *)self timeout];
+      v18 = timeout;
+      if (!timeout)
       {
         v18 = 1.79769313e308;
       }
@@ -1153,9 +1153,9 @@ LABEL_19:
 
       if (!v20)
       {
-        v21 = [(_MFSocket *)self threadsafe_bufferedByteCount];
-        v22 = v14 == v21;
-        v14 = v21;
+        threadsafe_bufferedByteCount2 = [(_MFSocket *)self threadsafe_bufferedByteCount];
+        v22 = threadsafe_bufferedByteCount == threadsafe_bufferedByteCount2;
+        threadsafe_bufferedByteCount = threadsafe_bufferedByteCount2;
         if (v22)
         {
           break;
@@ -1163,11 +1163,11 @@ LABEL_19:
       }
     }
 
-    if (self->_socketCanRead && [v8 isOpen])
+    if (self->_socketCanRead && [stream isOpen])
     {
       self->_socketCanRead = 0;
       [(NSCondition *)self->_rw_condition unlock];
-      v23 = [v8 read:a3 maxLength:a4];
+      v23 = [stream read:bytes maxLength:length];
       if (v23 != -1)
       {
 LABEL_23:
@@ -1183,16 +1183,16 @@ LABEL_23:
       [(NSCondition *)self->_rw_condition unlock];
     }
 
-    v24 = [v8 streamError];
+    streamError = [stream streamError];
     v25 = 0x279E32000uLL;
-    if (!v24)
+    if (!streamError)
     {
-      v24 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:60 userInfo:0];
+      streamError = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:60 userInfo:0];
     }
 
     v26 = MEMORY[0x277CCA9B8];
-    v27 = [v24 domain];
-    v28 = [v26 errorWithDomain:v27 code:objc_msgSend(v24 localizedDescription:{"code"), 0}];
+    domain = [streamError domain];
+    v28 = [v26 errorWithDomain:domain code:objc_msgSend(streamError localizedDescription:{"code"), 0}];
 
     v29 = v28;
     v30 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
@@ -1200,7 +1200,7 @@ LABEL_23:
     {
       mambaID = self->mambaID;
       rumbaID = self->rumbaID;
-      v38 = [v29 domain];
+      domain2 = [v29 domain];
       v39 = 136316930;
       *v40 = mambaID;
       *&v40[8] = 2080;
@@ -1214,22 +1214,22 @@ LABEL_23:
       v43 = 2080;
       v44 = "read";
       v45 = 2112;
-      v46 = v38;
+      v46 = domain2;
       v47 = 2048;
-      v48 = [v24 code];
+      code = [streamError code];
       _os_log_error_impl(&dword_2720B1000, v30, OS_LOG_TYPE_ERROR, "#E %s%s%{public}@%s*** _NSSocket.m:%d (%s) failed; error=(%@, %ld)", &v39, 0x4Eu);
 
       v25 = 0x279E32000;
     }
 
-    v31 = [*(v25 + 2416) currentMonitor];
-    [v31 setError:v29];
+    currentMonitor = [*(v25 + 2416) currentMonitor];
+    [currentMonitor setError:v29];
 
     v23 = -1;
     goto LABEL_23;
   }
 
-  v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1028 localizedDescription:0];
+  stream = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1028 localizedDescription:0];
   if (self)
   {
     v9 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
@@ -1237,7 +1237,7 @@ LABEL_23:
     {
       v11 = self->mambaID;
       v10 = self->rumbaID;
-      v12 = [v8 domain];
+      domain3 = [stream domain];
       v39 = 136316930;
       *v40 = v11;
       *&v40[8] = 2080;
@@ -1251,9 +1251,9 @@ LABEL_23:
       v43 = 2080;
       v44 = "read";
       v45 = 2112;
-      v46 = v12;
+      v46 = domain3;
       v47 = 2048;
-      v48 = 1028;
+      code = 1028;
       _os_log_error_impl(&dword_2720B1000, v9, OS_LOG_TYPE_ERROR, "#E %s%s%{public}@%s*** _NSSocket.m:%d (%s) failed; error=(%@, %ld)", &v39, 0x4Eu);
     }
   }
@@ -1263,20 +1263,20 @@ LABEL_23:
     v9 = vm_vmd_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [v8 domain];
+      domain4 = [stream domain];
       v39 = 67109890;
       *v40 = 1583;
       *&v40[4] = 2080;
       *&v40[6] = "read";
       *&v40[14] = 2112;
-      *&v40[16] = v33;
+      *&v40[16] = domain4;
       *&v40[24] = 2048;
       *&v40[26] = 1028;
       _os_log_impl(&dword_2720B1000, v9, OS_LOG_TYPE_DEFAULT, "*** _NSSocket.m:%d (%s) failed; error=(%@, %ld)", &v39, 0x26u);
     }
   }
 
-  [v7 setError:v8];
+  [v7 setError:stream];
   v23 = -1;
 LABEL_27:
 
@@ -1284,16 +1284,16 @@ LABEL_27:
   return v23;
 }
 
-- (void)setEventHandler:(id)a3
+- (void)setEventHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __29___MFSocket_setEventHandler___block_invoke;
   v6[3] = &unk_279E34500;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(_MFSocket *)self performAtomicAccessorBlock:v6];
 }
 
@@ -1318,16 +1318,16 @@ LABEL_27:
   return v2;
 }
 
-- (void)setClosingEventHandler:(id)a3
+- (void)setClosingEventHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36___MFSocket_setClosingEventHandler___block_invoke;
   v6[3] = &unk_279E34500;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(_MFSocket *)self performAtomicAccessorBlock:v6];
 }
 
@@ -1409,27 +1409,27 @@ LABEL_27:
   return v2;
 }
 
-- (void)enableThroughputMonitoring:(BOOL)a3
+- (void)enableThroughputMonitoring:(BOOL)monitoring
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __40___MFSocket_enableThroughputMonitoring___block_invoke;
   v3[3] = &unk_279E34640;
   v3[4] = self;
-  v4 = a3;
+  monitoringCopy = monitoring;
   execute_on_networkthread_sync(v3);
 }
 
-- (void)performAtomicAccessorBlock:(id)a3
+- (void)performAtomicAccessorBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = v4;
+    v5 = blockCopy;
     os_unfair_lock_lock_with_options();
     v5[2]();
     os_unfair_lock_unlock(&self->lock);
-    v4 = v5;
+    blockCopy = v5;
   }
 }
 

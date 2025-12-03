@@ -1,22 +1,22 @@
 @interface AWDSymptomsNoBackhaulPopUpMetric
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAction:(id)a3;
-- (int)StringAsNetworkType:(id)a3;
+- (int)StringAsAction:(id)action;
+- (int)StringAsNetworkType:(id)type;
 - (int)action;
 - (int)networkType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAction:(BOOL)a3;
-- (void)setHasNetworkType:(BOOL)a3;
-- (void)setHasNetworksShownAtLeastOnceInLast24Hrs:(BOOL)a3;
-- (void)setHasPopUpShownForSecs:(BOOL)a3;
-- (void)setHasTimeSinceShownOnSameNetworkSecs:(BOOL)a3;
-- (void)setHasTimesShownOnAnyNetworkLast24Hrs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAction:(BOOL)action;
+- (void)setHasNetworkType:(BOOL)type;
+- (void)setHasNetworksShownAtLeastOnceInLast24Hrs:(BOOL)hrs;
+- (void)setHasPopUpShownForSecs:(BOOL)secs;
+- (void)setHasTimeSinceShownOnSameNetworkSecs:(BOOL)secs;
+- (void)setHasTimesShownOnAnyNetworkLast24Hrs:(BOOL)hrs;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSymptomsNoBackhaulPopUpMetric
@@ -34,9 +34,9 @@
   }
 }
 
-- (void)setHasNetworkType:(BOOL)a3
+- (void)setHasNetworkType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -49,20 +49,20 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsNetworkType:(id)a3
+- (int)StringAsNetworkType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WIFI"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"WIFI"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CELLULAR"])
+  else if ([typeCopy isEqualToString:@"CELLULAR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WIRED_ETHERNET"])
+  else if ([typeCopy isEqualToString:@"WIRED_ETHERNET"])
   {
     v4 = 3;
   }
@@ -75,9 +75,9 @@
   return v4;
 }
 
-- (void)setHasPopUpShownForSecs:(BOOL)a3
+- (void)setHasPopUpShownForSecs:(BOOL)secs
 {
-  if (a3)
+  if (secs)
   {
     v3 = 16;
   }
@@ -90,9 +90,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasTimeSinceShownOnSameNetworkSecs:(BOOL)a3
+- (void)setHasTimeSinceShownOnSameNetworkSecs:(BOOL)secs
 {
-  if (a3)
+  if (secs)
   {
     v3 = 32;
   }
@@ -105,9 +105,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasTimesShownOnAnyNetworkLast24Hrs:(BOOL)a3
+- (void)setHasTimesShownOnAnyNetworkLast24Hrs:(BOOL)hrs
 {
-  if (a3)
+  if (hrs)
   {
     v3 = 64;
   }
@@ -120,9 +120,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasNetworksShownAtLeastOnceInLast24Hrs:(BOOL)a3
+- (void)setHasNetworksShownAtLeastOnceInLast24Hrs:(BOOL)hrs
 {
-  if (a3)
+  if (hrs)
   {
     v3 = 8;
   }
@@ -148,9 +148,9 @@
   }
 }
 
-- (void)setHasAction:(BOOL)a3
+- (void)setHasAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 2;
   }
@@ -163,25 +163,25 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsAction:(id)a3
+- (int)StringAsAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SIMULATED_DISPLAY"])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:@"SIMULATED_DISPLAY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"POP_UP_RECALLED_NO_ACTION"])
+  else if ([actionCopy isEqualToString:@"POP_UP_RECALLED_NO_ACTION"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"USE_CELLULAR_DATA_ACTION"])
+  else if ([actionCopy isEqualToString:@"USE_CELLULAR_DATA_ACTION"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KEEP_TRYING_ACTION"])
+  else if ([actionCopy isEqualToString:@"KEEP_TRYING_ACTION"])
   {
     v4 = 4;
   }
@@ -200,20 +200,20 @@
   v8.receiver = self;
   v8.super_class = AWDSymptomsNoBackhaulPopUpMetric;
   v4 = [(AWDSymptomsNoBackhaulPopUpMetric *)&v8 description];
-  v5 = [(AWDSymptomsNoBackhaulPopUpMetric *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDSymptomsNoBackhaulPopUpMetric *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -244,7 +244,7 @@ LABEL_3:
     v7 = *(&off_27898E3D8 + v6);
   }
 
-  [v3 setObject:v7 forKey:@"networkType"];
+  [dictionary setObject:v7 forKey:@"networkType"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -260,7 +260,7 @@ LABEL_4:
 
 LABEL_14:
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_popUpShownForSecs];
-  [v3 setObject:v8 forKey:@"popUpShownForSecs"];
+  [dictionary setObject:v8 forKey:@"popUpShownForSecs"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -276,7 +276,7 @@ LABEL_5:
 
 LABEL_15:
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_timeSinceShownOnSameNetworkSecs];
-  [v3 setObject:v9 forKey:@"timeSinceShownOnSameNetworkSecs"];
+  [dictionary setObject:v9 forKey:@"timeSinceShownOnSameNetworkSecs"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -289,7 +289,7 @@ LABEL_6:
 
 LABEL_17:
     v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_networksShownAtLeastOnceInLast24Hrs];
-    [v3 setObject:v11 forKey:@"networksShownAtLeastOnceInLast24Hrs"];
+    [dictionary setObject:v11 forKey:@"networksShownAtLeastOnceInLast24Hrs"];
 
     if ((*&self->_has & 2) == 0)
     {
@@ -308,14 +308,14 @@ LABEL_18:
       v13 = *(&off_27898E3F0 + v12);
     }
 
-    [v3 setObject:v13 forKey:@"action"];
+    [dictionary setObject:v13 forKey:@"action"];
 
     goto LABEL_22;
   }
 
 LABEL_16:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_timesShownOnAnyNetworkLast24Hrs];
-  [v3 setObject:v10 forKey:@"timesShownOnAnyNetworkLast24Hrs"];
+  [dictionary setObject:v10 forKey:@"timesShownOnAnyNetworkLast24Hrs"];
 
   has = self->_has;
   if ((has & 8) != 0)
@@ -331,12 +331,12 @@ LABEL_7:
 
 LABEL_22:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -432,14 +432,14 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -458,8 +458,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 5) = self->_networkType;
-  *(v4 + 40) |= 4u;
+  *(toCopy + 5) = self->_networkType;
+  *(toCopy + 40) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -473,8 +473,8 @@ LABEL_4:
   }
 
 LABEL_14:
-  *(v4 + 7) = self->_popUpShownForSecs;
-  *(v4 + 40) |= 0x10u;
+  *(toCopy + 7) = self->_popUpShownForSecs;
+  *(toCopy + 40) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -488,8 +488,8 @@ LABEL_5:
   }
 
 LABEL_15:
-  *(v4 + 8) = self->_timeSinceShownOnSameNetworkSecs;
-  *(v4 + 40) |= 0x20u;
+  *(toCopy + 8) = self->_timeSinceShownOnSameNetworkSecs;
+  *(toCopy + 40) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -503,8 +503,8 @@ LABEL_6:
   }
 
 LABEL_16:
-  *(v4 + 9) = self->_timesShownOnAnyNetworkLast24Hrs;
-  *(v4 + 40) |= 0x40u;
+  *(toCopy + 9) = self->_timesShownOnAnyNetworkLast24Hrs;
+  *(toCopy + 40) |= 0x40u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -518,21 +518,21 @@ LABEL_7:
   }
 
 LABEL_17:
-  *(v4 + 6) = self->_networksShownAtLeastOnceInLast24Hrs;
-  *(v4 + 40) |= 8u;
+  *(toCopy + 6) = self->_networksShownAtLeastOnceInLast24Hrs;
+  *(toCopy + 40) |= 8u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_8:
-    *(v4 + 4) = self->_action;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 4) = self->_action;
+    *(toCopy + 40) |= 2u;
   }
 
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -629,23 +629,23 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_36:
     v5 = 0;
@@ -654,73 +654,73 @@ LABEL_36:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_networkType != *(v4 + 5))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_networkType != *(equalCopy + 5))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 40) & 0x10) == 0 || self->_popUpShownForSecs != *(v4 + 7))
+    if ((*(equalCopy + 40) & 0x10) == 0 || self->_popUpShownForSecs != *(equalCopy + 7))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 40) & 0x10) != 0)
+  else if ((*(equalCopy + 40) & 0x10) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 40) & 0x20) == 0 || self->_timeSinceShownOnSameNetworkSecs != *(v4 + 8))
+    if ((*(equalCopy + 40) & 0x20) == 0 || self->_timeSinceShownOnSameNetworkSecs != *(equalCopy + 8))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 40) & 0x20) != 0)
+  else if ((*(equalCopy + 40) & 0x20) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 40) & 0x40) == 0 || self->_timesShownOnAnyNetworkLast24Hrs != *(v4 + 9))
+    if ((*(equalCopy + 40) & 0x40) == 0 || self->_timesShownOnAnyNetworkLast24Hrs != *(equalCopy + 9))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 40) & 0x40) != 0)
+  else if ((*(equalCopy + 40) & 0x40) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 40) & 8) == 0 || self->_networksShownAtLeastOnceInLast24Hrs != *(v4 + 6))
+    if ((*(equalCopy + 40) & 8) == 0 || self->_networksShownAtLeastOnceInLast24Hrs != *(equalCopy + 6))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 40) & 8) != 0)
+  else if ((*(equalCopy + 40) & 8) != 0)
   {
     goto LABEL_36;
   }
 
-  v5 = (*(v4 + 40) & 2) == 0;
+  v5 = (*(equalCopy + 40) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_action != *(v4 + 4))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_action != *(equalCopy + 4))
     {
       goto LABEL_36;
     }
@@ -829,15 +829,15 @@ LABEL_8:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 40);
+  fromCopy = from;
+  v5 = *(fromCopy + 40);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -850,14 +850,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 40) & 4) == 0)
+  else if ((*(fromCopy + 40) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_networkType = *(v4 + 5);
+  self->_networkType = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -870,9 +870,9 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_popUpShownForSecs = *(v4 + 7);
+  self->_popUpShownForSecs = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x20) == 0)
   {
 LABEL_5:
@@ -885,9 +885,9 @@ LABEL_5:
   }
 
 LABEL_15:
-  self->_timeSinceShownOnSameNetworkSecs = *(v4 + 8);
+  self->_timeSinceShownOnSameNetworkSecs = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x40) == 0)
   {
 LABEL_6:
@@ -900,9 +900,9 @@ LABEL_6:
   }
 
 LABEL_16:
-  self->_timesShownOnAnyNetworkLast24Hrs = *(v4 + 9);
+  self->_timesShownOnAnyNetworkLast24Hrs = *(fromCopy + 9);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 8) == 0)
   {
 LABEL_7:
@@ -915,12 +915,12 @@ LABEL_7:
   }
 
 LABEL_17:
-  self->_networksShownAtLeastOnceInLast24Hrs = *(v4 + 6);
+  self->_networksShownAtLeastOnceInLast24Hrs = *(fromCopy + 6);
   *&self->_has |= 8u;
-  if ((*(v4 + 40) & 2) != 0)
+  if ((*(fromCopy + 40) & 2) != 0)
   {
 LABEL_8:
-    self->_action = *(v4 + 4);
+    self->_action = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 

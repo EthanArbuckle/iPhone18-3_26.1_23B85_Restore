@@ -1,47 +1,47 @@
 @interface CHSynthesisModelHashes
-+ (id)modelHashesWithLatinHash:(id)a3 zhJaHash:(id)a4 koHash:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (CHSynthesisModelHashes)initWithCoder:(id)a3;
-- (CHSynthesisModelHashes)initWithLatinHash:(id)a3 zhJaHash:(id)a4 koHash:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateHashKo:(id)a3;
-- (void)updateHashLatin:(id)a3;
-- (void)updateHashZhJa:(id)a3;
++ (id)modelHashesWithLatinHash:(id)hash zhJaHash:(id)jaHash koHash:(id)koHash;
+- (BOOL)isEqual:(id)equal;
+- (CHSynthesisModelHashes)initWithCoder:(id)coder;
+- (CHSynthesisModelHashes)initWithLatinHash:(id)hash zhJaHash:(id)jaHash koHash:(id)koHash;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateHashKo:(id)ko;
+- (void)updateHashLatin:(id)latin;
+- (void)updateHashZhJa:(id)ja;
 @end
 
 @implementation CHSynthesisModelHashes
 
-+ (id)modelHashesWithLatinHash:(id)a3 zhJaHash:(id)a4 koHash:(id)a5
++ (id)modelHashesWithLatinHash:(id)hash zhJaHash:(id)jaHash koHash:(id)koHash
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  hashCopy = hash;
+  jaHashCopy = jaHash;
+  koHashCopy = koHash;
   v10 = [CHSynthesisModelHashes alloc];
-  v13 = objc_msgSend_initWithLatinHash_zhJaHash_koHash_(v10, v11, v7, v8, v9, v12);
+  v13 = objc_msgSend_initWithLatinHash_zhJaHash_koHash_(v10, v11, hashCopy, jaHashCopy, koHashCopy, v12);
 
   return v13;
 }
 
-- (CHSynthesisModelHashes)initWithLatinHash:(id)a3 zhJaHash:(id)a4 koHash:(id)a5
+- (CHSynthesisModelHashes)initWithLatinHash:(id)hash zhJaHash:(id)jaHash koHash:(id)koHash
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  hashCopy = hash;
+  jaHashCopy = jaHash;
+  koHashCopy = koHash;
   v34.receiver = self;
   v34.super_class = CHSynthesisModelHashes;
   v16 = [(CHSynthesisModelHashes *)&v34 init];
   if (v16)
   {
-    v17 = objc_msgSend_copy(v8, v11, v12, v13, v14, v15);
+    v17 = objc_msgSend_copy(hashCopy, v11, v12, v13, v14, v15);
     latin = v16->_latin;
     v16->_latin = v17;
 
-    v24 = objc_msgSend_copy(v9, v19, v20, v21, v22, v23);
+    v24 = objc_msgSend_copy(jaHashCopy, v19, v20, v21, v22, v23);
     zhJa = v16->_zhJa;
     v16->_zhJa = v24;
 
-    v31 = objc_msgSend_copy(v10, v26, v27, v28, v29, v30);
+    v31 = objc_msgSend_copy(koHashCopy, v26, v27, v28, v29, v30);
     ko = v16->_ko;
     v16->_ko = v31;
   }
@@ -49,31 +49,31 @@
   return v16;
 }
 
-- (void)updateHashLatin:(id)a3
+- (void)updateHashLatin:(id)latin
 {
-  v11 = a3;
-  v9 = objc_msgSend_copy(v11, v4, v5, v6, v7, v8);
+  latinCopy = latin;
+  v9 = objc_msgSend_copy(latinCopy, v4, v5, v6, v7, v8);
   latin = self->_latin;
   self->_latin = v9;
 }
 
-- (void)updateHashZhJa:(id)a3
+- (void)updateHashZhJa:(id)ja
 {
-  v11 = a3;
-  v9 = objc_msgSend_copy(v11, v4, v5, v6, v7, v8);
+  jaCopy = ja;
+  v9 = objc_msgSend_copy(jaCopy, v4, v5, v6, v7, v8);
   zhJa = self->_zhJa;
   self->_zhJa = v9;
 }
 
-- (void)updateHashKo:(id)a3
+- (void)updateHashKo:(id)ko
 {
-  v11 = a3;
-  v9 = objc_msgSend_copy(v11, v4, v5, v6, v7, v8);
+  koCopy = ko;
+  v9 = objc_msgSend_copy(koCopy, v4, v5, v6, v7, v8);
   ko = self->_ko;
   self->_ko = v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHSynthesisModelHashes alloc];
   v10 = objc_msgSend_latin(self, v5, v6, v7, v8, v9);
@@ -84,39 +84,39 @@
   return v25;
 }
 
-- (CHSynthesisModelHashes)initWithCoder:(id)a3
+- (CHSynthesisModelHashes)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"synthesisModelHashLAtin", v7, v8);
+  v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"synthesisModelHashLAtin", v7, v8);
   latin = self->_latin;
   self->_latin = v9;
 
   v11 = objc_opt_class();
-  v15 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"synthesisModelHashZhJa", v13, v14);
+  v15 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"synthesisModelHashZhJa", v13, v14);
   zhJa = self->_zhJa;
   self->_zhJa = v15;
 
   v17 = objc_opt_class();
-  v21 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v18, v17, @"synthesisModelHashKo", v19, v20);
+  v21 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v18, v17, @"synthesisModelHashKo", v19, v20);
   ko = self->_ko;
   self->_ko = v21;
 
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  objc_msgSend_encodeObject_forKey_(v13, v4, self->_latin, @"synthesisModelHashLAtin", v5, v6);
-  objc_msgSend_encodeObject_forKey_(v13, v7, self->_zhJa, @"synthesisModelHashZhJa", v8, v9);
-  objc_msgSend_encodeObject_forKey_(v13, v10, self->_ko, @"synthesisModelHashKo", v11, v12);
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v4, self->_latin, @"synthesisModelHashLAtin", v5, v6);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_zhJa, @"synthesisModelHashZhJa", v8, v9);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v10, self->_ko, @"synthesisModelHashKo", v11, v12);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v41 = 1;
   }
@@ -126,7 +126,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v11 = objc_msgSend_latin(self, v6, v7, v8, v9, v10);
       v17 = objc_msgSend_latin(v5, v12, v13, v14, v15, v16);
       v23 = v17;

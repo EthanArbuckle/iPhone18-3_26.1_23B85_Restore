@@ -1,27 +1,27 @@
 @interface PKPeerPaymentAccountInvitation
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentAccountInvitation)initWithCoder:(id)a3;
-- (PKPeerPaymentAccountInvitation)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentAccountInvitation)initWithCoder:(id)coder;
+- (PKPeerPaymentAccountInvitation)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentAccountInvitation
 
-- (PKPeerPaymentAccountInvitation)initWithDictionary:(id)a3
+- (PKPeerPaymentAccountInvitation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = PKPeerPaymentAccountInvitation;
   v5 = [(PKPeerPaymentAccountInvitation *)&v16 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"altDSID"];
+    v6 = [dictionaryCopy PKStringForKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v6;
 
-    v8 = [v4 PKStringForKey:@"status"];
+    v8 = [dictionaryCopy PKStringForKey:@"status"];
     v9 = v8;
     if (v8 != @"pending")
     {
@@ -56,34 +56,34 @@ LABEL_10:
   return v5;
 }
 
-- (PKPeerPaymentAccountInvitation)initWithCoder:(id)a3
+- (PKPeerPaymentAccountInvitation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentAccountInvitation;
   v5 = [(PKPeerPaymentAccountInvitation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v6;
 
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
-    v5->_registrationResult = [v4 decodeIntegerForKey:@"registrationResult"];
-    v5->_remoteRegistrationRequestLevel = [v4 decodeIntegerForKey:@"remoteRegistrationRequestLevel"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"status"];
+    v5->_registrationResult = [coderCopy decodeIntegerForKey:@"registrationResult"];
+    v5->_remoteRegistrationRequestLevel = [coderCopy decodeIntegerForKey:@"remoteRegistrationRequestLevel"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   altDSID = self->_altDSID;
-  v5 = a3;
-  [v5 encodeObject:altDSID forKey:@"altDSID"];
-  [v5 encodeInteger:self->_status forKey:@"status"];
-  [v5 encodeInteger:self->_registrationResult forKey:@"registrationResult"];
-  [v5 encodeInteger:self->_remoteRegistrationRequestLevel forKey:@"remoteRegistrationRequestLevel"];
+  coderCopy = coder;
+  [coderCopy encodeObject:altDSID forKey:@"altDSID"];
+  [coderCopy encodeInteger:self->_status forKey:@"status"];
+  [coderCopy encodeInteger:self->_registrationResult forKey:@"registrationResult"];
+  [coderCopy encodeInteger:self->_remoteRegistrationRequestLevel forKey:@"remoteRegistrationRequestLevel"];
 }
 
 - (id)description
@@ -117,16 +117,16 @@ LABEL_10:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_12;
   }
 
-  v5 = v4[1];
+  v5 = equalCopy[1];
   v6 = self->_altDSID;
   v7 = v5;
   v8 = v7;
@@ -152,12 +152,12 @@ LABEL_12:
     }
   }
 
-  if (self->_status != v4[2] || self->_registrationResult != v4[3])
+  if (self->_status != equalCopy[2] || self->_registrationResult != equalCopy[3])
   {
     goto LABEL_12;
   }
 
-  v10 = self->_remoteRegistrationRequestLevel == v4[4];
+  v10 = self->_remoteRegistrationRequestLevel == equalCopy[4];
 LABEL_13:
 
   return v10;
@@ -165,9 +165,9 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_altDSID];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_altDSID];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_status - v4 + 32 * v4;
   v6 = self->_registrationResult - v5 + 32 * v5;
   v7 = self->_remoteRegistrationRequestLevel - v6 + 32 * v6;

@@ -1,19 +1,19 @@
 @interface WLKArtworkVariant
-+ (id)artworkURLFromTemplate:(id)a3 forSize:(CGSize)a4 cropCode:(id)a5 format:(id)a6;
++ (id)artworkURLFromTemplate:(id)template forSize:(CGSize)size cropCode:(id)code format:(id)format;
 - (CGSize)artworkSize;
 - (NSURL)artworkURL;
-- (WLKArtworkVariant)initWithDictionary:(id)a3;
+- (WLKArtworkVariant)initWithDictionary:(id)dictionary;
 - (id)artworkSizeTemplateURL;
-- (id)artworkURLForSize:(CGSize)a3 cropCode:(id)a4 format:(id)a5;
+- (id)artworkURLForSize:(CGSize)size cropCode:(id)code format:(id)format;
 - (id)description;
 @end
 
 @implementation WLKArtworkVariant
 
-- (WLKArtworkVariant)initWithDictionary:(id)a3
+- (WLKArtworkVariant)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if ([v4 count] == 1)
+  dictionaryCopy = dictionary;
+  if ([dictionaryCopy count] == 1)
   {
     v35.receiver = self;
     v35.super_class = WLKArtworkVariant;
@@ -22,20 +22,20 @@
     {
 LABEL_75:
       self = v5;
-      v11 = self;
+      selfCopy = self;
       goto LABEL_76;
     }
 
-    v6 = [v4 allKeys];
-    v7 = [v6 firstObject];
+    allKeys = [dictionaryCopy allKeys];
+    firstObject = [allKeys firstObject];
 
-    v8 = v7;
+    v8 = firstObject;
     objc_opt_class();
-    v9 = v8;
+    lowercaseString = v8;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 LABEL_66:
-      v12 = [v4 objectForKey:v8];
+      v12 = [dictionaryCopy objectForKey:v8];
 
       v13 = [v12 objectForKey:@"width"];
       [v13 floatValue];
@@ -55,9 +55,9 @@ LABEL_66:
       {
         v21 = [v18 rangeOfString:@"bundle://"];
         v23 = [v18 substringFromIndex:v21 + v22];
-        v24 = [MEMORY[0x277CCA8D8] mainBundle];
-        v25 = [v24 resourcePath];
-        v26 = [v25 stringByAppendingPathComponent:v23];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        resourcePath = [mainBundle resourcePath];
+        v26 = [resourcePath stringByAppendingPathComponent:v23];
         v27 = [v26 copy];
         artworkURLTemplate = v5->_artworkURLTemplate;
         v5->_artworkURLTemplate = v27;
@@ -88,184 +88,184 @@ LABEL_66:
         v5->_format = @"jpg";
       }
 
-      v4 = v12;
+      dictionaryCopy = v12;
       goto LABEL_75;
     }
 
-    v9 = [v8 lowercaseString];
+    lowercaseString = [v8 lowercaseString];
 
-    if ([v9 isEqualToString:@"banner"])
+    if ([lowercaseString isEqualToString:@"banner"])
     {
       v10 = 1;
     }
 
     else
     {
-      if (![v9 isEqualToString:@"other"])
+      if (![lowercaseString isEqualToString:@"other"])
       {
-        if ([v9 isEqualToString:@"coverart"])
+        if ([lowercaseString isEqualToString:@"coverart"])
         {
           v10 = 2;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"previewframe"])
+        if ([lowercaseString isEqualToString:@"previewframe"])
         {
           v10 = 4;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"showlogo"])
+        if ([lowercaseString isEqualToString:@"showlogo"])
         {
           v10 = 5;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"castincharacter"])
+        if ([lowercaseString isEqualToString:@"castincharacter"])
         {
           v10 = 3;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"fullscreenbackground"])
+        if ([lowercaseString isEqualToString:@"fullscreenbackground"])
         {
           v10 = 6;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"contentlogo"])
+        if ([lowercaseString isEqualToString:@"contentlogo"])
         {
           v10 = 8;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"fullcolorcontentlogo"])
+        if ([lowercaseString isEqualToString:@"fullcolorcontentlogo"])
         {
           v10 = 21;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"singlecolorcontentlogo"])
+        if ([lowercaseString isEqualToString:@"singlecolorcontentlogo"])
         {
           v10 = 22;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"flowcaseimage"])
+        if ([lowercaseString isEqualToString:@"flowcaseimage"])
         {
           v10 = 7;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"logoglyph"])
+        if ([lowercaseString isEqualToString:@"logoglyph"])
         {
           v10 = 9;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"appicon"])
+        if ([lowercaseString isEqualToString:@"appicon"])
         {
           v10 = 10;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"heroimage"])
+        if ([lowercaseString isEqualToString:@"heroimage"])
         {
           v10 = 11;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"masterlockupimage"])
+        if ([lowercaseString isEqualToString:@"masterlockupimage"])
         {
           v10 = 12;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"evodfeaturing"])
+        if ([lowercaseString isEqualToString:@"evodfeaturing"])
         {
           v10 = 13;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"actioncoverart"])
+        if ([lowercaseString isEqualToString:@"actioncoverart"])
         {
           v10 = 14;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"upnextbackground"])
+        if ([lowercaseString isEqualToString:@"upnextbackground"])
         {
           v10 = 15;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"keyframe"])
+        if ([lowercaseString isEqualToString:@"keyframe"])
         {
           v10 = 16;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"coverart16x9"])
+        if ([lowercaseString isEqualToString:@"coverart16x9"])
         {
           v10 = 17;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"whitelogo"])
+        if ([lowercaseString isEqualToString:@"whitelogo"])
         {
           v10 = 18;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"centeredfullscreenbackgroundimage"])
+        if ([lowercaseString isEqualToString:@"centeredfullscreenbackgroundimage"])
         {
           v10 = 20;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"shelfimagebackground"])
+        if ([lowercaseString isEqualToString:@"shelfimagebackground"])
         {
           v10 = 23;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"posterart"])
+        if ([lowercaseString isEqualToString:@"posterart"])
         {
           v10 = 24;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"showposterart"])
+        if ([lowercaseString isEqualToString:@"showposterart"])
         {
           v10 = 25;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"shelfimage"])
+        if ([lowercaseString isEqualToString:@"shelfimage"])
         {
           v10 = 26;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"keyframeimage"])
+        if ([lowercaseString isEqualToString:@"keyframeimage"])
         {
           v10 = 27;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"shelfitemimage"])
+        if ([lowercaseString isEqualToString:@"shelfitemimage"])
         {
           v10 = 28;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"shelfitemimagelive"])
+        if ([lowercaseString isEqualToString:@"shelfitemimagelive"])
         {
           v10 = 29;
           goto LABEL_65;
         }
 
-        if ([v9 isEqualToString:@"shelfitemimagepost"])
+        if ([lowercaseString isEqualToString:@"shelfitemimagepost"])
         {
           v10 = 30;
           goto LABEL_65;
@@ -280,10 +280,10 @@ LABEL_65:
     goto LABEL_66;
   }
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_76:
 
-  return v11;
+  return selfCopy;
 }
 
 - (NSURL)artworkURL
@@ -294,31 +294,31 @@ LABEL_76:
   return v3;
 }
 
-- (id)artworkURLForSize:(CGSize)a3 cropCode:(id)a4 format:(id)a5
+- (id)artworkURLForSize:(CGSize)size cropCode:(id)code format:(id)format
 {
-  height = a3.height;
-  width = a3.width;
-  format = a5;
-  if (!a5)
+  height = size.height;
+  width = size.width;
+  format = format;
+  if (!format)
   {
     format = self->_format;
   }
 
-  v11 = format;
-  v12 = a5;
-  v13 = a4;
-  v14 = [objc_opt_class() artworkURLFromTemplate:self->_artworkURLTemplate forSize:v13 cropCode:v11 format:{width, height}];
+  formatCopy = format;
+  formatCopy2 = format;
+  codeCopy = code;
+  v14 = [objc_opt_class() artworkURLFromTemplate:self->_artworkURLTemplate forSize:codeCopy cropCode:formatCopy format:{width, height}];
 
   return v14;
 }
 
-+ (id)artworkURLFromTemplate:(id)a3 forSize:(CGSize)a4 cropCode:(id)a5 format:(id)a6
++ (id)artworkURLFromTemplate:(id)template forSize:(CGSize)size cropCode:(id)code format:(id)format
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a5;
-  v11 = a6;
-  v12 = [a3 mutableCopy];
+  height = size.height;
+  width = size.width;
+  codeCopy = code;
+  formatCopy = format;
+  v12 = [template mutableCopy];
   v13 = [v12 rangeOfString:@"{w}"];
   if (v13 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -342,9 +342,9 @@ LABEL_76:
   {
     v25 = v23;
     v26 = v24;
-    if ([(__CFString *)v10 length])
+    if ([(__CFString *)codeCopy length])
     {
-      v27 = v10;
+      v27 = codeCopy;
     }
 
     else
@@ -358,11 +358,11 @@ LABEL_76:
   v28 = [v12 rangeOfString:@"{f}"];
   if (v28 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v12 replaceCharactersInRange:v28 withString:{v29, v11}];
+    [v12 replaceCharactersInRange:v28 withString:{v29, formatCopy}];
   }
 
-  v30 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-  v31 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:v30];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+  v31 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
   v32 = [v31 mutableCopy];
 
   v33 = [MEMORY[0x277CBEBC0] URLWithString:v32];
@@ -379,8 +379,8 @@ LABEL_76:
     [v3 replaceCharactersInRange:v4 withString:{v5, self->_format}];
   }
 
-  v6 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-  v7 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:v6];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+  v7 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
   v8 = [v7 mutableCopy];
 
   v9 = [MEMORY[0x277CBEBC0] URLWithString:v8];
@@ -397,9 +397,9 @@ LABEL_76:
   artworkType = self->_artworkType;
   [(WLKArtworkVariant *)self artworkSize];
   v6 = [(WLKArtworkVariant *)self _sizeDescription:?];
-  v7 = [(WLKArtworkVariant *)self artworkURL];
-  v8 = [v7 absoluteString];
-  v9 = [v3 stringWithFormat:@"%@ type: %ld, size: %@, url: %@", v4, artworkType, v6, v8];
+  artworkURL = [(WLKArtworkVariant *)self artworkURL];
+  absoluteString = [artworkURL absoluteString];
+  v9 = [v3 stringWithFormat:@"%@ type: %ld, size: %@, url: %@", v4, artworkType, v6, absoluteString];
 
   return v9;
 }

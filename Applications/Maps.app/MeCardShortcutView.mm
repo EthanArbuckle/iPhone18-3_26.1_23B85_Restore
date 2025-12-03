@@ -1,5 +1,5 @@
 @interface MeCardShortcutView
-- (MeCardShortcutView)initWithContact:(id)a3;
+- (MeCardShortcutView)initWithContact:(id)contact;
 - (void)_createViews;
 @end
 
@@ -18,19 +18,19 @@
 
   v9 = +[UIColor blackColor];
   v10 = [v9 colorWithAlphaComponent:0.140000001];
-  v11 = [v10 CGColor];
-  v12 = [(UIImageView *)v7 layer];
-  [v12 setShadowColor:v11];
+  cGColor = [v10 CGColor];
+  layer = [(UIImageView *)v7 layer];
+  [layer setShadowColor:cGColor];
 
-  v13 = [(UIImageView *)v7 layer];
-  [v13 setShadowOffset:{0.0, 10.0}];
+  layer2 = [(UIImageView *)v7 layer];
+  [layer2 setShadowOffset:{0.0, 10.0}];
 
-  v14 = [(UIImageView *)v7 layer];
-  [v14 setShadowRadius:4.0];
+  layer3 = [(UIImageView *)v7 layer];
+  [layer3 setShadowRadius:4.0];
 
-  v15 = [(UIImageView *)v7 layer];
+  layer4 = [(UIImageView *)v7 layer];
   LODWORD(v16) = 0.25;
-  [v15 setShadowOpacity:v16];
+  [layer4 setShadowOpacity:v16];
 
   [(MeCardShortcutView *)self addSubview:v7];
   schoolImageview = self->_schoolImageview;
@@ -45,19 +45,19 @@
 
   v22 = +[UIColor blackColor];
   v23 = [v22 colorWithAlphaComponent:0.140000001];
-  v24 = [v23 CGColor];
-  v25 = [(UIImageView *)v20 layer];
-  [v25 setShadowColor:v24];
+  cGColor2 = [v23 CGColor];
+  layer5 = [(UIImageView *)v20 layer];
+  [layer5 setShadowColor:cGColor2];
 
-  v26 = [(UIImageView *)v20 layer];
-  [v26 setShadowOffset:{0.0, 10.0}];
+  layer6 = [(UIImageView *)v20 layer];
+  [layer6 setShadowOffset:{0.0, 10.0}];
 
-  v27 = [(UIImageView *)v20 layer];
-  [v27 setShadowRadius:4.0];
+  layer7 = [(UIImageView *)v20 layer];
+  [layer7 setShadowRadius:4.0];
 
-  v28 = [(UIImageView *)v20 layer];
+  layer8 = [(UIImageView *)v20 layer];
   LODWORD(v29) = 0.25;
-  [v28 setShadowOpacity:v29];
+  [layer8 setShadowOpacity:v29];
 
   [(MeCardShortcutView *)self addSubview:v20];
   workImageview = self->_workImageview;
@@ -72,49 +72,49 @@
 
   v35 = +[UIColor blackColor];
   v36 = [v35 colorWithAlphaComponent:0.140000001];
-  v37 = [v36 CGColor];
-  v38 = [v33 layer];
-  [v38 setShadowColor:v37];
+  cGColor3 = [v36 CGColor];
+  layer9 = [v33 layer];
+  [layer9 setShadowColor:cGColor3];
 
-  v39 = [v33 layer];
-  [v39 setShadowOffset:{0.0, 10.0}];
+  layer10 = [v33 layer];
+  [layer10 setShadowOffset:{0.0, 10.0}];
 
-  v40 = [v33 layer];
-  [v40 setShadowRadius:4.0];
+  layer11 = [v33 layer];
+  [layer11 setShadowRadius:4.0];
 
-  v41 = [v33 layer];
+  layer12 = [v33 layer];
   LODWORD(v42) = 0.25;
-  [v41 setShadowOpacity:v42];
+  [layer12 setShadowOpacity:v42];
 
   [(MeCardShortcutView *)self addSubview:v33];
   p_homeImageview = &self->_homeImageview;
   v101 = v33;
   objc_storeStrong(&self->_homeImageview, v33);
-  v44 = [(MeCardShortcutView *)self traitCollection];
-  v45 = [v44 userInterfaceIdiom];
+  traitCollection = [(MeCardShortcutView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v46 = [(MeCardShortcutView *)self traitCollection];
-  v47 = [v46 userInterfaceIdiom];
+  traitCollection2 = [(MeCardShortcutView *)self traitCollection];
+  userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
-  v48 = [(MeCardShortcutView *)self traitCollection];
-  v49 = [v48 userInterfaceIdiom];
+  traitCollection3 = [(MeCardShortcutView *)self traitCollection];
+  userInterfaceIdiom3 = [traitCollection3 userInterfaceIdiom];
 
   if (sub_10000FA08(self) == 5)
   {
-    v50 = [(UIImageView *)*p_homeImageview leadingAnchor];
-    v51 = [(MeCardShortcutView *)self leadingAnchor];
-    [v50 constraintEqualToAnchor:v51 constant:17.0];
+    leadingAnchor = [(UIImageView *)*p_homeImageview leadingAnchor];
+    leadingAnchor2 = [(MeCardShortcutView *)self leadingAnchor];
+    [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:17.0];
   }
 
   else
   {
-    v50 = [(UIImageView *)self->_workImageview centerXAnchor];
-    v51 = [(MeCardShortcutView *)self centerXAnchor];
-    [v50 constraintEqualToAnchor:v51];
+    leadingAnchor = [(UIImageView *)self->_workImageview centerXAnchor];
+    leadingAnchor2 = [(MeCardShortcutView *)self centerXAnchor];
+    [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   }
   v102 = ;
 
-  if (v49 == 5)
+  if (userInterfaceIdiom3 == 5)
   {
     v52 = 6.0;
   }
@@ -124,7 +124,7 @@
     v52 = 10.0;
   }
 
-  if (v47 == 5)
+  if (userInterfaceIdiom2 == 5)
   {
     v53 = 0.0;
   }
@@ -134,7 +134,7 @@
     v53 = 14.0;
   }
 
-  if (v45 == 5)
+  if (userInterfaceIdiom == 5)
   {
     v54 = 41.0;
   }
@@ -144,58 +144,58 @@
     v54 = 60.0;
   }
 
-  v100 = [(UIImageView *)*p_homeImageview topAnchor];
-  v99 = [(UIImageView *)self->_workImageview topAnchor];
-  v98 = [v100 constraintEqualToAnchor:v99];
+  topAnchor = [(UIImageView *)*p_homeImageview topAnchor];
+  topAnchor2 = [(UIImageView *)self->_workImageview topAnchor];
+  v98 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v106[0] = v98;
-  v97 = [(UIImageView *)*p_homeImageview bottomAnchor];
-  v96 = [(UIImageView *)self->_workImageview bottomAnchor];
-  v95 = [v97 constraintEqualToAnchor:v96];
+  bottomAnchor = [(UIImageView *)*p_homeImageview bottomAnchor];
+  bottomAnchor2 = [(UIImageView *)self->_workImageview bottomAnchor];
+  v95 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v106[1] = v95;
-  v94 = [(UIImageView *)*p_homeImageview widthAnchor];
-  v93 = [v94 constraintEqualToConstant:v54];
+  widthAnchor = [(UIImageView *)*p_homeImageview widthAnchor];
+  v93 = [widthAnchor constraintEqualToConstant:v54];
   v106[2] = v93;
-  v92 = [(UIImageView *)*p_homeImageview heightAnchor];
-  v91 = [(UIImageView *)*p_homeImageview widthAnchor];
-  v90 = [v92 constraintEqualToAnchor:v91];
+  heightAnchor = [(UIImageView *)*p_homeImageview heightAnchor];
+  widthAnchor2 = [(UIImageView *)*p_homeImageview widthAnchor];
+  v90 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
   v106[3] = v90;
-  v89 = [(UIImageView *)*p_homeImageview trailingAnchor];
-  v88 = [(UIImageView *)self->_workImageview leadingAnchor];
-  v87 = [v89 constraintEqualToAnchor:v88 constant:v52];
+  trailingAnchor = [(UIImageView *)*p_homeImageview trailingAnchor];
+  leadingAnchor3 = [(UIImageView *)self->_workImageview leadingAnchor];
+  v87 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:v52];
   v106[4] = v87;
-  v86 = [(UIImageView *)self->_workImageview topAnchor];
-  v85 = [(MeCardShortcutView *)self topAnchor];
-  v84 = [v86 constraintEqualToAnchor:v85 constant:v53];
+  topAnchor3 = [(UIImageView *)self->_workImageview topAnchor];
+  topAnchor4 = [(MeCardShortcutView *)self topAnchor];
+  v84 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:v53];
   v106[5] = v84;
-  v83 = [(UIImageView *)self->_workImageview bottomAnchor];
-  v82 = [(MeCardShortcutView *)self bottomAnchor];
-  v81 = [v83 constraintEqualToAnchor:v82 constant:-v53];
+  bottomAnchor3 = [(UIImageView *)self->_workImageview bottomAnchor];
+  bottomAnchor4 = [(MeCardShortcutView *)self bottomAnchor];
+  v81 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-v53];
   v106[6] = v81;
-  v80 = [(UIImageView *)self->_workImageview widthAnchor];
-  v79 = [v80 constraintEqualToConstant:v54];
+  widthAnchor3 = [(UIImageView *)self->_workImageview widthAnchor];
+  v79 = [widthAnchor3 constraintEqualToConstant:v54];
   v106[7] = v79;
-  v78 = [(UIImageView *)self->_workImageview widthAnchor];
-  v77 = [(UIImageView *)self->_workImageview heightAnchor];
-  v76 = [v78 constraintEqualToAnchor:v77];
+  widthAnchor4 = [(UIImageView *)self->_workImageview widthAnchor];
+  heightAnchor2 = [(UIImageView *)self->_workImageview heightAnchor];
+  v76 = [widthAnchor4 constraintEqualToAnchor:heightAnchor2];
   v106[8] = v76;
-  v75 = [(UIImageView *)self->_schoolImageview topAnchor];
-  v74 = [(UIImageView *)self->_workImageview topAnchor];
-  v73 = [v75 constraintEqualToAnchor:v74];
+  topAnchor5 = [(UIImageView *)self->_schoolImageview topAnchor];
+  topAnchor6 = [(UIImageView *)self->_workImageview topAnchor];
+  v73 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v106[9] = v73;
-  v72 = [(UIImageView *)self->_schoolImageview bottomAnchor];
-  v71 = [(UIImageView *)self->_workImageview bottomAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71];
+  bottomAnchor5 = [(UIImageView *)self->_schoolImageview bottomAnchor];
+  bottomAnchor6 = [(UIImageView *)self->_workImageview bottomAnchor];
+  v70 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v106[10] = v70;
-  v55 = [(UIImageView *)self->_schoolImageview widthAnchor];
-  v56 = [v55 constraintEqualToConstant:v54];
+  widthAnchor5 = [(UIImageView *)self->_schoolImageview widthAnchor];
+  v56 = [widthAnchor5 constraintEqualToConstant:v54];
   v106[11] = v56;
-  v57 = [(UIImageView *)self->_schoolImageview widthAnchor];
-  v58 = [(UIImageView *)self->_schoolImageview heightAnchor];
-  v59 = [v57 constraintEqualToAnchor:v58];
+  widthAnchor6 = [(UIImageView *)self->_schoolImageview widthAnchor];
+  heightAnchor3 = [(UIImageView *)self->_schoolImageview heightAnchor];
+  v59 = [widthAnchor6 constraintEqualToAnchor:heightAnchor3];
   v106[12] = v59;
-  v60 = [(UIImageView *)self->_schoolImageview leadingAnchor];
-  v61 = [(UIImageView *)self->_workImageview trailingAnchor];
-  v62 = [v60 constraintEqualToAnchor:v61 constant:-v52];
+  leadingAnchor4 = [(UIImageView *)self->_schoolImageview leadingAnchor];
+  trailingAnchor2 = [(UIImageView *)self->_workImageview trailingAnchor];
+  v62 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor2 constant:-v52];
   v106[13] = v62;
   v106[14] = v102;
   v63 = [NSArray arrayWithObjects:v106 count:15];
@@ -229,16 +229,16 @@
   [v68 getImageForStyleAttributes:v69 completion:v103];
 }
 
-- (MeCardShortcutView)initWithContact:(id)a3
+- (MeCardShortcutView)initWithContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   v9.receiver = self;
   v9.super_class = MeCardShortcutView;
   v6 = [(MeCardShortcutView *)&v9 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contact, a3);
+    objc_storeStrong(&v6->_contact, contact);
     [(MeCardShortcutView *)v7 _createViews];
   }
 

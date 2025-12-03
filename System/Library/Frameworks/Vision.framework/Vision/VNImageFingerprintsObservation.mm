@@ -1,19 +1,19 @@
 @interface VNImageFingerprintsObservation
-- (BOOL)isEqual:(id)a3;
-- (VNImageFingerprintsObservation)initWithCoder:(id)a3;
-- (VNImageFingerprintsObservation)initWithOriginatingRequestSpecifier:(id)a3 fingerprintHashes:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VNImageFingerprintsObservation)initWithCoder:(id)coder;
+- (VNImageFingerprintsObservation)initWithOriginatingRequestSpecifier:(id)specifier fingerprintHashes:(id)hashes;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNImageFingerprintsObservation
 
-- (VNImageFingerprintsObservation)initWithCoder:(id)a3
+- (VNImageFingerprintsObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = VNImageFingerprintsObservation;
-  v5 = [(VNObservation *)&v13 initWithCoder:v4];
-  if (v5 && (v6 = objc_alloc(MEMORY[0x1E695DFD8]), v7 = objc_opt_class(), v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}], objc_msgSend(v4, "decodeObjectOfClasses:forKey:", v8, @"hashes"), v9 = objc_claimAutoreleasedReturnValue(), fingerprintHashes = v5->_fingerprintHashes, v5->_fingerprintHashes = v9, fingerprintHashes, v8, !v5->_fingerprintHashes))
+  v5 = [(VNObservation *)&v13 initWithCoder:coderCopy];
+  if (v5 && (v6 = objc_alloc(MEMORY[0x1E695DFD8]), v7 = objc_opt_class(), v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}], objc_msgSend(coderCopy, "decodeObjectOfClasses:forKey:", v8, @"hashes"), v9 = objc_claimAutoreleasedReturnValue(), fingerprintHashes = v5->_fingerprintHashes, v5->_fingerprintHashes = v9, fingerprintHashes, v8, !v5->_fingerprintHashes))
   {
     v11 = 0;
   }
@@ -26,19 +26,19 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = VNImageFingerprintsObservation;
-  v4 = a3;
-  [(VNObservation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_fingerprintHashes forKey:{@"hashes", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(VNObservation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_fingerprintHashes forKey:{@"hashes", v5.receiver, v5.super_class}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -48,11 +48,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNImageFingerprintsObservation *)self fingerprintHashes];
-      v7 = [(VNImageFingerprintsObservation *)v5 fingerprintHashes];
+      v5 = equalCopy;
+      fingerprintHashes = [(VNImageFingerprintsObservation *)self fingerprintHashes];
+      fingerprintHashes2 = [(VNImageFingerprintsObservation *)v5 fingerprintHashes];
 
-      v8 = [v6 isEqualToArray:v7];
+      v8 = [fingerprintHashes isEqualToArray:fingerprintHashes2];
     }
 
     else
@@ -64,15 +64,15 @@
   return v8;
 }
 
-- (VNImageFingerprintsObservation)initWithOriginatingRequestSpecifier:(id)a3 fingerprintHashes:(id)a4
+- (VNImageFingerprintsObservation)initWithOriginatingRequestSpecifier:(id)specifier fingerprintHashes:(id)hashes
 {
-  v6 = a4;
+  hashesCopy = hashes;
   v11.receiver = self;
   v11.super_class = VNImageFingerprintsObservation;
-  v7 = [(VNObservation *)&v11 initWithOriginatingRequestSpecifier:a3];
+  v7 = [(VNObservation *)&v11 initWithOriginatingRequestSpecifier:specifier];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [hashesCopy copy];
     fingerprintHashes = v7->_fingerprintHashes;
     v7->_fingerprintHashes = v8;
   }

@@ -1,14 +1,14 @@
 @interface RESectionDescriptor
-+ (id)defaultSectionDescriptorForIdentifier:(id)a3;
-+ (id)defaultUpNextSectionDescriptorForIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)defaultSectionDescriptorForIdentifier:(id)identifier;
++ (id)defaultUpNextSectionDescriptorForIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)rules;
 - (RESectionDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)setHistoricSectionDescriptor:(id)a3;
-- (void)setOrderedRules:(id)a3;
-- (void)setRules:(id)a3;
+- (void)setHistoricSectionDescriptor:(id)descriptor;
+- (void)setOrderedRules:(id)rules;
+- (void)setRules:(id)rules;
 @end
 
 @implementation RESectionDescriptor
@@ -25,9 +25,9 @@
     name = v2->_name;
     v2->_name = &stru_283B97458;
 
-    v5 = [MEMORY[0x277CBEB70] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB70] orderedSet];
     rules = v3->_rules;
-    v3->_rules = v5;
+    v3->_rules = orderedSet;
 
     historicSectionDescriptor = v3->_historicSectionDescriptor;
     v3->_historicSectionDescriptor = 0;
@@ -36,7 +36,7 @@
   return v3;
 }
 
-+ (id)defaultSectionDescriptorForIdentifier:(id)a3
++ (id)defaultSectionDescriptorForIdentifier:(id)identifier
 {
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
@@ -44,13 +44,13 @@
   v11 = &unk_2785FBD28;
   v12 = &__block_literal_global_29;
   v13 = &__block_literal_global_82_0;
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = MEMORY[0x22AABC5E0](&v8);
   v5 = objc_alloc_init(RESectionDescriptor);
   v6 = v4[2](v4);
   [(RESectionDescriptor *)v5 setOrderedRules:v6, v8, v9, v10, v11];
 
-  [(RESectionDescriptor *)v5 setName:v3];
+  [(RESectionDescriptor *)v5 setName:identifierCopy];
 
   return v5;
 }
@@ -229,9 +229,9 @@ id __61__RESectionDescriptor_defaultSectionDescriptorForIdentifier___block_invok
   return v53;
 }
 
-- (void)setHistoricSectionDescriptor:(id)a3
+- (void)setHistoricSectionDescriptor:(id)descriptor
 {
-  v4 = [a3 copy];
+  v4 = [descriptor copy];
   [(REHistoricSectionDescriptor *)self->_historicSectionDescriptor setParentDescriptor:0];
   historicSectionDescriptor = self->_historicSectionDescriptor;
   self->_historicSectionDescriptor = v4;
@@ -240,10 +240,10 @@ id __61__RESectionDescriptor_defaultSectionDescriptorForIdentifier___block_invok
   [(REHistoricSectionDescriptor *)self->_historicSectionDescriptor setParentDescriptor:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -253,7 +253,7 @@ id __61__RESectionDescriptor_defaultSectionDescriptorForIdentifier___block_invok
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_maxElementCount == v5->_maxElementCount)
       {
@@ -339,18 +339,18 @@ LABEL_19:
   return v3;
 }
 
-- (void)setRules:(id)a3
+- (void)setRules:(id)rules
 {
-  v4 = [MEMORY[0x277CBEB70] orderedSetWithSet:a3];
+  v4 = [MEMORY[0x277CBEB70] orderedSetWithSet:rules];
   rules = self->_rules;
   self->_rules = v4;
 
   MEMORY[0x2821F96F8](v4, rules);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setName:self->_name];
   [v4 setMaxElementCount:self->_maxElementCount];
   objc_storeStrong(v4 + 1, self->_rules);
@@ -360,18 +360,18 @@ LABEL_19:
   return v4;
 }
 
-- (void)setOrderedRules:(id)a3
+- (void)setOrderedRules:(id)rules
 {
-  v4 = [MEMORY[0x277CBEB70] orderedSetWithArray:a3];
+  v4 = [MEMORY[0x277CBEB70] orderedSetWithArray:rules];
   rules = self->_rules;
   self->_rules = v4;
 
   MEMORY[0x2821F96F8](v4, rules);
 }
 
-+ (id)defaultUpNextSectionDescriptorForIdentifier:(id)a3
++ (id)defaultUpNextSectionDescriptorForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __90__RESectionDescriptor_REUpNextConfiguration__defaultUpNextSectionDescriptorForIdentifier___block_invoke_3;
@@ -400,7 +400,7 @@ LABEL_19:
   v28 = v9;
   v10 = MEMORY[0x22AABC5E0](v27);
   v11 = v10;
-  if (@"defaultSectionIdentifier" == v4)
+  if (@"defaultSectionIdentifier" == identifierCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -420,7 +420,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (@"allDaySectionIdentifier" == v4)
+  if (@"allDaySectionIdentifier" == identifierCopy)
   {
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -437,7 +437,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (@"tomorrowSectionIdentifier" == v4)
+  if (@"tomorrowSectionIdentifier" == identifierCopy)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -454,7 +454,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (@"upcomingSectionIdentifier" == v4)
+  if (@"upcomingSectionIdentifier" == identifierCopy)
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -473,32 +473,32 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ([(__CFString *)v4 isEqualToString:@"defaultSectionIdentifier"])
+  if ([(__CFString *)identifierCopy isEqualToString:@"defaultSectionIdentifier"])
   {
-    v12 = a1;
+    selfCopy4 = self;
     v13 = @"defaultSectionIdentifier";
 LABEL_29:
-    v14 = [v12 defaultSectionDescriptorForIdentifier:v13];
+    v14 = [selfCopy4 defaultSectionDescriptorForIdentifier:v13];
     goto LABEL_20;
   }
 
-  if ([(__CFString *)v4 isEqualToString:@"allDaySectionIdentifier"])
+  if ([(__CFString *)identifierCopy isEqualToString:@"allDaySectionIdentifier"])
   {
-    v12 = a1;
+    selfCopy4 = self;
     v13 = @"allDaySectionIdentifier";
     goto LABEL_29;
   }
 
-  if ([(__CFString *)v4 isEqualToString:@"tomorrowSectionIdentifier"])
+  if ([(__CFString *)identifierCopy isEqualToString:@"tomorrowSectionIdentifier"])
   {
-    v12 = a1;
+    selfCopy4 = self;
     v13 = @"tomorrowSectionIdentifier";
     goto LABEL_29;
   }
 
-  if ([(__CFString *)v4 isEqualToString:@"upcomingSectionIdentifier"])
+  if ([(__CFString *)identifierCopy isEqualToString:@"upcomingSectionIdentifier"])
   {
-    v12 = a1;
+    selfCopy4 = self;
     v13 = @"upcomingSectionIdentifier";
     goto LABEL_29;
   }

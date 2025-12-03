@@ -2,11 +2,11 @@
 - (AVTAvatarPickerDelegate)avatarPickerDelegate;
 - (CFXMemojiPickerViewController)init;
 - (CFXMemojiPickerViewControllerDelegate)delegate;
-- (void)beginHidingInterfaceWithMessage:(id)a3;
+- (void)beginHidingInterfaceWithMessage:(id)message;
 - (void)endHidingInterface;
-- (void)selectAvatarRecordWithIdentifier:(id)a3 animated:(BOOL)a4;
-- (void)setAvatarPickerDelegate:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)selectAvatarRecordWithIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)setAvatarPickerDelegate:(id)delegate;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -36,38 +36,38 @@
   v102.super_class = CFXMemojiPickerViewController;
   [(CFXMemojiPickerViewController *)&v102 viewDidLoad];
   [(CFXMemojiPickerViewController *)self setExtendedLayoutIncludesOpaqueBars:1];
-  v3 = [MEMORY[0x277CF0530] appBackgroundColor];
-  v4 = [(CFXMemojiPickerViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  appBackgroundColor = [MEMORY[0x277CF0530] appBackgroundColor];
+  view = [(CFXMemojiPickerViewController *)self view];
+  [view setBackgroundColor:appBackgroundColor];
 
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x277CCA8D8] jfxBundle];
-  v7 = [v6 localizedStringForKey:@"MEMOJI Name" value:&stru_28553D028 table:0];
+  jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+  v7 = [jfxBundle localizedStringForKey:@"MEMOJI Name" value:&stru_28553D028 table:0];
   [v5 setText:v7];
 
   v8 = [MEMORY[0x277D74300] boldSystemFontOfSize:20.0];
   [v5 setFont:v8];
 
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(CFXMemojiPickerViewController *)self view];
-  [v9 addSubview:v5];
+  view2 = [(CFXMemojiPickerViewController *)self view];
+  [view2 addSubview:v5];
 
   v10 = objc_opt_new();
   v101 = [MEMORY[0x277D755B8] systemImageNamed:@"xmark"];
   [v10 setImage:v101 forState:0];
-  v11 = [v10 layer];
-  [v11 setCornerRadius:15.0];
+  layer = [v10 layer];
+  [layer setCornerRadius:15.0];
 
-  v12 = [MEMORY[0x277D75348] systemGray4Color];
-  [v10 setBackgroundColor:v12];
+  systemGray4Color = [MEMORY[0x277D75348] systemGray4Color];
+  [v10 setBackgroundColor:systemGray4Color];
 
-  v13 = [MEMORY[0x277D75348] systemGrayColor];
-  [v10 setTintColor:v13];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [v10 setTintColor:systemGrayColor];
 
   [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v10 addTarget:self action:sel_close_ forControlEvents:64];
-  v14 = [(CFXMemojiPickerViewController *)self view];
-  [v14 addSubview:v10];
+  view3 = [(CFXMemojiPickerViewController *)self view];
+  [view3 addSubview:v10];
 
   v100 = objc_opt_new();
   [v100 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -75,125 +75,125 @@
   [v100 setFont:v15];
 
   [v100 setTextAlignment:1];
-  v16 = [MEMORY[0x277D75348] systemGrayColor];
-  [v100 setTintColor:v16];
+  systemGrayColor2 = [MEMORY[0x277D75348] systemGrayColor];
+  [v100 setTintColor:systemGrayColor2];
 
-  v17 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v100 setBackgroundColor:v17];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [v100 setBackgroundColor:systemBackgroundColor];
 
   [v100 setHidden:1];
-  v18 = [(CFXMemojiPickerViewController *)self view];
-  [v18 addSubview:v100];
+  view4 = [(CFXMemojiPickerViewController *)self view];
+  [view4 addSubview:v100];
 
   [(CFXMemojiPickerViewController *)self setMessagePrompt:v100];
-  v19 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  [v19 setExtendedLayoutIncludesOpaqueBars:1];
+  avatarPicker = [(CFXMemojiPickerViewController *)self avatarPicker];
+  [avatarPicker setExtendedLayoutIncludesOpaqueBars:1];
 
-  v20 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  [(CFXMemojiPickerViewController *)self addChildViewController:v20];
+  avatarPicker2 = [(CFXMemojiPickerViewController *)self avatarPicker];
+  [(CFXMemojiPickerViewController *)self addChildViewController:avatarPicker2];
 
-  v21 = [(CFXMemojiPickerViewController *)self view];
-  v22 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  v23 = [v22 view];
-  [v21 addSubview:v23];
+  view5 = [(CFXMemojiPickerViewController *)self view];
+  avatarPicker3 = [(CFXMemojiPickerViewController *)self avatarPicker];
+  view6 = [avatarPicker3 view];
+  [view5 addSubview:view6];
 
-  v24 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  v25 = [v24 view];
-  [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
+  avatarPicker4 = [(CFXMemojiPickerViewController *)self avatarPicker];
+  view7 = [avatarPicker4 view];
+  [view7 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v98 = [v5 topAnchor];
-  v99 = [(CFXMemojiPickerViewController *)self view];
-  v97 = [v99 topAnchor];
-  v96 = [v98 constraintEqualToAnchor:v97 constant:16.0];
+  topAnchor = [v5 topAnchor];
+  view8 = [(CFXMemojiPickerViewController *)self view];
+  topAnchor2 = [view8 topAnchor];
+  v96 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   v103[0] = v96;
-  v94 = [v5 leadingAnchor];
-  v95 = [(CFXMemojiPickerViewController *)self view];
-  v93 = [v95 leadingAnchor];
-  v92 = [v94 constraintEqualToAnchor:v93 constant:16.0];
+  leadingAnchor = [v5 leadingAnchor];
+  view9 = [(CFXMemojiPickerViewController *)self view];
+  leadingAnchor2 = [view9 leadingAnchor];
+  v92 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v103[1] = v92;
   v85 = v5;
-  v90 = [v5 heightAnchor];
-  v89 = [v90 constraintEqualToConstant:30.0];
+  heightAnchor = [v5 heightAnchor];
+  v89 = [heightAnchor constraintEqualToConstant:30.0];
   v103[2] = v89;
-  v87 = [v10 topAnchor];
-  v88 = [(CFXMemojiPickerViewController *)self view];
-  v86 = [v88 topAnchor];
-  v84 = [v87 constraintEqualToAnchor:v86 constant:16.0];
+  topAnchor3 = [v10 topAnchor];
+  view10 = [(CFXMemojiPickerViewController *)self view];
+  topAnchor4 = [view10 topAnchor];
+  v84 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:16.0];
   v103[3] = v84;
   v91 = v10;
-  v82 = [v10 trailingAnchor];
-  v83 = [(CFXMemojiPickerViewController *)self view];
-  v81 = [v83 trailingAnchor];
-  v80 = [v82 constraintEqualToAnchor:v81 constant:-16.0];
+  trailingAnchor = [v10 trailingAnchor];
+  view11 = [(CFXMemojiPickerViewController *)self view];
+  trailingAnchor2 = [view11 trailingAnchor];
+  v80 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v103[4] = v80;
-  v79 = [v10 heightAnchor];
-  v78 = [v79 constraintEqualToConstant:30.0];
+  heightAnchor2 = [v10 heightAnchor];
+  v78 = [heightAnchor2 constraintEqualToConstant:30.0];
   v103[5] = v78;
-  v77 = [v10 widthAnchor];
-  v76 = [v77 constraintEqualToConstant:30.0];
+  widthAnchor = [v10 widthAnchor];
+  v76 = [widthAnchor constraintEqualToConstant:30.0];
   v103[6] = v76;
-  v75 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  v74 = [v75 view];
-  v72 = [v74 bottomAnchor];
-  v73 = [(CFXMemojiPickerViewController *)self view];
-  v71 = [v73 bottomAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71];
+  avatarPicker5 = [(CFXMemojiPickerViewController *)self avatarPicker];
+  view12 = [avatarPicker5 view];
+  bottomAnchor = [view12 bottomAnchor];
+  view13 = [(CFXMemojiPickerViewController *)self view];
+  bottomAnchor2 = [view13 bottomAnchor];
+  v70 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v103[7] = v70;
-  v69 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  v68 = [v69 view];
-  v67 = [v68 topAnchor];
-  v66 = [v5 bottomAnchor];
-  v65 = [v67 constraintEqualToAnchor:v66 constant:16.0];
+  avatarPicker6 = [(CFXMemojiPickerViewController *)self avatarPicker];
+  view14 = [avatarPicker6 view];
+  topAnchor5 = [view14 topAnchor];
+  bottomAnchor3 = [v5 bottomAnchor];
+  v65 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:16.0];
   v103[8] = v65;
-  v64 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  v63 = [v64 view];
-  v61 = [v63 centerXAnchor];
-  v62 = [(CFXMemojiPickerViewController *)self view];
-  v60 = [v62 centerXAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60];
+  avatarPicker7 = [(CFXMemojiPickerViewController *)self avatarPicker];
+  view15 = [avatarPicker7 view];
+  centerXAnchor = [view15 centerXAnchor];
+  view16 = [(CFXMemojiPickerViewController *)self view];
+  centerXAnchor2 = [view16 centerXAnchor];
+  v59 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v103[9] = v59;
-  v58 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  v56 = [v58 view];
-  v54 = [v56 widthAnchor];
-  v55 = [(CFXMemojiPickerViewController *)self view];
-  v53 = [v55 widthAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53];
+  avatarPicker8 = [(CFXMemojiPickerViewController *)self avatarPicker];
+  view17 = [avatarPicker8 view];
+  widthAnchor2 = [view17 widthAnchor];
+  view18 = [(CFXMemojiPickerViewController *)self view];
+  widthAnchor3 = [view18 widthAnchor];
+  v52 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
   v103[10] = v52;
-  v51 = [(CFXMemojiPickerViewController *)self messagePrompt];
-  v49 = [v51 bottomAnchor];
-  v50 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  v48 = [v50 view];
-  v47 = [v48 bottomAnchor];
-  v46 = [v49 constraintEqualToAnchor:v47];
+  messagePrompt = [(CFXMemojiPickerViewController *)self messagePrompt];
+  bottomAnchor4 = [messagePrompt bottomAnchor];
+  avatarPicker9 = [(CFXMemojiPickerViewController *)self avatarPicker];
+  view19 = [avatarPicker9 view];
+  bottomAnchor5 = [view19 bottomAnchor];
+  v46 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v103[11] = v46;
-  v45 = [(CFXMemojiPickerViewController *)self messagePrompt];
-  v43 = [v45 topAnchor];
-  v44 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  v42 = [v44 view];
-  v41 = [v42 topAnchor];
-  v40 = [v43 constraintEqualToAnchor:v41];
+  messagePrompt2 = [(CFXMemojiPickerViewController *)self messagePrompt];
+  topAnchor6 = [messagePrompt2 topAnchor];
+  avatarPicker10 = [(CFXMemojiPickerViewController *)self avatarPicker];
+  view20 = [avatarPicker10 view];
+  topAnchor7 = [view20 topAnchor];
+  v40 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
   v103[12] = v40;
-  v39 = [(CFXMemojiPickerViewController *)self messagePrompt];
-  v37 = [v39 centerXAnchor];
-  v38 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  v26 = [v38 view];
-  v27 = [v26 centerXAnchor];
-  v28 = [v37 constraintEqualToAnchor:v27];
+  messagePrompt3 = [(CFXMemojiPickerViewController *)self messagePrompt];
+  centerXAnchor3 = [messagePrompt3 centerXAnchor];
+  avatarPicker11 = [(CFXMemojiPickerViewController *)self avatarPicker];
+  view21 = [avatarPicker11 view];
+  centerXAnchor4 = [view21 centerXAnchor];
+  v28 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v103[13] = v28;
-  v29 = [(CFXMemojiPickerViewController *)self messagePrompt];
-  v30 = [v29 widthAnchor];
-  v31 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  v32 = [v31 view];
-  v33 = [v32 widthAnchor];
-  v34 = [v30 constraintEqualToAnchor:v33];
+  messagePrompt4 = [(CFXMemojiPickerViewController *)self messagePrompt];
+  widthAnchor4 = [messagePrompt4 widthAnchor];
+  avatarPicker12 = [(CFXMemojiPickerViewController *)self avatarPicker];
+  view22 = [avatarPicker12 view];
+  widthAnchor5 = [view22 widthAnchor];
+  v34 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5];
   v103[14] = v34;
   v57 = [MEMORY[0x277CBEA60] arrayWithObjects:v103 count:15];
 
-  v35 = [(CFXMemojiPickerViewController *)self view];
-  [v35 addConstraints:v57];
+  view23 = [(CFXMemojiPickerViewController *)self view];
+  [view23 addConstraints:v57];
 
-  v36 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  [v36 didMoveToParentViewController:self];
+  avatarPicker13 = [(CFXMemojiPickerViewController *)self avatarPicker];
+  [avatarPicker13 didMoveToParentViewController:self];
 }
 
 - (void)viewDidLayoutSubviews
@@ -201,17 +201,17 @@
   v14.receiver = self;
   v14.super_class = CFXMemojiPickerViewController;
   [(CFXMemojiPickerViewController *)&v14 viewDidLayoutSubviews];
-  v3 = [(CFXMemojiPickerViewController *)self view];
-  [v3 frame];
+  view = [(CFXMemojiPickerViewController *)self view];
+  [view frame];
   v5 = v4;
   v7 = v6;
 
   if (v7 > v5)
   {
-    v8 = [(CFXMemojiPickerViewController *)self avatarPicker];
-    v9 = [v8 mode];
+    avatarPicker = [(CFXMemojiPickerViewController *)self avatarPicker];
+    mode = [avatarPicker mode];
 
-    if (v9 != 1)
+    if (mode != 1)
     {
       v12 = 1;
       goto LABEL_7;
@@ -220,75 +220,75 @@
 
   if (v5 > v7)
   {
-    v10 = [(CFXMemojiPickerViewController *)self avatarPicker];
-    v11 = [v10 mode];
+    avatarPicker2 = [(CFXMemojiPickerViewController *)self avatarPicker];
+    mode2 = [avatarPicker2 mode];
 
-    if (v11)
+    if (mode2)
     {
       v12 = 0;
 LABEL_7:
-      v13 = [(CFXMemojiPickerViewController *)self avatarPicker];
-      [v13 setMode:v12];
+      avatarPicker3 = [(CFXMemojiPickerViewController *)self avatarPicker];
+      [avatarPicker3 setMode:v12];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = [(CFXMemojiPickerViewController *)self delegate];
+  delegate = [(CFXMemojiPickerViewController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(CFXMemojiPickerViewController *)self delegate];
-    [v5 didDismissMemojiPicker];
+    delegate2 = [(CFXMemojiPickerViewController *)self delegate];
+    [delegate2 didDismissMemojiPicker];
   }
 }
 
 - (AVTAvatarPickerDelegate)avatarPickerDelegate
 {
-  v2 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  v3 = [v2 avatarPickerDelegate];
+  avatarPicker = [(CFXMemojiPickerViewController *)self avatarPicker];
+  avatarPickerDelegate = [avatarPicker avatarPickerDelegate];
 
-  return v3;
+  return avatarPickerDelegate;
 }
 
-- (void)setAvatarPickerDelegate:(id)a3
+- (void)setAvatarPickerDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  [v5 setAvatarPickerDelegate:v4];
+  delegateCopy = delegate;
+  avatarPicker = [(CFXMemojiPickerViewController *)self avatarPicker];
+  [avatarPicker setAvatarPickerDelegate:delegateCopy];
 }
 
-- (void)selectAvatarRecordWithIdentifier:(id)a3 animated:(BOOL)a4
+- (void)selectAvatarRecordWithIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  [v7 selectAvatarRecordWithIdentifier:v6 animated:v4];
+  animatedCopy = animated;
+  identifierCopy = identifier;
+  avatarPicker = [(CFXMemojiPickerViewController *)self avatarPicker];
+  [avatarPicker selectAvatarRecordWithIdentifier:identifierCopy animated:animatedCopy];
 }
 
-- (void)beginHidingInterfaceWithMessage:(id)a3
+- (void)beginHidingInterfaceWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(CFXMemojiPickerViewController *)self messagePrompt];
-  [v5 setText:v4];
+  messageCopy = message;
+  messagePrompt = [(CFXMemojiPickerViewController *)self messagePrompt];
+  [messagePrompt setText:messageCopy];
 
-  v6 = [(CFXMemojiPickerViewController *)self messagePrompt];
-  [v6 setHidden:0];
+  messagePrompt2 = [(CFXMemojiPickerViewController *)self messagePrompt];
+  [messagePrompt2 setHidden:0];
 
-  v8 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  v7 = [v8 view];
-  [v7 setHidden:1];
+  avatarPicker = [(CFXMemojiPickerViewController *)self avatarPicker];
+  view = [avatarPicker view];
+  [view setHidden:1];
 }
 
 - (void)endHidingInterface
 {
-  v3 = [(CFXMemojiPickerViewController *)self messagePrompt];
-  [v3 setHidden:1];
+  messagePrompt = [(CFXMemojiPickerViewController *)self messagePrompt];
+  [messagePrompt setHidden:1];
 
-  v5 = [(CFXMemojiPickerViewController *)self avatarPicker];
-  v4 = [v5 view];
-  [v4 setHidden:0];
+  avatarPicker = [(CFXMemojiPickerViewController *)self avatarPicker];
+  view = [avatarPicker view];
+  [view setHidden:0];
 }
 
 - (CFXMemojiPickerViewControllerDelegate)delegate

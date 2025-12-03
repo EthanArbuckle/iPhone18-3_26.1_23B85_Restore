@@ -3,11 +3,11 @@
 - (MBSCachePool)init;
 - (id)_openCache;
 - (id)acquireCache;
-- (void)_closeCache:(id)a3;
+- (void)_closeCache:(id)cache;
 - (void)_drain;
 - (void)_scheduleDrain;
 - (void)dealloc;
-- (void)releaseCache:(id)a3;
+- (void)releaseCache:(id)cache;
 @end
 
 @implementation MBSCachePool
@@ -70,18 +70,18 @@
   v7[4] = self;
   v7[5] = &v9;
   dispatch_sync(queue, v7);
-  v5 = v10[5];
-  if (!v5)
+  _openCache = v10[5];
+  if (!_openCache)
   {
-    v5 = [(MBSCachePool *)self _openCache];
-    v10[5] = v5;
+    _openCache = [(MBSCachePool *)self _openCache];
+    v10[5] = _openCache;
   }
 
   _Block_object_dispose(&v9, 8);
-  return v5;
+  return _openCache;
 }
 
-- (void)releaseCache:(id)a3
+- (void)releaseCache:(id)cache
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -89,7 +89,7 @@
   v4[2] = sub_100135CE8;
   v4[3] = &unk_1003BF8D0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = cache;
   dispatch_sync(queue, v4);
 }
 
@@ -114,19 +114,19 @@
   return v2;
 }
 
-- (void)_closeCache:(id)a3
+- (void)_closeCache:(id)cache
 {
   v4 = MBGetDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v7 = a3;
+    cacheCopy = cache;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Closing cache: %p", buf, 0xCu);
-    v5 = a3;
+    cacheCopy2 = cache;
     _MBLog();
   }
 
-  [a3 close];
+  [cache close];
 }
 
 - (void)_scheduleDrain

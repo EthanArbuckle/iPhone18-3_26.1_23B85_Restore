@@ -1,28 +1,28 @@
 @interface AWDCFNetworkW3CNavigationTiming
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConnectStart:(BOOL)a3;
-- (void)setHasDomainLookupEnd:(BOOL)a3;
-- (void)setHasDomainLookupStart:(BOOL)a3;
-- (void)setHasFetchStart:(BOOL)a3;
-- (void)setHasIsCellular:(BOOL)a3;
-- (void)setHasIsReused:(BOOL)a3;
-- (void)setHasRedirectCount:(BOOL)a3;
-- (void)setHasRedirectCountW3C:(BOOL)a3;
-- (void)setHasRedirectEnd:(BOOL)a3;
-- (void)setHasRedirectStart:(BOOL)a3;
-- (void)setHasRequestStart:(BOOL)a3;
-- (void)setHasResponseEnd:(BOOL)a3;
-- (void)setHasResponseStart:(BOOL)a3;
-- (void)setHasSecureConnectionStart:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasConnectStart:(BOOL)start;
+- (void)setHasDomainLookupEnd:(BOOL)end;
+- (void)setHasDomainLookupStart:(BOOL)start;
+- (void)setHasFetchStart:(BOOL)start;
+- (void)setHasIsCellular:(BOOL)cellular;
+- (void)setHasIsReused:(BOOL)reused;
+- (void)setHasRedirectCount:(BOOL)count;
+- (void)setHasRedirectCountW3C:(BOOL)c;
+- (void)setHasRedirectEnd:(BOOL)end;
+- (void)setHasRedirectStart:(BOOL)start;
+- (void)setHasRequestStart:(BOOL)start;
+- (void)setHasResponseEnd:(BOOL)end;
+- (void)setHasResponseStart:(BOOL)start;
+- (void)setHasSecureConnectionStart:(BOOL)start;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCFNetworkW3CNavigationTiming
@@ -37,9 +37,9 @@
   [(AWDCFNetworkW3CNavigationTiming *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 0x8000;
   }
@@ -52,9 +52,9 @@
   *&self->_has = v3 & 0x8000 | *&self->_has & 0x7FFF;
 }
 
-- (void)setHasRedirectStart:(BOOL)a3
+- (void)setHasRedirectStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 1024;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasRedirectEnd:(BOOL)a3
+- (void)setHasRedirectEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 512;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasFetchStart:(BOOL)a3
+- (void)setHasFetchStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 16;
   }
@@ -97,9 +97,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasDomainLookupStart:(BOOL)a3
+- (void)setHasDomainLookupStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 8;
   }
@@ -112,9 +112,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasDomainLookupEnd:(BOOL)a3
+- (void)setHasDomainLookupEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 4;
   }
@@ -127,9 +127,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasConnectStart:(BOOL)a3
+- (void)setHasConnectStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 2;
   }
@@ -142,9 +142,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasSecureConnectionStart:(BOOL)a3
+- (void)setHasSecureConnectionStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 0x4000;
   }
@@ -157,9 +157,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasRequestStart:(BOOL)a3
+- (void)setHasRequestStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 2048;
   }
@@ -172,9 +172,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasResponseStart:(BOOL)a3
+- (void)setHasResponseStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 0x2000;
   }
@@ -187,9 +187,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasResponseEnd:(BOOL)a3
+- (void)setHasResponseEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 4096;
   }
@@ -202,9 +202,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasRedirectCountW3C:(BOOL)a3
+- (void)setHasRedirectCountW3C:(BOOL)c
 {
-  if (a3)
+  if (c)
   {
     v3 = 256;
   }
@@ -217,9 +217,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasRedirectCount:(BOOL)a3
+- (void)setHasRedirectCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 128;
   }
@@ -232,9 +232,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasIsReused:(BOOL)a3
+- (void)setHasIsReused:(BOOL)reused
 {
-  if (a3)
+  if (reused)
   {
     v3 = 64;
   }
@@ -247,9 +247,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasIsCellular:(BOOL)a3
+- (void)setHasIsCellular:(BOOL)cellular
 {
-  if (a3)
+  if (cellular)
   {
     v3 = 32;
   }
@@ -271,11 +271,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has < 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x400) == 0)
     {
@@ -294,7 +294,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_redirectStart), @"redirectStart"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_redirectStart), @"redirectStart"}];
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -308,7 +308,7 @@ LABEL_4:
   }
 
 LABEL_28:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_redirectEnd), @"redirectEnd"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_redirectEnd), @"redirectEnd"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -322,7 +322,7 @@ LABEL_5:
   }
 
 LABEL_29:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_fetchStart), @"fetchStart"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_fetchStart), @"fetchStart"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -336,7 +336,7 @@ LABEL_6:
   }
 
 LABEL_30:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_domainLookupStart), @"domainLookupStart"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_domainLookupStart), @"domainLookupStart"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -350,7 +350,7 @@ LABEL_7:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_domainLookupEnd), @"domainLookupEnd"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_domainLookupEnd), @"domainLookupEnd"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -364,7 +364,7 @@ LABEL_8:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_connectStart), @"connectStart"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_connectStart), @"connectStart"}];
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -378,7 +378,7 @@ LABEL_9:
   }
 
 LABEL_33:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_secureConnectionStart), @"secureConnectionStart"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_secureConnectionStart), @"secureConnectionStart"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -392,7 +392,7 @@ LABEL_10:
   }
 
 LABEL_34:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_connectEnd), @"connectEnd"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_connectEnd), @"connectEnd"}];
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -406,7 +406,7 @@ LABEL_11:
   }
 
 LABEL_35:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestStart), @"requestStart"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestStart), @"requestStart"}];
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -420,7 +420,7 @@ LABEL_12:
   }
 
 LABEL_36:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_responseStart), @"responseStart"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_responseStart), @"responseStart"}];
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -434,7 +434,7 @@ LABEL_13:
   }
 
 LABEL_37:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_responseEnd), @"responseEnd"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_responseEnd), @"responseEnd"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -448,7 +448,7 @@ LABEL_14:
   }
 
 LABEL_38:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_redirectCountW3C), @"redirectCountW3C"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_redirectCountW3C), @"redirectCountW3C"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -462,41 +462,41 @@ LABEL_15:
   }
 
 LABEL_39:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_redirectCount), @"redirectCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_redirectCount), @"redirectCount"}];
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_16:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_isReused), @"isReused"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_isReused), @"isReused"}];
   }
 
 LABEL_17:
   hostname = self->_hostname;
   if (hostname)
   {
-    [v3 setObject:hostname forKey:@"hostname"];
+    [dictionary setObject:hostname forKey:@"hostname"];
   }
 
   url = self->_url;
   if (url)
   {
-    [v3 setObject:url forKey:@"url"];
+    [dictionary setObject:url forKey:@"url"];
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_isCellular), @"isCellular"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_isCellular), @"isCellular"}];
   }
 
   procname = self->_procname;
   if (procname)
   {
-    [v3 setObject:procname forKey:@"procname"];
+    [dictionary setObject:procname forKey:@"procname"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
@@ -726,7 +726,7 @@ LABEL_18:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
@@ -739,22 +739,22 @@ LABEL_18:
     goto LABEL_3;
   }
 
-  *(a3 + 16) = self->_timestamp;
-  *(a3 + 80) |= 0x8000u;
+  *(to + 16) = self->_timestamp;
+  *(to + 80) |= 0x8000u;
   *&has = self->_has;
   if ((*&has & 0x400) != 0)
   {
 LABEL_3:
-    *(a3 + 11) = self->_redirectStart;
-    *(a3 + 80) |= 0x400u;
+    *(to + 11) = self->_redirectStart;
+    *(to + 80) |= 0x400u;
     *&has = self->_has;
   }
 
 LABEL_4:
   if ((*&has & 0x200) != 0)
   {
-    *(a3 + 10) = self->_redirectEnd;
-    *(a3 + 80) |= 0x200u;
+    *(to + 10) = self->_redirectEnd;
+    *(to + 80) |= 0x200u;
     *&has = self->_has;
     if ((*&has & 0x10) == 0)
     {
@@ -773,8 +773,8 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  *(a3 + 5) = self->_fetchStart;
-  *(a3 + 80) |= 0x10u;
+  *(to + 5) = self->_fetchStart;
+  *(to + 80) |= 0x10u;
   *&has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -788,8 +788,8 @@ LABEL_7:
   }
 
 LABEL_30:
-  *(a3 + 4) = self->_domainLookupStart;
-  *(a3 + 80) |= 8u;
+  *(to + 4) = self->_domainLookupStart;
+  *(to + 80) |= 8u;
   *&has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -803,8 +803,8 @@ LABEL_8:
   }
 
 LABEL_31:
-  *(a3 + 3) = self->_domainLookupEnd;
-  *(a3 + 80) |= 4u;
+  *(to + 3) = self->_domainLookupEnd;
+  *(to + 80) |= 4u;
   *&has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -818,8 +818,8 @@ LABEL_9:
   }
 
 LABEL_32:
-  *(a3 + 2) = self->_connectStart;
-  *(a3 + 80) |= 2u;
+  *(to + 2) = self->_connectStart;
+  *(to + 80) |= 2u;
   *&has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -833,8 +833,8 @@ LABEL_10:
   }
 
 LABEL_33:
-  *(a3 + 15) = self->_secureConnectionStart;
-  *(a3 + 80) |= 0x4000u;
+  *(to + 15) = self->_secureConnectionStart;
+  *(to + 80) |= 0x4000u;
   *&has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -848,8 +848,8 @@ LABEL_11:
   }
 
 LABEL_34:
-  *(a3 + 1) = self->_connectEnd;
-  *(a3 + 80) |= 1u;
+  *(to + 1) = self->_connectEnd;
+  *(to + 80) |= 1u;
   *&has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -863,8 +863,8 @@ LABEL_12:
   }
 
 LABEL_35:
-  *(a3 + 12) = self->_requestStart;
-  *(a3 + 80) |= 0x800u;
+  *(to + 12) = self->_requestStart;
+  *(to + 80) |= 0x800u;
   *&has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -878,8 +878,8 @@ LABEL_13:
   }
 
 LABEL_36:
-  *(a3 + 14) = self->_responseStart;
-  *(a3 + 80) |= 0x2000u;
+  *(to + 14) = self->_responseStart;
+  *(to + 80) |= 0x2000u;
   *&has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -893,8 +893,8 @@ LABEL_14:
   }
 
 LABEL_37:
-  *(a3 + 13) = self->_responseEnd;
-  *(a3 + 80) |= 0x1000u;
+  *(to + 13) = self->_responseEnd;
+  *(to + 80) |= 0x1000u;
   *&has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -908,8 +908,8 @@ LABEL_15:
   }
 
 LABEL_38:
-  *(a3 + 9) = self->_redirectCountW3C;
-  *(a3 + 80) |= 0x100u;
+  *(to + 9) = self->_redirectCountW3C;
+  *(to + 80) |= 0x100u;
   *&has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -923,42 +923,42 @@ LABEL_16:
   }
 
 LABEL_39:
-  *(a3 + 8) = self->_redirectCount;
-  *(a3 + 80) |= 0x80u;
+  *(to + 8) = self->_redirectCount;
+  *(to + 80) |= 0x80u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_17:
-    *(a3 + 7) = self->_isReused;
-    *(a3 + 80) |= 0x40u;
+    *(to + 7) = self->_isReused;
+    *(to + 80) |= 0x40u;
   }
 
 LABEL_18:
   if (self->_hostname)
   {
-    [a3 setHostname:?];
+    [to setHostname:?];
   }
 
   if (self->_url)
   {
-    [a3 setUrl:?];
+    [to setUrl:?];
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    *(a3 + 6) = self->_isCellular;
-    *(a3 + 80) |= 0x20u;
+    *(to + 6) = self->_isCellular;
+    *(to + 80) |= 0x20u;
   }
 
   if (self->_procname)
   {
 
-    [a3 setProcname:?];
+    [to setProcname:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has < 0)
@@ -1174,34 +1174,34 @@ LABEL_16:
 
 LABEL_17:
 
-  *(v6 + 136) = [(NSString *)self->_hostname copyWithZone:a3];
-  *(v6 + 152) = [(NSString *)self->_url copyWithZone:a3];
+  *(v6 + 136) = [(NSString *)self->_hostname copyWithZone:zone];
+  *(v6 + 152) = [(NSString *)self->_url copyWithZone:zone];
   if ((*&self->_has & 0x20) != 0)
   {
     *(v6 + 48) = self->_isCellular;
     *(v6 + 160) |= 0x20u;
   }
 
-  *(v6 + 144) = [(NSString *)self->_procname copyWithZone:a3];
+  *(v6 + 144) = [(NSString *)self->_procname copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 80);
+    v7 = *(equal + 80);
     if ((*&has & 0x80000000) != 0)
     {
-      if ((*(a3 + 80) & 0x8000) == 0 || self->_timestamp != *(a3 + 16))
+      if ((*(equal + 80) & 0x8000) == 0 || self->_timestamp != *(equal + 16))
       {
         goto LABEL_88;
       }
     }
 
-    else if ((*(a3 + 80) & 0x8000) != 0)
+    else if ((*(equal + 80) & 0x8000) != 0)
     {
 LABEL_88:
       LOBYTE(v5) = 0;
@@ -1210,33 +1210,33 @@ LABEL_88:
 
     if ((*&has & 0x400) != 0)
     {
-      if ((*(a3 + 80) & 0x400) == 0 || self->_redirectStart != *(a3 + 11))
+      if ((*(equal + 80) & 0x400) == 0 || self->_redirectStart != *(equal + 11))
       {
         goto LABEL_88;
       }
     }
 
-    else if ((*(a3 + 80) & 0x400) != 0)
+    else if ((*(equal + 80) & 0x400) != 0)
     {
       goto LABEL_88;
     }
 
     if ((*&has & 0x200) != 0)
     {
-      if ((*(a3 + 80) & 0x200) == 0 || self->_redirectEnd != *(a3 + 10))
+      if ((*(equal + 80) & 0x200) == 0 || self->_redirectEnd != *(equal + 10))
       {
         goto LABEL_88;
       }
     }
 
-    else if ((*(a3 + 80) & 0x200) != 0)
+    else if ((*(equal + 80) & 0x200) != 0)
     {
       goto LABEL_88;
     }
 
     if ((*&has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_fetchStart != *(a3 + 5))
+      if ((v7 & 0x10) == 0 || self->_fetchStart != *(equal + 5))
       {
         goto LABEL_88;
       }
@@ -1249,7 +1249,7 @@ LABEL_88:
 
     if ((*&has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_domainLookupStart != *(a3 + 4))
+      if ((v7 & 8) == 0 || self->_domainLookupStart != *(equal + 4))
       {
         goto LABEL_88;
       }
@@ -1262,7 +1262,7 @@ LABEL_88:
 
     if ((*&has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_domainLookupEnd != *(a3 + 3))
+      if ((v7 & 4) == 0 || self->_domainLookupEnd != *(equal + 3))
       {
         goto LABEL_88;
       }
@@ -1275,7 +1275,7 @@ LABEL_88:
 
     if ((*&has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_connectStart != *(a3 + 2))
+      if ((v7 & 2) == 0 || self->_connectStart != *(equal + 2))
       {
         goto LABEL_88;
       }
@@ -1288,20 +1288,20 @@ LABEL_88:
 
     if ((*&has & 0x4000) != 0)
     {
-      if ((*(a3 + 80) & 0x4000) == 0 || self->_secureConnectionStart != *(a3 + 15))
+      if ((*(equal + 80) & 0x4000) == 0 || self->_secureConnectionStart != *(equal + 15))
       {
         goto LABEL_88;
       }
     }
 
-    else if ((*(a3 + 80) & 0x4000) != 0)
+    else if ((*(equal + 80) & 0x4000) != 0)
     {
       goto LABEL_88;
     }
 
     if (*&has)
     {
-      if ((v7 & 1) == 0 || self->_connectEnd != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_connectEnd != *(equal + 1))
       {
         goto LABEL_88;
       }
@@ -1314,59 +1314,59 @@ LABEL_88:
 
     if ((*&has & 0x800) != 0)
     {
-      if ((*(a3 + 80) & 0x800) == 0 || self->_requestStart != *(a3 + 12))
+      if ((*(equal + 80) & 0x800) == 0 || self->_requestStart != *(equal + 12))
       {
         goto LABEL_88;
       }
     }
 
-    else if ((*(a3 + 80) & 0x800) != 0)
+    else if ((*(equal + 80) & 0x800) != 0)
     {
       goto LABEL_88;
     }
 
     if ((*&has & 0x2000) != 0)
     {
-      if ((*(a3 + 80) & 0x2000) == 0 || self->_responseStart != *(a3 + 14))
+      if ((*(equal + 80) & 0x2000) == 0 || self->_responseStart != *(equal + 14))
       {
         goto LABEL_88;
       }
     }
 
-    else if ((*(a3 + 80) & 0x2000) != 0)
+    else if ((*(equal + 80) & 0x2000) != 0)
     {
       goto LABEL_88;
     }
 
     if ((*&has & 0x1000) != 0)
     {
-      if ((*(a3 + 80) & 0x1000) == 0 || self->_responseEnd != *(a3 + 13))
+      if ((*(equal + 80) & 0x1000) == 0 || self->_responseEnd != *(equal + 13))
       {
         goto LABEL_88;
       }
     }
 
-    else if ((*(a3 + 80) & 0x1000) != 0)
+    else if ((*(equal + 80) & 0x1000) != 0)
     {
       goto LABEL_88;
     }
 
     if ((*&has & 0x100) != 0)
     {
-      if ((*(a3 + 80) & 0x100) == 0 || self->_redirectCountW3C != *(a3 + 9))
+      if ((*(equal + 80) & 0x100) == 0 || self->_redirectCountW3C != *(equal + 9))
       {
         goto LABEL_88;
       }
     }
 
-    else if ((*(a3 + 80) & 0x100) != 0)
+    else if ((*(equal + 80) & 0x100) != 0)
     {
       goto LABEL_88;
     }
 
     if ((*&has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_redirectCount != *(a3 + 8))
+      if ((v7 & 0x80) == 0 || self->_redirectCount != *(equal + 8))
       {
         goto LABEL_88;
       }
@@ -1379,7 +1379,7 @@ LABEL_88:
 
     if ((*&has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_isReused != *(a3 + 7))
+      if ((v7 & 0x40) == 0 || self->_isReused != *(equal + 7))
       {
         goto LABEL_88;
       }
@@ -1391,15 +1391,15 @@ LABEL_88:
     }
 
     hostname = self->_hostname;
-    if (!(hostname | *(a3 + 17)) || (v5 = [(NSString *)hostname isEqual:?]) != 0)
+    if (!(hostname | *(equal + 17)) || (v5 = [(NSString *)hostname isEqual:?]) != 0)
     {
       url = self->_url;
-      if (!(url | *(a3 + 19)) || (v5 = [(NSString *)url isEqual:?]) != 0)
+      if (!(url | *(equal + 19)) || (v5 = [(NSString *)url isEqual:?]) != 0)
       {
-        v10 = *(a3 + 80);
+        v10 = *(equal + 80);
         if ((*&self->_has & 0x20) != 0)
         {
-          if ((v10 & 0x20) == 0 || self->_isCellular != *(a3 + 6))
+          if ((v10 & 0x20) == 0 || self->_isCellular != *(equal + 6))
           {
             goto LABEL_88;
           }
@@ -1411,7 +1411,7 @@ LABEL_88:
         }
 
         procname = self->_procname;
-        if (procname | *(a3 + 18))
+        if (procname | *(equal + 18))
         {
 
           LOBYTE(v5) = [(NSString *)procname isEqual:?];
@@ -1650,9 +1650,9 @@ LABEL_32:
   return v21 ^ v22 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ [(NSString *)self->_procname hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 80);
+  v5 = *(from + 80);
   if ((v5 & 0x80000000) == 0)
   {
     if ((v5 & 0x400) == 0)
@@ -1663,23 +1663,23 @@ LABEL_32:
     goto LABEL_3;
   }
 
-  self->_timestamp = *(a3 + 16);
+  self->_timestamp = *(from + 16);
   *&self->_has |= 0x8000u;
-  LOWORD(v5) = *(a3 + 80);
+  LOWORD(v5) = *(from + 80);
   if ((v5 & 0x400) != 0)
   {
 LABEL_3:
-    self->_redirectStart = *(a3 + 11);
+    self->_redirectStart = *(from + 11);
     *&self->_has |= 0x400u;
-    LOWORD(v5) = *(a3 + 80);
+    LOWORD(v5) = *(from + 80);
   }
 
 LABEL_4:
   if ((v5 & 0x200) != 0)
   {
-    self->_redirectEnd = *(a3 + 10);
+    self->_redirectEnd = *(from + 10);
     *&self->_has |= 0x200u;
-    LOWORD(v5) = *(a3 + 80);
+    LOWORD(v5) = *(from + 80);
     if ((v5 & 0x10) == 0)
     {
 LABEL_6:
@@ -1697,9 +1697,9 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  self->_fetchStart = *(a3 + 5);
+  self->_fetchStart = *(from + 5);
   *&self->_has |= 0x10u;
-  LOWORD(v5) = *(a3 + 80);
+  LOWORD(v5) = *(from + 80);
   if ((v5 & 8) == 0)
   {
 LABEL_7:
@@ -1712,9 +1712,9 @@ LABEL_7:
   }
 
 LABEL_30:
-  self->_domainLookupStart = *(a3 + 4);
+  self->_domainLookupStart = *(from + 4);
   *&self->_has |= 8u;
-  LOWORD(v5) = *(a3 + 80);
+  LOWORD(v5) = *(from + 80);
   if ((v5 & 4) == 0)
   {
 LABEL_8:
@@ -1727,9 +1727,9 @@ LABEL_8:
   }
 
 LABEL_31:
-  self->_domainLookupEnd = *(a3 + 3);
+  self->_domainLookupEnd = *(from + 3);
   *&self->_has |= 4u;
-  LOWORD(v5) = *(a3 + 80);
+  LOWORD(v5) = *(from + 80);
   if ((v5 & 2) == 0)
   {
 LABEL_9:
@@ -1742,9 +1742,9 @@ LABEL_9:
   }
 
 LABEL_32:
-  self->_connectStart = *(a3 + 2);
+  self->_connectStart = *(from + 2);
   *&self->_has |= 2u;
-  LOWORD(v5) = *(a3 + 80);
+  LOWORD(v5) = *(from + 80);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_10:
@@ -1757,9 +1757,9 @@ LABEL_10:
   }
 
 LABEL_33:
-  self->_secureConnectionStart = *(a3 + 15);
+  self->_secureConnectionStart = *(from + 15);
   *&self->_has |= 0x4000u;
-  LOWORD(v5) = *(a3 + 80);
+  LOWORD(v5) = *(from + 80);
   if ((v5 & 1) == 0)
   {
 LABEL_11:
@@ -1772,9 +1772,9 @@ LABEL_11:
   }
 
 LABEL_34:
-  self->_connectEnd = *(a3 + 1);
+  self->_connectEnd = *(from + 1);
   *&self->_has |= 1u;
-  LOWORD(v5) = *(a3 + 80);
+  LOWORD(v5) = *(from + 80);
   if ((v5 & 0x800) == 0)
   {
 LABEL_12:
@@ -1787,9 +1787,9 @@ LABEL_12:
   }
 
 LABEL_35:
-  self->_requestStart = *(a3 + 12);
+  self->_requestStart = *(from + 12);
   *&self->_has |= 0x800u;
-  LOWORD(v5) = *(a3 + 80);
+  LOWORD(v5) = *(from + 80);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_13:
@@ -1802,9 +1802,9 @@ LABEL_13:
   }
 
 LABEL_36:
-  self->_responseStart = *(a3 + 14);
+  self->_responseStart = *(from + 14);
   *&self->_has |= 0x2000u;
-  LOWORD(v5) = *(a3 + 80);
+  LOWORD(v5) = *(from + 80);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_14:
@@ -1817,9 +1817,9 @@ LABEL_14:
   }
 
 LABEL_37:
-  self->_responseEnd = *(a3 + 13);
+  self->_responseEnd = *(from + 13);
   *&self->_has |= 0x1000u;
-  LOWORD(v5) = *(a3 + 80);
+  LOWORD(v5) = *(from + 80);
   if ((v5 & 0x100) == 0)
   {
 LABEL_15:
@@ -1832,9 +1832,9 @@ LABEL_15:
   }
 
 LABEL_38:
-  self->_redirectCountW3C = *(a3 + 9);
+  self->_redirectCountW3C = *(from + 9);
   *&self->_has |= 0x100u;
-  LOWORD(v5) = *(a3 + 80);
+  LOWORD(v5) = *(from + 80);
   if ((v5 & 0x80) == 0)
   {
 LABEL_16:
@@ -1847,33 +1847,33 @@ LABEL_16:
   }
 
 LABEL_39:
-  self->_redirectCount = *(a3 + 8);
+  self->_redirectCount = *(from + 8);
   *&self->_has |= 0x80u;
-  if ((*(a3 + 80) & 0x40) != 0)
+  if ((*(from + 80) & 0x40) != 0)
   {
 LABEL_17:
-    self->_isReused = *(a3 + 7);
+    self->_isReused = *(from + 7);
     *&self->_has |= 0x40u;
   }
 
 LABEL_18:
-  if (*(a3 + 17))
+  if (*(from + 17))
   {
     [(AWDCFNetworkW3CNavigationTiming *)self setHostname:?];
   }
 
-  if (*(a3 + 19))
+  if (*(from + 19))
   {
     [(AWDCFNetworkW3CNavigationTiming *)self setUrl:?];
   }
 
-  if ((*(a3 + 80) & 0x20) != 0)
+  if ((*(from + 80) & 0x20) != 0)
   {
-    self->_isCellular = *(a3 + 6);
+    self->_isCellular = *(from + 6);
     *&self->_has |= 0x20u;
   }
 
-  if (*(a3 + 18))
+  if (*(from + 18))
   {
 
     [(AWDCFNetworkW3CNavigationTiming *)self setProcname:?];

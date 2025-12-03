@@ -1,14 +1,14 @@
 @interface MPSNDArrayRandom
-- (MPSNDArrayRandom)initWithDevice:(id)a3;
+- (MPSNDArrayRandom)initWithDevice:(id)device;
 @end
 
 @implementation MPSNDArrayRandom
 
-- (MPSNDArrayRandom)initWithDevice:(id)a3
+- (MPSNDArrayRandom)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSNDArrayRandom;
-  return [(MPSNDArrayUnaryKernel *)&v4 initWithDevice:a3];
+  return [(MPSNDArrayUnaryKernel *)&v4 initWithDevice:device];
 }
 
 @end

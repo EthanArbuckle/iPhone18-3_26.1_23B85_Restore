@@ -1,6 +1,6 @@
 @interface FigAlternateObjCVideoAttributes
 - (CGSize)presentationSize;
-- (FigAlternateObjCVideoAttributes)initWithFigAlternate:(OpaqueFigAlternate *)a3;
+- (FigAlternateObjCVideoAttributes)initWithFigAlternate:(OpaqueFigAlternate *)alternate;
 - (NSArray)codecTypes;
 - (NSArray)videoLayoutAttributes;
 - (NSString)videoRange;
@@ -9,16 +9,16 @@
 
 @implementation FigAlternateObjCVideoAttributes
 
-- (FigAlternateObjCVideoAttributes)initWithFigAlternate:(OpaqueFigAlternate *)a3
+- (FigAlternateObjCVideoAttributes)initWithFigAlternate:(OpaqueFigAlternate *)alternate
 {
   v9.receiver = self;
   v9.super_class = FigAlternateObjCVideoAttributes;
   v4 = [(FigAlternateObjCVideoAttributes *)&v9 init];
   if (v4)
   {
-    if (a3)
+    if (alternate)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(alternate);
     }
 
     else
@@ -27,11 +27,11 @@
     }
 
     v4->_alternate = v5;
-    v4->_presentationSize.width = FigAlternateGetResolution(a3);
+    v4->_presentationSize.width = FigAlternateGetResolution(alternate);
     v4->_presentationSize.height = v6;
-    if (FigAlternateIsFrameRateDeclared(a3))
+    if (FigAlternateIsFrameRateDeclared(alternate))
     {
-      FrameRate = FigAlternateGetFrameRate(a3);
+      FrameRate = FigAlternateGetFrameRate(alternate);
     }
 
     else
@@ -94,7 +94,7 @@
   if (!self->_videoLayoutAttributes)
   {
     VideoLayoutTags = FigAlternateGetVideoLayoutTags(self->_alternate);
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = 0;
     if (!VideoLayoutTags)
     {
@@ -105,7 +105,7 @@ LABEL_3:
     for (i = CFArrayGetCount(VideoLayoutTags); v5 < i; i = 0)
     {
       v7 = [[FigAlternateObjCVideoLayoutAttributes alloc] initWithTagCollection:CFArrayGetValueAtIndex(VideoLayoutTags, v5)];
-      [v4 addObject:v7];
+      [array addObject:v7];
 
       ++v5;
       if (VideoLayoutTags)
@@ -117,7 +117,7 @@ LABEL_4:
       ;
     }
 
-    self->_videoLayoutAttributes = v4;
+    self->_videoLayoutAttributes = array;
   }
 
   FigSimpleMutexUnlock();

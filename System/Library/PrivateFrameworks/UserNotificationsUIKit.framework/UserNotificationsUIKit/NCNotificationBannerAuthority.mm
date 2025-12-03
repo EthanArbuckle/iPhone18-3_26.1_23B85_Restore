@@ -1,17 +1,17 @@
 @interface NCNotificationBannerAuthority
 - (id)delegate;
-- (int64_t)shouldOverlapPresentable:(id)a3 withPresentable:(id)a4;
-- (int64_t)shouldPresentPresentable:(id)a3 withPresentedPresentables:(id)a4 responsiblePresentable:(id *)a5;
+- (int64_t)shouldOverlapPresentable:(id)presentable withPresentable:(id)withPresentable;
+- (int64_t)shouldPresentPresentable:(id)presentable withPresentedPresentables:(id)presentables responsiblePresentable:(id *)responsiblePresentable;
 @end
 
 @implementation NCNotificationBannerAuthority
 
-- (int64_t)shouldPresentPresentable:(id)a3 withPresentedPresentables:(id)a4 responsiblePresentable:(id *)a5
+- (int64_t)shouldPresentPresentable:(id)presentable withPresentedPresentables:(id)presentables responsiblePresentable:(id *)responsiblePresentable
 {
-  v8 = a3;
-  v9 = a4;
+  presentableCopy = presentable;
+  presentablesCopy = presentables;
   v10 = objc_opt_class();
-  v11 = v8;
+  v11 = presentableCopy;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -34,10 +34,10 @@
 
   if (v13 && ([v13 isStaticContentLoadingComplete] & 1) == 0)
   {
-    if (a5)
+    if (responsiblePresentable)
     {
       v15 = v11;
-      *a5 = v11;
+      *responsiblePresentable = v11;
     }
 
     objc_initWeak(&location, self);
@@ -73,13 +73,13 @@ void __107__NCNotificationBannerAuthority_shouldPresentPresentable_withPresented
   }
 }
 
-- (int64_t)shouldOverlapPresentable:(id)a3 withPresentable:(id)a4
+- (int64_t)shouldOverlapPresentable:(id)presentable withPresentable:(id)withPresentable
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D77E48] requesterIdentifier];
-  v8 = [v5 requesterIdentifier];
-  v9 = [v8 isEqualToString:v7];
+  presentableCopy = presentable;
+  withPresentableCopy = withPresentable;
+  requesterIdentifier = [MEMORY[0x277D77E48] requesterIdentifier];
+  requesterIdentifier2 = [presentableCopy requesterIdentifier];
+  v9 = [requesterIdentifier2 isEqualToString:requesterIdentifier];
 
   if (v9)
   {
@@ -91,9 +91,9 @@ void __107__NCNotificationBannerAuthority_shouldPresentPresentable_withPresented
 
     else
     {
-      v12 = [v5 viewController];
+      viewController = [presentableCopy viewController];
       v13 = objc_opt_class();
-      v14 = v12;
+      v14 = viewController;
       if (v13)
       {
         if (objc_opt_isKindOfClass())
@@ -114,9 +114,9 @@ void __107__NCNotificationBannerAuthority_shouldPresentPresentable_withPresented
 
       v16 = v15;
 
-      v17 = [v16 notificationViewController];
+      notificationViewController = [v16 notificationViewController];
 
-      LODWORD(v16) = [v17 hasCommittedToPresentingCustomContentProvidingViewController];
+      LODWORD(v16) = [notificationViewController hasCommittedToPresentingCustomContentProvidingViewController];
       v10 = v16;
     }
   }

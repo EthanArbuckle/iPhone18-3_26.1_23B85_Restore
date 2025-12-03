@@ -1,34 +1,34 @@
 @interface ASDRestoreApplicationsRequestOptions
-- (ASDRestoreApplicationsRequestOptions)initWithApplicationMetadata:(id)a3;
-- (ASDRestoreApplicationsRequestOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASDRestoreApplicationsRequestOptions)initWithApplicationMetadata:(id)metadata;
+- (ASDRestoreApplicationsRequestOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDRestoreApplicationsRequestOptions
 
-- (ASDRestoreApplicationsRequestOptions)initWithApplicationMetadata:(id)a3
+- (ASDRestoreApplicationsRequestOptions)initWithApplicationMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   v9.receiver = self;
   v9.super_class = ASDRestoreApplicationsRequestOptions;
   v6 = [(ASDRestoreApplicationsRequestOptions *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_items, a3);
+    objc_storeStrong(&v6->_items, metadata);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[ASDRestoreApplicationsRequestOptions allocWithZone:](ASDRestoreApplicationsRequestOptions init];
   v5->_completeDataPromise = self->_completeDataPromise;
   v5->_createAsMobileBackup = self->_createAsMobileBackup;
   v5->_createsPlaceholders = self->_createsPlaceholders;
-  v6 = [(NSArray *)self->_items copyWithZone:a3];
+  v6 = [(NSArray *)self->_items copyWithZone:zone];
   items = v5->_items;
   v5->_items = v6;
 
@@ -37,43 +37,43 @@
   return v5;
 }
 
-- (ASDRestoreApplicationsRequestOptions)initWithCoder:(id)a3
+- (ASDRestoreApplicationsRequestOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = ASDRestoreApplicationsRequestOptions;
-  v5 = [(ASDRequestOptions *)&v12 initWithCoder:v4];
+  v5 = [(ASDRequestOptions *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_completeDataPromise = [v4 decodeBoolForKey:@"completeDataPromise"];
-    v5->_createAsMobileBackup = [v4 decodeBoolForKey:@"createsAsMobileBackup"];
-    v5->_createsPlaceholders = [v4 decodeBoolForKey:@"createsPlaceholders"];
+    v5->_completeDataPromise = [coderCopy decodeBoolForKey:@"completeDataPromise"];
+    v5->_createAsMobileBackup = [coderCopy decodeBoolForKey:@"createsAsMobileBackup"];
+    v5->_createsPlaceholders = [coderCopy decodeBoolForKey:@"createsPlaceholders"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"items"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"items"];
     items = v5->_items;
     v5->_items = v9;
 
-    v5->_restoreApplicationData = [v4 decodeBoolForKey:@"restoreAppData"];
-    v5->_skipCoordinatorCompletion = [v4 decodeBoolForKey:@"skipCompletion"];
+    v5->_restoreApplicationData = [coderCopy decodeBoolForKey:@"restoreAppData"];
+    v5->_skipCoordinatorCompletion = [coderCopy decodeBoolForKey:@"skipCompletion"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   completeDataPromise = self->_completeDataPromise;
-  v6 = a3;
-  [v6 encodeBool:completeDataPromise forKey:@"completeDataPromise"];
-  [v6 encodeBool:self->_createAsMobileBackup forKey:@"createsAsMobileBackup"];
-  [v6 encodeBool:self->_createsPlaceholders forKey:@"createsPlaceholders"];
-  v5 = [(ASDRestoreApplicationsRequestOptions *)self items];
-  [v6 encodeObject:v5 forKey:@"items"];
+  coderCopy = coder;
+  [coderCopy encodeBool:completeDataPromise forKey:@"completeDataPromise"];
+  [coderCopy encodeBool:self->_createAsMobileBackup forKey:@"createsAsMobileBackup"];
+  [coderCopy encodeBool:self->_createsPlaceholders forKey:@"createsPlaceholders"];
+  items = [(ASDRestoreApplicationsRequestOptions *)self items];
+  [coderCopy encodeObject:items forKey:@"items"];
 
-  [v6 encodeBool:self->_restoreApplicationData forKey:@"restoreAppData"];
-  [v6 encodeBool:self->_skipCoordinatorCompletion forKey:@"skipCompletion"];
+  [coderCopy encodeBool:self->_restoreApplicationData forKey:@"restoreAppData"];
+  [coderCopy encodeBool:self->_skipCoordinatorCompletion forKey:@"skipCompletion"];
 }
 
 @end

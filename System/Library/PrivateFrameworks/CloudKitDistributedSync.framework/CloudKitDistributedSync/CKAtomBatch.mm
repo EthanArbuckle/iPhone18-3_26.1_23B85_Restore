@@ -1,100 +1,100 @@
 @interface CKAtomBatch
-+ (id)atomBatchByMergingAtomBatches:(id)a3 error:(id *)a4;
-+ (id)bindingForFormatVersion:(unsigned __int8)a3;
++ (id)atomBatchByMergingAtomBatches:(id)batches error:(id *)error;
++ (id)bindingForFormatVersion:(unsigned __int8)version;
 - ($06D0163FE0D7AFE752A9F21F38483579)writerIdentity;
-- (BOOL)_setStorage:(id)a3 optionsByReaderWriterClass:(id)a4 error:(id *)a5;
+- (BOOL)_setStorage:(id)storage optionsByReaderWriterClass:(id)class error:(id *)error;
 - (BOOL)fileBacked;
-- (BOOL)finishWritingWithError:(id *)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)finishWritingWithError:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isWriting;
-- (BOOL)size:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)splitWithMaximumSize:(unint64_t)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)validateWithError:(id *)a3;
-- (CKAtomBatch)initWithCoder:(id)a3;
-- (CKAtomBatch)initWithData:(id)a3 mergeableValueID:(id)a4 vectors:(id)a5 options:(id)a6 error:(id *)a7;
-- (CKAtomBatch)initWithFileURL:(id)a3 mergeableValueID:(id)a4 vectors:(id)a5 options:(id)a6 error:(id *)a7;
-- (CKAtomBatch)initWithMergeableDelta:(id)a3 error:(id *)a4;
+- (BOOL)size:(unint64_t *)size error:(id *)error;
+- (BOOL)splitWithMaximumSize:(unint64_t)size error:(id *)error block:(id)block;
+- (BOOL)validateWithError:(id *)error;
+- (CKAtomBatch)initWithCoder:(id)coder;
+- (CKAtomBatch)initWithData:(id)data mergeableValueID:(id)d vectors:(id)vectors options:(id)options error:(id *)error;
+- (CKAtomBatch)initWithFileURL:(id)l mergeableValueID:(id)d vectors:(id)vectors options:(id)options error:(id *)error;
+- (CKAtomBatch)initWithMergeableDelta:(id)delta error:(id *)error;
 - (CKDSReadableStorage)storage;
 - (CKDistributedTimestampStateVector)enumeratedContentsVector;
 - (CKMergeableDeltaVectors)vectors;
 - (CKMergeableValueID)mergeableValueID;
 - (id)_metadataForCoding;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)data;
-- (id)dataWithError:(id *)a3;
+- (id)dataWithError:(id *)error;
 - (id)description;
-- (id)initWriterWithMergeableValueID:(id)a3 vectors:(id)a4 options:(id)a5 error:(id *)a6;
-- (id)nthAtom:(int64_t)a3;
-- (id)splitWithMaximumDeltaSize:(unint64_t)a3 error:(id *)a4;
-- (id)splitWithMaximumSize:(unint64_t)a3 error:(id *)a4;
+- (id)initWriterWithMergeableValueID:(id)d vectors:(id)vectors options:(id)options error:(id *)error;
+- (id)nthAtom:(int64_t)atom;
+- (id)splitWithMaximumDeltaSize:(unint64_t)size error:(id *)error;
+- (id)splitWithMaximumSize:(unint64_t)size error:(id *)error;
 - (id)writableCopy;
-- (id)writableCopyWithMergeableValueID:(id)a3 vectors:(id)a4;
+- (id)writableCopyWithMergeableValueID:(id)d vectors:(id)vectors;
 - (id)writerOptions;
 - (int64_t)count;
 - (unint64_t)hash;
 - (unsigned)formatVersion;
-- (void)appendAtomWithBlock:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateAtomsWithOptions:(id)a3 usingBlock:(id)a4;
+- (void)appendAtomWithBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateAtomsWithOptions:(id)options usingBlock:(id)block;
 - (void)finishWriting;
 @end
 
 @implementation CKAtomBatch
 
-- (CKAtomBatch)initWithData:(id)a3 mergeableValueID:(id)a4 vectors:(id)a5 options:(id)a6 error:(id *)a7
+- (CKAtomBatch)initWithData:(id)data mergeableValueID:(id)d vectors:(id)vectors options:(id)options error:(id *)error
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  optionsCopy = options;
+  vectorsCopy = vectors;
+  dCopy = d;
+  dataCopy = data;
   v16 = [CKDSReadableStorage alloc];
-  v22 = objc_msgSend_initWithData_(v16, v17, v15, v18, v19, v20, v21);
+  v22 = objc_msgSend_initWithData_(v16, v17, dataCopy, v18, v19, v20, v21);
 
-  v29 = objc_msgSend_underlyingReaderOptionsByClass(v12, v23, v24, v25, v26, v27, v28);
+  v29 = objc_msgSend_underlyingReaderOptionsByClass(optionsCopy, v23, v24, v25, v26, v27, v28);
 
-  v31 = objc_msgSend_initWithStorage_optionsByReaderWriterClass_mergeableValueID_vectors_formatVersion_error_(self, v30, v22, v29, v14, v13, 3, a7);
+  v31 = objc_msgSend_initWithStorage_optionsByReaderWriterClass_mergeableValueID_vectors_formatVersion_error_(self, v30, v22, v29, dCopy, vectorsCopy, 3, error);
   return v31;
 }
 
-- (CKAtomBatch)initWithFileURL:(id)a3 mergeableValueID:(id)a4 vectors:(id)a5 options:(id)a6 error:(id *)a7
+- (CKAtomBatch)initWithFileURL:(id)l mergeableValueID:(id)d vectors:(id)vectors options:(id)options error:(id *)error
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  optionsCopy = options;
+  vectorsCopy = vectors;
+  dCopy = d;
+  lCopy = l;
   v16 = [CKDSReadableStorage alloc];
-  v22 = objc_msgSend_initWithFileURL_(v16, v17, v15, v18, v19, v20, v21);
+  v22 = objc_msgSend_initWithFileURL_(v16, v17, lCopy, v18, v19, v20, v21);
 
-  v29 = objc_msgSend_underlyingReaderOptionsByClass(v12, v23, v24, v25, v26, v27, v28);
+  v29 = objc_msgSend_underlyingReaderOptionsByClass(optionsCopy, v23, v24, v25, v26, v27, v28);
 
-  v31 = objc_msgSend_initWithStorage_optionsByReaderWriterClass_mergeableValueID_vectors_formatVersion_error_(self, v30, v22, v29, v14, v13, 3, a7);
+  v31 = objc_msgSend_initWithStorage_optionsByReaderWriterClass_mergeableValueID_vectors_formatVersion_error_(self, v30, v22, v29, dCopy, vectorsCopy, 3, error);
   return v31;
 }
 
-- (id)initWriterWithMergeableValueID:(id)a3 vectors:(id)a4 options:(id)a5 error:(id *)a6
+- (id)initWriterWithMergeableValueID:(id)d vectors:(id)vectors options:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v18 = a5;
-  if (!v18)
+  dCopy = d;
+  vectorsCopy = vectors;
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v18 = objc_opt_new();
+    optionsCopy = objc_opt_new();
   }
 
-  if (!objc_msgSend_fileBacked(v18, v12, v13, v14, v15, v16, v17))
+  if (!objc_msgSend_fileBacked(optionsCopy, v12, v13, v14, v15, v16, v17))
   {
     v48 = [CKDSWritableStorage alloc];
     v40 = objc_msgSend_initInMemory(v48, v49, v50, v51, v52, v53, v54);
     goto LABEL_8;
   }
 
-  v25 = objc_msgSend_fileURL(v18, v19, v20, v21, v22, v23, v24);
+  v25 = objc_msgSend_fileURL(optionsCopy, v19, v20, v21, v22, v23, v24);
 
   v26 = [CKDSWritableStorage alloc];
   v33 = v26;
   if (v25)
   {
-    v34 = objc_msgSend_fileURL(v18, v27, v28, v29, v30, v31, v32);
+    v34 = objc_msgSend_fileURL(optionsCopy, v27, v28, v29, v30, v31, v32);
     v40 = objc_msgSend_initWithFileURL_(v33, v35, v34, v36, v37, v38, v39);
 
     v41 = 0;
@@ -103,12 +103,12 @@
 LABEL_6:
 
 LABEL_8:
-      v55 = objc_msgSend_underlyingWriterOptionsByClass(v18, v42, v43, v44, v45, v46, v47);
-      v62 = objc_msgSend_formatVersion(v18, v56, v57, v58, v59, v60, v61);
-      self = objc_msgSend_initWithStorage_optionsByReaderWriterClass_mergeableValueID_vectors_formatVersion_error_(self, v63, v40, v55, v10, v11, v62, a6);
+      v55 = objc_msgSend_underlyingWriterOptionsByClass(optionsCopy, v42, v43, v44, v45, v46, v47);
+      v62 = objc_msgSend_formatVersion(optionsCopy, v56, v57, v58, v59, v60, v61);
+      self = objc_msgSend_initWithStorage_optionsByReaderWriterClass_mergeableValueID_vectors_formatVersion_error_(self, v63, v40, v55, dCopy, vectorsCopy, v62, error);
 
       v41 = v40;
-      v64 = self;
+      selfCopy = self;
       goto LABEL_9;
     }
   }
@@ -124,21 +124,21 @@ LABEL_8:
     }
   }
 
-  if (a6)
+  if (error)
   {
     v41 = v41;
-    v64 = 0;
-    *a6 = v41;
+    selfCopy = 0;
+    *error = v41;
   }
 
   else
   {
-    v64 = 0;
+    selfCopy = 0;
   }
 
 LABEL_9:
 
-  return v64;
+  return selfCopy;
 }
 
 - (CKDSReadableStorage)storage
@@ -201,10 +201,10 @@ LABEL_9:
   return v23;
 }
 
-- (void)enumerateAtomsWithOptions:(id)a3 usingBlock:(id)a4
+- (void)enumerateAtomsWithOptions:(id)options usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  blockCopy = block;
   v15 = objc_msgSend_backingStore(self, v9, v10, v11, v12, v13, v14);
 
   if (!v15)
@@ -218,16 +218,16 @@ LABEL_9:
   v32[1] = 3221225472;
   v32[2] = sub_24396A7AC;
   v32[3] = &unk_278DDAE08;
-  v33 = v7;
-  v34 = v8;
-  v23 = v8;
-  v24 = v7;
+  v33 = optionsCopy;
+  v34 = blockCopy;
+  v23 = blockCopy;
+  v24 = optionsCopy;
   objc_msgSend_readUsingBlock_(v22, v25, v32, v26, v27, v28, v29);
 }
 
-- (id)nthAtom:(int64_t)a3
+- (id)nthAtom:(int64_t)atom
 {
-  v10 = objc_msgSend_backingStore(self, a2, a3, v3, v4, v5, v6);
+  v10 = objc_msgSend_backingStore(self, a2, atom, v3, v4, v5, v6);
 
   if (!v10)
   {
@@ -235,25 +235,25 @@ LABEL_9:
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v31, v32, a2, self, @"CKAtomBatch.m", 282, @"Unable to read atoms before data is set");
   }
 
-  if (objc_msgSend_count(self, v11, v12, v13, v14, v15, v16) <= a3)
+  if (objc_msgSend_count(self, v11, v12, v13, v14, v15, v16) <= atom)
   {
     v33 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v17, v18, v19, v20, v21, v22);
     v40 = objc_msgSend_count(self, v34, v35, v36, v37, v38, v39);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v33, v41, a2, self, @"CKAtomBatch.m", 283, @"Trying to read index: %ld, but atom batch has %ld atoms", a3, v40);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v33, v41, a2, self, @"CKAtomBatch.m", 283, @"Trying to read index: %ld, but atom batch has %ld atoms", atom, v40);
 
-    if ((a3 & 0x8000000000000000) == 0)
+    if ((atom & 0x8000000000000000) == 0)
     {
       goto LABEL_5;
     }
   }
 
-  else if ((a3 & 0x8000000000000000) == 0)
+  else if ((atom & 0x8000000000000000) == 0)
   {
     goto LABEL_5;
   }
 
   v42 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v17, v18, v19, v20, v21, v22);
-  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v42, v43, a2, self, @"CKAtomBatch.m", 284, @"Can not access a negative index: %ld", a3);
+  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v42, v43, a2, self, @"CKAtomBatch.m", 284, @"Can not access a negative index: %ld", atom);
 
 LABEL_5:
   v45 = 0;
@@ -268,7 +268,7 @@ LABEL_5:
   v44[2] = sub_24396AC98;
   v44[3] = &unk_278DDAE30;
   v44[4] = &v45;
-  v44[5] = a3;
+  v44[5] = atom;
   objc_msgSend_readUsingBlock_(v23, v24, v44, v25, v26, v27, v28);
 
   v29 = v46[5];
@@ -277,9 +277,9 @@ LABEL_5:
   return v29;
 }
 
-- (void)appendAtomWithBlock:(id)a3
+- (void)appendAtomWithBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v12 = objc_msgSend_backingStore(self, v6, v7, v8, v9, v10, v11);
 
   if (!v12)
@@ -295,10 +295,10 @@ LABEL_5:
   v36[2] = sub_24396AE34;
   v36[3] = &unk_278DDAE80;
   v37 = v19;
-  v38 = v5;
+  v38 = blockCopy;
   v36[4] = self;
   v27 = v19;
-  v28 = v5;
+  v28 = blockCopy;
   objc_msgSend_writeUsingBlock_(v26, v29, v36, v30, v31, v32, v33);
 }
 
@@ -321,19 +321,19 @@ LABEL_5:
   }
 }
 
-- (BOOL)finishWritingWithError:(id *)a3
+- (BOOL)finishWritingWithError:(id *)error
 {
-  v7 = a3;
-  v8 = objc_msgSend_backingStore(self, a2, a3, v3, v4, v5, v6);
-  LOBYTE(v7) = objc_msgSend_finishWritingWithError_(v8, v9, v7, v10, v11, v12, v13);
+  errorCopy = error;
+  v8 = objc_msgSend_backingStore(self, a2, error, v3, v4, v5, v6);
+  LOBYTE(errorCopy) = objc_msgSend_finishWritingWithError_(v8, v9, errorCopy, v10, v11, v12, v13);
 
-  return v7;
+  return errorCopy;
 }
 
-- (BOOL)validateWithError:(id *)a3
+- (BOOL)validateWithError:(id *)error
 {
   v152[1] = *MEMORY[0x277D85DE8];
-  if (objc_msgSend_isWriting(self, a2, a3, v3, v4, v5, v6))
+  if (objc_msgSend_isWriting(self, a2, error, v3, v4, v5, v6))
   {
     objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], v9, *MEMORY[0x277CBE660], @"[CKAtomBatch finishWritingWithError:] must be called before reading data", v12, v13, v14);
     v15 = 0;
@@ -398,9 +398,9 @@ LABEL_5:
       v142[5] = v130;
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = v142[5];
+      *error = v142[5];
     }
 
     v15 = *(v148 + 24);
@@ -436,9 +436,9 @@ LABEL_5:
   return v19;
 }
 
-- (id)dataWithError:(id *)a3
+- (id)dataWithError:(id *)error
 {
-  if (objc_msgSend_isWriting(self, a2, a3, v3, v4, v5, v6))
+  if (objc_msgSend_isWriting(self, a2, error, v3, v4, v5, v6))
   {
     objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], v10, *MEMORY[0x277CBE660], @"[CKAtomBatch finishWritingWithError:] must be called before reading data", v13, v14, v15);
     v16 = 0;
@@ -455,28 +455,28 @@ LABEL_5:
       objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v32, v33, a2, self, @"CKAtomBatch.m", 447, @"Unexpectedly nil readable storage");
     }
 
-    v16 = objc_msgSend_dataWithError_(v24, v25, a3, v27, v28, v29, v30);
+    v16 = objc_msgSend_dataWithError_(v24, v25, error, v27, v28, v29, v30);
   }
 
   return v16;
 }
 
-- (BOOL)_setStorage:(id)a3 optionsByReaderWriterClass:(id)a4 error:(id *)a5
+- (BOOL)_setStorage:(id)storage optionsByReaderWriterClass:(id)class error:(id *)error
 {
   v58[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  storageCopy = storage;
+  classCopy = class;
   v16 = objc_msgSend_backingStore(self, v10, v11, v12, v13, v14, v15);
 
   if (v16)
   {
-    if (a5)
+    if (error)
     {
       v20 = MEMORY[0x277CCA9B8];
       v57 = *MEMORY[0x277CCA450];
       v58[0] = @"Cannot replace existing backing store";
       v21 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v17, v58, &v57, 1, v18, v19);
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v20, v22, @"CKDSErrorDomain", 1, v21, v23, v24);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v20, v22, @"CKDSErrorDomain", 1, v21, v23, v24);
     }
 
     v25 = 0;
@@ -487,7 +487,7 @@ LABEL_5:
     v54 = 0;
     v53 = 0;
     v52 = 0;
-    v26 = objc_msgSend_header_forStorage_error_(CKXBackingStore, v17, &v53, v8, &v52, v18, v19);
+    v26 = objc_msgSend_header_forStorage_error_(CKXBackingStore, v17, &v53, storageCopy, &v52, v18, v19);
     v27 = v52;
     v28 = v27;
     if (v26)
@@ -495,20 +495,20 @@ LABEL_5:
       v29 = [CKXBackingStore alloc];
       v30 = objc_opt_class();
       v36 = objc_msgSend_bindingForFormatVersion_(v30, v31, v53, v32, v33, v34, v35);
-      v38 = objc_msgSend_initWithStorage_binding_optionsByReaderWriterClass_formatVersion_error_(v29, v37, v8, v36, v9, v53, a5);
+      v38 = objc_msgSend_initWithStorage_binding_optionsByReaderWriterClass_formatVersion_error_(v29, v37, storageCopy, v36, classCopy, v53, error);
       backingStore = self->_backingStore;
       self->_backingStore = v38;
 
       v43 = self->_backingStore;
       if (v43 && v53 >= 3u && !self->_vectors)
       {
-        if (a5)
+        if (error)
         {
           v44 = MEMORY[0x277CCA9B8];
           v55 = *MEMORY[0x277CCA450];
           v56 = @"Expecting non-nil vectors";
           v45 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v40, &v56, &v55, 1, v41, v42);
-          *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v44, v46, @"CKDSErrorDomain", 2, v45, v47, v48);
+          *error = objc_msgSend_errorWithDomain_code_userInfo_(v44, v46, @"CKDSErrorDomain", 2, v45, v47, v48);
 
           v43 = self->_backingStore;
         }
@@ -521,11 +521,11 @@ LABEL_5:
       v25 = v43 != 0;
     }
 
-    else if (a5)
+    else if (error)
     {
       v49 = v27;
       v25 = 0;
-      *a5 = v28;
+      *error = v28;
     }
 
     else
@@ -571,9 +571,9 @@ LABEL_5:
   return v28;
 }
 
-- (BOOL)size:(unint64_t *)a3 error:(id *)a4
+- (BOOL)size:(unint64_t *)size error:(id *)error
 {
-  if (objc_msgSend_isWriting(self, a2, a3, a4, v4, v5, v6))
+  if (objc_msgSend_isWriting(self, a2, size, error, v4, v5, v6))
   {
     objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], v10, *MEMORY[0x277CBE660], @"[CKAtomBatch finishWritingWithError:] must be called before getting the size", v13, v14, v15);
     return 0;
@@ -629,16 +629,16 @@ LABEL_5:
         while (v58);
       }
 
-      if (a3)
+      if (size)
       {
-        *a3 = v47 + v57 + 16;
+        *size = v47 + v57 + 16;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v46 = v22;
-      *a4 = v22;
+      *error = v22;
     }
   }
 
@@ -774,10 +774,10 @@ LABEL_5:
   return v29 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     isEqual = 1;
   }
@@ -787,7 +787,7 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       v13 = objc_msgSend_mergeableValueID(self, v7, v8, v9, v10, v11, v12);
       v26 = objc_msgSend_mergeableValueID(v6, v14, v15, v16, v17, v18, v19);
       if (v13 != v26)
@@ -837,9 +837,9 @@ LABEL_15:
   return isEqual;
 }
 
-+ (id)bindingForFormatVersion:(unsigned __int8)a3
++ (id)bindingForFormatVersion:(unsigned __int8)version
 {
-  if (a3 == 2)
+  if (version == 2)
   {
     CKXAtomBindingFormatVersionORC();
   }
@@ -853,14 +853,14 @@ LABEL_15:
   return v3;
 }
 
-- (id)writableCopyWithMergeableValueID:(id)a3 vectors:(id)a4
+- (id)writableCopyWithMergeableValueID:(id)d vectors:(id)vectors
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  vectorsCopy = vectors;
   v9 = [CKAtomBatch alloc];
   v16 = objc_msgSend_writerOptions(self, v10, v11, v12, v13, v14, v15);
   v60 = 0;
-  inited = objc_msgSend_initWriterWithMergeableValueID_vectors_options_error_(v9, v17, v7, v8, v16, &v60, v18);
+  inited = objc_msgSend_initWriterWithMergeableValueID_vectors_options_error_(v9, v17, dCopy, vectorsCopy, v16, &v60, v18);
 
   v20 = v60;
   if (v20)
@@ -876,8 +876,8 @@ LABEL_15:
   v57[3] = &unk_278DDB038;
   v27 = inited;
   v58 = v27;
-  v59 = v7;
-  v28 = v7;
+  v59 = dCopy;
+  v28 = dCopy;
   objc_msgSend_enumerateAtomsWithOptions_usingBlock_(self, v29, 0, v57, v30, v31, v32);
   v39 = objc_msgSend_atomValueDescriptionBlock(self, v33, v34, v35, v36, v37, v38);
   objc_msgSend_setAtomValueDescriptionBlock_(v27, v40, v39, v41, v42, v43, v44);
@@ -896,26 +896,26 @@ LABEL_15:
   return v13;
 }
 
-+ (id)atomBatchByMergingAtomBatches:(id)a3 error:(id *)a4
++ (id)atomBatchByMergingAtomBatches:(id)batches error:(id *)error
 {
   v157[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (objc_msgSend_count(v5, v6, v7, v8, v9, v10, v11))
+  batchesCopy = batches;
+  if (objc_msgSend_count(batchesCopy, v6, v7, v8, v9, v10, v11))
   {
-    if (objc_msgSend_count(v5, v12, v13, v14, v15, v16, v17) == 1)
+    if (objc_msgSend_count(batchesCopy, v12, v13, v14, v15, v16, v17) == 1)
     {
-      v24 = objc_msgSend_firstObject(v5, v18, v19, v20, v21, v22, v23);
+      v24 = objc_msgSend_firstObject(batchesCopy, v18, v19, v20, v21, v22, v23);
     }
 
     else
     {
-      v138 = a4;
+      errorCopy = error;
       v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v148 = 0u;
       v149 = 0u;
       v150 = 0u;
       v151 = 0u;
-      v31 = v5;
+      v31 = batchesCopy;
       v35 = objc_msgSend_countByEnumeratingWithState_objects_count_(v31, v32, &v148, v155, 16, v33, v34);
       if (v35)
       {
@@ -955,7 +955,7 @@ LABEL_15:
       {
         v135 = v89;
         v136 = v56;
-        v137 = v5;
+        v137 = batchesCopy;
         v145 = 0u;
         v146 = 0u;
         v143 = 0u;
@@ -979,18 +979,18 @@ LABEL_15:
               v104 = objc_msgSend_formatVersion(v103, v94, v95, v96, v97, v98, v99, v135, v136, v137);
               if (v104 != objc_msgSend_formatVersion(v70, v105, v106, v107, v108, v109, v110))
               {
-                if (v138)
+                if (errorCopy)
                 {
                   v126 = MEMORY[0x277CCA9B8];
                   v152 = *MEMORY[0x277CCA450];
                   v153 = @"Unable to merge atom batches with different format versions";
                   v127 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v111, &v153, &v152, 1, v112, v113);
-                  *v138 = objc_msgSend_errorWithDomain_code_userInfo_(v126, v128, @"CKDSErrorDomain", 2, v127, v129, v130);
+                  *errorCopy = objc_msgSend_errorWithDomain_code_userInfo_(v126, v128, @"CKDSErrorDomain", 2, v127, v129, v130);
                 }
 
                 v24 = 0;
                 v56 = v136;
-                v5 = v137;
+                batchesCopy = v137;
                 v89 = v135;
                 goto LABEL_35;
               }
@@ -1022,11 +1022,11 @@ LABEL_15:
           v24 = inited;
         }
 
-        else if (v138)
+        else if (errorCopy)
         {
           v132 = v124;
           v24 = 0;
-          *v138 = v125;
+          *errorCopy = v125;
         }
 
         else
@@ -1035,15 +1035,15 @@ LABEL_15:
         }
 
         v56 = v136;
-        v5 = v137;
+        batchesCopy = v137;
         v89 = v135;
       }
 
-      else if (v138)
+      else if (errorCopy)
       {
         v131 = v89;
         v24 = 0;
-        *v138 = v89;
+        *errorCopy = v89;
       }
 
       else
@@ -1057,13 +1057,13 @@ LABEL_35:
 
   else
   {
-    if (a4)
+    if (error)
     {
       v25 = MEMORY[0x277CCA9B8];
       v156 = *MEMORY[0x277CCA450];
       v157[0] = @"Cannot merge zero atom batches";
       v26 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v12, v157, &v156, 1, v16, v17);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v25, v27, @"CKDSErrorDomain", 2, v26, v28, v29);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v25, v27, @"CKDSErrorDomain", 2, v26, v28, v29);
     }
 
     v24 = 0;
@@ -1074,7 +1074,7 @@ LABEL_35:
   return v24;
 }
 
-- (id)splitWithMaximumSize:(unint64_t)a3 error:(id *)a4
+- (id)splitWithMaximumSize:(unint64_t)size error:(id *)error
 {
   v7 = objc_opt_new();
   v14[0] = MEMORY[0x277D85DD0];
@@ -1083,7 +1083,7 @@ LABEL_35:
   v14[3] = &unk_278DDB088;
   v8 = v7;
   v15 = v8;
-  if (objc_msgSend_splitWithMaximumSize_error_block_(self, v9, a3, a4, v14, v10, v11))
+  if (objc_msgSend_splitWithMaximumSize_error_block_(self, v9, size, error, v14, v10, v11))
   {
     v12 = v8;
   }
@@ -1096,10 +1096,10 @@ LABEL_35:
   return v12;
 }
 
-- (BOOL)splitWithMaximumSize:(unint64_t)a3 error:(id *)a4 block:(id)a5
+- (BOOL)splitWithMaximumSize:(unint64_t)size error:(id *)error block:(id)block
 {
   v401 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  blockCopy = block;
   if (objc_msgSend_isWriting(self, v9, v10, v11, v12, v13, v14))
   {
     v368 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v15, v16, v17, v18, v19, v20);
@@ -1128,9 +1128,9 @@ LABEL_35:
 
   v378 = objc_opt_new();
   v377 = objc_opt_new();
-  v107 = self;
-  v108 = v107;
-  if (!v107)
+  selfCopy = self;
+  v108 = selfCopy;
+  if (!selfCopy)
   {
     v109 = 0;
     v327 = 0;
@@ -1147,7 +1147,7 @@ LABEL_45:
       *buf = 138412546;
       v398 = v108;
       v399 = 2048;
-      v400 = v360;
+      sizeCopy = v360;
       _os_log_debug_impl(&dword_2438A8000, v362, OS_LOG_TYPE_DEBUG, "Successfully split atom batch %@ over %tu iterations", buf, 0x16u);
     }
 
@@ -1155,12 +1155,12 @@ LABEL_45:
     goto LABEL_57;
   }
 
-  v370 = a4;
+  errorCopy = error;
   v109 = 0;
   v382 = 0;
   v110 = 1;
-  v381 = v107;
-  v374 = v8;
+  v381 = selfCopy;
+  v374 = blockCopy;
   while (1)
   {
     v111 = v110;
@@ -1205,22 +1205,22 @@ LABEL_45:
       objc_autoreleasePoolPop(context);
       v327 = 0;
       v109 = v222;
-      v361 = v370;
+      v361 = errorCopy;
       v360 = v385;
       goto LABEL_50;
     }
 
     v229 = v396;
-    if (v396 <= a3 || v216 <= 1)
+    if (v396 <= size || v216 <= 1)
     {
-      if (v8)
+      if (blockCopy)
       {
-        v8[2](v8, v108);
+        blockCopy[2](blockCopy, v108);
         ++v382;
         v229 = v396;
       }
 
-      if (v229 > a3)
+      if (v229 > size)
       {
         if (*MEMORY[0x277CBC880] != -1)
         {
@@ -1233,12 +1233,12 @@ LABEL_45:
           *buf = 134218240;
           v398 = v396;
           v399 = 2048;
-          v400 = a3;
+          sizeCopy = size;
           _os_log_impl(&dword_2438A8000, v329, OS_LOG_TYPE_INFO, "An indivisible batch of size %tu exceeds the maximum requested size %tu, continuing as a best effort", buf, 0x16u);
         }
       }
 
-      v330 = v8;
+      v330 = blockCopy;
       v331 = objc_msgSend_lastObject(v378, v223, v224, v225, v226, v227, v228);
       v280 = objc_msgSend_lastObject(v377, v332, v333, v334, v335, v336, v337);
       objc_msgSend_removeLastObject(v378, v338, v339, v340, v341, v342, v343);
@@ -1256,7 +1256,7 @@ LABEL_45:
         {
           LOBYTE(v294) = 0;
           v328 = 1;
-          v8 = v330;
+          blockCopy = v330;
           goto LABEL_37;
         }
       }
@@ -1268,7 +1268,7 @@ LABEL_45:
         v301 = 0;
       }
 
-      v8 = v330;
+      blockCopy = v330;
       v328 = 0;
       LOBYTE(v294) = 1;
     }
@@ -1386,7 +1386,7 @@ LABEL_45:
         v280 = v241;
       }
 
-      v8 = v374;
+      blockCopy = v374;
     }
 
 LABEL_37:
@@ -1410,7 +1410,7 @@ LABEL_37:
   v360 = v385;
   v109 = v359;
 LABEL_43:
-  v361 = v370;
+  v361 = errorCopy;
   if (v294)
   {
     v108 = v381;
@@ -1429,7 +1429,7 @@ LABEL_50:
     *buf = 138412546;
     v398 = v381;
     v399 = 2048;
-    v400 = v360;
+    sizeCopy = v360;
     _os_log_error_impl(&dword_2438A8000, v364, OS_LOG_TYPE_ERROR, "Failed to split atom batch %@ over %tu iterations", buf, 0x16u);
     if (!v361)
     {
@@ -1459,9 +1459,9 @@ LABEL_57:
   return v363;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  if (objc_msgSend_isWriting(self, a2, a3, v3, v4, v5, v6))
+  if (objc_msgSend_isWriting(self, a2, zone, v3, v4, v5, v6))
   {
     v51 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v9, v10, v11, v12, v13, v14);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v51, v52, a2, self, @"CKAtomBatch.m", 1032, @"Cannot copy an atom batch which is writing");
@@ -1489,10 +1489,10 @@ LABEL_57:
   return v33;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  coderCopy = coder;
   if (objc_msgSend_isWriting(self, v6, v7, v8, v9, v10, v11))
   {
     v49 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v12, v13, v14, v15, v16, v17);
@@ -1506,21 +1506,21 @@ LABEL_57:
   {
     mergeableValueID = self->_mergeableValueID;
     v21 = NSStringFromSelector(sel_mergeableValueID);
-    objc_msgSend_encodeObject_forKey_(v5, v22, mergeableValueID, v21, v23, v24, v25);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v22, mergeableValueID, v21, v23, v24, v25);
 
     if (self->_vectors)
     {
       v32 = objc_msgSend__metadataForCoding(self, v26, v27, v28, v29, v30, v31);
-      objc_msgSend_encodeObject_forKey_(v5, v33, v32, @"metadata", v34, v35, v36);
+      objc_msgSend_encodeObject_forKey_(coderCopy, v33, v32, @"metadata", v34, v35, v36);
     }
 
     else
     {
-      objc_msgSend_encodeObject_forKey_(v5, v26, 0, @"metadata", v29, v30, v31);
+      objc_msgSend_encodeObject_forKey_(coderCopy, v26, 0, @"metadata", v29, v30, v31);
     }
 
     v43 = NSStringFromSelector(sel_data);
-    objc_msgSend_encodeObject_forKey_(v5, v44, v18, v43, v45, v46, v47);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v44, v18, v43, v45, v46, v47);
   }
 
   else
@@ -1538,25 +1538,25 @@ LABEL_57:
       _os_log_error_impl(&dword_2438A8000, v37, OS_LOG_TYPE_ERROR, "Error exporting data for atom batch in coder: %@", buf, 0xCu);
     }
 
-    objc_msgSend_failWithError_(v5, v38, v19, v39, v40, v41, v42);
+    objc_msgSend_failWithError_(coderCopy, v38, v19, v39, v40, v41, v42);
   }
 
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (CKAtomBatch)initWithCoder:(id)a3
+- (CKAtomBatch)initWithCoder:(id)coder
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_mergeableValueID);
-  v11 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v5, v6, v8, v9, v10);
+  v11 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v5, v6, v8, v9, v10);
 
   v12 = objc_opt_class();
-  v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v13, v12, @"metadata", v14, v15, v16);
+  v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v13, v12, @"metadata", v14, v15, v16);
   v18 = objc_opt_class();
   v19 = NSStringFromSelector(sel_data);
-  v24 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v20, v18, v19, v21, v22, v23);
+  v24 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v20, v18, v19, v21, v22, v23);
 
   v31 = objc_msgSend_vectors(v17, v25, v26, v27, v28, v29, v30);
   v45 = 0;
@@ -1578,7 +1578,7 @@ LABEL_57:
       _os_log_error_impl(&dword_2438A8000, v36, OS_LOG_TYPE_ERROR, "Error initializing atom batch from data in coder: %@", buf, 0xCu);
     }
 
-    objc_msgSend_failWithError_(v4, v37, v35, v38, v39, v40, v41);
+    objc_msgSend_failWithError_(coderCopy, v37, v35, v38, v39, v40, v41);
     v42 = 0;
   }
 
@@ -1609,10 +1609,10 @@ LABEL_57:
   return v28;
 }
 
-- (CKAtomBatch)initWithMergeableDelta:(id)a3 error:(id *)a4
+- (CKAtomBatch)initWithMergeableDelta:(id)delta error:(id *)error
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  deltaCopy = delta;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -1622,42 +1622,42 @@ LABEL_57:
   if (os_log_type_enabled(*MEMORY[0x277CBC840], OS_LOG_TYPE_DEBUG))
   {
     v61 = 138412290;
-    v62 = v6;
+    v62 = deltaCopy;
     _os_log_debug_impl(&dword_2438A8000, v7, OS_LOG_TYPE_DEBUG, "Creating atom batch from delta: %@", &v61, 0xCu);
   }
 
-  v20 = objc_msgSend_fileURL(v6, v8, v9, v10, v11, v12, v13);
+  v20 = objc_msgSend_fileURL(deltaCopy, v8, v9, v10, v11, v12, v13);
   if (v20)
   {
-    v21 = objc_msgSend_valueID(v6, v14, v15, v16, v17, v18, v19);
-    v28 = objc_msgSend_metadata(v6, v22, v23, v24, v25, v26, v27);
+    v21 = objc_msgSend_valueID(deltaCopy, v14, v15, v16, v17, v18, v19);
+    v28 = objc_msgSend_metadata(deltaCopy, v22, v23, v24, v25, v26, v27);
     v35 = objc_msgSend_vectors(v28, v29, v30, v31, v32, v33, v34);
-    self = objc_msgSend_initWithFileURL_mergeableValueID_vectors_options_error_(self, v36, v20, v21, v35, 0, a4);
+    self = objc_msgSend_initWithFileURL_mergeableValueID_vectors_options_error_(self, v36, v20, v21, v35, 0, error);
   }
 
   else
   {
-    v21 = objc_msgSend_dataWithError_(v6, v14, a4, v16, v17, v18, v19);
+    v21 = objc_msgSend_dataWithError_(deltaCopy, v14, error, v16, v17, v18, v19);
     if (!v21)
     {
-      v58 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
-    v28 = objc_msgSend_valueID(v6, v37, v38, v39, v40, v41, v42);
-    v35 = objc_msgSend_metadata(v6, v43, v44, v45, v46, v47, v48);
+    v28 = objc_msgSend_valueID(deltaCopy, v37, v38, v39, v40, v41, v42);
+    v35 = objc_msgSend_metadata(deltaCopy, v43, v44, v45, v46, v47, v48);
     v55 = objc_msgSend_vectors(v35, v49, v50, v51, v52, v53, v54);
-    self = objc_msgSend_initWithData_mergeableValueID_vectors_error_(self, v56, v21, v28, v55, a4, v57);
+    self = objc_msgSend_initWithData_mergeableValueID_vectors_error_(self, v56, v21, v28, v55, error, v57);
   }
 
-  v58 = self;
+  selfCopy = self;
 LABEL_10:
 
   v59 = *MEMORY[0x277D85DE8];
-  return v58;
+  return selfCopy;
 }
 
-- (id)splitWithMaximumDeltaSize:(unint64_t)a3 error:(id *)a4
+- (id)splitWithMaximumDeltaSize:(unint64_t)size error:(id *)error
 {
   v25 = 0;
   v26 = &v25;
@@ -1679,7 +1679,7 @@ LABEL_10:
   v18 = &v25;
   v8 = v7;
   v17 = v8;
-  LOBYTE(self) = objc_msgSend_splitWithMaximumSize_error_block_(self, v9, a3, &v20, v16, v10, v11);
+  LOBYTE(self) = objc_msgSend_splitWithMaximumSize_error_block_(self, v9, size, &v20, v16, v10, v11);
   v12 = v20;
   v13 = v12;
   if (v22[3] & self)
@@ -1687,7 +1687,7 @@ LABEL_10:
     v14 = v8;
   }
 
-  else if (a4)
+  else if (error)
   {
     if (v26[5])
     {
@@ -1695,7 +1695,7 @@ LABEL_10:
     }
 
     v14 = 0;
-    *a4 = v12;
+    *error = v12;
   }
 
   else

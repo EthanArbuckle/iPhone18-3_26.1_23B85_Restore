@@ -1,20 +1,20 @@
 @interface HFActionSetServiceSuggestionMetadata
-+ (id)metadataForServiceType:(id)a3;
-- (HFActionSetServiceSuggestionMetadata)initWithServiceType:(id)a3 primaryCharacteristicType:(id)a4 secondaryCharacteristicTypes:(id)a5;
++ (id)metadataForServiceType:(id)type;
+- (HFActionSetServiceSuggestionMetadata)initWithServiceType:(id)type primaryCharacteristicType:(id)characteristicType secondaryCharacteristicTypes:(id)types;
 @end
 
 @implementation HFActionSetServiceSuggestionMetadata
 
-+ (id)metadataForServiceType:(id)a3
++ (id)metadataForServiceType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __63__HFActionSetServiceSuggestionMetadata_metadataForServiceType___block_invoke;
   v12 = &unk_277DFF7A0;
-  v13 = v4;
-  v14 = a1;
-  v5 = v4;
+  v13 = typeCopy;
+  selfCopy = self;
+  v5 = typeCopy;
   v6 = __63__HFActionSetServiceSuggestionMetadata_metadataForServiceType___block_invoke(&v9);
   v7 = [v6 objectForKeyedSubscript:{v5, v9, v10, v11, v12}];
 
@@ -123,20 +123,20 @@ id __63__HFActionSetServiceSuggestionMetadata_metadataForServiceType___block_inv
   return v26;
 }
 
-- (HFActionSetServiceSuggestionMetadata)initWithServiceType:(id)a3 primaryCharacteristicType:(id)a4 secondaryCharacteristicTypes:(id)a5
+- (HFActionSetServiceSuggestionMetadata)initWithServiceType:(id)type primaryCharacteristicType:(id)characteristicType secondaryCharacteristicTypes:(id)types
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  characteristicTypeCopy = characteristicType;
+  typesCopy = types;
   v15.receiver = self;
   v15.super_class = HFActionSetServiceSuggestionMetadata;
   v12 = [(HFActionSetServiceSuggestionMetadata *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_serviceType, a3);
-    objc_storeStrong(&v13->_primaryCharacteristicType, a4);
-    objc_storeStrong(&v13->_secondaryCharacteristicTypes, a5);
+    objc_storeStrong(&v12->_serviceType, type);
+    objc_storeStrong(&v13->_primaryCharacteristicType, characteristicType);
+    objc_storeStrong(&v13->_secondaryCharacteristicTypes, types);
   }
 
   return v13;

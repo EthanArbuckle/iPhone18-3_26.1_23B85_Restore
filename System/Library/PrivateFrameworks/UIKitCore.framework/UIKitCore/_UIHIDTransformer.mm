@@ -1,10 +1,10 @@
 @interface _UIHIDTransformer
 - (CGSize)canvasSize;
-- (_UIHIDTransformer)initWithRunLoop:(__CFRunLoop *)a3;
-- (id)_inputEventsForHIDEvent:(__IOHIDEvent *)a3 contextId:(unsigned int)a4;
+- (_UIHIDTransformer)initWithRunLoop:(__CFRunLoop *)loop;
+- (id)_inputEventsForHIDEvent:(__IOHIDEvent *)event contextId:(unsigned int)id;
 - (id)drainOutputHIDEvents;
-- (id)handleHIDEvent:(__IOHIDEvent *)a3;
-- (void)addOutputHIDEvent:(id)a3 injected:(BOOL)a4;
+- (id)handleHIDEvent:(__IOHIDEvent *)event;
+- (void)addOutputHIDEvent:(id)event injected:(BOOL)injected;
 - (void)pathCollection;
 - (void)scaleEventTracker;
 @end
@@ -19,7 +19,7 @@
   return v3;
 }
 
-- (_UIHIDTransformer)initWithRunLoop:(__CFRunLoop *)a3
+- (_UIHIDTransformer)initWithRunLoop:(__CFRunLoop *)loop
 {
   v16.receiver = self;
   v16.super_class = _UIHIDTransformer;
@@ -34,15 +34,15 @@
     hidContextByContextId = v4->_hidContextByContextId;
     v4->_hidContextByContextId = v7;
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v10 = _UIWindowDidDetachContextNotification;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __37___UIHIDTransformer_initWithRunLoop___block_invoke;
     v13[3] = &unk_1E711EBD8;
-    v15 = a3;
+    loopCopy = loop;
     v14 = v4;
-    v11 = [v9 addObserverForName:v10 object:0 queue:0 usingBlock:v13];
+    v11 = [defaultCenter addObserverForName:v10 object:0 queue:0 usingBlock:v13];
   }
 
   return v4;
@@ -50,73 +50,73 @@
 
 - (void)pathCollection
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[1];
+    selfCopy = self;
+    v3 = self[1];
     if (!v3)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:sel_pathCollection object:v2 file:@"_UIHIDTransformer.m" lineNumber:425 description:@"Attempting to access a path collection when no hidEvent is being processed"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_pathCollection object:selfCopy file:@"_UIHIDTransformer.m" lineNumber:425 description:@"Attempting to access a path collection when no hidEvent is being processed"];
 
-      v3 = v2[1];
+      v3 = selfCopy[1];
     }
 
     v4 = *(v3 + 8);
     if (!v4)
     {
       v4 = objc_opt_new();
-      v5 = v2[1];
+      v5 = selfCopy[1];
       v6 = *(v5 + 8);
       *(v5 + 8) = v4;
     }
 
-    a1 = v4;
+    self = v4;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)scaleEventTracker
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[1];
+    selfCopy = self;
+    v3 = self[1];
     if (!v3)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:sel_scaleEventTracker object:v2 file:@"_UIHIDTransformer.m" lineNumber:431 description:@"Attempting to access a scaleEventTracker when no hidEvent is being processed"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_scaleEventTracker object:selfCopy file:@"_UIHIDTransformer.m" lineNumber:431 description:@"Attempting to access a scaleEventTracker when no hidEvent is being processed"];
 
-      v3 = v2[1];
+      v3 = selfCopy[1];
     }
 
     v4 = *(v3 + 16);
     if (!v4)
     {
       v4 = objc_opt_new();
-      v5 = v2[1];
+      v5 = selfCopy[1];
       v6 = *(v5 + 16);
       *(v5 + 16) = v4;
     }
 
-    a1 = v4;
+    self = v4;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)handleHIDEvent:(__IOHIDEvent *)a3
+- (id)handleHIDEvent:(__IOHIDEvent *)event
 {
   v60 = *MEMORY[0x1E69E9840];
   v5 = BKSHIDEventGetBaseAttributes();
-  v6 = [v5 contextID];
+  contextID = [v5 contextID];
 
-  self->_hidEvent = a3;
+  self->_hidEvent = event;
   hidContextByContextId = self->_hidContextByContextId;
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v6];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:contextID];
   v9 = [(NSMutableDictionary *)hidContextByContextId objectForKeyedSubscript:v8];
   hidContext = self->_hidContext;
   self->_hidContext = v9;
@@ -128,20 +128,20 @@
     self->_hidContext = v11;
 
     v13 = self->_hidContextByContextId;
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v6];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:contextID];
     [(NSMutableDictionary *)v13 setObject:v11 forKeyedSubscript:v14];
 
     self->_hidContext->state = 1;
   }
 
   self->_hidContext->remoteTimestamp = BKSHIDEventGetRemoteTimestamp();
-  v15 = [(_UIHIDTransformer *)self _inputEventsForHIDEvent:a3 contextId:v6];
+  v15 = [(_UIHIDTransformer *)self _inputEventsForHIDEvent:event contextId:contextID];
   if ([v15 count] == 1)
   {
     v16 = [v15 objectAtIndexedSubscript:0];
-    v17 = [v16 unsignedIntegerValue];
+    unsignedIntegerValue = [v16 unsignedIntegerValue];
 
-    if (!v17)
+    if (!unsignedIntegerValue)
     {
       CategoryCachedImpl = __UILogGetCategoryCachedImpl("HIDTransformer", &qword_1ED4A00F8);
       if (*CategoryCachedImpl)
@@ -150,7 +150,7 @@
         if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v55 = a3;
+          eventCopy = event;
           _os_log_impl(&dword_188A29000, v44, OS_LOG_TYPE_ERROR, "No input event specified for HIDEvent:\n%@", buf, 0xCu);
         }
       }
@@ -218,7 +218,7 @@
       }
     }
 
-    v28 = [v25 UTF8String];
+    uTF8String = [v25 UTF8String];
     v29 = *(__UILogGetCategoryCachedImpl("HIDTransformer", &qword_1ED4A0100) + 8);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
@@ -226,13 +226,13 @@
       v31 = _UIStateString[v30->state];
       v32 = v31;
       v33 = v29;
-      v34 = [v31 UTF8String];
+      uTF8String2 = [v31 UTF8String];
       *buf = 134218498;
-      v55 = v30;
+      eventCopy = v30;
       v56 = 2080;
-      v57 = v34;
+      v57 = uTF8String2;
       v58 = 2080;
-      v59 = v28;
+      v59 = uTF8String;
       _os_log_impl(&dword_188A29000, v33, OS_LOG_TYPE_DEFAULT, "State machine: hidContext: %p; state: %s; events for event: %s", buf, 0x20u);
     }
   }
@@ -257,13 +257,13 @@
           objc_enumerationMutation(v35);
         }
 
-        v40 = [*(*(&v45 + 1) + 8 * v39) unsignedIntegerValue];
+        unsignedIntegerValue2 = [*(*(&v45 + 1) + 8 * v39) unsignedIntegerValue];
         if (qword_1ED4A0120 != -1)
         {
           dispatch_once(&qword_1ED4A0120, &__block_literal_global_161);
         }
 
-        handleEvent(&xmmword_1ED4A0130, self->_hidContext->state, v40, self, &self->_hidContext->state);
+        handleEvent(&xmmword_1ED4A0130, self->_hidContext->state, unsignedIntegerValue2, self, &self->_hidContext->state);
         ++v39;
       }
 
@@ -278,20 +278,20 @@
   v41 = self->_hidContext;
   self->_hidContext = 0;
 
-  v42 = [(_UIHIDTransformer *)self drainOutputHIDEvents];
+  drainOutputHIDEvents = [(_UIHIDTransformer *)self drainOutputHIDEvents];
 
-  return v42;
+  return drainOutputHIDEvents;
 }
 
-- (id)_inputEventsForHIDEvent:(__IOHIDEvent *)a3 contextId:(unsigned int)a4
+- (id)_inputEventsForHIDEvent:(__IOHIDEvent *)event contextId:(unsigned int)id
 {
-  v4 = *&a4;
+  v4 = *&id;
   v44 = *MEMORY[0x1E69E9840];
   v5 = _UIEventHIDShouldTransformEvent();
   Type = IOHIDEventGetType();
   v7 = [UIWindow _windowWithContextId:v4];
-  v8 = [v7 screen];
-  v9 = [v8 _userInterfaceIdiom];
+  screen = [v7 screen];
+  _userInterfaceIdiom = [screen _userInterfaceIdiom];
 
   kdebug_trace();
   if (qword_1ED4A0110 != -1)
@@ -313,7 +313,7 @@
       v40 = 2048;
       v41 = v7;
       v42 = 2048;
-      v43 = v9;
+      v43 = _userInterfaceIdiom;
       _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_DEFAULT, "Should consider event transformation: %d; backing type: %i; contextId: 0x%X; window: %p; idiom: %li", buf, 0x28u);
     }
   }
@@ -324,8 +324,8 @@
     goto LABEL_70;
   }
 
-  v11 = [UIApp _supportsIndirectInputEvents];
-  if (v11)
+  _supportsIndirectInputEvents = [UIApp _supportsIndirectInputEvents];
+  if (_supportsIndirectInputEvents)
   {
     if (_UIInternalPreferencesRevisionOnce != -1)
     {
@@ -390,7 +390,7 @@
   {
     CFArrayGetValueAtIndex(v17, i);
     v22 = IOHIDEventGetType();
-    if (v11)
+    if (_supportsIndirectInputEvents)
     {
       if (v22 <= 5)
       {
@@ -551,14 +551,14 @@ LABEL_70:
   return v15;
 }
 
-- (void)addOutputHIDEvent:(id)a3 injected:(BOOL)a4
+- (void)addOutputHIDEvent:(id)event injected:(BOOL)injected
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  injectedCopy = injected;
+  eventCopy = event;
+  if (eventCopy)
   {
-    v7 = v6;
-    if (v4)
+    v7 = eventCopy;
+    if (injectedCopy)
     {
       IOHIDEventSetIntegerValue();
     }
@@ -569,7 +569,7 @@ LABEL_70:
     }
 
     [(NSMutableArray *)self->_hidEvents addObject:v7];
-    v6 = v7;
+    eventCopy = v7;
   }
 }
 

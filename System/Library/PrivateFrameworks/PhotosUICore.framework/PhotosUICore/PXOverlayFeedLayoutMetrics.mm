@@ -1,7 +1,7 @@
 @interface PXOverlayFeedLayoutMetrics
 - (CGSize)interItemSpacing;
 - (UIEdgeInsets)contentInsets;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXOverlayFeedLayoutMetrics
@@ -28,11 +28,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PXOverlayFeedLayoutMetrics;
-  result = [(PXLayoutMetrics *)&v6 copyWithZone:a3];
+  result = [(PXLayoutMetrics *)&v6 copyWithZone:zone];
   v5 = *&self->_contentInsets.bottom;
   *(result + 72) = *&self->_contentInsets.top;
   *(result + 88) = v5;

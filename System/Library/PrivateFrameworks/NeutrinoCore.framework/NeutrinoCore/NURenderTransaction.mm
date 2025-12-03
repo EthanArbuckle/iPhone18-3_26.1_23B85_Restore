@@ -2,32 +2,32 @@
 + (id)assertCurrentTransaction;
 + (id)currentTransaction;
 + (id)ensureCurrentTransaction;
-+ (void)_commit:(id)a3;
++ (void)_commit:(id)_commit;
 + (void)begin;
 + (void)commit;
-+ (void)commitAndNotifyOnQueue:(id)a3 withBlock:(id)a4;
-+ (void)group:(id)a3;
-+ (void)setCurrentTransaction:(id)a3;
-+ (void)withCurrentTransaction:(id)a3;
++ (void)commitAndNotifyOnQueue:(id)queue withBlock:(id)block;
++ (void)group:(id)group;
++ (void)setCurrentTransaction:(id)transaction;
++ (void)withCurrentTransaction:(id)transaction;
 - (BOOL)begin;
 - (BOOL)commit;
 - (NSArray)pendingRequests;
 - (NURenderTransaction)init;
 - (void)flush;
-- (void)notifyCompletion:(id)a3 block:(id)a4;
+- (void)notifyCompletion:(id)completion block:(id)block;
 - (void)submitPendingRequests;
-- (void)submitRequest:(id)a3;
+- (void)submitRequest:(id)request;
 @end
 
 @implementation NURenderTransaction
 
 - (void)submitPendingRequests
 {
-  v4 = [(NURenderTransaction *)self pendingRequests];
-  if ([v4 count])
+  pendingRequests = [(NURenderTransaction *)self pendingRequests];
+  if ([pendingRequests count])
   {
     v3 = +[NUScheduler sharedScheduler];
-    [v3 submitRequests:v4 withGroup:self->_group];
+    [v3 submitRequests:pendingRequests withGroup:self->_group];
   }
 }
 
@@ -45,13 +45,13 @@
   return v2;
 }
 
-- (void)submitRequest:(id)a3
+- (void)submitRequest:(id)request
 {
   v61 = *MEMORY[0x1E69E9840];
-  v56 = a3;
-  v4 = [v56 responseQueue];
+  requestCopy = request;
+  responseQueue = [requestCopy responseQueue];
 
-  if (!v4)
+  if (!responseQueue)
   {
     v7 = NUAssertLogger_23382();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -72,8 +72,8 @@
         v28 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v58 = v28;
         v59 = 2114;
@@ -84,8 +84,8 @@
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v58 = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -94,9 +94,9 @@
     _NUAssertFailHandler("[NURenderTransaction submitRequest:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderTransaction.m", 173, @"Cannot render without a response queue", v33, v34, v35, v36, v55);
   }
 
-  v5 = [v56 renderContext];
+  renderContext = [requestCopy renderContext];
 
-  if (!v5)
+  if (!renderContext)
   {
     v14 = NUAssertLogger_23382();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -117,8 +117,8 @@
         v37 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v40 = [v38 callStackSymbols];
-        v41 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v38 callStackSymbols];
+        v41 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v58 = v37;
         v59 = 2114;
@@ -129,8 +129,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v58 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -139,9 +139,9 @@
     _NUAssertFailHandler("[NURenderTransaction submitRequest:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderTransaction.m", 174, @"Cannot render without a context", v42, v43, v44, v45, v55);
   }
 
-  v6 = [v56 completionBlock];
+  completionBlock = [requestCopy completionBlock];
 
-  if (!v6)
+  if (!completionBlock)
   {
     v21 = NUAssertLogger_23382();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -162,8 +162,8 @@
         v46 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v47 = MEMORY[0x1E696AF00];
         v48 = v46;
-        v49 = [v47 callStackSymbols];
-        v50 = [v49 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v47 callStackSymbols];
+        v50 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v58 = v46;
         v59 = 2114;
@@ -174,8 +174,8 @@
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v58 = v27;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -184,14 +184,14 @@
     _NUAssertFailHandler("[NURenderTransaction submitRequest:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderTransaction.m", 175, @"Cannot render without a completion block", v51, v52, v53, v54, v55);
   }
 
-  [(NSMutableArray *)self->_requests addObject:v56];
+  [(NSMutableArray *)self->_requests addObject:requestCopy];
 }
 
-- (void)notifyCompletion:(id)a3 block:(id)a4
+- (void)notifyCompletion:(id)completion block:(id)block
 {
   v45 = *MEMORY[0x1E69E9840];
-  queue = a3;
-  v6 = a4;
+  queue = completion;
+  blockCopy = block;
   if (!queue)
   {
     v8 = NUAssertLogger_23382();
@@ -213,8 +213,8 @@
         v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v22;
         v43 = 2114;
@@ -225,8 +225,8 @@
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v14;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -235,8 +235,8 @@
     _NUAssertFailHandler("[NURenderTransaction notifyCompletion:block:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderTransaction.m", 165, @"Invalid parameter not satisfying: %s", v27, v28, v29, v30, "queue != nil");
   }
 
-  v7 = v6;
-  if (!v6)
+  v7 = blockCopy;
+  if (!blockCopy)
   {
     v15 = NUAssertLogger_23382();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -257,8 +257,8 @@
         v31 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v34 = [v32 callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v32 callStackSymbols];
+        v35 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v31;
         v43 = 2114;
@@ -269,8 +269,8 @@
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -279,7 +279,7 @@
     _NUAssertFailHandler("[NURenderTransaction notifyCompletion:block:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderTransaction.m", 166, @"Invalid parameter not satisfying: %s", v36, v37, v38, v39, "block != nil");
   }
 
-  dispatch_group_notify(self->_group, queue, v6);
+  dispatch_group_notify(self->_group, queue, blockCopy);
 }
 
 - (BOOL)commit
@@ -307,8 +307,8 @@
         v13 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v14 = MEMORY[0x1E696AF00];
         v15 = v13;
-        v16 = [v14 callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v14 callStackSymbols];
+        v17 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v22 = 138543618;
         *&v22[4] = v13;
         v23 = 2114;
@@ -319,8 +319,8 @@
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v22 = 138543362;
       *&v22[4] = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v22, 0xCu);
@@ -365,8 +365,8 @@
         v11 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v12 = MEMORY[0x1E696AF00];
         v13 = v11;
-        v14 = [v12 callStackSymbols];
-        v15 = [v14 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v12 callStackSymbols];
+        v15 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v20 = 138543618;
         *&v20[4] = v11;
         v21 = 2114;
@@ -377,8 +377,8 @@
 
     else if (v8)
     {
-      v9 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v10 = [v9 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v10 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v20 = 138543362;
       *&v20[4] = v10;
       _os_log_error_impl(&dword_1C0184000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v20, 0xCu);
@@ -412,11 +412,11 @@
   return v2;
 }
 
-+ (void)withCurrentTransaction:(id)a3
++ (void)withCurrentTransaction:(id)transaction
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  transactionCopy = transaction;
+  if (!transactionCopy)
   {
     v7 = NUAssertLogger_23382();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -437,8 +437,8 @@
         v14 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v24 = v14;
         v25 = 2114;
@@ -449,8 +449,8 @@
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -459,18 +459,18 @@
     _NUAssertFailHandler("+[NURenderTransaction withCurrentTransaction:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderTransaction.m", 108, @"Invalid parameter not satisfying: %s", v19, v20, v21, v22, "block != nil");
   }
 
-  v5 = v4;
-  v6 = [a1 ensureCurrentTransaction];
-  [v6 begin];
-  (v5)[2](v5, v6);
-  [a1 _commit:v6];
+  v5 = transactionCopy;
+  ensureCurrentTransaction = [self ensureCurrentTransaction];
+  [ensureCurrentTransaction begin];
+  (v5)[2](v5, ensureCurrentTransaction);
+  [self _commit:ensureCurrentTransaction];
 }
 
-+ (void)group:(id)a3
++ (void)group:(id)group
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  groupCopy = group;
+  if (!groupCopy)
   {
     v6 = NUAssertLogger_23382();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -491,8 +491,8 @@
         v13 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v14 = MEMORY[0x1E696AF00];
         v15 = v13;
-        v16 = [v14 callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v14 callStackSymbols];
+        v17 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v25 = v13;
         v26 = 2114;
@@ -503,8 +503,8 @@
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v25 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -517,47 +517,47 @@
   v22[1] = 3221225472;
   v22[2] = __29__NURenderTransaction_group___block_invoke;
   v22[3] = &unk_1E810B000;
-  v23 = v4;
-  v5 = v4;
-  [a1 withCurrentTransaction:v22];
+  v23 = groupCopy;
+  v5 = groupCopy;
+  [self withCurrentTransaction:v22];
 }
 
-+ (void)commitAndNotifyOnQueue:(id)a3 withBlock:(id)a4
++ (void)commitAndNotifyOnQueue:(id)queue withBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 assertCurrentTransaction];
-  [v8 notifyCompletion:v7 block:v6];
+  blockCopy = block;
+  queueCopy = queue;
+  assertCurrentTransaction = [self assertCurrentTransaction];
+  [assertCurrentTransaction notifyCompletion:queueCopy block:blockCopy];
 
-  [a1 _commit:v8];
+  [self _commit:assertCurrentTransaction];
 }
 
-+ (void)_commit:(id)a3
++ (void)_commit:(id)_commit
 {
-  if ([a3 commit])
+  if ([_commit commit])
   {
 
-    [a1 setCurrentTransaction:0];
+    [self setCurrentTransaction:0];
   }
 }
 
 + (void)commit
 {
-  v3 = [a1 assertCurrentTransaction];
-  [a1 _commit:v3];
+  assertCurrentTransaction = [self assertCurrentTransaction];
+  [self _commit:assertCurrentTransaction];
 }
 
 + (void)begin
 {
-  v2 = [a1 ensureCurrentTransaction];
-  [v2 begin];
+  ensureCurrentTransaction = [self ensureCurrentTransaction];
+  [ensureCurrentTransaction begin];
 }
 
 + (id)assertCurrentTransaction
 {
   v23 = *MEMORY[0x1E69E9840];
-  v2 = [a1 currentTransaction];
-  if (!v2)
+  currentTransaction = [self currentTransaction];
+  if (!currentTransaction)
   {
     v4 = NUAssertLogger_23382();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -578,8 +578,8 @@
         v11 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v12 = MEMORY[0x1E696AF00];
         v13 = v11;
-        v14 = [v12 callStackSymbols];
-        v15 = [v14 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v12 callStackSymbols];
+        v15 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v20 = 138543618;
         *&v20[4] = v11;
         v21 = 2114;
@@ -590,8 +590,8 @@
 
     else if (v8)
     {
-      v9 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v10 = [v9 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v10 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v20 = 138543362;
       *&v20[4] = v10;
       _os_log_error_impl(&dword_1C0184000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v20, 0xCu);
@@ -600,44 +600,44 @@
     _NUAssertFailHandler("+[NURenderTransaction assertCurrentTransaction]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderTransaction.m", 61, @"No current transaction", v16, v17, v18, v19, *v20);
   }
 
-  return v2;
+  return currentTransaction;
 }
 
 + (id)ensureCurrentTransaction
 {
-  v3 = [a1 currentTransaction];
-  if (!v3)
+  currentTransaction = [self currentTransaction];
+  if (!currentTransaction)
   {
-    v3 = objc_alloc_init(NURenderTransaction);
-    [a1 setCurrentTransaction:v3];
+    currentTransaction = objc_alloc_init(NURenderTransaction);
+    [self setCurrentTransaction:currentTransaction];
   }
 
-  return v3;
+  return currentTransaction;
 }
 
-+ (void)setCurrentTransaction:(id)a3
++ (void)setCurrentTransaction:(id)transaction
 {
-  v5 = a3;
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  v4 = [v3 threadDictionary];
+  transactionCopy = transaction;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  if (v5)
+  if (transactionCopy)
   {
-    [v4 setObject:v5 forKey:@"NURenderTransaction.current"];
+    [threadDictionary setObject:transactionCopy forKey:@"NURenderTransaction.current"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"NURenderTransaction.current"];
+    [threadDictionary removeObjectForKey:@"NURenderTransaction.current"];
   }
 }
 
 + (id)currentTransaction
 {
-  v2 = [MEMORY[0x1E696AF00] currentThread];
-  v3 = [v2 threadDictionary];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v4 = [v3 objectForKey:@"NURenderTransaction.current"];
+  v4 = [threadDictionary objectForKey:@"NURenderTransaction.current"];
 
   return v4;
 }

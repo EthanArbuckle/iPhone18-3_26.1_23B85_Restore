@@ -1,21 +1,21 @@
 @interface LNActionConfigurationContext
-- (BOOL)isEqual:(id)a3;
-- (LNActionConfigurationContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNActionConfigurationContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNActionConfigurationContext
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -24,10 +24,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNActionConfigurationContext *)self widgetFamily];
-    v8 = [(LNActionConfigurationContext *)v6 widgetFamily];
-    v9 = v7;
-    v10 = v8;
+    widgetFamily = [(LNActionConfigurationContext *)self widgetFamily];
+    widgetFamily2 = [(LNActionConfigurationContext *)v6 widgetFamily];
+    v9 = widgetFamily;
+    v10 = widgetFamily2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -54,10 +54,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNActionConfigurationContext *)self origin];
-    v16 = [(LNActionConfigurationContext *)v6 origin];
-    v14 = v15;
-    v17 = v16;
+    origin = [(LNActionConfigurationContext *)self origin];
+    origin2 = [(LNActionConfigurationContext *)v6 origin];
+    v14 = origin;
+    v17 = origin2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -84,8 +84,8 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v2 = [(LNActionConfigurationContext *)self widgetFamily];
-  v3 = [v2 hash];
+  widgetFamily = [(LNActionConfigurationContext *)self widgetFamily];
+  v3 = [widgetFamily hash];
 
   return v3;
 }
@@ -95,24 +95,24 @@ LABEL_21:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNActionConfigurationContext *)self widgetFamily];
-  v7 = [(LNActionConfigurationContext *)self origin];
-  v8 = [v3 stringWithFormat:@"<%@: %p, widgetFamily: %@, origin: %@>", v5, self, v6, v7];
+  widgetFamily = [(LNActionConfigurationContext *)self widgetFamily];
+  origin = [(LNActionConfigurationContext *)self origin];
+  v8 = [v3 stringWithFormat:@"<%@: %p, widgetFamily: %@, origin: %@>", v5, self, widgetFamily, origin];
 
   return v8;
 }
 
-- (LNActionConfigurationContext)initWithCoder:(id)a3
+- (LNActionConfigurationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(LNActionConfigurationContext *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"widgetFamily"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widgetFamily"];
     widgetFamily = v5->_widgetFamily;
     v5->_widgetFamily = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"origin"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"origin"];
     origin = v5->_origin;
     v5->_origin = v8;
 
@@ -122,24 +122,24 @@ LABEL_21:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNActionConfigurationContext *)self widgetFamily];
-  [v4 encodeObject:v5 forKey:@"widgetFamily"];
+  coderCopy = coder;
+  widgetFamily = [(LNActionConfigurationContext *)self widgetFamily];
+  [coderCopy encodeObject:widgetFamily forKey:@"widgetFamily"];
 
-  v6 = [(LNActionConfigurationContext *)self origin];
-  [v4 encodeObject:v6 forKey:@"origin"];
+  origin = [(LNActionConfigurationContext *)self origin];
+  [coderCopy encodeObject:origin forKey:@"origin"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(LNActionConfigurationContext *)self widgetFamily];
-  [v4 setWidgetFamily:v5];
+  widgetFamily = [(LNActionConfigurationContext *)self widgetFamily];
+  [v4 setWidgetFamily:widgetFamily];
 
-  v6 = [(LNActionConfigurationContext *)self origin];
-  [v4 setOrigin:v6];
+  origin = [(LNActionConfigurationContext *)self origin];
+  [v4 setOrigin:origin];
 
   return v4;
 }

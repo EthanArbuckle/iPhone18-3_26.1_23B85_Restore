@@ -1,27 +1,27 @@
 @interface NTKCharacterRenderer
-+ (id)rendererWithCharacter:(unint64_t)a3 loader:(id)a4;
-- (NTKCharacterRenderer)initWithCharacter:(unint64_t)a3 loader:(id)a4 prefix:(id)a5;
-- (float)_getElbowScaleForPosition:(float)a3;
-- (void)_applyClothingColorWithEncoder:(id)a3;
++ (id)rendererWithCharacter:(unint64_t)character loader:(id)loader;
+- (NTKCharacterRenderer)initWithCharacter:(unint64_t)character loader:(id)loader prefix:(id)prefix;
+- (float)_getElbowScaleForPosition:(float)position;
+- (void)_applyClothingColorWithEncoder:(id)encoder;
 - (void)_doneWaitingForFootRaise;
-- (void)_drawBackgroundWithEncoder:(id)a3;
-- (void)_drawBodyWithEncoder:(id)a3;
-- (void)_drawCharacterWithEncoder:(id)a3;
-- (void)_drawHeadWithEncoder:(id)a3;
-- (void)_drawHourHandWithEncoder:(id)a3;
-- (void)_drawMinuteHandWithEncoder:(id)a3;
-- (void)_drawTappingFootWithEncoder:(id)a3;
+- (void)_drawBackgroundWithEncoder:(id)encoder;
+- (void)_drawBodyWithEncoder:(id)encoder;
+- (void)_drawCharacterWithEncoder:(id)encoder;
+- (void)_drawHeadWithEncoder:(id)encoder;
+- (void)_drawHourHandWithEncoder:(id)encoder;
+- (void)_drawMinuteHandWithEncoder:(id)encoder;
+- (void)_drawTappingFootWithEncoder:(id)encoder;
 - (void)_idleBodyAfterAnimation;
 - (void)_lowerFootAfterBodyAnimation;
 - (void)_raiseFootForBodyAnimation;
-- (void)_setPoseSpecs:(CharacterPoseSpecs)a3[2];
-- (void)_setStateSpecs:(CharacterStateSpecs)a3[4];
+- (void)_setPoseSpecs:(CharacterPoseSpecs)specs[2];
+- (void)_setStateSpecs:(CharacterStateSpecs)specs[4];
 - (void)_updateStateAndPose;
 - (void)_updateTimeVariables;
 - (void)_updateWaitingForFootRaise;
 - (void)activate;
-- (void)bindPipelineState:(unint64_t)a3 withEncoder:(id)a4;
-- (void)copyStateFrom:(id)a3;
+- (void)bindPipelineState:(unint64_t)state withEncoder:(id)encoder;
+- (void)copyStateFrom:(id)from;
 - (void)dealloc;
 - (void)loadBackgroundTextures;
 - (void)loadBodyTextures;
@@ -30,32 +30,32 @@
 - (void)loadHeadTextures;
 - (void)loadNumbersTexture;
 - (void)loadShiftTextures;
-- (void)prepareToAnimateToDate:(id)a3 forOrb:(BOOL)a4;
-- (void)renderWithEncoder:(id)a3;
-- (void)scrubToDate:(id)a3;
+- (void)prepareToAnimateToDate:(id)date forOrb:(BOOL)orb;
+- (void)renderWithEncoder:(id)encoder;
+- (void)scrubToDate:(id)date;
 - (void)setupBodyState;
 - (void)setupGeometry;
 - (void)setupPipelineState;
 - (void)setupTextures;
-- (void)significantTimeChanged:(id)a3;
+- (void)significantTimeChanged:(id)changed;
 @end
 
 @implementation NTKCharacterRenderer
 
-+ (id)rendererWithCharacter:(unint64_t)a3 loader:(id)a4
++ (id)rendererWithCharacter:(unint64_t)character loader:(id)loader
 {
-  v5 = a4;
-  if (!a3)
+  loaderCopy = loader;
+  if (!character)
   {
     v6 = off_1C308;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (character == 1)
   {
     v6 = &off_1C310;
 LABEL_5:
-    v7 = [objc_alloc(*v6) initWithLoader:v5];
+    v7 = [objc_alloc(*v6) initWithLoader:loaderCopy];
     goto LABEL_7;
   }
 
@@ -65,70 +65,70 @@ LABEL_7:
   return v7;
 }
 
-- (void)copyStateFrom:(id)a3
+- (void)copyStateFrom:(id)from
 {
-  self->_hourHandPos = *(a3 + 22);
-  self->_minHandPos = *(a3 + 23);
-  self->_applyInstantTimeWarp = *(a3 + 138);
-  self->_prevState = *(a3 + 14);
-  self->_idealState = *(a3 + 15);
-  self->_curState = *(a3 + 16);
-  self->_endState = *(a3 + 17);
-  self->_prevPose = *(a3 + 18);
-  self->_idealPose = *(a3 + 19);
-  self->_curPose = *(a3 + 20);
-  self->_endPose = *(a3 + 21);
-  v5 = *(a3 + 3);
+  self->_hourHandPos = *(from + 22);
+  self->_minHandPos = *(from + 23);
+  self->_applyInstantTimeWarp = *(from + 138);
+  self->_prevState = *(from + 14);
+  self->_idealState = *(from + 15);
+  self->_curState = *(from + 16);
+  self->_endState = *(from + 17);
+  self->_prevPose = *(from + 18);
+  self->_idealPose = *(from + 19);
+  self->_curPose = *(from + 20);
+  self->_endPose = *(from + 21);
+  v5 = *(from + 3);
   overrideDate = self->_overrideDate;
   self->_overrideDate = v5;
-  v7 = a3;
+  fromCopy = from;
 
-  self->_overrideDateFraction = *(v7 + 8);
-  self->_fromHourPercent = *(v7 + 9);
-  self->_fromMinutePercent = *(v7 + 10);
-  self->_toHourPercent = *(v7 + 11);
-  self->_toMinutePercent = *(v7 + 12);
-  self->_animationFrameInterval = *(v7 + 13);
-  self->_animatingToNewDate = *(v7 + 136);
-  self->_animatingIntoOrb = *(v7 + 137);
-  self->_pinHandsBrightnessToMax = *(v7 + 139);
-  self->_sayCheese = *(v7 + 140);
-  self->_scrubOffset = *(v7 + 37);
-  self->_inTimeTravel = *(v7 + 152);
-  objc_storeStrong(&self->_timeTravelEnterDate, *(v7 + 20));
-  [*(v7 + 59) curHeadX];
+  self->_overrideDateFraction = *(fromCopy + 8);
+  self->_fromHourPercent = *(fromCopy + 9);
+  self->_fromMinutePercent = *(fromCopy + 10);
+  self->_toHourPercent = *(fromCopy + 11);
+  self->_toMinutePercent = *(fromCopy + 12);
+  self->_animationFrameInterval = *(fromCopy + 13);
+  self->_animatingToNewDate = *(fromCopy + 136);
+  self->_animatingIntoOrb = *(fromCopy + 137);
+  self->_pinHandsBrightnessToMax = *(fromCopy + 139);
+  self->_sayCheese = *(fromCopy + 140);
+  self->_scrubOffset = *(fromCopy + 37);
+  self->_inTimeTravel = *(fromCopy + 152);
+  objc_storeStrong(&self->_timeTravelEnterDate, *(fromCopy + 20));
+  [*(fromCopy + 59) curHeadX];
   [(_Head *)self->_head setCurHeadX:?];
-  -[_Head setInAnimation:](self->_head, "setInAnimation:", [*(v7 + 59) inAnimation]);
-  [*(v7 + 59) bone];
+  -[_Head setInAnimation:](self->_head, "setInAnimation:", [*(fromCopy + 59) inAnimation]);
+  [*(fromCopy + 59) bone];
   [(_Head *)self->_head setBone:?];
-  [*(v7 + 59) curHeadTilt];
+  [*(fromCopy + 59) curHeadTilt];
   [(_Head *)self->_head setCurHeadTilt:?];
-  [*(v7 + 60) bone];
+  [*(fromCopy + 60) bone];
   [(_Body *)self->_body setBone:?];
-  -[_Body setAnimationDirection:](self->_body, "setAnimationDirection:", [*(v7 + 60) animationDirection]);
-  -[_Body setAnimationFrame:](self->_body, "setAnimationFrame:", [*(v7 + 60) animationFrame]);
-  -[_Body setFrameDisplayTime60th:](self->_body, "setFrameDisplayTime60th:", [*(v7 + 60) frameDisplayTime60th]);
-  -[_Body setWaitingForFootRaise:](self->_body, "setWaitingForFootRaise:", [*(v7 + 60) waitingForFootRaise]);
-  -[_Body setState:](self->_body, "setState:", [*(v7 + 60) state]);
-  [*(v7 + 62) curLeftBend];
+  -[_Body setAnimationDirection:](self->_body, "setAnimationDirection:", [*(fromCopy + 60) animationDirection]);
+  -[_Body setAnimationFrame:](self->_body, "setAnimationFrame:", [*(fromCopy + 60) animationFrame]);
+  -[_Body setFrameDisplayTime60th:](self->_body, "setFrameDisplayTime60th:", [*(fromCopy + 60) frameDisplayTime60th]);
+  -[_Body setWaitingForFootRaise:](self->_body, "setWaitingForFootRaise:", [*(fromCopy + 60) waitingForFootRaise]);
+  -[_Body setState:](self->_body, "setState:", [*(fromCopy + 60) state]);
+  [*(fromCopy + 62) curLeftBend];
   [(_Arms *)self->_arms setCurLeftBend:?];
-  [*(v7 + 62) curRightBend];
+  [*(fromCopy + 62) curRightBend];
   [(_Arms *)self->_arms setCurRightBend:?];
-  -[_Foot setState:](self->_foot, "setState:", [*(v7 + 61) state]);
-  -[_Foot setAnimFrame:](self->_foot, "setAnimFrame:", [*(v7 + 61) animFrame]);
-  -[_Foot setFrameDisplayTime60th:](self->_foot, "setFrameDisplayTime60th:", [*(v7 + 61) frameDisplayTime60th]);
+  -[_Foot setState:](self->_foot, "setState:", [*(fromCopy + 61) state]);
+  -[_Foot setAnimFrame:](self->_foot, "setAnimFrame:", [*(fromCopy + 61) animFrame]);
+  -[_Foot setFrameDisplayTime60th:](self->_foot, "setFrameDisplayTime60th:", [*(fromCopy + 61) frameDisplayTime60th]);
 }
 
-- (void)prepareToAnimateToDate:(id)a3 forOrb:(BOOL)a4
+- (void)prepareToAnimateToDate:(id)date forOrb:(BOOL)orb
 {
-  v4 = a4;
+  orbCopy = orb;
   overrideDate = self->_overrideDate;
   self->_overrideDate = 0;
-  v7 = a3;
+  dateCopy = date;
 
   self->_animatingToNewDate = 1;
   self->_overrideDateFraction = 0.0;
-  if (v4)
+  if (orbCopy)
   {
     self->_animatingIntoOrb = 1;
     [(NTKCharacterRenderer *)self _raiseFootForBodyAnimation];
@@ -142,7 +142,7 @@ LABEL_7:
 
   *&self->_fromHourPercent = *&self->_hourHandPos;
   p_toMinutePercent = &self->_toMinutePercent;
-  sub_92BC(&self->_toHourPercent, &self->_toMinutePercent, v7, self->_cal);
+  sub_92BC(&self->_toHourPercent, &self->_toMinutePercent, dateCopy, self->_cal);
 
   fromHourPercent = self->_fromHourPercent;
   toHourPercent = self->_toHourPercent;
@@ -191,10 +191,10 @@ LABEL_7:
   }
 }
 
-- (NTKCharacterRenderer)initWithCharacter:(unint64_t)a3 loader:(id)a4 prefix:(id)a5
+- (NTKCharacterRenderer)initWithCharacter:(unint64_t)character loader:(id)loader prefix:(id)prefix
 {
-  v8 = a4;
-  v9 = a5;
+  loaderCopy = loader;
+  prefixCopy = prefix;
   v38.receiver = self;
   v38.super_class = NTKCharacterRenderer;
   v10 = [(NTKCharacterRenderer *)&v38 init];
@@ -204,8 +204,8 @@ LABEL_7:
     v12 = *(v10 + 1);
     *(v10 + 1) = v11;
 
-    objc_storeStrong(v10 + 55, a5);
-    objc_storeStrong(v10 + 21, a4);
+    objc_storeStrong(v10 + 55, prefix);
+    objc_storeStrong(v10 + 21, loader);
     v13 = +[UIColor redColor];
     v14 = *(v10 + 64);
     *(v10 + 64) = v13;
@@ -265,30 +265,30 @@ LABEL_7:
   return v10;
 }
 
-- (void)_setPoseSpecs:(CharacterPoseSpecs)a3[2]
+- (void)_setPoseSpecs:(CharacterPoseSpecs)specs[2]
 {
-  v3 = *&a3->bodyOffsetX;
-  self->_poseSpecs[0].headOffsetX = a3->headOffsetX;
+  v3 = *&specs->bodyOffsetX;
+  self->_poseSpecs[0].headOffsetX = specs->headOffsetX;
   *&self->_poseSpecs[0].bodyOffsetX = v3;
-  v4 = *&a3[1].bodyOffsetX;
-  self->_poseSpecs[1].headOffsetX = a3[1].headOffsetX;
+  v4 = *&specs[1].bodyOffsetX;
+  self->_poseSpecs[1].headOffsetX = specs[1].headOffsetX;
   *&self->_poseSpecs[1].bodyOffsetX = v4;
 }
 
-- (void)_setStateSpecs:(CharacterStateSpecs)a3[4]
+- (void)_setStateSpecs:(CharacterStateSpecs)specs[4]
 {
   for (i = 0; i != 4; ++i)
   {
     v4 = &self->_stateSpecs[i];
-    v5 = *&a3[i].bodyTexIdx;
-    v6 = *&a3[i].leftShoulderX;
-    *&v4->xFlipFoot = *&a3[i].xFlipFoot;
+    v5 = *&specs[i].bodyTexIdx;
+    v6 = *&specs[i].leftShoulderX;
+    *&v4->xFlipFoot = *&specs[i].xFlipFoot;
     *&v4->leftShoulderX = v6;
     *&v4->bodyTexIdx = v5;
   }
 }
 
-- (void)significantTimeChanged:(id)a3
+- (void)significantTimeChanged:(id)changed
 {
   v4 = +[NSTimeZone systemTimeZone];
   [(NSCalendar *)self->_cal setTimeZone:v4];
@@ -318,17 +318,17 @@ LABEL_7:
 
 - (void)setupGeometry
 {
-  v9 = [(NTKCharacterRenderer *)self loader];
-  v3 = [v9 mtlBuffer];
+  loader = [(NTKCharacterRenderer *)self loader];
+  mtlBuffer = [loader mtlBuffer];
   geometryMtlBuffer = self->_geometryMtlBuffer;
-  self->_geometryMtlBuffer = v3;
+  self->_geometryMtlBuffer = mtlBuffer;
 
-  -[_Geometry setMtlBufOffset:](self->_background, "setMtlBufOffset:", [v9 bufferOffsetBackground]);
-  -[_Geometry setMtlBufOffset:](self->_body, "setMtlBufOffset:", [v9 bufferOffsetBody]);
-  -[_Geometry setMtlBufOffset:](self->_foot, "setMtlBufOffset:", [v9 bufferOffsetFoot]);
-  -[_Arms setMtlBufArmOffset:](self->_arms, "setMtlBufArmOffset:", [v9 bufferOffsetArm]);
-  -[_Arms setMtlBufHandOffset:](self->_arms, "setMtlBufHandOffset:", [v9 bufferOffsetHand]);
-  -[_Geometry setMtlBufOffset:](self->_head, "setMtlBufOffset:", [v9 bufferOffsetHead]);
+  -[_Geometry setMtlBufOffset:](self->_background, "setMtlBufOffset:", [loader bufferOffsetBackground]);
+  -[_Geometry setMtlBufOffset:](self->_body, "setMtlBufOffset:", [loader bufferOffsetBody]);
+  -[_Geometry setMtlBufOffset:](self->_foot, "setMtlBufOffset:", [loader bufferOffsetFoot]);
+  -[_Arms setMtlBufArmOffset:](self->_arms, "setMtlBufArmOffset:", [loader bufferOffsetArm]);
+  -[_Arms setMtlBufHandOffset:](self->_arms, "setMtlBufHandOffset:", [loader bufferOffsetHand]);
+  -[_Geometry setMtlBufOffset:](self->_head, "setMtlBufOffset:", [loader bufferOffsetHead]);
   LODWORD(v5) = 1058938398;
   [(_Head *)self->_head setWidth:v5];
   LODWORD(v6) = 1056224437;
@@ -341,12 +341,12 @@ LABEL_7:
 
 - (void)setupPipelineState
 {
-  v7 = [(NTKCharacterRenderer *)self loader];
+  loader = [(NTKCharacterRenderer *)self loader];
   v3 = 0;
   pipelines = self->_pipelines;
   do
   {
-    v5 = [v7 getPipelineForProgramType:v3];
+    v5 = [loader getPipelineForProgramType:v3];
     v6 = pipelines[v3];
     pipelines[v3] = v5;
 
@@ -442,8 +442,8 @@ LABEL_7:
     loader = self->_loader;
     v6 = [NSString stringWithFormat:@"Head_%d", i];
     v7 = [(NTKCharacterResourceLoader *)loader textureWithName:v6 prefix:self->_prefix];
-    v8 = [(_Head *)self->_head texs];
-    [v8 setObject:v7 atIndexedSubscript:i];
+    texs = [(_Head *)self->_head texs];
+    [texs setObject:v7 atIndexedSubscript:i];
   }
 }
 
@@ -457,8 +457,8 @@ LABEL_7:
     loader = self->_loader;
     v6 = [NSString stringWithFormat:@"HeadBlink_%d", i];
     v7 = [(NTKCharacterResourceLoader *)loader textureWithName:v6 prefix:self->_prefix];
-    v8 = [(_Head *)self->_head blinkTexs];
-    [v8 setObject:v7 atIndexedSubscript:i];
+    blinkTexs = [(_Head *)self->_head blinkTexs];
+    [blinkTexs setObject:v7 atIndexedSubscript:i];
   }
 }
 
@@ -472,8 +472,8 @@ LABEL_7:
     loader = self->_loader;
     v6 = [NSString stringWithFormat:@"Foot_%02d", i];
     v7 = [(NTKCharacterResourceLoader *)loader textureWithName:v6 prefix:self->_prefix];
-    v8 = [(_Foot *)self->_foot texs];
-    [v8 setObject:v7 atIndexedSubscript:i];
+    texs = [(_Foot *)self->_foot texs];
+    [texs setObject:v7 atIndexedSubscript:i];
   }
 }
 
@@ -496,8 +496,8 @@ LABEL_7:
     loader = self->_loader;
     v9 = [NSString stringWithFormat:@"Shift-1-2_%02d", i];
     v10 = [(NTKCharacterResourceLoader *)loader textureWithName:v9 prefix:self->_prefix];
-    v11 = [(_Body *)self->_body shiftTexs12];
-    [v11 setObject:v10 atIndexedSubscript:i];
+    shiftTexs12 = [(_Body *)self->_body shiftTexs12];
+    [shiftTexs12 setObject:v10 atIndexedSubscript:i];
   }
 
   for (j = 0; j != 10; ++j)
@@ -505,8 +505,8 @@ LABEL_7:
     v13 = self->_loader;
     v14 = [NSString stringWithFormat:@"Shift-1-4_%02d", j];
     v15 = [(NTKCharacterResourceLoader *)v13 textureWithName:v14 prefix:self->_prefix];
-    v16 = [(_Body *)self->_body shiftTexs14];
-    [v16 setObject:v15 atIndexedSubscript:j];
+    shiftTexs14 = [(_Body *)self->_body shiftTexs14];
+    [shiftTexs14 setObject:v15 atIndexedSubscript:j];
   }
 
   for (k = 0; k != 14; ++k)
@@ -514,8 +514,8 @@ LABEL_7:
     v18 = self->_loader;
     v19 = [NSString stringWithFormat:@"Shift-2-3_%02d", k];
     v20 = [(NTKCharacterResourceLoader *)v18 textureWithName:v19 prefix:self->_prefix];
-    v21 = [(_Body *)self->_body shiftTexs23];
-    [v21 setObject:v20 atIndexedSubscript:k];
+    shiftTexs23 = [(_Body *)self->_body shiftTexs23];
+    [shiftTexs23 setObject:v20 atIndexedSubscript:k];
   }
 
   for (m = 0; m != 9; ++m)
@@ -523,8 +523,8 @@ LABEL_7:
     v23 = self->_loader;
     v24 = [NSString stringWithFormat:@"Shift-1-3_%02d", m];
     v25 = [(NTKCharacterResourceLoader *)v23 textureWithName:v24 prefix:self->_prefix];
-    v26 = [(_Body *)self->_body shiftTexs13];
-    [v26 setObject:v25 atIndexedSubscript:m];
+    shiftTexs13 = [(_Body *)self->_body shiftTexs13];
+    [shiftTexs13 setObject:v25 atIndexedSubscript:m];
   }
 }
 
@@ -603,11 +603,11 @@ LABEL_7:
   }
 }
 
-- (void)scrubToDate:(id)a3
+- (void)scrubToDate:(id)date
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  dateCopy = date;
+  v9 = dateCopy;
+  if (dateCopy)
   {
     if (!self->_inTimeTravel)
     {
@@ -617,10 +617,10 @@ LABEL_7:
       timeTravelEnterDate = self->_timeTravelEnterDate;
       self->_timeTravelEnterDate = v5;
 
-      v4 = v9;
+      dateCopy = v9;
     }
 
-    [v4 timeIntervalSinceDate:self->_timeTravelEnterDate];
+    [dateCopy timeIntervalSinceDate:self->_timeTravelEnterDate];
     v8 = v7 / 43200.0;
     *&v8 = v8;
   }
@@ -662,60 +662,60 @@ LABEL_7:
   self->_idealPose = bodyTexIdx;
 }
 
-- (void)bindPipelineState:(unint64_t)a3 withEncoder:(id)a4
+- (void)bindPipelineState:(unint64_t)state withEncoder:(id)encoder
 {
-  if (self->_currentPipeline != a3)
+  if (self->_currentPipeline != state)
   {
-    self->_currentPipeline = a3;
-    [a4 setRenderPipelineState:self->_pipelines[a3]];
+    self->_currentPipeline = state;
+    [encoder setRenderPipelineState:self->_pipelines[state]];
   }
 }
 
-- (void)_drawBackgroundWithEncoder:(id)a3
+- (void)_drawBackgroundWithEncoder:(id)encoder
 {
-  v4 = a3;
-  [(NTKCharacterRenderer *)self bindPipelineState:1 withEncoder:v4];
-  [v4 setVertexBufferOffset:-[_Geometry mtlBufOffset](self->_background atIndex:{"mtlBufOffset"), 0}];
+  encoderCopy = encoder;
+  [(NTKCharacterRenderer *)self bindPipelineState:1 withEncoder:encoderCopy];
+  [encoderCopy setVertexBufferOffset:-[_Geometry mtlBufOffset](self->_background atIndex:{"mtlBufOffset"), 0}];
   v5 = *self->_globalOffset;
   v21 = *self->_globalScale;
   v22 = v5;
-  [v4 setVertexBytes:&v21 length:16 atIndex:1];
+  [encoderCopy setVertexBytes:&v21 length:16 atIndex:1];
   _D0.i32[0] = LODWORD(self->_glowBrightness);
   __asm { FCVT            H0, S0 }
 
   v11 = vdup_lane_s16(_D0, 0);
   v11.i16[3] = COERCE_UNSIGNED_INT(1.0);
   v20 = v11;
-  [v4 setFragmentBytes:&v20 length:8 atIndex:0];
-  v12 = [(_Background *)self->_background glowTex];
-  [v4 setFragmentTexture:v12 atIndex:0];
+  [encoderCopy setFragmentBytes:&v20 length:8 atIndex:0];
+  glowTex = [(_Background *)self->_background glowTex];
+  [encoderCopy setFragmentTexture:glowTex atIndex:0];
 
-  [v4 drawPrimitives:4 vertexStart:0 vertexCount:4];
+  [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4];
   numbersScale = self->_numbersScale;
   numbersAlpha = self->_numbersAlpha;
-  [(NTKCharacterRenderer *)self bindPipelineState:2 withEncoder:v4];
+  [(NTKCharacterRenderer *)self bindPipelineState:2 withEncoder:encoderCopy];
   v13 = *self->_globalOffset;
   v21 = vmul_n_f32(*self->_globalScale, numbersScale);
   v22 = v13;
-  [v4 setVertexBytes:&v21 length:16 atIndex:1];
+  [encoderCopy setVertexBytes:&v21 length:16 atIndex:1];
   v14.i32[0] = LODWORD(self->_numbersBrightness);
   v14.f32[1] = numbersAlpha;
   *v14.f32 = vcvt_f16_f32(v14);
   v15 = vzip1_s16(*v14.f32, *v14.f32);
   v15.i16[2] = v14.i16[0];
   v20 = v15;
-  [v4 setFragmentBytes:&v20 length:8 atIndex:0];
-  v16 = [(_Background *)self->_background numbersTex];
+  [encoderCopy setFragmentBytes:&v20 length:8 atIndex:0];
+  numbersTex = [(_Background *)self->_background numbersTex];
 
-  if (!v16)
+  if (!numbersTex)
   {
     [(NTKCharacterRenderer *)self loadNumbersTexture];
   }
 
-  v17 = [(_Background *)self->_background numbersTex];
-  [v4 setFragmentTexture:v17 atIndex:0];
+  numbersTex2 = [(_Background *)self->_background numbersTex];
+  [encoderCopy setFragmentTexture:numbersTex2 atIndex:0];
 
-  [v4 drawPrimitives:4 vertexStart:0 vertexCount:4];
+  [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4];
 }
 
 - (void)_idleBodyAfterAnimation
@@ -730,9 +730,9 @@ LABEL_7:
   }
 }
 
-- (void)_drawBodyWithEncoder:(id)a3
+- (void)_drawBodyWithEncoder:(id)encoder
 {
-  v4 = a3;
+  encoderCopy = encoder;
   stateSpecs = self->_stateSpecs;
   xFlipBody = self->_stateSpecs[self->_curState].xFlipBody;
   if ([(_Body *)self->_body state])
@@ -846,11 +846,11 @@ LABEL_23:
   if ([(_Body *)self->_body waitingForFootRaise])
   {
     loader = self->_loader;
-    v9 = [(_Body *)self->_body texs];
-    v10 = [v9 objectAtIndexedSubscript:self->_curPose];
+    texs = [(_Body *)self->_body texs];
+    v10 = [texs objectAtIndexedSubscript:self->_curPose];
     v11 = [(NTKCharacterResourceLoader *)loader getMTLTexture:v10];
 
-    [v4 setFragmentTexture:v11 atIndex:0];
+    [encoderCopy setFragmentTexture:v11 atIndex:0];
     goto LABEL_23;
   }
 
@@ -863,8 +863,8 @@ LABEL_23:
   {
     [(_Body *)v17 setFrameDisplayTime60th:0];
     v18 = self->_body;
-    v19 = [(_Body *)v18 animationDirection];
-    v20 = [(_Body *)v18 animationFrame]+ 2 * v19;
+    animationDirection = [(_Body *)v18 animationDirection];
+    v20 = [(_Body *)v18 animationFrame]+ 2 * animationDirection;
   }
 
   else
@@ -876,8 +876,8 @@ LABEL_23:
 
     [(_Body *)self->_body setFrameDisplayTime60th:0];
     v18 = self->_body;
-    v26 = [(_Body *)v18 animationDirection];
-    v20 = [(_Body *)v18 animationFrame]+ v26;
+    animationDirection2 = [(_Body *)v18 animationDirection];
+    v20 = [(_Body *)v18 animationFrame]+ animationDirection2;
   }
 
   [(_Body *)v18 setAnimationFrame:v20];
@@ -890,9 +890,9 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v27 = [(_Body *)self->_body state];
+  state = [(_Body *)self->_body state];
   v28 = self->_body;
-  if (v27 == 1)
+  if (state == 1)
   {
     if ([(_Body *)v28 animationFrame]>= 17)
     {
@@ -900,30 +900,30 @@ LABEL_22:
     }
 
     xFlipBody = xFlipBody * [(_Body *)self->_body];
-    v61 = [(_Body *)self->_body animationFrame];
+    animationFrame = [(_Body *)self->_body animationFrame];
     if (xFlipBody >= 0.0)
     {
-      *&v62 = shoulderX_12Anim[2 * v61];
+      *&v62 = shoulderX_12Anim[2 * animationFrame];
       [(_Arms *)self->_arms setLeftShoulderX:v62];
       *&v63 = shoulderX_12Anim[2 * [(_Body *)self->_body animationFrame]+ 1];
     }
 
     else
     {
-      *&v62 = -shoulderX_12Anim[2 * v61 + 1];
+      *&v62 = -shoulderX_12Anim[2 * animationFrame + 1];
       [(_Arms *)self->_arms setLeftShoulderX:v62];
       *&v63 = -shoulderX_12Anim[2 * [(_Body *)self->_body animationFrame]];
     }
 
     [(_Arms *)self->_arms setRightShoulderX:v63];
     v69 = self->_loader;
-    v70 = [(_Body *)self->_body shiftTexs12];
+    shiftTexs12 = [(_Body *)self->_body shiftTexs12];
     goto LABEL_56;
   }
 
-  v56 = [(_Body *)v28 state];
+  state2 = [(_Body *)v28 state];
   v57 = self->_body;
-  if (v56 == 2)
+  if (state2 == 2)
   {
     if ([(_Body *)v57 animationFrame]>= 10)
     {
@@ -932,36 +932,36 @@ LABEL_22:
     }
 
     xFlipBody = xFlipBody * [(_Body *)self->_body];
-    v58 = [(_Body *)self->_body animationFrame];
+    animationFrame2 = [(_Body *)self->_body animationFrame];
     if (xFlipBody >= 0.0)
     {
-      *&v59 = shoulderX_14Anim[2 * v58];
+      *&v59 = shoulderX_14Anim[2 * animationFrame2];
       [(_Arms *)self->_arms setLeftShoulderX:v59];
       *&v60 = shoulderX_14Anim[2 * [(_Body *)self->_body animationFrame]+ 1];
     }
 
     else
     {
-      *&v59 = -shoulderX_14Anim[2 * v58 + 1];
+      *&v59 = -shoulderX_14Anim[2 * animationFrame2 + 1];
       [(_Arms *)self->_arms setLeftShoulderX:v59];
       *&v60 = -shoulderX_14Anim[2 * [(_Body *)self->_body animationFrame]];
     }
 
     [(_Arms *)self->_arms setRightShoulderX:v60];
     v69 = self->_loader;
-    v70 = [(_Body *)self->_body shiftTexs14];
+    shiftTexs12 = [(_Body *)self->_body shiftTexs14];
 LABEL_56:
-    v71 = v70;
-    v72 = [v70 objectAtIndexedSubscript:{-[_Body animationFrame](self->_body, "animationFrame")}];
+    v71 = shiftTexs12;
+    v72 = [shiftTexs12 objectAtIndexedSubscript:{-[_Body animationFrame](self->_body, "animationFrame")}];
     v73 = [(NTKCharacterResourceLoader *)v69 getMTLTexture:v72];
 
-    [v4 setFragmentTexture:v73 atIndex:0];
+    [encoderCopy setFragmentTexture:v73 atIndex:0];
     goto LABEL_24;
   }
 
-  v64 = [(_Body *)v57 state];
+  state3 = [(_Body *)v57 state];
   v65 = self->_body;
-  if (v64 != 3)
+  if (state3 != 3)
   {
     if ([(_Body *)v65 state]!= 4)
     {
@@ -973,24 +973,24 @@ LABEL_56:
       goto LABEL_22;
     }
 
-    v74 = [(_Body *)self->_body animationFrame];
+    animationFrame3 = [(_Body *)self->_body animationFrame];
     if (xFlipBody >= 0.0)
     {
-      *&v75 = shoulderX_13Anim[2 * v74];
+      *&v75 = shoulderX_13Anim[2 * animationFrame3];
       [(_Arms *)self->_arms setLeftShoulderX:v75];
       *&v76 = shoulderX_13Anim[2 * [(_Body *)self->_body animationFrame]+ 1];
     }
 
     else
     {
-      *&v75 = -shoulderX_13Anim[2 * v74 + 1];
+      *&v75 = -shoulderX_13Anim[2 * animationFrame3 + 1];
       [(_Arms *)self->_arms setLeftShoulderX:v75];
       *&v76 = -shoulderX_13Anim[2 * [(_Body *)self->_body animationFrame]];
     }
 
     [(_Arms *)self->_arms setRightShoulderX:v76];
     v69 = self->_loader;
-    v70 = [(_Body *)self->_body shiftTexs13];
+    shiftTexs12 = [(_Body *)self->_body shiftTexs13];
     goto LABEL_56;
   }
 
@@ -1001,38 +1001,38 @@ LABEL_56:
   }
 
   xFlipBody = xFlipBody * [(_Body *)self->_body animationDirection];
-  v66 = [(_Body *)self->_body animationFrame];
+  animationFrame4 = [(_Body *)self->_body animationFrame];
   if (xFlipBody >= 0.0)
   {
-    *&v67 = shoulderX_23Anim[2 * v66];
+    *&v67 = shoulderX_23Anim[2 * animationFrame4];
     [(_Arms *)self->_arms setLeftShoulderX:v67];
     *&v68 = shoulderX_23Anim[2 * [(_Body *)self->_body animationFrame]+ 1];
   }
 
   else
   {
-    *&v67 = -shoulderX_23Anim[2 * v66 + 1];
+    *&v67 = -shoulderX_23Anim[2 * animationFrame4 + 1];
     [(_Arms *)self->_arms setLeftShoulderX:v67];
     *&v68 = -shoulderX_23Anim[2 * [(_Body *)self->_body animationFrame]];
   }
 
   [(_Arms *)self->_arms setRightShoulderX:v68];
   v77 = self->_loader;
-  v78 = [(_Body *)self->_body shiftTexs23];
+  shiftTexs23 = [(_Body *)self->_body shiftTexs23];
   if ([(_Body *)self->_body animationFrame]== 1)
   {
-    v79 = 0;
+    animationFrame5 = 0;
   }
 
   else
   {
-    v79 = [(_Body *)self->_body animationFrame];
+    animationFrame5 = [(_Body *)self->_body animationFrame];
   }
 
-  v80 = [v78 objectAtIndexedSubscript:v79];
+  v80 = [shiftTexs23 objectAtIndexedSubscript:animationFrame5];
   v81 = [(NTKCharacterResourceLoader *)v77 getMTLTexture:v80];
 
-  [v4 setFragmentTexture:v81 atIndex:0];
+  [encoderCopy setFragmentTexture:v81 atIndex:0];
 LABEL_24:
   arms = self->_arms;
   [(_Arms *)arms leftShoulderAdjustment];
@@ -1049,16 +1049,16 @@ LABEL_24:
   if (![(_Body *)self->_body state])
   {
     v40 = self->_loader;
-    v41 = [(_Body *)self->_body texs];
-    v42 = [v41 objectAtIndexedSubscript:self->_curPose];
+    texs2 = [(_Body *)self->_body texs];
+    v42 = [texs2 objectAtIndexedSubscript:self->_curPose];
     v43 = [(NTKCharacterResourceLoader *)v40 getMTLTexture:v42];
 
-    [v4 setFragmentTexture:v43 atIndex:0];
+    [encoderCopy setFragmentTexture:v43 atIndex:0];
   }
 
-  [(NTKCharacterRenderer *)self bindPipelineState:3 withEncoder:v4];
-  [v4 setVertexBufferOffset:-[_Geometry mtlBufOffset](self->_body atIndex:{"mtlBufOffset"), 0}];
-  [(NTKCharacterRenderer *)self _applyClothingColorWithEncoder:v4];
+  [(NTKCharacterRenderer *)self bindPipelineState:3 withEncoder:encoderCopy];
+  [encoderCopy setVertexBufferOffset:-[_Geometry mtlBufOffset](self->_body atIndex:{"mtlBufOffset"), 0}];
+  [(NTKCharacterRenderer *)self _applyClothingColorWithEncoder:encoderCopy];
   v44 = *self->_globalOffset;
   v45 = *self->_globalScale;
   characterScale = self->_characterScale;
@@ -1083,18 +1083,18 @@ LABEL_24:
   [(_Body *)self->_body offset];
   v90 = vmla_f32(v44, __PAIR64__(v53, v83), vmul_n_f32(v45, characterScale));
   v91 = 0;
-  [v4 setVertexBytes:v85 length:112 atIndex:1];
-  [v4 drawPrimitives:4 vertexStart:0 vertexCount:4];
+  [encoderCopy setVertexBytes:v85 length:112 atIndex:1];
+  [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4];
 }
 
-- (void)_applyClothingColorWithEncoder:(id)a3
+- (void)_applyClothingColorWithEncoder:(id)encoder
 {
   v17 = 0;
   v18 = 0;
   v15 = 0;
   v16 = 0;
   clothingColor = self->_clothingColor;
-  v5 = a3;
+  encoderCopy = encoder;
   [(UIColor *)clothingColor getHue:&v18 saturation:&v17 brightness:&v16 alpha:&v15];
   _D1 = v17;
   _D0 = v18;
@@ -1114,7 +1114,7 @@ LABEL_24:
 
   HIWORD(_D0) = _D1;
   v14 = _D0;
-  [v5 setFragmentBytes:&v14 length:8 atIndex:1];
+  [encoderCopy setFragmentBytes:&v14 length:8 atIndex:1];
 }
 
 - (void)_doneWaitingForFootRaise
@@ -1164,9 +1164,9 @@ LABEL_24:
   [(_Foot *)foot setFrameDisplayTime60th:0];
 }
 
-- (void)_drawTappingFootWithEncoder:(id)a3
+- (void)_drawTappingFootWithEncoder:(id)encoder
 {
-  v4 = a3;
+  encoderCopy = encoder;
   if ([(_Foot *)self->_foot state]== 4 && [(_Body *)self->_body state])
   {
     goto LABEL_52;
@@ -1390,19 +1390,19 @@ LABEL_49:
     [(_Foot *)self->_foot setState:4];
   }
 
-  [(NTKCharacterRenderer *)self bindPipelineState:3 withEncoder:v4];
-  [v4 setVertexBufferOffset:-[_Geometry mtlBufOffset](self->_foot atIndex:{"mtlBufOffset"), 0}];
+  [(NTKCharacterRenderer *)self bindPipelineState:3 withEncoder:encoderCopy];
+  [encoderCopy setVertexBufferOffset:-[_Geometry mtlBufOffset](self->_foot atIndex:{"mtlBufOffset"), 0}];
   v22 = *self->_globalScale;
   v20 = COERCE_FLOAT(*self->_globalOffset);
   LODWORD(v8) = HIDWORD(*self->_globalOffset);
   characterScale = self->_characterScale;
   xFlipFoot = self->_stateSpecs[self->_curState].xFlipFoot;
   loader = self->_loader;
-  v11 = [(_Foot *)self->_foot texs];
-  v12 = [v11 objectAtIndexedSubscript:{-[_Foot animFrame](self->_foot, "animFrame")}];
+  texs = [(_Foot *)self->_foot texs];
+  v12 = [texs objectAtIndexedSubscript:{-[_Foot animFrame](self->_foot, "animFrame")}];
   v13 = [(NTKCharacterResourceLoader *)loader getMTLTexture:v12];
 
-  [v4 setFragmentTexture:v13 atIndex:0];
+  [encoderCopy setFragmentTexture:v13 atIndex:0];
   v14 = matrix_identity_float4x4.columns[1];
   v23[0] = matrix_identity_float4x4.columns[0];
   v23[1] = v14;
@@ -1422,15 +1422,15 @@ LABEL_49:
   *(&v18 + 1) = v19;
   v28 = v18;
   v29 = 0;
-  [v4 setVertexBytes:v23 length:112 atIndex:1];
-  [v4 drawPrimitives:4 vertexStart:0 vertexCount:4];
+  [encoderCopy setVertexBytes:v23 length:112 atIndex:1];
+  [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4];
 
 LABEL_52:
 }
 
-- (void)_drawHeadWithEncoder:(id)a3
+- (void)_drawHeadWithEncoder:(id)encoder
 {
-  v4 = a3;
+  encoderCopy = encoder;
   stateSpecs = self->_stateSpecs;
   xFlipFace = self->_stateSpecs[self->_curState].xFlipFace;
   if (xFlipFace >= 0.0)
@@ -1461,34 +1461,34 @@ LABEL_28:
   }
 
   [(_Head *)self->_head setInAnimation:(self->_animationFrameInterval + [(_Head *)self->_head inAnimation])];
-  v8 = [(_Head *)self->_head inAnimation];
-  if (v8 > 9)
+  inAnimation = [(_Head *)self->_head inAnimation];
+  if (inAnimation > 9)
   {
-    if (v8 < 0xC)
+    if (inAnimation < 0xC)
     {
       v9 = 5;
       goto LABEL_29;
     }
 
-    if (v8 < 0xE)
+    if (inAnimation < 0xE)
     {
       v9 = 4;
       goto LABEL_29;
     }
 
-    if (v8 < 0x10)
+    if (inAnimation < 0x10)
     {
       v9 = 3;
       goto LABEL_29;
     }
 
-    if (v8 < 0x12)
+    if (inAnimation < 0x12)
     {
       v9 = 2;
       goto LABEL_29;
     }
 
-    if (v8 < 0x14)
+    if (inAnimation < 0x14)
     {
       goto LABEL_12;
     }
@@ -1498,7 +1498,7 @@ LABEL_28:
   }
 
   xFlipFace = -xFlipFace;
-  if (v8 < 4)
+  if (inAnimation < 4)
   {
 LABEL_12:
     v9 = 1;
@@ -1506,12 +1506,12 @@ LABEL_12:
   }
 
   v10 = 3;
-  if (v8 >= 8)
+  if (inAnimation >= 8)
   {
     v10 = 4;
   }
 
-  if (v8 >= 6)
+  if (inAnimation >= 6)
   {
     v9 = v10;
   }
@@ -1522,9 +1522,9 @@ LABEL_12:
   }
 
 LABEL_29:
-  [(NTKCharacterRenderer *)self bindPipelineState:3 withEncoder:v4];
-  [(NTKCharacterRenderer *)self _applyClothingColorWithEncoder:v4];
-  [v4 setVertexBufferOffset:-[_Geometry mtlBufOffset](self->_head atIndex:{"mtlBufOffset"), 0}];
+  [(NTKCharacterRenderer *)self bindPipelineState:3 withEncoder:encoderCopy];
+  [(NTKCharacterRenderer *)self _applyClothingColorWithEncoder:encoderCopy];
+  [encoderCopy setVertexBufferOffset:-[_Geometry mtlBufOffset](self->_head atIndex:{"mtlBufOffset"), 0}];
   v11 = 0.0;
   if (v7 >= 5.0 && v7 < 20.0)
   {
@@ -1611,8 +1611,8 @@ LABEL_29:
   if (self->_sayCheese || [(_Head *)self->_head inAnimation]|| self->_curTimeMod15Sec > self->_blinkDuration)
   {
     loader = self->_loader;
-    v37 = [(_Head *)self->_head texs];
-    v38 = v37;
+    texs = [(_Head *)self->_head texs];
+    v38 = texs;
     v39 = v9;
   }
 
@@ -1620,15 +1620,15 @@ LABEL_29:
   {
     v54 = [(NTKCharacterRenderer *)self getBlinkFrameFor15sTime:?];
     loader = self->_loader;
-    v37 = [(_Head *)self->_head blinkTexs];
-    v38 = v37;
+    texs = [(_Head *)self->_head blinkTexs];
+    v38 = texs;
     v39 = v54;
   }
 
-  v40 = [v37 objectAtIndexedSubscript:v39];
+  v40 = [texs objectAtIndexedSubscript:v39];
   v41 = [(NTKCharacterResourceLoader *)loader getMTLTexture:v40];
 
-  [v4 setFragmentTexture:v41 atIndex:0];
+  [encoderCopy setFragmentTexture:v41 atIndex:0];
   v42 = (xFlipFace * v30) * -0.3;
   v43 = *&self[1]._cal;
   v62[0] = *&self[1].super.isa;
@@ -1659,16 +1659,16 @@ LABEL_29:
   v53.i32[0] = v56;
   v67 = vmla_f32(v34, vadd_f32(__PAIR64__(LODWORD(v60), v59), vmla_f32(v53, vdup_n_s32(0x3D4CCCCDu), v52)), vmul_n_f32(v35, characterScale));
   v68 = 0;
-  [v4 setVertexBytes:v62 length:112 atIndex:1];
-  [v4 drawPrimitives:4 vertexStart:0 vertexCount:4];
+  [encoderCopy setVertexBytes:v62 length:112 atIndex:1];
+  [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4];
 }
 
-- (float)_getElbowScaleForPosition:(float)a3
+- (float)_getElbowScaleForPosition:(float)position
 {
-  v3 = (a3 * -4.0) + 1.25;
-  if (a3 >= 0.5)
+  v3 = (position * -4.0) + 1.25;
+  if (position >= 0.5)
   {
-    v3 = (a3 * 4.0) + -2.7;
+    v3 = (position * 4.0) + -2.7;
   }
 
   if (v3 > 1.0)
@@ -1678,7 +1678,7 @@ LABEL_29:
 
   if (v3 < 0.0)
   {
-    v4 = a3 < 0.5;
+    v4 = position < 0.5;
     v5 = 0.0;
     if (v4)
     {
@@ -1709,9 +1709,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)_drawHourHandWithEncoder:(id)a3
+- (void)_drawHourHandWithEncoder:(id)encoder
 {
-  v4 = a3;
+  encoderCopy = encoder;
   characterScale = self->_characterScale;
   hourHandPos = self->_hourHandPos;
   v6 = __sincosf_stret(hourHandPos * -6.2832);
@@ -1807,20 +1807,20 @@ LABEL_29:
   v30 = *self->_neckBone;
   *&v31 = v18 + v30.f32[0];
   HIDWORD(v31) = vmuls_lane_f32(0.75, v30, 1);
-  [(NTKCharacterRenderer *)self _drawArmFromShoulder:v4 toWrist:v31 withBend:v49 withEncoder:v25];
-  [(NTKCharacterRenderer *)self bindPipelineState:3 withEncoder:v4];
-  [v4 setVertexBufferOffset:-[_Arms mtlBufHandOffset](self->_arms atIndex:{"mtlBufHandOffset"), 0}];
+  [(NTKCharacterRenderer *)self _drawArmFromShoulder:encoderCopy toWrist:v31 withBend:v49 withEncoder:v25];
+  [(NTKCharacterRenderer *)self bindPipelineState:3 withEncoder:encoderCopy];
+  [encoderCopy setVertexBufferOffset:-[_Arms mtlBufHandOffset](self->_arms atIndex:{"mtlBufHandOffset"), 0}];
   if (self->_pinHandsBrightnessToMax)
   {
     v56.i64[0] = 0x3C003C003C003C00;
-    [v4 setFragmentBytes:&v56 length:8 atIndex:0];
+    [encoderCopy setFragmentBytes:&v56 length:8 atIndex:0];
   }
 
   loader = self->_loader;
-  v33 = [(_Arms *)self->_arms texHandHour];
-  v34 = [(NTKCharacterResourceLoader *)loader getMTLTexture:v33];
+  texHandHour = [(_Arms *)self->_arms texHandHour];
+  v34 = [(NTKCharacterResourceLoader *)loader getMTLTexture:texHandHour];
 
-  [v4 setFragmentTexture:v34 atIndex:0];
+  [encoderCopy setFragmentTexture:v34 atIndex:0];
   v56 = v53;
   v57 = v52;
   v58 = v51;
@@ -1841,8 +1841,8 @@ LABEL_29:
   v63 = v41;
   v64 = v42;
   v65 = 0;
-  [v4 setVertexBytes:&v56 length:112 atIndex:1];
-  [v4 drawPrimitives:4 vertexStart:0 vertexCount:4];
+  [encoderCopy setVertexBytes:&v56 length:112 atIndex:1];
+  [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4];
   if (self->_pinHandsBrightnessToMax)
   {
     _D0.i32[0] = LODWORD(self->_characterBrightness);
@@ -1851,13 +1851,13 @@ LABEL_29:
     v48 = vdup_lane_s16(_D0, 0);
     v48.i16[3] = COERCE_UNSIGNED_INT(1.0);
     *&v66[0] = v48;
-    [v4 setFragmentBytes:v66 length:8 atIndex:0];
+    [encoderCopy setFragmentBytes:v66 length:8 atIndex:0];
   }
 }
 
-- (void)_drawMinuteHandWithEncoder:(id)a3
+- (void)_drawMinuteHandWithEncoder:(id)encoder
 {
-  v4 = a3;
+  encoderCopy = encoder;
   characterScale = self->_characterScale;
   minHandPos = self->_minHandPos;
   v6 = minHandPos * -6.28318531;
@@ -1954,21 +1954,21 @@ LABEL_29:
   v32 = *self->_neckBone;
   *&v33 = v20 + v32.f32[0];
   HIDWORD(v33) = vmuls_lane_f32(0.75, v32, 1);
-  [(NTKCharacterRenderer *)self _drawArmFromShoulder:v4 toWrist:v33 withBend:v13 withEncoder:v27];
-  [(NTKCharacterRenderer *)self bindPipelineState:3 withEncoder:v4];
-  [v4 setVertexBufferOffset:-[_Arms mtlBufHandOffset](self->_arms atIndex:{"mtlBufHandOffset"), 0}];
+  [(NTKCharacterRenderer *)self _drawArmFromShoulder:encoderCopy toWrist:v33 withBend:v13 withEncoder:v27];
+  [(NTKCharacterRenderer *)self bindPipelineState:3 withEncoder:encoderCopy];
+  [encoderCopy setVertexBufferOffset:-[_Arms mtlBufHandOffset](self->_arms atIndex:{"mtlBufHandOffset"), 0}];
   if (self->_pinHandsBrightnessToMax)
   {
     v55.i64[0] = 0x3C003C003C003C00;
-    [v4 setFragmentBytes:&v55 length:8 atIndex:0];
+    [encoderCopy setFragmentBytes:&v55 length:8 atIndex:0];
   }
 
   loader = self->_loader;
-  v35 = [(_Arms *)self->_arms texHandMnut];
-  v36 = [v35 objectAtIndexedSubscript:stateSpecs[self->_idealState].minuteTexIdx];
+  texHandMnut = [(_Arms *)self->_arms texHandMnut];
+  v36 = [texHandMnut objectAtIndexedSubscript:stateSpecs[self->_idealState].minuteTexIdx];
   v37 = [(NTKCharacterResourceLoader *)loader getMTLTexture:v36];
 
-  [v4 setFragmentTexture:v37 atIndex:0];
+  [encoderCopy setFragmentTexture:v37 atIndex:0];
   v55 = v52;
   v56 = v51;
   v57 = v50;
@@ -1986,8 +1986,8 @@ LABEL_29:
   v62 = v41;
   v63 = v42;
   v64 = 0;
-  [v4 setVertexBytes:&v55 length:112 atIndex:1];
-  [v4 drawPrimitives:4 vertexStart:0 vertexCount:4];
+  [encoderCopy setVertexBytes:&v55 length:112 atIndex:1];
+  [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4];
   if (self->_pinHandsBrightnessToMax)
   {
     _D0.i32[0] = LODWORD(self->_characterBrightness);
@@ -1996,16 +1996,16 @@ LABEL_29:
     v48 = vdup_lane_s16(_D0, 0);
     v48.i16[3] = COERCE_UNSIGNED_INT(1.0);
     *&v65[0] = v48;
-    [v4 setFragmentBytes:v65 length:8 atIndex:0];
+    [encoderCopy setFragmentBytes:v65 length:8 atIndex:0];
   }
 }
 
-- (void)renderWithEncoder:(id)a3
+- (void)renderWithEncoder:(id)encoder
 {
-  v12 = a3;
+  encoderCopy = encoder;
   [(NTKCharacterRenderer *)self activate];
   self->_currentPipeline = 5;
-  [v12 setVertexBuffer:self->_geometryMtlBuffer offset:0 atIndex:0];
+  [encoderCopy setVertexBuffer:self->_geometryMtlBuffer offset:0 atIndex:0];
   if (self->_overrideDate || self->_animatingIntoOrb && self->_overrideDateFraction > 0.95)
   {
     self->_sayCheese = 1;
@@ -2053,36 +2053,36 @@ LABEL_29:
   *self->_neckBone = vmul_n_f32(vcvt_f32_f64(vmulq_f64(vcvtq_f64_f32(v8), xmmword_15670)), v11);
   [(_Body *)self->_body setBone:?];
   [(_Head *)self->_head setBone:COERCE_DOUBLE(vmul_f32(*self->_neckBone, vdup_n_s32(0x3F59999Au)))];
-  [(NTKCharacterRenderer *)self _drawBackgroundWithEncoder:v12];
-  [(NTKCharacterRenderer *)self _drawCharacterWithEncoder:v12];
+  [(NTKCharacterRenderer *)self _drawBackgroundWithEncoder:encoderCopy];
+  [(NTKCharacterRenderer *)self _drawCharacterWithEncoder:encoderCopy];
   self->_applyInstantTimeWarp = 0;
   self->_sayCheese = 0;
 }
 
-- (void)_drawCharacterWithEncoder:(id)a3
+- (void)_drawCharacterWithEncoder:(id)encoder
 {
-  v4 = a3;
+  encoderCopy = encoder;
   _D0.i32[0] = LODWORD(self->_characterBrightness);
   __asm { FCVT            H0, S0 }
 
   v9 = vdup_lane_s16(_D0, 0);
   v9.i16[3] = COERCE_UNSIGNED_INT(1.0);
   v12 = v9;
-  [v4 setFragmentBytes:&v12 length:8 atIndex:0];
-  [(NTKCharacterRenderer *)self _drawBodyWithEncoder:v4];
-  [(NTKCharacterRenderer *)self _drawTappingFootWithEncoder:v4];
-  [(NTKCharacterRenderer *)self _drawHourHandWithEncoder:v4];
+  [encoderCopy setFragmentBytes:&v12 length:8 atIndex:0];
+  [(NTKCharacterRenderer *)self _drawBodyWithEncoder:encoderCopy];
+  [(NTKCharacterRenderer *)self _drawTappingFootWithEncoder:encoderCopy];
+  [(NTKCharacterRenderer *)self _drawHourHandWithEncoder:encoderCopy];
   minHandPos = self->_minHandPos;
   if (minHandPos > 0.25 && minHandPos < 0.75)
   {
-    [(NTKCharacterRenderer *)self _drawMinuteHandWithEncoder:v4];
-    [(NTKCharacterRenderer *)self _drawHeadWithEncoder:v4];
+    [(NTKCharacterRenderer *)self _drawMinuteHandWithEncoder:encoderCopy];
+    [(NTKCharacterRenderer *)self _drawHeadWithEncoder:encoderCopy];
   }
 
   else
   {
-    [(NTKCharacterRenderer *)self _drawHeadWithEncoder:v4];
-    [(NTKCharacterRenderer *)self _drawMinuteHandWithEncoder:v4];
+    [(NTKCharacterRenderer *)self _drawHeadWithEncoder:encoderCopy];
+    [(NTKCharacterRenderer *)self _drawMinuteHandWithEncoder:encoderCopy];
   }
 }
 

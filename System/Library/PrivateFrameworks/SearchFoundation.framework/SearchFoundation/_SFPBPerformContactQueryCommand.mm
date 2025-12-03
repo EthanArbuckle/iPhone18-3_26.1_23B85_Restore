@@ -1,28 +1,28 @@
 @interface _SFPBPerformContactQueryCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBPerformContactQueryCommand)initWithDictionary:(id)a3;
-- (_SFPBPerformContactQueryCommand)initWithFacade:(id)a3;
-- (_SFPBPerformContactQueryCommand)initWithJSON:(id)a3;
+- (_SFPBPerformContactQueryCommand)initWithDictionary:(id)dictionary;
+- (_SFPBPerformContactQueryCommand)initWithFacade:(id)facade;
+- (_SFPBPerformContactQueryCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setContactIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setContactIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBPerformContactQueryCommand
 
-- (_SFPBPerformContactQueryCommand)initWithFacade:(id)a3
+- (_SFPBPerformContactQueryCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBPerformContactQueryCommand *)self init];
   if (v5)
   {
-    v6 = [v4 contactIdentifier];
+    contactIdentifier = [facadeCopy contactIdentifier];
 
-    if (v6)
+    if (contactIdentifier)
     {
-      v7 = [v4 contactIdentifier];
-      [(_SFPBPerformContactQueryCommand *)v5 setContactIdentifier:v7];
+      contactIdentifier2 = [facadeCopy contactIdentifier];
+      [(_SFPBPerformContactQueryCommand *)v5 setContactIdentifier:contactIdentifier2];
     }
 
     v8 = v5;
@@ -31,15 +31,15 @@
   return v5;
 }
 
-- (_SFPBPerformContactQueryCommand)initWithDictionary:(id)a3
+- (_SFPBPerformContactQueryCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBPerformContactQueryCommand;
   v5 = [(_SFPBPerformContactQueryCommand *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"contactIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"contactIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,30 +53,30 @@
   return v5;
 }
 
-- (_SFPBPerformContactQueryCommand)initWithJSON:(id)a3
+- (_SFPBPerformContactQueryCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBPerformContactQueryCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBPerformContactQueryCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBPerformContactQueryCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -89,29 +89,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_contactIdentifier)
   {
-    v4 = [(_SFPBPerformContactQueryCommand *)self contactIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"contactIdentifier"];
+    contactIdentifier = [(_SFPBPerformContactQueryCommand *)self contactIdentifier];
+    v5 = [contactIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"contactIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBPerformContactQueryCommand *)self contactIdentifier];
-    v6 = [v4 contactIdentifier];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    contactIdentifier = [(_SFPBPerformContactQueryCommand *)self contactIdentifier];
+    contactIdentifier2 = [equalCopy contactIdentifier];
+    v7 = contactIdentifier2;
+    if ((contactIdentifier != 0) != (contactIdentifier2 == 0))
     {
-      v8 = [(_SFPBPerformContactQueryCommand *)self contactIdentifier];
-      if (!v8)
+      contactIdentifier3 = [(_SFPBPerformContactQueryCommand *)self contactIdentifier];
+      if (!contactIdentifier3)
       {
 
 LABEL_10:
@@ -119,10 +119,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBPerformContactQueryCommand *)self contactIdentifier];
-      v11 = [v4 contactIdentifier];
-      v12 = [v10 isEqual:v11];
+      v9 = contactIdentifier3;
+      contactIdentifier4 = [(_SFPBPerformContactQueryCommand *)self contactIdentifier];
+      contactIdentifier5 = [equalCopy contactIdentifier];
+      v12 = [contactIdentifier4 isEqual:contactIdentifier5];
 
       if (v12)
       {
@@ -141,19 +141,19 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBPerformContactQueryCommand *)self contactIdentifier];
-  if (v4)
+  toCopy = to;
+  contactIdentifier = [(_SFPBPerformContactQueryCommand *)self contactIdentifier];
+  if (contactIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setContactIdentifier:(id)a3
+- (void)setContactIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   contactIdentifier = self->_contactIdentifier;
   self->_contactIdentifier = v4;
 

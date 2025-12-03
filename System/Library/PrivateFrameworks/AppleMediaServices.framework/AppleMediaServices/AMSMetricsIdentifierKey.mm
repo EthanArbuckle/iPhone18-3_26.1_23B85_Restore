@@ -1,20 +1,20 @@
 @interface AMSMetricsIdentifierKey
-+ (id)keyWithName:(id)a3 crossDeviceSync:(BOOL)a4 isActiveITunesAccountRequired:(BOOL)a5;
++ (id)keyWithName:(id)name crossDeviceSync:(BOOL)sync isActiveITunesAccountRequired:(BOOL)required;
 - (id)description;
 @end
 
 @implementation AMSMetricsIdentifierKey
 
-+ (id)keyWithName:(id)a3 crossDeviceSync:(BOOL)a4 isActiveITunesAccountRequired:(BOOL)a5
++ (id)keyWithName:(id)name crossDeviceSync:(BOOL)sync isActiveITunesAccountRequired:(BOOL)required
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  requiredCopy = required;
+  syncCopy = sync;
+  nameCopy = name;
   v8 = objc_opt_new();
-  [v8 setName:v7];
+  [v8 setName:nameCopy];
 
-  [v8 setCrossDeviceSync:v6];
-  [v8 setIsActiveITunesAccountRequired:v5];
+  [v8 setCrossDeviceSync:syncCopy];
+  [v8 setIsActiveITunesAccountRequired:requiredCopy];
 
   return v8;
 }

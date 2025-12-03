@@ -1,34 +1,34 @@
 @interface PKPaymentSendOwnershipTokensRequest
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 deviceMetadata:(id)a5 appleAccountInformation:(id)a6;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier deviceMetadata:(id)metadata appleAccountInformation:(id)information;
 @end
 
 @implementation PKPaymentSendOwnershipTokensRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 deviceMetadata:(id)a5 appleAccountInformation:(id)a6
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier deviceMetadata:(id)metadata appleAccountInformation:(id)information
 {
   v39[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  informationCopy = information;
   v39[0] = @"devices";
-  v39[1] = v11;
+  v39[1] = identifierCopy;
   v39[2] = @"ownershipTokens";
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:3];
-  v15 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v10 endpointComponents:v14 queryParameters:0 appleAccountInformation:v13];
+  v15 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v14 queryParameters:0 appleAccountInformation:informationCopy];
 
   [v15 setHTTPMethod:@"POST"];
   v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v12)
+  if (metadataCopy)
   {
-    v17 = [v12 dictionaryRepresentation];
-    [v16 setObject:v17 forKey:@"deviceMetadata"];
+    dictionaryRepresentation = [metadataCopy dictionaryRepresentation];
+    [v16 setObject:dictionaryRepresentation forKey:@"deviceMetadata"];
   }
 
   reason = self->_reason;
-  v32 = v11;
-  v33 = v10;
-  v31 = v13;
+  v32 = identifierCopy;
+  v33 = lCopy;
+  v31 = informationCopy;
   if (reason > 2)
   {
     v19 = @"unknown";
@@ -60,8 +60,8 @@
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
-        [v20 addObject:v26];
+        dictionaryRepresentation2 = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
+        [v20 addObject:dictionaryRepresentation2];
       }
 
       v23 = [(NSSet *)v21 countByEnumeratingWithState:&v34 objects:v38 count:16];

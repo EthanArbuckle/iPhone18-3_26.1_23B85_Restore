@@ -1,8 +1,8 @@
 @interface _UIViewControllerTransitionManager
 - (_UIViewControllerTransitionManager)init;
-- (void)applyViewControllers:(id)a3;
-- (void)configureWithInitialViewControllers:(id)a3;
-- (void)performAnimatedTransitionWithRequest:(id)a3;
+- (void)applyViewControllers:(id)controllers;
+- (void)configureWithInitialViewControllers:(id)controllers;
+- (void)performAnimatedTransitionWithRequest:(id)request;
 @end
 
 @implementation _UIViewControllerTransitionManager
@@ -18,27 +18,27 @@
   return [(_UIViewControllerTransitionManager *)&v5 init];
 }
 
-- (void)configureWithInitialViewControllers:(id)a3
+- (void)configureWithInitialViewControllers:(id)controllers
 {
   sub_188A34624(0, &qword_1ED48D5A0);
   v4 = sub_18A4A7548();
-  v5 = self;
+  selfCopy = self;
   sub_188FED5C4(v4);
 }
 
-- (void)applyViewControllers:(id)a3
+- (void)applyViewControllers:(id)controllers
 {
   sub_188A34624(0, &qword_1ED48D5A0);
   v4 = sub_18A4A7548();
-  v5 = self;
+  selfCopy = self;
   sub_188FED7A8(v4);
 }
 
-- (void)performAnimatedTransitionWithRequest:(id)a3
+- (void)performAnimatedTransitionWithRequest:(id)request
 {
-  v5 = a3;
-  v4 = self;
-  sub_188FEFB18(v5);
+  requestCopy = request;
+  selfCopy = self;
+  sub_188FEFB18(requestCopy);
 }
 
 @end

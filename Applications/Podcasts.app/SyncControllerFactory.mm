@@ -8,9 +8,9 @@
 
 + (MTSyncControllerProtocol)resolvedSyncController
 {
-  v2 = [objc_opt_self() sharedInstance];
+  sharedInstance = [objc_opt_self() sharedInstance];
 
-  return v2;
+  return sharedInstance;
 }
 
 + (Class)resolvedSyncClass

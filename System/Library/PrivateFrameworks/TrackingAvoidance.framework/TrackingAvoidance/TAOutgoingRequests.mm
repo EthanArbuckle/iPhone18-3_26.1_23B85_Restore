@@ -1,5 +1,5 @@
 @interface TAOutgoingRequests
-- (TAOutgoingRequests)initWithRequestKey:(id)a3 additionalInformation:(id)a4 date:(id)a5;
+- (TAOutgoingRequests)initWithRequestKey:(id)key additionalInformation:(id)information date:(id)date;
 - (id)description;
 - (id)descriptionDictionary;
 - (void)description;
@@ -7,11 +7,11 @@
 
 @implementation TAOutgoingRequests
 
-- (TAOutgoingRequests)initWithRequestKey:(id)a3 additionalInformation:(id)a4 date:(id)a5
+- (TAOutgoingRequests)initWithRequestKey:(id)key additionalInformation:(id)information date:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  informationCopy = information;
+  dateCopy = date;
   v20.receiver = self;
   v20.super_class = TAOutgoingRequests;
   v11 = [(TAOutgoingRequests *)&v20 init];
@@ -23,26 +23,26 @@ LABEL_8:
   }
 
   v12 = 0;
-  if (v8 && v10)
+  if (keyCopy && dateCopy)
   {
-    v13 = [v8 copy];
+    v13 = [keyCopy copy];
     key = v11->_key;
     v11->_key = v13;
 
-    if (v9)
+    if (informationCopy)
     {
-      v15 = [v9 copy];
+      dictionary = [informationCopy copy];
     }
 
     else
     {
-      v15 = [MEMORY[0x277CBEAC0] dictionary];
+      dictionary = [MEMORY[0x277CBEAC0] dictionary];
     }
 
     additionalInformation = v11->_additionalInformation;
-    v11->_additionalInformation = v15;
+    v11->_additionalInformation = dictionary;
 
-    v17 = [v10 copy];
+    v17 = [dateCopy copy];
     date = v11->_date;
     v11->_date = v17;
 
@@ -65,8 +65,8 @@ LABEL_9:
   v5 = [(NSDictionary *)additionalInformation description];
   v11[1] = v5;
   v10[2] = @"Date";
-  v6 = [(NSDate *)self->_date getDateString];
-  v11[2] = v6;
+  getDateString = [(NSDate *)self->_date getDateString];
+  v11[2] = getDateString;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:3];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -76,9 +76,9 @@ LABEL_9:
 
 - (id)description
 {
-  v3 = [(TAOutgoingRequests *)self descriptionDictionary];
+  descriptionDictionary = [(TAOutgoingRequests *)self descriptionDictionary];
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v3 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -88,15 +88,15 @@ LABEL_9:
       [(TAOutgoingRequests *)v6 description];
     }
 
-    v7 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v7 = v4;
+    string = v4;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }
@@ -104,14 +104,14 @@ LABEL_9:
 - (void)description
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a1;
+  selfCopy = self;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v8 = 138412546;
   v9 = v6;
   v10 = 2112;
   v11 = a3;
-  _os_log_error_impl(&dword_26F2E2000, v4, OS_LOG_TYPE_ERROR, "%@ instance failed to create description:%@", &v8, 0x16u);
+  _os_log_error_impl(&dword_26F2E2000, selfCopy, OS_LOG_TYPE_ERROR, "%@ instance failed to create description:%@", &v8, 0x16u);
 
   v7 = *MEMORY[0x277D85DE8];
 }

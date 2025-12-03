@@ -1,73 +1,73 @@
 @interface PKSqueezePaletteColorSwatchButton
-- (id)initWithColor:(id *)a1;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (id)initWithColor:(id *)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation PKSqueezePaletteColorSwatchButton
 
-- (id)initWithColor:(id *)a1
+- (id)initWithColor:(id *)color
 {
   v31[4] = *MEMORY[0x1E69E9840];
   v26 = a2;
-  if (a1)
+  if (color)
   {
-    v30.receiver = a1;
+    v30.receiver = color;
     v30.super_class = PKSqueezePaletteColorSwatchButton;
     v4 = objc_msgSendSuper2(&v30, sel_init);
-    a1 = v4;
+    color = v4;
     if (v4)
     {
       objc_storeStrong(v4 + 94, a2);
       v5 = objc_alloc_init(PKPaletteColorSwatch);
-      v6 = a1[93];
-      a1[93] = v5;
+      v6 = color[93];
+      color[93] = v5;
 
-      [a1[93] setSwatchColor:a1[94]];
-      [a1[93] setUserInteractionEnabled:0];
-      [a1[93] setTranslatesAutoresizingMaskIntoConstraints:0];
-      [a1 addSubview:a1[93]];
+      [color[93] setSwatchColor:color[94]];
+      [color[93] setUserInteractionEnabled:0];
+      [color[93] setTranslatesAutoresizingMaskIntoConstraints:0];
+      [color addSubview:color[93]];
       v21 = MEMORY[0x1E696ACD8];
-      v25 = [a1[93] centerXAnchor];
-      v24 = [a1 centerXAnchor];
-      v23 = [v25 constraintEqualToAnchor:v24];
+      centerXAnchor = [color[93] centerXAnchor];
+      centerXAnchor2 = [color centerXAnchor];
+      v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v31[0] = v23;
-      v22 = [a1[93] centerYAnchor];
-      v7 = [a1 centerYAnchor];
-      v8 = [v22 constraintEqualToAnchor:v7];
+      centerYAnchor = [color[93] centerYAnchor];
+      centerYAnchor2 = [color centerYAnchor];
+      v8 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v31[1] = v8;
-      v9 = [a1[93] widthAnchor];
-      v10 = [a1 widthAnchor];
-      v11 = [v9 constraintEqualToAnchor:v10];
+      widthAnchor = [color[93] widthAnchor];
+      widthAnchor2 = [color widthAnchor];
+      v11 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       v31[2] = v11;
-      v12 = [a1[93] heightAnchor];
-      v13 = [a1 heightAnchor];
-      v14 = [v12 constraintEqualToAnchor:v13];
+      heightAnchor = [color[93] heightAnchor];
+      heightAnchor2 = [color heightAnchor];
+      v14 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
       v31[3] = v14;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:4];
       [v21 activateConstraints:v15];
 
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, color);
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __51__PKSqueezePaletteColorSwatchButton_initWithColor___block_invoke;
       v27[3] = &unk_1E82D9230;
       objc_copyWeak(&v28, &location);
-      [a1 setPointerStyleProvider:v27];
+      [color setPointerStyleProvider:v27];
       v16 = MEMORY[0x1E696AEC0];
-      v17 = [v26 identifier];
-      v18 = [v16 stringWithFormat:@"MiniPalette-ColorSwatch-%@", v17];
-      [a1 setAccessibilityIdentifier:v18];
+      identifier = [v26 identifier];
+      v18 = [v16 stringWithFormat:@"MiniPalette-ColorSwatch-%@", identifier];
+      [color setAccessibilityIdentifier:v18];
 
-      v19 = [v26 identifier];
-      [a1 setAccessibilityLabel:v19];
+      identifier2 = [v26 identifier];
+      [color setAccessibilityLabel:identifier2];
 
       objc_destroyWeak(&v28);
       objc_destroyWeak(&location);
     }
   }
 
-  return a1;
+  return color;
 }
 
 id __51__PKSqueezePaletteColorSwatchButton_initWithColor___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -90,26 +90,26 @@ id __51__PKSqueezePaletteColorSwatchButton_initWithColor___block_invoke(uint64_t
   return v12;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = PKSqueezePaletteColorSwatchButton;
-  [(PKSqueezePaletteColorSwatchButton *)&v4 setSelected:a3];
+  [(PKSqueezePaletteColorSwatchButton *)&v4 setSelected:selected];
   [(PKPaletteColorSwatch *)self->_swatch setSelected:[(PKSqueezePaletteColorSwatchButton *)self isSelected]];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v6.receiver = self;
   v6.super_class = PKSqueezePaletteColorSwatchButton;
-  [(PKSqueezePaletteColorSwatchButton *)&v6 setHighlighted:a3];
-  v4 = [(PKSqueezePaletteColorSwatchButton *)self isHighlighted];
+  [(PKSqueezePaletteColorSwatchButton *)&v6 setHighlighted:highlighted];
+  isHighlighted = [(PKSqueezePaletteColorSwatchButton *)self isHighlighted];
   swatch = self->_swatch;
   if (swatch)
   {
-    if (swatch->_showsSelectionHighlight != v4)
+    if (swatch->_showsSelectionHighlight != isHighlighted)
     {
-      swatch->_showsSelectionHighlight = v4;
+      swatch->_showsSelectionHighlight = isHighlighted;
       [(PKPaletteColorSwatch *)swatch _updateSelectionHighlight];
     }
   }

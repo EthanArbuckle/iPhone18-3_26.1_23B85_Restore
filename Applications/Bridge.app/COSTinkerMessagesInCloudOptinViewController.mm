@@ -6,7 +6,7 @@
 - (id)detailTitleString;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)applyConfirmedOptin:(BOOL)a3;
+- (void)applyConfirmedOptin:(BOOL)optin;
 @end
 
 @implementation COSTinkerMessagesInCloudOptinViewController
@@ -14,9 +14,9 @@
 + (BOOL)controllerNeedsToRun
 {
   v2 = BPSGetActiveDevice();
-  v3 = [v2 pairingID];
-  v4 = [v3 UUIDString];
-  v5 = [@"kEnableMessages-" stringByAppendingString:v4];
+  pairingID = [v2 pairingID];
+  uUIDString = [pairingID UUIDString];
+  v5 = [@"kEnableMessages-" stringByAppendingString:uUIDString];
 
   keyExistsAndHasValidFormat = 0;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(v5, @"com.apple.MobileSMS", &keyExistsAndHasValidFormat);
@@ -65,38 +65,38 @@
 {
   v2 = +[NSBundle mainBundle];
   v3 = [v2 localizedStringForKey:@"MIC_TINKER_TITLE_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-  v4 = [UIApp setupController];
-  v5 = [v4 tinkerUserName];
-  v6 = [v5 localizedCapitalizedString];
-  v7 = [NSString stringWithFormat:v3, v6];
+  setupController = [UIApp setupController];
+  tinkerUserName = [setupController tinkerUserName];
+  localizedCapitalizedString = [tinkerUserName localizedCapitalizedString];
+  v7 = [NSString stringWithFormat:v3, localizedCapitalizedString];
 
   return v7;
 }
 
 - (id)detailString
 {
-  v2 = [UIApp setupController];
-  v3 = [v2 tinkerUserName];
-  v4 = [v3 localizedCapitalizedString];
+  setupController = [UIApp setupController];
+  tinkerUserName = [setupController tinkerUserName];
+  localizedCapitalizedString = [tinkerUserName localizedCapitalizedString];
 
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"MIC_DETAIL_TINKER_%@_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-  v7 = [NSString stringWithFormat:v6, v4, v4];
+  v7 = [NSString stringWithFormat:v6, localizedCapitalizedString, localizedCapitalizedString];
 
   return v7;
 }
 
-- (void)applyConfirmedOptin:(BOOL)a3
+- (void)applyConfirmedOptin:(BOOL)optin
 {
-  if (a3)
+  if (optin)
   {
     v4 = +[UIApplication sharedApplication];
-    v5 = [v4 bridgeController];
-    [v5 tellGizmoToSetMessagesinCloudEnabled:1];
+    bridgeController = [v4 bridgeController];
+    [bridgeController tellGizmoToSetMessagesinCloudEnabled:1];
   }
 
-  v6 = [(COSTinkerMessagesInCloudOptinViewController *)self delegate];
-  [v6 buddyControllerDone:self];
+  delegate = [(COSTinkerMessagesInCloudOptinViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (id)suggestedButtonTitle

@@ -21,14 +21,14 @@
 - (id)wf_supportedContentOperators
 {
   v2 = WFContentOperatorToLNComparisonPropertyMapping();
-  v3 = [a1 comparators];
+  comparators = [self comparators];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__LNQueryParameterMetadata_Workflow__wf_supportedContentOperators__block_invoke;
   v7[3] = &unk_1E837B048;
   v8 = v2;
   v4 = v2;
-  v5 = [v3 if_compactMap:v7];
+  v5 = [comparators if_compactMap:v7];
 
   return v5;
 }

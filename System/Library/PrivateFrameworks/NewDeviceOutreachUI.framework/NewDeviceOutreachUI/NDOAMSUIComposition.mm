@@ -1,20 +1,20 @@
 @interface NDOAMSUIComposition
-+ (void)makeFollowUpAMSViewControllerWithAgent:(id)a3 url:(id)a4 presenter:(id)a5 headers:(id)a6 body:(id)a7 onDismiss:(id)a8 completion:(id)a9;
++ (void)makeFollowUpAMSViewControllerWithAgent:(id)agent url:(id)url presenter:(id)presenter headers:(id)headers body:(id)body onDismiss:(id)dismiss completion:(id)completion;
 - (NDOAMSUIComposition)init;
 @end
 
 @implementation NDOAMSUIComposition
 
-+ (void)makeFollowUpAMSViewControllerWithAgent:(id)a3 url:(id)a4 presenter:(id)a5 headers:(id)a6 body:(id)a7 onDismiss:(id)a8 completion:(id)a9
++ (void)makeFollowUpAMSViewControllerWithAgent:(id)agent url:(id)url presenter:(id)presenter headers:(id)headers body:(id)body onDismiss:(id)dismiss completion:(id)completion
 {
-  v23 = a5;
+  presenterCopy = presenter;
   v24 = sub_25BDDF408();
   v11 = *(v24 - 8);
   v12 = *(v11 + 64);
   MEMORY[0x28223BE20](v24);
-  v14 = &v23 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v15 = _Block_copy(a8);
-  v16 = _Block_copy(a9);
+  v14 = &presenterCopy - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v15 = _Block_copy(dismiss);
+  v16 = _Block_copy(completion);
   sub_25BDDF3E8();
   v17 = sub_25BDDFE08();
   v18 = sub_25BDDFE08();
@@ -22,9 +22,9 @@
   *(v19 + 16) = v15;
   v20 = swift_allocObject();
   *(v20 + 16) = v16;
-  v21 = a3;
-  v22 = v23;
-  sub_25BDAC334(v21, v14, v22, v17, v18, sub_25BDAAFB0, v19, sub_25BDAC798, v20);
+  agentCopy = agent;
+  v22 = presenterCopy;
+  sub_25BDAC334(agentCopy, v14, v22, v17, v18, sub_25BDAAFB0, v19, sub_25BDAC798, v20);
 
   (*(v11 + 8))(v14, v24);
 }

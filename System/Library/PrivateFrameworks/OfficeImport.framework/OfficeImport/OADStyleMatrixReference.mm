@@ -1,41 +1,41 @@
 @interface OADStyleMatrixReference
-+ (OADStyleMatrixReference)styleMatrixReferenceWithMatrixIndex:(unint64_t)a3 color:(id)a4;
-- (OADStyleMatrixReference)initWithMatrixIndex:(unint64_t)a3 color:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (OADStyleMatrixReference)styleMatrixReferenceWithMatrixIndex:(unint64_t)index color:(id)color;
+- (OADStyleMatrixReference)initWithMatrixIndex:(unint64_t)index color:(id)color;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation OADStyleMatrixReference
 
-- (OADStyleMatrixReference)initWithMatrixIndex:(unint64_t)a3 color:(id)a4
+- (OADStyleMatrixReference)initWithMatrixIndex:(unint64_t)index color:(id)color
 {
-  v7 = a4;
+  colorCopy = color;
   v11.receiver = self;
   v11.super_class = OADStyleMatrixReference;
   v8 = [(OADStyleMatrixReference *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->mMatrixIndex = a3;
-    objc_storeStrong(&v8->mColor, a4);
+    v8->mMatrixIndex = index;
+    objc_storeStrong(&v8->mColor, color);
   }
 
   return v9;
 }
 
-+ (OADStyleMatrixReference)styleMatrixReferenceWithMatrixIndex:(unint64_t)a3 color:(id)a4
++ (OADStyleMatrixReference)styleMatrixReferenceWithMatrixIndex:(unint64_t)index color:(id)color
 {
-  v5 = a4;
-  v6 = [[OADStyleMatrixReference alloc] initWithMatrixIndex:a3 color:v5];
+  colorCopy = color;
+  v6 = [[OADStyleMatrixReference alloc] initWithMatrixIndex:index color:colorCopy];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   v5[1] = self->mMatrixIndex;
-  v6 = [(OADColor *)self->mColor copyWithZone:a3];
+  v6 = [(OADColor *)self->mColor copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -49,9 +49,9 @@
   v4 = [(OADColor *)self->mColor description];
   [v3 addField:@"Color" value:v4];
 
-  v5 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v5;
+  return descriptionString;
 }
 
 @end

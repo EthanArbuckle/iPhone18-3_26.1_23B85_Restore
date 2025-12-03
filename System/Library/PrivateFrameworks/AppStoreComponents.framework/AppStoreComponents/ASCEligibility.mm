@@ -1,11 +1,11 @@
 @interface ASCEligibility
-+ (BOOL)isInternalASCClient:(id)a3;
-+ (BOOL)isSpotlightClient:(id)a3;
-+ (uint64_t)clientWithBundleID:(void *)a3 isEligibleToUseLockupViewSize:;
-+ (uint64_t)clientWithBundleIDIsEligibleToUseASC:(uint64_t)a1;
-+ (uint64_t)clientWithProcessNameIsEligibleToUseASC:(uint64_t)a1;
++ (BOOL)isInternalASCClient:(id)client;
++ (BOOL)isSpotlightClient:(id)client;
++ (uint64_t)clientWithBundleID:(void *)d isEligibleToUseLockupViewSize:;
++ (uint64_t)clientWithBundleIDIsEligibleToUseASC:(uint64_t)c;
++ (uint64_t)clientWithProcessNameIsEligibleToUseASC:(uint64_t)c;
 + (uint64_t)currentClientIsEligibleToUseASC;
-+ (uint64_t)currentClientIsEligibleToUseLockupViewSize:(uint64_t)a1;
++ (uint64_t)currentClientIsEligibleToUseLockupViewSize:(uint64_t)size;
 + (void)abortExecution;
 + (void)assertCurrentProcessEligibility;
 @end
@@ -25,18 +25,18 @@
 + (uint64_t)currentClientIsEligibleToUseASC
 {
   v0 = objc_opt_self();
-  v1 = [MEMORY[0x277CCA8D8] mainBundle];
-  v2 = [v1 bundleIdentifier];
-  if (([(ASCEligibility *)v0 clientWithBundleIDIsEligibleToUseASC:v2]& 1) != 0)
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  if (([(ASCEligibility *)v0 clientWithBundleIDIsEligibleToUseASC:bundleIdentifier]& 1) != 0)
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCAC38] processInfo];
-    v5 = [v4 processName];
-    v3 = [(ASCEligibility *)v0 clientWithProcessNameIsEligibleToUseASC:v5];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    v3 = [(ASCEligibility *)v0 clientWithProcessNameIsEligibleToUseASC:processName];
   }
 
   return v3;
@@ -51,7 +51,7 @@
   }
 }
 
-+ (uint64_t)clientWithBundleIDIsEligibleToUseASC:(uint64_t)a1
++ (uint64_t)clientWithBundleIDIsEligibleToUseASC:(uint64_t)c
 {
   v2 = a2;
   objc_opt_self();
@@ -60,7 +60,7 @@
   return v3;
 }
 
-+ (uint64_t)clientWithProcessNameIsEligibleToUseASC:(uint64_t)a1
++ (uint64_t)clientWithProcessNameIsEligibleToUseASC:(uint64_t)c
 {
   v2 = a2;
   objc_opt_self();
@@ -69,9 +69,9 @@
   return v3;
 }
 
-+ (BOOL)isSpotlightClient:(id)a3
++ (BOOL)isSpotlightClient:(id)client
 {
-  if ([a3 hasPrefix:@"com.apple.Spotlight"])
+  if ([client hasPrefix:@"com.apple.Spotlight"])
   {
     return 1;
   }
@@ -85,7 +85,7 @@
       break;
     }
 
-    v7 = [a3 hasPrefix:SpotlightClientBundleIDPrefixes[v5 + 1]];
+    v7 = [client hasPrefix:SpotlightClientBundleIDPrefixes[v5 + 1]];
     v5 = v6 + 1;
   }
 
@@ -93,13 +93,13 @@
   return v6 < 9;
 }
 
-+ (BOOL)isInternalASCClient:(id)a3
++ (BOOL)isInternalASCClient:(id)client
 {
   v4 = 0;
   v5 = 0;
   do
   {
-    v6 = [a3 hasPrefix:InternalASCClientBundleIDPrefixes[v5]];
+    v6 = [client hasPrefix:InternalASCClientBundleIDPrefixes[v5]];
     if (v4)
     {
       break;
@@ -113,23 +113,23 @@
   return v6;
 }
 
-+ (uint64_t)currentClientIsEligibleToUseLockupViewSize:(uint64_t)a1
++ (uint64_t)currentClientIsEligibleToUseLockupViewSize:(uint64_t)size
 {
   v2 = a2;
   v3 = objc_opt_self();
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 bundleIdentifier];
-  v6 = [(ASCEligibility *)v3 clientWithBundleID:v5 isEligibleToUseLockupViewSize:v2];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v6 = [(ASCEligibility *)v3 clientWithBundleID:bundleIdentifier isEligibleToUseLockupViewSize:v2];
 
   return v6;
 }
 
-+ (uint64_t)clientWithBundleID:(void *)a3 isEligibleToUseLockupViewSize:
++ (uint64_t)clientWithBundleID:(void *)d isEligibleToUseLockupViewSize:
 {
   v4 = a2;
-  v5 = a3;
+  dCopy = d;
   v6 = objc_opt_self();
-  IsSmallOfferButton = ASCLockupViewSizeIsSmallOfferButton(v5, v7);
+  IsSmallOfferButton = ASCLockupViewSizeIsSmallOfferButton(dCopy, v7);
 
   if (!IsSmallOfferButton || ([v4 asc_sha246Hash], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", @"BKN3YPrkowJshOfzYN9kxtu/zEFYrAWOeXV3rzu9h1k="), v9, (v10 & 1) != 0) || (objc_msgSend(v6, "isInternalASCClient:", v4) & 1) != 0 || (objc_msgSend(v6, "isSpotlightClient:", v4) & 1) != 0 || (objc_msgSend(v6, "isITunesStoreClient:", v4) & 1) != 0 || (objc_msgSend(v6, "isAppleTV:", v4) & 1) != 0 || (objc_msgSend(v6, "isGameOverlayUI:", v4) & 1) != 0 || (objc_msgSend(v6, "isAppDistributionLaunchAngel:", v4) & 1) != 0 || (objc_msgSend(v6, "isAMSEngagementViewService:", v4) & 1) != 0 || (objc_msgSend(v6, "isStoreKitUISceneService:", v4) & 1) != 0)
   {

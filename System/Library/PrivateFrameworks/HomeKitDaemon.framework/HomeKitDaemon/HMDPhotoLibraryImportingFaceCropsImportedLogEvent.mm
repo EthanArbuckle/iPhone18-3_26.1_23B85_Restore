@@ -1,5 +1,5 @@
 @interface HMDPhotoLibraryImportingFaceCropsImportedLogEvent
-- (HMDPhotoLibraryImportingFaceCropsImportedLogEvent)initWithNumberOfImportedFaceCrops:(int64_t)a3;
+- (HMDPhotoLibraryImportingFaceCropsImportedLogEvent)initWithNumberOfImportedFaceCrops:(int64_t)crops;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -19,14 +19,14 @@
   return v5;
 }
 
-- (HMDPhotoLibraryImportingFaceCropsImportedLogEvent)initWithNumberOfImportedFaceCrops:(int64_t)a3
+- (HMDPhotoLibraryImportingFaceCropsImportedLogEvent)initWithNumberOfImportedFaceCrops:(int64_t)crops
 {
   v5.receiver = self;
   v5.super_class = HMDPhotoLibraryImportingFaceCropsImportedLogEvent;
   result = [(HMMLogEvent *)&v5 init];
   if (result)
   {
-    result->_numberOfImportedFaceCrops = a3;
+    result->_numberOfImportedFaceCrops = crops;
   }
 
   return result;

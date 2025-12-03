@@ -1,12 +1,12 @@
 @interface CertificationLogging
 + (id)getInstance;
-+ (void)bleLogMessageReceived:(id)a3 peerUUID:(id)a4;
-+ (void)bleLogMessageSent:(id)a3 peerUUID:(id)a4;
-+ (void)bleLogRSSI:(id)a3 peerUUID:(id)a4;
-+ (void)bleLogVehicleConnected:(id)a3;
-+ (void)bleLogVehicleDisconnected:(id)a3;
-+ (void)logEncryptedAPDU:(id)a3 decrypted:(id)a4;
-- (void)logEvent:(void *)a3 message:(void *)a4 peerUUID:;
++ (void)bleLogMessageReceived:(id)received peerUUID:(id)d;
++ (void)bleLogMessageSent:(id)sent peerUUID:(id)d;
++ (void)bleLogRSSI:(id)i peerUUID:(id)d;
++ (void)bleLogVehicleConnected:(id)connected;
++ (void)bleLogVehicleDisconnected:(id)disconnected;
++ (void)logEncryptedAPDU:(id)u decrypted:(id)decrypted;
+- (void)logEvent:(void *)event message:(void *)message peerUUID:;
 @end
 
 @implementation CertificationLogging
@@ -66,38 +66,38 @@ void __50__CertificationLogging_logEvent_message_peerUUID___block_invoke(uint64_
 LABEL_6:
 }
 
-+ (void)logEncryptedAPDU:(id)a3 decrypted:(id)a4
++ (void)logEncryptedAPDU:(id)u decrypted:(id)decrypted
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 length] && objc_msgSend(v5, "length"))
+  uCopy = u;
+  decryptedCopy = decrypted;
+  if ([decryptedCopy length] && objc_msgSend(uCopy, "length"))
   {
-    [(CertificationLogging *)&v8 logEncryptedAPDU:v5 decrypted:v9, v6];
+    [(CertificationLogging *)&v8 logEncryptedAPDU:uCopy decrypted:v9, decryptedCopy];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logEvent:(void *)a3 message:(void *)a4 peerUUID:
+- (void)logEvent:(void *)event message:(void *)message peerUUID:
 {
   v55[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a1)
+  eventCopy = event;
+  messageCopy = message;
+  v10 = messageCopy;
+  if (self)
   {
     switch(a2)
     {
       case 0uLL:
-        if (v9)
+        if (messageCopy)
         {
           v55[0] = @"event";
           v54[0] = @"log_type";
           v54[1] = @"vehicle_uuid";
-          v11 = [v9 UUIDString];
+          uUIDString = [messageCopy UUIDString];
           v54[2] = @"payload";
-          v55[1] = v11;
+          v55[1] = uUIDString;
           v55[2] = @"connect";
           v12 = MEMORY[0x1E695DF20];
           v13 = v55;
@@ -107,14 +107,14 @@ LABEL_6:
 
         break;
       case 1uLL:
-        if (v9)
+        if (messageCopy)
         {
           v53[0] = @"event";
           v52[0] = @"log_type";
           v52[1] = @"vehicle_uuid";
-          v11 = [v9 UUIDString];
+          uUIDString = [messageCopy UUIDString];
           v52[2] = @"payload";
-          v53[1] = v11;
+          v53[1] = uUIDString;
           v53[2] = @"disconnect";
           v12 = MEMORY[0x1E695DF20];
           v13 = v53;
@@ -126,9 +126,9 @@ LABEL_20:
 
         break;
       case 2uLL:
-        if (v9)
+        if (messageCopy)
         {
-          if (v8)
+          if (eventCopy)
           {
             objc_opt_class();
             if (OUTLINED_FUNCTION_2())
@@ -136,13 +136,13 @@ LABEL_20:
               v47[0] = @"dck_message";
               v46[0] = @"log_type";
               v46[1] = @"vehicle_uuid";
-              v11 = [v10 UUIDString];
-              v47[1] = v11;
+              uUIDString = [v10 UUIDString];
+              v47[1] = uUIDString;
               v47[2] = @"out";
               v46[2] = @"direction";
               v46[3] = @"payload";
-              v17 = [v8 base64];
-              v47[3] = v17;
+              base64 = [eventCopy base64];
+              v47[3] = base64;
               v18 = MEMORY[0x1E695DF20];
               v19 = v47;
               v20 = v46;
@@ -164,9 +164,9 @@ LABEL_20:
 
         break;
       case 3uLL:
-        if (v9)
+        if (messageCopy)
         {
-          if (v8)
+          if (eventCopy)
           {
             objc_opt_class();
             if (OUTLINED_FUNCTION_2())
@@ -174,13 +174,13 @@ LABEL_20:
               v45[0] = @"dck_message";
               v44[0] = @"log_type";
               v44[1] = @"vehicle_uuid";
-              v11 = [v10 UUIDString];
-              v45[1] = v11;
+              uUIDString = [v10 UUIDString];
+              v45[1] = uUIDString;
               v45[2] = @"in";
               v44[2] = @"direction";
               v44[3] = @"payload";
-              v17 = [v8 base64];
-              v45[3] = v17;
+              base64 = [eventCopy base64];
+              v45[3] = base64;
               v18 = MEMORY[0x1E695DF20];
               v19 = v45;
               v20 = v44;
@@ -205,29 +205,29 @@ LABEL_17:
 
         break;
       case 4uLL:
-        if (v9)
+        if (messageCopy)
         {
-          if (v8)
+          if (eventCopy)
           {
             v4 = 0x1E695D000;
             objc_opt_class();
             if (OUTLINED_FUNCTION_2())
             {
-              v15 = [v8 mutableCopy];
+              v15 = [eventCopy mutableCopy];
               v38[0] = MEMORY[0x1E69E9820];
               v38[1] = 3221225472;
               v38[2] = __50__CertificationLogging_logEvent_message_peerUUID___block_invoke;
               v38[3] = &unk_1E86FFB80;
               v39 = v15;
-              v11 = v15;
-              [v8 enumerateKeysAndObjectsUsingBlock:v38];
+              uUIDString = v15;
+              [eventCopy enumerateKeysAndObjectsUsingBlock:v38];
               v43[0] = @"rssi";
               v42[0] = @"log_type";
               v42[1] = @"vehicle_uuid";
-              v16 = [v10 UUIDString];
+              uUIDString2 = [v10 UUIDString];
               v42[2] = @"payload";
-              v43[1] = v16;
-              v43[2] = v11;
+              v43[1] = uUIDString2;
+              v43[2] = uUIDString;
               v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:3];
 
 LABEL_21:
@@ -256,7 +256,7 @@ LABEL_21:
           v40[0] = @"log_type";
           v40[1] = @"payload";
           v41[0] = @"dck_decrypted";
-          v41[1] = v8;
+          v41[1] = eventCopy;
           v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:2];
 LABEL_24:
           if ([MEMORY[0x1E696ACB0] isValidJSONObject:v4])
@@ -279,7 +279,7 @@ LABEL_24:
 
             else
             {
-              v30 = *(a1 + 8);
+              v30 = *(self + 8);
               if (!os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
               {
 LABEL_38:
@@ -347,42 +347,42 @@ LABEL_47:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)bleLogVehicleConnected:(id)a3
++ (void)bleLogVehicleConnected:(id)connected
 {
-  v3 = a3;
+  connectedCopy = connected;
   v4 = +[CertificationLogging getInstance];
-  [(CertificationLogging *)v4 logEvent:0 message:v3 peerUUID:?];
+  [(CertificationLogging *)v4 logEvent:0 message:connectedCopy peerUUID:?];
 }
 
-+ (void)bleLogVehicleDisconnected:(id)a3
++ (void)bleLogVehicleDisconnected:(id)disconnected
 {
-  v3 = a3;
+  disconnectedCopy = disconnected;
   v4 = +[CertificationLogging getInstance];
-  [(CertificationLogging *)v4 logEvent:0 message:v3 peerUUID:?];
+  [(CertificationLogging *)v4 logEvent:0 message:disconnectedCopy peerUUID:?];
 }
 
-+ (void)bleLogMessageSent:(id)a3 peerUUID:(id)a4
++ (void)bleLogMessageSent:(id)sent peerUUID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  sentCopy = sent;
   v7 = +[CertificationLogging getInstance];
-  [(CertificationLogging *)v7 logEvent:v6 message:v5 peerUUID:?];
+  [(CertificationLogging *)v7 logEvent:sentCopy message:dCopy peerUUID:?];
 }
 
-+ (void)bleLogMessageReceived:(id)a3 peerUUID:(id)a4
++ (void)bleLogMessageReceived:(id)received peerUUID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  receivedCopy = received;
   v7 = +[CertificationLogging getInstance];
-  [(CertificationLogging *)v7 logEvent:v6 message:v5 peerUUID:?];
+  [(CertificationLogging *)v7 logEvent:receivedCopy message:dCopy peerUUID:?];
 }
 
-+ (void)bleLogRSSI:(id)a3 peerUUID:(id)a4
++ (void)bleLogRSSI:(id)i peerUUID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  iCopy = i;
   v7 = +[CertificationLogging getInstance];
-  [(CertificationLogging *)v7 logEvent:v6 message:v5 peerUUID:?];
+  [(CertificationLogging *)v7 logEvent:iCopy message:dCopy peerUUID:?];
 }
 
 + (void)logEncryptedAPDU:(void *)a3 decrypted:(void *)a4 .cold.1(void *a1, void *a2, void *a3, void *a4)

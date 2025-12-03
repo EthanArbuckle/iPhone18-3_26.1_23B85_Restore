@@ -1,36 +1,36 @@
 @interface OrgApacheLuceneIndexTerm
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (OrgApacheLuceneIndexTerm)initWithNSString:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4;
-- (int)compareToWithId:(id)a3;
+- (OrgApacheLuceneIndexTerm)initWithNSString:(id)string withOrgApacheLuceneUtilBytesRef:(id)ref;
+- (int)compareToWithId:(id)id;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setWithNSString:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4;
+- (void)setWithNSString:(id)string withOrgApacheLuceneUtilBytesRef:(id)ref;
 @end
 
 @implementation OrgApacheLuceneIndexTerm
 
-- (OrgApacheLuceneIndexTerm)initWithNSString:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4
+- (OrgApacheLuceneIndexTerm)initWithNSString:(id)string withOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  JreStrongAssign(&self->field_, a3);
-  JreStrongAssign(&self->bytes_, a4);
+  JreStrongAssign(&self->field_, string);
+  JreStrongAssign(&self->bytes_, ref);
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     goto LABEL_14;
   }
 
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_4;
   }
 
-  v5 = [(OrgApacheLuceneIndexTerm *)self getClass];
-  if (v5 != [a3 getClass])
+  getClass = [(OrgApacheLuceneIndexTerm *)self getClass];
+  if (getClass != [equal getClass])
   {
     goto LABEL_4;
   }
@@ -42,7 +42,7 @@
   }
 
   field = self->field_;
-  v8 = *(a3 + 1);
+  v8 = *(equal + 1);
   if (field)
   {
     v6 = [(NSString *)field isEqual:v8];
@@ -58,7 +58,7 @@
   }
 
   bytes = self->bytes_;
-  v10 = *(a3 + 2);
+  v10 = *(equal + 2);
   if (bytes)
   {
     v6 = [(OrgApacheLuceneUtilBytesRef *)bytes isEqual:v10];
@@ -104,10 +104,10 @@ LABEL_4:
   return (bytes + v4);
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     field = self->field_;
     JreThrowNullPointerException();
@@ -124,12 +124,12 @@ LABEL_4:
     goto LABEL_11;
   }
 
-  if ([(NSString *)v5 isEqual:*(a3 + 1)])
+  if ([(NSString *)v5 isEqual:*(id + 1)])
   {
     bytes = self->bytes_;
     if (bytes)
     {
-      v7 = *(a3 + 2);
+      v7 = *(id + 2);
       goto LABEL_8;
     }
 
@@ -138,17 +138,17 @@ LABEL_11:
   }
 
   bytes = self->field_;
-  v7 = *(a3 + 1);
+  v7 = *(id + 1);
 LABEL_8:
 
   return [(OrgApacheLuceneUtilBytesRef *)bytes compareToWithId:v7];
 }
 
-- (void)setWithNSString:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4
+- (void)setWithNSString:(id)string withOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  JreStrongAssign(&self->field_, a3);
+  JreStrongAssign(&self->field_, string);
 
-  JreStrongAssign(&self->bytes_, a4);
+  JreStrongAssign(&self->bytes_, ref);
 }
 
 - (NSString)description

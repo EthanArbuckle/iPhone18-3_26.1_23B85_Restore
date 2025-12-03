@@ -1,43 +1,43 @@
 @interface HKOverlayRoomWalkingViewController
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11;
-- (HKOverlayRoomWalkingViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5 identifier:(id)a6 preferredOverlay:(int64_t)a7 trendModel:(id)a8 factorDisplayTypes:(id)a9;
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1;
+- (HKOverlayRoomWalkingViewController)initWithDisplayDate:(id)date applicationItems:(id)items mode:(int64_t)mode identifier:(id)identifier preferredOverlay:(int64_t)overlay trendModel:(id)model factorDisplayTypes:(id)types;
 - (id)_buildGranularAverageDataSourceTitleFromTimeScope;
-- (id)_buildWalkingAverageDataSourceWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5;
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5;
-- (id)controllerTitleWithApplicationItems:(id)a3;
+- (id)_buildWalkingAverageDataSourceWithUnitController:(id)controller displayType:(id)type healthStore:(id)store;
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller;
+- (id)controllerTitleWithApplicationItems:(id)items;
 - (id)createChartOverlayViewController;
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5;
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3;
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items;
+- (id)primaryDisplayTypeWithApplicationItems:(id)items;
 - (id)showAllFiltersButtonTitle;
 - (void)viewDidLoad;
 @end
 
 @implementation HKOverlayRoomWalkingViewController
 
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a6;
-  v21 = a5;
-  v22 = a3;
-  v23 = [[a1 alloc] initWithDisplayDate:v20 applicationItems:v21 mode:1 identifier:v22 preferredOverlay:a7 trendModel:v18 factorDisplayTypes:v17];
+  typesCopy = types;
+  modelCopy = model;
+  activityCopy = activity;
+  dateCopy = date;
+  itemsCopy = items;
+  identifierCopy = identifier;
+  v23 = [[self alloc] initWithDisplayDate:dateCopy applicationItems:itemsCopy mode:1 identifier:identifierCopy preferredOverlay:overlay trendModel:modelCopy factorDisplayTypes:typesCopy];
 
-  [v23 setRestorationUserActivity:v19];
-  [v23 setAdditionalChartOptions:a11];
+  [v23 setRestorationUserActivity:activityCopy];
+  [v23 setAdditionalChartOptions:options];
 
   return v23;
 }
 
-- (HKOverlayRoomWalkingViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5 identifier:(id)a6 preferredOverlay:(int64_t)a7 trendModel:(id)a8 factorDisplayTypes:(id)a9
+- (HKOverlayRoomWalkingViewController)initWithDisplayDate:(id)date applicationItems:(id)items mode:(int64_t)mode identifier:(id)identifier preferredOverlay:(int64_t)overlay trendModel:(id)model factorDisplayTypes:(id)types
 {
-  v14 = a3;
-  v32 = a6;
-  v15 = a8;
-  v16 = a9;
-  v17 = a4;
-  v18 = [HKOverlayRoomTrendContext findInitialDateFromTrendModel:v15];
+  dateCopy = date;
+  identifierCopy = identifier;
+  modelCopy = model;
+  typesCopy = types;
+  itemsCopy = items;
+  v18 = [HKOverlayRoomTrendContext findInitialDateFromTrendModel:modelCopy];
   v19 = v18;
   if (v18)
   {
@@ -46,19 +46,19 @@
 
   else
   {
-    v20 = v14;
+    v20 = dateCopy;
   }
 
   v21 = v20;
 
   v33.receiver = self;
   v33.super_class = HKOverlayRoomWalkingViewController;
-  v22 = [(HKOverlayRoomViewController *)&v33 initWithDisplayDate:v21 applicationItems:v17 factorDisplayTypes:v16 mode:a5];
+  v22 = [(HKOverlayRoomViewController *)&v33 initWithDisplayDate:v21 applicationItems:itemsCopy factorDisplayTypes:typesCopy mode:mode];
 
   if (v22)
   {
-    objc_storeStrong(&v22->_quantityTypeIdentifier, a6);
-    v22->_preferredOverlay = a7;
+    objc_storeStrong(&v22->_quantityTypeIdentifier, identifier);
+    v22->_preferredOverlay = overlay;
     v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
     contextDelegates = v22->_contextDelegates;
     v22->_contextDelegates = v23;
@@ -66,18 +66,18 @@
     preferredOverlayIndex = v22->_preferredOverlayIndex;
     v22->_preferredOverlayIndex = 0;
 
-    objc_storeStrong(&v22->_trendModel, a8);
-    if (a5 == 3)
+    objc_storeStrong(&v22->_trendModel, model);
+    if (mode == 3)
     {
       v26 = 0;
     }
 
     else
     {
-      v27 = [v15 selectTrendInitially];
-      if (a5)
+      selectTrendInitially = [modelCopy selectTrendInitially];
+      if (mode)
       {
-        v28 = a7 == 0;
+        v28 = overlay == 0;
       }
 
       else
@@ -86,10 +86,10 @@
       }
 
       v29 = !v28;
-      v26 = v29 | v27;
+      v26 = v29 | selectTrendInitially;
     }
 
-    [(HKOverlayRoomViewController *)v22 setShouldSelectInitialOverlay:v26 & 1, a7, v32];
+    [(HKOverlayRoomViewController *)v22 setShouldSelectInitialOverlay:v26 & 1, overlay, identifierCopy];
   }
 
   return v22;
@@ -102,12 +102,12 @@
   [(HKOverlayRoomViewController *)&v2 viewDidLoad];
 }
 
-- (id)controllerTitleWithApplicationItems:(id)a3
+- (id)controllerTitleWithApplicationItems:(id)items
 {
   if ([(NSString *)self->_quantityTypeIdentifier isEqualToString:*MEMORY[0x1E696BE10]])
   {
     v5 = HKHealthKitFrameworkBundle();
-    v6 = v5;
+    currentHandler = v5;
     v7 = *MEMORY[0x1E696B910];
     v8 = @"WALKING_SPEED";
 LABEL_11:
@@ -118,7 +118,7 @@ LABEL_11:
   if ([(NSString *)self->_quantityTypeIdentifier isEqualToString:*MEMORY[0x1E696BE00]])
   {
     v5 = HKHealthKitFrameworkBundle();
-    v6 = v5;
+    currentHandler = v5;
     v7 = *MEMORY[0x1E696B910];
     v8 = @"WALKING_DOUBLE_SUPPORT_PERCENTAGE";
     goto LABEL_11;
@@ -127,7 +127,7 @@ LABEL_11:
   if ([(NSString *)self->_quantityTypeIdentifier isEqualToString:*MEMORY[0x1E696BDB8]])
   {
     v5 = HKHealthKitFrameworkBundle();
-    v6 = v5;
+    currentHandler = v5;
     v7 = *MEMORY[0x1E696B910];
     v8 = @"STAIR_ASCENT_SPEED";
     goto LABEL_11;
@@ -136,7 +136,7 @@ LABEL_11:
   if ([(NSString *)self->_quantityTypeIdentifier isEqualToString:*MEMORY[0x1E696BDC0]])
   {
     v5 = HKHealthKitFrameworkBundle();
-    v6 = v5;
+    currentHandler = v5;
     v7 = *MEMORY[0x1E696B910];
     v8 = @"STAIR_DESCENT_SPEED";
     goto LABEL_11;
@@ -145,14 +145,14 @@ LABEL_11:
   if ([(NSString *)self->_quantityTypeIdentifier isEqualToString:*MEMORY[0x1E696BE18]])
   {
     v5 = HKHealthKitFrameworkBundle();
-    v6 = v5;
+    currentHandler = v5;
     v7 = *MEMORY[0x1E696B910];
     v8 = @"WALKING_STEP_LENGTH";
     goto LABEL_11;
   }
 
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"HKOverlayRoomWalkingViewController.m" lineNumber:133 description:{@"Unsupported identifier (%@)", self->_quantityTypeIdentifier}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HKOverlayRoomWalkingViewController.m" lineNumber:133 description:{@"Unsupported identifier (%@)", self->_quantityTypeIdentifier}];
   v9 = &stru_1F42FFBE0;
 LABEL_12:
 
@@ -167,34 +167,34 @@ LABEL_12:
   return v3;
 }
 
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3
+- (id)primaryDisplayTypeWithApplicationItems:(id)items
 {
   v3 = MEMORY[0x1E696C2E0];
   quantityTypeIdentifier = self->_quantityTypeIdentifier;
-  v5 = a3;
+  itemsCopy = items;
   v6 = [v3 quantityTypeForIdentifier:quantityTypeIdentifier];
-  v7 = [v5 displayTypeController];
+  displayTypeController = [itemsCopy displayTypeController];
 
-  v8 = [v7 displayTypeForObjectType:v6];
+  v8 = [displayTypeController displayTypeForObjectType:v6];
 
   return v8;
 }
 
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller
 {
   v68[3] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HKOverlayRoomWalkingViewController *)self primaryDisplayTypeWithApplicationItems:v8];
+  itemsCopy = items;
+  controllerCopy = controller;
+  v10 = [(HKOverlayRoomWalkingViewController *)self primaryDisplayTypeWithApplicationItems:itemsCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __110__HKOverlayRoomWalkingViewController_contextSectionContainersForMode_applicationItems_overlayChartController___block_invoke_2;
   aBlock[3] = &unk_1E81B61A0;
-  v11 = v9;
+  v11 = controllerCopy;
   v61 = v11;
-  v12 = v8;
+  v12 = itemsCopy;
   v62 = v12;
-  v63 = a3;
+  modeCopy = mode;
   v13 = _Block_copy(aBlock);
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
@@ -204,7 +204,7 @@ LABEL_12:
   v57 = v14;
   v15 = v12;
   v58 = v15;
-  v59 = a3;
+  modeCopy2 = mode;
   v16 = _Block_copy(v56);
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
@@ -217,7 +217,7 @@ LABEL_12:
   v53 = v18;
   v19 = v14;
   v54 = v19;
-  v55 = a3;
+  modeCopy3 = mode;
   v20 = _Block_copy(v51);
   v50 = v13;
   v21 = v13[2](v13);
@@ -231,25 +231,25 @@ LABEL_12:
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:3];
 
   v25 = [v24 objectAtIndexedSubscript:0];
-  v26 = [(HKOverlayRoomWalkingViewController *)self trendModel];
+  trendModel = [(HKOverlayRoomWalkingViewController *)self trendModel];
 
   v49 = v17;
-  if (v26)
+  if (trendModel)
   {
     v27 = [HKOverlayRoomTrendContext alloc];
-    v28 = [(HKOverlayRoomWalkingViewController *)self trendModel];
+    trendModel2 = [(HKOverlayRoomWalkingViewController *)self trendModel];
     v29 = v19;
-    v30 = [(HKOverlayRoomTrendContext *)v27 initWithBaseDisplayType:v18 trendModel:v28 overlayChartController:v19 applicationItems:v17 overlayMode:a3];
+    v30 = [(HKOverlayRoomTrendContext *)v27 initWithBaseDisplayType:v18 trendModel:trendModel2 overlayChartController:v19 applicationItems:v17 overlayMode:mode];
 
-    v31 = [(HKOverlayRoomViewController *)self chartController];
-    [v31 setTrendAccessibilityDelegate:v30];
+    chartController = [(HKOverlayRoomViewController *)self chartController];
+    [chartController setTrendAccessibilityDelegate:v30];
 
     v32 = [v24 arrayByAddingObject:v30];
 
-    v33 = [(HKOverlayRoomWalkingViewController *)self trendModel];
-    v34 = [v33 selectTrendInitially];
+    trendModel3 = [(HKOverlayRoomWalkingViewController *)self trendModel];
+    selectTrendInitially = [trendModel3 selectTrendInitially];
 
-    if (v34)
+    if (selectTrendInitially)
     {
       v30 = v30;
 
@@ -266,9 +266,9 @@ LABEL_12:
   }
 
   v35 = v50;
-  if ((a3 - 1) >= 2)
+  if ((mode - 1) >= 2)
   {
-    if (a3 != 3)
+    if (mode != 3)
     {
       v42 = MEMORY[0x1E695E0F0];
       goto LABEL_17;
@@ -352,63 +352,63 @@ id __110__HKOverlayRoomWalkingViewController_contextSectionContainersForMode_app
 {
   if ([(HKOverlayRoomViewController *)self controllerMode]!= 3)
   {
-    v3 = [(HKOverlayRoomWalkingViewController *)self trendModel];
-    v4 = [HKOverlayRoomTrendContext findStartingTimeScopeFromTrendModel:v3];
+    trendModel = [(HKOverlayRoomWalkingViewController *)self trendModel];
+    v4 = [HKOverlayRoomTrendContext findStartingTimeScopeFromTrendModel:trendModel];
 
     if (v4 != 8)
     {
-      v5 = [(HKOverlayRoomViewController *)self applicationItems];
-      v6 = [v5 timeScopeController];
-      [v6 setSelectedTimeScope:v4];
+      applicationItems = [(HKOverlayRoomViewController *)self applicationItems];
+      timeScopeController = [applicationItems timeScopeController];
+      [timeScopeController setSelectedTimeScope:v4];
     }
   }
 
   v9.receiver = self;
   v9.super_class = HKOverlayRoomWalkingViewController;
-  v7 = [(HKOverlayRoomViewController *)&v9 createChartOverlayViewController];
+  createChartOverlayViewController = [(HKOverlayRoomViewController *)&v9 createChartOverlayViewController];
 
-  return v7;
+  return createChartOverlayViewController;
 }
 
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items
 {
-  v8 = a5;
-  v9 = a4;
+  itemsCopy = items;
+  dateCopy = date;
   v10 = [HKOverlayRoomWalkingViewController alloc];
   quantityTypeIdentifier = self->_quantityTypeIdentifier;
   preferredOverlay = self->_preferredOverlay;
-  v13 = [(HKOverlayRoomWalkingViewController *)self trendModel];
-  v14 = [(HKOverlayRoomViewController *)self factorDisplayTypes];
-  v15 = [(HKOverlayRoomWalkingViewController *)v10 initWithDisplayDate:v9 applicationItems:v8 mode:a3 identifier:quantityTypeIdentifier preferredOverlay:preferredOverlay trendModel:v13 factorDisplayTypes:v14];
+  trendModel = [(HKOverlayRoomWalkingViewController *)self trendModel];
+  factorDisplayTypes = [(HKOverlayRoomViewController *)self factorDisplayTypes];
+  v15 = [(HKOverlayRoomWalkingViewController *)v10 initWithDisplayDate:dateCopy applicationItems:itemsCopy mode:mode identifier:quantityTypeIdentifier preferredOverlay:preferredOverlay trendModel:trendModel factorDisplayTypes:factorDisplayTypes];
 
-  [(HKOverlayRoomViewController *)v15 setAdditionalChartOptions:[(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:a3]];
+  [(HKOverlayRoomViewController *)v15 setAdditionalChartOptions:[(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:mode]];
 
   return v15;
 }
 
-- (id)_buildWalkingAverageDataSourceWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5
+- (id)_buildWalkingAverageDataSourceWithUnitController:(id)controller displayType:(id)type healthStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[HKQuantityTypeDataSource alloc] initWithUnitController:v8 options:66 displayType:v9 healthStore:v10];
+  controllerCopy = controller;
+  typeCopy = type;
+  storeCopy = store;
+  v11 = [[HKQuantityTypeDataSource alloc] initWithUnitController:controllerCopy options:66 displayType:typeCopy healthStore:storeCopy];
 
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __111__HKOverlayRoomWalkingViewController__buildWalkingAverageDataSourceWithUnitController_displayType_healthStore___block_invoke;
   v24 = &unk_1E81B6288;
-  v25 = v8;
-  v26 = v9;
-  v12 = v9;
-  v13 = v8;
+  v25 = controllerCopy;
+  v26 = typeCopy;
+  v12 = typeCopy;
+  v13 = controllerCopy;
   [(HKQuantityTypeDataSource *)v11 setUserInfoCreationBlock:&v21];
-  v14 = [(HKOverlayRoomWalkingViewController *)self _buildGranularAverageDataSourceTitleFromTimeScope];
+  _buildGranularAverageDataSourceTitleFromTimeScope = [(HKOverlayRoomWalkingViewController *)self _buildGranularAverageDataSourceTitleFromTimeScope];
   v15 = MEMORY[0x1E696AEC0];
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
   v18 = [v15 stringWithFormat:@"%@%@", @"HKOverlayRoomNamedChartCacheDataSource_", v17, v21, v22, v23, v24];
 
-  v19 = [[HKInteractiveChartOverlayNamedDataSource alloc] initWithDataSource:v11 named:v18 withContextTitleForTimeScope:v14];
+  v19 = [[HKInteractiveChartOverlayNamedDataSource alloc] initWithDataSource:v11 named:v18 withContextTitleForTimeScope:_buildGranularAverageDataSourceTitleFromTimeScope];
 
   return v19;
 }

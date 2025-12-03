@@ -3,7 +3,7 @@
 - (NSString)decisionPapertrail;
 - (NSString)diagnosticDescription;
 - (PXStoryConcreteAutoEditDecisionList)init;
-- (PXStoryConcreteAutoEditDecisionList)initWithColorGradeCategory:(id)a3 song:(id)a4 clipCatalog:(id)a5 constrainedOverallDurationInfo:(id *)a6 outroDuration:(id *)a7 allowsNUp:(BOOL)a8;
+- (PXStoryConcreteAutoEditDecisionList)initWithColorGradeCategory:(id)category song:(id)song clipCatalog:(id)catalog constrainedOverallDurationInfo:(id *)info outroDuration:(id *)duration allowsNUp:(BOOL)up;
 - (id)debugDescription;
 - (id)description;
 @end
@@ -15,7 +15,7 @@
   p_var1 = &self[1].var1;
   if (!self[1].var1.var0.var0)
   {
-    v5 = self;
+    selfCopy = self;
     v16 = 0;
     v17 = &v16;
     v18 = 0x6810000000;
@@ -39,12 +39,12 @@
     v10 = v17[12];
     v12 = *(v17 + 2);
     v11 = *(v17 + 3);
-    v5[1].var1.var0.var0 = 1;
-    v5[2].var0 = v10;
-    *&v5[1].var1.var1.var3 = v8;
-    *&v5[1].var1.var2.var1 = v9;
-    *&v5[1].var1.var0.var1 = v12;
-    *&v5[1].var1.var1.var0 = v11;
+    selfCopy[1].var1.var0.var0 = 1;
+    selfCopy[2].var0 = v10;
+    *&selfCopy[1].var1.var1.var3 = v8;
+    *&selfCopy[1].var1.var2.var1 = v9;
+    *&selfCopy[1].var1.var0.var1 = v12;
+    *&selfCopy[1].var1.var1.var0 = v11;
     _Block_object_dispose(&v16, 8);
   }
 
@@ -328,8 +328,8 @@ LABEL_6:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PXStoryConcreteAutoEditDecisionList *)self colorGradeCategory];
-  v6 = [(PXStoryConcreteAutoEditDecisionList *)self song];
+  colorGradeCategory = [(PXStoryConcreteAutoEditDecisionList *)self colorGradeCategory];
+  song = [(PXStoryConcreteAutoEditDecisionList *)self song];
   [(PXStoryConcreteAutoEditDecisionList *)self defaultDisplayAssetPresentationDuration];
   Seconds = CMTimeGetSeconds(&time);
   if ([(PXStoryConcreteAutoEditDecisionList *)self allowsNUp])
@@ -342,9 +342,9 @@ LABEL_6:
     v8 = "NO";
   }
 
-  v9 = [(PXStoryConcreteAutoEditDecisionList *)self numberOfClips];
+  numberOfClips = [(PXStoryConcreteAutoEditDecisionList *)self numberOfClips];
   v10 = [(PXStoryAutoEditClipCatalog *)self->_clipCatalog debugDescription];
-  v11 = [v3 stringWithFormat:@"<%@:%p - colorGradeCategory: %@, song: %@, default asset duration: %f, allows N-up: %s, number of clips: %ld, clips: %@>", v4, self, v5, v6, *&Seconds, v8, v9, v10];
+  v11 = [v3 stringWithFormat:@"<%@:%p - colorGradeCategory: %@, song: %@, default asset duration: %f, allows N-up: %s, number of clips: %ld, clips: %@>", v4, self, colorGradeCategory, song, *&Seconds, v8, numberOfClips, v10];
 
   return v11;
 }
@@ -353,8 +353,8 @@ LABEL_6:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PXStoryConcreteAutoEditDecisionList *)self colorGradeCategory];
-  v6 = [(PXStoryConcreteAutoEditDecisionList *)self song];
+  colorGradeCategory = [(PXStoryConcreteAutoEditDecisionList *)self colorGradeCategory];
+  song = [(PXStoryConcreteAutoEditDecisionList *)self song];
   [(PXStoryConcreteAutoEditDecisionList *)self defaultDisplayAssetPresentationDuration];
   Seconds = CMTimeGetSeconds(&time);
   if ([(PXStoryConcreteAutoEditDecisionList *)self allowsNUp])
@@ -367,38 +367,38 @@ LABEL_6:
     v8 = "NO";
   }
 
-  v9 = [v3 stringWithFormat:@"<%@:%p - colorGradeCategory: %@, song: %@, default asset duration: %f, allows N-up: %s, number of clips: %ld>", v4, self, v5, v6, *&Seconds, v8, -[PXStoryConcreteAutoEditDecisionList numberOfClips](self, "numberOfClips")];
+  v9 = [v3 stringWithFormat:@"<%@:%p - colorGradeCategory: %@, song: %@, default asset duration: %f, allows N-up: %s, number of clips: %ld>", v4, self, colorGradeCategory, song, *&Seconds, v8, -[PXStoryConcreteAutoEditDecisionList numberOfClips](self, "numberOfClips")];
 
   return v9;
 }
 
-- (PXStoryConcreteAutoEditDecisionList)initWithColorGradeCategory:(id)a3 song:(id)a4 clipCatalog:(id)a5 constrainedOverallDurationInfo:(id *)a6 outroDuration:(id *)a7 allowsNUp:(BOOL)a8
+- (PXStoryConcreteAutoEditDecisionList)initWithColorGradeCategory:(id)category song:(id)song clipCatalog:(id)catalog constrainedOverallDurationInfo:(id *)info outroDuration:(id *)duration allowsNUp:(BOOL)up
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  categoryCopy = category;
+  songCopy = song;
+  catalogCopy = catalog;
   v26.receiver = self;
   v26.super_class = PXStoryConcreteAutoEditDecisionList;
   v18 = [(PXStoryConcreteAutoEditDecisionList *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_colorGradeCategory, a3);
-    objc_storeStrong(&v19->_song, a4);
-    objc_storeStrong(&v19->_clipCatalog, a5);
-    *&v19->_overallDurationInfo.kind = *&a6->var0;
-    v20 = *&a6->var1.var0.var1;
-    v21 = *&a6->var1.var1.var0;
-    v22 = *&a6->var1.var1.var3;
-    *&v19->_overallDurationInfo.specificDurationInfo.maximumDuration.timescale = *&a6->var1.var2.var1;
+    objc_storeStrong(&v18->_colorGradeCategory, category);
+    objc_storeStrong(&v19->_song, song);
+    objc_storeStrong(&v19->_clipCatalog, catalog);
+    *&v19->_overallDurationInfo.kind = *&info->var0;
+    v20 = *&info->var1.var0.var1;
+    v21 = *&info->var1.var1.var0;
+    v22 = *&info->var1.var1.var3;
+    *&v19->_overallDurationInfo.specificDurationInfo.maximumDuration.timescale = *&info->var1.var2.var1;
     *&v19->_overallDurationInfo.specificDurationInfo.preferredDuration.epoch = v22;
     *&v19->_overallDurationInfo.specificDurationInfo.preferredDuration.value = v21;
     *&v19->_overallDurationInfo.specificDurationInfo.minimumDuration.timescale = v20;
     CMTimeMakeWithSeconds(&v25, 3.0, 600);
     v19->_defaultDisplayAssetPresentationDuration = v25;
-    v19->_allowsNUp = a8;
-    v23 = *&a7->var0;
-    v19->_outroDuration.epoch = a7->var3;
+    v19->_allowsNUp = up;
+    v23 = *&duration->var0;
+    v19->_outroDuration.epoch = duration->var3;
     *&v19->_outroDuration.value = v23;
   }
 
@@ -407,8 +407,8 @@ LABEL_6:
 
 - (PXStoryConcreteAutoEditDecisionList)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteAutoEditDecisionList.m" lineNumber:23 description:{@"%s is not available as initializer", "-[PXStoryConcreteAutoEditDecisionList init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteAutoEditDecisionList.m" lineNumber:23 description:{@"%s is not available as initializer", "-[PXStoryConcreteAutoEditDecisionList init]"}];
 
   abort();
 }

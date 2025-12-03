@@ -1,44 +1,44 @@
 @interface TVRTouchProcessor
-+ (id)touchProcessorForDevice:(id)a3;
++ (id)touchProcessorForDevice:(id)device;
 - (BOOL)_deviceSupportsMovableBoundingBox;
-- (CGPoint)_virtualTouchLocationForTouch:(id)a3;
-- (CGRect)_boundingBoxForTouch:(id)a3 relativeStartLocation:(int64_t)a4;
+- (CGPoint)_virtualTouchLocationForTouch:(id)touch;
+- (CGRect)_boundingBoxForTouch:(id)touch relativeStartLocation:(int64_t)location;
 - (TVRTouchProcessorDelegate)delegate;
 - (id)_init;
 - (int64_t)_defaultRelativeStartingLocation;
-- (int64_t)_relativeTouchLocationForDistanceTraveled:(CGPoint)a3;
+- (int64_t)_relativeTouchLocationForDistanceTraveled:(CGPoint)traveled;
 - (void)_beginTrackingAnyTouchIfNeeded;
-- (void)_beginTrackingTouch:(id)a3 withRelativeLocation:(int64_t)a4;
-- (void)_deliverTouchToDelegate:(id)a3 info:(id)a4;
-- (void)_dispatchGameControllerEventForTouch:(id)a3 event:(id)a4;
-- (void)_touchTimerExpired:(id)a3;
+- (void)_beginTrackingTouch:(id)touch withRelativeLocation:(int64_t)location;
+- (void)_deliverTouchToDelegate:(id)delegate info:(id)info;
+- (void)_dispatchGameControllerEventForTouch:(id)touch event:(id)event;
+- (void)_touchTimerExpired:(id)expired;
 - (void)markCurrentTouchToBeCancelled;
 - (void)reset;
-- (void)sendPressBegan:(int64_t)a3;
-- (void)sendPressEnded:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)sendPressBegan:(int64_t)began;
+- (void)sendPressEnded:(int64_t)ended;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation TVRTouchProcessor
 
-+ (id)touchProcessorForDevice:(id)a3
++ (id)touchProcessorForDevice:(id)device
 {
-  v3 = [a3 supportsTouchEvents];
+  supportsTouchEvents = [device supportsTouchEvents];
   v4 = off_279D86B78;
-  if (!v3)
+  if (!supportsTouchEvents)
   {
     v4 = off_279D86B50;
   }
 
-  v5 = [objc_alloc(*v4) _init];
-  v6 = [[TVRTouchpadView alloc] _init];
-  [v6 setTouchProcessor:v5];
-  [v5 setTouchpadView:v6];
+  _init = [objc_alloc(*v4) _init];
+  _init2 = [[TVRTouchpadView alloc] _init];
+  [_init2 setTouchProcessor:_init];
+  [_init setTouchpadView:_init2];
 
-  return v5;
+  return _init;
 }
 
 - (id)_init
@@ -48,9 +48,9 @@
   v2 = [(TVRTouchProcessor *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     touches = v2->_touches;
-    v2->_touches = v3;
+    v2->_touches = strongToStrongObjectsMapTable;
 
     v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
     activeButtonTypes = v2->_activeButtonTypes;
@@ -60,24 +60,24 @@
   return v2;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v6;
-  v8 = [v6 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  obj = beganCopy;
+  v8 = [beganCopy countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v31;
     v28 = *MEMORY[0x277CBE738];
     v11 = 0x282029000uLL;
-    v27 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v9; ++i)
@@ -88,24 +88,24 @@
         }
 
         v13 = *(*(&v30 + 1) + 8 * i);
-        v14 = [(TVRTouchProcessor *)self touchpadView];
-        [v13 preciseLocationInView:v14];
+        touchpadView = [(TVRTouchProcessor *)self touchpadView];
+        [v13 preciseLocationInView:touchpadView];
         v16 = v15;
         v18 = v17;
         v19 = objc_alloc_init((v11 + 3416));
         [v19 setInitialLocation:{v16, v18}];
         [v19 setVirtualPhase:0];
-        [v7 timestamp];
+        [eventCopy timestamp];
         [v19 setTimestamp:?];
-        [v7 timestamp];
+        [eventCopy timestamp];
         [v19 setPreviousTimestamp:?];
         [(NSMapTable *)self->_touches setObject:v19 forKey:v13];
         if ([(TVRTouchProcessor *)self _deviceSupportsMovableBoundingBox])
         {
           v20 = [MEMORY[0x277CBEBB8] timerWithTimeInterval:self target:sel__touchTimerExpired_ selector:v13 userInfo:0 repeats:0.2];
           [MEMORY[0x277CBEB88] mainRunLoop];
-          v21 = v14;
-          v22 = v7;
+          v21 = touchpadView;
+          v22 = eventCopy;
           v23 = v9;
           v24 = v10;
           v26 = v25 = v11;
@@ -114,9 +114,9 @@
           v11 = v25;
           v10 = v24;
           v9 = v23;
-          v7 = v22;
-          v14 = v21;
-          self = v27;
+          eventCopy = v22;
+          touchpadView = v21;
+          self = selfCopy;
         }
 
         else
@@ -124,7 +124,7 @@
           [(TVRTouchProcessor *)self _beginTrackingTouch:v13 withRelativeLocation:[(TVRTouchProcessor *)self _defaultRelativeStartingLocation]];
         }
 
-        [(TVRTouchProcessor *)self _dispatchGameControllerEventForTouch:v13 event:v7];
+        [(TVRTouchProcessor *)self _dispatchGameControllerEventForTouch:v13 event:eventCopy];
       }
 
       v9 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -134,16 +134,16 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v106 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v100 = [v6 countByEnumeratingWithState:&v101 objects:v105 count:16];
+  v100 = [movedCopy countByEnumeratingWithState:&v101 objects:v105 count:16];
   if (v100)
   {
     v8 = &OBJC_IVAR____TtC10TVRemoteUI17FMPFSKPatternNode_derivativeCenterFactor;
@@ -156,14 +156,14 @@
       {
         if (*v102 != v99)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(movedCopy);
         }
 
         v11 = *(*(&v101 + 1) + 8 * v10);
         v12 = [(NSMapTable *)self->_touches objectForKey:v11];
-        [v7 timestamp];
+        [eventCopy timestamp];
         [v12 setTimestamp:?];
-        [v7 timestamp];
+        [eventCopy timestamp];
         v14 = v13;
         [v12 previousTimestamp];
         v16 = v14 - v15;
@@ -234,8 +234,8 @@ LABEL_39:
 
               if ((__hasCachedBoundingBoxExtraRightDistance & 1) == 0)
               {
-                v54 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-                v55 = [v54 objectForKey:@"BoundingBoxExtraRightDistance"];
+                standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+                v55 = [standardUserDefaults objectForKey:@"BoundingBoxExtraRightDistance"];
 
                 if (v55)
                 {
@@ -391,9 +391,9 @@ LABEL_80:
             if ((__hasCachedBoundingBoxExitSpeed & 1) == 0)
             {
               v35 = v8;
-              v36 = v6;
-              v37 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-              v38 = [v37 objectForKey:@"BoundingBoxExitSpeed"];
+              v36 = movedCopy;
+              standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+              v38 = [standardUserDefaults2 objectForKey:@"BoundingBoxExitSpeed"];
 
               if (v38)
               {
@@ -408,7 +408,7 @@ LABEL_80:
               __cachedBoundingBoxExitSpeed = v39;
               __hasCachedBoundingBoxExitSpeed = 1;
 
-              v6 = v36;
+              movedCopy = v36;
               v8 = v35;
               v9 = &OBJC_IVAR____TtC10TVRemoteUI17FMPFSKPatternNode_derivativeCenterFactor;
             }
@@ -456,8 +456,8 @@ LABEL_78:
 
         if ((v9[271] & 1) == 0)
         {
-          v32 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-          v33 = [v32 objectForKey:@"BoundingBoxThresholdDistance"];
+          standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+          v33 = [standardUserDefaults3 objectForKey:@"BoundingBoxThresholdDistance"];
 
           if (v33)
           {
@@ -482,8 +482,8 @@ LABEL_78:
 
           if ((__hasCachedBoundingBoxThresholdSpeed & 1) == 0)
           {
-            v41 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-            v42 = [v41 objectForKey:@"BoundingBoxThresholdSpeed"];
+            standardUserDefaults4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+            v42 = [standardUserDefaults4 objectForKey:@"BoundingBoxThresholdSpeed"];
 
             if (v42)
             {
@@ -501,7 +501,7 @@ LABEL_78:
 
           if (v29 <= *&__cachedBoundingBoxThresholdSpeed)
           {
-            v60 = self;
+            selfCopy2 = self;
             v61 = v11;
             v59 = 0;
           }
@@ -510,23 +510,23 @@ LABEL_78:
           {
             [v12 initialLocation];
             v59 = [(TVRTouchProcessor *)self _relativeTouchLocationForDistanceTraveled:v18 - v57, v20 - v58];
-            v60 = self;
+            selfCopy2 = self;
             v61 = v11;
           }
 
-          [(TVRTouchProcessor *)v60 _beginTrackingTouch:v61 withRelativeLocation:v59];
+          [(TVRTouchProcessor *)selfCopy2 _beginTrackingTouch:v61 withRelativeLocation:v59];
         }
 
 LABEL_81:
-        [(TVRTouchProcessor *)self _dispatchGameControllerEventForTouch:v11 event:v7];
-        [v7 timestamp];
+        [(TVRTouchProcessor *)self _dispatchGameControllerEventForTouch:v11 event:eventCopy];
+        [eventCopy timestamp];
         [v12 setPreviousTimestamp:?];
 
         ++v10;
       }
 
       while (v100 != v10);
-      v89 = [v6 countByEnumeratingWithState:&v101 objects:v105 count:16];
+      v89 = [movedCopy countByEnumeratingWithState:&v101 objects:v105 count:16];
       v100 = v89;
     }
 
@@ -534,16 +534,16 @@ LABEL_81:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [endedCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -554,7 +554,7 @@ LABEL_81:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(endedCopy);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
@@ -576,10 +576,10 @@ LABEL_81:
         }
 
         [(NSMapTable *)self->_touches removeObjectForKey:v12];
-        [(TVRTouchProcessor *)self _dispatchGameControllerEventForTouch:v12 event:v7];
+        [(TVRTouchProcessor *)self _dispatchGameControllerEventForTouch:v12 event:eventCopy];
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [endedCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -591,16 +591,16 @@ LABEL_81:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  cancelledCopy = cancelled;
+  eventCopy = event;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [cancelledCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -611,7 +611,7 @@ LABEL_81:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(cancelledCopy);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
@@ -623,10 +623,10 @@ LABEL_81:
         }
 
         [(NSMapTable *)self->_touches removeObjectForKey:v12];
-        [(TVRTouchProcessor *)self _dispatchGameControllerEventForTouch:v12 event:v7];
+        [(TVRTouchProcessor *)self _dispatchGameControllerEventForTouch:v12 event:eventCopy];
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [cancelledCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -645,8 +645,8 @@ LABEL_81:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMapTable *)self->_touches keyEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  keyEnumerator = [(NSMapTable *)self->_touches keyEnumerator];
+  v4 = [keyEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -658,7 +658,7 @@ LABEL_81:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
@@ -678,7 +678,7 @@ LABEL_81:
       }
 
       while (v5 != v7);
-      v10 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v10 = [keyEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
       v5 = v10;
     }
 
@@ -686,7 +686,7 @@ LABEL_81:
   }
 }
 
-- (void)sendPressBegan:(int64_t)a3
+- (void)sendPressBegan:(int64_t)began
 {
   activeButtonTypes = self->_activeButtonTypes;
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -695,10 +695,10 @@ LABEL_81:
   if ((activeButtonTypes & 1) == 0)
   {
     v7 = self->_activeButtonTypes;
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:began];
     [(NSMutableSet *)v7 addObject:v8];
 
-    if (a3 == 1)
+    if (began == 1)
     {
       [(TVRTouchProcessor *)self _beginTrackingAnyTouchIfNeeded];
     }
@@ -708,7 +708,7 @@ LABEL_81:
 
     if (v10)
     {
-      v13 = [objc_alloc(MEMORY[0x277D6C4C8]) _initWithButtonType:a3];
+      v13 = [objc_alloc(MEMORY[0x277D6C4C8]) _initWithButtonType:began];
       v11 = [MEMORY[0x277D6C4D0] buttonEventForButton:v13 eventType:1];
       v12 = objc_loadWeakRetained(&self->_delegate);
       [v12 touchProcessor:self generatedButtonEvent:v11];
@@ -716,7 +716,7 @@ LABEL_81:
   }
 }
 
-- (void)sendPressEnded:(int64_t)a3
+- (void)sendPressEnded:(int64_t)ended
 {
   activeButtonTypes = self->_activeButtonTypes;
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -725,7 +725,7 @@ LABEL_81:
   if (activeButtonTypes)
   {
     v7 = self->_activeButtonTypes;
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:ended];
     [(NSMutableSet *)v7 removeObject:v8];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -733,7 +733,7 @@ LABEL_81:
 
     if (v8)
     {
-      v12 = [objc_alloc(MEMORY[0x277D6C4C8]) _initWithButtonType:a3];
+      v12 = [objc_alloc(MEMORY[0x277D6C4C8]) _initWithButtonType:ended];
       v10 = [MEMORY[0x277D6C4D0] buttonEventForButton:v12 eventType:2];
       v11 = objc_loadWeakRetained(&self->_delegate);
       [v11 touchProcessor:self generatedButtonEvent:v10];
@@ -790,14 +790,14 @@ LABEL_81:
   [(NSMutableSet *)self->_activeButtonTypes removeAllObjects];
 }
 
-- (void)_touchTimerExpired:(id)a3
+- (void)_touchTimerExpired:(id)expired
 {
-  v6 = [a3 userInfo];
+  userInfo = [expired userInfo];
   v4 = [(NSMapTable *)self->_touches objectForKey:?];
   v5 = v4;
   if (v4 && ![v4 virtualPhase])
   {
-    [(TVRTouchProcessor *)self _beginTrackingTouch:v6 withRelativeLocation:[(TVRTouchProcessor *)self _defaultRelativeStartingLocation]];
+    [(TVRTouchProcessor *)self _beginTrackingTouch:userInfo withRelativeLocation:[(TVRTouchProcessor *)self _defaultRelativeStartingLocation]];
   }
 }
 
@@ -808,18 +808,18 @@ LABEL_81:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMapTable *)self->_touches objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMapTable *)self->_touches objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (!v4)
   {
 
 LABEL_11:
     if ([(NSMapTable *)self->_touches count])
     {
-      v9 = [(NSMapTable *)self->_touches keyEnumerator];
-      v10 = [v9 nextObject];
+      keyEnumerator = [(NSMapTable *)self->_touches keyEnumerator];
+      nextObject = [keyEnumerator nextObject];
 
-      [(TVRTouchProcessor *)self _beginTrackingTouch:v10 withRelativeLocation:[(TVRTouchProcessor *)self _defaultRelativeStartingLocation]];
+      [(TVRTouchProcessor *)self _beginTrackingTouch:nextObject withRelativeLocation:[(TVRTouchProcessor *)self _defaultRelativeStartingLocation]];
     }
 
     return;
@@ -834,13 +834,13 @@ LABEL_11:
     {
       if (*v12 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(objectEnumerator);
       }
 
       v6 |= [*(*(&v11 + 1) + 8 * i) virtualPhase] != 0;
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v5 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   }
 
   while (v5);
@@ -864,18 +864,18 @@ LABEL_11:
   }
 }
 
-- (int64_t)_relativeTouchLocationForDistanceTraveled:(CGPoint)a3
+- (int64_t)_relativeTouchLocationForDistanceTraveled:(CGPoint)traveled
 {
-  v3 = fabs(a3.x);
-  v4 = fabs(a3.y);
+  v3 = fabs(traveled.x);
+  v4 = fabs(traveled.y);
   v5 = 4;
-  if (a3.x > 0.0)
+  if (traveled.x > 0.0)
   {
     v5 = 3;
   }
 
   v6 = 2;
-  if (a3.y > 0.0)
+  if (traveled.y > 0.0)
   {
     v6 = 1;
   }
@@ -893,52 +893,52 @@ LABEL_11:
 
 - (BOOL)_deviceSupportsMovableBoundingBox
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 1;
 
   return v3;
 }
 
-- (void)_beginTrackingTouch:(id)a3 withRelativeLocation:(int64_t)a4
+- (void)_beginTrackingTouch:(id)touch withRelativeLocation:(int64_t)location
 {
   touches = self->_touches;
-  v7 = a3;
-  v12 = [(NSMapTable *)touches objectForKey:v7];
-  [(TVRTouchProcessor *)self _boundingBoxForTouch:v7 relativeStartLocation:a4];
+  touchCopy = touch;
+  v12 = [(NSMapTable *)touches objectForKey:touchCopy];
+  [(TVRTouchProcessor *)self _boundingBoxForTouch:touchCopy relativeStartLocation:location];
   [v12 setBoundingBox:?];
   [v12 setVirtualPhase:1];
-  [(TVRTouchProcessor *)self _virtualTouchLocationForTouch:v7];
+  [(TVRTouchProcessor *)self _virtualTouchLocationForTouch:touchCopy];
   v9 = v8;
   [v12 setInitialProportionalLocation:?];
-  v11 = v9 >= 0.9 && (a4 - 5) < 0xFFFFFFFFFFFFFFFELL;
+  v11 = v9 >= 0.9 && (location - 5) < 0xFFFFFFFFFFFFFFFELL;
   [v12 setIsLikelyLongListScrollingEdgeGesture:v11];
-  [(TVRTouchProcessor *)self _deliverTouchToDelegate:v7 info:v12];
+  [(TVRTouchProcessor *)self _deliverTouchToDelegate:touchCopy info:v12];
 }
 
-- (void)_deliverTouchToDelegate:(id)a3 info:(id)a4
+- (void)_deliverTouchToDelegate:(id)delegate info:(id)info
 {
-  v17 = a3;
-  v6 = a4;
+  delegateCopy = delegate;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    [(TVRTouchProcessor *)self _virtualTouchLocationForTouch:v17];
+    [(TVRTouchProcessor *)self _virtualTouchLocationForTouch:delegateCopy];
     v10 = v9;
     v12 = v11;
     v13 = objc_alloc(MEMORY[0x277D6C538]);
-    [v6 timestamp];
-    v15 = [v13 _initWithTimestamp:1 finger:objc_msgSend(v6 phase:"virtualPhase") digitizerLocation:{v14, v10, v12}];
+    [infoCopy timestamp];
+    v15 = [v13 _initWithTimestamp:1 finger:objc_msgSend(infoCopy phase:"virtualPhase") digitizerLocation:{v14, v10, v12}];
     v16 = objc_loadWeakRetained(&self->_delegate);
     [v16 touchProcessor:self generatedTouchEvent:v15];
   }
 }
 
-- (CGRect)_boundingBoxForTouch:(id)a3 relativeStartLocation:(int64_t)a4
+- (CGRect)_boundingBoxForTouch:(id)touch relativeStartLocation:(int64_t)location
 {
   touchpadView = self->_touchpadView;
-  v7 = a3;
+  touchCopy = touch;
   [(TVRTouchpadView *)touchpadView bounds];
   x = v60.origin.x;
   y = v60.origin.y;
@@ -950,7 +950,7 @@ LABEL_11:
   v61.size.width = width;
   v61.size.height = height;
   MidY = CGRectGetMidY(v61);
-  [v7 preciseLocationInView:self->_touchpadView];
+  [touchCopy preciseLocationInView:self->_touchpadView];
   v13 = v12;
   v15 = v14;
 
@@ -1005,8 +1005,8 @@ LABEL_11:
   v54 = fmin(v21, 1.0);
   if ((__hasCachedTouchCenteringWeight & 1) == 0)
   {
-    v23 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v24 = [v23 objectForKey:@"TouchCenteringWeight"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v24 = [standardUserDefaults objectForKey:@"TouchCenteringWeight"];
 
     if (v24)
     {
@@ -1049,7 +1049,7 @@ LABEL_11:
   v32 = v26 + (0.0 - v26) * fmin(v31, 1.0);
   v33 = v22 + (0.5 - v22) * v32;
   v34 = v54 + (0.5 - v54) * v32;
-  if (a4 == 5)
+  if (location == 5)
   {
     v35 = 0.5;
   }
@@ -1059,34 +1059,34 @@ LABEL_11:
     v35 = v33;
   }
 
-  if (a4 != 5)
+  if (location != 5)
   {
     v30 = v34;
   }
 
-  if (a4 == 4)
+  if (location == 4)
   {
     v35 = 1.0;
     v30 = v34;
   }
 
-  if (a4 == 3)
+  if (location == 3)
   {
     v35 = 0.0;
     v30 = v34;
   }
 
-  if (a4 == 2)
+  if (location == 2)
   {
     v34 = 1.0;
   }
 
-  if (a4 == 1)
+  if (location == 1)
   {
     v34 = 0.0;
   }
 
-  if (a4 <= 2)
+  if (location <= 2)
   {
     v36 = v33;
   }
@@ -1096,7 +1096,7 @@ LABEL_11:
     v36 = v35;
   }
 
-  if (a4 <= 2)
+  if (location <= 2)
   {
     v37 = v34;
   }
@@ -1225,13 +1225,13 @@ LABEL_11:
   return result;
 }
 
-- (CGPoint)_virtualTouchLocationForTouch:(id)a3
+- (CGPoint)_virtualTouchLocationForTouch:(id)touch
 {
   touches = self->_touches;
-  v5 = a3;
-  v6 = [(NSMapTable *)touches objectForKey:v5];
-  v7 = [(TVRTouchProcessor *)self touchpadView];
-  [v5 preciseLocationInView:v7];
+  touchCopy = touch;
+  v6 = [(NSMapTable *)touches objectForKey:touchCopy];
+  touchpadView = [(TVRTouchProcessor *)self touchpadView];
+  [touchCopy preciseLocationInView:touchpadView];
   v9 = v8;
   v23 = v10;
 
@@ -1276,17 +1276,17 @@ LABEL_11:
   return result;
 }
 
-- (void)_dispatchGameControllerEventForTouch:(id)a3 event:(id)a4
+- (void)_dispatchGameControllerEventForTouch:(id)touch event:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   objc_copyWeak(&to, &self->_delegate);
   v8 = objc_loadWeakRetained(&to);
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    [v6 preciseLocationInView:self->_touchpadView];
+    [touchCopy preciseLocationInView:self->_touchpadView];
     v11 = v10;
     v13 = v12;
     [(TVRTouchpadView *)self->_touchpadView bounds];
@@ -1360,9 +1360,9 @@ LABEL_11:
     v34 = fmin(v32, 1.0);
     if (v33 != 3 || __fpclassifyf(-v34) != 3)
     {
-      v35 = [v6 phase] != 3 && objc_msgSend(v6, "phase") != 4;
+      v35 = [touchCopy phase] != 3 && objc_msgSend(touchCopy, "phase") != 4;
       v36 = objc_alloc(MEMORY[0x277D6C4F8]);
-      [v7 timestamp];
+      [eventCopy timestamp];
       v37 = [v36 _initWithTimestamp:v35 isDown:? joystickLocation:?];
       v38 = objc_loadWeakRetained(&to);
       [v38 touchProcessor:self generatedGameControllerEvent:v37];

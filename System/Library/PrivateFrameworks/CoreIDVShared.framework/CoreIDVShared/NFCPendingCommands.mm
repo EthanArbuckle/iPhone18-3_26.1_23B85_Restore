@@ -1,24 +1,24 @@
 @interface NFCPendingCommands
 - (_TtC13CoreIDVShared18NFCPendingCommands)init;
-- (_TtC13CoreIDVShared18NFCPendingCommands)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC13CoreIDVShared18NFCPendingCommands)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFCPendingCommands
 
-- (_TtC13CoreIDVShared18NFCPendingCommands)initWithCoder:(id)a3
+- (_TtC13CoreIDVShared18NFCPendingCommands)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_225C13BD0(v3);
+  coderCopy = coder;
+  v4 = sub_225C13BD0(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  NFCPendingCommands.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  NFCPendingCommands.encode(with:)(coderCopy);
 }
 
 - (_TtC13CoreIDVShared18NFCPendingCommands)init

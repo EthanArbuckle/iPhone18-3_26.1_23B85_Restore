@@ -1,26 +1,26 @@
 @interface BCSShareActionPickerItem
-- (BCSShareActionPickerItem)initWithAction:(id)a3;
+- (BCSShareActionPickerItem)initWithAction:(id)action;
 - (id)icon;
-- (void)performActionWithFBOptions:(id)a3;
+- (void)performActionWithFBOptions:(id)options;
 @end
 
 @implementation BCSShareActionPickerItem
 
-- (BCSShareActionPickerItem)initWithAction:(id)a3
+- (BCSShareActionPickerItem)initWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v12.receiver = self;
   v12.super_class = BCSShareActionPickerItem;
-  v5 = [(BCSActionPickerItem *)&v12 initWithAction:v4];
+  v5 = [(BCSActionPickerItem *)&v12 initWithAction:actionCopy];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     itemsToShare = v5->_itemsToShare;
-    v5->_itemsToShare = v6;
+    v5->_itemsToShare = array;
 
     v8 = v5->_itemsToShare;
-    v9 = [v4 urlThatCanBeOpened];
-    [(NSMutableArray *)v8 addObject:v9];
+    urlThatCanBeOpened = [actionCopy urlThatCanBeOpened];
+    [(NSMutableArray *)v8 addObject:urlThatCanBeOpened];
 
     v10 = v5;
   }
@@ -35,17 +35,17 @@
   return [UIImageClass systemImageNamed:@"square.and.arrow.up"];
 }
 
-- (void)performActionWithFBOptions:(id)a3
+- (void)performActionWithFBOptions:(id)options
 {
   v4 = [objc_alloc(getUIActivityViewControllerClass()) initWithActivityItems:self->_itemsToShare applicationActivities:0];
-  v5 = [v4 popoverPresentationController];
-  v6 = [(BCSActionPickerItem *)self action];
-  v7 = [v6 delegate];
-  v8 = [v7 presentingViewControllerForAction:v6];
+  popoverPresentationController = [v4 popoverPresentationController];
+  action = [(BCSActionPickerItem *)self action];
+  delegate = [action delegate];
+  v8 = [delegate presentingViewControllerForAction:action];
 
   if (v8)
   {
-    [v5 _setCentersPopoverIfSourceViewNotSet:1];
+    [popoverPresentationController _setCentersPopoverIfSourceViewNotSet:1];
     [v8 presentViewController:v4 animated:1 completion:0];
   }
 

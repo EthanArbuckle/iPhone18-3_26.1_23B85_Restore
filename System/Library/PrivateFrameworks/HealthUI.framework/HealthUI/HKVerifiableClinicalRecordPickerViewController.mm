@@ -1,44 +1,44 @@
 @interface HKVerifiableClinicalRecordPickerViewController
 - (HKHealthPrivacyServicePickerControllerDelegate)delegate;
-- (HKVerifiableClinicalRecordPickerViewController)initWithClinicalRecords:(id)a3 signedRecords:(id)a4 recordTypes:(id)a5;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)_explanationText:(id)a3;
-- (id)_headerIconForRecordTypes:(id)a3;
-- (id)_headerTitleForRecordTypes:(id)a3;
-- (id)_noDataExplanationTextForRecordTypes:(id)a3;
+- (HKVerifiableClinicalRecordPickerViewController)initWithClinicalRecords:(id)records signedRecords:(id)signedRecords recordTypes:(id)types;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)_explanationText:(id)text;
+- (id)_headerIconForRecordTypes:(id)types;
+- (id)_headerTitleForRecordTypes:(id)types;
+- (id)_noDataExplanationTextForRecordTypes:(id)types;
 - (id)_noDataTableViewCell;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_enableSample:(id)a3 enabled:(BOOL)a4;
-- (void)_finishWithError:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_enableSample:(id)sample enabled:(BOOL)enabled;
+- (void)_finishWithError:(id)error;
 - (void)_setUpAccessoryButton;
 - (void)_setUpCancelBarButtonItem;
 - (void)_setUpFooterView;
 - (void)_setUpTableView;
 - (void)_updateShareButtonState;
-- (void)cancelButtonTapped:(id)a3;
-- (void)learnMoreButtonTapped:(id)a3;
-- (void)noDataLearnMoreButtonTapped:(id)a3;
-- (void)setSource:(id)a3;
-- (void)shareButtonTapped:(id)a3;
-- (void)showDetailsButtonTappedAtIndexPath:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)cancelButtonTapped:(id)tapped;
+- (void)learnMoreButtonTapped:(id)tapped;
+- (void)noDataLearnMoreButtonTapped:(id)tapped;
+- (void)setSource:(id)source;
+- (void)shareButtonTapped:(id)tapped;
+- (void)showDetailsButtonTappedAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HKVerifiableClinicalRecordPickerViewController
 
-- (HKVerifiableClinicalRecordPickerViewController)initWithClinicalRecords:(id)a3 signedRecords:(id)a4 recordTypes:(id)a5
+- (HKVerifiableClinicalRecordPickerViewController)initWithClinicalRecords:(id)records signedRecords:(id)signedRecords recordTypes:(id)types
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HKVerifiableClinicalRecordPickerViewController *)self _headerTitleForRecordTypes:v10];
+  recordsCopy = records;
+  signedRecordsCopy = signedRecords;
+  typesCopy = types;
+  v11 = [(HKVerifiableClinicalRecordPickerViewController *)self _headerTitleForRecordTypes:typesCopy];
   v12 = [(HKVerifiableClinicalRecordPickerViewController *)self _explanationText:self->_source];
-  v13 = [(HKVerifiableClinicalRecordPickerViewController *)self _headerIconForRecordTypes:v10];
+  v13 = [(HKVerifiableClinicalRecordPickerViewController *)self _headerIconForRecordTypes:typesCopy];
   v26.receiver = self;
   v26.super_class = HKVerifiableClinicalRecordPickerViewController;
   v14 = [(OBTableWelcomeController *)&v26 initWithTitle:v11 detailText:v12 icon:v13 adoptTableViewScrollView:1];
@@ -48,23 +48,23 @@
     enabledSamples = v14->_enabledSamples;
     v14->_enabledSamples = v15;
 
-    v17 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v8];
+    v17 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:recordsCopy];
     allSamples = v14->_allSamples;
     v14->_allSamples = v17;
 
-    v19 = [v8 copy];
+    v19 = [recordsCopy copy];
     clinicalRecords = v14->_clinicalRecords;
     v14->_clinicalRecords = v19;
 
-    v21 = [v9 copy];
+    v21 = [signedRecordsCopy copy];
     signedRecordsByIdentifier = v14->_signedRecordsByIdentifier;
     v14->_signedRecordsByIdentifier = v21;
 
-    v23 = [v10 copy];
+    v23 = [typesCopy copy];
     recordTypes = v14->_recordTypes;
     v14->_recordTypes = v23;
 
-    v14->_hasData = [v8 count] != 0;
+    v14->_hasData = [recordsCopy count] != 0;
   }
 
   return v14;
@@ -75,23 +75,23 @@
   v12.receiver = self;
   v12.super_class = HKVerifiableClinicalRecordPickerViewController;
   [(OBTableWelcomeController *)&v12 viewDidLoad];
-  v3 = [(HKVerifiableClinicalRecordPickerViewController *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(HKVerifiableClinicalRecordPickerViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 != 6)
+  if (userInterfaceIdiom != 6)
   {
-    v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v6 = [(HKVerifiableClinicalRecordPickerViewController *)self view];
-    [v6 setBackgroundColor:v5];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    view = [(HKVerifiableClinicalRecordPickerViewController *)self view];
+    [view setBackgroundColor:systemBackgroundColor];
   }
 
   [(HKVerifiableClinicalRecordPickerViewController *)self setModalInPresentation:1];
-  v7 = [(HKVerifiableClinicalRecordPickerViewController *)self headerView];
-  [v7 setAllowFullWidthIcon:1];
+  headerView = [(HKVerifiableClinicalRecordPickerViewController *)self headerView];
+  [headerView setAllowFullWidthIcon:1];
 
-  v8 = [(HKVerifiableClinicalRecordPickerViewController *)self headerView];
+  headerView2 = [(HKVerifiableClinicalRecordPickerViewController *)self headerView];
   LODWORD(v9) = 1036831949;
-  [v8 setTitleHyphenationFactor:v9];
+  [headerView2 setTitleHyphenationFactor:v9];
 
   [(HKVerifiableClinicalRecordPickerViewController *)self _setUpTableView];
   [(HKVerifiableClinicalRecordPickerViewController *)self _setUpAccessoryButton];
@@ -109,25 +109,25 @@
 
   [(HKVerifiableClinicalRecordPickerViewController *)self _updateShareButtonState];
   [(HKVerifiableClinicalRecordPickerViewController *)self _updateCancelButtonState];
-  v11 = [(OBTableWelcomeController *)self tableView];
-  [v11 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = HKVerifiableClinicalRecordPickerViewController;
   [(OBTableWelcomeController *)&v8 viewWillAppear:?];
   if (self->_hasData)
   {
-    v5 = [(HKVerifiableClinicalRecordPickerViewController *)self navigationController];
-    v6 = [v5 isNavigationBarHidden];
+    navigationController = [(HKVerifiableClinicalRecordPickerViewController *)self navigationController];
+    isNavigationBarHidden = [navigationController isNavigationBarHidden];
 
-    if ((v6 & 1) == 0)
+    if ((isNavigationBarHidden & 1) == 0)
     {
-      v7 = [(HKVerifiableClinicalRecordPickerViewController *)self navigationController];
-      [v7 setNavigationBarHidden:1 animated:v3];
+      navigationController2 = [(HKVerifiableClinicalRecordPickerViewController *)self navigationController];
+      [navigationController2 setNavigationBarHidden:1 animated:appearCopy];
     }
   }
 }
@@ -138,65 +138,65 @@
   v4 = [v3 initWithFrame:2 style:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v4];
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 setDataSource:self];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setDataSource:self];
 
-  v6 = [(OBTableWelcomeController *)self tableView];
-  [v6 setDelegate:self];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setDelegate:self];
 
-  v7 = [(HKVerifiableClinicalRecordPickerViewController *)self traitCollection];
-  v8 = [v7 userInterfaceIdiom];
+  traitCollection = [(HKVerifiableClinicalRecordPickerViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v8 != 6)
+  if (userInterfaceIdiom != 6)
   {
-    v9 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v10 = [(OBTableWelcomeController *)self tableView];
-    [v10 setBackgroundColor:v9];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    tableView3 = [(OBTableWelcomeController *)self tableView];
+    [tableView3 setBackgroundColor:systemBackgroundColor];
   }
 
-  v11 = [(OBTableWelcomeController *)self tableView];
-  [v11 setAllowsMultipleSelection:1];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setAllowsMultipleSelection:1];
 
-  v12 = [(OBTableWelcomeController *)self tableView];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
   v13 = objc_opt_class();
   v14 = +[(HKObjectPickerTableViewCell *)HKSignedClinicalDataTableViewCell];
-  [v12 registerClass:v13 forCellReuseIdentifier:v14];
+  [tableView5 registerClass:v13 forCellReuseIdentifier:v14];
 
-  v15 = [(OBTableWelcomeController *)self tableView];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
   v16 = objc_opt_class();
   v17 = +[HKObjectPickerShowDetailsTableViewCell defaultReuseIdentifier];
-  [v15 registerClass:v16 forCellReuseIdentifier:v17];
+  [tableView6 registerClass:v16 forCellReuseIdentifier:v17];
 
-  v20 = [(OBTableWelcomeController *)self tableView];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
   v18 = objc_opt_class();
   v19 = +[HKObjectPickerNoDataTableViewCell defaultReuseIdentifier];
-  [v20 registerClass:v18 forCellReuseIdentifier:v19];
+  [tableView7 registerClass:v18 forCellReuseIdentifier:v19];
 }
 
 - (void)_setUpAccessoryButton
 {
-  v7 = [MEMORY[0x1E69B7D20] accessoryButton];
-  v3 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [v7 setTintColor:v3];
+  accessoryButton = [MEMORY[0x1E69B7D20] accessoryButton];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [accessoryButton setTintColor:systemBlueColor];
 
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v5 = [v4 localizedStringForKey:@"LEARN_MORE_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
-  [v7 setTitle:v5 forState:0];
+  [accessoryButton setTitle:v5 forState:0];
 
-  [v7 addTarget:self action:sel_learnMoreButtonTapped_ forControlEvents:64];
-  v6 = [(HKVerifiableClinicalRecordPickerViewController *)self headerView];
-  [v6 addAccessoryButton:v7];
+  [accessoryButton addTarget:self action:sel_learnMoreButtonTapped_ forControlEvents:64];
+  headerView = [(HKVerifiableClinicalRecordPickerViewController *)self headerView];
+  [headerView addAccessoryButton:accessoryButton];
 }
 
 - (void)_setUpFooterView
 {
-  v3 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   shareButton = self->_shareButton;
-  self->_shareButton = v3;
+  self->_shareButton = boldButton;
 
   v5 = self->_shareButton;
-  v6 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [(OBBoldTrayButton *)v5 setTintColor:v6];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [(OBBoldTrayButton *)v5 setTintColor:systemBlueColor];
 
   v7 = self->_shareButton;
   v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -204,12 +204,12 @@
   [(OBBoldTrayButton *)v7 setTitle:v9 forState:0];
 
   [(OBBoldTrayButton *)self->_shareButton addTarget:self action:sel_shareButtonTapped_ forControlEvents:64];
-  v10 = [(HKVerifiableClinicalRecordPickerViewController *)self buttonTray];
-  [v10 addButton:self->_shareButton];
+  buttonTray = [(HKVerifiableClinicalRecordPickerViewController *)self buttonTray];
+  [buttonTray addButton:self->_shareButton];
 
-  v11 = [MEMORY[0x1E69B7D38] linkButton];
+  linkButton = [MEMORY[0x1E69B7D38] linkButton];
   cancelButton = self->_cancelButton;
-  self->_cancelButton = v11;
+  self->_cancelButton = linkButton;
 
   v13 = self->_cancelButton;
   v14 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -217,30 +217,30 @@
   [(OBLinkTrayButton *)v13 setTitle:v15 forState:0];
 
   [(OBLinkTrayButton *)self->_cancelButton addTarget:self action:sel_cancelButtonTapped_ forControlEvents:64];
-  v16 = [(HKVerifiableClinicalRecordPickerViewController *)self buttonTray];
-  [v16 addButton:self->_cancelButton];
+  buttonTray2 = [(HKVerifiableClinicalRecordPickerViewController *)self buttonTray];
+  [buttonTray2 addButton:self->_cancelButton];
 }
 
 - (void)_setUpCancelBarButtonItem
 {
   v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonTapped_];
-  v3 = [(OBBaseWelcomeController *)self navigationItem];
-  [v3 setRightBarButtonItem:v4];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 }
 
-- (id)_explanationText:(id)a3
+- (id)_explanationText:(id)text
 {
   v3 = MEMORY[0x1E696AAE8];
-  v4 = a3;
+  textCopy = text;
   v5 = [v3 bundleWithIdentifier:@"com.apple.HealthUI"];
   v6 = [v5 localizedStringForKey:@"SHARE_DATA_WITH_APP_EXPLANATION" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v4 name];
+  name = [textCopy name];
 
-  if (v8)
+  if (name)
   {
-    v9 = v8;
+    v9 = name;
   }
 
   else
@@ -253,10 +253,10 @@
   return v10;
 }
 
-- (id)_headerIconForRecordTypes:(id)a3
+- (id)_headerIconForRecordTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 containsObject:*MEMORY[0x1E696BEA0]])
+  typesCopy = types;
+  if ([typesCopy containsObject:*MEMORY[0x1E696BEA0]])
   {
     v4 = MEMORY[0x1E69DCAB8];
     v5 = HKHealthUIFrameworkBundle();
@@ -265,7 +265,7 @@
 
   else
   {
-    v7 = [v3 containsObject:*MEMORY[0x1E696BEA8]];
+    v7 = [typesCopy containsObject:*MEMORY[0x1E696BEA8]];
     v4 = MEMORY[0x1E69DCAB8];
     v5 = HKHealthUIFrameworkBundle();
     if (v7)
@@ -284,7 +284,7 @@
   return v8;
 }
 
-- (id)_headerTitleForRecordTypes:(id)a3
+- (id)_headerTitleForRecordTypes:(id)types
 {
   v3 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v4 = [v3 localizedStringForKey:@"SHARE_RESULT_WITH_APP_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
@@ -292,14 +292,14 @@
   return v4;
 }
 
-- (void)learnMoreButtonTapped:(id)a3
+- (void)learnMoreButtonTapped:(id)tapped
 {
   v4 = [MEMORY[0x1E69B7D58] presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.healthapp"];
   [v4 setPresentingViewController:self];
   [v4 present];
 }
 
-- (void)shareButtonTapped:(id)a3
+- (void)shareButtonTapped:(id)tapped
 {
   _HKInitializeLogging();
   v4 = HKLogAuthorization();
@@ -317,7 +317,7 @@
   [(HKVerifiableClinicalRecordPickerViewController *)self _finishWithError:0];
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   _HKInitializeLogging();
   v4 = HKLogAuthorization();
@@ -336,9 +336,9 @@
   [(HKVerifiableClinicalRecordPickerViewController *)self _finishWithError:v7];
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   _HKInitializeLogging();
   v5 = HKLogAuthorization();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
@@ -352,37 +352,37 @@
     }
   }
 
-  v8 = [(HKVerifiableClinicalRecordPickerViewController *)self delegate];
+  delegate = [(HKVerifiableClinicalRecordPickerViewController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(HKVerifiableClinicalRecordPickerViewController *)self delegate];
-    [v10 pickerControllerDidFinish:self error:v4];
+    delegate2 = [(HKVerifiableClinicalRecordPickerViewController *)self delegate];
+    [delegate2 pickerControllerDidFinish:self error:errorCopy];
   }
 }
 
-- (void)setSource:(id)a3
+- (void)setSource:(id)source
 {
-  objc_storeStrong(&self->_source, a3);
-  v5 = a3;
-  v7 = [(HKVerifiableClinicalRecordPickerViewController *)self headerView];
+  objc_storeStrong(&self->_source, source);
+  sourceCopy = source;
+  headerView = [(HKVerifiableClinicalRecordPickerViewController *)self headerView];
   v6 = [(HKVerifiableClinicalRecordPickerViewController *)self _explanationText:self->_source];
 
-  [v7 setDetailText:v6];
+  [headerView setDetailText:v6];
 }
 
-- (void)_enableSample:(id)a3 enabled:(BOOL)a4
+- (void)_enableSample:(id)sample enabled:(BOOL)enabled
 {
   enabledSamples = self->_enabledSamples;
-  if (a4)
+  if (enabled)
   {
-    [(NSMutableSet *)enabledSamples addObject:a3];
+    [(NSMutableSet *)enabledSamples addObject:sample];
   }
 
   else
   {
-    [(NSMutableSet *)enabledSamples removeObject:a3];
+    [(NSMutableSet *)enabledSamples removeObject:sample];
   }
 }
 
@@ -394,7 +394,7 @@
   [(OBBoldTrayButton *)shareButton setEnabled:v3];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_hasData)
   {
@@ -407,7 +407,7 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (self->_hasData)
   {
@@ -420,11 +420,11 @@
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   if (!self->_hasData)
   {
-    v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:{@"com.apple.HealthUI", a4}];
+    v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:{@"com.apple.HealthUI", section}];
     v8 = v7;
     v9 = @"DATA_SECTION_TABLE_HEADER_NO_DATA";
     goto LABEL_5;
@@ -438,105 +438,105 @@
     v9 = @"DATA_SECTION_TABLE_HEADER";
 LABEL_5:
     v10 = [v7 localizedStringForKey:v9 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
-    v11 = [v10 localizedUppercaseString];
+    localizedUppercaseString = [v10 localizedUppercaseString];
 
     goto LABEL_7;
   }
 
   v12 = [v7 localizedStringForKey:@"DATA_SECTION_TABLE_HEADER_STRING_FORMAT_%1$ld_%2$ld" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
 
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:v12, a4 + 1, -[NSArray count](self->_clinicalRecords, "count")];
+  localizedUppercaseString = [MEMORY[0x1E696AEC0] stringWithFormat:v12, section + 1, -[NSArray count](self->_clinicalRecords, "count")];
   v8 = v12;
 LABEL_7:
 
-  return v11;
+  return localizedUppercaseString;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  viewCopy = view;
+  pathCopy = path;
+  v8 = pathCopy;
   if (self->_hasData)
   {
-    if ([v7 row] == 1)
+    if ([pathCopy row] == 1)
     {
       v9 = +[HKObjectPickerShowDetailsTableViewCell defaultReuseIdentifier];
-      v10 = [v6 dequeueReusableCellWithIdentifier:v9];
+      _noDataTableViewCell = [viewCopy dequeueReusableCellWithIdentifier:v9];
     }
 
     else
     {
       v39 = +[(HKObjectPickerTableViewCell *)HKSignedClinicalDataTableViewCell];
-      v10 = [v6 dequeueReusableCellWithIdentifier:?];
+      _noDataTableViewCell = [viewCopy dequeueReusableCellWithIdentifier:?];
       v11 = -[NSArray objectAtIndexedSubscript:](self->_clinicalRecords, "objectAtIndexedSubscript:", [v8 section]);
       signedRecordsByIdentifier = self->_signedRecordsByIdentifier;
-      v13 = [v11 originIdentifier];
-      v14 = [(NSDictionary *)signedRecordsByIdentifier objectForKeyedSubscript:v13];
+      originIdentifier = [v11 originIdentifier];
+      v14 = [(NSDictionary *)signedRecordsByIdentifier objectForKeyedSubscript:originIdentifier];
 
-      v15 = [v11 recordTypeDisplayName];
-      [v10 setPrimaryText:v15];
+      recordTypeDisplayName = [v11 recordTypeDisplayName];
+      [_noDataTableViewCell setPrimaryText:recordTypeDisplayName];
 
       v38 = v14;
       if (v14)
       {
-        v16 = [v14 issuerDisplayStringWithSignatureStatusGlyph];
-        [v10 setSecondaryAttributedText:v16];
+        issuerDisplayStringWithSignatureStatusGlyph = [v14 issuerDisplayStringWithSignatureStatusGlyph];
+        [_noDataTableViewCell setSecondaryAttributedText:issuerDisplayStringWithSignatureStatusGlyph];
 
-        v17 = [v14 items];
-        v18 = [v17 sortedArrayUsingComparator:&__block_literal_global];
+        items = [v14 items];
+        v18 = [items sortedArrayUsingComparator:&__block_literal_global];
 
         v19 = [v18 hk_map:&__block_literal_global_377];
-        [v10 setDetailItems:v19];
+        [_noDataTableViewCell setDetailItems:v19];
       }
 
       else
       {
-        v20 = [v11 recordIssuerDisplayName];
-        [v10 setSecondaryText:v20];
+        recordIssuerDisplayName = [v11 recordIssuerDisplayName];
+        [_noDataTableViewCell setSecondaryText:recordIssuerDisplayName];
 
-        v21 = [v11 relevantDate];
-        v22 = [MEMORY[0x1E695DEE8] currentCalendar];
-        v23 = [v21 hk_utcDateAdjustedToCalendar:v22];
+        relevantDate = [v11 relevantDate];
+        currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+        v23 = [relevantDate hk_utcDateAdjustedToCalendar:currentCalendar];
 
         v24 = HKLocalizedStringForDateAndTemplate(v23, 10);
         v25 = [HKObjectPickerDetailItem alloc];
-        v26 = [v11 recordItemsDisplayName];
-        v27 = [(HKObjectPickerDetailItem *)v25 initWithPrimaryText:v26 secondaryText:v24];
+        recordItemsDisplayName = [v11 recordItemsDisplayName];
+        v27 = [(HKObjectPickerDetailItem *)v25 initWithPrimaryText:recordItemsDisplayName secondaryText:v24];
 
         v41[0] = v27;
         v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
-        [v10 setDetailItems:v28];
+        [_noDataTableViewCell setDetailItems:v28];
       }
 
-      v29 = [v11 subject];
-      v30 = [v29 fullName];
-      [v10 setPatientName:v30];
+      subject = [v11 subject];
+      fullName = [subject fullName];
+      [_noDataTableViewCell setPatientName:fullName];
 
-      v31 = [v11 subject];
-      v32 = [v31 dateOfBirthComponents];
+      subject2 = [v11 subject];
+      dateOfBirthComponents = [subject2 dateOfBirthComponents];
 
-      if (v32)
+      if (dateOfBirthComponents)
       {
-        v33 = [v32 hk_populatedCalendarGregorianCalendarDefault];
-        v34 = [v33 dateFromComponents:v32];
+        hk_populatedCalendarGregorianCalendarDefault = [dateOfBirthComponents hk_populatedCalendarGregorianCalendarDefault];
+        v34 = [hk_populatedCalendarGregorianCalendarDefault dateFromComponents:dateOfBirthComponents];
         v35 = HKLocalizedStringForDateAndTemplate(v34, 10);
         v40 = v35;
         v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v40 count:1];
-        [v10 setPatientDetails:v36];
+        [_noDataTableViewCell setPatientDetails:v36];
       }
 
-      [v10 setChecked:{-[NSMutableSet containsObject:](self->_enabledSamples, "containsObject:", v11)}];
+      [_noDataTableViewCell setChecked:{-[NSMutableSet containsObject:](self->_enabledSamples, "containsObject:", v11)}];
     }
   }
 
   else
   {
-    v10 = [(HKVerifiableClinicalRecordPickerViewController *)self _noDataTableViewCell];
+    _noDataTableViewCell = [(HKVerifiableClinicalRecordPickerViewController *)self _noDataTableViewCell];
   }
 
-  return v10;
+  return _noDataTableViewCell;
 }
 
 uint64_t __82__HKVerifiableClinicalRecordPickerViewController_tableView_cellForRowAtIndexPath___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -566,10 +566,10 @@ HKObjectPickerDetailItem *__82__HKVerifiableClinicalRecordPickerViewController_t
   return v10;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   result = *MEMORY[0x1E69DE3D0];
-  if (!a4)
+  if (!section)
   {
     return 10.0;
   }
@@ -577,22 +577,22 @@ HKObjectPickerDetailItem *__82__HKVerifiableClinicalRecordPickerViewController_t
   return result;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = a4;
-  [v9 deselectRowAtIndexPath:v6 animated:1];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   if (self->_hasData)
   {
-    if ([v6 row] == 1)
+    if ([pathCopy row] == 1)
     {
-      [(HKVerifiableClinicalRecordPickerViewController *)self showDetailsButtonTappedAtIndexPath:v6];
+      [(HKVerifiableClinicalRecordPickerViewController *)self showDetailsButtonTappedAtIndexPath:pathCopy];
     }
 
     else
     {
-      v7 = [v9 cellForRowAtIndexPath:v6];
-      v8 = -[NSArray objectAtIndexedSubscript:](self->_clinicalRecords, "objectAtIndexedSubscript:", [v6 section]);
+      v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
+      v8 = -[NSArray objectAtIndexedSubscript:](self->_clinicalRecords, "objectAtIndexedSubscript:", [pathCopy section]);
       -[HKVerifiableClinicalRecordPickerViewController _enableSample:enabled:](self, "_enableSample:enabled:", v8, [v7 checked] ^ 1);
       [v7 setChecked:{-[NSMutableSet containsObject:](self->_enabledSamples, "containsObject:", v8)}];
       [(HKVerifiableClinicalRecordPickerViewController *)self _updateShareButtonState];
@@ -603,23 +603,23 @@ HKObjectPickerDetailItem *__82__HKVerifiableClinicalRecordPickerViewController_t
 - (id)_noDataTableViewCell
 {
   v3 = +[HKObjectPickerNoDataTableViewCell defaultReuseIdentifier];
-  v4 = [(OBTableWelcomeController *)self tableView];
-  v5 = [v4 dequeueReusableCellWithIdentifier:v3];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  v5 = [tableView dequeueReusableCellWithIdentifier:v3];
 
   v6 = [(HKVerifiableClinicalRecordPickerViewController *)self _noDataExplanationTextForRecordTypes:self->_recordTypes];
   [v5 setExplanationText:v6];
 
-  v7 = [v5 learnMoreButton];
-  [v7 addTarget:self action:sel_noDataLearnMoreButtonTapped_ forControlEvents:64];
+  learnMoreButton = [v5 learnMoreButton];
+  [learnMoreButton addTarget:self action:sel_noDataLearnMoreButtonTapped_ forControlEvents:64];
 
   return v5;
 }
 
-- (id)_noDataExplanationTextForRecordTypes:(id)a3
+- (id)_noDataExplanationTextForRecordTypes:(id)types
 {
-  v3 = a3;
-  v4 = [v3 containsObject:*MEMORY[0x1E696BE98]];
-  if ([v3 containsObject:*MEMORY[0x1E696BEA0]])
+  typesCopy = types;
+  v4 = [typesCopy containsObject:*MEMORY[0x1E696BE98]];
+  if ([typesCopy containsObject:*MEMORY[0x1E696BEA0]])
   {
     v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     if (v4)
@@ -635,7 +635,7 @@ HKObjectPickerDetailItem *__82__HKVerifiableClinicalRecordPickerViewController_t
 
   else
   {
-    v7 = [v3 containsObject:*MEMORY[0x1E696BEA8]];
+    v7 = [typesCopy containsObject:*MEMORY[0x1E696BEA8]];
     v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     if (v7)
     {
@@ -666,41 +666,41 @@ HKObjectPickerDetailItem *__82__HKVerifiableClinicalRecordPickerViewController_t
   return v8;
 }
 
-- (void)noDataLearnMoreButtonTapped:(id)a3
+- (void)noDataLearnMoreButtonTapped:(id)tapped
 {
   v4 = MEMORY[0x1E695DFF8];
-  v5 = a3;
+  tappedCopy = tapped;
   v8 = [[v4 alloc] initWithString:@"https://support.apple.com/en-us/HT212752"];
   v6 = [objc_alloc(MEMORY[0x1E697A838]) initWithURL:v8];
   [v6 setModalPresentationStyle:7];
-  v7 = [v6 popoverPresentationController];
-  [v7 setSourceView:v5];
+  popoverPresentationController = [v6 popoverPresentationController];
+  [popoverPresentationController setSourceView:tappedCopy];
 
   [v6 setDismissButtonStyle:0];
   [(HKVerifiableClinicalRecordPickerViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)showDetailsButtonTappedAtIndexPath:(id)a3
+- (void)showDetailsButtonTappedAtIndexPath:(id)path
 {
-  v4 = -[NSArray objectAtIndexedSubscript:](self->_clinicalRecords, "objectAtIndexedSubscript:", [a3 section]);
+  v4 = -[NSArray objectAtIndexedSubscript:](self->_clinicalRecords, "objectAtIndexedSubscript:", [path section]);
   signedRecordsByIdentifier = self->_signedRecordsByIdentifier;
-  v6 = [v4 originIdentifier];
-  v7 = [(NSDictionary *)signedRecordsByIdentifier objectForKeyedSubscript:v6];
+  originIdentifier = [v4 originIdentifier];
+  v7 = [(NSDictionary *)signedRecordsByIdentifier objectForKeyedSubscript:originIdentifier];
 
-  v8 = [(HKVerifiableClinicalRecordPickerViewController *)self delegate];
+  delegate = [(HKVerifiableClinicalRecordPickerViewController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(HKVerifiableClinicalRecordPickerViewController *)self delegate];
-    v11 = [v10 medicalRecordsForVerifiableClinicalRecord:v4];
+    delegate2 = [(HKVerifiableClinicalRecordPickerViewController *)self delegate];
+    v11 = [delegate2 medicalRecordsForVerifiableClinicalRecord:v4];
 
     if (v7)
     {
 LABEL_3:
       v12 = [[HKVerifiableClinicalRecordDetailViewController alloc] initWithSignedRecord:v7 medicalRecords:v11];
-      v13 = [(HKVerifiableClinicalRecordPickerViewController *)self navigationController];
-      [v13 pushViewController:v12 animated:1];
+      navigationController = [(HKVerifiableClinicalRecordPickerViewController *)self navigationController];
+      [navigationController pushViewController:v12 animated:1];
 
 LABEL_12:
       goto LABEL_13;

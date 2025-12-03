@@ -1,84 +1,84 @@
 @interface SGLocation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLocation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLocation:(id)location;
 - (BOOL)isGeocoded;
 - (NSString)description;
-- (SGLocation)initWithCoder:(id)a3;
-- (SGLocation)initWithId:(id)a3 origin:(id)a4 type:(unint64_t)a5 label:(id)a6 address:(id)a7 airportCode:(id)a8 latitude:(double)a9 longitude:(double)a10 accuracy:(double)a11 quality:(double)a12 handle:(id)a13 country:(id)a14 state:(id)a15 city:(id)a16 thoroughfare:(id)a17 subThoroughfare:(id)a18 postalCode:(id)a19;
-- (SGLocation)initWithLocation:(id)a3 latitude:(double)a4 longitude:(double)a5 accuracy:(double)a6 handle:(id)a7;
-- (SGLocation)initWithLocation:(id)a3 latitude:(double)a4 longitude:(double)a5 accuracy:(double)a6 handle:(id)a7 country:(id)a8 state:(id)a9 city:(id)a10 thoroughfare:(id)a11 subThoroughfare:(id)a12 postalCode:(id)a13;
-- (SGLocation)initWithMailAccountIdentifier:(id)a3 messageIdentifier:(id)a4 type:(unint64_t)a5 label:(id)a6 address:(id)a7 airportCode:(id)a8 latitude:(double)a9 longitude:(double)a10;
-- (id)geocodedLocationWithLabel:(id)a3 address:(id)a4 latitude:(double)a5 longitude:(double)a6 accuracy:(double)a7 handle:(id)a8 country:(id)a9 state:(id)a10 city:(id)a11 thoroughfare:(id)a12 subThoroughfare:(id)a13 postalCode:(id)a14;
-- (id)geocodedLocationWithLatitude:(double)a3 longitude:(double)a4 accuracy:(double)a5 handle:(id)a6 country:(id)a7 state:(id)a8 city:(id)a9 thoroughfare:(id)a10 subThoroughfare:(id)a11 postalCode:(id)a12;
-- (int64_t)compare:(id)a3;
+- (SGLocation)initWithCoder:(id)coder;
+- (SGLocation)initWithId:(id)id origin:(id)origin type:(unint64_t)type label:(id)label address:(id)address airportCode:(id)code latitude:(double)latitude longitude:(double)self0 accuracy:(double)self1 quality:(double)self2 handle:(id)self3 country:(id)self4 state:(id)self5 city:(id)self6 thoroughfare:(id)self7 subThoroughfare:(id)self8 postalCode:(id)self9;
+- (SGLocation)initWithLocation:(id)location latitude:(double)latitude longitude:(double)longitude accuracy:(double)accuracy handle:(id)handle;
+- (SGLocation)initWithLocation:(id)location latitude:(double)latitude longitude:(double)longitude accuracy:(double)accuracy handle:(id)handle country:(id)country state:(id)state city:(id)self0 thoroughfare:(id)self1 subThoroughfare:(id)self2 postalCode:(id)self3;
+- (SGLocation)initWithMailAccountIdentifier:(id)identifier messageIdentifier:(id)messageIdentifier type:(unint64_t)type label:(id)label address:(id)address airportCode:(id)code latitude:(double)latitude longitude:(double)self0;
+- (id)geocodedLocationWithLabel:(id)label address:(id)address latitude:(double)latitude longitude:(double)longitude accuracy:(double)accuracy handle:(id)handle country:(id)country state:(id)self0 city:(id)self1 thoroughfare:(id)self2 subThoroughfare:(id)self3 postalCode:(id)self4;
+- (id)geocodedLocationWithLatitude:(double)latitude longitude:(double)longitude accuracy:(double)accuracy handle:(id)handle country:(id)country state:(id)state city:(id)city thoroughfare:(id)self0 subThoroughfare:(id)self1 postalCode:(id)self2;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGLocation
 
-- (SGLocation)initWithMailAccountIdentifier:(id)a3 messageIdentifier:(id)a4 type:(unint64_t)a5 label:(id)a6 address:(id)a7 airportCode:(id)a8 latitude:(double)a9 longitude:(double)a10
+- (SGLocation)initWithMailAccountIdentifier:(id)identifier messageIdentifier:(id)messageIdentifier type:(unint64_t)type label:(id)label address:(id)address airportCode:(id)code latitude:(double)latitude longitude:(double)self0
 {
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a4;
-  v22 = a3;
+  codeCopy = code;
+  addressCopy = address;
+  labelCopy = label;
+  messageIdentifierCopy = messageIdentifier;
+  identifierCopy = identifier;
   v23 = [SGRecordId recordIdWithNumericValue:0];
-  v24 = [SGOrigin originWithType:1 sourceKey:v22 externalKey:v21 fromForwardedMessage:0];
+  v24 = [SGOrigin originWithType:1 sourceKey:identifierCopy externalKey:messageIdentifierCopy fromForwardedMessage:0];
 
-  v25 = [[SGLocation alloc] initWithId:v23 origin:v24 type:a5 label:v20 address:v19 airportCode:v18 latitude:a9 longitude:a10 accuracy:1.0 quality:0.0 handle:0];
+  v25 = [[SGLocation alloc] initWithId:v23 origin:v24 type:type label:labelCopy address:addressCopy airportCode:codeCopy latitude:latitude longitude:longitude accuracy:1.0 quality:0.0 handle:0];
   return v25;
 }
 
-- (id)geocodedLocationWithLatitude:(double)a3 longitude:(double)a4 accuracy:(double)a5 handle:(id)a6 country:(id)a7 state:(id)a8 city:(id)a9 thoroughfare:(id)a10 subThoroughfare:(id)a11 postalCode:(id)a12
+- (id)geocodedLocationWithLatitude:(double)latitude longitude:(double)longitude accuracy:(double)accuracy handle:(id)handle country:(id)country state:(id)state city:(id)city thoroughfare:(id)self0 subThoroughfare:(id)self1 postalCode:(id)self2
 {
-  v22 = a12;
-  v23 = a11;
-  v24 = a10;
-  v25 = a9;
-  v26 = a8;
-  v27 = a7;
-  v28 = a6;
-  v29 = [[SGLocation alloc] initWithLocation:self latitude:v28 longitude:v27 accuracy:v26 handle:v25 country:v24 state:a3 city:a4 thoroughfare:a5 subThoroughfare:v23 postalCode:v22];
+  codeCopy = code;
+  subThoroughfareCopy = subThoroughfare;
+  thoroughfareCopy = thoroughfare;
+  cityCopy = city;
+  stateCopy = state;
+  countryCopy = country;
+  handleCopy = handle;
+  v29 = [[SGLocation alloc] initWithLocation:self latitude:handleCopy longitude:countryCopy accuracy:stateCopy handle:cityCopy country:thoroughfareCopy state:latitude city:longitude thoroughfare:accuracy subThoroughfare:subThoroughfareCopy postalCode:codeCopy];
 
   return v29;
 }
 
-- (id)geocodedLocationWithLabel:(id)a3 address:(id)a4 latitude:(double)a5 longitude:(double)a6 accuracy:(double)a7 handle:(id)a8 country:(id)a9 state:(id)a10 city:(id)a11 thoroughfare:(id)a12 subThoroughfare:(id)a13 postalCode:(id)a14
+- (id)geocodedLocationWithLabel:(id)label address:(id)address latitude:(double)latitude longitude:(double)longitude accuracy:(double)accuracy handle:(id)handle country:(id)country state:(id)self0 city:(id)self1 thoroughfare:(id)self2 subThoroughfare:(id)self3 postalCode:(id)self4
 {
-  v40 = a14;
-  v39 = a13;
-  v37 = a12;
-  v36 = a11;
-  v35 = a10;
-  v34 = a9;
-  v33 = a8;
-  v24 = a4;
-  v25 = a3;
+  codeCopy = code;
+  subThoroughfareCopy = subThoroughfare;
+  thoroughfareCopy = thoroughfare;
+  cityCopy = city;
+  stateCopy = state;
+  countryCopy = country;
+  handleCopy = handle;
+  addressCopy = address;
+  labelCopy = label;
   v32 = [SGLocation alloc];
-  v26 = [(SGObject *)self recordId];
-  v38 = [(SGObject *)self origin];
-  v30 = [(SGLocation *)self locationType];
-  v42 = v25;
-  if (!v25)
+  recordId = [(SGObject *)self recordId];
+  origin = [(SGObject *)self origin];
+  locationType = [(SGLocation *)self locationType];
+  label = labelCopy;
+  if (!labelCopy)
   {
-    v42 = [(SGLocation *)self label];
+    label = [(SGLocation *)self label];
   }
 
-  v41 = v24;
-  if (!v24)
+  address = addressCopy;
+  if (!addressCopy)
   {
-    v41 = [(SGLocation *)self address];
+    address = [(SGLocation *)self address];
   }
 
-  v27 = [(SGLocation *)self airportCode];
+  airportCode = [(SGLocation *)self airportCode];
   [(SGLocation *)self quality];
-  v31 = [(SGLocation *)v32 initWithId:v26 origin:v38 type:v30 label:v42 address:v41 airportCode:v27 latitude:a5 longitude:a6 accuracy:a7 quality:v28 handle:v33 country:v34 state:v35 city:v36 thoroughfare:v37 subThoroughfare:v39 postalCode:v40];
+  v31 = [(SGLocation *)v32 initWithId:recordId origin:origin type:locationType label:label address:address airportCode:airportCode latitude:latitude longitude:longitude accuracy:accuracy quality:v28 handle:handleCopy country:countryCopy state:stateCopy city:cityCopy thoroughfare:thoroughfareCopy subThoroughfare:subThoroughfareCopy postalCode:codeCopy];
 
-  if (v24)
+  if (addressCopy)
   {
-    if (v25)
+    if (labelCopy)
     {
       goto LABEL_7;
     }
@@ -87,7 +87,7 @@
   else
   {
 
-    if (v25)
+    if (labelCopy)
     {
       goto LABEL_7;
     }
@@ -115,13 +115,13 @@ LABEL_7:
   return 1;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = compareCopy;
     quality = self->_quality;
     v7 = *(v5 + 9);
     if (quality >= v7)
@@ -163,25 +163,25 @@ LABEL_10:
   return self->_longitude - v5 + 32 * v5;
 }
 
-- (BOOL)isEqualToLocation:(id)a3
+- (BOOL)isEqualToLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v19.receiver = self;
   v19.super_class = SGLocation;
-  if (![(SGObject *)&v19 isEqualToSuggestion:v4])
+  if (![(SGObject *)&v19 isEqualToSuggestion:locationCopy])
   {
     goto LABEL_26;
   }
 
   if ([(SGLocation *)self isGeocoded])
   {
-    if (self->_latitude != v4[6] || self->_longitude != v4[7])
+    if (self->_latitude != locationCopy[6] || self->_longitude != locationCopy[7])
     {
       goto LABEL_26;
     }
   }
 
-  else if ([v4 isGeocoded])
+  else if ([locationCopy isGeocoded])
   {
 LABEL_26:
     v17 = 0;
@@ -190,7 +190,7 @@ LABEL_26:
 
   v5 = self->_address;
   v6 = v5;
-  if (v5 == *(v4 + 5))
+  if (v5 == *(locationCopy + 5))
   {
   }
 
@@ -206,7 +206,7 @@ LABEL_26:
 
   v8 = self->_airportCode;
   v9 = v8;
-  if (v8 == *(v4 + 10))
+  if (v8 == *(locationCopy + 10))
   {
   }
 
@@ -222,7 +222,7 @@ LABEL_26:
 
   v11 = self->_handle;
   v12 = v11;
-  if (v11 == *(v4 + 11))
+  if (v11 == *(locationCopy + 11))
   {
   }
 
@@ -238,7 +238,7 @@ LABEL_26:
 
   v14 = self->_label;
   v15 = v14;
-  if (v14 == *(v4 + 4))
+  if (v14 == *(locationCopy + 4))
   {
   }
 
@@ -252,121 +252,121 @@ LABEL_26:
     }
   }
 
-  if (self->_locationType != *(v4 + 3) || self->_accuracy != v4[8])
+  if (self->_locationType != *(locationCopy + 3) || self->_accuracy != locationCopy[8])
   {
     goto LABEL_26;
   }
 
-  v17 = self->_quality == v4[9];
+  v17 = self->_quality == locationCopy[9];
 LABEL_27:
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGLocation *)self isEqualToLocation:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGLocation *)self isEqualToLocation:v5];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SGLocation;
-  v4 = a3;
-  [(SGObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:self->_locationType forKey:{@"locationType", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_label forKey:@"label"];
-  [v4 encodeObject:self->_address forKey:@"address"];
-  [v4 encodeObject:self->_airportCode forKey:@"airportCode"];
-  [v4 encodeDouble:@"latitude" forKey:self->_latitude];
-  [v4 encodeDouble:@"longitude" forKey:self->_longitude];
-  [v4 encodeDouble:@"accuracy" forKey:self->_accuracy];
-  [v4 encodeDouble:@"quality" forKey:self->_quality];
-  [v4 encodeObject:self->_handle forKey:@"handle"];
-  [v4 encodeObject:self->_country forKey:@"country"];
-  [v4 encodeObject:self->_state forKey:@"state"];
-  [v4 encodeObject:self->_city forKey:@"city"];
-  [v4 encodeObject:self->_thoroughfare forKey:@"thoroughfare"];
-  [v4 encodeObject:self->_subThoroughfare forKey:@"subThoroughfare"];
-  [v4 encodeObject:self->_postalCode forKey:@"postalCode"];
+  coderCopy = coder;
+  [(SGObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:self->_locationType forKey:{@"locationType", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_label forKey:@"label"];
+  [coderCopy encodeObject:self->_address forKey:@"address"];
+  [coderCopy encodeObject:self->_airportCode forKey:@"airportCode"];
+  [coderCopy encodeDouble:@"latitude" forKey:self->_latitude];
+  [coderCopy encodeDouble:@"longitude" forKey:self->_longitude];
+  [coderCopy encodeDouble:@"accuracy" forKey:self->_accuracy];
+  [coderCopy encodeDouble:@"quality" forKey:self->_quality];
+  [coderCopy encodeObject:self->_handle forKey:@"handle"];
+  [coderCopy encodeObject:self->_country forKey:@"country"];
+  [coderCopy encodeObject:self->_state forKey:@"state"];
+  [coderCopy encodeObject:self->_city forKey:@"city"];
+  [coderCopy encodeObject:self->_thoroughfare forKey:@"thoroughfare"];
+  [coderCopy encodeObject:self->_subThoroughfare forKey:@"subThoroughfare"];
+  [coderCopy encodeObject:self->_postalCode forKey:@"postalCode"];
 }
 
-- (SGLocation)initWithCoder:(id)a3
+- (SGLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = SGLocation;
-  v5 = [(SGObject *)&v41 initWithCoder:v4];
+  v5 = [(SGObject *)&v41 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_locationType = [v4 decodeInt64ForKey:@"locationType"];
+    v5->_locationType = [coderCopy decodeInt64ForKey:@"locationType"];
     v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"label"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"label"];
     label = v5->_label;
     v5->_label = v7;
 
     v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"address"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"address"];
     address = v5->_address;
     v5->_address = v10;
 
     v12 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"airportCode"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"airportCode"];
     airportCode = v5->_airportCode;
     v5->_airportCode = v13;
 
-    [v4 decodeDoubleForKey:@"latitude"];
+    [coderCopy decodeDoubleForKey:@"latitude"];
     v5->_latitude = v15;
-    [v4 decodeDoubleForKey:@"longitude"];
+    [coderCopy decodeDoubleForKey:@"longitude"];
     v5->_longitude = v16;
-    [v4 decodeDoubleForKey:@"accuracy"];
+    [coderCopy decodeDoubleForKey:@"accuracy"];
     v5->_accuracy = v17;
-    [v4 decodeDoubleForKey:@"quality"];
+    [coderCopy decodeDoubleForKey:@"quality"];
     v5->_quality = v18;
     v19 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"handle"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"handle"];
     handle = v5->_handle;
     v5->_handle = v20;
 
     v22 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"country"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"country"];
     country = v5->_country;
     v5->_country = v23;
 
     v25 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"state"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"state"];
     state = v5->_state;
     v5->_state = v26;
 
     v28 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"city"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"city"];
     city = v5->_city;
     v5->_city = v29;
 
     v31 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"thoroughfare"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"thoroughfare"];
     thoroughfare = v5->_thoroughfare;
     v5->_thoroughfare = v32;
 
     v34 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"subThoroughfare"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"subThoroughfare"];
     subThoroughfare = v5->_subThoroughfare;
     v5->_subThoroughfare = v35;
 
     v37 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"postalCode"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"postalCode"];
     postalCode = v5->_postalCode;
     v5->_postalCode = v38;
   }
@@ -374,119 +374,119 @@ LABEL_27:
   return v5;
 }
 
-- (SGLocation)initWithId:(id)a3 origin:(id)a4 type:(unint64_t)a5 label:(id)a6 address:(id)a7 airportCode:(id)a8 latitude:(double)a9 longitude:(double)a10 accuracy:(double)a11 quality:(double)a12 handle:(id)a13 country:(id)a14 state:(id)a15 city:(id)a16 thoroughfare:(id)a17 subThoroughfare:(id)a18 postalCode:(id)a19
+- (SGLocation)initWithId:(id)id origin:(id)origin type:(unint64_t)type label:(id)label address:(id)address airportCode:(id)code latitude:(double)latitude longitude:(double)self0 accuracy:(double)self1 quality:(double)self2 handle:(id)self3 country:(id)self4 state:(id)self5 city:(id)self6 thoroughfare:(id)self7 subThoroughfare:(id)self8 postalCode:(id)self9
 {
-  v56 = a3;
-  v53 = a4;
-  v26 = a6;
-  v27 = a7;
-  v51 = a8;
-  v28 = a13;
-  v55 = a14;
-  v52 = a15;
-  v29 = a16;
-  v50 = a17;
-  v49 = a18;
-  v48 = a19;
-  if (fabs(a9) > 90.0)
+  idCopy = id;
+  originCopy = origin;
+  labelCopy = label;
+  addressCopy = address;
+  codeCopy = code;
+  handleCopy = handle;
+  countryCopy = country;
+  stateCopy = state;
+  cityCopy = city;
+  thoroughfareCopy = thoroughfare;
+  subThoroughfareCopy = subThoroughfare;
+  postalCodeCopy = postalCode;
+  if (fabs(latitude) > 90.0)
   {
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v41 handleFailureInMethod:a2 object:self file:@"SGLocation.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"isnan(latitude) || (-90 <= latitude && latitude <= 90)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGLocation.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"isnan(latitude) || (-90 <= latitude && latitude <= 90)"}];
   }
 
-  if (fabs(a10) > 180.0)
+  if (fabs(longitude) > 180.0)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"SGLocation.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"isnan(longitude) || (-180 <= longitude && longitude <= 180)"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGLocation.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"isnan(longitude) || (-180 <= longitude && longitude <= 180)"}];
   }
 
-  if ((*&a11 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
+  if ((*&accuracy & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"SGLocation.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"isfinite(accuracy)"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"SGLocation.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"isfinite(accuracy)"}];
   }
 
-  if ((*&a12 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
+  if ((*&quality & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
-    v44 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v44 handleFailureInMethod:a2 object:self file:@"SGLocation.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"isfinite(quality)"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"SGLocation.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"isfinite(quality)"}];
   }
 
   v57.receiver = self;
   v57.super_class = SGLocation;
-  v30 = [(SGObject *)&v57 initWithRecordId:v56 origin:v53];
+  v30 = [(SGObject *)&v57 initWithRecordId:idCopy origin:originCopy];
   v31 = v30;
   if (v30)
   {
-    v30->_locationType = a5;
-    v32 = [v26 copy];
+    v30->_locationType = type;
+    v32 = [labelCopy copy];
     label = v31->_label;
     v31->_label = v32;
 
-    v34 = [v27 copy];
+    v34 = [addressCopy copy];
     address = v31->_address;
     v31->_address = v34;
 
-    v36 = [v51 copy];
+    v36 = [codeCopy copy];
     airportCode = v31->_airportCode;
     v31->_airportCode = v36;
 
-    v31->_latitude = a9;
-    v31->_longitude = a10;
-    v31->_accuracy = a11;
-    v31->_quality = a12;
-    v38 = [v28 copy];
+    v31->_latitude = latitude;
+    v31->_longitude = longitude;
+    v31->_accuracy = accuracy;
+    v31->_quality = quality;
+    v38 = [handleCopy copy];
     handle = v31->_handle;
     v31->_handle = v38;
 
-    objc_storeStrong(&v31->_country, a14);
-    objc_storeStrong(&v31->_state, a15);
-    objc_storeStrong(&v31->_city, a16);
-    objc_storeStrong(&v31->_thoroughfare, a17);
-    objc_storeStrong(&v31->_subThoroughfare, a18);
-    objc_storeStrong(&v31->_postalCode, a19);
+    objc_storeStrong(&v31->_country, country);
+    objc_storeStrong(&v31->_state, state);
+    objc_storeStrong(&v31->_city, city);
+    objc_storeStrong(&v31->_thoroughfare, thoroughfare);
+    objc_storeStrong(&v31->_subThoroughfare, subThoroughfare);
+    objc_storeStrong(&v31->_postalCode, postalCode);
   }
 
   return v31;
 }
 
-- (SGLocation)initWithLocation:(id)a3 latitude:(double)a4 longitude:(double)a5 accuracy:(double)a6 handle:(id)a7 country:(id)a8 state:(id)a9 city:(id)a10 thoroughfare:(id)a11 subThoroughfare:(id)a12 postalCode:(id)a13
+- (SGLocation)initWithLocation:(id)location latitude:(double)latitude longitude:(double)longitude accuracy:(double)accuracy handle:(id)handle country:(id)country state:(id)state city:(id)self0 thoroughfare:(id)self1 subThoroughfare:(id)self2 postalCode:(id)self3
 {
-  v22 = a13;
-  v37 = a12;
-  v36 = a11;
-  v35 = a10;
-  v33 = a9;
-  v40 = a8;
-  v23 = a7;
-  v24 = a3;
-  v34 = [v24 recordId];
-  v32 = [v24 origin];
-  v31 = [v24 locationType];
-  v25 = [v24 label];
-  v26 = [v24 address];
-  v27 = [v24 airportCode];
-  [v24 quality];
+  codeCopy = code;
+  subThoroughfareCopy = subThoroughfare;
+  thoroughfareCopy = thoroughfare;
+  cityCopy = city;
+  stateCopy = state;
+  countryCopy = country;
+  handleCopy = handle;
+  locationCopy = location;
+  recordId = [locationCopy recordId];
+  origin = [locationCopy origin];
+  locationType = [locationCopy locationType];
+  label = [locationCopy label];
+  address = [locationCopy address];
+  airportCode = [locationCopy airportCode];
+  [locationCopy quality];
   v29 = v28;
 
-  v39 = [(SGLocation *)self initWithId:v34 origin:v32 type:v31 label:v25 address:v26 airportCode:v27 latitude:a4 longitude:a5 accuracy:a6 quality:v29 handle:v23 country:v40 state:v33 city:v35 thoroughfare:v36 subThoroughfare:v37 postalCode:v22];
+  v39 = [(SGLocation *)self initWithId:recordId origin:origin type:locationType label:label address:address airportCode:airportCode latitude:latitude longitude:longitude accuracy:accuracy quality:v29 handle:handleCopy country:countryCopy state:stateCopy city:cityCopy thoroughfare:thoroughfareCopy subThoroughfare:subThoroughfareCopy postalCode:codeCopy];
   return v39;
 }
 
-- (SGLocation)initWithLocation:(id)a3 latitude:(double)a4 longitude:(double)a5 accuracy:(double)a6 handle:(id)a7
+- (SGLocation)initWithLocation:(id)location latitude:(double)latitude longitude:(double)longitude accuracy:(double)accuracy handle:(id)handle
 {
-  v12 = a7;
-  v13 = a3;
-  v14 = [v13 recordId];
-  v15 = [v13 origin];
-  v16 = [v13 locationType];
-  v17 = [v13 label];
-  v18 = [v13 address];
-  v19 = [v13 airportCode];
-  [v13 quality];
+  handleCopy = handle;
+  locationCopy = location;
+  recordId = [locationCopy recordId];
+  origin = [locationCopy origin];
+  locationType = [locationCopy locationType];
+  label = [locationCopy label];
+  address = [locationCopy address];
+  airportCode = [locationCopy airportCode];
+  [locationCopy quality];
   v21 = v20;
 
-  v22 = [(SGLocation *)self initWithId:v14 origin:v15 type:v16 label:v17 address:v18 airportCode:v19 latitude:a4 longitude:a5 accuracy:a6 quality:v21 handle:v12];
+  v22 = [(SGLocation *)self initWithId:recordId origin:origin type:locationType label:label address:address airportCode:airportCode latitude:latitude longitude:longitude accuracy:accuracy quality:v21 handle:handleCopy];
   return v22;
 }
 

@@ -1,45 +1,45 @@
 @interface AKHighlightAppearanceHelper
-+ (id)borderColorForNoteOfHighlightAttributeTag:(int64_t)a3;
-+ (id)colorForHighlightAttributeWithTag:(int64_t)a3;
-+ (id)colorForNoteOfHighlightAttributeTag:(int64_t)a3;
-+ (int)annotationStyleForHighlightAttributeWithTag:(int64_t)a3;
-+ (int64_t)attributeTagForHighlightOfColor:(id)a3;
-+ (int64_t)attributeTagForNoteOfColor:(id)a3;
++ (id)borderColorForNoteOfHighlightAttributeTag:(int64_t)tag;
++ (id)colorForHighlightAttributeWithTag:(int64_t)tag;
++ (id)colorForNoteOfHighlightAttributeTag:(int64_t)tag;
++ (int)annotationStyleForHighlightAttributeWithTag:(int64_t)tag;
++ (int64_t)attributeTagForHighlightOfColor:(id)color;
++ (int64_t)attributeTagForNoteOfColor:(id)color;
 @end
 
 @implementation AKHighlightAppearanceHelper
 
-+ (int)annotationStyleForHighlightAttributeWithTag:(int64_t)a3
++ (int)annotationStyleForHighlightAttributeWithTag:(int64_t)tag
 {
-  if ((a3 - 765200) > 6)
+  if ((tag - 765200) > 6)
   {
     return 0;
   }
 
   else
   {
-    return dword_23F4D93E0[a3 - 765200];
+    return dword_23F4D93E0[tag - 765200];
   }
 }
 
-+ (id)colorForHighlightAttributeWithTag:(int64_t)a3
++ (id)colorForHighlightAttributeWithTag:(int64_t)tag
 {
-  v3 = 0;
-  if (a3 > 765202)
+  highlightColor = 0;
+  if (tag > 765202)
   {
-    if ((a3 - 765205) < 2)
+    if ((tag - 765205) < 2)
     {
       v4 = [AKAnnotationTheme underlineTheme:0];
     }
 
-    else if (a3 == 765203)
+    else if (tag == 765203)
     {
       v4 = [AKAnnotationTheme pinkTheme:0];
     }
 
     else
     {
-      if (a3 != 765204)
+      if (tag != 765204)
       {
         goto LABEL_15;
       }
@@ -50,7 +50,7 @@
 
   else
   {
-    switch(a3)
+    switch(tag)
     {
       case 765200:
         v4 = [AKAnnotationTheme yellowTheme:0];
@@ -67,18 +67,18 @@
   }
 
   v5 = v4;
-  v3 = [v4 highlightColor];
+  highlightColor = [v4 highlightColor];
 
 LABEL_15:
 
-  return v3;
+  return highlightColor;
 }
 
-+ (int64_t)attributeTagForHighlightOfColor:(id)a3
++ (int64_t)attributeTagForHighlightOfColor:(id)color
 {
   v14[12] = *MEMORY[0x277D85DE8];
   v4 = 763000;
-  v5 = a3;
+  colorCopy = color;
   v6 = 0;
   v14[1] = 0;
   v14[3] = 0;
@@ -94,8 +94,8 @@ LABEL_15:
   v14[11] = 0;
   do
   {
-    v7 = [a1 colorForHighlightAttributeWithTag:v14[v6]];
-    [v5 akDistanceFromColor:v7];
+    v7 = [self colorForHighlightAttributeWithTag:v14[v6]];
+    [colorCopy akDistanceFromColor:v7];
     v14[v6 + 1] = v8;
 
     v9 = v6 >= 10;
@@ -127,24 +127,24 @@ LABEL_15:
   return v4;
 }
 
-+ (id)colorForNoteOfHighlightAttributeTag:(int64_t)a3
++ (id)colorForNoteOfHighlightAttributeTag:(int64_t)tag
 {
-  v3 = 0;
-  if (a3 > 765202)
+  noteFillColor = 0;
+  if (tag > 765202)
   {
-    if ((a3 - 765205) < 2)
+    if ((tag - 765205) < 2)
     {
       v4 = [AKAnnotationTheme underlineTheme:0];
     }
 
-    else if (a3 == 765203)
+    else if (tag == 765203)
     {
       v4 = [AKAnnotationTheme pinkTheme:0];
     }
 
     else
     {
-      if (a3 != 765204)
+      if (tag != 765204)
       {
         goto LABEL_15;
       }
@@ -155,7 +155,7 @@ LABEL_15:
 
   else
   {
-    switch(a3)
+    switch(tag)
     {
       case 765200:
         v4 = [AKAnnotationTheme yellowTheme:0];
@@ -172,18 +172,18 @@ LABEL_15:
   }
 
   v5 = v4;
-  v3 = [v4 noteFillColor];
+  noteFillColor = [v4 noteFillColor];
 
 LABEL_15:
 
-  return v3;
+  return noteFillColor;
 }
 
-+ (int64_t)attributeTagForNoteOfColor:(id)a3
++ (int64_t)attributeTagForNoteOfColor:(id)color
 {
   v14[12] = *MEMORY[0x277D85DE8];
   v4 = 763000;
-  v5 = a3;
+  colorCopy = color;
   v6 = 0;
   v14[1] = 0;
   v14[3] = 0;
@@ -199,8 +199,8 @@ LABEL_15:
   v14[11] = 0;
   do
   {
-    v7 = [a1 colorForNoteOfHighlightAttributeTag:v14[v6]];
-    [v5 akDistanceFromColor:v7];
+    v7 = [self colorForNoteOfHighlightAttributeTag:v14[v6]];
+    [colorCopy akDistanceFromColor:v7];
     v14[v6 + 1] = v8;
 
     v9 = v6 >= 10;
@@ -232,24 +232,24 @@ LABEL_15:
   return v4;
 }
 
-+ (id)borderColorForNoteOfHighlightAttributeTag:(int64_t)a3
++ (id)borderColorForNoteOfHighlightAttributeTag:(int64_t)tag
 {
-  v3 = 0;
-  if (a3 > 765202)
+  noteBorderColor = 0;
+  if (tag > 765202)
   {
-    if ((a3 - 765205) < 2)
+    if ((tag - 765205) < 2)
     {
       v4 = [AKAnnotationTheme underlineTheme:0];
     }
 
-    else if (a3 == 765203)
+    else if (tag == 765203)
     {
       v4 = [AKAnnotationTheme pinkTheme:0];
     }
 
     else
     {
-      if (a3 != 765204)
+      if (tag != 765204)
       {
         goto LABEL_15;
       }
@@ -260,7 +260,7 @@ LABEL_15:
 
   else
   {
-    switch(a3)
+    switch(tag)
     {
       case 765200:
         v4 = [AKAnnotationTheme yellowTheme:0];
@@ -277,11 +277,11 @@ LABEL_15:
   }
 
   v5 = v4;
-  v3 = [v4 noteBorderColor];
+  noteBorderColor = [v4 noteBorderColor];
 
 LABEL_15:
 
-  return v3;
+  return noteBorderColor;
 }
 
 @end

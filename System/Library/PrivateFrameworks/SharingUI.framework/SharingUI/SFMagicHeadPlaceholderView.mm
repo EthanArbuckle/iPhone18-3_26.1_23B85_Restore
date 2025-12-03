@@ -1,24 +1,24 @@
 @interface SFMagicHeadPlaceholderView
-- (SFMagicHeadPlaceholderView)initWithFrame:(CGRect)a3;
+- (SFMagicHeadPlaceholderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAlpha:(double)a3;
-- (void)setTiltedTooFarColor:(BOOL)a3 useRaiseLabel:(BOOL)a4 useNoUWBCapableLabel:(BOOL)a5;
+- (void)setAlpha:(double)alpha;
+- (void)setTiltedTooFarColor:(BOOL)color useRaiseLabel:(BOOL)label useNoUWBCapableLabel:(BOOL)capableLabel;
 - (void)updateForCurrentState;
 @end
 
 @implementation SFMagicHeadPlaceholderView
 
-- (SFMagicHeadPlaceholderView)initWithFrame:(CGRect)a3
+- (SFMagicHeadPlaceholderView)initWithFrame:(CGRect)frame
 {
   v28.receiver = self;
   v28.super_class = SFMagicHeadPlaceholderView;
-  v3 = [(SFMagicHeadPlaceholderView *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFMagicHeadPlaceholderView *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(SFMagicHeadPlaceholderView *)v3 setBounds:0.0, 0.0, 128.0, 128.0];
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [(SFMagicHeadPlaceholderView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SFMagicHeadPlaceholderView *)v4 setBackgroundColor:clearColor];
 
     v6 = [SFMagicHeadCircleView alloc];
     [(SFMagicHeadPlaceholderView *)v4 bounds];
@@ -32,8 +32,8 @@
     backgroundVisualEffectView = v4->_backgroundVisualEffectView;
     v4->_backgroundVisualEffectView = v11;
 
-    v13 = [(UIVisualEffectView *)v4->_backgroundVisualEffectView contentView];
-    [v13 addSubview:v4->_backgroundView];
+    contentView = [(UIVisualEffectView *)v4->_backgroundVisualEffectView contentView];
+    [contentView addSubview:v4->_backgroundView];
 
     [(SFMagicHeadPlaceholderView *)v4 addSubview:v4->_backgroundVisualEffectView];
     v14 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -58,11 +58,11 @@
     contentVisualEffectView = v4->_contentVisualEffectView;
     v4->_contentVisualEffectView = v23;
 
-    v25 = [(UIVisualEffectView *)v4->_contentVisualEffectView contentView];
-    [v25 addSubview:v4->_label];
+    contentView2 = [(UIVisualEffectView *)v4->_contentVisualEffectView contentView];
+    [contentView2 addSubview:v4->_label];
 
-    v26 = [(UIVisualEffectView *)v4->_contentVisualEffectView contentView];
-    [v26 addSubview:v4->_imageView];
+    contentView3 = [(UIVisualEffectView *)v4->_contentVisualEffectView contentView];
+    [contentView3 addSubview:v4->_imageView];
 
     [(SFMagicHeadPlaceholderView *)v4 addSubview:v4->_contentVisualEffectView];
     [(SFMagicHeadPlaceholderView *)v4 updateForCurrentState];
@@ -97,12 +97,12 @@
   [(UIImageView *)self->_imageView setCenter:MidX, MidY];
 }
 
-- (void)setTiltedTooFarColor:(BOOL)a3 useRaiseLabel:(BOOL)a4 useNoUWBCapableLabel:(BOOL)a5
+- (void)setTiltedTooFarColor:(BOOL)color useRaiseLabel:(BOOL)label useNoUWBCapableLabel:(BOOL)capableLabel
 {
-  if (self->_titledTooFarColor != a3 || self->_useRaiseLabel != a4 || self->_useNoUWBCapableLabel != a5)
+  if (self->_titledTooFarColor != color || self->_useRaiseLabel != label || self->_useNoUWBCapableLabel != capableLabel)
   {
-    self->_titledTooFarColor = a3;
-    self->_useRaiseLabel = a4;
+    self->_titledTooFarColor = color;
+    self->_useRaiseLabel = label;
     self->_useNoUWBCapableLabel = 0;
     self->_canShowArrow = 1;
     [(SFMagicHeadPlaceholderView *)self updateForCurrentState];
@@ -111,13 +111,13 @@
 
 - (void)updateForCurrentState
 {
-  v3 = [MEMORY[0x1E69CDEB8] rootSettings];
-  v7 = [v3 magicHeadSettings];
+  rootSettings = [MEMORY[0x1E69CDEB8] rootSettings];
+  magicHeadSettings = [rootSettings magicHeadSettings];
 
   v4 = 1.0;
   if (self->_titledTooFarColor)
   {
-    [v7 guidanceTiltedTooFarAlpha];
+    [magicHeadSettings guidanceTiltedTooFarAlpha];
   }
 
   [(UIVisualEffectView *)self->_backgroundVisualEffectView setAlpha:v4];
@@ -145,12 +145,12 @@
   [(SFMagicHeadPlaceholderView *)self setNeedsLayout];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   [(UIVisualEffectView *)self->_backgroundVisualEffectView setAlpha:?];
   contentVisualEffectView = self->_contentVisualEffectView;
 
-  [(UIVisualEffectView *)contentVisualEffectView setAlpha:a3];
+  [(UIVisualEffectView *)contentVisualEffectView setAlpha:alpha];
 }
 
 @end

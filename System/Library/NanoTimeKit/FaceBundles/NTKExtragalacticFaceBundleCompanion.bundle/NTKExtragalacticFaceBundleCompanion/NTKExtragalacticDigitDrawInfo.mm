@@ -1,26 +1,26 @@
 @interface NTKExtragalacticDigitDrawInfo
-+ (id)drawInfoWithUnifiedSize:(CGSize)a3 paths:(id)a4;
++ (id)drawInfoWithUnifiedSize:(CGSize)size paths:(id)paths;
 - (CGSize)unifiedGlyphSize;
-- (NTKExtragalacticDigitDrawInfo)initWithUnifiedSize:(CGSize)a3 paths:(id)a4;
+- (NTKExtragalacticDigitDrawInfo)initWithUnifiedSize:(CGSize)size paths:(id)paths;
 @end
 
 @implementation NTKExtragalacticDigitDrawInfo
 
-+ (id)drawInfoWithUnifiedSize:(CGSize)a3 paths:(id)a4
++ (id)drawInfoWithUnifiedSize:(CGSize)size paths:(id)paths
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a4;
-  v7 = [[NTKExtragalacticDigitDrawInfo alloc] initWithUnifiedSize:v6 paths:width, height];
+  height = size.height;
+  width = size.width;
+  pathsCopy = paths;
+  height = [[NTKExtragalacticDigitDrawInfo alloc] initWithUnifiedSize:pathsCopy paths:width, height];
 
-  return v7;
+  return height;
 }
 
-- (NTKExtragalacticDigitDrawInfo)initWithUnifiedSize:(CGSize)a3 paths:(id)a4
+- (NTKExtragalacticDigitDrawInfo)initWithUnifiedSize:(CGSize)size paths:(id)paths
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a4;
+  height = size.height;
+  width = size.width;
+  pathsCopy = paths;
   v12.receiver = self;
   v12.super_class = NTKExtragalacticDigitDrawInfo;
   v9 = [(NTKExtragalacticDigitDrawInfo *)&v12 init];
@@ -29,7 +29,7 @@
   {
     v9->_unifiedGlyphSize.width = width;
     v9->_unifiedGlyphSize.height = height;
-    objc_storeStrong(&v9->_paths, a4);
+    objc_storeStrong(&v9->_paths, paths);
   }
 
   return v10;

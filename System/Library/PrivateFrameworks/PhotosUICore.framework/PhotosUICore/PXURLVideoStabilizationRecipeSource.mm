@@ -1,28 +1,28 @@
 @interface PXURLVideoStabilizationRecipeSource
-- (PXURLVideoStabilizationRecipeSource)initWithVideoURL:(id)a3;
-- (id)_loadStabilizationRecipe:(id *)a3 analysisType:(unint64_t *)a4;
+- (PXURLVideoStabilizationRecipeSource)initWithVideoURL:(id)l;
+- (id)_loadStabilizationRecipe:(id *)recipe analysisType:(unint64_t *)type;
 @end
 
 @implementation PXURLVideoStabilizationRecipeSource
 
-- (id)_loadStabilizationRecipe:(id *)a3 analysisType:(unint64_t *)a4
+- (id)_loadStabilizationRecipe:(id *)recipe analysisType:(unint64_t *)type
 {
   v73 = *MEMORY[0x1E69E9840];
   v52 = self->_inputVideoURL;
   v5 = [objc_alloc(MEMORY[0x1E69BE880]) initWithVideoURL:v52];
   PIPhotoEditHelperClass = getPIPhotoEditHelperClass();
-  v7 = [getPIPhotoEditHelperClass() newComposition];
-  v8 = [PIPhotoEditHelperClass newCompositionControllerWithComposition:v7];
+  newComposition = [getPIPhotoEditHelperClass() newComposition];
+  v8 = [PIPhotoEditHelperClass newCompositionControllerWithComposition:newComposition];
 
   v48 = v5;
-  v9 = [v5 source];
-  [v8 setSource:v9 mediaType:2];
+  source = [v5 source];
+  [v8 setSource:source mediaType:2];
 
   v10 = [v8 copy];
   v11 = getPIPhotoEditHelperClass();
   v49 = v10;
-  v12 = [v10 composition];
-  v13 = [v11 imagePropertiesRequestWithComposition:v12];
+  composition = [v10 composition];
+  v13 = [v11 imagePropertiesRequestWithComposition:composition];
 
   [v13 setName:@"PXStabilizedPlayerItemWithVideoURL-imageProperties"];
   v63 = 0;
@@ -31,8 +31,8 @@
   v47 = v15;
   if (v14)
   {
-    v16 = [v14 properties];
-    v17 = [v16 orientation];
+    properties = [v14 properties];
+    orientation = [properties orientation];
 
     v57 = 0;
     v58 = &v57;
@@ -53,22 +53,22 @@
     _Block_object_dispose(&v57, 8);
     if (!v18)
     {
-      v45 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v46 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NUOrientation SOFT_LINKED_NUOrientationIsValid(NUOrientation)"];
-      [v45 handleFailureInFunction:v46 file:@"PXVideoStabilizationRecipeSource.m" lineNumber:40 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v46 file:@"PXVideoStabilizationRecipeSource.m" lineNumber:40 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
 
-    if (v18(v17))
+    if (v18(orientation))
     {
-      [MEMORY[0x1E69BE360] compositionController:v8 setInputOrientation:v17];
+      [MEMORY[0x1E69BE360] compositionController:v8 setInputOrientation:orientation];
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 67109120;
-      DWORD1(buf) = v17;
+      DWORD1(buf) = orientation;
       _os_log_error_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "image orientation from the image properties is invalid: %d", &buf, 8u);
     }
 
@@ -107,34 +107,34 @@
   v24 = dispatch_group_create();
   if (([(PXVideoStabilizationRecipeSource *)self allowedAnalysisTypes]& 1) != 0)
   {
-    v25 = [(PXVideoStabilizationRecipeSource *)self allowsOnDemandPixelAnalysis];
+    allowsOnDemandPixelAnalysis = [(PXVideoStabilizationRecipeSource *)self allowsOnDemandPixelAnalysis];
   }
 
   else
   {
-    v25 = 0;
+    allowsOnDemandPixelAnalysis = 0;
   }
 
-  v26 = [(PXVideoStabilizationRecipeSource *)self allowedAnalysisTypes];
-  v27 = v25 | 2;
+  allowedAnalysisTypes = [(PXVideoStabilizationRecipeSource *)self allowedAnalysisTypes];
+  v27 = allowsOnDemandPixelAnalysis | 2;
   if (!v23)
   {
-    v27 = v25;
+    v27 = allowsOnDemandPixelAnalysis;
   }
 
-  if ((v26 & 2) != 0)
+  if ((allowedAnalysisTypes & 2) != 0)
   {
     v28 = v27;
   }
 
   else
   {
-    v28 = v25;
+    v28 = allowsOnDemandPixelAnalysis;
   }
 
   v29 = objc_alloc(getPIVideoStabilizeRequestClass());
-  v30 = [v8 composition];
-  v31 = [v29 initWithComposition:v30];
+  composition2 = [v8 composition];
+  v31 = [v29 initWithComposition:composition2];
   stabilizeRequest = self->_stabilizeRequest;
   self->_stabilizeRequest = v31;
 
@@ -159,7 +159,7 @@
   v36 = *(*(&buf + 1) + 40);
   if (v36)
   {
-    v37 = [v36 rawHomographies];
+    rawHomographies = [v36 rawHomographies];
   }
 
   else
@@ -174,22 +174,22 @@
 
     v38 = v58[5];
 
-    v37 = 0;
+    rawHomographies = 0;
     v20 = v38;
   }
 
-  if (a3)
+  if (recipe)
   {
     v39 = v20;
-    *a3 = v20;
+    *recipe = v20;
   }
 
-  if (a4)
+  if (type)
   {
-    v40 = [*(*(&buf + 1) + 40) analysisType];
-    if (v40 <= 2)
+    analysisType = [*(*(&buf + 1) + 40) analysisType];
+    if (analysisType <= 2)
     {
-      *a4 = v40;
+      *type = analysisType;
     }
   }
 
@@ -202,7 +202,7 @@
   _Block_object_dispose(&v57, 8);
   _Block_object_dispose(&buf, 8);
 
-  return v37;
+  return rawHomographies;
 }
 
 void __77__PXURLVideoStabilizationRecipeSource__loadStabilizationRecipe_analysisType___block_invoke(uint64_t a1, void *a2)
@@ -218,15 +218,15 @@ void __77__PXURLVideoStabilizationRecipeSource__loadStabilizationRecipe_analysis
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (PXURLVideoStabilizationRecipeSource)initWithVideoURL:(id)a3
+- (PXURLVideoStabilizationRecipeSource)initWithVideoURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = PXURLVideoStabilizationRecipeSource;
   v5 = [(PXVideoStabilizationRecipeSource *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     inputVideoURL = v5->_inputVideoURL;
     v5->_inputVideoURL = v6;
   }

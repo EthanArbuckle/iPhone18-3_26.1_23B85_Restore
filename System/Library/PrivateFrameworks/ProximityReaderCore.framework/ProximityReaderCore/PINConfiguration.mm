@@ -1,15 +1,15 @@
 @interface PINConfiguration
 - (_TtC19ProximityReaderCore16PINConfiguration)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PINConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  PINConfiguration.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  PINConfiguration.encode(with:)(coderCopy);
 }
 
 - (_TtC19ProximityReaderCore16PINConfiguration)init

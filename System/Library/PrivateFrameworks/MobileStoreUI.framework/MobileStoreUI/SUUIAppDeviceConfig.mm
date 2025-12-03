@@ -7,8 +7,8 @@
 
 - (CGSize)screenSize
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
@@ -21,12 +21,12 @@
 
 - (id)systemLanguage
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 arrayForKey:@"AppleLanguages"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults arrayForKey:@"AppleLanguages"];
 
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 @end

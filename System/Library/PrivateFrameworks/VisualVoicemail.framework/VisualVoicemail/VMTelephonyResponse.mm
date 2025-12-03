@@ -1,15 +1,15 @@
 @interface VMTelephonyResponse
 + (id)unarchivedObjectClasses;
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToResponse:(id)a3;
++ (id)unarchivedObjectFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToResponse:(id)response;
 - (NSString)debugDescription;
 - (VMTelephonyResponse)init;
-- (VMTelephonyResponse)initWithCoder:(id)a3;
-- (VMTelephonyResponse)initWithSubscription:(id)a3 error:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VMTelephonyResponse)initWithCoder:(id)coder;
+- (VMTelephonyResponse)initWithSubscription:(id)subscription error:(id)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VMTelephonyResponse
@@ -21,47 +21,47 @@
   return 0;
 }
 
-- (VMTelephonyResponse)initWithSubscription:(id)a3 error:(id)a4
+- (VMTelephonyResponse)initWithSubscription:(id)subscription error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  subscriptionCopy = subscription;
+  errorCopy = error;
   v12.receiver = self;
   v12.super_class = VMTelephonyResponse;
   v9 = [(VMTelephonyResponse *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_error, a4);
-    objc_storeStrong(&v10->_subscription, a3);
+    objc_storeStrong(&v9->_error, error);
+    objc_storeStrong(&v10->_subscription, subscription);
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   error = self->_error;
   subscription = self->_subscription;
 
   return [v4 initWithSubscription:subscription error:error];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   error = self->_error;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector("error");
-  [v5 encodeObject:error forKey:v6];
+  [coderCopy encodeObject:error forKey:v6];
 
   subscription = self->_subscription;
   v8 = NSStringFromSelector("subscription");
-  [v5 encodeObject:subscription forKey:v8];
+  [coderCopy encodeObject:subscription forKey:v8];
 }
 
-- (VMTelephonyResponse)initWithCoder:(id)a3
+- (VMTelephonyResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = VMTelephonyResponse;
   v5 = [(VMTelephonyResponse *)&v15 init];
@@ -69,13 +69,13 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector("error");
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     error = v5->_error;
     v5->_error = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector("subscription");
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     subscription = v5->_subscription;
     v5->_subscription = v12;
   }
@@ -88,13 +88,13 @@
   v3 = objc_alloc_init(NSMutableString);
   [v3 appendFormat:@"<%@ %p ", objc_opt_class(), self];
   v4 = NSStringFromSelector("subscription");
-  v5 = [(VMTelephonyResponse *)self subscription];
-  [v3 appendFormat:@"%@=%@", v4, v5];
+  subscription = [(VMTelephonyResponse *)self subscription];
+  [v3 appendFormat:@"%@=%@", v4, subscription];
 
   [v3 appendFormat:@", "];
   v6 = NSStringFromSelector("error");
-  v7 = [(VMTelephonyResponse *)self error];
-  [v3 appendFormat:@"%@=%@", v6, v7];
+  error = [(VMTelephonyResponse *)self error];
+  [v3 appendFormat:@"%@=%@", v6, error];
 
   [v3 appendFormat:@">"];
   v8 = [v3 copy];
@@ -104,18 +104,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(VMTelephonyResponse *)self error];
-  v4 = [v3 hash];
-  v5 = [(VMTelephonyResponse *)self subscription];
-  v6 = [v5 hash];
+  error = [(VMTelephonyResponse *)self error];
+  v4 = [error hash];
+  subscription = [(VMTelephonyResponse *)self subscription];
+  v6 = [subscription hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -125,7 +125,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(VMTelephonyResponse *)self isEqualToResponse:v4];
+      v5 = [(VMTelephonyResponse *)self isEqualToResponse:equalCopy];
     }
 
     else
@@ -137,23 +137,23 @@
   return v5;
 }
 
-- (BOOL)isEqualToResponse:(id)a3
+- (BOOL)isEqualToResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(VMTelephonyResponse *)self error];
-  v6 = [v4 error];
-  v7 = v5;
-  v8 = v6;
+  responseCopy = response;
+  error = [(VMTelephonyResponse *)self error];
+  error2 = [responseCopy error];
+  v7 = error;
+  v8 = error2;
   v9 = v8;
   if (!(v7 | v8))
   {
 LABEL_4:
-    v11 = [(VMTelephonyResponse *)self subscription];
-    v12 = [v4 subscription];
-    v13 = (v11 | v12) == 0;
-    if (v12)
+    subscription = [(VMTelephonyResponse *)self subscription];
+    subscription2 = [responseCopy subscription];
+    v13 = (subscription | subscription2) == 0;
+    if (subscription2)
     {
-      v13 = [v11 isEqual:v12];
+      v13 = [subscription isEqual:subscription2];
     }
 
     goto LABEL_8;
@@ -173,7 +173,7 @@ LABEL_4:
   }
 
   v13 = 0;
-  v11 = v7;
+  subscription = v7;
 LABEL_8:
 
 LABEL_9:
@@ -188,11 +188,11 @@ LABEL_9:
   return [NSSet setWithObjects:v2, v3, v4, objc_opt_class(), 0];
 }
 
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4
++ (id)unarchivedObjectFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 unarchivedObjectClasses];
-  v8 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v7 fromData:v6 error:a4];
+  dataCopy = data;
+  unarchivedObjectClasses = [self unarchivedObjectClasses];
+  v8 = [NSKeyedUnarchiver unarchivedObjectOfClasses:unarchivedObjectClasses fromData:dataCopy error:error];
 
   return v8;
 }

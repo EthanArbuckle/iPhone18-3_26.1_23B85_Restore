@@ -1,6 +1,6 @@
 @interface _NMSDispatchQueue
 - (_NMSDispatchQueue)init;
-- (_NMSDispatchQueue)initWithName:(id)a3 attributes:(id)a4 target:(id)a5;
+- (_NMSDispatchQueue)initWithName:(id)name attributes:(id)attributes target:(id)target;
 - (void)dealloc;
 - (void)resume;
 - (void)suspend;
@@ -16,17 +16,17 @@
   return v4;
 }
 
-- (_NMSDispatchQueue)initWithName:(id)a3 attributes:(id)a4 target:(id)a5
+- (_NMSDispatchQueue)initWithName:(id)name attributes:(id)attributes target:(id)target
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  attributesCopy = attributes;
+  targetCopy = target;
   v16.receiver = self;
   v16.super_class = _NMSDispatchQueue;
   v11 = [(_NMSDispatchQueue *)&v16 init];
   if (v11)
   {
-    v12 = dispatch_queue_create_with_target_V2([v8 UTF8String], v9, v10);
+    v12 = dispatch_queue_create_with_target_V2([nameCopy UTF8String], attributesCopy, targetCopy);
     q = v11->_q;
     v11->_q = v12;
 

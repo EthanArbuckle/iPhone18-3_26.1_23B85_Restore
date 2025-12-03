@@ -1,91 +1,91 @@
 @interface MTPAFItemActivity
-- (void)populatePlaylistAndItemData:(id)a3;
-- (void)startAtOverallPosition:(unint64_t)a3 triggerType:(id)a4 reason:(id)a5 eventData:(id)a6;
-- (void)stopAtOverallPosition:(unint64_t)a3 triggerType:(id)a4 reason:(id)a5 eventData:(id)a6;
+- (void)populatePlaylistAndItemData:(id)data;
+- (void)startAtOverallPosition:(unint64_t)position triggerType:(id)type reason:(id)reason eventData:(id)data;
+- (void)stopAtOverallPosition:(unint64_t)position triggerType:(id)type reason:(id)reason eventData:(id)data;
 @end
 
 @implementation MTPAFItemActivity
 
-- (void)startAtOverallPosition:(unint64_t)a3 triggerType:(id)a4 reason:(id)a5 eventData:(id)a6
+- (void)startAtOverallPosition:(unint64_t)position triggerType:(id)type reason:(id)reason eventData:(id)data
 {
-  v21 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(MTPAFItemActivity *)self item];
-  v13 = [v12 start];
+  dataCopy = data;
+  reasonCopy = reason;
+  typeCopy = type;
+  item = [(MTPAFItemActivity *)self item];
+  start = [item start];
 
-  if (v13 > a3)
+  if (start > position)
   {
-    v14 = [(MTPAFItemActivity *)self item];
-    a3 = [v14 start];
+    item2 = [(MTPAFItemActivity *)self item];
+    position = [item2 start];
   }
 
-  v15 = [(MTPAFItemActivity *)self item];
-  v16 = [v15 start];
+  item3 = [(MTPAFItemActivity *)self item];
+  start2 = [item3 start];
 
-  v17 = [MEMORY[0x277CBEB18] array];
-  [(MTPAFItemActivity *)self populatePlaylistAndItemData:v17];
-  if (v21)
+  array = [MEMORY[0x277CBEB18] array];
+  [(MTPAFItemActivity *)self populatePlaylistAndItemData:array];
+  if (dataCopy)
   {
-    [v17 addObjectsFromArray:v21];
+    [array addObjectsFromArray:dataCopy];
   }
 
-  v18 = [(MTPAFItemActivity *)self startEventHandler];
-  v19 = [v18 metricsDataForStartActionWithPosition:a3 - v16 overallPosition:a3 type:v11 reason:v10 eventData:v17];
+  startEventHandler = [(MTPAFItemActivity *)self startEventHandler];
+  v19 = [startEventHandler metricsDataForStartActionWithPosition:position - start2 overallPosition:position type:typeCopy reason:reasonCopy eventData:array];
 
-  v20 = [v19 recordEvent];
+  recordEvent = [v19 recordEvent];
   [(MTPAFItemActivity *)self setStartMetricsData:v19];
 }
 
-- (void)stopAtOverallPosition:(unint64_t)a3 triggerType:(id)a4 reason:(id)a5 eventData:(id)a6
+- (void)stopAtOverallPosition:(unint64_t)position triggerType:(id)type reason:(id)reason eventData:(id)data
 {
-  v22 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(MTPAFItemActivity *)self item];
-  v13 = [v12 end];
+  dataCopy = data;
+  reasonCopy = reason;
+  typeCopy = type;
+  item = [(MTPAFItemActivity *)self item];
+  v13 = [item end];
 
-  if (v13 < a3)
+  if (v13 < position)
   {
-    v14 = [(MTPAFItemActivity *)self item];
-    a3 = [v14 end];
+    item2 = [(MTPAFItemActivity *)self item];
+    position = [item2 end];
   }
 
-  v15 = [(MTPAFItemActivity *)self item];
-  v16 = [v15 start];
+  item3 = [(MTPAFItemActivity *)self item];
+  start = [item3 start];
 
-  v17 = [MEMORY[0x277CBEB18] array];
-  [(MTPAFItemActivity *)self populatePlaylistAndItemData:v17];
-  if (v22)
+  array = [MEMORY[0x277CBEB18] array];
+  [(MTPAFItemActivity *)self populatePlaylistAndItemData:array];
+  if (dataCopy)
   {
-    [v17 addObjectsFromArray:v22];
+    [array addObjectsFromArray:dataCopy];
   }
 
-  v18 = [(MTPAFItemActivity *)self stopEventHandler];
-  v19 = [(MTPAFItemActivity *)self startMetricsData];
-  v20 = [v18 metricsDataForStopActionWithPosition:a3 - v16 overallPosition:a3 type:v11 reason:v10 startMetricsData:v19 eventData:v17];
+  stopEventHandler = [(MTPAFItemActivity *)self stopEventHandler];
+  startMetricsData = [(MTPAFItemActivity *)self startMetricsData];
+  v20 = [stopEventHandler metricsDataForStopActionWithPosition:position - start overallPosition:position type:typeCopy reason:reasonCopy startMetricsData:startMetricsData eventData:array];
 
-  v21 = [v20 recordEvent];
+  recordEvent = [v20 recordEvent];
   [(MTPAFItemActivity *)self setStopMetricsData:v20];
 }
 
-- (void)populatePlaylistAndItemData:(id)a3
+- (void)populatePlaylistAndItemData:(id)data
 {
-  v8 = a3;
-  v4 = [(MTPAFItemActivity *)self playlist];
-  v5 = [v4 metricsData];
+  dataCopy = data;
+  playlist = [(MTPAFItemActivity *)self playlist];
+  metricsData = [playlist metricsData];
 
-  if (v5)
+  if (metricsData)
   {
-    [v8 addObjectsFromArray:v5];
+    [dataCopy addObjectsFromArray:metricsData];
   }
 
-  v6 = [(MTPAFItemActivity *)self item];
-  v7 = [v6 metricsData];
+  item = [(MTPAFItemActivity *)self item];
+  metricsData2 = [item metricsData];
 
-  if (v7)
+  if (metricsData2)
   {
-    [v8 addObjectsFromArray:v7];
+    [dataCopy addObjectsFromArray:metricsData2];
   }
 }
 

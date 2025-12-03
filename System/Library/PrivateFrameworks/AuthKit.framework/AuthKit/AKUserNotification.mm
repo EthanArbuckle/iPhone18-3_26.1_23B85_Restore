@@ -1,53 +1,53 @@
 @interface AKUserNotification
-- (AKUserNotification)initWithPushMessage:(id)a3;
+- (AKUserNotification)initWithPushMessage:(id)message;
 - (id)description;
 @end
 
 @implementation AKUserNotification
 
-- (AKUserNotification)initWithPushMessage:(id)a3
+- (AKUserNotification)initWithPushMessage:(id)message
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v20;
-  v20 = 0;
+  objc_storeStrong(location, message);
+  v3 = selfCopy;
+  selfCopy = 0;
   v18.receiver = v3;
   v18.super_class = AKUserNotification;
-  v20 = [(AKUserNotification *)&v18 init];
-  objc_storeStrong(&v20, v20);
-  if (v20)
+  selfCopy = [(AKUserNotification *)&v18 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    v4 = [location[0] messageId];
-    identifier = v20->_identifier;
-    v20->_identifier = v4;
+    messageId = [location[0] messageId];
+    identifier = selfCopy->_identifier;
+    selfCopy->_identifier = messageId;
     _objc_release(identifier);
-    v6 = [location[0] alertTitle];
-    titleKey = v20->_titleKey;
-    v20->_titleKey = v6;
+    alertTitle = [location[0] alertTitle];
+    titleKey = selfCopy->_titleKey;
+    selfCopy->_titleKey = alertTitle;
     _objc_release(titleKey);
-    v8 = [location[0] secondaryTitle];
-    subTitleKey = v20->_subTitleKey;
-    v20->_subTitleKey = v8;
+    secondaryTitle = [location[0] secondaryTitle];
+    subTitleKey = selfCopy->_subTitleKey;
+    selfCopy->_subTitleKey = secondaryTitle;
     _objc_release(subTitleKey);
-    v10 = [location[0] alertBody];
-    bodyKey = v20->_bodyKey;
-    v20->_bodyKey = v10;
+    alertBody = [location[0] alertBody];
+    bodyKey = selfCopy->_bodyKey;
+    selfCopy->_bodyKey = alertBody;
     _objc_release(bodyKey);
-    v12 = [location[0] defaultButtonTitle];
-    actionButtonText = v20->_actionButtonText;
-    v20->_actionButtonText = v12;
+    defaultButtonTitle = [location[0] defaultButtonTitle];
+    actionButtonText = selfCopy->_actionButtonText;
+    selfCopy->_actionButtonText = defaultButtonTitle;
     _objc_release(actionButtonText);
-    v14 = [location[0] alternateButtonTitle];
-    otherButtonText = v20->_otherButtonText;
-    v20->_otherButtonText = v14;
+    alternateButtonTitle = [location[0] alternateButtonTitle];
+    otherButtonText = selfCopy->_otherButtonText;
+    selfCopy->_otherButtonText = alternateButtonTitle;
     _objc_release(otherButtonText);
   }
 
-  v17 = _objc_retain(v20);
+  v17 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v17;
 }
 

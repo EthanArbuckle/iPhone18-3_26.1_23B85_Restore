@@ -2,12 +2,12 @@
 - (BOOL)isSelected;
 - (CKTapbackViewDelegate)delegate;
 - (UIEdgeInsets)platterEdgeInsets;
-- (_TtC7ChatKit16TapbackAssetView)initWithFrame:(CGRect)a3;
-- (void)configureForTapback:(id)a3 isSelected:(BOOL)a4;
+- (_TtC7ChatKit16TapbackAssetView)initWithFrame:(CGRect)frame;
+- (void)configureForTapback:(id)tapback isSelected:(BOOL)selected;
 - (void)layoutSubviews;
 - (void)performViewControllerAppearingAnimation;
 - (void)performViewControllerDismissingAnimation;
-- (void)setIsSelected:(BOOL)a3;
+- (void)setIsSelected:(BOOL)selected;
 @end
 
 @implementation TapbackAssetView
@@ -40,11 +40,11 @@
   return *(self + v3);
 }
 
-- (void)setIsSelected:(BOOL)a3
+- (void)setIsSelected:(BOOL)selected
 {
   v5 = OBJC_IVAR____TtC7ChatKit16TapbackAssetView_isSelected;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = selected;
 }
 
 - (void)layoutSubviews
@@ -62,12 +62,12 @@
   }
 }
 
-- (_TtC7ChatKit16TapbackAssetView)initWithFrame:(CGRect)a3
+- (_TtC7ChatKit16TapbackAssetView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(self + OBJC_IVAR____TtC7ChatKit16TapbackAssetView_attributionScaleFactor) = 0x3FF0000000000000;
   v8 = (self + OBJC_IVAR____TtC7ChatKit16TapbackAssetView_platterEdgeInsets);
   v9 = *(MEMORY[0x1E69DDCE0] + 16);
@@ -82,11 +82,11 @@
   return [(TapbackAssetView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (void)configureForTapback:(id)a3 isSelected:(BOOL)a4
+- (void)configureForTapback:(id)tapback isSelected:(BOOL)selected
 {
-  v5 = a3;
-  v6 = self;
-  [v5 associatedMessageType];
+  tapbackCopy = tapback;
+  selfCopy = self;
+  [tapbackCopy associatedMessageType];
   _s7ChatKit16TapbackAssetViewC04loadD024forAssociatedMessageTypeySo012IMAssociatediJ0V_tF_0();
 }
 
@@ -104,7 +104,7 @@
 
 - (void)performViewControllerDismissingAnimation
 {
-  v2 = self;
+  selfCopy = self;
   TapbackAssetView.performViewControllerDismissingAnimation()();
 }
 

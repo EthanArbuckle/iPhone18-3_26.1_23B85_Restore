@@ -1,33 +1,33 @@
 @interface HDAttachmentManager
-- (BOOL)_attachmentReferencesForObjectIdentifier:(uint64_t)a3 schemaIdentifier:(uint64_t)a4 transaction:(uint64_t)a5 error:(void *)a6 enumerationHandler:;
-- (BOOL)attachmentReferencesForAttachment:(id)a3 error:(id *)a4 enumerationHandler:(id)a5;
-- (BOOL)attachmentReferencesForObjectIdentifier:(id)a3 schemaIdentifier:(id)a4 error:(id *)a5 enumerationHandler:(id)a6;
-- (BOOL)insertAttachmentReferences:(id)a3 attachment:(id)a4 error:(id *)a5;
-- (BOOL)insertAttachmentReferences:(id)a3 attachment:(id)a4 fileData:(id)a5 encrypt:(BOOL)a6 error:(id *)a7;
-- (BOOL)insertAttachmentReferences:(id)a3 attachment:(id)a4 fileHandle:(id)a5 encrypt:(BOOL)a6 error:(id *)a7;
-- (BOOL)readAuthorizationForObjectIdentifier:(id)a3 schemaIdentifier:(id)a4 client:(id)a5 error:(id *)a6;
-- (BOOL)removeAllReferencesWithAttachmentIdentifier:(id)a3 objectIdentifier:(id)a4 schemaIdentifier:(id)a5 error:(id *)a6;
-- (BOOL)removeAttachmentReferences:(id)a3 error:(id *)a4;
-- (BOOL)removeAttachmentReferencesWithObjectIdentifier:(id)a3 schemaIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)removeAttachmentReferencesWithObjectIdentifier:(id)a3 schemaIdentifier:(id)a4 transaction:(id)a5 error:(id *)a6;
-- (BOOL)replaceReferencesWithObjectIdentifier:(id)a3 replacementIdentifier:(id)a4 schemaIdentifier:(id)a5 error:(id *)a6;
-- (BOOL)writeAuthorizationForObjectIdentifier:(id)a3 schemaIdentifier:(id)a4 client:(id)a5 error:(id *)a6;
+- (BOOL)_attachmentReferencesForObjectIdentifier:(uint64_t)identifier schemaIdentifier:(uint64_t)schemaIdentifier transaction:(uint64_t)transaction error:(void *)error enumerationHandler:;
+- (BOOL)attachmentReferencesForAttachment:(id)attachment error:(id *)error enumerationHandler:(id)handler;
+- (BOOL)attachmentReferencesForObjectIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier error:(id *)error enumerationHandler:(id)handler;
+- (BOOL)insertAttachmentReferences:(id)references attachment:(id)attachment error:(id *)error;
+- (BOOL)insertAttachmentReferences:(id)references attachment:(id)attachment fileData:(id)data encrypt:(BOOL)encrypt error:(id *)error;
+- (BOOL)insertAttachmentReferences:(id)references attachment:(id)attachment fileHandle:(id)handle encrypt:(BOOL)encrypt error:(id *)error;
+- (BOOL)readAuthorizationForObjectIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier client:(id)client error:(id *)error;
+- (BOOL)removeAllReferencesWithAttachmentIdentifier:(id)identifier objectIdentifier:(id)objectIdentifier schemaIdentifier:(id)schemaIdentifier error:(id *)error;
+- (BOOL)removeAttachmentReferences:(id)references error:(id *)error;
+- (BOOL)removeAttachmentReferencesWithObjectIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier error:(id *)error;
+- (BOOL)removeAttachmentReferencesWithObjectIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier transaction:(id)transaction error:(id *)error;
+- (BOOL)replaceReferencesWithObjectIdentifier:(id)identifier replacementIdentifier:(id)replacementIdentifier schemaIdentifier:(id)schemaIdentifier error:(id *)error;
+- (BOOL)writeAuthorizationForObjectIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier client:(id)client error:(id *)error;
 - (HDAttachmentManager)init;
-- (HDAttachmentManager)initWithProfile:(id)a3;
-- (id)_addReferenceWithAttachment:(id)a3 toObjectWithIdentifier:(id)a4 schemaIdentifier:(id)a5 metadata:(id)a6 error:(id *)a7;
-- (id)addAttachmentWithName:(id)a3 contentTypeIdentifier:(id)a4 fileHandle:(id)a5 toObjectWithIdentifier:(id)a6 schemaIdentifier:(id)a7 attachmentMetadata:(id)a8 referenceMetadata:(id)a9 error:(id *)a10;
-- (id)addReferenceWithAttachment:(id)a3 toObjectWithIdentifier:(id)a4 schemaIdentifier:(id)a5 metadata:(id)a6 error:(id *)a7;
-- (id)fileHandleForAttachment:(id)a3 error:(id *)a4;
-- (id)readerForAttachment:(id)a3 error:(id *)a4;
+- (HDAttachmentManager)initWithProfile:(id)profile;
+- (id)_addReferenceWithAttachment:(id)attachment toObjectWithIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier metadata:(id)metadata error:(id *)error;
+- (id)addAttachmentWithName:(id)name contentTypeIdentifier:(id)identifier fileHandle:(id)handle toObjectWithIdentifier:(id)withIdentifier schemaIdentifier:(id)schemaIdentifier attachmentMetadata:(id)metadata referenceMetadata:(id)referenceMetadata error:(id *)self0;
+- (id)addReferenceWithAttachment:(id)attachment toObjectWithIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier metadata:(id)metadata error:(id *)error;
+- (id)fileHandleForAttachment:(id)attachment error:(id *)error;
+- (id)readerForAttachment:(id)attachment error:(id *)error;
 - (id)schemaProviderClasses;
-- (id)schemaProviderForIdentifier:(id)a3 error:(id *)a4;
-- (int64_t)supportedSchemaVersionForReference:(id)a3;
-- (uint64_t)_validateAttachment:(void *)a3 toObjectWithIdentifier:(uint64_t)a4 schemaIdentifier:(void *)a5 metadata:(uint64_t)a6 error:;
-- (uint64_t)createFileDirectoriesWithError:(void *)a1;
+- (id)schemaProviderForIdentifier:(id)identifier error:(id *)error;
+- (int64_t)supportedSchemaVersionForReference:(id)reference;
+- (uint64_t)_validateAttachment:(void *)attachment toObjectWithIdentifier:(uint64_t)identifier schemaIdentifier:(void *)schemaIdentifier metadata:(uint64_t)metadata error:;
+- (uint64_t)createFileDirectoriesWithError:(void *)error;
 - (void)_cleanupAttachmentsFolder;
 - (void)dealloc;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)reportDailyAnalyticsWithCoordinator:(id)a3 completion:(id)a4;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)reportDailyAnalyticsWithCoordinator:(id)coordinator completion:(id)completion;
 - (void)runMaintenanceOperationIfNeeded;
 @end
 
@@ -54,31 +54,31 @@
   return 0;
 }
 
-- (HDAttachmentManager)initWithProfile:(id)a3
+- (HDAttachmentManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v19.receiver = self;
   v19.super_class = HDAttachmentManager;
   v5 = [(HDAttachmentManager *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_profile, v4);
-    [v4 registerProfileReadyObserver:v6 queue:0];
+    v7 = objc_storeWeak(&v5->_profile, profileCopy);
+    [profileCopy registerProfileReadyObserver:v6 queue:0];
 
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     schemaProvidersByIdentifier = v6->_schemaProvidersByIdentifier;
     v6->_schemaProvidersByIdentifier = v8;
 
     WeakRetained = objc_loadWeakRetained(&v6->_profile);
-    v11 = [WeakRetained directoryPath];
-    v12 = [v11 stringByAppendingPathComponent:@"Files"];
+    directoryPath = [WeakRetained directoryPath];
+    v12 = [directoryPath stringByAppendingPathComponent:@"Files"];
     filesDirectoryPath = v6->_filesDirectoryPath;
     v6->_filesDirectoryPath = v12;
 
     v14 = objc_loadWeakRetained(&v6->_profile);
-    v15 = [v14 directoryPath];
-    v16 = [v15 stringByAppendingPathComponent:@"UnconfirmedFiles"];
+    directoryPath2 = [v14 directoryPath];
+    v16 = [directoryPath2 stringByAppendingPathComponent:@"UnconfirmedFiles"];
     unconfirmedFilesDirectoryPath = v6->_unconfirmedFilesDirectoryPath;
     v6->_unconfirmedFilesDirectoryPath = v16;
   }
@@ -89,35 +89,35 @@
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained daemon];
-  v5 = [v4 analyticsSubmissionCoordinator];
-  [v5 removeObserver:self];
+  daemon = [WeakRetained daemon];
+  analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+  [analyticsSubmissionCoordinator removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = HDAttachmentManager;
   [(HDAttachmentManager *)&v6 dealloc];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
-  v5 = [a3 daemon];
-  v4 = [v5 analyticsSubmissionCoordinator];
-  [v4 addObserver:self queue:0];
+  daemon = [ready daemon];
+  analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+  [analyticsSubmissionCoordinator addObserver:self queue:0];
 }
 
-- (uint64_t)createFileDirectoriesWithError:(void *)a1
+- (uint64_t)createFileDirectoriesWithError:(void *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!error)
   {
     v9 = 0;
     goto LABEL_17;
   }
 
   v4 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v5 = [a1 filesDirectoryURL];
+  filesDirectoryURL = [error filesDirectoryURL];
   v20 = 0;
-  v6 = [v4 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v20];
+  v6 = [v4 createDirectoryAtURL:filesDirectoryURL withIntermediateDirectories:1 attributes:0 error:&v20];
   v7 = v20;
 
   if ((v6 & 1) == 0)
@@ -126,9 +126,9 @@
     v13 = HKLogInfrastructure();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v17 = [a1 filesDirectoryURL];
+      filesDirectoryURL2 = [error filesDirectoryURL];
       *buf = 138412546;
-      v22 = v17;
+      v22 = filesDirectoryURL2;
       v23 = 2114;
       v24 = v7;
       _os_log_error_impl(&dword_228986000, v13, OS_LOG_TYPE_ERROR, "Unable to create directory (%@). Error: %{public}@", buf, 0x16u);
@@ -149,10 +149,10 @@
     goto LABEL_13;
   }
 
-  v8 = [a1 unconfirmedFilesDirectoryURL];
+  unconfirmedFilesDirectoryURL = [error unconfirmedFilesDirectoryURL];
   v19 = v7;
   v9 = 1;
-  v10 = [v4 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v19];
+  v10 = [v4 createDirectoryAtURL:unconfirmedFilesDirectoryURL withIntermediateDirectories:1 attributes:0 error:&v19];
   v11 = v19;
 
   if ((v10 & 1) == 0)
@@ -161,9 +161,9 @@
     v12 = HKLogInfrastructure();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v18 = [a1 unconfirmedFilesDirectoryURL];
+      unconfirmedFilesDirectoryURL2 = [error unconfirmedFilesDirectoryURL];
       *buf = 138412546;
-      v22 = v18;
+      v22 = unconfirmedFilesDirectoryURL2;
       v23 = 2114;
       v24 = v11;
       _os_log_error_impl(&dword_228986000, v12, OS_LOG_TYPE_ERROR, "Unable to create directory (%@). Error: %{public}@", buf, 0x16u);
@@ -199,18 +199,18 @@ LABEL_17:
   return v9;
 }
 
-- (uint64_t)_validateAttachment:(void *)a3 toObjectWithIdentifier:(uint64_t)a4 schemaIdentifier:(void *)a5 metadata:(uint64_t)a6 error:
+- (uint64_t)_validateAttachment:(void *)attachment toObjectWithIdentifier:(uint64_t)identifier schemaIdentifier:(void *)schemaIdentifier metadata:(uint64_t)metadata error:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a5;
-  if (a1)
+  attachmentCopy = attachment;
+  schemaIdentifierCopy = schemaIdentifier;
+  if (self)
   {
-    v14 = [a1 schemaProviderForIdentifier:a4 error:a6];
+    v14 = [self schemaProviderForIdentifier:identifier error:metadata];
     if (v14)
     {
-      WeakRetained = objc_loadWeakRetained(a1 + 2);
-      v16 = [v14 validateAttachment:v11 forObjectWithIdentifier:v12 metadata:v13 profile:WeakRetained error:a6];
+      WeakRetained = objc_loadWeakRetained(self + 2);
+      v16 = [v14 validateAttachment:v11 forObjectWithIdentifier:attachmentCopy metadata:schemaIdentifierCopy profile:WeakRetained error:metadata];
     }
 
     else
@@ -227,12 +227,12 @@ LABEL_17:
   return v16;
 }
 
-- (id)addReferenceWithAttachment:(id)a3 toObjectWithIdentifier:(id)a4 schemaIdentifier:(id)a5 metadata:(id)a6 error:(id *)a7
+- (id)addReferenceWithAttachment:(id)attachment toObjectWithIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier metadata:(id)metadata error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  attachmentCopy = attachment;
+  identifierCopy = identifier;
+  schemaIdentifierCopy = schemaIdentifier;
+  metadataCopy = metadata;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -243,25 +243,25 @@ LABEL_17:
   v35[1] = 3221225472;
   v35[2] = __105__HDAttachmentManager_addReferenceWithAttachment_toObjectWithIdentifier_schemaIdentifier_metadata_error___block_invoke;
   v35[3] = &unk_278621800;
-  v16 = v12;
+  v16 = attachmentCopy;
   v36 = v16;
   v37 = &v38;
-  if (![(HDAttachmentManager *)self attachmentReferencesForObjectIdentifier:v13 schemaIdentifier:v14 error:a7 enumerationHandler:v35])
+  if (![(HDAttachmentManager *)self attachmentReferencesForObjectIdentifier:identifierCopy schemaIdentifier:schemaIdentifierCopy error:error enumerationHandler:v35])
   {
     goto LABEL_10;
   }
 
   if (v39[5])
   {
-    v17 = [MEMORY[0x277CCA9B8] hk_error:115 format:{@"The attachment with identifier %@ is already attached to object %@.", v39[5], v13}];
+    v17 = [MEMORY[0x277CCA9B8] hk_error:115 format:{@"The attachment with identifier %@ is already attached to object %@.", v39[5], identifierCopy}];
     v18 = v17;
     if (v17)
     {
-      if (a7)
+      if (error)
       {
         v19 = v17;
         v20 = 0;
-        *a7 = v18;
+        *error = v18;
       }
 
       else
@@ -282,17 +282,17 @@ LABEL_17:
     goto LABEL_24;
   }
 
-  if (([(HDAttachmentManager *)&self->super.isa _validateAttachment:v16 toObjectWithIdentifier:v13 schemaIdentifier:v14 metadata:v15 error:a7]& 1) == 0)
+  if (([(HDAttachmentManager *)&self->super.isa _validateAttachment:v16 toObjectWithIdentifier:identifierCopy schemaIdentifier:schemaIdentifierCopy metadata:metadataCopy error:error]& 1) == 0)
   {
 LABEL_10:
     v20 = 0;
     goto LABEL_25;
   }
 
-  v21 = [v16 identifier];
+  identifier = [v16 identifier];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v34 = 0;
-  v18 = [HDAttachmentEntity attachmentWithIdentifier:v21 profile:WeakRetained error:&v34];
+  v18 = [HDAttachmentEntity attachmentWithIdentifier:identifier profile:WeakRetained error:&v34];
   v23 = v34;
 
   if (!v18)
@@ -305,8 +305,8 @@ LABEL_10:
     else
     {
       v28 = MEMORY[0x277CCA9B8];
-      v29 = [v16 identifier];
-      v30 = [v28 hk_error:118 format:{@"The attachment with identifier %@ was not found.", v29}];
+      identifier2 = [v16 identifier];
+      v30 = [v28 hk_error:118 format:{@"The attachment with identifier %@ was not found.", identifier2}];
 
       v24 = v30;
       if (!v24)
@@ -316,11 +316,11 @@ LABEL_10:
       }
     }
 
-    if (a7)
+    if (error)
     {
       v31 = v24;
       v20 = 0;
-      *a7 = v24;
+      *error = v24;
     }
 
     else
@@ -333,7 +333,7 @@ LABEL_10:
     goto LABEL_23;
   }
 
-  v24 = [(HDAttachmentManager *)self _addReferenceWithAttachment:v18 toObjectWithIdentifier:v13 schemaIdentifier:v14 metadata:v15 error:a7];
+  v24 = [(HDAttachmentManager *)self _addReferenceWithAttachment:v18 toObjectWithIdentifier:identifierCopy schemaIdentifier:schemaIdentifierCopy metadata:metadataCopy error:error];
   if (!v24)
   {
 LABEL_22:
@@ -342,10 +342,10 @@ LABEL_22:
   }
 
   v25 = objc_alloc(MEMORY[0x277CCD010]);
-  v33 = [v24 identifier];
-  v26 = [v24 creationDate];
-  v27 = [v24 metadata];
-  v20 = [v25 _initWithIdentifier:v33 objectIdentifier:v13 attachment:v16 creationDate:v26 metadata:v27];
+  identifier3 = [v24 identifier];
+  creationDate = [v24 creationDate];
+  metadata = [v24 metadata];
+  v20 = [v25 _initWithIdentifier:identifier3 objectIdentifier:identifierCopy attachment:v16 creationDate:creationDate metadata:metadata];
 
 LABEL_23:
 LABEL_24:
@@ -373,31 +373,31 @@ uint64_t __105__HDAttachmentManager_addReferenceWithAttachment_toObjectWithIdent
   return v5 ^ 1u;
 }
 
-- (id)addAttachmentWithName:(id)a3 contentTypeIdentifier:(id)a4 fileHandle:(id)a5 toObjectWithIdentifier:(id)a6 schemaIdentifier:(id)a7 attachmentMetadata:(id)a8 referenceMetadata:(id)a9 error:(id *)a10
+- (id)addAttachmentWithName:(id)name contentTypeIdentifier:(id)identifier fileHandle:(id)handle toObjectWithIdentifier:(id)withIdentifier schemaIdentifier:(id)schemaIdentifier attachmentMetadata:(id)metadata referenceMetadata:(id)referenceMetadata error:(id *)self0
 {
   v71[1] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
+  nameCopy = name;
+  identifierCopy = identifier;
+  handleCopy = handle;
+  withIdentifierCopy = withIdentifier;
+  schemaIdentifierCopy = schemaIdentifier;
+  metadataCopy = metadata;
+  referenceMetadataCopy = referenceMetadata;
   memset(&v70, 0, sizeof(v70));
-  if (fstat([v18 fileDescriptor], &v70) < 0)
+  if (fstat([handleCopy fileDescriptor], &v70) < 0)
   {
-    v67 = v16;
+    v67 = nameCopy;
     v45 = MEMORY[0x277CCA9B8];
     v46 = *__error();
     v47 = __error();
     v48 = [v45 hk_error:102 format:{@"Cannot determine file size: %d: %s", v46, strerror(*v47)}];
     if (v48)
     {
-      if (a10)
+      if (error)
       {
         v49 = v48;
         v44 = 0;
-        *a10 = v48;
+        *error = v48;
       }
 
       else
@@ -419,7 +419,7 @@ uint64_t __105__HDAttachmentManager_addReferenceWithAttachment_toObjectWithIdent
   }
 
   st_size = v70.st_size;
-  v24 = [HDEncryptedArchiveSymmetricKey randomKeyWithError:a10];
+  v24 = [HDEncryptedArchiveSymmetricKey randomKeyWithError:error];
   if (!v24)
   {
     v44 = 0;
@@ -427,14 +427,14 @@ uint64_t __105__HDAttachmentManager_addReferenceWithAttachment_toObjectWithIdent
   }
 
   v62 = st_size;
-  v67 = v16;
+  v67 = nameCopy;
   v69 = 0;
-  v25 = [(HDAttachmentManager *)self schemaProviderForIdentifier:v20 error:&v69];
+  v25 = [(HDAttachmentManager *)self schemaProviderForIdentifier:schemaIdentifierCopy error:&v69];
   v65 = v69;
   v66 = v25;
   if (v25)
   {
-    v61 = v22;
+    v61 = referenceMetadataCopy;
     if (self)
     {
       WeakRetained = objc_loadWeakRetained(&self->_profile);
@@ -446,66 +446,66 @@ uint64_t __105__HDAttachmentManager_addReferenceWithAttachment_toObjectWithIdent
     }
 
     v68 = 0;
-    v27 = [v25 schemaVersionForObjectIdentifier:v19 profile:WeakRetained error:&v68];
+    v27 = [v25 schemaVersionForObjectIdentifier:withIdentifierCopy profile:WeakRetained error:&v68];
     v60 = v68;
 
-    v64 = v17;
+    v64 = identifierCopy;
     if (v27 > 0)
     {
       v55 = v27;
-      v58 = v18;
+      v58 = handleCopy;
       v56 = [HDAttachment alloc];
-      v28 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
       [MEMORY[0x277CCAD78] UUID];
-      v29 = v59 = v20;
-      v30 = [v29 UUIDString];
+      v29 = v59 = schemaIdentifierCopy;
+      uUIDString = [v29 UUIDString];
       [MEMORY[0x277CBEAA8] date];
-      v32 = v31 = v19;
-      v57 = v21;
-      v33 = [(HDAttachment *)v56 initWithIdentifier:v28 name:v67 type:v17 hash:v30 size:v62 creationDate:v32 metadata:v21 encryptionKey:v24];
+      v32 = v31 = withIdentifierCopy;
+      v57 = metadataCopy;
+      v33 = [(HDAttachment *)v56 initWithIdentifier:uUID name:v67 type:identifierCopy hash:uUIDString size:v62 creationDate:v32 metadata:metadataCopy encryptionKey:v24];
 
-      v20 = v59;
-      v34 = [(HDAttachment *)v33 hkAttachment];
+      schemaIdentifierCopy = v59;
+      hkAttachment = [(HDAttachment *)v33 hkAttachment];
       v63 = v31;
-      v22 = v61;
-      v35 = [(HDAttachmentManager *)&self->super.isa _validateAttachment:v34 toObjectWithIdentifier:v31 schemaIdentifier:v59 metadata:v61 error:a10];
+      referenceMetadataCopy = v61;
+      v35 = [(HDAttachmentManager *)&self->super.isa _validateAttachment:hkAttachment toObjectWithIdentifier:v31 schemaIdentifier:v59 metadata:v61 error:error];
 
       if (v35)
       {
         v36 = [HDAttachmentReferenceSchemaIdentifier alloc];
-        v37 = [(HDAttachment *)v33 identifier];
-        v38 = [(HDAttachmentReferenceSchemaIdentifier *)v36 initWithSchemaIdentifier:v59 schemaVersion:v55 objectIdentifier:v31 attachmentIdentifier:v37];
+        identifier = [(HDAttachment *)v33 identifier];
+        v38 = [(HDAttachmentReferenceSchemaIdentifier *)v36 initWithSchemaIdentifier:v59 schemaVersion:v55 objectIdentifier:v31 attachmentIdentifier:identifier];
 
         v39 = [HDAttachmentReference alloc];
-        v40 = [MEMORY[0x277CCAD78] UUID];
-        v41 = [MEMORY[0x277CBEAA8] date];
-        v42 = [(HDAttachmentReference *)v39 initWithIdentifier:v40 schemaIdentifier:v38 creationDate:v41 options:0 metadata:v61];
+        uUID2 = [MEMORY[0x277CCAD78] UUID];
+        date = [MEMORY[0x277CBEAA8] date];
+        v42 = [(HDAttachmentReference *)v39 initWithIdentifier:uUID2 schemaIdentifier:v38 creationDate:date options:0 metadata:v61];
 
         v71[0] = v42;
         v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:1];
-        v18 = v58;
-        LODWORD(v40) = [(HDAttachmentManager *)self insertAttachmentReferences:v43 attachment:v33 fileHandle:v58 encrypt:1 error:a10];
+        handleCopy = v58;
+        LODWORD(uUID2) = [(HDAttachmentManager *)self insertAttachmentReferences:v43 attachment:v33 fileHandle:v58 encrypt:1 error:error];
 
         [v58 closeFile];
         v44 = 0;
-        if (v40)
+        if (uUID2)
         {
           v44 = [(HDAttachmentReference *)v42 hkAttachmentReferenceWithAttachment:v33];
         }
 
-        v19 = v63;
-        v17 = v64;
-        v20 = v59;
+        withIdentifierCopy = v63;
+        identifierCopy = v64;
+        schemaIdentifierCopy = v59;
       }
 
       else
       {
         v44 = 0;
-        v19 = v31;
-        v18 = v58;
+        withIdentifierCopy = v31;
+        handleCopy = v58;
       }
 
-      v21 = v57;
+      metadataCopy = v57;
       v51 = v60;
       goto LABEL_32;
     }
@@ -514,13 +514,13 @@ uint64_t __105__HDAttachmentManager_addReferenceWithAttachment_toObjectWithIdent
     {
       v50 = [MEMORY[0x277CCA9B8] hk_error:3 format:@"The object type is not supported"];
 
-      v22 = v61;
+      referenceMetadataCopy = v61;
     }
 
     else
     {
       v50 = v60;
-      v22 = v61;
+      referenceMetadataCopy = v61;
     }
 
     v33 = v50;
@@ -529,16 +529,16 @@ uint64_t __105__HDAttachmentManager_addReferenceWithAttachment_toObjectWithIdent
       v51 = 0;
       v44 = 0;
 LABEL_31:
-      v17 = v64;
+      identifierCopy = v64;
       goto LABEL_32;
     }
 
 LABEL_27:
-    if (a10)
+    if (error)
     {
       v52 = v33;
       v44 = 0;
-      *a10 = v33;
+      *error = v33;
     }
 
     else
@@ -551,10 +551,10 @@ LABEL_27:
     goto LABEL_31;
   }
 
-  v33 = [MEMORY[0x277CCA9B8] hk_error:100 format:{@"No schema provider found for identifier '%@'", v20}];
+  v33 = [MEMORY[0x277CCA9B8] hk_error:100 format:{@"No schema provider found for identifier '%@'", schemaIdentifierCopy}];
   if (v33)
   {
-    v64 = v17;
+    v64 = identifierCopy;
     goto LABEL_27;
   }
 
@@ -565,7 +565,7 @@ LABEL_32:
   v48 = v65;
 LABEL_33:
 
-  v16 = v67;
+  nameCopy = v67;
 LABEL_34:
 
   v53 = *MEMORY[0x277D85DE8];
@@ -573,30 +573,30 @@ LABEL_34:
   return v44;
 }
 
-- (id)_addReferenceWithAttachment:(id)a3 toObjectWithIdentifier:(id)a4 schemaIdentifier:(id)a5 metadata:(id)a6 error:(id *)a7
+- (id)_addReferenceWithAttachment:(id)attachment toObjectWithIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier metadata:(id)metadata error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(HDAttachmentManager *)self schemaProviderForIdentifier:v14 error:a7];
-  if (v16 && (!self ? (v17 = 0) : (v17 = objc_loadWeakRetained(&self->_profile)), v18 = [v16 schemaVersionForObjectIdentifier:v13 profile:v17 error:a7], v17, v18 >= 1))
+  attachmentCopy = attachment;
+  identifierCopy = identifier;
+  schemaIdentifierCopy = schemaIdentifier;
+  metadataCopy = metadata;
+  v16 = [(HDAttachmentManager *)self schemaProviderForIdentifier:schemaIdentifierCopy error:error];
+  if (v16 && (!self ? (v17 = 0) : (v17 = objc_loadWeakRetained(&self->_profile)), v18 = [v16 schemaVersionForObjectIdentifier:identifierCopy profile:v17 error:error], v17, v18 >= 1))
   {
     v19 = [HDAttachmentReferenceSchemaIdentifier alloc];
-    v20 = [v12 identifier];
-    v21 = [(HDAttachmentReferenceSchemaIdentifier *)v19 initWithSchemaIdentifier:v14 schemaVersion:v18 objectIdentifier:v13 attachmentIdentifier:v20];
+    identifier = [attachmentCopy identifier];
+    v21 = [(HDAttachmentReferenceSchemaIdentifier *)v19 initWithSchemaIdentifier:schemaIdentifierCopy schemaVersion:v18 objectIdentifier:identifierCopy attachmentIdentifier:identifier];
 
     v22 = [HDAttachmentReference alloc];
-    v23 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     [MEMORY[0x277CBEAA8] date];
-    v24 = v31 = v12;
-    v25 = [(HDAttachmentReference *)v22 initWithIdentifier:v23 schemaIdentifier:v21 creationDate:v24 options:0 metadata:v15];
+    v24 = v31 = attachmentCopy;
+    v25 = [(HDAttachmentReference *)v22 initWithIdentifier:uUID schemaIdentifier:v21 creationDate:v24 options:0 metadata:metadataCopy];
 
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    LODWORD(v24) = [HDAttachmentReferenceEntity insertReference:v25 profile:WeakRetained error:a7];
+    LODWORD(v24) = [HDAttachmentReferenceEntity insertReference:v25 profile:WeakRetained error:error];
 
     v27 = v24 == 0;
-    v12 = v31;
+    attachmentCopy = v31;
     if (v27)
     {
       v28 = 0;
@@ -618,48 +618,48 @@ LABEL_34:
   return v29;
 }
 
-- (BOOL)insertAttachmentReferences:(id)a3 attachment:(id)a4 error:(id *)a5
+- (BOOL)insertAttachmentReferences:(id)references attachment:(id)attachment error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[HDInsertAttachmentOperation alloc] initWithAttachmentReferences:v9 attachment:v8 fileOnDisk:0];
+  attachmentCopy = attachment;
+  referencesCopy = references;
+  v10 = [[HDInsertAttachmentOperation alloc] initWithAttachmentReferences:referencesCopy attachment:attachmentCopy fileOnDisk:0];
 
   if (self)
   {
     self = objc_loadWeakRetained(&self->_profile);
   }
 
-  v11 = [(HDJournalableOperation *)v10 performOrJournalWithProfile:self error:a5];
+  v11 = [(HDJournalableOperation *)v10 performOrJournalWithProfile:self error:error];
 
   return v11;
 }
 
-- (BOOL)insertAttachmentReferences:(id)a3 attachment:(id)a4 fileHandle:(id)a5 encrypt:(BOOL)a6 error:(id *)a7
+- (BOOL)insertAttachmentReferences:(id)references attachment:(id)attachment fileHandle:(id)handle encrypt:(BOOL)encrypt error:(id *)error
 {
-  v8 = a6;
+  encryptCopy = encrypt;
   v96 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a3;
-  v15 = [[HDInsertAttachmentOperation alloc] initWithAttachmentReferences:v14 attachment:v12 fileOnDisk:1];
+  attachmentCopy = attachment;
+  handleCopy = handle;
+  referencesCopy = references;
+  v15 = [[HDInsertAttachmentOperation alloc] initWithAttachmentReferences:referencesCopy attachment:attachmentCopy fileOnDisk:1];
 
   v83 = 0;
-  LOBYTE(a5) = [(HDAttachmentManager *)self createFileDirectoriesWithError:?];
+  LOBYTE(handle) = [(HDAttachmentManager *)self createFileDirectoriesWithError:?];
   v16 = v83;
   v17 = v16;
-  if (a5)
+  if (handle)
   {
     v80 = v15;
-    v81 = v13;
-    v18 = [(HDAttachmentManager *)self unconfirmedFilesDirectoryURL];
-    v19 = [v12 identifier];
-    v20 = [v19 UUIDString];
-    v21 = [v18 URLByAppendingPathComponent:v20];
+    v81 = handleCopy;
+    unconfirmedFilesDirectoryURL = [(HDAttachmentManager *)self unconfirmedFilesDirectoryURL];
+    identifier = [attachmentCopy identifier];
+    uUIDString = [identifier UUIDString];
+    v21 = [unconfirmedFilesDirectoryURL URLByAppendingPathComponent:uUIDString];
 
     v22 = objc_alloc_init(MEMORY[0x277CCAA00]);
-    v23 = [v21 path];
+    path = [v21 path];
     v79 = v22;
-    LOBYTE(v22) = [v22 createFileAtPath:v23 contents:0 attributes:0];
+    LOBYTE(v22) = [v22 createFileAtPath:path contents:0 attributes:0];
 
     if (v22)
     {
@@ -668,12 +668,12 @@ LABEL_34:
       v78 = v82;
       if (v24)
       {
-        v25 = [v12 encryptionKey];
-        v26 = v25;
-        v13 = v81;
-        if (v8 && v25)
+        encryptionKey = [attachmentCopy encryptionKey];
+        v26 = encryptionKey;
+        handleCopy = v81;
+        if (encryptCopy && encryptionKey)
         {
-          v27 = [HDEncryptedArchive encryptContentsOfFileHandle:v81 to:v24 key:v25 error:a7];
+          v27 = [HDEncryptedArchive encryptContentsOfFileHandle:v81 to:v24 key:encryptionKey error:error];
           [v24 closeFile];
           if (!v27)
           {
@@ -683,11 +683,11 @@ LABEL_34:
 
         else
         {
-          v39 = [v21 path];
-          v74 = v12;
+          path2 = [v21 path];
+          v74 = attachmentCopy;
           v40 = v81;
           v77 = v24;
-          v75 = v39;
+          v75 = path2;
           v76 = v40;
           if (self)
           {
@@ -730,7 +730,7 @@ LABEL_34:
                   if (os_log_type_enabled(*MEMORY[0x277CCC280], OS_LOG_TYPE_ERROR))
                   {
                     *buf = 138543874;
-                    v91 = self;
+                    selfCopy6 = self;
                     v92 = 2114;
                     v93 = v75;
                     v94 = 2114;
@@ -748,7 +748,7 @@ LABEL_34:
                     if (os_log_type_enabled(*MEMORY[0x277CCC280], OS_LOG_TYPE_ERROR))
                     {
                       *buf = 138543874;
-                      v91 = self;
+                      selfCopy6 = self;
                       v92 = 2114;
                       v93 = v75;
                       v94 = 2114;
@@ -761,10 +761,10 @@ LABEL_34:
                   v73 = v62 == 0;
                   if (v62)
                   {
-                    if (a7)
+                    if (error)
                     {
                       v63 = v62;
-                      *a7 = v62;
+                      *error = v62;
                     }
 
                     else
@@ -791,7 +791,7 @@ LABEL_34:
                 if (os_log_type_enabled(*MEMORY[0x277CCC280], OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138543874;
-                  v91 = self;
+                  selfCopy6 = self;
                   v92 = 2114;
                   v93 = v75;
                   v94 = 2114;
@@ -815,7 +815,7 @@ LABEL_34:
             if (os_log_type_enabled(*MEMORY[0x277CCC280], OS_LOG_TYPE_ERROR))
             {
               *buf = 138543874;
-              v91 = self;
+              selfCopy6 = self;
               v92 = 2114;
               v93 = v75;
               v94 = 2114;
@@ -823,11 +823,11 @@ LABEL_34:
               _os_log_error_impl(&dword_228986000, v49, OS_LOG_TYPE_ERROR, "%{public}@: Failed to read file from source for URL %{public}@. %{public}@", buf, 0x20u);
             }
 
-            if (a7)
+            if (error)
             {
               v50 = v48;
               v73 = 0;
-              *a7 = v48;
+              *error = v48;
             }
 
             else
@@ -847,14 +847,14 @@ LABEL_59:
             v67 = v74;
           }
 
-          v13 = v81;
+          handleCopy = v81;
           if (!v73)
           {
             v24 = v77;
 LABEL_65:
             v29 = 0;
 LABEL_66:
-            v35 = v78;
+            path5 = v78;
             goto LABEL_67;
           }
         }
@@ -869,22 +869,22 @@ LABEL_66:
           WeakRetained = 0;
         }
 
-        v29 = [(HDJournalableOperation *)v80 performOrJournalWithProfile:WeakRetained error:a7];
+        v29 = [(HDJournalableOperation *)v80 performOrJournalWithProfile:WeakRetained error:error];
 
         goto LABEL_66;
       }
 
       _HKInitializeLogging();
       v37 = *MEMORY[0x277CCC280];
-      v13 = v81;
+      handleCopy = v81;
       if (os_log_type_enabled(*MEMORY[0x277CCC280], OS_LOG_TYPE_ERROR))
       {
         v65 = v37;
-        v66 = [v21 path];
+        path3 = [v21 path];
         *buf = 138543874;
-        v91 = self;
+        selfCopy6 = self;
         v92 = 2114;
-        v93 = v66;
+        v93 = path3;
         v94 = 2114;
         v95 = v78;
         _os_log_error_impl(&dword_228986000, v65, OS_LOG_TYPE_ERROR, "[attachments] %{public}@: Failed to create a file handle for URL %{public}@. %{public}@", buf, 0x20u);
@@ -893,12 +893,12 @@ LABEL_66:
       v26 = v78;
       if (v26)
       {
-        if (a7)
+        if (error)
         {
           v38 = v26;
           v24 = 0;
           v29 = 0;
-          *a7 = v26;
+          *error = v26;
         }
 
         else
@@ -908,12 +908,12 @@ LABEL_66:
           v29 = 0;
         }
 
-        v35 = v26;
+        path5 = v26;
         goto LABEL_67;
       }
 
       v24 = 0;
-      v35 = 0;
+      path5 = 0;
     }
 
     else
@@ -923,13 +923,13 @@ LABEL_66:
       if (os_log_type_enabled(*MEMORY[0x277CCC280], OS_LOG_TYPE_ERROR))
       {
         v55 = v30;
-        v56 = [v21 path];
+        path4 = [v21 path];
         v57 = __error();
         v58 = strerror(*v57);
         *buf = 138543874;
-        v91 = self;
+        selfCopy6 = self;
         v92 = 2114;
-        v93 = v56;
+        v93 = path4;
         v94 = 2080;
         v95 = v58;
         _os_log_error_impl(&dword_228986000, v55, OS_LOG_TYPE_ERROR, "[attachments] %{public}@: Failed to create file %{public}@ error: %s.", buf, 0x20u);
@@ -939,16 +939,16 @@ LABEL_66:
       v32 = *__error();
       v33 = __error();
       v34 = strerror(*v33);
-      v35 = [v21 path];
-      v26 = [v31 hk_error:102 format:{@"Error %d, %s while creating file at %@ ", v32, v34, v35}];
-      v13 = v81;
+      path5 = [v21 path];
+      v26 = [v31 hk_error:102 format:{@"Error %d, %s while creating file at %@ ", v32, v34, path5}];
+      handleCopy = v81;
       if (v26)
       {
-        if (a7)
+        if (error)
         {
           v36 = v26;
           v29 = 0;
-          *a7 = v26;
+          *error = v26;
         }
 
         else
@@ -974,11 +974,11 @@ LABEL_67:
   v21 = v16;
   if (v21)
   {
-    if (a7)
+    if (error)
     {
       v28 = v21;
       v29 = 0;
-      *a7 = v21;
+      *error = v21;
     }
 
     else
@@ -999,14 +999,14 @@ LABEL_68:
   return v29;
 }
 
-- (BOOL)insertAttachmentReferences:(id)a3 attachment:(id)a4 fileData:(id)a5 encrypt:(BOOL)a6 error:(id *)a7
+- (BOOL)insertAttachmentReferences:(id)references attachment:(id)attachment fileData:(id)data encrypt:(BOOL)encrypt error:(id *)error
 {
-  v8 = a6;
+  encryptCopy = encrypt;
   v95 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a3;
-  v15 = [[HDInsertAttachmentOperation alloc] initWithAttachmentReferences:v14 attachment:v12 fileOnDisk:1];
+  attachmentCopy = attachment;
+  dataCopy = data;
+  referencesCopy = references;
+  v15 = [[HDInsertAttachmentOperation alloc] initWithAttachmentReferences:referencesCopy attachment:attachmentCopy fileOnDisk:1];
 
   v88 = 0;
   v16 = [(HDAttachmentManager *)self createFileDirectoriesWithError:?];
@@ -1014,44 +1014,44 @@ LABEL_68:
   v18 = v17;
   if (v16)
   {
-    v81 = v13;
+    v81 = dataCopy;
     v82 = v15;
     v19 = objc_alloc_init(MEMORY[0x277CCAA00]);
-    v20 = [(HDAttachmentManager *)self unconfirmedFilesDirectoryURL];
-    v21 = [v12 identifier];
-    v22 = [v21 UUIDString];
-    v23 = [v20 URLByAppendingPathComponent:v22];
+    unconfirmedFilesDirectoryURL = [(HDAttachmentManager *)self unconfirmedFilesDirectoryURL];
+    identifier = [attachmentCopy identifier];
+    uUIDString = [identifier UUIDString];
+    v23 = [unconfirmedFilesDirectoryURL URLByAppendingPathComponent:uUIDString];
 
-    v24 = [v23 path];
-    LOBYTE(v20) = [v19 createFileAtPath:v24 contents:0 attributes:0];
+    path = [v23 path];
+    LOBYTE(unconfirmedFilesDirectoryURL) = [v19 createFileAtPath:path contents:0 attributes:0];
 
-    if ((v20 & 1) == 0)
+    if ((unconfirmedFilesDirectoryURL & 1) == 0)
     {
       _HKInitializeLogging();
       v36 = *MEMORY[0x277CCC280];
       if (os_log_type_enabled(*MEMORY[0x277CCC280], OS_LOG_TYPE_ERROR))
       {
         v56 = v36;
-        v57 = [v23 path];
+        path2 = [v23 path];
         *buf = 138543618;
-        v92 = self;
+        selfCopy7 = self;
         v93 = 2114;
-        *v94 = v57;
+        *v94 = path2;
         _os_log_error_impl(&dword_228986000, v56, OS_LOG_TYPE_ERROR, "[attachments] %{public}@: Failed to create file %{public}@.", buf, 0x16u);
       }
 
       v37 = MEMORY[0x277CCA9B8];
-      v38 = [v23 path];
-      v29 = [v37 hk_error:102 format:{@"Error creating file at %@", v38}];
-      v13 = v81;
+      path3 = [v23 path];
+      v29 = [v37 hk_error:102 format:{@"Error creating file at %@", path3}];
+      dataCopy = v81;
       if (v29)
       {
         v15 = v82;
-        if (a7)
+        if (error)
         {
           v39 = v29;
           LOBYTE(v33) = 0;
-          *a7 = v29;
+          *error = v29;
         }
 
         else
@@ -1085,19 +1085,19 @@ LABEL_68:
       if (os_log_type_enabled(*MEMORY[0x277CCC280], OS_LOG_TYPE_ERROR))
       {
         v63 = v41;
-        v64 = [v23 path];
+        path4 = [v23 path];
         *buf = 138543874;
-        v92 = self;
+        selfCopy7 = self;
         v93 = 2114;
-        *v94 = v64;
+        *v94 = path4;
         *&v94[8] = 2114;
         *&v94[10] = v79;
         _os_log_error_impl(&dword_228986000, v63, OS_LOG_TYPE_ERROR, "[attachments] %{public}@: Failed to retreive fileHandle for %{public}@. Reverting attachment and reference storage. %{public}@", buf, 0x20u);
       }
 
-      v42 = [v23 path];
+      path5 = [v23 path];
       v86 = 0;
-      v43 = [v19 removeItemAtPath:v42 error:&v86];
+      v43 = [v19 removeItemAtPath:path5 error:&v86];
       v29 = v86;
 
       if ((v43 & 1) == 0)
@@ -1107,28 +1107,28 @@ LABEL_68:
         if (os_log_type_enabled(*v40, OS_LOG_TYPE_ERROR))
         {
           v69 = v44;
-          v70 = [v23 path];
+          path6 = [v23 path];
           *buf = 138543874;
-          v92 = self;
+          selfCopy7 = self;
           v93 = 2114;
-          *v94 = v70;
+          *v94 = path6;
           *&v94[8] = 2114;
           *&v94[10] = v29;
           _os_log_error_impl(&dword_228986000, v69, OS_LOG_TYPE_ERROR, "[attachments] %{public}@: Failed to remove file at %{public}@, %{public}@", buf, 0x20u);
         }
       }
 
-      v38 = v79;
+      path3 = v79;
       v45 = v79;
       if (v45)
       {
-        v13 = v81;
+        dataCopy = v81;
         v15 = v82;
-        if (a7)
+        if (error)
         {
           v45 = v45;
           LOBYTE(v33) = 0;
-          *a7 = v45;
+          *error = v45;
         }
 
         else
@@ -1143,7 +1143,7 @@ LABEL_68:
       else
       {
         LOBYTE(v33) = 0;
-        v13 = v81;
+        dataCopy = v81;
         v15 = v82;
       }
 
@@ -1158,12 +1158,12 @@ LABEL_68:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         v58 = v26;
-        v59 = [v23 path];
+        path7 = [v23 path];
         v60 = *__error();
         v61 = __error();
         v62 = strerror(*v61);
         *buf = 138543874;
-        v92 = v59;
+        selfCopy7 = path7;
         v93 = 1024;
         *v94 = v60;
         *&v94[4] = 2082;
@@ -1179,20 +1179,20 @@ LABEL_68:
     v90[0] = v27;
     v90[1] = &unk_283CB2508;
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v90 forKeys:v89 count:2];
-    v30 = [v23 path];
+    path8 = [v23 path];
     v85 = 0;
-    v31 = [v19 setAttributes:v29 ofItemAtPath:v30 error:&v85];
+    v31 = [v19 setAttributes:v29 ofItemAtPath:path8 error:&v85];
     v78 = v85;
 
     if (v31)
     {
-      v32 = [v12 encryptionKey];
-      v77 = v32;
-      if (v8 && v32)
+      encryptionKey = [attachmentCopy encryptionKey];
+      v77 = encryptionKey;
+      if (encryptCopy && encryptionKey)
       {
-        v33 = [HDEncryptedArchive archiveForEncryptionWithFileHandle:v80 key:v32 error:a7];
+        v33 = [HDEncryptedArchive archiveForEncryptionWithFileHandle:v80 key:encryptionKey error:error];
         [v80 closeFile];
-        v13 = v81;
+        dataCopy = v81;
         if (!v33)
         {
 LABEL_13:
@@ -1201,14 +1201,14 @@ LABEL_62:
           v46 = v80;
 
           v45 = v78;
-          v38 = v79;
+          path3 = v79;
 LABEL_63:
 
 LABEL_64:
           goto LABEL_65;
         }
 
-        v34 = [v33 writeData:v81 error:a7];
+        v34 = [v33 writeData:v81 error:error];
         [v33 close];
 
         if ((v34 & 1) == 0)
@@ -1221,7 +1221,7 @@ LABEL_64:
       }
 
       v83 = 0;
-      v13 = v81;
+      dataCopy = v81;
       v75 = [v80 writeData:v81 error:&v83];
       v53 = v83;
       [v80 closeFile];
@@ -1235,7 +1235,7 @@ LABEL_45:
         }
 
         v15 = v82;
-        LOBYTE(v33) = [(HDJournalableOperation *)v82 performOrJournalWithProfile:self error:a7];
+        LOBYTE(v33) = [(HDJournalableOperation *)v82 performOrJournalWithProfile:self error:error];
         goto LABEL_61;
       }
 
@@ -1246,11 +1246,11 @@ LABEL_45:
       if (os_log_type_enabled(*MEMORY[0x277CCC280], OS_LOG_TYPE_ERROR))
       {
         v73 = v54;
-        v74 = [v23 path];
+        path9 = [v23 path];
         *buf = 138543874;
-        v92 = self;
+        selfCopy7 = self;
         v93 = 2114;
-        *v94 = v74;
+        *v94 = path9;
         *&v94[8] = 2114;
         *&v94[10] = v76;
         _os_log_error_impl(&dword_228986000, v73, OS_LOG_TYPE_ERROR, "[attachments] %{public}@: Failed to write data to file at %{public}@, %{public}@", buf, 0x20u);
@@ -1261,10 +1261,10 @@ LABEL_45:
       self = v76;
       if (self)
       {
-        if (a7)
+        if (error)
         {
-          v55 = self;
-          *a7 = self;
+          selfCopy5 = self;
+          *error = self;
         }
 
         else
@@ -1282,19 +1282,19 @@ LABEL_45:
     if (os_log_type_enabled(*MEMORY[0x277CCC280], OS_LOG_TYPE_ERROR))
     {
       v65 = v48;
-      v66 = [v23 path];
+      path10 = [v23 path];
       *buf = 138543874;
-      v92 = self;
+      selfCopy7 = self;
       v93 = 2114;
-      *v94 = v66;
+      *v94 = path10;
       *&v94[8] = 2114;
       *&v94[10] = v78;
       _os_log_error_impl(&dword_228986000, v65, OS_LOG_TYPE_ERROR, "[attachments] %{public}@: Failed to set protection class for %{public}@. Reverting storage. %{public}@", buf, 0x20u);
     }
 
-    v49 = [v23 path];
+    path11 = [v23 path];
     v84 = 0;
-    v50 = [v19 removeItemAtPath:v49 error:&v84];
+    v50 = [v19 removeItemAtPath:path11 error:&v84];
     v77 = v84;
 
     if ((v50 & 1) == 0)
@@ -1304,11 +1304,11 @@ LABEL_45:
       if (os_log_type_enabled(*v47, OS_LOG_TYPE_ERROR))
       {
         v71 = v51;
-        v72 = [v23 path];
+        path12 = [v23 path];
         *buf = 138543874;
-        v92 = self;
+        selfCopy7 = self;
         v93 = 2114;
-        *v94 = v72;
+        *v94 = path12;
         *&v94[8] = 2114;
         *&v94[10] = v77;
         _os_log_error_impl(&dword_228986000, v71, OS_LOG_TYPE_ERROR, "[attachments] %{public}@: Failed to remove file at %{public}@, %{public}@", buf, 0x20u);
@@ -1318,9 +1318,9 @@ LABEL_45:
     self = v78;
     if (self)
     {
-      v13 = v81;
+      dataCopy = v81;
       v15 = v82;
-      if (!a7)
+      if (!error)
       {
         _HKLogDroppedError();
 LABEL_60:
@@ -1328,15 +1328,15 @@ LABEL_60:
         goto LABEL_61;
       }
 
-      v52 = self;
+      selfCopy8 = self;
       LOBYTE(v33) = 0;
-      *a7 = self;
+      *error = self;
     }
 
     else
     {
       LOBYTE(v33) = 0;
-      v13 = v81;
+      dataCopy = v81;
       v15 = v82;
     }
 
@@ -1351,7 +1351,7 @@ LABEL_61:
     goto LABEL_23;
   }
 
-  if (!a7)
+  if (!error)
   {
     _HKLogDroppedError();
 LABEL_23:
@@ -1361,49 +1361,49 @@ LABEL_23:
 
   v35 = v19;
   LOBYTE(v33) = 0;
-  *a7 = v19;
+  *error = v19;
 LABEL_65:
 
   v67 = *MEMORY[0x277D85DE8];
   return v33;
 }
 
-- (BOOL)attachmentReferencesForObjectIdentifier:(id)a3 schemaIdentifier:(id)a4 error:(id *)a5 enumerationHandler:(id)a6
+- (BOOL)attachmentReferencesForObjectIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier error:(id *)error enumerationHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  schemaIdentifierCopy = schemaIdentifier;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v14 = [WeakRetained database];
+  database = [WeakRetained database];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __105__HDAttachmentManager_attachmentReferencesForObjectIdentifier_schemaIdentifier_error_enumerationHandler___block_invoke;
   v19[3] = &unk_2786185E8;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  LOBYTE(a5) = [(HDHealthEntity *)HDAttachmentReferenceEntity performReadTransactionWithHealthDatabase:v14 error:a5 block:v19];
+  v20 = identifierCopy;
+  v21 = schemaIdentifierCopy;
+  v22 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = schemaIdentifierCopy;
+  v17 = identifierCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDAttachmentReferenceEntity performReadTransactionWithHealthDatabase:database error:error block:v19];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)_attachmentReferencesForObjectIdentifier:(uint64_t)a3 schemaIdentifier:(uint64_t)a4 transaction:(uint64_t)a5 error:(void *)a6 enumerationHandler:
+- (BOOL)_attachmentReferencesForObjectIdentifier:(uint64_t)identifier schemaIdentifier:(uint64_t)schemaIdentifier transaction:(uint64_t)transaction error:(void *)error enumerationHandler:
 {
-  v11 = a6;
-  v12 = v11;
-  if (a1)
+  errorCopy = error;
+  v12 = errorCopy;
+  if (self)
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __118__HDAttachmentManager__attachmentReferencesForObjectIdentifier_schemaIdentifier_transaction_error_enumerationHandler___block_invoke;
     v15[3] = &unk_278621918;
-    v15[4] = a1;
-    v16 = v11;
-    v13 = [HDAttachmentReferenceEntity enumerateReferencesForObjectIdentifier:a2 schemaIdentifier:a3 transaction:a4 error:a5 enumerationHandler:v15];
+    v15[4] = self;
+    v16 = errorCopy;
+    v13 = [HDAttachmentReferenceEntity enumerateReferencesForObjectIdentifier:a2 schemaIdentifier:identifier transaction:schemaIdentifier error:transaction enumerationHandler:v15];
   }
 
   else
@@ -1414,23 +1414,23 @@ LABEL_65:
   return v13;
 }
 
-- (BOOL)attachmentReferencesForAttachment:(id)a3 error:(id *)a4 enumerationHandler:(id)a5
+- (BOOL)attachmentReferencesForAttachment:(id)attachment error:(id *)error enumerationHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  attachmentCopy = attachment;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained database];
+  database = [WeakRetained database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __82__HDAttachmentManager_attachmentReferencesForAttachment_error_enumerationHandler___block_invoke;
   v15[3] = &unk_278618368;
-  v16 = v8;
-  v17 = v9;
-  v12 = v9;
-  v13 = v8;
-  LOBYTE(a4) = [(HDHealthEntity *)HDAttachmentReferenceEntity performReadTransactionWithHealthDatabase:v11 error:a4 block:v15];
+  v16 = attachmentCopy;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = attachmentCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDAttachmentReferenceEntity performReadTransactionWithHealthDatabase:database error:error block:v15];
 
-  return a4;
+  return error;
 }
 
 BOOL __82__HDAttachmentManager_attachmentReferencesForAttachment_error_enumerationHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1444,14 +1444,14 @@ BOOL __82__HDAttachmentManager_attachmentReferencesForAttachment_error_enumerati
   return v9;
 }
 
-- (id)fileHandleForAttachment:(id)a3 error:(id *)a4
+- (id)fileHandleForAttachment:(id)attachment error:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HDAttachmentManager *)self filesDirectoryURL];
-  v8 = [v6 identifier];
-  v9 = [v8 UUIDString];
-  v10 = [v7 URLByAppendingPathComponent:v9];
+  attachmentCopy = attachment;
+  filesDirectoryURL = [(HDAttachmentManager *)self filesDirectoryURL];
+  identifier = [attachmentCopy identifier];
+  uUIDString = [identifier UUIDString];
+  v10 = [filesDirectoryURL URLByAppendingPathComponent:uUIDString];
 
   v39 = 0;
   v11 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:v10 error:&v39];
@@ -1464,11 +1464,11 @@ BOOL __82__HDAttachmentManager_attachmentReferencesForAttachment_error_enumerati
 
   else if ([v12 hk_isCocoaNoSuchFileError])
   {
-    v37 = a4;
-    v15 = [(HDAttachmentManager *)self unconfirmedFilesDirectoryURL];
-    v16 = [v6 identifier];
-    v17 = [v16 UUIDString];
-    v18 = [v15 URLByAppendingPathComponent:v17];
+    errorCopy = error;
+    unconfirmedFilesDirectoryURL = [(HDAttachmentManager *)self unconfirmedFilesDirectoryURL];
+    identifier2 = [attachmentCopy identifier];
+    uUIDString2 = [identifier2 UUIDString];
+    v18 = [unconfirmedFilesDirectoryURL URLByAppendingPathComponent:uUIDString2];
 
     v38 = 0;
     v14 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:v18 error:&v38];
@@ -1485,25 +1485,25 @@ BOOL __82__HDAttachmentManager_attachmentReferencesForAttachment_error_enumerati
       if (os_log_type_enabled(*MEMORY[0x277CCC280], OS_LOG_TYPE_ERROR))
       {
         log = v26;
-        v35 = [v18 path];
+        path = [v18 path];
         *buf = 138543874;
-        v41 = self;
+        selfCopy2 = self;
         v42 = 2114;
-        v43 = v35;
+        v43 = path;
         v44 = 2114;
         v45 = v19;
         _os_log_error_impl(&dword_228986000, log, OS_LOG_TYPE_ERROR, "[attachments] %{public}@: File not found at %{public}@, %{public}@", buf, 0x20u);
       }
 
       v27 = MEMORY[0x277CCA9B8];
-      v28 = [v18 path];
-      v29 = [v27 hk_error:102 format:{@"File not found at %@, %@", v28, v19}];
+      path2 = [v18 path];
+      v29 = [v27 hk_error:102 format:{@"File not found at %@, %@", path2, v19}];
       if (v29)
       {
-        if (v37)
+        if (errorCopy)
         {
           v30 = v29;
-          *v37 = v29;
+          *errorCopy = v29;
         }
 
         else
@@ -1521,25 +1521,25 @@ BOOL __82__HDAttachmentManager_attachmentReferencesForAttachment_error_enumerati
     if (os_log_type_enabled(*MEMORY[0x277CCC280], OS_LOG_TYPE_ERROR))
     {
       v33 = v21;
-      v34 = [v10 path];
+      path3 = [v10 path];
       *buf = 138543874;
-      v41 = self;
+      selfCopy2 = self;
       v42 = 2114;
-      v43 = v34;
+      v43 = path3;
       v44 = 2114;
       v45 = v13;
       _os_log_error_impl(&dword_228986000, v33, OS_LOG_TYPE_ERROR, "[attachments] %{public}@: File not found at %{public}@, %{public}@", buf, 0x20u);
     }
 
     v22 = MEMORY[0x277CCA9B8];
-    v23 = [v10 path];
-    v24 = [v22 hk_error:102 format:{@"File not found at %@, %@", v23, v13}];
+    path4 = [v10 path];
+    v24 = [v22 hk_error:102 format:{@"File not found at %@, %@", path4, v13}];
     if (v24)
     {
-      if (a4)
+      if (error)
       {
         v25 = v24;
-        *a4 = v24;
+        *error = v24;
       }
 
       else
@@ -1556,18 +1556,18 @@ BOOL __82__HDAttachmentManager_attachmentReferencesForAttachment_error_enumerati
   return v14;
 }
 
-- (id)readerForAttachment:(id)a3 error:(id *)a4
+- (id)readerForAttachment:(id)attachment error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDAttachmentManager *)self fileHandleForAttachment:v6 error:a4];
+  attachmentCopy = attachment;
+  v7 = [(HDAttachmentManager *)self fileHandleForAttachment:attachmentCopy error:error];
   if (v7)
   {
-    v8 = [v6 encryptionKey];
+    encryptionKey = [attachmentCopy encryptionKey];
 
-    if (v8)
+    if (encryptionKey)
     {
-      v9 = [v6 encryptionKey];
-      v10 = [HDEncryptedArchive archiveForDecryptionWithFileHandle:v7 key:v9 error:a4];
+      encryptionKey2 = [attachmentCopy encryptionKey];
+      v10 = [HDEncryptedArchive archiveForDecryptionWithFileHandle:v7 key:encryptionKey2 error:error];
 
       [v7 closeFile];
       if (v10)
@@ -1595,40 +1595,40 @@ BOOL __82__HDAttachmentManager_attachmentReferencesForAttachment_error_enumerati
   return v11;
 }
 
-- (BOOL)replaceReferencesWithObjectIdentifier:(id)a3 replacementIdentifier:(id)a4 schemaIdentifier:(id)a5 error:(id *)a6
+- (BOOL)replaceReferencesWithObjectIdentifier:(id)identifier replacementIdentifier:(id)replacementIdentifier schemaIdentifier:(id)schemaIdentifier error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[HDReplaceObjectIdentifierOperation alloc] initWithWithObjectIdentifier:v12 replacementIdentifier:v11 schemaIdentifier:v10];
+  schemaIdentifierCopy = schemaIdentifier;
+  replacementIdentifierCopy = replacementIdentifier;
+  identifierCopy = identifier;
+  v13 = [[HDReplaceObjectIdentifierOperation alloc] initWithWithObjectIdentifier:identifierCopy replacementIdentifier:replacementIdentifierCopy schemaIdentifier:schemaIdentifierCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LOBYTE(a6) = [(HDJournalableOperation *)v13 performOrJournalWithProfile:WeakRetained error:a6];
+  LOBYTE(error) = [(HDJournalableOperation *)v13 performOrJournalWithProfile:WeakRetained error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)removeAllReferencesWithAttachmentIdentifier:(id)a3 objectIdentifier:(id)a4 schemaIdentifier:(id)a5 error:(id *)a6
+- (BOOL)removeAllReferencesWithAttachmentIdentifier:(id)identifier objectIdentifier:(id)objectIdentifier schemaIdentifier:(id)schemaIdentifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  objectIdentifierCopy = objectIdentifier;
+  schemaIdentifierCopy = schemaIdentifier;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v14 = [WeakRetained database];
+  database = [WeakRetained database];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __107__HDAttachmentManager_removeAllReferencesWithAttachmentIdentifier_objectIdentifier_schemaIdentifier_error___block_invoke;
   v19[3] = &unk_27861B120;
   v19[4] = self;
-  v20 = v11;
-  v21 = v12;
-  v22 = v10;
-  v15 = v10;
-  v16 = v12;
-  v17 = v11;
-  LOBYTE(a6) = [(HDHealthEntity *)HDAttachmentReferenceEntity performWriteTransactionWithHealthDatabase:v14 error:a6 block:v19 inaccessibilityHandler:0];
+  v20 = objectIdentifierCopy;
+  v21 = schemaIdentifierCopy;
+  v22 = identifierCopy;
+  v15 = identifierCopy;
+  v16 = schemaIdentifierCopy;
+  v17 = objectIdentifierCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDAttachmentReferenceEntity performWriteTransactionWithHealthDatabase:database error:error block:v19 inaccessibilityHandler:0];
 
-  return a6;
+  return error;
 }
 
 uint64_t __107__HDAttachmentManager_removeAllReferencesWithAttachmentIdentifier_objectIdentifier_schemaIdentifier_error___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1714,42 +1714,42 @@ uint64_t __107__HDAttachmentManager_removeAllReferencesWithAttachmentIdentifier_
   return 1;
 }
 
-- (BOOL)removeAttachmentReferences:(id)a3 error:(id *)a4
+- (BOOL)removeAttachmentReferences:(id)references error:(id *)error
 {
-  v6 = a3;
-  v7 = [[HDDeleteAttachmentReferenceOperation alloc] initWithReferences:v6];
+  referencesCopy = references;
+  v7 = [[HDDeleteAttachmentReferenceOperation alloc] initWithReferences:referencesCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LOBYTE(a4) = [(HDJournalableOperation *)v7 performOrJournalWithProfile:WeakRetained error:a4];
+  LOBYTE(error) = [(HDJournalableOperation *)v7 performOrJournalWithProfile:WeakRetained error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)removeAttachmentReferencesWithObjectIdentifier:(id)a3 schemaIdentifier:(id)a4 error:(id *)a5
+- (BOOL)removeAttachmentReferencesWithObjectIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  schemaIdentifierCopy = schemaIdentifier;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained database];
+  database = [WeakRetained database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __93__HDAttachmentManager_removeAttachmentReferencesWithObjectIdentifier_schemaIdentifier_error___block_invoke;
   v15[3] = &unk_278615D40;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v12 = v9;
-  v13 = v8;
-  LOBYTE(a5) = [(HDHealthEntity *)HDAttachmentReferenceEntity performWriteTransactionWithHealthDatabase:v11 error:a5 block:v15];
+  v16 = identifierCopy;
+  v17 = schemaIdentifierCopy;
+  v12 = schemaIdentifierCopy;
+  v13 = identifierCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDAttachmentReferenceEntity performWriteTransactionWithHealthDatabase:database error:error block:v15];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)removeAttachmentReferencesWithObjectIdentifier:(id)a3 schemaIdentifier:(id)a4 transaction:(id)a5 error:(id *)a6
+- (BOOL)removeAttachmentReferencesWithObjectIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier transaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  schemaIdentifierCopy = schemaIdentifier;
+  transactionCopy = transaction;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1761,12 +1761,12 @@ uint64_t __107__HDAttachmentManager_removeAllReferencesWithAttachmentIdentifier_
   v18[2] = __105__HDAttachmentManager_removeAttachmentReferencesWithObjectIdentifier_schemaIdentifier_transaction_error___block_invoke;
   v18[3] = &unk_278621850;
   v18[4] = &v19;
-  if ([(HDAttachmentManager *)self _attachmentReferencesForObjectIdentifier:v10 schemaIdentifier:v11 transaction:v12 error:a6 enumerationHandler:v18])
+  if ([(HDAttachmentManager *)self _attachmentReferencesForObjectIdentifier:identifierCopy schemaIdentifier:schemaIdentifierCopy transaction:transactionCopy error:error enumerationHandler:v18])
   {
     v13 = [HDDeleteAttachmentReferenceOperation alloc];
     v14 = [(HDDeleteAttachmentReferenceOperation *)v13 initWithReferences:v20[5]];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v16 = [(HDDeleteAttachmentReferenceOperation *)v14 performWithProfile:WeakRetained transaction:v12 error:a6];
+    v16 = [(HDDeleteAttachmentReferenceOperation *)v14 performWithProfile:WeakRetained transaction:transactionCopy error:error];
   }
 
   else
@@ -1779,15 +1779,15 @@ uint64_t __107__HDAttachmentManager_removeAllReferencesWithAttachmentIdentifier_
   return v16;
 }
 
-- (BOOL)readAuthorizationForObjectIdentifier:(id)a3 schemaIdentifier:(id)a4 client:(id)a5 error:(id *)a6
+- (BOOL)readAuthorizationForObjectIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier client:(id)client error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(HDAttachmentManager *)self schemaProviderForIdentifier:a4 error:a6];
+  identifierCopy = identifier;
+  clientCopy = client;
+  v12 = [(HDAttachmentManager *)self schemaProviderForIdentifier:schemaIdentifier error:error];
   if (v12)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v14 = [v12 readAuthorizationForObjectIdentifier:v10 client:v11 profile:WeakRetained error:a6];
+    v14 = [v12 readAuthorizationForObjectIdentifier:identifierCopy client:clientCopy profile:WeakRetained error:error];
   }
 
   else
@@ -1798,15 +1798,15 @@ uint64_t __107__HDAttachmentManager_removeAllReferencesWithAttachmentIdentifier_
   return v14;
 }
 
-- (BOOL)writeAuthorizationForObjectIdentifier:(id)a3 schemaIdentifier:(id)a4 client:(id)a5 error:(id *)a6
+- (BOOL)writeAuthorizationForObjectIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier client:(id)client error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(HDAttachmentManager *)self schemaProviderForIdentifier:a4 error:a6];
+  identifierCopy = identifier;
+  clientCopy = client;
+  v12 = [(HDAttachmentManager *)self schemaProviderForIdentifier:schemaIdentifier error:error];
   if (v12)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v14 = [v12 writeAuthorizationForObjectIdentifier:v10 client:v11 profile:WeakRetained error:a6];
+    v14 = [v12 writeAuthorizationForObjectIdentifier:identifierCopy client:clientCopy profile:WeakRetained error:error];
   }
 
   else
@@ -1817,19 +1817,19 @@ uint64_t __107__HDAttachmentManager_removeAllReferencesWithAttachmentIdentifier_
   return v14;
 }
 
-- (void)reportDailyAnalyticsWithCoordinator:(id)a3 completion:(id)a4
+- (void)reportDailyAnalyticsWithCoordinator:(id)coordinator completion:(id)completion
 {
   v87 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v6 = a4;
+  coordinatorCopy = coordinator;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v8 = WeakRetained;
   if (WeakRetained)
   {
     v27 = WeakRetained;
-    v9 = [MEMORY[0x277CBEA80] currentCalendar];
-    v10 = [MEMORY[0x277CBEAA8] date];
-    v11 = [v9 startOfDayForDate:v10];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    date = [MEMORY[0x277CBEAA8] date];
+    v11 = [currentCalendar startOfDayForDate:date];
 
     v79 = 0;
     v80 = &v79;
@@ -1871,7 +1871,7 @@ uint64_t __107__HDAttachmentManager_removeAllReferencesWithAttachmentIdentifier_
     v44 = &v43;
     v45 = 0x2020000000;
     v46 = 0;
-    v12 = [v27 database];
+    database = [v27 database];
     v42 = 0;
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
@@ -1889,15 +1889,15 @@ uint64_t __107__HDAttachmentManager_removeAllReferencesWithAttachmentIdentifier_
     v39 = &v59;
     v40 = &v71;
     v41 = &v47;
-    v14 = [(HDHealthEntity *)HDAttachmentEntity performReadTransactionWithHealthDatabase:v12 error:&v42 block:v30];
+    v14 = [(HDHealthEntity *)HDAttachmentEntity performReadTransactionWithHealthDatabase:database error:&v42 block:v30];
     v15 = v42;
 
     if (v14)
     {
-      v16 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       unconfirmedFilesDirectoryPath = self->_unconfirmedFilesDirectoryPath;
       v29 = 0;
-      v18 = [v16 contentsOfDirectoryAtPath:unconfirmedFilesDirectoryPath error:&v29];
+      v18 = [defaultManager contentsOfDirectoryAtPath:unconfirmedFilesDirectoryPath error:&v29];
       v19 = v29;
 
       if (v19)
@@ -1907,13 +1907,13 @@ uint64_t __107__HDAttachmentManager_removeAllReferencesWithAttachmentIdentifier_
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v84 = self;
+          selfCopy2 = self;
           v85 = 2114;
           v86 = v19;
           _os_log_error_impl(&dword_228986000, v20, OS_LOG_TYPE_ERROR, "%{public}@ Failed to read directory contents at %{public}@", buf, 0x16u);
         }
 
-        (*(v6 + 2))(v6, 0, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0, 0);
       }
 
       else
@@ -1931,11 +1931,11 @@ uint64_t __107__HDAttachmentManager_removeAllReferencesWithAttachmentIdentifier_
         [(HDAttachmentAnalytics *)v23 setNumberOfAttachmentsCreatedLast24Hours:v52[3]];
         [(HDAttachmentAnalytics *)v23 setNumberOfTombstonesCreatedLast24Hours:v48[3]];
         [(HDAttachmentAnalytics *)v23 setNumberOfAttachmentsWithMultipleReferences:v44[3]];
-        v24 = [v27 daemon];
-        v25 = [v24 analyticsSubmissionCoordinator];
-        [v25 attachments_reportDailyAnalytics:v23];
+        daemon = [v27 daemon];
+        analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+        [analyticsSubmissionCoordinator attachments_reportDailyAnalytics:v23];
 
-        (*(v6 + 2))(v6, 0, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0, 0);
       }
     }
 
@@ -1946,13 +1946,13 @@ uint64_t __107__HDAttachmentManager_removeAllReferencesWithAttachmentIdentifier_
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v84 = self;
+        selfCopy2 = self;
         v85 = 2114;
         v86 = v15;
         _os_log_error_impl(&dword_228986000, v21, OS_LOG_TYPE_ERROR, "%{public}@ Failed to read directory contents at %{public}@", buf, 0x16u);
       }
 
-      (*(v6 + 2))(v6, 0, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0);
     }
 
     _Block_object_dispose(&v43, 8);
@@ -1971,7 +1971,7 @@ uint64_t __107__HDAttachmentManager_removeAllReferencesWithAttachmentIdentifier_
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -2212,12 +2212,12 @@ LABEL_12:
   return v17;
 }
 
-- (id)schemaProviderForIdentifier:(id)a3 error:(id *)a4
+- (id)schemaProviderForIdentifier:(id)identifier error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(NSMutableDictionary *)self->_schemaProvidersByIdentifier objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_schemaProvidersByIdentifier objectForKeyedSubscript:identifierCopy];
   if (v7)
   {
     v8 = v7;
@@ -2226,13 +2226,13 @@ LABEL_12:
 
   else
   {
-    v20 = self;
+    selfCopy = self;
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = [(HDAttachmentManager *)self schemaProviderClasses];
-    v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    schemaProviderClasses = [(HDAttachmentManager *)self schemaProviderClasses];
+    v10 = [schemaProviderClasses countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2244,26 +2244,26 @@ LABEL_12:
         {
           if (*v22 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(schemaProviderClasses);
           }
 
           v14 = *(*(&v21 + 1) + 8 * i);
           if ([v14 conformsToProtocol:&unk_283CC7B40])
           {
-            v15 = [v14 schemaIdentifier];
-            v16 = [v15 isEqualToString:v6];
+            schemaIdentifier = [v14 schemaIdentifier];
+            v16 = [schemaIdentifier isEqualToString:identifierCopy];
 
             if (v16)
             {
               v17 = objc_alloc_init(v14);
 
-              [(NSMutableDictionary *)v20->_schemaProvidersByIdentifier setObject:v17 forKeyedSubscript:v6];
+              [(NSMutableDictionary *)selfCopy->_schemaProvidersByIdentifier setObject:v17 forKeyedSubscript:identifierCopy];
               v8 = v17;
             }
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v11 = [schemaProviderClasses countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v11);
@@ -2274,10 +2274,10 @@ LABEL_12:
       v8 = 0;
     }
 
-    os_unfair_lock_unlock(&v20->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
     if (!v8)
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:100 format:{@"No schema provider found for identifier '%@'", v6}];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"No schema provider found for identifier '%@'", identifierCopy}];
     }
   }
 
@@ -2286,18 +2286,18 @@ LABEL_12:
   return v8;
 }
 
-- (int64_t)supportedSchemaVersionForReference:(id)a3
+- (int64_t)supportedSchemaVersionForReference:(id)reference
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 schemaIdentifier];
+  referenceCopy = reference;
+  schemaIdentifier = [referenceCopy schemaIdentifier];
   v23 = 0;
-  v6 = [(HDAttachmentManager *)self schemaProviderForIdentifier:v5 error:&v23];
+  v6 = [(HDAttachmentManager *)self schemaProviderForIdentifier:schemaIdentifier error:&v23];
   v7 = v23;
 
   if (v6)
   {
-    v8 = [v4 objectIdentifier];
+    objectIdentifier = [referenceCopy objectIdentifier];
     if (self)
     {
       WeakRetained = objc_loadWeakRetained(&self->_profile);
@@ -2309,7 +2309,7 @@ LABEL_12:
     }
 
     v22 = 0;
-    v10 = [v6 schemaVersionForObjectIdentifier:v8 profile:WeakRetained error:&v22];
+    v10 = [v6 schemaVersionForObjectIdentifier:objectIdentifier profile:WeakRetained error:&v22];
     v11 = v22;
 
     if (!v10)
@@ -2319,14 +2319,14 @@ LABEL_12:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         v19 = v12;
-        v20 = [v4 schemaIdentifier];
-        v21 = [v4 identifier];
+        schemaIdentifier2 = [referenceCopy schemaIdentifier];
+        identifier = [referenceCopy identifier];
         *buf = 138544130;
-        v25 = self;
+        selfCopy2 = self;
         v26 = 2114;
-        v27 = v20;
+        v27 = schemaIdentifier2;
         v28 = 2114;
-        v29 = v21;
+        v29 = identifier;
         v30 = 2114;
         v31 = v11;
         _os_log_error_impl(&dword_228986000, v19, OS_LOG_TYPE_ERROR, "%{public}@ Failed to get schema version for schema identifier %{public}@ for reference %{public}@, error: %{public}@", buf, 0x2Au);
@@ -2341,14 +2341,14 @@ LABEL_12:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
     {
       v16 = v13;
-      v17 = [v4 schemaIdentifier];
-      v18 = [v4 identifier];
+      schemaIdentifier3 = [referenceCopy schemaIdentifier];
+      identifier2 = [referenceCopy identifier];
       *buf = 138544130;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2114;
-      v27 = v17;
+      v27 = schemaIdentifier3;
       v28 = 2114;
-      v29 = v18;
+      v29 = identifier2;
       v30 = 2114;
       v31 = v7;
       _os_log_error_impl(&dword_228986000, v16, OS_LOG_TYPE_ERROR, "%{public}@ Failed to find attachment schema provider %{public}@ for reference %{public}@: %{public}@", buf, 0x2Au);
@@ -2448,9 +2448,9 @@ LABEL_11:
       v13 = [HDMaintenanceOperation maintenanceOperationWithName:v12 queue:0 synchronousBlock:v20];
 
       v14 = objc_loadWeakRetained(&self->_profile);
-      v15 = [v14 daemon];
-      v16 = [v15 maintenanceWorkCoordinator];
-      [v16 enqueueMaintenanceOperation:v13];
+      daemon = [v14 daemon];
+      maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
+      [maintenanceWorkCoordinator enqueueMaintenanceOperation:v13];
     }
   }
 
@@ -2461,7 +2461,7 @@ LABEL_11:
     if (os_log_type_enabled(*MEMORY[0x277CCC280], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v23 = self;
+      selfCopy = self;
       v24 = 2114;
       v25 = v9;
       _os_log_error_impl(&dword_228986000, v17, OS_LOG_TYPE_ERROR, "%{public}@: Failed to lookup attachment cleanup date with error %{public}@", buf, 0x16u);
@@ -2492,19 +2492,19 @@ void __54__HDAttachmentManager_runMaintenanceOperationIfNeeded__block_invoke(uin
   if (os_log_type_enabled(*MEMORY[0x277CCC280], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Cleaning up attachments folder", buf, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained database];
+  database = [WeakRetained database];
   v19[4] = self;
   v20 = 0;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __48__HDAttachmentManager__cleanupAttachmentsFolder__block_invoke;
   v19[3] = &unk_278616048;
-  v7 = [(HDHealthEntity *)HDAttachmentEntity performWriteTransactionWithHealthDatabase:v6 error:&v20 block:v19];
+  v7 = [(HDHealthEntity *)HDAttachmentEntity performWriteTransactionWithHealthDatabase:database error:&v20 block:v19];
   v8 = v20;
 
   if (v7)
@@ -2513,9 +2513,9 @@ void __54__HDAttachmentManager_runMaintenanceOperationIfNeeded__block_invoke(uin
     v10 = objc_loadWeakRetained(&self->_profile);
     v11 = [(HDKeyValueDomain *)v9 initWithCategory:0 domainName:@"attachment-manager" profile:v10];
 
-    v12 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v18 = 0;
-    v13 = [(HDKeyValueDomain *)v11 setDate:v12 forKey:@"file-cleanup" error:&v18];
+    v13 = [(HDKeyValueDomain *)v11 setDate:date forKey:@"file-cleanup" error:&v18];
     v14 = v18;
 
     if (!v13)
@@ -2525,7 +2525,7 @@ void __54__HDAttachmentManager_runMaintenanceOperationIfNeeded__block_invoke(uin
       if (os_log_type_enabled(*v3, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v22 = self;
+        selfCopy3 = self;
         v23 = 2114;
         v24 = v14;
         _os_log_error_impl(&dword_228986000, v15, OS_LOG_TYPE_ERROR, "[attachments] %{public}@: Failed to set cleanup date %{public}@", buf, 0x16u);
@@ -2540,7 +2540,7 @@ void __54__HDAttachmentManager_runMaintenanceOperationIfNeeded__block_invoke(uin
     if (os_log_type_enabled(*v3, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v22 = self;
+      selfCopy3 = self;
       v23 = 2114;
       v24 = v8;
       _os_log_error_impl(&dword_228986000, v16, OS_LOG_TYPE_ERROR, "[attachments] %{public}@: Cleanup failed with error %{public}@", buf, 0x16u);

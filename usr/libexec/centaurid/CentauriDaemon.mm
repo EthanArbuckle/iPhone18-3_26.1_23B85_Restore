@@ -2,24 +2,24 @@
 + (BOOL)configureTempDirectory;
 + (BOOL)shouldDisableDaemon;
 + (int64_t)powerStatsTaskInterval;
-+ (void)handleSignal:(int)a3;
++ (void)handleSignal:(int)signal;
 + (void)setupSignalHandlers;
 - (CentauriDaemon)init;
 - (void)_run;
 - (void)dealloc;
 - (void)log;
 - (void)run;
-- (void)runBackgroundTaskWithIdentifier:(id)a3 completion:(id)a4;
+- (void)runBackgroundTaskWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation CentauriDaemon
 
 - (CentauriDaemon)init
 {
-  v4 = [objc_opt_class() configureTempDirectory];
+  configureTempDirectory = [objc_opt_class() configureTempDirectory];
   v5 = sub_100025204();
   v6 = v5;
-  if ((v4 & 1) == 0)
+  if ((configureTempDirectory & 1) == 0)
   {
     sub_1000287D4(v5, self, a2);
   }
@@ -100,9 +100,9 @@
   handler[4] = self;
   handler[5] = a2;
   xpc_set_event_stream_handler("com.apple.iokit.matching", v5, handler);
-  v6 = [objc_opt_class() shouldDisableDaemon];
-  self->_disabled = v6;
-  if (v6)
+  shouldDisableDaemon = [objc_opt_class() shouldDisableDaemon];
+  self->_disabled = shouldDisableDaemon;
+  if (shouldDisableDaemon)
   {
     v7 = sub_100025204();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -228,18 +228,18 @@
   [(CentauriDaemon *)v6 runBackgroundTaskWithIdentifier:v7 completion:v8, v9];
 }
 
-- (void)runBackgroundTaskWithIdentifier:(id)a3 completion:(id)a4
+- (void)runBackgroundTaskWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 == @"com.apple.centaurid.PowerStats")
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (identifier == @"com.apple.centaurid.PowerStats")
   {
     chipManager = self->_chipManager;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100001EB4;
     v9[3] = &unk_10005C728;
-    v10 = v6;
+    v10 = completionCopy;
     [(ChipManager *)chipManager getPowerStats:0 completion:v9];
   }
 }
@@ -250,7 +250,7 @@
   v4 = sub_100025204();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    sub_100028880(a1, a2);
+    sub_100028880(self, a2);
   }
 
   return 0;
@@ -264,9 +264,9 @@
   sigaction(31, &v2, 0);
 }
 
-+ (void)handleSignal:(int)a3
++ (void)handleSignal:(int)signal
 {
-  LODWORD(v3) = a3;
+  LODWORD(v3) = signal;
   v5 = sub_100025204();
   v6 = v5;
   if (v3 == 31)
@@ -337,7 +337,7 @@
     v11 = sub_100025204();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_100028938(a1, a2, v11);
+      sub_100028938(self, a2, v11);
     }
 
     v9 = 0;
@@ -362,13 +362,13 @@
       v12 = [objc_opt_class() description];
       v13 = NSStringFromSelector(a2);
       v14 = [v9 description];
-      v15 = [v14 UTF8String];
+      uTF8String = [v14 UTF8String];
       *buf = 138543874;
       v18 = v12;
       v19 = 2114;
       v20 = v13;
       v21 = 2082;
-      v22 = v15;
+      v22 = uTF8String;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: failed to set temp directory permissions: %{public}s", buf, 0x20u);
     }
 

@@ -1,10 +1,10 @@
 @interface HMDMetricsManager
 + (HMMLogEventSubmitting)sharedLogEventSubmitter;
 + (NSUUID)namespaceUUID;
-+ (id)initSwiftExtensionsWithLogEventSubmitter:(id)a3;
++ (id)initSwiftExtensionsWithLogEventSubmitter:(id)submitter;
 + (id)logCategory;
-+ (id)makeDailySchedulerWithSwiftData:(id)a3;
-+ (void)submitMinimalCoreAnalyticsEvent:(id)a3;
++ (id)makeDailySchedulerWithSwiftData:(id)data;
++ (void)submitMinimalCoreAnalyticsEvent:(id)event;
 - (BOOL)isCurrentDeviceConfirmedPrimaryResident;
 - (BOOL)isDemoModeConfigured;
 - (BOOL)updateCachedWidgetCount;
@@ -13,8 +13,8 @@
 - (HMDEWSLogging)ewsLogger;
 - (HMDHH2AutoMigrationEligibilityChecker)hh2AutoMigrationEligibilityChecker;
 - (HMDHomeManager)homeManager;
-- (HMDMetricsManager)initWithMessageDispatcher:(id)a3 accountManager:(id)a4 notificationSettingsProvider:(id)a5;
-- (HMDMetricsManager)initWithMessageDispatcher:(id)a3 accountManager:(id)a4 notificationSettingsProvider:(id)a5 logEventDispatcher:(id)a6 dailyScheduler:(id)a7 dateProvider:(id)a8 uptimeProvider:(id)a9 legacyCountersManager:(id)a10 flagsManager:(id)a11 ewsLogger:(id)a12 deviceStateManager:(id)a13 networkObserver:(id)a14 coreAnalyticsTagObserver:(id)a15 backgroundLoggingTimer:(id)a16 radarInitiator:(id)a17 notificationCenter:(id)a18 userDefaults:(id)a19 currentSoftwareVersion:(id)a20 swiftData:(id)a21;
+- (HMDMetricsManager)initWithMessageDispatcher:(id)dispatcher accountManager:(id)manager notificationSettingsProvider:(id)provider;
+- (HMDMetricsManager)initWithMessageDispatcher:(id)dispatcher accountManager:(id)manager notificationSettingsProvider:(id)provider logEventDispatcher:(id)eventDispatcher dailyScheduler:(id)scheduler dateProvider:(id)dateProvider uptimeProvider:(id)uptimeProvider legacyCountersManager:(id)self0 flagsManager:(id)self1 ewsLogger:(id)self2 deviceStateManager:(id)self3 networkObserver:(id)self4 coreAnalyticsTagObserver:(id)self5 backgroundLoggingTimer:(id)self6 radarInitiator:(id)self7 notificationCenter:(id)self8 userDefaults:(id)self9 currentSoftwareVersion:(id)version swiftData:(id)data;
 - (NSArray)configurationObservers;
 - (NSArray)devicesOnCurrentAccount;
 - (NSArray)homeDataSources;
@@ -23,34 +23,34 @@
 - (NSUUID)homeUUIDForCurrentResidentDevice;
 - (NSUUID)messageTargetUUID;
 - (OS_dispatch_queue)messageReceiveQueue;
-- (id)accessoryForIdentifier:(id)a3;
-- (id)cachedHomeConfigurationForHomeUUID:(id)a3;
+- (id)accessoryForIdentifier:(id)identifier;
+- (id)cachedHomeConfigurationForHomeUUID:(id)d;
 - (id)configureHouseholdLogEventFactories;
 - (id)configureSwiftObservers;
-- (id)homeKitAggregationAnalysisLogEventForDate:(id)a3;
+- (id)homeKitAggregationAnalysisLogEventForDate:(id)date;
 - (id)messageDestination;
 - (void)_configureManagers;
 - (void)_configureObservers;
-- (void)_handleFetchEventCounters:(id)a3;
-- (void)_handleResetEventCounters:(id)a3;
+- (void)_handleFetchEventCounters:(id)counters;
+- (void)_handleResetEventCounters:(id)counters;
 - (void)_registerForMessages;
-- (void)addConfigurationChangedObserver:(id)a3;
-- (void)addContributor:(id)a3 toListOfAggregationAnalysisEventContributing:(id)a4;
-- (void)addRateTrigger:(id)a3 forEventName:(id)a4 requestGroup:(id)a5 atThreshold:(unint64_t)a6 windowSize:(unint64_t)a7;
-- (void)addThresholdTrigger:(id)a3 forEventName:(id)a4 requestGroup:(id)a5 atThreshold:(unint64_t)a6;
-- (void)configureHAPMetricsDispatcher:(id)a3;
-- (void)handleAddEphemeralContainer:(id)a3;
-- (void)handleDeactivateEphemeralContainer:(id)a3;
-- (void)handleDeleteCounters:(id)a3;
-- (void)handleDeleteEphemeralContainer:(id)a3;
-- (void)handleListEphemeralContainers:(id)a3;
-- (void)handleLogEventDailySchedulerSubmitRequest:(id)a3;
-- (void)handleReadCounters:(id)a3;
-- (void)handleSaveCounters:(id)a3;
-- (void)handleStartupEphemeralContainer:(id)a3;
+- (void)addConfigurationChangedObserver:(id)observer;
+- (void)addContributor:(id)contributor toListOfAggregationAnalysisEventContributing:(id)contributing;
+- (void)addRateTrigger:(id)trigger forEventName:(id)name requestGroup:(id)group atThreshold:(unint64_t)threshold windowSize:(unint64_t)size;
+- (void)addThresholdTrigger:(id)trigger forEventName:(id)name requestGroup:(id)group atThreshold:(unint64_t)threshold;
+- (void)configureHAPMetricsDispatcher:(id)dispatcher;
+- (void)handleAddEphemeralContainer:(id)container;
+- (void)handleDeactivateEphemeralContainer:(id)container;
+- (void)handleDeleteCounters:(id)counters;
+- (void)handleDeleteEphemeralContainer:(id)container;
+- (void)handleListEphemeralContainers:(id)containers;
+- (void)handleLogEventDailySchedulerSubmitRequest:(id)request;
+- (void)handleReadCounters:(id)counters;
+- (void)handleSaveCounters:(id)counters;
+- (void)handleStartupEphemeralContainer:(id)container;
 - (void)homeKitConfigurationChanged;
 - (void)logEventAggregationAnalysisLogEvents;
-- (void)notifyConfigurationObserversWithUpdatedEvent:(id)a3;
+- (void)notifyConfigurationObserversWithUpdatedEvent:(id)event;
 - (void)registerDailyTaskRunnerBookends;
 - (void)registerTaggedLoggingProcessors;
 - (void)resetHomeKitAggregationAnalysisContext;
@@ -61,14 +61,14 @@
 - (void)submitCurrentUserSettings;
 - (void)submitDailyAggregationAnalysisEvents;
 - (void)submitHAPMetricsCounters;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 - (void)updateCachedConfiguration;
 - (void)waitToCompleteCurrentlyQueuedTasks;
 @end
 
 @implementation HMDMetricsManager
 
-+ (id)initSwiftExtensionsWithLogEventSubmitter:(id)a3
++ (id)initSwiftExtensionsWithLogEventSubmitter:(id)submitter
 {
   swift_unknownObjectRetain();
   v3 = sub_253275CD0();
@@ -77,7 +77,7 @@
   return v3;
 }
 
-+ (id)makeDailySchedulerWithSwiftData:(id)a3
++ (id)makeDailySchedulerWithSwiftData:(id)data
 {
   _s9SwiftDataCMa();
   v3 = swift_dynamicCastClassUnconditional();
@@ -85,21 +85,21 @@
   v4 = objc_allocWithZone(sub_253CD05D8());
   swift_unknownObjectRetain();
   v5 = sub_253CD05C8();
-  v6 = [objc_allocWithZone(MEMORY[0x277D17DA8]) initWithDelegate_];
+  initWithDelegate_ = [objc_allocWithZone(MEMORY[0x277D17DA8]) initWithDelegate_];
   swift_unknownObjectRelease();
 
-  return v6;
+  return initWithDelegate_;
 }
 
 - (void)registerDailyTaskRunnerBookends
 {
-  v2 = self;
+  selfCopy = self;
   sub_25326F294();
 }
 
 - (id)configureSwiftObservers
 {
-  v2 = self;
+  selfCopy = self;
   sub_2532700A0();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F5A3C08, &qword_253D4AC10);
@@ -139,11 +139,11 @@
   return v5;
 }
 
-- (void)handleLogEventDailySchedulerSubmitRequest:(id)a3
+- (void)handleLogEventDailySchedulerSubmitRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(HMDMetricsManager *)v5 internalSwiftData];
+  requestCopy = request;
+  selfCopy = self;
+  internalSwiftData = [(HMDMetricsManager *)selfCopy internalSwiftData];
   _s9SwiftDataCMa();
   v7 = swift_dynamicCastClassUnconditional();
   sub_2532074E4(v7 + OBJC_IVAR____TtCE19HomeKitDaemonLegacyCSo17HMDMetricsManager9SwiftData_dailyScheduler, v8);
@@ -151,63 +151,63 @@
   __swift_project_boxed_opaque_existential_0(v8, v8[3]);
   sub_253CD05E8();
   __swift_destroy_boxed_opaque_existential_0(v8);
-  [v4 respondWithSuccess];
+  [requestCopy respondWithSuccess];
 }
 
-- (void)handleReadCounters:(id)a3
+- (void)handleReadCounters:(id)counters
 {
-  v4 = a3;
-  v5 = self;
-  sub_2532705E8(v4);
+  countersCopy = counters;
+  selfCopy = self;
+  sub_2532705E8(countersCopy);
 }
 
-- (void)handleSaveCounters:(id)a3
+- (void)handleSaveCounters:(id)counters
 {
-  v4 = a3;
-  v5 = self;
-  sub_253270FE8(v4);
+  countersCopy = counters;
+  selfCopy = self;
+  sub_253270FE8(countersCopy);
 }
 
-- (void)handleDeleteCounters:(id)a3
+- (void)handleDeleteCounters:(id)counters
 {
-  v4 = a3;
-  v5 = self;
-  sub_253271178(v4);
+  countersCopy = counters;
+  selfCopy = self;
+  sub_253271178(countersCopy);
 }
 
-- (void)handleAddEphemeralContainer:(id)a3
+- (void)handleAddEphemeralContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
-  sub_25327185C(v4, MEMORY[0x277D17CE0]);
+  containerCopy = container;
+  selfCopy = self;
+  sub_25327185C(containerCopy, MEMORY[0x277D17CE0]);
 }
 
-- (void)handleDeactivateEphemeralContainer:(id)a3
+- (void)handleDeactivateEphemeralContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
-  sub_25327185C(v4, MEMORY[0x277D17CF0]);
+  containerCopy = container;
+  selfCopy = self;
+  sub_25327185C(containerCopy, MEMORY[0x277D17CF0]);
 }
 
-- (void)handleDeleteEphemeralContainer:(id)a3
+- (void)handleDeleteEphemeralContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
-  sub_25327185C(v4, MEMORY[0x277D17CE8]);
+  containerCopy = container;
+  selfCopy = self;
+  sub_25327185C(containerCopy, MEMORY[0x277D17CE8]);
 }
 
-- (void)handleStartupEphemeralContainer:(id)a3
+- (void)handleStartupEphemeralContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
-  sub_253271ACC(v4);
+  containerCopy = container;
+  selfCopy = self;
+  sub_253271ACC(containerCopy);
 }
 
-- (void)handleListEphemeralContainers:(id)a3
+- (void)handleListEphemeralContainers:(id)containers
 {
-  v4 = a3;
-  v5 = self;
-  sub_253271CE8(v4);
+  containersCopy = containers;
+  selfCopy = self;
+  sub_253271CE8(containersCopy);
 }
 
 - (HMDHomeManager)homeManager
@@ -226,19 +226,19 @@
 
 - (BOOL)isCurrentDeviceConfirmedPrimaryResident
 {
-  v2 = [(HMDMetricsManager *)self homeManager];
-  v3 = [v2 homes];
-  v4 = [v3 na_any:&__block_literal_global_268_80461];
+  homeManager = [(HMDMetricsManager *)self homeManager];
+  homes = [homeManager homes];
+  v4 = [homes na_any:&__block_literal_global_268_80461];
 
   return v4;
 }
 
 - (HMDHH2AutoMigrationEligibilityChecker)hh2AutoMigrationEligibilityChecker
 {
-  v2 = [(HMDMetricsManager *)self homeManager];
-  v3 = [v2 hh2AutoMigrationEligibilityChecker];
+  homeManager = [(HMDMetricsManager *)self homeManager];
+  hh2AutoMigrationEligibilityChecker = [homeManager hh2AutoMigrationEligibilityChecker];
 
-  return v3;
+  return hh2AutoMigrationEligibilityChecker;
 }
 
 - (NSUUID)homeUUIDForCurrentResidentDevice
@@ -248,10 +248,10 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v2 = [(HMDMetricsManager *)self homeManager];
-  v3 = [v2 homes];
+  homeManager = [(HMDMetricsManager *)self homeManager];
+  homes = [homeManager homes];
 
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v4 = [homes countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -262,7 +262,7 @@
       {
         if (*v23 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(homes);
         }
 
         v8 = *(*(&v22 + 1) + 8 * i);
@@ -270,10 +270,10 @@
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v9 = [v8 residentDeviceManager];
-        v10 = [v9 residentDevices];
+        residentDeviceManager = [v8 residentDeviceManager];
+        residentDevices = [residentDeviceManager residentDevices];
 
-        v11 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v11 = [residentDevices countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v11)
         {
           v12 = v11;
@@ -284,18 +284,18 @@
             {
               if (*v19 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(residentDevices);
               }
 
               if ([*(*(&v18 + 1) + 8 * j) isCurrentDevice])
               {
-                v15 = [v8 uuid];
+                uuid = [v8 uuid];
 
                 goto LABEL_19;
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v12 = [residentDevices countByEnumeratingWithState:&v18 objects:v26 count:16];
             if (v12)
             {
               continue;
@@ -306,8 +306,8 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v22 objects:v27 count:16];
-      v15 = 0;
+      v5 = [homes countByEnumeratingWithState:&v22 objects:v27 count:16];
+      uuid = 0;
     }
 
     while (v5);
@@ -315,54 +315,54 @@
 
   else
   {
-    v15 = 0;
+    uuid = 0;
   }
 
 LABEL_19:
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return uuid;
 }
 
 - (NSArray)homeDataSources
 {
-  v2 = [(HMDMetricsManager *)self homeManager];
-  v3 = [v2 homes];
+  homeManager = [(HMDMetricsManager *)self homeManager];
+  homes = [homeManager homes];
 
-  return v3;
+  return homes;
 }
 
 - (NSArray)devicesOnCurrentAccount
 {
-  v2 = [(HMDMetricsManager *)self accountManager];
-  v3 = [v2 account];
-  v4 = [v3 devices];
+  accountManager = [(HMDMetricsManager *)self accountManager];
+  account = [accountManager account];
+  devices = [account devices];
 
-  return v4;
+  return devices;
 }
 
 - (HMDDevice)currentDevice
 {
-  v2 = [(HMDMetricsManager *)self accountManager];
-  v3 = [v2 device];
+  accountManager = [(HMDMetricsManager *)self accountManager];
+  device = [accountManager device];
 
-  return v3;
+  return device;
 }
 
 - (OS_dispatch_queue)messageReceiveQueue
 {
-  v2 = [(HMDMetricsManager *)self logEventDispatcher];
-  v3 = [v2 clientQueue];
+  logEventDispatcher = [(HMDMetricsManager *)self logEventDispatcher];
+  clientQueue = [logEventDispatcher clientQueue];
 
-  return v3;
+  return clientQueue;
 }
 
 - (id)messageDestination
 {
   v3 = objc_alloc(MEMORY[0x277D0F820]);
-  v4 = [(HMDMetricsManager *)self messageTargetUUID];
-  v5 = [v3 initWithTarget:v4];
+  messageTargetUUID = [(HMDMetricsManager *)self messageTargetUUID];
+  v5 = [v3 initWithTarget:messageTargetUUID];
 
   return v5;
 }
@@ -376,45 +376,45 @@ LABEL_19:
 
 - (void)saveCounters
 {
-  v2 = [(HMDMetricsManager *)self legacyCountersManager];
-  [v2 forceSave];
+  legacyCountersManager = [(HMDMetricsManager *)self legacyCountersManager];
+  [legacyCountersManager forceSave];
 }
 
 - (void)waitToCompleteCurrentlyQueuedTasks
 {
-  v3 = [(HMDMetricsManager *)self logEventDispatcher];
-  v2 = [v3 clientQueue];
-  dispatch_sync(v2, &__block_literal_global_264);
+  logEventDispatcher = [(HMDMetricsManager *)self logEventDispatcher];
+  clientQueue = [logEventDispatcher clientQueue];
+  dispatch_sync(clientQueue, &__block_literal_global_264);
 }
 
-- (void)_handleResetEventCounters:(id)a3
+- (void)_handleResetEventCounters:(id)counters
 {
-  v5 = a3;
-  v4 = [(HMDMetricsManager *)self legacyCountersManager];
-  [v4 resetAllEventCounters];
+  countersCopy = counters;
+  legacyCountersManager = [(HMDMetricsManager *)self legacyCountersManager];
+  [legacyCountersManager resetAllEventCounters];
 
-  [v5 respondWithSuccess];
+  [countersCopy respondWithSuccess];
 }
 
-- (void)_handleFetchEventCounters:(id)a3
+- (void)_handleFetchEventCounters:(id)counters
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMetricsManager *)self legacyCountersManager];
-  v6 = [v5 fetchAllEventCounters];
+  countersCopy = counters;
+  legacyCountersManager = [(HMDMetricsManager *)self legacyCountersManager];
+  fetchAllEventCounters = [legacyCountersManager fetchAllEventCounters];
 
-  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(fetchAllEventCounters, "count")}];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __47__HMDMetricsManager__handleFetchEventCounters___block_invoke;
   v14 = &unk_279729148;
   v15 = v7;
   v8 = v7;
-  [v6 enumerateKeysAndObjectsUsingBlock:&v11];
+  [fetchAllEventCounters enumerateKeysAndObjectsUsingBlock:&v11];
   v16 = @"countersManager";
   v17[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:{1, v11, v12, v13, v14}];
-  [v4 respondWithPayload:v9];
+  [countersCopy respondWithPayload:v9];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -427,44 +427,44 @@ void __47__HMDMetricsManager__handleFetchEventCounters___block_invoke(uint64_t a
   [v4 setObject:v5 forKey:v6];
 }
 
-- (void)addRateTrigger:(id)a3 forEventName:(id)a4 requestGroup:(id)a5 atThreshold:(unint64_t)a6 windowSize:(unint64_t)a7
+- (void)addRateTrigger:(id)trigger forEventName:(id)name requestGroup:(id)group atThreshold:(unint64_t)threshold windowSize:(unint64_t)size
 {
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v18 = [(HMDMetricsManager *)self legacyCountersManager];
+  groupCopy = group;
+  nameCopy = name;
+  triggerCopy = trigger;
+  legacyCountersManager = [(HMDMetricsManager *)self legacyCountersManager];
   v15 = [HMDCounterRateLoggingTrigger alloc];
-  v16 = [(HMDMetricsManager *)self ewsLogger];
-  v17 = [(HMDCounterRateLoggingTrigger *)v15 initWithThreshold:a6 windowSize:a7 counterName:v14 ewsLogger:v16];
+  ewsLogger = [(HMDMetricsManager *)self ewsLogger];
+  v17 = [(HMDCounterRateLoggingTrigger *)v15 initWithThreshold:threshold windowSize:size counterName:triggerCopy ewsLogger:ewsLogger];
 
-  [v18 addObserver:v17 forEventName:v13 requestGroup:v12];
+  [legacyCountersManager addObserver:v17 forEventName:nameCopy requestGroup:groupCopy];
 }
 
-- (void)addThresholdTrigger:(id)a3 forEventName:(id)a4 requestGroup:(id)a5 atThreshold:(unint64_t)a6
+- (void)addThresholdTrigger:(id)trigger forEventName:(id)name requestGroup:(id)group atThreshold:(unint64_t)threshold
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v16 = [(HMDMetricsManager *)self legacyCountersManager];
+  groupCopy = group;
+  nameCopy = name;
+  triggerCopy = trigger;
+  legacyCountersManager = [(HMDMetricsManager *)self legacyCountersManager];
   v13 = [HMDCounterThresholdLoggingTrigger alloc];
-  v14 = [(HMDMetricsManager *)self ewsLogger];
-  v15 = [(HMDCounterThresholdLoggingTrigger *)v13 initWithThreshold:a6 counterName:v12 ewsLogger:v14];
+  ewsLogger = [(HMDMetricsManager *)self ewsLogger];
+  v15 = [(HMDCounterThresholdLoggingTrigger *)v13 initWithThreshold:threshold counterName:triggerCopy ewsLogger:ewsLogger];
 
-  [v16 addObserver:v15 forEventName:v11 requestGroup:v10];
+  [legacyCountersManager addObserver:v15 forEventName:nameCopy requestGroup:groupCopy];
 }
 
 - (void)startAnalyzers
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMetricsManager *)self logEventDispatcher];
-  v4 = [(HMDMetricsManager *)self processMemoryEventsAnalyzer];
+  logEventDispatcher = [(HMDMetricsManager *)self logEventDispatcher];
+  processMemoryEventsAnalyzer = [(HMDMetricsManager *)self processMemoryEventsAnalyzer];
   v28[0] = objc_opt_class();
   v28[1] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
-  [v3 addObserver:v4 forEventClasses:v5];
+  [logEventDispatcher addObserver:processMemoryEventsAnalyzer forEventClasses:v5];
 
-  v6 = [(HMDMetricsManager *)self logEventDispatcher];
-  v7 = [(HMDMetricsManager *)self userActivityEventsAnalyzer];
+  logEventDispatcher2 = [(HMDMetricsManager *)self logEventDispatcher];
+  userActivityEventsAnalyzer = [(HMDMetricsManager *)self userActivityEventsAnalyzer];
   v27[0] = objc_opt_class();
   v27[1] = objc_opt_class();
   v27[2] = objc_opt_class();
@@ -473,43 +473,43 @@ void __47__HMDMetricsManager__handleFetchEventCounters___block_invoke(uint64_t a
   v27[5] = objc_opt_class();
   v27[6] = objc_opt_class();
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:7];
-  [v6 addObserver:v7 forEventClasses:v8];
+  [logEventDispatcher2 addObserver:userActivityEventsAnalyzer forEventClasses:v8];
 
-  v9 = [(HMDMetricsManager *)self logEventDispatcher];
-  v10 = [(HMDMetricsManager *)self hapEventsAnalyzer];
+  logEventDispatcher3 = [(HMDMetricsManager *)self logEventDispatcher];
+  hapEventsAnalyzer = [(HMDMetricsManager *)self hapEventsAnalyzer];
   v26 = objc_opt_class();
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
-  [v9 addObserver:v10 forEventClasses:v11];
+  [logEventDispatcher3 addObserver:hapEventsAnalyzer forEventClasses:v11];
 
-  v12 = [(HMDMetricsManager *)self logEventDispatcher];
-  v13 = [(HMDMetricsManager *)self firmwareUpdateEventsAnalyzer];
+  logEventDispatcher4 = [(HMDMetricsManager *)self logEventDispatcher];
+  firmwareUpdateEventsAnalyzer = [(HMDMetricsManager *)self firmwareUpdateEventsAnalyzer];
   v25 = objc_opt_class();
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
-  [v12 addObserver:v13 forEventClasses:v14];
+  [logEventDispatcher4 addObserver:firmwareUpdateEventsAnalyzer forEventClasses:v14];
 
-  v15 = [(HMDMetricsManager *)self logEventDispatcher];
-  v16 = [(HMDMetricsManager *)self reachabilityEventsAnalyzer];
+  logEventDispatcher5 = [(HMDMetricsManager *)self logEventDispatcher];
+  reachabilityEventsAnalyzer = [(HMDMetricsManager *)self reachabilityEventsAnalyzer];
   v24[0] = objc_opt_class();
   v24[1] = objc_opt_class();
   v24[2] = objc_opt_class();
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:3];
-  [v15 addObserver:v16 forEventClasses:v17];
+  [logEventDispatcher5 addObserver:reachabilityEventsAnalyzer forEventClasses:v17];
 
   if (isInternalBuild())
   {
-    v18 = [(HMDMetricsManager *)self eventCountingAnalyzer];
+    eventCountingAnalyzer = [(HMDMetricsManager *)self eventCountingAnalyzer];
 
-    if (v18)
+    if (eventCountingAnalyzer)
     {
-      v19 = [(HMDMetricsManager *)self logEventDispatcher];
-      v20 = [(HMDMetricsManager *)self eventCountingAnalyzer];
-      [v19 addObserver:v20 forProtocol:&unk_28662C538];
+      logEventDispatcher6 = [(HMDMetricsManager *)self logEventDispatcher];
+      eventCountingAnalyzer2 = [(HMDMetricsManager *)self eventCountingAnalyzer];
+      [logEventDispatcher6 addObserver:eventCountingAnalyzer2 forProtocol:&unk_28662C538];
     }
   }
 
-  v21 = [(HMDMetricsManager *)self logEventDispatcher];
-  v22 = [(HMDMetricsManager *)self widgetTimelineRefresherEventsAnalyzer];
-  [v21 addObserver:v22 forEventClass:objc_opt_class()];
+  logEventDispatcher7 = [(HMDMetricsManager *)self logEventDispatcher];
+  widgetTimelineRefresherEventsAnalyzer = [(HMDMetricsManager *)self widgetTimelineRefresherEventsAnalyzer];
+  [logEventDispatcher7 addObserver:widgetTimelineRefresherEventsAnalyzer forEventClass:objc_opt_class()];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -541,27 +541,27 @@ HMDMatterThirdPartyPairingTagProcessor *__52__HMDMetricsManager_registerTaggedLo
 
 - (BOOL)isDemoModeConfigured
 {
-  v2 = [(HMDMetricsManager *)self homeManager];
-  v3 = [v2 demoFinalized];
+  homeManager = [(HMDMetricsManager *)self homeManager];
+  demoFinalized = [homeManager demoFinalized];
 
-  return v3;
+  return demoFinalized;
 }
 
 - (BOOL)updateCachedWidgetCount
 {
-  v3 = [(HMDMetricsManager *)self homeManager];
-  v4 = [v3 widgetConfigurationReader];
-  v5 = [v4 homeWidgetsEnabledCount];
+  homeManager = [(HMDMetricsManager *)self homeManager];
+  widgetConfigurationReader = [homeManager widgetConfigurationReader];
+  homeWidgetsEnabledCount = [widgetConfigurationReader homeWidgetsEnabledCount];
 
   os_unfair_lock_lock_with_options();
-  if (v5 < 0 || v5 == self->_configuredWidgetsCount)
+  if (homeWidgetsEnabledCount < 0 || homeWidgetsEnabledCount == self->_configuredWidgetsCount)
   {
     v6 = 0;
   }
 
   else
   {
-    self->_configuredWidgetsCount = v5;
+    self->_configuredWidgetsCount = homeWidgetsEnabledCount;
     v6 = 1;
   }
 
@@ -569,18 +569,18 @@ HMDMatterThirdPartyPairingTagProcessor *__52__HMDMetricsManager_registerTaggedLo
   return v6;
 }
 
-- (id)accessoryForIdentifier:(id)a3
+- (id)accessoryForIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [(HMDMetricsManager *)self homeManager];
-  v6 = [v5 homes];
+  homeManager = [(HMDMetricsManager *)self homeManager];
+  homes = [homeManager homes];
 
-  v22 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  v22 = [homes countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v22)
   {
     v7 = *v28;
@@ -591,7 +591,7 @@ HMDMatterThirdPartyPairingTagProcessor *__52__HMDMetricsManager_registerTaggedLo
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(homes);
         }
 
         v9 = *(*(&v27 + 1) + 8 * i);
@@ -599,8 +599,8 @@ HMDMatterThirdPartyPairingTagProcessor *__52__HMDMetricsManager_registerTaggedLo
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v10 = [v9 accessories];
-        v11 = [v10 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        accessories = [v9 accessories];
+        v11 = [accessories countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v11)
         {
           v12 = v11;
@@ -611,12 +611,12 @@ HMDMatterThirdPartyPairingTagProcessor *__52__HMDMetricsManager_registerTaggedLo
             {
               if (*v24 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(accessories);
               }
 
               v15 = *(*(&v23 + 1) + 8 * j);
-              v16 = [v15 identifier];
-              v17 = [v16 isEqual:v4];
+              identifier = [v15 identifier];
+              v17 = [identifier isEqual:identifierCopy];
 
               if (v17)
               {
@@ -626,7 +626,7 @@ HMDMatterThirdPartyPairingTagProcessor *__52__HMDMetricsManager_registerTaggedLo
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v23 objects:v31 count:16];
+            v12 = [accessories countByEnumeratingWithState:&v23 objects:v31 count:16];
             if (v12)
             {
               continue;
@@ -640,7 +640,7 @@ HMDMatterThirdPartyPairingTagProcessor *__52__HMDMetricsManager_registerTaggedLo
       }
 
       v18 = 0;
-      v22 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v22 = [homes countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v22);
@@ -658,18 +658,18 @@ LABEL_19:
   return v18;
 }
 
-- (id)cachedHomeConfigurationForHomeUUID:(id)a3
+- (id)cachedHomeConfigurationForHomeUUID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(HMDMetricsManager *)self cachedConfiguration];
-  v6 = [v5 homeConfigurations];
+  cachedConfiguration = [(HMDMetricsManager *)self cachedConfiguration];
+  homeConfigurations = [cachedConfiguration homeConfigurations];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [homeConfigurations countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -679,12 +679,12 @@ LABEL_19:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(homeConfigurations);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 homeUUID];
-        v12 = [v11 hmf_isEqualToUUID:v4];
+        homeUUID = [v10 homeUUID];
+        v12 = [homeUUID hmf_isEqualToUUID:dCopy];
 
         if (v12)
         {
@@ -693,7 +693,7 @@ LABEL_19:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [homeConfigurations countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -719,16 +719,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)notifyConfigurationObserversWithUpdatedEvent:(id)a3
+- (void)notifyConfigurationObserversWithUpdatedEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(HMDMetricsManager *)self configurationObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  configurationObservers = [(HMDMetricsManager *)self configurationObservers];
+  v6 = [configurationObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -740,14 +740,14 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(configurationObservers);
         }
 
         (*(*(*(&v11 + 1) + 8 * v9++) + 16))();
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [configurationObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -759,12 +759,12 @@ LABEL_11:
 - (void)updateCachedConfiguration
 {
   v3 = +[HMDHAPMetadata getSharedInstance];
-  v4 = [v3 version];
-  v5 = [v4 unsignedIntegerValue];
+  version = [v3 version];
+  unsignedIntegerValue = [version unsignedIntegerValue];
 
   v6 = [HMDConfigurationLogEvent alloc];
-  v7 = [(HMDMetricsManager *)self homeManager];
-  v8 = [(HMDConfigurationLogEvent *)v6 initWithHomeManager:v7 widgetDataSource:self metadataVersion:v5];
+  homeManager = [(HMDMetricsManager *)self homeManager];
+  v8 = [(HMDConfigurationLogEvent *)v6 initWithHomeManager:homeManager widgetDataSource:self metadataVersion:unsignedIntegerValue];
 
   os_unfair_lock_lock_with_options();
   cachedConfiguration = self->_cachedConfiguration;
@@ -777,20 +777,20 @@ LABEL_11:
 
 - (void)homeKitConfigurationChanged
 {
-  v3 = [(HMDMetricsManager *)self homeManager];
-  if (v3)
+  homeManager = [(HMDMetricsManager *)self homeManager];
+  if (homeManager)
   {
-    v4 = [(HMDMetricsManager *)self processLaunchEventsAnalyzer];
-    [v4 homeKitConfigurationChangedWithHomeManager:v3];
+    processLaunchEventsAnalyzer = [(HMDMetricsManager *)self processLaunchEventsAnalyzer];
+    [processLaunchEventsAnalyzer homeKitConfigurationChangedWithHomeManager:homeManager];
 
-    v5 = [(HMDMetricsManager *)self logEventDispatcher];
-    v6 = [v5 clientQueue];
+    logEventDispatcher = [(HMDMetricsManager *)self logEventDispatcher];
+    clientQueue = [logEventDispatcher clientQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __48__HMDMetricsManager_homeKitConfigurationChanged__block_invoke;
     block[3] = &unk_279735D00;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(clientQueue, block);
   }
 }
 
@@ -824,9 +824,9 @@ void __48__HMDMetricsManager_homeKitConfigurationChanged__block_invoke(uint64_t 
   return v3;
 }
 
-- (void)addConfigurationChangedObserver:(id)a3
+- (void)addConfigurationChangedObserver:(id)observer
 {
-  aBlock = a3;
+  aBlock = observer;
   os_unfair_lock_lock_with_options();
   configurationObservers = self->_configurationObservers;
   v5 = _Block_copy(aBlock);
@@ -843,12 +843,12 @@ void __48__HMDMetricsManager_homeKitConfigurationChanged__block_invoke(uint64_t 
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v22 = self;
-  v4 = [(HMDMetricsManager *)self homeManager];
-  v5 = [v4 homes];
+  selfCopy = self;
+  homeManager = [(HMDMetricsManager *)self homeManager];
+  homes = [homeManager homes];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  obj = homes;
+  v6 = [homes countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
   {
     v7 = v6;
@@ -867,8 +867,8 @@ void __48__HMDMetricsManager_homeKitConfigurationChanged__block_invoke(uint64_t 
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v11 = [v10 hapAccessories];
-        v12 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        hapAccessories = [v10 hapAccessories];
+        v12 = [hapAccessories countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v12)
         {
           v13 = v12;
@@ -879,21 +879,21 @@ void __48__HMDMetricsManager_homeKitConfigurationChanged__block_invoke(uint64_t 
             {
               if (*v25 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(hapAccessories);
               }
 
               v16 = *(*(&v24 + 1) + 8 * j);
-              v17 = [v16 identifier];
-              v18 = [v16 matchingHAPAccessoryWithServerIdentifier:v17];
+              identifier = [v16 identifier];
+              v18 = [v16 matchingHAPAccessoryWithServerIdentifier:identifier];
 
-              v19 = [v18 server];
-              if (v19)
+              server = [v18 server];
+              if (server)
               {
-                [(HMDHAPMetricsLogEvent *)v3 updateWithHAPAccessoryServer:v19];
+                [(HMDHAPMetricsLogEvent *)v3 updateWithHAPAccessoryServer:server];
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v13 = [hapAccessories countByEnumeratingWithState:&v24 objects:v32 count:16];
           }
 
           while (v13);
@@ -906,8 +906,8 @@ void __48__HMDMetricsManager_homeKitConfigurationChanged__block_invoke(uint64_t 
     while (v7);
   }
 
-  v20 = [(HMDMetricsManager *)v22 logEventDispatcher];
-  [v20 submitLogEvent:v3];
+  logEventDispatcher = [(HMDMetricsManager *)selfCopy logEventDispatcher];
+  [logEventDispatcher submitLogEvent:v3];
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -915,16 +915,16 @@ void __48__HMDMetricsManager_homeKitConfigurationChanged__block_invoke(uint64_t 
 - (void)logEventAggregationAnalysisLogEvents
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMetricsManager *)self dateProvider];
-  v4 = [v3 startOfCurrentDay];
+  dateProvider = [(HMDMetricsManager *)self dateProvider];
+  startOfCurrentDay = [dateProvider startOfCurrentDay];
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [(HMDMetricsManager *)v6 homeKitAggregationAnalysisLogEventForDate:v4];
+    v9 = [(HMDMetricsManager *)selfCopy homeKitAggregationAnalysisLogEventForDate:startOfCurrentDay];
     v10 = [v9 description];
     v18 = 138543618;
     v19 = v8;
@@ -935,13 +935,13 @@ void __48__HMDMetricsManager_homeKitConfigurationChanged__block_invoke(uint64_t 
 
   objc_autoreleasePoolPop(v5);
   v11 = objc_autoreleasePoolPush();
-  v12 = v6;
+  v12 = selfCopy;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [(HMDMetricsManager *)v12 errorEventsAnalyzer];
-    v16 = [v15 errorEventsAnalyzedSummaryForDate:v4];
+    errorEventsAnalyzer = [(HMDMetricsManager *)v12 errorEventsAnalyzer];
+    v16 = [errorEventsAnalyzer errorEventsAnalyzedSummaryForDate:startOfCurrentDay];
     v18 = 138543618;
     v19 = v14;
     v20 = 2114;
@@ -953,7 +953,7 @@ void __48__HMDMetricsManager_homeKitConfigurationChanged__block_invoke(uint64_t 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   [(HMDMetricsManager *)self logEventAggregationAnalysisLogEvents];
 
@@ -967,8 +967,8 @@ void __48__HMDMetricsManager_homeKitConfigurationChanged__block_invoke(uint64_t 
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(HMDMetricsManager *)self aggregationAnalysisEventContributingAnalyzers];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  aggregationAnalysisEventContributingAnalyzers = [(HMDMetricsManager *)self aggregationAnalysisEventContributingAnalyzers];
+  v3 = [aggregationAnalysisEventContributingAnalyzers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -980,14 +980,14 @@ void __48__HMDMetricsManager_homeKitConfigurationChanged__block_invoke(uint64_t 
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(aggregationAnalysisEventContributingAnalyzers);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) resetAggregationAnalysisContext];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [aggregationAnalysisEventContributingAnalyzers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -996,17 +996,17 @@ void __48__HMDMetricsManager_homeKitConfigurationChanged__block_invoke(uint64_t 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)homeKitAggregationAnalysisLogEventForDate:(id)a3
+- (id)homeKitAggregationAnalysisLogEventForDate:(id)date
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(HMDAggregationAnalysisLogEvent);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(HMDMetricsManager *)self aggregationAnalysisEventContributingAnalyzers];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  aggregationAnalysisEventContributingAnalyzers = [(HMDMetricsManager *)self aggregationAnalysisEventContributingAnalyzers];
+  v7 = [aggregationAnalysisEventContributingAnalyzers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1017,13 +1017,13 @@ void __48__HMDMetricsManager_homeKitConfigurationChanged__block_invoke(uint64_t 
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(aggregationAnalysisEventContributingAnalyzers);
         }
 
-        [*(*(&v13 + 1) + 8 * i) populateAggregationAnalysisLogEvent:v5 forDate:v4];
+        [*(*(&v13 + 1) + 8 * i) populateAggregationAnalysisLogEvent:v5 forDate:dateCopy];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [aggregationAnalysisEventContributingAnalyzers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -1036,14 +1036,14 @@ void __48__HMDMetricsManager_homeKitConfigurationChanged__block_invoke(uint64_t 
 
 - (void)submitDailyAggregationAnalysisEvents
 {
-  v3 = [(HMDMetricsManager *)self logEventDispatcher];
-  v4 = [v3 clientQueue];
+  logEventDispatcher = [(HMDMetricsManager *)self logEventDispatcher];
+  clientQueue = [logEventDispatcher clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(clientQueue, block);
 }
 
 void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(uint64_t a1)
@@ -1076,10 +1076,10 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(HMDMetricsManager *)self homeManager];
-  v4 = [v3 homes];
+  homeManager = [(HMDMetricsManager *)self homeManager];
+  homes = [homeManager homes];
 
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [homes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1091,22 +1091,22 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(homes);
         }
 
         v9 = *(*(&v15 + 1) + 8 * v8);
         v10 = [HMDUserSettingsPerHomeLogEvent alloc];
-        v11 = [v9 currentUser];
-        v12 = [(HMDUserSettingsPerHomeLogEvent *)v10 initWithUser:v11];
+        currentUser = [v9 currentUser];
+        v12 = [(HMDUserSettingsPerHomeLogEvent *)v10 initWithUser:currentUser];
 
-        v13 = [(HMDMetricsManager *)self logEventDispatcher];
-        [v13 submitLogEvent:v12];
+        logEventDispatcher = [(HMDMetricsManager *)self logEventDispatcher];
+        [logEventDispatcher submitLogEvent:v12];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [homes countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -1118,18 +1118,18 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
 - (void)runDailyTask
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D0F8E8] productInfo];
-  v4 = [v3 productVariant];
+  productInfo = [MEMORY[0x277D0F8E8] productInfo];
+  productVariant = [productInfo productVariant];
 
-  if (v4 == 3)
+  if (productVariant == 3)
   {
-    v5 = [MEMORY[0x277D0F910] systemInfo];
-    v6 = [v5 serialNumber];
+    systemInfo = [MEMORY[0x277D0F910] systemInfo];
+    serialNumber = [systemInfo serialNumber];
 
-    if (v6)
+    if (serialNumber)
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
@@ -1137,7 +1137,7 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
         *buf = 138543618;
         v45 = v10;
         v46 = 2112;
-        v47 = v6;
+        v47 = serialNumber;
         _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@[CA] Serial Number: %@", buf, 0x16u);
       }
 
@@ -1154,10 +1154,10 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v11 = [(HMDMetricsManager *)self cachedConfiguration];
-  v12 = [v11 homeConfigurations];
+  cachedConfiguration = [(HMDMetricsManager *)self cachedConfiguration];
+  homeConfigurations = [cachedConfiguration homeConfigurations];
 
-  v13 = [v12 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  v13 = [homeConfigurations countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1169,58 +1169,58 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
       {
         if (*v40 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(homeConfigurations);
         }
 
         v17 = *(*(&v39 + 1) + 8 * v16);
-        v18 = [(HMDMetricsManager *)self logEventDispatcher];
-        [v18 submitLogEvent:v17];
+        logEventDispatcher = [(HMDMetricsManager *)self logEventDispatcher];
+        [logEventDispatcher submitLogEvent:v17];
 
         ++v16;
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v14 = [homeConfigurations countByEnumeratingWithState:&v39 objects:v43 count:16];
     }
 
     while (v14);
   }
 
-  v19 = [(HMDMetricsManager *)self logEventDispatcher];
-  v20 = [(HMDMetricsManager *)self cachedConfiguration];
-  [v19 submitLogEvent:v20];
+  logEventDispatcher2 = [(HMDMetricsManager *)self logEventDispatcher];
+  cachedConfiguration2 = [(HMDMetricsManager *)self cachedConfiguration];
+  [logEventDispatcher2 submitLogEvent:cachedConfiguration2];
 
   [(HMDMetricsManager *)self submitCurrentUserSettings];
   v21 = [HMDCameraConfigurationsLogEvent alloc];
   v22 = MEMORY[0x277CBEA60];
-  v23 = [(HMDMetricsManager *)self homeManager];
-  v24 = [v23 homes];
-  v25 = [v22 arrayWithArray:v24];
+  homeManager = [(HMDMetricsManager *)self homeManager];
+  homes = [homeManager homes];
+  v25 = [v22 arrayWithArray:homes];
   v26 = [(HMDCameraConfigurationsLogEvent *)v21 initWithHomes:v25];
 
-  v27 = [(HMDMetricsManager *)self logEventDispatcher];
-  [v27 submitLogEvent:v26];
+  logEventDispatcher3 = [(HMDMetricsManager *)self logEventDispatcher];
+  [logEventDispatcher3 submitLogEvent:v26];
 
   v28 = objc_alloc_init(HMDWatchConnectivityLogEvent);
-  v29 = [(HMDMetricsManager *)self logEventDispatcher];
-  [v29 submitLogEvent:v28];
+  logEventDispatcher4 = [(HMDMetricsManager *)self logEventDispatcher];
+  [logEventDispatcher4 submitLogEvent:v28];
 
-  v30 = [(HMDMetricsManager *)self messagingEventsAnalyzer];
-  [v30 submitDailyMessageEvents];
+  messagingEventsAnalyzer = [(HMDMetricsManager *)self messagingEventsAnalyzer];
+  [messagingEventsAnalyzer submitDailyMessageEvents];
 
   [(HMDMetricsManager *)self submitDailyAggregationAnalysisEvents];
-  v31 = [(HMDMetricsManager *)self logEventSubmitter];
+  logEventSubmitter = [(HMDMetricsManager *)self logEventSubmitter];
   v32 = [[HMDUnexpectedNotificationLogEvent alloc] initWithCount:0];
-  [v31 submitLogEvent:v32];
+  [logEventSubmitter submitLogEvent:v32];
 
-  v33 = [(HMDMetricsManager *)self ewsLogger];
-  [v33 submitEventWithName:@"Daily heartbeat" serviceName:@"EWS Heartbeat" uploadImmediately:0 payload:MEMORY[0x277CBEC10]];
+  ewsLogger = [(HMDMetricsManager *)self ewsLogger];
+  [ewsLogger submitEventWithName:@"Daily heartbeat" serviceName:@"EWS Heartbeat" uploadImmediately:0 payload:MEMORY[0x277CBEC10]];
 
-  v34 = [(HMDMetricsManager *)self dateProvider];
-  v35 = [v34 startOfDayByAddingDayCount:-7];
+  dateProvider = [(HMDMetricsManager *)self dateProvider];
+  v35 = [dateProvider startOfDayByAddingDayCount:-7];
 
-  v36 = [(HMDMetricsManager *)self dateProvider];
-  v37 = [v36 startOfDayByAddingDayCount:1];
+  dateProvider2 = [(HMDMetricsManager *)self dateProvider];
+  v37 = [dateProvider2 startOfDayByAddingDayCount:1];
 
   [(HMDMetricsManager *)self deletePartitionsBeforeDate:v35];
   [(HMDMetricsManager *)self deletePartitionsAfterDate:v37];
@@ -1235,7 +1235,7 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
   if ([(HMDMetricsManager *)self hasStarted])
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
@@ -1255,39 +1255,39 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
     [(HMDMetricsManager *)self setHasStarted:1];
     os_unfair_lock_unlock(&self->_lock);
     [(HMDMetricsManager *)self _registerForMessages];
-    v8 = [(HMDMetricsManager *)self deviceStateManager];
-    [v8 configure];
+    deviceStateManager = [(HMDMetricsManager *)self deviceStateManager];
+    [deviceStateManager configure];
 
-    v9 = [(HMDMetricsManager *)self logEventDispatcher];
-    v10 = [(HMDMetricsManager *)self coreAnalyticsObserver];
-    [v9 addObserver:v10 forProtocol:&unk_28662E450];
+    logEventDispatcher = [(HMDMetricsManager *)self logEventDispatcher];
+    coreAnalyticsObserver = [(HMDMetricsManager *)self coreAnalyticsObserver];
+    [logEventDispatcher addObserver:coreAnalyticsObserver forProtocol:&unk_28662E450];
 
     [(HMDMetricsManager *)self registerTaggedLoggingProcessors];
-    v11 = [(HMDMetricsManager *)self diagnosticReporterLogObserver];
-    [v11 start];
+    diagnosticReporterLogObserver = [(HMDMetricsManager *)self diagnosticReporterLogObserver];
+    [diagnosticReporterLogObserver start];
 
-    v12 = [(HMDMetricsManager *)self powerLogObserver];
-    [v12 start];
+    powerLogObserver = [(HMDMetricsManager *)self powerLogObserver];
+    [powerLogObserver start];
 
-    v13 = [(HMDMetricsManager *)self coreAnalyticsTagObserver];
-    [v13 configure];
+    coreAnalyticsTagObserver = [(HMDMetricsManager *)self coreAnalyticsTagObserver];
+    [coreAnalyticsTagObserver configure];
 
     [(HMDMetricsManager *)self startAnalyzers];
     [(HMDMetricsManager *)self registerDailyTaskRunnerBookends];
-    v14 = [(HMDMetricsManager *)self dailyScheduler];
-    [v14 registerDailyTaskRunner:self];
+    dailyScheduler = [(HMDMetricsManager *)self dailyScheduler];
+    [dailyScheduler registerDailyTaskRunner:self];
 
     os_unfair_lock_lock_with_options();
     v15 = bufferedSubmitter;
-    v16 = [(HMDMetricsManager *)self logEventDispatcher];
-    [v15 processLogEventsWithSubmitter:v16];
+    logEventDispatcher2 = [(HMDMetricsManager *)self logEventDispatcher];
+    [v15 processLogEventsWithSubmitter:logEventDispatcher2];
 
     v17 = bufferedSubmitter;
     bufferedSubmitter = 0;
 
-    v18 = [(HMDMetricsManager *)self logEventDispatcher];
+    logEventDispatcher3 = [(HMDMetricsManager *)self logEventDispatcher];
     v19 = sharedDispatcher;
-    sharedDispatcher = v18;
+    sharedDispatcher = logEventDispatcher3;
 
     v20 = *MEMORY[0x277D85DE8];
 
@@ -1295,23 +1295,23 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
   }
 }
 
-- (void)configureHAPMetricsDispatcher:(id)a3
+- (void)configureHAPMetricsDispatcher:(id)dispatcher
 {
-  v4 = a3;
-  v5 = [(HMDMetricsManager *)self logEventDispatcher];
-  [v4 setLogDispatcher:v5];
+  dispatcherCopy = dispatcher;
+  logEventDispatcher = [(HMDMetricsManager *)self logEventDispatcher];
+  [dispatcherCopy setLogDispatcher:logEventDispatcher];
 }
 
 - (void)_registerForMessages
 {
   v56 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D0F8E8] productInfo];
-  v4 = [v3 productVariant];
+  productInfo = [MEMORY[0x277D0F8E8] productInfo];
+  productVariant = [productInfo productVariant];
 
-  if (v4 == 3)
+  if (productVariant == 3)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -1322,71 +1322,71 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
     }
 
     objc_autoreleasePoolPop(v5);
-    v9 = [(HMDMetricsManager *)v6 messageDispatcher];
+    messageDispatcher = [(HMDMetricsManager *)selfCopy messageDispatcher];
     v10 = [HMDXPCMessagePolicy policyWithEntitlements:5];
     v53 = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v53 count:1];
-    [v9 registerForMessage:@"readCounters" receiver:v6 policies:v11 selector:sel_handleReadCounters_];
+    [messageDispatcher registerForMessage:@"readCounters" receiver:selfCopy policies:v11 selector:sel_handleReadCounters_];
 
-    v12 = [(HMDMetricsManager *)v6 messageDispatcher];
+    messageDispatcher2 = [(HMDMetricsManager *)selfCopy messageDispatcher];
     v13 = [HMDXPCMessagePolicy policyWithEntitlements:5];
     v52 = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v52 count:1];
-    [v12 registerForMessage:@"saveCounters" receiver:v6 policies:v14 selector:sel_handleSaveCounters_];
+    [messageDispatcher2 registerForMessage:@"saveCounters" receiver:selfCopy policies:v14 selector:sel_handleSaveCounters_];
 
-    v15 = [(HMDMetricsManager *)v6 messageDispatcher];
+    messageDispatcher3 = [(HMDMetricsManager *)selfCopy messageDispatcher];
     v16 = [HMDXPCMessagePolicy policyWithEntitlements:5];
     v51 = v16;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v51 count:1];
-    [v15 registerForMessage:@"deleteCounters" receiver:v6 policies:v17 selector:sel_handleDeleteCounters_];
+    [messageDispatcher3 registerForMessage:@"deleteCounters" receiver:selfCopy policies:v17 selector:sel_handleDeleteCounters_];
 
-    v18 = [(HMDMetricsManager *)v6 messageDispatcher];
+    messageDispatcher4 = [(HMDMetricsManager *)selfCopy messageDispatcher];
     v19 = [HMDXPCMessagePolicy policyWithEntitlements:5];
     v50 = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v50 count:1];
-    [v18 registerForMessage:@"addEphemeralContainer" receiver:v6 policies:v20 selector:sel_handleAddEphemeralContainer_];
+    [messageDispatcher4 registerForMessage:@"addEphemeralContainer" receiver:selfCopy policies:v20 selector:sel_handleAddEphemeralContainer_];
 
-    v21 = [(HMDMetricsManager *)v6 messageDispatcher];
+    messageDispatcher5 = [(HMDMetricsManager *)selfCopy messageDispatcher];
     v22 = [HMDXPCMessagePolicy policyWithEntitlements:5];
     v49 = v22;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v49 count:1];
-    [v21 registerForMessage:@"deactivateEphemeralContainer" receiver:v6 policies:v23 selector:sel_handleDeactivateEphemeralContainer_];
+    [messageDispatcher5 registerForMessage:@"deactivateEphemeralContainer" receiver:selfCopy policies:v23 selector:sel_handleDeactivateEphemeralContainer_];
 
-    v24 = [(HMDMetricsManager *)v6 messageDispatcher];
+    messageDispatcher6 = [(HMDMetricsManager *)selfCopy messageDispatcher];
     v25 = [HMDXPCMessagePolicy policyWithEntitlements:5];
     v48 = v25;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v48 count:1];
-    [v24 registerForMessage:@"deleteEphemeralContainer" receiver:v6 policies:v26 selector:sel_handleDeleteEphemeralContainer_];
+    [messageDispatcher6 registerForMessage:@"deleteEphemeralContainer" receiver:selfCopy policies:v26 selector:sel_handleDeleteEphemeralContainer_];
 
-    v27 = [(HMDMetricsManager *)v6 messageDispatcher];
+    messageDispatcher7 = [(HMDMetricsManager *)selfCopy messageDispatcher];
     v28 = [HMDXPCMessagePolicy policyWithEntitlements:5];
     v47 = v28;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v47 count:1];
-    [v27 registerForMessage:@"startupEphemeralContainer" receiver:v6 policies:v29 selector:sel_handleStartupEphemeralContainer_];
+    [messageDispatcher7 registerForMessage:@"startupEphemeralContainer" receiver:selfCopy policies:v29 selector:sel_handleStartupEphemeralContainer_];
 
-    v30 = [(HMDMetricsManager *)v6 messageDispatcher];
+    messageDispatcher8 = [(HMDMetricsManager *)selfCopy messageDispatcher];
     v31 = [HMDXPCMessagePolicy policyWithEntitlements:5];
     v46 = v31;
     v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v46 count:1];
-    [v30 registerForMessage:@"listEphemeralContainers" receiver:v6 policies:v32 selector:sel_handleListEphemeralContainers_];
+    [messageDispatcher8 registerForMessage:@"listEphemeralContainers" receiver:selfCopy policies:v32 selector:sel_handleListEphemeralContainers_];
 
-    v33 = [(HMDMetricsManager *)v6 messageDispatcher];
+    messageDispatcher9 = [(HMDMetricsManager *)selfCopy messageDispatcher];
     v34 = [HMDXPCMessagePolicy policyWithEntitlements:5];
     v45 = v34;
     v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
-    [v33 registerForMessage:@"fetchEventCounters" receiver:v6 policies:v35 selector:sel__handleFetchEventCounters_];
+    [messageDispatcher9 registerForMessage:@"fetchEventCounters" receiver:selfCopy policies:v35 selector:sel__handleFetchEventCounters_];
 
-    v36 = [(HMDMetricsManager *)v6 messageDispatcher];
+    messageDispatcher10 = [(HMDMetricsManager *)selfCopy messageDispatcher];
     v37 = [HMDXPCMessagePolicy policyWithEntitlements:5];
     v44 = v37;
     v38 = [MEMORY[0x277CBEA60] arrayWithObjects:&v44 count:1];
-    [v36 registerForMessage:@"resetEventCounters" receiver:v6 policies:v38 selector:sel__handleResetEventCounters_];
+    [messageDispatcher10 registerForMessage:@"resetEventCounters" receiver:selfCopy policies:v38 selector:sel__handleResetEventCounters_];
 
-    v39 = [(HMDMetricsManager *)v6 messageDispatcher];
+    messageDispatcher11 = [(HMDMetricsManager *)selfCopy messageDispatcher];
     v40 = [HMDXPCMessagePolicy policyWithEntitlements:5];
     v43 = v40;
     v41 = [MEMORY[0x277CBEA60] arrayWithObjects:&v43 count:1];
-    [v39 registerForMessage:@"logEventDailySchedulerRunRegisteredBlocks" receiver:v6 policies:v41 selector:sel_handleLogEventDailySchedulerSubmitRequest_];
+    [messageDispatcher11 registerForMessage:@"logEventDailySchedulerRunRegisteredBlocks" receiver:selfCopy policies:v41 selector:sel_handleLogEventDailySchedulerSubmitRequest_];
   }
 
   v42 = *MEMORY[0x277D85DE8];
@@ -1399,32 +1399,32 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
   accessoryDetailsManager = self->_accessoryDetailsManager;
   self->_accessoryDetailsManager = v3;
 
-  v5 = [(HMDMetricsManager *)self configureHouseholdLogEventFactories];
+  configureHouseholdLogEventFactories = [(HMDMetricsManager *)self configureHouseholdLogEventFactories];
   householdLogEventFactories = self->_householdLogEventFactories;
-  self->_householdLogEventFactories = v5;
+  self->_householdLogEventFactories = configureHouseholdLogEventFactories;
 
   v7 = [HMDHouseholdMetricsManager alloc];
-  v8 = [(HMDMetricsManager *)self legacyCountersManager];
-  v9 = [(HMDMetricsManager *)self accessoryDetailsManager];
-  v10 = [(HMDMetricsManager *)self dailyScheduler];
-  v11 = [(HMDMetricsManager *)self logEventDispatcher];
+  legacyCountersManager = [(HMDMetricsManager *)self legacyCountersManager];
+  accessoryDetailsManager = [(HMDMetricsManager *)self accessoryDetailsManager];
+  dailyScheduler = [(HMDMetricsManager *)self dailyScheduler];
+  logEventDispatcher = [(HMDMetricsManager *)self logEventDispatcher];
   dateProvider = self->_dateProvider;
   v17[0] = self->_userActivityEventsAnalyzer;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  v14 = [(HMDHouseholdMetricsManager *)v7 initWithCountersManager:v8 dataSource:self accessoryDetailsManager:v9 dailyScheduler:v10 logEventSubmitter:v11 dateProvider:dateProvider activityContributors:v13 logEventFactories:self->_householdLogEventFactories];
+  v14 = [(HMDHouseholdMetricsManager *)v7 initWithCountersManager:legacyCountersManager dataSource:self accessoryDetailsManager:accessoryDetailsManager dailyScheduler:dailyScheduler logEventSubmitter:logEventDispatcher dateProvider:dateProvider activityContributors:v13 logEventFactories:self->_householdLogEventFactories];
   householdMetricsManager = self->_householdMetricsManager;
   self->_householdMetricsManager = v14;
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addContributor:(id)a3 toListOfAggregationAnalysisEventContributing:(id)a4
+- (void)addContributor:(id)contributor toListOfAggregationAnalysisEventContributing:(id)contributing
 {
-  v6 = a3;
-  v5 = a4;
-  if ([v6 conformsToProtocol:&unk_286649248])
+  contributorCopy = contributor;
+  contributingCopy = contributing;
+  if ([contributorCopy conformsToProtocol:&unk_286649248])
   {
-    [v5 addObject:v6];
+    [contributingCopy addObject:contributorCopy];
   }
 }
 
@@ -1454,8 +1454,8 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
   self->_powerLogObserver = v12;
 
   v14 = objc_alloc(MEMORY[0x277D17DD8]);
-  v15 = [MEMORY[0x277D552C0] sharedStream];
-  v16 = [v14 initWithSiriAnalyticsStream:v15 logEventDispatcher:self->_logEventDispatcher];
+  mEMORY[0x277D552C0] = [MEMORY[0x277D552C0] sharedStream];
+  v16 = [v14 initWithSiriAnalyticsStream:mEMORY[0x277D552C0] logEventDispatcher:self->_logEventDispatcher];
   siriSELFLoggingObserver = self->_siriSELFLoggingObserver;
   self->_siriSELFLoggingObserver = v16;
 
@@ -1469,9 +1469,9 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
     legacyCountersManager = self->_legacyCountersManager;
     dailyScheduler = self->_dailyScheduler;
     dateProvider = self->_dateProvider;
-    v24 = [MEMORY[0x277D0F910] systemInfo];
-    v25 = [(HMMLogEventDispatching *)self->_logEventDispatcher clientQueue];
-    v26 = [(HMDLogEventCountingAnalyzer *)v20 initWithEventCountersManager:legacyCountersManager dailyScheduler:dailyScheduler dateProvider:dateProvider systemInfo:v24 queue:v25];
+    systemInfo = [MEMORY[0x277D0F910] systemInfo];
+    clientQueue = [(HMMLogEventDispatching *)self->_logEventDispatcher clientQueue];
+    v26 = [(HMDLogEventCountingAnalyzer *)v20 initWithEventCountersManager:legacyCountersManager dailyScheduler:dailyScheduler dateProvider:dateProvider systemInfo:systemInfo queue:clientQueue];
     eventCountingAnalyzer = self->_eventCountingAnalyzer;
     self->_eventCountingAnalyzer = v26;
 
@@ -1553,77 +1553,77 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
   v59 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMetricsManager)initWithMessageDispatcher:(id)a3 accountManager:(id)a4 notificationSettingsProvider:(id)a5 logEventDispatcher:(id)a6 dailyScheduler:(id)a7 dateProvider:(id)a8 uptimeProvider:(id)a9 legacyCountersManager:(id)a10 flagsManager:(id)a11 ewsLogger:(id)a12 deviceStateManager:(id)a13 networkObserver:(id)a14 coreAnalyticsTagObserver:(id)a15 backgroundLoggingTimer:(id)a16 radarInitiator:(id)a17 notificationCenter:(id)a18 userDefaults:(id)a19 currentSoftwareVersion:(id)a20 swiftData:(id)a21
+- (HMDMetricsManager)initWithMessageDispatcher:(id)dispatcher accountManager:(id)manager notificationSettingsProvider:(id)provider logEventDispatcher:(id)eventDispatcher dailyScheduler:(id)scheduler dateProvider:(id)dateProvider uptimeProvider:(id)uptimeProvider legacyCountersManager:(id)self0 flagsManager:(id)self1 ewsLogger:(id)self2 deviceStateManager:(id)self3 networkObserver:(id)self4 coreAnalyticsTagObserver:(id)self5 backgroundLoggingTimer:(id)self6 radarInitiator:(id)self7 notificationCenter:(id)self8 userDefaults:(id)self9 currentSoftwareVersion:(id)version swiftData:(id)data
 {
-  v60 = a3;
-  v59 = a4;
-  v58 = a5;
-  v46 = a6;
-  v26 = a6;
-  v27 = a8;
-  v57 = v26;
-  v56 = a7;
-  v55 = a8;
-  v54 = a9;
-  v53 = a10;
-  v52 = a11;
-  v61 = a12;
-  v51 = a13;
-  v50 = a14;
-  v49 = a15;
-  v28 = a16;
-  v48 = a17;
-  v29 = a18;
-  v30 = a19;
-  v31 = a20;
-  v32 = a21;
+  dispatcherCopy = dispatcher;
+  managerCopy = manager;
+  providerCopy = provider;
+  eventDispatcherCopy = eventDispatcher;
+  eventDispatcherCopy2 = eventDispatcher;
+  dateProviderCopy = dateProvider;
+  v57 = eventDispatcherCopy2;
+  schedulerCopy = scheduler;
+  dateProviderCopy2 = dateProvider;
+  uptimeProviderCopy = uptimeProvider;
+  countersManagerCopy = countersManager;
+  flagsManagerCopy = flagsManager;
+  loggerCopy = logger;
+  stateManagerCopy = stateManager;
+  observerCopy = observer;
+  tagObserverCopy = tagObserver;
+  timerCopy = timer;
+  initiatorCopy = initiator;
+  centerCopy = center;
+  defaultsCopy = defaults;
+  versionCopy = version;
+  dataCopy = data;
   v62.receiver = self;
   v62.super_class = HMDMetricsManager;
   v33 = [(HMDMetricsManager *)&v62 init];
   v34 = v33;
   if (v33)
   {
-    objc_storeStrong(&v33->_messageDispatcher, a3);
-    objc_storeStrong(&v34->_accountManager, a4);
-    objc_storeStrong(&v34->_notificationSettingsProvider, a5);
-    objc_storeStrong(&v34->_dailyScheduler, a7);
-    objc_storeStrong(&v34->_dateProvider, v27);
-    objc_storeStrong(&v34->_uptimeProvider, a9);
-    objc_storeStrong(&v34->_legacyCountersManager, a10);
-    objc_storeStrong(&v34->_flagsManager, a11);
-    objc_storeWeak(&v34->_ewsLogger, v61);
-    objc_storeStrong(&v34->_deviceStateManager, a13);
-    objc_storeStrong(&v34->_networkObserver, a14);
-    objc_storeStrong(&v34->_coreAnalyticsTagObserver, a15);
-    objc_storeStrong(&v34->_logEventDispatcher, v46);
+    objc_storeStrong(&v33->_messageDispatcher, dispatcher);
+    objc_storeStrong(&v34->_accountManager, manager);
+    objc_storeStrong(&v34->_notificationSettingsProvider, provider);
+    objc_storeStrong(&v34->_dailyScheduler, scheduler);
+    objc_storeStrong(&v34->_dateProvider, dateProviderCopy);
+    objc_storeStrong(&v34->_uptimeProvider, uptimeProvider);
+    objc_storeStrong(&v34->_legacyCountersManager, countersManager);
+    objc_storeStrong(&v34->_flagsManager, flagsManager);
+    objc_storeWeak(&v34->_ewsLogger, loggerCopy);
+    objc_storeStrong(&v34->_deviceStateManager, stateManager);
+    objc_storeStrong(&v34->_networkObserver, observer);
+    objc_storeStrong(&v34->_coreAnalyticsTagObserver, tagObserver);
+    objc_storeStrong(&v34->_logEventDispatcher, eventDispatcherCopy);
     [(HMMLogEventDispatching *)v34->_logEventDispatcher setDataSource:v34];
-    [v28 setDelegate:v34];
+    [timerCopy setDelegate:v34];
     [(HMDMetricsManager *)v34 logEventDispatcher];
-    v36 = v35 = v31;
-    v37 = [v36 clientQueue];
-    [v28 setDelegateQueue:v37];
+    v36 = v35 = versionCopy;
+    clientQueue = [v36 clientQueue];
+    [timerCopy setDelegateQueue:clientQueue];
 
-    [v28 resume];
-    objc_storeStrong(&v34->_backgroundLoggingTimer, a16);
-    objc_storeStrong(&v34->_radarInitiator, a17);
-    objc_storeStrong(&v34->_notificationCenter, a18);
-    objc_storeStrong(&v34->_userDefaults, a19);
-    objc_storeStrong(&v34->_currentSoftwareVersion, a20);
-    objc_storeStrong(&v34->_internalSwiftData, a21);
-    v38 = [MEMORY[0x277CBEB18] array];
+    [timerCopy resume];
+    objc_storeStrong(&v34->_backgroundLoggingTimer, timer);
+    objc_storeStrong(&v34->_radarInitiator, initiator);
+    objc_storeStrong(&v34->_notificationCenter, center);
+    objc_storeStrong(&v34->_userDefaults, defaults);
+    objc_storeStrong(&v34->_currentSoftwareVersion, version);
+    objc_storeStrong(&v34->_internalSwiftData, data);
+    array = [MEMORY[0x277CBEB18] array];
     aggregationAnalysisEventContributingAnalyzers = v34->_aggregationAnalysisEventContributingAnalyzers;
-    v34->_aggregationAnalysisEventContributingAnalyzers = v38;
+    v34->_aggregationAnalysisEventContributingAnalyzers = array;
 
-    v31 = v35;
-    v40 = [MEMORY[0x277CBEB18] array];
+    versionCopy = v35;
+    array2 = [MEMORY[0x277CBEB18] array];
     configurationObservers = v34->_configurationObservers;
-    v34->_configurationObservers = v40;
+    v34->_configurationObservers = array2;
 
-    [v61 addCommonField:@"isHH2Enabled" withValue:&unk_2866284F8];
+    [loggerCopy addCommonField:@"isHH2Enabled" withValue:&unk_2866284F8];
     [(HMDMetricsManager *)v34 _configureObservers];
-    v42 = [(HMDMetricsManager *)v34 configureSwiftObservers];
+    configureSwiftObservers = [(HMDMetricsManager *)v34 configureSwiftObservers];
     swiftObservers = v34->_swiftObservers;
-    v34->_swiftObservers = v42;
+    v34->_swiftObservers = configureSwiftObservers;
 
     [(HMDMetricsManager *)v34 _configureManagers];
   }
@@ -1631,23 +1631,23 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
   return v34;
 }
 
-- (HMDMetricsManager)initWithMessageDispatcher:(id)a3 accountManager:(id)a4 notificationSettingsProvider:(id)a5
+- (HMDMetricsManager)initWithMessageDispatcher:(id)dispatcher accountManager:(id)manager notificationSettingsProvider:(id)provider
 {
   v87 = *MEMORY[0x277D85DE8];
-  v78 = a3;
-  v77 = a4;
-  v76 = a5;
-  v80 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  dispatcherCopy = dispatcher;
+  managerCopy = manager;
+  providerCopy = provider;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v68 = objc_alloc_init(MEMORY[0x277D17DC8]);
   v75 = [HMDMetricsManager initSwiftExtensionsWithLogEventSubmitter:?];
   v74 = [HMDMetricsManager makeDailySchedulerWithSwiftData:?];
-  v8 = [MEMORY[0x277D17DB0] sharedInstance];
-  v72 = [MEMORY[0x277D17E00] sharedInstance];
+  mEMORY[0x277D17DB0] = [MEMORY[0x277D17DB0] sharedInstance];
+  mEMORY[0x277D17E00] = [MEMORY[0x277D17E00] sharedInstance];
   v79 = +[HMDMetricsManager defaultRadarInitiator];
-  v71 = [[HMDTimeBasedFlagsManager alloc] initWithDateProvider:v8];
+  v71 = [[HMDTimeBasedFlagsManager alloc] initWithDateProvider:mEMORY[0x277D17DB0]];
   v9 = _os_feature_enabled_impl();
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
   if (v9)
@@ -1664,7 +1664,7 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
     v15 = metricsCountersPersistentStorePath;
     if (isInternalBuild())
     {
-      v16 = [v80 objectForKey:@"HMDStartupEphemeralContainer"];
+      v16 = [standardUserDefaults objectForKey:@"HMDStartupEphemeralContainer"];
     }
 
     else
@@ -1674,7 +1674,7 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
 
     if (isInternalBuild())
     {
-      v19 = [v80 objectForKey:@"HMDCounterPersistence"];
+      v19 = [standardUserDefaults objectForKey:@"HMDCounterPersistence"];
     }
 
     else
@@ -1685,12 +1685,12 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
     if ([v19 isEqualToIgnoringCase:@"none"])
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = v11;
+      v21 = selfCopy;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         HMFGetLogIdentifier();
-        v23 = v11;
+        v23 = selfCopy;
         v24 = v15;
         v25 = v19;
         v27 = v26 = v16;
@@ -1701,11 +1701,11 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
         v16 = v26;
         v19 = v25;
         v15 = v24;
-        v11 = v23;
+        selfCopy = v23;
       }
 
       objc_autoreleasePoolPop(v20);
-      v18 = [[HMDEventCountersManager alloc] initWithDateProvider:v8 startupContainerName:v16 uptimeProvider:v72];
+      v18 = [[HMDEventCountersManager alloc] initWithDateProvider:mEMORY[0x277D17DB0] startupContainerName:v16 uptimeProvider:mEMORY[0x277D17E00]];
       v28 = 0;
       if (v18)
       {
@@ -1718,12 +1718,12 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
     if ([v19 isEqualToIgnoringCase:@"core-data"])
     {
       v29 = objc_autoreleasePoolPush();
-      v30 = v11;
+      v30 = selfCopy;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
         HMFGetLogIdentifier();
-        v32 = v11;
+        v32 = selfCopy;
         v33 = v15;
         v34 = v19;
         v36 = v35 = v16;
@@ -1734,12 +1734,12 @@ void __57__HMDMetricsManager_submitDailyAggregationAnalysisEvents__block_invoke(
         v16 = v35;
         v19 = v34;
         v15 = v33;
-        v11 = v32;
+        selfCopy = v32;
       }
 
       objc_autoreleasePoolPop(v29);
       v82 = 0;
-      v18 = [[HMDEventCountersManager alloc] initWithCoreDataStoragePath:v15 dateProvider:v8 startupContainerName:v16 uptimeProvider:v72 error:&v82];
+      v18 = [[HMDEventCountersManager alloc] initWithCoreDataStoragePath:v15 dateProvider:mEMORY[0x277D17DB0] startupContainerName:v16 uptimeProvider:mEMORY[0x277D17E00] error:&v82];
       v37 = v82;
 LABEL_29:
       v28 = v37;
@@ -1753,7 +1753,7 @@ LABEL_33:
 LABEL_30:
       v73 = v16;
       v45 = objc_autoreleasePoolPush();
-      v46 = v11;
+      v46 = selfCopy;
       v47 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
       {
@@ -1768,13 +1768,13 @@ LABEL_30:
       objc_autoreleasePoolPop(v45);
       [v79 requestRadarWithDisplayReason:@"persistent counter storage failed to load" radarTitle:@"Failed to load persistent counter storage"];
       v16 = v73;
-      v18 = [[HMDEventCountersManager alloc] initWithDateProvider:v8 startupContainerName:v73 uptimeProvider:v72];
+      v18 = [[HMDEventCountersManager alloc] initWithDateProvider:mEMORY[0x277D17DB0] startupContainerName:v73 uptimeProvider:mEMORY[0x277D17E00]];
       goto LABEL_33;
     }
 
     v38 = [v19 isEqualToIgnoringCase:@"flat-file"];
     v39 = objc_autoreleasePoolPush();
-    v40 = v11;
+    v40 = selfCopy;
     v41 = HMFGetOSLogHandle();
     v42 = os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT);
     if (v38)
@@ -1801,7 +1801,7 @@ LABEL_27:
 
     objc_autoreleasePoolPop(v39);
     v81 = 0;
-    v18 = [[HMDEventCountersManager alloc] initWithFlatFileStoragePath:v15 dateProvider:v8 startupContainerName:v16 uptimeProvider:v72 error:&v81];
+    v18 = [[HMDEventCountersManager alloc] initWithFlatFileStoragePath:v15 dateProvider:mEMORY[0x277D17DB0] startupContainerName:v16 uptimeProvider:mEMORY[0x277D17E00] error:&v81];
     v37 = v81;
     goto LABEL_29;
   }
@@ -1818,28 +1818,28 @@ LABEL_27:
   v18 = objc_alloc_init(HMDEventCountersManager);
 LABEL_34:
   v49 = objc_alloc(MEMORY[0x277D17DA0]);
-  v50 = [MEMORY[0x277D17DE8] sharedInstance];
+  mEMORY[0x277D17DE8] = [MEMORY[0x277D17DE8] sharedInstance];
   v51 = objc_alloc_init(HMDCoreAnalyticsLogEventFactory);
-  v52 = [v49 initWithTagDispatcher:v50 logEventSubmitter:v68 logEventFactory:v51];
+  v52 = [v49 initWithTagDispatcher:mEMORY[0x277D17DE8] logEventSubmitter:v68 logEventFactory:v51];
 
-  v67 = [[HMDNetworkObserver alloc] initWithLogEventDispatcher:v68 countersManager:v18 dailyScheduler:v74 currentHomeDataSource:v11 dateProvider:v8];
-  v70 = [[HMDMetricsDeviceStateManager alloc] initWithLogEventSubmitter:v68 dailyScheduler:v74 dateProvider:v8];
-  v53 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v54 = [v53 preferenceForKey:@"backgroundLoggingPeriod"];
-  v69 = [v54 numberValue];
+  v67 = [[HMDNetworkObserver alloc] initWithLogEventDispatcher:v68 countersManager:v18 dailyScheduler:v74 currentHomeDataSource:selfCopy dateProvider:mEMORY[0x277D17DB0]];
+  v70 = [[HMDMetricsDeviceStateManager alloc] initWithLogEventSubmitter:v68 dailyScheduler:v74 dateProvider:mEMORY[0x277D17DB0]];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v54 = [mEMORY[0x277D0F8D0] preferenceForKey:@"backgroundLoggingPeriod"];
+  numberValue = [v54 numberValue];
 
   v55 = objc_alloc(MEMORY[0x277D0F920]);
-  [v69 doubleValue];
+  [numberValue doubleValue];
   v66 = [v55 initWithTimeInterval:4 options:?];
-  v56 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   [MEMORY[0x277D0F8E8] productInfo];
-  v57 = v8;
-  v59 = v58 = v11;
-  v60 = [v59 softwareVersion];
-  v61 = [v60 versionString];
+  v57 = mEMORY[0x277D17DB0];
+  v59 = v58 = selfCopy;
+  softwareVersion = [v59 softwareVersion];
+  versionString = [softwareVersion versionString];
 
-  v62 = [MEMORY[0x277D17DD0] sharedManager];
-  v65 = [(HMDMetricsManager *)v58 initWithMessageDispatcher:v78 accountManager:v77 notificationSettingsProvider:v76 logEventDispatcher:v68 dailyScheduler:v74 dateProvider:v57 uptimeProvider:v72 legacyCountersManager:v18 flagsManager:v71 ewsLogger:v62 deviceStateManager:v70 networkObserver:v67 coreAnalyticsTagObserver:v52 backgroundLoggingTimer:v66 radarInitiator:v79 notificationCenter:v56 userDefaults:v80 currentSoftwareVersion:v61 swiftData:v75];
+  mEMORY[0x277D17DD0] = [MEMORY[0x277D17DD0] sharedManager];
+  v65 = [(HMDMetricsManager *)v58 initWithMessageDispatcher:dispatcherCopy accountManager:managerCopy notificationSettingsProvider:providerCopy logEventDispatcher:v68 dailyScheduler:v74 dateProvider:v57 uptimeProvider:mEMORY[0x277D17E00] legacyCountersManager:v18 flagsManager:v71 ewsLogger:mEMORY[0x277D17DD0] deviceStateManager:v70 networkObserver:v67 coreAnalyticsTagObserver:v52 backgroundLoggingTimer:v66 radarInitiator:v79 notificationCenter:defaultCenter userDefaults:standardUserDefaults currentSoftwareVersion:versionString swiftData:v75];
 
   v63 = *MEMORY[0x277D85DE8];
   return v65;
@@ -1867,13 +1867,13 @@ uint64_t __32__HMDMetricsManager_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (void)submitMinimalCoreAnalyticsEvent:(id)a3
++ (void)submitMinimalCoreAnalyticsEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v6 = objc_alloc_init(HMDMinimalCoreAnalyticsLogEventObserverDelegate);
   v4 = objc_alloc(MEMORY[0x277D17D98]);
   v5 = [v4 initWithDelegate:v6 filters:MEMORY[0x277CBEBF8]];
-  [v5 observeEvent:v3];
+  [v5 observeEvent:eventCopy];
 }
 
 + (HMMLogEventSubmitting)sharedLogEventSubmitter

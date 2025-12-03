@@ -1,22 +1,22 @@
 @interface CACRecordedUserAction
-- (CACRecordedUserAction)initWithCoder:(id)a3;
-- (CACRecordedUserAction)initWithSpokenCommand:(id)a3;
+- (CACRecordedUserAction)initWithCoder:(id)coder;
+- (CACRecordedUserAction)initWithSpokenCommand:(id)command;
 - (CACRecordedUserActionFlow)ownerFlow;
-- (CGRect)_rectFromDictionary:(id)a3;
-- (id)_derivedTargetAttributesFromSpokenCommand:(id)a3;
-- (id)_dictionaryFromRect:(CGRect)a3;
-- (id)_labeledElementsFromMatchingCriteria:(id)a3;
+- (CGRect)_rectFromDictionary:(id)dictionary;
+- (id)_derivedTargetAttributesFromSpokenCommand:(id)command;
+- (id)_dictionaryFromRect:(CGRect)rect;
+- (id)_labeledElementsFromMatchingCriteria:(id)criteria;
 - (id)plistDescription;
 - (id)spokenCommand;
-- (void)beginExecutingWithCompletionBlock:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)beginExecutingWithCompletionBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CACRecordedUserAction
 
-- (CACRecordedUserAction)initWithSpokenCommand:(id)a3
+- (CACRecordedUserAction)initWithSpokenCommand:(id)command
 {
-  v5 = a3;
+  commandCopy = command;
   v13.receiver = self;
   v13.super_class = CACRecordedUserAction;
   v6 = [(CACRecordedUserAction *)&v13 init];
@@ -24,12 +24,12 @@
   if (v6)
   {
     v6->_type = 1;
-    objc_storeStrong(&v6->_object, a3);
-    v8 = [v5 identifier];
+    objc_storeStrong(&v6->_object, command);
+    identifier = [commandCopy identifier];
     identifier = v7->_identifier;
-    v7->_identifier = v8;
+    v7->_identifier = identifier;
 
-    v10 = [(CACRecordedUserAction *)v7 _derivedTargetAttributesFromSpokenCommand:v5];
+    v10 = [(CACRecordedUserAction *)v7 _derivedTargetAttributesFromSpokenCommand:commandCopy];
     targetAttributes = v7->_targetAttributes;
     v7->_targetAttributes = v10;
   }
@@ -52,26 +52,26 @@
   return object;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:1 forKey:@"Version"];
-  [v4 encodeInteger:self->_type forKey:@"Type"];
-  [v4 encodeObject:self->_identifier forKey:@"CommandIdentifier"];
-  [v4 encodeObject:self->_targetAttributes forKey:@"TargetAttributes"];
-  [v4 encodeBool:self->_canIgnoreFailure forKey:@"CanIgnoreFailure"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:1 forKey:@"Version"];
+  [coderCopy encodeInteger:self->_type forKey:@"Type"];
+  [coderCopy encodeObject:self->_identifier forKey:@"CommandIdentifier"];
+  [coderCopy encodeObject:self->_targetAttributes forKey:@"TargetAttributes"];
+  [coderCopy encodeBool:self->_canIgnoreFailure forKey:@"CanIgnoreFailure"];
 }
 
-- (CACRecordedUserAction)initWithCoder:(id)a3
+- (CACRecordedUserAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = CACRecordedUserAction;
   v5 = [(CACRecordedUserAction *)&v20 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"Type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CommandIdentifier"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"Type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CommandIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
@@ -81,11 +81,11 @@
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v8 setWithObjects:{v9, v10, v11, v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"TargetAttributes"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"TargetAttributes"];
     targetAttributes = v5->_targetAttributes;
     v5->_targetAttributes = v14;
 
-    v5->_canIgnoreFailure = [v4 decodeBoolForKey:@"CanIgnoreFailure"];
+    v5->_canIgnoreFailure = [coderCopy decodeBoolForKey:@"CanIgnoreFailure"];
     if (v5->_type == 1)
     {
       if (v5->_identifier)
@@ -103,12 +103,12 @@
   return v5;
 }
 
-- (id)_dictionaryFromRect:(CGRect)a3
+- (id)_dictionaryFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = objc_alloc(MEMORY[0x277CBEAC0]);
   *&v8 = x;
   v9 = [MEMORY[0x277CCABB0] numberWithFloat:v8];
@@ -123,19 +123,19 @@
   return v16;
 }
 
-- (CGRect)_rectFromDictionary:(id)a3
+- (CGRect)_rectFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"x"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"x"];
   [v4 floatValue];
   v6 = v5;
-  v7 = [v3 objectForKey:@"y"];
+  v7 = [dictionaryCopy objectForKey:@"y"];
   [v7 floatValue];
   v9 = v8;
-  v10 = [v3 objectForKey:@"width"];
+  v10 = [dictionaryCopy objectForKey:@"width"];
   [v10 floatValue];
   v12 = v11;
-  v13 = [v3 objectForKey:@"height"];
+  v13 = [dictionaryCopy objectForKey:@"height"];
 
   [v13 floatValue];
   v15 = v14;
@@ -151,22 +151,22 @@
   return result;
 }
 
-- (id)_derivedTargetAttributesFromSpokenCommand:(id)a3
+- (id)_derivedTargetAttributesFromSpokenCommand:(id)command
 {
   v76 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  commandCopy = command;
   v5 = objc_opt_new();
-  v59 = self;
+  selfCopy = self;
   if (self->_type == 1)
   {
-    v51 = v4;
-    v6 = [v4 recognizedParameters];
+    v51 = commandCopy;
+    recognizedParameters = [commandCopy recognizedParameters];
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v7 = [v6 allKeys];
-    v8 = [v7 countByEnumeratingWithState:&v69 objects:v75 count:16];
+    allKeys = [recognizedParameters allKeys];
+    v8 = [allKeys countByEnumeratingWithState:&v69 objects:v75 count:16];
     if (!v8)
     {
       goto LABEL_57;
@@ -176,9 +176,9 @@
     v10 = 0x277CBE000uLL;
     v11 = MEMORY[0x277D65608];
     v12 = *v70;
-    v53 = v6;
+    v53 = recognizedParameters;
     v54 = v5;
-    v52 = v7;
+    v52 = allKeys;
     v56 = *v70;
     while (1)
     {
@@ -188,14 +188,14 @@
       {
         if (*v70 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v61 = v13;
         v14 = *(*(&v69 + 1) + 8 * v13);
         if (([v14 isEqualToString:kCACCommandParameterText] & 1) != 0 || objc_msgSend(v14, "isEqualToString:", kCACCommandParameterTextVariants))
         {
-          v15 = [v6 objectForKey:v14];
+          v15 = [recognizedParameters objectForKey:v14];
           [v5 setObject:v15 forKey:v14];
           goto LABEL_10;
         }
@@ -223,13 +223,13 @@
         {
           v15 = objc_opt_new();
           v58 = v14;
-          v23 = [v6 objectForKey:v14];
+          v23 = [recognizedParameters objectForKey:v14];
           v65 = 0u;
           v66 = 0u;
           v67 = 0u;
           v68 = 0u;
-          v24 = [v23 allKeys];
-          v25 = [v24 countByEnumeratingWithState:&v65 objects:v73 count:16];
+          allKeys2 = [v23 allKeys];
+          v25 = [allKeys2 countByEnumeratingWithState:&v65 objects:v73 count:16];
           if (!v25)
           {
             goto LABEL_55;
@@ -237,7 +237,7 @@
 
           v26 = v25;
           v27 = *v66;
-          v60 = v24;
+          v60 = allKeys2;
           while (1)
           {
             v28 = 0;
@@ -245,7 +245,7 @@
             {
               if (*v66 != v27)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(allKeys2);
               }
 
               v29 = *(*(&v65 + 1) + 8 * v28);
@@ -259,18 +259,18 @@
               if (([v29 isEqualToString:kCACCommandParameterLabeledElement] & 1) != 0 || objc_msgSend(v29, "isEqualToString:", kCACCommandParameterLabeledElementForDisambiguation))
               {
                 v30 = [v23 objectForKey:v29];
-                v31 = [v30 element];
-                v63 = v31;
+                element = [v30 element];
+                v63 = element;
                 v64 = objc_opt_new();
-                if (v31)
+                if (element)
                 {
-                  [v31 frame];
-                  [(CACRecordedUserAction *)v59 _dictionaryFromRect:?];
-                  v33 = v32 = v31;
+                  [element frame];
+                  [(CACRecordedUserAction *)selfCopy _dictionaryFromRect:?];
+                  v33 = v32 = element;
                   [v64 setObject:v33 forKey:@"ScreenRect"];
 
-                  v34 = [v32 uiElement];
-                  v35 = [v34 stringWithAXAttribute:5019];
+                  uiElement = [v32 uiElement];
+                  v35 = [uiElement stringWithAXAttribute:5019];
 
                   if ([v35 length])
                   {
@@ -280,10 +280,10 @@
                   v62 = v35;
                   if ([v58 isEqualToString:*MEMORY[0x277D65628]])
                   {
-                    v36 = [v23 objectForKey:kCACCommandParameterText];
-                    if ([v36 length])
+                    firstObject = [v23 objectForKey:kCACCommandParameterText];
+                    if ([firstObject length])
                     {
-                      [v64 setObject:v36 forKey:@"AXElementLabel"];
+                      [v64 setObject:firstObject forKey:@"AXElementLabel"];
                     }
 
                     [v64 setObject:@"ItemName" forKey:@"RecordedApproach"];
@@ -292,12 +292,12 @@
 
                   if (([v58 isEqualToString:*MEMORY[0x277D655F8]] & 1) != 0 || objc_msgSend(v58, "isEqualToString:", *MEMORY[0x277D65600]))
                   {
-                    v45 = [v63 recognitionStrings];
-                    v36 = [v45 firstObject];
+                    recognitionStrings = [v63 recognitionStrings];
+                    firstObject = [recognitionStrings firstObject];
 
-                    if ([v36 length])
+                    if ([firstObject length])
                     {
-                      [v64 setObject:v36 forKey:@"AXElementLabel"];
+                      [v64 setObject:firstObject forKey:@"AXElementLabel"];
                     }
 
                     v46 = [v23 objectForKey:kCACCommandParameterText];
@@ -320,29 +320,29 @@ LABEL_51:
 
                 else
                 {
-                  v37 = [0 recognitionStrings];
-                  v38 = [v37 firstObject];
+                  recognitionStrings2 = [0 recognitionStrings];
+                  firstObject2 = [recognitionStrings2 firstObject];
 
-                  if ([v38 length])
+                  if ([firstObject2 length])
                   {
-                    [v64 setObject:v38 forKey:@"AXElementLabel"];
+                    [v64 setObject:firstObject2 forKey:@"AXElementLabel"];
                   }
 
-                  v62 = v38;
+                  v62 = firstObject2;
                   [v30 rectangle];
-                  v39 = [(CACRecordedUserAction *)v59 _dictionaryFromRect:?];
+                  v39 = [(CACRecordedUserAction *)selfCopy _dictionaryFromRect:?];
                   [v64 setObject:v39 forKey:@"ScreenRect"];
 
-                  v40 = [v30 numberedLabel];
-                  if (v40)
+                  numberedLabel = [v30 numberedLabel];
+                  if (numberedLabel)
                   {
-                    [v64 setObject:v40 forKey:@"NumberedLabel"];
+                    [v64 setObject:numberedLabel forKey:@"NumberedLabel"];
                   }
 
-                  v57 = v40;
-                  v41 = [v30 element];
-                  v42 = [v41 uiElement];
-                  v43 = [v42 stringWithAXAttribute:5019];
+                  v57 = numberedLabel;
+                  element2 = [v30 element];
+                  uiElement2 = [element2 uiElement];
+                  v43 = [uiElement2 stringWithAXAttribute:5019];
 
                   v44 = v64;
                   if ([v43 length])
@@ -354,7 +354,7 @@ LABEL_51:
                   [v15 setObject:v64 forKey:@"MatchingCriteria"];
                 }
 
-                v24 = v60;
+                allKeys2 = v60;
 LABEL_25:
               }
 
@@ -362,7 +362,7 @@ LABEL_25:
             }
 
             while (v26 != v28);
-            v48 = [v24 countByEnumeratingWithState:&v65 objects:v73 count:16];
+            v48 = [allKeys2 countByEnumeratingWithState:&v65 objects:v73 count:16];
             v26 = v48;
             if (!v48)
             {
@@ -371,8 +371,8 @@ LABEL_55:
               v5 = v54;
               [v54 setObject:v15 forKey:v58];
 
-              v7 = v52;
-              v6 = v53;
+              allKeys = v52;
+              recognizedParameters = v53;
               v9 = v55;
               v12 = v56;
               v10 = 0x277CBE000;
@@ -388,13 +388,13 @@ LABEL_10:
       }
 
       while (v61 + 1 != v9);
-      v49 = [v7 countByEnumeratingWithState:&v69 objects:v75 count:16];
+      v49 = [allKeys countByEnumeratingWithState:&v69 objects:v75 count:16];
       v9 = v49;
       if (!v49)
       {
 LABEL_57:
 
-        v4 = v51;
+        commandCopy = v51;
         break;
       }
     }
@@ -403,21 +403,21 @@ LABEL_57:
   return v5;
 }
 
-- (id)_labeledElementsFromMatchingCriteria:(id)a3
+- (id)_labeledElementsFromMatchingCriteria:(id)criteria
 {
   v92 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  criteriaCopy = criteria;
   v4 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v5 = [v4 labeledScreenElementsCollection];
-  v6 = [v5 copyTableOfCollectedElementsByTitle];
+  labeledScreenElementsCollection = [v4 labeledScreenElementsCollection];
+  copyTableOfCollectedElementsByTitle = [labeledScreenElementsCollection copyTableOfCollectedElementsByTitle];
 
-  v7 = [v3 objectForKey:@"AXElementLabel"];
-  v76 = v3;
+  v7 = [criteriaCopy objectForKey:@"AXElementLabel"];
+  v76 = criteriaCopy;
   if (v7)
   {
-    v8 = [v3 objectForKey:@"AXElementLabel"];
-    v9 = [v8 lowercaseString];
-    v10 = [v6 objectForKey:v9];
+    v8 = [criteriaCopy objectForKey:@"AXElementLabel"];
+    lowercaseString = [v8 lowercaseString];
+    v10 = [copyTableOfCollectedElementsByTitle objectForKey:lowercaseString];
   }
 
   else
@@ -427,7 +427,7 @@ LABEL_57:
 
   if ([v10 count] >= 2)
   {
-    v11 = [v3 objectForKey:@"RecordedApproach"];
+    v11 = [criteriaCopy objectForKey:@"RecordedApproach"];
     v12 = [v11 isEqualToString:@"ItemName"];
 
     if ((v12 & 1) == 0)
@@ -448,13 +448,13 @@ LABEL_9:
   }
 
   v68 = v10;
-  v69 = v6;
+  v69 = copyTableOfCollectedElementsByTitle;
   v83 = 0u;
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  obj = [v6 allValues];
-  v17 = v3;
+  obj = [copyTableOfCollectedElementsByTitle allValues];
+  v17 = criteriaCopy;
   v72 = [obj countByEnumeratingWithState:&v81 objects:v91 count:16];
   v18 = 0;
   v15 = 0;
@@ -498,8 +498,8 @@ LABEL_9:
               v27 = v26;
               if (!v15 && v26)
               {
-                v28 = [v25 numberedLabel];
-                v29 = [v28 isEqualToString:v27];
+                numberedLabel = [v25 numberedLabel];
+                v29 = [numberedLabel isEqualToString:v27];
 
                 if (v29)
                 {
@@ -520,8 +520,8 @@ LABEL_9:
               v33 = v18;
               if (!v16 && v31)
               {
-                v34 = [v25 axIdentifier];
-                v35 = [v34 isEqualToString:v32];
+                axIdentifier = [v25 axIdentifier];
+                v35 = [axIdentifier isEqualToString:v32];
 
                 if (v35)
                 {
@@ -586,7 +586,7 @@ LABEL_9:
   {
 
     v10 = v68;
-    v6 = v69;
+    copyTableOfCollectedElementsByTitle = v69;
 LABEL_43:
     if (!v15)
     {
@@ -623,7 +623,7 @@ LABEL_51:
   v52 = [v51 isEqualToString:@"ItemName"];
 
   v10 = v68;
-  v6 = v69;
+  copyTableOfCollectedElementsByTitle = v69;
   if (v52)
   {
     goto LABEL_43;
@@ -668,9 +668,9 @@ LABEL_52:
   return v13;
 }
 
-- (void)beginExecutingWithCompletionBlock:(id)a3
+- (void)beginExecutingWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_type == 1)
   {
     v5 = dispatch_get_global_queue(21, 0);
@@ -679,14 +679,14 @@ LABEL_52:
     v7[2] = __59__CACRecordedUserAction_beginExecutingWithCompletionBlock___block_invoke;
     v7[3] = &unk_279CEB3E0;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_async(v5, v7);
   }
 
   else
   {
     v6 = CACMakeError(3006, 0);
-    (*(v4 + 2))(v4, v6);
+    (*(blockCopy + 2))(blockCopy, v6);
   }
 }
 
@@ -1048,8 +1048,8 @@ LABEL_53:
   if (self->_type == 1)
   {
     v16 = self->_object;
-    v17 = [v16 identifier];
-    [v22 setObject:v17 forKey:@"SpokenCommandIdentifier"];
+    identifier = [v16 identifier];
+    [v22 setObject:identifier forKey:@"SpokenCommandIdentifier"];
 
     if ([v16 action])
     {
@@ -1057,12 +1057,12 @@ LABEL_53:
       [v22 setObject:v18 forKey:@"SpokenCommandAction"];
     }
 
-    v19 = [v16 contextEvaluation];
+    contextEvaluation = [v16 contextEvaluation];
 
-    if (v19)
+    if (contextEvaluation)
     {
-      v20 = [v16 contextEvaluation];
-      [v22 setObject:v20 forKey:@"SpokenCommandContext"];
+      contextEvaluation2 = [v16 contextEvaluation];
+      [v22 setObject:contextEvaluation2 forKey:@"SpokenCommandContext"];
     }
   }
 

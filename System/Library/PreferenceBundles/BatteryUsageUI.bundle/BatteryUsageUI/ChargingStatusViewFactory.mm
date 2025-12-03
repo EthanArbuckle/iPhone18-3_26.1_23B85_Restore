@@ -1,14 +1,14 @@
 @interface ChargingStatusViewFactory
-+ (id)createCellWith:(id)a3;
++ (id)createCellWith:(id)with;
 - (_TtC14BatteryUsageUI25ChargingStatusViewFactory)init;
 @end
 
 @implementation ChargingStatusViewFactory
 
-+ (id)createCellWith:(id)a3
++ (id)createCellWith:(id)with
 {
-  v4 = a3;
-  v5 = sub_A81A4(a3);
+  withCopy = with;
+  v5 = sub_A81A4(with);
 
   return v5;
 }

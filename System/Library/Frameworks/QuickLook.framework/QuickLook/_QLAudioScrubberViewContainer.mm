@@ -21,8 +21,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(_QLAudioScrubberViewContainer *)self superview];
-  [v2 frame];
+  superview = [(_QLAudioScrubberViewContainer *)self superview];
+  [superview frame];
   Width = CGRectGetWidth(v7);
 
   v4 = 40.0;

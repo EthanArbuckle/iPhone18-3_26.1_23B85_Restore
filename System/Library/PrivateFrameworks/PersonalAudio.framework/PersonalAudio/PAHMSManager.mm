@@ -1,27 +1,27 @@
 @interface PAHMSManager
 + (id)sharedInstance;
-- (BOOL)beamformingForAddress:(id)a3;
-- (BOOL)hearingAidEnabledForAddress:(id)a3;
-- (BOOL)ownVoiceSupportedForAddress:(id)a3;
-- (BOOL)ppeEnrolledForAddress:(id)a3;
-- (BOOL)regionSupportedForHearingProtection:(id)a3;
-- (BOOL)yodelEnabledForAddress:(id)a3;
+- (BOOL)beamformingForAddress:(id)address;
+- (BOOL)hearingAidEnabledForAddress:(id)address;
+- (BOOL)ownVoiceSupportedForAddress:(id)address;
+- (BOOL)ppeEnrolledForAddress:(id)address;
+- (BOOL)regionSupportedForHearingProtection:(id)protection;
+- (BOOL)yodelEnabledForAddress:(id)address;
 - (PAHMSManager)init;
-- (double)amplificationForAddress:(id)a3;
-- (double)balanceForAddress:(id)a3;
-- (double)noiseSupressorForAddress:(id)a3;
-- (double)ownVoiceForAddress:(id)a3;
-- (double)toneForAddress:(id)a3;
-- (void)sendConfigUpdate:(id)a3 forAddress:(id)a4;
-- (void)sendConfigUpdate:(id)a3 forIdentifier:(id)a4 withCompletion:(id)a5;
-- (void)setAccommodationType:(unint64_t)a3 forAddress:(id)a4;
-- (void)setAmplification:(double)a3 forAddress:(id)a4;
-- (void)setBalance:(double)a3 forAddress:(id)a4;
-- (void)setNoiseSupressor:(double)a3 forAddress:(id)a4;
-- (void)setOwnVoice:(double)a3 forAddress:(id)a4;
-- (void)setTone:(double)a3 forAddress:(id)a4;
+- (double)amplificationForAddress:(id)address;
+- (double)balanceForAddress:(id)address;
+- (double)noiseSupressorForAddress:(id)address;
+- (double)ownVoiceForAddress:(id)address;
+- (double)toneForAddress:(id)address;
+- (void)sendConfigUpdate:(id)update forAddress:(id)address;
+- (void)sendConfigUpdate:(id)update forIdentifier:(id)identifier withCompletion:(id)completion;
+- (void)setAccommodationType:(unint64_t)type forAddress:(id)address;
+- (void)setAmplification:(double)amplification forAddress:(id)address;
+- (void)setBalance:(double)balance forAddress:(id)address;
+- (void)setNoiseSupressor:(double)supressor forAddress:(id)address;
+- (void)setOwnVoice:(double)voice forAddress:(id)address;
+- (void)setTone:(double)tone forAddress:(id)address;
 - (void)setupHearingModeService;
-- (void)toggleHearingAidForAddress:(id)a3;
+- (void)toggleHearingAidForAddress:(id)address;
 @end
 
 @implementation PAHMSManager
@@ -52,18 +52,18 @@ uint64_t __30__PAHMSManager_sharedInstance__block_invoke()
   v2 = [(PAHMSManager *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
-    [(PAHMSManager *)v2 setYodelDeviceRecordByAddress:v3];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(PAHMSManager *)v2 setYodelDeviceRecordByAddress:dictionary];
 
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [(PAHMSManager *)v2 setHearingAidEnabledByAddress:v4];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [(PAHMSManager *)v2 setHearingAidEnabledByAddress:dictionary2];
 
     v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_DEFAULT, 0);
     v6 = dispatch_queue_create("hearing_mode_service_queue", v5);
     hmsQueue = v2->_hmsQueue;
     v2->_hmsQueue = v6;
 
-    v8 = [getHUAccessoryManagerClass_0() sharedInstance];
+    sharedInstance = [getHUAccessoryManagerClass_0() sharedInstance];
     [(PAHMSManager *)v2 setupHearingModeService];
   }
 
@@ -246,9 +246,9 @@ void __39__PAHMSManager_setupHearingModeService__block_invoke_7(uint64_t a1, voi
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)yodelEnabledForAddress:(id)a3
+- (BOOL)yodelEnabledForAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -258,10 +258,10 @@ void __39__PAHMSManager_setupHearingModeService__block_invoke_7(uint64_t a1, voi
   block[1] = 3221225472;
   block[2] = __39__PAHMSManager_yodelEnabledForAddress___block_invoke;
   block[3] = &unk_279A1D7E0;
-  v9 = v4;
+  v9 = addressCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = addressCopy;
   dispatch_sync(hmsQueue, block);
   LOBYTE(hmsQueue) = *(v12 + 24);
 
@@ -276,9 +276,9 @@ void __39__PAHMSManager_yodelEnabledForAddress___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = [v2 hearingAssistEnabled] == 1;
 }
 
-- (double)amplificationForAddress:(id)a3
+- (double)amplificationForAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -288,10 +288,10 @@ void __39__PAHMSManager_yodelEnabledForAddress___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __40__PAHMSManager_amplificationForAddress___block_invoke;
   block[3] = &unk_279A1D7E0;
-  v10 = v4;
+  v10 = addressCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = addressCopy;
   dispatch_sync(hmsQueue, block);
   v7 = v13[3];
 
@@ -308,20 +308,20 @@ void __40__PAHMSManager_amplificationForAddress___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = v4;
 }
 
-- (void)setAmplification:(double)a3 forAddress:(id)a4
+- (void)setAmplification:(double)amplification forAddress:(id)address
 {
   v6 = getHMDeviceConfigurationsClass_0;
-  v7 = a4;
+  addressCopy = address;
   v9 = objc_alloc_init(v6());
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:amplification];
   [v9 setAmplification:v8];
 
-  [(PAHMSManager *)self sendConfigUpdate:v9 forAddress:v7];
+  [(PAHMSManager *)self sendConfigUpdate:v9 forAddress:addressCopy];
 }
 
-- (double)balanceForAddress:(id)a3
+- (double)balanceForAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -331,10 +331,10 @@ void __40__PAHMSManager_amplificationForAddress___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __34__PAHMSManager_balanceForAddress___block_invoke;
   block[3] = &unk_279A1D7E0;
-  v10 = v4;
+  v10 = addressCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = addressCopy;
   dispatch_sync(hmsQueue, block);
   v7 = v13[3];
 
@@ -351,20 +351,20 @@ void __34__PAHMSManager_balanceForAddress___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = v4;
 }
 
-- (void)setBalance:(double)a3 forAddress:(id)a4
+- (void)setBalance:(double)balance forAddress:(id)address
 {
   v6 = getHMDeviceConfigurationsClass_0;
-  v7 = a4;
+  addressCopy = address;
   v9 = objc_alloc_init(v6());
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:balance];
   [v9 setBalance:v8];
 
-  [(PAHMSManager *)self sendConfigUpdate:v9 forAddress:v7];
+  [(PAHMSManager *)self sendConfigUpdate:v9 forAddress:addressCopy];
 }
 
-- (double)toneForAddress:(id)a3
+- (double)toneForAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -374,10 +374,10 @@ void __34__PAHMSManager_balanceForAddress___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __31__PAHMSManager_toneForAddress___block_invoke;
   block[3] = &unk_279A1D7E0;
-  v10 = v4;
+  v10 = addressCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = addressCopy;
   dispatch_sync(hmsQueue, block);
   v7 = v13[3];
 
@@ -394,20 +394,20 @@ void __31__PAHMSManager_toneForAddress___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = v4;
 }
 
-- (void)setTone:(double)a3 forAddress:(id)a4
+- (void)setTone:(double)tone forAddress:(id)address
 {
   v6 = getHMDeviceConfigurationsClass_0;
-  v7 = a4;
+  addressCopy = address;
   v9 = objc_alloc_init(v6());
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:tone];
   [v9 setTone:v8];
 
-  [(PAHMSManager *)self sendConfigUpdate:v9 forAddress:v7];
+  [(PAHMSManager *)self sendConfigUpdate:v9 forAddress:addressCopy];
 }
 
-- (BOOL)beamformingForAddress:(id)a3
+- (BOOL)beamformingForAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -417,10 +417,10 @@ void __31__PAHMSManager_toneForAddress___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __38__PAHMSManager_beamformingForAddress___block_invoke;
   block[3] = &unk_279A1D7E0;
-  v9 = v4;
+  v9 = addressCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = addressCopy;
   dispatch_sync(hmsQueue, block);
   LOBYTE(hmsQueue) = *(v12 + 24);
 
@@ -436,9 +436,9 @@ void __38__PAHMSManager_beamformingForAddress___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = [v3 BOOLValue];
 }
 
-- (double)noiseSupressorForAddress:(id)a3
+- (double)noiseSupressorForAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -448,10 +448,10 @@ void __38__PAHMSManager_beamformingForAddress___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __41__PAHMSManager_noiseSupressorForAddress___block_invoke;
   block[3] = &unk_279A1D7E0;
-  v10 = v4;
+  v10 = addressCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = addressCopy;
   dispatch_sync(hmsQueue, block);
   v7 = v13[3];
 
@@ -468,20 +468,20 @@ void __41__PAHMSManager_noiseSupressorForAddress___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = v4;
 }
 
-- (void)setNoiseSupressor:(double)a3 forAddress:(id)a4
+- (void)setNoiseSupressor:(double)supressor forAddress:(id)address
 {
   v6 = getHMDeviceConfigurationsClass_0;
-  v7 = a4;
+  addressCopy = address;
   v9 = objc_alloc_init(v6());
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:supressor];
   [v9 setNoiseSuppression:v8];
 
-  [(PAHMSManager *)self sendConfigUpdate:v9 forAddress:v7];
+  [(PAHMSManager *)self sendConfigUpdate:v9 forAddress:addressCopy];
 }
 
-- (BOOL)ownVoiceSupportedForAddress:(id)a3
+- (BOOL)ownVoiceSupportedForAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -492,9 +492,9 @@ void __41__PAHMSManager_noiseSupressorForAddress___block_invoke(uint64_t a1)
   block[2] = __44__PAHMSManager_ownVoiceSupportedForAddress___block_invoke;
   block[3] = &unk_279A1D808;
   block[4] = self;
-  v9 = v4;
+  v9 = addressCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = addressCopy;
   dispatch_sync(hmsQueue, block);
   LOBYTE(hmsQueue) = *(v12 + 24);
 
@@ -530,9 +530,9 @@ void __44__PAHMSManager_ownVoiceSupportedForAddress___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (double)ownVoiceForAddress:(id)a3
+- (double)ownVoiceForAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -542,10 +542,10 @@ void __44__PAHMSManager_ownVoiceSupportedForAddress___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__PAHMSManager_ownVoiceForAddress___block_invoke;
   block[3] = &unk_279A1D7E0;
-  v10 = v4;
+  v10 = addressCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = addressCopy;
   dispatch_sync(hmsQueue, block);
   v7 = v13[3];
 
@@ -562,25 +562,25 @@ void __35__PAHMSManager_ownVoiceForAddress___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = v4;
 }
 
-- (void)setOwnVoice:(double)a3 forAddress:(id)a4
+- (void)setOwnVoice:(double)voice forAddress:(id)address
 {
   v6 = getHMDeviceConfigurationsClass_0;
-  v7 = a4;
+  addressCopy = address;
   v9 = objc_alloc_init(v6());
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:voice];
   [v9 setOwnVoiceLevelGain:v8];
 
-  [(PAHMSManager *)self sendConfigUpdate:v9 forAddress:v7];
+  [(PAHMSManager *)self sendConfigUpdate:v9 forAddress:addressCopy];
 }
 
-- (void)setAccommodationType:(unint64_t)a3 forAddress:(id)a4
+- (void)setAccommodationType:(unint64_t)type forAddress:(id)address
 {
-  v4 = a3;
+  typeCopy = type;
   v6 = getHMDeviceConfigurationsClass_0;
-  v7 = a4;
+  addressCopy = address;
   v8 = objc_alloc_init(v6());
   v11 = v8;
-  if ((v4 & 2) != 0)
+  if ((typeCopy & 2) != 0)
   {
     v9 = 1;
   }
@@ -591,7 +591,7 @@ void __35__PAHMSManager_ownVoiceForAddress___block_invoke(uint64_t a1)
   }
 
   [v8 setEnablePMEVoice:v9];
-  if ((v4 & 4) != 0)
+  if ((typeCopy & 4) != 0)
   {
     v10 = 1;
   }
@@ -602,12 +602,12 @@ void __35__PAHMSManager_ownVoiceForAddress___block_invoke(uint64_t a1)
   }
 
   [v11 setEnablePMEMedia:v10];
-  [(PAHMSManager *)self sendConfigUpdate:v11 forAddress:v7];
+  [(PAHMSManager *)self sendConfigUpdate:v11 forAddress:addressCopy];
 }
 
-- (BOOL)hearingAidEnabledForAddress:(id)a3
+- (BOOL)hearingAidEnabledForAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -618,9 +618,9 @@ void __35__PAHMSManager_ownVoiceForAddress___block_invoke(uint64_t a1)
   block[2] = __44__PAHMSManager_hearingAidEnabledForAddress___block_invoke;
   block[3] = &unk_279A1D808;
   block[4] = self;
-  v9 = v4;
+  v9 = addressCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = addressCopy;
   dispatch_sync(hmsQueue, block);
   LOBYTE(hmsQueue) = *(v12 + 24);
 
@@ -658,17 +658,17 @@ void __44__PAHMSManager_hearingAidEnabledForAddress___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)toggleHearingAidForAddress:(id)a3
+- (void)toggleHearingAidForAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   hmsQueue = self->_hmsQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__PAHMSManager_toggleHearingAidForAddress___block_invoke;
   v7[3] = &unk_279A1D830;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = addressCopy;
+  v6 = addressCopy;
   dispatch_sync(hmsQueue, v7);
 }
 
@@ -710,9 +710,9 @@ void __43__PAHMSManager_toggleHearingAidForAddress___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)regionSupportedForHearingProtection:(id)a3
+- (BOOL)regionSupportedForHearingProtection:(id)protection
 {
-  v4 = a3;
+  protectionCopy = protection;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -723,9 +723,9 @@ void __43__PAHMSManager_toggleHearingAidForAddress___block_invoke(uint64_t a1)
   block[2] = __52__PAHMSManager_regionSupportedForHearingProtection___block_invoke;
   block[3] = &unk_279A1D808;
   block[4] = self;
-  v9 = v4;
+  v9 = protectionCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = protectionCopy;
   dispatch_sync(hmsQueue, block);
   LOBYTE(hmsQueue) = *(v12 + 24);
 
@@ -755,9 +755,9 @@ void __52__PAHMSManager_regionSupportedForHearingProtection___block_invoke(uint6
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)ppeEnrolledForAddress:(id)a3
+- (BOOL)ppeEnrolledForAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -767,10 +767,10 @@ void __52__PAHMSManager_regionSupportedForHearingProtection___block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __38__PAHMSManager_ppeEnrolledForAddress___block_invoke;
   block[3] = &unk_279A1D7E0;
-  v9 = v4;
+  v9 = addressCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = addressCopy;
   dispatch_sync(hmsQueue, block);
   LOBYTE(hmsQueue) = *(v12 + 24);
 
@@ -800,33 +800,33 @@ void __38__PAHMSManager_ppeEnrolledForAddress___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendConfigUpdate:(id)a3 forAddress:(id)a4
+- (void)sendConfigUpdate:(id)update forAddress:(id)address
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  updateCopy = update;
+  addressCopy = address;
+  if ([addressCopy length])
   {
-    v8 = [getHUAccessoryManagerClass_0() sharedInstance];
-    v15[0] = v7;
+    sharedInstance = [getHUAccessoryManagerClass_0() sharedInstance];
+    v15[0] = addressCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __44__PAHMSManager_sendConfigUpdate_forAddress___block_invoke;
     v12[3] = &unk_279A1D880;
     v12[4] = self;
-    v13 = v6;
-    v14 = v7;
-    [v8 getIdentifiersFromAddresses:v9 withCompletion:v12];
+    v13 = updateCopy;
+    v14 = addressCopy;
+    [sharedInstance getIdentifiersFromAddresses:v9 withCompletion:v12];
   }
 
   else
   {
-    v8 = HCLogAudioAccommodations();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    sharedInstance = HCLogAudioAccommodations();
+    if (os_log_type_enabled(sharedInstance, OS_LOG_TYPE_DEFAULT))
     {
       *v11 = 0;
-      _os_log_impl(&dword_25E445000, v8, OS_LOG_TYPE_DEFAULT, "Skipping update. No address", v11, 2u);
+      _os_log_impl(&dword_25E445000, sharedInstance, OS_LOG_TYPE_DEFAULT, "Skipping update. No address", v11, 2u);
     }
   }
 
@@ -883,13 +883,13 @@ void __44__PAHMSManager_sendConfigUpdate_forAddress___block_invoke_2(uint64_t a1
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendConfigUpdate:(id)a3 forIdentifier:(id)a4 withCompletion:(id)a5
+- (void)sendConfigUpdate:(id)update forIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PAHMSManager *)self hmsClient];
-  [v11 modifyDeviceConfig:v10 identifier:v9 completion:v8];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  updateCopy = update;
+  hmsClient = [(PAHMSManager *)self hmsClient];
+  [hmsClient modifyDeviceConfig:updateCopy identifier:identifierCopy completion:completionCopy];
 }
 
 @end

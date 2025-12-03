@@ -21,9 +21,9 @@
     v2->_maxRaysResolution = 60;
     v2->_numJasperBands = 5;
     v2->_maxJasperDepth = 8.0;
-    v4 = [MEMORY[0x277CED0B8] emptyFilter];
+    emptyFilter = [MEMORY[0x277CED0B8] emptyFilter];
     pointCloudFilter = v3->_pointCloudFilter;
-    v3->_pointCloudFilter = v4;
+    v3->_pointCloudFilter = emptyFilter;
 
     [(ADJasperPointCloudFilterParameters *)v3->_pointCloudFilter setDuplicateProjectedSpotsMode:2];
     LODWORD(v6) = 1061997773;
@@ -38,12 +38,12 @@
 
     [(ADAggregationParameters *)v3->_aggregationParameters setAggregationSize:4];
     [(ADAggregationParameters *)v3->_aggregationParameters setMaxPointCloudAge:0.15];
-    v10 = [objc_opt_class() defaults];
-    [v10 floatForKey:kADDeviceConfigurationKeyMetricDepthPearlJasperCoFilteringMaxAllowedDisagreement];
+    defaults = [objc_opt_class() defaults];
+    [defaults floatForKey:kADDeviceConfigurationKeyMetricDepthPearlJasperCoFilteringMaxAllowedDisagreement];
     v3->_pearlJasperCoFilteringMaxAllowedDisagreement = v11;
 
-    v12 = [objc_opt_class() defaults];
-    [v12 floatForKey:kADDeviceConfigurationKeyMetricDepthPearlJasperCoFilteringMaxPearlDepth];
+    defaults2 = [objc_opt_class() defaults];
+    [defaults2 floatForKey:kADDeviceConfigurationKeyMetricDepthPearlJasperCoFilteringMaxPearlDepth];
     v3->_pearlJasperCoFilteringMaxPearlDepth = v13;
   }
 

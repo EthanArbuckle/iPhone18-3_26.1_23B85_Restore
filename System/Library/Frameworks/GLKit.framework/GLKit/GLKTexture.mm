@@ -1,22 +1,22 @@
 @interface GLKTexture
-- (BOOL)_uploadToGLTexture:(unsigned int)a3 data:(id)a4 width:(int)a5 height:(int)a6 dataCategory:(int)a7 cubeMapIndex:(int)a8 mipMapIndex:(int)a9 error:(id *)a10;
-- (BOOL)decodeCGImage:(CGImage *)a3;
-- (BOOL)decodeCGImageDataProvider:(CGImage *)a3;
-- (BOOL)decodeCGImageImageProvider:(CGImage *)a3 CGImageProvider:(CGImageProvider *)a4;
-- (BOOL)determineCGImageBlockFormatWithComponentType:(int)a3 andPixelSize:(unint64_t)a4 andColorModel:(int)a5;
-- (BOOL)determinePVRFormat:(unsigned int)a3;
-- (BOOL)loadCGImage:(CGImage *)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)loadPVRTCData:(id)a3 error:(id *)a4;
-- (BOOL)loadWithData:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)premultiplyWithAlpha:(void *)a3 source:(void *)a4 withWidth:(unsigned int)a5 withHeight:(unsigned int)a6 withRowBytes:(unsigned int)a7 error:(id *)a8;
-- (BOOL)reorientToGL:(void *)a3 source:(void *)a4 withWidth:(unsigned int)a5 withHeight:(unsigned int)a6 withRowBytes:(unsigned int)a7 error:(id *)a8;
+- (BOOL)_uploadToGLTexture:(unsigned int)texture data:(id)data width:(int)width height:(int)height dataCategory:(int)category cubeMapIndex:(int)index mipMapIndex:(int)mapIndex error:(id *)self0;
+- (BOOL)decodeCGImage:(CGImage *)image;
+- (BOOL)decodeCGImageDataProvider:(CGImage *)provider;
+- (BOOL)decodeCGImageImageProvider:(CGImage *)provider CGImageProvider:(CGImageProvider *)imageProvider;
+- (BOOL)determineCGImageBlockFormatWithComponentType:(int)type andPixelSize:(unint64_t)size andColorModel:(int)model;
+- (BOOL)determinePVRFormat:(unsigned int)format;
+- (BOOL)loadCGImage:(CGImage *)image options:(id)options error:(id *)error;
+- (BOOL)loadPVRTCData:(id)data error:(id *)error;
+- (BOOL)loadWithData:(id)data options:(id)options error:(id *)error;
+- (BOOL)premultiplyWithAlpha:(void *)alpha source:(void *)source withWidth:(unsigned int)width withHeight:(unsigned int)height withRowBytes:(unsigned int)bytes error:(id *)error;
+- (BOOL)reorientToGL:(void *)l source:(void *)source withWidth:(unsigned int)width withHeight:(unsigned int)height withRowBytes:(unsigned int)bytes error:(id *)error;
 - (GLKTexture)init;
-- (GLKTexture)initWithCGImage:(CGImage *)a3 forceCubeMap:(BOOL)a4 wasCubeMap:(BOOL *)a5 cubeMapIndex:(int)a6 options:(id)a7 error:(id *)a8;
-- (GLKTexture)initWithData:(id)a3 forceCubeMap:(BOOL)a4 wasCubeMap:(BOOL *)a5 cubeMapIndex:(int)a6 options:(id)a7 error:(id *)a8;
-- (GLKTexture)initWithDecodedData:(id)a3 width:(unsigned int)a4 height:(unsigned int)a5 rowBytes:(unsigned int)a6 texture:(id)a7 cubeMapIndex:(int)a8 options:(id)a9 error:(id *)a10;
-- (void)alignmentFix:(unsigned int)a3 data:(const void *)a4;
+- (GLKTexture)initWithCGImage:(CGImage *)image forceCubeMap:(BOOL)map wasCubeMap:(BOOL *)cubeMap cubeMapIndex:(int)index options:(id)options error:(id *)error;
+- (GLKTexture)initWithData:(id)data forceCubeMap:(BOOL)map wasCubeMap:(BOOL *)cubeMap cubeMapIndex:(int)index options:(id)options error:(id *)error;
+- (GLKTexture)initWithDecodedData:(id)data width:(unsigned int)width height:(unsigned int)height rowBytes:(unsigned int)bytes texture:(id)texture cubeMapIndex:(int)index options:(id)options error:(id *)self0;
+- (void)alignmentFix:(unsigned int)fix data:(const void *)data;
 - (void)dealloc;
-- (void)updateRequestedOperationsFromOptions:(id)a3;
+- (void)updateRequestedOperationsFromOptions:(id)options;
 @end
 
 @implementation GLKTexture
@@ -57,26 +57,26 @@
   [(GLKTexture *)&v4 dealloc];
 }
 
-- (void)updateRequestedOperationsFromOptions:(id)a3
+- (void)updateRequestedOperationsFromOptions:(id)options
 {
-  self->_requestIssuedForMipmapGeneration = [objc_msgSend(a3 objectForKey:{@"GLKTextureLoaderGenerateMipmaps", "BOOLValue"}];
-  self->_requestIssuedToReorientToGL = [objc_msgSend(a3 objectForKey:{@"GLKTextureLoaderOriginBottomLeft", "BOOLValue"}];
-  self->_requestIssuedForAlphaPremultiplication = [objc_msgSend(a3 objectForKey:{@"GLKTextureLoaderApplyPremultiplication", "BOOLValue"}];
-  self->_requestIssuedForSRGB = [objc_msgSend(a3 objectForKey:{@"GLKTextureLoaderSRGB", "BOOLValue"}];
-  self->_requestIssuedToInterpretGrayAsAlpha = [objc_msgSend(a3 objectForKey:{@"GLKTextureLoaderGrayscaleAsAlpha", "BOOLValue"}];
+  self->_requestIssuedForMipmapGeneration = [objc_msgSend(options objectForKey:{@"GLKTextureLoaderGenerateMipmaps", "BOOLValue"}];
+  self->_requestIssuedToReorientToGL = [objc_msgSend(options objectForKey:{@"GLKTextureLoaderOriginBottomLeft", "BOOLValue"}];
+  self->_requestIssuedForAlphaPremultiplication = [objc_msgSend(options objectForKey:{@"GLKTextureLoaderApplyPremultiplication", "BOOLValue"}];
+  self->_requestIssuedForSRGB = [objc_msgSend(options objectForKey:{@"GLKTextureLoaderSRGB", "BOOLValue"}];
+  self->_requestIssuedToInterpretGrayAsAlpha = [objc_msgSend(options objectForKey:{@"GLKTextureLoaderGrayscaleAsAlpha", "BOOLValue"}];
   self->_isMipmapped = self->_requestIssuedForMipmapGeneration;
 }
 
-- (GLKTexture)initWithData:(id)a3 forceCubeMap:(BOOL)a4 wasCubeMap:(BOOL *)a5 cubeMapIndex:(int)a6 options:(id)a7 error:(id *)a8
+- (GLKTexture)initWithData:(id)data forceCubeMap:(BOOL)map wasCubeMap:(BOOL *)cubeMap cubeMapIndex:(int)index options:(id)options error:(id *)error
 {
-  v12 = a4;
+  mapCopy = map;
   v14 = [(GLKTexture *)self init];
   if (v14)
   {
     v20 = 0;
     v19 = 0u;
     memset(v18, 0, sizeof(v18));
-    [a3 getBytes:v18 length:52];
+    [data getBytes:v18 length:52];
     if (HIDWORD(v19) == 559044176)
     {
       v15 = 2;
@@ -88,11 +88,11 @@
     }
 
     v14->_loadMode = v15;
-    [(GLKTexture *)v14 updateRequestedOperationsFromOptions:a7];
-    v14->_index = a6;
-    if (a5)
+    [(GLKTexture *)v14 updateRequestedOperationsFromOptions:options];
+    v14->_index = index;
+    if (cubeMap)
     {
-      *a5 = 0;
+      *cubeMap = 0;
     }
 
     loadMode = v14->_loadMode;
@@ -103,8 +103,8 @@
         return v14;
       }
 
-      v14->_isCubeMap = v12;
-      if ([(GLKTexture *)v14 loadWithData:a3 options:a7 error:a8])
+      v14->_isCubeMap = mapCopy;
+      if ([(GLKTexture *)v14 loadWithData:data options:options error:error])
       {
         return v14;
       }
@@ -114,17 +114,17 @@ LABEL_17:
       return 0;
     }
 
-    if (![(GLKTexture *)v14 loadPVRTCData:a3 error:a8])
+    if (![(GLKTexture *)v14 loadPVRTCData:data error:error])
     {
       goto LABEL_17;
     }
 
-    if (a5 && v14->_isCubeMap)
+    if (cubeMap && v14->_isCubeMap)
     {
-      *a5 = 1;
+      *cubeMap = 1;
     }
 
-    if (v12)
+    if (mapCopy)
     {
       v14->_isCubeMap = 1;
       *&v14->_bindTarget = 0x851500008513;
@@ -134,22 +134,22 @@ LABEL_17:
   return v14;
 }
 
-- (GLKTexture)initWithCGImage:(CGImage *)a3 forceCubeMap:(BOOL)a4 wasCubeMap:(BOOL *)a5 cubeMapIndex:(int)a6 options:(id)a7 error:(id *)a8
+- (GLKTexture)initWithCGImage:(CGImage *)image forceCubeMap:(BOOL)map wasCubeMap:(BOOL *)cubeMap cubeMapIndex:(int)index options:(id)options error:(id *)error
 {
   v14 = [(GLKTexture *)self init];
   v15 = v14;
   if (v14)
   {
     v14->_loadMode = 1;
-    [(GLKTexture *)v14 updateRequestedOperationsFromOptions:a7];
-    v15->_isCubeMap = a4;
-    v15->_index = a6;
-    if (a5)
+    [(GLKTexture *)v14 updateRequestedOperationsFromOptions:options];
+    v15->_isCubeMap = map;
+    v15->_index = index;
+    if (cubeMap)
     {
-      *a5 = 0;
+      *cubeMap = 0;
     }
 
-    if (![(GLKTexture *)v15 loadCGImage:a3 options:a7 error:a8])
+    if (![(GLKTexture *)v15 loadCGImage:image options:options error:error])
     {
 
       return 0;
@@ -159,39 +159,39 @@ LABEL_17:
   return v15;
 }
 
-- (GLKTexture)initWithDecodedData:(id)a3 width:(unsigned int)a4 height:(unsigned int)a5 rowBytes:(unsigned int)a6 texture:(id)a7 cubeMapIndex:(int)a8 options:(id)a9 error:(id *)a10
+- (GLKTexture)initWithDecodedData:(id)data width:(unsigned int)width height:(unsigned int)height rowBytes:(unsigned int)bytes texture:(id)texture cubeMapIndex:(int)index options:(id)options error:(id *)self0
 {
   v16 = [(GLKTexture *)self init];
   if (v16)
   {
-    v16->_loadMode = [a7 loadMode];
-    [(GLKTexture *)v16 updateRequestedOperationsFromOptions:a9];
-    v16->_dataCategory = [a7 dataCategory];
-    v16->_imageData = a3;
-    v16->_width = a4;
-    v16->_height = a5;
-    v16->_rowBytes = a6;
-    v16->_index = a8;
-    v16->_isCubeMap = [a7 isCubeMap];
-    v16->_bitsPerPixel = [a7 bitsPerPixel];
-    v16->_nComponents = [a7 nComponents];
-    v16->_orientation = [a7 orientation];
-    v16->_texelFormat = [a7 texelFormat];
-    v16->_internalFormat = [a7 internalFormat];
-    v16->_format = [a7 format];
-    v16->_type = [a7 type];
-    v16->_isPowerOfTwo = [a7 isPowerOfTwo];
-    v16->_isVerticalFlipped = [a7 isVerticalFlipped];
-    v16->_hasAlpha = [a7 hasAlpha];
+    v16->_loadMode = [texture loadMode];
+    [(GLKTexture *)v16 updateRequestedOperationsFromOptions:options];
+    v16->_dataCategory = [texture dataCategory];
+    v16->_imageData = data;
+    v16->_width = width;
+    v16->_height = height;
+    v16->_rowBytes = bytes;
+    v16->_index = index;
+    v16->_isCubeMap = [texture isCubeMap];
+    v16->_bitsPerPixel = [texture bitsPerPixel];
+    v16->_nComponents = [texture nComponents];
+    v16->_orientation = [texture orientation];
+    v16->_texelFormat = [texture texelFormat];
+    v16->_internalFormat = [texture internalFormat];
+    v16->_format = [texture format];
+    v16->_type = [texture type];
+    v16->_isPowerOfTwo = [texture isPowerOfTwo];
+    v16->_isVerticalFlipped = [texture isVerticalFlipped];
+    v16->_hasAlpha = [texture hasAlpha];
     v16->_numMipMapLevels = 1;
-    v16->_bindTarget = [a7 bindTarget];
-    v16->_textureTarget = [a7 textureTarget];
+    v16->_bindTarget = [texture bindTarget];
+    v16->_textureTarget = [texture textureTarget];
   }
 
   return v16;
 }
 
-- (BOOL)loadPVRTCData:(id)a3 error:(id *)a4
+- (BOOL)loadPVRTCData:(id)data error:(id *)error
 {
   self->_imageData = 0;
   if (self->_blockSet)
@@ -200,13 +200,13 @@ LABEL_17:
     self->_blockSet = 0;
   }
 
-  v7 = a3;
-  self->_imageData = v7;
-  v8 = [(NSData *)v7 bytes];
-  v9 = v8[4];
+  dataCopy = data;
+  self->_imageData = dataCopy;
+  bytes = [(NSData *)dataCopy bytes];
+  v9 = bytes[4];
   if (![(GLKTexture *)self determinePVRFormat:v9])
   {
-    if (!a4)
+    if (!error)
     {
 LABEL_17:
 
@@ -218,11 +218,11 @@ LABEL_17:
     v14 = @"Unsupported PVR format";
     v15 = 11;
 LABEL_16:
-    *a4 = _GLKTextureErrorWithCodeAndErrorString(v15, v14);
+    *error = _GLKTextureErrorWithCodeAndErrorString(v15, v14);
     goto LABEL_17;
   }
 
-  v10 = v8[3];
+  v10 = bytes[3];
   self->_numMipMapLevels = v10 + 1;
   if ((v9 & 0xFE) != 0x18)
   {
@@ -243,12 +243,12 @@ LABEL_16:
 
   if (requestIssuedForMipmapGeneration)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_32;
     }
 
-    *a4 = _GLKTextureErrorWithCodeAndErrorString(13, @"Cannot generate mipmaps for compressed PVR file");
+    *error = _GLKTextureErrorWithCodeAndErrorString(13, @"Cannot generate mipmaps for compressed PVR file");
   }
 
   if (!self->_requestIssuedToReorientToGL)
@@ -257,7 +257,7 @@ LABEL_16:
     goto LABEL_33;
   }
 
-  if (!a4)
+  if (!error)
   {
 LABEL_32:
     v13 = 0;
@@ -266,11 +266,11 @@ LABEL_32:
 
   v12 = _GLKTextureErrorWithCodeAndErrorString(15, @"Cannot reorient compressed PVR file");
   v13 = 0;
-  *a4 = v12;
+  *error = v12;
 LABEL_33:
   if (self->_requestIssuedForAlphaPremultiplication)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -286,8 +286,8 @@ LABEL_33:
   }
 
 LABEL_19:
-  v17 = v8[10] != 0;
-  v18 = v8[2];
+  v17 = bytes[10] != 0;
+  v18 = bytes[2];
   self->_width = v18;
   result = 1;
   v19 = HIWORD(v9) & 1;
@@ -301,13 +301,13 @@ LABEL_19:
     v20 = 1;
   }
 
-  self->_height = v8[1];
+  self->_height = bytes[1];
   self->_orientation = v20;
-  v21 = v8[6];
+  v21 = bytes[6];
   self->_bitsPerPixel = v21;
   self->_rowBytes = (v21 * v18) >> 3;
   self->_unpackAlignment = 1;
-  v22 = v8[12];
+  v22 = bytes[12];
   if (v22 <= 1)
   {
     v22 = 1;
@@ -318,7 +318,7 @@ LABEL_19:
   self->_isVerticalFlipped = v19;
   self->_hasAlpha = v17;
   self->_nPrimarySurfaces = v22;
-  self->_nSurfaces = v8[3] + 1;
+  self->_nSurfaces = bytes[3] + 1;
   if ((v9 >> 12))
   {
     v23 = 34067;
@@ -341,13 +341,13 @@ LABEL_19:
 
   self->_bindTarget = v23;
   self->_textureTarget = v24;
-  self->_primarySurfaceLength = v8[5];
+  self->_primarySurfaceLength = bytes[5];
   return result;
 }
 
-- (void)alignmentFix:(unsigned int)a3 data:(const void *)a4
+- (void)alignmentFix:(unsigned int)fix data:(const void *)data
 {
-  v5 = self->_width * a3;
+  v5 = self->_width * fix;
   v6 = self->_rowBytes - v5;
   if (!v6)
   {
@@ -391,7 +391,7 @@ LABEL_7:
     v12 = 0;
     do
     {
-      memcpy(memptr + v11, a4 + (self->_rowBytes * v12++), v10);
+      memcpy(memptr + v11, data + (self->_rowBytes * v12++), v10);
       v11 += v10;
     }
 
@@ -402,21 +402,21 @@ LABEL_7:
   return memptr;
 }
 
-- (BOOL)decodeCGImageDataProvider:(CGImage *)a3
+- (BOOL)decodeCGImageDataProvider:(CGImage *)provider
 {
-  BitmapInfo = CGImageGetBitmapInfo(a3);
-  ColorSpace = CGImageGetColorSpace(a3);
+  BitmapInfo = CGImageGetBitmapInfo(provider);
+  ColorSpace = CGImageGetColorSpace(provider);
   Model = CGColorSpaceGetModel(ColorSpace);
-  BitsPerPixel = CGImageGetBitsPerPixel(a3);
+  BitsPerPixel = CGImageGetBitsPerPixel(provider);
   self->_bitsPerPixel = BitsPerPixel;
   if (BitsPerPixel != 32 && BitsPerPixel != 8 || ColorSpace && Model > kCGColorSpaceModelRGB)
   {
     return 0;
   }
 
-  self->_rowBytes = CGImageGetBytesPerRow(a3);
-  self->_width = CGImageGetWidth(a3);
-  self->_height = CGImageGetHeight(a3);
+  self->_rowBytes = CGImageGetBytesPerRow(provider);
+  self->_width = CGImageGetWidth(provider);
+  self->_height = CGImageGetHeight(provider);
   self->_type = 5121;
   v9 = self->_bitsPerPixel;
   if (v9 == 8)
@@ -477,7 +477,7 @@ LABEL_7:
   self->_format = v13;
   self->_texelFormat = v12;
   self->_nComponents = v11;
-  DataProvider = CGImageGetDataProvider(a3);
+  DataProvider = CGImageGetDataProvider(provider);
   v16 = CGDataProviderCopyData(DataProvider);
   self->_cfData = v16;
   if (!v16)
@@ -526,7 +526,7 @@ LABEL_31:
   return v10;
 }
 
-- (BOOL)decodeCGImageImageProvider:(CGImage *)a3 CGImageProvider:(CGImageProvider *)a4
+- (BOOL)decodeCGImageImageProvider:(CGImage *)provider CGImageProvider:(CGImageProvider *)imageProvider
 {
   ColorSpace = CGImageProviderGetColorSpace();
   Model = CGColorSpaceGetModel(ColorSpace);
@@ -612,23 +612,23 @@ LABEL_15:
   return 0;
 }
 
-- (BOOL)decodeCGImage:(CGImage *)a3
+- (BOOL)decodeCGImage:(CGImage *)image
 {
   ImageProvider = CGImageGetImageProvider();
   if (ImageProvider)
   {
 
-    return [(GLKTexture *)self decodeCGImageImageProvider:a3 CGImageProvider:ImageProvider];
+    return [(GLKTexture *)self decodeCGImageImageProvider:image CGImageProvider:ImageProvider];
   }
 
   else
   {
 
-    return [(GLKTexture *)self decodeCGImageDataProvider:a3];
+    return [(GLKTexture *)self decodeCGImageDataProvider:image];
   }
 }
 
-- (BOOL)loadWithData:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)loadWithData:(id)data options:(id)options error:(id *)error
 {
   self->_imageData = 0;
   if (self->_blockSet)
@@ -638,7 +638,7 @@ LABEL_15:
   }
 
   self->_dataCategory = 1;
-  v8 = CGImageSourceCreateWithData(a3, 0);
+  v8 = CGImageSourceCreateWithData(data, 0);
   if (!v8)
   {
     goto LABEL_24;
@@ -693,14 +693,14 @@ LABEL_15:
 LABEL_23:
     CFRelease(v9);
 LABEL_24:
-    if (!a5)
+    if (!error)
     {
       return 0;
     }
 
     v25 = _GLKTextureErrorWithCodeAndErrorString(12, @"Image decoding failed");
     result = 0;
-    *a5 = v25;
+    *error = v25;
     return result;
   }
 
@@ -743,16 +743,16 @@ LABEL_24:
   return result;
 }
 
-- (BOOL)loadCGImage:(CGImage *)a3 options:(id)a4 error:(id *)a5
+- (BOOL)loadCGImage:(CGImage *)image options:(id)options error:(id *)error
 {
-  if (!a3)
+  if (!image)
   {
-    if (a5)
+    if (error)
     {
       v11 = @"Invalid CGImageRef";
 LABEL_16:
       v8 = 0;
-      *a5 = _GLKTextureErrorWithCodeAndErrorString(12, v11);
+      *error = _GLKTextureErrorWithCodeAndErrorString(12, v11);
       return v8;
     }
 
@@ -769,10 +769,10 @@ LABEL_16:
   v8 = 1;
   self->_dataCategory = 1;
   self->_orientation = 1;
-  self->_hasAlpha = CGImageGetAlphaInfo(a3) - 1 < 4;
-  if (![(GLKTexture *)self decodeCGImage:a3])
+  self->_hasAlpha = CGImageGetAlphaInfo(image) - 1 < 4;
+  if (![(GLKTexture *)self decodeCGImage:image])
   {
-    if (a5)
+    if (error)
     {
       v11 = @"Image decoding failed";
       goto LABEL_16;
@@ -808,13 +808,13 @@ LABEL_16:
   return v8;
 }
 
-- (BOOL)_uploadToGLTexture:(unsigned int)a3 data:(id)a4 width:(int)a5 height:(int)a6 dataCategory:(int)a7 cubeMapIndex:(int)a8 mipMapIndex:(int)a9 error:(id *)a10
+- (BOOL)_uploadToGLTexture:(unsigned int)texture data:(id)data width:(int)width height:(int)height dataCategory:(int)category cubeMapIndex:(int)index mipMapIndex:(int)mapIndex error:(id *)self0
 {
-  glBindTexture(self->_bindTarget, a3);
+  glBindTexture(self->_bindTarget, texture);
   label = self->_label;
   if (label)
   {
-    glLabelObjectEXT(0x1702u, a3, 0, [(NSString *)label cStringUsingEncoding:1]);
+    glLabelObjectEXT(0x1702u, texture, 0, [(NSString *)label cStringUsingEncoding:1]);
   }
 
   glTexParameteri(self->_bindTarget, 0x2802u, 33071);
@@ -831,9 +831,9 @@ LABEL_16:
   }
 
   glTexParameteri(self->_bindTarget, 0x2801u, v18);
-  if (a7 == 5)
+  if (category == 5)
   {
-    glCompressedTexImage2D(self->_textureTarget + a8, a9, self->_internalFormat, a5, a6, 0, [a4 length], objc_msgSend(a4, "bytes"));
+    glCompressedTexImage2D(self->_textureTarget + index, mapIndex, self->_internalFormat, width, height, 0, [data length], objc_msgSend(data, "bytes"));
   }
 
   else
@@ -841,19 +841,19 @@ LABEL_16:
     params = 0;
     glGetIntegerv(0xCF5u, &params);
     glPixelStorei(0xCF5u, self->_unpackAlignment);
-    v19 = a5;
-    v20 = a6;
-    v21 = a7;
+    widthCopy = width;
+    heightCopy = height;
+    categoryCopy = category;
     textureTarget = self->_textureTarget;
     internalFormat = self->_internalFormat;
     type = self->_type;
     format = self->_format;
-    pixels = [a4 bytes];
-    v25 = textureTarget + a8;
-    a7 = v21;
-    a6 = v20;
-    a5 = v19;
-    glTexImage2D(v25, a9, internalFormat, v19, a6, 0, format, type, pixels);
+    pixels = [data bytes];
+    v25 = textureTarget + index;
+    category = categoryCopy;
+    height = heightCopy;
+    width = widthCopy;
+    glTexImage2D(v25, mapIndex, internalFormat, widthCopy, height, 0, format, type, pixels);
     glPixelStorei(0xCF5u, params);
   }
 
@@ -867,13 +867,13 @@ LABEL_16:
       v36 = 0;
       glGetIntegerv(0xD33u, &v36);
       glGetIntegerv(0x851Cu, &v35);
-      if (self->_isCubeMap || v36 >= a5)
+      if (self->_isCubeMap || v36 >= width)
       {
-        if (self->_isCubeMap || v36 >= a6)
+        if (self->_isCubeMap || v36 >= height)
         {
-          if (a5 == a6 || !self->_isCubeMap)
+          if (width == height || !self->_isCubeMap)
           {
-            if (self->_isCubeMap && v35 < a5)
+            if (self->_isCubeMap && v35 < width)
             {
               v28 = @"Cube Map width / height are greater than GL_MAX_CUBE_MAP_TEXTURE_SIZE";
             }
@@ -883,9 +883,9 @@ LABEL_16:
               v28 = 0;
             }
 
-            if (a7 == 5 && (!self->_isCubeMap || v35 >= a5))
+            if (category == 5 && (!self->_isCubeMap || v35 >= width))
             {
-              if ([a4 length] == (a6 * a5 * self->_bitsPerPixel) >> 3)
+              if ([data length] == (height * width * self->_bitsPerPixel) >> 3)
               {
                 v28 = 0;
               }
@@ -921,10 +921,10 @@ LABEL_16:
     }
 
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInt:", v27), @"GLKTextureLoaderGLErrorKey", v28, @"GLKTextureLoaderErrorKey", 0}];
-    if (a10)
+    if (error)
     {
       v30 = v29;
-      if (a7 == 5)
+      if (category == 5)
       {
         v31 = 7;
       }
@@ -934,22 +934,22 @@ LABEL_16:
         v31 = 8;
       }
 
-      *a10 = _GLKTextureErrorWithCodeAndUserInfo(v31, v30);
+      *error = _GLKTextureErrorWithCodeAndUserInfo(v31, v30);
     }
   }
 
   return v27 == 0;
 }
 
-- (BOOL)determineCGImageBlockFormatWithComponentType:(int)a3 andPixelSize:(unint64_t)a4 andColorModel:(int)a5
+- (BOOL)determineCGImageBlockFormatWithComponentType:(int)type andPixelSize:(unint64_t)size andColorModel:(int)model
 {
-  if (a3 != 1)
+  if (type != 1)
   {
     return 0;
   }
 
   self->_type = 5121;
-  if (a4 == 1)
+  if (size == 1)
   {
     if (self->_requestIssuedToInterpretGrayAsAlpha)
     {
@@ -977,9 +977,9 @@ LABEL_16:
     goto LABEL_23;
   }
 
-  if (a4 != 2)
+  if (size != 2)
   {
-    if (a4 == 4)
+    if (size == 4)
     {
       if (self->_requestIssuedForSRGB)
       {
@@ -1011,7 +1011,7 @@ LABEL_16:
   }
 
   v10 = 0;
-  if (!a5 && self->_hasAlpha)
+  if (!model && self->_hasAlpha)
   {
     v7 = 16;
     v8 = 2;
@@ -1030,9 +1030,9 @@ LABEL_23:
   return v10;
 }
 
-- (BOOL)determinePVRFormat:(unsigned int)a3
+- (BOOL)determinePVRFormat:(unsigned int)format
 {
-  if ((a3 & 0xFFFFFFF7) == 0x12)
+  if ((format & 0xFFFFFFF7) == 0x12)
   {
     if (self->_requestIssuedForSRGB)
     {
@@ -1061,13 +1061,13 @@ LABEL_37:
   }
 
   v9 = 0;
-  if (a3 > 22)
+  if (format > 22)
   {
-    if (a3 <= 26)
+    if (format <= 26)
     {
-      if (a3 != 23)
+      if (format != 23)
       {
-        if (a3 == 24)
+        if (format == 24)
         {
           v4 = 4;
           v5 = 26;
@@ -1078,7 +1078,7 @@ LABEL_37:
           goto LABEL_37;
         }
 
-        if (a3 == 25)
+        if (format == 25)
         {
           v4 = 4;
           v5 = 27;
@@ -1099,9 +1099,9 @@ LABEL_37:
       goto LABEL_35;
     }
 
-    if (a3 != 27)
+    if (format != 27)
     {
-      if (a3 == 50)
+      if (format == 50)
       {
         v3 = 6408;
         v4 = 4;
@@ -1112,7 +1112,7 @@ LABEL_37:
 
       else
       {
-        if (a3 != 53)
+        if (format != 53)
         {
           return v9;
         }
@@ -1136,9 +1136,9 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (a3 <= 18)
+  if (format <= 18)
   {
-    if (a3 == 16)
+    if (format == 16)
     {
       v3 = 6408;
       v5 = 4;
@@ -1150,7 +1150,7 @@ LABEL_35:
       goto LABEL_37;
     }
 
-    if (a3 != 17)
+    if (format != 17)
     {
       return v9;
     }
@@ -1166,7 +1166,7 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  switch(a3)
+  switch(format)
   {
     case 0x13u:
       v3 = 6407;
@@ -1201,27 +1201,27 @@ LABEL_36:
   return v9;
 }
 
-- (BOOL)reorientToGL:(void *)a3 source:(void *)a4 withWidth:(unsigned int)a5 withHeight:(unsigned int)a6 withRowBytes:(unsigned int)a7 error:(id *)a8
+- (BOOL)reorientToGL:(void *)l source:(void *)source withWidth:(unsigned int)width withHeight:(unsigned int)height withRowBytes:(unsigned int)bytes error:(id *)error
 {
-  src.data = a4;
-  src.height = a6;
-  src.width = a5;
-  src.rowBytes = a7;
-  dest.data = a3;
-  dest.height = a6;
-  dest.width = a5;
-  dest.rowBytes = a7;
+  src.data = source;
+  src.height = height;
+  src.width = width;
+  src.rowBytes = bytes;
+  dest.data = l;
+  dest.height = height;
+  dest.width = width;
+  dest.rowBytes = bytes;
   orientation = self->_orientation;
   if (!orientation)
   {
-    if (a8)
+    if (error)
     {
       v16 = @"Unsupported image orientation";
       v17 = 14;
 LABEL_21:
       v18 = _GLKTextureErrorWithCodeAndErrorString(v17, v16);
       v13 = 0;
-      *a8 = v18;
+      *error = v18;
       return v13;
     }
 
@@ -1263,7 +1263,7 @@ LABEL_21:
         }
 
 LABEL_19:
-        if (a8)
+        if (error)
         {
           v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Image reorientation failed, vImageError: %ld", v15];
           v17 = 15;
@@ -1314,18 +1314,18 @@ LABEL_18:
   return v13;
 }
 
-- (BOOL)premultiplyWithAlpha:(void *)a3 source:(void *)a4 withWidth:(unsigned int)a5 withHeight:(unsigned int)a6 withRowBytes:(unsigned int)a7 error:(id *)a8
+- (BOOL)premultiplyWithAlpha:(void *)alpha source:(void *)source withWidth:(unsigned int)width withHeight:(unsigned int)height withRowBytes:(unsigned int)bytes error:(id *)error
 {
-  v9 = a4;
-  v10 = a3;
-  src.data = a4;
-  src.height = a6;
-  src.width = a5;
-  src.rowBytes = a7;
-  dest.data = a3;
-  dest.height = a6;
-  dest.width = a5;
-  dest.rowBytes = a7;
+  sourceCopy = source;
+  alphaCopy = alpha;
+  src.data = source;
+  src.height = height;
+  src.width = width;
+  src.rowBytes = bytes;
+  dest.data = alpha;
+  dest.height = height;
+  dest.width = width;
+  dest.rowBytes = bytes;
   texelFormat = self->_texelFormat;
   if (texelFormat > 4)
   {
@@ -1349,15 +1349,15 @@ LABEL_21:
       v14 = 0;
       do
       {
-        v15 = &v10[v14];
-        v16 = HIBYTE(v9[v14]);
-        *v15 = LOBYTE(v9[v14]) * v16 / 0xFF;
+        v15 = &alphaCopy[v14];
+        v16 = HIBYTE(sourceCopy[v14]);
+        *v15 = LOBYTE(sourceCopy[v14]) * v16 / 0xFF;
         *(v15 + 1) = v16;
-        v17 = [(GLKTexture *)self rowBytes];
+        rowBytes = [(GLKTexture *)self rowBytes];
         ++v14;
       }
 
-      while ((v14 * 2) <= [(GLKTexture *)self height]* v17);
+      while ((v14 * 2) <= [(GLKTexture *)self height]* rowBytes);
       goto LABEL_21;
     }
 
@@ -1375,9 +1375,9 @@ LABEL_20:
       v18 = 0;
       do
       {
-        if (*v9)
+        if (*sourceCopy)
         {
-          v19 = *v10;
+          v19 = *alphaCopy;
         }
 
         else
@@ -1385,13 +1385,13 @@ LABEL_20:
           v19 = 0;
         }
 
-        *v10++ = v19;
-        ++v9;
+        *alphaCopy++ = v19;
+        ++sourceCopy;
         v18 += 4;
-        v20 = [(GLKTexture *)self rowBytes];
+        rowBytes2 = [(GLKTexture *)self rowBytes];
       }
 
-      while (v18 <= [(GLKTexture *)self height]* v20);
+      while (v18 <= [(GLKTexture *)self height]* rowBytes2);
       goto LABEL_21;
     }
 
@@ -1405,11 +1405,11 @@ LABEL_20:
   }
 
 LABEL_18:
-  if (a8)
+  if (error)
   {
     v21 = _GLKTextureErrorWithCodeAndErrorString(16, [MEMORY[0x277CCACA8] stringWithFormat:@"Alpha premultiplication failed, vImageError: %ld", v13]);
     result = 0;
-    *a8 = v21;
+    *error = v21;
   }
 
   else

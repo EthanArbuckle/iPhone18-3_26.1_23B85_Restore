@@ -1,6 +1,6 @@
 @interface VOGestureMat
 - (id)accessibilityLabel;
-- (void)_accessibilitySetCurrentGesture:(id)a3;
+- (void)_accessibilitySetCurrentGesture:(id)gesture;
 @end
 
 @implementation VOGestureMat
@@ -14,11 +14,11 @@
   return v4;
 }
 
-- (void)_accessibilitySetCurrentGesture:(id)a3
+- (void)_accessibilitySetCurrentGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(VOGestureMat *)self superview];
-  [v5 _accessibilitySetCurrentGesture:v4];
+  gestureCopy = gesture;
+  superview = [(VOGestureMat *)self superview];
+  [superview _accessibilitySetCurrentGesture:gestureCopy];
 }
 
 @end

@@ -24,8 +24,8 @@
 
   if (!v11)
   {
-    v12 = [MEMORY[0x277CBEB38] dictionary];
-    [_coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes setObject:v12 forKeyedSubscript:v5];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [_coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes setObject:dictionary forKeyedSubscript:v5];
   }
 
   v13 = [_coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes objectForKeyedSubscript:v5];

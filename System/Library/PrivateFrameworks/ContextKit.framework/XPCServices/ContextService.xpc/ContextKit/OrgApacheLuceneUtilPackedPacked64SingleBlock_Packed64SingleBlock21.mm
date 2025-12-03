@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneUtilPackedPacked64SingleBlock_Packed64SingleBlock21
-- (int64_t)getWithInt:(int)a3;
-- (void)setWithInt:(int)a3 withLong:(int64_t)a4;
+- (int64_t)getWithInt:(int)int;
+- (void)setWithInt:(int)int withLong:(int64_t)long;
 @end
 
 @implementation OrgApacheLuceneUtilPackedPacked64SingleBlock_Packed64SingleBlock21
 
-- (int64_t)getWithInt:(int)a3
+- (int64_t)getWithInt:(int)int
 {
   blocks = self->super.blocks_;
   if (!blocks)
@@ -14,21 +14,21 @@
   }
 
   size = blocks->super.size_;
-  if (a3 < -2 || a3 / 3 >= size)
+  if (int < -2 || int / 3 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (a3 / 3));
+    IOSArray_throwOutOfBoundsWithMsg(size, (int / 3));
   }
 
-  return (blocks->buffer_[a3 / 3] >> (21 * (a3 % 3))) & 0x1FFFFF;
+  return (blocks->buffer_[int / 3] >> (21 * (int % 3))) & 0x1FFFFF;
 }
 
-- (void)setWithInt:(int)a3 withLong:(int64_t)a4
+- (void)setWithInt:(int)int withLong:(int64_t)long
 {
-  v4 = a3 / 3;
+  v4 = int / 3;
   blocks = self->super.blocks_;
-  v6 = a3 / 3;
+  v6 = int / 3;
   size = blocks->super.size_;
-  if (a3 < -2 || v4 >= size)
+  if (int < -2 || v4 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v4);
   }
@@ -39,7 +39,7 @@
     IOSArray_throwOutOfBoundsWithMsg(v8, v6);
   }
 
-  blocks->buffer_[a3 / 3] = blocks->buffer_[a3 / 3] & ~(0x1FFFFFLL << (21 * (a3 % 3))) | (a4 << (21 * (a3 % 3)));
+  blocks->buffer_[int / 3] = blocks->buffer_[int / 3] & ~(0x1FFFFFLL << (21 * (int % 3))) | (long << (21 * (int % 3)));
 }
 
 @end

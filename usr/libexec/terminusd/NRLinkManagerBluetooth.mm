@@ -1,39 +1,39 @@
 @interface NRLinkManagerBluetooth
 - (id)copyStatusString;
 - (void)cancel;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)dealloc;
 - (void)invalidateManager;
-- (void)linkDidReceiveData:(id)a3 data:(id)a4;
-- (void)linkIsAvailable:(id)a3;
-- (void)linkIsReady:(id)a3;
-- (void)linkIsSuspended:(id)a3;
-- (void)linkIsUnavailable:(id)a3;
-- (void)peripheral:(id)a3 didCloseL2CAPChannel:(id)a4;
-- (void)peripheral:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5;
-- (void)peripheralManager:(id)a3 didCloseL2CAPChannel:(id)a4;
-- (void)peripheralManager:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5;
-- (void)peripheralManager:(id)a3 didStopAdvertisingWithError:(id)a4;
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4;
-- (void)peripheralManagerDidUpdateState:(id)a3;
-- (void)scalablePipeManager:(id)a3 didRegisterEndpoint:(id)a4 error:(id)a5;
-- (void)scalablePipeManager:(id)a3 didUnregisterEndpoint:(id)a4;
-- (void)scalablePipeManager:(id)a3 pipeDidConnect:(id)a4;
-- (void)scalablePipeManager:(id)a3 pipeDidDisconnect:(id)a4 error:(id)a5;
-- (void)scalablePipeManagerDidUpdateState:(id)a3;
+- (void)linkDidReceiveData:(id)data data:(id)a4;
+- (void)linkIsAvailable:(id)available;
+- (void)linkIsReady:(id)ready;
+- (void)linkIsSuspended:(id)suspended;
+- (void)linkIsUnavailable:(id)unavailable;
+- (void)peripheral:(id)peripheral didCloseL2CAPChannel:(id)channel;
+- (void)peripheral:(id)peripheral didOpenL2CAPChannel:(id)channel error:(id)error;
+- (void)peripheralManager:(id)manager didCloseL2CAPChannel:(id)channel;
+- (void)peripheralManager:(id)manager didOpenL2CAPChannel:(id)channel error:(id)error;
+- (void)peripheralManager:(id)manager didStopAdvertisingWithError:(id)error;
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error;
+- (void)peripheralManagerDidUpdateState:(id)state;
+- (void)scalablePipeManager:(id)manager didRegisterEndpoint:(id)endpoint error:(id)error;
+- (void)scalablePipeManager:(id)manager didUnregisterEndpoint:(id)endpoint;
+- (void)scalablePipeManager:(id)manager pipeDidConnect:(id)connect;
+- (void)scalablePipeManager:(id)manager pipeDidDisconnect:(id)disconnect error:(id)error;
+- (void)scalablePipeManagerDidUpdateState:(id)state;
 @end
 
 @implementation NRLinkManagerBluetooth
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   if (self)
   {
     v10 = self->_centralManager;
@@ -41,20 +41,20 @@
     {
       centralManager = self->_centralManager;
 
-      if (centralManager == v12)
+      if (centralManager == managerCopy)
       {
-        [(NRLinkManager *)self reportEvent:4004 detailsFormat:@"peripheral %@ error %@", v8, v9];
+        [(NRLinkManager *)self reportEvent:4004 detailsFormat:@"peripheral %@ error %@", peripheralCopy, errorCopy];
         sub_10002DB64(&self->super.super.isa);
       }
     }
   }
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   if (self)
   {
     v10 = self->_centralManager;
@@ -62,15 +62,15 @@
     {
       centralManager = self->_centralManager;
 
-      if (centralManager == v17)
+      if (centralManager == managerCopy)
       {
-        [(NRLinkManager *)self reportEvent:4002 detailsFormat:@"peripheral %@ error %@", v8, v9];
-        v12 = v9;
+        [(NRLinkManager *)self reportEvent:4002 detailsFormat:@"peripheral %@ error %@", peripheralCopy, errorCopy];
+        v12 = errorCopy;
         v13 = v12;
         if (v12 && [(NRAnalyticsLinkManagerBluetooth *)v12 code]== 14)
         {
-          v14 = [(NRAnalyticsLinkManagerBluetooth *)v13 domain];
-          v15 = [v14 isEqualToString:CBErrorDomain];
+          domain = [(NRAnalyticsLinkManagerBluetooth *)v13 domain];
+          v15 = [domain isEqualToString:CBErrorDomain];
 
           if (!v15)
           {
@@ -79,7 +79,7 @@ LABEL_11:
             goto LABEL_12;
           }
 
-          [(NRLinkManager *)self reportEvent:4015 detailsFormat:@"peripheral %@", v8];
+          [(NRLinkManager *)self reportEvent:4015 detailsFormat:@"peripheral %@", peripheralCopy];
           v16 = objc_alloc_init(NRAnalyticsLinkManagerBluetooth);
           v13 = v16;
           if (v16)
@@ -98,10 +98,10 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v10 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
   if (self)
   {
     v7 = self->_centralManager;
@@ -109,21 +109,21 @@ LABEL_12:
     {
       centralManager = self->_centralManager;
 
-      if (centralManager == v10)
+      if (centralManager == managerCopy)
       {
-        v9 = [v6 description];
+        v9 = [peripheralCopy description];
         [(NRLinkManager *)self reportEvent:4001 details:v9];
 
         sub_10002E6F4(self);
-        sub_10002E8E0(&self->super.super.isa, v6);
+        sub_10002E8E0(&self->super.super.isa, peripheralCopy);
       }
     }
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v6 = a3;
+  stateCopy = state;
   if (self)
   {
     v4 = self->_centralManager;
@@ -131,21 +131,21 @@ LABEL_12:
     {
       centralManager = self->_centralManager;
 
-      if (centralManager == v6)
+      if (centralManager == stateCopy)
       {
-        sub_10002FEC4(self, [(CBCentralManager *)v6 state]);
+        sub_10002FEC4(self, [(CBCentralManager *)stateCopy state]);
       }
     }
   }
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
-  v41 = a4;
-  v9 = a5;
+  peripheralCopy = peripheral;
+  dataCopy = data;
   if (!self)
   {
-    if (a3)
+    if (manager)
     {
       goto LABEL_53;
     }
@@ -154,7 +154,7 @@ LABEL_12:
     goto LABEL_5;
   }
 
-  if (self->_centralManager != a3)
+  if (self->_centralManager != manager)
   {
     goto LABEL_53;
   }
@@ -179,22 +179,22 @@ LABEL_5:
     }
 
     v36 = 2839;
-    v37 = v41;
+    v37 = peripheralCopy;
     v34 = "";
     v35 = "[NRLinkManagerBluetooth centralManager:didDiscoverPeripheral:advertisementData:RSSI:]";
     _NRLogWithArgs();
   }
 
-  if (v9)
+  if (dataCopy)
   {
-    v11 = [v9 objectForKeyedSubscript:CBAdvertisementDataServiceUUIDsKey];
+    v11 = [dataCopy objectForKeyedSubscript:CBAdvertisementDataServiceUUIDsKey];
     if ([v11 count])
     {
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v38 = v9;
+      v38 = dataCopy;
       if (self)
       {
         scanRequests = self->_scanRequests;
@@ -287,7 +287,7 @@ LABEL_5:
                     }
 
                     v31 = v30;
-                    v32 = [v41 identifier];
+                    identifier = [peripheralCopy identifier];
                     if (v29)
                     {
                       v33 = v29[4];
@@ -298,7 +298,7 @@ LABEL_5:
                       v33 = 0;
                     }
 
-                    (v30)[2](v31, 1, v32, v33);
+                    (v30)[2](v31, 1, identifier, v33);
 
                     if (self)
                     {
@@ -310,7 +310,7 @@ LABEL_5:
                       discoveredPeripherals = 0;
                     }
 
-                    [(NSMutableArray *)discoveredPeripherals addObject:v41];
+                    [(NSMutableArray *)discoveredPeripherals addObject:peripheralCopy];
 
                     goto LABEL_22;
                   }
@@ -335,19 +335,19 @@ LABEL_22:
         while (v14);
       }
 
-      v9 = v38;
+      dataCopy = v38;
     }
   }
 
 LABEL_53:
 }
 
-- (void)scalablePipeManager:(id)a3 pipeDidDisconnect:(id)a4 error:(id)a5
+- (void)scalablePipeManager:(id)manager pipeDidDisconnect:(id)disconnect error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  managerCopy = manager;
+  disconnectCopy = disconnect;
+  errorCopy = error;
+  if (!managerCopy)
   {
     v60 = sub_10002D6B4();
     IsLevelEnabled = _NRLogIsLevelEnabled();
@@ -364,7 +364,7 @@ LABEL_89:
     goto LABEL_85;
   }
 
-  if (!v9)
+  if (!disconnectCopy)
   {
     v62 = sub_10002D6B4();
     v63 = _NRLogIsLevelEnabled();
@@ -377,10 +377,10 @@ LABEL_89:
     goto LABEL_89;
   }
 
-  v11 = [v9 peer];
-  v12 = [v11 identifier];
+  peer = [disconnectCopy peer];
+  identifier = [peer identifier];
 
-  if (!v12)
+  if (!identifier)
   {
     v65 = sub_10002D6B4();
     v66 = _NRLogIsLevelEnabled();
@@ -394,7 +394,7 @@ LABEL_89:
     goto LABEL_84;
   }
 
-  v13 = v12;
+  v13 = identifier;
   objc_opt_self();
   v14 = sub_100168BE8(NRDLocalDevice, v13, 1);
   obj = v13;
@@ -419,10 +419,10 @@ LABEL_89:
     goto LABEL_92;
   }
 
-  v76 = v10;
-  v15 = [v9 priority];
-  v16 = [v9 type];
-  if ((v15 - 1) >= 3)
+  v76 = errorCopy;
+  priority = [disconnectCopy priority];
+  type = [disconnectCopy type];
+  if ((priority - 1) >= 3)
   {
     if (qword_100228F70 != -1)
     {
@@ -446,22 +446,22 @@ LABEL_29:
     goto LABEL_83;
   }
 
-  v75 = v9;
+  v75 = disconnectCopy;
   if (!self)
   {
     goto LABEL_93;
   }
 
-  v17 = v16;
-  v18 = dword_100196520[(v15 - 1)];
+  v17 = type;
+  v18 = dword_100196520[(priority - 1)];
   v19 = &OBJC_IVAR___NRLinkManagerBluetooth__pipeRegistrations;
-  if (v16 == 2)
+  if (type == 2)
   {
     v19 = &OBJC_IVAR___NRLinkManagerBluetooth__p2pPipeRegistrations;
   }
 
   v20 = *(&self->super.super.isa + *v19);
-  v21 = [NSNumber numberWithInteger:v15];
+  v21 = [NSNumber numberWithInteger:priority];
   v22 = [v20 objectForKeyedSubscript:v21];
 
   if (!v22)
@@ -470,8 +470,8 @@ LABEL_93:
     v68 = sub_10002D6B4();
     v69 = _NRLogIsLevelEnabled();
 
-    v9 = v75;
-    v10 = v76;
+    disconnectCopy = v75;
+    errorCopy = v76;
     if (v69)
     {
       v70 = sub_10002D6B4();
@@ -482,14 +482,14 @@ LABEL_93:
   }
 
   v23 = v18;
-  v9 = v75;
+  disconnectCopy = v75;
   [(NRLinkManager *)self reportEvent:v23 detailsFormat:@"pipe %@ bluetoothUUID %@ error %@", v75, obj, v76];
   [*(v22 + 16) removeObject:v75];
-  sub_100038C64(self, v15, v17 == 2);
+  sub_100038C64(self, priority, v17 == 2);
   v73 = v14;
-  v74 = v12;
+  v74 = identifier;
   v72 = v22;
-  if (v15 == 3)
+  if (priority == 3)
   {
     v89 = 0u;
     v90 = 0u;
@@ -545,9 +545,9 @@ LABEL_93:
 
   else
   {
-    if (v15 != 2)
+    if (priority != 2)
     {
-      v71 = v8;
+      v71 = managerCopy;
       v43 = objc_alloc_init(NSMutableArray);
       v83 = 0u;
       v84 = 0u;
@@ -614,7 +614,7 @@ LABEL_93:
             }
 
             v57 = *(*(&v79 + 1) + 8 * j);
-            v58 = [v57 nrUUID];
+            nrUUID = [v57 nrUUID];
             if (v57)
             {
               [v57 setNoTransport:1];
@@ -623,9 +623,9 @@ LABEL_93:
             }
 
             WeakRetained = objc_loadWeakRetained(&self->_bluetoothManagerDelegate);
-            [WeakRetained pipeDidConnectForNRUUID:0 nrUUID:v58];
+            [WeakRetained pipeDidConnectForNRUUID:0 nrUUID:nrUUID];
 
-            sub_100037950(self, v58);
+            sub_100037950(self, nrUUID);
           }
 
           v54 = [obja countByEnumeratingWithState:&v79 objects:v95 count:16];
@@ -634,11 +634,11 @@ LABEL_93:
         while (v54);
       }
 
-      v8 = v71;
-      v9 = v75;
-      v10 = v76;
+      managerCopy = v71;
+      disconnectCopy = v75;
+      errorCopy = v76;
       v14 = v73;
-      v12 = v74;
+      identifier = v74;
       if (self->_peripheralManager)
       {
         if (!v73 || (~LODWORD(v73->_databaseFlags) & 3) != 0)
@@ -722,7 +722,7 @@ LABEL_93:
 
 LABEL_75:
 
-  v10 = v76;
+  errorCopy = v76;
   v14 = v73;
 LABEL_83:
 
@@ -730,12 +730,12 @@ LABEL_84:
 LABEL_85:
 }
 
-- (void)scalablePipeManager:(id)a3 pipeDidConnect:(id)a4
+- (void)scalablePipeManager:(id)manager pipeDidConnect:(id)connect
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  managerCopy = manager;
+  connectCopy = connect;
+  v8 = connectCopy;
+  if (!managerCopy)
   {
     v24 = sub_10002D6B4();
     IsLevelEnabled = _NRLogIsLevelEnabled();
@@ -748,7 +748,7 @@ LABEL_85:
     goto LABEL_27;
   }
 
-  if (!v7)
+  if (!connectCopy)
   {
     v26 = sub_10002D6B4();
     v27 = _NRLogIsLevelEnabled();
@@ -759,15 +759,15 @@ LABEL_85:
     }
 
 LABEL_27:
-    v10 = sub_10002D6B4();
+    identifier = sub_10002D6B4();
     _NRLogWithArgs();
     goto LABEL_22;
   }
 
-  v9 = [v7 peer];
-  v10 = [v9 identifier];
+  peer = [connectCopy peer];
+  identifier = [peer identifier];
 
-  if (!v10)
+  if (!identifier)
   {
     v28 = sub_10002D6B4();
     v29 = _NRLogIsLevelEnabled();
@@ -781,7 +781,7 @@ LABEL_27:
     goto LABEL_20;
   }
 
-  v11 = v10;
+  v11 = identifier;
   objc_opt_self();
   v12 = sub_100168BE8(NRDLocalDevice, v11, 1);
 
@@ -806,27 +806,27 @@ LABEL_27:
   }
 
   self->_noBTCallbackSimCrashGenerated = 0;
-  v13 = [v8 priority];
-  v14 = [v8 type];
-  if ((v13 - 1) < 3)
+  priority = [v8 priority];
+  type = [v8 type];
+  if ((priority - 1) < 3)
   {
-    v15 = dword_100196514[(v13 - 1)];
+    v15 = dword_100196514[(priority - 1)];
     v16 = &OBJC_IVAR___NRLinkManagerBluetooth__pipeRegistrations;
-    if (v14 == 2)
+    if (type == 2)
     {
       v16 = &OBJC_IVAR___NRLinkManagerBluetooth__p2pPipeRegistrations;
     }
 
     v17 = *(&self->super.super.isa + *v16);
-    v18 = [NSNumber numberWithInteger:v13];
+    v18 = [NSNumber numberWithInteger:priority];
     v19 = [v17 objectForKeyedSubscript:v18];
 
     if (v19)
     {
       [v19[2] addObject:v8];
-      v20 = [v8 peer];
-      v21 = [v20 identifier];
-      [(NRLinkManager *)self reportEvent:v15 detailsFormat:@"pipe %@ bluetoothUUID %@", v8, v21];
+      peer2 = [v8 peer];
+      identifier2 = [peer2 identifier];
+      [(NRLinkManager *)self reportEvent:v15 detailsFormat:@"pipe %@ bluetoothUUID %@", v8, identifier2];
 
       objc_initWeak(&location, v19);
       v22 = dispatch_time(0x8000000000000000, 500000000);
@@ -837,7 +837,7 @@ LABEL_27:
       block[3] = &unk_1001FB8D8;
       objc_copyWeak(&v36, &location);
       v34 = v8;
-      v35 = self;
+      selfCopy = self;
       dispatch_after(v22, v23, block);
 
       objc_destroyWeak(&v36);
@@ -883,9 +883,9 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)scalablePipeManager:(id)a3 didUnregisterEndpoint:(id)a4
+- (void)scalablePipeManager:(id)manager didUnregisterEndpoint:(id)endpoint
 {
-  v25 = a4;
+  endpointCopy = endpoint;
   if (self)
   {
     queue = self->super._queue;
@@ -899,11 +899,11 @@ LABEL_23:
   v7 = queue;
   dispatch_assert_queue_V2(v7);
 
-  if (a3)
+  if (manager)
   {
-    if (v25)
+    if (endpointCopy)
     {
-      v8 = v25;
+      v8 = endpointCopy;
       v9 = v8;
       if (!self)
       {
@@ -939,7 +939,7 @@ LABEL_20:
         }
 
         [(NRLinkManager *)self reportEvent:4207 detailsFormat:@"%s %s", "High", "pipe"];
-        v14 = self;
+        selfCopy5 = self;
         v15 = 2;
       }
 
@@ -957,7 +957,7 @@ LABEL_20:
             }
 
             [(NRLinkManager *)self reportEvent:4207 detailsFormat:@"%s %s", "Medium", "p2pPipe"];
-            v14 = self;
+            selfCopy5 = self;
             v15 = 1;
             v17 = 1;
           }
@@ -972,7 +972,7 @@ LABEL_20:
             }
 
             [(NRLinkManager *)self reportEvent:4207 detailsFormat:@"%s %s", "High", "p2pPipe"];
-            v14 = self;
+            selfCopy5 = self;
             v15 = 2;
             v17 = 1;
           }
@@ -993,7 +993,7 @@ LABEL_20:
             }
 
             [(NRLinkManager *)self reportEvent:4207 detailsFormat:@"%s %s", "Isochronous", "p2pPipe"];
-            v14 = self;
+            selfCopy5 = self;
             v15 = 3;
             v17 = 1;
           }
@@ -1009,13 +1009,13 @@ LABEL_20:
         }
 
         [(NRLinkManager *)self reportEvent:4207 detailsFormat:@"%s %s", "Isochronous", "pipe"];
-        v14 = self;
+        selfCopy5 = self;
         v15 = 3;
       }
 
       v17 = 0;
 LABEL_19:
-      sub_100038C64(v14, v15, v17);
+      sub_100038C64(selfCopy5, v15, v17);
 
       goto LABEL_20;
     }
@@ -1046,10 +1046,10 @@ LABEL_40:
 LABEL_21:
 }
 
-- (void)scalablePipeManager:(id)a3 didRegisterEndpoint:(id)a4 error:(id)a5
+- (void)scalablePipeManager:(id)manager didRegisterEndpoint:(id)endpoint error:(id)error
 {
-  v33 = a4;
-  v8 = a5;
+  endpointCopy = endpoint;
+  errorCopy = error;
   if (self)
   {
     queue = self->super._queue;
@@ -1063,12 +1063,12 @@ LABEL_21:
   v10 = queue;
   dispatch_assert_queue_V2(v10);
 
-  if (a3)
+  if (manager)
   {
-    if (v33)
+    if (endpointCopy)
     {
-      v11 = v33;
-      v12 = v8;
+      v11 = endpointCopy;
+      v12 = errorCopy;
       if (!self)
       {
 LABEL_50:
@@ -1080,7 +1080,7 @@ LABEL_51:
       if ([v11 isEqualToString:@"com.apple.terminusLink"])
       {
         v13 = [(NSMutableDictionary *)self->_pipeRegistrations objectForKeyedSubscript:&off_100209AA0];
-        v14 = v13;
+        localizedDescription3 = v13;
         if (v12)
         {
           if (v13)
@@ -1088,8 +1088,8 @@ LABEL_51:
             *(v13 + 8) = 0;
           }
 
-          v15 = [v12 localizedDescription];
-          v32 = v15;
+          localizedDescription = [v12 localizedDescription];
+          v32 = localizedDescription;
           v16 = "pipe";
 LABEL_11:
           [(NRLinkManager *)self reportEvent:4204 detailsFormat:@"%s %s error %@", "Medium", v16, v32];
@@ -1115,7 +1115,7 @@ LABEL_29:
       if ([v11 isEqualToString:@"com.apple.terminusLink.urgent"])
       {
         v17 = [(NSMutableDictionary *)self->_pipeRegistrations objectForKeyedSubscript:&off_100209AB8];
-        v14 = v17;
+        localizedDescription3 = v17;
         if (v12)
         {
           if (v17)
@@ -1123,13 +1123,13 @@ LABEL_29:
             *(v17 + 8) = 0;
           }
 
-          v18 = [v12 localizedDescription];
-          v15 = v18;
+          localizedDescription2 = [v12 localizedDescription];
+          localizedDescription = localizedDescription2;
           v19 = "pipe";
 LABEL_17:
           v20 = "High";
 LABEL_24:
-          [(NRLinkManager *)self reportEvent:4204 detailsFormat:@"%s %s error %@", v20, v19, v18];
+          [(NRLinkManager *)self reportEvent:4204 detailsFormat:@"%s %s error %@", v20, v19, localizedDescription2];
           goto LABEL_25;
         }
 
@@ -1149,7 +1149,7 @@ LABEL_48:
       if ([v11 isEqualToString:@"com.apple.terminusLink.datagram"])
       {
         v21 = [(NSMutableDictionary *)self->_pipeRegistrations objectForKeyedSubscript:&off_100209AD0];
-        v14 = v21;
+        localizedDescription3 = v21;
         if (v12)
         {
           if (v21)
@@ -1157,8 +1157,8 @@ LABEL_48:
             *(v21 + 8) = 0;
           }
 
-          v18 = [v12 localizedDescription];
-          v15 = v18;
+          localizedDescription2 = [v12 localizedDescription];
+          localizedDescription = localizedDescription2;
           v19 = "pipe";
 LABEL_23:
           v20 = "Isochronous";
@@ -1178,7 +1178,7 @@ LABEL_23:
         if ([v11 isEqualToString:@"com.apple.terminusLink.p2p"])
         {
           v23 = [(NSMutableDictionary *)self->_p2pPipeRegistrations objectForKeyedSubscript:&off_100209AA0];
-          v14 = v23;
+          localizedDescription3 = v23;
           if (v12)
           {
             if (v23)
@@ -1186,8 +1186,8 @@ LABEL_23:
               *(v23 + 8) = 0;
             }
 
-            v15 = [v12 localizedDescription];
-            v32 = v15;
+            localizedDescription = [v12 localizedDescription];
+            v32 = localizedDescription;
             v16 = "p2pPipe";
             goto LABEL_11;
           }
@@ -1204,7 +1204,7 @@ LABEL_23:
         if ([v11 isEqualToString:@"com.apple.terminusLink.urgent.p2p"])
         {
           v26 = [(NSMutableDictionary *)self->_p2pPipeRegistrations objectForKeyedSubscript:&off_100209AB8];
-          v14 = v26;
+          localizedDescription3 = v26;
           if (v12)
           {
             if (v26)
@@ -1212,8 +1212,8 @@ LABEL_23:
               *(v26 + 8) = 0;
             }
 
-            v18 = [v12 localizedDescription];
-            v15 = v18;
+            localizedDescription2 = [v12 localizedDescription];
+            localizedDescription = localizedDescription2;
             v19 = "p2pPipe";
             goto LABEL_17;
           }
@@ -1235,13 +1235,13 @@ LABEL_23:
             goto LABEL_50;
           }
 
-          v14 = [v12 localizedDescription];
-          [(NRLinkManager *)self reportEvent:4205 detailsFormat:@"%@ error %@", v11, v14];
+          localizedDescription3 = [v12 localizedDescription];
+          [(NRLinkManager *)self reportEvent:4205 detailsFormat:@"%@ error %@", v11, localizedDescription3];
           goto LABEL_49;
         }
 
         v27 = [(NSMutableDictionary *)self->_p2pPipeRegistrations objectForKeyedSubscript:&off_100209AD0];
-        v14 = v27;
+        localizedDescription3 = v27;
         if (v12)
         {
           if (v27)
@@ -1249,8 +1249,8 @@ LABEL_23:
             *(v27 + 8) = 0;
           }
 
-          v18 = [v12 localizedDescription];
-          v15 = v18;
+          localizedDescription2 = [v12 localizedDescription];
+          localizedDescription = localizedDescription2;
           v19 = "p2pPipe";
           goto LABEL_23;
         }
@@ -1293,18 +1293,18 @@ LABEL_75:
 LABEL_52:
 }
 
-- (void)scalablePipeManagerDidUpdateState:(id)a3
+- (void)scalablePipeManagerDidUpdateState:(id)state
 {
-  v4 = [a3 state];
-  v5 = v4;
-  if (v4 >= 6)
+  state = [state state];
+  v5 = state;
+  if (state >= 6)
   {
-    v6 = [[NSString alloc] initWithFormat:@"UnknownState(%lld)", v4];
+    v6 = [[NSString alloc] initWithFormat:@"UnknownState(%lld)", state];
   }
 
   else
   {
-    v6 = *(&off_1001FA940 + v4);
+    v6 = *(&off_1001FA940 + state);
   }
 
   [(NRLinkManager *)self reportEvent:4200 details:v6];
@@ -1312,11 +1312,11 @@ LABEL_52:
   sub_100032164(self, v5);
 }
 
-- (void)peripheral:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didOpenL2CAPChannel:(id)channel error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  channelCopy = channel;
+  errorCopy = error;
   if (self)
   {
     peripherals = self->_peripherals;
@@ -1327,17 +1327,17 @@ LABEL_52:
     peripherals = 0;
   }
 
-  if ([(NSArray *)peripherals containsObject:v8])
+  if ([(NSArray *)peripherals containsObject:peripheralCopy])
   {
-    -[NRLinkManager reportEvent:detailsFormat:](self, "reportEvent:detailsFormat:", 4017, @"(central) psm %u, error: %@", [v9 PSM], v10);
-    if (v10)
+    -[NRLinkManager reportEvent:detailsFormat:](self, "reportEvent:detailsFormat:", 4017, @"(central) psm %u, error: %@", [channelCopy PSM], errorCopy);
+    if (errorCopy)
     {
       v12 = CBInternalErrorDomain;
-      v13 = v10;
+      v13 = errorCopy;
       if ([v13 code] == 24)
       {
-        v14 = [v13 domain];
-        v15 = [v14 isEqualToString:v12];
+        domain = [v13 domain];
+        v15 = [domain isEqualToString:v12];
 
         if (v15)
         {
@@ -1352,8 +1352,8 @@ LABEL_52:
       v16 = v13;
       if ([v16 code] == 22)
       {
-        v17 = [v16 domain];
-        v18 = [v17 isEqualToString:v12];
+        domain2 = [v16 domain];
+        v18 = [domain2 isEqualToString:v12];
 
         if (v18)
         {
@@ -1382,30 +1382,30 @@ LABEL_52:
       block[2] = sub_10003A6CC;
       block[3] = &unk_1001FD060;
       block[4] = self;
-      v23 = v8;
+      v23 = peripheralCopy;
       dispatch_after(v19, v21, block);
     }
 
     else
     {
-      sub_10003583C(&self->super.super.isa, v9);
+      sub_10003583C(&self->super.super.isa, channelCopy);
     }
   }
 
 LABEL_17:
 }
 
-- (void)peripheral:(id)a3 didCloseL2CAPChannel:(id)a4
+- (void)peripheral:(id)peripheral didCloseL2CAPChannel:(id)channel
 {
-  v6 = a3;
-  sub_10003A738(&self->super.super.isa, a4);
-  sub_10002E8E0(&self->super.super.isa, v6);
+  peripheralCopy = peripheral;
+  sub_10003A738(&self->super.super.isa, channel);
+  sub_10002E8E0(&self->super.super.isa, peripheralCopy);
 }
 
-- (void)peripheralManager:(id)a3 didCloseL2CAPChannel:(id)a4
+- (void)peripheralManager:(id)manager didCloseL2CAPChannel:(id)channel
 {
-  v9 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  channelCopy = channel;
   if (self)
   {
     v7 = self->_peripheralManager;
@@ -1413,19 +1413,19 @@ LABEL_17:
     {
       peripheralManager = self->_peripheralManager;
 
-      if (peripheralManager == v9)
+      if (peripheralManager == managerCopy)
       {
-        sub_10003A738(&self->super.super.isa, v6);
+        sub_10003A738(&self->super.super.isa, channelCopy);
       }
     }
   }
 }
 
-- (void)peripheralManager:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5
+- (void)peripheralManager:(id)manager didOpenL2CAPChannel:(id)channel error:(id)error
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  channelCopy = channel;
+  errorCopy = error;
   if (self)
   {
     v10 = self->_peripheralManager;
@@ -1433,22 +1433,22 @@ LABEL_17:
     {
       peripheralManager = self->_peripheralManager;
 
-      if (peripheralManager == v12)
+      if (peripheralManager == managerCopy)
       {
-        -[NRLinkManager reportEvent:detailsFormat:](self, "reportEvent:detailsFormat:", 4017, @"(peripheral) psm %u, error: %@", [v8 PSM], v9);
-        if (!v9)
+        -[NRLinkManager reportEvent:detailsFormat:](self, "reportEvent:detailsFormat:", 4017, @"(peripheral) psm %u, error: %@", [channelCopy PSM], errorCopy);
+        if (!errorCopy)
         {
-          sub_10003583C(&self->super.super.isa, v8);
+          sub_10003583C(&self->super.super.isa, channelCopy);
         }
       }
     }
   }
 }
 
-- (void)peripheralManager:(id)a3 didStopAdvertisingWithError:(id)a4
+- (void)peripheralManager:(id)manager didStopAdvertisingWithError:(id)error
 {
-  v11 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  errorCopy = error;
   if (self)
   {
     v7 = self->_peripheralManager;
@@ -1456,14 +1456,14 @@ LABEL_17:
     {
       peripheralManager = self->_peripheralManager;
 
-      if (peripheralManager == v11)
+      if (peripheralManager == managerCopy)
       {
         currentAdvertisementState = self->_currentAdvertisementState;
         self->_currentAdvertisementState = 0;
-        if (v6)
+        if (errorCopy)
         {
-          v10 = [v6 localizedDescription];
-          [(NRLinkManager *)self reportEvent:3506 details:v10];
+          localizedDescription = [errorCopy localizedDescription];
+          [(NRLinkManager *)self reportEvent:3506 details:localizedDescription];
         }
 
         else
@@ -1479,10 +1479,10 @@ LABEL_17:
   }
 }
 
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error
 {
-  v13 = a3;
-  v6 = a4;
+  advertisingCopy = advertising;
+  errorCopy = error;
   if (self)
   {
     v7 = self->_peripheralManager;
@@ -1490,20 +1490,20 @@ LABEL_17:
     {
       peripheralManager = self->_peripheralManager;
 
-      if (peripheralManager == v13)
+      if (peripheralManager == advertisingCopy)
       {
-        if (v6)
+        if (errorCopy)
         {
-          v9 = [v6 domain];
-          v10 = v9;
-          if (v9 == CBErrorDomain)
+          domain = [errorCopy domain];
+          v10 = domain;
+          if (domain == CBErrorDomain)
           {
-            v11 = [v6 code];
+            code = [errorCopy code];
 
-            if (v11 != 9)
+            if (code != 9)
             {
-              v12 = [v6 localizedDescription];
-              [(NRLinkManager *)self reportEvent:3503 details:v12];
+              localizedDescription = [errorCopy localizedDescription];
+              [(NRLinkManager *)self reportEvent:3503 details:localizedDescription];
 
               self->_currentAdvertisementState = 0;
             }
@@ -1524,9 +1524,9 @@ LABEL_17:
   }
 }
 
-- (void)peripheralManagerDidUpdateState:(id)a3
+- (void)peripheralManagerDidUpdateState:(id)state
 {
-  v6 = a3;
+  stateCopy = state;
   if (self)
   {
     v4 = self->_peripheralManager;
@@ -1534,17 +1534,17 @@ LABEL_17:
     {
       peripheralManager = self->_peripheralManager;
 
-      if (peripheralManager == v6)
+      if (peripheralManager == stateCopy)
       {
-        sub_100032610(self, [(CBPeripheralManager *)v6 state]);
+        sub_100032610(self, [(CBPeripheralManager *)stateCopy state]);
       }
     }
   }
 }
 
-- (void)linkDidReceiveData:(id)a3 data:(id)a4
+- (void)linkDidReceiveData:(id)data data:(id)a4
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = a4;
   if (self)
   {
@@ -1559,7 +1559,7 @@ LABEL_17:
   v9 = queue;
   dispatch_assert_queue_V2(v9);
 
-  if (!v6)
+  if (!dataCopy)
   {
     v14 = sub_10002D6B4();
     IsLevelEnabled = _NRLogIsLevelEnabled();
@@ -1589,8 +1589,8 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v10 = [v6 copyShortDescription];
-  [(NRLinkManager *)self reportEvent:2008 details:v10];
+  copyShortDescription = [dataCopy copyShortDescription];
+  [(NRLinkManager *)self reportEvent:2008 details:copyShortDescription];
 
   if (self && self->super._state == 1004)
   {
@@ -1612,7 +1612,7 @@ LABEL_28:
 
   else
   {
-    v11 = v6;
+    v11 = dataCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1659,9 +1659,9 @@ LABEL_28:
 LABEL_24:
 }
 
-- (void)linkIsUnavailable:(id)a3
+- (void)linkIsUnavailable:(id)unavailable
 {
-  v4 = a3;
+  unavailableCopy = unavailable;
   if (self)
   {
     queue = self->super._queue;
@@ -1675,10 +1675,10 @@ LABEL_24:
   v6 = queue;
   dispatch_assert_queue_V2(v6);
 
-  if (v4)
+  if (unavailableCopy)
   {
-    v7 = [v4 copyShortDescription];
-    [(NRLinkManager *)self reportEvent:2007 details:v7];
+    copyShortDescription = [unavailableCopy copyShortDescription];
+    [(NRLinkManager *)self reportEvent:2007 details:copyShortDescription];
 
     if (self && self->super._state == 1004)
     {
@@ -1700,7 +1700,7 @@ LABEL_24:
       goto LABEL_39;
     }
 
-    v8 = v4;
+    v8 = unavailableCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -1723,10 +1723,10 @@ LABEL_24:
     }
 
     v9 = *(v8 + 399);
-    v10 = [v9 type];
+    type = [v9 type];
 
-    v11 = [v8 nrUUID];
-    v12 = sub_100163A30(NRDLocalDevice, v11);
+    nrUUID = [v8 nrUUID];
+    v12 = sub_100163A30(NRDLocalDevice, nrUUID);
 
     if (v12 && (v12[48] & 2) != 0)
     {
@@ -1753,7 +1753,7 @@ LABEL_24:
           v13 = 0;
         }
 
-        if (v10 == 2)
+        if (type == 2)
         {
           if (self)
           {
@@ -1790,7 +1790,7 @@ LABEL_24:
         v44 = 0u;
         v45 = 0u;
         v39 = v12;
-        v40 = v10;
+        v40 = type;
         if (self)
         {
           peripherals = self->_peripherals;
@@ -1817,9 +1817,9 @@ LABEL_24:
               }
 
               v32 = *(*(&v44 + 1) + 8 * i);
-              v33 = [v32 identifier];
+              identifier = [v32 identifier];
               v34 = *(v8 + 391);
-              v35 = [v33 isEqual:v34];
+              v35 = [identifier isEqual:v34];
 
               if (v35)
               {
@@ -1842,7 +1842,7 @@ LABEL_62:
 
         v13 = 0;
         v12 = v39;
-        v10 = v40;
+        type = v40;
         goto LABEL_20;
       }
     }
@@ -1869,9 +1869,9 @@ LABEL_20:
       if (v17)
       {
         v18 = v17;
-        v19 = [v16 nrUUID];
+        nrUUID2 = [v16 nrUUID];
 
-        if (v19)
+        if (nrUUID2)
         {
           if (qword_100228F70 != -1)
           {
@@ -1889,12 +1889,12 @@ LABEL_20:
           }
 
           v20 = self->_pipeStateDictionary;
-          v21 = [v16 nrUUID];
-          [(NSMutableDictionary *)v20 setObject:0 forKeyedSubscript:v21];
+          nrUUID3 = [v16 nrUUID];
+          [(NSMutableDictionary *)v20 setObject:0 forKeyedSubscript:nrUUID3];
         }
       }
 
-      sub_10002F748(self, v10 == 2);
+      sub_10002F748(self, type == 2);
     }
 
 LABEL_38:
@@ -1913,9 +1913,9 @@ LABEL_38:
 LABEL_39:
 }
 
-- (void)linkIsSuspended:(id)a3
+- (void)linkIsSuspended:(id)suspended
 {
-  v4 = a3;
+  suspendedCopy = suspended;
   if (self)
   {
     queue = self->super._queue;
@@ -1929,10 +1929,10 @@ LABEL_39:
   v6 = queue;
   dispatch_assert_queue_V2(v6);
 
-  if (v4)
+  if (suspendedCopy)
   {
-    v7 = [v4 copyShortDescription];
-    [(NRLinkManager *)self reportEvent:2006 details:v7];
+    copyShortDescription = [suspendedCopy copyShortDescription];
+    [(NRLinkManager *)self reportEvent:2006 details:copyShortDescription];
 
     if (self && self->super._state == 1004)
     {
@@ -1954,7 +1954,7 @@ LABEL_39:
 
     else
     {
-      v8 = v4;
+      v8 = suspendedCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -1977,7 +1977,7 @@ LABEL_39:
         block[2] = sub_10003C87C;
         block[3] = &unk_1001FD060;
         v16 = v8;
-        v17 = self;
+        selfCopy = self;
         dispatch_async(v11, block);
       }
 
@@ -2014,9 +2014,9 @@ LABEL_39:
   }
 }
 
-- (void)linkIsReady:(id)a3
+- (void)linkIsReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   if (self)
   {
     queue = self->super._queue;
@@ -2030,10 +2030,10 @@ LABEL_39:
   v6 = queue;
   dispatch_assert_queue_V2(v6);
 
-  if (v4)
+  if (readyCopy)
   {
-    v7 = [v4 copyShortDescription];
-    [(NRLinkManager *)self reportEvent:2005 details:v7];
+    copyShortDescription = [readyCopy copyShortDescription];
+    [(NRLinkManager *)self reportEvent:2005 details:copyShortDescription];
 
     if (self && self->super._state == 1004)
     {
@@ -2055,7 +2055,7 @@ LABEL_39:
 
     else
     {
-      v8 = v4;
+      v8 = readyCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -2068,7 +2068,7 @@ LABEL_39:
         v64 = 0u;
         v61 = 0u;
         v62 = 0u;
-        v52 = v4;
+        v52 = readyCopy;
         if (self)
         {
           pipeRegistrations = self->_pipeRegistrations;
@@ -2082,7 +2082,7 @@ LABEL_39:
         v12 = pipeRegistrations;
         v13 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:&off_100209AB8];
         v14 = v13;
-        v53 = self;
+        selfCopy = self;
         if (v13)
         {
           v15 = *(v13 + 16);
@@ -2110,10 +2110,10 @@ LABEL_19:
             }
 
             v21 = *(*(&v61 + 1) + 8 * v20);
-            v22 = [v21 peer];
-            v23 = [v22 identifier];
+            peer = [v21 peer];
+            identifier = [peer identifier];
             v24 = *(v8 + 391);
-            v25 = [v23 isEqual:v24];
+            v25 = [identifier isEqual:v24];
 
             if (v25)
             {
@@ -2140,7 +2140,7 @@ LABEL_19:
           }
 
 LABEL_47:
-          v42 = v53;
+          v42 = selfCopy;
           sub_1000AF784(v8, v26);
         }
 
@@ -2153,9 +2153,9 @@ LABEL_33:
           v60 = 0u;
           v57 = 0u;
           v58 = 0u;
-          if (v53)
+          if (selfCopy)
           {
-            p2pPipeRegistrations = v53->_p2pPipeRegistrations;
+            p2pPipeRegistrations = selfCopy->_p2pPipeRegistrations;
           }
 
           else
@@ -2193,10 +2193,10 @@ LABEL_39:
               }
 
               v37 = *(*(&v57 + 1) + 8 * v36);
-              v38 = [v37 peer];
-              v39 = [v38 identifier];
+              peer2 = [v37 peer];
+              identifier2 = [peer2 identifier];
               v40 = *(v8 + 391);
-              v41 = [v39 isEqual:v40];
+              v41 = [identifier2 isEqual:v40];
 
               if (v41)
               {
@@ -2222,7 +2222,7 @@ LABEL_39:
               goto LABEL_47;
             }
 
-            v42 = v53;
+            v42 = selfCopy;
           }
 
           else
@@ -2230,7 +2230,7 @@ LABEL_39:
 LABEL_45:
 
             v26 = 0;
-            v42 = v53;
+            v42 = selfCopy;
           }
         }
 
@@ -2261,7 +2261,7 @@ LABEL_45:
         v56 = v42;
         dispatch_async(v47, block);
 
-        v4 = v52;
+        readyCopy = v52;
       }
 
       else
@@ -2297,9 +2297,9 @@ LABEL_45:
   }
 }
 
-- (void)linkIsAvailable:(id)a3
+- (void)linkIsAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   if (self)
   {
     queue = self->super._queue;
@@ -2313,12 +2313,12 @@ LABEL_45:
   v6 = queue;
   dispatch_assert_queue_V2(v6);
 
-  if (v4)
+  if (availableCopy)
   {
-    v7 = [v4 copyShortDescription];
-    v8 = [v4 nrUUID];
-    v9 = [v8 UUIDString];
-    [(NRLinkManager *)self reportEvent:2004 detailsFormat:@"%@ %@", v7, v9];
+    copyShortDescription = [availableCopy copyShortDescription];
+    nrUUID = [availableCopy nrUUID];
+    uUIDString = [nrUUID UUIDString];
+    [(NRLinkManager *)self reportEvent:2004 detailsFormat:@"%@ %@", copyShortDescription, uUIDString];
 
     if (self && self->super._state == 1004)
     {
@@ -2340,12 +2340,12 @@ LABEL_45:
 
     else
     {
-      v10 = v4;
+      v10 = availableCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v28 = self;
-        v29 = v4;
+        selfCopy = self;
+        v29 = availableCopy;
         if (self)
         {
           links = self->_links;
@@ -2392,8 +2392,8 @@ LABEL_45:
 
               if (v21)
               {
-                v22 = [v10 copyShortDescription];
-                [v17 cancelWithReason:{@"Replaced by new link %@", v22}];
+                copyShortDescription2 = [v10 copyShortDescription];
+                [v17 cancelWithReason:{@"Replaced by new link %@", copyShortDescription2}];
               }
             }
 
@@ -2403,10 +2403,10 @@ LABEL_45:
           while (v14);
         }
 
-        if (v28)
+        if (selfCopy)
         {
-          [(NSMutableSet *)v28->_links addObject:v10];
-          v23 = v28->super._queue;
+          [(NSMutableSet *)selfCopy->_links addObject:v10];
+          v23 = selfCopy->super._queue;
         }
 
         else
@@ -2415,14 +2415,14 @@ LABEL_45:
           v23 = 0;
         }
 
-        v4 = v29;
+        availableCopy = v29;
         v24 = v23;
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_10003D540;
         block[3] = &unk_1001FD060;
         v31 = v10;
-        v32 = v28;
+        v32 = selfCopy;
         dispatch_async(v24, block);
       }
 
@@ -2657,8 +2657,8 @@ LABEL_45:
   }
 
   [v4 appendString:@"]"];
-  v35 = [(NRLinkManagerBluetooth *)self copyName];
-  [v3 appendFormat:@"\nName: %@", v35];
+  copyName = [(NRLinkManagerBluetooth *)self copyName];
+  [v3 appendFormat:@"\nName: %@", copyName];
 
   if (self)
   {
@@ -2673,16 +2673,16 @@ LABEL_45:
       switch(state)
       {
         case 0x3EA:
-          v40 = [v39 initWithUTF8String:"Start"];
+          state = [v39 initWithUTF8String:"Start"];
           goto LABEL_61;
         case 0x3EB:
-          v40 = [v39 initWithUTF8String:"Ready"];
+          state = [v39 initWithUTF8String:"Ready"];
           goto LABEL_61;
         case 0x3EC:
-          v40 = [v39 initWithUTF8String:"Cancelled"];
+          state = [v39 initWithUTF8String:"Cancelled"];
 LABEL_61:
-          v41 = v40;
-          [v3 appendFormat:@"\nState: %@ %@", v40, v4];
+          v41 = state;
+          [v3 appendFormat:@"\nState: %@ %@", state, v4];
 
 LABEL_62:
           v42 = self->_links;
@@ -2699,12 +2699,12 @@ LABEL_62:
     {
       if (state == 1001)
       {
-        v40 = [v39 initWithUTF8String:"Initial"];
+        state = [v39 initWithUTF8String:"Initial"];
         goto LABEL_61;
       }
 
 LABEL_60:
-      v40 = [v39 initWithFormat:@"Unknown(%u)", state];
+      state = [v39 initWithFormat:@"Unknown(%u)", state];
       goto LABEL_61;
     }
   }
@@ -2878,36 +2878,36 @@ LABEL_63:
     currentAdvertisementState = self->_currentAdvertisementState;
     if (currentAdvertisementState >= 5)
     {
-      v77 = [[NSString alloc] initWithFormat:@"UnknownType(%lld)", currentAdvertisementState];
+      currentAdvertisementState = [[NSString alloc] initWithFormat:@"UnknownType(%lld)", currentAdvertisementState];
     }
 
     else
     {
-      v77 = *(&off_1001FA918 + currentAdvertisementState);
+      currentAdvertisementState = *(&off_1001FA918 + currentAdvertisementState);
     }
 
-    [v3 appendFormat:@"\ncurrentAdvertisementState: %@", v77];
+    [v3 appendFormat:@"\ncurrentAdvertisementState: %@", currentAdvertisementState];
 
     currentAdvertisementRate = self->_currentAdvertisementRate;
     if (self->_currentAdvertisementRate)
     {
       if (currentAdvertisementRate == 1)
       {
-        v79 = @"1 sec";
+        currentAdvertisementRate = @"1 sec";
       }
 
       else
       {
-        v79 = [[NSString alloc] initWithFormat:@"UnknownType(%lld)", currentAdvertisementRate];
+        currentAdvertisementRate = [[NSString alloc] initWithFormat:@"UnknownType(%lld)", currentAdvertisementRate];
       }
     }
 
     else
     {
-      v79 = @"Default";
+      currentAdvertisementRate = @"Default";
     }
 
-    [v3 appendFormat:@"\ncurrentAdvertisementRate: %@", v79];
+    [v3 appendFormat:@"\ncurrentAdvertisementRate: %@", currentAdvertisementRate];
 
     pipeStateDictionary = self->_pipeStateDictionary;
   }
@@ -2943,7 +2943,7 @@ LABEL_63:
 
     v3 = qword_100228F68;
     v6 = 416;
-    v7 = [(NRLinkManagerBluetooth *)self copyName];
+    copyName = [(NRLinkManagerBluetooth *)self copyName];
     v4 = "";
     v5 = "[NRLinkManagerBluetooth dealloc]";
     _NRLogWithArgs();

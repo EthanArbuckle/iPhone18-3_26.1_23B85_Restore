@@ -1,25 +1,25 @@
 @interface CRKConcreteAirPlayPrimitives
-- (CRKConcreteAirPlayPrimitives)initWithOutputContext:(id)a3 notificationCenter:(id)a4;
+- (CRKConcreteAirPlayPrimitives)initWithOutputContext:(id)context notificationCenter:(id)center;
 - (CRKOutputDevice)currentOutputDevice;
 - (CRKOutputDevice)localOutputDevice;
 - (id)beginOutputDeviceBrowsingSession;
-- (id)observeCurrentOutputDeviceChangesWithHandler:(id)a3;
+- (id)observeCurrentOutputDeviceChangesWithHandler:(id)handler;
 @end
 
 @implementation CRKConcreteAirPlayPrimitives
 
-- (CRKConcreteAirPlayPrimitives)initWithOutputContext:(id)a3 notificationCenter:(id)a4
+- (CRKConcreteAirPlayPrimitives)initWithOutputContext:(id)context notificationCenter:(id)center
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  centerCopy = center;
   v12.receiver = self;
   v12.super_class = CRKConcreteAirPlayPrimitives;
   v9 = [(CRKConcreteAirPlayPrimitives *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_outputContext, a3);
-    objc_storeStrong(&v10->_notificationCenter, a4);
+    objc_storeStrong(&v9->_outputContext, context);
+    objc_storeStrong(&v10->_notificationCenter, center);
   }
 
   return v10;
@@ -28,9 +28,9 @@
 - (CRKOutputDevice)localOutputDevice
 {
   v3 = [CRKConcreteOutputDevice alloc];
-  v4 = [MEMORY[0x277CB86A0] sharedLocalDevice];
-  v5 = [(CRKConcreteAirPlayPrimitives *)self outputContext];
-  v6 = [(CRKConcreteOutputDevice *)v3 initWithOutputDevice:v4 outputContext:v5];
+  mEMORY[0x277CB86A0] = [MEMORY[0x277CB86A0] sharedLocalDevice];
+  outputContext = [(CRKConcreteAirPlayPrimitives *)self outputContext];
+  v6 = [(CRKConcreteOutputDevice *)v3 initWithOutputDevice:mEMORY[0x277CB86A0] outputContext:outputContext];
 
   return v6;
 }
@@ -38,36 +38,36 @@
 - (CRKOutputDevice)currentOutputDevice
 {
   v3 = [CRKConcreteOutputDevice alloc];
-  v4 = [(CRKConcreteAirPlayPrimitives *)self outputContext];
-  v5 = [v4 outputDevice];
-  v6 = [(CRKConcreteAirPlayPrimitives *)self outputContext];
-  v7 = [(CRKConcreteOutputDevice *)v3 initWithOutputDevice:v5 outputContext:v6];
+  outputContext = [(CRKConcreteAirPlayPrimitives *)self outputContext];
+  outputDevice = [outputContext outputDevice];
+  outputContext2 = [(CRKConcreteAirPlayPrimitives *)self outputContext];
+  v7 = [(CRKConcreteOutputDevice *)v3 initWithOutputDevice:outputDevice outputContext:outputContext2];
 
   return v7;
 }
 
-- (id)observeCurrentOutputDeviceChangesWithHandler:(id)a3
+- (id)observeCurrentOutputDeviceChangesWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CRKConcreteAirPlayPrimitives *)self notificationCenter];
+  handlerCopy = handler;
+  notificationCenter = [(CRKConcreteAirPlayPrimitives *)self notificationCenter];
   v6 = *MEMORY[0x277CB8628];
-  v7 = [(CRKConcreteAirPlayPrimitives *)self outputContext];
+  outputContext = [(CRKConcreteAirPlayPrimitives *)self outputContext];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__CRKConcreteAirPlayPrimitives_observeCurrentOutputDeviceChangesWithHandler___block_invoke;
   v11[3] = &unk_278DC11E0;
-  v12 = v4;
-  v8 = v4;
-  v9 = [CRKNotificationObservation observationWithNotificationCenter:v5 notificationName:v6 object:v7 notificationHandler:v11];
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = [CRKNotificationObservation observationWithNotificationCenter:notificationCenter notificationName:v6 object:outputContext notificationHandler:v11];
 
   return v9;
 }
 
 - (id)beginOutputDeviceBrowsingSession
 {
-  v3 = [(CRKConcreteAirPlayPrimitives *)self outputContext];
-  v4 = [(CRKConcreteAirPlayPrimitives *)self notificationCenter];
-  v5 = [CRKConcreteOutputDeviceBrowsingSession sessionWithOutputContext:v3 notificationCenter:v4];
+  outputContext = [(CRKConcreteAirPlayPrimitives *)self outputContext];
+  notificationCenter = [(CRKConcreteAirPlayPrimitives *)self notificationCenter];
+  v5 = [CRKConcreteOutputDeviceBrowsingSession sessionWithOutputContext:outputContext notificationCenter:notificationCenter];
 
   return v5;
 }

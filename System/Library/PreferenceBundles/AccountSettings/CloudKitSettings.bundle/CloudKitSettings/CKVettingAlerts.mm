@@ -1,91 +1,91 @@
 @interface CKVettingAlerts
-+ (BOOL)isEmail:(id)a3;
-+ (id)_alertContentForAppStoreOperationWithApp:(id)a3 shareMetadata:(id)a4 keyPrefix:(id)a5 titleKeySuffix:(id)a6 bodyKeySuffix:(id)a7 isSourceICS:(BOOL)a8;
-+ (id)_alertContentForDropDownSelectionWithShareName:(id)a3 ownerName:(id)a4 currentUserName:(id)a5 currentUserFormattedUsername:(id)a6 dropDownTitles:(id)a7 locKeyPrefix:(id)a8 isSourceICS:(BOOL)a9;
-+ (id)_alertContentForVettingBindingPromptWithBundleID:(id)a3 shareName:(id)a4 ownerName:(id)a5 shareType:(id)a6 isShortcut:(BOOL)a7 isSourceICS:(BOOL)a8;
-+ (id)_sanitizedShareURLSlug:(id)a3;
-+ (id)alertContentDictionaryForDeviceOfflineErrorWithURLSlug:(id)a3;
-+ (id)alertContentDictionaryForServiceUnavailableErrorWithURLSlug:(id)a3;
-+ (id)alertContentForAppStoreAppLookupFailureWithShareName:(id)a3 error:(id)a4;
-+ (id)alertContentForAppStoreUpdateLookupFailureWithShareName:(id)a3 appName:(id)a4 error:(id)a5;
-+ (id)alertContentForCompleteVettingError:(id)a3 shareTitle:(id)a4 email:(id)a5 phone:(id)a6 reconstructedShareURL:(id)a7;
-+ (id)alertContentForFirstJoinAlertWithRecordName:(id)a3 appName:(id)a4 bundleID:(id)a5 shareMetadata:(id)a6 currentUserName:(id)a7 currentUserFormattedUsername:(id)a8;
-+ (id)alertContentForGenericErrorWithURLSlug:(id)a3;
++ (BOOL)isEmail:(id)email;
++ (id)_alertContentForAppStoreOperationWithApp:(id)app shareMetadata:(id)metadata keyPrefix:(id)prefix titleKeySuffix:(id)suffix bodyKeySuffix:(id)keySuffix isSourceICS:(BOOL)s;
++ (id)_alertContentForDropDownSelectionWithShareName:(id)name ownerName:(id)ownerName currentUserName:(id)userName currentUserFormattedUsername:(id)username dropDownTitles:(id)titles locKeyPrefix:(id)prefix isSourceICS:(BOOL)s;
++ (id)_alertContentForVettingBindingPromptWithBundleID:(id)d shareName:(id)name ownerName:(id)ownerName shareType:(id)type isShortcut:(BOOL)shortcut isSourceICS:(BOOL)s;
++ (id)_sanitizedShareURLSlug:(id)slug;
++ (id)alertContentDictionaryForDeviceOfflineErrorWithURLSlug:(id)slug;
++ (id)alertContentDictionaryForServiceUnavailableErrorWithURLSlug:(id)slug;
++ (id)alertContentForAppStoreAppLookupFailureWithShareName:(id)name error:(id)error;
++ (id)alertContentForAppStoreUpdateLookupFailureWithShareName:(id)name appName:(id)appName error:(id)error;
++ (id)alertContentForCompleteVettingError:(id)error shareTitle:(id)title email:(id)email phone:(id)phone reconstructedShareURL:(id)l;
++ (id)alertContentForFirstJoinAlertWithRecordName:(id)name appName:(id)appName bundleID:(id)d shareMetadata:(id)metadata currentUserName:(id)userName currentUserFormattedUsername:(id)username;
++ (id)alertContentForGenericErrorWithURLSlug:(id)slug;
 + (id)alertContentForGenericInitiateVettingError;
-+ (id)alertContentForICloudAccountError:(id)a3 shareMetadata:(id)a4 shareURL:(id)a5;
-+ (id)alertContentForInitiateVettingError:(id)a3 shareTitle:(id)a4 isEmail:(BOOL)a5 address:(id)a6;
++ (id)alertContentForICloudAccountError:(id)error shareMetadata:(id)metadata shareURL:(id)l;
++ (id)alertContentForInitiateVettingError:(id)error shareTitle:(id)title isEmail:(BOOL)email address:(id)address;
 + (id)alertContentForRequestAccessConfirmation;
 + (id)alertContentForRequestAccessFailure;
-+ (id)alertContentForRequestAccessWithHandle:(id)a3;
-+ (id)alertContentForShareMetadataErrorWithURL:(id)a3 email:(id)a4;
-+ (id)alertContentForUnprovisionedDataclassWithURL:(id)a3 email:(id)a4;
-+ (id)appSpecificLocKeyForBundleID:(id)a3 shareType:(id)a4 prefix:(id)a5;
-+ (id)appSpecificLocKeyForURLSlug:(id)a3 prefix:(id)a4;
++ (id)alertContentForRequestAccessWithHandle:(id)handle;
++ (id)alertContentForShareMetadataErrorWithURL:(id)l email:(id)email;
++ (id)alertContentForUnprovisionedDataclassWithURL:(id)l email:(id)email;
++ (id)appSpecificLocKeyForBundleID:(id)d shareType:(id)type prefix:(id)prefix;
++ (id)appSpecificLocKeyForURLSlug:(id)slug prefix:(id)prefix;
 + (id)deviceTypeSpecificSuffix;
-+ (id)getAlertOptionsFromOptions:(id)a3 isSourceICS:(BOOL)a4;
-+ (id)getLaunchingOptionsFromOptions:(id)a3 isSourceICS:(BOOL)a4;
-+ (id)mediumNameFromComponents:(id)a3;
-+ (id)platformSpecificAlertOptionsWithOptions:(id)a3 bundleIdentifier:(id)a4;
-+ (void)showDropDownAlert:(id)a3 defaultResponseBlock:(id)a4 alternateResponseBlock:(id)a5 errorBlock:(id)a6;
-+ (void)showICloudAccountSettingAlert:(id)a3 appName:(id)a4 previewRequested:(BOOL *)a5 isSourceICS:(BOOL)a6 maid:(BOOL)a7;
++ (id)getAlertOptionsFromOptions:(id)options isSourceICS:(BOOL)s;
++ (id)getLaunchingOptionsFromOptions:(id)options isSourceICS:(BOOL)s;
++ (id)mediumNameFromComponents:(id)components;
++ (id)platformSpecificAlertOptionsWithOptions:(id)options bundleIdentifier:(id)identifier;
++ (void)showDropDownAlert:(id)alert defaultResponseBlock:(id)block alternateResponseBlock:(id)responseBlock errorBlock:(id)errorBlock;
++ (void)showICloudAccountSettingAlert:(id)alert appName:(id)name previewRequested:(BOOL *)requested isSourceICS:(BOOL)s maid:(BOOL)maid;
 @end
 
 @implementation CKVettingAlerts
 
-+ (id)alertContentForFirstJoinAlertWithRecordName:(id)a3 appName:(id)a4 bundleID:(id)a5 shareMetadata:(id)a6 currentUserName:(id)a7 currentUserFormattedUsername:(id)a8
++ (id)alertContentForFirstJoinAlertWithRecordName:(id)name appName:(id)appName bundleID:(id)d shareMetadata:(id)metadata currentUserName:(id)userName currentUserFormattedUsername:(id)username
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v63 = a7;
-  v62 = a8;
-  v18 = a3;
+  appNameCopy = appName;
+  dCopy = d;
+  metadataCopy = metadata;
+  userNameCopy = userName;
+  usernameCopy = username;
+  nameCopy = name;
   v19 = +[NSCharacterSet whitespaceCharacterSet];
-  v20 = [v18 stringByTrimmingCharactersInSet:v19];
+  v20 = [nameCopy stringByTrimmingCharactersInSet:v19];
 
-  v21 = [v17 containerID];
-  v22 = [v21 specialContainerType];
+  containerID = [metadataCopy containerID];
+  specialContainerType = [containerID specialContainerType];
 
-  if (v22 <= 0x1D)
+  if (specialContainerType <= 0x1D)
   {
-    if (((1 << v22) & 0x32200000) != 0)
+    if (((1 << specialContainerType) & 0x32200000) != 0)
     {
       v55 = a2;
-      v57 = a1;
-      v23 = [v17 share];
-      v24 = [v23 objectForKeyedSubscript:CKShareTypeKey];
+      selfCopy = self;
+      share = [metadataCopy share];
+      v24 = [share objectForKeyedSubscript:CKShareTypeKey];
 
       v59 = v20;
       if ([v20 length])
       {
-        v25 = v15;
+        v25 = appNameCopy;
         v48 = v20;
-        v52 = v15;
+        v52 = appNameCopy;
         v26 = sub_16B8(@"TITLED_DOCUMENT_OPEN_TITLE", @"%@%@");
       }
 
       else
       {
-        v27 = [CKVettingAlerts appSpecificLocKeyForBundleID:v16 shareType:v24 prefix:@"UNTITLED_DOCUMENT_OPEN_TITLE_"];
-        v25 = v15;
-        v48 = v15;
+        v27 = [CKVettingAlerts appSpecificLocKeyForBundleID:dCopy shareType:v24 prefix:@"UNTITLED_DOCUMENT_OPEN_TITLE_"];
+        v25 = appNameCopy;
+        v48 = appNameCopy;
         v26 = sub_16B8(v27, @"%@");
       }
 
-      v60 = v16;
-      v28 = [CKVettingAlerts appSpecificLocKeyForBundleID:v16 shareType:v24 prefix:@"PRIVATE_DOCUMENT_OPEN_BODY_", v48, v52];
-      v29 = [v17 ownerIdentity];
-      v30 = [v29 nameComponents];
-      v31 = [CKVettingAlerts mediumNameFromComponents:v30];
-      v53 = [CKVettingAlerts mediumNameFromComponents:v63];
+      v60 = dCopy;
+      v28 = [CKVettingAlerts appSpecificLocKeyForBundleID:dCopy shareType:v24 prefix:@"PRIVATE_DOCUMENT_OPEN_BODY_", v48, v52];
+      ownerIdentity = [metadataCopy ownerIdentity];
+      nameComponents = [ownerIdentity nameComponents];
+      v31 = [CKVettingAlerts mediumNameFromComponents:nameComponents];
+      v53 = [CKVettingAlerts mediumNameFromComponents:userNameCopy];
       v49 = v31;
       v32 = sub_16B8(v28, @"%@%@%@");
 
-      v15 = v25;
+      appNameCopy = v25;
       if (!v26 || !v32)
       {
         v46 = [NSAssertionHandler currentHandler:v31];
-        [v46 handleFailureInMethod:v55 object:v57 file:@"CKVettingAlerts.m" lineNumber:101 description:{@"Failed to construct alertTitle: %@ and/or alertBody: %@ for %@", v26, v32, v25}];
+        [v46 handleFailureInMethod:v55 object:selfCopy file:@"CKVettingAlerts.m" lineNumber:101 description:{@"Failed to construct alertTitle: %@ and/or alertBody: %@ for %@", v26, v32, v25}];
       }
 
       v66[0] = @"ckVettingAlertTitle";
@@ -95,17 +95,17 @@
       v33 = [NSDictionary dictionaryWithObjects:v67 forKeys:v66 count:2, v49];
 
       v20 = v59;
-      v16 = v60;
+      dCopy = v60;
       goto LABEL_9;
     }
 
-    if (v22 == 4)
+    if (specialContainerType == 4)
     {
       v35 = +[NSAssertionHandler currentHandler];
-      [v35 handleFailureInMethod:a2 object:a1 file:@"CKVettingAlerts.m" lineNumber:77 description:@"ShareAcceptor isn't responsible for iWork FirstJoinAlert"];
+      [v35 handleFailureInMethod:a2 object:self file:@"CKVettingAlerts.m" lineNumber:77 description:@"ShareAcceptor isn't responsible for iWork FirstJoinAlert"];
 
       v36 = +[NSAssertionHandler currentHandler];
-      [v36 handleFailureInMethod:a2 object:a1 file:@"CKVettingAlerts.m" lineNumber:131 description:{@"Appeasing the compiler, should never get here"}];
+      [v36 handleFailureInMethod:a2 object:self file:@"CKVettingAlerts.m" lineNumber:131 description:{@"Appeasing the compiler, should never get here"}];
 
       v33 = &__NSDictionary0__struct;
       goto LABEL_9;
@@ -113,8 +113,8 @@
   }
 
   v56 = a2;
-  v61 = v16;
-  v58 = a1;
+  v61 = dCopy;
+  selfCopy2 = self;
   if ([v20 length])
   {
     v50 = v20;
@@ -123,19 +123,19 @@
 
   else
   {
-    v50 = v15;
+    v50 = appNameCopy;
     v37 = @"UNTITLED_NONIWORK_DOCUMENT_OPEN_TITLE";
   }
 
   v38 = sub_16B8(v37, @"%@");
-  v39 = [v17 share];
-  v40 = [v39 allowsAnonymousPublicAccess];
+  share2 = [metadataCopy share];
+  allowsAnonymousPublicAccess = [share2 allowsAnonymousPublicAccess];
 
-  v41 = [v17 ownerIdentity];
-  v42 = [v41 nameComponents];
-  v43 = [CKVettingAlerts mediumNameFromComponents:v42];
+  ownerIdentity2 = [metadataCopy ownerIdentity];
+  nameComponents2 = [ownerIdentity2 nameComponents];
+  v43 = [CKVettingAlerts mediumNameFromComponents:nameComponents2];
   v44 = v43;
-  if (v40)
+  if (allowsAnonymousPublicAccess)
   {
     v51 = v43;
     v45 = sub_16B8(@"PUBLIC_ANONYMOUS_SHARING_OPEN_BODY", @"%@");
@@ -143,8 +143,8 @@
 
   else
   {
-    v52 = [CKVettingAlerts mediumNameFromComponents:v63];
-    v54 = v62;
+    v52 = [CKVettingAlerts mediumNameFromComponents:userNameCopy];
+    v54 = usernameCopy;
     v51 = v44;
     v45 = sub_16B8(@"GENERIC_APP_SHARING_OPEN_BODY", @"%@%@%@");
   }
@@ -152,7 +152,7 @@
   if (!v38 || !v45)
   {
     v47 = [NSAssertionHandler currentHandler:v51];
-    [v47 handleFailureInMethod:v56 object:v58 file:@"CKVettingAlerts.m" lineNumber:126 description:{@"Filed to construct alertTitle: %@ and/or alertBody: %@ for generic share", v38, v45}];
+    [v47 handleFailureInMethod:v56 object:selfCopy2 file:@"CKVettingAlerts.m" lineNumber:126 description:{@"Filed to construct alertTitle: %@ and/or alertBody: %@ for generic share", v38, v45}];
   }
 
   v64[0] = @"ckVettingAlertTitle";
@@ -161,17 +161,17 @@
   v65[1] = v45;
   v33 = [NSDictionary dictionaryWithObjects:v65 forKeys:v64 count:2, v51];
 
-  v16 = v61;
+  dCopy = v61;
 LABEL_9:
 
   return v33;
 }
 
-+ (id)getAlertOptionsFromOptions:(id)a3 isSourceICS:(BOOL)a4
++ (id)getAlertOptionsFromOptions:(id)options isSourceICS:(BOOL)s
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  optionsCopy = options;
+  v6 = optionsCopy;
+  if (s)
   {
     v7 = objc_alloc_init(NSMutableDictionary);
     [v7 addEntriesFromDictionary:v6];
@@ -183,17 +183,17 @@ LABEL_9:
 
   else
   {
-    v8 = v5;
+    v8 = optionsCopy;
   }
 
   return v8;
 }
 
-+ (id)getLaunchingOptionsFromOptions:(id)a3 isSourceICS:(BOOL)a4
++ (id)getLaunchingOptionsFromOptions:(id)options isSourceICS:(BOOL)s
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  optionsCopy = options;
+  v6 = optionsCopy;
+  if (s)
   {
     v7 = objc_alloc_init(NSMutableDictionary);
     [v7 addEntriesFromDictionary:v6];
@@ -204,24 +204,24 @@ LABEL_9:
 
   else
   {
-    v8 = v5;
+    v8 = optionsCopy;
   }
 
   return v8;
 }
 
-+ (id)_alertContentForVettingBindingPromptWithBundleID:(id)a3 shareName:(id)a4 ownerName:(id)a5 shareType:(id)a6 isShortcut:(BOOL)a7 isSourceICS:(BOOL)a8
++ (id)_alertContentForVettingBindingPromptWithBundleID:(id)d shareName:(id)name ownerName:(id)ownerName shareType:(id)type isShortcut:(BOOL)shortcut isSourceICS:(BOOL)s
 {
-  v34 = a8;
-  v8 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v33 = v14;
-  if (v14)
+  sCopy = s;
+  shortcutCopy = shortcut;
+  dCopy = d;
+  nameCopy = name;
+  ownerNameCopy = ownerName;
+  typeCopy = type;
+  v33 = ownerNameCopy;
+  if (ownerNameCopy)
   {
-    if (v8)
+    if (shortcutCopy)
     {
       v16 = @"VETTING_ALERT_SINGLE_MATCH_BODY_";
     }
@@ -231,14 +231,14 @@ LABEL_9:
       v16 = @"VETTING_ALERT_BODY_";
     }
 
-    v17 = [CKVettingAlerts appSpecificLocKeyForBundleID:v12 shareType:v15 prefix:v16];
-    v29 = [CKVettingAlerts mediumNameFromComponents:v14];
+    v17 = [CKVettingAlerts appSpecificLocKeyForBundleID:dCopy shareType:typeCopy prefix:v16];
+    v29 = [CKVettingAlerts mediumNameFromComponents:ownerNameCopy];
     v18 = CKLocalizedString();
   }
 
   else
   {
-    if (v8)
+    if (shortcutCopy)
     {
       v19 = @"VETTING_ALERT_SINGLE_MATCH_BODY_UNKNOWN_USER_";
     }
@@ -248,30 +248,30 @@ LABEL_9:
       v19 = @"VETTING_ALERT_BODY_UNKNOWN_USER_";
     }
 
-    v17 = [CKVettingAlerts appSpecificLocKeyForBundleID:v12 shareType:v15 prefix:v19];
+    v17 = [CKVettingAlerts appSpecificLocKeyForBundleID:dCopy shareType:typeCopy prefix:v19];
     v18 = CKLocalizedString();
   }
 
   v20 = [NSString stringWithFormat:@"VETTING_ALERT_TITLE%@_", @"_IOS"];
-  v21 = [CKVettingAlerts appSpecificLocKeyForBundleID:v12 shareType:v15 prefix:v20];
-  v30 = v13;
+  v21 = [CKVettingAlerts appSpecificLocKeyForBundleID:dCopy shareType:typeCopy prefix:v20];
+  v30 = nameCopy;
   v22 = CKLocalizedString();
-  v32 = v15;
+  v32 = typeCopy;
   v35[0] = kCFUserNotificationAlertHeaderKey;
   v35[1] = kCFUserNotificationAlertMessageKey;
   v36[0] = v22;
   v36[1] = v18;
   v35[2] = kCFUserNotificationDefaultButtonTitleKey;
   CKLocalizedString();
-  v23 = v31 = v13;
+  v23 = v31 = nameCopy;
   v36[2] = v23;
   v35[3] = kCFUserNotificationAlternateButtonTitleKey;
   v24 = CKLocalizedString();
   v36[3] = v24;
   v25 = [NSDictionary dictionaryWithObjects:v36 forKeys:v35 count:4, v30];
-  v26 = [CKVettingAlerts platformSpecificAlertOptionsWithOptions:v25 bundleIdentifier:v12];
+  v26 = [CKVettingAlerts platformSpecificAlertOptionsWithOptions:v25 bundleIdentifier:dCopy];
 
-  v27 = [CKVettingAlerts getAlertOptionsFromOptions:v26 isSourceICS:v34];
+  v27 = [CKVettingAlerts getAlertOptionsFromOptions:v26 isSourceICS:sCopy];
 
   return v27;
 }
@@ -313,7 +313,7 @@ LABEL_7:
   }
 
   v9 = +[NSAssertionHandler currentHandler];
-  [v9 handleFailureInMethod:a2 object:a1 file:@"CKVettingAlerts.m" lineNumber:240 description:{@"Unsupported device class: %@", v4}];
+  [v9 handleFailureInMethod:a2 object:self file:@"CKVettingAlerts.m" lineNumber:240 description:{@"Unsupported device class: %@", v4}];
 
   v6 = @"_IOS";
 LABEL_8:
@@ -321,21 +321,21 @@ LABEL_8:
   return v6;
 }
 
-+ (id)alertContentForAppStoreAppLookupFailureWithShareName:(id)a3 error:(id)a4
++ (id)alertContentForAppStoreAppLookupFailureWithShareName:(id)name error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 deviceTypeSpecificSuffix];
+  errorCopy = error;
+  nameCopy = name;
+  deviceTypeSpecificSuffix = [self deviceTypeSpecificSuffix];
   v9 = [@"APP_STORE_FAILURE_TITLE" stringByAppendingString:@"_IOS"];
   v10 = CKLocalizedString();
 
-  v11 = [v6 domain];
+  domain = [errorCopy domain];
 
-  if (v11 == NSURLErrorDomain)
+  if (domain == NSURLErrorDomain)
   {
-    if ([v6 code] == -1009)
+    if ([errorCopy code] == -1009)
     {
-      v14 = [NSString stringWithFormat:@"APP_STORE_GET_APP_FAILURE_OFFLINE_BODY%@", v8];
+      v14 = [NSString stringWithFormat:@"APP_STORE_GET_APP_FAILURE_OFFLINE_BODY%@", deviceTypeSpecificSuffix];
       v28[0] = v10;
       v27[0] = @"ckVettingAlertTitle";
       v27[1] = @"ckVettingAlertBody";
@@ -347,7 +347,7 @@ LABEL_8:
 
     else
     {
-      v14 = [NSString stringWithFormat:@"APP_STORE_GET_APP_FAILURE_STORE_NOT_AVAILABLE_BODY%@", v8];
+      v14 = [NSString stringWithFormat:@"APP_STORE_GET_APP_FAILURE_STORE_NOT_AVAILABLE_BODY%@", deviceTypeSpecificSuffix];
       v25[0] = @"ckVettingAlertTitle";
       v25[1] = @"ckVettingAlertBody";
       v26[0] = v10;
@@ -360,13 +360,13 @@ LABEL_8:
 
   else
   {
-    v12 = [v6 domain];
-    v13 = v12;
-    if (v12 == CKUnderlyingErrorDomain)
+    domain2 = [errorCopy domain];
+    v13 = domain2;
+    if (domain2 == CKUnderlyingErrorDomain)
     {
-      v18 = [v6 code];
+      code = [errorCopy code];
 
-      if (v18 == &stru_3D8.size)
+      if (code == &stru_3D8.size)
       {
         v23[0] = @"ckVettingAlertTitle";
         v23[1] = @"ckVettingAlertBody";
@@ -382,7 +382,7 @@ LABEL_8:
     {
     }
 
-    v14 = [NSString stringWithFormat:@"APP_STORE_GET_APP_FAILURE_STORE_NOT_AVAILABLE_BODY%@", v8];
+    v14 = [NSString stringWithFormat:@"APP_STORE_GET_APP_FAILURE_STORE_NOT_AVAILABLE_BODY%@", deviceTypeSpecificSuffix];
     v21[0] = @"ckVettingAlertTitle";
     v21[1] = @"ckVettingAlertBody";
     v22[0] = v10;
@@ -399,20 +399,20 @@ LABEL_11:
   return v19;
 }
 
-+ (id)alertContentForAppStoreUpdateLookupFailureWithShareName:(id)a3 appName:(id)a4 error:(id)a5
++ (id)alertContentForAppStoreUpdateLookupFailureWithShareName:(id)name appName:(id)appName error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  appNameCopy = appName;
+  errorCopy = error;
+  nameCopy = name;
   v10 = [@"APP_STORE_FAILURE_TITLE" stringByAppendingString:@"_IOS"];
   v11 = CKLocalizedString();
 
-  v12 = [v8 domain];
+  domain = [errorCopy domain];
 
-  if (v12 == NSURLErrorDomain)
+  if (domain == NSURLErrorDomain)
   {
-    v21 = v7;
-    if ([v8 code] == -1009)
+    v21 = appNameCopy;
+    if ([errorCopy code] == -1009)
     {
       v15 = CKLocalizedString();
       v34 = @"ckVettingAlertTitle";
@@ -437,15 +437,15 @@ LABEL_11:
 
   else
   {
-    v13 = [v8 domain];
-    v14 = v13;
-    if (v13 == CKUnderlyingErrorDomain)
+    domain2 = [errorCopy domain];
+    v14 = domain2;
+    if (domain2 == CKUnderlyingErrorDomain)
     {
-      v18 = [v8 code];
+      code = [errorCopy code];
 
-      if (v18 == &stru_3D8.size)
+      if (code == &stru_3D8.size)
       {
-        v21 = v7;
+        v21 = appNameCopy;
         v15 = CKLocalizedString();
         v26 = @"ckVettingAlertTitle";
         v27 = @"ckVettingAlertBody";
@@ -461,7 +461,7 @@ LABEL_11:
     {
     }
 
-    v21 = v7;
+    v21 = appNameCopy;
     v15 = CKLocalizedString();
     v22 = @"ckVettingAlertTitle";
     v23 = @"ckVettingAlertBody";
@@ -477,33 +477,33 @@ LABEL_10:
   return v19;
 }
 
-+ (id)_alertContentForAppStoreOperationWithApp:(id)a3 shareMetadata:(id)a4 keyPrefix:(id)a5 titleKeySuffix:(id)a6 bodyKeySuffix:(id)a7 isSourceICS:(BOOL)a8
++ (id)_alertContentForAppStoreOperationWithApp:(id)app shareMetadata:(id)metadata keyPrefix:(id)prefix titleKeySuffix:(id)suffix bodyKeySuffix:(id)keySuffix isSourceICS:(BOOL)s
 {
-  v31 = a8;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = a5;
-  v16 = [NSString stringWithFormat:@"%@TITLE%@", v15, a6];
+  sCopy = s;
+  appCopy = app;
+  metadataCopy = metadata;
+  keySuffixCopy = keySuffix;
+  prefixCopy = prefix;
+  suffix = [NSString stringWithFormat:@"%@TITLE%@", prefixCopy, suffix];
   v17 = CKLocalizedString();
-  v18 = [v13 ownerIdentity];
-  v19 = [v18 nameComponents];
+  ownerIdentity = [metadataCopy ownerIdentity];
+  nameComponents = [ownerIdentity nameComponents];
 
-  if (v19)
+  if (nameComponents)
   {
-    v20 = [NSString stringWithFormat:@"%@BODY%@", v15, v14];
+    keySuffixCopy = [NSString stringWithFormat:@"%@BODY%@", prefixCopy, keySuffixCopy];
 
-    v21 = [v13 ownerIdentity];
-    v22 = [v21 nameComponents];
-    v30 = [CKVettingAlerts mediumNameFromComponents:v22];
+    ownerIdentity2 = [metadataCopy ownerIdentity];
+    nameComponents2 = [ownerIdentity2 nameComponents];
+    v30 = [CKVettingAlerts mediumNameFromComponents:nameComponents2];
     v23 = CKLocalizedString();
   }
 
   else
   {
-    v20 = [NSString stringWithFormat:@"%@BODY_UNKNOWN_USER%@", v15, v14];
+    keySuffixCopy = [NSString stringWithFormat:@"%@BODY_UNKNOWN_USER%@", prefixCopy, keySuffixCopy];
 
-    v30 = v12;
+    v30 = appCopy;
     v23 = CKLocalizedString();
   }
 
@@ -520,46 +520,46 @@ LABEL_10:
   v26 = [NSDictionary dictionaryWithObjects:v33 forKeys:v32 count:4, v30];
   v27 = [CKVettingAlerts platformSpecificAlertOptionsWithOptions:v26 bundleIdentifier:0];
 
-  v28 = [CKVettingAlerts getAlertOptionsFromOptions:v27 isSourceICS:v31];
+  v28 = [CKVettingAlerts getAlertOptionsFromOptions:v27 isSourceICS:sCopy];
 
   return v28;
 }
 
-+ (id)alertContentForInitiateVettingError:(id)a3 shareTitle:(id)a4 isEmail:(BOOL)a5 address:(id)a6
++ (id)alertContentForInitiateVettingError:(id)error shareTitle:(id)title isEmail:(BOOL)email address:(id)address
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  emailCopy = email;
+  errorCopy = error;
+  titleCopy = title;
+  addressCopy = address;
   v12 = [NSString stringWithFormat:@"VETTING_FAILURE_ALERT_TITLE_CANT_SEND_LINK%@", @"_IOS"];
   v13 = sub_16B8(v12, &stru_14980);
   v14 = sub_16B8(@"VETTING_FAILURE_ALERT_BODY_INITIATE_GENERIC_ERROR", &stru_14980);
-  v15 = [v9 domain];
-  v16 = [v15 isEqualToString:CKErrorDomain];
+  domain = [errorCopy domain];
+  v16 = [domain isEqualToString:CKErrorDomain];
 
   if (v16)
   {
-    v17 = [v9 userInfo];
-    v18 = [v17 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo = [errorCopy userInfo];
+    v18 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-    v19 = [v18 code];
-    if (v19 <= 8006)
+    code = [v18 code];
+    if (code <= 8006)
     {
-      if (v19 == &loc_1388 + 5)
+      if (code == &loc_1388 + 5)
       {
-        v33 = v10;
+        v33 = titleCopy;
         v20 = @"VETTING_FAILURE_ALERT_BODY_INITIATE_PCS_ERROR";
       }
 
       else
       {
-        if (v19 != &loc_1F44 + 2)
+        if (code != &loc_1F44 + 2)
         {
           goto LABEL_29;
         }
 
-        v33 = v11;
-        if (v7)
+        v33 = addressCopy;
+        if (emailCopy)
         {
           v20 = @"VETTING_FAILURE_ALERT_BODY_INITIATE_TOO_MANY_VETS_EMAIL";
         }
@@ -574,14 +574,14 @@ LABEL_10:
       goto LABEL_26;
     }
 
-    if (v19 != &loc_1F44 + 3)
+    if (code != &loc_1F44 + 3)
     {
-      if (v19 == &loc_1F48)
+      if (code == &loc_1F48)
       {
         v23 = +[CKContainer matterhornName];
-        v33 = v11;
+        v33 = addressCopy;
         v34 = v23;
-        if (v7)
+        if (emailCopy)
         {
           v27 = @"VETTING_FAILURE_ALERT_BODY_INITIATE_VETTED_TO_OTHER_EMAIL";
         }
@@ -598,7 +598,7 @@ LABEL_10:
         goto LABEL_27;
       }
 
-      if (v19 == &loc_1F48 + 2)
+      if (code == &loc_1F48 + 2)
       {
         v20 = @"VETTING_FAILURE_ALERT_BODY_INITIATE_SERVER_ERROR";
         v21 = &stru_14980;
@@ -619,10 +619,10 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v22 = [v18 userInfo];
-    v23 = [v22 objectForKeyedSubscript:CKErrorAccountPrimaryEmailKey];
+    userInfo2 = [v18 userInfo];
+    v23 = [userInfo2 objectForKeyedSubscript:CKErrorAccountPrimaryEmailKey];
 
-    if (v7)
+    if (emailCopy)
     {
       v24 = [@"VETTING_FAILURE_ALERT_TITLE_INITIATE_VETTED_TO_CALLER_ERROR_EMAIL" stringByAppendingString:@"_IOS"];
 
@@ -630,7 +630,7 @@ LABEL_29:
 
       if (!v23 || ([v23 isEqualToString:&stru_14980] & 1) != 0)
       {
-        v33 = v11;
+        v33 = addressCopy;
         v26 = @"VETTING_FAILURE_ALERT_BODY_INITIATE_VETTED_TO_CALLER_ERROR_EMAIL_NO_APPLE_ID";
 LABEL_21:
         v28 = @"%@";
@@ -641,7 +641,7 @@ LABEL_36:
         goto LABEL_28;
       }
 
-      v33 = v11;
+      v33 = addressCopy;
       v34 = v23;
       v26 = @"VETTING_FAILURE_ALERT_BODY_INITIATE_VETTED_TO_CALLER_ERROR_EMAIL";
     }
@@ -654,12 +654,12 @@ LABEL_36:
 
       if (!v23 || ([v23 isEqualToString:&stru_14980] & 1) != 0)
       {
-        v33 = v11;
+        v33 = addressCopy;
         v26 = @"VETTING_FAILURE_ALERT_BODY_INITIATE_VETTED_TO_CALLER_ERROR_PHONE_NO_APPLE_ID";
         goto LABEL_21;
       }
 
-      v33 = v11;
+      v33 = addressCopy;
       v34 = v23;
       v26 = @"VETTING_FAILURE_ALERT_BODY_INITIATE_VETTED_TO_CALLER_ERROR_PHONE";
     }
@@ -678,18 +678,18 @@ LABEL_30:
   return v30;
 }
 
-+ (id)_sanitizedShareURLSlug:(id)a3
++ (id)_sanitizedShareURLSlug:(id)slug
 {
-  v3 = a3;
+  slugCopy = slug;
   if (qword_197F0 != -1)
   {
     dispatch_once(&qword_197F0, &stru_14560);
   }
 
-  v4 = [v3 CKURLSlug];
-  if ([qword_197F8 containsObject:v4])
+  cKURLSlug = [slugCopy CKURLSlug];
+  if ([qword_197F8 containsObject:cKURLSlug])
   {
-    v5 = v4;
+    v5 = cKURLSlug;
   }
 
   else
@@ -700,43 +700,43 @@ LABEL_30:
   return v5;
 }
 
-+ (id)alertContentForCompleteVettingError:(id)a3 shareTitle:(id)a4 email:(id)a5 phone:(id)a6 reconstructedShareURL:(id)a7
++ (id)alertContentForCompleteVettingError:(id)error shareTitle:(id)title email:(id)email phone:(id)phone reconstructedShareURL:(id)l
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  errorCopy = error;
+  titleCopy = title;
+  emailCopy = email;
+  phoneCopy = phone;
+  lCopy = l;
   v17 = @"_WITH_SHARE_NAME";
-  if (!v13)
+  if (!titleCopy)
   {
     v17 = @"_WITHOUT_SHARE_NAME";
   }
 
-  v83 = v16;
+  v83 = lCopy;
   v84 = v17;
-  v85 = [a1 _sanitizedShareURLSlug:v16];
+  v85 = [self _sanitizedShareURLSlug:lCopy];
   v18 = [@"VETTING_FAILURE_ALERT_TITLE_COMPLETE_GENERIC_ERROR" stringByAppendingString:@"_IOS"];
   v19 = sub_16B8(v18, &stru_14980);
   v20 = sub_16B8(@"VETTING_FAILURE_ALERT_BODY_COMPLETE_GENERIC_ERROR_ADDRESS", &stru_14980);
-  v86 = v14;
-  if (v14)
+  v86 = emailCopy;
+  if (emailCopy)
   {
     v21 = sub_16B8(@"VETTING_FAILURE_ALERT_BODY_COMPLETE_GENERIC_ERROR_EMAIL", &stru_14980);
 
     v20 = v21;
   }
 
-  v82 = v15;
-  if (v15)
+  v82 = phoneCopy;
+  if (phoneCopy)
   {
     v22 = sub_16B8(@"VETTING_FAILURE_ALERT_BODY_COMPLETE_GENERIC_ERROR_PHONE", &stru_14980);
 
     v20 = v22;
   }
 
-  v23 = [v12 domain];
-  v24 = [v23 isEqualToString:CKErrorDomain];
+  domain = [errorCopy domain];
+  v24 = [domain isEqualToString:CKErrorDomain];
 
   if (!v24)
   {
@@ -745,14 +745,14 @@ LABEL_30:
     goto LABEL_78;
   }
 
-  v25 = [v12 userInfo];
-  v26 = [v25 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo = [errorCopy userInfo];
+  v26 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
   v81 = v26;
-  v27 = [v26 code];
-  if (v27 > 8008)
+  code = [v26 code];
+  if (code > 8008)
   {
-    if (v27 == &loc_1F48 + 1)
+    if (code == &loc_1F48 + 1)
     {
       v41 = [NSString stringWithFormat:@"VETTING_FAILURE_ALERT_TITLE_COMPLETE_DRYRUN_KEYSWAP_FAILED%@_%@", @"_IOS", v85];
 
@@ -788,7 +788,7 @@ LABEL_30:
 
       v18 = v43;
 
-      v75 = v13;
+      v75 = titleCopy;
       v51 = sub_16B8(v18, @"%@");
       v52 = v20;
       v20 = v51;
@@ -797,7 +797,7 @@ LABEL_30:
       goto LABEL_40;
     }
 
-    if (v27 == &loc_1F48 + 3)
+    if (code == &loc_1F48 + 3)
     {
       v28 = v82;
       if (v86)
@@ -825,24 +825,24 @@ LABEL_30:
       goto LABEL_75;
     }
 
-    if (v27 != &loc_1F48 + 4)
+    if (code != &loc_1F48 + 4)
     {
       v28 = v82;
       v31 = v84;
       goto LABEL_77;
     }
 
-    v33 = [v26 userInfo];
-    v34 = [v33 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo2 = [v26 userInfo];
+    v34 = [userInfo2 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
     v35 = v34;
-    v36 = [v34 domain];
-    if ([v36 isEqualToString:CKErrorDomain])
+    domain2 = [v34 domain];
+    if ([domain2 isEqualToString:CKErrorDomain])
     {
       v37 = v35;
-      v38 = [v35 code];
+      code2 = [v35 code];
 
-      if (v38 != &dword_0 + 2)
+      if (code2 != &dword_0 + 2)
       {
         v35 = v37;
 LABEL_42:
@@ -854,9 +854,9 @@ LABEL_42:
         }
 
         v55 = v54;
-        v56 = [v35 domain];
+        domain3 = [v35 domain];
         v77 = v35;
-        if ([v56 isEqualToString:CKErrorDomain])
+        if ([domain3 isEqualToString:CKErrorDomain])
         {
           if ([v35 code] == &dword_0 + 3)
           {
@@ -864,9 +864,9 @@ LABEL_42:
             goto LABEL_60;
           }
 
-          v67 = [v35 code];
+          code3 = [v35 code];
 
-          v59 = v67 == &dword_4;
+          v59 = code3 == &dword_4;
           v35 = v77;
           if (v59)
           {
@@ -885,7 +885,7 @@ LABEL_60:
             }
 
             v72 = v68;
-            v75 = v13;
+            v75 = titleCopy;
             v70 = sub_16B8(v68, @"%@");
 
             v20 = v72;
@@ -899,12 +899,12 @@ LABEL_60:
         {
         }
 
-        v57 = [v35 domain];
-        if ([v57 isEqualToString:CKErrorDomain])
+        domain4 = [v35 domain];
+        if ([domain4 isEqualToString:CKErrorDomain])
         {
-          v58 = [v35 code];
+          code4 = [v35 code];
 
-          v59 = v58 == &dword_8 + 3;
+          v59 = code4 == &dword_8 + 3;
           v35 = v77;
           if (v59)
           {
@@ -937,7 +937,7 @@ LABEL_60:
             v66 = v71;
             v32 = v77;
             v30 = v63;
-            v75 = v13;
+            v75 = titleCopy;
             v70 = sub_16B8(v71, @"%@");
             goto LABEL_74;
           }
@@ -947,19 +947,19 @@ LABEL_60:
         {
         }
 
-        v64 = [v35 domain];
-        if ([v64 isEqualToString:CKErrorDomain])
+        domain5 = [v35 domain];
+        if ([domain5 isEqualToString:CKErrorDomain])
         {
-          v65 = [v35 code];
+          code5 = [v35 code];
 
-          if (v65 == stru_3D8.segname)
+          if (code5 == stru_3D8.segname)
           {
             v66 = [@"VETTING_FAILURE_ALERT_TITLE_COMPLETE_SHARE_METADATA_FETCH_FAILED" stringByAppendingFormat:@"%@_%@", @"_IOS", v85];
             v30 = sub_16B8(v66, &stru_14980);
 
             [NSString stringWithFormat:@"VETTING_FAILURE_ALERT_BODY_COMPLETE_SHARE_METADATA_FETCH_FAILED_SERVER_ERROR%@%@", v84, v55];
             v69 = LABEL_65:;
-            v75 = v13;
+            v75 = titleCopy;
             v70 = sub_16B8(v69, @"%@");
 
             v20 = v69;
@@ -985,8 +985,8 @@ LABEL_75:
         goto LABEL_65;
       }
 
-      v36 = [v37 userInfo];
-      v39 = [v36 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+      domain2 = [v37 userInfo];
+      v39 = [domain2 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
       v78 = [v39 objectForKeyedSubscript:v83];
 
       v35 = v78;
@@ -996,7 +996,7 @@ LABEL_75:
   }
 
   v28 = v82;
-  if ((v27 - 8003) < 2)
+  if ((code - 8003) < 2)
   {
     v29 = [@"VETTING_FAILURE_ALERT_TITLE_COMPLETE_GENERIC_ERROR" stringByAppendingString:@"_IOS"];
 
@@ -1005,7 +1005,7 @@ LABEL_75:
     v31 = v84;
     v18 = [NSString stringWithFormat:@"VETTING_FAILURE_ALERT_BODY_COMPLETE_VETTING_RECORD_ERROR%@%@", v84, @"_IOS"];
 
-    v75 = v13;
+    v75 = titleCopy;
     sub_16B8(v18, @"%@");
     v20 = v32 = v20;
 LABEL_76:
@@ -1014,7 +1014,7 @@ LABEL_76:
     goto LABEL_77;
   }
 
-  if (v27 == &loc_1F40 + 2)
+  if (code == &loc_1F40 + 2)
   {
     v40 = [@"VETTING_FAILURE_ALERT_TITLE_COMPLETE_TOKEN_INVALID" stringByAppendingString:@"_IOS"];
 
@@ -1026,13 +1026,13 @@ LABEL_76:
     if (v86)
     {
       v75 = v86;
-      v76 = v13;
+      v76 = titleCopy;
     }
 
     else
     {
       v75 = v82;
-      v76 = v13;
+      v76 = titleCopy;
     }
 
     sub_16B8(v18, @"%@%@");
@@ -1055,14 +1055,14 @@ LABEL_78:
   return v73;
 }
 
-+ (id)alertContentForShareMetadataErrorWithURL:(id)a3 email:(id)a4
++ (id)alertContentForShareMetadataErrorWithURL:(id)l email:(id)email
 {
-  v5 = a4;
-  v6 = [a3 CKURLSlug];
+  emailCopy = email;
+  cKURLSlug = [l CKURLSlug];
   v7 = [@"ITEM_UNAVAILABLE_FAILURE_ALERT_TITLE" stringByAppendingFormat:@"%@_", @"_IOS"];
-  v8 = [CKVettingAlerts appSpecificLocKeyForURLSlug:v6 prefix:v7];
+  v8 = [CKVettingAlerts appSpecificLocKeyForURLSlug:cKURLSlug prefix:v7];
 
-  if (v5)
+  if (emailCopy)
   {
     v9 = @"ITEM_UNAVAILABLE_FAILURE_ALERT_BODY_EMAIL";
     v10 = @"%@";
@@ -1085,12 +1085,12 @@ LABEL_78:
   return v13;
 }
 
-+ (id)alertContentForUnprovisionedDataclassWithURL:(id)a3 email:(id)a4
++ (id)alertContentForUnprovisionedDataclassWithURL:(id)l email:(id)email
 {
-  v5 = a4;
-  v6 = [a3 CKURLSlug];
+  emailCopy = email;
+  cKURLSlug = [l CKURLSlug];
   v7 = [@"ITEM_UNAVAILABLE_FAILURE_ALERT_TITLE" stringByAppendingFormat:@"%@_", @"_IOS"];
-  v8 = [CKVettingAlerts appSpecificLocKeyForURLSlug:v6 prefix:v7];
+  v8 = [CKVettingAlerts appSpecificLocKeyForURLSlug:cKURLSlug prefix:v7];
 
   v13[0] = @"ckVettingAlertTitle";
   v9 = sub_16B8(v8, &stru_14980);
@@ -1099,20 +1099,20 @@ LABEL_78:
   v10 = sub_16B8(@"ITEM_UNAVAILABLE_UNPROVISIONED_DATACLASS_ALERT_BODY", @"%@");
 
   v14[1] = v10;
-  v11 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2, v5];
+  emailCopy = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2, emailCopy];
 
-  return v11;
+  return emailCopy;
 }
 
-+ (id)alertContentForICloudAccountError:(id)a3 shareMetadata:(id)a4 shareURL:(id)a5
++ (id)alertContentForICloudAccountError:(id)error shareMetadata:(id)metadata shareURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 domain];
-  if ([v10 isEqualToString:CKErrorDomain])
+  errorCopy = error;
+  metadataCopy = metadata;
+  lCopy = l;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:CKErrorDomain])
   {
-    if ([v7 code] == &dword_8 + 1)
+    if ([errorCopy code] == &dword_8 + 1)
     {
 
 LABEL_15:
@@ -1121,8 +1121,8 @@ LABEL_15:
       v16 = CKLocalizedString();
 
       v32 = [@"SIGN_IN_TO_ICLOUD_BODY" stringByAppendingFormat:@"%@_", @"_IOS"];
-      v33 = [v9 CKURLSlug];
-      v34 = [CKVettingAlerts appSpecificLocKeyForURLSlug:v33 prefix:v32];
+      cKURLSlug = [lCopy CKURLSlug];
+      v34 = [CKVettingAlerts appSpecificLocKeyForURLSlug:cKURLSlug prefix:v32];
       v41 = +[CKContainer matterhornName];
       v24 = CKLocalizedString();
 
@@ -1135,9 +1135,9 @@ LABEL_15:
       goto LABEL_23;
     }
 
-    v29 = [v7 code];
+    code = [errorCopy code];
 
-    if (v29 == &stru_68.sectname[11])
+    if (code == &stru_68.sectname[11])
     {
       goto LABEL_15;
     }
@@ -1147,33 +1147,33 @@ LABEL_15:
   {
   }
 
-  v11 = [v7 domain];
-  if ([v11 isEqualToString:CKUnderlyingErrorDomain])
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqualToString:CKUnderlyingErrorDomain])
   {
-    v12 = [v7 code];
+    code2 = [errorCopy code];
 
-    if (v12 == &stru_3D8.addr + 7)
+    if (code2 == &stru_3D8.addr + 7)
     {
-      v13 = [v7 userInfo];
-      v14 = [v13 objectForKeyedSubscript:CKErrorDisabledAppLocalizedName];
+      userInfo = [errorCopy userInfo];
+      v14 = [userInfo objectForKeyedSubscript:CKErrorDisabledAppLocalizedName];
 
       v15 = [@"ENABLE_IN_ICLOUD_TITLE" stringByAppendingString:@"_IOS"];
       v39 = +[CKContainer matterhornName];
       v16 = CKLocalizedString();
 
-      v17 = [v8 ownerIdentity];
-      v18 = [v17 nameComponents];
+      ownerIdentity = [metadataCopy ownerIdentity];
+      nameComponents = [ownerIdentity nameComponents];
 
       if (v14)
       {
-        v19 = [v9 CKURLSlug];
-        if (v18)
+        cKURLSlug2 = [lCopy CKURLSlug];
+        if (nameComponents)
         {
-          v20 = [CKVettingAlerts appSpecificLocKeyForURLSlug:v19 prefix:@"ENABLE_IN_ICLOUD_BODY_"];
+          ownerIdentity3 = [CKVettingAlerts appSpecificLocKeyForURLSlug:cKURLSlug2 prefix:@"ENABLE_IN_ICLOUD_BODY_"];
 
-          v44 = [v8 ownerIdentity];
-          v21 = [v44 nameComponents];
-          [CKVettingAlerts mediumNameFromComponents:v21];
+          ownerIdentity2 = [metadataCopy ownerIdentity];
+          nameComponents2 = [ownerIdentity2 nameComponents];
+          [CKVettingAlerts mediumNameFromComponents:nameComponents2];
           v23 = v22 = v14;
           v42 = +[CKContainer matterhornName];
           v40 = v23;
@@ -1184,18 +1184,18 @@ LABEL_15:
 
         else
         {
-          v20 = [CKVettingAlerts appSpecificLocKeyForURLSlug:v19 prefix:@"ENABLE_IN_ICLOUD_BODY_UNKNOWN_USER_"];
+          ownerIdentity3 = [CKVettingAlerts appSpecificLocKeyForURLSlug:cKURLSlug2 prefix:@"ENABLE_IN_ICLOUD_BODY_UNKNOWN_USER_"];
 
           v40 = +[CKContainer matterhornName];
           v24 = CKLocalizedString();
         }
       }
 
-      else if (v18)
+      else if (nameComponents)
       {
-        v20 = [v8 ownerIdentity];
-        v36 = [v20 nameComponents];
-        v37 = [CKVettingAlerts mediumNameFromComponents:v36];
+        ownerIdentity3 = [metadataCopy ownerIdentity];
+        nameComponents3 = [ownerIdentity3 nameComponents];
+        v37 = [CKVettingAlerts mediumNameFromComponents:nameComponents3];
         +[CKContainer matterhornName];
         v43 = v40 = v37;
         v24 = CKLocalizedString();
@@ -1203,8 +1203,8 @@ LABEL_15:
 
       else
       {
-        v20 = +[CKContainer matterhornName];
-        v40 = v20;
+        ownerIdentity3 = +[CKContainer matterhornName];
+        v40 = ownerIdentity3;
         v24 = CKLocalizedString();
       }
 
@@ -1222,12 +1222,12 @@ LABEL_15:
   {
   }
 
-  v25 = [v7 domain];
-  if ([v25 isEqualToString:CKErrorDomain])
+  domain3 = [errorCopy domain];
+  if ([domain3 isEqualToString:CKErrorDomain])
   {
-    v26 = [v7 code];
+    code3 = [errorCopy code];
 
-    if (v26 == &stru_68.sectname[6])
+    if (code3 == &stru_68.sectname[6])
     {
       v27 = [@"UPDATE_APPLE_ID_SETTINGS_TITLE" stringByAppendingFormat:@"%@", @"_IOS"];
       v16 = CKLocalizedString();
@@ -1246,8 +1246,8 @@ LABEL_15:
   {
   }
 
-  v35 = [v9 CKURLSlug];
-  v28 = [CKVettingAlerts alertContentForGenericErrorWithURLSlug:v35];
+  cKURLSlug3 = [lCopy CKURLSlug];
+  v28 = [CKVettingAlerts alertContentForGenericErrorWithURLSlug:cKURLSlug3];
 
   v24 = &stru_14980;
   v16 = &stru_14980;
@@ -1256,15 +1256,15 @@ LABEL_23:
   return v28;
 }
 
-+ (id)alertContentDictionaryForDeviceOfflineErrorWithURLSlug:(id)a3
++ (id)alertContentDictionaryForDeviceOfflineErrorWithURLSlug:(id)slug
 {
-  v3 = a3;
+  slugCopy = slug;
   v4 = [NSString stringWithFormat:@"DEVICE_OFFLINE_TITLE%@_", @"_IOS"];
-  v5 = [CKVettingAlerts appSpecificLocKeyForURLSlug:v3 prefix:v4];
+  v5 = [CKVettingAlerts appSpecificLocKeyForURLSlug:slugCopy prefix:v4];
   v6 = CKLocalizedString();
 
   v7 = [NSString stringWithFormat:@"DEVICE_OFFLINE_BODY%@_", @"_IOS"];
-  v8 = [CKVettingAlerts appSpecificLocKeyForURLSlug:v3 prefix:v7];
+  v8 = [CKVettingAlerts appSpecificLocKeyForURLSlug:slugCopy prefix:v7];
 
   v9 = CKLocalizedString();
 
@@ -1277,15 +1277,15 @@ LABEL_23:
   return v10;
 }
 
-+ (id)alertContentDictionaryForServiceUnavailableErrorWithURLSlug:(id)a3
++ (id)alertContentDictionaryForServiceUnavailableErrorWithURLSlug:(id)slug
 {
-  v3 = a3;
+  slugCopy = slug;
   v4 = [NSString stringWithFormat:@"SERVER_ERROR_TITLE%@_", @"_IOS"];
-  v5 = [CKVettingAlerts appSpecificLocKeyForURLSlug:v3 prefix:v4];
+  v5 = [CKVettingAlerts appSpecificLocKeyForURLSlug:slugCopy prefix:v4];
   v6 = CKLocalizedString();
 
   v7 = [NSString stringWithFormat:@"SERVER_ERROR_BODY%@_", @"_IOS"];
-  v8 = [CKVettingAlerts appSpecificLocKeyForURLSlug:v3 prefix:v7];
+  v8 = [CKVettingAlerts appSpecificLocKeyForURLSlug:slugCopy prefix:v7];
 
   v9 = CKLocalizedString();
 
@@ -1298,45 +1298,45 @@ LABEL_23:
   return v10;
 }
 
-+ (id)_alertContentForDropDownSelectionWithShareName:(id)a3 ownerName:(id)a4 currentUserName:(id)a5 currentUserFormattedUsername:(id)a6 dropDownTitles:(id)a7 locKeyPrefix:(id)a8 isSourceICS:(BOOL)a9
++ (id)_alertContentForDropDownSelectionWithShareName:(id)name ownerName:(id)ownerName currentUserName:(id)userName currentUserFormattedUsername:(id)username dropDownTitles:(id)titles locKeyPrefix:(id)prefix isSourceICS:(BOOL)s
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v34 = a7;
-  v18 = a8;
-  if (v14)
+  nameCopy = name;
+  ownerNameCopy = ownerName;
+  userNameCopy = userName;
+  usernameCopy = username;
+  titlesCopy = titles;
+  prefixCopy = prefix;
+  if (nameCopy)
   {
-    [NSString stringWithFormat:@"%@TITLE%@", v18, @"_IOS"];
+    [NSString stringWithFormat:@"%@TITLE%@", prefixCopy, @"_IOS"];
   }
 
   else
   {
-    [NSString stringWithFormat:@"%@UNTITLED_TITLE%@", v18, @"_IOS"];
+    [NSString stringWithFormat:@"%@UNTITLED_TITLE%@", prefixCopy, @"_IOS"];
   }
   v19 = ;
   v33 = CKLocalizedString();
 
-  v32 = v17;
-  v31 = v16;
-  if (v15)
+  v32 = usernameCopy;
+  v31 = userNameCopy;
+  if (ownerNameCopy)
   {
-    v20 = [NSString stringWithFormat:@"%@BODY%@", v18, @"_IOS"];
-    v21 = [CKVettingAlerts mediumNameFromComponents:v15];
-    v30 = [CKVettingAlerts mediumNameFromComponents:v16];
+    v20 = [NSString stringWithFormat:@"%@BODY%@", prefixCopy, @"_IOS"];
+    v21 = [CKVettingAlerts mediumNameFromComponents:ownerNameCopy];
+    v30 = [CKVettingAlerts mediumNameFromComponents:userNameCopy];
     v22 = CKLocalizedString();
   }
 
   else
   {
-    v20 = [NSString stringWithFormat:@"%@UNKNOWN_USER_BODY%@", v18, @"_IOS"];
-    v21 = [CKVettingAlerts mediumNameFromComponents:v16];
-    v30 = v17;
+    v20 = [NSString stringWithFormat:@"%@UNKNOWN_USER_BODY%@", prefixCopy, @"_IOS"];
+    v21 = [CKVettingAlerts mediumNameFromComponents:userNameCopy];
+    v30 = usernameCopy;
     v22 = CKLocalizedString();
   }
 
-  v23 = [NSString stringWithFormat:@"%@OPEN_BUTTON_MAC", v18, v30];
+  v23 = [NSString stringWithFormat:@"%@OPEN_BUTTON_MAC", prefixCopy, v30];
   v24 = CKLocalizedString();
   v35[0] = kCFUserNotificationAlertHeaderKey;
   v35[1] = kCFUserNotificationAlertMessageKey;
@@ -1348,23 +1348,23 @@ LABEL_23:
   v25 = CKLocalizedString();
   v35[4] = kCFUserNotificationPopUpTitlesKey;
   v36[3] = v25;
-  v36[4] = v34;
+  v36[4] = titlesCopy;
   v26 = [NSDictionary dictionaryWithObjects:v36 forKeys:v35 count:5];
   v27 = [CKVettingAlerts platformSpecificAlertOptionsWithOptions:v26 bundleIdentifier:0];
 
-  v28 = [CKVettingAlerts getAlertOptionsFromOptions:v27 isSourceICS:a9];
+  v28 = [CKVettingAlerts getAlertOptionsFromOptions:v27 isSourceICS:s];
 
   return v28;
 }
 
-+ (void)showICloudAccountSettingAlert:(id)a3 appName:(id)a4 previewRequested:(BOOL *)a5 isSourceICS:(BOOL)a6 maid:(BOOL)a7
++ (void)showICloudAccountSettingAlert:(id)alert appName:(id)name previewRequested:(BOOL *)requested isSourceICS:(BOOL)s maid:(BOOL)maid
 {
-  v7 = a7;
-  v33 = a6;
-  v9 = a3;
-  v10 = a4;
+  maidCopy = maid;
+  sCopy = s;
+  alertCopy = alert;
+  nameCopy = name;
   v11 = [NSURL URLWithString:@"settings-navigation://com.apple.Settings.AppleAccount/ICLOUD_SERVICE"];
-  if (v7)
+  if (maidCopy)
   {
     v12 = [NSURL URLWithString:@"settings-navigation://com.apple.Settings"];
 
@@ -1372,10 +1372,10 @@ LABEL_23:
   }
 
   v13 = CKLocalizedString();
-  if (v10)
+  if (nameCopy)
   {
-    v14 = [NSString stringWithFormat:@"PREVIEW_BUTTON_IOS_%@", v10];
-    if (v14)
+    nameCopy = [NSString stringWithFormat:@"PREVIEW_BUTTON_IOS_%@", nameCopy];
+    if (nameCopy)
     {
       v15 = CKLocalizedString();
     }
@@ -1389,15 +1389,15 @@ LABEL_23:
   else
   {
     v15 = 0;
-    v14 = 0;
+    nameCopy = 0;
   }
 
   v16 = CKLocalizedString();
   v39[0] = kCFUserNotificationAlertHeaderKey;
-  v17 = [v9 objectForKeyedSubscript:@"ckVettingAlertTitle"];
+  v17 = [alertCopy objectForKeyedSubscript:@"ckVettingAlertTitle"];
   v40[0] = v17;
   v39[1] = kCFUserNotificationAlertMessageKey;
-  v18 = [v9 objectForKeyedSubscript:@"ckVettingAlertBody"];
+  v18 = [alertCopy objectForKeyedSubscript:@"ckVettingAlertBody"];
   v40[1] = v18;
   v40[2] = v13;
   v31 = v13;
@@ -1406,7 +1406,7 @@ LABEL_23:
   v40[3] = v16;
   v19 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:4];
 
-  v20 = [CKVettingAlerts getAlertOptionsFromOptions:v19 isSourceICS:v33];
+  v20 = [CKVettingAlerts getAlertOptionsFromOptions:v19 isSourceICS:sCopy];
 
   if (v15)
   {
@@ -1441,7 +1441,7 @@ LABEL_23:
       _os_log_impl(&dword_0, v25, OS_LOG_TYPE_INFO, "Redirecting user to iCloud preferences", buf, 2u);
     }
 
-    v26 = [CKVettingAlerts getLaunchingOptionsFromOptions:0 isSourceICS:v33];
+    v26 = [CKVettingAlerts getLaunchingOptionsFromOptions:0 isSourceICS:sCopy];
     v27 = +[LSApplicationWorkspace defaultWorkspace];
     v34 = v26;
     v35 = 0;
@@ -1470,44 +1470,44 @@ LABEL_23:
   }
 
   CFRelease(v23);
-  if (a5)
+  if (requested)
   {
-    *a5 = v24;
+    *requested = v24;
   }
 }
 
-+ (void)showDropDownAlert:(id)a3 defaultResponseBlock:(id)a4 alternateResponseBlock:(id)a5 errorBlock:(id)a6
++ (void)showDropDownAlert:(id)alert defaultResponseBlock:(id)block alternateResponseBlock:(id)responseBlock errorBlock:(id)errorBlock
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = CFUserNotificationCreate(0, 0.0, 3uLL, 0, a3);
+  blockCopy = block;
+  responseBlockCopy = responseBlock;
+  errorBlockCopy = errorBlock;
+  v12 = CFUserNotificationCreate(0, 0.0, 3uLL, 0, alert);
   responseFlags = 0;
   CFUserNotificationReceiveResponse(v12, 604800.0, &responseFlags);
   if ((responseFlags & 3) == 1)
   {
-    v10[2](v10);
+    responseBlockCopy[2](responseBlockCopy);
   }
 
   else if ((responseFlags & 3) != 0)
   {
-    v11[2](v11);
+    errorBlockCopy[2](errorBlockCopy);
   }
 
   else
   {
-    v9[2](v9, responseFlags >> 24);
+    blockCopy[2](blockCopy, responseFlags >> 24);
   }
 
   CFRelease(v12);
 }
 
-+ (id)platformSpecificAlertOptionsWithOptions:(id)a3 bundleIdentifier:(id)a4
++ (id)platformSpecificAlertOptionsWithOptions:(id)options bundleIdentifier:(id)identifier
 {
-  v4 = [a3 mutableCopy];
+  v4 = [options mutableCopy];
   v5 = +[NSBundle mainBundle];
-  v6 = [v5 resourceURL];
-  [v4 setObject:v6 forKeyedSubscript:kCFUserNotificationLocalizationURLKey];
+  resourceURL = [v5 resourceURL];
+  [v4 setObject:resourceURL forKeyedSubscript:kCFUserNotificationLocalizationURLKey];
 
   return v4;
 }
@@ -1526,11 +1526,11 @@ LABEL_23:
   return v5;
 }
 
-+ (id)mediumNameFromComponents:(id)a3
++ (id)mediumNameFromComponents:(id)components
 {
-  if (a3)
+  if (components)
   {
-    v3 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:a3 style:2 options:0];
+    v3 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:components style:2 options:0];
     v4 = [v3 stringByReplacingOccurrencesOfString:@" " withString:@" "];
   }
 
@@ -1542,13 +1542,13 @@ LABEL_23:
   return v4;
 }
 
-+ (id)alertContentForGenericErrorWithURLSlug:(id)a3
++ (id)alertContentForGenericErrorWithURLSlug:(id)slug
 {
-  v3 = a3;
+  slugCopy = slug;
   v4 = [NSString stringWithFormat:@"GENERIC_ERROR_BODY_TRY_AGAIN%@_", @"_IOS"];
-  v5 = [CKVettingAlerts appSpecificLocKeyForURLSlug:v3 prefix:v4];
+  v5 = [CKVettingAlerts appSpecificLocKeyForURLSlug:slugCopy prefix:v4];
   v6 = [NSString stringWithFormat:@"GENERIC_ERROR_TITLE%@_", @"_IOS"];
-  v7 = [CKVettingAlerts appSpecificLocKeyForURLSlug:v3 prefix:v6];
+  v7 = [CKVettingAlerts appSpecificLocKeyForURLSlug:slugCopy prefix:v6];
 
   v12[0] = @"ckVettingAlertTitle";
   v8 = CKLocalizedString();
@@ -1561,75 +1561,75 @@ LABEL_23:
   return v10;
 }
 
-+ (id)appSpecificLocKeyForBundleID:(id)a3 shareType:(id)a4 prefix:(id)a5
++ (id)appSpecificLocKeyForBundleID:(id)d shareType:(id)type prefix:(id)prefix
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  typeCopy = type;
+  prefixCopy = prefix;
   if (qword_19800 != -1)
   {
     dispatch_once(&qword_19800, &stru_14580);
   }
 
-  v10 = [qword_19808 objectForKey:v7];
+  v10 = [qword_19808 objectForKey:dCopy];
 
   if (v10)
   {
-    v11 = [qword_19808 objectForKeyedSubscript:v7];
+    v11 = [qword_19808 objectForKeyedSubscript:dCopy];
     v12 = [qword_19810 objectForKeyedSubscript:v11];
-    v13 = [v12 containsObject:v8];
+    v13 = [v12 containsObject:typeCopy];
 
     if (v13)
     {
-      [NSString stringWithFormat:@"%@%@_%@", v9, v11, v8];
+      [NSString stringWithFormat:@"%@%@_%@", prefixCopy, v11, typeCopy];
     }
 
     else
     {
-      [NSString stringWithFormat:@"%@%@", v9, v11, v16];
+      [NSString stringWithFormat:@"%@%@", prefixCopy, v11, v16];
     }
-    v14 = ;
+    prefixCopy = ;
   }
 
   else
   {
-    v14 = [NSString stringWithFormat:@"%@Generic", v9];
+    prefixCopy = [NSString stringWithFormat:@"%@Generic", prefixCopy];
   }
 
-  return v14;
+  return prefixCopy;
 }
 
-+ (id)appSpecificLocKeyForURLSlug:(id)a3 prefix:(id)a4
++ (id)appSpecificLocKeyForURLSlug:(id)slug prefix:(id)prefix
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  slugCopy = slug;
+  prefixCopy = prefix;
+  if ([slugCopy length])
   {
-    [NSString stringWithFormat:@"%@%@", v6, v5];
+    [NSString stringWithFormat:@"%@%@", prefixCopy, slugCopy];
   }
 
   else
   {
-    [NSString stringWithFormat:@"%@share", v6, v9];
+    [NSString stringWithFormat:@"%@share", prefixCopy, v9];
   }
   v7 = ;
 
   return v7;
 }
 
-+ (BOOL)isEmail:(id)a3
++ (BOOL)isEmail:(id)email
 {
-  v3 = a3;
+  emailCopy = email;
   v4 = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2, 6}"];
-  v5 = [v4 evaluateWithObject:v3];
+  v5 = [v4 evaluateWithObject:emailCopy];
 
   return v5;
 }
 
-+ (id)alertContentForRequestAccessWithHandle:(id)a3
++ (id)alertContentForRequestAccessWithHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [a1 isEmail:v4];
+  handleCopy = handle;
+  v5 = [self isEmail:handleCopy];
   v6 = @"PHONE";
   if (v5)
   {
@@ -1644,9 +1644,9 @@ LABEL_23:
   v12[1] = @"ckVettingAlertBody";
   v13[0] = v9;
   v13[1] = v8;
-  v10 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2, v4];
+  handleCopy = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2, handleCopy];
 
-  return v10;
+  return handleCopy;
 }
 
 + (id)alertContentForRequestAccessConfirmation

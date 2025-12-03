@@ -1,13 +1,13 @@
 @interface HKClinicalGateway
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isNewerGatewayVersionOfGateway:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isNewerGatewayVersionOfGateway:(id)gateway;
 - (HKClinicalGateway)init;
-- (HKClinicalGateway)initWithCoder:(id)a3;
-- (HKClinicalGateway)initWithExternalID:(id)a3 title:(id)a4 subtitle:(id)a5 displayableDescription:(id)a6 phoneNumber:(id)a7 informationURL:(id)a8 passwordResetURL:(id)a9 patientPortalURL:(id)a10 signupURL:(id)a11 status:(int64_t)a12 type:(int64_t)a13 brand:(id)a14 country:(id)a15 baseURL:(id)a16 FHIRVersion:(id)a17 authSchemas:(id)a18 resourceSchemas:(id)a19 features:(id)a20 gatewayVersions:(id)a21 minCompatibleAPIVersion:(int64_t)a22;
+- (HKClinicalGateway)initWithCoder:(id)coder;
+- (HKClinicalGateway)initWithExternalID:(id)d title:(id)title subtitle:(id)subtitle displayableDescription:(id)description phoneNumber:(id)number informationURL:(id)l passwordResetURL:(id)rL patientPortalURL:(id)self0 signupURL:(id)self1 status:(int64_t)self2 type:(int64_t)self3 brand:(id)self4 country:(id)self5 baseURL:(id)self6 FHIRVersion:(id)self7 authSchemas:(id)self8 resourceSchemas:(id)self9 features:(id)features gatewayVersions:(id)versions minCompatibleAPIVersion:(int64_t)iVersion;
 - (HKClinicalGatewayReference)newerSupportedGatewayVersion;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalGateway
@@ -22,101 +22,101 @@
   return 0;
 }
 
-- (HKClinicalGateway)initWithExternalID:(id)a3 title:(id)a4 subtitle:(id)a5 displayableDescription:(id)a6 phoneNumber:(id)a7 informationURL:(id)a8 passwordResetURL:(id)a9 patientPortalURL:(id)a10 signupURL:(id)a11 status:(int64_t)a12 type:(int64_t)a13 brand:(id)a14 country:(id)a15 baseURL:(id)a16 FHIRVersion:(id)a17 authSchemas:(id)a18 resourceSchemas:(id)a19 features:(id)a20 gatewayVersions:(id)a21 minCompatibleAPIVersion:(int64_t)a22
+- (HKClinicalGateway)initWithExternalID:(id)d title:(id)title subtitle:(id)subtitle displayableDescription:(id)description phoneNumber:(id)number informationURL:(id)l passwordResetURL:(id)rL patientPortalURL:(id)self0 signupURL:(id)self1 status:(int64_t)self2 type:(int64_t)self3 brand:(id)self4 country:(id)self5 baseURL:(id)self6 FHIRVersion:(id)self7 authSchemas:(id)self8 resourceSchemas:(id)self9 features:(id)features gatewayVersions:(id)versions minCompatibleAPIVersion:(int64_t)iVersion
 {
-  v80 = a3;
-  v79 = a4;
-  v78 = a5;
-  v77 = a6;
-  v76 = a7;
-  v75 = a8;
-  v74 = a9;
-  v73 = a10;
-  v27 = a11;
-  v28 = a14;
-  v29 = a15;
-  v30 = a16;
-  v31 = a17;
-  v32 = a18;
-  v33 = a19;
-  v34 = a20;
-  v35 = a21;
+  dCopy = d;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  descriptionCopy = description;
+  numberCopy = number;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
+  signupURLCopy = signupURL;
+  brandCopy = brand;
+  countryCopy = country;
+  baseURLCopy = baseURL;
+  versionCopy = version;
+  schemasCopy = schemas;
+  resourceSchemasCopy = resourceSchemas;
+  featuresCopy = features;
+  versionsCopy = versions;
   v81.receiver = self;
   v81.super_class = HKClinicalGateway;
   v36 = [(HKClinicalGateway *)&v81 init];
   if (v36)
   {
-    v37 = [v80 copy];
+    v37 = [dCopy copy];
     externalID = v36->_externalID;
     v36->_externalID = v37;
 
-    v39 = [v79 copy];
+    v39 = [titleCopy copy];
     title = v36->_title;
     v36->_title = v39;
 
-    v41 = [v78 copy];
+    v41 = [subtitleCopy copy];
     subtitle = v36->_subtitle;
     v36->_subtitle = v41;
 
-    v43 = [v77 copy];
+    v43 = [descriptionCopy copy];
     displayableDescription = v36->_displayableDescription;
     v36->_displayableDescription = v43;
 
-    v45 = [v76 copy];
+    v45 = [numberCopy copy];
     phoneNumber = v36->_phoneNumber;
     v36->_phoneNumber = v45;
 
-    v47 = [v75 copy];
+    v47 = [lCopy copy];
     informationURL = v36->_informationURL;
     v36->_informationURL = v47;
 
-    v49 = [v74 copy];
+    v49 = [rLCopy copy];
     passwordResetURL = v36->_passwordResetURL;
     v36->_passwordResetURL = v49;
 
-    v51 = [v73 copy];
+    v51 = [uRLCopy copy];
     patientPortalURL = v36->_patientPortalURL;
     v36->_patientPortalURL = v51;
 
-    v53 = [v27 copy];
+    v53 = [signupURLCopy copy];
     signupURL = v36->_signupURL;
     v36->_signupURL = v53;
 
-    v36->_status = a12;
-    v36->_type = a13;
-    v55 = [v28 copy];
+    v36->_status = status;
+    v36->_type = type;
+    v55 = [brandCopy copy];
     brand = v36->_brand;
     v36->_brand = v55;
 
-    v57 = [v29 copy];
+    v57 = [countryCopy copy];
     country = v36->_country;
     v36->_country = v57;
 
-    v59 = [v30 copy];
+    v59 = [baseURLCopy copy];
     baseURL = v36->_baseURL;
     v36->_baseURL = v59;
 
-    v61 = [v31 copy];
+    v61 = [versionCopy copy];
     FHIRVersion = v36->_FHIRVersion;
     v36->_FHIRVersion = v61;
 
-    v63 = [v32 copy];
+    v63 = [schemasCopy copy];
     authSchemas = v36->_authSchemas;
     v36->_authSchemas = v63;
 
-    v65 = [v33 copy];
+    v65 = [resourceSchemasCopy copy];
     resourceSchemas = v36->_resourceSchemas;
     v36->_resourceSchemas = v65;
 
-    v67 = [v34 copy];
+    v67 = [featuresCopy copy];
     features = v36->_features;
     v36->_features = v67;
 
-    v69 = [v35 copy];
+    v69 = [versionsCopy copy];
     gatewayVersions = v36->_gatewayVersions;
     v36->_gatewayVersions = v69;
 
-    v36->_minCompatibleAPIVersion = a22;
+    v36->_minCompatibleAPIVersion = iVersion;
   }
 
   return v36;
@@ -126,41 +126,41 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HKClinicalGateway *)self externalID];
-  v6 = [(HKClinicalGateway *)self title];
-  v7 = [(HKClinicalGateway *)self subtitle];
-  v8 = [(HKClinicalGateway *)self displayableDescription];
-  v9 = [v3 stringWithFormat:@"<%@:%p externalID: %@ title: %@; subtitle: %@; description: %@; MCAV: %zd; status: %zd;>", v4, self, v5, v6, v7, v8, -[HKClinicalGateway minCompatibleAPIVersion](self, "minCompatibleAPIVersion"), -[HKClinicalGateway status](self, "status"), 0];;
+  externalID = [(HKClinicalGateway *)self externalID];
+  title = [(HKClinicalGateway *)self title];
+  subtitle = [(HKClinicalGateway *)self subtitle];
+  displayableDescription = [(HKClinicalGateway *)self displayableDescription];
+  v9 = [v3 stringWithFormat:@"<%@:%p externalID: %@ title: %@; subtitle: %@; description: %@; MCAV: %zd; status: %zd;>", v4, self, externalID, title, subtitle, displayableDescription, -[HKClinicalGateway minCompatibleAPIVersion](self, "minCompatibleAPIVersion"), -[HKClinicalGateway status](self, "status"), 0];;
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if ([(HKClinicalGateway *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(HKClinicalGateway *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(HKClinicalGateway *)self externalID];
-    v7 = [(HKClinicalGateway *)v5 externalID];
-    if (v6 == v7)
+    v5 = equalCopy;
+    externalID = [(HKClinicalGateway *)self externalID];
+    externalID2 = [(HKClinicalGateway *)v5 externalID];
+    if (externalID == externalID2)
     {
       v11 = 1;
     }
 
     else
     {
-      v8 = [(HKClinicalGateway *)v5 externalID];
-      if (v8)
+      externalID3 = [(HKClinicalGateway *)v5 externalID];
+      if (externalID3)
       {
-        v9 = [(HKClinicalGateway *)self externalID];
-        v10 = [(HKClinicalGateway *)v5 externalID];
-        v11 = [v9 isEqualToString:v10];
+        externalID4 = [(HKClinicalGateway *)self externalID];
+        externalID5 = [(HKClinicalGateway *)v5 externalID];
+        v11 = [externalID4 isEqualToString:externalID5];
       }
 
       else
@@ -180,8 +180,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HKClinicalGateway *)self externalID];
-  v3 = [v2 hash];
+  externalID = [(HKClinicalGateway *)self externalID];
+  v3 = [externalID hash];
 
   return v3;
 }
@@ -236,16 +236,16 @@
   return v8;
 }
 
-- (BOOL)isNewerGatewayVersionOfGateway:(id)a3
+- (BOOL)isNewerGatewayVersionOfGateway:(id)gateway
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  gatewayCopy = gateway;
+  if (!gatewayCopy)
   {
     [(HKClinicalGateway *)a2 isNewerGatewayVersionOfGateway:?];
   }
 
-  if (self == v5)
+  if (self == gatewayCopy)
   {
     v15 = 0;
   }
@@ -272,9 +272,9 @@
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
-          v12 = [v11 gatewayID];
-          v13 = [(HKClinicalGateway *)v5 externalID];
-          v14 = [v12 isEqualToString:v13];
+          gatewayID = [v11 gatewayID];
+          externalID = [(HKClinicalGateway *)gatewayCopy externalID];
+          v14 = [gatewayID isEqualToString:externalID];
 
           if (v14)
           {
@@ -301,120 +301,120 @@ LABEL_14:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v21 = a3;
-  [v21 encodeInteger:-[HKClinicalGateway status](self forKey:{"status"), @"status"}];
-  [v21 encodeInteger:-[HKClinicalGateway type](self forKey:{"type"), @"type"}];
-  v4 = [(HKClinicalGateway *)self brand];
-  [v21 encodeObject:v4 forKey:@"brand"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[HKClinicalGateway status](self forKey:{"status"), @"status"}];
+  [coderCopy encodeInteger:-[HKClinicalGateway type](self forKey:{"type"), @"type"}];
+  brand = [(HKClinicalGateway *)self brand];
+  [coderCopy encodeObject:brand forKey:@"brand"];
 
-  v5 = [(HKClinicalGateway *)self displayableDescription];
-  [v21 encodeObject:v5 forKey:@"displayableDescription"];
+  displayableDescription = [(HKClinicalGateway *)self displayableDescription];
+  [coderCopy encodeObject:displayableDescription forKey:@"displayableDescription"];
 
-  v6 = [(HKClinicalGateway *)self externalID];
-  [v21 encodeObject:v6 forKey:@"externalID"];
+  externalID = [(HKClinicalGateway *)self externalID];
+  [coderCopy encodeObject:externalID forKey:@"externalID"];
 
-  v7 = [(HKClinicalGateway *)self informationURL];
-  [v21 encodeObject:v7 forKey:@"info"];
+  informationURL = [(HKClinicalGateway *)self informationURL];
+  [coderCopy encodeObject:informationURL forKey:@"info"];
 
-  v8 = [(HKClinicalGateway *)self passwordResetURL];
-  [v21 encodeObject:v8 forKey:@"forgot"];
+  passwordResetURL = [(HKClinicalGateway *)self passwordResetURL];
+  [coderCopy encodeObject:passwordResetURL forKey:@"forgot"];
 
-  v9 = [(HKClinicalGateway *)self patientPortalURL];
-  [v21 encodeObject:v9 forKey:@"patientportal"];
+  patientPortalURL = [(HKClinicalGateway *)self patientPortalURL];
+  [coderCopy encodeObject:patientPortalURL forKey:@"patientportal"];
 
-  v10 = [(HKClinicalGateway *)self phoneNumber];
-  [v21 encodeObject:v10 forKey:@"phoneNumber"];
+  phoneNumber = [(HKClinicalGateway *)self phoneNumber];
+  [coderCopy encodeObject:phoneNumber forKey:@"phoneNumber"];
 
-  v11 = [(HKClinicalGateway *)self country];
-  [v21 encodeObject:v11 forKey:@"country"];
+  country = [(HKClinicalGateway *)self country];
+  [coderCopy encodeObject:country forKey:@"country"];
 
-  v12 = [(HKClinicalGateway *)self signupURL];
-  [v21 encodeObject:v12 forKey:@"signup"];
+  signupURL = [(HKClinicalGateway *)self signupURL];
+  [coderCopy encodeObject:signupURL forKey:@"signup"];
 
-  v13 = [(HKClinicalGateway *)self subtitle];
-  [v21 encodeObject:v13 forKey:@"subtitle"];
+  subtitle = [(HKClinicalGateway *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"subtitle"];
 
-  v14 = [(HKClinicalGateway *)self title];
-  [v21 encodeObject:v14 forKey:@"title"];
+  title = [(HKClinicalGateway *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v15 = [(HKClinicalGateway *)self baseURL];
-  [v21 encodeObject:v15 forKey:@"baseURL"];
+  baseURL = [(HKClinicalGateway *)self baseURL];
+  [coderCopy encodeObject:baseURL forKey:@"baseURL"];
 
-  v16 = [(HKClinicalGateway *)self FHIRVersion];
-  [v21 encodeObject:v16 forKey:@"FHIRVersion"];
+  fHIRVersion = [(HKClinicalGateway *)self FHIRVersion];
+  [coderCopy encodeObject:fHIRVersion forKey:@"FHIRVersion"];
 
-  v17 = [(HKClinicalGateway *)self authSchemas];
-  [v21 encodeObject:v17 forKey:@"authSchemas"];
+  authSchemas = [(HKClinicalGateway *)self authSchemas];
+  [coderCopy encodeObject:authSchemas forKey:@"authSchemas"];
 
-  v18 = [(HKClinicalGateway *)self resourceSchemas];
-  [v21 encodeObject:v18 forKey:@"resourceSchemas"];
+  resourceSchemas = [(HKClinicalGateway *)self resourceSchemas];
+  [coderCopy encodeObject:resourceSchemas forKey:@"resourceSchemas"];
 
-  v19 = [(HKClinicalGateway *)self features];
-  [v21 encodeObject:v19 forKey:@"features"];
+  features = [(HKClinicalGateway *)self features];
+  [coderCopy encodeObject:features forKey:@"features"];
 
-  v20 = [(HKClinicalGateway *)self gatewayVersions];
-  [v21 encodeObject:v20 forKey:@"gatewayVersions"];
+  gatewayVersions = [(HKClinicalGateway *)self gatewayVersions];
+  [coderCopy encodeObject:gatewayVersions forKey:@"gatewayVersions"];
 
-  [v21 encodeInteger:-[HKClinicalGateway minCompatibleAPIVersion](self forKey:{"minCompatibleAPIVersion"), @"minCompatibleAPIVersion"}];
+  [coderCopy encodeInteger:-[HKClinicalGateway minCompatibleAPIVersion](self forKey:{"minCompatibleAPIVersion"), @"minCompatibleAPIVersion"}];
 }
 
-- (HKClinicalGateway)initWithCoder:(id)a3
+- (HKClinicalGateway)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brand"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brand"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalID"];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
       if (v7)
       {
-        v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"country"];
+        v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"country"];
         if (v8)
         {
-          v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
+          v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
           if (v9)
           {
-            v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FHIRVersion"];
+            v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FHIRVersion"];
             v11 = v10;
             if (v10)
             {
               v30 = v10;
               v31 = v9;
               v12 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-              v28 = [v4 decodeObjectOfClasses:v12 forKey:@"authSchemas"];
+              v28 = [coderCopy decodeObjectOfClasses:v12 forKey:@"authSchemas"];
               v29 = v12;
-              v33 = [v4 decodeObjectOfClasses:v12 forKey:@"resourceSchemas"];
+              v33 = [coderCopy decodeObjectOfClasses:v12 forKey:@"resourceSchemas"];
               v27 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-              v32 = [v4 decodeObjectOfClasses:? forKey:?];
+              v32 = [coderCopy decodeObjectOfClasses:? forKey:?];
               v26 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-              v13 = [v4 decodeObjectOfClasses:? forKey:?];
-              if ([v4 containsValueForKey:@"status"] && objc_msgSend(v4, "containsValueForKey:", @"type") && (objc_msgSend(v4, "containsValueForKey:", @"minCompatibleAPIVersion") & 1) != 0)
+              v13 = [coderCopy decodeObjectOfClasses:? forKey:?];
+              if ([coderCopy containsValueForKey:@"status"] && objc_msgSend(coderCopy, "containsValueForKey:", @"type") && (objc_msgSend(coderCopy, "containsValueForKey:", @"minCompatibleAPIVersion") & 1) != 0)
               {
-                v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
-                v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayableDescription"];
-                v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
-                v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"info"];
-                v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"forgot"];
-                v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"patientportal"];
-                v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signup"];
+                v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+                v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayableDescription"];
+                v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+                v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"info"];
+                v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"forgot"];
+                v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"patientportal"];
+                v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signup"];
                 v18 = v13;
                 v14 = v13;
                 v15 = v28;
                 v11 = v30;
-                self = -[HKClinicalGateway initWithExternalID:title:subtitle:displayableDescription:phoneNumber:informationURL:passwordResetURL:patientPortalURL:signupURL:status:type:brand:country:baseURL:FHIRVersion:authSchemas:resourceSchemas:features:gatewayVersions:minCompatibleAPIVersion:](self, "initWithExternalID:title:subtitle:displayableDescription:phoneNumber:informationURL:passwordResetURL:patientPortalURL:signupURL:status:type:brand:country:baseURL:FHIRVersion:authSchemas:resourceSchemas:features:gatewayVersions:minCompatibleAPIVersion:", v6, v7, v25, v24, v23, v20, v22, v21, v19, [v4 decodeIntegerForKey:@"status"], objc_msgSend(v4, "decodeIntegerForKey:", @"type"), v5, v8, v31, v30, v28, v33, v32, v18, objc_msgSend(v4, "decodeIntegerForKey:", @"minCompatibleAPIVersion"));
+                self = -[HKClinicalGateway initWithExternalID:title:subtitle:displayableDescription:phoneNumber:informationURL:passwordResetURL:patientPortalURL:signupURL:status:type:brand:country:baseURL:FHIRVersion:authSchemas:resourceSchemas:features:gatewayVersions:minCompatibleAPIVersion:](self, "initWithExternalID:title:subtitle:displayableDescription:phoneNumber:informationURL:passwordResetURL:patientPortalURL:signupURL:status:type:brand:country:baseURL:FHIRVersion:authSchemas:resourceSchemas:features:gatewayVersions:minCompatibleAPIVersion:", v6, v7, v25, v24, v23, v20, v22, v21, v19, [coderCopy decodeIntegerForKey:@"status"], objc_msgSend(coderCopy, "decodeIntegerForKey:", @"type"), v5, v8, v31, v30, v28, v33, v32, v18, objc_msgSend(coderCopy, "decodeIntegerForKey:", @"minCompatibleAPIVersion"));
 
-                v16 = self;
+                selfCopy = self;
               }
 
               else
               {
                 v14 = v13;
-                [v4 hrs_failWithCocoaValueNotFoundError];
-                v16 = 0;
+                [coderCopy hrs_failWithCocoaValueNotFoundError];
+                selfCopy = 0;
                 v11 = v30;
                 v15 = v28;
               }
@@ -424,46 +424,46 @@ LABEL_14:
 
             else
             {
-              [v4 hrs_failWithCocoaValueNotFoundError];
-              v16 = 0;
+              [coderCopy hrs_failWithCocoaValueNotFoundError];
+              selfCopy = 0;
             }
           }
 
           else
           {
-            [v4 hrs_failWithCocoaValueNotFoundError];
-            v16 = 0;
+            [coderCopy hrs_failWithCocoaValueNotFoundError];
+            selfCopy = 0;
           }
         }
 
         else
         {
-          [v4 hrs_failWithCocoaValueNotFoundError];
-          v16 = 0;
+          [coderCopy hrs_failWithCocoaValueNotFoundError];
+          selfCopy = 0;
         }
       }
 
       else
       {
-        [v4 hrs_failWithCocoaValueNotFoundError];
-        v16 = 0;
+        [coderCopy hrs_failWithCocoaValueNotFoundError];
+        selfCopy = 0;
       }
     }
 
     else
     {
-      [v4 hrs_failWithCocoaValueNotFoundError];
-      v16 = 0;
+      [coderCopy hrs_failWithCocoaValueNotFoundError];
+      selfCopy = 0;
     }
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v16 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (void)isNewerGatewayVersionOfGateway:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

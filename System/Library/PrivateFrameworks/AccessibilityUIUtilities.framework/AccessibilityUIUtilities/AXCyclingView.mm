@@ -12,8 +12,8 @@
 
 - (void)beginCycling
 {
-  v3 = [(AXCyclingView *)self viewsInCycle];
-  v4 = [v3 count];
+  viewsInCycle = [(AXCyclingView *)self viewsInCycle];
+  v4 = [viewsInCycle count];
 
   if (v4 >= 2)
   {
@@ -36,9 +36,9 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(AXCyclingView *)self window];
+  window = [(AXCyclingView *)self window];
 
-  if (!v3)
+  if (!window)
   {
     v4 = MEMORY[0x1E69E58C0];
 
@@ -48,8 +48,8 @@
 
 - (void)_updateForCycleIndex
 {
-  v3 = [(AXCyclingView *)self viewsInCycle];
-  v4 = [v3 count];
+  viewsInCycle = [(AXCyclingView *)self viewsInCycle];
+  v4 = [viewsInCycle count];
 
   if (v4)
   {
@@ -65,23 +65,23 @@
         v6 = 0.0;
       }
 
-      v7 = [(AXCyclingView *)self viewsInCycle];
-      v8 = [v7 objectAtIndexedSubscript:i];
+      viewsInCycle2 = [(AXCyclingView *)self viewsInCycle];
+      v8 = [viewsInCycle2 objectAtIndexedSubscript:i];
       [v8 setAlpha:v6];
 
-      v9 = [(AXCyclingView *)self delegate];
-      if (v9)
+      delegate = [(AXCyclingView *)self delegate];
+      if (delegate)
       {
-        v10 = v9;
-        v11 = [(AXCyclingView *)self delegate];
+        v10 = delegate;
+        delegate2 = [(AXCyclingView *)self delegate];
         v12 = objc_opt_respondsToSelector();
 
         if (v12)
         {
-          v13 = [(AXCyclingView *)self delegate];
-          v14 = [(AXCyclingView *)self viewsInCycle];
-          v15 = [v14 objectAtIndexedSubscript:i];
-          [v13 cyclingViewDidPresentView:v15];
+          delegate3 = [(AXCyclingView *)self delegate];
+          viewsInCycle3 = [(AXCyclingView *)self viewsInCycle];
+          v15 = [viewsInCycle3 objectAtIndexedSubscript:i];
+          [delegate3 cyclingViewDidPresentView:v15];
         }
       }
     }
@@ -92,11 +92,11 @@
 {
   [(AXCyclingView *)self setIsMakingNextViewVisible:1];
   [(AXCyclingView *)self setCycleIndex:[(AXCyclingView *)self cycleIndex]+ 1];
-  v3 = [(AXCyclingView *)self cycleIndex];
-  v4 = [(AXCyclingView *)self viewsInCycle];
-  v5 = [v4 count];
+  cycleIndex = [(AXCyclingView *)self cycleIndex];
+  viewsInCycle = [(AXCyclingView *)self viewsInCycle];
+  v5 = [viewsInCycle count];
 
-  if (v3 >= v5)
+  if (cycleIndex >= v5)
   {
     [(AXCyclingView *)self setCycleIndex:0];
   }

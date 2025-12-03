@@ -1,14 +1,14 @@
 @interface APRotatingIdentifier
 - (APRotatingIdentifier)init;
-- (APRotatingIdentifier)initWithValue:(id)a3 type:(int64_t)a4 source:(int64_t)a5 expirationDate:(id)a6 processId:(id)a7;
+- (APRotatingIdentifier)initWithValue:(id)value type:(int64_t)type source:(int64_t)source expirationDate:(id)date processId:(id)id;
 - (NSDate)expirationDate;
 - (NSString)processId;
 - (NSString)value;
 - (int64_t)type;
-- (void)setExpirationDate:(id)a3;
-- (void)setProcessId:(id)a3;
-- (void)setType:(int64_t)a3;
-- (void)setValue:(id)a3;
+- (void)setExpirationDate:(id)date;
+- (void)setProcessId:(id)id;
+- (void)setType:(int64_t)type;
+- (void)setValue:(id)value;
 @end
 
 @implementation APRotatingIdentifier
@@ -25,7 +25,7 @@
   return v5;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v4 = sub_1BB014B48();
   v6 = v5;
@@ -43,11 +43,11 @@
   return *(self + v3);
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   v5 = OBJC_IVAR___APRotatingIdentifier_type;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (NSDate)expirationDate
@@ -66,7 +66,7 @@
   return v10;
 }
 
-- (void)setExpirationDate:(id)a3
+- (void)setExpirationDate:(id)date
 {
   v4 = sub_1BB014398();
   v5 = *(v4 - 8);
@@ -77,7 +77,7 @@
   v10 = OBJC_IVAR___APRotatingIdentifier_expirationDate;
   swift_beginAccess();
   v11 = *(v5 + 40);
-  v12 = self;
+  selfCopy = self;
   v11(self + v10, v9, v4);
   swift_endAccess();
 }
@@ -92,7 +92,7 @@
   return v4;
 }
 
-- (void)setProcessId:(id)a3
+- (void)setProcessId:(id)id
 {
   v4 = sub_1BB014B48();
   v5 = (self + OBJC_IVAR___APRotatingIdentifier_processId);
@@ -101,7 +101,7 @@
   v5[1] = v7;
 }
 
-- (APRotatingIdentifier)initWithValue:(id)a3 type:(int64_t)a4 source:(int64_t)a5 expirationDate:(id)a6 processId:(id)a7
+- (APRotatingIdentifier)initWithValue:(id)value type:(int64_t)type source:(int64_t)source expirationDate:(id)date processId:(id)id
 {
   ObjectType = swift_getObjectType();
   v10 = sub_1BB014398();
@@ -117,8 +117,8 @@
   v22 = (self + OBJC_IVAR___APRotatingIdentifier_value);
   *v22 = v16;
   v22[1] = v18;
-  *(self + OBJC_IVAR___APRotatingIdentifier_type) = a4;
-  *(self + OBJC_IVAR___APRotatingIdentifier_source) = a5;
+  *(self + OBJC_IVAR___APRotatingIdentifier_type) = type;
+  *(self + OBJC_IVAR___APRotatingIdentifier_source) = source;
   (*(v11 + 16))(self + OBJC_IVAR___APRotatingIdentifier_expirationDate, v15, v10);
   v23 = (self + OBJC_IVAR___APRotatingIdentifier_processId);
   *v23 = v19;

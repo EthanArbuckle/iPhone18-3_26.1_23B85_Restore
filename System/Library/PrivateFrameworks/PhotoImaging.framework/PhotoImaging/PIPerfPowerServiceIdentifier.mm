@@ -1,15 +1,15 @@
 @interface PIPerfPowerServiceIdentifier
 + (id)genEditIdentifier;
 - (PIPerfPowerServiceIdentifier)init;
-- (PIPerfPowerServiceIdentifier)initWithIdentifier:(PPSTelemetryIdentifier *)a3;
+- (PIPerfPowerServiceIdentifier)initWithIdentifier:(PPSTelemetryIdentifier *)identifier;
 @end
 
 @implementation PIPerfPowerServiceIdentifier
 
-- (PIPerfPowerServiceIdentifier)initWithIdentifier:(PPSTelemetryIdentifier *)a3
+- (PIPerfPowerServiceIdentifier)initWithIdentifier:(PPSTelemetryIdentifier *)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!identifier)
   {
     v5 = NUAssertLogger_16186();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -31,8 +31,8 @@
         v13 = dispatch_get_specific(*v7);
         v14 = MEMORY[0x1E696AF00];
         v15 = v13;
-        v16 = [v14 callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v14 callStackSymbols];
+        v17 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v20 = v13;
         v21 = 2114;
@@ -43,8 +43,8 @@
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v20 = v12;
       _os_log_error_impl(&dword_1C7694000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -56,7 +56,7 @@
   v18.receiver = self;
   v18.super_class = PIPerfPowerServiceIdentifier;
   result = [(PIPerfPowerServiceIdentifier *)&v18 init];
-  result->_telemetryId = a3;
+  result->_telemetryId = identifier;
   return result;
 }
 
@@ -101,8 +101,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -129,8 +129,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -154,7 +154,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __49__PIPerfPowerServiceIdentifier_genEditIdentifier__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (genEditIdentifier_onceToken != -1)
   {
     dispatch_once(&genEditIdentifier_onceToken, block);

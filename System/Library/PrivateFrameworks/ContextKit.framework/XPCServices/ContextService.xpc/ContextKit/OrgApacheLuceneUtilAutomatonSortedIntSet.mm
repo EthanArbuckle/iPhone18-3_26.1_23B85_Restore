@@ -1,35 +1,35 @@
 @interface OrgApacheLuceneUtilAutomatonSortedIntSet
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)freezeWithInt:(int)a3;
+- (id)freezeWithInt:(int)int;
 - (void)computeHash;
 - (void)dealloc;
-- (void)decrWithInt:(int)a3;
+- (void)decrWithInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneUtilAutomatonSortedIntSet
 
-- (void)decrWithInt:(int)a3
+- (void)decrWithInt:(int)int
 {
   if (self->useTreeMap_)
   {
     map = self->map_;
     if (map)
     {
-      v6 = [(JavaUtilMap *)map getWithId:JavaLangInteger_valueOfWithInt_(a3)];
+      v6 = [(JavaUtilMap *)map getWithId:JavaLangInteger_valueOfWithInt_(int)];
       if (v6)
       {
-        v7 = [v6 intValue];
+        intValue = [v6 intValue];
         v8 = self->map_;
-        v9 = JavaLangInteger_valueOfWithInt_(a3);
-        if (v7 == 1)
+        v9 = JavaLangInteger_valueOfWithInt_(int);
+        if (intValue == 1)
         {
           [(JavaUtilMap *)v8 removeWithId:v9];
         }
 
         else
         {
-          [(JavaUtilMap *)v8 putWithId:v9 withId:JavaLangInteger_valueOfWithInt_(v7 - 1)];
+          [(JavaUtilMap *)v8 putWithId:v9 withId:JavaLangInteger_valueOfWithInt_(intValue - 1)];
         }
 
         if (![(JavaUtilMap *)self->map_ size])
@@ -66,7 +66,7 @@ LABEL_34:
       IOSArray_throwOutOfBoundsWithMsg(size, v10);
     }
 
-    if (*(&values->super.size_ + v10 + 1) == a3)
+    if (*(&values->super.size_ + v10 + 1) == int)
     {
       break;
     }
@@ -208,14 +208,14 @@ LABEL_28:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v14 = [(JavaUtilMap *)self->map_ keySet];
-  if (!v14)
+  keySet = [(JavaUtilMap *)self->map_ keySet];
+  if (!keySet)
   {
     goto LABEL_28;
   }
 
-  v15 = v14;
-  v16 = [v14 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  v15 = keySet;
+  v16 = [keySet countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v16)
   {
     v17 = v16;
@@ -236,8 +236,8 @@ LABEL_28:
           goto LABEL_28;
         }
 
-        v21 = [v20 intValue];
-        self->hashCode_ = v21 + 683 * self->hashCode_;
+        intValue = [v20 intValue];
+        self->hashCode_ = intValue + 683 * self->hashCode_;
         v22 = self->values_;
         v23 = self->upto_;
         self->upto_ = v23 + 1;
@@ -247,7 +247,7 @@ LABEL_28:
           IOSArray_throwOutOfBoundsWithMsg(v24, v23);
         }
 
-        *(&v22->super.size_ + v23 + 1) = v21;
+        *(&v22->super.size_ + v23 + 1) = intValue;
         v19 = v19 + 1;
       }
 
@@ -260,7 +260,7 @@ LABEL_28:
   }
 }
 
-- (id)freezeWithInt:(int)a3
+- (id)freezeWithInt:(int)int
 {
   v5 = [IOSIntArray arrayWithLength:self->upto_];
   JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(self->values_, 0, v5, 0, self->upto_);
@@ -268,14 +268,14 @@ LABEL_28:
   v7 = [OrgApacheLuceneUtilAutomatonSortedIntSet_FrozenIntSet alloc];
   JreStrongAssign(&v7->values_, v5);
   v7->hashCode_ = hashCode;
-  v7->state_ = a3;
+  v7->state_ = int;
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -292,12 +292,12 @@ LABEL_28:
     JreThrowClassCastException();
   }
 
-  if (self->hashCode_ != *(a3 + 4))
+  if (self->hashCode_ != *(equal + 4))
   {
     return 0;
   }
 
-  v5 = *(a3 + 1);
+  v5 = *(equal + 1);
   if (!v5)
   {
     goto LABEL_20;
@@ -314,7 +314,7 @@ LABEL_28:
     v7 = 0;
     while (1)
     {
-      v8 = *(a3 + 1);
+      v8 = *(equal + 1);
       v9 = *(v8 + 8);
       if (v7 >= v9)
       {

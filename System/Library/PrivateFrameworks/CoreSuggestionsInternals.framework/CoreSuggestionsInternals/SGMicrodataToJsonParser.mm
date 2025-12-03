@@ -1,20 +1,20 @@
 @interface SGMicrodataToJsonParser
-+ (id)parseMicrodataToJsonLd:(id)a3 error:(id *)a4;
++ (id)parseMicrodataToJsonLd:(id)ld error:(id *)error;
 @end
 
 @implementation SGMicrodataToJsonParser
 
-+ (id)parseMicrodataToJsonLd:(id)a3 error:(id *)a4
++ (id)parseMicrodataToJsonLd:(id)ld error:(id *)error
 {
-  v5 = a3;
+  ldCopy = ld;
   v6 = objc_autoreleasePoolPush();
-  v7 = [SGMicrodataParser parse:v5];
-  v8 = [v7 asJsonLd];
+  v7 = [SGMicrodataParser parse:ldCopy];
+  asJsonLd = [v7 asJsonLd];
 
   objc_autoreleasePoolPop(v6);
-  if ([v8 count])
+  if ([asJsonLd count])
   {
-    v9 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v8 options:1 error:a4];
+    v9 = [MEMORY[0x277CCAAA0] dataWithJSONObject:asJsonLd options:1 error:error];
     if (v9)
     {
       v10 = v9;

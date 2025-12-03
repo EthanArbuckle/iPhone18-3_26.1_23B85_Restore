@@ -1,10 +1,10 @@
 @interface EQKitMathMLMTd
 - (BOOL)isBaseFontNameUsed;
 - (EQKitMathMLMTd)init;
-- (EQKitMathMLMTd)initWithChildren:(id)a3 node:(_xmlNode *)a4;
+- (EQKitMathMLMTd)initWithChildren:(id)children node:(_xmlNode *)node;
 - (NSString)description;
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (void)dealloc;
 @end
 
@@ -12,26 +12,26 @@
 
 - (EQKitMathMLMTd)init
 {
-  v3 = [MEMORY[0x277CBEA60] array];
+  array = [MEMORY[0x277CBEA60] array];
 
-  return [(EQKitMathMLMTd *)self initWithChildren:v3];
+  return [(EQKitMathMLMTd *)self initWithChildren:array];
 }
 
-- (EQKitMathMLMTd)initWithChildren:(id)a3 node:(_xmlNode *)a4
+- (EQKitMathMLMTd)initWithChildren:(id)children node:(_xmlNode *)node
 {
   v18 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = EQKitMathMLMTd;
-  v5 = [(EQKitMathMLMTd *)&v16 init:a3];
+  v5 = [(EQKitMathMLMTd *)&v16 init:children];
   if (v5)
   {
-    v6 = a3;
-    v5->mChildren = v6;
+    childrenCopy = children;
+    v5->mChildren = childrenCopy;
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    v7 = [(NSArray *)childrenCopy countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -43,14 +43,14 @@
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(childrenCopy);
           }
 
           [*(*(&v12 + 1) + 8 * v10++) setParent:v5];
         }
 
         while (v8 != v10);
-        v8 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v8 = [(NSArray *)childrenCopy countByEnumeratingWithState:&v12 objects:v17 count:16];
       }
 
       while (v8);
@@ -60,13 +60,13 @@
   return v5;
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  [a4 pushState:0];
-  v7 = [a4 parseChildrenAsArrayFromXMLNode:a3];
-  [a4 popState];
+  [parser pushState:0];
+  v7 = [parser parseChildrenAsArrayFromXMLNode:node];
+  [parser popState];
 
-  return [(EQKitMathMLMTd *)self initWithChildren:v7 node:a3];
+  return [(EQKitMathMLMTd *)self initWithChildren:v7 node:node];
 }
 
 - (const)mathMLAttributes

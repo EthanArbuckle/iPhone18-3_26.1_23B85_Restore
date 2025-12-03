@@ -1,33 +1,33 @@
 @interface PXCMMStatusController
 - (PXCMMStatusController)init;
-- (PXCMMStatusController)initWithStatusPresentation:(id)a3 viewModel:(id)a4;
-- (void)_updateWithChangeDescriptor:(unint64_t)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (PXCMMStatusController)initWithStatusPresentation:(id)presentation viewModel:(id)model;
+- (void)_updateWithChangeDescriptor:(unint64_t)descriptor;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXCMMStatusController
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (PXMomentShareStatusPresentationChangeObserverContext != a5)
+  observableCopy = observable;
+  if (PXMomentShareStatusPresentationChangeObserverContext != context)
   {
-    v12 = v9;
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXCMMStatusController.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"context == PXMomentShareStatusPresentationChangeObserverContext"}];
+    v12 = observableCopy;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMStatusController.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"context == PXMomentShareStatusPresentationChangeObserverContext"}];
 
-    v9 = v12;
+    observableCopy = v12;
   }
 
-  if ((a4 & 0x7E8) != 0)
+  if ((change & 0x7E8) != 0)
   {
-    v11 = v9;
-    [(PXCMMStatusController *)self _updateWithChangeDescriptor:a4];
-    v9 = v11;
+    v11 = observableCopy;
+    [(PXCMMStatusController *)self _updateWithChangeDescriptor:change];
+    observableCopy = v11;
   }
 }
 
-- (void)_updateWithChangeDescriptor:(unint64_t)a3
+- (void)_updateWithChangeDescriptor:(unint64_t)descriptor
 {
   viewModel = self->_viewModel;
   v4[0] = MEMORY[0x1E69E9820];
@@ -35,7 +35,7 @@
   v4[2] = __53__PXCMMStatusController__updateWithChangeDescriptor___block_invoke;
   v4[3] = &unk_1E77480A0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = descriptor;
   [(PXStatusViewModel *)viewModel performChanges:v4];
 }
 
@@ -143,14 +143,14 @@ LABEL_8:
 LABEL_9:
 }
 
-- (PXCMMStatusController)initWithStatusPresentation:(id)a3 viewModel:(id)a4
+- (PXCMMStatusController)initWithStatusPresentation:(id)presentation viewModel:(id)model
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  presentationCopy = presentation;
+  modelCopy = model;
+  v10 = modelCopy;
+  if (presentationCopy)
   {
-    if (v9)
+    if (modelCopy)
     {
       goto LABEL_3;
     }
@@ -158,8 +158,8 @@ LABEL_9:
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXCMMStatusController.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"statusPresentation"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMStatusController.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"statusPresentation"}];
 
     if (v10)
     {
@@ -167,8 +167,8 @@ LABEL_9:
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"PXCMMStatusController.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCMMStatusController.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -177,9 +177,9 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_statusPresentation, a3);
+    objc_storeStrong(&v11->_statusPresentation, presentation);
     [(PXMomentShareStatusPresentation *)v12->_statusPresentation registerChangeObserver:v12 context:PXMomentShareStatusPresentationChangeObserverContext];
-    objc_storeStrong(&v12->_viewModel, a4);
+    objc_storeStrong(&v12->_viewModel, model);
     [(PXCMMStatusController *)v12 _updateWithChangeDescriptor:-1];
   }
 
@@ -188,8 +188,8 @@ LABEL_3:
 
 - (PXCMMStatusController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCMMStatusController.m" lineNumber:26 description:{@"%s is not available as initializer", "-[PXCMMStatusController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMStatusController.m" lineNumber:26 description:{@"%s is not available as initializer", "-[PXCMMStatusController init]"}];
 
   abort();
 }

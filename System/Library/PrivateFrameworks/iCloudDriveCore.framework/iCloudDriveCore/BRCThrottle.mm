@@ -1,20 +1,20 @@
 @interface BRCThrottle
-+ (int64_t)throttleHashBytes:(void *)a3 length:(unint64_t)a4;
-+ (int64_t)throttleHashFormat:(id)a3;
-- (BRCThrottle)initWithName:(id)a3 andParameters:(id)a4;
-- (int64_t)nsecsToNextRetry:(int64_t)a3 now:(int64_t)a4 increment:(BOOL)a5;
-- (void)_cleanupStaleCounters:(int64_t)a3;
-- (void)incrementRetryCount:(int64_t)a3;
++ (int64_t)throttleHashBytes:(void *)bytes length:(unint64_t)length;
++ (int64_t)throttleHashFormat:(id)format;
+- (BRCThrottle)initWithName:(id)name andParameters:(id)parameters;
+- (int64_t)nsecsToNextRetry:(int64_t)retry now:(int64_t)now increment:(BOOL)increment;
+- (void)_cleanupStaleCounters:(int64_t)counters;
+- (void)incrementRetryCount:(int64_t)count;
 - (void)reset;
 @end
 
 @implementation BRCThrottle
 
-- (BRCThrottle)initWithName:(id)a3 andParameters:(id)a4
+- (BRCThrottle)initWithName:(id)name andParameters:(id)parameters
 {
   v10.receiver = self;
   v10.super_class = BRCThrottle;
-  v4 = [(BRCThrottleBase *)&v10 initWithName:a3 andParameters:a4];
+  v4 = [(BRCThrottleBase *)&v10 initWithName:name andParameters:parameters];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:32];
@@ -46,17 +46,17 @@ uint64_t __42__BRCThrottle_initWithName_andParameters___block_invoke(uint64_t a1
   }
 }
 
-- (void)_cleanupStaleCounters:(int64_t)a3
+- (void)_cleanupStaleCounters:(int64_t)counters
 {
   nsecsBeforeForgettingCounter = self->super._nsecsBeforeForgettingCounter;
-  v6 = [(BRCMinHeap *)self->_retryHeap firstObject];
-  if (v6)
+  firstObject = [(BRCMinHeap *)self->_retryHeap firstObject];
+  if (firstObject)
   {
-    v7 = a3 - nsecsBeforeForgettingCounter;
+    v7 = counters - nsecsBeforeForgettingCounter;
     while (1)
     {
-      v11 = v6;
-      if ([v6 latestRetry] >= v7 && -[BRCMinHeap count](self->_retryHeap, "count") <= self->super._maximumElementCount)
+      v11 = firstObject;
+      if ([firstObject latestRetry] >= v7 && -[BRCMinHeap count](self->_retryHeap, "count") <= self->super._maximumElementCount)
       {
         break;
       }
@@ -66,25 +66,25 @@ uint64_t __42__BRCThrottle_initWithName_andParameters___block_invoke(uint64_t a1
       v9 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v11, "throttleHash")}];
       [(NSMutableDictionary *)retryCounters removeObjectForKey:v9];
 
-      v10 = [(BRCMinHeap *)self->_retryHeap firstObject];
+      firstObject2 = [(BRCMinHeap *)self->_retryHeap firstObject];
 
-      v6 = v10;
-      if (!v10)
+      firstObject = firstObject2;
+      if (!firstObject2)
       {
         goto LABEL_9;
       }
     }
 
-    v6 = v11;
+    firstObject = v11;
 LABEL_9:
   }
 }
 
-- (void)incrementRetryCount:(int64_t)a3
+- (void)incrementRetryCount:(int64_t)count
 {
   obj = self;
   objc_sync_enter(obj);
-  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:count];
   v5 = [(NSMutableDictionary *)obj->_retryCounters objectForKeyedSubscript:v4];
   v6 = v5;
   if (v5)
@@ -95,7 +95,7 @@ LABEL_9:
 
   else
   {
-    v6 = [[BRCRetryCounter alloc] initWithThrottleHash:a3];
+    v6 = [[BRCRetryCounter alloc] initWithThrottleHash:count];
     [(NSMutableDictionary *)obj->_retryCounters setObject:v6 forKeyedSubscript:v4];
     [(BRCMinHeap *)obj->_retryHeap addObject:v6];
   }
@@ -103,26 +103,26 @@ LABEL_9:
   objc_sync_exit(obj);
 }
 
-- (int64_t)nsecsToNextRetry:(int64_t)a3 now:(int64_t)a4 increment:(BOOL)a5
+- (int64_t)nsecsToNextRetry:(int64_t)retry now:(int64_t)now increment:(BOOL)increment
 {
-  v5 = a5;
+  incrementCopy = increment;
   v32 = *MEMORY[0x277D85DE8];
-  v8 = self;
-  objc_sync_enter(v8);
-  [(BRCThrottle *)v8 _cleanupStaleCounters:a4];
-  retryCounters = v8->_retryCounters;
-  v10 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(BRCThrottle *)selfCopy _cleanupStaleCounters:now];
+  retryCounters = selfCopy->_retryCounters;
+  v10 = [MEMORY[0x277CCABB0] numberWithLongLong:retry];
   v11 = [(NSMutableDictionary *)retryCounters objectForKeyedSubscript:v10];
 
   [v11 schedule];
-  v23 = [v11 retryCount];
-  objc_sync_exit(v8);
+  retryCount = [v11 retryCount];
+  objc_sync_exit(selfCopy);
 
-  v12 = -[BRCThrottleBase nsecsToNextRetry:retryCount:now:](v8, "nsecsToNextRetry:retryCount:now:", [v11 latestRetry], &v23, a4);
-  LODWORD(v10) = v23;
-  if (v10 > [v11 retryCount] && v5)
+  v12 = -[BRCThrottleBase nsecsToNextRetry:retryCount:now:](selfCopy, "nsecsToNextRetry:retryCount:now:", [v11 latestRetry], &retryCount, now);
+  LODWORD(v10) = retryCount;
+  if (v10 > [v11 retryCount] && incrementCopy)
   {
-    [(BRCThrottle *)v8 incrementRetryCount:a3];
+    [(BRCThrottle *)selfCopy incrementRetryCount:retry];
   }
 
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
@@ -131,13 +131,13 @@ LABEL_9:
     v15 = brc_default_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      name = v8->super._name;
+      name = selfCopy->super._name;
       *buf = 138413058;
       v25 = name;
       v26 = 2048;
-      v27 = a3;
+      retryCopy2 = retry;
       v28 = 1024;
-      *v29 = v23;
+      *v29 = retryCount;
       *&v29[4] = 2112;
       *&v29[6] = v14;
       v17 = "[DEBUG] gave up on %@/%llx (retry-count:%u)%@";
@@ -157,15 +157,15 @@ LABEL_14:
     v15 = brc_default_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v22 = v8->super._name;
+      v22 = selfCopy->super._name;
       *buf = 138413314;
       v25 = v22;
       v26 = 2048;
-      v27 = a3;
+      retryCopy2 = retry;
       v28 = 2048;
       *v29 = v12 / 0xF4240uLL;
       *&v29[8] = 1024;
-      *&v29[10] = v23;
+      *&v29[10] = retryCount;
       v30 = 2112;
       v31 = v14;
       v17 = "[DEBUG] backing off %@/%llx for %llu milliseconds (retry-count:%u)%@";
@@ -184,15 +184,15 @@ LABEL_11:
 - (void)reset
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  [(BRCMinHeap *)v2->_retryHeap removeAllObjects];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(BRCMinHeap *)selfCopy->_retryHeap removeAllObjects];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)v2->_retryCounters allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allKeys = [(NSMutableDictionary *)selfCopy->_retryCounters allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -203,32 +203,32 @@ LABEL_11:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v7 = *(*(&v10 + 1) + 8 * v6);
         v8 = -[BRCRetryCounter initWithThrottleHash:]([BRCRetryCounter alloc], "initWithThrottleHash:", [v7 unsignedLongLongValue]);
-        [(NSMutableDictionary *)v2->_retryCounters setObject:v8 forKeyedSubscript:v7];
-        [(BRCMinHeap *)v2->_retryHeap addObject:v8];
+        [(NSMutableDictionary *)selfCopy->_retryCounters setObject:v8 forKeyedSubscript:v7];
+        [(BRCMinHeap *)selfCopy->_retryHeap addObject:v8];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (int64_t)throttleHashFormat:(id)a3
++ (int64_t)throttleHashFormat:(id)format
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  formatCopy = format;
   v34 = 0;
   v33 = 0;
   v31 = 0;
@@ -236,12 +236,12 @@ LABEL_11:
   v30 = 0;
   memset(&c, 0, sizeof(c));
   CC_SHA1_Init(&c);
-  v4 = [v3 UTF8String];
+  uTF8String = [formatCopy UTF8String];
   v34 = &v37;
-  v5 = *v4;
-  if (*v4)
+  v5 = *uTF8String;
+  if (*uTF8String)
   {
-    j = v4;
+    j = uTF8String;
     while (1)
     {
       v7 = 0;
@@ -290,7 +290,7 @@ LABEL_11:
           if (v10 == 115)
           {
             v14 = v34++;
-            v15 = *v14;
+            uTF8String2 = *v14;
           }
 
           else
@@ -323,12 +323,12 @@ LABEL_20:
             }
 
             v16 = v34++;
-            v15 = [*v16 UTF8String];
+            uTF8String2 = [*v16 UTF8String];
           }
 
-          if (v15)
+          if (uTF8String2)
           {
-            v17 = v15;
+            v17 = uTF8String2;
           }
 
           else
@@ -336,9 +336,9 @@ LABEL_20:
             v17 = "NULL";
           }
 
-          if (v15)
+          if (uTF8String2)
           {
-            v13 = strlen(v15);
+            v13 = strlen(uTF8String2);
           }
 
           else
@@ -399,13 +399,13 @@ LABEL_40:
   return v26;
 }
 
-+ (int64_t)throttleHashBytes:(void *)a3 length:(unint64_t)a4
++ (int64_t)throttleHashBytes:(void *)bytes length:(unint64_t)length
 {
-  v4 = a4;
+  lengthCopy = length;
   v10 = *MEMORY[0x277D85DE8];
   memset(&v8, 0, sizeof(v8));
   CC_SHA1_Init(&v8);
-  CC_SHA1_Update(&v8, a3, v4);
+  CC_SHA1_Update(&v8, bytes, lengthCopy);
   CC_SHA1_Final(md, &v8);
   result = *md;
   v7 = *MEMORY[0x277D85DE8];

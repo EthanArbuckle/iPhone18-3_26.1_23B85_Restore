@@ -6,7 +6,7 @@
 
 - (id)localLightHDRStatisticsNoProxy
 {
-  v1 = MEMORY[0x1EEE9AC00](a1);
+  v1 = MEMORY[0x1EEE9AC00](self);
   v66[256] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E695F620];
   v3 = *MEMORY[0x1E695F830];
@@ -31,11 +31,11 @@
   v15 = v14;
   v16 = 4 * v13;
   v17 = [MEMORY[0x1E695DF88] dataWithLength:4 * v13 * v14];
-  v18 = [v17 bytes];
-  v19 = [v17 mutableBytes];
+  bytes = [v17 bytes];
+  mutableBytes = [v17 mutableBytes];
   v50 = v6;
   v51 = v7;
-  [v7 render:v6 toBitmap:v19 rowBytes:4 * v13 bounds:*MEMORY[0x1E695F910] format:0 colorSpace:{x, y, width, height}];
+  [v7 render:v6 toBitmap:mutableBytes rowBytes:4 * v13 bounds:*MEMORY[0x1E695F910] format:0 colorSpace:{x, y, width, height}];
   v20 = 0;
   v21 = 0;
   LODWORD(v22) = 0;
@@ -44,7 +44,7 @@
   v60 = vcvtas_u32_f32(v13 / 31.0);
   v55 = v15;
   v53 = v15 - 1;
-  v24 = v18 + 2;
+  v24 = bytes + 2;
   v52 = 4 * v13 * v23;
   v54 = v23;
   do

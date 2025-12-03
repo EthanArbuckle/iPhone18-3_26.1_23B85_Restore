@@ -1,12 +1,12 @@
 @interface CaptureGestureRecognizer
-- (_TtC16ScreenSharingKit24CaptureGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtC16ScreenSharingKit24CaptureGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 @end
 
 @implementation CaptureGestureRecognizer
 
-- (_TtC16ScreenSharingKit24CaptureGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC16ScreenSharingKit24CaptureGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_264B41664();

@@ -1,45 +1,45 @@
 @interface CAARSchemaCAARActionFeatureSet
-- (BOOL)isEqual:(id)a3;
-- (CAARSchemaCAARActionFeatureSet)initWithDictionary:(id)a3;
-- (CAARSchemaCAARActionFeatureSet)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CAARSchemaCAARActionFeatureSet)initWithDictionary:(id)dictionary;
+- (CAARSchemaCAARActionFeatureSet)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAppNameMentioned:(BOOL)a3;
-- (void)setHasDomainProtectionLevel:(BOOL)a3;
-- (void)setHasEntitySaliencyMaxScore:(BOOL)a3;
-- (void)setHasEntityTypeMentioned:(BOOL)a3;
-- (void)setHasIsAmbiguousFirstRunPreviouslyShown:(BOOL)a3;
-- (void)setHasIsAppInForeground:(BOOL)a3;
-- (void)setHasIsAutoShortcutEnabled:(BOOL)a3;
-- (void)setHasIsAutoshortcut:(BOOL)a3;
-- (void)setHasIsAutoshortcutAppOnScreen:(BOOL)a3;
-- (void)setHasIsColdOpenAllowlist:(BOOL)a3;
-- (void)setHasIsDefaultLinkAction:(BOOL)a3;
-- (void)setHasIsInterpretableAsUniversalCommand:(BOOL)a3;
-- (void)setHasIsLinkAction:(BOOL)a3;
-- (void)setHasIsLinkActionOnScreen:(BOOL)a3;
-- (void)setHasIsTopRankedParse:(BOOL)a3;
-- (void)setHasIsTopRankedPlugin:(BOOL)a3;
-- (void)setHasIsVocabNameMatch:(BOOL)a3;
-- (void)setHasNlParseProbability:(BOOL)a3;
-- (void)setHasNumSalientEntities:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAppNameMentioned:(BOOL)mentioned;
+- (void)setHasDomainProtectionLevel:(BOOL)level;
+- (void)setHasEntitySaliencyMaxScore:(BOOL)score;
+- (void)setHasEntityTypeMentioned:(BOOL)mentioned;
+- (void)setHasIsAmbiguousFirstRunPreviouslyShown:(BOOL)shown;
+- (void)setHasIsAppInForeground:(BOOL)foreground;
+- (void)setHasIsAutoShortcutEnabled:(BOOL)enabled;
+- (void)setHasIsAutoshortcut:(BOOL)autoshortcut;
+- (void)setHasIsAutoshortcutAppOnScreen:(BOOL)screen;
+- (void)setHasIsColdOpenAllowlist:(BOOL)allowlist;
+- (void)setHasIsDefaultLinkAction:(BOOL)action;
+- (void)setHasIsInterpretableAsUniversalCommand:(BOOL)command;
+- (void)setHasIsLinkAction:(BOOL)action;
+- (void)setHasIsLinkActionOnScreen:(BOOL)screen;
+- (void)setHasIsTopRankedParse:(BOOL)parse;
+- (void)setHasIsTopRankedPlugin:(BOOL)plugin;
+- (void)setHasIsVocabNameMatch:(BOOL)match;
+- (void)setHasNlParseProbability:(BOOL)probability;
+- (void)setHasNumSalientEntities:(BOOL)entities;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CAARSchemaCAARActionFeatureSet
 
-- (CAARSchemaCAARActionFeatureSet)initWithDictionary:(id)a3
+- (CAARSchemaCAARActionFeatureSet)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v61.receiver = self;
   v61.super_class = CAARSchemaCAARActionFeatureSet;
   v5 = [(CAARSchemaCAARActionFeatureSet *)&v61 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"actionCandidateId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"actionCandidateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,35 +47,35 @@
       [(CAARSchemaCAARActionFeatureSet *)v5 setActionCandidateId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isHighConfidence"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isHighConfidence"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARActionFeatureSet setIsHighConfidence:](v5, "setIsHighConfidence:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isAppInForeground"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isAppInForeground"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARActionFeatureSet setIsAppInForeground:](v5, "setIsAppInForeground:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"appNameMentioned"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"appNameMentioned"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARActionFeatureSet setAppNameMentioned:](v5, "setAppNameMentioned:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isTopRankedPlugin"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isTopRankedPlugin"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARActionFeatureSet setIsTopRankedPlugin:](v5, "setIsTopRankedPlugin:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"entityTypeMentioned"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"entityTypeMentioned"];
     objc_opt_class();
     v60 = v12;
     if (objc_opt_isKindOfClass())
@@ -83,7 +83,7 @@
       -[CAARSchemaCAARActionFeatureSet setEntityTypeMentioned:](v5, "setEntityTypeMentioned:", [v12 BOOLValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"isColdOpenAllowlist"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"isColdOpenAllowlist"];
     objc_opt_class();
     v59 = v13;
     if (objc_opt_isKindOfClass())
@@ -91,7 +91,7 @@
       -[CAARSchemaCAARActionFeatureSet setIsColdOpenAllowlist:](v5, "setIsColdOpenAllowlist:", [v13 BOOLValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"isLinkActionOnScreen"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"isLinkActionOnScreen"];
     objc_opt_class();
     v58 = v14;
     if (objc_opt_isKindOfClass())
@@ -99,7 +99,7 @@
       -[CAARSchemaCAARActionFeatureSet setIsLinkActionOnScreen:](v5, "setIsLinkActionOnScreen:", [v14 BOOLValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"isDefaultLinkAction"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isDefaultLinkAction"];
     objc_opt_class();
     v57 = v15;
     if (objc_opt_isKindOfClass())
@@ -107,7 +107,7 @@
       -[CAARSchemaCAARActionFeatureSet setIsDefaultLinkAction:](v5, "setIsDefaultLinkAction:", [v15 BOOLValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"isVocabNameMatch"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"isVocabNameMatch"];
     objc_opt_class();
     v56 = v16;
     if (objc_opt_isKindOfClass())
@@ -115,7 +115,7 @@
       -[CAARSchemaCAARActionFeatureSet setIsVocabNameMatch:](v5, "setIsVocabNameMatch:", [v16 BOOLValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"isLinkAction"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"isLinkAction"];
     objc_opt_class();
     v55 = v17;
     if (objc_opt_isKindOfClass())
@@ -123,7 +123,7 @@
       -[CAARSchemaCAARActionFeatureSet setIsLinkAction:](v5, "setIsLinkAction:", [v17 BOOLValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"isAutoshortcut"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"isAutoshortcut"];
     objc_opt_class();
     v54 = v18;
     if (objc_opt_isKindOfClass())
@@ -131,7 +131,7 @@
       -[CAARSchemaCAARActionFeatureSet setIsAutoshortcut:](v5, "setIsAutoshortcut:", [v18 BOOLValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"isAutoshortcutAppOnScreen"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"isAutoshortcutAppOnScreen"];
     objc_opt_class();
     v53 = v19;
     if (objc_opt_isKindOfClass())
@@ -139,7 +139,7 @@
       -[CAARSchemaCAARActionFeatureSet setIsAutoshortcutAppOnScreen:](v5, "setIsAutoshortcutAppOnScreen:", [v19 BOOLValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"entitySaliencyMaxScore"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"entitySaliencyMaxScore"];
     objc_opt_class();
     v52 = v20;
     if (objc_opt_isKindOfClass())
@@ -147,7 +147,7 @@
       -[CAARSchemaCAARActionFeatureSet setEntitySaliencyMaxScore:](v5, "setEntitySaliencyMaxScore:", [v20 unsignedIntValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"numSalientEntities"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"numSalientEntities"];
     objc_opt_class();
     v51 = v21;
     if (objc_opt_isKindOfClass())
@@ -155,7 +155,7 @@
       -[CAARSchemaCAARActionFeatureSet setNumSalientEntities:](v5, "setNumSalientEntities:", [v21 unsignedIntValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"nlParseProbability"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"nlParseProbability"];
     objc_opt_class();
     v50 = v22;
     if (objc_opt_isKindOfClass())
@@ -164,7 +164,7 @@
       [(CAARSchemaCAARActionFeatureSet *)v5 setNlParseProbability:?];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"isTopRankedParse"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"isTopRankedParse"];
     objc_opt_class();
     v49 = v23;
     if (objc_opt_isKindOfClass())
@@ -172,7 +172,7 @@
       -[CAARSchemaCAARActionFeatureSet setIsTopRankedParse:](v5, "setIsTopRankedParse:", [v23 BOOLValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"isRepeatedFlowHandlerId"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"isRepeatedFlowHandlerId"];
     objc_opt_class();
     v48 = v24;
     if (objc_opt_isKindOfClass())
@@ -180,7 +180,7 @@
       -[CAARSchemaCAARActionFeatureSet setIsRepeatedFlowHandlerId:](v5, "setIsRepeatedFlowHandlerId:", [v24 BOOLValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"appHistoryFeatures"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"appHistoryFeatures"];
     objc_opt_class();
     v47 = v25;
     if (objc_opt_isKindOfClass())
@@ -190,7 +190,7 @@
     }
 
     v45 = v8;
-    v27 = [v4 objectForKeyedSubscript:@"appLevelDisambiguationHistory"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"appLevelDisambiguationHistory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -200,7 +200,7 @@
 
     v41 = v27;
     v44 = v9;
-    v29 = [v4 objectForKeyedSubscript:@"actionLevelDisambiguationHistory"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"actionLevelDisambiguationHistory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -209,7 +209,7 @@
     }
 
     v43 = v10;
-    v31 = [v4 objectForKeyedSubscript:@"proactiveFeatures"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"proactiveFeatures"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -218,21 +218,21 @@
     }
 
     v42 = v11;
-    v33 = [v4 objectForKeyedSubscript:@"isAutoShortcutEnabled"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"isAutoShortcutEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARActionFeatureSet setIsAutoShortcutEnabled:](v5, "setIsAutoShortcutEnabled:", [v33 BOOLValue]);
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"isAmbiguousFirstRunPreviouslyShown"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"isAmbiguousFirstRunPreviouslyShown"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARActionFeatureSet setIsAmbiguousFirstRunPreviouslyShown:](v5, "setIsAmbiguousFirstRunPreviouslyShown:", [v34 BOOLValue]);
     }
 
-    v35 = [v4 objectForKeyedSubscript:@"actionIdentifier"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"actionIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -241,14 +241,14 @@
     }
 
     v46 = v6;
-    v37 = [v4 objectForKeyedSubscript:@"isInterpretableAsUniversalCommand"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"isInterpretableAsUniversalCommand"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARActionFeatureSet setIsInterpretableAsUniversalCommand:](v5, "setIsInterpretableAsUniversalCommand:", [v37 BOOLValue]);
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"domainProtectionLevel"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"domainProtectionLevel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -261,30 +261,30 @@
   return v5;
 }
 
-- (CAARSchemaCAARActionFeatureSet)initWithJSON:(id)a3
+- (CAARSchemaCAARActionFeatureSet)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CAARSchemaCAARActionFeatureSet *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CAARSchemaCAARActionFeatureSet *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CAARSchemaCAARActionFeatureSet *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -297,75 +297,75 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_actionCandidateId)
   {
-    v4 = [(CAARSchemaCAARActionFeatureSet *)self actionCandidateId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    actionCandidateId = [(CAARSchemaCAARActionFeatureSet *)self actionCandidateId];
+    dictionaryRepresentation = [actionCandidateId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"actionCandidateId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"actionCandidateId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"actionCandidateId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"actionCandidateId"];
     }
   }
 
   if (self->_actionIdentifier)
   {
-    v7 = [(CAARSchemaCAARActionFeatureSet *)self actionIdentifier];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"actionIdentifier"];
+    actionIdentifier = [(CAARSchemaCAARActionFeatureSet *)self actionIdentifier];
+    v8 = [actionIdentifier copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"actionIdentifier"];
   }
 
   if (self->_actionLevelDisambiguationHistory)
   {
-    v9 = [(CAARSchemaCAARActionFeatureSet *)self actionLevelDisambiguationHistory];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    actionLevelDisambiguationHistory = [(CAARSchemaCAARActionFeatureSet *)self actionLevelDisambiguationHistory];
+    dictionaryRepresentation2 = [actionLevelDisambiguationHistory dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"actionLevelDisambiguationHistory"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"actionLevelDisambiguationHistory"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"actionLevelDisambiguationHistory"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"actionLevelDisambiguationHistory"];
     }
   }
 
   if (self->_appHistoryFeatures)
   {
-    v12 = [(CAARSchemaCAARActionFeatureSet *)self appHistoryFeatures];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    appHistoryFeatures = [(CAARSchemaCAARActionFeatureSet *)self appHistoryFeatures];
+    dictionaryRepresentation3 = [appHistoryFeatures dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"appHistoryFeatures"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"appHistoryFeatures"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"appHistoryFeatures"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"appHistoryFeatures"];
     }
   }
 
   if (self->_appLevelDisambiguationHistory)
   {
-    v15 = [(CAARSchemaCAARActionFeatureSet *)self appLevelDisambiguationHistory];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    appLevelDisambiguationHistory = [(CAARSchemaCAARActionFeatureSet *)self appLevelDisambiguationHistory];
+    dictionaryRepresentation4 = [appLevelDisambiguationHistory dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"appLevelDisambiguationHistory"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"appLevelDisambiguationHistory"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"appLevelDisambiguationHistory"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"appLevelDisambiguationHistory"];
     }
   }
 
@@ -373,7 +373,7 @@
   if ((*&self->_has & 4) != 0)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionFeatureSet appNameMentioned](self, "appNameMentioned")}];
-    [v3 setObject:v19 forKeyedSubscript:@"appNameMentioned"];
+    [dictionary setObject:v19 forKeyedSubscript:@"appNameMentioned"];
   }
 
   if ((*(&self->_has + 2) & 0x10) != 0)
@@ -389,14 +389,14 @@
       v21 = off_1E78D2288[v20];
     }
 
-    [v3 setObject:v21 forKeyedSubscript:@"domainProtectionLevel"];
+    [dictionary setObject:v21 forKeyedSubscript:@"domainProtectionLevel"];
   }
 
   v22 = *p_has;
   if ((*p_has & 0x1000) != 0)
   {
     v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionFeatureSet entitySaliencyMaxScore](self, "entitySaliencyMaxScore")}];
-    [v3 setObject:v23 forKeyedSubscript:@"entitySaliencyMaxScore"];
+    [dictionary setObject:v23 forKeyedSubscript:@"entitySaliencyMaxScore"];
 
     v22 = *p_has;
   }
@@ -404,32 +404,32 @@
   if ((v22 & 0x10) != 0)
   {
     v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionFeatureSet entityTypeMentioned](self, "entityTypeMentioned")}];
-    [v3 setObject:v24 forKeyedSubscript:@"entityTypeMentioned"];
+    [dictionary setObject:v24 forKeyedSubscript:@"entityTypeMentioned"];
   }
 
   if ((*(&self->_has + 2) & 4) != 0)
   {
     v25 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionFeatureSet isAmbiguousFirstRunPreviouslyShown](self, "isAmbiguousFirstRunPreviouslyShown")}];
-    [v3 setObject:v25 forKeyedSubscript:@"isAmbiguousFirstRunPreviouslyShown"];
+    [dictionary setObject:v25 forKeyedSubscript:@"isAmbiguousFirstRunPreviouslyShown"];
   }
 
   if ((*p_has & 2) != 0)
   {
     v26 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionFeatureSet isAppInForeground](self, "isAppInForeground")}];
-    [v3 setObject:v26 forKeyedSubscript:@"isAppInForeground"];
+    [dictionary setObject:v26 forKeyedSubscript:@"isAppInForeground"];
   }
 
   if ((*(&self->_has + 2) & 2) != 0)
   {
     v27 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionFeatureSet isAutoShortcutEnabled](self, "isAutoShortcutEnabled")}];
-    [v3 setObject:v27 forKeyedSubscript:@"isAutoShortcutEnabled"];
+    [dictionary setObject:v27 forKeyedSubscript:@"isAutoShortcutEnabled"];
   }
 
   v28 = *p_has;
   if ((*p_has & 0x400) != 0)
   {
     v40 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionFeatureSet isAutoshortcut](self, "isAutoshortcut")}];
-    [v3 setObject:v40 forKeyedSubscript:@"isAutoshortcut"];
+    [dictionary setObject:v40 forKeyedSubscript:@"isAutoshortcut"];
 
     v28 = *p_has;
     if ((*p_has & 0x800) == 0)
@@ -450,7 +450,7 @@ LABEL_42:
   }
 
   v41 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionFeatureSet isAutoshortcutAppOnScreen](self, "isAutoshortcutAppOnScreen")}];
-  [v3 setObject:v41 forKeyedSubscript:@"isAutoshortcutAppOnScreen"];
+  [dictionary setObject:v41 forKeyedSubscript:@"isAutoshortcutAppOnScreen"];
 
   v28 = *p_has;
   if ((*p_has & 0x20) == 0)
@@ -466,7 +466,7 @@ LABEL_43:
 
 LABEL_66:
   v42 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionFeatureSet isColdOpenAllowlist](self, "isColdOpenAllowlist")}];
-  [v3 setObject:v42 forKeyedSubscript:@"isColdOpenAllowlist"];
+  [dictionary setObject:v42 forKeyedSubscript:@"isColdOpenAllowlist"];
 
   v28 = *p_has;
   if ((*p_has & 0x80) == 0)
@@ -482,27 +482,27 @@ LABEL_44:
 
 LABEL_67:
   v43 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionFeatureSet isDefaultLinkAction](self, "isDefaultLinkAction")}];
-  [v3 setObject:v43 forKeyedSubscript:@"isDefaultLinkAction"];
+  [dictionary setObject:v43 forKeyedSubscript:@"isDefaultLinkAction"];
 
   if (*p_has)
   {
 LABEL_45:
     v29 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionFeatureSet isHighConfidence](self, "isHighConfidence")}];
-    [v3 setObject:v29 forKeyedSubscript:@"isHighConfidence"];
+    [dictionary setObject:v29 forKeyedSubscript:@"isHighConfidence"];
   }
 
 LABEL_46:
   if ((*(&self->_has + 2) & 8) != 0)
   {
     v30 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionFeatureSet isInterpretableAsUniversalCommand](self, "isInterpretableAsUniversalCommand")}];
-    [v3 setObject:v30 forKeyedSubscript:@"isInterpretableAsUniversalCommand"];
+    [dictionary setObject:v30 forKeyedSubscript:@"isInterpretableAsUniversalCommand"];
   }
 
   v31 = *p_has;
   if ((*p_has & 0x200) != 0)
   {
     v32 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionFeatureSet isLinkAction](self, "isLinkAction")}];
-    [v3 setObject:v32 forKeyedSubscript:@"isLinkAction"];
+    [dictionary setObject:v32 forKeyedSubscript:@"isLinkAction"];
 
     v31 = *p_has;
   }
@@ -510,13 +510,13 @@ LABEL_46:
   if ((v31 & 0x40) != 0)
   {
     v33 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionFeatureSet isLinkActionOnScreen](self, "isLinkActionOnScreen")}];
-    [v3 setObject:v33 forKeyedSubscript:@"isLinkActionOnScreen"];
+    [dictionary setObject:v33 forKeyedSubscript:@"isLinkActionOnScreen"];
   }
 
   if (*(&self->_has + 2))
   {
     v34 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionFeatureSet isRepeatedFlowHandlerId](self, "isRepeatedFlowHandlerId")}];
-    [v3 setObject:v34 forKeyedSubscript:@"isRepeatedFlowHandlerId"];
+    [dictionary setObject:v34 forKeyedSubscript:@"isRepeatedFlowHandlerId"];
   }
 
   v35 = *p_has;
@@ -531,14 +531,14 @@ LABEL_46:
   }
 
   v47 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionFeatureSet isTopRankedParse](self, "isTopRankedParse")}];
-  [v3 setObject:v47 forKeyedSubscript:@"isTopRankedParse"];
+  [dictionary setObject:v47 forKeyedSubscript:@"isTopRankedParse"];
 
   LOWORD(v35) = *p_has;
   if ((*p_has & 8) != 0)
   {
 LABEL_56:
     v36 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionFeatureSet isTopRankedPlugin](self, "isTopRankedPlugin")}];
-    [v3 setObject:v36 forKeyedSubscript:@"isTopRankedPlugin"];
+    [dictionary setObject:v36 forKeyedSubscript:@"isTopRankedPlugin"];
 
     LOWORD(v35) = *p_has;
   }
@@ -547,7 +547,7 @@ LABEL_57:
   if ((v35 & 0x100) != 0)
   {
     v44 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionFeatureSet isVocabNameMatch](self, "isVocabNameMatch")}];
-    [v3 setObject:v44 forKeyedSubscript:@"isVocabNameMatch"];
+    [dictionary setObject:v44 forKeyedSubscript:@"isVocabNameMatch"];
 
     LOWORD(v35) = *p_has;
     if ((*p_has & 0x4000) == 0)
@@ -570,35 +570,35 @@ LABEL_59:
   v45 = MEMORY[0x1E696AD98];
   [(CAARSchemaCAARActionFeatureSet *)self nlParseProbability];
   v46 = [v45 numberWithFloat:?];
-  [v3 setObject:v46 forKeyedSubscript:@"nlParseProbability"];
+  [dictionary setObject:v46 forKeyedSubscript:@"nlParseProbability"];
 
   if ((*p_has & 0x2000) != 0)
   {
 LABEL_60:
     v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionFeatureSet numSalientEntities](self, "numSalientEntities")}];
-    [v3 setObject:v37 forKeyedSubscript:@"numSalientEntities"];
+    [dictionary setObject:v37 forKeyedSubscript:@"numSalientEntities"];
   }
 
 LABEL_61:
   if (self->_proactiveFeatures)
   {
-    v38 = [(CAARSchemaCAARActionFeatureSet *)self proactiveFeatures];
-    v39 = [v38 dictionaryRepresentation];
-    if (v39)
+    proactiveFeatures = [(CAARSchemaCAARActionFeatureSet *)self proactiveFeatures];
+    dictionaryRepresentation5 = [proactiveFeatures dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v39 forKeyedSubscript:@"proactiveFeatures"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"proactiveFeatures"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"proactiveFeatures"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"proactiveFeatures"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -909,28 +909,28 @@ LABEL_49:
   return v36 ^ v37 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v10 ^ v22 ^ v21 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_105;
   }
 
-  v5 = [(CAARSchemaCAARActionFeatureSet *)self actionCandidateId];
-  v6 = [v4 actionCandidateId];
-  if ((v5 != 0) == (v6 == 0))
+  actionCandidateId = [(CAARSchemaCAARActionFeatureSet *)self actionCandidateId];
+  actionCandidateId2 = [equalCopy actionCandidateId];
+  if ((actionCandidateId != 0) == (actionCandidateId2 == 0))
   {
     goto LABEL_104;
   }
 
-  v7 = [(CAARSchemaCAARActionFeatureSet *)self actionCandidateId];
-  if (v7)
+  actionCandidateId3 = [(CAARSchemaCAARActionFeatureSet *)self actionCandidateId];
+  if (actionCandidateId3)
   {
-    v8 = v7;
-    v9 = [(CAARSchemaCAARActionFeatureSet *)self actionCandidateId];
-    v10 = [v4 actionCandidateId];
-    v11 = [v9 isEqual:v10];
+    v8 = actionCandidateId3;
+    actionCandidateId4 = [(CAARSchemaCAARActionFeatureSet *)self actionCandidateId];
+    actionCandidateId5 = [equalCopy actionCandidateId];
+    v11 = [actionCandidateId4 isEqual:actionCandidateId5];
 
     if (!v11)
     {
@@ -944,8 +944,8 @@ LABEL_49:
 
   p_has = &self->_has;
   has = self->_has;
-  v14 = v4 + 52;
-  v15 = v4[52];
+  v14 = equalCopy + 52;
+  v15 = equalCopy[52];
   if ((*&has & 1) != (v15 & 1))
   {
     goto LABEL_105;
@@ -954,7 +954,7 @@ LABEL_49:
   if (*&has)
   {
     isHighConfidence = self->_isHighConfidence;
-    if (isHighConfidence != [v4 isHighConfidence])
+    if (isHighConfidence != [equalCopy isHighConfidence])
     {
       goto LABEL_105;
     }
@@ -972,7 +972,7 @@ LABEL_49:
   if (v17)
   {
     isAppInForeground = self->_isAppInForeground;
-    if (isAppInForeground != [v4 isAppInForeground])
+    if (isAppInForeground != [equalCopy isAppInForeground])
     {
       goto LABEL_105;
     }
@@ -990,7 +990,7 @@ LABEL_49:
   if (v19)
   {
     appNameMentioned = self->_appNameMentioned;
-    if (appNameMentioned != [v4 appNameMentioned])
+    if (appNameMentioned != [equalCopy appNameMentioned])
     {
       goto LABEL_105;
     }
@@ -1008,7 +1008,7 @@ LABEL_49:
   if (v21)
   {
     isTopRankedPlugin = self->_isTopRankedPlugin;
-    if (isTopRankedPlugin != [v4 isTopRankedPlugin])
+    if (isTopRankedPlugin != [equalCopy isTopRankedPlugin])
     {
       goto LABEL_105;
     }
@@ -1026,7 +1026,7 @@ LABEL_49:
   if (v23)
   {
     entityTypeMentioned = self->_entityTypeMentioned;
-    if (entityTypeMentioned != [v4 entityTypeMentioned])
+    if (entityTypeMentioned != [equalCopy entityTypeMentioned])
     {
       goto LABEL_105;
     }
@@ -1044,7 +1044,7 @@ LABEL_49:
   if (v25)
   {
     isColdOpenAllowlist = self->_isColdOpenAllowlist;
-    if (isColdOpenAllowlist != [v4 isColdOpenAllowlist])
+    if (isColdOpenAllowlist != [equalCopy isColdOpenAllowlist])
     {
       goto LABEL_105;
     }
@@ -1062,7 +1062,7 @@ LABEL_49:
   if (v27)
   {
     isLinkActionOnScreen = self->_isLinkActionOnScreen;
-    if (isLinkActionOnScreen != [v4 isLinkActionOnScreen])
+    if (isLinkActionOnScreen != [equalCopy isLinkActionOnScreen])
     {
       goto LABEL_105;
     }
@@ -1080,7 +1080,7 @@ LABEL_49:
   if (v29)
   {
     isDefaultLinkAction = self->_isDefaultLinkAction;
-    if (isDefaultLinkAction != [v4 isDefaultLinkAction])
+    if (isDefaultLinkAction != [equalCopy isDefaultLinkAction])
     {
       goto LABEL_105;
     }
@@ -1098,7 +1098,7 @@ LABEL_49:
   if (v31)
   {
     isVocabNameMatch = self->_isVocabNameMatch;
-    if (isVocabNameMatch != [v4 isVocabNameMatch])
+    if (isVocabNameMatch != [equalCopy isVocabNameMatch])
     {
       goto LABEL_105;
     }
@@ -1116,7 +1116,7 @@ LABEL_49:
   if (v33)
   {
     isLinkAction = self->_isLinkAction;
-    if (isLinkAction != [v4 isLinkAction])
+    if (isLinkAction != [equalCopy isLinkAction])
     {
       goto LABEL_105;
     }
@@ -1134,7 +1134,7 @@ LABEL_49:
   if (v35)
   {
     isAutoshortcut = self->_isAutoshortcut;
-    if (isAutoshortcut != [v4 isAutoshortcut])
+    if (isAutoshortcut != [equalCopy isAutoshortcut])
     {
       goto LABEL_105;
     }
@@ -1152,7 +1152,7 @@ LABEL_49:
   if (v37)
   {
     isAutoshortcutAppOnScreen = self->_isAutoshortcutAppOnScreen;
-    if (isAutoshortcutAppOnScreen != [v4 isAutoshortcutAppOnScreen])
+    if (isAutoshortcutAppOnScreen != [equalCopy isAutoshortcutAppOnScreen])
     {
       goto LABEL_105;
     }
@@ -1170,7 +1170,7 @@ LABEL_49:
   if (v39)
   {
     entitySaliencyMaxScore = self->_entitySaliencyMaxScore;
-    if (entitySaliencyMaxScore != [v4 entitySaliencyMaxScore])
+    if (entitySaliencyMaxScore != [equalCopy entitySaliencyMaxScore])
     {
       goto LABEL_105;
     }
@@ -1188,7 +1188,7 @@ LABEL_49:
   if (v41)
   {
     numSalientEntities = self->_numSalientEntities;
-    if (numSalientEntities != [v4 numSalientEntities])
+    if (numSalientEntities != [equalCopy numSalientEntities])
     {
       goto LABEL_105;
     }
@@ -1206,7 +1206,7 @@ LABEL_49:
   if (v43)
   {
     nlParseProbability = self->_nlParseProbability;
-    [v4 nlParseProbability];
+    [equalCopy nlParseProbability];
     if (nlParseProbability != v45)
     {
       goto LABEL_105;
@@ -1224,13 +1224,13 @@ LABEL_49:
   if ((*&has & 0x8000) != 0)
   {
     isTopRankedParse = self->_isTopRankedParse;
-    if (isTopRankedParse != [v4 isTopRankedParse])
+    if (isTopRankedParse != [equalCopy isTopRankedParse])
     {
       goto LABEL_105;
     }
   }
 
-  if ((*(&self->_has + 2) & 1) != (v4[53] & 1))
+  if ((*(&self->_has + 2) & 1) != (equalCopy[53] & 1))
   {
     goto LABEL_105;
   }
@@ -1238,26 +1238,26 @@ LABEL_49:
   if (*(&self->_has + 2))
   {
     isRepeatedFlowHandlerId = self->_isRepeatedFlowHandlerId;
-    if (isRepeatedFlowHandlerId != [v4 isRepeatedFlowHandlerId])
+    if (isRepeatedFlowHandlerId != [equalCopy isRepeatedFlowHandlerId])
     {
       goto LABEL_105;
     }
   }
 
-  v5 = [(CAARSchemaCAARActionFeatureSet *)self appHistoryFeatures];
-  v6 = [v4 appHistoryFeatures];
-  if ((v5 != 0) == (v6 == 0))
+  actionCandidateId = [(CAARSchemaCAARActionFeatureSet *)self appHistoryFeatures];
+  actionCandidateId2 = [equalCopy appHistoryFeatures];
+  if ((actionCandidateId != 0) == (actionCandidateId2 == 0))
   {
     goto LABEL_104;
   }
 
-  v48 = [(CAARSchemaCAARActionFeatureSet *)self appHistoryFeatures];
-  if (v48)
+  appHistoryFeatures = [(CAARSchemaCAARActionFeatureSet *)self appHistoryFeatures];
+  if (appHistoryFeatures)
   {
-    v49 = v48;
-    v50 = [(CAARSchemaCAARActionFeatureSet *)self appHistoryFeatures];
-    v51 = [v4 appHistoryFeatures];
-    v52 = [v50 isEqual:v51];
+    v49 = appHistoryFeatures;
+    appHistoryFeatures2 = [(CAARSchemaCAARActionFeatureSet *)self appHistoryFeatures];
+    appHistoryFeatures3 = [equalCopy appHistoryFeatures];
+    v52 = [appHistoryFeatures2 isEqual:appHistoryFeatures3];
 
     if (!v52)
     {
@@ -1269,20 +1269,20 @@ LABEL_49:
   {
   }
 
-  v5 = [(CAARSchemaCAARActionFeatureSet *)self appLevelDisambiguationHistory];
-  v6 = [v4 appLevelDisambiguationHistory];
-  if ((v5 != 0) == (v6 == 0))
+  actionCandidateId = [(CAARSchemaCAARActionFeatureSet *)self appLevelDisambiguationHistory];
+  actionCandidateId2 = [equalCopy appLevelDisambiguationHistory];
+  if ((actionCandidateId != 0) == (actionCandidateId2 == 0))
   {
     goto LABEL_104;
   }
 
-  v53 = [(CAARSchemaCAARActionFeatureSet *)self appLevelDisambiguationHistory];
-  if (v53)
+  appLevelDisambiguationHistory = [(CAARSchemaCAARActionFeatureSet *)self appLevelDisambiguationHistory];
+  if (appLevelDisambiguationHistory)
   {
-    v54 = v53;
-    v55 = [(CAARSchemaCAARActionFeatureSet *)self appLevelDisambiguationHistory];
-    v56 = [v4 appLevelDisambiguationHistory];
-    v57 = [v55 isEqual:v56];
+    v54 = appLevelDisambiguationHistory;
+    appLevelDisambiguationHistory2 = [(CAARSchemaCAARActionFeatureSet *)self appLevelDisambiguationHistory];
+    appLevelDisambiguationHistory3 = [equalCopy appLevelDisambiguationHistory];
+    v57 = [appLevelDisambiguationHistory2 isEqual:appLevelDisambiguationHistory3];
 
     if (!v57)
     {
@@ -1294,20 +1294,20 @@ LABEL_49:
   {
   }
 
-  v5 = [(CAARSchemaCAARActionFeatureSet *)self actionLevelDisambiguationHistory];
-  v6 = [v4 actionLevelDisambiguationHistory];
-  if ((v5 != 0) == (v6 == 0))
+  actionCandidateId = [(CAARSchemaCAARActionFeatureSet *)self actionLevelDisambiguationHistory];
+  actionCandidateId2 = [equalCopy actionLevelDisambiguationHistory];
+  if ((actionCandidateId != 0) == (actionCandidateId2 == 0))
   {
     goto LABEL_104;
   }
 
-  v58 = [(CAARSchemaCAARActionFeatureSet *)self actionLevelDisambiguationHistory];
-  if (v58)
+  actionLevelDisambiguationHistory = [(CAARSchemaCAARActionFeatureSet *)self actionLevelDisambiguationHistory];
+  if (actionLevelDisambiguationHistory)
   {
-    v59 = v58;
-    v60 = [(CAARSchemaCAARActionFeatureSet *)self actionLevelDisambiguationHistory];
-    v61 = [v4 actionLevelDisambiguationHistory];
-    v62 = [v60 isEqual:v61];
+    v59 = actionLevelDisambiguationHistory;
+    actionLevelDisambiguationHistory2 = [(CAARSchemaCAARActionFeatureSet *)self actionLevelDisambiguationHistory];
+    actionLevelDisambiguationHistory3 = [equalCopy actionLevelDisambiguationHistory];
+    v62 = [actionLevelDisambiguationHistory2 isEqual:actionLevelDisambiguationHistory3];
 
     if (!v62)
     {
@@ -1319,20 +1319,20 @@ LABEL_49:
   {
   }
 
-  v5 = [(CAARSchemaCAARActionFeatureSet *)self proactiveFeatures];
-  v6 = [v4 proactiveFeatures];
-  if ((v5 != 0) == (v6 == 0))
+  actionCandidateId = [(CAARSchemaCAARActionFeatureSet *)self proactiveFeatures];
+  actionCandidateId2 = [equalCopy proactiveFeatures];
+  if ((actionCandidateId != 0) == (actionCandidateId2 == 0))
   {
     goto LABEL_104;
   }
 
-  v63 = [(CAARSchemaCAARActionFeatureSet *)self proactiveFeatures];
-  if (v63)
+  proactiveFeatures = [(CAARSchemaCAARActionFeatureSet *)self proactiveFeatures];
+  if (proactiveFeatures)
   {
-    v64 = v63;
-    v65 = [(CAARSchemaCAARActionFeatureSet *)self proactiveFeatures];
-    v66 = [v4 proactiveFeatures];
-    v67 = [v65 isEqual:v66];
+    v64 = proactiveFeatures;
+    proactiveFeatures2 = [(CAARSchemaCAARActionFeatureSet *)self proactiveFeatures];
+    proactiveFeatures3 = [equalCopy proactiveFeatures];
+    v67 = [proactiveFeatures2 isEqual:proactiveFeatures3];
 
     if (!v67)
     {
@@ -1346,7 +1346,7 @@ LABEL_49:
 
   v68 = *(&self->_has + 2);
   v69 = (v68 >> 1) & 1;
-  v70 = *(v4 + 106);
+  v70 = *(equalCopy + 106);
   if (v69 != ((v70 >> 1) & 1))
   {
     goto LABEL_105;
@@ -1355,13 +1355,13 @@ LABEL_49:
   if (v69)
   {
     isAutoShortcutEnabled = self->_isAutoShortcutEnabled;
-    if (isAutoShortcutEnabled != [v4 isAutoShortcutEnabled])
+    if (isAutoShortcutEnabled != [equalCopy isAutoShortcutEnabled])
     {
       goto LABEL_105;
     }
 
     v68 = *(&self->_has + 2);
-    v70 = *(v4 + 106);
+    v70 = *(equalCopy + 106);
   }
 
   v72 = (v68 >> 2) & 1;
@@ -1373,28 +1373,28 @@ LABEL_49:
   if (v72)
   {
     isAmbiguousFirstRunPreviouslyShown = self->_isAmbiguousFirstRunPreviouslyShown;
-    if (isAmbiguousFirstRunPreviouslyShown != [v4 isAmbiguousFirstRunPreviouslyShown])
+    if (isAmbiguousFirstRunPreviouslyShown != [equalCopy isAmbiguousFirstRunPreviouslyShown])
     {
       goto LABEL_105;
     }
   }
 
-  v5 = [(CAARSchemaCAARActionFeatureSet *)self actionIdentifier];
-  v6 = [v4 actionIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  actionCandidateId = [(CAARSchemaCAARActionFeatureSet *)self actionIdentifier];
+  actionCandidateId2 = [equalCopy actionIdentifier];
+  if ((actionCandidateId != 0) == (actionCandidateId2 == 0))
   {
 LABEL_104:
 
     goto LABEL_105;
   }
 
-  v74 = [(CAARSchemaCAARActionFeatureSet *)self actionIdentifier];
-  if (v74)
+  actionIdentifier = [(CAARSchemaCAARActionFeatureSet *)self actionIdentifier];
+  if (actionIdentifier)
   {
-    v75 = v74;
-    v76 = [(CAARSchemaCAARActionFeatureSet *)self actionIdentifier];
-    v77 = [v4 actionIdentifier];
-    v78 = [v76 isEqual:v77];
+    v75 = actionIdentifier;
+    actionIdentifier2 = [(CAARSchemaCAARActionFeatureSet *)self actionIdentifier];
+    actionIdentifier3 = [equalCopy actionIdentifier];
+    v78 = [actionIdentifier2 isEqual:actionIdentifier3];
 
     if (!v78)
     {
@@ -1408,25 +1408,25 @@ LABEL_104:
 
   v81 = *(&self->_has + 2);
   v82 = (v81 >> 3) & 1;
-  v83 = *(v4 + 106);
+  v83 = *(equalCopy + 106);
   if (v82 == ((v83 >> 3) & 1))
   {
     if (v82)
     {
       isInterpretableAsUniversalCommand = self->_isInterpretableAsUniversalCommand;
-      if (isInterpretableAsUniversalCommand != [v4 isInterpretableAsUniversalCommand])
+      if (isInterpretableAsUniversalCommand != [equalCopy isInterpretableAsUniversalCommand])
       {
         goto LABEL_105;
       }
 
       v81 = *(&self->_has + 2);
-      v83 = *(v4 + 106);
+      v83 = *(equalCopy + 106);
     }
 
     v85 = (v81 >> 4) & 1;
     if (v85 == ((v83 >> 4) & 1))
     {
-      if (!v85 || (domainProtectionLevel = self->_domainProtectionLevel, domainProtectionLevel == [v4 domainProtectionLevel]))
+      if (!v85 || (domainProtectionLevel = self->_domainProtectionLevel, domainProtectionLevel == [equalCopy domainProtectionLevel]))
       {
         v79 = 1;
         goto LABEL_106;
@@ -1441,14 +1441,14 @@ LABEL_106:
   return v79;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v20 = a3;
-  v4 = [(CAARSchemaCAARActionFeatureSet *)self actionCandidateId];
+  toCopy = to;
+  actionCandidateId = [(CAARSchemaCAARActionFeatureSet *)self actionCandidateId];
 
-  if (v4)
+  if (actionCandidateId)
   {
-    v5 = [(CAARSchemaCAARActionFeatureSet *)self actionCandidateId];
+    actionCandidateId2 = [(CAARSchemaCAARActionFeatureSet *)self actionCandidateId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1671,35 +1671,35 @@ LABEL_19:
     PBDataWriterWriteBOOLField();
   }
 
-  v8 = [(CAARSchemaCAARActionFeatureSet *)self appHistoryFeatures];
+  appHistoryFeatures = [(CAARSchemaCAARActionFeatureSet *)self appHistoryFeatures];
 
-  if (v8)
+  if (appHistoryFeatures)
   {
-    v9 = [(CAARSchemaCAARActionFeatureSet *)self appHistoryFeatures];
+    appHistoryFeatures2 = [(CAARSchemaCAARActionFeatureSet *)self appHistoryFeatures];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(CAARSchemaCAARActionFeatureSet *)self appLevelDisambiguationHistory];
+  appLevelDisambiguationHistory = [(CAARSchemaCAARActionFeatureSet *)self appLevelDisambiguationHistory];
 
-  if (v10)
+  if (appLevelDisambiguationHistory)
   {
-    v11 = [(CAARSchemaCAARActionFeatureSet *)self appLevelDisambiguationHistory];
+    appLevelDisambiguationHistory2 = [(CAARSchemaCAARActionFeatureSet *)self appLevelDisambiguationHistory];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(CAARSchemaCAARActionFeatureSet *)self actionLevelDisambiguationHistory];
+  actionLevelDisambiguationHistory = [(CAARSchemaCAARActionFeatureSet *)self actionLevelDisambiguationHistory];
 
-  if (v12)
+  if (actionLevelDisambiguationHistory)
   {
-    v13 = [(CAARSchemaCAARActionFeatureSet *)self actionLevelDisambiguationHistory];
+    actionLevelDisambiguationHistory2 = [(CAARSchemaCAARActionFeatureSet *)self actionLevelDisambiguationHistory];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(CAARSchemaCAARActionFeatureSet *)self proactiveFeatures];
+  proactiveFeatures = [(CAARSchemaCAARActionFeatureSet *)self proactiveFeatures];
 
-  if (v14)
+  if (proactiveFeatures)
   {
-    v15 = [(CAARSchemaCAARActionFeatureSet *)self proactiveFeatures];
+    proactiveFeatures2 = [(CAARSchemaCAARActionFeatureSet *)self proactiveFeatures];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1715,32 +1715,32 @@ LABEL_19:
     PBDataWriterWriteBOOLField();
   }
 
-  v17 = [(CAARSchemaCAARActionFeatureSet *)self actionIdentifier];
+  actionIdentifier = [(CAARSchemaCAARActionFeatureSet *)self actionIdentifier];
 
-  if (v17)
+  if (actionIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
   v18 = *(&self->_has + 2);
-  v19 = v20;
+  v19 = toCopy;
   if ((v18 & 8) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v19 = v20;
+    v19 = toCopy;
     v18 = *(&self->_has + 2);
   }
 
   if ((v18 & 0x10) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v19 = v20;
+    v19 = toCopy;
   }
 }
 
-- (void)setHasDomainProtectionLevel:(BOOL)a3
+- (void)setHasDomainProtectionLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 16;
   }
@@ -1753,9 +1753,9 @@ LABEL_19:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xEF | v3;
 }
 
-- (void)setHasIsInterpretableAsUniversalCommand:(BOOL)a3
+- (void)setHasIsInterpretableAsUniversalCommand:(BOOL)command
 {
-  if (a3)
+  if (command)
   {
     v3 = 8;
   }
@@ -1768,9 +1768,9 @@ LABEL_19:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xF7 | v3;
 }
 
-- (void)setHasIsAmbiguousFirstRunPreviouslyShown:(BOOL)a3
+- (void)setHasIsAmbiguousFirstRunPreviouslyShown:(BOOL)shown
 {
-  if (a3)
+  if (shown)
   {
     v3 = 4;
   }
@@ -1783,9 +1783,9 @@ LABEL_19:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFB | v3;
 }
 
-- (void)setHasIsAutoShortcutEnabled:(BOOL)a3
+- (void)setHasIsAutoShortcutEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }
@@ -1798,9 +1798,9 @@ LABEL_19:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFD | v3;
 }
 
-- (void)setHasIsTopRankedParse:(BOOL)a3
+- (void)setHasIsTopRankedParse:(BOOL)parse
 {
-  if (a3)
+  if (parse)
   {
     v3 = 0x8000;
   }
@@ -1813,9 +1813,9 @@ LABEL_19:
   *&self->_has = v3 & 0x8000 | *&self->_has & 0x7FFF;
 }
 
-- (void)setHasNlParseProbability:(BOOL)a3
+- (void)setHasNlParseProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 0x4000;
   }
@@ -1828,9 +1828,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasNumSalientEntities:(BOOL)a3
+- (void)setHasNumSalientEntities:(BOOL)entities
 {
-  if (a3)
+  if (entities)
   {
     v3 = 0x2000;
   }
@@ -1843,9 +1843,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasEntitySaliencyMaxScore:(BOOL)a3
+- (void)setHasEntitySaliencyMaxScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 4096;
   }
@@ -1858,9 +1858,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasIsAutoshortcutAppOnScreen:(BOOL)a3
+- (void)setHasIsAutoshortcutAppOnScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     v3 = 2048;
   }
@@ -1873,9 +1873,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasIsAutoshortcut:(BOOL)a3
+- (void)setHasIsAutoshortcut:(BOOL)autoshortcut
 {
-  if (a3)
+  if (autoshortcut)
   {
     v3 = 1024;
   }
@@ -1888,9 +1888,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasIsLinkAction:(BOOL)a3
+- (void)setHasIsLinkAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 512;
   }
@@ -1903,9 +1903,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasIsVocabNameMatch:(BOOL)a3
+- (void)setHasIsVocabNameMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 256;
   }
@@ -1918,9 +1918,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasIsDefaultLinkAction:(BOOL)a3
+- (void)setHasIsDefaultLinkAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 128;
   }
@@ -1933,9 +1933,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasIsLinkActionOnScreen:(BOOL)a3
+- (void)setHasIsLinkActionOnScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     v3 = 64;
   }
@@ -1948,9 +1948,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasIsColdOpenAllowlist:(BOOL)a3
+- (void)setHasIsColdOpenAllowlist:(BOOL)allowlist
 {
-  if (a3)
+  if (allowlist)
   {
     v3 = 32;
   }
@@ -1963,9 +1963,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasEntityTypeMentioned:(BOOL)a3
+- (void)setHasEntityTypeMentioned:(BOOL)mentioned
 {
-  if (a3)
+  if (mentioned)
   {
     v3 = 16;
   }
@@ -1978,9 +1978,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasIsTopRankedPlugin:(BOOL)a3
+- (void)setHasIsTopRankedPlugin:(BOOL)plugin
 {
-  if (a3)
+  if (plugin)
   {
     v3 = 8;
   }
@@ -1993,9 +1993,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasAppNameMentioned:(BOOL)a3
+- (void)setHasAppNameMentioned:(BOOL)mentioned
 {
-  if (a3)
+  if (mentioned)
   {
     v3 = 4;
   }
@@ -2008,9 +2008,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasIsAppInForeground:(BOOL)a3
+- (void)setHasIsAppInForeground:(BOOL)foreground
 {
-  if (a3)
+  if (foreground)
   {
     v3 = 2;
   }
@@ -2023,53 +2023,53 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v22.receiver = self;
   v22.super_class = CAARSchemaCAARActionFeatureSet;
-  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:v4];
-  v6 = [(CAARSchemaCAARActionFeatureSet *)self actionCandidateId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:policyCopy];
+  actionCandidateId = [(CAARSchemaCAARActionFeatureSet *)self actionCandidateId];
+  v7 = [actionCandidateId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(CAARSchemaCAARActionFeatureSet *)self deleteActionCandidateId];
   }
 
-  v9 = [(CAARSchemaCAARActionFeatureSet *)self appHistoryFeatures];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  appHistoryFeatures = [(CAARSchemaCAARActionFeatureSet *)self appHistoryFeatures];
+  v10 = [appHistoryFeatures applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(CAARSchemaCAARActionFeatureSet *)self deleteAppHistoryFeatures];
   }
 
-  v12 = [(CAARSchemaCAARActionFeatureSet *)self appLevelDisambiguationHistory];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  appLevelDisambiguationHistory = [(CAARSchemaCAARActionFeatureSet *)self appLevelDisambiguationHistory];
+  v13 = [appLevelDisambiguationHistory applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(CAARSchemaCAARActionFeatureSet *)self deleteAppLevelDisambiguationHistory];
   }
 
-  v15 = [(CAARSchemaCAARActionFeatureSet *)self actionLevelDisambiguationHistory];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  actionLevelDisambiguationHistory = [(CAARSchemaCAARActionFeatureSet *)self actionLevelDisambiguationHistory];
+  v16 = [actionLevelDisambiguationHistory applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(CAARSchemaCAARActionFeatureSet *)self deleteActionLevelDisambiguationHistory];
   }
 
-  v18 = [(CAARSchemaCAARActionFeatureSet *)self proactiveFeatures];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  proactiveFeatures = [(CAARSchemaCAARActionFeatureSet *)self proactiveFeatures];
+  v19 = [proactiveFeatures applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(CAARSchemaCAARActionFeatureSet *)self deleteProactiveFeatures];
   }

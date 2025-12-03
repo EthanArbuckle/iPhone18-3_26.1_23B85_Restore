@@ -1,14 +1,14 @@
 @interface CSAttSiriOSDProvider
 - (CSAttSiriOSDProvider)init;
 - (CSAttSiriOSDProviderDelegate)delegate;
-- (unint64_t)_getSampleCountByProcessedAudioInMs:(double)a3;
-- (void)_processBoron:(id)a3;
+- (unint64_t)_getSampleCountByProcessedAudioInMs:(double)ms;
+- (void)_processBoron:(id)boron;
 - (void)_resetBoron;
-- (void)addAudio:(id)a3;
-- (void)getSampleCountByProcessedAudioInMs:(double)a3 completion:(id)a4;
-- (void)getStartSpeechInfoForProcessedAudio:(double)a3 prependedAudio:(double)a4 speechDetectionSamples:(unint64_t)a5 completion:(id)a6;
-- (void)osdAnalyzer:(id)a3 didUpdateOSDFeatures:(id)a4;
-- (void)start:(BOOL)a3 useOwnVoiceVAD:(BOOL)a4 completion:(id)a5;
+- (void)addAudio:(id)audio;
+- (void)getSampleCountByProcessedAudioInMs:(double)ms completion:(id)completion;
+- (void)getStartSpeechInfoForProcessedAudio:(double)audio prependedAudio:(double)prependedAudio speechDetectionSamples:(unint64_t)samples completion:(id)completion;
+- (void)osdAnalyzer:(id)analyzer didUpdateOSDFeatures:(id)features;
+- (void)start:(BOOL)start useOwnVoiceVAD:(BOOL)d completion:(id)completion;
 - (void)stop;
 - (void)stopAnalysisAndReset;
 @end
@@ -22,28 +22,28 @@
   return WeakRetained;
 }
 
-- (void)osdAnalyzer:(id)a3 didUpdateOSDFeatures:(id)a4
+- (void)osdAnalyzer:(id)analyzer didUpdateOSDFeatures:(id)features
 {
-  v5 = a4;
+  featuresCopy = features;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000788A8;
   v8[3] = &unk_100253C48;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = featuresCopy;
+  v7 = featuresCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)_processBoron:(id)a3
+- (void)_processBoron:(id)boron
 {
-  v15 = a3;
-  v4 = [v15 remoteVAD];
-  v5 = [v4 bytes];
+  boronCopy = boron;
+  remoteVAD = [boronCopy remoteVAD];
+  bytes = [remoteVAD bytes];
 
-  v6 = [v15 remoteVAD];
-  v7 = [v6 length];
+  remoteVAD2 = [boronCopy remoteVAD];
+  v7 = [remoteVAD2 length];
 
   if (v7 >= 1)
   {
@@ -51,7 +51,7 @@
     do
     {
       currentBoronCount = self->_currentBoronCount;
-      if (v5[v8])
+      if (bytes[v8])
       {
         v10 = (currentBoronCount + 1);
         if (v10 >= 5)
@@ -60,7 +60,7 @@
         }
 
         self->_currentBoronCount = v10;
-        v11 = [v15 startSampleCount];
+        startSampleCount = [boronCopy startSampleCount];
       }
 
       else
@@ -73,71 +73,71 @@
         }
 
         self->_currentBoronCount = 0;
-        v11 = -1;
+        startSampleCount = -1;
       }
 
-      self->_latestBoronActiveSampleCount = v11;
+      self->_latestBoronActiveSampleCount = startSampleCount;
 LABEL_9:
       ++v8;
-      v13 = [v15 remoteVAD];
-      v14 = [v13 length];
+      remoteVAD3 = [boronCopy remoteVAD];
+      v14 = [remoteVAD3 length];
     }
 
     while (v8 < v14);
   }
 }
 
-- (void)addAudio:(id)a3
+- (void)addAudio:(id)audio
 {
-  v4 = a3;
+  audioCopy = audio;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100078B64;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = audioCopy;
+  v6 = audioCopy;
   dispatch_async(queue, v7);
 }
 
-- (unint64_t)_getSampleCountByProcessedAudioInMs:(double)a3
+- (unint64_t)_getSampleCountByProcessedAudioInMs:(double)ms
 {
   firstAudioStartSampleCount = self->_firstAudioStartSampleCount;
-  v4 = a3 / 1000.0;
+  v4 = ms / 1000.0;
   +[CSConfig inputRecordingSampleRate];
   return (firstAudioStartSampleCount + v4 * v5);
 }
 
-- (void)getStartSpeechInfoForProcessedAudio:(double)a3 prependedAudio:(double)a4 speechDetectionSamples:(unint64_t)a5 completion:(id)a6
+- (void)getStartSpeechInfoForProcessedAudio:(double)audio prependedAudio:(double)prependedAudio speechDetectionSamples:(unint64_t)samples completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100078F50;
   block[3] = &unk_10024FCE8;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  audioCopy = audio;
+  prependedAudioCopy = prependedAudio;
+  samplesCopy = samples;
   block[4] = self;
-  v14 = v10;
-  v12 = v10;
+  v14 = completionCopy;
+  v12 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)getSampleCountByProcessedAudioInMs:(double)a3 completion:(id)a4
+- (void)getSampleCountByProcessedAudioInMs:(double)ms completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100079080;
   block[3] = &unk_100251038;
-  v11 = a3;
+  msCopy = ms;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -170,21 +170,21 @@ LABEL_9:
   self->_latestBoronActiveSampleCount = -1;
 }
 
-- (void)start:(BOOL)a3 useOwnVoiceVAD:(BOOL)a4 completion:(id)a5
+- (void)start:(BOOL)start useOwnVoiceVAD:(BOOL)d completion:(id)completion
 {
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10007951C;
   v14[3] = &unk_100253220;
-  v15 = a5;
-  v7 = v15;
+  completionCopy = completion;
+  v7 = completionCopy;
   v8 = objc_retainBlock(v14);
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100079638;
   v11[3] = &unk_10024FCC0;
-  v13 = a3;
+  startCopy = start;
   v11[4] = self;
   v12 = v8;
   v10 = v8;

@@ -1,17 +1,17 @@
 @interface HNDMouseKeyDevice
-- (BOOL)handleHIDEvent:(id)a3;
+- (BOOL)handleHIDEvent:(id)event;
 - (BOOL)keyRepeatTimerIsRunning;
 - (HNDMouseKeyDevice)init;
 - (double)mouseKeysMovementDelay;
 - (int64_t)mouseKeysMovementMultiplier;
-- (unint64_t)mouseKeyActionForKeyCode:(unsigned __int16)a3;
+- (unint64_t)mouseKeyActionForKeyCode:(unsigned __int16)code;
 - (void)canUseMainKeyboardKeysPreferenceDidChange;
 - (void)invalidateTimers;
-- (void)movePointerWithMouseKeyAction:(unint64_t)a3 increment:(double)a4;
+- (void)movePointerWithMouseKeyAction:(unint64_t)action increment:(double)increment;
 - (void)reevaluateTimers;
-- (void)repeatMouseKeyMovementAction:(unint64_t)a3;
+- (void)repeatMouseKeyMovementAction:(unint64_t)action;
 - (void)resetInternalState;
-- (void)startMovementHoldWithMouseKeyAction:(unint64_t)a3;
+- (void)startMovementHoldWithMouseKeyAction:(unint64_t)action;
 - (void)unload;
 @end
 
@@ -73,11 +73,11 @@
   [(NSMutableArray *)activeDownMovementDirections removeAllObjects];
 }
 
-- (unint64_t)mouseKeyActionForKeyCode:(unsigned __int16)a3
+- (unint64_t)mouseKeyActionForKeyCode:(unsigned __int16)code
 {
-  if ((a3 - 88) < 0xC)
+  if ((code - 88) < 0xC)
   {
-    return qword_1001BD2C8[(a3 - 88)];
+    return qword_1001BD2C8[(code - 88)];
   }
 
   if (!self->_canUseMainKeyboardKeys)
@@ -85,13 +85,13 @@
     return 0;
   }
 
-  if (a3 > 36)
+  if (code > 36)
   {
-    if (a3 > 78)
+    if (code > 78)
     {
-      if (a3 <= 80)
+      if (code <= 80)
       {
-        if (a3 == 79)
+        if (code == 79)
         {
           return 5;
         }
@@ -99,12 +99,12 @@
         return 4;
       }
 
-      if (a3 == 81)
+      if (code == 81)
       {
         return 7;
       }
 
-      if (a3 != 82)
+      if (code != 82)
       {
         return 0;
       }
@@ -112,11 +112,11 @@
 
     else
     {
-      if (a3 > 39)
+      if (code > 39)
       {
-        if (a3 != 40)
+        if (code != 40)
         {
-          if (a3 == 55)
+          if (code == 55)
           {
             return 11;
           }
@@ -127,9 +127,9 @@
         return 12;
       }
 
-      if (a3 != 37)
+      if (code != 37)
       {
-        if (a3 == 38)
+        if (code == 38)
         {
           return 3;
         }
@@ -141,16 +141,16 @@
     return 2;
   }
 
-  if (a3 > 15)
+  if (code > 15)
   {
-    if (a3 <= 23)
+    if (code <= 23)
     {
-      if (a3 == 16)
+      if (code == 16)
       {
         return 10;
       }
 
-      if (a3 != 18)
+      if (code != 18)
       {
         return 0;
       }
@@ -158,17 +158,17 @@
       return 5;
     }
 
-    if (a3 != 24)
+    if (code != 24)
     {
-      return a3 == 36;
+      return code == 36;
     }
 
     return 4;
   }
 
-  if (a3 > 13)
+  if (code > 13)
   {
-    if (a3 != 14)
+    if (code != 14)
     {
       return 8;
     }
@@ -176,9 +176,9 @@
     return 7;
   }
 
-  if (a3 != 12)
+  if (code != 12)
   {
-    if (a3 == 13)
+    if (code == 13)
     {
       return 6;
     }
@@ -189,11 +189,11 @@
   return 9;
 }
 
-- (BOOL)handleHIDEvent:(id)a3
+- (BOOL)handleHIDEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 keyInfo];
-  if (!v5)
+  eventCopy = event;
+  keyInfo = [eventCopy keyInfo];
+  if (!keyInfo)
   {
     goto LABEL_13;
   }
@@ -203,7 +203,7 @@
   {
 
 LABEL_12:
-    LOBYTE(v5) = 0;
+    LOBYTE(keyInfo) = 0;
     goto LABEL_13;
   }
 
@@ -217,44 +217,44 @@ LABEL_12:
   v8 = ASTLogMouse();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_10012990C(v4, v8);
+    sub_10012990C(eventCopy, v8);
   }
 
-  v9 = [v4 keyInfo];
-  v10 = [v9 keyCode];
+  keyInfo2 = [eventCopy keyInfo];
+  keyCode = [keyInfo2 keyCode];
 
-  v5 = [(HNDMouseKeyDevice *)self mouseKeyActionForKeyCode:v10];
-  if ([v4 type] == 11)
+  keyInfo = [(HNDMouseKeyDevice *)self mouseKeyActionForKeyCode:keyCode];
+  if ([eventCopy type] == 11)
   {
-    if ([(HNDMouseKeyDevice *)self mouseKeyActionIsMovement:v5])
+    if ([(HNDMouseKeyDevice *)self mouseKeyActionIsMovement:keyInfo])
     {
       activeDownMovementDirections = self->_activeDownMovementDirections;
-      v12 = [NSNumber numberWithUnsignedInteger:v5];
+      v12 = [NSNumber numberWithUnsignedInteger:keyInfo];
       [(NSMutableArray *)activeDownMovementDirections removeObject:v12];
 
       if (![(HNDMouseKeyDevice *)self keyRepeatTimerIsRunning])
       {
-        [(HNDMouseKeyDevice *)self movePointerWithMouseKeyAction:v5];
+        [(HNDMouseKeyDevice *)self movePointerWithMouseKeyAction:keyInfo];
       }
     }
 
     else
     {
-      if (v5 != 12)
+      if (keyInfo != 12)
       {
-        if (v5 == 9)
+        if (keyInfo == 9)
         {
           v14 = [objc_allocWithZone(HNDEvent) init];
           [v14 setType:2];
-          LOBYTE(v5) = 1;
+          LOBYTE(keyInfo) = 1;
           [v14 setButtonNumber:1];
-          v15 = [(HNDDevice *)self delegate];
-          [v15 device:self didPostEvent:v14];
+          delegate = [(HNDDevice *)self delegate];
+          [delegate device:self didPostEvent:v14];
         }
 
         else
         {
-          LOBYTE(v5) = 0;
+          LOBYTE(keyInfo) = 0;
         }
 
         goto LABEL_27;
@@ -264,96 +264,96 @@ LABEL_12:
       [v18 setType:2];
       [v18 setButtonNumber:2];
       [v18 setActionOverride:AXAssistiveTouchIconTypeOpenMenu];
-      v19 = [(HNDDevice *)self delegate];
-      [v19 device:self didPostEvent:v18];
+      delegate2 = [(HNDDevice *)self delegate];
+      [delegate2 device:self didPostEvent:v18];
     }
 
-    LOBYTE(v5) = 1;
+    LOBYTE(keyInfo) = 1;
 LABEL_27:
     [(HNDMouseKeyDevice *)self reevaluateTimers];
     goto LABEL_13;
   }
 
-  if ([v4 type] != 10)
+  if ([eventCopy type] != 10)
   {
     goto LABEL_12;
   }
 
-  if (v5 > 10)
+  if (keyInfo > 10)
   {
-    if (v5 == 11)
+    if (keyInfo == 11)
     {
-      v5 = [objc_allocWithZone(HNDEvent) init];
-      [v5 setType:2];
+      keyInfo = [objc_allocWithZone(HNDEvent) init];
+      [keyInfo setType:2];
       goto LABEL_34;
     }
 
-    if (v5 == 12)
+    if (keyInfo == 12)
     {
       v16 = [objc_allocWithZone(HNDEvent) init];
-      LOBYTE(v5) = 1;
+      LOBYTE(keyInfo) = 1;
       [v16 setType:1];
       [v16 setButtonNumber:2];
       [v16 setActionOverride:AXAssistiveTouchIconTypeOpenMenu];
-      v17 = [(HNDDevice *)self delegate];
-      [v17 device:self didPostEvent:v16];
+      delegate3 = [(HNDDevice *)self delegate];
+      [delegate3 device:self didPostEvent:v16];
 
       goto LABEL_13;
     }
   }
 
-  else if (v5 == 9 || v5 == 10)
+  else if (keyInfo == 9 || keyInfo == 10)
   {
-    v5 = [objc_allocWithZone(HNDEvent) init];
-    [v5 setType:1];
+    keyInfo = [objc_allocWithZone(HNDEvent) init];
+    [keyInfo setType:1];
 LABEL_34:
-    [v5 setButtonNumber:1];
-    v21 = [(HNDDevice *)self delegate];
-    [v21 device:self didPostEvent:v5];
+    [keyInfo setButtonNumber:1];
+    delegate4 = [(HNDDevice *)self delegate];
+    [delegate4 device:self didPostEvent:keyInfo];
 
-    LOBYTE(v5) = 1;
+    LOBYTE(keyInfo) = 1;
     goto LABEL_13;
   }
 
-  if (![(HNDMouseKeyDevice *)self mouseKeyActionIsMovement:v5])
+  if (![(HNDMouseKeyDevice *)self mouseKeyActionIsMovement:keyInfo])
   {
     goto LABEL_12;
   }
 
-  v20 = [NSNumber numberWithUnsignedInteger:v5];
+  v20 = [NSNumber numberWithUnsignedInteger:keyInfo];
   if ([(NSMutableArray *)self->_activeDownMovementDirections containsObject:v20])
   {
     [(NSMutableArray *)self->_activeDownMovementDirections removeObject:v20];
   }
 
   [(NSMutableArray *)self->_activeDownMovementDirections addObject:v20];
-  [(HNDMouseKeyDevice *)self startMovementHoldWithMouseKeyAction:v5];
+  [(HNDMouseKeyDevice *)self startMovementHoldWithMouseKeyAction:keyInfo];
 
-  LOBYTE(v5) = 1;
+  LOBYTE(keyInfo) = 1;
 LABEL_13:
 
-  return v5;
+  return keyInfo;
 }
 
 - (void)reevaluateTimers
 {
   [(HNDMouseKeyDevice *)self invalidateTimers];
-  v3 = [(NSMutableArray *)self->_activeDownMovementDirections lastObject];
-  v4 = [v3 unsignedIntegerValue];
+  lastObject = [(NSMutableArray *)self->_activeDownMovementDirections lastObject];
+  unsignedIntegerValue = [lastObject unsignedIntegerValue];
 
-  if ([(HNDMouseKeyDevice *)self mouseKeyActionIsMovement:v4])
+  if ([(HNDMouseKeyDevice *)self mouseKeyActionIsMovement:unsignedIntegerValue])
   {
 
-    [(HNDMouseKeyDevice *)self repeatMouseKeyMovementAction:v4];
+    [(HNDMouseKeyDevice *)self repeatMouseKeyMovementAction:unsignedIntegerValue];
   }
 }
 
 - (int64_t)mouseKeysMovementMultiplier
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchMouseKeysMaxSpeed];
+  assistiveTouchMouseKeysMaxSpeed = [v2 assistiveTouchMouseKeysMaxSpeed];
 
-  return v3 + 1;
+  return assistiveTouchMouseKeysMaxSpeed + 1;
 }
 
 - (double)mouseKeysMovementDelay
@@ -364,16 +364,16 @@ LABEL_13:
   return v3;
 }
 
-- (void)movePointerWithMouseKeyAction:(unint64_t)a3 increment:(double)a4
+- (void)movePointerWithMouseKeyAction:(unint64_t)action increment:(double)increment
 {
   v6 = 0.0;
-  if (a3 <= 4)
+  if (action <= 4)
   {
-    if (a3 <= 2)
+    if (action <= 2)
     {
-      if (a3 != 1)
+      if (action != 1)
       {
-        if (a3 != 2)
+        if (action != 2)
         {
           return;
         }
@@ -386,24 +386,24 @@ LABEL_13:
       goto LABEL_15;
     }
 
-    if (a3 != 3)
+    if (action != 3)
     {
       v7 = 0.0;
 LABEL_15:
-      v6 = -1.0 - a4;
+      v6 = -1.0 - increment;
       goto LABEL_19;
     }
 
     v7 = -1.0;
 LABEL_18:
-    v6 = a4 + 1.0;
+    v6 = increment + 1.0;
     goto LABEL_19;
   }
 
   v7 = 1.0;
-  if (a3 <= 6)
+  if (action <= 6)
   {
-    if (a3 != 5)
+    if (action != 5)
     {
       goto LABEL_15;
     }
@@ -412,9 +412,9 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (a3 != 7)
+  if (action != 7)
   {
-    if (a3 != 8)
+    if (action != 8)
     {
       return;
     }
@@ -424,10 +424,10 @@ LABEL_18:
 
 LABEL_19:
   v8 = v6 * [(HNDMouseKeyDevice *)self mouseKeysMovementMultiplier];
-  v9 = v7 - a4;
+  v9 = v7 - increment;
   if (v7 > 0.0)
   {
-    v9 = v7 + a4;
+    v9 = v7 + increment;
   }
 
   if (v7 == 0.0)
@@ -445,14 +445,14 @@ LABEL_19:
   [v13 setType:3];
   [v13 setDeltaX:v8];
   [v13 setDeltaY:v11];
-  v12 = [(HNDDevice *)self delegate];
-  [v12 device:self didPostEvent:v13];
+  delegate = [(HNDDevice *)self delegate];
+  [delegate device:self didPostEvent:v13];
 }
 
-- (void)startMovementHoldWithMouseKeyAction:(unint64_t)a3
+- (void)startMovementHoldWithMouseKeyAction:(unint64_t)action
 {
   [(HNDMouseKeyDevice *)self invalidateTimers];
-  [(HNDMouseKeyDevice *)self movePointerWithMouseKeyAction:a3];
+  [(HNDMouseKeyDevice *)self movePointerWithMouseKeyAction:action];
   objc_initWeak(&location, self);
   initialDelayTimer = self->_initialDelayTimer;
   [(HNDMouseKeyDevice *)self mouseKeysMovementDelay];
@@ -462,13 +462,13 @@ LABEL_19:
   v8[2] = sub_100068098;
   v8[3] = &unk_1001D56F8;
   objc_copyWeak(v9, &location);
-  v9[1] = a3;
+  v9[1] = action;
   [(AXDispatchTimer *)initialDelayTimer afterDelay:v8 processBlock:v7];
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
 }
 
-- (void)repeatMouseKeyMovementAction:(unint64_t)a3
+- (void)repeatMouseKeyMovementAction:(unint64_t)action
 {
   [(HNDMouseKeyDevice *)self invalidateTimers];
   v12[0] = 0;
@@ -484,7 +484,7 @@ LABEL_19:
   v9[3] = &unk_1001D5720;
   v9[4] = v12;
   objc_copyWeak(v10, &location);
-  v10[1] = a3;
+  v10[1] = action;
   v7 = [NSTimer scheduledTimerWithTimeInterval:1 repeats:v9 block:v6];
   repeatTimer = self->_repeatTimer;
   self->_repeatTimer = v7;

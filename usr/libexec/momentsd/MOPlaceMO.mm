@@ -1,74 +1,74 @@
 @interface MOPlaceMO
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4;
-- (id)clonedObjectWithContext:(id)a3;
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context;
+- (id)clonedObjectWithContext:(id)context;
 @end
 
 @implementation MOPlaceMO
 
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOPlaceMO alloc] initWithContext:v5];
+  contextCopy = context;
+  objectCopy = object;
+  v7 = [[MOPlaceMO alloc] initWithContext:contextCopy];
 
-  v8 = [v6 identifier];
-  [(MOPlaceMO *)v7 setIdentifier:v8];
+  identifier = [objectCopy identifier];
+  [(MOPlaceMO *)v7 setIdentifier:identifier];
 
-  v9 = [v6 placeName];
-  [(MOPlaceMO *)v7 setName:v9];
+  placeName = [objectCopy placeName];
+  [(MOPlaceMO *)v7 setName:placeName];
 
-  v10 = [v6 location];
-  [v10 latitude];
+  location = [objectCopy location];
+  [location latitude];
   [(MOPlaceMO *)v7 setLatitude:?];
 
-  v11 = [v6 location];
-  [v11 longitude];
+  location2 = [objectCopy location];
+  [location2 longitude];
   [(MOPlaceMO *)v7 setLongitude:?];
 
-  v12 = [v6 location];
-  [v12 horizontalUncertainty];
+  location3 = [objectCopy location];
+  [location3 horizontalUncertainty];
   [(MOPlaceMO *)v7 setRange:?];
 
-  -[MOPlaceMO setUserSpecificPlaceType:](v7, "setUserSpecificPlaceType:", [v6 placeUserType]);
-  -[MOPlaceMO setProposition:](v7, "setProposition:", [v6 proposition]);
-  -[MOPlaceMO setPlaceType:](v7, "setPlaceType:", [v6 placeType]);
-  -[MOPlaceMO setLocationMode:](v7, "setLocationMode:", [v6 locationMode]);
-  v13 = [v6 poiCategory];
-  [(MOPlaceMO *)v7 setPoiCategory:v13];
+  -[MOPlaceMO setUserSpecificPlaceType:](v7, "setUserSpecificPlaceType:", [objectCopy placeUserType]);
+  -[MOPlaceMO setProposition:](v7, "setProposition:", [objectCopy proposition]);
+  -[MOPlaceMO setPlaceType:](v7, "setPlaceType:", [objectCopy placeType]);
+  -[MOPlaceMO setLocationMode:](v7, "setLocationMode:", [objectCopy locationMode]);
+  poiCategory = [objectCopy poiCategory];
+  [(MOPlaceMO *)v7 setPoiCategory:poiCategory];
 
-  v14 = [v6 categoryMuid];
-  [(MOPlaceMO *)v7 setCategoryMuid:v14];
+  categoryMuid = [objectCopy categoryMuid];
+  [(MOPlaceMO *)v7 setCategoryMuid:categoryMuid];
 
-  [v6 distanceToHomeInMiles];
+  [objectCopy distanceToHomeInMiles];
   [(MOPlaceMO *)v7 setDistanceToHomeInMiles:?];
-  [v6 placeNameConfidence];
+  [objectCopy placeNameConfidence];
   [(MOPlaceMO *)v7 setPlaceNameConfidence:?];
-  [v6 familiarityIndexLOI];
+  [objectCopy familiarityIndexLOI];
   [(MOPlaceMO *)v7 setFamiliarityIndexLOI:?];
-  v15 = [v6 enclosingArea];
-  [(MOPlaceMO *)v7 setCityName:v15];
+  enclosingArea = [objectCopy enclosingArea];
+  [(MOPlaceMO *)v7 setCityName:enclosingArea];
 
-  v16 = [v6 startDate];
-  [(MOPlaceMO *)v7 setStartDate:v16];
+  startDate = [objectCopy startDate];
+  [(MOPlaceMO *)v7 setStartDate:startDate];
 
-  v17 = [v6 endDate];
-  [(MOPlaceMO *)v7 setEndDate:v17];
+  endDate = [objectCopy endDate];
+  [(MOPlaceMO *)v7 setEndDate:endDate];
 
-  [v6 priorityScore];
+  [objectCopy priorityScore];
   [(MOPlaceMO *)v7 setPriorityScore:?];
-  -[MOPlaceMO setSourceEventAccessType:](v7, "setSourceEventAccessType:", [v6 sourceEventAccessType]);
-  v18 = [v6 sourceEventIdentifier];
+  -[MOPlaceMO setSourceEventAccessType:](v7, "setSourceEventAccessType:", [objectCopy sourceEventAccessType]);
+  sourceEventIdentifier = [objectCopy sourceEventIdentifier];
 
-  [(MOPlaceMO *)v7 setSourceEventIdentifier:v18];
+  [(MOPlaceMO *)v7 setSourceEventIdentifier:sourceEventIdentifier];
 
   return v7;
 }
 
-- (id)clonedObjectWithContext:(id)a3
+- (id)clonedObjectWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [[MOPlace alloc] initWithPlaceMO:self];
-  v6 = [MOPlaceMO managedObjectWithObject:v5 inManagedObjectContext:v4];
+  v6 = [MOPlaceMO managedObjectWithObject:v5 inManagedObjectContext:contextCopy];
 
   return v6;
 }

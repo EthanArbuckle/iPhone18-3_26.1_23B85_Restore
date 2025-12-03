@@ -1,43 +1,43 @@
 @interface SKProgressObserver
-- (SKProgressObserver)initWithProgress:(id)a3;
+- (SKProgressObserver)initWithProgress:(id)progress;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation SKProgressObserver
 
-- (SKProgressObserver)initWithProgress:(id)a3
+- (SKProgressObserver)initWithProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   v12.receiver = self;
   v12.super_class = SKProgressObserver;
   v6 = [(SKProgressObserver *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_progress, a3);
+    objc_storeStrong(&v6->_progress, progress);
     v8 = objc_opt_new();
     messages = v7->_messages;
     v7->_messages = v8;
 
     v10 = NSStringFromSelector("localizedAdditionalDescription");
-    [v5 addObserver:v7 forKeyPath:v10 options:1 context:0];
+    [progressCopy addObserver:v7 forKeyPath:v10 options:1 context:0];
   }
 
   return v7;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v23 = a4;
-  v8 = a3;
+  objectCopy = object;
+  pathCopy = path;
   v9 = NSStringFromSelector("localizedAdditionalDescription");
-  v10 = [v8 isEqualToString:v9];
+  v10 = [pathCopy isEqualToString:v9];
 
-  v11 = v23;
+  v11 = objectCopy;
   if (v10)
   {
-    v12 = v23;
+    v12 = objectCopy;
     if (!v12)
     {
       goto LABEL_10;
@@ -49,22 +49,22 @@
       goto LABEL_10;
     }
 
-    v13 = [v12 localizedAdditionalDescription];
+    localizedAdditionalDescription = [v12 localizedAdditionalDescription];
 
-    if (!v13)
+    if (!localizedAdditionalDescription)
     {
       goto LABEL_10;
     }
 
-    v14 = [(SKProgressObserver *)self messages];
-    v15 = [v14 lastObject];
-    if (v15)
+    messages = [(SKProgressObserver *)self messages];
+    lastObject = [messages lastObject];
+    if (lastObject)
     {
-      v16 = v15;
-      v17 = [(SKProgressObserver *)self messages];
-      v18 = [v17 lastObject];
-      v19 = [v12 localizedAdditionalDescription];
-      v20 = [v18 isEqualToString:v19];
+      v16 = lastObject;
+      messages2 = [(SKProgressObserver *)self messages];
+      lastObject2 = [messages2 lastObject];
+      localizedAdditionalDescription2 = [v12 localizedAdditionalDescription];
+      v20 = [lastObject2 isEqualToString:localizedAdditionalDescription2];
 
       if (v20)
       {
@@ -76,20 +76,20 @@
     {
     }
 
-    v21 = [(SKProgressObserver *)self messages];
-    v22 = [v12 localizedAdditionalDescription];
-    [v21 addObject:v22];
+    messages3 = [(SKProgressObserver *)self messages];
+    localizedAdditionalDescription3 = [v12 localizedAdditionalDescription];
+    [messages3 addObject:localizedAdditionalDescription3];
 
 LABEL_10:
-    v11 = v23;
+    v11 = objectCopy;
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(SKProgressObserver *)self progress];
+  progress = [(SKProgressObserver *)self progress];
   v4 = NSStringFromSelector("localizedAdditionalDescription");
-  [v3 removeObserver:self forKeyPath:v4];
+  [progress removeObserver:self forKeyPath:v4];
 
   v5.receiver = self;
   v5.super_class = SKProgressObserver;

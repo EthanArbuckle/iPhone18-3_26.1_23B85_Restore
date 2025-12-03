@@ -1,17 +1,17 @@
 @interface CBStackAddressMonitorBTStack
-- (id)_dataWithBTAddress:(unint64_t)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (id)_dataWithBTAddress:(unint64_t)address;
+- (id)descriptionWithLevel:(int)level;
 - (void)activate;
-- (void)addressChanged:(BOOL)a3;
-- (void)forceNonConnectableAddressReadAndUpdate:(unsigned __int8)a3;
+- (void)addressChanged:(BOOL)changed;
+- (void)forceNonConnectableAddressReadAndUpdate:(unsigned __int8)update;
 - (void)invalidate;
 @end
 
 @implementation CBStackAddressMonitorBTStack
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v3 = 0;
   }
@@ -93,11 +93,11 @@ LABEL_11:
   }
 }
 
-- (void)addressChanged:(BOOL)a3
+- (void)addressChanged:(BOOL)changed
 {
   if (self->_addedMonitor)
   {
-    v3 = a3;
+    changedCopy = changed;
     if (qword_100B508B0 != -1)
     {
       sub_10080F6B4();
@@ -176,7 +176,7 @@ LABEL_22:
           if (v24 == v25)
           {
 
-            if (!v3)
+            if (!changedCopy)
             {
 LABEL_30:
               if (!v10)
@@ -204,7 +204,7 @@ LABEL_35:
 
               if (v27)
               {
-                if (v3)
+                if (changedCopy)
                 {
                   goto LABEL_34;
                 }
@@ -218,7 +218,7 @@ LABEL_35:
             }
 
             objc_storeStrong(&self->_nonConnectableSecondaryAddressData, v22);
-            if (!v3)
+            if (!changedCopy)
             {
               goto LABEL_35;
             }
@@ -249,7 +249,7 @@ LABEL_38:
   }
 }
 
-- (void)forceNonConnectableAddressReadAndUpdate:(unsigned __int8)a3
+- (void)forceNonConnectableAddressReadAndUpdate:(unsigned __int8)update
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (!self->_addedMonitor)
@@ -296,16 +296,16 @@ LABEL_38:
 LABEL_12:
 }
 
-- (id)_dataWithBTAddress:(unint64_t)a3
+- (id)_dataWithBTAddress:(unint64_t)address
 {
-  if (a3)
+  if (address)
   {
-    v6[0] = BYTE5(a3);
-    v6[1] = BYTE4(a3);
-    v6[2] = BYTE3(a3);
-    v6[3] = BYTE2(a3);
-    v6[4] = BYTE1(a3);
-    v6[5] = a3;
+    v6[0] = BYTE5(address);
+    v6[1] = BYTE4(address);
+    v6[2] = BYTE3(address);
+    v6[3] = BYTE2(address);
+    v6[4] = BYTE1(address);
+    v6[5] = address;
     v4 = [[NSData alloc] initWithBytes:v6 length:6];
   }
 

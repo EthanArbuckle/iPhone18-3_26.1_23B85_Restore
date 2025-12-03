@@ -1,35 +1,35 @@
 @interface PPEventScorer
-+ (id)cacheKeyforCoreRoutineCacheForStartDate:(void *)a3 endDate:;
-+ (id)emailAddressFromEKAttendee:(uint64_t)a1;
-+ (id)participantsInEvent:(uint64_t)a1;
++ (id)cacheKeyforCoreRoutineCacheForStartDate:(void *)date endDate:;
++ (id)emailAddressFromEKAttendee:(uint64_t)attendee;
++ (id)participantsInEvent:(uint64_t)event;
 + (void)clearAssetCache;
-+ (void)enrichDictionary:(id)a3 withEvent:(id)a4 interningSet:(id)a5;
-+ (void)setLocationsOfInterestLocations:(id)a3 withReferenceDate:(id)a4;
-- (BOOL)isHomeCalendar:(id)a3;
-- (BOOL)isWorkCalendar:(id)a3;
-- (BOOL)scoreIsExtraordinary:(double)a3 rankingOptions:(int)a4;
++ (void)enrichDictionary:(id)dictionary withEvent:(id)event interningSet:(id)set;
++ (void)setLocationsOfInterestLocations:(id)locations withReferenceDate:(id)date;
+- (BOOL)isHomeCalendar:(id)calendar;
+- (BOOL)isWorkCalendar:(id)calendar;
+- (BOOL)scoreIsExtraordinary:(double)extraordinary rankingOptions:(int)options;
 - (PPEventScorer)init;
-- (PPEventScorer)initWithPastEventTitlesAndParticipants:(id)a3 andEarliestStartTime:(double)a4 shouldConsiderAlarms:(BOOL)a5 withOptions:(int)a6 trialWrapper:(id)a7;
+- (PPEventScorer)initWithPastEventTitlesAndParticipants:(id)participants andEarliestStartTime:(double)time shouldConsiderAlarms:(BOOL)alarms withOptions:(int)options trialWrapper:(id)wrapper;
 - (id)eventScorerConfig;
-- (id)scoreEvent:(id)a3 usingDate:(id)a4;
+- (id)scoreEvent:(id)event usingDate:(id)date;
 @end
 
 @implementation PPEventScorer
 
-- (BOOL)scoreIsExtraordinary:(double)a3 rankingOptions:(int)a4
+- (BOOL)scoreIsExtraordinary:(double)extraordinary rankingOptions:(int)options
 {
-  v4 = a4;
-  v6 = [(PPEventScorer *)self eventScorerConfig];
-  v7 = v6;
-  if (!v6)
+  optionsCopy = options;
+  eventScorerConfig = [(PPEventScorer *)self eventScorerConfig];
+  v7 = eventScorerConfig;
+  if (!eventScorerConfig)
   {
     v11 = 1000.0;
 LABEL_10:
-    v13 = v11 < a3;
+    v13 = v11 < extraordinary;
     goto LABEL_11;
   }
 
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     v8 = @"highExtraordinaryThreshold";
   }
@@ -39,7 +39,7 @@ LABEL_10:
     v8 = @"extraordinaryThreshold";
   }
 
-  v9 = [v6 objectForKeyedSubscript:v8];
+  v9 = [eventScorerConfig objectForKeyedSubscript:v8];
   [v9 doubleValue];
   v11 = v10;
 
@@ -63,7 +63,7 @@ LABEL_11:
 
 - (id)eventScorerConfig
 {
-  if (a1)
+  if (self)
   {
     if (eventScorerConfig_onceToken != -1)
     {
@@ -74,7 +74,7 @@ LABEL_11:
     if (!v2)
     {
       pthread_mutex_lock(&configLock);
-      v3 = [*(a1 + 64) plistForFactorName:@"EventRankerConfig.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_EVENTS"];
+      v3 = [*(self + 64) plistForFactorName:@"EventRankerConfig.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_EVENTS"];
       if ([v3 count])
       {
         v2 = v3;
@@ -109,48 +109,48 @@ uint64_t __34__PPEventScorer_eventScorerConfig__block_invoke()
   return [v2 setCountLimit:1];
 }
 
-- (BOOL)isHomeCalendar:(id)a3
+- (BOOL)isHomeCalendar:(id)calendar
 {
-  v3 = a3;
-  v4 = [v3 title];
-  v5 = ([v4 isEqualToString:@"Home"] & 1) != 0 || objc_msgSend(v3, "type") == 4;
+  calendarCopy = calendar;
+  title = [calendarCopy title];
+  v5 = ([title isEqualToString:@"Home"] & 1) != 0 || objc_msgSend(calendarCopy, "type") == 4;
 
   return v5;
 }
 
-- (BOOL)isWorkCalendar:(id)a3
+- (BOOL)isWorkCalendar:(id)calendar
 {
-  v3 = a3;
-  v4 = [v3 title];
-  if ([v4 isEqualToString:@"Work"])
+  calendarCopy = calendar;
+  title = [calendarCopy title];
+  if ([title isEqualToString:@"Work"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 source];
-    v7 = [v6 title];
-    v5 = [v7 isEqualToString:@"calendar.apple.com"];
+    source = [calendarCopy source];
+    title2 = [source title];
+    v5 = [title2 isEqualToString:@"calendar.apple.com"];
   }
 
   return v5;
 }
 
-- (id)scoreEvent:(id)a3 usingDate:(id)a4
+- (id)scoreEvent:(id)event usingDate:(id)date
 {
   v309 = *MEMORY[0x277D85DE8];
-  v281 = a3;
-  v279 = a4;
-  v287 = self;
+  eventCopy = event;
+  dateCopy = date;
+  selfCopy = self;
   v6 = [[PPEventRankerFeaturizer alloc] initWithTrialWrapper:self->_trialWrapper];
-  v7 = [(PPEventRankerFeaturizer *)v6 featureSchema];
+  featureSchema = [(PPEventRankerFeaturizer *)v6 featureSchema];
 
-  if (v7)
+  if (featureSchema)
   {
     context = objc_autoreleasePoolPush();
-    v8 = v281;
-    v9 = v7;
+    v8 = eventCopy;
+    v9 = featureSchema;
     v301 = 0u;
     v302 = 0u;
     v303 = 0u;
@@ -174,13 +174,13 @@ uint64_t __34__PPEventScorer_eventScorerConfig__block_invoke()
 
           v14 = *(*(&v301 + 1) + 8 * i);
           v15 = objc_autoreleasePoolPush();
-          v16 = [v14 frequency];
+          frequency = [v14 frequency];
           v17 = [v9 objectForKeyedSubscript:@"RecurrenceFeatures"];
           v18 = v17;
           v19 = @"RecurrenceRuleSet";
-          if (v16 <= 3)
+          if (frequency <= 3)
           {
-            v19 = off_278979A68[v16];
+            v19 = off_278979A68[frequency];
           }
 
           v20 = [v17 objectForKeyedSubscript:v19];
@@ -206,7 +206,7 @@ uint64_t __34__PPEventScorer_eventScorerConfig__block_invoke()
 
     v24 = v283;
     v25 = v23;
-    if (v287)
+    if (selfCopy)
     {
       [v24 duration];
       if (v26 > 43200.0)
@@ -249,7 +249,7 @@ uint64_t __34__PPEventScorer_eventScorerConfig__block_invoke()
 
     v40 = v24;
     v41 = v39;
-    if (!v287)
+    if (!selfCopy)
     {
       v64 = 0;
       v43 = 0;
@@ -279,10 +279,10 @@ LABEL_46:
       }
 
       v74 = v73;
-      if (v287)
+      if (selfCopy)
       {
-        v75 = [v65 attachments];
-        v76 = [v75 count];
+        attachments = [v65 attachments];
+        v76 = [attachments count];
 
         if (v76)
         {
@@ -301,13 +301,13 @@ LABEL_46:
 
       v80 = v65;
       v81 = v79;
-      if (v287)
+      if (selfCopy)
       {
         v82 = objc_autoreleasePoolPush();
-        v83 = [v80 suggestionInfo];
+        suggestionInfo = [v80 suggestionInfo];
         objc_autoreleasePoolPop(v82);
 
-        if (v83)
+        if (suggestionInfo)
         {
           v84 = objc_autoreleasePoolPush();
           v85 = [v81 objectForKeyedSubscript:@"EventAttributeFeatures"];
@@ -336,10 +336,10 @@ LABEL_46:
         v92 = 0;
       }
 
-      v93 = v287;
+      v93 = selfCopy;
 
       v94 = v92;
-      if (v287)
+      if (selfCopy)
       {
         if ([v80 hasNotes])
         {
@@ -347,7 +347,7 @@ LABEL_46:
           v96 = [v95 objectForKeyedSubscript:@"Notes"];
           [v96 setObject:&unk_284784218 forKeyedSubscript:@"Value"];
 
-          v93 = v287;
+          v93 = selfCopy;
         }
 
         v97 = v94;
@@ -379,12 +379,12 @@ LABEL_46:
       }
 
       v103 = v102;
-      if (v287)
+      if (selfCopy)
       {
-        v104 = [v80 calendar];
-        v105 = [v104 allowsContentModifications];
+        calendar = [v80 calendar];
+        allowsContentModifications = [calendar allowsContentModifications];
 
-        if ((v105 & 1) == 0)
+        if ((allowsContentModifications & 1) == 0)
         {
           v106 = [v103 objectForKeyedSubscript:@"EventAttributeFeatures"];
           v107 = [v106 objectForKeyedSubscript:@"ContentModificationsNotAllowed"];
@@ -401,30 +401,30 @@ LABEL_46:
 
       v109 = v80;
       v110 = v108;
-      if (!v287)
+      if (!selfCopy)
       {
         v121 = 0;
         goto LABEL_80;
       }
 
-      v111 = [v109 calendar];
-      if ([v111 isSubscribed])
+      calendar2 = [v109 calendar];
+      if ([calendar2 isSubscribed])
       {
       }
 
       else
       {
-        v112 = [v109 calendar];
-        v113 = [v112 source];
-        v114 = [v113 sourceType];
+        calendar3 = [v109 calendar];
+        source = [calendar3 source];
+        sourceType = [source sourceType];
 
-        if (v114 != 4)
+        if (sourceType != 4)
         {
 LABEL_77:
-          v117 = [v109 calendar];
-          v118 = [v117 sharingStatus];
+          calendar4 = [v109 calendar];
+          sharingStatus = [calendar4 sharingStatus];
 
-          if (v118 == 2)
+          if (sharingStatus == 2)
           {
             v119 = [v110 objectForKeyedSubscript:@"CalendarFeatures"];
             v120 = [v119 objectForKeyedSubscript:@"Shared"];
@@ -436,27 +436,27 @@ LABEL_80:
 
           v122 = v109;
           v123 = v121;
-          v124 = v287;
-          if (v287)
+          v124 = selfCopy;
+          if (selfCopy)
           {
-            if (v287->_pastEventTitlesAndParticipants)
+            if (selfCopy->_pastEventTitlesAndParticipants)
             {
-              v125 = [v122 title];
-              v124 = v287;
-              if (v125)
+              title = [v122 title];
+              v124 = selfCopy;
+              if (title)
               {
-                pastEventTitlesAndParticipants = v287->_pastEventTitlesAndParticipants;
-                v127 = [v122 title];
-                v128 = [(NSDictionary *)pastEventTitlesAndParticipants objectForKeyedSubscript:v127];
+                pastEventTitlesAndParticipants = selfCopy->_pastEventTitlesAndParticipants;
+                title2 = [v122 title];
+                v128 = [(NSDictionary *)pastEventTitlesAndParticipants objectForKeyedSubscript:title2];
 
-                v124 = v287;
+                v124 = selfCopy;
                 if (v128)
                 {
                   v129 = [v123 objectForKeyedSubscript:@"TitleFeatures"];
                   v130 = [v129 objectForKeyedSubscript:@"RecurringTitle"];
                   [v130 setObject:&unk_284784218 forKeyedSubscript:@"Value"];
 
-                  v124 = v287;
+                  v124 = selfCopy;
                 }
               }
             }
@@ -474,24 +474,24 @@ LABEL_80:
           {
             if (*(v124 + 56))
             {
-              v133 = [(PPEventScorer *)v124 eventScorerConfig];
-              v134 = v133;
-              if (v133)
+              eventScorerConfig = [(PPEventScorer *)v124 eventScorerConfig];
+              v134 = eventScorerConfig;
+              if (eventScorerConfig)
               {
-                pastTitlesCount = v287->_pastTitlesCount;
-                v136 = [v133 objectForKeyedSubscript:@"minEkEventsForThreshold"];
-                v137 = [v136 integerValue];
+                pastTitlesCount = selfCopy->_pastTitlesCount;
+                v136 = [eventScorerConfig objectForKeyedSubscript:@"minEkEventsForThreshold"];
+                integerValue = [v136 integerValue];
 
-                if (pastTitlesCount > v137)
+                if (pastTitlesCount > integerValue)
                 {
-                  v138 = [MEMORY[0x277CCABB0] numberWithInteger:v287->_pastTitlesCount];
+                  v138 = [MEMORY[0x277CCABB0] numberWithInteger:selfCopy->_pastTitlesCount];
                   v139 = [v132 objectForKeyedSubscript:@"TitleFeatures"];
                   v140 = [v139 objectForKeyedSubscript:@"PastTitleCount"];
                   [v140 setObject:v138 forKeyedSubscript:@"Value"];
                 }
               }
 
-              v124 = v287;
+              v124 = selfCopy;
             }
 
             v141 = v132;
@@ -511,7 +511,7 @@ LABEL_80:
 LABEL_116:
 
             v280 = v165;
-            if (!v287)
+            if (!selfCopy)
             {
               v207 = 0;
               goto LABEL_174;
@@ -525,14 +525,14 @@ LABEL_173:
 
 LABEL_174:
               v208 = v207;
-              if (v287)
+              if (selfCopy)
               {
-                v209 = [v282 selfAttendee];
-                v210 = [v209 participantRole];
+                selfAttendee = [v282 selfAttendee];
+                participantRole = [selfAttendee participantRole];
 
-                if ((v210 - 2) <= 2)
+                if ((participantRole - 2) <= 2)
                 {
-                  v211 = off_2789751F0[v210 - 2];
+                  v211 = off_2789751F0[participantRole - 2];
                   v212 = [v208 objectForKeyedSubscript:@"ParticipantsFeatures"];
                   v213 = [v212 objectForKeyedSubscript:*v211];
                   [v213 setObject:&unk_284784218 forKeyedSubscript:@"Value"];
@@ -547,18 +547,18 @@ LABEL_174:
               }
 
               v215 = v214;
-              v216 = v287;
-              if (v287)
+              v216 = selfCopy;
+              if (selfCopy)
               {
-                v217 = [v282 availability];
-                if (v217 <= 2)
+                availability = [v282 availability];
+                if (availability <= 2)
                 {
-                  v218 = off_278975208[v217];
+                  v218 = off_278975208[availability];
                   v219 = [v215 objectForKeyedSubscript:@"EventAttributeFeatures"];
                   v220 = [v219 objectForKeyedSubscript:*v218];
                   [v220 setObject:&unk_284784218 forKeyedSubscript:@"Value"];
 
-                  v216 = v287;
+                  v216 = selfCopy;
                 }
 
                 v221 = v215;
@@ -578,8 +578,8 @@ LABEL_174:
 
                 if ([v225 count])
                 {
-                  v226 = [v222 selfAttendee];
-                  v227 = [PPEventScorer emailAddressFromEKAttendee:v226];
+                  selfAttendee2 = [v222 selfAttendee];
+                  v227 = [PPEventScorer emailAddressFromEKAttendee:selfAttendee2];
 
                   if (v227)
                   {
@@ -605,7 +605,7 @@ LABEL_174:
                           objc_enumerationMutation(v228);
                         }
 
-                        v233 = [(NSDictionary *)v287->_pastEventTitlesAndParticipants objectForKeyedSubscript:*(*(&v301 + 1) + 8 * j)];
+                        v233 = [(NSDictionary *)selfCopy->_pastEventTitlesAndParticipants objectForKeyedSubscript:*(*(&v301 + 1) + 8 * j)];
                         v234 = v233 == 0;
 
                         if (!v234)
@@ -642,14 +642,14 @@ LABEL_174:
                 v238 = 0;
               }
 
-              v239 = v279;
+              v239 = dateCopy;
               v240 = v238;
-              if (v287)
+              if (selfCopy)
               {
-                v241 = [v222 structuredLocationWithoutPrediction];
-                v242 = [v241 geoLocation];
+                structuredLocationWithoutPrediction = [v222 structuredLocationWithoutPrediction];
+                geoLocation = [structuredLocationWithoutPrediction geoLocation];
 
-                if (v242)
+                if (geoLocation)
                 {
                   v243 = v239;
                   v244 = [PPEventRankerDateUtils dateTwoWeeksPriorToDate:v243];
@@ -682,7 +682,7 @@ LABEL_174:
                           objc_enumerationMutation(v246);
                         }
 
-                        [*(*(&v301 + 1) + 8 * k) distanceFromLocation:v242];
+                        [*(*(&v301 + 1) + 8 * k) distanceFromLocation:geoLocation];
                         if (v249 == -1.0 || v249 > v251)
                         {
                           v249 = v251;
@@ -721,13 +721,13 @@ LABEL_174:
               }
 
               v258 = v257;
-              if (v287)
+              if (selfCopy)
               {
-                v259 = [v222 startDate];
-                [PPEventRankerDateUtils secondsFromMidnight:v259];
+                startDate = [v222 startDate];
+                [PPEventRankerDateUtils secondsFromMidnight:startDate];
                 v261 = v260;
 
-                earliestStartTime = v287->_earliestStartTime;
+                earliestStartTime = selfCopy->_earliestStartTime;
                 if (earliestStartTime != -1.0 && earliestStartTime + -3600.0 > v261)
                 {
                   v263 = [v258 objectForKeyedSubscript:@"UnusualStartTimeFeatures"];
@@ -745,19 +745,19 @@ LABEL_174:
 
               v266 = [PPEventRankerFeaturizer scoreFeatureSchema:v265];
               [v266 weightedScore];
-              v267 = [(PPEventScorer *)v287 scoreIsExtraordinary:v287->_rankingOptions rankingOptions:?];
+              v267 = [(PPEventScorer *)selfCopy scoreIsExtraordinary:selfCopy->_rankingOptions rankingOptions:?];
               objc_autoreleasePoolPop(context);
               v268 = MEMORY[0x277D3A398];
               [v266 weightedScore];
               v270 = v269;
-              v271 = [v266 prominentFeature];
-              v272 = [v266 featureValues];
-              v63 = [v268 eventHighlightWithEKEvent:v222 score:v271 prominentFeature:v272 features:v267 isExtraordinary:v270];
+              prominentFeature = [v266 prominentFeature];
+              featureValues = [v266 featureValues];
+              v63 = [v268 eventHighlightWithEKEvent:v222 score:prominentFeature prominentFeature:featureValues features:v267 isExtraordinary:v270];
 
               goto LABEL_228;
             }
 
-            emailVIPEmailAddresses = v287->_emailVIPEmailAddresses;
+            emailVIPEmailAddresses = selfCopy->_emailVIPEmailAddresses;
             if (emailVIPEmailAddresses)
             {
               v167 = emailVIPEmailAddresses;
@@ -784,10 +784,10 @@ LABEL_174:
               v169 = v168;
               _Block_object_dispose(&v301, 8);
               v170 = objc_opt_new();
-              v171 = [v170 vipManager];
-              if ([v171 conformsToProtocol:&unk_2847B99C0])
+              vipManager = [v170 vipManager];
+              if ([vipManager conformsToProtocol:&unk_2847B99C0])
               {
-                v172 = [v171 allVIPWaitForResult];
+                allVIPWaitForResult = [vipManager allVIPWaitForResult];
               }
 
               else
@@ -803,16 +803,16 @@ LABEL_174:
                 }
               }
 
-              v174 = [v171 allVIPEmailAddresses];
-              v175 = [v174 copy];
-              v176 = v287->_emailVIPEmailAddresses;
-              v287->_emailVIPEmailAddresses = v175;
+              allVIPEmailAddresses = [vipManager allVIPEmailAddresses];
+              v175 = [allVIPEmailAddresses copy];
+              v176 = selfCopy->_emailVIPEmailAddresses;
+              selfCopy->_emailVIPEmailAddresses = v175;
 
-              v167 = v287->_emailVIPEmailAddresses;
+              v167 = selfCopy->_emailVIPEmailAddresses;
               if (!v167)
               {
 LABEL_141:
-                favoritesEmailAddresses = v287->_favoritesEmailAddresses;
+                favoritesEmailAddresses = selfCopy->_favoritesEmailAddresses;
                 if (favoritesEmailAddresses)
                 {
                   v186 = favoritesEmailAddresses;
@@ -846,8 +846,8 @@ LABEL_141:
                         v295 = 0u;
                         v292 = 0u;
                         v293 = 0u;
-                        v198 = [v196 emailAddresses];
-                        v199 = [v198 countByEnumeratingWithState:&v292 objects:&v301 count:16];
+                        emailAddresses = [v196 emailAddresses];
+                        v199 = [emailAddresses countByEnumeratingWithState:&v292 objects:&v301 count:16];
                         if (v199)
                         {
                           v200 = *v293;
@@ -857,14 +857,14 @@ LABEL_141:
                             {
                               if (*v293 != v200)
                               {
-                                objc_enumerationMutation(v198);
+                                objc_enumerationMutation(emailAddresses);
                               }
 
-                              v202 = [*(*(&v292 + 1) + 8 * n) value];
-                              [(NSSet *)v192 addObject:v202];
+                              value = [*(*(&v292 + 1) + 8 * n) value];
+                              [(NSSet *)v192 addObject:value];
                             }
 
-                            v199 = [v198 countByEnumeratingWithState:&v292 objects:&v301 count:16];
+                            v199 = [emailAddresses countByEnumeratingWithState:&v292 objects:&v301 count:16];
                           }
 
                           while (v199);
@@ -879,10 +879,10 @@ LABEL_141:
                     while (v194);
                   }
 
-                  v203 = v287->_favoritesEmailAddresses;
-                  v287->_favoritesEmailAddresses = v192;
+                  v203 = selfCopy->_favoritesEmailAddresses;
+                  selfCopy->_favoritesEmailAddresses = v192;
 
-                  v186 = v287->_favoritesEmailAddresses;
+                  v186 = selfCopy->_favoritesEmailAddresses;
                   if (!v186)
                   {
                     goto LABEL_172;
@@ -986,14 +986,14 @@ LABEL_172:
             goto LABEL_141;
           }
 
-          v144 = [v142 selfAttendee];
+          selfAttendee3 = [v142 selfAttendee];
 
-          if (v144)
+          if (selfAttendee3)
           {
-            v145 = [v142 selfAttendee];
-            v146 = [v145 participantStatus];
+            selfAttendee4 = [v142 selfAttendee];
+            participantStatus = [selfAttendee4 participantStatus];
 
-            if (v146 == 2)
+            if (participantStatus == 2)
             {
               v147 = [v143 objectForKeyedSubscript:@"ParticipantsFeatures"];
               v148 = [v147 objectForKeyedSubscript:@"SelfAttendeeStatusAccepted"];
@@ -1003,8 +1003,8 @@ LABEL_172:
               v304 = 0u;
               v301 = 0u;
               v302 = 0u;
-              v149 = [v282 attendees];
-              v150 = [v149 countByEnumeratingWithState:&v301 objects:&buf count:16];
+              attendees = [v282 attendees];
+              v150 = [attendees countByEnumeratingWithState:&v301 objects:&buf count:16];
               if (v150)
               {
                 v151 = 0;
@@ -1015,7 +1015,7 @@ LABEL_172:
                   {
                     if (*v302 != v152)
                     {
-                      objc_enumerationMutation(v149);
+                      objc_enumerationMutation(attendees);
                     }
 
                     if ([*(*(&v301 + 1) + 8 * kk) participantType] == 1)
@@ -1024,7 +1024,7 @@ LABEL_172:
                     }
                   }
 
-                  v150 = [v149 countByEnumeratingWithState:&v301 objects:&buf count:16];
+                  v150 = [attendees countByEnumeratingWithState:&v301 objects:&buf count:16];
                 }
 
                 while (v150);
@@ -1051,10 +1051,10 @@ LABEL_172:
               goto LABEL_115;
             }
 
-            v156 = [v282 selfAttendee];
-            v157 = [v156 participantStatus];
+            selfAttendee5 = [v282 selfAttendee];
+            participantStatus2 = [selfAttendee5 participantStatus];
 
-            if (v157 == 3)
+            if (participantStatus2 == 3)
             {
               v158 = [v143 objectForKeyedSubscript:@"ParticipantsFeatures"];
               v159 = [v158 objectForKeyedSubscript:@"SelfAttendeeStatusDeclined"];
@@ -1065,10 +1065,10 @@ LABEL_111:
               goto LABEL_115;
             }
 
-            v160 = [v282 selfAttendee];
-            v161 = [v160 participantStatus];
+            selfAttendee6 = [v282 selfAttendee];
+            participantStatus3 = [selfAttendee6 participantStatus];
 
-            if (v161 == 4)
+            if (participantStatus3 == 4)
             {
               v158 = [v143 objectForKeyedSubscript:@"ParticipantsFeatures"];
               v159 = [v158 objectForKeyedSubscript:@"SelfAttendeeStatusTentative"];
@@ -1089,11 +1089,11 @@ LABEL_115:
       goto LABEL_77;
     }
 
-    v42 = [v40 alarms];
-    if ([v42 count])
+    alarms = [v40 alarms];
+    if ([alarms count])
     {
-      v43 = v287;
-      shouldConsiderAlarms = v287->_shouldConsiderAlarms;
+      v43 = selfCopy;
+      shouldConsiderAlarms = selfCopy->_shouldConsiderAlarms;
 
       if (!shouldConsiderAlarms)
       {
@@ -1110,8 +1110,8 @@ LABEL_45:
       v304 = 0u;
       v301 = 0u;
       v302 = 0u;
-      v47 = [v40 alarms];
-      v48 = [v47 countByEnumeratingWithState:&v301 objects:&buf count:16];
+      alarms2 = [v40 alarms];
+      v48 = [alarms2 countByEnumeratingWithState:&v301 objects:&buf count:16];
       if (v48)
       {
         v49 = *v302;
@@ -1122,17 +1122,17 @@ LABEL_45:
           {
             if (*v302 != v49)
             {
-              objc_enumerationMutation(v47);
+              objc_enumerationMutation(alarms2);
             }
 
             v52 = *(*(&v301 + 1) + 8 * mm);
-            v53 = [v52 absoluteDate];
+            absoluteDate = [v52 absoluteDate];
 
-            if (v53)
+            if (absoluteDate)
             {
-              v54 = [v52 absoluteDate];
-              v55 = [v40 startDate];
-              [v54 timeIntervalSinceDate:v55];
+              absoluteDate2 = [v52 absoluteDate];
+              startDate2 = [v40 startDate];
+              [absoluteDate2 timeIntervalSinceDate:startDate2];
               v57 = v56;
             }
 
@@ -1148,12 +1148,12 @@ LABEL_45:
             }
           }
 
-          v48 = [v47 countByEnumeratingWithState:&v301 objects:&buf count:16];
+          v48 = [alarms2 countByEnumeratingWithState:&v301 objects:&buf count:16];
         }
 
         while (v48);
 
-        v43 = v287;
+        v43 = selfCopy;
         if (v50 == 0.0)
         {
           goto LABEL_45;
@@ -1174,7 +1174,7 @@ LABEL_45:
     {
     }
 
-    v43 = v287;
+    v43 = selfCopy;
     goto LABEL_45;
   }
 
@@ -1185,7 +1185,7 @@ LABEL_45:
     _os_log_error_impl(&dword_23224A000, v62, OS_LOG_TYPE_ERROR, "PPEventRankerFeatureSchema is nil", &buf, 2u);
   }
 
-  v63 = [MEMORY[0x277D3A398] eventHighlightWithEKEvent:v281 score:8 prominentFeature:MEMORY[0x277CBEBF8] features:0 isExtraordinary:0.0];
+  v63 = [MEMORY[0x277D3A398] eventHighlightWithEKEvent:eventCopy score:8 prominentFeature:MEMORY[0x277CBEBF8] features:0 isExtraordinary:0.0];
 LABEL_228:
 
   v273 = *MEMORY[0x277D85DE8];
@@ -1193,9 +1193,9 @@ LABEL_228:
   return v63;
 }
 
-+ (id)cacheKeyforCoreRoutineCacheForStartDate:(void *)a3 endDate:
++ (id)cacheKeyforCoreRoutineCacheForStartDate:(void *)date endDate:
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = a2;
   objc_opt_self();
   v6 = objc_opt_new();
@@ -1203,14 +1203,14 @@ LABEL_228:
   v7 = MEMORY[0x277CCACA8];
   v8 = [v6 stringFromDate:v5];
 
-  v9 = [v6 stringFromDate:v4];
+  v9 = [v6 stringFromDate:dateCopy];
 
   v10 = [v7 stringWithFormat:@"%@%@", v8, v9];
 
   return v10;
 }
 
-+ (id)participantsInEvent:(uint64_t)a1
++ (id)participantsInEvent:(uint64_t)event
 {
   v21 = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -1221,9 +1221,9 @@ LABEL_228:
   v18 = 0u;
   v19 = 0u;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v2 attendees];
+  attendees = [v2 attendees];
   objc_autoreleasePoolPop(v5);
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [attendees countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1234,7 +1234,7 @@ LABEL_228:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(attendees);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -1248,7 +1248,7 @@ LABEL_228:
         objc_autoreleasePoolPop(v12);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [attendees countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -1259,27 +1259,27 @@ LABEL_228:
   return v4;
 }
 
-+ (id)emailAddressFromEKAttendee:(uint64_t)a1
++ (id)emailAddressFromEKAttendee:(uint64_t)attendee
 {
   v2 = a2;
   objc_opt_self();
   if ([v2 participantType] == 1)
   {
-    v3 = [v2 emailAddress];
-    if ([v3 hasPrefix:@"mailto:"])
+    emailAddress = [v2 emailAddress];
+    if ([emailAddress hasPrefix:@"mailto:"])
     {
-      v4 = [v3 substringFromIndex:7];
+      v4 = [emailAddress substringFromIndex:7];
 
-      v3 = v4;
+      emailAddress = v4;
     }
   }
 
   else
   {
-    v3 = 0;
+    emailAddress = 0;
   }
 
-  return v3;
+  return emailAddress;
 }
 
 - (PPEventScorer)init
@@ -1290,34 +1290,34 @@ LABEL_228:
   return v4;
 }
 
-- (PPEventScorer)initWithPastEventTitlesAndParticipants:(id)a3 andEarliestStartTime:(double)a4 shouldConsiderAlarms:(BOOL)a5 withOptions:(int)a6 trialWrapper:(id)a7
+- (PPEventScorer)initWithPastEventTitlesAndParticipants:(id)participants andEarliestStartTime:(double)time shouldConsiderAlarms:(BOOL)alarms withOptions:(int)options trialWrapper:(id)wrapper
 {
   v33 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a7;
+  participantsCopy = participants;
+  wrapperCopy = wrapper;
   v31.receiver = self;
   v31.super_class = PPEventScorer;
   v15 = [(PPEventScorer *)&v31 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_pastEventTitlesAndParticipants, a3);
-    v16->_earliestStartTime = a4;
-    v16->_shouldConsiderAlarms = a5;
+    objc_storeStrong(&v15->_pastEventTitlesAndParticipants, participants);
+    v16->_earliestStartTime = time;
+    v16->_shouldConsiderAlarms = alarms;
     emailVIPEmailAddresses = v16->_emailVIPEmailAddresses;
     v16->_emailVIPEmailAddresses = 0;
 
     favoritesEmailAddresses = v16->_favoritesEmailAddresses;
     v16->_favoritesEmailAddresses = 0;
 
-    v16->_rankingOptions = a6;
-    objc_storeStrong(&v16->_trialWrapper, a7);
+    v16->_rankingOptions = options;
+    objc_storeStrong(&v16->_trialWrapper, wrapper);
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v19 = [(NSDictionary *)v16->_pastEventTitlesAndParticipants allKeys];
-    v20 = [v19 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    allKeys = [(NSDictionary *)v16->_pastEventTitlesAndParticipants allKeys];
+    v20 = [allKeys countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v20)
     {
       v21 = v20;
@@ -1329,13 +1329,13 @@ LABEL_228:
         {
           if (*v28 != v23)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(allKeys);
           }
 
           v22 += [*(*(&v27 + 1) + 8 * i) containsString:@"@"] ^ 1;
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v21 = [allKeys countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v21);
@@ -1375,60 +1375,60 @@ uint64_t __123__PPEventScorer_initWithPastEventTitlesAndParticipants_andEarliest
   +[PPEventRankerFeaturizer clearAssetCache];
 }
 
-+ (void)setLocationsOfInterestLocations:(id)a3 withReferenceDate:(id)a4
++ (void)setLocationsOfInterestLocations:(id)locations withReferenceDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [PPEventRankerDateUtils dateTwoWeeksPriorToDate:v6];
-  v9 = [(PPEventScorer *)a1 cacheKeyforCoreRoutineCacheForStartDate:v8 endDate:v6];
+  dateCopy = date;
+  locationsCopy = locations;
+  v8 = [PPEventRankerDateUtils dateTwoWeeksPriorToDate:dateCopy];
+  v9 = [(PPEventScorer *)self cacheKeyforCoreRoutineCacheForStartDate:v8 endDate:dateCopy];
 
-  [routineCache setObject:v7 forKey:v9];
+  [routineCache setObject:locationsCopy forKey:v9];
 }
 
-+ (void)enrichDictionary:(id)a3 withEvent:(id)a4 interningSet:(id)a5
++ (void)enrichDictionary:(id)dictionary withEvent:(id)event interningSet:(id)set
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  eventCopy = event;
+  setCopy = set;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __57__PPEventScorer_enrichDictionary_withEvent_interningSet___block_invoke;
   aBlock[3] = &unk_2789751B8;
-  v33 = v10;
+  v33 = setCopy;
   v40 = v33;
   v11 = _Block_copy(aBlock);
-  v12 = [v9 title];
-  v13 = v11[2](v11, v12);
+  title = [eventCopy title];
+  v13 = v11[2](v11, title);
 
   if (v13)
   {
-    v14 = [v8 objectForKeyedSubscript:v13];
+    v14 = [dictionaryCopy objectForKeyedSubscript:v13];
 
     if (v14)
     {
       v15 = MEMORY[0x277CCABB0];
-      v16 = [v8 objectForKeyedSubscript:v13];
+      v16 = [dictionaryCopy objectForKeyedSubscript:v13];
       v17 = [v15 numberWithInteger:{objc_msgSend(v16, "integerValue") + 1}];
-      [v8 setObject:v17 forKeyedSubscript:v13];
+      [dictionaryCopy setObject:v17 forKeyedSubscript:v13];
     }
 
     else
     {
-      [v8 setObject:&unk_284784218 forKeyedSubscript:v13];
+      [dictionaryCopy setObject:&unk_284784218 forKeyedSubscript:v13];
     }
   }
 
   v31 = v13;
-  v34 = v9;
-  [(PPEventScorer *)a1 participantsInEvent:v9];
+  v34 = eventCopy;
+  [(PPEventScorer *)self participantsInEvent:eventCopy];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v30 = v38 = 0u;
-  v18 = [v30 allObjects];
+  allObjects = [v30 allObjects];
   v32 = v11;
-  v19 = [v18 _pas_mappedArrayWithTransform:v11];
+  v19 = [allObjects _pas_mappedArrayWithTransform:v11];
 
   v20 = [v19 countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v20)
@@ -1445,19 +1445,19 @@ uint64_t __123__PPEventScorer_initWithPastEventTitlesAndParticipants_andEarliest
         }
 
         v24 = *(*(&v35 + 1) + 8 * i);
-        v25 = [v8 objectForKeyedSubscript:v24];
+        v25 = [dictionaryCopy objectForKeyedSubscript:v24];
 
         if (v25)
         {
           v26 = MEMORY[0x277CCABB0];
-          v27 = [v8 objectForKeyedSubscript:v24];
+          v27 = [dictionaryCopy objectForKeyedSubscript:v24];
           v28 = [v26 numberWithInteger:{objc_msgSend(v27, "integerValue") + 1}];
-          [v8 setObject:v28 forKeyedSubscript:v24];
+          [dictionaryCopy setObject:v28 forKeyedSubscript:v24];
         }
 
         else
         {
-          [v8 setObject:&unk_284784218 forKeyedSubscript:v24];
+          [dictionaryCopy setObject:&unk_284784218 forKeyedSubscript:v24];
         }
       }
 

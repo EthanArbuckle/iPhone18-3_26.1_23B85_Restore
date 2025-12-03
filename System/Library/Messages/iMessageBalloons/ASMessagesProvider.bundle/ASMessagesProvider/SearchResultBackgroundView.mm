@@ -1,23 +1,23 @@
 @interface SearchResultBackgroundView
-- (_TtC18ASMessagesProvider26SearchResultBackgroundView)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (_TtC18ASMessagesProvider26SearchResultBackgroundView)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 @end
 
 @implementation SearchResultBackgroundView
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_24D33C(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_24D33C(attributesCopy);
 }
 
-- (_TtC18ASMessagesProvider26SearchResultBackgroundView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider26SearchResultBackgroundView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider26SearchResultBackgroundView_borderColor) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider26SearchResultBackgroundView_backgroundGradientColors) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider26SearchResultBackgroundView_gradientLayer) = 0;

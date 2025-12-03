@@ -1,17 +1,17 @@
 @interface RAPInstructionIncorrectViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (RAPInstructionIncorrectViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (RAPInstructionIncorrectViewAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateFlagView;
 @end
 
 @implementation RAPInstructionIncorrectViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"RAPInstructionIncorrectView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"RAPInstructionIncorrectView" hasInstanceVariable:@"_flagView" withType:"UIImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"RAPInstructionIncorrectView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"RAPInstructionIncorrectView" hasInstanceVariable:@"_flagView" withType:"UIImageView"];
 }
 
 - (void)_axAnnotateFlagView
@@ -28,11 +28,11 @@
   [(RAPInstructionIncorrectViewAccessibility *)self _axAnnotateFlagView];
 }
 
-- (RAPInstructionIncorrectViewAccessibility)initWithFrame:(CGRect)a3
+- (RAPInstructionIncorrectViewAccessibility)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = RAPInstructionIncorrectViewAccessibility;
-  v3 = [(RAPInstructionIncorrectViewAccessibility *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RAPInstructionIncorrectViewAccessibility *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

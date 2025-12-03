@@ -1,5 +1,5 @@
 @interface _DKLowPowerModeMonitor
-+ (id)_eventWithLowPowerModeState:(BOOL)a3;
++ (id)_eventWithLowPowerModeState:(BOOL)state;
 - (void)start;
 - (void)stop;
 - (void)synchronouslyReflectCurrentValue;
@@ -8,9 +8,9 @@
 
 @implementation _DKLowPowerModeMonitor
 
-+ (id)_eventWithLowPowerModeState:(BOOL)a3
++ (id)_eventWithLowPowerModeState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     [MEMORY[0x277CFE1A0] on];
   }
@@ -21,10 +21,10 @@
   }
   v3 = ;
   v4 = MEMORY[0x277CFE1D8];
-  v5 = [MEMORY[0x277CFE298] deviceLowPowerModeStream];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [MEMORY[0x277CBEAA8] distantFuture];
-  v8 = [v4 eventWithStream:v5 startDate:v6 endDate:v7 value:v3];
+  deviceLowPowerModeStream = [MEMORY[0x277CFE298] deviceLowPowerModeStream];
+  date = [MEMORY[0x277CBEAA8] date];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v8 = [v4 eventWithStream:deviceLowPowerModeStream startDate:date endDate:distantFuture value:v3];
 
   return v8;
 }
@@ -36,22 +36,22 @@
   if ([(_DKMonitor *)&v15 instantMonitorNeedsActivation])
   {
     v3 = BiomeLibrary();
-    v4 = [v3 Device];
-    v5 = [v4 Power];
-    v6 = [v5 LowPowerMode];
-    v7 = [v6 source];
+    device = [v3 Device];
+    power = [device Power];
+    lowPowerMode = [power LowPowerMode];
+    source = [lowPowerMode source];
     source = self->_source;
-    self->_source = v7;
+    self->_source = source;
 
-    v9 = [MEMORY[0x277CFE318] userContext];
-    v10 = [MEMORY[0x277CFE338] keyPathForLowPowerModeStatus];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    userContext = [MEMORY[0x277CFE318] userContext];
+    keyPathForLowPowerModeStatus = [MEMORY[0x277CFE338] keyPathForLowPowerModeStatus];
+    v11 = [userContext objectForKeyedSubscript:keyPathForLowPowerModeStatus];
     [(_DKLowPowerModeMonitor *)self setLowPowerModeStatus:v11];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v13 = *MEMORY[0x277CCA5E8];
-    v14 = [MEMORY[0x277CCAC38] processInfo];
-    [v12 addObserver:self selector:sel_lowPowerModeStateChanged_ name:v13 object:v14];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [defaultCenter addObserver:self selector:sel_lowPowerModeStateChanged_ name:v13 object:processInfo];
 
     [(_DKLowPowerModeMonitor *)self updateLowPowerMode];
   }
@@ -63,18 +63,18 @@
   v6.super_class = _DKLowPowerModeMonitor;
   if ([(_DKMonitor *)&v6 instantMonitorNeedsDeactivation])
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v4 = *MEMORY[0x277CCA5E8];
-    v5 = [MEMORY[0x277CCAC38] processInfo];
-    [v3 removeObserver:self name:v4 object:v5];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [defaultCenter removeObserver:self name:v4 object:processInfo];
   }
 }
 
 - (void)synchronouslyReflectCurrentValue
 {
-  v3 = [(_DKMonitor *)self currentEvent];
+  currentEvent = [(_DKMonitor *)self currentEvent];
 
-  if (!v3)
+  if (!currentEvent)
   {
 
     [(_DKLowPowerModeMonitor *)self updateLowPowerMode];
@@ -83,13 +83,13 @@
 
 - (void)updateLowPowerMode
 {
-  v3 = [(_DKMonitor *)self queue];
+  queue = [(_DKMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44___DKLowPowerModeMonitor_updateLowPowerMode__block_invoke;
   block[3] = &unk_27856F060;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 @end

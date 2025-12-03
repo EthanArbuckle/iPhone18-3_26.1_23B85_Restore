@@ -4,9 +4,9 @@
 - (CGVector)focusSensitivity;
 - (_UIFocusSpecularHighlightLayer)init;
 - (void)_updateSpecularLayerContents;
-- (void)setContentsScale:(double)a3;
-- (void)updateForFocusDirection:(CGPoint)a3 isFocused:(BOOL)a4;
-- (void)updateTransformWithFocused:(BOOL)a3;
+- (void)setContentsScale:(double)scale;
+- (void)updateForFocusDirection:(CGPoint)direction isFocused:(BOOL)focused;
+- (void)updateTransformWithFocused:(BOOL)focused;
 @end
 
 @implementation _UIFocusSpecularHighlightLayer
@@ -61,19 +61,19 @@
   return v3;
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   v4.receiver = self;
   v4.super_class = _UIFocusSpecularHighlightLayer;
-  [(_UIFocusSpecularHighlightLayer *)&v4 setContentsScale:a3];
+  [(_UIFocusSpecularHighlightLayer *)&v4 setContentsScale:scale];
   [(_UIFocusSpecularHighlightLayer *)self _updateSpecularLayerContents];
 }
 
-- (void)updateForFocusDirection:(CGPoint)a3 isFocused:(BOOL)a4
+- (void)updateForFocusDirection:(CGPoint)direction isFocused:(BOOL)focused
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  focusedCopy = focused;
+  y = direction.y;
+  x = direction.x;
   [(_UIFocusSpecularHighlightLayer *)self bounds];
   v8 = v34.origin.x;
   v9 = v34.origin.y;
@@ -85,7 +85,7 @@
   v35.size.width = width;
   v35.size.height = height;
   v13 = CGRectGetHeight(v35);
-  if (v4)
+  if (focusedCopy)
   {
     v14 = v13;
     if ([(_UIFocusSpecularHighlightLayer *)self appliesFocusDirectionToContentsRect])
@@ -169,9 +169,9 @@
   }
 }
 
-- (void)updateTransformWithFocused:(BOOL)a3
+- (void)updateTransformWithFocused:(BOOL)focused
 {
-  v3 = a3;
+  focusedCopy = focused;
   [(_UIFocusSpecularHighlightLayer *)self bounds];
   x = v34.origin.x;
   y = v34.origin.y;
@@ -246,7 +246,7 @@
       CATransform3DScale(&v33, &v32, v13 * v19, v14 * v19, 1.0);
     }
 
-    if (v3)
+    if (focusedCopy)
     {
       [(_UIFocusSpecularHighlightLayer *)self focusBaseScaleAmounts];
       v31 = v33;

@@ -19,8 +19,8 @@
 
 - (id)_activeDialTicks
 {
-  v2 = [(NTKAlaskanDiversColorPalette *)self markers];
-  v3 = [v2 colorWithAlphaComponent:0.6];
+  markers = [(NTKAlaskanDiversColorPalette *)self markers];
+  v3 = [markers colorWithAlphaComponent:0.6];
 
   return v3;
 }
@@ -29,21 +29,21 @@
 {
   if ([(NTKAlaskanDiversColorPalette *)self isEvergreenCollection])
   {
-    v3 = [(NTKAlaskanDiversColorPalette *)self markers];
+    markers = [(NTKAlaskanDiversColorPalette *)self markers];
   }
 
   else
   {
-    v3 = 0;
+    markers = 0;
   }
 
-  return v3;
+  return markers;
 }
 
 - (id)_activeBackground
 {
   [(NTKAlaskanDiversColorPalette *)self isEvergreenCollection];
-  v3 = [(NTKAlaskanDiversColorPalette *)self primaryColor];
+  primaryColor = [(NTKAlaskanDiversColorPalette *)self primaryColor];
   v4 = NTKColorByApplyingBlackOverlay();
 
   return v4;
@@ -51,16 +51,16 @@
 
 - (id)_ring
 {
-  v3 = [(NTKAlaskanDiversColorPalette *)self isEvergreenCollection];
-  v4 = [(NTKAlaskanDiversColorPalette *)self primaryColor];
-  if ((v3 & 1) == 0)
+  isEvergreenCollection = [(NTKAlaskanDiversColorPalette *)self isEvergreenCollection];
+  primaryColor = [(NTKAlaskanDiversColorPalette *)self primaryColor];
+  if ((isEvergreenCollection & 1) == 0)
   {
     v5 = NTKColorByApplyingBlackOverlay();
 
-    v4 = v5;
+    primaryColor = v5;
   }
 
-  return v4;
+  return primaryColor;
 }
 
 - (id)_activeStateDateComplication

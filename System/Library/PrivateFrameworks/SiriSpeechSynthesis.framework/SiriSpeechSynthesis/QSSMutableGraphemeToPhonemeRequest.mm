@@ -1,41 +1,41 @@
 @interface QSSMutableGraphemeToPhonemeRequest
 - (QSSMutableGraphemeToPhonemeRequest)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setContext_with_pron_hints:(id)a3;
-- (void)setLanguage:(id)a3;
-- (void)setOrthography:(id)a3;
-- (void)setSession_id:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setContext_with_pron_hints:(id)context_with_pron_hints;
+- (void)setLanguage:(id)language;
+- (void)setOrthography:(id)orthography;
+- (void)setSession_id:(id)session_id;
 @end
 
 @implementation QSSMutableGraphemeToPhonemeRequest
 
-- (void)setContext_with_pron_hints:(id)a3
+- (void)setContext_with_pron_hints:(id)context_with_pron_hints
 {
-  v4 = [a3 copy];
+  v4 = [context_with_pron_hints copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setOrthography:(id)a3
+- (void)setOrthography:(id)orthography
 {
-  v4 = [a3 copy];
+  v4 = [orthography copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setLanguage:(id)a3
+- (void)setLanguage:(id)language
 {
-  v4 = [a3 copy];
+  v4 = [language copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setSession_id:(id)a3
+- (void)setSession_id:(id)session_id
 {
-  v4 = [a3 copy];
+  v4 = [session_id copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -50,9 +50,9 @@
   v2 = [(QSSMutableGraphemeToPhonemeRequest *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;

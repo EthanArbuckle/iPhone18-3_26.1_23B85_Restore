@@ -1,27 +1,27 @@
 @interface FCBaseURLConfiguration
 + (BOOL)hasOverrideCAPIURL;
-+ (id)CAPIBaseURLForConfiguration:(id)a3;
-+ (id)appAnalyticsSportsEventsBaseURLForConfiguration:(id)a3;
-+ (id)authTokenBaseURLForConfiguration:(id)a3;
-+ (id)ckEdgeCachedMultiFetchBaseURLForConfiguration:(id)a3;
-+ (id)ckEdgeCachedOrderFeedBaseURLForConfiguration:(id)a3;
-+ (id)ckMultiFetchBaseURLForConfiguration:(id)a3;
-+ (id)ckOrderFeedBaseURLForConfiguration:(id)a3;
-+ (id)ckRecordFetchBaseURLForConfiguration:(id)a3;
-+ (id)fairPlayBaseURLForConfiguration:(id)a3;
-+ (id)fineGrainedNewsletterSubscriptionBaseURLForConfiguration:(id)a3;
-+ (id)liveActivityBaseURLForConfiguration:(id)a3;
-+ (id)newsletterBaseURLForConfiguration:(id)a3;
-+ (id)notificationsBaseURLForConfiguration:(id)a3;
++ (id)CAPIBaseURLForConfiguration:(id)configuration;
++ (id)appAnalyticsSportsEventsBaseURLForConfiguration:(id)configuration;
++ (id)authTokenBaseURLForConfiguration:(id)configuration;
++ (id)ckEdgeCachedMultiFetchBaseURLForConfiguration:(id)configuration;
++ (id)ckEdgeCachedOrderFeedBaseURLForConfiguration:(id)configuration;
++ (id)ckMultiFetchBaseURLForConfiguration:(id)configuration;
++ (id)ckOrderFeedBaseURLForConfiguration:(id)configuration;
++ (id)ckRecordFetchBaseURLForConfiguration:(id)configuration;
++ (id)fairPlayBaseURLForConfiguration:(id)configuration;
++ (id)fineGrainedNewsletterSubscriptionBaseURLForConfiguration:(id)configuration;
++ (id)liveActivityBaseURLForConfiguration:(id)configuration;
++ (id)newsletterBaseURLForConfiguration:(id)configuration;
++ (id)notificationsBaseURLForConfiguration:(id)configuration;
 + (id)overrideCAPIURLString;
-+ (id)puzzlesArchiveBaseURLForConfiguration:(id)a3;
-+ (id)searchBaseURLForConfiguration:(id)a3;
-+ (id)smarterFetchBaseURLForConfiguration:(id)a3;
-+ (id)sportsDataVisualizationBaseURLForConfiguration:(id)a3;
-- (FCBaseURLConfiguration)initWithCoreConfiguration:(id)a3;
++ (id)puzzlesArchiveBaseURLForConfiguration:(id)configuration;
++ (id)searchBaseURLForConfiguration:(id)configuration;
++ (id)smarterFetchBaseURLForConfiguration:(id)configuration;
++ (id)sportsDataVisualizationBaseURLForConfiguration:(id)configuration;
+- (FCBaseURLConfiguration)initWithCoreConfiguration:(id)configuration;
 - (id)CAPIBaseURL;
-- (id)baseURL:(id)a3 fallback:(void *)a4;
-- (id)baseURLString:(id)a3 fallback:(void *)a4;
+- (id)baseURL:(id)l fallback:(void *)fallback;
+- (id)baseURLString:(id)string fallback:(void *)fallback;
 @end
 
 @implementation FCBaseURLConfiguration
@@ -34,211 +34,211 @@
   return v3;
 }
 
-+ (id)fairPlayBaseURLForConfiguration:(id)a3
++ (id)fairPlayBaseURLForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:configurationCopy];
 
-  v5 = [(FCBaseURLConfiguration *)v4 fairPlayBaseURL];
+  fairPlayBaseURL = [(FCBaseURLConfiguration *)v4 fairPlayBaseURL];
 
-  return v5;
+  return fairPlayBaseURL;
 }
 
-+ (id)notificationsBaseURLForConfiguration:(id)a3
++ (id)notificationsBaseURLForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:configurationCopy];
 
-  v5 = [(FCBaseURLConfiguration *)v4 notificationsBaseURL];
+  notificationsBaseURL = [(FCBaseURLConfiguration *)v4 notificationsBaseURL];
 
-  return v5;
+  return notificationsBaseURL;
 }
 
-+ (id)newsletterBaseURLForConfiguration:(id)a3
++ (id)newsletterBaseURLForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:configurationCopy];
 
-  v5 = [(FCBaseURLConfiguration *)v4 newsletterBaseURL];
+  newsletterBaseURL = [(FCBaseURLConfiguration *)v4 newsletterBaseURL];
 
-  return v5;
+  return newsletterBaseURL;
 }
 
-+ (id)CAPIBaseURLForConfiguration:(id)a3
++ (id)CAPIBaseURLForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:configurationCopy];
 
-  v5 = [(FCBaseURLConfiguration *)v4 CAPIBaseURL];
+  cAPIBaseURL = [(FCBaseURLConfiguration *)v4 CAPIBaseURL];
 
-  return v5;
+  return cAPIBaseURL;
 }
 
-+ (id)searchBaseURLForConfiguration:(id)a3
++ (id)searchBaseURLForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:configurationCopy];
 
-  v5 = [(FCBaseURLConfiguration *)v4 searchBaseURLForConfiguration];
+  searchBaseURLForConfiguration = [(FCBaseURLConfiguration *)v4 searchBaseURLForConfiguration];
 
-  return v5;
+  return searchBaseURLForConfiguration;
 }
 
-+ (id)puzzlesArchiveBaseURLForConfiguration:(id)a3
++ (id)puzzlesArchiveBaseURLForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:configurationCopy];
 
-  v5 = [(FCBaseURLConfiguration *)v4 puzzlesArchiveBaseURLForConfiguration];
+  puzzlesArchiveBaseURLForConfiguration = [(FCBaseURLConfiguration *)v4 puzzlesArchiveBaseURLForConfiguration];
 
-  return v5;
+  return puzzlesArchiveBaseURLForConfiguration;
 }
 
-+ (id)authTokenBaseURLForConfiguration:(id)a3
++ (id)authTokenBaseURLForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:configurationCopy];
 
-  v5 = [(FCBaseURLConfiguration *)v4 authTokenBaseURLForConfiguration];
+  authTokenBaseURLForConfiguration = [(FCBaseURLConfiguration *)v4 authTokenBaseURLForConfiguration];
 
-  return v5;
+  return authTokenBaseURLForConfiguration;
 }
 
-+ (id)sportsDataVisualizationBaseURLForConfiguration:(id)a3
++ (id)sportsDataVisualizationBaseURLForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:configurationCopy];
 
-  v5 = [(FCBaseURLConfiguration *)v4 sportsDataVisualizationBaseURLForConfiguration];
+  sportsDataVisualizationBaseURLForConfiguration = [(FCBaseURLConfiguration *)v4 sportsDataVisualizationBaseURLForConfiguration];
 
-  return v5;
+  return sportsDataVisualizationBaseURLForConfiguration;
 }
 
-+ (id)liveActivityBaseURLForConfiguration:(id)a3
++ (id)liveActivityBaseURLForConfiguration:(id)configuration
 {
-  v3 = [a1 sportsDataVisualizationBaseURLForConfiguration:a3];
+  v3 = [self sportsDataVisualizationBaseURLForConfiguration:configuration];
   v4 = [v3 URLByAppendingPathComponent:@"/liveactivity/v1/"];
 
   return v4;
 }
 
-+ (id)appAnalyticsSportsEventsBaseURLForConfiguration:(id)a3
++ (id)appAnalyticsSportsEventsBaseURLForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:configurationCopy];
 
-  v5 = [(FCBaseURLConfiguration *)v4 appAnalyticsSportsEventsBaseURLForConfiguration];
+  appAnalyticsSportsEventsBaseURLForConfiguration = [(FCBaseURLConfiguration *)v4 appAnalyticsSportsEventsBaseURLForConfiguration];
 
-  return v5;
+  return appAnalyticsSportsEventsBaseURLForConfiguration;
 }
 
-+ (id)fineGrainedNewsletterSubscriptionBaseURLForConfiguration:(id)a3
++ (id)fineGrainedNewsletterSubscriptionBaseURLForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:configurationCopy];
 
-  v5 = [(FCBaseURLConfiguration *)v4 fineGrainedNewsletterSubscriptionBaseURLForConfiguration];
+  fineGrainedNewsletterSubscriptionBaseURLForConfiguration = [(FCBaseURLConfiguration *)v4 fineGrainedNewsletterSubscriptionBaseURLForConfiguration];
 
-  return v5;
+  return fineGrainedNewsletterSubscriptionBaseURLForConfiguration;
 }
 
-+ (id)ckOrderFeedBaseURLForConfiguration:(id)a3
++ (id)ckOrderFeedBaseURLForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:configurationCopy];
 
-  v5 = [(FCBaseURLConfiguration *)v4 ckOrderFeedBaseURLForConfiguration];
+  ckOrderFeedBaseURLForConfiguration = [(FCBaseURLConfiguration *)v4 ckOrderFeedBaseURLForConfiguration];
 
-  return v5;
+  return ckOrderFeedBaseURLForConfiguration;
 }
 
-+ (id)ckMultiFetchBaseURLForConfiguration:(id)a3
++ (id)ckMultiFetchBaseURLForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:configurationCopy];
 
-  v5 = [(FCBaseURLConfiguration *)v4 ckMultiFetchBaseURLForConfiguration];
+  ckMultiFetchBaseURLForConfiguration = [(FCBaseURLConfiguration *)v4 ckMultiFetchBaseURLForConfiguration];
 
-  return v5;
+  return ckMultiFetchBaseURLForConfiguration;
 }
 
-+ (id)ckRecordFetchBaseURLForConfiguration:(id)a3
++ (id)ckRecordFetchBaseURLForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:configurationCopy];
 
-  v5 = [(FCBaseURLConfiguration *)v4 ckRecordFetchBaseURLForConfiguration];
+  ckRecordFetchBaseURLForConfiguration = [(FCBaseURLConfiguration *)v4 ckRecordFetchBaseURLForConfiguration];
 
-  return v5;
+  return ckRecordFetchBaseURLForConfiguration;
 }
 
-+ (id)ckEdgeCachedOrderFeedBaseURLForConfiguration:(id)a3
++ (id)ckEdgeCachedOrderFeedBaseURLForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:configurationCopy];
 
-  v5 = [(FCBaseURLConfiguration *)v4 ckEdgeCachedOrderFeedBaseURLForConfiguration];
+  ckEdgeCachedOrderFeedBaseURLForConfiguration = [(FCBaseURLConfiguration *)v4 ckEdgeCachedOrderFeedBaseURLForConfiguration];
 
-  return v5;
+  return ckEdgeCachedOrderFeedBaseURLForConfiguration;
 }
 
-+ (id)ckEdgeCachedMultiFetchBaseURLForConfiguration:(id)a3
++ (id)ckEdgeCachedMultiFetchBaseURLForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:configurationCopy];
 
-  v5 = [(FCBaseURLConfiguration *)v4 ckEdgeCachedMultiFetchBaseURLForConfiguration];
+  ckEdgeCachedMultiFetchBaseURLForConfiguration = [(FCBaseURLConfiguration *)v4 ckEdgeCachedMultiFetchBaseURLForConfiguration];
 
-  return v5;
+  return ckEdgeCachedMultiFetchBaseURLForConfiguration;
 }
 
-+ (id)smarterFetchBaseURLForConfiguration:(id)a3
++ (id)smarterFetchBaseURLForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[FCBaseURLConfiguration alloc] initWithCoreConfiguration:configurationCopy];
 
-  v5 = [(FCBaseURLConfiguration *)v4 smarterFetchBaseURLForConfiguration];
+  smarterFetchBaseURLForConfiguration = [(FCBaseURLConfiguration *)v4 smarterFetchBaseURLForConfiguration];
 
-  return v5;
+  return smarterFetchBaseURLForConfiguration;
 }
 
-- (FCBaseURLConfiguration)initWithCoreConfiguration:(id)a3
+- (FCBaseURLConfiguration)initWithCoreConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = FCBaseURLConfiguration;
   v6 = [(FCBaseURLConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_coreConfiguration, a3);
+    objc_storeStrong(&v6->_coreConfiguration, configuration);
   }
 
   return v7;
 }
 
-- (id)baseURLString:(id)a3 fallback:(void *)a4
+- (id)baseURLString:(id)string fallback:(void *)fallback
 {
-  v6 = a3;
+  stringCopy = string;
   EndpointEnvironment = FCDefaultsReadEndpointEnvironment();
-  v8 = [(FCBaseURLConfiguration *)self coreConfiguration];
-  v9 = [v8 endpointConfigsByEnvironment];
+  coreConfiguration = [(FCBaseURLConfiguration *)self coreConfiguration];
+  endpointConfigsByEnvironment = [coreConfiguration endpointConfigsByEnvironment];
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:EndpointEnvironment];
-  v11 = [v9 objectForKey:v10];
+  v11 = [endpointConfigsByEnvironment objectForKey:v10];
 
-  v12 = v6[2](v6, v11);
+  v12 = stringCopy[2](stringCopy, v11);
 
   if (!v12)
   {
-    v12 = (a4)(EndpointEnvironment);
+    v12 = (fallback)(EndpointEnvironment);
   }
 
   return v12;
 }
 
-- (id)baseURL:(id)a3 fallback:(void *)a4
+- (id)baseURL:(id)l fallback:(void *)fallback
 {
-  v4 = [(FCBaseURLConfiguration *)self baseURLString:a3 fallback:a4];
+  v4 = [(FCBaseURLConfiguration *)self baseURLString:l fallback:fallback];
   v5 = [MEMORY[0x1E695DFF8] URLWithString:v4];
 
   return v5;

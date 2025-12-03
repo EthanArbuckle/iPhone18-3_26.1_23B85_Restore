@@ -1,11 +1,11 @@
 @interface _BlastDoorLPSpecializationMetadata
 + (id)keyPathsForValuesAffecting_dummyPropertyForObservation;
-- (_BlastDoorLPSpecializationMetadata)initWithCoder:(id)a3;
+- (_BlastDoorLPSpecializationMetadata)initWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorLPSpecializationMetadata
 
-- (_BlastDoorLPSpecializationMetadata)initWithCoder:(id)a3
+- (_BlastDoorLPSpecializationMetadata)initWithCoder:(id)coder
 {
   v6 = *MEMORY[0x277D85DE8];
   v5.receiver = self;

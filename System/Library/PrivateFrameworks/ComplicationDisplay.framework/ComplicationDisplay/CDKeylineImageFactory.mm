@@ -1,9 +1,9 @@
 @interface CDKeylineImageFactory
-+ (CGPath)_cornerPathWithDevice:(id)a3 size:(CGSize)a4 innerCircleRadius:(double)a5 strokeWidth:(double)a6;
-+ (CGPath)cornerPathWithDevice:(id)a3 corner:(unint64_t)a4 size:(CGSize)a5 innerCircleRadius:(double)a6;
-+ (id)_heartKeylineWithDevice:(id)a3 outerRadius:(double)a4 innerRadius:(double)a5 sideCircleRadius:(double)a6 topCircleRadius:(double)a7 strokeWidth:(double)a8 filled:(BOOL)a9;
-+ (id)smileShapeWithDevice:(id)a3 outerRadius:(double)a4 innerRadius:(double)a5 angle:(double)a6 strokeWidth:(double)a7 filled:(BOOL)a8;
-+ (id)topLeftCornerShapeWithDevice:(id)a3 size:(CGSize)a4 innerCircleRadius:(double)a5 strokeWidth:(double)a6 filled:(BOOL)a7;
++ (CGPath)_cornerPathWithDevice:(id)device size:(CGSize)size innerCircleRadius:(double)radius strokeWidth:(double)width;
++ (CGPath)cornerPathWithDevice:(id)device corner:(unint64_t)corner size:(CGSize)size innerCircleRadius:(double)radius;
++ (id)_heartKeylineWithDevice:(id)device outerRadius:(double)radius innerRadius:(double)innerRadius sideCircleRadius:(double)circleRadius topCircleRadius:(double)topCircleRadius strokeWidth:(double)width filled:(BOOL)filled;
++ (id)smileShapeWithDevice:(id)device outerRadius:(double)radius innerRadius:(double)innerRadius angle:(double)angle strokeWidth:(double)width filled:(BOOL)filled;
++ (id)topLeftCornerShapeWithDevice:(id)device size:(CGSize)size innerCircleRadius:(double)radius strokeWidth:(double)width filled:(BOOL)filled;
 @end
 
 @implementation CDKeylineImageFactory
@@ -15,12 +15,12 @@ uint64_t __98__CDKeylineImageFactory_cornerKeylineWithDevice_corner_size_innerCi
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)topLeftCornerShapeWithDevice:(id)a3 size:(CGSize)a4 innerCircleRadius:(double)a5 strokeWidth:(double)a6 filled:(BOOL)a7
++ (id)topLeftCornerShapeWithDevice:(id)device size:(CGSize)size innerCircleRadius:(double)radius strokeWidth:(double)width filled:(BOOL)filled
 {
-  v9 = [a1 _cornerPathWithDevice:a3 size:a4.width innerCircleRadius:a4.height strokeWidth:a5];
-  v10 = [MEMORY[0x277CD9F90] layer];
-  [v10 setPath:v9];
-  if (a7)
+  v9 = [self _cornerPathWithDevice:device size:size.width innerCircleRadius:size.height strokeWidth:radius];
+  layer = [MEMORY[0x277CD9F90] layer];
+  [layer setPath:v9];
+  if (filled)
   {
     [MEMORY[0x277D75348] whiteColor];
   }
@@ -30,26 +30,26 @@ uint64_t __98__CDKeylineImageFactory_cornerKeylineWithDevice_corner_size_innerCi
     [MEMORY[0x277D75348] clearColor];
   }
   v11 = ;
-  [v10 setFillColor:{objc_msgSend(v11, "CGColor")}];
+  [layer setFillColor:{objc_msgSend(v11, "CGColor")}];
 
-  v12 = [MEMORY[0x277D75348] whiteColor];
-  [v10 setStrokeColor:{objc_msgSend(v12, "CGColor")}];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [layer setStrokeColor:{objc_msgSend(whiteColor, "CGColor")}];
 
-  [v10 setLineWidth:a6];
+  [layer setLineWidth:width];
   CGPathRelease(v9);
 
-  return v10;
+  return layer;
 }
 
-+ (CGPath)cornerPathWithDevice:(id)a3 corner:(unint64_t)a4 size:(CGSize)a5 innerCircleRadius:(double)a6
++ (CGPath)cornerPathWithDevice:(id)device corner:(unint64_t)corner size:(CGSize)size innerCircleRadius:(double)radius
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = [a1 _cornerPathWithDevice:a3 size:a5.width innerCircleRadius:a5.height strokeWidth:{a6, 0.0}];
+  height = size.height;
+  width = size.width;
+  v9 = [self _cornerPathWithDevice:device size:size.width innerCircleRadius:size.height strokeWidth:{radius, 0.0}];
   memset(&v18, 0, sizeof(v18));
-  if (a4 > 3)
+  if (corner > 3)
   {
-    if (a4 == 4)
+    if (corner == 4)
     {
       CGAffineTransformMakeScale(&v18, 1.0, -1.0);
       v16 = v18;
@@ -58,7 +58,7 @@ uint64_t __98__CDKeylineImageFactory_cornerKeylineWithDevice_corner_size_innerCi
 
     else
     {
-      if (a4 != 8)
+      if (corner != 8)
       {
         goto LABEL_8;
       }
@@ -72,9 +72,9 @@ uint64_t __98__CDKeylineImageFactory_cornerKeylineWithDevice_corner_size_innerCi
     goto LABEL_11;
   }
 
-  if (a4 != 1)
+  if (corner != 1)
   {
-    if (a4 == 2)
+    if (corner == 2)
     {
       CGAffineTransformMakeScale(&v18, -1.0, 1.0);
       v16 = v18;
@@ -103,41 +103,41 @@ LABEL_12:
   return v9;
 }
 
-+ (CGPath)_cornerPathWithDevice:(id)a3 size:(CGSize)a4 innerCircleRadius:(double)a5 strokeWidth:(double)a6
++ (CGPath)_cornerPathWithDevice:(id)device size:(CGSize)size innerCircleRadius:(double)radius strokeWidth:(double)width
 {
-  height = a4.height;
-  v41 = a4.height;
-  width = a4.width;
-  v9 = a4.width;
-  v10 = a3;
-  [v10 screenBounds];
+  height = size.height;
+  v41 = size.height;
+  width = size.width;
+  v9 = size.width;
+  deviceCopy = device;
+  [deviceCopy screenBounds];
   v12 = v11 * 0.5;
-  [v10 screenBounds];
-  v14 = a6 * 0.5;
-  v15 = a6 * 0.5 + v12;
-  v16 = a6 * 0.5 + v13 * 0.5;
-  v40 = v16 - (v15 - v9 - sqrt(-((v15 - v9) * a5) - (v15 - v9) * v16 + v16 * a5 + a5 * a5) * -1.41421356) + a5;
+  [deviceCopy screenBounds];
+  v14 = width * 0.5;
+  v15 = width * 0.5 + v12;
+  v16 = width * 0.5 + v13 * 0.5;
+  v40 = v16 - (v15 - v9 - sqrt(-((v15 - v9) * radius) - (v15 - v9) * v16 + v16 * radius + radius * radius) * -1.41421356) + radius;
   v36 = atan2(v16 - v40, v15 - v9 + v40);
-  v39 = v15 - (v16 - height - sqrt(-((v16 - height) * a5) - (v16 - height) * v15 + v15 * a5 + a5 * a5) * -1.41421356) + a5;
+  v39 = v15 - (v16 - height - sqrt(-((v16 - height) * radius) - (v16 - height) * v15 + v15 * radius + radius * radius) * -1.41421356) + radius;
   v35 = atan2(v15 - v39, v16 - height + v39);
-  [v10 screenCornerRadius];
-  v18 = (v17 - a6 * 0.5) * 1.6;
+  [deviceCopy screenCornerRadius];
+  v18 = (v17 - width * 0.5) * 1.6;
   v37 = v18;
-  [v10 screenCornerRadius];
-  v20 = (v19 - a6 * 0.5) * 1.6;
+  [deviceCopy screenCornerRadius];
+  v20 = (v19 - width * 0.5) * 1.6;
   v38 = v20;
   Mutable = CGPathCreateMutable();
   v22 = MEMORY[0x277D75208];
-  v34 = a6;
-  v23 = v18 - a6;
-  v24 = v20 - a6;
-  [v10 screenCornerRadius];
+  widthCopy = width;
+  v23 = v18 - width;
+  v24 = v20 - width;
+  [deviceCopy screenCornerRadius];
   v26 = v25 - v14;
-  [v10 screenCornerRadius];
+  [deviceCopy screenCornerRadius];
   v28 = v27;
 
   v29 = [v22 bezierPathWithRoundedRect:1 byRoundingCorners:v14 cornerRadii:{v14, v23, v24, v26, v28 - v14}];
-  v30 = [v29 CGPath];
+  cGPath = [v29 CGPath];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -145,11 +145,11 @@ LABEL_12:
   aBlock[3] = &__block_descriptor_112_e17_v16__0__CGPath__8l;
   *&aBlock[4] = width;
   *&aBlock[5] = v40;
-  *&aBlock[6] = v34;
+  *&aBlock[6] = widthCopy;
   *&aBlock[7] = v36;
   *&aBlock[8] = v15;
   *&aBlock[9] = v16;
-  *&aBlock[10] = a5;
+  *&aBlock[10] = radius;
   *&aBlock[11] = v35;
   *&aBlock[12] = v39;
   *&aBlock[13] = v41;
@@ -158,8 +158,8 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = __82__CDKeylineImageFactory__cornerPathWithDevice_size_innerCircleRadius_strokeWidth___block_invoke_2;
   block[3] = &unk_278DF34B8;
-  v46 = v34;
-  v47 = width;
+  v46 = widthCopy;
+  widthCopy2 = width;
   v48 = v40;
   v49 = v41;
   v50 = v39;
@@ -168,7 +168,7 @@ LABEL_12:
   v44 = v31;
   v45 = Mutable;
   v32 = v31;
-  CGPathApplyWithBlock(v30, block);
+  CGPathApplyWithBlock(cGPath, block);
   CGPathCloseSubpath(Mutable);
 
   return Mutable;
@@ -263,15 +263,15 @@ uint64_t __124__CDKeylineImageFactory_heartKeylineWithDevice_outerRadius_innerRa
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)_heartKeylineWithDevice:(id)a3 outerRadius:(double)a4 innerRadius:(double)a5 sideCircleRadius:(double)a6 topCircleRadius:(double)a7 strokeWidth:(double)a8 filled:(BOOL)a9
++ (id)_heartKeylineWithDevice:(id)device outerRadius:(double)radius innerRadius:(double)innerRadius sideCircleRadius:(double)circleRadius topCircleRadius:(double)topCircleRadius strokeWidth:(double)width filled:(BOOL)filled
 {
-  v12 = a4 + a4;
-  radius = a5 - a8 * 0.5;
-  v13 = a4 - a8 * 0.5;
-  v14 = a6 - a8 * 0.5;
-  v28 = a8 * 0.5 + a7;
-  v15 = a5 - a6;
-  v16 = sqrt((a6 + a7) * (a6 + a7) - v15 * v15);
+  v12 = radius + radius;
+  radius = innerRadius - width * 0.5;
+  v13 = radius - width * 0.5;
+  v14 = circleRadius - width * 0.5;
+  v28 = width * 0.5 + topCircleRadius;
+  v15 = innerRadius - circleRadius;
+  v16 = sqrt((circleRadius + topCircleRadius) * (circleRadius + topCircleRadius) - v15 * v15);
   v17 = atan2(v16, v15);
   Mutable = CGPathCreateMutable();
   v19 = CGPathCreateMutable();
@@ -280,15 +280,15 @@ uint64_t __124__CDKeylineImageFactory_heartKeylineWithDevice_outerRadius_innerRa
   CGPathAddArc(v20, 0, v12 * 0.5, v12 * 0.5, v13, 0.0, 6.28318531, 1);
   CGPathCloseSubpath(v20);
   CGPathAddArc(v19, 0, v21, v21, radius, 0.0, 3.14159265, 0);
-  CGPathAddArc(v19, 0, v21 - a5 + a6, v21, v14, 3.14159265, -v17, 0);
+  CGPathAddArc(v19, 0, v21 - innerRadius + circleRadius, v21, v14, 3.14159265, -v17, 0);
   CGPathAddArc(v19, 0, v21, v21 - v16, v28, 3.14159265 - v17, v17, 1);
-  CGPathAddArc(v19, 0, v21 + a5 - a6, v21, v14, v17 + 3.14159265, 0.0, 0);
+  CGPathAddArc(v19, 0, v21 + innerRadius - circleRadius, v21, v14, v17 + 3.14159265, 0.0, 0);
   CGPathCloseSubpath(v19);
   CGPathAddPath(Mutable, 0, v19);
   CGPathAddPath(Mutable, 0, v20);
-  v22 = [MEMORY[0x277CD9F90] layer];
-  [v22 setPath:Mutable];
-  if (a9)
+  layer = [MEMORY[0x277CD9F90] layer];
+  [layer setPath:Mutable];
+  if (filled)
   {
     [MEMORY[0x277D75348] whiteColor];
   }
@@ -298,16 +298,16 @@ uint64_t __124__CDKeylineImageFactory_heartKeylineWithDevice_outerRadius_innerRa
     [MEMORY[0x277D75348] clearColor];
   }
   v23 = ;
-  [v22 setFillColor:{objc_msgSend(v23, "CGColor")}];
+  [layer setFillColor:{objc_msgSend(v23, "CGColor")}];
 
-  v24 = [MEMORY[0x277D75348] whiteColor];
-  [v22 setStrokeColor:{objc_msgSend(v24, "CGColor")}];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [layer setStrokeColor:{objc_msgSend(whiteColor, "CGColor")}];
 
-  [v22 setLineWidth:a8];
+  [layer setLineWidth:width];
   v31.width = v12;
   v31.height = v12;
   UIGraphicsBeginImageContextWithOptions(v31, 0, 0.0);
-  [v22 renderInContext:UIGraphicsGetCurrentContext()];
+  [layer renderInContext:UIGraphicsGetCurrentContext()];
   v25 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   CGPathRelease(Mutable);
@@ -324,27 +324,27 @@ uint64_t __97__CDKeylineImageFactory_smileKeylineWithDevice_outerRadius_innerRad
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)smileShapeWithDevice:(id)a3 outerRadius:(double)a4 innerRadius:(double)a5 angle:(double)a6 strokeWidth:(double)a7 filled:(BOOL)a8
++ (id)smileShapeWithDevice:(id)device outerRadius:(double)radius innerRadius:(double)innerRadius angle:(double)angle strokeWidth:(double)width filled:(BOOL)filled
 {
-  v10 = a4 - a5;
-  v11 = (a4 - a5) * 0.5;
-  v12 = (a4 + a5) * 0.5;
-  v22 = a6 + 1.57079633;
-  v13 = 1.57079633 - a6;
+  v10 = radius - innerRadius;
+  v11 = (radius - innerRadius) * 0.5;
+  v12 = (radius + innerRadius) * 0.5;
+  v22 = angle + 1.57079633;
+  v13 = 1.57079633 - angle;
   Mutable = CGPathCreateMutable();
   v15 = __sincos_stret(v13);
   v25 = v11 + v12 * v15.__cosval + v11 + v12 * v15.__cosval;
   y = -(v12 * v15.__sinval - v10 * 0.5);
-  CGPathAddArc(Mutable, 0, v25 * 0.5, y, a7 * 0.5 + a5, v22, v13, 1);
+  CGPathAddArc(Mutable, 0, v25 * 0.5, y, width * 0.5 + innerRadius, v22, v13, 1);
   v16 = -(v11 - v12 * v15.__sinval);
-  CGPathAddArc(Mutable, 0, v25 * 0.5 + v12 * v15.__cosval, -(v16 - v12 * v15.__sinval), v11 - a7 * 0.5, v13 + 3.14159265, v13, 0);
-  CGPathAddArc(Mutable, 0, v25 * 0.5, y, a4 - a7 * 0.5, v13, v22, 0);
+  CGPathAddArc(Mutable, 0, v25 * 0.5 + v12 * v15.__cosval, -(v16 - v12 * v15.__sinval), v11 - width * 0.5, v13 + 3.14159265, v13, 0);
+  CGPathAddArc(Mutable, 0, v25 * 0.5, y, radius - width * 0.5, v13, v22, 0);
   v17 = __sincos_stret(v22);
-  CGPathAddArc(Mutable, 0, v25 * 0.5 + v12 * v17.__cosval, -(v16 - v12 * v17.__sinval), v11 - a7 * 0.5, v22, v22 + 3.14159265, 0);
-  v18 = [MEMORY[0x277CD9F90] layer];
-  [v18 setBounds:{0.0, 0.0, v25, a4 - v16}];
-  [v18 setPath:Mutable];
-  if (a8)
+  CGPathAddArc(Mutable, 0, v25 * 0.5 + v12 * v17.__cosval, -(v16 - v12 * v17.__sinval), v11 - width * 0.5, v22, v22 + 3.14159265, 0);
+  layer = [MEMORY[0x277CD9F90] layer];
+  [layer setBounds:{0.0, 0.0, v25, radius - v16}];
+  [layer setPath:Mutable];
+  if (filled)
   {
     [MEMORY[0x277D75348] whiteColor];
   }
@@ -354,15 +354,15 @@ uint64_t __97__CDKeylineImageFactory_smileKeylineWithDevice_outerRadius_innerRad
     [MEMORY[0x277D75348] clearColor];
   }
   v19 = ;
-  [v18 setFillColor:{objc_msgSend(v19, "CGColor")}];
+  [layer setFillColor:{objc_msgSend(v19, "CGColor")}];
 
-  v20 = [MEMORY[0x277D75348] whiteColor];
-  [v18 setStrokeColor:{objc_msgSend(v20, "CGColor")}];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [layer setStrokeColor:{objc_msgSend(whiteColor, "CGColor")}];
 
-  [v18 setLineWidth:a7];
+  [layer setLineWidth:width];
   CGPathRelease(Mutable);
 
-  return v18;
+  return layer;
 }
 
 @end

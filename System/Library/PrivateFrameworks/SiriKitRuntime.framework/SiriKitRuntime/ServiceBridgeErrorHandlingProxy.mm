@@ -1,26 +1,26 @@
 @interface ServiceBridgeErrorHandlingProxy
-- (void)closeServerRequestForExecutionRequestId:(id)a3;
-- (void)closeWithExecutionOutput:(id)a3 errorString:(id)a4;
-- (void)fetchContextsFor:(id)a3 includesNearByDevices:(BOOL)a4 completion:(id)a5;
-- (void)postToMessageBusWithMessage:(id)a3 completion:(id)a4;
-- (void)retriggerOriginalRequestWithExecutionRequestId:(id)a3 forUserId:(id)a4 givenCurrentExecutionRequestId:(id)a5 reply:(id)a6;
+- (void)closeServerRequestForExecutionRequestId:(id)id;
+- (void)closeWithExecutionOutput:(id)output errorString:(id)string;
+- (void)fetchContextsFor:(id)for includesNearByDevices:(BOOL)devices completion:(id)completion;
+- (void)postToMessageBusWithMessage:(id)message completion:(id)completion;
+- (void)retriggerOriginalRequestWithExecutionRequestId:(id)id forUserId:(id)userId givenCurrentExecutionRequestId:(id)requestId reply:(id)reply;
 @end
 
 @implementation ServiceBridgeErrorHandlingProxy
 
-- (void)fetchContextsFor:(id)a3 includesNearByDevices:(BOOL)a4 completion:(id)a5
+- (void)fetchContextsFor:(id)for includesNearByDevices:(BOOL)devices completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   v8 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
   _Block_copy(v7);
 
-  specialized ServiceBridgeErrorHandlingProxy.fetchContexts(for:includesNearByDevices:completion:)(v8, a4, self, v7);
+  specialized ServiceBridgeErrorHandlingProxy.fetchContexts(for:includesNearByDevices:completion:)(v8, devices, self, v7);
   _Block_release(v7);
 }
 
-- (void)closeServerRequestForExecutionRequestId:(id)a3
+- (void)closeServerRequestForExecutionRequestId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
 
   v5 = specialized ServiceBridgeErrorHandlingProxy.withErrorHandler(onError:)(v4, specialized closure #1 in ServiceBridgeErrorHandlingProxy.withErrorHandler(onError:), &block_descriptor_251);
   if (v5)
@@ -35,15 +35,15 @@
   }
 }
 
-- (void)closeWithExecutionOutput:(id)a3 errorString:(id)a4
+- (void)closeWithExecutionOutput:(id)output errorString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
+  outputCopy = output;
+  stringCopy = string;
 
   v8 = specialized ServiceBridgeErrorHandlingProxy.withErrorHandler(onError:)(v7, specialized closure #1 in ServiceBridgeErrorHandlingProxy.withErrorHandler(onError:), &block_descriptor_321);
   if (v8)
   {
-    [v8 closeWithExecutionOutput:v5 errorString:v6];
+    [v8 closeWithExecutionOutput:outputCopy errorString:stringCopy];
 
     swift_unknownObjectRelease();
   }
@@ -53,9 +53,9 @@
   }
 }
 
-- (void)retriggerOriginalRequestWithExecutionRequestId:(id)a3 forUserId:(id)a4 givenCurrentExecutionRequestId:(id)a5 reply:(id)a6
+- (void)retriggerOriginalRequestWithExecutionRequestId:(id)id forUserId:(id)userId givenCurrentExecutionRequestId:(id)requestId reply:(id)reply
 {
-  v7 = _Block_copy(a6);
+  v7 = _Block_copy(reply);
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -68,10 +68,10 @@
   _Block_release(v7);
 }
 
-- (void)postToMessageBusWithMessage:(id)a3 completion:(id)a4
+- (void)postToMessageBusWithMessage:(id)message completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
+  v6 = _Block_copy(completion);
+  messageCopy = message;
 
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;

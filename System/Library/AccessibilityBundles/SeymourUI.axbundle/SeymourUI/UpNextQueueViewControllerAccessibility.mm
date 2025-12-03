@@ -1,16 +1,16 @@
 @interface UpNextQueueViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation UpNextQueueViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SeymourUI.UpNextQueueViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SeymourUI.UpNextQueueViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -22,11 +22,11 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 subviews];
-    v6 = [v5 ax_filteredArrayUsingBlock:&__block_literal_global_2];
+    subviews = [v3 subviews];
+    v6 = [subviews ax_filteredArrayUsingBlock:&__block_literal_global_2];
     [v6 enumerateObjectsUsingBlock:&__block_literal_global_300];
     objc_opt_class();
-    v7 = [v6 lastObject];
+    lastObject = [v6 lastObject];
     v8 = __UIAccessibilityCastAsClass();
 
     [v8 setIsAccessibilityElement:1];

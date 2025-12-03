@@ -1,10 +1,10 @@
 @interface MTRFabricInfo
-- (MTRFabricInfo)initWithFabricTable:(const void *)a3 fabricInfo:(const void *)a4;
+- (MTRFabricInfo)initWithFabricTable:(const void *)table fabricInfo:(const void *)info;
 @end
 
 @implementation MTRFabricInfo
 
-- (MTRFabricInfo)initWithFabricTable:(const void *)a3 fabricInfo:(const void *)a4
+- (MTRFabricInfo)initWithFabricTable:(const void *)table fabricInfo:(const void *)info
 {
   v34[9] = *MEMORY[0x277D85DE8];
   v28.receiver = self;
@@ -16,12 +16,12 @@
   }
 
   v33 = &unk_284BB9138;
-  if (sub_2394A7848(a4, &v33))
+  if (sub_2394A7848(info, &v33))
   {
     v7 = sub_2393D9044(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = *(a4 + 137);
+      v8 = *(info + 137);
       v9 = sub_2393C9138();
       *buf = 67109378;
       v30 = v8;
@@ -32,7 +32,7 @@
 
     if (sub_2393D5398(1u))
     {
-      v27 = *(a4 + 137);
+      v27 = *(info + 137);
       sub_2393C9138();
       sub_2393D5320(0, 1);
     }
@@ -44,31 +44,31 @@
   v11 = *(v6 + 1);
   *(v6 + 1) = v10;
 
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(a4 + 69)];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(info + 69)];
   v13 = *(v6 + 2);
   *(v6 + 2) = v12;
 
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*(a4 + 1)];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*(info + 1)];
   v15 = *(v6 + 3);
   *(v6 + 3) = v14;
 
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*a4];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*info];
   v17 = *(v6 + 4);
   *(v6 + 4) = v16;
 
-  v18 = sub_239283EA0(a4);
+  v18 = sub_239283EA0(info);
   v20 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v18 length:v19 encoding:4];
   v21 = *(v6 + 5);
   *(v6 + 5) = v20;
 
-  if (!sub_239283EE8(v6 + 6, v6 + 7, a3, *(a4 + 137), sub_2394A7BFC, 0, "root") || !sub_239283EE8(v6 + 8, v6 + 9, a3, *(a4 + 137), sub_2394A8274, 0, "intermediate") || !sub_239283EE8(v6 + 10, v6 + 11, a3, *(a4 + 137), sub_2394A847C, 0, "operational"))
+  if (!sub_239283EE8(v6 + 6, v6 + 7, table, *(info + 137), sub_2394A7BFC, 0, "root") || !sub_239283EE8(v6 + 8, v6 + 9, table, *(info + 137), sub_2394A8274, 0, "intermediate") || !sub_239283EE8(v6 + 10, v6 + 11, table, *(info + 137), sub_2394A847C, 0, "operational"))
   {
 LABEL_11:
     v24 = 0;
     goto LABEL_12;
   }
 
-  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a4 + 137)];
+  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(info + 137)];
   v23 = *(v6 + 12);
   *(v6 + 12) = v22;
 

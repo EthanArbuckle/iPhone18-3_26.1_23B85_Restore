@@ -13,8 +13,8 @@
   v4 = v9;
   if (v4)
   {
-    v5 = +[SDSeedingLogging fwHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    bundleRecord = +[SDSeedingLogging fwHandle];
+    if (os_log_type_enabled(bundleRecord, OS_LOG_TYPE_ERROR))
     {
       +[(SDBuildInfo *)v4];
     }
@@ -30,9 +30,9 @@
       goto LABEL_8;
     }
 
-    v5 = [v3 bundleRecord];
-    v7 = [v5 bundleIdentifier];
-    v6 = [v7 isEqual:@"com.apple.appleseed.FeedbackAssistant"];
+    bundleRecord = [v3 bundleRecord];
+    bundleIdentifier = [bundleRecord bundleIdentifier];
+    v6 = [bundleIdentifier isEqual:@"com.apple.appleseed.FeedbackAssistant"];
   }
 
 LABEL_8:
@@ -43,7 +43,7 @@ LABEL_8:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_22E41E000, a2, OS_LOG_TYPE_ERROR, "Error checking FBA url scheme %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

@@ -1,25 +1,25 @@
 @interface TSWPInteractiveCanvasController
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)isEditingText;
 - (BOOL)shouldRespondToTextHyperlinks;
-- (CGImage)textImageFromRect:(CGRect)a3;
-- (CGRect)scrollFocusRectForModel:(id)a3 withSelection:(id)a4;
-- (id)_repsForStorage:(id)a3;
-- (id)beginEditingRepForInfo:(id)a3;
-- (id)closestRepToPoint:(CGPoint)a3;
-- (id)closestRepToPoint:(CGPoint)a3 forStorage:(id)a4;
-- (id)p_beginEditingPossibleContainedRep:(id *)a3;
-- (id)p_repsForStorage:(id)a3;
+- (CGImage)textImageFromRect:(CGRect)rect;
+- (CGRect)scrollFocusRectForModel:(id)model withSelection:(id)selection;
+- (id)_repsForStorage:(id)storage;
+- (id)beginEditingRepForInfo:(id)info;
+- (id)closestRepToPoint:(CGPoint)point;
+- (id)closestRepToPoint:(CGPoint)point forStorage:(id)storage;
+- (id)p_beginEditingPossibleContainedRep:(id *)rep;
+- (id)p_repsForStorage:(id)storage;
 - (void)dealloc;
 - (void)didBeginEditingText;
 - (void)gestureSequenceDidEnd;
 - (void)gestureSequenceWillBegin;
-- (void)p_recursivelyAddRep:(id)a3 forStorage:(id)a4 toSet:(id)a5;
+- (void)p_recursivelyAddRep:(id)rep forStorage:(id)storage toSet:(id)set;
 - (void)resumeEditing;
 - (void)teardown;
 - (void)willEndEditingText;
-- (void)withLayoutForModel:(id)a3 withSelection:(id)a4 performBlock:(id)a5;
+- (void)withLayoutForModel:(id)model withSelection:(id)selection performBlock:(id)block;
 @end
 
 @implementation TSWPInteractiveCanvasController
@@ -41,7 +41,7 @@
   self->_isTearingDown = 0;
 }
 
-- (CGRect)scrollFocusRectForModel:(id)a3 withSelection:(id)a4
+- (CGRect)scrollFocusRectForModel:(id)model withSelection:(id)selection
 {
   v6 = MEMORY[0x277CBF398];
   v7 = *MEMORY[0x277CBF398];
@@ -57,23 +57,23 @@
     v12 = TSUDynamicCast();
     if (([v12 selectionLastModifiedWithKnob] & 1) != 0 || objc_msgSend(v12, "selectionLastModifiedWithKeyboard"))
     {
-      v13 = [v12 currentSelectionFlags];
-      v14 = [v11 range];
-      if (v13 < 0)
+      currentSelectionFlags = [v12 currentSelectionFlags];
+      range = [v11 range];
+      if (currentSelectionFlags < 0)
       {
-        v16 = v15 + v14 - 1;
+        v16 = v15 + range - 1;
       }
 
       else
       {
-        v16 = v14;
+        v16 = range;
       }
 
       v17 = [TSWPSelection selectionWithRange:v16, 1];
-      if (a3)
+      if (model)
       {
         v18 = v17;
-        v19 = [(TSDInteractiveCanvasController *)self infoForModel:a3 withSelection:v17];
+        v19 = [(TSDInteractiveCanvasController *)self infoForModel:model withSelection:v17];
         if (v19)
         {
           v20 = [(TSDInteractiveCanvasController *)self layoutForInfo:v19];
@@ -107,12 +107,12 @@
   return result;
 }
 
-- (void)withLayoutForModel:(id)a3 withSelection:(id)a4 performBlock:(id)a5
+- (void)withLayoutForModel:(id)model withSelection:(id)selection performBlock:(id)block
 {
-  v6 = [(TSDInteractiveCanvasController *)self layoutForModel:a3 withSelection:a4];
-  v7 = *(a5 + 2);
+  v6 = [(TSDInteractiveCanvasController *)self layoutForModel:model withSelection:selection];
+  v7 = *(block + 2);
 
-  v7(a5, v6);
+  v7(block, v6);
 }
 
 - (BOOL)shouldRespondToTextHyperlinks
@@ -123,51 +123,51 @@
     return 1;
   }
 
-  v3 = [(TSDInteractiveCanvasController *)self delegate];
+  delegate = [(TSDInteractiveCanvasController *)self delegate];
 
-  return [(TSDInteractiveCanvasControllerDelegate *)v3 interactiveCanvasControllerAllowsHyperlinkInteraction];
+  return [(TSDInteractiveCanvasControllerDelegate *)delegate interactiveCanvasControllerAllowsHyperlinkInteraction];
 }
 
-- (id)p_beginEditingPossibleContainedRep:(id *)a3
+- (id)p_beginEditingPossibleContainedRep:(id *)rep
 {
-  if (!a3)
+  if (!rep)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPInteractiveCanvasController p_beginEditingPossibleContainedRep:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPInteractiveCanvasController.mm"), 205, @"invalid nil value for '%s'", "ioContainedRep"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPInteractiveCanvasController.mm"), 205, @"invalid nil value for '%s'", "ioContainedRep"}];
   }
 
   objc_opt_class();
-  [*a3 parentRep];
+  [*rep parentRep];
   v7 = TSUDynamicCast();
   if (v7)
   {
     v8 = v7;
     [v7 willBeginEditingContainedRep];
-    v9 = [v8 containedRep];
-    *a3 = v9;
+    containedRep = [v8 containedRep];
+    *rep = containedRep;
   }
 
   else
   {
-    v9 = *a3;
+    containedRep = *rep;
   }
 
-  return [(TSDInteractiveCanvasController *)self beginEditingRep:v9];
+  return [(TSDInteractiveCanvasController *)self beginEditingRep:containedRep];
 }
 
-- (id)beginEditingRepForInfo:(id)a3
+- (id)beginEditingRepForInfo:(id)info
 {
   [(TSDCanvas *)[(TSDInteractiveCanvasController *)self canvas] layoutIfNeeded];
   objc_opt_class();
-  [(TSDInteractiveCanvasController *)self repForInfo:a3];
+  [(TSDInteractiveCanvasController *)self repForInfo:info];
   v5 = TSUDynamicCast();
   if (!v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [-[TSDInteractiveCanvasController repForInfo:](self repForInfo:{objc_msgSend(a3, "parentInfo")), "repForSelecting"}];
+      v10 = [-[TSDInteractiveCanvasController repForInfo:](self repForInfo:{objc_msgSend(info, "parentInfo")), "repForSelecting"}];
       if (v10)
       {
         v11 = v10;
@@ -181,13 +181,13 @@
     goto LABEL_12;
   }
 
-  v14 = [v5 containedRep];
-  if (!v14 || ((v6 = -[TSWPInteractiveCanvasController p_beginEditingPossibleContainedRep:](self, "p_beginEditingPossibleContainedRep:", &v14), objc_opt_class(), v7 = TSUDynamicCast(), v8 = -[TSWPSelection initWithRange:]([TSWPSelection alloc], "initWithRange:", 0, [objc_msgSend(v7 "storage")]), !objc_msgSend(v7, "pIsSelectionPlaceHolderTextWithSelection:", v8)) ? (v9 = 16640) : (v9 = 0x4000), -[TSDInteractiveCanvasController setSelection:onModel:withFlags:](self, "setSelection:onModel:withFlags:", v8, objc_msgSend(v7, "storage"), v9), v8, !v6))
+  containedRep = [v5 containedRep];
+  if (!containedRep || ((v6 = -[TSWPInteractiveCanvasController p_beginEditingPossibleContainedRep:](self, "p_beginEditingPossibleContainedRep:", &containedRep), objc_opt_class(), v7 = TSUDynamicCast(), v8 = -[TSWPSelection initWithRange:]([TSWPSelection alloc], "initWithRange:", 0, [objc_msgSend(v7 "storage")]), !objc_msgSend(v7, "pIsSelectionPlaceHolderTextWithSelection:", v8)) ? (v9 = 16640) : (v9 = 0x4000), -[TSDInteractiveCanvasController setSelection:onModel:withFlags:](self, "setSelection:onModel:withFlags:", v8, objc_msgSend(v7, "storage"), v9), v8, !v6))
   {
 LABEL_12:
     v13.receiver = self;
     v13.super_class = TSWPInteractiveCanvasController;
-    return [(TSDInteractiveCanvasController *)&v13 beginEditingRepForInfo:a3];
+    return [(TSDInteractiveCanvasController *)&v13 beginEditingRepForInfo:info];
   }
 
   return v6;
@@ -203,20 +203,20 @@ LABEL_12:
 
   if (!-[TSWPInteractiveCanvasController isEditingText](self, "isEditingText") && ([-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](self "layerHost")] & 1) == 0)
   {
-    v4 = [(TSDCanvasLayerHosting *)[(TSDInteractiveCanvasController *)self layerHost] asiOSCVC];
+    asiOSCVC = [(TSDCanvasLayerHosting *)[(TSDInteractiveCanvasController *)self layerHost] asiOSCVC];
 
-    [v4 becomeFirstResponder];
+    [asiOSCVC becomeFirstResponder];
   }
 }
 
-- (CGImage)textImageFromRect:(CGRect)a3
+- (CGImage)textImageFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v23 = *MEMORY[0x277D85DE8];
-  MidX = CGRectGetMidX(a3);
+  MidX = CGRectGetMidX(rect);
   v24.origin.x = x;
   v24.origin.y = y;
   v24.size.width = width;
@@ -274,25 +274,25 @@ LABEL_12:
   objc_opt_class();
   [[(TSDTextInputResponder *)self->super.mTextInputResponder editor] selection];
   v3 = TSUDynamicCast();
-  v4 = [(TSDTextInputResponder *)self->super.mTextInputResponder isFirstResponder];
-  if (v4)
+  isFirstResponder = [(TSDTextInputResponder *)self->super.mTextInputResponder isFirstResponder];
+  if (isFirstResponder)
   {
 
-    LOBYTE(v4) = [v3 isValid];
+    LOBYTE(isFirstResponder) = [v3 isValid];
   }
 
-  return v4;
+  return isFirstResponder;
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  [a3 unscaledLocationForICC:self];
+  [gesture unscaledLocationForICC:self];
   v6 = v5;
   v8 = v7;
   v9 = [(TSDInteractiveCanvasController *)self hitRep:?];
   objc_opt_class();
   v10 = TSUDynamicCast();
-  if (v10 && ((v11 = v10, objc_opt_class(), -[TSDEditorController textInputEditor](-[TSDInteractiveCanvasController editorController](self, "editorController"), "textInputEditor"), v12 = [TSUDynamicCast() storage], v12 != objc_msgSend(v11, "storage")) && (objc_msgSend(v11, "shouldBeginEditingWithGesture:", a3) & 1) != 0 || objc_msgSend(a3, "gestureKind") == @"TSWPTapAndTouch" && (objc_msgSend(v11, "convertNaturalPointFromUnscaledCanvas:", v6, v8), objc_msgSend(v11, "footnoteReferenceAttachmentAtPoint:"))))
+  if (v10 && ((v11 = v10, objc_opt_class(), -[TSDEditorController textInputEditor](-[TSDInteractiveCanvasController editorController](self, "editorController"), "textInputEditor"), v12 = [TSUDynamicCast() storage], v12 != objc_msgSend(v11, "storage")) && (objc_msgSend(v11, "shouldBeginEditingWithGesture:", gesture) & 1) != 0 || objc_msgSend(gesture, "gestureKind") == @"TSWPTapAndTouch" && (objc_msgSend(v11, "convertNaturalPointFromUnscaledCanvas:", v6, v8), objc_msgSend(v11, "footnoteReferenceAttachmentAtPoint:"))))
   {
     LOBYTE(v14) = 1;
   }
@@ -318,7 +318,7 @@ LABEL_12:
     [v14 smartFieldAtPoint:{v16, v18}];
     if (TSUDynamicCast() && ([(TSDInteractiveCanvasController *)self delegate], (objc_opt_respondsToSelector() & 1) != 0))
     {
-      LOBYTE(v14) = [(TSDInteractiveCanvasControllerDelegate *)[(TSDInteractiveCanvasController *)self delegate] interactiveCanvasController:self allowsHyperlinkWithGesture:a3 forRep:v9];
+      LOBYTE(v14) = [(TSDInteractiveCanvasControllerDelegate *)[(TSDInteractiveCanvasController *)self delegate] interactiveCanvasController:self allowsHyperlinkWithGesture:gesture forRep:v9];
     }
 
     else
@@ -334,9 +334,9 @@ LABEL_14:
   v19 = TSUDynamicCast();
   if (!v19)
   {
-    v20 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPInteractiveCanvasController canHandleGesture:]"];
-    [v20 handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPInteractiveCanvasController.mm"), 462, @"invalid nil value for '%s'", "cvc"}];
+    [currentHandler handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPInteractiveCanvasController.mm"), 462, @"invalid nil value for '%s'", "cvc"}];
     if ((v14 & 1) == 0)
     {
       goto LABEL_19;
@@ -378,9 +378,9 @@ LABEL_20:
         v22 = TSUDynamicCast();
         if (v22)
         {
-          if ([a3 gestureKind] != @"TSWPImmediateSingleTap")
+          if ([gesture gestureKind] != @"TSWPImmediateSingleTap")
           {
-            if ([a3 gestureKind] != @"TSWPLongPress")
+            if ([gesture gestureKind] != @"TSWPLongPress")
             {
               goto LABEL_20;
             }
@@ -401,9 +401,9 @@ LABEL_20:
   return v22;
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  [a3 unscaledLocationForICC:self];
+  [gesture unscaledLocationForICC:self];
   v6 = v5;
   v8 = v7;
   v9 = [(TSDInteractiveCanvasController *)self hitRep:?];
@@ -415,13 +415,13 @@ LABEL_20:
   v11 = TSUDynamicCast();
   if (!v11)
   {
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPInteractiveCanvasController handleGesture:]"];
-    [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPInteractiveCanvasController.mm"), 495, @"invalid nil value for '%s'", "cvc"}];
+    [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPInteractiveCanvasController.mm"), 495, @"invalid nil value for '%s'", "cvc"}];
   }
 
   [v11 cancelDelayedTapAction];
-  if (!-[TSWPInteractiveCanvasController handleHyperlinksWithTextGRs](self, "handleHyperlinksWithTextGRs") || (-[TSDInteractiveCanvasController delegate](self, "delegate"), (objc_opt_respondsToSelector() & 1) != 0) && !-[TSDInteractiveCanvasControllerDelegate interactiveCanvasController:allowsHyperlinkWithGesture:forRep:](-[TSDInteractiveCanvasController delegate](self, "delegate"), "interactiveCanvasController:allowsHyperlinkWithGesture:forRep:", self, a3, v9) || (v14 = TSUProtocolCast()) == 0 || (v15 = v14, [v14 convertNaturalPointFromUnscaledCanvas:{v6, v8}], v17 = v16, v19 = v18, objc_opt_class(), objc_msgSend(v15, "smartFieldAtPoint:", v17, v19), (v20 = TSUDynamicCast()) == 0) || (v21 = v20, objc_msgSend(a3, "gestureState") != 3) || (v22 = objc_msgSend(v11, "actionForHyperlink:inRep:gesture:", v21, v15, a3)) == 0)
+  if (!-[TSWPInteractiveCanvasController handleHyperlinksWithTextGRs](self, "handleHyperlinksWithTextGRs") || (-[TSDInteractiveCanvasController delegate](self, "delegate"), (objc_opt_respondsToSelector() & 1) != 0) && !-[TSDInteractiveCanvasControllerDelegate interactiveCanvasController:allowsHyperlinkWithGesture:forRep:](-[TSDInteractiveCanvasController delegate](self, "delegate"), "interactiveCanvasController:allowsHyperlinkWithGesture:forRep:", self, gesture, v9) || (v14 = TSUProtocolCast()) == 0 || (v15 = v14, [v14 convertNaturalPointFromUnscaledCanvas:{v6, v8}], v17 = v16, v19 = v18, objc_opt_class(), objc_msgSend(v15, "smartFieldAtPoint:", v17, v19), (v20 = TSUDynamicCast()) == 0) || (v21 = v20, objc_msgSend(gesture, "gestureState") != 3) || (v22 = objc_msgSend(v11, "actionForHyperlink:inRep:gesture:", v21, v15, gesture)) == 0)
   {
     if (!v10)
     {
@@ -446,8 +446,8 @@ LABEL_18:
         objc_opt_class();
         [(TSDEditorController *)[(TSDInteractiveCanvasController *)self editorController] textInputEditor];
         v28 = TSUDynamicCast();
-        v29 = [v28 storage];
-        if (v29 != [v10 storage] && objc_msgSend(v10, "shouldBeginEditingWithGesture:", a3))
+        storage = [v28 storage];
+        if (storage != [v10 storage] && objc_msgSend(v10, "shouldBeginEditingWithGesture:", gesture))
         {
           v30 = [objc_msgSend(v28 "selection")];
           v28 = [(TSWPInteractiveCanvasController *)self p_beginEditingPossibleContainedRep:&v32];
@@ -456,8 +456,8 @@ LABEL_18:
             v28 = 0;
           }
 
-          [a3 setTargetRep:v32];
-          if (v30 && [a3 gestureKind] == @"TSWPImmediateSingleTap")
+          [gesture setTargetRep:v32];
+          if (v30 && [gesture gestureKind] == @"TSWPImmediateSingleTap")
           {
             [v28 setIsBecomingActive:1];
           }
@@ -465,7 +465,7 @@ LABEL_18:
 
         if (v28)
         {
-          LOBYTE(v23) = [(TSDGestureDispatcher *)[(TSDInteractiveCanvasController *)self gestureDispatcher] handleGesture:a3 withTarget:v28];
+          LOBYTE(v23) = [(TSDGestureDispatcher *)[(TSDInteractiveCanvasController *)self gestureDispatcher] handleGesture:gesture withTarget:v28];
           return v23;
         }
 
@@ -475,10 +475,10 @@ LABEL_28:
       }
 
       v26 = v23;
-      v27 = [(TSDInteractiveCanvasController *)self delegate];
+      delegate = [(TSDInteractiveCanvasController *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        LOBYTE(v23) = [(TSDInteractiveCanvasControllerDelegate *)v27 interactiveCanvasController:self tappedOnFootnoteAttachment:v26];
+        LOBYTE(v23) = [(TSDInteractiveCanvasControllerDelegate *)delegate interactiveCanvasController:self tappedOnFootnoteAttachment:v26];
         goto LABEL_18;
       }
     }
@@ -499,9 +499,9 @@ LABEL_28:
   v3 = TSUDynamicCast();
   if (!v3)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPInteractiveCanvasController gestureSequenceWillBegin]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPInteractiveCanvasController.mm"), 627, @"invalid nil value for '%s'", "cvc"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPInteractiveCanvasController.mm"), 627, @"invalid nil value for '%s'", "cvc"}];
   }
 
   [v3 gestureSequenceWillBegin];
@@ -514,9 +514,9 @@ LABEL_28:
   v3 = TSUDynamicCast();
   if (!v3)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPInteractiveCanvasController gestureSequenceDidEnd]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPInteractiveCanvasController.mm"), 635, @"invalid nil value for '%s'", "cvc"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPInteractiveCanvasController.mm"), 635, @"invalid nil value for '%s'", "cvc"}];
   }
 
   [v3 gestureSequenceDidEnd];
@@ -546,15 +546,15 @@ LABEL_28:
   }
 }
 
-- (void)p_recursivelyAddRep:(id)a3 forStorage:(id)a4 toSet:(id)a5
+- (void)p_recursivelyAddRep:(id)rep forStorage:(id)storage toSet:(id)set
 {
   v21 = *MEMORY[0x277D85DE8];
   objc_opt_class();
   v8 = TSUDynamicCast();
-  if (v8 && (v9 = v8, [v8 storage] == a4))
+  if (v8 && (v9 = v8, [v8 storage] == storage))
   {
 
-    [a5 addObject:v9];
+    [set addObject:v9];
   }
 
   else
@@ -566,8 +566,8 @@ LABEL_28:
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v11 = [v10 childReps];
-      v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      childReps = [v10 childReps];
+      v12 = [childReps countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v12)
       {
         v13 = v12;
@@ -578,13 +578,13 @@ LABEL_28:
           {
             if (*v17 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(childReps);
             }
 
-            [(TSWPInteractiveCanvasController *)self p_recursivelyAddRep:*(*(&v16 + 1) + 8 * i) forStorage:a4 toSet:a5];
+            [(TSWPInteractiveCanvasController *)self p_recursivelyAddRep:*(*(&v16 + 1) + 8 * i) forStorage:storage toSet:set];
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v13 = [childReps countByEnumeratingWithState:&v16 objects:v20 count:16];
         }
 
         while (v13);
@@ -593,24 +593,24 @@ LABEL_28:
   }
 }
 
-- (id)_repsForStorage:(id)a3
+- (id)_repsForStorage:(id)storage
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(TSWPInteractiveCanvasController *)self p_repsForStorage:a3];
+  v4 = [(TSWPInteractiveCanvasController *)self p_repsForStorage:storage];
 
   return [v3 setWithSet:v4];
 }
 
-- (id)p_repsForStorage:(id)a3
+- (id)p_repsForStorage:(id)storage
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CBEB58] set];
-  v6 = [(TSDInteractiveCanvasController *)self infosToDisplay];
+  infosToDisplay = [(TSDInteractiveCanvasController *)self infosToDisplay];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [(NSArray *)infosToDisplay countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -622,14 +622,14 @@ LABEL_28:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(infosToDisplay);
         }
 
-        [(TSWPInteractiveCanvasController *)self p_recursivelyAddRep:[(TSDInteractiveCanvasController *)self repForInfo:*(*(&v12 + 1) + 8 * v10++)] forStorage:a3 toSet:v5];
+        [(TSWPInteractiveCanvasController *)self p_recursivelyAddRep:[(TSDInteractiveCanvasController *)self repForInfo:*(*(&v12 + 1) + 8 * v10++)] forStorage:storage toSet:v5];
       }
 
       while (v8 != v10);
-      v8 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [(NSArray *)infosToDisplay countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -638,12 +638,12 @@ LABEL_28:
   return v5;
 }
 
-- (id)closestRepToPoint:(CGPoint)a3 forStorage:(id)a4
+- (id)closestRepToPoint:(CGPoint)point forStorage:(id)storage
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v27 = *MEMORY[0x277D85DE8];
-  v6 = [(TSWPInteractiveCanvasController *)self _repsForStorage:a4];
+  v6 = [(TSWPInteractiveCanvasController *)self _repsForStorage:storage];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -710,17 +710,17 @@ LABEL_28:
   return v9;
 }
 
-- (id)closestRepToPoint:(CGPoint)a3
+- (id)closestRepToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [(TSDInteractiveCanvasController *)self topLevelRepsForHitTesting];
+  topLevelRepsForHitTesting = [(TSDInteractiveCanvasController *)self topLevelRepsForHitTesting];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v6 = [topLevelRepsForHitTesting countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v6)
   {
     return 0;
@@ -736,7 +736,7 @@ LABEL_28:
     {
       if (*v23 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(topLevelRepsForHitTesting);
       }
 
       objc_opt_class();
@@ -775,7 +775,7 @@ LABEL_28:
       }
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v7 = [topLevelRepsForHitTesting countByEnumeratingWithState:&v22 objects:v26 count:16];
     v13 = v8;
   }
 

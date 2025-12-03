@@ -1,17 +1,17 @@
 @interface PLSTransportDecoder
 + (id)decoder;
-- (id)_itemFromPropertyList:(id)a3;
-- (id)decodeSnapshotFromFile:(id)a3 error:(id *)a4;
-- (id)decodeSnapshotFromPropertyList:(id)a3 error:(id *)a4;
+- (id)_itemFromPropertyList:(id)list;
+- (id)decodeSnapshotFromFile:(id)file error:(id *)error;
+- (id)decodeSnapshotFromPropertyList:(id)list error:(id *)error;
 @end
 
 @implementation PLSTransportDecoder
 
-- (id)_itemFromPropertyList:(id)a3
+- (id)_itemFromPropertyList:(id)list
 {
   v5 = kPLSTransportItemTypeKey;
-  v6 = a3;
-  v7 = [v6 objectForKey:v5];
+  listCopy = list;
+  v7 = [listCopy objectForKey:v5];
   if ([v7 isEqualToString:kPLSTransportAlbumItemType] || objc_msgSend(v7, "isEqualToString:", kPLSTransportAssetItemType) || objc_msgSend(v7, "isEqualToString:", kPLSTransportEventItemType))
   {
     v8 = objc_opt_class();
@@ -25,20 +25,20 @@
     v8 = 0;
   }
 
-  v9 = [[v8 alloc] initFromPropertyList:v6];
+  v9 = [[v8 alloc] initFromPropertyList:listCopy];
 
   return v9;
 }
 
-- (id)decodeSnapshotFromFile:(id)a3 error:(id *)a4
+- (id)decodeSnapshotFromFile:(id)file error:(id *)error
 {
-  v6 = [NSInputStream inputStreamWithURL:a3];
+  v6 = [NSInputStream inputStreamWithURL:file];
   [v6 open];
-  v7 = [NSPropertyListSerialization propertyListWithStream:v6 options:0 format:0 error:a4];
+  v7 = [NSPropertyListSerialization propertyListWithStream:v6 options:0 format:0 error:error];
   [v6 close];
   if (v7)
   {
-    v8 = [(PLSTransportDecoder *)self decodeSnapshotFromPropertyList:v7 error:a4];
+    v8 = [(PLSTransportDecoder *)self decodeSnapshotFromPropertyList:v7 error:error];
   }
 
   else
@@ -49,26 +49,26 @@
   return v8;
 }
 
-- (id)decodeSnapshotFromPropertyList:(id)a3 error:(id *)a4
+- (id)decodeSnapshotFromPropertyList:(id)list error:(id *)error
 {
-  v5 = a3;
+  listCopy = list;
   v6 = +[PLSLibraryChangeSnapshot librarySnapshot];
   context = objc_autoreleasePoolPush();
-  v7 = [v5 objectForKey:kPLSTransportLibraryUUIDKey];
+  v7 = [listCopy objectForKey:kPLSTransportLibraryUUIDKey];
   [v6 setLibraryUUID:v7];
 
-  v8 = [v5 objectForKey:kPLSTransportLibraryKindKey];
+  v8 = [listCopy objectForKey:kPLSTransportLibraryKindKey];
   [v6 setLibraryKind:v8];
 
-  v9 = [v6 libraryKind];
+  libraryKind = [v6 libraryKind];
   v34 = v6;
-  [v6 setIsFolderSync:{objc_msgSend(v9, "isEqualToString:", kPLSTransportLibraryKindFolderKey)}];
+  [v6 setIsFolderSync:{objc_msgSend(libraryKind, "isEqualToString:", kPLSTransportLibraryKindFolderKey)}];
 
   v35 = +[NSMutableDictionary dictionary];
   v10 = +[NSMutableDictionary dictionary];
   v11 = +[NSMutableArray array];
-  v33 = v5;
-  [v5 objectForKey:kPLSTransportUpdatesKey];
+  v33 = listCopy;
+  [listCopy objectForKey:kPLSTransportUpdatesKey];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
@@ -89,14 +89,14 @@
         }
 
         v16 = [(PLSTransportDecoder *)self _itemFromPropertyList:*(*(&v41 + 1) + 8 * v15)];
-        v17 = [v16 uuid];
+        uuid = [v16 uuid];
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
           [v11 addObject:v16];
           v18 = v10;
 LABEL_9:
-          [v18 setObject:v16 forKey:v17];
+          [v18 setObject:v16 forKey:uuid];
           goto LABEL_10;
         }
 
@@ -146,8 +146,8 @@ LABEL_10:
         }
 
         v27 = [(PLSTransportDecoder *)self _itemFromPropertyList:*(*(&v37 + 1) + 8 * i)];
-        v28 = [v27 uuid];
-        [v21 setObject:v27 forKey:v28];
+        uuid2 = [v27 uuid];
+        [v21 setObject:v27 forKey:uuid2];
       }
 
       v24 = [v22 countByEnumeratingWithState:&v37 objects:v45 count:16];
@@ -159,8 +159,8 @@ LABEL_10:
   [v34 setDeletes:v21];
   if ([v34 isFolderSync])
   {
-    v29 = [v34 orderedAlbums];
-    v30 = [NSMutableArray arrayWithArray:v29];
+    orderedAlbums = [v34 orderedAlbums];
+    v30 = [NSMutableArray arrayWithArray:orderedAlbums];
 
     [v30 sortUsingComparator:&stru_246E0];
     [v34 setOrderedAlbums:v30];

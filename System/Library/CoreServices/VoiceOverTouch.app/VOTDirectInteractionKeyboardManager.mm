@@ -1,26 +1,26 @@
 @interface VOTDirectInteractionKeyboardManager
 - (BOOL)isEmojiKey;
 - (BOOL)isEmojiKeyboard;
-- (BOOL)processEvent:(id)a3;
+- (BOOL)processEvent:(id)event;
 - (CGRect)gestureKeyboardRegion;
 - (VOTDirectInteractionKeyboardManager)init;
 - (VOTGestureKeyboardDelegate)delegate;
-- (void)_handleCommitTyping:(id)a3;
-- (void)_handleDelete:(id)a3;
-- (void)_handleKeyboardSelection:(id)a3;
-- (void)_handleKeyplaneSelection:(id)a3;
-- (void)_handleShift:(id)a3;
-- (void)_handleShiftLock:(id)a3;
-- (void)_handleSuggestionSelection:(id)a3;
-- (void)_handleTypingEnter:(id)a3;
-- (void)_handleTypingPeriod:(id)a3;
+- (void)_handleCommitTyping:(id)typing;
+- (void)_handleDelete:(id)delete;
+- (void)_handleKeyboardSelection:(id)selection;
+- (void)_handleKeyplaneSelection:(id)selection;
+- (void)_handleShift:(id)shift;
+- (void)_handleShiftLock:(id)lock;
+- (void)_handleSuggestionSelection:(id)selection;
+- (void)_handleTypingEnter:(id)enter;
+- (void)_handleTypingPeriod:(id)period;
 - (void)_initializeDispatchTable;
-- (void)_processEvent:(id)a3;
+- (void)_processEvent:(id)event;
 - (void)_updateKeyboardElement;
 - (void)_updateTypingMode;
 - (void)dealloc;
-- (void)screenChange:(id)a3;
-- (void)setInDirectInteractionTypingMode:(BOOL)a3;
+- (void)screenChange:(id)change;
+- (void)setInDirectInteractionTypingMode:(BOOL)mode;
 - (void)updateKeyboardElement;
 - (void)updateTypingMode;
 @end
@@ -172,7 +172,7 @@
   [(NSMutableDictionary *)v25 setObject:v26 forKey:kVOTEventCommandGestureTypingNextInternationalKeyboard];
 }
 
-- (void)screenChange:(id)a3
+- (void)screenChange:(id)change
 {
   [(VOTDirectInteractionKeyboardManager *)self updateKeyboardElement];
 
@@ -231,9 +231,9 @@
   v6 = *p_keyboardElement;
   if (*p_keyboardElement)
   {
-    v7 = [v6 isValid];
+    isValid = [v6 isValid];
     v6 = *p_keyboardElement;
-    if (v7)
+    if (isValid)
     {
       if ([v6 windowContextId])
       {
@@ -247,13 +247,13 @@
   *p_keyboardElement = 0;
 
   v8 = +[VOTWorkspace sharedWorkspace];
-  v9 = [v8 focusedApplications];
+  focusedApplications = [v8 focusedApplications];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v10 = v9;
+  v10 = focusedApplications;
   v11 = [v10 countByEnumeratingWithState:&v38 objects:v48 count:16];
   if (v11)
   {
@@ -268,11 +268,11 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v38 + 1) + 8 * i) activeKeyboard];
-        if (v15)
+        activeKeyboard = [*(*(&v38 + 1) + 8 * i) activeKeyboard];
+        if (activeKeyboard)
         {
           v17 = *p_keyboardElement;
-          *p_keyboardElement = v15;
+          *p_keyboardElement = activeKeyboard;
 
           goto LABEL_19;
         }
@@ -290,43 +290,43 @@
 
 LABEL_19:
 
-  v18 = [(VOTDirectInteractionKeyboardManager *)self delegate];
-  v19 = [v18 currentElement];
+  delegate = [(VOTDirectInteractionKeyboardManager *)self delegate];
+  currentElement = [delegate currentElement];
 
   if ([(VOTDirectInteractionKeyboardManager *)self isEmojiKeyboard]&& [(VOTDirectInteractionKeyboardManager *)self isEmojiKey])
   {
-    v20 = [v19 activeKeyboard];
-    if (v20)
+    activeKeyboard2 = [currentElement activeKeyboard];
+    if (activeKeyboard2)
     {
-      objc_storeStrong(&self->_keyboardElement, v20);
+      objc_storeStrong(&self->_keyboardElement, activeKeyboard2);
     }
   }
 
-  if (*p_keyboardElement || ([v19 activeKeyboard], v21 = objc_claimAutoreleasedReturnValue(), v22 = *p_keyboardElement, *p_keyboardElement = v21, v22, *p_keyboardElement))
+  if (*p_keyboardElement || ([currentElement activeKeyboard], v21 = objc_claimAutoreleasedReturnValue(), v22 = *p_keyboardElement, *p_keyboardElement = v21, v22, *p_keyboardElement))
   {
-    v23 = v19;
+    currentElement2 = currentElement;
   }
 
   else
   {
-    v23 = [VOTSharedWorkspace currentElement];
+    currentElement2 = [VOTSharedWorkspace currentElement];
 
-    v34 = [v23 remoteParent];
+    remoteParent = [currentElement2 remoteParent];
 
-    if (v34)
+    if (remoteParent)
     {
-      v35 = [v23 application];
-      v36 = [v35 activeKeyboard];
+      application = [currentElement2 application];
+      activeKeyboard3 = [application activeKeyboard];
       v37 = *p_keyboardElement;
-      *p_keyboardElement = v36;
+      *p_keyboardElement = activeKeyboard3;
     }
   }
 
   if ([*p_keyboardElement isRemoteElement])
   {
-    v24 = [*p_keyboardElement activeKeyboard];
+    activeKeyboard4 = [*p_keyboardElement activeKeyboard];
     v25 = *p_keyboardElement;
-    *p_keyboardElement = v24;
+    *p_keyboardElement = activeKeyboard4;
   }
 
 LABEL_30:
@@ -334,28 +334,28 @@ LABEL_30:
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
   {
     v27 = *p_keyboardElement;
-    v28 = [*p_keyboardElement application];
-    v29 = [v28 isSoftwareKeyboardActive];
-    v30 = [*p_keyboardElement isSoftwareKeyboardMimic];
+    application2 = [*p_keyboardElement application];
+    isSoftwareKeyboardActive = [application2 isSoftwareKeyboardActive];
+    isSoftwareKeyboardMimic = [*p_keyboardElement isSoftwareKeyboardMimic];
     *buf = 138412802;
     v43 = v27;
     v44 = 1024;
-    v45 = v29;
+    v45 = isSoftwareKeyboardActive;
     v46 = 1024;
-    v47 = v30;
+    v47 = isSoftwareKeyboardMimic;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Got gesture keyboard: %@ [SW active: %d, IsMimic: %d]", buf, 0x18u);
   }
 
-  v31 = [*p_keyboardElement application];
-  if ([v31 isSoftwareKeyboardActive])
+  application3 = [*p_keyboardElement application];
+  if ([application3 isSoftwareKeyboardActive])
   {
   }
 
   else
   {
-    v32 = [*p_keyboardElement isSoftwareKeyboardMimic];
+    isSoftwareKeyboardMimic2 = [*p_keyboardElement isSoftwareKeyboardMimic];
 
-    if ((v32 & 1) == 0)
+    if ((isSoftwareKeyboardMimic2 & 1) == 0)
     {
       v16 = 0;
       goto LABEL_37;
@@ -377,19 +377,19 @@ LABEL_40:
   [(VOTDirectInteractionKeyboardManager *)self setInDirectInteractionTypingMode:v16];
 }
 
-- (void)setInDirectInteractionTypingMode:(BOOL)a3
+- (void)setInDirectInteractionTypingMode:(BOOL)mode
 {
-  self->_inDirectInteractionTypingMode = a3;
-  v4 = [(VOTDirectInteractionKeyboardManager *)self delegate];
-  [v4 directInteractionModeStatus:self->_inDirectInteractionTypingMode];
+  self->_inDirectInteractionTypingMode = mode;
+  delegate = [(VOTDirectInteractionKeyboardManager *)self delegate];
+  [delegate directInteractionModeStatus:self->_inDirectInteractionTypingMode];
 }
 
 - (BOOL)isEmojiKey
 {
-  v2 = [(VOTDirectInteractionKeyboardManager *)self delegate];
-  v3 = [v2 currentElement];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.StickerKit.StickerPickerService"];
+  delegate = [(VOTDirectInteractionKeyboardManager *)self delegate];
+  currentElement = [delegate currentElement];
+  bundleIdentifier = [currentElement bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.StickerKit.StickerPickerService"];
 
   return v5;
 }
@@ -397,13 +397,13 @@ LABEL_40:
 - (BOOL)isEmojiKeyboard
 {
   v2 = +[VOTWorkspace sharedWorkspace];
-  v3 = [v2 focusedApplications];
+  focusedApplications = [v2 focusedApplications];
 
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = v3;
+  v4 = focusedApplications;
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
@@ -491,12 +491,12 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)processEvent:(id)a3
+- (BOOL)processEvent:(id)event
 {
-  v4 = a3;
-  if ((self->_inDirectInteractionTypingMode || (_AXAssert(), self->_inDirectInteractionTypingMode)) && ([v4 command], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", kVOTEventCommandGestureTypingType), v5, v6))
+  eventCopy = event;
+  if ((self->_inDirectInteractionTypingMode || (_AXAssert(), self->_inDirectInteractionTypingMode)) && ([eventCopy command], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", kVOTEventCommandGestureTypingType), v5, v6))
   {
-    v7 = [v4 objectForIndex:115];
+    v7 = [eventCopy objectForIndex:115];
     [v7 pointValue];
     v9 = v8;
     v11 = v10;
@@ -515,13 +515,13 @@ LABEL_11:
   return v13;
 }
 
-- (void)_processEvent:(id)a3
+- (void)_processEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatchTable = self->_dispatchTable;
-  v8 = v4;
-  v6 = [v4 command];
-  v7 = [(NSMutableDictionary *)dispatchTable objectForKey:v6];
+  v8 = eventCopy;
+  command = [eventCopy command];
+  v7 = [(NSMutableDictionary *)dispatchTable objectForKey:command];
 
   if (v7)
   {
@@ -529,10 +529,10 @@ LABEL_11:
   }
 }
 
-- (void)_handleSuggestionSelection:(id)a3
+- (void)_handleSuggestionSelection:(id)selection
 {
-  v4 = [a3 command];
-  v5 = [v4 isEqualToString:kVOTEventCommandGestureTypingNextSuggestion];
+  command = [selection command];
+  v5 = [command isEqualToString:kVOTEventCommandGestureTypingNextSuggestion];
 
   if (v5)
   {
@@ -544,15 +544,15 @@ LABEL_11:
     v6 = 2607;
   }
 
-  v8 = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
-  v7 = [v8 uiElement];
-  [v7 performAXAction:v6];
+  keyboardElement = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
+  uiElement = [keyboardElement uiElement];
+  [uiElement performAXAction:v6];
 }
 
-- (void)_handleKeyplaneSelection:(id)a3
+- (void)_handleKeyplaneSelection:(id)selection
 {
-  v4 = [a3 command];
-  v5 = [v4 isEqualToString:kVOTEventCommandGestureTypingNextKeyplane];
+  command = [selection command];
+  v5 = [command isEqualToString:kVOTEventCommandGestureTypingNextKeyplane];
 
   if (v5)
   {
@@ -564,15 +564,15 @@ LABEL_11:
     v6 = 2603;
   }
 
-  v8 = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
-  v7 = [v8 uiElement];
-  [v7 performAXAction:v6];
+  keyboardElement = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
+  uiElement = [keyboardElement uiElement];
+  [uiElement performAXAction:v6];
 }
 
-- (void)_handleKeyboardSelection:(id)a3
+- (void)_handleKeyboardSelection:(id)selection
 {
-  v4 = [a3 command];
-  v5 = [v4 isEqualToString:kVOTEventCommandGestureTypingNextInternationalKeyboard];
+  command = [selection command];
+  v5 = [command isEqualToString:kVOTEventCommandGestureTypingNextInternationalKeyboard];
 
   if (v5)
   {
@@ -584,53 +584,53 @@ LABEL_11:
     v6 = 0;
   }
 
-  v8 = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
-  v7 = [v8 uiElement];
-  [v7 performAXAction:v6];
+  keyboardElement = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
+  uiElement = [keyboardElement uiElement];
+  [uiElement performAXAction:v6];
 }
 
-- (void)_handleDelete:(id)a3
+- (void)_handleDelete:(id)delete
 {
-  v4 = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
-  v3 = [v4 uiElement];
-  [v3 performAXAction:2601];
+  keyboardElement = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
+  uiElement = [keyboardElement uiElement];
+  [uiElement performAXAction:2601];
 }
 
-- (void)_handleShiftLock:(id)a3
+- (void)_handleShiftLock:(id)lock
 {
-  v4 = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
-  v3 = [v4 uiElement];
-  [v3 performAXAction:2610];
+  keyboardElement = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
+  uiElement = [keyboardElement uiElement];
+  [uiElement performAXAction:2610];
 }
 
-- (void)_handleShift:(id)a3
+- (void)_handleShift:(id)shift
 {
-  v4 = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
-  v3 = [v4 uiElement];
-  [v3 performAXAction:2609];
+  keyboardElement = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
+  uiElement = [keyboardElement uiElement];
+  [uiElement performAXAction:2609];
 }
 
-- (void)_handleTypingEnter:(id)a3
+- (void)_handleTypingEnter:(id)enter
 {
-  v5 = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
-  v3 = [v5 uiElement];
+  keyboardElement = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
+  uiElement = [keyboardElement uiElement];
   v4 = [NSString stringWithFormat:@"\n"];
-  [v3 performAXAction:2605 withValue:v4];
+  [uiElement performAXAction:2605 withValue:v4];
 }
 
-- (void)_handleTypingPeriod:(id)a3
+- (void)_handleTypingPeriod:(id)period
 {
-  v5 = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
-  v3 = [v5 uiElement];
+  keyboardElement = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
+  uiElement = [keyboardElement uiElement];
   v4 = [NSString stringWithFormat:@"."];
-  [v3 performAXAction:2605 withValue:v4];
+  [uiElement performAXAction:2605 withValue:v4];
 }
 
-- (void)_handleCommitTyping:(id)a3
+- (void)_handleCommitTyping:(id)typing
 {
-  v4 = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
-  v3 = [v4 uiElement];
-  [v3 performAXAction:2604];
+  keyboardElement = [(VOTDirectInteractionKeyboardManager *)self keyboardElement];
+  uiElement = [keyboardElement uiElement];
+  [uiElement performAXAction:2604];
 }
 
 - (VOTGestureKeyboardDelegate)delegate

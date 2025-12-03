@@ -1,18 +1,18 @@
 @interface _DASWidgetRefreshUsageTracker
 + (id)sharedInstance;
 - (_DASWidgetRefreshUsageTracker)init;
-- (double)stopTrackingActivity:(id)a3;
-- (double)sumOfValuesOfDictionary:(id)a3;
-- (id)allocatedBudgetsWithAverageViews:(id)a3 groupTotalBudget:(int)a4 individualMaxBudgets:(id)a5 individualMinBudget:(int)a6;
-- (id)dailyBudgetForWidget:(id)a3;
+- (double)stopTrackingActivity:(id)activity;
+- (double)sumOfValuesOfDictionary:(id)dictionary;
+- (id)allocatedBudgetsWithAverageViews:(id)views groupTotalBudget:(int)budget individualMaxBudgets:(id)budgets individualMinBudget:(int)minBudget;
+- (id)dailyBudgetForWidget:(id)widget;
 - (id)dailyBudgetsForAllWidgets;
 - (id)getAverageWidgetViewsPerDay;
-- (int)allocateBudgetForViewsCurve:(int)a3;
+- (int)allocateBudgetForViewsCurve:(int)curve;
 - (void)checkBiomeMigrationState;
 - (void)computeBudgetFromHistoryForAllWidgets;
 - (void)flushComputedBudgetCache;
 - (void)invalidateComputedBudgetCache;
-- (void)startTrackingActivity:(id)a3;
+- (void)startTrackingActivity:(id)activity;
 - (void)updateTrialParameters;
 @end
 
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000244DC;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020AEB8 != -1)
   {
     dispatch_once(&qword_10020AEB8, block);
@@ -83,9 +83,9 @@
 - (void)updateTrialParameters
 {
   v3 = [(_DASTrialManager *)self->_trialManager factorWithName:@"widgetImprovedAllocStrat"];
-  v4 = [v3 BOOLeanValue];
+  bOOLeanValue = [v3 BOOLeanValue];
 
-  byte_10020AEC8 = v4;
+  byte_10020AEC8 = bOOLeanValue;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -95,9 +95,9 @@
   }
 }
 
-- (id)dailyBudgetForWidget:(id)a3
+- (id)dailyBudgetForWidget:(id)widget
 {
-  v4 = a3;
+  widgetCopy = widget;
   if (self->_biomeMigrationComplete)
   {
     goto LABEL_6;
@@ -112,7 +112,7 @@
   {
 LABEL_6:
     [(_DASWidgetRefreshUsageTracker *)self computeBudgetFromHistoryForAllWidgets];
-    v8 = [(NSMutableDictionary *)self->_dailyComputedBudgetsForAllWidgets objectForKey:v4];
+    v8 = [(NSMutableDictionary *)self->_dailyComputedBudgetsForAllWidgets objectForKey:widgetCopy];
   }
 
   else
@@ -126,13 +126,13 @@ LABEL_6:
 - (id)dailyBudgetsForAllWidgets
 {
   [(_DASWidgetRefreshUsageTracker *)self computeBudgetFromHistoryForAllWidgets];
-  v3 = [(NSMutableDictionary *)self->_dailyComputedBudgetsForAllWidgets allKeys];
+  allKeys = [(NSMutableDictionary *)self->_dailyComputedBudgetsForAllWidgets allKeys];
   v4 = objc_alloc_init(NSMutableDictionary);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = allKeys;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -225,14 +225,14 @@ LABEL_6:
     v6 = v2;
     contexta = objc_autoreleasePoolPush();
     v7 = BiomeLibrary();
-    v8 = [v7 Widgets];
-    v9 = [v8 Viewed];
+    widgets = [v7 Widgets];
+    viewed = [widgets Viewed];
 
     v10 = [[BMPublisherOptions alloc] initWithStartDate:v6 endDate:v5 maxEvents:5000 lastN:0 reversed:0];
     v11 = +[_DASBMUtilityProvider sharedUtilityProvider];
-    v12 = [v11 getConsoleUserUid];
+    getConsoleUserUid = [v11 getConsoleUserUid];
 
-    v13 = [v9 publisherWithUser:v12 useCase:@"DuetActivitySchedulerWidgetRefresh" options:v10];
+    v13 = [viewed publisherWithUser:getConsoleUserUid useCase:@"DuetActivitySchedulerWidgetRefresh" options:v10];
     v52[0] = _NSConcreteStackBlock;
     v52[1] = 3221225472;
     v52[2] = sub_100025614;
@@ -333,38 +333,38 @@ LABEL_6:
   return v43;
 }
 
-- (int)allocateBudgetForViewsCurve:(int)a3
+- (int)allocateBudgetForViewsCurve:(int)curve
 {
-  result = a3;
-  if (a3 > 0x1E)
+  result = curve;
+  if (curve > 0x1E)
   {
-    v4 = a3;
+    curveCopy = curve;
     if (byte_10020AEC8)
     {
-      return (((v4 + -30.0) / 5.0 + 30.0) / 30.0 / (((v4 + -30.0) / 5.0 + 30.0) / 30.0 + 1.0) * v4 + 5.0);
+      return (((curveCopy + -30.0) / 5.0 + 30.0) / 30.0 / (((curveCopy + -30.0) / 5.0 + 30.0) / 30.0 + 1.0) * curveCopy + 5.0);
     }
 
     else
     {
-      return (v4 + -59.2305146 + 30.0);
+      return (curveCopy + -59.2305146 + 30.0);
     }
   }
 
   else if (byte_10020AEC8)
   {
-    return llround(a3 * 0.66);
+    return llround(curve * 0.66);
   }
 
   return result;
 }
 
-- (id)allocatedBudgetsWithAverageViews:(id)a3 groupTotalBudget:(int)a4 individualMaxBudgets:(id)a5 individualMinBudget:(int)a6
+- (id)allocatedBudgetsWithAverageViews:(id)views groupTotalBudget:(int)budget individualMaxBudgets:(id)budgets individualMinBudget:(int)minBudget
 {
-  v9 = a3;
-  v43 = a5;
+  viewsCopy = views;
+  budgetsCopy = budgets;
   v10 = objc_alloc_init(NSMutableDictionary);
-  v42 = v9;
-  [v9 allKeys];
+  v42 = viewsCopy;
+  [viewsCopy allKeys];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
@@ -386,15 +386,15 @@ LABEL_6:
 
         v16 = *(*(&v48 + 1) + 8 * i);
         v17 = [v42 objectForKeyedSubscript:v16];
-        v18 = [v17 intValue];
+        intValue = [v17 intValue];
 
-        v19 = [v43 objectForKeyedSubscript:v16];
-        v20 = [v19 intValue];
+        v19 = [budgetsCopy objectForKeyedSubscript:v16];
+        intValue2 = [v19 intValue];
 
-        v21 = [(_DASWidgetRefreshUsageTracker *)self allocateBudgetForViewsCurve:v18];
-        if (v21 >= v20)
+        v21 = [(_DASWidgetRefreshUsageTracker *)self allocateBudgetForViewsCurve:intValue];
+        if (v21 >= intValue2)
         {
-          v22 = v20;
+          v22 = intValue2;
         }
 
         else
@@ -402,17 +402,17 @@ LABEL_6:
           v22 = v21;
         }
 
-        if (v22 <= a6)
+        if (v22 <= minBudget)
         {
-          v23 = a6;
+          minBudgetCopy = minBudget;
         }
 
         else
         {
-          v23 = v22;
+          minBudgetCopy = v22;
         }
 
-        v24 = [NSNumber numberWithInt:v23];
+        v24 = [NSNumber numberWithInt:minBudgetCopy];
         [v10 setObject:v24 forKeyedSubscript:v16];
 
         v14 = v14 + v21;
@@ -429,7 +429,7 @@ LABEL_6:
     v14 = 0.0;
   }
 
-  if (v14 > a4)
+  if (v14 > budget)
   {
     v46 = 0u;
     v47 = 0u;
@@ -441,7 +441,7 @@ LABEL_6:
     {
       v27 = v26;
       v28 = *v45;
-      v29 = a4 / v14;
+      v29 = budget / v14;
       do
       {
         for (j = 0; j != v27; j = j + 1)
@@ -456,10 +456,10 @@ LABEL_6:
           [v32 doubleValue];
           v34 = v33;
 
-          v35 = [v43 objectForKeyedSubscript:v31];
-          v36 = [v35 intValue];
+          v35 = [budgetsCopy objectForKeyedSubscript:v31];
+          intValue3 = [v35 intValue];
 
-          if (v34 <= v36)
+          if (v34 <= intValue3)
           {
             v37 = v34;
           }
@@ -483,36 +483,36 @@ LABEL_6:
   return v10;
 }
 
-- (void)startTrackingActivity:(id)a3
+- (void)startTrackingActivity:(id)activity
 {
-  v7 = a3;
-  v4 = [v7 widgetBudgetID];
+  activityCopy = activity;
+  widgetBudgetID = [activityCopy widgetBudgetID];
 
-  if (v4)
+  if (widgetBudgetID)
   {
     trackingWidgets = self->_trackingWidgets;
-    v6 = [v7 widgetBudgetID];
-    [(NSMutableDictionary *)trackingWidgets setObject:&off_1001C9748 forKeyedSubscript:v6];
+    widgetBudgetID2 = [activityCopy widgetBudgetID];
+    [(NSMutableDictionary *)trackingWidgets setObject:&off_1001C9748 forKeyedSubscript:widgetBudgetID2];
   }
 }
 
-- (double)stopTrackingActivity:(id)a3
+- (double)stopTrackingActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 widgetBudgetID];
+  activityCopy = activity;
+  widgetBudgetID = [activityCopy widgetBudgetID];
 
   v6 = 0.0;
-  if (v5)
+  if (widgetBudgetID)
   {
     trackingWidgets = self->_trackingWidgets;
-    v8 = [v4 widgetBudgetID];
-    v9 = [(NSMutableDictionary *)trackingWidgets objectForKeyedSubscript:v8];
+    widgetBudgetID2 = [activityCopy widgetBudgetID];
+    v9 = [(NSMutableDictionary *)trackingWidgets objectForKeyedSubscript:widgetBudgetID2];
 
     if (v9)
     {
       v10 = self->_trackingWidgets;
-      v11 = [v4 widgetBudgetID];
-      [(NSMutableDictionary *)v10 removeObjectForKey:v11];
+      widgetBudgetID3 = [activityCopy widgetBudgetID];
+      [(NSMutableDictionary *)v10 removeObjectForKey:widgetBudgetID3];
 
       v6 = 1.0;
     }
@@ -521,14 +521,14 @@ LABEL_6:
   return v6;
 }
 
-- (double)sumOfValuesOfDictionary:(id)a3
+- (double)sumOfValuesOfDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [dictionaryCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -540,15 +540,15 @@ LABEL_6:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dictionaryCopy);
         }
 
-        v9 = [v3 objectForKey:*(*(&v12 + 1) + 8 * i)];
+        v9 = [dictionaryCopy objectForKey:*(*(&v12 + 1) + 8 * i)];
         [v9 doubleValue];
         v7 = v7 + v10;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [dictionaryCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -566,9 +566,9 @@ LABEL_6:
 {
   v14 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.duetactivityscheduler"];
   v3 = [v14 objectForKey:@"widgetBiomeMigrationComplete"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     self->_biomeMigrationComplete = 1;
     goto LABEL_11;

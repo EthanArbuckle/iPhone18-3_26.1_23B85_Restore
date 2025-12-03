@@ -1,7 +1,7 @@
 @interface HREActionTemplate
 - (HREActionVarianceCollection)allowedVariance;
 - (NSDictionary)actionMap;
-- (id)createStarterRecommendationInHome:(id)a3;
+- (id)createStarterRecommendationInHome:(id)home;
 - (id)involvedAccessoryTypes;
 @end
 
@@ -12,9 +12,9 @@
   actionMap = self->_actionMap;
   if (!actionMap)
   {
-    v4 = [(HREActionTemplate *)self _lazy_actionMap];
+    _lazy_actionMap = [(HREActionTemplate *)self _lazy_actionMap];
     v5 = self->_actionMap;
-    self->_actionMap = v4;
+    self->_actionMap = _lazy_actionMap;
 
     actionMap = self->_actionMap;
   }
@@ -27,9 +27,9 @@
   allowedVariance = self->_allowedVariance;
   if (!allowedVariance)
   {
-    v4 = [(HREActionTemplate *)self _lazy_allowedVariance];
+    _lazy_allowedVariance = [(HREActionTemplate *)self _lazy_allowedVariance];
     v5 = self->_allowedVariance;
-    self->_allowedVariance = v4;
+    self->_allowedVariance = _lazy_allowedVariance;
 
     allowedVariance = self->_allowedVariance;
   }
@@ -37,11 +37,11 @@
   return allowedVariance;
 }
 
-- (id)createStarterRecommendationInHome:(id)a3
+- (id)createStarterRecommendationInHome:(id)home
 {
   v9.receiver = self;
   v9.super_class = HREActionTemplate;
-  v4 = [(HRETemplate *)&v9 createStarterRecommendationInHome:a3];
+  v4 = [(HRETemplate *)&v9 createStarterRecommendationInHome:home];
   if ([v4 conformsToProtocol:&unk_286660478])
   {
     v5 = v4;
@@ -55,8 +55,8 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HREActionTemplate *)self allowedVariance];
-    [v6 setAllowedVariance:v7];
+    allowedVariance = [(HREActionTemplate *)self allowedVariance];
+    [v6 setAllowedVariance:allowedVariance];
   }
 
   return v4;
@@ -65,11 +65,11 @@
 - (id)involvedAccessoryTypes
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(HREActionTemplate *)self actionMap];
-  v5 = [v4 allKeys];
-  v6 = [v3 setWithArray:v5];
-  v7 = [(HREActionTemplate *)self extraInvolvedTypes];
-  v8 = [v6 setByAddingObjectsFromSet:v7];
+  actionMap = [(HREActionTemplate *)self actionMap];
+  allKeys = [actionMap allKeys];
+  v6 = [v3 setWithArray:allKeys];
+  extraInvolvedTypes = [(HREActionTemplate *)self extraInvolvedTypes];
+  v8 = [v6 setByAddingObjectsFromSet:extraInvolvedTypes];
 
   return v8;
 }

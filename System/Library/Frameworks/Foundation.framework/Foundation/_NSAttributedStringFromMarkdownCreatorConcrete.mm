@@ -1,12 +1,12 @@
 @interface _NSAttributedStringFromMarkdownCreatorConcrete
 - (_NSAttributedStringFromMarkdownCreatorConcrete)init;
-- (id)parseExtendedAttributesFromData:(id)a3 error:(id *)a4;
+- (id)parseExtendedAttributesFromData:(id)data error:(id *)error;
 - (id)result;
 - (unsigned)lastCharacter;
-- (void)appendString:(id)a3;
-- (void)appendString:(id)a3 with:(id)a4;
+- (void)appendString:(id)string;
+- (void)appendString:(id)string with:(id)with;
 - (void)dealloc;
-- (void)finalizeWithLanguageIdentifier:(id)a3;
+- (void)finalizeWithLanguageIdentifier:(id)identifier;
 @end
 
 @implementation _NSAttributedStringFromMarkdownCreatorConcrete
@@ -41,9 +41,9 @@
   [(_NSAttributedStringFromMarkdownCreatorConcrete *)&v3 dealloc];
 }
 
-- (void)appendString:(id)a3 with:(id)a4
+- (void)appendString:(id)string with:(id)with
 {
-  v5 = [[NSAttributedString alloc] initWithString:a3 attributes:a4];
+  v5 = [[NSAttributedString alloc] initWithString:string attributes:with];
   [(NSMutableAttributedString *)self->_result appendAttributedString:v5];
 }
 
@@ -52,27 +52,27 @@
   v3 = [(NSAttributedString *)self->_result length];
   if (v3)
   {
-    v4 = [(NSAttributedString *)self->_result string];
+    string = [(NSAttributedString *)self->_result string];
     v5 = [(NSAttributedString *)self->_result length]- 1;
 
-    LOWORD(v3) = [(NSString *)v4 characterAtIndex:v5];
+    LOWORD(v3) = [(NSString *)string characterAtIndex:v5];
   }
 
   return v3;
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v4 = [(NSMutableAttributedString *)self->_result mutableString];
+  mutableString = [(NSMutableAttributedString *)self->_result mutableString];
 
-  [(NSMutableString *)v4 appendString:a3];
+  [(NSMutableString *)mutableString appendString:string];
 }
 
-- (id)parseExtendedAttributesFromData:(id)a3 error:(id *)a4
+- (id)parseExtendedAttributesFromData:(id)data error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v13 = 0;
-  v5 = [NSJSONSerialization JSONObjectWithData:a3 options:24 error:&v13];
+  v5 = [NSJSONSerialization JSONObjectWithData:data options:24 error:&v13];
   if (v5)
   {
     v6 = v5;
@@ -88,7 +88,7 @@
       return v7;
     }
 
-    if (a4)
+    if (error)
     {
       v15 = @"NSDebugDescription";
       v16 = @"JSON result was not a dictionary";
@@ -99,7 +99,7 @@
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v17 = @"NSUnderlyingError";
     v18[0] = v13;
@@ -109,17 +109,17 @@
 LABEL_8:
     v12 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 259, [v9 dictionaryWithObjects:v10 forKeys:v11 count:1]);
     result = 0;
-    *a4 = v12;
+    *error = v12;
     return result;
   }
 
   return 0;
 }
 
-- (void)finalizeWithLanguageIdentifier:(id)a3
+- (void)finalizeWithLanguageIdentifier:(id)identifier
 {
   v7[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (identifier)
   {
     result = self->_result;
     v6 = [(NSAttributedString *)result length];
@@ -128,7 +128,7 @@ LABEL_8:
     v7[2] = __81___NSAttributedStringFromMarkdownCreatorConcrete_finalizeWithLanguageIdentifier___block_invoke;
     v7[3] = &unk_1E69F67D0;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = identifier;
     [(NSAttributedString *)result enumerateAttribute:@"NSLanguage" inRange:0 options:v6 usingBlock:0x100000, v7];
   }
 }

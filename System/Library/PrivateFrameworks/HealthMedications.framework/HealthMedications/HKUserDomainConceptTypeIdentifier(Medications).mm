@@ -7,28 +7,28 @@
 
 + (id)medicationUserDomainConceptTypeIdentifier
 {
-  v1 = [[a1 alloc] initWithCode:0 schema:@"medication"];
+  v1 = [[self alloc] initWithCode:0 schema:@"medication"];
 
   return v1;
 }
 
 - (uint64_t)isMedicationTypeIdentifier
 {
-  if ([a1 code])
+  if ([self code])
   {
     return 0;
   }
 
-  v3 = [a1 schema];
-  if (v3 == @"medication")
+  schema = [self schema];
+  if (schema == @"medication")
   {
     v2 = 1;
   }
 
   else if (@"medication")
   {
-    v4 = [a1 schema];
-    v2 = [v4 isEqualToString:@"medication"];
+    schema2 = [self schema];
+    v2 = [schema2 isEqualToString:@"medication"];
   }
 
   else

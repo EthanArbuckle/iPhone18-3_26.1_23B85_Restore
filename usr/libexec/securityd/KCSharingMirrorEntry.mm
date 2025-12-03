@@ -2,25 +2,25 @@
 + (NSSet)requiredAttributeKeys;
 - (KCSharingLocalFingerprint)internetPasswordFingerprint;
 - (KCSharingLocalFingerprint)privateKeyFingerprint;
-- (KCSharingMirrorEntry)initWithAttributes:(id)a3 error:(id *)a4;
-- (KCSharingMirrorEntry)initWithIncomingEntry:(id)a3 flags:(unsigned int)a4;
-- (KCSharingMirrorEntry)initWithMirrorDatabaseItem:(SecDbItem *)a3 error:(id *)a4;
-- (KCSharingMirrorEntry)initWithMirrorEntry:(id)a3 flags:(unsigned int)a4;
-- (KCSharingMirrorEntry)initWithSavedRecord:(id)a3 forOutgoingEntry:(id)a4 flags:(unsigned int)a5;
-- (KCSharingMirrorEntry)initWithUpdatedLocalItem:(id)a3 forIncomingEntry:(id)a4 flags:(unsigned int)a5;
-- (KCSharingMirrorEntry)initWithUpdatedLocalItem:(id)a3 forMirrorEntry:(id)a4 flags:(unsigned int)a5;
+- (KCSharingMirrorEntry)initWithAttributes:(id)attributes error:(id *)error;
+- (KCSharingMirrorEntry)initWithIncomingEntry:(id)entry flags:(unsigned int)flags;
+- (KCSharingMirrorEntry)initWithMirrorDatabaseItem:(SecDbItem *)item error:(id *)error;
+- (KCSharingMirrorEntry)initWithMirrorEntry:(id)entry flags:(unsigned int)flags;
+- (KCSharingMirrorEntry)initWithSavedRecord:(id)record forOutgoingEntry:(id)entry flags:(unsigned int)flags;
+- (KCSharingMirrorEntry)initWithUpdatedLocalItem:(id)item forIncomingEntry:(id)entry flags:(unsigned int)flags;
+- (KCSharingMirrorEntry)initWithUpdatedLocalItem:(id)item forMirrorEntry:(id)entry flags:(unsigned int)flags;
 - (NSString)description;
-- (id)attributesWithAccessGroups:(id)a3 error:(id *)a4;
-- (id)remoteItemWithAccessGroups:(id)a3 error:(id *)a4;
-- (id)shareWithAccessGroups:(id)a3 error:(id *)a4;
+- (id)attributesWithAccessGroups:(id)groups error:(id *)error;
+- (id)remoteItemWithAccessGroups:(id)groups error:(id *)error;
+- (id)shareWithAccessGroups:(id)groups error:(id *)error;
 @end
 
 @implementation KCSharingMirrorEntry
 
-- (id)attributesWithAccessGroups:(id)a3 error:(id *)a4
+- (id)attributesWithAccessGroups:(id)groups error:(id *)error
 {
-  v6 = a3;
-  v7 = [NSKeyedArchiver archivedDataWithRootObject:self->_record requiringSecureCoding:1 error:a4];
+  groupsCopy = groups;
+  v7 = [NSKeyedArchiver archivedDataWithRootObject:self->_record requiringSecureCoding:1 error:error];
   if (!v7)
   {
     v22 = 0;
@@ -31,39 +31,39 @@
   v35 = v7;
   [v8 setCloudKitRecord:v7];
   v37[0] = kSecAttrUUID;
-  v33 = [(CKRecord *)self->_record recordID];
-  v32 = [v33 recordName];
-  v38[0] = v32;
+  recordID = [(CKRecord *)self->_record recordID];
+  recordName = [recordID recordName];
+  v38[0] = recordName;
   v37[1] = @"zone";
-  v31 = [(KCSharingMirrorEntry *)self record];
-  v30 = [v31 recordID];
-  v29 = [v30 zoneID];
-  v28 = [v29 zoneName];
-  v38[1] = v28;
+  record = [(KCSharingMirrorEntry *)self record];
+  recordID2 = [record recordID];
+  zoneID = [recordID2 zoneID];
+  zoneName = [zoneID zoneName];
+  v38[1] = zoneName;
   v37[2] = @"ownr";
-  v27 = [(KCSharingMirrorEntry *)self record];
-  v26 = [v27 recordID];
-  v9 = [v26 zoneID];
-  v10 = [v9 ownerName];
-  v38[2] = v10;
+  record2 = [(KCSharingMirrorEntry *)self record];
+  recordID3 = [record2 recordID];
+  zoneID2 = [recordID3 zoneID];
+  ownerName = [zoneID2 ownerName];
+  v38[2] = ownerName;
   v38[3] = kSecAttrAccessibleWhenUnlockedThisDeviceOnly;
   v37[3] = kSecAttrAccessible;
   v37[4] = @"type";
   v11 = [NSNumber numberWithLongLong:self->_type];
   v38[4] = v11;
   v37[5] = kSecAttrAccessGroup;
-  v12 = [v6 entryAccessGroup];
-  v38[5] = v12;
+  entryAccessGroup = [groupsCopy entryAccessGroup];
+  v38[5] = entryAccessGroup;
   v37[6] = kSecValueData;
   v34 = v8;
-  v13 = [v8 data];
-  v38[6] = v13;
+  data = [v8 data];
+  v38[6] = data;
   v37[7] = @"flag";
   v14 = [NSNumber numberWithUnsignedInt:self->_flags];
   v38[7] = v14;
   v37[8] = @"lwsv";
-  v36 = v6;
-  v15 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v6 entrySchemaVersion]);
+  v36 = groupsCopy;
+  v15 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [groupsCopy entrySchemaVersion]);
   v38[8] = v15;
   v16 = [NSDictionary dictionaryWithObjects:v38 forKeys:v37 count:9];
   v17 = [v16 mutableCopy];
@@ -83,64 +83,64 @@
     v20 = 40;
     v21 = &off_100334C80;
 LABEL_7:
-    v23 = [*(&self->super.isa + v20) keyprint];
-    [v17 setObject:v23 forKeyedSubscript:*v21];
+    keyprint = [*(&self->super.isa + v20) keyprint];
+    [v17 setObject:keyprint forKeyedSubscript:*v21];
 
-    v24 = [*(&self->super.isa + v20) valueprint];
-    [v17 setObject:v24 forKeyedSubscript:*v19];
+    valueprint = [*(&self->super.isa + v20) valueprint];
+    [v17 setObject:valueprint forKeyedSubscript:*v19];
   }
 
   v22 = [v17 copy];
 
   v7 = v35;
-  v6 = v36;
+  groupsCopy = v36;
 LABEL_9:
 
   return v22;
 }
 
-- (id)shareWithAccessGroups:(id)a3 error:(id *)a4
+- (id)shareWithAccessGroups:(id)groups error:(id *)error
 {
-  v6 = a3;
-  v7 = [(KCSharingMirrorEntry *)self type];
-  if ((v7 - 1) < 2)
+  groupsCopy = groups;
+  type = [(KCSharingMirrorEntry *)self type];
+  if ((type - 1) < 2)
   {
-    v18 = a4;
+    errorCopy2 = error;
     v19 = 21;
     goto LABEL_7;
   }
 
-  if (v7)
+  if (type)
   {
-    if (v7 != 3)
+    if (type != 3)
     {
 LABEL_8:
       v17 = 0;
       goto LABEL_10;
     }
 
-    v8 = [(KCSharingMirrorEntry *)self record];
-    v9 = [v8 recordID];
-    v10 = [v9 zoneID];
-    v11 = [v10 zoneName];
-    v12 = [v11 hasPrefix:@"group-"];
+    record = [(KCSharingMirrorEntry *)self record];
+    recordID = [record recordID];
+    zoneID = [recordID zoneID];
+    zoneName = [zoneID zoneName];
+    v12 = [zoneName hasPrefix:@"group-"];
 
     if (v12)
     {
-      v13 = [(KCSharingMirrorEntry *)self record];
-      v14 = [v6 recordIsFullyDecoded:v13];
+      record2 = [(KCSharingMirrorEntry *)self record];
+      v14 = [groupsCopy recordIsFullyDecoded:record2];
 
       v15 = [KCSharingEntryContents alloc];
-      v16 = [(KCSharingMirrorEntry *)self record];
-      v17 = [(KCSharingEntryContents *)v15 initWithContents:v16 fullyDecoded:v14];
+      record3 = [(KCSharingMirrorEntry *)self record];
+      v17 = [(KCSharingEntryContents *)v15 initWithContents:record3 fullyDecoded:v14];
 
       goto LABEL_10;
     }
 
-    v18 = a4;
+    errorCopy2 = error;
     v19 = 7;
 LABEL_7:
-    sub_100061E2C(v18, v19, 0);
+    sub_100061E2C(errorCopy2, v19, 0);
     goto LABEL_8;
   }
 
@@ -150,9 +150,9 @@ LABEL_10:
   return v17;
 }
 
-- (id)remoteItemWithAccessGroups:(id)a3 error:(id *)a4
+- (id)remoteItemWithAccessGroups:(id)groups error:(id *)error
 {
-  v6 = a3;
+  groupsCopy = groups;
   v7 = 0;
   type = self->_type;
   if (type <= 1)
@@ -168,28 +168,28 @@ LABEL_10:
       goto LABEL_25;
     }
 
-    v9 = [(CKRecord *)self->_record recordID];
-    v10 = [v9 zoneID];
-    v11 = sub_100031160(v10);
+    recordID = [(CKRecord *)self->_record recordID];
+    zoneID = [recordID zoneID];
+    v11 = sub_100031160(zoneID);
 
     if (v11)
     {
       v12 = [KCSharingPBRemoteItem alloc];
-      v13 = [(CKRecord *)self->_record encryptedValues];
-      v14 = [v13 objectForKeyedSubscript:@"payload"];
+      encryptedValues = [(CKRecord *)self->_record encryptedValues];
+      v14 = [encryptedValues objectForKeyedSubscript:@"payload"];
       v15 = [(KCSharingPBRemoteItem *)v12 initWithData:v14];
 
       if (v15)
       {
-        v16 = [[KCSharingRemoteItem alloc] initPasskeyWithProto:v15 sharingGroup:v11 error:a4];
+        v16 = [[KCSharingRemoteItem alloc] initPasskeyWithProto:v15 sharingGroup:v11 error:error];
 LABEL_14:
         v22 = v16;
         if (v16)
         {
-          v23 = [(KCSharingMirrorEntry *)self record];
-          if ([v6 recordIsFullyDecoded:v23])
+          record = [(KCSharingMirrorEntry *)self record];
+          if ([groupsCopy recordIsFullyDecoded:record])
           {
-            v24 = [v6 remoteItemProtoIsFullyDecoded:v15];
+            v24 = [groupsCopy remoteItemProtoIsFullyDecoded:v15];
           }
 
           else
@@ -216,25 +216,25 @@ LABEL_14:
 
   if (type == 2)
   {
-    v17 = [(CKRecord *)self->_record recordID];
-    v18 = [v17 zoneID];
-    v11 = sub_100031160(v18);
+    recordID2 = [(CKRecord *)self->_record recordID];
+    zoneID2 = [recordID2 zoneID];
+    v11 = sub_100031160(zoneID2);
 
     if (v11)
     {
       v19 = [KCSharingPBRemoteItem alloc];
-      v20 = [(CKRecord *)self->_record encryptedValues];
-      v21 = [v20 objectForKeyedSubscript:@"payload"];
+      encryptedValues2 = [(CKRecord *)self->_record encryptedValues];
+      v21 = [encryptedValues2 objectForKeyedSubscript:@"payload"];
       v15 = [(KCSharingPBRemoteItem *)v19 initWithData:v21];
 
       if (v15)
       {
-        v16 = [[KCSharingRemoteItem alloc] initPasswordWithProto:v15 sharingGroup:v11 error:a4];
+        v16 = [[KCSharingRemoteItem alloc] initPasswordWithProto:v15 sharingGroup:v11 error:error];
         goto LABEL_14;
       }
 
 LABEL_18:
-      sub_100061E2C(a4, 4, 0);
+      sub_100061E2C(error, 4, 0);
       v7 = 0;
 LABEL_23:
 
@@ -242,7 +242,7 @@ LABEL_23:
     }
 
 LABEL_17:
-    sub_100061E2C(a4, 7, 0);
+    sub_100061E2C(error, 7, 0);
     v7 = 0;
 LABEL_24:
 
@@ -251,7 +251,7 @@ LABEL_24:
 
   if (type == 3)
   {
-    sub_100061E2C(a4, 13, 0);
+    sub_100061E2C(error, 13, 0);
     v7 = 0;
   }
 
@@ -289,15 +289,15 @@ LABEL_25:
 - (NSString)description
 {
   type = self->_type;
-  v3 = [(CKRecord *)self->_record recordID];
-  v4 = [NSString stringWithFormat:@"KCSharingMirrorEntry(type:%lld recordID:%@)", type, v3];
+  recordID = [(CKRecord *)self->_record recordID];
+  v4 = [NSString stringWithFormat:@"KCSharingMirrorEntry(type:%lld recordID:%@)", type, recordID];
 
   return v4;
 }
 
-- (KCSharingMirrorEntry)initWithAttributes:(id)a3 error:(id *)a4
+- (KCSharingMirrorEntry)initWithAttributes:(id)attributes error:(id *)error
 {
-  v6 = a3;
+  attributesCopy = attributes;
   v40.receiver = self;
   v40.super_class = KCSharingMirrorEntry;
   v7 = [(KCSharingMirrorEntry *)&v40 init];
@@ -307,19 +307,19 @@ LABEL_25:
   }
 
   v8 = [KCSharingPBLocalEntryData alloc];
-  v9 = [v6 objectForKeyedSubscript:kSecValueData];
+  v9 = [attributesCopy objectForKeyedSubscript:kSecValueData];
   v10 = [(KCSharingPBLocalEntryData *)v8 initWithData:v9];
 
   if (!v10)
   {
-    sub_100061E2C(a4, 3, 0);
+    sub_100061E2C(error, 3, 0);
     goto LABEL_9;
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"type"];
+  v11 = [attributesCopy objectForKeyedSubscript:@"type"];
   v7->_type = [v11 longLongValue];
 
-  v12 = [v6 objectForKeyedSubscript:@"flag"];
+  v12 = [attributesCopy objectForKeyedSubscript:@"flag"];
   v7->_flags = [v12 unsignedIntValue];
 
   type = v7->_type;
@@ -330,8 +330,8 @@ LABEL_25:
       if (type == 1)
       {
         v14 = objc_opt_class();
-        v15 = [(KCSharingPBLocalEntryData *)v10 cloudKitRecord];
-        v16 = [NSKeyedUnarchiver unarchivedObjectOfClass:v14 fromData:v15 error:a4];
+        cloudKitRecord = [(KCSharingPBLocalEntryData *)v10 cloudKitRecord];
+        v16 = [NSKeyedUnarchiver unarchivedObjectOfClass:v14 fromData:cloudKitRecord error:error];
         record = v7->_record;
         v7->_record = v16;
 
@@ -342,8 +342,8 @@ LABEL_25:
           v20 = &off_100334C70;
 LABEL_18:
           v34 = [KCSharingLocalFingerprint alloc];
-          v35 = [v6 objectForKeyedSubscript:*v20];
-          v36 = [v6 objectForKeyedSubscript:*v18];
+          v35 = [attributesCopy objectForKeyedSubscript:*v20];
+          v36 = [attributesCopy objectForKeyedSubscript:*v18];
           v37 = [(KCSharingLocalFingerprint *)v34 initWithKeyprint:v35 valueprint:v36];
           v38 = *(&v7->super.isa + v19);
           *(&v7->super.isa + v19) = v37;
@@ -362,8 +362,8 @@ LABEL_20:
     }
 
     v26 = objc_opt_class();
-    v27 = [(KCSharingPBLocalEntryData *)v10 cloudKitRecord];
-    v28 = [NSKeyedUnarchiver unarchivedObjectOfClass:v26 fromData:v27 error:a4];
+    cloudKitRecord2 = [(KCSharingPBLocalEntryData *)v10 cloudKitRecord];
+    v28 = [NSKeyedUnarchiver unarchivedObjectOfClass:v26 fromData:cloudKitRecord2 error:error];
     v29 = v7->_record;
     v7->_record = v28;
 
@@ -384,8 +384,8 @@ LABEL_14:
     }
 
     v22 = [NSSet setWithObject:objc_opt_class()];
-    v23 = [(KCSharingPBLocalEntryData *)v10 cloudKitRecord];
-    v24 = [NSKeyedUnarchiver _strictlyUnarchivedObjectOfClasses:v22 fromData:v23 error:a4];
+    cloudKitRecord3 = [(KCSharingPBLocalEntryData *)v10 cloudKitRecord];
+    v24 = [NSKeyedUnarchiver _strictlyUnarchivedObjectOfClasses:v22 fromData:cloudKitRecord3 error:error];
     v25 = v7->_record;
     v7->_record = v24;
 
@@ -393,8 +393,8 @@ LABEL_14:
   }
 
   v30 = objc_opt_class();
-  v31 = [(KCSharingPBLocalEntryData *)v10 cloudKitRecord];
-  v32 = [NSKeyedUnarchiver unarchivedObjectOfClass:v30 fromData:v31 error:a4];
+  cloudKitRecord4 = [(KCSharingPBLocalEntryData *)v10 cloudKitRecord];
+  v32 = [NSKeyedUnarchiver unarchivedObjectOfClass:v30 fromData:cloudKitRecord4 error:error];
   v33 = v7->_record;
   v7->_record = v32;
 
@@ -414,180 +414,180 @@ LABEL_21:
   return v21;
 }
 
-- (KCSharingMirrorEntry)initWithMirrorDatabaseItem:(SecDbItem *)a3 error:(id *)a4
+- (KCSharingMirrorEntry)initWithMirrorDatabaseItem:(SecDbItem *)item error:(id *)error
 {
-  v7 = [objc_opt_class() requiredAttributeKeys];
-  v8 = sub_100017964(a3, v7, a4);
+  requiredAttributeKeys = [objc_opt_class() requiredAttributeKeys];
+  v8 = sub_100017964(item, requiredAttributeKeys, error);
 
   if (v8)
   {
-    self = [(KCSharingMirrorEntry *)self initWithAttributes:v8 error:a4];
-    v9 = self;
+    self = [(KCSharingMirrorEntry *)self initWithAttributes:v8 error:error];
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  v10 = v9;
+  v10 = selfCopy;
 
   return v10;
 }
 
-- (KCSharingMirrorEntry)initWithUpdatedLocalItem:(id)a3 forMirrorEntry:(id)a4 flags:(unsigned int)a5
+- (KCSharingMirrorEntry)initWithUpdatedLocalItem:(id)item forMirrorEntry:(id)entry flags:(unsigned int)flags
 {
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  entryCopy = entry;
   v18.receiver = self;
   v18.super_class = KCSharingMirrorEntry;
   v10 = [(KCSharingMirrorEntry *)&v18 init];
   if (v10)
   {
-    v10->_type = [v9 type];
-    v11 = [v9 record];
+    v10->_type = [entryCopy type];
+    record = [entryCopy record];
     record = v10->_record;
-    v10->_record = v11;
+    v10->_record = record;
 
-    v10->_flags = a5;
-    v13 = [v8 type];
-    if (v13 == 2)
+    v10->_flags = flags;
+    type = [itemCopy type];
+    if (type == 2)
     {
-      v14 = [v8 internetPasswordFingerprint];
+      internetPasswordFingerprint = [itemCopy internetPasswordFingerprint];
       v15 = 40;
       goto LABEL_6;
     }
 
-    if (v13 == 1)
+    if (type == 1)
     {
-      v14 = [v8 privateKeyFingerprint];
+      internetPasswordFingerprint = [itemCopy privateKeyFingerprint];
       v15 = 32;
 LABEL_6:
       v16 = *(&v10->super.isa + v15);
-      *(&v10->super.isa + v15) = v14;
+      *(&v10->super.isa + v15) = internetPasswordFingerprint;
     }
   }
 
   return v10;
 }
 
-- (KCSharingMirrorEntry)initWithSavedRecord:(id)a3 forOutgoingEntry:(id)a4 flags:(unsigned int)a5
+- (KCSharingMirrorEntry)initWithSavedRecord:(id)record forOutgoingEntry:(id)entry flags:(unsigned int)flags
 {
-  v9 = a3;
-  v10 = a4;
+  recordCopy = record;
+  entryCopy = entry;
   v17.receiver = self;
   v17.super_class = KCSharingMirrorEntry;
   v11 = [(KCSharingMirrorEntry *)&v17 init];
   if (v11)
   {
-    v11->_type = [v10 type];
-    objc_storeStrong(&v11->_record, a3);
-    v11->_flags = a5;
-    v12 = [v10 type];
-    if (v12 == 2)
+    v11->_type = [entryCopy type];
+    objc_storeStrong(&v11->_record, record);
+    v11->_flags = flags;
+    type = [entryCopy type];
+    if (type == 2)
     {
-      v13 = [v10 internetPasswordFingerprint];
+      internetPasswordFingerprint = [entryCopy internetPasswordFingerprint];
       v14 = 40;
       goto LABEL_6;
     }
 
-    if (v12 == 1)
+    if (type == 1)
     {
-      v13 = [v10 privateKeyFingerprint];
+      internetPasswordFingerprint = [entryCopy privateKeyFingerprint];
       v14 = 32;
 LABEL_6:
       v15 = *(&v11->super.isa + v14);
-      *(&v11->super.isa + v14) = v13;
+      *(&v11->super.isa + v14) = internetPasswordFingerprint;
     }
   }
 
   return v11;
 }
 
-- (KCSharingMirrorEntry)initWithMirrorEntry:(id)a3 flags:(unsigned int)a4
+- (KCSharingMirrorEntry)initWithMirrorEntry:(id)entry flags:(unsigned int)flags
 {
-  v6 = a3;
+  entryCopy = entry;
   v15.receiver = self;
   v15.super_class = KCSharingMirrorEntry;
   v7 = [(KCSharingMirrorEntry *)&v15 init];
   if (v7)
   {
-    v7->_type = [v6 type];
-    v8 = [v6 record];
+    v7->_type = [entryCopy type];
+    record = [entryCopy record];
     record = v7->_record;
-    v7->_record = v8;
+    v7->_record = record;
 
-    v7->_flags = a4;
-    v10 = [v6 type];
-    if (v10 == 2)
+    v7->_flags = flags;
+    type = [entryCopy type];
+    if (type == 2)
     {
-      v11 = [v6 internetPasswordFingerprint];
+      internetPasswordFingerprint = [entryCopy internetPasswordFingerprint];
       v12 = 40;
       goto LABEL_6;
     }
 
-    if (v10 == 1)
+    if (type == 1)
     {
-      v11 = [v6 privateKeyFingerprint];
+      internetPasswordFingerprint = [entryCopy privateKeyFingerprint];
       v12 = 32;
 LABEL_6:
       v13 = *(&v7->super.isa + v12);
-      *(&v7->super.isa + v12) = v11;
+      *(&v7->super.isa + v12) = internetPasswordFingerprint;
     }
   }
 
   return v7;
 }
 
-- (KCSharingMirrorEntry)initWithIncomingEntry:(id)a3 flags:(unsigned int)a4
+- (KCSharingMirrorEntry)initWithIncomingEntry:(id)entry flags:(unsigned int)flags
 {
-  v6 = a3;
+  entryCopy = entry;
   v11.receiver = self;
   v11.super_class = KCSharingMirrorEntry;
   v7 = [(KCSharingMirrorEntry *)&v11 init];
   if (v7)
   {
-    v7->_type = [v6 type];
-    v8 = [v6 record];
+    v7->_type = [entryCopy type];
+    record = [entryCopy record];
     record = v7->_record;
-    v7->_record = v8;
+    v7->_record = record;
 
-    v7->_flags = a4;
+    v7->_flags = flags;
   }
 
   return v7;
 }
 
-- (KCSharingMirrorEntry)initWithUpdatedLocalItem:(id)a3 forIncomingEntry:(id)a4 flags:(unsigned int)a5
+- (KCSharingMirrorEntry)initWithUpdatedLocalItem:(id)item forIncomingEntry:(id)entry flags:(unsigned int)flags
 {
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  entryCopy = entry;
   v18.receiver = self;
   v18.super_class = KCSharingMirrorEntry;
   v10 = [(KCSharingMirrorEntry *)&v18 init];
   if (v10)
   {
-    v10->_type = [v9 type];
-    v11 = [v9 record];
+    v10->_type = [entryCopy type];
+    record = [entryCopy record];
     record = v10->_record;
-    v10->_record = v11;
+    v10->_record = record;
 
-    v10->_flags = a5;
-    v13 = [v8 type];
-    if (v13 == 2)
+    v10->_flags = flags;
+    type = [itemCopy type];
+    if (type == 2)
     {
-      v14 = [v8 internetPasswordFingerprint];
+      internetPasswordFingerprint = [itemCopy internetPasswordFingerprint];
       v15 = 40;
       goto LABEL_6;
     }
 
-    if (v13 == 1)
+    if (type == 1)
     {
-      v14 = [v8 privateKeyFingerprint];
+      internetPasswordFingerprint = [itemCopy privateKeyFingerprint];
       v15 = 32;
 LABEL_6:
       v16 = *(&v10->super.isa + v15);
-      *(&v10->super.isa + v15) = v14;
+      *(&v10->super.isa + v15) = internetPasswordFingerprint;
     }
   }
 

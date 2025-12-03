@@ -1,38 +1,38 @@
 @interface _REMNSPersistentHistoryTrackingAbstract
-- (id)_accountIDForPersistenceStoreID:(id)a3;
-- (id)_accountIdentifierForPersistenceStoreID:(id)a3;
-- (id)_changeTokenFromCDTrackingState:(id)a3 error:(id *)a4;
-- (id)_currentREMChangeTokenFromNSPersistentStores:(id)a3 persistentStoreCoordinator:(id)a4;
-- (id)_errorChangeSetWithError:(id)a3;
-- (id)_executeDeleteHistoryRequest:(id)a3;
-- (id)_fetchCDAuxiliaryChangeInfosWithObjectID:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5;
-- (id)_fetchCDTrackingStateWithClientID:(id)a3 andPerformBlock:(id)a4;
-- (id)_fetchRequestWithPredicateUsingEntityNames:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-- (id)_persistenceStoreForAccountID:(id)a3;
-- (id)_persistenceStoreIDForAccountID:(id)a3;
-- (id)_persistenceStoreIDsForAccountTypes:(int64_t)a3;
-- (id)_persistenceStoresForAccountTypes:(id)a3;
-- (id)_resultChangeSetByExecutingRequest:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
+- (id)_accountIDForPersistenceStoreID:(id)d;
+- (id)_accountIdentifierForPersistenceStoreID:(id)d;
+- (id)_changeTokenFromCDTrackingState:(id)state error:(id *)error;
+- (id)_currentREMChangeTokenFromNSPersistentStores:(id)stores persistentStoreCoordinator:(id)coordinator;
+- (id)_errorChangeSetWithError:(id)error;
+- (id)_executeDeleteHistoryRequest:(id)request;
+- (id)_fetchCDAuxiliaryChangeInfosWithObjectID:(id)d inManagedObjectContext:(id)context error:(id *)error;
+- (id)_fetchCDTrackingStateWithClientID:(id)d andPerformBlock:(id)block;
+- (id)_fetchRequestWithPredicateUsingEntityNames:(id)names managedObjectContext:(id)context error:(id *)error;
+- (id)_persistenceStoreForAccountID:(id)d;
+- (id)_persistenceStoreIDForAccountID:(id)d;
+- (id)_persistenceStoreIDsForAccountTypes:(int64_t)types;
+- (id)_persistenceStoresForAccountTypes:(id)types;
+- (id)_resultChangeSetByExecutingRequest:(id)request managedObjectContext:(id)context error:(id *)error;
 - (id)currentChangeToken;
-- (id)currentChangeTokenForAccountID:(id)a3;
-- (id)currentChangeTokenForAccountTypes:(int64_t)a3;
-- (id)earliestChangeTokenForAccountID:(id)a3;
-- (void)_resolveObjectIDsInChanges:(id)a3 deletedObjectsIDMap:(id)a4 inManagedObjectContext:(id)a5;
-- (void)deleteHistoryBeforeDate:(id)a3 completionHandler:(id)a4;
-- (void)deleteHistoryBeforeToken:(id)a3 completionHandler:(id)a4;
-- (void)fetchAuxiliaryChangeInfos:(id)a3 completionHandler:(id)a4;
-- (void)fetchHistoryAfterDate:(id)a3 entityNames:(id)a4 transactionFetchLimit:(unint64_t)a5 completionHandler:(id)a6;
-- (void)fetchHistoryAfterToken:(id)a3 entityNames:(id)a4 transactionFetchLimit:(unint64_t)a5 completionHandler:(id)a6;
-- (void)getTrackingStateWithClientID:(id)a3 completionHandler:(id)a4;
-- (void)saveTrackingState:(id)a3 withClientID:(id)a4 completionHandler:(id)a5;
-- (void)withManagedObjectContext:(id)a3;
+- (id)currentChangeTokenForAccountID:(id)d;
+- (id)currentChangeTokenForAccountTypes:(int64_t)types;
+- (id)earliestChangeTokenForAccountID:(id)d;
+- (void)_resolveObjectIDsInChanges:(id)changes deletedObjectsIDMap:(id)map inManagedObjectContext:(id)context;
+- (void)deleteHistoryBeforeDate:(id)date completionHandler:(id)handler;
+- (void)deleteHistoryBeforeToken:(id)token completionHandler:(id)handler;
+- (void)fetchAuxiliaryChangeInfos:(id)infos completionHandler:(id)handler;
+- (void)fetchHistoryAfterDate:(id)date entityNames:(id)names transactionFetchLimit:(unint64_t)limit completionHandler:(id)handler;
+- (void)fetchHistoryAfterToken:(id)token entityNames:(id)names transactionFetchLimit:(unint64_t)limit completionHandler:(id)handler;
+- (void)getTrackingStateWithClientID:(id)d completionHandler:(id)handler;
+- (void)saveTrackingState:(id)state withClientID:(id)d completionHandler:(id)handler;
+- (void)withManagedObjectContext:(id)context;
 @end
 
 @implementation _REMNSPersistentHistoryTrackingAbstract
 
-- (void)withManagedObjectContext:(id)a3
+- (void)withManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = NSStringFromSelector(a2);
   v6 = [NSString stringWithFormat:@"You must override %@ in a subclass", v5];
   v7 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v6 userInfo:0];
@@ -62,7 +62,7 @@
   return v2;
 }
 
-- (id)currentChangeTokenForAccountTypes:(int64_t)a3
+- (id)currentChangeTokenForAccountTypes:(int64_t)types
 {
   v6 = 0;
   v7 = &v6;
@@ -75,7 +75,7 @@
   v5[2] = sub_1000B9930;
   v5[3] = &unk_1008DBC30;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = types;
   v5[4] = self;
   [(_REMNSPersistentHistoryTrackingAbstract *)self withManagedObjectContext:v5];
   v3 = v7[5];
@@ -84,7 +84,7 @@
   return v3;
 }
 
-- (id)currentChangeTokenForAccountID:(id)a3
+- (id)currentChangeTokenForAccountID:(id)d
 {
   v10 = 0;
   v11 = &v10;
@@ -96,11 +96,11 @@
   v6[1] = 3221225472;
   v6[2] = sub_1000B9C14;
   v6[3] = &unk_1008DBC58;
-  v7 = self;
-  v3 = a3;
-  v8 = v3;
+  selfCopy = self;
+  dCopy = d;
+  v8 = dCopy;
   v9 = &v10;
-  [(_REMNSPersistentHistoryTrackingAbstract *)v7 withManagedObjectContext:v6];
+  [(_REMNSPersistentHistoryTrackingAbstract *)selfCopy withManagedObjectContext:v6];
   v4 = v11[5];
 
   _Block_object_dispose(&v10, 8);
@@ -108,7 +108,7 @@
   return v4;
 }
 
-- (id)earliestChangeTokenForAccountID:(id)a3
+- (id)earliestChangeTokenForAccountID:(id)d
 {
   v10 = 0;
   v11 = &v10;
@@ -120,11 +120,11 @@
   v6[1] = 3221225472;
   v6[2] = sub_1000B9E5C;
   v6[3] = &unk_1008DBC58;
-  v7 = self;
-  v3 = a3;
-  v8 = v3;
+  selfCopy = self;
+  dCopy = d;
+  v8 = dCopy;
   v9 = &v10;
-  [(_REMNSPersistentHistoryTrackingAbstract *)v7 withManagedObjectContext:v6];
+  [(_REMNSPersistentHistoryTrackingAbstract *)selfCopy withManagedObjectContext:v6];
   v4 = v11[5];
 
   _Block_object_dispose(&v10, 8);
@@ -132,10 +132,10 @@
   return v4;
 }
 
-- (void)getTrackingStateWithClientID:(id)a3 completionHandler:(id)a4
+- (void)getTrackingStateWithClientID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   objc_opt_class();
   v8 = REMCheckedDynamicCast();
   v9 = +[REMLog changeTracking];
@@ -157,16 +157,16 @@
   v11[4] = self;
   v11[5] = &v12;
   v10 = [(_REMNSPersistentHistoryTrackingAbstract *)self _fetchCDTrackingStateWithClientID:v8 andPerformBlock:v11];
-  v7[2](v7, v13[5], v10);
+  handlerCopy[2](handlerCopy, v13[5], v10);
 
   _Block_object_dispose(&v12, 8);
 }
 
-- (void)saveTrackingState:(id)a3 withClientID:(id)a4 completionHandler:(id)a5
+- (void)saveTrackingState:(id)state withClientID:(id)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  dCopy = d;
+  handlerCopy = handler;
   objc_opt_class();
   v11 = REMCheckedDynamicCast();
   v12 = +[REMLog changeTracking];
@@ -175,15 +175,15 @@
     sub_100769D88();
   }
 
-  v13 = [v8 lastConsumedChangeToken];
+  lastConsumedChangeToken = [stateCopy lastConsumedChangeToken];
   v25 = 0;
-  v14 = [NSKeyedArchiver archivedDataWithRootObject:v13 requiringSecureCoding:1 error:&v25];
+  v14 = [NSKeyedArchiver archivedDataWithRootObject:lastConsumedChangeToken requiringSecureCoding:1 error:&v25];
   v15 = v25;
 
   if (v14)
   {
-    v16 = [v11 accountIdentifier];
-    v17 = [(_REMNSPersistentHistoryTrackingAbstract *)self _persistenceStoreForAccountID:v16];
+    accountIdentifier = [v11 accountIdentifier];
+    v17 = [(_REMNSPersistentHistoryTrackingAbstract *)self _persistenceStoreForAccountID:accountIdentifier];
 
     if (v17)
     {
@@ -220,24 +220,24 @@
     v18 = [NSError errorWithREMChangeErrorCode:9 underlyingError:v15];
   }
 
-  v10[2](v10, v18);
+  handlerCopy[2](handlerCopy, v18);
 }
 
-- (void)fetchHistoryAfterDate:(id)a3 entityNames:(id)a4 transactionFetchLimit:(unint64_t)a5 completionHandler:(id)a6
+- (void)fetchHistoryAfterDate:(id)date entityNames:(id)names transactionFetchLimit:(unint64_t)limit completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (a5 && [v11 count])
+  dateCopy = date;
+  namesCopy = names;
+  handlerCopy = handler;
+  if (limit && [namesCopy count])
   {
     sub_100769FA4();
   }
 
-  v13 = [NSPersistentHistoryChangeRequest fetchHistoryAfterDate:v10];
+  v13 = [NSPersistentHistoryChangeRequest fetchHistoryAfterDate:dateCopy];
   v14 = v13;
-  if (a5)
+  if (limit)
   {
-    [v13 setFetchLimit:a5];
+    [v13 setFetchLimit:limit];
   }
 
   v28 = 0;
@@ -257,30 +257,30 @@
   v17[2] = sub_1000BA994;
   v17[3] = &unk_1008DBCD0;
   v17[4] = self;
-  v15 = v11;
+  v15 = namesCopy;
   v18 = v15;
   v20 = &v22;
   v16 = v14;
   v19 = v16;
   v21 = &v28;
   [(_REMNSPersistentHistoryTrackingAbstract *)self withManagedObjectContext:v17];
-  v12[2](v12, v29[5], v23[5]);
+  handlerCopy[2](handlerCopy, v29[5], v23[5]);
 
   _Block_object_dispose(&v22, 8);
   _Block_object_dispose(&v28, 8);
 }
 
-- (void)fetchHistoryAfterToken:(id)a3 entityNames:(id)a4 transactionFetchLimit:(unint64_t)a5 completionHandler:(id)a6
+- (void)fetchHistoryAfterToken:(id)token entityNames:(id)names transactionFetchLimit:(unint64_t)limit completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (a5 && [v11 count])
+  tokenCopy = token;
+  namesCopy = names;
+  handlerCopy = handler;
+  if (limit && [namesCopy count])
   {
     sub_100769FA4();
   }
 
-  v13 = v10;
+  v13 = tokenCopy;
   objc_opt_class();
   v14 = REMSpecificCast();
 
@@ -298,12 +298,12 @@
   {
     if (v15)
     {
-      v20 = [v16 token];
+      token = [v16 token];
     }
 
     else
     {
-      v20 = 0;
+      token = 0;
     }
 
     v34 = 0;
@@ -322,15 +322,15 @@
     v21[1] = 3221225472;
     v21[2] = sub_1000BAD48;
     v21[3] = &unk_1008DBCF8;
-    v18 = v20;
+    v18 = token;
     v22 = v18;
-    v23 = self;
-    v24 = v11;
+    selfCopy = self;
+    v24 = namesCopy;
     v25 = &v28;
     v26 = &v34;
-    v27 = a5;
+    limitCopy = limit;
     [(_REMNSPersistentHistoryTrackingAbstract *)self withManagedObjectContext:v21];
-    v12[2](v12, v35[5], v29[5]);
+    handlerCopy[2](handlerCopy, v35[5], v29[5]);
 
     _Block_object_dispose(&v28, 8);
     _Block_object_dispose(&v34, 8);
@@ -340,23 +340,23 @@
   {
     v18 = [NSError errorWithREMChangeErrorCode:0];
     v19 = [(_REMNSPersistentHistoryTrackingAbstract *)self _errorChangeSetWithError:v18];
-    v12[2](v12, v19, v18);
+    handlerCopy[2](handlerCopy, v19, v18);
   }
 }
 
-- (id)_fetchRequestWithPredicateUsingEntityNames:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
+- (id)_fetchRequestWithPredicateUsingEntityNames:(id)names managedObjectContext:(id)context error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count])
+  namesCopy = names;
+  contextCopy = context;
+  if ([namesCopy count])
   {
-    v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
+    v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [namesCopy count]);
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v26 = v7;
-    v10 = v7;
+    v26 = namesCopy;
+    v10 = namesCopy;
     v11 = [v10 countByEnumeratingWithState:&v28 objects:v34 count:16];
     v27 = v9;
     if (v11)
@@ -373,7 +373,7 @@
           }
 
           v15 = *(*(&v28 + 1) + 8 * i);
-          v16 = [NSEntityDescription entityForName:v15 inManagedObjectContext:v8];
+          v16 = [NSEntityDescription entityForName:v15 inManagedObjectContext:contextCopy];
           if (v16)
           {
             [v9 addObject:v16];
@@ -390,9 +390,9 @@
             }
 
             v18 = [REMError invalidParameterErrorWithDescription:@"Failed to find entity name in -fetchHistoryAfterToken:entityName."];
-            if (a5)
+            if (error)
             {
-              *a5 = [NSError errorWithREMChangeErrorCode:1 underlyingError:v18];
+              *error = [NSError errorWithREMChangeErrorCode:1 underlyingError:v18];
             }
 
             v9 = v27;
@@ -407,14 +407,14 @@
 
     if ([v9 count])
     {
-      v19 = [NSPersistentHistoryChange entityDescriptionWithContext:v8];
-      v20 = [v19 propertiesByName];
-      v21 = [v20 valueForKey:@"changedEntity"];
+      v19 = [NSPersistentHistoryChange entityDescriptionWithContext:contextCopy];
+      propertiesByName = [v19 propertiesByName];
+      v21 = [propertiesByName valueForKey:@"changedEntity"];
 
       v22 = objc_alloc_init(NSFetchRequest);
       [v22 setEntity:v19];
-      v23 = [v21 name];
-      v24 = [NSPredicate predicateWithFormat:@"%K IN %@", v23, v27];
+      name = [v21 name];
+      v24 = [NSPredicate predicateWithFormat:@"%K IN %@", name, v27];
       [v22 setPredicate:v24];
 
       v9 = v27;
@@ -425,7 +425,7 @@
       v22 = 0;
     }
 
-    v7 = v26;
+    namesCopy = v26;
   }
 
   else
@@ -436,19 +436,19 @@
   return v22;
 }
 
-- (void)deleteHistoryBeforeDate:(id)a3 completionHandler:(id)a4
+- (void)deleteHistoryBeforeDate:(id)date completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = [NSPersistentHistoryChangeRequest deleteHistoryBeforeDate:a3];
+  handlerCopy = handler;
+  v8 = [NSPersistentHistoryChangeRequest deleteHistoryBeforeDate:date];
   v7 = [(_REMNSPersistentHistoryTrackingAbstract *)self _executeDeleteHistoryRequest:v8];
-  v6[2](v6, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
-- (void)deleteHistoryBeforeToken:(id)a3 completionHandler:(id)a4
+- (void)deleteHistoryBeforeToken:(id)token completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v15 = v6;
+  tokenCopy = token;
+  handlerCopy = handler;
+  v15 = tokenCopy;
   objc_opt_class();
   v8 = REMSpecificCast();
 
@@ -466,30 +466,30 @@
   {
     if (v9)
     {
-      v12 = [v10 token];
+      token = [v10 token];
     }
 
     else
     {
-      v12 = 0;
+      token = 0;
     }
 
-    v13 = [NSPersistentHistoryChangeRequest deleteHistoryBeforeToken:v12];
+    v13 = [NSPersistentHistoryChangeRequest deleteHistoryBeforeToken:token];
     v14 = [(_REMNSPersistentHistoryTrackingAbstract *)self _executeDeleteHistoryRequest:v13];
-    v7[2](v7, v14);
+    handlerCopy[2](handlerCopy, v14);
   }
 
   else
   {
-    v12 = [NSError errorWithREMChangeErrorCode:0];
-    v7[2](v7, v12);
+    token = [NSError errorWithREMChangeErrorCode:0];
+    handlerCopy[2](handlerCopy, token);
   }
 }
 
-- (void)fetchAuxiliaryChangeInfos:(id)a3 completionHandler:(id)a4
+- (void)fetchAuxiliaryChangeInfos:(id)infos completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  infosCopy = infos;
+  handlerCopy = handler;
   v8 = +[NSMutableDictionary dictionary];
   v16 = 0;
   v17 = &v16;
@@ -501,21 +501,21 @@
   v11[1] = 3221225472;
   v11[2] = sub_1000BB52C;
   v11[3] = &unk_1008DBD20;
-  v9 = v6;
+  v9 = infosCopy;
   v12 = v9;
-  v13 = self;
+  selfCopy = self;
   v15 = &v16;
   v10 = v8;
   v14 = v10;
   [(_REMNSPersistentHistoryTrackingAbstract *)self withManagedObjectContext:v11];
-  v7[2](v7, v10, v17[5]);
+  handlerCopy[2](handlerCopy, v10, v17[5]);
 
   _Block_object_dispose(&v16, 8);
 }
 
-- (id)_persistenceStoreForAccountID:(id)a3
+- (id)_persistenceStoreForAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = NSStringFromSelector(a2);
   v6 = [NSString stringWithFormat:@"You must override %@ in a subclass", v5];
   v7 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v6 userInfo:0];
@@ -524,9 +524,9 @@
   objc_exception_throw(v7);
 }
 
-- (id)_persistenceStoresForAccountTypes:(id)a3
+- (id)_persistenceStoresForAccountTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v5 = NSStringFromSelector(a2);
   v6 = [NSString stringWithFormat:@"You must override %@ in a subclass", v5];
   v7 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v6 userInfo:0];
@@ -535,9 +535,9 @@
   objc_exception_throw(v7);
 }
 
-- (id)_accountIdentifierForPersistenceStoreID:(id)a3
+- (id)_accountIdentifierForPersistenceStoreID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = NSStringFromSelector(a2);
   v6 = [NSString stringWithFormat:@"You must override %@ in a subclass", v5];
   v7 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v6 userInfo:0];
@@ -546,17 +546,17 @@
   objc_exception_throw(v7);
 }
 
-- (id)_persistenceStoreIDForAccountID:(id)a3
+- (id)_persistenceStoreIDForAccountID:(id)d
 {
-  v3 = [(_REMNSPersistentHistoryTrackingAbstract *)self _persistenceStoreForAccountID:a3];
-  v4 = [v3 identifier];
+  v3 = [(_REMNSPersistentHistoryTrackingAbstract *)self _persistenceStoreForAccountID:d];
+  identifier = [v3 identifier];
 
-  return v4;
+  return identifier;
 }
 
-- (id)_persistenceStoreIDsForAccountTypes:(int64_t)a3
+- (id)_persistenceStoreIDsForAccountTypes:(int64_t)types
 {
-  v4 = [REMAccount _accountTypeMaskWithBitMask:a3];
+  v4 = [REMAccount _accountTypeMaskWithBitMask:types];
   v5 = +[NSMutableArray array];
   v6 = [(_REMNSPersistentHistoryTrackingAbstract *)self _persistenceStoresForAccountTypes:v4];
   v13 = 0u;
@@ -577,8 +577,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) identifier];
-        [v5 addObject:v11];
+        identifier = [*(*(&v13 + 1) + 8 * i) identifier];
+        [v5 addObject:identifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -590,35 +590,35 @@
   return v5;
 }
 
-- (id)_accountIDForPersistenceStoreID:(id)a3
+- (id)_accountIDForPersistenceStoreID:(id)d
 {
-  v4 = a3;
-  v5 = [(_REMNSPersistentHistoryTrackingAbstract *)self cachedAccountIDsByStoreIDsMap];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  cachedAccountIDsByStoreIDsMap = [(_REMNSPersistentHistoryTrackingAbstract *)self cachedAccountIDsByStoreIDsMap];
+  v6 = [cachedAccountIDsByStoreIDsMap objectForKey:dCopy];
 
   if (!v6)
   {
-    v7 = [(_REMNSPersistentHistoryTrackingAbstract *)self _accountIdentifierForPersistenceStoreID:v4];
+    v7 = [(_REMNSPersistentHistoryTrackingAbstract *)self _accountIdentifierForPersistenceStoreID:dCopy];
     v8 = [[NSUUID alloc] initWithUUIDString:v7];
     v9 = v8;
     if (v7 && v8)
     {
       v6 = [REMAccount objectIDWithUUID:v8];
-      v10 = [(_REMNSPersistentHistoryTrackingAbstract *)self cachedAccountIDsByStoreIDsMap];
-      [v10 setObject:v6 forKey:v4];
+      cachedAccountIDsByStoreIDsMap2 = [(_REMNSPersistentHistoryTrackingAbstract *)self cachedAccountIDsByStoreIDsMap];
+      [cachedAccountIDsByStoreIDsMap2 setObject:v6 forKey:dCopy];
     }
   }
 
   return v6;
 }
 
-- (id)_currentREMChangeTokenFromNSPersistentStores:(id)a3 persistentStoreCoordinator:(id)a4
+- (id)_currentREMChangeTokenFromNSPersistentStores:(id)stores persistentStoreCoordinator:(id)coordinator
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  storesCopy = stores;
+  coordinatorCopy = coordinator;
+  if ([storesCopy count])
   {
-    v7 = [v6 currentPersistentHistoryTokenFromStores:v5];
+    v7 = [coordinatorCopy currentPersistentHistoryTokenFromStores:storesCopy];
     v8 = [[REMNSPersistentHistoryToken alloc] initWithPersistentHistoryToken:v7];
   }
 
@@ -630,9 +630,9 @@
   return v8;
 }
 
-- (id)_errorChangeSetWithError:(id)a3
+- (id)_errorChangeSetWithError:(id)error
 {
-  if (a3)
+  if (error)
   {
     v3 = [REMChangeSet errorChangeSetWithError:?];
   }
@@ -646,24 +646,24 @@
   return v3;
 }
 
-- (id)_resultChangeSetByExecutingRequest:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
+- (id)_resultChangeSetByExecutingRequest:(id)request managedObjectContext:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  contextCopy = context;
   v65 = objc_autoreleasePoolPush();
   v10 = +[REMLog changeTracking];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 transactionAuthor];
+    transactionAuthor = [contextCopy transactionAuthor];
     *buf = 138543362;
-    v80 = v11;
+    v80 = transactionAuthor;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "REMNSPersistentHistoryTracking resultChangeSet: Will fetch transactions {author: %{public}@}", buf, 0xCu);
   }
 
   v12 = +[NSDate now];
-  [v8 setResultType:5];
+  [requestCopy setResultType:5];
   v75 = 0;
-  v13 = [v9 executeRequest:v8 error:&v75];
+  v13 = [contextCopy executeRequest:requestCopy error:&v75];
   v14 = v75;
   if (v14)
   {
@@ -671,11 +671,11 @@
     v16 = +[REMLog changeTracking];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v57 = [v9 transactionAuthor];
+      transactionAuthor2 = [contextCopy transactionAuthor];
       v58 = +[NSDate now];
       [v58 timeIntervalSinceDate:v12];
       *buf = 138543874;
-      v80 = v57;
+      v80 = transactionAuthor2;
       v81 = 2048;
       v82 = v59 * 1000.0;
       v83 = 2112;
@@ -707,19 +707,19 @@
     }
 
     objc_opt_class();
-    v19 = [v13 result];
+    result = [v13 result];
     v15 = REMDynamicCast();
 
     v20 = +[REMLog changeTracking];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v9 transactionAuthor];
+      transactionAuthor3 = [contextCopy transactionAuthor];
       v22 = +[NSDate now];
       [v22 timeIntervalSinceDate:v12];
       v24 = v23 * 1000.0;
       v25 = [v15 count];
       *buf = 138543874;
-      v80 = v21;
+      v80 = transactionAuthor3;
       v81 = 2048;
       v82 = v24;
       v83 = 2048;
@@ -733,9 +733,9 @@
     {
       v61 = v13;
       v62 = v12;
-      v67 = v9;
-      v63 = v8;
-      v64 = a5;
+      v67 = contextCopy;
+      v63 = requestCopy;
+      errorCopy = error;
       v68 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v15 count]);
       v66 = +[NSMutableDictionary dictionary];
       v71 = 0u;
@@ -768,18 +768,18 @@
             v35 = v34;
             if (v34)
             {
-              v36 = [v34 storeID];
-              if (v36)
+              storeID = [v34 storeID];
+              if (storeID)
               {
                 v37 = v28;
                 v38 = v29;
-                v39 = [(_REMNSPersistentHistoryTrackingAbstract *)self _accountIDForPersistenceStoreID:v36];
-                v40 = self;
+                v39 = [(_REMNSPersistentHistoryTrackingAbstract *)self _accountIDForPersistenceStoreID:storeID];
+                selfCopy = self;
                 if (v39)
                 {
                   [v35 _resolveAccountID:v39];
-                  v41 = [v35 changes];
-                  [(_REMNSPersistentHistoryTrackingAbstract *)v40 _resolveObjectIDsInChanges:v41 deletedObjectsIDMap:v66 inManagedObjectContext:v67];
+                  changes = [v35 changes];
+                  [(_REMNSPersistentHistoryTrackingAbstract *)selfCopy _resolveObjectIDsInChanges:changes deletedObjectsIDMap:v66 inManagedObjectContext:v67];
 
                   [v68 addObject:v35];
                 }
@@ -793,7 +793,7 @@
                   }
                 }
 
-                self = v40;
+                self = selfCopy;
                 v29 = v38;
                 v28 = v37;
                 v27 = v69;
@@ -821,23 +821,23 @@
       }
 
       v43 = [REMChangeSet alloc];
-      v44 = [v68 reverseObjectEnumerator];
-      v45 = [v44 allObjects];
-      v46 = [v43 initWithChangeTransactions:v45];
+      reverseObjectEnumerator = [v68 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
+      v46 = [v43 initWithChangeTransactions:allObjects];
 
       v47 = +[REMLog changeTracking];
-      v9 = v67;
+      contextCopy = v67;
       v12 = v62;
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
       {
-        v48 = [v67 transactionAuthor];
+        transactionAuthor4 = [v67 transactionAuthor];
         v49 = +[NSDate now];
         [v49 timeIntervalSinceDate:v62];
         v51 = v50 * 1000.0;
-        v52 = [v46 transactions];
-        v53 = [v52 count];
+        transactions = [v46 transactions];
+        v53 = [transactions count];
         *buf = 138543874;
-        v80 = v48;
+        v80 = transactionAuthor4;
         v81 = 2048;
         v82 = v51;
         v83 = 2048;
@@ -846,8 +846,8 @@
       }
 
       v54 = 0;
-      v8 = v63;
-      a5 = v64;
+      requestCopy = v63;
+      error = errorCopy;
       v18 = v65;
       v15 = v60;
       v13 = v61;
@@ -866,31 +866,31 @@
     v46 = [(_REMNSPersistentHistoryTrackingAbstract *)self _errorChangeSetWithError:v54];
   }
 
-  if (a5)
+  if (error)
   {
     v55 = v54;
-    *a5 = v54;
+    *error = v54;
   }
 
   return v46;
 }
 
-- (void)_resolveObjectIDsInChanges:(id)a3 deletedObjectsIDMap:(id)a4 inManagedObjectContext:(id)a5
+- (void)_resolveObjectIDsInChanges:(id)changes deletedObjectsIDMap:(id)map inManagedObjectContext:(id)context
 {
-  v7 = a3;
-  v33 = a4;
-  v8 = a5;
+  changesCopy = changes;
+  mapCopy = map;
+  contextCopy = context;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v31 = v7;
-  obj = [v7 reverseObjectEnumerator];
+  v31 = changesCopy;
+  obj = [changesCopy reverseObjectEnumerator];
   v37 = [obj countByEnumeratingWithState:&v39 objects:v49 count:16];
   if (v37)
   {
     v36 = *v40;
-    v32 = v8;
+    v32 = contextCopy;
     do
     {
       for (i = 0; i != v37; i = i + 1)
@@ -904,14 +904,14 @@
         v11 = objc_autoreleasePoolPush();
         objc_opt_class();
         v12 = REMCheckedDynamicCast();
-        v13 = [v12 changedManagedObjectID];
-        v14 = [v13 entity];
-        v15 = [v14 name];
+        changedManagedObjectID = [v12 changedManagedObjectID];
+        entity = [changedManagedObjectID entity];
+        name = [entity name];
 
-        if (v15)
+        if (name)
         {
           v38 = 0;
-          v16 = [v8 existingObjectWithID:v13 error:&v38];
+          v16 = [contextCopy existingObjectWithID:changedManagedObjectID error:&v38];
           v17 = v38;
           if (v16)
           {
@@ -919,31 +919,31 @@
             if (objc_opt_respondsToSelector() & 1) != 0 && (v34 = v11, v18 = [objc_opt_class() methodForSelector:"conformsToREMChangeTrackingIdentifiable"], v19 = objc_opt_class(), (v18(v19, "conformsToREMChangeTrackingIdentifiable")))
             {
               v20 = v16;
-              v21 = [v20 remChangedObjectID];
-              v22 = v21;
-              if (v21)
+              remChangedObjectID = [v20 remChangedObjectID];
+              v22 = remChangedObjectID;
+              if (remChangedObjectID)
               {
-                v23 = [v21 uuid];
-                v24 = [v22 entityName];
-                [v12 resolveObjectIDWithUUID:v23 entityName:v24];
+                uuid = [remChangedObjectID uuid];
+                entityName = [v22 entityName];
+                [v12 resolveObjectIDWithUUID:uuid entityName:entityName];
               }
 
               else
               {
-                v23 = +[REMLog changeTracking];
-                if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+                uuid = +[REMLog changeTracking];
+                if (os_log_type_enabled(uuid, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138543874;
-                  v44 = v13;
+                  v44 = changedManagedObjectID;
                   v45 = 2112;
                   v46 = v12;
                   v47 = 2112;
                   v48 = v20;
-                  _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Changed object has nil remChangedObjectID {mID: %{public}@, change: %@, managedObject: %@}", buf, 0x20u);
+                  _os_log_error_impl(&_mh_execute_header, uuid, OS_LOG_TYPE_ERROR, "Changed object has nil remChangedObjectID {mID: %{public}@, change: %@, managedObject: %@}", buf, 0x20u);
                 }
               }
 
-              v8 = v32;
+              contextCopy = v32;
               v11 = v34;
             }
 
@@ -953,41 +953,41 @@
               if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
               {
                 *buf = 138543618;
-                v44 = v13;
+                v44 = changedManagedObjectID;
                 v45 = 2112;
                 v46 = v12;
                 _os_log_fault_impl(&_mh_execute_header, v20, OS_LOG_TYPE_FAULT, "Changed object does not conform to REMChangeTrackingIdentifiable, skip resolving objectID {mID: %{public}@, change: %@}", buf, 0x16u);
               }
             }
 
-            [v8 refreshObject:v16 mergeChanges:0];
+            [contextCopy refreshObject:v16 mergeChanges:0];
             goto LABEL_32;
           }
 
-          v25 = [v12 tombstone];
-          v26 = [v25 objectIdentifier];
+          tombstone = [v12 tombstone];
+          objectIdentifier = [tombstone objectIdentifier];
 
-          if (v26)
+          if (objectIdentifier)
           {
-            v27 = [v26 UUIDString];
-            [v33 setObject:v27 forKey:v13];
+            uUIDString = [objectIdentifier UUIDString];
+            [mapCopy setObject:uUIDString forKey:changedManagedObjectID];
 
             goto LABEL_18;
           }
 
-          v28 = [v33 objectForKeyedSubscript:v13];
+          v28 = [mapCopy objectForKeyedSubscript:changedManagedObjectID];
           if (v28)
           {
             v29 = v28;
-            v26 = [[NSUUID alloc] initWithUUIDString:v28];
+            objectIdentifier = [[NSUUID alloc] initWithUUIDString:v28];
 
-            if (!v26)
+            if (!objectIdentifier)
             {
               goto LABEL_29;
             }
 
 LABEL_18:
-            [v12 resolveObjectIDWithUUID:v26 entityName:v15];
+            [v12 resolveObjectIDWithUUID:objectIdentifier entityName:name];
           }
 
           else
@@ -996,19 +996,19 @@ LABEL_18:
             if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              v44 = v13;
+              v44 = changedManagedObjectID;
               _os_log_error_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "We may have found a race condition where object got deleted in context before we could fetch a deletion change history! {mID: %@}", buf, 0xCu);
             }
 
 LABEL_29:
-            v26 = +[REMLog changeTracking];
-            if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+            objectIdentifier = +[REMLog changeTracking];
+            if (os_log_type_enabled(objectIdentifier, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412546;
-              v44 = v13;
+              v44 = changedManagedObjectID;
               v45 = 2112;
               v46 = v12;
-              _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Could not find the REMChangedObjectIdentifying ID of the managed object previously deleted in the same change set {mID: %@, change: %@}", buf, 0x16u);
+              _os_log_error_impl(&_mh_execute_header, objectIdentifier, OS_LOG_TYPE_ERROR, "Could not find the REMChangedObjectIdentifying ID of the managed object previously deleted in the same change set {mID: %@, change: %@}", buf, 0x16u);
             }
           }
 
@@ -1036,7 +1036,7 @@ LABEL_33:
   }
 }
 
-- (id)_executeDeleteHistoryRequest:(id)a3
+- (id)_executeDeleteHistoryRequest:(id)request
 {
   v10 = 0;
   v11 = &v10;
@@ -1048,8 +1048,8 @@ LABEL_33:
   v7[1] = 3221225472;
   v7[2] = sub_1000BCC8C;
   v7[3] = &unk_1008DBD48;
-  v4 = a3;
-  v8 = v4;
+  requestCopy = request;
+  v8 = requestCopy;
   v9 = &v10;
   [(_REMNSPersistentHistoryTrackingAbstract *)self withManagedObjectContext:v7];
   v5 = v11[5];
@@ -1059,10 +1059,10 @@ LABEL_33:
   return v5;
 }
 
-- (id)_fetchCDTrackingStateWithClientID:(id)a3 andPerformBlock:(id)a4
+- (id)_fetchCDTrackingStateWithClientID:(id)d andPerformBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1073,10 +1073,10 @@ LABEL_33:
   v12[1] = 3221225472;
   v12[2] = sub_1000BCF3C;
   v12[3] = &unk_1008DBD70;
-  v8 = v6;
+  v8 = dCopy;
   v13 = v8;
   v15 = &v16;
-  v9 = v7;
+  v9 = blockCopy;
   v14 = v9;
   [(_REMNSPersistentHistoryTrackingAbstract *)self withManagedObjectContext:v12];
   v10 = v17[5];
@@ -1086,26 +1086,26 @@ LABEL_33:
   return v10;
 }
 
-- (id)_changeTokenFromCDTrackingState:(id)a3 error:(id *)a4
+- (id)_changeTokenFromCDTrackingState:(id)state error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 lastConsumedChangeTokenData];
-  if (v6)
+  stateCopy = state;
+  lastConsumedChangeTokenData = [stateCopy lastConsumedChangeTokenData];
+  if (lastConsumedChangeTokenData)
   {
     v12 = 0;
-    v7 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:&v12];
+    v7 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:lastConsumedChangeTokenData error:&v12];
     v8 = v12;
     if (!v7)
     {
       v9 = +[REMLog changeTracking];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        sub_10076A408(v5, v8);
+        sub_10076A408(stateCopy, v8);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = [NSError errorWithREMChangeErrorCode:9 underlyingError:v8];
+        *error = [NSError errorWithREMChangeErrorCode:9 underlyingError:v8];
       }
     }
   }
@@ -1115,13 +1115,13 @@ LABEL_33:
     v10 = +[REMLog changeTracking];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_10076A4E4(v5);
+      sub_10076A4E4(stateCopy);
     }
 
-    if (a4)
+    if (error)
     {
       [NSError errorWithREMChangeErrorCode:9];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -1133,16 +1133,16 @@ LABEL_33:
   return v7;
 }
 
-- (id)_fetchCDAuxiliaryChangeInfosWithObjectID:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5
+- (id)_fetchCDAuxiliaryChangeInfosWithObjectID:(id)d inManagedObjectContext:(id)context error:(id *)error
 {
-  v6 = a4;
-  v7 = [a3 uuid];
+  contextCopy = context;
+  uuid = [d uuid];
   v8 = +[REMCDAuxiliaryChangeInfo fetchRequest];
-  v9 = [NSPredicate predicateWithFormat:@"identifier == %@", v7];
+  v9 = [NSPredicate predicateWithFormat:@"identifier == %@", uuid];
   [v8 setPredicate:v9];
 
   v16 = 0;
-  v10 = [v6 executeFetchRequest:v8 error:&v16];
+  v10 = [contextCopy executeFetchRequest:v8 error:&v16];
 
   v11 = v16;
   if (v11)
@@ -1150,7 +1150,7 @@ LABEL_33:
     v12 = +[REMLog changeTracking];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_10076A598(v7, v11);
+      sub_10076A598(uuid, v11);
     }
 
 LABEL_8:
@@ -1170,8 +1170,8 @@ LABEL_8:
   }
 
 LABEL_9:
-  v13 = [v10 firstObject];
-  if (!v13)
+  firstObject = [v10 firstObject];
+  if (!firstObject)
   {
     v14 = +[REMLog changeTracking];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1180,7 +1180,7 @@ LABEL_9:
     }
   }
 
-  return v13;
+  return firstObject;
 }
 
 @end

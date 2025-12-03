@@ -1,13 +1,13 @@
 @interface CAMButtonLabel
-- (CAMButtonLabel)initWithFrame:(CGRect)a3;
+- (CAMButtonLabel)initWithFrame:(CGRect)frame;
 - (CGSize)contentSize;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)_preferredContentSizeCategoryDidChange;
 - (void)_updateAttributedText;
 - (void)_updateInternalContentSize;
-- (void)setText:(id)a3;
-- (void)setWantsLegibilityShadow:(BOOL)a3;
+- (void)setText:(id)text;
+- (void)setWantsLegibilityShadow:(BOOL)shadow;
 @end
 
 @implementation CAMButtonLabel
@@ -15,28 +15,28 @@
 - (void)_updateAttributedText
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v3 = [(CAMButtonLabel *)self text];
-  if (v3)
+  text = [(CAMButtonLabel *)self text];
+  if (text)
   {
-    v4 = [(UILabel *)self->__label font];
+    font = [(UILabel *)self->__label font];
     v5 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
-    [v4 leading];
+    [font leading];
     [v5 setLineSpacing:?];
     v6 = *MEMORY[0x1E69DB688];
     v19[0] = *MEMORY[0x1E69DB648];
     v19[1] = v6;
-    v20[0] = v4;
+    v20[0] = font;
     v20[1] = v5;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
     v8 = objc_alloc(MEMORY[0x1E696AD40]);
-    v9 = [(CAMButtonLabel *)self text];
-    v10 = [v8 initWithString:v9 attributes:v7];
+    text2 = [(CAMButtonLabel *)self text];
+    v10 = [v8 initWithString:text2 attributes:v7];
 
     if ([(CAMButtonLabel *)self wantsLegibilityShadow])
     {
       v11 = objc_alloc_init(MEMORY[0x1E69DB7D8]);
-      v12 = [MEMORY[0x1E69DC888] blackColor];
-      [v11 setShadowColor:v12];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      [v11 setShadowColor:blackColor];
 
       [v11 setShadowOffset:{0.0, 0.0}];
       [v11 setShadowBlurRadius:3.0];
@@ -44,11 +44,11 @@
     }
 
     v13 = +[CAMFormattingManager sharedManager];
-    v14 = [v13 wantsCustomKerning];
+    wantsCustomKerning = [v13 wantsCustomKerning];
 
-    if (v14)
+    if (wantsCustomKerning)
     {
-      v15 = [CAMFont cameraKerningForFont:v4];
+      v15 = [CAMFont cameraKerningForFont:font];
       v17 = *MEMORY[0x1E69DB660];
       v18 = v15;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
@@ -70,12 +70,12 @@
   [(UILabel *)label setFrame:0.0, 0.0, v4, v5];
 }
 
-- (CAMButtonLabel)initWithFrame:(CGRect)a3
+- (CAMButtonLabel)initWithFrame:(CGRect)frame
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = CAMButtonLabel;
-  v3 = [(CAMButtonLabel *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMButtonLabel *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -85,16 +85,16 @@
     v3->__label = v5;
 
     v7 = v3->__label;
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v7 setTextColor:v8];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v7 setTextColor:whiteColor];
 
     v9 = v3->__label;
     v10 = [CAMFont cameraFontForContentSize:*MEMORY[0x1E69DDC70]];
     [(UILabel *)v9 setFont:v10];
 
     v11 = v3->__label;
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v11 setBackgroundColor:v12];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v11 setBackgroundColor:clearColor];
 
     [(UILabel *)v3->__label setTextAlignment:0];
     [(CAMButtonLabel *)v3 addSubview:v3->__label];
@@ -106,7 +106,7 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [(UILabel *)self->__label sizeThatFits:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   result.height = v4;
@@ -122,15 +122,15 @@
   return result;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   text = self->_text;
-  if (text != v4)
+  if (text != textCopy)
   {
-    v8 = v4;
-    text = [text isEqualToString:v4];
-    v4 = v8;
+    v8 = textCopy;
+    text = [text isEqualToString:textCopy];
+    textCopy = v8;
     if ((text & 1) == 0)
     {
       v6 = [v8 copy];
@@ -139,28 +139,28 @@
 
       [(CAMButtonLabel *)self _updateAttributedText];
       text = [(CAMButtonLabel *)self _updateInternalContentSize];
-      v4 = v8;
+      textCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](text, v4);
+  MEMORY[0x1EEE66BB8](text, textCopy);
 }
 
-- (void)setWantsLegibilityShadow:(BOOL)a3
+- (void)setWantsLegibilityShadow:(BOOL)shadow
 {
-  if (self->_wantsLegibilityShadow != a3)
+  if (self->_wantsLegibilityShadow != shadow)
   {
-    self->_wantsLegibilityShadow = a3;
+    self->_wantsLegibilityShadow = shadow;
     [(CAMButtonLabel *)self _updateAttributedText];
   }
 }
 
 - (void)_preferredContentSizeCategoryDidChange
 {
-  v3 = [(CAMButtonLabel *)self traitCollection];
-  v5 = [v3 preferredContentSizeCategory];
+  traitCollection = [(CAMButtonLabel *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v4 = [CAMFont cameraFontForContentSize:v5];
+  v4 = [CAMFont cameraFontForContentSize:preferredContentSizeCategory];
   [(UILabel *)self->__label setFont:v4];
   [(CAMButtonLabel *)self _updateInternalContentSize];
   [(CAMButtonLabel *)self _updateAttributedText];

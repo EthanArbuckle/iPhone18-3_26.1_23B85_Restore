@@ -1,5 +1,5 @@
 @interface UIWindow
-+ (void)music_setWantsLayoutInsetsUsingBlock:(id)a3;
++ (void)music_setWantsLayoutInsetsUsingBlock:(id)block;
 @end
 
 @implementation UIWindow
@@ -80,9 +80,9 @@ UIEdgeInsets __65__UIWindow_MusicLayoutAdditions__music_setWantsMusicLayoutInset
   return result;
 }
 
-+ (void)music_setWantsLayoutInsetsUsingBlock:(id)a3
++ (void)music_setWantsLayoutInsetsUsingBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_opt_class();
   v72 = 0;
   v73 = &v72;
@@ -94,7 +94,7 @@ UIEdgeInsets __65__UIWindow_MusicLayoutAdditions__music_setWantsMusicLayoutInset
   v68[3] = &unk_19E008;
   v70 = &v72;
   v71 = "layoutSubviews";
-  v5 = v3;
+  v5 = blockCopy;
   v69 = v5;
   v6 = objc_retainBlock(v68);
   v7 = imp_implementationWithBlock(v6);

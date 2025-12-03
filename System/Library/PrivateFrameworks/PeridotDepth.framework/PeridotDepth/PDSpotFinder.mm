@@ -1,29 +1,29 @@
 @interface PDSpotFinder
-+ (BOOL)findSpotsInImage:(__CVBuffer *)a3 andUpdateCalib:(void *)a4 forPreset:(int)a5 distance:(float)a6 isSphere:(BOOL)a7 outputFoMs:(id *)a8;
++ (BOOL)findSpotsInImage:(__CVBuffer *)image andUpdateCalib:(void *)calib forPreset:(int)preset distance:(float)distance isSphere:(BOOL)sphere outputFoMs:(id *)ms;
 @end
 
 @implementation PDSpotFinder
 
-+ (BOOL)findSpotsInImage:(__CVBuffer *)a3 andUpdateCalib:(void *)a4 forPreset:(int)a5 distance:(float)a6 isSphere:(BOOL)a7 outputFoMs:(id *)a8
++ (BOOL)findSpotsInImage:(__CVBuffer *)image andUpdateCalib:(void *)calib forPreset:(int)preset distance:(float)distance isSphere:(BOOL)sphere outputFoMs:(id *)ms
 {
   v275 = *MEMORY[0x277D85DE8];
-  if (CVPixelBufferGetWidth(a3) != 84 || CVPixelBufferGetHeight(a3) != 864 || CVPixelBufferGetPixelFormatType(a3) != 1278226534)
+  if (CVPixelBufferGetWidth(image) != 84 || CVPixelBufferGetHeight(image) != 864 || CVPixelBufferGetPixelFormatType(image) != 1278226534)
   {
     peridot_depth_log("image must be of width %zu, height %zu, and pixel format 'L00f'");
     return 0;
   }
 
-  MutableBytePtr = CFDataGetMutableBytePtr(a4);
-  if (a5)
+  MutableBytePtr = CFDataGetMutableBytePtr(calib);
+  if (preset)
   {
     peridot_depth_log("spot finder currently only supports NormalRange preset");
     return 0;
   }
 
   v16 = MutableBytePtr;
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+  CVPixelBufferLockBaseAddress(image, 1uLL);
+  BaseAddress = CVPixelBufferGetBaseAddress(image);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(image);
   __dst[0] = 0;
   __dst[1] = 0;
   v46 = 0;
@@ -41,17 +41,17 @@
   }
 
   while (v21);
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(image, 1uLL);
   v274 = 0x800000001;
   rep = std::chrono::steady_clock::now().__d_.__rep_;
   memcpy(&state, &uv, 0x9C4uLL);
   isInitialized_spot_finder_peridot[0] = 1;
-  spot_finder_peridot(__dst, a6, &unk_2247B94A8, v23);
+  spot_finder_peridot(__dst, distance, &unk_2247B94A8, v23);
   isInitialized_spot_finder_peridot[0] = 0;
   v24.__d_.__rep_ = std::chrono::steady_clock::now().__d_.__rep_;
   peridot_depth_log("Ran spot finder in %f ms", ((v24.__d_.__rep_ - rep) / 1000) * 0.001);
-  *(v19 + 307) = a6;
-  v19[1232] = a7;
+  *(v19 + 307) = distance;
+  v19[1232] = sphere;
   *(v19 + 83) = v50;
   *(v19 + 84) = v162;
   *(v19 + 85) = v51;
@@ -276,7 +276,7 @@
   *(v19 + 304) = v272;
   *(v19 + 305) = v161;
   *(v19 + 306) = v273;
-  if (a8)
+  if (ms)
   {
     v48[0] = @"SF_Spots99pDistToNominal";
     v34 = [MEMORY[0x277CCABB0] numberWithDouble:v35];
@@ -308,7 +308,7 @@
     v48[9] = @"SF_Rz_center_region_mrads";
     v33 = [MEMORY[0x277CCABB0] numberWithDouble:v44];
     v49[9] = v33;
-    *a8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:10];
+    *ms = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:10];
   }
 
   if (v46 == 1)

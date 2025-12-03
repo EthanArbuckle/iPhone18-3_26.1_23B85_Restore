@@ -1,45 +1,45 @@
 @interface CAMTimelapseBackendController
-- (BOOL)_deleteItemAtPath:(id)a3;
-- (BOOL)_scheduleDelayedMovieWriteIfNeededForTimelapseUUID:(id)a3;
+- (BOOL)_deleteItemAtPath:(id)path;
+- (BOOL)_scheduleDelayedMovieWriteIfNeededForTimelapseUUID:(id)d;
 - (BOOL)_shouldSaveLastTimelapseDataForDebugging;
 - (CAMTimelapseBackendController)init;
-- (CAMTimelapseBackendController)initWithPersistenceController:(id)a3 keepAliveController:(id)a4;
-- (CGAffineTransform)_frameTransformForState:(SEL)a3;
-- (id)_getOrCreateSessionContextForTimelapseUUID:(id)a3;
-- (int)_pidForApplication:(id)a3;
-- (void)_createPlaceholderAssetForState:(id)a3;
-- (void)_dispatchToMainQueueWithBlock:(id)a3;
-- (void)_dispatchToWorkQueueAfterDelay:(double)a3 withBlock:(id)a4;
-- (void)_dispatchToWorkQueueWithBlock:(id)a3;
-- (void)_movieWrittenToFilePath:(id)a3 duration:(id *)a4 metadata:(id)a5 state:(id)a6;
-- (void)_notifyAssetsdOfIncomingMovieAtPath:(id)a3 duration:(id *)a4 metadata:(id)a5 state:(id)a6;
+- (CAMTimelapseBackendController)initWithPersistenceController:(id)controller keepAliveController:(id)aliveController;
+- (CGAffineTransform)_frameTransformForState:(SEL)state;
+- (id)_getOrCreateSessionContextForTimelapseUUID:(id)d;
+- (int)_pidForApplication:(id)application;
+- (void)_createPlaceholderAssetForState:(id)state;
+- (void)_dispatchToMainQueueWithBlock:(id)block;
+- (void)_dispatchToWorkQueueAfterDelay:(double)delay withBlock:(id)block;
+- (void)_dispatchToWorkQueueWithBlock:(id)block;
+- (void)_movieWrittenToFilePath:(id)path duration:(id *)duration metadata:(id)metadata state:(id)state;
+- (void)_notifyAssetsdOfIncomingMovieAtPath:(id)path duration:(id *)duration metadata:(id)metadata state:(id)state;
 - (void)_performPendingWork;
-- (void)_permanentlyFailTimelapseUUID:(id)a3 withState:(id)a4;
-- (void)_reserveDummyFileForTimelapseUUID:(id)a3 firstImageFilePath:(id)a4 useHEVC:(BOOL)a5;
-- (void)_saveTimelapseDirectoryForDebuggingTimelapseUUID:(id)a3;
-- (void)_setCapturing:(BOOL)a3;
-- (void)_setCurrentState:(id)a3;
-- (void)_updatePendingWorkFromDiskForceEndLastSession:(BOOL)a3;
-- (void)_updateSessionContext:(id)a3 withState:(id)a4;
+- (void)_permanentlyFailTimelapseUUID:(id)d withState:(id)state;
+- (void)_reserveDummyFileForTimelapseUUID:(id)d firstImageFilePath:(id)path useHEVC:(BOOL)c;
+- (void)_saveTimelapseDirectoryForDebuggingTimelapseUUID:(id)d;
+- (void)_setCapturing:(BOOL)capturing;
+- (void)_setCurrentState:(id)state;
+- (void)_updatePendingWorkFromDiskForceEndLastSession:(BOOL)session;
+- (void)_updateSessionContext:(id)context withState:(id)state;
 - (void)_workQueue_destroyApplicationStateMonitor;
 - (void)_workQueue_setupCameraProcessMonitoringIfNecessary;
-- (void)_writeMovieForSessionContext:(id)a3;
+- (void)_writeMovieForSessionContext:(id)context;
 - (void)dealloc;
-- (void)handleClientConnection:(id)a3;
-- (void)resumeTimelapseWithUUID:(id)a3;
-- (void)startTimelapseWithUUID:(id)a3;
-- (void)updatePendingWorkFromDiskForceEndLastSession:(BOOL)a3;
-- (void)updateTimelapseWithUUID:(id)a3;
-- (void)videoRequestDidCompleteRemotePersistence:(id)a3 withResponse:(id)a4 error:(id)a5;
+- (void)handleClientConnection:(id)connection;
+- (void)resumeTimelapseWithUUID:(id)d;
+- (void)startTimelapseWithUUID:(id)d;
+- (void)updatePendingWorkFromDiskForceEndLastSession:(BOOL)session;
+- (void)updateTimelapseWithUUID:(id)d;
+- (void)videoRequestDidCompleteRemotePersistence:(id)persistence withResponse:(id)response error:(id)error;
 @end
 
 @implementation CAMTimelapseBackendController
 
-- (CAMTimelapseBackendController)initWithPersistenceController:(id)a3 keepAliveController:(id)a4
+- (CAMTimelapseBackendController)initWithPersistenceController:(id)controller keepAliveController:(id)aliveController
 {
   v40 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  aliveControllerCopy = aliveController;
   v38.receiver = self;
   v38.super_class = CAMTimelapseBackendController;
   v8 = [(CAMTimelapseBackendController *)&v38 init];
@@ -52,11 +52,11 @@
       _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "CAMTimelapseBackendController initialized", buf, 2u);
     }
 
-    objc_storeStrong(&v8->__persistenceController, a3);
-    objc_storeStrong(&v8->__keepAliveController, a4);
-    v10 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v8->__persistenceController, controller);
+    objc_storeStrong(&v8->__keepAliveController, aliveController);
+    array = [MEMORY[0x1E695DF70] array];
     sessionContexts = v8->__sessionContexts;
-    v8->__sessionContexts = v10;
+    v8->__sessionContexts = array;
 
     v12 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
     v13 = dispatch_queue_create("com.apple.camera.timelapse.backend.work", v12);
@@ -64,8 +64,8 @@
     v8->__workQueue = v13;
 
     v15 = [CAMTimelapseDiskUtilities readSortedStatesFromDiskMergeSecondaryState:1];
-    v16 = [v15 lastObject];
-    [(CAMTimelapseBackendController *)v8 _setCurrentState:v16];
+    lastObject = [v15 lastObject];
+    [(CAMTimelapseBackendController *)v8 _setCurrentState:lastObject];
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
@@ -86,8 +86,8 @@
           }
 
           keepAliveController = v8->__keepAliveController;
-          v22 = [*(*(&v34 + 1) + 8 * v20) timelapseUUID];
-          [(CAMNebulaKeepAliveController *)keepAliveController startKeepAliveForIdentifier:v22];
+          timelapseUUID = [*(*(&v34 + 1) + 8 * v20) timelapseUUID];
+          [(CAMNebulaKeepAliveController *)keepAliveController startKeepAliveForIdentifier:timelapseUUID];
 
           ++v20;
         }
@@ -100,21 +100,21 @@
     }
 
     objc_initWeak(buf, v8);
-    v23 = [(CAMTimelapseBackendController *)v8 _workQueue];
+    _workQueue = [(CAMTimelapseBackendController *)v8 _workQueue];
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __83__CAMTimelapseBackendController_initWithPersistenceController_keepAliveController___block_invoke;
     handler[3] = &unk_1E76F8388;
     objc_copyWeak(&v32, buf);
-    notify_register_dispatch("com.apple.camera.nebulad.io.suspend", &v8->__notifyRegisterTokenSuspendIO, v23, handler);
+    notify_register_dispatch("com.apple.camera.nebulad.io.suspend", &v8->__notifyRegisterTokenSuspendIO, _workQueue, handler);
 
-    v24 = [(CAMTimelapseBackendController *)v8 _workQueue];
+    _workQueue2 = [(CAMTimelapseBackendController *)v8 _workQueue];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __83__CAMTimelapseBackendController_initWithPersistenceController_keepAliveController___block_invoke_5;
     v29[3] = &unk_1E76F8388;
     objc_copyWeak(&v30, buf);
-    notify_register_dispatch("com.apple.camera.nebulad.io.resume", &v8->__notifyRegisterTokenResumeIO, v24, v29);
+    notify_register_dispatch("com.apple.camera.nebulad.io.resume", &v8->__notifyRegisterTokenResumeIO, _workQueue2, v29);
 
     v8->__oldMovieWriterEnabled = CFPreferencesGetAppBooleanValue(@"CAMTimelapseOldMovieWriterEnabled", @"com.apple.camera", 0) != 0;
     v25 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -175,40 +175,40 @@ void __83__CAMTimelapseBackendController_initWithPersistenceController_keepAlive
 {
   notify_cancel(self->__notifyRegisterTokenSuspendIO);
   notify_cancel(self->__notifyRegisterTokenResumeIO);
-  v3 = [(CAMTimelapseBackendController *)self _workQueue];
+  _workQueue = [(CAMTimelapseBackendController *)self _workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__CAMTimelapseBackendController_dealloc__block_invoke;
   block[3] = &unk_1E76F77B0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(_workQueue, block);
 
   v4.receiver = self;
   v4.super_class = CAMTimelapseBackendController;
   [(CAMTimelapseBackendController *)&v4 dealloc];
 }
 
-- (void)_setCurrentState:(id)a3
+- (void)_setCurrentState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   p_currentState = &self->__currentState;
-  if (self->__currentState != v5)
+  if (self->__currentState != stateCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_currentState, a3);
+    v7 = stateCopy;
+    objc_storeStrong(p_currentState, state);
     p_currentState = [(CAMTimelapseBackendController *)self _setCapturing:[(CAMTimelapseState *)self->__currentState canContinueCapture]];
-    v5 = v7;
+    stateCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_currentState, v5);
+  MEMORY[0x1EEE66BB8](p_currentState, stateCopy);
 }
 
-- (void)_setCapturing:(BOOL)a3
+- (void)_setCapturing:(BOOL)capturing
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (self->__capturing != a3)
+  if (self->__capturing != capturing)
   {
-    self->__capturing = a3;
+    self->__capturing = capturing;
     v4 = os_log_create("com.apple.camera", "Nebula");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -220,9 +220,9 @@ void __83__CAMTimelapseBackendController_initWithPersistenceController_keepAlive
   }
 }
 
-- (void)_dispatchToWorkQueueWithBlock:(id)a3
+- (void)_dispatchToWorkQueueWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = os_transaction_create();
   workQueue = self->__workQueue;
   v9[0] = MEMORY[0x1E69E9820];
@@ -230,9 +230,9 @@ void __83__CAMTimelapseBackendController_initWithPersistenceController_keepAlive
   v9[2] = __63__CAMTimelapseBackendController__dispatchToWorkQueueWithBlock___block_invoke;
   v9[3] = &unk_1E76F83B0;
   v10 = v5;
-  v11 = v4;
+  v11 = blockCopy;
   v7 = v5;
-  v8 = v4;
+  v8 = blockCopy;
   dispatch_async(workQueue, v9);
 }
 
@@ -244,20 +244,20 @@ void __63__CAMTimelapseBackendController__dispatchToWorkQueueWithBlock___block_i
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_dispatchToWorkQueueAfterDelay:(double)a3 withBlock:(id)a4
+- (void)_dispatchToWorkQueueAfterDelay:(double)delay withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = os_transaction_create();
-  v8 = dispatch_time(0, (a3 * 1000000000.0));
+  v8 = dispatch_time(0, (delay * 1000000000.0));
   workQueue = self->__workQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __74__CAMTimelapseBackendController__dispatchToWorkQueueAfterDelay_withBlock___block_invoke;
   v12[3] = &unk_1E76F83B0;
   v13 = v7;
-  v14 = v6;
+  v14 = blockCopy;
   v10 = v7;
-  v11 = v6;
+  v11 = blockCopy;
   dispatch_after(v8, workQueue, v12);
 }
 
@@ -269,18 +269,18 @@ void __74__CAMTimelapseBackendController__dispatchToWorkQueueAfterDelay_withBloc
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_dispatchToMainQueueWithBlock:(id)a3
+- (void)_dispatchToMainQueueWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = os_transaction_create();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__CAMTimelapseBackendController__dispatchToMainQueueWithBlock___block_invoke;
   v7[3] = &unk_1E76F83B0;
   v8 = v4;
-  v9 = v3;
+  v9 = blockCopy;
   v5 = v4;
-  v6 = v3;
+  v6 = blockCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -292,30 +292,30 @@ void __63__CAMTimelapseBackendController__dispatchToMainQueueWithBlock___block_i
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)startTimelapseWithUUID:(id)a3
+- (void)startTimelapseWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  [(CAMNebulaKeepAliveController *)self->__keepAliveController startKeepAliveForIdentifier:v4];
-  v5 = [CAMTimelapseDiskUtilities readStateForTimelapseUUID:v4 mergeSecondaryState:1];
+  [(CAMNebulaKeepAliveController *)self->__keepAliveController startKeepAliveForIdentifier:dCopy];
+  v5 = [CAMTimelapseDiskUtilities readStateForTimelapseUUID:dCopy mergeSecondaryState:1];
 
   [(CAMTimelapseBackendController *)self _setCurrentState:v5];
 }
 
-- (void)resumeTimelapseWithUUID:(id)a3
+- (void)resumeTimelapseWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [CAMTimelapseDiskUtilities readStateForTimelapseUUID:v4 mergeSecondaryState:1];
+  v5 = [CAMTimelapseDiskUtilities readStateForTimelapseUUID:dCopy mergeSecondaryState:1];
 
   [(CAMTimelapseBackendController *)self _setCurrentState:v5];
 }
 
-- (void)updateTimelapseWithUUID:(id)a3
+- (void)updateTimelapseWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [CAMTimelapseDiskUtilities readStateForTimelapseUUID:v4 mergeSecondaryState:1];
+  v5 = [CAMTimelapseDiskUtilities readStateForTimelapseUUID:dCopy mergeSecondaryState:1];
   [(CAMTimelapseBackendController *)self _setCurrentState:v5];
   v6 = [(CAMTimelapseState *)self->__currentState copy];
   v9[0] = MEMORY[0x1E69E9820];
@@ -323,10 +323,10 @@ void __63__CAMTimelapseBackendController__dispatchToMainQueueWithBlock___block_i
   v9[2] = __57__CAMTimelapseBackendController_updateTimelapseWithUUID___block_invoke;
   v9[3] = &unk_1E76F7938;
   v9[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v4;
+  v8 = dCopy;
   [(CAMTimelapseBackendController *)self _dispatchToWorkQueueWithBlock:v9];
 }
 
@@ -337,26 +337,26 @@ void __57__CAMTimelapseBackendController_updateTimelapseWithUUID___block_invoke(
   [*(a1 + 32) _performPendingWork];
 }
 
-- (void)updatePendingWorkFromDiskForceEndLastSession:(BOOL)a3
+- (void)updatePendingWorkFromDiskForceEndLastSession:(BOOL)session
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __78__CAMTimelapseBackendController_updatePendingWorkFromDiskForceEndLastSession___block_invoke;
   v3[3] = &unk_1E76F7850;
   v3[4] = self;
-  v4 = a3;
+  sessionCopy = session;
   [(CAMTimelapseBackendController *)self _dispatchToWorkQueueWithBlock:v3];
 }
 
-- (void)_updatePendingWorkFromDiskForceEndLastSession:(BOOL)a3
+- (void)_updatePendingWorkFromDiskForceEndLastSession:(BOOL)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v25 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.camera", "Nebula");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *&buf[4] = v3;
+    *&buf[4] = sessionCopy;
     _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "CAMTimelapseBackendController _updatePendingWorkFromDiskForceEndLastSession:%d", buf, 8u);
   }
 
@@ -401,7 +401,7 @@ void __57__CAMTimelapseBackendController_updateTimelapseWithUUID___block_invoke(
   v14[1] = 3221225472;
   v14[2] = __79__CAMTimelapseBackendController__updatePendingWorkFromDiskForceEndLastSession___block_invoke_2_22;
   v14[3] = &unk_1E76FED78;
-  v15 = v3;
+  v15 = sessionCopy;
   v14[4] = self;
   v14[5] = v12 - 1;
   [v7 enumerateObjectsUsingBlock:v14];
@@ -521,35 +521,35 @@ void __79__CAMTimelapseBackendController__updatePendingWorkFromDiskForceEndLastS
   [*(a1 + 32) _updateSessionContext:v4 withState:v3];
 }
 
-- (void)_updateSessionContext:(id)a3 withState:(id)a4
+- (void)_updateSessionContext:(id)context withState:(id)state
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->__workQueue);
-  [v6 setState:v7];
-  v8 = [v6 timelapseUUID];
-  v9 = [CAMTimelapseDiskUtilities readFrameFilePathsForTimelapseUUID:v8];
+  [contextCopy setState:stateCopy];
+  timelapseUUID = [contextCopy timelapseUUID];
+  v9 = [CAMTimelapseDiskUtilities readFrameFilePathsForTimelapseUUID:timelapseUUID];
 
   if ([v9 count])
   {
-    v10 = [v7 frameIndexStride];
-    v11 = [v7 isReadyForWritingMovie];
-    v12 = [v7 canContinueCapture];
-    v13 = [MEMORY[0x1E695DF90] dictionary];
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    frameIndexStride = [stateCopy frameIndexStride];
+    isReadyForWritingMovie = [stateCopy isReadyForWritingMovie];
+    canContinueCapture = [stateCopy canContinueCapture];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __65__CAMTimelapseBackendController__updateSessionContext_withState___block_invoke;
     v23[3] = &unk_1E76FEDC8;
-    v26 = v10;
-    v15 = v13;
+    v26 = frameIndexStride;
+    v15 = dictionary;
     v24 = v15;
-    v27 = v12;
-    v16 = v14;
+    v27 = canContinueCapture;
+    v16 = dictionary2;
     v25 = v16;
     [v9 enumerateKeysAndObjectsUsingBlock:v23];
-    if ((v12 & 1) == 0 && (v11 & 1) == 0)
+    if ((canContinueCapture & 1) == 0 && (isReadyForWritingMovie & 1) == 0)
     {
       +[CAMTimelapseState maxTimeToWaitForWrittenFrameAfterStop];
       v18 = v17;
@@ -579,8 +579,8 @@ void __79__CAMTimelapseBackendController__updatePendingWorkFromDiskForceEndLastS
     v20 = 0;
   }
 
-  [v6 setFilesToDelete:v20];
-  [v6 setFilesToWrite:v21];
+  [contextCopy setFilesToDelete:v20];
+  [contextCopy setFilesToWrite:v21];
 }
 
 void __65__CAMTimelapseBackendController__updateSessionContext_withState___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -618,9 +618,9 @@ uint64_t __65__CAMTimelapseBackendController__updateSessionContext_withState___b
   return [*(a1 + 32) _updatePendingWorkFromDiskForceEndLastSession:0];
 }
 
-- (id)_getOrCreateSessionContextForTimelapseUUID:(id)a3
+- (id)_getOrCreateSessionContextForTimelapseUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -632,7 +632,7 @@ uint64_t __65__CAMTimelapseBackendController__updateSessionContext_withState___b
   v14 = 3221225472;
   v15 = __76__CAMTimelapseBackendController__getOrCreateSessionContextForTimelapseUUID___block_invoke;
   v16 = &unk_1E76FEDF0;
-  v6 = v4;
+  v6 = dCopy;
   v17 = v6;
   v18 = &v19;
   [(NSMutableArray *)sessionContexts enumerateObjectsUsingBlock:&v13];
@@ -706,17 +706,17 @@ void __76__CAMTimelapseBackendController__getOrCreateSessionContextForTimelapseU
   v5 = v14[5];
   if (v5)
   {
-    v6 = [v5 timelapseUUID];
-    v7 = [v14[5] state];
+    timelapseUUID = [v5 timelapseUUID];
+    state = [v14[5] state];
     v8 = os_log_create("com.apple.camera", "Nebula");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = v6;
+      v25 = timelapseUUID;
       _os_log_impl(&dword_1A3640000, v8, OS_LOG_TYPE_DEFAULT, "Deleting timelapse session that completed with zero frames: %{public}@", buf, 0xCu);
     }
 
-    [(CAMTimelapseBackendController *)self _permanentlyFailTimelapseUUID:v6 withState:v7];
+    [(CAMTimelapseBackendController *)self _permanentlyFailTimelapseUUID:timelapseUUID withState:state];
     *(v21 + 24) = 1;
   }
 
@@ -880,23 +880,23 @@ void __52__CAMTimelapseBackendController__performPendingWork__block_invoke_38(ui
   }
 }
 
-- (void)_permanentlyFailTimelapseUUID:(id)a3 withState:(id)a4
+- (void)_permanentlyFailTimelapseUUID:(id)d withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  stateCopy = state;
+  if (stateCopy)
   {
     v8 = os_log_create("com.apple.camera", "Nebula");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [CAMTimelapseBackendController _permanentlyFailTimelapseUUID:v7 withState:v8];
+      [CAMTimelapseBackendController _permanentlyFailTimelapseUUID:stateCopy withState:v8];
     }
   }
 
-  v9 = [CAMTimelapseDiskUtilities directoryPathForTimelapseUUID:v6];
+  v9 = [CAMTimelapseDiskUtilities directoryPathForTimelapseUUID:dCopy];
   if ([(CAMTimelapseBackendController *)self _shouldSaveLastTimelapseDataForDebugging])
   {
-    [(CAMTimelapseBackendController *)self _saveTimelapseDirectoryForDebuggingTimelapseUUID:v6];
+    [(CAMTimelapseBackendController *)self _saveTimelapseDirectoryForDebuggingTimelapseUUID:dCopy];
   }
 
   else
@@ -915,7 +915,7 @@ void __52__CAMTimelapseBackendController__performPendingWork__block_invoke_38(ui
   v13 = 3221225472;
   v14 = __73__CAMTimelapseBackendController__permanentlyFailTimelapseUUID_withState___block_invoke;
   v15 = &unk_1E76FEDF0;
-  v11 = v6;
+  v11 = dCopy;
   v16 = v11;
   v17 = &v18;
   [(NSMutableArray *)sessionContexts enumerateObjectsUsingBlock:&v12];
@@ -943,23 +943,23 @@ void __73__CAMTimelapseBackendController__permanentlyFailTimelapseUUID_withState
   }
 }
 
-- (BOOL)_scheduleDelayedMovieWriteIfNeededForTimelapseUUID:(id)a3
+- (BOOL)_scheduleDelayedMovieWriteIfNeededForTimelapseUUID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [CAMTimelapseDiskUtilities readSecondaryStateForTimelapseUUID:v4];
-  v6 = [v5 movieWriteAttemptsCount];
-  if (v6 < 1)
+  dCopy = d;
+  v5 = [CAMTimelapseDiskUtilities readSecondaryStateForTimelapseUUID:dCopy];
+  movieWriteAttemptsCount = [v5 movieWriteAttemptsCount];
+  if (movieWriteAttemptsCount < 1)
   {
     v16 = 0;
   }
 
   else
   {
-    v7 = v6;
-    v8 = [v5 lastMovieWriteAttemptTime];
-    v9 = [MEMORY[0x1E695DF00] date];
-    [v9 timeIntervalSinceDate:v8];
+    v7 = movieWriteAttemptsCount;
+    lastMovieWriteAttemptTime = [v5 lastMovieWriteAttemptTime];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:lastMovieWriteAttemptTime];
     v11 = v10;
 
     v12 = +[CAMTimelapseSettings sharedInstance];
@@ -974,7 +974,7 @@ void __73__CAMTimelapseBackendController__permanentlyFailTimelapseUUID_withState
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v21 = v4;
+        v21 = dCopy;
         v22 = 2048;
         v23 = v15;
         _os_log_impl(&dword_1A3640000, v17, OS_LOG_TYPE_DEFAULT, "Not ready to write movie for timelapse %{public}@. Delaying %.2f seconds", buf, 0x16u);
@@ -992,14 +992,14 @@ void __73__CAMTimelapseBackendController__permanentlyFailTimelapseUUID_withState
   return v16;
 }
 
-- (BOOL)_deleteItemAtPath:(id)a3
+- (BOOL)_deleteItemAtPath:(id)path
 {
-  v3 = a3;
-  if ([v3 length])
+  pathCopy = path;
+  if ([pathCopy length])
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v9 = 0;
-    v5 = [v4 removeItemAtPath:v3 error:&v9];
+    v5 = [defaultManager removeItemAtPath:pathCopy error:&v9];
     v6 = v9;
 
     if ((v5 & 1) == 0)
@@ -1020,25 +1020,25 @@ void __73__CAMTimelapseBackendController__permanentlyFailTimelapseUUID_withState
   return v5;
 }
 
-- (void)_writeMovieForSessionContext:(id)a3
+- (void)_writeMovieForSessionContext:(id)context
 {
   v69 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->__workQueue);
-  v5 = [v4 state];
-  v6 = [v5 timelapseUUID];
+  state = [contextCopy state];
+  timelapseUUID = [state timelapseUUID];
   v7 = os_log_create("com.apple.camera", "Nebula");
-  v50 = v5;
+  v50 = state;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 stopReasons];
+    stopReasons = [state stopReasons];
     [v50 fullDescription];
     v10 = v9 = self;
     *buf = 138543874;
-    *&buf[4] = v6;
+    *&buf[4] = timelapseUUID;
     *&buf[12] = 2048;
-    *&buf[14] = v8;
-    v5 = v50;
+    *&buf[14] = stopReasons;
+    state = v50;
     *&buf[22] = 2114;
     *&buf[24] = v10;
     _os_log_impl(&dword_1A3640000, v7, OS_LOG_TYPE_DEFAULT, "Starting to write timelapse movie for %{public}@ (stopReasons = %ld) %{public}@", buf, 0x20u);
@@ -1046,26 +1046,26 @@ void __73__CAMTimelapseBackendController__permanentlyFailTimelapseUUID_withState
     self = v9;
   }
 
-  v48 = [CAMTimelapseDiskUtilities directoryPathForTimelapseUUID:v6];
+  v48 = [CAMTimelapseDiskUtilities directoryPathForTimelapseUUID:timelapseUUID];
   v11 = [v48 stringByAppendingPathComponent:@"MOVIE.MOV"];
-  v47 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v47 fileExistsAtPath:v11])
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:v11])
   {
     [(CAMTimelapseBackendController *)self _deleteItemAtPath:v11];
   }
 
   v43 = v11;
-  [CAMTimelapseDiskUtilities removeDummyFileForTimelapseUUID:v6];
-  v46 = v6;
-  v42 = [CAMTimelapseDiskUtilities updateSecondaryStateForMovieWriteAttemptForTimelapseUUID:v6];
-  v44 = self;
-  [(CAMTimelapseBackendController *)self _createPlaceholderAssetForState:v5];
-  v49 = v4;
-  v12 = [v4 filesToWrite];
-  v13 = [v12 copy];
+  [CAMTimelapseDiskUtilities removeDummyFileForTimelapseUUID:timelapseUUID];
+  v46 = timelapseUUID;
+  v42 = [CAMTimelapseDiskUtilities updateSecondaryStateForMovieWriteAttemptForTimelapseUUID:timelapseUUID];
+  selfCopy = self;
+  [(CAMTimelapseBackendController *)self _createPlaceholderAssetForState:state];
+  v49 = contextCopy;
+  filesToWrite = [contextCopy filesToWrite];
+  v13 = [filesToWrite copy];
 
   v40 = [v13 count];
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
@@ -1085,11 +1085,11 @@ void __73__CAMTimelapseBackendController__permanentlyFailTimelapseUUID_withState
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v62 + 1) + 8 * i) stringByDeletingPathExtension];
-        v21 = [v20 stringByAppendingPathExtension:@"tvis"];
+        stringByDeletingPathExtension = [*(*(&v62 + 1) + 8 * i) stringByDeletingPathExtension];
+        v21 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"tvis"];
 
-        v22 = [MEMORY[0x1E696AC08] defaultManager];
-        v23 = [v22 fileExistsAtPath:v21];
+        defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+        v23 = [defaultManager2 fileExistsAtPath:v21];
 
         if ((v23 & 1) == 0)
         {
@@ -1097,7 +1097,7 @@ void __73__CAMTimelapseBackendController__permanentlyFailTimelapseUUID_withState
           goto LABEL_15;
         }
 
-        [v14 addObject:v21];
+        [array addObject:v21];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v62 objects:v68 count:16];
@@ -1118,16 +1118,16 @@ LABEL_15:
 
   v67 = 0u;
   memset(buf, 0, sizeof(buf));
-  [(CAMTimelapseBackendController *)v44 _frameTransformForState:v50];
-  v41 = [v50 startTime];
-  v39 = [v50 startLocation];
-  v38 = [v50 preferHEVC];
+  [(CAMTimelapseBackendController *)selfCopy _frameTransformForState:v50];
+  startTime = [v50 startTime];
+  startLocation = [v50 startLocation];
+  preferHEVC = [v50 preferHEVC];
   v27 = os_transaction_create();
-  v44->__writingMovie = 1;
-  [v14 count];
+  selfCopy->__writingMovie = 1;
+  [array count];
   v28 = objc_alloc_init(objc_opt_class());
-  movieWriter = v44->__movieWriter;
-  v44->__movieWriter = v28;
+  movieWriter = selfCopy->__movieWriter;
+  selfCopy->__movieWriter = v28;
 
   if (+[CAMProtectionController isCameraPerformingHighPriorityDiskActivity])
   {
@@ -1138,22 +1138,22 @@ LABEL_15:
       _os_log_impl(&dword_1A3640000, v30, OS_LOG_TYPE_DEFAULT, "Starting timelapse movie writer suspended for Camera", v51, 2u);
     }
 
-    [(CAMTimelapseBackendController *)v44 _workQueue_setupCameraProcessMonitoringIfNecessary];
-    [(CAMTimelapseMovieWriterProtocol *)v44->__movieWriter setSuspended:[(CAMTimelapseBackendController *)v44 _isCameraRunning]];
+    [(CAMTimelapseBackendController *)selfCopy _workQueue_setupCameraProcessMonitoringIfNecessary];
+    [(CAMTimelapseMovieWriterProtocol *)selfCopy->__movieWriter setSuspended:[(CAMTimelapseBackendController *)selfCopy _isCameraRunning]];
   }
 
-  v31 = v44->__movieWriter;
+  v31 = selfCopy->__movieWriter;
   v54[0] = MEMORY[0x1E69E9820];
   v54[1] = 3221225472;
   v54[2] = __62__CAMTimelapseBackendController__writeMovieForSessionContext___block_invoke;
   v54[3] = &unk_1E76FEE40;
-  v54[4] = v44;
+  v54[4] = selfCopy;
   v55 = v43;
   v56 = v50;
   v57 = v42;
   v58 = v46;
   v59 = v15;
-  v61 = v38;
+  v61 = preferHEVC;
   v60 = v27;
   *v51 = *buf;
   v52 = *&buf[16];
@@ -1164,8 +1164,8 @@ LABEL_15:
   v34 = v42;
   v35 = v50;
   v36 = v43;
-  LOBYTE(v37) = v38;
-  [(CAMTimelapseMovieWriterProtocol *)v31 writeMovieFromImageFiles:v32 visMetadataFiles:v14 startDate:v41 location:v39 outputPath:v36 transform:v51 framesPerSecond:v26 preferHEVC:v37 completionHandler:v54];
+  LOBYTE(v37) = preferHEVC;
+  [(CAMTimelapseMovieWriterProtocol *)v31 writeMovieFromImageFiles:v32 visMetadataFiles:array startDate:startTime location:startLocation outputPath:v36 transform:v51 framesPerSecond:v26 preferHEVC:v37 completionHandler:v54];
 }
 
 void __62__CAMTimelapseBackendController__writeMovieForSessionContext___block_invoke(uint64_t a1, char a2, __int128 *a3, void *a4)
@@ -1258,77 +1258,77 @@ uint64_t __62__CAMTimelapseBackendController__writeMovieForSessionContext___bloc
   return [v14 _dispatchToWorkQueueWithBlock:v16];
 }
 
-- (void)_reserveDummyFileForTimelapseUUID:(id)a3 firstImageFilePath:(id)a4 useHEVC:(BOOL)a5
+- (void)_reserveDummyFileForTimelapseUUID:(id)d firstImageFilePath:(id)path useHEVC:(BOOL)c
 {
-  v5 = a5;
-  v7 = a3;
-  v11 = [CAMTimelapseJPEGReader newDataFromFilePath:a4];
+  cCopy = c;
+  dCopy = d;
+  v11 = [CAMTimelapseJPEGReader newDataFromFilePath:path];
   v8 = [CAMTimelapseJPEGReader createPixelBufferFromData:v11 applyTransform:1 maxPixelSize:0 useBGRA:0];
   Width = CVPixelBufferGetWidth(v8);
   Height = CVPixelBufferGetHeight(v8);
   CVPixelBufferRelease(v8);
-  [CAMTimelapseDiskUtilities reserveDummyFileForTimelapseUUID:v7 width:Width height:Height useHEVC:v5];
+  [CAMTimelapseDiskUtilities reserveDummyFileForTimelapseUUID:dCopy width:Width height:Height useHEVC:cCopy];
 }
 
-- (void)_createPlaceholderAssetForState:(id)a3
+- (void)_createPlaceholderAssetForState:(id)state
 {
-  v4 = [CAMTimelapseController createPlaceholderResultForTimelapseState:a3];
+  v4 = [CAMTimelapseController createPlaceholderResultForTimelapseState:state];
   if (v4)
   {
     v5 = os_transaction_create();
-    v6 = [(CAMTimelapseBackendController *)self _persistenceController];
+    _persistenceController = [(CAMTimelapseBackendController *)self _persistenceController];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __65__CAMTimelapseBackendController__createPlaceholderAssetForState___block_invoke;
     v8[3] = &unk_1E76FD1E0;
     v9 = v5;
     v7 = v5;
-    [v6 persistPlaceholderTimelapseVideoWithResult:v4 completionHandler:v8];
+    [_persistenceController persistPlaceholderTimelapseVideoWithResult:v4 completionHandler:v8];
   }
 }
 
-- (void)_movieWrittenToFilePath:(id)a3 duration:(id *)a4 metadata:(id)a5 state:(id)a6
+- (void)_movieWrittenToFilePath:(id)path duration:(id *)duration metadata:(id)metadata state:(id)state
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  pathCopy = path;
+  metadataCopy = metadata;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->__workQueue);
   v13 = os_log_create("com.apple.camera", "Nebula");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v12 timelapseUUID];
+    timelapseUUID = [stateCopy timelapseUUID];
     *buf = 138543362;
-    *&buf[4] = v14;
+    *&buf[4] = timelapseUUID;
     _os_log_impl(&dword_1A3640000, v13, OS_LOG_TYPE_DEFAULT, "Finished writing timelapse movie for %{public}@", buf, 0xCu);
   }
 
   v15 = MEMORY[0x1E69BF178];
-  v16 = [v12 timelapseUUID];
-  v17 = [v15 uniqueIncomingPathForAssetWithUUID:v16 andExtension:@"MOV" isPhotoStream:0];
+  timelapseUUID2 = [stateCopy timelapseUUID];
+  v17 = [v15 uniqueIncomingPathForAssetWithUUID:timelapseUUID2 andExtension:@"MOV" isPhotoStream:0];
 
-  v18 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v27 = 0;
-  v19 = [v18 linkItemAtPath:v10 toPath:v17 error:&v27];
+  v19 = [defaultManager linkItemAtPath:pathCopy toPath:v17 error:&v27];
   v20 = v27;
   if (v19)
   {
-    v21 = [(CAMTimelapseBackendController *)self _shouldSaveLastTimelapseDataForDebugging];
-    if (!v21)
+    _shouldSaveLastTimelapseDataForDebugging = [(CAMTimelapseBackendController *)self _shouldSaveLastTimelapseDataForDebugging];
+    if (!_shouldSaveLastTimelapseDataForDebugging)
     {
-      [(CAMTimelapseBackendController *)self _deleteItemAtPath:v10];
+      [(CAMTimelapseBackendController *)self _deleteItemAtPath:pathCopy];
     }
 
-    *buf = *&a4->var0;
-    var3 = a4->var3;
-    [(CAMTimelapseBackendController *)self _notifyAssetsdOfIncomingMovieAtPath:v17 duration:buf metadata:v11 state:v12];
-    v22 = [v12 timelapseUUID];
-    v23 = [CAMTimelapseDiskUtilities directoryPathForTimelapseUUID:v22];
+    *buf = *&duration->var0;
+    var3 = duration->var3;
+    [(CAMTimelapseBackendController *)self _notifyAssetsdOfIncomingMovieAtPath:v17 duration:buf metadata:metadataCopy state:stateCopy];
+    timelapseUUID3 = [stateCopy timelapseUUID];
+    v23 = [CAMTimelapseDiskUtilities directoryPathForTimelapseUUID:timelapseUUID3];
 
-    if (v21)
+    if (_shouldSaveLastTimelapseDataForDebugging)
     {
-      v24 = [v12 timelapseUUID];
-      [(CAMTimelapseBackendController *)self _saveTimelapseDirectoryForDebuggingTimelapseUUID:v24];
+      timelapseUUID4 = [stateCopy timelapseUUID];
+      [(CAMTimelapseBackendController *)self _saveTimelapseDirectoryForDebuggingTimelapseUUID:timelapseUUID4];
     }
 
     else
@@ -1336,8 +1336,8 @@ uint64_t __62__CAMTimelapseBackendController__writeMovieForSessionContext___bloc
       [(CAMTimelapseBackendController *)self _deleteItemAtPath:v23];
     }
 
-    v25 = [v12 timelapseUUID];
-    v26 = [(CAMTimelapseBackendController *)self _getOrCreateSessionContextForTimelapseUUID:v25];
+    timelapseUUID5 = [stateCopy timelapseUUID];
+    v26 = [(CAMTimelapseBackendController *)self _getOrCreateSessionContextForTimelapseUUID:timelapseUUID5];
 
     [(NSMutableArray *)self->__sessionContexts removeObject:v26];
   }
@@ -1359,28 +1359,28 @@ uint64_t __62__CAMTimelapseBackendController__writeMovieForSessionContext___bloc
   return CFPreferencesGetAppBooleanValue(@"CAMSaveLastTimelapseData", @"com.apple.camera", &keyExistsAndHasValidFormat) != 0;
 }
 
-- (void)_saveTimelapseDirectoryForDebuggingTimelapseUUID:(id)a3
+- (void)_saveTimelapseDirectoryForDebuggingTimelapseUUID:(id)d
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [CAMTimelapseDiskUtilities directoryPathForTimelapseUUID:v4];
-  [CAMTimelapseDiskUtilities removeDummyFileForTimelapseUUID:v4];
+  dCopy = d;
+  v5 = [CAMTimelapseDiskUtilities directoryPathForTimelapseUUID:dCopy];
+  [CAMTimelapseDiskUtilities removeDummyFileForTimelapseUUID:dCopy];
 
   v6 = +[CAMTimelapseDiskUtilities timelapseDirectoryPath];
-  v7 = [v6 stringByDeletingLastPathComponent];
-  v8 = [v7 stringByAppendingPathComponent:@"LastTimelapse"];
+  stringByDeletingLastPathComponent = [v6 stringByDeletingLastPathComponent];
+  v8 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:@"LastTimelapse"];
 
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v9 fileExistsAtPath:v8];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:v8];
 
   if (v10)
   {
     [(CAMTimelapseBackendController *)self _deleteItemAtPath:v8];
   }
 
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v16 = 0;
-  v12 = [v11 moveItemAtPath:v5 toPath:v8 error:&v16];
+  v12 = [defaultManager2 moveItemAtPath:v5 toPath:v8 error:&v16];
   v13 = v16;
 
   v14 = os_log_create("com.apple.camera", "Nebula");
@@ -1414,59 +1414,59 @@ uint64_t __62__CAMTimelapseBackendController__writeMovieForSessionContext___bloc
   }
 }
 
-- (void)_notifyAssetsdOfIncomingMovieAtPath:(id)a3 duration:(id *)a4 metadata:(id)a5 state:(id)a6
+- (void)_notifyAssetsdOfIncomingMovieAtPath:(id)path duration:(id *)duration metadata:(id)metadata state:(id)state
 {
   workQueue = self->__workQueue;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
+  stateCopy = state;
+  metadataCopy = metadata;
+  pathCopy = path;
   dispatch_assert_queue_V2(workQueue);
-  v14 = [v11 captureOrientation];
-  v15 = [v11 captureDevice];
-  v16 = [v11 startLocation];
-  v17 = [v11 timelapseUUID];
+  captureOrientation = [stateCopy captureOrientation];
+  captureDevice = [stateCopy captureDevice];
+  startLocation = [stateCopy startLocation];
+  timelapseUUID = [stateCopy timelapseUUID];
   v18 = objc_alloc_init(CAMMutableVideoCaptureRequest);
   [(CAMMutableVideoCaptureRequest *)v18 setTorchMode:0];
-  [(CAMMutableVideoCaptureRequest *)v18 setCaptureOrientation:v14];
-  -[CAMMutableVideoCaptureRequest setCaptureMirrored:](v18, "setCaptureMirrored:", [v11 isCaptureMirrored]);
-  [(CAMMutableVideoCaptureRequest *)v18 setCaptureDevice:v15];
-  [(CAMMutableVideoCaptureRequest *)v18 setLocation:v16];
-  [(CAMMutableVideoCaptureRequest *)v18 setPersistenceUUID:v17];
+  [(CAMMutableVideoCaptureRequest *)v18 setCaptureOrientation:captureOrientation];
+  -[CAMMutableVideoCaptureRequest setCaptureMirrored:](v18, "setCaptureMirrored:", [stateCopy isCaptureMirrored]);
+  [(CAMMutableVideoCaptureRequest *)v18 setCaptureDevice:captureDevice];
+  [(CAMMutableVideoCaptureRequest *)v18 setLocation:startLocation];
+  [(CAMMutableVideoCaptureRequest *)v18 setPersistenceUUID:timelapseUUID];
   [(CAMMutableVideoCaptureRequest *)v18 setTimelapse:1];
-  LODWORD(v14) = [v11 preferHEVC];
+  LODWORD(captureOrientation) = [stateCopy preferHEVC];
 
-  [(CAMMutableVideoCaptureRequest *)v18 setVideoEncodingBehavior:v14];
+  [(CAMMutableVideoCaptureRequest *)v18 setVideoEncodingBehavior:captureOrientation];
   [(CAMMutableVideoCaptureRequest *)v18 setDelegate:self];
   v19 = os_transaction_create();
-  v20 = [(CAMTimelapseBackendController *)self _transactionForPersistenceUUID];
-  [v20 setObject:v19 forKeyedSubscript:v17];
+  _transactionForPersistenceUUID = [(CAMTimelapseBackendController *)self _transactionForPersistenceUUID];
+  [_transactionForPersistenceUUID setObject:v19 forKeyedSubscript:timelapseUUID];
 
-  v21 = [MEMORY[0x1E695DFF8] fileURLWithPath:v13];
+  v21 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy];
 
   v22 = [CAMVideoCaptureResult alloc];
-  v28 = *a4;
+  v28 = *duration;
   v26 = *MEMORY[0x1E6960C70];
   v27 = *(MEMORY[0x1E6960C70] + 16);
   LOBYTE(v25) = 0;
-  v23 = [(CAMVideoCaptureResult *)v22 initWithURL:v21 filteredLocalDestinationURL:0 duration:&v28 stillDisplayTime:&v26 dimensions:0 metadata:v12 videoZoomFactor:1.0 reason:0 videoPreviewPixelBuffer:0 coordinationInfo:0 error:0 slowWriterFrameDrops:v25];
+  v23 = [(CAMVideoCaptureResult *)v22 initWithURL:v21 filteredLocalDestinationURL:0 duration:&v28 stillDisplayTime:&v26 dimensions:0 metadata:metadataCopy videoZoomFactor:1.0 reason:0 videoPreviewPixelBuffer:0 coordinationInfo:0 error:0 slowWriterFrameDrops:v25];
 
-  v24 = [(CAMTimelapseBackendController *)self _persistenceController];
-  [v24 videoRequest:v18 didCompleteCaptureWithResult:v23];
+  _persistenceController = [(CAMTimelapseBackendController *)self _persistenceController];
+  [_persistenceController videoRequest:v18 didCompleteCaptureWithResult:v23];
 }
 
-- (void)videoRequestDidCompleteRemotePersistence:(id)a3 withResponse:(id)a4 error:(id)a5
+- (void)videoRequestDidCompleteRemotePersistence:(id)persistence withResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = [(CAMTimelapseBackendController *)self _transactionForPersistenceUUID];
-  v8 = [v6 persistenceUUID];
-  [v7 removeObjectForKey:v8];
+  persistenceCopy = persistence;
+  _transactionForPersistenceUUID = [(CAMTimelapseBackendController *)self _transactionForPersistenceUUID];
+  persistenceUUID = [persistenceCopy persistenceUUID];
+  [_transactionForPersistenceUUID removeObjectForKey:persistenceUUID];
 
-  v9 = [v6 persistenceUUID];
+  persistenceUUID2 = [persistenceCopy persistenceUUID];
 
-  [(CAMNebulaKeepAliveController *)self->__keepAliveController stopKeepAliveForIdentifier:v9];
+  [(CAMNebulaKeepAliveController *)self->__keepAliveController stopKeepAliveForIdentifier:persistenceUUID2];
 }
 
-- (CGAffineTransform)_frameTransformForState:(SEL)a3
+- (CGAffineTransform)_frameTransformForState:(SEL)state
 {
   v5 = MEMORY[0x1E695EFD0];
   v6 = *(MEMORY[0x1E695EFD0] + 16);
@@ -1474,12 +1474,12 @@ uint64_t __62__CAMTimelapseBackendController__writeMovieForSessionContext___bloc
   *&retstr->c = v6;
   *&retstr->tx = *(v5 + 32);
   v7 = a4;
-  v8 = [v7 captureOrientation];
-  v9 = [v7 isCaptureMirrored];
-  v10 = [v7 captureDevice];
+  captureOrientation = [v7 captureOrientation];
+  isCaptureMirrored = [v7 isCaptureMirrored];
+  captureDevice = [v7 captureDevice];
 
-  v12 = (v10 < 0xC) & (0xF02u >> v10);
-  if (v8 > 2)
+  v12 = (captureDevice < 0xC) & (0xF02u >> captureDevice);
+  if (captureOrientation > 2)
   {
     if (v12)
     {
@@ -1501,12 +1501,12 @@ uint64_t __62__CAMTimelapseBackendController__writeMovieForSessionContext___bloc
       v15 = 0;
     }
 
-    if (v8 != 3)
+    if (captureOrientation != 3)
     {
       v15 = 0;
     }
 
-    if (v8 == 4)
+    if (captureOrientation == 4)
     {
       v13 = v14;
     }
@@ -1517,12 +1517,12 @@ uint64_t __62__CAMTimelapseBackendController__writeMovieForSessionContext___bloc
     }
   }
 
-  else if (v8 == 1)
+  else if (captureOrientation == 1)
   {
     v13 = 90;
   }
 
-  else if (v8 == 2)
+  else if (captureOrientation == 2)
   {
     v13 = 270;
   }
@@ -1539,7 +1539,7 @@ uint64_t __62__CAMTimelapseBackendController__writeMovieForSessionContext___bloc
 
   if (_frameTransformForState__frontCameraRotation)
   {
-    v16 = (v10 < 0xC) & (0xF02u >> v10);
+    v16 = (captureDevice < 0xC) & (0xF02u >> captureDevice);
   }
 
   else
@@ -1580,7 +1580,7 @@ uint64_t __62__CAMTimelapseBackendController__writeMovieForSessionContext___bloc
     *&retstr->tx = *&v24.tx;
   }
 
-  if (v9)
+  if (isCaptureMirrored)
   {
     t2.a = -1.0;
     t2.b = 0.0;
@@ -1609,23 +1609,23 @@ uint64_t __57__CAMTimelapseBackendController__frameTransformForState___block_inv
   return result;
 }
 
-- (void)handleClientConnection:(id)a3
+- (void)handleClientConnection:(id)connection
 {
   v4 = MEMORY[0x1E69E96A0];
   v5 = MEMORY[0x1E69E96A0];
   dispatch_assert_queue_V2(v4);
 
-  v6 = [(CAMTimelapseState *)self->__currentState timelapseUUID];
-  v7 = [CAMTimelapseDiskUtilities readStateForTimelapseUUID:v6 mergeSecondaryState:1];
+  timelapseUUID = [(CAMTimelapseState *)self->__currentState timelapseUUID];
+  v7 = [CAMTimelapseDiskUtilities readStateForTimelapseUUID:timelapseUUID mergeSecondaryState:1];
 
   [(CAMTimelapseBackendController *)self _setCurrentState:v7];
 }
 
-- (int)_pidForApplication:(id)a3
+- (int)_pidForApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = -1;
-  if (v3)
+  if (applicationCopy)
   {
     v16 = 0;
     v17 = &v16;
@@ -1640,7 +1640,7 @@ uint64_t __57__CAMTimelapseBackendController__frameTransformForState___block_inv
     v15 = &v16;
     v7 = v5;
     v14 = v7;
-    [v6 applicationInfoForApplication:v3 completion:&v10];
+    [v6 applicationInfoForApplication:applicationCopy completion:&v10];
     v8 = dispatch_time(0, 10000000000);
     dispatch_semaphore_wait(v7, v8);
     [v6 invalidate];
@@ -1665,8 +1665,8 @@ void __52__CAMTimelapseBackendController__pidForApplication___block_invoke(uint6
 
 - (void)_workQueue_setupCameraProcessMonitoringIfNecessary
 {
-  v3 = [(CAMTimelapseBackendController *)self _workQueue];
-  dispatch_assert_queue_V2(v3);
+  _workQueue = [(CAMTimelapseBackendController *)self _workQueue];
+  dispatch_assert_queue_V2(_workQueue);
 
   if (!self->__applicationStateMonitor)
   {
@@ -1719,8 +1719,8 @@ void __83__CAMTimelapseBackendController__workQueue_setupCameraProcessMonitoring
 
 - (void)_workQueue_destroyApplicationStateMonitor
 {
-  v3 = [(CAMTimelapseBackendController *)self _workQueue];
-  dispatch_assert_queue_V2(v3);
+  _workQueue = [(CAMTimelapseBackendController *)self _workQueue];
+  dispatch_assert_queue_V2(_workQueue);
 
   [(BKSApplicationStateMonitor *)self->__applicationStateMonitor invalidate];
   applicationStateMonitor = self->__applicationStateMonitor;

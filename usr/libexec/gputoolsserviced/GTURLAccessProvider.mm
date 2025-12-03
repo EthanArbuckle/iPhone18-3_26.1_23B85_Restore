@@ -1,23 +1,23 @@
 @interface GTURLAccessProvider
-- (BOOL)_sharesFileSystemWith:(id)a3 remoteConnection:(id)a4;
-- (GTURLAccessProvider)initWithServiceProvider:(id)a3 connectionProvider:(id)a4 serviceVendor:(id)a5;
-- (id)makeURL:(id)a3;
-- (id)urlForPath:(id)a3;
-- (void)copyIdentifier:(id)a3 toDevice:(id)a4 allowLocalURL:(BOOL)a5 directory:(id)a6 completionHandler:(id)a7;
-- (void)securityScopedURLFromSandboxID:(id)a3 completionHandler:(id)a4;
-- (void)transferIdentifier:(id)a3 toDevice:(id)a4 completionHandler:(id)a5;
+- (BOOL)_sharesFileSystemWith:(id)with remoteConnection:(id)connection;
+- (GTURLAccessProvider)initWithServiceProvider:(id)provider connectionProvider:(id)connectionProvider serviceVendor:(id)vendor;
+- (id)makeURL:(id)l;
+- (id)urlForPath:(id)path;
+- (void)copyIdentifier:(id)identifier toDevice:(id)device allowLocalURL:(BOOL)l directory:(id)directory completionHandler:(id)handler;
+- (void)securityScopedURLFromSandboxID:(id)d completionHandler:(id)handler;
+- (void)transferIdentifier:(id)identifier toDevice:(id)device completionHandler:(id)handler;
 @end
 
 @implementation GTURLAccessProvider
 
-- (GTURLAccessProvider)initWithServiceProvider:(id)a3 connectionProvider:(id)a4 serviceVendor:(id)a5
+- (GTURLAccessProvider)initWithServiceProvider:(id)provider connectionProvider:(id)connectionProvider serviceVendor:(id)vendor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  v13 = 0;
-  if (v9 && v10 && v11)
+  providerCopy = provider;
+  connectionProviderCopy = connectionProvider;
+  vendorCopy = vendor;
+  v12 = vendorCopy;
+  selfCopy = 0;
+  if (providerCopy && connectionProviderCopy && vendorCopy)
   {
     v21.receiver = self;
     v21.super_class = GTURLAccessProvider;
@@ -32,23 +32,23 @@
       deviceUDID = v14->_deviceUDID;
       v14->_deviceUDID = v17;
 
-      objc_storeStrong(&v14->_serviceProvider, a3);
-      objc_storeStrong(&v14->_connectionProvider, a4);
-      objc_storeStrong(&v14->_serviceVendor, a5);
+      objc_storeStrong(&v14->_serviceProvider, provider);
+      objc_storeStrong(&v14->_connectionProvider, connectionProvider);
+      objc_storeStrong(&v14->_serviceVendor, vendor);
       v19 = NSTemporaryDirectory();
       DeleteAllArchives(v19);
     }
 
     self = v14;
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (id)urlForPath:(id)a3
+- (id)urlForPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -69,8 +69,8 @@ LABEL_3:
       }
 
       v10 = [(NSMutableDictionary *)self->_registeredURLs objectForKeyedSubscript:*(*(&v14 + 1) + 8 * v9), v14];
-      v11 = [v10 path];
-      v12 = [v11 isEqualToString:v4];
+      path = [v10 path];
+      v12 = [path isEqualToString:pathCopy];
 
       if (v12)
       {
@@ -99,41 +99,41 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)_sharesFileSystemWith:(id)a3 remoteConnection:(id)a4
+- (BOOL)_sharesFileSystemWith:(id)with remoteConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  withCopy = with;
+  connectionCopy = connection;
+  v8 = connectionCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (withCopy && connectionCopy)
   {
-    if ([(NSString *)self->_deviceUDID isEqualToString:v6])
+    if ([(NSString *)self->_deviceUDID isEqualToString:withCopy])
     {
       v9 = 1;
     }
 
     else
     {
-      v10 = [(GTServiceProvider *)self->_serviceProvider allServices];
-      v11 = filteredArrayByService(v10, &OBJC_PROTOCOL___GTSimulatorDeviceBrowser);
-      v12 = [v11 firstObject];
+      allServices = [(GTServiceProvider *)self->_serviceProvider allServices];
+      v11 = filteredArrayByService(allServices, &OBJC_PROTOCOL___GTSimulatorDeviceBrowser);
+      firstObject = [v11 firstObject];
 
       serviceVendor = self->_serviceVendor;
-      v14 = [v12 serviceProperties];
-      v15 = [(GTServiceVendor *)serviceVendor getSimulatorDeviceBrowserService:v14];
+      serviceProperties = [firstObject serviceProperties];
+      v15 = [(GTServiceVendor *)serviceVendor getSimulatorDeviceBrowserService:serviceProperties];
 
-      v9 = [v15 isSimulatorDevice:v6];
+      v9 = [v15 isSimulatorDevice:withCopy];
     }
   }
 
   return v9;
 }
 
-- (void)securityScopedURLFromSandboxID:(id)a3 completionHandler:(id)a4
+- (void)securityScopedURLFromSandboxID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  dCopy = d;
+  handlerCopy = handler;
+  v8 = dCopy;
   if (!v8)
   {
     goto LABEL_10;
@@ -145,14 +145,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v9 = [v8 scheme];
-  v10 = [v9 isEqualToString:@"gtsandboxid"];
+  scheme = [v8 scheme];
+  v10 = [scheme isEqualToString:@"gtsandboxid"];
 
   if (v10 && ([v8 host], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
-    v12 = [v8 path];
+    path = [v8 path];
 
-    if (v12)
+    if (path)
     {
       if (GTCoreLogUseOsLog())
       {
@@ -173,10 +173,10 @@ LABEL_9:
       v19 = [(NSMutableDictionary *)self->_registeredURLs objectForKeyedSubscript:v8];
       if (v19)
       {
-        v20 = v19;
+        host = v19;
         v21 = +[NSFileManager defaultManager];
-        v22 = [v20 path];
-        v23 = [v21 fileExistsAtPath:v22];
+        path2 = [host path];
+        v23 = [v21 fileExistsAtPath:path2];
 
         v24 = GTCoreLogUseOsLog();
         if (v23)
@@ -193,11 +193,11 @@ LABEL_9:
           else
           {
             v27 = __stdoutp;
-            v25 = [NSString stringWithFormat:@"File found locally %@", v20];
+            v25 = [NSString stringWithFormat:@"File found locally %@", host];
             fprintf(v27, "%s\n", [v25 UTF8String]);
           }
 
-          v7[2](v7, v20);
+          handlerCopy[2](handlerCopy, host);
 LABEL_51:
 
           goto LABEL_17;
@@ -215,29 +215,29 @@ LABEL_51:
         else
         {
           v28 = __stderrp;
-          v26 = [NSString stringWithFormat:@"File should exist locally at %@ but can't be found on disk", v20];
+          v26 = [NSString stringWithFormat:@"File should exist locally at %@ but can't be found on disk", host];
           fprintf(v28, "%s\n", [v26 UTF8String]);
         }
 
         [(NSMutableDictionary *)self->_registeredURLs removeObjectForKey:v8];
       }
 
-      v20 = [v8 host];
-      v29 = [(GTConnectionProvider *)self->_connectionProvider connectionForDeviceUDID:v20];
+      host = [v8 host];
+      v29 = [(GTConnectionProvider *)self->_connectionProvider connectionForDeviceUDID:host];
       v30 = v29;
       if (v29)
       {
-        v31 = allServicesForDeviceUDID(v29, v20);
+        v31 = allServicesForDeviceUDID(v29, host);
         v32 = filteredArrayByService(v31, &OBJC_PROTOCOL___GTURLAccessProvider);
-        v33 = [v32 firstObject];
+        firstObject = [v32 firstObject];
 
-        if (v33)
+        if (firstObject)
         {
           v34 = [GTURLAccessProviderXPCProxy alloc];
-          v35 = [v33 serviceProperties];
-          v36 = [(GTURLAccessProviderXPCProxy *)v34 initWithConnection:v30 remoteProperties:v35];
+          serviceProperties = [firstObject serviceProperties];
+          v36 = [(GTURLAccessProviderXPCProxy *)v34 initWithConnection:v30 remoteProperties:serviceProperties];
 
-          if ([(GTURLAccessProvider *)self _sharesFileSystemWith:v20 remoteConnection:v30])
+          if ([(GTURLAccessProvider *)self _sharesFileSystemWith:host remoteConnection:v30])
           {
             v50[0] = _NSConcreteStackBlock;
             v50[1] = 3221225472;
@@ -245,7 +245,7 @@ LABEL_51:
             v50[3] = &unk_100040D70;
             v50[4] = self;
             v51 = v8;
-            v52 = v7;
+            v52 = handlerCopy;
             [(GTURLAccessProviderXPCProxy *)v36 securityScopedURLFromSandboxID:v51 completionHandler:v50];
 
             v37 = v51;
@@ -261,7 +261,7 @@ LABEL_51:
               v47[1] = 3221225472;
               v47[2] = sub_100017938;
               v47[3] = &unk_100040D98;
-              v49 = v7;
+              v49 = handlerCopy;
               v47[4] = self;
               v48 = v8;
               [(GTURLAccessProviderXPCProxy *)v36 copyIdentifier:v48 toDevice:deviceUDID completionHandler:v47];
@@ -275,7 +275,7 @@ LABEL_51:
               v44[1] = 3221225472;
               v44[2] = sub_100017BA4;
               v44[3] = &unk_100040DC0;
-              v46 = v7;
+              v46 = handlerCopy;
               v44[4] = self;
               v45 = v8;
               [(GTURLAccessProviderXPCProxy *)v36 transferIdentifier:v45 toDevice:deviceUDID completionHandler:v44];
@@ -303,7 +303,7 @@ LABEL_51:
             fprintf(v43, "%s\n", [v39 UTF8String]);
           }
 
-          v7[2](v7, 0);
+          handlerCopy[2](handlerCopy, 0);
         }
       }
 
@@ -321,11 +321,11 @@ LABEL_51:
         else
         {
           v42 = __stderrp;
-          v38 = [NSString stringWithFormat:@"Missing remote connection for %@", v20];
+          v38 = [NSString stringWithFormat:@"Missing remote connection for %@", host];
           fprintf(v42, "%s\n", [v38 UTF8String]);
         }
 
-        v7[2](v7, 0);
+        handlerCopy[2](handlerCopy, 0);
       }
 
       goto LABEL_51;
@@ -353,43 +353,43 @@ LABEL_10:
     fprintf(v15, "%s\n", [v16 UTF8String]);
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 LABEL_17:
 }
 
-- (id)makeURL:(id)a3
+- (id)makeURL:(id)l
 {
   ++dword_100051F64;
-  v4 = a3;
-  v5 = [v4 path];
+  lCopy = l;
+  path = [lCopy path];
   v6 = +[NSCharacterSet URLPathAllowedCharacterSet];
-  v7 = [v5 stringByAddingPercentEncodingWithAllowedCharacters:v6];
+  v7 = [path stringByAddingPercentEncodingWithAllowedCharacters:v6];
 
-  v8 = [NSString stringWithFormat:@"%@://%@/%@?id=%u", @"gtsandboxid", self->_deviceUDID, v7, dword_100051F64];
-  v9 = [NSURL URLWithString:v8];
-  [(NSMutableDictionary *)self->_registeredURLs setObject:v4 forKeyedSubscript:v9];
+  dword_100051F64 = [NSString stringWithFormat:@"%@://%@/%@?id=%u", @"gtsandboxid", self->_deviceUDID, v7, dword_100051F64];
+  v9 = [NSURL URLWithString:dword_100051F64];
+  [(NSMutableDictionary *)self->_registeredURLs setObject:lCopy forKeyedSubscript:v9];
 
   return v9;
 }
 
-- (void)transferIdentifier:(id)a3 toDevice:(id)a4 completionHandler:(id)a5
+- (void)transferIdentifier:(id)identifier toDevice:(id)device completionHandler:(id)handler
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100017E84;
   v9[3] = &unk_100040DE8;
-  v10 = a5;
-  v8 = v10;
-  [(GTURLAccessProvider *)self copyIdentifier:a3 toDevice:a4 allowLocalURL:0 directory:0 completionHandler:v9];
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  [(GTURLAccessProvider *)self copyIdentifier:identifier toDevice:device allowLocalURL:0 directory:0 completionHandler:v9];
 }
 
-- (void)copyIdentifier:(id)a3 toDevice:(id)a4 allowLocalURL:(BOOL)a5 directory:(id)a6 completionHandler:(id)a7
+- (void)copyIdentifier:(id)identifier toDevice:(id)device allowLocalURL:(BOOL)l directory:(id)directory completionHandler:(id)handler
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  lCopy = l;
+  identifierCopy = identifier;
+  deviceCopy = device;
+  directoryCopy = directory;
+  handlerCopy = handler;
   if (GTCoreLogUseOsLog())
   {
     v16 = gt_tagged_log(0x10u);
@@ -402,12 +402,12 @@ LABEL_17:
   else
   {
     v17 = __stdoutp;
-    v18 = [NSString stringWithFormat:@"copyIdentifier %@ to device %@", v12, v13];
-    fprintf(v17, "%s\n", [v18 UTF8String]);
+    deviceCopy = [NSString stringWithFormat:@"copyIdentifier %@ to device %@", identifierCopy, deviceCopy];
+    fprintf(v17, "%s\n", [deviceCopy UTF8String]);
   }
 
-  v19 = [(NSMutableDictionary *)self->_registeredURLs objectForKeyedSubscript:v12];
-  v123 = v9;
+  v19 = [(NSMutableDictionary *)self->_registeredURLs objectForKeyedSubscript:identifierCopy];
+  v123 = lCopy;
   if (GTCoreLogUseOsLog())
   {
     v20 = gt_tagged_log(0x10u);
@@ -424,14 +424,14 @@ LABEL_17:
     fprintf(v21, "%s\n", [v20 UTF8String]);
   }
 
-  v22 = [(GTConnectionProvider *)self->_connectionProvider connectionForDeviceUDID:v13];
+  v22 = [(GTConnectionProvider *)self->_connectionProvider connectionForDeviceUDID:deviceCopy];
   v23 = v22;
   if (!v22)
   {
     if (GTCoreLogUseOsLog())
     {
-      v28 = gt_tagged_log(0x10u);
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+      deviceCopy2 = gt_tagged_log(0x10u);
+      if (os_log_type_enabled(deviceCopy2, OS_LOG_TYPE_ERROR))
       {
         sub_10001B4E0();
       }
@@ -440,28 +440,28 @@ LABEL_17:
     else
     {
       v30 = __stderrp;
-      v28 = [NSString stringWithFormat:@"No remote connection for device %@", v13];
-      fprintf(v30, "%s\n", [v28 UTF8String]);
+      deviceCopy2 = [NSString stringWithFormat:@"No remote connection for device %@", deviceCopy];
+      fprintf(v30, "%s\n", [deviceCopy2 UTF8String]);
     }
 
     v164 = NSLocalizedDescriptionKey;
-    v31 = [NSString stringWithFormat:@"Missing connection for device: %@", v13];
-    v165 = v31;
+    deviceCopy3 = [NSString stringWithFormat:@"Missing connection for device: %@", deviceCopy];
+    v165 = deviceCopy3;
     v32 = [NSDictionary dictionaryWithObjects:&v165 forKeys:&v164 count:1];
     v24 = [NSError errorWithDomain:@"com.apple.gputools.urlaccessprovider" code:0 userInfo:v32];
 
-    v15[2](v15, 0, v24);
+    handlerCopy[2](handlerCopy, 0, v24);
     goto LABEL_93;
   }
 
-  v119 = self;
-  v24 = FindRemoteGTFileWriterService(v22, v13, self->_connectionProvider);
+  selfCopy = self;
+  v24 = FindRemoteGTFileWriterService(v22, deviceCopy, self->_connectionProvider);
   if (!v24)
   {
     if (GTCoreLogUseOsLog())
     {
-      v29 = gt_tagged_log(0x10u);
-      if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+      deviceCopy4 = gt_tagged_log(0x10u);
+      if (os_log_type_enabled(deviceCopy4, OS_LOG_TYPE_ERROR))
       {
         sub_10001B470();
       }
@@ -470,23 +470,23 @@ LABEL_17:
     else
     {
       v33 = __stderrp;
-      v29 = [NSString stringWithFormat:@"Failed to find remote file writer service for device %@", v13];
-      fprintf(v33, "%s\n", [v29 UTF8String]);
+      deviceCopy4 = [NSString stringWithFormat:@"Failed to find remote file writer service for device %@", deviceCopy];
+      fprintf(v33, "%s\n", [deviceCopy4 UTF8String]);
     }
 
     v162 = NSLocalizedDescriptionKey;
-    v34 = [NSString stringWithFormat:@"Missing file writer service for device: %@", v13];
-    v163 = v34;
+    deviceCopy5 = [NSString stringWithFormat:@"Missing file writer service for device: %@", deviceCopy];
+    v163 = deviceCopy5;
     v35 = [NSDictionary dictionaryWithObjects:&v163 forKeys:&v162 count:1];
     v36 = [NSError errorWithDomain:@"com.apple.gputools.urlaccessprovider" code:1 userInfo:v35];
 
-    v15[2](v15, 0, v36);
+    handlerCopy[2](handlerCopy, 0, v36);
     goto LABEL_92;
   }
 
   v25 = [GTFileWriterServiceXPCProxy alloc];
-  v26 = [v24 serviceProperties];
-  v122 = [(GTFileWriterServiceXPCProxy *)v25 initWithConnection:v23 remoteProperties:v26];
+  serviceProperties = [v24 serviceProperties];
+  v122 = [(GTFileWriterServiceXPCProxy *)v25 initWithConnection:v23 remoteProperties:serviceProperties];
 
   if (([v19 startAccessingSecurityScopedResource] & 1) == 0)
   {
@@ -507,8 +507,8 @@ LABEL_17:
     }
   }
 
-  v118 = v12;
-  v38 = v14;
+  v118 = identifierCopy;
+  v38 = directoryCopy;
   v136 = 0;
   v39 = v19;
   v159 = 0;
@@ -523,7 +523,7 @@ LABEL_17:
 
   v112 = v23;
   v108 = v41;
-  v124 = [v41 pathComponents];
+  pathComponents = [v41 pathComponents];
   v155 = 0;
   v156 = &v155;
   v157 = 0x2020000000;
@@ -563,8 +563,8 @@ LABEL_17:
   v48 = v47;
   v126 = *v145;
   v117 = v46;
-  v106 = v15;
-  v107 = v13;
+  v106 = handlerCopy;
+  v107 = deviceCopy;
   v114 = v38;
   v110 = v19;
   while (2)
@@ -611,7 +611,7 @@ LABEL_17:
 
       v58 = v150 + 5;
       v139 = v150[5];
-      v59 = v124;
+      v59 = pathComponents;
       *v174 = 0;
       v60 = 0;
       if ([v50 getResourceValue:v174 forKey:NSURLCanonicalPathKey error:&v139])
@@ -692,9 +692,9 @@ LABEL_17:
             v105 = v65;
             if (GTCoreLogUseOsLog())
             {
-              v69 = gt_tagged_log(0x10u);
+              1024 = gt_tagged_log(0x10u);
               v70 = &SecTaskCopySigningIdentifier_ptr;
-              if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(1024, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412802;
                 *&buf[4] = v66;
@@ -702,7 +702,7 @@ LABEL_17:
                 v170 = v68;
                 v171 = 2048;
                 v172 = 1024;
-                _os_log_error_impl(&_mh_execute_header, v69, OS_LOG_TYPE_ERROR, "Target path for symlink %@ is too long (%zd bytes >= %lu bytes [PATH_MAX])", buf, 0x20u);
+                _os_log_error_impl(&_mh_execute_header, 1024, OS_LOG_TYPE_ERROR, "Target path for symlink %@ is too long (%zd bytes >= %lu bytes [PATH_MAX])", buf, 0x20u);
               }
             }
 
@@ -710,13 +710,13 @@ LABEL_17:
             {
               v83 = __stderrp;
               v70 = &SecTaskCopySigningIdentifier_ptr;
-              v69 = [NSString stringWithFormat:@"Target path for symlink %@ is too long (%zd bytes >= %lu bytes [PATH_MAX])", v66, v68, 1024];
-              fprintf(v83, "%s\n", [v69 UTF8String]);
+              1024 = [NSString stringWithFormat:@"Target path for symlink %@ is too long (%zd bytes >= %lu bytes [PATH_MAX])", v66, v68, 1024];
+              fprintf(v83, "%s\n", [1024 UTF8String]);
             }
 
             v173 = NSLocalizedDescriptionKey;
-            v84 = [v70[248] stringWithFormat:@"Target path for symlink %@ is too long (%zd bytes >= %lu bytes [PATH_MAX])", v66, v68, 1024];
-            *buf = v84;
+            10242 = [v70[248] stringWithFormat:@"Target path for symlink %@ is too long (%zd bytes >= %lu bytes [PATH_MAX])", v66, v68, 1024];
+            *buf = 10242;
             v85 = [NSDictionary dictionaryWithObjects:buf forKeys:&v173 count:1];
             v64 = [NSError errorWithDomain:NSPOSIXErrorDomain code:55 userInfo:v85];
             v86 = v64;
@@ -757,8 +757,8 @@ LABEL_70:
         v19 = v110;
 
         objc_autoreleasePoolPop(v51);
-        v15 = v106;
-        v13 = v107;
+        handlerCopy = v106;
+        deviceCopy = v107;
         v38 = v114;
         v24 = v120;
         goto LABEL_71;
@@ -777,8 +777,8 @@ LABEL_60:
 
     while (v48 != v49);
     v48 = [obj countByEnumeratingWithState:&v144 objects:v166 count:16];
-    v15 = v106;
-    v13 = v107;
+    handlerCopy = v106;
+    deviceCopy = v107;
     v38 = v114;
     v19 = v110;
     v24 = v120;
@@ -819,28 +819,28 @@ LABEL_75:
     v128 = v87;
     v88 = v39;
     v127 = objc_opt_new();
-    v14 = v38;
+    directoryCopy = v38;
     if (v38)
     {
       v115 = v38;
-      v12 = v118;
+      identifierCopy = v118;
       if (objc_opt_respondsToSelector())
       {
         v89 = objc_opt_new();
-        v90 = [v88 path];
+        path = [v88 path];
         v113 = v23;
         v91 = v19;
-        deviceUDID = v119->_deviceUDID;
+        deviceUDID = selfCopy->_deviceUDID;
         v134[0] = _NSConcreteStackBlock;
         v134[1] = 3221225472;
         v134[2] = sub_100019080;
         v134[3] = &unk_100040DE8;
-        v135 = v15;
+        v135 = handlerCopy;
         v93 = deviceUDID;
         v19 = v91;
         v23 = v113;
-        v14 = v115;
-        [(GTFileWriterServiceXPCProxy *)v122 startTransfer:v42 basePath:v90 fromDevice:v93 toDirectory:v115 options:v89 completionHandler:v134];
+        directoryCopy = v115;
+        [(GTFileWriterServiceXPCProxy *)v122 startTransfer:v42 basePath:path fromDevice:v93 toDirectory:v115 options:v89 completionHandler:v134];
 
         v94 = v127;
         v87 = v128;
@@ -852,7 +852,7 @@ LABEL_75:
         if (GTCoreLogUseOsLog())
         {
           v98 = gt_tagged_log(0x10u);
-          v14 = v115;
+          directoryCopy = v115;
           v99 = v128;
           if (os_log_type_enabled(v98, OS_LOG_TYPE_ERROR))
           {
@@ -865,7 +865,7 @@ LABEL_75:
           v102 = __stderrp;
           v98 = [NSString stringWithFormat:@"The gputrace file transfer service is too old to support remote macOS debugging. Try updating your device's DDI by installing a newer Xcode."];
           fprintf(v102, "%s\n", [v98 UTF8String]);
-          v14 = v115;
+          directoryCopy = v115;
           v99 = v128;
         }
 
@@ -875,7 +875,7 @@ LABEL_75:
         v104 = [NSDictionary dictionaryWithObjects:&v161 forKeys:&v160 count:1];
         v87 = [NSError errorWithDomain:@"com.apple.gputools.urlaccessprovider" code:2 userInfo:v104];
 
-        v15[2](v15, 0, v87);
+        handlerCopy[2](handlerCopy, 0, v87);
         v19 = v111;
         v94 = v127;
       }
@@ -883,34 +883,34 @@ LABEL_75:
 
     else
     {
-      v12 = v118;
+      identifierCopy = v118;
       if (v123 && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v95 = [v88 path];
-        v96 = v119->_deviceUDID;
+        path2 = [v88 path];
+        v96 = selfCopy->_deviceUDID;
         v132[0] = _NSConcreteStackBlock;
         v132[1] = 3221225472;
         v132[2] = sub_100019090;
         v132[3] = &unk_100040DE8;
-        v133 = v15;
+        v133 = handlerCopy;
         v94 = v127;
-        [(GTFileWriterServiceXPCProxy *)v122 startTransfer:v42 basePath:v95 fromDevice:v96 options:v127 completionHandler:v132];
+        [(GTFileWriterServiceXPCProxy *)v122 startTransfer:v42 basePath:path2 fromDevice:v96 options:v127 completionHandler:v132];
 
         v97 = v133;
       }
 
       else
       {
-        v100 = [v88 path];
-        v101 = v119->_deviceUDID;
+        path3 = [v88 path];
+        v101 = selfCopy->_deviceUDID;
         v129[0] = _NSConcreteStackBlock;
         v129[1] = 3221225472;
         v129[2] = sub_1000190A0;
         v129[3] = &unk_100040E10;
-        v131 = v15;
+        v131 = handlerCopy;
         v130 = v88;
         v94 = v127;
-        [(GTFileWriterServiceXPCProxy *)v122 initiateTransfer:v42 basePath:v100 fromDevice:v101 options:v127 completionHandler:v129];
+        [(GTFileWriterServiceXPCProxy *)v122 initiateTransfer:v42 basePath:path3 fromDevice:v101 options:v127 completionHandler:v129];
 
         v97 = v131;
       }
@@ -923,9 +923,9 @@ LABEL_75:
 
   else
   {
-    v15[2](v15, 0, v87);
-    v14 = v38;
-    v12 = v118;
+    handlerCopy[2](handlerCopy, 0, v87);
+    directoryCopy = v38;
+    identifierCopy = v118;
   }
 
   v36 = v122;

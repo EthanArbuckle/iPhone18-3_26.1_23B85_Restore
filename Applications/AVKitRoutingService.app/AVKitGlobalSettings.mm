@@ -13,37 +13,37 @@
 - (BOOL)timelineDiagnosticsEnabled;
 - (BOOL)visualAnalysisEnabled;
 - (BOOL)visualAnalysisSupported;
-- (void)setDisplayingCaptionsOnSkipBack:(BOOL)a3;
-- (void)setMostRecentAudioLanguageCode:(id)a3;
-- (void)setMostRecentLegibleLanguageCode:(id)a3;
-- (void)setPlayerGeneration:(int64_t)a3;
-- (void)setSharedSetting:(id)a3 toString:(id)a4;
-- (void)setSubtitleAutomaticallyEnabledState:(unint64_t)a3;
+- (void)setDisplayingCaptionsOnSkipBack:(BOOL)back;
+- (void)setMostRecentAudioLanguageCode:(id)code;
+- (void)setMostRecentLegibleLanguageCode:(id)code;
+- (void)setPlayerGeneration:(int64_t)generation;
+- (void)setSharedSetting:(id)setting toString:(id)string;
+- (void)setSubtitleAutomaticallyEnabledState:(unint64_t)state;
 @end
 
 @implementation AVKitGlobalSettings
 
-- (void)setSharedSetting:(id)a3 toString:(id)a4
+- (void)setSharedSetting:(id)setting toString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
+  settingCopy = setting;
+  stringCopy = string;
   v7 = [[NSXPCConnection alloc] initWithServiceName:@"com.apple.avkit.SharedPreferences"];
   v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___AVSharedPreferencesProtocol];
   [v7 setRemoteObjectInterface:v8];
 
   [v7 resume];
-  v9 = [v7 remoteObjectProxy];
+  remoteObjectProxy = [v7 remoteObjectProxy];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10005B19C;
   v13[3] = &unk_10007BDC0;
-  v14 = v5;
-  v15 = v6;
+  v14 = settingCopy;
+  v15 = stringCopy;
   v16 = v7;
   v10 = v7;
-  v11 = v6;
-  v12 = v5;
-  [v9 setString:v11 forKey:v12 completion:v13];
+  v11 = stringCopy;
+  v12 = settingCopy;
+  [remoteObjectProxy setString:v11 forKey:v12 completion:v13];
 }
 
 - (BOOL)subtitlesOnMuteEnabled
@@ -126,43 +126,43 @@
 
 - (BOOL)timelineDiagnosticsEnabled
 {
-  v2 = [(AVKitGlobalSettings *)self _platformSupportsIntegratedTimeline];
-  if (v2)
+  _platformSupportsIntegratedTimeline = [(AVKitGlobalSettings *)self _platformSupportsIntegratedTimeline];
+  if (_platformSupportsIntegratedTimeline)
   {
     v3 = sub_10005D9F8();
     v4 = [v3 BOOLForKey:@"TimelineDiagnostics"];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(_platformSupportsIntegratedTimeline) = v4;
   }
 
-  return v2;
+  return _platformSupportsIntegratedTimeline;
 }
 
 - (BOOL)isIntegratedTimelineEnabled
 {
-  v2 = [(AVKitGlobalSettings *)self _platformSupportsIntegratedTimeline];
-  if (v2)
+  _platformSupportsIntegratedTimeline = [(AVKitGlobalSettings *)self _platformSupportsIntegratedTimeline];
+  if (_platformSupportsIntegratedTimeline)
   {
     if (_os_feature_enabled_impl())
     {
-      LOBYTE(v2) = 1;
+      LOBYTE(_platformSupportsIntegratedTimeline) = 1;
     }
 
     else
     {
       v3 = sub_10005B804();
-      LOBYTE(v2) = _os_feature_enabled_impl() & v3;
+      LOBYTE(_platformSupportsIntegratedTimeline) = _os_feature_enabled_impl() & v3;
     }
   }
 
-  return v2;
+  return _platformSupportsIntegratedTimeline;
 }
 
-- (void)setDisplayingCaptionsOnSkipBack:(BOOL)a3
+- (void)setDisplayingCaptionsOnSkipBack:(BOOL)back
 {
-  if (self->_displayingCaptionsOnSkipBack != a3)
+  if (self->_displayingCaptionsOnSkipBack != back)
   {
-    v3 = a3;
+    backCopy = back;
     v5 = sub_10005AA5C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -171,7 +171,7 @@
       *&v9[4] = "[AVKitGlobalSettings setDisplayingCaptionsOnSkipBack:]";
       *&v9[14] = "displayingCaptionsOnSkipBack";
       *&v9[12] = 2080;
-      if (v3)
+      if (backCopy)
       {
         v6 = "YES";
       }
@@ -181,8 +181,8 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", v9, 0x20u);
     }
 
-    self->_displayingCaptionsOnSkipBack = v3;
-    if (+[AVKitGlobalSettings _isDisplayingCaptionsOnSkipBack]!= v3)
+    self->_displayingCaptionsOnSkipBack = backCopy;
+    if (+[AVKitGlobalSettings _isDisplayingCaptionsOnSkipBack]!= backCopy)
     {
       v7 = sub_10005AA5C();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -192,7 +192,7 @@
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s updating the shared setting", v9, 0xCu);
       }
 
-      if (v3)
+      if (backCopy)
       {
         v8 = @"YES";
       }
@@ -207,9 +207,9 @@
   }
 }
 
-- (void)setSubtitleAutomaticallyEnabledState:(unint64_t)a3
+- (void)setSubtitleAutomaticallyEnabledState:(unint64_t)state
 {
-  if (self->_subtitleAutomaticallyEnabledState != a3)
+  if (self->_subtitleAutomaticallyEnabledState != state)
   {
     v5 = sub_10005AA5C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -217,9 +217,9 @@
       v6 = "YES";
       *buf = 136315650;
       v10 = "[AVKitGlobalSettings setSubtitleAutomaticallyEnabledState:]";
-      v12 = "subtitleAutomaticallyEnabledState";
+      stateCopy = "subtitleAutomaticallyEnabledState";
       v11 = 2080;
-      if (!a3)
+      if (!state)
       {
         v6 = "NO";
       }
@@ -229,8 +229,8 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", buf, 0x20u);
     }
 
-    self->_subtitleAutomaticallyEnabledState = a3;
-    if (+[AVKitGlobalSettings _subtitleAutomaticallyEnabledState]!= a3)
+    self->_subtitleAutomaticallyEnabledState = state;
+    if (+[AVKitGlobalSettings _subtitleAutomaticallyEnabledState]!= state)
     {
       v7 = sub_10005AA5C();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -238,21 +238,21 @@
         *buf = 136315394;
         v10 = "[AVKitGlobalSettings setSubtitleAutomaticallyEnabledState:]";
         v11 = 2048;
-        v12 = a3;
+        stateCopy = state;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s updating the shared setting: %ld ", buf, 0x16u);
       }
 
-      v8 = [NSString stringWithFormat:@"%ld", a3];
-      [(AVKitGlobalSettings *)self setSharedSetting:@"subtitleAutomaticallyEnabledState" toString:v8];
+      state = [NSString stringWithFormat:@"%ld", state];
+      [(AVKitGlobalSettings *)self setSharedSetting:@"subtitleAutomaticallyEnabledState" toString:state];
     }
   }
 }
 
-- (void)setMostRecentAudioLanguageCode:(id)a3
+- (void)setMostRecentAudioLanguageCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   mostRecentAudioLanguageCode = self->_mostRecentAudioLanguageCode;
-  if (mostRecentAudioLanguageCode != v4 && (!v4 || ![(NSString *)mostRecentAudioLanguageCode isEqualToString:v4]))
+  if (mostRecentAudioLanguageCode != codeCopy && (!codeCopy || ![(NSString *)mostRecentAudioLanguageCode isEqualToString:codeCopy]))
   {
     v6 = sub_10005AA5C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -260,17 +260,17 @@
       v12 = 136315394;
       v13 = "[AVKitGlobalSettings setMostRecentAudioLanguageCode:]";
       v14 = 2114;
-      v15 = v4;
+      v15 = codeCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s '%{public}@", &v12, 0x16u);
     }
 
-    v7 = [(NSString *)v4 copy];
+    v7 = [(NSString *)codeCopy copy];
     v8 = self->_mostRecentAudioLanguageCode;
     self->_mostRecentAudioLanguageCode = v7;
 
     v9 = +[AVKitGlobalSettings _mostRecentAudioLanguageCode];
     v10 = v9;
-    if (v9 != v4 && (!v4 || !v9 || ![(NSString *)v9 isEqualToString:v4]))
+    if (v9 != codeCopy && (!codeCopy || !v9 || ![(NSString *)v9 isEqualToString:codeCopy]))
     {
       v11 = sub_10005AA5C();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -280,16 +280,16 @@
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s updating the shared setting", &v12, 0xCu);
       }
 
-      [(AVKitGlobalSettings *)self setSharedSetting:@"RecentAudioLanguageCode" toString:v4];
+      [(AVKitGlobalSettings *)self setSharedSetting:@"RecentAudioLanguageCode" toString:codeCopy];
     }
   }
 }
 
-- (void)setMostRecentLegibleLanguageCode:(id)a3
+- (void)setMostRecentLegibleLanguageCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   mostRecentLegibleLanguageCode = self->_mostRecentLegibleLanguageCode;
-  if (mostRecentLegibleLanguageCode != v4 && (!v4 || ![(NSString *)mostRecentLegibleLanguageCode isEqualToString:v4]))
+  if (mostRecentLegibleLanguageCode != codeCopy && (!codeCopy || ![(NSString *)mostRecentLegibleLanguageCode isEqualToString:codeCopy]))
   {
     v6 = sub_10005AA5C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -297,17 +297,17 @@
       v12 = 136315394;
       v13 = "[AVKitGlobalSettings setMostRecentLegibleLanguageCode:]";
       v14 = 2114;
-      v15 = v4;
+      v15 = codeCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s '%{public}@", &v12, 0x16u);
     }
 
-    v7 = [(NSString *)v4 copy];
+    v7 = [(NSString *)codeCopy copy];
     v8 = self->_mostRecentLegibleLanguageCode;
     self->_mostRecentLegibleLanguageCode = v7;
 
     v9 = +[AVKitGlobalSettings _mostRecentLegibleLanguageCode];
     v10 = v9;
-    if (v9 != v4 && (!v4 || !v9 || ![(NSString *)v9 isEqualToString:v4]))
+    if (v9 != codeCopy && (!codeCopy || !v9 || ![(NSString *)v9 isEqualToString:codeCopy]))
     {
       v11 = sub_10005AA5C();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -317,41 +317,41 @@
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s updating the shared setting", &v12, 0xCu);
       }
 
-      [(AVKitGlobalSettings *)self setSharedSetting:@"RecentLegibleLanguageCode" toString:v4];
+      [(AVKitGlobalSettings *)self setSharedSetting:@"RecentLegibleLanguageCode" toString:codeCopy];
     }
   }
 }
 
-- (void)setPlayerGeneration:(int64_t)a3
+- (void)setPlayerGeneration:(int64_t)generation
 {
   if (self)
   {
-    v4 = a3;
-    if (a3 == 2)
+    generationCopy = generation;
+    if (generation == 2)
     {
       if ([(AVKitGlobalSettings *)self thirdGenerationControlsEnabled])
       {
-        v4 = 2;
+        generationCopy = 2;
       }
 
       else
       {
-        v4 = 1;
+        generationCopy = 1;
       }
     }
   }
 
   else
   {
-    v4 = 0;
+    generationCopy = 0;
   }
 
-  if (self->_playerGeneration != v4)
+  if (self->_playerGeneration != generationCopy)
   {
     v5 = sub_10005AA5C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [NSNumber numberWithInteger:v4];
+      v6 = [NSNumber numberWithInteger:generationCopy];
       v7 = 136315394;
       v8 = "[AVKitGlobalSettings setPlayerGeneration:]";
       v9 = 2112;
@@ -359,7 +359,7 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v7, 0x16u);
     }
 
-    self->_playerGeneration = v4;
+    self->_playerGeneration = generationCopy;
   }
 }
 
@@ -442,9 +442,9 @@ LABEL_18:
   if (!(v11 & 1 | ((v10 & 1) == 0)))
   {
     v12 = sub_10005D8C8();
-    v13 = [v12 lowercaseString];
+    lowercaseString = [v12 lowercaseString];
 
-    v11 = [v13 hasPrefix:@"com.apple."];
+    v11 = [lowercaseString hasPrefix:@"com.apple."];
   }
 
   v2->_playbackSpeedControlEnabled = v11;
@@ -572,8 +572,8 @@ LABEL_18:
   v2->_constrainedHDREnabled = _os_feature_enabled_impl();
   objc_opt_self();
   v36 = +[UIScreen avkit_mainScreen];
-  v37 = [v36 traitCollection];
-  v38 = [v37 userInterfaceIdiom] == 0;
+  traitCollection = [v36 traitCollection];
+  v38 = [traitCollection userInterfaceIdiom] == 0;
 
   if (v38)
   {
@@ -687,15 +687,15 @@ LABEL_18:
   v2 = MGGetBoolAnswer();
   v3 = _os_feature_enabled_impl();
   v4 = +[UIScreen avkit_mainScreen];
-  v5 = [v4 traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [v4 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   if (!v3)
   {
     return 0;
   }
 
-  if (v6)
+  if (userInterfaceIdiom)
   {
     return 0;
   }

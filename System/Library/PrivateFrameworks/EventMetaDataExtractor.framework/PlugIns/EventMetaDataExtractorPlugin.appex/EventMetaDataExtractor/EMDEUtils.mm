@@ -1,29 +1,29 @@
 @interface EMDEUtils
 + (BOOL)isValidConfigFile;
-+ (CFScopedPtr<MontrealNeuralNetwork)loadExtractionModelWithError:(id *)a3;
++ (CFScopedPtr<MontrealNeuralNetwork)loadExtractionModelWithError:(id *)error;
 + (NSDictionary)config;
 + (basic_string<char,)getTokenForTokenID:(std::allocator<char>> *__return_ptr)retstr;
 + (id)decodeSequence:()vector<int;
-+ (id)preProcessInputMessage:(id)a3;
-+ (id)profaneRangesForText:(id)a3 usingLexicon:(_LXLexicon *)a4;
-+ (id)removeLinksFrom:(id)a3;
-+ (unsigned)validateAndUpdateAllowedWords:(void *)a3 forWord:()basic_string<char isComplete:()std:(std::allocator<char>> *)a4 :char_traits<char>;
-+ (vector<float,)tokenizeInputSequence:(id)a2;
++ (id)preProcessInputMessage:(id)message;
++ (id)profaneRangesForText:(id)text usingLexicon:(_LXLexicon *)lexicon;
++ (id)removeLinksFrom:(id)from;
++ (unsigned)validateAndUpdateAllowedWords:(void *)words forWord:()basic_string<char isComplete:()std:(std::allocator<char>> *)std :char_traits<char>;
++ (vector<float,)tokenizeInputSequence:(id)sequence;
 + (vector<std::string,)allowedPrefixes;
 + (vector<std::string,)decodeVocabulary;
-+ (void)loadConfigFromFile:(id)a3 assetFolderPath:(id)a4 error:(id *)a5;
++ (void)loadConfigFromFile:(id)file assetFolderPath:(id)path error:(id *)error;
 + (void)loadDecodeVocabulary;
-+ (void)setAllowedPrefixes:()vector<std:(std::allocator<std::string>> *)a3 :string;
-+ (void)setDecodeVocabulary:()vector<std:(std::allocator<std::string>> *)a3 :string;
++ (void)setAllowedPrefixes:()vector<std:(std::allocator<std::string>> *)std :string;
++ (void)setDecodeVocabulary:()vector<std:(std::allocator<std::string>> *)std :string;
 @end
 
 @implementation EMDEUtils
 
-+ (void)setAllowedPrefixes:()vector<std:(std::allocator<std::string>> *)a3 :string
++ (void)setAllowedPrefixes:()vector<std:(std::allocator<std::string>> *)std :string
 {
-  if (a3 != &qword_1000B6400)
+  if (std != &qword_1000B6400)
   {
-    sub_10000CD84(&qword_1000B6400, a3->var0, a3->var1, 0xAAAAAAAAAAAAAAABLL * ((a3->var1 - a3->var0) >> 3));
+    sub_10000CD84(&qword_1000B6400, std->var0, std->var1, 0xAAAAAAAAAAAAAAABLL * ((std->var1 - std->var0) >> 3));
   }
 }
 
@@ -35,11 +35,11 @@
   return sub_10000D024(retstr, qword_1000B6400, *algn_1000B6408, 0xAAAAAAAAAAAAAAABLL * ((*algn_1000B6408 - qword_1000B6400) >> 3));
 }
 
-+ (void)setDecodeVocabulary:()vector<std:(std::allocator<std::string>> *)a3 :string
++ (void)setDecodeVocabulary:()vector<std:(std::allocator<std::string>> *)std :string
 {
-  if (a3 != &qword_1000B6418)
+  if (std != &qword_1000B6418)
   {
-    sub_10000CD84(&qword_1000B6418, a3->var0, a3->var1, 0xAAAAAAAAAAAAAAABLL * ((a3->var1 - a3->var0) >> 3));
+    sub_10000CD84(&qword_1000B6418, std->var0, std->var1, 0xAAAAAAAAAAAAAAABLL * ((std->var1 - std->var0) >> 3));
   }
 }
 
@@ -57,7 +57,7 @@
   if (!qword_1000B6430)
   {
     v12 = 0;
-    [a1 loadConfigFromFile:qword_1000B6440 assetFolderPath:qword_1000B6438 error:&v12];
+    [self loadConfigFromFile:qword_1000B6440 assetFolderPath:qword_1000B6438 error:&v12];
     v3 = v12;
     if (v3)
     {
@@ -74,40 +74,40 @@
   return v2;
 }
 
-+ (void)loadConfigFromFile:(id)a3 assetFolderPath:(id)a4 error:(id *)a5
++ (void)loadConfigFromFile:(id)file assetFolderPath:(id)path error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9 && v10)
+  fileCopy = file;
+  pathCopy = path;
+  v11 = pathCopy;
+  if (fileCopy && pathCopy)
   {
-    objc_storeStrong(&qword_1000B6438, a4);
-    objc_storeStrong(&qword_1000B6440, a3);
+    objc_storeStrong(&qword_1000B6438, path);
+    objc_storeStrong(&qword_1000B6440, file);
     v12 = [qword_1000B6438 stringByAppendingPathComponent:qword_1000B6440];
     v13 = [NSURL fileURLWithPath:v12];
-    v14 = [NSData dataWithContentsOfURL:v13 options:0 error:a5];
+    v14 = [NSData dataWithContentsOfURL:v13 options:0 error:error];
 
-    if (a5 && *a5)
+    if (error && *error)
     {
       v15 = extractionLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        sub_10008B854(a5, v15, v16, v17, v18, v19, v20, v21);
+        sub_10008B854(error, v15, v16, v17, v18, v19, v20, v21);
       }
     }
 
     else
     {
-      v24 = [NSPropertyListSerialization propertyListWithData:v14 options:0 format:0 error:a5];
+      v24 = [NSPropertyListSerialization propertyListWithData:v14 options:0 format:0 error:error];
       v25 = qword_1000B6430;
       qword_1000B6430 = v24;
 
-      if (a5 && *a5)
+      if (error && *error)
       {
         v15 = extractionLogHandle();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          sub_10008B8C4(a5, v15, v26, v27, v28, v29, v30, v31);
+          sub_10008B8C4(error, v15, v26, v27, v28, v29, v30, v31);
         }
       }
 
@@ -121,7 +121,7 @@
 
         if ([objc_opt_class() isValidConfigFile])
         {
-          [a1 loadDecodeVocabulary];
+          [self loadDecodeVocabulary];
         }
 
         else
@@ -132,14 +132,14 @@
             sub_10008B934();
           }
 
-          if (a5)
+          if (error)
           {
             v37 = NSLocalizedDescriptionKey;
             v35 = [NSString stringWithFormat:@"EMDEUtils - Loaded config file is not valid."];
             v38 = v35;
             v36 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
 
-            *a5 = [NSError errorWithDomain:@"com.apple.eventMetaDataExtractor.eventMetaDataExtractorPlugin" code:500 userInfo:v36];
+            *error = [NSError errorWithDomain:@"com.apple.eventMetaDataExtractor.eventMetaDataExtractorPlugin" code:500 userInfo:v36];
           }
         }
       }
@@ -151,17 +151,17 @@
   v22 = extractionLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
-    sub_10008B968(v9, v11, v22);
+    sub_10008B968(fileCopy, v11, v22);
   }
 
-  if (a5)
+  if (error)
   {
     v39 = NSLocalizedDescriptionKey;
-    v23 = [NSString stringWithFormat:@"Found nil in input parameters for loadConfigFromFile:%@ assetFolderPath:%@", v9, v11];
+    v23 = [NSString stringWithFormat:@"Found nil in input parameters for loadConfigFromFile:%@ assetFolderPath:%@", fileCopy, v11];
     v40 = v23;
     v12 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
 
-    *a5 = [NSError errorWithDomain:@"com.apple.eventMetaDataExtractor.eventMetaDataExtractorPlugin" code:500 userInfo:v12];
+    *error = [NSError errorWithDomain:@"com.apple.eventMetaDataExtractor.eventMetaDataExtractorPlugin" code:500 userInfo:v12];
 LABEL_22:
   }
 }
@@ -351,7 +351,7 @@ LABEL_13:
   return result;
 }
 
-+ (CFScopedPtr<MontrealNeuralNetwork)loadExtractionModelWithError:(id *)a3
++ (CFScopedPtr<MontrealNeuralNetwork)loadExtractionModelWithError:(id *)error
 {
   v5 = v3;
   v6 = +[EMDEUtils config];
@@ -452,14 +452,14 @@ LABEL_13:
 
   v28[0] = 0;
   *v5 = MRLNeuralNetworkCreate();
-  if (a3 && v28[0])
+  if (error && v28[0])
   {
     v19 = CFRetain(v28[0]);
   }
 
   else
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_31;
     }
@@ -467,7 +467,7 @@ LABEL_13:
     v19 = 0;
   }
 
-  *a3 = v19;
+  *error = v19;
 LABEL_31:
   if (v15)
   {
@@ -482,7 +482,7 @@ LABEL_31:
   return v20;
 }
 
-+ (vector<float,)tokenizeInputSequence:(id)a2
++ (vector<float,)tokenizeInputSequence:(id)sequence
 {
   v44 = a4;
   if (v44)
@@ -501,8 +501,8 @@ LABEL_31:
     {
       v10 = +[EMDEUtils config];
       v11 = [v10 objectForKeyedSubscript:@"EMDE_TOKENISER_UPPERCASE_TOKEN_ID"];
-      v12 = [v11 intValue];
-      v13 = qword_1000B6418 + 24 * v12;
+      intValue = [v11 intValue];
+      v13 = qword_1000B6418 + 24 * intValue;
       if (*(v13 + 23) < 0)
       {
         v13 = *v13;
@@ -541,16 +541,16 @@ LABEL_31:
                 objc_enumerationMutation(obj);
               }
 
-              v24 = [*(*(&v58 + 1) + 8 * j) range];
+              range = [*(*(&v58 + 1) + 8 * j) range];
               v26 = v25;
               v27 = [v16 objectAtIndexedSubscript:i];
-              v28 = [v27 substringWithRange:{v24, v26}];
+              v28 = [v27 substringWithRange:{range, v26}];
 
-              v29 = [v28 lowercaseString];
-              v30 = [NSString stringWithFormat:@"%@%@", v48, v29];
+              lowercaseString = [v28 lowercaseString];
+              v30 = [NSString stringWithFormat:@"%@%@", v48, lowercaseString];
 
               v31 = [v16 objectAtIndexedSubscript:i];
-              v32 = [v31 stringByReplacingCharactersInRange:v24 withString:{v26, v30}];
+              v32 = [v31 stringByReplacingCharactersInRange:range withString:{v26, v30}];
               [v16 setObject:v32 atIndexedSubscript:i];
             }
 
@@ -686,21 +686,21 @@ LABEL_33:
   return v10;
 }
 
-+ (id)removeLinksFrom:(id)a3
++ (id)removeLinksFrom:(id)from
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  fromCopy = from;
+  v4 = fromCopy;
+  if (fromCopy)
   {
-    v5 = v3;
+    v5 = fromCopy;
     v6 = [NSDataDetector dataDetectorWithTypes:32 error:0];
     v7 = [v6 matchesInString:v5 options:0 range:{0, objc_msgSend(v5, "length")}];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [v7 reverseObjectEnumerator];
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    reverseObjectEnumerator = [v7 reverseObjectEnumerator];
+    v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
       v10 = *v20;
@@ -710,20 +710,20 @@ LABEL_33:
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
           if ([v12 resultType] == 32)
           {
-            v13 = [v12 range];
-            v15 = [v5 stringByReplacingCharactersInRange:v13 withString:{v14, @"."}];
+            range = [v12 range];
+            v15 = [v5 stringByReplacingCharactersInRange:range withString:{v14, @"."}];
 
             v5 = v15;
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v9);
@@ -747,15 +747,15 @@ LABEL_33:
   return v17;
 }
 
-+ (id)preProcessInputMessage:(id)a3
++ (id)preProcessInputMessage:(id)message
 {
-  v4 = a3;
-  if (v4)
+  messageCopy = message;
+  if (messageCopy)
   {
-    v5 = [a1 removeLinksFrom:v4];
+    v5 = [self removeLinksFrom:messageCopy];
     if (!v5)
     {
-      v5 = v4;
+      v5 = messageCopy;
     }
 
     v6 = [NSRegularExpression regularExpressionWithPattern:@"\\*" options:0 error:0];
@@ -790,25 +790,25 @@ LABEL_33:
   return v17;
 }
 
-+ (id)profaneRangesForText:(id)a3 usingLexicon:(_LXLexicon *)a4
++ (id)profaneRangesForText:(id)text usingLexicon:(_LXLexicon *)lexicon
 {
-  v5 = a3;
-  if (a4)
+  textCopy = text;
+  if (lexicon)
   {
     v6 = [NLTagger alloc];
     v19 = NLTagSchemeTokenType;
     v7 = [NSArray arrayWithObjects:&v19 count:1];
     v8 = [v6 initWithTagSchemes:v7];
 
-    [v8 setString:v5];
+    [v8 setString:textCopy];
     v9 = objc_opt_new();
-    v10 = [v5 length];
+    v10 = [textCopy length];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10000BC84;
     v15[3] = &unk_1000ACAD8;
-    v16 = v5;
-    v18 = a4;
+    v16 = textCopy;
+    lexiconCopy = lexicon;
     v11 = v9;
     v17 = v11;
     [v8 enumerateTagsInRange:0 unit:v10 scheme:0 options:NLTagSchemeTokenType usingBlock:46, v15];
@@ -830,10 +830,10 @@ LABEL_33:
   return v13;
 }
 
-+ (unsigned)validateAndUpdateAllowedWords:(void *)a3 forWord:()basic_string<char isComplete:()std:(std::allocator<char>> *)a4 :char_traits<char>
++ (unsigned)validateAndUpdateAllowedWords:(void *)words forWord:()basic_string<char isComplete:()std:(std::allocator<char>> *)std :char_traits<char>
 {
   v53 = v4;
-  if (!a3)
+  if (!words)
   {
     v10 = modelLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -844,47 +844,47 @@ LABEL_33:
     return 0;
   }
 
-  v5 = a4;
-  v6 = a3;
-  size = *(&a4->__rep_.__l + 23);
+  stdCopy = std;
+  wordsCopy = words;
+  size = *(&std->__rep_.__l + 23);
   if ((size & 0x8000000000000000) != 0)
   {
-    data = a4->__rep_.__l.__data_;
-    size = a4->__rep_.__l.__size_;
+    data = std->__rep_.__l.__data_;
+    size = std->__rep_.__l.__size_;
   }
 
   else
   {
-    data = a4;
+    data = std;
   }
 
   LOBYTE(__dst) = 44;
   v12 = sub_10000C46C(data, &data->__rep_.__s.__data_[size], &__dst);
-  v13 = *(&v5->__rep_.__l + 23);
+  v13 = *(&stdCopy->__rep_.__l + 23);
   if (v13 < 0)
   {
-    v15 = v5->__rep_.__l.__data_;
-    v14 = &v5->__rep_.__l.__data_[v5->__rep_.__l.__size_];
+    v15 = stdCopy->__rep_.__l.__data_;
+    v14 = &stdCopy->__rep_.__l.__data_[stdCopy->__rep_.__l.__size_];
   }
 
   else
   {
-    v14 = &v5->__rep_.__s.__data_[v13];
-    v15 = v5;
+    v14 = &stdCopy->__rep_.__s.__data_[v13];
+    v15 = stdCopy;
   }
 
-  std::string::erase(v5, v12 - v15, v14 - v12);
-  v16 = *(&v5->__rep_.__l + 23);
+  std::string::erase(stdCopy, v12 - v15, v14 - v12);
+  v16 = *(&stdCopy->__rep_.__l + 23);
   if (v16 < 0)
   {
-    v18 = v5->__rep_.__l.__data_;
-    v17 = &v5->__rep_.__l.__data_[v5->__rep_.__l.__size_];
+    v18 = stdCopy->__rep_.__l.__data_;
+    v17 = &stdCopy->__rep_.__l.__data_[stdCopy->__rep_.__l.__size_];
   }
 
   else
   {
-    v17 = &v5->__rep_.__s.__data_[v16];
-    v18 = v5;
+    v17 = &stdCopy->__rep_.__s.__data_[v16];
+    v18 = stdCopy;
   }
 
   while (v18 != v17)
@@ -928,7 +928,7 @@ LABEL_33:
 
   if (!v23)
   {
-    [a1 allowedPrefixes];
+    [self allowedPrefixes];
     sub_10000CF24(&v66);
     v66 = __dst;
     v67 = v69;
@@ -947,7 +947,7 @@ LABEL_90:
     goto LABEL_94;
   }
 
-  v56 = v6;
+  v56 = wordsCopy;
   __n1 = 0;
   while (2)
   {
@@ -980,7 +980,7 @@ LABEL_90:
         *__p = v28;
       }
 
-      sub_10000C4D4(__p, v5, &v59);
+      sub_10000C4D4(__p, stdCopy, &v59);
       if (v69 >= 0)
       {
         p_dst = &__dst;
@@ -1006,16 +1006,16 @@ LABEL_90:
       v31->__r_.__value_.__l.__size_ = 0;
       v31->__r_.__value_.__r.__words[2] = 0;
       v31->__r_.__value_.__r.__words[0] = 0;
-      v32 = SHIBYTE(v6->__r_.__value_.__r.__words[2]);
+      v32 = SHIBYTE(wordsCopy->__r_.__value_.__r.__words[2]);
       if (v32 < 0)
       {
-        v33 = v6->__r_.__value_.__r.__words[0];
-        v32 = v6->__r_.__value_.__l.__size_;
+        v33 = wordsCopy->__r_.__value_.__r.__words[0];
+        v32 = wordsCopy->__r_.__value_.__l.__size_;
       }
 
       else
       {
-        v33 = v6;
+        v33 = wordsCopy;
       }
 
       v34 = SHIBYTE(v60.__r_.__value_.__r.__words[2]);
@@ -1053,7 +1053,7 @@ LABEL_67:
         goto LABEL_68;
       }
 
-      v38 = v5;
+      v38 = stdCopy;
       v39 = v33 + v32;
       if (v32 >= v37)
       {
@@ -1086,7 +1086,7 @@ LABEL_67:
         while (v32 >= v37);
         v40 = v39;
 LABEL_62:
-        v6 = v56;
+        wordsCopy = v56;
       }
 
       else
@@ -1104,7 +1104,7 @@ LABEL_62:
         v41 = v40 - v33;
       }
 
-      v5 = v38;
+      stdCopy = v38;
       if (v34 < 0)
       {
         goto LABEL_67;
@@ -1118,7 +1118,7 @@ LABEL_68:
 
       if (v41 != -1)
       {
-        sub_10000C4D4(__p, v5, &v60);
+        sub_10000C4D4(__p, stdCopy, &v60);
         if (v69 >= 0)
         {
           v46 = &__dst;
@@ -1195,7 +1195,7 @@ LABEL_86:
 
   if (v53)
   {
-    std::string::replace(v6, v41, __n1, " ");
+    std::string::replace(wordsCopy, v41, __n1, " ");
   }
 
   v11 = 1;

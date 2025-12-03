@@ -13,26 +13,26 @@
   v3 = a3;
   if (CKIsRunningUITests())
   {
-    v4 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-    v5 = [v4 simulatedChats];
-    v6 = [v5 firstObject];
+    mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    simulatedChats = [mEMORY[0x1E69A5AF8] simulatedChats];
+    firstObject = [simulatedChats firstObject];
 
-    v7 = [v6 account];
+    account = [firstObject account];
   }
 
   else
   {
-    v7 = IMPreferredAccountForService();
+    account = IMPreferredAccountForService();
   }
 
-  return v7;
+  return account;
 }
 
 - (id)__ck_bestAccountForAddresses:()CKAdditions
 {
   v4 = a3;
-  v5 = [a1 fallbackServiceForAddresses:v4];
-  v6 = [a1 __ck_bestAccountForAddresses:v4 withFallbackService:v5];
+  v5 = [self fallbackServiceForAddresses:v4];
+  v6 = [self __ck_bestAccountForAddresses:v4 withFallbackService:v5];
 
   return v6;
 }
@@ -47,11 +47,11 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = [v3 objectAtIndexedSubscript:0];
-      v6 = [v5 __im_isChatBot];
+      __im_isChatBot = [v5 __im_isChatBot];
 
-      if (v6)
+      if (__im_isChatBot)
       {
-        v7 = [MEMORY[0x1E69A5CA0] rcsService];
+        rcsService = [MEMORY[0x1E69A5CA0] rcsService];
         goto LABEL_7;
       }
     }
@@ -61,9 +61,9 @@
     }
   }
 
-  v7 = [MEMORY[0x1E69A5CA0] iMessageService];
+  rcsService = [MEMORY[0x1E69A5CA0] iMessageService];
 LABEL_7:
-  v8 = v7;
+  v8 = rcsService;
 
   return v8;
 }
@@ -80,11 +80,11 @@ LABEL_7:
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v8 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-    v9 = [v8 simulatedChats];
+    mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    simulatedChats = [mEMORY[0x1E69A5AF8] simulatedChats];
 
-    obj = v9;
-    v31 = [v9 countByEnumeratingWithState:&v36 objects:v41 count:16];
+    obj = simulatedChats;
+    v31 = [simulatedChats countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v31)
     {
       v30 = *v37;
@@ -99,13 +99,13 @@ LABEL_4:
         }
 
         v12 = *(*(&v36 + 1) + 8 * v10);
-        v13 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v14 = [v12 participants];
-        v15 = [v14 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        participants = [v12 participants];
+        v15 = [participants countByEnumeratingWithState:&v32 objects:v40 count:16];
         if (v15)
         {
           v16 = v15;
@@ -116,22 +116,22 @@ LABEL_4:
             {
               if (*v33 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(participants);
               }
 
               v19 = [*(*(&v32 + 1) + 8 * i) ID];
               v20 = IMStripFormattingFromAddress();
-              [v13 addObject:v20];
+              [array addObject:v20];
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v32 objects:v40 count:16];
+            v16 = [participants countByEnumeratingWithState:&v32 objects:v40 count:16];
           }
 
           while (v16);
         }
 
         v6 = v11;
-        if ([v13 isEqualToArray:v11])
+        if ([array isEqualToArray:v11])
         {
           break;
         }
@@ -148,10 +148,10 @@ LABEL_4:
         }
       }
 
-      v21 = [v12 account];
+      account = [v12 account];
 
       v7 = v28;
-      if (v21)
+      if (account)
       {
         goto LABEL_24;
       }
@@ -164,34 +164,34 @@ LABEL_17:
       v7 = v28;
     }
 
-    v22 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-    v23 = [v22 simulatedChats];
-    v24 = [v23 firstObject];
+    mEMORY[0x1E69A5AF8]2 = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    simulatedChats2 = [mEMORY[0x1E69A5AF8]2 simulatedChats];
+    firstObject = [simulatedChats2 firstObject];
 
-    v21 = [v24 account];
+    account = [firstObject account];
   }
 
   else
   {
-    v21 = IMPreferredSendingAccountForAddressesWantsGroupWithFallbackService();
-    if ([v21 _isUsableForSending])
+    account = IMPreferredSendingAccountForAddressesWantsGroupWithFallbackService();
+    if ([account _isUsableForSending])
     {
       goto LABEL_24;
     }
 
-    v24 = [MEMORY[0x1E69A5CA0] smsService];
-    if (v24)
+    firstObject = [MEMORY[0x1E69A5CA0] smsService];
+    if (firstObject)
     {
-      v25 = [a1 accountsForService:v24];
-      v26 = [v25 __imFirstObject];
+      v25 = [self accountsForService:firstObject];
+      __imFirstObject = [v25 __imFirstObject];
 
-      v21 = v26;
+      account = __imFirstObject;
     }
   }
 
 LABEL_24:
 
-  return v21;
+  return account;
 }
 
 - (id)__ck_bestAccountForAddress:()CKAdditions
@@ -202,19 +202,19 @@ LABEL_24:
     v11[0] = a3;
     v4 = MEMORY[0x1E695DEC8];
     v5 = a3;
-    v6 = [v4 arrayWithObjects:v11 count:1];
+    array = [v4 arrayWithObjects:v11 count:1];
   }
 
   else
   {
     v7 = MEMORY[0x1E695DEC8];
     v5 = 0;
-    v6 = [v7 array];
+    array = [v7 array];
   }
 
-  v8 = v6;
+  v8 = array;
 
-  v9 = [a1 __ck_bestAccountForAddresses:v8];
+  v9 = [self __ck_bestAccountForAddresses:v8];
 
   return v9;
 }

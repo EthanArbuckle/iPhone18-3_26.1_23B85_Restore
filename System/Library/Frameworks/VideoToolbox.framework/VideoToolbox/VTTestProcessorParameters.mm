@@ -1,21 +1,21 @@
 @interface VTTestProcessorParameters
-- (VTTestProcessorParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 previousFrame:(id)a5 destinationFrame:(id)a6;
+- (VTTestProcessorParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame previousFrame:(id)previousFrame destinationFrame:(id)destinationFrame;
 - (void)dealloc;
 @end
 
 @implementation VTTestProcessorParameters
 
-- (VTTestProcessorParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 previousFrame:(id)a5 destinationFrame:(id)a6
+- (VTTestProcessorParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame previousFrame:(id)previousFrame destinationFrame:(id)destinationFrame
 {
   v12.receiver = self;
   v12.super_class = VTTestProcessorParameters;
   v10 = [(VTTestProcessorParameters *)&v12 init];
   if (v10)
   {
-    v10->_sourceFrame = a3;
-    v10->_nextFrame = a4;
-    v10->_previousFrame = a5;
-    v10->_destinationFrame = a6;
+    v10->_sourceFrame = frame;
+    v10->_nextFrame = nextFrame;
+    v10->_previousFrame = previousFrame;
+    v10->_destinationFrame = destinationFrame;
   }
 
   else

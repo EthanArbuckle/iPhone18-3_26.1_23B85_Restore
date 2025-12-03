@@ -1,19 +1,19 @@
 @interface LinkPreviewCollectionViewCell
-- (void)_linkViewMetadataDidBecomeComplete:(id)a3;
-- (void)linkViewNeedsResize:(id)a3;
+- (void)_linkViewMetadataDidBecomeComplete:(id)complete;
+- (void)linkViewNeedsResize:(id)resize;
 - (void)prepareForReuse;
-- (void)setLinkView:(id)a3;
+- (void)setLinkView:(id)view;
 @end
 
 @implementation LinkPreviewCollectionViewCell
 
-- (void)setLinkView:(id)a3
+- (void)setLinkView:(id)view
 {
-  v5 = a3;
-  if (self->_linkView != v5)
+  viewCopy = view;
+  if (self->_linkView != viewCopy)
   {
-    objc_storeStrong(&self->_linkView, a3);
-    if (v5)
+    objc_storeStrong(&self->_linkView, view);
+    if (viewCopy)
     {
       [(LPLinkView *)self->_linkView setDelegate:self];
       [(LPLinkView *)self->_linkView _setDisableTapGesture:1];
@@ -28,35 +28,35 @@
 
       [(MFAvatarView *)self->_avatarView setTranslatesAutoresizingMaskIntoConstraints:0];
       v9 = +[UIColor whiteColor];
-      v10 = [v9 CGColor];
-      v11 = [(MFAvatarView *)self->_avatarView layer];
-      [v11 setBorderColor:v10];
+      cGColor = [v9 CGColor];
+      layer = [(MFAvatarView *)self->_avatarView layer];
+      [layer setBorderColor:cGColor];
 
-      v12 = [(MFAvatarView *)self->_avatarView layer];
-      [v12 setCornerRadius:12.5];
+      layer2 = [(MFAvatarView *)self->_avatarView layer];
+      [layer2 setCornerRadius:12.5];
 
-      v13 = [(MFAvatarView *)self->_avatarView layer];
-      [v13 setBorderWidth:1.0];
+      layer3 = [(MFAvatarView *)self->_avatarView layer];
+      [layer3 setBorderWidth:1.0];
 
       [(MFAvatarView *)self->_avatarView setClipsToBounds:1];
-      v14 = [(MFAvatarView *)self->_avatarView layer];
-      [v14 setMasksToBounds:1];
+      layer4 = [(MFAvatarView *)self->_avatarView layer];
+      [layer4 setMasksToBounds:1];
 
       [(LinkPreviewCollectionViewCell *)self addSubview:self->_avatarView];
       [(LinkPreviewCollectionViewCell *)self bringSubviewToFront:self->_avatarView];
-      v26 = [(MFAvatarView *)self->_avatarView trailingAnchor];
-      v24 = [(LPLinkView *)self->_linkView trailingAnchor];
-      v23 = [v26 constraintEqualToAnchor:-10.0 constant:?];
+      trailingAnchor = [(MFAvatarView *)self->_avatarView trailingAnchor];
+      trailingAnchor2 = [(LPLinkView *)self->_linkView trailingAnchor];
+      v23 = [trailingAnchor constraintEqualToAnchor:-10.0 constant:?];
       v27[0] = v23;
-      v25 = [(MFAvatarView *)self->_avatarView topAnchor];
-      v15 = [(LPLinkView *)self->_linkView topAnchor];
-      v16 = [v25 constraintEqualToAnchor:v15 constant:10.0];
+      topAnchor = [(MFAvatarView *)self->_avatarView topAnchor];
+      topAnchor2 = [(LPLinkView *)self->_linkView topAnchor];
+      v16 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
       v27[1] = v16;
-      v17 = [(MFAvatarView *)self->_avatarView widthAnchor];
-      v18 = [v17 constraintEqualToConstant:25.0];
+      widthAnchor = [(MFAvatarView *)self->_avatarView widthAnchor];
+      v18 = [widthAnchor constraintEqualToConstant:25.0];
       v27[2] = v18;
-      v19 = [(MFAvatarView *)self->_avatarView heightAnchor];
-      v20 = [v19 constraintEqualToConstant:25.0];
+      heightAnchor = [(MFAvatarView *)self->_avatarView heightAnchor];
+      v20 = [heightAnchor constraintEqualToConstant:25.0];
       v27[3] = v20;
       v21 = [NSArray arrayWithObjects:v27 count:4];
       [NSLayoutConstraint activateConstraints:v21];
@@ -64,8 +64,8 @@
 
     else
     {
-      v22 = [(LinkPreviewCollectionViewCell *)self linkView];
-      [v22 removeFromSuperview];
+      linkView = [(LinkPreviewCollectionViewCell *)self linkView];
+      [linkView removeFromSuperview];
     }
   }
 }
@@ -75,39 +75,39 @@
   v6.receiver = self;
   v6.super_class = LinkPreviewCollectionViewCell;
   [(LinkPreviewCollectionViewCell *)&v6 prepareForReuse];
-  v3 = [(LinkPreviewCollectionViewCell *)self linkView];
+  linkView = [(LinkPreviewCollectionViewCell *)self linkView];
 
-  if (v3)
+  if (linkView)
   {
-    v4 = [(LinkPreviewCollectionViewCell *)self linkView];
-    [v4 removeFromSuperview];
+    linkView2 = [(LinkPreviewCollectionViewCell *)self linkView];
+    [linkView2 removeFromSuperview];
 
-    v5 = [(LinkPreviewCollectionViewCell *)self avatarView];
-    [v5 removeFromSuperview];
+    avatarView = [(LinkPreviewCollectionViewCell *)self avatarView];
+    [avatarView removeFromSuperview];
   }
 }
 
-- (void)linkViewNeedsResize:(id)a3
+- (void)linkViewNeedsResize:(id)resize
 {
-  v6 = a3;
-  v4 = [(LinkPreviewCollectionViewCell *)self linkView];
+  resizeCopy = resize;
+  linkView = [(LinkPreviewCollectionViewCell *)self linkView];
 
-  if (v4 == v6)
+  if (linkView == resizeCopy)
   {
-    v5 = [(LinkPreviewCollectionViewCell *)self linkView];
-    [v5 setNeedsLayout];
+    linkView2 = [(LinkPreviewCollectionViewCell *)self linkView];
+    [linkView2 setNeedsLayout];
   }
 }
 
-- (void)_linkViewMetadataDidBecomeComplete:(id)a3
+- (void)_linkViewMetadataDidBecomeComplete:(id)complete
 {
-  v6 = a3;
-  v4 = [(LinkPreviewCollectionViewCell *)self linkView];
+  completeCopy = complete;
+  linkView = [(LinkPreviewCollectionViewCell *)self linkView];
 
-  if (v4 == v6)
+  if (linkView == completeCopy)
   {
-    v5 = [(LinkPreviewCollectionViewCell *)self linkView];
-    [v5 setNeedsLayout];
+    linkView2 = [(LinkPreviewCollectionViewCell *)self linkView];
+    [linkView2 setNeedsLayout];
   }
 }
 

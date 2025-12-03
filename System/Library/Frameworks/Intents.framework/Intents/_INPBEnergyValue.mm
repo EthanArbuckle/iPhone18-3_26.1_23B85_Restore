@@ -1,50 +1,50 @@
 @interface _INPBEnergyValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBEnergyValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBEnergyValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsUnit:(id)a3;
+- (int)StringAsUnit:(id)unit;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasUnit:(BOOL)a3;
-- (void)setUnit:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasUnit:(BOOL)unit;
+- (void)setUnit:(int)unit;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBEnergyValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBEnergyValue *)self hasMagnitude])
   {
     v4 = MEMORY[0x1E696AD98];
     [(_INPBEnergyValue *)self magnitude];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"magnitude"];
+    [dictionary setObject:v5 forKeyedSubscript:@"magnitude"];
   }
 
   if ([(_INPBEnergyValue *)self hasUnit])
   {
-    v6 = [(_INPBEnergyValue *)self unit];
-    if (v6 >= 6)
+    unit = [(_INPBEnergyValue *)self unit];
+    if (unit >= 6)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", unit];
     }
 
     else
     {
-      v7 = *(&off_1E7287348 + v6);
+      v7 = *(&off_1E7287348 + unit);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"unit"];
+    [dictionary setObject:v7 forKeyedSubscript:@"unit"];
   }
 
-  v8 = [(_INPBEnergyValue *)self valueMetadata];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"valueMetadata"];
+  valueMetadata = [(_INPBEnergyValue *)self valueMetadata];
+  dictionaryRepresentation = [valueMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"valueMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -95,28 +95,28 @@
   return v9 ^ v8 ^ [(_INPBValueMetadata *)self->_valueMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBEnergyValue *)self hasMagnitude];
-    if (v5 == [v4 hasMagnitude])
+    hasMagnitude = [(_INPBEnergyValue *)self hasMagnitude];
+    if (hasMagnitude == [equalCopy hasMagnitude])
     {
-      if (!-[_INPBEnergyValue hasMagnitude](self, "hasMagnitude") || ![v4 hasMagnitude] || (magnitude = self->_magnitude, objc_msgSend(v4, "magnitude"), magnitude == v7))
+      if (!-[_INPBEnergyValue hasMagnitude](self, "hasMagnitude") || ![equalCopy hasMagnitude] || (magnitude = self->_magnitude, objc_msgSend(equalCopy, "magnitude"), magnitude == v7))
       {
-        v8 = [(_INPBEnergyValue *)self hasUnit];
-        if (v8 == [v4 hasUnit])
+        hasUnit = [(_INPBEnergyValue *)self hasUnit];
+        if (hasUnit == [equalCopy hasUnit])
         {
-          if (!-[_INPBEnergyValue hasUnit](self, "hasUnit") || ![v4 hasUnit] || (unit = self->_unit, unit == objc_msgSend(v4, "unit")))
+          if (!-[_INPBEnergyValue hasUnit](self, "hasUnit") || ![equalCopy hasUnit] || (unit = self->_unit, unit == objc_msgSend(equalCopy, "unit")))
           {
-            v10 = [(_INPBEnergyValue *)self valueMetadata];
-            v11 = [v4 valueMetadata];
-            v12 = v11;
-            if ((v10 != 0) != (v11 == 0))
+            valueMetadata = [(_INPBEnergyValue *)self valueMetadata];
+            valueMetadata2 = [equalCopy valueMetadata];
+            v12 = valueMetadata2;
+            if ((valueMetadata != 0) != (valueMetadata2 == 0))
             {
-              v13 = [(_INPBEnergyValue *)self valueMetadata];
-              if (!v13)
+              valueMetadata3 = [(_INPBEnergyValue *)self valueMetadata];
+              if (!valueMetadata3)
               {
 
 LABEL_18:
@@ -124,10 +124,10 @@ LABEL_18:
                 goto LABEL_16;
               }
 
-              v14 = v13;
-              v15 = [(_INPBEnergyValue *)self valueMetadata];
-              v16 = [v4 valueMetadata];
-              v17 = [v15 isEqual:v16];
+              v14 = valueMetadata3;
+              valueMetadata4 = [(_INPBEnergyValue *)self valueMetadata];
+              valueMetadata5 = [equalCopy valueMetadata];
+              v17 = [valueMetadata4 isEqual:valueMetadata5];
 
               if (v17)
               {
@@ -150,7 +150,7 @@ LABEL_16:
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBEnergyValue allocWithZone:](_INPBEnergyValue init];
   if ([(_INPBEnergyValue *)self hasMagnitude])
@@ -164,39 +164,39 @@ LABEL_16:
     [(_INPBEnergyValue *)v5 setUnit:[(_INPBEnergyValue *)self unit]];
   }
 
-  v6 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:a3];
+  v6 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:zone];
   [(_INPBEnergyValue *)v5 setValueMetadata:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBEnergyValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBEnergyValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBEnergyValue)initWithCoder:(id)a3
+- (_INPBEnergyValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBEnergyValue *)self initWithData:v6];
+    self = [(_INPBEnergyValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(_INPBEnergyValue *)self hasMagnitude])
   {
     magnitude = self->_magnitude;
@@ -209,47 +209,47 @@ LABEL_16:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(_INPBEnergyValue *)self valueMetadata];
+  valueMetadata = [(_INPBEnergyValue *)self valueMetadata];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (valueMetadata)
   {
-    v8 = [(_INPBEnergyValue *)self valueMetadata];
+    valueMetadata2 = [(_INPBEnergyValue *)self valueMetadata];
     PBDataWriterWriteSubmessage();
 
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
-- (int)StringAsUnit:(id)a3
+- (int)StringAsUnit:(id)unit
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_ENERGY_UNIT"])
+  unitCopy = unit;
+  if ([unitCopy isEqualToString:@"UNKNOWN_ENERGY_UNIT"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"KILOJOULE"])
+  else if ([unitCopy isEqualToString:@"KILOJOULE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"JOULE"])
+  else if ([unitCopy isEqualToString:@"JOULE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"KILOCALORIE"])
+  else if ([unitCopy isEqualToString:@"KILOCALORIE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CALORIE"])
+  else if ([unitCopy isEqualToString:@"CALORIE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"KILOWATT_HOUR"])
+  else if ([unitCopy isEqualToString:@"KILOWATT_HOUR"])
   {
     v4 = 5;
   }
@@ -262,9 +262,9 @@ LABEL_16:
   return v4;
 }
 
-- (void)setHasUnit:(BOOL)a3
+- (void)setHasUnit:(BOOL)unit
 {
-  if (a3)
+  if (unit)
   {
     v3 = 2;
   }
@@ -277,10 +277,10 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setUnit:(int)a3
+- (void)setUnit:(int)unit
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (unit == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -288,7 +288,7 @@ LABEL_16:
   else
   {
     *&self->_has = has | 2;
-    self->_unit = a3;
+    self->_unit = unit;
   }
 }
 

@@ -1,34 +1,34 @@
 @interface PUHidePhotosActionController
-- (PUHidePhotosActionController)initWithAssets:(id)a3 undoManager:(id)a4;
-- (id)alertControllerForTogglingAssetsVisibilityWithCompletionHandler:(id)a3;
-- (void)performActionWithCompletionHandler:(id)a3;
+- (PUHidePhotosActionController)initWithAssets:(id)assets undoManager:(id)manager;
+- (id)alertControllerForTogglingAssetsVisibilityWithCompletionHandler:(id)handler;
+- (void)performActionWithCompletionHandler:(id)handler;
 @end
 
 @implementation PUHidePhotosActionController
 
-- (void)performActionWithCompletionHandler:(id)a3
+- (void)performActionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   action = self->_action;
-  v6 = [(PUHidePhotosActionController *)self undoManager];
+  undoManager = [(PUHidePhotosActionController *)self undoManager];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67__PUHidePhotosActionController_performActionWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7B7C940;
-  v9 = v4;
-  v7 = v4;
-  [(PXHideAssetsAction *)action executeWithUndoManager:v6 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(PXHideAssetsAction *)action executeWithUndoManager:undoManager completionHandler:v8];
 }
 
-- (id)alertControllerForTogglingAssetsVisibilityWithCompletionHandler:(id)a3
+- (id)alertControllerForTogglingAssetsVisibilityWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(PXHideAssetsAction *)self->_action isHidden])
   {
-    v5 = [(PUHidePhotosActionController *)self assets];
+    assets = [(PUHidePhotosActionController *)self assets];
     v6 = PLSuffixForItems();
-    v21 = v5;
-    if ([v5 count] == 1)
+    v21 = assets;
+    if ([assets count] == 1)
     {
       v7 = [@"HIDE_CONFIRMATION_MESSAGE_" stringByAppendingString:v6];
       v8 = PULocalizedString(v7);
@@ -54,7 +54,7 @@
     v24[1] = 3221225472;
     v24[2] = __96__PUHidePhotosActionController_alertControllerForTogglingAssetsVisibilityWithCompletionHandler___block_invoke;
     v24[3] = &unk_1E7B80980;
-    v16 = v4;
+    v16 = handlerCopy;
     v25 = v16;
     v17 = [v15 actionWithTitle:v10 style:2 handler:v24];
     [v11 addAction:v17];
@@ -99,11 +99,11 @@ uint64_t __96__PUHidePhotosActionController_alertControllerForTogglingAssetsVisi
   return result;
 }
 
-- (PUHidePhotosActionController)initWithAssets:(id)a3 undoManager:(id)a4
+- (PUHidePhotosActionController)initWithAssets:(id)assets undoManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_alloc(MEMORY[0x1E69C35E8]) initWithAssets:v7];
+  assetsCopy = assets;
+  managerCopy = manager;
+  v9 = [objc_alloc(MEMORY[0x1E69C35E8]) initWithAssets:assetsCopy];
   if (v9)
   {
     v14.receiver = self;
@@ -113,20 +113,20 @@ uint64_t __96__PUHidePhotosActionController_alertControllerForTogglingAssetsVisi
     if (v10)
     {
       objc_storeStrong(&v10->_action, v9);
-      objc_storeStrong(p_isa + 2, a3);
-      objc_storeStrong(p_isa + 3, a4);
+      objc_storeStrong(p_isa + 2, assets);
+      objc_storeStrong(p_isa + 3, manager);
     }
 
     self = p_isa;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

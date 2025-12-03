@@ -1,68 +1,68 @@
 @interface MTRGBColor
 - (CAColorMatrix)sourceOverColorMatrix;
 - (CGColor)CGColor;
-- (MTRGBColor)colorWithAlphaComponent:(double)a3;
-- (MTRGBColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-- (id)_initWithCGColor:(CGColor *)a3;
-- (id)_initWithDescription:(id)a3;
-- (id)colorBlendedWithColor:(id)a3;
+- (MTRGBColor)colorWithAlphaComponent:(double)component;
+- (MTRGBColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
+- (id)_initWithCGColor:(CGColor *)color;
+- (id)_initWithDescription:(id)description;
+- (id)colorBlendedWithColor:(id)color;
 - (id)colorDescription;
 - (id)description;
 @end
 
 @implementation MTRGBColor
 
-- (MTRGBColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
+- (MTRGBColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
   v13.receiver = self;
   v13.super_class = MTRGBColor;
   v10 = [(MTRGBColor *)&v13 init];
   if (v10)
   {
-    if (a3 < 0.0 || a3 > 1.0)
+    if (red < 0.0 || red > 1.0)
     {
       [MTRGBColor initWithRed:green:blue:alpha:];
     }
 
-    if (a4 < 0.0 || a4 > 1.0)
+    if (green < 0.0 || green > 1.0)
     {
       [MTRGBColor initWithRed:green:blue:alpha:];
     }
 
-    if (a5 < 0.0 || a5 > 1.0)
+    if (blue < 0.0 || blue > 1.0)
     {
       [MTRGBColor initWithRed:green:blue:alpha:];
     }
 
-    if (a6 < 0.0 || a6 > 1.0)
+    if (alpha < 0.0 || alpha > 1.0)
     {
       [MTRGBColor initWithRed:green:blue:alpha:];
     }
 
-    v10->_red = a3;
-    v10->_green = a4;
-    v10->_blue = a5;
-    v10->_alpha = a6;
+    v10->_red = red;
+    v10->_green = green;
+    v10->_blue = blue;
+    v10->_alpha = alpha;
   }
 
   return v10;
 }
 
-- (id)_initWithCGColor:(CGColor *)a3
+- (id)_initWithCGColor:(CGColor *)color
 {
-  if (!a3)
+  if (!color)
   {
     [MTRGBColor _initWithCGColor:];
     goto LABEL_6;
   }
 
-  ColorSpace = CGColorGetColorSpace(a3);
+  ColorSpace = CGColorGetColorSpace(color);
   v6 = CGColorSpaceGetName(ColorSpace);
-  if (![v6 isEqualToString:*MEMORY[0x1E695F110]] || (Components = CGColorGetComponents(a3), CGColorGetNumberOfComponents(a3) != 4))
+  if (![v6 isEqualToString:*MEMORY[0x1E695F110]] || (Components = CGColorGetComponents(color), CGColorGetNumberOfComponents(color) != 4))
   {
 
 LABEL_6:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
@@ -72,40 +72,40 @@ LABEL_6:
   v11 = Components[3];
 
   self = [(MTRGBColor *)self initWithRed:v8 green:v9 blue:v10 alpha:v11];
-  v12 = self;
+  selfCopy = self;
 LABEL_7:
-  v13 = v12;
+  v13 = selfCopy;
 
   return v13;
 }
 
-- (id)_initWithDescription:(id)a3
+- (id)_initWithDescription:(id)description
 {
-  v4 = a3;
-  if (!v4)
+  descriptionCopy = description;
+  if (!descriptionCopy)
   {
     [MTRGBColor _initWithDescription:];
   }
 
-  v5 = [v4 objectForKey:@"alpha"];
+  v5 = [descriptionCopy objectForKey:@"alpha"];
   if (!v5)
   {
     [MTRGBColor _initWithDescription:];
   }
 
-  v6 = [v4 objectForKey:@"red"];
+  v6 = [descriptionCopy objectForKey:@"red"];
   if (!v6)
   {
     [MTRGBColor _initWithDescription:];
   }
 
-  v7 = [v4 objectForKey:@"green"];
+  v7 = [descriptionCopy objectForKey:@"green"];
   if (!v7)
   {
     [MTRGBColor _initWithDescription:];
   }
 
-  v8 = [v4 objectForKey:@"blue"];
+  v8 = [descriptionCopy objectForKey:@"blue"];
   if (!v8)
   {
     [MTRGBColor _initWithDescription:];
@@ -171,22 +171,22 @@ LABEL_7:
   return v7;
 }
 
-- (MTRGBColor)colorWithAlphaComponent:(double)a3
+- (MTRGBColor)colorWithAlphaComponent:(double)component
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithRed:self->_red green:self->_green blue:self->_blue alpha:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithRed:self->_red green:self->_green blue:self->_blue alpha:component];
 
   return v3;
 }
 
-- (id)colorBlendedWithColor:(id)a3
+- (id)colorBlendedWithColor:(id)color
 {
-  v4 = self;
-  if (a3)
+  selfCopy = self;
+  if (color)
   {
-    v5 = [a3 _rgbColor];
-    v6 = v5;
-    alpha = v4->_alpha;
-    v8 = v5[5];
+    _rgbColor = [color _rgbColor];
+    v6 = _rgbColor;
+    alpha = selfCopy->_alpha;
+    v8 = _rgbColor[5];
     v9 = 1.0;
     v10 = 1.0 - alpha;
     v11 = alpha + v8 * (1.0 - alpha);
@@ -194,17 +194,17 @@ LABEL_7:
     v13 = 1.0;
     if (v11 != 0.0)
     {
-      v9 = (alpha * v4->_red + v8 * v5[2] * v10) / v11;
-      v12 = (alpha * v4->_green + v8 * v5[3] * v10) / v11;
-      v13 = (alpha * v4->_blue + v8 * v5[4] * v10) / v11;
+      v9 = (alpha * selfCopy->_red + v8 * _rgbColor[2] * v10) / v11;
+      v12 = (alpha * selfCopy->_green + v8 * _rgbColor[3] * v10) / v11;
+      v13 = (alpha * selfCopy->_blue + v8 * _rgbColor[4] * v10) / v11;
     }
 
     v14 = [MTColor colorWithRed:v9 green:v12 blue:v13 alpha:?];
 
-    v4 = v14;
+    selfCopy = v14;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (CAColorMatrix)sourceOverColorMatrix

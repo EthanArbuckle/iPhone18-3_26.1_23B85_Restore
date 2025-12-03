@@ -1,27 +1,27 @@
 @interface CMCameraWorkoutSession
-- (CMCameraWorkoutSession)initWithOptions:(id)a3;
+- (CMCameraWorkoutSession)initWithOptions:(id)options;
 - (id).cxx_construct;
 - (id)stats;
-- (void)_feed2DSkeleton:(id)a3 localMachtime:(double)a4 globalMachtime:(double)a5;
-- (void)_feed3DLiftedSkeleton:(id)a3 localMachtime:(double)a4 globalMachtime:(double)a5;
-- (void)_feed3DRetargetedSkeleton:(id)a3 localMachtime:(double)a4 globalMachtime:(double)a5;
-- (void)_feedAccel:(const Sample *)a3;
-- (void)_feedAccessoryConfig:(const Config *)a3;
-- (void)_feedAccessoryInEarStatus:(int)a3;
-- (void)_feedDeviceMotion:(const Sample *)a3;
-- (void)_feedGyro:(const Sample *)a3;
-- (void)_feedGyroTemperature:(const Temperature *)a3;
-- (void)_feedHeadAccessoryDeviceMotion:(id)a3;
+- (void)_feed2DSkeleton:(id)skeleton localMachtime:(double)machtime globalMachtime:(double)globalMachtime;
+- (void)_feed3DLiftedSkeleton:(id)skeleton localMachtime:(double)machtime globalMachtime:(double)globalMachtime;
+- (void)_feed3DRetargetedSkeleton:(id)skeleton localMachtime:(double)machtime globalMachtime:(double)globalMachtime;
+- (void)_feedAccel:(const Sample *)accel;
+- (void)_feedAccessoryConfig:(const Config *)config;
+- (void)_feedAccessoryInEarStatus:(int)status;
+- (void)_feedDeviceMotion:(const Sample *)motion;
+- (void)_feedGyro:(const Sample *)gyro;
+- (void)_feedGyroTemperature:(const Temperature *)temperature;
+- (void)_feedHeadAccessoryDeviceMotion:(id)motion;
 - (void)dealloc;
-- (void)feedBodyMetrics:(id)a3;
-- (void)feedFacePose:(id)a3;
-- (void)feedFitnessMachineSample:(id)a3;
-- (void)feedHeartRateReference:(unsigned __int16)a3 localMachtime:(double)a4 globalMachtime:(double)a5;
-- (void)feedSkeleton:(id)a3;
-- (void)feedWatchActiveCalories:(float)a3 localMachtime:(double)a4 globalMachtime:(double)a5;
-- (void)feedWatchBasalCalories:(float)a3 localMachtime:(double)a4 globalMachtime:(double)a5;
-- (void)feedWatchHeartRate:(float)a3 confidence:(float)a4 localMachtime:(double)a5 globalMachtime:(double)a6;
-- (void)feedWorkoutEvent:(id)a3;
+- (void)feedBodyMetrics:(id)metrics;
+- (void)feedFacePose:(id)pose;
+- (void)feedFitnessMachineSample:(id)sample;
+- (void)feedHeartRateReference:(unsigned __int16)reference localMachtime:(double)machtime globalMachtime:(double)globalMachtime;
+- (void)feedSkeleton:(id)skeleton;
+- (void)feedWatchActiveCalories:(float)calories localMachtime:(double)machtime globalMachtime:(double)globalMachtime;
+- (void)feedWatchBasalCalories:(float)calories localMachtime:(double)machtime globalMachtime:(double)globalMachtime;
+- (void)feedWatchHeartRate:(float)rate confidence:(float)confidence localMachtime:(double)machtime globalMachtime:(double)globalMachtime;
+- (void)feedWorkoutEvent:(id)event;
 - (void)flushMsl;
 - (void)logCounters;
 - (void)start;
@@ -30,26 +30,26 @@
 
 @implementation CMCameraWorkoutSession
 
-- (CMCameraWorkoutSession)initWithOptions:(id)a3
+- (CMCameraWorkoutSession)initWithOptions:(id)options
 {
   v64 = *MEMORY[0x1E69E9840];
   v55.receiver = self;
   v55.super_class = CMCameraWorkoutSession;
   v4 = [(CMCameraWorkoutSession *)&v55 init];
   v6 = v4;
-  if (a3 && v4)
+  if (options && v4)
   {
-    v7 = objc_msgSend_objectForKeyedSubscript_(a3, v5, @"kCMCameraWorkoutSessionMSLPrefix");
+    v7 = objc_msgSend_objectForKeyedSubscript_(options, v5, @"kCMCameraWorkoutSessionMSLPrefix");
     v9 = objc_msgSend_cStringUsingEncoding_(v7, v8, 1);
-    v11 = objc_msgSend_objectForKeyedSubscript_(a3, v10, @"kCMCameraWorkoutSessionMSLPath");
+    v11 = objc_msgSend_objectForKeyedSubscript_(options, v10, @"kCMCameraWorkoutSessionMSLPath");
     v13 = objc_msgSend_cStringUsingEncoding_(v11, v12, 1);
-    v15 = objc_msgSend_objectForKeyedSubscript_(a3, v14, @"kCMCameraWorkoutSessionLogAirPodsDM");
+    v15 = objc_msgSend_objectForKeyedSubscript_(options, v14, @"kCMCameraWorkoutSessionLogAirPodsDM");
     v6->_logAirpodsDM = objc_msgSend_BOOLValue(v15, v16, v17);
-    v19 = objc_msgSend_objectForKeyedSubscript_(a3, v18, @"kCMCameraWorkoutSessionLogDM");
+    v19 = objc_msgSend_objectForKeyedSubscript_(options, v18, @"kCMCameraWorkoutSessionLogDM");
     v6->_logDM = objc_msgSend_BOOLValue(v19, v20, v21);
-    v23 = objc_msgSend_objectForKeyedSubscript_(a3, v22, @"kCMCameraWorkoutSessionLogAccel");
+    v23 = objc_msgSend_objectForKeyedSubscript_(options, v22, @"kCMCameraWorkoutSessionLogAccel");
     v6->_logAccel = objc_msgSend_BOOLValue(v23, v24, v25);
-    v27 = objc_msgSend_objectForKeyedSubscript_(a3, v26, @"kCMCameraWorkoutSessionLogGyro");
+    v27 = objc_msgSend_objectForKeyedSubscript_(options, v26, @"kCMCameraWorkoutSessionLogGyro");
     v6->_logGyro = objc_msgSend_BOOLValue(v27, v28, v29);
     if (qword_1EAFE2780 != -1)
     {
@@ -59,7 +59,7 @@
     v30 = qword_1EAFE27B8;
     if (os_log_type_enabled(qword_1EAFE27B8, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = objc_msgSend_description(a3, v31, v32);
+      v33 = objc_msgSend_description(options, v31, v32);
       *buf = 138412290;
       *v61 = v33;
       _os_log_impl(&dword_19B41C000, v30, OS_LOG_TYPE_DEFAULT, "[camera] options:%@", buf, 0xCu);
@@ -74,7 +74,7 @@
         dispatch_once(&qword_1EAFE2780, &unk_1F0E2A460);
       }
 
-      v37 = objc_msgSend_description(a3, v35, v36);
+      v37 = objc_msgSend_description(options, v35, v36);
       v56 = 138412290;
       *v57 = v37;
       v38 = _os_log_send_and_compose_impl();
@@ -315,7 +315,7 @@
       v39 = 0x3052000000;
       v40 = sub_19B428B20;
       v41 = sub_19B42908C;
-      v42 = self;
+      selfCopy2 = self;
       v23 = self->_audioAccessoryManager;
       v26 = objc_msgSend_mainQueue(MEMORY[0x1E696ADC8], v24, v25);
       v35[0] = MEMORY[0x1E69E9820];
@@ -369,7 +369,7 @@
   v39 = 0x3052000000;
   v40 = sub_19B428B20;
   v41 = sub_19B42908C;
-  v42 = self;
+  selfCopy2 = self;
   logCountersTimer = self->_logCountersTimer;
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
@@ -547,50 +547,50 @@
   return result;
 }
 
-- (void)feedSkeleton:(id)a3
+- (void)feedSkeleton:(id)skeleton
 {
-  v5 = objc_msgSend_skeleton2D(a3, a2, a3);
-  objc_msgSend_localMachtime(a3, v6, v7);
+  v5 = objc_msgSend_skeleton2D(skeleton, a2, skeleton);
+  objc_msgSend_localMachtime(skeleton, v6, v7);
   v9 = v8;
-  objc_msgSend_globalMachtime(a3, v10, v11);
+  objc_msgSend_globalMachtime(skeleton, v10, v11);
   objc_msgSend__feed2DSkeleton_localMachtime_globalMachtime_(self, v12, v5, v9, v13);
-  v16 = objc_msgSend_skeleton3DLifted(a3, v14, v15);
-  objc_msgSend_localMachtime(a3, v17, v18);
+  v16 = objc_msgSend_skeleton3DLifted(skeleton, v14, v15);
+  objc_msgSend_localMachtime(skeleton, v17, v18);
   v20 = v19;
-  objc_msgSend_globalMachtime(a3, v21, v22);
+  objc_msgSend_globalMachtime(skeleton, v21, v22);
   objc_msgSend__feed3DLiftedSkeleton_localMachtime_globalMachtime_(self, v23, v16, v20, v24);
-  v27 = objc_msgSend_skeleton3DRetargeted(a3, v25, v26);
-  objc_msgSend_localMachtime(a3, v28, v29);
+  v27 = objc_msgSend_skeleton3DRetargeted(skeleton, v25, v26);
+  objc_msgSend_localMachtime(skeleton, v28, v29);
   v31 = v30;
-  objc_msgSend_globalMachtime(a3, v32, v33);
+  objc_msgSend_globalMachtime(skeleton, v32, v33);
   objc_msgSend__feed3DRetargetedSkeleton_localMachtime_globalMachtime_(self, v34, v27, v31, v35);
   atomic_fetch_add(&self->_skeletonCount, 1u);
 }
 
-- (void)_feed2DSkeleton:(id)a3 localMachtime:(double)a4 globalMachtime:(double)a5
+- (void)_feed2DSkeleton:(id)skeleton localMachtime:(double)machtime globalMachtime:(double)globalMachtime
 {
   v30[33] = *MEMORY[0x1E69E9840];
   if (self->_logger.__ptr_)
   {
-    if (objc_msgSend_count(a3, a2, a3, *&a4, *&a5))
+    if (objc_msgSend_count(skeleton, a2, skeleton, *&machtime, *&globalMachtime))
     {
       v8 = 0;
       do
       {
-        v9 = objc_msgSend_objectAtIndexedSubscript_(a3, v7, v8);
+        v9 = objc_msgSend_objectAtIndexedSubscript_(skeleton, v7, v8);
         v12 = objc_msgSend_type(v9, v10, v11);
-        v14 = objc_msgSend_objectAtIndexedSubscript_(a3, v13, v8);
+        v14 = objc_msgSend_objectAtIndexedSubscript_(skeleton, v13, v8);
         objc_msgSend_position(v14, v15, v16);
         v30[v12 + 2] = v17;
-        v19 = objc_msgSend_objectAtIndexedSubscript_(a3, v18, v8);
+        v19 = objc_msgSend_objectAtIndexedSubscript_(skeleton, v18, v8);
         objc_msgSend_confidence(v19, v20, v21);
         *(&v30[21] + v12) = v22;
-        v24 = objc_msgSend_objectAtIndexedSubscript_(a3, v23, v8);
+        v24 = objc_msgSend_objectAtIndexedSubscript_(skeleton, v23, v8);
         *(&v30[30] + v12 + 4) = objc_msgSend_visible(v24, v25, v26);
         ++v8;
       }
 
-      while (objc_msgSend_count(a3, v27, v28) > v8);
+      while (objc_msgSend_count(skeleton, v27, v28) > v8);
     }
 
     sub_19B5C6D58(self->_logger.__ptr_, v30);
@@ -599,60 +599,60 @@
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_feed3DLiftedSkeleton:(id)a3 localMachtime:(double)a4 globalMachtime:(double)a5
+- (void)_feed3DLiftedSkeleton:(id)skeleton localMachtime:(double)machtime globalMachtime:(double)globalMachtime
 {
   if (self->_logger.__ptr_)
   {
-    if (objc_msgSend_count(a3, a2, a3, *&a4, *&a5))
+    if (objc_msgSend_count(skeleton, a2, skeleton, *&machtime, *&globalMachtime))
     {
       v8 = 0;
       do
       {
-        v9 = objc_msgSend_objectAtIndexedSubscript_(a3, v7, v8);
+        v9 = objc_msgSend_objectAtIndexedSubscript_(skeleton, v7, v8);
         v12 = objc_msgSend_type(v9, v10, v11);
-        v14 = objc_msgSend_objectAtIndexedSubscript_(a3, v13, v8);
+        v14 = objc_msgSend_objectAtIndexedSubscript_(skeleton, v13, v8);
         objc_msgSend_position(v14, v15, v16);
         *&v20[2 * v12 + 2] = v17;
         ++v8;
       }
 
-      while (objc_msgSend_count(a3, v18, v19) > v8);
+      while (objc_msgSend_count(skeleton, v18, v19) > v8);
     }
 
     sub_19B5C714C(self->_logger.__ptr_, v20);
   }
 }
 
-- (void)_feed3DRetargetedSkeleton:(id)a3 localMachtime:(double)a4 globalMachtime:(double)a5
+- (void)_feed3DRetargetedSkeleton:(id)skeleton localMachtime:(double)machtime globalMachtime:(double)globalMachtime
 {
   if (self->_logger.__ptr_)
   {
-    if (objc_msgSend_count(a3, a2, a3, *&a4, *&a5))
+    if (objc_msgSend_count(skeleton, a2, skeleton, *&machtime, *&globalMachtime))
     {
       v9 = 0;
       do
       {
-        v10 = objc_msgSend_objectAtIndexedSubscript_(a3, v7, v9);
+        v10 = objc_msgSend_objectAtIndexedSubscript_(skeleton, v7, v9);
         v13 = objc_msgSend_type(v10, v11, v12);
-        v15 = objc_msgSend_objectAtIndexedSubscript_(a3, v14, v9);
+        v15 = objc_msgSend_objectAtIndexedSubscript_(skeleton, v14, v9);
         objc_msgSend_position(v15, v16, v17);
         *&v26[2 * v13 + 2] = v18;
-        v20 = objc_msgSend_objectAtIndexedSubscript_(a3, v19, v9);
+        v20 = objc_msgSend_objectAtIndexedSubscript_(skeleton, v19, v9);
         objc_msgSend_quaternion(v20, v21, v22);
         *&v26[2 * v13 + 52] = v23;
         ++v9;
       }
 
-      while (objc_msgSend_count(a3, v24, v25) > v9);
+      while (objc_msgSend_count(skeleton, v24, v25) > v9);
     }
 
     sub_19B5C7440(self->_logger.__ptr_, v26, v8);
   }
 }
 
-- (void)feedFacePose:(id)a3
+- (void)feedFacePose:(id)pose
 {
-  objc_msgSend_rotation(a3, a2, a3);
+  objc_msgSend_rotation(pose, a2, pose);
   v11 = v10 + (*_Q0.i32 + *&v8.i32[1]);
   if (v11 >= 0.0)
   {
@@ -714,67 +714,67 @@
     v32 = (*&v8.i32[2] - *&v9.i32[1]) * v29;
   }
 
-  objc_msgSend_localMachtime(a3, v5, v6);
+  objc_msgSend_localMachtime(pose, v5, v6);
   v146[0] = v41;
-  objc_msgSend_localMachtime(a3, v42, v43);
+  objc_msgSend_localMachtime(pose, v42, v43);
   v146[1] = v44;
   v146[2] = 0x100000002;
   *&v146[3] = v30;
   v147 = vcvtq_f64_f32(v31);
   v148 = v32;
-  objc_msgSend_translation(a3, v45, v46);
+  objc_msgSend_translation(pose, v45, v46);
   v133 = v47;
-  objc_msgSend_translation(a3, v48, v49);
+  objc_msgSend_translation(pose, v48, v49);
   v149 = __PAIR64__(v50, v133);
-  objc_msgSend_translation(a3, v51, v52);
+  objc_msgSend_translation(pose, v51, v52);
   v150 = v53;
   v151 = 0;
   v153 = 0;
   v152 = 0;
-  objc_msgSend_gaze(a3, v54, v55);
+  objc_msgSend_gaze(pose, v54, v55);
   v134 = v56;
-  objc_msgSend_gaze(a3, v57, v58);
+  objc_msgSend_gaze(pose, v57, v58);
   v154 = __PAIR64__(v59, v134);
-  objc_msgSend_gaze(a3, v60, v61);
+  objc_msgSend_gaze(pose, v60, v61);
   v135 = v62;
-  objc_msgSend_leftEyePosition(a3, v63, v64);
+  objc_msgSend_leftEyePosition(pose, v63, v64);
   v155 = vzip2q_s32(v135, vuzp1q_s32(v135, v65)).u64[0];
-  objc_msgSend_leftEyePosition(a3, v66, v67);
+  objc_msgSend_leftEyePosition(pose, v66, v67);
   v156 = v68;
-  objc_msgSend_leftEyePosition(a3, v69, v70);
+  objc_msgSend_leftEyePosition(pose, v69, v70);
   v136 = v71;
-  objc_msgSend_rightEyePosition(a3, v72, v73);
+  objc_msgSend_rightEyePosition(pose, v72, v73);
   v157 = vzip2q_s32(v136, vuzp1q_s32(v136, v74)).u64[0];
-  objc_msgSend_rightEyePosition(a3, v75, v76);
+  objc_msgSend_rightEyePosition(pose, v75, v76);
   v158 = v77;
-  objc_msgSend_rightEyePosition(a3, v78, v79);
+  objc_msgSend_rightEyePosition(pose, v78, v79);
   v159 = v80;
   v160 = 0;
   v161 = 0;
   v162 = 0;
   v143 = 0;
-  objc_msgSend_confidence(a3, v81, v82);
+  objc_msgSend_confidence(pose, v81, v82);
   v140 = v83;
-  v141 = objc_msgSend_tooDark(a3, v84, v85);
-  v142 = objc_msgSend_sensorCovered(a3, v86, v87);
-  v144 = objc_msgSend_failureCode(a3, v88, v89);
-  objc_msgSend_roll(a3, v90, v91);
+  v141 = objc_msgSend_tooDark(pose, v84, v85);
+  v142 = objc_msgSend_sensorCovered(pose, v86, v87);
+  v144 = objc_msgSend_failureCode(pose, v88, v89);
+  objc_msgSend_roll(pose, v90, v91);
   v145 = v92;
   __src = 0;
   v138 = 0;
   v139 = 0;
-  v95 = objc_msgSend_blendShapeWeights(a3, v93, v94);
+  v95 = objc_msgSend_blendShapeWeights(pose, v93, v94);
   if (objc_msgSend_count(v95, v96, v97))
   {
     for (i = 0; ; ++i)
     {
-      v101 = objc_msgSend_blendShapeWeights(a3, v98, v99);
+      v101 = objc_msgSend_blendShapeWeights(pose, v98, v99);
       if (objc_msgSend_count(v101, v102, v103) <= i)
       {
         break;
       }
 
-      v106 = objc_msgSend_blendShapeWeights(a3, v104, v105);
+      v106 = objc_msgSend_blendShapeWeights(pose, v104, v105);
       v108 = objc_msgSend_objectAtIndexedSubscript_(v106, v107, i);
       objc_msgSend_floatValue(v108, v109, v110);
       v112 = v138;
@@ -833,16 +833,16 @@
     }
 
     ptr = self->_logger.__ptr_;
-    objc_msgSend_localMachtime(a3, v104, v105);
+    objc_msgSend_localMachtime(pose, v104, v105);
     v123 = v122;
-    objc_msgSend_globalMachtime(a3, v124, v125);
+    objc_msgSend_globalMachtime(pose, v124, v125);
     sub_19B5C80E0(ptr, &__src, v123, v126);
   }
 
   v127 = self->_logger.__ptr_;
-  objc_msgSend_localMachtime(a3, v98, v99);
+  objc_msgSend_localMachtime(pose, v98, v99);
   v129 = v128;
-  objc_msgSend_globalMachtime(a3, v130, v131);
+  objc_msgSend_globalMachtime(pose, v130, v131);
   sub_19B5C77B8(v127, v146, &v140, v129, v132);
   atomic_fetch_add(&self->_facePoseCount, 1u);
   if (__src)
@@ -852,56 +852,56 @@
   }
 }
 
-- (void)feedWatchActiveCalories:(float)a3 localMachtime:(double)a4 globalMachtime:(double)a5
+- (void)feedWatchActiveCalories:(float)calories localMachtime:(double)machtime globalMachtime:(double)globalMachtime
 {
   ptr = self->_logger.__ptr_;
   if (ptr)
   {
-    sub_19B5C7C44(ptr, a3, a4, a5);
+    sub_19B5C7C44(ptr, calories, machtime, globalMachtime);
   }
 
   atomic_fetch_add(&self->_watchActiveCalorieCount, 1u);
 }
 
-- (void)feedWatchBasalCalories:(float)a3 localMachtime:(double)a4 globalMachtime:(double)a5
+- (void)feedWatchBasalCalories:(float)calories localMachtime:(double)machtime globalMachtime:(double)globalMachtime
 {
   ptr = self->_logger.__ptr_;
   if (ptr)
   {
-    sub_19B5C7D8C(ptr, a3, a4, a5);
+    sub_19B5C7D8C(ptr, calories, machtime, globalMachtime);
   }
 
   atomic_fetch_add(&self->_watchBasalCalorieCount, 1u);
 }
 
-- (void)feedWatchHeartRate:(float)a3 confidence:(float)a4 localMachtime:(double)a5 globalMachtime:(double)a6
+- (void)feedWatchHeartRate:(float)rate confidence:(float)confidence localMachtime:(double)machtime globalMachtime:(double)globalMachtime
 {
   ptr = self->_logger.__ptr_;
   if (ptr)
   {
-    sub_19B5C7ED4(ptr, a3, a4, a5, a6);
+    sub_19B5C7ED4(ptr, rate, confidence, machtime, globalMachtime);
   }
 
   atomic_fetch_add(&self->_watchHeartRateCount, 1u);
 }
 
-- (void)feedHeartRateReference:(unsigned __int16)a3 localMachtime:(double)a4 globalMachtime:(double)a5
+- (void)feedHeartRateReference:(unsigned __int16)reference localMachtime:(double)machtime globalMachtime:(double)globalMachtime
 {
   ptr = self->_logger.__ptr_;
   if (ptr)
   {
-    sub_19B5C93F0(ptr, a3, a4, a5);
+    sub_19B5C93F0(ptr, reference, machtime, globalMachtime);
   }
 
   atomic_fetch_add(&self->_heartRateReferenceCount, 1u);
 }
 
-- (void)feedWorkoutEvent:(id)a3
+- (void)feedWorkoutEvent:(id)event
 {
   v27 = *MEMORY[0x1E69E9840];
   if (self->_logger.__ptr_)
   {
-    v5 = objc_msgSend_eventType(a3, a2, a3);
+    v5 = objc_msgSend_eventType(event, a2, event);
     if (v5 >= 6)
     {
       if (qword_1EAFE2780 != -1)
@@ -913,7 +913,7 @@
       if (os_log_type_enabled(qword_1EAFE27B8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        *&buf[4] = objc_msgSend_eventType(a3, v10, v11);
+        *&buf[4] = objc_msgSend_eventType(event, v10, v11);
         _os_log_impl(&dword_19B41C000, v9, OS_LOG_TYPE_DEFAULT, "[camera] Received unsupported event: %d", buf, 8u);
       }
 
@@ -926,7 +926,7 @@
           dispatch_once(&qword_1EAFE2780, &unk_1F0E2A460);
         }
 
-        objc_msgSend_eventType(a3, v13, v14);
+        objc_msgSend_eventType(event, v13, v14);
         v15 = _os_log_send_and_compose_impl();
         sub_19B6BB7CC("Generic", 1, 0, 2, "[CMCameraWorkoutSession feedWorkoutEvent:]", "CoreLocation: %s\n", v15);
         if (v15 != buf)
@@ -943,11 +943,11 @@
       v8 = *&asc_19B7BD818[8 * v5];
     }
 
-    objc_msgSend_localMachtime(a3, v6, v7);
+    objc_msgSend_localMachtime(event, v6, v7);
     *buf = v16;
-    objc_msgSend_localMachtime(a3, v17, v18);
+    objc_msgSend_localMachtime(event, v17, v18);
     v25 = v19;
-    v26 = objc_msgSend_workoutType(a3, v20, v21);
+    v26 = objc_msgSend_workoutType(event, v20, v21);
     v24 = v8;
     sub_19B5C9534(self->_logger.__ptr_, buf);
   }
@@ -955,81 +955,81 @@
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)feedBodyMetrics:(id)a3
+- (void)feedBodyMetrics:(id)metrics
 {
   if (self->_logger.__ptr_)
   {
     *v23 = 0u;
-    v5 = objc_msgSend_biologicalSex(a3, a2, a3, 0, 0, 0, 0, 0, 0, 0, *&v23[12]);
+    v5 = objc_msgSend_biologicalSex(metrics, a2, metrics, 0, 0, 0, 0, 0, 0, 0, *&v23[12]);
     if (v5 <= 3)
     {
       v22[1] = v5;
     }
 
-    objc_msgSend_heightMeters(a3, v6, v7);
+    objc_msgSend_heightMeters(metrics, v6, v7);
     *&v8 = v8;
     v22[2] = LODWORD(v8);
-    objc_msgSend_weightKG(a3, v9, v10);
+    objc_msgSend_weightKG(metrics, v9, v10);
     *&v11 = v11;
     v22[3] = LODWORD(v11);
-    objc_msgSend_vo2max(a3, v12, v13);
+    objc_msgSend_vo2max(metrics, v12, v13);
     *&v14 = v14;
     v22[4] = LODWORD(v14);
-    *&v22[5] = objc_msgSend_age(a3, v15, v16);
-    v23[4] = objc_msgSend_betaBlockerUse(a3, v17, v18);
+    *&v22[5] = objc_msgSend_age(metrics, v15, v16);
+    v23[4] = objc_msgSend_betaBlockerUse(metrics, v17, v18);
     ptr = self->_logger.__ptr_;
-    objc_msgSend_localMachtime(a3, v20, v21);
+    objc_msgSend_localMachtime(metrics, v20, v21);
     sub_19B5C8478(ptr, v22);
   }
 }
 
-- (void)feedFitnessMachineSample:(id)a3
+- (void)feedFitnessMachineSample:(id)sample
 {
   if (self->_logger.__ptr_)
   {
-    objc_msgSend_localMachtime(a3, a2, a3);
+    objc_msgSend_localMachtime(sample, a2, sample);
     v70[0] = v5;
-    objc_msgSend_globalMachtime(a3, v6, v7);
+    objc_msgSend_globalMachtime(sample, v6, v7);
     v70[1] = v8;
-    objc_msgSend_elapsedTime(a3, v9, v10);
+    objc_msgSend_elapsedTime(sample, v9, v10);
     v70[2] = v11;
-    objc_msgSend_energy(a3, v12, v13);
+    objc_msgSend_energy(sample, v12, v13);
     v71 = v14;
-    objc_msgSend_treadmillDistance(a3, v15, v16);
+    objc_msgSend_treadmillDistance(sample, v15, v16);
     v72 = v17;
-    objc_msgSend_indoorBikeDistance(a3, v18, v19);
+    objc_msgSend_indoorBikeDistance(sample, v18, v19);
     v73 = v20;
-    objc_msgSend_crossTrainerDistance(a3, v21, v22);
+    objc_msgSend_crossTrainerDistance(sample, v21, v22);
     v74 = v23;
-    v75 = objc_msgSend_floors(a3, v24, v25);
-    v76 = objc_msgSend_stepCount(a3, v26, v27);
-    objc_msgSend_strideCount(a3, v28, v29);
+    v75 = objc_msgSend_floors(sample, v24, v25);
+    v76 = objc_msgSend_stepCount(sample, v26, v27);
+    objc_msgSend_strideCount(sample, v28, v29);
     v77 = v30;
-    objc_msgSend_instantaneousSpeed(a3, v31, v32);
+    objc_msgSend_instantaneousSpeed(sample, v31, v32);
     v78 = v33;
-    objc_msgSend_averageSpeed(a3, v34, v35);
+    objc_msgSend_averageSpeed(sample, v34, v35);
     v79 = v36;
-    objc_msgSend_instantaneousPace(a3, v37, v38);
+    objc_msgSend_instantaneousPace(sample, v37, v38);
     v80 = v39;
-    objc_msgSend_averagePace(a3, v40, v41);
+    objc_msgSend_averagePace(sample, v40, v41);
     v81 = v42;
-    objc_msgSend_elevationGain(a3, v43, v44);
+    objc_msgSend_elevationGain(sample, v43, v44);
     v82 = v45;
-    objc_msgSend_inclination(a3, v46, v47);
+    objc_msgSend_inclination(sample, v46, v47);
     v83 = v48;
-    objc_msgSend_resistanceLevel(a3, v49, v50);
+    objc_msgSend_resistanceLevel(sample, v49, v50);
     v84 = v51;
-    objc_msgSend_instantaneousPower(a3, v52, v53);
+    objc_msgSend_instantaneousPower(sample, v52, v53);
     v85 = v54;
-    objc_msgSend_averagePower(a3, v55, v56);
+    objc_msgSend_averagePower(sample, v55, v56);
     v86 = v57;
-    objc_msgSend_instantaneousCadence(a3, v58, v59);
+    objc_msgSend_instantaneousCadence(sample, v58, v59);
     v87 = v60;
-    objc_msgSend_averageCadence(a3, v61, v62);
+    objc_msgSend_averageCadence(sample, v61, v62);
     v88 = v63;
-    objc_msgSend_instantaneousHeartRate(a3, v64, v65);
+    objc_msgSend_instantaneousHeartRate(sample, v64, v65);
     v89 = v66;
-    objc_msgSend_averageHeartRate(a3, v67, v68);
+    objc_msgSend_averageHeartRate(sample, v67, v68);
     v90 = v69;
     sub_19B5C96C4(self->_logger.__ptr_, v70);
   }
@@ -1037,16 +1037,16 @@
   atomic_fetch_add(&self->_fitnessMachineSampleCount, 1u);
 }
 
-- (void)_feedAccessoryConfig:(const Config *)a3
+- (void)_feedAccessoryConfig:(const Config *)config
 {
   ptr = self->_logger.__ptr_;
   if (ptr)
   {
-    sub_19B5C8A00(ptr, a3);
+    sub_19B5C8A00(ptr, config);
   }
 }
 
-- (void)_feedAccessoryInEarStatus:(int)a3
+- (void)_feedAccessoryInEarStatus:(int)status
 {
   ptr = self->_logger.__ptr_;
   if (ptr)
@@ -1054,58 +1054,58 @@
     v5 = mach_continuous_time();
     v6 = sub_19B41E070(v5);
 
-    sub_19B5C88D4(ptr, a3, v6);
+    sub_19B5C88D4(ptr, status, v6);
   }
 }
 
-- (void)_feedDeviceMotion:(const Sample *)a3
+- (void)_feedDeviceMotion:(const Sample *)motion
 {
   ptr = self->_logger.__ptr_;
   if (ptr)
   {
-    sub_19B5C8C48(ptr, &a3->timestamp, 7);
+    sub_19B5C8C48(ptr, &motion->timestamp, 7);
   }
 
   atomic_fetch_add(&self->_dmCount, 1u);
 }
 
-- (void)_feedAccel:(const Sample *)a3
+- (void)_feedAccel:(const Sample *)accel
 {
   ptr = self->_logger.__ptr_;
   if (ptr)
   {
-    sub_19B5C8FB4(ptr, a3);
+    sub_19B5C8FB4(ptr, accel);
   }
 
   atomic_fetch_add(&self->_accelCount, 1u);
 }
 
-- (void)_feedGyro:(const Sample *)a3
+- (void)_feedGyro:(const Sample *)gyro
 {
   ptr = self->_logger.__ptr_;
   if (ptr)
   {
-    sub_19B5C9108(ptr, a3);
+    sub_19B5C9108(ptr, gyro);
   }
 
   atomic_fetch_add(&self->_gyroCount, 1u);
 }
 
-- (void)_feedGyroTemperature:(const Temperature *)a3
+- (void)_feedGyroTemperature:(const Temperature *)temperature
 {
   ptr = self->_logger.__ptr_;
   if (ptr)
   {
-    sub_19B5C92E4(ptr, a3);
+    sub_19B5C92E4(ptr, temperature);
   }
 }
 
-- (void)_feedHeadAccessoryDeviceMotion:(id)a3
+- (void)_feedHeadAccessoryDeviceMotion:(id)motion
 {
   ptr = self->_logger.__ptr_;
   if (ptr)
   {
-    sub_19B5C85E4(ptr, a3);
+    sub_19B5C85E4(ptr, motion);
   }
 
   atomic_fetch_add(&self->_airpodsDmCount, 1u);

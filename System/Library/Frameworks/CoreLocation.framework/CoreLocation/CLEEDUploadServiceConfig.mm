@@ -1,13 +1,13 @@
 @interface CLEEDUploadServiceConfig
-- (CLEEDUploadServiceConfig)initWithCoder:(id)a3;
-- (CLEEDUploadServiceConfig)initWithNumInflightUploads:(int64_t)a3 maxUploadFileSizeMB:(int64_t)a4 maxUploadQuotaMB:(int64_t)a5;
+- (CLEEDUploadServiceConfig)initWithCoder:(id)coder;
+- (CLEEDUploadServiceConfig)initWithNumInflightUploads:(int64_t)uploads maxUploadFileSizeMB:(int64_t)b maxUploadQuotaMB:(int64_t)mB;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLEEDUploadServiceConfig
 
-- (CLEEDUploadServiceConfig)initWithNumInflightUploads:(int64_t)a3 maxUploadFileSizeMB:(int64_t)a4 maxUploadQuotaMB:(int64_t)a5
+- (CLEEDUploadServiceConfig)initWithNumInflightUploads:(int64_t)uploads maxUploadFileSizeMB:(int64_t)b maxUploadQuotaMB:(int64_t)mB
 {
   v31 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -21,11 +21,11 @@
     *buf = 136446978;
     v24 = "[CLEEDUploadServiceConfig initWithNumInflightUploads:maxUploadFileSizeMB:maxUploadQuotaMB:]";
     v25 = 2050;
-    v26 = a5;
+    mBCopy = mB;
     v27 = 2050;
-    v28 = a4;
+    bCopy = b;
     v29 = 2050;
-    v30 = a3;
+    uploadsCopy = uploads;
     _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEFAULT, "#EED2EMSFW,%{public}s[uploadQuotaMB:%{public}ld,maxFileSizeMB:%{public}ld,numInFlightUploads:%{public}ld]", buf, 0x2Au);
   }
 
@@ -41,11 +41,11 @@
     v15 = 136446978;
     v16 = "[CLEEDUploadServiceConfig initWithNumInflightUploads:maxUploadFileSizeMB:maxUploadQuotaMB:]";
     v17 = 2050;
-    v18 = a5;
+    mBCopy2 = mB;
     v19 = 2050;
-    v20 = a4;
+    bCopy2 = b;
     v21 = 2050;
-    v22 = a3;
+    uploadsCopy2 = uploads;
     v11 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDUploadServiceConfig initWithNumInflightUploads:maxUploadFileSizeMB:maxUploadQuotaMB:]", "CoreLocation: %s\n", v11);
     if (v11 != buf)
@@ -59,9 +59,9 @@
   result = [(CLEEDUploadServiceConfig *)&v14 init];
   if (result)
   {
-    result->_maxUploadFileSizeMB = a4;
-    result->_maxUploadQuotaMB = a5;
-    result->_numInFlightUploads = a3;
+    result->_maxUploadFileSizeMB = b;
+    result->_maxUploadQuotaMB = mB;
+    result->_numInFlightUploads = uploads;
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -75,25 +75,25 @@
   [(CLEEDUploadServiceConfig *)&v2 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInteger:self->_maxUploadQuotaMB forKey:@"maxUploadQuotaMB"];
-  [a3 encodeInteger:self->_maxUploadFileSizeMB forKey:@"maxUploadFileSizeMB"];
+  [coder encodeInteger:self->_maxUploadQuotaMB forKey:@"maxUploadQuotaMB"];
+  [coder encodeInteger:self->_maxUploadFileSizeMB forKey:@"maxUploadFileSizeMB"];
   numInFlightUploads = self->_numInFlightUploads;
 
-  [a3 encodeInteger:numInFlightUploads forKey:@"numInFlightUploads"];
+  [coder encodeInteger:numInFlightUploads forKey:@"numInFlightUploads"];
 }
 
-- (CLEEDUploadServiceConfig)initWithCoder:(id)a3
+- (CLEEDUploadServiceConfig)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CLEEDUploadServiceConfig;
   v4 = [(CLEEDUploadServiceConfig *)&v6 init];
   if (v4)
   {
-    v4->_maxUploadQuotaMB = [a3 decodeIntegerForKey:@"maxUploadQuotaMB"];
-    v4->_maxUploadFileSizeMB = [a3 decodeIntegerForKey:@"maxUploadFileSizeMB"];
-    v4->_numInFlightUploads = [a3 decodeIntegerForKey:@"numInFlightUploads"];
+    v4->_maxUploadQuotaMB = [coder decodeIntegerForKey:@"maxUploadQuotaMB"];
+    v4->_maxUploadFileSizeMB = [coder decodeIntegerForKey:@"maxUploadFileSizeMB"];
+    v4->_numInFlightUploads = [coder decodeIntegerForKey:@"numInFlightUploads"];
   }
 
   return v4;

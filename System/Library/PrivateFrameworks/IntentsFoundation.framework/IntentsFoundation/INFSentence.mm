@@ -1,21 +1,21 @@
 @interface INFSentence
-+ (id)sentenceWithIdentifier:(id)a3;
-- (BOOL)containsUnresolvedTokens:(id)a3;
++ (id)sentenceWithIdentifier:(id)identifier;
+- (BOOL)containsUnresolvedTokens:(id)tokens;
 - (INFGrammarCollection)collection;
 - (INFSentence)init;
-- (INFSentence)initWithDictionary:(id)a3 identifier:(id)a4;
-- (INFSentence)initWithIdentifier:(id)a3;
+- (INFSentence)initWithDictionary:(id)dictionary identifier:(id)identifier;
+- (INFSentence)initWithIdentifier:(id)identifier;
 - (NSSet)placeholders;
 - (NSString)resolvedSentence;
-- (id)concreteToken:(id)a3 in:(id)a4;
+- (id)concreteToken:(id)token in:(id)in;
 - (id)dictionaryRepresentation;
 - (id)filteredPlaceholders;
-- (id)unresolvedInArray:(id)a3;
+- (id)unresolvedInArray:(id)array;
 - (void)generatePlaceholders;
 - (void)reportCyclesIfAny;
-- (void)setFormat:(id)a3;
-- (void)setNumber:(id)a3 forPlaceholder:(id)a4;
-- (void)setToken:(id)a3 forPlaceholder:(id)a4;
+- (void)setFormat:(id)format;
+- (void)setNumber:(id)number forPlaceholder:(id)placeholder;
+- (void)setToken:(id)token forPlaceholder:(id)placeholder;
 @end
 
 @implementation INFSentence
@@ -29,21 +29,21 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v3 setObject:self->_format forKeyedSubscript:@"LOCSentenceFormat"];
-  [v3 setObject:self->_relationships forKeyedSubscript:@"LOCSentenceRelationships"];
-  v4 = [(INFSentence *)self filteredPlaceholders];
-  [v3 setObject:v4 forKeyedSubscript:@"LOCSentencePlaceholders"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:self->_format forKeyedSubscript:@"LOCSentenceFormat"];
+  [dictionary setObject:self->_relationships forKeyedSubscript:@"LOCSentenceRelationships"];
+  filteredPlaceholders = [(INFSentence *)self filteredPlaceholders];
+  [dictionary setObject:filteredPlaceholders forKeyedSubscript:@"LOCSentencePlaceholders"];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)filteredPlaceholders
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = [(NSMutableDictionary *)self->_placeholdersToTokens mutableCopy];
-  v4 = [v3 allKeys];
-  v5 = [v4 copy];
+  allKeys = [v3 allKeys];
+  v5 = [allKeys copy];
 
   v20 = 0u;
   v21 = 0u;
@@ -88,16 +88,16 @@
   return v3;
 }
 
-- (id)concreteToken:(id)a3 in:(id)a4
+- (id)concreteToken:(id)token in:(id)in
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  tokenCopy = token;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  inCopy = in;
+  v7 = [inCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = *v18;
@@ -107,14 +107,14 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(inCopy);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 originalToken];
-        v12 = [v11 identifier];
-        v13 = [v5 identifier];
-        v14 = [v12 isEqualToString:v13];
+        originalToken = [v10 originalToken];
+        identifier = [originalToken identifier];
+        identifier2 = [tokenCopy identifier];
+        v14 = [identifier isEqualToString:identifier2];
 
         if (v14)
         {
@@ -123,7 +123,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [inCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -140,16 +140,16 @@ LABEL_11:
   return v7;
 }
 
-- (id)unresolvedInArray:(id)a3
+- (id)unresolvedInArray:(id)array
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  arrayCopy = array;
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -167,7 +167,7 @@ LABEL_11:
         v10 = *(*(&v13 + 1) + 8 * i);
         if (([v10 isResolved] & 1) == 0)
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -179,12 +179,12 @@ LABEL_11:
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
-- (BOOL)containsUnresolvedTokens:(id)a3
+- (BOOL)containsUnresolvedTokens:(id)tokens
 {
-  v3 = a3;
+  tokensCopy = tokens;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -194,7 +194,7 @@ LABEL_11:
   v6[2] = __40__INFSentence_containsUnresolvedTokens___block_invoke;
   v6[3] = &unk_2797E9810;
   v6[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [tokensCopy enumerateObjectsUsingBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -218,13 +218,13 @@ uint64_t __40__INFSentence_containsUnresolvedTokens___block_invoke(uint64_t a1, 
   v81 = *MEMORY[0x277D85DE8];
   [(INFSentence *)self reportCyclesIfAny];
   v54 = [MEMORY[0x277CCAB68] stringWithString:self->_format];
-  v60 = [(INFSentence *)self collection];
-  v3 = [MEMORY[0x277CBEB18] array];
+  collection = [(INFSentence *)self collection];
+  array = [MEMORY[0x277CBEB18] array];
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v59 = self;
+  selfCopy = self;
   v4 = self->_placeholdersToTokens;
   v5 = [(NSMutableDictionary *)v4 countByEnumeratingWithState:&v73 objects:v80 count:16];
   if (v5)
@@ -241,10 +241,10 @@ uint64_t __40__INFSentence_containsUnresolvedTokens___block_invoke(uint64_t a1, 
         }
 
         v9 = *(*(&v73 + 1) + 8 * i);
-        v10 = [(NSMutableDictionary *)v59->_placeholdersToTokens objectForKeyedSubscript:v9];
-        v11 = [v60 tokenWithIdentifier:v10];
+        v10 = [(NSMutableDictionary *)selfCopy->_placeholdersToTokens objectForKeyedSubscript:v9];
+        v11 = [collection tokenWithIdentifier:v10];
         v12 = [INFSentenceTokenWithContext sentenceResolvedTokenWithOriginalToken:v11 placeholderName:v9];
-        [v3 addObject:v12];
+        [array addObject:v12];
       }
 
       v6 = [(NSMutableDictionary *)v4 countByEnumeratingWithState:&v73 objects:v80 count:16];
@@ -257,9 +257,9 @@ uint64_t __40__INFSentence_containsUnresolvedTokens___block_invoke(uint64_t a1, 
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v13 = v3;
+  v13 = array;
   v14 = [v13 countByEnumeratingWithState:&v69 objects:v79 count:16];
-  v15 = v59;
+  v15 = selfCopy;
   obj = v13;
   if (v14)
   {
@@ -275,16 +275,16 @@ uint64_t __40__INFSentence_containsUnresolvedTokens___block_invoke(uint64_t a1, 
         }
 
         v19 = *(*(&v69 + 1) + 8 * j);
-        relationships = v59->_relationships;
-        v21 = [v19 placeholderName];
-        v22 = [(NSMutableDictionary *)relationships objectForKeyedSubscript:v21];
+        relationships = selfCopy->_relationships;
+        placeholderName = [v19 placeholderName];
+        v22 = [(NSMutableDictionary *)relationships objectForKeyedSubscript:placeholderName];
 
         if (!v22)
         {
           [v19 setResolved:1];
-          v23 = [v19 originalToken];
-          v24 = [v23 contributingSentenceContext];
-          [v19 setContext:v24];
+          originalToken = [v19 originalToken];
+          contributingSentenceContext = [originalToken contributingSentenceContext];
+          [v19 setContext:contributingSentenceContext];
         }
       }
 
@@ -295,7 +295,7 @@ uint64_t __40__INFSentence_containsUnresolvedTokens___block_invoke(uint64_t a1, 
     while (v16);
   }
 
-  if ([(INFSentence *)v59 containsUnresolvedTokens:v13])
+  if ([(INFSentence *)selfCopy containsUnresolvedTokens:v13])
   {
     do
     {
@@ -323,20 +323,20 @@ uint64_t __40__INFSentence_containsUnresolvedTokens___block_invoke(uint64_t a1, 
 
             v29 = *(*(&v65 + 1) + 8 * v28);
             v30 = v15->_relationships;
-            v31 = [v29 placeholderName];
-            v32 = [(NSMutableDictionary *)v30 objectForKeyedSubscript:v31];
+            placeholderName2 = [v29 placeholderName];
+            v32 = [(NSMutableDictionary *)v30 objectForKeyedSubscript:placeholderName2];
 
             v33 = [(NSMutableDictionary *)v15->_placeholdersToTokens objectForKeyedSubscript:v32];
-            v34 = [v60 tokenWithIdentifier:v33];
+            v34 = [collection tokenWithIdentifier:v33];
             v35 = [(INFSentence *)v15 concreteToken:v34 in:v13];
             if ([v35 isResolved])
             {
-              v36 = [v35 context];
-              v37 = [v29 originalToken];
-              v38 = [v37 contributingSentenceContext];
-              v39 = [v36 combinedWithContext:v38];
+              context = [v35 context];
+              originalToken2 = [v29 originalToken];
+              contributingSentenceContext2 = [originalToken2 contributingSentenceContext];
+              v39 = [context combinedWithContext:contributingSentenceContext2];
 
-              v15 = v59;
+              v15 = selfCopy;
               v26 = v56;
 
               v27 = v55;
@@ -381,12 +381,12 @@ uint64_t __40__INFSentence_containsUnresolvedTokens___block_invoke(uint64_t a1, 
 
         v45 = *(*(&v61 + 1) + 8 * k);
         v46 = MEMORY[0x277CCACA8];
-        v47 = [v45 placeholderName];
-        v48 = [v46 stringWithFormat:@"%%#@%@@", v47];
+        placeholderName3 = [v45 placeholderName];
+        v48 = [v46 stringWithFormat:@"%%#@%@@", placeholderName3];
 
-        v49 = [v45 originalToken];
-        v50 = [v45 context];
-        v51 = [v49 stringForContext:v50];
+        originalToken3 = [v45 originalToken];
+        context2 = [v45 context];
+        v51 = [originalToken3 stringForContext:context2];
 
         if (v51)
         {
@@ -455,32 +455,32 @@ void __32__INFSentence_reportCyclesIfAny__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setNumber:(id)a3 forPlaceholder:(id)a4
+- (void)setNumber:(id)number forPlaceholder:(id)placeholder
 {
   v6 = MEMORY[0x277CCACA8];
   identifier = self->_identifier;
-  v8 = a4;
-  v9 = a3;
-  v12 = [v6 stringWithFormat:@"%@_%@", identifier, v8];
-  v10 = [INFNumber numberWithIdentifier:v12];
-  [v10 setValue:v9];
+  placeholderCopy = placeholder;
+  numberCopy = number;
+  placeholderCopy = [v6 stringWithFormat:@"%@_%@", identifier, placeholderCopy];
+  v10 = [INFNumber numberWithIdentifier:placeholderCopy];
+  [v10 setValue:numberCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_collection);
   [WeakRetained addToken:v10];
 
-  [(INFSentence *)self setToken:v10 forPlaceholder:v8];
+  [(INFSentence *)self setToken:v10 forPlaceholder:placeholderCopy];
 }
 
-- (void)setToken:(id)a3 forPlaceholder:(id)a4
+- (void)setToken:(id)token forPlaceholder:(id)placeholder
 {
-  v6 = a4;
-  v7 = [a3 identifier];
-  [(NSMutableDictionary *)self->_placeholdersToTokens setObject:v7 forKeyedSubscript:v6];
+  placeholderCopy = placeholder;
+  identifier = [token identifier];
+  [(NSMutableDictionary *)self->_placeholdersToTokens setObject:identifier forKeyedSubscript:placeholderCopy];
 }
 
-- (void)setFormat:(id)a3
+- (void)setFormat:(id)format
 {
-  v4 = [a3 copy];
+  v4 = [format copy];
   format = self->_format;
   self->_format = v4;
 
@@ -543,32 +543,32 @@ void __35__INFSentence_generatePlaceholders__block_invoke(uint64_t a1, void *a2)
   return placeholders;
 }
 
-- (INFSentence)initWithDictionary:(id)a3 identifier:(id)a4
+- (INFSentence)initWithDictionary:(id)dictionary identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
   v8 = [(INFSentence *)self init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"LOCSentenceFormat"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"LOCSentenceFormat"];
     v12 = [v11 copy];
     format = v8->_format;
     v8->_format = v12;
 
-    v14 = [v6 objectForKeyedSubscript:@"LOCSentenceRelationships"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"LOCSentenceRelationships"];
     v15 = [v14 mutableCopy];
     relationships = v8->_relationships;
     v8->_relationships = v15;
 
-    v17 = [v6 objectForKeyedSubscript:@"LOCSentencePlaceholders"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"LOCSentencePlaceholders"];
 
     if (v17)
     {
-      v18 = [v6 objectForKeyedSubscript:@"LOCSentencePlaceholders"];
+      v18 = [dictionaryCopy objectForKeyedSubscript:@"LOCSentencePlaceholders"];
       v19 = [v18 mutableCopy];
       placeholdersToTokens = v8->_placeholdersToTokens;
       v8->_placeholdersToTokens = v19;
@@ -578,13 +578,13 @@ void __35__INFSentence_generatePlaceholders__block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-- (INFSentence)initWithIdentifier:(id)a3
+- (INFSentence)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(INFSentence *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -606,13 +606,13 @@ void __35__INFSentence_generatePlaceholders__block_invoke(uint64_t a1, void *a2)
     format = v3->_format;
     v3->_format = &stru_28676DA60;
 
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     relationships = v3->_relationships;
-    v3->_relationships = v6;
+    v3->_relationships = dictionary;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     placeholdersToTokens = v3->_placeholdersToTokens;
-    v3->_placeholdersToTokens = v8;
+    v3->_placeholdersToTokens = dictionary2;
 
     placeholders = v3->_placeholders;
     v3->_placeholders = 0;
@@ -621,10 +621,10 @@ void __35__INFSentence_generatePlaceholders__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-+ (id)sentenceWithIdentifier:(id)a3
++ (id)sentenceWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithIdentifier:identifierCopy];
 
   return v5;
 }

@@ -1,31 +1,31 @@
 @interface AXSDVoiceTriggerAssetManager
-- (AXSDVoiceTriggerAssetManager)initWithDelegate:(id)a3;
+- (AXSDVoiceTriggerAssetManager)initWithDelegate:(id)delegate;
 - (AXSDVoiceTriggerAssetManagerDelegate)delegate;
-- (void)assetController:(id)a3 didFinishDownloadingAsset:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6 hasRemainingDownloads:(BOOL)a7;
-- (void)assetController:(id)a3 didFinishRefreshingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6;
-- (void)assetDidUpdateWithError:(id)a3;
+- (void)assetController:(id)controller didFinishDownloadingAsset:(id)asset wasSuccessful:(BOOL)successful error:(id)error hasRemainingDownloads:(BOOL)downloads;
+- (void)assetController:(id)controller didFinishRefreshingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error;
+- (void)assetDidUpdateWithError:(id)error;
 @end
 
 @implementation AXSDVoiceTriggerAssetManager
 
-- (AXSDVoiceTriggerAssetManager)initWithDelegate:(id)a3
+- (AXSDVoiceTriggerAssetManager)initWithDelegate:(id)delegate
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = AXSDVoiceTriggerAssetManager;
   v5 = [(AXSDVoiceTriggerAssetManager *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
-    v7 = [MEMORY[0x277CE66B0] policy];
+    objc_storeWeak(&v5->_delegate, delegateCopy);
+    policy = [MEMORY[0x277CE66B0] policy];
     assetPolicy = v6->_assetPolicy;
-    v6->_assetPolicy = v7;
+    v6->_assetPolicy = policy;
 
     v9 = MEMORY[0x277CE6668];
-    v10 = [(AXSDVoiceTriggerAssetManager *)v6 assetPolicy];
-    v11 = [v9 assetControllerWithPolicy:v10 qosClass:25];
+    assetPolicy = [(AXSDVoiceTriggerAssetManager *)v6 assetPolicy];
+    v11 = [v9 assetControllerWithPolicy:assetPolicy qosClass:25];
     assetController = v6->_assetController;
     v6->_assetController = v11;
 
@@ -57,8 +57,8 @@
 
     v15 = v14;
     _Block_object_dispose(&v20, 8);
-    v16 = [v14 sharedInstance];
-    [v16 setSoundActionsLastModelAccess:CFAbsoluteTimeGetCurrent()];
+    sharedInstance = [v14 sharedInstance];
+    [sharedInstance setSoundActionsLastModelAccess:CFAbsoluteTimeGetCurrent()];
 
     [(AXAssetController *)v6->_assetController refreshAssetsByForceUpdatingCatalog:0 updatingCatalogIfNeeded:1 catalogRefreshOverrideTimeout:0 completion:0];
   }
@@ -67,49 +67,49 @@
   return v6;
 }
 
-- (void)assetController:(id)a3 didFinishRefreshingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6
+- (void)assetController:(id)controller didFinishRefreshingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error
 {
-  v7 = a5;
+  successfulCopy = successful;
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a6;
-  if (v7)
+  assetsCopy = assets;
+  errorCopy = error;
+  if (successfulCopy)
   {
-    v11 = [v9 lastObject];
+    lastObject = [assetsCopy lastObject];
     v12 = AXLogSoundActions();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v23 = self;
+      selfCopy3 = self;
       v24 = 2112;
-      v25 = v9;
+      v25 = assetsCopy;
       _os_log_impl(&dword_23D62D000, v12, OS_LOG_TYPE_INFO, "[%@]: Voice Trigger Model loading:  Refreshed Assets:\n%@", buf, 0x16u);
     }
 
-    if ([v11 isInstalled])
+    if ([lastObject isInstalled])
     {
       v13 = AXLogSoundActions();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v23 = self;
+        selfCopy3 = self;
         v24 = 2112;
-        v25 = v9;
+        v25 = assetsCopy;
         _os_log_impl(&dword_23D62D000, v13, OS_LOG_TYPE_INFO, "[%@]: Voice Trigger Model loading:  Newst asset already installed:\n%@", buf, 0x16u);
       }
 
-      objc_storeStrong(&self->_latestDownloadedAsset, v11);
+      objc_storeStrong(&self->_latestDownloadedAsset, lastObject);
       [(AXSDVoiceTriggerAssetManager *)self assetDidUpdateWithError:0];
     }
 
-    else if (self->_latestDownloadedAsset && (v14 = [v11 contentVersion], v14 <= [(AXAsset *)self->_latestDownloadedAsset contentVersion]))
+    else if (self->_latestDownloadedAsset && (v14 = [lastObject contentVersion], v14 <= [(AXAsset *)self->_latestDownloadedAsset contentVersion]))
     {
       v16 = AXLogSoundActions();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         latestDownloadedAsset = self->_latestDownloadedAsset;
         *buf = 138412546;
-        v23 = self;
+        selfCopy3 = self;
         v24 = 2112;
         v25 = latestDownloadedAsset;
         _os_log_impl(&dword_23D62D000, v16, OS_LOG_TYPE_INFO, "[%@]: Voice Trigger Model loading:  Latest asset up to date - keeping:\n%@", buf, 0x16u);
@@ -124,16 +124,16 @@
       v19[2] = __94__AXSDVoiceTriggerAssetManager_assetController_didFinishRefreshingAssets_wasSuccessful_error___block_invoke;
       v19[3] = &unk_278BDCFB8;
       v19[4] = self;
-      v20 = v9;
-      v21 = v10;
+      v20 = assetsCopy;
+      v21 = errorCopy;
       [(AXAssetController *)assetController downloadAssets:v20 successStartBlock:v19];
     }
   }
 
   else
   {
-    v11 = AXLogSoundActions();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    lastObject = AXLogSoundActions();
+    if (os_log_type_enabled(lastObject, OS_LOG_TYPE_ERROR))
     {
       [AXSDVoiceTriggerAssetManager assetController:didFinishRefreshingAssets:wasSuccessful:error:];
     }
@@ -169,26 +169,26 @@ void __94__AXSDVoiceTriggerAssetManager_assetController_didFinishRefreshingAsset
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assetController:(id)a3 didFinishDownloadingAsset:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6 hasRemainingDownloads:(BOOL)a7
+- (void)assetController:(id)controller didFinishDownloadingAsset:(id)asset wasSuccessful:(BOOL)successful error:(id)error hasRemainingDownloads:(BOOL)downloads
 {
-  v8 = a5;
+  successfulCopy = successful;
   v20 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
+  assetCopy = asset;
+  errorCopy = error;
   v12 = AXLogSoundActions();
   latestDownloadedAsset = v12;
-  if (v8)
+  if (successfulCopy)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v16 = 138412546;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
-      v19 = v10;
+      v19 = assetCopy;
       _os_log_impl(&dword_23D62D000, latestDownloadedAsset, OS_LOG_TYPE_INFO, "[%@]: Voice Trigger Model loading:  Downloaded Asset:\n%@", &v16, 0x16u);
     }
 
-    v14 = v10;
+    v14 = assetCopy;
     latestDownloadedAsset = self->_latestDownloadedAsset;
     self->_latestDownloadedAsset = v14;
   }
@@ -198,28 +198,28 @@ void __94__AXSDVoiceTriggerAssetManager_assetController_didFinishRefreshingAsset
     [AXSDVoiceTriggerAssetManager assetController:didFinishDownloadingAsset:wasSuccessful:error:hasRemainingDownloads:];
   }
 
-  [(AXSDVoiceTriggerAssetManager *)self assetDidUpdateWithError:v11];
+  [(AXSDVoiceTriggerAssetManager *)self assetDidUpdateWithError:errorCopy];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assetDidUpdateWithError:(id)a3
+- (void)assetDidUpdateWithError:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = AXLogSoundActions();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     latestDownloadedAsset = self->_latestDownloadedAsset;
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = latestDownloadedAsset;
     _os_log_impl(&dword_23D62D000, v5, OS_LOG_TYPE_INFO, "[%@]: Voice Trigger Model loading:  Asset Did Update:\n%@", &v10, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [(AXAsset *)self->_latestDownloadedAsset localURL];
-  [WeakRetained modelDidUpdate:v8 assetVersion:-[AXAsset contentVersion](self->_latestDownloadedAsset withError:{"contentVersion"), v4}];
+  localURL = [(AXAsset *)self->_latestDownloadedAsset localURL];
+  [WeakRetained modelDidUpdate:localURL assetVersion:-[AXAsset contentVersion](self->_latestDownloadedAsset withError:{"contentVersion"), errorCopy}];
 
   v9 = *MEMORY[0x277D85DE8];
 }

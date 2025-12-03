@@ -1,72 +1,72 @@
 @interface _INPBGetSettingResponseData
-- (BOOL)isEqual:(id)a3;
-- (_INPBGetSettingResponseData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBGetSettingResponseData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsBinaryValue:(id)a3;
-- (int)StringAsBoundedValue:(id)a3;
+- (int)StringAsBinaryValue:(id)value;
+- (int)StringAsBoundedValue:(id)value;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBinaryValue:(int)a3;
-- (void)setBoundedValue:(int)a3;
-- (void)setHasBoundedValue:(BOOL)a3;
-- (void)setLabeledValue:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBinaryValue:(int)value;
+- (void)setBoundedValue:(int)value;
+- (void)setHasBoundedValue:(BOOL)value;
+- (void)setLabeledValue:(id)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBGetSettingResponseData
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBGetSettingResponseData *)self hasBinaryValue])
   {
-    v4 = [(_INPBGetSettingResponseData *)self binaryValue];
-    if ((v4 - 1) >= 3)
+    binaryValue = [(_INPBGetSettingResponseData *)self binaryValue];
+    if ((binaryValue - 1) >= 3)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", binaryValue];
     }
 
     else
     {
-      v5 = *(&off_1E7287C58 + (v4 - 1));
+      v5 = *(&off_1E7287C58 + (binaryValue - 1));
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"binaryValue"];
+    [dictionary setObject:v5 forKeyedSubscript:@"binaryValue"];
   }
 
   if ([(_INPBGetSettingResponseData *)self hasBoundedValue])
   {
-    v6 = [(_INPBGetSettingResponseData *)self boundedValue];
-    if ((v6 - 1) >= 3)
+    boundedValue = [(_INPBGetSettingResponseData *)self boundedValue];
+    if ((boundedValue - 1) >= 3)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", boundedValue];
     }
 
     else
     {
-      v7 = *(&off_1E7287C70 + (v6 - 1));
+      v7 = *(&off_1E7287C70 + (boundedValue - 1));
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"boundedValue"];
+    [dictionary setObject:v7 forKeyedSubscript:@"boundedValue"];
   }
 
   if (self->_labeledValue)
   {
-    v8 = [(_INPBGetSettingResponseData *)self labeledValue];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"labeledValue"];
+    labeledValue = [(_INPBGetSettingResponseData *)self labeledValue];
+    v9 = [labeledValue copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"labeledValue"];
   }
 
-  v10 = [(_INPBGetSettingResponseData *)self numericValue];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"numericValue"];
+  numericValue = [(_INPBGetSettingResponseData *)self numericValue];
+  dictionaryRepresentation = [numericValue dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"numericValue"];
 
-  v12 = [(_INPBGetSettingResponseData *)self settingMetadata];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"settingMetadata"];
+  settingMetadata = [(_INPBGetSettingResponseData *)self settingMetadata];
+  dictionaryRepresentation2 = [settingMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"settingMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -96,64 +96,64 @@
   return v5 ^ v6 ^ [(_INPBSettingMetadata *)self->_settingMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  v5 = [(_INPBGetSettingResponseData *)self hasBinaryValue];
-  if (v5 != [v4 hasBinaryValue])
+  hasBinaryValue = [(_INPBGetSettingResponseData *)self hasBinaryValue];
+  if (hasBinaryValue != [equalCopy hasBinaryValue])
   {
     goto LABEL_25;
   }
 
   if ([(_INPBGetSettingResponseData *)self hasBinaryValue])
   {
-    if ([v4 hasBinaryValue])
+    if ([equalCopy hasBinaryValue])
     {
       binaryValue = self->_binaryValue;
-      if (binaryValue != [v4 binaryValue])
+      if (binaryValue != [equalCopy binaryValue])
       {
         goto LABEL_25;
       }
     }
   }
 
-  v7 = [(_INPBGetSettingResponseData *)self hasBoundedValue];
-  if (v7 != [v4 hasBoundedValue])
+  hasBoundedValue = [(_INPBGetSettingResponseData *)self hasBoundedValue];
+  if (hasBoundedValue != [equalCopy hasBoundedValue])
   {
     goto LABEL_25;
   }
 
   if ([(_INPBGetSettingResponseData *)self hasBoundedValue])
   {
-    if ([v4 hasBoundedValue])
+    if ([equalCopy hasBoundedValue])
     {
       boundedValue = self->_boundedValue;
-      if (boundedValue != [v4 boundedValue])
+      if (boundedValue != [equalCopy boundedValue])
       {
         goto LABEL_25;
       }
     }
   }
 
-  v9 = [(_INPBGetSettingResponseData *)self labeledValue];
-  v10 = [v4 labeledValue];
-  if ((v9 != 0) == (v10 == 0))
+  labeledValue = [(_INPBGetSettingResponseData *)self labeledValue];
+  labeledValue2 = [equalCopy labeledValue];
+  if ((labeledValue != 0) == (labeledValue2 == 0))
   {
     goto LABEL_24;
   }
 
-  v11 = [(_INPBGetSettingResponseData *)self labeledValue];
-  if (v11)
+  labeledValue3 = [(_INPBGetSettingResponseData *)self labeledValue];
+  if (labeledValue3)
   {
-    v12 = v11;
-    v13 = [(_INPBGetSettingResponseData *)self labeledValue];
-    v14 = [v4 labeledValue];
-    v15 = [v13 isEqual:v14];
+    v12 = labeledValue3;
+    labeledValue4 = [(_INPBGetSettingResponseData *)self labeledValue];
+    labeledValue5 = [equalCopy labeledValue];
+    v15 = [labeledValue4 isEqual:labeledValue5];
 
     if (!v15)
     {
@@ -165,20 +165,20 @@
   {
   }
 
-  v9 = [(_INPBGetSettingResponseData *)self numericValue];
-  v10 = [v4 numericValue];
-  if ((v9 != 0) == (v10 == 0))
+  labeledValue = [(_INPBGetSettingResponseData *)self numericValue];
+  labeledValue2 = [equalCopy numericValue];
+  if ((labeledValue != 0) == (labeledValue2 == 0))
   {
     goto LABEL_24;
   }
 
-  v16 = [(_INPBGetSettingResponseData *)self numericValue];
-  if (v16)
+  numericValue = [(_INPBGetSettingResponseData *)self numericValue];
+  if (numericValue)
   {
-    v17 = v16;
-    v18 = [(_INPBGetSettingResponseData *)self numericValue];
-    v19 = [v4 numericValue];
-    v20 = [v18 isEqual:v19];
+    v17 = numericValue;
+    numericValue2 = [(_INPBGetSettingResponseData *)self numericValue];
+    numericValue3 = [equalCopy numericValue];
+    v20 = [numericValue2 isEqual:numericValue3];
 
     if (!v20)
     {
@@ -190,12 +190,12 @@
   {
   }
 
-  v9 = [(_INPBGetSettingResponseData *)self settingMetadata];
-  v10 = [v4 settingMetadata];
-  if ((v9 != 0) != (v10 == 0))
+  labeledValue = [(_INPBGetSettingResponseData *)self settingMetadata];
+  labeledValue2 = [equalCopy settingMetadata];
+  if ((labeledValue != 0) != (labeledValue2 == 0))
   {
-    v21 = [(_INPBGetSettingResponseData *)self settingMetadata];
-    if (!v21)
+    settingMetadata = [(_INPBGetSettingResponseData *)self settingMetadata];
+    if (!settingMetadata)
     {
 
 LABEL_28:
@@ -203,10 +203,10 @@ LABEL_28:
       goto LABEL_26;
     }
 
-    v22 = v21;
-    v23 = [(_INPBGetSettingResponseData *)self settingMetadata];
-    v24 = [v4 settingMetadata];
-    v25 = [v23 isEqual:v24];
+    v22 = settingMetadata;
+    settingMetadata2 = [(_INPBGetSettingResponseData *)self settingMetadata];
+    settingMetadata3 = [equalCopy settingMetadata];
+    v25 = [settingMetadata2 isEqual:settingMetadata3];
 
     if (v25)
     {
@@ -226,7 +226,7 @@ LABEL_26:
   return v26;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBGetSettingResponseData allocWithZone:](_INPBGetSettingResponseData init];
   if ([(_INPBGetSettingResponseData *)self hasBinaryValue])
@@ -239,45 +239,45 @@ LABEL_26:
     [(_INPBGetSettingResponseData *)v5 setBoundedValue:[(_INPBGetSettingResponseData *)self boundedValue]];
   }
 
-  v6 = [(NSString *)self->_labeledValue copyWithZone:a3];
+  v6 = [(NSString *)self->_labeledValue copyWithZone:zone];
   [(_INPBGetSettingResponseData *)v5 setLabeledValue:v6];
 
-  v7 = [(_INPBNumericSettingValue *)self->_numericValue copyWithZone:a3];
+  v7 = [(_INPBNumericSettingValue *)self->_numericValue copyWithZone:zone];
   [(_INPBGetSettingResponseData *)v5 setNumericValue:v7];
 
-  v8 = [(_INPBSettingMetadata *)self->_settingMetadata copyWithZone:a3];
+  v8 = [(_INPBSettingMetadata *)self->_settingMetadata copyWithZone:zone];
   [(_INPBGetSettingResponseData *)v5 setSettingMetadata:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBGetSettingResponseData *)self data];
+  coderCopy = coder;
+  data = [(_INPBGetSettingResponseData *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBGetSettingResponseData)initWithCoder:(id)a3
+- (_INPBGetSettingResponseData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBGetSettingResponseData *)self initWithData:v6];
+    self = [(_INPBGetSettingResponseData *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   if ([(_INPBGetSettingResponseData *)self hasBinaryValue])
   {
     binaryValue = self->_binaryValue;
@@ -290,57 +290,57 @@ LABEL_26:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(_INPBGetSettingResponseData *)self labeledValue];
+  labeledValue = [(_INPBGetSettingResponseData *)self labeledValue];
 
-  if (v6)
+  if (labeledValue)
   {
     labeledValue = self->_labeledValue;
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_INPBGetSettingResponseData *)self numericValue];
+  numericValue = [(_INPBGetSettingResponseData *)self numericValue];
 
-  if (v8)
+  if (numericValue)
   {
-    v9 = [(_INPBGetSettingResponseData *)self numericValue];
+    numericValue2 = [(_INPBGetSettingResponseData *)self numericValue];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBGetSettingResponseData *)self settingMetadata];
+  settingMetadata = [(_INPBGetSettingResponseData *)self settingMetadata];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (settingMetadata)
   {
-    v12 = [(_INPBGetSettingResponseData *)self settingMetadata];
+    settingMetadata2 = [(_INPBGetSettingResponseData *)self settingMetadata];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
-- (void)setLabeledValue:(id)a3
+- (void)setLabeledValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   labeledValue = self->_labeledValue;
   self->_labeledValue = v4;
 
   MEMORY[0x1EEE66BB8](v4, labeledValue);
 }
 
-- (int)StringAsBoundedValue:(id)a3
+- (int)StringAsBoundedValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"MIN"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"MIN"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MEDIAN"])
+  else if ([valueCopy isEqualToString:@"MEDIAN"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MAX"])
+  else if ([valueCopy isEqualToString:@"MAX"])
   {
     v4 = 3;
   }
@@ -353,9 +353,9 @@ LABEL_26:
   return v4;
 }
 
-- (void)setHasBoundedValue:(BOOL)a3
+- (void)setHasBoundedValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -368,10 +368,10 @@ LABEL_26:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setBoundedValue:(int)a3
+- (void)setBoundedValue:(int)value
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (value == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -379,24 +379,24 @@ LABEL_26:
   else
   {
     *&self->_has = has | 2;
-    self->_boundedValue = a3;
+    self->_boundedValue = value;
   }
 }
 
-- (int)StringAsBinaryValue:(id)a3
+- (int)StringAsBinaryValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ON"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"ON"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"OFF"])
+  else if ([valueCopy isEqualToString:@"OFF"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TOGGLE"])
+  else if ([valueCopy isEqualToString:@"TOGGLE"])
   {
     v4 = 3;
   }
@@ -409,10 +409,10 @@ LABEL_26:
   return v4;
 }
 
-- (void)setBinaryValue:(int)a3
+- (void)setBinaryValue:(int)value
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (value == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -420,7 +420,7 @@ LABEL_26:
   else
   {
     *&self->_has = has | 1;
-    self->_binaryValue = a3;
+    self->_binaryValue = value;
   }
 }
 

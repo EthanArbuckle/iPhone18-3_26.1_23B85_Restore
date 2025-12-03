@@ -1,13 +1,13 @@
 @interface RTCostMatrixCell
-- (RTCostMatrixCell)initWithDistance:(double)a3 cellIndex:(id)a4;
+- (RTCostMatrixCell)initWithDistance:(double)distance cellIndex:(id)index;
 @end
 
 @implementation RTCostMatrixCell
 
-- (RTCostMatrixCell)initWithDistance:(double)a3 cellIndex:(id)a4
+- (RTCostMatrixCell)initWithDistance:(double)distance cellIndex:(id)index
 {
-  v6 = a4;
-  if (v6)
+  indexCopy = index;
+  if (indexCopy)
   {
     v12.receiver = self;
     v12.super_class = RTCostMatrixCell;
@@ -15,12 +15,12 @@
     v8 = v7;
     if (v7)
     {
-      [(RTCostMatrixCell *)v7 setDistance:a3];
-      [(RTCostMatrixCell *)v8 setCellIndex:v6];
+      [(RTCostMatrixCell *)v7 setDistance:distance];
+      [(RTCostMatrixCell *)v8 setCellIndex:indexCopy];
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -32,10 +32,10 @@
       _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: cellIndex", buf, 2u);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

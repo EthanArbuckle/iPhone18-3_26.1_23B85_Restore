@@ -1,34 +1,34 @@
 @interface CRFDRUtils
-+ (BOOL)_getAllLiveDataClasses:(id *)a3 liveInstances:(id *)a4 missingLiveData:(id)a5 mesaState:(id)a6 error:(id *)a7;
-+ (BOOL)_getAllSealedDataAndPropertiesFromManifest:(id)a3 properties:(id *)a4 classes:(id *)a5 instances:(id *)a6 error:(id *)a7;
-+ (BOOL)isDataClassSupported:(id)a3;
-+ (BOOL)isDcSignedCombinedDataClass:(id)a3 error:(id *)a4;
-+ (BOOL)isDcSignedDataClass:(id)a3 instance:(id)a4 error:(id *)a5;
-+ (BOOL)isDcSignedSealingManifest:(id *)a3;
-+ (BOOL)isPrimaryDataClassSupported:(id)a3;
-+ (BOOL)isPropertySupported:(id)a3;
++ (BOOL)_getAllLiveDataClasses:(id *)classes liveInstances:(id *)instances missingLiveData:(id)data mesaState:(id)state error:(id *)error;
++ (BOOL)_getAllSealedDataAndPropertiesFromManifest:(id)manifest properties:(id *)properties classes:(id *)classes instances:(id *)instances error:(id *)error;
++ (BOOL)isDataClassSupported:(id)supported;
++ (BOOL)isDcSignedCombinedDataClass:(id)class error:(id *)error;
++ (BOOL)isDcSignedDataClass:(id)class instance:(id)instance error:(id *)error;
++ (BOOL)isDcSignedSealingManifest:(id *)manifest;
++ (BOOL)isPrimaryDataClassSupported:(id)supported;
++ (BOOL)isPropertySupported:(id)supported;
 + (BOOL)isRepairASIDSupported;
-+ (BOOL)queryDeviceStagedSealedFromEAN:(BOOL)a3 error:(id *)a4;
++ (BOOL)queryDeviceStagedSealedFromEAN:(BOOL)n error:(id *)error;
 + (__AMFDR)_createFDRLocal;
 + (id)_getDataClassesFromSealingManifest;
 + (id)_getDataClassesFromSealingMap;
-+ (id)_getManifestForDataClass:(id)a3;
++ (id)_getManifestForDataClass:(id)class;
 + (id)_getMesaState;
 + (id)_getPropertiesFromSealingMap;
-+ (id)_getUnsealedMesaData:(id)a3 mesaState:(id)a4;
-+ (id)extractComponentsAndIdentifiers:(id)a3;
-+ (id)findUnsealedDataWithError:(id *)a3;
-+ (id)findUnsealedDataWithKey:(id)a3 error:(id *)a4;
-+ (id)getData:(id)a3 instance:(id)a4;
-+ (id)getDataPayload:(id)a3 instance:(id)a4;
-+ (id)getDataPayloadDictWithClass:(id)a3 instance:(id)a4;
-+ (id)getLocalSealingManifestWithError:(id *)a3;
-+ (id)getSealedInstancesWithClass:(id)a3 error:(id *)a4;
-+ (id)getStringFromCert:(id)a3 WithTag:(unint64_t)a4 AndOID:(id)a5;
-+ (id)isServicePartWithError:(id *)a3;
++ (id)_getUnsealedMesaData:(id)data mesaState:(id)state;
++ (id)extractComponentsAndIdentifiers:(id)identifiers;
++ (id)findUnsealedDataWithError:(id *)error;
++ (id)findUnsealedDataWithKey:(id)key error:(id *)error;
++ (id)getData:(id)data instance:(id)instance;
++ (id)getDataPayload:(id)payload instance:(id)instance;
++ (id)getDataPayloadDictWithClass:(id)class instance:(id)instance;
++ (id)getLocalSealingManifestWithError:(id *)error;
++ (id)getSealedInstancesWithClass:(id)class error:(id *)error;
++ (id)getStringFromCert:(id)cert WithTag:(unint64_t)tag AndOID:(id)d;
++ (id)isServicePartWithError:(id *)error;
 + (id)localManifestProperties;
-+ (void)_compareSealedAndLiveDataClasses:(id)a3 instances:(id)a4 liveClasses:(id)a5 liveInstances:(id)a6 results:(id)a7;
-+ (void)_compareSerialNumberProperties:(id)a3 missingLiveData:(id)a4 results:(id)a5;
++ (void)_compareSealedAndLiveDataClasses:(id)classes instances:(id)instances liveClasses:(id)liveClasses liveInstances:(id)liveInstances results:(id)results;
++ (void)_compareSerialNumberProperties:(id)properties missingLiveData:(id)data results:(id)results;
 + (void)_getDataClassesFromSealingManifest;
 + (void)_getDataClassesFromSealingMap;
 + (void)_getPropertiesFromSealingMap;
@@ -51,9 +51,9 @@
   return v4;
 }
 
-+ (id)getLocalSealingManifestWithError:(id *)a3
++ (id)getLocalSealingManifestWithError:(id *)error
 {
-  [a1 _createFDRLocal];
+  [self _createFDRLocal];
   v9 = 0;
   v10 = 0;
   v4 = handleForCategory(0);
@@ -77,10 +77,10 @@
     }
 
     v5 = 0;
-    if (a3 && v10)
+    if (error && v10)
     {
       v5 = 0;
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -89,11 +89,11 @@
   return v5;
 }
 
-+ (id)getStringFromCert:(id)a3 WithTag:(unint64_t)a4 AndOID:(id)a5
++ (id)getStringFromCert:(id)cert WithTag:(unint64_t)tag AndOID:(id)d
 {
   v31 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v6 = a5;
+  certCopy = cert;
+  dCopy = d;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v27[0] = 0;
   v27[1] = 0;
@@ -104,7 +104,7 @@
   v22 = 0;
   v23 = 0;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  while (!DERDecodeSeqNext(&v28, &v21))
+  while (!DERDecodeSeqNext(&certCopy, &v21))
   {
     v9 = [MEMORY[0x277CCAE60] valueWithBytes:&v21 objCType:"{?=Q{?=*Q}}"];
     [v7 addObject:v9];
@@ -121,7 +121,7 @@
       [v12 getValue:&v24];
       v13 = objc_alloc(MEMORY[0x277CBEA90]);
       v14 = [v13 initWithBytes:v25 length:v26];
-      if (v24 != a4 || ([v6 isEqual:v14] & 1) == 0)
+      if (v24 != tag || ([dCopy isEqual:v14] & 1) == 0)
       {
         break;
       }
@@ -177,14 +177,14 @@ LABEL_20:
   return v17;
 }
 
-+ (id)getData:(id)a3 instance:(id)a4
++ (id)getData:(id)data instance:(id)instance
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  instanceCopy = instance;
   v14 = 0;
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   CFDictionarySetValue(Mutable, @"VerifyData", *MEMORY[0x277CBED28]);
-  if (v6)
+  if (instanceCopy)
   {
     v8 = AMFDRSealingMapCopyLocalData();
   }
@@ -198,7 +198,7 @@ LABEL_20:
   if (v8)
   {
     CFDictionarySetValue(Mutable, @"VerifyData", *MEMORY[0x277CBED10]);
-    if (v6)
+    if (instanceCopy)
     {
       v10 = AMFDRSealingMapCopyLocalData();
     }
@@ -217,7 +217,7 @@ LABEL_20:
     v13 = handleForCategory(0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [CRFDRUtils getData:v5 instance:&v14];
+      [CRFDRUtils getData:dataCopy instance:&v14];
     }
 
     v11 = 0;
@@ -229,11 +229,11 @@ LABEL_20:
   return v11;
 }
 
-+ (id)getDataPayload:(id)a3 instance:(id)a4
++ (id)getDataPayload:(id)payload instance:(id)instance
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a1 getData:v6 instance:a4];
+  payloadCopy = payload;
+  v7 = [self getData:payloadCopy instance:instance];
   v8 = v7;
   if (v7)
   {
@@ -269,17 +269,17 @@ LABEL_5:
   return v9;
 }
 
-+ (id)getDataPayloadDictWithClass:(id)a3 instance:(id)a4
++ (id)getDataPayloadDictWithClass:(id)class instance:(id)instance
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  instanceCopy = instance;
   v14 = 0;
   v16 = @"DataStore";
   v17[0] = @"Local";
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a3;
+  classCopy = class;
   v8 = [v6 dictionaryWithObjects:v17 forKeys:&v16 count:1];
-  if (v5)
+  if (instanceCopy)
   {
     v9 = AMFDRSealingMapCopyLocalDict();
   }
@@ -313,9 +313,9 @@ LABEL_5:
   return v10;
 }
 
-+ (id)getSealedInstancesWithClass:(id)a3 error:(id *)a4
++ (id)getSealedInstancesWithClass:(id)class error:(id *)error
 {
-  v5 = a3;
+  classCopy = class;
   v6 = AMFDRSealingManifestCopyMultiInstanceForClass();
   if (!v6)
   {
@@ -326,30 +326,30 @@ LABEL_5:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v8 = 0;
-    *a4 = 0;
+    *error = 0;
   }
 
   return v6;
 }
 
-+ (BOOL)isDataClassSupported:(id)a3
++ (BOOL)isDataClassSupported:(id)supported
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__CRFDRUtils_isDataClassSupported___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v3 = isDataClassSupported__onceToken;
-  v4 = a3;
+  supportedCopy = supported;
   if (v3 != -1)
   {
     dispatch_once(&isDataClassSupported__onceToken, block);
   }
 
-  v5 = [isDataClassSupported__classes containsObject:v4];
+  v5 = [isDataClassSupported__classes containsObject:supportedCopy];
 
   return v5;
 }
@@ -372,21 +372,21 @@ void __35__CRFDRUtils_isDataClassSupported___block_invoke(uint64_t a1)
   isDataClassSupported__classes = v2;
 }
 
-+ (BOOL)isPropertySupported:(id)a3
++ (BOOL)isPropertySupported:(id)supported
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__CRFDRUtils_isPropertySupported___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v3 = isPropertySupported__onceToken;
-  v4 = a3;
+  supportedCopy = supported;
   if (v3 != -1)
   {
     dispatch_once(&isPropertySupported__onceToken, block);
   }
 
-  v5 = [isPropertySupported__properties containsObject:v4];
+  v5 = [isPropertySupported__properties containsObject:supportedCopy];
 
   return v5;
 }
@@ -409,14 +409,14 @@ void __34__CRFDRUtils_isPropertySupported___block_invoke(uint64_t a1)
   isPropertySupported__properties = v2;
 }
 
-+ (BOOL)isPrimaryDataClassSupported:(id)a3
++ (BOOL)isPrimaryDataClassSupported:(id)supported
 {
-  v4 = a3;
+  supportedCopy = supported;
   v5 = objc_opt_new();
-  if ([a1 isDataClassSupported:v4])
+  if ([self isDataClassSupported:supportedCopy])
   {
     [v5 addObject:@"vcrt"];
-    if ([a1 isDataClassSupported:@"tcrt"])
+    if ([self isDataClassSupported:@"tcrt"])
     {
       v6 = @"tcrt";
     }
@@ -427,7 +427,7 @@ void __34__CRFDRUtils_isPropertySupported___block_invoke(uint64_t a1)
     }
 
     [v5 addObject:v6];
-    if ([a1 isDataClassSupported:@"prpc"])
+    if ([self isDataClassSupported:@"prpc"])
     {
       v7 = @"prpc";
     }
@@ -446,7 +446,7 @@ void __34__CRFDRUtils_isPropertySupported___block_invoke(uint64_t a1)
     [v5 addObject:@"LCfg"];
     [v5 addObject:@"bcrt"];
     [v5 addObject:@"wcrt"];
-    v8 = [v5 containsObject:v4];
+    v8 = [v5 containsObject:supportedCopy];
   }
 
   else
@@ -506,8 +506,8 @@ void __34__CRFDRUtils_isPropertySupported___block_invoke(uint64_t a1)
 + (id)_getDataClassesFromSealingManifest
 {
   v7 = 0;
-  v2 = [a1 getLocalSealingManifest];
-  if (v2)
+  getLocalSealingManifest = [self getLocalSealingManifest];
+  if (getLocalSealingManifest)
   {
     v3 = AMFDRSealingManifestCopyDataClassesInstancesAndProperties();
     AMSupportSafeRelease();
@@ -612,14 +612,14 @@ LABEL_12:
   if (objc_opt_isKindOfClass())
   {
     v3 = MEMORY[0x277CBEB98];
-    v4 = [v2 allKeys];
-    v5 = [v3 setWithArray:v4];
+    allKeys = [v2 allKeys];
+    v5 = [v3 setWithArray:allKeys];
   }
 
   else
   {
-    v4 = handleForCategory(0);
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    allKeys = handleForCategory(0);
+    if (os_log_type_enabled(allKeys, OS_LOG_TYPE_ERROR))
     {
       +[CRFDRUtils _getPropertiesFromSealingMap];
     }
@@ -630,12 +630,12 @@ LABEL_12:
   return v5;
 }
 
-+ (id)_getManifestForDataClass:(id)a3
++ (id)_getManifestForDataClass:(id)class
 {
-  v4 = a3;
-  [a1 _createFDRLocal];
+  classCopy = class;
+  [self _createFDRLocal];
   v8 = 0;
-  if (v4)
+  if (classCopy)
   {
     v5 = AMFDRSealingManifestCopyInstanceForClass();
     if (v5)
@@ -668,7 +668,7 @@ LABEL_12:
   return 0;
 }
 
-+ (BOOL)isDcSignedSealingManifest:(id *)a3
++ (BOOL)isDcSignedSealingManifest:(id *)manifest
 {
   v46 = *MEMORY[0x277D85DE8];
   v45 = 0;
@@ -714,7 +714,7 @@ LABEL_12:
     v13 = 0;
     if (!v16)
     {
-      LOBYTE(a3) = 0;
+      LOBYTE(manifest) = 0;
       v11 = 0;
       goto LABEL_9;
     }
@@ -734,18 +734,18 @@ LABEL_12:
   v11 = v10;
   if (v10 && [v10 count])
   {
-    a3 = handleForCategory(0);
-    if (os_log_type_enabled(a3, OS_LOG_TYPE_DEFAULT))
+    manifest = handleForCategory(0);
+    if (os_log_type_enabled(manifest, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v25 = v11;
-      _os_log_impl(&dword_247864000, a3, OS_LOG_TYPE_DEFAULT, "Parsed the following common names from cert in seal: %@", buf, 0xCu);
+      _os_log_impl(&dword_247864000, manifest, OS_LOG_TYPE_DEFAULT, "Parsed the following common names from cert in seal: %@", buf, 0xCu);
     }
 
     v12 = [v11 filteredArrayUsingPredicate:v5];
 
     v13 = 0;
-    LOBYTE(a3) = [v12 count] != 0;
+    LOBYTE(manifest) = [v12 count] != 0;
     v11 = v12;
     goto LABEL_9;
   }
@@ -758,28 +758,28 @@ LABEL_16:
     +[CRFDRUtils isDcSignedSealingManifest:];
   }
 
-  if (a3)
+  if (manifest)
   {
     v18 = MEMORY[0x277CCA9B8];
     v22 = *MEMORY[0x277CCA450];
     v23 = v16;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-    *a3 = [v18 errorWithDomain:@"com.apple.corerepair" code:-42 userInfo:v19];
+    *manifest = [v18 errorWithDomain:@"com.apple.corerepair" code:-42 userInfo:v19];
 
-    LOBYTE(a3) = 0;
+    LOBYTE(manifest) = 0;
   }
 
   v13 = v16;
 LABEL_9:
 
   v14 = *MEMORY[0x277D85DE8];
-  return a3;
+  return manifest;
 }
 
-+ (BOOL)isDcSignedDataClass:(id)a3 instance:(id)a4 error:(id *)a5
++ (BOOL)isDcSignedDataClass:(id)class instance:(id)instance error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  classCopy = class;
   v55 = 0;
   memset(v54, 0, sizeof(v54));
   v52 = 0u;
@@ -803,19 +803,19 @@ LABEL_9:
   v28 = 0;
   v29 = 0;
   v8 = MEMORY[0x277CBEA90];
-  v9 = a4;
+  instanceCopy = instance;
   v10 = [[v8 alloc] initWithBytes:&commonNameOIDBytes length:3];
   v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF MATCHES %@", @"FDR-CA\\d{1, 4}-ROOT-DC.*"];
-  v12 = [CRFDRUtils getData:v7 instance:v9];
+  v12 = [CRFDRUtils getData:classCopy instance:instanceCopy];
 
   if (!v12)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot copy %@ data from device", v7];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot copy %@ data from device", classCopy];
     v21 = LABEL_15:;
     v18 = 0;
     if (!v21)
     {
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
       v16 = 0;
       goto LABEL_9;
     }
@@ -850,20 +850,20 @@ LABEL_14:
   v16 = v15;
   if (v15 && [v15 count])
   {
-    a5 = handleForCategory(0);
-    if (os_log_type_enabled(a5, OS_LOG_TYPE_DEFAULT))
+    error = handleForCategory(0);
+    if (os_log_type_enabled(error, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v33 = v7;
+      v33 = classCopy;
       v34 = 2112;
       v35 = v16;
-      _os_log_impl(&dword_247864000, a5, OS_LOG_TYPE_DEFAULT, "Parsed the following common names from cert in %@: %@", buf, 0x16u);
+      _os_log_impl(&dword_247864000, error, OS_LOG_TYPE_DEFAULT, "Parsed the following common names from cert in %@: %@", buf, 0x16u);
     }
 
     v17 = [v16 filteredArrayUsingPredicate:v11];
 
     v18 = 0;
-    LOBYTE(a5) = [v17 count] != 0;
+    LOBYTE(error) = [v17 count] != 0;
     v16 = v17;
     goto LABEL_9;
   }
@@ -876,28 +876,28 @@ LABEL_17:
     +[CRFDRUtils isDcSignedSealingManifest:];
   }
 
-  if (a5)
+  if (error)
   {
     v25 = MEMORY[0x277CCA9B8];
     v30 = *MEMORY[0x277CCA450];
     v31 = v21;
     v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-    *a5 = [v25 errorWithDomain:@"com.apple.corerepair" code:-42 userInfo:v26];
+    *error = [v25 errorWithDomain:@"com.apple.corerepair" code:-42 userInfo:v26];
 
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
   }
 
   v18 = v21;
 LABEL_9:
 
   v19 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-+ (BOOL)isDcSignedCombinedDataClass:(id)a3 error:(id *)a4
++ (BOOL)isDcSignedCombinedDataClass:(id)class error:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  classCopy = class;
   v53 = 0;
   memset(v52, 0, sizeof(v52));
   v50 = 0u;
@@ -922,16 +922,16 @@ LABEL_9:
   v27 = 0;
   v7 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&commonNameOIDBytes length:3];
   v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF MATCHES %@", @"FDR-CA\\d{1, 4}-ROOT-DC.*"];
-  v9 = [a1 _getManifestForDataClass:v6];
+  v9 = [self _getManifestForDataClass:classCopy];
   v10 = v9;
   if (!v9)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot copy %@ manifest from device", v6];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot copy %@ manifest from device", classCopy];
     v19 = LABEL_15:;
     v16 = 0;
     if (!v19)
     {
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
       v14 = 0;
       goto LABEL_9;
     }
@@ -966,20 +966,20 @@ LABEL_14:
   v14 = v13;
   if (v13 && [v13 count])
   {
-    a4 = handleForCategory(0);
-    if (os_log_type_enabled(a4, OS_LOG_TYPE_DEFAULT))
+    error = handleForCategory(0);
+    if (os_log_type_enabled(error, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v31 = v6;
+      v31 = classCopy;
       v32 = 2112;
       v33 = v14;
-      _os_log_impl(&dword_247864000, a4, OS_LOG_TYPE_DEFAULT, "Parsed the following common names from cert in %@: %@", buf, 0x16u);
+      _os_log_impl(&dword_247864000, error, OS_LOG_TYPE_DEFAULT, "Parsed the following common names from cert in %@: %@", buf, 0x16u);
     }
 
     v15 = [v14 filteredArrayUsingPredicate:v8];
 
     v16 = 0;
-    LOBYTE(a4) = [v15 count] != 0;
+    LOBYTE(error) = [v15 count] != 0;
     v14 = v15;
     goto LABEL_9;
   }
@@ -992,25 +992,25 @@ LABEL_17:
     +[CRFDRUtils isDcSignedSealingManifest:];
   }
 
-  if (a4)
+  if (error)
   {
     v23 = MEMORY[0x277CCA9B8];
     v28 = *MEMORY[0x277CCA450];
     v29 = v19;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-    *a4 = [v23 errorWithDomain:@"com.apple.corerepair" code:-42 userInfo:v24];
+    *error = [v23 errorWithDomain:@"com.apple.corerepair" code:-42 userInfo:v24];
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
   v16 = v19;
 LABEL_9:
 
   v17 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
-+ (id)isServicePartWithError:(id *)a3
++ (id)isServicePartWithError:(id *)error
 {
   v34[1] = *MEMORY[0x277D85DE8];
   v29 = 0;
@@ -1112,10 +1112,10 @@ LABEL_17:
 LABEL_18:
   v13 = 0;
 LABEL_19:
-  if (a3)
+  if (error)
   {
     v15 = v8;
-    *a3 = v8;
+    *error = v8;
   }
 
   v16 = v13;
@@ -1125,27 +1125,27 @@ LABEL_19:
   return v16;
 }
 
-+ (id)findUnsealedDataWithError:(id *)a3
++ (id)findUnsealedDataWithError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CBEB58] set];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [a1 _getMesaState];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  _getMesaState = [self _getMesaState];
   v8 = +[CRFDRRetryController sharedInstance];
   [v8 disableRetry];
 
   v40 = 0;
-  v9 = [a1 getLocalSealingManifestWithError:&v40];
+  v9 = [self getLocalSealingManifestWithError:&v40];
   v10 = v40;
   v11 = v10;
   if (v9)
   {
-    v30 = v6;
+    v30 = dictionary;
     v38 = 0;
     v39 = 0;
     v36 = v10;
     v37 = 0;
-    v12 = [a1 _getAllSealedDataAndPropertiesFromManifest:v9 properties:&v39 classes:&v38 instances:&v37 error:&v36];
+    v12 = [self _getAllSealedDataAndPropertiesFromManifest:v9 properties:&v39 classes:&v38 instances:&v37 error:&v36];
     v13 = v39;
     v32 = v38;
     v31 = v37;
@@ -1153,12 +1153,12 @@ LABEL_19:
 
     if (v12)
     {
-      v29 = a3;
+      errorCopy = error;
       v34 = 0;
       v35 = 0;
       v33 = v14;
-      v15 = [a1 _getAllLiveDataClasses:&v35 liveInstances:&v34 missingLiveData:v5 mesaState:v7 error:&v33];
-      v16 = v7;
+      v15 = [self _getAllLiveDataClasses:&v35 liveInstances:&v34 missingLiveData:v5 mesaState:_getMesaState error:&v33];
+      v16 = _getMesaState;
       v17 = v5;
       v18 = v15;
       v19 = v35;
@@ -1167,22 +1167,22 @@ LABEL_19:
 
       if (v18)
       {
-        [a1 _compareSealedAndLiveDataClasses:v32 instances:v31 liveClasses:v19 liveInstances:v20 results:v30];
+        [self _compareSealedAndLiveDataClasses:v32 instances:v31 liveClasses:v19 liveInstances:v20 results:v30];
         v21 = v13;
-        v6 = v30;
-        [a1 _compareSerialNumberProperties:v21 missingLiveData:v17 results:v30];
-        v22 = [a1 _getUnsealedMesaData:v30 mesaState:v16];
+        dictionary = v30;
+        [self _compareSerialNumberProperties:v21 missingLiveData:v17 results:v30];
+        v22 = [self _getUnsealedMesaData:v30 mesaState:v16];
         [v30 addEntriesFromDictionary:v22];
 
         v5 = v17;
-        v7 = v16;
-        a3 = v29;
+        _getMesaState = v16;
+        error = errorCopy;
         goto LABEL_9;
       }
 
       v5 = v17;
-      v7 = v16;
-      a3 = v29;
+      _getMesaState = v16;
+      error = errorCopy;
     }
 
     else
@@ -1193,7 +1193,7 @@ LABEL_19:
     }
 
     v21 = v13;
-    v6 = v30;
+    dictionary = v30;
   }
 
   else
@@ -1217,10 +1217,10 @@ LABEL_9:
       [CRFDRUtils findUnsealedDataWithError:v11];
     }
 
-    if (a3)
+    if (error)
     {
       v25 = v11;
-      *a3 = v11;
+      *error = v11;
     }
   }
 
@@ -1228,19 +1228,19 @@ LABEL_9:
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v42 = v6;
+    v42 = dictionary;
     _os_log_impl(&dword_247864000, v26, OS_LOG_TYPE_DEFAULT, "Unsealed: %@", buf, 0xCu);
   }
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return dictionary;
 }
 
-+ (BOOL)_getAllSealedDataAndPropertiesFromManifest:(id)a3 properties:(id *)a4 classes:(id *)a5 instances:(id *)a6 error:(id *)a7
++ (BOOL)_getAllSealedDataAndPropertiesFromManifest:(id)manifest properties:(id *)properties classes:(id *)classes instances:(id *)instances error:(id *)error
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  if (!a4 || !a5 || !a6 || !a7)
+  if (!properties || !classes || !instances || !error)
   {
     v11 = handleForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1259,24 +1259,24 @@ LABEL_9:
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to decode sealing manifest: %@", 0, 0, 0, 0];
     v23[0] = v16;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-    *a7 = [v15 errorWithDomain:@"com.apple.corerepair" code:-28 userInfo:v17];
+    *error = [v15 errorWithDomain:@"com.apple.corerepair" code:-28 userInfo:v17];
 
 LABEL_14:
     result = 0;
     goto LABEL_15;
   }
 
-  *a4 = 0;
-  *a5 = 0;
+  *properties = 0;
+  *classes = 0;
   v12 = 0;
-  *a6 = v12;
-  if (!*a5 || !v12 || (v13 = [*a5 count], v13 != objc_msgSend(*a6, "count")))
+  *instances = v12;
+  if (!*classes || !v12 || (v13 = [*classes count], v13 != objc_msgSend(*instances, "count")))
   {
     v18 = MEMORY[0x277CCA9B8];
     v20 = *MEMORY[0x277CCA450];
     v21 = @"Number of data classes and instances mismatches";
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    *a7 = [v18 errorWithDomain:@"com.apple.corerepair" code:-42 userInfo:v11];
+    *error = [v18 errorWithDomain:@"com.apple.corerepair" code:-42 userInfo:v11];
     goto LABEL_14;
   }
 
@@ -1286,33 +1286,33 @@ LABEL_15:
   return result;
 }
 
-+ (BOOL)_getAllLiveDataClasses:(id *)a3 liveInstances:(id *)a4 missingLiveData:(id)a5 mesaState:(id)a6 error:(id *)a7
++ (BOOL)_getAllLiveDataClasses:(id *)classes liveInstances:(id *)instances missingLiveData:(id)data mesaState:(id)state error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a6;
+  dataCopy = data;
+  stateCopy = state;
   v31 = 0;
   v32 = 0;
   v29 = 0;
   v30 = 0;
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  if (v11 && a3 && a4 && a7)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (dataCopy && classes && instances && error)
   {
-    if (+[CRFDRUtils isDataClassSupported:](CRFDRUtils, "isDataClassSupported:", @"FSCl") && (([v12 isEqualToString:@"ProvisionedUnknownKey"] & 1) != 0 || objc_msgSend(v12, "isEqualToString:", @"ProvisionedLockedUnknownKey")))
+    if (+[CRFDRUtils isDataClassSupported:](CRFDRUtils, "isDataClassSupported:", @"FSCl") && (([stateCopy isEqualToString:@"ProvisionedUnknownKey"] & 1) != 0 || objc_msgSend(stateCopy, "isEqualToString:", @"ProvisionedLockedUnknownKey")))
     {
       v14 = handleForCategory(0);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v36 = v12;
+        v36 = stateCopy;
         _os_log_impl(&dword_247864000, v14, OS_LOG_TYPE_DEFAULT, "Skip reading unknown Mesa: %@", buf, 0xCu);
       }
 
-      [v13 setObject:&unk_285978270 forKey:@"SkipRecoverDataClasses"];
-      [v11 addObjectsFromArray:&unk_285978270];
+      [dictionary setObject:&unk_285978270 forKey:@"SkipRecoverDataClasses"];
+      [dataCopy addObjectsFromArray:&unk_285978270];
     }
 
-    [v13 setObject:MEMORY[0x277CBEC38] forKey:@"AllowIncompleteData"];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:@"AllowIncompleteData"];
     v15 = *MEMORY[0x277CBECE8];
     AMFDRCreateTypeWithOptions();
     v16 = *MEMORY[0x277D81FA0];
@@ -1337,26 +1337,26 @@ LABEL_15:
           +[CRFDRUtils _getAllLiveDataClasses:liveInstances:missingLiveData:mesaState:error:];
         }
 
-        [v11 addObjectsFromArray:v21];
+        [dataCopy addObjectsFromArray:v21];
       }
     }
 
-    *a3 = v32;
+    *classes = v32;
     v23 = v31;
-    *a4 = v23;
-    if (!*a3 || !v23 || (v24 = [*a3 count], v24 != objc_msgSend(*a4, "count")))
+    *instances = v23;
+    if (!*classes || !v23 || (v24 = [*classes count], v24 != objc_msgSend(*instances, "count")))
     {
       v25 = handleForCategory(0);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        [CRFDRUtils _getAllLiveDataClasses:a3 liveInstances:a4 missingLiveData:? mesaState:? error:?];
+        [CRFDRUtils _getAllLiveDataClasses:classes liveInstances:instances missingLiveData:? mesaState:? error:?];
       }
 
       v26 = MEMORY[0x277CCA9B8];
       v33 = *MEMORY[0x277CCA450];
       v34 = @"Number of live data classes and instances mismatches";
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-      *a7 = [v26 errorWithDomain:@"com.apple.corerepair" code:-42 userInfo:v17];
+      *error = [v26 errorWithDomain:@"com.apple.corerepair" code:-42 userInfo:v17];
 
       LOBYTE(v17) = 0;
     }
@@ -1400,21 +1400,21 @@ LABEL_15:
   return v3;
 }
 
-+ (void)_compareSealedAndLiveDataClasses:(id)a3 instances:(id)a4 liveClasses:(id)a5 liveInstances:(id)a6 results:(id)a7
++ (void)_compareSealedAndLiveDataClasses:(id)classes instances:(id)instances liveClasses:(id)liveClasses liveInstances:(id)liveInstances results:(id)results
 {
   v39 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v30 = a7;
-  if (v11 && v12 && v13 && v30)
+  classesCopy = classes;
+  instancesCopy = instances;
+  liveClassesCopy = liveClasses;
+  liveInstancesCopy = liveInstances;
+  resultsCopy = results;
+  if (classesCopy && instancesCopy && liveClassesCopy && resultsCopy)
   {
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    obj = [MEMORY[0x277CBEB98] setWithArray:v11];
+    obj = [MEMORY[0x277CBEB98] setWithArray:classesCopy];
     v32 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v32)
     {
@@ -1433,13 +1433,13 @@ LABEL_15:
           v33 = v16;
           v17 = *(*(&v34 + 1) + 8 * v16);
           v18 = [*(v15 + 2904) set];
-          if ([v13 count])
+          if ([liveClassesCopy count])
           {
             v19 = 0;
             do
             {
-              v20 = [v13 objectAtIndexedSubscript:v19];
-              v21 = [v14 objectAtIndexedSubscript:v19];
+              v20 = [liveClassesCopy objectAtIndexedSubscript:v19];
+              v21 = [liveInstancesCopy objectAtIndexedSubscript:v19];
               if ([v20 isEqualToString:v17])
               {
                 [v18 addObject:v21];
@@ -1448,17 +1448,17 @@ LABEL_15:
               ++v19;
             }
 
-            while (v19 < [v13 count]);
+            while (v19 < [liveClassesCopy count]);
           }
 
           v22 = [*(v15 + 2904) set];
-          if ([v11 count])
+          if ([classesCopy count])
           {
             v23 = 0;
             do
             {
-              v24 = [v11 objectAtIndexedSubscript:v23];
-              v25 = [v12 objectAtIndexedSubscript:v23];
+              v24 = [classesCopy objectAtIndexedSubscript:v23];
+              v25 = [instancesCopy objectAtIndexedSubscript:v23];
               if ([v24 isEqualToString:v17])
               {
                 [v22 addObject:v25];
@@ -1467,15 +1467,15 @@ LABEL_15:
               ++v23;
             }
 
-            while (v23 < [v11 count]);
+            while (v23 < [classesCopy count]);
           }
 
           v26 = [v18 mutableCopy];
           [v26 minusSet:v22];
           if ([v26 count])
           {
-            v27 = [v26 allObjects];
-            [v30 setObject:v27 forKeyedSubscript:v17];
+            allObjects = [v26 allObjects];
+            [resultsCopy setObject:allObjects forKeyedSubscript:v17];
           }
 
           v16 = v33 + 1;
@@ -1502,14 +1502,14 @@ LABEL_15:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_compareSerialNumberProperties:(id)a3 missingLiveData:(id)a4 results:(id)a5
++ (void)_compareSerialNumberProperties:(id)properties missingLiveData:(id)data results:(id)results
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v26 = a5;
-  [a1 _createFDRLocal];
-  if (v8 && v9 && v26)
+  propertiesCopy = properties;
+  dataCopy = data;
+  resultsCopy = results;
+  [self _createFDRLocal];
+  if (propertiesCopy && dataCopy && resultsCopy)
   {
     v29 = 0u;
     v30 = 0u;
@@ -1522,7 +1522,7 @@ LABEL_15:
       v13 = *v28;
       *&v11 = 138412546;
       v24 = v11;
-      v25 = v9;
+      v25 = dataCopy;
       do
       {
         for (i = 0; i != v12; ++i)
@@ -1533,7 +1533,7 @@ LABEL_15:
           }
 
           v15 = *(*(&v27 + 1) + 8 * i);
-          v16 = [v8 objectForKeyedSubscript:{v15, v24}];
+          v16 = [propertiesCopy objectForKeyedSubscript:{v15, v24}];
           if (v16)
           {
             v17 = AMFDRSealingMapCopyPropertyWithTag();
@@ -1544,7 +1544,7 @@ LABEL_15:
               {
                 v31 = v18;
                 v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
-                [v26 setObject:v19 forKeyedSubscript:v15];
+                [resultsCopy setObject:v19 forKeyedSubscript:v15];
               }
             }
 
@@ -1559,10 +1559,10 @@ LABEL_15:
                 v35 = 0;
                 _os_log_error_impl(&dword_247864000, v21, OS_LOG_TYPE_ERROR, "Live property missing for %@: %@", buf, 0x16u);
 
-                v9 = v25;
+                dataCopy = v25;
               }
 
-              [v9 addObject:v15];
+              [dataCopy addObject:v15];
             }
           }
 
@@ -1599,39 +1599,39 @@ LABEL_15:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)findUnsealedDataWithKey:(id)a3 error:(id *)a4
++ (id)findUnsealedDataWithKey:(id)key error:(id *)error
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  keyCopy = key;
   v21 = 0;
-  v6 = [MEMORY[0x277CBEA60] array];
-  [a1 _createFDRLocal];
-  if (![&unk_285978258 containsObject:v5])
+  array = [MEMORY[0x277CBEA60] array];
+  [self _createFDRLocal];
+  if (![&unk_285978258 containsObject:keyCopy])
   {
     v7 = AMFDRSealingMapCopyMultiInstanceForClass();
     if (v7)
     {
-      v8 = AMFDRSealingManifestCopyMultiInstanceForClass();
-      if (v8)
+      localManifestProperties = AMFDRSealingManifestCopyMultiInstanceForClass();
+      if (localManifestProperties)
       {
         v12 = [MEMORY[0x277CBEB58] setWithArray:v7];
-        v15 = [MEMORY[0x277CBEB58] setWithArray:v8];
+        v15 = [MEMORY[0x277CBEB58] setWithArray:localManifestProperties];
         goto LABEL_8;
       }
 
       v18 = handleForCategory(0);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        [CRFDRUtils findUnsealedDataWithKey:v5 error:&v21];
+        [CRFDRUtils findUnsealedDataWithKey:keyCopy error:&v21];
       }
     }
 
     else
     {
-      v8 = handleForCategory(0);
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      localManifestProperties = handleForCategory(0);
+      if (os_log_type_enabled(localManifestProperties, OS_LOG_TYPE_ERROR))
       {
-        [CRFDRUtils findUnsealedDataWithKey:v5 error:&v21];
+        [CRFDRUtils findUnsealedDataWithKey:keyCopy error:&v21];
       }
     }
 
@@ -1645,23 +1645,23 @@ LABEL_22:
   v7 = AMFDRSealingMapCopyPropertyWithTag();
   if (!v7)
   {
-    v8 = handleForCategory(0);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    localManifestProperties = handleForCategory(0);
+    if (os_log_type_enabled(localManifestProperties, OS_LOG_TYPE_ERROR))
     {
-      [CRFDRUtils findUnsealedDataWithKey:v5 error:&v21];
+      [CRFDRUtils findUnsealedDataWithKey:keyCopy error:&v21];
     }
 
     goto LABEL_22;
   }
 
-  v8 = [a1 localManifestProperties];
-  v9 = [v8 objectForKeyedSubscript:v5];
+  localManifestProperties = [self localManifestProperties];
+  v9 = [localManifestProperties objectForKeyedSubscript:keyCopy];
   if (!v9)
   {
     v17 = handleForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      [CRFDRUtils findUnsealedDataWithKey:v5 error:&v21];
+      [CRFDRUtils findUnsealedDataWithKey:keyCopy error:&v21];
     }
 
     goto LABEL_22;
@@ -1688,14 +1688,14 @@ LABEL_8:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v23 = v5;
+    v23 = keyCopy;
     v24 = 2112;
     v25 = v12;
     _os_log_impl(&dword_247864000, v16, OS_LOG_TYPE_DEFAULT, "Unsealed %@: %@", buf, 0x16u);
   }
 
   [v12 allObjects];
-  v6 = v7 = v6;
+  array = v7 = array;
 LABEL_23:
 
 LABEL_24:
@@ -1703,21 +1703,21 @@ LABEL_24:
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return array;
 }
 
-+ (id)_getUnsealedMesaData:(id)a3 mesaState:(id)a4
++ (id)_getUnsealedMesaData:(id)data mesaState:(id)state
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dataCopy = data;
+  stateCopy = state;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v8 = [CRFDRUtils isDataClassSupported:@"FSCl"];
   v9 = [CRFDRUtils isDataClassSupported:@"MSRk"];
   v10 = v9;
   if (v8)
   {
-    if ([v6 isEqualToString:@"ProvisionedUnknownKey"])
+    if ([stateCopy isEqualToString:@"ProvisionedUnknownKey"])
     {
       v11 = handleForCategory(0);
       if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1733,7 +1733,7 @@ LABEL_12:
 
     else
     {
-      v14 = [v5 objectForKey:@"FSCl"];
+      v14 = [dataCopy objectForKey:@"FSCl"];
 
       if (!v14)
       {
@@ -1756,14 +1756,14 @@ LABEL_12:
 
   if (v9)
   {
-    if ([v6 isEqualToString:@"ProvisionedUnknownKey"])
+    if ([stateCopy isEqualToString:@"ProvisionedUnknownKey"])
     {
       v13 = 1;
     }
 
     else
     {
-      v13 = [v6 isEqualToString:@"ProvisionedLockedUnknownKey"];
+      v13 = [stateCopy isEqualToString:@"ProvisionedLockedUnknownKey"];
     }
 
     v15 = handleForCategory(0);
@@ -1813,14 +1813,14 @@ LABEL_27:
 
           v26 = v16;
           v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
-          [v7 setObject:v20 forKeyedSubscript:@"MSRk"];
+          [dictionary setObject:v20 forKeyedSubscript:@"MSRk"];
 
           v25 = v17;
           v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
           v19 = @"FSC2";
         }
 
-        [v7 setObject:v18 forKeyedSubscript:v19];
+        [dictionary setObject:v18 forKeyedSubscript:v19];
       }
 
       goto LABEL_27;
@@ -1831,17 +1831,17 @@ LABEL_30:
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return dictionary;
 }
 
-+ (BOOL)queryDeviceStagedSealedFromEAN:(BOOL)a3 error:(id *)a4
++ (BOOL)queryDeviceStagedSealedFromEAN:(BOOL)n error:(id *)error
 {
-  v5 = a3;
+  nCopy = n;
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0;
   v6 = objc_opt_new();
   v7 = v6;
-  if (v5)
+  if (nCopy)
   {
     if (([v6 isEANSupported] & 1) == 0)
     {
@@ -1927,13 +1927,13 @@ LABEL_30:
 
 LABEL_25:
 
-  if (a4)
+  if (error)
   {
     v13 = MEMORY[0x277CCA9B8];
     v18 = *MEMORY[0x277CCA450];
     v19 = @"Query staged state failed";
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-    *a4 = [v13 errorWithDomain:@"com.apple.corerepair" code:-42 userInfo:v14];
+    *error = [v13 errorWithDomain:@"com.apple.corerepair" code:-42 userInfo:v14];
   }
 
 LABEL_27:
@@ -1946,7 +1946,7 @@ LABEL_27:
 + (id)localManifestProperties
 {
   v5 = 0;
-  if ([a1 _createFDRLocal])
+  if ([self _createFDRLocal])
   {
     v2 = AMFDRSealingMapCopyManifestProperties();
     if (v2)
@@ -1979,17 +1979,17 @@ LABEL_9:
   return v2;
 }
 
-+ (id)extractComponentsAndIdentifiers:(id)a3
++ (id)extractComponentsAndIdentifiers:(id)identifiers
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifiersCopy = identifiers;
   v29 = objc_opt_new();
   v4 = [objc_alloc(MEMORY[0x277CCAC68]) initWithPattern:@"([a-zA-Z0-9#]{4})-(.*$)" options:0 error:0];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = v3;
+  v5 = identifiersCopy;
   v6 = [v5 countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v6)
   {
@@ -2012,9 +2012,9 @@ LABEL_9:
         v12 = handleForCategory(0);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [v11 numberOfRanges];
+          numberOfRanges = [v11 numberOfRanges];
           *buf = 134217984;
-          v36 = v13;
+          v36 = numberOfRanges;
           _os_log_impl(&dword_247864000, v12, OS_LOG_TYPE_DEFAULT, "number of ranges:%lu", buf, 0xCu);
         }
 
@@ -2179,7 +2179,7 @@ LABEL_9:
 + (void)_getDataClassesFromSealingMap
 {
   v2 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_9_0(a1);
+  OUTLINED_FUNCTION_9_0(self);
   OUTLINED_FUNCTION_10();
   OUTLINED_FUNCTION_1();
   _os_log_error_impl(v3, v4, v5, v6, v7, 0xCu);

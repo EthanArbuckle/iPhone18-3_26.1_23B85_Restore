@@ -1,15 +1,15 @@
 @interface CAMShutterButton
-+ (id)shutterButtonWithSpec:(CAMShutterButtonSpec)a3;
++ (id)shutterButtonWithSpec:(CAMShutterButtonSpec)spec;
 - (int64_t)mode;
 @end
 
 @implementation CAMShutterButton
 
-+ (id)shutterButtonWithSpec:(CAMShutterButtonSpec)a3
++ (id)shutterButtonWithSpec:(CAMShutterButtonSpec)spec
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CAMShutterButton;
-  v3 = objc_msgSendSuper2(&v5, sel_shutterButtonWithDesiredSpec_, a3.var0, a3.var1, a3.var2, a3.var3);
+  v3 = objc_msgSendSuper2(&v5, sel_shutterButtonWithDesiredSpec_, spec.var0, spec.var1, spec.var2, spec.var3);
 
   return v3;
 }

@@ -2,19 +2,19 @@
 - ($7DEDF3842AEFB7F1E6DF5AF62E424A02)location;
 - (id)tileContentsLayer;
 - (void)display;
-- (void)drawInContext:(CGContext *)a3;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
-- (void)setNeedsDisplayInRectIgnoringBackground:(CGRect)a3;
-- (void)updateFrameWithTileSize:(CGSize)a3 tilesWide:(unint64_t)a4 tilesHigh:(unint64_t)a5 geometryProvider:(id)a6;
+- (void)drawInContext:(CGContext *)context;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+- (void)setNeedsDisplayInRectIgnoringBackground:(CGRect)background;
+- (void)updateFrameWithTileSize:(CGSize)size tilesWide:(unint64_t)wide tilesHigh:(unint64_t)high geometryProvider:(id)provider;
 @end
 
 @implementation TSDTilingTileLayer
 
 - (void)display
 {
-  v3 = [(TSDTilingTileLayer *)self superlayer];
-  v4 = [v3 delegate];
-  if ([v3 drawsInBackground] && (objc_opt_respondsToSelector() & 1) != 0 && (v5 = objc_msgSend(v4, "queueForDrawingTilingLayerInBackground:", v3)) != 0 && (v6 = v5, objc_msgSend(MEMORY[0x277CCACC8], "isMainThread")))
+  superlayer = [(TSDTilingTileLayer *)self superlayer];
+  delegate = [superlayer delegate];
+  if ([superlayer drawsInBackground] && (objc_opt_respondsToSelector() & 1) != 0 && (v5 = objc_msgSend(delegate, "queueForDrawingTilingLayerInBackground:", superlayer)) != 0 && (v6 = v5, objc_msgSend(MEMORY[0x277CCACC8], "isMainThread")))
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -39,7 +39,7 @@ id __29__TSDTilingTileLayer_display__block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v2, sel_display);
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   v5 = [objc_msgSend(MEMORY[0x277CCACC8] "currentThread")];
   v6 = MEMORY[0x277CCAE60];
@@ -51,22 +51,22 @@ id __29__TSDTilingTileLayer_display__block_invoke(uint64_t a1)
   [v7 removeObjectForKey:@"TSDTilingTileLayerPositionTLSKey"];
 }
 
-- (void)updateFrameWithTileSize:(CGSize)a3 tilesWide:(unint64_t)a4 tilesHigh:(unint64_t)a5 geometryProvider:(id)a6
+- (void)updateFrameWithTileSize:(CGSize)size tilesWide:(unint64_t)wide tilesHigh:(unint64_t)high geometryProvider:(id)provider
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [-[TSDTilingTileLayer superlayer](self "superlayer")];
   v45 = v15;
   v46 = v14;
   mIndex = self->mIndex;
-  v17 = mIndex / a4;
-  v18 = mIndex % a4;
+  v17 = mIndex / wide;
+  v18 = mIndex % wide;
   v49 = 0;
   v47 = v13;
   v48 = v12;
-  if (a6)
+  if (provider)
   {
-    [a6 tileGeometryRectWithLayer:-[TSDTilingTileLayer superlayer](self atIndex:"superlayer") mask:{self->mIndex, &v49}];
+    [provider tileGeometryRectWithLayer:-[TSDTilingTileLayer superlayer](self atIndex:"superlayer") mask:{self->mIndex, &v49}];
     v20 = v19;
     v22 = v21;
   }
@@ -87,7 +87,7 @@ id __29__TSDTilingTileLayer_display__block_invoke(uint64_t a1)
   v28 = v27;
   v30 = v29;
   v32 = v31;
-  if (!a6 && (v18 == a4 - 1 || v17 == a5 - 1))
+  if (!provider && (v18 == wide - 1 || v17 == high - 1))
   {
     v50.origin.x = v20;
     v50.origin.y = v22;
@@ -118,33 +118,33 @@ id __29__TSDTilingTileLayer_display__block_invoke(uint64_t a1)
     [(TSDTilingTileLayer *)self bounds];
     v41 = CGRectEqualToRect(v52, *MEMORY[0x277CBF3A0]);
     [(TSDTilingTileLayer *)self setBounds:v26, v28, v30, v32];
-    v42 = [(TSDTilingTileLayer *)self superlayer];
+    superlayer = [(TSDTilingTileLayer *)self superlayer];
     if (v41)
     {
-      [v42 i_setNeedsTileDisplayForTile:self];
+      [superlayer i_setNeedsTileDisplayForTile:self];
     }
 
     else
     {
-      [v42 setNeedsDisplay];
+      [superlayer setNeedsDisplay];
     }
   }
 
   v43 = v49;
-  if (!a6)
+  if (!provider)
   {
     v44 = v49 | (v18 == 0);
-    if (v18 == a4 - 1)
+    if (v18 == wide - 1)
     {
       v44 |= 2u;
     }
 
-    if (mIndex < a4)
+    if (mIndex < wide)
     {
       v44 |= 4u;
     }
 
-    if (v17 == a5 - 1)
+    if (v17 == high - 1)
     {
       v43 = v44 | 8;
     }
@@ -161,17 +161,17 @@ id __29__TSDTilingTileLayer_display__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(TSDTilingTileLayer *)self superlayer];
-  if ([v8 drawsInBackground] && (objc_msgSend(v8, "delegate"), (objc_opt_respondsToSelector() & 1) != 0) && objc_msgSend(objc_msgSend(v8, "delegate"), "canDrawTilingLayerInBackground:", v8))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  superlayer = [(TSDTilingTileLayer *)self superlayer];
+  if ([superlayer drawsInBackground] && (objc_msgSend(superlayer, "delegate"), (objc_opt_respondsToSelector() & 1) != 0) && objc_msgSend(objc_msgSend(superlayer, "delegate"), "canDrawTilingLayerInBackground:", superlayer))
   {
 
-    [v8 i_drawTileInBackground:self inRect:{x, y, width, height}];
+    [superlayer i_drawTileInBackground:self inRect:{x, y, width, height}];
   }
 
   else
@@ -182,18 +182,18 @@ id __29__TSDTilingTileLayer_display__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setNeedsDisplayInRectIgnoringBackground:(CGRect)a3
+- (void)setNeedsDisplayInRectIgnoringBackground:(CGRect)background
 {
   v3.receiver = self;
   v3.super_class = TSDTilingTileLayer;
-  [(TSDTilingTileLayer *)&v3 setNeedsDisplayInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TSDTilingTileLayer *)&v3 setNeedsDisplayInRect:background.origin.x, background.origin.y, background.size.width, background.size.height];
 }
 
 - (id)tileContentsLayer
 {
-  v2 = [(TSDTilingTileLayer *)self sublayers];
+  sublayers = [(TSDTilingTileLayer *)self sublayers];
 
-  return [v2 objectAtIndex:0];
+  return [sublayers objectAtIndex:0];
 }
 
 - ($7DEDF3842AEFB7F1E6DF5AF62E424A02)location

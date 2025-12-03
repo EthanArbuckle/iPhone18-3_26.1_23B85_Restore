@@ -9,7 +9,7 @@
   v4 = a3;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [a1 disallowGlassGroupingForReason:v4];
+    v5 = [self disallowGlassGroupingForReason:v4];
   }
 
   else

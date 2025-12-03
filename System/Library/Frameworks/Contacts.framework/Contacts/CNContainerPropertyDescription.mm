@@ -1,33 +1,33 @@
 @interface CNContainerPropertyDescription
-- (BOOL)isValidValue:(id)a3 error:(id *)a4;
-- (BOOL)isValue:(id)a3 equalToEmptyEquivalentOrValue:(id)a4;
-- (BOOL)setABValue:(void *)a3 onABSource:(void *)a4 error:(__CFError *)a5;
+- (BOOL)isValidValue:(id)value error:(id *)error;
+- (BOOL)isValue:(id)value equalToEmptyEquivalentOrValue:(id)orValue;
+- (BOOL)setABValue:(void *)value onABSource:(void *)source error:(__CFError *)error;
 - (NSString)key;
-- (id)CNValueForContainer:(id)a3;
+- (id)CNValueForContainer:(id)container;
 - (id)nilValue;
 - (int)abPropertyID;
-- (void)ABValueForABSource:(void *)a3;
-- (void)setCNValue:(id)a3 onContainer:(id)a4;
+- (void)ABValueForABSource:(void *)source;
+- (void)setCNValue:(id)value onContainer:(id)container;
 @end
 
 @implementation CNContainerPropertyDescription
 
 - (NSString)key
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (BOOL)isValidValue:(id)a3 error:(id *)a4
+- (BOOL)isValidValue:(id)value error:(id *)error
 {
-  v6 = a3;
-  if (v6 || ([(CNContainerPropertyDescription *)self valueClass], (objc_opt_isKindOfClass() & 1) == 0))
+  valueCopy = value;
+  if (valueCopy || ([(CNContainerPropertyDescription *)self valueClass], (objc_opt_isKindOfClass() & 1) == 0))
   {
-    if (a4)
+    if (error)
     {
       [CNErrorFactory errorWithCode:301 userInfo:0];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -44,19 +44,19 @@
   return v7;
 }
 
-- (id)CNValueForContainer:(id)a3
+- (id)CNValueForContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
+  containerCopy = container;
+  selfCopy = self;
   v6 = CNAbstractMethodException();
   objc_exception_throw(v6);
 }
 
-- (void)setCNValue:(id)a3 onContainer:(id)a4
+- (void)setCNValue:(id)value onContainer:(id)container
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  valueCopy = value;
+  containerCopy = container;
+  selfCopy = self;
   v9 = CNAbstractMethodException();
   objc_exception_throw(v9);
 }
@@ -76,45 +76,45 @@
   }
 }
 
-- (BOOL)isValue:(id)a3 equalToEmptyEquivalentOrValue:(id)a4
+- (BOOL)isValue:(id)value equalToEmptyEquivalentOrValue:(id)orValue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  valueCopy = value;
+  orValueCopy = orValue;
+  nilValue = orValueCopy;
+  if (!valueCopy)
   {
-    v6 = [(CNContainerPropertyDescription *)self nilValue];
-    if (v8)
+    valueCopy = [(CNContainerPropertyDescription *)self nilValue];
+    if (nilValue)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v8 = [(CNContainerPropertyDescription *)self nilValue];
+    nilValue = [(CNContainerPropertyDescription *)self nilValue];
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!orValueCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v9 = [MEMORY[0x1E69966F0] isObject:v6 equalToOther:v8];
+  v9 = [MEMORY[0x1E69966F0] isObject:valueCopy equalToOther:nilValue];
 
   return v9;
 }
 
 - (int)abPropertyID
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (void)ABValueForABSource:(void *)a3
+- (void)ABValueForABSource:(void *)source
 {
-  result = ABRecordCopyValue(a3, [(CNContainerPropertyDescription *)self abPropertyID]);
+  result = ABRecordCopyValue(source, [(CNContainerPropertyDescription *)self abPropertyID]);
   if (result)
   {
 
@@ -124,11 +124,11 @@ LABEL_3:
   return result;
 }
 
-- (BOOL)setABValue:(void *)a3 onABSource:(void *)a4 error:(__CFError *)a5
+- (BOOL)setABValue:(void *)value onABSource:(void *)source error:(__CFError *)error
 {
-  v8 = [(CNContainerPropertyDescription *)self abPropertyID];
+  abPropertyID = [(CNContainerPropertyDescription *)self abPropertyID];
 
-  return ABRecordSetValue(a4, v8, a3, a5);
+  return ABRecordSetValue(source, abPropertyID, value, error);
 }
 
 @end

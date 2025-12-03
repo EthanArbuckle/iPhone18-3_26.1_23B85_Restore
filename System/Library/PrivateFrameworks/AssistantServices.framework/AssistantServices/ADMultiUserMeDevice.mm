@@ -65,15 +65,15 @@
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "%s ", &v16, 0xCu);
   }
 
-  v4 = [(CUSystemMonitor *)self->_systemMonitor meDeviceIsMe];
+  meDeviceIsMe = [(CUSystemMonitor *)self->_systemMonitor meDeviceIsMe];
   v5 = self->_isMeDevice;
-  v6 = [NSNumber numberWithBool:v4];
+  v6 = [NSNumber numberWithBool:meDeviceIsMe];
   isMeDevice = self->_isMeDevice;
   self->_isMeDevice = v6;
 
-  v8 = [(CUSystemMonitor *)self->_systemMonitor meDeviceIDSDeviceID];
+  meDeviceIDSDeviceID = [(CUSystemMonitor *)self->_systemMonitor meDeviceIDSDeviceID];
   meDeviceIDSIdentifier = self->_meDeviceIDSIdentifier;
-  self->_meDeviceIDSIdentifier = v8;
+  self->_meDeviceIDSIdentifier = meDeviceIDSDeviceID;
 
   v10 = +[NSDate date];
   lastUpdated = self->_lastUpdated;
@@ -93,7 +93,7 @@
     [v13 postNotificationName:@"ADMultiUserMeDeviceEvaluatedNotification" object:self->_isMeDevice];
   }
 
-  if (v4 != [(NSNumber *)v5 BOOLValue])
+  if (meDeviceIsMe != [(NSNumber *)v5 BOOLValue])
   {
     v14 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))

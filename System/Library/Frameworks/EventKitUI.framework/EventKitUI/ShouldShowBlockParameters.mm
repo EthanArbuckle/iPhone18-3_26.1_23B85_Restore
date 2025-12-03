@@ -1,21 +1,21 @@
 @interface ShouldShowBlockParameters
-- (ShouldShowBlockParameters)initWithEvents:(id)a3 presentationController:(id)a4;
+- (ShouldShowBlockParameters)initWithEvents:(id)events presentationController:(id)controller;
 @end
 
 @implementation ShouldShowBlockParameters
 
-- (ShouldShowBlockParameters)initWithEvents:(id)a3 presentationController:(id)a4
+- (ShouldShowBlockParameters)initWithEvents:(id)events presentationController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  eventsCopy = events;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = ShouldShowBlockParameters;
   v9 = [(ShouldShowBlockParameters *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_events, a3);
-    objc_storeStrong(&v10->_presentationController, a4);
+    objc_storeStrong(&v9->_events, events);
+    objc_storeStrong(&v10->_presentationController, controller);
   }
 
   return v10;

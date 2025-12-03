@@ -1,7 +1,7 @@
 @interface HDSPSleepScheduleModelMigrationManager
 - (BOOL)needDataMigration;
 - (HDSPEnvironment)environment;
-- (HDSPSleepScheduleModelMigrationManager)initWithEnvironment:(id)a3;
+- (HDSPSleepScheduleModelMigrationManager)initWithEnvironment:(id)environment;
 - (NSString)sourceIdentifier;
 - (id)_migrateHomeScreenPage;
 - (id)_migrateOnboardingSettings;
@@ -13,16 +13,16 @@
 
 @implementation HDSPSleepScheduleModelMigrationManager
 
-- (HDSPSleepScheduleModelMigrationManager)initWithEnvironment:(id)a3
+- (HDSPSleepScheduleModelMigrationManager)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v9.receiver = self;
   v9.super_class = HDSPSleepScheduleModelMigrationManager;
   v5 = [(HDSPSleepScheduleModelMigrationManager *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v7 = v6;
   }
 
@@ -32,29 +32,29 @@
 - (BOOL)needDataMigration
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained sleepStorage];
-  v4 = [v3 needsMigration];
+  sleepStorage = [WeakRetained sleepStorage];
+  needsMigration = [sleepStorage needsMigration];
 
-  return v4;
+  return needsMigration;
 }
 
 - (id)performDataMigration
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(HDSPSleepScheduleModelMigrationManager *)self _migrateToCloudKit];
-  [v3 addObject:v4];
+  _migrateToCloudKit = [(HDSPSleepScheduleModelMigrationManager *)self _migrateToCloudKit];
+  [v3 addObject:_migrateToCloudKit];
 
-  v5 = [(HDSPSleepScheduleModelMigrationManager *)self _migrateSleepScheduleFromMobileTimer];
-  [v3 addObject:v5];
+  _migrateSleepScheduleFromMobileTimer = [(HDSPSleepScheduleModelMigrationManager *)self _migrateSleepScheduleFromMobileTimer];
+  [v3 addObject:_migrateSleepScheduleFromMobileTimer];
 
-  v6 = [(HDSPSleepScheduleModelMigrationManager *)self _migrateSleepFocus];
-  [v3 addObject:v6];
+  _migrateSleepFocus = [(HDSPSleepScheduleModelMigrationManager *)self _migrateSleepFocus];
+  [v3 addObject:_migrateSleepFocus];
 
-  v7 = [(HDSPSleepScheduleModelMigrationManager *)self _migrateOnboardingSettings];
-  [v3 addObject:v7];
+  _migrateOnboardingSettings = [(HDSPSleepScheduleModelMigrationManager *)self _migrateOnboardingSettings];
+  [v3 addObject:_migrateOnboardingSettings];
 
-  v8 = [(HDSPSleepScheduleModelMigrationManager *)self _migrateHomeScreenPage];
-  [v3 addObject:v8];
+  _migrateHomeScreenPage = [(HDSPSleepScheduleModelMigrationManager *)self _migrateHomeScreenPage];
+  [v3 addObject:_migrateHomeScreenPage];
 
   v9 = [MEMORY[0x277D2C900] chainFutures:v3];
   v12[0] = MEMORY[0x277D85DD0];

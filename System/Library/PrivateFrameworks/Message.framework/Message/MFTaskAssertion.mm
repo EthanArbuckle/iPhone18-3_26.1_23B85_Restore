@@ -1,6 +1,6 @@
 @interface MFTaskAssertion
 + (id)log;
-- (MFTaskAssertion)initWithName:(id)a3 expiration:(double)a4 preventIdleSleep:(BOOL)a5;
+- (MFTaskAssertion)initWithName:(id)name expiration:(double)expiration preventIdleSleep:(BOOL)sleep;
 - (void)cancelTimer;
 - (void)dealloc;
 - (void)invalidate;
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = __22__MFTaskAssertion_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_34 != -1)
   {
     dispatch_once(&log_onceToken_34, block);
@@ -60,21 +60,21 @@ void __22__MFTaskAssertion_log__block_invoke(uint64_t a1)
   log_log_34 = v1;
 }
 
-- (MFTaskAssertion)initWithName:(id)a3 expiration:(double)a4 preventIdleSleep:(BOOL)a5
+- (MFTaskAssertion)initWithName:(id)name expiration:(double)expiration preventIdleSleep:(BOOL)sleep
 {
-  v5 = a5;
-  v8 = a3;
+  sleepCopy = sleep;
+  nameCopy = name;
   v31.receiver = self;
   v31.super_class = MFTaskAssertion;
   v9 = [(MFTaskAssertion *)&v31 init];
   if (v9)
   {
     v10 = MFUserAgent();
-    v11 = [v10 isMaild];
+    isMaild = [v10 isMaild];
 
-    if (v11)
+    if (isMaild)
     {
-      v12 = [MEMORY[0x1E699B860] transactionWithDescription:v8];
+      v12 = [MEMORY[0x1E699B860] transactionWithDescription:nameCopy];
       v13 = *(v9 + 1);
       *(v9 + 1) = v12;
     }
@@ -82,16 +82,16 @@ void __22__MFTaskAssertion_log__block_invoke(uint64_t a1)
     else
     {
       v14 = MFUserAgent();
-      v15 = [v14 isMobileMail];
+      isMobileMail = [v14 isMobileMail];
 
-      if (v15)
+      if (isMobileMail)
       {
 LABEL_12:
         v25 = v9;
         goto LABEL_13;
       }
 
-      if (v5)
+      if (sleepCopy)
       {
         v16 = 3;
       }
@@ -107,18 +107,18 @@ LABEL_12:
       v29[1] = 3221225472;
       v29[2] = __60__MFTaskAssertion_initWithName_expiration_preventIdleSleep___block_invoke;
       v29[3] = &unk_1E7AA74A8;
-      v30 = v8;
+      v30 = nameCopy;
       v19 = [v17 initWithPID:v18 flags:v16 reason:10004 name:v30 withHandler:v29];
       v20 = *(v9 + 2);
       *(v9 + 2) = v19;
 
-      if (a4 > 0.0)
+      if (expiration > 0.0)
       {
         v21 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
         v22 = *(v9 + 3);
         *(v9 + 3) = v21;
 
-        v23 = dispatch_time(0, (a4 * 1000000000.0));
+        v23 = dispatch_time(0, (expiration * 1000000000.0));
         dispatch_source_set_timer(*(v9 + 3), v23, 0xFFFFFFFFFFFFFFFFLL, 0);
         v24 = *(v9 + 3);
         v27[0] = MEMORY[0x1E69E9820];

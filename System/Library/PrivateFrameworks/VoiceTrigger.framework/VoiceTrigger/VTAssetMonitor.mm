@@ -2,21 +2,21 @@
 + (id)sharedInstance;
 - (VTAssetMonitor)init;
 - (void)_didReceiveNewAssetAvailable;
-- (void)_notifyObserver:(id)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_notifyObserver:(id)observer;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 - (void)notifyNewAssetDownloaded;
 @end
 
 @implementation VTAssetMonitor
 
-- (void)_notifyObserver:(id)a3
+- (void)_notifyObserver:(id)observer
 {
-  v4 = a3;
-  [(VTEventMonitor *)self notifyObserver:v4];
+  observerCopy = observer;
+  [(VTEventMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v4 VTAssetMonitor:self didReceiveNewAssetAvailable:1];
+    [observerCopy VTAssetMonitor:self didReceiveNewAssetAvailable:1];
   }
 }
 
@@ -63,7 +63,7 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   if (self->_notifyToken == -1)
   {
@@ -74,7 +74,7 @@
     handler[2] = __44__VTAssetMonitor__startMonitoringWithQueue___block_invoke;
     handler[3] = &unk_2784ECD80;
     handler[4] = self;
-    notify_register_dispatch("com.apple.MobileAsset.VoiceTriggerAssets.ma.cached-metadata-updated", &self->_notifyToken, a3, handler);
+    notify_register_dispatch("com.apple.MobileAsset.VoiceTriggerAssets.ma.cached-metadata-updated", &self->_notifyToken, queue, handler);
     v5 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {

@@ -1,20 +1,20 @@
 @interface PLCloudPersistentHistoryChangeTracker
-- (BOOL)connectWithContext:(id)a3;
+- (BOOL)connectWithContext:(id)context;
 - (BOOL)hasChangeTrackerToken;
 - (NSString)lastKnownTokenDescription;
-- (PLCloudPersistentHistoryChangeTracker)initWithPersistentStoreCoordinator:(id)a3 libraryBundle:(id)a4;
+- (PLCloudPersistentHistoryChangeTracker)initWithPersistentStoreCoordinator:(id)coordinator libraryBundle:(id)bundle;
 - (PLCloudPersistentHistoryChangeTrackerDelegate)delegate;
-- (id)_eventsResultFromPersistentHistoryToken:(id)a3 inContext:(id)a4;
-- (id)fetchAllEventsInContext:(id)a3;
+- (id)_eventsResultFromPersistentHistoryToken:(id)token inContext:(id)context;
+- (id)fetchAllEventsInContext:(id)context;
 - (id)lastKnownTokenFromDisk;
 - (void)_registerForChangeHandlingNotifications;
-- (void)_updateLastKnownTokensToToken:(id)a3;
-- (void)changeTrackerDidReceiveChangesWithTransaction:(id)a3;
+- (void)_updateLastKnownTokensToToken:(id)token;
+- (void)changeTrackerDidReceiveChangesWithTransaction:(id)transaction;
 - (void)clearToken;
 - (void)disconnect;
 - (void)forceTokenToCurrent;
-- (void)saveLastKnownChangeTrackerTokenToDiskWithContext:(id)a3;
-- (void)updateLastKnownTokenToResult:(id)a3;
+- (void)saveLastKnownChangeTrackerTokenToDiskWithContext:(id)context;
+- (void)updateLastKnownTokenToResult:(id)result;
 @end
 
 @implementation PLCloudPersistentHistoryChangeTracker
@@ -33,25 +33,25 @@ void __80__PLCloudPersistentHistoryChangeTracker__registerForChangeHandlingNotif
   return WeakRetained;
 }
 
-- (void)_updateLastKnownTokensToToken:(id)a3
+- (void)_updateLastKnownTokensToToken:(id)token
 {
-  v4 = [a3 copy];
+  v4 = [token copy];
   lastKnownToken = self->_lastKnownToken;
   self->_lastKnownToken = v4;
 }
 
-- (void)updateLastKnownTokenToResult:(id)a3
+- (void)updateLastKnownTokenToResult:(id)result
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 resultType])
+  resultCopy = result;
+  if ([resultCopy resultType])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PLCloudPersistentHistoryChangeTracker.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"result.resultType == PLCloudChangeEventsResultSuccess"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCloudPersistentHistoryChangeTracker.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"result.resultType == PLCloudChangeEventsResultSuccess"}];
   }
 
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = resultCopy;
   if (!v7)
   {
     goto LABEL_9;
@@ -70,29 +70,29 @@ void __80__PLCloudPersistentHistoryChangeTracker__registerForChangeHandlingNotif
   v9 = v8;
   if (!v9)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"id  _Nullable _PLAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nullable __strong)"}];
-    [v10 handleFailureInFunction:v11 file:@"PLHelperExtension.h" lineNumber:78 description:{@"Expected class of %@ but was %@", v6, objc_opt_class()}];
+    [currentHandler2 handleFailureInFunction:v11 file:@"PLHelperExtension.h" lineNumber:78 description:{@"Expected class of %@ but was %@", v6, objc_opt_class()}];
 
 LABEL_9:
     v9 = 0;
   }
 
-  v12 = [v9 lastProcessedCoreDataToken];
+  lastProcessedCoreDataToken = [v9 lastProcessedCoreDataToken];
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     v13 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v16 = v12;
+      v16 = lastProcessedCoreDataToken;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEBUG, "Updating last known tokens from result token: %@", buf, 0xCu);
     }
   }
 
-  if (v12)
+  if (lastProcessedCoreDataToken)
   {
-    [(PLCloudPersistentHistoryChangeTracker *)self _updateLastKnownTokensToToken:v12];
+    [(PLCloudPersistentHistoryChangeTracker *)self _updateLastKnownTokensToToken:lastProcessedCoreDataToken];
   }
 }
 
@@ -114,10 +114,10 @@ LABEL_9:
   [(PLCloudPersistentHistoryChangeTracker *)self _updateLastKnownTokensToToken:v3];
 }
 
-- (id)fetchAllEventsInContext:(id)a3
+- (id)fetchAllEventsInContext:(id)context
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     v5 = __CPLAssetsdOSLogDomain();
@@ -130,16 +130,16 @@ LABEL_9:
     }
   }
 
-  v7 = [(PLCloudPersistentHistoryChangeTracker *)self _eventsResultFromPersistentHistoryToken:self->_lastKnownToken inContext:v4];
+  v7 = [(PLCloudPersistentHistoryChangeTracker *)self _eventsResultFromPersistentHistoryToken:self->_lastKnownToken inContext:contextCopy];
 
   return v7;
 }
 
-- (id)_eventsResultFromPersistentHistoryToken:(id)a3 inContext:(id)a4
+- (id)_eventsResultFromPersistentHistoryToken:(id)token inContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5 && (*MEMORY[0x1E6994D48] & 1) == 0)
+  tokenCopy = token;
+  contextCopy = context;
+  if (!tokenCopy && (*MEMORY[0x1E6994D48] & 1) == 0)
   {
     v7 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -149,7 +149,7 @@ LABEL_9:
     }
   }
 
-  v8 = [PLCloudPersistentHistoryTransactionsResult fetchTransactionsSinceToken:v5 inContext:v6];
+  v8 = [PLCloudPersistentHistoryTransactionsResult fetchTransactionsSinceToken:tokenCopy inContext:contextCopy];
 
   return v8;
 }
@@ -169,11 +169,11 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (void)changeTrackerDidReceiveChangesWithTransaction:(id)a3
+- (void)changeTrackerDidReceiveChangesWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained cloudChangeTrackerDidReceiveChangesWithTransaction:v4];
+  [WeakRetained cloudChangeTrackerDidReceiveChangesWithTransaction:transactionCopy];
 }
 
 - (void)disconnect
@@ -183,10 +183,10 @@ LABEL_9:
   [(PLCloudPersistentHistoryChangeTracker *)self _unregisterForChangeHandlingNotifications];
 }
 
-- (void)saveLastKnownChangeTrackerTokenToDiskWithContext:(id)a3
+- (void)saveLastKnownChangeTrackerTokenToDiskWithContext:(id)context
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     v5 = __CPLAssetsdOSLogDomain();
@@ -200,14 +200,14 @@ LABEL_9:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained saveCloudTrackerToken:self->_lastKnownToken withContext:v4];
+  [WeakRetained saveCloudTrackerToken:self->_lastKnownToken withContext:contextCopy];
 }
 
 - (id)lastKnownTokenFromDisk
 {
   v8 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained readCloudTrackerToken];
+  readCloudTrackerToken = [WeakRetained readCloudTrackerToken];
 
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -215,18 +215,18 @@ LABEL_9:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       v6 = 138412290;
-      v7 = v3;
+      v7 = readCloudTrackerToken;
       _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEBUG, "Last known token from disk: %@", &v6, 0xCu);
     }
   }
 
-  return v3;
+  return readCloudTrackerToken;
 }
 
-- (BOOL)connectWithContext:(id)a3
+- (BOOL)connectWithContext:(id)context
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   [(PLCloudPersistentHistoryChangeTracker *)self clearToken];
   [(PLCloudPersistentHistoryChangeTracker *)self _registerForChangeHandlingNotifications];
   v5 = MEMORY[0x1E6994D48];
@@ -240,13 +240,13 @@ LABEL_9:
     }
   }
 
-  v7 = [(PLCloudPersistentHistoryChangeTracker *)self lastKnownTokenFromDisk];
-  if (!v7)
+  lastKnownTokenFromDisk = [(PLCloudPersistentHistoryChangeTracker *)self lastKnownTokenFromDisk];
+  if (!lastKnownTokenFromDisk)
   {
-    v7 = [(PLCloudPersistentHistoryChangeTracker *)self currentToken];
+    lastKnownTokenFromDisk = [(PLCloudPersistentHistoryChangeTracker *)self currentToken];
   }
 
-  v8 = [v7 copy];
+  v8 = [lastKnownTokenFromDisk copy];
   lastKnownToken = self->_lastKnownToken;
   self->_lastKnownToken = v8;
 
@@ -262,7 +262,7 @@ LABEL_9:
     }
   }
 
-  [(PLCloudPersistentHistoryChangeTracker *)self saveLastKnownChangeTrackerTokenToDiskWithContext:v4];
+  [(PLCloudPersistentHistoryChangeTracker *)self saveLastKnownChangeTrackerTokenToDiskWithContext:contextCopy];
 
   return 1;
 }
@@ -325,24 +325,24 @@ LABEL_9:
   return self->_lastKnownToken != 0;
 }
 
-- (PLCloudPersistentHistoryChangeTracker)initWithPersistentStoreCoordinator:(id)a3 libraryBundle:(id)a4
+- (PLCloudPersistentHistoryChangeTracker)initWithPersistentStoreCoordinator:(id)coordinator libraryBundle:(id)bundle
 {
-  v8 = a3;
-  v9 = a4;
+  coordinatorCopy = coordinator;
+  bundleCopy = bundle;
   v17.receiver = self;
   v17.super_class = PLCloudPersistentHistoryChangeTracker;
   v10 = [(PLCloudPersistentHistoryChangeTracker *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_coordinator, a3);
-    if (!v9)
+    objc_storeStrong(&v10->_coordinator, coordinator);
+    if (!bundleCopy)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:v11 file:@"PLCloudPersistentHistoryChangeTracker.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"bundle"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v11 file:@"PLCloudPersistentHistoryChangeTracker.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"bundle"}];
     }
 
-    v12 = [v9 makeChangeHandlingNotificationObserverWithLowPriorityThrottleInterval:0.0];
+    v12 = [bundleCopy makeChangeHandlingNotificationObserverWithLowPriorityThrottleInterval:0.0];
     notificationObserver = v11->_notificationObserver;
     v11->_notificationObserver = v12;
 

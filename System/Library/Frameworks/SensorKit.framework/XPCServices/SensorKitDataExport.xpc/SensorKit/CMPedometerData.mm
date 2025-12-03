@@ -33,11 +33,11 @@
 
   v37[1] = v6;
   v36[2] = @"numberOfSteps";
-  v7 = [(CMPedometerData *)self numberOfSteps];
-  if (v7)
+  numberOfSteps = [(CMPedometerData *)self numberOfSteps];
+  if (numberOfSteps)
   {
-    v8 = v7;
-    [(NSNumber *)v7 doubleValue];
+    v8 = numberOfSteps;
+    [(NSNumber *)numberOfSteps doubleValue];
     if (fabs(v9) == INFINITY)
     {
       v10 = @"INFINITY";
@@ -56,11 +56,11 @@
 
   v37[2] = v10;
   v36[3] = @"distance";
-  v11 = [(CMPedometerData *)self distance];
-  if (v11)
+  distance = [(CMPedometerData *)self distance];
+  if (distance)
   {
-    v12 = v11;
-    [(NSNumber *)v11 doubleValue];
+    v12 = distance;
+    [(NSNumber *)distance doubleValue];
     if (fabs(v13) == INFINITY)
     {
       v14 = @"INFINITY";
@@ -79,11 +79,11 @@
 
   v37[3] = v14;
   v36[4] = @"floorsAscended";
-  v15 = [(CMPedometerData *)self floorsAscended];
-  if (v15)
+  floorsAscended = [(CMPedometerData *)self floorsAscended];
+  if (floorsAscended)
   {
-    v16 = v15;
-    [(NSNumber *)v15 doubleValue];
+    v16 = floorsAscended;
+    [(NSNumber *)floorsAscended doubleValue];
     if (fabs(v17) == INFINITY)
     {
       v18 = @"INFINITY";
@@ -102,11 +102,11 @@
 
   v37[4] = v18;
   v36[5] = @"floorsDescended";
-  v19 = [(CMPedometerData *)self floorsDescended];
-  if (v19)
+  floorsDescended = [(CMPedometerData *)self floorsDescended];
+  if (floorsDescended)
   {
-    v20 = v19;
-    [(NSNumber *)v19 doubleValue];
+    v20 = floorsDescended;
+    [(NSNumber *)floorsDescended doubleValue];
     if (fabs(v21) == INFINITY)
     {
       v22 = @"INFINITY";
@@ -125,11 +125,11 @@
 
   v37[5] = v22;
   v36[6] = @"currentPace";
-  v23 = [(CMPedometerData *)self currentPace];
-  if (v23)
+  currentPace = [(CMPedometerData *)self currentPace];
+  if (currentPace)
   {
-    v24 = v23;
-    [(NSNumber *)v23 doubleValue];
+    v24 = currentPace;
+    [(NSNumber *)currentPace doubleValue];
     if (fabs(v25) == INFINITY)
     {
       v26 = @"INFINITY";
@@ -148,11 +148,11 @@
 
   v37[6] = v26;
   v36[7] = @"currentCadence";
-  v27 = [(CMPedometerData *)self currentCadence];
-  if (v27)
+  currentCadence = [(CMPedometerData *)self currentCadence];
+  if (currentCadence)
   {
-    v28 = v27;
-    [(NSNumber *)v27 doubleValue];
+    v28 = currentCadence;
+    [(NSNumber *)currentCadence doubleValue];
     if (fabs(v29) == INFINITY)
     {
       v30 = @"INFINITY";
@@ -171,11 +171,11 @@
 
   v37[7] = v30;
   v36[8] = @"averageActivePace";
-  v31 = [(CMPedometerData *)self averageActivePace];
-  if (v31)
+  averageActivePace = [(CMPedometerData *)self averageActivePace];
+  if (averageActivePace)
   {
-    v32 = v31;
-    [(NSNumber *)v31 doubleValue];
+    v32 = averageActivePace;
+    [(NSNumber *)averageActivePace doubleValue];
     if (fabs(v33) == INFINITY)
     {
       v34 = @"INFINITY";

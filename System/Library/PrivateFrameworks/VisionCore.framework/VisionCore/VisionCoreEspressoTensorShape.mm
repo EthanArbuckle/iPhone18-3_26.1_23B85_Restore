@@ -1,12 +1,12 @@
 @interface VisionCoreEspressoTensorShape
-+ (id)shapeForBlobDimensions:(id *)a3;
++ (id)shapeForBlobDimensions:(id *)dimensions;
 @end
 
 @implementation VisionCoreEspressoTensorShape
 
-+ (id)shapeForBlobDimensions:(id *)a3
++ (id)shapeForBlobDimensions:(id *)dimensions
 {
-  v3 = [[a1 alloc] initWithBatchNumber:a3->var4 channels:a3->var3 height:a3->var2 width:a3->var1];
+  v3 = [[self alloc] initWithBatchNumber:dimensions->var4 channels:dimensions->var3 height:dimensions->var2 width:dimensions->var1];
 
   return v3;
 }

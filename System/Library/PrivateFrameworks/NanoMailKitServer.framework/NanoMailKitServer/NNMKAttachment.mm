@@ -1,64 +1,64 @@
 @interface NNMKAttachment
 - (BOOL)isActionable;
-- (NNMKAttachment)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NNMKAttachment)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NNMKAttachment
 
-- (NNMKAttachment)initWithCoder:(id)a3
+- (NNMKAttachment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = NNMKAttachment;
   v5 = [(NNMKAttachment *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyContentId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyContentId"];
     contentId = v5->_contentId;
     v5->_contentId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyMessageId"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyMessageId"];
     messageId = v5->_messageId;
     v5->_messageId = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyFileName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyFileName"];
     fileName = v5->_fileName;
     v5->_fileName = v10;
 
-    v5->_fileSize = [v4 decodeIntegerForKey:@"kNSCodingKeyFileSize"];
-    v5->_type = [v4 decodeIntegerForKey:@"kNSCodingKeyType"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyContentURL"];
+    v5->_fileSize = [coderCopy decodeIntegerForKey:@"kNSCodingKeyFileSize"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"kNSCodingKeyType"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyContentURL"];
     url = v5->_url;
     v5->_url = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeySyncState"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeySyncState"];
     v5->_syncState = [v14 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contentId = self->_contentId;
-  v5 = a3;
-  [v5 encodeObject:contentId forKey:@"kNSCodingKeyContentId"];
-  [v5 encodeObject:self->_messageId forKey:@"kNSCodingKeyMessageId"];
-  [v5 encodeObject:self->_fileName forKey:@"kNSCodingKeyFileName"];
-  [v5 encodeInteger:self->_fileSize forKey:@"kNSCodingKeyFileSize"];
-  [v5 encodeInteger:self->_type forKey:@"kNSCodingKeyType"];
-  [v5 encodeObject:self->_url forKey:@"kNSCodingKeyContentURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contentId forKey:@"kNSCodingKeyContentId"];
+  [coderCopy encodeObject:self->_messageId forKey:@"kNSCodingKeyMessageId"];
+  [coderCopy encodeObject:self->_fileName forKey:@"kNSCodingKeyFileName"];
+  [coderCopy encodeInteger:self->_fileSize forKey:@"kNSCodingKeyFileSize"];
+  [coderCopy encodeInteger:self->_type forKey:@"kNSCodingKeyType"];
+  [coderCopy encodeObject:self->_url forKey:@"kNSCodingKeyContentURL"];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_syncState];
-  [v5 encodeObject:v6 forKey:@"kNSCodingKeySyncState"];
+  [coderCopy encodeObject:v6 forKey:@"kNSCodingKeySyncState"];
 }
 
 - (BOOL)isActionable
 {
   v3 = objc_opt_class();
-  v4 = [(NNMKAttachment *)self type];
+  type = [(NNMKAttachment *)self type];
 
-  return [v3 isTypeActionable:v4];
+  return [v3 isTypeActionable:type];
 }
 
 @end

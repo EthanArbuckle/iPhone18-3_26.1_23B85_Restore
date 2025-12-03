@@ -1,64 +1,64 @@
 @interface AKAuthorizationScopesUserSelection
-- (AKAuthorizationScopesUserSelection)initWithCoder:(id)a3;
+- (AKAuthorizationScopesUserSelection)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKAuthorizationScopesUserSelection
 
-- (AKAuthorizationScopesUserSelection)initWithCoder:(id)a3
+- (AKAuthorizationScopesUserSelection)initWithCoder:(id)coder
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
-  v12 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v3;
   v10.super_class = AKAuthorizationScopesUserSelection;
   v9 = [(AKAuthorizationScopesUserSelection *)&v10 init];
-  v12 = v9;
-  objc_storeStrong(&v12, v9);
+  selfCopy = v9;
+  objc_storeStrong(&selfCopy, v9);
   if (v9)
   {
     v4 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_userInformation"];
-    userInformation = v12->_userInformation;
-    v12->_userInformation = v4;
+    userInformation = selfCopy->_userInformation;
+    selfCopy->_userInformation = v4;
     MEMORY[0x1E69E5920](userInformation);
     v6 = [location[0] decodeBoolForKey:@"_makePrivateEmail"];
-    v12->_makePrivateEmail = v6;
+    selfCopy->_makePrivateEmail = v6;
   }
 
-  v8 = MEMORY[0x1E69E5928](v12);
+  v8 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v4->_userInformation forKey:@"_userInformation"];
-  [location[0] encodeBool:v4->_makePrivateEmail forKey:@"_makePrivateEmail"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_userInformation forKey:@"_userInformation"];
+  [location[0] encodeBool:selfCopy->_makePrivateEmail forKey:@"_makePrivateEmail"];
   objc_storeStrong(location, 0);
 }
 
 - (id)description
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(AKAuthorizationScopesUserSelection *)self userInformation];
-  v2 = [(AKAuthorizationScopesUserSelection *)self makePrivateEmail];
+  userInformation = [(AKAuthorizationScopesUserSelection *)self userInformation];
+  makePrivateEmail = [(AKAuthorizationScopesUserSelection *)self makePrivateEmail];
   v3 = @"YES";
-  if (!v2)
+  if (!makePrivateEmail)
   {
     v3 = @"NO";
   }
 
-  v7 = [v5 stringWithFormat:@"{ userInformation: %@, makePrivateEmail: %@}", v6, v3];
-  MEMORY[0x1E69E5920](v6);
+  v7 = [v5 stringWithFormat:@"{ userInformation: %@, makePrivateEmail: %@}", userInformation, v3];
+  MEMORY[0x1E69E5920](userInformation);
 
   return v7;
 }

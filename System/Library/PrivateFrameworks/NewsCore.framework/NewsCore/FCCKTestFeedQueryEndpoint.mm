@@ -1,24 +1,24 @@
 @interface FCCKTestFeedQueryEndpoint
-- (void)handleQueryOperation:(id)a3 withRecords:(id)a4 droppedFeeds:(id)a5;
+- (void)handleQueryOperation:(id)operation withRecords:(id)records droppedFeeds:(id)feeds;
 @end
 
 @implementation FCCKTestFeedQueryEndpoint
 
-- (void)handleQueryOperation:(id)a3 withRecords:(id)a4 droppedFeeds:(id)a5
+- (void)handleQueryOperation:(id)operation withRecords:(id)records droppedFeeds:(id)feeds
 {
   v302 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v173 = a5;
-  v10 = [v8 query];
+  operationCopy = operation;
+  recordsCopy = records;
+  feedsCopy = feeds;
+  query = [operationCopy query];
   objc_opt_class();
-  v165 = v10;
-  v11 = [v10 predicate];
-  if (v11)
+  v165 = query;
+  predicate = [query predicate];
+  if (predicate)
   {
     if (objc_opt_isKindOfClass())
     {
-      v12 = v11;
+      v12 = predicate;
     }
 
     else
@@ -63,8 +63,8 @@ LABEL_11:
     v279 = 0u;
     v278 = 0u;
     v277 = 0u;
-    v16 = [v13 subpredicates];
-    v17 = [v16 countByEnumeratingWithState:&v277 objects:v293 count:16];
+    subpredicates = [v13 subpredicates];
+    v17 = [subpredicates countByEnumeratingWithState:&v277 objects:v293 count:16];
     if (!v17)
     {
       v194 = 0;
@@ -82,111 +82,111 @@ LABEL_11:
     v189 = 0;
     v204 = 0;
     v19 = *v278;
-    v213 = v16;
+    v213 = subpredicates;
     while (1)
     {
       for (i = 0; i != v18; ++i)
       {
         if (*v278 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(subpredicates);
         }
 
-        v5 = *(*(&v277 + 1) + 8 * i);
+        keyPath = *(*(&v277 + 1) + 8 * i);
         objc_opt_class();
-        if (!v5 || (objc_opt_isKindOfClass() & 1) == 0)
+        if (!keyPath || (objc_opt_isKindOfClass() & 1) == 0)
         {
           v21 = 0;
           goto LABEL_35;
         }
 
-        v21 = v5;
-        v22 = [v21 predicateOperatorType];
-        if (v22 != 99)
+        v21 = keyPath;
+        predicateOperatorType = [v21 predicateOperatorType];
+        if (predicateOperatorType != 99)
         {
-          if (v22 != 4)
+          if (predicateOperatorType != 4)
           {
             goto LABEL_35;
           }
 
-          v23 = [v21 leftExpression];
-          v5 = [v23 keyPath];
-          v24 = [v5 isEqualToString:@"tagField"];
+          leftExpression = [v21 leftExpression];
+          keyPath = [leftExpression keyPath];
+          v24 = [keyPath isEqualToString:@"tagField"];
 
           if (!v24)
           {
 LABEL_33:
-            v16 = v213;
+            subpredicates = v213;
             goto LABEL_34;
           }
 
-          v5 = [v21 rightExpression];
-          v25 = [v5 constantValue];
+          keyPath = [v21 rightExpression];
+          constantValue = [keyPath constantValue];
           v26 = v194;
-          v194 = v25;
+          v194 = constantValue;
           goto LABEL_32;
         }
 
-        v23 = [v21 rightExpression];
-        if ([v23 expressionType] == 3)
+        leftExpression = [v21 rightExpression];
+        if ([leftExpression expressionType] == 3)
         {
-          v27 = [v23 keyPath];
-          v28 = [v27 isEqualToString:@"tagID"];
+          keyPath2 = [leftExpression keyPath];
+          v28 = [keyPath2 isEqualToString:@"tagID"];
 
           if (v28)
           {
-            v5 = [v21 leftExpression];
-            v29 = [v5 constantValue];
+            keyPath = [v21 leftExpression];
+            constantValue2 = [keyPath constantValue];
             v26 = v204;
-            v204 = v29;
+            v204 = constantValue2;
           }
 
           else
           {
-            v30 = [v23 keyPath];
-            v31 = [v30 isEqualToString:@"cursor"];
+            keyPath3 = [leftExpression keyPath];
+            v31 = [keyPath3 isEqualToString:@"cursor"];
 
             if (v31)
             {
-              v5 = [v21 leftExpression];
-              v32 = [v5 constantValue];
+              keyPath = [v21 leftExpression];
+              constantValue3 = [keyPath constantValue];
               v26 = v195;
-              v195 = v32;
+              v195 = constantValue3;
             }
 
             else
             {
-              v33 = [v23 keyPath];
-              v34 = [v33 isEqualToString:@"minOrder"];
+              keyPath4 = [leftExpression keyPath];
+              v34 = [keyPath4 isEqualToString:@"minOrder"];
 
               if (v34)
               {
-                v5 = [v21 leftExpression];
-                v35 = [v5 constantValue];
+                keyPath = [v21 leftExpression];
+                constantValue4 = [keyPath constantValue];
                 v26 = v189;
-                v189 = v35;
+                v189 = constantValue4;
               }
 
               else
               {
-                v36 = [v23 keyPath];
-                v5 = [v36 isEqualToString:@"hardLimit"];
+                keyPath5 = [leftExpression keyPath];
+                keyPath = [keyPath5 isEqualToString:@"hardLimit"];
 
-                if (!v5)
+                if (!keyPath)
                 {
                   goto LABEL_33;
                 }
 
-                v5 = [v21 leftExpression];
-                v37 = [v5 constantValue];
+                keyPath = [v21 leftExpression];
+                constantValue5 = [keyPath constantValue];
                 v26 = v186;
-                v186 = v37;
+                v186 = constantValue5;
               }
             }
           }
 
 LABEL_32:
-          v16 = v213;
+          subpredicates = v213;
         }
 
 LABEL_34:
@@ -194,7 +194,7 @@ LABEL_34:
 LABEL_35:
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v277 objects:v293 count:16];
+      v18 = [subpredicates countByEnumeratingWithState:&v277 objects:v293 count:16];
       if (!v18)
       {
 LABEL_39:
@@ -211,7 +211,7 @@ LABEL_39:
   v189 = 0;
   v38 = 0;
 LABEL_41:
-  v181 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v273 = 0u;
   v274 = 0u;
   v275 = 0u;
@@ -233,9 +233,9 @@ LABEL_41:
 
         v44 = *(*(&v273 + 1) + 8 * j);
         v45 = MEMORY[0x1E695DF70];
-        v5 = FCSortedFeedItemRecordsForFeedID(v9, v44);
-        v46 = [v45 arrayWithArray:v5];
-        [v181 setObject:v46 forKeyedSubscript:v44];
+        keyPath = FCSortedFeedItemRecordsForFeedID(recordsCopy, v44);
+        v46 = [v45 arrayWithArray:keyPath];
+        [dictionary setObject:v46 forKeyedSubscript:v44];
       }
 
       v41 = [v39 countByEnumeratingWithState:&v273 objects:v292 count:16];
@@ -295,24 +295,24 @@ LABEL_41:
         if ([v53 length])
         {
           v209 = k;
-          v5 = [v181 objectForKeyedSubscript:v52];
+          keyPath = [dictionary objectForKeyedSubscript:v52];
           v205 = v53;
           v54 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v53 error:0];
-          while ([v5 count])
+          while ([keyPath count])
           {
-            v55 = [v5 firstObject];
-            v56 = [v55 objectForKeyedSubscript:@"order"];
-            v57 = [v54 order];
-            if ([v56 compare:v57] == 1)
+            firstObject = [keyPath firstObject];
+            v56 = [firstObject objectForKeyedSubscript:@"order"];
+            order = [v54 order];
+            if ([v56 compare:order] == 1)
             {
             }
 
             else
             {
-              v58 = [v5 firstObject];
-              v59 = [v58 objectForKeyedSubscript:@"subOrder"];
-              v60 = [v54 subOrder];
-              v214 = [v59 compare:v60];
+              firstObject2 = [keyPath firstObject];
+              v59 = [firstObject2 objectForKeyedSubscript:@"subOrder"];
+              subOrder = [v54 subOrder];
+              v214 = [v59 compare:subOrder];
 
               v50 = @"order";
               if (v214 != 1)
@@ -321,7 +321,7 @@ LABEL_41:
               }
             }
 
-            [v5 fc_removeFirstObject];
+            [keyPath fc_removeFirstObject];
           }
 
           v53 = v205;
@@ -335,7 +335,7 @@ LABEL_41:
     while (v200);
   }
 
-  v180 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v256 = 0u;
   v257 = 0u;
   v258 = 0u;
@@ -345,21 +345,21 @@ LABEL_41:
   if (v61)
   {
     v62 = v61;
-    v5 = *v257;
+    keyPath = *v257;
     do
     {
       for (m = 0; m != v62; ++m)
       {
-        if (*v257 != v5)
+        if (*v257 != keyPath)
         {
           objc_enumerationMutation(v167);
         }
 
         v64 = *(*(&v256 + 1) + 8 * m);
-        v65 = [v181 objectForKeyedSubscript:{v64, v161}];
-        v66 = [v65 firstObject];
+        v65 = [dictionary objectForKeyedSubscript:{v64, v161}];
+        firstObject3 = [v65 firstObject];
 
-        v67 = [v66 objectForKeyedSubscript:@"order"];
+        v67 = [firstObject3 objectForKeyedSubscript:@"order"];
         v50 = v67;
         if (v67)
         {
@@ -371,7 +371,7 @@ LABEL_41:
           v68 = &unk_1F2E70740;
         }
 
-        [v180 setObject:v68 forKeyedSubscript:v64];
+        [dictionary2 setObject:v68 forKeyedSubscript:v64];
       }
 
       v62 = [v167 countByEnumeratingWithState:&v256 objects:v290 count:16];
@@ -380,14 +380,14 @@ LABEL_41:
     while (v62);
   }
 
-  v69 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v185 = [MEMORY[0x1E696AB50] set];
   v174 = *MEMORY[0x1E695B7A8];
-  v177 = v69;
+  v177 = array;
   while (2)
   {
-    v70 = [v69 count];
-    if (v70 >= [v8 resultsLimit] && objc_msgSend(v8, "resultsLimit") != v174)
+    v70 = [array count];
+    if (v70 >= [operationCopy resultsLimit] && objc_msgSend(operationCopy, "resultsLimit") != v174)
     {
       goto LABEL_108;
     }
@@ -396,7 +396,7 @@ LABEL_41:
     v255 = 0u;
     v252 = 0u;
     v253 = 0u;
-    v71 = v181;
+    v71 = dictionary;
     v206 = [v71 countByEnumeratingWithState:&v252 objects:v289 count:16];
     if (!v206)
     {
@@ -420,18 +420,18 @@ LABEL_41:
 
         v74 = *(*(&v252 + 1) + 8 * v73);
         v75 = [v71 objectForKeyedSubscript:v74];
-        v76 = [v75 firstObject];
+        firstObject4 = [v75 firstObject];
 
         v77 = [v188 objectForKeyedSubscript:v74];
         v78 = [v187 objectForKeyedSubscript:v74];
-        if (!v76)
+        if (!firstObject4)
         {
           v72 = v215;
           goto LABEL_100;
         }
 
         v210 = v78;
-        v79 = [v76 objectForKeyedSubscript:@"order"];
+        v79 = [firstObject4 objectForKeyedSubscript:@"order"];
         if ([v79 compare:v77] == -1)
         {
           goto LABEL_93;
@@ -439,9 +439,9 @@ LABEL_41:
 
         if (v215)
         {
-          v5 = [v76 objectForKeyedSubscript:@"order"];
+          keyPath = [firstObject4 objectForKeyedSubscript:@"order"];
           v50 = [v215 objectForKeyedSubscript:@"order"];
-          if ([v5 compare:v50] != 1)
+          if ([keyPath compare:v50] != 1)
           {
 
 LABEL_93:
@@ -462,18 +462,18 @@ LABEL_95:
         }
 
         v80 = [v185 countForObject:v74];
-        v182 = [v210 unsignedLongLongValue];
+        unsignedLongLongValue = [v210 unsignedLongLongValue];
         if (!v215)
         {
 
-          if (v80 >= v182)
+          if (v80 >= unsignedLongLongValue)
           {
             v72 = 0;
             goto LABEL_98;
           }
 
 LABEL_97:
-          v81 = v76;
+          v81 = firstObject4;
 
           v82 = v74;
           [v185 addObject:v82];
@@ -484,7 +484,7 @@ LABEL_98:
           goto LABEL_99;
         }
 
-        if (v80 < v182)
+        if (v80 < unsignedLongLongValue)
         {
           goto LABEL_97;
         }
@@ -508,7 +508,7 @@ LABEL_100:
 
     if (obja)
     {
-      v69 = v177;
+      array = v177;
       v84 = v72;
       [v177 addObject:v72];
       v85 = [v71 objectForKeyedSubscript:obja];
@@ -521,16 +521,16 @@ LABEL_100:
   }
 
   v71 = v72;
-  v69 = v177;
+  array = v177;
 LABEL_107:
 
 LABEL_108:
-  v170 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v248 = 0u;
   v249 = 0u;
   v250 = 0u;
   v251 = 0u;
-  v166 = v69;
+  v166 = array;
   v175 = [v166 countByEnumeratingWithState:&v248 objects:v288 count:16];
   if (v175)
   {
@@ -554,14 +554,14 @@ LABEL_108:
         v246[3] = &unk_1E7C38030;
         v178 = v88;
         v247 = v178;
-        v89 = [v9 fc_firstObjectPassingTest:v246];
+        v89 = [recordsCopy fc_firstObjectPassingTest:v246];
         v207 = [objc_alloc(MEMORY[0x1E695BA60]) initWithRecordType:@"FeedItemAndArticle"];
         v242 = 0u;
         v243 = 0u;
         v244 = 0u;
         v245 = 0u;
-        v90 = [v87 changedKeys];
-        v91 = [v90 countByEnumeratingWithState:&v242 objects:v287 count:16];
+        changedKeys = [v87 changedKeys];
+        v91 = [changedKeys countByEnumeratingWithState:&v242 objects:v287 count:16];
         if (v91)
         {
           v92 = v91;
@@ -572,7 +572,7 @@ LABEL_108:
             {
               if (*v243 != v93)
               {
-                objc_enumerationMutation(v90);
+                objc_enumerationMutation(changedKeys);
               }
 
               v95 = *(*(&v242 + 1) + 8 * n);
@@ -583,7 +583,7 @@ LABEL_108:
               }
             }
 
-            v92 = [v90 countByEnumeratingWithState:&v242 objects:v287 count:16];
+            v92 = [changedKeys countByEnumeratingWithState:&v242 objects:v287 count:16];
           }
 
           while (v92);
@@ -639,11 +639,11 @@ LABEL_108:
                     v105 = [v89 objectForKeyedSubscript:*(*(&v234 + 1) + 8 * ii)];
                     if (v105)
                     {
-                      v106 = FCLookupRecordByName(v9, v105);
+                      v106 = FCLookupRecordByName(recordsCopy, v105);
                       if (v106)
                       {
-                        v107 = [v8 recordFetchedBlock];
-                        (v107)[2](v107, v106);
+                        recordFetchedBlock = [operationCopy recordFetchedBlock];
+                        (recordFetchedBlock)[2](recordFetchedBlock, v106);
                       }
                     }
                   }
@@ -664,20 +664,20 @@ LABEL_108:
           while (v202);
         }
 
-        v108 = [v8 desiredKeys];
+        desiredKeys = [operationCopy desiredKeys];
 
-        if (v108)
+        if (desiredKeys)
         {
           v109 = MEMORY[0x1E695DFD8];
-          v110 = [v8 desiredKeys];
-          v111 = [v109 setWithArray:v110];
+          desiredKeys2 = [operationCopy desiredKeys];
+          v111 = [v109 setWithArray:desiredKeys2];
 
           v232 = 0u;
           v233 = 0u;
           v230 = 0u;
           v231 = 0u;
-          v112 = [v207 changedKeys];
-          v113 = [v112 countByEnumeratingWithState:&v230 objects:v284 count:16];
+          changedKeys2 = [v207 changedKeys];
+          v113 = [changedKeys2 countByEnumeratingWithState:&v230 objects:v284 count:16];
           if (v113)
           {
             v114 = v113;
@@ -688,7 +688,7 @@ LABEL_108:
               {
                 if (*v231 != v115)
                 {
-                  objc_enumerationMutation(v112);
+                  objc_enumerationMutation(changedKeys2);
                 }
 
                 v117 = *(*(&v230 + 1) + 8 * jj);
@@ -698,7 +698,7 @@ LABEL_108:
                 }
               }
 
-              v114 = [v112 countByEnumeratingWithState:&v230 objects:v284 count:16];
+              v114 = [changedKeys2 countByEnumeratingWithState:&v230 objects:v284 count:16];
             }
 
             while (v114);
@@ -706,16 +706,16 @@ LABEL_108:
         }
 
         [v207 setObject:v178 forKeyedSubscript:@"articleID"];
-        v118 = [v89 recordChangeTag];
-        [v207 setObject:v118 forKeyedSubscript:@"articleETag"];
+        recordChangeTag = [v89 recordChangeTag];
+        [v207 setObject:recordChangeTag forKeyedSubscript:@"articleETag"];
 
-        v119 = [v89 creationDate];
-        [v207 setObject:v119 forKeyedSubscript:@"articleCreationDate"];
+        creationDate = [v89 creationDate];
+        [v207 setObject:creationDate forKeyedSubscript:@"articleCreationDate"];
 
-        v120 = [v89 modificationDate];
-        [v207 setObject:v120 forKeyedSubscript:@"articleModDate"];
+        modificationDate = [v89 modificationDate];
+        [v207 setObject:modificationDate forKeyedSubscript:@"articleModDate"];
 
-        [v170 addObject:v207];
+        [array2 addObject:v207];
         v86 = v183 + 1;
       }
 
@@ -730,7 +730,7 @@ LABEL_108:
   v229 = 0u;
   v226 = 0u;
   v227 = 0u;
-  v121 = v170;
+  v121 = array2;
   v122 = [v121 countByEnumeratingWithState:&v226 objects:v283 count:16];
   if (v122)
   {
@@ -746,8 +746,8 @@ LABEL_108:
         }
 
         v126 = *(*(&v226 + 1) + 8 * kk);
-        v127 = [v8 recordFetchedBlock];
-        v127[2](v127, v126);
+        recordFetchedBlock2 = [operationCopy recordFetchedBlock];
+        recordFetchedBlock2[2](recordFetchedBlock2, v126);
       }
 
       v123 = [v121 countByEnumeratingWithState:&v226 objects:v283 count:16];
@@ -758,11 +758,11 @@ LABEL_108:
 
   v169 = v121;
 
-  v203 = [MEMORY[0x1E695DF70] array];
-  v199 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   objc = [MEMORY[0x1E695DF70] array];
-  v184 = [MEMORY[0x1E695DF70] array];
-  v179 = [MEMORY[0x1E695DF70] array];
+  array5 = [MEMORY[0x1E695DF70] array];
+  array6 = [MEMORY[0x1E695DF70] array];
   v222 = 0u;
   v223 = 0u;
   v224 = 0u;
@@ -783,47 +783,47 @@ LABEL_108:
         }
 
         v130 = *(*(&v222 + 1) + 8 * mm);
-        v131 = [v181 objectForKeyedSubscript:v130];
-        v217 = [v180 objectForKeyedSubscript:v130];
-        v212 = [v173 containsObject:v130];
+        v131 = [dictionary objectForKeyedSubscript:v130];
+        v217 = [dictionary2 objectForKeyedSubscript:v130];
+        v212 = [feedsCopy containsObject:v130];
         if ([v131 count])
         {
           v132 = [v128 objectForKeyedSubscript:v130];
-          v133 = [v131 firstObject];
-          v134 = [v133 objectForKeyedSubscript:@"order"];
+          firstObject5 = [v131 firstObject];
+          v134 = [firstObject5 objectForKeyedSubscript:@"order"];
           v135 = [v134 compare:v132] == -1;
 
           v136 = [v131 count] == 0;
           v137 = objc_alloc_init(FCCKTestContentDatabaseFeedCursor);
-          v138 = [v131 firstObject];
-          v139 = [v138 objectForKeyedSubscript:@"order"];
+          firstObject6 = [v131 firstObject];
+          v139 = [firstObject6 objectForKeyedSubscript:@"order"];
           [(FCCKTestContentDatabaseFeedCursor *)v137 setOrder:v139];
 
-          v140 = [v131 firstObject];
-          v141 = [v140 objectForKeyedSubscript:@"subOrder"];
+          firstObject7 = [v131 firstObject];
+          v141 = [firstObject7 objectForKeyedSubscript:@"subOrder"];
           [(FCCKTestContentDatabaseFeedCursor *)v137 setSubOrder:v141];
 
           v128 = v188;
-          v142 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v137 requiringSecureCoding:1 error:0];
+          data = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v137 requiringSecureCoding:1 error:0];
         }
 
         else
         {
-          v142 = [MEMORY[0x1E695DEF0] data];
+          data = [MEMORY[0x1E695DEF0] data];
           v135 = 0;
           v136 = 1;
         }
 
         v143 = [MEMORY[0x1E696AD98] numberWithBool:v135];
-        [v203 addObject:v143];
+        [array3 addObject:v143];
 
         v144 = [MEMORY[0x1E696AD98] numberWithBool:v136];
-        [v199 addObject:v144];
+        [array4 addObject:v144];
 
-        [v184 addObject:v217];
-        [objc addObject:v142];
+        [array5 addObject:v217];
+        [objc addObject:data];
         v145 = [MEMORY[0x1E696AD98] numberWithBool:v212];
-        [v179 addObject:v145];
+        [array6 addObject:v145];
       }
 
       v208 = [v171 countByEnumeratingWithState:&v222 objects:v282 count:16];
@@ -833,25 +833,25 @@ LABEL_108:
   }
 
   v146 = [objc_alloc(MEMORY[0x1E695BA60]) initWithRecordType:@"Results"];
-  [v146 setObject:v203 forKeyedSubscript:@"reachedMinOrder"];
-  [v146 setObject:v199 forKeyedSubscript:@"reachedEnd"];
+  [v146 setObject:array3 forKeyedSubscript:@"reachedMinOrder"];
+  [v146 setObject:array4 forKeyedSubscript:@"reachedEnd"];
   [v146 setObject:objc forKeyedSubscript:@"cursor"];
-  [v146 setObject:v184 forKeyedSubscript:@"topOrder"];
-  [v146 setObject:v179 forKeyedSubscript:@"feedDropped"];
-  v147 = [v8 desiredKeys];
+  [v146 setObject:array5 forKeyedSubscript:@"topOrder"];
+  [v146 setObject:array6 forKeyedSubscript:@"feedDropped"];
+  desiredKeys3 = [operationCopy desiredKeys];
 
-  if (v147)
+  if (desiredKeys3)
   {
     v148 = MEMORY[0x1E695DFD8];
-    v149 = [v8 desiredKeys];
-    v150 = [v148 setWithArray:v149];
+    desiredKeys4 = [operationCopy desiredKeys];
+    v150 = [v148 setWithArray:desiredKeys4];
 
     v220 = 0u;
     v221 = 0u;
     v218 = 0u;
     v219 = 0u;
-    v151 = [v146 changedKeys];
-    v152 = [v151 countByEnumeratingWithState:&v218 objects:v281 count:16];
+    changedKeys3 = [v146 changedKeys];
+    v152 = [changedKeys3 countByEnumeratingWithState:&v218 objects:v281 count:16];
     if (v152)
     {
       v153 = v152;
@@ -862,7 +862,7 @@ LABEL_108:
         {
           if (*v219 != v154)
           {
-            objc_enumerationMutation(v151);
+            objc_enumerationMutation(changedKeys3);
           }
 
           v156 = *(*(&v218 + 1) + 8 * nn);
@@ -872,7 +872,7 @@ LABEL_108:
           }
         }
 
-        v153 = [v151 countByEnumeratingWithState:&v218 objects:v281 count:16];
+        v153 = [changedKeys3 countByEnumeratingWithState:&v218 objects:v281 count:16];
       }
 
       while (v153);
@@ -881,11 +881,11 @@ LABEL_108:
     v128 = v188;
   }
 
-  v157 = [v8 recordFetchedBlock];
-  (v157)[2](v157, v146);
+  recordFetchedBlock3 = [operationCopy recordFetchedBlock];
+  (recordFetchedBlock3)[2](recordFetchedBlock3, v146);
 
-  v158 = [v8 queryCompletionBlock];
-  v158[2](v158, 0, 0);
+  queryCompletionBlock = [operationCopy queryCompletionBlock];
+  queryCompletionBlock[2](queryCompletionBlock, 0, 0);
 
   v159 = *MEMORY[0x1E69E9840];
 }

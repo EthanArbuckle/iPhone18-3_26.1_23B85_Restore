@@ -1,8 +1,8 @@
 @interface IdsDeviceObserver
 - (IdsDeviceObserver)initWithCallback:(function<void)(;
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)service:(id)a3 linkedDevicesChanged:(id)a4;
+- (void)service:(id)service connectedDevicesChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)service:(id)service linkedDevicesChanged:(id)changed;
 @end
 
 @implementation IdsDeviceObserver
@@ -21,10 +21,10 @@
   return v5;
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  v8 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  changedCopy = changed;
   f = self->fCallback.__f_.__f_;
   if (!f)
   {
@@ -34,10 +34,10 @@
   (*(*f + 48))(f);
 }
 
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4
+- (void)service:(id)service connectedDevicesChanged:(id)changed
 {
-  v8 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  changedCopy = changed;
   f = self->fCallback.__f_.__f_;
   if (!f)
   {
@@ -47,10 +47,10 @@
   (*(*f + 48))(f);
 }
 
-- (void)service:(id)a3 linkedDevicesChanged:(id)a4
+- (void)service:(id)service linkedDevicesChanged:(id)changed
 {
-  v8 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  changedCopy = changed;
   f = self->fCallback.__f_.__f_;
   if (!f)
   {

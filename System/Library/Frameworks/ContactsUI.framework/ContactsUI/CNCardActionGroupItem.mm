@@ -1,20 +1,20 @@
 @interface CNCardActionGroupItem
-+ (id)actionGroupItemWithAction:(id)a3;
-+ (id)actionGroupItemWithActions:(id)a3;
++ (id)actionGroupItemWithAction:(id)action;
++ (id)actionGroupItemWithActions:(id)actions;
 - (CNCardActionGroupItem)init;
-- (CNCardActionGroupItem)initWithAction:(id)a3;
+- (CNCardActionGroupItem)initWithAction:(id)action;
 @end
 
 @implementation CNCardActionGroupItem
 
-- (CNCardActionGroupItem)initWithAction:(id)a3
+- (CNCardActionGroupItem)initWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = [(CNCardActionGroupItem *)self init];
   v6 = v5;
   if (v5)
   {
-    [(CNCardActionGroupItem *)v5 addAction:v4];
+    [(CNCardActionGroupItem *)v5 addAction:actionCopy];
   }
 
   return v6;
@@ -35,22 +35,22 @@
   return v2;
 }
 
-+ (id)actionGroupItemWithActions:(id)a3
++ (id)actionGroupItemWithActions:(id)actions
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 count] != 1 && objc_msgSend(v5, "count") != 2)
+  actionsCopy = actions;
+  if ([actionsCopy count] != 1 && objc_msgSend(actionsCopy, "count") != 2)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"CNCardActionGroupItem.m" lineNumber:49 description:@"We currently only support at most two actions in a cell"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNCardActionGroupItem.m" lineNumber:49 description:@"We currently only support at most two actions in a cell"];
   }
 
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = actionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -77,10 +77,10 @@
   return v6;
 }
 
-+ (id)actionGroupItemWithAction:(id)a3
++ (id)actionGroupItemWithAction:(id)action
 {
-  v3 = a3;
-  v4 = [[CNCardActionGroupItem alloc] initWithAction:v3];
+  actionCopy = action;
+  v4 = [[CNCardActionGroupItem alloc] initWithAction:actionCopy];
 
   return v4;
 }

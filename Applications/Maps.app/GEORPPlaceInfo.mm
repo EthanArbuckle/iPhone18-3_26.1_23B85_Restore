@@ -1,22 +1,22 @@
 @interface GEORPPlaceInfo
-- (GEORPPlaceInfo)initWithCorrectedSearch:(id)a3;
+- (GEORPPlaceInfo)initWithCorrectedSearch:(id)search;
 @end
 
 @implementation GEORPPlaceInfo
 
-- (GEORPPlaceInfo)initWithCorrectedSearch:(id)a3
+- (GEORPPlaceInfo)initWithCorrectedSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   v9.receiver = self;
   v9.super_class = GEORPPlaceInfo;
   v5 = [(GEORPPlaceInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 placeResponse];
-    [(GEORPPlaceInfo *)v5 setPlaceResponse:v6];
+    placeResponse = [searchCopy placeResponse];
+    [(GEORPPlaceInfo *)v5 setPlaceResponse:placeResponse];
 
-    v7 = [v4 placeRequest];
-    [(GEORPPlaceInfo *)v5 setPlaceRequest:v7];
+    placeRequest = [searchCopy placeRequest];
+    [(GEORPPlaceInfo *)v5 setPlaceRequest:placeRequest];
   }
 
   return v5;

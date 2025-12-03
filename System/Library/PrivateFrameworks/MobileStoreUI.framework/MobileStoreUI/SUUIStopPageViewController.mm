@@ -1,18 +1,18 @@
 @interface SUUIStopPageViewController
-- (_TtC13MobileStoreUI26SUUIStopPageViewController)initWithCoder:(id)a3;
-- (_TtC13MobileStoreUI26SUUIStopPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)initForTabIdentifier:(id)a3 replacementAppAdamId:(id)a4 title:(id)a5 subtitle:(id)a6 artworkDictionary:(id)a7 deeplinkUrl:(id)a8 purchasesUrl:(id)a9 wishlistButtonTitle:(id)a10 showWishlistButton:(BOOL)a11 clientContext:(id)a12;
+- (_TtC13MobileStoreUI26SUUIStopPageViewController)initWithCoder:(id)coder;
+- (_TtC13MobileStoreUI26SUUIStopPageViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)initForTabIdentifier:(id)identifier replacementAppAdamId:(id)id title:(id)title subtitle:(id)subtitle artworkDictionary:(id)dictionary deeplinkUrl:(id)url purchasesUrl:(id)purchasesUrl wishlistButtonTitle:(id)self0 showWishlistButton:(BOOL)self1 clientContext:(id)self2;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation SUUIStopPageViewController
 
-- (id)initForTabIdentifier:(id)a3 replacementAppAdamId:(id)a4 title:(id)a5 subtitle:(id)a6 artworkDictionary:(id)a7 deeplinkUrl:(id)a8 purchasesUrl:(id)a9 wishlistButtonTitle:(id)a10 showWishlistButton:(BOOL)a11 clientContext:(id)a12
+- (id)initForTabIdentifier:(id)identifier replacementAppAdamId:(id)id title:(id)title subtitle:(id)subtitle artworkDictionary:(id)dictionary deeplinkUrl:(id)url purchasesUrl:(id)purchasesUrl wishlistButtonTitle:(id)self0 showWishlistButton:(BOOL)self1 clientContext:(id)self2
 {
-  v54 = self;
+  selfCopy = self;
   v17 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F9F0F00);
   v18 = MEMORY[0x28223BE20](v17 - 8);
   v20 = v44 - ((v19 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -21,7 +21,7 @@
   v23 = sub_259F95DE4();
   v52 = v24;
   v53 = v23;
-  if (a4)
+  if (id)
   {
     v25 = sub_259F95DE4();
     v50 = v26;
@@ -34,12 +34,12 @@
     v51 = 0;
   }
 
-  if (a5)
+  if (title)
   {
     v27 = sub_259F95DE4();
     v48 = v28;
     v49 = v27;
-    if (a6)
+    if (subtitle)
     {
 LABEL_6:
       v29 = sub_259F95DE4();
@@ -53,7 +53,7 @@ LABEL_6:
   {
     v48 = 0;
     v49 = 0;
-    if (a6)
+    if (subtitle)
     {
       goto LABEL_6;
     }
@@ -62,17 +62,17 @@ LABEL_6:
   v46 = 0;
   v47 = 0;
 LABEL_9:
-  v31 = a7;
-  v32 = a8;
-  v33 = a9;
-  v44[1] = a10;
-  v34 = a10;
-  v45 = a12;
-  if (v31)
+  dictionaryCopy = dictionary;
+  urlCopy = url;
+  purchasesUrlCopy = purchasesUrl;
+  v44[1] = buttonTitle;
+  buttonTitleCopy = buttonTitle;
+  contextCopy = context;
+  if (dictionaryCopy)
   {
     v35 = sub_259F95D84();
 
-    if (v32)
+    if (urlCopy)
     {
 LABEL_11:
       sub_259F95C94();
@@ -86,7 +86,7 @@ LABEL_11:
   else
   {
     v35 = 0;
-    if (v32)
+    if (urlCopy)
     {
       goto LABEL_11;
     }
@@ -95,7 +95,7 @@ LABEL_11:
   v37 = sub_259F95CB4();
   (*(*(v37 - 8) + 56))(v22, 1, 1, v37);
 LABEL_14:
-  if (v33)
+  if (purchasesUrlCopy)
   {
     sub_259F95C94();
 
@@ -109,7 +109,7 @@ LABEL_14:
 
   v39 = sub_259F95CB4();
   (*(*(v39 - 8) + 56))(v20, v38, 1, v39);
-  if (v34)
+  if (buttonTitleCopy)
   {
     v40 = sub_259F95DE4();
     v42 = v41;
@@ -121,10 +121,10 @@ LABEL_14:
     v42 = 0;
   }
 
-  return SUUIStopPageViewController.init(tabIdentifier:replacementAppAdamId:title:subtitle:artworkDictionar:deeplinkUrl:purchasesUrl:wishlistButtonTitle:showWishlistButton:clientContext:)(v53, v52, v51, v50, v49, v48, v47, v46, v35, v22, v20, v40, v42, a11, v45);
+  return SUUIStopPageViewController.init(tabIdentifier:replacementAppAdamId:title:subtitle:artworkDictionar:deeplinkUrl:purchasesUrl:wishlistButtonTitle:showWishlistButton:clientContext:)(v53, v52, v51, v50, v49, v48, v47, v46, v35, v22, v20, v40, v42, button, contextCopy);
 }
 
-- (_TtC13MobileStoreUI26SUUIStopPageViewController)initWithCoder:(id)a3
+- (_TtC13MobileStoreUI26SUUIStopPageViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13MobileStoreUI26SUUIStopPageViewController_lockupView) = 0;
   result = sub_259F95F44();
@@ -134,16 +134,16 @@ LABEL_14:
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   SUUIStopPageViewController.viewDidLoad()();
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [objc_opt_self() currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [objc_opt_self() currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3)
+  if (userInterfaceIdiom)
   {
     return 30;
   }
@@ -156,21 +156,21 @@ LABEL_14:
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SUUIStopPageViewController.viewDidLayoutSubviews()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   SUUIStopPageViewController.traitCollectionDidChange(_:)(v9);
 }
 
-- (_TtC13MobileStoreUI26SUUIStopPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13MobileStoreUI26SUUIStopPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,13 +1,13 @@
 @interface CenteredLabelWithSpinnerCell
-- (_TtC5Heart28CenteredLabelWithSpinnerCell)initWithCoder:(id)a3;
-- (_TtC5Heart28CenteredLabelWithSpinnerCell)initWithFrame:(CGRect)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (_TtC5Heart28CenteredLabelWithSpinnerCell)initWithCoder:(id)coder;
+- (_TtC5Heart28CenteredLabelWithSpinnerCell)initWithFrame:(CGRect)frame;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)prepareForReuse;
 @end
 
 @implementation CenteredLabelWithSpinnerCell
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   sub_29D69F37C(0, &qword_2A17B1848, MEMORY[0x29EDC77B8]);
   v5 = *(*(v4 - 8) + 64);
@@ -24,15 +24,15 @@
   MEMORY[0x2A1C7C4A8](v15, v18);
   v20 = &v25 - ((v19 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29D937988();
-  v21 = self;
+  selfCopy = self;
   v22 = sub_29D937978();
   v23 = type metadata accessor for CenteredLabelWithSpinnerCell();
-  v25.receiver = v21;
+  v25.receiver = selfCopy;
   v25.super_class = v23;
   [(CenteredLabelWithSpinnerCell *)&v25 _bridgedUpdateConfigurationUsingState:v22];
 
   sub_29D9379D8();
-  v24 = [objc_opt_self() systemBackgroundColor];
+  systemBackgroundColor = [objc_opt_self() systemBackgroundColor];
   sub_29D9379B8();
   (*(v10 + 16))(v8, v14, v9);
   (*(v10 + 56))(v8, 0, 1, v9);
@@ -48,7 +48,7 @@
   v6.super_class = type metadata accessor for CenteredLabelWithSpinnerCell();
   v2 = v6.receiver;
   [(CenteredLabelWithSpinnerCell *)&v6 prepareForReuse];
-  v3 = [v2 contentView];
+  contentView = [v2 contentView];
   type metadata accessor for CenteredLabelWithSpinnerContentView();
   v4 = swift_dynamicCastClass();
   if (v4)
@@ -61,16 +61,16 @@
   else
   {
     v5 = v2;
-    v2 = v3;
+    v2 = contentView;
   }
 }
 
-- (_TtC5Heart28CenteredLabelWithSpinnerCell)initWithFrame:(CGRect)a3
+- (_TtC5Heart28CenteredLabelWithSpinnerCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = self + OBJC_IVAR____TtC5Heart28CenteredLabelWithSpinnerCell_item;
   v9 = type metadata accessor for CenteredLabelWithSpinnerCell();
   *v8 = 0u;
@@ -81,7 +81,7 @@
   return [(CenteredLabelWithSpinnerCell *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC5Heart28CenteredLabelWithSpinnerCell)initWithCoder:(id)a3
+- (_TtC5Heart28CenteredLabelWithSpinnerCell)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC5Heart28CenteredLabelWithSpinnerCell_item;
   *v4 = 0u;
@@ -89,8 +89,8 @@
   *(v4 + 4) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for CenteredLabelWithSpinnerCell();
-  v5 = a3;
-  v6 = [(CenteredLabelWithSpinnerCell *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(CenteredLabelWithSpinnerCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

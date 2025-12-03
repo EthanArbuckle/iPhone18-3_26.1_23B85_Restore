@@ -1,38 +1,38 @@
 @interface PUPXAssetsDataSource
 - (PUPXAssetsDataSource)init;
-- (PUPXAssetsDataSource)initWithUnderlyingDataSource:(id)a3;
-- (id)assetReferenceAtIndexPath:(id)a3;
-- (id)badgeInfoPromiseForAssetAtIndexPath:(id)a3 spatialPresentationEnabled:(BOOL)a4;
-- (id)convertIndexPath:(id)a3 fromAssetsDataSource:(id)a4;
-- (id)indexPathForAssetReference:(id)a3;
+- (PUPXAssetsDataSource)initWithUnderlyingDataSource:(id)source;
+- (id)assetReferenceAtIndexPath:(id)path;
+- (id)badgeInfoPromiseForAssetAtIndexPath:(id)path spatialPresentationEnabled:(BOOL)enabled;
+- (id)convertIndexPath:(id)path fromAssetsDataSource:(id)source;
+- (id)indexPathForAssetReference:(id)reference;
 - (id)startingAssetReference;
-- (int64_t)numberOfSubItemsAtIndexPath:(id)a3;
+- (int64_t)numberOfSubItemsAtIndexPath:(id)path;
 @end
 
 @implementation PUPXAssetsDataSource
 
-- (id)badgeInfoPromiseForAssetAtIndexPath:(id)a3 spatialPresentationEnabled:(BOOL)a4
+- (id)badgeInfoPromiseForAssetAtIndexPath:(id)path spatialPresentationEnabled:(BOOL)enabled
 {
   v5 = MEMORY[0x1E69C4490];
-  v6 = a3;
-  v7 = [v5 defaultManager];
-  v8 = [(PUPXAssetsDataSource *)self underlyingDataSource];
-  v9 = [v8 identifier];
-  v10 = [v6 section];
-  v11 = [v6 item];
+  pathCopy = path;
+  defaultManager = [v5 defaultManager];
+  underlyingDataSource = [(PUPXAssetsDataSource *)self underlyingDataSource];
+  identifier = [underlyingDataSource identifier];
+  section = [pathCopy section];
+  item = [pathCopy item];
 
-  *&v18 = v9;
-  *(&v18 + 1) = v10;
-  *&v19 = v11;
+  *&v18 = identifier;
+  *(&v18 + 1) = section;
+  *&v19 = item;
   *(&v19 + 1) = 0x7FFFFFFFFFFFFFFFLL;
-  v12 = [v8 assetReferenceAtItemIndexPath:&v18];
-  v13 = [v12 asset];
+  v12 = [underlyingDataSource assetReferenceAtItemIndexPath:&v18];
+  asset = [v12 asset];
 
   v18 = 0u;
   v19 = 0u;
-  if (v7)
+  if (defaultManager)
   {
-    [v7 badgeInfoForAsset:v13 inCollection:0 options:16];
+    [defaultManager badgeInfoForAsset:asset inCollection:0 options:16];
   }
 
   v14 = [PUBadgeInfoPromise alloc];
@@ -43,43 +43,43 @@
   return v15;
 }
 
-- (id)convertIndexPath:(id)a3 fromAssetsDataSource:(id)a4
+- (id)convertIndexPath:(id)path fromAssetsDataSource:(id)source
 {
-  v5 = [a4 assetReferenceAtIndexPath:a3];
+  v5 = [source assetReferenceAtIndexPath:path];
   v6 = [(PUPXAssetsDataSource *)self indexPathForAssetReference:v5];
 
   return v6;
 }
 
-- (id)indexPathForAssetReference:(id)a3
+- (id)indexPathForAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = [v4 dataSourceIdentifier];
-  v6 = [(PUTilingDataSource *)self identifier];
+  referenceCopy = reference;
+  dataSourceIdentifier = [referenceCopy dataSourceIdentifier];
+  identifier = [(PUTilingDataSource *)self identifier];
 
-  if (v5 == v6)
+  if (dataSourceIdentifier == identifier)
   {
-    v14 = [v4 indexPath];
+    indexPath = [referenceCopy indexPath];
   }
 
   else
   {
-    v7 = [(PUPXAssetsDataSource *)self underlyingDataSource];
-    if ([v7 containsAnyItems])
+    underlyingDataSource = [(PUPXAssetsDataSource *)self underlyingDataSource];
+    if ([underlyingDataSource containsAnyItems])
     {
       v8 = objc_alloc(MEMORY[0x1E69C4498]);
-      v9 = [v4 assetCollection];
-      v10 = [v4 asset];
+      assetCollection = [referenceCopy assetCollection];
+      asset = [referenceCopy asset];
       v11 = *(MEMORY[0x1E69C48E8] + 16);
       v16 = *MEMORY[0x1E69C48E8];
       v17 = v11;
-      v12 = [v8 initWithSectionObject:v9 itemObject:v10 subitemObject:0 indexPath:&v16];
+      v12 = [v8 initWithSectionObject:assetCollection itemObject:asset subitemObject:0 indexPath:&v16];
 
       v16 = 0u;
       v17 = 0u;
-      if (v7)
+      if (underlyingDataSource)
       {
-        [v7 indexPathForAssetReference:v12];
+        [underlyingDataSource indexPathForAssetReference:v12];
         v13 = v16;
       }
 
@@ -90,81 +90,81 @@
 
       if (v13 == *MEMORY[0x1E69C4880])
       {
-        v14 = 0;
+        indexPath = 0;
       }
 
       else
       {
-        v14 = PXIndexPathFromSimpleIndexPath();
+        indexPath = PXIndexPathFromSimpleIndexPath();
       }
     }
 
     else
     {
-      v14 = 0;
+      indexPath = 0;
     }
   }
 
-  return v14;
+  return indexPath;
 }
 
-- (id)assetReferenceAtIndexPath:(id)a3
+- (id)assetReferenceAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUPXAssetsDataSource *)self underlyingDataSource];
-  [v5 identifier];
+  pathCopy = path;
+  underlyingDataSource = [(PUPXAssetsDataSource *)self underlyingDataSource];
+  [underlyingDataSource identifier];
   PXSimpleIndexPathFromIndexPath();
 
-  v6 = [(PUPXAssetsDataSource *)self underlyingDataSource];
+  underlyingDataSource2 = [(PUPXAssetsDataSource *)self underlyingDataSource];
   memset(v12, 0, sizeof(v12));
-  v7 = [v6 assetReferenceAtItemIndexPath:v12];
+  v7 = [underlyingDataSource2 assetReferenceAtItemIndexPath:v12];
 
   v8 = [PUPXAssetReference alloc];
-  v9 = [(PUTilingDataSource *)self identifier];
-  v10 = [(PUPXAssetReference *)v8 initWithPXAssetReference:v7 dataSourceIdentifier:v9];
+  identifier = [(PUTilingDataSource *)self identifier];
+  v10 = [(PUPXAssetReference *)v8 initWithPXAssetReference:v7 dataSourceIdentifier:identifier];
 
   return v10;
 }
 
-- (int64_t)numberOfSubItemsAtIndexPath:(id)a3
+- (int64_t)numberOfSubItemsAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AC88] pu_rootIndexPath];
-  v6 = [v4 isEqual:v5];
+  pathCopy = path;
+  pu_rootIndexPath = [MEMORY[0x1E696AC88] pu_rootIndexPath];
+  v6 = [pathCopy isEqual:pu_rootIndexPath];
 
   if (v6)
   {
-    v7 = [(PUPXAssetsDataSource *)self underlyingDataSource];
-    v8 = [v7 numberOfSections];
+    underlyingDataSource = [(PUPXAssetsDataSource *)self underlyingDataSource];
+    numberOfSections = [underlyingDataSource numberOfSections];
   }
 
-  else if ([v4 length] == 1 && objc_msgSend(v4, "section") != 0x7FFFFFFFFFFFFFFFLL)
+  else if ([pathCopy length] == 1 && objc_msgSend(pathCopy, "section") != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(PUPXAssetsDataSource *)self underlyingDataSource];
-    v8 = [v7 numberOfItemsInSection:{objc_msgSend(v4, "section")}];
+    underlyingDataSource = [(PUPXAssetsDataSource *)self underlyingDataSource];
+    numberOfSections = [underlyingDataSource numberOfItemsInSection:{objc_msgSend(pathCopy, "section")}];
   }
 
   else
   {
-    v7 = [(PUPXAssetsDataSource *)self underlyingDataSource];
-    v8 = [v7 numberOfSubitemsInItem:objc_msgSend(v4 section:{"item"), objc_msgSend(v4, "section")}];
+    underlyingDataSource = [(PUPXAssetsDataSource *)self underlyingDataSource];
+    numberOfSections = [underlyingDataSource numberOfSubitemsInItem:objc_msgSend(pathCopy section:{"item"), objc_msgSend(pathCopy, "section")}];
   }
 
-  v9 = v8;
+  v9 = numberOfSections;
 
   return v9;
 }
 
 - (id)startingAssetReference
 {
-  v3 = [(PUPXAssetsDataSource *)self underlyingDataSource];
-  v4 = [v3 startingAssetReference];
+  underlyingDataSource = [(PUPXAssetsDataSource *)self underlyingDataSource];
+  startingAssetReference = [underlyingDataSource startingAssetReference];
 
-  if (v4)
+  if (startingAssetReference)
   {
     v5 = [PUPXAssetReference alloc];
-    v6 = [(PUTilingDataSource *)self identifier];
-    v7 = [(PUPXAssetReference *)v5 initWithPXAssetReference:v4 dataSourceIdentifier:v6];
+    identifier = [(PUTilingDataSource *)self identifier];
+    v7 = [(PUPXAssetReference *)v5 initWithPXAssetReference:startingAssetReference dataSourceIdentifier:identifier];
   }
 
   else
@@ -175,16 +175,16 @@
   return v7;
 }
 
-- (PUPXAssetsDataSource)initWithUnderlyingDataSource:(id)a3
+- (PUPXAssetsDataSource)initWithUnderlyingDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = PUPXAssetsDataSource;
   v6 = [(PUTilingDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingDataSource, a3);
+    objc_storeStrong(&v6->_underlyingDataSource, source);
   }
 
   return v7;
@@ -192,8 +192,8 @@
 
 - (PUPXAssetsDataSource)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUPXAssetsDataSource.m" lineNumber:19 description:{@"%s is not available as initializer", "-[PUPXAssetsDataSource init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPXAssetsDataSource.m" lineNumber:19 description:{@"%s is not available as initializer", "-[PUPXAssetsDataSource init]"}];
 
   abort();
 }

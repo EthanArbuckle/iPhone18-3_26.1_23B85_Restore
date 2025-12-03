@@ -1,52 +1,52 @@
 @interface NUChannelControlData
-+ (id)controlDataWithAdjustment:(id)a3;
-+ (id)controlDataWithComposition:(id)a3;
-+ (id)controlDataWithSetting:(id)a3 value:(id)a4;
-+ (id)controlDataWithSource:(id)a3;
++ (id)controlDataWithAdjustment:(id)adjustment;
++ (id)controlDataWithComposition:(id)composition;
++ (id)controlDataWithSetting:(id)setting value:(id)value;
++ (id)controlDataWithSource:(id)source;
 - (BOOL)isBoolean;
 - (BOOL)isNumber;
-- (NUChannelControlData)initWithData:(id)a3 format:(id)a4;
-- (NUChannelControlData)initWithData:(id)a3 schema:(id)a4;
-- (NUChannelControlData)initWithFormat:(id)a3;
-- (NUChannelControlData)initWithSetting:(id)a3 value:(id)a4;
+- (NUChannelControlData)initWithData:(id)data format:(id)format;
+- (NUChannelControlData)initWithData:(id)data schema:(id)schema;
+- (NUChannelControlData)initWithFormat:(id)format;
+- (NUChannelControlData)initWithSetting:(id)setting value:(id)value;
 - (id)cardinality;
 - (id)compactDescription;
 - (id)debugDescription;
 - (id)description;
-- (id)subdataAtIndex:(unint64_t)a3 error:(id *)a4;
-- (id)subdataForChannel:(id)a3 error:(id *)a4;
-- (int64_t)compare:(id)a3;
-- (int64_t)compareToControlData:(id)a3;
+- (id)subdataAtIndex:(unint64_t)index error:(id *)error;
+- (id)subdataForChannel:(id)channel error:(id *)error;
+- (int64_t)compare:(id)compare;
+- (int64_t)compareToControlData:(id)data;
 @end
 
 @implementation NUChannelControlData
 
-- (int64_t)compareToControlData:(id)a3
+- (int64_t)compareToControlData:(id)data
 {
-  v4 = a3;
-  v5 = [(NUChannelControlData *)self controlFormat];
-  v6 = [v5 controlType];
+  dataCopy = data;
+  controlFormat = [(NUChannelControlData *)self controlFormat];
+  controlType = [controlFormat controlType];
 
-  if (v6 == 1)
+  if (controlType == 1)
   {
-    v17 = [v4 controlFormat];
-    v18 = [v17 controlType];
+    controlFormat2 = [dataCopy controlFormat];
+    controlType2 = [controlFormat2 controlType];
 
-    if (v18 != 1)
+    if (controlType2 != 1)
     {
 LABEL_26:
       v16 = -1;
       goto LABEL_27;
     }
 
-    v19 = [(NUChannelControlData *)self controlFormat];
-    v20 = [v19 dataModel];
+    controlFormat3 = [(NUChannelControlData *)self controlFormat];
+    dataModel = [controlFormat3 dataModel];
 
-    v21 = [v4 controlFormat];
-    v22 = [v21 dataModel];
+    controlFormat4 = [dataCopy controlFormat];
+    dataModel2 = [controlFormat4 dataModel];
 
-    v23 = [v22 type];
-    if (v23 != [v20 type])
+    type = [dataModel2 type];
+    if (type != [dataModel type])
     {
       v16 = -1;
 LABEL_33:
@@ -54,28 +54,28 @@ LABEL_33:
       goto LABEL_27;
     }
 
-    v24 = [v20 type];
-    if (v24 <= 3)
+    type2 = [dataModel type];
+    if (type2 <= 3)
     {
-      if (v24 == 1)
+      if (type2 == 1)
       {
-        v34 = [(NUChannelControlData *)self value];
-        v35 = [v34 BOOLValue];
+        value = [(NUChannelControlData *)self value];
+        bOOLValue = [value BOOLValue];
 
-        v36 = [v4 value];
-        v37 = [v36 BOOLValue];
+        value2 = [dataCopy value];
+        bOOLValue2 = [value2 BOOLValue];
 
-        v16 = v35 ^ v37 ^ 1u;
+        v16 = bOOLValue ^ bOOLValue2 ^ 1u;
         goto LABEL_33;
       }
 
-      if (v24 != 2)
+      if (type2 != 2)
       {
-        if (v24 == 3)
+        if (type2 == 3)
         {
-          v27 = [(NUChannelControlData *)self value];
-          v28 = [v4 value];
-          v29 = [v27 compare:v28];
+          value3 = [(NUChannelControlData *)self value];
+          value4 = [dataCopy value];
+          v29 = [value3 compare:value4];
           v30 = 3;
           if (v29 == 1)
           {
@@ -100,24 +100,24 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      v27 = [(NUChannelControlData *)self value];
-      v28 = [v4 value];
-      v39 = [v28 isEqualToString:v27];
+      value3 = [(NUChannelControlData *)self value];
+      value4 = [dataCopy value];
+      v39 = [value4 isEqualToString:value3];
     }
 
     else
     {
-      if (v24 <= 5)
+      if (type2 <= 5)
       {
-        if (v24 != 4)
+        if (type2 != 4)
         {
           v44 = 0u;
           v45 = 0u;
-          v25 = [(NUChannelControlData *)self value];
-          v26 = v25;
-          if (v25)
+          value5 = [(NUChannelControlData *)self value];
+          v26 = value5;
+          if (value5)
           {
-            [v25 nu_pixelRect];
+            [value5 nu_pixelRect];
           }
 
           else
@@ -128,11 +128,11 @@ LABEL_25:
 
           v42 = 0u;
           v43 = 0u;
-          v40 = [v4 value];
-          v41 = v40;
-          if (v40)
+          value6 = [dataCopy value];
+          v41 = value6;
+          if (value6)
           {
-            [v40 nu_pixelRect];
+            [value6 nu_pixelRect];
           }
 
           else
@@ -145,19 +145,19 @@ LABEL_25:
           goto LABEL_33;
         }
 
-        v27 = [(NUChannelControlData *)self value];
-        v28 = [v4 value];
-        v39 = [v28 isEqualToDictionary:v27];
+        value3 = [(NUChannelControlData *)self value];
+        value4 = [dataCopy value];
+        v39 = [value4 isEqualToDictionary:value3];
         goto LABEL_31;
       }
 
-      if (v24 != 6)
+      if (type2 != 6)
       {
-        if (v24 == 7)
+        if (type2 == 7)
         {
-          v31 = [v4 value];
-          v32 = [(NUChannelControlData *)self value];
-          v33 = [v31 isEqual:v32];
+          value7 = [dataCopy value];
+          value8 = [(NUChannelControlData *)self value];
+          v33 = [value7 isEqual:value8];
 
           v16 = v33;
           goto LABEL_33;
@@ -166,9 +166,9 @@ LABEL_25:
         goto LABEL_25;
       }
 
-      v27 = [(NUChannelControlData *)self value];
-      v28 = [v4 value];
-      v39 = [v28 isEqualToArray:v27];
+      value3 = [(NUChannelControlData *)self value];
+      value4 = [dataCopy value];
+      v39 = [value4 isEqualToArray:value3];
     }
 
 LABEL_31:
@@ -178,28 +178,28 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  if (v6 != 2)
+  if (controlType != 2)
   {
     goto LABEL_26;
   }
 
-  v7 = [v4 controlFormat];
-  v8 = [v7 controlType];
+  controlFormat5 = [dataCopy controlFormat];
+  controlType3 = [controlFormat5 controlType];
 
-  if (v8 != 2)
+  if (controlType3 != 2)
   {
     goto LABEL_26;
   }
 
-  v9 = [(NUChannelControlData *)self controlFormat];
-  v10 = [v9 dataModel];
+  controlFormat6 = [(NUChannelControlData *)self controlFormat];
+  dataModel3 = [controlFormat6 dataModel];
 
-  v11 = [v4 controlFormat];
-  v12 = [v11 dataModel];
+  controlFormat7 = [dataCopy controlFormat];
+  dataModel4 = [controlFormat7 dataModel];
 
-  v13 = [v12 identifier];
-  v14 = [v10 identifier];
-  v15 = [v13 isEqualToIdentifier:v14];
+  identifier = [dataModel4 identifier];
+  identifier2 = [dataModel3 identifier];
+  v15 = [identifier isEqualToIdentifier:identifier2];
 
   v16 = v15;
 LABEL_27:
@@ -207,17 +207,17 @@ LABEL_27:
   return v16;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if ([v4 isNull])
+  compareCopy = compare;
+  if ([compareCopy isNull])
   {
     v5 = 0;
   }
 
-  else if ([v4 type] == 2)
+  else if ([compareCopy type] == 2)
   {
-    v5 = [(NUChannelControlData *)self compareToControlData:v4];
+    v5 = [(NUChannelControlData *)self compareToControlData:compareCopy];
   }
 
   else
@@ -228,33 +228,33 @@ LABEL_27:
   return v5;
 }
 
-- (id)subdataAtIndex:(unint64_t)a3 error:(id *)a4
+- (id)subdataAtIndex:(unint64_t)index error:(id *)error
 {
-  v7 = [(NUChannelControlData *)self controlFormat];
-  v8 = [v7 controlType];
+  controlFormat = [(NUChannelControlData *)self controlFormat];
+  controlType = [controlFormat controlType];
 
-  if (v8 == 2)
+  if (controlType == 2)
   {
-    v9 = [(NUChannelControlData *)self controlFormat];
-    v10 = [v9 dataModel];
+    controlFormat2 = [(NUChannelControlData *)self controlFormat];
+    dataModel = [controlFormat2 dataModel];
 
-    if ([v10 type] == 2)
+    if ([dataModel type] == 2)
     {
-      v11 = [(NUChannelControlData *)self value];
-      if ([v11 count] <= a3)
+      value = [(NUChannelControlData *)self value];
+      if ([value count] <= index)
       {
-        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
         [NUError invalidError:@"Invalid index" object:v12];
-        *a4 = v15 = 0;
+        *error = v15 = 0;
       }
 
       else
       {
-        v12 = [v11 objectAtIndex:a3];
-        v13 = [(NUChannelControlData *)self controlFormat];
-        v14 = [v13 arrayItemFormat];
+        v12 = [value objectAtIndex:index];
+        controlFormat3 = [(NUChannelControlData *)self controlFormat];
+        arrayItemFormat = [controlFormat3 arrayItemFormat];
 
-        v15 = [[NUChannelControlData alloc] initWithData:v12 format:v14];
+        v15 = [[NUChannelControlData alloc] initWithData:v12 format:arrayItemFormat];
       }
 
       goto LABEL_9;
@@ -262,7 +262,7 @@ LABEL_27:
   }
 
   [NUError unsupportedError:@"Not an array" object:self];
-  *a4 = v15 = 0;
+  *error = v15 = 0;
 LABEL_9:
 
   return v15;
@@ -270,18 +270,18 @@ LABEL_9:
 
 - (id)cardinality
 {
-  v3 = [(NUChannelControlData *)self controlFormat];
-  v4 = [v3 controlType];
+  controlFormat = [(NUChannelControlData *)self controlFormat];
+  controlType = [controlFormat controlType];
 
-  if (v4 == 2)
+  if (controlType == 2)
   {
-    v5 = [(NUChannelControlData *)self controlFormat];
-    v6 = [v5 dataModel];
+    controlFormat2 = [(NUChannelControlData *)self controlFormat];
+    dataModel = [controlFormat2 dataModel];
 
-    if ([v6 type] == 2)
+    if ([dataModel type] == 2)
     {
-      v7 = [(NUChannelControlData *)self value];
-      v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
+      value = [(NUChannelControlData *)self value];
+      v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(value, "count")}];
     }
 
     else
@@ -302,10 +302,10 @@ LABEL_9:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NUChannelControlData *)self value];
-  v6 = [(NUChannelData *)self format];
-  v7 = [v6 debugDescription];
-  v8 = [v3 stringWithFormat:@"<%@:%p data:'%@' format:%@>", v4, self, v5, v7];
+  value = [(NUChannelControlData *)self value];
+  format = [(NUChannelData *)self format];
+  v7 = [format debugDescription];
+  v8 = [v3 stringWithFormat:@"<%@:%p data:'%@' format:%@>", v4, self, value, v7];
 
   return v8;
 }
@@ -313,100 +313,100 @@ LABEL_9:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NUChannelData *)self format];
-  v5 = [(NUChannelControlData *)self value];
-  v6 = [v3 stringWithFormat:@"%@=%@", v4, v5];
+  format = [(NUChannelData *)self format];
+  value = [(NUChannelControlData *)self value];
+  v6 = [v3 stringWithFormat:@"%@=%@", format, value];
 
   return v6;
 }
 
 - (id)compactDescription
 {
-  v3 = [(NUChannelControlData *)self controlFormat];
-  v4 = [v3 controlType];
+  controlFormat = [(NUChannelControlData *)self controlFormat];
+  controlType = [controlFormat controlType];
 
-  if (v4 == 2)
+  if (controlType == 2)
   {
-    v17 = [(NUChannelControlData *)self controlFormat];
-    v6 = [v17 dataModel];
+    controlFormat2 = [(NUChannelControlData *)self controlFormat];
+    dataModel = [controlFormat2 dataModel];
 
-    v15 = [v6 identifier];
-    v18 = [v15 name];
-    v19 = [v18 substringToIndex:3];
+    identifier = [dataModel identifier];
+    name = [identifier name];
+    v19 = [name substringToIndex:3];
 
 LABEL_24:
     goto LABEL_25;
   }
 
-  if (v4 != 1)
+  if (controlType != 1)
   {
     v19 = @"???";
     goto LABEL_26;
   }
 
-  v5 = [(NUChannelControlData *)self controlFormat];
-  v6 = [v5 dataModel];
+  controlFormat3 = [(NUChannelControlData *)self controlFormat];
+  dataModel = [controlFormat3 dataModel];
 
-  v7 = [v6 type];
-  if (v7 <= 3)
+  type = [dataModel type];
+  if (type <= 3)
   {
-    switch(v7)
+    switch(type)
     {
       case 1:
         v13 = MEMORY[0x1E696AEC0];
-        v15 = [(NUChannelControlData *)self value];
-        v16 = [v15 BOOLValue];
+        identifier = [(NUChannelControlData *)self value];
+        bOOLValue = [identifier BOOLValue];
 LABEL_16:
-        [v13 stringWithFormat:@"%d", v16];
+        [v13 stringWithFormat:@"%d", bOOLValue];
         v21 = LABEL_22:;
         goto LABEL_23;
       case 2:
-        v15 = [(NUChannelControlData *)self value];
-        v21 = [v15 substringToIndex:3];
+        identifier = [(NUChannelControlData *)self value];
+        v21 = [identifier substringToIndex:3];
 LABEL_23:
         v19 = v21;
         goto LABEL_24;
       case 3:
-        v8 = [(NUChannelControlData *)self value];
-        [v8 floatValue];
+        value = [(NUChannelControlData *)self value];
+        [value floatValue];
         v10 = v9;
-        v11 = [(NUChannelControlData *)self value];
-        v12 = vabds_f32(v10, [v11 intValue]);
+        value2 = [(NUChannelControlData *)self value];
+        v12 = vabds_f32(v10, [value2 intValue]);
 
         v13 = MEMORY[0x1E696AEC0];
-        v14 = [(NUChannelControlData *)self value];
-        v15 = v14;
+        value3 = [(NUChannelControlData *)self value];
+        identifier = value3;
         if (v12 >= 0.01)
         {
-          [v14 floatValue];
+          [value3 floatValue];
           [v13 stringWithFormat:@"%0.1f", v23];
           goto LABEL_22;
         }
 
-        v16 = [v14 intValue];
+        bOOLValue = [value3 intValue];
         goto LABEL_16;
     }
 
     goto LABEL_18;
   }
 
-  if (v7 == 4)
+  if (type == 4)
   {
     v20 = MEMORY[0x1E696AEC0];
-    v15 = [(NUChannelControlData *)self value];
-    [v20 stringWithFormat:@"{%lu}", objc_msgSend(v15, "count")];
+    identifier = [(NUChannelControlData *)self value];
+    [v20 stringWithFormat:@"{%lu}", objc_msgSend(identifier, "count")];
     goto LABEL_22;
   }
 
-  if (v7 == 6)
+  if (type == 6)
   {
     v22 = MEMORY[0x1E696AEC0];
-    v15 = [(NUChannelControlData *)self value];
-    [v22 stringWithFormat:@"[%lu]", objc_msgSend(v15, "count")];
+    identifier = [(NUChannelControlData *)self value];
+    [v22 stringWithFormat:@"[%lu]", objc_msgSend(identifier, "count")];
     goto LABEL_22;
   }
 
-  if (v7 != 7)
+  if (type != 7)
   {
 LABEL_18:
     v19 = @"???";
@@ -423,44 +423,44 @@ LABEL_26:
 
 - (BOOL)isBoolean
 {
-  v3 = [(NUChannelControlData *)self controlFormat];
-  v4 = [v3 controlType];
+  controlFormat = [(NUChannelControlData *)self controlFormat];
+  controlType = [controlFormat controlType];
 
-  if (v4 != 1)
+  if (controlType != 1)
   {
     return 0;
   }
 
-  v5 = [(NUChannelControlData *)self controlFormat];
-  v6 = [v5 dataModel];
+  controlFormat2 = [(NUChannelControlData *)self controlFormat];
+  dataModel = [controlFormat2 dataModel];
 
-  v7 = [v6 type] == 1;
+  v7 = [dataModel type] == 1;
   return v7;
 }
 
 - (BOOL)isNumber
 {
-  v3 = [(NUChannelControlData *)self controlFormat];
-  v4 = [v3 controlType];
+  controlFormat = [(NUChannelControlData *)self controlFormat];
+  controlType = [controlFormat controlType];
 
-  if (v4 != 1)
+  if (controlType != 1)
   {
     return 0;
   }
 
-  v5 = [(NUChannelControlData *)self controlFormat];
-  v6 = [v5 dataModel];
+  controlFormat2 = [(NUChannelControlData *)self controlFormat];
+  dataModel = [controlFormat2 dataModel];
 
-  v7 = [v6 type] == 3;
+  v7 = [dataModel type] == 3;
   return v7;
 }
 
-- (NUChannelControlData)initWithSetting:(id)a3 value:(id)a4
+- (NUChannelControlData)initWithSetting:(id)setting value:(id)value
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  settingCopy = setting;
+  valueCopy = value;
+  if (!settingCopy)
   {
     v12 = NUAssertLogger_4187();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -481,8 +481,8 @@ LABEL_26:
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v19;
         v30 = 2114;
@@ -493,8 +493,8 @@ LABEL_26:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -503,18 +503,18 @@ LABEL_26:
     _NUAssertFailHandler("[NUChannelControlData initWithSetting:value:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 2164, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "setting != nil");
   }
 
-  v8 = v7;
-  v9 = [NUChannelControlFormat controlFormatWithSetting:v6];
+  v8 = valueCopy;
+  v9 = [NUChannelControlFormat controlFormatWithSetting:settingCopy];
   v10 = [(NUChannelControlData *)self initWithData:v8 format:v9];
 
   return v10;
 }
 
-- (id)subdataForChannel:(id)a3 error:(id *)a4
+- (id)subdataForChannel:(id)channel error:(id *)error
 {
   v66 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!a4)
+  channelCopy = channel;
+  if (!error)
   {
     v30 = NUAssertLogger_4187();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -535,8 +535,8 @@ LABEL_26:
         v44 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v45 = MEMORY[0x1E696AF00];
         v46 = v44;
-        v47 = [v45 callStackSymbols];
-        v48 = [v47 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v45 callStackSymbols];
+        v48 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v63 = v44;
         v64 = 2114;
@@ -547,8 +547,8 @@ LABEL_26:
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v36 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v63 = v36;
       _os_log_error_impl(&dword_1C0184000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -557,8 +557,8 @@ LABEL_26:
     _NUAssertFailHandler("[NUChannelControlData subdataForChannel:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 2104, @"Invalid parameter not satisfying: %s", v49, v50, v51, v52, "error != NULL");
   }
 
-  v7 = v6;
-  if (!v6)
+  v7 = channelCopy;
+  if (!channelCopy)
   {
     v37 = NUAssertLogger_4187();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -579,8 +579,8 @@ LABEL_26:
         v53 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v54 = MEMORY[0x1E696AF00];
         v55 = v53;
-        v56 = [v54 callStackSymbols];
-        v57 = [v56 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v54 callStackSymbols];
+        v57 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v63 = v53;
         v64 = 2114;
@@ -591,8 +591,8 @@ LABEL_26:
 
     else if (v41)
     {
-      v42 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v43 = [v42 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v43 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v63 = v43;
       _os_log_error_impl(&dword_1C0184000, v40, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -601,29 +601,29 @@ LABEL_26:
     _NUAssertFailHandler("[NUChannelControlData subdataForChannel:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 2105, @"Invalid parameter not satisfying: %s", v58, v59, v60, v61, "channel != nil");
   }
 
-  v8 = [v6 type];
-  v9 = [(NUChannelData *)self format];
-  v10 = v9;
-  if (v8 == 5)
+  type = [channelCopy type];
+  format = [(NUChannelData *)self format];
+  v10 = format;
+  if (type == 5)
   {
-    v11 = [v9 representedFormat];
+    representedFormat = [format representedFormat];
 
-    v12 = [v7 format];
-    v13 = [v11 isEqualToChannelFormat:v12];
+    format2 = [v7 format];
+    v13 = [representedFormat isEqualToChannelFormat:format2];
 
     if (v13)
     {
-      v14 = [(NUChannelControlData *)self cardinality];
+      cardinality = [(NUChannelControlData *)self cardinality];
 
-      if (!v14)
+      if (!cardinality)
       {
-        v25 = self;
+        selfCopy = self;
         goto LABEL_22;
       }
 
       v15 = [NUChannelElementData alloc];
-      v16 = [v7 format];
-      v17 = [(NUChannelElementData *)v15 initWithIdentifier:@"???" format:v16];
+      format3 = [v7 format];
+      v17 = [(NUChannelElementData *)v15 initWithIdentifier:@"???" format:format3];
       goto LABEL_20;
     }
 
@@ -631,20 +631,20 @@ LABEL_26:
     goto LABEL_14;
   }
 
-  v18 = [v7 name];
-  v11 = [v10 subchannelFormatForKey:v18];
+  name = [v7 name];
+  representedFormat = [v10 subchannelFormatForKey:name];
 
-  if (!v11)
+  if (!representedFormat)
   {
     v24 = [NUError notFoundError:@"Unknown subchannel" object:v7];
 LABEL_15:
-    v25 = 0;
-    *a4 = v24;
+    selfCopy = 0;
+    *error = v24;
     goto LABEL_22;
   }
 
-  v19 = [v7 format];
-  v20 = [v11 isEqualToChannelFormat:v19];
+  format4 = [v7 format];
+  v20 = [representedFormat isEqualToChannelFormat:format4];
 
   if ((v20 & 1) == 0)
   {
@@ -654,21 +654,21 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v21 = [(NUChannelControlData *)self value];
-  v22 = [v7 name];
-  v16 = [v21 valueForKey:v22];
+  value = [(NUChannelControlData *)self value];
+  name2 = [v7 name];
+  format3 = [value valueForKey:name2];
 
-  if (v16)
+  if (format3)
   {
-    v17 = [[NUChannelControlData alloc] initWithData:v16 format:v11];
+    v17 = [[NUChannelControlData alloc] initWithData:format3 format:representedFormat];
 LABEL_20:
-    v25 = v17;
+    selfCopy = v17;
     goto LABEL_21;
   }
 
-  v26 = [(NUChannelData *)self format];
-  v27 = [v7 name];
-  v28 = [v26 requiresSubchannelDataForKey:v27];
+  format5 = [(NUChannelData *)self format];
+  name3 = [v7 name];
+  v28 = [format5 requiresSubchannelDataForKey:name3];
 
   if (!v28)
   {
@@ -677,20 +677,20 @@ LABEL_20:
   }
 
   [NUError missingError:@"Missing required subchannel value" object:v7];
-  *a4 = v25 = 0;
+  *error = selfCopy = 0;
 LABEL_21:
 
 LABEL_22:
 
-  return v25;
+  return selfCopy;
 }
 
-- (NUChannelControlData)initWithData:(id)a3 schema:(id)a4
+- (NUChannelControlData)initWithData:(id)data schema:(id)schema
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  dataCopy = data;
+  schemaCopy = schema;
+  if (!schemaCopy)
   {
     v12 = NUAssertLogger_4187();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -711,8 +711,8 @@ LABEL_22:
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v19;
         v30 = 2114;
@@ -723,8 +723,8 @@ LABEL_22:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -733,19 +733,19 @@ LABEL_22:
     _NUAssertFailHandler("[NUChannelControlData initWithData:schema:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 2098, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "schema != nil");
   }
 
-  v8 = v7;
-  v9 = [NUChannelControlFormat controlFormatWithSchema:v7];
-  v10 = [(NUChannelControlData *)self initWithData:v6 format:v9];
+  v8 = schemaCopy;
+  v9 = [NUChannelControlFormat controlFormatWithSchema:schemaCopy];
+  v10 = [(NUChannelControlData *)self initWithData:dataCopy format:v9];
 
   return v10;
 }
 
-- (NUChannelControlData)initWithData:(id)a3 format:(id)a4
+- (NUChannelControlData)initWithData:(id)data format:(id)format
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dataCopy = data;
+  formatCopy = format;
+  if (!dataCopy)
   {
     v13 = NUAssertLogger_4187();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -766,8 +766,8 @@ LABEL_22:
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v31 = v20;
         v32 = 2114;
@@ -778,8 +778,8 @@ LABEL_22:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -788,21 +788,21 @@ LABEL_22:
     _NUAssertFailHandler("[NUChannelControlData initWithData:format:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 2091, @"Invalid parameter not satisfying: %s", v25, v26, v27, v28, "data != nil");
   }
 
-  v8 = v7;
+  v8 = formatCopy;
   v29.receiver = self;
   v29.super_class = NUChannelControlData;
-  v9 = [(NUChannelData *)&v29 initWithFormat:v7];
-  v10 = [v6 copy];
+  v9 = [(NUChannelData *)&v29 initWithFormat:formatCopy];
+  v10 = [dataCopy copy];
   data = v9->_data;
   v9->_data = v10;
 
   return v9;
 }
 
-- (NUChannelControlData)initWithFormat:(id)a3
+- (NUChannelControlData)initWithFormat:(id)format
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  formatCopy = format;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1367);
@@ -846,8 +846,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -863,8 +863,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;
@@ -880,12 +880,12 @@ LABEL_14:
   _NUAssertFailHandler("[NUChannelControlData initWithFormat:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 2087, @"Initializer not available: [%@ %@], use designated initializer instead.", v27, v28, v29, v30, v26);
 }
 
-+ (id)controlDataWithSetting:(id)a3 value:(id)a4
++ (id)controlDataWithSetting:(id)setting value:(id)value
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  settingCopy = setting;
+  valueCopy = value;
+  if (!settingCopy)
   {
     v11 = NUAssertLogger_4187();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -906,8 +906,8 @@ LABEL_14:
         v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v44 = v25;
         v45 = 2114;
@@ -918,8 +918,8 @@ LABEL_14:
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v44 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -928,8 +928,8 @@ LABEL_14:
     _NUAssertFailHandler("+[NUChannelControlData controlDataWithSetting:value:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 2170, @"Invalid parameter not satisfying: %s", v30, v31, v32, v33, "setting != nil");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = valueCopy;
+  if (!valueCopy)
   {
     v18 = NUAssertLogger_4187();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -950,8 +950,8 @@ LABEL_14:
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v35 callStackSymbols];
+        v38 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v44 = v34;
         v45 = 2114;
@@ -962,8 +962,8 @@ LABEL_14:
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v44 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -972,16 +972,16 @@ LABEL_14:
     _NUAssertFailHandler("+[NUChannelControlData controlDataWithSetting:value:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 2171, @"Invalid parameter not satisfying: %s", v39, v40, v41, v42, "value != nil");
   }
 
-  v9 = [[a1 alloc] initWithSetting:v6 value:v7];
+  v9 = [[self alloc] initWithSetting:settingCopy value:valueCopy];
 
   return v9;
 }
 
-+ (id)controlDataWithSource:(id)a3
++ (id)controlDataWithSource:(id)source
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  sourceCopy = source;
+  if (!sourceCopy)
   {
     v10 = NUAssertLogger_4187();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1002,8 +1002,8 @@ LABEL_14:
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v17;
         v28 = 2114;
@@ -1014,8 +1014,8 @@ LABEL_14:
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1024,19 +1024,19 @@ LABEL_14:
     _NUAssertFailHandler("+[NUChannelControlData controlDataWithSource:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 2159, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "source != nil");
   }
 
-  v5 = v4;
-  v6 = [a1 alloc];
-  v7 = [v5 schema];
-  v8 = [v6 initWithData:v5 schema:v7];
+  v5 = sourceCopy;
+  v6 = [self alloc];
+  schema = [v5 schema];
+  v8 = [v6 initWithData:v5 schema:schema];
 
   return v8;
 }
 
-+ (id)controlDataWithAdjustment:(id)a3
++ (id)controlDataWithAdjustment:(id)adjustment
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  adjustmentCopy = adjustment;
+  if (!adjustmentCopy)
   {
     v10 = NUAssertLogger_4187();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1057,8 +1057,8 @@ LABEL_14:
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v17;
         v28 = 2114;
@@ -1069,8 +1069,8 @@ LABEL_14:
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1079,19 +1079,19 @@ LABEL_14:
     _NUAssertFailHandler("+[NUChannelControlData controlDataWithAdjustment:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 2154, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "adjustment != nil");
   }
 
-  v5 = v4;
-  v6 = [a1 alloc];
-  v7 = [v5 schema];
-  v8 = [v6 initWithData:v5 schema:v7];
+  v5 = adjustmentCopy;
+  v6 = [self alloc];
+  schema = [v5 schema];
+  v8 = [v6 initWithData:v5 schema:schema];
 
   return v8;
 }
 
-+ (id)controlDataWithComposition:(id)a3
++ (id)controlDataWithComposition:(id)composition
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  compositionCopy = composition;
+  if (!compositionCopy)
   {
     v10 = NUAssertLogger_4187();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1112,8 +1112,8 @@ LABEL_14:
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v17;
         v28 = 2114;
@@ -1124,8 +1124,8 @@ LABEL_14:
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1134,10 +1134,10 @@ LABEL_14:
     _NUAssertFailHandler("+[NUChannelControlData controlDataWithComposition:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 2149, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "composition != nil");
   }
 
-  v5 = v4;
-  v6 = [a1 alloc];
-  v7 = [v5 schema];
-  v8 = [v6 initWithData:v5 schema:v7];
+  v5 = compositionCopy;
+  v6 = [self alloc];
+  schema = [v5 schema];
+  v8 = [v6 initWithData:v5 schema:schema];
 
   return v8;
 }

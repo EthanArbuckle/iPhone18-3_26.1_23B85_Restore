@@ -1,6 +1,6 @@
 @interface CNVCardProdIdString
 + (id)stringForCurrentBuild;
-+ (id)stringWithProduct:(id)a3 version:(id)a4 language:(id)a5;
++ (id)stringWithProduct:(id)product version:(id)version language:(id)language;
 @end
 
 @implementation CNVCardProdIdString
@@ -10,31 +10,31 @@
   v3 = _CFCopySystemVersionDictionary();
   v4 = [v3 objectForKey:*MEMORY[0x277CBEC78]];
   v5 = [v3 objectForKey:*MEMORY[0x277CBEC88]];
-  v6 = [a1 defaultLanguage];
-  v7 = [a1 stringWithProduct:v4 version:v5 language:v6];
+  defaultLanguage = [self defaultLanguage];
+  v7 = [self stringWithProduct:v4 version:v5 language:defaultLanguage];
 
   return v7;
 }
 
-+ (id)stringWithProduct:(id)a3 version:(id)a4 language:(id)a5
++ (id)stringWithProduct:(id)product version:(id)version language:(id)language
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  productCopy = product;
+  versionCopy = version;
+  languageCopy = language;
   v10 = [MEMORY[0x277CCAB68] stringWithString:@"-//Apple Inc."];
   v11 = *MEMORY[0x277CFBD30];
-  if (((*(*MEMORY[0x277CFBD30] + 16))(*MEMORY[0x277CFBD30], v7) & 1) == 0)
+  if (((*(*MEMORY[0x277CFBD30] + 16))(*MEMORY[0x277CFBD30], productCopy) & 1) == 0)
   {
-    [v10 appendFormat:@"//%@", v7];
-    if (((*(v11 + 16))(v11, v8) & 1) == 0)
+    [v10 appendFormat:@"//%@", productCopy];
+    if (((*(v11 + 16))(v11, versionCopy) & 1) == 0)
     {
-      [v10 appendFormat:@" %@", v8];
+      [v10 appendFormat:@" %@", versionCopy];
     }
   }
 
-  if (((*(v11 + 16))(v11, v9) & 1) == 0)
+  if (((*(v11 + 16))(v11, languageCopy) & 1) == 0)
   {
-    [v10 appendFormat:@"//%@", v9];
+    [v10 appendFormat:@"//%@", languageCopy];
   }
 
   return v10;

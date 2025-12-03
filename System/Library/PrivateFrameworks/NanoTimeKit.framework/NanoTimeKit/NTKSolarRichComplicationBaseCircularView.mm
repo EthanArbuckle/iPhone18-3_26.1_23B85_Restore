@@ -1,13 +1,13 @@
 @interface NTKSolarRichComplicationBaseCircularView
-- (NTKSolarRichComplicationBaseCircularView)initWithFamily:(int64_t)a3;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
+- (NTKSolarRichComplicationBaseCircularView)initWithFamily:(int64_t)family;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 - (void)layoutSubviews;
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4;
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated;
 @end
 
 @implementation NTKSolarRichComplicationBaseCircularView
 
-- (NTKSolarRichComplicationBaseCircularView)initWithFamily:(int64_t)a3
+- (NTKSolarRichComplicationBaseCircularView)initWithFamily:(int64_t)family
 {
   v13.receiver = self;
   v13.super_class = NTKSolarRichComplicationBaseCircularView;
@@ -15,19 +15,19 @@
   if (v4)
   {
     v5 = [NTKSolarRichComplicationFullColorImageView alloc];
-    v6 = [(CDRichComplicationView *)v4 device];
-    v7 = [(NTKSolarRichComplicationFullColorImageView *)v5 initFullColorImageViewWithDevice:v6 family:a3];
+    device = [(CDRichComplicationView *)v4 device];
+    v7 = [(NTKSolarRichComplicationFullColorImageView *)v5 initFullColorImageViewWithDevice:device family:family];
     solarImageView = v4->_solarImageView;
     v4->_solarImageView = v7;
 
     [(NTKSolarRichComplicationFullColorImageView *)v4->_solarImageView setFilterProvider:v4];
     [(NTKSolarRichComplicationFullColorImageView *)v4->_solarImageView setClipsToBounds:0];
-    v9 = [(NTKRichComplicationCircularBaseView *)v4 contentView];
-    [v9 addSubview:v4->_solarImageView];
+    contentView = [(NTKRichComplicationCircularBaseView *)v4 contentView];
+    [contentView addSubview:v4->_solarImageView];
 
-    v10 = [(NTKRichComplicationCircularBaseView *)v4 contentView];
-    v11 = [v10 layer];
-    [v11 setMasksToBounds:1];
+    contentView2 = [(NTKRichComplicationCircularBaseView *)v4 contentView];
+    layer = [contentView2 layer];
+    [layer setMasksToBounds:1];
   }
 
   return v4;
@@ -38,8 +38,8 @@
   v16.receiver = self;
   v16.super_class = NTKSolarRichComplicationBaseCircularView;
   [(NTKRichComplicationCircularBaseView *)&v16 layoutSubviews];
-  v3 = [(NTKRichComplicationCircularBaseView *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKRichComplicationCircularBaseView *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -69,25 +69,25 @@
   [(NTKSolarRichComplicationFullColorImageView *)self->_solarImageView setCenter:MidX, MidY];
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v9 = [a3 metadata];
-  v6 = [v9 objectForKeyedSubscript:@"NTKSolarComplicationEntryLocationKey"];
-  v7 = [v9 objectForKeyedSubscript:@"NTKSolarComplicationUseIdealizedTimeKey"];
-  v8 = [v7 BOOLValue];
+  metadata = [template metadata];
+  v6 = [metadata objectForKeyedSubscript:@"NTKSolarComplicationEntryLocationKey"];
+  v7 = [metadata objectForKeyedSubscript:@"NTKSolarComplicationUseIdealizedTimeKey"];
+  bOOLValue = [v7 BOOLValue];
 
-  [(NTKSolarRichComplicationBaseCircularView *)self _updateWithLocation:v6 useIdealizedTime:v8 forceUpdate:0 animated:[(NTKSolarRichComplicationBaseCircularView *)self _shouldAnimateWithTemplateUpdateReason:a4]];
+  [(NTKSolarRichComplicationBaseCircularView *)self _updateWithLocation:v6 useIdealizedTime:bOOLValue forceUpdate:0 animated:[(NTKSolarRichComplicationBaseCircularView *)self _shouldAnimateWithTemplateUpdateReason:reason]];
 }
 
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   solarImageView = self->_solarImageView;
-  v7 = a3;
-  [(NTKSolarRichComplicationFullColorImageView *)solarImageView setTimeTravelDate:v7];
+  dateCopy = date;
+  [(NTKSolarRichComplicationFullColorImageView *)solarImageView setTimeTravelDate:dateCopy];
   v8.receiver = self;
   v8.super_class = NTKSolarRichComplicationBaseCircularView;
-  [(CDRichComplicationTemplateView *)&v8 setTimeTravelDate:v7 animated:v4];
+  [(CDRichComplicationTemplateView *)&v8 setTimeTravelDate:dateCopy animated:animatedCopy];
 }
 
 @end

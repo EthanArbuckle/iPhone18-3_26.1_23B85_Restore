@@ -1,12 +1,12 @@
 @interface BPSReduce
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5;
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state;
 - (BOOL)completed;
-- (BPSReduce)initWithUpstream:(id)a3 initialResult:(id)a4 nextPartialResult:(id)a5;
+- (BPSReduce)initWithUpstream:(id)upstream initialResult:(id)result nextPartialResult:(id)partialResult;
 - (id)bookmarkableUpstreams;
 - (id)nextEvent;
 - (id)upstreamPublishers;
 - (void)reset;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSReduce
@@ -14,8 +14,8 @@
 - (id)upstreamPublishers
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSReduce *)self upstream];
-  v6[0] = v2;
+  upstream = [(BPSReduce *)self upstream];
+  v6[0] = upstream;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -25,36 +25,36 @@
 
 - (id)nextEvent
 {
-  v3 = [(BPSReduce *)self upstream];
-  v4 = [v3 nextEvent];
+  upstream = [(BPSReduce *)self upstream];
+  nextEvent = [upstream nextEvent];
 
-  if (v4)
+  if (nextEvent)
   {
     do
     {
-      v5 = [(BPSReduce *)self nextPartialResult];
-      v6 = [(BPSReduce *)self result];
-      v7 = (v5)[2](v5, v6, v4);
+      nextPartialResult = [(BPSReduce *)self nextPartialResult];
+      result = [(BPSReduce *)self result];
+      v7 = (nextPartialResult)[2](nextPartialResult, result, nextEvent);
       [(BPSReduce *)self setResult:v7];
 
-      v8 = [(BPSReduce *)self upstream];
-      v9 = [v8 nextEvent];
+      upstream2 = [(BPSReduce *)self upstream];
+      nextEvent2 = [upstream2 nextEvent];
 
-      v4 = v9;
+      nextEvent = nextEvent2;
     }
 
-    while (v9);
+    while (nextEvent2);
   }
 
-  v10 = [(BPSReduce *)self upstream];
-  if ([v10 completed])
+  upstream3 = [(BPSReduce *)self upstream];
+  if ([upstream3 completed])
   {
-    v11 = [(BPSReduce *)self returned];
+    returned = [(BPSReduce *)self returned];
 
-    if (!v11)
+    if (!returned)
     {
       [(BPSReduce *)self setReturned:1];
-      v12 = [(BPSReduce *)self result];
+      result2 = [(BPSReduce *)self result];
       goto LABEL_8;
     }
   }
@@ -63,32 +63,32 @@
   {
   }
 
-  v12 = 0;
+  result2 = 0;
 LABEL_8:
 
-  return v12;
+  return result2;
 }
 
 - (BOOL)completed
 {
-  v3 = [(BPSReduce *)self upstream];
-  if ([v3 completed])
+  upstream = [(BPSReduce *)self upstream];
+  if ([upstream completed])
   {
-    v4 = [(BPSReduce *)self returned];
+    returned = [(BPSReduce *)self returned];
   }
 
   else
   {
-    v4 = 0;
+    returned = 0;
   }
 
-  return v4;
+  return returned;
 }
 
 - (void)reset
 {
-  v3 = [(BPSReduce *)self initialResult];
-  [(BPSReduce *)self setResult:v3];
+  initialResult = [(BPSReduce *)self initialResult];
+  [(BPSReduce *)self setResult:initialResult];
 
   [(BPSReduce *)self setReturned:0];
   v4.receiver = self;
@@ -96,21 +96,21 @@ LABEL_8:
   [(BPSPublisher *)&v4 reset];
 }
 
-- (BPSReduce)initWithUpstream:(id)a3 initialResult:(id)a4 nextPartialResult:(id)a5
+- (BPSReduce)initWithUpstream:(id)upstream initialResult:(id)result nextPartialResult:(id)partialResult
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  upstreamCopy = upstream;
+  resultCopy = result;
+  partialResultCopy = partialResult;
   v17.receiver = self;
   v17.super_class = BPSReduce;
   v12 = [(BPSReduce *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_upstream, a3);
-    objc_storeStrong(&v13->_initialResult, a4);
-    objc_storeStrong(&v13->_result, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_upstream, upstream);
+    objc_storeStrong(&v13->_initialResult, result);
+    objc_storeStrong(&v13->_result, result);
+    v14 = [partialResultCopy copy];
     nextPartialResult = v13->_nextPartialResult;
     v13->_nextPartialResult = v14;
   }
@@ -118,33 +118,33 @@ LABEL_8:
   return v13;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
-  v6 = [[_BPSReduceInner alloc] initWithDownstream:v4 initial:self->_initialResult reduce:self->_nextPartialResult];
+  subscribeCopy = subscribe;
+  v6 = [[_BPSReduceInner alloc] initWithDownstream:subscribeCopy initial:self->_initialResult reduce:self->_nextPartialResult];
 
-  v5 = [(BPSReduce *)self upstream];
-  [v5 subscribe:v6];
+  upstream = [(BPSReduce *)self upstream];
+  [upstream subscribe:v6];
 }
 
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  publisherCopy = publisher;
+  stateCopy = state;
+  upstreamsCopy = upstreams;
   v10 = [BPSReduce alloc];
-  v11 = [v9 objectAtIndexedSubscript:0];
+  v11 = [upstreamsCopy objectAtIndexedSubscript:0];
 
-  v12 = v8;
-  if (!v8)
+  initialResult = stateCopy;
+  if (!stateCopy)
   {
-    v12 = [v7 initialResult];
+    initialResult = [publisherCopy initialResult];
   }
 
-  v13 = [v7 nextPartialResult];
-  v14 = [(BPSReduce *)v10 initWithUpstream:v11 initialResult:v12 nextPartialResult:v13];
+  nextPartialResult = [publisherCopy nextPartialResult];
+  v14 = [(BPSReduce *)v10 initWithUpstream:v11 initialResult:initialResult nextPartialResult:nextPartialResult];
 
-  if (!v8)
+  if (!stateCopy)
   {
   }
 
@@ -154,8 +154,8 @@ LABEL_8:
 - (id)bookmarkableUpstreams
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSReduce *)self upstream];
-  v6[0] = v2;
+  upstream = [(BPSReduce *)self upstream];
+  v6[0] = upstream;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];

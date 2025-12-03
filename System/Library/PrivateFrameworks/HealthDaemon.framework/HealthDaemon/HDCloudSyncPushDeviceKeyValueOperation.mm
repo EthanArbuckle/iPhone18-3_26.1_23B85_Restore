@@ -1,6 +1,6 @@
 @interface HDCloudSyncPushDeviceKeyValueOperation
-- (id)_computeEntryHash:(uint64_t)a1;
-- (void)_fetchLocalKeyValuesForProtectionCategory:(void *)a3 completion:;
+- (id)_computeEntryHash:(uint64_t)hash;
+- (void)_fetchLocalKeyValuesForProtectionCategory:(void *)category completion:;
 - (void)main;
 @end
 
@@ -15,20 +15,20 @@
   v74 = __Block_byref_object_copy__56;
   v75 = __Block_byref_object_dispose__56;
   v76 = 0;
-  v3 = [(HDCloudSyncOperation *)self profile];
-  v4 = [v3 syncIdentityManager];
-  v5 = [v4 currentSyncIdentity];
-  v64 = [v5 identity];
+  profile = [(HDCloudSyncOperation *)self profile];
+  syncIdentityManager = [profile syncIdentityManager];
+  currentSyncIdentity = [syncIdentityManager currentSyncIdentity];
+  identity = [currentSyncIdentity identity];
 
-  v6 = [(HDCloudSyncOperation *)self configuration];
-  v7 = [v6 cachedCloudState];
-  v8 = [(HDCloudSyncOperation *)self configuration];
-  v9 = [v8 repository];
-  v10 = [v9 primaryCKContainer];
-  v11 = [v10 containerIdentifier];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cachedCloudState = [configuration cachedCloudState];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration2 repository];
+  primaryCKContainer = [repository primaryCKContainer];
+  containerIdentifier = [primaryCKContainer containerIdentifier];
   v12 = (v72 + 5);
   obj = v72[5];
-  v13 = [v7 contextSyncZoneForContainerID:v11 error:&obj];
+  v13 = [cachedCloudState contextSyncZoneForContainerID:containerIdentifier error:&obj];
   objc_storeStrong(v12, obj);
   contextSyncZone = self->_contextSyncZone;
   self->_contextSyncZone = v13;
@@ -46,16 +46,16 @@
     v68 = &v71;
     v69 = v17;
     v66[4] = self;
-    v67 = v64;
+    v67 = identity;
     v19 = [(HDCloudSyncCachedZone *)v15 recordsForClass:v16 error:&v69 filter:v66];
     objc_storeStrong(v18, v69);
     if (v19)
     {
       if ([v19 count] < 2)
       {
-        v30 = [v19 firstObject];
+        firstObject = [v19 firstObject];
         recordWithCurrentIdentity = self->_recordWithCurrentIdentity;
-        self->_recordWithCurrentIdentity = v30;
+        self->_recordWithCurrentIdentity = firstObject;
 
         v65[0] = MEMORY[0x277D85DD0];
         v65[1] = 3221225472;
@@ -76,7 +76,7 @@
         *&buf[8] = 3221225472;
         *&buf[16] = __87__HDCloudSyncPushDeviceKeyValueOperation__computeRecordsToSaveAndDeleteWithCompletion___block_invoke;
         v95 = &unk_27861B0F8;
-        v96 = self;
+        selfCopy = self;
         v100 = &v88;
         v61 = v32;
         v99 = v61;
@@ -86,15 +86,15 @@
         v98 = v37;
         [v35 setDidFinish:buf];
         v38 = +[HDMutableDatabaseTransactionContext contextForReadingProtectedData];
-        v39 = [(HDCloudSyncOperation *)self configuration];
-        v40 = [v39 accessibilityAssertion];
-        v41 = [v38 contextWithAccessibilityAssertion:v40];
+        configuration3 = [(HDCloudSyncOperation *)self configuration];
+        accessibilityAssertion = [configuration3 accessibilityAssertion];
+        v41 = [v38 contextWithAccessibilityAssertion:accessibilityAssertion];
 
         [v35 beginTask];
-        v42 = [(HDCloudSyncOperation *)self configuration];
-        v63 = [v42 repository];
-        v43 = [v63 profile];
-        v44 = [v43 database];
+        configuration4 = [(HDCloudSyncOperation *)self configuration];
+        repository2 = [configuration4 repository];
+        profile2 = [repository2 profile];
+        database = [profile2 database];
         v45 = v89;
         v87 = v89[5];
         v82[0] = MEMORY[0x277D85DD0];
@@ -103,9 +103,9 @@
         v82[3] = &unk_27861B120;
         v46 = v35;
         v83 = v46;
-        v84 = self;
+        selfCopy2 = self;
         v47 = v36;
-        v48 = v42;
+        v48 = configuration4;
         v49 = v19;
         v50 = v41;
         v51 = v47;
@@ -118,7 +118,7 @@
         v77[3] = &unk_27861B148;
         v53 = v46;
         v78 = v53;
-        v79 = self;
+        selfCopy3 = self;
         v54 = v51;
         v55 = v50;
         v19 = v49;
@@ -127,7 +127,7 @@
         v80 = v54;
         v58 = v52;
         v81 = v58;
-        LOBYTE(v52) = [v44 performTransactionWithContext:v55 error:&v87 block:v82 inaccessibilityHandler:v77];
+        LOBYTE(v52) = [database performTransactionWithContext:v55 error:&v87 block:v82 inaccessibilityHandler:v77];
         objc_storeStrong(v45 + 5, v87);
 
         if (v52)
@@ -371,24 +371,24 @@ void __87__HDCloudSyncPushDeviceKeyValueOperation__computeRecordsToSaveAndDelete
   }
 }
 
-- (void)_fetchLocalKeyValuesForProtectionCategory:(void *)a3 completion:
+- (void)_fetchLocalKeyValuesForProtectionCategory:(void *)category completion:
 {
-  v5 = a3;
-  if (a1)
+  categoryCopy = category;
+  if (self)
   {
-    v6 = [a1 configuration];
-    v7 = [v6 repository];
-    v8 = [v7 cloudSyncShimProvider];
-    v9 = [v8 contextSyncShim];
+    configuration = [self configuration];
+    repository = [configuration repository];
+    cloudSyncShimProvider = [repository cloudSyncShimProvider];
+    contextSyncShim = [cloudSyncShimProvider contextSyncShim];
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __95__HDCloudSyncPushDeviceKeyValueOperation__fetchLocalKeyValuesForProtectionCategory_completion___block_invoke;
     v10[3] = &unk_27861B170;
-    v10[4] = a1;
+    v10[4] = self;
     v12 = a2;
-    v11 = v5;
-    [v9 fetchLocalKeyValueForProtectionCategory:a2 completion:v10];
+    v11 = categoryCopy;
+    [contextSyncShim fetchLocalKeyValueForProtectionCategory:a2 completion:v10];
   }
 }
 
@@ -565,20 +565,20 @@ void __95__HDCloudSyncPushDeviceKeyValueOperation__fetchLocalKeyValuesForProtect
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_computeEntryHash:(uint64_t)a1
+- (id)_computeEntryHash:(uint64_t)hash
 {
-  if (a1)
+  if (hash)
   {
     v2 = MEMORY[0x277CCABB0];
     v3 = a2;
     v4 = [v3 key];
     v5 = [v4 hash];
-    v6 = [v3 domain];
-    v7 = [v6 hash] ^ v5;
+    domain = [v3 domain];
+    v7 = [domain hash] ^ v5;
     v8 = MEMORY[0x277CCABB0];
-    v9 = [v3 protectionCategory];
+    protectionCategory = [v3 protectionCategory];
 
-    v10 = [v8 numberWithInteger:v9];
+    v10 = [v8 numberWithInteger:protectionCategory];
     v11 = [v2 numberWithUnsignedInteger:{v7 ^ objc_msgSend(v10, "hash")}];
   }
 

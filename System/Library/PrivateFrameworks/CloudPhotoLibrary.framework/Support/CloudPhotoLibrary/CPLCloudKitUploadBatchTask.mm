@@ -1,15 +1,15 @@
 @interface CPLCloudKitUploadBatchTask
 + (NSArray)simulateOverQuotaPhases;
-- (CPLCloudKitUploadBatchTask)initWithController:(id)a3 scope:(id)a4 targetMapping:(id)a5 transportScopeMapping:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8;
-- (void)_executeSharePlanFromPlanner:(id)a3 completionHandler:(id)a4;
-- (void)_executeUnsharePlanFromPlanner:(id)a3 completionHandler:(id)a4;
-- (void)_fetchPrivateRecordsFromPlanner:(id)a3 completionHandler:(id)a4;
-- (void)_fetchRequestedRecordsFromPlanner:(id)a3 completionHandler:(id)a4;
-- (void)_fetchSharedRecordsFromPlanner:(id)a3 completionHandler:(id)a4;
-- (void)_runModernOperationsWithCurrentUserID:(id)a3;
-- (void)_uploadBatchFromPlanner:(id)a3 completionHandler:(id)a4;
-- (void)_uploadRecords:(id)a3 deleteRecordIDs:(id)a4 identification:(id)a5 fromPlanner:(id)a6 uploadContext:(id)a7 updateProgress:(id)a8 completionHandler:(id)a9;
-- (void)_uploadSharedBatchFromPlanner:(id)a3 completionHandler:(id)a4;
+- (CPLCloudKitUploadBatchTask)initWithController:(id)controller scope:(id)scope targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)_executeSharePlanFromPlanner:(id)planner completionHandler:(id)handler;
+- (void)_executeUnsharePlanFromPlanner:(id)planner completionHandler:(id)handler;
+- (void)_fetchPrivateRecordsFromPlanner:(id)planner completionHandler:(id)handler;
+- (void)_fetchRequestedRecordsFromPlanner:(id)planner completionHandler:(id)handler;
+- (void)_fetchSharedRecordsFromPlanner:(id)planner completionHandler:(id)handler;
+- (void)_runModernOperationsWithCurrentUserID:(id)d;
+- (void)_uploadBatchFromPlanner:(id)planner completionHandler:(id)handler;
+- (void)_uploadRecords:(id)records deleteRecordIDs:(id)ds identification:(id)identification fromPlanner:(id)planner uploadContext:(id)context updateProgress:(id)progress completionHandler:(id)handler;
+- (void)_uploadSharedBatchFromPlanner:(id)planner completionHandler:(id)handler;
 - (void)runOperations;
 @end
 
@@ -27,26 +27,26 @@
   return v2;
 }
 
-- (CPLCloudKitUploadBatchTask)initWithController:(id)a3 scope:(id)a4 targetMapping:(id)a5 transportScopeMapping:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8
+- (CPLCloudKitUploadBatchTask)initWithController:(id)controller scope:(id)scope targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v14 = a3;
-  v55 = a4;
-  v56 = a5;
-  v57 = a6;
-  v59 = a7;
-  v58 = a8;
+  controllerCopy = controller;
+  scopeCopy = scope;
+  mappingCopy = mapping;
+  scopeMappingCopy = scopeMapping;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v72.receiver = self;
   v72.super_class = CPLCloudKitUploadBatchTask;
-  v54 = v14;
-  v15 = [(CPLCloudKitTransportTask *)&v72 initWithController:v14];
+  v54 = controllerCopy;
+  v15 = [(CPLCloudKitTransportTask *)&v72 initWithController:controllerCopy];
   v16 = v15;
   if (!v15)
   {
     goto LABEL_55;
   }
 
-  objc_storeStrong(&v15->_scope, a4);
-  objc_storeStrong(&v16->_targetMapping, a5);
+  objc_storeStrong(&v15->_scope, scope);
+  objc_storeStrong(&v16->_targetMapping, mapping);
   if (qword_1002C55A8 != -1)
   {
     sub_1001AA394();
@@ -194,9 +194,9 @@ LABEL_24:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v40 = [v39 lowercaseString];
+      lowercaseString = [v39 lowercaseString];
 
-      if ([v40 isEqualToString:@"none"])
+      if ([lowercaseString isEqualToString:@"none"])
       {
         v41 = 0;
 LABEL_49:
@@ -204,25 +204,25 @@ LABEL_49:
         goto LABEL_50;
       }
 
-      if ([v40 isEqualToString:@"upload"])
+      if ([lowercaseString isEqualToString:@"upload"])
       {
         v41 = 1;
         goto LABEL_49;
       }
 
-      if ([v40 isEqualToString:@"sharedupload"])
+      if ([lowercaseString isEqualToString:@"sharedupload"])
       {
         v41 = 2;
         goto LABEL_49;
       }
 
-      if ([v40 isEqualToString:@"share"])
+      if ([lowercaseString isEqualToString:@"share"])
       {
         v41 = 3;
         goto LABEL_49;
       }
 
-      if ([v40 isEqualToString:@"unshare"])
+      if ([lowercaseString isEqualToString:@"unshare"])
       {
         v41 = 4;
         goto LABEL_49;
@@ -231,13 +231,13 @@ LABEL_49:
 
     else
     {
-      v40 = v39;
+      lowercaseString = v39;
     }
 
 LABEL_50:
   }
 
-  v42 = [v59 copy];
+  v42 = [handlerCopy copy];
   progressHandler = v16->_progressHandler;
   v16->_progressHandler = v42;
 
@@ -252,7 +252,7 @@ LABEL_50:
     v60[2] = sub_1000911A8;
     v60[3] = &unk_1002740B0;
     objc_copyWeak(&v62, &location);
-    v61 = v58;
+    v61 = completionHandlerCopy;
     v46 = [v60 copy];
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v46;
@@ -263,13 +263,13 @@ LABEL_50:
 
   else
   {
-    v48 = [v58 copy];
+    v48 = [completionHandlerCopy copy];
     v49 = v16->_completionHandler;
     v16->_completionHandler = v48;
   }
 
   [(CPLCloudKitTransportTask *)v16 setIsUpload:1];
-  [(CPLCloudKitTransportTask *)v16 setTransportScopeMapping:v57];
+  [(CPLCloudKitTransportTask *)v16 setTransportScopeMapping:scopeMappingCopy];
 LABEL_55:
 
   return v16;
@@ -285,16 +285,16 @@ LABEL_55:
   [(CPLCloudKitTransportTask *)self getUserRecordIDFetchIfNecessaryWithCompletionHandler:v2];
 }
 
-- (void)_runModernOperationsWithCurrentUserID:(id)a3
+- (void)_runModernOperationsWithCurrentUserID:(id)d
 {
-  v75 = a3;
+  dCopy = d;
   v96 = 0;
-  v77 = self;
+  selfCopy = self;
   LOBYTE(self) = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:&v96];
   v74 = v96;
-  if ((self & 1) == 0 || v77->_autoError)
+  if ((self & 1) == 0 || selfCopy->_autoError)
   {
-    (*(v77->_completionHandler + 2))();
+    (*(selfCopy->_completionHandler + 2))();
     goto LABEL_4;
   }
 
@@ -303,12 +303,12 @@ LABEL_55:
 
   if (v5)
   {
-    v6 = [[NSMutableDictionary alloc] initWithCapacity:{-[CPLChangeBatch count](v77->_batch, "count")}];
+    v6 = [[NSMutableDictionary alloc] initWithCapacity:{-[CPLChangeBatch count](selfCopy->_batch, "count")}];
     v94 = 0u;
     v95 = 0u;
     v92 = 0u;
     v93 = 0u;
-    v7 = v77->_batch;
+    v7 = selfCopy->_batch;
     v8 = [(CPLChangeBatch *)v7 countByEnumeratingWithState:&v92 objects:v107 count:16];
     if (v8)
     {
@@ -322,8 +322,8 @@ LABEL_55:
             objc_enumerationMutation(v7);
           }
 
-          v11 = [*(*(&v92 + 1) + 8 * i) scopedIdentifier];
-          [v6 setObject:@"record is rejected for testing purpose" forKeyedSubscript:v11];
+          scopedIdentifier = [*(*(&v92 + 1) + 8 * i) scopedIdentifier];
+          [v6 setObject:@"record is rejected for testing purpose" forKeyedSubscript:scopedIdentifier];
         }
 
         v8 = [(CPLChangeBatch *)v7 countByEnumeratingWithState:&v92 objects:v107 count:16];
@@ -337,7 +337,7 @@ LABEL_55:
     v12 = [NSDictionary dictionaryWithObjects:&v106 forKeys:&v105 count:1];
     v13 = [CPLErrors cplErrorWithCode:18 underlyingError:0 userInfo:v12 description:@"Some records are rejected for testing purpose"];
 
-    (*(v77->_completionHandler + 2))();
+    (*(selfCopy->_completionHandler + 2))();
     goto LABEL_4;
   }
 
@@ -353,44 +353,44 @@ LABEL_55:
     v18 = [CPLScopeChange descriptionForBusyState:v15];
     v19 = [CPLErrors cplErrorWithCode:35 underlyingError:0 userInfo:v17 description:@"Simulating busy state (%@)", v18];
 
-    (*(v77->_completionHandler + 2))();
+    (*(selfCopy->_completionHandler + 2))();
     goto LABEL_4;
   }
 
-  v20 = [(CPLEngineScope *)v77->_scope scopeIdentifier];
-  v73 = [(CPLCloudKitTransportTask *)v77 cloudKitScopeForScopeIdentifier:v20];
+  scopeIdentifier = [(CPLEngineScope *)selfCopy->_scope scopeIdentifier];
+  v73 = [(CPLCloudKitTransportTask *)selfCopy cloudKitScopeForScopeIdentifier:scopeIdentifier];
 
-  v21 = [v73 zoneID];
-  LODWORD(v20) = v21 == 0;
+  zoneID = [v73 zoneID];
+  LODWORD(scopeIdentifier) = zoneID == 0;
 
-  if (v20)
+  if (scopeIdentifier)
   {
-    completionHandler = v77->_completionHandler;
+    completionHandler = selfCopy->_completionHandler;
     v72 = [CPLErrors cplErrorWithCode:80 description:@"Missing required zone"];
     completionHandler[2](completionHandler, v72);
     goto LABEL_67;
   }
 
-  v22 = v77;
-  sharedScope = v77->_sharedScope;
+  v22 = selfCopy;
+  sharedScope = selfCopy->_sharedScope;
   if (sharedScope)
   {
-    v24 = [(CPLEngineScope *)sharedScope scopeIdentifier];
-    v72 = [(CPLCloudKitTransportTask *)v77 cloudKitScopeForScopeIdentifier:v24];
+    scopeIdentifier2 = [(CPLEngineScope *)sharedScope scopeIdentifier];
+    v72 = [(CPLCloudKitTransportTask *)selfCopy cloudKitScopeForScopeIdentifier:scopeIdentifier2];
 
-    v25 = [v72 zoneID];
-    LODWORD(v24) = v25 == 0;
+    zoneID2 = [v72 zoneID];
+    LODWORD(scopeIdentifier2) = zoneID2 == 0;
 
-    if (v24)
+    if (scopeIdentifier2)
     {
-      v64 = v77->_completionHandler;
+      v64 = selfCopy->_completionHandler;
       v65 = [CPLErrors cplErrorWithCode:80 description:@"Missing required shared zone"];
       v64[2](v64, v65);
 
       goto LABEL_67;
     }
 
-    v22 = v77;
+    v22 = selfCopy;
   }
 
   else
@@ -412,7 +412,7 @@ LABEL_55:
   if (!v28)
   {
 
-    v22 = v77;
+    v22 = selfCopy;
     goto LABEL_43;
   }
 
@@ -428,23 +428,23 @@ LABEL_55:
       }
 
       v32 = *(*(&v88 + 1) + 8 * j);
-      if ([(NSMutableSet *)v77->_autoRejectClasses containsObject:objc_opt_class()])
+      if ([(NSMutableSet *)selfCopy->_autoRejectClasses containsObject:objc_opt_class()])
       {
         if (!v29)
         {
           v29 = objc_alloc_init(NSMutableDictionary);
         }
 
-        v33 = [v32 scopedIdentifier];
-        [v29 setObject:@"record class is rejected for testing purpose" forKeyedSubscript:v33];
+        scopedIdentifier2 = [v32 scopedIdentifier];
+        [v29 setObject:@"record class is rejected for testing purpose" forKeyedSubscript:scopedIdentifier2];
       }
 
       else
       {
-        autoRejectRecordIdentifiers = v77->_autoRejectRecordIdentifiers;
-        v35 = [v32 scopedIdentifier];
-        v36 = [v35 identifier];
-        LODWORD(autoRejectRecordIdentifiers) = [(NSMutableSet *)autoRejectRecordIdentifiers containsObject:v36];
+        autoRejectRecordIdentifiers = selfCopy->_autoRejectRecordIdentifiers;
+        scopedIdentifier3 = [v32 scopedIdentifier];
+        identifier = [scopedIdentifier3 identifier];
+        LODWORD(autoRejectRecordIdentifiers) = [(NSMutableSet *)autoRejectRecordIdentifiers containsObject:identifier];
 
         if (!autoRejectRecordIdentifiers)
         {
@@ -456,8 +456,8 @@ LABEL_55:
           v29 = objc_alloc_init(NSMutableDictionary);
         }
 
-        v33 = [v32 scopedIdentifier];
-        [v29 setObject:@"record is rejected for testing purpose" forKeyedSubscript:v33];
+        scopedIdentifier2 = [v32 scopedIdentifier];
+        [v29 setObject:@"record is rejected for testing purpose" forKeyedSubscript:scopedIdentifier2];
       }
     }
 
@@ -466,7 +466,7 @@ LABEL_55:
 
   while (v28);
 
-  v22 = v77;
+  v22 = selfCopy;
   if (v29)
   {
     v100 = CPLErrorRejectedRecordIdentifiersAndReasonsKey;
@@ -474,18 +474,18 @@ LABEL_55:
     v37 = [NSDictionary dictionaryWithObjects:&v101 forKeys:&v100 count:1];
     v38 = [CPLErrors cplErrorWithCode:18 underlyingError:0 userInfo:v37 description:@"Some records are rejected for testing purpose"];
 
-    (*(v77->_completionHandler + 2))();
+    (*(selfCopy->_completionHandler + 2))();
     goto LABEL_67;
   }
 
 LABEL_43:
-  v39 = [(CPLCloudKitTransportTask *)v22 controller];
-  v70 = [v39 zoneIdentificationForCloudKitScope:v73 engineScope:v77->_scope];
+  controller = [(CPLCloudKitTransportTask *)v22 controller];
+  v70 = [controller zoneIdentificationForCloudKitScope:v73 engineScope:selfCopy->_scope];
 
-  if (v72 && v77->_sharedScope)
+  if (v72 && selfCopy->_sharedScope)
   {
-    v40 = [(CPLCloudKitTransportTask *)v77 controller];
-    v69 = [v40 zoneIdentificationForCloudKitScope:v72 engineScope:v77->_sharedScope];
+    controller2 = [(CPLCloudKitTransportTask *)selfCopy controller];
+    v69 = [controller2 zoneIdentificationForCloudKitScope:v72 engineScope:selfCopy->_sharedScope];
   }
 
   else
@@ -495,20 +495,20 @@ LABEL_43:
 
   v71 = objc_alloc_init(CPLCloudKitUploadMetric);
   v41 = [CPLCKBatchUploadPlanner alloc];
-  v42 = [(CPLCloudKitTransportTask *)v77 controller];
-  v43 = [v42 propertyMapping];
-  targetMapping = v77->_targetMapping;
-  v45 = [(CPLCloudKitTransportTask *)v77 fetchCache];
-  v46 = [(CPLCloudKitUploadBatchTask *)v77 cplEnabledDate];
-  v76 = [(CPLCKBatchUploadPlanner *)v41 initWithScopeProvider:v77 destinationZoneIdentification:v70 sharedZoneIdentification:v69 propertyMapping:v43 currentUserRecordID:v75 targetMapping:targetMapping fetchCache:v45 cplEnabledDate:v46];
+  controller3 = [(CPLCloudKitTransportTask *)selfCopy controller];
+  propertyMapping = [controller3 propertyMapping];
+  targetMapping = selfCopy->_targetMapping;
+  fetchCache = [(CPLCloudKitTransportTask *)selfCopy fetchCache];
+  cplEnabledDate = [(CPLCloudKitUploadBatchTask *)selfCopy cplEnabledDate];
+  v76 = [(CPLCKBatchUploadPlanner *)v41 initWithScopeProvider:selfCopy destinationZoneIdentification:v70 sharedZoneIdentification:v69 propertyMapping:propertyMapping currentUserRecordID:dCopy targetMapping:targetMapping fetchCache:fetchCache cplEnabledDate:cplEnabledDate];
 
   [(CPLCKBatchUploadPlanner *)v76 setMetric:v71];
-  [(CPLCKBatchUploadPlanner *)v76 setProgressHandler:v77->_progressHandler];
+  [(CPLCKBatchUploadPlanner *)v76 setProgressHandler:selfCopy->_progressHandler];
   v86 = 0u;
   v87 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v47 = v77->_batch;
+  v47 = selfCopy->_batch;
   v48 = 0;
   v49 = [(CPLChangeBatch *)v47 countByEnumeratingWithState:&v84 objects:v99 count:16];
   if (v49)
@@ -531,9 +531,9 @@ LABEL_43:
         v56 = v55;
         if ((v54 & 1) == 0)
         {
-          v57 = [v55 localizedDescription];
-          v58 = v57;
-          v59 = v57 ? v57 : [[NSString alloc] initWithFormat:@"Failed to create CKRecord from %@", objc_opt_class()];
+          localizedDescription = [v55 localizedDescription];
+          v58 = localizedDescription;
+          v59 = localizedDescription ? localizedDescription : [[NSString alloc] initWithFormat:@"Failed to create CKRecord from %@", objc_opt_class()];
           v60 = v59;
 
           if (v60)
@@ -543,8 +543,8 @@ LABEL_43:
               v48 = objc_alloc_init(NSMutableDictionary);
             }
 
-            v61 = [v52 scopedIdentifier];
-            [v48 setObject:v60 forKeyedSubscript:v61];
+            scopedIdentifier4 = [v52 scopedIdentifier];
+            [v48 setObject:v60 forKeyedSubscript:scopedIdentifier4];
           }
         }
 
@@ -564,14 +564,14 @@ LABEL_43:
     v62 = [NSDictionary dictionaryWithObjects:&v98 forKeys:&v97 count:1];
     v63 = [CPLErrors cplErrorWithCode:18 underlyingError:0 userInfo:v62 description:@"Some records were rejected before upload"];
 
-    (*(v77->_completionHandler + 2))();
+    (*(selfCopy->_completionHandler + 2))();
   }
 
   else
   {
     [(CPLCKBatchUploadPlanner *)v76 finalizePlan];
-    v66 = objc_retainBlock(v77->_completionHandler);
-    [(CPLCloudKitTransportTask *)v77 associateMetric:v71];
+    v66 = objc_retainBlock(selfCopy->_completionHandler);
+    [(CPLCloudKitTransportTask *)selfCopy associateMetric:v71];
     [(CPLCloudKitMetric *)v71 begin];
     v78[0] = _NSConcreteStackBlock;
     v78[1] = 3221225472;
@@ -581,45 +581,45 @@ LABEL_43:
     v67 = v76;
     v79 = v67;
     v80 = v71;
-    v81 = v77;
+    v81 = selfCopy;
     v63 = v66;
     v68 = objc_retainBlock(v78);
-    [(CPLCloudKitUploadBatchTask *)v77 _fetchRequestedRecordsFromPlanner:v67 completionHandler:v68];
+    [(CPLCloudKitUploadBatchTask *)selfCopy _fetchRequestedRecordsFromPlanner:v67 completionHandler:v68];
   }
 
 LABEL_67:
 LABEL_4:
 }
 
-- (void)_fetchRequestedRecordsFromPlanner:(id)a3 completionHandler:(id)a4
+- (void)_fetchRequestedRecordsFromPlanner:(id)planner completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 recordRequestor];
-  if ([v8 needsRequestedRecords])
+  plannerCopy = planner;
+  handlerCopy = handler;
+  recordRequestor = [plannerCopy recordRequestor];
+  if ([recordRequestor needsRequestedRecords])
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100092330;
     v9[3] = &unk_1002756E8;
-    v11 = v7;
+    v11 = handlerCopy;
     v9[4] = self;
-    v10 = v6;
-    [v8 fetchRequestedRecordsForTransportTask:self completionHandler:v9];
+    v10 = plannerCopy;
+    [recordRequestor fetchRequestedRecordsForTransportTask:self completionHandler:v9];
   }
 
   else
   {
-    [(CPLCloudKitUploadBatchTask *)self _fetchSharedRecordsFromPlanner:v6 completionHandler:v7];
+    [(CPLCloudKitUploadBatchTask *)self _fetchSharedRecordsFromPlanner:plannerCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)_fetchSharedRecordsFromPlanner:(id)a3 completionHandler:(id)a4
+- (void)_fetchSharedRecordsFromPlanner:(id)planner completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 requestedSharedCKRecordIDs];
-  if ([v9 count])
+  plannerCopy = planner;
+  handlerCopy = handler;
+  requestedSharedCKRecordIDs = [plannerCopy requestedSharedCKRecordIDs];
+  if ([requestedSharedCKRecordIDs count])
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -627,42 +627,42 @@ LABEL_4:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v19 = v9;
+        v19 = requestedSharedCKRecordIDs;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Will fetch %@ before upload", buf, 0xCu);
       }
     }
 
-    v11 = [v7 sharedZoneIdentification];
+    sharedZoneIdentification = [plannerCopy sharedZoneIdentification];
 
-    if (!v11)
+    if (!sharedZoneIdentification)
     {
-      sub_1001AA3D0(a2, self, v9);
+      sub_1001AA3D0(a2, self, requestedSharedCKRecordIDs);
     }
 
-    v12 = [v7 sharedZoneIdentification];
-    v13 = [v12 operationType];
+    sharedZoneIdentification2 = [plannerCopy sharedZoneIdentification];
+    operationType = [sharedZoneIdentification2 operationType];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100092528;
     v14[3] = &unk_100276410;
-    v17 = v8;
-    v15 = v7;
-    v16 = self;
-    [(CPLCloudKitTransportTask *)self fetchRecordsFollowRemappingWithIDs:v9 wantsAllRecords:1 type:v13 completionHandler:v14];
+    v17 = handlerCopy;
+    v15 = plannerCopy;
+    selfCopy = self;
+    [(CPLCloudKitTransportTask *)self fetchRecordsFollowRemappingWithIDs:requestedSharedCKRecordIDs wantsAllRecords:1 type:operationType completionHandler:v14];
   }
 
   else
   {
-    [(CPLCloudKitUploadBatchTask *)self _uploadBatchFromPlanner:v7 completionHandler:v8];
+    [(CPLCloudKitUploadBatchTask *)self _uploadBatchFromPlanner:plannerCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)_fetchPrivateRecordsFromPlanner:(id)a3 completionHandler:(id)a4
+- (void)_fetchPrivateRecordsFromPlanner:(id)planner completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 requestedPrivateCKRecordIDs];
-  if ([v9 count])
+  plannerCopy = planner;
+  handlerCopy = handler;
+  requestedPrivateCKRecordIDs = [plannerCopy requestedPrivateCKRecordIDs];
+  if ([requestedPrivateCKRecordIDs count])
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -670,54 +670,54 @@ LABEL_4:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v19 = v9;
+        v19 = requestedPrivateCKRecordIDs;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Will fetch %@ before upload", buf, 0xCu);
       }
     }
 
-    v11 = [v7 sharedZoneIdentification];
+    sharedZoneIdentification = [plannerCopy sharedZoneIdentification];
 
-    if (!v11)
+    if (!sharedZoneIdentification)
     {
-      sub_1001AA4A4(a2, self, v9);
+      sub_1001AA4A4(a2, self, requestedPrivateCKRecordIDs);
     }
 
-    v12 = [v7 destinationZoneIdentification];
-    v13 = [v12 operationType];
+    destinationZoneIdentification = [plannerCopy destinationZoneIdentification];
+    operationType = [destinationZoneIdentification operationType];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100092A1C;
     v14[3] = &unk_100276410;
-    v17 = v8;
-    v15 = v7;
-    v16 = self;
-    [(CPLCloudKitTransportTask *)self fetchRecordsFollowRemappingWithIDs:v9 wantsAllRecords:1 type:v13 completionHandler:v14];
+    v17 = handlerCopy;
+    v15 = plannerCopy;
+    selfCopy = self;
+    [(CPLCloudKitTransportTask *)self fetchRecordsFollowRemappingWithIDs:requestedPrivateCKRecordIDs wantsAllRecords:1 type:operationType completionHandler:v14];
   }
 
   else
   {
-    [(CPLCloudKitUploadBatchTask *)self _uploadSharedBatchFromPlanner:v7 completionHandler:v8];
+    [(CPLCloudKitUploadBatchTask *)self _uploadSharedBatchFromPlanner:plannerCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)_uploadRecords:(id)a3 deleteRecordIDs:(id)a4 identification:(id)a5 fromPlanner:(id)a6 uploadContext:(id)a7 updateProgress:(id)a8 completionHandler:(id)a9
+- (void)_uploadRecords:(id)records deleteRecordIDs:(id)ds identification:(id)identification fromPlanner:(id)planner uploadContext:(id)context updateProgress:(id)progress completionHandler:(id)handler
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v38 = a7;
-  v20 = a8;
-  v21 = a9;
+  recordsCopy = records;
+  dsCopy = ds;
+  identificationCopy = identification;
+  plannerCopy = planner;
+  contextCopy = context;
+  progressCopy = progress;
+  handlerCopy = handler;
   v54[0] = 0;
-  LOBYTE(a8) = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:v54];
+  LOBYTE(progress) = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:v54];
   v22 = v54[0];
-  if (a8)
+  if (progress)
   {
-    if ([v16 count] || objc_msgSend(v17, "count"))
+    if ([recordsCopy count] || objc_msgSend(dsCopy, "count"))
     {
-      v37 = v18;
-      v23 = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:v16 recordIDsToDelete:v17];
+      v37 = identificationCopy;
+      v23 = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:recordsCopy recordIDsToDelete:dsCopy];
       [v23 setSavePolicy:0];
       [(CPLCloudKitTransportTask *)self fetchCache];
       v50[0] = _NSConcreteStackBlock;
@@ -726,15 +726,15 @@ LABEL_4:
       v50[3] = &unk_100276438;
       v50[4] = self;
       v35 = a2;
-      v24 = v21;
+      v24 = handlerCopy;
       v25 = v22;
-      v27 = v26 = v19;
+      v27 = v26 = plannerCopy;
       v51 = v27;
-      v28 = v38;
+      v28 = contextCopy;
       v52 = v28;
-      v36 = v16;
-      v29 = v20;
-      v30 = v20;
+      v36 = recordsCopy;
+      v29 = progressCopy;
+      v30 = progressCopy;
       v53 = v30;
       [v23 setPerRecordSaveBlock:v50];
       v48[0] = _NSConcreteStackBlock;
@@ -744,9 +744,9 @@ LABEL_4:
       v48[4] = self;
       v49 = v27;
       v31 = v27;
-      v19 = v26;
+      plannerCopy = v26;
       v22 = v25;
-      v21 = v24;
+      handlerCopy = v24;
       v32 = v31;
       [v23 setPerRecordDeleteBlock:v48];
       v45[0] = _NSConcreteStackBlock;
@@ -757,8 +757,8 @@ LABEL_4:
       v33 = v28;
       v46 = v33;
       v34 = v30;
-      v20 = v29;
-      v16 = v36;
+      progressCopy = v29;
+      recordsCopy = v36;
       v47 = v34;
       [v23 setPerRecordProgressBlock:v45];
       v39[0] = _NSConcreteStackBlock;
@@ -767,114 +767,114 @@ LABEL_4:
       v39[3] = &unk_1002764D8;
       v39[4] = self;
       v40 = v36;
-      v41 = v17;
-      v42 = v19;
+      v41 = dsCopy;
+      v42 = plannerCopy;
       v44 = v35;
-      v43 = v21;
+      v43 = handlerCopy;
       [v23 setModifyRecordsCompletionBlock:v39];
       -[CPLCloudKitTransportTask launchOperation:type:withContext:](self, "launchOperation:type:withContext:", v23, [v37 operationType], v33);
 
-      v18 = v37;
+      identificationCopy = v37;
     }
 
     else
     {
-      (*(v21 + 2))(v21, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
   else
   {
-    (*(v21 + 2))(v21, v22);
+    (*(handlerCopy + 2))(handlerCopy, v22);
   }
 }
 
-- (void)_uploadBatchFromPlanner:(id)a3 completionHandler:(id)a4
+- (void)_uploadBatchFromPlanner:(id)planner completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 ckRecordsToUpload];
-  if ([v8 count] && self->_simulateOverQuotaPhase == 1)
+  plannerCopy = planner;
+  handlerCopy = handler;
+  ckRecordsToUpload = [plannerCopy ckRecordsToUpload];
+  if ([ckRecordsToUpload count] && self->_simulateOverQuotaPhase == 1)
   {
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100093D44;
     v20[3] = &unk_100271E98;
-    v21 = v7;
-    v9 = v7;
+    v21 = handlerCopy;
+    ckRecordIDsToDelete = handlerCopy;
     [(CPLCloudKitTransportTask *)self dispatchAsync:v20];
-    v10 = v21;
+    willUploadRecords = v21;
   }
 
   else
   {
-    v9 = [v6 ckRecordIDsToDelete];
-    v10 = [v6 willUploadRecords];
-    v11 = [v6 destinationZoneIdentification];
+    ckRecordIDsToDelete = [plannerCopy ckRecordIDsToDelete];
+    willUploadRecords = [plannerCopy willUploadRecords];
+    destinationZoneIdentification = [plannerCopy destinationZoneIdentification];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100093DA4;
     v17[3] = &unk_100276500;
-    v18 = v6;
-    v19 = self;
+    v18 = plannerCopy;
+    selfCopy = self;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100093DEC;
     v13[3] = &unk_100276528;
-    v15 = self;
-    v16 = v7;
+    selfCopy2 = self;
+    v16 = handlerCopy;
     v14 = v18;
-    v12 = v7;
-    [(CPLCloudKitUploadBatchTask *)self _uploadRecords:v8 deleteRecordIDs:v9 identification:v11 fromPlanner:v14 uploadContext:v10 updateProgress:v17 completionHandler:v13];
+    v12 = handlerCopy;
+    [(CPLCloudKitUploadBatchTask *)self _uploadRecords:ckRecordsToUpload deleteRecordIDs:ckRecordIDsToDelete identification:destinationZoneIdentification fromPlanner:v14 uploadContext:willUploadRecords updateProgress:v17 completionHandler:v13];
   }
 }
 
-- (void)_uploadSharedBatchFromPlanner:(id)a3 completionHandler:(id)a4
+- (void)_uploadSharedBatchFromPlanner:(id)planner completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 sharedCKRecordsToUpload];
-  if ([v8 count] && self->_simulateOverQuotaPhase == 2)
+  plannerCopy = planner;
+  handlerCopy = handler;
+  sharedCKRecordsToUpload = [plannerCopy sharedCKRecordsToUpload];
+  if ([sharedCKRecordsToUpload count] && self->_simulateOverQuotaPhase == 2)
   {
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1001AA290;
     v20[3] = &unk_100271E98;
-    v21 = v7;
-    v9 = v7;
+    v21 = handlerCopy;
+    sharedCKRecordIDsToDelete = handlerCopy;
     [(CPLCloudKitTransportTask *)self dispatchAsync:v20];
-    v10 = v21;
+    willUploadSharedRecords = v21;
   }
 
   else
   {
-    v9 = [v6 sharedCKRecordIDsToDelete];
-    v10 = [v6 willUploadSharedRecords];
-    v11 = [v6 sharedZoneIdentification];
+    sharedCKRecordIDsToDelete = [plannerCopy sharedCKRecordIDsToDelete];
+    willUploadSharedRecords = [plannerCopy willUploadSharedRecords];
+    sharedZoneIdentification = [plannerCopy sharedZoneIdentification];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100094084;
     v17[3] = &unk_100276500;
-    v18 = v6;
-    v19 = self;
+    v18 = plannerCopy;
+    selfCopy = self;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000940CC;
     v13[3] = &unk_100276528;
-    v15 = self;
-    v16 = v7;
+    selfCopy2 = self;
+    v16 = handlerCopy;
     v14 = v18;
-    v12 = v7;
-    [(CPLCloudKitUploadBatchTask *)self _uploadRecords:v8 deleteRecordIDs:v9 identification:v11 fromPlanner:v14 uploadContext:v10 updateProgress:v17 completionHandler:v13];
+    v12 = handlerCopy;
+    [(CPLCloudKitUploadBatchTask *)self _uploadRecords:sharedCKRecordsToUpload deleteRecordIDs:sharedCKRecordIDsToDelete identification:sharedZoneIdentification fromPlanner:v14 uploadContext:willUploadSharedRecords updateProgress:v17 completionHandler:v13];
   }
 }
 
-- (void)_executeSharePlanFromPlanner:(id)a3 completionHandler:(id)a4
+- (void)_executeSharePlanFromPlanner:(id)planner completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 sharePlan];
-  if ([v8 count])
+  plannerCopy = planner;
+  handlerCopy = handler;
+  sharePlan = [plannerCopy sharePlan];
+  if ([sharePlan count])
   {
     if (self->_simulateOverQuotaPhase == 3)
     {
@@ -882,27 +882,27 @@ LABEL_4:
       v19[1] = 3221225472;
       v19[2] = sub_1001AA2E0;
       v19[3] = &unk_100271E98;
-      v20 = v7;
+      v20 = handlerCopy;
       [(CPLCloudKitTransportTask *)self dispatchAsync:v19];
       v9 = v20;
     }
 
     else
     {
-      [v8 willUploadRecords];
-      v10 = [v8 ckRecordIDsToShare];
-      v11 = [v6 destinationZoneIdentification];
-      v15 = [v11 operationType];
-      v12 = [v8 sharedCKRecordIDs];
-      v13 = [v6 sharedZoneIdentification];
-      v14 = [v13 operationType];
+      [sharePlan willUploadRecords];
+      ckRecordIDsToShare = [sharePlan ckRecordIDsToShare];
+      destinationZoneIdentification = [plannerCopy destinationZoneIdentification];
+      operationType = [destinationZoneIdentification operationType];
+      sharedCKRecordIDs = [sharePlan sharedCKRecordIDs];
+      sharedZoneIdentification = [plannerCopy sharedZoneIdentification];
+      operationType2 = [sharedZoneIdentification operationType];
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = sub_100094360;
       v16[3] = &unk_100276550;
-      v18 = v7;
-      v17 = v8;
-      [(CPLCloudKitTransportTask *)self moveRecordsWithIDs:v10 followRemapping:1 sourceType:v15 destinationRecordIDs:v12 destinationType:v14 helper:v17 completionHandler:v16];
+      v18 = handlerCopy;
+      v17 = sharePlan;
+      [(CPLCloudKitTransportTask *)self moveRecordsWithIDs:ckRecordIDsToShare followRemapping:1 sourceType:operationType destinationRecordIDs:sharedCKRecordIDs destinationType:operationType2 helper:v17 completionHandler:v16];
 
       v9 = v18;
     }
@@ -910,16 +910,16 @@ LABEL_4:
 
   else
   {
-    [(CPLCloudKitUploadBatchTask *)self _executeUnsharePlanFromPlanner:v6 completionHandler:v7];
+    [(CPLCloudKitUploadBatchTask *)self _executeUnsharePlanFromPlanner:plannerCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)_executeUnsharePlanFromPlanner:(id)a3 completionHandler:(id)a4
+- (void)_executeUnsharePlanFromPlanner:(id)planner completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 unsharePlan];
-  if ([v8 count])
+  plannerCopy = planner;
+  handlerCopy = handler;
+  unsharePlan = [plannerCopy unsharePlan];
+  if ([unsharePlan count])
   {
     if (self->_simulateOverQuotaPhase == 4)
     {
@@ -927,27 +927,27 @@ LABEL_4:
       v19[1] = 3221225472;
       v19[2] = sub_1001AA330;
       v19[3] = &unk_100271E98;
-      v20 = v7;
+      v20 = handlerCopy;
       [(CPLCloudKitTransportTask *)self dispatchAsync:v19];
       v9 = v20;
     }
 
     else
     {
-      [v8 willUploadRecords];
-      v10 = [v8 ckRecordIDsToUnshare];
-      v11 = [v6 sharedZoneIdentification];
-      v15 = [v11 operationType];
-      v12 = [v8 privateRecordIDs];
-      v13 = [v6 destinationZoneIdentification];
-      v14 = [v13 operationType];
+      [unsharePlan willUploadRecords];
+      ckRecordIDsToUnshare = [unsharePlan ckRecordIDsToUnshare];
+      sharedZoneIdentification = [plannerCopy sharedZoneIdentification];
+      operationType = [sharedZoneIdentification operationType];
+      privateRecordIDs = [unsharePlan privateRecordIDs];
+      destinationZoneIdentification = [plannerCopy destinationZoneIdentification];
+      operationType2 = [destinationZoneIdentification operationType];
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = sub_10009460C;
       v16[3] = &unk_100276550;
-      v18 = v7;
-      v17 = v8;
-      [(CPLCloudKitTransportTask *)self moveRecordsWithIDs:v10 followRemapping:1 sourceType:v15 destinationRecordIDs:v12 destinationType:v14 helper:v17 completionHandler:v16];
+      v18 = handlerCopy;
+      v17 = unsharePlan;
+      [(CPLCloudKitTransportTask *)self moveRecordsWithIDs:ckRecordIDsToUnshare followRemapping:1 sourceType:operationType destinationRecordIDs:privateRecordIDs destinationType:operationType2 helper:v17 completionHandler:v16];
 
       v9 = v18;
     }
@@ -955,7 +955,7 @@ LABEL_4:
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 

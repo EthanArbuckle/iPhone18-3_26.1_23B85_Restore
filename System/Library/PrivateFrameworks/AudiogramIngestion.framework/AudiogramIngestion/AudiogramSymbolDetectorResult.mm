@@ -1,7 +1,7 @@
 @interface AudiogramSymbolDetectorResult
-+ (CGRect)boundingBoxForSymbols:(id)a3;
++ (CGRect)boundingBoxForSymbols:(id)symbols;
 - (CGRect)box;
-- (CGRect)scaledBoxWithSize:(CGSize)a3 offset:(CGPoint)a4;
+- (CGRect)scaledBoxWithSize:(CGSize)size offset:(CGPoint)offset;
 - (NSString)labelName;
 - (_TtC18AudiogramIngestion29AudiogramSymbolDetectorResult)init;
 @end
@@ -29,10 +29,10 @@
   return v2;
 }
 
-- (CGRect)scaledBoxWithSize:(CGSize)a3 offset:(CGPoint)a4
+- (CGRect)scaledBoxWithSize:(CGSize)size offset:(CGPoint)offset
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = *(self + OBJC_IVAR____TtC18AudiogramIngestion29AudiogramSymbolDetectorResult_box);
   v8 = *(self + OBJC_IVAR____TtC18AudiogramIngestion29AudiogramSymbolDetectorResult_box + 8);
   v9 = *(self + OBJC_IVAR____TtC18AudiogramIngestion29AudiogramSymbolDetectorResult_box + 16);
@@ -64,7 +64,7 @@
   v16 = v37.origin.y;
   v17 = v37.size.width;
   v18 = v37.size.height;
-  v19 = self;
+  selfCopy = self;
   v38.origin.x = v15;
   v38.origin.y = v16;
   v38.size.width = v17;
@@ -88,7 +88,7 @@
   v42.origin.x = v20;
   v42.origin.y = v21;
   v42.size.width = v22;
-  v43 = CGRectOffset(v42, a4.x, a4.y);
+  v43 = CGRectOffset(v42, offset.x, offset.y);
   v23 = v43.origin.x;
   v24 = v43.origin.y;
   v25 = v43.size.width;
@@ -105,7 +105,7 @@
   return result;
 }
 
-+ (CGRect)boundingBoxForSymbols:(id)a3
++ (CGRect)boundingBoxForSymbols:(id)symbols
 {
   type metadata accessor for AudiogramSymbolDetectorResult();
   v3 = sub_2417E424C();

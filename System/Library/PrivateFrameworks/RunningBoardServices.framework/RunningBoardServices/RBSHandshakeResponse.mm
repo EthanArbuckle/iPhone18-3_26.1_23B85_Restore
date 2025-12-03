@@ -1,16 +1,16 @@
 @interface RBSHandshakeResponse
-- (BOOL)isEqual:(id)a3;
-- (RBSHandshakeResponse)initWithRBSXPCCoder:(id)a3;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (RBSHandshakeResponse)initWithRBSXPCCoder:(id)coder;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSHandshakeResponse
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_29;
   }
@@ -24,7 +24,7 @@ LABEL_3:
   }
 
   handle = self->_handle;
-  v8 = v4->_handle;
+  v8 = equalCopy->_handle;
   if (handle != v8)
   {
     v6 = 0;
@@ -40,7 +40,7 @@ LABEL_3:
   }
 
   assertionIdentifiersByOldIdentifier = self->_assertionIdentifiersByOldIdentifier;
-  v10 = v4->_assertionIdentifiersByOldIdentifier;
+  v10 = equalCopy->_assertionIdentifiersByOldIdentifier;
   if (assertionIdentifiersByOldIdentifier != v10)
   {
     v6 = 0;
@@ -56,7 +56,7 @@ LABEL_3:
   }
 
   assertionErrorsByOldIdentifier = self->_assertionErrorsByOldIdentifier;
-  v12 = v4->_assertionErrorsByOldIdentifier;
+  v12 = equalCopy->_assertionErrorsByOldIdentifier;
   if (assertionErrorsByOldIdentifier != v12)
   {
     v6 = 0;
@@ -72,7 +72,7 @@ LABEL_3:
   }
 
   managedEndpointByLaunchIdentifier = self->_managedEndpointByLaunchIdentifier;
-  v14 = v4->_managedEndpointByLaunchIdentifier;
+  v14 = equalCopy->_managedEndpointByLaunchIdentifier;
   if (managedEndpointByLaunchIdentifier == v14)
   {
 LABEL_29:
@@ -140,63 +140,63 @@ LABEL_30:
   return v6;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   handle = self->_handle;
-  v9 = a3;
-  [(RBSProcessHandle *)handle fullEncode:v9 forKey:@"_handle"];
-  v5 = [(NSDictionary *)self->_assertionIdentifiersByOldIdentifier allKeys];
-  [v9 encodeObject:v5 forKey:@"success-keys"];
+  coderCopy = coder;
+  [(RBSProcessHandle *)handle fullEncode:coderCopy forKey:@"_handle"];
+  allKeys = [(NSDictionary *)self->_assertionIdentifiersByOldIdentifier allKeys];
+  [coderCopy encodeObject:allKeys forKey:@"success-keys"];
 
-  v6 = [(NSDictionary *)self->_assertionIdentifiersByOldIdentifier allValues];
-  [v9 encodeObject:v6 forKey:@"success-values"];
+  allValues = [(NSDictionary *)self->_assertionIdentifiersByOldIdentifier allValues];
+  [coderCopy encodeObject:allValues forKey:@"success-values"];
 
-  v7 = [(NSDictionary *)self->_assertionErrorsByOldIdentifier allKeys];
-  [v9 encodeObject:v7 forKey:@"fail-keys"];
+  allKeys2 = [(NSDictionary *)self->_assertionErrorsByOldIdentifier allKeys];
+  [coderCopy encodeObject:allKeys2 forKey:@"fail-keys"];
 
-  v8 = [(NSDictionary *)self->_assertionErrorsByOldIdentifier allValues];
-  [v9 encodeObject:v8 forKey:@"fail-values"];
+  allValues2 = [(NSDictionary *)self->_assertionErrorsByOldIdentifier allValues];
+  [coderCopy encodeObject:allValues2 forKey:@"fail-values"];
 
-  [v9 encodeDictionary:self->_managedEndpointByLaunchIdentifier forKey:@"_managedEndpointByLaunchIdentifier"];
+  [coderCopy encodeDictionary:self->_managedEndpointByLaunchIdentifier forKey:@"_managedEndpointByLaunchIdentifier"];
 }
 
-- (RBSHandshakeResponse)initWithRBSXPCCoder:(id)a3
+- (RBSHandshakeResponse)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = RBSHandshakeResponse;
   v5 = [(RBSHandshakeResponse *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_handle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_handle"];
     handle = v5->_handle;
     v5->_handle = v6;
 
-    if ([v4 containsValueForKey:@"success-values"])
+    if ([coderCopy containsValueForKey:@"success-values"])
     {
       v8 = MEMORY[0x1E695DF20];
       v9 = objc_opt_class();
-      v10 = [v4 decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"success-values"];
+      v10 = [coderCopy decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"success-values"];
       v11 = objc_opt_class();
-      v12 = [v4 decodeCollectionOfClass:v11 containingClass:objc_opt_class() forKey:@"success-keys"];
+      v12 = [coderCopy decodeCollectionOfClass:v11 containingClass:objc_opt_class() forKey:@"success-keys"];
       v13 = [v8 dictionaryWithObjects:v10 forKeys:v12];
       assertionIdentifiersByOldIdentifier = v5->_assertionIdentifiersByOldIdentifier;
       v5->_assertionIdentifiersByOldIdentifier = v13;
     }
 
-    if ([v4 containsValueForKey:@"fail-values"])
+    if ([coderCopy containsValueForKey:@"fail-values"])
     {
       v15 = MEMORY[0x1E695DF20];
       v16 = objc_opt_class();
-      v17 = [v4 decodeCollectionOfClass:v16 containingClass:objc_opt_class() forKey:@"fail-values"];
+      v17 = [coderCopy decodeCollectionOfClass:v16 containingClass:objc_opt_class() forKey:@"fail-values"];
       v18 = objc_opt_class();
-      v19 = [v4 decodeCollectionOfClass:v18 containingClass:objc_opt_class() forKey:@"fail-keys"];
+      v19 = [coderCopy decodeCollectionOfClass:v18 containingClass:objc_opt_class() forKey:@"fail-keys"];
       v20 = [v15 dictionaryWithObjects:v17 forKeys:v19];
       assertionErrorsByOldIdentifier = v5->_assertionErrorsByOldIdentifier;
       v5->_assertionErrorsByOldIdentifier = v20;
     }
 
-    v22 = [v4 decodeDictionaryOfClass:objc_opt_class() forKey:@"_managedEndpointByLaunchIdentifier"];
+    v22 = [coderCopy decodeDictionaryOfClass:objc_opt_class() forKey:@"_managedEndpointByLaunchIdentifier"];
     managedEndpointByLaunchIdentifier = v5->_managedEndpointByLaunchIdentifier;
     v5->_managedEndpointByLaunchIdentifier = v22;
   }

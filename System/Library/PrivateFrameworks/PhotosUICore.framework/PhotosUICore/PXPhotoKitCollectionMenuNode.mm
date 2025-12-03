@@ -1,10 +1,10 @@
 @interface PXPhotoKitCollectionMenuNode
-+ (id)rootNodeForAssetCollectionsContainingAsset:(id)a3 excludedAssetCollection:(id)a4;
++ (id)rootNodeForAssetCollectionsContainingAsset:(id)asset excludedAssetCollection:(id)collection;
 - (NSArray)childNodes;
 - (NSString)localizedTitle;
 - (PXPhotoKitCollectionMenuNode)init;
-- (PXPhotoKitCollectionMenuNode)initWithCollection:(id)a3;
-- (void)addChildNode:(id)a3;
+- (PXPhotoKitCollectionMenuNode)initWithCollection:(id)collection;
+- (void)addChildNode:(id)node;
 - (void)sortChildNodes;
 @end
 
@@ -13,22 +13,22 @@
 - (void)sortChildNodes
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(PXPhotoKitCollectionMenuNode *)self collection];
+  collection = [(PXPhotoKitCollectionMenuNode *)self collection];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = collection;
 
     if (v4 && [(NSMutableDictionary *)self->_childNodesByLocalIdentifier count]>= 2)
     {
-      v5 = [v4 photoLibrary];
-      v6 = [v5 librarySpecificFetchOptions];
+      photoLibrary = [v4 photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
       v7 = MEMORY[0x1E696AE18];
-      v8 = [(NSMutableDictionary *)self->_childNodesByLocalIdentifier allKeys];
-      v9 = [v7 predicateWithFormat:@"localIdentifier in (%@)", v8];
-      [v6 setPredicate:v9];
+      allKeys = [(NSMutableDictionary *)self->_childNodesByLocalIdentifier allKeys];
+      v9 = [v7 predicateWithFormat:@"localIdentifier in (%@)", allKeys];
+      [librarySpecificFetchOptions setPredicate:v9];
 
-      v10 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v4 options:v6];
+      v10 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v4 options:librarySpecificFetchOptions];
       [(NSMutableArray *)self->_childNodes removeAllObjects];
       v21 = 0u;
       v22 = 0u;
@@ -51,8 +51,8 @@
             }
 
             childNodesByLocalIdentifier = self->_childNodesByLocalIdentifier;
-            v17 = [*(*(&v19 + 1) + 8 * v15) localIdentifier];
-            v18 = [(NSMutableDictionary *)childNodesByLocalIdentifier objectForKey:v17];
+            localIdentifier = [*(*(&v19 + 1) + 8 * v15) localIdentifier];
+            v18 = [(NSMutableDictionary *)childNodesByLocalIdentifier objectForKey:localIdentifier];
 
             [(NSMutableArray *)self->_childNodes addObject:v18];
             ++v15;
@@ -74,15 +74,15 @@
   }
 }
 
-- (void)addChildNode:(id)a3
+- (void)addChildNode:(id)node
 {
   childNodesByLocalIdentifier = self->_childNodesByLocalIdentifier;
-  v7 = a3;
-  v5 = [v7 collection];
-  v6 = [v5 localIdentifier];
-  [(NSMutableDictionary *)childNodesByLocalIdentifier setObject:v7 forKey:v6];
+  nodeCopy = node;
+  collection = [nodeCopy collection];
+  localIdentifier = [collection localIdentifier];
+  [(NSMutableDictionary *)childNodesByLocalIdentifier setObject:nodeCopy forKey:localIdentifier];
 
-  [(NSMutableArray *)self->_childNodes addObject:v7];
+  [(NSMutableArray *)self->_childNodes addObject:nodeCopy];
 }
 
 - (NSArray)childNodes
@@ -94,31 +94,31 @@
 
 - (NSString)localizedTitle
 {
-  v2 = [(PXPhotoKitCollectionMenuNode *)self collection];
-  v3 = [v2 localizedTitle];
+  collection = [(PXPhotoKitCollectionMenuNode *)self collection];
+  localizedTitle = [collection localizedTitle];
 
-  return v3;
+  return localizedTitle;
 }
 
 - (PXPhotoKitCollectionMenuNode)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotoKitCollectionMenuNode.m" lineNumber:66 description:{@"%s is not available as initializer", "-[PXPhotoKitCollectionMenuNode init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitCollectionMenuNode.m" lineNumber:66 description:{@"%s is not available as initializer", "-[PXPhotoKitCollectionMenuNode init]"}];
 
   abort();
 }
 
-- (PXPhotoKitCollectionMenuNode)initWithCollection:(id)a3
+- (PXPhotoKitCollectionMenuNode)initWithCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v14.receiver = self;
   v14.super_class = PXPhotoKitCollectionMenuNode;
   v6 = [(PXPhotoKitCollectionMenuNode *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collection, a3);
-    if ([v5 canContainAssets])
+    objc_storeStrong(&v6->_collection, collection);
+    if ([collectionCopy canContainAssets])
     {
       v8 = @"rectangle.stack";
     }
@@ -141,24 +141,24 @@
   return v7;
 }
 
-+ (id)rootNodeForAssetCollectionsContainingAsset:(id)a3 excludedAssetCollection:(id)a4
++ (id)rootNodeForAssetCollectionsContainingAsset:(id)asset excludedAssetCollection:(id)collection
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 photoLibrary];
-  v9 = [v8 librarySpecificFetchOptions];
+  assetCopy = asset;
+  collectionCopy = collection;
+  photoLibrary = [assetCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  v27 = v9;
-  v10 = [MEMORY[0x1E6978760] fetchRootAlbumCollectionListWithOptions:v9];
-  v11 = [v10 firstObject];
+  v27 = librarySpecificFetchOptions;
+  v10 = [MEMORY[0x1E6978760] fetchRootAlbumCollectionListWithOptions:librarySpecificFetchOptions];
+  firstObject = [v10 firstObject];
 
-  v26 = v11;
-  v32 = [[a1 alloc] initWithCollection:v11];
+  v26 = firstObject;
+  v32 = [[self alloc] initWithCollection:firstObject];
   v12 = objc_opt_new();
-  v28 = v7;
-  v29 = v6;
-  [MEMORY[0x1E6978650] px_fetchContainingCollectionsForAsset:v6 excludedAssetCollection:v7];
+  v28 = collectionCopy;
+  v29 = assetCopy;
+  [MEMORY[0x1E6978650] px_fetchContainingCollectionsForAsset:assetCopy excludedAssetCollection:collectionCopy];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -204,22 +204,22 @@
               v22 = *(*(&v35 + 1) + 8 * v20);
               if ([v22 canContainCollections])
               {
-                v23 = [v22 localIdentifier];
-                v15 = [v12 objectForKeyedSubscript:v23];
+                localIdentifier = [v22 localIdentifier];
+                v15 = [v12 objectForKeyedSubscript:localIdentifier];
 
                 if (v15)
                 {
                   goto LABEL_16;
                 }
 
-                v15 = [[a1 alloc] initWithCollection:v22];
-                v24 = [v22 localIdentifier];
-                [v12 setObject:v15 forKeyedSubscript:v24];
+                v15 = [[self alloc] initWithCollection:v22];
+                localIdentifier2 = [v22 localIdentifier];
+                [v12 setObject:v15 forKeyedSubscript:localIdentifier2];
               }
 
               else
               {
-                v15 = [[a1 alloc] initWithCollection:v22];
+                v15 = [[self alloc] initWithCollection:v22];
               }
 
               [v21 addChildNode:v15];

@@ -4,10 +4,10 @@
 - (UIView)contentContainerView;
 - (UIView)sidebarContainerView;
 - (void)createLayout;
-- (void)setContentViewController:(id)a3;
-- (void)setPreferredSidebarWidth:(double)a3;
-- (void)setSidebarHidden:(BOOL)a3;
-- (void)setSidebarViewController:(id)a3;
+- (void)setContentViewController:(id)controller;
+- (void)setPreferredSidebarWidth:(double)width;
+- (void)setSidebarHidden:(BOOL)hidden;
+- (void)setSidebarViewController:(id)controller;
 @end
 
 @implementation ICTrailingSidebarContainerViewController
@@ -29,62 +29,62 @@
   return v3;
 }
 
-- (void)setContentViewController:(id)a3
+- (void)setContentViewController:(id)controller
 {
-  v9 = a3;
+  controllerCopy = controller;
   [(UIViewController *)self->_contentViewController willMoveToParentViewController:0];
   [(UIViewController *)self->_contentViewController removeFromParentViewController];
-  v5 = [(UIViewController *)self->_contentViewController view];
-  [v5 removeFromSuperview];
+  view = [(UIViewController *)self->_contentViewController view];
+  [view removeFromSuperview];
 
-  objc_storeStrong(&self->_contentViewController, a3);
-  if (v9)
+  objc_storeStrong(&self->_contentViewController, controller);
+  if (controllerCopy)
   {
-    v6 = [(ICTrailingSidebarContainerViewController *)self contentContainerView];
-    v7 = [v9 view];
-    [v6 addSubview:v7];
+    contentContainerView = [(ICTrailingSidebarContainerViewController *)self contentContainerView];
+    view2 = [controllerCopy view];
+    [contentContainerView addSubview:view2];
 
-    [(ICTrailingSidebarContainerViewController *)self addChildViewController:v9];
-    [v9 didMoveToParentViewController:self];
-    v8 = [v9 view];
-    [v8 ic_addConstraintsToFillSuperview];
+    [(ICTrailingSidebarContainerViewController *)self addChildViewController:controllerCopy];
+    [controllerCopy didMoveToParentViewController:self];
+    view3 = [controllerCopy view];
+    [view3 ic_addConstraintsToFillSuperview];
   }
 }
 
-- (void)setSidebarViewController:(id)a3
+- (void)setSidebarViewController:(id)controller
 {
-  v9 = a3;
+  controllerCopy = controller;
   [(UIViewController *)self->_sidebarViewController willMoveToParentViewController:0];
   [(UIViewController *)self->_sidebarViewController removeFromParentViewController];
-  v5 = [(UIViewController *)self->_sidebarViewController view];
-  [v5 removeFromSuperview];
+  view = [(UIViewController *)self->_sidebarViewController view];
+  [view removeFromSuperview];
 
-  objc_storeStrong(&self->_sidebarViewController, a3);
-  if (v9)
+  objc_storeStrong(&self->_sidebarViewController, controller);
+  if (controllerCopy)
   {
-    v6 = [(ICTrailingSidebarContainerViewController *)self sidebarContainerView];
-    v7 = [v9 view];
-    [v6 addSubview:v7];
+    sidebarContainerView = [(ICTrailingSidebarContainerViewController *)self sidebarContainerView];
+    view2 = [controllerCopy view];
+    [sidebarContainerView addSubview:view2];
 
-    [(ICTrailingSidebarContainerViewController *)self addChildViewController:v9];
-    [v9 didMoveToParentViewController:self];
-    v8 = [v9 view];
-    [v8 ic_addConstraintsToFillSuperview];
+    [(ICTrailingSidebarContainerViewController *)self addChildViewController:controllerCopy];
+    [controllerCopy didMoveToParentViewController:self];
+    view3 = [controllerCopy view];
+    [view3 ic_addConstraintsToFillSuperview];
   }
 }
 
-- (void)setSidebarHidden:(BOOL)a3
+- (void)setSidebarHidden:(BOOL)hidden
 {
-  if (self->_sidebarHidden != a3)
+  if (self->_sidebarHidden != hidden)
   {
-    v3 = a3;
+    hiddenCopy = hidden;
     [(ICTrailingSidebarContainerViewController *)self setTransitioning:1];
-    self->_sidebarHidden = v3;
-    v5 = [(ICTrailingSidebarContainerViewController *)self sidebarContainerView];
-    [v5 setHidden:v3];
+    self->_sidebarHidden = hiddenCopy;
+    sidebarContainerView = [(ICTrailingSidebarContainerViewController *)self sidebarContainerView];
+    [sidebarContainerView setHidden:hiddenCopy];
 
     v6 = 0.0;
-    if (!v3)
+    if (!hiddenCopy)
     {
       [(ICTrailingSidebarContainerViewController *)self preferredSidebarWidth];
     }
@@ -92,8 +92,8 @@
     [(ICTrailingSidebarContainerViewController *)self setSidebarWidth:v6];
     [(ICTrailingSidebarContainerViewController *)self sidebarWidth];
     v8 = v7;
-    v9 = [(ICTrailingSidebarContainerViewController *)self sidebarWidthConstraint];
-    [v9 setConstant:v8];
+    sidebarWidthConstraint = [(ICTrailingSidebarContainerViewController *)self sidebarWidthConstraint];
+    [sidebarWidthConstraint setConstant:v8];
 
     [(ICTrailingSidebarContainerViewController *)self setTransitioning:0];
   }
@@ -138,10 +138,10 @@
   if (!stackView)
   {
     v4 = [UIStackView alloc];
-    v5 = [(ICTrailingSidebarContainerViewController *)self contentContainerView];
-    v11[0] = v5;
-    v6 = [(ICTrailingSidebarContainerViewController *)self sidebarContainerView];
-    v11[1] = v6;
+    contentContainerView = [(ICTrailingSidebarContainerViewController *)self contentContainerView];
+    v11[0] = contentContainerView;
+    sidebarContainerView = [(ICTrailingSidebarContainerViewController *)self sidebarContainerView];
+    v11[1] = sidebarContainerView;
     v7 = [NSArray arrayWithObjects:v11 count:2];
     v8 = [v4 initWithArrangedSubviews:v7];
     v9 = self->_stackView;
@@ -157,17 +157,17 @@
 
 - (void)createLayout
 {
-  v3 = [(ICTrailingSidebarContainerViewController *)self view];
-  v4 = [(ICTrailingSidebarContainerViewController *)self stackView];
-  [v3 addSubview:v4];
+  view = [(ICTrailingSidebarContainerViewController *)self view];
+  stackView = [(ICTrailingSidebarContainerViewController *)self stackView];
+  [view addSubview:stackView];
 
-  v5 = [(ICTrailingSidebarContainerViewController *)self stackView];
-  [v5 ic_addConstraintsToFillSuperview];
+  stackView2 = [(ICTrailingSidebarContainerViewController *)self stackView];
+  [stackView2 ic_addConstraintsToFillSuperview];
 
-  v6 = [(ICTrailingSidebarContainerViewController *)self sidebarContainerView];
-  v7 = [v6 widthAnchor];
+  sidebarContainerView = [(ICTrailingSidebarContainerViewController *)self sidebarContainerView];
+  widthAnchor = [sidebarContainerView widthAnchor];
   [(ICTrailingSidebarContainerViewController *)self sidebarWidth];
-  v8 = [v7 constraintEqualToConstant:?];
+  v8 = [widthAnchor constraintEqualToConstant:?];
   sidebarWidthConstraint = self->_sidebarWidthConstraint;
   self->_sidebarWidthConstraint = v8;
 
@@ -176,13 +176,13 @@
   [NSLayoutConstraint activateConstraints:v10];
 }
 
-- (void)setPreferredSidebarWidth:(double)a3
+- (void)setPreferredSidebarWidth:(double)width
 {
-  self->_preferredSidebarWidth = a3;
+  self->_preferredSidebarWidth = width;
   [(ICTrailingSidebarContainerViewController *)self sidebarWidth];
   v5 = v4;
-  v6 = [(ICTrailingSidebarContainerViewController *)self sidebarWidthConstraint];
-  [v6 setConstant:v5];
+  sidebarWidthConstraint = [(ICTrailingSidebarContainerViewController *)self sidebarWidthConstraint];
+  [sidebarWidthConstraint setConstant:v5];
 }
 
 @end

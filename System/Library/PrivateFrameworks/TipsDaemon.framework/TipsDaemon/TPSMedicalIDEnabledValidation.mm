@@ -1,24 +1,24 @@
 @interface TPSMedicalIDEnabledValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSMedicalIDEnabledValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[TPSHealthKitDefines sharedHealthStore];
   v6 = [objc_alloc(MEMORY[0x277CCD5E8]) initWithHealthStore:v5];
-  v7 = [v6 medicalIDSetUpStatus];
-  v8 = [(TPSTargetingValidation *)self BOOLValue];
-  v9 = v7 != 2;
-  v10 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  medicalIDSetUpStatus = [v6 medicalIDSetUpStatus];
+  bOOLValue = [(TPSTargetingValidation *)self BOOLValue];
+  v9 = medicalIDSetUpStatus != 2;
+  targeting = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSDictationLanguageValidation *)self validateWithCompletion:v10];
+    [(TPSDictationLanguageValidation *)self validateWithCompletion:targeting];
   }
 
-  (*(v4 + 2))(v4, v9 ^ v8, 0);
+  (*(completionCopy + 2))(completionCopy, v9 ^ bOOLValue, 0);
 }
 
 @end

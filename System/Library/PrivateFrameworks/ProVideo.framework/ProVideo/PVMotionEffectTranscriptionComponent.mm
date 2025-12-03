@@ -1,55 +1,55 @@
 @interface PVMotionEffectTranscriptionComponent
 + (id)motionEffectPropertyKeyToPublishedParameterNameMap;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)transcriptionDuration;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)transcriptionDuration_NoLock:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)transcriptionDuration_NoLock:(SEL)lock;
 - (BOOL)disableWordFadeOutForPreview;
 - (BOOL)isSingleWordTranscription;
 - (BOOL)isTranscription;
-- (BOOL)shouldDisableWordFadeOut_NoLock:(const void *)a3;
-- (BOOL)transcriptionHitTest:(CGPoint)a3 time:(id *)a4;
+- (BOOL)shouldDisableWordFadeOut_NoLock:(const void *)lock;
+- (BOOL)transcriptionHitTest:(CGPoint)test time:(id *)time;
 - (void)clearTranscription;
-- (void)computeLoopMarkerBasedOnTranscription_NoLock:(const void *)a3;
-- (void)disableWordFadeOutIfNecessary_NoLock:(const void *)a3;
-- (void)effect:(id)a3 updateProperties:(id)a4 allProperties:(id)a5;
-- (void)motionEffect:(id)a3 didBecomeReady:(const void *)a4 properties:(id)a5;
-- (void)motionEffect:(id)a3 didLoad:(const void *)a4;
-- (void)resetToDefaultTranscriptionForLocaleID:(id)a3;
-- (void)setTranscriptionText:(id)a3;
-- (void)setupTranscriptionParameters_NoLock:(id)a3 documentInfo:(const void *)a4;
+- (void)computeLoopMarkerBasedOnTranscription_NoLock:(const void *)lock;
+- (void)disableWordFadeOutIfNecessary_NoLock:(const void *)lock;
+- (void)effect:(id)effect updateProperties:(id)properties allProperties:(id)allProperties;
+- (void)motionEffect:(id)effect didBecomeReady:(const void *)ready properties:(id)properties;
+- (void)motionEffect:(id)effect didLoad:(const void *)load;
+- (void)resetToDefaultTranscriptionForLocaleID:(id)d;
+- (void)setTranscriptionText:(id)text;
+- (void)setupTranscriptionParameters_NoLock:(id)lock documentInfo:(const void *)info;
 @end
 
 @implementation PVMotionEffectTranscriptionComponent
 
-- (void)setupTranscriptionParameters_NoLock:(id)a3 documentInfo:(const void *)a4
+- (void)setupTranscriptionParameters_NoLock:(id)lock documentInfo:(const void *)info
 {
-  v6 = a3;
-  v7 = [(PVMotionEffectComponent *)self motionEffect];
-  [v7 assertDocumentIsLocked];
+  lockCopy = lock;
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v8 = [(PVMotionEffectComponent *)self motionEffect];
-  [v8 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   if ([(PVMotionEffectTranscriptionComponent *)self isTranscription])
   {
     v9 = +[PVMotionEffect motionEffectPropertyKeyToPublishedParameterNameMap];
-    v10 = [v6 objectForKeyedSubscript:@"Transcription"];
+    v10 = [lockCopy objectForKeyedSubscript:@"Transcription"];
 
     if (v10)
     {
       v34.value = 0;
       PCString::set(&v34, @"IsRecording");
-      v11 = *a4;
-      v12 = [(PVMotionEffectComponent *)self motionEffect];
-      OZXSetPublishedCheckBox(v11, &v34, [v12 isRecording]);
+      v11 = *info;
+      motionEffect3 = [(PVMotionEffectComponent *)self motionEffect];
+      OZXSetPublishedCheckBox(v11, &v34, [motionEffect3 isRecording]);
 
       PCString::~PCString(&v34);
-      v13 = [v6 objectForKeyedSubscript:@"Transcription"];
+      v13 = [lockCopy objectForKeyedSubscript:@"Transcription"];
       objc_opt_class();
       LOBYTE(v11) = objc_opt_isKindOfClass();
 
       if (v11)
       {
-        v14 = [v6 objectForKeyedSubscript:@"Transcription"];
+        v14 = [lockCopy objectForKeyedSubscript:@"Transcription"];
         v15 = [v14 objectForKeyedSubscript:@"TranscriptionArray"];
 
         v16 = [v14 objectForKeyedSubscript:@"TranscriptionFormattedString"];
@@ -67,63 +67,63 @@
         }
 
         v19 = [v14 objectForKeyedSubscript:@"TranscriptionIsFinal"];
-        v20 = [v19 BOOLValue];
+        bOOLValue = [v19 BOOLValue];
 
-        OZXSetTranscription(*a4, v15, v16, &v34, v20);
+        OZXSetTranscription(*info, v15, v16, &v34, bOOLValue);
         if ([(PVMotionEffectTranscriptionComponent *)self isSingleWordTranscription])
         {
           v21 = [v9 objectForKeyedSubscript:@"TranscriptionWordFadeOut"];
           v33.var0 = 0;
           PCString::set(&v33, v21);
 
-          OZXSetPublishedCheckBox(*a4, &v33, v20);
+          OZXSetPublishedCheckBox(*info, &v33, bOOLValue);
           PCString::~PCString(&v33);
         }
       }
 
       PCString::PCString(&v34, "TranscriptionLineShift");
-      OZXAdjustTranscriptionLineSpacingForCurrentFont(*a4, &v34);
+      OZXAdjustTranscriptionLineSpacingForCurrentFont(*info, &v34);
       v32 = 0;
-      OZXIsUsingSubstituteFont(*a4, &v32);
+      OZXIsUsingSubstituteFont(*info, &v32);
       v33.var0 = 0;
       PCString::set(&v33, @"EnableDynamicLineSpacing");
-      OZXSetPublishedCheckBox(*a4, &v33, v32);
+      OZXSetPublishedCheckBox(*info, &v33, v32);
       PCString::~PCString(&v33);
       PCString::~PCString(&v34);
     }
 
-    v22 = [v6 objectForKeyedSubscript:@"RenderStartOffset"];
+    v22 = [lockCopy objectForKeyedSubscript:@"RenderStartOffset"];
     v23 = v22;
     if (v22)
     {
       memset(&v34, 0, sizeof(v34));
       [v22 CMTimeValue];
-      OZXSetTranscriptionMediaOffset(*a4, &v34);
+      OZXSetTranscriptionMediaOffset(*info, &v34);
     }
 
-    [(PVMotionEffectTranscriptionComponent *)self disableWordFadeOutIfNecessary_NoLock:a4];
-    v24 = [v6 objectForKeyedSubscript:@"TranscriptionLocale"];
+    [(PVMotionEffectTranscriptionComponent *)self disableWordFadeOutIfNecessary_NoLock:info];
+    v24 = [lockCopy objectForKeyedSubscript:@"TranscriptionLocale"];
 
     if (v24)
     {
-      v25 = [v6 objectForKeyedSubscript:@"TranscriptionLocale"];
-      OZXSetTranscriptionLocale(*a4, v25);
+      v25 = [lockCopy objectForKeyedSubscript:@"TranscriptionLocale"];
+      OZXSetTranscriptionLocale(*info, v25);
       v26 = [MEMORY[0x277CBEAF8] characterDirectionForLanguage:v25];
-      v27 = [(PVMotionEffectComponent *)self motionEffect];
-      v28 = [v27 textComponent];
-      [v28 setIsRightToLeft_NoLock:v26 == 2 documentInfo:a4];
+      motionEffect4 = [(PVMotionEffectComponent *)self motionEffect];
+      textComponent = [motionEffect4 textComponent];
+      [textComponent setIsRightToLeft_NoLock:v26 == 2 documentInfo:info];
     }
 
-    v29 = [v6 objectForKeyedSubscript:@"LiveTitleFontName"];
+    v29 = [lockCopy objectForKeyedSubscript:@"LiveTitleFontName"];
 
     if (v29)
     {
-      v30 = [v6 objectForKeyedSubscript:@"LiveTitleFontName"];
+      v30 = [lockCopy objectForKeyedSubscript:@"LiveTitleFontName"];
       v31 = [v9 objectForKeyedSubscript:@"LiveTitleFontName"];
       v34.value = 0;
       PCString::set(&v34, v31);
 
-      OZXSetPublishedTextFont(*a4, &v34, v30);
+      OZXSetPublishedTextFont(*info, &v34, v30);
       PCString::~PCString(&v34);
     }
   }
@@ -134,29 +134,29 @@
   isTranscription = self->_isTranscription;
   if (!isTranscription)
   {
-    v4 = [(PVMotionEffectComponent *)self motionEffect];
-    v5 = [v4 contentRegistryPropertyForKey:@"effectType"];
+    motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+    v5 = [motionEffect contentRegistryPropertyForKey:@"effectType"];
 
     if (v5)
     {
       v6 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v5, "isEqualToString:", @"LiveTitle"}];
-      v7 = self->_isTranscription;
+      effectID = self->_isTranscription;
       self->_isTranscription = v6;
     }
 
     else
     {
-      v8 = [(PVMotionEffectComponent *)self motionEffect];
-      v7 = [v8 effectID];
+      motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+      effectID = [motionEffect2 effectID];
 
-      if ([v7 isEqualToString:@"6561CB61-577E-403C-A533-81E23A1B9308"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"A0F0CBC6-16F5-4973-B45D-7F15B90F17F8") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"4D82B147-6A27-42E2-AA56-C7CBA653D5B8") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"5645A248-34A3-4654-8CEB-AEE59C6F7BCB") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"58D36D1B-D0F8-4709-BD10-4DCF2CEC9FC3") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"3485E1D8-0A05-4EAF-859B-8930899EC5A8") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"15A33011-A4E4-44E8-9127-1766525161F3") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"A6409851-8835-43BC-BC4B-39B8AC431632") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"AB4E2A80-1B3B-4492-8E66-F655E123B106") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"7CDB9627-80F6-4024-8AE9-C14AE68A42F0") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"DCB06633-5C51-422E-9A10-2C63DF1C8054") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"F8663D3B-D1D6-4DEC-BA5B-016CFD5D1E41") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"7C600E39-6465-4495-8AA4-66935176CAA2") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"CA33687A-1B4E-4519-8CB1-69A4E2E8D74A") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"ED3EDF36-B5A1-42B4-9CAB-78CDB10494CD") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"D2542CC4-A256-493C-9546-81E17145A4A1"))
+      if ([effectID isEqualToString:@"6561CB61-577E-403C-A533-81E23A1B9308"] & 1) != 0 || (objc_msgSend(effectID, "isEqualToString:", @"A0F0CBC6-16F5-4973-B45D-7F15B90F17F8") & 1) != 0 || (objc_msgSend(effectID, "isEqualToString:", @"4D82B147-6A27-42E2-AA56-C7CBA653D5B8") & 1) != 0 || (objc_msgSend(effectID, "isEqualToString:", @"5645A248-34A3-4654-8CEB-AEE59C6F7BCB") & 1) != 0 || (objc_msgSend(effectID, "isEqualToString:", @"58D36D1B-D0F8-4709-BD10-4DCF2CEC9FC3") & 1) != 0 || (objc_msgSend(effectID, "isEqualToString:", @"3485E1D8-0A05-4EAF-859B-8930899EC5A8") & 1) != 0 || (objc_msgSend(effectID, "isEqualToString:", @"15A33011-A4E4-44E8-9127-1766525161F3") & 1) != 0 || (objc_msgSend(effectID, "isEqualToString:", @"A6409851-8835-43BC-BC4B-39B8AC431632") & 1) != 0 || (objc_msgSend(effectID, "isEqualToString:", @"AB4E2A80-1B3B-4492-8E66-F655E123B106") & 1) != 0 || (objc_msgSend(effectID, "isEqualToString:", @"7CDB9627-80F6-4024-8AE9-C14AE68A42F0") & 1) != 0 || (objc_msgSend(effectID, "isEqualToString:", @"DCB06633-5C51-422E-9A10-2C63DF1C8054") & 1) != 0 || (objc_msgSend(effectID, "isEqualToString:", @"F8663D3B-D1D6-4DEC-BA5B-016CFD5D1E41") & 1) != 0 || (objc_msgSend(effectID, "isEqualToString:", @"7C600E39-6465-4495-8AA4-66935176CAA2") & 1) != 0 || (objc_msgSend(effectID, "isEqualToString:", @"CA33687A-1B4E-4519-8CB1-69A4E2E8D74A") & 1) != 0 || (objc_msgSend(effectID, "isEqualToString:", @"ED3EDF36-B5A1-42B4-9CAB-78CDB10494CD") & 1) != 0 || (objc_msgSend(effectID, "isEqualToString:", @"D2542CC4-A256-493C-9546-81E17145A4A1"))
       {
         v9 = 1;
       }
 
       else
       {
-        v9 = [v7 isEqualToString:@"A4C8F76A-3336-4296-9C54-CA3ACC13ED61"];
+        v9 = [effectID isEqualToString:@"A4C8F76A-3336-4296-9C54-CA3ACC13ED61"];
       }
 
       v10 = [MEMORY[0x277CCABB0] numberWithBool:v9];
@@ -175,29 +175,29 @@
   isSingleWordTranscription = self->_isSingleWordTranscription;
   if (!isSingleWordTranscription)
   {
-    v4 = [(PVMotionEffectComponent *)self motionEffect];
-    v5 = [v4 contentRegistryPropertyForKey:@"isSingleWordTranscription"];
+    motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+    v5 = [motionEffect contentRegistryPropertyForKey:@"isSingleWordTranscription"];
 
     if (v5)
     {
       v6 = v5;
-      v7 = self->_isSingleWordTranscription;
+      effectID = self->_isSingleWordTranscription;
       self->_isSingleWordTranscription = v6;
     }
 
     else
     {
-      v8 = [(PVMotionEffectComponent *)self motionEffect];
-      v7 = [v8 effectID];
+      motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+      effectID = [motionEffect2 effectID];
 
-      if ([v7 isEqualToString:@"4D82B147-6A27-42E2-AA56-C7CBA653D5B8"])
+      if ([effectID isEqualToString:@"4D82B147-6A27-42E2-AA56-C7CBA653D5B8"])
       {
         v9 = 1;
       }
 
       else
       {
-        v9 = [v7 isEqualToString:@"5645A248-34A3-4654-8CEB-AEE59C6F7BCB"];
+        v9 = [effectID isEqualToString:@"5645A248-34A3-4654-8CEB-AEE59C6F7BCB"];
       }
 
       v10 = [MEMORY[0x277CCABB0] numberWithBool:v9];
@@ -216,22 +216,22 @@
   disableWordFadeOutForPreview = self->_disableWordFadeOutForPreview;
   if (!disableWordFadeOutForPreview)
   {
-    v4 = [(PVMotionEffectComponent *)self motionEffect];
-    v5 = [v4 contentRegistryPropertyForKey:@"disableWordFadeOutForPreview"];
+    motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+    v5 = [motionEffect contentRegistryPropertyForKey:@"disableWordFadeOutForPreview"];
 
     if (v5)
     {
       v6 = v5;
-      v7 = self->_disableWordFadeOutForPreview;
+      effectID = self->_disableWordFadeOutForPreview;
       self->_disableWordFadeOutForPreview = v6;
     }
 
     else
     {
-      v8 = [(PVMotionEffectComponent *)self motionEffect];
-      v7 = [v8 effectID];
+      motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+      effectID = [motionEffect2 effectID];
 
-      v9 = [v7 isEqualToString:@"15A33011-A4E4-44E8-9127-1766525161F3"];
+      v9 = [effectID isEqualToString:@"15A33011-A4E4-44E8-9127-1766525161F3"];
       v10 = [MEMORY[0x277CCABB0] numberWithBool:v9];
       v11 = self->_disableWordFadeOutForPreview;
       self->_disableWordFadeOutForPreview = v10;
@@ -247,24 +247,24 @@
 {
   if ([(PVMotionEffectTranscriptionComponent *)self isTranscription])
   {
-    v3 = [(PVMotionEffectComponent *)self motionEffect];
-    [v3 runEnsuringDocumentReadyAndLockingDocument:&__block_literal_global_12];
+    motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+    [motionEffect runEnsuringDocumentReadyAndLockingDocument:&__block_literal_global_12];
   }
 }
 
-- (void)resetToDefaultTranscriptionForLocaleID:(id)a3
+- (void)resetToDefaultTranscriptionForLocaleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(PVMotionEffectTranscriptionComponent *)self isTranscription])
   {
-    v5 = [(PVMotionEffectComponent *)self motionEffect];
+    motionEffect = [(PVMotionEffectComponent *)self motionEffect];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = *"";
     v6[2] = __79__PVMotionEffectTranscriptionComponent_resetToDefaultTranscriptionForLocaleID___block_invoke;
     v6[3] = &unk_279AA58C0;
-    v7 = v4;
-    v8 = self;
-    [v5 runEnsuringDocumentReadyAndLockingDocument:v6];
+    v7 = dCopy;
+    selfCopy = self;
+    [motionEffect runEnsuringDocumentReadyAndLockingDocument:v6];
   }
 }
 
@@ -278,25 +278,25 @@ void __79__PVMotionEffectTranscriptionComponent_resetToDefaultTranscriptionForLo
   [v5 setIsRightToLeft_NoLock:v4 == 2 documentInfo:a2];
 }
 
-- (void)setTranscriptionText:(id)a3
+- (void)setTranscriptionText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   if ([(PVMotionEffectTranscriptionComponent *)self isTranscription])
   {
-    v5 = [(PVMotionEffectComponent *)self motionEffect];
+    motionEffect = [(PVMotionEffectComponent *)self motionEffect];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = *"";
     v6[2] = __61__PVMotionEffectTranscriptionComponent_setTranscriptionText___block_invoke;
     v6[3] = &unk_279AA5170;
-    v7 = v4;
-    [v5 runEnsuringDocumentReadyAndLockingDocument:v6];
+    v7 = textCopy;
+    [motionEffect runEnsuringDocumentReadyAndLockingDocument:v6];
   }
 }
 
-- (BOOL)transcriptionHitTest:(CGPoint)a3 time:(id *)a4
+- (BOOL)transcriptionHitTest:(CGPoint)test time:(id *)time
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   if ([(PVMotionEffectTranscriptionComponent *)self isTranscription])
   {
     v16 = 0;
@@ -307,19 +307,19 @@ void __79__PVMotionEffectTranscriptionComponent_resetToDefaultTranscriptionForLo
     v14[1] = v14;
     v14[2] = 0x2020000000;
     v15 = 11;
-    v8 = [(PVMotionEffectComponent *)self motionEffect];
+    motionEffect = [(PVMotionEffectComponent *)self motionEffect];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = *"";
     v11[2] = __66__PVMotionEffectTranscriptionComponent_transcriptionHitTest_time___block_invoke;
     v11[3] = &unk_279AA6190;
-    v12 = *&a4->var0;
-    var3 = a4->var3;
+    v12 = *&time->var0;
+    var3 = time->var3;
     v11[4] = self;
     v11[5] = v14;
     *&v11[7] = x;
     *&v11[8] = y;
     v11[6] = &v16;
-    [v8 runEnsuringDocumentReadyAndLockingDocument:v11];
+    [motionEffect runEnsuringDocumentReadyAndLockingDocument:v11];
 
     v9 = *(v17 + 24);
     _Block_object_dispose(v14, 8);
@@ -361,65 +361,65 @@ uint64_t __66__PVMotionEffectTranscriptionComponent_transcriptionHitTest_time___
   return result;
 }
 
-- (void)computeLoopMarkerBasedOnTranscription_NoLock:(const void *)a3
+- (void)computeLoopMarkerBasedOnTranscription_NoLock:(const void *)lock
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoaded];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoaded];
 
   if ([(PVMotionEffectTranscriptionComponent *)self isTranscription])
   {
-    if (OZXSetLoopMarkerFromTranscription(*a3))
+    if (OZXSetLoopMarkerFromTranscription(*lock))
     {
       NSLog(&cfstr_SCouldNotSetLo.isa, "[PVMotionEffectTranscriptionComponent computeLoopMarkerBasedOnTranscription_NoLock:]");
     }
   }
 }
 
-- (void)disableWordFadeOutIfNecessary_NoLock:(const void *)a3
+- (void)disableWordFadeOutIfNecessary_NoLock:(const void *)lock
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   if ([(PVMotionEffectTranscriptionComponent *)self isTranscription])
   {
     v7 = +[PVMotionEffect motionEffectPropertyKeyToPublishedParameterNameMap];
-    v8 = [(PVMotionEffectTranscriptionComponent *)self shouldDisableWordFadeOut_NoLock:a3];
+    v8 = [(PVMotionEffectTranscriptionComponent *)self shouldDisableWordFadeOut_NoLock:lock];
     v9 = [v7 objectForKeyedSubscript:@"TranscriptionWordFadeOut"];
     v12.var0 = 0;
     PCString::set(&v12, v9);
 
-    OZXDisableElementWithPublishedParam(*a3, &v12, v8);
-    v10 = *a3;
-    v11 = [(PVMotionEffectComponent *)self motionEffect];
-    OZXTranscriptionSetShouldDisableFadeOut(v10, [v11 shouldDisableFadeOut]);
+    OZXDisableElementWithPublishedParam(*lock, &v12, v8);
+    v10 = *lock;
+    motionEffect3 = [(PVMotionEffectComponent *)self motionEffect];
+    OZXTranscriptionSetShouldDisableFadeOut(v10, [motionEffect3 shouldDisableFadeOut]);
 
     PCString::~PCString(&v12);
   }
 }
 
-- (BOOL)shouldDisableWordFadeOut_NoLock:(const void *)a3
+- (BOOL)shouldDisableWordFadeOut_NoLock:(const void *)lock
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   if (![(PVMotionEffectTranscriptionComponent *)self isTranscription])
   {
     return 0;
   }
 
-  v7 = [(PVMotionEffectComponent *)self motionEffect];
-  v8 = [v7 shouldDisableFadeOut];
+  motionEffect3 = [(PVMotionEffectComponent *)self motionEffect];
+  shouldDisableFadeOut = [motionEffect3 shouldDisableFadeOut];
 
-  if (!v8)
+  if (!shouldDisableFadeOut)
   {
     return 0;
   }
@@ -430,7 +430,7 @@ uint64_t __66__PVMotionEffectTranscriptionComponent_transcriptionHitTest_time___
   }
 
   v10 = 0;
-  OZXTranscriptionGetLineCount(*a3, &v10);
+  OZXTranscriptionGetLineCount(*lock, &v10);
   return v10 < 3;
 }
 
@@ -446,14 +446,14 @@ uint64_t __66__PVMotionEffectTranscriptionComponent_transcriptionHitTest_time___
   v16 = *(MEMORY[0x277CC08F0] + 16);
   if ([(PVMotionEffectTranscriptionComponent *)self isTranscription])
   {
-    v5 = [(PVMotionEffectComponent *)self motionEffect];
+    motionEffect = [(PVMotionEffectComponent *)self motionEffect];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = *"";
     v8[2] = __61__PVMotionEffectTranscriptionComponent_transcriptionDuration__block_invoke;
     v8[3] = &unk_279AA5B80;
     v8[4] = self;
     v8[5] = &v9;
-    [v5 runEnsuringDocumentReadyAndLockingDocument:v8];
+    [motionEffect runEnsuringDocumentReadyAndLockingDocument:v8];
   }
 
   v6 = v10;
@@ -484,7 +484,7 @@ double __61__PVMotionEffectTranscriptionComponent_transcriptionDuration__block_i
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)transcriptionDuration_NoLock:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)transcriptionDuration_NoLock:(SEL)lock
 {
   *retstr = **&MEMORY[0x277CC08F0];
   result = [(PVMotionEffectTranscriptionComponent *)self isTranscription];
@@ -498,65 +498,65 @@ double __61__PVMotionEffectTranscriptionComponent_transcriptionDuration__block_i
   return result;
 }
 
-- (void)effect:(id)a3 updateProperties:(id)a4 allProperties:(id)a5
+- (void)effect:(id)effect updateProperties:(id)properties allProperties:(id)allProperties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  effectCopy = effect;
+  propertiesCopy = properties;
+  allPropertiesCopy = allProperties;
   v14.receiver = self;
   v14.super_class = PVMotionEffectTranscriptionComponent;
-  [(PVMotionEffectComponent *)&v14 effect:v8 updateProperties:v9 allProperties:v10];
+  [(PVMotionEffectComponent *)&v14 effect:effectCopy updateProperties:propertiesCopy allProperties:allPropertiesCopy];
   if ([(PVMotionEffectTranscriptionComponent *)self isTranscription])
   {
-    v11 = [(PVMotionEffectComponent *)self motionEffect];
+    motionEffect = [(PVMotionEffectComponent *)self motionEffect];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = *"";
     v12[2] = __78__PVMotionEffectTranscriptionComponent_effect_updateProperties_allProperties___block_invoke;
     v12[3] = &unk_279AA58C0;
     v12[4] = self;
-    v13 = v9;
-    [v11 runWithDocument_NoLock:v12];
+    v13 = propertiesCopy;
+    [motionEffect runWithDocument_NoLock:v12];
   }
 }
 
-- (void)motionEffect:(id)a3 didLoad:(const void *)a4
+- (void)motionEffect:(id)effect didLoad:(const void *)load
 {
-  v6 = a3;
+  effectCopy = effect;
   v13.receiver = self;
   v13.super_class = PVMotionEffectTranscriptionComponent;
-  [(PVMotionEffectComponent *)&v13 motionEffect:v6 didLoad:a4];
+  [(PVMotionEffectComponent *)&v13 motionEffect:effectCopy didLoad:load];
   if ([(PVMotionEffectTranscriptionComponent *)self isTranscription])
   {
-    OZXSetDuration(*a4, MEMORY[0x277CC0888]);
-    [(PVMotionEffectTranscriptionComponent *)self computeLoopMarkerBasedOnTranscription_NoLock:a4];
+    OZXSetDuration(*load, MEMORY[0x277CC0888]);
+    [(PVMotionEffectTranscriptionComponent *)self computeLoopMarkerBasedOnTranscription_NoLock:load];
     v11 = 0uLL;
     v12 = 0;
-    [(PVMotionEffectTranscriptionComponent *)self transcriptionDuration_NoLock:a4];
-    v7 = [(PVMotionEffectComponent *)self motionEffect];
-    v8 = [v7 timelineComponent];
+    [(PVMotionEffectTranscriptionComponent *)self transcriptionDuration_NoLock:load];
+    motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+    timelineComponent = [motionEffect timelineComponent];
     v9 = v11;
     v10 = v12;
-    [v8 setLoopTimeOverride_NoLock:&v9];
+    [timelineComponent setLoopTimeOverride_NoLock:&v9];
   }
 }
 
-- (void)motionEffect:(id)a3 didBecomeReady:(const void *)a4 properties:(id)a5
+- (void)motionEffect:(id)effect didBecomeReady:(const void *)ready properties:(id)properties
 {
-  v8 = a3;
-  v9 = a5;
+  effectCopy = effect;
+  propertiesCopy = properties;
   v10.receiver = self;
   v10.super_class = PVMotionEffectTranscriptionComponent;
-  [(PVMotionEffectComponent *)&v10 motionEffect:v8 didBecomeReady:a4 properties:v9];
+  [(PVMotionEffectComponent *)&v10 motionEffect:effectCopy didBecomeReady:ready properties:propertiesCopy];
   if ([(PVMotionEffectTranscriptionComponent *)self isTranscription])
   {
-    [(PVMotionEffectTranscriptionComponent *)self setupTranscriptionParameters_NoLock:v9 documentInfo:a4];
+    [(PVMotionEffectTranscriptionComponent *)self setupTranscriptionParameters_NoLock:propertiesCopy documentInfo:ready];
   }
 }
 
 + (id)motionEffectPropertyKeyToPublishedParameterNameMap
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___PVMotionEffectTranscriptionComponent;
   v2 = objc_msgSendSuper2(&v7, sel_motionEffectPropertyKeyToPublishedParameterNameMap);
   v3 = [v2 mutableCopy];

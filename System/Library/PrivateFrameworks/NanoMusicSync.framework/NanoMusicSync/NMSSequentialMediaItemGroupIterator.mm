@@ -10,29 +10,29 @@
 {
   [(NMSMediaItemGroupIterator *)self _generateItemListAndSizesDictIfNecessary];
   v3 = [(NMSMediaItemGroupIterator *)self currentItemIndex]+ 1;
-  v4 = self;
+  selfCopy2 = self;
   while (1)
   {
-    [(NMSMediaItemGroupIterator *)v4 setCurrentItemIndex:v3];
-    v5 = [(NMSMediaItemGroupIterator *)self currentContainerIndex];
-    v10 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
-    if (v5 >= [v10 count])
+    [(NMSMediaItemGroupIterator *)selfCopy2 setCurrentItemIndex:v3];
+    currentContainerIndex = [(NMSMediaItemGroupIterator *)self currentContainerIndex];
+    remainingItemLists = [(NMSMediaItemGroupIterator *)self remainingItemLists];
+    if (currentContainerIndex >= [remainingItemLists count])
     {
       break;
     }
 
-    v6 = [(NMSMediaItemGroupIterator *)self currentItemIndex];
-    v7 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
-    v8 = [v7 objectAtIndex:{-[NMSMediaItemGroupIterator currentContainerIndex](self, "currentContainerIndex")}];
+    currentItemIndex = [(NMSMediaItemGroupIterator *)self currentItemIndex];
+    remainingItemLists2 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
+    v8 = [remainingItemLists2 objectAtIndex:{-[NMSMediaItemGroupIterator currentContainerIndex](self, "currentContainerIndex")}];
     v9 = [v8 count];
 
-    if (v6 < v9)
+    if (currentItemIndex < v9)
     {
       return;
     }
 
     [(NMSMediaItemGroupIterator *)self setCurrentContainerIndex:[(NMSMediaItemGroupIterator *)self currentContainerIndex]+ 1];
-    v4 = self;
+    selfCopy2 = self;
     v3 = 0;
   }
 }
@@ -50,23 +50,23 @@
   [(NMSMediaItemGroupIterator *)self _generateItemListAndSizesDictIfNecessary];
   while (1)
   {
-    v3 = [(NMSMediaItemGroupIterator *)self currentContainerIndex];
-    v4 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
-    v5 = [v4 count];
+    currentContainerIndex = [(NMSMediaItemGroupIterator *)self currentContainerIndex];
+    remainingItemLists = [(NMSMediaItemGroupIterator *)self remainingItemLists];
+    v5 = [remainingItemLists count];
 
-    if (v3 >= v5)
+    if (currentContainerIndex >= v5)
     {
       break;
     }
 
-    v6 = [(NMSMediaItemGroupIterator *)self currentItem];
+    currentItem = [(NMSMediaItemGroupIterator *)self currentItem];
 
-    if (v6)
+    if (currentItem)
     {
-      v7 = [(NMSMediaItemGroupIterator *)self remainingContainers];
-      v8 = [v7 objectAtIndex:{-[NMSMediaItemGroupIterator currentContainerIndex](self, "currentContainerIndex")}];
-      v9 = [v8 quotaData];
-      [v9 setHasSkippedItems:1];
+      remainingContainers = [(NMSMediaItemGroupIterator *)self remainingContainers];
+      v8 = [remainingContainers objectAtIndex:{-[NMSMediaItemGroupIterator currentContainerIndex](self, "currentContainerIndex")}];
+      quotaData = [v8 quotaData];
+      [quotaData setHasSkippedItems:1];
     }
 
     [(NMSSequentialMediaItemGroupIterator *)self _continueToNextContainer];

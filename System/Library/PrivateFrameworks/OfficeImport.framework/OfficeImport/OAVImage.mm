@@ -1,40 +1,40 @@
 @interface OAVImage
-+ (void)readFromManager:(id)a3 toImage:(id)a4 state:(id)a5;
++ (void)readFromManager:(id)manager toImage:(id)image state:(id)state;
 @end
 
 @implementation OAVImage
 
-+ (void)readFromManager:(id)a3 toImage:(id)a4 state:(id)a5
++ (void)readFromManager:(id)manager toImage:(id)image state:(id)state
 {
-  v58 = a3;
-  v7 = a4;
-  v8 = a5;
-  v47 = v8;
-  v48 = v7;
-  v51 = [v7 imageProperties];
+  managerCopy = manager;
+  imageCopy = image;
+  stateCopy = state;
+  v47 = stateCopy;
+  v48 = imageCopy;
+  imageProperties = [imageCopy imageProperties];
   v9 = objc_alloc_init(OADImageFill);
   v46 = v9;
-  v53 = [v58 imageRelId];
-  v10 = [v58 packagePart];
-  v11 = [v10 relationshipForIdentifier:v53];
+  imageRelId = [managerCopy imageRelId];
+  packagePart = [managerCopy packagePart];
+  v11 = [packagePart relationshipForIdentifier:imageRelId];
 
   v52 = v11;
   if ([v11 targetMode])
   {
     v12 = [OADBlipRef alloc];
-    v13 = [v11 targetLocation];
-    v14 = [v13 relativeString];
-    v57 = [(OADBlipRef *)v12 initWithIndex:0 name:v14 blip:0];
+    targetLocation = [v11 targetLocation];
+    relativeString = [targetLocation relativeString];
+    v57 = [(OADBlipRef *)v12 initWithIndex:0 name:relativeString blip:0];
   }
 
   else
   {
-    v13 = [v11 targetLocation];
-    v57 = [v8 blipRefForURL:v13];
+    targetLocation = [v11 targetLocation];
+    v57 = [stateCopy blipRefForURL:targetLocation];
   }
 
-  v15 = [v58 shape];
-  v16 = OCXFindChild(v15, OAVOfficeMainNamespace, "imagedata");
+  shape = [managerCopy shape];
+  v16 = OCXFindChild(shape, OAVOfficeMainNamespace, "imagedata");
   v50 = objc_alloc_init(OADStretchTechnique);
   v49 = CXDefaultStringAttribute(v16, CXNoNamespace, "cropleft", 0);
   v56 = CXDefaultStringAttribute(v16, CXNoNamespace, "croptop", 0);
@@ -127,20 +127,20 @@
     [(OADBlipRef *)v57 addEffect:v35];
   }
 
-  v36 = [v58 movieRelId];
-  if (v36)
+  movieRelId = [managerCopy movieRelId];
+  if (movieRelId)
   {
-    v37 = [v58 packagePart];
-    v38 = [v37 relationshipForIdentifier:v36];
+    packagePart2 = [managerCopy packagePart];
+    v38 = [packagePart2 relationshipForIdentifier:movieRelId];
 
     if (v38 && ![v38 targetMode])
     {
       v45 = objc_alloc_init(OADQTStubFile);
       v39 = [OAXMovieContext alloc];
-      v40 = [v38 targetLocation];
-      v41 = [v58 packagePart];
-      v42 = [v41 package];
-      v43 = [(OCXDelayedMediaContext *)v39 initWithTargetLocation:v40 package:v42];
+      targetLocation2 = [v38 targetLocation];
+      packagePart3 = [managerCopy packagePart];
+      package = [packagePart3 package];
+      v43 = [(OCXDelayedMediaContext *)v39 initWithTargetLocation:targetLocation2 package:package];
 
       [(OCDDelayedNode *)v45 setDelayedContext:v43];
       v44 = CXDefaultStringAttribute(v16, OAVOfficeDrawingNamespace, "title", 0);
@@ -152,7 +152,7 @@
 
   [(OADImageFill *)v46 setBlipRef:v57, v45];
   [(OADImageFill *)v46 setTechnique:v50];
-  [v51 setImageFill:v46];
+  [imageProperties setImageFill:v46];
 }
 
 @end

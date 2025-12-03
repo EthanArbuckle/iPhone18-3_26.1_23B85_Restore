@@ -1,36 +1,36 @@
 @interface _SRDeviceUsageActivityLevel
-+ (id)activityLevelWithLevel:(int64_t)a3 duration:(double)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)activityLevelWithLevel:(int64_t)level duration:(double)duration;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_SRDeviceUsageActivityLevel)initWithCoder:(id)a3;
+- (_SRDeviceUsageActivityLevel)initWithCoder:(id)coder;
 - (id)sr_dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SRDeviceUsageActivityLevel
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeInteger:-[_SRDeviceUsageActivityLevel activityLevel](self forKey:{"activityLevel"), @"activityLevel"}];
+  [coder encodeInteger:-[_SRDeviceUsageActivityLevel activityLevel](self forKey:{"activityLevel"), @"activityLevel"}];
   [(_SRDeviceUsageActivityLevel *)self duration];
 
-  [a3 encodeDouble:@"duration" forKey:?];
+  [coder encodeDouble:@"duration" forKey:?];
 }
 
-- (_SRDeviceUsageActivityLevel)initWithCoder:(id)a3
+- (_SRDeviceUsageActivityLevel)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeIntegerForKey:@"activityLevel"];
-  [a3 decodeDoubleForKey:@"duration"];
+  v6 = [coder decodeIntegerForKey:@"activityLevel"];
+  [coder decodeDoubleForKey:@"duration"];
   v8 = v7;
 
   result = objc_alloc_init(_SRDeviceUsageActivityLevel);
@@ -39,11 +39,11 @@
   return result;
 }
 
-+ (id)activityLevelWithLevel:(int64_t)a3 duration:(double)a4
++ (id)activityLevelWithLevel:(int64_t)level duration:(double)duration
 {
   v6 = objc_alloc_init(_SRDeviceUsageActivityLevel);
-  [(_SRDeviceUsageActivityLevel *)v6 setActivityLevel:a3];
-  [(_SRDeviceUsageActivityLevel *)v6 setDuration:a4];
+  [(_SRDeviceUsageActivityLevel *)v6 setActivityLevel:level];
+  [(_SRDeviceUsageActivityLevel *)v6 setDuration:duration];
 
   return v6;
 }
@@ -53,14 +53,14 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_SRDeviceUsageActivityLevel *)self activityLevel];
+  activityLevel = [(_SRDeviceUsageActivityLevel *)self activityLevel];
   [(_SRDeviceUsageActivityLevel *)self duration];
-  return [v3 stringWithFormat:@"%@ {activityLevel: %ld, duration: %f}", v5, v6, v7];
+  return [v3 stringWithFormat:@"%@ {activityLevel: %ld, duration: %f}", v5, activityLevel, v7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -72,13 +72,13 @@
   }
 
   activityLevel = self->_activityLevel;
-  if (activityLevel != [a3 activityLevel])
+  if (activityLevel != [equal activityLevel])
   {
     return 0;
   }
 
   duration = self->_duration;
-  [a3 duration];
+  [equal duration];
   return duration == v7;
 }
 

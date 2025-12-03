@@ -1,7 +1,7 @@
 @interface FMDEventLoggerGeneral
 + (id)sharedInstance;
 - (FMDEventLoggerGeneral)init;
-- (void)sendError:(id)a3 forEventName:(id)a4;
+- (void)sendError:(id)error forEventName:(id)name;
 @end
 
 @implementation FMDEventLoggerGeneral
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001BDD20;
   block[3] = &unk_1002CD2C8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1003149D0 != -1)
   {
     dispatch_once(&qword_1003149D0, block);
@@ -40,22 +40,22 @@
   return v2;
 }
 
-- (void)sendError:(id)a3 forEventName:(id)a4
+- (void)sendError:(id)error forEventName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  nameCopy = name;
   objc_initWeak(&location, self);
-  v8 = [(FMDEventLoggerGeneral *)self logQueue];
+  logQueue = [(FMDEventLoggerGeneral *)self logQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001BDEFC;
   v11[3] = &unk_1002CE3B8;
   objc_copyWeak(&v14, &location);
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, v11);
+  v12 = nameCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = nameCopy;
+  dispatch_async(logQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);

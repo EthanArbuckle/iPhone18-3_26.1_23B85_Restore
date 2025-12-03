@@ -1,30 +1,30 @@
 @interface MUTextPairViewModel
-+ (id)textPairViewModelsFromStrings:(id)a3;
++ (id)textPairViewModelsFromStrings:(id)strings;
 @end
 
 @implementation MUTextPairViewModel
 
-+ (id)textPairViewModelsFromStrings:(id)a3
++ (id)textPairViewModelsFromStrings:(id)strings
 {
-  v3 = a3;
+  stringsCopy = strings;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v3 count])
+  if ([stringsCopy count])
   {
     v5 = 0;
     do
     {
       v6 = objc_alloc_init(MUTextPairViewModel);
-      v7 = [v3 objectAtIndexedSubscript:v5];
+      v7 = [stringsCopy objectAtIndexedSubscript:v5];
       [(MUTextPairViewModel *)v6 setLeftText:v7];
 
-      if ([v3 count] <= v5 + 1)
+      if ([stringsCopy count] <= v5 + 1)
       {
         [(MUTextPairViewModel *)v6 setRightText:0];
       }
 
       else
       {
-        v8 = [v3 objectAtIndexedSubscript:?];
+        v8 = [stringsCopy objectAtIndexedSubscript:?];
         [(MUTextPairViewModel *)v6 setRightText:v8];
       }
 
@@ -33,7 +33,7 @@
       v5 += 2;
     }
 
-    while (v5 < [v3 count]);
+    while (v5 < [stringsCopy count]);
   }
 
   v9 = [v4 copy];

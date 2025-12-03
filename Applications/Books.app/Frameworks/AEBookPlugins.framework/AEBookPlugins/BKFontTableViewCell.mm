@@ -1,5 +1,5 @@
 @interface BKFontTableViewCell
-- (BKFontTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BKFontTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NSString)labelText;
 - (UIImageView)selectionView;
 - (UILabel)label;
@@ -7,36 +7,36 @@
 - (unint64_t)accessibilityTraits;
 - (void)_setEffectiveLabelFont;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)prepareForReuse;
-- (void)setFont:(id)a3;
-- (void)setLabelFont:(id)a3;
-- (void)setLabelText:(id)a3;
+- (void)setFont:(id)font;
+- (void)setLabelFont:(id)font;
+- (void)setLabelText:(id)text;
 @end
 
 @implementation BKFontTableViewCell
 
-- (BKFontTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (BKFontTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v52.receiver = self;
   v52.super_class = BKFontTableViewCell;
-  v4 = [(BKFontTableViewCell *)&v52 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(BKFontTableViewCell *)&v52 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(BKFontTableViewCell *)v4 contentView];
-    v7 = [(BKFontTableViewCell *)v5 label];
-    v8 = [(BKFontTableViewCell *)v5 selectionView];
-    v9 = [(BKFontTableViewCell *)v5 buttonContainerView];
-    [v6 addSubview:v7];
-    [v6 addSubview:v8];
-    [v6 addSubview:v9];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = v7;
-    [v7 setNumberOfLines:0];
-    v11 = [NSLayoutConstraint constraintWithItem:v9 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
+    contentView = [(BKFontTableViewCell *)v4 contentView];
+    label = [(BKFontTableViewCell *)v5 label];
+    selectionView = [(BKFontTableViewCell *)v5 selectionView];
+    buttonContainerView = [(BKFontTableViewCell *)v5 buttonContainerView];
+    [contentView addSubview:label];
+    [contentView addSubview:selectionView];
+    [contentView addSubview:buttonContainerView];
+    [label setTranslatesAutoresizingMaskIntoConstraints:0];
+    [selectionView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [buttonContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
+    v10 = label;
+    [label setNumberOfLines:0];
+    v11 = [NSLayoutConstraint constraintWithItem:buttonContainerView attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
     buttonContainerWidthConstraint = v5->_buttonContainerWidthConstraint;
     v5->_buttonContainerWidthConstraint = v11;
 
@@ -48,49 +48,49 @@
       v14 = v15;
     }
 
-    v16 = [v8 image];
-    [v16 size];
+    image = [selectionView image];
+    [image size];
     v18 = v17;
 
-    v51 = [v8 widthAnchor];
-    v50 = [v51 constraintEqualToConstant:v18];
+    widthAnchor = [selectionView widthAnchor];
+    v50 = [widthAnchor constraintEqualToConstant:v18];
     v53[0] = v50;
-    v48 = [v8 leadingAnchor];
-    v49 = [v6 layoutMarginsGuide];
-    v46 = [v49 leadingAnchor];
-    v45 = [v48 constraintEqualToAnchor:v46];
+    leadingAnchor = [selectionView leadingAnchor];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v45 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v53[1] = v45;
-    v47 = v8;
-    v43 = [v8 centerYAnchor];
-    v42 = [v6 centerYAnchor];
-    v41 = [v43 constraintEqualToAnchor:v42];
+    v47 = selectionView;
+    centerYAnchor = [selectionView centerYAnchor];
+    centerYAnchor2 = [contentView centerYAnchor];
+    v41 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v53[2] = v41;
-    v39 = [v10 leadingAnchor];
-    v38 = [v8 trailingAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38 constant:8.0];
+    leadingAnchor3 = [v10 leadingAnchor];
+    trailingAnchor = [selectionView trailingAnchor];
+    v37 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:8.0];
     v53[3] = v37;
     v44 = v10;
-    v34 = [v10 centerYAnchor];
-    v33 = [v6 centerYAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    centerYAnchor3 = [v10 centerYAnchor];
+    centerYAnchor4 = [contentView centerYAnchor];
+    v32 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v53[4] = v32;
-    v31 = [v10 trailingAnchor];
-    v30 = [v9 leadingAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30 constant:-8.0];
+    trailingAnchor2 = [v10 trailingAnchor];
+    leadingAnchor4 = [buttonContainerView leadingAnchor];
+    v29 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor4 constant:-8.0];
     v53[5] = v29;
-    v19 = [v9 heightAnchor];
-    v20 = [v19 constraintEqualToConstant:v14];
+    heightAnchor = [buttonContainerView heightAnchor];
+    v20 = [heightAnchor constraintEqualToConstant:v14];
     v53[6] = v20;
-    v35 = v9;
-    v21 = [v9 centerYAnchor];
-    v36 = v6;
-    v22 = [v6 centerYAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    v35 = buttonContainerView;
+    centerYAnchor5 = [buttonContainerView centerYAnchor];
+    v36 = contentView;
+    centerYAnchor6 = [contentView centerYAnchor];
+    v23 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v53[7] = v23;
-    v24 = [v9 trailingAnchor];
-    v25 = [v6 layoutMarginsGuide];
-    v26 = [v25 trailingAnchor];
-    v27 = [v24 constraintEqualToAnchor:v26];
+    trailingAnchor3 = [buttonContainerView trailingAnchor];
+    layoutMarginsGuide2 = [contentView layoutMarginsGuide];
+    trailingAnchor4 = [layoutMarginsGuide2 trailingAnchor];
+    v27 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v53[8] = v27;
     v53[9] = v5->_buttonContainerWidthConstraint;
     v40 = [NSArray arrayWithObjects:v53 count:10];
@@ -111,76 +111,76 @@
 
 - (NSString)labelText
 {
-  v2 = [(BKFontTableViewCell *)self label];
-  v3 = [v2 text];
+  label = [(BKFontTableViewCell *)self label];
+  text = [label text];
 
-  return v3;
+  return text;
 }
 
-- (void)setLabelText:(id)a3
+- (void)setLabelText:(id)text
 {
-  v4 = a3;
-  v5 = [(BKFontTableViewCell *)self label];
-  [v5 setText:v4];
+  textCopy = text;
+  label = [(BKFontTableViewCell *)self label];
+  [label setText:textCopy];
 
   [(BKFontTableViewCell *)self _setEffectiveLabelFont];
 }
 
-- (void)setLabelFont:(id)a3
+- (void)setLabelFont:(id)font
 {
-  v5 = a3;
-  if (self->_labelFont != v5)
+  fontCopy = font;
+  if (self->_labelFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_labelFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_labelFont, font);
     [(BKFontTableViewCell *)self _setEffectiveLabelFont];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
 - (void)_setEffectiveLabelFont
 {
-  v6 = [(BKFontTableViewCell *)self labelFont];
-  v3 = [(BKFontTableViewCell *)self labelText];
-  v4 = [v6 bkEffectiveFontForText:v3];
-  v5 = [(BKFontTableViewCell *)self label];
-  [v5 setFont:v4];
+  labelFont = [(BKFontTableViewCell *)self labelFont];
+  labelText = [(BKFontTableViewCell *)self labelText];
+  v4 = [labelFont bkEffectiveFontForText:labelText];
+  label = [(BKFontTableViewCell *)self label];
+  [label setFont:v4];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   font = self->_font;
-  if (font != v5)
+  if (font != fontCopy)
   {
-    v9 = v5;
+    v9 = fontCopy;
     [(BKFont *)font removeObserver:self forKeyPath:@"displayName" context:off_22C1F0];
-    objc_storeStrong(&self->_font, a3);
+    objc_storeStrong(&self->_font, font);
     [(BKFont *)self->_font addObserver:self forKeyPath:@"displayName" options:0 context:off_22C1F0];
-    v7 = [(BKFontTableViewCell *)self font];
-    v8 = [v7 displayName];
-    [(BKFontTableViewCell *)self setLabelText:v8];
+    font = [(BKFontTableViewCell *)self font];
+    displayName = [font displayName];
+    [(BKFontTableViewCell *)self setLabelText:displayName];
 
-    v5 = v9;
+    fontCopy = v9;
   }
 
-  _objc_release_x1(font, v5);
+  _objc_release_x1(font, fontCopy);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_22C1F0 == a6)
+  if (off_22C1F0 == context)
   {
-    v8 = [(BKFontTableViewCell *)self font:a3];
-    v7 = [v8 displayName];
-    [(BKFontTableViewCell *)self setLabelText:v7];
+    v8 = [(BKFontTableViewCell *)self font:path];
+    displayName = [v8 displayName];
+    [(BKFontTableViewCell *)self setLabelText:displayName];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = BKFontTableViewCell;
-    [(BKFontTableViewCell *)&v9 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(BKFontTableViewCell *)&v9 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -248,27 +248,27 @@
   v6.receiver = self;
   v6.super_class = BKFontTableViewCell;
   [(BKFontTableViewCell *)&v6 prepareForReuse];
-  v3 = [(BKFontTableViewCell *)self label];
-  [v3 setText:0];
+  label = [(BKFontTableViewCell *)self label];
+  [label setText:0];
 
-  v4 = [(BKFontTableViewCell *)self buttonContainerView];
-  v5 = [v4 subviews];
-  [v5 makeObjectsPerformSelector:"removeFromSuperview"];
+  buttonContainerView = [(BKFontTableViewCell *)self buttonContainerView];
+  subviews = [buttonContainerView subviews];
+  [subviews makeObjectsPerformSelector:"removeFromSuperview"];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v5.receiver = self;
   v5.super_class = BKFontTableViewCell;
-  v3 = [(BKFontTableViewCell *)&v5 accessibilityTraits];
+  accessibilityTraits = [(BKFontTableViewCell *)&v5 accessibilityTraits];
   if ([(UIImageView *)self->_selectionView isHidden])
   {
-    return v3 & ~UIAccessibilityTraitSelected;
+    return accessibilityTraits & ~UIAccessibilityTraitSelected;
   }
 
   else
   {
-    return UIAccessibilityTraitSelected | v3;
+    return UIAccessibilityTraitSelected | accessibilityTraits;
   }
 }
 

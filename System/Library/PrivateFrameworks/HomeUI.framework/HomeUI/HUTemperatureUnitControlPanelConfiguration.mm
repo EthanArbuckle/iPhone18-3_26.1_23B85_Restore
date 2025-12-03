@@ -1,6 +1,6 @@
 @interface HUTemperatureUnitControlPanelConfiguration
 - (HUControlPanelRule)rule;
-- (void)setupControlsForCell:(id)a3 item:(id)a4;
+- (void)setupControlsForCell:(id)cell item:(id)item;
 @end
 
 @implementation HUTemperatureUnitControlPanelConfiguration
@@ -12,12 +12,12 @@
   return [HUControlPanelClassRule ruleWithControlItemClass:v2];
 }
 
-- (void)setupControlsForCell:(id)a3 item:(id)a4
+- (void)setupControlsForCell:(id)cell item:(id)item
 {
-  v5 = a3;
-  v6 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v7 = objc_opt_class();
-  v8 = v5;
+  v8 = cellCopy;
   v23 = v8;
   if (!v8)
   {
@@ -39,9 +39,9 @@
   v11 = v23;
   if (!v10)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v12 handleFailureInFunction:v13 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v7, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v13 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v7, objc_opt_class()}];
 
     v8 = v23;
 LABEL_7:
@@ -49,13 +49,13 @@ LABEL_7:
   }
 
   v14 = objc_opt_class();
-  v15 = [v6 controlItems];
-  v16 = [v15 anyObject];
-  if (v16)
+  controlItems = [itemCopy controlItems];
+  anyObject = [controlItems anyObject];
+  if (anyObject)
   {
     if (objc_opt_isKindOfClass())
     {
-      v17 = v16;
+      v17 = anyObject;
     }
 
     else
@@ -63,22 +63,22 @@ LABEL_7:
       v17 = 0;
     }
 
-    v18 = v16;
+    v18 = anyObject;
     if (v17)
     {
       goto LABEL_15;
     }
 
-    v19 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v19 handleFailureInFunction:v20 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v14, objc_opt_class()}];
+    [currentHandler2 handleFailureInFunction:v20 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v14, objc_opt_class()}];
   }
 
   v18 = 0;
 LABEL_15:
 
   v21 = objc_alloc_init(HUTemperatureUnitControlView);
-  v22 = [v6 identifierForControlItem:v18];
+  v22 = [itemCopy identifierForControlItem:v18];
   [(HUTemperatureUnitControlView *)v21 setIdentifier:v22];
 
   [(HUTemperatureUnitControlView *)v21 setCanBeHighlighted:1];

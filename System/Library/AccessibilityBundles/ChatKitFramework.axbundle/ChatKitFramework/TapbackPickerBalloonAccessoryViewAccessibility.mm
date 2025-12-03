@@ -6,8 +6,8 @@
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(TapbackPickerBalloonAccessoryViewAccessibility *)self accessibilityContainer];
-  [v2 accessibilityFrame];
+  accessibilityContainer = [(TapbackPickerBalloonAccessoryViewAccessibility *)self accessibilityContainer];
+  [accessibilityContainer accessibilityFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;

@@ -1,60 +1,60 @@
 @interface CollectionTableViewCell
-- (CollectionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CollectionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_cellBackgroundColor;
 - (void)createContent;
-- (void)setCollectionInfo:(id)a3;
-- (void)setCollectionViewSize:(unint64_t)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setShowCheckmark:(BOOL)a3;
+- (void)setCollectionInfo:(id)info;
+- (void)setCollectionViewSize:(unint64_t)size;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setShowCheckmark:(BOOL)checkmark;
 @end
 
 @implementation CollectionTableViewCell
 
-- (void)setShowCheckmark:(BOOL)a3
+- (void)setShowCheckmark:(BOOL)checkmark
 {
-  if (self->_showCheckmark != a3)
+  if (self->_showCheckmark != checkmark)
   {
-    self->_showCheckmark = a3;
+    self->_showCheckmark = checkmark;
     [(CollectionView *)self->_collectionView setShowCheckmark:?];
   }
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  if (self->_disabled != a3)
+  if (self->_disabled != disabled)
   {
-    self->_disabled = a3;
+    self->_disabled = disabled;
     [(CollectionView *)self->_collectionView setDisabled:?];
   }
 }
 
-- (void)setCollectionInfo:(id)a3
+- (void)setCollectionInfo:(id)info
 {
-  v5 = a3;
-  if (self->_collectionInfo != v5)
+  infoCopy = info;
+  if (self->_collectionInfo != infoCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_collectionInfo, a3);
+    v6 = infoCopy;
+    objc_storeStrong(&self->_collectionInfo, info);
     [(CollectionView *)self->_collectionView setCollectionInfo:self->_collectionInfo];
-    v5 = v6;
+    infoCopy = v6;
   }
 }
 
-- (void)setCollectionViewSize:(unint64_t)a3
+- (void)setCollectionViewSize:(unint64_t)size
 {
-  if (self->_collectionViewSize != a3)
+  if (self->_collectionViewSize != size)
   {
-    self->_collectionViewSize = a3;
+    self->_collectionViewSize = size;
     [(CollectionView *)self->_collectionView setCollectionViewSize:?];
   }
 }
 
 - (void)createContent
 {
-  v3 = [(CollectionTableViewCell *)self _tableView];
-  v4 = [v3 style];
+  _tableView = [(CollectionTableViewCell *)self _tableView];
+  style = [_tableView style];
 
-  if (v4 == 2)
+  if (style == 2)
   {
     [(CollectionTableViewCell *)self _cellBackgroundColor];
   }
@@ -67,8 +67,8 @@
   [(CollectionTableViewCell *)self setBackgroundColor:v5];
 
   [(CollectionTableViewCell *)self setAccessibilityIdentifier:@"CollectionTableViewCell"];
-  v6 = [(CollectionTableViewCell *)self contentView];
-  [v6 setAccessibilityIdentifier:@"CollectionTableViewCellContent"];
+  contentView = [(CollectionTableViewCell *)self contentView];
+  [contentView setAccessibilityIdentifier:@"CollectionTableViewCellContent"];
 
   v7 = [[CollectionView alloc] initWithCollectionViewSize:self->_collectionViewSize];
   collectionView = self->_collectionView;
@@ -76,28 +76,28 @@
 
   [(CollectionView *)self->_collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CollectionView *)self->_collectionView setAccessibilityIdentifier:@"CollectionTableViewCellCollectionView"];
-  v9 = [(CollectionTableViewCell *)self contentView];
-  [v9 addSubview:self->_collectionView];
+  contentView2 = [(CollectionTableViewCell *)self contentView];
+  [contentView2 addSubview:self->_collectionView];
 
-  v25 = [(CollectionView *)self->_collectionView topAnchor];
-  v26 = [(CollectionTableViewCell *)self contentView];
-  v24 = [v26 topAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  topAnchor = [(CollectionView *)self->_collectionView topAnchor];
+  contentView3 = [(CollectionTableViewCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v27[0] = v23;
-  v21 = [(CollectionView *)self->_collectionView leadingAnchor];
-  v22 = [(CollectionTableViewCell *)self contentView];
-  v20 = [v22 leadingAnchor];
-  v10 = [v21 constraintEqualToAnchor:v20];
+  leadingAnchor = [(CollectionView *)self->_collectionView leadingAnchor];
+  contentView4 = [(CollectionTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v27[1] = v10;
-  v11 = [(CollectionView *)self->_collectionView trailingAnchor];
-  v12 = [(CollectionTableViewCell *)self contentView];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  trailingAnchor = [(CollectionView *)self->_collectionView trailingAnchor];
+  contentView5 = [(CollectionTableViewCell *)self contentView];
+  trailingAnchor2 = [contentView5 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v27[2] = v14;
-  v15 = [(CollectionView *)self->_collectionView bottomAnchor];
-  v16 = [(CollectionTableViewCell *)self contentView];
-  v17 = [v16 bottomAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  bottomAnchor = [(CollectionView *)self->_collectionView bottomAnchor];
+  contentView6 = [(CollectionTableViewCell *)self contentView];
+  bottomAnchor2 = [contentView6 bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v27[3] = v18;
   v19 = [NSArray arrayWithObjects:v27 count:4];
   [NSLayoutConstraint activateConstraints:v19];
@@ -120,11 +120,11 @@
   return v7;
 }
 
-- (CollectionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CollectionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CollectionTableViewCell;
-  v4 = [(CollectionTableViewCell *)&v7 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(CollectionTableViewCell *)&v7 initWithStyle:0 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

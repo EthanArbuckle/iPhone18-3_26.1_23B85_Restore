@@ -1,48 +1,48 @@
 @interface SBSystemActionInteractionContext
-- (BOOL)isEqual:(id)a3;
-- (uint64_t)initWithPreciseTimestamp:(uint64_t)a3 type:(void *)a4 suppressionStatus:;
+- (BOOL)isEqual:(id)equal;
+- (uint64_t)initWithPreciseTimestamp:(uint64_t)timestamp type:(void *)type suppressionStatus:;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation SBSystemActionInteractionContext
 
-- (uint64_t)initWithPreciseTimestamp:(uint64_t)a3 type:(void *)a4 suppressionStatus:
+- (uint64_t)initWithPreciseTimestamp:(uint64_t)timestamp type:(void *)type suppressionStatus:
 {
   v8 = a2;
-  v9 = a4;
-  if (a1)
+  typeCopy = type;
+  if (self)
   {
     if (!v8)
     {
-      [SBSystemActionInteractionContext initWithPreciseTimestamp:a1 type:? suppressionStatus:?];
+      [SBSystemActionInteractionContext initWithPreciseTimestamp:self type:? suppressionStatus:?];
     }
 
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = SBSystemActionInteractionContext;
     v10 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       objc_storeStrong(v10 + 1, a2);
-      *(a1 + 16) = a3;
-      objc_storeStrong((a1 + 24), a4);
+      *(self + 16) = timestamp;
+      objc_storeStrong((self + 24), type);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__SBSystemActionInteractionContext_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_2783A92D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = formatterCopy;
+  selfCopy = self;
+  v5 = formatterCopy;
   [v5 appendProem:0 block:v6];
 }
 
@@ -56,10 +56,10 @@ id __65__SBSystemActionInteractionContext_appendDescriptionToFormatter___block_i
   return [*(a1 + 32) appendObject:*(*(a1 + 40) + 24) withName:@"suppressionStatus"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -71,7 +71,7 @@ id __65__SBSystemActionInteractionContext_appendDescriptionToFormatter___block_i
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       if ([(NSDate *)self->_preciseTimestamp isEqualToDate:v7->_preciseTimestamp]&& self->_type == v7->_type)
       {
         v8 = BSEqualObjects();

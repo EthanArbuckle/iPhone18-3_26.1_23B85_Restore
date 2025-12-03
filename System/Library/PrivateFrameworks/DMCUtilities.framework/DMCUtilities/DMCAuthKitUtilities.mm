@@ -1,10 +1,10 @@
 @interface DMCAuthKitUtilities
-+ (id)midWithError:(id *)a3;
++ (id)midWithError:(id *)error;
 @end
 
 @implementation DMCAuthKitUtilities
 
-+ (id)midWithError:(id *)a3
++ (id)midWithError:(id *)error
 {
   if (midWithError__onceToken != -1)
   {
@@ -17,25 +17,25 @@
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      v8 = 0;
-      *a3 = v6;
+      machineID = 0;
+      *error = v6;
     }
 
     else
     {
-      v8 = 0;
+      machineID = 0;
     }
   }
 
   else
   {
-    v8 = [v4 machineID];
+    machineID = [v4 machineID];
   }
 
-  return v8;
+  return machineID;
 }
 
 uint64_t __36__DMCAuthKitUtilities_midWithError___block_invoke()

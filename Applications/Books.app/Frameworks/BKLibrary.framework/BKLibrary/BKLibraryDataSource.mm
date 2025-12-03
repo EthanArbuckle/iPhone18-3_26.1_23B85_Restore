@@ -1,20 +1,20 @@
 @interface BKLibraryDataSource
 - (BKLibraryManager)libraryManager;
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4;
-- (void)bookCoverForLibraryAssetProperties:(id)a3 size:(CGSize)a4 completion:(id)a5;
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5;
-- (void)fetchAssetsWithCompletion:(id)a3;
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion;
+- (void)bookCoverForLibraryAssetProperties:(id)properties size:(CGSize)size completion:(id)completion;
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion;
+- (void)fetchAssetsWithCompletion:(id)completion;
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion;
 @end
 
 @implementation BKLibraryDataSource
 
-- (void)fetchAssetsWithCompletion:(id)a3
+- (void)fetchAssetsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   [NSException raise:NSInvalidArgumentException format:@"This is an abstract class. Don't call this method"];
   v5 = [NSError errorWithDomain:@"kBKLibraryDataSourceDomain" code:kBKLibraryDataSourceErrorAbstractMethodError userInfo:0];
-  v4 = objc_retainBlock(v3);
+  v4 = objc_retainBlock(completionCopy);
 
   if (v4)
   {
@@ -22,9 +22,9 @@
   }
 }
 
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -33,9 +33,9 @@
   }
 }
 
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion
 {
-  v4 = objc_retainBlock(a4);
+  v4 = objc_retainBlock(completion);
   if (v4)
   {
     v6 = v4;
@@ -46,9 +46,9 @@
   }
 }
 
-- (void)bookCoverForLibraryAssetProperties:(id)a3 size:(CGSize)a4 completion:(id)a5
+- (void)bookCoverForLibraryAssetProperties:(id)properties size:(CGSize)size completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v7 = v5;
@@ -59,9 +59,9 @@
   }
 }
 
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v7 = v5;

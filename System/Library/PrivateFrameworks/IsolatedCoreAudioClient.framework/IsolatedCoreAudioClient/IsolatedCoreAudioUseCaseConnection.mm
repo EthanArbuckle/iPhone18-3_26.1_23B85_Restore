@@ -1,5 +1,5 @@
 @interface IsolatedCoreAudioUseCaseConnection
-- (IsolatedCoreAudioUseCaseConnection)initWithConnection:(id)a3;
+- (IsolatedCoreAudioUseCaseConnection)initWithConnection:(id)connection;
 - (void)invalidate;
 @end
 
@@ -7,21 +7,21 @@
 
 - (void)invalidate
 {
-  v2 = [(IsolatedCoreAudioUseCaseConnection *)self connection];
-  [v2 invalidate];
+  connection = [(IsolatedCoreAudioUseCaseConnection *)self connection];
+  [connection invalidate];
 }
 
-- (IsolatedCoreAudioUseCaseConnection)initWithConnection:(id)a3
+- (IsolatedCoreAudioUseCaseConnection)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = IsolatedCoreAudioUseCaseConnection;
   v5 = [(IsolatedCoreAudioUseCaseConnection *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(IsolatedCoreAudioUseCaseConnection *)v5 setConnection:v4];
-    -[IsolatedCoreAudioUseCaseConnection setPid:](v6, "setPid:", [v4 getProcessID]);
+    [(IsolatedCoreAudioUseCaseConnection *)v5 setConnection:connectionCopy];
+    -[IsolatedCoreAudioUseCaseConnection setPid:](v6, "setPid:", [connectionCopy getProcessID]);
   }
 
   return v6;

@@ -1,5 +1,5 @@
 @interface SDDirtyIdleTimer
-- (SDDirtyIdleTimer)initWithQueue:(id)a3 timeoutBlock:(id)a4;
+- (SDDirtyIdleTimer)initWithQueue:(id)queue timeoutBlock:(id)block;
 - (id)description;
 - (void)_stop;
 - (void)cancel;
@@ -8,18 +8,18 @@
 
 @implementation SDDirtyIdleTimer
 
-- (SDDirtyIdleTimer)initWithQueue:(id)a3 timeoutBlock:(id)a4
+- (SDDirtyIdleTimer)initWithQueue:(id)queue timeoutBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = SDDirtyIdleTimer;
   v9 = [(SDDirtyIdleTimer *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = MEMORY[0x2383760E0](v8);
+    objc_storeStrong(&v9->_queue, queue);
+    v11 = MEMORY[0x2383760E0](blockCopy);
     block = v10->_block;
     v10->_block = v11;
 
@@ -40,7 +40,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_231A35000, a2, OS_LOG_TYPE_DEBUG, "%@ stopped", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

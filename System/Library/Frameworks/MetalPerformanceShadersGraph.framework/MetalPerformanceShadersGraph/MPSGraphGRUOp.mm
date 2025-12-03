@@ -1,42 +1,42 @@
 @interface MPSGraphGRUOp
-- (MPSGraphGRUOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 descriptor:(id)a6 name:(id)a7;
-- (id)partialDerivativesForInputTensors:(id)a3 incomingGradients:(id)a4 name:(id)a5;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphGRUOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies descriptor:(id)descriptor name:(id)name;
+- (id)partialDerivativesForInputTensors:(id)tensors incomingGradients:(id)gradients name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphGRUOp
 
-- (MPSGraphGRUOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 descriptor:(id)a6 name:(id)a7
+- (MPSGraphGRUOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies descriptor:(id)descriptor name:(id)name
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v15 copy];
+  graphCopy = graph;
+  tensorsCopy = tensors;
+  dependenciesCopy = dependencies;
+  descriptorCopy = descriptor;
+  nameCopy = name;
+  v17 = [descriptorCopy copy];
   desc = self->super._desc;
   self->super._desc = v17;
 
-  v19 = [(MPSGraphOperation *)self initWithGraph:v12 inputTensors:v13 controlDependencies:v14 name:v16];
+  v19 = [(MPSGraphOperation *)self initWithGraph:graphCopy inputTensors:tensorsCopy controlDependencies:dependenciesCopy name:nameCopy];
   return v19;
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v67 = *MEMORY[0x1E69E9840];
-  v49 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphGRUOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphRNNOps.mm", __p);
-  v11 = v49;
+  v11 = nameCopy;
   v66 = 260;
   v65[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v65);
+  StringAttr = mlir::Builder::getStringAttr(builder, v65);
   v14 = mlir::FileLineColLoc::get(StringAttr, 0x2BFu, 0);
   if (v11)
   {
     v15 = v11;
-    v16 = a3;
-    v17 = [v11 UTF8String];
-    v18 = strlen(v17);
+    builderCopy = builder;
+    uTF8String = [v11 UTF8String];
+    v18 = strlen(uTF8String);
     if (v18 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -51,10 +51,10 @@
     v64 = v18;
     if (v18)
     {
-      memmove(&__dst, v17, v18);
+      memmove(&__dst, uTF8String, v18);
     }
 
-    a3 = v16;
+    builder = builderCopy;
     v20 = &__dst + v19;
   }
 
@@ -66,7 +66,7 @@
   }
 
   *v20 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v13, &v60);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v13, &v60);
   v21 = v60.__r_.__value_.__r.__words[0];
   if ((v60.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -82,7 +82,7 @@
   }
 
   LOBYTE(v66) = v22;
-  v23 = mlir::Builder::getStringAttr(a3, v65);
+  v23 = mlir::Builder::getStringAttr(builder, v65);
   v54 = mlir::NameLoc::get(v23, v14);
   if (SHIBYTE(v60.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -106,32 +106,32 @@ LABEL_16:
     operator delete(__p[0]);
   }
 
-  v24 = [(MPSGraphGRUDescriptor *)self->super._desc training];
-  v25 = [(MPSGraphGRUDescriptor *)self->super._desc updateGateActivation];
-  if (v25 >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu))
+  training = [(MPSGraphGRUDescriptor *)self->super._desc training];
+  updateGateActivation = [(MPSGraphGRUDescriptor *)self->super._desc updateGateActivation];
+  if (updateGateActivation >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu))
   {
     v26 = 1;
   }
 
   else
   {
-    v26 = v25;
+    v26 = updateGateActivation;
   }
 
-  v27 = [(MPSGraphGRUDescriptor *)self->super._desc resetGateActivation];
-  if (v27 >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu))
+  resetGateActivation = [(MPSGraphGRUDescriptor *)self->super._desc resetGateActivation];
+  if (resetGateActivation >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu))
   {
     v28 = 1;
   }
 
   else
   {
-    v28 = v27;
+    v28 = resetGateActivation;
   }
 
-  v29 = [(MPSGraphGRUDescriptor *)self->super._desc outputGateActivation];
-  v30 = v29;
-  v31 = v29 >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu);
+  outputGateActivation = [(MPSGraphGRUDescriptor *)self->super._desc outputGateActivation];
+  v30 = outputGateActivation;
+  v31 = outputGateActivation >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu);
   desc = self->super._desc;
   if (v31)
   {
@@ -145,12 +145,12 @@ LABEL_16:
 
   if (desc->_hasInitState)
   {
-    if (*(a5 + 1) - *a5 < 0x11uLL)
+    if (*(values + 1) - *values < 0x11uLL)
     {
       goto LABEL_46;
     }
 
-    v34 = *(*a5 + 16);
+    v34 = *(*values + 16);
     v35 = 3;
     if (!desc->_hasMask)
     {
@@ -170,22 +170,22 @@ LABEL_30:
     }
   }
 
-  if (v35 >= (*(a5 + 1) - *a5) >> 3)
+  if (v35 >= (*(values + 1) - *values) >> 3)
   {
     goto LABEL_46;
   }
 
-  v51 = *(*a5 + 8 * v35++);
+  v51 = *(*values + 8 * v35++);
 LABEL_34:
   v50 = v11;
   v52 = v28;
   v53 = v33;
   if (desc->_hasBias2)
   {
-    if (v35 < (*(a5 + 1) - *a5) >> 3)
+    if (v35 < (*(values + 1) - *values) >> 3)
     {
-      v36 = v24;
-      v37 = *(*a5 + 8 * v35);
+      v36 = training;
+      v37 = *(*values + 8 * v35);
       goto LABEL_38;
     }
 
@@ -193,19 +193,19 @@ LABEL_46:
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
 
-  v36 = v24;
+  v36 = training;
   v37 = 0;
 LABEL_38:
-  v38 = [(MPSGraphGRUDescriptor *)desc resetGateFirst];
-  v39 = *a5;
-  if (*(a5 + 1) - *a5 <= 8uLL)
+  resetGateFirst = [(MPSGraphGRUDescriptor *)desc resetGateFirst];
+  v39 = *values;
+  if (*(values + 1) - *values <= 8uLL)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
 
-  v40 = v38;
-  v41 = [(MPSGraphGRUDescriptor *)self->super._desc resetAfter];
-  v42 = [(MPSGraphGRUDescriptor *)self->super._desc flipZ];
+  v40 = resetGateFirst;
+  resetAfter = [(MPSGraphGRUDescriptor *)self->super._desc resetAfter];
+  flipZ = [(MPSGraphGRUDescriptor *)self->super._desc flipZ];
   v57 = v54;
   Context = mlir::Attribute::getContext(&v57);
   v44 = mlir::RegisteredOperationName::lookup(&mlir::detail::TypeIDResolver<mlir::mps::GRUOp,void>::id, Context);
@@ -220,8 +220,8 @@ LABEL_38:
   }
 
   mlir::OperationState::OperationState(v65, v54, v44);
-  mlir::mps::GRUOp::build(a3, v65, *v39, v39[1], v26, v52, v53, v40, v36, v41, v42, v34, v51, v37);
-  v46 = mlir::OpBuilder::create(a3, v65);
+  mlir::mps::GRUOp::build(builder, v65, *v39, v39[1], v26, v52, v53, v40, v36, resetAfter, flipZ, v34, v51, v37);
+  v46 = mlir::OpBuilder::create(builder, v65);
   v47 = *(v46[6] + 16);
   mlir::OperationState::~OperationState(v65);
   if (v47 != &mlir::detail::TypeIDResolver<mlir::mps::GRUOp,void>::id)
@@ -232,14 +232,14 @@ LABEL_38:
   return v46;
 }
 
-- (id)partialDerivativesForInputTensors:(id)a3 incomingGradients:(id)a4 name:(id)a5
+- (id)partialDerivativesForInputTensors:(id)tensors incomingGradients:(id)gradients name:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 count])
+  tensorsCopy = tensors;
+  gradientsCopy = gradients;
+  nameCopy = name;
+  if ([gradientsCopy count])
   {
-    v37 = v9;
+    v37 = gradientsCopy;
     v11 = self->super._desc;
     if (![(MPSGraphGRUDescriptor *)v11 training])
     {
@@ -271,7 +271,7 @@ LABEL_38:
       {
 LABEL_6:
         v16 = 0;
-        v35 = v10;
+        v35 = nameCopy;
         if (desc->_hasBias2)
         {
 LABEL_7:
@@ -295,11 +295,11 @@ LABEL_14:
         v27 = [v21 objectAtIndexedSubscript:0];
         v28 = [v22 GRUGradientsWithSourceTensor:v23 recurrentWeight:v24 sourceGradient:v25 zState:v26 outputFwd:v27 stateGradient:0 inputWeight:0 bias:0 initState:v39 mask:v16 secondaryBias:v38 descriptor:v36 name:v35];
 
-        v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
-        for (i = 0; i < [v8 count]; ++i)
+        v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(tensorsCopy, "count")}];
+        for (i = 0; i < [tensorsCopy count]; ++i)
         {
-          v30 = [MEMORY[0x1E695DFB0] null];
-          v31 = [v8 objectAtIndexedSubscript:i];
+          null = [MEMORY[0x1E695DFB0] null];
+          v31 = [tensorsCopy objectAtIndexedSubscript:i];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -307,20 +307,20 @@ LABEL_14:
           {
             v33 = [v28 objectAtIndexedSubscript:i];
 
-            v30 = v33;
+            null = v33;
           }
 
-          [v17 addObject:v30];
+          [v17 addObject:null];
         }
 
-        v9 = v37;
-        v10 = v35;
+        gradientsCopy = v37;
+        nameCopy = v35;
         goto LABEL_20;
       }
     }
 
     v16 = [(NSArray *)self->super.super._inputTensors objectAtIndexedSubscript:v15++];
-    v35 = v10;
+    v35 = nameCopy;
     if (self->super._desc->_hasBias2)
     {
       goto LABEL_7;

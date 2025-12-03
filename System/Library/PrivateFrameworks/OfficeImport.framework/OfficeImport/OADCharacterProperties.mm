@@ -7,7 +7,7 @@
 - (BOOL)hasSymbolFont;
 - (BOOL)isAnyCharacterPropertyOverridden;
 - (BOOL)isBold;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHorizontalNormalized;
 - (BOOL)isItalic;
 - (BOOL)isRightToLeft;
@@ -36,25 +36,25 @@
 - (unsigned)formatType;
 - (unsigned)strikeThroughType;
 - (unsigned)underlineType;
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3;
-- (void)overrideWithCharacterProperties:(id)a3;
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values;
+- (void)overrideWithCharacterProperties:(id)properties;
 - (void)removeUnnecessaryOverrides;
-- (void)setBidiFont:(id)a3;
-- (void)setEastAsianFont:(id)a3;
-- (void)setHAnsiFont:(id)a3;
-- (void)setIsBold:(BOOL)a3;
-- (void)setIsHorizontalNormalized:(BOOL)a3;
-- (void)setIsItalic:(BOOL)a3;
-- (void)setIsRightToLeft:(BOOL)a3;
-- (void)setLatinFont:(id)a3;
-- (void)setSymbolFont:(id)a3;
+- (void)setBidiFont:(id)font;
+- (void)setEastAsianFont:(id)font;
+- (void)setHAnsiFont:(id)font;
+- (void)setIsBold:(BOOL)bold;
+- (void)setIsHorizontalNormalized:(BOOL)normalized;
+- (void)setIsItalic:(BOOL)italic;
+- (void)setIsRightToLeft:(BOOL)left;
+- (void)setLatinFont:(id)font;
+- (void)setSymbolFont:(id)font;
 @end
 
 @implementation OADCharacterProperties
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [[OADEffect alloc] initWithType:6];
     v3 = kOADAutoTextShadowEffect;
@@ -66,46 +66,46 @@
 {
   v10.receiver = self;
   v10.super_class = OADCharacterProperties;
-  v2 = [(OADProperties *)&v10 initWithDefaults];
-  if (v2)
+  initWithDefaults = [(OADProperties *)&v10 initWithDefaults];
+  if (initWithDefaults)
   {
     v3 = +[OADSolidFill blackFill];
-    [(OADCharacterProperties *)v2 setFill:v3];
+    [(OADCharacterProperties *)initWithDefaults setFill:v3];
 
     v4 = +[OADStroke nullStroke];
-    [(OADCharacterProperties *)v2 setStroke:v4];
+    [(OADCharacterProperties *)initWithDefaults setStroke:v4];
 
-    v5 = [MEMORY[0x277CBEA60] array];
-    [(OADCharacterProperties *)v2 setEffects:v5];
+    array = [MEMORY[0x277CBEA60] array];
+    [(OADCharacterProperties *)initWithDefaults setEffects:array];
 
-    [(OADCharacterProperties *)v2 setHighlight:0];
-    [(OADCharacterProperties *)v2 setUnderlineFill:0];
-    [(OADCharacterProperties *)v2 setUnderlineStroke:0];
+    [(OADCharacterProperties *)initWithDefaults setHighlight:0];
+    [(OADCharacterProperties *)initWithDefaults setUnderlineFill:0];
+    [(OADCharacterProperties *)initWithDefaults setUnderlineStroke:0];
     LODWORD(v6) = 1.0;
-    [(OADCharacterProperties *)v2 setOpacity:v6];
-    [(OADCharacterProperties *)v2 setIsBold:0];
-    [(OADCharacterProperties *)v2 setIsItalic:0];
-    [(OADCharacterProperties *)v2 setUnderlineType:0];
-    [(OADCharacterProperties *)v2 setFormatType:0];
-    [(OADCharacterProperties *)v2 setFormatKerningType:0];
-    [(OADCharacterProperties *)v2 setStrikeThroughType:0];
+    [(OADCharacterProperties *)initWithDefaults setOpacity:v6];
+    [(OADCharacterProperties *)initWithDefaults setIsBold:0];
+    [(OADCharacterProperties *)initWithDefaults setIsItalic:0];
+    [(OADCharacterProperties *)initWithDefaults setUnderlineType:0];
+    [(OADCharacterProperties *)initWithDefaults setFormatType:0];
+    [(OADCharacterProperties *)initWithDefaults setFormatKerningType:0];
+    [(OADCharacterProperties *)initWithDefaults setStrikeThroughType:0];
     LODWORD(v7) = 18.0;
-    [(OADCharacterProperties *)v2 setSize:v7];
-    [(OADCharacterProperties *)v2 setSpacing:0.0];
-    [(OADCharacterProperties *)v2 setIsVerticalText:0];
-    [(OADCharacterProperties *)v2 setBaseline:0.0];
-    [(OADCharacterProperties *)v2 setIsHorizontalNormalized:0];
-    [(OADCharacterProperties *)v2 setCaps:0];
-    [(OADCharacterProperties *)v2 setLanguage:0];
-    [(OADCharacterProperties *)v2 setLatinFont:&stru_286EE1130];
-    [(OADCharacterProperties *)v2 setEastAsianFont:&stru_286EE1130];
-    [(OADCharacterProperties *)v2 setBidiFont:&stru_286EE1130];
-    [(OADCharacterProperties *)v2 setHAnsiFont:&stru_286EE1130];
-    [(OADCharacterProperties *)v2 setSymbolFont:&stru_286EE1130];
-    v8 = v2;
+    [(OADCharacterProperties *)initWithDefaults setSize:v7];
+    [(OADCharacterProperties *)initWithDefaults setSpacing:0.0];
+    [(OADCharacterProperties *)initWithDefaults setIsVerticalText:0];
+    [(OADCharacterProperties *)initWithDefaults setBaseline:0.0];
+    [(OADCharacterProperties *)initWithDefaults setIsHorizontalNormalized:0];
+    [(OADCharacterProperties *)initWithDefaults setCaps:0];
+    [(OADCharacterProperties *)initWithDefaults setLanguage:0];
+    [(OADCharacterProperties *)initWithDefaults setLatinFont:&stru_286EE1130];
+    [(OADCharacterProperties *)initWithDefaults setEastAsianFont:&stru_286EE1130];
+    [(OADCharacterProperties *)initWithDefaults setBidiFont:&stru_286EE1130];
+    [(OADCharacterProperties *)initWithDefaults setHAnsiFont:&stru_286EE1130];
+    [(OADCharacterProperties *)initWithDefaults setSymbolFont:&stru_286EE1130];
+    v8 = initWithDefaults;
   }
 
-  return v2;
+  return initWithDefaults;
 }
 
 - (id)fill
@@ -291,21 +291,21 @@
 
 - (void)removeUnnecessaryOverrides
 {
-  v3 = [(OADProperties *)self parent];
+  parent = [(OADProperties *)self parent];
 
-  if (!v3)
+  if (!parent)
   {
     return;
   }
 
-  v4 = [(OADProperties *)self isMerged];
-  v5 = [(OADProperties *)self isMergedWithParent];
+  isMerged = [(OADProperties *)self isMerged];
+  isMergedWithParent = [(OADProperties *)self isMergedWithParent];
   [(OADProperties *)self setMerged:0];
   [(OADProperties *)self setMergedWithParent:0];
-  v6 = [(OADProperties *)self parent];
+  parent2 = [(OADProperties *)self parent];
   mStroke = self->mStroke;
-  v8 = [v6 stroke];
-  LODWORD(mStroke) = TCObjectEqual(mStroke, v8);
+  stroke = [parent2 stroke];
+  LODWORD(mStroke) = TCObjectEqual(mStroke, stroke);
 
   if (mStroke)
   {
@@ -314,8 +314,8 @@
   }
 
   mFill = self->mFill;
-  v11 = [v6 fill];
-  LODWORD(mFill) = TCObjectEqual(mFill, v11);
+  fill = [parent2 fill];
+  LODWORD(mFill) = TCObjectEqual(mFill, fill);
 
   if (mFill)
   {
@@ -325,30 +325,30 @@
 
   if ([(OADCharacterProperties *)self hasEffects])
   {
-    v13 = [(OADProperties *)self parent];
-    v14 = [(OADCharacterProperties *)self effects];
-    v15 = [v13 effects];
+    parent3 = [(OADProperties *)self parent];
+    effects = [(OADCharacterProperties *)self effects];
+    effects2 = [parent3 effects];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(objc_object *)v14 removeUnnecessaryOverrides];
+      [(objc_object *)effects removeUnnecessaryOverrides];
       v16 = objc_opt_class();
       if (v16 != objc_opt_class())
       {
         goto LABEL_13;
       }
 
-      v17 = [(objc_object *)v14 isMergedWithParent];
-      [(objc_object *)v14 setMergedWithParent:0];
-      v18 = [(objc_object *)v14 isAnythingOverridden];
-      [(objc_object *)v14 setMergedWithParent:v17];
-      if (v18)
+      isMergedWithParent2 = [(objc_object *)effects isMergedWithParent];
+      [(objc_object *)effects setMergedWithParent:0];
+      isAnythingOverridden = [(objc_object *)effects isAnythingOverridden];
+      [(objc_object *)effects setMergedWithParent:isMergedWithParent2];
+      if (isAnythingOverridden)
       {
         goto LABEL_13;
       }
     }
 
-    else if (!TCObjectEqual(v14, v15))
+    else if (!TCObjectEqual(effects, effects2))
     {
 LABEL_13:
 
@@ -364,10 +364,10 @@ LABEL_13:
 LABEL_14:
   if ([(OADCharacterProperties *)self hasOpacity])
   {
-    v20 = [(OADProperties *)self parent];
+    parent4 = [(OADProperties *)self parent];
     [(OADCharacterProperties *)self opacity];
     v22 = v21;
-    [v20 opacity];
+    [parent4 opacity];
     if (v22 == *&v23)
     {
       LODWORD(v23) = 1.0;
@@ -378,30 +378,30 @@ LABEL_14:
 
   if ([(OADCharacterProperties *)self hasHighlight])
   {
-    v24 = [(OADProperties *)self parent];
-    v25 = [(OADCharacterProperties *)self highlight];
-    v26 = [v24 highlight];
+    parent5 = [(OADProperties *)self parent];
+    highlight = [(OADCharacterProperties *)self highlight];
+    highlight2 = [parent5 highlight];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(objc_object *)v25 removeUnnecessaryOverrides];
+      [(objc_object *)highlight removeUnnecessaryOverrides];
       v27 = objc_opt_class();
       if (v27 != objc_opt_class())
       {
         goto LABEL_25;
       }
 
-      v28 = [(objc_object *)v25 isMergedWithParent];
-      [(objc_object *)v25 setMergedWithParent:0];
-      v29 = [(objc_object *)v25 isAnythingOverridden];
-      [(objc_object *)v25 setMergedWithParent:v28];
-      if (v29)
+      isMergedWithParent3 = [(objc_object *)highlight isMergedWithParent];
+      [(objc_object *)highlight setMergedWithParent:0];
+      isAnythingOverridden2 = [(objc_object *)highlight isAnythingOverridden];
+      [(objc_object *)highlight setMergedWithParent:isMergedWithParent3];
+      if (isAnythingOverridden2)
       {
         goto LABEL_25;
       }
     }
 
-    else if (!TCObjectEqual(v25, v26))
+    else if (!TCObjectEqual(highlight, highlight2))
     {
 LABEL_25:
 
@@ -421,24 +421,24 @@ LABEL_26:
     goto LABEL_34;
   }
 
-  v31 = [(OADProperties *)self parent];
-  v32 = [(OADCharacterProperties *)self underlineFill];
-  v33 = [v31 underlineFill];
+  parent6 = [(OADProperties *)self parent];
+  underlineFill = [(OADCharacterProperties *)self underlineFill];
+  underlineFill2 = [parent6 underlineFill];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(objc_object *)v32 removeUnnecessaryOverrides];
+    [(objc_object *)underlineFill removeUnnecessaryOverrides];
     v34 = objc_opt_class();
     if (v34 != objc_opt_class())
     {
       goto LABEL_33;
     }
 
-    v35 = [(objc_object *)v32 isMergedWithParent];
-    [(objc_object *)v32 setMergedWithParent:0];
-    v36 = [(objc_object *)v32 isAnythingOverridden];
-    [(objc_object *)v32 setMergedWithParent:v35];
-    if (v36)
+    isMergedWithParent4 = [(objc_object *)underlineFill isMergedWithParent];
+    [(objc_object *)underlineFill setMergedWithParent:0];
+    isAnythingOverridden3 = [(objc_object *)underlineFill isAnythingOverridden];
+    [(objc_object *)underlineFill setMergedWithParent:isMergedWithParent4];
+    if (isAnythingOverridden3)
     {
       goto LABEL_33;
     }
@@ -446,7 +446,7 @@ LABEL_26:
     goto LABEL_32;
   }
 
-  if (TCObjectEqual(v32, v33))
+  if (TCObjectEqual(underlineFill, underlineFill2))
   {
 LABEL_32:
     mUnderlineFill = self->mUnderlineFill;
@@ -463,24 +463,24 @@ LABEL_34:
     goto LABEL_42;
   }
 
-  v38 = [(OADProperties *)self parent];
-  v39 = [(OADCharacterProperties *)self underlineStroke];
-  v40 = [v38 underlineStroke];
+  parent7 = [(OADProperties *)self parent];
+  underlineStroke = [(OADCharacterProperties *)self underlineStroke];
+  underlineStroke2 = [parent7 underlineStroke];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(objc_object *)v39 removeUnnecessaryOverrides];
+    [(objc_object *)underlineStroke removeUnnecessaryOverrides];
     v41 = objc_opt_class();
     if (v41 != objc_opt_class())
     {
       goto LABEL_41;
     }
 
-    v42 = [(objc_object *)v39 isMergedWithParent];
-    [(objc_object *)v39 setMergedWithParent:0];
-    v43 = [(objc_object *)v39 isAnythingOverridden];
-    [(objc_object *)v39 setMergedWithParent:v42];
-    if (v43)
+    isMergedWithParent5 = [(objc_object *)underlineStroke isMergedWithParent];
+    [(objc_object *)underlineStroke setMergedWithParent:0];
+    isAnythingOverridden4 = [(objc_object *)underlineStroke isAnythingOverridden];
+    [(objc_object *)underlineStroke setMergedWithParent:isMergedWithParent5];
+    if (isAnythingOverridden4)
     {
       goto LABEL_41;
     }
@@ -488,7 +488,7 @@ LABEL_34:
     goto LABEL_40;
   }
 
-  if (TCObjectEqual(v39, v40))
+  if (TCObjectEqual(underlineStroke, underlineStroke2))
   {
 LABEL_40:
     mUnderlineStroke = self->mUnderlineStroke;
@@ -502,9 +502,9 @@ LABEL_41:
 LABEL_42:
   if ([(OADCharacterProperties *)self hasIsBold])
   {
-    v45 = [(OADProperties *)self parent];
-    v46 = [(OADCharacterProperties *)self isBold];
-    if (v46 == [v45 isBold])
+    parent8 = [(OADProperties *)self parent];
+    isBold = [(OADCharacterProperties *)self isBold];
+    if (isBold == [parent8 isBold])
     {
       [(OADCharacterProperties *)self setIsBold:0];
       *(self + 156) &= ~0x10u;
@@ -513,9 +513,9 @@ LABEL_42:
 
   if ([(OADCharacterProperties *)self hasIsItalic])
   {
-    v47 = [(OADProperties *)self parent];
-    v48 = [(OADCharacterProperties *)self isItalic];
-    if (v48 == [v47 isItalic])
+    parent9 = [(OADProperties *)self parent];
+    isItalic = [(OADCharacterProperties *)self isItalic];
+    if (isItalic == [parent9 isItalic])
     {
       [(OADCharacterProperties *)self setIsItalic:0];
       *(self + 156) &= ~0x40u;
@@ -524,9 +524,9 @@ LABEL_42:
 
   if ([(OADCharacterProperties *)self hasUnderlineType])
   {
-    v49 = [(OADProperties *)self parent];
-    v50 = [(OADCharacterProperties *)self underlineType];
-    if (v50 == [v49 underlineType])
+    parent10 = [(OADProperties *)self parent];
+    underlineType = [(OADCharacterProperties *)self underlineType];
+    if (underlineType == [parent10 underlineType])
     {
       [(OADCharacterProperties *)self setUnderlineType:0];
       *(self + 157) &= ~1u;
@@ -535,9 +535,9 @@ LABEL_42:
 
   if ([(OADCharacterProperties *)self hasFormatType])
   {
-    v51 = [(OADProperties *)self parent];
-    v52 = [(OADCharacterProperties *)self formatType];
-    if (v52 == [v51 formatType])
+    parent11 = [(OADProperties *)self parent];
+    formatType = [(OADCharacterProperties *)self formatType];
+    if (formatType == [parent11 formatType])
     {
       [(OADCharacterProperties *)self setFormatType:0];
       *(self + 157) &= ~2u;
@@ -546,9 +546,9 @@ LABEL_42:
 
   if ([(OADCharacterProperties *)self hasFormatKerningType])
   {
-    v53 = [(OADProperties *)self parent];
-    v54 = [(OADCharacterProperties *)self formatKerningType];
-    if (v54 == [v53 formatKerningType])
+    parent12 = [(OADProperties *)self parent];
+    formatKerningType = [(OADCharacterProperties *)self formatKerningType];
+    if (formatKerningType == [parent12 formatKerningType])
     {
       [(OADCharacterProperties *)self setFormatKerningType:0];
       *(self + 157) &= ~4u;
@@ -557,9 +557,9 @@ LABEL_42:
 
   if ([(OADCharacterProperties *)self hasStrikeThroughType])
   {
-    v55 = [(OADProperties *)self parent];
-    v56 = [(OADCharacterProperties *)self strikeThroughType];
-    if (v56 == [v55 strikeThroughType])
+    parent13 = [(OADProperties *)self parent];
+    strikeThroughType = [(OADCharacterProperties *)self strikeThroughType];
+    if (strikeThroughType == [parent13 strikeThroughType])
     {
       [(OADCharacterProperties *)self setStrikeThroughType:0];
       *(self + 157) &= ~8u;
@@ -568,10 +568,10 @@ LABEL_42:
 
   if ([(OADCharacterProperties *)self hasSize])
   {
-    v57 = [(OADProperties *)self parent];
+    parent14 = [(OADProperties *)self parent];
     [(OADCharacterProperties *)self size];
     v59 = v58;
-    [v57 size];
+    [parent14 size];
     if (v59 == *&v60)
     {
       LODWORD(v60) = 18.0;
@@ -582,10 +582,10 @@ LABEL_42:
 
   if ([(OADCharacterProperties *)self hasSpacing])
   {
-    v61 = [(OADProperties *)self parent];
+    parent15 = [(OADProperties *)self parent];
     [(OADCharacterProperties *)self spacing];
     v63 = v62;
-    [v61 spacing];
+    [parent15 spacing];
     if (v63 == v64)
     {
       [(OADCharacterProperties *)self setSpacing:0.0];
@@ -595,9 +595,9 @@ LABEL_42:
 
   if ([(OADCharacterProperties *)self hasIsVerticalText])
   {
-    v65 = [(OADProperties *)self parent];
-    v66 = [(OADCharacterProperties *)self isVerticalText];
-    if (v66 == [v65 isVerticalText])
+    parent16 = [(OADProperties *)self parent];
+    isVerticalText = [(OADCharacterProperties *)self isVerticalText];
+    if (isVerticalText == [parent16 isVerticalText])
     {
       [(OADCharacterProperties *)self setIsVerticalText:0];
       *(self + 157) &= ~0x80u;
@@ -606,9 +606,9 @@ LABEL_42:
 
   if ([(OADCharacterProperties *)self hasIsRightToLeft])
   {
-    v67 = [(OADProperties *)self parent];
-    v68 = [(OADCharacterProperties *)self isRightToLeft];
-    if (v68 == [v67 isRightToLeft])
+    parent17 = [(OADProperties *)self parent];
+    isRightToLeft = [(OADCharacterProperties *)self isRightToLeft];
+    if (isRightToLeft == [parent17 isRightToLeft])
     {
       [(OADCharacterProperties *)self setIsRightToLeft:0];
       *(self + 158) &= ~2u;
@@ -617,10 +617,10 @@ LABEL_42:
 
   if ([(OADCharacterProperties *)self hasBaseline])
   {
-    v69 = [(OADProperties *)self parent];
+    parent18 = [(OADProperties *)self parent];
     [(OADCharacterProperties *)self baseline];
     v71 = v70;
-    [v69 baseline];
+    [parent18 baseline];
     if (v71 == v72)
     {
       [(OADCharacterProperties *)self setBaseline:0.0];
@@ -630,9 +630,9 @@ LABEL_42:
 
   if ([(OADCharacterProperties *)self hasIsHorizontalNormalized])
   {
-    v73 = [(OADProperties *)self parent];
-    v74 = [(OADCharacterProperties *)self isHorizontalNormalized];
-    if (v74 == [v73 isHorizontalNormalized])
+    parent19 = [(OADProperties *)self parent];
+    isHorizontalNormalized = [(OADCharacterProperties *)self isHorizontalNormalized];
+    if (isHorizontalNormalized == [parent19 isHorizontalNormalized])
     {
       [(OADCharacterProperties *)self setIsHorizontalNormalized:0];
       *(self + 158) &= ~0x10u;
@@ -641,9 +641,9 @@ LABEL_42:
 
   if ([(OADCharacterProperties *)self hasCaps])
   {
-    v75 = [(OADProperties *)self parent];
-    v76 = [(OADCharacterProperties *)self caps];
-    if (v76 == [v75 caps])
+    parent20 = [(OADProperties *)self parent];
+    caps = [(OADCharacterProperties *)self caps];
+    if (caps == [parent20 caps])
     {
       [(OADCharacterProperties *)self setCaps:0];
       *(self + 158) &= ~0x40u;
@@ -652,9 +652,9 @@ LABEL_42:
 
   if ([(OADCharacterProperties *)self hasLanguage])
   {
-    v77 = [(OADProperties *)self parent];
-    v78 = [(OADCharacterProperties *)self language];
-    if (v78 == [v77 language])
+    parent21 = [(OADProperties *)self parent];
+    language = [(OADCharacterProperties *)self language];
+    if (language == [parent21 language])
     {
       [(OADCharacterProperties *)self setLanguage:0];
       *(self + 158) &= ~0x80u;
@@ -663,30 +663,30 @@ LABEL_42:
 
   if ([(OADCharacterProperties *)self hasLatinFont])
   {
-    v79 = [(OADProperties *)self parent];
-    v80 = [(OADCharacterProperties *)self latinFont];
-    v81 = [v79 latinFont];
+    parent22 = [(OADProperties *)self parent];
+    latinFont = [(OADCharacterProperties *)self latinFont];
+    latinFont2 = [parent22 latinFont];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(objc_object *)v80 removeUnnecessaryOverrides];
+      [(objc_object *)latinFont removeUnnecessaryOverrides];
       v82 = objc_opt_class();
       if (v82 != objc_opt_class())
       {
         goto LABEL_105;
       }
 
-      v83 = [(objc_object *)v80 isMergedWithParent];
-      [(objc_object *)v80 setMergedWithParent:0];
-      v84 = [(objc_object *)v80 isAnythingOverridden];
-      [(objc_object *)v80 setMergedWithParent:v83];
-      if (v84)
+      isMergedWithParent6 = [(objc_object *)latinFont isMergedWithParent];
+      [(objc_object *)latinFont setMergedWithParent:0];
+      isAnythingOverridden5 = [(objc_object *)latinFont isAnythingOverridden];
+      [(objc_object *)latinFont setMergedWithParent:isMergedWithParent6];
+      if (isAnythingOverridden5)
       {
         goto LABEL_105;
       }
     }
 
-    else if (!TCObjectEqual(v80, v81))
+    else if (!TCObjectEqual(latinFont, latinFont2))
     {
 LABEL_105:
 
@@ -705,24 +705,24 @@ LABEL_106:
     goto LABEL_114;
   }
 
-  v86 = [(OADProperties *)self parent];
-  v87 = [(OADCharacterProperties *)self eastAsianFont];
-  v88 = [v86 eastAsianFont];
+  parent23 = [(OADProperties *)self parent];
+  eastAsianFont = [(OADCharacterProperties *)self eastAsianFont];
+  eastAsianFont2 = [parent23 eastAsianFont];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(objc_object *)v87 removeUnnecessaryOverrides];
+    [(objc_object *)eastAsianFont removeUnnecessaryOverrides];
     v89 = objc_opt_class();
     if (v89 != objc_opt_class())
     {
       goto LABEL_113;
     }
 
-    v90 = [(objc_object *)v87 isMergedWithParent];
-    [(objc_object *)v87 setMergedWithParent:0];
-    v91 = [(objc_object *)v87 isAnythingOverridden];
-    [(objc_object *)v87 setMergedWithParent:v90];
-    if (v91)
+    isMergedWithParent7 = [(objc_object *)eastAsianFont isMergedWithParent];
+    [(objc_object *)eastAsianFont setMergedWithParent:0];
+    isAnythingOverridden6 = [(objc_object *)eastAsianFont isAnythingOverridden];
+    [(objc_object *)eastAsianFont setMergedWithParent:isMergedWithParent7];
+    if (isAnythingOverridden6)
     {
       goto LABEL_113;
     }
@@ -730,7 +730,7 @@ LABEL_106:
     goto LABEL_112;
   }
 
-  if (TCObjectEqual(v87, v88))
+  if (TCObjectEqual(eastAsianFont, eastAsianFont2))
   {
 LABEL_112:
     mEastAsianFont = self->mEastAsianFont;
@@ -745,24 +745,24 @@ LABEL_114:
     goto LABEL_122;
   }
 
-  v93 = [(OADProperties *)self parent];
-  v94 = [(OADCharacterProperties *)self bidiFont];
-  v95 = [v93 bidiFont];
+  parent24 = [(OADProperties *)self parent];
+  bidiFont = [(OADCharacterProperties *)self bidiFont];
+  bidiFont2 = [parent24 bidiFont];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(objc_object *)v94 removeUnnecessaryOverrides];
+    [(objc_object *)bidiFont removeUnnecessaryOverrides];
     v96 = objc_opt_class();
     if (v96 != objc_opt_class())
     {
       goto LABEL_121;
     }
 
-    v97 = [(objc_object *)v94 isMergedWithParent];
-    [(objc_object *)v94 setMergedWithParent:0];
-    v98 = [(objc_object *)v94 isAnythingOverridden];
-    [(objc_object *)v94 setMergedWithParent:v97];
-    if (v98)
+    isMergedWithParent8 = [(objc_object *)bidiFont isMergedWithParent];
+    [(objc_object *)bidiFont setMergedWithParent:0];
+    isAnythingOverridden7 = [(objc_object *)bidiFont isAnythingOverridden];
+    [(objc_object *)bidiFont setMergedWithParent:isMergedWithParent8];
+    if (isAnythingOverridden7)
     {
       goto LABEL_121;
     }
@@ -770,7 +770,7 @@ LABEL_114:
     goto LABEL_120;
   }
 
-  if (TCObjectEqual(v94, v95))
+  if (TCObjectEqual(bidiFont, bidiFont2))
   {
 LABEL_120:
     mBidiFont = self->mBidiFont;
@@ -785,24 +785,24 @@ LABEL_122:
     goto LABEL_130;
   }
 
-  v100 = [(OADProperties *)self parent];
-  v101 = [(OADCharacterProperties *)self hansiFont];
-  v102 = [v100 hansiFont];
+  parent25 = [(OADProperties *)self parent];
+  hansiFont = [(OADCharacterProperties *)self hansiFont];
+  hansiFont2 = [parent25 hansiFont];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(objc_object *)v101 removeUnnecessaryOverrides];
+    [(objc_object *)hansiFont removeUnnecessaryOverrides];
     v103 = objc_opt_class();
     if (v103 != objc_opt_class())
     {
       goto LABEL_129;
     }
 
-    v104 = [(objc_object *)v101 isMergedWithParent];
-    [(objc_object *)v101 setMergedWithParent:0];
-    v105 = [(objc_object *)v101 isAnythingOverridden];
-    [(objc_object *)v101 setMergedWithParent:v104];
-    if (v105)
+    isMergedWithParent9 = [(objc_object *)hansiFont isMergedWithParent];
+    [(objc_object *)hansiFont setMergedWithParent:0];
+    isAnythingOverridden8 = [(objc_object *)hansiFont isAnythingOverridden];
+    [(objc_object *)hansiFont setMergedWithParent:isMergedWithParent9];
+    if (isAnythingOverridden8)
     {
       goto LABEL_129;
     }
@@ -810,7 +810,7 @@ LABEL_122:
     goto LABEL_128;
   }
 
-  if (TCObjectEqual(v101, v102))
+  if (TCObjectEqual(hansiFont, hansiFont2))
   {
 LABEL_128:
     mHAnsiFont = self->mHAnsiFont;
@@ -822,30 +822,30 @@ LABEL_129:
 LABEL_130:
   if ([(OADCharacterProperties *)self hasSymbolFont])
   {
-    v107 = [(OADProperties *)self parent];
-    v108 = [(OADCharacterProperties *)self symbolFont];
-    v109 = [v107 symbolFont];
+    parent26 = [(OADProperties *)self parent];
+    symbolFont = [(OADCharacterProperties *)self symbolFont];
+    symbolFont2 = [parent26 symbolFont];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(objc_object *)v108 removeUnnecessaryOverrides];
+      [(objc_object *)symbolFont removeUnnecessaryOverrides];
       v110 = objc_opt_class();
       if (v110 != objc_opt_class())
       {
         goto LABEL_137;
       }
 
-      v111 = [(objc_object *)v108 isMergedWithParent];
-      [(objc_object *)v108 setMergedWithParent:0];
-      v112 = [(objc_object *)v108 isAnythingOverridden];
-      [(objc_object *)v108 setMergedWithParent:v111];
-      if (v112)
+      isMergedWithParent10 = [(objc_object *)symbolFont isMergedWithParent];
+      [(objc_object *)symbolFont setMergedWithParent:0];
+      isAnythingOverridden9 = [(objc_object *)symbolFont isAnythingOverridden];
+      [(objc_object *)symbolFont setMergedWithParent:isMergedWithParent10];
+      if (isAnythingOverridden9)
       {
         goto LABEL_137;
       }
     }
 
-    else if (!TCObjectEqual(v108, v109))
+    else if (!TCObjectEqual(symbolFont, symbolFont2))
     {
 LABEL_137:
 
@@ -860,9 +860,9 @@ LABEL_137:
 
 LABEL_138:
   mClickHyperlink = self->mClickHyperlink;
-  v115 = [(OADProperties *)self parent];
-  v116 = [v115 clickHyperlink];
-  LODWORD(mClickHyperlink) = [(OADHyperlink *)mClickHyperlink isEqual:v116];
+  parent27 = [(OADProperties *)self parent];
+  clickHyperlink = [parent27 clickHyperlink];
+  LODWORD(mClickHyperlink) = [(OADHyperlink *)mClickHyperlink isEqual:clickHyperlink];
 
   if (mClickHyperlink)
   {
@@ -871,9 +871,9 @@ LABEL_138:
   }
 
   mHoverHyperlink = self->mHoverHyperlink;
-  v119 = [(OADProperties *)self parent];
-  v120 = [v119 hoverHyperlink];
-  LODWORD(mHoverHyperlink) = [(OADHyperlink *)mHoverHyperlink isEqual:v120];
+  parent28 = [(OADProperties *)self parent];
+  hoverHyperlink = [parent28 hoverHyperlink];
+  LODWORD(mHoverHyperlink) = [(OADHyperlink *)mHoverHyperlink isEqual:hoverHyperlink];
 
   if (mHoverHyperlink)
   {
@@ -881,8 +881,8 @@ LABEL_138:
     self->mHoverHyperlink = 0;
   }
 
-  [(OADProperties *)self setMerged:v4];
-  [(OADProperties *)self setMergedWithParent:v5];
+  [(OADProperties *)self setMerged:isMerged];
+  [(OADProperties *)self setMergedWithParent:isMergedWithParent];
   v122.receiver = self;
   v122.super_class = OADCharacterProperties;
   [(OADProperties *)&v122 removeUnnecessaryOverrides];
@@ -1028,9 +1028,9 @@ LABEL_138:
   return v3;
 }
 
-- (void)setIsBold:(BOOL)a3
+- (void)setIsBold:(BOOL)bold
 {
-  if (a3)
+  if (bold)
   {
     v3 = 32;
   }
@@ -1044,9 +1044,9 @@ LABEL_138:
   *(self + 156) |= 0x10u;
 }
 
-- (void)setIsItalic:(BOOL)a3
+- (void)setIsItalic:(BOOL)italic
 {
-  if (a3)
+  if (italic)
   {
     v3 = 0x80;
   }
@@ -1076,9 +1076,9 @@ LABEL_138:
   return v3;
 }
 
-- (void)setIsRightToLeft:(BOOL)a3
+- (void)setIsRightToLeft:(BOOL)left
 {
-  if (a3)
+  if (left)
   {
     v3 = 4;
   }
@@ -1100,9 +1100,9 @@ LABEL_138:
   return v3;
 }
 
-- (void)setIsHorizontalNormalized:(BOOL)a3
+- (void)setIsHorizontalNormalized:(BOOL)normalized
 {
-  if (a3)
+  if (normalized)
   {
     v3 = 32;
   }
@@ -1124,18 +1124,18 @@ LABEL_138:
   return v3;
 }
 
-- (void)setLatinFont:(id)a3
+- (void)setLatinFont:(id)font
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  fontCopy = font;
+  v4 = [fontCopy copy];
   mLatinFont = self->mLatinFont;
   self->mLatinFont = v4;
 }
 
-- (void)setEastAsianFont:(id)a3
+- (void)setEastAsianFont:(id)font
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  fontCopy = font;
+  v4 = [fontCopy copy];
   mEastAsianFont = self->mEastAsianFont;
   self->mEastAsianFont = v4;
 }
@@ -1160,63 +1160,63 @@ LABEL_138:
   return v4;
 }
 
-- (void)setBidiFont:(id)a3
+- (void)setBidiFont:(id)font
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  fontCopy = font;
+  v4 = [fontCopy copy];
   mBidiFont = self->mBidiFont;
   self->mBidiFont = v4;
 }
 
-- (void)setHAnsiFont:(id)a3
+- (void)setHAnsiFont:(id)font
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  fontCopy = font;
+  v4 = [fontCopy copy];
   mHAnsiFont = self->mHAnsiFont;
   self->mHAnsiFont = v4;
 }
 
-- (void)setSymbolFont:(id)a3
+- (void)setSymbolFont:(id)font
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  fontCopy = font;
+  v4 = [fontCopy copy];
   mSymbolFont = self->mSymbolFont;
   self->mSymbolFont = v4;
 }
 
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v125.receiver = self;
   v125.super_class = OADCharacterProperties;
-  [(OADProperties *)&v125 fixPropertiesForChangingParentPreservingEffectiveValues:v4];
-  if ([(OADCharacterProperties *)self hasLatinFont]|| ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != v4))
+  [(OADProperties *)&v125 fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
+  if ([(OADCharacterProperties *)self hasLatinFont]|| ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != valuesCopy))
   {
     v6 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasLatinFont];
 
     if (v6)
     {
-      v7 = [(OADCharacterProperties *)self latinFont];
+      latinFont = [(OADCharacterProperties *)self latinFont];
     }
 
     else
     {
-      v7 = 0;
+      latinFont = 0;
     }
 
-    v8 = [v4 possiblyInexistentOverrideForSelector:sel_hasLatinFont];
+    v8 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasLatinFont];
 
     if (v8)
     {
-      v9 = [v4 latinFont];
+      latinFont2 = [valuesCopy latinFont];
     }
 
     else
     {
-      v9 = 0;
+      latinFont2 = 0;
     }
 
-    v10 = TCObjectEqual(v7, v9);
+    v10 = TCObjectEqual(latinFont, latinFont2);
     mLatinFont = self->mLatinFont;
     if (v10)
     {
@@ -1225,37 +1225,37 @@ LABEL_138:
 
     else if (!mLatinFont && v6)
     {
-      [(OADCharacterProperties *)self setLatinFont:v7];
+      [(OADCharacterProperties *)self setLatinFont:latinFont];
     }
   }
 
-  if ([(OADCharacterProperties *)self hasEastAsianFont]|| ([(OADProperties *)self parent], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 != v4))
+  if ([(OADCharacterProperties *)self hasEastAsianFont]|| ([(OADProperties *)self parent], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 != valuesCopy))
   {
     v13 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasEastAsianFont];
 
     if (v13)
     {
-      v14 = [(OADCharacterProperties *)self eastAsianFont];
+      eastAsianFont = [(OADCharacterProperties *)self eastAsianFont];
     }
 
     else
     {
-      v14 = 0;
+      eastAsianFont = 0;
     }
 
-    v15 = [v4 possiblyInexistentOverrideForSelector:sel_hasEastAsianFont];
+    v15 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasEastAsianFont];
 
     if (v15)
     {
-      v16 = [v4 eastAsianFont];
+      eastAsianFont2 = [valuesCopy eastAsianFont];
     }
 
     else
     {
-      v16 = 0;
+      eastAsianFont2 = 0;
     }
 
-    v17 = TCObjectEqual(v14, v16);
+    v17 = TCObjectEqual(eastAsianFont, eastAsianFont2);
     mEastAsianFont = self->mEastAsianFont;
     if (v17)
     {
@@ -1264,37 +1264,37 @@ LABEL_138:
 
     else if (!mEastAsianFont && v13)
     {
-      [(OADCharacterProperties *)self setEastAsianFont:v14];
+      [(OADCharacterProperties *)self setEastAsianFont:eastAsianFont];
     }
   }
 
-  if ([(OADCharacterProperties *)self hasBidiFont]|| ([(OADProperties *)self parent], v19 = objc_claimAutoreleasedReturnValue(), v19, v19 != v4))
+  if ([(OADCharacterProperties *)self hasBidiFont]|| ([(OADProperties *)self parent], v19 = objc_claimAutoreleasedReturnValue(), v19, v19 != valuesCopy))
   {
     v20 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasBidiFont];
 
     if (v20)
     {
-      v21 = [(OADCharacterProperties *)self bidiFont];
+      bidiFont = [(OADCharacterProperties *)self bidiFont];
     }
 
     else
     {
-      v21 = 0;
+      bidiFont = 0;
     }
 
-    v22 = [v4 possiblyInexistentOverrideForSelector:sel_hasBidiFont];
+    v22 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasBidiFont];
 
     if (v22)
     {
-      v23 = [v4 bidiFont];
+      bidiFont2 = [valuesCopy bidiFont];
     }
 
     else
     {
-      v23 = 0;
+      bidiFont2 = 0;
     }
 
-    v24 = TCObjectEqual(v21, v23);
+    v24 = TCObjectEqual(bidiFont, bidiFont2);
     mBidiFont = self->mBidiFont;
     if (v24)
     {
@@ -1303,37 +1303,37 @@ LABEL_138:
 
     else if (!mBidiFont && v20)
     {
-      [(OADCharacterProperties *)self setBidiFont:v21];
+      [(OADCharacterProperties *)self setBidiFont:bidiFont];
     }
   }
 
-  if ([(OADCharacterProperties *)self hasHAnsiFont]|| ([(OADProperties *)self parent], v26 = objc_claimAutoreleasedReturnValue(), v26, v26 != v4))
+  if ([(OADCharacterProperties *)self hasHAnsiFont]|| ([(OADProperties *)self parent], v26 = objc_claimAutoreleasedReturnValue(), v26, v26 != valuesCopy))
   {
     v27 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasHAnsiFont];
 
     if (v27)
     {
-      v28 = [(OADCharacterProperties *)self hansiFont];
+      hansiFont = [(OADCharacterProperties *)self hansiFont];
     }
 
     else
     {
-      v28 = 0;
+      hansiFont = 0;
     }
 
-    v29 = [v4 possiblyInexistentOverrideForSelector:sel_hasHAnsiFont];
+    v29 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasHAnsiFont];
 
     if (v29)
     {
-      v30 = [v4 hansiFont];
+      hansiFont2 = [valuesCopy hansiFont];
     }
 
     else
     {
-      v30 = 0;
+      hansiFont2 = 0;
     }
 
-    v31 = TCObjectEqual(v28, v30);
+    v31 = TCObjectEqual(hansiFont, hansiFont2);
     mHAnsiFont = self->mHAnsiFont;
     if (v31)
     {
@@ -1342,37 +1342,37 @@ LABEL_138:
 
     else if (!mHAnsiFont && v27)
     {
-      [(OADCharacterProperties *)self setHAnsiFont:v28];
+      [(OADCharacterProperties *)self setHAnsiFont:hansiFont];
     }
   }
 
-  if ([(OADCharacterProperties *)self hasSymbolFont]|| ([(OADProperties *)self parent], v33 = objc_claimAutoreleasedReturnValue(), v33, v33 != v4))
+  if ([(OADCharacterProperties *)self hasSymbolFont]|| ([(OADProperties *)self parent], v33 = objc_claimAutoreleasedReturnValue(), v33, v33 != valuesCopy))
   {
     v34 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasSymbolFont];
 
     if (v34)
     {
-      v35 = [(OADCharacterProperties *)self symbolFont];
+      symbolFont = [(OADCharacterProperties *)self symbolFont];
     }
 
     else
     {
-      v35 = 0;
+      symbolFont = 0;
     }
 
-    v36 = [v4 possiblyInexistentOverrideForSelector:sel_hasSymbolFont];
+    v36 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasSymbolFont];
 
     if (v36)
     {
-      v37 = [v4 symbolFont];
+      symbolFont2 = [valuesCopy symbolFont];
     }
 
     else
     {
-      v37 = 0;
+      symbolFont2 = 0;
     }
 
-    v38 = TCObjectEqual(v35, v37);
+    v38 = TCObjectEqual(symbolFont, symbolFont2);
     mSymbolFont = self->mSymbolFont;
     if (v38)
     {
@@ -1381,37 +1381,37 @@ LABEL_138:
 
     else if (!mSymbolFont && v34)
     {
-      [(OADCharacterProperties *)self setSymbolFont:v35];
+      [(OADCharacterProperties *)self setSymbolFont:symbolFont];
     }
   }
 
-  if ([(OADCharacterProperties *)self hasFill]|| ([(OADProperties *)self parent], v40 = objc_claimAutoreleasedReturnValue(), v40, v40 != v4))
+  if ([(OADCharacterProperties *)self hasFill]|| ([(OADProperties *)self parent], v40 = objc_claimAutoreleasedReturnValue(), v40, v40 != valuesCopy))
   {
     v41 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasFill];
 
     if (v41)
     {
-      v42 = [(OADCharacterProperties *)self fill];
+      fill = [(OADCharacterProperties *)self fill];
     }
 
     else
     {
-      v42 = 0;
+      fill = 0;
     }
 
-    v43 = [v4 possiblyInexistentOverrideForSelector:sel_hasFill];
+    v43 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasFill];
 
     if (v43)
     {
-      v44 = [v4 fill];
+      fill2 = [valuesCopy fill];
     }
 
     else
     {
-      v44 = 0;
+      fill2 = 0;
     }
 
-    v45 = TCObjectEqual(v42, v44);
+    v45 = TCObjectEqual(fill, fill2);
     mFill = self->mFill;
     if (v45)
     {
@@ -1420,37 +1420,37 @@ LABEL_138:
 
     else if (!mFill && v41)
     {
-      [(OADCharacterProperties *)self setFill:v42];
+      [(OADCharacterProperties *)self setFill:fill];
     }
   }
 
-  if ([(OADCharacterProperties *)self hasStroke]|| ([(OADProperties *)self parent], v47 = objc_claimAutoreleasedReturnValue(), v47, v47 != v4))
+  if ([(OADCharacterProperties *)self hasStroke]|| ([(OADProperties *)self parent], v47 = objc_claimAutoreleasedReturnValue(), v47, v47 != valuesCopy))
   {
     v48 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasStroke];
 
     if (v48)
     {
-      v49 = [(OADCharacterProperties *)self stroke];
+      stroke = [(OADCharacterProperties *)self stroke];
     }
 
     else
     {
-      v49 = 0;
+      stroke = 0;
     }
 
-    v50 = [v4 possiblyInexistentOverrideForSelector:sel_hasStroke];
+    v50 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasStroke];
 
     if (v50)
     {
-      v51 = [v4 stroke];
+      stroke2 = [valuesCopy stroke];
     }
 
     else
     {
-      v51 = 0;
+      stroke2 = 0;
     }
 
-    v52 = TCObjectEqual(v49, v51);
+    v52 = TCObjectEqual(stroke, stroke2);
     mStroke = self->mStroke;
     if (v52)
     {
@@ -1459,37 +1459,37 @@ LABEL_138:
 
     else if (!mStroke && v48)
     {
-      [(OADCharacterProperties *)self setStroke:v49];
+      [(OADCharacterProperties *)self setStroke:stroke];
     }
   }
 
-  if ([(OADCharacterProperties *)self hasEffects]|| ([(OADProperties *)self parent], v54 = objc_claimAutoreleasedReturnValue(), v54, v54 != v4))
+  if ([(OADCharacterProperties *)self hasEffects]|| ([(OADProperties *)self parent], v54 = objc_claimAutoreleasedReturnValue(), v54, v54 != valuesCopy))
   {
     v55 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasEffects];
 
     if (v55)
     {
-      v56 = [(OADCharacterProperties *)self effects];
+      effects = [(OADCharacterProperties *)self effects];
     }
 
     else
     {
-      v56 = 0;
+      effects = 0;
     }
 
-    v57 = [v4 possiblyInexistentOverrideForSelector:sel_hasEffects];
+    v57 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasEffects];
 
     if (v57)
     {
-      v58 = [v4 effects];
+      effects2 = [valuesCopy effects];
     }
 
     else
     {
-      v58 = 0;
+      effects2 = 0;
     }
 
-    v59 = TCObjectEqual(v56, v58);
+    v59 = TCObjectEqual(effects, effects2);
     mEffects = self->mEffects;
     if (v59)
     {
@@ -1498,48 +1498,48 @@ LABEL_138:
 
     else if (!mEffects && v55)
     {
-      [(OADCharacterProperties *)self setEffects:v56];
+      [(OADCharacterProperties *)self setEffects:effects];
     }
   }
 
   if ((*(self + 156) & 1) == 0)
   {
-    v63 = [(OADProperties *)self parent];
+    parent = [(OADProperties *)self parent];
 
-    if (v63 == v4)
+    if (parent == valuesCopy)
     {
       goto LABEL_129;
     }
 
 LABEL_119:
-    v64 = [(OADCharacterProperties *)self underlineFill];
+    underlineFill = [(OADCharacterProperties *)self underlineFill];
     v65 = objc_alloc_init(objc_opt_class());
 
-    v66 = [(OADCharacterProperties *)self underlineFill];
-    [v65 setParent:v66];
+    underlineFill2 = [(OADCharacterProperties *)self underlineFill];
+    [v65 setParent:underlineFill2];
 
     objc_storeStrong(&self->mUnderlineFill, v65);
     *(self + 156) |= 1u;
-    v67 = [v4 possiblyInexistentOverrideForSelector:sel_hasUnderlineFill];
+    underlineFill3 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasUnderlineFill];
 
-    if (v67)
+    if (underlineFill3)
     {
-      v67 = [v4 underlineFill];
+      underlineFill3 = [valuesCopy underlineFill];
     }
 
     mUnderlineFill = self->mUnderlineFill;
-    if (mUnderlineFill != v67)
+    if (mUnderlineFill != underlineFill3)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       if ((isKindOfClass & 1) == 0)
       {
-        v70 = [objc_opt_class() defaultProperties];
+        defaultProperties = [objc_opt_class() defaultProperties];
 
-        v67 = v70;
+        underlineFill3 = defaultProperties;
       }
 
-      [(OADProperties *)self->mUnderlineFill changeParentPreservingEffectiveValues:v67];
+      [(OADProperties *)self->mUnderlineFill changeParentPreservingEffectiveValues:underlineFill3];
       if ((isKindOfClass & 1) == 0 || [(OADProperties *)self->mUnderlineFill isAnythingOverridden])
       {
         goto LABEL_128;
@@ -1561,8 +1561,8 @@ LABEL_128:
     goto LABEL_119;
   }
 
-  v61 = [v4 possiblyInexistentOverrideForSelector:sel_hasUnderlineFill];
-  if (!v61 || ([v4 underlineFill], v62 = objc_claimAutoreleasedReturnValue(), v62, v61, !v62))
+  v61 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasUnderlineFill];
+  if (!v61 || ([valuesCopy underlineFill], v62 = objc_claimAutoreleasedReturnValue(), v62, v61, !v62))
   {
     *(self + 156) &= ~1u;
   }
@@ -1570,42 +1570,42 @@ LABEL_128:
 LABEL_129:
   if ((*(self + 156) & 2) == 0)
   {
-    v71 = [(OADProperties *)self parent];
+    parent2 = [(OADProperties *)self parent];
 
-    if (v71 == v4)
+    if (parent2 == valuesCopy)
     {
       goto LABEL_143;
     }
 
 LABEL_133:
-    v72 = [(OADCharacterProperties *)self underlineStroke];
+    underlineStroke = [(OADCharacterProperties *)self underlineStroke];
     v73 = objc_alloc_init(objc_opt_class());
 
-    v74 = [(OADCharacterProperties *)self underlineStroke];
-    [v73 setParent:v74];
+    underlineStroke2 = [(OADCharacterProperties *)self underlineStroke];
+    [v73 setParent:underlineStroke2];
 
     objc_storeStrong(&self->mUnderlineStroke, v73);
     *(self + 156) |= 2u;
-    v75 = [v4 possiblyInexistentOverrideForSelector:sel_hasUnderlineStroke];
+    underlineStroke3 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasUnderlineStroke];
 
-    if (v75)
+    if (underlineStroke3)
     {
-      v75 = [v4 underlineStroke];
+      underlineStroke3 = [valuesCopy underlineStroke];
     }
 
     mUnderlineStroke = self->mUnderlineStroke;
-    if (mUnderlineStroke != v75)
+    if (mUnderlineStroke != underlineStroke3)
     {
       objc_opt_class();
       v77 = objc_opt_isKindOfClass();
       if ((v77 & 1) == 0)
       {
-        v78 = [objc_opt_class() defaultProperties];
+        defaultProperties2 = [objc_opt_class() defaultProperties];
 
-        v75 = v78;
+        underlineStroke3 = defaultProperties2;
       }
 
-      [(OADProperties *)self->mUnderlineStroke changeParentPreservingEffectiveValues:v75];
+      [(OADProperties *)self->mUnderlineStroke changeParentPreservingEffectiveValues:underlineStroke3];
       if ((v77 & 1) == 0 || [(OADStroke *)self->mUnderlineStroke isAnythingOverridden])
       {
         goto LABEL_142;
@@ -1627,40 +1627,40 @@ LABEL_142:
     goto LABEL_133;
   }
 
-  v123 = [v4 possiblyInexistentOverrideForSelector:sel_hasUnderlineStroke];
-  if (!v123 || ([v4 underlineStroke], v124 = objc_claimAutoreleasedReturnValue(), v124, v123, !v124))
+  v123 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasUnderlineStroke];
+  if (!v123 || ([valuesCopy underlineStroke], v124 = objc_claimAutoreleasedReturnValue(), v124, v123, !v124))
   {
     *(self + 156) &= ~2u;
   }
 
 LABEL_143:
-  if ((*(self + 156) & 4) != 0 || ([(OADProperties *)self parent], v79 = objc_claimAutoreleasedReturnValue(), v79, v79 != v4))
+  if ((*(self + 156) & 4) != 0 || ([(OADProperties *)self parent], v79 = objc_claimAutoreleasedReturnValue(), v79, v79 != valuesCopy))
   {
     v80 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasHighlight];
 
     if (v80)
     {
-      v81 = [(OADCharacterProperties *)self highlight];
+      highlight = [(OADCharacterProperties *)self highlight];
     }
 
     else
     {
-      v81 = 0;
+      highlight = 0;
     }
 
-    v82 = [v4 possiblyInexistentOverrideForSelector:sel_hasHighlight];
+    v82 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasHighlight];
 
     if (v82)
     {
-      v83 = [v4 highlight];
+      highlight2 = [valuesCopy highlight];
     }
 
     else
     {
-      v83 = 0;
+      highlight2 = 0;
     }
 
-    if (TCObjectEqual(v81, v83))
+    if (TCObjectEqual(highlight, highlight2))
     {
       mHighlight = self->mHighlight;
       self->mHighlight = 0;
@@ -1670,15 +1670,15 @@ LABEL_143:
 
     else if ((*(self + 156) & 4) == 0 && v80)
     {
-      [(OADCharacterProperties *)self setHighlight:v81];
+      [(OADCharacterProperties *)self setHighlight:highlight];
     }
   }
 
-  if ((*(self + 156) & 8) != 0 || ([(OADProperties *)self parent], v85 = objc_claimAutoreleasedReturnValue(), v85, v85 != v4))
+  if ((*(self + 156) & 8) != 0 || ([(OADProperties *)self parent], v85 = objc_claimAutoreleasedReturnValue(), v85, v85 != valuesCopy))
   {
     [(OADCharacterProperties *)self opacity];
     v87 = v86;
-    [v4 opacity];
+    [valuesCopy opacity];
     if (v87 == v88)
     {
       *(self + 156) &= ~8u;
@@ -1691,11 +1691,11 @@ LABEL_143:
     }
   }
 
-  if ((*(self + 157) & 0x10) != 0 || ([(OADProperties *)self parent], v89 = objc_claimAutoreleasedReturnValue(), v89, v89 != v4))
+  if ((*(self + 157) & 0x10) != 0 || ([(OADProperties *)self parent], v89 = objc_claimAutoreleasedReturnValue(), v89, v89 != valuesCopy))
   {
     [(OADCharacterProperties *)self size];
     v91 = v90;
-    [v4 size];
+    [valuesCopy size];
     if (v91 == v92)
     {
       *(self + 157) &= ~0x10u;
@@ -1708,11 +1708,11 @@ LABEL_143:
     }
   }
 
-  if ((*(self + 157) & 0x20) != 0 || ([(OADProperties *)self parent], v93 = objc_claimAutoreleasedReturnValue(), v93, v93 != v4))
+  if ((*(self + 157) & 0x20) != 0 || ([(OADProperties *)self parent], v93 = objc_claimAutoreleasedReturnValue(), v93, v93 != valuesCopy))
   {
     [(OADCharacterProperties *)self spacing];
     v95 = v94;
-    [v4 spacing];
+    [valuesCopy spacing];
     if (v95 == v96)
     {
       *(self + 157) &= ~0x20u;
@@ -1725,11 +1725,11 @@ LABEL_143:
     }
   }
 
-  if ((*(self + 158) & 8) != 0 || ([(OADProperties *)self parent], v97 = objc_claimAutoreleasedReturnValue(), v97, v97 != v4))
+  if ((*(self + 158) & 8) != 0 || ([(OADProperties *)self parent], v97 = objc_claimAutoreleasedReturnValue(), v97, v97 != valuesCopy))
   {
     [(OADCharacterProperties *)self baseline];
     v99 = v98;
-    [v4 baseline];
+    [valuesCopy baseline];
     if (v99 == v100)
     {
       *(self + 158) &= ~8u;
@@ -1742,10 +1742,10 @@ LABEL_143:
     }
   }
 
-  if ((*(self + 157) & 1) != 0 || ([(OADProperties *)self parent], v101 = objc_claimAutoreleasedReturnValue(), v101, v101 != v4))
+  if ((*(self + 157) & 1) != 0 || ([(OADProperties *)self parent], v101 = objc_claimAutoreleasedReturnValue(), v101, v101 != valuesCopy))
   {
-    v102 = [(OADCharacterProperties *)self underlineType];
-    if (v102 == [v4 underlineType])
+    underlineType = [(OADCharacterProperties *)self underlineType];
+    if (underlineType == [valuesCopy underlineType])
     {
       *(self + 157) &= ~1u;
     }
@@ -1756,10 +1756,10 @@ LABEL_143:
     }
   }
 
-  if ((*(self + 157) & 2) != 0 || ([(OADProperties *)self parent], v103 = objc_claimAutoreleasedReturnValue(), v103, v103 != v4))
+  if ((*(self + 157) & 2) != 0 || ([(OADProperties *)self parent], v103 = objc_claimAutoreleasedReturnValue(), v103, v103 != valuesCopy))
   {
-    v104 = [(OADCharacterProperties *)self formatType];
-    if (v104 == [v4 formatType])
+    formatType = [(OADCharacterProperties *)self formatType];
+    if (formatType == [valuesCopy formatType])
     {
       *(self + 157) &= ~2u;
     }
@@ -1770,10 +1770,10 @@ LABEL_143:
     }
   }
 
-  if ((*(self + 157) & 4) != 0 || ([(OADProperties *)self parent], v105 = objc_claimAutoreleasedReturnValue(), v105, v105 != v4))
+  if ((*(self + 157) & 4) != 0 || ([(OADProperties *)self parent], v105 = objc_claimAutoreleasedReturnValue(), v105, v105 != valuesCopy))
   {
-    v106 = [(OADCharacterProperties *)self formatKerningType];
-    if (v106 == [v4 formatKerningType])
+    formatKerningType = [(OADCharacterProperties *)self formatKerningType];
+    if (formatKerningType == [valuesCopy formatKerningType])
     {
       *(self + 157) &= ~4u;
     }
@@ -1784,10 +1784,10 @@ LABEL_143:
     }
   }
 
-  if ((*(self + 157) & 8) != 0 || ([(OADProperties *)self parent], v107 = objc_claimAutoreleasedReturnValue(), v107, v107 != v4))
+  if ((*(self + 157) & 8) != 0 || ([(OADProperties *)self parent], v107 = objc_claimAutoreleasedReturnValue(), v107, v107 != valuesCopy))
   {
-    v108 = [(OADCharacterProperties *)self strikeThroughType];
-    if (v108 == [v4 strikeThroughType])
+    strikeThroughType = [(OADCharacterProperties *)self strikeThroughType];
+    if (strikeThroughType == [valuesCopy strikeThroughType])
     {
       *(self + 157) &= ~8u;
     }
@@ -1798,10 +1798,10 @@ LABEL_143:
     }
   }
 
-  if ((*(self + 158) & 0x40) != 0 || ([(OADProperties *)self parent], v109 = objc_claimAutoreleasedReturnValue(), v109, v109 != v4))
+  if ((*(self + 158) & 0x40) != 0 || ([(OADProperties *)self parent], v109 = objc_claimAutoreleasedReturnValue(), v109, v109 != valuesCopy))
   {
-    v110 = [(OADCharacterProperties *)self caps];
-    if (v110 == [v4 caps])
+    caps = [(OADCharacterProperties *)self caps];
+    if (caps == [valuesCopy caps])
     {
       *(self + 158) &= ~0x40u;
     }
@@ -1812,10 +1812,10 @@ LABEL_143:
     }
   }
 
-  if ((*(self + 156) & 0x10) != 0 || ([(OADProperties *)self parent], v111 = objc_claimAutoreleasedReturnValue(), v111, v111 != v4))
+  if ((*(self + 156) & 0x10) != 0 || ([(OADProperties *)self parent], v111 = objc_claimAutoreleasedReturnValue(), v111, v111 != valuesCopy))
   {
-    v112 = [(OADCharacterProperties *)self isBold];
-    if (v112 == [v4 isBold])
+    isBold = [(OADCharacterProperties *)self isBold];
+    if (isBold == [valuesCopy isBold])
     {
       *(self + 156) &= ~0x10u;
     }
@@ -1826,10 +1826,10 @@ LABEL_143:
     }
   }
 
-  if ((*(self + 156) & 0x40) != 0 || ([(OADProperties *)self parent], v113 = objc_claimAutoreleasedReturnValue(), v113, v113 != v4))
+  if ((*(self + 156) & 0x40) != 0 || ([(OADProperties *)self parent], v113 = objc_claimAutoreleasedReturnValue(), v113, v113 != valuesCopy))
   {
-    v114 = [(OADCharacterProperties *)self isItalic];
-    if (v114 == [v4 isItalic])
+    isItalic = [(OADCharacterProperties *)self isItalic];
+    if (isItalic == [valuesCopy isItalic])
     {
       *(self + 156) &= ~0x40u;
     }
@@ -1840,12 +1840,12 @@ LABEL_143:
     }
   }
 
-  if (*(self + 157) < 0 || ([(OADProperties *)self parent], v115 = objc_claimAutoreleasedReturnValue(), v115, v115 != v4))
+  if (*(self + 157) < 0 || ([(OADProperties *)self parent], v115 = objc_claimAutoreleasedReturnValue(), v115, v115 != valuesCopy))
   {
-    v116 = [(OADCharacterProperties *)self isVerticalText];
-    v117 = [v4 isVerticalText];
+    isVerticalText = [(OADCharacterProperties *)self isVerticalText];
+    isVerticalText2 = [valuesCopy isVerticalText];
     v118 = *(self + 157);
-    if (v116 == v117)
+    if (isVerticalText == isVerticalText2)
     {
       *(self + 157) = v118 & 0x7F;
     }
@@ -1856,10 +1856,10 @@ LABEL_143:
     }
   }
 
-  if ((*(self + 158) & 2) != 0 || ([(OADProperties *)self parent], v119 = objc_claimAutoreleasedReturnValue(), v119, v119 != v4))
+  if ((*(self + 158) & 2) != 0 || ([(OADProperties *)self parent], v119 = objc_claimAutoreleasedReturnValue(), v119, v119 != valuesCopy))
   {
-    v120 = [(OADCharacterProperties *)self isRightToLeft];
-    if (v120 == [v4 isRightToLeft])
+    isRightToLeft = [(OADCharacterProperties *)self isRightToLeft];
+    if (isRightToLeft == [valuesCopy isRightToLeft])
     {
       *(self + 158) &= ~2u;
     }
@@ -1870,10 +1870,10 @@ LABEL_143:
     }
   }
 
-  if ((*(self + 158) & 0x10) != 0 || ([(OADProperties *)self parent], v121 = objc_claimAutoreleasedReturnValue(), v121, v121 != v4))
+  if ((*(self + 158) & 0x10) != 0 || ([(OADProperties *)self parent], v121 = objc_claimAutoreleasedReturnValue(), v121, v121 != valuesCopy))
   {
-    v122 = [(OADCharacterProperties *)self isHorizontalNormalized];
-    if (v122 == [v4 isHorizontalNormalized])
+    isHorizontalNormalized = [(OADCharacterProperties *)self isHorizontalNormalized];
+    if (isHorizontalNormalized == [valuesCopy isHorizontalNormalized])
     {
       *(self + 158) &= ~0x10u;
     }
@@ -1885,184 +1885,184 @@ LABEL_143:
   }
 }
 
-- (void)overrideWithCharacterProperties:(id)a3
+- (void)overrideWithCharacterProperties:(id)properties
 {
-  v21 = a3;
-  v4 = [v21 isMerged];
-  v5 = [v21 isMergedWithParent];
-  [v21 setMerged:0];
-  [v21 setMergedWithParent:0];
-  if ([v21 hasStroke])
+  propertiesCopy = properties;
+  isMerged = [propertiesCopy isMerged];
+  isMergedWithParent = [propertiesCopy isMergedWithParent];
+  [propertiesCopy setMerged:0];
+  [propertiesCopy setMergedWithParent:0];
+  if ([propertiesCopy hasStroke])
   {
-    v6 = [v21 stroke];
-    [(OADCharacterProperties *)self setStroke:v6];
+    stroke = [propertiesCopy stroke];
+    [(OADCharacterProperties *)self setStroke:stroke];
   }
 
-  if ([v21 hasFill])
+  if ([propertiesCopy hasFill])
   {
-    v7 = [v21 fill];
-    [(OADCharacterProperties *)self setFill:v7];
+    fill = [propertiesCopy fill];
+    [(OADCharacterProperties *)self setFill:fill];
   }
 
-  if ([v21 hasOpacity])
+  if ([propertiesCopy hasOpacity])
   {
-    [v21 opacity];
+    [propertiesCopy opacity];
     [(OADCharacterProperties *)self setOpacity:?];
   }
 
-  if ([v21 hasUnderlineType])
+  if ([propertiesCopy hasUnderlineType])
   {
-    -[OADCharacterProperties setUnderlineType:](self, "setUnderlineType:", [v21 underlineType]);
+    -[OADCharacterProperties setUnderlineType:](self, "setUnderlineType:", [propertiesCopy underlineType]);
   }
 
-  if ([v21 hasUnderlineFill])
+  if ([propertiesCopy hasUnderlineFill])
   {
-    v8 = [v21 underlineFill];
-    [(OADCharacterProperties *)self setUnderlineFill:v8];
+    underlineFill = [propertiesCopy underlineFill];
+    [(OADCharacterProperties *)self setUnderlineFill:underlineFill];
   }
 
-  if ([v21 hasUnderlineStroke])
+  if ([propertiesCopy hasUnderlineStroke])
   {
-    v9 = [v21 underlineStroke];
-    [(OADCharacterProperties *)self setUnderlineStroke:v9];
+    underlineStroke = [propertiesCopy underlineStroke];
+    [(OADCharacterProperties *)self setUnderlineStroke:underlineStroke];
   }
 
-  if ([v21 hasHighlight])
+  if ([propertiesCopy hasHighlight])
   {
-    v10 = [v21 highlight];
-    [(OADCharacterProperties *)self setHighlight:v10];
+    highlight = [propertiesCopy highlight];
+    [(OADCharacterProperties *)self setHighlight:highlight];
   }
 
-  if ([v21 hasIsBold])
+  if ([propertiesCopy hasIsBold])
   {
-    -[OADCharacterProperties setIsBold:](self, "setIsBold:", [v21 isBold]);
+    -[OADCharacterProperties setIsBold:](self, "setIsBold:", [propertiesCopy isBold]);
   }
 
-  if ([v21 hasIsItalic])
+  if ([propertiesCopy hasIsItalic])
   {
-    -[OADCharacterProperties setIsItalic:](self, "setIsItalic:", [v21 isItalic]);
+    -[OADCharacterProperties setIsItalic:](self, "setIsItalic:", [propertiesCopy isItalic]);
   }
 
-  if ([v21 hasEffects])
+  if ([propertiesCopy hasEffects])
   {
-    v11 = [v21 effects];
-    [(OADCharacterProperties *)self setEffects:v11];
+    effects = [propertiesCopy effects];
+    [(OADCharacterProperties *)self setEffects:effects];
   }
 
-  if ([v21 hasFormatType])
+  if ([propertiesCopy hasFormatType])
   {
-    -[OADCharacterProperties setFormatType:](self, "setFormatType:", [v21 formatType]);
+    -[OADCharacterProperties setFormatType:](self, "setFormatType:", [propertiesCopy formatType]);
   }
 
-  if ([v21 hasFormatKerningType])
+  if ([propertiesCopy hasFormatKerningType])
   {
-    -[OADCharacterProperties setFormatKerningType:](self, "setFormatKerningType:", [v21 formatKerningType]);
+    -[OADCharacterProperties setFormatKerningType:](self, "setFormatKerningType:", [propertiesCopy formatKerningType]);
   }
 
-  if ([v21 hasStrikeThroughType])
+  if ([propertiesCopy hasStrikeThroughType])
   {
-    -[OADCharacterProperties setStrikeThroughType:](self, "setStrikeThroughType:", [v21 strikeThroughType]);
+    -[OADCharacterProperties setStrikeThroughType:](self, "setStrikeThroughType:", [propertiesCopy strikeThroughType]);
   }
 
-  if ([v21 hasSize])
+  if ([propertiesCopy hasSize])
   {
-    [v21 size];
+    [propertiesCopy size];
     [(OADCharacterProperties *)self setSize:?];
   }
 
-  if ([v21 hasSpacing])
+  if ([propertiesCopy hasSpacing])
   {
-    [v21 spacing];
+    [propertiesCopy spacing];
     [(OADCharacterProperties *)self setSpacing:?];
   }
 
-  if ([v21 hasIsVerticalText])
+  if ([propertiesCopy hasIsVerticalText])
   {
-    -[OADCharacterProperties setIsVerticalText:](self, "setIsVerticalText:", [v21 isVerticalText]);
+    -[OADCharacterProperties setIsVerticalText:](self, "setIsVerticalText:", [propertiesCopy isVerticalText]);
   }
 
-  if ([v21 hasBaseline])
+  if ([propertiesCopy hasBaseline])
   {
-    [v21 baseline];
+    [propertiesCopy baseline];
     [(OADCharacterProperties *)self setBaseline:?];
   }
 
-  if ([v21 hasIsHorizontalNormalized])
+  if ([propertiesCopy hasIsHorizontalNormalized])
   {
-    -[OADCharacterProperties setIsHorizontalNormalized:](self, "setIsHorizontalNormalized:", [v21 isHorizontalNormalized]);
+    -[OADCharacterProperties setIsHorizontalNormalized:](self, "setIsHorizontalNormalized:", [propertiesCopy isHorizontalNormalized]);
   }
 
-  if ([v21 hasCaps])
+  if ([propertiesCopy hasCaps])
   {
-    -[OADCharacterProperties setCaps:](self, "setCaps:", [v21 caps]);
+    -[OADCharacterProperties setCaps:](self, "setCaps:", [propertiesCopy caps]);
   }
 
-  if ([v21 hasLanguage])
+  if ([propertiesCopy hasLanguage])
   {
-    -[OADCharacterProperties setLanguage:](self, "setLanguage:", [v21 language]);
+    -[OADCharacterProperties setLanguage:](self, "setLanguage:", [propertiesCopy language]);
   }
 
-  if ([v21 hasLatinFont])
+  if ([propertiesCopy hasLatinFont])
   {
-    v12 = [v21 latinFont];
-    [(OADCharacterProperties *)self setLatinFont:v12];
+    latinFont = [propertiesCopy latinFont];
+    [(OADCharacterProperties *)self setLatinFont:latinFont];
   }
 
-  if ([v21 hasEastAsianFont])
+  if ([propertiesCopy hasEastAsianFont])
   {
-    v13 = [v21 eastAsianFont];
-    [(OADCharacterProperties *)self setEastAsianFont:v13];
+    eastAsianFont = [propertiesCopy eastAsianFont];
+    [(OADCharacterProperties *)self setEastAsianFont:eastAsianFont];
   }
 
-  if ([v21 hasBidiFont])
+  if ([propertiesCopy hasBidiFont])
   {
-    v14 = [v21 bidiFont];
-    [(OADCharacterProperties *)self setBidiFont:v14];
+    bidiFont = [propertiesCopy bidiFont];
+    [(OADCharacterProperties *)self setBidiFont:bidiFont];
   }
 
-  if ([v21 hasHAnsiFont])
+  if ([propertiesCopy hasHAnsiFont])
   {
-    v15 = [v21 hansiFont];
-    [(OADCharacterProperties *)self setHAnsiFont:v15];
+    hansiFont = [propertiesCopy hansiFont];
+    [(OADCharacterProperties *)self setHAnsiFont:hansiFont];
   }
 
-  if ([v21 hasSymbolFont])
+  if ([propertiesCopy hasSymbolFont])
   {
-    v16 = [v21 symbolFont];
-    [(OADCharacterProperties *)self setSymbolFont:v16];
+    symbolFont = [propertiesCopy symbolFont];
+    [(OADCharacterProperties *)self setSymbolFont:symbolFont];
   }
 
-  v17 = [v21 clickHyperlink];
+  clickHyperlink = [propertiesCopy clickHyperlink];
 
-  if (v17)
+  if (clickHyperlink)
   {
-    v18 = [v21 clickHyperlink];
-    [(OADCharacterProperties *)self setClickHyperlink:v18];
+    clickHyperlink2 = [propertiesCopy clickHyperlink];
+    [(OADCharacterProperties *)self setClickHyperlink:clickHyperlink2];
   }
 
-  v19 = [v21 hoverHyperlink];
+  hoverHyperlink = [propertiesCopy hoverHyperlink];
 
-  if (v19)
+  if (hoverHyperlink)
   {
-    v20 = [v21 hoverHyperlink];
-    [(OADCharacterProperties *)self setHoverHyperlink:v20];
+    hoverHyperlink2 = [propertiesCopy hoverHyperlink];
+    [(OADCharacterProperties *)self setHoverHyperlink:hoverHyperlink2];
   }
 
-  [v21 setMerged:v4];
-  [v21 setMergedWithParent:v5];
+  [propertiesCopy setMerged:isMerged];
+  [propertiesCopy setMergedWithParent:isMergedWithParent];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(OADProperties *)self isMerged];
-    v7 = [(OADProperties *)self isMergedWithParent];
-    v8 = [v5 isMerged];
-    v9 = [v5 isMergedWithParent];
+    v5 = equalCopy;
+    isMerged = [(OADProperties *)self isMerged];
+    isMergedWithParent = [(OADProperties *)self isMergedWithParent];
+    isMerged2 = [v5 isMerged];
+    isMergedWithParent2 = [v5 isMergedWithParent];
     [(OADProperties *)self setMerged:0];
     [(OADProperties *)self setMergedWithParent:0];
     [v5 setMerged:0];
@@ -2127,10 +2127,10 @@ LABEL_143:
       v51 = 0;
     }
 
-    [(OADProperties *)self setMerged:v6];
-    [(OADProperties *)self setMergedWithParent:v7];
-    [v5 setMerged:v8];
-    [v5 setMergedWithParent:v9];
+    [(OADProperties *)self setMerged:isMerged];
+    [(OADProperties *)self setMergedWithParent:isMergedWithParent];
+    [v5 setMerged:isMerged2];
+    [v5 setMergedWithParent:isMergedWithParent2];
   }
 
   else
@@ -2150,16 +2150,16 @@ LABEL_143:
     return 1;
   }
 
-  v5 = [(OADCharacterProperties *)self clickHyperlink];
-  if (v5)
+  clickHyperlink = [(OADCharacterProperties *)self clickHyperlink];
+  if (clickHyperlink)
   {
     v3 = 1;
   }
 
   else
   {
-    v6 = [(OADCharacterProperties *)self hoverHyperlink];
-    v3 = v6 != 0;
+    hoverHyperlink = [(OADCharacterProperties *)self hoverHyperlink];
+    v3 = hoverHyperlink != 0;
   }
 
   return v3;

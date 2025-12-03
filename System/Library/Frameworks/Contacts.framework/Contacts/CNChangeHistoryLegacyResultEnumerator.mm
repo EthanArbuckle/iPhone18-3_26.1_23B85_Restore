@@ -1,40 +1,40 @@
 @interface CNChangeHistoryLegacyResultEnumerator
-+ (id)contactEnumeratorWithChanges:(id)a3 keysToFetch:(id)a4 unifyResults:(BOOL)a5 contactStore:(id)a6;
-+ (id)groupEnumeratorWithChanges:(id)a3 contactStore:(id)a4;
-- (CNChangeHistoryLegacyResultEnumerator)initWithChanges:(id)a3 refillStrategy:(id)a4;
++ (id)contactEnumeratorWithChanges:(id)changes keysToFetch:(id)fetch unifyResults:(BOOL)results contactStore:(id)store;
++ (id)groupEnumeratorWithChanges:(id)changes contactStore:(id)store;
+- (CNChangeHistoryLegacyResultEnumerator)initWithChanges:(id)changes refillStrategy:(id)strategy;
 - (id)nextObject;
 - (void)_fetchNextBatch;
 @end
 
 @implementation CNChangeHistoryLegacyResultEnumerator
 
-+ (id)contactEnumeratorWithChanges:(id)a3 keysToFetch:(id)a4 unifyResults:(BOOL)a5 contactStore:(id)a6
++ (id)contactEnumeratorWithChanges:(id)changes keysToFetch:(id)fetch unifyResults:(BOOL)results contactStore:(id)store
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[_CNChangeHistoryContactRefillStrategy alloc] initWithKeysToFetch:v10 unifyResults:a5 contactStore:v9];
+  storeCopy = store;
+  fetchCopy = fetch;
+  changesCopy = changes;
+  v12 = [[_CNChangeHistoryContactRefillStrategy alloc] initWithKeysToFetch:fetchCopy unifyResults:results contactStore:storeCopy];
 
-  v13 = [[CNChangeHistoryLegacyResultEnumerator alloc] initWithChanges:v11 refillStrategy:v12];
+  v13 = [[CNChangeHistoryLegacyResultEnumerator alloc] initWithChanges:changesCopy refillStrategy:v12];
 
   return v13;
 }
 
-+ (id)groupEnumeratorWithChanges:(id)a3 contactStore:(id)a4
++ (id)groupEnumeratorWithChanges:(id)changes contactStore:(id)store
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_CNChangeHistoryGroupRefillStrategy alloc] initWithContactStore:v5];
+  storeCopy = store;
+  changesCopy = changes;
+  v7 = [[_CNChangeHistoryGroupRefillStrategy alloc] initWithContactStore:storeCopy];
 
-  v8 = [[CNChangeHistoryLegacyResultEnumerator alloc] initWithChanges:v6 refillStrategy:v7];
+  v8 = [[CNChangeHistoryLegacyResultEnumerator alloc] initWithChanges:changesCopy refillStrategy:v7];
 
   return v8;
 }
 
-- (CNChangeHistoryLegacyResultEnumerator)initWithChanges:(id)a3 refillStrategy:(id)a4
+- (CNChangeHistoryLegacyResultEnumerator)initWithChanges:(id)changes refillStrategy:(id)strategy
 {
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  strategyCopy = strategy;
   v16.receiver = self;
   v16.super_class = CNChangeHistoryLegacyResultEnumerator;
   v8 = [(CNChangeHistoryLegacyResultEnumerator *)&v16 init];
@@ -48,9 +48,9 @@
     batchFetchQueue = v8->_batchFetchQueue;
     v8->_batchFetchQueue = v11;
 
-    v13 = [v7 batchesToRepresentObjects:v6 suggestedBatchSize:100];
+    v13 = [strategyCopy batchesToRepresentObjects:changesCopy suggestedBatchSize:100];
     [(CNQueue *)v8->_batchFetchQueue enqueueObjectsFromArray:v13];
-    objc_storeStrong(&v8->_refillStrategy, a4);
+    objc_storeStrong(&v8->_refillStrategy, strategy);
     v14 = v8;
   }
 
@@ -59,32 +59,32 @@
 
 - (id)nextObject
 {
-  v3 = [(CNChangeHistoryLegacyResultEnumerator *)self changes];
-  v4 = [v3 count];
+  changes = [(CNChangeHistoryLegacyResultEnumerator *)self changes];
+  v4 = [changes count];
 
   if (!v4)
   {
     [(CNChangeHistoryLegacyResultEnumerator *)self _fetchNextBatch];
   }
 
-  v5 = [(CNChangeHistoryLegacyResultEnumerator *)self changes];
-  v6 = [v5 dequeue];
+  changes2 = [(CNChangeHistoryLegacyResultEnumerator *)self changes];
+  dequeue = [changes2 dequeue];
 
-  return v6;
+  return dequeue;
 }
 
 - (void)_fetchNextBatch
 {
-  v3 = [(CNChangeHistoryLegacyResultEnumerator *)self batchFetchQueue];
-  v7 = [v3 dequeue];
+  batchFetchQueue = [(CNChangeHistoryLegacyResultEnumerator *)self batchFetchQueue];
+  dequeue = [batchFetchQueue dequeue];
 
   if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
   {
-    v4 = [(CNChangeHistoryLegacyResultEnumerator *)self refillStrategy];
-    v5 = [v4 objectsRepresentedByBatch:v7];
+    refillStrategy = [(CNChangeHistoryLegacyResultEnumerator *)self refillStrategy];
+    v5 = [refillStrategy objectsRepresentedByBatch:dequeue];
 
-    v6 = [(CNChangeHistoryLegacyResultEnumerator *)self changes];
-    [v6 enqueueObjectsFromArray:v5];
+    changes = [(CNChangeHistoryLegacyResultEnumerator *)self changes];
+    [changes enqueueObjectsFromArray:v5];
   }
 }
 

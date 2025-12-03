@@ -1,17 +1,17 @@
 @interface HMDCoreDataTransformerHMCameraActivityZone
-+ (id)OPACKFromValue:(id)a3 error:(id *)a4;
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4;
++ (id)OPACKFromValue:(id)value error:(id *)error;
++ (id)valueFromOPACK:(id)k error:(id *)error;
 @end
 
 @implementation HMDCoreDataTransformerHMCameraActivityZone
 
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4
++ (id)valueFromOPACK:(id)k error:(id *)error
 {
-  v5 = a3;
+  kCopy = k;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = kCopy;
   }
 
   else
@@ -53,28 +53,28 @@
         goto LABEL_18;
       }
 
-      if (a4)
+      if (error)
       {
-        [NSString stringWithFormat:@"Expected NSArray of even length to create HMCameraActivityZone: %@", v5];
+        [NSString stringWithFormat:@"Expected NSArray of even length to create HMCameraActivityZone: %@", kCopy];
         goto LABEL_17;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
-      [NSString stringWithFormat:@"Expected NSArray of at least 6 elements to create HMCameraActivityZone: %@", v5];
+      [NSString stringWithFormat:@"Expected NSArray of at least 6 elements to create HMCameraActivityZone: %@", kCopy];
       v9 = LABEL_17:;
       [NSError hmfErrorWithCode:3 reason:v9];
-      *a4 = v18 = 0;
+      *error = v18 = 0;
 LABEL_18:
 
       goto LABEL_20;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
-    [NSString stringWithFormat:@"Expected NSArray value to create HMCameraActivityZone: %@", v5];
+    [NSString stringWithFormat:@"Expected NSArray value to create HMCameraActivityZone: %@", kCopy];
     goto LABEL_17;
   }
 
@@ -84,14 +84,14 @@ LABEL_20:
   return v18;
 }
 
-+ (id)OPACKFromValue:(id)a3 error:(id *)a4
++ (id)OPACKFromValue:(id)value error:(id *)error
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = [NSMutableArray alloc];
-  v6 = [v4 points];
-  v7 = [v5 initWithCapacity:{2 * objc_msgSend(v6, "count")}];
+  points = [valueCopy points];
+  v7 = [v5 initWithCapacity:{2 * objc_msgSend(points, "count")}];
 
-  v8 = [v4 points];
+  points2 = [valueCopy points];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -99,7 +99,7 @@ LABEL_20:
   v12[3] = &unk_100030BA8;
   v13 = v7;
   v9 = v7;
-  [v8 hmf_enumerateWithAutoreleasePoolUsingBlock:v12];
+  [points2 hmf_enumerateWithAutoreleasePoolUsingBlock:v12];
 
   v10 = [v9 copy];
 

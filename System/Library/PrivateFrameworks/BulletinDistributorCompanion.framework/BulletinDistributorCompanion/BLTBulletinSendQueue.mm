@@ -1,14 +1,14 @@
 @interface BLTBulletinSendQueue
 - (BLTBulletinSendQueue)init;
-- (BOOL)handleFileURL:(id)a3;
+- (BOOL)handleFileURL:(id)l;
 - (void)_queue_performSend;
 - (void)_queue_queuePending;
-- (void)_queue_startTimerWithFireDate:(id)a3;
+- (void)_queue_startTimerWithFireDate:(id)date;
 - (void)queuePending;
 - (void)sendNow;
-- (void)sendRequest:(id)a3 type:(unsigned __int16)a4 didSend:(id)a5 didQueue:(id)a6;
-- (void)sendRequest:(id)a3 withTimeout:(id)a4 didSend:(id)a5;
-- (void)sendRequest:(id)a3 withTimeout:(id)a4 isTrafficRestricted:(BOOL)a5 didSend:(id)a6;
+- (void)sendRequest:(id)request type:(unsigned __int16)type didSend:(id)send didQueue:(id)queue;
+- (void)sendRequest:(id)request withTimeout:(id)timeout didSend:(id)send;
+- (void)sendRequest:(id)request withTimeout:(id)timeout isTrafficRestricted:(BOOL)restricted didSend:(id)send;
 @end
 
 @implementation BLTBulletinSendQueue
@@ -40,8 +40,8 @@
     v6 = self->_lastItemDate;
     self->_lastItemDate = 0;
 
-    v7 = [(BLTBulletinSendQueue *)self timer];
-    [v7 invalidate];
+    timer = [(BLTBulletinSendQueue *)self timer];
+    [timer invalidate];
 
     [(BLTBulletinSendQueue *)self setTimer:0];
     v4 = self->_timeout;
@@ -52,9 +52,9 @@
     [(NSMutableArray *)self->_completionHandlers removeAllObjects];
     v27 = [(NSMutableArray *)self->_queuedBlockHandlers copy];
     [(NSMutableArray *)self->_queuedBlockHandlers removeAllObjects];
-    v9 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     lastQueueSendDate = self->_lastQueueSendDate;
-    self->_lastQueueSendDate = v9;
+    self->_lastQueueSendDate = date;
 
     v59 = 0;
     v60 = &v59;
@@ -82,7 +82,7 @@
     v47[2] = 0x2020000000;
     v48 = 0;
     attachmentSender = self->_attachmentSender;
-    v13 = [(BLTBulletinSendQueuePassthrough *)self delegate];
+    delegate = [(BLTBulletinSendQueuePassthrough *)self delegate];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __42__BLTBulletinSendQueue__queue_performSend__block_invoke;
@@ -93,7 +93,7 @@
     v46 = buf;
     v14 = v11;
     v43 = v14;
-    LODWORD(attachmentSender) = [(BLTBulletinSendQueueAttachmentSender *)attachmentSender sendAttachmentsWithSender:v13 timeout:v4 completion:v42];
+    LODWORD(attachmentSender) = [(BLTBulletinSendQueueAttachmentSender *)attachmentSender sendAttachmentsWithSender:delegate timeout:v4 completion:v42];
 
     if (attachmentSender)
     {
@@ -112,7 +112,7 @@
     dispatch_group_enter(v14);
     if (self->_firstRequest)
     {
-      v15 = [(BLTBulletinSendQueuePassthrough *)self delegate];
+      delegate2 = [(BLTBulletinSendQueuePassthrough *)self delegate];
       firstRequest = self->_firstRequest;
       firstRequestType = self->_firstRequestType;
       v38[0] = MEMORY[0x277D85DD0];
@@ -135,7 +135,7 @@
         v19 = 0;
       }
 
-      [v15 sendRequest:firstRequest type:firstRequestType withTimeout:v4 didSend:v38 didQueue:v19];
+      [delegate2 sendRequest:firstRequest type:firstRequestType withTimeout:v4 didSend:v38 didQueue:v19];
       v22 = v39;
       if (v18)
       {
@@ -148,7 +148,7 @@
     else
     {
       queueSerializer = self->_queueSerializer;
-      v21 = [(BLTBulletinSendQueuePassthrough *)self delegate];
+      delegate3 = [(BLTBulletinSendQueuePassthrough *)self delegate];
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __42__BLTBulletinSendQueue__queue_performSend__block_invoke_5;
@@ -163,7 +163,7 @@
       v34[2] = __42__BLTBulletinSendQueue__queue_performSend__block_invoke_7;
       v34[3] = &unk_278D31428;
       v35 = v27;
-      [(BLTSendQueueSerializer *)queueSerializer sendWithSender:v21 timeout:v4 responseHandlers:0 didSend:v36 didQueue:v34];
+      [(BLTSendQueueSerializer *)queueSerializer sendWithSender:delegate3 timeout:v4 responseHandlers:0 didSend:v36 didQueue:v34];
       v22 = v37;
 
       v23 = v35;
@@ -223,13 +223,13 @@
     queue = v2->_queue;
     v2->_queue = v9;
 
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     completionHandlers = v2->_completionHandlers;
-    v2->_completionHandlers = v11;
+    v2->_completionHandlers = array;
 
-    v13 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     queuedBlockHandlers = v2->_queuedBlockHandlers;
-    v2->_queuedBlockHandlers = v13;
+    v2->_queuedBlockHandlers = array2;
 
     v15 = v2->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -278,24 +278,24 @@ LABEL_5:
   [*(*(a1 + 32) + 88) setSendFileURL:v4];
 }
 
-- (void)sendRequest:(id)a3 type:(unsigned __int16)a4 didSend:(id)a5 didQueue:(id)a6
+- (void)sendRequest:(id)request type:(unsigned __int16)type didSend:(id)send didQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  requestCopy = request;
+  sendCopy = send;
+  queueCopy = queue;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__BLTBulletinSendQueue_sendRequest_type_didSend_didQueue___block_invoke;
   block[3] = &unk_278D32128;
   block[4] = self;
-  v18 = v10;
-  v21 = a4;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = requestCopy;
+  typeCopy = type;
+  v19 = sendCopy;
+  v20 = queueCopy;
+  v14 = queueCopy;
+  v15 = sendCopy;
+  v16 = requestCopy;
   dispatch_async(queue, block);
 }
 
@@ -311,20 +311,20 @@ uint64_t __58__BLTBulletinSendQueue_sendRequest_type_didSend_didQueue___block_in
   return [*(a1 + 32) _queue_sendRequest:*(a1 + 40) type:*(a1 + 64) withTimeout:0 isTrafficRestricted:0 didSend:*(a1 + 48) didQueue:*(a1 + 56)];
 }
 
-- (void)sendRequest:(id)a3 withTimeout:(id)a4 didSend:(id)a5
+- (void)sendRequest:(id)request withTimeout:(id)timeout didSend:(id)send
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  timeoutCopy = timeout;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__BLTBulletinSendQueue_sendRequest_withTimeout_didSend___block_invoke;
   block[3] = &unk_278D316C8;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = requestCopy;
+  selfCopy = self;
+  v15 = timeoutCopy;
+  v10 = timeoutCopy;
+  v11 = requestCopy;
   dispatch_async(queue, block);
 }
 
@@ -345,24 +345,24 @@ uint64_t __56__BLTBulletinSendQueue_sendRequest_withTimeout_didSend___block_invo
   return result;
 }
 
-- (void)sendRequest:(id)a3 withTimeout:(id)a4 isTrafficRestricted:(BOOL)a5 didSend:(id)a6
+- (void)sendRequest:(id)request withTimeout:(id)timeout isTrafficRestricted:(BOOL)restricted didSend:(id)send
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  requestCopy = request;
+  timeoutCopy = timeout;
+  sendCopy = send;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__BLTBulletinSendQueue_sendRequest_withTimeout_isTrafficRestricted_didSend___block_invoke;
   block[3] = &unk_278D32150;
-  v18 = v10;
-  v19 = self;
-  v22 = a5;
-  v20 = v11;
-  v21 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = requestCopy;
+  selfCopy = self;
+  restrictedCopy = restricted;
+  v20 = timeoutCopy;
+  v21 = sendCopy;
+  v14 = sendCopy;
+  v15 = timeoutCopy;
+  v16 = requestCopy;
   dispatch_async(queue, block);
 }
 
@@ -421,12 +421,12 @@ void __76__BLTBulletinSendQueue_sendRequest_withTimeout_isTrafficRestricted_didS
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)handleFileURL:(id)a3
+- (BOOL)handleFileURL:(id)l
 {
   queueSerializer = self->_queueSerializer;
-  v5 = a3;
-  v6 = [(BLTBulletinSendQueuePassthrough *)self delegate];
-  LOBYTE(queueSerializer) = [(BLTSendQueueSerializer *)queueSerializer handleFileURL:v5 protobufHandler:v6];
+  lCopy = l;
+  delegate = [(BLTBulletinSendQueuePassthrough *)self delegate];
+  LOBYTE(queueSerializer) = [(BLTSendQueueSerializer *)queueSerializer handleFileURL:lCopy protobufHandler:delegate];
 
   return queueSerializer;
 }
@@ -619,24 +619,24 @@ void __42__BLTBulletinSendQueue__queue_performSend__block_invoke_8(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_startTimerWithFireDate:(id)a3
+- (void)_queue_startTimerWithFireDate:(id)date
 {
-  v4 = a3;
-  v5 = [(BLTBulletinSendQueue *)self timer];
-  [v5 invalidate];
+  dateCopy = date;
+  timer = [(BLTBulletinSendQueue *)self timer];
+  [timer invalidate];
 
   v6 = [objc_alloc(MEMORY[0x277D6C0A8]) initWithIdentifier:@"com.apple.bulletindistributor.coalescebulletinrequest"];
   [(BLTBulletinSendQueue *)self setTimer:v6];
 
   objc_initWeak(&location, self);
-  v7 = [(BLTBulletinSendQueue *)self timer];
+  timer2 = [(BLTBulletinSendQueue *)self timer];
   queue = self->_queue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __54__BLTBulletinSendQueue__queue_startTimerWithFireDate___block_invoke;
   v9[3] = &unk_278D321F0;
   objc_copyWeak(&v10, &location);
-  [v7 scheduleForDate:v4 leewayInterval:queue queue:v9 handler:1.0];
+  [timer2 scheduleForDate:dateCopy leewayInterval:queue queue:v9 handler:1.0];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);

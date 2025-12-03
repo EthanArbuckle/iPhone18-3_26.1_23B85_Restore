@@ -1,17 +1,17 @@
 @interface CADDiagnosticsDiagnosticDatabaseCollector
-- (BOOL)collectDiagnosticsDatabase:(id)a3;
-- (void)collect:(id)a3;
-- (void)determineExpectedOutputFiles:(id)a3;
+- (BOOL)collectDiagnosticsDatabase:(id)database;
+- (void)collect:(id)collect;
+- (void)determineExpectedOutputFiles:(id)files;
 @end
 
 @implementation CADDiagnosticsDiagnosticDatabaseCollector
 
-- (void)determineExpectedOutputFiles:(id)a3
+- (void)determineExpectedOutputFiles:(id)files
 {
-  v7 = a3;
+  filesCopy = files;
   if (CalendarDiagnosticsLibraryCore())
   {
-    if ([v7 redactLogs])
+    if ([filesCopy redactLogs])
     {
       v4 = @"Diagnostics-redacted.db.gz";
     }
@@ -21,23 +21,23 @@
       v4 = @"Diagnostics.db.gz";
     }
 
-    v5 = [v7 temporaryFileForName:v4];
+    v5 = [filesCopy temporaryFileForName:v4];
     outputURL = self->_outputURL;
     self->_outputURL = v5;
 
-    [v7 setStatus:0 forFile:self->_outputURL];
+    [filesCopy setStatus:0 forFile:self->_outputURL];
   }
 
   else
   {
-    [v7 logError:@"CalendarDiagnostics not loaded; no diagnostics database will be attached"];
+    [filesCopy logError:@"CalendarDiagnostics not loaded; no diagnostics database will be attached"];
   }
 }
 
-- (void)collect:(id)a3
+- (void)collect:(id)collect
 {
-  v5 = a3;
-  if ([(CADDiagnosticsDiagnosticDatabaseCollector *)self collectDiagnosticsDatabase:v5])
+  collectCopy = collect;
+  if ([(CADDiagnosticsDiagnosticDatabaseCollector *)self collectDiagnosticsDatabase:collectCopy])
   {
     v4 = 2;
   }
@@ -47,12 +47,12 @@
     v4 = 3;
   }
 
-  [v5 setStatus:v4 forFile:self->_outputURL];
+  [collectCopy setStatus:v4 forFile:self->_outputURL];
 }
 
-- (BOOL)collectDiagnosticsDatabase:(id)a3
+- (BOOL)collectDiagnosticsDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   if (CalendarDiagnosticsLibraryCore())
   {
     v21 = 0;
@@ -75,43 +75,43 @@
     _Block_object_dispose(&v21, 8);
     if (v5)
     {
-      v7 = [(NSURL *)self->_outputURL lastPathComponent];
-      v8 = [v7 stringByDeletingPathExtension];
+      lastPathComponent = [(NSURL *)self->_outputURL lastPathComponent];
+      stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-      v9 = [v4 temporaryFileForName:v8];
+      v9 = [databaseCopy temporaryFileForName:stringByDeletingPathExtension];
       v10 = [objc_msgSend(v5 "alloc")];
-      if ([v4 redactLogs])
+      if ([databaseCopy redactLogs])
       {
         v19 = 0;
         v11 = &v19;
-        v12 = [v10 obfuscateWithContext:v4 error:&v19];
+        v12 = [v10 obfuscateWithContext:databaseCopy error:&v19];
       }
 
       else
       {
         v18 = 0;
         v11 = &v18;
-        v12 = [v10 copyWithoutObfuscatingWithContext:v4 error:&v18];
+        v12 = [v10 copyWithoutObfuscatingWithContext:databaseCopy error:&v18];
       }
 
       v15 = v12;
       v16 = *v11;
-      if (![v4 canceled] && v15)
+      if (![databaseCopy canceled] && v15)
       {
-        if ([CADDiagnosticsUtils compressFileAt:v9 to:self->_outputURL context:v4])
+        if ([CADDiagnosticsUtils compressFileAt:v9 to:self->_outputURL context:databaseCopy])
         {
-          [v4 deleteTemporaryFile:v9];
+          [databaseCopy deleteTemporaryFile:v9];
           v14 = 1;
 LABEL_17:
 
           goto LABEL_18;
         }
 
-        [v4 deleteTemporaryFile:self->_outputURL];
+        [databaseCopy deleteTemporaryFile:self->_outputURL];
       }
 
-      [v4 deleteTemporaryFile:v9];
-      [v4 log:{@"Error attaching diagnostics database. Diagnostics database will NOT be attached: %@", v16}];
+      [databaseCopy deleteTemporaryFile:v9];
+      [databaseCopy log:{@"Error attaching diagnostics database. Diagnostics database will NOT be attached: %@", v16}];
       v14 = 0;
       goto LABEL_17;
     }
@@ -124,7 +124,7 @@ LABEL_17:
     v13 = @"CalendarDiagnostics not loaded; no diagnostics database will be attached";
   }
 
-  [v4 logError:v13];
+  [databaseCopy logError:v13];
   v14 = 0;
 LABEL_18:
 

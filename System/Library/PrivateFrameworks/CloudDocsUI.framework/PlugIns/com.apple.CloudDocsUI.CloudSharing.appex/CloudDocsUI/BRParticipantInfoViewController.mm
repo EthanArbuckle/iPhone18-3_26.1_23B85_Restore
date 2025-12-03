@@ -1,56 +1,56 @@
 @interface BRParticipantInfoViewController
-- (BOOL)isAllowedToInvite:(id)a3 share:(id)a4;
-- (BRParticipantInfoViewController)initWithParticipantContact:(id)a3;
+- (BOOL)isAllowedToInvite:(id)invite share:(id)share;
+- (BRParticipantInfoViewController)initWithParticipantContact:(id)contact;
 - (BRParticipantInfoViewControllerDelegate)delegate;
 - (UISwitch)allowInviteToggle;
 - (id)_sections;
 - (int64_t)participantPermission;
-- (void)_performParticipantAction:(id)a3;
-- (void)createdInviteToggle:(id)a3;
-- (void)leaveShare:(id)a3;
-- (void)removeAccess:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setParticipantPermission:(int64_t)a3;
-- (void)toggleParticipantAllowedToInvite:(id)a3;
+- (void)_performParticipantAction:(id)action;
+- (void)createdInviteToggle:(id)toggle;
+- (void)leaveShare:(id)share;
+- (void)removeAccess:(id)access;
+- (void)setDelegate:(id)delegate;
+- (void)setParticipantPermission:(int64_t)permission;
+- (void)toggleParticipantAllowedToInvite:(id)invite;
 - (void)updateSections;
 @end
 
 @implementation BRParticipantInfoViewController
 
-- (BRParticipantInfoViewController)initWithParticipantContact:(id)a3
+- (BRParticipantInfoViewController)initWithParticipantContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v31.receiver = self;
   v31.super_class = BRParticipantInfoViewController;
   v5 = [(BRParticipantInfoViewController *)&v31 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(BRParticipantInfoViewController *)v5 setContact:v4];
+    [(BRParticipantInfoViewController *)v5 setContact:contactCopy];
     v7 = [[UITableView alloc] initWithFrame:1 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [(BRParticipantInfoViewController *)v6 setStaticTableView:v7];
     [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(BRParticipantInfoViewController *)v6 view];
-    [v8 addSubview:v6->_staticTableView];
+    view = [(BRParticipantInfoViewController *)v6 view];
+    [view addSubview:v6->_staticTableView];
 
-    v9 = [(BRParticipantInfoViewController *)v6 view];
-    v28 = [v9 bottomAnchor];
-    v27 = [v7 bottomAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    view2 = [(BRParticipantInfoViewController *)v6 view];
+    bottomAnchor = [view2 bottomAnchor];
+    bottomAnchor2 = [v7 bottomAnchor];
+    v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v34[0] = v26;
-    v25 = [v9 rightAnchor];
-    v24 = [v7 rightAnchor];
-    v10 = [v25 constraintEqualToAnchor:v24];
+    rightAnchor = [view2 rightAnchor];
+    rightAnchor2 = [v7 rightAnchor];
+    v10 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v34[1] = v10;
-    [v9 leftAnchor];
-    v11 = v30 = v4;
-    v12 = [v7 leftAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    [view2 leftAnchor];
+    v11 = v30 = contactCopy;
+    leftAnchor = [v7 leftAnchor];
+    v13 = [v11 constraintEqualToAnchor:leftAnchor];
     v34[2] = v13;
-    v29 = v9;
-    v14 = [v9 topAnchor];
-    v15 = [v7 topAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    v29 = view2;
+    topAnchor = [view2 topAnchor];
+    topAnchor2 = [v7 topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v34[3] = v16;
     v17 = [NSArray arrayWithObjects:v34 count:4];
     [NSLayoutConstraint activateConstraints:v17];
@@ -58,8 +58,8 @@
     v18 = [[_UIShareTableStaticDataSource alloc] initWithTableView:v7];
     [(BRParticipantInfoViewController *)v6 setStaticTableDataSource:v18];
 
-    v19 = [(BRParticipantInfoViewController *)v6 staticTableDataSource];
-    [v19 setDefaultTarget:v6];
+    staticTableDataSource = [(BRParticipantInfoViewController *)v6 staticTableDataSource];
+    [staticTableDataSource setDefaultTarget:v6];
 
     [v7 setRowHeight:UITableViewAutomaticDimension];
     [v7 setEstimatedRowHeight:44.0];
@@ -68,7 +68,7 @@
     v21 = [v20 localizedStringForKey:@"PARTICIPANT_INFO_TITLE_TEXT" value:@"Info" table:@"Localizable"];
     [(BRParticipantInfoViewController *)v6 setTitle:v21];
 
-    v4 = v30;
+    contactCopy = v30;
     [v7 registerClass:objc_opt_class() forCellReuseIdentifier:off_100060278];
     [v7 registerClass:objc_opt_class() forCellReuseIdentifier:off_100060088];
     [(BRParticipantInfoViewController *)v6 updateSections];
@@ -86,69 +86,69 @@
 
 - (void)updateSections
 {
-  v3 = [(BRParticipantInfoViewController *)self _sections];
-  v4 = [(BRParticipantInfoViewController *)self staticTableDataSource];
-  [v4 setSections:v3];
+  _sections = [(BRParticipantInfoViewController *)self _sections];
+  staticTableDataSource = [(BRParticipantInfoViewController *)self staticTableDataSource];
+  [staticTableDataSource setSections:_sections];
 
-  v5 = [(BRParticipantInfoViewController *)self staticTableView];
-  [v5 reloadData];
+  staticTableView = [(BRParticipantInfoViewController *)self staticTableView];
+  [staticTableView reloadData];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 
   [(BRParticipantInfoViewController *)self updateSections];
 }
 
-- (void)_performParticipantAction:(id)a3
+- (void)_performParticipantAction:(id)action
 {
-  v4 = [(BRParticipantInfoViewController *)self contact];
-  v5 = [v4 participant];
-  v6 = [v5 userIdentity];
-  v7 = [v6 lookupInfo];
-  v8 = [v7 emailAddress];
+  contact = [(BRParticipantInfoViewController *)self contact];
+  participant = [contact participant];
+  userIdentity = [participant userIdentity];
+  lookupInfo = [userIdentity lookupInfo];
+  emailAddress = [lookupInfo emailAddress];
 
-  v9 = [(BRParticipantInfoViewController *)self contact];
-  v10 = [v9 participant];
-  v11 = [v10 userIdentity];
-  v12 = [v11 lookupInfo];
-  v13 = v12;
-  if (v8)
+  contact2 = [(BRParticipantInfoViewController *)self contact];
+  participant2 = [contact2 participant];
+  userIdentity2 = [participant2 userIdentity];
+  lookupInfo2 = [userIdentity2 lookupInfo];
+  v13 = lookupInfo2;
+  if (emailAddress)
   {
-    v14 = [v12 emailAddress];
-    [NSString stringWithFormat:@"mailto:%@", v14];
+    emailAddress2 = [lookupInfo2 emailAddress];
+    [NSString stringWithFormat:@"mailto:%@", emailAddress2];
   }
 
   else
   {
-    v14 = [v12 phoneNumber];
-    [NSString stringWithFormat:@"tel://%@", v14];
+    emailAddress2 = [lookupInfo2 phoneNumber];
+    [NSString stringWithFormat:@"tel://%@", emailAddress2];
   }
   v15 = ;
   v20 = [NSURL URLWithString:v15];
 
   v16 = +[LSApplicationWorkspace defaultWorkspace];
   [v16 openURL:v20];
-  v17 = [(BRParticipantInfoViewController *)self staticTableView];
-  v18 = [(BRParticipantInfoViewController *)self staticTableView];
-  v19 = [v18 indexPathForSelectedRow];
-  [v17 deselectRowAtIndexPath:v19 animated:1];
+  staticTableView = [(BRParticipantInfoViewController *)self staticTableView];
+  staticTableView2 = [(BRParticipantInfoViewController *)self staticTableView];
+  indexPathForSelectedRow = [staticTableView2 indexPathForSelectedRow];
+  [staticTableView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 }
 
-- (BOOL)isAllowedToInvite:(id)a3 share:(id)a4
+- (BOOL)isAllowedToInvite:(id)invite share:(id)share
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRParticipantInfoViewController *)self delegate];
-  v9 = [v8 itemIsShareRoot];
+  inviteCopy = invite;
+  shareCopy = share;
+  delegate = [(BRParticipantInfoViewController *)self delegate];
+  itemIsShareRoot = [delegate itemIsShareRoot];
 
-  if (v9)
+  if (itemIsShareRoot)
   {
-    v10 = [v7 owner];
-    v11 = [v10 isEqual:v6];
+    owner = [shareCopy owner];
+    v11 = [owner isEqual:inviteCopy];
 
-    v12 = [v6 role] == 2 && objc_msgSend(v6, "permission") == 3;
+    v12 = [inviteCopy role] == 2 && objc_msgSend(inviteCopy, "permission") == 3;
     v13 = v11 | v12;
   }
 
@@ -162,37 +162,37 @@
 
 - (id)_sections
 {
-  v3 = [(BRParticipantInfoViewController *)self delegate];
+  delegate = [(BRParticipantInfoViewController *)self delegate];
   v4 = +[NSMutableArray array];
-  v5 = [v3 viewControllerShare:self];
-  v96 = [v3 itemIsShareRoot];
+  v5 = [delegate viewControllerShare:self];
+  itemIsShareRoot = [delegate itemIsShareRoot];
   if (!v5)
   {
     goto LABEL_41;
   }
 
   v6 = objc_opt_new();
-  v7 = [(BRParticipantInfoViewController *)self contact];
-  v8 = [v7 contact];
+  contact = [(BRParticipantInfoViewController *)self contact];
+  v7Contact = [contact contact];
 
   v9 = &BRFormatPhoneNumber_ptr;
   v95 = v4;
   v97 = v5;
-  v98 = v3;
-  if (v8)
+  v98 = delegate;
+  if (v7Contact)
   {
     v10 = objc_opt_new();
-    v11 = [(BRParticipantInfoViewController *)self contact];
-    v12 = [v11 contact];
-    [v10 setContact:v12];
+    contact2 = [(BRParticipantInfoViewController *)self contact];
+    v11Contact = [contact2 contact];
+    [v10 setContact:v11Contact];
 
-    v13 = [(BRParticipantInfoViewController *)self contact];
-    v14 = [v13 participant];
-    v15 = [v13 contact];
-    if (v15)
+    contact3 = [(BRParticipantInfoViewController *)self contact];
+    participant = [contact3 participant];
+    v13Contact = [contact3 contact];
+    if (v13Contact)
     {
-      v16 = [v13 contact];
-      v17 = [CNContactFormatter stringFromContact:v16 style:0];
+      v13Contact2 = [contact3 contact];
+      v17 = [CNContactFormatter stringFromContact:v13Contact2 style:0];
     }
 
     else
@@ -202,16 +202,16 @@
 
     if (![v17 length])
     {
-      v18 = [v14 userIdentity];
-      v19 = [v18 nameComponents];
-      v20 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:v19 style:1 options:0];
+      userIdentity = [participant userIdentity];
+      nameComponents = [userIdentity nameComponents];
+      v20 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:nameComponents style:1 options:0];
 
       v17 = v20;
     }
 
     if ([v17 length])
     {
-      if ([v14 role] == 1)
+      if ([participant role] == 1)
       {
         v21 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
         v22 = v21;
@@ -221,7 +221,7 @@
 
       else
       {
-        if (![v14 isCurrentUser])
+        if (![participant isCurrentUser])
         {
           v25 = v17;
           goto LABEL_16;
@@ -245,10 +245,10 @@
 LABEL_16:
 
     [v10 setTitle:v25];
-    v27 = [v10 title];
+    title = [v10 title];
 
     v9 = &BRFormatPhoneNumber_ptr;
-    if (v27)
+    if (title)
     {
       v125[0] = @"value";
       v125[1] = @"celltype";
@@ -259,32 +259,32 @@ LABEL_16:
     }
 
     v4 = v95;
-    v3 = v98;
+    delegate = v98;
   }
 
-  v29 = [(BRParticipantInfoViewController *)self contact];
-  v30 = [v29 participant];
-  v31 = [v30 userIdentity];
-  v32 = [v31 lookupInfo];
+  contact4 = [(BRParticipantInfoViewController *)self contact];
+  participant2 = [contact4 participant];
+  userIdentity2 = [participant2 userIdentity];
+  lookupInfo = [userIdentity2 lookupInfo];
 
-  v33 = [v32 emailAddress];
-  if (v33)
+  emailAddress = [lookupInfo emailAddress];
+  if (emailAddress)
   {
   }
 
   else
   {
-    v34 = [v32 phoneNumber];
+    phoneNumber = [lookupInfo phoneNumber];
 
-    if (!v34)
+    if (!phoneNumber)
     {
       goto LABEL_23;
     }
   }
 
   v123[0] = @"value";
-  v35 = [(BRParticipantInfoViewController *)self contact];
-  v124[0] = v35;
+  contact5 = [(BRParticipantInfoViewController *)self contact];
+  v124[0] = contact5;
   v124[1] = @"action";
   v123[1] = @"type";
   v123[2] = @"celltype";
@@ -303,23 +303,23 @@ LABEL_23:
   v38 = [v9[269] dictionaryWithObjects:v122 forKeys:v121 count:2];
   [v4 addObject:v38];
 
-  v39 = [v3 participantInfoViewControllerAllowedPermissions:self];
+  v39 = [delegate participantInfoViewControllerAllowedPermissions:self];
   v5 = v97;
-  v40 = [v97 owner];
-  v41 = [v40 isCurrentUser];
+  owner = [v97 owner];
+  isCurrentUser = [owner isCurrentUser];
 
-  v42 = [v97 currentUserParticipant];
-  v43 = [(BRParticipantInfoViewController *)self isAllowedToInvite:v42 share:v97];
+  currentUserParticipant = [v97 currentUserParticipant];
+  v43 = [(BRParticipantInfoViewController *)self isAllowedToInvite:currentUserParticipant share:v97];
 
   v44 = &selRef_shareViewControllerRootFolderTitle;
   if (v43)
   {
-    v45 = [(CKShareParticipantContact *)self->_contact participant];
-    if (([v45 isCurrentUser] & 1) == 0)
+    participant3 = [(CKShareParticipantContact *)self->_contact participant];
+    if (([participant3 isCurrentUser] & 1) == 0)
     {
-      v46 = [v97 publicPermission];
+      publicPermission = [v97 publicPermission];
 
-      v47 = v46 == 1;
+      v47 = publicPermission == 1;
       v44 = &selRef_shareViewControllerRootFolderTitle;
       v4 = v95;
       if (!v47)
@@ -327,15 +327,15 @@ LABEL_23:
         goto LABEL_38;
       }
 
-      v48 = [(CKShareParticipantContact *)self->_contact participant];
-      v49 = [v48 permission];
+      participant4 = [(CKShareParticipantContact *)self->_contact participant];
+      permission = [participant4 permission];
 
-      v50 = [(CKShareParticipantContact *)self->_contact participant];
-      [(BRParticipantInfoViewController *)self setAllowedToInvite:[(BRParticipantInfoViewController *)self isAllowedToInvite:v50 share:v97]];
+      participant5 = [(CKShareParticipantContact *)self->_contact participant];
+      [(BRParticipantInfoViewController *)self setAllowedToInvite:[(BRParticipantInfoViewController *)self isAllowedToInvite:participant5 share:v97]];
 
-      if (v41)
+      if (isCurrentUser)
       {
-        v82 = v49;
+        v82 = permission;
         v83 = (v39 & 0xC) == 0;
         v119[0] = @"title";
         v92 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
@@ -353,7 +353,7 @@ LABEL_23:
         v117[3] = &off_100050EB0;
         v116[3] = @"value";
         v116[4] = @"enabled";
-        v87 = [NSNumber numberWithInt:v83 & v96];
+        v87 = [NSNumber numberWithInt:v83 & itemIsShareRoot];
         v117[4] = v87;
         v86 = [NSDictionary dictionaryWithObjects:v117 forKeys:v116 count:5];
         v118[0] = v86;
@@ -368,7 +368,7 @@ LABEL_23:
         v115[3] = &off_100050EC8;
         v114[3] = @"value";
         v114[4] = @"enabled";
-        v51 = [NSNumber numberWithInt:v83 & v96];
+        v51 = [NSNumber numberWithInt:v83 & itemIsShareRoot];
         v115[4] = v51;
         v52 = [NSDictionary dictionaryWithObjects:v115 forKeys:v114 count:5];
         v118[1] = v52;
@@ -383,11 +383,11 @@ LABEL_23:
         }
 
         v94 = v54;
-        v55 = [v98 shareViewControllerIsNotesOrRemindersOrDocSharing];
+        shareViewControllerIsNotesOrRemindersOrDocSharing = [v98 shareViewControllerIsNotesOrRemindersOrDocSharing];
         v56 = +[UIShareFeature coOwners];
-        v57 = [v56 isEnabled];
+        isEnabled = [v56 isEnabled];
 
-        if (v57 && v55)
+        if (isEnabled && shareViewControllerIsNotesOrRemindersOrDocSharing)
         {
           v112 = @"items";
           v109[0] = @"title";
@@ -420,12 +420,12 @@ LABEL_23:
         v5 = v97;
       }
 
-      v64 = [v5 owner];
-      v65 = [(CKShareParticipantContact *)self->_contact participant];
-      v66 = [v64 isEqual:v65];
+      owner2 = [v5 owner];
+      participant6 = [(CKShareParticipantContact *)self->_contact participant];
+      v66 = [owner2 isEqual:participant6];
 
       v44 = &selRef_shareViewControllerRootFolderTitle;
-      if (!v96 || (v66 & 1) != 0)
+      if (!itemIsShareRoot || (v66 & 1) != 0)
       {
         goto LABEL_38;
       }
@@ -449,23 +449,23 @@ LABEL_23:
       v71 = [NSArray arrayWithObjects:&v106 count:1];
       v108 = v71;
       [NSDictionary dictionaryWithObjects:&v108 forKeys:&v107 count:1];
-      v45 = v72 = v4;
+      participant3 = v72 = v4;
 
       v44 = &selRef_shareViewControllerRootFolderTitle;
       v5 = v97;
 
-      [v72 addObject:v45];
+      [v72 addObject:participant3];
     }
 
     v4 = v95;
   }
 
 LABEL_38:
-  v3 = v98;
-  if ((v41 & 1) == 0)
+  delegate = v98;
+  if ((isCurrentUser & 1) == 0)
   {
-    v73 = [*(&self->super.super.super.isa + *(v44 + 661)) participant];
-    v74 = [v73 isCurrentUser] & v96;
+    participant7 = [*(&self->super.super.super.isa + *(v44 + 661)) participant];
+    v74 = [participant7 isCurrentUser] & itemIsShareRoot;
 
     if (v74 == 1)
     {
@@ -501,28 +501,28 @@ LABEL_41:
 
 - (int64_t)participantPermission
 {
-  v2 = [(CKShareParticipantContact *)self->_contact participant];
-  v3 = [v2 permission];
+  participant = [(CKShareParticipantContact *)self->_contact participant];
+  permission = [participant permission];
 
-  return v3;
+  return permission;
 }
 
-- (void)setParticipantPermission:(int64_t)a3
+- (void)setParticipantPermission:(int64_t)permission
 {
-  v5 = [(CKShareParticipantContact *)self->_contact participant];
-  if ([v5 permission] != a3)
+  participant = [(CKShareParticipantContact *)self->_contact participant];
+  if ([participant permission] != permission)
   {
-    v6 = [(BRParticipantInfoViewController *)self allowInviteToggle];
+    allowInviteToggle = [(BRParticipantInfoViewController *)self allowInviteToggle];
 
-    if (!v6)
+    if (!allowInviteToggle)
     {
       goto LABEL_9;
     }
 
-    v5 = [(BRParticipantInfoViewController *)self allowInviteToggle];
-    v7 = [(CKShareParticipantContact *)self->_contact participant];
-    v8 = v7;
-    if (a3 == 2)
+    participant = [(BRParticipantInfoViewController *)self allowInviteToggle];
+    participant2 = [(CKShareParticipantContact *)self->_contact participant];
+    v8 = participant2;
+    if (permission == 2)
     {
       v9 = 3;
     }
@@ -532,36 +532,36 @@ LABEL_41:
       v9 = 2;
     }
 
-    [v7 setRole:v9];
+    [participant2 setRole:v9];
 
-    if (v5)
+    if (participant)
     {
-      [v5 setEnabled:a3 != 2];
-      [v5 setUserInteractionEnabled:a3 != 2];
-      [v5 setOn:a3 != 2];
+      [participant setEnabled:permission != 2];
+      [participant setUserInteractionEnabled:permission != 2];
+      [participant setOn:permission != 2];
     }
   }
 
 LABEL_9:
-  v10 = [(CKShareParticipantContact *)self->_contact participant];
-  [v10 setPermission:a3];
+  participant3 = [(CKShareParticipantContact *)self->_contact participant];
+  [participant3 setPermission:permission];
 
   v11 = cdui_default_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [(CKShareParticipantContact *)self->_contact participant];
+    participant4 = [(CKShareParticipantContact *)self->_contact participant];
     v14 = 134217984;
-    v15 = [v12 permission];
+    permission = [participant4 permission];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[INFO] participant permissions set to %li", &v14, 0xCu);
   }
 
-  v13 = [(BRParticipantInfoViewController *)self delegate];
-  [v13 participantInfoViewControllerDidChangeParticipant:self];
+  delegate = [(BRParticipantInfoViewController *)self delegate];
+  [delegate participantInfoViewControllerDidChangeParticipant:self];
 }
 
-- (void)toggleParticipantAllowedToInvite:(id)a3
+- (void)toggleParticipantAllowedToInvite:(id)invite
 {
-  if ([a3 isOn])
+  if ([invite isOn])
   {
     v4 = 2;
   }
@@ -571,63 +571,63 @@ LABEL_9:
     v4 = 3;
   }
 
-  v5 = [(CKShareParticipantContact *)self->_contact participant];
-  [v5 setRole:v4];
+  participant = [(CKShareParticipantContact *)self->_contact participant];
+  [participant setRole:v4];
 
   v6 = cdui_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(CKShareParticipantContact *)self->_contact participant];
+    participant2 = [(CKShareParticipantContact *)self->_contact participant];
     v9 = 134217984;
-    v10 = [v7 role];
+    role = [participant2 role];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[INFO] participant allowedToInvite (role) set to %li", &v9, 0xCu);
   }
 
-  v8 = [(BRParticipantInfoViewController *)self delegate];
-  [v8 participantInfoViewControllerDidChangeParticipant:self];
+  delegate = [(BRParticipantInfoViewController *)self delegate];
+  [delegate participantInfoViewControllerDidChangeParticipant:self];
 }
 
-- (void)createdInviteToggle:(id)a3
+- (void)createdInviteToggle:(id)toggle
 {
-  v6 = a3;
+  toggleCopy = toggle;
   [(BRParticipantInfoViewController *)self setAllowInviteToggle:?];
-  v4 = [(CKShareParticipantContact *)self->_contact participant];
-  v5 = [v4 permission];
+  participant = [(CKShareParticipantContact *)self->_contact participant];
+  permission = [participant permission];
 
-  if (v5 == 2)
+  if (permission == 2)
   {
-    [v6 setUserInteractionEnabled:0];
+    [toggleCopy setUserInteractionEnabled:0];
   }
 }
 
-- (void)removeAccess:(id)a3
+- (void)removeAccess:(id)access
 {
   v4 = cdui_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(BRParticipantInfoViewController *)self contact];
+    contact = [(BRParticipantInfoViewController *)self contact];
     v7 = 138412290;
-    v8 = v5;
+    v8 = contact;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[INFO] Remove requested for participant %@", &v7, 0xCu);
   }
 
-  v6 = [(BRParticipantInfoViewController *)self delegate];
-  [v6 participantInfoViewControllerRemoveParticipant:self];
+  delegate = [(BRParticipantInfoViewController *)self delegate];
+  [delegate participantInfoViewControllerRemoveParticipant:self];
 }
 
-- (void)leaveShare:(id)a3
+- (void)leaveShare:(id)share
 {
   v4 = cdui_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(BRParticipantInfoViewController *)self contact];
+    contact = [(BRParticipantInfoViewController *)self contact];
     v7 = 138412290;
-    v8 = v5;
+    v8 = contact;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[INFO] Leave share requested for participant %@", &v7, 0xCu);
   }
 
-  v6 = [(BRParticipantInfoViewController *)self delegate];
-  [v6 participantInfoViewControllerLeaveShare:self];
+  delegate = [(BRParticipantInfoViewController *)self delegate];
+  [delegate participantInfoViewControllerLeaveShare:self];
 }
 
 - (BRParticipantInfoViewControllerDelegate)delegate

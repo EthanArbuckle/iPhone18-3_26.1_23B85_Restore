@@ -1,40 +1,40 @@
 @interface ICCollaborationFolderActivity
 - (CGRect)presentingSourceRect;
-- (ICCollaborationFolderActivity)initWithFolder:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 presentingSourceView:(id)a6 presentingSourceRect:(CGRect)a7 eventReporter:(id)a8;
+- (ICCollaborationFolderActivity)initWithFolder:(id)folder presentingViewController:(id)controller presentingBarButtonItem:(id)item presentingSourceView:(id)view presentingSourceRect:(CGRect)rect eventReporter:(id)reporter;
 - (UIViewController)presentingViewController;
 - (id)activityImage;
 - (id)activityTitle;
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICCollaborationFolderActivity
 
-- (ICCollaborationFolderActivity)initWithFolder:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 presentingSourceView:(id)a6 presentingSourceRect:(CGRect)a7 eventReporter:(id)a8
+- (ICCollaborationFolderActivity)initWithFolder:(id)folder presentingViewController:(id)controller presentingBarButtonItem:(id)item presentingSourceView:(id)view presentingSourceRect:(CGRect)rect eventReporter:(id)reporter
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a8;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  folderCopy = folder;
+  controllerCopy = controller;
+  itemCopy = item;
+  viewCopy = view;
+  reporterCopy = reporter;
   v26.receiver = self;
   v26.super_class = ICCollaborationFolderActivity;
   v23 = [(ICCollaborationFolderActivity *)&v26 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_folder, a3);
-    objc_storeWeak(&v24->_presentingViewController, v19);
-    objc_storeStrong(&v24->_presentingBarButtonItem, a5);
-    objc_storeStrong(&v24->_presentingSourceView, a6);
+    objc_storeStrong(&v23->_folder, folder);
+    objc_storeWeak(&v24->_presentingViewController, controllerCopy);
+    objc_storeStrong(&v24->_presentingBarButtonItem, item);
+    objc_storeStrong(&v24->_presentingSourceView, view);
     v24->_presentingSourceRect.origin.x = x;
     v24->_presentingSourceRect.origin.y = y;
     v24->_presentingSourceRect.size.width = width;
     v24->_presentingSourceRect.size.height = height;
-    objc_storeStrong(&v24->_eventReporter, a8);
+    objc_storeStrong(&v24->_eventReporter, reporter);
   }
 
   return v24;
@@ -42,52 +42,52 @@
 
 - (id)activityTitle
 {
-  v2 = [(ICCollaborationFolderActivity *)self folder];
-  v3 = [v2 shareViaICloudManageActionTitle];
+  folder = [(ICCollaborationFolderActivity *)self folder];
+  shareViaICloudManageActionTitle = [folder shareViaICloudManageActionTitle];
 
-  return v3;
+  return shareViaICloudManageActionTitle;
 }
 
 - (id)activityImage
 {
-  v2 = [(ICCollaborationFolderActivity *)self folder];
-  v3 = [v2 shareViaICloudSystemImageName];
+  folder = [(ICCollaborationFolderActivity *)self folder];
+  shareViaICloudSystemImageName = [folder shareViaICloudSystemImageName];
 
-  v4 = [UIImage systemImageNamed:v3];
+  v4 = [UIImage systemImageNamed:shareViaICloudSystemImageName];
 
   return v4;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(ICCollaborationFolderActivity *)self contextPathEnum])
   {
-    v5 = [(ICCollaborationFolderActivity *)self eventReporter];
-    [v5 pushContextPathDataWithContextPathEnum:{-[ICCollaborationFolderActivity contextPathEnum](self, "contextPathEnum")}];
+    eventReporter = [(ICCollaborationFolderActivity *)self eventReporter];
+    [eventReporter pushContextPathDataWithContextPathEnum:{-[ICCollaborationFolderActivity contextPathEnum](self, "contextPathEnum")}];
   }
 
-  v6 = [(ICCollaborationFolderActivity *)self presentationSourceItem];
-  if (v6)
+  presentationSourceItem = [(ICCollaborationFolderActivity *)self presentationSourceItem];
+  if (presentationSourceItem)
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [(ICCollaborationFolderActivity *)self presentingSourceView];
-    v7 = v8 == 0;
+    presentingSourceView = [(ICCollaborationFolderActivity *)self presentingSourceView];
+    v7 = presentingSourceView == 0;
   }
 
   if (![(ICCollaborationFolderActivity *)self forceShareSheet])
   {
-    v9 = [(ICCollaborationFolderActivity *)self folder];
-    if ([v9 canBeSharedViaICloud])
+    folder = [(ICCollaborationFolderActivity *)self folder];
+    if ([folder canBeSharedViaICloud])
     {
-      v10 = [(ICCollaborationFolderActivity *)self folder];
-      v11 = [v10 isPubliclySharedOrHasInvitees];
+      folder2 = [(ICCollaborationFolderActivity *)self folder];
+      isPubliclySharedOrHasInvitees = [folder2 isPubliclySharedOrHasInvitees];
 
-      if (((v11 | v7) & 1) == 0)
+      if (((isPubliclySharedOrHasInvitees | v7) & 1) == 0)
       {
         goto LABEL_11;
       }
@@ -98,10 +98,10 @@
     }
 
 LABEL_13:
-    v27 = [(ICCollaborationFolderActivity *)self collaborationUIController];
-    v28 = [(ICCollaborationFolderActivity *)self folder];
-    v29 = [(ICCollaborationFolderActivity *)self presentingViewController];
-    v30 = [(ICCollaborationFolderActivity *)self presentingBarButtonItem];
+    collaborationUIController = [(ICCollaborationFolderActivity *)self collaborationUIController];
+    folder3 = [(ICCollaborationFolderActivity *)self folder];
+    presentingViewController = [(ICCollaborationFolderActivity *)self presentingViewController];
+    presentingBarButtonItem = [(ICCollaborationFolderActivity *)self presentingBarButtonItem];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_100068380;
@@ -112,9 +112,9 @@ LABEL_13:
     v32[2] = sub_1000683EC;
     v32[3] = &unk_100645E80;
     v32[4] = self;
-    v33 = v4;
-    v31 = v4;
-    [v27 showCloudSharingControllerForFolder:v28 presentingViewController:v29 popoverBarButtonItem:v30 presented:v34 dismissed:v32];
+    v33 = completionCopy;
+    v31 = completionCopy;
+    [collaborationUIController showCloudSharingControllerForFolder:folder3 presentingViewController:presentingViewController popoverBarButtonItem:presentingBarButtonItem presented:v34 dismissed:v32];
 
     v26 = v33;
     goto LABEL_14;
@@ -126,11 +126,11 @@ LABEL_13:
   }
 
 LABEL_11:
-  v12 = [(ICCollaborationFolderActivity *)self collaborationUIController];
-  v13 = [(ICCollaborationFolderActivity *)self folder];
-  v14 = [(ICCollaborationFolderActivity *)self presentingViewController];
-  v15 = [(ICCollaborationFolderActivity *)self presentationSourceItem];
-  v16 = [(ICCollaborationFolderActivity *)self presentingSourceView];
+  collaborationUIController2 = [(ICCollaborationFolderActivity *)self collaborationUIController];
+  folder4 = [(ICCollaborationFolderActivity *)self folder];
+  presentingViewController2 = [(ICCollaborationFolderActivity *)self presentingViewController];
+  presentationSourceItem2 = [(ICCollaborationFolderActivity *)self presentationSourceItem];
+  presentingSourceView2 = [(ICCollaborationFolderActivity *)self presentingSourceView];
   [(ICCollaborationFolderActivity *)self presentingSourceRect];
   v18 = v17;
   v20 = v19;
@@ -141,9 +141,9 @@ LABEL_11:
   v35[2] = sub_1000682D4;
   v35[3] = &unk_100645E80;
   v35[4] = self;
-  v36 = v4;
-  v25 = v4;
-  [v12 presentFolderActivityViewControllerWithFolder:v13 presentingViewController:v14 sourceItem:v15 sourceView:v16 sourceRect:v35 completion:{v18, v20, v22, v24}];
+  v36 = completionCopy;
+  v25 = completionCopy;
+  [collaborationUIController2 presentFolderActivityViewControllerWithFolder:folder4 presentingViewController:presentingViewController2 sourceItem:presentationSourceItem2 sourceView:presentingSourceView2 sourceRect:v35 completion:{v18, v20, v22, v24}];
 
   v26 = v36;
 LABEL_14:

@@ -1,15 +1,15 @@
 @interface TVURLImageLoader
 + (id)sharedInstance;
 - (TVURLImageLoader)init;
-- (id)URLForObject:(id)a3;
-- (id)imageKeyForObject:(id)a3;
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 requestLoader:(id)a7 completionHandler:(id)a8;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 dataTask:(id)a4 willCacheResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)_executeOnProcessingQueue:(id)a3;
-- (void)cancelLoad:(id)a3;
+- (id)URLForObject:(id)object;
+- (id)imageKeyForObject:(id)object;
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction requestLoader:(id)loader completionHandler:(id)handler;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session dataTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)_executeOnProcessingQueue:(id)queue;
+- (void)cancelLoad:(id)load;
 @end
 
 @implementation TVURLImageLoader
@@ -42,12 +42,12 @@ uint64_t __34__TVURLImageLoader_sharedInstance__block_invoke()
   v2 = [(TVURLImageLoader *)&v16 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-    [v3 setHTTPMaximumConnectionsPerHost:4];
-    [v3 setHTTPShouldUsePipelining:1];
-    [v3 setWaitsForConnectivity:0];
-    [v3 set_timingDataOptions:1];
-    v4 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v3 delegate:v2 delegateQueue:0];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    [defaultSessionConfiguration setHTTPMaximumConnectionsPerHost:4];
+    [defaultSessionConfiguration setHTTPShouldUsePipelining:1];
+    [defaultSessionConfiguration setWaitsForConnectivity:0];
+    [defaultSessionConfiguration set_timingDataOptions:1];
+    v4 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration delegate:v2 delegateQueue:0];
     session = v2->_session;
     v2->_session = v4;
 
@@ -56,35 +56,35 @@ uint64_t __34__TVURLImageLoader_sharedInstance__block_invoke()
     processingQueue = v2->_processingQueue;
     v2->_processingQueue = v7;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     loadOptionsByID = v2->_loadOptionsByID;
-    v2->_loadOptionsByID = v9;
+    v2->_loadOptionsByID = dictionary;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     loadIDsByURL = v2->_loadIDsByURL;
-    v2->_loadIDsByURL = v11;
+    v2->_loadIDsByURL = dictionary2;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     taskOptionsByURL = v2->_taskOptionsByURL;
-    v2->_taskOptionsByURL = v13;
+    v2->_taskOptionsByURL = dictionary3;
   }
 
   return v2;
 }
 
-- (void)_executeOnProcessingQueue:(id)a3
+- (void)_executeOnProcessingQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   objc_initWeak(&location, self);
-  v5 = [(TVURLImageLoader *)self processingQueue];
+  processingQueue = [(TVURLImageLoader *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__TVURLImageLoader__executeOnProcessingQueue___block_invoke;
   block[3] = &unk_279D6FE98;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = queueCopy;
+  v6 = queueCopy;
+  dispatch_async(processingQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -104,13 +104,13 @@ uint64_t __46__TVURLImageLoader__executeOnProcessingQueue___block_invoke(uint64_
   return MEMORY[0x2821F96F8](WeakRetained, v3);
 }
 
-- (id)URLForObject:(id)a3
+- (id)URLForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
 LABEL_5:
     v5 = v4;
     goto LABEL_7;
@@ -119,7 +119,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 url];
+    v4 = [objectCopy url];
     goto LABEL_5;
   }
 
@@ -129,22 +129,22 @@ LABEL_7:
   return v5;
 }
 
-- (id)imageKeyForObject:(id)a3
+- (id)imageKeyForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 absoluteString];
+    absoluteString = [objectCopy absoluteString];
 LABEL_5:
-    v5 = v4;
+    v5 = absoluteString;
     goto LABEL_9;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 identifier];
+    absoluteString = [objectCopy identifier];
     goto LABEL_5;
   }
 
@@ -156,24 +156,24 @@ LABEL_5:
 
   v5 = 0;
 LABEL_9:
-  v7 = [v5 tv_SHA256String];
+  tv_SHA256String = [v5 tv_SHA256String];
 
-  return v7;
+  return tv_SHA256String;
 }
 
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 requestLoader:(id)a7 completionHandler:(id)a8
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction requestLoader:(id)loader completionHandler:(id)handler
 {
   v64 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a7;
-  v13 = a8;
+  objectCopy = object;
+  loaderCopy = loader;
+  handlerCopy = handler;
   v14 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
   v15 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [(TVURLImageLoader *)self session];
-    v17 = [v16 dataTaskWithURL:v11];
+    session = [(TVURLImageLoader *)self session];
+    v17 = [session dataTaskWithURL:objectCopy];
 
     if (v17)
     {
@@ -194,18 +194,18 @@ LABEL_9:
       }
 
       v27 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
-      (*(v13 + 2))(v13, 0, 0, 0, 0, v27);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, v27);
       v17 = 0;
       v25 = 0;
       v15 = v49;
       goto LABEL_23;
     }
 
-    v51 = self;
+    selfCopy = self;
     v46 = v14;
-    v47 = v13;
-    v48 = v12;
-    v28 = v11;
+    v47 = handlerCopy;
+    v48 = loaderCopy;
+    v28 = objectCopy;
     v29 = objc_alloc(MEMORY[0x277CCAB70]);
     v30 = [v28 url];
     v31 = [v29 initWithURL:v30];
@@ -214,8 +214,8 @@ LABEL_9:
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v32 = [v28 headers];
-    v33 = [v32 countByEnumeratingWithState:&v59 objects:v63 count:16];
+    headers = [v28 headers];
+    v33 = [headers countByEnumeratingWithState:&v59 objects:v63 count:16];
     if (v33)
     {
       v34 = v33;
@@ -226,64 +226,64 @@ LABEL_9:
         {
           if (*v60 != v35)
           {
-            objc_enumerationMutation(v32);
+            objc_enumerationMutation(headers);
           }
 
           v37 = *(*(&v59 + 1) + 8 * i);
-          v38 = [v28 headers];
-          v39 = [v38 objectForKey:v37];
+          headers2 = [v28 headers];
+          v39 = [headers2 objectForKey:v37];
           [v31 setValue:v39 forHTTPHeaderField:v37];
         }
 
-        v34 = [v32 countByEnumeratingWithState:&v59 objects:v63 count:16];
+        v34 = [headers countByEnumeratingWithState:&v59 objects:v63 count:16];
       }
 
       while (v34);
     }
 
-    self = v51;
-    v40 = [(TVURLImageLoader *)v51 session];
-    v17 = [v40 dataTaskWithRequest:v31];
+    self = selfCopy;
+    session2 = [(TVURLImageLoader *)selfCopy session];
+    v17 = [session2 dataTaskWithRequest:v31];
 
-    v41 = [v28 decrypter];
+    decrypter = [v28 decrypter];
 
     v15 = v49;
-    if (v41)
+    if (decrypter)
     {
-      v42 = [v28 decrypter];
-      [v49 setObject:v42 forKey:@"TVURLImageLoaderTaskDecryptorKey"];
+      decrypter2 = [v28 decrypter];
+      [v49 setObject:decrypter2 forKey:@"TVURLImageLoaderTaskDecryptorKey"];
     }
 
-    v13 = v47;
-    v12 = v48;
+    handlerCopy = v47;
+    loaderCopy = v48;
     v14 = v46;
     if (v17)
     {
 LABEL_3:
-      v50 = self;
-      v18 = [v17 originalRequest];
-      v19 = [v18 URL];
+      selfCopy2 = self;
+      originalRequest = [v17 originalRequest];
+      v19 = [originalRequest URL];
 
-      v20 = [MEMORY[0x277CCAD78] UUID];
-      v21 = [v20 description];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      v21 = [uUID description];
 
       [v14 setObject:v21 forKey:@"TVURLImageLoaderOptionsIDKey"];
       [v14 setObject:v19 forKey:@"TVURLImageLoaderOptionsURLKey"];
-      if (v13)
+      if (handlerCopy)
       {
-        v22 = [v13 copy];
+        v22 = [handlerCopy copy];
         [v14 setObject:v22 forKey:@"TVURLImageLoaderOptionsCompletionHandlerKey"];
       }
 
       [v15 setObject:v17 forKey:@"TVURLImageLoaderTaskKey"];
-      v23 = [v12 recordForResource:3 withInitiator:2];
+      v23 = [loaderCopy recordForResource:3 withInitiator:2];
       if (v23)
       {
         [v15 setObject:v23 forKey:@"TVURLImageLoaderOptionsRequestRecordKey"];
       }
 
-      v24 = [MEMORY[0x277CBEB28] data];
-      [v15 setObject:v24 forKey:@"TVURLImageLoaderTaskReceivedDataKey"];
+      data = [MEMORY[0x277CBEB28] data];
+      [v15 setObject:data forKey:@"TVURLImageLoaderTaskReceivedDataKey"];
 
       v52[0] = MEMORY[0x277D85DD0];
       v52[1] = 3221225472;
@@ -299,7 +299,7 @@ LABEL_3:
       v58 = v23;
       v26 = v23;
       v27 = v19;
-      [(TVURLImageLoader *)v50 _executeOnProcessingQueue:v52];
+      [(TVURLImageLoader *)selfCopy2 _executeOnProcessingQueue:v52];
 
 LABEL_23:
       goto LABEL_24;
@@ -355,9 +355,9 @@ void __108__TVURLImageLoader_loadImageForObject_scaleToSize_cropToFit_imageDirec
   }
 }
 
-- (void)cancelLoad:(id)a3
+- (void)cancelLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -365,7 +365,7 @@ void __108__TVURLImageLoader_loadImageForObject_scaleToSize_cropToFit_imageDirec
     v5[1] = 3221225472;
     v5[2] = __31__TVURLImageLoader_cancelLoad___block_invoke;
     v5[3] = &unk_279D6FEE8;
-    v6 = v4;
+    v6 = loadCopy;
     [(TVURLImageLoader *)self _executeOnProcessingQueue:v5];
   }
 }
@@ -419,21 +419,21 @@ void __31__TVURLImageLoader_cancelLoad___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __77__TVURLImageLoader_URLSession_dataTask_didReceiveResponse_completionHandler___block_invoke;
   v15[3] = &unk_279D6FF10;
-  v16 = v9;
-  v17 = v10;
-  v18 = v11;
-  v12 = v11;
-  v13 = v10;
-  v14 = v9;
+  v16 = taskCopy;
+  v17 = responseCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = responseCopy;
+  v14 = taskCopy;
   [(TVURLImageLoader *)self _executeOnProcessingQueue:v15];
 }
 
@@ -456,18 +456,18 @@ void __77__TVURLImageLoader_URLSession_dataTask_didReceiveResponse_completionHan
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  dataCopy = data;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__TVURLImageLoader_URLSession_dataTask_didReceiveData___block_invoke;
   v11[3] = &unk_279D6FF38;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = taskCopy;
+  v13 = dataCopy;
+  v9 = dataCopy;
+  v10 = taskCopy;
   [(TVURLImageLoader *)self _executeOnProcessingQueue:v11];
 }
 
@@ -491,32 +491,32 @@ void __55__TVURLImageLoader_URLSession_dataTask_didReceiveData___block_invoke(ui
   [v11 didReceiveData:*(a1 + 40)];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 willCacheResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler
 {
   v7 = MEMORY[0x277CCA8F0];
-  v8 = a6;
-  v9 = a5;
+  handlerCopy = handler;
+  responseCopy = response;
   v10 = [v7 alloc];
-  v11 = [v9 response];
-  v12 = [v9 data];
-  v13 = [v9 userInfo];
+  response = [responseCopy response];
+  data = [responseCopy data];
+  userInfo = [responseCopy userInfo];
 
-  v14 = [v10 initWithResponse:v11 data:v12 userInfo:v13 storagePolicy:2];
-  v8[2](v8, v14);
+  v14 = [v10 initWithResponse:response data:data userInfo:userInfo storagePolicy:2];
+  handlerCopy[2](handlerCopy, v14);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  errorCopy = error;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __57__TVURLImageLoader_URLSession_task_didCompleteWithError___block_invoke;
   v11[3] = &unk_279D6FF38;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = taskCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = taskCopy;
   [(TVURLImageLoader *)self _executeOnProcessingQueue:v11];
 }
 

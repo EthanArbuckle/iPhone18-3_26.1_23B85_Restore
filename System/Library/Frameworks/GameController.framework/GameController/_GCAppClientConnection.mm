@@ -1,24 +1,24 @@
 @interface _GCAppClientConnection
-- (_GCAppClientConnection)initWithConnection:(id)a3 fromProcess:(id)a4;
+- (_GCAppClientConnection)initWithConnection:(id)connection fromProcess:(id)process;
 - (_GCAppServerInterface)server;
-- (void)setServer:(id)a3;
+- (void)setServer:(id)server;
 @end
 
 @implementation _GCAppClientConnection
 
-- (_GCAppClientConnection)initWithConnection:(id)a3 fromProcess:(id)a4
+- (_GCAppClientConnection)initWithConnection:(id)connection fromProcess:(id)process
 {
-  v6 = a3;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = _GCAppClientConnection;
-  v7 = [(_GCIPCRemoteIncomingConnection *)&v11 initWithConnection:v6 fromProcess:a4];
+  v7 = [(_GCIPCRemoteIncomingConnection *)&v11 initWithConnection:connectionCopy fromProcess:process];
   if (v7)
   {
     v8 = GCAppServerInterface();
-    [v6 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
     v9 = GCAppClientInterface();
-    [v6 setRemoteObjectInterface:v9];
+    [connectionCopy setRemoteObjectInterface:v9];
   }
 
   return v7;
@@ -26,17 +26,17 @@
 
 - (_GCAppServerInterface)server
 {
-  v2 = [(GCIPCRemoteConnection *)self connection];
-  v3 = [v2 exportedObject];
+  connection = [(GCIPCRemoteConnection *)self connection];
+  exportedObject = [connection exportedObject];
 
-  return v3;
+  return exportedObject;
 }
 
-- (void)setServer:(id)a3
+- (void)setServer:(id)server
 {
-  v4 = a3;
-  v5 = [(GCIPCRemoteConnection *)self connection];
-  [v5 setExportedObject:v4];
+  serverCopy = server;
+  connection = [(GCIPCRemoteConnection *)self connection];
+  [connection setExportedObject:serverCopy];
 }
 
 @end

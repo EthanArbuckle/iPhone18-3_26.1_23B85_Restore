@@ -1,15 +1,15 @@
 @interface DDRemoteActionHostViewController
 - (DDRemoteActionHostViewControllerDelegate)delegate;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation DDRemoteActionHostViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(DDRemoteActionHostViewController *)self delegate];
-  [v5 DDRemoteActionDidTerminateWithError:v4];
+  errorCopy = error;
+  delegate = [(DDRemoteActionHostViewController *)self delegate];
+  [delegate DDRemoteActionDidTerminateWithError:errorCopy];
 }
 
 - (DDRemoteActionHostViewControllerDelegate)delegate

@@ -1,54 +1,54 @@
 @interface ASCStatefulOffer
-- (ASCStatefulOffer)initWithCoder:(id)a3;
-- (ASCStatefulOffer)initWithID:(id)a3 titles:(id)a4 subtitles:(id)a5 flags:(int64_t)a6 ageRating:(id)a7 metrics:(id)a8 defaultOffer:(id)a9 buyOffer:(id)a10 openOffer:(id)a11;
-- (ASCStatefulOffer)offerWithMetrics:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCStatefulOffer)initWithCoder:(id)coder;
+- (ASCStatefulOffer)initWithID:(id)d titles:(id)titles subtitles:(id)subtitles flags:(int64_t)flags ageRating:(id)rating metrics:(id)metrics defaultOffer:(id)offer buyOffer:(id)self0 openOffer:(id)self1;
+- (ASCStatefulOffer)offerWithMetrics:(id)metrics;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCStatefulOffer
 
-- (ASCStatefulOffer)initWithID:(id)a3 titles:(id)a4 subtitles:(id)a5 flags:(int64_t)a6 ageRating:(id)a7 metrics:(id)a8 defaultOffer:(id)a9 buyOffer:(id)a10 openOffer:(id)a11
+- (ASCStatefulOffer)initWithID:(id)d titles:(id)titles subtitles:(id)subtitles flags:(int64_t)flags ageRating:(id)rating metrics:(id)metrics defaultOffer:(id)offer buyOffer:(id)self0 openOffer:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v38 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
+  dCopy = d;
+  titlesCopy = titles;
+  subtitlesCopy = subtitles;
+  ratingCopy = rating;
+  metricsCopy = metrics;
+  offerCopy = offer;
+  buyOfferCopy = buyOffer;
+  openOfferCopy = openOffer;
   v39.receiver = self;
   v39.super_class = ASCStatefulOffer;
   v23 = [(ASCStatefulOffer *)&v39 init];
   if (v23)
   {
-    v24 = [v16 copy];
+    v24 = [dCopy copy];
     id = v23->_id;
     v23->_id = v24;
 
-    v26 = [v17 copy];
+    v26 = [titlesCopy copy];
     titles = v23->_titles;
     v23->_titles = v26;
 
-    v28 = [v18 copy];
+    v28 = [subtitlesCopy copy];
     subtitles = v23->_subtitles;
     v23->_subtitles = v28;
 
-    v23->_flags = a6;
-    objc_storeStrong(&v23->_ageRating, a7);
-    objc_storeStrong(&v23->_metrics, a8);
-    v30 = [v20 copyWithZone:0];
+    v23->_flags = flags;
+    objc_storeStrong(&v23->_ageRating, rating);
+    objc_storeStrong(&v23->_metrics, metrics);
+    v30 = [offerCopy copyWithZone:0];
     defaultOffer = v23->_defaultOffer;
     v23->_defaultOffer = v30;
 
-    v32 = [v21 copyWithZone:0];
+    v32 = [buyOfferCopy copyWithZone:0];
     buyOffer = v23->_buyOffer;
     v23->_buyOffer = v32;
 
-    v34 = [v22 copyWithZone:0];
+    v34 = [openOfferCopy copyWithZone:0];
     openOffer = v23->_openOffer;
     v23->_openOffer = v34;
   }
@@ -56,35 +56,35 @@
   return v23;
 }
 
-- (ASCStatefulOffer)initWithCoder:(id)a3
+- (ASCStatefulOffer)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
   if (v5)
   {
-    v6 = ASCOfferTitlesDecodeForKey(v4, @"titles");
+    v6 = ASCOfferTitlesDecodeForKey(coderCopy, @"titles");
     if (v6)
     {
-      v7 = ASCOfferTitlesDecodeForKey(v4, @"subtitles");
+      v7 = ASCOfferTitlesDecodeForKey(coderCopy, @"subtitles");
       if (v7)
       {
-        v8 = [v4 decodeIntegerForKey:@"flags"];
-        v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ageRating"];
-        v10 = ASCMetricsDataDecodeArrayForKey(v4, @"metrics");
+        v8 = [coderCopy decodeIntegerForKey:@"flags"];
+        v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ageRating"];
+        v10 = ASCMetricsDataDecodeArrayForKey(coderCopy, @"metrics");
         if (v10)
         {
-          v11 = ASCOfferDecodeForKey(v4, @"defaultOffer");
+          v11 = ASCOfferDecodeForKey(coderCopy, @"defaultOffer");
           if (v11)
           {
-            v12 = ASCOfferDecodeForKey(v4, @"buyOffer");
-            v13 = ASCOfferDecodeForKey(v4, @"openOffer");
+            v12 = ASCOfferDecodeForKey(coderCopy, @"buyOffer");
+            v13 = ASCOfferDecodeForKey(coderCopy, @"openOffer");
             v14 = v8;
             v15 = v9;
             v16 = v13;
             self = [(ASCStatefulOffer *)self initWithID:v5 titles:v6 subtitles:v7 flags:v14 ageRating:v15 metrics:v10 defaultOffer:v11 buyOffer:v12 openOffer:v13];
 
             v9 = v15;
-            v17 = self;
+            selfCopy = self;
           }
 
           else
@@ -95,7 +95,7 @@
               [(ASCStatefulOffer *)v50 initWithCoder:v51, v52, v53, v54, v55, v56, v57];
             }
 
-            v17 = 0;
+            selfCopy = 0;
           }
         }
 
@@ -107,7 +107,7 @@
             [(ASCStatefulOffer *)v42 initWithCoder:v43, v44, v45, v46, v47, v48, v49];
           }
 
-          v17 = 0;
+          selfCopy = 0;
         }
       }
 
@@ -119,7 +119,7 @@
           [(ASCStatefulOffer *)v34 initWithCoder:v35, v36, v37, v38, v39, v40, v41];
         }
 
-        v17 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -131,7 +131,7 @@
         [(ASCStatefulOffer *)v26 initWithCoder:v27, v28, v29, v30, v31, v32, v33];
       }
 
-      v17 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -143,54 +143,54 @@
       [(ASCStatefulOffer *)v18 initWithCoder:v19, v20, v21, v22, v23, v24, v25];
     }
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASCStatefulOffer *)self id];
-  [v4 encodeObject:v5 forKey:@"id"];
+  [coderCopy encodeObject:v5 forKey:@"id"];
 
-  v6 = [(ASCStatefulOffer *)self titles];
-  [v4 encodeObject:v6 forKey:@"titles"];
+  titles = [(ASCStatefulOffer *)self titles];
+  [coderCopy encodeObject:titles forKey:@"titles"];
 
-  v7 = [(ASCStatefulOffer *)self subtitles];
-  [v4 encodeObject:v7 forKey:@"subtitles"];
+  subtitles = [(ASCStatefulOffer *)self subtitles];
+  [coderCopy encodeObject:subtitles forKey:@"subtitles"];
 
-  [v4 encodeInteger:-[ASCStatefulOffer flags](self forKey:{"flags"), @"flags"}];
-  v8 = [(ASCStatefulOffer *)self ageRating];
-  [v4 encodeObject:v8 forKey:@"ageRating"];
+  [coderCopy encodeInteger:-[ASCStatefulOffer flags](self forKey:{"flags"), @"flags"}];
+  ageRating = [(ASCStatefulOffer *)self ageRating];
+  [coderCopy encodeObject:ageRating forKey:@"ageRating"];
 
-  v9 = [(ASCStatefulOffer *)self metrics];
-  [v4 encodeObject:v9 forKey:@"metrics"];
+  metrics = [(ASCStatefulOffer *)self metrics];
+  [coderCopy encodeObject:metrics forKey:@"metrics"];
 
-  v10 = [(ASCStatefulOffer *)self defaultOffer];
-  [v4 encodeObject:v10 forKey:@"defaultOffer"];
+  defaultOffer = [(ASCStatefulOffer *)self defaultOffer];
+  [coderCopy encodeObject:defaultOffer forKey:@"defaultOffer"];
 
-  v11 = [(ASCStatefulOffer *)self buyOffer];
-  [v4 encodeObject:v11 forKey:@"buyOffer"];
+  buyOffer = [(ASCStatefulOffer *)self buyOffer];
+  [coderCopy encodeObject:buyOffer forKey:@"buyOffer"];
 
-  v12 = [(ASCStatefulOffer *)self openOffer];
-  [v4 encodeObject:v12 forKey:@"openOffer"];
+  openOffer = [(ASCStatefulOffer *)self openOffer];
+  [coderCopy encodeObject:openOffer forKey:@"openOffer"];
 }
 
-- (ASCStatefulOffer)offerWithMetrics:(id)a3
+- (ASCStatefulOffer)offerWithMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v5 = objc_alloc(objc_opt_class());
   v6 = [(ASCStatefulOffer *)self id];
-  v7 = [(ASCStatefulOffer *)self titles];
-  v8 = [(ASCStatefulOffer *)self subtitles];
-  v9 = [(ASCStatefulOffer *)self flags];
-  v10 = [(ASCStatefulOffer *)self ageRating];
-  v11 = [(ASCStatefulOffer *)self defaultOffer];
-  v12 = [(ASCStatefulOffer *)self buyOffer];
-  v13 = [(ASCStatefulOffer *)self openOffer];
-  v14 = [v5 initWithID:v6 titles:v7 subtitles:v8 flags:v9 ageRating:v10 metrics:v4 defaultOffer:v11 buyOffer:v12 openOffer:v13];
+  titles = [(ASCStatefulOffer *)self titles];
+  subtitles = [(ASCStatefulOffer *)self subtitles];
+  flags = [(ASCStatefulOffer *)self flags];
+  ageRating = [(ASCStatefulOffer *)self ageRating];
+  defaultOffer = [(ASCStatefulOffer *)self defaultOffer];
+  buyOffer = [(ASCStatefulOffer *)self buyOffer];
+  openOffer = [(ASCStatefulOffer *)self openOffer];
+  v14 = [v5 initWithID:v6 titles:titles subtitles:subtitles flags:flags ageRating:ageRating metrics:metricsCopy defaultOffer:defaultOffer buyOffer:buyOffer openOffer:openOffer];
 
   return v14;
 }
@@ -201,37 +201,37 @@
   v4 = [(ASCStatefulOffer *)self id];
   [(ASCHasher *)v3 combineObject:v4];
 
-  v5 = [(ASCStatefulOffer *)self titles];
-  [(ASCHasher *)v3 combineObject:v5];
+  titles = [(ASCStatefulOffer *)self titles];
+  [(ASCHasher *)v3 combineObject:titles];
 
-  v6 = [(ASCStatefulOffer *)self subtitles];
-  [(ASCHasher *)v3 combineObject:v6];
+  subtitles = [(ASCStatefulOffer *)self subtitles];
+  [(ASCHasher *)v3 combineObject:subtitles];
 
   [(ASCHasher *)v3 combineInteger:[(ASCStatefulOffer *)self flags]];
-  v7 = [(ASCStatefulOffer *)self ageRating];
-  [(ASCHasher *)v3 combineObject:v7];
+  ageRating = [(ASCStatefulOffer *)self ageRating];
+  [(ASCHasher *)v3 combineObject:ageRating];
 
-  v8 = [(ASCStatefulOffer *)self metrics];
-  [(ASCHasher *)v3 combineObject:v8];
+  metrics = [(ASCStatefulOffer *)self metrics];
+  [(ASCHasher *)v3 combineObject:metrics];
 
-  v9 = [(ASCStatefulOffer *)self defaultOffer];
-  [(ASCHasher *)v3 combineObject:v9];
+  defaultOffer = [(ASCStatefulOffer *)self defaultOffer];
+  [(ASCHasher *)v3 combineObject:defaultOffer];
 
-  v10 = [(ASCStatefulOffer *)self buyOffer];
-  [(ASCHasher *)v3 combineObject:v10];
+  buyOffer = [(ASCStatefulOffer *)self buyOffer];
+  [(ASCHasher *)v3 combineObject:buyOffer];
 
-  v11 = [(ASCStatefulOffer *)self openOffer];
-  [(ASCHasher *)v3 combineObject:v11];
+  openOffer = [(ASCStatefulOffer *)self openOffer];
+  [(ASCHasher *)v3 combineObject:openOffer];
 
-  v12 = [(ASCHasher *)v3 finalizeHash];
-  return v12;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -262,82 +262,82 @@
       if ([v8 isEqual:v9])
       {
 LABEL_10:
-        v11 = [(ASCStatefulOffer *)self titles];
-        v12 = [v7 titles];
-        v13 = v12;
-        if (v11 && v12)
+        titles = [(ASCStatefulOffer *)self titles];
+        titles2 = [v7 titles];
+        v13 = titles2;
+        if (titles && titles2)
         {
-          if ([v11 isEqual:v12])
+          if ([titles isEqual:titles2])
           {
 LABEL_13:
-            v14 = [(ASCStatefulOffer *)self subtitles];
-            v15 = [v7 subtitles];
-            v16 = v15;
-            if (v14 && v15)
+            subtitles = [(ASCStatefulOffer *)self subtitles];
+            subtitles2 = [v7 subtitles];
+            v16 = subtitles2;
+            if (subtitles && subtitles2)
             {
-              if (![v14 isEqual:v15])
+              if (![subtitles isEqual:subtitles2])
               {
                 goto LABEL_39;
               }
             }
 
-            else if (v14 != v15)
+            else if (subtitles != subtitles2)
             {
               goto LABEL_39;
             }
 
-            v18 = [(ASCStatefulOffer *)self flags];
-            if (v18 == [v7 flags])
+            flags = [(ASCStatefulOffer *)self flags];
+            if (flags == [v7 flags])
             {
-              v19 = [(ASCStatefulOffer *)self ageRating];
-              v20 = [v7 ageRating];
-              v21 = v20;
-              v54 = v19;
-              if (v19 && v20)
+              ageRating = [(ASCStatefulOffer *)self ageRating];
+              ageRating2 = [v7 ageRating];
+              v21 = ageRating2;
+              v54 = ageRating;
+              if (ageRating && ageRating2)
               {
-                v22 = v19;
+                v22 = ageRating;
                 v23 = v21;
                 v24 = [v22 isEqual:v21];
                 v21 = v23;
-                v19 = v54;
+                ageRating = v54;
                 if (v24)
                 {
 LABEL_27:
                   v52 = v21;
-                  v25 = [(ASCStatefulOffer *)self metrics];
-                  v26 = [v7 metrics];
-                  v27 = v26;
-                  v53 = v25;
-                  if (v25 && v26)
+                  metrics = [(ASCStatefulOffer *)self metrics];
+                  metrics2 = [v7 metrics];
+                  v27 = metrics2;
+                  v53 = metrics;
+                  if (metrics && metrics2)
                   {
-                    v28 = v26;
-                    v29 = [v53 isEqual:v26];
+                    v28 = metrics2;
+                    v29 = [v53 isEqual:metrics2];
                     v27 = v28;
                     if (v29)
                     {
 LABEL_30:
                       v50 = v27;
-                      v30 = [(ASCStatefulOffer *)self defaultOffer];
-                      v31 = [v7 defaultOffer];
-                      v32 = v31;
-                      v51 = v30;
-                      if (v30 && v31)
+                      defaultOffer = [(ASCStatefulOffer *)self defaultOffer];
+                      defaultOffer2 = [v7 defaultOffer];
+                      v32 = defaultOffer2;
+                      v51 = defaultOffer;
+                      if (defaultOffer && defaultOffer2)
                       {
-                        v33 = v31;
-                        v34 = [v51 isEqual:v31];
+                        v33 = defaultOffer2;
+                        v34 = [v51 isEqual:defaultOffer2];
                         v32 = v33;
                         if (v34)
                         {
 LABEL_33:
                           v48 = v32;
-                          v35 = [(ASCStatefulOffer *)self buyOffer];
-                          v36 = [v7 buyOffer];
-                          v37 = v36;
-                          v49 = v35;
-                          if (v35 && v36)
+                          buyOffer = [(ASCStatefulOffer *)self buyOffer];
+                          buyOffer2 = [v7 buyOffer];
+                          v37 = buyOffer2;
+                          v49 = buyOffer;
+                          if (buyOffer && buyOffer2)
                           {
-                            v38 = v36;
-                            v39 = [v49 isEqual:v36];
+                            v38 = buyOffer2;
+                            v39 = [v49 isEqual:buyOffer2];
                             v37 = v38;
                             if (v39)
                             {
@@ -345,25 +345,25 @@ LABEL_33:
                             }
                           }
 
-                          else if (v35 == v36)
+                          else if (buyOffer == buyOffer2)
                           {
 LABEL_36:
-                            v40 = [(ASCStatefulOffer *)self openOffer];
-                            v41 = [v7 openOffer];
-                            v42 = v41;
-                            if (v40 && v41)
+                            openOffer = [(ASCStatefulOffer *)self openOffer];
+                            openOffer2 = [v7 openOffer];
+                            v42 = openOffer2;
+                            if (openOffer && openOffer2)
                             {
-                              v43 = v41;
-                              v44 = [v40 isEqual:v41];
+                              v43 = openOffer2;
+                              v44 = [openOffer isEqual:openOffer2];
                               v42 = v43;
-                              v45 = v40;
+                              v45 = openOffer;
                               v17 = v44;
                             }
 
                             else
                             {
-                              v45 = v40;
-                              v17 = v40 == v41;
+                              v45 = openOffer;
+                              v17 = openOffer == openOffer2;
                             }
 
                             v37 = v47;
@@ -378,7 +378,7 @@ LABEL_50:
                         }
                       }
 
-                      else if (v30 == v31)
+                      else if (defaultOffer == defaultOffer2)
                       {
                         goto LABEL_33;
                       }
@@ -391,7 +391,7 @@ LABEL_51:
                     }
                   }
 
-                  else if (v25 == v26)
+                  else if (metrics == metrics2)
                   {
                     goto LABEL_30;
                   }
@@ -400,12 +400,12 @@ LABEL_51:
 LABEL_52:
 
                   v21 = v52;
-                  v19 = v54;
+                  ageRating = v54;
                   goto LABEL_53;
                 }
               }
 
-              else if (v19 == v20)
+              else if (ageRating == ageRating2)
               {
                 goto LABEL_27;
               }
@@ -424,7 +424,7 @@ LABEL_54:
           }
         }
 
-        else if (v11 == v12)
+        else if (titles == titles2)
         {
           goto LABEL_13;
         }
@@ -459,33 +459,33 @@ LABEL_57:
   v4 = [(ASCStatefulOffer *)self id];
   [(ASCDescriber *)v3 addObject:v4 withName:@"id"];
 
-  v5 = [(ASCStatefulOffer *)self titles];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"titles"];
+  titles = [(ASCStatefulOffer *)self titles];
+  [(ASCDescriber *)v3 addObject:titles withName:@"titles"];
 
-  v6 = [(ASCStatefulOffer *)self subtitles];
-  [(ASCDescriber *)v3 addObject:v6 withName:@"subtitles"];
+  subtitles = [(ASCStatefulOffer *)self subtitles];
+  [(ASCDescriber *)v3 addObject:subtitles withName:@"subtitles"];
 
   v7 = ASCOfferFlagsGetDescription([(ASCStatefulOffer *)self flags]);
   [(ASCDescriber *)v3 addObject:v7 withName:@"flags"];
 
-  v8 = [(ASCStatefulOffer *)self ageRating];
-  [(ASCDescriber *)v3 addObject:v8 withName:@"ageRating"];
+  ageRating = [(ASCStatefulOffer *)self ageRating];
+  [(ASCDescriber *)v3 addObject:ageRating withName:@"ageRating"];
 
-  v9 = [(ASCStatefulOffer *)self metrics];
-  [(ASCDescriber *)v3 addSensitiveObject:v9 withName:@"metrics"];
+  metrics = [(ASCStatefulOffer *)self metrics];
+  [(ASCDescriber *)v3 addSensitiveObject:metrics withName:@"metrics"];
 
-  v10 = [(ASCStatefulOffer *)self defaultOffer];
-  [(ASCDescriber *)v3 addObject:v10 withName:@"defaultOffer"];
+  defaultOffer = [(ASCStatefulOffer *)self defaultOffer];
+  [(ASCDescriber *)v3 addObject:defaultOffer withName:@"defaultOffer"];
 
-  v11 = [(ASCStatefulOffer *)self buyOffer];
-  [(ASCDescriber *)v3 addObject:v11 withName:@"buyOffer"];
+  buyOffer = [(ASCStatefulOffer *)self buyOffer];
+  [(ASCDescriber *)v3 addObject:buyOffer withName:@"buyOffer"];
 
-  v12 = [(ASCStatefulOffer *)self openOffer];
-  [(ASCDescriber *)v3 addObject:v12 withName:@"openOffer"];
+  openOffer = [(ASCStatefulOffer *)self openOffer];
+  [(ASCDescriber *)v3 addObject:openOffer withName:@"openOffer"];
 
-  v13 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v13;
+  return finalizeDescription;
 }
 
 @end

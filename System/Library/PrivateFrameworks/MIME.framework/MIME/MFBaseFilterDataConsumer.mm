@@ -1,37 +1,37 @@
 @interface MFBaseFilterDataConsumer
-+ (id)filterWithConsumer:(id)a3;
-+ (id)filterWithConsumers:(id)a3;
-- (MFBaseFilterDataConsumer)initWithConsumer:(id)a3;
-- (MFBaseFilterDataConsumer)initWithConsumers:(id)a3;
-- (int64_t)appendData:(id)a3;
++ (id)filterWithConsumer:(id)consumer;
++ (id)filterWithConsumers:(id)consumers;
+- (MFBaseFilterDataConsumer)initWithConsumer:(id)consumer;
+- (MFBaseFilterDataConsumer)initWithConsumers:(id)consumers;
+- (int64_t)appendData:(id)data;
 - (void)done;
 @end
 
 @implementation MFBaseFilterDataConsumer
 
-+ (id)filterWithConsumers:(id)a3
++ (id)filterWithConsumers:(id)consumers
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithConsumers:v4];
+  consumersCopy = consumers;
+  v5 = [[self alloc] initWithConsumers:consumersCopy];
 
   return v5;
 }
 
-+ (id)filterWithConsumer:(id)a3
++ (id)filterWithConsumer:(id)consumer
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithConsumer:v4];
+  consumerCopy = consumer;
+  v5 = [[self alloc] initWithConsumer:consumerCopy];
 
   return v5;
 }
 
-- (MFBaseFilterDataConsumer)initWithConsumers:(id)a3
+- (MFBaseFilterDataConsumer)initWithConsumers:(id)consumers
 {
-  v4 = a3;
+  consumersCopy = consumers;
   v5 = [(MFBaseFilterDataConsumer *)self init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [consumersCopy mutableCopy];
     consumers = v5->_consumers;
     v5->_consumers = v6;
   }
@@ -39,19 +39,19 @@
   return v5;
 }
 
-- (MFBaseFilterDataConsumer)initWithConsumer:(id)a3
+- (MFBaseFilterDataConsumer)initWithConsumer:(id)consumer
 {
-  v7 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:&v7 count:1];
+  consumerCopy = consumer;
+  v4 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:&consumerCopy count:1];
   v5 = [(MFBaseFilterDataConsumer *)self initWithConsumers:v4];
 
   return v5;
 }
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 length];
+  dataCopy = data;
+  v5 = [dataCopy length];
   if (!self->_serialAppend)
   {
     v15 = [(NSMutableArray *)self->_consumers count];
@@ -66,7 +66,7 @@
     while (1)
     {
       v10 = [(NSMutableArray *)self->_consumers objectAtIndex:v16 - 2];
-      v17 = [v10 appendData:v4];
+      v17 = [v10 appendData:dataCopy];
       v18 = v17;
       if (v17)
       {
@@ -88,7 +88,7 @@ LABEL_26:
 
       if (!v8)
       {
-        v8 = [v4 length];
+        v8 = [dataCopy length];
       }
 
       if (--v16 <= 1)
@@ -99,13 +99,13 @@ LABEL_26:
   }
 
   v6 = v5;
-  v7 = [v4 bytes];
+  bytes = [dataCopy bytes];
   v8 = 0;
   while ([(NSMutableArray *)self->_consumers count]&& v6 != v8)
   {
     v10 = [(NSMutableArray *)self->_consumers objectAtIndex:0];
     v11 = v6 - v8;
-    v12 = [[MFData alloc] initWithBytesNoCopy:v7 + v8 length:v6 - v8 freeWhenDone:0];
+    v12 = [[MFData alloc] initWithBytesNoCopy:bytes + v8 length:v6 - v8 freeWhenDone:0];
     v13 = [v10 appendData:v12];
     v14 = v13;
     if (v13)

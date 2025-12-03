@@ -1,62 +1,62 @@
 @interface CALNNotificationStorageWrapper
-- (CALNNotificationStorageWrapper)initWithWrappedStorage:(id)a3;
+- (CALNNotificationStorageWrapper)initWithWrappedStorage:(id)storage;
 - (id)notificationRecords;
-- (void)addNotificationRecord:(id)a3;
-- (void)addNotificationRecords:(id)a3;
+- (void)addNotificationRecord:(id)record;
+- (void)addNotificationRecords:(id)records;
 - (void)removeAllNotificationRecords;
-- (void)removeNotificationRecordsPassingTest:(id)a3;
+- (void)removeNotificationRecordsPassingTest:(id)test;
 @end
 
 @implementation CALNNotificationStorageWrapper
 
-- (CALNNotificationStorageWrapper)initWithWrappedStorage:(id)a3
+- (CALNNotificationStorageWrapper)initWithWrappedStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v9.receiver = self;
   v9.super_class = CALNNotificationStorageWrapper;
   v6 = [(CALNNotificationStorageWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrappedStorage, a3);
+    objc_storeStrong(&v6->_wrappedStorage, storage);
   }
 
   return v7;
 }
 
-- (void)addNotificationRecord:(id)a3
+- (void)addNotificationRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(CALNNotificationStorageWrapper *)self wrappedStorage];
-  [v5 addNotificationRecord:v4];
+  recordCopy = record;
+  wrappedStorage = [(CALNNotificationStorageWrapper *)self wrappedStorage];
+  [wrappedStorage addNotificationRecord:recordCopy];
 }
 
 - (id)notificationRecords
 {
-  v2 = [(CALNNotificationStorageWrapper *)self wrappedStorage];
-  v3 = [v2 notificationRecords];
+  wrappedStorage = [(CALNNotificationStorageWrapper *)self wrappedStorage];
+  notificationRecords = [wrappedStorage notificationRecords];
 
-  return v3;
+  return notificationRecords;
 }
 
-- (void)removeNotificationRecordsPassingTest:(id)a3
+- (void)removeNotificationRecordsPassingTest:(id)test
 {
-  v4 = a3;
-  v5 = [(CALNNotificationStorageWrapper *)self wrappedStorage];
-  [v5 removeNotificationRecordsPassingTest:v4];
+  testCopy = test;
+  wrappedStorage = [(CALNNotificationStorageWrapper *)self wrappedStorage];
+  [wrappedStorage removeNotificationRecordsPassingTest:testCopy];
 }
 
-- (void)addNotificationRecords:(id)a3
+- (void)addNotificationRecords:(id)records
 {
-  v4 = a3;
-  v5 = [(CALNNotificationStorageWrapper *)self wrappedStorage];
-  [v5 addNotificationRecords:v4];
+  recordsCopy = records;
+  wrappedStorage = [(CALNNotificationStorageWrapper *)self wrappedStorage];
+  [wrappedStorage addNotificationRecords:recordsCopy];
 }
 
 - (void)removeAllNotificationRecords
 {
-  v2 = [(CALNNotificationStorageWrapper *)self wrappedStorage];
-  [v2 removeAllNotificationRecords];
+  wrappedStorage = [(CALNNotificationStorageWrapper *)self wrappedStorage];
+  [wrappedStorage removeAllNotificationRecords];
 }
 
 @end

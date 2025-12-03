@@ -1,41 +1,41 @@
 @interface MMParser
-- (BOOL)_parseListMarkerWithScanner:(id)a3 listType:(int64_t)a4;
-- (MMParser)initWithExtensions:(unint64_t)a3;
-- (id)_parseBlockElementWithScanner:(id)a3;
-- (id)_parseBlockquoteWithScanner:(id)a3;
-- (id)_parseCodeBlockWithScanner:(id)a3;
-- (id)_parseCodeLinesWithScanner:(id)a3;
-- (id)_parseElementsWithScanner:(id)a3;
-- (id)_parseFencedCodeBlockWithScanner:(id)a3;
-- (id)_parseHTMLWithScanner:(id)a3;
-- (id)_parseHorizontalRuleWithScanner:(id)a3;
-- (id)_parseLinkDefinitionWithScanner:(id)a3;
-- (id)_parseListItemWithScanner:(id)a3 listType:(int64_t)a4;
-- (id)_parseListWithScanner:(id)a3;
-- (id)_parseParagraphWithScanner:(id)a3;
-- (id)_parsePrefixHeaderWithScanner:(id)a3;
-- (id)_parseTableHeaderWithScanner:(id)a3;
-- (id)_parseTableRowWithScanner:(id)a3 columns:(id)a4;
-- (id)_parseTableWithScanner:(id)a3;
-- (id)_parseUnderlinedHeaderWithScanner:(id)a3;
-- (id)_removeTabsFromString:(id)a3;
-- (id)parseMarkdown:(id)a3 error:(id *)a4;
-- (void)_addTextLineToElement:(id)a3 withScanner:(id)a4;
-- (void)_updateLinksFromDefinitionsInDocument:(id)a3;
+- (BOOL)_parseListMarkerWithScanner:(id)scanner listType:(int64_t)type;
+- (MMParser)initWithExtensions:(unint64_t)extensions;
+- (id)_parseBlockElementWithScanner:(id)scanner;
+- (id)_parseBlockquoteWithScanner:(id)scanner;
+- (id)_parseCodeBlockWithScanner:(id)scanner;
+- (id)_parseCodeLinesWithScanner:(id)scanner;
+- (id)_parseElementsWithScanner:(id)scanner;
+- (id)_parseFencedCodeBlockWithScanner:(id)scanner;
+- (id)_parseHTMLWithScanner:(id)scanner;
+- (id)_parseHorizontalRuleWithScanner:(id)scanner;
+- (id)_parseLinkDefinitionWithScanner:(id)scanner;
+- (id)_parseListItemWithScanner:(id)scanner listType:(int64_t)type;
+- (id)_parseListWithScanner:(id)scanner;
+- (id)_parseParagraphWithScanner:(id)scanner;
+- (id)_parsePrefixHeaderWithScanner:(id)scanner;
+- (id)_parseTableHeaderWithScanner:(id)scanner;
+- (id)_parseTableRowWithScanner:(id)scanner columns:(id)columns;
+- (id)_parseTableWithScanner:(id)scanner;
+- (id)_parseUnderlinedHeaderWithScanner:(id)scanner;
+- (id)_removeTabsFromString:(id)string;
+- (id)parseMarkdown:(id)markdown error:(id *)error;
+- (void)_addTextLineToElement:(id)element withScanner:(id)scanner;
+- (void)_updateLinksFromDefinitionsInDocument:(id)document;
 @end
 
 @implementation MMParser
 
-- (void)_updateLinksFromDefinitionsInDocument:(id)a3
+- (void)_updateLinksFromDefinitionsInDocument:(id)document
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  documentCopy = document;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  v31 = v3;
-  v7 = [v3 elements];
-  [v6 addObjectsFromArray:v7];
+  v31 = documentCopy;
+  elements = [documentCopy elements];
+  [v6 addObjectsFromArray:elements];
   while (1)
   {
 
@@ -44,33 +44,33 @@
       break;
     }
 
-    v7 = [v6 objectAtIndex:0];
+    elements = [v6 objectAtIndex:0];
     [v6 removeObjectAtIndex:0];
-    v8 = [v7 children];
-    [v6 addObjectsFromArray:v8];
+    children = [elements children];
+    [v6 addObjectsFromArray:children];
 
-    v9 = [v7 type];
-    if ((v9 - 15) >= 2)
+    type = [elements type];
+    if ((type - 15) >= 2)
     {
-      if (v9 == 18)
+      if (type == 18)
       {
-        v13 = [v7 identifier];
-        v14 = [v13 lowercaseString];
-        [v5 setObject:v7 forKeyedSubscript:v14];
+        identifier = [elements identifier];
+        lowercaseString = [identifier lowercaseString];
+        [v5 setObject:elements forKeyedSubscript:lowercaseString];
       }
     }
 
     else
     {
-      v10 = [v7 identifier];
-      if (v10)
+      identifier2 = [elements identifier];
+      if (identifier2)
       {
-        v11 = v10;
-        v12 = [v7 href];
+        v11 = identifier2;
+        href = [elements href];
 
-        if (!v12)
+        if (!href)
         {
-          [v4 addObject:v7];
+          [v4 addObject:elements];
         }
       }
     }
@@ -97,32 +97,32 @@
         }
 
         v20 = *(*(&v32 + 1) + 8 * v19);
-        v21 = [v20 identifier];
-        v22 = [v21 lowercaseString];
-        v23 = [v5 objectForKeyedSubscript:v22];
+        identifier3 = [v20 identifier];
+        lowercaseString2 = [identifier3 lowercaseString];
+        v23 = [v5 objectForKeyedSubscript:lowercaseString2];
 
         if (!v23)
         {
           [v20 setType:0];
           while (1)
           {
-            v26 = [v20 children];
-            v27 = [v26 count];
+            children2 = [v20 children];
+            v27 = [children2 count];
 
             if (!v27)
             {
               break;
             }
 
-            v28 = [v20 removeLastChild];
+            removeLastChild = [v20 removeLastChild];
           }
         }
 
-        v24 = [v23 href];
-        [v20 setHref:v24];
+        href2 = [v23 href];
+        [v20 setHref:href2];
 
-        v25 = [v23 title];
-        [v20 setTitle:v25];
+        title = [v23 title];
+        [v20 setTitle:title];
 
         ++v19;
       }
@@ -138,17 +138,17 @@
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_parseTableWithScanner:(id)a3
+- (id)_parseTableWithScanner:(id)scanner
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 advanceToNextLine];
-  v5 = [(MMParser *)self _parseTableHeaderWithScanner:v4];
+  scannerCopy = scanner;
+  [scannerCopy advanceToNextLine];
+  v5 = [(MMParser *)self _parseTableHeaderWithScanner:scannerCopy];
   if (v5)
   {
-    [v4 commitTransaction:0];
-    [v4 beginTransaction];
-    v6 = [(MMParser *)self _parseTableRowWithScanner:v4 columns:v5];
+    [scannerCopy commitTransaction:0];
+    [scannerCopy beginTransaction];
+    v6 = [(MMParser *)self _parseTableRowWithScanner:scannerCopy columns:v5];
     v7 = v6;
     if (v6)
     {
@@ -157,8 +157,8 @@
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v8 = [v7 children];
-      v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      children = [v7 children];
+      v9 = [children countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v9)
       {
         v10 = v9;
@@ -169,27 +169,27 @@
           {
             if (*v19 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(children);
             }
 
             [*(*(&v18 + 1) + 8 * i) setType:22];
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v10 = [children countByEnumeratingWithState:&v18 objects:v22 count:16];
         }
 
         while (v10);
       }
 
-      [v4 advanceToNextLine];
+      [scannerCopy advanceToNextLine];
       v13 = [MEMORY[0x277CBEB18] arrayWithObject:v7];
-      if (([v4 atEndOfString] & 1) == 0)
+      if (([scannerCopy atEndOfString] & 1) == 0)
       {
         do
         {
-          [v4 beginTransaction];
-          v14 = [(MMParser *)self _parseTableRowWithScanner:v4 columns:v5];
-          [v4 commitTransaction:v14 != 0];
+          [scannerCopy beginTransaction];
+          v14 = [(MMParser *)self _parseTableRowWithScanner:scannerCopy columns:v5];
+          [scannerCopy commitTransaction:v14 != 0];
           if (!v14)
           {
             break;
@@ -198,7 +198,7 @@
           [v13 addObject:v14];
         }
 
-        while (![v4 atEndOfString]);
+        while (![scannerCopy atEndOfString]);
       }
 
       if ([v13 count] >= 2)
@@ -206,7 +206,7 @@
         v15 = objc_opt_new();
         [v15 setType:20];
         [v15 setChildren:v13];
-        [v15 setRange:{objc_msgSend(v4, "startLocation"), objc_msgSend(v4, "location") - objc_msgSend(v4, "startLocation")}];
+        [v15 setRange:{objc_msgSend(scannerCopy, "startLocation"), objc_msgSend(scannerCopy, "location") - objc_msgSend(scannerCopy, "startLocation")}];
       }
 
       else
@@ -231,34 +231,34 @@
   return v15;
 }
 
-- (id)_parseTableRowWithScanner:(id)a3 columns:(id)a4
+- (id)_parseTableRowWithScanner:(id)scanner columns:(id)columns
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  scannerCopy = scanner;
   v7 = MEMORY[0x277CCAB50];
-  v8 = a4;
-  v9 = [v7 whitespaceCharacterSet];
-  [v9 addCharactersInString:@"|"];
+  columnsCopy = columns;
+  whitespaceCharacterSet = [v7 whitespaceCharacterSet];
+  [whitespaceCharacterSet addCharactersInString:@"|"];
   v10 = MEMORY[0x277CCAE60];
-  v11 = [v6 currentRange];
-  v13 = [v10 valueWithRange:{v11, v12}];
-  v14 = [v6 string];
+  currentRange = [scannerCopy currentRange];
+  v13 = [v10 valueWithRange:{currentRange, v12}];
+  string = [scannerCopy string];
   v22[0] = v13;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-  v16 = [MMScanner scannerWithString:v14 lineRanges:v15];
+  v16 = [MMScanner scannerWithString:string lineRanges:v15];
 
-  [v16 skipCharactersFromSet:v9];
-  v17 = [(MMParser *)self spanParser];
-  v18 = [v17 parseSpansInTableColumns:v8 withScanner:v16];
+  [v16 skipCharactersFromSet:whitespaceCharacterSet];
+  spanParser = [(MMParser *)self spanParser];
+  v18 = [spanParser parseSpansInTableColumns:columnsCopy withScanner:v16];
 
-  [v16 skipCharactersFromSet:v9];
+  [v16 skipCharactersFromSet:whitespaceCharacterSet];
   if (v18 && [v16 atEndOfLine])
   {
-    [v6 advanceToNextLine];
+    [scannerCopy advanceToNextLine];
     v19 = objc_opt_new();
     [v19 setType:23];
     [v19 setChildren:v18];
-    [v19 setRange:{objc_msgSend(v6, "startLocation"), objc_msgSend(v6, "location") - objc_msgSend(v6, "startLocation")}];
+    [v19 setRange:{objc_msgSend(scannerCopy, "startLocation"), objc_msgSend(scannerCopy, "location") - objc_msgSend(scannerCopy, "startLocation")}];
   }
 
   else
@@ -271,22 +271,22 @@
   return v19;
 }
 
-- (id)_parseTableHeaderWithScanner:(id)a3
+- (id)_parseTableHeaderWithScanner:(id)scanner
 {
-  v3 = a3;
+  scannerCopy = scanner;
   v4 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"-"];
-  [v3 skipWhitespace];
-  if ([v3 nextCharacter] == 124)
+  [scannerCopy skipWhitespace];
+  if ([scannerCopy nextCharacter] == 124)
   {
-    [v3 advance];
+    [scannerCopy advance];
   }
 
-  [v3 skipWhitespace];
+  [scannerCopy skipWhitespace];
   v5 = objc_opt_new();
-  if ([v3 atEndOfLine])
+  if ([scannerCopy atEndOfLine])
   {
 LABEL_14:
-    if ([v3 atEndOfLine])
+    if ([scannerCopy atEndOfLine])
     {
       v9 = v5;
       goto LABEL_17;
@@ -297,21 +297,21 @@ LABEL_14:
   {
     while (1)
     {
-      v6 = [v3 nextCharacter];
-      if (v6 == 58)
+      nextCharacter = [scannerCopy nextCharacter];
+      if (nextCharacter == 58)
       {
-        [v3 advance];
+        [scannerCopy advance];
       }
 
-      if ([v3 skipCharactersFromSet:v4] < 3)
+      if ([scannerCopy skipCharactersFromSet:v4] < 3)
       {
         break;
       }
 
-      if ([v3 nextCharacter] == 58)
+      if ([scannerCopy nextCharacter] == 58)
       {
-        [v3 advance];
-        if (v6 == 58)
+        [scannerCopy advance];
+        if (nextCharacter == 58)
         {
           v7 = 2;
         }
@@ -324,18 +324,18 @@ LABEL_14:
 
       else
       {
-        v7 = v6 == 58;
+        v7 = nextCharacter == 58;
       }
 
       v8 = [MEMORY[0x277CCABB0] numberWithInteger:v7];
       [v5 addObject:v8];
 
-      [v3 skipWhitespace];
-      if ([v3 nextCharacter] == 124)
+      [scannerCopy skipWhitespace];
+      if ([scannerCopy nextCharacter] == 124)
       {
-        [v3 advance];
-        [v3 skipWhitespace];
-        if (![v3 atEndOfLine])
+        [scannerCopy advance];
+        [scannerCopy skipWhitespace];
+        if (![scannerCopy atEndOfLine])
         {
           continue;
         }
@@ -351,55 +351,55 @@ LABEL_17:
   return v9;
 }
 
-- (id)_parseParagraphWithScanner:(id)a3
+- (id)_parseParagraphWithScanner:(id)scanner
 {
-  v4 = a3;
+  scannerCopy = scanner;
   v5 = objc_opt_new();
   [v5 setType:2];
-  v6 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  if (([v4 atEndOfString] & 1) == 0)
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  if (([scannerCopy atEndOfString] & 1) == 0)
   {
     while (1)
     {
-      [v4 skipWhitespace];
-      if ([v4 atEndOfLine])
+      [scannerCopy skipWhitespace];
+      if ([scannerCopy atEndOfLine])
       {
-        [v4 advanceToNextLine];
+        [scannerCopy advanceToNextLine];
         goto LABEL_2;
       }
 
-      [v4 beginTransaction];
-      [v4 skipCharactersFromSet:v6];
-      if ([v4 nextCharacter] == 62)
+      [scannerCopy beginTransaction];
+      [scannerCopy skipCharactersFromSet:whitespaceCharacterSet];
+      if ([scannerCopy nextCharacter] == 62)
       {
-        v21 = v4;
+        v21 = scannerCopy;
         v22 = 1;
         goto LABEL_22;
       }
 
-      [v4 commitTransaction:0];
-      [v4 beginTransaction];
-      v15 = [(MMParser *)self _parseLinkDefinitionWithScanner:v4];
+      [scannerCopy commitTransaction:0];
+      [scannerCopy beginTransaction];
+      v15 = [(MMParser *)self _parseLinkDefinitionWithScanner:scannerCopy];
 
-      [v4 commitTransaction:0];
+      [scannerCopy commitTransaction:0];
       if (v15)
       {
         goto LABEL_2;
       }
 
-      [v4 beginTransaction];
-      v16 = [(MMParser *)self _parseUnderlinedHeaderWithScanner:v4];
+      [scannerCopy beginTransaction];
+      v16 = [(MMParser *)self _parseUnderlinedHeaderWithScanner:scannerCopy];
 
-      [v4 commitTransaction:0];
+      [scannerCopy commitTransaction:0];
       if (v16)
       {
         goto LABEL_2;
       }
 
-      [v4 beginTransaction];
-      v17 = [(MMParser *)self _parsePrefixHeaderWithScanner:v4];
+      [scannerCopy beginTransaction];
+      v17 = [(MMParser *)self _parsePrefixHeaderWithScanner:scannerCopy];
 
-      [v4 commitTransaction:0];
+      [scannerCopy commitTransaction:0];
       if (v17)
       {
         goto LABEL_2;
@@ -407,29 +407,29 @@ LABEL_17:
 
       if (([(MMParser *)self extensions]& 8) != 0)
       {
-        [v4 beginTransaction];
-        v18 = [(MMParser *)self _parseFencedCodeBlockWithScanner:v4];
+        [scannerCopy beginTransaction];
+        v18 = [(MMParser *)self _parseFencedCodeBlockWithScanner:scannerCopy];
 
-        [v4 commitTransaction:0];
+        [scannerCopy commitTransaction:0];
         if (v18)
         {
           goto LABEL_2;
         }
       }
 
-      [v4 beginTransaction];
-      [v4 skipIndentationUpTo:2];
-      if ([(MMParser *)self _parseListMarkerWithScanner:v4 listType:0])
+      [scannerCopy beginTransaction];
+      [scannerCopy skipIndentationUpTo:2];
+      if ([(MMParser *)self _parseListMarkerWithScanner:scannerCopy listType:0])
       {
         break;
       }
 
-      v19 = [(MMParser *)self _parseListMarkerWithScanner:v4 listType:1];
-      [v4 commitTransaction:0];
+      v19 = [(MMParser *)self _parseListMarkerWithScanner:scannerCopy listType:1];
+      [scannerCopy commitTransaction:0];
       if (!v19)
       {
-        [(MMParser *)self _addTextLineToElement:v5 withScanner:v4];
-        if (![v4 atEndOfString])
+        [(MMParser *)self _addTextLineToElement:v5 withScanner:scannerCopy];
+        if (![scannerCopy atEndOfString])
         {
           continue;
         }
@@ -438,25 +438,25 @@ LABEL_17:
       goto LABEL_2;
     }
 
-    v21 = v4;
+    v21 = scannerCopy;
     v22 = 0;
 LABEL_22:
     [v21 commitTransaction:v22];
   }
 
 LABEL_2:
-  [v5 setRange:{objc_msgSend(v4, "startLocation"), objc_msgSend(v4, "location") - objc_msgSend(v4, "startLocation")}];
-  v7 = [v5 innerRanges];
-  v8 = [v7 count];
+  [v5 setRange:{objc_msgSend(scannerCopy, "startLocation"), objc_msgSend(scannerCopy, "location") - objc_msgSend(scannerCopy, "startLocation")}];
+  innerRanges = [v5 innerRanges];
+  v8 = [innerRanges count];
 
   if (v8)
   {
-    v9 = [v4 string];
-    v10 = [v5 innerRanges];
-    v11 = [MMScanner scannerWithString:v9 lineRanges:v10];
+    string = [scannerCopy string];
+    innerRanges2 = [v5 innerRanges];
+    v11 = [MMScanner scannerWithString:string lineRanges:innerRanges2];
 
-    v12 = [(MMParser *)self spanParser];
-    v13 = [v12 parseSpansInBlockElement:v5 withScanner:v11];
+    spanParser = [(MMParser *)self spanParser];
+    v13 = [spanParser parseSpansInBlockElement:v5 withScanner:v11];
     [v5 setChildren:v13];
 
     v14 = v5;
@@ -470,33 +470,33 @@ LABEL_2:
   return v14;
 }
 
-- (id)_parseLinkDefinitionWithScanner:(id)a3
+- (id)_parseLinkDefinitionWithScanner:(id)scanner
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  [v3 skipIndentationUpTo:3];
-  v5 = [v3 location];
-  v6 = [v3 skipNestedBracketsWithDelimiter:91];
+  scannerCopy = scanner;
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  [scannerCopy skipIndentationUpTo:3];
+  location = [scannerCopy location];
+  v6 = [scannerCopy skipNestedBracketsWithDelimiter:91];
   if (!v6)
   {
     goto LABEL_22;
   }
 
-  if ([v3 nextCharacter] != 58)
+  if ([scannerCopy nextCharacter] != 58)
   {
     v6 = 0;
     goto LABEL_22;
   }
 
-  [v3 advance];
-  [v3 skipCharactersFromSet:v4];
-  v7 = [v3 location];
-  v8 = [v4 invertedSet];
-  [v3 skipCharactersFromSet:v8];
+  [scannerCopy advance];
+  [scannerCopy skipCharactersFromSet:whitespaceCharacterSet];
+  location2 = [scannerCopy location];
+  invertedSet = [whitespaceCharacterSet invertedSet];
+  [scannerCopy skipCharactersFromSet:invertedSet];
 
-  v9 = [v3 location] - v7;
-  v10 = [v3 string];
-  v11 = [v10 substringWithRange:{v7, v9}];
+  v9 = [scannerCopy location] - location2;
+  string = [scannerCopy string];
+  v11 = [string substringWithRange:{location2, v9}];
 
   if ([v11 hasPrefix:@"<"] && objc_msgSend(v11, "hasSuffix:", @">"))
   {
@@ -505,62 +505,62 @@ LABEL_2:
     v11 = v12;
   }
 
-  [v3 skipCharactersFromSet:v4];
-  [v3 beginTransaction];
-  if ([v3 atEndOfLine])
+  [scannerCopy skipCharactersFromSet:whitespaceCharacterSet];
+  [scannerCopy beginTransaction];
+  if ([scannerCopy atEndOfLine])
   {
-    [v3 advanceToNextLine];
-    [v3 skipCharactersFromSet:v4];
+    [scannerCopy advanceToNextLine];
+    [scannerCopy skipCharactersFromSet:whitespaceCharacterSet];
   }
 
-  v13 = [v3 nextCharacter];
-  v14 = 0;
-  if (v13 > 0x28)
+  nextCharacter = [scannerCopy nextCharacter];
+  skipToLastCharacterOfLine = 0;
+  if (nextCharacter > 0x28)
   {
     goto LABEL_16;
   }
 
-  v15 = v13;
-  v16 = 0x7FFFFFFFFFFFFFFFLL;
-  if (((1 << v13) & 0x18400000000) != 0)
+  v15 = nextCharacter;
+  location3 = 0x7FFFFFFFFFFFFFFFLL;
+  if (((1 << nextCharacter) & 0x18400000000) != 0)
   {
-    [v3 advance];
+    [scannerCopy advance];
     if (v15 == 40)
     {
       v15 = 41;
     }
 
-    v16 = [v3 location];
-    v14 = [v3 skipToLastCharacterOfLine];
-    if ([v3 nextCharacter] == v15)
+    location3 = [scannerCopy location];
+    skipToLastCharacterOfLine = [scannerCopy skipToLastCharacterOfLine];
+    if ([scannerCopy nextCharacter] == v15)
     {
-      [v3 advance];
+      [scannerCopy advance];
       goto LABEL_17;
     }
 
-    v14 = 0;
+    skipToLastCharacterOfLine = 0;
 LABEL_16:
-    v16 = 0x7FFFFFFFFFFFFFFFLL;
+    location3 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
 LABEL_17:
-  [v3 commitTransaction:v16 != 0x7FFFFFFFFFFFFFFFLL];
-  [v3 skipCharactersFromSet:v4];
-  if ([v3 atEndOfLine])
+  [scannerCopy commitTransaction:location3 != 0x7FFFFFFFFFFFFFFFLL];
+  [scannerCopy skipCharactersFromSet:whitespaceCharacterSet];
+  if ([scannerCopy atEndOfLine])
   {
     v17 = v6 - 2;
     v6 = objc_opt_new();
     [v6 setType:18];
-    [v6 setRange:{objc_msgSend(v3, "startLocation"), objc_msgSend(v3, "location") - objc_msgSend(v3, "startLocation")}];
-    v18 = [v3 string];
-    v19 = [v18 substringWithRange:{v5 + 1, v17}];
+    [v6 setRange:{objc_msgSend(scannerCopy, "startLocation"), objc_msgSend(scannerCopy, "location") - objc_msgSend(scannerCopy, "startLocation")}];
+    string2 = [scannerCopy string];
+    v19 = [string2 substringWithRange:{location + 1, v17}];
     [v6 setIdentifier:v19];
 
     [v6 setHref:v11];
-    if (v16 != 0x7FFFFFFFFFFFFFFFLL)
+    if (location3 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v20 = [v3 string];
-      v21 = [v20 substringWithRange:{v16, v14}];
+      string3 = [scannerCopy string];
+      v21 = [string3 substringWithRange:{location3, skipToLastCharacterOfLine}];
       [v6 setTitle:v21];
     }
   }
@@ -575,16 +575,16 @@ LABEL_22:
   return v6;
 }
 
-- (id)_parseListWithScanner:(id)a3
+- (id)_parseListWithScanner:(id)scanner
 {
-  v4 = a3;
-  [v4 beginTransaction];
-  [v4 skipIndentationUpTo:3];
-  v5 = [v4 nextCharacter];
-  v6 = (v5 < 0x2E) & (0x2C0000000000uLL >> v5);
-  v7 = !((v5 < 0x2E) & (0x2C0000000000uLL >> v5));
-  v8 = [(MMParser *)self _parseListMarkerWithScanner:v4 listType:v7];
-  [v4 commitTransaction:0];
+  scannerCopy = scanner;
+  [scannerCopy beginTransaction];
+  [scannerCopy skipIndentationUpTo:3];
+  nextCharacter = [scannerCopy nextCharacter];
+  v6 = (nextCharacter < 0x2E) & (0x2C0000000000uLL >> nextCharacter);
+  v7 = !((nextCharacter < 0x2E) & (0x2C0000000000uLL >> nextCharacter));
+  v8 = [(MMParser *)self _parseListMarkerWithScanner:scannerCopy listType:v7];
+  [scannerCopy commitTransaction:0];
   if (v8)
   {
     v9 = objc_opt_new();
@@ -600,42 +600,42 @@ LABEL_22:
     }
 
     [v9 setType:v11];
-    if (([v4 atEndOfString] & 1) == 0)
+    if (([scannerCopy atEndOfString] & 1) == 0)
     {
       while (1)
       {
-        [v4 beginTransaction];
-        [v4 skipEmptyLines];
-        v12 = [(MMParser *)self _parseHorizontalRuleWithScanner:v4];
-        [v4 commitTransaction:0];
+        [scannerCopy beginTransaction];
+        [scannerCopy skipEmptyLines];
+        v12 = [(MMParser *)self _parseHorizontalRuleWithScanner:scannerCopy];
+        [scannerCopy commitTransaction:0];
         if (v12)
         {
 
           goto LABEL_13;
         }
 
-        [v4 beginTransaction];
-        v13 = [(MMParser *)self _parseListItemWithScanner:v4 listType:v7];
+        [scannerCopy beginTransaction];
+        v13 = [(MMParser *)self _parseListItemWithScanner:scannerCopy listType:v7];
         if (!v13)
         {
           break;
         }
 
         v14 = v13;
-        [v4 commitTransaction:1];
+        [scannerCopy commitTransaction:1];
         [v10 addChild:v14];
 
-        if ([v4 atEndOfString])
+        if ([scannerCopy atEndOfString])
         {
           goto LABEL_13;
         }
       }
 
-      [v4 commitTransaction:0];
+      [scannerCopy commitTransaction:0];
     }
 
 LABEL_13:
-    [v10 setRange:{objc_msgSend(v4, "startLocation"), objc_msgSend(v4, "location") - objc_msgSend(v4, "startLocation")}];
+    [v10 setRange:{objc_msgSend(scannerCopy, "startLocation"), objc_msgSend(scannerCopy, "location") - objc_msgSend(scannerCopy, "startLocation")}];
   }
 
   else
@@ -646,20 +646,20 @@ LABEL_13:
   return v10;
 }
 
-- (id)_parseListItemWithScanner:(id)a3 listType:(int64_t)a4
+- (id)_parseListItemWithScanner:(id)scanner listType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [v6 skipEmptyLines];
-  [v6 skipIndentationUpTo:3];
-  if ([(MMParser *)self _parseListMarkerWithScanner:v6 listType:a4])
+  scannerCopy = scanner;
+  skipEmptyLines = [scannerCopy skipEmptyLines];
+  [scannerCopy skipIndentationUpTo:3];
+  if ([(MMParser *)self _parseListMarkerWithScanner:scannerCopy listType:type])
   {
-    v43 = v7 != 0;
-    v8 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    [v6 skipCharactersFromSet:v8];
+    v43 = skipEmptyLines != 0;
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    [scannerCopy skipCharactersFromSet:whitespaceCharacterSet];
 
     v9 = objc_opt_new();
     [v9 setType:6];
-    if ([v6 atEndOfString])
+    if ([scannerCopy atEndOfString])
     {
       v10 = 0x7FFFFFFFFFFFFFFFLL;
     }
@@ -670,160 +670,160 @@ LABEL_13:
       v10 = 0x7FFFFFFFFFFFFFFFLL;
       while (1)
       {
-        [v6 beginTransaction];
-        v12 = [v6 skipEmptyLines];
-        [v6 beginTransaction];
-        v13 = [(MMParser *)self _parseHorizontalRuleWithScanner:v6];
+        [scannerCopy beginTransaction];
+        skipEmptyLines2 = [scannerCopy skipEmptyLines];
+        [scannerCopy beginTransaction];
+        v13 = [(MMParser *)self _parseHorizontalRuleWithScanner:scannerCopy];
 
-        [v6 commitTransaction:0];
+        [scannerCopy commitTransaction:0];
         if (v13)
         {
           break;
         }
 
-        [v6 beginTransaction];
-        [v6 skipIndentationUpTo:1];
-        v14 = [(MMParser *)self _parseListMarkerWithScanner:v6 listType:a4];
-        [v6 commitTransaction:0];
+        [scannerCopy beginTransaction];
+        [scannerCopy skipIndentationUpTo:1];
+        v14 = [(MMParser *)self _parseListMarkerWithScanner:scannerCopy listType:type];
+        [scannerCopy commitTransaction:0];
         if (v14)
         {
-          [v6 commitTransaction:0];
-          v43 |= v12 != 0;
+          [scannerCopy commitTransaction:0];
+          v43 |= skipEmptyLines2 != 0;
           goto LABEL_28;
         }
 
-        [v6 beginTransaction];
-        v15 = [v6 skipIndentationUpTo:4];
-        [v6 beginTransaction];
-        v16 = [(MMParser *)self _parseListMarkerWithScanner:v6 listType:0]|| [(MMParser *)self _parseListMarkerWithScanner:v6 listType:1];
-        [v6 commitTransaction:0];
+        [scannerCopy beginTransaction];
+        v15 = [scannerCopy skipIndentationUpTo:4];
+        [scannerCopy beginTransaction];
+        v16 = [(MMParser *)self _parseListMarkerWithScanner:scannerCopy listType:0]|| [(MMParser *)self _parseListMarkerWithScanner:scannerCopy listType:1];
+        [scannerCopy commitTransaction:0];
         if (v15 >= 2 && v16 && v10 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v9 addInnerRange:{objc_msgSend(v6, "location"), 0}];
-          v17 = [v9 innerRanges];
-          v10 = [v17 count];
+          [v9 addInnerRange:{objc_msgSend(scannerCopy, "location"), 0}];
+          innerRanges = [v9 innerRanges];
+          v10 = [innerRanges count];
 
-          v18 = [v6 currentRange];
-          [v9 addInnerRange:{v18, v19}];
-          [v6 commitTransaction:1];
-          [v6 commitTransaction:1];
-          [v6 advanceToNextLine];
+          currentRange = [scannerCopy currentRange];
+          [v9 addInnerRange:{currentRange, v19}];
+          [scannerCopy commitTransaction:1];
+          [scannerCopy commitTransaction:1];
+          [scannerCopy advanceToNextLine];
           v11 = v15;
         }
 
         else
         {
-          [v6 commitTransaction:0];
-          if (v12)
+          [scannerCopy commitTransaction:0];
+          if (skipEmptyLines2)
           {
-            [v6 beginTransaction];
-            if ([v6 skipIndentationUpTo:4] < 4)
+            [scannerCopy beginTransaction];
+            if ([scannerCopy skipIndentationUpTo:4] < 4)
             {
-              [v6 commitTransaction:0];
+              [scannerCopy commitTransaction:0];
               break;
             }
 
             v43 = 1;
-            [v6 commitTransaction:1];
-            [v6 commitTransaction:1];
-            [v9 addInnerRange:{objc_msgSend(v6, "location"), 0}];
+            [scannerCopy commitTransaction:1];
+            [scannerCopy commitTransaction:1];
+            [v9 addInnerRange:{objc_msgSend(scannerCopy, "location"), 0}];
           }
 
           else
           {
-            [v6 commitTransaction:1];
-            [v6 skipIndentationUpTo:v11];
+            [scannerCopy commitTransaction:1];
+            [scannerCopy skipIndentationUpTo:v11];
           }
 
           if (v10 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            [(MMParser *)self _addTextLineToElement:v9 withScanner:v6];
+            [(MMParser *)self _addTextLineToElement:v9 withScanner:scannerCopy];
           }
 
           else
           {
-            v20 = [v6 currentRange];
-            [v9 addInnerRange:{v20, v21}];
-            [v6 advanceToNextLine];
+            currentRange2 = [scannerCopy currentRange];
+            [v9 addInnerRange:{currentRange2, v21}];
+            [scannerCopy advanceToNextLine];
           }
 
-          [v6 beginTransaction];
-          [v6 skipIndentationUpTo:4];
-          v22 = [v6 nextCharacter];
-          [v6 commitTransaction:0];
-          if (v22 == 62)
+          [scannerCopy beginTransaction];
+          [scannerCopy skipIndentationUpTo:4];
+          nextCharacter = [scannerCopy nextCharacter];
+          [scannerCopy commitTransaction:0];
+          if (nextCharacter == 62)
           {
             goto LABEL_28;
           }
         }
 
-        if ([v6 atEndOfString])
+        if ([scannerCopy atEndOfString])
         {
           goto LABEL_28;
         }
       }
 
-      [v6 commitTransaction:0];
+      [scannerCopy commitTransaction:0];
     }
 
 LABEL_28:
-    [v9 setRange:{objc_msgSend(v6, "startLocation"), objc_msgSend(v6, "location") - objc_msgSend(v6, "startLocation")}];
-    v23 = [v9 innerRanges];
-    v24 = [v23 count];
+    [v9 setRange:{objc_msgSend(scannerCopy, "startLocation"), objc_msgSend(scannerCopy, "location") - objc_msgSend(scannerCopy, "startLocation")}];
+    innerRanges2 = [v9 innerRanges];
+    v24 = [innerRanges2 count];
 
     if (v24)
     {
       if (v10 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v25 = [v6 string];
-        v26 = [v9 innerRanges];
-        v27 = [MMScanner scannerWithString:v25 lineRanges:v26];
+        string = [scannerCopy string];
+        innerRanges3 = [v9 innerRanges];
+        v27 = [MMScanner scannerWithString:string lineRanges:innerRanges3];
 
         if (v43)
         {
-          v28 = [(MMParser *)self _parseElementsWithScanner:v27];
-          [v9 setChildren:v28];
+          spanParser = [(MMParser *)self _parseElementsWithScanner:v27];
+          [v9 setChildren:spanParser];
         }
 
         else
         {
-          v28 = [(MMParser *)self spanParser];
-          v37 = [v28 parseSpansInBlockElement:v9 withScanner:v27];
+          spanParser = [(MMParser *)self spanParser];
+          v37 = [spanParser parseSpansInBlockElement:v9 withScanner:v27];
           [v9 setChildren:v37];
         }
       }
 
       else
       {
-        v29 = [v9 innerRanges];
-        v27 = [v29 subarrayWithRange:{0, v10}];
+        innerRanges4 = [v9 innerRanges];
+        v27 = [innerRanges4 subarrayWithRange:{0, v10}];
 
-        v30 = [v9 innerRanges];
-        v31 = [v9 innerRanges];
-        v28 = [v30 subarrayWithRange:{v10, objc_msgSend(v31, "count") - v10}];
+        innerRanges5 = [v9 innerRanges];
+        innerRanges6 = [v9 innerRanges];
+        spanParser = [innerRanges5 subarrayWithRange:{v10, objc_msgSend(innerRanges6, "count") - v10}];
 
-        v32 = [v6 string];
-        v33 = [MMScanner scannerWithString:v32 lineRanges:v27];
+        string2 = [scannerCopy string];
+        v33 = [MMScanner scannerWithString:string2 lineRanges:v27];
 
-        v34 = [v6 string];
-        v35 = [MMScanner scannerWithString:v34 lineRanges:v28];
+        string3 = [scannerCopy string];
+        v35 = [MMScanner scannerWithString:string3 lineRanges:spanParser];
 
         if (v43)
         {
-          v36 = [(MMParser *)self _parseElementsWithScanner:v33];
-          [v9 setChildren:v36];
+          spanParser2 = [(MMParser *)self _parseElementsWithScanner:v33];
+          [v9 setChildren:spanParser2];
         }
 
         else
         {
-          v36 = [(MMParser *)self spanParser];
-          v38 = [v36 parseSpansInBlockElement:v9 withScanner:v33];
+          spanParser2 = [(MMParser *)self spanParser];
+          v38 = [spanParser2 parseSpansInBlockElement:v9 withScanner:v33];
           [v9 setChildren:v38];
         }
 
-        v39 = [v9 children];
+        children = [v9 children];
         v40 = [(MMParser *)self _parseElementsWithScanner:v35];
-        v41 = [v39 arrayByAddingObjectsFromArray:v40];
+        v41 = [children arrayByAddingObjectsFromArray:v40];
         [v9 setChildren:v41];
       }
     }
@@ -837,15 +837,15 @@ LABEL_28:
   return v9;
 }
 
-- (BOOL)_parseListMarkerWithScanner:(id)a3 listType:(int64_t)a4
+- (BOOL)_parseListMarkerWithScanner:(id)scanner listType:(int64_t)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 1)
+  scannerCopy = scanner;
+  v6 = scannerCopy;
+  if (type == 1)
   {
-    [v5 beginTransaction];
-    v8 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-    v9 = [v6 skipCharactersFromSet:v8];
+    [scannerCopy beginTransaction];
+    decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+    v9 = [v6 skipCharactersFromSet:decimalDigitCharacterSet];
 
     if (!v9 || [v6 nextCharacter] != 46)
     {
@@ -855,48 +855,48 @@ LABEL_28:
     goto LABEL_8;
   }
 
-  if (a4)
+  if (type)
   {
-    LOBYTE(a4) = 0;
+    LOBYTE(type) = 0;
     goto LABEL_13;
   }
 
-  [v5 beginTransaction];
-  v7 = [v6 nextCharacter];
-  if (v7 <= 0x2D && ((1 << v7) & 0x2C0000000000) != 0)
+  [scannerCopy beginTransaction];
+  nextCharacter = [v6 nextCharacter];
+  if (nextCharacter <= 0x2D && ((1 << nextCharacter) & 0x2C0000000000) != 0)
   {
 LABEL_8:
     [v6 advance];
     if ([v6 nextCharacter] == 32)
     {
       [v6 advance];
-      a4 = 1;
+      type = 1;
       goto LABEL_11;
     }
 
 LABEL_10:
-    a4 = 0;
+    type = 0;
   }
 
 LABEL_11:
-  [v6 commitTransaction:a4];
+  [v6 commitTransaction:type];
 LABEL_13:
 
-  return a4;
+  return type;
 }
 
-- (id)_parseHorizontalRuleWithScanner:(id)a3
+- (id)_parseHorizontalRuleWithScanner:(id)scanner
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  [v3 skipCharactersFromSet:v4];
+  scannerCopy = scanner;
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  [scannerCopy skipCharactersFromSet:whitespaceCharacterSet];
 
-  v5 = [v3 nextCharacter];
+  nextCharacter = [scannerCopy nextCharacter];
   v6 = 0;
-  if ((v5 - 42) <= 0x35 && ((1 << (v5 - 42)) & 0x20000000000009) != 0)
+  if ((nextCharacter - 42) <= 0x35 && ((1 << (nextCharacter - 42)) & 0x20000000000009) != 0)
   {
-    v7 = v5;
-    if ([v3 atEndOfLine])
+    v7 = nextCharacter;
+    if ([scannerCopy atEndOfLine])
     {
       goto LABEL_12;
     }
@@ -904,19 +904,19 @@ LABEL_13:
     v8 = 0;
     do
     {
-      [v3 advance];
-      v9 = [v3 nextCharacter];
-      if (v9 == 32)
+      [scannerCopy advance];
+      nextCharacter2 = [scannerCopy nextCharacter];
+      if (nextCharacter2 == 32)
       {
-        [v3 advance];
-        v9 = [v3 nextCharacter];
+        [scannerCopy advance];
+        nextCharacter2 = [scannerCopy nextCharacter];
       }
 
       ++v8;
     }
 
-    while (([v3 atEndOfLine] & 1) == 0 && v9 == v7);
-    if (v8 < 3 || ([MEMORY[0x277CCA900] whitespaceCharacterSet], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "skipCharactersFromSet:", v10), v10, !objc_msgSend(v3, "atEndOfLine")))
+    while (([scannerCopy atEndOfLine] & 1) == 0 && nextCharacter2 == v7);
+    if (v8 < 3 || ([MEMORY[0x277CCA900] whitespaceCharacterSet], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(scannerCopy, "skipCharactersFromSet:", v10), v10, !objc_msgSend(scannerCopy, "atEndOfLine")))
     {
 LABEL_12:
       v6 = 0;
@@ -926,26 +926,26 @@ LABEL_12:
     {
       v6 = objc_opt_new();
       [v6 setType:8];
-      [v6 setRange:{objc_msgSend(v3, "startLocation"), objc_msgSend(v3, "location") - objc_msgSend(v3, "startLocation")}];
+      [v6 setRange:{objc_msgSend(scannerCopy, "startLocation"), objc_msgSend(scannerCopy, "location") - objc_msgSend(scannerCopy, "startLocation")}];
     }
   }
 
   return v6;
 }
 
-- (id)_parseFencedCodeBlockWithScanner:(id)a3
+- (id)_parseFencedCodeBlockWithScanner:(id)scanner
 {
-  v4 = a3;
+  scannerCopy = scanner;
   {
-    [v4 skipWhitespace];
-    v5 = [MEMORY[0x277CCAB50] alphanumericCharacterSet];
-    [v5 addCharactersInString:@"-_"];
-    v6 = [v4 nextWordWithCharactersFromSet:v5];
-    [v4 setLocation:{objc_msgSend(v4, "location") + objc_msgSend(v6, "length")}];
-    [v4 skipWhitespace];
-    if ([v4 atEndOfLine])
+    [scannerCopy skipWhitespace];
+    alphanumericCharacterSet = [MEMORY[0x277CCAB50] alphanumericCharacterSet];
+    [alphanumericCharacterSet addCharactersInString:@"-_"];
+    v6 = [scannerCopy nextWordWithCharactersFromSet:alphanumericCharacterSet];
+    [scannerCopy setLocation:{objc_msgSend(scannerCopy, "location") + objc_msgSend(v6, "length")}];
+    [scannerCopy skipWhitespace];
+    if ([scannerCopy atEndOfLine])
     {
-      [v4 advanceToNextLine];
+      [scannerCopy advanceToNextLine];
       v7 = objc_opt_new();
       [v7 setType:7];
       if ([v6 length])
@@ -959,42 +959,42 @@ LABEL_12:
       }
 
       [v7 setLanguage:v8];
-      if (([v4 atEndOfString] & 1) == 0)
+      if (([scannerCopy atEndOfString] & 1) == 0)
       {
         while (1)
         {
-          [v4 beginTransaction];
+          [scannerCopy beginTransaction];
           {
-            [v4 skipWhitespace];
-            if ([v4 atEndOfLine])
+            [scannerCopy skipWhitespace];
+            if ([scannerCopy atEndOfLine])
             {
               break;
             }
           }
 
-          [v4 commitTransaction:0];
-          v9 = [v4 currentRange];
-          [v7 addInnerRange:{v9, v10}];
-          [v4 advanceToNextLine];
-          if ([v4 atEndOfString])
+          [scannerCopy commitTransaction:0];
+          currentRange = [scannerCopy currentRange];
+          [v7 addInnerRange:{currentRange, v10}];
+          [scannerCopy advanceToNextLine];
+          if ([scannerCopy atEndOfString])
           {
             goto LABEL_14;
           }
         }
 
-        [v4 commitTransaction:1];
+        [scannerCopy commitTransaction:1];
       }
 
 LABEL_14:
-      [v4 advanceToNextLine];
-      v11 = [v7 innerRanges];
-      v12 = [v11 count];
+      [scannerCopy advanceToNextLine];
+      innerRanges = [v7 innerRanges];
+      v12 = [innerRanges count];
 
       if (v12)
       {
-        v13 = [v4 string];
-        v14 = [v7 innerRanges];
-        v15 = [MMScanner scannerWithString:v13 lineRanges:v14];
+        string = [scannerCopy string];
+        innerRanges2 = [v7 innerRanges];
+        v15 = [MMScanner scannerWithString:string lineRanges:innerRanges2];
 
         v16 = [(MMParser *)self _parseCodeLinesWithScanner:v15];
         [v7 setChildren:v16];
@@ -1015,54 +1015,54 @@ LABEL_14:
   return v7;
 }
 
-- (id)_parseCodeBlockWithScanner:(id)a3
+- (id)_parseCodeBlockWithScanner:(id)scanner
 {
-  v4 = a3;
-  if ([v4 skipIndentationUpTo:4] == 4 && (objc_msgSend(v4, "atEndOfLine") & 1) == 0)
+  scannerCopy = scanner;
+  if ([scannerCopy skipIndentationUpTo:4] == 4 && (objc_msgSend(scannerCopy, "atEndOfLine") & 1) == 0)
   {
     v5 = objc_opt_new();
     [v5 setType:7];
-    v7 = [v4 currentRange];
-    [v5 addInnerRange:{v7, v8}];
-    [v4 advanceToNextLine];
-    if ([v4 atEndOfString])
+    currentRange = [scannerCopy currentRange];
+    [v5 addInnerRange:{currentRange, v8}];
+    [scannerCopy advanceToNextLine];
+    if ([scannerCopy atEndOfString])
     {
       goto LABEL_16;
     }
 
     do
     {
-      for (i = [v4 skipEmptyLines]; i; --i)
+      for (i = [scannerCopy skipEmptyLines]; i; --i)
       {
-        [v5 addInnerRange:{objc_msgSend(v4, "location"), 0}];
+        [v5 addInnerRange:{objc_msgSend(scannerCopy, "location"), 0}];
       }
 
-      [v4 beginTransaction];
-      if ([v4 skipIndentationUpTo:4] < 4)
+      [scannerCopy beginTransaction];
+      if ([scannerCopy skipIndentationUpTo:4] < 4)
       {
-        [v4 commitTransaction:0];
+        [scannerCopy commitTransaction:0];
         break;
       }
 
-      [v4 commitTransaction:1];
-      v10 = [v4 currentRange];
-      [v5 addInnerRange:{v10, v11}];
-      [v4 advanceToNextLine];
+      [scannerCopy commitTransaction:1];
+      currentRange2 = [scannerCopy currentRange];
+      [v5 addInnerRange:{currentRange2, v11}];
+      [scannerCopy advanceToNextLine];
     }
 
-    while (![v4 atEndOfString]);
+    while (![scannerCopy atEndOfString]);
 LABEL_16:
     while (1)
     {
-      v16 = [v5 innerRanges];
-      if (![v16 count])
+      innerRanges = [v5 innerRanges];
+      if (![innerRanges count])
       {
         break;
       }
 
-      v12 = [v5 innerRanges];
-      v13 = [v12 lastObject];
-      [v13 rangeValue];
+      innerRanges2 = [v5 innerRanges];
+      lastObject = [innerRanges2 lastObject];
+      [lastObject rangeValue];
       v15 = v14;
 
       if (v15)
@@ -1074,25 +1074,25 @@ LABEL_16:
     }
 
 LABEL_18:
-    v17 = [v5 innerRanges];
-    v18 = [v17 count];
+    innerRanges3 = [v5 innerRanges];
+    v18 = [innerRanges3 count];
 
     if (v18)
     {
-      v19 = [v5 innerRanges];
-      v20 = [v19 lastObject];
-      v21 = [v20 rangeValue];
+      innerRanges4 = [v5 innerRanges];
+      lastObject2 = [innerRanges4 lastObject];
+      rangeValue = [lastObject2 rangeValue];
       v23 = v22;
 
       [v5 removeLastInnerRange];
-      v24 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
       while (v23)
       {
-        v25 = [v4 string];
-        v26 = [v25 characterAtIndex:v21 - 1 + v23];
+        string = [scannerCopy string];
+        v26 = [string characterAtIndex:rangeValue - 1 + v23];
 
         --v23;
-        if (([v24 characterIsMember:v26] & 1) == 0)
+        if (([whitespaceCharacterSet characterIsMember:v26] & 1) == 0)
         {
           v27 = v23 + 1;
           goto LABEL_24;
@@ -1101,18 +1101,18 @@ LABEL_18:
 
       v27 = 0;
 LABEL_24:
-      [v5 addInnerRange:{v21, v27}];
+      [v5 addInnerRange:{rangeValue, v27}];
     }
 
-    [v5 setRange:{objc_msgSend(v4, "startLocation"), objc_msgSend(v4, "location") - objc_msgSend(v4, "startLocation")}];
-    v28 = [v5 innerRanges];
-    v29 = [v28 count];
+    [v5 setRange:{objc_msgSend(scannerCopy, "startLocation"), objc_msgSend(scannerCopy, "location") - objc_msgSend(scannerCopy, "startLocation")}];
+    innerRanges5 = [v5 innerRanges];
+    v29 = [innerRanges5 count];
 
     if (v29)
     {
-      v30 = [v4 string];
-      v31 = [v5 innerRanges];
-      v32 = [MMScanner scannerWithString:v30 lineRanges:v31];
+      string2 = [scannerCopy string];
+      innerRanges6 = [v5 innerRanges];
+      v32 = [MMScanner scannerWithString:string2 lineRanges:innerRanges6];
 
       v33 = [(MMParser *)self _parseCodeLinesWithScanner:v32];
       [v5 setChildren:v33];
@@ -1127,34 +1127,34 @@ LABEL_24:
   return v5;
 }
 
-- (id)_parseCodeLinesWithScanner:(id)a3
+- (id)_parseCodeLinesWithScanner:(id)scanner
 {
-  v3 = a3;
+  scannerCopy = scanner;
   v4 = objc_opt_new();
   v15 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"&<>"];
-  v5 = [v15 invertedSet];
-  if (([v3 atEndOfString] & 1) == 0)
+  invertedSet = [v15 invertedSet];
+  if (([scannerCopy atEndOfString] & 1) == 0)
   {
     do
     {
-      v6 = [v3 location];
-      [v3 skipCharactersFromSet:v5];
-      if (v6 != [v3 location])
+      location = [scannerCopy location];
+      [scannerCopy skipCharactersFromSet:invertedSet];
+      if (location != [scannerCopy location])
       {
         v7 = objc_opt_new();
         [v7 setType:0];
-        [v7 setRange:{v6, objc_msgSend(v3, "location") - v6}];
+        [v7 setRange:{location, objc_msgSend(scannerCopy, "location") - location}];
         [v4 addObject:v7];
       }
 
-      if (([v3 atEndOfLine] & 1) == 0)
+      if (([scannerCopy atEndOfLine] & 1) == 0)
       {
-        v8 = [v3 string];
-        v9 = [v8 characterAtIndex:{objc_msgSend(v3, "location")}];
+        string = [scannerCopy string];
+        v9 = [string characterAtIndex:{objc_msgSend(scannerCopy, "location")}];
 
         v10 = objc_opt_new();
         [v10 setType:19];
-        [v10 setRange:{objc_msgSend(v3, "location"), 1}];
+        [v10 setRange:{objc_msgSend(scannerCopy, "location"), 1}];
         if (v9 == 60)
         {
           v11 = @"&lt;";
@@ -1182,93 +1182,93 @@ LABEL_24:
 
         [v10 setStringValue:v12];
         [v4 addObject:v10];
-        [v3 advance];
+        [scannerCopy advance];
       }
 
-      if ([v3 atEndOfLine])
+      if ([scannerCopy atEndOfLine])
       {
-        [v3 advanceToNextLine];
+        [scannerCopy advanceToNextLine];
         v13 = objc_opt_new();
         [v13 setType:0];
-        [v13 setRange:{objc_msgSend(v3, "location"), 0}];
+        [v13 setRange:{objc_msgSend(scannerCopy, "location"), 0}];
         [v4 addObject:v13];
       }
     }
 
-    while (![v3 atEndOfString]);
+    while (![scannerCopy atEndOfString]);
   }
 
   return v4;
 }
 
-- (id)_parseBlockquoteWithScanner:(id)a3
+- (id)_parseBlockquoteWithScanner:(id)scanner
 {
-  v4 = a3;
+  scannerCopy = scanner;
   v5 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@" "];
-  [v4 skipCharactersFromSet:v5 max:3];
-  if ([v4 nextCharacter] == 62)
+  [scannerCopy skipCharactersFromSet:v5 max:3];
+  if ([scannerCopy nextCharacter] == 62)
   {
-    [v4 advance];
-    if ([v4 nextCharacter] == 32)
+    [scannerCopy advance];
+    if ([scannerCopy nextCharacter] == 32)
     {
-      [v4 advance];
+      [scannerCopy advance];
     }
 
     v6 = objc_opt_new();
     [v6 setType:3];
-    v7 = [v4 currentRange];
-    [v6 addInnerRange:{v7, v8}];
-    [v4 advanceToNextLine];
-    v9 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    while (([v4 atEndOfString] & 1) == 0)
+    currentRange = [scannerCopy currentRange];
+    [v6 addInnerRange:{currentRange, v8}];
+    [scannerCopy advanceToNextLine];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    while (([scannerCopy atEndOfString] & 1) == 0)
     {
-      [v4 beginTransaction];
-      [v4 skipCharactersFromSet:v9];
-      if ([v4 atEndOfLine])
+      [scannerCopy beginTransaction];
+      [scannerCopy skipCharactersFromSet:whitespaceCharacterSet];
+      if ([scannerCopy atEndOfLine])
       {
         goto LABEL_13;
       }
 
-      if ([v4 nextCharacter] == 62)
+      if ([scannerCopy nextCharacter] == 62)
       {
-        [v4 advance];
-        [v4 skipCharactersFromSet:v9 max:1];
+        [scannerCopy advance];
+        [scannerCopy skipCharactersFromSet:whitespaceCharacterSet max:1];
       }
 
       else
       {
-        [v4 beginTransaction];
-        [v4 skipIndentationUpTo:2];
-        if ([(MMParser *)self _parseListMarkerWithScanner:v4 listType:0])
+        [scannerCopy beginTransaction];
+        [scannerCopy skipIndentationUpTo:2];
+        if ([(MMParser *)self _parseListMarkerWithScanner:scannerCopy listType:0])
         {
 LABEL_13:
-          [v4 commitTransaction:0];
+          [scannerCopy commitTransaction:0];
           break;
         }
 
-        v10 = [(MMParser *)self _parseListMarkerWithScanner:v4 listType:1];
-        [v4 commitTransaction:0];
+        v10 = [(MMParser *)self _parseListMarkerWithScanner:scannerCopy listType:1];
+        [scannerCopy commitTransaction:0];
         if (v10)
         {
           break;
         }
       }
 
-      v11 = [v4 currentRange];
-      [v6 addInnerRange:{v11, v12}];
-      [v4 commitTransaction:1];
-      [v4 advanceToNextLine];
+      currentRange2 = [scannerCopy currentRange];
+      [v6 addInnerRange:{currentRange2, v12}];
+      [scannerCopy commitTransaction:1];
+      [scannerCopy advanceToNextLine];
     }
 
-    [v6 setRange:{objc_msgSend(v4, "startLocation"), objc_msgSend(v4, "location") - objc_msgSend(v4, "startLocation")}];
-    v13 = [v6 innerRanges];
-    v14 = [v13 count];
+    [v6 setRange:{objc_msgSend(scannerCopy, "startLocation"), objc_msgSend(scannerCopy, "location") - objc_msgSend(scannerCopy, "startLocation")}];
+    innerRanges = [v6 innerRanges];
+    v14 = [innerRanges count];
 
     if (v14)
     {
-      v15 = [v4 string];
-      v16 = [v6 innerRanges];
-      v17 = [MMScanner scannerWithString:v15 lineRanges:v16];
+      string = [scannerCopy string];
+      innerRanges2 = [v6 innerRanges];
+      v17 = [MMScanner scannerWithString:string lineRanges:innerRanges2];
 
       v18 = [(MMParser *)self _parseElementsWithScanner:v17];
       [v6 setChildren:v18];
@@ -1283,52 +1283,52 @@ LABEL_13:
   return v6;
 }
 
-- (id)_parseUnderlinedHeaderWithScanner:(id)a3
+- (id)_parseUnderlinedHeaderWithScanner:(id)scanner
 {
-  v4 = a3;
-  [v4 beginTransaction];
-  v5 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  [v4 skipCharactersFromSet:v5];
+  scannerCopy = scanner;
+  [scannerCopy beginTransaction];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  [scannerCopy skipCharactersFromSet:whitespaceCharacterSet];
 
-  if ([v4 atEndOfLine])
+  if ([scannerCopy atEndOfLine])
   {
     goto LABEL_14;
   }
 
-  [v4 advanceToNextLine];
-  if ([v4 atEndOfString])
+  [scannerCopy advanceToNextLine];
+  if ([scannerCopy atEndOfString])
   {
     goto LABEL_14;
   }
 
-  v6 = [v4 nextCharacter];
-  if ((v6 & 0xFFFFFFEF) != 0x2D)
+  nextCharacter = [scannerCopy nextCharacter];
+  if ((nextCharacter & 0xFFFFFFEF) != 0x2D)
   {
     goto LABEL_14;
   }
 
-  v7 = v6;
-  if ([v4 atEndOfLine])
+  v7 = nextCharacter;
+  if ([scannerCopy atEndOfLine])
   {
     goto LABEL_9;
   }
 
-  while (v7 == [v4 nextCharacter])
+  while (v7 == [scannerCopy nextCharacter])
   {
-    [v4 advance];
-    if ([v4 atEndOfLine])
+    [scannerCopy advance];
+    if ([scannerCopy atEndOfLine])
     {
       goto LABEL_9;
     }
   }
 
-  v8 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  [v4 skipCharactersFromSet:v8];
+  whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  [scannerCopy skipCharactersFromSet:whitespaceCharacterSet2];
 
-  if ([v4 atEndOfLine])
+  if ([scannerCopy atEndOfLine])
   {
 LABEL_9:
-    [v4 commitTransaction:0];
+    [scannerCopy commitTransaction:0];
     v9 = objc_opt_new();
     [v9 setType:1];
     if (v7 == 61)
@@ -1342,22 +1342,22 @@ LABEL_9:
     }
 
     [v9 setLevel:v10];
-    v11 = [v4 currentRange];
-    [v9 addInnerRange:{v11, v12}];
-    [v4 advanceToNextLine];
-    [v4 advanceToNextLine];
-    [v9 setRange:{objc_msgSend(v4, "startLocation"), objc_msgSend(v4, "location") - objc_msgSend(v4, "startLocation")}];
-    v13 = [v9 innerRanges];
-    v14 = [v13 count];
+    currentRange = [scannerCopy currentRange];
+    [v9 addInnerRange:{currentRange, v12}];
+    [scannerCopy advanceToNextLine];
+    [scannerCopy advanceToNextLine];
+    [v9 setRange:{objc_msgSend(scannerCopy, "startLocation"), objc_msgSend(scannerCopy, "location") - objc_msgSend(scannerCopy, "startLocation")}];
+    innerRanges = [v9 innerRanges];
+    v14 = [innerRanges count];
 
     if (v14)
     {
-      v15 = [v4 string];
-      v16 = [v9 innerRanges];
-      v17 = [MMScanner scannerWithString:v15 lineRanges:v16];
+      string = [scannerCopy string];
+      innerRanges2 = [v9 innerRanges];
+      v17 = [MMScanner scannerWithString:string lineRanges:innerRanges2];
 
-      v18 = [(MMParser *)self spanParser];
-      v19 = [v18 parseSpansInBlockElement:v9 withScanner:v17];
+      spanParser = [(MMParser *)self spanParser];
+      v19 = [spanParser parseSpansInBlockElement:v9 withScanner:v17];
       [v9 setChildren:v19];
     }
   }
@@ -1365,17 +1365,17 @@ LABEL_9:
   else
   {
 LABEL_14:
-    [v4 commitTransaction:0];
+    [scannerCopy commitTransaction:0];
     v9 = 0;
   }
 
   return v9;
 }
 
-- (id)_parsePrefixHeaderWithScanner:(id)a3
+- (id)_parsePrefixHeaderWithScanner:(id)scanner
 {
-  v4 = a3;
-  if ([v4 nextCharacter] != 35)
+  scannerCopy = scanner;
+  if ([scannerCopy nextCharacter] != 35)
   {
     goto LABEL_11;
   }
@@ -1384,23 +1384,23 @@ LABEL_14:
   do
   {
     v6 = v5 + 1;
-    [v4 advance];
-    if ([v4 nextCharacter] != 35)
+    [scannerCopy advance];
+    if ([scannerCopy nextCharacter] != 35)
     {
       break;
     }
   }
 
   while (v5++ < 5);
-  if ([v4 skipWhitespace])
+  if ([scannerCopy skipWhitespace])
   {
-    v8 = [v4 currentRange];
+    currentRange = [scannerCopy currentRange];
     v10 = v9;
-    v11 = v8 - 1;
+    v11 = currentRange - 1;
     while (v10)
     {
-      v12 = [v4 string];
-      v13 = [v12 characterAtIndex:v11 + v10];
+      string = [scannerCopy string];
+      v13 = [string characterAtIndex:v11 + v10];
 
       --v10;
       if (v13 != 35)
@@ -1412,14 +1412,14 @@ LABEL_14:
 
     v14 = 0;
 LABEL_13:
-    v16 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
     while (v14)
     {
-      v17 = [v4 string];
-      v18 = [v17 characterAtIndex:v11 + v14];
+      string2 = [scannerCopy string];
+      v18 = [string2 characterAtIndex:v11 + v14];
 
       --v14;
-      if (([v16 characterIsMember:v18] & 1) == 0)
+      if (([whitespaceCharacterSet characterIsMember:v18] & 1) == 0)
       {
         v19 = v14 + 1;
         goto LABEL_18;
@@ -1428,25 +1428,25 @@ LABEL_13:
 
     v19 = 0;
 LABEL_18:
-    [v4 advanceToNextLine];
+    [scannerCopy advanceToNextLine];
     v15 = objc_opt_new();
     [v15 setType:1];
-    v20 = [v4 startLocation];
-    v21 = [v4 currentRange];
-    [v15 setRange:{v20, v21 + v22 - objc_msgSend(v4, "startLocation")}];
+    startLocation = [scannerCopy startLocation];
+    currentRange2 = [scannerCopy currentRange];
+    [v15 setRange:{startLocation, currentRange2 + v22 - objc_msgSend(scannerCopy, "startLocation")}];
     [v15 setLevel:v6];
-    [v15 addInnerRange:{v8, v19}];
-    v23 = [v15 innerRanges];
-    v24 = [v23 count];
+    [v15 addInnerRange:{currentRange, v19}];
+    innerRanges = [v15 innerRanges];
+    v24 = [innerRanges count];
 
     if (v24)
     {
-      v25 = [v4 string];
-      v26 = [v15 innerRanges];
-      v27 = [MMScanner scannerWithString:v25 lineRanges:v26];
+      string3 = [scannerCopy string];
+      innerRanges2 = [v15 innerRanges];
+      v27 = [MMScanner scannerWithString:string3 lineRanges:innerRanges2];
 
-      v28 = [(MMParser *)self spanParser];
-      v29 = [v28 parseSpansInBlockElement:v15 withScanner:v27];
+      spanParser = [(MMParser *)self spanParser];
+      v29 = [spanParser parseSpansInBlockElement:v15 withScanner:v27];
       [v15 setChildren:v29];
     }
   }
@@ -1460,13 +1460,13 @@ LABEL_11:
   return v15;
 }
 
-- (id)_parseHTMLWithScanner:(id)a3
+- (id)_parseHTMLWithScanner:(id)scanner
 {
-  v4 = a3;
-  if ([v4 atBeginningOfLine])
+  scannerCopy = scanner;
+  if ([scannerCopy atBeginningOfLine])
   {
-    v5 = [(MMParser *)self htmlParser];
-    v6 = [v5 parseBlockTagWithScanner:v4];
+    htmlParser = [(MMParser *)self htmlParser];
+    v6 = [htmlParser parseBlockTagWithScanner:scannerCopy];
   }
 
   else
@@ -1477,63 +1477,63 @@ LABEL_11:
   return v6;
 }
 
-- (id)_parseBlockElementWithScanner:(id)a3
+- (id)_parseBlockElementWithScanner:(id)scanner
 {
-  v4 = a3;
-  [v4 beginTransaction];
-  v5 = [(MMParser *)self htmlParser];
-  v6 = [v5 parseCommentWithScanner:v4];
+  scannerCopy = scanner;
+  [scannerCopy beginTransaction];
+  htmlParser = [(MMParser *)self htmlParser];
+  v6 = [htmlParser parseCommentWithScanner:scannerCopy];
 
-  [v4 commitTransaction:v6 != 0];
+  [scannerCopy commitTransaction:v6 != 0];
   if (!v6)
   {
-    [v4 beginTransaction];
-    v6 = [(MMParser *)self _parseHTMLWithScanner:v4];
-    [v4 commitTransaction:v6 != 0];
+    [scannerCopy beginTransaction];
+    v6 = [(MMParser *)self _parseHTMLWithScanner:scannerCopy];
+    [scannerCopy commitTransaction:v6 != 0];
     if (!v6)
     {
-      [v4 beginTransaction];
-      v6 = [(MMParser *)self _parsePrefixHeaderWithScanner:v4];
-      [v4 commitTransaction:v6 != 0];
+      [scannerCopy beginTransaction];
+      v6 = [(MMParser *)self _parsePrefixHeaderWithScanner:scannerCopy];
+      [scannerCopy commitTransaction:v6 != 0];
       if (!v6)
       {
-        [v4 beginTransaction];
-        v6 = [(MMParser *)self _parseUnderlinedHeaderWithScanner:v4];
-        [v4 commitTransaction:v6 != 0];
+        [scannerCopy beginTransaction];
+        v6 = [(MMParser *)self _parseUnderlinedHeaderWithScanner:scannerCopy];
+        [scannerCopy commitTransaction:v6 != 0];
         if (!v6)
         {
-          [v4 beginTransaction];
-          v6 = [(MMParser *)self _parseBlockquoteWithScanner:v4];
-          [v4 commitTransaction:v6 != 0];
+          [scannerCopy beginTransaction];
+          v6 = [(MMParser *)self _parseBlockquoteWithScanner:scannerCopy];
+          [scannerCopy commitTransaction:v6 != 0];
           if (!v6)
           {
-            [v4 beginTransaction];
-            v6 = [(MMParser *)self _parseCodeBlockWithScanner:v4];
-            [v4 commitTransaction:v6 != 0];
+            [scannerCopy beginTransaction];
+            v6 = [(MMParser *)self _parseCodeBlockWithScanner:scannerCopy];
+            [scannerCopy commitTransaction:v6 != 0];
             if (!v6)
             {
-              if ((-[MMParser extensions](self, "extensions") & 8) == 0 || ([v4 beginTransaction], -[MMParser _parseFencedCodeBlockWithScanner:](self, "_parseFencedCodeBlockWithScanner:", v4), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "commitTransaction:", v6 != 0), !v6))
+              if ((-[MMParser extensions](self, "extensions") & 8) == 0 || ([scannerCopy beginTransaction], -[MMParser _parseFencedCodeBlockWithScanner:](self, "_parseFencedCodeBlockWithScanner:", scannerCopy), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(scannerCopy, "commitTransaction:", v6 != 0), !v6))
               {
-                if ((-[MMParser extensions](self, "extensions") & 0x100) == 0 || ([v4 beginTransaction], -[MMParser _parseTableWithScanner:](self, "_parseTableWithScanner:", v4), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "commitTransaction:", v6 != 0), !v6))
+                if ((-[MMParser extensions](self, "extensions") & 0x100) == 0 || ([scannerCopy beginTransaction], -[MMParser _parseTableWithScanner:](self, "_parseTableWithScanner:", scannerCopy), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(scannerCopy, "commitTransaction:", v6 != 0), !v6))
                 {
-                  [v4 beginTransaction];
-                  v6 = [(MMParser *)self _parseHorizontalRuleWithScanner:v4];
-                  [v4 commitTransaction:v6 != 0];
+                  [scannerCopy beginTransaction];
+                  v6 = [(MMParser *)self _parseHorizontalRuleWithScanner:scannerCopy];
+                  [scannerCopy commitTransaction:v6 != 0];
                   if (!v6)
                   {
-                    [v4 beginTransaction];
-                    v6 = [(MMParser *)self _parseListWithScanner:v4];
-                    [v4 commitTransaction:v6 != 0];
+                    [scannerCopy beginTransaction];
+                    v6 = [(MMParser *)self _parseListWithScanner:scannerCopy];
+                    [scannerCopy commitTransaction:v6 != 0];
                     if (!v6)
                     {
-                      [v4 beginTransaction];
-                      v6 = [(MMParser *)self _parseLinkDefinitionWithScanner:v4];
-                      [v4 commitTransaction:v6 != 0];
+                      [scannerCopy beginTransaction];
+                      v6 = [(MMParser *)self _parseLinkDefinitionWithScanner:scannerCopy];
+                      [scannerCopy commitTransaction:v6 != 0];
                       if (!v6)
                       {
-                        [v4 beginTransaction];
-                        v6 = [(MMParser *)self _parseParagraphWithScanner:v4];
-                        [v4 commitTransaction:v6 != 0];
+                        [scannerCopy beginTransaction];
+                        v6 = [(MMParser *)self _parseParagraphWithScanner:scannerCopy];
+                        [scannerCopy commitTransaction:v6 != 0];
                       }
                     }
                   }
@@ -1549,15 +1549,15 @@ LABEL_11:
   return v6;
 }
 
-- (id)_parseElementsWithScanner:(id)a3
+- (id)_parseElementsWithScanner:(id)scanner
 {
-  v4 = a3;
+  scannerCopy = scanner;
   v5 = objc_opt_new();
-  if (([v4 atEndOfString] & 1) == 0)
+  if (([scannerCopy atEndOfString] & 1) == 0)
   {
     do
     {
-      v6 = [(MMParser *)self _parseBlockElementWithScanner:v4];
+      v6 = [(MMParser *)self _parseBlockElementWithScanner:scannerCopy];
       if (v6)
       {
         [v5 addObject:v6];
@@ -1565,28 +1565,28 @@ LABEL_11:
 
       else
       {
-        v7 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-        [v4 skipCharactersFromSet:v7];
+        whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+        [scannerCopy skipCharactersFromSet:whitespaceCharacterSet];
 
-        if ([v4 atEndOfLine])
+        if ([scannerCopy atEndOfLine])
         {
-          [v4 advanceToNextLine];
+          [scannerCopy advanceToNextLine];
         }
       }
     }
 
-    while (![v4 atEndOfString]);
+    while (![scannerCopy atEndOfString]);
   }
 
   return v5;
 }
 
-- (id)_removeTabsFromString:(id)a3
+- (id)_removeTabsFromString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
+  stringCopy = string;
+  v4 = [stringCopy mutableCopy];
   v5 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"\t\n"];
-  v6 = [v4 rangeOfCharacterFromSet:v5 options:0 range:{0, objc_msgSend(v3, "length")}];
+  v6 = [v4 rangeOfCharacterFromSet:v5 options:0 range:{0, objc_msgSend(stringCopy, "length")}];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = v6;
@@ -1618,63 +1618,63 @@ LABEL_11:
   return v4;
 }
 
-- (void)_addTextLineToElement:(id)a3 withScanner:(id)a4
+- (void)_addTextLineToElement:(id)element withScanner:(id)scanner
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  scannerCopy = scanner;
   v7 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"<"];
-  v8 = [v7 invertedSet];
+  invertedSet = [v7 invertedSet];
 
   v9 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"-"];
-  v10 = [v9 invertedSet];
+  invertedSet2 = [v9 invertedSet];
 
-  v11 = [v6 currentRange];
+  currentRange = [scannerCopy currentRange];
   v13 = v12;
-  [v6 beginTransaction];
+  [scannerCopy beginTransaction];
   v14 = objc_opt_new();
-  if (([v6 atEndOfLine] & 1) == 0)
+  if (([scannerCopy atEndOfLine] & 1) == 0)
   {
     do
     {
-      [v6 skipCharactersFromSet:v8];
-      if ([v6 matchString:@"<!--"])
+      [scannerCopy skipCharactersFromSet:invertedSet];
+      if ([scannerCopy matchString:@"<!--"])
       {
-        while (([v6 atEndOfString] & 1) == 0)
+        while (([scannerCopy atEndOfString] & 1) == 0)
         {
-          [v6 skipCharactersFromSet:v10];
-          if ([v6 atEndOfLine])
+          [scannerCopy skipCharactersFromSet:invertedSet2];
+          if ([scannerCopy atEndOfLine])
           {
-            v15 = [MEMORY[0x277CCAE60] valueWithRange:{v11, v13}];
+            v15 = [MEMORY[0x277CCAE60] valueWithRange:{currentRange, v13}];
             [v14 addObject:v15];
 
-            [v6 advanceToNextLine];
-            v11 = [v6 currentRange];
+            [scannerCopy advanceToNextLine];
+            currentRange = [scannerCopy currentRange];
             v13 = v16;
           }
 
           else
           {
-            if ([v6 matchString:@"-->"])
+            if ([scannerCopy matchString:@"-->"])
             {
               break;
             }
 
-            [v6 advance];
+            [scannerCopy advance];
           }
         }
       }
 
       else
       {
-        [v6 advance];
+        [scannerCopy advance];
       }
     }
 
-    while (![v6 atEndOfLine]);
+    while (![scannerCopy atEndOfLine]);
   }
 
-  [v6 commitTransaction:{objc_msgSend(v14, "count") != 0}];
+  [scannerCopy commitTransaction:{objc_msgSend(v14, "count") != 0}];
   if ([v14 count])
   {
     v28 = 0u;
@@ -1698,8 +1698,8 @@ LABEL_11:
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v26 + 1) + 8 * v21) rangeValue];
-          [v5 addInnerRange:{v22, v23}];
+          rangeValue = [*(*(&v26 + 1) + 8 * v21) rangeValue];
+          [elementCopy addInnerRange:{rangeValue, v23}];
           ++v21;
         }
 
@@ -1713,17 +1713,17 @@ LABEL_11:
     v14 = v25;
   }
 
-  [v5 addInnerRange:{v11, v13}];
-  [v6 advanceToNextLine];
+  [elementCopy addInnerRange:{currentRange, v13}];
+  [scannerCopy advanceToNextLine];
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)parseMarkdown:(id)a3 error:(id *)a4
+- (id)parseMarkdown:(id)markdown error:(id *)error
 {
-  v5 = [(MMParser *)self _removeTabsFromString:a3, a4];
-  v6 = [MMScanner scannerWithString:v5];
-  v7 = [MMDocument documentWithMarkdown:v5];
+  error = [(MMParser *)self _removeTabsFromString:markdown, error];
+  v6 = [MMScanner scannerWithString:error];
+  v7 = [MMDocument documentWithMarkdown:error];
   v8 = [(MMParser *)self _parseElementsWithScanner:v6];
   [v7 setElements:v8];
 
@@ -1732,7 +1732,7 @@ LABEL_11:
   return v7;
 }
 
-- (MMParser)initWithExtensions:(unint64_t)a3
+- (MMParser)initWithExtensions:(unint64_t)extensions
 {
   v11.receiver = self;
   v11.super_class = MMParser;
@@ -1740,12 +1740,12 @@ LABEL_11:
   v5 = v4;
   if (v4)
   {
-    v4->_extensions = a3;
+    v4->_extensions = extensions;
     v6 = objc_opt_new();
     htmlParser = v5->_htmlParser;
     v5->_htmlParser = v6;
 
-    v8 = [[MMSpanParser alloc] initWithExtensions:a3];
+    v8 = [[MMSpanParser alloc] initWithExtensions:extensions];
     spanParser = v5->_spanParser;
     v5->_spanParser = v8;
   }

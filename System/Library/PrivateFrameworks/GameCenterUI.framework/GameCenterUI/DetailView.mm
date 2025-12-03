@@ -1,6 +1,6 @@
 @interface DetailView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (void)didTapWithAccessoryView:(id)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (void)didTapWithAccessoryView:(id)view;
 - (void)layoutSubviews;
 - (void)wasTapped;
 @end
@@ -9,22 +9,22 @@
 
 - (void)wasTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E159D40();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E159DF0();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  width = a3.width;
+  width = fitting.width;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_24E15A19C(a4, width);
+  selfCopy = self;
+  v8 = sub_24E15A19C(in, width);
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -41,11 +41,11 @@
   return result;
 }
 
-- (void)didTapWithAccessoryView:(id)a3
+- (void)didTapWithAccessoryView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E15A520(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_24E15A520(viewCopy);
 }
 
 @end

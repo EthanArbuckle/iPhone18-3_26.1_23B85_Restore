@@ -1,30 +1,30 @@
 @interface CarShortcutsCardViewController
-- (BOOL)_scrollsIfUsingCompactLayout:(BOOL)a3;
+- (BOOL)_scrollsIfUsingCompactLayout:(BOOL)layout;
 - (BOOL)_useCompactLayout;
-- (CGSize)_cellSizeUsingCompactLayout:(BOOL)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)_cellSizeUsingCompactLayout:(BOOL)layout;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (CarShortcutsCardViewController)init;
 - (CarShortcutsCardViewControllerDelegate)delegate;
 - (NSArray)focusOrderSubItems;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (double)_preferredHeightUsingCompactLayout:(BOOL)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (double)_preferredHeightUsingCompactLayout:(BOOL)layout;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view;
 - (int64_t)_numberOfItems;
 - (int64_t)_numberOfRows;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
-- (void)_captureTapActionWithFavoriteItem:(id)a3;
-- (void)_captureTapActionWithShortcut:(id)a3;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
+- (void)_captureTapActionWithFavoriteItem:(id)item;
+- (void)_captureTapActionWithShortcut:(id)shortcut;
 - (void)_updateHeightConstraint;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)homeDataProvidingObjectDidUpdate:(id)a3;
-- (void)setCanBeExpanded:(BOOL)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setShouldBeVisible:(BOOL)a3;
-- (void)shortcutsProviderUpdated:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)homeDataProvidingObjectDidUpdate:(id)update;
+- (void)setCanBeExpanded:(BOOL)expanded;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setShouldBeVisible:(BOOL)visible;
+- (void)shortcutsProviderUpdated:(id)updated;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -64,15 +64,15 @@
 
 - (int64_t)_numberOfRows
 {
-  v2 = [(CarShortcutsCardViewController *)self _numberOfItems];
-  if ((v2 & 0x8000000000000001) == 1)
+  _numberOfItems = [(CarShortcutsCardViewController *)self _numberOfItems];
+  if ((_numberOfItems & 0x8000000000000001) == 1)
   {
-    return v2 / 2 + 1;
+    return _numberOfItems / 2 + 1;
   }
 
   else
   {
-    return v2 / 2;
+    return _numberOfItems / 2;
   }
 }
 
@@ -80,15 +80,15 @@
 {
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
-    v3 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-    v4 = [v3 shortcutsForCarplay];
-    v5 = [v4 count];
+    shortcuts = +[_TtC4Maps20MapsFavoritesManager sharedManager];
+    shortcutsForCarplay = [shortcuts shortcutsForCarplay];
+    v5 = [shortcutsForCarplay count];
   }
 
   else
   {
-    v3 = [(CarShortcutsProvider *)self->_shortcutsProvider shortcuts];
-    v5 = [v3 count];
+    shortcuts = [(CarShortcutsProvider *)self->_shortcutsProvider shortcuts];
+    v5 = [shortcuts count];
   }
 
   v6 = 2;
@@ -115,7 +115,7 @@
   return WeakRetained;
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
@@ -131,7 +131,7 @@
   }
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
@@ -147,27 +147,27 @@
   }
 }
 
-- (void)_captureTapActionWithFavoriteItem:(id)a3
+- (void)_captureTapActionWithFavoriteItem:(id)item
 {
-  v7 = a3;
-  v3 = [v7 type];
-  if (v3 == 1)
+  itemCopy = item;
+  type = [itemCopy type];
+  if (type == 1)
   {
-    v5 = [v7 geoMapItem];
-    v6 = [v5 _mapsCategoryId];
-    [GEOAPPortal captureUserAction:2049 target:1005 value:v6];
+    geoMapItem = [itemCopy geoMapItem];
+    _mapsCategoryId = [geoMapItem _mapsCategoryId];
+    [GEOAPPortal captureUserAction:2049 target:1005 value:_mapsCategoryId];
   }
 
   else
   {
-    if (v3 == 3)
+    if (type == 3)
     {
       v4 = 2047;
     }
 
     else
     {
-      if (v3 != 2)
+      if (type != 2)
       {
         goto LABEL_8;
       }
@@ -181,28 +181,28 @@
 LABEL_8:
 }
 
-- (void)_captureTapActionWithShortcut:(id)a3
+- (void)_captureTapActionWithShortcut:(id)shortcut
 {
-  v7 = a3;
-  v3 = [v7 type];
-  if (v3 == 18)
+  shortcutCopy = shortcut;
+  type = [shortcutCopy type];
+  if (type == 18)
   {
-    v5 = [v7 geoMapItem];
-    v6 = [v5 _mapsCategoryId];
+    geoMapItem = [shortcutCopy geoMapItem];
+    _mapsCategoryId = [geoMapItem _mapsCategoryId];
 
-    [GEOAPPortal captureUserAction:2049 target:1005 value:v6];
+    [GEOAPPortal captureUserAction:2049 target:1005 value:_mapsCategoryId];
   }
 
   else
   {
-    if (v3 == 2)
+    if (type == 2)
     {
       v4 = 2047;
     }
 
     else
     {
-      if (v3 != 1)
+      if (type != 1)
       {
         goto LABEL_8;
       }
@@ -220,8 +220,8 @@ LABEL_8:
 {
   if ([(CarShortcutsCardViewController *)self shouldBeVisible])
   {
-    v3 = [(CarCollectionView *)self->_collectionView visibleCells];
-    v4 = [(CarShortcutsCardViewController *)self _sortCells:v3];
+    visibleCells = [(CarCollectionView *)self->_collectionView visibleCells];
+    v4 = [(CarShortcutsCardViewController *)self _sortCells:visibleCells];
   }
 
   else
@@ -232,7 +232,7 @@ LABEL_8:
   return v4;
 }
 
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view
 {
   if ([(CarShortcutsCardViewController *)self shouldBeVisible])
   {
@@ -247,16 +247,16 @@ LABEL_8:
   return v3;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
     v6 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-    v7 = [v6 shortcutsForCarplay];
-    v8 = [v5 row];
+    shortcutsForCarplay = [v6 shortcutsForCarplay];
+    v8 = [pathCopy row];
 
-    v13 = [v7 objectAtIndexedSubscript:v8];
+    v13 = [shortcutsForCarplay objectAtIndexedSubscript:v8];
 
     v9 = +[CarChromeModeCoordinator sharedInstance];
     [v9 displayRoutePlanningForDestination:v13];
@@ -266,10 +266,10 @@ LABEL_8:
 
   else
   {
-    v10 = [(CarShortcutsProvider *)self->_shortcutsProvider shortcuts];
-    v11 = [v5 row];
+    shortcuts = [(CarShortcutsProvider *)self->_shortcutsProvider shortcuts];
+    v11 = [pathCopy row];
 
-    v13 = [v10 objectAtIndexedSubscript:v11];
+    v13 = [shortcuts objectAtIndexedSubscript:v11];
 
     v12 = +[CarChromeModeCoordinator sharedInstance];
     [v12 displayRoutePlanningForDestination:v13];
@@ -278,9 +278,9 @@ LABEL_8:
   }
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  [CarShortcutCollectionViewCell focusRingTopOverhang:a3];
+  [CarShortcutCollectionViewCell focusRingTopOverhang:view];
   v6 = 10.0;
   v7 = 0.0;
   v8 = 10.0;
@@ -291,9 +291,9 @@ LABEL_8:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = [(CarShortcutsCardViewController *)self _useCompactLayout:a3];
+  v6 = [(CarShortcutsCardViewController *)self _useCompactLayout:view];
 
   [(CarShortcutsCardViewController *)self _cellSizeUsingCompactLayout:v6];
   result.height = v8;
@@ -301,33 +301,33 @@ LABEL_8:
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CarShortcutsCardViewController *)self _useCompactLayout];
+  pathCopy = path;
+  viewCopy = view;
+  _useCompactLayout = [(CarShortcutsCardViewController *)self _useCompactLayout];
   v9 = off_1015F6160;
-  if (!v8)
+  if (!_useCompactLayout)
   {
     v9 = off_1015F6158;
   }
 
-  v10 = [(__objc2_class *)*v9 cellReuseIdentifier];
-  v11 = [v7 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v6];
+  cellReuseIdentifier = [(__objc2_class *)*v9 cellReuseIdentifier];
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier forIndexPath:pathCopy];
 
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
     v12 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-    v13 = [v12 shortcutsForCarplay];
-    v14 = [v13 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+    shortcutsForCarplay = [v12 shortcutsForCarplay];
+    v14 = [shortcutsForCarplay objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     v15 = [[SuggestionShortcutsRowCellModel alloc] initWithMapsFavoriteItem:v14];
   }
 
   else
   {
-    v16 = [(CarShortcutsProvider *)self->_shortcutsProvider shortcuts];
-    v14 = [v16 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+    shortcuts = [(CarShortcutsProvider *)self->_shortcutsProvider shortcuts];
+    v14 = [shortcuts objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     v15 = [[SuggestionShortcutsRowCellModel alloc] initWithMapsSuggestionsEntry:v14];
   }
@@ -339,15 +339,15 @@ LABEL_8:
   return v11;
 }
 
-- (void)homeDataProvidingObjectDidUpdate:(id)a3
+- (void)homeDataProvidingObjectDidUpdate:(id)update
 {
   v4 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-  v5 = [v4 shortcutsForCarplay];
-  -[CarShortcutsCardViewController setShouldBeVisible:](self, "setShouldBeVisible:", [v5 count] != 0);
+  shortcutsForCarplay = [v4 shortcutsForCarplay];
+  -[CarShortcutsCardViewController setShouldBeVisible:](self, "setShouldBeVisible:", [shortcutsForCarplay count] != 0);
 
   v6 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-  v7 = [v6 shortcutsForCarplay];
-  -[CarShortcutsCardViewController setCanBeExpanded:](self, "setCanBeExpanded:", [v7 count] > 2);
+  shortcutsForCarplay2 = [v6 shortcutsForCarplay];
+  -[CarShortcutsCardViewController setCanBeExpanded:](self, "setCanBeExpanded:", [shortcutsForCarplay2 count] > 2);
 
   [(CarShortcutsCardViewController *)self _updateHeightConstraint];
   collectionView = self->_collectionView;
@@ -355,63 +355,63 @@ LABEL_8:
   [(CarCollectionView *)collectionView reloadData];
 }
 
-- (void)shortcutsProviderUpdated:(id)a3
+- (void)shortcutsProviderUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [v4 shortcuts];
-  -[CarShortcutsCardViewController setShouldBeVisible:](self, "setShouldBeVisible:", [v5 count] != 0);
+  updatedCopy = updated;
+  shortcuts = [updatedCopy shortcuts];
+  -[CarShortcutsCardViewController setShouldBeVisible:](self, "setShouldBeVisible:", [shortcuts count] != 0);
 
-  v6 = [v4 shortcuts];
+  shortcuts2 = [updatedCopy shortcuts];
 
-  -[CarShortcutsCardViewController setCanBeExpanded:](self, "setCanBeExpanded:", [v6 count] > 2);
+  -[CarShortcutsCardViewController setCanBeExpanded:](self, "setCanBeExpanded:", [shortcuts2 count] > 2);
   [(CarShortcutsCardViewController *)self _updateHeightConstraint];
   collectionView = self->_collectionView;
 
   [(CarCollectionView *)collectionView reloadData];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = CarShortcutsCardViewController;
-  v4 = a3;
-  [(CarShortcutsCardViewController *)&v11 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CarShortcutsCardViewController *)&v11 traitCollectionDidChange:changeCopy];
   v5 = [(CarShortcutsCardViewController *)self traitCollection:v11.receiver];
   [v5 displayScale];
   v7 = v6;
-  [v4 displayScale];
+  [changeCopy displayScale];
   v9 = v8;
 
   if (v7 != v9)
   {
     [(CarShortcutsCardViewController *)self _updateHeightConstraint];
-    v10 = [(CarCollectionView *)self->_collectionView collectionViewLayout];
-    [v10 invalidateLayout];
+    collectionViewLayout = [(CarCollectionView *)self->_collectionView collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
   }
 }
 
-- (BOOL)_scrollsIfUsingCompactLayout:(BOOL)a3
+- (BOOL)_scrollsIfUsingCompactLayout:(BOOL)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   +[CarShortcutCollectionViewCell focusRingTopOverhang];
   v6 = v5;
-  [(CarShortcutsCardViewController *)self _preferredHeightUsingCompactLayout:v3];
+  [(CarShortcutsCardViewController *)self _preferredHeightUsingCompactLayout:layoutCopy];
   v8 = v7;
   [(CarCollectionView *)self->_collectionView bounds];
   return v8 > CGRectGetHeight(v10) - v6;
 }
 
-- (CGSize)_cellSizeUsingCompactLayout:(BOOL)a3
+- (CGSize)_cellSizeUsingCompactLayout:(BOOL)layout
 {
   v4 = off_1015F6160;
-  if (!a3)
+  if (!layout)
   {
     v4 = off_1015F6158;
   }
 
   v5 = *v4;
-  v6 = [(CarShortcutsCardViewController *)self traitCollection];
-  [(__objc2_class *)v5 cellSizeWithTraitCollection:v6];
+  traitCollection = [(CarShortcutsCardViewController *)self traitCollection];
+  [(__objc2_class *)v5 cellSizeWithTraitCollection:traitCollection];
   v8 = v7;
 
   [(CarCollectionView *)self->_collectionView bounds];
@@ -435,31 +435,31 @@ LABEL_8:
   return result;
 }
 
-- (void)setCanBeExpanded:(BOOL)a3
+- (void)setCanBeExpanded:(BOOL)expanded
 {
-  if (self->_canBeExpanded != a3)
+  if (self->_canBeExpanded != expanded)
   {
-    self->_canBeExpanded = a3;
+    self->_canBeExpanded = expanded;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained carShortcutsCardViewController:self canBeExpandedUpdated:self->_canBeExpanded];
   }
 }
 
-- (void)setShouldBeVisible:(BOOL)a3
+- (void)setShouldBeVisible:(BOOL)visible
 {
-  if (self->_shouldBeVisible != a3)
+  if (self->_shouldBeVisible != visible)
   {
-    self->_shouldBeVisible = a3;
+    self->_shouldBeVisible = visible;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained carShortcutsCardViewController:self visibilityUpdated:self->_shouldBeVisible];
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    self->_expanded = a3;
+    self->_expanded = expanded;
     [(CarCollectionView *)self->_collectionView setScrollEnabled:?];
     [(CarShortcutsCardViewController *)self _updateHeightConstraint];
     collectionView = self->_collectionView;
@@ -476,17 +476,17 @@ LABEL_8:
   [(NSLayoutConstraint *)collectionHeight setConstant:?];
 }
 
-- (double)_preferredHeightUsingCompactLayout:(BOOL)a3
+- (double)_preferredHeightUsingCompactLayout:(BOOL)layout
 {
-  v3 = a3;
-  v5 = [(CarShortcutsCardViewController *)self _numberOfRows];
-  if (v5 < 1)
+  layoutCopy = layout;
+  _numberOfRows = [(CarShortcutsCardViewController *)self _numberOfRows];
+  if (_numberOfRows < 1)
   {
     return 0.0;
   }
 
-  v6 = v5;
-  [(CarShortcutsCardViewController *)self _cellSizeUsingCompactLayout:v3];
+  v6 = _numberOfRows;
+  [(CarShortcutsCardViewController *)self _cellSizeUsingCompactLayout:layoutCopy];
   return (v7 + 12.0) * v6 + -12.0;
 }
 
@@ -513,8 +513,8 @@ LABEL_8:
   v38.receiver = self;
   v38.super_class = CarShortcutsCardViewController;
   [(CarShortcutsCardViewController *)&v38 viewDidLoad];
-  v3 = [(CarShortcutsCardViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"CarShortcutsCard"];
+  view = [(CarShortcutsCardViewController *)self view];
+  [view setAccessibilityIdentifier:@"CarShortcutsCard"];
 
   v4 = objc_alloc_init(UICollectionViewFlowLayout);
   [v4 setMinimumLineSpacing:12.0];
@@ -535,16 +535,16 @@ LABEL_8:
   [(CarCollectionView *)v5 registerClass:v9 forCellWithReuseIdentifier:v10];
 
   [(CarCollectionView *)v5 setScrollEnabled:self->_expanded];
-  v11 = [(CarShortcutsCardViewController *)self view];
-  [v11 addSubview:v5];
+  view2 = [(CarShortcutsCardViewController *)self view];
+  [view2 addSubview:v5];
 
   collectionView = self->_collectionView;
   self->_collectionView = v5;
   v13 = v5;
 
-  v14 = [(CarShortcutsCardViewController *)self view];
-  v15 = [v14 heightAnchor];
-  v16 = [v15 constraintEqualToConstant:0.0];
+  view3 = [(CarShortcutsCardViewController *)self view];
+  heightAnchor = [view3 heightAnchor];
+  v16 = [heightAnchor constraintEqualToConstant:0.0];
   collectionHeight = self->_collectionHeight;
   self->_collectionHeight = v16;
 
@@ -552,26 +552,26 @@ LABEL_8:
   [(NSLayoutConstraint *)self->_collectionHeight setPriority:v18];
   [(CarShortcutsCardViewController *)self _updateHeightConstraint];
   v39[0] = self->_collectionHeight;
-  v35 = [(CarCollectionView *)v13 topAnchor];
-  v36 = [(CarShortcutsCardViewController *)self view];
-  v34 = [v36 topAnchor];
+  topAnchor = [(CarCollectionView *)v13 topAnchor];
+  view4 = [(CarShortcutsCardViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
   +[CarShortcutCollectionViewCell focusRingTopOverhang];
-  v33 = [v35 constraintEqualToAnchor:v34 constant:-v19];
+  v33 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-v19];
   v39[1] = v33;
-  v31 = [(CarCollectionView *)v13 leadingAnchor];
-  v32 = [(CarShortcutsCardViewController *)self view];
-  v30 = [v32 leadingAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  leadingAnchor = [(CarCollectionView *)v13 leadingAnchor];
+  view5 = [(CarShortcutsCardViewController *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v39[2] = v29;
-  v28 = [(CarShortcutsCardViewController *)self view];
-  v20 = [v28 trailingAnchor];
-  v21 = [(CarCollectionView *)v13 trailingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  view6 = [(CarShortcutsCardViewController *)self view];
+  trailingAnchor = [view6 trailingAnchor];
+  trailingAnchor2 = [(CarCollectionView *)v13 trailingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v39[3] = v22;
-  v23 = [(CarShortcutsCardViewController *)self view];
-  v24 = [v23 bottomAnchor];
-  v25 = [(CarCollectionView *)v13 bottomAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  view7 = [(CarShortcutsCardViewController *)self view];
+  bottomAnchor = [view7 bottomAnchor];
+  bottomAnchor2 = [(CarCollectionView *)v13 bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v39[4] = v26;
   v27 = [NSArray arrayWithObjects:v39 count:5];
   [NSLayoutConstraint activateConstraints:v27];
@@ -595,12 +595,12 @@ LABEL_8:
       [v4 registerObserver:v3];
 
       v5 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-      v6 = [v5 shortcutsForCarplay];
-      -[CarShortcutsCardViewController setShouldBeVisible:](v3, "setShouldBeVisible:", [v6 count] != 0);
+      shortcutsForCarplay = [v5 shortcutsForCarplay];
+      -[CarShortcutsCardViewController setShouldBeVisible:](v3, "setShouldBeVisible:", [shortcutsForCarplay count] != 0);
 
       v7 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-      v8 = [v7 shortcutsForCarplay];
-      -[CarShortcutsCardViewController setCanBeExpanded:](v3, "setCanBeExpanded:", [v8 count] > 2);
+      shortcutsForCarplay2 = [v7 shortcutsForCarplay];
+      -[CarShortcutsCardViewController setCanBeExpanded:](v3, "setCanBeExpanded:", [shortcutsForCarplay2 count] > 2);
     }
 
     else

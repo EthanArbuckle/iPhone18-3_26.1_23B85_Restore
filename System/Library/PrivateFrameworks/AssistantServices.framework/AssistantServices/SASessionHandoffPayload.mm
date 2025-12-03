@@ -1,14 +1,14 @@
 @interface SASessionHandoffPayload
-- (void)_ad_setPayloadOnRequestInfo:(id)a3;
+- (void)_ad_setPayloadOnRequestInfo:(id)info;
 @end
 
 @implementation SASessionHandoffPayload
 
-- (void)_ad_setPayloadOnRequestInfo:(id)a3
+- (void)_ad_setPayloadOnRequestInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(SASessionHandoffPayload *)self sessionHandoffData];
-  [v4 setHandoffRequestData:v5];
+  infoCopy = info;
+  sessionHandoffData = [(SASessionHandoffPayload *)self sessionHandoffData];
+  [infoCopy setHandoffRequestData:sessionHandoffData];
 }
 
 @end

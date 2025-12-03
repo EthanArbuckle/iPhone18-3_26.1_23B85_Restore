@@ -2,29 +2,29 @@
 - (BOOL)alwaysShowPlaceholderView;
 - (BOOL)hasTemplateUIImage;
 - (BOOL)isImageMode;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
 - (CGSize)intrinsicContentSize;
 - (CGSize)maximumLayoutSize;
 - (CGSize)minimumLayoutSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (TLKTextButton)init;
 - (UIFont)font;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)matchHeightForAlignmentRectWithIntrinsicContentSizeIfNecessary;
-- (void)setAlignment:(int64_t)a3;
-- (void)setAlwaysShowPlaceholderView:(BOOL)a3;
-- (void)setAttributedTitle:(id)a3 forState:(unint64_t)a4;
-- (void)setFont:(id)a3;
-- (void)setImage:(id)a3 forState:(unint64_t)a4;
-- (void)setMaximumLayoutSize:(CGSize)a3;
-- (void)setMinimumLayoutSize:(CGSize)a3;
-- (void)setProminence:(unint64_t)a3;
-- (void)setRichTitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTlkImage:(id)a3;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAlignment:(int64_t)alignment;
+- (void)setAlwaysShowPlaceholderView:(BOOL)view;
+- (void)setAttributedTitle:(id)title forState:(unint64_t)state;
+- (void)setFont:(id)font;
+- (void)setImage:(id)image forState:(unint64_t)state;
+- (void)setMaximumLayoutSize:(CGSize)size;
+- (void)setMinimumLayoutSize:(CGSize)size;
+- (void)setProminence:(unint64_t)prominence;
+- (void)setRichTitle:(id)title;
+- (void)setTitle:(id)title;
+- (void)setTlkImage:(id)image;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateAttributedTitle;
 - (void)updateImageViewAlignment;
 @end
@@ -37,8 +37,8 @@
 
   if (v3)
   {
-    v4 = [(TLKTextButton *)v3 layer];
-    [v4 setAllowsGroupOpacity:0];
+    layer = [(TLKTextButton *)v3 layer];
+    [layer setAllowsGroupOpacity:0];
 
     [(TLKTextButton *)v3 _setDisableAutomaticTitleAnimations:1];
   }
@@ -48,24 +48,24 @@
 
 - (BOOL)isImageMode
 {
-  v3 = [(TLKTextButton *)self richTitle];
-  if ([v3 hasContent])
+  richTitle = [(TLKTextButton *)self richTitle];
+  if ([richTitle hasContent])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(TLKTextButton *)self title];
-    if ([v5 length])
+    title = [(TLKTextButton *)self title];
+    if ([title length])
     {
       v4 = 0;
     }
 
     else
     {
-      v6 = [(TLKTextButton *)self tlkImage];
-      v4 = v6 != 0;
+      tlkImage = [(TLKTextButton *)self tlkImage];
+      v4 = tlkImage != 0;
     }
   }
 
@@ -76,8 +76,8 @@
 {
   if ([(TLKTextButton *)self isImageMode])
   {
-    v3 = [(TLKTextButton *)self tlkImageView];
-    [v3 intrinsicContentSize];
+    tlkImageView = [(TLKTextButton *)self tlkImageView];
+    [tlkImageView intrinsicContentSize];
     v5 = v4;
     v7 = v6;
 
@@ -107,43 +107,43 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TLKTextButton *)self tlkImageView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  tlkImageView = [(TLKTextButton *)self tlkImageView];
+  [tlkImageView setFrame:{v4, v6, v8, v10}];
 }
 
 - (BOOL)hasTemplateUIImage
 {
-  v2 = [(TLKTextButton *)self imageView];
-  v3 = [v2 image];
+  imageView = [(TLKTextButton *)self imageView];
+  image = [imageView image];
 
-  LOBYTE(v2) = [TLKImage isTemplateImage:v3];
-  return v2;
+  LOBYTE(imageView) = [TLKImage isTemplateImage:image];
+  return imageView;
 }
 
 - (void)updateAttributedTitle
 {
   if (![(TLKTextButton *)self attributedTitleExplicitlySet])
   {
-    v3 = [(TLKTextButton *)self font];
-    v4 = [(TLKTextButton *)self titleLabel];
-    v5 = [v4 adjustsFontForContentSizeCategory];
+    font = [(TLKTextButton *)self font];
+    titleLabel = [(TLKTextButton *)self titleLabel];
+    adjustsFontForContentSizeCategory = [titleLabel adjustsFontForContentSizeCategory];
 
-    if (v5)
+    if (adjustsFontForContentSizeCategory)
     {
-      v6 = [v3 _fontAdjustedForCurrentContentSizeCategory];
+      _fontAdjustedForCurrentContentSizeCategory = [font _fontAdjustedForCurrentContentSizeCategory];
 
-      v3 = v6;
+      font = _fontAdjustedForCurrentContentSizeCategory;
     }
 
-    v7 = [(TLKTextButton *)self richTitle];
+    richTitle = [(TLKTextButton *)self richTitle];
     v8 = [TLKAppearance bestAppearanceForView:self];
-    v9 = [(TLKTextButton *)self prominence];
-    v10 = [(TLKTextButton *)self alignment];
+    prominence = [(TLKTextButton *)self prominence];
+    alignment = [(TLKTextButton *)self alignment];
     [(TLKTextButton *)self effectiveScreenScale];
     v12 = v11;
     v13 = [TLKAppearance bestAppearanceForView:self];
     LOBYTE(v17) = [v13 isDark];
-    v14 = [TLKFontUtilities attributedStringForRichText:v7 appearance:v8 prominence:v9 alignment:v10 font:v3 isButton:1 scale:v12 isDark:v17];
+    v14 = [TLKFontUtilities attributedStringForRichText:richTitle appearance:v8 prominence:prominence alignment:alignment font:font isButton:1 scale:v12 isDark:v17];
     v15 = [v14 mutableCopy];
 
     v18.receiver = self;
@@ -151,18 +151,18 @@
     [(TLKTextButton *)&v18 setAttributedTitle:v15 forState:0];
     if (![(TLKTextButton *)self isImageMode])
     {
-      v16 = [(TLKTextButton *)self tlkImageView];
-      [v16 setTlkImage:0];
+      tlkImageView = [(TLKTextButton *)self tlkImageView];
+      [tlkImageView setTlkImage:0];
     }
   }
 }
 
 - (UIFont)font
 {
-  v2 = [(TLKTextButton *)self titleLabel];
-  v3 = [v2 font];
+  titleLabel = [(TLKTextButton *)self titleLabel];
+  font = [titleLabel font];
 
-  return v3;
+  return font;
 }
 
 - (void)matchHeightForAlignmentRectWithIntrinsicContentSizeIfNecessary
@@ -181,8 +181,8 @@
   v13 = [v12 length];
   if (!v13)
   {
-    v2 = [(TLKTextButton *)self richTitle];
-    if (!v2)
+    richTitle = [(TLKTextButton *)self richTitle];
+    if (!richTitle)
     {
       v16 = 0.0;
 LABEL_7:
@@ -191,8 +191,8 @@ LABEL_7:
     }
   }
 
-  v14 = [(TLKTextButton *)self titleLabel];
-  [v14 intrinsicContentSize];
+  titleLabel = [(TLKTextButton *)self titleLabel];
+  [titleLabel intrinsicContentSize];
   v16 = v15;
 
   if (!v13)
@@ -201,13 +201,13 @@ LABEL_7:
   }
 
 LABEL_8:
-  v17 = [(TLKTextButton *)self tlkImage];
-  [v17 size];
+  tlkImage = [(TLKTextButton *)self tlkImage];
+  [tlkImage size];
   if (v18 == 0.0)
   {
-    v19 = [(TLKTextButton *)self tlkImage];
-    v20 = [v19 uiImage];
-    [v20 size];
+    tlkImage2 = [(TLKTextButton *)self tlkImage];
+    uiImage = [tlkImage2 uiImage];
+    [uiImage size];
     v22 = v21;
   }
 
@@ -244,24 +244,24 @@ LABEL_16:
   [(UIView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
-  v6 = [(TLKMultilineText *)TLKRichText textWithString:v5];
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
+  v6 = [(TLKMultilineText *)TLKRichText textWithString:titleCopy];
   richTitle = self->_richTitle;
   self->_richTitle = v6;
 
   [(UIView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)setTlkImage:(id)a3
+- (void)setTlkImage:(id)image
 {
-  v12 = a3;
-  objc_storeStrong(&self->_tlkImage, a3);
-  v5 = [(TLKTextButton *)self tlkImageView];
+  imageCopy = image;
+  objc_storeStrong(&self->_tlkImage, image);
+  tlkImageView = [(TLKTextButton *)self tlkImageView];
 
-  if (!v5)
+  if (!tlkImageView)
   {
     v6 = objc_opt_new();
     [(TLKTextButton *)self setTlkImageView:v6];
@@ -270,35 +270,35 @@ LABEL_16:
     v7 = objc_opt_new();
     [(TLKTextButton *)self setImage:v7 forState:0];
 
-    v8 = [(TLKTextButton *)self imageView];
-    v9 = [(TLKTextButton *)self tlkImageView];
-    [v8 addSubview:v9];
+    imageView = [(TLKTextButton *)self imageView];
+    tlkImageView2 = [(TLKTextButton *)self tlkImageView];
+    [imageView addSubview:tlkImageView2];
   }
 
-  v10 = [(TLKTextButton *)self tlkImageView];
-  [v10 setTlkImage:v12];
+  tlkImageView3 = [(TLKTextButton *)self tlkImageView];
+  [tlkImageView3 setTlkImage:imageCopy];
 
-  v11 = [(TLKTextButton *)self tlkImageView];
-  [v11 setHidden:v12 == 0];
+  tlkImageView4 = [(TLKTextButton *)self tlkImageView];
+  [tlkImageView4 setHidden:imageCopy == 0];
 
   [(UIView *)self tlk_updateWithCurrentAppearance];
   [(TLKTextButton *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setImage:(id)a3 forState:(unint64_t)a4
+- (void)setImage:(id)image forState:(unint64_t)state
 {
   v5.receiver = self;
   v5.super_class = TLKTextButton;
-  [(TLKTextButton *)&v5 setImage:a3 forState:a4];
+  [(TLKTextButton *)&v5 setImage:image forState:state];
   [(UIView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (![(TLKTextButton *)self isImageMode])
   {
     v16.receiver = self;
@@ -321,14 +321,14 @@ LABEL_16:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if ([(TLKTextButton *)self isImageMode])
   {
-    v6 = [(TLKTextButton *)self tlkImageView];
-    [v6 sizeThatFits:{width, height}];
+    tlkImageView = [(TLKTextButton *)self tlkImageView];
+    [tlkImageView sizeThatFits:{width, height}];
     v8 = v7;
     v10 = v9;
 
@@ -350,8 +350,8 @@ LABEL_16:
 
 - (CGSize)maximumLayoutSize
 {
-  v2 = [(TLKTextButton *)self tlkImageView];
-  [v2 maximumLayoutSize];
+  tlkImageView = [(TLKTextButton *)self tlkImageView];
+  [tlkImageView maximumLayoutSize];
   v4 = v3;
   v6 = v5;
 
@@ -362,18 +362,18 @@ LABEL_16:
   return result;
 }
 
-- (void)setMaximumLayoutSize:(CGSize)a3
+- (void)setMaximumLayoutSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(TLKTextButton *)self tlkImageView];
-  [v5 setMaximumLayoutSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  tlkImageView = [(TLKTextButton *)self tlkImageView];
+  [tlkImageView setMaximumLayoutSize:{width, height}];
 }
 
 - (CGSize)minimumLayoutSize
 {
-  v2 = [(TLKTextButton *)self tlkImageView];
-  [v2 minimumLayoutSize];
+  tlkImageView = [(TLKTextButton *)self tlkImageView];
+  [tlkImageView minimumLayoutSize];
   v4 = v3;
   v6 = v5;
 
@@ -384,39 +384,39 @@ LABEL_16:
   return result;
 }
 
-- (void)setMinimumLayoutSize:(CGSize)a3
+- (void)setMinimumLayoutSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(TLKTextButton *)self tlkImageView];
-  [v5 setMinimumLayoutSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  tlkImageView = [(TLKTextButton *)self tlkImageView];
+  [tlkImageView setMinimumLayoutSize:{width, height}];
 }
 
 - (BOOL)alwaysShowPlaceholderView
 {
-  v2 = [(TLKTextButton *)self tlkImageView];
-  v3 = [v2 placeholderVisibility] == 1;
+  tlkImageView = [(TLKTextButton *)self tlkImageView];
+  v3 = [tlkImageView placeholderVisibility] == 1;
 
   return v3;
 }
 
-- (void)setAlwaysShowPlaceholderView:(BOOL)a3
+- (void)setAlwaysShowPlaceholderView:(BOOL)view
 {
-  v3 = a3;
-  v4 = [(TLKTextButton *)self tlkImageView];
-  [v4 setPlaceholderVisibility:v3];
+  viewCopy = view;
+  tlkImageView = [(TLKTextButton *)self tlkImageView];
+  [tlkImageView setPlaceholderVisibility:viewCopy];
 }
 
-- (void)setRichTitle:(id)a3
+- (void)setRichTitle:(id)title
 {
-  v5 = a3;
-  if (self->_richTitle != v5)
+  titleCopy = title;
+  if (self->_richTitle != titleCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_richTitle, a3);
-    v6 = [(TLKTextButton *)self window];
+    v7 = titleCopy;
+    objc_storeStrong(&self->_richTitle, title);
+    window = [(TLKTextButton *)self window];
 
-    if (v6)
+    if (window)
     {
       [(UIView *)self tlk_updateWithCurrentAppearance];
     }
@@ -426,22 +426,22 @@ LABEL_16:
       [(TLKTextButton *)self updateAttributedTitle];
     }
 
-    v5 = v7;
+    titleCopy = v7;
   }
 }
 
-- (void)setProminence:(unint64_t)a3
+- (void)setProminence:(unint64_t)prominence
 {
-  if (self->_prominence != a3)
+  if (self->_prominence != prominence)
   {
-    self->_prominence = a3;
+    self->_prominence = prominence;
     [(UIView *)self tlk_updateWithCurrentAppearance];
   }
 }
 
-- (void)setAlignment:(int64_t)a3
+- (void)setAlignment:(int64_t)alignment
 {
-  self->_alignment = a3;
+  self->_alignment = alignment;
   [(TLKTextButton *)self updateAttributedTitle];
 
   [(TLKTextButton *)self updateImageViewAlignment];
@@ -450,18 +450,18 @@ LABEL_16:
 - (void)updateImageViewAlignment
 {
   v3 = [(TLKTextButton *)self alignment]== 2;
-  v4 = [(TLKTextButton *)self tlkImageView];
-  [v4 setAlignment:v3];
+  tlkImageView = [(TLKTextButton *)self tlkImageView];
+  [tlkImageView setAlignment:v3];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = TLKTextButton;
-  [(TLKTextButton *)&v9 traitCollectionDidChange:v4];
-  v5 = [(TLKTextButton *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(TLKTextButton *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(TLKTextButton *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -469,11 +469,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(TLKTextButton *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(TLKTextButton *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -481,13 +481,13 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v15.receiver = self;
   v15.super_class = TLKTextButton;
-  [(UIView *)&v15 tlk_updateForAppearance:v4];
-  v5 = [v4 buttonColorForProminence:{-[TLKTextButton prominence](self, "prominence")}];
+  [(UIView *)&v15 tlk_updateForAppearance:appearanceCopy];
+  v5 = [appearanceCopy buttonColorForProminence:{-[TLKTextButton prominence](self, "prominence")}];
   [(TLKTextButton *)self setTintColor:v5];
 
   v6 = MEMORY[0x1E69DD250];
@@ -495,14 +495,14 @@ LABEL_5:
   v10 = 3221225472;
   v11 = __41__TLKTextButton_tlk_updateForAppearance___block_invoke;
   v12 = &unk_1E7FD8DA8;
-  v7 = v4;
+  v7 = appearanceCopy;
   v13 = v7;
-  v14 = self;
+  selfCopy = self;
   [v6 performWithoutAnimation:&v9];
   if ([(TLKTextButton *)self isImageMode:v9]&& ![(TLKTextButton *)self hasTemplateUIImage])
   {
-    v8 = [(TLKTextButton *)self imageView];
-    [TLKView makeContainerShadowCompatible:v8];
+    imageView = [(TLKTextButton *)self imageView];
+    [TLKView makeContainerShadowCompatible:imageView];
   }
 
   if ([(TLKTextButton *)self isImageMode]&& ![(TLKTextButton *)self hasTemplateUIImage])
@@ -539,21 +539,21 @@ void __41__TLKTextButton_tlk_updateForAppearance___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAttributedTitle:(id)a3 forState:(unint64_t)a4
+- (void)setAttributedTitle:(id)title forState:(unint64_t)state
 {
-  v6 = a3 != 0;
-  v7 = a3;
+  v6 = title != 0;
+  titleCopy = title;
   [(TLKTextButton *)self setAttributedTitleExplicitlySet:v6];
   v8.receiver = self;
   v8.super_class = TLKTextButton;
-  [(TLKTextButton *)&v8 setAttributedTitle:v7 forState:a4];
+  [(TLKTextButton *)&v8 setAttributedTitle:titleCopy forState:state];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  v5 = [(TLKTextButton *)self titleLabel];
-  [v5 setFont:v4];
+  fontCopy = font;
+  titleLabel = [(TLKTextButton *)self titleLabel];
+  [titleLabel setFont:fontCopy];
 
   [(UIView *)self tlk_updateWithCurrentAppearance];
 }

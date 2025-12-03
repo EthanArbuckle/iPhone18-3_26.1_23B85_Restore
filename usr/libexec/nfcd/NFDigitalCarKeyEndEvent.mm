@@ -1,37 +1,37 @@
 @interface NFDigitalCarKeyEndEvent
-- (NFDigitalCarKeyEndEvent)initWithCoder:(id)a3;
+- (NFDigitalCarKeyEndEvent)initWithCoder:(id)coder;
 - (id)asDictionary;
 - (id)description;
-- (id)initFromContactlessPaymentEndEvent:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)initFromContactlessPaymentEndEvent:(id)event;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFDigitalCarKeyEndEvent
 
-- (id)initFromContactlessPaymentEndEvent:(id)a3
+- (id)initFromContactlessPaymentEndEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v15.receiver = self;
   v15.super_class = NFDigitalCarKeyEndEvent;
   v5 = [(NFDigitalCarKeyEndEvent *)&v15 init];
   if (v5)
   {
-    v6 = [v4 appletIdentifier];
+    appletIdentifier = [eventCopy appletIdentifier];
     appletIdentifier = v5->_appletIdentifier;
-    v5->_appletIdentifier = v6;
+    v5->_appletIdentifier = appletIdentifier;
 
-    v8 = [v4 keyIdentifier];
+    keyIdentifier = [eventCopy keyIdentifier];
     keyIdentifier = v5->_keyIdentifier;
-    v5->_keyIdentifier = v8;
+    v5->_keyIdentifier = keyIdentifier;
 
-    v5->_didError = [v4 didError];
-    v5->_result = [v4 result];
-    v10 = [v4 parsedInfo];
+    v5->_didError = [eventCopy didError];
+    v5->_result = [eventCopy result];
+    parsedInfo = [eventCopy parsedInfo];
 
-    if (v10)
+    if (parsedInfo)
     {
-      v11 = [v4 parsedInfo];
-      v12 = [v11 objectForKeyedSubscript:@"PairingModeBrandCode"];
+      parsedInfo2 = [eventCopy parsedInfo];
+      v12 = [parsedInfo2 objectForKeyedSubscript:@"PairingModeBrandCode"];
       brandCode = v5->_brandCode;
       v5->_brandCode = v12;
     }
@@ -91,25 +91,25 @@
   return v8;
 }
 
-- (NFDigitalCarKeyEndEvent)initWithCoder:(id)a3
+- (NFDigitalCarKeyEndEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NFDigitalCarKeyEndEvent;
   v5 = [(NFDigitalCarKeyEndEvent *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appletIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appletIdentifier"];
     appletIdentifier = v5->_appletIdentifier;
     v5->_appletIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyIdentifier"];
     keyIdentifier = v5->_keyIdentifier;
     v5->_keyIdentifier = v8;
 
-    v5->_didError = [v4 decodeBoolForKey:@"didError"];
-    v5->_result = [v4 decodeInt32ForKey:@"result"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brandCode"];
+    v5->_didError = [coderCopy decodeBoolForKey:@"didError"];
+    v5->_result = [coderCopy decodeInt32ForKey:@"result"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brandCode"];
     brandCode = v5->_brandCode;
     v5->_brandCode = v10;
   }
@@ -117,15 +117,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appletIdentifier = self->_appletIdentifier;
-  v5 = a3;
-  [v5 encodeObject:appletIdentifier forKey:@"appletIdentifier"];
-  [v5 encodeObject:self->_keyIdentifier forKey:@"keyIdentifier"];
-  [v5 encodeBool:self->_didError forKey:@"didError"];
-  [v5 encodeInt32:self->_result forKey:@"result"];
-  [v5 encodeObject:self->_brandCode forKey:@"brandCode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appletIdentifier forKey:@"appletIdentifier"];
+  [coderCopy encodeObject:self->_keyIdentifier forKey:@"keyIdentifier"];
+  [coderCopy encodeBool:self->_didError forKey:@"didError"];
+  [coderCopy encodeInt32:self->_result forKey:@"result"];
+  [coderCopy encodeObject:self->_brandCode forKey:@"brandCode"];
 }
 
 @end

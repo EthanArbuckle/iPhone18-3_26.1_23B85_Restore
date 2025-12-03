@@ -1,27 +1,27 @@
 @interface DeviceObject
-- (DeviceObject)initWithDevice:(id)a3 andBundleIdentifier:(id)a4;
+- (DeviceObject)initWithDevice:(id)device andBundleIdentifier:(id)identifier;
 @end
 
 @implementation DeviceObject
 
-- (DeviceObject)initWithDevice:(id)a3 andBundleIdentifier:(id)a4
+- (DeviceObject)initWithDevice:(id)device andBundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = DeviceObject;
   v9 = [(DeviceObject *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
+    objc_storeStrong(&v9->_device, device);
     v11 = +[NSMutableArray array];
     bundleIdentifiers = v10->_bundleIdentifiers;
     v10->_bundleIdentifiers = v11;
 
-    if (v8)
+    if (identifierCopy)
     {
-      [(NSMutableArray *)v10->_bundleIdentifiers addObject:v8];
+      [(NSMutableArray *)v10->_bundleIdentifiers addObject:identifierCopy];
     }
   }
 

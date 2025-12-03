@@ -1,54 +1,54 @@
 @interface HDInsertOrUpdateSharingRelationshipOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (HDInsertOrUpdateSharingRelationshipOperation)initWithCodableSharingRelationships:(id)a3 syncProvenance:(int64_t)a4;
-- (HDInsertOrUpdateSharingRelationshipOperation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (HDInsertOrUpdateSharingRelationshipOperation)initWithCodableSharingRelationships:(id)relationships syncProvenance:(int64_t)provenance;
+- (HDInsertOrUpdateSharingRelationshipOperation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDInsertOrUpdateSharingRelationshipOperation
 
-- (HDInsertOrUpdateSharingRelationshipOperation)initWithCodableSharingRelationships:(id)a3 syncProvenance:(int64_t)a4
+- (HDInsertOrUpdateSharingRelationshipOperation)initWithCodableSharingRelationships:(id)relationships syncProvenance:(int64_t)provenance
 {
-  v6 = a3;
+  relationshipsCopy = relationships;
   v11.receiver = self;
   v11.super_class = HDInsertOrUpdateSharingRelationshipOperation;
   v7 = [(HDInsertOrUpdateSharingRelationshipOperation *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [relationshipsCopy copy];
     relationships = v7->_relationships;
     v7->_relationships = v8;
 
-    v7->_syncProvenance = a4;
+    v7->_syncProvenance = provenance;
   }
 
   return v7;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v7 = [a3 sharingAuthorizationManager];
-  LOBYTE(a5) = [v7 insertOrUpdateCodableRelationships:self->_relationships syncProvenance:self->_syncProvenance error:a5];
+  sharingAuthorizationManager = [profile sharingAuthorizationManager];
+  LOBYTE(error) = [sharingAuthorizationManager insertOrUpdateCodableRelationships:self->_relationships syncProvenance:self->_syncProvenance error:error];
 
-  return a5;
+  return error;
 }
 
-- (HDInsertOrUpdateSharingRelationshipOperation)initWithCoder:(id)a3
+- (HDInsertOrUpdateSharingRelationshipOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"relationships"];
-  v6 = [v4 decodeInt64ForKey:@"syncProvenance"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"relationships"];
+  v6 = [coderCopy decodeInt64ForKey:@"syncProvenance"];
 
   v7 = [(HDInsertOrUpdateSharingRelationshipOperation *)self initWithCodableSharingRelationships:v5 syncProvenance:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   relationships = self->_relationships;
-  v5 = a3;
-  [v5 encodeObject:relationships forKey:@"relationships"];
-  [v5 encodeInt64:self->_syncProvenance forKey:@"syncProvenance"];
+  coderCopy = coder;
+  [coderCopy encodeObject:relationships forKey:@"relationships"];
+  [coderCopy encodeInt64:self->_syncProvenance forKey:@"syncProvenance"];
 }
 
 @end

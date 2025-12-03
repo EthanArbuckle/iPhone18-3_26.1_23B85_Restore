@@ -1,36 +1,36 @@
 @interface MFMailboxFilterPickerViewController
-- (MFMailboxFilterPickerViewController)initWithViewModel:(id)a3 delegate:(id)a4;
+- (MFMailboxFilterPickerViewController)initWithViewModel:(id)model delegate:(id)delegate;
 - (MFMailboxFilterPickerViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_setupNavigationBar;
 - (void)_setupTableView;
 - (void)_updateSelectedRows;
-- (void)cancelButtonPressed:(id)a3;
-- (void)doneButtonPressed:(id)a3;
-- (void)mailboxFilterPickerSwitchCell:(id)a3 valueDidChange:(BOOL)a4;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)cancelButtonPressed:(id)pressed;
+- (void)doneButtonPressed:(id)pressed;
+- (void)mailboxFilterPickerSwitchCell:(id)cell valueDidChange:(BOOL)change;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MFMailboxFilterPickerViewController
 
-- (MFMailboxFilterPickerViewController)initWithViewModel:(id)a3 delegate:(id)a4
+- (MFMailboxFilterPickerViewController)initWithViewModel:(id)model delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  modelCopy = model;
+  delegateCopy = delegate;
+  v10 = delegateCopy;
+  if (modelCopy)
   {
-    if (v9)
+    if (delegateCopy)
     {
       goto LABEL_3;
     }
@@ -58,7 +58,7 @@ LABEL_3:
   if (v11)
   {
     objc_storeWeak(&v11->_delegate, v10);
-    objc_storeStrong(&v12->_viewModel, a3);
+    objc_storeStrong(&v12->_viewModel, model);
   }
 
   return v12;
@@ -73,42 +73,42 @@ LABEL_3:
   [(MFMailboxFilterPickerViewController *)self _setupTableView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = MFMailboxFilterPickerViewController;
-  [(MFMailboxFilterPickerViewController *)&v5 viewWillAppear:a3];
-  v4 = [(MFMailboxFilterPickerViewController *)self mf_updatePreferredContentSizeBasedOnTableView];
-  [(MFMailboxFilterPickerViewController *)self setTableViewObserver:v4];
+  [(MFMailboxFilterPickerViewController *)&v5 viewWillAppear:appear];
+  mf_updatePreferredContentSizeBasedOnTableView = [(MFMailboxFilterPickerViewController *)self mf_updatePreferredContentSizeBasedOnTableView];
+  [(MFMailboxFilterPickerViewController *)self setTableViewObserver:mf_updatePreferredContentSizeBasedOnTableView];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MFMailboxFilterPickerViewController;
-  [(MFMailboxFilterPickerViewController *)&v4 viewDidAppear:a3];
+  [(MFMailboxFilterPickerViewController *)&v4 viewDidAppear:appear];
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 postNotificationName:@"MFMailboxFilterPickerViewControllerDidShow" object:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5.receiver = self;
   v5.super_class = MFMailboxFilterPickerViewController;
-  [(MFMailboxFilterPickerViewController *)&v5 traitCollectionDidChange:v4];
+  [(MFMailboxFilterPickerViewController *)&v5 traitCollectionDidChange:changeCopy];
   [(MFMailboxFilterPickerViewController *)self mf_updateTableViewBackgroundColorForPopover];
 }
 
 - (void)_setupTableView
 {
-  v3 = [(MFMailboxFilterPickerViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"MFMailboxFilterPickerSwitchCell"];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"MFMailboxFilterPickerCheckmarkCell"];
-  [v3 setKeyboardDismissMode:1];
-  [v3 setEstimatedRowHeight:44.0];
-  [v3 setRowHeight:UITableViewAutomaticDimension];
-  [v3 setAllowsMultipleSelection:1];
+  tableView = [(MFMailboxFilterPickerViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"MFMailboxFilterPickerSwitchCell"];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"MFMailboxFilterPickerCheckmarkCell"];
+  [tableView setKeyboardDismissMode:1];
+  [tableView setEstimatedRowHeight:44.0];
+  [tableView setRowHeight:UITableViewAutomaticDimension];
+  [tableView setAllowsMultipleSelection:1];
   [(MFMailboxFilterPickerViewController *)self _updateSelectedRows];
 }
 
@@ -119,58 +119,58 @@ LABEL_3:
   [(MFMailboxFilterPickerViewController *)self setTitle:v3];
 
   v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"doneButtonPressed:"];
-  v4 = [(MFMailboxFilterPickerViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:v6];
+  navigationItem = [(MFMailboxFilterPickerViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v6];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(MFMailboxFilterPickerViewController *)self viewModel];
-  v6 = [v5 titleForSection:a4];
+  viewModel = [(MFMailboxFilterPickerViewController *)self viewModel];
+  v6 = [viewModel titleForSection:section];
 
   if (MUISolariumFeatureEnabled())
   {
-    v7 = v6;
+    localizedUppercaseString = v6;
   }
 
   else
   {
-    v7 = [v6 localizedUppercaseString];
+    localizedUppercaseString = [v6 localizedUppercaseString];
   }
 
-  v8 = v7;
+  v8 = localizedUppercaseString;
 
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(MFMailboxFilterPickerViewController *)self viewModel];
-  v4 = [v3 numberOfFilterSection];
+  viewModel = [(MFMailboxFilterPickerViewController *)self viewModel];
+  numberOfFilterSection = [viewModel numberOfFilterSection];
 
-  return v4;
+  return numberOfFilterSection;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(MFMailboxFilterPickerViewController *)self viewModel];
-  v6 = [v5 numberOfFiltersForSection:a4];
+  viewModel = [(MFMailboxFilterPickerViewController *)self viewModel];
+  v6 = [viewModel numberOfFiltersForSection:section];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFMailboxFilterPickerViewController *)self viewModel];
-  v9 = [v8 selectionTypeAtIndex:v7];
+  viewCopy = view;
+  pathCopy = path;
+  viewModel = [(MFMailboxFilterPickerViewController *)self viewModel];
+  v9 = [viewModel selectionTypeAtIndex:pathCopy];
 
   if (v9)
   {
     if (v9 == 1)
     {
-      v10 = [v6 dequeueReusableCellWithIdentifier:@"MFMailboxFilterPickerSwitchCell" forIndexPath:v7];
+      v10 = [viewCopy dequeueReusableCellWithIdentifier:@"MFMailboxFilterPickerSwitchCell" forIndexPath:pathCopy];
       [v10 setDelegate:self];
     }
 
@@ -186,11 +186,11 @@ LABEL_3:
 
   else
   {
-    v10 = [v6 dequeueReusableCellWithIdentifier:@"MFMailboxFilterPickerCheckmarkCell" forIndexPath:v7];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:@"MFMailboxFilterPickerCheckmarkCell" forIndexPath:pathCopy];
   }
 
-  v13 = [(MFMailboxFilterPickerViewController *)self viewModel];
-  v14 = [v13 filterAtIndexPath:v7];
+  viewModel2 = [(MFMailboxFilterPickerViewController *)self viewModel];
+  v14 = [viewModel2 filterAtIndexPath:pathCopy];
 
   [v10 bindWithMailboxFilter:v14];
   [v10 mf_updateBackgroundColorForPopover:{-[MFMailboxFilterPickerViewController mf_supportsPopoverPresentation](self, "mf_supportsPopoverPresentation")}];
@@ -198,20 +198,20 @@ LABEL_3:
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v5 = [(MFMailboxFilterPickerViewController *)self viewModel];
-  [v5 selectFilterAtIndexPath:v6];
+  pathCopy = path;
+  viewModel = [(MFMailboxFilterPickerViewController *)self viewModel];
+  [viewModel selectFilterAtIndexPath:pathCopy];
 }
 
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(MFMailboxFilterPickerViewController *)self viewModel];
-  if ([v6 canDeselectRowAtIndexPath:v5])
+  pathCopy = path;
+  viewModel = [(MFMailboxFilterPickerViewController *)self viewModel];
+  if ([viewModel canDeselectRowAtIndexPath:pathCopy])
   {
-    v7 = v5;
+    v7 = pathCopy;
   }
 
   else
@@ -224,45 +224,45 @@ LABEL_3:
   return v7;
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v5 = [(MFMailboxFilterPickerViewController *)self viewModel];
-  [v5 deselectFilterAtIndexPath:v6];
+  pathCopy = path;
+  viewModel = [(MFMailboxFilterPickerViewController *)self viewModel];
+  [viewModel deselectFilterAtIndexPath:pathCopy];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [v6 mf_updateBackgroundColorForPopover:{-[MFMailboxFilterPickerViewController mf_supportsPopoverPresentation](self, "mf_supportsPopoverPresentation")}];
+  cellCopy = cell;
+  [cellCopy mf_updateBackgroundColorForPopover:{-[MFMailboxFilterPickerViewController mf_supportsPopoverPresentation](self, "mf_supportsPopoverPresentation")}];
 }
 
-- (void)doneButtonPressed:(id)a3
+- (void)doneButtonPressed:(id)pressed
 {
-  v4 = [(MFMailboxFilterPickerViewController *)self viewModel];
-  v6 = [v4 selectedFilters];
+  viewModel = [(MFMailboxFilterPickerViewController *)self viewModel];
+  selectedFilters = [viewModel selectedFilters];
 
-  v5 = [(MFMailboxFilterPickerViewController *)self delegate];
-  [v5 mailboxFilterPickerViewController:self didFinishPickingWithSelectedFilters:v6];
+  delegate = [(MFMailboxFilterPickerViewController *)self delegate];
+  [delegate mailboxFilterPickerViewController:self didFinishPickingWithSelectedFilters:selectedFilters];
 }
 
-- (void)cancelButtonPressed:(id)a3
+- (void)cancelButtonPressed:(id)pressed
 {
-  v4 = [(MFMailboxFilterPickerViewController *)self delegate];
-  [v4 didDismissMailboxFilterPickerViewController:self];
+  delegate = [(MFMailboxFilterPickerViewController *)self delegate];
+  [delegate didDismissMailboxFilterPickerViewController:self];
 }
 
 - (void)_updateSelectedRows
 {
-  v3 = [(MFMailboxFilterPickerViewController *)self tableView];
+  tableView = [(MFMailboxFilterPickerViewController *)self tableView];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(MFMailboxFilterPickerViewController *)self viewModel];
-  v5 = [v4 selected];
+  viewModel = [(MFMailboxFilterPickerViewController *)self viewModel];
+  selected = [viewModel selected];
 
-  v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v6 = [selected countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -273,37 +273,37 @@ LABEL_3:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selected);
         }
 
-        [v3 selectRowAtIndexPath:*(*(&v9 + 1) + 8 * v8) animated:0 scrollPosition:0];
+        [tableView selectRowAtIndexPath:*(*(&v9 + 1) + 8 * v8) animated:0 scrollPosition:0];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [selected countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)mailboxFilterPickerSwitchCell:(id)a3 valueDidChange:(BOOL)a4
+- (void)mailboxFilterPickerSwitchCell:(id)cell valueDidChange:(BOOL)change
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [(MFMailboxFilterPickerViewController *)self tableView];
-  v7 = [v6 indexPathForCell:v9];
+  changeCopy = change;
+  cellCopy = cell;
+  tableView = [(MFMailboxFilterPickerViewController *)self tableView];
+  v7 = [tableView indexPathForCell:cellCopy];
 
-  v8 = [(MFMailboxFilterPickerViewController *)self viewModel];
-  if (v4)
+  viewModel = [(MFMailboxFilterPickerViewController *)self viewModel];
+  if (changeCopy)
   {
-    [v8 selectFilterAtIndexPath:v7];
+    [viewModel selectFilterAtIndexPath:v7];
   }
 
   else
   {
-    [v8 deselectFilterAtIndexPath:v7];
+    [viewModel deselectFilterAtIndexPath:v7];
   }
 }
 

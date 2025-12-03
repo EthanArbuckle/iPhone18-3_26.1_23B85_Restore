@@ -3,8 +3,8 @@
 - (UIViewController)selectedViewController;
 - (void)_addSelectedViewController;
 - (void)layoutSubviews;
-- (void)setContentViewControllers:(id)a3;
-- (void)setSelectedViewControllerIndex:(int64_t)a3;
+- (void)setContentViewControllers:(id)controllers;
+- (void)setSelectedViewControllerIndex:(int64_t)index;
 @end
 
 @implementation SUUIIPadChartsColumnView
@@ -25,39 +25,39 @@
   return v4;
 }
 
-- (void)setContentViewControllers:(id)a3
+- (void)setContentViewControllers:(id)controllers
 {
-  v5 = a3;
-  if (self->_contentViewControllers != v5)
+  controllersCopy = controllers;
+  if (self->_contentViewControllers != controllersCopy)
   {
-    v8 = v5;
-    v6 = [(SUUIIPadChartsColumnView *)self selectedViewController];
-    if ([v6 isViewLoaded])
+    v8 = controllersCopy;
+    selectedViewController = [(SUUIIPadChartsColumnView *)self selectedViewController];
+    if ([selectedViewController isViewLoaded])
     {
-      v7 = [v6 view];
-      [v7 removeFromSuperview];
+      view = [selectedViewController view];
+      [view removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_contentViewControllers, a3);
+    objc_storeStrong(&self->_contentViewControllers, controllers);
     self->_selectedViewControllerIndex = 0;
     [(SUUIIPadChartsColumnView *)self _addSelectedViewController];
 
-    v5 = v8;
+    controllersCopy = v8;
   }
 }
 
-- (void)setSelectedViewControllerIndex:(int64_t)a3
+- (void)setSelectedViewControllerIndex:(int64_t)index
 {
-  if (self->_selectedViewControllerIndex != a3)
+  if (self->_selectedViewControllerIndex != index)
   {
-    v6 = [(SUUIIPadChartsColumnView *)self selectedViewController];
-    if ([v6 isViewLoaded])
+    selectedViewController = [(SUUIIPadChartsColumnView *)self selectedViewController];
+    if ([selectedViewController isViewLoaded])
     {
-      v5 = [v6 view];
-      [v5 removeFromSuperview];
+      view = [selectedViewController view];
+      [view removeFromSuperview];
     }
 
-    self->_selectedViewControllerIndex = a3;
+    self->_selectedViewControllerIndex = index;
     [(SUUIIPadChartsColumnView *)self _addSelectedViewController];
   }
 }
@@ -67,31 +67,31 @@
   v5.receiver = self;
   v5.super_class = SUUIIPadChartsColumnView;
   [(SUUIIPadChartsColumnView *)&v5 layoutSubviews];
-  v3 = [(SUUIIPadChartsColumnView *)self selectedViewController];
-  v4 = [v3 view];
+  selectedViewController = [(SUUIIPadChartsColumnView *)self selectedViewController];
+  view = [selectedViewController view];
   [(SUUIIPadChartsColumnView *)self bounds];
-  [v4 setFrame:?];
+  [view setFrame:?];
 }
 
 - (void)_addSelectedViewController
 {
-  v3 = [(SUUIIPadChartsColumnView *)self selectedViewController];
-  if (v3)
+  selectedViewController = [(SUUIIPadChartsColumnView *)self selectedViewController];
+  if (selectedViewController)
   {
-    v21 = v3;
-    v4 = [v3 view];
-    [(SUUIIPadChartsColumnView *)self addSubview:v4];
+    v21 = selectedViewController;
+    view = [selectedViewController view];
+    [(SUUIIPadChartsColumnView *)self addSubview:view];
 
-    v5 = [v21 contentScrollView];
-    v6 = v5;
-    if (v5)
+    contentScrollView = [v21 contentScrollView];
+    v6 = contentScrollView;
+    if (contentScrollView)
     {
       p_contentInset = &self->_contentInset;
       top = p_contentInset->top;
       left = p_contentInset->left;
       bottom = p_contentInset->bottom;
       right = p_contentInset->right;
-      [v5 contentOffset];
+      [contentScrollView contentOffset];
       v13 = v12;
       v15 = v14;
       [v6 scrollIndicatorInsets];
@@ -108,7 +108,7 @@
       [v6 setScrollIndicatorInsets:{v20, v17, bottom, v19}];
     }
 
-    v3 = v21;
+    selectedViewController = v21;
   }
 }
 

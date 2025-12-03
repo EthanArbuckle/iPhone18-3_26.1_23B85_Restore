@@ -1,11 +1,11 @@
 @interface ABTKoreanTranslator
-+ (id)translate:(id)a3;
++ (id)translate:(id)translate;
 - (_TtC22AppleBrailleTranslator19ABTKoreanTranslator)init;
 @end
 
 @implementation ABTKoreanTranslator
 
-+ (id)translate:(id)a3
++ (id)translate:(id)translate
 {
   v3 = sub_21880();
   v5 = v4;

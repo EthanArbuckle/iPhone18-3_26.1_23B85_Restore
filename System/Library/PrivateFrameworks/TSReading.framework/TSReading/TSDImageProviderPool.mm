@@ -1,26 +1,26 @@
 @interface TSDImageProviderPool
-+ (Class)p_providerClassForData:(id)a3;
++ (Class)p_providerClassForData:(id)data;
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)sharedPool;
 - (TSDImageProviderPool)init;
-- (id)p_providerForData:(id)a3 temporary:(BOOL)a4 shouldValidate:(BOOL)a5;
+- (id)p_providerForData:(id)data temporary:(BOOL)temporary shouldValidate:(BOOL)validate;
 - (unint64_t)p_removeProvidersWithZeroInterest;
-- (void)addInterestInProviderForData:(id)a3;
+- (void)addInterestInProviderForData:(id)data;
 - (void)dealloc;
 - (void)flushImageProviders;
-- (void)p_freeFileDescriptorsWithProviderCount:(unint64_t)a3;
+- (void)p_freeFileDescriptorsWithProviderCount:(unint64_t)count;
 - (void)p_updateFileDescriptorLimit;
-- (void)removeInterestInProviderForData:(id)a3;
-- (void)willCloseDocumentContext:(id)a3;
-- (void)willCullData:(id)a3;
+- (void)removeInterestInProviderForData:(id)data;
+- (void)willCloseDocumentContext:(id)context;
+- (void)willCullData:(id)data;
 @end
 
 @implementation TSDImageProviderPool
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSDImageProviderPool;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -30,32 +30,32 @@
   result = sharedPool_sSingletonInstance;
   if (!sharedPool_sSingletonInstance)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!sharedPool_sSingletonInstance)
     {
-      v4 = [objc_msgSend(a1 "_singletonAlloc")];
+      v4 = [objc_msgSend(self "_singletonAlloc")];
       __dmb(0xBu);
       sharedPool_sSingletonInstance = v4;
       if (!v4)
       {
-        v5 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDImageProviderPool sharedPool]"];
-        [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageProviderPool.m"), 50, @"Couldn't create singleton instance of %@", a1}];
+        [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageProviderPool.m"), 50, @"Couldn't create singleton instance of %@", self}];
       }
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return sharedPool_sSingletonInstance;
   }
 
   return result;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDImageProviderPool allocWithZone:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageProviderPool.m"), 50, @"Don't alloc a singleton"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageProviderPool.m"), 50, @"Don't alloc a singleton"}];
   return 0;
 }
 
@@ -68,8 +68,8 @@
   {
     v2->mImageDataToImageProviderMap = objc_alloc_init(MEMORY[0x277D6C348]);
     [(TSDImageProviderPool *)v2 p_updateFileDescriptorLimit];
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_p_didReceiveMemoryWarning_ name:*MEMORY[0x277D76670] object:{objc_msgSend(MEMORY[0x277D75128], "sharedApplication")}];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_p_didReceiveMemoryWarning_ name:*MEMORY[0x277D76670] object:{objc_msgSend(MEMORY[0x277D75128], "sharedApplication")}];
     [TSPData addCullingListener:v2];
   }
 
@@ -85,8 +85,8 @@
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -98,14 +98,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) removeOwner];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -116,22 +116,22 @@
   [(TSDImageProviderPool *)&v8 dealloc];
 }
 
-+ (Class)p_providerClassForData:(id)a3
++ (Class)p_providerClassForData:(id)data
 {
-  v4 = [a3 isLengthLikelyToBeGreaterThan:TSDImageMaxAllowedDataLength()];
+  v4 = [data isLengthLikelyToBeGreaterThan:TSDImageMaxAllowedDataLength()];
   v5 = 0;
-  if (+[TSPData null]== a3 || (v4 & 1) != 0)
+  if (+[TSPData null]== data || (v4 & 1) != 0)
   {
     return v5;
   }
 
-  v6 = [a3 type];
-  if (UTTypeConformsTo(v6, *MEMORY[0x277CC2110]))
+  type = [data type];
+  if (UTTypeConformsTo(type, *MEMORY[0x277CC2110]))
   {
     return 0;
   }
 
-  if (!-[__CFString isEqualToString:](v6, "isEqualToString:", @"com.adobe.illustrator.ai-image") && !UTTypeConformsTo(v6, *MEMORY[0x277CC20B0]) && !UTTypeConformsTo(v6, [*MEMORY[0x277CE1E08] identifier]))
+  if (!-[__CFString isEqualToString:](type, "isEqualToString:", @"com.adobe.illustrator.ai-image") && !UTTypeConformsTo(type, *MEMORY[0x277CC20B0]) && !UTTypeConformsTo(type, [*MEMORY[0x277CE1E08] identifier]))
   {
     v16 = 0;
     v15 = 0;
@@ -145,7 +145,7 @@
     v10[3] = &unk_279D48B88;
     v10[4] = &v11;
     v10[5] = &v15;
-    [a3 performInputStreamReadWithAccessor:v10];
+    [data performInputStreamReadWithAccessor:v10];
     if (*(v12 + 24) == 1 && (v15 == 1178882085 ? (v8 = v16 == 45) : (v8 = 0), v8))
     {
       v5 = objc_opt_class();
@@ -153,11 +153,11 @@
 
     else
     {
-      v9 = [a3 newCGImage];
-      if (v9)
+      newCGImage = [data newCGImage];
+      if (newCGImage)
       {
         v5 = objc_opt_class();
-        CGImageRelease(v9);
+        CGImageRelease(newCGImage);
       }
 
       else
@@ -197,19 +197,19 @@ uint64_t __47__TSDImageProviderPool_p_providerClassForData___block_invoke(uint64
   return result;
 }
 
-- (id)p_providerForData:(id)a3 temporary:(BOOL)a4 shouldValidate:(BOOL)a5
+- (id)p_providerForData:(id)data temporary:(BOOL)temporary shouldValidate:(BOOL)validate
 {
-  v5 = a5;
-  v6 = a3;
-  if (!a3)
+  validateCopy = validate;
+  dataCopy = data;
+  if (!data)
   {
     goto LABEL_4;
   }
 
-  v8 = a4;
-  if ([a3 needsDownload])
+  temporaryCopy = temporary;
+  if ([data needsDownload])
   {
-    v6 = 0;
+    dataCopy = 0;
 LABEL_4:
     mOpenFileDescriptorLimit = 0;
     v10 = 0;
@@ -218,9 +218,9 @@ LABEL_4:
 
   objc_sync_enter(self);
   mOpenFileDescriptorLimit = self->mOpenFileDescriptorLimit;
-  v11 = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap objectForKey:v6];
+  v11 = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap objectForKey:dataCopy];
   v10 = v11;
-  if (v11 || (objc_sync_exit(self), objc_sync_enter(self), v11 = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap objectForKey:v6], (v10 = v11) != 0))
+  if (v11 || (objc_sync_exit(self), objc_sync_enter(self), v11 = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap objectForKey:dataCopy], (v10 = v11) != 0))
   {
     [(TSDImageProvider *)v11 ownerAccess];
     v12 = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap count];
@@ -228,23 +228,23 @@ LABEL_4:
 
   else
   {
-    v14 = [objc_opt_class() p_providerClassForData:v6];
+    v14 = [objc_opt_class() p_providerClassForData:dataCopy];
     if (!v14)
     {
-      v6 = 0;
+      dataCopy = 0;
       v10 = 0;
       goto LABEL_9;
     }
 
-    v15 = [[v14 alloc] initWithImageData:v6];
+    v15 = [[v14 alloc] initWithImageData:dataCopy];
     v10 = v15;
     if (!v15)
     {
-      v6 = 0;
+      dataCopy = 0;
       goto LABEL_9;
     }
 
-    if (v8)
+    if (temporaryCopy)
     {
       v16 = v15;
     }
@@ -252,14 +252,14 @@ LABEL_4:
     else
     {
       [(TSDImageProvider *)v15 addOwner];
-      [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap setObject:v10 forUncopiedKey:v6];
+      [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap setObject:v10 forUncopiedKey:dataCopy];
       [(TSDImageProvider *)v10 ownerAccess];
     }
 
     v12 = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap count];
   }
 
-  v6 = v12;
+  dataCopy = v12;
 LABEL_9:
   objc_sync_exit(self);
 LABEL_10:
@@ -269,7 +269,7 @@ LABEL_10:
   [(TSDImageProvider *)v10 removeInterest];
   if (v10)
   {
-    if (!v5)
+    if (!validateCopy)
     {
       goto LABEL_16;
     }
@@ -278,7 +278,7 @@ LABEL_10:
   else
   {
     v10 = +[TSDErrorImageProvider sharedInstance];
-    if (!v5)
+    if (!validateCopy)
     {
       goto LABEL_16;
     }
@@ -290,50 +290,50 @@ LABEL_10:
   }
 
 LABEL_16:
-  if (v6 > [(TSDImageProviderPool *)self p_providerLimitForFileDescriptorLimit:mOpenFileDescriptorLimit])
+  if (dataCopy > [(TSDImageProviderPool *)self p_providerLimitForFileDescriptorLimit:mOpenFileDescriptorLimit])
   {
-    [(TSDImageProviderPool *)self p_freeFileDescriptorsWithProviderCount:v6];
+    [(TSDImageProviderPool *)self p_freeFileDescriptorsWithProviderCount:dataCopy];
   }
 
   return v10;
 }
 
-- (void)addInterestInProviderForData:(id)a3
+- (void)addInterestInProviderForData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = [(TSDImageProviderPool *)self providerForData:a3 shouldValidate:0];
+    v3 = [(TSDImageProviderPool *)self providerForData:data shouldValidate:0];
 
     [v3 addInterest];
   }
 
   else
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageProviderPool addInterestInProviderForData:]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageProviderPool.m"), 267, @"invalid nil value for '%s'", "imageData"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageProviderPool.m"), 267, @"invalid nil value for '%s'", "imageData"}];
   }
 }
 
-- (void)removeInterestInProviderForData:(id)a3
+- (void)removeInterestInProviderForData:(id)data
 {
-  if (a3)
+  if (data)
   {
     objc_sync_enter(self);
-    [-[TSUPointerKeyDictionary objectForKey:](self->mImageDataToImageProviderMap objectForKey:{a3), "removeInterest"}];
+    [-[TSUPointerKeyDictionary objectForKey:](self->mImageDataToImageProviderMap objectForKey:{data), "removeInterest"}];
 
     objc_sync_exit(self);
   }
 
   else
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageProviderPool removeInterestInProviderForData:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageProviderPool.m"), 276, @"invalid nil value for '%s'", "imageData"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageProviderPool.m"), 276, @"invalid nil value for '%s'", "imageData"}];
   }
 }
 
-- (void)willCloseDocumentContext:(id)a3
+- (void)willCloseDocumentContext:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -341,9 +341,9 @@ LABEL_16:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap objectEnumerator];
+  objectEnumerator = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap objectEnumerator];
   v6 = 0;
-  v7 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
     v8 = *v22;
@@ -353,12 +353,12 @@ LABEL_16:
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 imageData];
-        if (v11 && [v11 context] == a3)
+        imageData = [v10 imageData];
+        if (imageData && [imageData context] == context)
         {
           if (!v6)
           {
@@ -369,7 +369,7 @@ LABEL_16:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v7);
@@ -394,10 +394,10 @@ LABEL_16:
 
         v15 = *(*(&v17 + 1) + 8 * j);
         [v15 removeOwner];
-        v16 = [v15 imageData];
-        if (v16)
+        imageData2 = [v15 imageData];
+        if (imageData2)
         {
-          [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap removeObjectForKey:v16];
+          [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap removeObjectForKey:imageData2];
         }
       }
 
@@ -418,8 +418,8 @@ LABEL_16:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  objectEnumerator = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -429,7 +429,7 @@ LABEL_16:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v7 = *(*(&v8 + 1) + 8 * i);
@@ -437,7 +437,7 @@ LABEL_16:
         [v7 removeOwner];
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -447,34 +447,34 @@ LABEL_16:
   objc_sync_exit(self);
 }
 
-- (void)willCullData:(id)a3
+- (void)willCullData:(id)data
 {
   objc_sync_enter(self);
-  v5 = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap objectForKey:a3];
+  v5 = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap objectForKey:data];
   if (v5)
   {
     [v5 removeOwner];
-    [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap removeObjectForKey:a3];
+    [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap removeObjectForKey:data];
   }
 
-  [TSDBitmapImageProvider clearCacheForData:a3];
+  [TSDBitmapImageProvider clearCacheForData:data];
 
   objc_sync_exit(self);
 }
 
-- (void)p_freeFileDescriptorsWithProviderCount:(unint64_t)a3
+- (void)p_freeFileDescriptorsWithProviderCount:(unint64_t)count
 {
   v35 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
   obj = self;
   [(TSDImageProviderPool *)self p_updateFileDescriptorLimit];
   v5 = [(TSDImageProviderPool *)self p_providerLimitForFileDescriptorLimit:self->mOpenFileDescriptorLimit];
-  if (v5 < a3)
+  if (v5 < count)
   {
-    a3 -= [(TSDImageProviderPool *)self p_removeProvidersWithZeroInterest];
+    count -= [(TSDImageProviderPool *)self p_removeProvidersWithZeroInterest];
   }
 
-  if (a3 > v5 && !self->mHaveRaisedFileDescriptorLimit && self->mOpenFileDescriptorLimit <= 0x7FF)
+  if (count > v5 && !self->mHaveRaisedFileDescriptorLimit && self->mOpenFileDescriptorLimit <= 0x7FF)
   {
     v6 = 2048;
     do
@@ -503,18 +503,18 @@ LABEL_16:
     self->mHaveRaisedFileDescriptorLimit = 1;
   }
 
-  if (a3 > v5)
+  if (count > v5)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v8 = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap objectEnumerator];
-    v9 = [v8 countByEnumeratingWithState:&v28 objects:v34 count:16];
+    objectEnumerator = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap objectEnumerator];
+    v9 = [objectEnumerator countByEnumeratingWithState:&v28 objects:v34 count:16];
     if (v9)
     {
-      v10 = a3 - ((3 * v5) >> 2);
+      v10 = count - ((3 * v5) >> 2);
       v11 = *v29;
       do
       {
@@ -522,7 +522,7 @@ LABEL_16:
         {
           if (*v29 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v13 = *(*(&v28 + 1) + 8 * i);
@@ -554,7 +554,7 @@ LABEL_16:
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v28 objects:v34 count:16];
+        v9 = [objectEnumerator countByEnumeratingWithState:&v28 objects:v34 count:16];
       }
 
       while (v9);
@@ -579,10 +579,10 @@ LABEL_16:
 
           v21 = *(*(&v24 + 1) + 8 * j);
           [v21 removeOwner];
-          v22 = [v21 imageData];
-          if (v22)
+          imageData = [v21 imageData];
+          if (imageData)
           {
-            [(TSUPointerKeyDictionary *)obj->mImageDataToImageProviderMap removeObjectForKey:v22];
+            [(TSUPointerKeyDictionary *)obj->mImageDataToImageProviderMap removeObjectForKey:imageData];
           }
         }
 
@@ -604,9 +604,9 @@ LABEL_16:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap objectEnumerator];
+  objectEnumerator = [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap objectEnumerator];
   v4 = 0;
-  v5 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v5)
   {
     v6 = *v21;
@@ -616,7 +616,7 @@ LABEL_16:
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
@@ -631,7 +631,7 @@ LABEL_16:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v5);
@@ -656,10 +656,10 @@ LABEL_16:
 
         v12 = *(*(&v16 + 1) + 8 * j);
         [v12 removeOwner];
-        v13 = [v12 imageData];
-        if (v13)
+        imageData = [v12 imageData];
+        if (imageData)
         {
-          [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap removeObjectForKey:v13];
+          [(TSUPointerKeyDictionary *)self->mImageDataToImageProviderMap removeObjectForKey:imageData];
         }
       }
 
@@ -681,9 +681,9 @@ LABEL_16:
   v6.rlim_max = 0;
   if (getrlimit(8, &v6))
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageProviderPool p_updateFileDescriptorLimit]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageProviderPool.m"), 512, @"Failed to get fd limit: getrlimit set errno to %d. Assuming limit of 256.", *__error()}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageProviderPool.m"), 512, @"Failed to get fd limit: getrlimit set errno to %d. Assuming limit of 256.", *__error()}];
     rlim_cur = 256;
   }
 

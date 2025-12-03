@@ -1,26 +1,26 @@
 @interface _MFMailComposeAttachmentLoader
-- (_MFMailComposeAttachmentLoader)initWithMessage:(id)a3 content:(id)a4 isDraft:(BOOL)a5 didLoadBestAlternative:(BOOL)a6 completion:(id)a7;
+- (_MFMailComposeAttachmentLoader)initWithMessage:(id)message content:(id)content isDraft:(BOOL)draft didLoadBestAlternative:(BOOL)alternative completion:(id)completion;
 - (void)loadAttachments;
 @end
 
 @implementation _MFMailComposeAttachmentLoader
 
-- (_MFMailComposeAttachmentLoader)initWithMessage:(id)a3 content:(id)a4 isDraft:(BOOL)a5 didLoadBestAlternative:(BOOL)a6 completion:(id)a7
+- (_MFMailComposeAttachmentLoader)initWithMessage:(id)message content:(id)content isDraft:(BOOL)draft didLoadBestAlternative:(BOOL)alternative completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  messageCopy = message;
+  contentCopy = content;
+  completionCopy = completion;
   v21.receiver = self;
   v21.super_class = _MFMailComposeAttachmentLoader;
   v16 = [(_MFMailComposeAttachmentLoader *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_message, a3);
-    objc_storeStrong(&v17->_content, a4);
-    v17->_isDraft = a5;
-    v17->_didLoadBestAlternative = a6;
-    v18 = [v15 copy];
+    objc_storeStrong(&v16->_message, message);
+    objc_storeStrong(&v17->_content, content);
+    v17->_isDraft = draft;
+    v17->_didLoadBestAlternative = alternative;
+    v18 = [completionCopy copy];
     completionBlock = v17->_completionBlock;
     v17->_completionBlock = v18;
   }
@@ -31,7 +31,7 @@
 - (void)loadAttachments
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v29 = [MEMORY[0x1E69B15A8] currentMonitor];
+  currentMonitor = [MEMORY[0x1E69B15A8] currentMonitor];
   v27 = self->_content;
   if (v27 && (self->_didLoadBestAlternative || !self->_isDraft) || (-[MFMailMessage messageBody](self->_message, "messageBody"), v2 = objc_claimAutoreleasedReturnValue(), [v2 htmlContent], v3 = objc_claimAutoreleasedReturnValue(), v27, v2, (v27 = v3) != 0))
   {
@@ -51,16 +51,16 @@
     v6 = [v4 count];
     if (v6 == 1)
     {
-      v7 = [v5 lastObject];
+      lastObject = [v5 lastObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v9 = [v5 lastObject];
-        v10 = [v9 attachmentsInDocument];
+        lastObject2 = [v5 lastObject];
+        attachmentsInDocument = [lastObject2 attachmentsInDocument];
 
-        v5 = v10;
+        v5 = attachmentsInDocument;
       }
     }
 
@@ -92,8 +92,8 @@
             v35 = 0u;
             v32 = 0u;
             v33 = 0u;
-            v17 = [MEMORY[0x1E69B15D0] allManagers];
-            v18 = [v17 countByEnumeratingWithState:&v32 objects:v40 count:16];
+            allManagers = [MEMORY[0x1E69B15D0] allManagers];
+            v18 = [allManagers countByEnumeratingWithState:&v32 objects:v40 count:16];
             if (v18)
             {
               v19 = *v33;
@@ -103,7 +103,7 @@
                 {
                   if (*v33 != v19)
                   {
-                    objc_enumerationMutation(v17);
+                    objc_enumerationMutation(allManagers);
                   }
 
                   v21 = [*(*(&v32 + 1) + 8 * j) attachmentForTextAttachment:v16 error:0];
@@ -115,14 +115,14 @@
                   }
                 }
 
-                v18 = [v17 countByEnumeratingWithState:&v32 objects:v40 count:16];
+                v18 = [allManagers countByEnumeratingWithState:&v32 objects:v40 count:16];
               }
 
               while (v18);
             }
           }
 
-          [v29 setPercentDone:(++v12 / v14)];
+          [currentMonitor setPercentDone:(++v12 / v14)];
         }
 
         v11 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
@@ -135,7 +135,7 @@
   else
   {
     v27 = 0;
-    [v29 setPercentDone:1.0];
+    [currentMonitor setPercentDone:1.0];
     obj = 0;
   }
 

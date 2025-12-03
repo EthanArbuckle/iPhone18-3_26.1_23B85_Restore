@@ -3,12 +3,12 @@
 + (GKMeshGraph)graphWithBufferRadius:(float)bufferRadius minCoordinate:(vector_float2)min maxCoordinate:(vector_float2)max nodeClass:(Class)nodeClass;
 - (GKMeshGraph)initWithBufferRadius:(float)bufferRadius minCoordinate:(vector_float2)min maxCoordinate:(vector_float2)max;
 - (GKMeshGraph)initWithBufferRadius:(float)bufferRadius minCoordinate:(vector_float2)min maxCoordinate:(vector_float2)max nodeClass:(Class)nodeClass;
-- (GKMeshGraph)initWithCoder:(id)a3;
+- (GKMeshGraph)initWithCoder:(id)coder;
 - (GKMeshGraphTriangulationMode)triangulationMode;
-- (GKTriangle)triangleAtIndex:(SEL)a3;
+- (GKTriangle)triangleAtIndex:(SEL)index;
 - (void)addObstacles:(NSArray *)obstacles;
 - (void)connectNodeUsingObstacles:(id)node;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeObstacles:(NSArray *)obstacles;
 - (void)setTriangulationMode:(GKMeshGraphTriangulationMode)triangulationMode;
 @end
@@ -46,7 +46,7 @@
 
 + (GKMeshGraph)graphWithBufferRadius:(float)bufferRadius minCoordinate:(vector_float2)min maxCoordinate:(vector_float2)max nodeClass:(Class)nodeClass
 {
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   *&v11 = bufferRadius;
   v12 = [v10 initWithBufferRadius:nodeClass minCoordinate:v11 maxCoordinate:*&min nodeClass:*&max];
 
@@ -62,9 +62,9 @@
   if (v10)
   {
     v10->_nodeClass = nodeClass;
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     sourceObstacles = v11->_sourceObstacles;
-    v11->_sourceObstacles = v12;
+    v11->_sourceObstacles = array;
 
     cMeshGraph = v11->_cMeshGraph;
     cMeshGraph[84].f32[0] = fmaxf(bufferRadius, 0.0);
@@ -80,7 +80,7 @@
   v9 = objc_opt_class();
   *&v10 = bufferRadius;
 
-  return [a1 graphWithBufferRadius:v9 minCoordinate:v10 maxCoordinate:*&min nodeClass:*&max];
+  return [self graphWithBufferRadius:v9 minCoordinate:v10 maxCoordinate:*&min nodeClass:*&max];
 }
 
 - (GKMeshGraph)initWithBufferRadius:(float)bufferRadius minCoordinate:(vector_float2)min maxCoordinate:(vector_float2)max
@@ -172,7 +172,7 @@
   GKCMeshGraph::ConnectNodeUsingObstacles(self->_cMeshGraph, [v4 cGraphNode2D]);
 }
 
-- (GKTriangle)triangleAtIndex:(SEL)a3
+- (GKTriangle)triangleAtIndex:(SEL)index
 {
   result = GKCMeshGraph::TriangleAtIndex(self->_cMeshGraph, index);
   v5 = vcvt_f32_f64(*result->points[0].i64[1]);
@@ -181,14 +181,14 @@
   return result;
 }
 
-- (GKMeshGraph)initWithCoder:(id)a3
+- (GKMeshGraph)initWithCoder:(id)coder
 {
   v61[11] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v59.receiver = self;
   v59.super_class = GKMeshGraph;
-  v45 = v4;
-  v5 = [(GKGraph *)&v59 initWithCoder:v4];
+  v45 = coderCopy;
+  v5 = [(GKGraph *)&v59 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -206,25 +206,25 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:11];
     [v6 addObjectsFromArray:v7];
 
-    v8 = [v4 allowedClasses];
-    [v6 unionSet:v8];
+    allowedClasses = [coderCopy allowedClasses];
+    [v6 unionSet:allowedClasses];
 
-    obj = [v4 decodeObjectOfClasses:v6 forKey:@"_sourceObstacles"];
-    v44 = [v4 decodeObjectOfClasses:v6 forKey:@"extrudedObstacles"];
-    [v4 decodeFloatForKey:@"bufferRadius"];
+    obj = [coderCopy decodeObjectOfClasses:v6 forKey:@"_sourceObstacles"];
+    v44 = [coderCopy decodeObjectOfClasses:v6 forKey:@"extrudedObstacles"];
+    [coderCopy decodeFloatForKey:@"bufferRadius"];
     v10 = v9;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"class"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"class"];
     v5->_nodeClass = NSClassFromString(v11);
 
     *(v5->_cMeshGraph + 168) = fmaxf(v10, 0.0);
     objc_storeStrong(&v5->_sourceObstacles, obj);
-    [v4 decodeFloatForKey:@"minX"];
+    [coderCopy decodeFloatForKey:@"minX"];
     v50 = v12;
-    [v4 decodeFloatForKey:@"minY"];
+    [coderCopy decodeFloatForKey:@"minY"];
     *(v5->_cMeshGraph + 85) = __PAIR64__(v13, v50);
-    [v4 decodeFloatForKey:@"maxX"];
+    [coderCopy decodeFloatForKey:@"maxX"];
     v51 = v14;
-    [v4 decodeFloatForKey:@"maxY"];
+    [coderCopy decodeFloatForKey:@"maxY"];
     *(v5->_cMeshGraph + 86) = __PAIR64__(v15, v51);
     std::vector<GKPolygonObstacle * {__strong}>::reserve(v5->_cMeshGraph + 53, [v44 count]);
     cMeshGraph = v5->_cMeshGraph;
@@ -275,8 +275,8 @@
 
           v24[54] = v26;
           v27 = v5->_cMeshGraph;
-          v53 = [v58 cPolygonObstacle];
-          std::vector<GKCPolygonObstacle *>::push_back[abi:ne200100](v27 + 400, &v53);
+          cPolygonObstacle = [v58 cPolygonObstacle];
+          std::vector<GKCPolygonObstacle *>::push_back[abi:ne200100](v27 + 400, &cPolygonObstacle);
         }
 
         v20 = [v19 countByEnumeratingWithState:&v54 objects:v60 count:16];
@@ -295,9 +295,9 @@
       {
         v52 = [obj objectAtIndexedSubscript:v29];
         v49 = [v19 objectAtIndexedSubscript:v29];
-        v30 = [v49 cPolygonObstacle];
+        cPolygonObstacle2 = [v49 cPolygonObstacle];
         v31 = v5->_cMeshGraph;
-        v32 = [v52 cPolygonObstacle];
+        cPolygonObstacle3 = [v52 cPolygonObstacle];
         v33 = v31[57];
         if (!v33)
         {
@@ -311,7 +311,7 @@ LABEL_23:
           {
             v34 = v33;
             v35 = v33[4];
-            if (v32 >= v35)
+            if (cPolygonObstacle3 >= v35)
             {
               break;
             }
@@ -323,7 +323,7 @@ LABEL_23:
             }
           }
 
-          if (v35 >= v32)
+          if (v35 >= cPolygonObstacle3)
           {
             break;
           }
@@ -335,10 +335,10 @@ LABEL_23:
           }
         }
 
-        v34[5] = v30;
-        v36 = [v52 cPolygonObstacle];
+        v34[5] = cPolygonObstacle2;
+        cPolygonObstacle4 = [v52 cPolygonObstacle];
         v37 = v5->_cMeshGraph;
-        v38 = [v49 cPolygonObstacle];
+        cPolygonObstacle5 = [v49 cPolygonObstacle];
         v39 = v37[60];
         if (!v39)
         {
@@ -352,7 +352,7 @@ LABEL_30:
           {
             v40 = v39;
             v41 = v39[4];
-            if (v38 >= v41)
+            if (cPolygonObstacle5 >= v41)
             {
               break;
             }
@@ -364,7 +364,7 @@ LABEL_30:
             }
           }
 
-          if (v41 >= v38)
+          if (v41 >= cPolygonObstacle5)
           {
             break;
           }
@@ -376,7 +376,7 @@ LABEL_30:
           }
         }
 
-        v40[5] = v36;
+        v40[5] = cPolygonObstacle4;
 
         v6 = v47;
         ++v29;
@@ -385,33 +385,33 @@ LABEL_30:
       while (v29 != v46);
     }
 
-    v4 = v45;
+    coderCopy = v45;
   }
 
   v42 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = GKMeshGraph;
-  [(GKGraph *)&v10 encodeWithCoder:v4];
-  [v4 encodeObject:self->_sourceObstacles forKey:@"_sourceObstacles"];
+  [(GKGraph *)&v10 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_sourceObstacles forKey:@"_sourceObstacles"];
   v5 = *(self->_cMeshGraph + 54) - *(self->_cMeshGraph + 53);
   v6 = [MEMORY[0x277CBEB18] arrayWithObjects:? count:?];
-  [v4 encodeObject:v6 forKey:@"extrudedObstacles"];
+  [coderCopy encodeObject:v6 forKey:@"extrudedObstacles"];
   [(GKMeshGraph *)self bufferRadius];
-  [v4 encodeFloat:@"bufferRadius" forKey:?];
-  [v4 encodeFloat:@"minX" forKey:*(self->_cMeshGraph + 85)];
+  [coderCopy encodeFloat:@"bufferRadius" forKey:?];
+  [coderCopy encodeFloat:@"minX" forKey:*(self->_cMeshGraph + 85)];
   LODWORD(v7) = *(self->_cMeshGraph + 171);
-  [v4 encodeFloat:@"minY" forKey:v7];
-  [v4 encodeFloat:@"maxX" forKey:*(self->_cMeshGraph + 86)];
+  [coderCopy encodeFloat:@"minY" forKey:v7];
+  [coderCopy encodeFloat:@"maxX" forKey:*(self->_cMeshGraph + 86)];
   LODWORD(v8) = *(self->_cMeshGraph + 173);
-  [v4 encodeFloat:@"maxY" forKey:v8];
+  [coderCopy encodeFloat:@"maxY" forKey:v8];
   v9 = NSStringFromClass([(GKMeshGraph *)self nodeClass]);
-  [v4 encodeObject:v9 forKey:@"class"];
+  [coderCopy encodeObject:v9 forKey:@"class"];
 }
 
 @end

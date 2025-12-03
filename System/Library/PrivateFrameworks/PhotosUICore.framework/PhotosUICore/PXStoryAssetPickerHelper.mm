@@ -1,8 +1,8 @@
 @interface PXStoryAssetPickerHelper
-- (PXStoryAssetPickerHelper)initWithContainerAssetCollection:(id)a3 preselectedAssets:(id)a4;
+- (PXStoryAssetPickerHelper)initWithContainerAssetCollection:(id)collection preselectedAssets:(id)assets;
 - (PXStoryAssetPickerHelperDelegate)delegate;
-- (void)_handlePickedAssets:(id)a3;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
+- (void)_handlePickedAssets:(id)assets;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
 @end
 
 @implementation PXStoryAssetPickerHelper
@@ -14,24 +14,24 @@
   return WeakRetained;
 }
 
-- (void)_handlePickedAssets:(id)a3
+- (void)_handlePickedAssets:(id)assets
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __48__PXStoryAssetPickerHelper__handlePickedAssets___block_invoke;
   aBlock[3] = &unk_1E773E0F8;
   aBlock[4] = self;
-  v4 = a3;
+  assetsCopy = assets;
   v5 = _Block_copy(aBlock);
-  v6 = v5[2](v5, v4, 0);
-  v7 = [(PXStoryAssetPickerHelper *)self preselectedOIDs];
-  v8 = (v5)[2](v5, v4, v7);
+  v6 = v5[2](v5, assetsCopy, 0);
+  preselectedOIDs = [(PXStoryAssetPickerHelper *)self preselectedOIDs];
+  v8 = (v5)[2](v5, assetsCopy, preselectedOIDs);
 
-  v9 = [(PXStoryAssetPickerHelper *)self preselectedOIDs];
-  v10 = (v5)[2](v5, v9, v4);
+  preselectedOIDs2 = [(PXStoryAssetPickerHelper *)self preselectedOIDs];
+  v10 = (v5)[2](v5, preselectedOIDs2, assetsCopy);
 
-  v11 = [(PXStoryAssetPickerHelper *)self delegate];
-  [v11 storyPickerHelper:self didFinishPicking:v6 promotedAssets:v8 demotedAssets:v10];
+  delegate = [(PXStoryAssetPickerHelper *)self delegate];
+  [delegate storyPickerHelper:self didFinishPicking:v6 promotedAssets:v8 demotedAssets:v10];
 }
 
 id __48__PXStoryAssetPickerHelper__handlePickedAssets___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -67,11 +67,11 @@ id __48__PXStoryAssetPickerHelper__handlePickedAssets___block_invoke(uint64_t a1
   return v13;
 }
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
   v8 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(PXStoryAssetPickerHelper *)self delegate];
+  pickingCopy = picking;
+  delegate = [(PXStoryAssetPickerHelper *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
@@ -80,18 +80,18 @@ id __48__PXStoryAssetPickerHelper__handlePickedAssets___block_invoke(uint64_t a1
   }
 }
 
-- (PXStoryAssetPickerHelper)initWithContainerAssetCollection:(id)a3 preselectedAssets:(id)a4
+- (PXStoryAssetPickerHelper)initWithContainerAssetCollection:(id)collection preselectedAssets:(id)assets
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  collectionCopy = collection;
+  assetsCopy = assets;
+  v10 = collectionCopy;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v11 = v10;
 
     if (v11)
     {
-      v12 = [v11 photoLibrary];
+      photoLibrary = [v11 photoLibrary];
       goto LABEL_11;
     }
   }
@@ -100,10 +100,10 @@ id __48__PXStoryAssetPickerHelper__handlePickedAssets___block_invoke(uint64_t a1
   {
   }
 
-  v13 = [v9 firstObject];
+  firstObject = [assetsCopy firstObject];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v14 = v13;
+    v14 = firstObject;
   }
 
   else
@@ -111,43 +111,43 @@ id __48__PXStoryAssetPickerHelper__handlePickedAssets___block_invoke(uint64_t a1
     v14 = 0;
   }
 
-  v12 = [v14 photoLibrary];
+  photoLibrary = [v14 photoLibrary];
 
   v11 = 0;
 LABEL_11:
 
-  if (!v12)
+  if (!photoLibrary)
   {
-    v44 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v44 handleFailureInMethod:a2 object:self file:@"PXStoryAssetPickerHelper.m" lineNumber:35 description:{@"Photo library couldn't be determined for %@ / %@", v10, v9}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryAssetPickerHelper.m" lineNumber:35 description:{@"Photo library couldn't be determined for %@ / %@", v10, assetsCopy}];
   }
 
   v15 = v10;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v16 = v15;
+    currentHandler2 = v15;
   }
 
   else
   {
-    v16 = 0;
+    currentHandler2 = 0;
   }
 
-  v17 = [v16 localIdentifier];
-  if (v17)
+  localIdentifier = [currentHandler2 localIdentifier];
+  if (localIdentifier)
   {
-    v18 = v17;
+    uuid = localIdentifier;
 LABEL_19:
 
     goto LABEL_21;
   }
 
-  v18 = [v15 uuid];
+  uuid = [v15 uuid];
 
-  if (!v18)
+  if (!uuid)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXStoryAssetPickerHelper.m" lineNumber:37 description:{@"Collection identifier couldn't be determined for %@", v15}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStoryAssetPickerHelper.m" lineNumber:37 description:{@"Collection identifier couldn't be determined for %@", v15}];
     goto LABEL_19;
   }
 
@@ -158,42 +158,42 @@ LABEL_21:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_containerCollection, a3);
-    objc_storeStrong(&v20->_photoLibrary, v12);
-    v21 = [objc_alloc(MEMORY[0x1E69790E0]) initWithPhotoLibraryAndOnlyReturnsIdentifiers:v12];
+    objc_storeStrong(&v19->_containerCollection, collection);
+    objc_storeStrong(&v20->_photoLibrary, photoLibrary);
+    v21 = [objc_alloc(MEMORY[0x1E69790E0]) initWithPhotoLibraryAndOnlyReturnsIdentifiers:photoLibrary];
     [v21 _setUsesMemoriesLayout:1];
     [v21 setMinimumSelectionLimit:1];
     [v21 setSelectionLimit:*MEMORY[0x1E6978FE8]];
     [v21 _setDisabledPrivateCapabilities:7];
-    v22 = [MEMORY[0x1E6979178] assetCollectionSuggestionGroup:v18 extendedCuratedAssetsOnly:1 shouldReverseSortOrder:1];
+    v22 = [MEMORY[0x1E6979178] assetCollectionSuggestionGroup:uuid extendedCuratedAssetsOnly:1 shouldReverseSortOrder:1];
     [v21 set_suggestionGroup:v22];
 
     [v21 setDisabledCapabilities:16];
-    if ([v9 count] >= 1)
+    if ([assetsCopy count] >= 1)
     {
       v45 = v21;
       v46 = v20;
-      v47 = v18;
+      v47 = uuid;
       v48 = v15;
-      v49 = v12;
+      v49 = photoLibrary;
       v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v24 = objc_alloc_init(MEMORY[0x1E695DFA0]);
       v25 = 1;
-      if ([v9 count])
+      if ([assetsCopy count])
       {
         v26 = -1;
         do
         {
-          v27 = [v9 objectAtIndexedSubscript:v26 + 1];
+          v27 = [assetsCopy objectAtIndexedSubscript:v26 + 1];
           if (v25 && (v26 + 1) >= 2)
           {
-            v28 = [v9 objectAtIndexedSubscript:v26];
-            v29 = [v28 creationDate];
-            if (v29 && (v30 = v29, [v27 creationDate], v31 = objc_claimAutoreleasedReturnValue(), v31, v30, v31))
+            v28 = [assetsCopy objectAtIndexedSubscript:v26];
+            creationDate = [v28 creationDate];
+            if (creationDate && (v30 = creationDate, [v27 creationDate], v31 = objc_claimAutoreleasedReturnValue(), v31, v30, v31))
             {
-              v32 = [v28 creationDate];
-              v33 = [v27 creationDate];
-              v25 = [v32 compare:v33] != 1;
+              creationDate2 = [v28 creationDate];
+              creationDate3 = [v27 creationDate];
+              v25 = [creationDate2 compare:creationDate3] != 1;
             }
 
             else
@@ -202,13 +202,13 @@ LABEL_21:
             }
           }
 
-          v34 = [v27 localIdentifier];
-          [v23 addObject:v34];
+          localIdentifier2 = [v27 localIdentifier];
+          [v23 addObject:localIdentifier2];
 
-          v35 = [v27 objectID];
-          [v24 addObject:v35];
+          objectID = [v27 objectID];
+          [v24 addObject:objectID];
 
-          v36 = [v9 count];
+          v36 = [assetsCopy count];
           v37 = v26 + 2;
           ++v26;
         }
@@ -227,8 +227,8 @@ LABEL_21:
 
       v46->_preselectedAssetsHaveDefaultSortOrder = v25;
       v15 = v48;
-      v12 = v49;
-      v18 = v47;
+      photoLibrary = v49;
+      uuid = v47;
     }
 
     v41 = [objc_alloc(MEMORY[0x1E69790F8]) initWithConfiguration:v21];

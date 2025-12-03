@@ -1,41 +1,41 @@
 @interface WFFileParameterState
-+ (id)serializedRepresentationFromValue:(id)a3;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (id)processForMultipleStateWithContext:(id)a3 error:(id *)a4 resolution:(int64_t *)a5;
-- (id)resolveFileURLWithContext:(id)a3 error:(id *)a4;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
-- (void)requestAccessToFileWithContext:(id)a3 completionHandler:(id)a4;
++ (id)serializedRepresentationFromValue:(id)value;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (id)processForMultipleStateWithContext:(id)context error:(id *)error resolution:(int64_t *)resolution;
+- (id)resolveFileURLWithContext:(id)context error:(id *)error;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
+- (void)requestAccessToFileWithContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation WFFileParameterState
 
-- (void)requestAccessToFileWithContext:(id)a3 completionHandler:(id)a4
+- (void)requestAccessToFileWithContext:(id)context completionHandler:(id)handler
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFVariableSubstitutableParameterState *)self value];
-  v9 = [v8 fileLocation];
+  contextCopy = context;
+  handlerCopy = handler;
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  fileLocation = [value fileLocation];
 
-  if (v9)
+  if (fileLocation)
   {
-    v10 = [v6 variableSource];
-    v11 = [v8 fileLocation];
-    v18[0] = v11;
+    variableSource = [contextCopy variableSource];
+    fileLocation2 = [value fileLocation];
+    v18[0] = fileLocation2;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __73__WFFileParameterState_requestAccessToFileWithContext_completionHandler___block_invoke;
     v14[3] = &unk_1E8375A88;
-    v17 = v7;
-    v15 = v6;
-    v16 = v8;
-    [v10 requestAccessToFileAtLocations:v12 completionHandler:v14];
+    v17 = handlerCopy;
+    v15 = contextCopy;
+    v16 = value;
+    [variableSource requestAccessToFileAtLocations:v12 completionHandler:v14];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -87,23 +87,23 @@ void __73__WFFileParameterState_requestAccessToFileWithContext_completionHandler
   }
 }
 
-- (id)resolveFileURLWithContext:(id)a3 error:(id *)a4
+- (id)resolveFileURLWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WFVariableSubstitutableParameterState *)self value];
-  if (![v7 isSupportedOnCurrentDevice])
+  contextCopy = context;
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  if (![value isSupportedOnCurrentDevice])
   {
     v10 = 0;
     goto LABEL_16;
   }
 
-  v8 = [v6 parameter];
-  if (v8)
+  parameter = [contextCopy parameter];
+  if (parameter)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = parameter;
     }
 
     else
@@ -119,14 +119,14 @@ void __73__WFFileParameterState_requestAccessToFileWithContext_completionHandler
 
   v11 = v9;
 
-  v12 = [v11 workflow];
+  workflow = [v11 workflow];
 
-  v13 = [v12 workflowID];
+  workflowID = [workflow workflowID];
 
-  v14 = [v7 resolveURLWithWorkflowID:v13 error:a4];
+  v14 = [value resolveURLWithWorkflowID:workflowID error:error];
   if (!v14)
   {
-    v18 = [v7 fileLocation];
+    fileLocation = [value fileLocation];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -136,22 +136,22 @@ void __73__WFFileParameterState_requestAccessToFileWithContext_completionHandler
       goto LABEL_15;
     }
 
-    v20 = [v7 fileLocation];
+    fileLocation2 = [value fileLocation];
     v22 = 0;
-    v17 = [v20 resolveLocationWithError:&v22];
+    variableSource = [fileLocation2 resolveLocationWithError:&v22];
 
-    v10 = [MEMORY[0x1E6996E20] fileWithURL:v17 options:8];
+    v10 = [MEMORY[0x1E6996E20] fileWithURL:variableSource options:8];
     goto LABEL_13;
   }
 
   v10 = [MEMORY[0x1E6996E20] fileWithURL:v14 options:8];
-  v15 = [v10 fileURL];
-  v16 = [v15 wf_fileIsDirectory];
+  fileURL = [v10 fileURL];
+  wf_fileIsDirectory = [fileURL wf_fileIsDirectory];
 
-  if (v16)
+  if (wf_fileIsDirectory)
   {
-    v17 = [v6 variableSource];
-    [v17 captureFileRepresentation:v10];
+    variableSource = [contextCopy variableSource];
+    [variableSource captureFileRepresentation:v10];
 LABEL_13:
   }
 
@@ -162,11 +162,11 @@ LABEL_16:
   return v10;
 }
 
-- (id)processForMultipleStateWithContext:(id)a3 error:(id *)a4 resolution:(int64_t *)a5
+- (id)processForMultipleStateWithContext:(id)context error:(id *)error resolution:(int64_t *)resolution
 {
-  v7 = [(WFFileParameterState *)self resolveFileURLWithContext:a3 error:?];
+  v7 = [(WFFileParameterState *)self resolveFileURLWithContext:context error:?];
   v8 = v7;
-  if (a5)
+  if (resolution)
   {
     if (v7)
     {
@@ -175,7 +175,7 @@ LABEL_16:
 
     else
     {
-      v10 = WFShouldRequestAccessToFile(*a4);
+      v10 = WFShouldRequestAccessToFile(*error);
       v9 = 2;
       if (!v10)
       {
@@ -183,35 +183,35 @@ LABEL_16:
       }
     }
 
-    *a5 = v9;
+    *resolution = v9;
   }
 
   return v8;
 }
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFVariableSubstitutableParameterState *)self variable];
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
 
-  if (v11)
+  if (variable)
   {
     v19.receiver = self;
     v19.super_class = WFFileParameterState;
-    [(WFVariableSubstitutableParameterState *)&v19 processWithContext:v8 userInputRequiredHandler:v9 valueHandler:v10];
+    [(WFVariableSubstitutableParameterState *)&v19 processWithContext:contextCopy userInputRequiredHandler:handlerCopy valueHandler:valueHandlerCopy];
   }
 
   else
   {
     v18 = 0;
-    v12 = [(WFFileParameterState *)self resolveFileURLWithContext:v8 error:&v18];
+    v12 = [(WFFileParameterState *)self resolveFileURLWithContext:contextCopy error:&v18];
     v13 = v18;
     v14 = v13;
     if (v12)
     {
-      v10[2](v10, v12, 0);
+      valueHandlerCopy[2](valueHandlerCopy, v12, 0);
     }
 
     else if (WFShouldRequestAccessToFile(v13))
@@ -220,14 +220,14 @@ LABEL_16:
       v15[1] = 3221225472;
       v15[2] = __81__WFFileParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
       v15[3] = &unk_1E837DCC8;
-      v17 = v10;
-      v16 = v8;
+      v17 = valueHandlerCopy;
+      v16 = contextCopy;
       [(WFFileParameterState *)self requestAccessToFileWithContext:v16 completionHandler:v15];
     }
 
     else
     {
-      (v10)[2](v10, 0, v14);
+      (valueHandlerCopy)[2](valueHandlerCopy, 0, v14);
     }
   }
 }
@@ -258,27 +258,27 @@ void __81__WFFileParameterState_processWithContext_userInputRequiredHandler_valu
   }
 }
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"WFFileParameterState.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[WFFileValue class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFileParameterState.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[WFFileValue class]]"}];
   }
 
-  v6 = [v5 serializedRepresentation];
+  serializedRepresentation = [valueCopy serializedRepresentation];
 
-  return v6;
+  return serializedRepresentation;
 }
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[WFFileValue alloc] initWithSerializedRepresentation:v9 variableProvider:v8 parameter:v7];
+  parameterCopy = parameter;
+  providerCopy = provider;
+  representationCopy = representation;
+  v10 = [[WFFileValue alloc] initWithSerializedRepresentation:representationCopy variableProvider:providerCopy parameter:parameterCopy];
 
   return v10;
 }

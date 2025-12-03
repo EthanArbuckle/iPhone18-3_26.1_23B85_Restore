@@ -1,14 +1,14 @@
 @interface AVScheduledParameterRamp
 + (id)defaultValue;
-+ (id)scheduledParameterRampWithPropertyList:(id)a3;
++ (id)scheduledParameterRampWithPropertyList:(id)list;
 - ($2FE3C3292E52C4A5B67D27538456EAD9)timeRange;
-- (AVScheduledParameterRamp)initWithPropertyList:(id)a3;
-- (AVScheduledParameterRamp)initWithTimeRange:(id *)a3;
-- (BOOL)isEqual:(id)a3;
+- (AVScheduledParameterRamp)initWithPropertyList:(id)list;
+- (AVScheduledParameterRamp)initWithTimeRange:(id *)range;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)endValue;
 - (id)propertyList;
-- (id)scheduledParameterRampInterpolatedToTime:(id *)a3;
+- (id)scheduledParameterRampInterpolatedToTime:(id *)time;
 - (id)startValue;
 - (unint64_t)hash;
 @end
@@ -18,20 +18,20 @@
 + (id)defaultValue
 {
   v4 = objc_opt_class();
-  AVRequestConcreteImplementation(a1, a2, v4);
+  AVRequestConcreteImplementation(self, a2, v4);
   return 0;
 }
 
-- (AVScheduledParameterRamp)initWithTimeRange:(id *)a3
+- (AVScheduledParameterRamp)initWithTimeRange:(id *)range
 {
   v7.receiver = self;
   v7.super_class = AVScheduledParameterRamp;
   result = [(AVScheduledParameterRamp *)&v7 init];
   if (result)
   {
-    v5 = *&a3->var0.var0;
-    v6 = *&a3->var0.var3;
-    *&result->_timeRange.duration.timescale = *&a3->var1.var1;
+    v5 = *&range->var0.var0;
+    v6 = *&range->var0.var3;
+    *&result->_timeRange.duration.timescale = *&range->var1.var1;
     *&result->_timeRange.start.epoch = v6;
     *&result->_timeRange.start.value = v5;
   }
@@ -62,14 +62,14 @@
   return 0;
 }
 
-- (id)scheduledParameterRampInterpolatedToTime:(id *)a3
+- (id)scheduledParameterRampInterpolatedToTime:(id *)time
 {
   v5 = objc_opt_class();
   AVRequestConcreteImplementation(self, a2, v5);
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -81,7 +81,7 @@
   if (!self)
   {
     memset(&range1, 0, sizeof(range1));
-    if (a3)
+    if (equal)
     {
       goto LABEL_4;
     }
@@ -92,13 +92,13 @@ LABEL_7:
   }
 
   [(AVScheduledParameterRamp *)self timeRange];
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  [a3 timeRange];
+  [equal timeRange];
 LABEL_8:
   v5 = CMTimeRangeEqual(&range1, &v7);
   if (v5)
@@ -109,7 +109,7 @@ LABEL_8:
       v5 = [-[AVScheduledParameterRamp endValue](self "endValue")];
       if (v5)
       {
-        LOBYTE(v5) = -[NSArray isEqual:](-[AVScheduledParameterRamp _additionalFigRepresentationObjects](self, "_additionalFigRepresentationObjects"), "isEqual:", [a3 _additionalFigRepresentationObjects]);
+        LOBYTE(v5) = -[NSArray isEqual:](-[AVScheduledParameterRamp _additionalFigRepresentationObjects](self, "_additionalFigRepresentationObjects"), "isEqual:", [equal _additionalFigRepresentationObjects]);
       }
     }
   }
@@ -141,14 +141,14 @@ LABEL_8:
   return [v3 stringWithFormat:@"<%@: %p, timeRange:%@ startValue:%@ endValue:%@ extras:%@>", v5, self, CMTimeRangeCopyDescription(v6, &range), -[AVScheduledParameterRamp startValue](self, "startValue"), -[AVScheduledParameterRamp endValue](self, "endValue"), -[AVScheduledParameterRamp _additionalFigRepresentationObjects](self, "_additionalFigRepresentationObjects")];
 }
 
-+ (id)scheduledParameterRampWithPropertyList:(id)a3
++ (id)scheduledParameterRampWithPropertyList:(id)list
 {
   v4 = objc_alloc(objc_opt_class());
 
-  return [v4 initWithPropertyList:a3];
+  return [v4 initWithPropertyList:list];
 }
 
-- (AVScheduledParameterRamp)initWithPropertyList:(id)a3
+- (AVScheduledParameterRamp)initWithPropertyList:(id)list
 {
   v5 = objc_opt_class();
   AVRequestConcreteImplementation(self, a2, v5);

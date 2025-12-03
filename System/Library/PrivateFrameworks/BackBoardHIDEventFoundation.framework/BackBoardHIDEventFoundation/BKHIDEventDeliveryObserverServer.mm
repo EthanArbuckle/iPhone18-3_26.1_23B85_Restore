@@ -1,22 +1,22 @@
 @interface BKHIDEventDeliveryObserverServer
-- (BKHIDEventDeliveryObserverServer)initWithDeliveryObserverServiceProvider:(id)a3;
-- (BKHIDEventDeliveryObserverServer)initWithIncomingServiceConnectionHandler:(id)a3;
-- (id)_deliveryObserverServiceForEstablishedConnection:(uint64_t)a1;
-- (id)setObservesDeferringResolutions:(id)a3;
-- (void)acceptIncomingServiceConnection:(id)a3 mappedObject:(id)a4;
-- (void)connectionDidTerminate:(id)a3;
-- (void)handleIncomingServiceConnection:(id)a3;
-- (void)rejectIncomingServiceConnection:(id)a3;
-- (void)setObservesDeferringChainIdentities:(id)a3;
+- (BKHIDEventDeliveryObserverServer)initWithDeliveryObserverServiceProvider:(id)provider;
+- (BKHIDEventDeliveryObserverServer)initWithIncomingServiceConnectionHandler:(id)handler;
+- (id)_deliveryObserverServiceForEstablishedConnection:(uint64_t)connection;
+- (id)setObservesDeferringResolutions:(id)resolutions;
+- (void)acceptIncomingServiceConnection:(id)connection mappedObject:(id)object;
+- (void)connectionDidTerminate:(id)terminate;
+- (void)handleIncomingServiceConnection:(id)connection;
+- (void)rejectIncomingServiceConnection:(id)connection;
+- (void)setObservesDeferringChainIdentities:(id)identities;
 @end
 
 @implementation BKHIDEventDeliveryObserverServer
 
-- (void)connectionDidTerminate:(id)a3
+- (void)connectionDidTerminate:(id)terminate
 {
   v25 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v5 = [(BKHIDEventDeliveryObserverServer *)self _deliveryObserverServiceForEstablishedConnection:v12];
+  terminateCopy = terminate;
+  v5 = [(BKHIDEventDeliveryObserverServer *)self _deliveryObserverServiceForEstablishedConnection:terminateCopy];
   if (!v5)
   {
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"no delivery observer service"];
@@ -30,7 +30,7 @@
       v15 = 2114;
       v16 = v11;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = @"BKHIDEventDeliveryObserverServer.m";
       v21 = 1024;
@@ -47,18 +47,18 @@
   }
 
   v6 = v5;
-  [v5 connectionDidTerminate:v12];
+  [v5 connectionDidTerminate:terminateCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_deliveryObserverServiceForEstablishedConnection:(uint64_t)a1
+- (id)_deliveryObserverServiceForEstablishedConnection:(uint64_t)connection
 {
   v26 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (connection)
   {
-    v4 = [*(a1 + 8) userInfoForConnection:v3];
+    v4 = [*(connection + 8) userInfoForConnection:v3];
     if (!v4 || (v5 = v4, (v6 = *(v4 + 16)) == 0))
     {
       v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to find delivery observer service for established connection: %@", v3];
@@ -72,7 +72,7 @@
         v16 = 2114;
         v17 = v13;
         v18 = 2048;
-        v19 = a1;
+        connectionCopy = connection;
         v20 = 2114;
         v21 = @"BKHIDEventDeliveryObserverServer.m";
         v22 = 1024;
@@ -101,19 +101,19 @@
   return v7;
 }
 
-- (void)rejectIncomingServiceConnection:(id)a3
+- (void)rejectIncomingServiceConnection:(id)connection
 {
-  v3 = [a3 domainIncomingServiceConnection];
-  [v3 rejectConnection];
+  domainIncomingServiceConnection = [connection domainIncomingServiceConnection];
+  [domainIncomingServiceConnection rejectConnection];
 }
 
-- (void)acceptIncomingServiceConnection:(id)a3 mappedObject:(id)a4
+- (void)acceptIncomingServiceConnection:(id)connection mappedObject:(id)object
 {
   v37 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  objectCopy = object;
   v8 = objc_opt_class();
-  v9 = v7;
+  v9 = objectCopy;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -136,7 +136,7 @@
 
   if (!v11)
   {
-    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to provide delivery observer service for incoming connection: %@", v27];
+    connectionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to provide delivery observer service for incoming connection: %@", connectionCopy];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v24 = NSStringFromSelector(a2);
@@ -147,33 +147,33 @@
       *&v28[12] = 2114;
       *&v28[14] = v26;
       v29 = 2048;
-      v30 = self;
+      selfCopy = self;
       v31 = 2114;
       v32 = @"BKHIDEventDeliveryObserverServer.m";
       v33 = 1024;
       v34 = 129;
       v35 = 2114;
-      v36 = v23;
+      v36 = connectionCopy;
       _os_log_error_impl(&dword_223CBE000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", v28, 0x3Au);
     }
 
-    [v23 UTF8String];
+    [connectionCopy UTF8String];
     _bs_set_crash_log_message();
     __break(0);
     JUMPOUT(0x223CC99C8);
   }
 
-  v12 = [v27 domainIncomingServiceConnection];
+  domainIncomingServiceConnection = [connectionCopy domainIncomingServiceConnection];
   v13 = [_BKEventObserverConnectionRecord alloc];
-  v14 = [v27 auditToken];
-  v15 = [v14 pid];
+  auditToken = [connectionCopy auditToken];
+  v15 = [auditToken pid];
   if (v13 && (v16 = v15, *v28 = v13, *&v28[8] = _BKEventObserverConnectionRecord, (v17 = objc_msgSendSuper2(v28, sel_init)) != 0))
   {
     v18 = v17;
     *(v17 + 3) = v16;
 
     v19 = v11;
-    v14 = v18[2];
+    auditToken = v18[2];
     v18[2] = v19;
   }
 
@@ -183,17 +183,17 @@
   }
 
   server = self->_server;
-  v21 = [v12 connection];
-  [(BKHIDDomainServiceServer *)server setUserInfo:v18 forConnection:v21];
+  connection = [domainIncomingServiceConnection connection];
+  [(BKHIDDomainServiceServer *)server setUserInfo:v18 forConnection:connection];
 
-  [v12 acceptConnection];
+  [domainIncomingServiceConnection acceptConnection];
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleIncomingServiceConnection:(id)a3
+- (void)handleIncomingServiceConnection:(id)connection
 {
   v24 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  connectionCopy = connection;
   if (!self->_incomingServiceConnectionHandler)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"_incomingServiceConnectionHandler"];
@@ -207,7 +207,7 @@
       v14 = 2114;
       v15 = v10;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"BKHIDEventDeliveryObserverServer.m";
       v20 = 1024;
@@ -223,22 +223,22 @@
     JUMPOUT(0x223CC9B7CLL);
   }
 
-  v5 = [[BKHIDIncomingServiceConnection alloc] initWithIncomingServiceConnection:v11 debugMappedObjectName:@"delivery observer service"];
+  v5 = [[BKHIDIncomingServiceConnection alloc] initWithIncomingServiceConnection:connectionCopy debugMappedObjectName:@"delivery observer service"];
   [(BKHIDIncomingServiceConnection *)v5 setHandler:self];
   [(BKHIDEventDeliveryObserverIncomingServiceConnectionHandler *)self->_incomingServiceConnectionHandler handleIncomingDeliveryObserverConnection:v5];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setObservesDeferringChainIdentities:(id)a3
+- (void)setObservesDeferringChainIdentities:(id)identities
 {
   v28 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v5 = [(BKHIDDomainServiceServer *)self->_server currentConnection];
-  v6 = [v5 remoteToken];
-  v7 = [v6 hasEntitlement:@"com.apple.backboardd.globalDeferringChainObserver"];
+  identitiesCopy = identities;
+  currentConnection = [(BKHIDDomainServiceServer *)self->_server currentConnection];
+  remoteToken = [currentConnection remoteToken];
+  v7 = [remoteToken hasEntitlement:@"com.apple.backboardd.globalDeferringChainObserver"];
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(BKHIDEventDeliveryObserverServer *)self _deliveryObserverServiceForEstablishedConnection:v5];
+  v8 = [(BKHIDEventDeliveryObserverServer *)self _deliveryObserverServiceForEstablishedConnection:currentConnection];
   if (!v8)
   {
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"service"];
@@ -252,7 +252,7 @@
       v18 = 2114;
       v19 = v14;
       v20 = 2048;
-      v21 = self;
+      selfCopy = self;
       v22 = 2114;
       v23 = @"BKHIDEventDeliveryObserverServer.m";
       v24 = 1024;
@@ -269,19 +269,19 @@
   }
 
   v9 = v8;
-  [v8 connection:v5 setObservesDeferringChainIdentities:v15 entitled:v7];
+  [v8 connection:currentConnection setObservesDeferringChainIdentities:identitiesCopy entitled:v7];
   os_unfair_lock_unlock(&self->_lock);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)setObservesDeferringResolutions:(id)a3
+- (id)setObservesDeferringResolutions:(id)resolutions
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(BKHIDDomainServiceServer *)self->_server currentConnection];
+  resolutionsCopy = resolutions;
+  currentConnection = [(BKHIDDomainServiceServer *)self->_server currentConnection];
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(BKHIDEventDeliveryObserverServer *)self _deliveryObserverServiceForEstablishedConnection:v6];
+  v7 = [(BKHIDEventDeliveryObserverServer *)self _deliveryObserverServiceForEstablishedConnection:currentConnection];
   if (!v7)
   {
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"service"];
@@ -295,7 +295,7 @@
       v18 = 2114;
       v19 = v15;
       v20 = 2048;
-      v21 = self;
+      selfCopy = self;
       v22 = 2114;
       v23 = @"BKHIDEventDeliveryObserverServer.m";
       v24 = 1024;
@@ -312,7 +312,7 @@
   }
 
   v8 = v7;
-  v9 = [v7 connection:v6 setObservesDeferringResolutions:{objc_msgSend(v5, "BOOLValue")}];
+  v9 = [v7 connection:currentConnection setObservesDeferringResolutions:{objc_msgSend(resolutionsCopy, "BOOLValue")}];
   os_unfair_lock_unlock(&self->_lock);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -320,13 +320,13 @@
   return v9;
 }
 
-- (BKHIDEventDeliveryObserverServer)initWithIncomingServiceConnectionHandler:(id)a3
+- (BKHIDEventDeliveryObserverServer)initWithIncomingServiceConnectionHandler:(id)handler
 {
-  v6 = a3;
-  if (!v6)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"BKHIDEventDeliveryObserverServer.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"incomingServiceConnectionHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKHIDEventDeliveryObserverServer.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"incomingServiceConnectionHandler"}];
   }
 
   v16.receiver = self;
@@ -336,7 +336,7 @@
   if (v7)
   {
     v7->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v7->_incomingServiceConnectionHandler, a3);
+    objc_storeStrong(&v7->_incomingServiceConnectionHandler, handler);
     v9 = [BKHIDDomainServiceServer alloc];
     v10 = *MEMORY[0x277CF0598];
     v11 = BKLogEventDelivery();
@@ -348,18 +348,18 @@
   return v8;
 }
 
-- (BKHIDEventDeliveryObserverServer)initWithDeliveryObserverServiceProvider:(id)a3
+- (BKHIDEventDeliveryObserverServer)initWithDeliveryObserverServiceProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = [_BKHIDDeliveryObserverDeprecatedIncomingConnectionHandler alloc];
-  v6 = v4;
+  v6 = providerCopy;
   v7 = v6;
   if (v5)
   {
     if (!v6)
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
-      [v11 handleFailureInMethod:sel_initWithDeliveryObserverServiceProvider_ object:v5 file:@"BKHIDEventDeliveryObserverServer.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"deliveryObserverServiceProvider"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithDeliveryObserverServiceProvider_ object:v5 file:@"BKHIDEventDeliveryObserverServer.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"deliveryObserverServiceProvider"}];
     }
 
     v12.receiver = v5;

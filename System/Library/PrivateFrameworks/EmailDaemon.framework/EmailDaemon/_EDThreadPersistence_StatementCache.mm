@@ -1,46 +1,46 @@
 @interface _EDThreadPersistence_StatementCache
-- (_EDThreadPersistence_StatementCache)initWithConnection:(id)a3;
-- (id)preparedStatementForQueryString:(id)a3;
+- (_EDThreadPersistence_StatementCache)initWithConnection:(id)connection;
+- (id)preparedStatementForQueryString:(id)string;
 @end
 
 @implementation _EDThreadPersistence_StatementCache
 
-- (_EDThreadPersistence_StatementCache)initWithConnection:(id)a3
+- (_EDThreadPersistence_StatementCache)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = _EDThreadPersistence_StatementCache;
   v6 = [(_EDThreadPersistence_StatementCache *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v6->_connection, connection);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     preparedStatements = v7->_preparedStatements;
-    v7->_preparedStatements = v8;
+    v7->_preparedStatements = dictionary;
   }
 
   return v7;
 }
 
-- (id)preparedStatementForQueryString:(id)a3
+- (id)preparedStatementForQueryString:(id)string
 {
-  v4 = a3;
-  v5 = [(_EDThreadPersistence_StatementCache *)self preparedStatements];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  stringCopy = string;
+  preparedStatements = [(_EDThreadPersistence_StatementCache *)self preparedStatements];
+  v6 = [preparedStatements objectForKeyedSubscript:stringCopy];
 
   if (!v6)
   {
-    v7 = [(_EDThreadPersistence_StatementCache *)self connection];
-    v6 = [v7 preparedStatementForQueryString:v4];
+    connection = [(_EDThreadPersistence_StatementCache *)self connection];
+    v6 = [connection preparedStatementForQueryString:stringCopy];
 
     if (!v6)
     {
       __assert_rtn("[_EDThreadPersistence_StatementCache preparedStatementForQueryString:]", "EDThreadPersistence_ThreadMessages.m", 1267, "statement");
     }
 
-    v8 = [(_EDThreadPersistence_StatementCache *)self preparedStatements];
-    [v8 setObject:v6 forKeyedSubscript:v4];
+    preparedStatements2 = [(_EDThreadPersistence_StatementCache *)self preparedStatements];
+    [preparedStatements2 setObject:v6 forKeyedSubscript:stringCopy];
   }
 
   return v6;

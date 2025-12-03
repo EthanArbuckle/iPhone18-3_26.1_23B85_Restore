@@ -1,22 +1,22 @@
 @interface TraceManager
 + (id)sharedManager;
-- (BOOL)_checkPathSuffix:(id)a3 matchesTraceType:(int64_t)a4;
-- (BOOL)deleteUserTraceWithName:(id)a3 withTraceType:(int64_t)a4;
+- (BOOL)_checkPathSuffix:(id)suffix matchesTraceType:(int64_t)type;
+- (BOOL)deleteUserTraceWithName:(id)name withTraceType:(int64_t)type;
 - (TraceManager)init;
-- (id)_cleanPathForDirectory:(id)a3;
-- (id)_listOfUserTracesWithTraceTypes:(id)a3;
-- (id)_validatedFilenamesFromTracePaths:(id)a3 traceType:(int64_t)a4;
+- (id)_cleanPathForDirectory:(id)directory;
+- (id)_listOfUserTracesWithTraceTypes:(id)types;
+- (id)_validatedFilenamesFromTracePaths:(id)paths traceType:(int64_t)type;
 - (id)clearSimulatedTracePath;
-- (id)extensionForTraceType:(int64_t)a3;
-- (id)filenameForUserTrace:(id)a3 traceType:(int64_t)a4;
-- (id)fullPathForTraceFilename:(id)a3 withTraceType:(int64_t)a4;
+- (id)extensionForTraceType:(int64_t)type;
+- (id)filenameForUserTrace:(id)trace traceType:(int64_t)type;
+- (id)fullPathForTraceFilename:(id)filename withTraceType:(int64_t)type;
 - (id)listOfAllUserTraces;
-- (id)listOfUserTracesWithTraceType:(int64_t)a3;
-- (id)migrateTraceWithExtraResourceType:(id)a3;
-- (id)pathForUserTrace:(id)a3 withTraceType:(int64_t)a4;
-- (id)preferredUserTracePathForName:(id)a3 withTraceType:(int64_t)a4;
-- (id)tracesDirectoryWithTraceType:(int64_t)a3;
-- (id)tracesDirectoryWithTraceType:(int64_t)a3 resolveSymlink:(BOOL)a4;
+- (id)listOfUserTracesWithTraceType:(int64_t)type;
+- (id)migrateTraceWithExtraResourceType:(id)type;
+- (id)pathForUserTrace:(id)trace withTraceType:(int64_t)type;
+- (id)preferredUserTracePathForName:(id)name withTraceType:(int64_t)type;
+- (id)tracesDirectoryWithTraceType:(int64_t)type;
+- (id)tracesDirectoryWithTraceType:(int64_t)type resolveSymlink:(BOOL)symlink;
 - (void)_migrateTracesInLegacyDirectory;
 @end
 
@@ -72,16 +72,16 @@
   }
 }
 
-- (id)migrateTraceWithExtraResourceType:(id)a3
+- (id)migrateTraceWithExtraResourceType:(id)type
 {
-  v4 = a3;
-  v5 = [v4 lastPathComponent];
-  v6 = [v5 stringByReplacingOccurrencesOfString:@".trace.sqlite" withString:&stru_1016631F0];
+  typeCopy = type;
+  lastPathComponent = [typeCopy lastPathComponent];
+  v6 = [lastPathComponent stringByReplacingOccurrencesOfString:@".trace.sqlite" withString:&stru_1016631F0];
   v7 = +[MNFilePaths navTraceExtension];
   v8 = [v6 stringByReplacingOccurrencesOfString:v7 withString:&stru_1016631F0];
 
   v9 = [(TraceManager *)self pathForUserTrace:v8 withTraceType:0];
-  LODWORD(v6) = [(TraceManager *)self moveUserTraceAtPath:v4 toPath:v9];
+  LODWORD(v6) = [(TraceManager *)self moveUserTraceAtPath:typeCopy toPath:v9];
 
   v10 = 0;
   if (v6)
@@ -92,9 +92,9 @@
   return v10;
 }
 
-- (id)preferredUserTracePathForName:(id)a3 withTraceType:(int64_t)a4
+- (id)preferredUserTracePathForName:(id)name withTraceType:(int64_t)type
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = objc_alloc_init(NSDateFormatter);
   [v7 setDateFormat:@"yyyy-MM-dd-HHmmss"];
   v8 = +[NSTimeZone localTimeZone];
@@ -103,9 +103,9 @@
   v9 = +[NSDate date];
   v10 = [v7 stringFromDate:v9];
 
-  v11 = [NSString stringWithFormat:@"%@_%@", v10, v6];
+  nameCopy = [NSString stringWithFormat:@"%@_%@", v10, nameCopy];
 
-  v12 = [(TraceManager *)self pathForUserTrace:v11 withTraceType:a4];
+  v12 = [(TraceManager *)self pathForUserTrace:nameCopy withTraceType:type];
 
   return v12;
 }
@@ -121,24 +121,24 @@
   return v3;
 }
 
-- (BOOL)deleteUserTraceWithName:(id)a3 withTraceType:(int64_t)a4
+- (BOOL)deleteUserTraceWithName:(id)name withTraceType:(int64_t)type
 {
-  v4 = self;
-  v5 = [(TraceManager *)self pathForUserTrace:a3 withTraceType:a4];
-  LOBYTE(v4) = [(TraceManager *)v4 deleteUserTraceWithPath:v5];
+  selfCopy = self;
+  v5 = [(TraceManager *)self pathForUserTrace:name withTraceType:type];
+  LOBYTE(selfCopy) = [(TraceManager *)selfCopy deleteUserTraceWithPath:v5];
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)_listOfUserTracesWithTraceTypes:(id)a3
+- (id)_listOfUserTracesWithTraceTypes:(id)types
 {
-  v3 = a3;
+  typesCopy = types;
   v4 = objc_alloc_init(NSMutableArray);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v3;
+  obj = typesCopy;
   v25 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v25)
   {
@@ -181,9 +181,9 @@
               }
 
               v16 = *(*(&v29 + 1) + 8 * i);
-              v17 = [v16 pathExtension];
+              pathExtension = [v16 pathExtension];
               v18 = -[TraceManager extensionForTraceType:](self, "extensionForTraceType:", [v6 integerValue]);
-              v19 = [v17 isEqualToString:v18];
+              v19 = [pathExtension isEqualToString:v18];
 
               if (v19)
               {
@@ -216,9 +216,9 @@
   return v21;
 }
 
-- (id)listOfUserTracesWithTraceType:(int64_t)a3
+- (id)listOfUserTracesWithTraceType:(int64_t)type
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:type];
   v5 = [NSSet setWithObject:v4];
   v6 = [(TraceManager *)self _listOfUserTracesWithTraceTypes:v5];
 
@@ -233,15 +233,15 @@
   return v4;
 }
 
-- (id)_validatedFilenamesFromTracePaths:(id)a3 traceType:(int64_t)a4
+- (id)_validatedFilenamesFromTracePaths:(id)paths traceType:(int64_t)type
 {
-  v6 = a3;
-  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+  pathsCopy = paths;
+  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [pathsCopy count]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v6;
+  v8 = pathsCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -257,7 +257,7 @@
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        if ([(TraceManager *)self _checkPathSuffix:v13 matchesTraceType:a4, v15])
+        if ([(TraceManager *)self _checkPathSuffix:v13 matchesTraceType:type, v15])
         {
           [v7 addObject:v13];
         }
@@ -272,14 +272,14 @@
   return v7;
 }
 
-- (id)fullPathForTraceFilename:(id)a3 withTraceType:(int64_t)a4
+- (id)fullPathForTraceFilename:(id)filename withTraceType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(TraceManager *)self tracesDirectoryWithTraceType:a4];
+  filenameCopy = filename;
+  v7 = [(TraceManager *)self tracesDirectoryWithTraceType:type];
   v8 = v7;
-  if (v6)
+  if (filenameCopy)
   {
-    v9 = [v7 stringByAppendingPathComponent:v6];
+    v9 = [v7 stringByAppendingPathComponent:filenameCopy];
   }
 
   else
@@ -290,36 +290,36 @@
   return v9;
 }
 
-- (id)pathForUserTrace:(id)a3 withTraceType:(int64_t)a4
+- (id)pathForUserTrace:(id)trace withTraceType:(int64_t)type
 {
-  v6 = [(TraceManager *)self filenameForUserTrace:a3];
-  v7 = [(TraceManager *)self fullPathForTraceFilename:v6 withTraceType:a4];
+  v6 = [(TraceManager *)self filenameForUserTrace:trace];
+  v7 = [(TraceManager *)self fullPathForTraceFilename:v6 withTraceType:type];
 
   return v7;
 }
 
-- (BOOL)_checkPathSuffix:(id)a3 matchesTraceType:(int64_t)a4
+- (BOOL)_checkPathSuffix:(id)suffix matchesTraceType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(TraceManager *)self extensionForTraceType:a4];
-  v8 = [v6 hasSuffix:v7];
+  suffixCopy = suffix;
+  v7 = [(TraceManager *)self extensionForTraceType:type];
+  v8 = [suffixCopy hasSuffix:v7];
 
-  if (!a4 && (v8 & 1) == 0)
+  if (!type && (v8 & 1) == 0)
   {
-    v8 = [v6 hasSuffix:@".trace.sqlite"];
+    v8 = [suffixCopy hasSuffix:@".trace.sqlite"];
   }
 
   return v8;
 }
 
-- (id)extensionForTraceType:(int64_t)a3
+- (id)extensionForTraceType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = +[MNFilePaths routePlanningTraceExtension];
   }
 
-  else if (a3)
+  else if (type)
   {
     v3 = 0;
   }
@@ -332,10 +332,10 @@
   return v3;
 }
 
-- (id)filenameForUserTrace:(id)a3 traceType:(int64_t)a4
+- (id)filenameForUserTrace:(id)trace traceType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(TraceManager *)self extensionForTraceType:a4];
+  traceCopy = trace;
+  v7 = [(TraceManager *)self extensionForTraceType:type];
   if (!v7)
   {
     v10 = sub_10006D178();
@@ -365,17 +365,17 @@
     }
   }
 
-  v8 = [v6 stringByAppendingPathExtension:v7];
+  v8 = [traceCopy stringByAppendingPathExtension:v7];
 
   return v8;
 }
 
-- (id)_cleanPathForDirectory:(id)a3
+- (id)_cleanPathForDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   fileManager = self->_fileManager;
   v15 = 0;
-  v6 = [(NSFileManager *)fileManager removeItemAtPath:v4 error:&v15];
+  v6 = [(NSFileManager *)fileManager removeItemAtPath:directoryCopy error:&v15];
   v7 = v15;
   v8 = v7;
   if (v6)
@@ -390,11 +390,11 @@
 
   if (!v9)
   {
-    NSLog(@"Could not remove trace at path: %@. Error: %@", v4, v7);
+    NSLog(@"Could not remove trace at path: %@. Error: %@", directoryCopy, v7);
   }
 
   v14 = v8;
-  v10 = [MNFilePaths createFolderIfNotPresent:v4 error:&v14];
+  v10 = [MNFilePaths createFolderIfNotPresent:directoryCopy error:&v14];
   v11 = v14;
 
   if (v10)
@@ -409,41 +409,41 @@
 
   if (!v12)
   {
-    NSLog(@"Could not create the folder: %@ Error: %@", v4, v11);
+    NSLog(@"Could not create the folder: %@ Error: %@", directoryCopy, v11);
   }
 
-  return v4;
+  return directoryCopy;
 }
 
-- (id)tracesDirectoryWithTraceType:(int64_t)a3 resolveSymlink:(BOOL)a4
+- (id)tracesDirectoryWithTraceType:(int64_t)type resolveSymlink:(BOOL)symlink
 {
-  v4 = a4;
-  v5 = [(TraceManager *)self tracesDirectoryWithTraceType:a3];
-  if (v4)
+  symlinkCopy = symlink;
+  v5 = [(TraceManager *)self tracesDirectoryWithTraceType:type];
+  if (symlinkCopy)
   {
     v6 = [NSURL fileURLWithPath:v5 isDirectory:1];
     v10 = 0;
     [v6 getResourceValue:&v10 forKey:NSURLIsSymbolicLinkKey error:0];
     if ([v10 BOOLValue])
     {
-      v7 = [v6 URLByResolvingSymlinksInPath];
-      v8 = [v7 path];
+      uRLByResolvingSymlinksInPath = [v6 URLByResolvingSymlinksInPath];
+      path = [uRLByResolvingSymlinksInPath path];
 
-      v5 = v8;
+      v5 = path;
     }
   }
 
   return v5;
 }
 
-- (id)tracesDirectoryWithTraceType:(int64_t)a3
+- (id)tracesDirectoryWithTraceType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     self = +[MNFilePaths routePlanningTracesDirectoryPath];
   }
 
-  else if (!a3)
+  else if (!type)
   {
     self = +[MNFilePaths navTracesDirectoryPath];
   }

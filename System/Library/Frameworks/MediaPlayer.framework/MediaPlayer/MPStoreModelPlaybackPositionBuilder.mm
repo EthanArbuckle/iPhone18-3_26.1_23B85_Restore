@@ -1,6 +1,6 @@
 @interface MPStoreModelPlaybackPositionBuilder
 + (id)allSupportedProperties;
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5;
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity;
 @end
 
 @implementation MPStoreModelPlaybackPositionBuilder
@@ -21,16 +21,16 @@
   return v3;
 }
 
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  objectCopy = object;
+  identityCopy = identity;
   if ((*&self->_requestedPlaybackPositionProperties & 1) == 0)
   {
-    v11 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-    v12 = [v11 properties];
-    if ([v12 containsObject:@"MPModelPropertyPlaybackPositionBookmarkTime"])
+    requestedPropertySet = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+    properties = [requestedPropertySet properties];
+    if ([properties containsObject:@"MPModelPropertyPlaybackPositionBookmarkTime"])
     {
       v13 = 2;
     }
@@ -41,7 +41,7 @@
     }
 
     *&self->_requestedPlaybackPositionProperties = *&self->_requestedPlaybackPositionProperties & 0xFD | v13;
-    if ([v12 containsObject:@"MPModelPropertyPlaybackPositionShouldRememberBookmarkTime"])
+    if ([properties containsObject:@"MPModelPropertyPlaybackPositionShouldRememberBookmarkTime"])
     {
       v14 = 4;
     }
@@ -52,7 +52,7 @@
     }
 
     *&self->_requestedPlaybackPositionProperties = *&self->_requestedPlaybackPositionProperties & 0xFB | v14;
-    if ([v12 containsObject:@"MPModelPropertyPlaybackPositionHasBeenPlayed"])
+    if ([properties containsObject:@"MPModelPropertyPlaybackPositionHasBeenPlayed"])
     {
       v15 = 8;
     }
@@ -63,7 +63,7 @@
     }
 
     *&self->_requestedPlaybackPositionProperties = *&self->_requestedPlaybackPositionProperties & 0xF7 | v15;
-    if ([v12 containsObject:@"MPModelPropertyPlaybackPositionStartTime"])
+    if ([properties containsObject:@"MPModelPropertyPlaybackPositionStartTime"])
     {
       v16 = 16;
     }
@@ -74,7 +74,7 @@
     }
 
     *&self->_requestedPlaybackPositionProperties = *&self->_requestedPlaybackPositionProperties & 0xEF | v16;
-    if ([v12 containsObject:@"MPModelPropertyPlaybackPositionStopTime"])
+    if ([properties containsObject:@"MPModelPropertyPlaybackPositionStopTime"])
     {
       v17 = 32;
     }
@@ -85,7 +85,7 @@
     }
 
     *&self->_requestedPlaybackPositionProperties = *&self->_requestedPlaybackPositionProperties & 0xDF | v17;
-    if ([v12 containsObject:@"MPModelPropertyPlaybackPositionStoreUbiquitousIdentifier"])
+    if ([properties containsObject:@"MPModelPropertyPlaybackPositionStoreUbiquitousIdentifier"])
     {
       v18 = 64;
     }
@@ -96,7 +96,7 @@
     }
 
     *&self->_requestedPlaybackPositionProperties = *&self->_requestedPlaybackPositionProperties & 0xBF | v18;
-    if ([v12 containsObject:@"MPModelPropertyPlaybackPositionUserPlayCount"])
+    if ([properties containsObject:@"MPModelPropertyPlaybackPositionUserPlayCount"])
     {
       v19 = -127;
     }
@@ -113,21 +113,21 @@
   v28 = 3221225472;
   v29 = __103__MPStoreModelPlaybackPositionBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke;
   v30 = &unk_1E767E980;
-  v20 = v8;
+  v20 = metadataCopy;
   v31 = v20;
-  v32 = self;
+  selfCopy = self;
   v21 = _Block_copy(&v27);
-  if (v9)
+  if (objectCopy)
   {
-    v22 = [v9 identifiers];
-    v23 = [v9 copyWithIdentifiers:v22 block:v21];
+    identifiers = [objectCopy identifiers];
+    v23 = [objectCopy copyWithIdentifiers:identifiers block:v21];
   }
 
   else
   {
     v24 = [MPModelPlaybackPosition alloc];
-    v22 = [MPIdentifierSet emptyIdentifierSet:v27];
-    v23 = [(MPModelObject *)v24 initWithIdentifiers:v22 block:v21];
+    identifiers = [MPIdentifierSet emptyIdentifierSet:v27];
+    v23 = [(MPModelObject *)v24 initWithIdentifiers:identifiers block:v21];
   }
 
   v25 = v23;

@@ -1,12 +1,12 @@
 @interface CuratedCollectionMediaIntegrationTableViewCell
 + (id)reuseIdentifier;
-- (CGPoint)mediaIntegrationMenuAttachmentPointForConfiguration:(id)a3;
-- (CuratedCollectionMediaIntegrationTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGPoint)mediaIntegrationMenuAttachmentPointForConfiguration:(id)configuration;
+- (CuratedCollectionMediaIntegrationTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (CuratedCollectionMediaIntegrationTableViewCellDelegate)delegate;
-- (id)_allMenuElementsForMediaIntegration:(id)a3;
-- (id)_buildDeferredMenuElementForMediaIntegration:(id)a3;
-- (id)_buildMenuElementForViewModel:(id)a3;
-- (id)mediaIntegrationMenuConfigurationWithInteraction:(id)a3;
+- (id)_allMenuElementsForMediaIntegration:(id)integration;
+- (id)_buildDeferredMenuElementForMediaIntegration:(id)integration;
+- (id)_buildMenuElementForViewModel:(id)model;
+- (id)mediaIntegrationMenuConfigurationWithInteraction:(id)interaction;
 - (void)_addSubviews;
 - (void)_loadImageIfNeeded;
 - (void)_loadMenuActionImages;
@@ -19,9 +19,9 @@
 - (void)mediaIntegrationMenuWillAppear;
 - (void)mediaIntegrationMenuWillDisappear;
 - (void)prepareForReuse;
-- (void)setPosition:(unint64_t)a3;
-- (void)setViewModel:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setPosition:(unint64_t)position;
+- (void)setViewModel:(id)model;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CuratedCollectionMediaIntegrationTableViewCell
@@ -35,30 +35,30 @@
 
 - (void)mediaIntegrationMenuWillDisappear
 {
-  v2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
-  [v2 setAlpha:1.0];
+  actionLabel = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
+  [actionLabel setAlpha:1.0];
 }
 
 - (void)mediaIntegrationMenuWillAppear
 {
-  v3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
-  [v3 setAlpha:0.5];
+  actionLabel = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
+  [actionLabel setAlpha:0.5];
 
-  v4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self delegate];
-  [v4 mediaIntegrationCellDidDisplayChildLinks:self];
+  delegate = [(CuratedCollectionMediaIntegrationTableViewCell *)self delegate];
+  [delegate mediaIntegrationCellDidDisplayChildLinks:self];
 }
 
-- (CGPoint)mediaIntegrationMenuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)mediaIntegrationMenuAttachmentPointForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
-  [v5 menuAttachmentPointForConfiguration:v4];
+  configurationCopy = configuration;
+  actionControl = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
+  [actionControl menuAttachmentPointForConfiguration:configurationCopy];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v11 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
-  [v10 convertPoint:v11 fromView:{v7, v9}];
+  platterView = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  actionControl2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
+  [platterView convertPoint:actionControl2 fromView:{v7, v9}];
   v13 = v12;
   v15 = v14;
 
@@ -69,9 +69,9 @@
   return result;
 }
 
-- (id)mediaIntegrationMenuConfigurationWithInteraction:(id)a3
+- (id)mediaIntegrationMenuConfigurationWithInteraction:(id)interaction
 {
-  [(CuratedCollectionMediaIntegrationTableViewCell *)self setMediaIntegrationMenuInteraction:a3];
+  [(CuratedCollectionMediaIntegrationTableViewCell *)self setMediaIntegrationMenuInteraction:interaction];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10081FF9C;
@@ -83,47 +83,47 @@
   return v4;
 }
 
-- (id)_buildMenuElementForViewModel:(id)a3
+- (id)_buildMenuElementForViewModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 localizedSystemFirstPartyName];
-  v6 = v5;
-  if (v5)
+  modelCopy = model;
+  localizedSystemFirstPartyName = [modelCopy localizedSystemFirstPartyName];
+  v6 = localizedSystemFirstPartyName;
+  if (localizedSystemFirstPartyName)
   {
-    v7 = v5;
+    title = localizedSystemFirstPartyName;
   }
 
   else
   {
-    v7 = [v4 title];
+    title = [modelCopy title];
   }
 
-  v8 = v7;
+  v8 = title;
 
-  v9 = [v4 systemFirstPartyIcon];
-  v10 = v9;
-  if (v9)
+  systemFirstPartyIcon = [modelCopy systemFirstPartyIcon];
+  v10 = systemFirstPartyIcon;
+  if (systemFirstPartyIcon)
   {
-    v11 = v9;
+    v11 = systemFirstPartyIcon;
   }
 
   else
   {
     cachedAppImagesByIdentifiers = self->_cachedAppImagesByIdentifiers;
-    v13 = [v4 identifier];
-    v11 = [(NSMutableDictionary *)cachedAppImagesByIdentifiers objectForKeyedSubscript:v13];
+    identifier = [modelCopy identifier];
+    v11 = [(NSMutableDictionary *)cachedAppImagesByIdentifiers objectForKeyedSubscript:identifier];
   }
 
   objc_initWeak(&location, self);
-  v14 = [v4 identifier];
+  identifier2 = [modelCopy identifier];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100820258;
   v18[3] = &unk_101660418;
   objc_copyWeak(&v20, &location);
-  v15 = v4;
+  v15 = modelCopy;
   v19 = v15;
-  v16 = [UIAction actionWithTitle:v8 image:v11 identifier:v14 handler:v18];
+  v16 = [UIAction actionWithTitle:v8 image:v11 identifier:identifier2 handler:v18];
 
   [v16 setAccessibilityIdentifier:@"CuratedCollectionMediaMenuItem"];
   objc_destroyWeak(&v20);
@@ -132,22 +132,22 @@
   return v16;
 }
 
-- (id)_allMenuElementsForMediaIntegration:(id)a3
+- (id)_allMenuElementsForMediaIntegration:(id)integration
 {
-  v4 = a3;
+  integrationCopy = integration;
   v5 = [NSMutableArray alloc];
-  v6 = [v4 childViewModels];
-  v7 = [v5 initWithCapacity:{objc_msgSend(v6, "count") + 1}];
+  childViewModels = [integrationCopy childViewModels];
+  v7 = [v5 initWithCapacity:{objc_msgSend(childViewModels, "count") + 1}];
 
-  v8 = [(CuratedCollectionMediaIntegrationTableViewCell *)self _buildMenuElementForViewModel:v4];
+  v8 = [(CuratedCollectionMediaIntegrationTableViewCell *)self _buildMenuElementForViewModel:integrationCopy];
   [v7 addObject:v8];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [v4 childViewModels];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  childViewModels2 = [integrationCopy childViewModels];
+  v10 = [childViewModels2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -158,14 +158,14 @@
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(childViewModels2);
         }
 
         v14 = [(CuratedCollectionMediaIntegrationTableViewCell *)self _buildMenuElementForViewModel:*(*(&v16 + 1) + 8 * i)];
         [v7 addObject:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [childViewModels2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
@@ -174,15 +174,15 @@
   return v7;
 }
 
-- (id)_buildDeferredMenuElementForMediaIntegration:(id)a3
+- (id)_buildDeferredMenuElementForMediaIntegration:(id)integration
 {
-  v4 = a3;
+  integrationCopy = integration;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100820564;
   v8[3] = &unk_10162B648;
-  v5 = v4;
+  v5 = integrationCopy;
   v9 = v5;
   objc_copyWeak(&v10, &location);
   v6 = [UIDeferredMenuElement elementWithProvider:v8];
@@ -195,62 +195,62 @@
 
 - (void)_updateLogoConstraintsAndVisibility
 {
-  v3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self activeLogoConstraints];
-  [NSLayoutConstraint deactivateConstraints:v3];
+  activeLogoConstraints = [(CuratedCollectionMediaIntegrationTableViewCell *)self activeLogoConstraints];
+  [NSLayoutConstraint deactivateConstraints:activeLogoConstraints];
 
-  v4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self viewModel];
-  v5 = [v4 childViewModels];
-  v6 = [v5 count];
+  viewModel = [(CuratedCollectionMediaIntegrationTableViewCell *)self viewModel];
+  childViewModels = [viewModel childViewModels];
+  v6 = [childViewModels count];
 
-  v7 = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
-  v8 = v7;
+  logoImageView = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
+  v8 = logoImageView;
   if (v6)
   {
-    [v7 setHidden:1];
+    [logoImageView setHidden:1];
 
-    v9 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
-    v10 = [v9 topAnchor];
-    v11 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-    v12 = [v11 topAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12 constant:16.0];
-    v32 = v13;
+    titleLabel = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
+    topAnchor = [titleLabel topAnchor];
+    platterView = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+    topAnchor2 = [platterView topAnchor];
+    v12TopAnchor = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
+    v32 = v12TopAnchor;
     v14 = [NSArray arrayWithObjects:&v32 count:1];
   }
 
   else
   {
-    [v7 setHidden:0];
+    [logoImageView setHidden:0];
 
-    v30 = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
-    v27 = [v30 heightAnchor];
-    v25 = [v27 constraintEqualToConstant:12.0];
+    logoImageView2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
+    heightAnchor = [logoImageView2 heightAnchor];
+    v25 = [heightAnchor constraintEqualToConstant:12.0];
     v33[0] = v25;
-    v12 = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
-    v13 = [v12 topAnchor];
-    v31 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-    v29 = [v31 topAnchor];
-    v28 = [v13 constraintEqualToAnchor:v29 constant:16.0];
+    topAnchor2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
+    v12TopAnchor = [topAnchor2 topAnchor];
+    platterView2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+    topAnchor3 = [platterView2 topAnchor];
+    v28 = [v12TopAnchor constraintEqualToAnchor:topAnchor3 constant:16.0];
     v33[1] = v28;
-    v26 = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
-    v23 = [v26 leadingAnchor];
-    v24 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-    v22 = [v24 leadingAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22 constant:16.0];
+    logoImageView3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
+    leadingAnchor = [logoImageView3 leadingAnchor];
+    platterView3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+    leadingAnchor2 = [platterView3 leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v33[2] = v21;
-    v15 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
-    v16 = [v15 topAnchor];
-    v17 = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
-    v18 = [v17 bottomAnchor];
-    v19 = [(CuratedCollectionMediaIntegrationTableViewCell *)self viewModel];
-    [v19 logoToTitlePadding];
-    v20 = [v16 constraintEqualToAnchor:v18 constant:?];
+    titleLabel2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
+    topAnchor4 = [titleLabel2 topAnchor];
+    logoImageView4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
+    bottomAnchor = [logoImageView4 bottomAnchor];
+    viewModel2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self viewModel];
+    [viewModel2 logoToTitlePadding];
+    v20 = [topAnchor4 constraintEqualToAnchor:bottomAnchor constant:?];
     v33[3] = v20;
     v14 = [NSArray arrayWithObjects:v33 count:4];
 
-    v11 = v25;
-    v10 = v27;
+    platterView = v25;
+    topAnchor = heightAnchor;
 
-    v9 = v30;
+    titleLabel = logoImageView2;
   }
 
   [NSLayoutConstraint activateConstraints:v14];
@@ -259,133 +259,133 @@
 
 - (void)_setupBaseConstraints
 {
-  v3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v4 = [v3 topAnchor];
-  v5 = [(CuratedCollectionMediaIntegrationTableViewCell *)self contentView];
-  v6 = [v5 topAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6 constant:16.0];
+  platterView = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  topAnchor = [platterView topAnchor];
+  contentView = [(CuratedCollectionMediaIntegrationTableViewCell *)self contentView];
+  topAnchor2 = [contentView topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   [(CuratedCollectionMediaIntegrationTableViewCell *)self setTopMarginConstraint:v7];
 
-  v8 = [(CuratedCollectionMediaIntegrationTableViewCell *)self contentView];
-  v9 = [v8 bottomAnchor];
-  v10 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:16.0];
+  contentView2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self contentView];
+  bottomAnchor = [contentView2 bottomAnchor];
+  platterView2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  bottomAnchor2 = [platterView2 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:16.0];
   [(CuratedCollectionMediaIntegrationTableViewCell *)self setBottomMarginConstraint:v12];
 
-  v106 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v104 = [v106 leadingAnchor];
-  v105 = [(CuratedCollectionMediaIntegrationTableViewCell *)self contentView];
-  v103 = [v105 leadingAnchor];
-  v102 = [v104 constraintEqualToAnchor:v103 constant:16.0];
+  platterView3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  leadingAnchor = [platterView3 leadingAnchor];
+  contentView3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v102 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v107[0] = v102;
-  v101 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v99 = [v101 trailingAnchor];
-  v100 = [(CuratedCollectionMediaIntegrationTableViewCell *)self contentView];
-  v98 = [v100 trailingAnchor];
-  v97 = [v99 constraintEqualToAnchor:v98 constant:-16.0];
+  platterView4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  trailingAnchor = [platterView4 trailingAnchor];
+  contentView4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  v97 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v107[1] = v97;
-  v96 = [(CuratedCollectionMediaIntegrationTableViewCell *)self topMarginConstraint];
-  v107[2] = v96;
-  v95 = [(CuratedCollectionMediaIntegrationTableViewCell *)self bottomMarginConstraint];
-  v107[3] = v95;
-  v94 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
-  v92 = [v94 leadingAnchor];
-  v93 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v91 = [v93 leadingAnchor];
-  v90 = [v92 constraintEqualToAnchor:v91 constant:16.0];
+  topMarginConstraint = [(CuratedCollectionMediaIntegrationTableViewCell *)self topMarginConstraint];
+  v107[2] = topMarginConstraint;
+  bottomMarginConstraint = [(CuratedCollectionMediaIntegrationTableViewCell *)self bottomMarginConstraint];
+  v107[3] = bottomMarginConstraint;
+  titleLabel = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
+  leadingAnchor3 = [titleLabel leadingAnchor];
+  platterView5 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  leadingAnchor4 = [platterView5 leadingAnchor];
+  v90 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
   v107[4] = v90;
-  v89 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
-  v87 = [v89 trailingAnchor];
-  v88 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  v86 = [v88 leadingAnchor];
-  v85 = [v87 constraintEqualToAnchor:v86 constant:-10.0];
+  titleLabel2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
+  trailingAnchor3 = [titleLabel2 trailingAnchor];
+  artworkImageView = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  leadingAnchor5 = [artworkImageView leadingAnchor];
+  v85 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor5 constant:-10.0];
   v107[5] = v85;
-  v84 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
-  v82 = [v84 topAnchor];
-  v83 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
-  v81 = [v83 bottomAnchor];
-  v80 = [v82 constraintEqualToAnchor:v81 constant:2.0];
+  subtitleLabel = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
+  topAnchor3 = [subtitleLabel topAnchor];
+  titleLabel3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
+  bottomAnchor3 = [titleLabel3 bottomAnchor];
+  v80 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3 constant:2.0];
   v107[6] = v80;
-  v79 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
-  v77 = [v79 leadingAnchor];
-  v78 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v76 = [v78 leadingAnchor];
-  v75 = [v77 constraintEqualToAnchor:v76 constant:16.0];
+  subtitleLabel2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
+  leadingAnchor6 = [subtitleLabel2 leadingAnchor];
+  platterView6 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  leadingAnchor7 = [platterView6 leadingAnchor];
+  v75 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7 constant:16.0];
   v107[7] = v75;
-  v74 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
-  v72 = [v74 trailingAnchor];
-  v73 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  v71 = [v73 leadingAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71 constant:-10.0];
+  subtitleLabel3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
+  trailingAnchor4 = [subtitleLabel3 trailingAnchor];
+  artworkImageView2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  leadingAnchor8 = [artworkImageView2 leadingAnchor];
+  v70 = [trailingAnchor4 constraintEqualToAnchor:leadingAnchor8 constant:-10.0];
   v107[8] = v70;
-  v69 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
-  v67 = [v69 topAnchor];
-  v68 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
-  v66 = [v68 bottomAnchor];
-  v65 = [v67 constraintEqualToAnchor:v66 constant:8.0];
+  actionLabel = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
+  topAnchor4 = [actionLabel topAnchor];
+  subtitleLabel4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
+  bottomAnchor4 = [subtitleLabel4 bottomAnchor];
+  v65 = [topAnchor4 constraintEqualToAnchor:bottomAnchor4 constant:8.0];
   v107[9] = v65;
-  v64 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
-  v62 = [v64 leadingAnchor];
-  v63 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v61 = [v63 leadingAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61 constant:16.0];
+  actionLabel2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
+  leadingAnchor9 = [actionLabel2 leadingAnchor];
+  platterView7 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  leadingAnchor10 = [platterView7 leadingAnchor];
+  v60 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:16.0];
   v107[10] = v60;
-  v59 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
-  v57 = [v59 trailingAnchor];
-  v58 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v56 = [v58 trailingAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56 constant:-16.0];
+  actionLabel3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
+  trailingAnchor5 = [actionLabel3 trailingAnchor];
+  platterView8 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  trailingAnchor6 = [platterView8 trailingAnchor];
+  v55 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-16.0];
   v107[11] = v55;
-  v54 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
-  v52 = [v54 bottomAnchor];
-  v53 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v51 = [v53 bottomAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51 constant:-16.0];
+  actionLabel4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
+  bottomAnchor5 = [actionLabel4 bottomAnchor];
+  platterView9 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  bottomAnchor6 = [platterView9 bottomAnchor];
+  v50 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-16.0];
   v107[12] = v50;
-  v49 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
-  v47 = [v49 topAnchor];
-  v48 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
-  v46 = [v48 topAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  actionControl = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
+  topAnchor5 = [actionControl topAnchor];
+  actionLabel5 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
+  topAnchor6 = [actionLabel5 topAnchor];
+  v45 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v107[13] = v45;
-  v44 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
-  v42 = [v44 leadingAnchor];
-  v43 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
-  v41 = [v43 leadingAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  actionControl2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
+  leadingAnchor11 = [actionControl2 leadingAnchor];
+  actionLabel6 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
+  leadingAnchor12 = [actionLabel6 leadingAnchor];
+  v40 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
   v107[14] = v40;
-  v39 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
-  v37 = [v39 trailingAnchor];
-  v38 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
-  v36 = [v38 trailingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  actionControl3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
+  trailingAnchor7 = [actionControl3 trailingAnchor];
+  actionLabel7 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
+  trailingAnchor8 = [actionLabel7 trailingAnchor];
+  v35 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   v107[15] = v35;
-  v34 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
-  v32 = [v34 bottomAnchor];
-  v33 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
-  v31 = [v33 bottomAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  actionControl4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
+  bottomAnchor7 = [actionControl4 bottomAnchor];
+  actionLabel8 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
+  bottomAnchor8 = [actionLabel8 bottomAnchor];
+  v30 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v107[16] = v30;
-  v29 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  v27 = [v29 topAnchor];
-  v28 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v26 = [v28 topAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26 constant:16.0];
+  artworkImageView3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  topAnchor7 = [artworkImageView3 topAnchor];
+  platterView10 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  topAnchor8 = [platterView10 topAnchor];
+  v25 = [topAnchor7 constraintEqualToAnchor:topAnchor8 constant:16.0];
   v107[17] = v25;
-  v24 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  v23 = [v24 trailingAnchor];
-  v13 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v14 = [v13 trailingAnchor];
-  v15 = [v23 constraintEqualToAnchor:v14 constant:-16.0];
+  artworkImageView4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  trailingAnchor9 = [artworkImageView4 trailingAnchor];
+  platterView11 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  trailingAnchor10 = [platterView11 trailingAnchor];
+  v15 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10 constant:-16.0];
   v107[18] = v15;
-  v16 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  v17 = [v16 heightAnchor];
-  v18 = [v17 constraintEqualToConstant:64.0];
+  artworkImageView5 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  heightAnchor = [artworkImageView5 heightAnchor];
+  v18 = [heightAnchor constraintEqualToConstant:64.0];
   v107[19] = v18;
-  v19 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  v20 = [v19 widthAnchor];
-  v21 = [v20 constraintEqualToConstant:64.0];
+  artworkImageView6 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  widthAnchor = [artworkImageView6 widthAnchor];
+  v21 = [widthAnchor constraintEqualToConstant:64.0];
   v107[20] = v21;
   v22 = [NSArray arrayWithObjects:v107 count:21];
   [NSLayoutConstraint activateConstraints:v22];
@@ -396,52 +396,52 @@
   v3 = objc_alloc_init(CuratedCollectionMediaIntegrationPlatterControl);
   [(CuratedCollectionMediaIntegrationTableViewCell *)self setPlatterView:v3];
 
-  v4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  [v4 setAccessibilityIdentifier:@"PlatterView"];
+  platterView = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  [platterView setAccessibilityIdentifier:@"PlatterView"];
 
-  v5 = [(CuratedCollectionMediaIntegrationTableViewCell *)self contentView];
-  v6 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  [v5 addSubview:v6];
+  contentView = [(CuratedCollectionMediaIntegrationTableViewCell *)self contentView];
+  platterView2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  [contentView addSubview:platterView2];
 
-  v7 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  platterView3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  [platterView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  [v8 setInteractionDelegate:self];
+  platterView4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  [platterView4 setInteractionDelegate:self];
 
   v9 = objc_alloc_init(UILabel);
   [(CuratedCollectionMediaIntegrationTableViewCell *)self setTitleLabel:v9];
 
   if (sub_10000FA08(self) == 5)
   {
-    v10 = [(CuratedCollectionMediaIntegrationTableViewCell *)self traitCollection];
-    v11 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleTitle3 weight:v10 compatibleWithTraitCollection:UIFontWeightSemibold];
-    v12 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
-    [v12 setFont:v11];
+    traitCollection = [(CuratedCollectionMediaIntegrationTableViewCell *)self traitCollection];
+    titleLabel2 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleTitle3 weight:traitCollection compatibleWithTraitCollection:UIFontWeightSemibold];
+    titleLabel = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
+    [titleLabel setFont:titleLabel2];
   }
 
   else
   {
-    v10 = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-    v11 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
-    [v11 setFont:v10];
+    traitCollection = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    titleLabel2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
+    [titleLabel2 setFont:traitCollection];
   }
 
-  v13 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
-  [v13 setNumberOfLines:2];
+  titleLabel3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
+  [titleLabel3 setNumberOfLines:2];
 
-  v14 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
-  [v14 setLineBreakStrategy:0];
+  titleLabel4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
+  [titleLabel4 setLineBreakStrategy:0];
 
-  v15 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
-  [v15 setAccessibilityIdentifier:@"TitleLabel"];
+  titleLabel5 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
+  [titleLabel5 setAccessibilityIdentifier:@"TitleLabel"];
 
-  v16 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v17 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
-  [v16 addSubview:v17];
+  platterView5 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  titleLabel6 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
+  [platterView5 addSubview:titleLabel6];
 
-  v18 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
-  [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel7 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
+  [titleLabel7 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v19 = sub_10000FA08(self);
   v20 = &UIFontTextStyleBody;
@@ -454,138 +454,138 @@
   v21 = objc_alloc_init(UILabel);
   [(CuratedCollectionMediaIntegrationTableViewCell *)self setSubtitleLabel:v21];
 
-  v22 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
-  [v22 setFont:v58];
+  subtitleLabel = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
+  [subtitleLabel setFont:v58];
 
   v23 = +[UIColor secondaryLabelColor];
-  v24 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
-  [v24 setTextColor:v23];
+  subtitleLabel2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
+  [subtitleLabel2 setTextColor:v23];
 
-  v25 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
-  [v25 setAccessibilityIdentifier:@"SubtitleLabel"];
+  subtitleLabel3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
+  [subtitleLabel3 setAccessibilityIdentifier:@"SubtitleLabel"];
 
-  v26 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v27 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
-  [v26 addSubview:v27];
+  platterView6 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  subtitleLabel4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
+  [platterView6 addSubview:subtitleLabel4];
 
-  v28 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
-  [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
+  subtitleLabel5 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
+  [subtitleLabel5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v29 = objc_alloc_init(UILabel);
   [(CuratedCollectionMediaIntegrationTableViewCell *)self setActionLabel:v29];
 
-  v30 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
-  [v30 setFont:v58];
+  actionLabel = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
+  [actionLabel setFont:v58];
 
   v31 = +[UIColor systemBlueColor];
-  v32 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
-  [v32 setTextColor:v31];
+  actionLabel2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
+  [actionLabel2 setTextColor:v31];
 
-  v33 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
-  [v33 setAccessibilityIdentifier:@"ActionLabel"];
+  actionLabel3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
+  [actionLabel3 setAccessibilityIdentifier:@"ActionLabel"];
 
-  v34 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v35 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
-  [v34 addSubview:v35];
+  platterView7 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  actionLabel4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
+  [platterView7 addSubview:actionLabel4];
 
-  v36 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
-  [v36 setTranslatesAutoresizingMaskIntoConstraints:0];
+  actionLabel5 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
+  [actionLabel5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v37 = objc_alloc_init(UIControl);
   [(CuratedCollectionMediaIntegrationTableViewCell *)self setActionControl:v37];
 
-  v38 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
-  [v38 setAccessibilityIdentifier:@"ActionControl"];
+  actionControl = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
+  [actionControl setAccessibilityIdentifier:@"ActionControl"];
 
-  v39 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v40 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
-  [v39 addSubview:v40];
+  platterView8 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  actionControl2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
+  [platterView8 addSubview:actionControl2];
 
-  v41 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
-  [v41 setTranslatesAutoresizingMaskIntoConstraints:0];
+  actionControl3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionControl];
+  [actionControl3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v42 = objc_alloc_init(UIImageView);
   [(CuratedCollectionMediaIntegrationTableViewCell *)self setLogoImageView:v42];
 
-  v43 = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
-  [v43 setContentMode:2];
+  logoImageView = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
+  [logoImageView setContentMode:2];
 
-  v44 = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
-  [v44 setAccessibilityIdentifier:@"LogoImageView"];
+  logoImageView2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
+  [logoImageView2 setAccessibilityIdentifier:@"LogoImageView"];
 
-  v45 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v46 = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
-  [v45 addSubview:v46];
+  platterView9 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  logoImageView3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
+  [platterView9 addSubview:logoImageView3];
 
-  v47 = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
-  [v47 setTranslatesAutoresizingMaskIntoConstraints:0];
+  logoImageView4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
+  [logoImageView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v48 = objc_alloc_init(UIImageView);
   [(CuratedCollectionMediaIntegrationTableViewCell *)self setArtworkImageView:v48];
 
-  v49 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  [v49 setAccessibilityIdentifier:@"ArtworkImageView"];
+  artworkImageView = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  [artworkImageView setAccessibilityIdentifier:@"ArtworkImageView"];
 
-  v50 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v51 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  [v50 addSubview:v51];
+  platterView10 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  artworkImageView2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  [platterView10 addSubview:artworkImageView2];
 
-  v52 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  [v52 setTranslatesAutoresizingMaskIntoConstraints:0];
+  artworkImageView3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  [artworkImageView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v53 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  v54 = [v53 layer];
-  [v54 setMasksToBounds:1];
+  artworkImageView4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  layer = [artworkImageView4 layer];
+  [layer setMasksToBounds:1];
 
-  v55 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  v56 = [v55 layer];
-  [v56 setCornerRadius:8.0];
+  artworkImageView5 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  layer2 = [artworkImageView5 layer];
+  [layer2 setCornerRadius:8.0];
 
-  v57 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  [v57 setContentMode:2];
+  artworkImageView6 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  [artworkImageView6 setContentMode:2];
 }
 
 - (void)_setupCornerRadius
 {
-  v3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v4 = [v3 layer];
-  [v4 setCornerRadius:10.0];
+  platterView = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  layer = [platterView layer];
+  [layer setCornerRadius:10.0];
 
-  v6 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  v5 = [v6 layer];
-  [v5 setMasksToBounds:1];
+  platterView2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  layer2 = [platterView2 layer];
+  [layer2 setMasksToBounds:1];
 }
 
 - (void)_setupShadows
 {
   v3 = +[UIColor systemBlackColor];
-  v4 = [v3 CGColor];
-  v5 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  v6 = [v5 layer];
-  [v6 setShadowColor:v4];
+  cGColor = [v3 CGColor];
+  artworkImageView = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  layer = [artworkImageView layer];
+  [layer setShadowColor:cGColor];
 
-  v7 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  v8 = [v7 layer];
+  artworkImageView2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  layer2 = [artworkImageView2 layer];
   LODWORD(v9) = 1025758986;
-  [v8 setShadowOpacity:v9];
+  [layer2 setShadowOpacity:v9];
 
-  v10 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  v11 = [v10 layer];
-  [v11 setShadowOffset:{0.0, 2.0}];
+  artworkImageView3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  layer3 = [artworkImageView3 layer];
+  [layer3 setShadowOffset:{0.0, 2.0}];
 
-  v12 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  v13 = [v12 layer];
-  [v13 setShadowRadius:5.0];
+  artworkImageView4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  layer4 = [artworkImageView4 layer];
+  [layer4 setShadowRadius:5.0];
 
-  v15 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  v14 = [v15 layer];
-  [v14 setShadowPathIsBounds:1];
+  artworkImageView5 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  layer5 = [artworkImageView5 layer];
+  [layer5 setShadowPathIsBounds:1];
 }
 
 - (void)_loadImageIfNeeded
 {
-  v3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  [v3 frame];
+  artworkImageView = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  [artworkImageView frame];
   v5 = v4;
   v7 = v6;
   height = CGSizeZero.height;
@@ -601,8 +601,8 @@
     [(CuratedCollectionMediaIntegrationTableViewCell *)self setNeedsImageLoad:0];
     v10 = self->_viewModel;
     objc_initWeak(&location, self);
-    v11 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-    [v11 frame];
+    artworkImageView2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+    [artworkImageView2 frame];
     v13 = v12;
     v15 = v14;
     v17[0] = _NSConcreteStackBlock;
@@ -641,73 +641,73 @@
 
 - (void)_updateViews
 {
-  v3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self viewModel];
-  v4 = [v3 title];
-  v5 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
-  [v5 setText:v4];
+  viewModel = [(CuratedCollectionMediaIntegrationTableViewCell *)self viewModel];
+  title = [viewModel title];
+  titleLabel = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
+  [titleLabel setText:title];
 
-  v6 = [(CuratedCollectionMediaIntegrationTableViewCell *)self viewModel];
-  v7 = [v6 subtitle];
-  v8 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
-  [v8 setText:v7];
+  viewModel2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self viewModel];
+  subtitle = [viewModel2 subtitle];
+  subtitleLabel = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
+  [subtitleLabel setText:subtitle];
 
-  v9 = [(CuratedCollectionMediaIntegrationTableViewCell *)self viewModel];
-  v10 = [v9 actionText];
-  v11 = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
-  [v11 setText:v10];
+  viewModel3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self viewModel];
+  actionText = [viewModel3 actionText];
+  actionLabel = [(CuratedCollectionMediaIntegrationTableViewCell *)self actionLabel];
+  [actionLabel setText:actionText];
 
-  v12 = [(CuratedCollectionMediaIntegrationTableViewCell *)self viewModel];
-  v13 = [v12 realmIcon];
-  v14 = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
-  [v14 setImage:v13];
+  viewModel4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self viewModel];
+  realmIcon = [viewModel4 realmIcon];
+  logoImageView = [(CuratedCollectionMediaIntegrationTableViewCell *)self logoImageView];
+  [logoImageView setImage:realmIcon];
 
   [(CuratedCollectionMediaIntegrationTableViewCell *)self _loadImageIfNeeded];
   v16 = +[UIColor secondarySystemGroupedBackgroundColor];
-  v15 = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
-  [v15 setBackgroundColor:v16];
+  platterView = [(CuratedCollectionMediaIntegrationTableViewCell *)self platterView];
+  [platterView setBackgroundColor:v16];
 }
 
-- (void)setPosition:(unint64_t)a3
+- (void)setPosition:(unint64_t)position
 {
-  if (self->_position != a3)
+  if (self->_position != position)
   {
-    self->_position = a3;
-    if (a3 >= 2)
+    self->_position = position;
+    if (position >= 2)
     {
-      if (a3 == 2)
+      if (position == 2)
       {
-        v6 = [(CuratedCollectionMediaIntegrationTableViewCell *)self topMarginConstraint];
-        [v6 setConstant:0.0];
+        topMarginConstraint = [(CuratedCollectionMediaIntegrationTableViewCell *)self topMarginConstraint];
+        [topMarginConstraint setConstant:0.0];
 
-        v7 = [(CuratedCollectionMediaIntegrationTableViewCell *)self bottomMarginConstraint];
-        [v7 setConstant:16.0];
+        bottomMarginConstraint = [(CuratedCollectionMediaIntegrationTableViewCell *)self bottomMarginConstraint];
+        [bottomMarginConstraint setConstant:16.0];
       }
     }
 
     else
     {
-      v4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self topMarginConstraint];
-      [v4 setConstant:16.0];
+      topMarginConstraint2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self topMarginConstraint];
+      [topMarginConstraint2 setConstant:16.0];
 
-      v5 = [(CuratedCollectionMediaIntegrationTableViewCell *)self bottomMarginConstraint];
-      [v5 setConstant:0.0];
+      bottomMarginConstraint2 = [(CuratedCollectionMediaIntegrationTableViewCell *)self bottomMarginConstraint];
+      [bottomMarginConstraint2 setConstant:0.0];
 
       [(CuratedCollectionMediaIntegrationTableViewCell *)self setSeparatorInset:0.0, 0.0, 0.0, 1.79769313e308];
     }
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = CuratedCollectionMediaIntegrationTableViewCell;
-  v4 = a3;
-  [(CuratedCollectionMediaIntegrationTableViewCell *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CuratedCollectionMediaIntegrationTableViewCell *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(CuratedCollectionMediaIntegrationTableViewCell *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(CuratedCollectionMediaIntegrationTableViewCell *)self _updateViews];
   }
@@ -725,14 +725,14 @@
 {
   self->_needsImageLoad = 0;
   [(CuratedCollectionMediaIntegrationTableViewCell *)self setViewModel:0];
-  v3 = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
-  [v3 setImage:0];
+  artworkImageView = [(CuratedCollectionMediaIntegrationTableViewCell *)self artworkImageView];
+  [artworkImageView setImage:0];
 
-  v4 = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
-  [v4 setText:0];
+  titleLabel = [(CuratedCollectionMediaIntegrationTableViewCell *)self titleLabel];
+  [titleLabel setText:0];
 
-  v5 = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
-  [v5 setText:0];
+  subtitleLabel = [(CuratedCollectionMediaIntegrationTableViewCell *)self subtitleLabel];
+  [subtitleLabel setText:0];
 
   [(CuratedCollectionMediaIntegrationTableViewCell *)self setMediaIntegrationMenuInteraction:0];
   v6.receiver = self;
@@ -740,27 +740,27 @@
   [(CuratedCollectionMediaIntegrationTableViewCell *)&v6 prepareForReuse];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v6 = a3;
-  objc_storeStrong(&self->_viewModel, a3);
+  modelCopy = model;
+  objc_storeStrong(&self->_viewModel, model);
   if (self->_viewModel)
   {
     [(CuratedCollectionMediaIntegrationTableViewCell *)self _updateLogoConstraintsAndVisibility];
     self->_needsImageLoad = 1;
     [(CuratedCollectionMediaIntegrationTableViewCell *)self _updateViews];
-    v5 = [v6 childViewModels];
-    -[CuratedCollectionMediaIntegrationPlatterControl setEnabled:](self->_platterView, "setEnabled:", [v5 count] != 0);
+    childViewModels = [modelCopy childViewModels];
+    -[CuratedCollectionMediaIntegrationPlatterControl setEnabled:](self->_platterView, "setEnabled:", [childViewModels count] != 0);
 
     [(CuratedCollectionMediaIntegrationTableViewCell *)self _loadMenuActionImages];
   }
 }
 
-- (CuratedCollectionMediaIntegrationTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CuratedCollectionMediaIntegrationTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v14.receiver = self;
   v14.super_class = CuratedCollectionMediaIntegrationTableViewCell;
-  v4 = [(CuratedCollectionMediaIntegrationTableViewCell *)&v14 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CuratedCollectionMediaIntegrationTableViewCell *)&v14 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[UIColor clearColor];

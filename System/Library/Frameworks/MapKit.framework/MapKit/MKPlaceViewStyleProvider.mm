@@ -1,37 +1,37 @@
 @interface MKPlaceViewStyleProvider
-+ (id)attributionStringWithText:(id)a3 image:(id)a4 placeholder:(id)a5;
-+ (id)attributionStringWithTitle:(id)a3 displayName:(id)a4 logo:(id)a5 isSnippetLogo:(BOOL)a6;
++ (id)attributionStringWithText:(id)text image:(id)image placeholder:(id)placeholder;
++ (id)attributionStringWithTitle:(id)title displayName:(id)name logo:(id)logo isSnippetLogo:(BOOL)snippetLogo;
 @end
 
 @implementation MKPlaceViewStyleProvider
 
-+ (id)attributionStringWithText:(id)a3 image:(id)a4 placeholder:(id)a5
++ (id)attributionStringWithText:(id)text image:(id)image placeholder:(id)placeholder
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  placeholderCopy = placeholder;
+  imageCopy = image;
+  textCopy = text;
   v10 = objc_alloc_init(_MKPlaceAttributionLabel);
-  [(_MKPlaceAttributionLabel *)v10 setImage:v8];
+  [(_MKPlaceAttributionLabel *)v10 setImage:imageCopy];
 
-  [(_MKPlaceAttributionLabel *)v10 setImagePlaceholder:v7];
-  v11 = [(_MKPlaceAttributionLabel *)v10 attributionWithString:v9];
+  [(_MKPlaceAttributionLabel *)v10 setImagePlaceholder:placeholderCopy];
+  v11 = [(_MKPlaceAttributionLabel *)v10 attributionWithString:textCopy];
 
   return v11;
 }
 
-+ (id)attributionStringWithTitle:(id)a3 displayName:(id)a4 logo:(id)a5 isSnippetLogo:(BOOL)a6
++ (id)attributionStringWithTitle:(id)title displayName:(id)name logo:(id)logo isSnippetLogo:(BOOL)snippetLogo
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  if (v10 | a5)
+  snippetLogoCopy = snippetLogo;
+  titleCopy = title;
+  nameCopy = name;
+  if (nameCopy | logo)
   {
-    v11 = a5;
+    logoCopy = logo;
     v12 = objc_alloc_init(_MKPlaceAttributionLabel);
-    [(_MKPlaceAttributionLabel *)v12 setImage:v11];
+    [(_MKPlaceAttributionLabel *)v12 setImage:logoCopy];
 
-    v13 = [(_MKPlaceAttributionLabel *)v12 image];
-    if (v13)
+    image = [(_MKPlaceAttributionLabel *)v12 image];
+    if (image)
     {
       v14 = @"%@";
     }
@@ -44,22 +44,22 @@
     [(_MKPlaceAttributionLabel *)v12 setImagePlaceholder:v14];
 
     v15 = -3.5;
-    if (v6)
+    if (snippetLogoCopy)
     {
       v15 = -12.0;
     }
 
     [(_MKPlaceAttributionLabel *)v12 setImageBaselineOffset:v15];
-    v16 = [(_MKPlaceAttributionLabel *)v12 image];
+    image2 = [(_MKPlaceAttributionLabel *)v12 image];
 
-    if (v10 && !v16)
+    if (nameCopy && !image2)
     {
-      v17 = [v9 stringByReplacingOccurrencesOfString:@"%@" withString:v10];
+      v17 = [titleCopy stringByReplacingOccurrencesOfString:@"%@" withString:nameCopy];
 
-      v9 = v17;
+      titleCopy = v17;
     }
 
-    v18 = [(_MKPlaceAttributionLabel *)v12 attributionWithString:v9];
+    v18 = [(_MKPlaceAttributionLabel *)v12 attributionWithString:titleCopy];
   }
 
   else

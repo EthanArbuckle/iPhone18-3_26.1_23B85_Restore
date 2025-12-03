@@ -2,23 +2,23 @@
 - (BOOL)hasGenmojiBundleID;
 - (NSString)stickerDetailsSubtitleText;
 - (NSString)stickerDetailsTitleText;
-- (id)attachmentSummary:(unint64_t)a3;
+- (id)attachmentSummary:(unint64_t)summary;
 - (id)inProcessGenerateAdaptiveImageGlyph;
 - (id)outOfProcessGenerateAdaptiveImageGlyph;
 - (id)stickerDetailsPreview;
-- (id)strikeImageAtPreviewSize:(double)a3 scaleFactor:(double)a4;
+- (id)strikeImageAtPreviewSize:(double)size scaleFactor:(double)factor;
 @end
 
 @implementation CKEmojiImageMediaObject
 
-- (id)attachmentSummary:(unint64_t)a3
+- (id)attachmentSummary:(unint64_t)summary
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = IMSharedUtilitiesFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"%lu Stickers" value:&stru_1F04268F8 table:@"IMSharedUtilities"];
-  v7 = [v4 localizedStringWithFormat:v6, a3];
+  summary = [v4 localizedStringWithFormat:v6, summary];
 
-  return v7;
+  return summary;
 }
 
 - (id)inProcessGenerateAdaptiveImageGlyph
@@ -29,10 +29,10 @@
     [CKEmojiImageMediaObject inProcessGenerateAdaptiveImageGlyph];
   }
 
-  v4 = [(CKMediaObject *)self data];
-  if (v4)
+  data = [(CKMediaObject *)self data];
+  if (data)
   {
-    v5 = [objc_alloc(MEMORY[0x1E69DB780]) initWithImageContent:v4];
+    v5 = [objc_alloc(MEMORY[0x1E69DB780]) initWithImageContent:data];
     v6 = v5;
     if (v5)
     {
@@ -74,16 +74,16 @@
     [CKEmojiImageMediaObject outOfProcessGenerateAdaptiveImageGlyph];
   }
 
-  v4 = [(CKMediaObject *)self fileURL];
-  v5 = [(CKMediaObject(Display) *)self senderContext];
-  v6 = [MEMORY[0x1E69A7ED0] generateEmojiImageAssetFromSourceURL:v4 senderContext:v5];
+  fileURL = [(CKMediaObject *)self fileURL];
+  senderContext = [(CKMediaObject(Display) *)self senderContext];
+  v6 = [MEMORY[0x1E69A7ED0] generateEmojiImageAssetFromSourceURL:fileURL senderContext:senderContext];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 imageData];
-    if ([v8 length])
+    imageData = [v6 imageData];
+    if ([imageData length])
     {
-      v9 = [objc_alloc(MEMORY[0x1E69DB780]) initWithImageContent:v8];
+      v9 = [objc_alloc(MEMORY[0x1E69DB780]) initWithImageContent:imageData];
       v10 = v9;
       if (v9)
       {
@@ -117,8 +117,8 @@
 
   else
   {
-    v8 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    imageData = IMLogHandleForCategory();
+    if (os_log_type_enabled(imageData, OS_LOG_TYPE_ERROR))
     {
       [CKEmojiImageMediaObject outOfProcessGenerateAdaptiveImageGlyph];
     }
@@ -129,17 +129,17 @@
   return v11;
 }
 
-- (id)strikeImageAtPreviewSize:(double)a3 scaleFactor:(double)a4
+- (id)strikeImageAtPreviewSize:(double)size scaleFactor:(double)factor
 {
-  v6 = [(CKMediaObject *)self adaptiveImageGlyph];
-  v7 = v6;
-  if (v6)
+  adaptiveImageGlyph = [(CKMediaObject *)self adaptiveImageGlyph];
+  v7 = adaptiveImageGlyph;
+  if (adaptiveImageGlyph)
   {
     v11[0] = 0;
     v11[1] = 0;
     v10[0] = 0;
     v10[1] = 0;
-    v8 = [v6 imageForProposedSize:v11 scaleFactor:v10 imageOffset:a3 imageSize:{a3, a4}];
+    v8 = [adaptiveImageGlyph imageForProposedSize:v11 scaleFactor:v10 imageOffset:size imageSize:{size, factor}];
     if (v8)
     {
       v8 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:v8];
@@ -156,8 +156,8 @@
 
 - (NSString)stickerDetailsTitleText
 {
-  v2 = [(CKMediaObject *)self transfer];
-  v3 = [CKStickerDetailViewController localizedAppNameForStickerDetailsFromFileTransfer:v2];
+  transfer = [(CKMediaObject *)self transfer];
+  v3 = [CKStickerDetailViewController localizedAppNameForStickerDetailsFromFileTransfer:transfer];
 
   return v3;
 }
@@ -166,14 +166,14 @@
 {
   if ([(CKEmojiImageMediaObject *)self hasGenmojiBundleID])
   {
-    v3 = [(CKMediaObject *)self transfer];
-    [v3 adaptiveImageGlyphContentDescription];
+    transfer = [(CKMediaObject *)self transfer];
+    [transfer adaptiveImageGlyphContentDescription];
   }
 
   else
   {
-    v3 = [(CKImageMediaObject *)self sticker];
-    [v3 accessibilityLabel];
+    transfer = [(CKImageMediaObject *)self sticker];
+    [transfer accessibilityLabel];
   }
   v4 = ;
 
@@ -182,16 +182,16 @@
 
 - (BOOL)hasGenmojiBundleID
 {
-  v2 = [(CKMediaObject *)self transfer];
-  v3 = [CKStickerDetailViewController isGenmojiBundleIDFromFileTransfer:v2];
+  transfer = [(CKMediaObject *)self transfer];
+  v3 = [CKStickerDetailViewController isGenmojiBundleIDFromFileTransfer:transfer];
 
   return v3;
 }
 
 - (id)stickerDetailsPreview
 {
-  v2 = [(CKMediaObject *)self adaptiveImageGlyph];
-  if (v2)
+  adaptiveImageGlyph = [(CKMediaObject *)self adaptiveImageGlyph];
+  if (adaptiveImageGlyph)
   {
     v3 = +[CKUIBehavior sharedBehaviors];
     [v3 previewMaxWidth];
@@ -201,7 +201,7 @@
     v9[1] = 0;
     v8[0] = 0;
     v8[1] = 0;
-    v6 = [v2 imageForProposedSize:v9 scaleFactor:v8 imageOffset:v5 imageSize:{v5, 3.0}];
+    v6 = [adaptiveImageGlyph imageForProposedSize:v9 scaleFactor:v8 imageOffset:v5 imageSize:{v5, 3.0}];
     if (v6)
     {
       v6 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:v6];

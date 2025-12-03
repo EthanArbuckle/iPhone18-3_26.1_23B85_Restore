@@ -1,25 +1,25 @@
 @interface UIStoryboardUnwindSegueTemplate
-- (UIStoryboardUnwindSegueTemplate)initWithCoder:(id)a3;
-- (id)_legacyUnwindExecutorForTarget:(id)a3;
-- (id)_perform:(id)a3;
-- (id)_performWithDestinationViewController:(id)a3 sender:(id)a4;
-- (id)instantiateOrFindDestinationViewControllerWithSender:(id)a3;
-- (id)newDefaultPerformHandlerForSegue:(id)a3;
-- (id)segueWithDestinationViewController:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UIStoryboardUnwindSegueTemplate)initWithCoder:(id)coder;
+- (id)_legacyUnwindExecutorForTarget:(id)target;
+- (id)_perform:(id)_perform;
+- (id)_performWithDestinationViewController:(id)controller sender:(id)sender;
+- (id)instantiateOrFindDestinationViewControllerWithSender:(id)sender;
+- (id)newDefaultPerformHandlerForSegue:(id)segue;
+- (id)segueWithDestinationViewController:(id)controller;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIStoryboardUnwindSegueTemplate
 
-- (UIStoryboardUnwindSegueTemplate)initWithCoder:(id)a3
+- (UIStoryboardUnwindSegueTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = UIStoryboardUnwindSegueTemplate;
-  v5 = [(UIStoryboardSegueTemplate *)&v10 initWithCoder:v4];
+  v5 = [(UIStoryboardSegueTemplate *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UIAction"];
+    v6 = [coderCopy decodeObjectForKey:@"UIAction"];
     v7 = [v6 copy];
     action = v5->_action;
     v5->_action = v7;
@@ -28,30 +28,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UIStoryboardUnwindSegueTemplate;
-  v4 = a3;
-  [(UIStoryboardSegueTemplate *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(UIStoryboardSegueTemplate *)&v6 encodeWithCoder:coderCopy];
   v5 = [(UIStoryboardUnwindSegueTemplate *)self action:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"UIAction"];
+  [coderCopy encodeObject:v5 forKey:@"UIAction"];
 }
 
-- (id)newDefaultPerformHandlerForSegue:(id)a3
+- (id)newDefaultPerformHandlerForSegue:(id)segue
 {
-  v3 = a3;
-  v4 = [v3 sourceViewController];
-  v5 = [v3 destinationViewController];
-  if (v4 == v5)
+  segueCopy = segue;
+  sourceViewController = [segueCopy sourceViewController];
+  destinationViewController = [segueCopy destinationViewController];
+  if (sourceViewController == destinationViewController)
   {
     v8 = &__block_literal_global_117_2;
   }
 
   else
   {
-    v6 = [[_UIStoryboardUnwindChain alloc] initFromSourceViewController:v4 toDestinationViewController:v5];
-    objc_initWeak(&location, v3);
+    v6 = [[_UIStoryboardUnwindChain alloc] initFromSourceViewController:sourceViewController toDestinationViewController:destinationViewController];
+    objc_initWeak(&location, segueCopy);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __68__UIStoryboardUnwindSegueTemplate_newDefaultPerformHandlerForSegue___block_invoke_2;
@@ -103,64 +103,64 @@ void __68__UIStoryboardUnwindSegueTemplate_newDefaultPerformHandlerForSegue___bl
   }
 }
 
-- (id)_legacyUnwindExecutorForTarget:(id)a3
+- (id)_legacyUnwindExecutorForTarget:(id)target
 {
-  v4 = a3;
-  v5 = [(UIStoryboardSegueTemplate *)self viewController];
-  v6 = _UIFirstPopoverSeguePresentedControllerInUnwindingResponderChain(v5, v4);
+  targetCopy = target;
+  viewController = [(UIStoryboardSegueTemplate *)self viewController];
+  v6 = _UIFirstPopoverSeguePresentedControllerInUnwindingResponderChain(viewController, targetCopy);
 
-  v7 = [v4 childModalViewController];
-  if (v7)
+  childModalViewController = [targetCopy childModalViewController];
+  if (childModalViewController)
   {
 
 LABEL_3:
-    v8 = v4;
+    parentViewController = targetCopy;
     goto LABEL_6;
   }
 
-  v9 = [v6 _sourceViewControllerIfPresentedViaPopoverSegue];
+  _sourceViewControllerIfPresentedViaPopoverSegue = [v6 _sourceViewControllerIfPresentedViaPopoverSegue];
 
-  if (v9 == v4)
+  if (_sourceViewControllerIfPresentedViaPopoverSegue == targetCopy)
   {
     goto LABEL_3;
   }
 
-  v8 = [v4 parentViewController];
+  parentViewController = [targetCopy parentViewController];
 LABEL_6:
-  v10 = v8;
+  v10 = parentViewController;
 
   return v10;
 }
 
-- (id)instantiateOrFindDestinationViewControllerWithSender:(id)a3
+- (id)instantiateOrFindDestinationViewControllerWithSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   v5 = [UIStoryboardUnwindSegueSource alloc];
-  v6 = [(UIStoryboardSegueTemplate *)self viewController];
-  v7 = [(UIStoryboardUnwindSegueTemplate *)self action];
-  v8 = [(UIStoryboardUnwindSegueSource *)v5 _initWithSourceViewController:v6 action:NSSelectorFromString(v7) sender:v4];
+  viewController = [(UIStoryboardSegueTemplate *)self viewController];
+  action = [(UIStoryboardUnwindSegueTemplate *)self action];
+  v8 = [(UIStoryboardUnwindSegueSource *)v5 _initWithSourceViewController:viewController action:NSSelectorFromString(action) sender:senderCopy];
 
-  v9 = [v8 _findDestination];
+  _findDestination = [v8 _findDestination];
 
-  return v9;
+  return _findDestination;
 }
 
-- (id)segueWithDestinationViewController:(id)a3
+- (id)segueWithDestinationViewController:(id)controller
 {
-  v5 = a3;
-  v6 = [(UIStoryboardUnwindSegueTemplate *)self action];
+  controllerCopy = controller;
+  action = [(UIStoryboardUnwindSegueTemplate *)self action];
 
-  if (!v6)
+  if (!action)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"UIStoryboardUnwindSegueTemplate.m" lineNumber:435 description:@"Cannot perform an unwind without an unwind action"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIStoryboardUnwindSegueTemplate.m" lineNumber:435 description:@"Cannot perform an unwind without an unwind action"];
   }
 
-  v7 = [(UIStoryboardUnwindSegueTemplate *)self _legacyUnwindExecutorForTarget:v5];
+  v7 = [(UIStoryboardUnwindSegueTemplate *)self _legacyUnwindExecutorForTarget:controllerCopy];
   if (!v7 && (dyld_program_sdk_at_least() & 1) == 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UIStoryboardUnwindSegueTemplate.m" lineNumber:442 description:{@"Could not find a view controller to execute unwinding for %@", v5}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIStoryboardUnwindSegueTemplate.m" lineNumber:442 description:{@"Could not find a view controller to execute unwinding for %@", controllerCopy}];
     goto LABEL_14;
   }
 
@@ -182,21 +182,21 @@ LABEL_6:
 
   if ([v10 doesOverrideViewControllerMethod:_MergedGlobals_1296 inBaseClass:*v12])
   {
-    v13 = [(UIStoryboardSegueTemplate *)self viewController];
-    v14 = [(UIStoryboardSegueTemplate *)self identifier];
-    v15 = [v9 segueForUnwindingToViewController:v5 fromViewController:v13 identifier:v14];
+    viewController = [(UIStoryboardSegueTemplate *)self viewController];
+    identifier = [(UIStoryboardSegueTemplate *)self identifier];
+    v15 = [v9 segueForUnwindingToViewController:controllerCopy fromViewController:viewController identifier:identifier];
 
     goto LABEL_15;
   }
 
   v20.receiver = self;
   v20.super_class = UIStoryboardUnwindSegueTemplate;
-  v15 = [(UIStoryboardSegueTemplate *)&v20 segueWithDestinationViewController:v5];
+  v15 = [(UIStoryboardSegueTemplate *)&v20 segueWithDestinationViewController:controllerCopy];
   if (!v15)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    v17 = [(UIStoryboardSegueTemplate *)self viewController];
-    [v16 handleFailureInMethod:a2 object:self file:@"UIStoryboardUnwindSegueTemplate.m" lineNumber:453 description:{@"Failed to create a segue for unwinding from %@ to %@", v17, v5}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    viewController2 = [(UIStoryboardSegueTemplate *)self viewController];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIStoryboardUnwindSegueTemplate.m" lineNumber:453 description:{@"Failed to create a segue for unwinding from %@ to %@", viewController2, controllerCopy}];
 
 LABEL_14:
     v15 = 0;
@@ -207,13 +207,13 @@ LABEL_15:
   return v15;
 }
 
-- (id)_perform:(id)a3
+- (id)_perform:(id)_perform
 {
-  v4 = a3;
-  v5 = [(UIStoryboardUnwindSegueTemplate *)self instantiateOrFindDestinationViewControllerWithSender:v4];
+  _performCopy = _perform;
+  v5 = [(UIStoryboardUnwindSegueTemplate *)self instantiateOrFindDestinationViewControllerWithSender:_performCopy];
   if (v5)
   {
-    v6 = [(UIStoryboardUnwindSegueTemplate *)self _performWithDestinationViewController:v5 sender:v4];
+    v6 = [(UIStoryboardUnwindSegueTemplate *)self _performWithDestinationViewController:v5 sender:_performCopy];
   }
 
   else
@@ -224,27 +224,27 @@ LABEL_15:
   return v6;
 }
 
-- (id)_performWithDestinationViewController:(id)a3 sender:(id)a4
+- (id)_performWithDestinationViewController:(id)controller sender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIStoryboardUnwindSegueTemplate *)self action];
-  v9 = NSSelectorFromString(v8);
+  controllerCopy = controller;
+  senderCopy = sender;
+  action = [(UIStoryboardUnwindSegueTemplate *)self action];
+  v9 = NSSelectorFromString(action);
 
-  v10 = [(UIStoryboardUnwindSegueTemplate *)self segueWithDestinationViewController:v6];
+  v10 = [(UIStoryboardUnwindSegueTemplate *)self segueWithDestinationViewController:controllerCopy];
   if (v10)
   {
-    v11 = [(UIStoryboardSegueTemplate *)self viewController];
-    [v11 prepareForSegue:v10 sender:v7];
+    viewController = [(UIStoryboardSegueTemplate *)self viewController];
+    [viewController prepareForSegue:v10 sender:senderCopy];
 
     if (dyld_program_sdk_at_least())
     {
-      [v6 v9];
+      [controllerCopy v9];
     }
 
     else
     {
-      [v6 performSelector:v9 withObject:v10];
+      [controllerCopy performSelector:v9 withObject:v10];
     }
 
     v12 = +[UIView areAnimationsEnabled];

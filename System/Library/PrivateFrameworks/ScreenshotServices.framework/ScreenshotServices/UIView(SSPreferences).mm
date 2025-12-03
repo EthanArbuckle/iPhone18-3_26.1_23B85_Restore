@@ -6,9 +6,9 @@
 
 - (uint64_t)_ss_vi2Enabled
 {
-  v0 = [MEMORY[0x1E696AAE8] mainBundle];
-  v1 = [v0 bundleIdentifier];
-  v2 = [v1 isEqualToString:@"com.apple.ScreenshotServicesService"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v2 = [bundleIdentifier isEqualToString:@"com.apple.ScreenshotServicesService"];
 
   if (v2)
   {

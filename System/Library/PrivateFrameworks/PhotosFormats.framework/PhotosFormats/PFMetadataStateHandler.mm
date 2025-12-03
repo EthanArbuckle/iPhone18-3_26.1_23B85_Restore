@@ -1,19 +1,19 @@
 @interface PFMetadataStateHandler
-- (PFMetadataStateHandler)initWithMetadata:(id)a3;
+- (PFMetadataStateHandler)initWithMetadata:(id)metadata;
 - (id)_stateInformation;
 - (id)className;
-- (os_state_data_s)stateDataWithHints:(os_state_hints_s *)a3;
-- (void)_addBreadcrumbWithTimeInterval:(double)a3 message:(id)a4;
-- (void)addBreadcrumb:(id)a3;
+- (os_state_data_s)stateDataWithHints:(os_state_hints_s *)hints;
+- (void)_addBreadcrumbWithTimeInterval:(double)interval message:(id)message;
+- (void)addBreadcrumb:(id)breadcrumb;
 - (void)dealloc;
 @end
 
 @implementation PFMetadataStateHandler
 
-- (void)_addBreadcrumbWithTimeInterval:(double)a3 message:(id)a4
+- (void)_addBreadcrumbWithTimeInterval:(double)interval message:(id)message
 {
-  v6 = a4;
-  v7 = [[PFMetadataStateBreadcrumb alloc] initWithTimeInterval:v6 message:a3];
+  messageCopy = message;
+  v7 = [[PFMetadataStateBreadcrumb alloc] initWithTimeInterval:messageCopy message:interval];
 
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
@@ -26,56 +26,56 @@
   dispatch_sync(queue, v10);
 }
 
-- (void)addBreadcrumb:(id)a3
+- (void)addBreadcrumb:(id)breadcrumb
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v15];
+  breadcrumbCopy = breadcrumb;
+  v6 = [[v4 alloc] initWithFormat:breadcrumbCopy arguments:&v15];
 
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   [(PFMetadataStateHandler *)self _addBreadcrumbWithTimeInterval:v6 message:?];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(PFMetadataStateHandler *)self className];
+    className = [(PFMetadataStateHandler *)self className];
     *buf = 138412802;
-    v9 = v7;
+    v9 = className;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v6;
     _os_log_debug_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%@ %p: Add breadcrumb: %@", buf, 0x20u);
   }
 }
 
-- (os_state_data_s)stateDataWithHints:(os_state_hints_s *)a3
+- (os_state_data_s)stateDataWithHints:(os_state_hints_s *)hints
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a3->var2 != 3)
+  if (hints->var2 != 3)
   {
     return 0;
   }
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v16 = [(PFMetadataStateHandler *)self className];
-    v17 = [(PFMetadataStateHandler *)self className];
+    className = [(PFMetadataStateHandler *)self className];
+    className2 = [(PFMetadataStateHandler *)self className];
     metadata = self->_metadata;
     *buf = 138413058;
-    v21 = v16;
+    v21 = className;
     v22 = 2048;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
-    v25 = v17;
+    v25 = className2;
     v26 = 2048;
     v27 = metadata;
     _os_log_debug_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%@ %p: Generating state data for %@: %p", buf, 0x2Au);
   }
 
   v4 = MEMORY[0x1E696AE40];
-  v5 = [(PFMetadataStateHandler *)self _stateInformation];
+  _stateInformation = [(PFMetadataStateHandler *)self _stateInformation];
   v19 = 0;
-  v6 = [v4 dataWithPropertyList:v5 format:200 options:0 error:&v19];
+  v6 = [v4 dataWithPropertyList:_stateInformation format:200 options:0 error:&v19];
   v7 = v19;
 
   if (v6)
@@ -90,8 +90,8 @@
       v11->var0 = 1;
       v11->var1.var1 = v8;
       v12 = MEMORY[0x1E696AEC0];
-      v13 = [(PFMetadataStateHandler *)self className];
-      v14 = [v12 stringWithFormat:@"State for <%@: %p>", v13, self->_metadata];
+      className3 = [(PFMetadataStateHandler *)self className];
+      v14 = [v12 stringWithFormat:@"State for <%@: %p>", className3, self->_metadata];
 
       [v14 UTF8String];
       __strlcpy_chk();
@@ -118,7 +118,7 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -138,8 +138,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) breadcrumbDescription];
-        [v3 addObject:v9];
+        breadcrumbDescription = [*(*(&v12 + 1) + 8 * i) breadcrumbDescription];
+        [array addObject:breadcrumbDescription];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
@@ -149,7 +149,7 @@
   }
 
   v16 = @"breadcrumbs";
-  v17 = v3;
+  v17 = array;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
 
   return v10;
@@ -160,12 +160,12 @@
   v12 = *MEMORY[0x1E69E9840];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v3 = [(PFMetadataStateHandler *)self className];
+    className = [(PFMetadataStateHandler *)self className];
     stateHandle = self->_stateHandle;
     *buf = 138412802;
-    v7 = v3;
+    v7 = className;
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
     v11 = stateHandle;
     _os_log_debug_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%@ %p: Removing state handler: %llu", buf, 0x20u);
@@ -181,17 +181,17 @@
   [(PFMetadataStateHandler *)&v5 dealloc];
 }
 
-- (PFMetadataStateHandler)initWithMetadata:(id)a3
+- (PFMetadataStateHandler)initWithMetadata:(id)metadata
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  metadataCopy = metadata;
   v24.receiver = self;
   v24.super_class = PFMetadataStateHandler;
   v5 = [(PFMetadataStateHandler *)&v24 init];
   v6 = v5;
   if (v5)
   {
-    v5->_metadata = v4;
+    v5->_metadata = metadataCopy;
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.photos.PFMetadata.stateHandleQueue", v7);
     queue = v6->_queue;
@@ -209,25 +209,25 @@
     v13 = MEMORY[0x1E69E9C10];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [(PFMetadataStateHandler *)v6 className];
+      className = [(PFMetadataStateHandler *)v6 className];
       stateHandle = v6->_stateHandle;
-      v19 = [(PFMetadataStateHandler *)v6 className];
+      className2 = [(PFMetadataStateHandler *)v6 className];
       metadata = v6->_metadata;
       *buf = 138413314;
-      v26 = v17;
+      v26 = className;
       v27 = 2048;
       v28 = v6;
       v29 = 2048;
       v30 = stateHandle;
       v31 = 2112;
-      v32 = v19;
+      v32 = className2;
       v33 = 2048;
-      v34 = metadata;
+      metadataCopy2 = metadata;
       _os_log_debug_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%@ %p: Added state handler: %llu for %@: %p", buf, 0x34u);
     }
 
-    v14 = [(PFMetadataStateHandler *)v6 className];
-    [(PFMetadataStateHandler *)v6 addBreadcrumb:@"Created %@ %p", v14, v6, v21, 3221225472, __43__PFMetadataStateHandler_initWithMetadata___block_invoke, &unk_1E7B658E8];
+    className3 = [(PFMetadataStateHandler *)v6 className];
+    [(PFMetadataStateHandler *)v6 addBreadcrumb:@"Created %@ %p", className3, v6, v21, 3221225472, __43__PFMetadataStateHandler_initWithMetadata___block_invoke, &unk_1E7B658E8];
 
     v15 = v6;
     objc_destroyWeak(&v22);

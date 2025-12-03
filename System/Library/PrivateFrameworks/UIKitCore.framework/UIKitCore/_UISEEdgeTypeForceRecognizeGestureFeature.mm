@@ -1,12 +1,12 @@
 @interface _UISEEdgeTypeForceRecognizeGestureFeature
-- (void)_incorporateSample:(const _UISEGestureFeatureSample *)a3;
+- (void)_incorporateSample:(const _UISEGestureFeatureSample *)sample;
 @end
 
 @implementation _UISEEdgeTypeForceRecognizeGestureFeature
 
-- (void)_incorporateSample:(const _UISEGestureFeatureSample *)a3
+- (void)_incorporateSample:(const _UISEGestureFeatureSample *)sample
 {
-  if (a3->var0 == 1 && a3->var3 == 1 && a3->var2)
+  if (sample->var0 == 1 && sample->var3 == 1 && sample->var2)
   {
     [(_UISEGestureFeature *)self _setState:1];
   }

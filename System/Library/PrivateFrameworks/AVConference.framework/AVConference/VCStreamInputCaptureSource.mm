@@ -1,28 +1,28 @@
 @interface VCStreamInputCaptureSource
-+ (BOOL)readIntegerFromConfig:(id)a3 key:(id)a4 value:(int64_t *)a5;
-+ (BOOL)readUint32FromConfig:(id)a3 key:(id)a4 value:(unsigned int *)a5;
++ (BOOL)readIntegerFromConfig:(id)config key:(id)key value:(int64_t *)value;
++ (BOOL)readUint32FromConfig:(id)config key:(id)key value:(unsigned int *)value;
 - (BOOL)allSinksSuspended;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)onVideoFrame:(opaqueCMSampleBuffer *)a3 frameTime:(id *)a4 attribute:(id *)a5;
-- (BOOL)setupDataFormatWithConfiguration:(id)a3;
-- (BOOL)setupFormatWithConfiguration:(id)a3;
-- (BOOL)setupVideoFormatWithConfiguration:(id)a3;
-- (VCStreamInputCaptureSource)initWithCaptureSourceID:(int)a3 configuration:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)onVideoFrame:(opaqueCMSampleBuffer *)frame frameTime:(id *)time attribute:(id *)attribute;
+- (BOOL)setupDataFormatWithConfiguration:(id)configuration;
+- (BOOL)setupFormatWithConfiguration:(id)configuration;
+- (BOOL)setupVideoFormatWithConfiguration:(id)configuration;
+- (VCStreamInputCaptureSource)initWithCaptureSourceID:(int)d configuration:(id)configuration;
 - (id)copyOnVideoFrameBlock;
-- (int)getCaptureFrameRateForSource:(int)a3;
-- (unsigned)addSink:(id)a3;
-- (unsigned)removeSink:(id)a3;
+- (int)getCaptureFrameRateForSource:(int)source;
+- (unsigned)addSink:(id)sink;
+- (unsigned)removeSink:(id)sink;
 - (void)dealloc;
-- (void)didResumeVideoSink:(id)a3;
-- (void)didSuspendVideoSink:(id)a3;
+- (void)didResumeVideoSink:(id)sink;
+- (void)didSuspendVideoSink:(id)sink;
 - (void)loadCannedVideoReplay;
-- (void)onCaptureScreenFrame:(opaqueCMSampleBuffer *)a3 frameTime:(id *)a4 orientation:(int)a5;
-- (void)setDelegate:(id)a3;
+- (void)onCaptureScreenFrame:(opaqueCMSampleBuffer *)frame frameTime:(id *)time orientation:(int)orientation;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation VCStreamInputCaptureSource
 
-- (VCStreamInputCaptureSource)initWithCaptureSourceID:(int)a3 configuration:(id)a4
+- (VCStreamInputCaptureSource)initWithCaptureSourceID:(int)d configuration:(id)configuration
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -36,7 +36,7 @@
   }
 
   pthread_mutex_init(&v6->_sinkMutex, 0);
-  if (a3 <= 0xA)
+  if (d <= 0xA)
   {
     [VCStreamInputCaptureSource initWithCaptureSourceID:configuration:];
 LABEL_13:
@@ -53,15 +53,15 @@ LABEL_13:
   }
 
   v10 = 0;
-  if (![VCStreamInputCaptureSource readIntegerFromConfig:a4 key:@"streamInputID" value:&v10])
+  if (![VCStreamInputCaptureSource readIntegerFromConfig:configuration key:@"streamInputID" value:&v10])
   {
     [VCStreamInputCaptureSource initWithCaptureSourceID:configuration:];
     goto LABEL_13;
   }
 
   v7->_streamInputID = v10;
-  v7->_captureSourceID = a3;
-  [(VCStreamInputCaptureSource *)v7 setupFormatWithConfiguration:a4];
+  v7->_captureSourceID = d;
+  [(VCStreamInputCaptureSource *)v7 setupFormatWithConfiguration:configuration];
   if (!v7->_formatDescription)
   {
     [VCStreamInputCaptureSource initWithCaptureSourceID:configuration:];
@@ -93,10 +93,10 @@ LABEL_13:
   [(VCVideoCapture *)&v4 dealloc];
 }
 
-+ (BOOL)readIntegerFromConfig:(id)a3 key:(id)a4 value:(int64_t *)a5
++ (BOOL)readIntegerFromConfig:(id)config key:(id)key value:(int64_t *)value
 {
-  v8 = [a3 objectForKeyedSubscript:a4];
-  if (a4 && a3 && a5)
+  v8 = [config objectForKeyedSubscript:key];
+  if (key && config && value)
   {
     v9 = v8;
     if (v8)
@@ -104,7 +104,7 @@ LABEL_13:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        *a5 = [v9 integerValue];
+        *value = [v9 integerValue];
         return 1;
       }
 
@@ -129,10 +129,10 @@ LABEL_13:
   }
 }
 
-+ (BOOL)readUint32FromConfig:(id)a3 key:(id)a4 value:(unsigned int *)a5
++ (BOOL)readUint32FromConfig:(id)config key:(id)key value:(unsigned int *)value
 {
-  v8 = [a3 objectForKeyedSubscript:a4];
-  if (a4 && a3 && a5)
+  v8 = [config objectForKeyedSubscript:key];
+  if (key && config && value)
   {
     v9 = v8;
     if (v8)
@@ -140,7 +140,7 @@ LABEL_13:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        *a5 = [v9 unsignedIntValue];
+        *value = [v9 unsignedIntValue];
         return 1;
       }
 
@@ -165,10 +165,10 @@ LABEL_13:
   }
 }
 
-- (BOOL)setupFormatWithConfiguration:(id)a3
+- (BOOL)setupFormatWithConfiguration:(id)configuration
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (![VCStreamInputCaptureSource readUint32FromConfig:a3 key:@"framerate" value:&self->_frameRate])
+  if (![VCStreamInputCaptureSource readUint32FromConfig:configuration key:@"framerate" value:&self->_frameRate])
   {
     [VCStreamInputCaptureSource setupFormatWithConfiguration:];
     return v9;
@@ -180,7 +180,7 @@ LABEL_13:
     return v9;
   }
 
-  v5 = [a3 objectForKeyedSubscript:@"formatDescription"];
+  v5 = [configuration objectForKeyedSubscript:@"formatDescription"];
   if (v5)
   {
     v6 = v5;
@@ -196,7 +196,7 @@ LABEL_13:
   }
 
   v9 = 0;
-  if (![VCStreamInputCaptureSource readUint32FromConfig:a3 key:@"type" value:&v9])
+  if (![VCStreamInputCaptureSource readUint32FromConfig:configuration key:@"type" value:&v9])
   {
     [VCStreamInputCaptureSource setupFormatWithConfiguration:];
     return v10;
@@ -204,36 +204,36 @@ LABEL_13:
 
   if (v9 == 1835365473)
   {
-    return [(VCStreamInputCaptureSource *)self setupDataFormatWithConfiguration:a3];
+    return [(VCStreamInputCaptureSource *)self setupDataFormatWithConfiguration:configuration];
   }
 
   if (v9 == 1986618469)
   {
-    return [(VCStreamInputCaptureSource *)self setupVideoFormatWithConfiguration:a3];
+    return [(VCStreamInputCaptureSource *)self setupVideoFormatWithConfiguration:configuration];
   }
 
   return 1;
 }
 
-- (BOOL)setupVideoFormatWithConfiguration:(id)a3
+- (BOOL)setupVideoFormatWithConfiguration:(id)configuration
 {
   v10 = *MEMORY[0x1E69E9840];
   v8 = 0;
-  if (![VCStreamInputCaptureSource readUint32FromConfig:a3 key:@"subtype" value:&v8])
+  if (![VCStreamInputCaptureSource readUint32FromConfig:configuration key:@"subtype" value:&v8])
   {
     [VCStreamInputCaptureSource setupVideoFormatWithConfiguration:];
     return v9;
   }
 
   v7 = 0;
-  if (![VCStreamInputCaptureSource readUint32FromConfig:a3 key:@"width" value:&v7])
+  if (![VCStreamInputCaptureSource readUint32FromConfig:configuration key:@"width" value:&v7])
   {
     [VCStreamInputCaptureSource setupVideoFormatWithConfiguration:];
     return v9;
   }
 
   height = 0;
-  if (![VCStreamInputCaptureSource readUint32FromConfig:a3 key:@"height" value:&height])
+  if (![VCStreamInputCaptureSource readUint32FromConfig:configuration key:@"height" value:&height])
   {
     [VCStreamInputCaptureSource setupVideoFormatWithConfiguration:];
     return v9;
@@ -242,11 +242,11 @@ LABEL_13:
   return CMVideoFormatDescriptionCreate(*MEMORY[0x1E695E480], v8, v7, height, 0, &self->_formatDescription) == 0;
 }
 
-- (BOOL)setupDataFormatWithConfiguration:(id)a3
+- (BOOL)setupDataFormatWithConfiguration:(id)configuration
 {
   v7 = *MEMORY[0x1E69E9840];
   mediaSubType = 0;
-  if ([VCStreamInputCaptureSource readUint32FromConfig:a3 key:@"subtype" value:&mediaSubType])
+  if ([VCStreamInputCaptureSource readUint32FromConfig:configuration key:@"subtype" value:&mediaSubType])
   {
     return CMFormatDescriptionCreate(*MEMORY[0x1E695E480], 0x6D657461u, mediaSubType, 0, &self->_formatDescription) == 0;
   }
@@ -255,12 +255,12 @@ LABEL_13:
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v14 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_sinkMutex);
   Weak = objc_loadWeak(&self->_delegate);
-  if (Weak == a3)
+  if (Weak == delegate)
   {
     [VCStreamInputCaptureSource setDelegate:?];
     goto LABEL_20;
@@ -269,11 +269,11 @@ LABEL_13:
   v6 = Weak;
   v13.receiver = self;
   v13.super_class = VCStreamInputCaptureSource;
-  v7 = [(VCVideoCapture *)&v13 sinkCount];
-  v8 = v7;
-  if (a3)
+  sinkCount = [(VCVideoCapture *)&v13 sinkCount];
+  v8 = sinkCount;
+  if (delegate)
   {
-    v9 = v7 == 0;
+    v9 = sinkCount == 0;
   }
 
   else
@@ -282,8 +282,8 @@ LABEL_13:
   }
 
   v10 = !v9;
-  objc_storeWeak(&self->_delegate, a3);
-  v11 = [(VCStreamInputCaptureSource *)self allSinksSuspended];
+  objc_storeWeak(&self->_delegate, delegate);
+  allSinksSuspended = [(VCStreamInputCaptureSource *)self allSinksSuspended];
   pthread_mutex_unlock(&self->_sinkMutex);
   if (v6)
   {
@@ -309,7 +309,7 @@ LABEL_13:
     if ((v10 & 1) == 0)
     {
 LABEL_17:
-      if (v11)
+      if (allSinksSuspended)
       {
         goto LABEL_18;
       }
@@ -318,23 +318,23 @@ LABEL_17:
     }
   }
 
-  [a3 didStartStreamInputCaptureSource];
-  if (v11)
+  [delegate didStartStreamInputCaptureSource];
+  if (allSinksSuspended)
   {
 LABEL_18:
-    [a3 didSuspendStreamInputCaptureSource];
+    [delegate didSuspendStreamInputCaptureSource];
     return;
   }
 
 LABEL_20:
-  [a3 didResumeStreamInputCaptureSource];
+  [delegate didResumeStreamInputCaptureSource];
 }
 
-- (BOOL)onVideoFrame:(opaqueCMSampleBuffer *)a3 frameTime:(id *)a4 attribute:(id *)a5
+- (BOOL)onVideoFrame:(opaqueCMSampleBuffer *)frame frameTime:(id *)time attribute:(id *)attribute
 {
   v7 = *MEMORY[0x1E69E9840];
-  v6 = *a4;
-  VCVideoCapture_DistributeVideoFrame(self, a3, &v6.var0, a5);
+  v6 = *time;
+  VCVideoCapture_DistributeVideoFrame(self, frame, &v6.var0, attribute);
   return 1;
 }
 
@@ -359,17 +359,17 @@ uint64_t __51__VCStreamInputCaptureSource_copyOnVideoFrameBlock__block_invoke(ui
   return 1;
 }
 
-- (unsigned)addSink:(id)a3
+- (unsigned)addSink:(id)sink
 {
   v12 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_sinkMutex);
-  v5 = [(VCVideoCapture *)self sinkCount];
+  sinkCount = [(VCVideoCapture *)self sinkCount];
   v11.receiver = self;
   v11.super_class = VCStreamInputCaptureSource;
-  v6 = [(VCVideoCapture *)&v11 addSink:a3];
+  v6 = [(VCVideoCapture *)&v11 addSink:sink];
   v7 = MEMORY[0x1E1289F20](&self->_delegate);
   pthread_mutex_unlock(&self->_sinkMutex);
-  if (v6 == 1 && v5 == 0)
+  if (v6 == 1 && sinkCount == 0)
   {
     cannedVideoCapture = self->_cannedVideoCapture;
     if (!cannedVideoCapture)
@@ -396,14 +396,14 @@ LABEL_9:
   return v6;
 }
 
-- (unsigned)removeSink:(id)a3
+- (unsigned)removeSink:(id)sink
 {
   v12 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_sinkMutex);
-  v5 = [(VCVideoCapture *)self sinkCount];
+  sinkCount = [(VCVideoCapture *)self sinkCount];
   v11.receiver = self;
   v11.super_class = VCStreamInputCaptureSource;
-  v6 = [(VCVideoCapture *)&v11 removeSink:a3];
+  v6 = [(VCVideoCapture *)&v11 removeSink:sink];
   v7 = MEMORY[0x1E1289F20](&self->_delegate);
   pthread_mutex_unlock(&self->_sinkMutex);
   if (v6)
@@ -413,7 +413,7 @@ LABEL_9:
 
   else
   {
-    v8 = v5 == 0;
+    v8 = sinkCount == 0;
   }
 
   if (!v8)
@@ -449,8 +449,8 @@ LABEL_8:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NSMutableDictionary *)self->_videoSinkState allValues];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v8 count:16];
+  allValues = [(NSMutableDictionary *)self->_videoSinkState allValues];
+  v3 = [allValues countByEnumeratingWithState:&v9 objects:v8 count:16];
   if (v3)
   {
     v4 = v3;
@@ -462,7 +462,7 @@ LABEL_8:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v9 + 1) + 8 * v6) unsignedCharValue] != 1)
@@ -474,7 +474,7 @@ LABEL_8:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v8 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v9 objects:v8 count:16];
       if (v4)
       {
         continue;
@@ -487,22 +487,22 @@ LABEL_8:
   return 1;
 }
 
-- (void)didSuspendVideoSink:(id)a3
+- (void)didSuspendVideoSink:(id)sink
 {
   pthread_mutex_lock(&self->_sinkMutex);
   v5 = MEMORY[0x1E1289F20](&self->_delegate);
-  v6 = [(VCStreamInputCaptureSource *)self allSinksSuspended];
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_videoSinkState, "setObject:forKeyedSubscript:", &unk_1F579C2B8, [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "hash")}]);
-  if (v6)
+  allSinksSuspended = [(VCStreamInputCaptureSource *)self allSinksSuspended];
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_videoSinkState, "setObject:forKeyedSubscript:", &unk_1F579C2B8, [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(sink, "hash")}]);
+  if (allSinksSuspended)
   {
     pthread_mutex_unlock(&self->_sinkMutex);
   }
 
   else
   {
-    v7 = [(VCStreamInputCaptureSource *)self allSinksSuspended];
+    allSinksSuspended2 = [(VCStreamInputCaptureSource *)self allSinksSuspended];
     pthread_mutex_unlock(&self->_sinkMutex);
-    if (v7)
+    if (allSinksSuspended2)
     {
       [v5 didSuspendStreamInputCaptureSource];
     }
@@ -515,13 +515,13 @@ LABEL_8:
   }
 }
 
-- (void)didResumeVideoSink:(id)a3
+- (void)didResumeVideoSink:(id)sink
 {
   pthread_mutex_lock(&self->_sinkMutex);
   v5 = MEMORY[0x1E1289F20](&self->_delegate);
-  v6 = [(VCStreamInputCaptureSource *)self allSinksSuspended];
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_videoSinkState, "setObject:forKeyedSubscript:", &unk_1F579C2D0, [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "hash")}]);
-  if (!v6)
+  allSinksSuspended = [(VCStreamInputCaptureSource *)self allSinksSuspended];
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_videoSinkState, "setObject:forKeyedSubscript:", &unk_1F579C2D0, [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(sink, "hash")}]);
+  if (!allSinksSuspended)
   {
     pthread_mutex_unlock(&self->_sinkMutex);
     if (!v5)
@@ -532,9 +532,9 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  v7 = [(VCStreamInputCaptureSource *)self allSinksSuspended];
+  allSinksSuspended2 = [(VCStreamInputCaptureSource *)self allSinksSuspended];
   pthread_mutex_unlock(&self->_sinkMutex);
-  if (!v7)
+  if (!allSinksSuspended2)
   {
     [v5 didResumeStreamInputCaptureSource];
   }
@@ -547,19 +547,19 @@ LABEL_5:
   }
 }
 
-- (void)onCaptureScreenFrame:(opaqueCMSampleBuffer *)a3 frameTime:(id *)a4 orientation:(int)a5
+- (void)onCaptureScreenFrame:(opaqueCMSampleBuffer *)frame frameTime:(id *)time orientation:(int)orientation
 {
   v8 = *MEMORY[0x1E69E9840];
   v6[0] = 0;
   v6[1] = 0;
   v7 = 0;
-  v5 = *a4;
-  VCVideoCapture_DistributeVideoFrame(self, a3, &v5.var0, v6);
+  v5 = *time;
+  VCVideoCapture_DistributeVideoFrame(self, frame, &v5.var0, v6);
 }
 
-- (int)getCaptureFrameRateForSource:(int)a3
+- (int)getCaptureFrameRateForSource:(int)source
 {
-  if (self->_captureSourceID == a3)
+  if (self->_captureSourceID == source)
   {
     return self->_frameRate;
   }
@@ -745,15 +745,15 @@ LABEL_15:
 LABEL_16:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
   captureSourceID = self->_captureSourceID;
-  return captureSourceID == [a3 captureSourceID] && CMFormatDescriptionEqual(self->_formatDescription, objc_msgSend(a3, "formatDescription")) != 0;
+  return captureSourceID == [equal captureSourceID] && CMFormatDescriptionEqual(self->_formatDescription, objc_msgSend(equal, "formatDescription")) != 0;
 }
 
 - (void)initWithCaptureSourceID:configuration:.cold.1()

@@ -1,23 +1,23 @@
 @interface REFeatureSet
-+ (REFeatureSet)featureSetWithFeature:(id)a3;
-+ (REFeatureSet)featureSetWithFeatures:(id)a3;
++ (REFeatureSet)featureSetWithFeature:(id)feature;
++ (REFeatureSet)featureSetWithFeatures:(id)features;
 + (id)featureSet;
-- (BOOL)containsFeature:(id)a3;
-- (BOOL)intersectsFeatureSet:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFeatureSet:(id)a3;
-- (BOOL)isSubsetOfFeatureSet:(id)a3;
+- (BOOL)containsFeature:(id)feature;
+- (BOOL)intersectsFeatureSet:(id)set;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFeatureSet:(id)set;
+- (BOOL)isSubsetOfFeatureSet:(id)set;
 - (NSArray)allFeatures;
 - (REFeatureSet)init;
-- (REFeatureSet)initWithFeature:(id)a3;
-- (REFeatureSet)initWithFeatureSet:(id)a3;
-- (REFeatureSet)initWithFeatures:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)featureWithName:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (REFeatureSet)initWithFeature:(id)feature;
+- (REFeatureSet)initWithFeatureSet:(id)set;
+- (REFeatureSet)initWithFeatures:(id)features;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)featureWithName:(id)name;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)enumerateFeaturesUsingBlock:(id)a3;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)enumerateFeaturesUsingBlock:(id)block;
 @end
 
 @implementation REFeatureSet
@@ -43,26 +43,26 @@
   return p_super;
 }
 
-- (REFeatureSet)initWithFeatures:(id)a3
+- (REFeatureSet)initWithFeatures:(id)features
 {
-  v4 = a3;
-  v5 = [[_REFeatureSet alloc] initWithFeatures:v4];
+  featuresCopy = features;
+  v5 = [[_REFeatureSet alloc] initWithFeatures:featuresCopy];
 
   return &v5->super;
 }
 
-- (REFeatureSet)initWithFeature:(id)a3
+- (REFeatureSet)initWithFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [[_RESingleFeatureSet alloc] initWithFeature:v4];
+  featureCopy = feature;
+  v5 = [[_RESingleFeatureSet alloc] initWithFeature:featureCopy];
 
   return &v5->super;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -70,22 +70,22 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(REFeatureSet *)self isEqualToFeatureSet:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(REFeatureSet *)self isEqualToFeatureSet:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [REFeatureSet allocWithZone:a3];
+  v4 = [REFeatureSet allocWithZone:zone];
 
   return [(REFeatureSet *)v4 initWithFeatureSet:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [REMutableFeatureSet allocWithZone:a3];
+  v4 = [REMutableFeatureSet allocWithZone:zone];
 
   return [(REFeatureSet *)v4 initWithFeatureSet:self];
 }
@@ -106,32 +106,32 @@ uint64_t __34___REFeatureSet_initWithFeatures___block_invoke()
   return v2;
 }
 
-+ (REFeatureSet)featureSetWithFeature:(id)a3
++ (REFeatureSet)featureSetWithFeature:(id)feature
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithFeature:v3];
+  featureCopy = feature;
+  v4 = [objc_alloc(objc_opt_class()) initWithFeature:featureCopy];
 
   return v4;
 }
 
-+ (REFeatureSet)featureSetWithFeatures:(id)a3
++ (REFeatureSet)featureSetWithFeatures:(id)features
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithFeatures:v3];
+  featuresCopy = features;
+  v4 = [objc_alloc(objc_opt_class()) initWithFeatures:featuresCopy];
 
   return v4;
 }
 
-- (REFeatureSet)initWithFeatureSet:(id)a3
+- (REFeatureSet)initWithFeatureSet:(id)set
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  setCopy = set;
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = setCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -147,7 +147,7 @@ uint64_t __34___REFeatureSet_initWithFeatures___block_invoke()
           objc_enumerationMutation(v6);
         }
 
-        [v5 addObject:{*(*(&v14 + 1) + 8 * v10++), v14}];
+        [array addObject:{*(*(&v14 + 1) + 8 * v10++), v14}];
       }
 
       while (v8 != v10);
@@ -157,34 +157,34 @@ uint64_t __34___REFeatureSet_initWithFeatures___block_invoke()
     while (v8);
   }
 
-  v11 = [(REFeatureSet *)self initWithFeatures:v5];
+  v11 = [(REFeatureSet *)self initWithFeatures:array];
   v12 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (BOOL)intersectsFeatureSet:(id)a3
+- (BOOL)intersectsFeatureSet:(id)set
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   v5 = [(REFeatureSet *)self count];
-  v6 = [(REFeatureSet *)v4 count];
+  v6 = [(REFeatureSet *)setCopy count];
   if (v5 >= v6)
   {
-    v7 = v4;
+    selfCopy = setCopy;
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   if (v5 < v6)
   {
-    self = v4;
+    self = setCopy;
   }
 
-  v8 = v7;
-  v9 = self;
+  v8 = selfCopy;
+  selfCopy2 = self;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -203,7 +203,7 @@ uint64_t __34___REFeatureSet_initWithFeatures___block_invoke()
           objc_enumerationMutation(v10);
         }
 
-        if ([(REFeatureSet *)v9 containsFeature:*(*(&v16 + 1) + 8 * i), v16])
+        if ([(REFeatureSet *)selfCopy2 containsFeature:*(*(&v16 + 1) + 8 * i), v16])
         {
           LOBYTE(v11) = 1;
           goto LABEL_16;
@@ -226,24 +226,24 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)isEqualToFeatureSet:(id)a3
+- (BOOL)isEqualToFeatureSet:(id)set
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  setCopy = set;
+  v5 = setCopy;
+  if (self == setCopy)
   {
     v12 = 1;
   }
 
-  else if (v4 && (v6 = [(REFeatureSet *)self count], v6 == [(REFeatureSet *)v5 count]))
+  else if (setCopy && (v6 = [(REFeatureSet *)self count], v6 == [(REFeatureSet *)v5 count]))
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = self;
-    v8 = [(REFeatureSet *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    selfCopy = self;
+    v8 = [(REFeatureSet *)selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -254,7 +254,7 @@ LABEL_16:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(selfCopy);
           }
 
           if (![(REFeatureSet *)v5 containsFeature:*(*(&v15 + 1) + 8 * i), v15])
@@ -264,7 +264,7 @@ LABEL_16:
           }
         }
 
-        v9 = [(REFeatureSet *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [(REFeatureSet *)selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v9)
         {
           continue;
@@ -287,18 +287,18 @@ LABEL_16:
   return v12;
 }
 
-- (BOOL)isSubsetOfFeatureSet:(id)a3
+- (BOOL)isSubsetOfFeatureSet:(id)set
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && (v5 = -[REFeatureSet count](self, "count"), v5 <= [v4 count]))
+  setCopy = set;
+  if (setCopy && (v5 = -[REFeatureSet count](self, "count"), v5 <= [setCopy count]))
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = self;
-    v8 = [(REFeatureSet *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    selfCopy = self;
+    v8 = [(REFeatureSet *)selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -309,17 +309,17 @@ LABEL_16:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(selfCopy);
           }
 
-          if (![v4 containsFeature:{*(*(&v14 + 1) + 8 * i), v14}])
+          if (![setCopy containsFeature:{*(*(&v14 + 1) + 8 * i), v14}])
           {
             v6 = 0;
             goto LABEL_14;
           }
         }
 
-        v9 = [(REFeatureSet *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [(REFeatureSet *)selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v9)
         {
           continue;
@@ -342,17 +342,17 @@ LABEL_14:
   return v6;
 }
 
-- (void)enumerateFeaturesUsingBlock:(id)a3
+- (void)enumerateFeaturesUsingBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v15 = 0;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = self;
-  v6 = [(REFeatureSet *)v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  selfCopy = self;
+  v6 = [(REFeatureSet *)selfCopy countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -363,10 +363,10 @@ LABEL_3:
     {
       if (*v12 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(selfCopy);
       }
 
-      v4[2](v4, *(*(&v11 + 1) + 8 * v9), &v15);
+      blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v9), &v15);
       if (v15)
       {
         break;
@@ -374,7 +374,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [(REFeatureSet *)v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v7 = [(REFeatureSet *)selfCopy countByEnumeratingWithState:&v11 objects:v16 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -396,8 +396,8 @@ LABEL_3:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = self;
-  v5 = [(REFeatureSet *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  selfCopy = self;
+  v5 = [(REFeatureSet *)selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -408,13 +408,13 @@ LABEL_3:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selfCopy);
         }
 
         [v3 addObject:{*(*(&v11 + 1) + 8 * i), v11}];
       }
 
-      v6 = [(REFeatureSet *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [(REFeatureSet *)selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -434,7 +434,7 @@ LABEL_3:
   return 0;
 }
 
-- (id)featureWithName:(id)a3
+- (id)featureWithName:(id)name
 {
   OUTLINED_FUNCTION_1_4();
   objc_opt_class();
@@ -443,7 +443,7 @@ LABEL_3:
   return 0;
 }
 
-- (BOOL)containsFeature:(id)a3
+- (BOOL)containsFeature:(id)feature
 {
   OUTLINED_FUNCTION_1_4();
   objc_opt_class();
@@ -452,7 +452,7 @@ LABEL_3:
   return 0;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   OUTLINED_FUNCTION_1_4();
   objc_opt_class();

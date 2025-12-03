@@ -1,13 +1,13 @@
 @interface SKAuthenticationRequestEvent
-- (SKAuthenticationRequestEvent)initWithPasswordType:(int)a3 pairingFlags:(unsigned int)a4 throttleSeconds:(int)a5;
-- (id)descriptionWithLevel:(int)a3;
+- (SKAuthenticationRequestEvent)initWithPasswordType:(int)type pairingFlags:(unsigned int)flags throttleSeconds:(int)seconds;
+- (id)descriptionWithLevel:(int)level;
 @end
 
 @implementation SKAuthenticationRequestEvent
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -57,15 +57,15 @@
   return v11;
 }
 
-- (SKAuthenticationRequestEvent)initWithPasswordType:(int)a3 pairingFlags:(unsigned int)a4 throttleSeconds:(int)a5
+- (SKAuthenticationRequestEvent)initWithPasswordType:(int)type pairingFlags:(unsigned int)flags throttleSeconds:(int)seconds
 {
   v8 = [(SKEvent *)self initWithEventType:120];
   v9 = v8;
   if (v8)
   {
-    v8->_passwordType = a3;
-    v8->_pairingFlags = a4;
-    v8->_throttleSeconds = a5;
+    v8->_passwordType = type;
+    v8->_pairingFlags = flags;
+    v8->_throttleSeconds = seconds;
     v10 = v8;
   }
 

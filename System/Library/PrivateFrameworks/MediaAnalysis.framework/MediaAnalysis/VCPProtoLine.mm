@@ -1,24 +1,24 @@
 @interface VCPProtoLine
-+ (id)lineFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)lineFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)endPointValue;
 - (CGPoint)startPointValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoLine
 
-+ (id)lineFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4
++ (id)lineFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = toPoint.y;
+  x = toPoint.x;
+  v6 = point.y;
+  v7 = point.x;
   v8 = objc_alloc_init(VCPProtoLine);
   v9 = [VCPProtoPoint pointWithPoint:v7, v6];
   [(VCPProtoLine *)v8 setStart:v9];
@@ -31,8 +31,8 @@
 
 - (CGPoint)startPointValue
 {
-  v2 = [(VCPProtoLine *)self start];
-  [v2 pointValue];
+  start = [(VCPProtoLine *)self start];
+  [start pointValue];
   v4 = v3;
   v6 = v5;
 
@@ -63,68 +63,68 @@
   v8.receiver = self;
   v8.super_class = VCPProtoLine;
   v4 = [(VCPProtoLine *)&v8 description];
-  v5 = [(VCPProtoLine *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoLine *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   start = self->_start;
   if (start)
   {
-    v5 = [(VCPProtoPoint *)start dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"start"];
+    dictionaryRepresentation = [(VCPProtoPoint *)start dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"start"];
   }
 
   end = self->_end;
   if (end)
   {
-    v7 = [(VCPProtoPoint *)end dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"end"];
+    dictionaryRepresentation2 = [(VCPProtoPoint *)end dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"end"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteSubmessage();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   start = self->_start;
-  v5 = a3;
-  [v5 setStart:start];
-  [v5 setEnd:self->_end];
+  toCopy = to;
+  [toCopy setStart:start];
+  [toCopy setEnd:self->_end];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoPoint *)self->_start copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoPoint *)self->_start copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(VCPProtoPoint *)self->_end copyWithZone:a3];
+  v8 = [(VCPProtoPoint *)self->_end copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((start = self->_start, !(start | v4[2])) || -[VCPProtoPoint isEqual:](start, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((start = self->_start, !(start | equalCopy[2])) || -[VCPProtoPoint isEqual:](start, "isEqual:")))
   {
     end = self->_end;
-    if (end | v4[1])
+    if (end | equalCopy[1])
     {
       v7 = [(VCPProtoPoint *)end isEqual:?];
     }
@@ -143,12 +143,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   start = self->_start;
-  v6 = v4[2];
-  v9 = v4;
+  v6 = fromCopy[2];
+  v9 = fromCopy;
   if (start)
   {
     if (!v6)
@@ -169,10 +169,10 @@
     [(VCPProtoLine *)self setStart:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   end = self->_end;
-  v8 = v4[1];
+  v8 = fromCopy[1];
   if (end)
   {
     if (!v8)
@@ -193,7 +193,7 @@ LABEL_7:
     [(VCPProtoLine *)self setEnd:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
 }
 

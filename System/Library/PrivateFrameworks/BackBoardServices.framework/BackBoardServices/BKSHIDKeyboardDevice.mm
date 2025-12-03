@@ -8,15 +8,15 @@
 - (NSString)language;
 - (NSString)layout;
 - (NSString)transport;
-- (id)_initWithProperties:(id)a3;
+- (id)_initWithProperties:(id)properties;
 - (id)_properties;
 - (int64_t)subinterfaceID;
 - (unint64_t)senderID;
 - (unsigned)countryCode;
 - (unsigned)standardType;
-- (void)_replaceProperties:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)appendDescriptionToStream:(id)a3 fromProxy:(id)a4;
+- (void)_replaceProperties:(id)properties;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)appendDescriptionToStream:(id)stream fromProxy:(id)proxy;
 @end
 
 @implementation BKSHIDKeyboardDevice
@@ -24,94 +24,94 @@
 - (BOOL)globeKeyLabelHasGlobeSymbol
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties globeKeyLabelHasGlobeSymbol];
+  globeKeyLabelHasGlobeSymbol = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties globeKeyLabelHasGlobeSymbol];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return globeKeyLabelHasGlobeSymbol;
 }
 
 - (BOOL)capsLockKeyHasLanguageSwitchLabel
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties capsLockKeyHasLanguageSwitchLabel];
+  capsLockKeyHasLanguageSwitchLabel = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties capsLockKeyHasLanguageSwitchLabel];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return capsLockKeyHasLanguageSwitchLabel;
 }
 
 - (int64_t)subinterfaceID
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties subinterfaceID];
+  subinterfaceID = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties subinterfaceID];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return subinterfaceID;
 }
 
 - (unsigned)standardType
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties standardType];
+  standardType = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties standardType];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return standardType;
 }
 
 - (unsigned)countryCode
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties countryCode];
+  countryCode = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties countryCode];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return countryCode;
 }
 
 - (NSData)platformInputModeConfiguration
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties platformInputModeConfiguration];
+  platformInputModeConfiguration = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties platformInputModeConfiguration];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return platformInputModeConfiguration;
 }
 
 - (NSString)exclusivityIdentifier
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties exclusivityIdentifier];
+  exclusivityIdentifier = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties exclusivityIdentifier];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return exclusivityIdentifier;
 }
 
 - (NSString)layout
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties layout];
+  layout = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties layout];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return layout;
 }
 
 - (NSString)language
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties language];
+  language = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties language];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return language;
 }
 
 - (NSString)transport
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties transport];
+  transport = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties transport];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return transport;
 }
 
 - (unint64_t)senderID
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties senderID];
+  senderID = [(BKSHIDKeyboardDeviceProperties *)self->_lock_properties senderID];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return senderID;
 }
 
 - (id)_properties
@@ -123,11 +123,11 @@
   return v3;
 }
 
-- (void)_replaceProperties:(id)a3
+- (void)_replaceProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [propertiesCopy copy];
 
   lock_properties = self->_lock_properties;
   self->_lock_properties = v5;
@@ -135,10 +135,10 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_initWithProperties:(id)a3
+- (id)_initWithProperties:(id)properties
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  propertiesCopy = properties;
   v15.receiver = self;
   v15.super_class = BKSHIDKeyboardDevice;
   v7 = [(BKSHIDKeyboardDevice *)&v15 init];
@@ -174,33 +174,33 @@
       JUMPOUT(0x18639068CLL);
     }
 
-    objc_storeStrong(&v7->_lock_properties, a3);
+    objc_storeStrong(&v7->_lock_properties, properties);
   }
 
   v9 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (void)appendDescriptionToStream:(id)a3 fromProxy:(id)a4
+- (void)appendDescriptionToStream:(id)stream fromProxy:(id)proxy
 {
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  proxyCopy = proxy;
   os_unfair_lock_lock(&self->_lock);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __60__BKSHIDKeyboardDevice_appendDescriptionToStream_fromProxy___block_invoke;
   v14[3] = &unk_1E6F47C78;
-  v15 = v7;
-  v8 = v6;
+  v15 = proxyCopy;
+  v8 = streamCopy;
   v16 = v8;
-  v9 = v7;
+  v9 = proxyCopy;
   [v8 appendProem:self block:v14];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__BKSHIDKeyboardDevice_appendDescriptionToStream_fromProxy___block_invoke_2;
   v11[3] = &unk_1E6F47C78;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   v10 = v8;
   [v10 appendBodySectionWithName:0 block:v11];
   os_unfair_lock_unlock(&self->_lock);
@@ -217,18 +217,18 @@ id __60__BKSHIDKeyboardDevice_appendDescriptionToStream_fromProxy___block_invoke
   return result;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   os_unfair_lock_lock(&self->_lock);
-  [v4 appendProem:self block:&__block_literal_global_7985];
+  [streamCopy appendProem:self block:&__block_literal_global_7985];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__BKSHIDKeyboardDevice_appendDescriptionToStream___block_invoke_2;
   v6[3] = &unk_1E6F47C78;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = streamCopy;
+  selfCopy = self;
+  v5 = streamCopy;
   [v5 appendBodySectionWithName:0 block:v6];
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -246,7 +246,7 @@ id __60__BKSHIDKeyboardDevice_appendDescriptionToStream_fromProxy___block_invoke
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDKeyboardDevice.m";
     v17 = 1024;
@@ -275,7 +275,7 @@ id __60__BKSHIDKeyboardDevice_appendDescriptionToStream_fromProxy___block_invoke
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = a1;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDKeyboardDevice.m";
     v17 = 1024;

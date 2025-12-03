@@ -1,7 +1,7 @@
 @interface COSSoftwareUpdateReleaseNotesDetail
 - (COSSoftwareUpdateReleaseNotesDetail)init;
 - (void)loadView;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSSoftwareUpdateReleaseNotesDetail
@@ -28,50 +28,50 @@
   v3 = BPSBackgroundColor();
   [v12 setBackgroundColor:v3];
 
-  v4 = [v12 _scrollView];
-  [v4 setIndicatorStyle:2];
+  _scrollView = [v12 _scrollView];
+  [_scrollView setIndicatorStyle:2];
 
-  v5 = [v12 _scrollView];
-  [v5 _setShowsBackgroundShadow:0];
+  _scrollView2 = [v12 _scrollView];
+  [_scrollView2 _setShowsBackgroundShadow:0];
 
-  v6 = [v12 _browserView];
-  [v6 setDoubleTapEnabled:0];
-  [v6 setLoadsSynchronously:1];
-  v7 = [v6 webView];
-  v8 = [v7 preferences];
-  [v8 _setMinimumZoomFontSize:0.0];
+  _browserView = [v12 _browserView];
+  [_browserView setDoubleTapEnabled:0];
+  [_browserView setLoadsSynchronously:1];
+  webView = [_browserView webView];
+  preferences = [webView preferences];
+  [preferences _setMinimumZoomFontSize:0.0];
 
   v9 = BPSBridgeTintColor();
-  v10 = [v9 styleString];
-  v11 = [NSString stringWithFormat:@"a:link {color: %@}\n", v10];;
+  styleString = [v9 styleString];
+  v11 = [NSString stringWithFormat:@"a:link {color: %@}\n", styleString];;
 
-  [v6 setUserStyleSheet:v11];
+  [_browserView setUserStyleSheet:v11];
   [v12 setDelegate:self];
   [(COSSoftwareUpdateReleaseNotesDetail *)self setView:v12];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = COSSoftwareUpdateReleaseNotesDetail;
-  [(COSSoftwareUpdateReleaseNotesDetail *)&v16 viewWillAppear:a3];
-  v4 = [(COSSoftwareUpdateReleaseNotesDetail *)self view];
-  v5 = [v4 scrollView];
-  [v5 setDecelerationRate:UIScrollViewDecelerationRateNormal];
+  [(COSSoftwareUpdateReleaseNotesDetail *)&v16 viewWillAppear:appear];
+  view = [(COSSoftwareUpdateReleaseNotesDetail *)self view];
+  scrollView = [view scrollView];
+  [scrollView setDecelerationRate:UIScrollViewDecelerationRateNormal];
 
-  v6 = [v4 stringByEvaluatingJavaScriptFromString:@"document.body.style.webkitUserSelect='none';"];
+  v6 = [view stringByEvaluatingJavaScriptFromString:@"document.body.style.webkitUserSelect='none';"];
   v7 = BPSBackgroundColor();
-  [v4 setBackgroundColor:v7];
+  [view setBackgroundColor:v7];
 
   v8 = BPSBackgroundColor();
-  v9 = [v8 styleString];
-  v10 = [NSString stringWithFormat:@"document.body.style.backgroundColor='%@'", v9];;
-  v11 = [v4 stringByEvaluatingJavaScriptFromString:v10];
+  styleString = [v8 styleString];
+  v10 = [NSString stringWithFormat:@"document.body.style.backgroundColor='%@'", styleString];;
+  v11 = [view stringByEvaluatingJavaScriptFromString:v10];
 
   v12 = BPSTextColor();
-  v13 = [v12 styleString];
-  v14 = [NSString stringWithFormat:@"document.body.style.color='%@'", v13];;
-  v15 = [v4 stringByEvaluatingJavaScriptFromString:v14];
+  styleString2 = [v12 styleString];
+  v14 = [NSString stringWithFormat:@"document.body.style.color='%@'", styleString2];;
+  v15 = [view stringByEvaluatingJavaScriptFromString:v14];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface _SWCollaborationMetadataType
 + (_SWCollaborationMetadataType)collaboration;
 + (_SWCollaborationMetadataType)event;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCollaborationMetadataType:(id)a3;
-- (_SWCollaborationMetadataType)initWithCoder:(id)a3;
-- (_SWCollaborationMetadataType)initWithTypedIdentifier:(id)a3 actionDescription:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCollaborationMetadataType:(id)type;
+- (_SWCollaborationMetadataType)initWithCoder:(id)coder;
+- (_SWCollaborationMetadataType)initWithTypedIdentifier:(id)identifier actionDescription:(id)description;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SWCollaborationMetadataType
@@ -32,61 +32,61 @@
   return v5;
 }
 
-- (_SWCollaborationMetadataType)initWithTypedIdentifier:(id)a3 actionDescription:(id)a4
+- (_SWCollaborationMetadataType)initWithTypedIdentifier:(id)identifier actionDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  descriptionCopy = description;
   v11.receiver = self;
   v11.super_class = _SWCollaborationMetadataType;
   v8 = [(_SWCollaborationMetadataType *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(_SWCollaborationMetadataType *)v8 setTypedIdentifier:v6];
-    [(_SWCollaborationMetadataType *)v9 setActionDescription:v7];
+    [(_SWCollaborationMetadataType *)v8 setTypedIdentifier:identifierCopy];
+    [(_SWCollaborationMetadataType *)v9 setActionDescription:descriptionCopy];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_SWCollaborationMetadataType *)self isEqualToCollaborationMetadataType:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_SWCollaborationMetadataType *)self isEqualToCollaborationMetadataType:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToCollaborationMetadataType:(id)a3
+- (BOOL)isEqualToCollaborationMetadataType:(id)type
 {
-  v7 = a3;
-  v8 = [(_SWCollaborationMetadataType *)self typedIdentifier];
-  if (!v8)
+  typeCopy = type;
+  typedIdentifier = [(_SWCollaborationMetadataType *)self typedIdentifier];
+  if (!typedIdentifier)
   {
-    v15 = [v7 typedIdentifier];
-    if (!v15)
+    typedIdentifier2 = [typeCopy typedIdentifier];
+    if (!typedIdentifier2)
     {
-      v15 = 0;
+      typedIdentifier2 = 0;
       v9 = 0;
       goto LABEL_7;
     }
   }
 
-  v3 = [(_SWCollaborationMetadataType *)self typedIdentifier];
-  v4 = [v7 typedIdentifier];
-  if ([v3 isEqual:v4])
+  typedIdentifier3 = [(_SWCollaborationMetadataType *)self typedIdentifier];
+  typedIdentifier4 = [typeCopy typedIdentifier];
+  if ([typedIdentifier3 isEqual:typedIdentifier4])
   {
     v9 = 1;
 LABEL_7:
-    v11 = [(_SWCollaborationMetadataType *)self actionDescription];
-    if (v11 || ([v7 actionDescription], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+    actionDescription = [(_SWCollaborationMetadataType *)self actionDescription];
+    if (actionDescription || ([typeCopy actionDescription], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v12 = [(_SWCollaborationMetadataType *)self actionDescription];
-      v13 = [v7 actionDescription];
-      v10 = [v12 isEqual:v13];
+      actionDescription2 = [(_SWCollaborationMetadataType *)self actionDescription];
+      actionDescription3 = [typeCopy actionDescription];
+      v10 = [actionDescription2 isEqual:actionDescription3];
 
-      if (v11)
+      if (actionDescription)
       {
         goto LABEL_13;
       }
@@ -110,7 +110,7 @@ LABEL_13:
 LABEL_14:
 
 LABEL_15:
-  if (!v8)
+  if (!typedIdentifier)
   {
   }
 
@@ -119,47 +119,47 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [(_SWCollaborationMetadataType *)self typedIdentifier];
-  v4 = [v3 hash];
-  v5 = [(_SWCollaborationMetadataType *)self actionDescription];
-  v6 = [v5 hash];
+  typedIdentifier = [(_SWCollaborationMetadataType *)self typedIdentifier];
+  v4 = [typedIdentifier hash];
+  actionDescription = [(_SWCollaborationMetadataType *)self actionDescription];
+  v6 = [actionDescription hash];
 
   return v6 ^ v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_SWCollaborationMetadataType *)self typedIdentifier];
+  coderCopy = coder;
+  typedIdentifier = [(_SWCollaborationMetadataType *)self typedIdentifier];
   v6 = NSStringFromSelector(sel_typedIdentifier);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:typedIdentifier forKey:v6];
 
-  v8 = [(_SWCollaborationMetadataType *)self actionDescription];
+  actionDescription = [(_SWCollaborationMetadataType *)self actionDescription];
   v7 = NSStringFromSelector(sel_actionDescription);
-  [v4 encodeObject:v8 forKey:v7];
+  [coderCopy encodeObject:actionDescription forKey:v7];
 }
 
-- (_SWCollaborationMetadataType)initWithCoder:(id)a3
+- (_SWCollaborationMetadataType)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_typedIdentifier);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_actionDescription);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = [(_SWCollaborationMetadataType *)self initWithTypedIdentifier:v7 actionDescription:v10];
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(_SWCollaborationMetadataType *)self typedIdentifier];
-  v6 = [(_SWCollaborationMetadataType *)self actionDescription];
-  v7 = [v4 initWithTypedIdentifier:v5 actionDescription:v6];
+  typedIdentifier = [(_SWCollaborationMetadataType *)self typedIdentifier];
+  actionDescription = [(_SWCollaborationMetadataType *)self actionDescription];
+  v7 = [v4 initWithTypedIdentifier:typedIdentifier actionDescription:actionDescription];
 
   return v7;
 }

@@ -2,21 +2,21 @@
 - (BOOL)sendMenuButtonEnabled;
 - (CAFilter)backgroundCompositingFilterForDarkMode;
 - (CAFilter)backgroundCompositingFilterForLightMode;
-- (CKEntryViewPlusButton)initWithCoder:(id)a3;
+- (CKEntryViewPlusButton)initWithCoder:(id)coder;
 - (UIColor)plusButtonBackgroundColor;
 - (double)backgroundBlurRadiusDarkMode;
 - (double)backgroundBlurRadiusLightMode;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)layoutSubviews;
-- (void)setAutomaticallyAdjustsBackgroundCornerRadius:(BOOL)a3;
-- (void)setBackgroundBlurRasterizationPercentage:(double)a3;
-- (void)setSendMenuButtonEnabled:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAutomaticallyAdjustsBackgroundCornerRadius:(BOOL)radius;
+- (void)setBackgroundBlurRasterizationPercentage:(double)percentage;
+- (void)setSendMenuButtonEnabled:(BOOL)enabled;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CKEntryViewPlusButton
 
-- (CKEntryViewPlusButton)initWithCoder:(id)a3
+- (CKEntryViewPlusButton)initWithCoder:(id)coder
 {
   *(&self->super.super._responderFlags + OBJC_IVAR___CKEntryViewPlusButton_plusButtonDelegate) = 0;
   swift_unknownObjectWeakInit();
@@ -37,18 +37,18 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setSendMenuButtonEnabled:(BOOL)a3
+- (void)setSendMenuButtonEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_1908FCEDC(a3);
+  selfCopy = self;
+  sub_1908FCEDC(enabled);
 }
 
-- (void)setAutomaticallyAdjustsBackgroundCornerRadius:(BOOL)a3
+- (void)setAutomaticallyAdjustsBackgroundCornerRadius:(BOOL)radius
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR___CKEntryViewPlusButton_clippingView);
   v4 = v3[OBJC_IVAR____TtC7ChatKitP33_3A4F9EFB16D832C5123E30AA2C9D387322PlusButtonClippingView_automaticallyAdjustsCornerRadius];
-  v3[OBJC_IVAR____TtC7ChatKitP33_3A4F9EFB16D832C5123E30AA2C9D387322PlusButtonClippingView_automaticallyAdjustsCornerRadius] = a3;
-  if ((v4 & 1) == 0 && a3)
+  v3[OBJC_IVAR____TtC7ChatKitP33_3A4F9EFB16D832C5123E30AA2C9D387322PlusButtonClippingView_automaticallyAdjustsCornerRadius] = radius;
+  if ((v4 & 1) == 0 && radius)
   {
     [v3 setNeedsLayout];
   }
@@ -56,15 +56,15 @@
 
 - (UIColor)plusButtonBackgroundColor
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR___CKEntryViewPlusButton_buttonView) backgroundColor];
+  backgroundColor = [*(&self->super.super.super.isa + OBJC_IVAR___CKEntryViewPlusButton_buttonView) backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBackgroundBlurRasterizationPercentage:(double)a3
+- (void)setBackgroundBlurRasterizationPercentage:(double)percentage
 {
-  v4 = self;
-  sub_1908FD494(a3);
+  selfCopy = self;
+  sub_1908FD494(percentage);
 }
 
 - (double)backgroundBlurRadiusLightMode
@@ -95,28 +95,28 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for EntryViewPlusButton();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(CKEntryViewPlusButton *)&v6 traitCollectionDidChange:v4];
+  [(CKEntryViewPlusButton *)&v6 traitCollectionDidChange:changeCopy];
   sub_1908FDE68();
   sub_1908FE09C();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1908FE1E4();
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
   v9 = _s7ChatKit19EntryViewPlusButtonC18pointerInteraction_8styleForSo14UIPointerStyleCSgSo0kH0C_So0K6RegionCtF_0();
 
   return v9;

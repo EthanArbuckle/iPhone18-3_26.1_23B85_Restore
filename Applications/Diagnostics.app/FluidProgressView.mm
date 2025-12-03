@@ -1,15 +1,15 @@
 @interface FluidProgressView
-- (_TtC11Diagnostics17FluidProgressView)initWithFrame:(CGRect)a3;
+- (_TtC11Diagnostics17FluidProgressView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FluidProgressView
 
-- (_TtC11Diagnostics17FluidProgressView)initWithFrame:(CGRect)a3
+- (_TtC11Diagnostics17FluidProgressView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11Diagnostics17FluidProgressView_progressSpeed) = 1007192201;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11Diagnostics17FluidProgressView_asymptotic) = 1;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11Diagnostics17FluidProgressView_progressTimer) = 0;

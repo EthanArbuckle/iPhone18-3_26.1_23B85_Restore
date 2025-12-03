@@ -1,23 +1,23 @@
 @interface DAOAuthSafariViewController
-+ (id)authenticationSessionWithURL:(id)a3 callbackURLScheme:(id)a4 handler:(id)a5;
++ (id)authenticationSessionWithURL:(id)l callbackURLScheme:(id)scheme handler:(id)handler;
 @end
 
 @implementation DAOAuthSafariViewController
 
-+ (id)authenticationSessionWithURL:(id)a3 callbackURLScheme:(id)a4 handler:(id)a5
++ (id)authenticationSessionWithURL:(id)l callbackURLScheme:(id)scheme handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 scheme];
-  if ([v10 isEqualToString:@"http"])
+  lCopy = l;
+  schemeCopy = scheme;
+  handlerCopy = handler;
+  scheme = [lCopy scheme];
+  if ([scheme isEqualToString:@"http"])
   {
   }
 
   else
   {
-    v11 = [v7 scheme];
-    v12 = [v11 isEqualToString:@"https"];
+    scheme2 = [lCopy scheme];
+    v12 = [scheme2 isEqualToString:@"https"];
 
     if (!v12)
     {
@@ -29,25 +29,25 @@
   if (_os_feature_enabled_impl())
   {
     v13 = MEMORY[0x277CBA9E0];
-    if (v8)
+    if (schemeCopy)
     {
-      v14 = [MEMORY[0x277CBA9E0] callbackWithCustomScheme:v8];
+      scheme4 = [MEMORY[0x277CBA9E0] callbackWithCustomScheme:schemeCopy];
     }
 
     else
     {
-      v18 = [v7 scheme];
-      v14 = [v13 callbackWithCustomScheme:v18];
+      scheme3 = [lCopy scheme];
+      scheme4 = [v13 callbackWithCustomScheme:scheme3];
     }
 
-    v16 = [objc_alloc(MEMORY[0x277CBA9D8]) initWithURL:v7 callback:v14 completionHandler:v9];
+    v16 = [objc_alloc(MEMORY[0x277CBA9D8]) initWithURL:lCopy callback:scheme4 completionHandler:handlerCopy];
   }
 
   else
   {
     v15 = objc_alloc(MEMORY[0x277CBA9D8]);
-    v14 = [v7 scheme];
-    v16 = [v15 initWithURL:v7 callbackURLScheme:v14 completionHandler:v9];
+    scheme4 = [lCopy scheme];
+    v16 = [v15 initWithURL:lCopy callbackURLScheme:scheme4 completionHandler:handlerCopy];
   }
 
   v17 = v16;

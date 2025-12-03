@@ -1,16 +1,16 @@
 @interface TSCEFunction_ISBLANK
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_ISBLANK
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v6 = **a5;
-  IsBlank_context = objc_msgSend_valueIsBlank_context_(TSCEFunction_ISBLANK, v7, v6, a3, v8);
+  v6 = **arguments;
+  IsBlank_context = objc_msgSend_valueIsBlank_context_(TSCEFunction_ISBLANK, v7, v6, context, v8);
   if (v6)
   {
-    objc_msgSend_formatWithContext_(v6, v9, a3, v10, v11);
+    objc_msgSend_formatWithContext_(v6, v9, context, v10, v11);
   }
 
   else

@@ -1,22 +1,22 @@
 @interface LiveActivityMonitor
-- (void)workout:(id)a3 didMoveToState:(int64_t)a4;
-- (void)workout:(id)a3 pausedReasonsDidUpdate:(unint64_t)a4;
+- (void)workout:(id)workout didMoveToState:(int64_t)state;
+- (void)workout:(id)workout pausedReasonsDidUpdate:(unint64_t)update;
 @end
 
 @implementation LiveActivityMonitor
 
-- (void)workout:(id)a3 didMoveToState:(int64_t)a4
+- (void)workout:(id)workout didMoveToState:(int64_t)state
 {
-  v5 = a3;
+  workoutCopy = workout;
 
-  LiveActivityMonitor.workout(_:didMoveToState:)(v5, a4);
+  LiveActivityMonitor.workout(_:didMoveToState:)(workoutCopy, state);
 }
 
-- (void)workout:(id)a3 pausedReasonsDidUpdate:(unint64_t)a4
+- (void)workout:(id)workout pausedReasonsDidUpdate:(unint64_t)update
 {
-  v4 = a3;
+  workoutCopy = workout;
 
-  specialized LiveActivityMonitor.workout(_:pausedReasonsDidUpdate:)(v4);
+  specialized LiveActivityMonitor.workout(_:pausedReasonsDidUpdate:)(workoutCopy);
 }
 
 @end

@@ -18,7 +18,7 @@
     _os_log_impl(&dword_269B11000, v2, OS_LOG_TYPE_DEFAULT, "[%{public}@] starting session", &v6, 0xCu);
   }
 
-  result = [a1 startSleepTrackingSession];
+  result = [self startSleepTrackingSession];
   v5 = *MEMORY[0x277D85DE8];
   return result;
 }
@@ -35,7 +35,7 @@
     _os_log_impl(&dword_269B11000, v2, OS_LOG_TYPE_DEFAULT, "[%{public}@] stopping session", &v6, 0xCu);
   }
 
-  result = [a1 stopSleepTrackingSession];
+  result = [self stopSleepTrackingSession];
   v5 = *MEMORY[0x277D85DE8];
   return result;
 }
@@ -44,17 +44,17 @@
 {
   v4 = a3;
   v5 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v6 = [a1 scheduler];
+  scheduler = [self scheduler];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __54__HKSleepHealthStore_HDSPSleep__hdsp_persistSessions___block_invoke;
   v12[3] = &unk_279C7C050;
-  v12[4] = a1;
+  v12[4] = self;
   v7 = v5;
   v13 = v7;
   v14 = v4;
   v8 = v4;
-  [v6 performBlock:v12];
+  [scheduler performBlock:v12];
 
   v9 = v14;
   v10 = v7;

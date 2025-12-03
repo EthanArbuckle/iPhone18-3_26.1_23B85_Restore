@@ -1,13 +1,13 @@
 @interface CARSettingsAnalytics
 + (BOOL)shouldSendAnalyticsEvents;
 + (id)sharedInstance;
-- (id)_analyticsEventNameForEvent:(unint64_t)a3;
-- (id)_dictionaryRepresentationWithVehicle:(id)a3 session:(id)a4;
-- (void)axBoldTextPrefChangedForVehicle:(id)a3 session:(id)a4;
-- (void)axColorFiltersPrefChangedForVehicle:(id)a3 session:(id)a4;
-- (void)axSoundRecognitionChangedForVehicle:(id)a3 session:(id)a4;
-- (void)axVoiceControlPrefChanged:(BOOL)a3 forVehicle:(id)a4 session:(id)a5;
-- (void)sendEvent:(unint64_t)a3 withParameters:(id)a4;
+- (id)_analyticsEventNameForEvent:(unint64_t)event;
+- (id)_dictionaryRepresentationWithVehicle:(id)vehicle session:(id)session;
+- (void)axBoldTextPrefChangedForVehicle:(id)vehicle session:(id)session;
+- (void)axColorFiltersPrefChangedForVehicle:(id)vehicle session:(id)session;
+- (void)axSoundRecognitionChangedForVehicle:(id)vehicle session:(id)session;
+- (void)axVoiceControlPrefChanged:(BOOL)changed forVehicle:(id)vehicle session:(id)session;
+- (void)sendEvent:(unint64_t)event withParameters:(id)parameters;
 @end
 
 @implementation CARSettingsAnalytics
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = sub_10001BBDC;
   block[3] = &unk_1000DB438;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100101EB8 != -1)
   {
     dispatch_once(&qword_100101EB8, block);
@@ -45,61 +45,61 @@
   return v2 == 0;
 }
 
-- (void)axVoiceControlPrefChanged:(BOOL)a3 forVehicle:(id)a4 session:(id)a5
+- (void)axVoiceControlPrefChanged:(BOOL)changed forVehicle:(id)vehicle session:(id)session
 {
-  v5 = a3;
-  v7 = [(CARSettingsAnalytics *)self _dictionaryRepresentationWithVehicle:a4 session:a5];
+  changedCopy = changed;
+  v7 = [(CARSettingsAnalytics *)self _dictionaryRepresentationWithVehicle:vehicle session:session];
   v9 = [NSMutableDictionary dictionaryWithDictionary:v7];
 
-  v8 = [NSNumber numberWithBool:v5];
+  v8 = [NSNumber numberWithBool:changedCopy];
   [v9 setObject:v8 forKeyedSubscript:@"voiceControl"];
 
   [(CARSettingsAnalytics *)self sendEvent:0 withParameters:v9];
 }
 
-- (void)axBoldTextPrefChangedForVehicle:(id)a3 session:(id)a4
+- (void)axBoldTextPrefChangedForVehicle:(id)vehicle session:(id)session
 {
-  v6 = a3;
-  v7 = [(CARSettingsAnalytics *)self _dictionaryRepresentationWithVehicle:v6 session:a4];
+  vehicleCopy = vehicle;
+  v7 = [(CARSettingsAnalytics *)self _dictionaryRepresentationWithVehicle:vehicleCopy session:session];
   v10 = [NSMutableDictionary dictionaryWithDictionary:v7];
 
-  v8 = [v6 boldTextPreference];
-  v9 = [NSNumber numberWithBool:v8 == 1];
+  boldTextPreference = [vehicleCopy boldTextPreference];
+  v9 = [NSNumber numberWithBool:boldTextPreference == 1];
   [v10 setObject:v9 forKeyedSubscript:@"boldText"];
 
   [(CARSettingsAnalytics *)self sendEvent:0 withParameters:v10];
 }
 
-- (void)axColorFiltersPrefChangedForVehicle:(id)a3 session:(id)a4
+- (void)axColorFiltersPrefChangedForVehicle:(id)vehicle session:(id)session
 {
-  v6 = a3;
-  v7 = [(CARSettingsAnalytics *)self _dictionaryRepresentationWithVehicle:v6 session:a4];
+  vehicleCopy = vehicle;
+  v7 = [(CARSettingsAnalytics *)self _dictionaryRepresentationWithVehicle:vehicleCopy session:session];
   v9 = [NSMutableDictionary dictionaryWithDictionary:v7];
 
-  v8 = [v6 _axColorFiltersAnalyticsString];
+  _axColorFiltersAnalyticsString = [vehicleCopy _axColorFiltersAnalyticsString];
 
-  [v9 setObject:v8 forKeyedSubscript:@"colorFilters"];
+  [v9 setObject:_axColorFiltersAnalyticsString forKeyedSubscript:@"colorFilters"];
   [(CARSettingsAnalytics *)self sendEvent:0 withParameters:v9];
 }
 
-- (void)axSoundRecognitionChangedForVehicle:(id)a3 session:(id)a4
+- (void)axSoundRecognitionChangedForVehicle:(id)vehicle session:(id)session
 {
-  v6 = a3;
-  v7 = [(CARSettingsAnalytics *)self _dictionaryRepresentationWithVehicle:v6 session:a4];
+  vehicleCopy = vehicle;
+  v7 = [(CARSettingsAnalytics *)self _dictionaryRepresentationWithVehicle:vehicleCopy session:session];
   v9 = [NSMutableDictionary dictionaryWithDictionary:v7];
 
-  v8 = [v6 _axSoundRecognitionAnalyticsString];
+  _axSoundRecognitionAnalyticsString = [vehicleCopy _axSoundRecognitionAnalyticsString];
 
-  [v9 setObject:v8 forKeyedSubscript:@"soundRecognition"];
+  [v9 setObject:_axSoundRecognitionAnalyticsString forKeyedSubscript:@"soundRecognition"];
   [(CARSettingsAnalytics *)self sendEvent:0 withParameters:v9];
 }
 
-- (void)sendEvent:(unint64_t)a3 withParameters:(id)a4
+- (void)sendEvent:(unint64_t)event withParameters:(id)parameters
 {
-  v6 = a4;
+  parametersCopy = parameters;
   if ([objc_opt_class() shouldSendAnalyticsEvents])
   {
-    v7 = [(CARSettingsAnalytics *)self _analyticsEventNameForEvent:a3];
+    v7 = [(CARSettingsAnalytics *)self _analyticsEventNameForEvent:event];
     if (v7)
     {
       v8 = sub_10001C784();
@@ -108,7 +108,7 @@
         v9 = 138412546;
         v10 = v7;
         v11 = 2112;
-        v12 = v6;
+        v12 = parametersCopy;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[Settings] Sending CA event %@ with %@", &v9, 0x16u);
       }
 
@@ -117,14 +117,14 @@
   }
 }
 
-- (id)_analyticsEventNameForEvent:(unint64_t)a3
+- (id)_analyticsEventNameForEvent:(unint64_t)event
 {
-  if (a3)
+  if (event)
   {
     v4 = sub_10001C784();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      sub_1000918B8(a3, v4);
+      sub_1000918B8(event, v4);
     }
 
     v5 = 0;
@@ -138,16 +138,16 @@
   return v5;
 }
 
-- (id)_dictionaryRepresentationWithVehicle:(id)a3 session:(id)a4
+- (id)_dictionaryRepresentationWithVehicle:(id)vehicle session:(id)session
 {
-  v4 = a4;
-  v5 = [v4 configuration];
+  sessionCopy = session;
+  configuration = [sessionCopy configuration];
   v6 = +[NSMutableDictionary dictionary];
-  v7 = [v5 PPID];
-  v8 = v7;
-  if (v7)
+  pPID = [configuration PPID];
+  v8 = pPID;
+  if (pPID)
   {
-    v9 = v7;
+    v9 = pPID;
   }
 
   else
@@ -157,11 +157,11 @@
 
   [v6 setObject:v9 forKeyedSubscript:@"ppid"];
 
-  v10 = [v5 name];
-  v11 = v10;
-  if (v10)
+  name = [configuration name];
+  v11 = name;
+  if (name)
   {
-    v12 = v10;
+    v12 = name;
   }
 
   else
@@ -171,11 +171,11 @@
 
   [v6 setObject:v12 forKeyedSubscript:@"name"];
 
-  v13 = [v5 modelName];
-  v14 = v13;
-  if (v13)
+  modelName = [configuration modelName];
+  v14 = modelName;
+  if (modelName)
   {
-    v15 = v13;
+    v15 = modelName;
   }
 
   else
@@ -185,11 +185,11 @@
 
   [v6 setObject:v15 forKeyedSubscript:@"airplayModel"];
 
-  v16 = [v5 manufacturerName];
-  v17 = v16;
-  if (v16)
+  manufacturerName = [configuration manufacturerName];
+  v17 = manufacturerName;
+  if (manufacturerName)
   {
-    v18 = v16;
+    v18 = manufacturerName;
   }
 
   else
@@ -199,11 +199,11 @@
 
   [v6 setObject:v18 forKeyedSubscript:@"manufacturer"];
 
-  v19 = [v5 vehicleName];
-  v20 = v19;
-  if (v19)
+  vehicleName = [configuration vehicleName];
+  v20 = vehicleName;
+  if (vehicleName)
   {
-    v21 = v19;
+    v21 = vehicleName;
   }
 
   else
@@ -213,11 +213,11 @@
 
   [v6 setObject:v21 forKeyedSubscript:@"iAPName"];
 
-  v22 = [v5 vehicleModelName];
-  v23 = v22;
-  if (v22)
+  vehicleModelName = [configuration vehicleModelName];
+  v23 = vehicleModelName;
+  if (vehicleModelName)
   {
-    v24 = v22;
+    v24 = vehicleModelName;
   }
 
   else
@@ -227,11 +227,11 @@
 
   [v6 setObject:v24 forKeyedSubscript:@"iAPModel"];
 
-  v25 = [v5 vehicleManufacturer];
-  v26 = v25;
-  if (v25)
+  vehicleManufacturer = [configuration vehicleManufacturer];
+  v26 = vehicleManufacturer;
+  if (vehicleManufacturer)
   {
-    v27 = v25;
+    v27 = vehicleManufacturer;
   }
 
   else
@@ -241,11 +241,11 @@
 
   [v6 setObject:v27 forKeyedSubscript:@"iAPManufacturer"];
 
-  v28 = [v5 vehicleFirmwareVersion];
-  v29 = v28;
-  if (v28)
+  vehicleFirmwareVersion = [configuration vehicleFirmwareVersion];
+  v29 = vehicleFirmwareVersion;
+  if (vehicleFirmwareVersion)
   {
-    v30 = v28;
+    v30 = vehicleFirmwareVersion;
   }
 
   else
@@ -255,11 +255,11 @@
 
   [v6 setObject:v30 forKeyedSubscript:@"firmwareVersion"];
 
-  v31 = [v5 vehicleHardwareVersion];
-  v32 = v31;
-  if (v31)
+  vehicleHardwareVersion = [configuration vehicleHardwareVersion];
+  v32 = vehicleHardwareVersion;
+  if (vehicleHardwareVersion)
   {
-    v33 = v31;
+    v33 = vehicleHardwareVersion;
   }
 
   else
@@ -269,11 +269,11 @@
 
   [v6 setObject:v33 forKeyedSubscript:@"hardwareVersion"];
 
-  v34 = [v5 descriptionForLimitableUserInterfaces];
-  v35 = v34;
-  if (v34)
+  descriptionForLimitableUserInterfaces = [configuration descriptionForLimitableUserInterfaces];
+  v35 = descriptionForLimitableUserInterfaces;
+  if (descriptionForLimitableUserInterfaces)
   {
-    v36 = v34;
+    v36 = descriptionForLimitableUserInterfaces;
   }
 
   else
@@ -283,7 +283,7 @@
 
   [v6 setObject:v36 forKeyedSubscript:@"limitableUITypes"];
 
-  [v4 voiceTriggerMode];
+  [sessionCopy voiceTriggerMode];
   v37 = CARStringFromVoiceTriggerMode();
   v38 = v37;
   if (v37)
@@ -298,15 +298,15 @@
 
   [v6 setObject:v39 forKeyedSubscript:@"voiceTriggerMode"];
 
-  v40 = [v5 screens];
-  v41 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v40 count]);
+  screens = [configuration screens];
+  v41 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [screens count]);
   [v6 setObject:v41 forKeyedSubscript:@"screenCount"];
 
-  v42 = [v4 sourceVersion];
+  sourceVersion = [sessionCopy sourceVersion];
 
-  if (v42)
+  if (sourceVersion)
   {
-    v43 = v42;
+    v43 = sourceVersion;
   }
 
   else
@@ -316,16 +316,16 @@
 
   [v6 setObject:v43 forKeyedSubscript:@"SourceVersion"];
 
-  v44 = [v5 screens];
-  v45 = [v44 firstObject];
+  screens2 = [configuration screens];
+  firstObject = [screens2 firstObject];
 
-  if (v45)
+  if (firstObject)
   {
-    v46 = [v45 descriptionForPrimaryInteractionModel];
-    v47 = v46;
-    if (v46)
+    descriptionForPrimaryInteractionModel = [firstObject descriptionForPrimaryInteractionModel];
+    v47 = descriptionForPrimaryInteractionModel;
+    if (descriptionForPrimaryInteractionModel)
     {
-      v48 = v46;
+      v48 = descriptionForPrimaryInteractionModel;
     }
 
     else
@@ -335,11 +335,11 @@
 
     [v6 setObject:v48 forKeyedSubscript:@"primaryInteraction"];
 
-    v49 = [v45 descriptionForAvailableInteractionModels];
-    v50 = v49;
-    if (v49)
+    descriptionForAvailableInteractionModels = [firstObject descriptionForAvailableInteractionModels];
+    v50 = descriptionForAvailableInteractionModels;
+    if (descriptionForAvailableInteractionModels)
     {
-      v51 = v49;
+      v51 = descriptionForAvailableInteractionModels;
     }
 
     else
@@ -349,7 +349,7 @@
 
     [v6 setObject:v51 forKeyedSubscript:@"availableInteractions"];
 
-    if ([v45 supportsHighFidelityTouch])
+    if ([firstObject supportsHighFidelityTouch])
     {
       v52 = &__kCFBooleanTrue;
     }

@@ -1,24 +1,24 @@
 @interface RemoteAlertHostingViewController
-- (_TtC13InCallService32RemoteAlertHostingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC13InCallService32RemoteAlertHostingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation RemoteAlertHostingViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1001FCAFC(a3);
+  selfCopy = self;
+  sub_1001FCAFC(appear);
 }
 
-- (_TtC13InCallService32RemoteAlertHostingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13InCallService32RemoteAlertHostingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1001FCC7C();
 }
 

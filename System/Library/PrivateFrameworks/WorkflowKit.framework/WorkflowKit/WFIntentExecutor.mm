@@ -1,32 +1,32 @@
 @interface WFIntentExecutor
 - (BOOL)continueInApp;
 - (WFIntentExecutorDelegate)delegate;
-- (id)errorFromConfirmResponse:(id)a3 intent:(id)a4;
-- (id)errorFromExtensionError:(id)a3;
-- (id)errorFromHandleResponse:(id)a3 intent:(id)a4;
-- (id)errorFromResolutionResult:(id)a3 forSlot:(id)a4 onIntent:(id)a5;
-- (id)extensionInputItemsWithIntent:(id)a3;
+- (id)errorFromConfirmResponse:(id)response intent:(id)intent;
+- (id)errorFromExtensionError:(id)error;
+- (id)errorFromHandleResponse:(id)response intent:(id)intent;
+- (id)errorFromResolutionResult:(id)result forSlot:(id)slot onIntent:(id)intent;
+- (id)extensionInputItemsWithIntent:(id)intent;
 - (void)autoreleaseSelf;
 - (void)configureConnection;
-- (void)confirmIntent:(id)a3 withExtensionProxy:(id)a4;
-- (void)failWithError:(id)a3;
+- (void)confirmIntent:(id)intent withExtensionProxy:(id)proxy;
+- (void)failWithError:(id)error;
 - (void)finish;
-- (void)finishWithInteraction:(id)a3 error:(id)a4;
-- (void)getDefaultValueForParameterNamed:(id)a3 completionHandler:(id)a4;
-- (void)getDynamicOptionsForParameterNamed:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5;
-- (void)handleIntent:(id)a3 withExtensionProxy:(id)a4;
-- (void)handleIntent:(id)a3 withExtensionProxy:(id)a4 completionHandler:(id)a5;
-- (void)intentResponseDidUpdate:(id)a3 withSerializedCacheItems:(id)a4;
-- (void)resolveIntent:(id)a3 withExtensionProxy:(id)a4;
-- (void)resolveIntentResolutionResults:(id)a3 slotDescription:(id)a4 intent:(id)a5 completion:(id)a6;
-- (void)resumeConnectionWithCompletionHandler:(id)a3;
-- (void)startConnectionForParameterName:(id)a3 completionHandler:(id)a4;
-- (void)startConnectionForParameterName:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5;
-- (void)startConnectionWithCompletionHandler:(id)a3;
+- (void)finishWithInteraction:(id)interaction error:(id)error;
+- (void)getDefaultValueForParameterNamed:(id)named completionHandler:(id)handler;
+- (void)getDynamicOptionsForParameterNamed:(id)named searchTerm:(id)term completionHandler:(id)handler;
+- (void)handleIntent:(id)intent withExtensionProxy:(id)proxy;
+- (void)handleIntent:(id)intent withExtensionProxy:(id)proxy completionHandler:(id)handler;
+- (void)intentResponseDidUpdate:(id)update withSerializedCacheItems:(id)items;
+- (void)resolveIntent:(id)intent withExtensionProxy:(id)proxy;
+- (void)resolveIntentResolutionResults:(id)results slotDescription:(id)description intent:(id)intent completion:(id)completion;
+- (void)resumeConnectionWithCompletionHandler:(id)handler;
+- (void)startConnectionForParameterName:(id)name completionHandler:(id)handler;
+- (void)startConnectionForParameterName:(id)name searchTerm:(id)term completionHandler:(id)handler;
+- (void)startConnectionWithCompletionHandler:(id)handler;
 - (void)startReceivingRideStatusUpdates;
-- (void)startWithCompletionHandler:(id)a3;
+- (void)startWithCompletionHandler:(id)handler;
 - (void)stopReceivingRideStatusUpdates;
-- (void)updateIntentWithItemToConfirm:(id)a3 forSlot:(id)a4 onIntent:(id)a5;
+- (void)updateIntentWithItemToConfirm:(id)confirm forSlot:(id)slot onIntent:(id)intent;
 @end
 
 @implementation WFIntentExecutor
@@ -50,13 +50,13 @@
 
 - (BOOL)continueInApp
 {
-  v3 = [(WFIntentExecutor *)self delegate];
+  delegate = [(WFIntentExecutor *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFIntentExecutor *)self delegate];
-    [v5 intentExecutorRequestsContinueInApp:self];
+    delegate2 = [(WFIntentExecutor *)self delegate];
+    [delegate2 intentExecutorRequestsContinueInApp:self];
   }
 
   return v4 & 1;
@@ -64,56 +64,56 @@
 
 - (void)finish
 {
-  v3 = [(WFIntentExecutor *)self connection];
-  [v3 reset];
+  connection = [(WFIntentExecutor *)self connection];
+  [connection reset];
 
   [(WFIntentExecutor *)self autoreleaseSelf];
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = getWFIntentExecutionLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v7 = 136315394;
     v8 = "[WFIntentExecutor failWithError:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = errorCopy;
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_ERROR, "%s Executing intent failed with error %@", &v7, 0x16u);
   }
 
-  [(WFIntentExecutor *)self finishWithInteraction:0 error:v4];
+  [(WFIntentExecutor *)self finishWithInteraction:0 error:errorCopy];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishWithInteraction:(id)a3 error:(id)a4
+- (void)finishWithInteraction:(id)interaction error:(id)error
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, a3, a4);
+    completionHandler[2](completionHandler, interaction, error);
     v6 = self->_completionHandler;
     self->_completionHandler = 0;
   }
 
-  [(WFIntentExecutor *)self finish:a3];
+  [(WFIntentExecutor *)self finish:interaction];
 }
 
-- (id)errorFromResolutionResult:(id)a3 forSlot:(id)a4 onIntent:(id)a5
+- (id)errorFromResolutionResult:(id)result forSlot:(id)slot onIntent:(id)intent
 {
   v16[3] = *MEMORY[0x1E69E9840];
   v15[0] = @"WFIntentExecutorSlotResolutionResultErrorKey";
   v15[1] = @"WFIntentExecutorSlotDescriptionErrorKey";
-  v16[0] = a3;
-  v16[1] = a4;
+  v16[0] = result;
+  v16[1] = slot;
   v15[2] = @"WFIntentExecutorIntentErrorKey";
-  v16[2] = a5;
+  v16[2] = intent;
   v7 = MEMORY[0x1E695DF20];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  intentCopy = intent;
+  slotCopy = slot;
+  resultCopy = result;
   v11 = [v7 dictionaryWithObjects:v16 forKeys:v15 count:3];
   v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFIntentExecutorErrorDomain" code:101 userInfo:v11];
 
@@ -122,19 +122,19 @@
   return v12;
 }
 
-- (id)errorFromHandleResponse:(id)a3 intent:(id)a4
+- (id)errorFromHandleResponse:(id)response intent:(id)intent
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 _intentResponseCode];
-  if (v7 > 4 || ((1 << v7) & 0x1A) == 0)
+  responseCopy = response;
+  intentCopy = intent;
+  _intentResponseCode = [responseCopy _intentResponseCode];
+  if (_intentResponseCode > 4 || ((1 << _intentResponseCode) & 0x1A) == 0)
   {
     v10 = MEMORY[0x1E696ABC0];
     v14[0] = @"WFIntentExecutorIntentErrorKey";
     v14[1] = @"WFIntentExecutorIntentResponseErrorKey";
-    v15[0] = v6;
-    v15[1] = v5;
+    v15[0] = intentCopy;
+    v15[1] = responseCopy;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
     v9 = [v10 errorWithDomain:@"WFIntentExecutorErrorDomain" code:103 userInfo:v11];
   }
@@ -149,13 +149,13 @@
   return v9;
 }
 
-- (id)errorFromConfirmResponse:(id)a3 intent:(id)a4
+- (id)errorFromConfirmResponse:(id)response intent:(id)intent
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 _intentResponseCode];
-  if (v7 - 1) < 8 && ((0x8Du >> (v7 - 1)) & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  responseCopy = response;
+  intentCopy = intent;
+  _intentResponseCode = [responseCopy _intentResponseCode];
+  if (_intentResponseCode - 1) < 8 && ((0x8Du >> (_intentResponseCode - 1)) & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     v8 = 0;
   }
@@ -165,8 +165,8 @@
     v11 = MEMORY[0x1E696ABC0];
     v13[0] = @"WFIntentExecutorIntentErrorKey";
     v13[1] = @"WFIntentExecutorIntentResponseErrorKey";
-    v14[0] = v6;
-    v14[1] = v5;
+    v14[0] = intentCopy;
+    v14[1] = responseCopy;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
     v8 = [v11 errorWithDomain:@"WFIntentExecutorErrorDomain" code:102 userInfo:v12];
   }
@@ -176,16 +176,16 @@
   return v8;
 }
 
-- (id)errorFromExtensionError:(id)a3
+- (id)errorFromExtensionError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_opt_new();
-  v6 = [(WFIntentExecutor *)self intent];
-  [v5 setObject:v6 forKey:@"WFIntentExecutorIntentErrorKey"];
+  intent = [(WFIntentExecutor *)self intent];
+  [v5 setObject:intent forKey:@"WFIntentExecutorIntentErrorKey"];
 
-  if (v4)
+  if (errorCopy)
   {
-    [v5 setObject:v4 forKey:*MEMORY[0x1E696AA08]];
+    [v5 setObject:errorCopy forKey:*MEMORY[0x1E696AA08]];
   }
 
   v7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFIntentExecutorErrorDomain" code:100 userInfo:v5];
@@ -193,16 +193,16 @@
   return v7;
 }
 
-- (void)intentResponseDidUpdate:(id)a3 withSerializedCacheItems:(id)a4
+- (void)intentResponseDidUpdate:(id)update withSerializedCacheItems:(id)items
 {
-  v12 = a3;
-  v6 = a4;
-  if (v12)
+  updateCopy = update;
+  itemsCopy = items;
+  if (updateCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v12;
+      v7 = updateCopy;
     }
 
     else
@@ -217,26 +217,26 @@
   }
 
   v8 = v7;
-  v9 = [(WFIntentExecutor *)self delegate];
+  delegate = [(WFIntentExecutor *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(WFIntentExecutor *)self delegate];
-    [v11 intentExecutor:self receivingRideStatusDidReceiveUpdate:v8];
+    delegate2 = [(WFIntentExecutor *)self delegate];
+    [delegate2 intentExecutor:self receivingRideStatusDidReceiveUpdate:v8];
   }
 }
 
 - (void)stopReceivingRideStatusUpdates
 {
-  v3 = [(WFIntentExecutor *)self intent];
+  intent = [(WFIntentExecutor *)self intent];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(WFIntentExecutor *)self getRideStatusUpdatingExtensionProxy];
-    [v5 stopSendingUpdates];
+    getRideStatusUpdatingExtensionProxy = [(WFIntentExecutor *)self getRideStatusUpdatingExtensionProxy];
+    [getRideStatusUpdatingExtensionProxy stopSendingUpdates];
 
     [(WFIntentExecutor *)self setGetRideStatusUpdatingExtensionProxy:0];
 
@@ -246,17 +246,17 @@
 
 - (void)startReceivingRideStatusUpdates
 {
-  v6 = [(WFIntentExecutor *)self intent];
+  intent = [(WFIntentExecutor *)self intent];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(WFIntentExecutor *)self getRideStatusUpdatingExtensionProxy];
+    getRideStatusUpdatingExtensionProxy = [(WFIntentExecutor *)self getRideStatusUpdatingExtensionProxy];
 
-    if (!v3)
+    if (!getRideStatusUpdatingExtensionProxy)
     {
-      v4 = [(WFIntentExecutor *)self connection];
-      v5 = [v4 _transaction];
-      [v5 setShouldResetRequestAfterHandle:0];
+      connection = [(WFIntentExecutor *)self connection];
+      _transaction = [connection _transaction];
+      [_transaction setShouldResetRequestAfterHandle:0];
 
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
@@ -362,78 +362,78 @@ void __51__WFIntentExecutor_startReceivingRideStatusUpdates__block_invoke_2(uint
   }
 }
 
-- (void)updateIntentWithItemToConfirm:(id)a3 forSlot:(id)a4 onIntent:(id)a5
+- (void)updateIntentWithItemToConfirm:(id)confirm forSlot:(id)slot onIntent:(id)intent
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![v8 isEnum])
+  confirmCopy = confirm;
+  slotCopy = slot;
+  intentCopy = intent;
+  if (![slotCopy isEnum])
   {
-    if ([v8 valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if ([slotCopy valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      if (!v7)
+      if (!confirmCopy)
       {
-        v10 = 0;
+        facadePropertyName = 0;
         goto LABEL_14;
       }
 
-      v16[0] = v7;
-      v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
+      v16[0] = confirmCopy;
+      firstObject = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     }
 
     else
     {
-      if ([v8 valueStyle] == 3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+      if ([slotCopy valueStyle] == 3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
-        v10 = [v8 facadePropertyName];
-        v12 = v9;
-        v11 = v7;
+        facadePropertyName = [slotCopy facadePropertyName];
+        v12 = intentCopy;
+        v11 = confirmCopy;
         goto LABEL_9;
       }
 
-      v13 = [v7 firstObject];
+      firstObject = [confirmCopy firstObject];
     }
 
-    v10 = v13;
+    facadePropertyName = firstObject;
 LABEL_14:
-    v14 = [v8 facadePropertyName];
-    [v9 setValue:v10 forKey:v14];
+    facadePropertyName2 = [slotCopy facadePropertyName];
+    [intentCopy setValue:facadePropertyName forKey:facadePropertyName2];
 
     goto LABEL_15;
   }
 
-  v10 = [v8 facadePropertyName];
+  facadePropertyName = [slotCopy facadePropertyName];
   v11 = &unk_1F4A9A5B8;
-  v12 = v9;
+  v12 = intentCopy;
 LABEL_9:
-  [v12 setValue:v11 forKey:v10];
+  [v12 setValue:v11 forKey:facadePropertyName];
 LABEL_15:
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleIntent:(id)a3 withExtensionProxy:(id)a4 completionHandler:(id)a5
+- (void)handleIntent:(id)intent withExtensionProxy:(id)proxy completionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  intentCopy = intent;
+  proxyCopy = proxy;
+  handlerCopy = handler;
   v11 = getWFIntentExecutionLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v24 = "[WFIntentExecutor handleIntent:withExtensionProxy:completionHandler:]";
     v25 = 2112;
-    v26 = v8;
+    v26 = intentCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = proxyCopy;
     _os_log_impl(&dword_1CA256000, v11, OS_LOG_TYPE_DEFAULT, "%s Handling %@ with extension proxy %@", buf, 0x20u);
   }
 
   v12 = [WFAutoIncrementingProgress alloc];
-  v13 = [(WFIntentExecutor *)self progress];
-  v14 = [(WFAutoIncrementingProgress *)v12 initWithParent:v13 pendingUnitCount:1 duration:5.0];
+  progress = [(WFIntentExecutor *)self progress];
+  v14 = [(WFAutoIncrementingProgress *)v12 initWithParent:progress pendingUnitCount:1 duration:5.0];
 
   [(WFAutoIncrementingProgress *)v14 start];
   v19[0] = MEMORY[0x1E69E9820];
@@ -441,13 +441,13 @@ LABEL_15:
   v19[2] = __70__WFIntentExecutor_handleIntent_withExtensionProxy_completionHandler___block_invoke;
   v19[3] = &unk_1E83793B8;
   v19[4] = self;
-  v20 = v8;
+  v20 = intentCopy;
   v21 = v14;
-  v22 = v10;
+  v22 = handlerCopy;
   v15 = v14;
-  v16 = v10;
-  v17 = v8;
-  [v9 handleIntentWithCompletionHandler:v19];
+  v16 = handlerCopy;
+  v17 = intentCopy;
+  [proxyCopy handleIntentWithCompletionHandler:v19];
 
   v18 = *MEMORY[0x1E69E9840];
 }
@@ -528,14 +528,14 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)handleIntent:(id)a3 withExtensionProxy:(id)a4
+- (void)handleIntent:(id)intent withExtensionProxy:(id)proxy
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __52__WFIntentExecutor_handleIntent_withExtensionProxy___block_invoke;
   v4[3] = &unk_1E8379390;
   v4[4] = self;
-  [(WFIntentExecutor *)self handleIntent:a3 withExtensionProxy:a4 completionHandler:v4];
+  [(WFIntentExecutor *)self handleIntent:intent withExtensionProxy:proxy completionHandler:v4];
 }
 
 uint64_t __52__WFIntentExecutor_handleIntent_withExtensionProxy___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -552,26 +552,26 @@ uint64_t __52__WFIntentExecutor_handleIntent_withExtensionProxy___block_invoke(u
   }
 }
 
-- (void)confirmIntent:(id)a3 withExtensionProxy:(id)a4
+- (void)confirmIntent:(id)intent withExtensionProxy:(id)proxy
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  intentCopy = intent;
+  proxyCopy = proxy;
   v8 = getWFIntentExecutionLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v21 = "[WFIntentExecutor confirmIntent:withExtensionProxy:]";
     v22 = 2112;
-    v23 = v6;
+    v23 = intentCopy;
     v24 = 2112;
-    v25 = v7;
+    v25 = proxyCopy;
     _os_log_impl(&dword_1CA256000, v8, OS_LOG_TYPE_DEFAULT, "%s Confirming %@ with extension proxy %@", buf, 0x20u);
   }
 
   v9 = [WFAutoIncrementingProgress alloc];
-  v10 = [(WFIntentExecutor *)self progress];
-  v11 = [(WFAutoIncrementingProgress *)v9 initWithParent:v10 pendingUnitCount:1 duration:1.0];
+  progress = [(WFIntentExecutor *)self progress];
+  v11 = [(WFAutoIncrementingProgress *)v9 initWithParent:progress pendingUnitCount:1 duration:1.0];
 
   [(WFAutoIncrementingProgress *)v11 start];
   v16[0] = MEMORY[0x1E69E9820];
@@ -579,12 +579,12 @@ uint64_t __52__WFIntentExecutor_handleIntent_withExtensionProxy___block_invoke(u
   v16[2] = __53__WFIntentExecutor_confirmIntent_withExtensionProxy___block_invoke;
   v16[3] = &unk_1E8379368;
   v16[4] = self;
-  v17 = v6;
+  v17 = intentCopy;
   v18 = v11;
-  v19 = v7;
-  v12 = v7;
+  v19 = proxyCopy;
+  v12 = proxyCopy;
   v13 = v11;
-  v14 = v6;
+  v14 = intentCopy;
   [v12 confirmIntentWithCompletionHandler:v16];
 
   v15 = *MEMORY[0x1E69E9840];
@@ -701,12 +701,12 @@ void __53__WFIntentExecutor_confirmIntent_withExtensionProxy___block_invoke_2(vo
   }
 }
 
-- (void)resolveIntentResolutionResults:(id)a3 slotDescription:(id)a4 intent:(id)a5 completion:(id)a6
+- (void)resolveIntentResolutionResults:(id)results slotDescription:(id)description intent:(id)intent completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  resultsCopy = results;
+  descriptionCopy = description;
+  intentCopy = intent;
+  completionCopy = completion;
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x3032000000;
@@ -718,7 +718,7 @@ void __53__WFIntentExecutor_confirmIntent_withExtensionProxy___block_invoke_2(vo
   v30[2] = 0x3032000000;
   v30[3] = __Block_byref_object_copy__38109;
   v30[4] = __Block_byref_object_dispose__38110;
-  v31 = [v12 copy];
+  v31 = [intentCopy copy];
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x2020000000;
@@ -728,9 +728,9 @@ void __53__WFIntentExecutor_confirmIntent_withExtensionProxy___block_invoke_2(vo
   v22[2] = __85__WFIntentExecutor_resolveIntentResolutionResults_slotDescription_intent_completion___block_invoke;
   v22[3] = &unk_1E83792F0;
   v22[4] = self;
-  v14 = v11;
+  v14 = descriptionCopy;
   v23 = v14;
-  v15 = v12;
+  v15 = intentCopy;
   v24 = v15;
   v25 = v28;
   v26 = v30;
@@ -739,12 +739,12 @@ void __53__WFIntentExecutor_confirmIntent_withExtensionProxy___block_invoke_2(vo
   v17[1] = 3221225472;
   v17[2] = __85__WFIntentExecutor_resolveIntentResolutionResults_slotDescription_intent_completion___block_invoke_3;
   v17[3] = &unk_1E8379318;
-  v16 = v13;
+  v16 = completionCopy;
   v18 = v16;
   v19 = v28;
   v20 = v30;
   v21 = v32;
-  [v10 if_enumerateAsynchronouslyInSequence:v22 completionHandler:v17];
+  [resultsCopy if_enumerateAsynchronouslyInSequence:v22 completionHandler:v17];
 
   _Block_object_dispose(v28, 8);
   _Block_object_dispose(v30, 8);
@@ -829,32 +829,32 @@ void __85__WFIntentExecutor_resolveIntentResolutionResults_slotDescription_inten
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resolveIntent:(id)a3 withExtensionProxy:(id)a4
+- (void)resolveIntent:(id)intent withExtensionProxy:(id)proxy
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  intentCopy = intent;
+  proxyCopy = proxy;
   v8 = getWFIntentExecutionLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v23 = "[WFIntentExecutor resolveIntent:withExtensionProxy:]";
     v24 = 2112;
-    v25 = v6;
+    v25 = intentCopy;
     v26 = 2112;
-    v27 = v7;
+    v27 = proxyCopy;
     _os_log_impl(&dword_1CA256000, v8, OS_LOG_TYPE_DEFAULT, "%s Resolving %@ with extension proxy %@", buf, 0x20u);
   }
 
-  v9 = [v6 _intentInstanceDescription];
-  v10 = [v9 slotDescriptions];
-  v11 = [v10 if_compactMap:&__block_literal_global_38116];
+  _intentInstanceDescription = [intentCopy _intentInstanceDescription];
+  slotDescriptions = [_intentInstanceDescription slotDescriptions];
+  v11 = [slotDescriptions if_compactMap:&__block_literal_global_38116];
 
   if ([v11 count])
   {
     v12 = [WFAutoIncrementingProgress alloc];
-    v13 = [(WFIntentExecutor *)self progress];
-    v14 = [(WFAutoIncrementingProgress *)v12 initWithParent:v13 pendingUnitCount:1 duration:0.5];
+    progress = [(WFIntentExecutor *)self progress];
+    v14 = [(WFAutoIncrementingProgress *)v12 initWithParent:progress pendingUnitCount:1 duration:0.5];
 
     [(WFAutoIncrementingProgress *)v14 start];
     v18[0] = MEMORY[0x1E69E9820];
@@ -862,8 +862,8 @@ void __85__WFIntentExecutor_resolveIntentResolutionResults_slotDescription_inten
     v18[2] = __53__WFIntentExecutor_resolveIntent_withExtensionProxy___block_invoke_2;
     v18[3] = &unk_1E83792A0;
     v18[4] = self;
-    v19 = v6;
-    v20 = v7;
+    v19 = intentCopy;
+    v20 = proxyCopy;
     v21 = v14;
     v15 = v14;
     [v20 resolveIntentSlotKeyPaths:v11 completionHandler:v18];
@@ -871,10 +871,10 @@ void __85__WFIntentExecutor_resolveIntentResolutionResults_slotDescription_inten
 
   else
   {
-    v16 = [(WFIntentExecutor *)self progress];
-    [v16 setCompletedUnitCount:{objc_msgSend(v16, "completedUnitCount") + 1}];
+    progress2 = [(WFIntentExecutor *)self progress];
+    [progress2 setCompletedUnitCount:{objc_msgSend(progress2, "completedUnitCount") + 1}];
 
-    [(WFIntentExecutor *)self confirmIntent:v6 withExtensionProxy:v7];
+    [(WFIntentExecutor *)self confirmIntent:intentCopy withExtensionProxy:proxyCopy];
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -1092,18 +1092,18 @@ id __53__WFIntentExecutor_resolveIntent_withExtensionProxy___block_invoke(uint64
   return v3;
 }
 
-- (void)resumeConnectionWithCompletionHandler:(id)a3
+- (void)resumeConnectionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFIntentExecutor *)self connection];
+  handlerCopy = handler;
+  connection = [(WFIntentExecutor *)self connection];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__WFIntentExecutor_resumeConnectionWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E83791B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 resumeWithCompletionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [connection resumeWithCompletionHandler:v7];
 }
 
 void __58__WFIntentExecutor_resumeConnectionWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1154,13 +1154,13 @@ void __58__WFIntentExecutor_resumeConnectionWithCompletionHandler___block_invoke
   }
 }
 
-- (void)startConnectionWithCompletionHandler:(id)a3
+- (void)startConnectionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(WFIntentExecutor *)self configureConnection];
   v5 = [WFAutoIncrementingProgress alloc];
-  v6 = [(WFIntentExecutor *)self progress];
-  v7 = [(WFAutoIncrementingProgress *)v5 initWithParent:v6 pendingUnitCount:1 duration:1.0];
+  progress = [(WFIntentExecutor *)self progress];
+  v7 = [(WFAutoIncrementingProgress *)v5 initWithParent:progress pendingUnitCount:1 duration:1.0];
 
   [(WFAutoIncrementingProgress *)v7 start];
   v10[0] = MEMORY[0x1E69E9820];
@@ -1168,10 +1168,10 @@ void __58__WFIntentExecutor_resumeConnectionWithCompletionHandler___block_invoke
   v10[2] = __57__WFIntentExecutor_startConnectionWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E8379168;
   v11 = v7;
-  v12 = v4;
+  v12 = handlerCopy;
   v10[4] = self;
   v8 = v7;
-  v9 = v4;
+  v9 = handlerCopy;
   [(WFIntentExecutor *)self resumeConnectionWithCompletionHandler:v10];
 }
 
@@ -1189,14 +1189,14 @@ void __57__WFIntentExecutor_startConnectionWithCompletionHandler___block_invoke(
 
 - (void)configureConnection
 {
-  v3 = [(WFIntentExecutor *)self connection];
-  v4 = [(WFIntentExecutor *)self intent];
-  v5 = [v4 extensionBundleId];
-  v6 = [v5 isEqualToString:@"com.apple.PassKit.PassKitIntentsExtension"];
+  connection = [(WFIntentExecutor *)self connection];
+  intent = [(WFIntentExecutor *)self intent];
+  extensionBundleId = [intent extensionBundleId];
+  v6 = [extensionBundleId isEqualToString:@"com.apple.PassKit.PassKitIntentsExtension"];
 
   if (v6)
   {
-    [v3 setRequestTimeoutInterval:60.0];
+    [connection setRequestTimeoutInterval:60.0];
   }
 
   objc_initWeak(&location, self);
@@ -1205,13 +1205,13 @@ void __57__WFIntentExecutor_startConnectionWithCompletionHandler___block_invoke(
   v9[2] = __39__WFIntentExecutor_configureConnection__block_invoke;
   v9[3] = &unk_1E8379140;
   objc_copyWeak(&v10, &location);
-  [v3 setTimeoutHandler:v9];
+  [connection setTimeoutHandler:v9];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__WFIntentExecutor_configureConnection__block_invoke_2;
   v7[3] = &unk_1E8379140;
   objc_copyWeak(&v8, &location);
-  [v3 setInterruptionHandler:v7];
+  [connection setInterruptionHandler:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -1265,30 +1265,30 @@ void __39__WFIntentExecutor_configureConnection__block_invoke_2(uint64_t a1, voi
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getDynamicOptionsForParameterNamed:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5
+- (void)getDynamicOptionsForParameterNamed:(id)named searchTerm:(id)term completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  namedCopy = named;
+  termCopy = term;
+  handlerCopy = handler;
   [(WFIntentExecutor *)self retainSelf];
-  v11 = [(WFIntentExecutor *)self networkExtensionProxy];
+  networkExtensionProxy = [(WFIntentExecutor *)self networkExtensionProxy];
 
-  if (v11)
+  if (networkExtensionProxy)
   {
-    v12 = [(WFIntentExecutor *)self networkExtensionProxy];
+    networkExtensionProxy2 = [(WFIntentExecutor *)self networkExtensionProxy];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __84__WFIntentExecutor_getDynamicOptionsForParameterNamed_searchTerm_completionHandler___block_invoke;
     v13[3] = &unk_1E83790F0;
-    v15 = v10;
+    v15 = handlerCopy;
     v13[4] = self;
-    v14 = v8;
-    [v12 getOptionsForParameterNamed:v14 searchTerm:v9 completionHandler:v13];
+    v14 = namedCopy;
+    [networkExtensionProxy2 getOptionsForParameterNamed:v14 searchTerm:termCopy completionHandler:v13];
   }
 
   else
   {
-    [(WFIntentExecutor *)self startConnectionForParameterName:v8 searchTerm:v9 completionHandler:v10];
+    [(WFIntentExecutor *)self startConnectionForParameterName:namedCopy searchTerm:termCopy completionHandler:handlerCopy];
   }
 }
 
@@ -1329,22 +1329,22 @@ uint64_t __84__WFIntentExecutor_getDynamicOptionsForParameterNamed_searchTerm_co
   return [v3 finish];
 }
 
-- (void)startConnectionForParameterName:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5
+- (void)startConnectionForParameterName:(id)name searchTerm:(id)term completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  termCopy = term;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __81__WFIntentExecutor_startConnectionForParameterName_searchTerm_completionHandler___block_invoke;
   v14[3] = &unk_1E8379118;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = v10;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = nameCopy;
+  v16 = termCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = termCopy;
+  v12 = nameCopy;
+  v13 = handlerCopy;
   [(WFIntentExecutor *)self startConnectionWithCompletionHandler:v14];
 }
 
@@ -1412,39 +1412,39 @@ uint64_t __81__WFIntentExecutor_startConnectionForParameterName_searchTerm_compl
   return [v3 finish];
 }
 
-- (void)getDefaultValueForParameterNamed:(id)a3 completionHandler:(id)a4
+- (void)getDefaultValueForParameterNamed:(id)named completionHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
+  namedCopy = named;
+  handlerCopy = handler;
   [(WFIntentExecutor *)self retainSelf];
-  v7 = [(WFIntentExecutor *)self networkExtensionProxy];
+  networkExtensionProxy = [(WFIntentExecutor *)self networkExtensionProxy];
 
-  if (v7)
+  if (networkExtensionProxy)
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
 
     [(WFIntentExecutor *)self finish];
   }
 
   else
   {
-    [(WFIntentExecutor *)self startConnectionForParameterName:v8 completionHandler:v6];
+    [(WFIntentExecutor *)self startConnectionForParameterName:namedCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)startConnectionForParameterName:(id)a3 completionHandler:(id)a4
+- (void)startConnectionForParameterName:(id)name completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__WFIntentExecutor_startConnectionForParameterName_completionHandler___block_invoke;
   v10[3] = &unk_1E8379168;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = nameCopy;
+  v8 = nameCopy;
+  v9 = handlerCopy;
   [(WFIntentExecutor *)self startConnectionWithCompletionHandler:v10];
 }
 
@@ -1510,15 +1510,15 @@ uint64_t __70__WFIntentExecutor_startConnectionForParameterName_completionHandle
   return [v3 finish];
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   completionHandler = self->_completionHandler;
   self->_completionHandler = v4;
 
   [(WFIntentExecutor *)self retainSelf];
-  v6 = [(WFIntentExecutor *)self progress];
-  [v6 setCompletedUnitCount:0];
+  progress = [(WFIntentExecutor *)self progress];
+  [progress setCompletedUnitCount:0];
 
   if ([(WFIntentExecutor *)self skipResolveAndConfirm])
   {
@@ -1530,8 +1530,8 @@ uint64_t __70__WFIntentExecutor_startConnectionForParameterName_completionHandle
     v7 = 4;
   }
 
-  v8 = [(WFIntentExecutor *)self progress];
-  [v8 setTotalUnitCount:v7];
+  progress2 = [(WFIntentExecutor *)self progress];
+  [progress2 setTotalUnitCount:v7];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1568,27 +1568,27 @@ void __47__WFIntentExecutor_startWithCompletionHandler___block_invoke(uint64_t a
   }
 }
 
-- (id)extensionInputItemsWithIntent:(id)a3
+- (id)extensionInputItemsWithIntent:(id)intent
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696ABE0];
-  v4 = a3;
+  intentCopy = intent;
   v5 = objc_alloc_init(v3);
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [v4 _executionContext];
+  _executionContext = [intentCopy _executionContext];
 
-  if (v7 <= 9 && ((1 << v7) & 0x206) != 0)
+  if (_executionContext <= 9 && ((1 << _executionContext) & 0x206) != 0)
   {
-    v8 = [MEMORY[0x1E696E958] siriLanguageCode];
+    siriLanguageCode = [MEMORY[0x1E696E958] siriLanguageCode];
   }
 
   else
   {
     v9 = _CFLocaleCopyPreferred();
-    v8 = [v9 languageIdentifier];
+    siriLanguageCode = [v9 languageIdentifier];
   }
 
-  [v6 if_setObjectIfNonNil:v8 forKey:*MEMORY[0x1E696EB08]];
+  [v6 if_setObjectIfNonNil:siriLanguageCode forKey:*MEMORY[0x1E696EB08]];
 
   [v5 setUserInfo:v6];
   v13[0] = v5;

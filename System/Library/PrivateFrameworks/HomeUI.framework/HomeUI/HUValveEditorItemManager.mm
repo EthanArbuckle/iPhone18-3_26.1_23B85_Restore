@@ -1,11 +1,11 @@
 @interface HUValveEditorItemManager
 + (id)preferredSectionSortArray;
-- (HUValveEditorItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4 editorMode:(unint64_t)a5;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
-- (id)_characteristicTypesForControlPanelItem:(id)a3;
-- (id)_characteristicsAffectedByControlItem:(id)a3;
-- (void)controlPanelController:(id)a3 willBeginPossibleWritesForControlItem:(id)a4;
+- (HUValveEditorItemManager)initWithDelegate:(id)delegate sourceItem:(id)item editorMode:(unint64_t)mode;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
+- (id)_characteristicTypesForControlPanelItem:(id)item;
+- (id)_characteristicsAffectedByControlItem:(id)item;
+- (void)controlPanelController:(id)controller willBeginPossibleWritesForControlItem:(id)item;
 @end
 
 @implementation HUValveEditorItemManager
@@ -55,23 +55,23 @@ uint64_t __64__HUValveEditorItemManager_sortComparatorForValveEditorSections__bl
   return v10;
 }
 
-- (HUValveEditorItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4 editorMode:(unint64_t)a5
+- (HUValveEditorItemManager)initWithDelegate:(id)delegate sourceItem:(id)item editorMode:(unint64_t)mode
 {
-  v8 = a3;
-  v9 = [a4 copy];
+  delegateCopy = delegate;
+  v9 = [item copy];
   v21.receiver = self;
   v21.super_class = HUValveEditorItemManager;
-  v10 = [(HFItemManager *)&v21 initWithDelegate:v8 sourceItem:v9];
+  v10 = [(HFItemManager *)&v21 initWithDelegate:delegateCopy sourceItem:v9];
 
   if (v10)
   {
     v11 = objc_opt_class();
-    v12 = [(HFItemManager *)v10 sourceItem];
-    if (v12)
+    sourceItem = [(HFItemManager *)v10 sourceItem];
+    if (sourceItem)
     {
       if (objc_opt_isKindOfClass())
       {
-        v13 = v12;
+        v13 = sourceItem;
       }
 
       else
@@ -79,15 +79,15 @@ uint64_t __64__HUValveEditorItemManager_sortComparatorForValveEditorSections__bl
         v13 = 0;
       }
 
-      v14 = v12;
+      v14 = sourceItem;
       if (v13)
       {
         goto LABEL_9;
       }
 
-      v15 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v15 handleFailureInFunction:v16 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v11, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v16 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v11, objc_opt_class()}];
     }
 
     v14 = 0;
@@ -100,32 +100,32 @@ LABEL_9:
     controlPanelController = v10->_controlPanelController;
     v10->_controlPanelController = v18;
 
-    v10->_editorMode = a5;
+    v10->_editorMode = mode;
   }
 
   return v10;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v55[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_alloc(MEMORY[0x277D14A98]);
-  v6 = [(HFValveServiceItem *)self->_sourceValveItem homeKitObject];
-  v7 = [(HFItemManager *)self home];
-  v8 = [v5 initWithExistingObject:v6 inHome:v7];
+  homeKitObject = [(HFValveServiceItem *)self->_sourceValveItem homeKitObject];
+  home = [(HFItemManager *)self home];
+  v8 = [v5 initWithExistingObject:homeKitObject inHome:home];
   [(HUValveEditorItemManager *)self setServiceBuilder:v8];
 
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [(HUValveEditorItemManager *)self controlPanelItemProvider];
+  array = [MEMORY[0x277CBEB18] array];
+  controlPanelItemProvider = [(HUValveEditorItemManager *)self controlPanelItemProvider];
 
-  if (!v10)
+  if (!controlPanelItemProvider)
   {
     v11 = objc_alloc(MEMORY[0x277D145D8]);
-    v12 = [(HUValveEditorItemManager *)self sourceValveItem];
-    v13 = [(HUValveEditorItemManager *)self sourceValveItem];
-    v14 = [v13 valueSource];
-    v15 = [v11 initWithItem:v12 valueSource:v14];
+    sourceValveItem = [(HUValveEditorItemManager *)self sourceValveItem];
+    sourceValveItem2 = [(HUValveEditorItemManager *)self sourceValveItem];
+    valueSource = [sourceValveItem2 valueSource];
+    v15 = [v11 initWithItem:sourceValveItem valueSource:valueSource];
     [(HUValveEditorItemManager *)self setControlPanelItemProvider:v15];
 
     if ([(HUValveEditorItemManager *)self editorMode]== 1)
@@ -136,31 +136,31 @@ LABEL_9:
       v51[2] = __55__HUValveEditorItemManager__buildItemProvidersForHome___block_invoke;
       v51[3] = &unk_277DBEAE8;
       objc_copyWeak(&v52, &location);
-      v16 = [(HUValveEditorItemManager *)self controlPanelItemProvider];
-      [v16 setFilter:v51];
+      controlPanelItemProvider2 = [(HUValveEditorItemManager *)self controlPanelItemProvider];
+      [controlPanelItemProvider2 setFilter:v51];
 
       objc_destroyWeak(&v52);
       objc_destroyWeak(&location);
     }
 
-    v17 = [(HUValveEditorItemManager *)self controlPanelItemProvider];
-    [v9 addObject:v17];
+    controlPanelItemProvider3 = [(HUValveEditorItemManager *)self controlPanelItemProvider];
+    [array addObject:controlPanelItemProvider3];
   }
 
-  v18 = [(HUValveEditorItemManager *)self staticItemProvider];
-  v19 = v18 == 0;
+  staticItemProvider = [(HUValveEditorItemManager *)self staticItemProvider];
+  v19 = staticItemProvider == 0;
 
   if (v19)
   {
-    v20 = [(HUValveEditorItemManager *)self sourceValveItem];
-    v21 = [v20 service];
-    v22 = [v21 accessory];
-    v23 = [v22 hf_owningBridgeAccessory];
-    v24 = v23 == 0;
+    sourceValveItem3 = [(HUValveEditorItemManager *)self sourceValveItem];
+    service = [sourceValveItem3 service];
+    accessory = [service accessory];
+    hf_owningBridgeAccessory = [accessory hf_owningBridgeAccessory];
+    v24 = hf_owningBridgeAccessory == 0;
 
-    v25 = [(HUValveEditorItemManager *)self sourceValveItem];
-    v26 = [v25 latestResults];
-    v27 = [v26 objectForKeyedSubscript:*MEMORY[0x277D14068]];
+    sourceValveItem4 = [(HUValveEditorItemManager *)self sourceValveItem];
+    latestResults = [sourceValveItem4 latestResults];
+    v27 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14068]];
     v28 = [v27 integerValue] == 0;
 
     v29 = objc_alloc(MEMORY[0x277D14B38]);
@@ -176,34 +176,34 @@ LABEL_9:
 
     v34 = objc_alloc(MEMORY[0x277D14B40]);
     v35 = MEMORY[0x277CBEB98];
-    v36 = [(HUValveEditorItemManager *)self nameItem];
-    v37 = [(HUValveEditorItemManager *)self identifyItem];
-    v38 = [v35 setWithObjects:{v36, v37, 0}];
+    nameItem = [(HUValveEditorItemManager *)self nameItem];
+    identifyItem = [(HUValveEditorItemManager *)self identifyItem];
+    v38 = [v35 setWithObjects:{nameItem, identifyItem, 0}];
     v39 = [v34 initWithItems:v38];
     [(HUValveEditorItemManager *)self setStaticItemProvider:v39];
 
-    v40 = [(HUValveEditorItemManager *)self staticItemProvider];
-    [v9 addObject:v40];
+    staticItemProvider2 = [(HUValveEditorItemManager *)self staticItemProvider];
+    [array addObject:staticItemProvider2];
   }
 
-  v41 = [(HUValveEditorItemManager *)self nameModule];
-  v42 = v41 == 0;
+  nameModule = [(HUValveEditorItemManager *)self nameModule];
+  v42 = nameModule == 0;
 
   if (v42)
   {
     v43 = [HUNameItemModule alloc];
-    v44 = [(HUValveEditorItemManager *)self sourceValveItem];
-    v45 = [(HUValveEditorItemManager *)self serviceBuilder];
-    v46 = [(HUNameItemModule *)v43 initWithItemUpdater:self sourceServiceLikeItem:v44 itemBuilder:v45];
+    sourceValveItem5 = [(HUValveEditorItemManager *)self sourceValveItem];
+    serviceBuilder = [(HUValveEditorItemManager *)self serviceBuilder];
+    v46 = [(HUNameItemModule *)v43 initWithItemUpdater:self sourceServiceLikeItem:sourceValveItem5 itemBuilder:serviceBuilder];
     [(HUValveEditorItemManager *)self setNameModule:v46];
 
-    v47 = [(HUValveEditorItemManager *)self nameModule];
-    v48 = [v47 itemProviders];
-    v49 = [v48 allObjects];
-    [v9 addObjectsFromArray:v49];
+    nameModule2 = [(HUValveEditorItemManager *)self nameModule];
+    itemProviders = [nameModule2 itemProviders];
+    allObjects = [itemProviders allObjects];
+    [array addObjectsFromArray:allObjects];
   }
 
-  return v9;
+  return array;
 }
 
 uint64_t __55__HUValveEditorItemManager__buildItemProvidersForHome___block_invoke(uint64_t a1, void *a2)
@@ -216,21 +216,21 @@ uint64_t __55__HUValveEditorItemManager__buildItemProvidersForHome___block_invok
   return v3 ^ 1;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v86 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(HUValveEditorItemManager *)self controlPanelItemProvider];
-  v7 = [v6 items];
-  v8 = [v7 intersectsSet:v4];
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
+  controlPanelItemProvider = [(HUValveEditorItemManager *)self controlPanelItemProvider];
+  items = [controlPanelItemProvider items];
+  v8 = [items intersectsSet:itemsCopy];
 
-  v62 = v4;
+  v62 = itemsCopy;
   if (v8)
   {
-    v9 = [(HUValveEditorItemManager *)self controlPanelItemProvider];
-    v10 = [v9 items];
-    v11 = [v10 na_setByIntersectingWithSet:v4];
+    controlPanelItemProvider2 = [(HUValveEditorItemManager *)self controlPanelItemProvider];
+    items2 = [controlPanelItemProvider2 items];
+    v11 = [items2 na_setByIntersectingWithSet:itemsCopy];
     v75[0] = MEMORY[0x277D85DD0];
     v75[1] = 3221225472;
     v75[2] = __61__HUValveEditorItemManager__buildSectionsWithDisplayedItems___block_invoke;
@@ -251,7 +251,7 @@ uint64_t __55__HUValveEditorItemManager__buildItemProvidersForHome___block_invok
       {
         for (i = 0; i != v65; ++i)
         {
-          v14 = v5;
+          v14 = array;
           if (*v72 != v64)
           {
             objc_enumerationMutation(obj);
@@ -270,23 +270,23 @@ uint64_t __55__HUValveEditorItemManager__buildItemProvidersForHome___block_invok
           v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v84 count:1];
           [v18 setItems:v19];
 
-          v20 = [(HUValveEditorItemManager *)self controlPanelController];
-          v21 = [(HFItemManager *)self sourceItem];
-          v22 = [v20 sectionTitleForItem:v15 forSourceItem:v21];
+          controlPanelController = [(HUValveEditorItemManager *)self controlPanelController];
+          sourceItem = [(HFItemManager *)self sourceItem];
+          v22 = [controlPanelController sectionTitleForItem:v15 forSourceItem:sourceItem];
           [v18 setHeaderTitle:v22];
 
-          v23 = [(HUValveEditorItemManager *)self controlPanelController];
-          v24 = [(HFItemManager *)self sourceItem];
-          v25 = [v23 sectionFooterForItem:v15 forSourceItem:v24];
+          controlPanelController2 = [(HUValveEditorItemManager *)self controlPanelController];
+          sourceItem2 = [(HFItemManager *)self sourceItem];
+          v25 = [controlPanelController2 sectionFooterForItem:v15 forSourceItem:sourceItem2];
           [v18 setFooterTitle:v25];
 
-          v26 = [objc_opt_class() preferredSectionSortArray];
-          v27 = [v26 indexOfObject:v17];
+          preferredSectionSortArray = [objc_opt_class() preferredSectionSortArray];
+          v27 = [preferredSectionSortArray indexOfObject:v17];
 
           if (v27 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v28 = [objc_opt_class() preferredSectionSortArray];
-            v27 = [v28 count];
+            preferredSectionSortArray2 = [objc_opt_class() preferredSectionSortArray];
+            v27 = [preferredSectionSortArray2 count];
           }
 
           v82 = @"HUValveEditorSectionSortOrderKey";
@@ -295,7 +295,7 @@ uint64_t __55__HUValveEditorItemManager__buildItemProvidersForHome___block_invok
           v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
           [v18 setUserInfo:v30];
 
-          v5 = v14;
+          array = v14;
           [v14 addObject:v18];
         }
 
@@ -305,11 +305,11 @@ uint64_t __55__HUValveEditorItemManager__buildItemProvidersForHome___block_invok
       while (v65);
     }
 
-    v4 = v62;
+    itemsCopy = v62;
   }
 
-  v31 = [(HUValveEditorItemManager *)self nameModule];
-  v32 = [v31 buildSectionsWithDisplayedItems:v4];
+  nameModule = [(HUValveEditorItemManager *)self nameModule];
+  v32 = [nameModule buildSectionsWithDisplayedItems:itemsCopy];
 
   v68 = 0u;
   v69 = 0u;
@@ -331,14 +331,14 @@ uint64_t __55__HUValveEditorItemManager__buildItemProvidersForHome___block_invok
         }
 
         v38 = *(*(&v66 + 1) + 8 * j);
-        v39 = [v38 identifier];
-        v40 = [v39 isEqualToString:@"HUNameItemModuleSectionIdentifier"];
+        identifier = [v38 identifier];
+        v40 = [identifier isEqualToString:@"HUNameItemModuleSectionIdentifier"];
 
         if (v40)
         {
           v41 = [v38 mutableCopy];
-          v42 = [objc_opt_class() preferredSectionSortArray];
-          v43 = [v42 indexOfObject:@"HUNameItemModuleSectionIdentifier"];
+          preferredSectionSortArray3 = [objc_opt_class() preferredSectionSortArray];
+          v43 = [preferredSectionSortArray3 indexOfObject:@"HUNameItemModuleSectionIdentifier"];
 
           v79 = @"HUValveEditorSectionSortOrderKey";
           v44 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v43];
@@ -346,12 +346,12 @@ uint64_t __55__HUValveEditorItemManager__buildItemProvidersForHome___block_invok
           v45 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
           [v41 setUserInfo:v45];
 
-          [v5 addObject:v41];
+          [array addObject:v41];
         }
 
         else
         {
-          [v5 addObject:v38];
+          [array addObject:v38];
         }
       }
 
@@ -361,42 +361,42 @@ uint64_t __55__HUValveEditorItemManager__buildItemProvidersForHome___block_invok
     while (v35);
   }
 
-  v46 = [(HUValveEditorItemManager *)self identifyItem];
-  v47 = [v62 containsObject:v46];
+  identifyItem = [(HUValveEditorItemManager *)self identifyItem];
+  v47 = [v62 containsObject:identifyItem];
 
   if (v47)
   {
     v48 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUValveEditorSectionIdentifierIdentify"];
-    v49 = [(HUValveEditorItemManager *)self identifyItem];
-    v78 = v49;
+    identifyItem2 = [(HUValveEditorItemManager *)self identifyItem];
+    v78 = identifyItem2;
     v50 = [MEMORY[0x277CBEA60] arrayWithObjects:&v78 count:1];
     [v48 setItems:v50];
 
-    v51 = [objc_opt_class() preferredSectionSortArray];
-    v52 = [v51 indexOfObject:@"HUValveEditorSectionIdentifierIdentify"];
+    preferredSectionSortArray4 = [objc_opt_class() preferredSectionSortArray];
+    v52 = [preferredSectionSortArray4 indexOfObject:@"HUValveEditorSectionIdentifierIdentify"];
 
-    v53 = [(HUValveEditorItemManager *)self sourceValveItem];
-    v54 = [v53 service];
-    v55 = [v54 serviceSubtype];
+    sourceValveItem = [(HUValveEditorItemManager *)self sourceValveItem];
+    service = [sourceValveItem service];
+    serviceSubtype = [service serviceSubtype];
 
-    if ([v55 isEqualToString:*MEMORY[0x277CD0DA8]])
+    if ([serviceSubtype isEqualToString:*MEMORY[0x277CD0DA8]])
     {
       v56 = @"HUValveEditorIdentifyButtonFooterTitleIrrigation";
     }
 
-    else if ([v55 isEqualToString:*MEMORY[0x277CD0DB0]])
+    else if ([serviceSubtype isEqualToString:*MEMORY[0x277CD0DB0]])
     {
       v56 = @"HUValveEditorIdentifyButtonFooterTitleShowerHead";
     }
 
-    else if ([v55 isEqualToString:*MEMORY[0x277CD0DC0]])
+    else if ([serviceSubtype isEqualToString:*MEMORY[0x277CD0DC0]])
     {
       v56 = @"HUValveEditorIdentifyButtonFooterTitleFaucet";
     }
 
     else
     {
-      if (![v55 isEqualToString:*MEMORY[0x277CD0DA0]])
+      if (![serviceSubtype isEqualToString:*MEMORY[0x277CD0DA0]])
       {
         v57 = 0;
         goto LABEL_32;
@@ -414,13 +414,13 @@ LABEL_32:
     v59 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
     [v48 setUserInfo:v59];
 
-    [v5 addObject:v48];
+    [array addObject:v48];
   }
 
-  v60 = [objc_opt_class() sortComparatorForValveEditorSections];
-  [v5 sortUsingComparator:v60];
+  sortComparatorForValveEditorSections = [objc_opt_class() sortComparatorForValveEditorSections];
+  [array sortUsingComparator:sortComparatorForValveEditorSections];
 
-  return v5;
+  return array;
 }
 
 uint64_t __61__HUValveEditorItemManager__buildSectionsWithDisplayedItems___block_invoke(uint64_t a1, void *a2)
@@ -442,9 +442,9 @@ uint64_t __61__HUValveEditorItemManager__buildSectionsWithDisplayedItems___block
   return v4;
 }
 
-- (id)_characteristicTypesForControlPanelItem:(id)a3
+- (id)_characteristicTypesForControlPanelItem:(id)item
 {
-  v3 = [a3 controlItems];
+  controlItems = [item controlItems];
   v4 = [MEMORY[0x277CBEB58] set];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -452,7 +452,7 @@ uint64_t __61__HUValveEditorItemManager__buildSectionsWithDisplayedItems___block
   v7[3] = &unk_277DBF718;
   v5 = v4;
   v8 = v5;
-  [v3 na_each:v7];
+  [controlItems na_each:v7];
 
   return v5;
 }
@@ -465,17 +465,17 @@ void __68__HUValveEditorItemManager__characteristicTypesForControlPanelItem___bl
   [v2 unionSet:v3];
 }
 
-- (id)_characteristicsAffectedByControlItem:(id)a3
+- (id)_characteristicsAffectedByControlItem:(id)item
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemCopy = item;
   v4 = [MEMORY[0x277CBEB58] set];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v3 characteristicOptions];
-  v6 = [v5 characteristicTypesForUsage:0];
+  characteristicOptions = [itemCopy characteristicOptions];
+  v6 = [characteristicOptions characteristicTypesForUsage:0];
 
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
@@ -492,8 +492,8 @@ void __68__HUValveEditorItemManager__characteristicTypesForControlPanelItem___bl
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v3 valueSource];
-        v13 = [v12 allCharacteristicsForCharacteristicType:v11];
+        valueSource = [itemCopy valueSource];
+        v13 = [valueSource allCharacteristicsForCharacteristicType:v11];
         [v4 unionSet:v13];
       }
 
@@ -506,9 +506,9 @@ void __68__HUValveEditorItemManager__characteristicTypesForControlPanelItem___bl
   return v4;
 }
 
-- (void)controlPanelController:(id)a3 willBeginPossibleWritesForControlItem:(id)a4
+- (void)controlPanelController:(id)controller willBeginPossibleWritesForControlItem:(id)item
 {
-  v5 = [(HUValveEditorItemManager *)self _characteristicsAffectedByControlItem:a4];
+  v5 = [(HUValveEditorItemManager *)self _characteristicsAffectedByControlItem:item];
   [(HFItemManager *)self beginSuppressingUpdatesForCharacteristics:v5 withReason:@"valveEditorControlItemInteraction"];
 }
 

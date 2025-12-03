@@ -1,12 +1,12 @@
 @interface PKPassImageSet
-+ (Class)classForImageSetType:(int64_t)a3;
++ (Class)classForImageSetType:(int64_t)type;
 @end
 
 @implementation PKPassImageSet
 
-+ (Class)classForImageSetType:(int64_t)a3
++ (Class)classForImageSetType:(int64_t)type
 {
-  if (a3 > 8)
+  if (type > 8)
   {
     v4 = 0;
   }

@@ -1,9 +1,9 @@
 @interface BMHomeKitClientMediaAccessoryControlEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMHomeKitClientMediaAccessoryControlEvent)initWithBase:(id)a3 accessoryUniqueIdentifier:(id)a4 accessoryStateString:(id)a5 accessoryStateNumber:(id)a6 accessoryStateData:(id)a7 accessoryMediaRouteIdentifier:(id)a8 zoneUniqueIdentifiers:(id)a9 roomUniqueIdentifier:(id)a10 accessoryName:(id)a11 roomName:(id)a12 zoneNames:(id)a13 homeName:(id)a14;
-- (BMHomeKitClientMediaAccessoryControlEvent)initWithProto:(id)a3;
-- (BMHomeKitClientMediaAccessoryControlEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMHomeKitClientMediaAccessoryControlEvent)initWithBase:(id)base accessoryUniqueIdentifier:(id)identifier accessoryStateString:(id)string accessoryStateNumber:(id)number accessoryStateData:(id)data accessoryMediaRouteIdentifier:(id)routeIdentifier zoneUniqueIdentifiers:(id)identifiers roomUniqueIdentifier:(id)self0 accessoryName:(id)self1 roomName:(id)self2 zoneNames:(id)self3 homeName:(id)self4;
+- (BMHomeKitClientMediaAccessoryControlEvent)initWithProto:(id)proto;
+- (BMHomeKitClientMediaAccessoryControlEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -11,41 +11,41 @@
 
 @implementation BMHomeKitClientMediaAccessoryControlEvent
 
-- (BMHomeKitClientMediaAccessoryControlEvent)initWithBase:(id)a3 accessoryUniqueIdentifier:(id)a4 accessoryStateString:(id)a5 accessoryStateNumber:(id)a6 accessoryStateData:(id)a7 accessoryMediaRouteIdentifier:(id)a8 zoneUniqueIdentifiers:(id)a9 roomUniqueIdentifier:(id)a10 accessoryName:(id)a11 roomName:(id)a12 zoneNames:(id)a13 homeName:(id)a14
+- (BMHomeKitClientMediaAccessoryControlEvent)initWithBase:(id)base accessoryUniqueIdentifier:(id)identifier accessoryStateString:(id)string accessoryStateNumber:(id)number accessoryStateData:(id)data accessoryMediaRouteIdentifier:(id)routeIdentifier zoneUniqueIdentifiers:(id)identifiers roomUniqueIdentifier:(id)self0 accessoryName:(id)self1 roomName:(id)self2 zoneNames:(id)self3 homeName:(id)self4
 {
-  v38 = a3;
-  v27 = a4;
-  v37 = a4;
-  v28 = a5;
-  v36 = a5;
-  v29 = a6;
-  v35 = a6;
-  v34 = a7;
-  v33 = a8;
-  v32 = a9;
-  v31 = a10;
-  v19 = a11;
-  v20 = a12;
-  v21 = a13;
-  v22 = a14;
+  baseCopy = base;
+  identifierCopy = identifier;
+  identifierCopy2 = identifier;
+  stringCopy = string;
+  stringCopy2 = string;
+  numberCopy = number;
+  numberCopy2 = number;
+  dataCopy = data;
+  routeIdentifierCopy = routeIdentifier;
+  identifiersCopy = identifiers;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  nameCopy = name;
+  roomNameCopy = roomName;
+  namesCopy = names;
+  homeNameCopy = homeName;
   v39.receiver = self;
   v39.super_class = BMHomeKitClientMediaAccessoryControlEvent;
   v23 = [(BMEventBase *)&v39 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_base, a3);
-    objc_storeStrong(&v24->_accessoryUniqueIdentifier, v27);
-    objc_storeStrong(&v24->_accessoryStateString, v28);
-    objc_storeStrong(&v24->_accessoryStateNumber, v29);
-    objc_storeStrong(&v24->_accessoryStateData, a7);
-    objc_storeStrong(&v24->_accessoryMediaRouteIdentifier, a8);
-    objc_storeStrong(&v24->_zoneUniqueIdentifiers, a9);
-    objc_storeStrong(&v24->_roomUniqueIdentifier, a10);
-    objc_storeStrong(&v24->_accessoryName, a11);
-    objc_storeStrong(&v24->_roomName, a12);
-    objc_storeStrong(&v24->_zoneNames, a13);
-    objc_storeStrong(&v24->_homeName, a14);
+    objc_storeStrong(&v23->_base, base);
+    objc_storeStrong(&v24->_accessoryUniqueIdentifier, identifierCopy);
+    objc_storeStrong(&v24->_accessoryStateString, stringCopy);
+    objc_storeStrong(&v24->_accessoryStateNumber, numberCopy);
+    objc_storeStrong(&v24->_accessoryStateData, data);
+    objc_storeStrong(&v24->_accessoryMediaRouteIdentifier, routeIdentifier);
+    objc_storeStrong(&v24->_zoneUniqueIdentifiers, identifiers);
+    objc_storeStrong(&v24->_roomUniqueIdentifier, uniqueIdentifier);
+    objc_storeStrong(&v24->_accessoryName, name);
+    objc_storeStrong(&v24->_roomName, roomName);
+    objc_storeStrong(&v24->_zoneNames, names);
+    objc_storeStrong(&v24->_homeName, homeName);
   }
 
   return v24;
@@ -61,20 +61,20 @@
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (!a4)
+  dataCopy = data;
+  if (!version)
   {
-    v7 = a1;
+    selfCopy = self;
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (version == 1)
   {
-    v7 = BMHomeKitClientMediaAccessoryControlEvent_v1;
+    selfCopy = BMHomeKitClientMediaAccessoryControlEvent_v1;
 LABEL_5:
-    v8 = [[v7 alloc] initWithProtoData:v6];
+    v8 = [[selfCopy alloc] initWithProtoData:dataCopy];
     goto LABEL_9;
   }
 
@@ -92,24 +92,24 @@ LABEL_9:
 
 - (id)encodeAsProto
 {
-  v2 = [(BMHomeKitClientMediaAccessoryControlEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMHomeKitClientMediaAccessoryControlEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMHomeKitClientMediaAccessoryControlEvent)initWithProto:(id)a3
+- (BMHomeKitClientMediaAccessoryControlEvent)initWithProto:(id)proto
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v35 = self;
-      v36 = v4;
-      v5 = v4;
+      selfCopy = self;
+      v36 = protoCopy;
+      v5 = protoCopy;
       v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -118,8 +118,8 @@ LABEL_9:
       v41 = 0u;
       v42 = 0u;
       v34 = v5;
-      v9 = [v5 accessoryStates];
-      v10 = [v9 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      accessoryStates = [v5 accessoryStates];
+      v10 = [accessoryStates countByEnumeratingWithState:&v39 objects:v43 count:16];
       if (!v10)
       {
         goto LABEL_17;
@@ -133,69 +133,69 @@ LABEL_9:
         {
           if (*v40 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(accessoryStates);
           }
 
           v14 = *(*(&v39 + 1) + 8 * i);
-          v15 = [v14 valueType];
-          if (v15)
+          valueType = [v14 valueType];
+          if (valueType)
           {
-            if (v15 == 2)
+            if (valueType == 2)
             {
               v19 = MEMORY[0x1E696AD98];
               [v14 numValue];
-              v16 = [v19 numberWithDouble:?];
-              v17 = [v14 mediaPropertyType];
+              stringValue = [v19 numberWithDouble:?];
+              mediaPropertyType = [v14 mediaPropertyType];
               v18 = v7;
             }
 
             else
             {
-              if (v15 != 1)
+              if (valueType != 1)
               {
                 goto LABEL_15;
               }
 
-              v16 = [v14 stringValue];
-              v17 = [v14 mediaPropertyType];
+              stringValue = [v14 stringValue];
+              mediaPropertyType = [v14 mediaPropertyType];
               v18 = v6;
             }
           }
 
           else
           {
-            v16 = [v14 dataValue];
-            v17 = [v14 mediaPropertyType];
+            stringValue = [v14 dataValue];
+            mediaPropertyType = [v14 mediaPropertyType];
             v18 = v8;
           }
 
-          [v18 setObject:v16 forKey:v17];
+          [v18 setObject:stringValue forKey:mediaPropertyType];
 
 LABEL_15:
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v39 objects:v43 count:16];
+        v11 = [accessoryStates countByEnumeratingWithState:&v39 objects:v43 count:16];
         if (!v11)
         {
 LABEL_17:
 
           v20 = [BMHomeKitClientBase alloc];
           v21 = v34;
-          v33 = [v34 base];
-          v38 = [(BMHomeKitClientBase *)v20 initWithProto:v33];
-          v37 = [v34 accessoryUniqueIdentifier];
-          v32 = [v34 accessoryMediaRouteIdentifier];
-          v31 = [v34 zoneUniqueIdentifiers];
-          v30 = [v34 roomUniqueIdentifier];
-          v22 = [v34 accessoryName];
-          v23 = [v34 roomName];
-          v24 = [v34 zoneNames];
-          v25 = [v34 homeName];
+          base = [v34 base];
+          v38 = [(BMHomeKitClientBase *)v20 initWithProto:base];
+          accessoryUniqueIdentifier = [v34 accessoryUniqueIdentifier];
+          accessoryMediaRouteIdentifier = [v34 accessoryMediaRouteIdentifier];
+          zoneUniqueIdentifiers = [v34 zoneUniqueIdentifiers];
+          roomUniqueIdentifier = [v34 roomUniqueIdentifier];
+          accessoryName = [v34 accessoryName];
+          roomName = [v34 roomName];
+          zoneNames = [v34 zoneNames];
+          homeName = [v34 homeName];
           v26 = v6;
-          self = [(BMHomeKitClientMediaAccessoryControlEvent *)v35 initWithBase:v38 accessoryUniqueIdentifier:v37 accessoryStateString:v6 accessoryStateNumber:v7 accessoryStateData:v8 accessoryMediaRouteIdentifier:v32 zoneUniqueIdentifiers:v31 roomUniqueIdentifier:v30 accessoryName:v22 roomName:v23 zoneNames:v24 homeName:v25];
+          self = [(BMHomeKitClientMediaAccessoryControlEvent *)selfCopy initWithBase:v38 accessoryUniqueIdentifier:accessoryUniqueIdentifier accessoryStateString:v6 accessoryStateNumber:v7 accessoryStateData:v8 accessoryMediaRouteIdentifier:accessoryMediaRouteIdentifier zoneUniqueIdentifiers:zoneUniqueIdentifiers roomUniqueIdentifier:roomUniqueIdentifier accessoryName:accessoryName roomName:roomName zoneNames:zoneNames homeName:homeName];
 
-          v27 = self;
-          v4 = v36;
+          selfCopy2 = self;
+          protoCopy = v36;
           goto LABEL_22;
         }
       }
@@ -207,57 +207,57 @@ LABEL_17:
       [BMHomeKitClientMediaAccessoryControlEvent initWithProto:];
     }
 
-    v27 = 0;
+    selfCopy2 = 0;
 LABEL_22:
   }
 
   else
   {
-    v27 = 0;
+    selfCopy2 = 0;
   }
 
   v28 = *MEMORY[0x1E69E9840];
-  return v27;
+  return selfCopy2;
 }
 
-- (BMHomeKitClientMediaAccessoryControlEvent)initWithProtoData:(id)a3
+- (BMHomeKitClientMediaAccessoryControlEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBHomeKitClientMediaAccessoryControlEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBHomeKitClientMediaAccessoryControlEvent alloc] initWithData:dataCopy];
 
     self = [(BMHomeKitClientMediaAccessoryControlEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v64 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(BMHomeKitClientMediaAccessoryControlEvent *)self base];
-  v5 = [v4 proto];
-  [v3 setBase:v5];
+  base = [(BMHomeKitClientMediaAccessoryControlEvent *)self base];
+  proto = [base proto];
+  [v3 setBase:proto];
 
-  v6 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryUniqueIdentifier];
+  accessoryUniqueIdentifier = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryUniqueIdentifier];
   v48 = v3;
-  [v3 setAccessoryUniqueIdentifier:v6];
+  [v3 setAccessoryUniqueIdentifier:accessoryUniqueIdentifier];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v8 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateString];
-  v9 = [v8 countByEnumeratingWithState:&v57 objects:v63 count:16];
+  accessoryStateString = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateString];
+  v9 = [accessoryStateString countByEnumeratingWithState:&v57 objects:v63 count:16];
   if (v9)
   {
     v10 = v9;
@@ -268,21 +268,21 @@ LABEL_22:
       {
         if (*v58 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(accessoryStateString);
         }
 
         v13 = *(*(&v57 + 1) + 8 * i);
         v14 = objc_opt_new();
         [v14 setMediaPropertyType:v13];
-        v15 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateString];
-        v16 = [v15 objectForKey:v13];
+        accessoryStateString2 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateString];
+        v16 = [accessoryStateString2 objectForKey:v13];
         [v14 setStringValue:v16];
 
         [v14 setValueType:1];
         [v7 addObject:v14];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v57 objects:v63 count:16];
+      v10 = [accessoryStateString countByEnumeratingWithState:&v57 objects:v63 count:16];
     }
 
     while (v10);
@@ -292,8 +292,8 @@ LABEL_22:
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v17 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateNumber];
-  v18 = [v17 countByEnumeratingWithState:&v53 objects:v62 count:16];
+  accessoryStateNumber = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateNumber];
+  v18 = [accessoryStateNumber countByEnumeratingWithState:&v53 objects:v62 count:16];
   if (v18)
   {
     v19 = v18;
@@ -304,14 +304,14 @@ LABEL_22:
       {
         if (*v54 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(accessoryStateNumber);
         }
 
         v22 = *(*(&v53 + 1) + 8 * j);
         v23 = objc_opt_new();
         [v23 setMediaPropertyType:v22];
-        v24 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateNumber];
-        v25 = [v24 objectForKey:v22];
+        accessoryStateNumber2 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateNumber];
+        v25 = [accessoryStateNumber2 objectForKey:v22];
 
         [v25 doubleValue];
         [v23 setNumValue:?];
@@ -319,7 +319,7 @@ LABEL_22:
         [v7 addObject:v23];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v53 objects:v62 count:16];
+      v19 = [accessoryStateNumber countByEnumeratingWithState:&v53 objects:v62 count:16];
     }
 
     while (v19);
@@ -329,8 +329,8 @@ LABEL_22:
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v26 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateData];
-  v27 = [v26 countByEnumeratingWithState:&v49 objects:v61 count:16];
+  accessoryStateData = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateData];
+  v27 = [accessoryStateData countByEnumeratingWithState:&v49 objects:v61 count:16];
   if (v27)
   {
     v28 = v27;
@@ -341,193 +341,193 @@ LABEL_22:
       {
         if (*v50 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(accessoryStateData);
         }
 
         v31 = *(*(&v49 + 1) + 8 * k);
         v32 = objc_opt_new();
         [v32 setMediaPropertyType:v31];
-        v33 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateData];
-        v34 = [v33 objectForKey:v31];
+        accessoryStateData2 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateData];
+        v34 = [accessoryStateData2 objectForKey:v31];
         [v32 setDataValue:v34];
 
         [v32 setValueType:0];
         [v7 addObject:v32];
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v49 objects:v61 count:16];
+      v28 = [accessoryStateData countByEnumeratingWithState:&v49 objects:v61 count:16];
     }
 
     while (v28);
   }
 
   [v48 setAccessoryStates:v7];
-  v35 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryMediaRouteIdentifier];
-  [v48 setAccessoryMediaRouteIdentifier:v35];
+  accessoryMediaRouteIdentifier = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryMediaRouteIdentifier];
+  [v48 setAccessoryMediaRouteIdentifier:accessoryMediaRouteIdentifier];
 
   v36 = MEMORY[0x1E695DF70];
-  v37 = [(BMHomeKitClientMediaAccessoryControlEvent *)self zoneUniqueIdentifiers];
-  v38 = [v36 arrayWithArray:v37];
+  zoneUniqueIdentifiers = [(BMHomeKitClientMediaAccessoryControlEvent *)self zoneUniqueIdentifiers];
+  v38 = [v36 arrayWithArray:zoneUniqueIdentifiers];
   [v48 setZoneUniqueIdentifiers:v38];
 
-  v39 = [(BMHomeKitClientMediaAccessoryControlEvent *)self roomUniqueIdentifier];
-  [v48 setRoomUniqueIdentifier:v39];
+  roomUniqueIdentifier = [(BMHomeKitClientMediaAccessoryControlEvent *)self roomUniqueIdentifier];
+  [v48 setRoomUniqueIdentifier:roomUniqueIdentifier];
 
-  v40 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryName];
-  [v48 setAccessoryName:v40];
+  accessoryName = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryName];
+  [v48 setAccessoryName:accessoryName];
 
-  v41 = [(BMHomeKitClientMediaAccessoryControlEvent *)self roomName];
-  [v48 setRoomName:v41];
+  roomName = [(BMHomeKitClientMediaAccessoryControlEvent *)self roomName];
+  [v48 setRoomName:roomName];
 
   v42 = MEMORY[0x1E695DF70];
-  v43 = [(BMHomeKitClientMediaAccessoryControlEvent *)self zoneNames];
-  v44 = [v42 arrayWithArray:v43];
+  zoneNames = [(BMHomeKitClientMediaAccessoryControlEvent *)self zoneNames];
+  v44 = [v42 arrayWithArray:zoneNames];
   [v48 setZoneNames:v44];
 
-  v45 = [(BMHomeKitClientMediaAccessoryControlEvent *)self homeName];
-  [v48 setHomeName:v45];
+  homeName = [(BMHomeKitClientMediaAccessoryControlEvent *)self homeName];
+  [v48 setHomeName:homeName];
 
   v46 = *MEMORY[0x1E69E9840];
 
   return v48;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v9 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
-    v11 = [(BMHomeKitClientMediaAccessoryControlEvent *)self base];
-    if (v11 || ([v10 base], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v10 = equalCopy;
+    base = [(BMHomeKitClientMediaAccessoryControlEvent *)self base];
+    if (base || ([v10 base], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v4 = [(BMHomeKitClientMediaAccessoryControlEvent *)self base];
-      v5 = [v10 base];
-      v40 = [v4 isEqual:v5];
+      base2 = [(BMHomeKitClientMediaAccessoryControlEvent *)self base];
+      base3 = [v10 base];
+      v40 = [base2 isEqual:base3];
 
-      if (v11)
+      if (base)
       {
 LABEL_9:
 
-        v13 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryUniqueIdentifier];
-        if (v13 || ([v10 accessoryUniqueIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        accessoryUniqueIdentifier = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryUniqueIdentifier];
+        if (accessoryUniqueIdentifier || ([v10 accessoryUniqueIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v4 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryUniqueIdentifier];
-          v5 = [v10 accessoryUniqueIdentifier];
-          v39 = [v4 isEqual:v5];
+          base2 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryUniqueIdentifier];
+          base3 = [v10 accessoryUniqueIdentifier];
+          v39 = [base2 isEqual:base3];
 
-          if (v13)
+          if (accessoryUniqueIdentifier)
           {
 LABEL_15:
 
-            v14 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateString];
-            if (v14 || ([v10 accessoryStateString], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+            accessoryStateString = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateString];
+            if (accessoryStateString || ([v10 accessoryStateString], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
             {
-              v4 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateString];
-              v5 = [v10 accessoryStateString];
-              v38 = [v4 isEqual:v5];
+              base2 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateString];
+              base3 = [v10 accessoryStateString];
+              v38 = [base2 isEqual:base3];
 
-              if (v14)
+              if (accessoryStateString)
               {
 LABEL_21:
 
-                v15 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateNumber];
-                if (v15 || ([v10 accessoryStateNumber], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+                accessoryStateNumber = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateNumber];
+                if (accessoryStateNumber || ([v10 accessoryStateNumber], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
                 {
-                  v4 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateNumber];
-                  v5 = [v10 accessoryStateNumber];
-                  v37 = [v4 isEqual:v5];
+                  base2 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateNumber];
+                  base3 = [v10 accessoryStateNumber];
+                  v37 = [base2 isEqual:base3];
 
-                  if (v15)
+                  if (accessoryStateNumber)
                   {
 LABEL_27:
 
-                    v16 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateData];
-                    if (v16 || ([v10 accessoryStateData], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+                    accessoryStateData = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateData];
+                    if (accessoryStateData || ([v10 accessoryStateData], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
                     {
-                      v4 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateData];
-                      v5 = [v10 accessoryStateData];
-                      v36 = [v4 isEqual:v5];
+                      base2 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryStateData];
+                      base3 = [v10 accessoryStateData];
+                      v36 = [base2 isEqual:base3];
 
-                      if (v16)
+                      if (accessoryStateData)
                       {
 LABEL_33:
 
-                        v17 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryMediaRouteIdentifier];
-                        if (v17 || ([v10 accessoryMediaRouteIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+                        accessoryMediaRouteIdentifier = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryMediaRouteIdentifier];
+                        if (accessoryMediaRouteIdentifier || ([v10 accessoryMediaRouteIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
                         {
-                          v4 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryMediaRouteIdentifier];
-                          v5 = [v10 accessoryMediaRouteIdentifier];
-                          v35 = [v4 isEqual:v5];
+                          base2 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryMediaRouteIdentifier];
+                          base3 = [v10 accessoryMediaRouteIdentifier];
+                          v35 = [base2 isEqual:base3];
 
-                          if (v17)
+                          if (accessoryMediaRouteIdentifier)
                           {
 LABEL_39:
 
-                            v18 = [(BMHomeKitClientMediaAccessoryControlEvent *)self zoneUniqueIdentifiers];
-                            if (v18 || ([v10 zoneUniqueIdentifiers], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+                            zoneUniqueIdentifiers = [(BMHomeKitClientMediaAccessoryControlEvent *)self zoneUniqueIdentifiers];
+                            if (zoneUniqueIdentifiers || ([v10 zoneUniqueIdentifiers], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
                             {
-                              v4 = [(BMHomeKitClientMediaAccessoryControlEvent *)self zoneUniqueIdentifiers];
-                              v5 = [v10 zoneUniqueIdentifiers];
-                              HIDWORD(v34) = [v4 isEqual:v5];
+                              base2 = [(BMHomeKitClientMediaAccessoryControlEvent *)self zoneUniqueIdentifiers];
+                              base3 = [v10 zoneUniqueIdentifiers];
+                              HIDWORD(v34) = [base2 isEqual:base3];
 
-                              if (v18)
+                              if (zoneUniqueIdentifiers)
                               {
 LABEL_45:
 
-                                v19 = [(BMHomeKitClientMediaAccessoryControlEvent *)self roomUniqueIdentifier];
-                                if (v19 || ([v10 roomUniqueIdentifier], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+                                roomUniqueIdentifier = [(BMHomeKitClientMediaAccessoryControlEvent *)self roomUniqueIdentifier];
+                                if (roomUniqueIdentifier || ([v10 roomUniqueIdentifier], (base2 = objc_claimAutoreleasedReturnValue()) != 0))
                                 {
-                                  v5 = [(BMHomeKitClientMediaAccessoryControlEvent *)self roomUniqueIdentifier];
-                                  v6 = [v10 roomUniqueIdentifier];
-                                  LODWORD(v34) = [v5 isEqual:v6];
+                                  base3 = [(BMHomeKitClientMediaAccessoryControlEvent *)self roomUniqueIdentifier];
+                                  roomUniqueIdentifier2 = [v10 roomUniqueIdentifier];
+                                  LODWORD(v34) = [base3 isEqual:roomUniqueIdentifier2];
 
-                                  if (v19)
+                                  if (roomUniqueIdentifier)
                                   {
 LABEL_51:
 
-                                    v20 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryName];
-                                    if (v20 || ([v10 accessoryName], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+                                    accessoryName = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryName];
+                                    if (accessoryName || ([v10 accessoryName], (base3 = objc_claimAutoreleasedReturnValue()) != 0))
                                     {
-                                      v6 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryName];
-                                      v7 = [v10 accessoryName];
-                                      v21 = [v6 isEqual:v7];
+                                      roomUniqueIdentifier2 = [(BMHomeKitClientMediaAccessoryControlEvent *)self accessoryName];
+                                      accessoryName2 = [v10 accessoryName];
+                                      v21 = [roomUniqueIdentifier2 isEqual:accessoryName2];
 
-                                      if (v20)
+                                      if (accessoryName)
                                       {
 LABEL_57:
 
-                                        v22 = [(BMHomeKitClientMediaAccessoryControlEvent *)self roomName];
-                                        if (v22 || ([v10 roomName], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+                                        roomName = [(BMHomeKitClientMediaAccessoryControlEvent *)self roomName];
+                                        if (roomName || ([v10 roomName], (roomUniqueIdentifier2 = objc_claimAutoreleasedReturnValue()) != 0))
                                         {
-                                          v7 = [(BMHomeKitClientMediaAccessoryControlEvent *)self roomName];
-                                          v23 = [v10 roomName];
-                                          v24 = [v7 isEqual:v23];
+                                          accessoryName2 = [(BMHomeKitClientMediaAccessoryControlEvent *)self roomName];
+                                          roomName2 = [v10 roomName];
+                                          v24 = [accessoryName2 isEqual:roomName2];
 
-                                          if (v22)
+                                          if (roomName)
                                           {
 LABEL_63:
 
-                                            v25 = [(BMHomeKitClientMediaAccessoryControlEvent *)self zoneNames];
-                                            if (v25 || ([v10 zoneNames], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+                                            zoneNames = [(BMHomeKitClientMediaAccessoryControlEvent *)self zoneNames];
+                                            if (zoneNames || ([v10 zoneNames], (accessoryName2 = objc_claimAutoreleasedReturnValue()) != 0))
                                             {
-                                              v26 = [(BMHomeKitClientMediaAccessoryControlEvent *)self zoneNames];
-                                              v27 = [v10 zoneNames];
-                                              v28 = [v26 isEqual:v27];
+                                              zoneNames2 = [(BMHomeKitClientMediaAccessoryControlEvent *)self zoneNames];
+                                              zoneNames3 = [v10 zoneNames];
+                                              v28 = [zoneNames2 isEqual:zoneNames3];
 
-                                              if (v25)
+                                              if (zoneNames)
                                               {
 LABEL_69:
 
-                                                v29 = [(BMHomeKitClientMediaAccessoryControlEvent *)self homeName];
-                                                if (v29 || ([v10 homeName], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+                                                homeName = [(BMHomeKitClientMediaAccessoryControlEvent *)self homeName];
+                                                if (homeName || ([v10 homeName], (accessoryName2 = objc_claimAutoreleasedReturnValue()) != 0))
                                                 {
-                                                  v30 = [(BMHomeKitClientMediaAccessoryControlEvent *)self homeName];
-                                                  v31 = [v10 homeName];
-                                                  v32 = [v30 isEqual:v31];
+                                                  homeName2 = [(BMHomeKitClientMediaAccessoryControlEvent *)self homeName];
+                                                  homeName3 = [v10 homeName];
+                                                  v32 = [homeName2 isEqual:homeName3];
 
-                                                  if (v29)
+                                                  if (homeName)
                                                   {
 LABEL_75:
 

@@ -1,5 +1,5 @@
 @interface MonthDayCellLayerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -8,18 +8,18 @@
 
 @implementation MonthDayCellLayerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ActivitySummaryCache" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MonthDayCellLayer" hasInstanceVariable:@"_hasWorkout" withType:"B"];
-  [v3 validateClass:@"MonthDayCellLayer" hasInstanceMethod:@"isFutureDay" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"HKCalendarDayCell" hasInstanceMethod:@"representsToday" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"HKCalendarDayCell" hasInstanceMethod:@"date" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MonthDayCellLayer" isKindOfClass:@"HKCalendarDayCell"];
-  [v3 validateClass:@"MonthWeekView"];
-  [v3 validateClass:@"MonthScrollViewController"];
-  [v3 validateClass:@"MonthViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ActivitySummaryCache" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MonthDayCellLayer" hasInstanceVariable:@"_hasWorkout" withType:"B"];
+  [validationsCopy validateClass:@"MonthDayCellLayer" hasInstanceMethod:@"isFutureDay" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"HKCalendarDayCell" hasInstanceMethod:@"representsToday" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"HKCalendarDayCell" hasInstanceMethod:@"date" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MonthDayCellLayer" isKindOfClass:@"HKCalendarDayCell"];
+  [validationsCopy validateClass:@"MonthWeekView"];
+  [validationsCopy validateClass:@"MonthScrollViewController"];
+  [validationsCopy validateClass:@"MonthViewController"];
 }
 
 - (id)accessibilityLabel
@@ -37,7 +37,7 @@
   v4 = [(MonthDayCellLayerAccessibility *)self safeValueForKey:@"date"];
   v5 = __UIAccessibilitySafeClass();
 
-  v6 = [(MonthDayCellLayerAccessibility *)self accessibilityContainer];
+  accessibilityContainer = [(MonthDayCellLayerAccessibility *)self accessibilityContainer];
   AXSafeClassFromString();
   objc_opt_isKindOfClass();
 

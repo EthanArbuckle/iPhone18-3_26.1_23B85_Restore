@@ -1,79 +1,79 @@
 @interface GCSElement
-- (GCSElement)initWithCoder:(id)a3;
-- (GCSElement)initWithJSONObject:(id)a3;
-- (GCSElement)initWithName:(id)a3 nameLocalizationKey:(id)a4 sfSymbolsName:(id)a5 remappingKey:(int)a6 kind:(int64_t)a7;
+- (GCSElement)initWithCoder:(id)coder;
+- (GCSElement)initWithJSONObject:(id)object;
+- (GCSElement)initWithName:(id)name nameLocalizationKey:(id)key sfSymbolsName:(id)symbolsName remappingKey:(int)remappingKey kind:(int64_t)kind;
 - (GCSJSONObject)jsonObject;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCSElement
 
-- (GCSElement)initWithName:(id)a3 nameLocalizationKey:(id)a4 sfSymbolsName:(id)a5 remappingKey:(int)a6 kind:(int64_t)a7
+- (GCSElement)initWithName:(id)name nameLocalizationKey:(id)key sfSymbolsName:(id)symbolsName remappingKey:(int)remappingKey kind:(int64_t)kind
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  nameCopy = name;
+  keyCopy = key;
+  symbolsNameCopy = symbolsName;
   v19.receiver = self;
   v19.super_class = GCSElement;
   v16 = [(GCSElement *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_name, a3);
-    objc_storeStrong(&v17->_nameLocalizationKey, a4);
-    objc_storeStrong(&v17->_sfSymbolsName, a5);
-    v17->_remappingKey = a6;
-    v17->_kind = a7;
+    objc_storeStrong(&v16->_name, name);
+    objc_storeStrong(&v17->_nameLocalizationKey, key);
+    objc_storeStrong(&v17->_sfSymbolsName, symbolsName);
+    v17->_remappingKey = remappingKey;
+    v17->_kind = kind;
   }
 
   return v17;
 }
 
-- (GCSElement)initWithCoder:(id)a3
+- (GCSElement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = GCSElement;
   v5 = [(GCSElement *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nameLocalizationKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nameLocalizationKey"];
     nameLocalizationKey = v5->_nameLocalizationKey;
     v5->_nameLocalizationKey = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_sfSymbolsName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_sfSymbolsName"];
     sfSymbolsName = v5->_sfSymbolsName;
     v5->_sfSymbolsName = v10;
 
-    v5->_remappingKey = [v4 decodeIntForKey:@"_remappingKey"];
-    v5->_kind = [v4 decodeInt64ForKey:@"_kind"];
+    v5->_remappingKey = [coderCopy decodeIntForKey:@"_remappingKey"];
+    v5->_kind = [coderCopy decodeInt64ForKey:@"_kind"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"_name"];
-  [v5 encodeObject:self->_nameLocalizationKey forKey:@"nameLocalizationKey"];
-  [v5 encodeObject:self->_sfSymbolsName forKey:@"_sfSymbolsName"];
-  [v5 encodeInt:self->_remappingKey forKey:@"_remappingKey"];
-  [v5 encodeInt64:self->_kind forKey:@"_kind"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"_name"];
+  [coderCopy encodeObject:self->_nameLocalizationKey forKey:@"nameLocalizationKey"];
+  [coderCopy encodeObject:self->_sfSymbolsName forKey:@"_sfSymbolsName"];
+  [coderCopy encodeInt:self->_remappingKey forKey:@"_remappingKey"];
+  [coderCopy encodeInt64:self->_kind forKey:@"_kind"];
 }
 
-- (GCSElement)initWithJSONObject:(id)a3
+- (GCSElement)initWithJSONObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
     v17.receiver = self;
     v17.super_class = GCSElement;
     v6 = [(GCSElement *)&v17 init];
@@ -100,15 +100,15 @@
 
     self = v6;
 
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (GCSJSONObject)jsonObject

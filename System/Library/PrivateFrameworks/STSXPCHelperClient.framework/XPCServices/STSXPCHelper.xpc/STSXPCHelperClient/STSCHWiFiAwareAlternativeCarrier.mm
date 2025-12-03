@@ -1,42 +1,42 @@
 @interface STSCHWiFiAwareAlternativeCarrier
-+ (id)connectionHandoverAlternativeCarrierWithBundle:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (STSCHWiFiAwareAlternativeCarrier)initWithCoder:(id)a3;
-- (STSCHWiFiAwareAlternativeCarrier)initWithNdefRecordBundle:(id)a3;
-- (STSCHWiFiAwareAlternativeCarrier)initWithSecurityInfo:(id)a3 discoveryChannelInfo:(id)a4 powerState:(unint64_t)a5 auxiliaryRecords:(id)a6;
++ (id)connectionHandoverAlternativeCarrierWithBundle:(id)bundle;
+- (BOOL)isEqual:(id)equal;
+- (STSCHWiFiAwareAlternativeCarrier)initWithCoder:(id)coder;
+- (STSCHWiFiAwareAlternativeCarrier)initWithNdefRecordBundle:(id)bundle;
+- (STSCHWiFiAwareAlternativeCarrier)initWithSecurityInfo:(id)info discoveryChannelInfo:(id)channelInfo powerState:(unint64_t)state auxiliaryRecords:(id)records;
 - (id)_createCarrierConfigurationRecord;
 - (id)description;
-- (void)_initWithCarrierConfiguration:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_initWithCarrierConfiguration:(id)configuration;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSCHWiFiAwareAlternativeCarrier
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STSCHWiFiAwareAlternativeCarrier;
-  v4 = a3;
-  [(STSCHAlternativeCarrier *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_securityInfo forKey:{@"securityInfos", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_discoveryChannelInfo forKey:@"discoveryChannelInfo"];
+  coderCopy = coder;
+  [(STSCHAlternativeCarrier *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_securityInfo forKey:{@"securityInfos", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_discoveryChannelInfo forKey:@"discoveryChannelInfo"];
 }
 
-- (STSCHWiFiAwareAlternativeCarrier)initWithCoder:(id)a3
+- (STSCHWiFiAwareAlternativeCarrier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = STSCHWiFiAwareAlternativeCarrier;
-  v5 = [(STSCHAlternativeCarrier *)&v13 initWithCoder:v4];
+  v5 = [(STSCHAlternativeCarrier *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = [NSSet setWithObjects:v6, objc_opt_class(), 0];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"securityInfos"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"securityInfos"];
     securityInfo = v5->_securityInfo;
     v5->_securityInfo = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"discoveryChannelInfo"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"discoveryChannelInfo"];
     discoveryChannelInfo = v5->_discoveryChannelInfo;
     v5->_discoveryChannelInfo = v10;
   }
@@ -44,20 +44,20 @@
   return v5;
 }
 
-- (void)_initWithCarrierConfiguration:(id)a3
+- (void)_initWithCarrierConfiguration:(id)configuration
 {
-  v42 = a3;
-  if (([v42 isWiFiAwareConfigurationRecord] & 1) == 0)
+  configurationCopy = configuration;
+  if (([configurationCopy isWiFiAwareConfigurationRecord] & 1) == 0)
   {
     sub_10002483C(OS_LOG_TYPE_INFO, 0, "[STSCHWiFiAwareAlternativeCarrier _initWithCarrierConfiguration:]", 313, self, @"Not WiFi Aware Carrier Configuration record", v4, v5, v37);
     goto LABEL_47;
   }
 
-  v6 = [v42 payload];
-  v7 = [v6 bytes];
+  payload = [configurationCopy payload];
+  bytes = [payload bytes];
 
-  v8 = [v42 payload];
-  v9 = [v8 length];
+  payload2 = [configurationCopy payload];
+  v9 = [payload2 length];
 
   v10 = +[NSMutableArray array];
   v13 = +[NSMutableArray array];
@@ -78,15 +78,15 @@ LABEL_38:
   v39 = -1;
   do
   {
-    v16 = *v7;
-    v17 = v7[1];
-    v18 = v7 + 2;
+    v16 = *bytes;
+    v17 = bytes[1];
+    v18 = bytes + 2;
     switch(v17)
     {
       case 3:
         if (v16 >= 2)
         {
-          v27 = [v15[245] dataWithBytes:v7 + 2 length:(v16 - 1)];
+          v27 = [v15[245] dataWithBytes:bytes + 2 length:(v16 - 1)];
 
           v14 = v27;
         }
@@ -94,10 +94,10 @@ LABEL_38:
         break;
       case 2:
         v25 = objc_alloc_init(STSDiffieHellmanParameter);
-        [(STSDiffieHellmanParameter *)v25 setPublicKeyGroup:__rev16(*(v7 + 1))];
+        [(STSDiffieHellmanParameter *)v25 setPublicKeyGroup:__rev16(*(bytes + 1))];
         if (v16 >= 4)
         {
-          v26 = [v15[245] dataWithBytes:v7 + 4 length:(v16 - 3)];
+          v26 = [v15[245] dataWithBytes:bytes + 4 length:(v16 - 3)];
           [(STSDiffieHellmanParameter *)v25 setPublicKey:v26];
         }
 
@@ -136,19 +136,19 @@ LABEL_38:
 
         else if (v17 == 5 && v16 == 3)
         {
-          v38 = v7[2];
-          v39 = v7[3];
+          v38 = bytes[2];
+          v39 = bytes[3];
         }
 
         else if (v17 != 221)
         {
-          sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[STSCHWiFiAwareAlternativeCarrier _initWithCarrierConfiguration:]", 359, self, @"Unknown tag:%d", v11, v12, v7[1]);
+          sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[STSCHWiFiAwareAlternativeCarrier _initWithCarrierConfiguration:]", 359, self, @"Unknown tag:%d", v11, v12, bytes[1]);
         }
 
         break;
     }
 
-    v7 = &v18[v16 - 1];
+    bytes = &v18[v16 - 1];
     v9 = v9 - 2 - (v16 - 1);
   }
 
@@ -211,47 +211,47 @@ LABEL_46:
 LABEL_47:
 }
 
-- (STSCHWiFiAwareAlternativeCarrier)initWithSecurityInfo:(id)a3 discoveryChannelInfo:(id)a4 powerState:(unint64_t)a5 auxiliaryRecords:(id)a6
+- (STSCHWiFiAwareAlternativeCarrier)initWithSecurityInfo:(id)info discoveryChannelInfo:(id)channelInfo powerState:(unint64_t)state auxiliaryRecords:(id)records
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  infoCopy = info;
+  channelInfoCopy = channelInfo;
+  recordsCopy = records;
   v19.receiver = self;
   v19.super_class = STSCHWiFiAwareAlternativeCarrier;
   v14 = [(STSCHWiFiAwareAlternativeCarrier *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_securityInfo, a3);
-    objc_storeStrong(&v15->_discoveryChannelInfo, a4);
+    objc_storeStrong(&v14->_securityInfo, info);
+    objc_storeStrong(&v15->_discoveryChannelInfo, channelInfo);
     [(STSCHAlternativeCarrier *)v15 setType:1];
-    if (a5 >= 3)
+    if (state >= 3)
     {
-      v16 = 3;
+      stateCopy = 3;
     }
 
     else
     {
-      v16 = a5;
+      stateCopy = state;
     }
 
-    [(STSCHAlternativeCarrier *)v15 setPowerState:v16];
-    [(STSCHAlternativeCarrier *)v15 setAuxiliaryRecords:v13];
-    v17 = [(STSCHWiFiAwareAlternativeCarrier *)v15 _createCarrierConfigurationRecord];
-    [(STSCHAlternativeCarrier *)v15 setCarrierRecord:v17];
+    [(STSCHAlternativeCarrier *)v15 setPowerState:stateCopy];
+    [(STSCHAlternativeCarrier *)v15 setAuxiliaryRecords:recordsCopy];
+    _createCarrierConfigurationRecord = [(STSCHWiFiAwareAlternativeCarrier *)v15 _createCarrierConfigurationRecord];
+    [(STSCHAlternativeCarrier *)v15 setCarrierRecord:_createCarrierConfigurationRecord];
   }
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = STSCHWiFiAwareAlternativeCarrier;
-  if ([(STSCHAlternativeCarrier *)&v12 isEqual:v4])
+  if ([(STSCHAlternativeCarrier *)&v12 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     securityInfo = self->_securityInfo;
     v7 = v5[5];
     if (securityInfo)
@@ -299,40 +299,40 @@ LABEL_15:
 
 - (id)description
 {
-  v3 = [(STSCHAlternativeCarrier *)self powerState];
+  powerState = [(STSCHAlternativeCarrier *)self powerState];
   v4 = [(STSCHWiFiAwareSecurityInfo *)self->_securityInfo description];
   v5 = [(STSCHWiFiAwareDiscoveryChannelInfo *)self->_discoveryChannelInfo description];
-  v6 = [(STSCHAlternativeCarrier *)self auxiliaryRecords];
-  v7 = [v6 description];
-  v8 = [NSString stringWithFormat:@"{ type=wifi, powerState=%lu, securityInfo={%@}, discoveryInfo={%@}, aux=%@ }", v3, v4, v5, v7];
+  auxiliaryRecords = [(STSCHAlternativeCarrier *)self auxiliaryRecords];
+  v7 = [auxiliaryRecords description];
+  v8 = [NSString stringWithFormat:@"{ type=wifi, powerState=%lu, securityInfo={%@}, discoveryInfo={%@}, aux=%@ }", powerState, v4, v5, v7];
 
   return v8;
 }
 
-- (STSCHWiFiAwareAlternativeCarrier)initWithNdefRecordBundle:(id)a3
+- (STSCHWiFiAwareAlternativeCarrier)initWithNdefRecordBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v8.receiver = self;
   v8.super_class = STSCHWiFiAwareAlternativeCarrier;
-  v5 = [(STSCHAlternativeCarrier *)&v8 initWithNdefRecordBundle:v4];
+  v5 = [(STSCHAlternativeCarrier *)&v8 initWithNdefRecordBundle:bundleCopy];
   if (v5)
   {
-    v6 = [v4 configurationRecord];
-    [(STSCHWiFiAwareAlternativeCarrier *)v5 _initWithCarrierConfiguration:v6];
+    configurationRecord = [bundleCopy configurationRecord];
+    [(STSCHWiFiAwareAlternativeCarrier *)v5 _initWithCarrierConfiguration:configurationRecord];
   }
 
   return v5;
 }
 
-+ (id)connectionHandoverAlternativeCarrierWithBundle:(id)a3
++ (id)connectionHandoverAlternativeCarrierWithBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [v4 configurationRecord];
-  v6 = [v5 isWiFiAwareConfigurationRecord];
+  bundleCopy = bundle;
+  configurationRecord = [bundleCopy configurationRecord];
+  isWiFiAwareConfigurationRecord = [configurationRecord isWiFiAwareConfigurationRecord];
 
-  if (v6)
+  if (isWiFiAwareConfigurationRecord)
   {
-    v7 = [[a1 alloc] initWithNdefRecordBundle:v4];
+    v7 = [[self alloc] initWithNdefRecordBundle:bundleCopy];
   }
 
   else
@@ -348,12 +348,12 @@ LABEL_15:
   v3 = [NSData dataWithBytes:"application/vnd.wfa.naniso.org:18013:nfc" length:23];
   v4 = [@"W" dataUsingEncoding:4];
   v5 = +[NSMutableData data];
-  v6 = [(STSCHWiFiAwareSecurityInfo *)self->_securityInfo asData];
-  [v5 appendData:v6];
+  asData = [(STSCHWiFiAwareSecurityInfo *)self->_securityInfo asData];
+  [v5 appendData:asData];
 
-  v7 = [(STSCHWiFiAwareAlternativeCarrier *)self discoveryChannelInfo];
-  v8 = [v7 asData];
-  [v5 appendData:v8];
+  discoveryChannelInfo = [(STSCHWiFiAwareAlternativeCarrier *)self discoveryChannelInfo];
+  asData2 = [discoveryChannelInfo asData];
+  [v5 appendData:asData2];
 
   v9 = [[STSNDEFRecord alloc] initWithFormat:2 type:v3 identifier:v4 payload:v5];
 

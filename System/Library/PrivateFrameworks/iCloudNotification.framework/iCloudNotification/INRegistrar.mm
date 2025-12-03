@@ -1,11 +1,11 @@
 @interface INRegistrar
 - (INRegistrar)init;
-- (void)_handleRegistrationResponse:(id)a3 forRequest:(id)a4 digest:(id)a5 account:(id)a6 completion:(id)a7;
-- (void)_handleUnregistrationResponse:(id)a3 account:(id)a4 completion:(id)a5;
-- (void)registerForLoggedOutPushWithToken:(id)a3 reason:(unint64_t)a4 completion:(id)a5;
-- (void)registerForPushNotificationsWithAccount:(id)a3 pushToken:(id)a4 reason:(unint64_t)a5 completion:(id)a6;
-- (void)unregisterFromLoggedOutPushNotificationsWithToken:(NSData *)a3 reason:(unint64_t)a4 completionHandler:(id)a5;
-- (void)unregisterFromPushNotificationsForAccount:(id)a3 pushToken:(id)a4 completion:(id)a5;
+- (void)_handleRegistrationResponse:(id)response forRequest:(id)request digest:(id)digest account:(id)account completion:(id)completion;
+- (void)_handleUnregistrationResponse:(id)response account:(id)account completion:(id)completion;
+- (void)registerForLoggedOutPushWithToken:(id)token reason:(unint64_t)reason completion:(id)completion;
+- (void)registerForPushNotificationsWithAccount:(id)account pushToken:(id)token reason:(unint64_t)reason completion:(id)completion;
+- (void)unregisterFromLoggedOutPushNotificationsWithToken:(NSData *)token reason:(unint64_t)reason completionHandler:(id)handler;
+- (void)unregisterFromPushNotificationsForAccount:(id)account pushToken:(id)token completion:(id)completion;
 @end
 
 @implementation INRegistrar
@@ -45,23 +45,23 @@
   return v2;
 }
 
-- (void)registerForPushNotificationsWithAccount:(id)a3 pushToken:(id)a4 reason:(unint64_t)a5 completion:(id)a6
+- (void)registerForPushNotificationsWithAccount:(id)account pushToken:(id)token reason:(unint64_t)reason completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  accountCopy = account;
+  tokenCopy = token;
+  completionCopy = completion;
   v50 = 0;
   v51 = &v50;
   v52 = 0x3032000000;
   v53 = sub_10000E4D8;
   v54 = sub_10000E4E8;
   v55 = os_transaction_create();
-  v13 = [INRegistrationRequest bodyParameterValueForRegistrationReason:a5];
+  v13 = [INRegistrationRequest bodyParameterValueForRegistrationReason:reason];
   v14 = _INLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v57 = v10;
+    v57 = accountCopy;
     v58 = 2112;
     v59 = v13;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Registration request for account %@ has reason code %@", buf, 0x16u);
@@ -69,13 +69,13 @@
 
   [(NSLock *)self->_unregisteredAcountsLock lock];
   unregisteredAccountIDs = self->_unregisteredAccountIDs;
-  v16 = [(__CFString *)v10 identifier];
-  LODWORD(unregisteredAccountIDs) = [(NSMutableArray *)unregisteredAccountIDs containsObject:v16];
+  identifier = [(__CFString *)accountCopy identifier];
+  LODWORD(unregisteredAccountIDs) = [(NSMutableArray *)unregisteredAccountIDs containsObject:identifier];
 
   [(NSLock *)self->_unregisteredAcountsLock unlock];
   if (unregisteredAccountIDs)
   {
-    (*(v12 + 2))(v12, 2, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 2, 0, 0);
     v17 = _INLogSystem();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -88,16 +88,16 @@
     goto LABEL_39;
   }
 
-  v19 = [(INRequest *)[INRegistrationRequest alloc] initWithAccount:v10 pushToken:v11];
+  v19 = [(INRequest *)[INRegistrationRequest alloc] initWithAccount:accountCopy pushToken:tokenCopy];
   v18 = v19;
   if (v19)
   {
-    [(INRegistrationRequest *)v19 setRegistrationReason:a5];
+    [(INRegistrationRequest *)v19 setRegistrationReason:reason];
     v43 = [[INRegistrationDigest alloc] initWithRegistrationRequest:v18];
     [(NSLock *)self->_inflightRegistrationLock lock];
     inflightRegistrationRequestsByAccountID = self->_inflightRegistrationRequestsByAccountID;
-    v21 = [(__CFString *)v10 identifier];
-    v22 = [(NSMutableDictionary *)inflightRegistrationRequestsByAccountID objectForKey:v21];
+    identifier2 = [(__CFString *)accountCopy identifier];
+    v22 = [(NSMutableDictionary *)inflightRegistrationRequestsByAccountID objectForKey:identifier2];
 
     if (v22)
     {
@@ -128,9 +128,9 @@ LABEL_33:
             sub_100036BC8();
           }
 
-          if (v12)
+          if (completionCopy)
           {
-            (*(v12 + 2))(v12, 2, 0, 0);
+            (*(completionCopy + 2))(completionCopy, 2, 0, 0);
             v36 = v51[5];
             v51[5] = 0;
           }
@@ -155,7 +155,7 @@ LABEL_33:
         sub_100036AEC();
       }
 
-      if (a5 != 5 && a5)
+      if (reason != 5 && reason)
       {
         v37 = _INLogSystem();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
@@ -163,7 +163,7 @@ LABEL_33:
           sub_100036B94();
         }
 
-        v38 = [(INRegistrationDigestCache *)self->_registrationDigestCache registrationDigestForAccount:v10 withError:0];
+        v38 = [(INRegistrationDigestCache *)self->_registrationDigestCache registrationDigestForAccount:accountCopy withError:0];
         v39 = v38;
         if (v38)
         {
@@ -197,8 +197,8 @@ LABEL_30:
           }
 
           v32 = self->_inflightRegistrationRequestsByAccountID;
-          v33 = [(__CFString *)v10 identifier];
-          [(NSMutableDictionary *)v32 setObject:v18 forKey:v33];
+          identifier3 = [(__CFString *)accountCopy identifier];
+          [(NSMutableDictionary *)v32 setObject:v18 forKey:identifier3];
 
           aaUrlSession = self->_aaUrlSession;
           v45[0] = _NSConcreteStackBlock;
@@ -207,8 +207,8 @@ LABEL_30:
           v45[3] = &unk_1000556F8;
           v45[4] = self;
           v46 = v43;
-          v47 = v10;
-          v48 = v12;
+          v47 = accountCopy;
+          v48 = completionCopy;
           v49 = &v50;
           [(INRegistrationRequest *)v18 performRequestWithSession:aaUrlSession withHandler:v45];
 
@@ -243,10 +243,10 @@ LABEL_30:
     sub_100036BFC();
   }
 
-  if (v12)
+  if (completionCopy)
   {
     v28 = INCreateError();
-    (*(v12 + 2))(v12, 0, 0, v28);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v28);
 
     v44 = v51[5];
     v51[5] = 0;
@@ -257,20 +257,20 @@ LABEL_39:
   _Block_object_dispose(&v50, 8);
 }
 
-- (void)_handleRegistrationResponse:(id)a3 forRequest:(id)a4 digest:(id)a5 account:(id)a6 completion:(id)a7
+- (void)_handleRegistrationResponse:(id)response forRequest:(id)request digest:(id)digest account:(id)account completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  responseCopy = response;
+  digestCopy = digest;
+  accountCopy = account;
+  completionCopy = completion;
   inflightRegistrationLock = self->_inflightRegistrationLock;
-  v17 = a4;
+  requestCopy = request;
   [(NSLock *)inflightRegistrationLock lock];
   inflightRegistrationRequestsByAccountID = self->_inflightRegistrationRequestsByAccountID;
-  v19 = [v14 identifier];
-  v20 = [(NSMutableDictionary *)inflightRegistrationRequestsByAccountID objectForKey:v19];
+  identifier = [accountCopy identifier];
+  v20 = [(NSMutableDictionary *)inflightRegistrationRequestsByAccountID objectForKey:identifier];
 
-  if (v20 != v17)
+  if (v20 != requestCopy)
   {
     v21 = _INLogSystem();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -280,39 +280,39 @@ LABEL_39:
     }
 
     v22 = 0;
-    v23 = 0;
+    timeToLive = 0;
     v24 = 2;
     goto LABEL_14;
   }
 
   v25 = self->_inflightRegistrationRequestsByAccountID;
-  v26 = [v14 identifier];
-  [(NSMutableDictionary *)v25 removeObjectForKey:v26];
+  identifier2 = [accountCopy identifier];
+  [(NSMutableDictionary *)v25 removeObjectForKey:identifier2];
 
-  if (!v12 || [v12 isResponseEmpty])
+  if (!responseCopy || [responseCopy isResponseEmpty])
   {
     v27 = _INLogSystem();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      sub_100036DC0(v12);
+      sub_100036DC0(responseCopy);
     }
 
 LABEL_13:
 
     v22 = INCreateError();
-    v23 = 0;
+    timeToLive = 0;
     v24 = 0;
     goto LABEL_14;
   }
 
-  v28 = [v12 error];
+  error = [responseCopy error];
 
-  if (v28)
+  if (error)
   {
     v27 = _INLogSystem();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      sub_100036CCC(v12);
+      sub_100036CCC(responseCopy);
     }
 
     goto LABEL_13;
@@ -323,10 +323,10 @@ LABEL_13:
     +[INDiagnostics setLastRegistrationSuccess];
   }
 
-  v23 = [v12 timeToLive];
+  timeToLive = [responseCopy timeToLive];
   registrationDigestCache = self->_registrationDigestCache;
   v33 = 0;
-  v30 = [(INRegistrationDigestCache *)registrationDigestCache updateRegistrationDigest:v13 forAccount:v14 withError:&v33];
+  v30 = [(INRegistrationDigestCache *)registrationDigestCache updateRegistrationDigest:digestCopy forAccount:accountCopy withError:&v33];
   v31 = v33;
   if ((v30 & 1) == 0)
   {
@@ -341,18 +341,18 @@ LABEL_13:
   v24 = 1;
 LABEL_14:
   [(NSLock *)self->_inflightRegistrationLock unlock];
-  if (v15)
+  if (completionCopy)
   {
-    v15[2](v15, v24, v23, v22);
+    completionCopy[2](completionCopy, v24, timeToLive, v22);
   }
 }
 
-- (void)unregisterFromPushNotificationsForAccount:(id)a3 pushToken:(id)a4 completion:(id)a5
+- (void)unregisterFromPushNotificationsForAccount:(id)account pushToken:(id)token completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(INRequest *)[INUnregistrationRequest alloc] initWithAccount:v8 pushToken:v10];
+  accountCopy = account;
+  completionCopy = completion;
+  tokenCopy = token;
+  v11 = [(INRequest *)[INUnregistrationRequest alloc] initWithAccount:accountCopy pushToken:tokenCopy];
 
   v12 = _INLogSystem();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -368,15 +368,15 @@ LABEL_14:
     v13 = _INLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v8 identifier];
+      identifier = [accountCopy identifier];
       *buf = 138412290;
-      v25 = v14;
+      v25 = identifier;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Adding %@ to unregistered account IDs.", buf, 0xCu);
     }
 
     unregisteredAccountIDs = self->_unregisteredAccountIDs;
-    v16 = [v8 identifier];
-    [(NSMutableArray *)unregisteredAccountIDs addObject:v16];
+    identifier2 = [accountCopy identifier];
+    [(NSMutableArray *)unregisteredAccountIDs addObject:identifier2];
 
     [(NSLock *)self->_unregisteredAcountsLock unlock];
     v17 = _INLogSystem();
@@ -392,8 +392,8 @@ LABEL_14:
     v21[2] = sub_10000EC60;
     v21[3] = &unk_100055720;
     v21[4] = self;
-    v22 = v8;
-    v23 = v9;
+    v22 = accountCopy;
+    v23 = completionCopy;
     [(INUnregistrationRequest *)v11 performRequestWithSession:aaUrlSession withHandler:v21];
   }
 
@@ -406,24 +406,24 @@ LABEL_14:
     }
 
     v20 = INCreateError();
-    (*(v9 + 2))(v9, 0, v20);
+    (*(completionCopy + 2))(completionCopy, 0, v20);
   }
 }
 
-- (void)_handleUnregistrationResponse:(id)a3 account:(id)a4 completion:(id)a5
+- (void)_handleUnregistrationResponse:(id)response account:(id)account completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  responseCopy = response;
+  accountCopy = account;
+  completionCopy = completion;
+  if (responseCopy)
   {
-    v11 = [v8 error];
+    error = [responseCopy error];
 
-    if (!v11)
+    if (!error)
     {
       registrationDigestCache = self->_registrationDigestCache;
       v17 = 0;
-      v15 = [(INRegistrationDigestCache *)registrationDigestCache removeRegistrationDigestForAccount:v9 withError:&v17];
+      v15 = [(INRegistrationDigestCache *)registrationDigestCache removeRegistrationDigestForAccount:accountCopy withError:&v17];
       v13 = v17;
       if ((v15 & 1) == 0)
       {
@@ -434,9 +434,9 @@ LABEL_14:
         }
       }
 
-      if (v10)
+      if (completionCopy)
       {
-        v10[2](v10, 1, 0);
+        completionCopy[2](completionCopy, 1, 0);
       }
 
       goto LABEL_13;
@@ -446,26 +446,26 @@ LABEL_14:
   v12 = _INLogSystem();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    sub_100036F98(v8);
+    sub_100036F98(responseCopy);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v13 = INCreateError();
-    (v10)[2](v10, 0, v13);
+    (completionCopy)[2](completionCopy, 0, v13);
 LABEL_13:
   }
 }
 
-- (void)registerForLoggedOutPushWithToken:(id)a3 reason:(unint64_t)a4 completion:(id)a5
+- (void)registerForLoggedOutPushWithToken:(id)token reason:(unint64_t)reason completion:(id)completion
 {
   v9 = sub_100022CF0(&qword_1000632D0, &qword_10004DAC0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v22 - v11;
-  v13 = _Block_copy(a5);
-  v14 = a3;
-  v15 = self;
+  v13 = _Block_copy(completion);
+  tokenCopy = token;
+  selfCopy = self;
   v16 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v18 = v17;
 
@@ -478,23 +478,23 @@ LABEL_13:
   v21[3] = 0;
   v21[4] = v16;
   v21[5] = v18;
-  v21[6] = a4;
-  v21[7] = v15;
+  v21[6] = reason;
+  v21[7] = selfCopy;
   v21[8] = sub_1000334C8;
   v21[9] = v19;
   sub_100020818(0, 0, v12, &unk_10004E2E0, v21);
 }
 
-- (void)unregisterFromLoggedOutPushNotificationsWithToken:(NSData *)a3 reason:(unint64_t)a4 completionHandler:(id)a5
+- (void)unregisterFromLoggedOutPushNotificationsWithToken:(NSData *)token reason:(unint64_t)reason completionHandler:(id)handler
 {
   v9 = sub_100022CF0(&qword_1000632D0, &qword_10004DAC0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = token;
+  v14[3] = reason;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -509,8 +509,8 @@ LABEL_13:
   v17[3] = 0;
   v17[4] = &unk_10004E2B0;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  tokenCopy = token;
+  selfCopy = self;
   sub_10002FEE4(0, 0, v12, &unk_10004E2C0, v17);
 }
 

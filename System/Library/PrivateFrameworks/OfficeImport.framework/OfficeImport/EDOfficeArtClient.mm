@@ -2,7 +2,7 @@
 - (BOOL)hasText;
 - (CGRect)bounds;
 - (NSString)description;
-- (void)setClientState:(id)a3;
+- (void)setClientState:(id)state;
 @end
 
 @implementation EDOfficeArtClient
@@ -15,9 +15,9 @@
     return 0;
   }
 
-  v3 = [(EDTextBox *)mTextBox text];
-  v4 = [v3 string];
-  v5 = [v4 length] != 0;
+  text = [(EDTextBox *)mTextBox text];
+  string = [text string];
+  v5 = [string length] != 0;
 
   return v5;
 }
@@ -35,16 +35,16 @@
   return result;
 }
 
-- (void)setClientState:(id)a3
+- (void)setClientState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   mClientState = self->mClientState;
   p_mClientState = &self->mClientState;
-  if (mClientState != v5)
+  if (mClientState != stateCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mClientState, a3);
-    v5 = v8;
+    v8 = stateCopy;
+    objc_storeStrong(p_mClientState, state);
+    stateCopy = v8;
   }
 }
 

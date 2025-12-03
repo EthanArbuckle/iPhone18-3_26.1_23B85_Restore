@@ -1,25 +1,25 @@
 @interface AMSURLProtocolHandler
-+ (id)reversePushSamplingPercentageForTask:(id)a3;
++ (id)reversePushSamplingPercentageForTask:(id)task;
 - (AMSURLProtocolHandler)init;
-- (AMSURLProtocolHandler)initWithFraudReportRefreshScoreBlock:(id)a3 fraudReportStateStorageFactoryBlock:(id)a4;
-- (AMSURLProtocolHandler)initWithMetricsHandler:(id)a3 fairPlayDeviceIdentity:(id)a4 fraudReportRefreshScoreBlock:(id)a5 fraudReportStateStorageFactoryBlock:(id)a6;
+- (AMSURLProtocolHandler)initWithFraudReportRefreshScoreBlock:(id)block fraudReportStateStorageFactoryBlock:(id)factoryBlock;
+- (AMSURLProtocolHandler)initWithMetricsHandler:(id)handler fairPlayDeviceIdentity:(id)identity fraudReportRefreshScoreBlock:(id)block fraudReportStateStorageFactoryBlock:(id)factoryBlock;
 - (AMSURLSession)session;
-- (id)_URLIsTrustedFromRequest:(id)a3 bag:(id)a4;
-- (id)_handleResponse:(id)a3 task:(id)a4;
-- (id)_setResponseCookiesFromResponse:(id)a3 taskInfo:(id)a4;
-- (id)decodeData:(id)a3 task:(id)a4 error:(id *)a5;
-- (id)decodeMutableData:(id)a3 task:(id)a4 error:(id *)a5;
-- (id)shouldEnableReversePushForTask:(id)a3;
-- (void)_pingURL:(id)a3 session:(id)a4 account:(id)a5 bag:(id)a6;
-- (void)decodeMutableData:(id)a3 task:(id)a4 completionHandler:(id)a5;
-- (void)didCreateTask:(id)a3 fromRequest:(id)a4 completionHandler:(id)a5;
-- (void)didCreateTask:(id)a3 fromRequest:(id)a4 error:(id *)a5;
-- (void)handleCompletionWithTask:(id)a3 metrics:(id)a4 decodedObject:(id)a5 completionHandler:(id)a6;
-- (void)handleResponse:(id)a3 task:(id)a4 completionHandler:(id)a5;
-- (void)reconfigureNewRequest:(id)a3 originalTask:(id)a4 redirect:(BOOL)a5 completionHandler:(id)a6;
-- (void)reconfigureNewRequest:(id)a3 originalTask:(id)a4 redirect:(BOOL)a5 error:(id *)a6;
-- (void)reportMetricsForContext:(id)a3;
-- (void)setSession:(id)a3;
+- (id)_URLIsTrustedFromRequest:(id)request bag:(id)bag;
+- (id)_handleResponse:(id)response task:(id)task;
+- (id)_setResponseCookiesFromResponse:(id)response taskInfo:(id)info;
+- (id)decodeData:(id)data task:(id)task error:(id *)error;
+- (id)decodeMutableData:(id)data task:(id)task error:(id *)error;
+- (id)shouldEnableReversePushForTask:(id)task;
+- (void)_pingURL:(id)l session:(id)session account:(id)account bag:(id)bag;
+- (void)decodeMutableData:(id)data task:(id)task completionHandler:(id)handler;
+- (void)didCreateTask:(id)task fromRequest:(id)request completionHandler:(id)handler;
+- (void)didCreateTask:(id)task fromRequest:(id)request error:(id *)error;
+- (void)handleCompletionWithTask:(id)task metrics:(id)metrics decodedObject:(id)object completionHandler:(id)handler;
+- (void)handleResponse:(id)response task:(id)task completionHandler:(id)handler;
+- (void)reconfigureNewRequest:(id)request originalTask:(id)task redirect:(BOOL)redirect completionHandler:(id)handler;
+- (void)reconfigureNewRequest:(id)request originalTask:(id)task redirect:(BOOL)redirect error:(id *)error;
+- (void)reportMetricsForContext:(id)context;
+- (void)setSession:(id)session;
 @end
 
 @implementation AMSURLProtocolHandler
@@ -42,23 +42,23 @@
   return WeakRetained;
 }
 
-- (AMSURLProtocolHandler)initWithFraudReportRefreshScoreBlock:(id)a3 fraudReportStateStorageFactoryBlock:(id)a4
+- (AMSURLProtocolHandler)initWithFraudReportRefreshScoreBlock:(id)block fraudReportStateStorageFactoryBlock:(id)factoryBlock
 {
-  v6 = a4;
-  v7 = a3;
+  factoryBlockCopy = factoryBlock;
+  blockCopy = block;
   v8 = [[AMSURLMetricsLoadURLHandler alloc] initWithMetrics:objc_opt_class()];
   v9 = +[AMSFairPlayDeviceIdentity shared];
-  v10 = [(AMSURLProtocolHandler *)self initWithMetricsHandler:v8 fairPlayDeviceIdentity:v9 fraudReportRefreshScoreBlock:v7 fraudReportStateStorageFactoryBlock:v6];
+  v10 = [(AMSURLProtocolHandler *)self initWithMetricsHandler:v8 fairPlayDeviceIdentity:v9 fraudReportRefreshScoreBlock:blockCopy fraudReportStateStorageFactoryBlock:factoryBlockCopy];
 
   return v10;
 }
 
-- (AMSURLProtocolHandler)initWithMetricsHandler:(id)a3 fairPlayDeviceIdentity:(id)a4 fraudReportRefreshScoreBlock:(id)a5 fraudReportStateStorageFactoryBlock:(id)a6
+- (AMSURLProtocolHandler)initWithMetricsHandler:(id)handler fairPlayDeviceIdentity:(id)identity fraudReportRefreshScoreBlock:(id)block fraudReportStateStorageFactoryBlock:(id)factoryBlock
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  handlerCopy = handler;
+  identityCopy = identity;
+  blockCopy = block;
+  factoryBlockCopy = factoryBlock;
   v22.receiver = self;
   v22.super_class = AMSURLProtocolHandler;
   v15 = [(AMSURLProtocolHandler *)&v22 init];
@@ -66,13 +66,13 @@
   if (v15)
   {
     v15->_propertiesLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v15->_metricsHandler, a3);
-    objc_storeStrong(&v16->_fairPlayDeviceIdentity, a4);
-    v17 = _Block_copy(v13);
+    objc_storeStrong(&v15->_metricsHandler, handler);
+    objc_storeStrong(&v16->_fairPlayDeviceIdentity, identity);
+    v17 = _Block_copy(blockCopy);
     fraudReportRefreshScoreBlock = v16->_fraudReportRefreshScoreBlock;
     v16->_fraudReportRefreshScoreBlock = v17;
 
-    v19 = _Block_copy(v14);
+    v19 = _Block_copy(factoryBlockCopy);
     fraudReportStateStorageFactoryBlock = v16->_fraudReportStateStorageFactoryBlock;
     v16->_fraudReportStateStorageFactoryBlock = v19;
   }
@@ -80,39 +80,39 @@
   return v16;
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   os_unfair_lock_lock_with_options();
-  objc_storeWeak(&self->_session, v4);
+  objc_storeWeak(&self->_session, sessionCopy);
 
   os_unfair_lock_unlock(&self->_propertiesLock);
 }
 
-- (void)decodeMutableData:(id)a3 task:(id)a4 completionHandler:(id)a5
+- (void)decodeMutableData:(id)data task:(id)task completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [AMSURLTaskInfo taskInfoForTask:v9];
-  v25 = [v11 properties];
-  v12 = [v25 mescalType];
-  v13 = [v11 properties];
-  v14 = [v13 bag];
-  v15 = [AMSMescal verificationPromiseForTask:v9 data:v8 type:v12 bag:v14];
-  v16 = [v15 promiseAdapter];
+  dataCopy = data;
+  taskCopy = task;
+  handlerCopy = handler;
+  v11 = [AMSURLTaskInfo taskInfoForTask:taskCopy];
+  properties = [v11 properties];
+  mescalType = [properties mescalType];
+  properties2 = [v11 properties];
+  v14 = [properties2 bag];
+  v15 = [AMSMescal verificationPromiseForTask:taskCopy data:dataCopy type:mescalType bag:v14];
+  promiseAdapter = [v15 promiseAdapter];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __66__AMSURLProtocolHandler_decodeMutableData_task_completionHandler___block_invoke;
   v32[3] = &unk_1E73B38E0;
   v17 = v11;
   v33 = v17;
-  v34 = self;
-  v35 = v8;
-  v36 = v9;
-  v24 = v9;
-  v18 = v8;
-  v19 = [v16 continueWithBlock:v32];
+  selfCopy = self;
+  v35 = dataCopy;
+  v36 = taskCopy;
+  v24 = taskCopy;
+  v18 = dataCopy;
+  v19 = [promiseAdapter continueWithBlock:v32];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __66__AMSURLProtocolHandler_decodeMutableData_task_completionHandler___block_invoke_44;
@@ -124,11 +124,11 @@
   v26[1] = 3221225472;
   v26[2] = __66__AMSURLProtocolHandler_decodeMutableData_task_completionHandler___block_invoke_2;
   v26[3] = &unk_1E73BCF18;
-  v28 = self;
-  v29 = v10;
+  selfCopy2 = self;
+  v29 = handlerCopy;
   v27 = v20;
   v22 = v20;
-  v23 = v10;
+  v23 = handlerCopy;
   [v21 addFinishBlock:v26];
 }
 
@@ -348,19 +348,19 @@ void __66__AMSURLProtocolHandler_decodeMutableData_task_completionHandler___bloc
   v8();
 }
 
-- (id)decodeData:(id)a3 task:(id)a4 error:(id *)a5
+- (id)decodeData:(id)data task:(id)task error:(id *)error
 {
-  v8 = a4;
-  v9 = [a3 mutableCopy];
-  v10 = [(AMSURLProtocolHandler *)self decodeMutableData:v9 task:v8 error:a5];
+  taskCopy = task;
+  v9 = [data mutableCopy];
+  v10 = [(AMSURLProtocolHandler *)self decodeMutableData:v9 task:taskCopy error:error];
 
   return v10;
 }
 
-- (id)decodeMutableData:(id)a3 task:(id)a4 error:(id *)a5
+- (id)decodeMutableData:(id)data task:(id)task error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  taskCopy = task;
+  dataCopy = data;
   v10 = objc_alloc_init(AMSMutablePromise);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -368,12 +368,12 @@ void __66__AMSURLProtocolHandler_decodeMutableData_task_completionHandler___bloc
   v15[3] = &unk_1E73B8618;
   v16 = v10;
   v11 = v10;
-  [(AMSURLProtocolHandler *)self decodeMutableData:v9 task:v8 completionHandler:v15];
+  [(AMSURLProtocolHandler *)self decodeMutableData:dataCopy task:taskCopy completionHandler:v15];
 
-  v12 = [(AMSPromise *)v11 resultWithError:a5];
-  v13 = [v12 value];
+  v12 = [(AMSPromise *)v11 resultWithError:error];
+  value = [v12 value];
 
-  return v13;
+  return value;
 }
 
 void __54__AMSURLProtocolHandler_decodeMutableData_task_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -397,10 +397,10 @@ void __54__AMSURLProtocolHandler_decodeMutableData_task_error___block_invoke(uin
   [*(a1 + 32) finishWithResult:v7 error:v6];
 }
 
-- (void)didCreateTask:(id)a3 fromRequest:(id)a4 error:(id *)a5
+- (void)didCreateTask:(id)task fromRequest:(id)request error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  requestCopy = request;
+  taskCopy = task;
   v10 = objc_alloc_init(AMSMutablePromise);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -408,9 +408,9 @@ void __54__AMSURLProtocolHandler_decodeMutableData_task_error___block_invoke(uin
   v13[3] = &unk_1E73B3168;
   v14 = v10;
   v11 = v10;
-  [(AMSURLProtocolHandler *)self didCreateTask:v9 fromRequest:v8 completionHandler:v13];
+  [(AMSURLProtocolHandler *)self didCreateTask:taskCopy fromRequest:requestCopy completionHandler:v13];
 
-  v12 = [(AMSPromise *)v11 resultWithError:a5];
+  v12 = [(AMSPromise *)v11 resultWithError:error];
 }
 
 uint64_t __57__AMSURLProtocolHandler_didCreateTask_fromRequest_error___block_invoke(uint64_t a1, int a2, uint64_t a3)
@@ -429,26 +429,26 @@ uint64_t __57__AMSURLProtocolHandler_didCreateTask_fromRequest_error___block_inv
   return [v4 finishWithResult:v5 error:a3];
 }
 
-- (void)didCreateTask:(id)a3 fromRequest:(id)a4 completionHandler:(id)a5
+- (void)didCreateTask:(id)task fromRequest:(id)request completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [AMSURLTaskInfo taskInfoForTask:v8];
-  v12 = [v11 properties];
-  v13 = [v12 knownToBeTrusted];
+  taskCopy = task;
+  requestCopy = request;
+  handlerCopy = handler;
+  v11 = [AMSURLTaskInfo taskInfoForTask:taskCopy];
+  properties = [v11 properties];
+  knownToBeTrusted = [properties knownToBeTrusted];
 
-  if (v13)
+  if (knownToBeTrusted)
   {
-    v14 = [AMSBoolean BOOLeanWithBool:1];
-    v15 = [AMSPromise promiseWithResult:v14];
+    properties2 = [AMSBoolean BOOLeanWithBool:1];
+    v15 = [AMSPromise promiseWithResult:properties2];
   }
 
   else
   {
-    v14 = [v11 properties];
-    v16 = [v14 bag];
-    v15 = [(AMSURLProtocolHandler *)self _URLIsTrustedFromRequest:v9 bag:v16];
+    properties2 = [v11 properties];
+    v16 = [properties2 bag];
+    v15 = [(AMSURLProtocolHandler *)self _URLIsTrustedFromRequest:requestCopy bag:v16];
   }
 
   v21[0] = MEMORY[0x1E69E9820];
@@ -457,12 +457,12 @@ uint64_t __57__AMSURLProtocolHandler_didCreateTask_fromRequest_error___block_inv
   v21[3] = &unk_1E73BCF68;
   v21[4] = self;
   v22 = v11;
-  v24 = v8;
-  v25 = v10;
-  v23 = v9;
-  v17 = v8;
-  v18 = v10;
-  v19 = v9;
+  v24 = taskCopy;
+  v25 = handlerCopy;
+  v23 = requestCopy;
+  v17 = taskCopy;
+  v18 = handlerCopy;
+  v19 = requestCopy;
   v20 = v11;
   [v15 addFinishBlock:v21];
 }
@@ -626,17 +626,17 @@ uint64_t __69__AMSURLProtocolHandler_didCreateTask_fromRequest_completionHandler
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)handleCompletionWithTask:(id)a3 metrics:(id)a4 decodedObject:(id)a5 completionHandler:(id)a6
+- (void)handleCompletionWithTask:(id)task metrics:(id)metrics decodedObject:(id)object completionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  taskCopy = task;
+  objectCopy = object;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [AMSURLTaskInfo taskInfoForTask:v9];
-    v13 = [[AMSFinanceResponse alloc] initWithTaskInfo:v12 decodedObject:v10];
+    v12 = [AMSURLTaskInfo taskInfoForTask:taskCopy];
+    v13 = [[AMSFinanceResponse alloc] initWithTaskInfo:v12 decodedObject:objectCopy];
     if (!v13)
     {
       v14 = +[AMSLogConfig sharedURLLoadingConfig];
@@ -645,33 +645,33 @@ uint64_t __69__AMSURLProtocolHandler_didCreateTask_fromRequest_completionHandler
         v14 = +[AMSLogConfig sharedConfig];
       }
 
-      v15 = [v14 OSLogObject];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v14 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v16 = objc_opt_class();
-        v24 = [v12 properties];
-        v17 = [v24 logUUID];
+        properties = [v12 properties];
+        logUUID = [properties logUUID];
         *buf = 138543618;
         v32 = v16;
         v33 = 2114;
-        v34 = v17;
-        _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to parse decodedObject", buf, 0x16u);
+        v34 = logUUID;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to parse decodedObject", buf, 0x16u);
       }
     }
 
-    v18 = [v12 response];
-    v19 = [(AMSURLProtocolHandler *)self session];
-    v20 = [AMSBiometrics handleResponse:v18 financeResponse:v13 session:v19 taskInfo:v12];
+    response = [v12 response];
+    session = [(AMSURLProtocolHandler *)self session];
+    v20 = [AMSBiometrics handleResponse:response financeResponse:v13 session:session taskInfo:v12];
 
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __90__AMSURLProtocolHandler_handleCompletionWithTask_metrics_decodedObject_completionHandler___block_invoke;
     v25[3] = &unk_1E73BD080;
     v26 = v13;
-    v27 = self;
+    selfCopy = self;
     v28 = v12;
-    v29 = v9;
-    v30 = v11;
+    v29 = taskCopy;
+    v30 = handlerCopy;
     v21 = v12;
     v22 = v13;
     [v20 addFinishBlock:v25];
@@ -680,7 +680,7 @@ uint64_t __69__AMSURLProtocolHandler_didCreateTask_fromRequest_completionHandler
   else
   {
     v23 = +[AMSURLAction proceedAction];
-    (*(v11 + 2))(v11, v23);
+    (*(handlerCopy + 2))(handlerCopy, v23);
   }
 }
 
@@ -1064,16 +1064,16 @@ LABEL_2:
   (*(*(a1 + 72) + 16))();
 }
 
-- (void)handleResponse:(id)a3 task:(id)a4 completionHandler:(id)a5
+- (void)handleResponse:(id)response task:(id)task completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [(AMSURLProtocolHandler *)self _handleResponse:a3 task:a4];
+  handlerCopy = handler;
+  v9 = [(AMSURLProtocolHandler *)self _handleResponse:response task:task];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __63__AMSURLProtocolHandler_handleResponse_task_completionHandler___block_invoke;
   v11[3] = &unk_1E73B7FF8;
-  v12 = v8;
-  v10 = v8;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [v9 addFinishBlock:v11];
 }
 
@@ -1084,27 +1084,27 @@ void __63__AMSURLProtocolHandler_handleResponse_task_completionHandler___block_i
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)reconfigureNewRequest:(id)a3 originalTask:(id)a4 redirect:(BOOL)a5 completionHandler:(id)a6
+- (void)reconfigureNewRequest:(id)request originalTask:(id)task redirect:(BOOL)redirect completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a4;
-  v43 = a6;
-  v11 = a3;
-  v12 = [AMSURLTaskInfo taskInfoForTask:v10];
-  v13 = [v11 mutableCopy];
+  redirectCopy = redirect;
+  taskCopy = task;
+  handlerCopy = handler;
+  requestCopy = request;
+  v12 = [AMSURLTaskInfo taskInfoForTask:taskCopy];
+  v13 = [requestCopy mutableCopy];
 
-  v14 = [v12 properties];
-  v15 = [v14 copy];
+  properties = [v12 properties];
+  v15 = [properties copy];
 
   v16 = +[AMSBinaryPromise promiseWithSuccess];
-  v41 = v10;
+  v41 = taskCopy;
   v42 = v12;
-  if (v7)
+  if (redirectCopy)
   {
-    v17 = [v10 response];
-    if (v17)
+    response = [taskCopy response];
+    if (response)
     {
-      [v10 response];
+      [taskCopy response];
     }
 
     else
@@ -1119,7 +1119,7 @@ void __63__AMSURLProtocolHandler_handleResponse_task_completionHandler___block_i
     v70[2] = __87__AMSURLProtocolHandler_reconfigureNewRequest_originalTask_redirect_completionHandler___block_invoke;
     v70[3] = &unk_1E73B6C00;
     v70[4] = self;
-    v71 = v10;
+    v71 = taskCopy;
     v72 = v13;
     v20 = [v19 continueWithBlock:v70];
 
@@ -1134,7 +1134,7 @@ void __63__AMSURLProtocolHandler_handleResponse_task_completionHandler___block_i
   v67 = v21;
   v22 = v15;
   v68 = v22;
-  v69 = self;
+  selfCopy = self;
   v23 = [v16 thenWithBlock:v66];
   v63[0] = MEMORY[0x1E69E9820];
   v63[1] = 3221225472;
@@ -1153,7 +1153,7 @@ void __63__AMSURLProtocolHandler_handleResponse_task_completionHandler___block_i
   v60 = v27;
   v28 = v25;
   v61 = v28;
-  v62 = self;
+  selfCopy2 = self;
   v29 = [v26 thenWithBlock:v59];
   v55[0] = MEMORY[0x1E69E9820];
   v55[1] = 3221225472;
@@ -1163,7 +1163,7 @@ void __63__AMSURLProtocolHandler_handleResponse_task_completionHandler___block_i
   v56 = v30;
   v31 = v28;
   v57 = v31;
-  v58 = self;
+  selfCopy3 = self;
   v32 = [v29 thenWithBlock:v55];
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
@@ -1173,7 +1173,7 @@ void __63__AMSURLProtocolHandler_handleResponse_task_completionHandler___block_i
   v52 = v33;
   v34 = v30;
   v53 = v34;
-  v54 = self;
+  selfCopy4 = self;
   v35 = [v32 thenWithBlock:v51];
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
@@ -1182,7 +1182,7 @@ void __63__AMSURLProtocolHandler_handleResponse_task_completionHandler___block_i
   v36 = v33;
   v48 = v36;
   v49 = v34;
-  v50 = self;
+  selfCopy5 = self;
   v40 = v34;
   v37 = [v35 thenWithBlock:v47];
   v44[0] = MEMORY[0x1E69E9820];
@@ -1190,9 +1190,9 @@ void __63__AMSURLProtocolHandler_handleResponse_task_completionHandler___block_i
   v44[2] = __87__AMSURLProtocolHandler_reconfigureNewRequest_originalTask_redirect_completionHandler___block_invoke_108;
   v44[3] = &unk_1E73B43F0;
   v45 = v36;
-  v46 = v43;
+  v46 = handlerCopy;
   v38 = v36;
-  v39 = v43;
+  v39 = handlerCopy;
   [v37 addSuccessBlock:v44];
 }
 
@@ -1644,23 +1644,23 @@ id __87__AMSURLProtocolHandler_reconfigureNewRequest_originalTask_redirect_compl
   return v12;
 }
 
-- (void)reconfigureNewRequest:(id)a3 originalTask:(id)a4 redirect:(BOOL)a5 error:(id *)a6
+- (void)reconfigureNewRequest:(id)request originalTask:(id)task redirect:(BOOL)redirect error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  redirectCopy = redirect;
+  requestCopy = request;
+  taskCopy = task;
   v12 = objc_alloc_init(AMSMutablePromise);
-  v13 = [(AMSPromise *)v12 completionHandlerAdapter];
-  [(AMSURLProtocolHandler *)self reconfigureNewRequest:v10 originalTask:v11 redirect:v7 completionHandler:v13];
+  completionHandlerAdapter = [(AMSPromise *)v12 completionHandlerAdapter];
+  [(AMSURLProtocolHandler *)self reconfigureNewRequest:requestCopy originalTask:taskCopy redirect:redirectCopy completionHandler:completionHandlerAdapter];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __75__AMSURLProtocolHandler_reconfigureNewRequest_originalTask_redirect_error___block_invoke;
   v17[3] = &unk_1E73B34E8;
-  v18 = v10;
-  v14 = v10;
+  v18 = requestCopy;
+  v14 = requestCopy;
   v15 = [(AMSMutablePromise *)v12 thenWithBlock:v17];
-  v16 = [v15 resultWithError:a6];
+  v16 = [v15 resultWithError:error];
 }
 
 id __75__AMSURLProtocolHandler_reconfigureNewRequest_originalTask_redirect_error___block_invoke(uint64_t a1, void *a2)
@@ -1703,34 +1703,34 @@ id __75__AMSURLProtocolHandler_reconfigureNewRequest_originalTask_redirect_error
   return v9;
 }
 
-- (void)reportMetricsForContext:(id)a3
+- (void)reportMetricsForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(AMSURLProtocolHandler *)self metricsHandler];
-  [v5 reportMetricsForContext:v4];
+  contextCopy = context;
+  metricsHandler = [(AMSURLProtocolHandler *)self metricsHandler];
+  [metricsHandler reportMetricsForContext:contextCopy];
 }
 
-+ (id)reversePushSamplingPercentageForTask:(id)a3
++ (id)reversePushSamplingPercentageForTask:(id)task
 {
-  v4 = [AMSURLTaskInfo taskInfoForTask:a3];
+  v4 = [AMSURLTaskInfo taskInfoForTask:task];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 properties];
-    v7 = [v6 bag];
+    properties = [v4 properties];
+    v7 = [properties bag];
 
     if (v7)
     {
       v8 = objc_alloc_init(AMSMutablePromise);
-      v9 = [v5 properties];
-      v10 = [v9 bag];
+      properties2 = [v5 properties];
+      v10 = [properties2 bag];
       v11 = [v10 doubleForKey:@"aps-sampling-percentage"];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __62__AMSURLProtocolHandler_reversePushSamplingPercentageForTask___block_invoke;
       v18[3] = &unk_1E73BD0A8;
       v19 = v5;
-      v21 = a1;
+      selfCopy = self;
       v12 = v8;
       v20 = v12;
       [v11 valueWithCompletion:v18];
@@ -1827,14 +1827,14 @@ LABEL_2:
   }
 }
 
-- (id)_handleResponse:(id)a3 task:(id)a4
+- (id)_handleResponse:(id)response task:(id)task
 {
   v84 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v49 = a4;
+  responseCopy = response;
+  taskCopy = task;
   v7 = [AMSURLTaskInfo taskInfoForTask:?];
-  v51 = [v6 ams_valueForHTTPHeaderField:@"X-Apple-Application-Site"];
-  v8 = [v6 ams_valueForHTTPHeaderField:@"X-Apple-Jingle-Correlation-Key"];
+  v51 = [responseCopy ams_valueForHTTPHeaderField:@"X-Apple-Application-Site"];
+  v8 = [responseCopy ams_valueForHTTPHeaderField:@"X-Apple-Jingle-Correlation-Key"];
   if ((os_variant_has_internal_content() & 1) == 0)
   {
 
@@ -1848,34 +1848,34 @@ LABEL_2:
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     v12 = v11;
-    v13 = [v7 properties];
-    v14 = [v13 logUUID];
-    v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "ams_statusCode")}];
+    properties = [v7 properties];
+    logUUID = [properties logUUID];
+    v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(responseCopy, "ams_statusCode")}];
     *buf = 138544386;
     v75 = v11;
     v76 = 2114;
-    v77 = v14;
+    v77 = logUUID;
     v78 = 2114;
     v79 = v15;
     v80 = 2114;
     v81 = v50;
     v82 = 2114;
     v83 = v51;
-    _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] StatusCode: %{public}@; %{public}@; Environment: %{public}@", buf, 0x34u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] StatusCode: %{public}@; %{public}@; Environment: %{public}@", buf, 0x34u);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v6;
-    v17 = [v7 properties];
-    v18 = [(AMSURLProtocolHandler *)self session];
-    if (!v18)
+    v16 = responseCopy;
+    properties2 = [v7 properties];
+    session = [(AMSURLProtocolHandler *)self session];
+    if (!session)
     {
       v19 = +[AMSLogConfig sharedURLLoadingConfig];
       if (!v19)
@@ -1883,28 +1883,28 @@ LABEL_2:
         v19 = +[AMSLogConfig sharedConfig];
       }
 
-      v20 = [v19 OSLogObject];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v19 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v21 = objc_opt_class();
-        v22 = [v17 logUUID];
+        logUUID2 = [properties2 logUUID];
         *buf = 138543618;
         v75 = v21;
         v76 = 2114;
-        v77 = v22;
-        _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] URL session is unexpectedly nil for Fraud Report, using default session", buf, 0x16u);
+        v77 = logUUID2;
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] URL session is unexpectedly nil for Fraud Report, using default session", buf, 0x16u);
       }
 
-      v18 = +[AMSURLSession defaultSession];
+      session = +[AMSURLSession defaultSession];
     }
 
-    v23 = [v17 account];
-    v24 = [v17 bag];
-    v25 = [v17 userInfo];
-    v26 = AMSFraudReportHandleResponseWithDetachedHandling(v18, v16, v23, v24, v25, self->_fraudReportStateStorageFactoryBlock, self->_fraudReportRefreshScoreBlock);
+    account = [properties2 account];
+    v24 = [properties2 bag];
+    userInfo = [properties2 userInfo];
+    v26 = AMSFraudReportHandleResponseWithDetachedHandling(session, v16, account, v24, userInfo, self->_fraudReportStateStorageFactoryBlock, self->_fraudReportRefreshScoreBlock);
   }
 
-  v48 = [(AMSURLProtocolHandler *)self _setResponseCookiesFromResponse:v6 taskInfo:v7];
+  v48 = [(AMSURLProtocolHandler *)self _setResponseCookiesFromResponse:responseCopy taskInfo:v7];
   v71[0] = MEMORY[0x1E69E9820];
   v71[1] = 3221225472;
   v71[2] = __46__AMSURLProtocolHandler__handleResponse_task___block_invoke;
@@ -1912,7 +1912,7 @@ LABEL_2:
   v71[4] = self;
   v27 = v7;
   v72 = v27;
-  v28 = v6;
+  v28 = responseCopy;
   v73 = v28;
   v47 = [v48 continueWithBlock:v71];
   v69[0] = MEMORY[0x1E69E9820];
@@ -1923,17 +1923,17 @@ LABEL_2:
   v29 = v27;
   v70 = v29;
   v30 = [v47 catchWithBlock:v69];
-  v31 = [v30 promiseAdapter];
+  promiseAdapter = [v30 promiseAdapter];
   v65[0] = MEMORY[0x1E69E9820];
   v65[1] = 3221225472;
   v65[2] = __46__AMSURLProtocolHandler__handleResponse_task___block_invoke_139;
   v65[3] = &unk_1E73BD0F8;
   v32 = v28;
   v66 = v32;
-  v67 = self;
+  selfCopy = self;
   v33 = v29;
   v68 = v33;
-  v34 = [v31 thenWithBlock:v65];
+  v34 = [promiseAdapter thenWithBlock:v65];
   v61[0] = MEMORY[0x1E69E9820];
   v61[1] = 3221225472;
   v61[2] = __46__AMSURLProtocolHandler__handleResponse_task___block_invoke_147;
@@ -1942,7 +1942,7 @@ LABEL_2:
   v62 = v35;
   v36 = v32;
   v63 = v36;
-  v64 = self;
+  selfCopy2 = self;
   v37 = [v34 continueWithBlock:v61];
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
@@ -1950,11 +1950,11 @@ LABEL_2:
   v56[3] = &unk_1E73B9BA8;
   v38 = v36;
   v57 = v38;
-  v39 = v49;
+  v39 = taskCopy;
   v58 = v39;
   v40 = v35;
   v59 = v40;
-  v60 = self;
+  selfCopy3 = self;
   v41 = [v37 continueWithBlock:v56];
   v52[0] = MEMORY[0x1E69E9820];
   v52[1] = 3221225472;
@@ -2508,33 +2508,33 @@ id __46__AMSURLProtocolHandler__handleResponse_task___block_invoke_159(uint64_t 
   return v27;
 }
 
-- (void)_pingURL:(id)a3 session:(id)a4 account:(id)a5 bag:(id)a6
+- (void)_pingURL:(id)l session:(id)session account:(id)account bag:(id)bag
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v13)
+  lCopy = l;
+  sessionCopy = session;
+  accountCopy = account;
+  bagCopy = bag;
+  v14 = bagCopy;
+  if (bagCopy)
   {
-    v15 = [v13 URLForKey:@"metrics/metricsUrl"];
-    v16 = [v15 valuePromise];
+    v15 = [bagCopy URLForKey:@"metrics/metricsUrl"];
+    valuePromise = [v15 valuePromise];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __54__AMSURLProtocolHandler__pingURL_session_account_bag___block_invoke;
     v29[3] = &unk_1E73BB150;
     v29[4] = self;
-    v30 = v10;
+    v30 = lCopy;
     v31 = v14;
-    v32 = v12;
-    v17 = [v16 continueWithBlock:v29];
+    v32 = accountCopy;
+    v17 = [valuePromise continueWithBlock:v29];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __54__AMSURLProtocolHandler__pingURL_session_account_bag___block_invoke_2;
     v27[3] = &unk_1E73B45F0;
     v27[4] = self;
-    v28 = v11;
+    v28 = sessionCopy;
     v18 = [v17 thenWithBlock:v27];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
@@ -2552,8 +2552,8 @@ id __46__AMSURLProtocolHandler__handleResponse_task___block_invoke_159(uint64_t 
       v19 = +[AMSLogConfig sharedConfig];
     }
 
-    v20 = [v19 OSLogObject];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
+    oSLogObject = [v19 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v21 = AMSLogKey();
       v22 = MEMORY[0x1E696AEC0];
@@ -2569,14 +2569,14 @@ id __46__AMSURLProtocolHandler__handleResponse_task___block_invoke_159(uint64_t 
       {
         [v22 stringWithFormat:@"%@: ", v23];
       }
-      v25 = ;
+      selfCopy = ;
       *buf = 138543362;
-      v34 = v25;
-      _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_INFO, "%{public}@Skipping ping-url as bag was not provided.", buf, 0xCu);
+      v34 = selfCopy;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@Skipping ping-url as bag was not provided.", buf, 0xCu);
       if (v21)
       {
 
-        v25 = self;
+        selfCopy = self;
       }
     }
   }
@@ -2815,12 +2815,12 @@ void __54__AMSURLProtocolHandler__pingURL_session_account_bag___block_invoke_174
   }
 }
 
-- (id)_setResponseCookiesFromResponse:(id)a3 taskInfo:(id)a4
+- (id)_setResponseCookiesFromResponse:(id)response taskInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 properties];
-  if ([v8 shouldSetCookiesFromResponse])
+  responseCopy = response;
+  infoCopy = info;
+  properties = [infoCopy properties];
+  if ([properties shouldSetCookiesFromResponse])
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -2828,20 +2828,20 @@ void __54__AMSURLProtocolHandler__pingURL_session_account_bag___block_invoke_174
     if (isKindOfClass)
     {
       v10 = MEMORY[0x1E6959A48];
-      v11 = [v7 properties];
-      v12 = [v11 clientInfo];
-      v13 = [v10 ams_sharedAccountStoreForProcessInfo:v12];
+      properties2 = [infoCopy properties];
+      clientInfo = [properties2 clientInfo];
+      v13 = [v10 ams_sharedAccountStoreForProcessInfo:clientInfo];
 
-      v14 = [v7 properties];
-      v15 = [v14 account];
-      v16 = [v13 ams_addCookiesForResponse:v6 account:v15];
+      properties3 = [infoCopy properties];
+      account = [properties3 account];
+      v16 = [v13 ams_addCookiesForResponse:responseCopy account:account];
 
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __66__AMSURLProtocolHandler__setResponseCookiesFromResponse_taskInfo___block_invoke;
       v22[3] = &unk_1E73B32F0;
       v22[4] = self;
-      v23 = v7;
+      v23 = infoCopy;
       [v16 addErrorBlock:v22];
 
       goto LABEL_10;
@@ -2852,8 +2852,8 @@ void __54__AMSURLProtocolHandler__pingURL_session_account_bag___block_invoke_174
   {
   }
 
-  v17 = [v7 properties];
-  if ([v17 shouldSetCookiesFromResponse])
+  properties4 = [infoCopy properties];
+  if ([properties4 shouldSetCookiesFromResponse])
   {
   }
 
@@ -2864,9 +2864,9 @@ void __54__AMSURLProtocolHandler__pingURL_session_account_bag___block_invoke_174
 
     if (v18)
     {
-      v19 = [v7 properties];
-      v20 = [v19 account];
-      v16 = [v20 ams_asynchronouslyAddCookiesForResponse:v6];
+      properties5 = [infoCopy properties];
+      account2 = [properties5 account];
+      v16 = [account2 ams_asynchronouslyAddCookiesForResponse:responseCopy];
 
       goto LABEL_10;
     }
@@ -2905,31 +2905,31 @@ void __66__AMSURLProtocolHandler__setResponseCookiesFromResponse_taskInfo___bloc
   }
 }
 
-- (id)shouldEnableReversePushForTask:(id)a3
+- (id)shouldEnableReversePushForTask:(id)task
 {
   v55 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [AMSURLTaskInfo taskInfoForTask:v3];
-  v5 = [v4 properties];
-  v6 = [v5 reversePushType];
+  taskCopy = task;
+  v4 = [AMSURLTaskInfo taskInfoForTask:taskCopy];
+  properties = [v4 properties];
+  reversePushType = [properties reversePushType];
 
-  v7 = [v4 properties];
-  v8 = [v7 purchaseInfo];
-  v9 = v8 != 0;
+  properties2 = [v4 properties];
+  purchaseInfo = [properties2 purchaseInfo];
+  v9 = purchaseInfo != 0;
 
-  v10 = [v4 properties];
-  v11 = [v10 bag];
+  properties3 = [v4 properties];
+  v11 = [properties3 bag];
 
-  v12 = [v4 properties];
-  v13 = [v12 logUUID];
+  properties4 = [v4 properties];
+  logUUID = [properties4 logUUID];
 
-  v14 = [v3 currentRequest];
-  v15 = [v14 URL];
-  v16 = [v15 absoluteString];
+  currentRequest = [taskCopy currentRequest];
+  v15 = [currentRequest URL];
+  absoluteString = [v15 absoluteString];
 
   if (+[AMSDefaults QAMode])
   {
-    if (v8)
+    if (purchaseInfo)
     {
       v17 = +[AMSLogConfig sharedURLLoadingConfig];
       if (!v17)
@@ -2937,17 +2937,17 @@ void __66__AMSURLProtocolHandler__setResponseCookiesFromResponse_taskInfo___bloc
         v17 = +[AMSLogConfig sharedConfig];
       }
 
-      v18 = [v17 OSLogObject];
-      if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v17 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_38;
       }
 
       v19 = MEMORY[0x1E696AEC0];
       v20 = objc_opt_class();
-      if (v13)
+      if (logUUID)
       {
-        [v19 stringWithFormat:@"%@: [%@] ", v20, v13];
+        [v19 stringWithFormat:@"%@: [%@] ", v20, logUUID];
       }
 
       else
@@ -2962,9 +2962,9 @@ void __66__AMSURLProtocolHandler__setResponseCookiesFromResponse_taskInfo___bloc
     }
   }
 
-  else if ((v6 - 1) > 1)
+  else if ((reversePushType - 1) > 1)
   {
-    if (v6 == 3)
+    if (reversePushType == 3)
     {
       v23 = +[AMSLogConfig sharedURLLoadingConfig];
       if (!v23)
@@ -2972,14 +2972,14 @@ void __66__AMSURLProtocolHandler__setResponseCookiesFromResponse_taskInfo___bloc
         v23 = +[AMSLogConfig sharedConfig];
       }
 
-      v24 = [v23 OSLogObject];
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v23 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v25 = MEMORY[0x1E696AEC0];
         v26 = objc_opt_class();
-        if (v13)
+        if (logUUID)
         {
-          [v25 stringWithFormat:@"%@: [%@] ", v26, v13];
+          [v25 stringWithFormat:@"%@: [%@] ", v26, logUUID];
         }
 
         else
@@ -2989,7 +2989,7 @@ void __66__AMSURLProtocolHandler__setResponseCookiesFromResponse_taskInfo___bloc
         v39 = ;
         *buf = 138543362;
         v54 = v39;
-        _os_log_impl(&dword_192869000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@Reverse push explicitly enabled by caller", buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Reverse push explicitly enabled by caller", buf, 0xCu);
       }
 
       v36 = 1;
@@ -2998,7 +2998,7 @@ void __66__AMSURLProtocolHandler__setResponseCookiesFromResponse_taskInfo___bloc
 
     if (+[AMSDefaults reversePushEnabled]!= 2)
     {
-      if (v16)
+      if (absoluteString)
       {
         if (v11)
         {
@@ -3007,13 +3007,13 @@ void __66__AMSURLProtocolHandler__setResponseCookiesFromResponse_taskInfo___bloc
             v29 = [AMSDouble doubleWithDouble:1.0];
             v30 = [AMSPromise promiseWithResult:v29];
 
-            v31 = self;
+            selfCopy2 = self;
           }
 
           else
           {
-            v31 = self;
-            v30 = [objc_opt_class() reversePushSamplingPercentageForTask:v3];
+            selfCopy2 = self;
+            v30 = [objc_opt_class() reversePushSamplingPercentageForTask:taskCopy];
           }
 
           v46[0] = MEMORY[0x1E69E9820];
@@ -3022,16 +3022,16 @@ void __66__AMSURLProtocolHandler__setResponseCookiesFromResponse_taskInfo___bloc
           v46[3] = &unk_1E73BD1D8;
           v52 = v9;
           v47 = v4;
-          v48 = v31;
+          v48 = selfCopy2;
           v49 = v11;
-          v50 = v13;
-          v51 = v16;
+          v50 = logUUID;
+          v51 = absoluteString;
           v37 = [v30 thenWithBlock:v46];
 
           goto LABEL_41;
         }
 
-        if (!v8)
+        if (!purchaseInfo)
         {
           goto LABEL_39;
         }
@@ -3042,17 +3042,17 @@ void __66__AMSURLProtocolHandler__setResponseCookiesFromResponse_taskInfo___bloc
           v17 = +[AMSLogConfig sharedConfig];
         }
 
-        v18 = [v17 OSLogObject];
-        if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v17 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_38;
         }
 
         v42 = MEMORY[0x1E696AEC0];
         v43 = objc_opt_class();
-        if (v13)
+        if (logUUID)
         {
-          [v42 stringWithFormat:@"%@: [%@] ", v43, v13];
+          [v42 stringWithFormat:@"%@: [%@] ", v43, logUUID];
         }
 
         else
@@ -3067,7 +3067,7 @@ void __66__AMSURLProtocolHandler__setResponseCookiesFromResponse_taskInfo___bloc
 
       else
       {
-        if (!v8)
+        if (!purchaseInfo)
         {
           goto LABEL_39;
         }
@@ -3078,17 +3078,17 @@ void __66__AMSURLProtocolHandler__setResponseCookiesFromResponse_taskInfo___bloc
           v17 = +[AMSLogConfig sharedConfig];
         }
 
-        v18 = [v17 OSLogObject];
-        if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v17 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_38;
         }
 
         v40 = MEMORY[0x1E696AEC0];
         v41 = objc_opt_class();
-        if (v13)
+        if (logUUID)
         {
-          [v40 stringWithFormat:@"%@: [%@] ", v41, v13];
+          [v40 stringWithFormat:@"%@: [%@] ", v41, logUUID];
         }
 
         else
@@ -3101,12 +3101,12 @@ void __66__AMSURLProtocolHandler__setResponseCookiesFromResponse_taskInfo___bloc
         v33 = "%{public}@Reverse push disabled because we can’t find a URL";
       }
 
-      v34 = v18;
+      v34 = oSLogObject;
       v35 = OS_LOG_TYPE_ERROR;
       goto LABEL_37;
     }
 
-    if (v8)
+    if (purchaseInfo)
     {
       v17 = +[AMSLogConfig sharedURLLoadingConfig];
       if (!v17)
@@ -3114,17 +3114,17 @@ void __66__AMSURLProtocolHandler__setResponseCookiesFromResponse_taskInfo___bloc
         v17 = +[AMSLogConfig sharedConfig];
       }
 
-      v18 = [v17 OSLogObject];
-      if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+      oSLogObject = [v17 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
       {
         goto LABEL_38;
       }
 
       v27 = MEMORY[0x1E696AEC0];
       v28 = objc_opt_class();
-      if (v13)
+      if (logUUID)
       {
-        [v27 stringWithFormat:@"%@: [%@] ", v28, v13];
+        [v27 stringWithFormat:@"%@: [%@] ", v28, logUUID];
       }
 
       else
@@ -3135,13 +3135,13 @@ void __66__AMSURLProtocolHandler__setResponseCookiesFromResponse_taskInfo___bloc
       *buf = 138543362;
       v54 = v32;
       v33 = "%{public}@Reverse push disabled (AMSDefaults)";
-      v34 = v18;
+      v34 = oSLogObject;
       v35 = OS_LOG_TYPE_DEBUG;
       goto LABEL_37;
     }
   }
 
-  else if (v8)
+  else if (purchaseInfo)
   {
     v17 = +[AMSLogConfig sharedURLLoadingConfig];
     if (!v17)
@@ -3149,17 +3149,17 @@ void __66__AMSURLProtocolHandler__setResponseCookiesFromResponse_taskInfo___bloc
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v17 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_38;
     }
 
     v21 = MEMORY[0x1E696AEC0];
     v22 = objc_opt_class();
-    if (v13)
+    if (logUUID)
     {
-      [v21 stringWithFormat:@"%@: [%@] ", v22, v13];
+      [v21 stringWithFormat:@"%@: [%@] ", v22, logUUID];
     }
 
     else
@@ -3171,7 +3171,7 @@ void __66__AMSURLProtocolHandler__setResponseCookiesFromResponse_taskInfo___bloc
     v54 = v32;
     v33 = "%{public}@Reverse push disabled by caller";
 LABEL_36:
-    v34 = v18;
+    v34 = oSLogObject;
     v35 = OS_LOG_TYPE_DEFAULT;
 LABEL_37:
     _os_log_impl(&dword_192869000, v34, v35, v33, buf, 0xCu);
@@ -3390,14 +3390,14 @@ LABEL_31:
   return v22;
 }
 
-- (id)_URLIsTrustedFromRequest:(id)a3 bag:(id)a4
+- (id)_URLIsTrustedFromRequest:(id)request bag:(id)bag
 {
-  v5 = a4;
-  v6 = a3;
+  bagCopy = bag;
+  requestCopy = request;
   v7 = objc_alloc_init(AMSMutablePromise);
-  v8 = [[AMSURLSentry alloc] initWithBag:v5];
+  v8 = [[AMSURLSentry alloc] initWithBag:bagCopy];
 
-  v9 = [v6 URL];
+  v9 = [requestCopy URL];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;

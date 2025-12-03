@@ -1,9 +1,9 @@
 @interface NavdRecentLocationsServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NavdRecentLocationsServer)init;
-- (void)beginServicingConnection:(id)a3;
-- (void)endServicingConnection:(id)a3;
-- (void)requestRecentLocationsWithResponse:(id)a3;
+- (void)beginServicingConnection:(id)connection;
+- (void)endServicingConnection:(id)connection;
+- (void)requestRecentLocationsWithResponse:(id)response;
 @end
 
 @implementation NavdRecentLocationsServer
@@ -39,18 +39,18 @@
   return v2;
 }
 
-- (void)requestRecentLocationsWithResponse:(id)a3
+- (void)requestRecentLocationsWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(GEOPerformanceEventLogger *)self->_performanceEventLogger logPerformanceEvent:"[NavdRecentLocationsServer requestRecentLocationsWithResponse:]"];
   v5 = +[NavdLocationLeecher sharedLeecher];
-  v6 = [v5 leechedLocations];
+  leechedLocations = [v5 leechedLocations];
   v7 = objc_alloc_init(NSMutableArray);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = leechedLocations;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -82,34 +82,34 @@
   }
 
   v16 = [v7 copy];
-  v4[2](v4, v16);
+  responseCopy[2](responseCopy, v16);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForEntitlement:@"com.apple.geoservices.navd.recentLocations"];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.geoservices.navd.recentLocations"];
   v9 = [v8 isEqual:&__kCFBooleanTrue];
 
   if (v9)
   {
-    [(NavdRecentLocationsServer *)self beginServicingConnection:v7];
+    [(NavdRecentLocationsServer *)self beginServicingConnection:connectionCopy];
     v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___GEORecentLocationsXPCInterface];
     v11 = objc_opt_class();
     v12 = [NSSet setWithObjects:v11, objc_opt_class(), 0];
     [v10 setClasses:v12 forSelector:"requestRecentLocationsWithResponse:" argumentIndex:0 ofReply:1];
-    [v7 setExportedInterface:v10];
-    [v7 setExportedObject:self];
-    objc_initWeak(&location, v7);
+    [connectionCopy setExportedInterface:v10];
+    [connectionCopy setExportedObject:self];
+    objc_initWeak(&location, connectionCopy);
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10002A204;
     v14[3] = &unk_100064F58;
     objc_copyWeak(&v15, &location);
     v14[4] = self;
-    [v7 setInvalidationHandler:v14];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:v14];
+    [connectionCopy resume];
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
@@ -117,31 +117,31 @@
   return v9;
 }
 
-- (void)beginServicingConnection:(id)a3
+- (void)beginServicingConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   peersQueue = self->_peersQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002A2F8;
   v7[3] = &unk_1000650C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_sync(peersQueue, v7);
 }
 
-- (void)endServicingConnection:(id)a3
+- (void)endServicingConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   peersQueue = self->_peersQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002A39C;
   v7[3] = &unk_1000650C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_sync(peersQueue, v7);
 }
 

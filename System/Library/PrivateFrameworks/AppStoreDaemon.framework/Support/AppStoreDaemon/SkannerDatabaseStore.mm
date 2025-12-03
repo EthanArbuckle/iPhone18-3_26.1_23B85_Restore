@@ -1,8 +1,8 @@
 @interface SkannerDatabaseStore
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3;
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema;
 + (SQLiteDatabaseStoreDescriptor)storeDescriptor;
 - (_TtC9appstored20SkannerDatabaseStore)init;
-- (_TtC9appstored20SkannerDatabaseStore)initWithDatabase:(id)a3;
+- (_TtC9appstored20SkannerDatabaseStore)initWithDatabase:(id)database;
 @end
 
 @implementation SkannerDatabaseStore
@@ -21,7 +21,7 @@
   return v7;
 }
 
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
   v5 = swift_allocObject();
@@ -33,19 +33,19 @@
   v10[2] = sub_1000C127C;
   v10[3] = &unk_10050B9F8;
   v6 = _Block_copy(v10);
-  v7 = a3;
+  schemaCopy = schema;
 
-  v8 = sub_100252C74(v7, 16400, v6);
+  v8 = sub_100252C74(schemaCopy, 16400, v6);
   _Block_release(v6);
 
   return v8;
 }
 
-- (_TtC9appstored20SkannerDatabaseStore)initWithDatabase:(id)a3
+- (_TtC9appstored20SkannerDatabaseStore)initWithDatabase:(id)database
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
-  return [(SQLiteDatabaseStore *)&v5 initWithDatabase:a3];
+  return [(SQLiteDatabaseStore *)&v5 initWithDatabase:database];
 }
 
 - (_TtC9appstored20SkannerDatabaseStore)init

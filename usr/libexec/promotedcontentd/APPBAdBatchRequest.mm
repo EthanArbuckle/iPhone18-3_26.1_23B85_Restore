@@ -1,17 +1,17 @@
 @interface APPBAdBatchRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCachedAds:(id)a3;
-- (void)addRequesters:(id)a3;
-- (void)addResourceCacheEntries:(id)a3;
-- (void)addTags:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCachedAds:(id)ads;
+- (void)addRequesters:(id)requesters;
+- (void)addResourceCacheEntries:(id)entries;
+- (void)addTags:(id)tags;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBAdBatchRequest
@@ -28,76 +28,76 @@
   return v3;
 }
 
-- (void)addResourceCacheEntries:(id)a3
+- (void)addResourceCacheEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   resourceCacheEntries = self->_resourceCacheEntries;
-  v8 = v4;
+  v8 = entriesCopy;
   if (!resourceCacheEntries)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_resourceCacheEntries;
     self->_resourceCacheEntries = v6;
 
-    v4 = v8;
+    entriesCopy = v8;
     resourceCacheEntries = self->_resourceCacheEntries;
   }
 
-  [(NSMutableArray *)resourceCacheEntries addObject:v4];
+  [(NSMutableArray *)resourceCacheEntries addObject:entriesCopy];
 }
 
-- (void)addCachedAds:(id)a3
+- (void)addCachedAds:(id)ads
 {
-  v4 = a3;
+  adsCopy = ads;
   cachedAds = self->_cachedAds;
-  v8 = v4;
+  v8 = adsCopy;
   if (!cachedAds)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_cachedAds;
     self->_cachedAds = v6;
 
-    v4 = v8;
+    adsCopy = v8;
     cachedAds = self->_cachedAds;
   }
 
-  [(NSMutableArray *)cachedAds addObject:v4];
+  [(NSMutableArray *)cachedAds addObject:adsCopy];
 }
 
-- (void)addTags:(id)a3
+- (void)addTags:(id)tags
 {
-  v4 = a3;
+  tagsCopy = tags;
   tags = self->_tags;
-  v8 = v4;
+  v8 = tagsCopy;
   if (!tags)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_tags;
     self->_tags = v6;
 
-    v4 = v8;
+    tagsCopy = v8;
     tags = self->_tags;
   }
 
-  [(NSMutableArray *)tags addObject:v4];
+  [(NSMutableArray *)tags addObject:tagsCopy];
 }
 
-- (void)addRequesters:(id)a3
+- (void)addRequesters:(id)requesters
 {
-  v4 = a3;
+  requestersCopy = requesters;
   requesters = self->_requesters;
-  v8 = v4;
+  v8 = requestersCopy;
   if (!requesters)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_requesters;
     self->_requesters = v6;
 
-    v4 = v8;
+    requestersCopy = v8;
     requesters = self->_requesters;
   }
 
-  [(NSMutableArray *)requesters addObject:v4];
+  [(NSMutableArray *)requesters addObject:requestersCopy];
 }
 
 - (id)description
@@ -105,8 +105,8 @@
   v7.receiver = self;
   v7.super_class = APPBAdBatchRequest;
   v3 = [(APPBAdBatchRequest *)&v7 description];
-  v4 = [(APPBAdBatchRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBAdBatchRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -117,15 +117,15 @@
   requestProperties = self->_requestProperties;
   if (requestProperties)
   {
-    v5 = [(APPBRequestProperties *)requestProperties dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"requestProperties"];
+    dictionaryRepresentation = [(APPBRequestProperties *)requestProperties dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"requestProperties"];
   }
 
   specification = self->_specification;
   if (specification)
   {
-    v7 = [(APPBAdSpecification *)specification dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"specification"];
+    dictionaryRepresentation2 = [(APPBAdSpecification *)specification dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"specification"];
   }
 
   if ([(NSMutableArray *)self->_resourceCacheEntries count])
@@ -150,8 +150,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v39 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation3 = [*(*(&v39 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation3];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v39 objects:v45 count:16];
@@ -185,8 +185,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v35 + 1) + 8 * j) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation4 = [*(*(&v35 + 1) + 8 * j) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation4];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v35 objects:v44 count:16];
@@ -226,8 +226,8 @@
             objc_enumerationMutation(v24);
           }
 
-          v29 = [*(*(&v31 + 1) + 8 * k) dictionaryRepresentation];
-          [v23 addObject:v29];
+          dictionaryRepresentation5 = [*(*(&v31 + 1) + 8 * k) dictionaryRepresentation];
+          [v23 addObject:dictionaryRepresentation5];
         }
 
         v26 = [(NSMutableArray *)v24 countByEnumeratingWithState:&v31 objects:v43 count:16];
@@ -242,9 +242,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_requestProperties)
   {
     PBDataWriterWriteSubmessage();
@@ -380,88 +380,88 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v20 = a3;
+  toCopy = to;
   if (self->_requestProperties)
   {
-    [v20 setRequestProperties:?];
+    [toCopy setRequestProperties:?];
   }
 
   if (self->_specification)
   {
-    [v20 setSpecification:?];
+    [toCopy setSpecification:?];
   }
 
   if ([(APPBAdBatchRequest *)self resourceCacheEntriesCount])
   {
-    [v20 clearResourceCacheEntries];
-    v4 = [(APPBAdBatchRequest *)self resourceCacheEntriesCount];
-    if (v4)
+    [toCopy clearResourceCacheEntries];
+    resourceCacheEntriesCount = [(APPBAdBatchRequest *)self resourceCacheEntriesCount];
+    if (resourceCacheEntriesCount)
     {
-      v5 = v4;
+      v5 = resourceCacheEntriesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(APPBAdBatchRequest *)self resourceCacheEntriesAtIndex:i];
-        [v20 addResourceCacheEntries:v7];
+        [toCopy addResourceCacheEntries:v7];
       }
     }
   }
 
   if ([(APPBAdBatchRequest *)self cachedAdsCount])
   {
-    [v20 clearCachedAds];
-    v8 = [(APPBAdBatchRequest *)self cachedAdsCount];
-    if (v8)
+    [toCopy clearCachedAds];
+    cachedAdsCount = [(APPBAdBatchRequest *)self cachedAdsCount];
+    if (cachedAdsCount)
     {
-      v9 = v8;
+      v9 = cachedAdsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(APPBAdBatchRequest *)self cachedAdsAtIndex:j];
-        [v20 addCachedAds:v11];
+        [toCopy addCachedAds:v11];
       }
     }
   }
 
   if ([(APPBAdBatchRequest *)self tagsCount])
   {
-    [v20 clearTags];
-    v12 = [(APPBAdBatchRequest *)self tagsCount];
-    if (v12)
+    [toCopy clearTags];
+    tagsCount = [(APPBAdBatchRequest *)self tagsCount];
+    if (tagsCount)
     {
-      v13 = v12;
+      v13 = tagsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(APPBAdBatchRequest *)self tagsAtIndex:k];
-        [v20 addTags:v15];
+        [toCopy addTags:v15];
       }
     }
   }
 
   if ([(APPBAdBatchRequest *)self requestersCount])
   {
-    [v20 clearRequesters];
-    v16 = [(APPBAdBatchRequest *)self requestersCount];
-    if (v16)
+    [toCopy clearRequesters];
+    requestersCount = [(APPBAdBatchRequest *)self requestersCount];
+    if (requestersCount)
     {
-      v17 = v16;
+      v17 = requestersCount;
       for (m = 0; m != v17; ++m)
       {
         v19 = [(APPBAdBatchRequest *)self requestersAtIndex:m];
-        [v20 addRequesters:v19];
+        [toCopy addRequesters:v19];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(APPBRequestProperties *)self->_requestProperties copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(APPBRequestProperties *)self->_requestProperties copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(APPBAdSpecification *)self->_specification copyWithZone:a3];
+  v8 = [(APPBAdSpecification *)self->_specification copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
@@ -485,7 +485,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v47 + 1) + 8 * v14) copyWithZone:a3];
+        v15 = [*(*(&v47 + 1) + 8 * v14) copyWithZone:zone];
         [v5 addResourceCacheEntries:v15];
 
         v14 = v14 + 1;
@@ -518,7 +518,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v43 + 1) + 8 * v20) copyWithZone:a3];
+        v21 = [*(*(&v43 + 1) + 8 * v20) copyWithZone:zone];
         [v5 addCachedAds:v21];
 
         v20 = v20 + 1;
@@ -551,7 +551,7 @@
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v39 + 1) + 8 * v26) copyWithZone:a3];
+        v27 = [*(*(&v39 + 1) + 8 * v26) copyWithZone:zone];
         [v5 addTags:v27];
 
         v26 = v26 + 1;
@@ -584,7 +584,7 @@
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v35 + 1) + 8 * v32) copyWithZone:{a3, v35}];
+        v33 = [*(*(&v35 + 1) + 8 * v32) copyWithZone:{zone, v35}];
         [v5 addRequesters:v33];
 
         v32 = v32 + 1;
@@ -600,13 +600,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((requestProperties = self->_requestProperties, !(requestProperties | v4[2])) || -[APPBRequestProperties isEqual:](requestProperties, "isEqual:")) && ((specification = self->_specification, !(specification | v4[5])) || -[APPBAdSpecification isEqual:](specification, "isEqual:")) && ((resourceCacheEntries = self->_resourceCacheEntries, !(resourceCacheEntries | v4[4])) || -[NSMutableArray isEqual:](resourceCacheEntries, "isEqual:")) && ((cachedAds = self->_cachedAds, !(cachedAds | v4[1])) || -[NSMutableArray isEqual:](cachedAds, "isEqual:")) && ((tags = self->_tags, !(tags | v4[6])) || -[NSMutableArray isEqual:](tags, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((requestProperties = self->_requestProperties, !(requestProperties | equalCopy[2])) || -[APPBRequestProperties isEqual:](requestProperties, "isEqual:")) && ((specification = self->_specification, !(specification | equalCopy[5])) || -[APPBAdSpecification isEqual:](specification, "isEqual:")) && ((resourceCacheEntries = self->_resourceCacheEntries, !(resourceCacheEntries | equalCopy[4])) || -[NSMutableArray isEqual:](resourceCacheEntries, "isEqual:")) && ((cachedAds = self->_cachedAds, !(cachedAds | equalCopy[1])) || -[NSMutableArray isEqual:](cachedAds, "isEqual:")) && ((tags = self->_tags, !(tags | equalCopy[6])) || -[NSMutableArray isEqual:](tags, "isEqual:")))
   {
     requesters = self->_requesters;
-    if (requesters | v4[3])
+    if (requesters | equalCopy[3])
     {
       v11 = [(NSMutableArray *)requesters isEqual:?];
     }
@@ -635,11 +635,11 @@
   return v6 ^ v7 ^ [(NSMutableArray *)self->_requesters hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   requestProperties = self->_requestProperties;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (requestProperties)
   {
     if (v6)
@@ -654,7 +654,7 @@
   }
 
   specification = self->_specification;
-  v8 = *(v4 + 5);
+  v8 = *(fromCopy + 5);
   if (specification)
   {
     if (v8)
@@ -672,7 +672,7 @@
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v9 = *(v4 + 4);
+  v9 = *(fromCopy + 4);
   v10 = [v9 countByEnumeratingWithState:&v41 objects:v48 count:16];
   if (v10)
   {
@@ -700,7 +700,7 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v14 = *(v4 + 1);
+  v14 = *(fromCopy + 1);
   v15 = [v14 countByEnumeratingWithState:&v37 objects:v47 count:16];
   if (v15)
   {
@@ -728,7 +728,7 @@
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v19 = *(v4 + 6);
+  v19 = *(fromCopy + 6);
   v20 = [v19 countByEnumeratingWithState:&v33 objects:v46 count:16];
   if (v20)
   {
@@ -756,7 +756,7 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v24 = *(v4 + 3);
+  v24 = *(fromCopy + 3);
   v25 = [v24 countByEnumeratingWithState:&v29 objects:v45 count:16];
   if (v25)
   {

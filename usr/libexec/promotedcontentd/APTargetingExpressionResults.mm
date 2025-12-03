@@ -1,7 +1,7 @@
 @interface APTargetingExpressionResults
 + (NSDictionary)results;
 + (NSMutableDictionary)mutableResults;
-+ (void)addResult:(id)a3 result:(BOOL)a4;
++ (void)addResult:(id)result result:(BOOL)a4;
 + (void)clearResults;
 @end
 
@@ -39,16 +39,16 @@
   return v3;
 }
 
-+ (void)addResult:(id)a3 result:(BOOL)a4
++ (void)addResult:(id)result result:(BOOL)a4
 {
   v4 = a4;
-  v5 = a3;
+  resultCopy = result;
   v9 = +[APTargetingExpressionResults mutableResults];
   v6 = +[APTargetingExpressionResults lock];
   [v6 lock];
 
   v7 = [NSNumber numberWithBool:v4];
-  [v9 setObject:v7 forKey:v5];
+  [v9 setObject:v7 forKey:resultCopy];
 
   v8 = +[APTargetingExpressionResults lock];
   [v8 unlock];

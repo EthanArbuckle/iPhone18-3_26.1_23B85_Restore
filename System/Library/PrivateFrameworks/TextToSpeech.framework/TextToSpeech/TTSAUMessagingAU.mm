@@ -1,18 +1,18 @@
 @interface TTSAUMessagingAU
 - (TTSFirstPartyAudioUnit)owningAudioUnit;
-- (id)callAudioUnit:(id)a3;
+- (id)callAudioUnit:(id)unit;
 @end
 
 @implementation TTSAUMessagingAU
 
-- (id)callAudioUnit:(id)a3
+- (id)callAudioUnit:(id)unit
 {
   v87 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v12 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"TTSMessageChannelMessageSelectorKey", v6, v7);
+  unitCopy = unit;
+  v12 = objc_msgSend_objectForKeyedSubscript_(unitCopy, v5, @"TTSMessageChannelMessageSelectorKey", v6, v7);
   if (v12 && (objc_msgSend__validSelectorsForProtocol(TTSAUMessagingHost, v8, v9, v10, v11), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKeyedSubscript_(v13, v14, v12, v15, v16), v17 = objc_claimAutoreleasedReturnValue(), v17, v13, v17))
   {
-    v21 = objc_msgSend_objectForKeyedSubscript_(v4, v18, @"TTSMessageChannelMessageArgumentsKey", v19, v20);
+    v21 = objc_msgSend_objectForKeyedSubscript_(unitCopy, v18, @"TTSMessageChannelMessageArgumentsKey", v19, v20);
     v22 = NSSelectorFromString(v12);
     v27 = objc_msgSend_owningAudioUnit(self, v23, v24, v25, v26);
     v31 = objc_msgSend_methodSignatureForSelector_(v27, v28, v22, v29, v30);

@@ -1,10 +1,10 @@
 @interface MSSSharedLibraryCameraController
 - (id)deepLinkURL;
 - (id)pathComponentsLocalizedResource;
-- (id)shareFromCameraEnabledForSpecifier:(id)a3;
+- (id)shareFromCameraEnabledForSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)_setCameraAutoShareEnabled:(id)a3 enableAutoshare:(BOOL)a4;
-- (void)setShareFromCameraEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)_setCameraAutoShareEnabled:(id)enabled enableAutoshare:(BOOL)autoshare;
+- (void)setShareFromCameraEnabled:(id)enabled forSpecifier:(id)specifier;
 @end
 
 @implementation MSSSharedLibraryCameraController
@@ -14,8 +14,8 @@
   v3 = +[MSSSettingsUtilities photosMainPaneLocalizedResource];
   v4 = +[MSSSettingsUtilities sharedLibraryPaneLocalizedResource];
   v8[1] = v4;
-  v5 = [(MSSSharedLibraryCameraController *)self paneTitleLocalizedResource];
-  v8[2] = v5;
+  paneTitleLocalizedResource = [(MSSSharedLibraryCameraController *)self paneTitleLocalizedResource];
+  v8[2] = paneTitleLocalizedResource;
   v6 = [NSArray arrayWithObjects:v8 count:3];
 
   return v6;
@@ -51,9 +51,9 @@
     [v10 setObject:&__kCFBooleanTrue forKeyedSubscript:?];
     [v5 addObject:v10];
     v12 = [(MSSSharedLibraryCameraController *)self shareFromCameraEnabledForSpecifier:v10];
-    v13 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
 
-    if (v13)
+    if (bOOLValue)
     {
       v14 = [PSSpecifier groupSpecifierWithID:@"SharedLibraryAutoSelectionGroup"];
       v15 = PXLocalizedSharedLibraryString();
@@ -115,23 +115,23 @@
   return v4;
 }
 
-- (void)_setCameraAutoShareEnabled:(id)a3 enableAutoshare:(BOOL)a4
+- (void)_setCameraAutoShareEnabled:(id)enabled enableAutoshare:(BOOL)autoshare
 {
   PXPreferencesSetCameraAutoShareEnabled();
 
   [(MSSSharedLibraryCameraController *)self reloadSpecifiers];
 }
 
-- (id)shareFromCameraEnabledForSpecifier:(id)a3
+- (id)shareFromCameraEnabledForSpecifier:(id)specifier
 {
   IsCameraSharingEnabled = PXPreferencesIsCameraSharingEnabled();
 
   return [NSNumber numberWithBool:IsCameraSharingEnabled];
 }
 
-- (void)setShareFromCameraEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setShareFromCameraEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [enabled BOOLValue];
   PXPreferencesSetCameraSharingEnabled();
 
   [(MSSSharedLibraryCameraController *)self reloadSpecifiers];

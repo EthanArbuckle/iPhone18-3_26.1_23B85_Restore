@@ -2,13 +2,13 @@
 - (BOOL)canBeSharedViaICloud;
 - (BOOL)isSharedReadOnly;
 - (BOOL)isSharedViaICloud;
-- (BOOL)mergeWithSubFolderMergeableData:(id)a3;
-- (BOOL)noteIsVisible:(id)a3;
+- (BOOL)mergeWithSubFolderMergeableData:(id)data;
+- (BOOL)noteIsVisible:(id)visible;
 - (ICCROrderedSet)subFolderIdentifiersOrderedSet;
 - (ICTTOrderedSetVersionedDocument)subFolderIdentifiersOrderedSetDocument;
-- (void)applyDateHeadersType:(int64_t)a3;
+- (void)applyDateHeadersType:(int64_t)type;
 - (void)saveSubFolderMergeableDataIfNeeded;
-- (void)willRefresh:(BOOL)a3;
+- (void)willRefresh:(BOOL)refresh;
 - (void)willSave;
 - (void)willTurnIntoFault;
 - (void)writeSubFolderMergeableData;
@@ -50,23 +50,23 @@
   return [(ICCloudSyncingObject *)&v3 canBeSharedViaICloud];
 }
 
-- (BOOL)noteIsVisible:(id)a3
+- (BOOL)noteIsVisible:(id)visible
 {
-  if (!a3)
+  if (!visible)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(ICNoteContainer *)self predicateForVisibleNotes];
-  v6 = [v5 evaluateWithObject:v4];
+  visibleCopy = visible;
+  predicateForVisibleNotes = [(ICNoteContainer *)self predicateForVisibleNotes];
+  v6 = [predicateForVisibleNotes evaluateWithObject:visibleCopy];
 
   return v6;
 }
 
-- (void)willRefresh:(BOOL)a3
+- (void)willRefresh:(BOOL)refresh
 {
-  v3 = a3;
+  refreshCopy = refresh;
   if (![(ICNoteContainer *)self isSubFolderOrderMergeableDataDirty])
   {
     subFolderIdentifiersOrderedSetDocument = self->_subFolderIdentifiersOrderedSetDocument;
@@ -75,7 +75,7 @@
 
   v6.receiver = self;
   v6.super_class = ICNoteContainer;
-  [(ICNoteContainer *)&v6 willRefresh:v3];
+  [(ICNoteContainer *)&v6 willRefresh:refreshCopy];
 }
 
 - (void)willSave
@@ -92,9 +92,9 @@
   if (!subFolderIdentifiersOrderedSetDocument)
   {
     v4 = [ICTTOrderedSetVersionedDocument alloc];
-    v5 = [(ICNoteContainer *)self subFolderOrderMergeableData];
-    v6 = [(ICCloudSyncingObject *)self currentReplicaID];
-    v7 = [(ICTTVersionedDocument *)v4 initWithData:v5 replicaID:v6];
+    subFolderOrderMergeableData = [(ICNoteContainer *)self subFolderOrderMergeableData];
+    currentReplicaID = [(ICCloudSyncingObject *)self currentReplicaID];
+    v7 = [(ICTTVersionedDocument *)v4 initWithData:subFolderOrderMergeableData replicaID:currentReplicaID];
     v8 = self->_subFolderIdentifiersOrderedSetDocument;
     self->_subFolderIdentifiersOrderedSetDocument = v7;
 
@@ -107,8 +107,8 @@
 - (ICCROrderedSet)subFolderIdentifiersOrderedSet
 {
   objc_opt_class();
-  v3 = [(ICNoteContainer *)self subFolderIdentifiersOrderedSetDocument];
-  v4 = [v3 orderedSet];
+  subFolderIdentifiersOrderedSetDocument = [(ICNoteContainer *)self subFolderIdentifiersOrderedSetDocument];
+  orderedSet = [subFolderIdentifiersOrderedSetDocument orderedSet];
   v5 = ICCheckedDynamicCast();
 
   return v5;
@@ -123,20 +123,20 @@
   }
 }
 
-- (BOOL)mergeWithSubFolderMergeableData:(id)a3
+- (BOOL)mergeWithSubFolderMergeableData:(id)data
 {
-  if (!a3)
+  if (!data)
   {
     return 0;
   }
 
-  v4 = a3;
+  dataCopy = data;
   v5 = [ICTTOrderedSetVersionedDocument alloc];
-  v6 = [(ICCloudSyncingObject *)self currentReplicaID];
-  v7 = [(ICTTVersionedDocument *)v5 initWithData:v4 replicaID:v6];
+  currentReplicaID = [(ICCloudSyncingObject *)self currentReplicaID];
+  v7 = [(ICTTVersionedDocument *)v5 initWithData:dataCopy replicaID:currentReplicaID];
 
-  v8 = [(ICNoteContainer *)self subFolderIdentifiersOrderedSetDocument];
-  v9 = [v8 mergeWithOrderedSetVersionedDocument:v7];
+  subFolderIdentifiersOrderedSetDocument = [(ICNoteContainer *)self subFolderIdentifiersOrderedSetDocument];
+  v9 = [subFolderIdentifiersOrderedSetDocument mergeWithOrderedSetVersionedDocument:v7];
 
   v10 = v9 == 2;
   if (v9 == 2)
@@ -154,14 +154,14 @@
     [(ICNoteContainer *)self setSubFolderOrderMergeableDataDirty:0];
   }
 
-  v4 = [(ICNoteContainer *)self subFolderIdentifiersOrderedSetDocument];
-  v3 = [v4 serialize];
-  [(ICNoteContainer *)self setSubFolderOrderMergeableData:v3];
+  subFolderIdentifiersOrderedSetDocument = [(ICNoteContainer *)self subFolderIdentifiersOrderedSetDocument];
+  serialize = [subFolderIdentifiersOrderedSetDocument serialize];
+  [(ICNoteContainer *)self setSubFolderOrderMergeableData:serialize];
 }
 
-- (void)applyDateHeadersType:(int64_t)a3
+- (void)applyDateHeadersType:(int64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
     [(ICNoteContainer *)self setDateHeadersType:?];
   }

@@ -1,19 +1,19 @@
 @interface HDDemoDataHealthDocumentSampleGenerator
-- (void)generateFirstRunObjectsForDemoPerson:(id)a3 firstDate:(id)a4 objectCollection:(id)a5;
+- (void)generateFirstRunObjectsForDemoPerson:(id)person firstDate:(id)date objectCollection:(id)collection;
 @end
 
 @implementation HDDemoDataHealthDocumentSampleGenerator
 
-- (void)generateFirstRunObjectsForDemoPerson:(id)a3 firstDate:(id)a4 objectCollection:(id)a5
+- (void)generateFirstRunObjectsForDemoPerson:(id)person firstDate:(id)date objectCollection:(id)collection
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  dateCopy = date;
+  collectionCopy = collection;
   v28.receiver = self;
   v28.super_class = HDDemoDataHealthDocumentSampleGenerator;
-  [(HDDemoDataBaseSampleGenerator *)&v28 generateFirstRunObjectsForDemoPerson:a3 firstDate:v8 objectCollection:v9];
-  v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v11 = [v10 BOOLForKey:@"HealthDemoDataGenerateHealthDocumentsKey"];
+  [(HDDemoDataBaseSampleGenerator *)&v28 generateFirstRunObjectsForDemoPerson:person firstDate:dateCopy objectCollection:collectionCopy];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v11 = [standardUserDefaults BOOLForKey:@"HealthDemoDataGenerateHealthDocumentsKey"];
 
   if (v11)
   {
@@ -23,23 +23,23 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v30 = v8;
+      v30 = dateCopy;
       _os_log_impl(&dword_228986000, v13, OS_LOG_TYPE_DEFAULT, "Generating demo CDA documents for date: %@", buf, 0xCu);
     }
 
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v15 = [v14 URLForResource:@"demo_cdas" withExtension:@"zip"];
-    v16 = [v15 path];
-    if (v16)
+    path = [v15 path];
+    if (path)
     {
-      v17 = [objc_alloc(MEMORY[0x277CCDE88]) initWithPathname:v16];
+      v17 = [objc_alloc(MEMORY[0x277CCDE88]) initWithPathname:path];
       v27 = 0;
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __107__HDDemoDataHealthDocumentSampleGenerator_generateFirstRunObjectsForDemoPerson_firstDate_objectCollection___block_invoke;
       v24[3] = &unk_278622098;
-      v25 = v8;
-      v26 = v9;
+      v25 = dateCopy;
+      v26 = collectionCopy;
       v18 = [v17 enumerateEntriesWithError:&v27 block:v24];
       v19 = v27;
       if ((v18 & 1) == 0)

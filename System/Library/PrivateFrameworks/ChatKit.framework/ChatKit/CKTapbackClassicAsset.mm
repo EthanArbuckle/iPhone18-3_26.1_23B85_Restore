@@ -1,16 +1,16 @@
 @interface CKTapbackClassicAsset
 - (CKTapbackClassicAsset)init;
-- (id)stillImageByApplyingSelectionFilter:(BOOL)a3;
+- (id)stillImageByApplyingSelectionFilter:(BOOL)filter;
 @end
 
 @implementation CKTapbackClassicAsset
 
-- (id)stillImageByApplyingSelectionFilter:(BOOL)a3
+- (id)stillImageByApplyingSelectionFilter:(BOOL)filter
 {
-  v4 = self;
+  selfCopy = self;
   sub_190CAD4AC();
   v6 = v5;
-  if (*(&v4->super.isa + OBJC_IVAR___CKTapbackClassicAsset_primarySelectionColorFilterValueMatrix) && a3 && v5)
+  if (*(&selfCopy->super.isa + OBJC_IVAR___CKTapbackClassicAsset_primarySelectionColorFilterValueMatrix) && filter && v5)
   {
     v7 = sub_190D52690();
     sub_190CAD664(v7);

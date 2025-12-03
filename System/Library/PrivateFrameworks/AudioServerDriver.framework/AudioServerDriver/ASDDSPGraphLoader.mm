@@ -1,22 +1,22 @@
 @interface ASDDSPGraphLoader
-+ (BOOL)applyAUStrip:(id)a3 toGraph:(id)a4;
-+ (BOOL)applyPropertyStrip:(id)a3 toGraph:(id)a4;
-+ (id)graphWithConfiguration:(id)a3;
-+ (id)graphWithGraphInfo:(id)a3;
++ (BOOL)applyAUStrip:(id)strip toGraph:(id)graph;
++ (BOOL)applyPropertyStrip:(id)strip toGraph:(id)graph;
++ (id)graphWithConfiguration:(id)configuration;
++ (id)graphWithGraphInfo:(id)info;
 @end
 
 @implementation ASDDSPGraphLoader
 
-+ (id)graphWithConfiguration:(id)a3
++ (id)graphWithConfiguration:(id)configuration
 {
   v36 = *MEMORY[0x277D85DE8];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v30 = a3;
-  v3 = [v30 dspItems];
-  v4 = [v3 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  configurationCopy = configuration;
+  dspItems = [configurationCopy dspItems];
+  v4 = [dspItems countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (!v4)
   {
     goto LABEL_28;
@@ -31,7 +31,7 @@
     {
       if (*v32 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(dspItems);
       }
 
       v9 = *(*(&v31 + 1) + 8 * i);
@@ -108,7 +108,7 @@ LABEL_28:
       }
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    v5 = [dspItems countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v5)
     {
       continue;
@@ -124,31 +124,31 @@ LABEL_29:
   return v6;
 }
 
-+ (id)graphWithGraphInfo:(id)a3
++ (id)graphWithGraphInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 text];
+  infoCopy = info;
+  text = [infoCopy text];
 
-  if (v4)
+  if (text)
   {
-    v5 = [v3 text];
-    v6 = [v3 substitutions];
-    v7 = [v3 includePaths];
-    v8 = [ASDDSPGraphInterpreter compileText:v5 withSubstitutions:v6 includingPaths:v7];
+    text2 = [infoCopy text];
+    substitutions = [infoCopy substitutions];
+    includePaths = [infoCopy includePaths];
+    v8 = [ASDDSPGraphInterpreter compileText:text2 withSubstitutions:substitutions includingPaths:includePaths];
 LABEL_5:
     v10 = v8;
 
     goto LABEL_6;
   }
 
-  v9 = [v3 path];
+  path = [infoCopy path];
 
-  if (v9)
+  if (path)
   {
-    v5 = [v3 path];
-    v6 = [v3 substitutions];
-    v7 = [v3 includePaths];
-    v8 = [ASDDSPGraphInterpreter compileFile:v5 withSubstitutions:v6 includingPaths:v7];
+    text2 = [infoCopy path];
+    substitutions = [infoCopy substitutions];
+    includePaths = [infoCopy includePaths];
+    v8 = [ASDDSPGraphInterpreter compileFile:text2 withSubstitutions:substitutions includingPaths:includePaths];
     goto LABEL_5;
   }
 
@@ -164,41 +164,41 @@ LABEL_6:
   return v10;
 }
 
-+ (BOOL)applyAUStrip:(id)a3 toGraph:(id)a4
++ (BOOL)applyAUStrip:(id)strip toGraph:(id)graph
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  stripCopy = strip;
+  graphCopy = graph;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 value];
-    v8 = [v5 path];
+    value = [stripCopy value];
+    path = [stripCopy path];
     v26 = 138412546;
-    v27 = v7;
+    v27 = value;
     v28 = 2112;
-    v29 = v8;
+    v29 = path;
     _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "AUStripInfo value:%@ path:%@", &v26, 0x16u);
   }
 
-  v9 = [v5 value];
+  value2 = [stripCopy value];
 
-  if (v9)
+  if (value2)
   {
-    v10 = [v5 value];
-    v11 = [v6 setAUStrip:v10];
+    value3 = [stripCopy value];
+    v11 = [graphCopy setAUStrip:value3];
   }
 
   else
   {
-    v12 = [v5 path];
+    path2 = [stripCopy path];
 
-    if (v12)
+    if (path2)
     {
       v13 = MEMORY[0x277CBEAC0];
-      v14 = [v5 path];
-      v15 = [v13 dictionaryWithContentsOfFile:v14];
+      path3 = [stripCopy path];
+      v15 = [v13 dictionaryWithContentsOfFile:path3];
 
-      v11 = [v6 setAUStrip:v15];
+      v11 = [graphCopy setAUStrip:v15];
     }
 
     else
@@ -217,29 +217,29 @@ LABEL_6:
   return v11;
 }
 
-+ (BOOL)applyPropertyStrip:(id)a3 toGraph:(id)a4
++ (BOOL)applyPropertyStrip:(id)strip toGraph:(id)graph
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 value];
+  stripCopy = strip;
+  graphCopy = graph;
+  value = [stripCopy value];
 
-  if (v7)
+  if (value)
   {
-    v8 = [v5 value];
-    v9 = [v6 setPropertyStrip:v8];
+    value2 = [stripCopy value];
+    v9 = [graphCopy setPropertyStrip:value2];
   }
 
   else
   {
-    v10 = [v5 path];
+    path = [stripCopy path];
 
-    if (v10)
+    if (path)
     {
       v11 = MEMORY[0x277CBEAC0];
-      v12 = [v5 path];
-      v13 = [v11 dictionaryWithContentsOfFile:v12];
+      path2 = [stripCopy path];
+      v13 = [v11 dictionaryWithContentsOfFile:path2];
 
-      v9 = [v6 setPropertyStrip:v13];
+      v9 = [graphCopy setPropertyStrip:v13];
     }
 
     else

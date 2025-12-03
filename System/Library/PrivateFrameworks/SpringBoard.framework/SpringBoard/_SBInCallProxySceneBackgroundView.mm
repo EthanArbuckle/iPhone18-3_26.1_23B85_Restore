@@ -3,31 +3,31 @@
 - (BOOL)needsClassicModeBackground;
 - (BOOL)shouldUseBrightMaterial;
 - (SBApplicationSceneBackgroundView)proxyTarget;
-- (_SBInCallProxySceneBackgroundView)initWithFrame:(CGRect)a3 proxyTarget:(id)a4;
+- (_SBInCallProxySceneBackgroundView)initWithFrame:(CGRect)frame proxyTarget:(id)target;
 - (int64_t)wallpaperStyle;
-- (void)setFullscreen:(BOOL)a3;
-- (void)setNeedsClassicModeBackground:(BOOL)a3;
-- (void)setShouldUseBrightMaterial:(BOOL)a3;
-- (void)setWallpaperStyle:(int64_t)a3;
-- (void)setWallpaperStyle:(int64_t)a3 withAnimationSettings:(id)a4;
+- (void)setFullscreen:(BOOL)fullscreen;
+- (void)setNeedsClassicModeBackground:(BOOL)background;
+- (void)setShouldUseBrightMaterial:(BOOL)material;
+- (void)setWallpaperStyle:(int64_t)style;
+- (void)setWallpaperStyle:(int64_t)style withAnimationSettings:(id)settings;
 @end
 
 @implementation _SBInCallProxySceneBackgroundView
 
-- (_SBInCallProxySceneBackgroundView)initWithFrame:(CGRect)a3 proxyTarget:(id)a4
+- (_SBInCallProxySceneBackgroundView)initWithFrame:(CGRect)frame proxyTarget:(id)target
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  targetCopy = target;
   v13.receiver = self;
   v13.super_class = _SBInCallProxySceneBackgroundView;
-  v10 = [(_SBInCallProxySceneBackgroundView *)&v13 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(_SBInCallProxySceneBackgroundView *)&v13 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    objc_storeWeak(&v10->_proxyTarget, v9);
+    objc_storeWeak(&height->_proxyTarget, targetCopy);
   }
 
   return v11;
@@ -38,24 +38,24 @@
   WeakRetained = objc_loadWeakRetained(&self->_proxyTarget);
   if (objc_opt_respondsToSelector())
   {
-    v3 = [WeakRetained isFullscreen];
+    isFullscreen = [WeakRetained isFullscreen];
   }
 
   else
   {
-    v3 = 0;
+    isFullscreen = 0;
   }
 
-  return v3;
+  return isFullscreen;
 }
 
-- (void)setFullscreen:(BOOL)a3
+- (void)setFullscreen:(BOOL)fullscreen
 {
-  v3 = a3;
+  fullscreenCopy = fullscreen;
   WeakRetained = objc_loadWeakRetained(&self->_proxyTarget);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained setFullscreen:v3];
+    [WeakRetained setFullscreen:fullscreenCopy];
   }
 }
 
@@ -64,24 +64,24 @@
   WeakRetained = objc_loadWeakRetained(&self->_proxyTarget);
   if (objc_opt_respondsToSelector())
   {
-    v3 = [WeakRetained needsClassicModeBackground];
+    needsClassicModeBackground = [WeakRetained needsClassicModeBackground];
   }
 
   else
   {
-    v3 = 0;
+    needsClassicModeBackground = 0;
   }
 
-  return v3;
+  return needsClassicModeBackground;
 }
 
-- (void)setNeedsClassicModeBackground:(BOOL)a3
+- (void)setNeedsClassicModeBackground:(BOOL)background
 {
-  v3 = a3;
+  backgroundCopy = background;
   WeakRetained = objc_loadWeakRetained(&self->_proxyTarget);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained setNeedsClassicModeBackground:v3];
+    [WeakRetained setNeedsClassicModeBackground:backgroundCopy];
   }
 }
 
@@ -90,43 +90,43 @@
   WeakRetained = objc_loadWeakRetained(&self->_proxyTarget);
   if (objc_opt_respondsToSelector())
   {
-    v3 = [WeakRetained shouldUseBrightMaterial];
+    shouldUseBrightMaterial = [WeakRetained shouldUseBrightMaterial];
   }
 
   else
   {
-    v3 = 0;
+    shouldUseBrightMaterial = 0;
   }
 
-  return v3;
+  return shouldUseBrightMaterial;
 }
 
-- (void)setShouldUseBrightMaterial:(BOOL)a3
+- (void)setShouldUseBrightMaterial:(BOOL)material
 {
-  v3 = a3;
+  materialCopy = material;
   WeakRetained = objc_loadWeakRetained(&self->_proxyTarget);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained setShouldUseBrightMaterial:v3];
+    [WeakRetained setShouldUseBrightMaterial:materialCopy];
   }
 }
 
-- (void)setWallpaperStyle:(int64_t)a3
+- (void)setWallpaperStyle:(int64_t)style
 {
   WeakRetained = objc_loadWeakRetained(&self->_proxyTarget);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained setWallpaperStyle:a3];
+    [WeakRetained setWallpaperStyle:style];
   }
 }
 
-- (void)setWallpaperStyle:(int64_t)a3 withAnimationSettings:(id)a4
+- (void)setWallpaperStyle:(int64_t)style withAnimationSettings:(id)settings
 {
-  v7 = a4;
+  settingsCopy = settings;
   WeakRetained = objc_loadWeakRetained(&self->_proxyTarget);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained setWallpaperStyle:a3 withAnimationSettings:v7];
+    [WeakRetained setWallpaperStyle:style withAnimationSettings:settingsCopy];
   }
 }
 
@@ -135,15 +135,15 @@
   WeakRetained = objc_loadWeakRetained(&self->_proxyTarget);
   if (objc_opt_respondsToSelector())
   {
-    v3 = [WeakRetained wallpaperStyle];
+    wallpaperStyle = [WeakRetained wallpaperStyle];
   }
 
   else
   {
-    v3 = 0;
+    wallpaperStyle = 0;
   }
 
-  return v3;
+  return wallpaperStyle;
 }
 
 - (SBApplicationSceneBackgroundView)proxyTarget

@@ -1,33 +1,33 @@
 @interface WebBundleSchemaHandler
-- (WebBundleSchemaHandler)initWithDelegate:(id)a3 configuration:(id)a4;
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4;
+- (WebBundleSchemaHandler)initWithDelegate:(id)delegate configuration:(id)configuration;
+- (void)webView:(id)view startURLSchemeTask:(id)task;
 @end
 
 @implementation WebBundleSchemaHandler
 
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4
+- (void)webView:(id)view startURLSchemeTask:(id)task
 {
-  v5 = a4;
-  v6 = [v5 request];
-  v7 = [v6 URL];
+  taskCopy = task;
+  request = [taskCopy request];
+  v7 = [request URL];
 
-  v8 = [(WebBundleConfiguration *)self->_configuration webBundleDirectory];
-  v9 = [v7 path];
-  v10 = [v8 URLByAppendingPathComponent:v9];
+  webBundleDirectory = [(WebBundleConfiguration *)self->_configuration webBundleDirectory];
+  path = [v7 path];
+  v10 = [webBundleDirectory URLByAppendingPathComponent:path];
 
-  v11 = [v10 pathExtension];
-  v12 = [UTType typeWithFilenameExtension:v11];
+  pathExtension = [v10 pathExtension];
+  v12 = [UTType typeWithFilenameExtension:pathExtension];
 
-  v13 = [v12 preferredMIMEType];
+  preferredMIMEType = [v12 preferredMIMEType];
   v14 = +[NSFileManager defaultManager];
-  v15 = [v10 absoluteString];
-  v16 = [v14 fileExistsAtPath:v15];
+  absoluteString = [v10 absoluteString];
+  v16 = [v14 fileExistsAtPath:absoluteString];
 
   if (v16)
   {
-    v17 = [v10 absoluteString];
+    absoluteString2 = [v10 absoluteString];
     v26 = 0;
-    v18 = [NSData dataWithContentsOfFile:v17 options:0 error:&v26];
+    v18 = [NSData dataWithContentsOfFile:absoluteString2 options:0 error:&v26];
     v19 = v26;
 
     if (!v19)
@@ -57,27 +57,27 @@
 
 LABEL_8:
   v21 = [NSURLResponse alloc];
-  v22 = [v5 request];
-  v23 = [v22 URL];
-  v24 = [v21 initWithURL:v23 MIMEType:v13 expectedContentLength:objc_msgSend(v18 textEncodingName:{"length"), 0}];
+  request2 = [taskCopy request];
+  v23 = [request2 URL];
+  v24 = [v21 initWithURL:v23 MIMEType:preferredMIMEType expectedContentLength:objc_msgSend(v18 textEncodingName:{"length"), 0}];
 
-  [v5 didReceiveResponse:v24];
-  [v5 didReceiveData:v18];
-  [v5 didFinish];
+  [taskCopy didReceiveResponse:v24];
+  [taskCopy didReceiveData:v18];
+  [taskCopy didFinish];
 }
 
-- (WebBundleSchemaHandler)initWithDelegate:(id)a3 configuration:(id)a4
+- (WebBundleSchemaHandler)initWithDelegate:(id)delegate configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = WebBundleSchemaHandler;
   v8 = [(WebBundleSchemaHandler *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_configuration, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_configuration, configuration);
   }
 
   return v9;

@@ -1,25 +1,25 @@
 @interface SGRemindersAdapter
-+ (BOOL)reminderHasDuplicate:(id)a3 usingStore:(id)a4;
-+ (id)_remindersFoundInAppsListInREMStore:(id)a3;
-+ (id)constructNotesForReminder:(id)a3;
-+ (id)reminderPredicateForReminder:(id)a3;
-+ (unint64_t)remindersCreatedBetweenStartDate:(id)a3 endDate:(id)a4;
-- (BOOL)_deleteReminder:(id)a3 usingReminderStore:(id)a4;
-- (BOOL)_saveReminder:(id)a3 usingReminderStore:(id)a4;
-- (SGRemindersAdapter)initWithSGSqlEntityStore:(id)a3;
-- (SGRemindersAdapter)initWithSGSqlEntityStore:(id)a3 andREMStore:(id)a4;
++ (BOOL)reminderHasDuplicate:(id)duplicate usingStore:(id)store;
++ (id)_remindersFoundInAppsListInREMStore:(id)store;
++ (id)constructNotesForReminder:(id)reminder;
++ (id)reminderPredicateForReminder:(id)reminder;
++ (unint64_t)remindersCreatedBetweenStartDate:(id)date endDate:(id)endDate;
+- (BOOL)_deleteReminder:(id)reminder usingReminderStore:(id)store;
+- (BOOL)_saveReminder:(id)reminder usingReminderStore:(id)store;
+- (SGRemindersAdapter)initWithSGSqlEntityStore:(id)store;
+- (SGRemindersAdapter)initWithSGSqlEntityStore:(id)store andREMStore:(id)mStore;
 - (SGSqlEntityStore)store;
-- (id)_remRemindersAssociatedWithStorageReminder:(id)a3 remStore:(id)a4;
-- (id)_remRemindersAssociatedWithTitle:(id)a3 sourceUniqueIdentifier:(id)a4 usingStore:(id)a5;
-- (id)sourceUniqueIdentifierForStorageReminder:(id)a3;
-- (void)addReminder:(id)a3;
-- (void)confirmReminderFromOtherDevice:(id)a3;
-- (void)confirmReminderFromThisDevice:(id)a3;
-- (void)orphanReminder:(id)a3;
-- (void)rejectReminder:(id)a3;
-- (void)rejectReminderFromOtherDevice:(id)a3;
-- (void)rejectReminderFromThisDevice:(id)a3;
-- (void)reminderAlarmTriggeredFromThisDevice:(id)a3;
+- (id)_remRemindersAssociatedWithStorageReminder:(id)reminder remStore:(id)store;
+- (id)_remRemindersAssociatedWithTitle:(id)title sourceUniqueIdentifier:(id)identifier usingStore:(id)store;
+- (id)sourceUniqueIdentifierForStorageReminder:(id)reminder;
+- (void)addReminder:(id)reminder;
+- (void)confirmReminderFromOtherDevice:(id)device;
+- (void)confirmReminderFromThisDevice:(id)device;
+- (void)orphanReminder:(id)reminder;
+- (void)rejectReminder:(id)reminder;
+- (void)rejectReminderFromOtherDevice:(id)device;
+- (void)rejectReminderFromThisDevice:(id)device;
+- (void)reminderAlarmTriggeredFromThisDevice:(id)device;
 @end
 
 @implementation SGRemindersAdapter
@@ -31,15 +31,15 @@
   return WeakRetained;
 }
 
-- (id)_remRemindersAssociatedWithTitle:(id)a3 sourceUniqueIdentifier:(id)a4 usingStore:(id)a5
+- (id)_remRemindersAssociatedWithTitle:(id)title sourceUniqueIdentifier:(id)identifier usingStore:(id)store
 {
   v46 = *MEMORY[0x277D85DE8];
-  v34 = a3;
-  v31 = a4;
-  v7 = a5;
+  titleCopy = title;
+  identifierCopy = identifier;
+  storeCopy = store;
   v32 = objc_opt_new();
-  v30 = v7;
-  [objc_opt_class() _remindersFoundInAppsListInREMStore:v7];
+  v30 = storeCopy;
+  [objc_opt_class() _remindersFoundInAppsListInREMStore:storeCopy];
   v29 = v40 = 0;
   v8 = [v29 fetchRemindersWithError:&v40];
   v28 = v40;
@@ -67,23 +67,23 @@
         v14 = *(*(&v36 + 1) + 8 * v13);
         v15 = *(v12 + 2760);
         v16 = objc_opt_class();
-        v17 = [v14 siriFoundInAppsData];
+        siriFoundInAppsData = [v14 siriFoundInAppsData];
         v35 = 0;
-        v18 = [v15 unarchivedObjectOfClass:v16 fromData:v17 error:&v35];
+        v18 = [v15 unarchivedObjectOfClass:v16 fromData:siriFoundInAppsData error:&v35];
         v19 = v35;
 
         if (v18)
         {
-          v20 = [v14 title];
-          v21 = [v20 string];
-          if ([v34 isEqualToString:v21])
+          title = [v14 title];
+          string = [title string];
+          if ([titleCopy isEqualToString:string])
           {
           }
 
           else
           {
-            v23 = [v18 sourceUniqueIdentifier];
-            v24 = [v31 isEqualToString:v23];
+            sourceUniqueIdentifier = [v18 sourceUniqueIdentifier];
+            v24 = [identifierCopy isEqualToString:sourceUniqueIdentifier];
 
             v12 = 0x277CCA000;
             if (!v24)
@@ -100,9 +100,9 @@
           v22 = sgRemindersLogHandle();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
-            v25 = [v14 objectID];
+            objectID = [v14 objectID];
             *buf = 138412546;
-            v42 = v25;
+            v42 = objectID;
             v43 = 2112;
             v44 = v19;
             _os_log_error_impl(&dword_231E60000, v22, OS_LOG_TYPE_ERROR, "Unable to load metadata from reminder with id: %@ error: %@", buf, 0x16u);
@@ -128,29 +128,29 @@ LABEL_14:
   return v32;
 }
 
-- (id)_remRemindersAssociatedWithStorageReminder:(id)a3 remStore:(id)a4
+- (id)_remRemindersAssociatedWithStorageReminder:(id)reminder remStore:(id)store
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 title];
-  v9 = [(SGRemindersAdapter *)self sourceUniqueIdentifierForStorageReminder:v7];
+  storeCopy = store;
+  reminderCopy = reminder;
+  title = [reminderCopy title];
+  v9 = [(SGRemindersAdapter *)self sourceUniqueIdentifierForStorageReminder:reminderCopy];
 
-  v10 = [(SGRemindersAdapter *)self _remRemindersAssociatedWithTitle:v8 sourceUniqueIdentifier:v9 usingStore:v6];
+  v10 = [(SGRemindersAdapter *)self _remRemindersAssociatedWithTitle:title sourceUniqueIdentifier:v9 usingStore:storeCopy];
 
   return v10;
 }
 
-- (BOOL)_deleteReminder:(id)a3 usingReminderStore:(id)a4
+- (BOOL)_deleteReminder:(id)reminder usingReminderStore:(id)store
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D447D8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithStore:v6];
-  v9 = [objc_opt_class() _remindersFoundInAppsListInREMStore:v6];
+  storeCopy = store;
+  reminderCopy = reminder;
+  v8 = [[v5 alloc] initWithStore:storeCopy];
+  v9 = [objc_opt_class() _remindersFoundInAppsListInREMStore:storeCopy];
 
   v10 = [v8 updateList:v9];
-  v11 = [v8 updateReminder:v7];
+  v11 = [v8 updateReminder:reminderCopy];
 
   [v11 removeFromList];
   v17 = 0;
@@ -171,23 +171,23 @@ LABEL_14:
   return v12;
 }
 
-- (BOOL)_saveReminder:(id)a3 usingReminderStore:(id)a4
+- (BOOL)_saveReminder:(id)reminder usingReminderStore:(id)store
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  reminderCopy = reminder;
   v6 = [objc_opt_class() _remindersFoundInAppsListInREMStore:self->_reminderStore];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x277D447D8]) initWithStore:self->_reminderStore];
     v8 = [v7 updateList:v6];
-    v9 = [v5 title];
+    title = [reminderCopy title];
     v49 = v8;
-    v10 = [v7 addReminderWithTitle:v9 toListChangeItem:v8];
+    v10 = [v7 addReminderWithTitle:title toListChangeItem:v8];
 
     v11 = objc_alloc(MEMORY[0x277D020D8]);
-    v12 = [v5 recordId];
-    v13 = [(SGRemindersAdapter *)self sourceUniqueIdentifierForStorageReminder:v5];
-    v14 = [v11 initWithRecordId:v12 sourceUniqueIdentifier:v13];
+    recordId = [reminderCopy recordId];
+    v13 = [(SGRemindersAdapter *)self sourceUniqueIdentifierForStorageReminder:reminderCopy];
+    v14 = [v11 initWithRecordId:recordId sourceUniqueIdentifier:v13];
 
     v51 = 0;
     v48 = v14;
@@ -210,76 +210,76 @@ LABEL_14:
       }
     }
 
-    v20 = [v5 dueDateComponents];
+    dueDateComponents = [reminderCopy dueDateComponents];
 
-    if (v20)
+    if (dueDateComponents)
     {
       v21 = objc_alloc(MEMORY[0x277D44578]);
-      v22 = [v5 dueDateComponents];
-      v23 = [v21 initWithDateComponents:v22];
+      dueDateComponents2 = [reminderCopy dueDateComponents];
+      v23 = [v21 initWithDateComponents:dueDateComponents2];
 
       v24 = [v10 addAlarmWithTrigger:v23];
-      v25 = [v5 dueDateComponents];
-      [v10 setDueDateComponents:v25];
+      dueDateComponents3 = [reminderCopy dueDateComponents];
+      [v10 setDueDateComponents:dueDateComponents3];
     }
 
-    v26 = [v5 dueLocation];
+    dueLocation = [reminderCopy dueLocation];
 
-    if (v26)
+    if (dueLocation)
     {
       v27 = objc_alloc(MEMORY[0x277D44868]);
-      v28 = [v5 dueLocation];
-      v29 = [v28 label];
-      v30 = [v27 initWithTitle:v29];
+      dueLocation2 = [reminderCopy dueLocation];
+      label = [dueLocation2 label];
+      v30 = [v27 initWithTitle:label];
 
-      v31 = [v5 dueLocation];
-      [v31 latitude];
+      dueLocation3 = [reminderCopy dueLocation];
+      [dueLocation3 latitude];
       [v30 setLatitude:?];
 
-      v32 = [v5 dueLocation];
-      [v32 longitude];
+      dueLocation4 = [reminderCopy dueLocation];
+      [dueLocation4 longitude];
       [v30 setLongitude:?];
 
-      v33 = [v5 dueLocation];
-      [v33 accuracy];
+      dueLocation5 = [reminderCopy dueLocation];
+      [dueLocation5 accuracy];
       [v30 setRadius:?];
 
-      v34 = [v5 dueLocationTrigger];
-      if (v34 == 1)
+      dueLocationTrigger = [reminderCopy dueLocationTrigger];
+      if (dueLocationTrigger == 1)
       {
         v35 = 1;
       }
 
       else
       {
-        v35 = 2 * (v34 == 2);
+        v35 = 2 * (dueLocationTrigger == 2);
       }
 
       v36 = [objc_alloc(MEMORY[0x277D44580]) initWithStructuredLocation:v30 proximity:v35];
       v37 = [v10 addAlarmWithTrigger:v36];
     }
 
-    v38 = [objc_opt_class() constructNotesForReminder:v5];
+    v38 = [objc_opt_class() constructNotesForReminder:reminderCopy];
     if (v38)
     {
       v39 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v38];
       [v10 setNotes:v39];
     }
 
-    v40 = [v5 origin];
-    v41 = [v40 universalURL];
+    origin = [reminderCopy origin];
+    universalURL = [origin universalURL];
 
     v42 = sgRemindersLogHandle();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v53 = v41;
+      v53 = universalURL;
       _os_log_impl(&dword_231E60000, v42, OS_LOG_TYPE_INFO, "Saving Reminder with universal link: %@", buf, 0xCu);
     }
 
-    if (v41)
+    if (universalURL)
     {
-      v43 = [objc_alloc(MEMORY[0x277D448F0]) initWithUniversalLink:v41];
+      v43 = [objc_alloc(MEMORY[0x277D448F0]) initWithUniversalLink:universalURL];
       [v10 setUserActivity:v43];
     }
 
@@ -314,68 +314,68 @@ LABEL_14:
   return v18;
 }
 
-- (id)sourceUniqueIdentifierForStorageReminder:(id)a3
+- (id)sourceUniqueIdentifierForStorageReminder:(id)reminder
 {
-  v3 = [a3 duplicateKey];
-  v4 = [v3 parentKey];
-  v5 = [v4 entityKey];
-  v6 = [v5 serialize];
+  duplicateKey = [reminder duplicateKey];
+  parentKey = [duplicateKey parentKey];
+  entityKey = [parentKey entityKey];
+  serialize = [entityKey serialize];
 
-  if (v6)
+  if (serialize)
   {
-    v7 = [[SGMessageKey alloc] initWithSerialized:v6];
-    v8 = [(SGMessageKey *)v7 uniqueIdentifier];
+    v7 = [[SGMessageKey alloc] initWithSerialized:serialize];
+    uniqueIdentifier = [(SGMessageKey *)v7 uniqueIdentifier];
   }
 
   else
   {
-    v8 = 0;
+    uniqueIdentifier = 0;
   }
 
-  return v8;
+  return uniqueIdentifier;
 }
 
-- (void)rejectReminder:(id)a3
+- (void)rejectReminder:(id)reminder
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(SGRemindersAdapter *)v5 _remRemindersAssociatedWithStorageReminder:v4 remStore:v5->_reminderStore];
+  reminderCopy = reminder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(SGRemindersAdapter *)selfCopy _remRemindersAssociatedWithStorageReminder:reminderCopy remStore:selfCopy->_reminderStore];
   if ([v6 count] < 2)
   {
     if ([v6 count] == 1)
     {
-      v7 = [v6 firstObject];
-      [(SGRemindersAdapter *)v5 _deleteReminder:v7 usingReminderStore:v5->_reminderStore];
+      firstObject = [v6 firstObject];
+      [(SGRemindersAdapter *)selfCopy _deleteReminder:firstObject usingReminderStore:selfCopy->_reminderStore];
     }
 
     else
     {
-      v7 = sgRemindersLogHandle();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+      firstObject = sgRemindersLogHandle();
+      if (os_log_type_enabled(firstObject, OS_LOG_TYPE_DEBUG))
       {
         *v8 = 0;
-        _os_log_debug_impl(&dword_231E60000, v7, OS_LOG_TYPE_DEBUG, "Didn't find any REMReminders to reject", v8, 2u);
+        _os_log_debug_impl(&dword_231E60000, firstObject, OS_LOG_TYPE_DEBUG, "Didn't find any REMReminders to reject", v8, 2u);
       }
     }
   }
 
   else
   {
-    v7 = sgRemindersLogHandle();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    firstObject = sgRemindersLogHandle();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_231E60000, v7, OS_LOG_TYPE_DEFAULT, "Multiple reminders linked to one storage reminder", buf, 2u);
+      _os_log_impl(&dword_231E60000, firstObject, OS_LOG_TYPE_DEFAULT, "Multiple reminders linked to one storage reminder", buf, 2u);
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)orphanReminder:(id)a3
+- (void)orphanReminder:(id)reminder
 {
-  v4 = a3;
+  reminderCopy = reminder;
   v5 = sgRemindersLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -383,12 +383,12 @@ LABEL_14:
     _os_log_impl(&dword_231E60000, v5, OS_LOG_TYPE_INFO, "SGRemindersAdapter: Removing pseudo reminder because of parent deletion", v6, 2u);
   }
 
-  [(SGRemindersAdapter *)self rejectReminder:v4];
+  [(SGRemindersAdapter *)self rejectReminder:reminderCopy];
 }
 
-- (void)rejectReminderFromOtherDevice:(id)a3
+- (void)rejectReminderFromOtherDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = sgRemindersLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -396,12 +396,12 @@ LABEL_14:
     _os_log_impl(&dword_231E60000, v5, OS_LOG_TYPE_INFO, "SGRemindersAdapter: Rejecting reminder from other device", v6, 2u);
   }
 
-  [(SGRemindersAdapter *)self rejectReminder:v4];
+  [(SGRemindersAdapter *)self rejectReminder:deviceCopy];
 }
 
-- (void)confirmReminderFromOtherDevice:(id)a3
+- (void)confirmReminderFromOtherDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = sgRemindersLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -409,12 +409,12 @@ LABEL_14:
     _os_log_impl(&dword_231E60000, v5, OS_LOG_TYPE_INFO, "SGRemindersAdapter: Confirming reminder from other device", v6, 2u);
   }
 
-  [(SGRemindersAdapter *)self rejectReminder:v4];
+  [(SGRemindersAdapter *)self rejectReminder:deviceCopy];
 }
 
-- (void)reminderAlarmTriggeredFromThisDevice:(id)a3
+- (void)reminderAlarmTriggeredFromThisDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = sgRemindersLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -422,7 +422,7 @@ LABEL_14:
     _os_log_impl(&dword_231E60000, v5, OS_LOG_TYPE_INFO, "SGRemindersAdapter: alarm triggered from this device", buf, 2u);
   }
 
-  if ([v4 isAllDay])
+  if ([deviceCopy isAllDay])
   {
     v6 = sgRemindersLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -434,13 +434,13 @@ LABEL_14:
 
   else
   {
-    [(SGRemindersAdapter *)self rejectReminder:v4];
+    [(SGRemindersAdapter *)self rejectReminder:deviceCopy];
   }
 }
 
-- (void)rejectReminderFromThisDevice:(id)a3
+- (void)rejectReminderFromThisDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = sgRemindersLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -448,12 +448,12 @@ LABEL_14:
     _os_log_impl(&dword_231E60000, v5, OS_LOG_TYPE_INFO, "SGRemindersAdapter: Rejecting reminder", v6, 2u);
   }
 
-  [(SGRemindersAdapter *)self rejectReminder:v4];
+  [(SGRemindersAdapter *)self rejectReminder:deviceCopy];
 }
 
-- (void)confirmReminderFromThisDevice:(id)a3
+- (void)confirmReminderFromThisDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = sgRemindersLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -461,17 +461,17 @@ LABEL_14:
     _os_log_impl(&dword_231E60000, v5, OS_LOG_TYPE_INFO, "SGRemindersAdapter: Confirming reminder", v6, 2u);
   }
 
-  [(SGRemindersAdapter *)self rejectReminderFromThisDevice:v4];
+  [(SGRemindersAdapter *)self rejectReminderFromThisDevice:deviceCopy];
 }
 
-- (void)addReminder:(id)a3
+- (void)addReminder:(id)reminder
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  reminderCopy = reminder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = +[SGSuggestHistory sharedSuggestHistory];
-  v7 = [v6 isValidNewReminder:v4];
+  v7 = [v6 isValidNewReminder:reminderCopy];
 
   if (!v7)
   {
@@ -485,16 +485,16 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  v8 = [v4 dueDateComponents];
-  if (v8)
+  dueDateComponents = [reminderCopy dueDateComponents];
+  if (dueDateComponents)
   {
-    v9 = [v4 dueDateComponents];
-    v10 = [MEMORY[0x277CBEAA8] date];
-    if (+[SGReminderDissector isReminderDueDateComponentsInPast:givenReferenceDate:allDay:](SGReminderDissector, "isReminderDueDateComponentsInPast:givenReferenceDate:allDay:", v9, v10, [v4 isAllDay]))
+    dueDateComponents2 = [reminderCopy dueDateComponents];
+    date = [MEMORY[0x277CBEAA8] date];
+    if (+[SGReminderDissector isReminderDueDateComponentsInPast:givenReferenceDate:allDay:](SGReminderDissector, "isReminderDueDateComponentsInPast:givenReferenceDate:allDay:", dueDateComponents2, date, [reminderCopy isAllDay]))
     {
-      v11 = [MEMORY[0x277D02098] showPastEvents];
+      showPastEvents = [MEMORY[0x277D02098] showPastEvents];
 
-      if ((v11 & 1) == 0)
+      if ((showPastEvents & 1) == 0)
       {
         v12 = sgRemindersLogHandle();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -515,7 +515,7 @@ LABEL_16:
     }
   }
 
-  v14 = [(SGRemindersAdapter *)v5 _remRemindersAssociatedWithStorageReminder:v4 remStore:v5->_reminderStore];
+  v14 = [(SGRemindersAdapter *)selfCopy _remRemindersAssociatedWithStorageReminder:reminderCopy remStore:selfCopy->_reminderStore];
   v15 = [v14 count];
 
   if (v15)
@@ -533,7 +533,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if ([objc_opt_class() reminderHasDuplicate:v4 usingStore:v5->_reminderStore])
+  if ([objc_opt_class() reminderHasDuplicate:reminderCopy usingStore:selfCopy->_reminderStore])
   {
     v12 = sgRemindersLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -549,71 +549,71 @@ LABEL_21:
   v16 = sgRemindersLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v4 recordId];
+    recordId = [reminderCopy recordId];
     v19 = 138412290;
-    v20 = v17;
+    v20 = recordId;
     _os_log_impl(&dword_231E60000, v16, OS_LOG_TYPE_INFO, "SGRemindersAdapter: Adding Reminder with recordId: %@", &v19, 0xCu);
   }
 
-  if ([(SGRemindersAdapter *)v5 _saveReminder:v4 usingReminderStore:v5->_reminderStore])
+  if ([(SGRemindersAdapter *)selfCopy _saveReminder:reminderCopy usingReminderStore:selfCopy->_reminderStore])
   {
     v12 = +[SGRTCLogging defaultLogger];
-    [v12 logReminderInteractionFromReminder:v4 interface:0 actionType:1];
+    [v12 logReminderInteractionFromReminder:reminderCopy interface:0 actionType:1];
     goto LABEL_21;
   }
 
 LABEL_22:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (SGRemindersAdapter)initWithSGSqlEntityStore:(id)a3 andREMStore:(id)a4
+- (SGRemindersAdapter)initWithSGSqlEntityStore:(id)store andREMStore:(id)mStore
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  mStoreCopy = mStore;
   v11.receiver = self;
   v11.super_class = SGRemindersAdapter;
   v8 = [(SGRemindersAdapter *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_store, v6);
-    objc_storeStrong(&v9->_reminderStore, a4);
+    objc_storeWeak(&v8->_store, storeCopy);
+    objc_storeStrong(&v9->_reminderStore, mStore);
   }
 
   return v9;
 }
 
-- (SGRemindersAdapter)initWithSGSqlEntityStore:(id)a3
+- (SGRemindersAdapter)initWithSGSqlEntityStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_opt_new();
-  v6 = [(SGRemindersAdapter *)self initWithSGSqlEntityStore:v4 andREMStore:v5];
+  v6 = [(SGRemindersAdapter *)self initWithSGSqlEntityStore:storeCopy andREMStore:v5];
 
   return v6;
 }
 
-+ (id)constructNotesForReminder:(id)a3
++ (id)constructNotesForReminder:(id)reminder
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 origin];
-  v5 = [v4 localizedApplicationName];
+  reminderCopy = reminder;
+  origin = [reminderCopy origin];
+  localizedApplicationName = [origin localizedApplicationName];
 
   v6 = +[SGContactStoreFactory contactStore];
-  v7 = [v3 contactIdentifier];
+  contactIdentifier = [reminderCopy contactIdentifier];
   v8 = [MEMORY[0x277CBDA78] descriptorForRequiredKeysForStyle:1000];
   v24[0] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
   v19 = 0;
-  v10 = [SGContactsInterface unifiedContactWithIdentifier:v7 keysToFetch:v9 usingContactStore:v6 error:&v19];
+  v10 = [SGContactsInterface unifiedContactWithIdentifier:contactIdentifier keysToFetch:v9 usingContactStore:v6 error:&v19];
   v11 = v19;
 
   if (v10 && ([MEMORY[0x277CBDA78] stringFromContact:v10 style:1000], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v13 = v12;
-    v14 = [SGFoundInAppsStrings foundInAppsStringLongVersionForAppName:v5 contactName:v12];
+    v14 = [SGFoundInAppsStrings foundInAppsStringLongVersionForAppName:localizedApplicationName contactName:v12];
 
     v15 = v14;
   }
@@ -623,9 +623,9 @@ LABEL_22:
     v14 = sgRemindersLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v3 loggingIdentifier];
+      loggingIdentifier = [reminderCopy loggingIdentifier];
       *buf = 138543618;
-      v21 = v16;
+      v21 = loggingIdentifier;
       v22 = 2114;
       v23 = v11;
       _os_log_impl(&dword_231E60000, v14, OS_LOG_TYPE_DEFAULT, "SGRemindersAdapter - [SGStorageReminder (%{public}@)] constructNotesForReminder: Unable to fetch contact: %{public}@", buf, 0x16u);
@@ -639,10 +639,10 @@ LABEL_22:
   return v15;
 }
 
-+ (unint64_t)remindersCreatedBetweenStartDate:(id)a3 endDate:(id)a4
++ (unint64_t)remindersCreatedBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a3;
-  v6 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v7 = objc_opt_new();
   v16 = 0;
   v17 = &v16;
@@ -652,9 +652,9 @@ LABEL_22:
   v12[1] = 3221225472;
   v12[2] = __63__SGRemindersAdapter_remindersCreatedBetweenStartDate_endDate___block_invoke;
   v12[3] = &unk_27894C528;
-  v8 = v5;
+  v8 = dateCopy;
   v13 = v8;
-  v9 = v6;
+  v9 = endDateCopy;
   v14 = v9;
   v15 = &v16;
   [v7 enumerateAllRemindersWithBlock:v12];
@@ -695,19 +695,19 @@ void __63__SGRemindersAdapter_remindersCreatedBetweenStartDate_endDate___block_i
   }
 }
 
-+ (BOOL)reminderHasDuplicate:(id)a3 usingStore:(id)a4
++ (BOOL)reminderHasDuplicate:(id)duplicate usingStore:(id)store
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  duplicateCopy = duplicate;
+  storeCopy = store;
+  if (!storeCopy)
   {
-    v7 = objc_opt_new();
+    storeCopy = objc_opt_new();
   }
 
-  v8 = [a1 reminderPredicateForReminder:v6];
+  v8 = [self reminderPredicateForReminder:duplicateCopy];
   v48 = 0;
-  v9 = [v7 fetchRemindersMatchingPredicateDescriptor:v8 sortDescriptors:0 options:0 error:&v48];
+  v9 = [storeCopy fetchRemindersMatchingPredicateDescriptor:v8 sortDescriptors:0 options:0 error:&v48];
   v10 = v48;
   v44 = 0u;
   v45 = 0u;
@@ -720,7 +720,7 @@ void __63__SGRemindersAdapter_remindersCreatedBetweenStartDate_endDate___block_i
     v12 = v11;
     v39 = v10;
     v40 = v8;
-    v41 = v7;
+    v41 = storeCopy;
     v13 = *v45;
     while (2)
     {
@@ -735,10 +735,10 @@ void __63__SGRemindersAdapter_remindersCreatedBetweenStartDate_endDate___block_i
         v16 = objc_autoreleasePoolPush();
         if (([v15 isCompleted] & 1) == 0)
         {
-          v17 = [v15 title];
-          v18 = [v17 string];
-          v19 = [v6 title];
-          v20 = [v18 isEqualToString:v19];
+          title = [v15 title];
+          string = [title string];
+          title2 = [duplicateCopy title];
+          v20 = [string isEqualToString:title2];
 
           if (v20)
           {
@@ -747,7 +747,7 @@ void __63__SGRemindersAdapter_remindersCreatedBetweenStartDate_endDate___block_i
             {
 LABEL_22:
               v8 = v40;
-              v7 = v41;
+              storeCopy = v41;
               v10 = v39;
 
               objc_autoreleasePoolPop(v16);
@@ -762,23 +762,23 @@ LABEL_25:
             goto LABEL_22;
           }
 
-          v21 = [v15 dueDateComponents];
-          v22 = [v6 dueDateComponents];
-          v23 = [v21 isEqual:v22];
+          dueDateComponents = [v15 dueDateComponents];
+          dueDateComponents2 = [duplicateCopy dueDateComponents];
+          v23 = [dueDateComponents isEqual:dueDateComponents2];
 
           if (v23)
           {
-            v24 = [v6 title];
-            v25 = [v15 title];
-            v26 = [v25 string];
-            v27 = [SGLevenshtein distanceBetweenStrings:v24 and:v26];
+            title3 = [duplicateCopy title];
+            title4 = [v15 title];
+            string2 = [title4 string];
+            v27 = [SGLevenshtein distanceBetweenStrings:title3 and:string2];
 
-            v28 = [v6 title];
-            v29 = [v28 length];
+            title5 = [duplicateCopy title];
+            v29 = [title5 length];
 
-            v30 = [v15 title];
-            v31 = [v30 string];
-            v32 = [v31 length];
+            title6 = [v15 title];
+            string3 = [title6 string];
+            v32 = [string3 length];
 
             v33 = v29 <= v32 ? v32 : v29;
             if (v27 / v33 < 0.5)
@@ -810,7 +810,7 @@ LABEL_25:
 
     v34 = 0;
     v8 = v40;
-    v7 = v41;
+    storeCopy = v41;
     v10 = v39;
   }
 
@@ -825,12 +825,12 @@ LABEL_23:
   return v34;
 }
 
-+ (id)reminderPredicateForReminder:(id)a3
++ (id)reminderPredicateForReminder:(id)reminder
 {
   v38 = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v3 = [v29 title];
-  v4 = [SGReminderMessage searchTokensForReminderTitle:v3];
+  reminderCopy = reminder;
+  title = [reminderCopy title];
+  v4 = [SGReminderMessage searchTokensForReminderTitle:title];
 
   v5 = objc_opt_new();
   v6 = [MEMORY[0x277D447C0] predicateDescriptorForRemindersWithCompleted:0];
@@ -869,17 +869,17 @@ LABEL_23:
     while (v8);
   }
 
-  v15 = [v29 dueDateComponents];
-  v16 = [v15 date];
+  dueDateComponents = [reminderCopy dueDateComponents];
+  date = [dueDateComponents date];
 
-  if (v16)
+  if (date)
   {
     v17 = MEMORY[0x277D447C0];
-    v18 = [v29 dueDateComponents];
-    v19 = [v18 date];
-    v20 = [v29 dueDateComponents];
-    v21 = [v20 date];
-    v22 = [v17 predicateDescriptorForRemindersWithDueDateBetween:v19 and:v21];
+    dueDateComponents2 = [reminderCopy dueDateComponents];
+    date2 = [dueDateComponents2 date];
+    dueDateComponents3 = [reminderCopy dueDateComponents];
+    date3 = [dueDateComponents3 date];
+    v22 = [v17 predicateDescriptorForRemindersWithDueDateBetween:date2 and:date3];
 
     v23 = MEMORY[0x277D447C0];
     v35[0] = v6;
@@ -897,11 +897,11 @@ LABEL_23:
   return v26;
 }
 
-+ (id)_remindersFoundInAppsListInREMStore:(id)a3
++ (id)_remindersFoundInAppsListInREMStore:(id)store
 {
   v11 = *MEMORY[0x277D85DE8];
   v8 = 0;
-  v3 = [a3 fetchSiriFoundInAppsListWithError:&v8];
+  v3 = [store fetchSiriFoundInAppsListWithError:&v8];
   v4 = v8;
   if (!v3)
   {

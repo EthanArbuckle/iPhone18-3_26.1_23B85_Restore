@@ -1,11 +1,11 @@
 @interface ClimateApp
 - (_TtC7Climate10ClimateApp)init;
-- (id)_keyWindowForScreen:(id)a3;
+- (id)_keyWindowForScreen:(id)screen;
 @end
 
 @implementation ClimateApp
 
-- (id)_keyWindowForScreen:(id)a3
+- (id)_keyWindowForScreen:(id)screen
 {
   sub_1000529CC();
 

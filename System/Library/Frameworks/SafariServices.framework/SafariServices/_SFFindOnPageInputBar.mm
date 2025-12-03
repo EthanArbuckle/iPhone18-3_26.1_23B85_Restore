@@ -1,16 +1,16 @@
 @interface _SFFindOnPageInputBar
 - (CGSize)intrinsicContentSize;
-- (_SFFindOnPageInputBar)initWithFrame:(CGRect)a3;
-- (float)contentCompressionResistancePriorityForAxis:(int64_t)a3;
+- (_SFFindOnPageInputBar)initWithFrame:(CGRect)frame;
+- (float)contentCompressionResistancePriorityForAxis:(int64_t)axis;
 @end
 
 @implementation _SFFindOnPageInputBar
 
-- (_SFFindOnPageInputBar)initWithFrame:(CGRect)a3
+- (_SFFindOnPageInputBar)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _SFFindOnPageInputBar;
-  v3 = [(_SFFindOnPageInputBar *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SFFindOnPageInputBar *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -18,8 +18,8 @@
     [(_SFFindOnPageInputBar *)v4 setAutocorrectionType:1];
     [(_SFFindOnPageInputBar *)v4 setAutocapitalizationType:0];
     [(_SFFindOnPageInputBar *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [(_SFFindOnPageInputBar *)v4 searchField];
-    [v5 setDisablePrediction:1];
+    searchField = [(_SFFindOnPageInputBar *)v4 searchField];
+    [searchField setDisablePrediction:1];
 
     v6 = v4;
   }
@@ -27,9 +27,9 @@
   return v4;
 }
 
-- (float)contentCompressionResistancePriorityForAxis:(int64_t)a3
+- (float)contentCompressionResistancePriorityForAxis:(int64_t)axis
 {
-  if (a3 || (_SFDeviceIsPad() & 1) == 0)
+  if (axis || (_SFDeviceIsPad() & 1) == 0)
   {
     return 250.0;
   }

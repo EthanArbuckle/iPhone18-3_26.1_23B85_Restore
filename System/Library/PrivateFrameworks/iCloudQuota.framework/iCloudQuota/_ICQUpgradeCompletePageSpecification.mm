@@ -1,10 +1,10 @@
 @interface _ICQUpgradeCompletePageSpecification
-+ (id)upgradeCompletePageSpecificationSampleForLevel:(int64_t)a3;
++ (id)upgradeCompletePageSpecificationSampleForLevel:(int64_t)level;
 @end
 
 @implementation _ICQUpgradeCompletePageSpecification
 
-+ (id)upgradeCompletePageSpecificationSampleForLevel:(int64_t)a3
++ (id)upgradeCompletePageSpecificationSampleForLevel:(int64_t)level
 {
   v3 = objc_opt_new();
   [v3 setTitle:@"Storage Upgraded"];

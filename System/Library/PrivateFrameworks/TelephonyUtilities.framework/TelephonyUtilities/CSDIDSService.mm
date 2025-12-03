@@ -1,17 +1,17 @@
 @interface CSDIDSService
 + (CSDIDSService)sharedInstance;
 - (BOOL)_devicesArrayHasPairedDevice;
-- (BOOL)checkValidityForSelfPseudonymString:(id)a3;
+- (BOOL)checkValidityForSelfPseudonymString:(id)string;
 - (BOOL)defaultPairedDeviceExists;
 - (BOOL)hasActiveAccounts;
-- (BOOL)isServiceEnabledForTelephonySubscriptionLabelIdentifier:(id)a3;
+- (BOOL)isServiceEnabledForTelephonySubscriptionLabelIdentifier:(id)identifier;
 - (BOOL)pairedDeviceExists;
 - (BOOL)relayCapableDeviceExists;
-- (BOOL)sendData:(id)a3 fromAccount:(id)a4 toDestinations:(id)a5 priority:(int64_t)a6 options:(id)a7 identifier:(id *)a8 error:(id *)a9;
+- (BOOL)sendData:(id)data fromAccount:(id)account toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
 - (BOOL)telephonyCapableDeviceExists;
-- (CSDIDSService)initWithName:(id)a3;
-- (CSDIDSService)initWithName:(id)a3 service:(id)a4;
-- (CSDIDSService)initWithName:(id)a3 service:(id)a4 queryController:(id)a5;
+- (CSDIDSService)initWithName:(id)name;
+- (CSDIDSService)initWithName:(id)name service:(id)service;
+- (CSDIDSService)initWithName:(id)name service:(id)service queryController:(id)controller;
 - (IDSAccount)account;
 - (IDSDevice)defaultPairedDevice;
 - (IDSDevice)pairedDevice;
@@ -22,40 +22,40 @@
 - (NSString)countryCode;
 - (NSString)debugDescription;
 - (NSString)localDeviceUniqueID;
-- (id)accountForTelephonySubscriptionLabelIdentifier:(id)a3;
-- (id)accountWithCallerID:(id)a3;
+- (id)accountForTelephonySubscriptionLabelIdentifier:(id)identifier;
+- (id)accountWithCallerID:(id)d;
 - (id)anyActiveAccount;
-- (id)createGroupSessionProviderWithGroupID:(id)a3 participantDestinationIDs:(id)a4 callerID:(id)a5 account:(id)a6 queue:(id)a7 isOneToOneModeEnabled:(BOOL)a8 localMember:(id)a9 avLess:(BOOL)a10 isScreenSharingRequest:(BOOL)a11 ABTestConfiguration:(id)a12 isInitiator:(BOOL)a13;
-- (id)deviceDestinationsWithCapability:(id)a3 localHandle:(id)a4;
-- (id)deviceForFromID:(id)a3;
-- (id)deviceWithUniqueID:(id)a3;
-- (id)devicesWithCapability:(id)a3;
+- (id)createGroupSessionProviderWithGroupID:(id)d participantDestinationIDs:(id)ds callerID:(id)iD account:(id)account queue:(id)queue isOneToOneModeEnabled:(BOOL)enabled localMember:(id)member avLess:(BOOL)self0 isScreenSharingRequest:(BOOL)self1 ABTestConfiguration:(id)self2 isInitiator:(BOOL)self3;
+- (id)deviceDestinationsWithCapability:(id)capability localHandle:(id)handle;
+- (id)deviceForFromID:(id)d;
+- (id)deviceWithUniqueID:(id)d;
+- (id)devicesWithCapability:(id)capability;
 - (id)idsDeviceID;
-- (id)pseudonymForPseudonymString:(id)a3;
+- (id)pseudonymForPseudonymString:(id)string;
 - (unint64_t)registrationRestrictionReason;
-- (void)_noteAction:(int64_t)a3 onHandle:(id)a4 completionHandle:(id)a5;
+- (void)_noteAction:(int64_t)action onHandle:(id)handle completionHandle:(id)completionHandle;
 - (void)_update;
-- (void)accountController:(id)a3 accountAdded:(id)a4;
-- (void)accountController:(id)a3 accountEnabled:(id)a4;
-- (void)addFirewallEntriesForHandleToDate:(id)a3;
-- (void)addFirewallEntriesForHandles:(id)a3 lastSeenDate:(id)a4;
-- (void)addFirewallEntryForHandle:(id)a3 lastSeenDate:(id)a4;
-- (void)addServiceDelegate:(id)a3 queue:(id)a4;
-- (void)checkValidityForPseudonymString:(id)a3 completion:(id)a4;
+- (void)accountController:(id)controller accountAdded:(id)added;
+- (void)accountController:(id)controller accountEnabled:(id)enabled;
+- (void)addFirewallEntriesForHandleToDate:(id)date;
+- (void)addFirewallEntriesForHandles:(id)handles lastSeenDate:(id)date;
+- (void)addFirewallEntryForHandle:(id)handle lastSeenDate:(id)date;
+- (void)addServiceDelegate:(id)delegate queue:(id)queue;
+- (void)checkValidityForPseudonymString:(id)string completion:(id)completion;
 - (void)dealloc;
-- (void)handleActiveAccountsChanged:(id)a3;
-- (void)provisionPseudonymForHandle:(id)a3 featureID:(id)a4 scopeID:(id)a5 expiryDuration:(double)a6 allowedServices:(id)a7 completionHandler:(id)a8;
+- (void)handleActiveAccountsChanged:(id)changed;
+- (void)provisionPseudonymForHandle:(id)handle featureID:(id)d scopeID:(id)iD expiryDuration:(double)duration allowedServices:(id)services completionHandler:(id)handler;
 - (void)removeAllFirewallEntries;
-- (void)removeFirewallEntries:(id)a3;
-- (void)removeServiceDelegate:(id)a3;
-- (void)renewPseudonym:(id)a3 expirationDate:(id)a4 completionHandler:(id)a5;
-- (void)renewPseudonymString:(id)a3 expirationDate:(id)a4 completionHandler:(id)a5;
-- (void)retrieveFirewallAndAddEntries:(id)a3;
-- (void)revokePseudonym:(id)a3 completionHandler:(id)a4;
-- (void)revokePseudonymString:(id)a3 completionHandler:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)service:(id)a3 didUpdatePseudonymsWithChanges:(id)a4;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
+- (void)removeFirewallEntries:(id)entries;
+- (void)removeServiceDelegate:(id)delegate;
+- (void)renewPseudonym:(id)pseudonym expirationDate:(id)date completionHandler:(id)handler;
+- (void)renewPseudonymString:(id)string expirationDate:(id)date completionHandler:(id)handler;
+- (void)retrieveFirewallAndAddEntries:(id)entries;
+- (void)revokePseudonym:(id)pseudonym completionHandler:(id)handler;
+- (void)revokePseudonymString:(id)string completionHandler:(id)handler;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)service:(id)service didUpdatePseudonymsWithChanges:(id)changes;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
 - (void)update;
 @end
 
@@ -74,10 +74,10 @@
   *p_pairedDevice = 0;
 
   *&self->_telephonyCapableDeviceExists = 0;
-  v7 = [(CSDIDSService *)self idsService];
-  v8 = [v7 devices];
+  idsService = [(CSDIDSService *)self idsService];
+  devices = [idsService devices];
   devices = self->_devices;
-  self->_devices = v8;
+  self->_devices = devices;
 
   v41 = 0u;
   v42 = 0u;
@@ -123,8 +123,8 @@
         v38 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v15 = [v14 linkedUserURIs];
-        v16 = [v15 countByEnumeratingWithState:&v35 objects:v57 count:16];
+        linkedUserURIs = [v14 linkedUserURIs];
+        v16 = [linkedUserURIs countByEnumeratingWithState:&v35 objects:v57 count:16];
         if (v16)
         {
           v17 = v16;
@@ -135,14 +135,14 @@
             {
               if (*v36 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(linkedUserURIs);
               }
 
-              v20 = [*(*(&v35 + 1) + 8 * j) _stripFZIDPrefix];
-              [v4 addObject:v20];
+              _stripFZIDPrefix = [*(*(&v35 + 1) + 8 * j) _stripFZIDPrefix];
+              [v4 addObject:_stripFZIDPrefix];
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v35 objects:v57 count:16];
+            v17 = [linkedUserURIs countByEnumeratingWithState:&v35 objects:v57 count:16];
           }
 
           while (v17);
@@ -170,7 +170,7 @@
     v28 = [(NSArray *)self->_devices arrayByApplyingSelector:"name"];
     v29 = [v28 componentsJoinedByString:{@", "}];
     *buf = 138413826;
-    v44 = self;
+    selfCopy = self;
     v45 = 1024;
     v46 = v24;
     v47 = 1024;
@@ -203,14 +203,14 @@
   v10 = sub_100028730;
   v11 = sub_100032914;
   v12 = 0;
-  v3 = [(CSDIDSService *)self queue];
+  queue = [(CSDIDSService *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10001CF28;
   v6[3] = &unk_100619E80;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -220,8 +220,8 @@
 
 - (BOOL)pairedDeviceExists
 {
-  v2 = [(CSDIDSService *)self pairedDevice];
-  v3 = v2 != 0;
+  pairedDevice = [(CSDIDSService *)self pairedDevice];
+  v3 = pairedDevice != 0;
 
   return v3;
 }
@@ -234,14 +234,14 @@
   v10 = sub_100028730;
   v11 = sub_100032914;
   v12 = 0;
-  v3 = [(CSDIDSService *)self queue];
+  queue = [(CSDIDSService *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000288C8;
   v6[3] = &unk_10061C1E0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -294,35 +294,35 @@ LABEL_11:
 + (CSDIDSService)sharedInstance
 {
   v4 = +[NSAssertionHandler currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CSDIDSService.m" lineNumber:60 description:@"All CSDIDSService subclasses must override +sharedInstance"];
+  [v4 handleFailureInMethod:a2 object:self file:@"CSDIDSService.m" lineNumber:60 description:@"All CSDIDSService subclasses must override +sharedInstance"];
 
   return 0;
 }
 
-- (CSDIDSService)initWithName:(id)a3
+- (CSDIDSService)initWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[IDSService alloc] initWithService:v4];
-  v6 = [(CSDIDSService *)self initWithName:v4 service:v5];
+  nameCopy = name;
+  v5 = [[IDSService alloc] initWithService:nameCopy];
+  v6 = [(CSDIDSService *)self initWithName:nameCopy service:v5];
 
   return v6;
 }
 
-- (CSDIDSService)initWithName:(id)a3 service:(id)a4
+- (CSDIDSService)initWithName:(id)name service:(id)service
 {
-  v6 = a4;
-  v7 = a3;
+  serviceCopy = service;
+  nameCopy = name;
   v8 = +[IDSIDQueryController sharedInstance];
-  v9 = [(CSDIDSService *)self initWithName:v7 service:v6 queryController:v8];
+  v9 = [(CSDIDSService *)self initWithName:nameCopy service:serviceCopy queryController:v8];
 
   return v9;
 }
 
-- (CSDIDSService)initWithName:(id)a3 service:(id)a4 queryController:(id)a5
+- (CSDIDSService)initWithName:(id)name service:(id)service queryController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  serviceCopy = service;
+  controllerCopy = controller;
   v34.receiver = self;
   v34.super_class = CSDIDSService;
   v11 = [(CSDIDSService *)&v34 init];
@@ -333,11 +333,11 @@ LABEL_11:
     queue = v11->_queue;
     v11->_queue = v13;
 
-    v15 = [v8 copy];
+    v15 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v15;
 
-    v17 = [[IDSAccountController alloc] initWithService:v8];
+    v17 = [[IDSAccountController alloc] initWithService:nameCopy];
     accountController = v11->_accountController;
     v11->_accountController = v17;
 
@@ -346,8 +346,8 @@ LABEL_11:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v19 = [(IDSAccountController *)v11->_accountController accounts];
-    v20 = [v19 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    accounts = [(IDSAccountController *)v11->_accountController accounts];
+    v20 = [accounts countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v20)
     {
       v21 = v20;
@@ -359,7 +359,7 @@ LABEL_11:
         {
           if (*v31 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(accounts);
           }
 
           [*(*(&v30 + 1) + 8 * v23) addRegistrationDelegate:v11 queue:v11->_queue];
@@ -367,14 +367,14 @@ LABEL_11:
         }
 
         while (v21 != v23);
-        v21 = [v19 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v21 = [accounts countByEnumeratingWithState:&v30 objects:v35 count:16];
       }
 
       while (v21);
     }
 
-    objc_storeStrong(&v11->_idsService, a4);
-    objc_storeStrong(&v11->_idsQueryController, a5);
+    objc_storeStrong(&v11->_idsService, service);
+    objc_storeStrong(&v11->_idsQueryController, controller);
     v24 = objc_alloc_init(TUFeatureFlags);
     featureFlags = v11->_featureFlags;
     v11->_featureFlags = v24;
@@ -394,8 +394,8 @@ LABEL_11:
 
 - (void)dealloc
 {
-  v3 = [(CSDIDSService *)self idsService];
-  [v3 removeDelegate:self];
+  idsService = [(CSDIDSService *)self idsService];
+  [idsService removeDelegate:self];
 
   v4.receiver = self;
   v4.super_class = CSDIDSService;
@@ -405,17 +405,17 @@ LABEL_11:
 - (NSString)debugDescription
 {
   v3 = [NSMutableString stringWithFormat:@"%@\n", self];
-  v4 = [(CSDIDSService *)self devices];
-  [v3 appendFormat:@"    devices: %@\n", v4];
+  devices = [(CSDIDSService *)self devices];
+  [v3 appendFormat:@"    devices: %@\n", devices];
 
-  v5 = [(CSDIDSService *)self availableOutgoingRelayCallerIDs];
-  [v3 appendFormat:@"    availableOutgoingRelayCallerIDs: %@\n", v5];
+  availableOutgoingRelayCallerIDs = [(CSDIDSService *)self availableOutgoingRelayCallerIDs];
+  [v3 appendFormat:@"    availableOutgoingRelayCallerIDs: %@\n", availableOutgoingRelayCallerIDs];
 
-  v6 = [(CSDIDSService *)self defaultPairedDevice];
-  [v3 appendFormat:@"    defaultPairedDevice: %@\n", v6];
+  defaultPairedDevice = [(CSDIDSService *)self defaultPairedDevice];
+  [v3 appendFormat:@"    defaultPairedDevice: %@\n", defaultPairedDevice];
 
-  v7 = [(CSDIDSService *)self pairedDevice];
-  [v3 appendFormat:@"    pairedDevice: %@\n", v7];
+  pairedDevice = [(CSDIDSService *)self pairedDevice];
+  [v3 appendFormat:@"    pairedDevice: %@\n", pairedDevice];
 
   if ([(CSDIDSService *)self telephonyCapableDeviceExists])
   {
@@ -450,10 +450,10 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(CSDIDSService *)self idsService];
-  v5 = [v4 accounts];
+  idsService = [(CSDIDSService *)self idsService];
+  accounts = [idsService accounts];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [accounts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -464,14 +464,14 @@ LABEL_11:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accounts);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) vettedAliases];
-        [v3 addObjectsFromArray:v10];
+        vettedAliases = [*(*(&v13 + 1) + 8 * i) vettedAliases];
+        [v3 addObjectsFromArray:vettedAliases];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [accounts countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -488,10 +488,10 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(CSDIDSService *)self idsService];
-  v3 = [v2 accounts];
+  idsService = [(CSDIDSService *)self idsService];
+  accounts = [idsService accounts];
 
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [accounts countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -503,7 +503,7 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accounts);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -515,7 +515,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [accounts countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -531,45 +531,45 @@ LABEL_11:
 
 - (BOOL)hasActiveAccounts
 {
-  v2 = [(CSDIDSService *)self idsService];
-  v3 = [v2 accounts];
-  v4 = [v3 count] != 0;
+  idsService = [(CSDIDSService *)self idsService];
+  accounts = [idsService accounts];
+  v4 = [accounts count] != 0;
 
   return v4;
 }
 
-- (id)accountWithCallerID:(id)a3
+- (id)accountWithCallerID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDIDSService *)self anyActiveAccount];
-  v6 = v5;
-  if (v5)
+  dCopy = d;
+  anyActiveAccount = [(CSDIDSService *)self anyActiveAccount];
+  v6 = anyActiveAccount;
+  if (anyActiveAccount)
   {
-    v7 = v5;
+    anyObject = anyActiveAccount;
   }
 
   else
   {
-    v8 = [(CSDIDSService *)self idsService];
-    v9 = [v8 accounts];
-    v7 = [v9 anyObject];
+    idsService = [(CSDIDSService *)self idsService];
+    accounts = [idsService accounts];
+    anyObject = [accounts anyObject];
   }
 
-  if (!v4)
+  if (!dCopy)
   {
     v14 = 0;
     goto LABEL_41;
   }
 
-  v34 = v7;
+  v34 = anyObject;
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v10 = [(CSDIDSService *)self idsService];
-  v11 = [v10 accounts];
+  idsService2 = [(CSDIDSService *)self idsService];
+  accounts2 = [idsService2 accounts];
 
-  v12 = [v11 countByEnumeratingWithState:&v47 objects:v53 count:16];
+  v12 = [accounts2 countByEnumeratingWithState:&v47 objects:v53 count:16];
   if (!v12)
   {
     v14 = 0;
@@ -580,7 +580,7 @@ LABEL_11:
   v14 = 0;
   v15 = *v48;
   v35 = *v48;
-  v36 = v11;
+  v36 = accounts2;
   do
   {
     v16 = 0;
@@ -589,18 +589,18 @@ LABEL_11:
     {
       if (*v48 != v15)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(accounts2);
       }
 
       v17 = *(*(&v47 + 1) + 8 * v16);
-      if ([v17 canSend] && objc_msgSend(v4, "destinationIdIsPseudonym"))
+      if ([v17 canSend] && objc_msgSend(dCopy, "destinationIdIsPseudonym"))
       {
         v45 = 0u;
         v46 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v18 = [v17 pseudonyms];
-        v19 = [v18 countByEnumeratingWithState:&v43 objects:v52 count:16];
+        pseudonyms = [v17 pseudonyms];
+        v19 = [pseudonyms countByEnumeratingWithState:&v43 objects:v52 count:16];
         if (v19)
         {
           v20 = v19;
@@ -612,23 +612,23 @@ LABEL_11:
             {
               if (*v44 != v21)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(pseudonyms);
               }
 
               v23 = [*(*(&v43 + 1) + 8 * i) URI];
-              v24 = [v23 prefixedURI];
-              v25 = [v24 isEqualToString:v4];
+              prefixedURI = [v23 prefixedURI];
+              v25 = [prefixedURI isEqualToString:dCopy];
 
               if (v25)
               {
-                v11 = v36;
+                accounts2 = v36;
                 v14 = v37;
                 v15 = v35;
                 goto LABEL_32;
               }
             }
 
-            v20 = [v18 countByEnumeratingWithState:&v43 objects:v52 count:16];
+            v20 = [pseudonyms countByEnumeratingWithState:&v43 objects:v52 count:16];
             if (v20)
             {
               continue;
@@ -637,7 +637,7 @@ LABEL_11:
             break;
           }
 
-          v11 = v36;
+          accounts2 = v36;
           v14 = v37;
           v15 = v35;
 LABEL_33:
@@ -656,8 +656,8 @@ LABEL_33:
         v42 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v18 = [v17 aliasStrings];
-        v26 = [v18 countByEnumeratingWithState:&v39 objects:v51 count:16];
+        pseudonyms = [v17 aliasStrings];
+        v26 = [pseudonyms countByEnumeratingWithState:&v39 objects:v51 count:16];
         if (v26)
         {
           v27 = v26;
@@ -668,10 +668,10 @@ LABEL_33:
             {
               if (*v40 != v28)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(pseudonyms);
               }
 
-              if ([*(*(&v39 + 1) + 8 * j) isEqualToString:v4])
+              if ([*(*(&v39 + 1) + 8 * j) isEqualToString:dCopy])
               {
 LABEL_32:
                 v30 = v17;
@@ -681,7 +681,7 @@ LABEL_32:
               }
             }
 
-            v27 = [v18 countByEnumeratingWithState:&v39 objects:v51 count:16];
+            v27 = [pseudonyms countByEnumeratingWithState:&v39 objects:v51 count:16];
             if (v27)
             {
               continue;
@@ -697,13 +697,13 @@ LABEL_35:
     }
 
     while (v16 != v13);
-    v13 = [v11 countByEnumeratingWithState:&v47 objects:v53 count:16];
+    v13 = [accounts2 countByEnumeratingWithState:&v47 objects:v53 count:16];
   }
 
   while (v13);
 LABEL_40:
 
-  v7 = v34;
+  anyObject = v34;
 LABEL_41:
   if (v14)
   {
@@ -712,7 +712,7 @@ LABEL_41:
 
   else
   {
-    v31 = v7;
+    v31 = anyObject;
   }
 
   v32 = v31;
@@ -722,42 +722,42 @@ LABEL_41:
 
 - (IDSAccount)account
 {
-  v3 = [(CSDIDSService *)self callerID];
-  v4 = [(CSDIDSService *)self accountWithCallerID:v3];
+  callerID = [(CSDIDSService *)self callerID];
+  v4 = [(CSDIDSService *)self accountWithCallerID:callerID];
 
   return v4;
 }
 
 - (id)idsDeviceID
 {
-  v2 = [(CSDIDSService *)self account];
-  v3 = [v2 loginID];
-  v4 = [v3 IDSFormattedDestinationID];
+  account = [(CSDIDSService *)self account];
+  loginID = [account loginID];
+  iDSFormattedDestinationID = [loginID IDSFormattedDestinationID];
 
-  return v4;
+  return iDSFormattedDestinationID;
 }
 
-- (void)addServiceDelegate:(id)a3 queue:(id)a4
+- (void)addServiceDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDIDSService *)self idsService];
-  [v8 addDelegate:v7 queue:v6];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  idsService = [(CSDIDSService *)self idsService];
+  [idsService addDelegate:delegateCopy queue:queueCopy];
 }
 
-- (void)removeServiceDelegate:(id)a3
+- (void)removeServiceDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CSDIDSService *)self idsService];
-  [v5 removeDelegate:v4];
+  delegateCopy = delegate;
+  idsService = [(CSDIDSService *)self idsService];
+  [idsService removeDelegate:delegateCopy];
 }
 
-- (BOOL)sendData:(id)a3 fromAccount:(id)a4 toDestinations:(id)a5 priority:(int64_t)a6 options:(id)a7 identifier:(id *)a8 error:(id *)a9
+- (BOOL)sendData:(id)data fromAccount:(id)account toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a4;
-  v18 = [a7 mutableCopy];
+  dataCopy = data;
+  destinationsCopy = destinations;
+  accountCopy = account;
+  v18 = [options mutableCopy];
   v19 = v18;
   if (v18)
   {
@@ -771,12 +771,12 @@ LABEL_41:
 
   v21 = v20;
 
-  v22 = [[CSDMessagingConversationMessage alloc] initWithData:v15];
+  v22 = [[CSDMessagingConversationMessage alloc] initWithData:dataCopy];
   v23 = v22;
   if (v22 && [(CSDMessagingConversationMessage *)v22 type]>= 30)
   {
-    v35 = a6;
-    v36 = a8;
+    priorityCopy = priority;
+    identifierCopy = identifier;
     v24 = IDSSendMessageOptionRequireAllRegistrationPropertiesKey;
     v25 = [v21 objectForKeyedSubscript:IDSSendMessageOptionRequireAllRegistrationPropertiesKey];
     if (!v25)
@@ -808,76 +808,76 @@ LABEL_9:
 
     [v21 setObject:v30 forKeyedSubscript:v24];
 
-    a6 = v35;
-    a8 = v36;
+    priority = priorityCopy;
+    identifier = identifierCopy;
   }
 
-  v31 = [(CSDIDSService *)self service];
-  v32 = [v31 sendData:v15 fromAccount:v17 toDestinations:v16 priority:a6 options:v21 identifier:a8 error:a9];
+  service = [(CSDIDSService *)self service];
+  v32 = [service sendData:dataCopy fromAccount:accountCopy toDestinations:destinationsCopy priority:priority options:v21 identifier:identifier error:error];
 
   return v32;
 }
 
 - (NSSet)aliases
 {
-  v2 = [(CSDIDSService *)self idsService];
-  v3 = [v2 aliases];
+  idsService = [(CSDIDSService *)self idsService];
+  aliases = [idsService aliases];
 
-  return v3;
+  return aliases;
 }
 
-- (id)createGroupSessionProviderWithGroupID:(id)a3 participantDestinationIDs:(id)a4 callerID:(id)a5 account:(id)a6 queue:(id)a7 isOneToOneModeEnabled:(BOOL)a8 localMember:(id)a9 avLess:(BOOL)a10 isScreenSharingRequest:(BOOL)a11 ABTestConfiguration:(id)a12 isInitiator:(BOOL)a13
+- (id)createGroupSessionProviderWithGroupID:(id)d participantDestinationIDs:(id)ds callerID:(id)iD account:(id)account queue:(id)queue isOneToOneModeEnabled:(BOOL)enabled localMember:(id)member avLess:(BOOL)self0 isScreenSharingRequest:(BOOL)self1 ABTestConfiguration:(id)self2 isInitiator:(BOOL)self3
 {
-  v31 = a8;
-  HIDWORD(v30) = a11;
-  v18 = a12;
-  v19 = a9;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
+  enabledCopy = enabled;
+  HIDWORD(v30) = request;
+  configurationCopy = configuration;
+  memberCopy = member;
+  queueCopy = queue;
+  accountCopy = account;
+  iDCopy = iD;
+  dsCopy = ds;
+  dCopy = d;
   v25 = [CSDIDSGroupSessionProvider alloc];
-  v26 = [v19 isLightweightMember];
+  isLightweightMember = [memberCopy isLightweightMember];
 
-  LOBYTE(v30) = a13;
-  *(&v29 + 1) = __PAIR16__(a11, a10);
-  LOBYTE(v29) = v26;
-  v27 = [CSDIDSGroupSessionProvider initWithGroupID:v25 participantDestinationIDs:"initWithGroupID:participantDestinationIDs:callerID:account:queue:isOneToOneModeEnabled:isLightweightMember:avLess:isScreenSharingRequest:ABTestConfiguration:isInitiator:" callerID:v24 account:v23 queue:v22 isOneToOneModeEnabled:v21 isLightweightMember:v20 avLess:v31 isScreenSharingRequest:v29 ABTestConfiguration:v18 isInitiator:v30];
+  LOBYTE(v30) = initiator;
+  *(&v29 + 1) = __PAIR16__(request, less);
+  LOBYTE(v29) = isLightweightMember;
+  v27 = [CSDIDSGroupSessionProvider initWithGroupID:v25 participantDestinationIDs:"initWithGroupID:participantDestinationIDs:callerID:account:queue:isOneToOneModeEnabled:isLightweightMember:avLess:isScreenSharingRequest:ABTestConfiguration:isInitiator:" callerID:dCopy account:dsCopy queue:iDCopy isOneToOneModeEnabled:accountCopy isLightweightMember:queueCopy avLess:enabledCopy isScreenSharingRequest:v29 ABTestConfiguration:configurationCopy isInitiator:v30];
 
   return v27;
 }
 
-- (id)accountForTelephonySubscriptionLabelIdentifier:(id)a3
+- (id)accountForTelephonySubscriptionLabelIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDIDSService *)self idsService];
-  v6 = [v5 accountMatchingSimIdentifier:v4];
+  identifierCopy = identifier;
+  idsService = [(CSDIDSService *)self idsService];
+  v6 = [idsService accountMatchingSimIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)isServiceEnabledForTelephonySubscriptionLabelIdentifier:(id)a3
+- (BOOL)isServiceEnabledForTelephonySubscriptionLabelIdentifier:(id)identifier
 {
-  v3 = [(CSDIDSService *)self accountForTelephonySubscriptionLabelIdentifier:a3];
+  v3 = [(CSDIDSService *)self accountForTelephonySubscriptionLabelIdentifier:identifier];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)addFirewallEntriesForHandleToDate:(id)a3
+- (void)addFirewallEntriesForHandleToDate:(id)date
 {
-  v4 = a3;
-  v5 = [(CSDIDSService *)self featureFlags];
-  v6 = [v5 offrampEnabled];
+  dateCopy = date;
+  featureFlags = [(CSDIDSService *)self featureFlags];
+  offrampEnabled = [featureFlags offrampEnabled];
 
-  if (v6)
+  if (offrampEnabled)
   {
     v7 = sub_100004778();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = v4;
+      v13 = dateCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Adding firewall entries for dictionary: %@", buf, 0xCu);
     }
 
@@ -887,36 +887,36 @@ LABEL_9:
     v10[2] = sub_1002426B8;
     v11 = v10[3] = &unk_10061F7A8;
     v8 = v11;
-    [v4 enumerateKeysAndObjectsUsingBlock:v10];
+    [dateCopy enumerateKeysAndObjectsUsingBlock:v10];
     v9 = [v8 copy];
     [(CSDIDSService *)self retrieveFirewallAndAddEntries:v9];
   }
 }
 
-- (void)addFirewallEntryForHandle:(id)a3 lastSeenDate:(id)a4
+- (void)addFirewallEntryForHandle:(id)handle lastSeenDate:(id)date
 {
-  v6 = a4;
-  v7 = [NSArray arrayWithObject:a3];
-  [(CSDIDSService *)self addFirewallEntriesForHandles:v7 lastSeenDate:v6];
+  dateCopy = date;
+  v7 = [NSArray arrayWithObject:handle];
+  [(CSDIDSService *)self addFirewallEntriesForHandles:v7 lastSeenDate:dateCopy];
 }
 
-- (void)addFirewallEntriesForHandles:(id)a3 lastSeenDate:(id)a4
+- (void)addFirewallEntriesForHandles:(id)handles lastSeenDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDIDSService *)self featureFlags];
-  v9 = [v8 offrampEnabled];
+  handlesCopy = handles;
+  dateCopy = date;
+  featureFlags = [(CSDIDSService *)self featureFlags];
+  offrampEnabled = [featureFlags offrampEnabled];
 
-  if (v9)
+  if (offrampEnabled)
   {
-    v21 = self;
+    selfCopy = self;
     v10 = sub_100004778();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v30 = v7;
+      v30 = dateCopy;
       v31 = 2112;
-      v32 = v6;
+      v32 = handlesCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Adding firewall entries with time %@ for handles: %@", buf, 0x16u);
     }
 
@@ -925,8 +925,8 @@ LABEL_9:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v22 = v6;
-    v11 = v6;
+    v22 = handlesCopy;
+    v11 = handlesCopy;
     v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {
@@ -942,12 +942,12 @@ LABEL_9:
           }
 
           v16 = *(*(&v24 + 1) + 8 * i);
-          v17 = [v16 normalizedValue];
-          v18 = [IDSURI URIWithUnprefixedURI:v17];
+          normalizedValue = [v16 normalizedValue];
+          v18 = [IDSURI URIWithUnprefixedURI:normalizedValue];
 
           if (v18)
           {
-            v19 = [[IDSFirewallEntry alloc] initWithURI:v18 andLastSeenDate:v7];
+            v19 = [[IDSFirewallEntry alloc] initWithURI:v18 andLastSeenDate:dateCopy];
             if (v19)
             {
               [v23 addObject:v19];
@@ -975,37 +975,37 @@ LABEL_9:
     }
 
     v20 = [v23 copy];
-    [(CSDIDSService *)v21 retrieveFirewallAndAddEntries:v20];
+    [(CSDIDSService *)selfCopy retrieveFirewallAndAddEntries:v20];
 
-    v6 = v22;
+    handlesCopy = v22;
   }
 }
 
-- (void)retrieveFirewallAndAddEntries:(id)a3
+- (void)retrieveFirewallAndAddEntries:(id)entries
 {
-  v4 = a3;
-  v5 = [(CSDIDSService *)self featureFlags];
-  v6 = [v5 offrampEnabled];
+  entriesCopy = entries;
+  featureFlags = [(CSDIDSService *)self featureFlags];
+  offrampEnabled = [featureFlags offrampEnabled];
 
-  if (v6)
+  if (offrampEnabled)
   {
-    v7 = [(CSDIDSService *)self service];
-    v8 = [(CSDIDSService *)self queue];
+    service = [(CSDIDSService *)self service];
+    queue = [(CSDIDSService *)self queue];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100242B78;
     v9[3] = &unk_10061F7D0;
-    v10 = v4;
-    [v7 retrieveFirewallWithQueue:v8 completion:v9];
+    v10 = entriesCopy;
+    [service retrieveFirewallWithQueue:queue completion:v9];
   }
 }
 
 - (void)removeAllFirewallEntries
 {
-  v3 = [(CSDIDSService *)self featureFlags];
-  v4 = [v3 offrampEnabled];
+  featureFlags = [(CSDIDSService *)self featureFlags];
+  offrampEnabled = [featureFlags offrampEnabled];
 
-  if (v4)
+  if (offrampEnabled)
   {
     v5 = sub_100004778();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1014,48 +1014,48 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing all IDSFirewall entries", v8, 2u);
     }
 
-    v6 = [(CSDIDSService *)self service];
-    v7 = [(CSDIDSService *)self queue];
-    [v6 retrieveFirewallWithQueue:v7 completion:&stru_10061F810];
+    service = [(CSDIDSService *)self service];
+    queue = [(CSDIDSService *)self queue];
+    [service retrieveFirewallWithQueue:queue completion:&stru_10061F810];
   }
 }
 
-- (void)removeFirewallEntries:(id)a3
+- (void)removeFirewallEntries:(id)entries
 {
-  v4 = a3;
-  v5 = [(CSDIDSService *)self featureFlags];
-  v6 = [v5 offrampEnabled];
+  entriesCopy = entries;
+  featureFlags = [(CSDIDSService *)self featureFlags];
+  offrampEnabled = [featureFlags offrampEnabled];
 
-  if (v6)
+  if (offrampEnabled)
   {
     v7 = sub_100004778();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = v4;
+      v13 = entriesCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Removing handles from IDSFirewall: %@", buf, 0xCu);
     }
 
-    v8 = [(CSDIDSService *)self service];
-    v9 = [(CSDIDSService *)self queue];
+    service = [(CSDIDSService *)self service];
+    queue = [(CSDIDSService *)self queue];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1002431BC;
     v10[3] = &unk_10061F7D0;
-    v11 = v4;
-    [v8 retrieveFirewallWithQueue:v9 completion:v10];
+    v11 = entriesCopy;
+    [service retrieveFirewallWithQueue:queue completion:v10];
   }
 }
 
-- (id)deviceWithUniqueID:(id)a3
+- (id)deviceWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(CSDIDSService *)self devices];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  devices = [(CSDIDSService *)self devices];
+  v6 = [devices countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1068,13 +1068,13 @@ LABEL_3:
     {
       if (*v16 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(devices);
       }
 
       v8 = *(*(&v15 + 1) + 8 * v10);
 
-      v12 = [v8 uniqueIDOverride];
-      v13 = [v12 isEqualToString:v4];
+      uniqueIDOverride = [v8 uniqueIDOverride];
+      v13 = [uniqueIDOverride isEqualToString:dCopy];
 
       if (v13)
       {
@@ -1085,7 +1085,7 @@ LABEL_3:
       v11 = v8;
       if (v7 == v10)
       {
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [devices countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -1105,25 +1105,25 @@ LABEL_10:
   return v8;
 }
 
-- (id)deviceForFromID:(id)a3
+- (id)deviceForFromID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDIDSService *)self idsService];
-  v6 = [v5 deviceForFromID:v4];
+  dCopy = d;
+  idsService = [(CSDIDSService *)self idsService];
+  v6 = [idsService deviceForFromID:dCopy];
 
   return v6;
 }
 
-- (id)devicesWithCapability:(id)a3
+- (id)devicesWithCapability:(id)capability
 {
-  v4 = a3;
+  capabilityCopy = capability;
   v5 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(CSDIDSService *)self devices];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  devices = [(CSDIDSService *)self devices];
+  v7 = [devices countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1134,12 +1134,12 @@ LABEL_10:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(devices);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 capabilities];
-        v13 = [v12 valueForCapability:v4];
+        capabilities = [v11 capabilities];
+        v13 = [capabilities valueForCapability:capabilityCopy];
 
         if (v13)
         {
@@ -1147,7 +1147,7 @@ LABEL_10:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [devices countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -1158,23 +1158,23 @@ LABEL_10:
   return v14;
 }
 
-- (id)deviceDestinationsWithCapability:(id)a3 localHandle:(id)a4
+- (id)deviceDestinationsWithCapability:(id)capability localHandle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
+  capabilityCopy = capability;
+  handleCopy = handle;
   v45 = +[NSMutableArray array];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v8 = [(CSDIDSService *)self devices];
-  v9 = [v8 countByEnumeratingWithState:&v50 objects:v59 count:16];
+  devices = [(CSDIDSService *)self devices];
+  v9 = [devices countByEnumeratingWithState:&v50 objects:v59 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v51;
-    v39 = v8;
-    v40 = v6;
+    v39 = devices;
+    v40 = capabilityCopy;
     v38 = *v51;
     do
     {
@@ -1184,39 +1184,39 @@ LABEL_10:
       {
         if (*v51 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(devices);
         }
 
         v13 = *(*(&v50 + 1) + 8 * v12);
-        v14 = [v13 capabilities];
-        v15 = [v14 valueForCapability:v6];
+        capabilities = [v13 capabilities];
+        v15 = [capabilities valueForCapability:capabilityCopy];
 
         if (v15)
         {
-          v16 = [v13 destination];
-          v17 = [v16 destinationURIs];
-          v18 = [v17 count];
+          destination = [v13 destination];
+          destinationURIs = [destination destinationURIs];
+          v18 = [destinationURIs count];
 
           if (v18)
           {
-            v43 = v16;
+            v43 = destination;
             v44 = v12;
-            v19 = [v16 destinationURIs];
-            v20 = [v19 anyObject];
+            destinationURIs2 = [destination destinationURIs];
+            anyObject = [destinationURIs2 anyObject];
             v21 = IDSCopyAddressDestinationForDestination();
             v22 = IDSCopyRawAddressForDestination();
             v23 = [TUHandle normalizedHandleWithDestinationID:v22];
 
             v24 = v23;
-            if (([v23 isEquivalentToHandle:v7] & 1) == 0)
+            if (([v23 isEquivalentToHandle:handleCopy] & 1) == 0)
             {
               v41 = v23;
-              v25 = [v13 csd_aliasStrings];
+              csd_aliasStrings = [v13 csd_aliasStrings];
               v46 = 0u;
               v47 = 0u;
               v48 = 0u;
               v49 = 0u;
-              v26 = [v25 countByEnumeratingWithState:&v46 objects:v58 count:16];
+              v26 = [csd_aliasStrings countByEnumeratingWithState:&v46 objects:v58 count:16];
               if (v26)
               {
                 v27 = v26;
@@ -1227,12 +1227,12 @@ LABEL_10:
                   {
                     if (*v47 != v28)
                     {
-                      objc_enumerationMutation(v25);
+                      objc_enumerationMutation(csd_aliasStrings);
                     }
 
                     v30 = *(*(&v46 + 1) + 8 * i);
                     v31 = [TUHandle normalizedHandleWithDestinationID:v30];
-                    if ([v31 isEquivalentToHandle:v7])
+                    if ([v31 isEquivalentToHandle:handleCopy])
                     {
                       v32 = sub_100004778();
                       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -1250,23 +1250,23 @@ LABEL_10:
                     }
                   }
 
-                  v27 = [v25 countByEnumeratingWithState:&v46 objects:v58 count:16];
+                  v27 = [csd_aliasStrings countByEnumeratingWithState:&v46 objects:v58 count:16];
                 }
 
                 while (v27);
               }
 
-              v8 = v39;
-              v6 = v40;
+              devices = v39;
+              capabilityCopy = v40;
               v11 = v38;
               v24 = v41;
             }
 
-            v35 = [v13 destination];
-            [v45 addObject:v35];
+            destination2 = [v13 destination];
+            [v45 addObject:destination2];
 
             v10 = v42;
-            v16 = v43;
+            destination = v43;
             v12 = v44;
           }
         }
@@ -1275,7 +1275,7 @@ LABEL_10:
       }
 
       while (v12 != v10);
-      v10 = [v8 countByEnumeratingWithState:&v50 objects:v59 count:16];
+      v10 = [devices countByEnumeratingWithState:&v50 objects:v59 count:16];
     }
 
     while (v10);
@@ -1288,50 +1288,50 @@ LABEL_10:
 
 - (BOOL)telephonyCapableDeviceExists
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDIDSService *)self queue];
+  queue = [(CSDIDSService *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100243D34;
   v5[3] = &unk_100619E80;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)relayCapableDeviceExists
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDIDSService *)self queue];
+  queue = [(CSDIDSService *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100243E20;
   v5[3] = &unk_100619E80;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)defaultPairedDeviceExists
 {
-  v2 = [(CSDIDSService *)self defaultPairedDevice];
-  v3 = v2 != 0;
+  defaultPairedDevice = [(CSDIDSService *)self defaultPairedDevice];
+  v3 = defaultPairedDevice != 0;
 
   return v3;
 }
@@ -1344,14 +1344,14 @@ LABEL_10:
   v10 = sub_100028730;
   v11 = sub_100032914;
   v12 = 0;
-  v3 = [(CSDIDSService *)self queue];
+  queue = [(CSDIDSService *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100243F84;
   v6[3] = &unk_100619E80;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1367,14 +1367,14 @@ LABEL_10:
   v10 = sub_100028730;
   v11 = sub_100032914;
   v12 = 0;
-  v3 = [(CSDIDSService *)self queue];
+  queue = [(CSDIDSService *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1002440B4;
   v6[3] = &unk_100619E80;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1384,23 +1384,23 @@ LABEL_10:
 
 - (NSString)countryCode
 {
-  v3 = [(CSDIDSService *)self account];
+  account = [(CSDIDSService *)self account];
   v4 = sub_100004778();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 accountInfo];
+    accountInfo = [account accountInfo];
     v19 = 138412290;
-    v20 = v5;
+    v20 = accountInfo;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Determining country code using account info %@", &v19, 0xCu);
   }
 
-  v6 = [v3 accountType];
-  if (v6 != 1)
+  accountType = [account accountType];
+  if (accountType != 1)
   {
-    if (!v6)
+    if (!accountType)
     {
-      v7 = [(CSDIDSService *)self callerID];
-      v8 = 0;
+      callerID = [(CSDIDSService *)self callerID];
+      telephoneNumber = 0;
       goto LABEL_10;
     }
 
@@ -1408,20 +1408,20 @@ LABEL_10:
   }
 
   v9 = +[FTDeviceSupport sharedInstance];
-  v10 = [v9 isTelephonyDevice];
+  isTelephonyDevice = [v9 isTelephonyDevice];
 
-  if (!v10)
+  if (!isTelephonyDevice)
   {
 LABEL_8:
-    v8 = 0;
+    telephoneNumber = 0;
     goto LABEL_9;
   }
 
   v11 = +[FTDeviceSupport sharedInstance];
-  v8 = [v11 telephoneNumber];
+  telephoneNumber = [v11 telephoneNumber];
 
 LABEL_9:
-  v7 = 0;
+  callerID = 0;
 LABEL_10:
   v12 = IMCountryCodeForNumber();
   v13 = v12;
@@ -1441,7 +1441,7 @@ LABEL_10:
 
     else
     {
-      v17 = [v3 regionBasePhoneNumber];
+      regionBasePhoneNumber = [account regionBasePhoneNumber];
       v14 = IMCountryCodeForNumber();
     }
   }
@@ -1456,21 +1456,21 @@ LABEL_10:
   return v2;
 }
 
-- (void)provisionPseudonymForHandle:(id)a3 featureID:(id)a4 scopeID:(id)a5 expiryDuration:(double)a6 allowedServices:(id)a7 completionHandler:(id)a8
+- (void)provisionPseudonymForHandle:(id)handle featureID:(id)d scopeID:(id)iD expiryDuration:(double)duration allowedServices:(id)services completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a8;
-  v15 = a5;
-  v16 = a4;
-  v17 = [(CSDIDSService *)self service];
-  v18 = [v17 pseudonymPropertiesWithFeatureID:v16 scopeID:v15 expiryDurationInSeconds:a6];
+  handleCopy = handle;
+  handlerCopy = handler;
+  iDCopy = iD;
+  dCopy = d;
+  service = [(CSDIDSService *)self service];
+  v18 = [service pseudonymPropertiesWithFeatureID:dCopy scopeID:iDCopy expiryDurationInSeconds:duration];
 
   v19 = sub_100004778();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v13 value];
-    v21 = [(CSDIDSService *)self service];
-    v22 = [v21 serviceIdentifier];
+    value = [handleCopy value];
+    service2 = [(CSDIDSService *)self service];
+    serviceIdentifier = [service2 serviceIdentifier];
     v23 = IDSLoggableDescriptionForHandleOnService();
     *buf = 138412546;
     v32 = v23;
@@ -1479,27 +1479,27 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Asking IDS to generated a pseudonym for unprefixedURI: %@ and properties: %@", buf, 0x16u);
   }
 
-  v24 = [(CSDIDSService *)self service];
+  service3 = [(CSDIDSService *)self service];
   v25 = [IDSURI alloc];
-  v26 = [v13 value];
-  v27 = [v25 initWithUnprefixedURI:v26];
+  value2 = [handleCopy value];
+  v27 = [v25 initWithUnprefixedURI:value2];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_10024452C;
   v29[3] = &unk_10061F748;
-  v30 = v14;
-  v28 = v14;
-  [v24 provisionPseudonymForURI:v27 withProperties:v18 completion:v29];
+  v30 = handlerCopy;
+  v28 = handlerCopy;
+  [service3 provisionPseudonymForURI:v27 withProperties:v18 completion:v29];
 }
 
-- (void)revokePseudonymString:(id)a3 completionHandler:(id)a4
+- (void)revokePseudonymString:(id)string completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDIDSService *)self pseudonymForPseudonymString:v6];
+  stringCopy = string;
+  handlerCopy = handler;
+  v8 = [(CSDIDSService *)self pseudonymForPseudonymString:stringCopy];
   if (v8)
   {
-    [(CSDIDSService *)self revokePseudonym:v8 completionHandler:v7];
+    [(CSDIDSService *)self revokePseudonym:v8 completionHandler:handlerCopy];
   }
 
   else
@@ -1507,44 +1507,44 @@ LABEL_10:
     v9 = sub_100004778();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(CSDIDSService *)self service];
-      v11 = [v10 pseudonymURIMap];
+      service = [(CSDIDSService *)self service];
+      pseudonymURIMap = [service pseudonymURIMap];
       v12 = 138412546;
-      v13 = v6;
+      v13 = stringCopy;
       v14 = 2112;
-      v15 = v11;
+      v15 = pseudonymURIMap;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "No IDSPseudonym matching string %@ was found. All pseudonym URIs: %@", &v12, 0x16u);
     }
 
-    v7[2](v7, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 }
 
-- (void)revokePseudonym:(id)a3 completionHandler:(id)a4
+- (void)revokePseudonym:(id)pseudonym completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  pseudonymCopy = pseudonym;
+  handlerCopy = handler;
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = pseudonymCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Asking IDS to revoke pseudonym: %@", &v10, 0xCu);
   }
 
-  v9 = [(CSDIDSService *)self service];
-  [v9 revokePseudonym:v6 completion:v7];
+  service = [(CSDIDSService *)self service];
+  [service revokePseudonym:pseudonymCopy completion:handlerCopy];
 }
 
-- (void)renewPseudonymString:(id)a3 expirationDate:(id)a4 completionHandler:(id)a5
+- (void)renewPseudonymString:(id)string expirationDate:(id)date completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CSDIDSService *)self pseudonymForPseudonymString:v8];
+  stringCopy = string;
+  dateCopy = date;
+  handlerCopy = handler;
+  v11 = [(CSDIDSService *)self pseudonymForPseudonymString:stringCopy];
   if (v11)
   {
-    [(CSDIDSService *)self renewPseudonym:v11 expirationDate:v9 completionHandler:v10];
+    [(CSDIDSService *)self renewPseudonym:v11 expirationDate:dateCopy completionHandler:handlerCopy];
   }
 
   else
@@ -1553,63 +1553,63 @@ LABEL_10:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v8;
+      v14 = stringCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "No pseudonym matching %@ was found.", &v13, 0xCu);
     }
 
-    (*(v10 + 2))(v10, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
   }
 }
 
-- (void)renewPseudonym:(id)a3 expirationDate:(id)a4 completionHandler:(id)a5
+- (void)renewPseudonym:(id)pseudonym expirationDate:(id)date completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  pseudonymCopy = pseudonym;
+  handlerCopy = handler;
+  dateCopy = date;
   v11 = sub_100004778();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v8;
+    v19 = pseudonymCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Asking IDS to renew pseudonym: %@", buf, 0xCu);
   }
 
-  v12 = [(CSDIDSService *)self service];
-  [v10 timeIntervalSince1970];
+  service = [(CSDIDSService *)self service];
+  [dateCopy timeIntervalSince1970];
   v14 = v13;
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100244AF0;
   v16[3] = &unk_10061F748;
-  v17 = v9;
-  v15 = v9;
-  [v12 renewPseudonym:v8 forUpdatedExpiryEpoch:v16 completion:v14];
+  v17 = handlerCopy;
+  v15 = handlerCopy;
+  [service renewPseudonym:pseudonymCopy forUpdatedExpiryEpoch:v16 completion:v14];
 }
 
-- (void)checkValidityForPseudonymString:(id)a3 completion:(id)a4
+- (void)checkValidityForPseudonymString:(id)string completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  stringCopy = string;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([(CSDIDSService *)self checkValidityForSelfPseudonymString:v6])
+    if ([(CSDIDSService *)self checkValidityForSelfPseudonymString:stringCopy])
     {
-      v7[2](v7, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
     else
     {
-      v8 = [(CSDIDSService *)self idsQueryController];
-      v9 = [(CSDIDSService *)self name];
-      v10 = [(CSDIDSService *)self queue];
+      idsQueryController = [(CSDIDSService *)self idsQueryController];
+      name = [(CSDIDSService *)self name];
+      queue = [(CSDIDSService *)self queue];
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_100244D00;
       v13[3] = &unk_10061F858;
-      v11 = v7;
+      v11 = completionCopy;
       v14 = v11;
-      v12 = [v8 refreshIDStatusForDestination:v6 service:v9 listenerID:@"CSDIDSServiceQueryListenerID" queue:v10 completionBlock:v13];
+      v12 = [idsQueryController refreshIDStatusForDestination:stringCopy service:name listenerID:@"CSDIDSServiceQueryListenerID" queue:queue completionBlock:v13];
 
       if ((v12 & 1) == 0)
       {
@@ -1619,9 +1619,9 @@ LABEL_10:
   }
 }
 
-- (BOOL)checkValidityForSelfPseudonymString:(id)a3
+- (BOOL)checkValidityForSelfPseudonymString:(id)string
 {
-  v3 = [(CSDIDSService *)self pseudonymForPseudonymString:a3];
+  v3 = [(CSDIDSService *)self pseudonymForPseudonymString:string];
   v4 = v3;
   if (v3)
   {
@@ -1636,106 +1636,106 @@ LABEL_10:
   return v5;
 }
 
-- (id)pseudonymForPseudonymString:(id)a3
+- (id)pseudonymForPseudonymString:(id)string
 {
-  v4 = a3;
-  v5 = [(CSDIDSService *)self service];
-  v6 = [[IDSURI alloc] initWithPrefixedURI:v4];
+  stringCopy = string;
+  service = [(CSDIDSService *)self service];
+  v6 = [[IDSURI alloc] initWithPrefixedURI:stringCopy];
 
-  v7 = [v5 pseudonymForPseudonymURI:v6];
+  v7 = [service pseudonymForPseudonymURI:v6];
 
   return v7;
 }
 
-- (void)_noteAction:(int64_t)a3 onHandle:(id)a4 completionHandle:(id)a5
+- (void)_noteAction:(int64_t)action onHandle:(id)handle completionHandle:(id)completionHandle
 {
-  v8 = a5;
-  v9 = [a4 normalizedValue];
-  v10 = [IDSURI URIWithPrefixedURI:v9];
+  completionHandleCopy = completionHandle;
+  normalizedValue = [handle normalizedValue];
+  v10 = [IDSURI URIWithPrefixedURI:normalizedValue];
 
   if ([v10 FZIDType] == 4)
   {
-    v11 = [(CSDIDSService *)self callerID];
-    v12 = [IDSURI URIWithPrefixedURI:v11];
+    callerID = [(CSDIDSService *)self callerID];
+    v12 = [IDSURI URIWithPrefixedURI:callerID];
 
-    v13 = [(CSDIDSService *)self service];
+    service = [(CSDIDSService *)self service];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100244F70;
     v14[3] = &unk_10061F880;
-    v15 = v8;
-    [v13 reportAction:a3 ofTempURI:v10 fromURI:v12 withCompletion:v14];
+    v15 = completionHandleCopy;
+    [service reportAction:action ofTempURI:v10 fromURI:v12 withCompletion:v14];
   }
 
-  else if (v8)
+  else if (completionHandleCopy)
   {
-    (*(v8 + 2))(v8, 0);
+    (*(completionHandleCopy + 2))(completionHandleCopy, 0);
   }
 }
 
-- (void)accountController:(id)a3 accountAdded:(id)a4
+- (void)accountController:(id)controller accountAdded:(id)added
 {
-  v5 = a4;
-  v6 = [(CSDIDSService *)self queue];
-  [v5 addRegistrationDelegate:self queue:v6];
+  addedCopy = added;
+  queue = [(CSDIDSService *)self queue];
+  [addedCopy addRegistrationDelegate:self queue:queue];
 }
 
-- (void)accountController:(id)a3 accountEnabled:(id)a4
+- (void)accountController:(id)controller accountEnabled:(id)enabled
 {
-  v5 = a4;
-  v6 = [(CSDIDSService *)self queue];
-  [v5 addRegistrationDelegate:self queue:v6];
+  enabledCopy = enabled;
+  queue = [(CSDIDSService *)self queue];
+  [enabledCopy addRegistrationDelegate:self queue:queue];
 }
 
-- (void)handleActiveAccountsChanged:(id)a3
+- (void)handleActiveAccountsChanged:(id)changed
 {
   v4 = sub_100004778();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@: Active accounts changed", &v6, 0xCu);
   }
 
   [(CSDIDSService *)self _update];
-  v5 = [(CSDIDSService *)self delegate];
-  [v5 activeAccountsChangedForService:self];
+  delegate = [(CSDIDSService *)self delegate];
+  [delegate activeAccountsChangedForService:self];
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: Devices changed", &v6, 0xCu);
   }
 
   [(CSDIDSService *)self _update];
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: Nearby devices changed", &v6, 0xCu);
   }
 
   [(CSDIDSService *)self _update];
 }
 
-- (void)service:(id)a3 didUpdatePseudonymsWithChanges:(id)a4
+- (void)service:(id)service didUpdatePseudonymsWithChanges:(id)changes
 {
-  v5 = a4;
+  changesCopy = changes;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  v6 = [changesCopy countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v6)
   {
     v8 = v6;
@@ -1748,46 +1748,46 @@ LABEL_10:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(changesCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 changeType];
-        if (!v12)
+        changeType = [v11 changeType];
+        if (!changeType)
         {
-          v13 = [(CSDIDSService *)self delegate];
-          v14 = [v11 pseudonym];
-          [v13 service:self pseudonymRemoved:v14];
+          delegate = [(CSDIDSService *)self delegate];
+          pseudonym = [v11 pseudonym];
+          [delegate service:self pseudonymRemoved:pseudonym];
           goto LABEL_13;
         }
 
-        if (v12 == 2)
+        if (changeType == 2)
         {
-          v13 = [(CSDIDSService *)self delegate];
-          v14 = [v11 pseudonym];
-          [v13 service:self pseudonymUpdated:v14];
+          delegate = [(CSDIDSService *)self delegate];
+          pseudonym = [v11 pseudonym];
+          [delegate service:self pseudonymUpdated:pseudonym];
 LABEL_13:
 
           goto LABEL_14;
         }
 
-        if (v12 != 1)
+        if (changeType != 1)
         {
           continue;
         }
 
-        v13 = sub_100004778();
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+        delegate = sub_100004778();
+        if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v15;
-          v21 = self;
-          _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%@: Told that a pseudonym was added to our account.", buf, 0xCu);
+          selfCopy = self;
+          _os_log_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_DEFAULT, "%@: Told that a pseudonym was added to our account.", buf, 0xCu);
         }
 
 LABEL_14:
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v8 = [changesCopy countByEnumeratingWithState:&v16 objects:v22 count:16];
     }
 
     while (v8);
@@ -1796,21 +1796,21 @@ LABEL_14:
 
 - (unint64_t)registrationRestrictionReason
 {
-  v2 = [(CSDIDSService *)self idsService];
-  v3 = [v2 registrationRestrictionReason];
+  idsService = [(CSDIDSService *)self idsService];
+  registrationRestrictionReason = [idsService registrationRestrictionReason];
 
-  return v3;
+  return registrationRestrictionReason;
 }
 
 - (void)update
 {
-  v3 = [(CSDIDSService *)self queue];
+  queue = [(CSDIDSService *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100245538;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 @end

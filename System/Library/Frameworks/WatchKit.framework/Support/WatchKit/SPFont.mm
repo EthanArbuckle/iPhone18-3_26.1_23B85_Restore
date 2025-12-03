@@ -1,57 +1,57 @@
 @interface SPFont
-- (SPFont)initWithCoder:(id)a3;
-- (SPFont)initWithFont:(id)a3;
-- (id)unarchiver:(id)a3 didDecodeObject:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (SPFont)initWithCoder:(id)coder;
+- (SPFont)initWithFont:(id)font;
+- (id)unarchiver:(id)unarchiver didDecodeObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPFont
 
-- (SPFont)initWithFont:(id)a3
+- (SPFont)initWithFont:(id)font
 {
   v6.receiver = self;
   v6.super_class = SPFont;
-  v3 = a3;
+  fontCopy = font;
   v4 = [(SPFont *)&v6 init];
-  [(SPFont *)v4 setFont:v3, v6.receiver, v6.super_class];
+  [(SPFont *)v4 setFont:fontCopy, v6.receiver, v6.super_class];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   font = self->_font;
-  v4 = a3;
-  v6 = [(UIFont *)font fontDescriptor];
-  v5 = [v6 fontAttributes];
-  [v4 encodeObject:v5 forKey:@"SPFontAttributes"];
+  coderCopy = coder;
+  fontDescriptor = [(UIFont *)font fontDescriptor];
+  fontAttributes = [fontDescriptor fontAttributes];
+  [coderCopy encodeObject:fontAttributes forKey:@"SPFontAttributes"];
 }
 
-- (id)unarchiver:(id)a3 didDecodeObject:(id)a4
+- (id)unarchiver:(id)unarchiver didDecodeObject:(id)object
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 || (v5 = objc_opt_class(), NSStringFromClass(v5), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isEqualToString:@"SPFont"], v6, v7))
   {
-    v8 = [a4 font];
+    objectCopy = [object font];
   }
 
   else
   {
-    v8 = a4;
+    objectCopy = object;
   }
 
-  v9 = v8;
+  v9 = objectCopy;
 
   return v9;
 }
 
-- (SPFont)initWithCoder:(id)a3
+- (SPFont)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = SPFont;
   v5 = [(SPFont *)&v14 init];
-  v6 = [v4 decodeObjectForKey:@"SPFontAttributes"];
+  v6 = [coderCopy decodeObjectForKey:@"SPFontAttributes"];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2050000000;

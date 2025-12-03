@@ -1,60 +1,60 @@
 @interface VMMessageTranscriptViewModel
-+ (BOOL)metricsCollectionValidForLocale:(id)a3;
++ (BOOL)metricsCollectionValidForLocale:(id)locale;
 - (NSAttributedString)localizedAttributedFollowUpSuggestionsText;
 - (NSAttributedString)localizedAttributedTitle;
 - (UIView)tintColorDelegate;
-- (VMMessageTranscriptViewModel)initWithDonated:(BOOL)a3 transcribing:(BOOL)a4 transcriptionAttempted:(BOOL)a5 transcriptionAvailable:(BOOL)a6 messageTranscript:(id)a7;
-- (VMMessageTranscriptViewModel)initWithMPMessage:(id)a3;
-- (VMMessageTranscriptViewModel)initWithMessage:(id)a3;
-- (id)localizedAttributedFeedbackTextForConfidence:(unint64_t)a3 locale:(id)a4;
-- (id)localizedAttributedFeedbackTextWithLocale:(id)a3;
-- (id)localizedAttributedTextForConfidence:(unint64_t)a3;
+- (VMMessageTranscriptViewModel)initWithDonated:(BOOL)donated transcribing:(BOOL)transcribing transcriptionAttempted:(BOOL)attempted transcriptionAvailable:(BOOL)available messageTranscript:(id)transcript;
+- (VMMessageTranscriptViewModel)initWithMPMessage:(id)message;
+- (VMMessageTranscriptViewModel)initWithMessage:(id)message;
+- (id)localizedAttributedFeedbackTextForConfidence:(unint64_t)confidence locale:(id)locale;
+- (id)localizedAttributedFeedbackTextWithLocale:(id)locale;
+- (id)localizedAttributedTextForConfidence:(unint64_t)confidence;
 - (id)localizedAttributedTextForMessage;
-- (id)localizedAttributedTitleForConfidence:(unint64_t)a3;
-- (id)tintColorForColor:(id)a3;
+- (id)localizedAttributedTitleForConfidence:(unint64_t)confidence;
+- (id)tintColorForColor:(id)color;
 - (unint64_t)confidence;
 @end
 
 @implementation VMMessageTranscriptViewModel
 
-- (VMMessageTranscriptViewModel)initWithMessage:(id)a3
+- (VMMessageTranscriptViewModel)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = [MPVisualTranscriptionMessage alloc];
-  v6 = [v4 transcript];
-  v7 = [(MPVisualTranscriptionMessage *)v5 initWithVMTranscript:v6];
+  transcript = [messageCopy transcript];
+  v7 = [(MPVisualTranscriptionMessage *)v5 initWithVMTranscript:transcript];
 
-  v8 = [v4 isTranscriptionRated];
-  v9 = [v4 isTranscribing];
-  v10 = [v4 wasTranscriptionAttempted];
-  v11 = [v4 isTranscriptionAvailable];
+  isTranscriptionRated = [messageCopy isTranscriptionRated];
+  isTranscribing = [messageCopy isTranscribing];
+  wasTranscriptionAttempted = [messageCopy wasTranscriptionAttempted];
+  isTranscriptionAvailable = [messageCopy isTranscriptionAvailable];
 
-  v12 = [(VMMessageTranscriptViewModel *)self initWithDonated:v8 transcribing:v9 transcriptionAttempted:v10 transcriptionAvailable:v11 messageTranscript:v7];
+  v12 = [(VMMessageTranscriptViewModel *)self initWithDonated:isTranscriptionRated transcribing:isTranscribing transcriptionAttempted:wasTranscriptionAttempted transcriptionAvailable:isTranscriptionAvailable messageTranscript:v7];
   return v12;
 }
 
-- (VMMessageTranscriptViewModel)initWithDonated:(BOOL)a3 transcribing:(BOOL)a4 transcriptionAttempted:(BOOL)a5 transcriptionAvailable:(BOOL)a6 messageTranscript:(id)a7
+- (VMMessageTranscriptViewModel)initWithDonated:(BOOL)donated transcribing:(BOOL)transcribing transcriptionAttempted:(BOOL)attempted transcriptionAvailable:(BOOL)available messageTranscript:(id)transcript
 {
-  v12 = a7;
+  transcriptCopy = transcript;
   v19.receiver = self;
   v19.super_class = VMMessageTranscriptViewModel;
   v13 = [(VMMessageTranscriptViewModel *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    v13->_donated = a3;
-    v13->_transcribing = a4;
-    v13->_transcriptionAttempted = a5;
-    v13->_transcriptionAvailable = a6;
-    if (v12)
+    v13->_donated = donated;
+    v13->_transcribing = transcribing;
+    v13->_transcriptionAttempted = attempted;
+    v13->_transcriptionAvailable = available;
+    if (transcriptCopy)
     {
-      [v12 confidence];
+      [transcriptCopy confidence];
       *&v15 = v15;
       v14->_messageTranscriptConfidence = *&v15;
-      v14->_messageTranscriptConfidenceRating = [v12 confidenceRating];
-      v16 = [v12 attributedText];
+      v14->_messageTranscriptConfidenceRating = [transcriptCopy confidenceRating];
+      attributedText = [transcriptCopy attributedText];
       messageTranscriptAttributedText = v14->_messageTranscriptAttributedText;
-      v14->_messageTranscriptAttributedText = v16;
+      v14->_messageTranscriptAttributedText = attributedText;
     }
   }
 
@@ -89,19 +89,19 @@
   return v15;
 }
 
-- (id)localizedAttributedFeedbackTextWithLocale:(id)a3
+- (id)localizedAttributedFeedbackTextWithLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [(VMMessageTranscriptViewModel *)self localizedAttributedFeedbackTextForConfidence:[(VMMessageTranscriptViewModel *)self confidence] locale:v4];
+  localeCopy = locale;
+  v5 = [(VMMessageTranscriptViewModel *)self localizedAttributedFeedbackTextForConfidence:[(VMMessageTranscriptViewModel *)self confidence] locale:localeCopy];
 
   return v5;
 }
 
 - (NSAttributedString)localizedAttributedTitle
 {
-  v3 = [(VMMessageTranscriptViewModel *)self confidence];
+  confidence = [(VMMessageTranscriptViewModel *)self confidence];
 
-  return [(VMMessageTranscriptViewModel *)self localizedAttributedTitleForConfidence:v3];
+  return [(VMMessageTranscriptViewModel *)self localizedAttributedTitleForConfidence:confidence];
 }
 
 - (id)localizedAttributedTextForMessage
@@ -178,10 +178,10 @@ LABEL_7:
   return result;
 }
 
-- (id)localizedAttributedFeedbackTextForConfidence:(unint64_t)a3 locale:(id)a4
+- (id)localizedAttributedFeedbackTextForConfidence:(unint64_t)confidence locale:(id)locale
 {
-  v6 = a4;
-  v7 = [objc_opt_class() metricsCollectionValidForLocale:v6];
+  localeCopy = locale;
+  v7 = [objc_opt_class() metricsCollectionValidForLocale:localeCopy];
 
   if (!v7)
   {
@@ -189,7 +189,7 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v8 = [UIApp userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [UIApp userInterfaceLayoutDirection];
   v9 = +[NSMutableDictionary dictionary];
   v10 = objc_alloc_init(NSMutableParagraphStyle);
   [v10 setAlignment:4];
@@ -201,7 +201,7 @@ LABEL_7:
   v13 = [(VMMessageTranscriptViewModel *)self tintColorForColor:v12];
   [v9 setObject:v13 forKeyedSubscript:NSForegroundColorAttributeName];
 
-  if (a3 - 2 < 2)
+  if (confidence - 2 < 2)
   {
     v14 = +[NSBundle mainBundle];
     [v14 localizedStringForKey:@"VOICEMAILUI_MESSAGE_TRANSCRIPT_VIEW_FEEDBACK_OPTION_NEGATIVE" value:&stru_10028F310 table:@"VoicemailUI"];
@@ -220,25 +220,25 @@ LABEL_7:
     v23 = [v20 rangeOfString:v17];
     v25 = v24;
     v26 = [[NSMutableAttributedString alloc] initWithString:v20 attributes:v42];
-    v27 = [objc_opt_class() positiveFeedbackURL];
-    [v26 addAttribute:NSLinkAttributeName value:v27 range:{v23, v25}];
+    positiveFeedbackURL = [objc_opt_class() positiveFeedbackURL];
+    [v26 addAttribute:NSLinkAttributeName value:positiveFeedbackURL range:{v23, v25}];
 
     v28 = v15;
     v9 = v42;
-    v29 = [objc_opt_class() neutralFeedbackURL];
+    neutralFeedbackURL = [objc_opt_class() neutralFeedbackURL];
     v30 = v22;
     v10 = v41;
-    [v26 addAttribute:NSLinkAttributeName value:v29 range:{v40, v30}];
+    [v26 addAttribute:NSLinkAttributeName value:neutralFeedbackURL range:{v40, v30}];
 LABEL_11:
 
     v31 = [v26 copy];
     goto LABEL_12;
   }
 
-  if (a3 == 1)
+  if (confidence == 1)
   {
-    v32 = [objc_opt_class() neutralFeedbackURL];
-    [v9 setObject:v32 forKeyedSubscript:NSLinkAttributeName];
+    neutralFeedbackURL2 = [objc_opt_class() neutralFeedbackURL];
+    [v9 setObject:neutralFeedbackURL2 forKeyedSubscript:NSLinkAttributeName];
 
     v28 = objc_alloc_init(NSTextAttachment);
     v33 = +[UIImage voicemailReportFeedbackGlyphImage];
@@ -250,10 +250,10 @@ LABEL_11:
     v20 = [v34 localizedStringForKey:@"VOICEMAILUI_MESSAGE_TRANSCRIPT_VIEW_FEEDBACK_CONFIDENCE_NONE" value:&stru_10028F310 table:@"VoicemailUI"];
 
     v26 = [[NSMutableAttributedString alloc] initWithString:&stru_10028F310 attributes:v9];
-    if (v8 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
-      v29 = [v20 stringByAppendingString:@" "];
-      v35 = [[NSAttributedString alloc] initWithString:v29];
+      neutralFeedbackURL = [v20 stringByAppendingString:@" "];
+      v35 = [[NSAttributedString alloc] initWithString:neutralFeedbackURL];
       [v26 appendAttributedString:v35];
 
       v36 = [NSAttributedString attributedStringWithAttachment:v28];
@@ -261,11 +261,11 @@ LABEL_11:
 
     else
     {
-      v29 = [@" " stringByAppendingString:v20];
+      neutralFeedbackURL = [@" " stringByAppendingString:v20];
       v37 = [NSAttributedString attributedStringWithAttachment:v28];
       [v26 appendAttributedString:v37];
 
-      v36 = [[NSAttributedString alloc] initWithString:v29];
+      v36 = [[NSAttributedString alloc] initWithString:neutralFeedbackURL];
     }
 
     v38 = v36;
@@ -283,19 +283,19 @@ LABEL_13:
   return v31;
 }
 
-- (id)localizedAttributedTextForConfidence:(unint64_t)a3
+- (id)localizedAttributedTextForConfidence:(unint64_t)confidence
 {
   v5 = +[NSMutableDictionary dictionary];
   v6 = +[UIColor dynamicSecondaryLabelColor];
   v7 = [(VMMessageTranscriptViewModel *)self tintColorForColor:v6];
   [v5 setObject:v7 forKeyedSubscript:NSForegroundColorAttributeName];
 
-  if (a3 - 2 < 2)
+  if (confidence - 2 < 2)
   {
     v8 = PHVoicemailTranscriptAttributedPrefix();
     v9 = PHVoicemailTranscriptAttributedSuffix();
-    v10 = [(VMMessageTranscriptViewModel *)self messageTranscriptAttributedText];
-    v11 = [v10 mutableCopy];
+    messageTranscriptAttributedText = [(VMMessageTranscriptViewModel *)self messageTranscriptAttributedText];
+    v11 = [messageTranscriptAttributedText mutableCopy];
 
     [v11 insertAttributedString:v8 atIndex:0];
     [v11 appendAttributedString:v9];
@@ -313,7 +313,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (confidence == 1)
   {
     v15 = +[NSBundle mainBundle];
     v8 = [v15 localizedStringForKey:@"VOICEMAILUI_MESSAGE_TRANSCRIPT_VIEW_MESSAGE_CONFIDENCE_NONE" value:&stru_10028F310 table:@"VoicemailUI"];
@@ -334,7 +334,7 @@ LABEL_7:
   return v14;
 }
 
-- (id)localizedAttributedTitleForConfidence:(unint64_t)a3
+- (id)localizedAttributedTitleForConfidence:(unint64_t)confidence
 {
   v5 = +[NSMutableDictionary dictionary];
   v6 = +[UIFont telephonyUIBodyShortEmphasizedFont];
@@ -344,13 +344,13 @@ LABEL_7:
   v8 = [(VMMessageTranscriptViewModel *)self tintColorForColor:v7];
   [v5 setObject:v8 forKeyedSubscript:NSForegroundColorAttributeName];
 
-  if (a3 == 2)
+  if (confidence == 2)
   {
     v9 = @"VOICEMAILUI_MESSAGE_TRANSCRIPT_VIEW_TITLE_CONFIDENCE_LOW";
     goto LABEL_5;
   }
 
-  if (a3 == 3)
+  if (confidence == 3)
   {
     v9 = @"VOICEMAILUI_MESSAGE_TRANSCRIPT_VIEW_TITLE";
 LABEL_5:
@@ -368,11 +368,11 @@ LABEL_7:
   return v13;
 }
 
-- (id)tintColorForColor:(id)a3
+- (id)tintColorForColor:(id)color
 {
-  v4 = a3;
-  v5 = [(VMMessageTranscriptViewModel *)self tintColorDelegate];
-  v6 = [v5 _accessibilityHigherContrastTintColorForColor:v4];
+  colorCopy = color;
+  tintColorDelegate = [(VMMessageTranscriptViewModel *)self tintColorDelegate];
+  v6 = [tintColorDelegate _accessibilityHigherContrastTintColorForColor:colorCopy];
   v7 = v6;
   if (v6)
   {
@@ -381,7 +381,7 @@ LABEL_7:
 
   else
   {
-    v8 = v4;
+    v8 = colorCopy;
   }
 
   v9 = v8;
@@ -389,16 +389,16 @@ LABEL_7:
   return v8;
 }
 
-+ (BOOL)metricsCollectionValidForLocale:(id)a3
++ (BOOL)metricsCollectionValidForLocale:(id)locale
 {
-  v3 = a3;
-  if (!v3)
+  localeCopy = locale;
+  if (!localeCopy)
   {
-    v3 = +[NSLocale currentLocale];
+    localeCopy = +[NSLocale currentLocale];
   }
 
-  v4 = [v3 regionCode];
-  v5 = [TULVMRegionsWithoutMetrics containsObject:v4];
+  regionCode = [localeCopy regionCode];
+  v5 = [TULVMRegionsWithoutMetrics containsObject:regionCode];
 
   return v5 ^ 1;
 }
@@ -410,10 +410,10 @@ LABEL_7:
   return WeakRetained;
 }
 
-- (VMMessageTranscriptViewModel)initWithMPMessage:(id)a3
+- (VMMessageTranscriptViewModel)initWithMPMessage:(id)message
 {
   swift_unknownObjectRetain();
-  v5 = -[VMMessageTranscriptViewModel initWithDonated:transcribing:transcriptionAttempted:transcriptionAvailable:messageTranscript:](self, "initWithDonated:transcribing:transcriptionAttempted:transcriptionAvailable:messageTranscript:", [a3 isTranscriptionRated], objc_msgSend(a3, "isTranscribing"), objc_msgSend(a3, "transcriptionAttempted"), objc_msgSend(a3, "isTranscriptionAvailable"), objc_msgSend(a3, "transcript"));
+  v5 = -[VMMessageTranscriptViewModel initWithDonated:transcribing:transcriptionAttempted:transcriptionAvailable:messageTranscript:](self, "initWithDonated:transcribing:transcriptionAttempted:transcriptionAvailable:messageTranscript:", [message isTranscriptionRated], objc_msgSend(message, "isTranscribing"), objc_msgSend(message, "transcriptionAttempted"), objc_msgSend(message, "isTranscriptionAvailable"), objc_msgSend(message, "transcript"));
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
   return v5;

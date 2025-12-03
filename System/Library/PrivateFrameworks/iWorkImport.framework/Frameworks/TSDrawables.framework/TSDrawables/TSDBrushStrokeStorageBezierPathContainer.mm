@@ -1,31 +1,31 @@
 @interface TSDBrushStrokeStorageBezierPathContainer
-- (BOOL)isEqual:(id)a3;
-- (TSDBrushStrokeStorageBezierPathContainer)initWithOriginalPath:(id)a3 pathWithPossibleSmoothing:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (TSDBrushStrokeStorageBezierPathContainer)initWithOriginalPath:(id)path pathWithPossibleSmoothing:(id)smoothing;
 - (unint64_t)hash;
 @end
 
 @implementation TSDBrushStrokeStorageBezierPathContainer
 
-- (TSDBrushStrokeStorageBezierPathContainer)initWithOriginalPath:(id)a3 pathWithPossibleSmoothing:(id)a4
+- (TSDBrushStrokeStorageBezierPathContainer)initWithOriginalPath:(id)path pathWithPossibleSmoothing:(id)smoothing
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  smoothingCopy = smoothing;
   v12.receiver = self;
   v12.super_class = TSDBrushStrokeStorageBezierPathContainer;
   v9 = [(TSDBrushStrokeStorageBezierPathContainer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_originalPath, a3);
-    objc_storeStrong(&v10->_pathWithPossibleSmoothing, a4);
+    objc_storeStrong(&v9->_originalPath, path);
+    objc_storeStrong(&v10->_pathWithPossibleSmoothing, smoothing);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 

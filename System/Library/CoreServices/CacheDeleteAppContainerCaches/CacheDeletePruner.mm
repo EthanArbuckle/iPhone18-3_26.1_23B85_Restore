@@ -1,29 +1,29 @@
 @interface CacheDeletePruner
-+ (id)prunerWithFileAge:(double)a3 dirAge:(double)a4;
-- (CacheDeletePruner)initWithFileAge:(double)a3 dirAge:(double)a4;
++ (id)prunerWithFileAge:(double)age dirAge:(double)dirAge;
+- (CacheDeletePruner)initWithFileAge:(double)age dirAge:(double)dirAge;
 - (unint64_t)pruneContainerTmps;
-- (unint64_t)pruneDir:(id)a3 bundleID:(id)a4;
+- (unint64_t)pruneDir:(id)dir bundleID:(id)d;
 @end
 
 @implementation CacheDeletePruner
 
-- (CacheDeletePruner)initWithFileAge:(double)a3 dirAge:(double)a4
+- (CacheDeletePruner)initWithFileAge:(double)age dirAge:(double)dirAge
 {
   v7.receiver = self;
   v7.super_class = CacheDeletePruner;
   result = [(CacheDeletePruner *)&v7 init];
   if (result)
   {
-    result->_dir_age = a4;
-    result->_file_age = a3;
+    result->_dir_age = dirAge;
+    result->_file_age = age;
   }
 
   return result;
 }
 
-+ (id)prunerWithFileAge:(double)a3 dirAge:(double)a4
++ (id)prunerWithFileAge:(double)age dirAge:(double)dirAge
 {
-  v4 = [[CacheDeletePruner alloc] initWithFileAge:a3 dirAge:a4];
+  v4 = [[CacheDeletePruner alloc] initWithFileAge:age dirAge:dirAge];
 
   return v4;
 }
@@ -120,16 +120,16 @@ LABEL_12:
   return v5 ^ 1;
 }
 
-- (unint64_t)pruneDir:(id)a3 bundleID:(id)a4
+- (unint64_t)pruneDir:(id)dir bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dirCopy = dir;
+  dCopy = d;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  v8 = v6;
-  v9 = [v6 fileSystemRepresentation];
+  v8 = dirCopy;
+  fileSystemRepresentation = [dirCopy fileSystemRepresentation];
   v10 = +[NSMutableSet set];
   v28.tv_sec = 0;
   *&v28.tv_usec = 0;
@@ -150,7 +150,7 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = __39__CacheDeletePruner_pruneDir_bundleID___block_invoke;
   block[3] = &unk_10000C518;
-  v26 = v9;
+  v26 = fileSystemRepresentation;
   block[4] = self;
   v27 = v28;
   v12 = v10;
@@ -158,10 +158,10 @@ LABEL_12:
   v25 = &v29;
   v13 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_BACKGROUND, 0, block);
   v14 = v13;
-  if (v7)
+  if (dCopy)
   {
-    v15 = [(CacheDeletePruner *)self testObject];
-    v33 = v7;
+    testObject = [(CacheDeletePruner *)self testObject];
+    v33 = dCopy;
     v16 = [NSArray arrayWithObjects:&v33 count:1];
     v22 = v14;
     v17 = assert_group_cache_deletion();

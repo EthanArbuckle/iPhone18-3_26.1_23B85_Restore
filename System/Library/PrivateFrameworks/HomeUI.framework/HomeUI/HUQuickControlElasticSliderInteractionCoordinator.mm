@@ -1,46 +1,46 @@
 @interface HUQuickControlElasticSliderInteractionCoordinator
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_rawViewValueRange;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)modelValue;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (HUQuickControlElasticSliderInteractionCoordinator)initWithControlView:(id)a3 delegate:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (HUQuickControlElasticSliderInteractionCoordinator)initWithControlView:(id)view delegate:(id)delegate;
 - (HUQuickControlIncrementalConvertibleProfile)viewProfile;
 - (double)_rubberBandedStretchProgress;
-- (double)_sliderValueForLocation:(CGPoint)a3;
+- (double)_sliderValueForLocation:(CGPoint)location;
 - (id)_allAppliers;
 - (id)_rubberBandingValueNormalizer;
-- (id)_setupValueApplierForValueType:(unint64_t)a3;
-- (id)_valueNormalizerWithOptions:(id)a3;
+- (id)_setupValueApplierForValueType:(unint64_t)type;
+- (id)_valueNormalizerWithOptions:(id)options;
 - (id)value;
-- (unint64_t)_findClosestValueFromTouchLocation:(CGPoint)a3;
-- (void)_beginReceivingTouchesWithGestureRecognizer:(id)a3 isTouchContinuation:(BOOL)a4;
-- (void)_handleControlPanGesture:(id)a3;
-- (void)_handleControlTapGesture:(id)a3;
+- (unint64_t)_findClosestValueFromTouchLocation:(CGPoint)location;
+- (void)_beginReceivingTouchesWithGestureRecognizer:(id)recognizer isTouchContinuation:(BOOL)continuation;
+- (void)_handleControlPanGesture:(id)gesture;
+- (void)_handleControlTapGesture:(id)gesture;
 - (void)_setupAllValueAppliersIfNecessary;
 - (void)_setupStretchingAppliers;
-- (void)_updateControlViewValueOfType:(unint64_t)a3 withValue:(double)a4;
-- (void)_updateModelValue:(id)a3 roundValue:(BOOL)a4 notifyDelegate:(BOOL)a5;
-- (void)_updatePropertiesForControlValueSmoothingApplier:(id)a3 ofType:(unint64_t)a4;
-- (void)beginUserInteractionWithFirstTouchGestureRecognizer:(id)a3;
+- (void)_updateControlViewValueOfType:(unint64_t)type withValue:(double)value;
+- (void)_updateModelValue:(id)value roundValue:(BOOL)roundValue notifyDelegate:(BOOL)delegate;
+- (void)_updatePropertiesForControlValueSmoothingApplier:(id)applier ofType:(unint64_t)type;
+- (void)beginUserInteractionWithFirstTouchGestureRecognizer:(id)recognizer;
 - (void)dealloc;
-- (void)gestureDidEndForGestureTransformer:(id)a3;
-- (void)gestureTransformer:(id)a3 sliderValueDidChange:(double)a4;
+- (void)gestureDidEndForGestureTransformer:(id)transformer;
+- (void)gestureTransformer:(id)transformer sliderValueDidChange:(double)change;
 - (void)recordInteractionStart;
-- (void)setActiveGestureValue:(double)a3;
-- (void)setHasSecondaryValue:(BOOL)a3;
-- (void)setUserInteractionActive:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)setValue:(id)a3;
-- (void)setViewVisible:(BOOL)a3;
+- (void)setActiveGestureValue:(double)value;
+- (void)setHasSecondaryValue:(BOOL)value;
+- (void)setUserInteractionActive:(BOOL)active;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)setValue:(id)value;
+- (void)setViewVisible:(BOOL)visible;
 @end
 
 @implementation HUQuickControlElasticSliderInteractionCoordinator
 
-- (HUQuickControlElasticSliderInteractionCoordinator)initWithControlView:(id)a3 delegate:(id)a4
+- (HUQuickControlElasticSliderInteractionCoordinator)initWithControlView:(id)view delegate:(id)delegate
 {
-  v6 = a3;
+  viewCopy = view;
   v19.receiver = self;
   v19.super_class = HUQuickControlElasticSliderInteractionCoordinator;
-  v7 = [(HUQuickControlInteractionCoordinator *)&v19 initWithControlView:v6 delegate:a4];
+  v7 = [(HUQuickControlInteractionCoordinator *)&v19 initWithControlView:viewCopy delegate:delegate];
   v8 = v7;
   if (v7)
   {
@@ -48,29 +48,29 @@
     v9 = objc_alloc_init(MEMORY[0x277D75708]);
     [(HUQuickControlElasticSliderInteractionCoordinator *)v8 setPanGestureRecognizer:v9];
 
-    v10 = [(HUQuickControlElasticSliderInteractionCoordinator *)v8 panGestureRecognizer];
-    [v10 setDelegate:v8];
+    panGestureRecognizer = [(HUQuickControlElasticSliderInteractionCoordinator *)v8 panGestureRecognizer];
+    [panGestureRecognizer setDelegate:v8];
 
-    v11 = [(HUQuickControlElasticSliderInteractionCoordinator *)v8 panGestureRecognizer];
-    [v11 setMinimumPressDuration:0.0];
+    panGestureRecognizer2 = [(HUQuickControlElasticSliderInteractionCoordinator *)v8 panGestureRecognizer];
+    [panGestureRecognizer2 setMinimumPressDuration:0.0];
 
-    v12 = [(HUQuickControlElasticSliderInteractionCoordinator *)v8 panGestureRecognizer];
-    [v12 addTarget:v8 action:sel__handleControlPanGesture_];
+    panGestureRecognizer3 = [(HUQuickControlElasticSliderInteractionCoordinator *)v8 panGestureRecognizer];
+    [panGestureRecognizer3 addTarget:v8 action:sel__handleControlPanGesture_];
 
-    v13 = [(HUQuickControlElasticSliderInteractionCoordinator *)v8 panGestureRecognizer];
-    [v6 addGestureRecognizer:v13];
+    panGestureRecognizer4 = [(HUQuickControlElasticSliderInteractionCoordinator *)v8 panGestureRecognizer];
+    [viewCopy addGestureRecognizer:panGestureRecognizer4];
 
     v14 = objc_alloc_init(MEMORY[0x277D75B80]);
     [(HUQuickControlElasticSliderInteractionCoordinator *)v8 setTapGestureRecognizer:v14];
 
-    v15 = [(HUQuickControlElasticSliderInteractionCoordinator *)v8 tapGestureRecognizer];
-    [v15 setAllowableMovement:5.0];
+    tapGestureRecognizer = [(HUQuickControlElasticSliderInteractionCoordinator *)v8 tapGestureRecognizer];
+    [tapGestureRecognizer setAllowableMovement:5.0];
 
-    v16 = [(HUQuickControlElasticSliderInteractionCoordinator *)v8 tapGestureRecognizer];
-    [v16 addTarget:v8 action:sel__handleControlTapGesture_];
+    tapGestureRecognizer2 = [(HUQuickControlElasticSliderInteractionCoordinator *)v8 tapGestureRecognizer];
+    [tapGestureRecognizer2 addTarget:v8 action:sel__handleControlTapGesture_];
 
-    v17 = [(HUQuickControlElasticSliderInteractionCoordinator *)v8 tapGestureRecognizer];
-    [v6 addGestureRecognizer:v17];
+    tapGestureRecognizer3 = [(HUQuickControlElasticSliderInteractionCoordinator *)v8 tapGestureRecognizer];
+    [viewCopy addGestureRecognizer:tapGestureRecognizer3];
   }
 
   return v8;
@@ -78,8 +78,8 @@
 
 - (void)dealloc
 {
-  v3 = [(HUQuickControlElasticSliderInteractionCoordinator *)self _allAppliers];
-  [v3 na_each:&__block_literal_global_196];
+  _allAppliers = [(HUQuickControlElasticSliderInteractionCoordinator *)self _allAppliers];
+  [_allAppliers na_each:&__block_literal_global_196];
 
   v4.receiver = self;
   v4.super_class = HUQuickControlElasticSliderInteractionCoordinator;
@@ -88,10 +88,10 @@
 
 - (HUQuickControlIncrementalConvertibleProfile)viewProfile
 {
-  v2 = [(HUQuickControlInteractionCoordinator *)self controlView];
-  v3 = [v2 profile];
+  controlView = [(HUQuickControlInteractionCoordinator *)self controlView];
+  profile = [controlView profile];
   v4 = &unk_282582800;
-  v5 = v3;
+  v5 = profile;
   v6 = v5;
   if (v5)
   {
@@ -111,10 +111,10 @@
       goto LABEL_8;
     }
 
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertProtocolCast(Protocol * _Nonnull __strong, id  _Nonnull __strong)"}];
     v11 = NSStringFromProtocol(v4);
-    [v9 handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v11}];
+    [currentHandler handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v11}];
   }
 
   v8 = 0;
@@ -123,12 +123,12 @@ LABEL_8:
   return v8;
 }
 
-- (void)beginUserInteractionWithFirstTouchGestureRecognizer:(id)a3
+- (void)beginUserInteractionWithFirstTouchGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   if (![(HUQuickControlElasticSliderInteractionCoordinator *)self hasSecondaryValue])
   {
-    [(HUQuickControlElasticSliderInteractionCoordinator *)self _beginReceivingTouchesWithGestureRecognizer:v4 isTouchContinuation:1];
+    [(HUQuickControlElasticSliderInteractionCoordinator *)self _beginReceivingTouchesWithGestureRecognizer:recognizerCopy isTouchContinuation:1];
   }
 }
 
@@ -141,16 +141,16 @@ LABEL_8:
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = HUQuickControlElasticSliderInteractionCoordinator;
   [(HUQuickControlInteractionCoordinator *)&v6 setUserInteractionEnabled:?];
-  v5 = [(HUQuickControlElasticSliderInteractionCoordinator *)self gestureTransformer];
-  [v5 setIgnoreTouches:!v3];
+  gestureTransformer = [(HUQuickControlElasticSliderInteractionCoordinator *)self gestureTransformer];
+  [gestureTransformer setIgnoreTouches:!enabledCopy];
 
-  if (!v3)
+  if (!enabledCopy)
   {
     [(HUQuickControlElasticSliderInteractionCoordinator *)self setUserInteractionActive:0];
   }
@@ -180,14 +180,14 @@ LABEL_8:
   return v9;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v14 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v4 = v14;
+    v4 = valueCopy;
     if (objc_opt_isKindOfClass())
     {
       v5 = v4;
@@ -210,8 +210,8 @@ LABEL_8:
 
     else
     {
-      v12 = [v6 midValue];
-      [v12 doubleValue];
+      midValue = [v6 midValue];
+      [midValue doubleValue];
       v10 = v13;
       v8 = 0.0;
     }
@@ -220,7 +220,7 @@ LABEL_8:
   else
   {
     [(HUQuickControlElasticSliderInteractionCoordinator *)self setHasSecondaryValue:0];
-    [v14 doubleValue];
+    [valueCopy doubleValue];
     v10 = v11;
     v8 = 0.0;
   }
@@ -229,135 +229,135 @@ LABEL_8:
   [(HUQuickControlElasticSliderInteractionCoordinator *)self _setupAllValueAppliersIfNecessary];
 }
 
-- (void)setHasSecondaryValue:(BOOL)a3
+- (void)setHasSecondaryValue:(BOOL)value
 {
-  self->_hasSecondaryValue = a3;
-  if (!a3)
+  self->_hasSecondaryValue = value;
+  if (!value)
   {
-    v5 = [(HUQuickControlElasticSliderInteractionCoordinator *)self secondaryValueSmoothingApplier];
-    [v5 cancel];
+    secondaryValueSmoothingApplier = [(HUQuickControlElasticSliderInteractionCoordinator *)self secondaryValueSmoothingApplier];
+    [secondaryValueSmoothingApplier cancel];
 
     [(HUQuickControlElasticSliderInteractionCoordinator *)self setSecondaryValueSmoothingApplier:0];
   }
 }
 
-- (void)setUserInteractionActive:(BOOL)a3
+- (void)setUserInteractionActive:(BOOL)active
 {
-  if (self->_userInteractionActive != a3)
+  if (self->_userInteractionActive != active)
   {
-    v4 = a3;
-    self->_userInteractionActive = a3;
-    v6 = [(HUQuickControlInteractionCoordinator *)self delegate];
-    [v6 interactionCoordinator:self interactionStateDidChange:v4];
+    activeCopy = active;
+    self->_userInteractionActive = active;
+    delegate = [(HUQuickControlInteractionCoordinator *)self delegate];
+    [delegate interactionCoordinator:self interactionStateDidChange:activeCopy];
   }
 }
 
-- (void)setViewVisible:(BOOL)a3
+- (void)setViewVisible:(BOOL)visible
 {
-  v3 = a3;
-  if ([(HUQuickControlInteractionCoordinator *)self viewVisible]!= a3)
+  visibleCopy = visible;
+  if ([(HUQuickControlInteractionCoordinator *)self viewVisible]!= visible)
   {
     v6.receiver = self;
     v6.super_class = HUQuickControlElasticSliderInteractionCoordinator;
-    [(HUQuickControlInteractionCoordinator *)&v6 setViewVisible:v3];
-    if (!v3)
+    [(HUQuickControlInteractionCoordinator *)&v6 setViewVisible:visibleCopy];
+    if (!visibleCopy)
     {
-      v5 = [(HUQuickControlElasticSliderInteractionCoordinator *)self _allAppliers];
-      [v5 na_each:&__block_literal_global_67_1];
+      _allAppliers = [(HUQuickControlElasticSliderInteractionCoordinator *)self _allAppliers];
+      [_allAppliers na_each:&__block_literal_global_67_1];
     }
   }
 }
 
-- (void)setActiveGestureValue:(double)a3
+- (void)setActiveGestureValue:(double)value
 {
-  if (self->_activeGestureValue != a3)
+  if (self->_activeGestureValue != value)
   {
-    self->_activeGestureValue = a3;
-    v5 = [(HUQuickControlElasticSliderInteractionCoordinator *)self primaryValueSmoothingApplier];
-    [(HUQuickControlElasticSliderInteractionCoordinator *)self _updatePropertiesForControlValueSmoothingApplier:v5 ofType:2];
+    self->_activeGestureValue = value;
+    primaryValueSmoothingApplier = [(HUQuickControlElasticSliderInteractionCoordinator *)self primaryValueSmoothingApplier];
+    [(HUQuickControlElasticSliderInteractionCoordinator *)self _updatePropertiesForControlValueSmoothingApplier:primaryValueSmoothingApplier ofType:2];
 
-    v6 = [(HUQuickControlElasticSliderInteractionCoordinator *)self secondaryValueSmoothingApplier];
-    [(HUQuickControlElasticSliderInteractionCoordinator *)self _updatePropertiesForControlValueSmoothingApplier:v6 ofType:1];
+    secondaryValueSmoothingApplier = [(HUQuickControlElasticSliderInteractionCoordinator *)self secondaryValueSmoothingApplier];
+    [(HUQuickControlElasticSliderInteractionCoordinator *)self _updatePropertiesForControlValueSmoothingApplier:secondaryValueSmoothingApplier ofType:1];
   }
 }
 
-- (void)_updateControlViewValueOfType:(unint64_t)a3 withValue:(double)a4
+- (void)_updateControlViewValueOfType:(unint64_t)type withValue:(double)value
 {
-  if (a3)
+  if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      v7 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-      v5 = [(HUQuickControlInteractionCoordinator *)self controlView];
-      [v5 setSecondaryValue:v7];
+      currentHandler = [MEMORY[0x277CCABB0] numberWithDouble:value];
+      controlView = [(HUQuickControlInteractionCoordinator *)self controlView];
+      [controlView setSecondaryValue:currentHandler];
     }
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         return;
       }
 
-      v7 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-      v5 = [(HUQuickControlInteractionCoordinator *)self controlView];
-      [v5 setValue:v7];
+      currentHandler = [MEMORY[0x277CCABB0] numberWithDouble:value];
+      controlView = [(HUQuickControlInteractionCoordinator *)self controlView];
+      [controlView setValue:currentHandler];
     }
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HUQuickControlElasticSliderInteractionCoordinator.m" lineNumber:212 description:@"Invalid control view value type!"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUQuickControlElasticSliderInteractionCoordinator.m" lineNumber:212 description:@"Invalid control view value type!"];
   }
 }
 
-- (void)_updateModelValue:(id)a3 roundValue:(BOOL)a4 notifyDelegate:(BOOL)a5
+- (void)_updateModelValue:(id)value roundValue:(BOOL)roundValue notifyDelegate:(BOOL)delegate
 {
-  v5 = a5;
-  v6 = a4;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  delegateCopy = delegate;
+  roundValueCopy = roundValue;
+  var1 = value.var1;
+  var0 = value.var0;
   v13 = objc_alloc_init(HUElasticSliderValueNormalizationOptions);
   [(HUElasticSliderValueNormalizationOptions *)v13 setBoundingStrategy:1];
-  [(HUElasticSliderValueNormalizationOptions *)v13 setApplyStepValue:v6];
+  [(HUElasticSliderValueNormalizationOptions *)v13 setApplyStepValue:roundValueCopy];
   v10 = [(HUQuickControlElasticSliderInteractionCoordinator *)self _valueNormalizerWithOptions:v13];
   [v10 normalizeRange:{var0, var1}];
   [(HUQuickControlElasticSliderInteractionCoordinator *)self setModelValue:?];
-  if (v5)
+  if (delegateCopy)
   {
-    v11 = [(HUQuickControlInteractionCoordinator *)self delegate];
-    v12 = [(HUQuickControlElasticSliderInteractionCoordinator *)self value];
-    [v11 interactionCoordinator:self viewValueDidChange:v12];
+    delegate = [(HUQuickControlInteractionCoordinator *)self delegate];
+    value = [(HUQuickControlElasticSliderInteractionCoordinator *)self value];
+    [delegate interactionCoordinator:self viewValueDidChange:value];
   }
 }
 
-- (void)_handleControlPanGesture:(id)a3
+- (void)_handleControlPanGesture:(id)gesture
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUQuickControlInteractionCoordinator *)self controlView];
-  if ([v5 conformsToProtocol:&unk_2824F3238])
+  gestureCopy = gesture;
+  controlView = [(HUQuickControlInteractionCoordinator *)self controlView];
+  if ([controlView conformsToProtocol:&unk_2824F3238])
   {
-    v6 = [(HUQuickControlInteractionCoordinator *)self controlView];
+    controlView2 = [(HUQuickControlInteractionCoordinator *)self controlView];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(HUQuickControlInteractionCoordinator *)self controlView];
-      if (![v8 reachabilityState])
+      controlView3 = [(HUQuickControlInteractionCoordinator *)self controlView];
+      if (![controlView3 reachabilityState])
       {
 
 LABEL_13:
-        v14 = [(HUQuickControlInteractionCoordinator *)self controlView];
-        v15 = HUQuickControlReachabilityString([v14 reachabilityState]);
+        controlView4 = [(HUQuickControlInteractionCoordinator *)self controlView];
+        v15 = HUQuickControlReachabilityString([controlView4 reachabilityState]);
 
         v16 = HFLogForCategory();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [(HUQuickControlInteractionCoordinator *)self controlView];
+          controlView5 = [(HUQuickControlInteractionCoordinator *)self controlView];
           v18 = 138412802;
-          v19 = v17;
+          v19 = controlView5;
           v20 = 2112;
           v21 = v15;
           v22 = 2080;
@@ -368,10 +368,10 @@ LABEL_13:
         goto LABEL_16;
       }
 
-      v9 = [(HUQuickControlInteractionCoordinator *)self controlView];
-      v10 = [v9 reachabilityState];
+      controlView6 = [(HUQuickControlInteractionCoordinator *)self controlView];
+      reachabilityState = [controlView6 reachabilityState];
 
-      if (v10 == 1)
+      if (reachabilityState == 1)
       {
         goto LABEL_13;
       }
@@ -382,7 +382,7 @@ LABEL_13:
   {
   }
 
-  if ([v4 state] == 1)
+  if ([gestureCopy state] == 1)
   {
     interactableStartTime = self->_interactableStartTime;
     if (interactableStartTime)
@@ -396,38 +396,38 @@ LABEL_13:
       v13 = 0;
     }
 
-    [(HUQuickControlElasticSliderInteractionCoordinator *)self _beginReceivingTouchesWithGestureRecognizer:v4 isTouchContinuation:v13];
+    [(HUQuickControlElasticSliderInteractionCoordinator *)self _beginReceivingTouchesWithGestureRecognizer:gestureCopy isTouchContinuation:v13];
   }
 
 LABEL_16:
 }
 
-- (void)_handleControlTapGesture:(id)a3
+- (void)_handleControlTapGesture:(id)gesture
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUQuickControlInteractionCoordinator *)self controlView];
-  if ([v5 conformsToProtocol:&unk_2824F3238])
+  gestureCopy = gesture;
+  controlView = [(HUQuickControlInteractionCoordinator *)self controlView];
+  if ([controlView conformsToProtocol:&unk_2824F3238])
   {
-    v6 = [(HUQuickControlInteractionCoordinator *)self controlView];
+    controlView2 = [(HUQuickControlInteractionCoordinator *)self controlView];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(HUQuickControlInteractionCoordinator *)self controlView];
-      if (![v8 reachabilityState])
+      controlView3 = [(HUQuickControlInteractionCoordinator *)self controlView];
+      if (![controlView3 reachabilityState])
       {
 
 LABEL_16:
-        v21 = [(HUQuickControlInteractionCoordinator *)self controlView];
-        v22 = HUQuickControlReachabilityString([v21 reachabilityState]);
+        controlView4 = [(HUQuickControlInteractionCoordinator *)self controlView];
+        v22 = HUQuickControlReachabilityString([controlView4 reachabilityState]);
 
         v23 = HFLogForCategory();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [(HUQuickControlInteractionCoordinator *)self controlView];
+          controlView5 = [(HUQuickControlInteractionCoordinator *)self controlView];
           v25 = 138412802;
-          v26 = v24;
+          v26 = controlView5;
           v27 = 2112;
           v28 = v22;
           v29 = 2080;
@@ -438,10 +438,10 @@ LABEL_16:
         goto LABEL_19;
       }
 
-      v9 = [(HUQuickControlInteractionCoordinator *)self controlView];
-      v10 = [v9 reachabilityState];
+      controlView6 = [(HUQuickControlInteractionCoordinator *)self controlView];
+      reachabilityState = [controlView6 reachabilityState];
 
-      if (v10 == 1)
+      if (reachabilityState == 1)
       {
         goto LABEL_16;
       }
@@ -452,10 +452,10 @@ LABEL_16:
   {
   }
 
-  if ([v4 state] == 3)
+  if ([gestureCopy state] == 3)
   {
     [(HUQuickControlElasticSliderInteractionCoordinator *)self setUserInteractionActive:1];
-    [v4 hu_locationInGlobalCoordinateSpace];
+    [gestureCopy hu_locationInGlobalCoordinateSpace];
     v12 = v11;
     v14 = v13;
     v15 = [(HUQuickControlElasticSliderInteractionCoordinator *)self _findClosestValueFromTouchLocation:?];
@@ -489,30 +489,30 @@ LABEL_16:
 LABEL_19:
 }
 
-- (void)_beginReceivingTouchesWithGestureRecognizer:(id)a3 isTouchContinuation:(BOOL)a4
+- (void)_beginReceivingTouchesWithGestureRecognizer:(id)recognizer isTouchContinuation:(BOOL)continuation
 {
-  v4 = a4;
-  v28 = a3;
+  continuationCopy = continuation;
+  recognizerCopy = recognizer;
   [(HUQuickControlElasticSliderInteractionCoordinator *)self setUserInteractionActive:1];
-  [(HUQuickControlElasticSliderInteractionCoordinator *)self setFirstTouchDown:v4];
-  [v28 hu_locationInGlobalCoordinateSpace];
+  [(HUQuickControlElasticSliderInteractionCoordinator *)self setFirstTouchDown:continuationCopy];
+  [recognizerCopy hu_locationInGlobalCoordinateSpace];
   [(HUQuickControlElasticSliderInteractionCoordinator *)self setActiveGestureValueType:[(HUQuickControlElasticSliderInteractionCoordinator *)self _findClosestValueFromTouchLocation:?]];
   [(HUQuickControlElasticSliderInteractionCoordinator *)self modelValue];
   v7 = v6;
   v9 = v8;
-  v10 = [(HUQuickControlElasticSliderInteractionCoordinator *)self activeGestureValueType];
-  if (v10 != 2)
+  activeGestureValueType = [(HUQuickControlElasticSliderInteractionCoordinator *)self activeGestureValueType];
+  if (activeGestureValueType != 2)
   {
-    if (v10 == 1)
+    if (activeGestureValueType == 1)
     {
       v9 = v7;
     }
 
     else
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"CGFloat HURangeValueOfType(UIFloatRange, HUQuickControlRangeValueType)"}];
-      [v11 handleFailureInFunction:v12 file:@"HUQuickControlRangeValueUtilities.h" lineNumber:31 description:@"Invalid range value type"];
+      [currentHandler handleFailureInFunction:v12 file:@"HUQuickControlRangeValueUtilities.h" lineNumber:31 description:@"Invalid range value type"];
 
       v9 = 1.79769313e308;
     }
@@ -520,31 +520,31 @@ LABEL_19:
 
   [(HUQuickControlElasticSliderInteractionCoordinator *)self setActiveGestureValue:v9];
   v13 = objc_opt_new();
-  v14 = [(HUQuickControlInteractionCoordinator *)self controlView];
-  [v14 bounds];
+  controlView = [(HUQuickControlInteractionCoordinator *)self controlView];
+  [controlView bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(HUQuickControlInteractionCoordinator *)self controlView];
-  [v13 setControlFrame:{HUConvertRectToGlobalCoordinateSpace(v23, v16, v18, v20, v22)}];
+  controlView2 = [(HUQuickControlInteractionCoordinator *)self controlView];
+  [v13 setControlFrame:{HUConvertRectToGlobalCoordinateSpace(controlView2, v16, v18, v20, v22)}];
 
   [(HUQuickControlElasticSliderInteractionCoordinator *)self activeGestureValue];
   [v13 setInitialSliderValue:?];
-  v24 = [(HUQuickControlElasticSliderInteractionCoordinator *)self viewProfile];
-  [v24 gestureDragCoefficient];
+  viewProfile = [(HUQuickControlElasticSliderInteractionCoordinator *)self viewProfile];
+  [viewProfile gestureDragCoefficient];
   [v13 setVerticalDragCoefficient:?];
 
-  [v13 setRequiresSomeMovementBeforeActivation:v4];
-  v25 = [[HUQuickControlSliderGestureTransformer alloc] initWithGestureRecognizer:v28 context:v13];
+  [v13 setRequiresSomeMovementBeforeActivation:continuationCopy];
+  v25 = [[HUQuickControlSliderGestureTransformer alloc] initWithGestureRecognizer:recognizerCopy context:v13];
   [(HUQuickControlElasticSliderInteractionCoordinator *)self setGestureTransformer:v25];
 
   LODWORD(v25) = [(HUQuickControlInteractionCoordinator *)self isUserInteractionEnabled];
-  v26 = [(HUQuickControlElasticSliderInteractionCoordinator *)self gestureTransformer];
-  [v26 setIgnoreTouches:v25 ^ 1];
+  gestureTransformer = [(HUQuickControlElasticSliderInteractionCoordinator *)self gestureTransformer];
+  [gestureTransformer setIgnoreTouches:v25 ^ 1];
 
-  v27 = [(HUQuickControlElasticSliderInteractionCoordinator *)self gestureTransformer];
-  [v27 setDelegate:self];
+  gestureTransformer2 = [(HUQuickControlElasticSliderInteractionCoordinator *)self gestureTransformer];
+  [gestureTransformer2 setDelegate:self];
 
   [(HUQuickControlElasticSliderInteractionCoordinator *)self _setupAllValueAppliersIfNecessary];
 }
@@ -559,9 +559,9 @@ LABEL_19:
   v6 = v5;
   v8 = v7;
 
-  v9 = [(HUQuickControlElasticSliderInteractionCoordinator *)self activeGestureValueType];
+  activeGestureValueType = [(HUQuickControlElasticSliderInteractionCoordinator *)self activeGestureValueType];
   [(HUQuickControlElasticSliderInteractionCoordinator *)self activeGestureValue];
-  if (v9 == 1)
+  if (activeGestureValueType == 1)
   {
     v11 = v10;
   }
@@ -571,7 +571,7 @@ LABEL_19:
     v11 = v6;
   }
 
-  if (v9 == 2)
+  if (activeGestureValueType == 2)
   {
     v8 = v10;
   }
@@ -588,17 +588,17 @@ LABEL_19:
   return result;
 }
 
-- (double)_sliderValueForLocation:(CGPoint)a3
+- (double)_sliderValueForLocation:(CGPoint)location
 {
-  y = a3.y;
-  v5 = [(HUQuickControlInteractionCoordinator *)self controlView];
-  [v5 bounds];
+  y = location.y;
+  controlView = [(HUQuickControlInteractionCoordinator *)self controlView];
+  [controlView bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(HUQuickControlInteractionCoordinator *)self controlView];
-  v15 = HUConvertRectToGlobalCoordinateSpace(v14, v7, v9, v11, v13);
+  controlView2 = [(HUQuickControlInteractionCoordinator *)self controlView];
+  v15 = HUConvertRectToGlobalCoordinateSpace(controlView2, v7, v9, v11, v13);
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -615,10 +615,10 @@ LABEL_19:
   return (CGRectGetMaxY(v25) - y) / Height;
 }
 
-- (unint64_t)_findClosestValueFromTouchLocation:(CGPoint)a3
+- (unint64_t)_findClosestValueFromTouchLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   if (![(HUQuickControlElasticSliderInteractionCoordinator *)self hasSecondaryValue])
   {
     return 2;
@@ -648,23 +648,23 @@ LABEL_19:
 
 - (double)_rubberBandedStretchProgress
 {
-  v3 = [(HUQuickControlElasticSliderInteractionCoordinator *)self primaryValueSmoothingApplier];
-  [v3 progress];
+  primaryValueSmoothingApplier = [(HUQuickControlElasticSliderInteractionCoordinator *)self primaryValueSmoothingApplier];
+  [primaryValueSmoothingApplier progress];
   v5 = v4;
 
-  v6 = [(HUQuickControlElasticSliderInteractionCoordinator *)self secondaryValueSmoothingApplier];
+  secondaryValueSmoothingApplier = [(HUQuickControlElasticSliderInteractionCoordinator *)self secondaryValueSmoothingApplier];
   v7 = 0.0;
   v8 = 0.0;
-  if (v6)
+  if (secondaryValueSmoothingApplier)
   {
-    v9 = [(HUQuickControlElasticSliderInteractionCoordinator *)self secondaryValueSmoothingApplier];
-    [v9 progress];
+    secondaryValueSmoothingApplier2 = [(HUQuickControlElasticSliderInteractionCoordinator *)self secondaryValueSmoothingApplier];
+    [secondaryValueSmoothingApplier2 progress];
     v8 = v10;
   }
 
-  v11 = [(HUQuickControlElasticSliderInteractionCoordinator *)self activeGestureValueType];
-  v12 = [(HUQuickControlElasticSliderInteractionCoordinator *)self activeGestureValueType];
-  switch(v12)
+  activeGestureValueType = [(HUQuickControlElasticSliderInteractionCoordinator *)self activeGestureValueType];
+  activeGestureValueType2 = [(HUQuickControlElasticSliderInteractionCoordinator *)self activeGestureValueType];
+  switch(activeGestureValueType2)
   {
     case 2uLL:
       v7 = v5;
@@ -687,19 +687,19 @@ LABEL_19:
 
       if (v13 <= v14)
       {
-        v11 = 1;
+        activeGestureValueType = 1;
       }
 
       else
       {
-        v11 = 2;
+        activeGestureValueType = 2;
       }
 
       break;
   }
 
-  v15 = [(HUQuickControlElasticSliderInteractionCoordinator *)self _rubberBandingValueNormalizer];
-  [v15 normalizeValue:v11 ofType:v7];
+  _rubberBandingValueNormalizer = [(HUQuickControlElasticSliderInteractionCoordinator *)self _rubberBandingValueNormalizer];
+  [_rubberBandingValueNormalizer normalizeValue:activeGestureValueType ofType:v7];
   v17 = v16;
 
   return v17;
@@ -715,21 +715,21 @@ LABEL_19:
   return v4;
 }
 
-- (id)_valueNormalizerWithOptions:(id)a3
+- (id)_valueNormalizerWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = [HUElasticSliderValueNormalizer alloc];
   [(HUQuickControlElasticSliderInteractionCoordinator *)self modelValue];
   v8 = [(HUElasticSliderValueNormalizer *)v5 initWithCurrentValueRange:[(HUQuickControlElasticSliderInteractionCoordinator *)self hasSecondaryValue] hasSecondaryValue:v6, v7];
-  v9 = [(HUQuickControlElasticSliderInteractionCoordinator *)self viewProfile];
-  v10 = [v9 primaryValueConstraints];
-  [(HUElasticSliderValueNormalizer *)v8 setMaxValueConstraints:v10];
+  viewProfile = [(HUQuickControlElasticSliderInteractionCoordinator *)self viewProfile];
+  primaryValueConstraints = [viewProfile primaryValueConstraints];
+  [(HUElasticSliderValueNormalizer *)v8 setMaxValueConstraints:primaryValueConstraints];
 
-  v11 = [(HUQuickControlElasticSliderInteractionCoordinator *)self viewProfile];
-  v12 = [v11 secondaryValueConstraints];
-  [(HUElasticSliderValueNormalizer *)v8 setMinValueConstraints:v12];
+  viewProfile2 = [(HUQuickControlElasticSliderInteractionCoordinator *)self viewProfile];
+  secondaryValueConstraints = [viewProfile2 secondaryValueConstraints];
+  [(HUElasticSliderValueNormalizer *)v8 setMinValueConstraints:secondaryValueConstraints];
 
-  [(HUElasticSliderValueNormalizer *)v8 setOptions:v4];
+  [(HUElasticSliderValueNormalizer *)v8 setOptions:optionsCopy];
 
   return v8;
 }
@@ -737,25 +737,25 @@ LABEL_19:
 - (id)_allAppliers
 {
   v3 = objc_opt_new();
-  v4 = [(HUQuickControlElasticSliderInteractionCoordinator *)self primaryValueSmoothingApplier];
-  [v3 na_safeAddObject:v4];
+  primaryValueSmoothingApplier = [(HUQuickControlElasticSliderInteractionCoordinator *)self primaryValueSmoothingApplier];
+  [v3 na_safeAddObject:primaryValueSmoothingApplier];
 
-  v5 = [(HUQuickControlElasticSliderInteractionCoordinator *)self secondaryValueSmoothingApplier];
-  [v3 na_safeAddObject:v5];
+  secondaryValueSmoothingApplier = [(HUQuickControlElasticSliderInteractionCoordinator *)self secondaryValueSmoothingApplier];
+  [v3 na_safeAddObject:secondaryValueSmoothingApplier];
 
-  v6 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlHorizontalCompressionApplier];
-  [v3 na_safeAddObject:v6];
+  controlHorizontalCompressionApplier = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlHorizontalCompressionApplier];
+  [v3 na_safeAddObject:controlHorizontalCompressionApplier];
 
-  v7 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlVerticalStretchingApplier];
-  [v3 na_safeAddObject:v7];
+  controlVerticalStretchingApplier = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlVerticalStretchingApplier];
+  [v3 na_safeAddObject:controlVerticalStretchingApplier];
 
   return v3;
 }
 
 - (void)_setupAllValueAppliersIfNecessary
 {
-  v3 = [(HUQuickControlElasticSliderInteractionCoordinator *)self primaryValueSmoothingApplier];
-  v4 = __86__HUQuickControlElasticSliderInteractionCoordinator__setupAllValueAppliersIfNecessary__block_invoke(v3);
+  primaryValueSmoothingApplier = [(HUQuickControlElasticSliderInteractionCoordinator *)self primaryValueSmoothingApplier];
+  v4 = __86__HUQuickControlElasticSliderInteractionCoordinator__setupAllValueAppliersIfNecessary__block_invoke(primaryValueSmoothingApplier);
 
   if (v4)
   {
@@ -763,23 +763,23 @@ LABEL_19:
     [(HUQuickControlElasticSliderInteractionCoordinator *)self setPrimaryValueSmoothingApplier:v5];
   }
 
-  v6 = [(HUQuickControlElasticSliderInteractionCoordinator *)self secondaryValueSmoothingApplier];
-  if (__86__HUQuickControlElasticSliderInteractionCoordinator__setupAllValueAppliersIfNecessary__block_invoke(v6))
+  secondaryValueSmoothingApplier = [(HUQuickControlElasticSliderInteractionCoordinator *)self secondaryValueSmoothingApplier];
+  if (__86__HUQuickControlElasticSliderInteractionCoordinator__setupAllValueAppliersIfNecessary__block_invoke(secondaryValueSmoothingApplier))
   {
-    v7 = [(HUQuickControlElasticSliderInteractionCoordinator *)self hasSecondaryValue];
+    hasSecondaryValue = [(HUQuickControlElasticSliderInteractionCoordinator *)self hasSecondaryValue];
 
-    if (!v7)
+    if (!hasSecondaryValue)
     {
       goto LABEL_7;
     }
 
-    v6 = [(HUQuickControlElasticSliderInteractionCoordinator *)self _setupValueApplierForValueType:1];
-    [(HUQuickControlElasticSliderInteractionCoordinator *)self setSecondaryValueSmoothingApplier:v6];
+    secondaryValueSmoothingApplier = [(HUQuickControlElasticSliderInteractionCoordinator *)self _setupValueApplierForValueType:1];
+    [(HUQuickControlElasticSliderInteractionCoordinator *)self setSecondaryValueSmoothingApplier:secondaryValueSmoothingApplier];
   }
 
 LABEL_7:
-  v8 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlHorizontalCompressionApplier];
-  v9 = __86__HUQuickControlElasticSliderInteractionCoordinator__setupAllValueAppliersIfNecessary__block_invoke(v8);
+  controlHorizontalCompressionApplier = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlHorizontalCompressionApplier];
+  v9 = __86__HUQuickControlElasticSliderInteractionCoordinator__setupAllValueAppliersIfNecessary__block_invoke(controlHorizontalCompressionApplier);
 
   if (v9)
   {
@@ -813,14 +813,14 @@ BOOL __86__HUQuickControlElasticSliderInteractionCoordinator__setupAllValueAppli
   return v3;
 }
 
-- (id)_setupValueApplierForValueType:(unint64_t)a3
+- (id)_setupValueApplierForValueType:(unint64_t)type
 {
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __84__HUQuickControlElasticSliderInteractionCoordinator__setupValueApplierForValueType___block_invoke;
   v13[3] = &unk_277DB7BA8;
   v13[4] = self;
-  v13[5] = a3;
+  v13[5] = type;
   [MEMORY[0x277D75D18] performWithoutAnimation:v13];
   objc_initWeak(&location, self);
   v5 = [HUElasticApplier alloc];
@@ -829,9 +829,9 @@ BOOL __86__HUQuickControlElasticSliderInteractionCoordinator__setupAllValueAppli
   v10[2] = __84__HUQuickControlElasticSliderInteractionCoordinator__setupValueApplierForValueType___block_invoke_2;
   v10[3] = &unk_277DC0E50;
   objc_copyWeak(v11, &location);
-  v11[1] = a3;
+  v11[1] = type;
   v6 = [(HUElasticApplier *)v5 initWithProgressInputBlock:v10];
-  [(HUQuickControlElasticSliderInteractionCoordinator *)self _updatePropertiesForControlValueSmoothingApplier:v6 ofType:a3];
+  [(HUQuickControlElasticSliderInteractionCoordinator *)self _updatePropertiesForControlValueSmoothingApplier:v6 ofType:type];
   [(HUElasticApplier *)v6 setProgressBeginsFromInitialInputProgress:1];
   [(HUElasticApplier *)v6 setCompletesWhenAtRest:0];
   v8[0] = MEMORY[0x277D85DD0];
@@ -839,7 +839,7 @@ BOOL __86__HUQuickControlElasticSliderInteractionCoordinator__setupAllValueAppli
   v8[2] = __84__HUQuickControlElasticSliderInteractionCoordinator__setupValueApplierForValueType___block_invoke_3;
   v8[3] = &unk_277DC0E78;
   objc_copyWeak(v9, &location);
-  v9[1] = a3;
+  v9[1] = type;
   [(HUApplier *)v6 addApplierBlock:v8];
   [(HUElasticApplier *)v6 start];
   objc_destroyWeak(v9);
@@ -922,28 +922,28 @@ void __84__HUQuickControlElasticSliderInteractionCoordinator__setupValueApplierF
   v4 = [(HUElasticApplier *)v3 initWithProgressInputBlock:v22];
   [(HUQuickControlElasticSliderInteractionCoordinator *)self setControlHorizontalCompressionApplier:v4];
 
-  v5 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlHorizontalCompressionApplier];
-  [v5 setProgressBeginsFromInitialInputProgress:1];
+  controlHorizontalCompressionApplier = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlHorizontalCompressionApplier];
+  [controlHorizontalCompressionApplier setProgressBeginsFromInitialInputProgress:1];
 
-  v6 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlHorizontalCompressionApplier];
-  [v6 setTension:300.0];
+  controlHorizontalCompressionApplier2 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlHorizontalCompressionApplier];
+  [controlHorizontalCompressionApplier2 setTension:300.0];
 
-  v7 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlHorizontalCompressionApplier];
-  [v7 setFriction:100.0];
+  controlHorizontalCompressionApplier3 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlHorizontalCompressionApplier];
+  [controlHorizontalCompressionApplier3 setFriction:100.0];
 
-  v8 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlHorizontalCompressionApplier];
-  [v8 setCompletesWhenAtRest:0];
+  controlHorizontalCompressionApplier4 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlHorizontalCompressionApplier];
+  [controlHorizontalCompressionApplier4 setCompletesWhenAtRest:0];
 
-  v9 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlHorizontalCompressionApplier];
+  controlHorizontalCompressionApplier5 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlHorizontalCompressionApplier];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __77__HUQuickControlElasticSliderInteractionCoordinator__setupStretchingAppliers__block_invoke_2;
   v20[3] = &unk_277DB7968;
   objc_copyWeak(&v21, &location);
-  [v9 addApplierBlock:v20];
+  [controlHorizontalCompressionApplier5 addApplierBlock:v20];
 
-  v10 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlHorizontalCompressionApplier];
-  [v10 start];
+  controlHorizontalCompressionApplier6 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlHorizontalCompressionApplier];
+  [controlHorizontalCompressionApplier6 start];
 
   v11 = [HUDisplayLinkApplier alloc];
   v18[0] = MEMORY[0x277D85DD0];
@@ -954,19 +954,19 @@ void __84__HUQuickControlElasticSliderInteractionCoordinator__setupValueApplierF
   v12 = [(HUDisplayLinkApplier *)v11 initWithProgressInputBlock:v18];
   [(HUQuickControlElasticSliderInteractionCoordinator *)self setControlVerticalStretchingApplier:v12];
 
-  v13 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlVerticalStretchingApplier];
-  [v13 setCompletesWhenAtRest:0];
+  controlVerticalStretchingApplier = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlVerticalStretchingApplier];
+  [controlVerticalStretchingApplier setCompletesWhenAtRest:0];
 
-  v14 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlVerticalStretchingApplier];
+  controlVerticalStretchingApplier2 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlVerticalStretchingApplier];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __77__HUQuickControlElasticSliderInteractionCoordinator__setupStretchingAppliers__block_invoke_4;
   v16[3] = &unk_277DB7968;
   objc_copyWeak(&v17, &location);
-  [v14 addApplierBlock:v16];
+  [controlVerticalStretchingApplier2 addApplierBlock:v16];
 
-  v15 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlVerticalStretchingApplier];
-  [v15 start];
+  controlVerticalStretchingApplier3 = [(HUQuickControlElasticSliderInteractionCoordinator *)self controlVerticalStretchingApplier];
+  [controlVerticalStretchingApplier3 start];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&v19);
@@ -1042,21 +1042,21 @@ void __77__HUQuickControlElasticSliderInteractionCoordinator__setupStretchingApp
   [v6 interactionCoordinator:v7 updateControlVerticalStretchFactor:v5];
 }
 
-- (void)_updatePropertiesForControlValueSmoothingApplier:(id)a3 ofType:(unint64_t)a4
+- (void)_updatePropertiesForControlValueSmoothingApplier:(id)applier ofType:(unint64_t)type
 {
-  if (a3)
+  if (applier)
   {
-    v6 = a3;
-    [v6 progress];
+    applierCopy = applier;
+    [applierCopy progress];
     v8 = v7;
     v16 = objc_alloc_init(HUElasticSliderValueNormalizationOptions);
     [(HUElasticSliderValueNormalizationOptions *)v16 setApplyMinimumVisualRangeSpan:1];
     v9 = [(HUQuickControlElasticSliderInteractionCoordinator *)self _valueNormalizerWithOptions:v16];
-    [v9 normalizeValue:a4 ofType:v8];
+    [v9 normalizeValue:type ofType:v8];
     v11 = v10;
 
-    v12 = [(HUQuickControlElasticSliderInteractionCoordinator *)self isUserInteractionActive];
-    v13 = vabdd_f64(v11, v8) >= 0.00000011920929 || v12;
+    isUserInteractionActive = [(HUQuickControlElasticSliderInteractionCoordinator *)self isUserInteractionActive];
+    v13 = vabdd_f64(v11, v8) >= 0.00000011920929 || isUserInteractionActive;
     v14 = 40.0;
     if (v13)
     {
@@ -1069,65 +1069,65 @@ void __77__HUQuickControlElasticSliderInteractionCoordinator__setupStretchingApp
       v15 = 180.0;
     }
 
-    [v6 setFriction:v14];
-    [v6 setTension:v15];
+    [applierCopy setFriction:v14];
+    [applierCopy setTension:v15];
   }
 }
 
-- (void)gestureTransformer:(id)a3 sliderValueDidChange:(double)a4
+- (void)gestureTransformer:(id)transformer sliderValueDidChange:(double)change
 {
-  [(HUQuickControlElasticSliderInteractionCoordinator *)self setActiveGestureValue:a3];
+  [(HUQuickControlElasticSliderInteractionCoordinator *)self setActiveGestureValue:transformer];
   [(HUQuickControlElasticSliderInteractionCoordinator *)self modelValue];
   v7 = v6;
   v9 = v8;
-  v10 = [(HUQuickControlElasticSliderInteractionCoordinator *)self activeGestureValueType];
-  if (v10 == 1)
+  activeGestureValueType = [(HUQuickControlElasticSliderInteractionCoordinator *)self activeGestureValueType];
+  if (activeGestureValueType == 1)
   {
-    v11 = a4;
+    changeCopy = change;
   }
 
   else
   {
-    v11 = v7;
+    changeCopy = v7;
   }
 
-  if (v10 == 2)
+  if (activeGestureValueType == 2)
   {
-    v11 = v7;
-    v12 = a4;
+    changeCopy = v7;
+    changeCopy2 = change;
   }
 
   else
   {
-    v12 = v9;
+    changeCopy2 = v9;
   }
 
-  [(HUQuickControlElasticSliderInteractionCoordinator *)self _updateModelValue:0 roundValue:1 notifyDelegate:v11, v12];
+  [(HUQuickControlElasticSliderInteractionCoordinator *)self _updateModelValue:0 roundValue:1 notifyDelegate:changeCopy, changeCopy2];
 }
 
-- (void)gestureDidEndForGestureTransformer:(id)a3
+- (void)gestureDidEndForGestureTransformer:(id)transformer
 {
-  v4 = a3;
+  transformerCopy = transformer;
   [(HUQuickControlElasticSliderInteractionCoordinator *)self modelValue];
   [(HUQuickControlElasticSliderInteractionCoordinator *)self _updateModelValue:1 roundValue:1 notifyDelegate:?];
   [(HUQuickControlElasticSliderInteractionCoordinator *)self setUserInteractionActive:0];
   [(HUQuickControlElasticSliderInteractionCoordinator *)self setGestureTransformer:0];
-  v5 = [v4 hasRecognizedSignificantSliderValueChange];
+  hasRecognizedSignificantSliderValueChange = [transformerCopy hasRecognizedSignificantSliderValueChange];
 
-  if (v5)
+  if (hasRecognizedSignificantSliderValueChange)
   {
-    v6 = [(HUQuickControlInteractionCoordinator *)self delegate];
-    if ([v6 hasModelValueChangedForInteractionCoordinator:self])
+    delegate = [(HUQuickControlInteractionCoordinator *)self delegate];
+    if ([delegate hasModelValueChangedForInteractionCoordinator:self])
     {
-      v7 = [(HUQuickControlElasticSliderInteractionCoordinator *)self isFirstTouchDown];
+      isFirstTouchDown = [(HUQuickControlElasticSliderInteractionCoordinator *)self isFirstTouchDown];
 
-      if (!v7)
+      if (!isFirstTouchDown)
       {
         goto LABEL_6;
       }
 
-      v6 = [(HUQuickControlInteractionCoordinator *)self delegate];
-      [v6 interactionCoordinatorWantsDismissal:self];
+      delegate = [(HUQuickControlInteractionCoordinator *)self delegate];
+      [delegate interactionCoordinatorWantsDismissal:self];
     }
   }
 
@@ -1138,16 +1138,16 @@ LABEL_6:
   [(HUQuickControlElasticSliderInteractionCoordinator *)self setActiveGestureValue:0.0];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUQuickControlElasticSliderInteractionCoordinator *)self panGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  panGestureRecognizer = [(HUQuickControlElasticSliderInteractionCoordinator *)self panGestureRecognizer];
 
-  if (v8 == v7)
+  if (panGestureRecognizer == recognizerCopy)
   {
-    v10 = [(HUQuickControlElasticSliderInteractionCoordinator *)self tapGestureRecognizer];
-    v9 = v10 == v6;
+    tapGestureRecognizer = [(HUQuickControlElasticSliderInteractionCoordinator *)self tapGestureRecognizer];
+    v9 = tapGestureRecognizer == gestureRecognizerCopy;
   }
 
   else

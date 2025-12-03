@@ -9,7 +9,7 @@
 
 - (BOOL)cs_supportsVariantWeights
 {
-  v1 = CTFontCopyVariation(a1);
+  v1 = CTFontCopyVariation(self);
   if (v1)
   {
     v2 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:2003265652];
@@ -28,23 +28,23 @@
 - (uint64_t)cs_variantWeight
 {
   v28 = *MEMORY[0x1E69E9840];
-  v2 = [a1 cs_cachedVariantWeight];
+  cs_cachedVariantWeight = [self cs_cachedVariantWeight];
 
-  if (v2)
+  if (cs_cachedVariantWeight)
   {
-    v3 = [a1 cs_cachedVariantWeight];
-    v4 = [v3 unsignedIntegerValue];
+    cs_cachedVariantWeight2 = [self cs_cachedVariantWeight];
+    unsignedIntegerValue = [cs_cachedVariantWeight2 unsignedIntegerValue];
 
-    return v4;
+    return unsignedIntegerValue;
   }
 
   else
   {
-    v6 = CTFontCopyVariation(a1);
+    v6 = CTFontCopyVariation(self);
     if (v6 && ([MEMORY[0x1E696AD98] numberWithUnsignedInteger:2003265652], v7 = objc_claimAutoreleasedReturnValue(), -[__CFDictionary objectForKeyedSubscript:](v6, "objectForKeyedSubscript:", v7), v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
     {
-      [a1 cs_setCachedVariantWeight:v8];
-      v9 = [v8 unsignedIntegerValue];
+      [self cs_setCachedVariantWeight:v8];
+      unsignedIntegerValue2 = [v8 unsignedIntegerValue];
     }
 
     else
@@ -82,8 +82,8 @@
                 if (v20)
                 {
                   v21 = v20;
-                  [a1 cs_setCachedVariantWeight:v20];
-                  v9 = [v21 unsignedIntegerValue];
+                  [self cs_setCachedVariantWeight:v20];
+                  unsignedIntegerValue2 = [v21 unsignedIntegerValue];
 
                   goto LABEL_18;
                 }
@@ -101,14 +101,14 @@
         }
       }
 
-      [a1 cs_setCachedVariantWeight:&unk_1F15930C8];
-      v9 = 0x7FFFFFFFFFFFFFFFLL;
+      [self cs_setCachedVariantWeight:&unk_1F15930C8];
+      unsignedIntegerValue2 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_18:
 
       v6 = v22;
     }
 
-    return v9;
+    return unsignedIntegerValue2;
   }
 }
 
@@ -187,11 +187,11 @@ LABEL_16:
   v16[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
 
-  v8 = [a1 fontDescriptor];
-  v9 = [v8 fontDescriptorByAddingAttributes:v7];
+  fontDescriptor = [self fontDescriptor];
+  v9 = [fontDescriptor fontDescriptorByAddingAttributes:v7];
 
   v10 = MEMORY[0x1E69DB878];
-  [a1 pointSize];
+  [self pointSize];
   v11 = [v10 fontWithDescriptor:v9 size:?];
 
   return v11;

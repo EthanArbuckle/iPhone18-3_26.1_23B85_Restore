@@ -1,10 +1,10 @@
 @interface ETGLSketchView
-- (BOOL)_doesPoint:(id *)a3 predateTime:(double)a4;
-- (BOOL)_getCurrentSketchPoint:(id *)a3;
-- (CGImage)createImageForTime:(double)a3;
+- (BOOL)_doesPoint:(id *)point predateTime:(double)time;
+- (BOOL)_getCurrentSketchPoint:(id *)point;
+- (CGImage)createImageForTime:(double)time;
 - (CGImage)createRenderedFrameImage;
-- (ETGLSketchView)initWithFrame:(CGRect)a3;
-- (char)setControlBatches:(char *)a3;
+- (ETGLSketchView)initWithFrame:(CGRect)frame;
+- (char)setControlBatches:(char *)batches;
 - (id).cxx_construct;
 - (uint64_t)controlBatches;
 - (vector<std::vector<float)vertexBatches;
@@ -12,58 +12,58 @@
 - (vector<unsigned)vertexBatchCount;
 - (void)_drawCurrentPointAdvancingPlayback;
 - (void)_endPlayback;
-- (void)animateOutWithCompletion:(id)a3;
-- (void)beginStrokeWithColor:(id)a3;
+- (void)animateOutWithCompletion:(id)completion;
+- (void)beginStrokeWithColor:(id)color;
 - (void)clear;
 - (void)clearAllPoints;
 - (void)didCompleteStroke;
 - (void)drawFrameBeforeWisp;
-- (void)drawView:(id)a3;
-- (void)handleSketchAtPosition:(CGPoint)a3;
-- (void)handleTapAtPosition:(CGPoint)a3;
+- (void)drawView:(id)view;
+- (void)handleSketchAtPosition:(CGPoint)position;
+- (void)handleTapAtPosition:(CGPoint)position;
 - (void)layoutSubviews;
-- (void)setMessageData:(id)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setPlaying:(BOOL)a3;
+- (void)setMessageData:(id)data;
+- (void)setPaused:(BOOL)paused;
+- (void)setPlaying:(BOOL)playing;
 - (void)setSecondaryVertexBatchCount:(vector<unsigned)long;
 - (void)setVertexBatchCount:(vector<unsigned)long;
 - (void)setVertexBatches:(vector<std::vector<float)__attribute__((ext_vector_type(2;
-- (void)updateRendererWithPoints:(ETGLSketchView *)self count:(SEL)a2 controlPoint:flush:;
-- (void)updateRendererWithSecondaryPoints:(ETGLSketchView *)self count:(SEL)a2 controlPoint:flush:;
+- (void)updateRendererWithPoints:(ETGLSketchView *)self count:(SEL)count controlPoint:flush:;
+- (void)updateRendererWithSecondaryPoints:(ETGLSketchView *)self count:(SEL)count controlPoint:flush:;
 @end
 
 @implementation ETGLSketchView
 
-- (ETGLSketchView)initWithFrame:(CGRect)a3
+- (ETGLSketchView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v60[2] = *MEMORY[0x277D85DE8];
   v58.receiver = self;
   v58.super_class = ETGLSketchView;
-  v5 = [(ETGLSketchView *)&v58 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(ETGLSketchView *)&v58 initWithFrame:frame.origin.x, frame.origin.y];
   v6 = v5;
   if (v5)
   {
-    v7 = [(ETGLSketchView *)v5 layer];
-    [v7 setOpaque:0];
+    layer = [(ETGLSketchView *)v5 layer];
+    [layer setOpaque:0];
     v59[0] = *MEMORY[0x277CD93C0];
     v8 = [MEMORY[0x277CCABB0] numberWithBool:0];
     v59[1] = *MEMORY[0x277CD93B8];
     v60[0] = v8;
     v60[1] = *MEMORY[0x277CD93A0];
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:v59 count:2];
-    [v7 setDrawableProperties:v9];
+    [layer setDrawableProperties:v9];
 
-    [v7 setAsynchronous:0];
-    v10 = [MEMORY[0x277D759A0] mainScreen];
-    [v10 scale];
+    [layer setAsynchronous:0];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v12 = v11 > 1.0;
 
     if (v12)
     {
-      v13 = [MEMORY[0x277D759A0] mainScreen];
-      [v13 scale];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 scale];
       [(ETGLSketchView *)v6 setContentScaleFactor:?];
     }
 
@@ -76,8 +76,8 @@
       [(ETGLSketchView *)v6 setGLContextAsCurrent];
       v16 = [ETGLSketchRenderer alloc];
       v17 = v6->_context;
-      v18 = [(ETGLSketchView *)v6 layer];
-      v19 = [(ETGLSketchRenderer *)v16 initWithContext:v17 andDrawable:v18];
+      layer2 = [(ETGLSketchView *)v6 layer];
+      v19 = [(ETGLSketchRenderer *)v16 initWithContext:v17 andDrawable:layer2];
       renderer = v6->_renderer;
       v6->_renderer = v19;
 
@@ -213,21 +213,21 @@ void __32__ETGLSketchView_initWithFrame___block_invoke_2(uint64_t a1, uint64_t a
   [WeakRetained updateRendererWithSecondaryPoints:a2 count:a3 controlPoint:a4 flush:a5];
 }
 
-- (void)setMessageData:(id)a3
+- (void)setMessageData:(id)data
 {
-  v6 = a3;
-  objc_storeStrong(&self->_messageData, a3);
-  v5 = [v6 isRenderingOffscreen];
-  self->_renderingOffscreen = v5;
-  [(ETGLSketchRenderer *)self->_renderer setRenderingOffscreen:v5];
+  dataCopy = data;
+  objc_storeStrong(&self->_messageData, data);
+  isRenderingOffscreen = [dataCopy isRenderingOffscreen];
+  self->_renderingOffscreen = isRenderingOffscreen;
+  [(ETGLSketchRenderer *)self->_renderer setRenderingOffscreen:isRenderingOffscreen];
 }
 
-- (void)animateOutWithCompletion:(id)a3
+- (void)animateOutWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_initWeak(&location, self);
-  v6 = [(ETGLSketchView *)self messageData];
-  objc_initWeak(&from, v6);
+  messageData = [(ETGLSketchView *)self messageData];
+  objc_initWeak(&from, messageData);
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -235,7 +235,7 @@ void __32__ETGLSketchView_initWithFrame___block_invoke_2(uint64_t a1, uint64_t a
   v9[3] = &unk_278F7A0D0;
   objc_copyWeak(&v11, &from);
   objc_copyWeak(&v12, &location);
-  v7 = v4;
+  v7 = completionCopy;
   v10 = v7;
   v8 = MEMORY[0x24C1E9BB0](v9);
   if ([(ETGLSketchView *)self isPaused])
@@ -287,35 +287,35 @@ uint64_t __43__ETGLSketchView_animateOutWithCompletion___block_invoke(uint64_t a
   return result;
 }
 
-- (void)beginStrokeWithColor:(id)a3
+- (void)beginStrokeWithColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (!self->_playing)
   {
-    v6 = [(ETGLSketchView *)self messageData];
-    [v6 addStrokeWithColor:v5];
+    messageData = [(ETGLSketchView *)self messageData];
+    [messageData addStrokeWithColor:colorCopy];
   }
 
-  if (!CGColorEqualToColor(-[UIColor CGColor](self->_currentStrokeColor, "CGColor"), [v5 CGColor]))
+  if (!CGColorEqualToColor(-[UIColor CGColor](self->_currentStrokeColor, "CGColor"), [colorCopy CGColor]))
   {
-    objc_storeStrong(&self->_currentStrokeColor, a3);
+    objc_storeStrong(&self->_currentStrokeColor, color);
     v26 = 0.0;
     v24 = 0.0;
     v25 = 0.0;
     v23 = 0.0;
-    [v5 getRed:&v26 green:&v25 blue:&v24 alpha:&v23];
+    [colorCopy getRed:&v26 green:&v25 blue:&v24 alpha:&v23];
     v7.f64[0] = v26;
     v7.f64[1] = v25;
     v8.f64[0] = v24;
     v8.f64[1] = v23;
     v22 = vcvt_hight_f32_f64(vcvt_f32_f64(v7), v8);
-    v9 = [(ETGLSketchView *)self renderer];
-    [v9 setFinalDrawingColor:&v22];
+    renderer = [(ETGLSketchView *)self renderer];
+    [renderer setFinalDrawingColor:&v22];
 
     v20 = 0.0;
     v21 = 0.0;
     v19 = 0.0;
-    [v5 getHue:&v21 saturation:&v20 brightness:&v19 alpha:&v23];
+    [colorCopy getHue:&v21 saturation:&v20 brightness:&v19 alpha:&v23];
     v10.i64[0] = 1.0;
     *v11.i64 = v21 + -0.05 + 1.0;
     *v11.i32 = *v11.i64;
@@ -334,18 +334,18 @@ uint64_t __43__ETGLSketchView_animateOutWithCompletion___block_invoke(uint64_t a
     v17.f64[0] = v24;
     v17.f64[1] = v23;
     v22 = vcvt_hight_f32_f64(vcvt_f32_f64(v16), v17);
-    v18 = [(ETGLSketchView *)self renderer];
-    [v18 setInitialDrawingColor:&v22];
+    renderer2 = [(ETGLSketchView *)self renderer];
+    [renderer2 setInitialDrawingColor:&v22];
   }
 }
 
 - (void)_drawCurrentPointAdvancingPlayback
 {
-  v3 = [(ETSketchMessage *)self->_messageData strokes];
+  strokes = [(ETSketchMessage *)self->_messageData strokes];
   currentStrokeIndex = self->_currentStrokeIndex;
-  if (currentStrokeIndex < [v3 count])
+  if (currentStrokeIndex < [strokes count])
   {
-    v5 = [v3 objectAtIndexedSubscript:self->_currentStrokeIndex];
+    v5 = [strokes objectAtIndexedSubscript:self->_currentStrokeIndex];
     currentPointIndex = self->_currentPointIndex;
     if (currentPointIndex >= [v5 count])
     {
@@ -353,7 +353,7 @@ uint64_t __43__ETGLSketchView_animateOutWithCompletion___block_invoke(uint64_t a
       ++self->_currentStrokeIndex;
       ++self->_numberOfDrawnStrokes;
       v7 = self->_currentStrokeIndex;
-      if (v7 >= [v3 count])
+      if (v7 >= [strokes count])
       {
         self->_playbackCompleted = 1;
 LABEL_21:
@@ -361,7 +361,7 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v8 = [v3 objectAtIndexedSubscript:self->_currentStrokeIndex];
+      v8 = [strokes objectAtIndexedSubscript:self->_currentStrokeIndex];
 
       v5 = v8;
     }
@@ -377,20 +377,20 @@ LABEL_21:
     v14 = HIWORD(v11) / 32767.0 + -1.0;
     if (!self->_currentPointIndex)
     {
-      v15 = [(ETSketchMessage *)self->_messageData hasMultipleColors];
+      hasMultipleColors = [(ETSketchMessage *)self->_messageData hasMultipleColors];
       messageData = self->_messageData;
-      if (v15)
+      if (hasMultipleColors)
       {
-        v17 = [(ETSketchMessage *)messageData colorsInMessage];
-        v18 = [v17 objectAtIndex:self->_numberOfDrawnStrokes];
+        colorsInMessage = [(ETSketchMessage *)messageData colorsInMessage];
+        color = [colorsInMessage objectAtIndex:self->_numberOfDrawnStrokes];
       }
 
       else
       {
-        v18 = [(ETMessage *)messageData color];
+        color = [(ETMessage *)messageData color];
       }
 
-      [(ETGLSketchView *)self beginStrokeWithColor:v18];
+      [(ETGLSketchView *)self beginStrokeWithColor:color];
       if (v12 == 1)
       {
         [(ETGLSketchView *)self handleTapAtPosition:v13, v14];
@@ -414,7 +414,7 @@ LABEL_21:
     }
 
     v20 = self->_currentStrokeIndex;
-    if (v20 == [v3 count])
+    if (v20 == [strokes count])
     {
       self->_playbackCompleted = 1;
       [(ETGLSketchView *)self setPlaying:0];
@@ -450,11 +450,11 @@ LABEL_22:
   {
     [(ETGLSketchView *)self _drawCurrentPointAdvancingPlayback];
     [(ETGLSketchRenderer *)self->_renderer render];
-    v3 = [(ETGLSketchView *)self messageData];
-    v4 = [v3 didDrawPoints];
+    messageData = [(ETGLSketchView *)self messageData];
+    didDrawPoints = [messageData didDrawPoints];
   }
 
-  while (!v4);
+  while (!didDrawPoints);
   v5 = 18;
   do
   {
@@ -466,21 +466,21 @@ LABEL_22:
   while (v5);
 }
 
-- (BOOL)_doesPoint:(id *)a3 predateTime:(double)a4
+- (BOOL)_doesPoint:(id *)point predateTime:(double)time
 {
   renderingStartTime = self->_renderingStartTime;
-  v5 = a4 - renderingStartTime;
-  LOWORD(renderingStartTime) = a3->var1.var0;
+  v5 = time - renderingStartTime;
+  LOWORD(renderingStartTime) = point->var1.var0;
   return v5 >= *&renderingStartTime / 1000.0;
 }
 
-- (void)drawView:(id)a3
+- (void)drawView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(ETGLSketchView *)self setGLContextAsCurrent];
   if (self->_playing)
   {
-    [v4 timestamp];
+    [viewCopy timestamp];
     v6 = v5;
     if (self->_renderingStartTime == 0.0)
     {
@@ -531,22 +531,22 @@ LABEL_22:
     }
   }
 
-  v11 = [(ETGLSketchView *)self renderer];
-  [v11 render];
+  renderer = [(ETGLSketchView *)self renderer];
+  [renderer render];
 }
 
-- (BOOL)_getCurrentSketchPoint:(id *)a3
+- (BOOL)_getCurrentSketchPoint:(id *)point
 {
-  v5 = [(ETSketchMessage *)self->_messageData strokes];
+  strokes = [(ETSketchMessage *)self->_messageData strokes];
   currentStrokeIndex = self->_currentStrokeIndex;
-  if (currentStrokeIndex >= [v5 count])
+  if (currentStrokeIndex >= [strokes count])
   {
     v11 = 0;
   }
 
   else
   {
-    v7 = [v5 objectAtIndexedSubscript:self->_currentStrokeIndex];
+    v7 = [strokes objectAtIndexedSubscript:self->_currentStrokeIndex];
     currentPointIndex = self->_currentPointIndex;
     v9 = [v7 count];
     v10 = currentPointIndex >= v9;
@@ -554,7 +554,7 @@ LABEL_22:
     if (!v10)
     {
       v12 = [v7 objectAtIndexedSubscript:self->_currentPointIndex];
-      [v12 getValue:a3];
+      [v12 getValue:point];
     }
   }
 
@@ -563,13 +563,13 @@ LABEL_22:
 
 - (CGImage)createRenderedFrameImage
 {
-  v2 = [(ETGLSketchView *)self renderer];
-  v3 = [v2 createRenderedFrameImageUsingAlpha:0];
+  renderer = [(ETGLSketchView *)self renderer];
+  v3 = [renderer createRenderedFrameImageUsingAlpha:0];
 
   return v3;
 }
 
-- (CGImage)createImageForTime:(double)a3
+- (CGImage)createImageForTime:(double)time
 {
   [(ETGLSketchView *)self setGLContextAsCurrent];
   self->_playing = 1;
@@ -578,14 +578,14 @@ LABEL_22:
 LABEL_4:
     if (![(ETMessage *)self->_messageData delayWisp])
     {
-      v5 = [(ETGLSketchView *)self renderer];
-      [v5 setIsDying:1];
+      renderer = [(ETGLSketchView *)self renderer];
+      [renderer setIsDying:1];
     }
   }
 
   else
   {
-    while (self->_timestampForLastDrawnPoint <= a3)
+    while (self->_timestampForLastDrawnPoint <= time)
     {
       [(ETGLSketchView *)self _drawCurrentPointAdvancingPlayback];
       if (self->_playbackCompleted)
@@ -595,16 +595,16 @@ LABEL_4:
     }
   }
 
-  v6 = [(ETGLSketchView *)self renderer];
-  *&v7 = a3;
-  [v6 updateGLWithTime:v7];
+  renderer2 = [(ETGLSketchView *)self renderer];
+  *&v7 = time;
+  [renderer2 updateGLWithTime:v7];
 
-  v8 = [(ETGLSketchView *)self renderer];
-  [v8 render];
+  renderer3 = [(ETGLSketchView *)self renderer];
+  [renderer3 render];
 
   self->_playing = 0;
-  v9 = [(ETGLSketchView *)self renderer];
-  v10 = [v9 createRenderedFrameImageUsingAlpha:{-[ETMessage isRenderingOffscreenOpaque](self->_messageData, "isRenderingOffscreenOpaque") ^ 1}];
+  renderer4 = [(ETGLSketchView *)self renderer];
+  v10 = [renderer4 createRenderedFrameImageUsingAlpha:{-[ETMessage isRenderingOffscreenOpaque](self->_messageData, "isRenderingOffscreenOpaque") ^ 1}];
 
   return v10;
 }
@@ -620,14 +620,14 @@ LABEL_4:
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    self->_paused = a3;
+    self->_paused = paused;
     if (!self->_renderingOffscreen)
     {
-      if (a3)
+      if (paused)
       {
         self->_pauseTime = CFAbsoluteTimeGetCurrent();
         [(CADisplayLink *)self->_displayLink invalidate];
@@ -655,19 +655,19 @@ LABEL_4:
         }
 
         v7 = self->_displayLink;
-        v8 = [MEMORY[0x277CBEB88] mainRunLoop];
+        mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
         [CADisplayLink addToRunLoop:v7 forMode:"addToRunLoop:forMode:"];
       }
     }
   }
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  if (self->_playing != a3)
+  if (self->_playing != playing)
   {
-    self->_playing = a3;
-    if (a3)
+    self->_playing = playing;
+    if (playing)
     {
       currentStrokeColor = self->_currentStrokeColor;
       self->_currentStrokeColor = 0;
@@ -676,11 +676,11 @@ LABEL_4:
       self->_numberOfDrawnStrokes = 0;
       self->_renderingStartTime = 0.0;
       self->_renderingDelay = 0.0;
-      v5 = [(ETGLSketchView *)self messageData];
-      [v5 setDidDrawPoints:0];
-      [v5 setDidEndWisping:0];
-      v6 = [v5 color];
-      [(ETGLSketchView *)self beginStrokeWithColor:v6];
+      messageData = [(ETGLSketchView *)self messageData];
+      [messageData setDidDrawPoints:0];
+      [messageData setDidEndWisping:0];
+      color = [messageData color];
+      [(ETGLSketchView *)self beginStrokeWithColor:color];
 
       [(ETGLSketchView *)self setPaused:0];
       if (IMOSLoggingEnabled())
@@ -742,8 +742,8 @@ LABEL_4:
   v12 = fmax(v11 * 0.7, 1.0) * v10;
   self->_unitSize = v12;
   renderer = self->_renderer;
-  v14 = [(ETGLSketchView *)self layer];
-  [(ETGLSketchRenderer *)renderer resizeFromLayer:v14];
+  layer = [(ETGLSketchView *)self layer];
+  [(ETGLSketchRenderer *)renderer resizeFromLayer:layer];
 
   [(ETGLSketchRenderer *)self->_renderer setUseFastVerticalWisp:self->_useFastVerticalWisp];
   v15 = fmax(v11, 1.0);
@@ -763,23 +763,23 @@ LABEL_4:
   [(ETQuadCurvePointFIFO *)self->_secondaryInterpolatingFIFO setUnitSize:v19];
 }
 
-- (void)handleTapAtPosition:(CGPoint)a3
+- (void)handleTapAtPosition:(CGPoint)position
 {
   if (!self->_playing)
   {
-    x = a3.x;
-    y = a3.y;
-    [(ETSketchMessage *)self->_messageData addSketchPoint:a3.x, a3.y];
-    a3.x = x;
-    a3.y = y;
+    x = position.x;
+    y = position.y;
+    [(ETSketchMessage *)self->_messageData addSketchPoint:position.x, position.y];
+    position.x = x;
+    position.y = y;
   }
 
-  v4 = a3.y;
-  v7 = vcvt_f32_f64(a3);
+  v4 = position.y;
+  v7 = vcvt_f32_f64(position);
   [(ETGLSketchRenderer *)self->_renderer appendPointArray:&v7 length:1];
 }
 
-- (void)updateRendererWithPoints:(ETGLSketchView *)self count:(SEL)a2 controlPoint:flush:
+- (void)updateRendererWithPoints:(ETGLSketchView *)self count:(SEL)count controlPoint:flush:
 {
   v5 = v4;
   v12 = 0;
@@ -807,7 +807,7 @@ LABEL_4:
   }
 }
 
-- (void)updateRendererWithSecondaryPoints:(ETGLSketchView *)self count:(SEL)a2 controlPoint:flush:
+- (void)updateRendererWithSecondaryPoints:(ETGLSketchView *)self count:(SEL)count controlPoint:flush:
 {
   v6 = v5;
   v7 = v4;
@@ -854,10 +854,10 @@ LABEL_4:
   }
 }
 
-- (void)handleSketchAtPosition:(CGPoint)a3
+- (void)handleSketchAtPosition:(CGPoint)position
 {
-  x = a3.x;
-  y = a3.y;
+  x = position.x;
+  y = position.y;
   [(ETGLSketchView *)self setGLContextAsCurrent];
   if (!self->_playing)
   {
@@ -913,15 +913,15 @@ LABEL_4:
   a2[1] = 0;
   a2[2] = 0;
   *a2 = 0;
-  return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPS1_S6_EEvT_T0_m(a2, *(a1 + 624), *(a1 + 632), (*(a1 + 632) - *(a1 + 624)) >> 3);
+  return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPS1_S6_EEvT_T0_m(a2, *(self + 624), *(self + 632), (*(self + 632) - *(self + 624)) >> 3);
 }
 
-- (char)setControlBatches:(char *)a3
+- (char)setControlBatches:(char *)batches
 {
-  result = (a1 + 624);
-  if (result != a3)
+  result = (self + 624);
+  if (result != batches)
   {
-    return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE18__assign_with_sizeB8ne200100IPS1_S6_EEvT_T0_l(result, *a3, a3[1], (a3[1] - *a3) >> 3);
+    return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE18__assign_with_sizeB8ne200100IPS1_S6_EEvT_T0_l(result, *batches, batches[1], (batches[1] - *batches) >> 3);
   }
 
   return result;

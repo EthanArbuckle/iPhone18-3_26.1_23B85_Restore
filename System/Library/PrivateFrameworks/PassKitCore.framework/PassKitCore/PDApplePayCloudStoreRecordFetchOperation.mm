@@ -1,8 +1,8 @@
 @interface PDApplePayCloudStoreRecordFetchOperation
 - (PDApplePayCloudStoreRecordFetchOperation)init;
 - (id)description;
-- (void)addCompletion:(id)a3;
-- (void)callCompletionsWithError:(id)a3 cloudStoreRecords:(id)a4;
+- (void)addCompletion:(id)completion;
+- (void)callCompletionsWithError:(id)error cloudStoreRecords:(id)records;
 @end
 
 @implementation PDApplePayCloudStoreRecordFetchOperation
@@ -22,17 +22,17 @@
   return v2;
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
   completions = self->_completions;
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(completion);
   [(NSMutableSet *)completions pk_safelyAddObject:v4];
 }
 
-- (void)callCompletionsWithError:(id)a3 cloudStoreRecords:(id)a4
+- (void)callCompletionsWithError:(id)error cloudStoreRecords:(id)records
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  recordsCopy = records;
   v8 = [(NSMutableSet *)self->_completions copy];
   [(NSMutableSet *)self->_completions removeAllObjects];
   v16 = 0u;
@@ -70,8 +70,8 @@
 - (id)description
 {
   v3 = [NSMutableString stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(PDApplePayCloudStoreRecordFetchOperation *)self identifier];
-  [v3 appendFormat:@"identifier: '%@'; ", v4];
+  identifier = [(PDApplePayCloudStoreRecordFetchOperation *)self identifier];
+  [v3 appendFormat:@"identifier: '%@'; ", identifier];
 
   [v3 appendFormat:@"task: '%@'; ", self->_task];
   [v3 appendFormat:@"completions: %ld; ", -[NSMutableSet count](self->_completions, "count")];

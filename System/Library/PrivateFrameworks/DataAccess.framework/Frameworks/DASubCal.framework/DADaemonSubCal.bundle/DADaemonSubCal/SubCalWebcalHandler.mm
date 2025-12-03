@@ -2,28 +2,28 @@
 + (id)outstandingSetupRequests;
 - (SubCalWebcalHandler)init;
 - (SubCalWebcalHandlerConsumer)consumer;
-- (id)_existingAccountLikeAccount:(id)a3;
-- (id)_newAccountWithHost:(id)a3;
+- (id)_existingAccountLikeAccount:(id)account;
+- (id)_newAccountWithHost:(id)host;
 - (id)waiterID;
-- (void)_beginAccountSetupWithSubscriptionAtHost:(id)a3;
+- (void)_beginAccountSetupWithSubscriptionAtHost:(id)host;
 - (void)_createCalendar;
-- (void)_createCalendarInStore:(id)a3 needsCommit:(BOOL *)a4;
+- (void)_createCalendarInStore:(id)store needsCommit:(BOOL *)commit;
 - (void)_prepareForSave;
-- (void)_receiveAuthPrompt:(unint64_t)a3 notification:(__CFUserNotification *)a4;
-- (void)_receiveInvalidAccount:(unint64_t)a3;
-- (void)_receiveSubscribeAccount:(unint64_t)a3;
-- (void)_receiveWhereTo:(unint64_t)a3;
+- (void)_receiveAuthPrompt:(unint64_t)prompt notification:(__CFUserNotification *)notification;
+- (void)_receiveInvalidAccount:(unint64_t)account;
+- (void)_receiveSubscribeAccount:(unint64_t)account;
+- (void)_receiveWhereTo:(unint64_t)to;
 - (void)_saveAccount;
 - (void)_showAuthPrompt;
 - (void)_showInvalidAccount;
-- (void)_showMatchingAccountAlertForAccount:(id)a3;
+- (void)_showMatchingAccountAlertForAccount:(id)account;
 - (void)_showSSLFailureAlert;
 - (void)_showSubscribeAccount;
 - (void)_showWhereTo;
-- (void)_sslFailureAlertReceived:(unint64_t)a3;
+- (void)_sslFailureAlertReceived:(unint64_t)received;
 - (void)_tellConsumerWereFinished;
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5;
-- (void)handleWebcalURLString:(id)a3 withConsumer:(id)a4;
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error;
+- (void)handleWebcalURLString:(id)string withConsumer:(id)consumer;
 @end
 
 @implementation SubCalWebcalHandler
@@ -67,17 +67,17 @@
   v5 = +[DADAgentManager sharedManager];
   [v5 removePendingAccountSetup];
 
-  v6 = [(SubCalWebcalHandler *)self consumer];
-  [v6 subCalWebcalHandlerFinishedSetup:self];
+  consumer = [(SubCalWebcalHandler *)self consumer];
+  [consumer subCalWebcalHandlerFinishedSetup:self];
 
   v7 = +[SubCalWebcalHandler outstandingSetupRequests];
-  v8 = [(SubCalWebcalHandler *)self urlString];
-  [v7 removeObject:v8];
+  urlString = [(SubCalWebcalHandler *)self urlString];
+  [v7 removeObject:urlString];
 }
 
-- (void)_receiveWhereTo:(unint64_t)a3
+- (void)_receiveWhereTo:(unint64_t)to
 {
-  v4 = a3 & 3;
+  v4 = to & 3;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   v7 = os_log_type_enabled(v5, v6);
@@ -110,7 +110,7 @@
 
 - (void)_showWhereTo
 {
-  v3 = [(SubCalWebcalHandler *)self account];
+  account = [(SubCalWebcalHandler *)self account];
   v4 = SubCalCopyWhereToAccountNotification();
 
   v5 = dataaccess_get_global_queue();
@@ -140,16 +140,16 @@
     _os_log_impl(&dword_0, v3, v4, "%@ saving account", buf, 0xCu);
   }
 
-  v6 = [(SubCalWebcalHandler *)self account];
-  [v6 saveTmpICSData];
+  account = [(SubCalWebcalHandler *)self account];
+  [account saveTmpICSData];
 
-  v7 = [(SubCalWebcalHandler *)self account];
-  v8 = [v7 backingAccountInfo];
-  [v8 setAuthenticated:1];
+  account2 = [(SubCalWebcalHandler *)self account];
+  backingAccountInfo = [account2 backingAccountInfo];
+  [backingAccountInfo setAuthenticated:1];
 
-  v9 = [(SubCalWebcalHandler *)self account];
+  account3 = [(SubCalWebcalHandler *)self account];
   v14 = 0;
-  v10 = [v9 saveAccountPropertiesWithError:&v14];
+  v10 = [account3 saveAccountPropertiesWithError:&v14];
   v11 = v14;
 
   if ((v10 & 1) == 0)
@@ -203,13 +203,13 @@ LABEL_4:
 LABEL_8:
 }
 
-- (void)_createCalendarInStore:(id)a3 needsCommit:(BOOL *)a4
+- (void)_createCalendarInStore:(id)store needsCommit:(BOOL *)commit
 {
-  v6 = a3;
+  storeCopy = store;
   v37 = 0;
   v7 = kSubCalCalendarStoreExternalId;
   v36 = 0;
-  v8 = [SubCalLocalDBHelper initializeSourceWithExternalId:kSubCalCalendarStoreExternalId inStore:v6 needsSave:&v37 error:&v36];
+  v8 = [SubCalLocalDBHelper initializeSourceWithExternalId:kSubCalCalendarStoreExternalId inStore:storeCopy needsSave:&v37 error:&v36];
   v9 = v36;
   v10 = v9;
   if (v8)
@@ -219,34 +219,34 @@ LABEL_8:
     {
       v13 = v9;
 LABEL_8:
-      *a4 = v11;
-      v16 = [(SubCalWebcalHandler *)self account];
-      v17 = [v16 subscriptionURL];
-      v18 = [v17 absoluteString];
+      *commit = v11;
+      account = [(SubCalWebcalHandler *)self account];
+      subscriptionURL = [account subscriptionURL];
+      absoluteString = [subscriptionURL absoluteString];
       v34 = v13;
-      v14 = [SubCalLocalDBHelper initializeCalendarWithExternalId:v18 inSource:v8 needsSave:0 error:&v34];
+      v14 = [SubCalLocalDBHelper initializeCalendarWithExternalId:absoluteString inSource:v8 needsSave:0 error:&v34];
       v10 = v34;
 
       if (v14)
       {
-        v19 = [v14 objectID];
-        -[SubCalWebcalHandler setCalendarId:](self, "setCalendarId:", [v19 rowID]);
+        objectID = [v14 objectID];
+        -[SubCalWebcalHandler setCalendarId:](self, "setCalendarId:", [objectID rowID]);
 
-        v20 = [(SubCalWebcalHandler *)self account];
-        v21 = [v20 accountDescription];
-        [v14 setTitle:v21];
+        account2 = [(SubCalWebcalHandler *)self account];
+        accountDescription = [account2 accountDescription];
+        [v14 setTitle:accountDescription];
 
-        v22 = [(SubCalWebcalHandler *)self account];
-        v23 = [v22 accountID];
-        [v14 setSubcalAccountID:v23];
+        account3 = [(SubCalWebcalHandler *)self account];
+        accountID = [account3 accountID];
+        [v14 setSubcalAccountID:accountID];
 
         v33 = v10;
-        LOBYTE(v23) = [v6 saveCalendar:v14 commit:0 error:&v33];
+        LOBYTE(accountID) = [storeCopy saveCalendar:v14 commit:0 error:&v33];
         v24 = v33;
 
-        if (v23)
+        if (accountID)
         {
-          *a4 = 1;
+          *commit = 1;
         }
 
         else
@@ -270,11 +270,11 @@ LABEL_8:
         v26 = _CPLog_to_os_log_type[3];
         if (os_log_type_enabled(v25, v26))
         {
-          v27 = [(SubCalWebcalHandler *)self account];
-          v28 = [v27 subscriptionURL];
-          v29 = [v28 absoluteString];
+          account4 = [(SubCalWebcalHandler *)self account];
+          subscriptionURL2 = [account4 subscriptionURL];
+          absoluteString2 = [subscriptionURL2 absoluteString];
           *buf = 138412546;
-          v39 = v29;
+          v39 = absoluteString2;
           v40 = 2112;
           v41 = v10;
           _os_log_impl(&dword_0, v25, v26, "Error initializing the EKCalendar with externalId: %@. Error: %@", buf, 0x16u);
@@ -285,7 +285,7 @@ LABEL_8:
     }
 
     v35 = v9;
-    v12 = [v6 saveSource:v8 commit:0 error:&v35];
+    v12 = [storeCopy saveSource:v8 commit:0 error:&v35];
     v13 = v35;
 
     if (v12)
@@ -330,9 +330,9 @@ LABEL_21:
   v5 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v4, v5))
   {
-    v6 = [v3 transactionId];
+    transactionId = [v3 transactionId];
     *buf = 138543362;
-    v12 = v6;
+    v12 = transactionId;
     _os_log_impl(&dword_0, v4, v5, "DATransaction starting, ID: %{public}@", buf, 0xCu);
   }
 
@@ -347,9 +347,9 @@ LABEL_21:
   [v7 registerWaiter:self forDataclassLocks:4 completionHandler:v9];
 }
 
-- (void)_receiveSubscribeAccount:(unint64_t)a3
+- (void)_receiveSubscribeAccount:(unint64_t)account
 {
-  v4 = a3 & 3;
+  v4 = account & 3;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   v7 = os_log_type_enabled(v5, v6);
@@ -361,20 +361,20 @@ LABEL_21:
       _os_log_impl(&dword_0, v5, v6, "User chose to subscribe to new account", buf, 2u);
     }
 
-    v8 = [(SubCalWebcalHandler *)self account];
-    v9 = [v8 tmpICSData];
+    account = [(SubCalWebcalHandler *)self account];
+    tmpICSData = [account tmpICSData];
 
-    if (v9)
+    if (tmpICSData)
     {
       [(SubCalWebcalHandler *)self _prepareForSave];
     }
 
     else
     {
-      v10 = [(SubCalWebcalHandler *)self account];
+      account2 = [(SubCalWebcalHandler *)self account];
       v11 = sharedDAAccountStore();
       v12 = dataaccess_get_global_queue();
-      [v10 checkValidityOnAccountStore:v11 withConsumer:self inQueue:v12];
+      [account2 checkValidityOnAccountStore:v11 withConsumer:self inQueue:v12];
     }
   }
 
@@ -409,7 +409,7 @@ LABEL_21:
   }
 }
 
-- (void)_receiveInvalidAccount:(unint64_t)a3
+- (void)_receiveInvalidAccount:(unint64_t)account
 {
   v4 = DALoggingwithCategory();
   v5 = _CPLog_to_os_log_type[6];
@@ -441,9 +441,9 @@ LABEL_21:
   }
 }
 
-- (void)_receiveAuthPrompt:(unint64_t)a3 notification:(__CFUserNotification *)a4
+- (void)_receiveAuthPrompt:(unint64_t)prompt notification:(__CFUserNotification *)notification
 {
-  if ((a3 & 3) != 0)
+  if ((prompt & 3) != 0)
   {
     v5 = DALoggingwithCategory();
     v6 = _CPLog_to_os_log_type[6];
@@ -458,7 +458,7 @@ LABEL_21:
 
   else
   {
-    ResponseDictionary = CFUserNotificationGetResponseDictionary(a4);
+    ResponseDictionary = CFUserNotificationGetResponseDictionary(notification);
     if (ResponseDictionary)
     {
       Value = CFDictionaryGetValue(ResponseDictionary, kCFUserNotificationTextFieldValuesKey);
@@ -470,24 +470,24 @@ LABEL_21:
         {
           ValueAtIndex = CFArrayGetValueAtIndex(v9, 0);
           v12 = CFArrayGetValueAtIndex(v9, 1);
-          v13 = [(SubCalWebcalHandler *)self account];
-          [v13 setUsername:ValueAtIndex];
+          account = [(SubCalWebcalHandler *)self account];
+          [account setUsername:ValueAtIndex];
 
-          v14 = [(SubCalWebcalHandler *)self account];
-          [v14 setPassword:v12];
+          account2 = [(SubCalWebcalHandler *)self account];
+          [account2 setPassword:v12];
         }
       }
     }
 
-    v15 = [(SubCalWebcalHandler *)self account];
-    [v15 quickValidate:self];
+    account3 = [(SubCalWebcalHandler *)self account];
+    [account3 quickValidate:self];
   }
 }
 
 - (void)_showAuthPrompt
 {
-  v3 = [(SubCalWebcalHandler *)self account];
-  v4 = [v3 host];
+  account = [(SubCalWebcalHandler *)self account];
+  host = [account host];
   v5 = SubCalCopyAuthNeededForHostNotification();
 
   v6 = dataaccess_get_global_queue();
@@ -505,16 +505,16 @@ LABEL_21:
   }
 }
 
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  validCopy = valid;
+  accountCopy = account;
+  errorCopy = error;
   v10 = DALoggingwithCategory();
   v11 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v10, v11))
   {
-    if (v6)
+    if (validCopy)
     {
       v12 = @"Validated";
     }
@@ -524,30 +524,30 @@ LABEL_21:
       v12 = @"Could not validate";
     }
 
-    v13 = [v8 host];
-    if (v6)
+    host = [accountCopy host];
+    if (validCopy)
     {
       v14 = &stru_1C8E8;
     }
 
     else
     {
-      v14 = [v9 description];
+      v14 = [errorCopy description];
     }
 
     v15 = 138412802;
     v16 = v12;
     v17 = 2112;
-    v18 = v13;
+    v18 = host;
     v19 = 2112;
     v20 = v14;
     _os_log_impl(&dword_0, v10, v11, "%@ account for host %@ %@", &v15, 0x20u);
-    if (!v6)
+    if (!validCopy)
     {
     }
   }
 
-  if (v6)
+  if (validCopy)
   {
     if ([(SubCalWebcalHandler *)self haveShownSubscribeAlert])
     {
@@ -561,7 +561,7 @@ LABEL_21:
     }
   }
 
-  else if ([v9 isSubCalAuthError])
+  else if ([errorCopy isSubCalAuthError])
   {
     [(SubCalWebcalHandler *)self _showAuthPrompt];
   }
@@ -577,7 +577,7 @@ LABEL_21:
   }
 }
 
-- (void)_showMatchingAccountAlertForAccount:(id)a3
+- (void)_showMatchingAccountAlertForAccount:(id)account
 {
   v4 = SubCalCopyDuplicateAccountNotification();
   v5 = dataaccess_get_global_queue();
@@ -597,7 +597,7 @@ LABEL_21:
 
 - (void)_showSSLFailureAlert
 {
-  v3 = [(SubCalWebcalHandler *)self account];
+  account = [(SubCalWebcalHandler *)self account];
   v4 = SubCalCopySSLFailureNotification();
 
   v5 = dataaccess_get_global_queue();
@@ -615,9 +615,9 @@ LABEL_21:
   }
 }
 
-- (void)_sslFailureAlertReceived:(unint64_t)a3
+- (void)_sslFailureAlertReceived:(unint64_t)received
 {
-  v4 = a3 & 3;
+  v4 = received & 3;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[5];
   v7 = os_log_type_enabled(v5, v6);
@@ -647,10 +647,10 @@ LABEL_21:
   }
 }
 
-- (id)_existingAccountLikeAccount:(id)a3
+- (id)_existingAccountLikeAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 subscriptionURL];
+  accountCopy = account;
+  subscriptionURL = [accountCopy subscriptionURL];
   v5 = dispatch_semaphore_create(0);
   v24 = 0;
   v25 = &v24;
@@ -690,7 +690,7 @@ LABEL_21:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        if ((objc_opt_respondsToSelector() & 1) != 0 && [v13 hasSubscribedCalendarAtURL:{v4, v17}])
+        if ((objc_opt_respondsToSelector() & 1) != 0 && [v13 hasSubscribedCalendarAtURL:{subscriptionURL, v17}])
         {
           v10 = v13;
           goto LABEL_12;
@@ -717,9 +717,9 @@ LABEL_12:
   return v15;
 }
 
-- (id)_newAccountWithHost:(id)a3
+- (id)_newAccountWithHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   v5 = sharedDAAccountStore();
   v6 = [v5 accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierSubscribedCalendar];
 
@@ -727,10 +727,10 @@ LABEL_12:
   v8 = [[SubCalAccount alloc] initWithBackingAccountInfo:v7];
   v9 = 1;
   [v8 setEnabled:1 forDADataclass:4];
-  [v8 setHost:v4];
-  if ([v4 length] >= 6)
+  [v8 setHost:hostCopy];
+  if ([hostCopy length] >= 6)
   {
-    v9 = [v4 compare:@"https" options:1 range:{0, 5}] != 0;
+    v9 = [hostCopy compare:@"https" options:1 range:{0, 5}] != 0;
   }
 
   [(SubCalWebcalHandler *)self setCanTryHTTP:v9];
@@ -739,9 +739,9 @@ LABEL_12:
   return v8;
 }
 
-- (void)_beginAccountSetupWithSubscriptionAtHost:(id)a3
+- (void)_beginAccountSetupWithSubscriptionAtHost:(id)host
 {
-  v6 = [(SubCalWebcalHandler *)self _newAccountWithHost:a3];
+  v6 = [(SubCalWebcalHandler *)self _newAccountWithHost:host];
   v4 = [(SubCalWebcalHandler *)self _existingAccountLikeAccount:?];
   if (v4)
   {
@@ -751,45 +751,45 @@ LABEL_12:
   else
   {
     [(SubCalWebcalHandler *)self setAccount:v6];
-    v5 = [(SubCalWebcalHandler *)self account];
-    [v5 quickValidate:self];
+    account = [(SubCalWebcalHandler *)self account];
+    [account quickValidate:self];
   }
 }
 
 - (id)waiterID
 {
-  v2 = [(SubCalWebcalHandler *)self account];
-  v3 = [v2 accountID];
+  account = [(SubCalWebcalHandler *)self account];
+  accountID = [account accountID];
 
-  return v3;
+  return accountID;
 }
 
-- (void)handleWebcalURLString:(id)a3 withConsumer:(id)a4
+- (void)handleWebcalURLString:(id)string withConsumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  consumerCopy = consumer;
   v8 = +[SubCalWebcalHandler outstandingSetupRequests];
-  if ([v8 containsObject:v6])
+  if ([v8 containsObject:stringCopy])
   {
     v9 = DALoggingwithCategory();
     v10 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v9, v10))
     {
       v18 = 138412290;
-      v19 = v6;
+      v19 = stringCopy;
       _os_log_impl(&dword_0, v9, v10, "Ignoring webcal setup of outstanding URL %@", &v18, 0xCu);
     }
   }
 
   else
   {
-    v9 = [v6 stringByReplacingPercentEscapesUsingEncoding:4];
+    v9 = [stringCopy stringByReplacingPercentEscapesUsingEncoding:4];
     if ([v9 isSubCalURLString])
     {
       if ([objc_opt_class() shouldSubscribeThroughMobileCal])
       {
         v11 = [[NSMutableString alloc] initWithString:@"calsubcal:"];
-        [v11 appendString:v6];
+        [v11 appendString:stringCopy];
         v12 = [NSURL URLWithString:v11];
         v13 = +[LSApplicationWorkspace defaultWorkspace];
         v14 = [v13 operationToOpenResource:v12 usingApplication:kCalCalendarBundleIdentifier userInfo:0];
@@ -800,23 +800,23 @@ LABEL_12:
       else
       {
         [(SubCalWebcalHandler *)self setUrlString:v9];
-        v15 = [(SubCalWebcalHandler *)self urlString];
-        [v8 addObject:v15];
+        urlString = [(SubCalWebcalHandler *)self urlString];
+        [v8 addObject:urlString];
 
         v16 = +[DADAgentManager sharedManager];
         [v16 addPendingAccountSetup];
 
-        [(SubCalWebcalHandler *)self setConsumer:v7];
+        [(SubCalWebcalHandler *)self setConsumer:consumerCopy];
         [(SubCalWebcalHandler *)self _beginAccountSetupWithSubscriptionAtHost:v9];
       }
     }
   }
 
-  v17 = [(SubCalWebcalHandler *)self consumer];
+  consumer = [(SubCalWebcalHandler *)self consumer];
 
-  if (!v17)
+  if (!consumer)
   {
-    [v7 subCalWebcalHandlerFinishedSetup:self];
+    [consumerCopy subCalWebcalHandlerFinishedSetup:self];
   }
 }
 

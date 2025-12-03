@@ -1,50 +1,50 @@
 @interface CPMessageGridItemConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMessageGridItemConfiguration:(id)a3;
-- (CPMessageGridItemConfiguration)initWithCoder:(id)a3;
-- (CPMessageGridItemConfiguration)initWithConversationIdentifier:(id)a3 unread:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMessageGridItemConfiguration:(id)configuration;
+- (CPMessageGridItemConfiguration)initWithCoder:(id)coder;
+- (CPMessageGridItemConfiguration)initWithConversationIdentifier:(id)identifier unread:(BOOL)unread;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPMessageGridItemConfiguration
 
-- (CPMessageGridItemConfiguration)initWithConversationIdentifier:(id)a3 unread:(BOOL)a4
+- (CPMessageGridItemConfiguration)initWithConversationIdentifier:(id)identifier unread:(BOOL)unread
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CPMessageGridItemConfiguration;
   v8 = [(CPMessageGridItemConfiguration *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_conversationIdentifier, a3);
-    v9->_unread = a4;
+    objc_storeStrong(&v8->_conversationIdentifier, identifier);
+    v9->_unread = unread;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CPMessageGridItemConfiguration *)self isEqualToMessageGridItemConfiguration:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CPMessageGridItemConfiguration *)self isEqualToMessageGridItemConfiguration:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToMessageGridItemConfiguration:(id)a3
+- (BOOL)isEqualToMessageGridItemConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CPMessageGridItemConfiguration *)self conversationIdentifier];
-  v6 = [v4 conversationIdentifier];
-  v7 = [v5 isEqual:v6];
+  configurationCopy = configuration;
+  conversationIdentifier = [(CPMessageGridItemConfiguration *)self conversationIdentifier];
+  conversationIdentifier2 = [configurationCopy conversationIdentifier];
+  v7 = [conversationIdentifier isEqual:conversationIdentifier2];
 
   if (v7)
   {
-    v8 = [(CPMessageGridItemConfiguration *)self isUnread];
-    v9 = v8 ^ [v4 isUnread] ^ 1;
+    isUnread = [(CPMessageGridItemConfiguration *)self isUnread];
+    v9 = isUnread ^ [configurationCopy isUnread] ^ 1;
   }
 
   else
@@ -57,36 +57,36 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CPMessageGridItemConfiguration *)self conversationIdentifier];
-  v4 = [v3 hash];
-  v5 = [(CPMessageGridItemConfiguration *)self isUnread];
+  conversationIdentifier = [(CPMessageGridItemConfiguration *)self conversationIdentifier];
+  v4 = [conversationIdentifier hash];
+  isUnread = [(CPMessageGridItemConfiguration *)self isUnread];
 
-  return v4 ^ v5;
+  return v4 ^ isUnread;
 }
 
-- (CPMessageGridItemConfiguration)initWithCoder:(id)a3
+- (CPMessageGridItemConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CPMessageGridItemConfiguration *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPGridButtonConversationKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPGridButtonConversationKey"];
     conversationIdentifier = v5->_conversationIdentifier;
     v5->_conversationIdentifier = v6;
 
-    v5->_unread = [v4 decodeBoolForKey:@"CPGridButtonUnreadKey"];
+    v5->_unread = [coderCopy decodeBoolForKey:@"CPGridButtonUnreadKey"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CPMessageGridItemConfiguration *)self conversationIdentifier];
-  [v5 encodeObject:v4 forKey:@"CPGridButtonConversationKey"];
+  coderCopy = coder;
+  conversationIdentifier = [(CPMessageGridItemConfiguration *)self conversationIdentifier];
+  [coderCopy encodeObject:conversationIdentifier forKey:@"CPGridButtonConversationKey"];
 
-  [v5 encodeBool:-[CPMessageGridItemConfiguration isUnread](self forKey:{"isUnread"), @"CPGridButtonUnreadKey"}];
+  [coderCopy encodeBool:-[CPMessageGridItemConfiguration isUnread](self forKey:{"isUnread"), @"CPGridButtonUnreadKey"}];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface NUNIGlobetrotterRenderer
-- (id)_renderGlobeLinesWithCommandBuffer:(id)a3 state:(const NUNIClassicRendererState *)a4 spheroid:(id)a5;
-- (void)_createPipelineForProgramType:(unint64_t)a3 fromLibrary:(id)a4;
+- (id)_renderGlobeLinesWithCommandBuffer:(id)buffer state:(const NUNIClassicRendererState *)state spheroid:(id)spheroid;
+- (void)_createPipelineForProgramType:(unint64_t)type fromLibrary:(id)library;
 - (void)_initPrograms;
-- (void)draw3DWithEncoder:(id)a3 state:(const NUNIClassicRendererState *)a4 spheroid:(id)a5;
-- (void)drawOffscreen3DWithCommandBuffer:(id)a3 state:(const NUNIClassicRendererState *)a4 spheroid:(id)a5;
+- (void)draw3DWithEncoder:(id)encoder state:(const NUNIClassicRendererState *)state spheroid:(id)spheroid;
+- (void)drawOffscreen3DWithCommandBuffer:(id)buffer state:(const NUNIClassicRendererState *)state spheroid:(id)spheroid;
 @end
 
 @implementation NUNIGlobetrotterRenderer
 
-- (void)draw3DWithEncoder:(id)a3 state:(const NUNIClassicRendererState *)a4 spheroid:(id)a5
+- (void)draw3DWithEncoder:(id)encoder state:(const NUNIClassicRendererState *)state spheroid:(id)spheroid
 {
-  v8 = a3;
-  v9 = a5;
-  [v9 position];
+  encoderCopy = encoder;
+  spheroidCopy = spheroid;
+  [spheroidCopy position];
   v104 = v10;
-  v11 = [v9 programType];
-  [v8 setFrontFacingWinding:1];
-  [v8 setCullMode:2];
-  [v9 equatorRotation];
+  programType = [spheroidCopy programType];
+  [encoderCopy setFrontFacingWinding:1];
+  [encoderCopy setCullMode:2];
+  [spheroidCopy equatorRotation];
   v13 = v12;
-  projectionType = a4->projectionType;
+  projectionType = state->projectionType;
   if (projectionType == 1)
   {
     v22 = 1.0;
@@ -36,9 +36,9 @@
       goto LABEL_6;
     }
 
-    [v9 radius];
+    [spheroidCopy radius];
     v20 = v19;
-    [v9 radiusScale];
+    [spheroidCopy radiusScale];
     v22 = v20 * v21;
   }
 
@@ -84,9 +84,9 @@ LABEL_6:
   }
 
   *v33.i64 = UMMul(v23, v32);
-  if (v11)
+  if (programType)
   {
-    if (v11 == 1)
+    if (programType == 1)
     {
       [NUNIGlobetrotterRenderer draw3DWithEncoder:state:spheroid:];
     }
@@ -132,29 +132,29 @@ LABEL_6:
     v103 = v33;
     v97 = v36;
     v99 = v35;
-    [(NUNIClassicRenderer *)self bindAssetArt:3 renderEncoder:v8 toSlot:0];
-    [v8 setFragmentTexture:self->_globeLinesCurrentTexture atIndex:1];
+    [(NUNIClassicRenderer *)self bindAssetArt:3 renderEncoder:encoderCopy toSlot:0];
+    [encoderCopy setFragmentTexture:self->_globeLinesCurrentTexture atIndex:1];
     v145 = v104;
     v140[0] = v103;
     v140[1] = v101;
     v140[2] = v99;
     v140[3] = v97;
-    v37 = *&a4[4].collectionType;
-    v140[4] = *&a4[4].viewport.width;
+    v37 = *&state[4].collectionType;
+    v140[4] = *&state[4].viewport.width;
     v140[5] = v37;
-    v38 = *&a4[5].viewport.width;
-    v140[6] = *&a4[4].octGeomRange.start;
+    v38 = *&state[5].viewport.width;
+    v140[6] = *&state[4].octGeomRange.start;
     v140[7] = v38;
-    [v9 light];
+    [spheroidCopy light];
     v94 = v39;
     v41 = __sincosf_stret(v40);
     v42 = __sincosf_stret(v94);
     v43.f32[0] = v42.__cosval * v41.__sinval;
     v43.f32[1] = v42.__sinval * v41.__sinval;
     v43.i64[1] = LODWORD(v41.__cosval);
-    *&v44 = UMMul(*&a4[4].viewport.width, *&a4[4].collectionType, *&a4[4].octGeomRange.start, *&a4[5].viewport.width, v43);
+    *&v44 = UMMul(*&state[4].viewport.width, *&state[4].collectionType, *&state[4].octGeomRange.start, *&state[5].viewport.width, v43);
     v111 = v44;
-    [v9 blend];
+    [spheroidCopy blend];
     v105 = v45;
     v46 = ((v45 * 0.35) + ((1.0 - v45) * 0.72));
     v47 = ((v45 * 0.0) + ((1.0 - v45) * 0.92157));
@@ -166,7 +166,7 @@ LABEL_6:
     aBlock[1] = 3221225472;
     aBlock[2] = __61__NUNIGlobetrotterRenderer_draw3DWithEncoder_state_spheroid___block_invoke;
     aBlock[3] = &unk_27995F380;
-    v51 = v9;
+    v51 = spheroidCopy;
     v109 = v51;
     v52 = _Block_copy(aBlock);
     v106[0] = MEMORY[0x277D85DD0];
@@ -244,17 +244,17 @@ LABEL_6:
     v148.columns[0] = v103;
     v148.columns[3] = v97;
     v148.columns[2] = v99;
-    *&v68 = UMMul(*&a4[5].collectionType, v148);
+    *&v68 = UMMul(*&state[5].collectionType, v148);
     v141 = v68;
     v142 = v69;
     v143 = v70;
     v144 = v71;
-    [v8 setVertexBytes:v140 length:208 atIndex:1];
-    [v8 setFragmentBytes:&v110 length:480 atIndex:0];
+    [encoderCopy setVertexBytes:v140 length:208 atIndex:1];
+    [encoderCopy setFragmentBytes:&v110 length:480 atIndex:0];
   }
 
-  [v8 drawIndexedPrimitives:3 indexCount:a4->octGeomRange.count indexType:0 indexBuffer:-[NUNIClassicRenderer resources](self indexBufferOffset:{"resources")[40], 2 * a4->octGeomRange.start}];
-  [v8 setCullMode:0];
+  [encoderCopy drawIndexedPrimitives:3 indexCount:state->octGeomRange.count indexType:0 indexBuffer:-[NUNIClassicRenderer resources](self indexBufferOffset:{"resources")[40], 2 * state->octGeomRange.start}];
+  [encoderCopy setCullMode:0];
 }
 
 uint64_t __61__NUNIGlobetrotterRenderer_draw3DWithEncoder_state_spheroid___block_invoke(uint64_t a1, double a2)
@@ -273,33 +273,33 @@ uint64_t __61__NUNIGlobetrotterRenderer_draw3DWithEncoder_state_spheroid___block
   return CLKUIConvertToRGBfFromSRGBf_fast();
 }
 
-- (void)drawOffscreen3DWithCommandBuffer:(id)a3 state:(const NUNIClassicRendererState *)a4 spheroid:(id)a5
+- (void)drawOffscreen3DWithCommandBuffer:(id)buffer state:(const NUNIClassicRendererState *)state spheroid:(id)spheroid
 {
-  v14 = a3;
-  v8 = a5;
-  if (![v8 programType] && !UMFloat4x4Equal(*&a4[4].viewport.width, *self->_anon_1d0))
+  bufferCopy = buffer;
+  spheroidCopy = spheroid;
+  if (![spheroidCopy programType] && !UMFloat4x4Equal(*&state[4].viewport.width, *self->_anon_1d0))
   {
-    v9 = [(NUNIGlobetrotterRenderer *)self _renderGlobeLinesWithCommandBuffer:v14 state:a4 spheroid:v8];
+    v9 = [(NUNIGlobetrotterRenderer *)self _renderGlobeLinesWithCommandBuffer:bufferCopy state:state spheroid:spheroidCopy];
     globeLinesCurrentTexture = self->_globeLinesCurrentTexture;
     self->_globeLinesCurrentTexture = v9;
 
-    v11 = *&a4[4].viewport.width;
-    v12 = *&a4[4].collectionType;
-    v13 = *&a4[5].viewport.width;
-    *&self->_anon_1d0[32] = *&a4[4].octGeomRange.start;
+    v11 = *&state[4].viewport.width;
+    v12 = *&state[4].collectionType;
+    v13 = *&state[5].viewport.width;
+    *&self->_anon_1d0[32] = *&state[4].octGeomRange.start;
     *&self->_anon_1d0[48] = v13;
     *self->_anon_1d0 = v11;
     *&self->_anon_1d0[16] = v12;
   }
 }
 
-- (id)_renderGlobeLinesWithCommandBuffer:(id)a3 state:(const NUNIClassicRendererState *)a4 spheroid:(id)a5
+- (id)_renderGlobeLinesWithCommandBuffer:(id)buffer state:(const NUNIClassicRendererState *)state spheroid:(id)spheroid
 {
-  v7 = a3;
+  bufferCopy = buffer;
   globeLineTextureResourcePool = self->_globeLineTextureResourcePool;
   if (!globeLineTextureResourcePool)
   {
-    v9 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:10 width:a4->viewport.width height:a4->viewport.height mipmapped:0];
+    v9 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:10 width:state->viewport.width height:state->viewport.height mipmapped:0];
     [v9 setUsage:5];
     v10 = [MEMORY[0x277CFA7A0] texturePoolWithDescriptor:v9 expectedCountPerFrame:3];
     v11 = self->_globeLineTextureResourcePool;
@@ -308,34 +308,34 @@ uint64_t __61__NUNIGlobetrotterRenderer_draw3DWithEncoder_state_spheroid___block
     globeLineTextureResourcePool = self->_globeLineTextureResourcePool;
   }
 
-  v12 = [(CLKUIMetalResourcePool *)globeLineTextureResourcePool dequeueReusableResourceForUseOnCommandBuffer:v7];
+  v12 = [(CLKUIMetalResourcePool *)globeLineTextureResourcePool dequeueReusableResourceForUseOnCommandBuffer:bufferCopy];
   v13 = objc_opt_new();
-  v14 = [v13 colorAttachments];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  colorAttachments = [v13 colorAttachments];
+  v15 = [colorAttachments objectAtIndexedSubscript:0];
   [v15 setTexture:v12];
 
-  v16 = [v13 colorAttachments];
-  v17 = [v16 objectAtIndexedSubscript:0];
+  colorAttachments2 = [v13 colorAttachments];
+  v17 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v17 setLoadAction:2];
 
-  v18 = [v13 colorAttachments];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  colorAttachments3 = [v13 colorAttachments];
+  v19 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v19 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-  v20 = [v13 colorAttachments];
-  v21 = [v20 objectAtIndexedSubscript:0];
+  colorAttachments4 = [v13 colorAttachments];
+  v21 = [colorAttachments4 objectAtIndexedSubscript:0];
   [v21 setStoreAction:1];
 
-  v22 = [v7 renderCommandEncoderWithDescriptor:v13];
+  v22 = [bufferCopy renderCommandEncoderWithDescriptor:v13];
   [v22 setRenderPipelineState:{-[NUNIClassicRenderer resources](self, "resources")[24]}];
   v39 = 0u;
   v40 = 0u;
   memset(&v38[4], 0, 384);
-  v23 = *&a4[4].collectionType;
-  v38[0] = *&a4[4].viewport.width;
+  v23 = *&state[4].collectionType;
+  v38[0] = *&state[4].viewport.width;
   v38[1] = v23;
-  v24 = *&a4[5].viewport.width;
-  v38[2] = *&a4[4].octGeomRange.start;
+  v24 = *&state[5].viewport.width;
+  v38[2] = *&state[4].octGeomRange.start;
   v38[3] = v24;
   for (i = 8; i != 32; ++i)
   {
@@ -347,11 +347,11 @@ uint64_t __61__NUNIGlobetrotterRenderer_draw3DWithEncoder_state_spheroid___block
   {
     v28 = j * 3.14159265 / 12.0;
     v29 = __sincosf_stret(v28);
-    *&v30 = UMMul(*&a4[4].viewport.width, *&a4[4].collectionType, *&a4[4].octGeomRange.start, *&a4[5].viewport.width, v29);
+    *&v30 = UMMul(*&state[4].viewport.width, *&state[4].collectionType, *&state[4].octGeomRange.start, *&state[5].viewport.width, v29);
     v38[j + 16] = v30;
   }
 
-  *&_Q0 = UMMul(*&a4[4].viewport.width, *&a4[4].collectionType, *&a4[4].octGeomRange.start, *&a4[5].viewport.width, xmmword_25B719C90);
+  *&_Q0 = UMMul(*&state[4].viewport.width, *&state[4].collectionType, *&state[4].octGeomRange.start, *&state[5].viewport.width, xmmword_25B719C90);
   v39 = _Q0;
   v37[0] = 0;
   v37[1] = 0x3F80000000000000;
@@ -368,15 +368,15 @@ uint64_t __61__NUNIGlobetrotterRenderer_draw3DWithEncoder_state_spheroid___block
   return v12;
 }
 
-- (void)_createPipelineForProgramType:(unint64_t)a3 fromLibrary:(id)a4
+- (void)_createPipelineForProgramType:(unint64_t)type fromLibrary:(id)library
 {
-  v38 = a4;
-  v6 = [(NUNIRenderer *)self pixelFormat];
-  if (a3 > 1)
+  libraryCopy = library;
+  pixelFormat = [(NUNIRenderer *)self pixelFormat];
+  if (type > 1)
   {
-    if (a3 != 3)
+    if (type != 3)
     {
-      if (a3 == 2)
+      if (type == 2)
       {
         v7 = @"classic_luna_vsh";
         v8 = @"classic_luna_fsh";
@@ -389,14 +389,14 @@ LABEL_17:
 
     v7 = @"globetrotter_lines_vsh";
     v8 = @"globetrotter_lines_fsh";
-    v6 = 10;
+    pixelFormat = 10;
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         v7 = @"classic_sprite_vsh";
         v8 = @"classic_sprite_fsh";
@@ -416,57 +416,57 @@ LABEL_8:
 LABEL_12:
   v10 = MEMORY[0x277CFA788];
   v11 = NUNIBundle();
-  v12 = [(NUNIClassicRenderer *)self mtlDevice];
-  v13 = [v10 archiveWithName:v9 bundle:v11 device:v12];
+  mtlDevice = [(NUNIClassicRenderer *)self mtlDevice];
+  v13 = [v10 archiveWithName:v9 bundle:v11 device:mtlDevice];
 
-  v14 = [MEMORY[0x277CD6D78] functionDescriptor];
-  [v14 setName:v7];
-  v15 = [v13 newFunctionInLibrary:v38 withDescriptor:v14];
-  [v14 setName:v8];
-  v16 = [v13 newFunctionInLibrary:v38 withDescriptor:v14];
+  functionDescriptor = [MEMORY[0x277CD6D78] functionDescriptor];
+  [functionDescriptor setName:v7];
+  v15 = [v13 newFunctionInLibrary:libraryCopy withDescriptor:functionDescriptor];
+  [functionDescriptor setName:v8];
+  v16 = [v13 newFunctionInLibrary:libraryCopy withDescriptor:functionDescriptor];
   v17 = objc_alloc_init(MEMORY[0x277CD6F78]);
-  [v17 setLabel:_NUNIGlobetrotterPipelineNames[a3]];
+  [v17 setLabel:_NUNIGlobetrotterPipelineNames[type]];
   [v17 setVertexFunction:v15];
   [v17 setFragmentFunction:v16];
-  v18 = [v17 colorAttachments];
-  v19 = [v18 objectAtIndexedSubscript:0];
-  [v19 setPixelFormat:v6];
+  colorAttachments = [v17 colorAttachments];
+  v19 = [colorAttachments objectAtIndexedSubscript:0];
+  [v19 setPixelFormat:pixelFormat];
 
-  v20 = [v17 colorAttachments];
-  v21 = [v20 objectAtIndexedSubscript:0];
+  colorAttachments2 = [v17 colorAttachments];
+  v21 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v21 setBlendingEnabled:1];
 
-  v22 = [v17 colorAttachments];
-  v23 = [v22 objectAtIndexedSubscript:0];
+  colorAttachments3 = [v17 colorAttachments];
+  v23 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v23 setRgbBlendOperation:0];
 
-  v24 = [v17 colorAttachments];
-  v25 = [v24 objectAtIndexedSubscript:0];
+  colorAttachments4 = [v17 colorAttachments];
+  v25 = [colorAttachments4 objectAtIndexedSubscript:0];
   [v25 setAlphaBlendOperation:0];
 
-  v26 = [v17 colorAttachments];
-  v27 = [v26 objectAtIndexedSubscript:0];
+  colorAttachments5 = [v17 colorAttachments];
+  v27 = [colorAttachments5 objectAtIndexedSubscript:0];
   [v27 setSourceRGBBlendFactor:1];
 
-  v28 = [v17 colorAttachments];
-  v29 = [v28 objectAtIndexedSubscript:0];
+  colorAttachments6 = [v17 colorAttachments];
+  v29 = [colorAttachments6 objectAtIndexedSubscript:0];
   [v29 setSourceAlphaBlendFactor:1];
 
-  v30 = [v17 colorAttachments];
-  v31 = [v30 objectAtIndexedSubscript:0];
+  colorAttachments7 = [v17 colorAttachments];
+  v31 = [colorAttachments7 objectAtIndexedSubscript:0];
   [v31 setDestinationRGBBlendFactor:5];
 
-  v32 = [v17 colorAttachments];
-  v33 = [v32 objectAtIndexedSubscript:0];
+  colorAttachments8 = [v17 colorAttachments];
+  v33 = [colorAttachments8 objectAtIndexedSubscript:0];
   [v33 setDestinationAlphaBlendFactor:5];
 
-  v34 = [(NUNIClassicRenderer *)self mtlDevice];
-  v35 = [v13 newRenderPipelineStateForDevice:v34 withDescriptor:v17];
-  v36 = [(NUNIClassicRenderer *)self resources];
-  v37 = v36->pipelines[a3];
-  v36->pipelines[a3] = v35;
+  mtlDevice2 = [(NUNIClassicRenderer *)self mtlDevice];
+  v35 = [v13 newRenderPipelineStateForDevice:mtlDevice2 withDescriptor:v17];
+  resources = [(NUNIClassicRenderer *)self resources];
+  v37 = resources->pipelines[type];
+  resources->pipelines[type] = v35;
 
-  if (![(NUNIClassicRenderer *)self resources][8 * a3])
+  if (![(NUNIClassicRenderer *)self resources][8 * type])
   {
     [NUNIGlobetrotterRenderer _createPipelineForProgramType:fromLibrary:];
   }
@@ -475,8 +475,8 @@ LABEL_12:
 - (void)_initPrograms
 {
   v5 = NUNIBundle();
-  v3 = [(NUNIClassicRenderer *)self mtlDevice];
-  v4 = [v3 newDefaultLibraryWithBundle:v5 error:0];
+  mtlDevice = [(NUNIClassicRenderer *)self mtlDevice];
+  v4 = [mtlDevice newDefaultLibraryWithBundle:v5 error:0];
 
   [(NUNIGlobetrotterRenderer *)self _createPipelineForProgramType:0 fromLibrary:v4];
   [(NUNIGlobetrotterRenderer *)self _createPipelineForProgramType:1 fromLibrary:v4];

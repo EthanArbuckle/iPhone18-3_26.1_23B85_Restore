@@ -1,29 +1,29 @@
 @interface CUIKRevertOperation
-+ (id)operationForContext:(id)a3;
-- (BOOL)_executeWithUndoDelegate:(id)a3 error:(id *)a4;
++ (id)operationForContext:(id)context;
+- (BOOL)_executeWithUndoDelegate:(id)delegate error:(id *)error;
 - (id)_actionName;
 - (id)_inverseOperation;
 @end
 
 @implementation CUIKRevertOperation
 
-+ (id)operationForContext:(id)a3
++ (id)operationForContext:(id)context
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 group];
-  v6 = [v5 trackedObjects];
-  if ([v4 _currentSpan])
+  contextCopy = context;
+  group = [contextCopy group];
+  trackedObjects = [group trackedObjects];
+  if ([contextCopy _currentSpan])
   {
-    v27 = a1;
-    v28 = v4;
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    selfCopy = self;
+    v28 = contextCopy;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v9 = v6;
+    v9 = trackedObjects;
     v10 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (!v10)
     {
@@ -45,28 +45,28 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v14 masterEvent];
-          v16 = [v14 recurrenceIdentifier];
-          if (v15 != v14 && v15 != 0)
+          masterEvent = [v14 masterEvent];
+          recurrenceIdentifier = [v14 recurrenceIdentifier];
+          if (masterEvent != v14 && masterEvent != 0)
           {
-            [v7 setObject:v14 forKeyedSubscript:v16];
+            [dictionary setObject:v14 forKeyedSubscript:recurrenceIdentifier];
 
-            v20 = [v15 recurrenceIdentifier];
-            v21 = [v8 objectForKeyedSubscript:v20];
+            recurrenceIdentifier2 = [masterEvent recurrenceIdentifier];
+            v21 = [dictionary2 objectForKeyedSubscript:recurrenceIdentifier2];
 
             if (!v21)
             {
-              v16 = [v15 recurrenceIdentifier];
-              v18 = v8;
-              v19 = v15;
+              recurrenceIdentifier = [masterEvent recurrenceIdentifier];
+              v18 = dictionary2;
+              v19 = masterEvent;
 LABEL_16:
-              [v18 setObject:v19 forKeyedSubscript:v16];
+              [v18 setObject:v19 forKeyedSubscript:recurrenceIdentifier];
             }
 
             continue;
           }
 
-          v18 = v8;
+          v18 = dictionary2;
           v19 = v14;
           goto LABEL_16;
         }
@@ -77,61 +77,61 @@ LABEL_16:
       {
 LABEL_20:
 
-        v22 = [v7 allValues];
+        allValues = [dictionary allValues];
 
-        v23 = [v8 allValues];
-        v6 = [v22 arrayByAddingObjectsFromArray:v23];
+        allValues2 = [dictionary2 allValues];
+        trackedObjects = [allValues arrayByAddingObjectsFromArray:allValues2];
 
-        v4 = v28;
-        a1 = v27;
+        contextCopy = v28;
+        self = selfCopy;
         break;
       }
     }
   }
 
-  v24 = [a1 operationWithObjects:v6 span:{objc_msgSend(v4, "_currentSpan")}];
-  v25 = [v5 originalObjects];
-  [v24 setOriginalObjects:v25];
+  v24 = [self operationWithObjects:trackedObjects span:{objc_msgSend(contextCopy, "_currentSpan")}];
+  originalObjects = [group originalObjects];
+  [v24 setOriginalObjects:originalObjects];
 
   return v24;
 }
 
 - (id)_actionName
 {
-  v3 = [(CUIKUserOperation *)self objects];
-  v4 = [v3 count];
+  objects = [(CUIKUserOperation *)self objects];
+  v4 = [objects count];
 
   if (v4 == 1)
   {
-    v5 = [(CUIKUserOperation *)self objects];
-    v6 = [v5 firstObject];
+    objects2 = [(CUIKUserOperation *)self objects];
+    firstObject = [objects2 firstObject];
 
     v7 = MEMORY[0x1E696AEC0];
     v8 = CUIKBundle();
     v9 = [v8 localizedStringForKey:@"Action: Revert “%@”" value:@"Revert “%@”" table:0];
-    v10 = [v6 title];
-    v11 = [v7 localizedStringWithFormat:v9, v10];
+    title = [firstObject title];
+    v11 = [v7 localizedStringWithFormat:v9, title];
   }
 
   else
   {
-    v6 = CUIKBundle();
-    v11 = [v6 localizedStringForKey:@"Action: Revert events" value:@"Revert Events" table:0];
+    firstObject = CUIKBundle();
+    v11 = [firstObject localizedStringForKey:@"Action: Revert events" value:@"Revert Events" table:0];
   }
 
   return v11;
 }
 
-- (BOOL)_executeWithUndoDelegate:(id)a3 error:(id *)a4
+- (BOOL)_executeWithUndoDelegate:(id)delegate error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  delegateCopy = delegate;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(CUIKUserOperation *)self objects];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  objects = [(CUIKUserOperation *)self objects];
+  v7 = [objects countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -143,21 +143,21 @@ LABEL_20:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objects);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        if (v5)
+        if (delegateCopy)
         {
-          v13 = [v5 objectToSaveForRevertingChangeToObject:v12];
+          v13 = [delegateCopy objectToSaveForRevertingChangeToObject:v12];
 
           v12 = v13;
         }
 
-        v14 = [v12 specificIdentifier];
+        specificIdentifier = [v12 specificIdentifier];
         if ([v12 revert])
         {
-          [v5 objectWithSpecificIdentifierWasReverted:v14];
+          [delegateCopy objectWithSpecificIdentifierWasReverted:specificIdentifier];
         }
 
         else
@@ -166,7 +166,7 @@ LABEL_20:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [objects countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -184,11 +184,11 @@ LABEL_20:
 {
   v6.receiver = self;
   v6.super_class = CUIKRevertOperation;
-  v3 = [(CUIKUserOperation *)&v6 _inverseOperation];
-  v4 = [(CUIKRevertOperation *)self originalChangeTracker];
-  [v3 setOriginalChangeTracker:v4];
+  _inverseOperation = [(CUIKUserOperation *)&v6 _inverseOperation];
+  originalChangeTracker = [(CUIKRevertOperation *)self originalChangeTracker];
+  [_inverseOperation setOriginalChangeTracker:originalChangeTracker];
 
-  return v3;
+  return _inverseOperation;
 }
 
 @end

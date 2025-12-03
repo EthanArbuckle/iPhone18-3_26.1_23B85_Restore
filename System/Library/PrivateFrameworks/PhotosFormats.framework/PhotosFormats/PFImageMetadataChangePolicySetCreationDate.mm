@@ -1,63 +1,63 @@
 @interface PFImageMetadataChangePolicySetCreationDate
-+ (id)policyWithCreationDate:(id)a3 inTimeZone:(id)a4;
-- (BOOL)metadataNeedsProcessing:(id)a3;
-- (PFImageMetadataChangePolicySetCreationDate)initWithCoder:(id)a3;
-- (id)processMetadata:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)policyWithCreationDate:(id)date inTimeZone:(id)zone;
+- (BOOL)metadataNeedsProcessing:(id)processing;
+- (PFImageMetadataChangePolicySetCreationDate)initWithCoder:(id)coder;
+- (id)processMetadata:(id)metadata;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PFImageMetadataChangePolicySetCreationDate
 
-+ (id)policyWithCreationDate:(id)a3 inTimeZone:(id)a4
++ (id)policyWithCreationDate:(id)date inTimeZone:(id)zone
 {
-  v5 = a4;
-  v6 = a3;
+  zoneCopy = zone;
+  dateCopy = date;
   v7 = objc_opt_new();
-  [v7 setCreationDate:v6];
+  [v7 setCreationDate:dateCopy];
 
-  if (v5)
+  if (zoneCopy)
   {
-    [v7 setTimeZone:v5];
+    [v7 setTimeZone:zoneCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-    [v7 setTimeZone:v8];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    [v7 setTimeZone:defaultTimeZone];
   }
 
   return v7;
 }
 
-- (id)processMetadata:(id)a3
+- (id)processMetadata:(id)metadata
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PFImageMetadataChangePolicySetCreationDate *)self creationDate];
+  metadataCopy = metadata;
+  creationDate = [(PFImageMetadataChangePolicySetCreationDate *)self creationDate];
 
-  if (v5)
+  if (creationDate)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
-    v7 = v6;
-    if (v4)
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v7 = dictionary;
+    if (metadataCopy)
     {
-      [v6 addEntriesFromDictionary:v4];
+      [dictionary addEntriesFromDictionary:metadataCopy];
     }
 
     v8 = objc_alloc_init(PFImageMetadataBuilder);
-    v9 = [(PFImageMetadataChangePolicySetCreationDate *)self creationDate];
-    v10 = [(PFImageMetadataChangePolicySetCreationDate *)self timeZone];
-    [(PFImageMetadataBuilder *)v8 setCreationDate:v9 timeZone:v10];
+    creationDate2 = [(PFImageMetadataChangePolicySetCreationDate *)self creationDate];
+    timeZone = [(PFImageMetadataChangePolicySetCreationDate *)self timeZone];
+    [(PFImageMetadataBuilder *)v8 setCreationDate:creationDate2 timeZone:timeZone];
 
     v19[0] = *MEMORY[0x1E696D9B0];
-    v11 = [(PFImageMetadataBuilder *)v8 exifDictionary];
-    v20[0] = v11;
+    exifDictionary = [(PFImageMetadataBuilder *)v8 exifDictionary];
+    v20[0] = exifDictionary;
     v19[1] = *MEMORY[0x1E696DF28];
-    v12 = [(PFImageMetadataBuilder *)v8 tiffDictionary];
-    v20[1] = v12;
+    tiffDictionary = [(PFImageMetadataBuilder *)v8 tiffDictionary];
+    v20[1] = tiffDictionary;
     v19[2] = *MEMORY[0x1E696DD90];
-    v13 = [(PFImageMetadataBuilder *)v8 iptcDictionary];
-    v20[2] = v13;
+    iptcDictionary = [(PFImageMetadataBuilder *)v8 iptcDictionary];
+    v20[2] = iptcDictionary;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
 
     v17[0] = MEMORY[0x1E69E9820];
@@ -71,7 +71,7 @@
 
   else
   {
-    v15 = v4;
+    v15 = metadataCopy;
   }
 
   return v15;
@@ -103,25 +103,25 @@ void __62__PFImageMetadataChangePolicySetCreationDate_processMetadata___block_in
   }
 }
 
-- (BOOL)metadataNeedsProcessing:(id)a3
+- (BOOL)metadataNeedsProcessing:(id)processing
 {
   v33[8] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PFImageMetadataChangePolicySetCreationDate *)self creationDate];
+  processingCopy = processing;
+  creationDate = [(PFImageMetadataChangePolicySetCreationDate *)self creationDate];
 
-  if (v5)
+  if (creationDate)
   {
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696D9B0]];
-    v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696DF28]];
-    v29 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696DD90]];
+    v6 = [processingCopy objectForKeyedSubscript:*MEMORY[0x1E696D9B0]];
+    v7 = [processingCopy objectForKeyedSubscript:*MEMORY[0x1E696DF28]];
+    v29 = [processingCopy objectForKeyedSubscript:*MEMORY[0x1E696DD90]];
     v8 = objc_alloc_init(PFImageMetadataBuilder);
-    v9 = [(PFImageMetadataChangePolicySetCreationDate *)self creationDate];
-    v10 = [(PFImageMetadataChangePolicySetCreationDate *)self timeZone];
-    [(PFImageMetadataBuilder *)v8 setCreationDate:v9 timeZone:v10];
+    creationDate2 = [(PFImageMetadataChangePolicySetCreationDate *)self creationDate];
+    timeZone = [(PFImageMetadataChangePolicySetCreationDate *)self timeZone];
+    [(PFImageMetadataBuilder *)v8 setCreationDate:creationDate2 timeZone:timeZone];
 
-    v11 = [(PFImageMetadataBuilder *)v8 exifDictionary];
-    v12 = [(PFImageMetadataBuilder *)v8 tiffDictionary];
-    v30 = [(PFImageMetadataBuilder *)v8 iptcDictionary];
+    exifDictionary = [(PFImageMetadataBuilder *)v8 exifDictionary];
+    tiffDictionary = [(PFImageMetadataBuilder *)v8 tiffDictionary];
+    iptcDictionary = [(PFImageMetadataBuilder *)v8 iptcDictionary];
     v13 = *MEMORY[0x1E696DB28];
     v33[0] = *MEMORY[0x1E696D998];
     v33[1] = v13;
@@ -136,7 +136,7 @@ void __62__PFImageMetadataChangePolicySetCreationDate_processMetadata___block_in
     v33[7] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:8];
     v18 = v6;
-    v19 = __70__PFImageMetadataChangePolicySetCreationDate_metadataNeedsProcessing___block_invoke(v6, v11, v17);
+    v19 = __70__PFImageMetadataChangePolicySetCreationDate_metadataNeedsProcessing___block_invoke(v6, exifDictionary, v17);
 
     if (v19)
     {
@@ -144,7 +144,7 @@ void __62__PFImageMetadataChangePolicySetCreationDate_processMetadata___block_in
       v20 = 1;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
       v22 = v7;
-      v23 = __70__PFImageMetadataChangePolicySetCreationDate_metadataNeedsProcessing___block_invoke(v7, v12, v21);
+      v23 = __70__PFImageMetadataChangePolicySetCreationDate_metadataNeedsProcessing___block_invoke(v7, tiffDictionary, v21);
 
       v24 = v29;
       if (v23)
@@ -153,7 +153,7 @@ void __62__PFImageMetadataChangePolicySetCreationDate_processMetadata___block_in
         v31[0] = *MEMORY[0x1E696DD88];
         v31[1] = v25;
         v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
-        v27 = __70__PFImageMetadataChangePolicySetCreationDate_metadataNeedsProcessing___block_invoke(v29, v30, v26);
+        v27 = __70__PFImageMetadataChangePolicySetCreationDate_metadataNeedsProcessing___block_invoke(v29, iptcDictionary, v26);
 
         v20 = v27 ^ 1;
       }
@@ -227,23 +227,23 @@ LABEL_11:
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PFImageMetadataChangePolicySetCreationDate *)self creationDate];
-  [v4 encodeObject:v5 forKey:@"creationDate"];
+  coderCopy = coder;
+  creationDate = [(PFImageMetadataChangePolicySetCreationDate *)self creationDate];
+  [coderCopy encodeObject:creationDate forKey:@"creationDate"];
 
-  v6 = [(PFImageMetadataChangePolicySetCreationDate *)self timeZone];
-  [v4 encodeObject:v6 forKey:@"creationDateTimeZone"];
+  timeZone = [(PFImageMetadataChangePolicySetCreationDate *)self timeZone];
+  [coderCopy encodeObject:timeZone forKey:@"creationDateTimeZone"];
 }
 
-- (PFImageMetadataChangePolicySetCreationDate)initWithCoder:(id)a3
+- (PFImageMetadataChangePolicySetCreationDate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"creationDate"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"creationDate"])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDateTimeZone"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDateTimeZone"];
     [(PFImageMetadataChangePolicySetCreationDate *)self setCreationDate:v5];
     [(PFImageMetadataChangePolicySetCreationDate *)self setTimeZone:v6];
   }

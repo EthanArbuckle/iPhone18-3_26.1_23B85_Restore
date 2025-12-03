@@ -1,24 +1,24 @@
 @interface WFLinkSafariFindTabsAction
-- (id)localizedCategoryWithContext:(id)a3;
-- (id)localizedNameWithContext:(id)a3;
+- (id)localizedCategoryWithContext:(id)context;
+- (id)localizedNameWithContext:(id)context;
 @end
 
 @implementation WFLinkSafariFindTabsAction
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Find Tabs", @"Find Tabs");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-- (id)localizedCategoryWithContext:(id)a3
+- (id)localizedCategoryWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"SafariSubcategoryTabs", @"Tabs");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

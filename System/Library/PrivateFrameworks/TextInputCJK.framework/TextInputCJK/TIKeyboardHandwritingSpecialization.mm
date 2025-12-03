@@ -10,20 +10,20 @@
 {
   v5.receiver = self;
   v5.super_class = TIKeyboardHandwritingSpecialization;
-  v2 = [(TIKeyboardFeatureSpecialization *)&v5 nonstopPunctuationCharacters];
-  v3 = [v2 stringByAppendingString:@"☻"];
+  nonstopPunctuationCharacters = [(TIKeyboardFeatureSpecialization *)&v5 nonstopPunctuationCharacters];
+  v3 = [nonstopPunctuationCharacters stringByAppendingString:@"☻"];
 
   return v3;
 }
 
 - (id)replacementForDoubleSpace
 {
-  v2 = [(TIKeyboardFeatureSpecialization *)self inputMode];
-  v3 = [v2 replacementForDoubleSpace];
-  v4 = v3;
-  if (v3)
+  inputMode = [(TIKeyboardFeatureSpecialization *)self inputMode];
+  replacementForDoubleSpace = [inputMode replacementForDoubleSpace];
+  v4 = replacementForDoubleSpace;
+  if (replacementForDoubleSpace)
   {
-    v5 = v3;
+    v5 = replacementForDoubleSpace;
   }
 
   else

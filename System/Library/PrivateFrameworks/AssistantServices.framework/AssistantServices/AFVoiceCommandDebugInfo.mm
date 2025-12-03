@@ -1,19 +1,19 @@
 @interface AFVoiceCommandDebugInfo
-- (AFVoiceCommandDebugInfo)initWithCoder:(id)a3;
-- (AFVoiceCommandDebugInfo)initWithHasVoiceCommandInExhaustiveParses:(BOOL)a3 hasVoiceCommandParses:(BOOL)a4 hasVoiceCommandEditIntent:(BOOL)a5 hasVoiceCommandAfterReranking:(BOOL)a6 hasNoVoiceCommandAfterRespeakCheck:(BOOL)a7;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AFVoiceCommandDebugInfo)initWithCoder:(id)coder;
+- (AFVoiceCommandDebugInfo)initWithHasVoiceCommandInExhaustiveParses:(BOOL)parses hasVoiceCommandParses:(BOOL)commandParses hasVoiceCommandEditIntent:(BOOL)intent hasVoiceCommandAfterReranking:(BOOL)reranking hasNoVoiceCommandAfterRespeakCheck:(BOOL)check;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFVoiceCommandDebugInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -21,7 +21,7 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v5 == objc_opt_class() && v4->_hasVoiceCommandInExhaustiveParses == self->_hasVoiceCommandInExhaustiveParses && v4->_hasVoiceCommandParses == self->_hasVoiceCommandParses && v4->_hasVoiceCommandEditIntent == self->_hasVoiceCommandEditIntent && v4->_hasVoiceCommandAfterReranking == self->_hasVoiceCommandAfterReranking && v4->_hasNoVoiceCommandAfterRespeakCheck == self->_hasNoVoiceCommandAfterRespeakCheck;
+    v6 = v5 == objc_opt_class() && equalCopy->_hasVoiceCommandInExhaustiveParses == self->_hasVoiceCommandInExhaustiveParses && equalCopy->_hasVoiceCommandParses == self->_hasVoiceCommandParses && equalCopy->_hasVoiceCommandEditIntent == self->_hasVoiceCommandEditIntent && equalCopy->_hasVoiceCommandAfterReranking == self->_hasVoiceCommandAfterReranking && equalCopy->_hasNoVoiceCommandAfterRespeakCheck == self->_hasNoVoiceCommandAfterRespeakCheck;
   }
 
   return v6;
@@ -54,48 +54,48 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendFormat:@"[hasVoiceCommandInExhaustiveParses = %u]", self->_hasVoiceCommandInExhaustiveParses];
-  [v3 appendFormat:@"[hasVoiceCommandParses = %u]", self->_hasVoiceCommandParses];
-  [v3 appendFormat:@"[hasVoiceCommandEditIntent = %u]", self->_hasVoiceCommandEditIntent];
-  [v3 appendFormat:@"[hasVoiceCommandAfterReranking = %u]", self->_hasVoiceCommandAfterReranking];
-  [v3 appendFormat:@"[hasNoVoiceCommandAfterRespeakCheck = %u]", self->_hasNoVoiceCommandAfterRespeakCheck];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"[hasVoiceCommandInExhaustiveParses = %u]", self->_hasVoiceCommandInExhaustiveParses];
+  [string appendFormat:@"[hasVoiceCommandParses = %u]", self->_hasVoiceCommandParses];
+  [string appendFormat:@"[hasVoiceCommandEditIntent = %u]", self->_hasVoiceCommandEditIntent];
+  [string appendFormat:@"[hasVoiceCommandAfterReranking = %u]", self->_hasVoiceCommandAfterReranking];
+  [string appendFormat:@"[hasNoVoiceCommandAfterRespeakCheck = %u]", self->_hasNoVoiceCommandAfterRespeakCheck];
 
-  return v3;
+  return string;
 }
 
-- (AFVoiceCommandDebugInfo)initWithCoder:(id)a3
+- (AFVoiceCommandDebugInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = AFVoiceCommandDebugInfo;
   v5 = [(AFVoiceCommandDebugInfo *)&v7 init];
   if (v5)
   {
-    v5->_hasVoiceCommandInExhaustiveParses = [v4 decodeBoolForKey:@"hasVoiceCommandInExhaustiveParses"];
-    v5->_hasVoiceCommandParses = [v4 decodeBoolForKey:@"hasVoiceCommandParses"];
-    v5->_hasVoiceCommandEditIntent = [v4 decodeBoolForKey:@"hasVoiceCommandEditIntent"];
-    v5->_hasVoiceCommandAfterReranking = [v4 decodeBoolForKey:@"hasVoiceCommandAfterReranking"];
-    v5->_hasNoVoiceCommandAfterRespeakCheck = [v4 decodeBoolForKey:@"hasNoVoiceCommandAfterRespeakCheck"];
+    v5->_hasVoiceCommandInExhaustiveParses = [coderCopy decodeBoolForKey:@"hasVoiceCommandInExhaustiveParses"];
+    v5->_hasVoiceCommandParses = [coderCopy decodeBoolForKey:@"hasVoiceCommandParses"];
+    v5->_hasVoiceCommandEditIntent = [coderCopy decodeBoolForKey:@"hasVoiceCommandEditIntent"];
+    v5->_hasVoiceCommandAfterReranking = [coderCopy decodeBoolForKey:@"hasVoiceCommandAfterReranking"];
+    v5->_hasNoVoiceCommandAfterRespeakCheck = [coderCopy decodeBoolForKey:@"hasNoVoiceCommandAfterRespeakCheck"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   hasVoiceCommandInExhaustiveParses = self->_hasVoiceCommandInExhaustiveParses;
-  v5 = a3;
-  [v5 encodeBool:hasVoiceCommandInExhaustiveParses forKey:@"hasVoiceCommandInExhaustiveParses"];
-  [v5 encodeBool:self->_hasVoiceCommandParses forKey:@"hasVoiceCommandParses"];
-  [v5 encodeBool:self->_hasVoiceCommandEditIntent forKey:@"hasVoiceCommandEditIntent"];
-  [v5 encodeBool:self->_hasVoiceCommandAfterReranking forKey:@"hasVoiceCommandAfterReranking"];
-  [v5 encodeBool:self->_hasNoVoiceCommandAfterRespeakCheck forKey:@"hasNoVoiceCommandAfterRespeakCheck"];
+  coderCopy = coder;
+  [coderCopy encodeBool:hasVoiceCommandInExhaustiveParses forKey:@"hasVoiceCommandInExhaustiveParses"];
+  [coderCopy encodeBool:self->_hasVoiceCommandParses forKey:@"hasVoiceCommandParses"];
+  [coderCopy encodeBool:self->_hasVoiceCommandEditIntent forKey:@"hasVoiceCommandEditIntent"];
+  [coderCopy encodeBool:self->_hasVoiceCommandAfterReranking forKey:@"hasVoiceCommandAfterReranking"];
+  [coderCopy encodeBool:self->_hasNoVoiceCommandAfterRespeakCheck forKey:@"hasNoVoiceCommandAfterRespeakCheck"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setHasVoiceCommandInExhaustiveParses:self->_hasVoiceCommandInExhaustiveParses];
   [v4 setHasVoiceCommandParses:self->_hasVoiceCommandParses];
   [v4 setHasVoiceCommandEditIntent:self->_hasVoiceCommandEditIntent];
@@ -104,18 +104,18 @@
   return v4;
 }
 
-- (AFVoiceCommandDebugInfo)initWithHasVoiceCommandInExhaustiveParses:(BOOL)a3 hasVoiceCommandParses:(BOOL)a4 hasVoiceCommandEditIntent:(BOOL)a5 hasVoiceCommandAfterReranking:(BOOL)a6 hasNoVoiceCommandAfterRespeakCheck:(BOOL)a7
+- (AFVoiceCommandDebugInfo)initWithHasVoiceCommandInExhaustiveParses:(BOOL)parses hasVoiceCommandParses:(BOOL)commandParses hasVoiceCommandEditIntent:(BOOL)intent hasVoiceCommandAfterReranking:(BOOL)reranking hasNoVoiceCommandAfterRespeakCheck:(BOOL)check
 {
   v13.receiver = self;
   v13.super_class = AFVoiceCommandDebugInfo;
   result = [(AFVoiceCommandDebugInfo *)&v13 init];
   if (result)
   {
-    result->_hasVoiceCommandInExhaustiveParses = a3;
-    result->_hasVoiceCommandParses = a4;
-    result->_hasVoiceCommandEditIntent = a5;
-    result->_hasVoiceCommandAfterReranking = a6;
-    result->_hasNoVoiceCommandAfterRespeakCheck = a7;
+    result->_hasVoiceCommandInExhaustiveParses = parses;
+    result->_hasVoiceCommandParses = commandParses;
+    result->_hasVoiceCommandEditIntent = intent;
+    result->_hasVoiceCommandAfterReranking = reranking;
+    result->_hasNoVoiceCommandAfterRespeakCheck = check;
   }
 
   return result;

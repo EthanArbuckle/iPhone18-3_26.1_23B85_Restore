@@ -1,12 +1,12 @@
 @interface AppPromotionDetailPageCloseAnimation
 - (_TtC22SubscribePageExtension36AppPromotionDetailPageCloseAnimation)init;
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation AppPromotionDetailPageCloseAnimation
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   if (UIAccessibilityIsReduceMotionEnabled())
   {
@@ -22,11 +22,11 @@
   return v7;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1002CBF20(a3);
+  selfCopy = self;
+  sub_1002CBF20(transition);
   swift_unknownObjectRelease();
 }
 

@@ -1,49 +1,49 @@
 @interface VNDetectHumanHeadRectanglesRequest
 + (NSIndexSet)revisionsSupportingPrecisionRecallThresholdOverride;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
 + (id)privateRevisionsSet;
 - (BOOL)canOverridePrecisionRecallThreshold;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 - (NSNumber)precisionRecallThresholdOverride;
 - (float)precisionRecallThreshold;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (void)_setPrecisionRecallThresholdOverride:(void *)a1;
-- (void)applyConfigurationOfRequest:(id)a3;
-- (void)setPrecisionRecallThreshold:(float)a3;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (void)_setPrecisionRecallThresholdOverride:(void *)override;
+- (void)applyConfigurationOfRequest:(id)request;
+- (void)setPrecisionRecallThreshold:(float)threshold;
 @end
 
 @implementation VNDetectHumanHeadRectanglesRequest
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    v7 = [(VNRequest *)self applicableDetectorClassAndOptions:0 forRevision:a3 error:0];
+    v7 = [(VNRequest *)self applicableDetectorClassAndOptions:0 forRevision:revision error:0];
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
     v9 = objc_opt_class();
-    v10 = VNRequestRevisionString(v9, a3);
+    v10 = VNRequestRevisionString(v9, revision);
     v11 = NSStringFromClass(v7);
     v12 = [v8 initWithFormat:@"%@ is handled by %@", v10, v11];
 
-    *a5 = [VNError errorForInternalErrorWithLocalizedDescription:v12];
+    *error = [VNError errorForInternalErrorWithLocalizedDescription:v12];
   }
 
   return 0;
 }
 
-- (void)_setPrecisionRecallThresholdOverride:(void *)a1
+- (void)_setPrecisionRecallThresholdOverride:(void *)override
 {
   v4 = a2;
-  if (a1)
+  if (override)
   {
-    v3 = [a1 configuration];
-    [v3 setPrecisionRecallThresholdOverride:v4];
+    configuration = [override configuration];
+    [configuration setPrecisionRecallThresholdOverride:v4];
   }
 }
 
-- (void)setPrecisionRecallThreshold:(float)a3
+- (void)setPrecisionRecallThreshold:(float)threshold
 {
-  if (a3 >= 0.0 && a3 <= 1.0)
+  if (threshold >= 0.0 && threshold <= 1.0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithFloat:?];
     [(VNDetectHumanHeadRectanglesRequest *)self _setPrecisionRecallThresholdOverride:v5];
@@ -53,11 +53,11 @@
 - (float)precisionRecallThreshold
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(VNDetectHumanHeadRectanglesRequest *)self precisionRecallThresholdOverride];
-  v5 = v4;
-  if (v4)
+  precisionRecallThresholdOverride = [(VNDetectHumanHeadRectanglesRequest *)self precisionRecallThresholdOverride];
+  v5 = precisionRecallThresholdOverride;
+  if (precisionRecallThresholdOverride)
   {
-    [v4 floatValue];
+    [precisionRecallThresholdOverride floatValue];
     v7 = v6;
   }
 
@@ -86,10 +86,10 @@
 
 - (NSNumber)precisionRecallThresholdOverride
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 precisionRecallThresholdOverride];
+  configuration = [(VNRequest *)self configuration];
+  precisionRecallThresholdOverride = [configuration precisionRecallThresholdOverride];
 
-  return v3;
+  return precisionRecallThresholdOverride;
 }
 
 - (BOOL)canOverridePrecisionRecallThreshold
@@ -114,18 +114,18 @@
   return v8;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 - 3737841664u < 4 || a3 == 1)
+  if (revision - 3737841664u < 4 || revision == 1)
   {
     v5 = @"VNANFDMultiDetectorType";
     v6 = @"VNANFDMultiDetectorType";
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v5 = 0;
+    *error = v5 = 0;
   }
 
   else
@@ -136,19 +136,19 @@
   return v5;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v6.receiver = self;
     v6.super_class = VNDetectHumanHeadRectanglesRequest;
-    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(VNDetectHumanHeadRectanglesRequest *)v4 precisionRecallThresholdOverride];
-      [(VNDetectHumanHeadRectanglesRequest *)self _setPrecisionRecallThresholdOverride:v5];
+      precisionRecallThresholdOverride = [(VNDetectHumanHeadRectanglesRequest *)requestCopy precisionRecallThresholdOverride];
+      [(VNDetectHumanHeadRectanglesRequest *)self _setPrecisionRecallThresholdOverride:precisionRecallThresholdOverride];
     }
   }
 }
@@ -156,13 +156,13 @@
 + (NSIndexSet)revisionsSupportingPrecisionRecallThresholdOverride
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [a1 allSupportedRevisions];
+  allSupportedRevisions = [self allSupportedRevisions];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __89__VNDetectHumanHeadRectanglesRequest_revisionsSupportingPrecisionRecallThresholdOverride__block_invoke;
   v7[3] = &__block_descriptor_40_e12_B24__0Q8_B16l;
-  v7[4] = a1;
-  v5 = [v4 indexesPassingTest:v7];
+  v7[4] = self;
+  v5 = [allSupportedRevisions indexesPassingTest:v7];
 
   objc_autoreleasePoolPop(v3);
 
@@ -180,20 +180,20 @@ uint64_t __89__VNDetectHumanHeadRectanglesRequest_revisionsSupportingPrecisionRe
   return v5;
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 - 3737841664u >= 4)
+  if (revision - 3737841664u >= 4)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___VNDetectHumanHeadRectanglesRequest;
     v5 = objc_msgSendSuper2(&v7, sel_descriptionForPrivateRevision_);
   }
 
   else
   {
-    v5 = off_1E77B1098[a3 - 3737841664u];
+    v5 = off_1E77B1098[revision - 3737841664u];
   }
 
   return v5;

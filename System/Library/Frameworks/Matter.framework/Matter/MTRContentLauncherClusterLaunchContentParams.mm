@@ -1,8 +1,8 @@
 @interface MTRContentLauncherClusterLaunchContentParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRContentLauncherClusterLaunchContentParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -41,29 +41,29 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRContentLauncherClusterLaunchContentParams);
-  v5 = [(MTRContentLauncherClusterLaunchContentParams *)self search];
-  [(MTRContentLauncherClusterLaunchContentParams *)v4 setSearch:v5];
+  search = [(MTRContentLauncherClusterLaunchContentParams *)self search];
+  [(MTRContentLauncherClusterLaunchContentParams *)v4 setSearch:search];
 
-  v6 = [(MTRContentLauncherClusterLaunchContentParams *)self autoPlay];
-  [(MTRContentLauncherClusterLaunchContentParams *)v4 setAutoPlay:v6];
+  autoPlay = [(MTRContentLauncherClusterLaunchContentParams *)self autoPlay];
+  [(MTRContentLauncherClusterLaunchContentParams *)v4 setAutoPlay:autoPlay];
 
-  v7 = [(MTRContentLauncherClusterLaunchContentParams *)self data];
-  [(MTRContentLauncherClusterLaunchContentParams *)v4 setData:v7];
+  data = [(MTRContentLauncherClusterLaunchContentParams *)self data];
+  [(MTRContentLauncherClusterLaunchContentParams *)v4 setData:data];
 
-  v8 = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
-  [(MTRContentLauncherClusterLaunchContentParams *)v4 setPlaybackPreferences:v8];
+  playbackPreferences = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
+  [(MTRContentLauncherClusterLaunchContentParams *)v4 setPlaybackPreferences:playbackPreferences];
 
-  v9 = [(MTRContentLauncherClusterLaunchContentParams *)self useCurrentContext];
-  [(MTRContentLauncherClusterLaunchContentParams *)v4 setUseCurrentContext:v9];
+  useCurrentContext = [(MTRContentLauncherClusterLaunchContentParams *)self useCurrentContext];
+  [(MTRContentLauncherClusterLaunchContentParams *)v4 setUseCurrentContext:useCurrentContext];
 
-  v10 = [(MTRContentLauncherClusterLaunchContentParams *)self timedInvokeTimeoutMs];
-  [(MTRContentLauncherClusterLaunchContentParams *)v4 setTimedInvokeTimeoutMs:v10];
+  timedInvokeTimeoutMs = [(MTRContentLauncherClusterLaunchContentParams *)self timedInvokeTimeoutMs];
+  [(MTRContentLauncherClusterLaunchContentParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v11 = [(MTRContentLauncherClusterLaunchContentParams *)self serverSideProcessingTimeout];
-  [(MTRContentLauncherClusterLaunchContentParams *)v4 setServerSideProcessingTimeout:v11];
+  serverSideProcessingTimeout = [(MTRContentLauncherClusterLaunchContentParams *)self serverSideProcessingTimeout];
+  [(MTRContentLauncherClusterLaunchContentParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -78,20 +78,20 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v67 = *MEMORY[0x277D85DE8];
   v54 = 0;
   v56 = 0;
   LOBYTE(v61) = 0;
   v52 = 0uLL;
-  v53 = 0;
+  bOOLValue = 0;
   v51[0] = 0;
   v51[1] = 0;
   v50 = v51;
-  v3 = [(MTRContentLauncherClusterLaunchContentParams *)self search];
-  v4 = [v3 parameterList];
-  v5 = [v4 count] == 0;
+  search = [(MTRContentLauncherClusterLaunchContentParams *)self search];
+  parameterList = [search parameterList];
+  v5 = [parameterList count] == 0;
 
   if (!v5)
   {
@@ -99,25 +99,25 @@
   }
 
   v52 = 0uLL;
-  v6 = [(MTRContentLauncherClusterLaunchContentParams *)self autoPlay];
-  v53 = [v6 BOOLValue];
+  autoPlay = [(MTRContentLauncherClusterLaunchContentParams *)self autoPlay];
+  bOOLValue = [autoPlay BOOLValue];
 
-  v7 = [(MTRContentLauncherClusterLaunchContentParams *)self data];
-  v8 = v7 == 0;
+  data = [(MTRContentLauncherClusterLaunchContentParams *)self data];
+  v8 = data == 0;
 
   if (!v8)
   {
     v54 = 1;
     v55 = 0uLL;
-    v9 = [(MTRContentLauncherClusterLaunchContentParams *)self data];
-    v10 = v9;
-    sub_238DB9BD8(buf, [v9 UTF8String], objc_msgSend(v9, "lengthOfBytesUsingEncoding:", 4));
+    data2 = [(MTRContentLauncherClusterLaunchContentParams *)self data];
+    v10 = data2;
+    sub_238DB9BD8(buf, [data2 UTF8String], objc_msgSend(data2, "lengthOfBytesUsingEncoding:", 4));
 
     v55 = *buf;
   }
 
-  v11 = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
-  v12 = v11 == 0;
+  playbackPreferences = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
+  v12 = playbackPreferences == 0;
 
   if (!v12)
   {
@@ -126,30 +126,30 @@
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v13 = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
-    v14 = [v13 playbackPosition];
-    *&v57[0] = [v14 unsignedLongLongValue];
+    playbackPreferences2 = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
+    playbackPosition = [playbackPreferences2 playbackPosition];
+    *&v57[0] = [playbackPosition unsignedLongLongValue];
 
-    v15 = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
-    v16 = [v15 textTrack];
-    v17 = [v16 languageCode];
-    v18 = v17;
-    sub_238DB9BD8(buf, [v17 UTF8String], objc_msgSend(v17, "lengthOfBytesUsingEncoding:", 4));
+    playbackPreferences3 = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
+    textTrack = [playbackPreferences3 textTrack];
+    languageCode = [textTrack languageCode];
+    v18 = languageCode;
+    sub_238DB9BD8(buf, [languageCode UTF8String], objc_msgSend(languageCode, "lengthOfBytesUsingEncoding:", 4));
 
     *(v57 + 8) = *buf;
-    v19 = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
-    v20 = [v19 textTrack];
-    v21 = [v20 characteristics];
-    v22 = v21 == 0;
+    playbackPreferences4 = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
+    textTrack2 = [playbackPreferences4 textTrack];
+    characteristics = [textTrack2 characteristics];
+    v22 = characteristics == 0;
 
     if (!v22)
     {
       BYTE8(v57[1]) = 1;
       v58 = 0uLL;
-      v23 = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
-      v24 = [v23 textTrack];
-      v25 = [v24 characteristics];
-      v26 = [v25 count] == 0;
+      playbackPreferences5 = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
+      textTrack3 = [playbackPreferences5 textTrack];
+      characteristics2 = [textTrack3 characteristics];
+      v26 = [characteristics2 count] == 0;
 
       if (!v26)
       {
@@ -159,22 +159,22 @@
       v58 = 0uLL;
     }
 
-    v27 = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
-    v28 = [v27 textTrack];
-    v29 = [v28 audioOutputIndex];
-    LOBYTE(v59) = [v29 unsignedCharValue];
+    playbackPreferences6 = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
+    textTrack4 = [playbackPreferences6 textTrack];
+    audioOutputIndex = [textTrack4 audioOutputIndex];
+    LOBYTE(v59) = [audioOutputIndex unsignedCharValue];
 
-    v30 = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
-    v31 = [v30 audioTracks];
-    v32 = v31 == 0;
+    playbackPreferences7 = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
+    audioTracks = [playbackPreferences7 audioTracks];
+    v32 = audioTracks == 0;
 
     if (!v32)
     {
       BYTE8(v59) = 1;
       v60 = 0uLL;
-      v33 = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
-      v34 = [v33 audioTracks];
-      v35 = [v34 count] == 0;
+      playbackPreferences8 = [(MTRContentLauncherClusterLaunchContentParams *)self playbackPreferences];
+      audioTracks2 = [playbackPreferences8 audioTracks];
+      v35 = [audioTracks2 count] == 0;
 
       if (!v35)
       {
@@ -185,14 +185,14 @@
     }
   }
 
-  v36 = [(MTRContentLauncherClusterLaunchContentParams *)self useCurrentContext];
-  v37 = v36 == 0;
+  useCurrentContext = [(MTRContentLauncherClusterLaunchContentParams *)self useCurrentContext];
+  v37 = useCurrentContext == 0;
 
   if (!v37)
   {
     v61 = 1;
-    v38 = [(MTRContentLauncherClusterLaunchContentParams *)self useCurrentContext];
-    HIBYTE(v61) = [v38 BOOLValue];
+    useCurrentContext2 = [(MTRContentLauncherClusterLaunchContentParams *)self useCurrentContext];
+    HIBYTE(v61) = [useCurrentContext2 BOOLValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v49);
@@ -214,8 +214,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v49);
-      v40 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v49);
+      v40 = sub_2393C7114(reader, 21, 256);
       v42 = v46;
       v41 = v40;
     }
@@ -243,19 +243,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRContentLauncherClusterLaunchContentParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -266,7 +266,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x795C00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

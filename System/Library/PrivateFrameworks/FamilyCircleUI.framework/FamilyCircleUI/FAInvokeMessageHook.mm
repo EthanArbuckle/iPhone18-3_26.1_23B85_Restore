@@ -1,47 +1,47 @@
 @interface FAInvokeMessageHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (FACircleRemoteUIDelegate)remoteUIDelegate;
 - (RUIServerHookDelegate)delegate;
-- (id)_stringForCompletionStatus:(unint64_t)a3;
-- (int64_t)transportWithActionString:(id)a3;
-- (void)_presentMessagesInviteWithServerAttributes:(id)a3 transport:(int64_t)a4 sourceView:(id)a5 completion:(id)a6;
-- (void)dismissWithUserInfo:(id)a3;
-- (void)inviteController:(id)a3 didFinishWithStatus:(unint64_t)a4 recipients:(id)a5 userInfo:(id)a6 error:(id)a7;
-- (void)inviteControllerDidEndAsyncLoading:(id)a3;
-- (void)inviteControllerDidStartAsyncLoading:(id)a3;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (id)_stringForCompletionStatus:(unint64_t)status;
+- (int64_t)transportWithActionString:(id)string;
+- (void)_presentMessagesInviteWithServerAttributes:(id)attributes transport:(int64_t)transport sourceView:(id)view completion:(id)completion;
+- (void)dismissWithUserInfo:(id)info;
+- (void)inviteController:(id)controller didFinishWithStatus:(unint64_t)status recipients:(id)recipients userInfo:(id)info error:(id)error;
+- (void)inviteControllerDidEndAsyncLoading:(id)loading;
+- (void)inviteControllerDidStartAsyncLoading:(id)loading;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation FAInvokeMessageHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v4 = [a3 name];
-  LOBYTE(self) = [(FAInvokeMessageHook *)self transportWithActionString:v4]!= -1;
+  name = [element name];
+  LOBYTE(self) = [(FAInvokeMessageHook *)self transportWithActionString:name]!= -1;
 
   return self;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v4 = [a3 clientInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CEC988]];
+  clientInfo = [model clientInfo];
+  v5 = [clientInfo objectForKeyedSubscript:*MEMORY[0x277CEC988]];
 
   LOBYTE(self) = [(FAInvokeMessageHook *)self transportWithActionString:v5]!= -1;
   return self;
 }
 
-- (int64_t)transportWithActionString:(id)a3
+- (int64_t)transportWithActionString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"family:iMessageInvite"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"family:iMessageInvite"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"family:shareSheetInvite"])
+  else if ([stringCopy isEqualToString:@"family:shareSheetInvite"])
   {
     v4 = 1;
   }
@@ -54,39 +54,39 @@
   return v4;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v16 = a3;
-  v9 = a5;
-  v10 = a6;
-  [v9 startActivityIndicator];
-  v11 = [v16 identifier];
+  elementCopy = element;
+  modelCopy = model;
+  completionCopy = completion;
+  [modelCopy startActivityIndicator];
+  identifier = [elementCopy identifier];
 
-  if (v11)
+  if (identifier)
   {
-    v12 = [v9 visiblePage];
-    v13 = [v16 identifier];
-    v11 = [v12 viewForElementIdentifier:v13];
+    visiblePage = [modelCopy visiblePage];
+    identifier2 = [elementCopy identifier];
+    identifier = [visiblePage viewForElementIdentifier:identifier2];
   }
 
-  v14 = [v9 clientInfo];
-  v15 = [v16 name];
-  [(FAInvokeMessageHook *)self _presentMessagesInviteWithServerAttributes:v14 transport:[(FAInvokeMessageHook *)self transportWithActionString:v15] sourceView:v11 completion:v10];
+  clientInfo = [modelCopy clientInfo];
+  name = [elementCopy name];
+  [(FAInvokeMessageHook *)self _presentMessagesInviteWithServerAttributes:clientInfo transport:[(FAInvokeMessageHook *)self transportWithActionString:name] sourceView:identifier completion:completionCopy];
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__FAInvokeMessageHook_processObjectModel_completion___block_invoke;
   block[3] = &unk_2782F3BA0;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = modelCopy;
+  selfCopy = self;
+  v13 = completionCopy;
+  v8 = completionCopy;
+  v9 = modelCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -115,11 +115,11 @@ void __53__FAInvokeMessageHook_processObjectModel_completion___block_invoke(uint
   [v5 _presentMessagesInviteWithServerAttributes:v6 transport:objc_msgSend(v7 sourceView:"transportWithActionString:" completion:{v9), v10, *(a1 + 48)}];
 }
 
-- (void)_presentMessagesInviteWithServerAttributes:(id)a3 transport:(int64_t)a4 sourceView:(id)a5 completion:(id)a6
+- (void)_presentMessagesInviteWithServerAttributes:(id)attributes transport:(int64_t)transport sourceView:(id)view completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v11 = _FALogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -131,12 +131,12 @@ void __53__FAInvokeMessageHook_processObjectModel_completion___block_invoke(uint
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v9;
+    v27 = attributesCopy;
     _os_log_impl(&dword_21BB35000, v12, OS_LOG_TYPE_DEFAULT, "Attributes - %@", buf, 0xCu);
   }
 
-  v13 = [objc_alloc(MEMORY[0x277D082B0]) initWithResults:v9];
-  v14 = [v10 copy];
+  v13 = [objc_alloc(MEMORY[0x277D082B0]) initWithResults:attributesCopy];
+  v14 = [completionCopy copy];
   completion = self->_completion;
   self->_completion = v14;
 
@@ -144,13 +144,13 @@ void __53__FAInvokeMessageHook_processObjectModel_completion___block_invoke(uint
   block[1] = 3221225472;
   block[2] = __98__FAInvokeMessageHook__presentMessagesInviteWithServerAttributes_transport_sourceView_completion___block_invoke;
   block[3] = &unk_2782F40E0;
-  v24 = v10;
-  v25 = a4;
+  v24 = completionCopy;
+  transportCopy = transport;
   v21 = v13;
-  v22 = self;
-  v23 = v9;
-  v16 = v10;
-  v17 = v9;
+  selfCopy = self;
+  v23 = attributesCopy;
+  v16 = completionCopy;
+  v17 = attributesCopy;
   v18 = v13;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
@@ -247,59 +247,59 @@ void __98__FAInvokeMessageHook__presentMessagesInviteWithServerAttributes_transp
   }
 }
 
-- (id)_stringForCompletionStatus:(unint64_t)a3
+- (id)_stringForCompletionStatus:(unint64_t)status
 {
-  if (a3 > 2)
+  if (status > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_2782F4100[a3];
+    return off_2782F4100[status];
   }
 }
 
-- (void)inviteController:(id)a3 didFinishWithStatus:(unint64_t)a4 recipients:(id)a5 userInfo:(id)a6 error:(id)a7
+- (void)inviteController:(id)controller didFinishWithStatus:(unint64_t)status recipients:(id)recipients userInfo:(id)info error:(id)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  recipientsCopy = recipients;
+  infoCopy = info;
+  errorCopy = error;
   v14 = _FALogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v27 = 134217984;
-    v28 = a4;
+    statusCopy = status;
     _os_log_impl(&dword_21BB35000, v14, OS_LOG_TYPE_DEFAULT, "Message Invite Controller did finish with status: %lu", &v27, 0xCu);
   }
 
   v15 = _FALogSystem();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-  if (v11)
+  if (recipientsCopy)
   {
     if (v16)
     {
       v27 = 138412290;
-      v28 = v11;
+      statusCopy = recipientsCopy;
       _os_log_impl(&dword_21BB35000, v15, OS_LOG_TYPE_DEFAULT, "Recipient key is not nil %@", &v27, 0xCu);
     }
 
     v17 = +[_TtC14FamilyCircleUI21FamilyInviteAnalytics shared];
-    v18 = [v12 objectForKeyedSubscript:*MEMORY[0x277D080F8]];
-    [v17 sendOtherContactInvitedEventWithInviteTransport:v18 inviteCompletionStatus:a4];
+    v18 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D080F8]];
+    [v17 sendOtherContactInvitedEventWithInviteTransport:v18 inviteCompletionStatus:status];
 
-    v19 = [MEMORY[0x277CBEB38] dictionary];
-    v15 = v19;
-    if (v12)
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v15 = dictionary;
+    if (infoCopy)
     {
-      [v19 addEntriesFromDictionary:v12];
+      [dictionary addEntriesFromDictionary:infoCopy];
     }
 
-    v20 = [(FAInvokeMessageHook *)self _stringForCompletionStatus:a4];
+    v20 = [(FAInvokeMessageHook *)self _stringForCompletionStatus:status];
     [v15 setObject:v20 forKeyedSubscript:*MEMORY[0x277D080F0]];
 
-    [v15 setObject:v11 forKeyedSubscript:*MEMORY[0x277D080E8]];
+    [v15 setObject:recipientsCopy forKeyedSubscript:*MEMORY[0x277D080E8]];
     v21 = objc_alloc_init(MEMORY[0x277D46208]);
     serverHookResponse = self->_serverHookResponse;
     self->_serverHookResponse = v21;
@@ -310,7 +310,7 @@ void __98__FAInvokeMessageHook__presentMessagesInviteWithServerAttributes_transp
     completion = self->_completion;
     if (completion)
     {
-      completion[2](completion, a4 == 1, v13);
+      completion[2](completion, status == 1, errorCopy);
       v25 = self->_completion;
       self->_completion = 0;
     }
@@ -325,23 +325,23 @@ void __98__FAInvokeMessageHook__presentMessagesInviteWithServerAttributes_transp
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)inviteControllerDidStartAsyncLoading:(id)a3
+- (void)inviteControllerDidStartAsyncLoading:(id)loading
 {
-  v3 = [(FAInvokeMessageHook *)self objectModel];
-  [v3 startActivityIndicator];
+  objectModel = [(FAInvokeMessageHook *)self objectModel];
+  [objectModel startActivityIndicator];
 }
 
-- (void)inviteControllerDidEndAsyncLoading:(id)a3
+- (void)inviteControllerDidEndAsyncLoading:(id)loading
 {
-  v3 = [(FAInvokeMessageHook *)self objectModel];
-  [v3 stopActivityIndicator];
+  objectModel = [(FAInvokeMessageHook *)self objectModel];
+  [objectModel stopActivityIndicator];
 }
 
-- (void)dismissWithUserInfo:(id)a3
+- (void)dismissWithUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(FAInvokeMessageHook *)self remoteUIDelegate];
-  [v5 setDismissInfo:v4];
+  infoCopy = info;
+  remoteUIDelegate = [(FAInvokeMessageHook *)self remoteUIDelegate];
+  [remoteUIDelegate setDismissInfo:infoCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = [WeakRetained presentationContextForHook:self];

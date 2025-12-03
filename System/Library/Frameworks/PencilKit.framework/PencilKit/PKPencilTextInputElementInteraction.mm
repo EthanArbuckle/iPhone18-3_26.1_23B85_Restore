@@ -1,5 +1,5 @@
 @interface PKPencilTextInputElementInteraction
-+ (id)_pencilTextInputElementInteractionInView:(id)a3;
++ (id)_pencilTextInputElementInteractionInView:(id)view;
 - (PKPencilTextInputElementInteractionDelegate)delegate;
 - (UIView)view;
 - (id)scribbleInteractionWrapper;
@@ -7,15 +7,15 @@
 
 @implementation PKPencilTextInputElementInteraction
 
-+ (id)_pencilTextInputElementInteractionInView:(id)a3
++ (id)_pencilTextInputElementInteractionInView:(id)view
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a3 interactions];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  interactions = [view interactions];
+  v4 = [interactions countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -25,7 +25,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(interactions);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -37,7 +37,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [interactions countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;

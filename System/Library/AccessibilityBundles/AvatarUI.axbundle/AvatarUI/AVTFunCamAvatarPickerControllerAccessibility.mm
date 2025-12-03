@@ -1,29 +1,29 @@
 @interface AVTFunCamAvatarPickerControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axLabelForIndexPath:(id)a3;
-- (id)_axRecordForIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axLabelForIndexPath:(id)path;
+- (id)_axRecordForIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_setupAccessibilityForCell:(id)a3 atIndexPath:(id)a4;
+- (void)_setupAccessibilityForCell:(id)cell atIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation AVTFunCamAvatarPickerControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTFunCamAvatarPickerController" hasInstanceMethod:@"collectionView:cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"AVTFunCamAvatarPickerController" hasInstanceMethod:@"collectionView:didSelectItemAtIndexPath:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"AVTFunCamAvatarPickerController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTFunCamAvatarPickerController" hasInstanceMethod:@"isDisplayingGridLayout" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AVTFunCamAvatarPickerController" hasInstanceMethod:@"items" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTFunCamAvatarPickerController" hasInstanceMethod:@"selectedIndexPath" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTFunCamAvatarPickerController" hasInstanceMethod:@"indexPathForNoneItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTFunCamAvatarPickerController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarListRecordItem" hasInstanceMethod:@"avatar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTFunCamAvatarPickerController" hasInstanceVariable:@"_allowsCreation" withType:"BOOL"];
-  [v3 validateProtocol:@"AVTAvatarRecord" hasRequiredInstanceMethod:@"isEditable"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTFunCamAvatarPickerController" hasInstanceMethod:@"collectionView:cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"AVTFunCamAvatarPickerController" hasInstanceMethod:@"collectionView:didSelectItemAtIndexPath:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"AVTFunCamAvatarPickerController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTFunCamAvatarPickerController" hasInstanceMethod:@"isDisplayingGridLayout" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AVTFunCamAvatarPickerController" hasInstanceMethod:@"items" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTFunCamAvatarPickerController" hasInstanceMethod:@"selectedIndexPath" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTFunCamAvatarPickerController" hasInstanceMethod:@"indexPathForNoneItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTFunCamAvatarPickerController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarListRecordItem" hasInstanceMethod:@"avatar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTFunCamAvatarPickerController" hasInstanceVariable:@"_allowsCreation" withType:"BOOL"];
+  [validationsCopy validateProtocol:@"AVTAvatarRecord" hasRequiredInstanceMethod:@"isEditable"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -34,24 +34,24 @@
   [(AVTFunCamAvatarPickerControllerAccessibility *)&v25 _accessibilityLoadAccessibilityInformation];
   if (([(AVTFunCamAvatarPickerControllerAccessibility *)self safeBoolForKey:@"isDisplayingGridLayout"]& 1) == 0)
   {
-    v3 = [(AVTFunCamAvatarPickerControllerAccessibility *)self _axFunCamAvatarCarousel];
-    if (!v3)
+    _axFunCamAvatarCarousel = [(AVTFunCamAvatarPickerControllerAccessibility *)self _axFunCamAvatarCarousel];
+    if (!_axFunCamAvatarCarousel)
     {
       v4 = [AX_FunCamAvatarCarousel alloc];
       v5 = [(AVTFunCamAvatarPickerControllerAccessibility *)self safeUIViewForKey:@"view"];
-      v3 = [(AX_FunCamAvatarCarousel *)v4 initWithFunCamAvatarPickerController:self accessibilityContainer:v5];
+      _axFunCamAvatarCarousel = [(AX_FunCamAvatarCarousel *)v4 initWithFunCamAvatarPickerController:self accessibilityContainer:v5];
 
-      [(AVTFunCamAvatarPickerControllerAccessibility *)self _setAXFunCamAvatarCarousel:v3];
+      [(AVTFunCamAvatarPickerControllerAccessibility *)self _setAXFunCamAvatarCarousel:_axFunCamAvatarCarousel];
     }
 
-    v6 = [MEMORY[0x29EDB8DE8] array];
-    [v6 axSafelyAddObject:v3];
+    array = [MEMORY[0x29EDB8DE8] array];
+    [array axSafelyAddObject:_axFunCamAvatarCarousel];
     v7 = [(AVTFunCamAvatarPickerControllerAccessibility *)self safeUIViewForKey:@"view"];
-    v8 = [v7 subviews];
-    [v6 axSafelyAddObjectsFromArray:v8];
+    subviews = [v7 subviews];
+    [array axSafelyAddObjectsFromArray:subviews];
 
     v9 = [(AVTFunCamAvatarPickerControllerAccessibility *)self safeValueForKey:@"view"];
-    [v9 setAccessibilityElements:v6];
+    [v9 setAccessibilityElements:array];
   }
 
   if (![(AVTFunCamAvatarPickerControllerAccessibility *)self _axFunCamAvatarPickerDidSetupCells])
@@ -65,8 +65,8 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [v11 visibleCells];
-    v13 = [v12 countByEnumeratingWithState:&v20 objects:v26 count:16];
+    visibleCells = [v11 visibleCells];
+    v13 = [visibleCells countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v13)
     {
       v14 = v13;
@@ -77,7 +77,7 @@
         {
           if (*v21 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(visibleCells);
           }
 
           v17 = *(*(&v20 + 1) + 8 * i);
@@ -85,7 +85,7 @@
           [(AVTFunCamAvatarPickerControllerAccessibility *)self _setupAccessibilityForCell:v17 atIndexPath:v18];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v20 objects:v26 count:16];
+        v14 = [visibleCells countByEnumeratingWithState:&v20 objects:v26 count:16];
       }
 
       while (v14);
@@ -97,15 +97,15 @@
   v19 = *MEMORY[0x29EDCA608];
 }
 
-- (id)_axLabelForIndexPath:(id)a3
+- (id)_axLabelForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   objc_opt_class();
   v5 = [(AVTFunCamAvatarPickerControllerAccessibility *)self safeValueForKey:@"items"];
   v6 = __UIAccessibilityCastAsClass();
 
   v7 = [(AVTFunCamAvatarPickerControllerAccessibility *)self safeValueForKey:@"indexPathForNoneItem"];
-  v8 = [v4 isEqual:v7];
+  v8 = [pathCopy isEqual:v7];
 
   if (v8 && ([(AVTFunCamAvatarPickerControllerAccessibility *)self safeBoolForKey:@"_allowsCreation"]& 1) == 0)
   {
@@ -114,10 +114,10 @@
 
   else
   {
-    v9 = [v6 objectAtIndexedSubscript:{objc_msgSend(v4, "item")}];
+    v9 = [v6 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
     v10 = [v9 safeValueForKey:@"avatar"];
 
-    if (v10 || [v4 item])
+    if (v10 || [pathCopy item])
     {
       v11 = [MEMORY[0x29EDBDE08] descriptionForAvatarWithRecord:v10 includeVideoPrefix:0];
     }
@@ -133,15 +133,15 @@
   return v12;
 }
 
-- (id)_axRecordForIndexPath:(id)a3
+- (id)_axRecordForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   objc_opt_class();
   v5 = [(AVTFunCamAvatarPickerControllerAccessibility *)self safeValueForKey:@"items"];
   v6 = __UIAccessibilityCastAsClass();
 
   v7 = [(AVTFunCamAvatarPickerControllerAccessibility *)self safeValueForKey:@"indexPathForNoneItem"];
-  LOBYTE(v5) = [v4 isEqual:v7];
+  LOBYTE(v5) = [pathCopy isEqual:v7];
 
   if (v5)
   {
@@ -150,10 +150,10 @@
 
   else
   {
-    v9 = [v6 objectAtIndexedSubscript:{objc_msgSend(v4, "item")}];
+    v9 = [v6 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
     v8 = [v9 safeValueForKey:@"avatar"];
 
-    if (v8 || [v4 item])
+    if (v8 || [pathCopy item])
     {
       v10 = v8;
     }
@@ -162,24 +162,24 @@
   return v8;
 }
 
-- (void)_setupAccessibilityForCell:(id)a3 atIndexPath:(id)a4
+- (void)_setupAccessibilityForCell:(id)cell atIndexPath:(id)path
 {
   v27[1] = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
-  v8 = (-[AVTFunCamAvatarPickerControllerAccessibility safeBoolForKey:](self, "safeBoolForKey:", @"isDisplayingGridLayout") & 1) != 0 || [v7 item] == 0;
-  [v6 setIsAccessibilityElement:v8];
-  v9 = [v6 accessibilityTraits];
-  [v6 setAccessibilityTraits:*MEMORY[0x29EDC7F70] | v9];
+  cellCopy = cell;
+  pathCopy = path;
+  v8 = (-[AVTFunCamAvatarPickerControllerAccessibility safeBoolForKey:](self, "safeBoolForKey:", @"isDisplayingGridLayout") & 1) != 0 || [pathCopy item] == 0;
+  [cellCopy setIsAccessibilityElement:v8];
+  accessibilityTraits = [cellCopy accessibilityTraits];
+  [cellCopy setAccessibilityTraits:*MEMORY[0x29EDC7F70] | accessibilityTraits];
   objc_initWeak(&location, self);
   v23[0] = MEMORY[0x29EDCA5F8];
   v23[1] = 3221225472;
   v23[2] = __87__AVTFunCamAvatarPickerControllerAccessibility__setupAccessibilityForCell_atIndexPath___block_invoke;
   v23[3] = &unk_29F2A39F0;
   objc_copyWeak(&v25, &location);
-  v10 = v7;
+  v10 = pathCopy;
   v24 = v10;
-  [v6 _setAccessibilityLabelBlock:v23];
+  [cellCopy _setAccessibilityLabelBlock:v23];
   v20[0] = MEMORY[0x29EDCA5F8];
   v20[1] = 3221225472;
   v20[2] = __87__AVTFunCamAvatarPickerControllerAccessibility__setupAccessibilityForCell_atIndexPath___block_invoke_2;
@@ -187,7 +187,7 @@
   objc_copyWeak(&v22, &location);
   v11 = v10;
   v21 = v11;
-  [v6 _setAccessibilityCustomContentBlock:v20];
+  [cellCopy _setAccessibilityCustomContentBlock:v20];
   objc_opt_class();
   v12 = [(AVTFunCamAvatarPickerControllerAccessibility *)self safeValueForKey:@"items"];
   v13 = __UIAccessibilityCastAsClass();
@@ -201,7 +201,7 @@
     v17 = accessibilityLocalizedString(@"starfish.avatar");
     v27[0] = v17;
     v18 = [MEMORY[0x29EDB8D80] arrayWithObjects:v27 count:1];
-    [v6 setAccessibilityUserInputLabels:v18];
+    [cellCopy setAccessibilityUserInputLabels:v18];
   }
 
   objc_destroyWeak(&v22);
@@ -245,13 +245,13 @@ id __87__AVTFunCamAvatarPickerControllerAccessibility__setupAccessibilityForCell
   [(AVTFunCamAvatarPickerControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = AVTFunCamAvatarPickerControllerAccessibility;
-  v6 = a4;
-  v7 = [(AVTFunCamAvatarPickerControllerAccessibility *)&v9 collectionView:a3 cellForItemAtIndexPath:v6];
-  [(AVTFunCamAvatarPickerControllerAccessibility *)self _setupAccessibilityForCell:v7 atIndexPath:v6, v9.receiver, v9.super_class];
+  pathCopy = path;
+  v7 = [(AVTFunCamAvatarPickerControllerAccessibility *)&v9 collectionView:view cellForItemAtIndexPath:pathCopy];
+  [(AVTFunCamAvatarPickerControllerAccessibility *)self _setupAccessibilityForCell:v7 atIndexPath:pathCopy, v9.receiver, v9.super_class];
 
   [(AVTFunCamAvatarPickerControllerAccessibility *)self _setAXFunCamAvatarPickerDidSetupCells:1];
 

@@ -1,13 +1,13 @@
 @interface InteractiveBackgroundContentView
 - (UIColor)backgroundColor;
-- (_TtC8AppStoreP33_7CB11EB016C41A3CC100BCE813D63B9132InteractiveBackgroundContentView)initWithCoder:(id)a3;
+- (_TtC8AppStoreP33_7CB11EB016C41A3CC100BCE813D63B9132InteractiveBackgroundContentView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation InteractiveBackgroundContentView
 
-- (_TtC8AppStoreP33_7CB11EB016C41A3CC100BCE813D63B9132InteractiveBackgroundContentView)initWithCoder:(id)a3
+- (_TtC8AppStoreP33_7CB11EB016C41A3CC100BCE813D63B9132InteractiveBackgroundContentView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStoreP33_7CB11EB016C41A3CC100BCE813D63B9132InteractiveBackgroundContentView_artworkView;
   type metadata accessor for ArtworkView();
@@ -21,19 +21,19 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for InteractiveBackgroundContentView();
-  v2 = [(InteractiveBackgroundContentView *)&v4 backgroundColor];
+  backgroundColor = [(InteractiveBackgroundContentView *)&v4 backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for InteractiveBackgroundContentView();
-  v4 = a3;
+  colorCopy = color;
   v5 = v7.receiver;
-  [(InteractiveBackgroundContentView *)&v7 setBackgroundColor:v4];
-  v6 = [v5 backgroundColor];
+  [(InteractiveBackgroundContentView *)&v7 setBackgroundColor:colorCopy];
+  backgroundColor = [v5 backgroundColor];
   ArtworkView.backgroundColor.setter();
 }
 

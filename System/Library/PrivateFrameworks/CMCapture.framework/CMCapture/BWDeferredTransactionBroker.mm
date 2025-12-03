@@ -1,7 +1,7 @@
 @interface BWDeferredTransactionBroker
 + (id)sharedInstance;
-- (void)_openTransaction:(uint64_t)a3 pid:(uint64_t)a4 name:;
-- (void)closeTransaction:(int)a3;
+- (void)_openTransaction:(uint64_t)transaction pid:(uint64_t)pid name:;
+- (void)closeTransaction:(int)transaction;
 - (void)exitImmediately;
 @end
 
@@ -37,28 +37,28 @@
   }
 }
 
-- (void)_openTransaction:(uint64_t)a3 pid:(uint64_t)a4 name:
+- (void)_openTransaction:(uint64_t)transaction pid:(uint64_t)pid name:
 {
-  if (a1)
+  if (self)
   {
     if (a2 >= 5)
     {
       [BWDeferredTransactionBroker _openTransaction:pid:name:];
     }
 
-    [(BWDeferredTransactionBroker *)a1 _openTransaction:a2 pid:a3 name:a4];
+    [(BWDeferredTransactionBroker *)self _openTransaction:a2 pid:transaction name:pid];
   }
 }
 
-- (void)closeTransaction:(int)a3
+- (void)closeTransaction:(int)transaction
 {
-  if (a3 >= 5)
+  if (transaction >= 5)
   {
     [BWDeferredTransactionBroker _openTransaction:pid:name:];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v5 = self + 16 * a3;
+  v5 = self + 16 * transaction;
   v6 = *(v5 + 6);
   if (v6)
   {

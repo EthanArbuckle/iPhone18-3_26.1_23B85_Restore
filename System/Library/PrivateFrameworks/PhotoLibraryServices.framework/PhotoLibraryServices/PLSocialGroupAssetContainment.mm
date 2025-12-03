@@ -1,47 +1,47 @@
 @interface PLSocialGroupAssetContainment
-+ (BOOL)_updateAssetPersonEdgesForAssetIDsInBatch:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (BOOL)_updateAssetPersonEdgesForAssetWithID:(id)a3 usingPersonFaceSizes:(id)a4 existingEdges:(id)a5 actorNodesByActorID:(id)a6 inContext:(id)a7 error:(id *)a8;
-+ (BOOL)updateAndSaveAssetPersonEdgesForAssetsWithIDs:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (id)_batchAssetIDs:(id)a3;
-+ (id)_generateFaceSizesByPersonIDByAssetIDForAssetIDs:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (int)_detectedFaceSizeFromBodyHeight:(double)a3 bodyWidth:(double)a4 size:(double)a5;
-+ (void)_updateEdgeLabelsIfNeededForEdge:(id)a3 expectedLabel:(id)a4;
-- (BOOL)_foundPersonIDsPassingContainmentRequirements:(id)a3;
-- (PLSocialGroupAssetContainment)initWithPersons:(id)a3 inContext:(id)a4;
-- (PLSocialGroupAssetContainment)initWithSocialGroup:(id)a3;
-- (id)_assetIDsPassingContainmentRequirementsFromAssetPersonEdgeDictionaries:(id)a3 potentialAssetIDs:(id)a4 personIDsByAssetID:(id)a5 error:(id *)a6;
-- (id)_assetIDsWithLargeMemberFacesFromAssetPersonEdgeDictionaries:(id)a3 containmentProgress:(id)a4 error:(id *)a5;
-- (id)_assetIDsWithRequiredPersonsPresentWithAssetIDs:(id)a3 minimumNumberOfSharedAssets:(unint64_t)a4 error:(id *)a5;
-- (id)_assetPersonEdgeDictionaries:(id *)a3 forAssetIDs:(id)a4;
-- (id)_containmentResultFromPersonIDsByAssetID:(id)a3 exclusivePotentialAssetIDs:(id)a4 error:(id *)a5;
-- (id)_edgeExternalIdentifiersFromAssetPersonEdgeDictionaries:(id)a3;
-- (id)_exclusivePotentialAssetIDsFromAssetPersonEdgeDictionaries:(id)a3 potentialInclusiveAssetIDs:(id)a4 containmentProgress:(id)a5 error:(id *)a6;
-- (id)_fetchEdgeExternalIdentifiersWithLabel:(id)a3 inEdgeExternalIdentifiers:(id)a4 containmentProgress:(id)a5 error:(id *)a6;
-- (id)_fetchEdgeInfosToMediumAndLargeNonMembersInPotentialAssetIDs:(id)a3 edgeInfosToSmallNonMembers:(id)a4 error:(id *)a5;
-- (id)_fetchEdgeInfosToSmallNonMembersInPotentialAssetIDs:(id)a3 error:(id *)a4;
-- (id)_personIDsByAssetIDFromAssetPersonEdgeDictionaries:(id)a3 potentialAssetIDs:(id)a4 error:(id *)a5;
-- (id)_potentialAssetIDsExcludingNonMembersFromAssetIDs:(id)a3 assetIDsWithLargeMemberFaces:(id)a4 error:(id *)a5;
-- (id)_runAssetContainmentOnAssetIDs:(id)a3 minimumNumberOfSharedAssets:(unint64_t)a4 error:(id *)a5;
-- (id)assetIDsIncludedInExclusiveContainment:(id)a3 error:(id *)a4;
++ (BOOL)_updateAssetPersonEdgesForAssetIDsInBatch:(id)batch inContext:(id)context error:(id *)error;
++ (BOOL)_updateAssetPersonEdgesForAssetWithID:(id)d usingPersonFaceSizes:(id)sizes existingEdges:(id)edges actorNodesByActorID:(id)iD inContext:(id)context error:(id *)error;
++ (BOOL)updateAndSaveAssetPersonEdgesForAssetsWithIDs:(id)ds inContext:(id)context error:(id *)error;
++ (id)_batchAssetIDs:(id)ds;
++ (id)_generateFaceSizesByPersonIDByAssetIDForAssetIDs:(id)ds inContext:(id)context error:(id *)error;
++ (int)_detectedFaceSizeFromBodyHeight:(double)height bodyWidth:(double)width size:(double)size;
++ (void)_updateEdgeLabelsIfNeededForEdge:(id)edge expectedLabel:(id)label;
+- (BOOL)_foundPersonIDsPassingContainmentRequirements:(id)requirements;
+- (PLSocialGroupAssetContainment)initWithPersons:(id)persons inContext:(id)context;
+- (PLSocialGroupAssetContainment)initWithSocialGroup:(id)group;
+- (id)_assetIDsPassingContainmentRequirementsFromAssetPersonEdgeDictionaries:(id)dictionaries potentialAssetIDs:(id)ds personIDsByAssetID:(id)d error:(id *)error;
+- (id)_assetIDsWithLargeMemberFacesFromAssetPersonEdgeDictionaries:(id)dictionaries containmentProgress:(id)progress error:(id *)error;
+- (id)_assetIDsWithRequiredPersonsPresentWithAssetIDs:(id)ds minimumNumberOfSharedAssets:(unint64_t)assets error:(id *)error;
+- (id)_assetPersonEdgeDictionaries:(id *)dictionaries forAssetIDs:(id)ds;
+- (id)_containmentResultFromPersonIDsByAssetID:(id)d exclusivePotentialAssetIDs:(id)ds error:(id *)error;
+- (id)_edgeExternalIdentifiersFromAssetPersonEdgeDictionaries:(id)dictionaries;
+- (id)_exclusivePotentialAssetIDsFromAssetPersonEdgeDictionaries:(id)dictionaries potentialInclusiveAssetIDs:(id)ds containmentProgress:(id)progress error:(id *)error;
+- (id)_fetchEdgeExternalIdentifiersWithLabel:(id)label inEdgeExternalIdentifiers:(id)identifiers containmentProgress:(id)progress error:(id *)error;
+- (id)_fetchEdgeInfosToMediumAndLargeNonMembersInPotentialAssetIDs:(id)ds edgeInfosToSmallNonMembers:(id)members error:(id *)error;
+- (id)_fetchEdgeInfosToSmallNonMembersInPotentialAssetIDs:(id)ds error:(id *)error;
+- (id)_personIDsByAssetIDFromAssetPersonEdgeDictionaries:(id)dictionaries potentialAssetIDs:(id)ds error:(id *)error;
+- (id)_potentialAssetIDsExcludingNonMembersFromAssetIDs:(id)ds assetIDsWithLargeMemberFaces:(id)faces error:(id *)error;
+- (id)_runAssetContainmentOnAssetIDs:(id)ds minimumNumberOfSharedAssets:(unint64_t)assets error:(id *)error;
+- (id)assetIDsIncludedInExclusiveContainment:(id)containment error:(id *)error;
 @end
 
 @implementation PLSocialGroupAssetContainment
 
-- (id)assetIDsIncludedInExclusiveContainment:(id)a3 error:(id *)a4
+- (id)assetIDsIncludedInExclusiveContainment:(id)containment error:(id *)error
 {
-  v4 = [(PLSocialGroupAssetContainment *)self _runAssetContainmentOnAssetIDs:a3 minimumNumberOfSharedAssets:0 error:a4];
-  v5 = [v4 exclusiveAssetIDs];
+  v4 = [(PLSocialGroupAssetContainment *)self _runAssetContainmentOnAssetIDs:containment minimumNumberOfSharedAssets:0 error:error];
+  exclusiveAssetIDs = [v4 exclusiveAssetIDs];
 
-  return v5;
+  return exclusiveAssetIDs;
 }
 
-- (id)_runAssetContainmentOnAssetIDs:(id)a3 minimumNumberOfSharedAssets:(unint64_t)a4 error:(id *)a5
+- (id)_runAssetContainmentOnAssetIDs:(id)ds minimumNumberOfSharedAssets:(unint64_t)assets error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dsCopy = ds;
   if ([(NSSet *)self->_members count]> 1)
   {
-    v13 = [(PLSocialGroupAssetContainment *)self _assetIDsWithRequiredPersonsPresentWithAssetIDs:v8 minimumNumberOfSharedAssets:a4 error:a5];
+    v13 = [(PLSocialGroupAssetContainment *)self _assetIDsWithRequiredPersonsPresentWithAssetIDs:dsCopy minimumNumberOfSharedAssets:assets error:error];
   }
 
   else
@@ -52,10 +52,10 @@
     v16[0] = @"unexpected member set size";
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v12 = [v9 errorWithDomain:v10 code:41003 userInfo:v11];
-    if (a5)
+    if (error)
     {
       v12 = v12;
-      *a5 = v12;
+      *error = v12;
     }
 
     v13 = 0;
@@ -64,11 +64,11 @@
   return v13;
 }
 
-- (id)_assetIDsWithRequiredPersonsPresentWithAssetIDs:(id)a3 minimumNumberOfSharedAssets:(unint64_t)a4 error:(id *)a5
+- (id)_assetIDsWithRequiredPersonsPresentWithAssetIDs:(id)ds minimumNumberOfSharedAssets:(unint64_t)assets error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (a4)
+  dsCopy = ds;
+  if (assets)
   {
     v9 = 4;
   }
@@ -80,7 +80,7 @@
 
   v10 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:v9];
   [v10 becomeCurrentWithPendingUnitCount:1];
-  v11 = [(PLSocialGroupAssetContainment *)self _assetPersonEdgeDictionaries:a5 forAssetIDs:v8];
+  v11 = [(PLSocialGroupAssetContainment *)self _assetPersonEdgeDictionaries:error forAssetIDs:dsCopy];
   [v10 resignCurrent];
   if (!v11)
   {
@@ -88,9 +88,9 @@
     goto LABEL_25;
   }
 
-  v30 = a4;
-  v31 = a5;
-  v32 = v8;
+  assetsCopy = assets;
+  errorCopy = error;
+  v32 = dsCopy;
   v12 = [MEMORY[0x1E695DFA8] set];
   v33 = 0u;
   v34 = 0u;
@@ -122,20 +122,20 @@
   }
 
   [v10 becomeCurrentWithPendingUnitCount:1];
-  v19 = [(PLSocialGroupAssetContainment *)self _personIDsByAssetIDFromAssetPersonEdgeDictionaries:v13 potentialAssetIDs:v12 error:v31];
+  v19 = [(PLSocialGroupAssetContainment *)self _personIDsByAssetIDFromAssetPersonEdgeDictionaries:v13 potentialAssetIDs:v12 error:errorCopy];
   [v10 resignCurrent];
   if (!v19)
   {
     goto LABEL_20;
   }
 
-  if (!v30)
+  if (!assetsCopy)
   {
     goto LABEL_23;
   }
 
   [v10 becomeCurrentWithPendingUnitCount:1];
-  v20 = [(PLSocialGroupAssetContainment *)self _containmentResultFromPersonIDsByAssetID:v19 exclusivePotentialAssetIDs:0 error:v31];
+  v20 = [(PLSocialGroupAssetContainment *)self _containmentResultFromPersonIDsByAssetID:v19 exclusivePotentialAssetIDs:0 error:errorCopy];
   [v10 resignCurrent];
   if (v20)
   {
@@ -143,7 +143,7 @@
     v21 = v29 = v20;
     v22 = [v21 count];
 
-    if (v22 < v30)
+    if (v22 < assetsCopy)
     {
       v23 = MEMORY[0x1E696ABC0];
       v24 = *MEMORY[0x1E69BFF48];
@@ -151,10 +151,10 @@
       v38 = @"Insufficent number of assets with all members present";
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
       v26 = [v23 errorWithDomain:v24 code:41008 userInfo:v25];
-      if (v31)
+      if (errorCopy)
       {
         v26 = v26;
-        *v31 = v26;
+        *errorCopy = v26;
       }
 
       v20 = v29;
@@ -163,7 +163,7 @@
 
 LABEL_23:
     [v10 becomeCurrentWithPendingUnitCount:1];
-    v27 = [(PLSocialGroupAssetContainment *)self _assetIDsPassingContainmentRequirementsFromAssetPersonEdgeDictionaries:v13 potentialAssetIDs:v12 personIDsByAssetID:v19 error:v31];
+    v27 = [(PLSocialGroupAssetContainment *)self _assetIDsPassingContainmentRequirementsFromAssetPersonEdgeDictionaries:v13 potentialAssetIDs:v12 personIDsByAssetID:v19 error:errorCopy];
     [v10 resignCurrent];
     goto LABEL_24;
   }
@@ -174,25 +174,25 @@ LABEL_20:
   v27 = 0;
 LABEL_24:
 
-  v8 = v32;
+  dsCopy = v32;
 LABEL_25:
 
   return v27;
 }
 
-- (id)_assetIDsPassingContainmentRequirementsFromAssetPersonEdgeDictionaries:(id)a3 potentialAssetIDs:(id)a4 personIDsByAssetID:(id)a5 error:(id *)a6
+- (id)_assetIDsPassingContainmentRequirementsFromAssetPersonEdgeDictionaries:(id)dictionaries potentialAssetIDs:(id)ds personIDsByAssetID:(id)d error:(id *)error
 {
-  v10 = a5;
+  dCopy = d;
   v11 = MEMORY[0x1E696AE38];
-  v12 = a4;
-  v13 = a3;
+  dsCopy = ds;
+  dictionariesCopy = dictionaries;
   v14 = [v11 progressWithTotalUnitCount:4];
-  v15 = [(PLSocialGroupAssetContainment *)self _exclusivePotentialAssetIDsFromAssetPersonEdgeDictionaries:v13 potentialInclusiveAssetIDs:v12 containmentProgress:v14 error:a6];
+  v15 = [(PLSocialGroupAssetContainment *)self _exclusivePotentialAssetIDsFromAssetPersonEdgeDictionaries:dictionariesCopy potentialInclusiveAssetIDs:dsCopy containmentProgress:v14 error:error];
 
   if (v15)
   {
     [v14 becomeCurrentWithPendingUnitCount:1];
-    v16 = [(PLSocialGroupAssetContainment *)self _containmentResultFromPersonIDsByAssetID:v10 exclusivePotentialAssetIDs:v15 error:a6];
+    v16 = [(PLSocialGroupAssetContainment *)self _containmentResultFromPersonIDsByAssetID:dCopy exclusivePotentialAssetIDs:v15 error:error];
     [v14 resignCurrent];
   }
 
@@ -204,16 +204,16 @@ LABEL_25:
   return v16;
 }
 
-- (id)_containmentResultFromPersonIDsByAssetID:(id)a3 exclusivePotentialAssetIDs:(id)a4 error:(id *)a5
+- (id)_containmentResultFromPersonIDsByAssetID:(id)d exclusivePotentialAssetIDs:(id)ds error:(id *)error
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  dsCopy = ds;
   v9 = MEMORY[0x1E695DFA8];
-  v10 = a3;
+  dCopy = d;
   v11 = [v9 set];
   v12 = [MEMORY[0x1E695DFA8] set];
   v13 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
-  v14 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:{objc_msgSend(v10, "count")}];
+  v14 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:{objc_msgSend(dCopy, "count")}];
   [v13 becomeCurrentWithPendingUnitCount:1];
   v25 = MEMORY[0x1E69E9820];
   v26 = 3221225472;
@@ -221,14 +221,14 @@ LABEL_25:
   v28 = &unk_1E7569FE8;
   v15 = v14;
   v29 = v15;
-  v30 = self;
+  selfCopy = self;
   v16 = v11;
   v31 = v16;
-  v17 = v8;
+  v17 = dsCopy;
   v32 = v17;
   v18 = v12;
   v33 = v18;
-  [v10 enumerateKeysAndObjectsUsingBlock:&v25];
+  [dCopy enumerateKeysAndObjectsUsingBlock:&v25];
 
   [v13 resignCurrent];
   if ([v13 isCancelled])
@@ -239,10 +239,10 @@ LABEL_25:
     v35[0] = @"User cancelled exclusive/ inclusive assetID processing";
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
     v22 = [v19 errorWithDomain:v20 code:3072 userInfo:v21];
-    if (a5)
+    if (error)
     {
       v22 = v22;
-      *a5 = v22;
+      *error = v22;
     }
 
     v23 = 0;
@@ -281,20 +281,20 @@ void __107__PLSocialGroupAssetContainment__containmentResultFromPersonIDsByAsset
   [*(a1 + 32) setCompletedUnitCount:{objc_msgSend(*(a1 + 32), "completedUnitCount") + 1}];
 }
 
-- (id)_exclusivePotentialAssetIDsFromAssetPersonEdgeDictionaries:(id)a3 potentialInclusiveAssetIDs:(id)a4 containmentProgress:(id)a5 error:(id *)a6
+- (id)_exclusivePotentialAssetIDsFromAssetPersonEdgeDictionaries:(id)dictionaries potentialInclusiveAssetIDs:(id)ds containmentProgress:(id)progress error:(id *)error
 {
-  v10 = a5;
+  progressCopy = progress;
   v11 = MEMORY[0x1E695DFA8];
-  v12 = a3;
-  v13 = [v11 setWithSet:a4];
-  v14 = [(PLSocialGroupAssetContainment *)self _assetIDsWithLargeMemberFacesFromAssetPersonEdgeDictionaries:v12 containmentProgress:v10 error:a6];
+  dictionariesCopy = dictionaries;
+  v13 = [v11 setWithSet:ds];
+  v14 = [(PLSocialGroupAssetContainment *)self _assetIDsWithLargeMemberFacesFromAssetPersonEdgeDictionaries:dictionariesCopy containmentProgress:progressCopy error:error];
 
   if (v14)
   {
-    [v10 becomeCurrentWithPendingUnitCount:1];
-    v15 = [(PLSocialGroupAssetContainment *)self _potentialAssetIDsExcludingNonMembersFromAssetIDs:v13 assetIDsWithLargeMemberFaces:v14 error:a6];
+    [progressCopy becomeCurrentWithPendingUnitCount:1];
+    v15 = [(PLSocialGroupAssetContainment *)self _potentialAssetIDsExcludingNonMembersFromAssetIDs:v13 assetIDsWithLargeMemberFaces:v14 error:error];
 
-    [v10 resignCurrent];
+    [progressCopy resignCurrent];
     if (v15)
     {
       v13 = v15;
@@ -315,19 +315,19 @@ void __107__PLSocialGroupAssetContainment__containmentResultFromPersonIDsByAsset
   return v15;
 }
 
-- (id)_potentialAssetIDsExcludingNonMembersFromAssetIDs:(id)a3 assetIDsWithLargeMemberFaces:(id)a4 error:(id *)a5
+- (id)_potentialAssetIDsExcludingNonMembersFromAssetIDs:(id)ds assetIDsWithLargeMemberFaces:(id)faces error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dsCopy = ds;
+  facesCopy = faces;
   v10 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:2];
   [v10 becomeCurrentWithPendingUnitCount:1];
-  v11 = [(PLSocialGroupAssetContainment *)self _fetchEdgeInfosToSmallNonMembersInPotentialAssetIDs:v8 error:a5];
+  v11 = [(PLSocialGroupAssetContainment *)self _fetchEdgeInfosToSmallNonMembersInPotentialAssetIDs:dsCopy error:error];
   [v10 resignCurrent];
   if (v11)
   {
     [v10 becomeCurrentWithPendingUnitCount:1];
-    v12 = [(PLSocialGroupAssetContainment *)self _fetchEdgeInfosToMediumAndLargeNonMembersInPotentialAssetIDs:v8 edgeInfosToSmallNonMembers:v11 error:a5];
+    v12 = [(PLSocialGroupAssetContainment *)self _fetchEdgeInfosToMediumAndLargeNonMembersInPotentialAssetIDs:dsCopy edgeInfosToSmallNonMembers:v11 error:error];
     [v10 resignCurrent];
     if (v12)
     {
@@ -355,7 +355,7 @@ void __107__PLSocialGroupAssetContainment__containmentResultFromPersonIDsByAsset
             v18 = *(*(&v37 + 1) + 8 * i);
             v19 = objc_autoreleasePoolPush();
             v20 = [v18 objectForKeyedSubscript:@"sourceAsset"];
-            [v8 removeObject:v20];
+            [dsCopy removeObject:v20];
 
             objc_autoreleasePoolPop(v19);
           }
@@ -388,9 +388,9 @@ void __107__PLSocialGroupAssetContainment__containmentResultFromPersonIDsByAsset
             v26 = *(*(&v33 + 1) + 8 * j);
             v27 = objc_autoreleasePoolPush();
             v28 = [v26 objectForKeyedSubscript:@"sourceAsset"];
-            if (([v9 containsObject:v28] & 1) == 0)
+            if (([facesCopy containsObject:v28] & 1) == 0)
             {
-              [v8 removeObject:v28];
+              [dsCopy removeObject:v28];
             }
 
             objc_autoreleasePoolPop(v27);
@@ -402,7 +402,7 @@ void __107__PLSocialGroupAssetContainment__containmentResultFromPersonIDsByAsset
         while (v23);
       }
 
-      v29 = v8;
+      v29 = dsCopy;
       v12 = v31;
       v11 = v32;
     }
@@ -421,11 +421,11 @@ void __107__PLSocialGroupAssetContainment__containmentResultFromPersonIDsByAsset
   return v29;
 }
 
-- (id)_fetchEdgeInfosToMediumAndLargeNonMembersInPotentialAssetIDs:(id)a3 edgeInfosToSmallNonMembers:(id)a4 error:(id *)a5
+- (id)_fetchEdgeInfosToMediumAndLargeNonMembersInPotentialAssetIDs:(id)ds edgeInfosToSmallNonMembers:(id)members error:(id *)error
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
+  membersCopy = members;
+  dsCopy = ds;
   v10 = +[PLGraphEdge fetchRequest];
   [v10 setResultType:2];
   v34[0] = @"objectID";
@@ -434,11 +434,11 @@ void __107__PLSocialGroupAssetContainment__containmentResultFromPersonIDsByAsset
   [v10 setPropertiesToFetch:v11];
 
   v12 = MEMORY[0x1E696AE18];
-  v13 = [v8 valueForKey:@"objectID"];
+  v13 = [membersCopy valueForKey:@"objectID"];
 
-  v14 = [v12 predicateWithFormat:@"NOT (self in %@) AND NOT (%K in %@) AND ANY %K in %@", v13, @"targetPerson", self->_members, @"sourceAsset", v9];
+  dsCopy = [v12 predicateWithFormat:@"NOT (self in %@) AND NOT (%K in %@) AND ANY %K in %@", v13, @"targetPerson", self->_members, @"sourceAsset", dsCopy];
 
-  [v10 setPredicate:v14];
+  [v10 setPredicate:dsCopy];
   v15 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   if ([v15 isCancelled])
   {
@@ -448,10 +448,10 @@ void __107__PLSocialGroupAssetContainment__containmentResultFromPersonIDsByAsset
     v31 = @"User cancelled progress before fetching edges for medium/large nonmembers";
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v19 = [v16 errorWithDomain:v17 code:3072 userInfo:v18];
-    if (a5)
+    if (error)
     {
       v19 = v19;
-      *a5 = v19;
+      *error = v19;
     }
 
     v20 = 0;
@@ -473,10 +473,10 @@ void __107__PLSocialGroupAssetContainment__containmentResultFromPersonIDsByAsset
       v33 = v23;
       v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
       v27 = [v24 errorWithDomain:v25 code:41003 userInfo:v26];
-      if (a5)
+      if (error)
       {
         v27 = v27;
-        *a5 = v27;
+        *error = v27;
       }
     }
 
@@ -486,12 +486,12 @@ void __107__PLSocialGroupAssetContainment__containmentResultFromPersonIDsByAsset
   return v20;
 }
 
-- (id)_fetchEdgeInfosToSmallNonMembersInPotentialAssetIDs:(id)a3 error:(id *)a4
+- (id)_fetchEdgeInfosToSmallNonMembersInPotentialAssetIDs:(id)ds error:(id *)error
 {
   v38[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NSManagedObjectContext *)self->_context pl_graphCache];
-  v8 = [v7 objectIDForLabelWithCode:1200 inContext:self->_context];
+  dsCopy = ds;
+  pl_graphCache = [(NSManagedObjectContext *)self->_context pl_graphCache];
+  v8 = [pl_graphCache objectIDForLabelWithCode:1200 inContext:self->_context];
   v9 = +[PLGraphEdge fetchRequest];
   [v9 setResultType:2];
   v38[0] = @"sourceAsset";
@@ -508,19 +508,19 @@ void __107__PLSocialGroupAssetContainment__containmentResultFromPersonIDsByAsset
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
     v20 = [v18 errorWithDomain:v19 code:41003 userInfo:v17];
     v12 = v20;
-    if (a4)
+    if (error)
     {
       v21 = v20;
       v22 = 0;
-      *a4 = v12;
+      *error = v12;
       goto LABEL_14;
     }
 
     goto LABEL_8;
   }
 
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K = %@) AND NOT (%K in %@) AND ANY %K in %@", @"primaryLabel", v8, @"targetPerson", self->_members, @"sourceAsset", v6];
-  [v9 setPredicate:v11];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K = %@) AND NOT (%K in %@) AND ANY %K in %@", @"primaryLabel", v8, @"targetPerson", self->_members, @"sourceAsset", dsCopy];
+  [v9 setPredicate:dsCopy];
 
   v12 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   if ([v12 isCancelled])
@@ -531,10 +531,10 @@ void __107__PLSocialGroupAssetContainment__containmentResultFromPersonIDsByAsset
     v33 = @"User cancelled progress before fetching edges to small nonmembers";
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     v16 = [v13 errorWithDomain:v14 code:3072 userInfo:v15];
-    if (a4)
+    if (error)
     {
       v16 = v16;
-      *a4 = v16;
+      *error = v16;
     }
 
     v17 = 0;
@@ -557,10 +557,10 @@ LABEL_8:
     v30 = v24;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
     v27 = [v29 errorWithDomain:v25 code:41003 userInfo:v26];
-    if (a4)
+    if (error)
     {
       v27 = v27;
-      *a4 = v27;
+      *error = v27;
     }
   }
 
@@ -570,16 +570,16 @@ LABEL_14:
   return v22;
 }
 
-- (id)_personIDsByAssetIDFromAssetPersonEdgeDictionaries:(id)a3 potentialAssetIDs:(id)a4 error:(id *)a5
+- (id)_personIDsByAssetIDFromAssetPersonEdgeDictionaries:(id)dictionaries potentialAssetIDs:(id)ds error:(id *)error
 {
-  v29 = a5;
+  errorCopy = error;
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
-  if ([v6 count])
+  dictionariesCopy = dictionaries;
+  dsCopy = ds;
+  v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(dsCopy, "count")}];
+  if ([dictionariesCopy count])
   {
-    v9 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:{objc_msgSend(v6, "count")}];
+    v9 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:{objc_msgSend(dictionariesCopy, "count")}];
   }
 
   else
@@ -591,7 +591,7 @@ LABEL_14:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v10 = v6;
+  v10 = dictionariesCopy;
   v31 = [v10 countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v31)
   {
@@ -615,10 +615,10 @@ LABEL_14:
           v38 = @"User cancelled processing for personIDs by assetIDs";
           v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
           v27 = [v24 errorWithDomain:v25 code:3072 userInfo:v26];
-          if (v29)
+          if (errorCopy)
           {
             v27 = v27;
-            *v29 = v27;
+            *errorCopy = v27;
           }
 
           v23 = 0;
@@ -628,7 +628,7 @@ LABEL_14:
         context = objc_autoreleasePoolPush();
         v14 = [v13 objectForKeyedSubscript:@"sourceAsset"];
         v15 = [v13 objectForKeyedSubscript:@"targetPerson"];
-        if ([v7 containsObject:v14])
+        if ([dsCopy containsObject:v14])
         {
           v16 = [v8 objectForKeyedSubscript:v14];
           if (v16)
@@ -637,10 +637,10 @@ LABEL_14:
             v17 = v9;
             v18 = v10;
             v19 = v8;
-            v21 = v20 = v7;
+            v21 = v20 = dsCopy;
             v22 = [v21 mutableCopy];
 
-            v7 = v20;
+            dsCopy = v20;
             v8 = v19;
             v10 = v18;
             v9 = v17;
@@ -677,15 +677,15 @@ LABEL_21:
   return v23;
 }
 
-- (id)_assetIDsWithLargeMemberFacesFromAssetPersonEdgeDictionaries:(id)a3 containmentProgress:(id)a4 error:(id *)a5
+- (id)_assetIDsWithLargeMemberFacesFromAssetPersonEdgeDictionaries:(id)dictionaries containmentProgress:(id)progress error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionariesCopy = dictionaries;
+  progressCopy = progress;
   v10 = self->_context;
-  v11 = [(NSManagedObjectContext *)v10 pl_graphCache];
-  v12 = [v11 labelWithCode:1200 inContext:v10];
-  v13 = [v11 labelWithCode:1201 inContext:v10];
+  pl_graphCache = [(NSManagedObjectContext *)v10 pl_graphCache];
+  v12 = [pl_graphCache labelWithCode:1200 inContext:v10];
+  v13 = [pl_graphCache labelWithCode:1201 inContext:v10];
   v46 = [MEMORY[0x1E695DFA8] set];
   v43 = [MEMORY[0x1E695DFA8] set];
   if (v12)
@@ -706,10 +706,10 @@ LABEL_21:
     v52 = @"_assetIDsWithLargeMemberFacesFromAssetPersonEdgeDictionaries: error fetching small/ large face label";
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
     v18 = [v15 errorWithDomain:v16 code:41003 userInfo:v17];
-    if (a5)
+    if (error)
     {
       v18 = v18;
-      *a5 = v18;
+      *error = v18;
     }
 
     v19 = 0;
@@ -717,11 +717,11 @@ LABEL_21:
 
   else
   {
-    v42 = v8;
-    v20 = [(PLSocialGroupAssetContainment *)self _edgeExternalIdentifiersFromAssetPersonEdgeDictionaries:v8];
-    v21 = [(PLSocialGroupAssetContainment *)self _fetchEdgeExternalIdentifiersWithLabel:v12 inEdgeExternalIdentifiers:v20 containmentProgress:v9 error:a5];
-    v41 = v9;
-    v22 = [(PLSocialGroupAssetContainment *)self _fetchEdgeExternalIdentifiersWithLabel:v13 inEdgeExternalIdentifiers:v20 containmentProgress:v9 error:a5];
+    v42 = dictionariesCopy;
+    v20 = [(PLSocialGroupAssetContainment *)self _edgeExternalIdentifiersFromAssetPersonEdgeDictionaries:dictionariesCopy];
+    v21 = [(PLSocialGroupAssetContainment *)self _fetchEdgeExternalIdentifiersWithLabel:v12 inEdgeExternalIdentifiers:v20 containmentProgress:progressCopy error:error];
+    v41 = progressCopy;
+    v22 = [(PLSocialGroupAssetContainment *)self _fetchEdgeExternalIdentifiersWithLabel:v13 inEdgeExternalIdentifiers:v20 containmentProgress:progressCopy error:error];
     v23 = MEMORY[0x1E695DFA8];
     v24 = [(NSSet *)self->_members valueForKey:@"objectID"];
     v25 = [v23 setWithSet:v24];
@@ -732,7 +732,7 @@ LABEL_21:
       v36 = v20;
       v37 = v13;
       v38 = v12;
-      v39 = v11;
+      v39 = pl_graphCache;
       v40 = v10;
       v49 = 0u;
       v50 = 0u;
@@ -779,9 +779,9 @@ LABEL_21:
       }
 
       v19 = v43;
-      v9 = v41;
-      v8 = v42;
-      v11 = v39;
+      progressCopy = v41;
+      dictionariesCopy = v42;
+      pl_graphCache = v39;
       v10 = v40;
       v13 = v37;
       v12 = v38;
@@ -791,24 +791,24 @@ LABEL_21:
     {
 
       v19 = 0;
-      v9 = v41;
-      v8 = v42;
+      progressCopy = v41;
+      dictionariesCopy = v42;
     }
   }
 
   return v19;
 }
 
-- (id)_edgeExternalIdentifiersFromAssetPersonEdgeDictionaries:(id)a3
+- (id)_edgeExternalIdentifiersFromAssetPersonEdgeDictionaries:(id)dictionaries
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dictionariesCopy = dictionaries;
   v4 = [MEMORY[0x1E695DFA8] set];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -836,20 +836,20 @@ LABEL_21:
   return v4;
 }
 
-- (id)_fetchEdgeExternalIdentifiersWithLabel:(id)a3 inEdgeExternalIdentifiers:(id)a4 containmentProgress:(id)a5 error:(id *)a6
+- (id)_fetchEdgeExternalIdentifiersWithLabel:(id)label inEdgeExternalIdentifiers:(id)identifiers containmentProgress:(id)progress error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = [a3 edgeExternalIdentifiersHavingLabel];
-  if (v11)
+  identifiersCopy = identifiers;
+  progressCopy = progress;
+  edgeExternalIdentifiersHavingLabel = [label edgeExternalIdentifiersHavingLabel];
+  if (edgeExternalIdentifiersHavingLabel)
   {
-    v12 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v9, "count")}];
+    v12 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v13 = v9;
+    v13 = identifiersCopy;
     v14 = [v13 countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v14)
     {
@@ -864,10 +864,10 @@ LABEL_21:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v24 + 1) + 8 * i) longLongValue];
-          if ([v11 bitAtIndex:v18 error:0])
+          longLongValue = [*(*(&v24 + 1) + 8 * i) longLongValue];
+          if ([edgeExternalIdentifiersHavingLabel bitAtIndex:longLongValue error:0])
           {
-            v19 = [MEMORY[0x1E696AD98] numberWithLongLong:v18];
+            v19 = [MEMORY[0x1E696AD98] numberWithLongLong:longLongValue];
             [v12 addObject:v19];
           }
         }
@@ -887,32 +887,32 @@ LABEL_21:
     v29 = @"Unable to fetch edgeExternalIdentifiersHavingLabel";
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
     v22 = [v20 errorWithDomain:v21 code:41003 userInfo:v13];
-    if (a6)
+    if (error)
     {
       v22 = v22;
-      *a6 = v22;
+      *error = v22;
     }
 
     v12 = 0;
   }
 
-  [v10 setCompletedUnitCount:{objc_msgSend(v10, "completedUnitCount") + 1}];
+  [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "completedUnitCount") + 1}];
 
   return v12;
 }
 
-- (id)_assetPersonEdgeDictionaries:(id *)a3 forAssetIDs:(id)a4
+- (id)_assetPersonEdgeDictionaries:(id *)dictionaries forAssetIDs:(id)ds
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dsCopy = ds;
   if ([(NSSet *)self->_members count]> 1)
   {
     v9 = +[PLGraphEdge fetchRequest];
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     members = self->_members;
-    if (v6)
+    if (dsCopy)
     {
-      [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@ AND noindex:(%K) IN %@", @"sourceAsset", v6, @"targetPerson", members];
+      [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@ AND noindex:(%K) IN %@", @"sourceAsset", dsCopy, @"targetPerson", members];
     }
 
     else
@@ -920,9 +920,9 @@ LABEL_21:
       [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != nil AND %K IN %@", @"sourceAsset", @"targetPerson", members, v31];
     }
     v16 = ;
-    [v14 addObject:v16];
+    [array addObject:v16];
 
-    v17 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v14];
+    v17 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
     [v9 setPredicate:v17];
 
     [v9 setResultType:2];
@@ -942,10 +942,10 @@ LABEL_21:
       v35 = @"User cancelled progress before fetching asset-person edges";
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
       v23 = [v20 errorWithDomain:v21 code:3072 userInfo:v22];
-      if (a3)
+      if (dictionaries)
       {
         v23 = v23;
-        *a3 = v23;
+        *dictionaries = v23;
       }
 
       v11 = 0;
@@ -968,10 +968,10 @@ LABEL_21:
         v32 = v25;
         v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
         v29 = [v26 errorWithDomain:v27 code:41003 userInfo:v28];
-        if (a3)
+        if (dictionaries)
         {
           v29 = v29;
-          *a3 = v29;
+          *dictionaries = v29;
         }
       }
 
@@ -988,11 +988,11 @@ LABEL_21:
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:&v39 count:1];
     v10 = [v7 errorWithDomain:v8 code:41003 userInfo:v9];
     v11 = v10;
-    if (a3)
+    if (dictionaries)
     {
       v12 = v10;
       v13 = 0;
-      *a3 = v11;
+      *dictionaries = v11;
     }
 
     else
@@ -1004,14 +1004,14 @@ LABEL_21:
   return v13;
 }
 
-- (BOOL)_foundPersonIDsPassingContainmentRequirements:(id)a3
+- (BOOL)_foundPersonIDsPassingContainmentRequirements:(id)requirements
 {
   members = self->_members;
-  v5 = a3;
+  requirementsCopy = requirements;
   v6 = [(NSSet *)members valueForKey:@"objectID"];
   v7 = [v6 mutableCopy];
 
-  [v7 intersectSet:v5];
+  [v7 intersectSet:requirementsCopy];
   if ([(NSSet *)self->_members count])
   {
     v8 = [v7 count];
@@ -1026,24 +1026,24 @@ LABEL_21:
   return v9;
 }
 
-- (PLSocialGroupAssetContainment)initWithSocialGroup:(id)a3
+- (PLSocialGroupAssetContainment)initWithSocialGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   v15.receiver = self;
   v15.super_class = PLSocialGroupAssetContainment;
   v6 = [(PLSocialGroupAssetContainment *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_socialGroup, a3);
-    v8 = [v5 sourceNode];
-    v9 = [v8 managedObjectContext];
+    objc_storeStrong(&v6->_socialGroup, group);
+    sourceNode = [groupCopy sourceNode];
+    managedObjectContext = [sourceNode managedObjectContext];
     context = v7->_context;
-    v7->_context = v9;
+    v7->_context = managedObjectContext;
 
-    v11 = [v5 members];
+    members = [groupCopy members];
     members = v7->_members;
-    v7->_members = v11;
+    v7->_members = members;
 
     v13 = v7;
   }
@@ -1051,32 +1051,32 @@ LABEL_21:
   return v7;
 }
 
-- (PLSocialGroupAssetContainment)initWithPersons:(id)a3 inContext:(id)a4
+- (PLSocialGroupAssetContainment)initWithPersons:(id)persons inContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  personsCopy = persons;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = PLSocialGroupAssetContainment;
   v9 = [(PLSocialGroupAssetContainment *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a4);
-    objc_storeStrong(&v10->_members, a3);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_members, persons);
     v11 = v10;
   }
 
   return v10;
 }
 
-+ (BOOL)updateAndSaveAssetPersonEdgesForAssetsWithIDs:(id)a3 inContext:(id)a4 error:(id *)a5
++ (BOOL)updateAndSaveAssetPersonEdgesForAssetsWithIDs:(id)ds inContext:(id)context error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  dsCopy = ds;
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:a1 file:@"PLSocialGroupAssetContainment.m" lineNumber:713 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroupAssetContainment.m" lineNumber:713 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
   v11 = PLBackendGetLog();
@@ -1104,17 +1104,17 @@ LABEL_21:
   v36[1] = 3221225472;
   v36[2] = __95__PLSocialGroupAssetContainment_updateAndSaveAssetPersonEdgesForAssetsWithIDs_inContext_error___block_invoke;
   v36[3] = &unk_1E75781E8;
-  v15 = v10;
+  v15 = contextCopy;
   v37 = v15;
   [v15 pl_performBlockAndWait:v36];
-  v16 = [a1 _batchAssetIDs:v9];
+  v16 = [self _batchAssetIDs:dsCopy];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __95__PLSocialGroupAssetContainment_updateAndSaveAssetPersonEdgesForAssetsWithIDs_inContext_error___block_invoke_2;
   v30[3] = &unk_1E756E960;
   v17 = v16;
   v31 = v17;
-  v35 = a1;
+  selfCopy = self;
   v18 = v15;
   v32 = v18;
   v33 = buf;
@@ -1137,10 +1137,10 @@ LABEL_21:
   [v21 pl_performBlockAndWait:v27];
   v22 = *(v45 + 24);
   v23 = *(v39 + 5);
-  if (a5 && (v22 & 1) == 0)
+  if (error && (v22 & 1) == 0)
   {
     v23 = v23;
-    *a5 = v23;
+    *error = v23;
   }
 
   v24 = *(v45 + 24);
@@ -1237,9 +1237,9 @@ void __95__PLSocialGroupAssetContainment_updateAndSaveAssetPersonEdgesForAssetsW
   [v2 setObject:v3 forKeyedSubscript:@"updatingAssetPersonEdgesKey"];
 }
 
-+ (id)_batchAssetIDs:(id)a3
++ (id)_batchAssetIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:400];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12[0] = MEMORY[0x1E69E9820];
@@ -1247,10 +1247,10 @@ void __95__PLSocialGroupAssetContainment_updateAndSaveAssetPersonEdgesForAssetsW
   v12[2] = __48__PLSocialGroupAssetContainment__batchAssetIDs___block_invoke;
   v12[3] = &unk_1E756A088;
   v13 = v4;
-  v14 = v3;
+  v14 = dsCopy;
   v6 = v5;
   v15 = v6;
-  v7 = v3;
+  v7 = dsCopy;
   v8 = v4;
   [v7 enumerateObjectsUsingBlock:v12];
   v9 = v15;
@@ -1278,17 +1278,17 @@ uint64_t __48__PLSocialGroupAssetContainment__batchAssetIDs___block_invoke(uint6
   return result;
 }
 
-+ (BOOL)_updateAssetPersonEdgesForAssetIDsInBatch:(id)a3 inContext:(id)a4 error:(id *)a5
++ (BOOL)_updateAssetPersonEdgesForAssetIDsInBatch:(id)batch inContext:(id)context error:(id *)error
 {
   v68[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  batchCopy = batch;
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:a1 file:@"PLSocialGroupAssetContainment.m" lineNumber:595 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroupAssetContainment.m" lineNumber:595 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
-    v9 = 0;
+    contextCopy = 0;
   }
 
   v63 = 0;
@@ -1302,20 +1302,20 @@ uint64_t __48__PLSocialGroupAssetContainment__batchAssetIDs___block_invoke(uint6
   v61 = __Block_byref_object_dispose__25723;
   v62 = 0;
   obj = 0;
-  v35 = a1;
-  v40 = v9;
-  v41 = [a1 _generateFaceSizesByPersonIDByAssetIDForAssetIDs:v8 inContext:v9 error:&obj];
+  selfCopy = self;
+  v40 = contextCopy;
+  v41 = [self _generateFaceSizesByPersonIDByAssetIDForAssetIDs:batchCopy inContext:contextCopy error:&obj];
   objc_storeStrong(&v62, obj);
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v54[0] = MEMORY[0x1E69E9820];
   v54[1] = 3221225472;
   v54[2] = __91__PLSocialGroupAssetContainment__updateAssetPersonEdgesForAssetIDsInBatch_inContext_error___block_invoke;
   v54[3] = &unk_1E756A038;
-  v39 = v10;
+  v39 = array;
   v55 = v39;
   [v41 enumerateKeysAndObjectsUsingBlock:v54];
   v11 = [MEMORY[0x1E695DFA8] set];
-  [v11 addObjectsFromArray:v8];
+  [v11 addObjectsFromArray:batchCopy];
   [v11 addObjectsFromArray:v39];
   v38 = v11;
   if (v41)
@@ -1325,7 +1325,7 @@ uint64_t __48__PLSocialGroupAssetContainment__batchAssetIDs___block_invoke(uint6
     {
       v33 = v12;
       v36 = +[PLGraphEdge fetchRequest];
-      v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@ AND %K != nil", @"sourceAsset", v8, @"targetPerson"];
+      v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@ AND %K != nil", @"sourceAsset", batchCopy, @"targetPerson"];
       [v36 setPredicate:v13];
 
       [v36 setResultType:0];
@@ -1341,7 +1341,7 @@ uint64_t __48__PLSocialGroupAssetContainment__batchAssetIDs___block_invoke(uint6
       objc_storeStrong(v16, v53);
       if (v34)
       {
-        v17 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v51 = 0u;
         v52 = 0u;
         v49 = 0u;
@@ -1363,15 +1363,15 @@ uint64_t __48__PLSocialGroupAssetContainment__batchAssetIDs___block_invoke(uint6
               v22 = *(*(&v49 + 1) + 8 * i);
               v23 = objc_autoreleasePoolPush();
               v24 = [v22 objectIDsForRelationshipNamed:@"sourceAsset"];
-              v25 = [v24 firstObject];
+              firstObject = [v24 firstObject];
 
-              if (v25)
+              if (firstObject)
               {
-                v26 = [v17 objectForKeyedSubscript:v25];
+                v26 = [dictionary objectForKeyedSubscript:firstObject];
                 if (!v26)
                 {
                   v26 = [MEMORY[0x1E695DFA8] set];
-                  [v17 setObject:v26 forKeyedSubscript:v25];
+                  [dictionary setObject:v26 forKeyedSubscript:firstObject];
                 }
 
                 [v26 addObject:v22];
@@ -1391,8 +1391,8 @@ uint64_t __48__PLSocialGroupAssetContainment__batchAssetIDs___block_invoke(uint6
         v42[2] = __91__PLSocialGroupAssetContainment__updateAssetPersonEdgesForAssetIDsInBatch_inContext_error___block_invoke_2;
         v42[3] = &unk_1E756A060;
         v46 = &v63;
-        v48 = v35;
-        v27 = v17;
+        v48 = selfCopy;
+        v27 = dictionary;
         v43 = v27;
         v44 = v33;
         v45 = v40;
@@ -1406,10 +1406,10 @@ uint64_t __48__PLSocialGroupAssetContainment__batchAssetIDs___block_invoke(uint6
 
   v28 = *(v64 + 24);
   v29 = v58[5];
-  if (a5 && (v28 & 1) == 0)
+  if (error && (v28 & 1) == 0)
   {
     v29 = v29;
-    *a5 = v29;
+    *error = v29;
   }
 
   v30 = *(v64 + 24);
@@ -1470,18 +1470,18 @@ void __91__PLSocialGroupAssetContainment__updateAssetPersonEdgesForAssetIDsInBat
   *(*(a1[7] + 8) + 24) = v5;
 }
 
-+ (id)_generateFaceSizesByPersonIDByAssetIDForAssetIDs:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)_generateFaceSizesByPersonIDByAssetIDForAssetIDs:(id)ds inContext:(id)context error:(id *)error
 {
   v79[6] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  dsCopy = ds;
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v55 handleFailureInMethod:a2 object:a1 file:@"PLSocialGroupAssetContainment.m" lineNumber:521 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroupAssetContainment.m" lineNumber:521 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
-  v10 = [v8 copy];
+  v10 = [dsCopy copy];
   v11 = +[PLDetectedFace fetchRequest];
   [v11 setResultType:2];
   v79[0] = @"assetForFace";
@@ -1505,12 +1505,12 @@ void __91__PLSocialGroupAssetContainment__updateAssetPersonEdgesForAssetIDsInBat
 
   v61 = v11;
   [v11 setFetchBatchSize:100];
-  v18 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
+  v18 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  obj = v8;
+  obj = dsCopy;
   v19 = [obj countByEnumeratingWithState:&v72 objects:v77 count:16];
   if (v19)
   {
@@ -1526,8 +1526,8 @@ void __91__PLSocialGroupAssetContainment__updateAssetPersonEdgesForAssetIDsInBat
         }
 
         v23 = *(*(&v72 + 1) + 8 * i);
-        v24 = [MEMORY[0x1E695DF90] dictionary];
-        [v18 setObject:v24 forKeyedSubscript:v23];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        [v18 setObject:dictionary forKeyedSubscript:v23];
       }
 
       v20 = [obj countByEnumeratingWithState:&v72 objects:v77 count:16];
@@ -1537,13 +1537,13 @@ void __91__PLSocialGroupAssetContainment__updateAssetPersonEdgesForAssetIDsInBat
   }
 
   v71 = 0;
-  v25 = [v9 executeFetchRequest:v61 error:&v71];
+  v25 = [contextCopy executeFetchRequest:v61 error:&v71];
   v26 = v71;
   v27 = v26;
   if (v25)
   {
     v58 = v26;
-    v59 = v9;
+    v59 = contextCopy;
     v56 = a2;
     v57 = v25;
     v69 = 0u;
@@ -1588,8 +1588,8 @@ void __91__PLSocialGroupAssetContainment__updateAssetPersonEdgesForAssetIDsInBat
             v38 = [v18 objectForKeyedSubscript:v34];
             if (!v38)
             {
-              v51 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v51 handleFailureInMethod:v56 object:a1 file:@"PLSocialGroupAssetContainment.m" lineNumber:572 description:@"expected existing collection"];
+              currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler2 handleFailureInMethod:v56 object:self file:@"PLSocialGroupAssetContainment.m" lineNumber:572 description:@"expected existing collection"];
             }
 
             v39 = [v32 objectForKeyedSubscript:@"bodyHeight"];
@@ -1600,7 +1600,7 @@ void __91__PLSocialGroupAssetContainment__updateAssetPersonEdgesForAssetIDsInBat
             v44 = v43;
             v45 = [v32 objectForKeyedSubscript:@"size"];
             [v45 doubleValue];
-            v47 = [a1 _detectedFaceSizeFromBodyHeight:v41 bodyWidth:v44 size:v46];
+            v47 = [self _detectedFaceSizeFromBodyHeight:v41 bodyWidth:v44 size:v46];
 
             v48 = [v38 objectForKeyedSubscript:v36];
             v49 = v48;
@@ -1627,15 +1627,15 @@ void __91__PLSocialGroupAssetContainment__updateAssetPersonEdgesForAssetIDsInBat
 
     v52 = v18;
     v27 = v58;
-    v9 = v59;
+    contextCopy = v59;
     v25 = v57;
   }
 
-  else if (a5)
+  else if (error)
   {
     v53 = v26;
     v52 = 0;
-    *a5 = v27;
+    *error = v27;
   }
 
   else
@@ -1646,24 +1646,24 @@ void __91__PLSocialGroupAssetContainment__updateAssetPersonEdgesForAssetIDsInBat
   return v52;
 }
 
-+ (BOOL)_updateAssetPersonEdgesForAssetWithID:(id)a3 usingPersonFaceSizes:(id)a4 existingEdges:(id)a5 actorNodesByActorID:(id)a6 inContext:(id)a7 error:(id *)a8
++ (BOOL)_updateAssetPersonEdgesForAssetWithID:(id)d usingPersonFaceSizes:(id)sizes existingEdges:(id)edges actorNodesByActorID:(id)iD inContext:(id)context error:(id *)error
 {
   v67[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (!v18)
+  dCopy = d;
+  sizesCopy = sizes;
+  edgesCopy = edges;
+  iDCopy = iD;
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:a1 file:@"PLSocialGroupAssetContainment.m" lineNumber:474 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroupAssetContainment.m" lineNumber:474 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
-  v19 = [v18 pl_graphCache];
-  v20 = [v19 labelWithCode:1200 inContext:v18];
-  v50 = v19;
-  v21 = [v19 labelWithCode:1201 inContext:v18];
+  pl_graphCache = [contextCopy pl_graphCache];
+  v20 = [pl_graphCache labelWithCode:1200 inContext:contextCopy];
+  v50 = pl_graphCache;
+  v21 = [pl_graphCache labelWithCode:1201 inContext:contextCopy];
   v22 = v21;
   if (v20)
   {
@@ -1679,24 +1679,24 @@ void __91__PLSocialGroupAssetContainment__updateAssetPersonEdgesForAssetIDsInBat
   v44 = v24;
   if (v23)
   {
-    v48 = v16;
-    v25 = v17;
-    v26 = v14;
+    v48 = edgesCopy;
+    v25 = iDCopy;
+    v26 = dCopy;
     v27 = MEMORY[0x1E696ABC0];
     v28 = *MEMORY[0x1E69BFF48];
     v66 = *MEMORY[0x1E696A278];
     v67[0] = @"_updateAssetPersonEdgesForAssetWithID: error getting small/ large face label";
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v67 forKeys:&v66 count:1];
     v30 = [v27 errorWithDomain:v28 code:41003 userInfo:v29];
-    if (a8)
+    if (error)
     {
       v30 = v30;
-      *a8 = v30;
+      *error = v30;
     }
 
-    v14 = v26;
-    v17 = v25;
-    v16 = v48;
+    dCopy = v26;
+    iDCopy = v25;
+    edgesCopy = v48;
   }
 
   v57[0] = MEMORY[0x1E69E9820];
@@ -1707,16 +1707,16 @@ void __91__PLSocialGroupAssetContainment__updateAssetPersonEdgesForAssetIDsInBat
   v58 = v49;
   v47 = v22;
   v59 = v47;
-  v31 = v16;
+  v31 = edgesCopy;
   v60 = v31;
-  v52 = v18;
+  v52 = contextCopy;
   v61 = v52;
-  v45 = v17;
+  v45 = iDCopy;
   v62 = v45;
-  v46 = v14;
+  v46 = dCopy;
   v63 = v46;
-  v64 = a1;
-  [v15 enumerateKeysAndObjectsUsingBlock:v57];
+  selfCopy = self;
+  [sizesCopy enumerateKeysAndObjectsUsingBlock:v57];
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
@@ -1739,9 +1739,9 @@ void __91__PLSocialGroupAssetContainment__updateAssetPersonEdgesForAssetIDsInBat
         v37 = *(*(&v53 + 1) + 8 * i);
         v38 = objc_autoreleasePoolPush();
         v39 = [v37 objectIDsForRelationshipNamed:@"targetPerson"];
-        v40 = [v39 firstObject];
+        firstObject = [v39 firstObject];
 
-        v41 = [v15 objectForKeyedSubscript:v40];
+        v41 = [sizesCopy objectForKeyedSubscript:firstObject];
 
         if (!v41)
         {
@@ -1810,23 +1810,23 @@ uint64_t __142__PLSocialGroupAssetContainment__updateAssetPersonEdgesForAssetWit
   return v5;
 }
 
-+ (void)_updateEdgeLabelsIfNeededForEdge:(id)a3 expectedLabel:(id)a4
++ (void)_updateEdgeLabelsIfNeededForEdge:(id)edge expectedLabel:(id)label
 {
-  v11 = a3;
-  v5 = a4;
-  v6 = [v11 primaryLabel];
-  v7 = v6;
-  if (v5)
+  edgeCopy = edge;
+  labelCopy = label;
+  primaryLabel = [edgeCopy primaryLabel];
+  v7 = primaryLabel;
+  if (labelCopy)
   {
-    v8 = [v6 isEqual:v5];
+    v8 = [primaryLabel isEqual:labelCopy];
 
     if (v8)
     {
       goto LABEL_7;
     }
 
-    v9 = v11;
-    v10 = v5;
+    v9 = edgeCopy;
+    v10 = labelCopy;
   }
 
   else
@@ -1837,7 +1837,7 @@ uint64_t __142__PLSocialGroupAssetContainment__updateAssetPersonEdgesForAssetWit
       goto LABEL_7;
     }
 
-    v9 = v11;
+    v9 = edgeCopy;
     v10 = 0;
   }
 
@@ -1845,31 +1845,31 @@ uint64_t __142__PLSocialGroupAssetContainment__updateAssetPersonEdgesForAssetWit
 LABEL_7:
 }
 
-+ (int)_detectedFaceSizeFromBodyHeight:(double)a3 bodyWidth:(double)a4 size:(double)a5
++ (int)_detectedFaceSizeFromBodyHeight:(double)height bodyWidth:(double)width size:(double)size
 {
-  if (a5 == 0.0)
+  if (size == 0.0)
   {
-    v6 = a3 * a4;
+    v6 = height * width;
     +[PLSocialGroupAssetContainment _assetContainmentSmallTorsoThreshold];
-    if (v6 < a3)
+    if (v6 < height)
     {
       return 0;
     }
   }
 
-  if (a5 <= 0.0)
+  if (size <= 0.0)
   {
     return 1;
   }
 
-  [PLSocialGroupAssetContainment _assetContainmentSmallFaceThreshold:a3];
-  if (v7 > a5)
+  [PLSocialGroupAssetContainment _assetContainmentSmallFaceThreshold:height];
+  if (v7 > size)
   {
     return 0;
   }
 
   +[PLSocialGroupAssetContainment _assetContainmentLargeFaceThreshold];
-  if (v9 >= a5)
+  if (v9 >= size)
   {
     return 1;
   }

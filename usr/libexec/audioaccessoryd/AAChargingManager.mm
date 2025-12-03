@@ -1,30 +1,30 @@
 @interface AAChargingManager
 + (id)calendar;
-+ (id)deocTempDisableIntervalAACPMessageIfNeededForDevice:(id)a3;
++ (id)deocTempDisableIntervalAACPMessageIfNeededForDevice:(id)device;
 + (id)sharedAAChargingManager;
 + (id)wallet;
-+ (void)fetchChargingStateForDevice:(id)a3;
++ (void)fetchChargingStateForDevice:(id)device;
 - (AAChargingManager)init;
 - (id)_calendarTravelInterval;
-- (id)_currentUserTempDisableDEOCIntervalForIdentifier:(id)a3;
-- (id)_deocTempDisableIntervalAACPMessageIfNeededForDevice:(id)a3;
+- (id)_currentUserTempDisableDEOCIntervalForIdentifier:(id)identifier;
+- (id)_deocTempDisableIntervalAACPMessageIfNeededForDevice:(id)device;
 - (id)_earliestDateConsideredForDEOCEvent;
-- (id)_isFlightEventWithId:(id)a3;
+- (id)_isFlightEventWithId:(id)id;
 - (id)_latestDateConsideredForDEOCEvent;
 - (id)_travelIntervalFromCalendarAndWallet;
-- (id)_userTempDisableDEOCIntervalForIdentifier:(id)a3;
+- (id)_userTempDisableDEOCIntervalForIdentifier:(id)identifier;
 - (id)_walletTravelInterval;
-- (id)deocTempDisableIntervalAACPMessageWithInterval:(id)a3;
+- (id)deocTempDisableIntervalAACPMessageWithInterval:(id)interval;
 - (id)upcomingEventIDs;
 - (id)userTempDisableDEOCIntervalMap;
-- (void)_changeOptimizedBatteryChargingState:(char)a3 forDevice:(id)a4;
-- (void)_currentUserDidTempDisableDEOCForDevice:(id)a3;
-- (void)_fetchOptimizedBatteryChargingEnabledForDevice:(id)a3;
+- (void)_changeOptimizedBatteryChargingState:(char)state forDevice:(id)device;
+- (void)_currentUserDidTempDisableDEOCForDevice:(id)device;
+- (void)_fetchOptimizedBatteryChargingEnabledForDevice:(id)device;
 - (void)_loadUserTempDisableDEOCIntervals;
 - (void)_persistUserTempDisableDEOCIntervals;
-- (void)_removeUserTempDisableDEOCIntervalforIdentifier:(id)a3;
-- (void)_setUserTempDisableDEOCInterval:(id)a3 forIdentifier:(id)a4;
-- (void)setUserTempDisableDEOCIntervalMap:(id)a3;
+- (void)_removeUserTempDisableDEOCIntervalforIdentifier:(id)identifier;
+- (void)_setUserTempDisableDEOCInterval:(id)interval forIdentifier:(id)identifier;
+- (void)setUserTempDisableDEOCIntervalMap:(id)map;
 @end
 
 @implementation AAChargingManager
@@ -58,21 +58,21 @@
   return v3;
 }
 
-+ (id)deocTempDisableIntervalAACPMessageIfNeededForDevice:(id)a3
++ (id)deocTempDisableIntervalAACPMessageIfNeededForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [a1 sharedAAChargingManager];
-  v6 = [v5 _deocTempDisableIntervalAACPMessageIfNeededForDevice:v4];
+  deviceCopy = device;
+  sharedAAChargingManager = [self sharedAAChargingManager];
+  v6 = [sharedAAChargingManager _deocTempDisableIntervalAACPMessageIfNeededForDevice:deviceCopy];
 
   return v6;
 }
 
-+ (void)fetchChargingStateForDevice:(id)a3
++ (void)fetchChargingStateForDevice:(id)device
 {
-  v9 = a3;
-  v4 = [a1 sharedAAChargingManager];
-  v5 = [v9 identifier];
-  v6 = [v4 _userTempDisableDEOCIntervalForIdentifier:v5];
+  deviceCopy = device;
+  sharedAAChargingManager = [self sharedAAChargingManager];
+  identifier = [deviceCopy identifier];
+  v6 = [sharedAAChargingManager _userTempDisableDEOCIntervalForIdentifier:identifier];
 
   if (v6)
   {
@@ -84,29 +84,29 @@
     v7 = 2;
   }
 
-  [v9 setDynamicEndOfChargeTempDisabled:v7];
-  v8 = [a1 sharedAAChargingManager];
-  [v8 _fetchOptimizedBatteryChargingEnabledForDevice:v9];
+  [deviceCopy setDynamicEndOfChargeTempDisabled:v7];
+  sharedAAChargingManager2 = [self sharedAAChargingManager];
+  [sharedAAChargingManager2 _fetchOptimizedBatteryChargingEnabledForDevice:deviceCopy];
 }
 
-- (void)_currentUserDidTempDisableDEOCForDevice:(id)a3
+- (void)_currentUserDidTempDisableDEOCForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v8 = +[NSDate now];
   v5 = [NSDate tomorrowAtHour:6];
   v6 = [[NSDateInterval alloc] initWithStartDate:v8 endDate:v5];
-  v7 = [v4 identifier];
+  identifier = [deviceCopy identifier];
 
-  [(AAChargingManager *)self _setUserTempDisableDEOCInterval:v6 forIdentifier:v7];
+  [(AAChargingManager *)self _setUserTempDisableDEOCInterval:v6 forIdentifier:identifier];
 }
 
-- (id)_deocTempDisableIntervalAACPMessageIfNeededForDevice:(id)a3
+- (id)_deocTempDisableIntervalAACPMessageIfNeededForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 dynamicEndOfChargeEnabled] == 1)
+  deviceCopy = device;
+  if ([deviceCopy dynamicEndOfChargeEnabled] == 1)
   {
-    v5 = [v4 identifier];
-    v6 = [(AAChargingManager *)self _currentUserTempDisableDEOCIntervalForIdentifier:v5];
+    identifier = [deviceCopy identifier];
+    v6 = [(AAChargingManager *)self _currentUserTempDisableDEOCIntervalForIdentifier:identifier];
 
     if (v6)
     {
@@ -118,16 +118,16 @@
       sub_1001ED72C();
     }
 
-    v9 = [(AAChargingManager *)self _travelIntervalFromCalendarAndWallet];
-    if (v9)
+    _travelIntervalFromCalendarAndWallet = [(AAChargingManager *)self _travelIntervalFromCalendarAndWallet];
+    if (_travelIntervalFromCalendarAndWallet)
     {
-      v10 = v9;
-      v11 = [v9 endDate];
-      v12 = [v11 dateByAddingTimeInterval:86400.0];
+      v10 = _travelIntervalFromCalendarAndWallet;
+      endDate = [_travelIntervalFromCalendarAndWallet endDate];
+      v12 = [endDate dateByAddingTimeInterval:86400.0];
 
       v13 = [NSDateInterval alloc];
-      v14 = [v10 startDate];
-      v6 = [v13 initWithStartDate:v14 endDate:v12];
+      startDate = [v10 startDate];
+      v6 = [v13 initWithStartDate:startDate endDate:v12];
 
       if (v6)
       {
@@ -155,25 +155,25 @@ LABEL_8:
   return v7;
 }
 
-- (id)deocTempDisableIntervalAACPMessageWithInterval:(id)a3
+- (id)deocTempDisableIntervalAACPMessageWithInterval:(id)interval
 {
-  v3 = a3;
+  intervalCopy = interval;
   if (dword_1002F6928 <= 30 && (dword_1002F6928 != -1 || _LogCategory_Initialize()))
   {
     sub_1001ED764();
   }
 
-  v4 = [v3 startDate];
-  [v4 timeIntervalSince1970];
+  startDate = [intervalCopy startDate];
+  [startDate timeIntervalSince1970];
   v5 = [NSNumber numberWithDouble:?];
 
-  v6 = [v3 endDate];
-  [v6 timeIntervalSince1970];
+  endDate = [intervalCopy endDate];
+  [endDate timeIntervalSince1970];
   v7 = [NSNumber numberWithDouble:?];
 
   v10 = 1;
-  v11 = [v5 unsignedLongLongValue];
-  v12 = [v7 unsignedLongLongValue];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
+  unsignedLongLongValue2 = [v7 unsignedLongLongValue];
   v8 = [NSData dataWithBytes:&v10 length:17];
 
   return v8;
@@ -181,36 +181,36 @@ LABEL_8:
 
 - (id)_travelIntervalFromCalendarAndWallet
 {
-  v3 = [(AAChargingManager *)self _walletTravelInterval];
-  v4 = [(AAChargingManager *)self _calendarTravelInterval];
-  v5 = v4;
-  if (!(v3 | v4))
+  _walletTravelInterval = [(AAChargingManager *)self _walletTravelInterval];
+  _calendarTravelInterval = [(AAChargingManager *)self _calendarTravelInterval];
+  v5 = _calendarTravelInterval;
+  if (!(_walletTravelInterval | _calendarTravelInterval))
   {
     v7 = 0;
     goto LABEL_11;
   }
 
-  if (!v3 && v4)
+  if (!_walletTravelInterval && _calendarTravelInterval)
   {
-    v6 = v4;
+    v6 = _calendarTravelInterval;
 LABEL_9:
     v7 = v6;
     goto LABEL_11;
   }
 
-  if (v3 && !v4)
+  if (_walletTravelInterval && !_calendarTravelInterval)
   {
-    v6 = v3;
+    v6 = _walletTravelInterval;
     goto LABEL_9;
   }
 
-  v8 = [v3 startDate];
-  v9 = [v5 startDate];
-  v10 = [v8 earlierDate:v9];
+  startDate = [_walletTravelInterval startDate];
+  startDate2 = [v5 startDate];
+  v10 = [startDate earlierDate:startDate2];
 
-  v11 = [v3 endDate];
-  v12 = [v5 endDate];
-  v13 = [v11 laterDate:v12];
+  endDate = [_walletTravelInterval endDate];
+  endDate2 = [v5 endDate];
+  v13 = [endDate laterDate:endDate2];
 
   v7 = [[NSDateInterval alloc] initWithStartDate:v10 endDate:v13];
 LABEL_11:
@@ -235,10 +235,10 @@ LABEL_11:
 
 - (id)upcomingEventIDs
 {
-  v3 = [(AAChargingManager *)self _earliestDateConsideredForDEOCEvent];
-  v4 = [(AAChargingManager *)self _latestDateConsideredForDEOCEvent];
+  _earliestDateConsideredForDEOCEvent = [(AAChargingManager *)self _earliestDateConsideredForDEOCEvent];
+  _latestDateConsideredForDEOCEvent = [(AAChargingManager *)self _latestDateConsideredForDEOCEvent];
   v5 = +[AAChargingManager calendar];
-  v6 = [v5 predicateForEventsWithStartDate:v3 endDate:v4 calendars:0 loadDefaultProperties:1];
+  v6 = [v5 predicateForEventsWithStartDate:_earliestDateConsideredForDEOCEvent endDate:_latestDateConsideredForDEOCEvent calendars:0 loadDefaultProperties:1];
 
   v7 = +[AAChargingManager calendar];
   v8 = [v7 eventObjectIDsMatchingPredicate:v6];
@@ -318,9 +318,9 @@ LABEL_11:
 
 - (void)_persistUserTempDisableDEOCIntervals
 {
-  v3 = [(AAChargingManager *)self userTempDisableDEOCIntervalMap];
+  userTempDisableDEOCIntervalMap = [(AAChargingManager *)self userTempDisableDEOCIntervalMap];
   v6 = 0;
-  v4 = [NSKeyedArchiver archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v6];
+  v4 = [NSKeyedArchiver archivedDataWithRootObject:userTempDisableDEOCIntervalMap requiringSecureCoding:1 error:&v6];
   v5 = v6;
 
   if (v5)
@@ -343,78 +343,78 @@ LABEL_7:
 LABEL_5:
 }
 
-- (void)_removeUserTempDisableDEOCIntervalforIdentifier:(id)a3
+- (void)_removeUserTempDisableDEOCIntervalforIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   [(AAChargingManager *)self _loadUserTempDisableDEOCIntervals];
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableDictionary *)v4->_userTempDisableDEOCIntervalMap setObject:0 forKeyedSubscript:v5];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_userTempDisableDEOCIntervalMap setObject:0 forKeyedSubscript:identifierCopy];
+  objc_sync_exit(selfCopy);
 
-  [(AAChargingManager *)v4 _persistUserTempDisableDEOCIntervals];
+  [(AAChargingManager *)selfCopy _persistUserTempDisableDEOCIntervals];
 }
 
-- (void)_setUserTempDisableDEOCInterval:(id)a3 forIdentifier:(id)a4
+- (void)_setUserTempDisableDEOCInterval:(id)interval forIdentifier:(id)identifier
 {
-  v8 = a3;
-  v6 = a4;
+  intervalCopy = interval;
+  identifierCopy = identifier;
   [(AAChargingManager *)self _loadUserTempDisableDEOCIntervals];
-  v7 = self;
-  objc_sync_enter(v7);
-  [(NSMutableDictionary *)v7->_userTempDisableDEOCIntervalMap setObject:v8 forKeyedSubscript:v6];
-  objc_sync_exit(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_userTempDisableDEOCIntervalMap setObject:intervalCopy forKeyedSubscript:identifierCopy];
+  objc_sync_exit(selfCopy);
 
-  [(AAChargingManager *)v7 _persistUserTempDisableDEOCIntervals];
+  [(AAChargingManager *)selfCopy _persistUserTempDisableDEOCIntervals];
 }
 
-- (void)setUserTempDisableDEOCIntervalMap:(id)a3
+- (void)setUserTempDisableDEOCIntervalMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   obj = self;
   objc_sync_enter(obj);
   userTempDisableDEOCIntervalMap = obj->_userTempDisableDEOCIntervalMap;
-  obj->_userTempDisableDEOCIntervalMap = v4;
+  obj->_userTempDisableDEOCIntervalMap = mapCopy;
 
   objc_sync_exit(obj);
 }
 
-- (id)_userTempDisableDEOCIntervalForIdentifier:(id)a3
+- (id)_userTempDisableDEOCIntervalForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(AAChargingManager *)self _loadUserTempDisableDEOCIntervals];
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_userTempDisableDEOCIntervalMap objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_userTempDisableDEOCIntervalMap objectForKeyedSubscript:identifierCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)userTempDisableDEOCIntervalMap
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_userTempDisableDEOCIntervalMap;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_userTempDisableDEOCIntervalMap;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)_currentUserTempDisableDEOCIntervalForIdentifier:(id)a3
+- (id)_currentUserTempDisableDEOCIntervalForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AAChargingManager *)self _userTempDisableDEOCIntervalForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(AAChargingManager *)self _userTempDisableDEOCIntervalForIdentifier:identifierCopy];
   if (v5)
   {
     v6 = +[NSDate now];
-    v7 = [v5 endDate];
-    v8 = [v7 earlierDate:v6];
-    v9 = [v5 endDate];
+    endDate = [v5 endDate];
+    v8 = [endDate earlierDate:v6];
+    endDate2 = [v5 endDate];
 
-    if (v8 == v9)
+    if (v8 == endDate2)
     {
-      [(AAChargingManager *)self _removeUserTempDisableDEOCIntervalforIdentifier:v4];
+      [(AAChargingManager *)self _removeUserTempDisableDEOCIntervalforIdentifier:identifierCopy];
       v10 = 0;
     }
 
@@ -460,8 +460,8 @@ LABEL_5:
         v11 = v10;
         if (v10)
         {
-          v12 = [v10 startDate];
-          v13 = [v3 earlierDate:v12];
+          startDate = [v10 startDate];
+          v13 = [v3 earlierDate:startDate];
 
           [v11 endDate];
           objc_claimAutoreleasedReturnValue();
@@ -495,11 +495,11 @@ LABEL_12:
   return v15;
 }
 
-- (id)_isFlightEventWithId:(id)a3
+- (id)_isFlightEventWithId:(id)id
 {
-  v4 = a3;
-  v5 = [sub_100076A0C() calendar];
-  v6 = [v5 publicObjectWithObjectID:v3];
+  idCopy = id;
+  calendar = [sub_100076A0C() calendar];
+  v6 = [calendar publicObjectWithObjectID:v3];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -513,15 +513,15 @@ LABEL_12:
     else
     {
       v9 = [SGEventMetadata eventMetadataFromEKEvent:v7];
-      v10 = [v9 categoryDescription];
-      v11 = [v10 localizedCaseInsensitiveContainsString:@"flight"];
+      categoryDescription = [v9 categoryDescription];
+      v11 = [categoryDescription localizedCaseInsensitiveContainsString:@"flight"];
 
       if (v11)
       {
         if (dword_1002F6928 <= 30 && (dword_1002F6928 != -1 || _LogCategory_Initialize()))
         {
-          v12 = [v7 startDate];
-          v15 = [v7 endDate];
+          startDate = [v7 startDate];
+          endDate = [v7 endDate];
           LogPrintF();
         }
 
@@ -558,7 +558,7 @@ LABEL_12:
   {
     [(AAChargingManager *)self _earliestDateConsideredForDEOCEvent];
     objc_claimAutoreleasedReturnValue();
-    v5 = [sub_100076A0C() _latestDateConsideredForDEOCEvent];
+    _latestDateConsideredForDEOCEvent = [sub_100076A0C() _latestDateConsideredForDEOCEvent];
     v34 = +[NSMutableArray array];
     v39 = 0u;
     v40 = 0u;
@@ -586,8 +586,8 @@ LABEL_12:
           v36 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v8 = [v7 relevantDates];
-          v9 = [v8 countByEnumeratingWithState:&v35 objects:v43 count:16];
+          relevantDates = [v7 relevantDates];
+          v9 = [relevantDates countByEnumeratingWithState:&v35 objects:v43 count:16];
           if (v9)
           {
             v10 = v9;
@@ -598,29 +598,29 @@ LABEL_12:
               {
                 if (*v36 != v11)
                 {
-                  objc_enumerationMutation(v8);
+                  objc_enumerationMutation(relevantDates);
                 }
 
                 v13 = *(*(&v35 + 1) + 8 * i);
-                v14 = [v13 latestDate];
-                v15 = [v14 earlierDate:v3];
-                v16 = [v13 latestDate];
+                latestDate = [v13 latestDate];
+                v15 = [latestDate earlierDate:v3];
+                latestDate2 = [v13 latestDate];
 
-                if (v15 != v16)
+                if (v15 != latestDate2)
                 {
-                  v17 = [v13 earliestDate];
-                  v18 = [v17 laterDate:v5];
-                  v19 = [v13 earliestDate];
+                  earliestDate = [v13 earliestDate];
+                  v18 = [earliestDate laterDate:_latestDateConsideredForDEOCEvent];
+                  earliestDate2 = [v13 earliestDate];
 
-                  if (v18 != v19)
+                  if (v18 != earliestDate2)
                   {
                     if (dword_1002F6928 <= 30 && (dword_1002F6928 != -1 || _LogCategory_Initialize()))
                     {
-                      v20 = [v13 earliestDate];
-                      v28 = [v13 latestDate];
+                      earliestDate3 = [v13 earliestDate];
+                      latestDate3 = [v13 latestDate];
                       LogPrintF();
 
-                      [v34 addObject:{v13, v20, v28}];
+                      [v34 addObject:{v13, earliestDate3, latestDate3}];
                     }
 
                     else
@@ -631,7 +631,7 @@ LABEL_12:
                 }
               }
 
-              v10 = [v8 countByEnumeratingWithState:&v35 objects:v43 count:16];
+              v10 = [relevantDates countByEnumeratingWithState:&v35 objects:v43 count:16];
             }
 
             while (v10);
@@ -676,43 +676,43 @@ LABEL_12:
   return v23;
 }
 
-- (void)_fetchOptimizedBatteryChargingEnabledForDevice:(id)a3
+- (void)_fetchOptimizedBatteryChargingEnabledForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(AAChargingManager *)self obcController];
+  deviceCopy = device;
+  obcController = [(AAChargingManager *)self obcController];
 
-  if (v5)
+  if (obcController)
   {
     [(AAChargingManager *)self obcController];
     objc_claimAutoreleasedReturnValue();
-    v6 = [sub_100076A0C() bluetoothAddress];
+    bluetoothAddress = [sub_100076A0C() bluetoothAddress];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000767CC;
     v7[3] = &unk_1002B7910;
-    v8 = v4;
-    [(AAChargingManager *)self isSmartChargingCurrentlyEnabledForDevice:v6 withHandler:v7];
+    v8 = deviceCopy;
+    [(AAChargingManager *)self isSmartChargingCurrentlyEnabledForDevice:bluetoothAddress withHandler:v7];
   }
 }
 
-- (void)_changeOptimizedBatteryChargingState:(char)a3 forDevice:(id)a4
+- (void)_changeOptimizedBatteryChargingState:(char)state forDevice:(id)device
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(AAChargingManager *)self obcController];
+  stateCopy = state;
+  deviceCopy = device;
+  obcController = [(AAChargingManager *)self obcController];
 
-  if (v7)
+  if (obcController)
   {
-    v8 = [v6 bluetoothAddress];
+    bluetoothAddress = [deviceCopy bluetoothAddress];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000768B8;
     v15[3] = &unk_1002B92D8;
-    v17 = v4;
-    v9 = v6;
+    v17 = stateCopy;
+    v9 = deviceCopy;
     v16 = v9;
     v10 = objc_retainBlock(v15);
-    switch(v4)
+    switch(stateCopy)
     {
       case 1:
         [(AAChargingManager *)self obcController];
@@ -739,7 +739,7 @@ LABEL_12:
         }
 
         self = [v9 identifier];
-        v14 = [v9 bluetoothAddress];
+        bluetoothAddress2 = [v9 bluetoothAddress];
         LogPrintF();
 
         break;

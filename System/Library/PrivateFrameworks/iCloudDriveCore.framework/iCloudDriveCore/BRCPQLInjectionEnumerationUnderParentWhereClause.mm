@@ -1,18 +1,18 @@
 @interface BRCPQLInjectionEnumerationUnderParentWhereClause
-+ (id)_createInjectionParentGlobalID:(id)a3 isZoneRoot:(BOOL)a4;
++ (id)_createInjectionParentGlobalID:(id)d isZoneRoot:(BOOL)root;
 @end
 
 @implementation BRCPQLInjectionEnumerationUnderParentWhereClause
 
-+ (id)_createInjectionParentGlobalID:(id)a3 isZoneRoot:(BOOL)a4
++ (id)_createInjectionParentGlobalID:(id)d isZoneRoot:(BOOL)root
 {
-  v4 = a4;
+  rootCopy = root;
   v5 = MEMORY[0x277D82C08];
-  v6 = a3;
-  v7 = [v6 zoneRowID];
-  v8 = [v6 itemID];
+  dCopy = d;
+  zoneRowID = [dCopy zoneRowID];
+  itemID = [dCopy itemID];
 
-  if (v4)
+  if (rootCopy)
   {
     v9 = @" item_parent_zone_rowid = %@ AND item_parent_id = %@";
   }
@@ -22,7 +22,7 @@
     v9 = @" zone_rowid = %@ AND item_id = %@";
   }
 
-  v10 = [v5 formatInjection:{v9, v7, v8}];
+  v10 = [v5 formatInjection:{v9, zoneRowID, itemID}];
 
   return v10;
 }

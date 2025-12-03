@@ -1,24 +1,24 @@
 @interface BFFFinishSetupBiometricAndPasscodeController
-- (BFFFinishSetupBiometricAndPasscodeController)initWithFlowSkipIdentifier:(id)a3;
-- (id)createViewControllerWithPasscode:(id)a3 completion:(id)a4;
-- (id)passcodeViewControllerCustomFirstEntryInstructions:(id)a3;
-- (id)preconditionViewControllerWithCompletion:(id)a3;
-- (id)viewControllerWithCompletion:(id)a3;
-- (void)_userDidTapPasscodeCancelButton:(id)a3;
-- (void)passcodeViewController:(id)a3 didFinishWithPasscodeCreation:(id)a4;
+- (BFFFinishSetupBiometricAndPasscodeController)initWithFlowSkipIdentifier:(id)identifier;
+- (id)createViewControllerWithPasscode:(id)passcode completion:(id)completion;
+- (id)passcodeViewControllerCustomFirstEntryInstructions:(id)instructions;
+- (id)preconditionViewControllerWithCompletion:(id)completion;
+- (id)viewControllerWithCompletion:(id)completion;
+- (void)_userDidTapPasscodeCancelButton:(id)button;
+- (void)passcodeViewController:(id)controller didFinishWithPasscodeCreation:(id)creation;
 @end
 
 @implementation BFFFinishSetupBiometricAndPasscodeController
 
-- (BFFFinishSetupBiometricAndPasscodeController)initWithFlowSkipIdentifier:(id)a3
+- (BFFFinishSetupBiometricAndPasscodeController)initWithFlowSkipIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = BFFFinishSetupBiometricAndPasscodeController;
   v5 = [(BFFFinishSetupBiometricAndPasscodeController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     flowSkipIdentifier = v5->_flowSkipIdentifier;
     v5->_flowSkipIdentifier = v6;
   }
@@ -26,37 +26,37 @@
   return v5;
 }
 
-- (id)preconditionViewControllerWithCompletion:(id)a3
+- (id)preconditionViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(BFFFinishSetupBiometricAndPasscodeController *)self setPasscode:0];
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  v6 = [v5 isPasscodeSet];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isPasscodeSet = [mEMORY[0x277D262A0] isPasscodeSet];
 
   v7 = 0;
-  if (v6)
+  if (isPasscodeSet)
   {
     v7 = objc_alloc_init(BFFFinishSetupPINVerificationViewController);
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __89__BFFFinishSetupBiometricAndPasscodeController_preconditionViewControllerWithCompletion___block_invoke;
     v13 = &unk_279BB4D40;
-    v14 = self;
-    v15 = v4;
+    selfCopy = self;
+    v15 = completionCopy;
     [(BFFFinishSetupPINVerificationViewController *)v7 setCompletion:&v10];
     if (BFFIsiPad())
     {
-      [(BFFFinishSetupPINVerificationViewController *)v7 setModalPresentationStyle:7, v10, v11, v12, v13, v14];
-      v8 = [(BFFFinishSetupPINVerificationViewController *)v7 popoverPresentationController];
-      [v8 setDelegate:self];
-      [v8 setPermittedArrowDirections:0];
-      [v8 setSourceView:0];
-      [v8 _setCentersPopoverIfSourceViewNotSet:1];
+      [(BFFFinishSetupPINVerificationViewController *)v7 setModalPresentationStyle:7, v10, v11, v12, v13, selfCopy];
+      popoverPresentationController = [(BFFFinishSetupPINVerificationViewController *)v7 popoverPresentationController];
+      [popoverPresentationController setDelegate:self];
+      [popoverPresentationController setPermittedArrowDirections:0];
+      [popoverPresentationController setSourceView:0];
+      [popoverPresentationController _setCentersPopoverIfSourceViewNotSet:1];
     }
 
     else
     {
-      [(BFFFinishSetupPINVerificationViewController *)v7 setModalPresentationStyle:17, v10, v11, v12, v13, v14];
+      [(BFFFinishSetupPINVerificationViewController *)v7 setModalPresentationStyle:17, v10, v11, v12, v13, selfCopy];
     }
   }
 
@@ -90,7 +90,7 @@ void __89__BFFFinishSetupBiometricAndPasscodeController_preconditionViewControll
   }
 }
 
-- (id)createViewControllerWithPasscode:(id)a3 completion:(id)a4
+- (id)createViewControllerWithPasscode:(id)passcode completion:(id)completion
 {
   v4 = _BYLoggingFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -102,35 +102,35 @@ void __89__BFFFinishSetupBiometricAndPasscodeController_preconditionViewControll
   return 0;
 }
 
-- (id)viewControllerWithCompletion:(id)a3
+- (id)viewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
   v17[3] = __Block_byref_object_copy__0;
   v17[4] = __Block_byref_object_dispose__0;
-  v5 = self;
-  v18 = v5;
+  selfCopy = self;
+  v18 = selfCopy;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __77__BFFFinishSetupBiometricAndPasscodeController_viewControllerWithCompletion___block_invoke;
   v14[3] = &unk_279BB4D68;
   v16 = v17;
-  v6 = v4;
+  v6 = completionCopy;
   v15 = v6;
-  [(BFFFinishSetupBiometricAndPasscodeController *)v5 setCompletion:v14];
-  v7 = [(BFFFinishSetupBiometricAndPasscodeController *)v5 passcode];
-  v8 = [v7 length];
+  [(BFFFinishSetupBiometricAndPasscodeController *)selfCopy setCompletion:v14];
+  passcode = [(BFFFinishSetupBiometricAndPasscodeController *)selfCopy passcode];
+  v8 = [passcode length];
 
-  v9 = [(BFFFinishSetupBiometricAndPasscodeController *)v5 passcode];
+  passcode2 = [(BFFFinishSetupBiometricAndPasscodeController *)selfCopy passcode];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __77__BFFFinishSetupBiometricAndPasscodeController_viewControllerWithCompletion___block_invoke_2;
   v12[3] = &unk_279BB4D90;
-  v12[4] = v5;
+  v12[4] = selfCopy;
   v13 = v8 == 0;
-  v10 = [(BFFFinishSetupBiometricAndPasscodeController *)v5 createViewControllerWithPasscode:v9 completion:v12];
+  v10 = [(BFFFinishSetupBiometricAndPasscodeController *)selfCopy createViewControllerWithPasscode:passcode2 completion:v12];
 
   _Block_object_dispose(v17, 8);
 
@@ -201,7 +201,7 @@ void __77__BFFFinishSetupBiometricAndPasscodeController_viewControllerWithComple
 LABEL_9:
 }
 
-- (void)_userDidTapPasscodeCancelButton:(id)a3
+- (void)_userDidTapPasscodeCancelButton:(id)button
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v4 = _BYLoggingFacility();
@@ -211,8 +211,8 @@ LABEL_9:
     _os_log_impl(&dword_265AC5000, v4, OS_LOG_TYPE_DEFAULT, "Finish setup biometric user did cancel passcode", v10, 2u);
   }
 
-  v5 = [(BFFFinishSetupBiometricAndPasscodeController *)self paneFeatureAnalyticsManager];
-  [v5 recordActionWithValue:MEMORY[0x277CBEC28] forFeature:11];
+  paneFeatureAnalyticsManager = [(BFFFinishSetupBiometricAndPasscodeController *)self paneFeatureAnalyticsManager];
+  [paneFeatureAnalyticsManager recordActionWithValue:MEMORY[0x277CBEC28] forFeature:11];
 
   completion = self->_completion;
   if (completion)
@@ -228,14 +228,14 @@ LABEL_9:
   }
 }
 
-- (id)passcodeViewControllerCustomFirstEntryInstructions:(id)a3
+- (id)passcodeViewControllerCustomFirstEntryInstructions:(id)instructions
 {
-  v3 = [(BFFFinishSetupBiometricAndPasscodeController *)self capabilities];
-  v4 = [v3 supportsPearl];
+  capabilities = [(BFFFinishSetupBiometricAndPasscodeController *)self capabilities];
+  supportsPearl = [capabilities supportsPearl];
 
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = v5;
-  if (v4)
+  if (supportsPearl)
   {
     v7 = @"ENTER_PASSCODE_SUBTITLE_FACEID";
   }
@@ -250,30 +250,30 @@ LABEL_9:
   return v8;
 }
 
-- (void)passcodeViewController:(id)a3 didFinishWithPasscodeCreation:(id)a4
+- (void)passcodeViewController:(id)controller didFinishWithPasscodeCreation:(id)creation
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  creationCopy = creation;
   v6 = _BYLoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithInt:v5 != 0];
+    v7 = [MEMORY[0x277CCABB0] numberWithInt:creationCopy != 0];
     *buf = 138412290;
     v18 = v7;
     _os_log_impl(&dword_265AC5000, v6, OS_LOG_TYPE_DEFAULT, "Finish setup biometric passcode did finish with passcode %@", buf, 0xCu);
   }
 
-  v8 = [MEMORY[0x277D262A0] sharedConnection];
-  [v8 setFingerprintUnlockAllowed:1 passcode:v5 completion:0];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] setFingerprintUnlockAllowed:1 passcode:creationCopy completion:0];
 
-  v9 = [(BFFFinishSetupBiometricAndPasscodeController *)self flowSkipController];
+  flowSkipController = [(BFFFinishSetupBiometricAndPasscodeController *)self flowSkipController];
   v10 = *MEMORY[0x277D4D9B8];
-  [v9 didCompleteFlow:*MEMORY[0x277D4D9B8]];
+  [flowSkipController didCompleteFlow:*MEMORY[0x277D4D9B8]];
 
   CFPreferencesSetValue(@"Passcode4Presented", *MEMORY[0x277CBED28], *MEMORY[0x277D4D9E0], *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
-  v11 = [(BFFFinishSetupBiometricAndPasscodeController *)self paneFeatureAnalyticsManager];
-  v12 = [MEMORY[0x277CCABB0] numberWithInt:v5 != 0];
-  [v11 recordActionWithValue:v12 forFeature:11];
+  paneFeatureAnalyticsManager = [(BFFFinishSetupBiometricAndPasscodeController *)self paneFeatureAnalyticsManager];
+  v12 = [MEMORY[0x277CCABB0] numberWithInt:creationCopy != 0];
+  [paneFeatureAnalyticsManager recordActionWithValue:v12 forFeature:11];
 
   completion = self->_completion;
   if (completion)

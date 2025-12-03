@@ -1,20 +1,20 @@
 @interface MADVUGalleryReader
-+ (id)sharedGalleryWithPhotoLibrary:(id)a3;
-- (MADVUGalleryReader)initWithPhotoLibrary:(id)a3;
-- (id)queryKeyObservationsFor:(id)a3 limit:(int64_t)a4 offset:(int64_t)a5;
++ (id)sharedGalleryWithPhotoLibrary:(id)library;
+- (MADVUGalleryReader)initWithPhotoLibrary:(id)library;
+- (id)queryKeyObservationsFor:(id)for limit:(int64_t)limit offset:(int64_t)offset;
 @end
 
 @implementation MADVUGalleryReader
 
-- (MADVUGalleryReader)initWithPhotoLibrary:(id)a3
+- (MADVUGalleryReader)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v13.receiver = self;
   v13.super_class = MADVUGalleryReader;
   v5 = [(MADVUGalleryReader *)&v13 init];
   if (v5)
   {
-    if (!v4)
+    if (!libraryCopy)
     {
       v11 = 0;
       goto LABEL_6;
@@ -25,9 +25,9 @@
     operationQueue = v5->_operationQueue;
     v5->_operationQueue = v7;
 
-    v9 = [v4 vcp_visionCacheStorageDirectoryURL];
+    vcp_visionCacheStorageDirectoryURL = [libraryCopy vcp_visionCacheStorageDirectoryURL];
     storageURL = v5->_storageURL;
-    v5->_storageURL = v9;
+    v5->_storageURL = vcp_visionCacheStorageDirectoryURL;
   }
 
   v11 = v5;
@@ -36,20 +36,20 @@ LABEL_6:
   return v11;
 }
 
-+ (id)sharedGalleryWithPhotoLibrary:(id)a3
++ (id)sharedGalleryWithPhotoLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [v3 photoLibraryURL];
-  v6 = [v4 stringWithFormat:@"MADVUGalleryReader-%@", v5];
+  photoLibraryURL = [libraryCopy photoLibraryURL];
+  v6 = [v4 stringWithFormat:@"MADVUGalleryReader-%@", photoLibraryURL];
 
   v7 = +[VCPSharedInstanceManager sharedManager];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __52__MADVUGalleryReader_sharedGalleryWithPhotoLibrary___block_invoke;
   v11[3] = &unk_1E8351AC0;
-  v12 = v3;
-  v8 = v3;
+  v12 = libraryCopy;
+  v8 = libraryCopy;
   v9 = [v7 sharedInstanceWithIdentifier:v6 andCreationBlock:v11];
 
   return v9;
@@ -62,9 +62,9 @@ MADVUGalleryReader *__52__MADVUGalleryReader_sharedGalleryWithPhotoLibrary___blo
   return v1;
 }
 
-- (id)queryKeyObservationsFor:(id)a3 limit:(int64_t)a4 offset:(int64_t)a5
+- (id)queryKeyObservationsFor:(id)for limit:(int64_t)limit offset:(int64_t)offset
 {
-  v8 = a3;
+  forCopy = for;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -77,11 +77,11 @@ MADVUGalleryReader *__52__MADVUGalleryReader_sharedGalleryWithPhotoLibrary___blo
   block[2] = __59__MADVUGalleryReader_queryKeyObservationsFor_limit_offset___block_invoke;
   block[3] = &unk_1E8351AE8;
   block[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v17 = a5;
+  v14 = forCopy;
+  limitCopy = limit;
+  offsetCopy = offset;
   v15 = &v18;
-  v10 = v8;
+  v10 = forCopy;
   dispatch_sync(operationQueue, block);
   v11 = v19[5];
 

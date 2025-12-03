@@ -1,22 +1,22 @@
 @interface HKColoredButton
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation HKColoredButton
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v9.receiver = self;
   v9.super_class = HKColoredButton;
   [(HKColoredButton *)&v9 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
-    v5 = [(HKColoredButton *)self titleLabel];
-    [v5 setAlpha:0.25];
+    titleLabel = [(HKColoredButton *)self titleLabel];
+    [titleLabel setAlpha:0.25];
 
-    v6 = [(HKColoredButton *)self backgroundColor];
-    v7 = [v6 colorWithAlphaComponent:0.5];
+    backgroundColor = [(HKColoredButton *)self backgroundColor];
+    v7 = [backgroundColor colorWithAlphaComponent:0.5];
     [(HKColoredButton *)self setBackgroundColor:v7];
   }
 

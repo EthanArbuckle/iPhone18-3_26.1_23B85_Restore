@@ -1,18 +1,18 @@
 @interface COAlarmNotification
-- (COAlarmNotification)initWithAlarms:(id)a3;
-- (COAlarmNotification)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (COAlarmNotification)initWithAlarms:(id)alarms;
+- (COAlarmNotification)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COAlarmNotification
 
-- (COAlarmNotification)initWithAlarms:(id)a3
+- (COAlarmNotification)initWithAlarms:(id)alarms
 {
-  v4 = a3;
+  alarmsCopy = alarms;
   v5 = [(COMeshCommand *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [alarmsCopy copy];
     alarms = v5->_alarms;
     v5->_alarms = v6;
   }
@@ -20,19 +20,19 @@
   return v5;
 }
 
-- (COAlarmNotification)initWithCoder:(id)a3
+- (COAlarmNotification)initWithCoder:(id)coder
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = COAlarmNotification;
-  v5 = [(COMeshCommand *)&v25 initWithCoder:v4];
-  if (v5 && [v4 containsValueForKey:@"alarms"])
+  v5 = [(COMeshCommand *)&v25 initWithCoder:coderCopy];
+  if (v5 && [coderCopy containsValueForKey:@"alarms"])
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"alarms"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"alarms"];
     alarms = v5->_alarms;
     v5->_alarms = v9;
 
@@ -101,16 +101,16 @@ LABEL_15:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = COAlarmNotification;
-  [(COMeshCommand *)&v6 encodeWithCoder:v4];
-  v5 = [(COAlarmNotification *)self alarms];
-  if (v5)
+  [(COMeshCommand *)&v6 encodeWithCoder:coderCopy];
+  alarms = [(COAlarmNotification *)self alarms];
+  if (alarms)
   {
-    [v4 encodeObject:v5 forKey:@"alarms"];
+    [coderCopy encodeObject:alarms forKey:@"alarms"];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface NSDate
 + (void)load;
-- (id)tri_memoryFriendlyDescriptionWithLocale:(id)a3;
+- (id)tri_memoryFriendlyDescriptionWithLocale:(id)locale;
 @end
 
 @implementation NSDate
@@ -11,7 +11,7 @@
   v2[1] = 3221225472;
   v2[2] = sub_100000C9C;
   v2[3] = &unk_100004118;
-  v2[4] = a1;
+  v2[4] = self;
   v2[5] = a2;
   if (qword_100008078 != -1)
   {
@@ -19,18 +19,18 @@
   }
 }
 
-- (id)tri_memoryFriendlyDescriptionWithLocale:(id)a3
+- (id)tri_memoryFriendlyDescriptionWithLocale:(id)locale
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100000F5C;
   v15[3] = &unk_100004140;
   v15[4] = self;
-  v5 = a3;
-  v16 = v5;
+  localeCopy = locale;
+  v16 = localeCopy;
   v17 = a2;
   v6 = objc_retainBlock(v15);
-  if (v5)
+  if (localeCopy)
   {
     goto LABEL_2;
   }

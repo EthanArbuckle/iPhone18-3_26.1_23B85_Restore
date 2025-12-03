@@ -1,21 +1,21 @@
 @interface SBDiagnosticRequestAlertItem
 - (id)_noButtonTitle;
-- (id)_stringFromClassification:(int64_t)a3;
-- (id)_stringFromReproducibility:(int64_t)a3;
+- (id)_stringFromClassification:(int64_t)classification;
+- (id)_stringFromReproducibility:(int64_t)reproducibility;
 - (id)_yesButtonTitle;
 - (void)_fileRadar;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBDiagnosticRequestAlertItem
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v6 = [(SBAlertItem *)self alertController:a3];
-  v7 = [(SBDiagnosticRequestAlertItem *)self title];
-  v8 = [(SBDiagnosticRequestAlertItem *)self message];
-  v9 = v8;
-  if (!v7)
+  v6 = [(SBAlertItem *)self alertController:configure];
+  title = [(SBDiagnosticRequestAlertItem *)self title];
+  message = [(SBDiagnosticRequestAlertItem *)self message];
+  v9 = message;
+  if (!title)
   {
     [SBDiagnosticRequestAlertItem configure:a2 requirePasscodeForActions:self];
     if (v9)
@@ -28,32 +28,32 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!message)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  [v6 setTitle:v7];
+  [v6 setTitle:title];
   [v6 setMessage:v9];
   v10 = MEMORY[0x277D750F8];
-  v11 = [(SBDiagnosticRequestAlertItem *)self _yesButtonTitle];
+  _yesButtonTitle = [(SBDiagnosticRequestAlertItem *)self _yesButtonTitle];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __68__SBDiagnosticRequestAlertItem_configure_requirePasscodeForActions___block_invoke;
   v17[3] = &unk_2783A8A40;
   v17[4] = self;
-  v12 = [v10 actionWithTitle:v11 style:0 handler:v17];
+  v12 = [v10 actionWithTitle:_yesButtonTitle style:0 handler:v17];
 
   [v6 addAction:v12];
   v13 = MEMORY[0x277D750F8];
-  v14 = [(SBDiagnosticRequestAlertItem *)self _noButtonTitle];
+  _noButtonTitle = [(SBDiagnosticRequestAlertItem *)self _noButtonTitle];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __68__SBDiagnosticRequestAlertItem_configure_requirePasscodeForActions___block_invoke_2;
   v16[3] = &unk_2783A8A40;
   v16[4] = self;
-  v15 = [v13 actionWithTitle:v14 style:1 handler:v16];
+  v15 = [v13 actionWithTitle:_noButtonTitle style:1 handler:v16];
 
   [v6 addAction:v15];
 }
@@ -72,123 +72,123 @@ void __68__SBDiagnosticRequestAlertItem_configure_requirePasscodeForActions___bl
 
 - (id)_yesButtonTitle
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"RADAR_REQUEST_BUTTON" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"RADAR_REQUEST_BUTTON" value:&stru_283094718 table:@"SpringBoard"];
 
   return v3;
 }
 
 - (id)_noButtonTitle
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"RADAR_REQUEST_CANCEL" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"RADAR_REQUEST_CANCEL" value:&stru_283094718 table:@"SpringBoard"];
 
   return v3;
 }
 
 - (void)_fileRadar
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   v5 = +[SBPlatformController sharedInstance];
-  v6 = [v5 isInternalInstall];
+  isInternalInstall = [v5 isInternalInstall];
 
-  if (v6)
+  if (isInternalInstall)
   {
-    v43 = v4;
+    v43 = bundleIdentifier;
     v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"tap-to-radar://new"];
     v42 = [MEMORY[0x277CCACE0] componentsWithString:?];
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v8 = [(SBDiagnosticRequestAlertItem *)self radarTitle];
-    v46 = [(SBDiagnosticRequestAlertItem *)self radarDescription];
-    v45 = [(SBDiagnosticRequestAlertItem *)self radarAttachments];
-    v44 = [(SBDiagnosticRequestAlertItem *)self radarKeywordIDs];
-    v9 = [(SBDiagnosticRequestAlertItem *)self radarClassification];
-    v10 = [(SBDiagnosticRequestAlertItem *)self radarReproducibility];
-    v11 = [(SBDiagnosticRequestAlertItem *)self radarComponentName];
-    v12 = [(SBDiagnosticRequestAlertItem *)self radarComponentVersion];
-    v13 = [(SBDiagnosticRequestAlertItem *)self radarComponentID];
-    if (!v13)
+    radarTitle = [(SBDiagnosticRequestAlertItem *)self radarTitle];
+    radarDescription = [(SBDiagnosticRequestAlertItem *)self radarDescription];
+    radarAttachments = [(SBDiagnosticRequestAlertItem *)self radarAttachments];
+    radarKeywordIDs = [(SBDiagnosticRequestAlertItem *)self radarKeywordIDs];
+    radarClassification = [(SBDiagnosticRequestAlertItem *)self radarClassification];
+    radarReproducibility = [(SBDiagnosticRequestAlertItem *)self radarReproducibility];
+    radarComponentName = [(SBDiagnosticRequestAlertItem *)self radarComponentName];
+    radarComponentVersion = [(SBDiagnosticRequestAlertItem *)self radarComponentVersion];
+    radarComponentID = [(SBDiagnosticRequestAlertItem *)self radarComponentID];
+    if (!radarComponentID)
     {
-      v13 = &unk_283371EB8;
+      radarComponentID = &unk_283371EB8;
     }
 
     v14 = MEMORY[0x277CCAD18];
-    v40 = v13;
-    v15 = [v13 stringValue];
-    v16 = [v14 queryItemWithName:@"ComponentID" value:v15];
+    v40 = radarComponentID;
+    stringValue = [radarComponentID stringValue];
+    v16 = [v14 queryItemWithName:@"ComponentID" value:stringValue];
     [v7 addObject:v16];
 
-    if (v11 && v12)
+    if (radarComponentName && radarComponentVersion)
     {
-      v17 = [MEMORY[0x277CCAD18] queryItemWithName:@"ComponentName" value:v11];
+      v17 = [MEMORY[0x277CCAD18] queryItemWithName:@"ComponentName" value:radarComponentName];
       [v7 addObject:v17];
 
-      v18 = [MEMORY[0x277CCAD18] queryItemWithName:@"ComponentVersion" value:v12];
+      v18 = [MEMORY[0x277CCAD18] queryItemWithName:@"ComponentVersion" value:radarComponentVersion];
       [v7 addObject:v18];
     }
 
-    if ([v8 length])
+    if ([radarTitle length])
     {
-      v19 = [MEMORY[0x277CCAD18] queryItemWithName:@"Title" value:v8];
+      v19 = [MEMORY[0x277CCAD18] queryItemWithName:@"Title" value:radarTitle];
       [v7 addObject:v19];
     }
 
-    if ([v46 length])
+    if ([radarDescription length])
     {
-      v20 = [MEMORY[0x277CCAD18] queryItemWithName:@"Description" value:v46];
+      v20 = [MEMORY[0x277CCAD18] queryItemWithName:@"Description" value:radarDescription];
       [v7 addObject:v20];
     }
 
-    if (v9)
+    if (radarClassification)
     {
       v21 = MEMORY[0x277CCAD18];
-      v22 = [(SBDiagnosticRequestAlertItem *)self _stringFromClassification:v9];
+      v22 = [(SBDiagnosticRequestAlertItem *)self _stringFromClassification:radarClassification];
       v23 = [v21 queryItemWithName:@"Classification" value:v22];
       [v7 addObject:v23];
     }
 
-    if (v10)
+    if (radarReproducibility)
     {
       v24 = MEMORY[0x277CCAD18];
-      v25 = [(SBDiagnosticRequestAlertItem *)self _stringFromReproducibility:v10];
+      v25 = [(SBDiagnosticRequestAlertItem *)self _stringFromReproducibility:radarReproducibility];
       v26 = [v24 queryItemWithName:@"Reproducibility" value:v25];
       [v7 addObject:v26];
     }
 
-    if ([v45 count])
+    if ([radarAttachments count])
     {
-      v27 = [v45 bs_map:&__block_literal_global_359];
+      v27 = [radarAttachments bs_map:&__block_literal_global_359];
       v28 = [v27 componentsJoinedByString:{@", "}];
       v29 = [MEMORY[0x277CCAD18] queryItemWithName:@"Attachments" value:v28];
       [v7 addObject:v29];
     }
 
-    v30 = v44;
-    if ([v44 count])
+    v30 = radarKeywordIDs;
+    if ([radarKeywordIDs count])
     {
-      v31 = [v44 bs_map:&__block_literal_global_61_4];
+      v31 = [radarKeywordIDs bs_map:&__block_literal_global_61_4];
       v32 = [v31 componentsJoinedByString:{@", "}];
       v33 = [MEMORY[0x277CCAD18] queryItemWithName:@"Keywords" value:v32];
       [v7 addObject:v33];
 
-      v30 = v44;
+      v30 = radarKeywordIDs;
     }
 
     [v42 setQueryItems:v7];
     v34 = [v42 URL];
-    v35 = [v34 absoluteString];
+    absoluteString = [v34 absoluteString];
 
-    v4 = v43;
+    bundleIdentifier = v43;
   }
 
   else
   {
-    v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"applefeedback://new?bundleID=%@", v4];
+    absoluteString = [MEMORY[0x277CCACA8] stringWithFormat:@"applefeedback://new?bundleID=%@", bundleIdentifier];
   }
 
-  v36 = [MEMORY[0x277CBEBC0] URLWithString:v35];
+  v36 = [MEMORY[0x277CBEBC0] URLWithString:absoluteString];
   [(SBAlertItem *)self deactivateForButton];
   v37 = objc_alloc_init(SBLockScreenUnlockRequest);
   [(SBLockScreenUnlockRequest *)v37 setSource:24];
@@ -201,7 +201,7 @@ void __68__SBDiagnosticRequestAlertItem_configure_requirePasscodeForActions___bl
   v47[2] = __42__SBDiagnosticRequestAlertItem__fileRadar__block_invoke_3;
   v47[3] = &unk_2783A8BF0;
   v48 = v36;
-  v49 = self;
+  selfCopy = self;
   v39 = v36;
   [v38 unlockWithRequest:v37 completion:v47];
 }
@@ -221,29 +221,29 @@ void __42__SBDiagnosticRequestAlertItem__fileRadar__block_invoke_3(uint64_t a1, 
   }
 }
 
-- (id)_stringFromClassification:(int64_t)a3
+- (id)_stringFromClassification:(int64_t)classification
 {
-  if ((a3 - 1) > 9)
+  if ((classification - 1) > 9)
   {
     return 0;
   }
 
   else
   {
-    return off_2783C0310[a3 - 1];
+    return off_2783C0310[classification - 1];
   }
 }
 
-- (id)_stringFromReproducibility:(int64_t)a3
+- (id)_stringFromReproducibility:(int64_t)reproducibility
 {
-  if ((a3 - 1) > 5)
+  if ((reproducibility - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_2783C0360[a3 - 1];
+    return off_2783C0360[reproducibility - 1];
   }
 }
 

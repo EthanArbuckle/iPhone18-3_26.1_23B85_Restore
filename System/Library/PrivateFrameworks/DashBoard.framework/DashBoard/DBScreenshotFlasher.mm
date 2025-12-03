@@ -1,50 +1,50 @@
 @interface DBScreenshotFlasher
-- (DBScreenshotFlasher)initWithWindowScene:(id)a3;
-- (void)_createUIWithColor:(id)a3;
-- (void)_orderWindowFrontAndThenOut:(id)a3 withColor:(id)a4;
-- (void)_orderWindowOut:(id)a3;
+- (DBScreenshotFlasher)initWithWindowScene:(id)scene;
+- (void)_createUIWithColor:(id)color;
+- (void)_orderWindowFrontAndThenOut:(id)out withColor:(id)color;
+- (void)_orderWindowOut:(id)out;
 - (void)_tearDown;
-- (void)flashColor:(id)a3 withCompletion:(id)a4;
+- (void)flashColor:(id)color withCompletion:(id)completion;
 @end
 
 @implementation DBScreenshotFlasher
 
-- (DBScreenshotFlasher)initWithWindowScene:(id)a3
+- (DBScreenshotFlasher)initWithWindowScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   v9.receiver = self;
   v9.super_class = DBScreenshotFlasher;
   v6 = [(DBScreenshotFlasher *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_windowScene, a3);
+    objc_storeStrong(&v6->_windowScene, scene);
   }
 
   return v7;
 }
 
-- (void)flashColor:(id)a3 withCompletion:(id)a4
+- (void)flashColor:(id)color withCompletion:(id)completion
 {
-  v8 = a3;
-  if (a4)
+  colorCopy = color;
+  if (completion)
   {
     flashCompletionBlocks = self->_flashCompletionBlocks;
-    v7 = [a4 copy];
+    v7 = [completion copy];
     [(NSMutableArray *)flashCompletionBlocks addObject:v7];
   }
 
-  [(DBScreenshotFlasher *)self _orderWindowFrontAndThenOut:self withColor:v8];
+  [(DBScreenshotFlasher *)self _orderWindowFrontAndThenOut:self withColor:colorCopy];
 }
 
-- (void)_createUIWithColor:(id)a3
+- (void)_createUIWithColor:(id)color
 {
   if (!self->_flashWindow)
   {
     windowScene = self->_windowScene;
-    v6 = a3;
-    v7 = [(UIWindowScene *)windowScene coordinateSpace];
-    [v7 bounds];
+    colorCopy = color;
+    coordinateSpace = [(UIWindowScene *)windowScene coordinateSpace];
+    [coordinateSpace bounds];
     v9 = v8;
     v11 = v10;
 
@@ -57,7 +57,7 @@
     flashView = self->_flashView;
     self->_flashView = v14;
 
-    [(UIView *)self->_flashView setBackgroundColor:v6];
+    [(UIView *)self->_flashView setBackgroundColor:colorCopy];
     v16 = self->_flashWindow;
     v17 = self->_flashView;
 
@@ -76,9 +76,9 @@
   self->_flashView = 0;
 }
 
-- (void)_orderWindowOut:(id)a3
+- (void)_orderWindowOut:(id)out
 {
-  v4 = a3;
+  outCopy = out;
   flashView = self->_flashView;
   if (flashView)
   {
@@ -157,22 +157,22 @@ void __39__DBScreenshotFlasher__orderWindowOut___block_invoke_2(uint64_t a1, int
   }
 }
 
-- (void)_orderWindowFrontAndThenOut:(id)a3 withColor:(id)a4
+- (void)_orderWindowFrontAndThenOut:(id)out withColor:(id)color
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  colorCopy = color;
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__orderWindowOut_ object:0];
   if (!self->_windowVisible)
   {
     if (self->_flashWindow)
     {
       [(UIView *)self->_flashView setAlpha:1.0];
-      [(UIView *)self->_flashView setBackgroundColor:v5];
+      [(UIView *)self->_flashView setBackgroundColor:colorCopy];
     }
 
     else
     {
-      [(DBScreenshotFlasher *)self _createUIWithColor:v5];
+      [(DBScreenshotFlasher *)self _createUIWithColor:colorCopy];
     }
 
     [(UIWindow *)self->_flashWindow _orderFrontWithoutMakingKey];

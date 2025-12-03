@@ -10,13 +10,13 @@
 - (void)deletePhotoWithCompletionHandler:()Photos
 {
   v4 = a3;
-  v5 = [a1 internal];
-  [v5 setPhotos:0];
+  internal = [self internal];
+  [internal setPhotos:0];
 
-  [a1 clearInMemoryCachedAvatars];
-  v7 = [a1 daemonProxy];
-  v6 = [v7 profileServicePrivate];
-  [v6 deletePhotoWithHandler:v4];
+  [self clearInMemoryCachedAvatars];
+  daemonProxy = [self daemonProxy];
+  profileServicePrivate = [daemonProxy profileServicePrivate];
+  [profileServicePrivate deletePhotoWithHandler:v4];
 }
 
 - (void)setPhoto:()Photos avatarType:withCompletionHandler:
@@ -29,7 +29,7 @@
   v13[2] = __67__GKLocalPlayer_Photos__setPhoto_avatarType_withCompletionHandler___block_invoke;
   v13[3] = &unk_27966A408;
   v14 = v8;
-  v15 = a1;
+  selfCopy = self;
   v16 = v9;
   v17 = a4;
   v11 = v9;
@@ -54,7 +54,7 @@
   v21 = v14;
   v15 = v8;
   v22 = v15;
-  v23 = a1;
+  selfCopy = self;
   v16 = v13;
   v24 = v16;
   [v16 perform:v20];
@@ -73,17 +73,17 @@
 - (void)deleteMonogramsWithHandler:()Photos
 {
   v4 = a3;
-  v5 = [a1 internal];
-  v6 = [v5 playerID];
+  internal = [self internal];
+  playerID = [internal playerID];
 
-  if (v6)
+  if (playerID)
   {
     v7 = MEMORY[0x277D0C020];
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLocalPlayer+Photos.m", 172, "-[GKLocalPlayer(Photos) deleteMonogramsWithHandler:]"];
     v9 = [v7 dispatchGroupWithName:v8];
 
-    v10 = [a1 internal];
-    v11 = [v10 playerID];
+    internal2 = [self internal];
+    playerID2 = [internal2 playerID];
     v12 = GKAvatarSubdirectoryNameForPlayerID();
 
     for (i = 0; i != 4; ++i)
@@ -99,13 +99,13 @@
       [v9 perform:v19];
     }
 
-    if ([a1 avatarType] == 1)
+    if ([self avatarType] == 1)
     {
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __52__GKLocalPlayer_Photos__deleteMonogramsWithHandler___block_invoke_3;
       v18[3] = &unk_27966A148;
-      v18[4] = a1;
+      v18[4] = self;
       [v9 perform:v18];
     }
 

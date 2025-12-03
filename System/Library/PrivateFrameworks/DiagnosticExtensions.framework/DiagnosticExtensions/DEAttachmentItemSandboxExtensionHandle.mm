@@ -1,17 +1,17 @@
 @interface DEAttachmentItemSandboxExtensionHandle
-- (DEAttachmentItemSandboxExtensionHandle)initWithSandboxExtensionToken:(id)a3 itemURL:(id)a4 errorOut:(id *)p_isa;
+- (DEAttachmentItemSandboxExtensionHandle)initWithSandboxExtensionToken:(id)token itemURL:(id)l errorOut:(id *)p_isa;
 - (void)dealloc;
 @end
 
 @implementation DEAttachmentItemSandboxExtensionHandle
 
-- (DEAttachmentItemSandboxExtensionHandle)initWithSandboxExtensionToken:(id)a3 itemURL:(id)a4 errorOut:(id *)p_isa
+- (DEAttachmentItemSandboxExtensionHandle)initWithSandboxExtensionToken:(id)token itemURL:(id)l errorOut:(id *)p_isa
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  tokenCopy = token;
+  lCopy = l;
+  v10 = lCopy;
+  if (!tokenCopy)
   {
     if (!p_isa)
     {
@@ -27,7 +27,7 @@
     goto LABEL_13;
   }
 
-  if (!v9)
+  if (!lCopy)
   {
     if (!p_isa)
     {
@@ -54,12 +54,12 @@ LABEL_13:
   self = [(DEAttachmentItemSandboxExtensionHandle *)&v31 init];
   if (self)
   {
-    [v8 UTF8String];
+    [tokenCopy UTF8String];
     self->__handle = sandbox_extension_consume();
     self->_didInit = 1;
     if ([(DEAttachmentItemSandboxExtensionHandle *)self _handle]!= -1)
     {
-      objc_storeStrong(&self->_itemURL, a4);
+      objc_storeStrong(&self->_itemURL, l);
       goto LABEL_6;
     }
 
@@ -69,8 +69,8 @@ LABEL_13:
     }
 
     v21 = MEMORY[0x277CCACA8];
-    v22 = [(DEAttachmentItemSandboxExtensionHandle *)self itemURL];
-    v23 = [v22 path];
+    itemURL = [(DEAttachmentItemSandboxExtensionHandle *)self itemURL];
+    path = [itemURL path];
     v24 = __error();
     v25 = strerror(*v24);
     v26 = "Unknown";
@@ -79,7 +79,7 @@ LABEL_13:
       v26 = v25;
     }
 
-    v17 = [v21 stringWithFormat:@"Failed to consume extension token for '%@' due to error: %s", v23, v26];
+    v17 = [v21 stringWithFormat:@"Failed to consume extension token for '%@' due to error: %s", path, v26];
 
     v27 = MEMORY[0x277CCA9B8];
     v32 = *MEMORY[0x277CCA450];
@@ -113,8 +113,8 @@ LABEL_15:
 - (void)dealloc
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = [a1 itemURL];
-  v2 = [v1 path];
+  itemURL = [self itemURL];
+  path = [itemURL path];
   v3 = __error();
   strerror(*v3);
   OUTLINED_FUNCTION_0();

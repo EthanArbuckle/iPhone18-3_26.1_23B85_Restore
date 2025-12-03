@@ -1,12 +1,12 @@
 @interface VCConnectionLegacy
-- (BOOL)isLocalIPPort:(tagIPPORT *)a3;
-- (BOOL)isOnSameIPPortWithConnection:(id)a3;
+- (BOOL)isLocalIPPort:(tagIPPORT *)port;
+- (BOOL)isOnSameIPPortWithConnection:(id)connection;
 - (BOOL)isWifiToWifi;
 - (NSString)description;
 - (NSString)localInterfaceTypeString;
 - (NSString)remoteInterfaceTypeString;
-- (VCConnectionLegacy)initWithCandidatePair:(tagCANDIDATEPAIR *)a3;
-- (VCConnectionLegacy)initWithConnectionResult:(tagCONNRESULT *)a3 type:(unsigned int)a4;
+- (VCConnectionLegacy)initWithCandidatePair:(tagCANDIDATEPAIR *)pair;
+- (VCConnectionLegacy)initWithConnectionResult:(tagCONNRESULT *)result type:(unsigned int)type;
 - (id)copy;
 - (int)localConnectionType;
 - (int)remoteConnectionType;
@@ -16,11 +16,11 @@
 - (unsigned)uplinkBitrateCapOneToOne;
 - (void)dealloc;
 - (void)downlinkBitrateCap;
-- (void)setDownlinkBitrateCap:(unsigned int)a3;
+- (void)setDownlinkBitrateCap:(unsigned int)cap;
 - (void)setUpVTable;
-- (void)setUplinkAudioBitrateCapOneToOne:(unsigned int)a3;
-- (void)setUplinkBitrateCap:(unsigned int)a3;
-- (void)setUplinkBitrateCapOneToOne:(unsigned int)a3;
+- (void)setUplinkAudioBitrateCapOneToOne:(unsigned int)one;
+- (void)setUplinkBitrateCap:(unsigned int)cap;
+- (void)setUplinkBitrateCapOneToOne:(unsigned int)one;
 - (void)uplinkAudioBitrateCapOneToOne;
 - (void)uplinkBitrateCap;
 - (void)uplinkBitrateCapOneToOne;
@@ -62,7 +62,7 @@
   self->super._vTable.qrExperiments = _VCConnectionLegacy_QRExperiments;
 }
 
-- (VCConnectionLegacy)initWithConnectionResult:(tagCONNRESULT *)a3 type:(unsigned int)a4
+- (VCConnectionLegacy)initWithConnectionResult:(tagCONNRESULT *)result type:(unsigned int)type
 {
   v23 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -74,7 +74,7 @@
     v6->super._connectionType = 1;
     v8 = malloc_type_calloc(1uLL, 0x140uLL, 0x1020040A6FBA1A4uLL);
     v7->_connectionResult = v8;
-    memcpy(v8, a3, sizeof(tagCONNRESULT));
+    memcpy(v8, result, sizeof(tagCONNRESULT));
     v9 = 48;
     if ((v7->_connectionResult->mbSrc.iFlags & 1) == 0)
     {
@@ -82,7 +82,7 @@
     }
 
     v7->super._constantConnectionOverhead = v9;
-    v7->_type = a4;
+    v7->_type = type;
     v7->super._priority = -1;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -90,7 +90,7 @@
       v11 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(NSString *)[(VCConnectionLegacy *)v7 description] UTF8String];
+        uTF8String = [(NSString *)[(VCConnectionLegacy *)v7 description] UTF8String];
         *buf = 136315906;
         v16 = v10;
         v17 = 2080;
@@ -98,7 +98,7 @@
         v19 = 1024;
         v20 = 127;
         v21 = 2080;
-        v22 = v12;
+        v22 = uTF8String;
         _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCConnection: initWithConnectionResult: %s", buf, 0x26u);
       }
     }
@@ -107,27 +107,27 @@
   return v7;
 }
 
-- (VCConnectionLegacy)initWithCandidatePair:(tagCANDIDATEPAIR *)a3
+- (VCConnectionLegacy)initWithCandidatePair:(tagCANDIDATEPAIR *)pair
 {
   v10 = *MEMORY[0x1E69E9840];
   memset(&v9[1], 0, 288);
   v8 = 0u;
   v9[0] = 0u;
-  v3 = a3->var0.var1 == 5;
-  LODWORD(v8) = a3->var0.var2;
+  v3 = pair->var0.var1 == 5;
+  LODWORD(v8) = pair->var0.var2;
   DWORD1(v9[0]) = v3;
-  WORD5(v9[0]) = a3->var15;
-  v4 = *&a3->var0.var7.szIfName[12];
-  *(v9 + 12) = *&a3->var0.var7.iFlags;
+  WORD5(v9[0]) = pair->var15;
+  v4 = *&pair->var0.var7.szIfName[12];
+  *(v9 + 12) = *&pair->var0.var7.iFlags;
   *(&v9[1] + 12) = v4;
-  *(&v9[2] + 12) = *&a3->var0.var7.IP.abIPv6[12];
-  *(&v9[5] + 12) = a3->var0.var6;
-  v5 = *&a3->var1.var7.iFlags;
-  v6 = *&a3->var1.var7.szIfName[12];
-  *(&v9[5] + 4) = *&a3->var1.var7.IP.abIPv6[12];
+  *(&v9[2] + 12) = *&pair->var0.var7.IP.abIPv6[12];
+  *(&v9[5] + 12) = pair->var0.var6;
+  v5 = *&pair->var1.var7.iFlags;
+  v6 = *&pair->var1.var7.szIfName[12];
+  *(&v9[5] + 4) = *&pair->var1.var7.IP.abIPv6[12];
   *(&v9[4] + 4) = v6;
   *(&v9[3] + 4) = v5;
-  *(&v9[8] + 4) = a3->var1.var6;
+  *(&v9[8] + 4) = pair->var1.var6;
   return [(VCConnectionLegacy *)self initWithConnectionResult:&v8 type:0];
 }
 
@@ -153,26 +153,26 @@
   [(VCConnection *)&v4 dealloc];
 }
 
-- (BOOL)isLocalIPPort:(tagIPPORT *)a3
+- (BOOL)isLocalIPPort:(tagIPPORT *)port
 {
   v22 = *MEMORY[0x1E69E9840];
   connectionResult = self->_connectionResult;
   if (connectionResult)
   {
-    if ((connectionResult->mbLocal.iFlags & 1) == (a3->iFlags & 1))
+    if ((connectionResult->mbLocal.iFlags & 1) == (port->iFlags & 1))
     {
       if (connectionResult->mbLocal.iFlags)
       {
-        if (*&connectionResult->mbLocal.IP.dwIPv4 == *&a3->IP.dwIPv4 && *&connectionResult->mbLocal.IP.abIPv6[8] == *&a3->IP.abIPv6[8])
+        if (*&connectionResult->mbLocal.IP.dwIPv4 == *&port->IP.dwIPv4 && *&connectionResult->mbLocal.IP.abIPv6[8] == *&port->IP.abIPv6[8])
         {
           goto LABEL_5;
         }
       }
 
-      else if (connectionResult->mbLocal.IP.dwIPv4 == a3->IP.dwIPv4)
+      else if (connectionResult->mbLocal.IP.dwIPv4 == port->IP.dwIPv4)
       {
 LABEL_5:
-        v4 = connectionResult->mbLocal.wPort == a3->wPort;
+        v4 = connectionResult->mbLocal.wPort == port->wPort;
         goto LABEL_15;
       }
     }
@@ -244,12 +244,12 @@ LABEL_15:
   return v4;
 }
 
-- (BOOL)isOnSameIPPortWithConnection:(id)a3
+- (BOOL)isOnSameIPPortWithConnection:(id)connection
 {
   v33 = *MEMORY[0x1E69E9840];
   connectionResult = self->_connectionResult;
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
-  if (a3 && connectionResult)
+  if (connection && connectionResult)
   {
     if (ErrorLogLevelForModule >= 8)
     {
@@ -267,9 +267,9 @@ LABEL_15:
           v27 = 1024;
           v28 = 200;
           v29 = 2080;
-          v30 = [(NSString *)[(VCConnectionLegacy *)self description] UTF8String];
+          uTF8String = [(NSString *)[(VCConnectionLegacy *)self description] UTF8String];
           v31 = 2080;
-          v32 = [objc_msgSend(a3 "description")];
+          v32 = [objc_msgSend(connection "description")];
           _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCConnection: isOnSameIPPortWithConnection: %s vs. %s", &v23, 0x30u);
         }
       }
@@ -283,15 +283,15 @@ LABEL_15:
         v27 = 1024;
         v28 = 200;
         v29 = 2080;
-        v30 = [(NSString *)[(VCConnectionLegacy *)self description] UTF8String];
+        uTF8String = [(NSString *)[(VCConnectionLegacy *)self description] UTF8String];
         v31 = 2080;
-        v32 = [objc_msgSend(a3 "description")];
+        v32 = [objc_msgSend(connection "description")];
         _os_log_debug_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEBUG, " [%s] %s:%d VCConnection: isOnSameIPPortWithConnection: %s vs. %s", &v23, 0x30u);
       }
     }
 
     v14 = self->_connectionResult;
-    v15 = *(a3 + 36);
+    v15 = *(connection + 36);
     if ((v14->mbLocal.iFlags & 1) == (*(v15 + 28) & 1))
     {
       if (v14->mbLocal.iFlags)
@@ -594,7 +594,7 @@ LABEL_44:
   return 0;
 }
 
-- (void)setDownlinkBitrateCap:(unsigned int)a3
+- (void)setDownlinkBitrateCap:(unsigned int)cap
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -606,7 +606,7 @@ LABEL_44:
   }
 }
 
-- (void)setUplinkBitrateCap:(unsigned int)a3
+- (void)setUplinkBitrateCap:(unsigned int)cap
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -632,7 +632,7 @@ LABEL_44:
   return 0;
 }
 
-- (void)setUplinkAudioBitrateCapOneToOne:(unsigned int)a3
+- (void)setUplinkAudioBitrateCapOneToOne:(unsigned int)one
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -658,7 +658,7 @@ LABEL_44:
   return 0;
 }
 
-- (void)setUplinkBitrateCapOneToOne:(unsigned int)a3
+- (void)setUplinkBitrateCapOneToOne:(unsigned int)one
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {

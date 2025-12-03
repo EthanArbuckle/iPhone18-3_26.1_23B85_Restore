@@ -1,42 +1,42 @@
 @interface BEWebViewFactoryStylesheetSet
-- (BEWebViewFactoryStylesheetSet)initWithMainframeOnlyStylesheets:(id)a3 allFrameStylesheets:(id)a4 variableStylesheets:(id)a5 documentAttributes:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (BEWebViewFactoryStylesheetSet)initWithMainframeOnlyStylesheets:(id)stylesheets allFrameStylesheets:(id)frameStylesheets variableStylesheets:(id)variableStylesheets documentAttributes:(id)attributes;
+- (BOOL)isEqual:(id)equal;
 - (NSString)unifedAllFrameStylesheet;
 - (WKContentWorld)allFrameContentWorld;
 - (WKContentWorld)mainframeContentWorld;
 - (WKContentWorld)variableContentWorld;
 - (id)description;
-- (void)_addStylesheetSetToUserContentController:(id)a3 includeMainframe:(BOOL)a4 includeAllFrame:(BOOL)a5 includeVariable:(BOOL)a6;
-- (void)applyToWebView:(id)a3;
-- (void)applyVariableStylesheetsToWebView:(id)a3;
+- (void)_addStylesheetSetToUserContentController:(id)controller includeMainframe:(BOOL)mainframe includeAllFrame:(BOOL)frame includeVariable:(BOOL)variable;
+- (void)applyToWebView:(id)view;
+- (void)applyVariableStylesheetsToWebView:(id)view;
 @end
 
 @implementation BEWebViewFactoryStylesheetSet
 
-- (BEWebViewFactoryStylesheetSet)initWithMainframeOnlyStylesheets:(id)a3 allFrameStylesheets:(id)a4 variableStylesheets:(id)a5 documentAttributes:(id)a6
+- (BEWebViewFactoryStylesheetSet)initWithMainframeOnlyStylesheets:(id)stylesheets allFrameStylesheets:(id)frameStylesheets variableStylesheets:(id)variableStylesheets documentAttributes:(id)attributes
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  stylesheetsCopy = stylesheets;
+  frameStylesheetsCopy = frameStylesheets;
+  variableStylesheetsCopy = variableStylesheets;
+  attributesCopy = attributes;
   v24.receiver = self;
   v24.super_class = BEWebViewFactoryStylesheetSet;
   v14 = [(BEWebViewFactoryStylesheetSet *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [stylesheetsCopy copy];
     mainframeOnlyStylesheets = v14->_mainframeOnlyStylesheets;
     v14->_mainframeOnlyStylesheets = v15;
 
-    v17 = [v11 copy];
+    v17 = [frameStylesheetsCopy copy];
     allFrameStylesheets = v14->_allFrameStylesheets;
     v14->_allFrameStylesheets = v17;
 
-    v19 = [v12 copy];
+    v19 = [variableStylesheetsCopy copy];
     variableStylesheets = v14->_variableStylesheets;
     v14->_variableStylesheets = v19;
 
-    v21 = [v13 copy];
+    v21 = [attributesCopy copy];
     documentAttributes = v14->_documentAttributes;
     v14->_documentAttributes = v21;
   }
@@ -46,54 +46,54 @@
 
 - (NSString)unifedAllFrameStylesheet
 {
-  v2 = [(BEWebViewFactoryStylesheetSet *)self allFrameStylesheets];
-  v3 = [v2 componentsJoinedByString:@"\n"];
+  allFrameStylesheets = [(BEWebViewFactoryStylesheetSet *)self allFrameStylesheets];
+  v3 = [allFrameStylesheets componentsJoinedByString:@"\n"];
 
   return v3;
 }
 
-- (void)applyToWebView:(id)a3
+- (void)applyToWebView:(id)view
 {
-  v5 = [a3 configuration];
-  v4 = [v5 userContentController];
-  [(BEWebViewFactoryStylesheetSet *)self _addStylesheetSetToUserContentController:v4 includeMainframe:1 includeAllFrame:1 includeVariable:1];
+  configuration = [view configuration];
+  userContentController = [configuration userContentController];
+  [(BEWebViewFactoryStylesheetSet *)self _addStylesheetSetToUserContentController:userContentController includeMainframe:1 includeAllFrame:1 includeVariable:1];
 }
 
-- (void)applyVariableStylesheetsToWebView:(id)a3
+- (void)applyVariableStylesheetsToWebView:(id)view
 {
-  v5 = [a3 configuration];
-  v4 = [v5 userContentController];
-  [(BEWebViewFactoryStylesheetSet *)self _addStylesheetSetToUserContentController:v4 includeMainframe:0 includeAllFrame:0 includeVariable:1];
+  configuration = [view configuration];
+  userContentController = [configuration userContentController];
+  [(BEWebViewFactoryStylesheetSet *)self _addStylesheetSetToUserContentController:userContentController includeMainframe:0 includeAllFrame:0 includeVariable:1];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = BUDynamicCast();
 
   if (v5)
   {
-    v6 = [(BEWebViewFactoryStylesheetSet *)self mainframeOnlyStylesheets];
-    v7 = [v5 mainframeOnlyStylesheets];
-    if ([v6 isEqual:v7])
+    mainframeOnlyStylesheets = [(BEWebViewFactoryStylesheetSet *)self mainframeOnlyStylesheets];
+    mainframeOnlyStylesheets2 = [v5 mainframeOnlyStylesheets];
+    if ([mainframeOnlyStylesheets isEqual:mainframeOnlyStylesheets2])
     {
-      v8 = [(BEWebViewFactoryStylesheetSet *)self allFrameStylesheets];
-      v9 = [v5 allFrameStylesheets];
-      if ([v8 isEqual:v9])
+      allFrameStylesheets = [(BEWebViewFactoryStylesheetSet *)self allFrameStylesheets];
+      allFrameStylesheets2 = [v5 allFrameStylesheets];
+      if ([allFrameStylesheets isEqual:allFrameStylesheets2])
       {
-        v10 = [(BEWebViewFactoryStylesheetSet *)self variableStylesheets];
-        v11 = [v5 variableStylesheets];
-        if ([v10 isEqual:v11])
+        variableStylesheets = [(BEWebViewFactoryStylesheetSet *)self variableStylesheets];
+        variableStylesheets2 = [v5 variableStylesheets];
+        if ([variableStylesheets isEqual:variableStylesheets2])
         {
-          v12 = [(BEWebViewFactoryStylesheetSet *)self documentAttributes];
-          v13 = [v5 documentAttributes];
-          v14 = [v12 isEqual:v13];
+          documentAttributes = [(BEWebViewFactoryStylesheetSet *)self documentAttributes];
+          documentAttributes2 = [v5 documentAttributes];
+          v14 = [documentAttributes isEqual:documentAttributes2];
         }
 
         else
@@ -126,14 +126,14 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BEWebViewFactoryStylesheetSet *)self mainframeOnlyStylesheets];
-  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 count]);
-  v7 = [(BEWebViewFactoryStylesheetSet *)self allFrameStylesheets];
-  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 count]);
-  v9 = [(BEWebViewFactoryStylesheetSet *)self variableStylesheets];
-  v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 count]);
-  v11 = [(BEWebViewFactoryStylesheetSet *)self documentAttributes];
-  v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v11 count]);
+  mainframeOnlyStylesheets = [(BEWebViewFactoryStylesheetSet *)self mainframeOnlyStylesheets];
+  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [mainframeOnlyStylesheets count]);
+  allFrameStylesheets = [(BEWebViewFactoryStylesheetSet *)self allFrameStylesheets];
+  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [allFrameStylesheets count]);
+  variableStylesheets = [(BEWebViewFactoryStylesheetSet *)self variableStylesheets];
+  v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [variableStylesheets count]);
+  documentAttributes = [(BEWebViewFactoryStylesheetSet *)self documentAttributes];
+  v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [documentAttributes count]);
   v13 = [NSString stringWithFormat:@"<%@ %p mainframeOnlyStylesheets=[%@ items] allFrameStylesheets=[%@ items] variableStylesheets=[%@ items] documentAttributes=[%@ items]>", v4, self, v6, v8, v10, v12];
 
   return v13;
@@ -184,18 +184,18 @@
   return variableContentWorld;
 }
 
-- (void)_addStylesheetSetToUserContentController:(id)a3 includeMainframe:(BOOL)a4 includeAllFrame:(BOOL)a5 includeVariable:(BOOL)a6
+- (void)_addStylesheetSetToUserContentController:(id)controller includeMainframe:(BOOL)mainframe includeAllFrame:(BOOL)frame includeVariable:(BOOL)variable
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  v42 = v6;
-  if (v8)
+  variableCopy = variable;
+  frameCopy = frame;
+  mainframeCopy = mainframe;
+  controllerCopy = controller;
+  v42 = variableCopy;
+  if (mainframeCopy)
   {
-    v41 = v7;
-    v11 = [(BEWebViewFactoryStylesheetSet *)self mainframeContentWorld];
-    [v10 _removeAllUserStyleSheetsAssociatedWithContentWorld:v11];
+    v41 = frameCopy;
+    mainframeContentWorld = [(BEWebViewFactoryStylesheetSet *)self mainframeContentWorld];
+    [controllerCopy _removeAllUserStyleSheetsAssociatedWithContentWorld:mainframeContentWorld];
 
     v53 = 0u;
     v54 = 0u;
@@ -218,10 +218,10 @@
 
           v17 = *(*(&v51 + 1) + 8 * i);
           v18 = [_WKUserStyleSheet alloc];
-          v19 = [(BEWebViewFactoryStylesheetSet *)self mainframeContentWorld];
-          v20 = [v18 initWithSource:v17 forWKWebView:0 forMainFrameOnly:1 includeMatchPatternStrings:0 excludeMatchPatternStrings:0 baseURL:0 level:0 contentWorld:v19];
+          mainframeContentWorld2 = [(BEWebViewFactoryStylesheetSet *)self mainframeContentWorld];
+          v20 = [v18 initWithSource:v17 forWKWebView:0 forMainFrameOnly:1 includeMatchPatternStrings:0 excludeMatchPatternStrings:0 baseURL:0 level:0 contentWorld:mainframeContentWorld2];
 
-          [v10 _addUserStyleSheet:v20];
+          [controllerCopy _addUserStyleSheet:v20];
         }
 
         v14 = [(NSArray *)v12 countByEnumeratingWithState:&v51 objects:v57 count:16];
@@ -233,7 +233,7 @@
     if (!v41)
     {
 LABEL_3:
-      if (!v6)
+      if (!variableCopy)
       {
         goto LABEL_29;
       }
@@ -242,13 +242,13 @@ LABEL_3:
     }
   }
 
-  else if (!v7)
+  else if (!frameCopy)
   {
     goto LABEL_3;
   }
 
-  v21 = [(BEWebViewFactoryStylesheetSet *)self allFrameContentWorld];
-  [v10 _removeAllUserStyleSheetsAssociatedWithContentWorld:v21];
+  allFrameContentWorld = [(BEWebViewFactoryStylesheetSet *)self allFrameContentWorld];
+  [controllerCopy _removeAllUserStyleSheetsAssociatedWithContentWorld:allFrameContentWorld];
 
   v49 = 0u;
   v50 = 0u;
@@ -271,10 +271,10 @@ LABEL_3:
 
         v27 = *(*(&v47 + 1) + 8 * j);
         v28 = [_WKUserStyleSheet alloc];
-        v29 = [(BEWebViewFactoryStylesheetSet *)self allFrameContentWorld];
-        v30 = [v28 initWithSource:v27 forWKWebView:0 forMainFrameOnly:0 includeMatchPatternStrings:0 excludeMatchPatternStrings:0 baseURL:0 level:0 contentWorld:v29];
+        allFrameContentWorld2 = [(BEWebViewFactoryStylesheetSet *)self allFrameContentWorld];
+        v30 = [v28 initWithSource:v27 forWKWebView:0 forMainFrameOnly:0 includeMatchPatternStrings:0 excludeMatchPatternStrings:0 baseURL:0 level:0 contentWorld:allFrameContentWorld2];
 
-        [v10 _addUserStyleSheet:v30];
+        [controllerCopy _addUserStyleSheet:v30];
       }
 
       v24 = [(NSArray *)v22 countByEnumeratingWithState:&v47 objects:v56 count:16];
@@ -286,8 +286,8 @@ LABEL_3:
   if (v42)
   {
 LABEL_21:
-    v31 = [(BEWebViewFactoryStylesheetSet *)self variableContentWorld];
-    [v10 _removeAllUserStyleSheetsAssociatedWithContentWorld:v31];
+    variableContentWorld = [(BEWebViewFactoryStylesheetSet *)self variableContentWorld];
+    [controllerCopy _removeAllUserStyleSheetsAssociatedWithContentWorld:variableContentWorld];
 
     v45 = 0u;
     v46 = 0u;
@@ -310,10 +310,10 @@ LABEL_21:
 
           v37 = *(*(&v43 + 1) + 8 * k);
           v38 = [_WKUserStyleSheet alloc];
-          v39 = [(BEWebViewFactoryStylesheetSet *)self variableContentWorld];
-          v40 = [v38 initWithSource:v37 forWKWebView:0 forMainFrameOnly:0 includeMatchPatternStrings:0 excludeMatchPatternStrings:0 baseURL:0 level:0 contentWorld:v39];
+          variableContentWorld2 = [(BEWebViewFactoryStylesheetSet *)self variableContentWorld];
+          v40 = [v38 initWithSource:v37 forWKWebView:0 forMainFrameOnly:0 includeMatchPatternStrings:0 excludeMatchPatternStrings:0 baseURL:0 level:0 contentWorld:variableContentWorld2];
 
-          [v10 _addUserStyleSheet:v40];
+          [controllerCopy _addUserStyleSheet:v40];
         }
 
         v34 = [(NSArray *)v32 countByEnumeratingWithState:&v43 objects:v55 count:16];

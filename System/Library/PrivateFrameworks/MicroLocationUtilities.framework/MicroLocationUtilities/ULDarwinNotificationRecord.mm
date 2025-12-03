@@ -1,23 +1,23 @@
 @interface ULDarwinNotificationRecord
-- (ULDarwinNotificationRecord)initWithNotificationName:(id)a3 registrationToken:(id)a4 handler:(id)a5;
+- (ULDarwinNotificationRecord)initWithNotificationName:(id)name registrationToken:(id)token handler:(id)handler;
 @end
 
 @implementation ULDarwinNotificationRecord
 
-- (ULDarwinNotificationRecord)initWithNotificationName:(id)a3 registrationToken:(id)a4 handler:(id)a5
+- (ULDarwinNotificationRecord)initWithNotificationName:(id)name registrationToken:(id)token handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  tokenCopy = token;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = ULDarwinNotificationRecord;
   v11 = [(ULDarwinNotificationRecord *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(ULDarwinNotificationRecord *)v11 setNotificationName:v8];
-    [(ULDarwinNotificationRecord *)v12 setRegistrationToken:v9];
-    [(ULDarwinNotificationRecord *)v12 setHandler:v10];
+    [(ULDarwinNotificationRecord *)v11 setNotificationName:nameCopy];
+    [(ULDarwinNotificationRecord *)v12 setRegistrationToken:tokenCopy];
+    [(ULDarwinNotificationRecord *)v12 setHandler:handlerCopy];
   }
 
   return v12;

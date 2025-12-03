@@ -1,21 +1,21 @@
 @interface MADGenerationXPCServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation MADGenerationXPCServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     sub_100008EF4();
   }
 
-  if (v7)
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -54,11 +54,11 @@ LABEL_18:
           {
             v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MADGenerationXPCServiceProtocol];
             [(MADGenerationXPCServiceDelegate *)self configureServerInterface:v14];
-            [v7 setExportedInterface:v14];
+            [connectionCopy setExportedInterface:v14];
             v15 = objc_alloc_init(MADGenerationXPCService);
-            [v7 setExportedObject:v15];
+            [connectionCopy setExportedObject:v15];
 
-            [v7 resume];
+            [connectionCopy resume];
             v12 = 1;
 LABEL_20:
             sub_1000020D0(&cf1);

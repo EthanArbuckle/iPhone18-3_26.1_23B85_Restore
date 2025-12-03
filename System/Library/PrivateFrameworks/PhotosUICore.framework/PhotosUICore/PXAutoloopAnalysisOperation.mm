@@ -1,7 +1,7 @@
 @interface PXAutoloopAnalysisOperation
 - (PXAutoloopAnalysisOperation)init;
-- (PXAutoloopAnalysisOperation)initWithEditSource:(id)a3;
-- (id)recipeForVariationType:(int64_t)a3;
+- (PXAutoloopAnalysisOperation)initWithEditSource:(id)source;
+- (id)recipeForVariationType:(int64_t)type;
 - (void)_timeout;
 - (void)cancel;
 - (void)main;
@@ -12,7 +12,7 @@
 - (void)main
 {
   v72 = *MEMORY[0x1E69E9840];
-  v55 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   objc_initWeak(&location, self);
   v3 = dispatch_time(0, 30000000000);
   block[0] = MEMORY[0x1E69E9820];
@@ -23,19 +23,19 @@
   dispatch_after(v3, MEMORY[0x1E69E96A0], block);
   v4 = MEMORY[0x1E695DFF8];
   v5 = NSTemporaryDirectory();
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v5 stringByAppendingPathComponent:v7];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [v5 stringByAppendingPathComponent:uUIDString];
   v9 = [v4 fileURLWithPath:v8];
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  [v10 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:0];
 
-  v54 = [(PXAutoloopAnalysisOperation *)self editSource];
-  v11 = [v54 videoEditSource];
-  v12 = [v11 videoURL];
+  editSource = [(PXAutoloopAnalysisOperation *)self editSource];
+  videoEditSource = [editSource videoEditSource];
+  videoURL = [videoEditSource videoURL];
 
-  v13 = [MEMORY[0x1E6987E28] assetWithURL:v12];
+  v13 = [MEMORY[0x1E6987E28] assetWithURL:videoURL];
   v14 = PLPhotoEditGetLog();
   v15 = os_signpost_id_make_with_pointer(v14, self);
   v16 = v14;
@@ -60,11 +60,11 @@
   }
 
   CMTimeGetSeconds(&buf);
-  v19 = self;
+  selfCopy = self;
   kdebug_trace();
 
-  v20 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v20 postNotificationName:@"PXAutoloopAnalysisOperationDidStartNotification" object:v19];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PXAutoloopAnalysisOperationDidStartNotification" object:selfCopy];
 
   v59 = 0;
   v21 = v13;
@@ -90,9 +90,9 @@
   _Block_object_dispose(&v63, 8);
   if (!v22)
   {
-    v50 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v51 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"struct autoloopSettings *_get_autoloopSettings_forAsset(AVAsset *__strong, autoloopErrorCode *)"}];
-    [v50 handleFailureInFunction:v51 file:@"PXAutoloopSoftLinks.m" lineNumber:33 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v51 file:@"PXAutoloopSoftLinks.m" lineNumber:33 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -109,17 +109,17 @@
     buf.timescale = 1;
     buf.value = 0x200000000;
     v63 = 0;
-    v27 = [(PXAutoloopAnalysisOperation *)v19 progress];
+    progress = [(PXAutoloopAnalysisOperation *)selfCopy progress];
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
     v56[2] = __35__PXAutoloopAnalysisOperation_main__block_invoke_33;
     v56[3] = &unk_1E77311A0;
-    v28 = v27;
+    v28 = progress;
     v57 = v28;
     objc_copyWeak(&v58, &location);
     _runLiveAnalysisPipeline(v25, v9, v21, &buf, &v63, v56);
     v30 = v29;
-    if (([(PXAutoloopAnalysisOperation *)v19 isCancelled]& 1) != 0)
+    if (([(PXAutoloopAnalysisOperation *)selfCopy isCancelled]& 1) != 0)
     {
       v26 = 0;
     }
@@ -136,11 +136,11 @@
       if (v31)
       {
         v32 = [v31 copy];
-        analysisResult = v19->_analysisResult;
-        v19->_analysisResult = v32;
+        analysisResult = selfCopy->_analysisResult;
+        selfCopy->_analysisResult = v32;
 
         v26 = 0;
-        v19->_succeeded = 1;
+        selfCopy->_succeeded = 1;
       }
 
       else
@@ -167,8 +167,8 @@
 
   if (v26)
   {
-    objc_storeStrong(&v19->_error, v26);
-    v19->_succeeded = 0;
+    objc_storeStrong(&selfCopy->_error, v26);
+    selfCopy->_succeeded = 0;
   }
 
   if (v25)
@@ -176,28 +176,28 @@
     _autoloopSettingsDestroy(v25);
   }
 
-  v40 = [MEMORY[0x1E695DF00] date];
-  [v40 timeIntervalSinceDate:v55];
+  date2 = [MEMORY[0x1E695DF00] date];
+  [date2 timeIntervalSinceDate:date];
   v42 = v41;
 
   v43 = PLUIGetLog();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf.value) = 138412546;
-    *(&buf.value + 4) = v19;
+    *(&buf.value + 4) = selfCopy;
     LOWORD(buf.flags) = 2048;
     *(&buf.flags + 2) = v42;
     _os_log_impl(&dword_1A3C1C000, v43, OS_LOG_TYPE_DEFAULT, "%@ finished generating variation recipes in %.2fs", &buf, 0x16u);
   }
 
   v44 = [MEMORY[0x1E696AD98] numberWithDouble:v42];
-  duration = v19->_duration;
-  v19->_duration = v44;
+  duration = selfCopy->_duration;
+  selfCopy->_duration = v44;
 
-  v46 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v46 postNotificationName:@"PXAutoloopAnalysisOperationDidEndNotification" object:v19];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 postNotificationName:@"PXAutoloopAnalysisOperationDidEndNotification" object:selfCopy];
 
-  v47 = v19;
+  v47 = selfCopy;
   kdebug_trace();
 
   v48 = v17;
@@ -288,25 +288,25 @@ id __35__PXAutoloopAnalysisOperation_main__block_invoke(uint64_t a1)
   }
 }
 
-- (id)recipeForVariationType:(int64_t)a3
+- (id)recipeForVariationType:(int64_t)type
 {
   recipesByVariationType = self->_recipesByVariationType;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v5 = [(NSDictionary *)recipesByVariationType objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (PXAutoloopAnalysisOperation)initWithEditSource:(id)a3
+- (PXAutoloopAnalysisOperation)initWithEditSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v15.receiver = self;
   v15.super_class = PXAutoloopAnalysisOperation;
   v6 = [(PXAutoloopAnalysisOperation *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_editSource, a3);
+    objc_storeStrong(&v6->_editSource, source);
     v8 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:50];
     progress = v7->_progress;
     v7->_progress = v8;
@@ -336,8 +336,8 @@ void __50__PXAutoloopAnalysisOperation_initWithEditSource___block_invoke(uint64_
 
 - (PXAutoloopAnalysisOperation)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAutoloopAnalysisOperation.m" lineNumber:41 description:{@"%s is not available as initializer", "-[PXAutoloopAnalysisOperation init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAutoloopAnalysisOperation.m" lineNumber:41 description:{@"%s is not available as initializer", "-[PXAutoloopAnalysisOperation init]"}];
 
   abort();
 }

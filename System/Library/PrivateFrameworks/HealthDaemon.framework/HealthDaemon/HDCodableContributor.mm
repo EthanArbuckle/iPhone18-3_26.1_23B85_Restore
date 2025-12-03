@@ -1,20 +1,20 @@
 @interface HDCodableContributor
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeleted:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeleted:(BOOL)deleted;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableContributor
 
-- (void)setHasDeleted:(BOOL)a3
+- (void)setHasDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableContributor;
   v4 = [(HDCodableContributor *)&v8 description];
-  v5 = [(HDCodableContributor *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableContributor *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   has = self->_has;
@@ -67,8 +67,8 @@
   syncIdentity = self->_syncIdentity;
   if (syncIdentity)
   {
-    v10 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"syncIdentity"];
+    dictionaryRepresentation = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"syncIdentity"];
   }
 
   appleID = self->_appleID;
@@ -86,14 +86,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_uuid)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -101,7 +101,7 @@
   {
     deleted = self->_deleted;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -109,75 +109,75 @@
   {
     modificationDate = self->_modificationDate;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_syncIdentity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_appleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_callerID)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v6;
+    [toCopy setUuid:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 48) = self->_deleted;
-    *(v4 + 52) |= 2u;
+    *(toCopy + 48) = self->_deleted;
+    *(toCopy + 52) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_modificationDate;
-    *(v4 + 52) |= 1u;
+    *(toCopy + 1) = *&self->_modificationDate;
+    *(toCopy + 52) |= 1u;
   }
 
   if (self->_syncIdentity)
   {
     [v6 setSyncIdentity:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_appleID)
   {
     [v6 setAppleID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_callerID)
   {
     [v6 setCallerID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_uuid copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -195,31 +195,31 @@
     *(v5 + 52) |= 1u;
   }
 
-  v9 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:a3];
+  v9 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:zone];
   v10 = *(v5 + 32);
   *(v5 + 32) = v9;
 
-  v11 = [(NSString *)self->_appleID copyWithZone:a3];
+  v11 = [(NSString *)self->_appleID copyWithZone:zone];
   v12 = *(v5 + 16);
   *(v5 + 16) = v11;
 
-  v13 = [(NSString *)self->_callerID copyWithZone:a3];
+  v13 = [(NSString *)self->_callerID copyWithZone:zone];
   v14 = *(v5 + 24);
   *(v5 + 24) = v13;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 5))
+  if (uuid | *(equalCopy + 5))
   {
     if (![(NSData *)uuid isEqual:?])
     {
@@ -227,10 +227,10 @@
     }
   }
 
-  v6 = *(v4 + 52);
+  v6 = *(equalCopy + 52);
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 52) & 2) == 0)
+    if ((*(equalCopy + 52) & 2) == 0)
     {
       goto LABEL_6;
     }
@@ -240,21 +240,21 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if ((*(v4 + 52) & 2) == 0)
+  if ((*(equalCopy + 52) & 2) == 0)
   {
     goto LABEL_22;
   }
 
-  v7 = *(v4 + 48);
+  v7 = *(equalCopy + 48);
   if (self->_deleted)
   {
-    if ((*(v4 + 48) & 1) == 0)
+    if ((*(equalCopy + 48) & 1) == 0)
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_22;
   }
@@ -262,25 +262,25 @@ LABEL_22:
 LABEL_6:
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_modificationDate != *(v4 + 1))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_modificationDate != *(equalCopy + 1))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_22;
   }
 
   syncIdentity = self->_syncIdentity;
-  if (syncIdentity | *(v4 + 4) && ![(HDCodableSyncIdentity *)syncIdentity isEqual:?])
+  if (syncIdentity | *(equalCopy + 4) && ![(HDCodableSyncIdentity *)syncIdentity isEqual:?])
   {
     goto LABEL_22;
   }
 
   appleID = self->_appleID;
-  if (appleID | *(v4 + 2))
+  if (appleID | *(equalCopy + 2))
   {
     if (![(NSString *)appleID isEqual:?])
     {
@@ -289,7 +289,7 @@ LABEL_6:
   }
 
   callerID = self->_callerID;
-  if (callerID | *(v4 + 3))
+  if (callerID | *(equalCopy + 3))
   {
     v11 = [(NSString *)callerID isEqual:?];
   }
@@ -358,32 +358,32 @@ LABEL_9:
   return v11 ^ v12 ^ [(NSString *)self->_callerID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 5))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(HDCodableContributor *)self setUuid:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 2) != 0)
   {
-    self->_deleted = *(v4 + 48);
+    self->_deleted = *(fromCopy + 48);
     *&self->_has |= 2u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
   }
 
   if (v5)
   {
-    self->_modificationDate = *(v4 + 1);
+    self->_modificationDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
   syncIdentity = self->_syncIdentity;
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   if (syncIdentity)
   {
     if (!v7)
@@ -404,21 +404,21 @@ LABEL_9:
     syncIdentity = [(HDCodableContributor *)self setSyncIdentity:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_13:
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     syncIdentity = [(HDCodableContributor *)self setAppleID:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     syncIdentity = [(HDCodableContributor *)self setCallerID:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](syncIdentity, v4);
+  MEMORY[0x2821F96F8](syncIdentity, fromCopy);
 }
 
 @end

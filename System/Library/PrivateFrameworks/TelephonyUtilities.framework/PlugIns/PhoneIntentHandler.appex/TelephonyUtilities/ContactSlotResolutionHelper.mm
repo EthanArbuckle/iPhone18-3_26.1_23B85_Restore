@@ -1,58 +1,58 @@
 @interface ContactSlotResolutionHelper
-- (ContactSlotResolutionHelper)initWithUnresolvedPerson:(id)a3 availableContacts:(id)a4;
-- (id)_lookup:(id)a3;
-- (id)buildConfirmationResultForContact:(id)a3 withReason:(int64_t)a4;
-- (id)buildDisambiguationResultForContacts:(id)a3;
+- (ContactSlotResolutionHelper)initWithUnresolvedPerson:(id)person availableContacts:(id)contacts;
+- (id)_lookup:(id)_lookup;
+- (id)buildConfirmationResultForContact:(id)contact withReason:(int64_t)reason;
+- (id)buildDisambiguationResultForContacts:(id)contacts;
 @end
 
 @implementation ContactSlotResolutionHelper
 
-- (ContactSlotResolutionHelper)initWithUnresolvedPerson:(id)a3 availableContacts:(id)a4
+- (ContactSlotResolutionHelper)initWithUnresolvedPerson:(id)person availableContacts:(id)contacts
 {
-  v7 = a3;
-  v8 = a4;
+  personCopy = person;
+  contactsCopy = contacts;
   v12.receiver = self;
   v12.super_class = ContactSlotResolutionHelper;
   v9 = [(ContactSlotResolutionHelper *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_unresolvedPerson, a3);
-    objc_storeStrong(&v10->_availableContacts, a4);
+    objc_storeStrong(&v9->_unresolvedPerson, person);
+    objc_storeStrong(&v10->_availableContacts, contacts);
   }
 
   return v10;
 }
 
-- (id)buildConfirmationResultForContact:(id)a3 withReason:(int64_t)a4
+- (id)buildConfirmationResultForContact:(id)contact withReason:(int64_t)reason
 {
-  v6 = [(ContactSlotResolutionHelper *)self _lookup:a3];
-  v7 = [(ContactSlotResolutionHelper *)self unresolvedPerson];
-  v8 = [v7 personHandle];
+  v6 = [(ContactSlotResolutionHelper *)self _lookup:contact];
+  unresolvedPerson = [(ContactSlotResolutionHelper *)self unresolvedPerson];
+  personHandle = [unresolvedPerson personHandle];
 
-  v9 = [v8 value];
-  v10 = [v8 type];
-  v11 = [v8 label];
-  v12 = [StartCallIntentHandlerUtilities inPersonFromContact:v6 handleValue:v9 handleType:v10 handleLabel:v11];
+  value = [personHandle value];
+  type = [personHandle type];
+  label = [personHandle label];
+  v12 = [StartCallIntentHandlerUtilities inPersonFromContact:v6 handleValue:value handleType:type handleLabel:label];
 
-  v13 = [INStartCallContactResolutionResult confirmationRequiredWithPersonToConfirm:v12 forReason:a4];
+  v13 = [INStartCallContactResolutionResult confirmationRequiredWithPersonToConfirm:v12 forReason:reason];
 
   return v13;
 }
 
-- (id)buildDisambiguationResultForContacts:(id)a3
+- (id)buildDisambiguationResultForContacts:(id)contacts
 {
-  v4 = a3;
-  v20 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
-  v5 = self;
-  v6 = [(ContactSlotResolutionHelper *)self unresolvedPerson];
-  v7 = [v6 personHandle];
+  contactsCopy = contacts;
+  v20 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(contactsCopy, "count")}];
+  selfCopy = self;
+  unresolvedPerson = [(ContactSlotResolutionHelper *)self unresolvedPerson];
+  personHandle = [unresolvedPerson personHandle];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v4;
+  obj = contactsCopy;
   v8 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -67,11 +67,11 @@
           objc_enumerationMutation(obj);
         }
 
-        v12 = [(ContactSlotResolutionHelper *)v5 _lookup:*(*(&v21 + 1) + 8 * i)];
-        v13 = [v7 value];
-        v14 = [v7 type];
-        v15 = [v7 label];
-        v16 = [StartCallIntentHandlerUtilities inPersonFromContact:v12 handleValue:v13 handleType:v14 handleLabel:v15];
+        v12 = [(ContactSlotResolutionHelper *)selfCopy _lookup:*(*(&v21 + 1) + 8 * i)];
+        value = [personHandle value];
+        type = [personHandle type];
+        label = [personHandle label];
+        v16 = [StartCallIntentHandlerUtilities inPersonFromContact:v12 handleValue:value handleType:type handleLabel:label];
 
         [v20 addObject:v16];
       }
@@ -87,11 +87,11 @@
   return v17;
 }
 
-- (id)_lookup:(id)a3
+- (id)_lookup:(id)_lookup
 {
-  v4 = a3;
-  v5 = [(ContactSlotResolutionHelper *)self availableContacts];
-  v6 = [v5 contactWithId:v4];
+  _lookupCopy = _lookup;
+  availableContacts = [(ContactSlotResolutionHelper *)self availableContacts];
+  v6 = [availableContacts contactWithId:_lookupCopy];
 
   if (!v6)
   {

@@ -8,7 +8,7 @@
 {
   if (a4)
   {
-    if (a3 || a4 != [a1 count])
+    if (a3 || a4 != [self count])
     {
       v8 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:a4];
       v9 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{a3, a4}];
@@ -18,21 +18,21 @@
       v13[3] = &unk_1E7CF2A50;
       v14 = v8;
       v10 = v8;
-      [a1 enumerateObjectsAtIndexes:v9 options:0 usingBlock:v13];
+      [self enumerateObjectsAtIndexes:v9 options:0 usingBlock:v13];
 
       v11 = [v10 copy];
       goto LABEL_8;
     }
 
-    v7 = [a1 copy];
+    orderedSet = [self copy];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DFB8] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
   }
 
-  v11 = v7;
+  v11 = orderedSet;
 LABEL_8:
 
   return v11;

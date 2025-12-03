@@ -1,7 +1,7 @@
 @interface _UIWeakReference
-+ (id)weakReferenceWrappingObject:(id)a3;
-- (_UIWeakReference)initWithObject:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)weakReferenceWrappingObject:(id)object;
+- (_UIWeakReference)initWithObject:(id)object;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)object;
 @end
 
@@ -14,22 +14,22 @@
   return WeakRetained;
 }
 
-- (_UIWeakReference)initWithObject:(id)a3
+- (_UIWeakReference)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = _UIWeakReference;
   v5 = [(_UIWeakReference *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_object, v4);
+    objc_storeWeak(&v5->_object, objectCopy);
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_UIWeakReference alloc];
   WeakRetained = objc_loadWeakRetained(&self->_object);
@@ -38,12 +38,12 @@
   return v6;
 }
 
-+ (id)weakReferenceWrappingObject:(id)a3
++ (id)weakReferenceWrappingObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    v3 = a3;
-    v4 = [[_UIWeakReference alloc] initWithObject:v3];
+    objectCopy = object;
+    v4 = [[_UIWeakReference alloc] initWithObject:objectCopy];
   }
 
   else

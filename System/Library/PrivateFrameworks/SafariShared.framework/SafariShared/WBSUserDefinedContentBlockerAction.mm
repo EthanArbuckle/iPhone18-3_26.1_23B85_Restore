@@ -2,21 +2,21 @@
 - ($01BB1521EC52D44A8E7628F5261DCEC8)edgeInsets;
 - (CGRect)bounds;
 - (NSArray)selectorsForStyleSheetRules;
-- (WBSUserDefinedContentBlockerAction)initWithDatabaseID:(int64_t)a3 selector:(id)a4 type:(id)a5 extraAttributesData:(id)a6 isGlobal:(BOOL)a7;
-- (WBSUserDefinedContentBlockerAction)initWithSelector:(id)a3 type:(id)a4 isGlobal:(BOOL)a5;
+- (WBSUserDefinedContentBlockerAction)initWithDatabaseID:(int64_t)d selector:(id)selector type:(id)type extraAttributesData:(id)data isGlobal:(BOOL)global;
+- (WBSUserDefinedContentBlockerAction)initWithSelector:(id)selector type:(id)type isGlobal:(BOOL)global;
 - (id)debugDescription;
 - (id)extraAttributesData;
-- (void)_readExtraAttributesWithData:(id)a3;
-- (void)addHostWhereActionHasApplied:(id)a3 selectors:(id)a4;
+- (void)_readExtraAttributesWithData:(id)data;
+- (void)addHostWhereActionHasApplied:(id)applied selectors:(id)selectors;
 - (void)extraAttributesData;
 @end
 
 @implementation WBSUserDefinedContentBlockerAction
 
-- (WBSUserDefinedContentBlockerAction)initWithSelector:(id)a3 type:(id)a4 isGlobal:(BOOL)a5
+- (WBSUserDefinedContentBlockerAction)initWithSelector:(id)selector type:(id)type isGlobal:(BOOL)global
 {
-  v9 = a3;
-  v10 = a4;
+  selectorCopy = selector;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = WBSUserDefinedContentBlockerAction;
   v11 = [(WBSUserDefinedContentBlockerAction *)&v15 init];
@@ -24,38 +24,38 @@
   if (v11)
   {
     v11->_databaseID = 0;
-    objc_storeStrong(&v11->_selector, a3);
-    objc_storeStrong(&v12->_typeString, a4);
-    v12->_global = a5;
+    objc_storeStrong(&v11->_selector, selector);
+    objc_storeStrong(&v12->_typeString, type);
+    v12->_global = global;
     v13 = v12;
   }
 
   return v12;
 }
 
-- (WBSUserDefinedContentBlockerAction)initWithDatabaseID:(int64_t)a3 selector:(id)a4 type:(id)a5 extraAttributesData:(id)a6 isGlobal:(BOOL)a7
+- (WBSUserDefinedContentBlockerAction)initWithDatabaseID:(int64_t)d selector:(id)selector type:(id)type extraAttributesData:(id)data isGlobal:(BOOL)global
 {
-  v7 = a7;
-  v12 = a6;
-  v13 = [(WBSUserDefinedContentBlockerAction *)self initWithSelector:a4 type:a5 isGlobal:v7];
+  globalCopy = global;
+  dataCopy = data;
+  v13 = [(WBSUserDefinedContentBlockerAction *)self initWithSelector:selector type:type isGlobal:globalCopy];
   v14 = v13;
   if (v13)
   {
-    v13->_databaseID = a3;
-    [(WBSUserDefinedContentBlockerAction *)v13 _readExtraAttributesWithData:v12];
+    v13->_databaseID = d;
+    [(WBSUserDefinedContentBlockerAction *)v13 _readExtraAttributesWithData:dataCopy];
     v15 = v14;
   }
 
   return v14;
 }
 
-- (void)_readExtraAttributesWithData:(id)a3
+- (void)_readExtraAttributesWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v4 = MEMORY[0x1E696ACD0];
     v5 = MEMORY[0x1E695DFD8];
-    v6 = a3;
+    dataCopy = data;
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = objc_opt_class();
@@ -63,7 +63,7 @@
     v11 = objc_opt_class();
     v12 = [v5 setWithObjects:{v7, v8, v9, v10, v11, objc_opt_class(), 0}];
     v56 = 0;
-    v13 = [v4 unarchivedObjectOfClasses:v12 fromData:v6 error:&v56];
+    v13 = [v4 unarchivedObjectOfClasses:v12 fromData:dataCopy error:&v56];
 
     v14 = v56;
     if (v14 && (v15 = WBS_LOG_CHANNEL_PREFIXUserDefinedContentBlocker(), os_log_type_enabled(v15, OS_LOG_TYPE_ERROR)))
@@ -170,11 +170,11 @@ LABEL_5:
 - (id)extraAttributesData
 {
   v29[4] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:self->_searchableText forKeyedSubscript:@"searchableText"];
-  [v3 setObject:self->_renderTreeText forKeyedSubscript:@"renderTreeText"];
-  [v3 setObject:self->_screenReaderText forKeyedSubscript:@"screenReaderText"];
-  [v3 setObject:self->_imageAnalysisText forKeyedSubscript:@"imageAnalysisText"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self->_searchableText forKeyedSubscript:@"searchableText"];
+  [dictionary setObject:self->_renderTreeText forKeyedSubscript:@"renderTreeText"];
+  [dictionary setObject:self->_screenReaderText forKeyedSubscript:@"screenReaderText"];
+  [dictionary setObject:self->_imageAnalysisText forKeyedSubscript:@"imageAnalysisText"];
   v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_bounds.origin.x];
   v29[0] = v4;
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_bounds.origin.y];
@@ -184,18 +184,18 @@ LABEL_5:
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_bounds.size.height];
   v29[3] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
-  [v3 setObject:v8 forKeyedSubscript:@"bounds"];
+  [dictionary setObject:v8 forKeyedSubscript:@"bounds"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_bounds.size.width];
   v28[0] = v9;
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:self->_bounds.size.height];
   v28[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
-  [v3 setObject:v11 forKeyedSubscript:@"webViewSize"];
+  [dictionary setObject:v11 forKeyedSubscript:@"webViewSize"];
 
-  [v3 setObject:self->_allSelectorsIncludingShadowHosts forKeyedSubscript:@"allSelectorsIncludingShadowHosts"];
+  [dictionary setObject:self->_allSelectorsIncludingShadowHosts forKeyedSubscript:@"allSelectorsIncludingShadowHosts"];
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_edgeAnchors];
-  [v3 setObject:v12 forKeyedSubscript:@"edgeAnchors"];
+  [dictionary setObject:v12 forKeyedSubscript:@"edgeAnchors"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithDouble:self->_edgeInsets.left];
   v27[0] = v13;
@@ -206,30 +206,30 @@ LABEL_5:
   v16 = [MEMORY[0x1E696AD98] numberWithDouble:self->_edgeInsets.bottom];
   v27[3] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:4];
-  [v3 setObject:v17 forKeyedSubscript:@"edgeInsets"];
+  [dictionary setObject:v17 forKeyedSubscript:@"edgeInsets"];
 
   v18 = [MEMORY[0x1E696AD98] numberWithDouble:self->_viewZoomScale];
-  [v3 setObject:v18 forKeyedSubscript:@"viewZoomFactor"];
+  [dictionary setObject:v18 forKeyedSubscript:@"viewZoomFactor"];
 
   v19 = [MEMORY[0x1E696AD98] numberWithInteger:self->_positionType];
-  [v3 setObject:v19 forKeyedSubscript:@"positionType"];
+  [dictionary setObject:v19 forKeyedSubscript:@"positionType"];
 
   mediaAndLinkURLs = self->_mediaAndLinkURLs;
   if (mediaAndLinkURLs)
   {
-    [v3 setObject:mediaAndLinkURLs forKeyedSubscript:@"mediaAndLinkURLs"];
+    [dictionary setObject:mediaAndLinkURLs forKeyedSubscript:@"mediaAndLinkURLs"];
   }
 
   hostsWhereActionHasApplied = self->_hostsWhereActionHasApplied;
   if (hostsWhereActionHasApplied)
   {
-    [v3 setObject:hostsWhereActionHasApplied forKeyedSubscript:@"hostsWhereActionHasApplied"];
+    [dictionary setObject:hostsWhereActionHasApplied forKeyedSubscript:@"hostsWhereActionHasApplied"];
   }
 
-  if ([v3 count])
+  if ([dictionary count])
   {
     v26 = 0;
-    v22 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v26];
+    v22 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:dictionary requiringSecureCoding:1 error:&v26];
     v23 = v26;
     if (v23)
     {
@@ -279,8 +279,8 @@ LABEL_5:
           v19 = 0u;
           v16 = 0u;
           v17 = 0u;
-          v10 = [v9 lastObject];
-          v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+          lastObject = [v9 lastObject];
+          v11 = [lastObject countByEnumeratingWithState:&v16 objects:v24 count:16];
           if (v11)
           {
             v12 = v11;
@@ -291,13 +291,13 @@ LABEL_5:
               {
                 if (*v17 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(lastObject);
                 }
 
                 [v3 addObject:*(*(&v16 + 1) + 8 * j)];
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+              v12 = [lastObject countByEnumeratingWithState:&v16 objects:v24 count:16];
             }
 
             while (v12);
@@ -314,10 +314,10 @@ LABEL_5:
   return v3;
 }
 
-- (void)addHostWhereActionHasApplied:(id)a3 selectors:(id)a4
+- (void)addHostWhereActionHasApplied:(id)applied selectors:(id)selectors
 {
-  v14 = a3;
-  v6 = a4;
+  appliedCopy = applied;
+  selectorsCopy = selectors;
   hostsWhereActionHasApplied = self->_hostsWhereActionHasApplied;
   v8 = hostsWhereActionHasApplied;
   if (!hostsWhereActionHasApplied)
@@ -325,7 +325,7 @@ LABEL_5:
     v8 = [MEMORY[0x1E695DFD8] set];
   }
 
-  v9 = [v8 setByAddingObject:v14];
+  v9 = [v8 setByAddingObject:appliedCopy];
   v10 = self->_hostsWhereActionHasApplied;
   self->_hostsWhereActionHasApplied = v9;
 
@@ -333,7 +333,7 @@ LABEL_5:
   {
   }
 
-  if ([v6 count])
+  if ([selectorsCopy count])
   {
     if (self->_allSelectorsIncludingShadowHosts)
     {
@@ -345,7 +345,7 @@ LABEL_5:
       allSelectorsIncludingShadowHosts = MEMORY[0x1E695E0F0];
     }
 
-    v12 = [(NSArray *)allSelectorsIncludingShadowHosts arrayByAddingObject:v6];
+    v12 = [(NSArray *)allSelectorsIncludingShadowHosts arrayByAddingObject:selectorsCopy];
     v13 = self->_allSelectorsIncludingShadowHosts;
     self->_allSelectorsIncludingShadowHosts = v12;
   }
@@ -408,7 +408,7 @@ LABEL_5:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1BB6F3000, a2, OS_LOG_TYPE_ERROR, "Error when archiving extra attributes: %@", &v2, 0xCu);
 }
 

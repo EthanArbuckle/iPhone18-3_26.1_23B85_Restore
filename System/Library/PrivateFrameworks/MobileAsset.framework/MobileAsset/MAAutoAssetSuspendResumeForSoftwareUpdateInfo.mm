@@ -1,19 +1,19 @@
 @interface MAAutoAssetSuspendResumeForSoftwareUpdateInfo
-+ (id)newServerMessageClasses:(id)a3;
-- (MAAutoAssetSuspendResumeForSoftwareUpdateInfo)initWithCoder:(id)a3;
++ (id)newServerMessageClasses:(id)classes;
+- (MAAutoAssetSuspendResumeForSoftwareUpdateInfo)initWithCoder:(id)coder;
 @end
 
 @implementation MAAutoAssetSuspendResumeForSoftwareUpdateInfo
 
-+ (id)newServerMessageClasses:(id)a3
++ (id)newServerMessageClasses:(id)classes
 {
-  v3 = a3;
-  if (v3)
+  classesCopy = classes;
+  if (classesCopy)
   {
-    v4 = v3;
+    v4 = classesCopy;
     if (objc_opt_class())
     {
-      v4 = [v3 setByAddingObject:objc_opt_class()];
+      v4 = [classesCopy setByAddingObject:objc_opt_class()];
     }
 
     if (objc_opt_class())
@@ -60,7 +60,7 @@
   return v4;
 }
 
-- (MAAutoAssetSuspendResumeForSoftwareUpdateInfo)initWithCoder:(id)a3
+- (MAAutoAssetSuspendResumeForSoftwareUpdateInfo)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = MAAutoAssetSuspendResumeForSoftwareUpdateInfo;

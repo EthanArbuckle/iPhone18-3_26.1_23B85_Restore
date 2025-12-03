@@ -1,25 +1,25 @@
 @interface DACoreDAVAgent
-- (DACoreDAVAgent)initWithAccount:(id)a3;
+- (DACoreDAVAgent)initWithAccount:(id)account;
 - (id)waiterID;
 - (void)_cancelOptionsTimer;
-- (void)_probeAndSyncWithBlock:(id)a3;
+- (void)_probeAndSyncWithBlock:(id)block;
 - (void)_serverProbeTimedOut;
 - (void)dealloc;
 @end
 
 @implementation DACoreDAVAgent
 
-- (DACoreDAVAgent)initWithAccount:(id)a3
+- (DACoreDAVAgent)initWithAccount:(id)account
 {
   v4.receiver = self;
   v4.super_class = DACoreDAVAgent;
-  return [(DAAgent *)&v4 initWithAccount:a3];
+  return [(DAAgent *)&v4 initWithAccount:account];
 }
 
 - (void)_cancelOptionsTimer
 {
-  v3 = [(DACoreDAVAgent *)self optionsTimeoutTimer];
-  [v3 invalidate];
+  optionsTimeoutTimer = [(DACoreDAVAgent *)self optionsTimeoutTimer];
+  [optionsTimeoutTimer invalidate];
 
   [(DACoreDAVAgent *)self setOptionsTimeoutTimer:0];
 }
@@ -39,13 +39,13 @@
 - (void)_serverProbeTimedOut
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(DAAgent *)self account];
-  v4 = [v3 taskManager];
-  v5 = [v4 activeModalTask];
+  account = [(DAAgent *)self account];
+  taskManager = [account taskManager];
+  activeModalTask = [taskManager activeModalTask];
 
   v6 = DALoggingwithCategory();
   v7 = v6;
-  if (v5)
+  if (activeModalTask)
   {
     v8 = *(MEMORY[0x277CF3AF0] + 6);
     if (os_log_type_enabled(v6, v8))
@@ -60,20 +60,20 @@
     v9 = *(MEMORY[0x277CF3AF0] + 4);
     if (os_log_type_enabled(v6, v9))
     {
-      v10 = [(DAAgent *)self account];
-      v11 = [v10 principalURL];
+      account2 = [(DAAgent *)self account];
+      principalURL = [account2 principalURL];
       [MEMORY[0x277CF3AC8] defaultDAVProbeTimeout];
       v16 = 138412546;
-      v17 = v11;
+      v17 = principalURL;
       v18 = 2048;
       v19 = v12;
       _os_log_impl(&dword_2424DF000, v7, v9, "We weren't able to reach the server at %@ within %lf seconds. Bailing out of this refresh early.", &v16, 0x16u);
     }
 
     [(DACoreDAVAgent *)self _cancelOptionsTimer];
-    v13 = [(DACoreDAVAgent *)self optionsProbe];
+    optionsProbe = [(DACoreDAVAgent *)self optionsProbe];
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CFDB18] code:1 userInfo:0];
-    [v13 finishCoreDAVTaskWithError:v14];
+    [optionsProbe finishCoreDAVTaskWithError:v14];
 
     [(DACoreDAVAgent *)self setOptionsProbe:0];
   }
@@ -81,22 +81,22 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_probeAndSyncWithBlock:(id)a3
+- (void)_probeAndSyncWithBlock:(id)block
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DACoreDAVAgent *)self optionsProbe];
+  blockCopy = block;
+  optionsProbe = [(DACoreDAVAgent *)self optionsProbe];
 
-  if (v5)
+  if (optionsProbe)
   {
     v6 = DALoggingwithCategory();
     v7 = *(MEMORY[0x277CF3AF0] + 6);
     if (os_log_type_enabled(v6, v7))
     {
-      v8 = [(DAAgent *)self account];
-      v9 = [v8 principalURL];
+      account = [(DAAgent *)self account];
+      principalURL = [account principalURL];
       *buf = 138412290;
-      v39 = v9;
+      selfCopy = principalURL;
       _os_log_impl(&dword_2424DF000, v6, v7, "Ignoring probe request for %@ as we already have one outstanding", buf, 0xCu);
     }
 
@@ -112,8 +112,8 @@ LABEL_8:
   v12 = NSStringFromClass(v11);
   v13 = [v10 stringWithFormat:@"%@Probe", v12];
 
-  v14 = [MEMORY[0x277CF3A10] sharedBabysitter];
-  v15 = [v14 registerAccount:self forOperationWithName:v13];
+  mEMORY[0x277CF3A10] = [MEMORY[0x277CF3A10] sharedBabysitter];
+  v15 = [mEMORY[0x277CF3A10] registerAccount:self forOperationWithName:v13];
 
   v16 = DALoggingwithCategory();
   v17 = v16;
@@ -122,23 +122,23 @@ LABEL_8:
     v18 = *(MEMORY[0x277CF3AF0] + 6);
     if (os_log_type_enabled(v16, v18))
     {
-      v19 = [(DAAgent *)self account];
-      v20 = [v19 principalURL];
+      account2 = [(DAAgent *)self account];
+      principalURL2 = [account2 principalURL];
       [MEMORY[0x277CF3AC8] defaultDAVProbeTimeout];
       *buf = 138412546;
-      v39 = v20;
+      selfCopy = principalURL2;
       v40 = 2048;
       v41 = v21;
       _os_log_impl(&dword_2424DF000, v17, v18, "Probing the host at %@ to see if we have a good enough network connection. We'll wait up to %lf seconds.", buf, 0x16u);
     }
 
     v22 = objc_alloc(MEMORY[0x277CFDC48]);
-    v23 = [(DAAgent *)self account];
-    v24 = [v23 principalURL];
-    v25 = [v22 initWithURL:v24];
+    account3 = [(DAAgent *)self account];
+    principalURL3 = [account3 principalURL];
+    v25 = [v22 initWithURL:principalURL3];
 
-    v26 = [(DAAgent *)self account];
-    [v25 setAccountInfoProvider:v26];
+    account4 = [(DAAgent *)self account];
+    [v25 setAccountInfoProvider:account4];
 
     objc_initWeak(buf, self);
     v34[0] = MEMORY[0x277D85DD0];
@@ -146,7 +146,7 @@ LABEL_8:
     v34[2] = __41__DACoreDAVAgent__probeAndSyncWithBlock___block_invoke;
     v34[3] = &unk_278D52DF0;
     objc_copyWeak(&v37, buf);
-    v36 = v4;
+    v36 = blockCopy;
     v6 = v13;
     v35 = v6;
     [v25 setCompletionBlock:v34];
@@ -156,10 +156,10 @@ LABEL_8:
     [(DACoreDAVAgent *)self setOptionsTimeoutTimer:v28];
 
     [(DACoreDAVAgent *)self setOptionsProbe:v25];
-    v29 = [(DAAgent *)self account];
-    v30 = [v29 taskManager];
-    v31 = [(DACoreDAVAgent *)self optionsProbe];
-    [v30 submitQueuedCoreDAVTask:v31];
+    account5 = [(DAAgent *)self account];
+    taskManager = [account5 taskManager];
+    optionsProbe2 = [(DACoreDAVAgent *)self optionsProbe];
+    [taskManager submitQueuedCoreDAVTask:optionsProbe2];
 
     objc_destroyWeak(&v37);
     objc_destroyWeak(buf);
@@ -171,11 +171,11 @@ LABEL_8:
   if (os_log_type_enabled(v16, v33))
   {
     *buf = 138412290;
-    v39 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2424DF000, v17, v33, "The babysitter has put this account in timeout, so giving up on this probe sync. %@", buf, 0xCu);
   }
 
-  (*(v4 + 2))(v4, 0);
+  (*(blockCopy + 2))(blockCopy, 0);
 LABEL_9:
 
   v32 = *MEMORY[0x277D85DE8];
@@ -287,10 +287,10 @@ LABEL_7:
 
 - (id)waiterID
 {
-  v2 = [(DAAgent *)self account];
-  v3 = [v2 accountID];
+  account = [(DAAgent *)self account];
+  accountID = [account accountID];
 
-  return v3;
+  return accountID;
 }
 
 @end

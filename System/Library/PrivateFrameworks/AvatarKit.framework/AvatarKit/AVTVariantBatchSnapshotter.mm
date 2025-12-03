@@ -1,39 +1,39 @@
 @interface AVTVariantBatchSnapshotter
-- (AVTVariantBatchSnapshotter)initWithAvatar:(id)a3 size:(CGSize)a4 scale:(double)a5 antialiasingMode:(unint64_t)a6 device:(id)a7;
-- (id)imageWithOptions:(id)a3 modifications:(id)a4;
+- (AVTVariantBatchSnapshotter)initWithAvatar:(id)avatar size:(CGSize)size scale:(double)scale antialiasingMode:(unint64_t)mode device:(id)device;
+- (id)imageWithOptions:(id)options modifications:(id)modifications;
 - (void)dealloc;
 @end
 
 @implementation AVTVariantBatchSnapshotter
 
-- (AVTVariantBatchSnapshotter)initWithAvatar:(id)a3 size:(CGSize)a4 scale:(double)a5 antialiasingMode:(unint64_t)a6 device:(id)a7
+- (AVTVariantBatchSnapshotter)initWithAvatar:(id)avatar size:(CGSize)size scale:(double)scale antialiasingMode:(unint64_t)mode device:(id)device
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v27[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a7;
+  avatarCopy = avatar;
+  deviceCopy = device;
   v25.receiver = self;
   v25.super_class = AVTVariantBatchSnapshotter;
   v16 = [(AVTVariantBatchSnapshotter *)&v25 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_avatar, a3);
+    objc_storeStrong(&v16->_avatar, avatar);
     v17->_size.width = width;
     v17->_size.height = height;
-    v17->_scale = a5;
-    v17->_antialiasingMode = a6;
+    v17->_scale = scale;
+    v17->_antialiasingMode = mode;
     [(AVTAvatar *)v17->_avatar setOptimizeForSnapshot:1];
     v26 = @"AVTRendererOptionInitiallyConfigureForARMode";
     v27[0] = MEMORY[0x1E695E110];
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-    v19 = [(VFXRenderer *)AVTRenderer rendererWithDevice:v15 options:v18];
+    v19 = [(VFXRenderer *)AVTRenderer rendererWithDevice:deviceCopy options:v18];
     renderer = v17->_renderer;
     v17->_renderer = v19;
 
     [(AVTRenderer *)v17->_renderer setFramingMode:@"cameraDefault"];
-    [(AVTRenderer *)v17->_renderer setAvatar:v14];
+    [(AVTRenderer *)v17->_renderer setAvatar:avatarCopy];
     v21 = objc_alloc_init(AVTSnapshotHelper);
     snapshotHelper = v17->_snapshotHelper;
     v17->_snapshotHelper = v21;
@@ -50,15 +50,15 @@
   [(AVTVariantBatchSnapshotter *)&v2 dealloc];
 }
 
-- (id)imageWithOptions:(id)a3 modifications:(id)a4
+- (id)imageWithOptions:(id)options modifications:(id)modifications
 {
   v78 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  optionsCopy = options;
+  modificationsCopy = modifications;
+  v8 = modificationsCopy;
+  if (modificationsCopy)
   {
-    (*(v7 + 2))(v7, self->_avatar);
+    (*(modificationsCopy + 2))(modificationsCopy, self->_avatar);
   }
 
   avatar = self->_avatar;
@@ -70,7 +70,7 @@
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v11 = [v6 objectForKeyedSubscript:@"AVTSnapshotMemojiPresetSubstitutions"];
+    v11 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotMemojiPresetSubstitutions"];
     v12 = [v11 countByEnumeratingWithState:&v70 objects:v77 count:16];
     if (v12)
     {
@@ -98,7 +98,7 @@
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v16 = [v6 objectForKeyedSubscript:@"AVTSnapshotMemojiColorPresetSubstitutions"];
+    v16 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotMemojiColorPresetSubstitutions"];
     v17 = [v16 countByEnumeratingWithState:&v66 objects:v76 count:16];
     if (v17)
     {
@@ -126,7 +126,7 @@
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v21 = [v6 objectForKeyedSubscript:@"AVTSnapshotMemojiSecondaryColorPresetSubstitutions"];
+    v21 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotMemojiSecondaryColorPresetSubstitutions"];
     v22 = [v21 countByEnumeratingWithState:&v62 objects:v75 count:16];
     if (v22)
     {
@@ -154,7 +154,7 @@
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v26 = [v6 objectForKeyedSubscript:@"AVTSnapshotMemojiThirdColorPresetSubstitutions"];
+    v26 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotMemojiThirdColorPresetSubstitutions"];
     v27 = [v26 countByEnumeratingWithState:&v58 objects:v74 count:16];
     if (v27)
     {
@@ -180,13 +180,13 @@
   }
 
   [(AVTAvatar *)self->_avatar updateWithOptions:1];
-  v31 = [v6 objectForKeyedSubscript:@"AVTSnapshotPose"];
+  v31 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotPose"];
   if (v31)
   {
     [(AVTAvatar *)self->_avatar setPose:v31];
   }
 
-  v32 = [v6 objectForKeyedSubscript:@"AVTSnapshotFramingMode"];
+  v32 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotFramingMode"];
   v33 = v32;
   v34 = @"cameraHead";
   if (v32)
@@ -197,17 +197,17 @@
   v35 = v34;
 
   [(AVTRenderer *)self->_renderer setFramingMode:v35];
-  v36 = [v6 objectForKeyedSubscript:@"AVTSnapshotPoseAnimation"];
+  v36 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotPoseAnimation"];
   v37 = v36;
   if (v36)
   {
     v38 = [v36 addToAvatar:self->_avatar useStaticPhysicsState:0];
   }
 
-  v39 = [v6 objectForKeyedSubscript:@"AVTSnapshotBackgroundColorKey"];
-  v40 = [(AVTRenderer *)self->_renderer backgroundColor];
+  v39 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotBackgroundColorKey"];
+  backgroundColor = [(AVTRenderer *)self->_renderer backgroundColor];
 
-  if (v40 != v39)
+  if (backgroundColor != v39)
   {
     [(AVTRenderer *)self->_renderer setBackgroundColor:v39];
   }
@@ -216,7 +216,7 @@
   scale = self->_scale;
   v42 = (scale * self->_size.width);
   v43 = (scale * self->_size.height);
-  v44 = [v6 objectForKeyedSubscript:@"AVTSnapshotHeroFrameKey"];
+  v44 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotHeroFrameKey"];
   [v44 floatValue];
   v46 = v45;
 

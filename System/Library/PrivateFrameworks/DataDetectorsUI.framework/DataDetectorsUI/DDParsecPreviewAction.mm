@@ -1,16 +1,16 @@
 @interface DDParsecPreviewAction
-- (DDParsecPreviewAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
+- (DDParsecPreviewAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context;
 - (id)menuActionClasses;
-- (void)prepareViewControllerForActionController:(id)a3;
+- (void)prepareViewControllerForActionController:(id)controller;
 @end
 
 @implementation DDParsecPreviewAction
 
-- (DDParsecPreviewAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
+- (DDParsecPreviewAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context
 {
   v9.receiver = self;
   v9.super_class = DDParsecPreviewAction;
-  v5 = [(DDAction *)&v9 initWithURL:a3 result:a4 context:a5];
+  v5 = [(DDAction *)&v9 initWithURL:l result:result context:context];
   v6 = v5;
   if (v5)
   {
@@ -37,13 +37,13 @@
   return v4;
 }
 
-- (void)prepareViewControllerForActionController:(id)a3
+- (void)prepareViewControllerForActionController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = DDParsecPreviewAction;
-  v4 = a3;
-  [(DDAction *)&v5 prepareViewControllerForActionController:v4];
-  [v4 action:self presentationShouldBeModal:{0, v5.receiver, v5.super_class}];
+  controllerCopy = controller;
+  [(DDAction *)&v5 prepareViewControllerForActionController:controllerCopy];
+  [controllerCopy action:self presentationShouldBeModal:{0, v5.receiver, v5.super_class}];
 }
 
 @end

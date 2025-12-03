@@ -2,7 +2,7 @@
 + (id)mapsDirectory;
 + (id)nanoRegistryDirectory;
 + (id)pinsPath;
-- (NMCSyncManager)initWithDelegate:(id)a3;
+- (NMCSyncManager)initWithDelegate:(id)delegate;
 - (NMCSyncManagerDelegate)delegate;
 - (id)_containerCompletionQueue;
 - (id)readPins;
@@ -12,10 +12,10 @@
 - (void)completedSync;
 - (void)notifyObservers;
 - (void)preparingSync;
-- (void)requestSyncUpdateWithReply:(id)a3;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
+- (void)requestSyncUpdateWithReply:(id)reply;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
 - (void)synchronizePreferences;
-- (void)writePins:(id)a3;
+- (void)writePins:(id)pins;
 @end
 
 @implementation NMCSyncManager
@@ -23,10 +23,10 @@
 + (id)mapsDirectory
 {
   v2 = [LSBundleRecord bundleRecordWithBundleIdentifier:@"com.apple.Maps" allowPlaceholder:0 error:0];
-  v3 = [v2 dataContainerURL];
-  v4 = [v3 path];
+  dataContainerURL = [v2 dataContainerURL];
+  path = [dataContainerURL path];
 
-  v5 = [v4 stringByAppendingPathComponent:@"Library"];
+  v5 = [path stringByAppendingPathComponent:@"Library"];
   v6 = [v5 stringByAppendingPathComponent:@"Maps"];
 
   return v6;
@@ -35,17 +35,17 @@
 + (id)nanoRegistryDirectory
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 pairingStorePath];
+  pairingStorePath = [v2 pairingStorePath];
 
-  v4 = [v3 stringByAppendingPathComponent:@"NanoMaps"];
+  v4 = [pairingStorePath stringByAppendingPathComponent:@"NanoMaps"];
 
   return v4;
 }
 
 + (id)pinsPath
 {
-  v2 = [a1 nanoRegistryDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"Pins.mapsdata"];
+  nanoRegistryDirectory = [self nanoRegistryDirectory];
+  v3 = [nanoRegistryDirectory stringByAppendingPathComponent:@"Pins.mapsdata"];
 
   return v3;
 }
@@ -53,26 +53,26 @@
 - (void)_createNanoRegistryDirectoryIfNeeded
 {
   v5 = +[NSFileManager defaultManager];
-  v2 = [objc_opt_class() nanoRegistryDirectory];
-  v3 = [v5 fileExistsAtPath:v2 isDirectory:0];
+  nanoRegistryDirectory = [objc_opt_class() nanoRegistryDirectory];
+  v3 = [v5 fileExistsAtPath:nanoRegistryDirectory isDirectory:0];
 
   if ((v3 & 1) == 0)
   {
-    v4 = [objc_opt_class() nanoRegistryDirectory];
-    [v5 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
+    nanoRegistryDirectory2 = [objc_opt_class() nanoRegistryDirectory];
+    [v5 createDirectoryAtPath:nanoRegistryDirectory2 withIntermediateDirectories:1 attributes:0 error:0];
   }
 }
 
-- (NMCSyncManager)initWithDelegate:(id)a3
+- (NMCSyncManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = NMCSyncManager;
   v5 = [(NMCSyncManager *)&v24 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [PSYSyncCoordinator syncCoordinatorWithServiceName:@"com.apple.pairedsync.mapssync"];
     coordinator = v6->_coordinator;
     v6->_coordinator = v7;
@@ -118,8 +118,8 @@
 
 - (id)readPins
 {
-  v2 = [objc_opt_class() pinsPath];
-  v3 = [NSDictionary dictionaryWithContentsOfFile:v2];
+  pinsPath = [objc_opt_class() pinsPath];
+  v3 = [NSDictionary dictionaryWithContentsOfFile:pinsPath];
 
   v4 = [v3 objectForKey:@"PinsKey"];
   v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
@@ -148,9 +148,9 @@
         v14 = v13;
         if (v13)
         {
-          v15 = [v13 identifier];
+          identifier = [v13 identifier];
 
-          if (v15)
+          if (identifier)
           {
             [v5 addObject:v14];
           }
@@ -168,13 +168,13 @@
   return v16;
 }
 
-- (void)writePins:(id)a3
+- (void)writePins:(id)pins
 {
-  v3 = [a3 arrayByApplyingSelector:"data"];
+  v3 = [pins arrayByApplyingSelector:"data"];
   v4 = [[NSDictionary alloc] initWithObjectsAndKeys:{v3, @"PinsKey", &off_10008C780, @"PinsVersionKey", 0}];
-  v5 = [objc_opt_class() pinsPath];
+  pinsPath = [objc_opt_class() pinsPath];
   v8 = 0;
-  v6 = [v4 _maps_writeBinaryPlist:v5 error:&v8];
+  v6 = [v4 _maps_writeBinaryPlist:pinsPath error:&v8];
   v7 = v8;
 
   if (v7 || (v6 & 1) == 0)
@@ -193,8 +193,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "com.apple.pairedsync.mapssync sync:%{private}@", &v5, 0xCu);
   }
 
-  v4 = [(PSYSyncCoordinator *)self->_coordinator activeSyncSession];
-  [v4 reportProgress:0.33];
+  activeSyncSession = [(PSYSyncCoordinator *)self->_coordinator activeSyncSession];
+  [activeSyncSession reportProgress:0.33];
 }
 
 - (void)completedPreparingSync
@@ -207,11 +207,11 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "com.apple.pairedsync.mapssync sync:%{private}@", &v6, 0xCu);
   }
 
-  v4 = [(PSYSyncCoordinator *)self->_coordinator activeSyncSession];
-  [v4 reportProgress:0.66];
+  activeSyncSession = [(PSYSyncCoordinator *)self->_coordinator activeSyncSession];
+  [activeSyncSession reportProgress:0.66];
 
-  v5 = [(PSYSyncCoordinator *)self->_coordinator activeSyncSession];
-  [v5 syncDidCompleteSending];
+  activeSyncSession2 = [(PSYSyncCoordinator *)self->_coordinator activeSyncSession];
+  [activeSyncSession2 syncDidCompleteSending];
 }
 
 - (void)_completedInitialSync
@@ -224,11 +224,11 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "com.apple.pairedsync.mapssync sync:%{private}@", &v6, 0xCu);
   }
 
-  v4 = [(PSYSyncCoordinator *)self->_coordinator activeSyncSession];
-  [v4 reportProgress:1.0];
+  activeSyncSession = [(PSYSyncCoordinator *)self->_coordinator activeSyncSession];
+  [activeSyncSession reportProgress:1.0];
 
-  v5 = [(PSYSyncCoordinator *)self->_coordinator activeSyncSession];
-  [v5 syncDidComplete];
+  activeSyncSession2 = [(PSYSyncCoordinator *)self->_coordinator activeSyncSession];
+  [activeSyncSession2 syncDidComplete];
 }
 
 - (void)completedSync
@@ -272,19 +272,19 @@
 
 - (void)notifyObservers
 {
-  v3 = [(NMCSyncManager *)self delegate];
-  [v3 syncManagerDidUpdate:self];
+  delegate = [(NMCSyncManager *)self delegate];
+  [delegate syncManagerDidUpdate:self];
 }
 
-- (void)requestSyncUpdateWithReply:(id)a3
+- (void)requestSyncUpdateWithReply:(id)reply
 {
-  v5 = a3;
+  replyCopy = reply;
   [(NMCSyncManager *)self notifyObservers];
-  v4 = v5;
-  if (v5)
+  v4 = replyCopy;
+  if (replyCopy)
   {
-    (*(v5 + 2))(v5);
-    v4 = v5;
+    (*(replyCopy + 2))(replyCopy);
+    v4 = replyCopy;
   }
 }
 
@@ -304,7 +304,7 @@
   [(WatchSyncedPreferences *)transitPreferences synchronize];
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
   preferencesSyncManager = self->_preferencesSyncManager;
   v6 = GEODefaultsDomain();

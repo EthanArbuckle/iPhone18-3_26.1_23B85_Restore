@@ -1,24 +1,24 @@
 @interface SFServiceSession
-- (BOOL)pairingContainsACL:(id)a3;
+- (BOOL)pairingContainsACL:(id)l;
 - (SFServiceSession)init;
-- (id)pairingDeriveKeyForIdentifier:(id)a3 keyLength:(unint64_t)a4;
-- (int)setEncryptionReadKey:(const char *)a3 readKeyLen:(unint64_t)a4 writeKey:(const char *)a5 writeKeyLen:(unint64_t)a6;
+- (id)pairingDeriveKeyForIdentifier:(id)identifier keyLength:(unint64_t)length;
+- (int)setEncryptionReadKey:(const char *)key readKeyLen:(unint64_t)len writeKey:(const char *)writeKey writeKeyLen:(unint64_t)keyLen;
 - (void)_hearbeatTimer;
-- (void)_sendWithFlags:(unsigned int)a3 object:(id)a4;
+- (void)_sendWithFlags:(unsigned int)flags object:(id)object;
 - (void)activate;
 - (void)clearEncryptionInfo;
 - (void)dealloc;
 - (void)invalidate;
-- (void)pairSetup:(id)a3 start:(BOOL)a4;
-- (void)pairSetupWithFlags:(unsigned int)a3;
-- (void)pairVerify:(id)a3 start:(BOOL)a4;
-- (void)receivedEncryptedData:(id)a3 type:(unsigned __int8)a4;
-- (void)receivedStartRequest:(id)a3;
-- (void)receivedUnencryptedData:(id)a3 type:(unsigned __int8)a4;
-- (void)sendEncryptedObject:(id)a3;
-- (void)sendFrameType:(unsigned __int8)a3 data:(id)a4;
-- (void)sendRequestWithFlags:(unsigned int)a3 object:(id)a4 responseHandler:(id)a5;
-- (void)sendWithFlags:(unsigned int)a3 object:(id)a4;
+- (void)pairSetup:(id)setup start:(BOOL)start;
+- (void)pairSetupWithFlags:(unsigned int)flags;
+- (void)pairVerify:(id)verify start:(BOOL)start;
+- (void)receivedEncryptedData:(id)data type:(unsigned __int8)type;
+- (void)receivedStartRequest:(id)request;
+- (void)receivedUnencryptedData:(id)data type:(unsigned __int8)type;
+- (void)sendEncryptedObject:(id)object;
+- (void)sendFrameType:(unsigned __int8)type data:(id)data;
+- (void)sendRequestWithFlags:(unsigned int)flags object:(id)object responseHandler:(id)handler;
+- (void)sendWithFlags:(unsigned int)flags object:(id)object;
 @end
 
 @implementation SFServiceSession
@@ -320,10 +320,10 @@ LABEL_14:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)receivedEncryptedData:(id)a3 type:(unsigned __int8)a4
+- (void)receivedEncryptedData:(id)data type:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
+  typeCopy = type;
+  dataCopy = data;
   dispatch_assert_queue_V2(self->super._dispatchQueue);
   if (!self->super._encryptionReadAEAD)
   {
@@ -348,7 +348,7 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  v7 = [v6 length];
+  v7 = [dataCopy length];
   v8 = v7;
   if (v7 <= 0xF)
   {
@@ -374,7 +374,7 @@ LABEL_24:
   }
 
   v9 = v7 - 16;
-  v10 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v11 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:v8 - 16];
   if ([v11 length] != v9)
   {
@@ -403,7 +403,7 @@ LABEL_42:
   encryptionReadAEAD = self->super._encryptionReadAEAD;
   serviceType = self->super._serviceType;
   encryptionReadNonce = self->super._encryptionReadNonce;
-  v36 = v10 + v9;
+  v36 = bytes + v9;
   v14 = CryptoAEADDecryptMessage();
   v15 = 0;
   do
@@ -445,7 +445,7 @@ LABEL_30:
     goto LABEL_42;
   }
 
-  if (v4 == 28)
+  if (typeCopy == 28)
   {
     v18 = NSDataDecompress();
     v19 = 0;
@@ -517,12 +517,12 @@ LABEL_43:
 LABEL_18:
 }
 
-- (void)receivedUnencryptedData:(id)a3 type:(unsigned __int8)a4
+- (void)receivedUnencryptedData:(id)data type:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
+  typeCopy = type;
+  dataCopy = data;
   dispatch_assert_queue_V2(self->super._dispatchQueue);
-  if (v4 == 29)
+  if (typeCopy == 29)
   {
     v7 = NSDataDecompress();
     v8 = 0;
@@ -530,11 +530,11 @@ LABEL_18:
     if (!v7)
     {
       [SFServiceSession receivedUnencryptedData:type:];
-      v6 = 0;
+      dataCopy = 0;
       goto LABEL_18;
     }
 
-    v6 = v7;
+    dataCopy = v7;
   }
 
   v9 = OPACKDecodeData();
@@ -554,7 +554,7 @@ LABEL_18:
         v21 = self->super._ucatCore;
       }
 
-      SFNearbyBLEFrameTypeToString(v4);
+      SFNearbyBLEFrameTypeToString(typeCopy);
       LogPrintF();
     }
 
@@ -567,51 +567,51 @@ LABEL_27:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v4 <= 17)
+    if (typeCopy <= 17)
     {
-      if (v4 == 16)
+      if (typeCopy == 16)
       {
-        v10 = self;
+        selfCopy2 = self;
         v11 = v7;
         v12 = 1;
         goto LABEL_15;
       }
 
-      if (v4 == 17)
+      if (typeCopy == 17)
       {
-        v10 = self;
+        selfCopy2 = self;
         v11 = v7;
         v12 = 0;
 LABEL_15:
-        [(SFServiceSession *)v10 pairSetup:v11 start:v12];
+        [(SFServiceSession *)selfCopy2 pairSetup:v11 start:v12];
         goto LABEL_18;
       }
 
       goto LABEL_13;
     }
 
-    if (v4 == 18)
+    if (typeCopy == 18)
     {
-      v13 = self;
+      selfCopy4 = self;
       v14 = v7;
       v15 = 1;
     }
 
     else
     {
-      if (v4 != 19)
+      if (typeCopy != 19)
       {
 LABEL_13:
         [(SFServiceSession *)self _receivedObject:v7 flags:0];
         goto LABEL_18;
       }
 
-      v13 = self;
+      selfCopy4 = self;
       v14 = v7;
       v15 = 0;
     }
 
-    [(SFServiceSession *)v13 pairVerify:v14 start:v15];
+    [(SFServiceSession *)selfCopy4 pairVerify:v14 start:v15];
     goto LABEL_18;
   }
 
@@ -628,7 +628,7 @@ LABEL_13:
       v20 = self->super._ucatCore;
     }
 
-    SFNearbyBLEFrameTypeToString(v4);
+    SFNearbyBLEFrameTypeToString(typeCopy);
     v18 = objc_opt_class();
     v22 = NSStringFromClass(v18);
     LogPrintF();
@@ -701,9 +701,9 @@ LABEL_12:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)receivedStartRequest:(id)a3
+- (void)receivedStartRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v21 = 0;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -869,10 +869,10 @@ int *__41__SFServiceSession_receivedStartRequest___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)sendEncryptedObject:(id)a3
+- (void)sendEncryptedObject:(id)object
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v19 = 0;
   v21[0] = 0;
   v21[1] = 0;
@@ -957,62 +957,62 @@ LABEL_16:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendFrameType:(unsigned __int8)a3 data:(id)a4
+- (void)sendFrameType:(unsigned __int8)type data:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   dispatchQueue = self->super._dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__SFServiceSession_sendFrameType_data___block_invoke;
   block[3] = &unk_1E788F2F0;
-  v11 = a3;
+  typeCopy = type;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = dataCopy;
+  v8 = dataCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)sendRequestWithFlags:(unsigned int)a3 object:(id)a4 responseHandler:(id)a5
+- (void)sendRequestWithFlags:(unsigned int)flags object:(id)object responseHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  objectCopy = object;
+  handlerCopy = handler;
   dispatchQueue = self->super._dispatchQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__SFServiceSession_sendRequestWithFlags_object_responseHandler___block_invoke;
   v13[3] = &unk_1E788EAB8;
-  v16 = a3;
+  flagsCopy = flags;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = objectCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = objectCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)sendWithFlags:(unsigned int)a3 object:(id)a4
+- (void)sendWithFlags:(unsigned int)flags object:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   dispatchQueue = self->super._dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__SFServiceSession_sendWithFlags_object___block_invoke;
   block[3] = &unk_1E788EC90;
-  v11 = a3;
+  flagsCopy = flags;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = objectCopy;
+  v8 = objectCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_sendWithFlags:(unsigned int)a3 object:(id)a4
+- (void)_sendWithFlags:(unsigned int)flags object:(id)object
 {
-  v4 = a3;
-  v6 = a4;
-  v8 = v6;
-  if (v4)
+  flagsCopy = flags;
+  objectCopy = object;
+  v8 = objectCopy;
+  if (flagsCopy)
   {
-    [(SFServiceSession *)self sendEncryptedObject:v6];
+    [(SFServiceSession *)self sendEncryptedObject:objectCopy];
   }
 
   else
@@ -1027,14 +1027,14 @@ LABEL_16:
       v7 = 5;
     }
 
-    [(SFServiceSession *)self _sendFrameType:v7 unencryptedObject:v6];
+    [(SFServiceSession *)self _sendFrameType:v7 unencryptedObject:objectCopy];
   }
 }
 
-- (BOOL)pairingContainsACL:(id)a3
+- (BOOL)pairingContainsACL:(id)l
 {
   dispatchQueue = self->super._dispatchQueue;
-  v5 = a3;
+  lCopy = l;
   dispatch_assert_queue_V2(dispatchQueue);
   pairVerifySession = self->_pairVerifySession;
   if (!pairVerifySession)
@@ -1042,22 +1042,22 @@ LABEL_16:
     pairVerifySession = self->_pairSetupSession;
   }
 
-  v7 = [(CUPairingSession *)pairVerifySession pairedPeer];
-  v8 = [v7 acl];
+  pairedPeer = [(CUPairingSession *)pairVerifySession pairedPeer];
+  v8 = [pairedPeer acl];
   Int64 = CFDictionaryGetInt64();
 
   return Int64 != 0;
 }
 
-- (id)pairingDeriveKeyForIdentifier:(id)a3 keyLength:(unint64_t)a4
+- (id)pairingDeriveKeyForIdentifier:(id)identifier keyLength:(unint64_t)length
 {
-  v6 = a3;
-  v7 = [v6 UTF8String];
-  v8 = strlen(v7);
-  v9 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:a4];
+  identifierCopy = identifier;
+  uTF8String = [identifierCopy UTF8String];
+  v8 = strlen(uTF8String);
+  v9 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:length];
   v10 = v9;
   pairSetupSession = self->_pairSetupSession;
-  if ((pairSetupSession || (pairSetupSession = self->_pairVerifySession) != 0) && !-[CUPairingSession deriveKeyWithSaltPtr:saltLen:infoPtr:infoLen:keyLen:outputKeyPtr:](pairSetupSession, "deriveKeyWithSaltPtr:saltLen:infoPtr:infoLen:keyLen:outputKeyPtr:", "IdentifierKeyInfo", 17, v7, v8, a4, [v9 mutableBytes]))
+  if ((pairSetupSession || (pairSetupSession = self->_pairVerifySession) != 0) && !-[CUPairingSession deriveKeyWithSaltPtr:saltLen:infoPtr:infoLen:keyLen:outputKeyPtr:](pairSetupSession, "deriveKeyWithSaltPtr:saltLen:infoPtr:infoLen:keyLen:outputKeyPtr:", "IdentifierKeyInfo", 17, uTF8String, v8, length, [v9 mutableBytes]))
   {
     v12 = v10;
     goto LABEL_5;
@@ -1086,7 +1086,7 @@ LABEL_5:
   return v12;
 }
 
-- (void)pairSetupWithFlags:(unsigned int)a3
+- (void)pairSetupWithFlags:(unsigned int)flags
 {
   RandomBytes();
   var0 = self->super._ucatCore->var0;
@@ -1116,41 +1116,41 @@ LABEL_5:
 
   else
   {
-    v6 = a3 & 0x18 | 4;
-    v7 = [(SFService *)self->_service showPINHandler];
-    if (v7)
+    v6 = flags & 0x18 | 4;
+    showPINHandler = [(SFService *)self->_service showPINHandler];
+    if (showPINHandler)
     {
     }
 
     else
     {
-      v8 = [(SFService *)self->_service showPINHandlerEx];
+      showPINHandlerEx = [(SFService *)self->_service showPINHandlerEx];
 
-      if (v8)
+      if (showPINHandlerEx)
       {
         v6 = v6;
       }
 
       else
       {
-        v6 = a3 & 0x18 | 0x84;
+        v6 = flags & 0x18 | 0x84;
       }
     }
   }
 
-  v9 = [(SFService *)self->_service promptForPINHandler];
+  promptForPINHandler = [(SFService *)self->_service promptForPINHandler];
 
   [(CUPairingSession *)self->_pairSetupSession invalidate];
   v10 = objc_alloc_init(MEMORY[0x1E69994F8]);
   pairSetupSession = self->_pairSetupSession;
   self->_pairSetupSession = v10;
 
-  v12 = [(SFService *)self->_service pairSetupACL];
+  pairSetupACL = [(SFService *)self->_service pairSetupACL];
 
-  if (v12)
+  if (pairSetupACL)
   {
-    v13 = [(SFService *)self->_service pairSetupACL];
-    [(CUPairingSession *)self->_pairSetupSession setAcl:v13];
+    pairSetupACL2 = [(SFService *)self->_service pairSetupACL];
+    [(CUPairingSession *)self->_pairSetupSession setAcl:pairSetupACL2];
   }
 
   [(CUPairingSession *)self->_pairSetupSession setDispatchQueue:self->super._dispatchQueue];
@@ -1163,9 +1163,9 @@ LABEL_5:
   v15 = self->super._fixedPIN;
   if (![(NSString *)v15 length])
   {
-    v16 = [(SFService *)self->_service fixedPIN];
+    fixedPIN = [(SFService *)self->_service fixedPIN];
 
-    v15 = v16;
+    v15 = fixedPIN;
   }
 
   if (![(NSString *)v15 length]&& IsAppleInternalBuild())
@@ -1181,41 +1181,41 @@ LABEL_5:
     [(CUPairingSession *)self->_pairSetupSession setFixedPIN:v15];
   }
 
-  v18 = [(SFService *)self->_service showPINHandlerEx];
+  showPINHandlerEx2 = [(SFService *)self->_service showPINHandlerEx];
 
   service = self->_service;
-  if (v18)
+  if (showPINHandlerEx2)
   {
-    v20 = [(SFService *)service showPINHandlerEx];
-    [(CUPairingSession *)self->_pairSetupSession setShowPINHandlerEx:v20];
+    showPINHandlerEx3 = [(SFService *)service showPINHandlerEx];
+    [(CUPairingSession *)self->_pairSetupSession setShowPINHandlerEx:showPINHandlerEx3];
   }
 
   else
   {
-    v21 = [(SFService *)service showPINHandler];
+    showPINHandler2 = [(SFService *)service showPINHandler];
 
-    if (!v21)
+    if (!showPINHandler2)
     {
       goto LABEL_26;
     }
 
-    v20 = [(SFService *)self->_service showPINHandler];
-    [(CUPairingSession *)self->_pairSetupSession setShowPINHandler:v20];
+    showPINHandlerEx3 = [(SFService *)self->_service showPINHandler];
+    [(CUPairingSession *)self->_pairSetupSession setShowPINHandler:showPINHandlerEx3];
   }
 
 LABEL_26:
-  v22 = [(SFService *)self->_service hidePINHandler];
+  hidePINHandler = [(SFService *)self->_service hidePINHandler];
 
-  if (v22)
+  if (hidePINHandler)
   {
-    v23 = [(SFService *)self->_service hidePINHandler];
-    [(CUPairingSession *)self->_pairSetupSession setHidePINHandler:v23];
+    hidePINHandler2 = [(SFService *)self->_service hidePINHandler];
+    [(CUPairingSession *)self->_pairSetupSession setHidePINHandler:hidePINHandler2];
   }
 
-  if (v9)
+  if (promptForPINHandler)
   {
-    v24 = [(SFService *)self->_service promptForPINHandler];
-    [(CUPairingSession *)self->_pairSetupSession setPromptForPINHandler:v24];
+    promptForPINHandler2 = [(SFService *)self->_service promptForPINHandler];
+    [(CUPairingSession *)self->_pairSetupSession setPromptForPINHandler:promptForPINHandler2];
   }
 
   v35[0] = MEMORY[0x1E69E9820];
@@ -1223,7 +1223,7 @@ LABEL_26:
   v35[2] = __39__SFServiceSession_pairSetupWithFlags___block_invoke;
   v35[3] = &unk_1E7890598;
   v35[4] = self;
-  v36 = a3;
+  flagsCopy = flags;
   [(CUPairingSession *)self->_pairSetupSession setSendDataHandler:v35];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
@@ -1335,11 +1335,11 @@ void __39__SFServiceSession_pairSetupWithFlags___block_invoke_2(uint64_t a1, voi
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pairSetup:(id)a3 start:(BOOL)a4
+- (void)pairSetup:(id)setup start:(BOOL)start
 {
-  v4 = a4;
+  startCopy = start;
   v63[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  setupCopy = setup;
   v60 = 0;
   if (![(SFService *)self->_service pairSetupDisabled])
   {
@@ -1357,7 +1357,7 @@ void __39__SFServiceSession_pairSetupWithFlags___block_invoke_2(uint64_t a1, voi
       }
 
       v11 = "no";
-      if (v4)
+      if (startCopy)
       {
         v11 = "yes";
       }
@@ -1378,7 +1378,7 @@ void __39__SFServiceSession_pairSetupWithFlags___block_invoke_2(uint64_t a1, voi
     }
 
 LABEL_12:
-    if (!v4 && self->_pairSetupSession)
+    if (!startCopy && self->_pairSetupSession)
     {
       v13 = self->super._ucatCore->var0;
       if (v13 > 30)
@@ -1437,16 +1437,16 @@ LABEL_58:
     else
     {
       v15 = Int64Ranged & 0x18 | 4;
-      v16 = [(SFService *)self->_service showPINHandler];
-      if (v16)
+      showPINHandler = [(SFService *)self->_service showPINHandler];
+      if (showPINHandler)
       {
       }
 
       else
       {
-        v17 = [(SFService *)self->_service showPINHandlerEx];
+        showPINHandlerEx = [(SFService *)self->_service showPINHandlerEx];
 
-        if (!v17)
+        if (!showPINHandlerEx)
         {
           v15 = Int64Ranged & 0x18 | 0x84;
         }
@@ -1463,12 +1463,12 @@ LABEL_58:
     pairSetupSession = self->_pairSetupSession;
     self->_pairSetupSession = v20;
 
-    v22 = [(SFService *)self->_service pairSetupACL];
+    pairSetupACL = [(SFService *)self->_service pairSetupACL];
 
-    if (v22)
+    if (pairSetupACL)
     {
-      v23 = [(SFService *)self->_service pairSetupACL];
-      [(CUPairingSession *)self->_pairSetupSession setAcl:v23];
+      pairSetupACL2 = [(SFService *)self->_service pairSetupACL];
+      [(CUPairingSession *)self->_pairSetupSession setAcl:pairSetupACL2];
     }
 
     [(CUPairingSession *)self->_pairSetupSession setDispatchQueue:self->super._dispatchQueue];
@@ -1488,15 +1488,15 @@ LABEL_58:
     }
 
     [(CUPairingSession *)self->_pairSetupSession setSessionType:v25];
-    v26 = [(SFSession *)self peerDevice];
-    -[CUPairingSession setPeerDeviceClass:](self->_pairSetupSession, "setPeerDeviceClass:", MGDeviceClassFromSFDeviceClassCode([v26 deviceClassCode]));
+    peerDevice = [(SFSession *)self peerDevice];
+    -[CUPairingSession setPeerDeviceClass:](self->_pairSetupSession, "setPeerDeviceClass:", MGDeviceClassFromSFDeviceClassCode([peerDevice deviceClassCode]));
 
     v27 = self->super._fixedPIN;
     if (![(NSString *)v27 length])
     {
-      v28 = [(SFService *)self->_service fixedPIN];
+      fixedPIN = [(SFService *)self->_service fixedPIN];
 
-      v27 = v28;
+      v27 = fixedPIN;
     }
 
     if (![(NSString *)v27 length]&& IsAppleInternalBuild())
@@ -1512,46 +1512,46 @@ LABEL_58:
       [(CUPairingSession *)self->_pairSetupSession setFixedPIN:v27];
     }
 
-    v30 = [(SFService *)self->_service showPINHandlerEx];
+    showPINHandlerEx2 = [(SFService *)self->_service showPINHandlerEx];
 
     service = self->_service;
-    if (v30)
+    if (showPINHandlerEx2)
     {
-      v32 = [(SFService *)service showPINHandlerEx];
-      [(CUPairingSession *)self->_pairSetupSession setShowPINHandlerEx:v32];
+      showPINHandlerEx3 = [(SFService *)service showPINHandlerEx];
+      [(CUPairingSession *)self->_pairSetupSession setShowPINHandlerEx:showPINHandlerEx3];
     }
 
     else
     {
-      v33 = [(SFService *)service showPINHandler];
+      showPINHandler2 = [(SFService *)service showPINHandler];
 
-      if (!v33)
+      if (!showPINHandler2)
       {
         goto LABEL_40;
       }
 
-      v32 = [(SFService *)self->_service showPINHandler];
-      [(CUPairingSession *)self->_pairSetupSession setShowPINHandler:v32];
+      showPINHandlerEx3 = [(SFService *)self->_service showPINHandler];
+      [(CUPairingSession *)self->_pairSetupSession setShowPINHandler:showPINHandlerEx3];
     }
 
 LABEL_40:
-    v34 = [(SFService *)self->_service hidePINHandler];
+    hidePINHandler = [(SFService *)self->_service hidePINHandler];
 
-    if (v34)
+    if (hidePINHandler)
     {
-      v35 = [(SFService *)self->_service hidePINHandler];
-      [(CUPairingSession *)self->_pairSetupSession setHidePINHandler:v35];
+      hidePINHandler2 = [(SFService *)self->_service hidePINHandler];
+      [(CUPairingSession *)self->_pairSetupSession setHidePINHandler:hidePINHandler2];
     }
 
     if (v19)
     {
-      v36 = [(SFService *)self->_service promptForPINHandler];
-      [(CUPairingSession *)self->_pairSetupSession setPromptForPINHandler:v36];
+      promptForPINHandler = [(SFService *)self->_service promptForPINHandler];
+      [(CUPairingSession *)self->_pairSetupSession setPromptForPINHandler:promptForPINHandler];
     }
 
-    v37 = [(SFService *)self->_service isCLIMode];
+    isCLIMode = [(SFService *)self->_service isCLIMode];
     v38 = self->super._ucatCore->var0;
-    if (!v37)
+    if (!isCLIMode)
     {
       if (v38 > 30)
       {
@@ -1625,8 +1625,8 @@ LABEL_57:
     }
 
 LABEL_52:
-    v39 = [(SFService *)self->_service forcedPin];
-    [(CUPairingSession *)self->_pairSetupSession setFixedPIN:v39];
+    forcedPin = [(SFService *)self->_service forcedPin];
+    [(CUPairingSession *)self->_pairSetupSession setFixedPIN:forcedPin];
 
     goto LABEL_53;
   }
@@ -1708,11 +1708,11 @@ void __36__SFServiceSession_pairSetup_start___block_invoke_2(uint64_t a1, void *
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pairVerify:(id)a3 start:(BOOL)a4
+- (void)pairVerify:(id)verify start:(BOOL)start
 {
-  v6 = a3;
+  verifyCopy = verify;
   v26 = 0;
-  if (a4 || !self->_pairVerifySession)
+  if (start || !self->_pairVerifySession)
   {
     Int64Ranged = CFDictionaryGetInt64Ranged();
     if ((CFDictionaryGetInt64Ranged() & 8) != 0)
@@ -1752,12 +1752,12 @@ void __36__SFServiceSession_pairSetup_start___block_invoke_2(uint64_t a1, void *
     pairVerifySession = self->_pairVerifySession;
     self->_pairVerifySession = v10;
 
-    v12 = [(SFService *)self->_service pairVerifyACL];
+    pairVerifyACL = [(SFService *)self->_service pairVerifyACL];
 
-    if (v12)
+    if (pairVerifyACL)
     {
-      v13 = [(SFService *)self->_service pairVerifyACL];
-      [(CUPairingSession *)self->_pairVerifySession setAcl:v13];
+      pairVerifyACL2 = [(SFService *)self->_service pairVerifyACL];
+      [(CUPairingSession *)self->_pairVerifySession setAcl:pairVerifyACL2];
     }
 
     [(CUPairingSession *)self->_pairVerifySession setDispatchQueue:self->super._dispatchQueue];
@@ -1771,26 +1771,26 @@ void __36__SFServiceSession_pairSetup_start___block_invoke_2(uint64_t a1, void *
       goto LABEL_24;
     }
 
-    v15 = [(SFService *)self->_service myAppleIDInfoClient];
+    myAppleIDInfoClient = [(SFService *)self->_service myAppleIDInfoClient];
 
     service = self->_service;
-    if (v15)
+    if (myAppleIDInfoClient)
     {
-      v17 = [(SFService *)service myAppleIDInfoClient];
-      [(CUPairingSession *)self->_pairVerifySession setMyAppleIDInfoClient:v17];
+      myAppleIDInfoClient2 = [(SFService *)service myAppleIDInfoClient];
+      [(CUPairingSession *)self->_pairVerifySession setMyAppleIDInfoClient:myAppleIDInfoClient2];
     }
 
     else
     {
-      v18 = [(SFService *)service myAppleID];
+      myAppleID = [(SFService *)service myAppleID];
 
-      if (!v18)
+      if (!myAppleID)
       {
         goto LABEL_21;
       }
 
-      v17 = [(SFService *)self->_service myAppleID];
-      [(CUPairingSession *)self->_pairVerifySession setMyAppleID:v17];
+      myAppleIDInfoClient2 = [(SFService *)self->_service myAppleID];
+      [(CUPairingSession *)self->_pairVerifySession setMyAppleID:myAppleIDInfoClient2];
     }
 
 LABEL_21:
@@ -1801,8 +1801,8 @@ LABEL_21:
 
     else
     {
-      v19 = [(SFService *)self->_service peerAppleID];
-      [(CUPairingSession *)self->_pairVerifySession setPeerAppleID:v19];
+      peerAppleID = [(SFService *)self->_service peerAppleID];
+      [(CUPairingSession *)self->_pairVerifySession setPeerAppleID:peerAppleID];
     }
 
 LABEL_24:
@@ -1893,7 +1893,7 @@ void __37__SFServiceSession_pairVerify_start___block_invoke_2(uint64_t a1)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (int)setEncryptionReadKey:(const char *)a3 readKeyLen:(unint64_t)a4 writeKey:(const char *)a5 writeKeyLen:(unint64_t)a6
+- (int)setEncryptionReadKey:(const char *)key readKeyLen:(unint64_t)len writeKey:(const char *)writeKey writeKeyLen:(unint64_t)keyLen
 {
   OUTLINED_FUNCTION_7_2();
   v7 = v6;

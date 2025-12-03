@@ -1,9 +1,9 @@
 @interface CTSweetgumCapabilities
-- (BOOL)isEqual:(id)a3;
-- (CTSweetgumCapabilities)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CTSweetgumCapabilities)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTSweetgumCapabilities
@@ -20,10 +20,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v8) = 1;
   }
@@ -31,10 +31,10 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(CTSweetgumCapabilities *)self supportsServices], v5 == [(CTSweetgumCapabilities *)v4 supportsServices]) && (v6 = [(CTSweetgumCapabilities *)self supportsUsage], v6 == [(CTSweetgumCapabilities *)v4 supportsUsage]) && (v7 = [(CTSweetgumCapabilities *)self supportsPlans], v7 == [(CTSweetgumCapabilities *)v4 supportsPlans]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(CTSweetgumCapabilities *)self supportsServices], v5 == [(CTSweetgumCapabilities *)equalCopy supportsServices]) && (v6 = [(CTSweetgumCapabilities *)self supportsUsage], v6 == [(CTSweetgumCapabilities *)equalCopy supportsUsage]) && (v7 = [(CTSweetgumCapabilities *)self supportsPlans], v7 == [(CTSweetgumCapabilities *)equalCopy supportsPlans]))
     {
-      v10 = [(CTSweetgumCapabilities *)self supportsApplications];
-      v8 = v10 ^ [(CTSweetgumCapabilities *)v4 supportsApplications]^ 1;
+      supportsApplications = [(CTSweetgumCapabilities *)self supportsApplications];
+      v8 = supportsApplications ^ [(CTSweetgumCapabilities *)equalCopy supportsApplications]^ 1;
     }
 
     else
@@ -46,9 +46,9 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setSupportsServices:{-[CTSweetgumCapabilities supportsServices](self, "supportsServices")}];
   [v4 setSupportsUsage:{-[CTSweetgumCapabilities supportsUsage](self, "supportsUsage")}];
   [v4 setSupportsPlans:{-[CTSweetgumCapabilities supportsPlans](self, "supportsPlans")}];
@@ -56,28 +56,28 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   supportsServices = self->_supportsServices;
-  v5 = a3;
-  [v5 encodeBool:supportsServices forKey:@"services"];
-  [v5 encodeBool:self->_supportsUsage forKey:@"usage"];
-  [v5 encodeBool:self->_supportsPlans forKey:@"plans"];
-  [v5 encodeBool:self->_supportsApplications forKey:@"applications"];
+  coderCopy = coder;
+  [coderCopy encodeBool:supportsServices forKey:@"services"];
+  [coderCopy encodeBool:self->_supportsUsage forKey:@"usage"];
+  [coderCopy encodeBool:self->_supportsPlans forKey:@"plans"];
+  [coderCopy encodeBool:self->_supportsApplications forKey:@"applications"];
 }
 
-- (CTSweetgumCapabilities)initWithCoder:(id)a3
+- (CTSweetgumCapabilities)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CTSweetgumCapabilities;
   v5 = [(CTSweetgumCapabilities *)&v7 init];
   if (v5)
   {
-    v5->_supportsServices = [v4 decodeBoolForKey:@"services"];
-    v5->_supportsUsage = [v4 decodeBoolForKey:@"usage"];
-    v5->_supportsPlans = [v4 decodeBoolForKey:@"plans"];
-    v5->_supportsApplications = [v4 decodeBoolForKey:@"applications"];
+    v5->_supportsServices = [coderCopy decodeBoolForKey:@"services"];
+    v5->_supportsUsage = [coderCopy decodeBoolForKey:@"usage"];
+    v5->_supportsPlans = [coderCopy decodeBoolForKey:@"plans"];
+    v5->_supportsApplications = [coderCopy decodeBoolForKey:@"applications"];
   }
 
   return v5;

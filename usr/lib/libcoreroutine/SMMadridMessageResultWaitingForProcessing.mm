@@ -1,14 +1,14 @@
 @interface SMMadridMessageResultWaitingForProcessing
-- (SMMadridMessageResultWaitingForProcessing)initWithMessageGUID:(id)a3 success:(BOOL)a4 error:(id)a5;
+- (SMMadridMessageResultWaitingForProcessing)initWithMessageGUID:(id)d success:(BOOL)success error:(id)error;
 @end
 
 @implementation SMMadridMessageResultWaitingForProcessing
 
-- (SMMadridMessageResultWaitingForProcessing)initWithMessageGUID:(id)a3 success:(BOOL)a4 error:(id)a5
+- (SMMadridMessageResultWaitingForProcessing)initWithMessageGUID:(id)d success:(BOOL)success error:(id)error
 {
-  v9 = a3;
-  v10 = a5;
-  if (v9)
+  dCopy = d;
+  errorCopy = error;
+  if (dCopy)
   {
     v16.receiver = self;
     v16.super_class = SMMadridMessageResultWaitingForProcessing;
@@ -16,13 +16,13 @@
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_messageGUID, a3);
-      v12->_success = a4;
-      objc_storeStrong(&v12->_error, a5);
+      objc_storeStrong(&v11->_messageGUID, d);
+      v12->_success = success;
+      objc_storeStrong(&v12->_error, error);
     }
 
     self = v12;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -34,10 +34,10 @@
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: messageGUID", buf, 2u);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 @end

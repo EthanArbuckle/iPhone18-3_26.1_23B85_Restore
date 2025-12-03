@@ -26,14 +26,14 @@
 - (id)metricDictionary
 {
   v24[6] = *MEMORY[0x277D85DE8];
-  v3 = [(RTVisitRedactionMetric *)self redactedForAuthorizedLocation];
-  v4 = [(RTVisitRedactionMetric *)self redactedForCategory];
-  v5 = [(RTVisitRedactionMetric *)self redactedForConfidence];
-  v6 = [(RTVisitRedactionMetric *)self redactedForRegion];
-  v7 = [(RTVisitRedactionMetric *)self redactedForPlaceType];
+  redactedForAuthorizedLocation = [(RTVisitRedactionMetric *)self redactedForAuthorizedLocation];
+  redactedForCategory = [(RTVisitRedactionMetric *)self redactedForCategory];
+  redactedForConfidence = [(RTVisitRedactionMetric *)self redactedForConfidence];
+  redactedForRegion = [(RTVisitRedactionMetric *)self redactedForRegion];
+  redactedForPlaceType = [(RTVisitRedactionMetric *)self redactedForPlaceType];
   if ([(RTVisitRedactionMetric *)self visitsConsideredCount])
   {
-    v8 = (v4 + v3 + v5 + v6 + v7) / [(RTVisitRedactionMetric *)self visitsConsideredCount];
+    v8 = (redactedForCategory + redactedForAuthorizedLocation + redactedForConfidence + redactedForRegion + redactedForPlaceType) / [(RTVisitRedactionMetric *)self visitsConsideredCount];
   }
 
   else

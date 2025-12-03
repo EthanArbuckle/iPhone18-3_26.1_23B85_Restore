@@ -1,21 +1,21 @@
 @interface RBShader
-+ (id)decodedObjectWithData:(id)a3 delegate:(id)a4 error:(id *)a5;
-- ($B8E3DD8A8954C8C133399D0883B251E3)argumentAtIndex:(SEL)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)decodedObjectWithData:(id)data delegate:(id)delegate error:(id *)error;
+- ($B8E3DD8A8954C8C133399D0883B251E3)argumentAtIndex:(SEL)index;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)CIFilterCTM;
-- (RBShader)initWithLibrary:(id)a3 function:(id)a4;
-- (RBShader)initWithSystemShader:(id)a3;
-- (float)argumentHeadroomAtIndex:(unint64_t)a3;
+- (RBShader)initWithLibrary:(id)library function:(id)function;
+- (RBShader)initWithSystemShader:(id)shader;
+- (float)argumentHeadroomAtIndex:(unint64_t)index;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)encodedDataForDelegate:(id)a3 error:(id *)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)encodedDataForDelegate:(id)delegate error:(id *)error;
 - (void)removeAllArguments;
-- (void)setArgumentBytes:(const void *)a3 atIndex:(unint64_t)a4 type:(unsigned int)a5 count:(unint64_t)a6 flags:(unsigned int)a7;
-- (void)setArgumentColorSpace:(int)a3 atIndex:(unint64_t)a4;
-- (void)setArgumentData:(id)a3 atIndex:(unint64_t)a4 type:(unsigned int)a5 flags:(unsigned int)a6;
-- (void)setArgumentHeadroom:(float)a3 atIndex:(unint64_t)a4;
-- (void)setCIFilterCTM:(CGAffineTransform *)a3;
-- (void)setCIFilterProvider:(id)a3;
+- (void)setArgumentBytes:(const void *)bytes atIndex:(unint64_t)index type:(unsigned int)type count:(unint64_t)count flags:(unsigned int)flags;
+- (void)setArgumentColorSpace:(int)space atIndex:(unint64_t)index;
+- (void)setArgumentData:(id)data atIndex:(unint64_t)index type:(unsigned int)type flags:(unsigned int)flags;
+- (void)setArgumentHeadroom:(float)headroom atIndex:(unint64_t)index;
+- (void)setCIFilterCTM:(CGAffineTransform *)m;
+- (void)setCIFilterProvider:(id)provider;
 - (void)setRBClosure:(void *)result;
 @end
 
@@ -33,7 +33,7 @@
   return self;
 }
 
-- (RBShader)initWithLibrary:(id)a3 function:(id)a4
+- (RBShader)initWithLibrary:(id)library function:(id)function
 {
   v9.receiver = self;
   v9.super_class = RBShader;
@@ -41,20 +41,20 @@
   v7 = v6;
   if (v6)
   {
-    [(RBShader *)v6 initWithLibrary:a3 function:a4];
+    [(RBShader *)v6 initWithLibrary:library function:function];
   }
 
   return v7;
 }
 
-- (RBShader)initWithSystemShader:(id)a3
+- (RBShader)initWithSystemShader:(id)shader
 {
   v5 = +[RBShaderLibrary systemLibrary];
 
-  return [(RBShader *)self initWithLibrary:v5 function:a3];
+  return [(RBShader *)self initWithLibrary:v5 function:shader];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   p = self->_library._p;
@@ -70,15 +70,15 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_type != *(a3 + 48) || self->_library._p != *(a3 + 1))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_type != *(equal + 48) || self->_library._p != *(equal + 1))
   {
     return 0;
   }
 
-  return RB::CustomShader::Closure::operator==(&self->_fn_args, a3 + 2);
+  return RB::CustomShader::Closure::operator==(&self->_fn_args, equal + 2);
 }
 
 - (void)removeAllArguments
@@ -110,79 +110,79 @@
   self->_fn_args.args._size = 0;
 }
 
-- (void)setArgumentBytes:(const void *)a3 atIndex:(unint64_t)a4 type:(unsigned int)a5 count:(unint64_t)a6 flags:(unsigned int)a7
+- (void)setArgumentBytes:(const void *)bytes atIndex:(unint64_t)index type:(unsigned int)type count:(unint64_t)count flags:(unsigned int)flags
 {
-  v7 = a7;
-  v9 = a5;
-  RB::CustomShader::Closure::ensure_arg(&self->_fn_args, a4);
+  flagsCopy = flags;
+  typeCopy = type;
+  RB::CustomShader::Closure::ensure_arg(&self->_fn_args, index);
   p_2 = self->_fn_args.args._p_2;
   if (!p_2)
   {
     p_2 = &self->_fn_args.args;
   }
 
-  RB::CustomShader::Value::set_bytes(p_2 + 32 * a4, v9, a6, a3);
+  RB::CustomShader::Value::set_bytes(p_2 + 32 * index, typeCopy, count, bytes);
   p = self->_fn_args.args._p_2;
   if (!p)
   {
     p = self->_fn_args.args._p;
   }
 
-  p[32 * a4 + 9] = p[32 * a4 + 9] & 0xFE | v7 & 1;
+  p[32 * index + 9] = p[32 * index + 9] & 0xFE | flagsCopy & 1;
   v15 = self->_fn_args.args._p_2;
   if (!v15)
   {
     v15 = self->_fn_args.args._p;
   }
 
-  v15[32 * a4 + 9] = v15[32 * a4 + 9] & 0xFD | v7 & 2;
+  v15[32 * index + 9] = v15[32 * index + 9] & 0xFD | flagsCopy & 2;
 }
 
-- (void)setArgumentData:(id)a3 atIndex:(unint64_t)a4 type:(unsigned int)a5 flags:(unsigned int)a6
+- (void)setArgumentData:(id)data atIndex:(unint64_t)index type:(unsigned int)type flags:(unsigned int)flags
 {
-  v6 = a6;
-  v7 = a5;
-  RB::CustomShader::Closure::ensure_arg(&self->_fn_args, a4);
+  flagsCopy = flags;
+  typeCopy = type;
+  RB::CustomShader::Closure::ensure_arg(&self->_fn_args, index);
   p_2 = self->_fn_args.args._p_2;
   if (!p_2)
   {
     p_2 = &self->_fn_args.args;
   }
 
-  RB::CustomShader::Value::set_data(p_2 + 32 * a4, v7, a3);
+  RB::CustomShader::Value::set_data(p_2 + 32 * index, typeCopy, data);
   p = self->_fn_args.args._p_2;
   if (!p)
   {
     p = self->_fn_args.args._p;
   }
 
-  p[32 * a4 + 9] = p[32 * a4 + 9] & 0xFE | v6 & 1;
+  p[32 * index + 9] = p[32 * index + 9] & 0xFE | flagsCopy & 1;
   v13 = self->_fn_args.args._p_2;
   if (!v13)
   {
     v13 = self->_fn_args.args._p;
   }
 
-  v13[32 * a4 + 9] = v13[32 * a4 + 9] & 0xFD | v6 & 2;
+  v13[32 * index + 9] = v13[32 * index + 9] & 0xFD | flagsCopy & 2;
 }
 
-- (void)setArgumentColorSpace:(int)a3 atIndex:(unint64_t)a4
+- (void)setArgumentColorSpace:(int)space atIndex:(unint64_t)index
 {
-  RB::CustomShader::Closure::ensure_arg(&self->_fn_args, a4);
-  v7 = rb_color_space(a3);
+  RB::CustomShader::Closure::ensure_arg(&self->_fn_args, index);
+  v7 = rb_color_space(space);
   p_args = &self->_fn_args.args;
   if (self->_fn_args.args._p_2)
   {
     p_args = self->_fn_args.args._p_2;
   }
 
-  *&p_args[32 * a4 + 7] = v7;
+  *&p_args[32 * index + 7] = v7;
 }
 
-- (void)setArgumentHeadroom:(float)a3 atIndex:(unint64_t)a4
+- (void)setArgumentHeadroom:(float)headroom atIndex:(unint64_t)index
 {
-  _S8 = a3;
-  RB::CustomShader::Closure::ensure_arg(&self->_fn_args, a4);
+  _S8 = headroom;
+  RB::CustomShader::Closure::ensure_arg(&self->_fn_args, index);
   __asm { FCVT            H0, S8 }
 
   p = self->_fn_args.args._p;
@@ -191,13 +191,13 @@
     p = self->_fn_args.args._p_2;
   }
 
-  p[16 * a4 + 2] = _H0;
+  p[16 * index + 2] = _H0;
 }
 
-- (float)argumentHeadroomAtIndex:(unint64_t)a3
+- (float)argumentHeadroomAtIndex:(unint64_t)index
 {
   result = 0.0;
-  if (self->_fn_args.args._size > a3)
+  if (self->_fn_args.args._size > index)
   {
     p = self->_fn_args.args._p;
     if (self->_fn_args.args._p_2)
@@ -205,18 +205,18 @@
       p = self->_fn_args.args._p_2;
     }
 
-    _H0 = p[16 * a3 + 2];
+    _H0 = p[16 * index + 2];
     __asm { FCVT            S0, H0 }
   }
 
   return result;
 }
 
-- ($B8E3DD8A8954C8C133399D0883B251E3)argumentAtIndex:(SEL)a3
+- ($B8E3DD8A8954C8C133399D0883B251E3)argumentAtIndex:(SEL)index
 {
   if (self->_fn_args.args._size <= a4)
   {
-    RB::precondition_failure("invalid argument index: %ld", a3, a4);
+    RB::precondition_failure("invalid argument index: %ld", index, a4);
   }
 
   p_args = &self->_fn_args.args;
@@ -255,9 +255,9 @@
   return result;
 }
 
-- (void)setCIFilterProvider:(id)a3
+- (void)setCIFilterProvider:(id)provider
 {
-  v4 = [a3 copy];
+  v4 = [provider copy];
 
   self->_fn_args.cifilter_provider._p = v4;
 }
@@ -277,7 +277,7 @@
   return self;
 }
 
-- (void)setCIFilterCTM:(CGAffineTransform *)a3
+- (void)setCIFilterCTM:(CGAffineTransform *)m
 {
   ptr = self->_cifilter_ctm.__ptr_;
   if (!ptr)
@@ -285,17 +285,17 @@
     operator new();
   }
 
-  v4 = *&a3->a;
-  v5 = *&a3->tx;
-  *&ptr->c = *&a3->c;
+  v4 = *&m->a;
+  v5 = *&m->tx;
+  *&ptr->c = *&m->c;
   *&ptr->tx = v5;
   *&ptr->a = v4;
 }
 
-- (id)encodedDataForDelegate:(id)a3 error:(id *)a4
+- (id)encodedDataForDelegate:(id)delegate error:(id *)error
 {
   v8[0] = &unk_1F0A38EC0;
-  v8[1] = a3;
+  v8[1] = delegate;
   RB::ObjcEncoderDelegate::font_set(v8, &v17);
   v6 = v17;
   *v9 = 0u;
@@ -343,28 +343,28 @@
   if (v17 && atomic_fetch_add_explicit((v17 + 8), 0xFFFFFFFF, memory_order_release) == 1)
   {
     [RBEncoderSet init];
-    if (!a4)
+    if (!error)
     {
       return 0;
     }
   }
 
-  else if (!a4)
+  else if (!error)
   {
     return 0;
   }
 
-  if (!*a4)
+  if (!*error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"RBCodableError" code:-1 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"RBCodableError" code:-1 userInfo:0];
   }
 
   return 0;
 }
 
-+ (id)decodedObjectWithData:(id)a3 delegate:(id)a4 error:(id *)a5
++ (id)decodedObjectWithData:(id)data delegate:(id)delegate error:(id *)error
 {
-  MEMORY[0x1EEE9AC00](a1, a2);
+  MEMORY[0x1EEE9AC00](self, a2);
   v6 = v5;
   v8 = v7;
   v40 = *MEMORY[0x1E69E9840];
@@ -372,10 +372,10 @@
   v10 = objc_opt_new();
   RB::Heap::Heap(v23, v24, 4096, 0);
   v11 = v10;
-  v12 = [v8 bytes];
+  bytes = [v8 bytes];
   v13 = [v8 length];
-  v25 = v12;
-  v26 = &v12[v13];
+  v25 = bytes;
+  v26 = &bytes[v13];
   v27 = 0;
   v28 = 0;
   v30 = 0;

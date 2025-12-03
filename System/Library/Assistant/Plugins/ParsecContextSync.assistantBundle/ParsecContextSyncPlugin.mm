@@ -1,14 +1,14 @@
 @interface ParsecContextSyncPlugin
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 forKey:(id)a5 beginInfo:(id)a6;
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4;
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity forKey:(id)key beginInfo:(id)info;
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info;
 @end
 
 @implementation ParsecContextSyncPlugin
 
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  anchorCopy = anchor;
+  infoCopy = info;
   v7 = dispatch_semaphore_create(0);
   v50 = 0;
   v51 = &v50;
@@ -61,17 +61,17 @@
   dispatch_semaphore_wait(v10, v12);
   if ([v27[5] length])
   {
-    if ([v5 isEqualToString:v27[5]])
+    if ([anchorCopy isEqualToString:v27[5]])
     {
-      [v6 setPostAnchor:v5];
-      [v6 setObject:0];
+      [infoCopy setPostAnchor:anchorCopy];
+      [infoCopy setObject:0];
     }
 
     else
     {
       v13 = objc_alloc_init(SAParsecContext);
-      v14 = [v33[5] absoluteString];
-      [v13 setHttpUrl:v14];
+      absoluteString = [v33[5] absoluteString];
+      [v13 setHttpUrl:absoluteString];
 
       [v13 setHttpBody:v45[5]];
       [v13 setHttpMethod:v39[5]];
@@ -79,18 +79,18 @@
       v15 = [NSURL URLWithString:@"ParsecContextIdentifier"];
       [v13 setIdentifier:v15];
 
-      [v6 setObject:v13];
-      [v6 setPostAnchor:v27[5]];
+      [infoCopy setObject:v13];
+      [infoCopy setPostAnchor:v27[5]];
     }
   }
 
   else
   {
-    [v6 setObject:0];
-    [v6 setPostAnchor:v5];
+    [infoCopy setObject:0];
+    [infoCopy setPostAnchor:anchorCopy];
   }
 
-  [v6 setIsDelete:0];
+  [infoCopy setIsDelete:0];
 
   _Block_object_dispose(&v26, 8);
   _Block_object_dispose(&v32, 8);
@@ -101,12 +101,12 @@
   _Block_object_dispose(&v50, 8);
 }
 
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 forKey:(id)a5 beginInfo:(id)a6
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity forKey:(id)key beginInfo:(id)info
 {
-  v7 = a6;
-  if (([a4 isEqualToString:@"ParsecContextValidity"] & 1) == 0)
+  infoCopy = info;
+  if (([validity isEqualToString:@"ParsecContextValidity"] & 1) == 0)
   {
-    [v7 resetWithValidity:@"ParsecContextValidity"];
+    [infoCopy resetWithValidity:@"ParsecContextValidity"];
   }
 }
 

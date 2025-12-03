@@ -1,37 +1,37 @@
 @interface PHImportLibrarySource
-+ (BOOL)_isValidPhotoLibrary:(id)a3 error:(id *)a4;
-+ (id)importLibrarySourceForURL:(id)a3 exceptions:(id *)a4;
++ (BOOL)_isValidPhotoLibrary:(id)library error:(id *)error;
++ (id)importLibrarySourceForURL:(id)l exceptions:(id *)exceptions;
 + (id)supportedImportLibraryTypes;
-- (BOOL)_isValidPhotoLibraryWithError:(id *)a3;
-- (PHImportLibrarySource)initWithURLs:(id)a3;
-- (id)_resourcePathsByUuidForPaths:(id)a3;
-- (id)assetsByProcessingItem:(id)a3;
+- (BOOL)_isValidPhotoLibraryWithError:(id *)error;
+- (PHImportLibrarySource)initWithURLs:(id)ls;
+- (id)_resourcePathsByUuidForPaths:(id)paths;
+- (id)assetsByProcessingItem:(id)item;
 - (id)name;
-- (void)beginProcessingWithCompletion:(id)a3;
-- (void)loadSidecarsFor:(id)a3;
+- (void)beginProcessingWithCompletion:(id)completion;
+- (void)loadSidecarsFor:(id)for;
 @end
 
 @implementation PHImportLibrarySource
 
-- (BOOL)_isValidPhotoLibraryWithError:(id *)a3
+- (BOOL)_isValidPhotoLibraryWithError:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69BE688];
-  v5 = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
-  v6 = [v4 sharedAssetsdClientForPhotoLibraryURL:v5];
+  libraryURL = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
+  v6 = [v4 sharedAssetsdClientForPhotoLibraryURL:libraryURL];
 
-  v7 = [v6 libraryClient];
+  libraryClient = [v6 libraryClient];
   v13 = 0;
-  v8 = [v7 isLibraryReadyForImportWithError:&v13];
+  v8 = [libraryClient isLibraryReadyForImportWithError:&v13];
   v9 = v13;
 
-  if (a3 && (v8 & 1) == 0)
+  if (error && (v8 & 1) == 0)
   {
-    *a3 = PHErrorFromPLError(v9);
+    *error = PHErrorFromPLError(v9);
     v10 = PLImportGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = *a3;
+      v11 = *error;
       *buf = 136446466;
       v15 = "[PHImportLibrarySource _isValidPhotoLibraryWithError:]";
       v16 = 2112;
@@ -45,14 +45,14 @@
 
 - (id)name
 {
-  v2 = [(PHImportUrlSource *)self prefix];
-  v3 = [v2 lastPathComponent];
-  v4 = [v3 stringByDeletingPathExtension];
+  prefix = [(PHImportUrlSource *)self prefix];
+  lastPathComponent = [prefix lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  return v4;
+  return stringByDeletingPathExtension;
 }
 
-- (void)loadSidecarsFor:(id)a3
+- (void)loadSidecarsFor:(id)for
 {
   v6 = *MEMORY[0x1E69E9840];
   v3 = PLImportGetLog();
@@ -64,13 +64,13 @@
   }
 }
 
-- (id)assetsByProcessingItem:(id)a3
+- (id)assetsByProcessingItem:(id)item
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHImportUrlSource *)self resourcePathsByIdentifier];
-  v37 = v4;
-  v6 = [v5 objectForKeyedSubscript:v4];
+  itemCopy = item;
+  resourcePathsByIdentifier = [(PHImportUrlSource *)self resourcePathsByIdentifier];
+  v37 = itemCopy;
+  v6 = [resourcePathsByIdentifier objectForKeyedSubscript:itemCopy];
   v7 = [v6 mutableCopy];
 
   v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
@@ -112,8 +112,8 @@
 
         else
         {
-          v16 = [v13 lastPathComponent];
-          v17 = [(PHImportExceptionRecorder *)self addExceptionWithType:1 path:v16 underlyingError:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportLibrarySource.m" line:132];
+          lastPathComponent = [v13 lastPathComponent];
+          v17 = [(PHImportExceptionRecorder *)self addExceptionWithType:1 path:lastPathComponent underlyingError:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportLibrarySource.m" line:132];
         }
       }
 
@@ -151,8 +151,8 @@
 
         if (!v26)
         {
-          v27 = [v24 lastPathComponent];
-          v28 = [(PHImportExceptionRecorder *)self addExceptionWithType:1 path:v27 underlyingError:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportLibrarySource.m" line:158];
+          lastPathComponent2 = [v24 lastPathComponent];
+          v28 = [(PHImportExceptionRecorder *)self addExceptionWithType:1 path:lastPathComponent2 underlyingError:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportLibrarySource.m" line:158];
 
           goto LABEL_31;
         }
@@ -215,11 +215,11 @@ LABEL_31:
   return v33;
 }
 
-- (void)beginProcessingWithCompletion:(id)a3
+- (void)beginProcessingWithCompletion:(id)completion
 {
   v24[1] = *MEMORY[0x1E69E9840];
   pathManager = self->_pathManager;
-  v5 = a3;
+  completionCopy = completion;
   v6 = [(PLPhotoLibraryPathManager *)pathManager photoDirectoryWithType:4];
   v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6];
   v24[0] = v7;
@@ -239,29 +239,29 @@ LABEL_31:
   renderResourcePathsByIdentifier = self->_renderResourcePathsByIdentifier;
   self->_renderResourcePathsByIdentifier = v15;
 
-  v17 = [(PHImportUrlSource *)self resourcePathsByIdentifier];
-  v18 = [v17 allKeys];
-  v19 = [v18 mutableCopy];
+  resourcePathsByIdentifier = [(PHImportUrlSource *)self resourcePathsByIdentifier];
+  allKeys = [resourcePathsByIdentifier allKeys];
+  v19 = [allKeys mutableCopy];
   [(PHImportSource *)self setItems:v19];
 
-  v20 = [(PHImportSource *)self items];
-  v21 = [v20 count];
-  v22 = [(PHImportSource *)self progress];
-  [v22 setTotalUnitCount:v21];
+  items = [(PHImportSource *)self items];
+  v21 = [items count];
+  progress = [(PHImportSource *)self progress];
+  [progress setTotalUnitCount:v21];
 
-  v5[2](v5);
+  completionCopy[2](completionCopy);
 }
 
-- (id)_resourcePathsByUuidForPaths:(id)a3
+- (id)_resourcePathsByUuidForPaths:(id)paths
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  pathsCopy = paths;
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(pathsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = pathsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -300,13 +300,13 @@ LABEL_31:
   return v4;
 }
 
-- (PHImportLibrarySource)initWithURLs:(id)a3
+- (PHImportLibrarySource)initWithURLs:(id)ls
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] == 1 && (v11.receiver = self, v11.super_class = PHImportLibrarySource, (self = -[PHImportUrlSource initWithURLs:](&v11, sel_initWithURLs_, v4)) != 0))
+  lsCopy = ls;
+  if ([lsCopy count] == 1 && (v11.receiver = self, v11.super_class = PHImportLibrarySource, (self = -[PHImportUrlSource initWithURLs:](&v11, sel_initWithURLs_, lsCopy)) != 0))
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
+    v5 = [lsCopy objectAtIndexedSubscript:0];
     libraryURL = self->_libraryURL;
     self->_libraryURL = v5;
 
@@ -323,7 +323,7 @@ LABEL_31:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v13 = v4;
+      v13 = lsCopy;
       _os_log_impl(&dword_19C86F000, v9, OS_LOG_TYPE_DEBUG, "Unexpected: Attempting to create a library import source with more than on URL: %@", buf, 0xCu);
     }
 
@@ -333,22 +333,22 @@ LABEL_31:
   return self;
 }
 
-+ (BOOL)_isValidPhotoLibrary:(id)a3 error:(id *)a4
++ (BOOL)_isValidPhotoLibrary:(id)library error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69BE688] sharedAssetsdClientForPhotoLibraryURL:a3];
-  v6 = [v5 libraryClient];
+  v5 = [MEMORY[0x1E69BE688] sharedAssetsdClientForPhotoLibraryURL:library];
+  libraryClient = [v5 libraryClient];
   v12 = 0;
-  v7 = [v6 isLibraryReadyForImportWithError:&v12];
+  v7 = [libraryClient isLibraryReadyForImportWithError:&v12];
   v8 = v12;
 
-  if (a4 && (v7 & 1) == 0)
+  if (error && (v7 & 1) == 0)
   {
-    *a4 = PHErrorFromPLError(v8);
+    *error = PHErrorFromPLError(v8);
     v9 = PLImportGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = *a4;
+      v10 = *error;
       *buf = 136446466;
       v14 = "+[PHImportLibrarySource _isValidPhotoLibrary:error:]";
       v15 = 2112;
@@ -363,29 +363,29 @@ LABEL_31:
 + (id)supportedImportLibraryTypes
 {
   v7[3] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69C08F0] photosLibraryType];
-  v3 = [MEMORY[0x1E69C08F0] apertureLibraryType];
-  v7[1] = v3;
-  v4 = [MEMORY[0x1E69C08F0] iPhotoLibraryType];
-  v7[2] = v4;
+  photosLibraryType = [MEMORY[0x1E69C08F0] photosLibraryType];
+  apertureLibraryType = [MEMORY[0x1E69C08F0] apertureLibraryType];
+  v7[1] = apertureLibraryType;
+  iPhotoLibraryType = [MEMORY[0x1E69C08F0] iPhotoLibraryType];
+  v7[2] = iPhotoLibraryType;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:3];
 
   return v5;
 }
 
-+ (id)importLibrarySourceForURL:(id)a3 exceptions:(id *)a4
++ (id)importLibrarySourceForURL:(id)l exceptions:(id *)exceptions
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
+  lCopy = l;
+  array = [MEMORY[0x1E695DF70] array];
   v22 = 0;
-  v8 = [a1 _isValidPhotoLibrary:v6 error:&v22];
+  v8 = [self _isValidPhotoLibrary:lCopy error:&v22];
   v9 = v22;
   v10 = v9;
   if (v8)
   {
     v11 = [PHImportLibrarySource alloc];
-    v26[0] = v6;
+    v26[0] = lCopy;
     v12 = v26;
   }
 
@@ -393,16 +393,16 @@ LABEL_31:
   {
     if ([v9 code] != 6209)
     {
-      if (a4)
+      if (exceptions)
       {
         v17 = [PHImportException alloc];
-        v18 = [v6 path];
-        v19 = [v18 lastPathComponent];
-        v20 = [(PHImportException *)v17 initWithType:7 path:v19 underlyingError:v10 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportLibrarySource.m" line:51];
-        [v7 addObject:v20];
+        path = [lCopy path];
+        lastPathComponent = [path lastPathComponent];
+        v20 = [(PHImportException *)v17 initWithType:7 path:lastPathComponent underlyingError:v10 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportLibrarySource.m" line:51];
+        [array addObject:v20];
 
         v14 = 0;
-        *a4 = [v7 copy];
+        *exceptions = [array copy];
       }
 
       else
@@ -414,7 +414,7 @@ LABEL_31:
     }
 
     v11 = [PHImportLegacyLibrarySource alloc];
-    v25 = v6;
+    v25 = lCopy;
     v12 = &v25;
   }
 
@@ -426,7 +426,7 @@ LABEL_31:
     v15 = PLImportGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v16 = NSStringFromClass(a1);
+      v16 = NSStringFromClass(self);
       *buf = 138412290;
       v24 = v16;
       _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_DEBUG, "Attempting to import library with %@", buf, 0xCu);

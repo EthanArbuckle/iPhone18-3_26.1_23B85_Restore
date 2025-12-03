@@ -1,11 +1,11 @@
 @interface ASDDSPGraphInterpreter
-+ (id)compileFile:(id)a3 withSubstitutions:(id)a4 includingPaths:(id)a5;
-+ (id)compileText:(id)a3 withSubstitutions:(id)a4 includingPaths:(id)a5;
-+ (unordered_map<std::string,)stringMapFromStringDictionary:()std:()std:(std:(std:(id)a2 :(SEL)a3 string>>> *__return_ptr)retstr :(id)a4 allocator<std::pair<const)std::string :equal_to<std::string> :hash<std::string>;
-+ (vector<std::string,)stringVectorFromStringArray:(id)a2;
++ (id)compileFile:(id)file withSubstitutions:(id)substitutions includingPaths:(id)paths;
++ (id)compileText:(id)text withSubstitutions:(id)substitutions includingPaths:(id)paths;
++ (unordered_map<std::string,)stringMapFromStringDictionary:()std:()std:(std:(std:(id)std :(SEL)a3 string>>> *__return_ptr)retstr :(id)a4 allocator<std::pair<const)std::string :equal_to<std::string> :hash<std::string>;
++ (vector<std::string,)stringVectorFromStringArray:(id)array;
 - (ASDDSPGraphInterpreter)init;
-- (id)compileFile:(id)a3 withSubstitutions:(id)a4 includingPaths:(id)a5;
-- (id)compileText:(id)a3 withSubstitutions:(id)a4 includingPaths:(id)a5;
+- (id)compileFile:(id)file withSubstitutions:(id)substitutions includingPaths:(id)paths;
+- (id)compileText:(id)text withSubstitutions:(id)substitutions includingPaths:(id)paths;
 @end
 
 @implementation ASDDSPGraphInterpreter
@@ -45,48 +45,48 @@
   return v3;
 }
 
-+ (id)compileFile:(id)a3 withSubstitutions:(id)a4 includingPaths:(id)a5
++ (id)compileFile:(id)file withSubstitutions:(id)substitutions includingPaths:(id)paths
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  fileCopy = file;
+  substitutionsCopy = substitutions;
+  pathsCopy = paths;
   v10 = objc_alloc_init(objc_opt_class());
-  v11 = [v10 compileFile:v7 withSubstitutions:v8 includingPaths:v9];
+  v11 = [v10 compileFile:fileCopy withSubstitutions:substitutionsCopy includingPaths:pathsCopy];
 
   return v11;
 }
 
-+ (id)compileText:(id)a3 withSubstitutions:(id)a4 includingPaths:(id)a5
++ (id)compileText:(id)text withSubstitutions:(id)substitutions includingPaths:(id)paths
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  textCopy = text;
+  substitutionsCopy = substitutions;
+  pathsCopy = paths;
   v10 = objc_alloc_init(objc_opt_class());
-  v11 = [v10 compileText:v7 withSubstitutions:v8 includingPaths:v9];
+  v11 = [v10 compileText:textCopy withSubstitutions:substitutionsCopy includingPaths:pathsCopy];
 
   return v11;
 }
 
-- (id)compileFile:(id)a3 withSubstitutions:(id)a4 includingPaths:(id)a5
+- (id)compileFile:(id)file withSubstitutions:(id)substitutions includingPaths:(id)paths
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  substitutionsCopy = substitutions;
+  pathsCopy = paths;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __71__ASDDSPGraphInterpreter_compileFile_withSubstitutions_includingPaths___block_invoke;
   v17[3] = &unk_278CE41B8;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = fileCopy;
+  v19 = substitutionsCopy;
+  v20 = pathsCopy;
   v21[0] = &unk_285344510;
   v21[1] = 0;
   v21[3] = v21;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v11 = pathsCopy;
+  v12 = substitutionsCopy;
+  v13 = fileCopy;
   v14 = ASDDSP::exceptionBarrier<objc_object *({block_pointer} {__strong})(void)>(v17);
   std::__function::__value_func<objc_object * ()(void)>::~__value_func[abi:ne200100](v21);
 
@@ -143,26 +143,26 @@ id __71__ASDDSPGraphInterpreter_compileFile_withSubstitutions_includingPaths___b
   return 0;
 }
 
-- (id)compileText:(id)a3 withSubstitutions:(id)a4 includingPaths:(id)a5
+- (id)compileText:(id)text withSubstitutions:(id)substitutions includingPaths:(id)paths
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  substitutionsCopy = substitutions;
+  pathsCopy = paths;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __71__ASDDSPGraphInterpreter_compileText_withSubstitutions_includingPaths___block_invoke;
   v17[3] = &unk_278CE41B8;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = textCopy;
+  v19 = substitutionsCopy;
+  v20 = pathsCopy;
   v21[0] = &unk_285344510;
   v21[1] = 0;
   v21[3] = v21;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v11 = pathsCopy;
+  v12 = substitutionsCopy;
+  v13 = textCopy;
   v14 = ASDDSP::exceptionBarrier<objc_object *({block_pointer} {__strong})(void)>(v17);
   std::__function::__value_func<objc_object * ()(void)>::~__value_func[abi:ne200100](v21);
 
@@ -218,7 +218,7 @@ id __71__ASDDSPGraphInterpreter_compileText_withSubstitutions_includingPaths___b
   return 0;
 }
 
-+ (unordered_map<std::string,)stringMapFromStringDictionary:()std:()std:(std:(std:(id)a2 :(SEL)a3 string>>> *__return_ptr)retstr :(id)a4 allocator<std::pair<const)std::string :equal_to<std::string> :hash<std::string>
++ (unordered_map<std::string,)stringMapFromStringDictionary:()std:()std:(std:(std:(id)std :(SEL)a3 string>>> *__return_ptr)retstr :(id)a4 allocator<std::pair<const)std::string :equal_to<std::string> :hash<std::string>
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = a4;
@@ -266,7 +266,7 @@ id __71__ASDDSPGraphInterpreter_compileText_withSubstitutions_includingPaths___b
   return result;
 }
 
-+ (vector<std::string,)stringVectorFromStringArray:(id)a2
++ (vector<std::string,)stringVectorFromStringArray:(id)array
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = a4;
@@ -297,8 +297,8 @@ id __71__ASDDSPGraphInterpreter_compileText_withSubstitutions_includingPaths___b
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          v12 = [v10 UTF8String];
-          v21 = v12;
+          uTF8String = [v10 UTF8String];
+          v21 = uTF8String;
           var1 = retstr->var1;
           if (var1 >= retstr->var2)
           {
@@ -307,7 +307,7 @@ id __71__ASDDSPGraphInterpreter_compileText_withSubstitutions_includingPaths___b
 
           else
           {
-            std::string::basic_string[abi:ne200100]<0>(retstr->var1, v12);
+            std::string::basic_string[abi:ne200100]<0>(retstr->var1, uTF8String);
             v14 = var1 + 24;
           }
 

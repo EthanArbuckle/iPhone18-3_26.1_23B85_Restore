@@ -1,22 +1,22 @@
 @interface MDKeyRing
 + (id)defaultKeyRing;
-- (BOOL)createKeychainItemForKey:(id)a3;
+- (BOOL)createKeychainItemForKey:(id)key;
 - (MDKeyRing)init;
-- (__CFUUID)_createKeyUUIDWithAccount:(id)a3 password:(id)a4;
-- (__SecKey)getKey:(id)a3;
+- (__CFUUID)_createKeyUUIDWithAccount:(id)account password:(id)password;
+- (__SecKey)getKey:(id)key;
 - (id)allKeyUUIDs;
-- (id)copyDecryptedData:(id)a3 withKeyUUID:(id)a4 iv1:(unsigned int)a5 iv2:(unsigned int)a6;
-- (id)copyEncryptedData:(id)a3 withKeyUUID:(id)a4 iv1:(unsigned int)a5 iv2:(unsigned int)a6;
-- (id)copyPrivateKeyQuery:(id)a3;
+- (id)copyDecryptedData:(id)data withKeyUUID:(id)d iv1:(unsigned int)iv1 iv2:(unsigned int)iv2;
+- (id)copyEncryptedData:(id)data withKeyUUID:(id)d iv1:(unsigned int)iv1 iv2:(unsigned int)iv2;
+- (id)copyPrivateKeyQuery:(id)query;
 - (id)createRandomAESKey;
 - (id)createRandomUUID;
-- (id)dictionaryToSecItemFormat:(id)a3;
-- (id)fetchKeyFromKeychain:(id)a3;
-- (id)secItemFormatToDictionary:(id)a3;
-- (int)restoreFromExistingKey:(id)a3;
+- (id)dictionaryToSecItemFormat:(id)format;
+- (id)fetchKeyFromKeychain:(id)keychain;
+- (id)secItemFormatToDictionary:(id)dictionary;
+- (int)restoreFromExistingKey:(id)key;
 - (void)dealloc;
-- (void)scheduleAccessToKey:(__CFUUID *)a3 onQueue:(id)global_queue usingBlock:(id)a5;
-- (void)writeToKeychain:(id)a3;
+- (void)scheduleAccessToKey:(__CFUUID *)key onQueue:(id)global_queue usingBlock:(id)block;
+- (void)writeToKeychain:(id)keychain;
 @end
 
 @implementation MDKeyRing
@@ -36,19 +36,19 @@
   return [[NSUUID alloc] initWithUUIDBytes:v4];
 }
 
-- (__CFUUID)_createKeyUUIDWithAccount:(id)a3 password:(id)a4
+- (__CFUUID)_createKeyUUIDWithAccount:(id)account password:(id)password
 {
   *&md.byte0 = 0;
   *&md.byte8 = 0;
   memset(&v11, 0, sizeof(v11));
   CC_MD5_Init(&v11);
   CC_MD5_Update(&v11, "obvious", 8u);
-  v6 = [a3 UTF8String];
-  v7 = strlen(v6);
-  CC_MD5_Update(&v11, v6, v7 + 1);
-  v8 = [a4 UTF8String];
-  v9 = strlen(v8);
-  CC_MD5_Update(&v11, v8, v9);
+  uTF8String = [account UTF8String];
+  v7 = strlen(uTF8String);
+  CC_MD5_Update(&v11, uTF8String, v7 + 1);
+  uTF8String2 = [password UTF8String];
+  v9 = strlen(uTF8String2);
+  CC_MD5_Update(&v11, uTF8String2, v9);
   CC_MD5_Final(&md.byte0, &v11);
   md.byte6 = md.byte6 & 0xF | 0x30;
   md.byte8 = md.byte8 & 0x3F | 0x80;
@@ -101,9 +101,9 @@
 
     if (!v2->_designatedKeyUUID)
     {
-      v7 = [(MDKeyRing *)v2 createRandomUUID];
-      v2->_designatedKeyUUID = v7;
-      [(MDKeyRing *)v2 fetchKeyFromKeychain:v7];
+      createRandomUUID = [(MDKeyRing *)v2 createRandomUUID];
+      v2->_designatedKeyUUID = createRandomUUID;
+      [(MDKeyRing *)v2 fetchKeyFromKeychain:createRandomUUID];
     }
 
     v2->_queue = dispatch_queue_create("com.apple.metadata.MDRemoteKeyRing", 0);
@@ -123,7 +123,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000030E0;
   block[3] = &unk_100014A10;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10001A118 != -1)
   {
     dispatch_once(&qword_10001A118, block);
@@ -132,7 +132,7 @@
   result = qword_10001A120;
   if (!qword_10001A120)
   {
-    return objc_alloc_init(a1);
+    return objc_alloc_init(self);
   }
 
   return result;
@@ -182,20 +182,20 @@
   return v3;
 }
 
-- (__SecKey)getKey:(id)a3
+- (__SecKey)getKey:(id)key
 {
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  if (a3)
+  if (key)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100003360;
     block[3] = &unk_100014A60;
-    block[5] = a3;
+    block[5] = key;
     block[6] = &v7;
     block[4] = self;
     dispatch_sync(queue, block);
@@ -211,7 +211,7 @@
   return v4;
 }
 
-- (void)scheduleAccessToKey:(__CFUUID *)a3 onQueue:(id)global_queue usingBlock:(id)a5
+- (void)scheduleAccessToKey:(__CFUUID *)key onQueue:(id)global_queue usingBlock:(id)block
 {
   if (!global_queue)
   {
@@ -223,30 +223,30 @@
   block[1] = 3221225472;
   block[2] = sub_1000035A8;
   block[3] = &unk_100014A88;
-  block[5] = a5;
-  block[6] = a3;
+  block[5] = block;
+  block[6] = key;
   block[4] = self;
   dispatch_async(global_queue, block);
 }
 
-- (int)restoreFromExistingKey:(id)a3
+- (int)restoreFromExistingKey:(id)key
 {
   result = 0;
   v5 = [(MDKeyRing *)self copyPrivateKeyQuery:?];
   v6 = SecItemCopyMatching(v5, &result);
 
-  v7 = [(MDKeyRing *)self keysByUUID];
-  if (!v7)
+  keysByUUID = [(MDKeyRing *)self keysByUUID];
+  if (!keysByUUID)
   {
-    v7 = objc_opt_new();
-    [(MDKeyRing *)self setKeysByUUID:v7];
+    keysByUUID = objc_opt_new();
+    [(MDKeyRing *)self setKeysByUUID:keysByUUID];
   }
 
-  v8 = [(NSMutableDictionary *)v7 objectForKey:a3];
+  v8 = [(NSMutableDictionary *)keysByUUID objectForKey:key];
   if (!v8 || (v9 = v8, v8 == kCFNull))
   {
     v9 = objc_opt_new();
-    [(NSMutableDictionary *)v7 setObject:v9 forKey:a3];
+    [(NSMutableDictionary *)keysByUUID setObject:v9 forKey:key];
   }
 
   v10 = result;
@@ -264,26 +264,26 @@
   return v6;
 }
 
-- (id)copyPrivateKeyQuery:(id)a3
+- (id)copyPrivateKeyQuery:(id)query
 {
   v4 = objc_alloc_init(NSMutableDictionary);
   [v4 setObject:kSecClassKey forKey:kSecClass];
-  [v4 setObject:objc_msgSend(a3 forKey:{"MDUUIDData"), kSecAttrApplicationLabel}];
+  [v4 setObject:objc_msgSend(query forKey:{"MDUUIDData"), kSecAttrApplicationLabel}];
   sub_100002CF4(v4);
   return v4;
 }
 
-- (id)fetchKeyFromKeychain:(id)a3
+- (id)fetchKeyFromKeychain:(id)keychain
 {
   v5 = [(MDKeyRing *)self restoreFromExistingKey:?];
   if (v5)
   {
     if (v5 == -25300)
     {
-      if ([(MDKeyRing *)self createKeychainItemForKey:a3])
+      if ([(MDKeyRing *)self createKeychainItemForKey:keychain])
       {
-        [(MDKeyRing *)self writeToKeychain:a3];
-        [(MDKeyRing *)self restoreFromExistingKey:a3];
+        [(MDKeyRing *)self writeToKeychain:keychain];
+        [(MDKeyRing *)self restoreFromExistingKey:keychain];
         goto LABEL_5;
       }
     }
@@ -301,7 +301,7 @@
   }
 
 LABEL_5:
-  v6 = [(NSMutableDictionary *)[(MDKeyRing *)self keysByUUID] objectForKey:a3];
+  v6 = [(NSMutableDictionary *)[(MDKeyRing *)self keysByUUID] objectForKey:keychain];
 
   return [v6 objectForKey:kSecValueData];
 }
@@ -321,20 +321,20 @@ LABEL_5:
   return [[NSData alloc] initWithBytes:v4 length:16];
 }
 
-- (BOOL)createKeychainItemForKey:(id)a3
+- (BOOL)createKeychainItemForKey:(id)key
 {
-  v5 = [(MDKeyRing *)self keysByUUID];
-  if (!v5)
+  keysByUUID = [(MDKeyRing *)self keysByUUID];
+  if (!keysByUUID)
   {
-    v5 = objc_opt_new();
-    [(MDKeyRing *)self setKeysByUUID:v5];
+    keysByUUID = objc_opt_new();
+    [(MDKeyRing *)self setKeysByUUID:keysByUUID];
   }
 
-  v6 = [(NSMutableDictionary *)v5 objectForKey:a3];
+  v6 = [(NSMutableDictionary *)keysByUUID objectForKey:key];
   if (!v6)
   {
     v6 = objc_opt_new();
-    [(NSMutableDictionary *)v5 setObject:v6 forKey:a3];
+    [(NSMutableDictionary *)keysByUUID setObject:v6 forKey:key];
   }
 
   if ([v6 count])
@@ -349,15 +349,15 @@ LABEL_5:
     }
   }
 
-  v15 = [(MDKeyRing *)self createRandomAESKey];
-  if (v15)
+  createRandomAESKey = [(MDKeyRing *)self createRandomAESKey];
+  if (createRandomAESKey)
   {
-    [v6 setObject:v15 forKey:kSecValueData];
+    [v6 setObject:createRandomAESKey forKey:kSecValueData];
     sub_100002CF4(v6);
-    [v6 setObject:+[NSString stringWithFormat:](NSString forKey:{"stringWithFormat:", @"%@ (%@)", @"Spotlight Metadata Privacy", objc_msgSend(a3, "UUIDString")), kSecAttrLabel}];
+    [v6 setObject:+[NSString stringWithFormat:](NSString forKey:{"stringWithFormat:", @"%@ (%@)", @"Spotlight Metadata Privacy", objc_msgSend(key, "UUIDString")), kSecAttrLabel}];
     v25[0] = 0;
     v25[1] = 0;
-    [a3 getUUIDBytes:v25];
+    [key getUUIDBytes:v25];
     [v6 setObject:+[NSData dataWithBytes:length:](NSData forKey:{"dataWithBytes:length:", v25, 16), kSecAttrApplicationLabel}];
   }
 
@@ -370,10 +370,10 @@ LABEL_5:
     }
   }
 
-  return v15 != 0;
+  return createRandomAESKey != 0;
 }
 
-- (void)writeToKeychain:(id)a3
+- (void)writeToKeychain:(id)keychain
 {
   result = 0;
   v5 = [(MDKeyRing *)self copyPrivateKeyQuery:?];
@@ -386,7 +386,7 @@ LABEL_5:
       {
         v7 = [NSMutableDictionary dictionaryWithDictionary:result];
         -[NSMutableDictionary setObject:forKey:](v7, "setObject:forKey:", [v5 objectForKey:kSecClass], kSecClass);
-        v8 = [(MDKeyRing *)self dictionaryToSecItemFormat:[(NSMutableDictionary *)[(MDKeyRing *)self keysByUUID] objectForKey:a3]];
+        v8 = [(MDKeyRing *)self dictionaryToSecItemFormat:[(NSMutableDictionary *)[(MDKeyRing *)self keysByUUID] objectForKey:keychain]];
         [v8 removeObjectForKey:kSecClass];
         if (SecItemUpdate(v7, v8))
         {
@@ -402,7 +402,7 @@ LABEL_5:
     }
   }
 
-  v17 = [(NSMutableDictionary *)[(MDKeyRing *)self keysByUUID] objectForKey:a3];
+  v17 = [(NSMutableDictionary *)[(MDKeyRing *)self keysByUUID] objectForKey:keychain];
   v18 = SecItemAdd([(MDKeyRing *)self dictionaryToSecItemFormat:v17], 0);
   if (v18 == -25299)
   {
@@ -432,11 +432,11 @@ LABEL_11:
 LABEL_15:
 }
 
-- (id)dictionaryToSecItemFormat:(id)a3
+- (id)dictionaryToSecItemFormat:(id)format
 {
   v4 = [NSMutableDictionary dictionaryWithDictionary:?];
   [(NSMutableDictionary *)v4 setObject:kSecClassKey forKey:kSecClass];
-  v5 = [a3 objectForKey:kSecValueData];
+  v5 = [format objectForKey:kSecValueData];
   if (v5)
   {
     [(NSMutableDictionary *)v4 setObject:v5 forKey:kSecValueData];
@@ -445,9 +445,9 @@ LABEL_15:
   return v4;
 }
 
-- (id)secItemFormatToDictionary:(id)a3
+- (id)secItemFormatToDictionary:(id)dictionary
 {
-  v3 = [NSMutableDictionary dictionaryWithDictionary:a3];
+  v3 = [NSMutableDictionary dictionaryWithDictionary:dictionary];
   [(NSMutableDictionary *)v3 setObject:kCFBooleanTrue forKey:kSecReturnData];
   [(NSMutableDictionary *)v3 setObject:kSecClassKey forKey:kSecClass];
   result = 0;
@@ -478,35 +478,35 @@ LABEL_15:
   return v3;
 }
 
-- (id)copyEncryptedData:(id)a3 withKeyUUID:(id)a4 iv1:(unsigned int)a5 iv2:(unsigned int)a6
+- (id)copyEncryptedData:(id)data withKeyUUID:(id)d iv1:(unsigned int)iv1 iv2:(unsigned int)iv2
 {
-  v11 = [(MDKeyRing *)self fetchKeyFromKeychain:a4];
-  if (v11 || ([(MDKeyRing *)self createKeychainItemForKey:a4], (v11 = [(MDKeyRing *)self fetchKeyFromKeychain:a4]) != 0))
+  v11 = [(MDKeyRing *)self fetchKeyFromKeychain:d];
+  if (v11 || ([(MDKeyRing *)self createKeychainItemForKey:d], (v11 = [(MDKeyRing *)self fetchKeyFromKeychain:d]) != 0))
   {
     v12 = v11;
-    v13 = [a3 bytes];
-    v14 = [a3 length];
+    bytes = [data bytes];
+    v14 = [data length];
 
-    return sub_100003F24(0, v13, v14, v12, a5, a6);
+    return sub_100003F24(0, bytes, v14, v12, iv1, iv2);
   }
 
   else
   {
-    NSLog(@"No key data for %@", a4);
+    NSLog(@"No key data for %@", d);
     return 0;
   }
 }
 
-- (id)copyDecryptedData:(id)a3 withKeyUUID:(id)a4 iv1:(unsigned int)a5 iv2:(unsigned int)a6
+- (id)copyDecryptedData:(id)data withKeyUUID:(id)d iv1:(unsigned int)iv1 iv2:(unsigned int)iv2
 {
-  result = [(MDKeyRing *)self fetchKeyFromKeychain:a4];
-  if (result || ([(MDKeyRing *)self createKeychainItemForKey:a4], (result = [(MDKeyRing *)self fetchKeyFromKeychain:a4]) != 0))
+  result = [(MDKeyRing *)self fetchKeyFromKeychain:d];
+  if (result || ([(MDKeyRing *)self createKeychainItemForKey:d], (result = [(MDKeyRing *)self fetchKeyFromKeychain:d]) != 0))
   {
     v12 = result;
-    v13 = [a3 bytes];
-    v14 = [a3 length];
+    bytes = [data bytes];
+    v14 = [data length];
 
-    return sub_100003F24(1u, v13, v14, v12, a5, a6);
+    return sub_100003F24(1u, bytes, v14, v12, iv1, iv2);
   }
 
   return result;

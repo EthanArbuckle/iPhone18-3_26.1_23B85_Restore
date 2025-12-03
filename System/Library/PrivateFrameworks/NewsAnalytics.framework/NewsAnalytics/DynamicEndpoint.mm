@@ -1,7 +1,7 @@
 @interface DynamicEndpoint
 - (NSString)name;
 - (NSURL)url;
-- (id)endpointURLWithContentType:(int64_t)a3;
+- (id)endpointURLWithContentType:(int64_t)type;
 @end
 
 @implementation DynamicEndpoint
@@ -33,14 +33,14 @@
   return v10;
 }
 
-- (id)endpointURLWithContentType:(int64_t)a3
+- (id)endpointURLWithContentType:(int64_t)type
 {
   sub_217CE93AC();
   v5 = *(*(v4 - 8) + 64);
   MEMORY[0x28223BE20](v4 - 8);
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
 
-  DynamicEndpoint.endpointURL(contentType:)(a3, v7);
+  DynamicEndpoint.endpointURL(contentType:)(type, v7);
 
   v8 = sub_217D87BAC();
   v9 = *(v8 - 8);

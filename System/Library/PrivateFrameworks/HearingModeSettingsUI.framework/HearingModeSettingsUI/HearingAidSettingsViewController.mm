@@ -1,5 +1,5 @@
 @interface HearingAidSettingsViewController
-- (_TtC21HearingModeSettingsUI32HearingAidSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC21HearingModeSettingsUI32HearingAidSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)mediaAssistEnabled;
 - (id)specifiers;
 - (uint64_t)hearingOptionsInControllcenterTapped;
@@ -9,9 +9,9 @@
 
 @implementation HearingAidSettingsViewController
 
-- (_TtC21HearingModeSettingsUI32HearingAidSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21HearingModeSettingsUI32HearingAidSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_2520046E0();
     v7 = v6;
@@ -23,19 +23,19 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return HearingAidSettingsViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return HearingAidSettingsViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_251FF94C4();
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_251FFA6D8();
 
   if (v3)
@@ -53,7 +53,7 @@
 
 - (id)mediaAssistEnabled
 {
-  v2 = self;
+  selfCopy = self;
   result = sub_251FF6DB8();
   if (result)
   {
@@ -77,7 +77,7 @@
 
 - (void)useNewTestResultTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_251FFB324();
 }
 
@@ -117,10 +117,10 @@
     swift_setDeallocating();
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F4C7210, &unk_252008A30);
     swift_arrayDestroy();
-    v18 = [objc_opt_self() defaultWorkspace];
-    if (v18)
+    defaultWorkspace = [objc_opt_self() defaultWorkspace];
+    if (defaultWorkspace)
     {
-      v19 = v18;
+      v19 = defaultWorkspace;
       v20 = sub_252003AF0();
       sub_251FFB484(v17);
 

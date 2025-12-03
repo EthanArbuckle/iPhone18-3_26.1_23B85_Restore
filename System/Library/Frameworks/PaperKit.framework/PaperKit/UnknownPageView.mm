@@ -1,11 +1,11 @@
 @interface UnknownPageView
-- (_TtC8PaperKit15UnknownPageView)initWithCoder:(id)a3;
+- (_TtC8PaperKit15UnknownPageView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation UnknownPageView
 
-- (_TtC8PaperKit15UnknownPageView)initWithCoder:(id)a3
+- (_TtC8PaperKit15UnknownPageView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC8PaperKit15UnknownPageView_textualContextProvider) = 0;

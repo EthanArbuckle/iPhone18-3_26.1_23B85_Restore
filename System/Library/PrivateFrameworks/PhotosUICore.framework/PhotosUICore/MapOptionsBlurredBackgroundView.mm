@@ -1,11 +1,11 @@
 @interface MapOptionsBlurredBackgroundView
-- (_TtC12PhotosUICore31MapOptionsBlurredBackgroundView)initWithCoder:(id)a3;
-- (_TtC12PhotosUICore31MapOptionsBlurredBackgroundView)initWithEffect:(id)a3;
+- (_TtC12PhotosUICore31MapOptionsBlurredBackgroundView)initWithCoder:(id)coder;
+- (_TtC12PhotosUICore31MapOptionsBlurredBackgroundView)initWithEffect:(id)effect;
 @end
 
 @implementation MapOptionsBlurredBackgroundView
 
-- (_TtC12PhotosUICore31MapOptionsBlurredBackgroundView)initWithCoder:(id)a3
+- (_TtC12PhotosUICore31MapOptionsBlurredBackgroundView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC12PhotosUICore31MapOptionsBlurredBackgroundView_backdropView;
   *(&self->super.super.super.super.isa + v3) = [objc_allocWithZone(MEMORY[0x1E69DD838]) init];
@@ -14,7 +14,7 @@
   return result;
 }
 
-- (_TtC12PhotosUICore31MapOptionsBlurredBackgroundView)initWithEffect:(id)a3
+- (_TtC12PhotosUICore31MapOptionsBlurredBackgroundView)initWithEffect:(id)effect
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

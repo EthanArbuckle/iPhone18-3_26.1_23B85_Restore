@@ -1,15 +1,15 @@
 @interface ColorViewController
 - (CGRect)visibleBounds;
-- (_TtC15ControlCenterUI19ColorViewController)initWithCoder:(id)a3;
-- (_TtC15ControlCenterUI19ColorViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ControlCenterUI19ColorViewController)initWithCoder:(id)coder;
+- (_TtC15ControlCenterUI19ColorViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)sourceView;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
 - (void)viewDidLoad;
 @end
 
 @implementation ColorViewController
 
-- (_TtC15ControlCenterUI19ColorViewController)initWithCoder:(id)a3
+- (_TtC15ControlCenterUI19ColorViewController)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC15ControlCenterUI19ColorViewController_iconImageInfo);
   *v3 = 0u;
@@ -31,11 +31,11 @@
   v5.super_class = type metadata accessor for ColorViewController();
   v2 = v5.receiver;
   [(ColorViewController *)&v5 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 setBackgroundColor_];
+    v4 = view;
+    [view setBackgroundColor_];
   }
 
   else
@@ -44,7 +44,7 @@
   }
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = (&self->super.super.super.isa + OBJC_IVAR____TtC15ControlCenterUI19ColorViewController_iconImageInfo);
   *v7 = v3;
@@ -55,8 +55,8 @@
 
 - (id)sourceView
 {
-  v2 = self;
-  result = [(ColorViewController *)v2 view];
+  selfCopy = self;
+  result = [(ColorViewController *)selfCopy view];
   if (result)
   {
     v4 = result;
@@ -85,7 +85,7 @@
   return result;
 }
 
-- (_TtC15ControlCenterUI19ColorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ControlCenterUI19ColorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

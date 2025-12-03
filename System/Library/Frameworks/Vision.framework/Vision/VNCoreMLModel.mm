@@ -1,8 +1,8 @@
 @interface VNCoreMLModel
 + (VNCoreMLModel)modelForMLModel:(MLModel *)model error:(NSError *)error;
 - (NSArray)supportedComputeDevices;
-- (id)_configuredMLPredictionOptionsForOptions:(void *)a3 error:;
-- (id)predictWithCVPixelBuffer:(__CVBuffer *)a3 options:(id)a4 error:(id *)a5;
+- (id)_configuredMLPredictionOptionsForOptions:(void *)options error:;
+- (id)predictWithCVPixelBuffer:(__CVBuffer *)buffer options:(id)options error:(id *)error;
 - (id)sequencedRequestPreviousObservationsKey;
 - (void)setInputImageFeatureName:(NSString *)inputImageFeatureName;
 @end
@@ -19,19 +19,19 @@
   return v6;
 }
 
-- (id)predictWithCVPixelBuffer:(__CVBuffer *)a3 options:(id)a4 error:(id *)a5
+- (id)predictWithCVPixelBuffer:(__CVBuffer *)buffer options:(id)options error:(id *)error
 {
-  v8 = a4;
+  optionsCopy = options;
   v9 = [VNPixelBufferMLFeatureProvider alloc];
   inputImageKey = self->_inputImageKey;
-  v11 = [(VNCoreMLModel *)self featureProvider];
-  v12 = [(VNPixelBufferMLFeatureProvider *)v9 initWithPixelBuffer:a3 forKey:inputImageKey originalFeatureProvider:v11];
+  featureProvider = [(VNCoreMLModel *)self featureProvider];
+  v12 = [(VNPixelBufferMLFeatureProvider *)v9 initWithPixelBuffer:buffer forKey:inputImageKey originalFeatureProvider:featureProvider];
 
-  v13 = [(VNCoreMLModel *)self _configuredMLPredictionOptionsForOptions:v8 error:a5];
+  v13 = [(VNCoreMLModel *)self _configuredMLPredictionOptionsForOptions:optionsCopy error:error];
   if (v13)
   {
-    v14 = [(VNCoreMLModel *)self model];
-    v15 = [v14 predictionFromFeatures:v12 options:v13 error:a5];
+    model = [(VNCoreMLModel *)self model];
+    v15 = [model predictionFromFeatures:v12 options:v13 error:error];
   }
 
   else
@@ -42,10 +42,10 @@
   return v15;
 }
 
-- (id)_configuredMLPredictionOptionsForOptions:(void *)a3 error:
+- (id)_configuredMLPredictionOptionsForOptions:(void *)options error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695FF08]);
     v7 = @"VNComputeStageMain";
@@ -56,17 +56,17 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [v9 computeDevice];
+        computeDevice = [v9 computeDevice];
 
-        v9 = v10;
+        v9 = computeDevice;
       }
 
-      v11 = [a1 supportedComputeDevices];
-      if (([v11 containsObject:v9] & 1) == 0)
+      supportedComputeDevices = [self supportedComputeDevices];
+      if (([supportedComputeDevices containsObject:v9] & 1) == 0)
       {
-        if (a3)
+        if (options)
         {
-          *a3 = [VNError errorForUnsupportedComputeDevice:v9];
+          *options = [VNError errorForUnsupportedComputeDevice:v9];
         }
 
         v12 = 0;
@@ -95,19 +95,19 @@ LABEL_12:
   inputImageKey = self->_inputImageKey;
   self->_inputImageKey = v4;
 
-  v6 = [(VNCoreMLModel *)self model];
-  v7 = [v6 modelDescription];
+  model = [(VNCoreMLModel *)self model];
+  modelDescription = [model modelDescription];
 
-  v8 = [v7 inputDescriptionsByName];
-  v9 = [v8 objectForKeyedSubscript:v13];
+  inputDescriptionsByName = [modelDescription inputDescriptionsByName];
+  v9 = [inputDescriptionsByName objectForKeyedSubscript:v13];
   v10 = v9;
   if (v9 && [v9 type] == 4)
   {
-    v11 = [v10 imageConstraint];
-    v12 = v11;
-    if (v11)
+    imageConstraint = [v10 imageConstraint];
+    v12 = imageConstraint;
+    if (imageConstraint)
     {
-      self->_inputImageWidth = [v11 pixelsWide];
+      self->_inputImageWidth = [imageConstraint pixelsWide];
       self->_inputImageHeight = [v12 pixelsHigh];
       self->_inputImageFormat = [v12 pixelFormatType];
     }
@@ -122,11 +122,11 @@ LABEL_12:
 
 - (NSArray)supportedComputeDevices
 {
-  v2 = [(VNCoreMLModel *)self model];
-  v3 = [v2 configuration];
-  v4 = [v3 computeUnits];
+  model = [(VNCoreMLModel *)self model];
+  configuration = [model configuration];
+  computeUnits = [configuration computeUnits];
 
-  v5 = [VNComputeDeviceUtilities computeDeviceTypesForMLComputeUnits:v4];
+  v5 = [VNComputeDeviceUtilities computeDeviceTypesForMLComputeUnits:computeUnits];
 
   return [VNComputeDeviceUtilities computeDevicesOfTypes:v5];
 }
@@ -140,22 +140,22 @@ LABEL_12:
   if (!v5 || (v82.receiver = v5, v82.super_class = VNCoreMLModel, (v7 = objc_msgSendSuper2(&v82, sel_init)) == 0))
   {
     v28 = 0;
-    v29 = v6;
+    postVisionFeaturePrintModel = v6;
     goto LABEL_66;
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-  v9 = [v8 UUIDString];
+  uUIDString = [v8 UUIDString];
   v10 = *(v7 + 1);
-  *(v7 + 1) = v9;
+  *(v7 + 1) = uUIDString;
 
-  v11 = [(MLModel *)v6 modelDescription];
-  v12 = [v11 inputDescriptionsByName];
+  modelDescription = [(MLModel *)v6 modelDescription];
+  inputDescriptionsByName = [modelDescription inputDescriptionsByName];
   v85 = 0u;
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v13 = v12;
+  v13 = inputDescriptionsByName;
   v14 = [v13 countByEnumeratingWithState:&v83 objects:v87 count:16];
   if (!v14)
   {
@@ -176,15 +176,15 @@ LABEL_12:
       v18 = [v13 objectForKeyedSubscript:v17];
       if ([v18 type] == 4)
       {
-        v19 = [v18 imageConstraint];
-        v20 = v19;
-        if (!v19)
+        imageConstraint = [v18 imageConstraint];
+        v20 = imageConstraint;
+        if (!imageConstraint)
         {
 
           goto LABEL_20;
         }
 
-        *(v7 + 10) = [v19 pixelsWide];
+        *(v7 + 10) = [imageConstraint pixelsWide];
         *(v7 + 11) = [v20 pixelsHigh];
         *(v7 + 7) = [v20 pixelFormatType];
         v21 = [v17 copy];
@@ -200,17 +200,17 @@ LABEL_12:
           goto LABEL_22;
         }
 
-        v25 = [v11 predictedProbabilitiesName];
-        v69 = v25;
-        if ([v25 length])
+        predictedProbabilitiesName = [modelDescription predictedProbabilitiesName];
+        v69 = predictedProbabilitiesName;
+        if ([predictedProbabilitiesName length])
         {
-          objc_storeStrong(v7 + 8, v25);
+          objc_storeStrong(v7 + 8, predictedProbabilitiesName);
         }
 
-        obj = [v11 predictedFeatureName];
-        v26 = [(MLModel *)v6 objectBoundingBoxOutputDescription];
+        obj = [modelDescription predictedFeatureName];
+        objectBoundingBoxOutputDescription = [(MLModel *)v6 objectBoundingBoxOutputDescription];
         v27 = *(v7 + 9);
-        *(v7 + 9) = v26;
+        *(v7 + 9) = objectBoundingBoxOutputDescription;
 
         if (*(v7 + 9))
         {
@@ -225,13 +225,13 @@ LABEL_12:
 
         else
         {
-          v30 = [v11 outputDescriptionsByName];
+          outputDescriptionsByName = [modelDescription outputDescriptionsByName];
           *(v7 + 6) = 1;
           v80 = 0u;
           v81 = 0u;
           v78 = 0u;
           v79 = 0u;
-          v31 = v30;
+          v31 = outputDescriptionsByName;
           v32 = [v31 countByEnumeratingWithState:&v78 objects:v87 count:16];
           if (v32)
           {
@@ -260,45 +260,45 @@ LABEL_12:
         }
 
         [(MLModel *)v6 visionFeaturePrintInfo];
-        v72 = v29 = v6;
+        v72 = postVisionFeaturePrintModel = v6;
         if (!v72)
         {
           goto LABEL_63;
         }
 
-        v29 = [v72 postVisionFeaturePrintModel];
+        postVisionFeaturePrintModel = [v72 postVisionFeaturePrintModel];
 
-        v71 = [v72 featureExtractorParameters];
+        featureExtractorParameters = [v72 featureExtractorParameters];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v36 = v71;
+          v36 = featureExtractorParameters;
           v67 = v36;
           if (objc_opt_respondsToSelector())
           {
-            v68 = [v36 requestClassName];
+            requestClassName = [v36 requestClassName];
           }
 
           else
           {
-            v68 = @"VNCreateSceneprintRequest";
+            requestClassName = @"VNCreateSceneprintRequest";
           }
 
-          v45 = +[VNRequestSpecifier specifierForRequestClassName:revision:error:](VNRequestSpecifier, "specifierForRequestClassName:revision:error:", v68, [v36 scenePrintVersion], error);
+          v45 = +[VNRequestSpecifier specifierForRequestClassName:revision:error:](VNRequestSpecifier, "specifierForRequestClassName:revision:error:", requestClassName, [v36 scenePrintVersion], error);
           v46 = *(v7 + 12);
           *(v7 + 12) = v45;
 
           v47 = *(v7 + 12);
           if (v47 && [v47 representsSupportedRequestAndReturnError:error])
           {
-            v48 = [v29 modelDescription];
-            v49 = [v48 inputDescriptionsByName];
+            modelDescription2 = [postVisionFeaturePrintModel modelDescription];
+            inputDescriptionsByName2 = [modelDescription2 inputDescriptionsByName];
 
             v76 = 0u;
             v77 = 0u;
             v74 = 0u;
             v75 = 0u;
-            v50 = v49;
+            v50 = inputDescriptionsByName2;
             v51 = [v50 countByEnumeratingWithState:&v74 objects:&v83 count:16];
             if (v51)
             {
@@ -317,8 +317,8 @@ LABEL_12:
                   if ([v55 type] == 5)
                   {
                     objc_storeStrong(v7 + 13, v54);
-                    v65 = [v55 multiArrayConstraint];
-                    *(v7 + 14) = [v65 dataType];
+                    multiArrayConstraint = [v55 multiArrayConstraint];
+                    *(v7 + 14) = [multiArrayConstraint dataType];
 
                     goto LABEL_61;
                   }
@@ -351,7 +351,7 @@ LABEL_64:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v37 = v71;
+          v37 = featureExtractorParameters;
           v38 = +[VNRequestSpecifier specifierForRequestClassName:revision:error:](VNRequestSpecifier, "specifierForRequestClassName:revision:error:", @"VNCreateDetectionprintRequest", [v37 objectPrintVersion], error);
           v39 = *(v7 + 15);
           *(v7 + 15) = v38;
@@ -362,9 +362,9 @@ LABEL_64:
             goto LABEL_58;
           }
 
-          v41 = [v29 modelDescription];
-          v42 = [v41 inputDescriptionsByName];
-          v43 = [v42 copy];
+          modelDescription3 = [postVisionFeaturePrintModel modelDescription];
+          inputDescriptionsByName3 = [modelDescription3 inputDescriptionsByName];
+          v43 = [inputDescriptionsByName3 copy];
           v44 = *(v7 + 16);
           *(v7 + 16) = v43;
 
@@ -386,14 +386,14 @@ LABEL_64:
           v56 = objc_opt_class();
           v37 = NSStringFromClass(v56);
           v57 = v37;
-          v58 = [v37 UTF8String];
-          VNValidatedLog(2, @"CoreML model has a FeaturePrint with an unsupported feature extractor class %s", v59, v60, v61, v62, v63, v64, v58);
+          uTF8String = [v37 UTF8String];
+          VNValidatedLog(2, @"CoreML model has a FeaturePrint with an unsupported feature extractor class %s", v59, v60, v61, v62, v63, v64, uTF8String);
         }
 
 LABEL_62:
 
 LABEL_63:
-        objc_storeStrong(v7 + 5, v29);
+        objc_storeStrong(v7 + 5, postVisionFeaturePrintModel);
         v28 = v7;
         goto LABEL_64;
       }
@@ -423,7 +423,7 @@ LABEL_22:
     v28 = 0;
   }
 
-  v29 = v6;
+  postVisionFeaturePrintModel = v6;
 LABEL_65:
 
 LABEL_66:

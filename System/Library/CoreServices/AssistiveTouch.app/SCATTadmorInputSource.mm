@@ -1,17 +1,17 @@
 @interface SCATTadmorInputSource
-- (id)actionForButtonNumber:(int64_t)a3 withType:(id)a4;
-- (void)pointerDidMoveWith:(CGPoint)a3;
-- (void)selectItemWithIndex:(int64_t)a3;
+- (id)actionForButtonNumber:(int64_t)number withType:(id)type;
+- (void)pointerDidMoveWith:(CGPoint)with;
+- (void)selectItemWithIndex:(int64_t)index;
 - (void)startRunning;
-- (void)updateSignalQuality:(int64_t)a3 forButtonNumber:(int64_t)a4;
-- (void)updateWithSwitches:(id)a3 recipe:(id)a4;
+- (void)updateSignalQuality:(int64_t)quality forButtonNumber:(int64_t)number;
+- (void)updateWithSwitches:(id)switches recipe:(id)recipe;
 @end
 
 @implementation SCATTadmorInputSource
 
-- (void)updateWithSwitches:(id)a3 recipe:(id)a4
+- (void)updateWithSwitches:(id)switches recipe:(id)recipe
 {
-  v13 = [NSMutableDictionary dictionary:a3];
+  v13 = [NSMutableDictionary dictionary:switches];
   v5 = 0;
   v6 = SCATSwitchSourceTadmor;
   v7 = SCATSwitchTypeOptional;
@@ -32,15 +32,15 @@
   [(SCATInputSource *)self setActions:v13];
 }
 
-- (id)actionForButtonNumber:(int64_t)a3 withType:(id)a4
+- (id)actionForButtonNumber:(int64_t)number withType:(id)type
 {
-  v6 = [(SCATInputSource *)self actions:a3];
+  v6 = [(SCATInputSource *)self actions:number];
 
   if (v6)
   {
-    v7 = [NSNumber numberWithInteger:a3];
-    v8 = [(SCATInputSource *)self actions];
-    v9 = [v8 objectForKeyedSubscript:v7];
+    v7 = [NSNumber numberWithInteger:number];
+    actions = [(SCATInputSource *)self actions];
+    v9 = [actions objectForKeyedSubscript:v7];
   }
 
   else
@@ -57,19 +57,19 @@
   return v9;
 }
 
-- (void)updateSignalQuality:(int64_t)a3 forButtonNumber:(int64_t)a4
+- (void)updateSignalQuality:(int64_t)quality forButtonNumber:(int64_t)number
 {
-  v5 = a3 / 255.0 * 100.0;
-  v6 = [(SCATInputSource *)self delegate];
-  [v6 tadmorInputSource:self didUpdateSignalQuality:v5];
+  v5 = quality / 255.0 * 100.0;
+  delegate = [(SCATInputSource *)self delegate];
+  [delegate tadmorInputSource:self didUpdateSignalQuality:v5];
 }
 
-- (void)pointerDidMoveWith:(CGPoint)a3
+- (void)pointerDidMoveWith:(CGPoint)with
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchScanningMode];
+  assistiveTouchScanningMode = [v3 assistiveTouchScanningMode];
 
-  if (v4 != 6)
+  if (assistiveTouchScanningMode != 6)
   {
     v5 = +[AXSettings sharedInstance];
     [v5 setAssistiveTouchScanningMode:6];
@@ -78,10 +78,10 @@
   AXPerformBlockAsynchronouslyOnMainThread();
 }
 
-- (void)selectItemWithIndex:(int64_t)a3
+- (void)selectItemWithIndex:(int64_t)index
 {
-  v5 = [(SCATInputSource *)self delegate];
-  [v5 tadmorInputSource:self didReceiveItemSelectionIndex:a3];
+  delegate = [(SCATInputSource *)self delegate];
+  [delegate tadmorInputSource:self didReceiveItemSelectionIndex:index];
 }
 
 - (void)startRunning

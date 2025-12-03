@@ -1,7 +1,7 @@
 @interface MRDPairingHandler
 - (MRDPairingHandler)init;
-- (void)addHandlerForRouteUID:(id)a3 completion:(id)a4;
-- (void)performHandlerForRouteUID:(id)a3 passcode:(id)a4;
+- (void)addHandlerForRouteUID:(id)d completion:(id)completion;
+- (void)performHandlerForRouteUID:(id)d passcode:(id)passcode;
 @end
 
 @implementation MRDPairingHandler
@@ -21,34 +21,34 @@
   return v2;
 }
 
-- (void)addHandlerForRouteUID:(id)a3 completion:(id)a4
+- (void)addHandlerForRouteUID:(id)d completion:(id)completion
 {
-  if (a3 && a4)
+  if (d && completion)
   {
     handlers = self->_handlers;
-    v6 = a3;
-    v7 = objc_retainBlock(a4);
-    [(NSMutableDictionary *)handlers setObject:v7 forKey:v6];
+    dCopy = d;
+    v7 = objc_retainBlock(completion);
+    [(NSMutableDictionary *)handlers setObject:v7 forKey:dCopy];
   }
 }
 
-- (void)performHandlerForRouteUID:(id)a3 passcode:(id)a4
+- (void)performHandlerForRouteUID:(id)d passcode:(id)passcode
 {
-  v6 = a4;
-  if (a3)
+  passcodeCopy = passcode;
+  if (d)
   {
-    v10 = v6;
+    v10 = passcodeCopy;
     handlers = self->_handlers;
-    v8 = a3;
-    v9 = [(NSMutableDictionary *)handlers objectForKeyedSubscript:v8];
-    [(NSMutableDictionary *)self->_handlers removeObjectForKey:v8];
+    dCopy = d;
+    v9 = [(NSMutableDictionary *)handlers objectForKeyedSubscript:dCopy];
+    [(NSMutableDictionary *)self->_handlers removeObjectForKey:dCopy];
 
     if (v9)
     {
       (v9)[2](v9, v10);
     }
 
-    v6 = v10;
+    passcodeCopy = v10;
   }
 }
 

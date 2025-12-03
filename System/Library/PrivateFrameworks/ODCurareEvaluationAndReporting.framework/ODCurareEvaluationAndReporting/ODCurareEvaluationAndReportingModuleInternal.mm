@@ -1,50 +1,50 @@
 @interface ODCurareEvaluationAndReportingModuleInternal
-- (BOOL)generatePETReportAndReturnError:(id *)a3;
+- (BOOL)generatePETReportAndReturnError:(id *)error;
 - (ODCurareEvaluationAndReportingModuleInternal)init;
-- (ODCurareEvaluationAndReportingModuleInternal)initWithBundleIdentifier:(id)a3 dataProviderInstance:(id)a4 evaluationInstance:(id)a5 personalizationInstance:(id)a6 pruningPolicy:(id)a7 error:(id *)a8;
-- (id)evaluateDefaultModelWithDefaultModelPath:(id)a3 modelConfiguration:(id)a4 error:(id *)a5;
+- (ODCurareEvaluationAndReportingModuleInternal)initWithBundleIdentifier:(id)identifier dataProviderInstance:(id)instance evaluationInstance:(id)evaluationInstance personalizationInstance:(id)personalizationInstance pruningPolicy:(id)policy error:(id *)error;
+- (id)evaluateDefaultModelWithDefaultModelPath:(id)path modelConfiguration:(id)configuration error:(id *)error;
 - (id)getEvaluationResults;
-- (id)getSelectedModelAndReturnError:(id *)a3;
-- (id)trainAndEvaluateAdaptedModelsWithAdaptableModelPath:(id)a3 modelConfiguration:(id)a4 error:(id *)a5;
-- (id)trainAndEvaluateModelsWithCandidateModels:(id)a3 personalizationPolicy:(id)a4 modelSelectionPolicy:(id)a5 error:(id *)a6;
+- (id)getSelectedModelAndReturnError:(id *)error;
+- (id)trainAndEvaluateAdaptedModelsWithAdaptableModelPath:(id)path modelConfiguration:(id)configuration error:(id *)error;
+- (id)trainAndEvaluateModelsWithCandidateModels:(id)models personalizationPolicy:(id)policy modelSelectionPolicy:(id)selectionPolicy error:(id *)error;
 @end
 
 @implementation ODCurareEvaluationAndReportingModuleInternal
 
-- (ODCurareEvaluationAndReportingModuleInternal)initWithBundleIdentifier:(id)a3 dataProviderInstance:(id)a4 evaluationInstance:(id)a5 personalizationInstance:(id)a6 pruningPolicy:(id)a7 error:(id *)a8
+- (ODCurareEvaluationAndReportingModuleInternal)initWithBundleIdentifier:(id)identifier dataProviderInstance:(id)instance evaluationInstance:(id)evaluationInstance personalizationInstance:(id)personalizationInstance pruningPolicy:(id)policy error:(id *)error
 {
   v12 = sub_25C82E0AC();
   v14 = v13;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v15 = a7;
-  return ODCurareEvaluationAndReportingModule.init(bundleIdentifier:dataProviderInstance:evaluationInstance:personalizationInstance:pruningPolicy:)(v12, v14, a4, a5, a6, a7);
+  policyCopy = policy;
+  return ODCurareEvaluationAndReportingModule.init(bundleIdentifier:dataProviderInstance:evaluationInstance:personalizationInstance:pruningPolicy:)(v12, v14, instance, evaluationInstance, personalizationInstance, policy);
 }
 
-- (id)getSelectedModelAndReturnError:(id *)a3
+- (id)getSelectedModelAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_25C7EA7A0();
   v5 = v4;
 
   return v5;
 }
 
-- (id)trainAndEvaluateModelsWithCandidateModels:(id)a3 personalizationPolicy:(id)a4 modelSelectionPolicy:(id)a5 error:(id *)a6
+- (id)trainAndEvaluateModelsWithCandidateModels:(id)models personalizationPolicy:(id)policy modelSelectionPolicy:(id)selectionPolicy error:(id *)error
 {
   sub_25C7E96B8(0, &qword_281559498, off_2799B9778);
   v9 = sub_25C82E1DC();
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
-  sub_25C7EC4B4(v9, v10, v11);
+  policyCopy = policy;
+  selectionPolicyCopy = selectionPolicy;
+  selfCopy = self;
+  sub_25C7EC4B4(v9, policyCopy, selectionPolicyCopy);
   v14 = v13;
 
   return v14;
 }
 
-- (id)evaluateDefaultModelWithDefaultModelPath:(id)a3 modelConfiguration:(id)a4 error:(id *)a5
+- (id)evaluateDefaultModelWithDefaultModelPath:(id)path modelConfiguration:(id)configuration error:(id *)error
 {
   v7 = sub_25C82DEAC();
   v8 = *(v7 - 8);
@@ -52,15 +52,15 @@
   MEMORY[0x28223BE20](v7);
   v11 = &v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_25C82DE7C();
-  v12 = a4;
-  v13 = self;
-  v14 = sub_25C7ECD40(v11, a4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  v14 = sub_25C7ECD40(v11, configuration);
   (*(v8 + 8))(v11, v7);
 
   return v14;
 }
 
-- (id)trainAndEvaluateAdaptedModelsWithAdaptableModelPath:(id)a3 modelConfiguration:(id)a4 error:(id *)a5
+- (id)trainAndEvaluateAdaptedModelsWithAdaptableModelPath:(id)path modelConfiguration:(id)configuration error:(id *)error
 {
   v7 = sub_25C82DEAC();
   v8 = *(v7 - 8);
@@ -68,18 +68,18 @@
   MEMORY[0x28223BE20](v7);
   v11 = &v17 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_25C82DE7C();
-  v12 = a4;
-  v13 = self;
-  sub_25C7ED28C(v13, a4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_25C7ED28C(selfCopy, configuration);
   v15 = v14;
   (*(v8 + 8))(v11, v7);
 
   return v15;
 }
 
-- (BOOL)generatePETReportAndReturnError:(id *)a3
+- (BOOL)generatePETReportAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_25C7EF3D0();
 
   return 1;
@@ -87,7 +87,7 @@
 
 - (id)getEvaluationResults
 {
-  v2 = self;
+  selfCopy = self;
   sub_25C7EF5EC();
 
   v3 = sub_25C82E01C();

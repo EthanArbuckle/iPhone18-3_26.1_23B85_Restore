@@ -1,29 +1,29 @@
 @interface TUILinkEntityAction
-- (TUILinkEntityAction)initWithName:(id)a3 trigger:(id)a4 refId:(id)a5;
+- (TUILinkEntityAction)initWithName:(id)name trigger:(id)trigger refId:(id)id;
 - (id)description;
 @end
 
 @implementation TUILinkEntityAction
 
-- (TUILinkEntityAction)initWithName:(id)a3 trigger:(id)a4 refId:(id)a5
+- (TUILinkEntityAction)initWithName:(id)name trigger:(id)trigger refId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  triggerCopy = trigger;
+  idCopy = id;
   v19.receiver = self;
   v19.super_class = TUILinkEntityAction;
   v11 = [(TUILinkEntityAction *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    v14 = [v9 copy];
+    v14 = [triggerCopy copy];
     trigger = v11->_trigger;
     v11->_trigger = v14;
 
-    v16 = [v10 copy];
+    v16 = [idCopy copy];
     refId = v11->_refId;
     v11->_refId = v16;
   }

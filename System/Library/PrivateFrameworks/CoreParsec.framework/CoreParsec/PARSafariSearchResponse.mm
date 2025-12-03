@@ -1,39 +1,39 @@
 @interface PARSafariSearchResponse
-+ (id)responseFromReply:(id)a3;
-- (PARSafariSearchResponse)initWithReply:(id)a3 factory:(id)a4 data:(id)a5;
++ (id)responseFromReply:(id)reply;
+- (PARSafariSearchResponse)initWithReply:(id)reply factory:(id)factory data:(id)data;
 @end
 
 @implementation PARSafariSearchResponse
 
-- (PARSafariSearchResponse)initWithReply:(id)a3 factory:(id)a4 data:(id)a5
+- (PARSafariSearchResponse)initWithReply:(id)reply factory:(id)factory data:(id)data
 {
-  v7 = a3;
+  replyCopy = reply;
   swift_unknownObjectRetain();
-  v8 = a5;
+  dataCopy = data;
   v9 = sub_1B11218CC();
   v11 = v10;
 
-  PARSafariSearchResponse.init(reply:factory:data:)(v7, a4, v9, v11);
+  PARSafariSearchResponse.init(reply:factory:data:)(replyCopy, factory, v9, v11);
   return result;
 }
 
-+ (id)responseFromReply:(id)a3
++ (id)responseFromReply:(id)reply
 {
-  v3 = a3;
-  v4 = [v3 task];
-  v5 = [v4 request];
+  replyCopy = reply;
+  task = [replyCopy task];
+  request = [task request];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 session];
-    v8 = [v7 configuration];
-    v9 = [v8 factory];
-    v10 = v9;
-    if (v9)
+    session = [task session];
+    configuration = [session configuration];
+    factory = [configuration factory];
+    v10 = factory;
+    if (factory)
     {
-      v11 = v9;
+      v11 = factory;
     }
 
     else
@@ -45,28 +45,28 @@
 
     if (v13)
     {
-      v12 = [v3 data];
+      data = [replyCopy data];
 
-      if (v12)
+      if (data)
       {
         v14 = [PARSafariSearchResponse alloc];
-        v15 = [v3 data];
-        v12 = [(PARSafariSearchResponse *)v14 initWithReply:v3 factory:v13 data:v15];
+        data2 = [replyCopy data];
+        data = [(PARSafariSearchResponse *)v14 initWithReply:replyCopy factory:v13 data:data2];
       }
     }
 
     else
     {
-      v12 = 0;
+      data = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    data = 0;
   }
 
-  return v12;
+  return data;
 }
 
 @end

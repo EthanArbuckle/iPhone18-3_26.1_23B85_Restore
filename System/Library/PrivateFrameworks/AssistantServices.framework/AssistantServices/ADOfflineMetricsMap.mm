@@ -1,21 +1,21 @@
 @interface ADOfflineMetricsMap
-- (ADOfflineMetricsMap)initWithPath:(id)a3;
+- (ADOfflineMetricsMap)initWithPath:(id)path;
 - (id)_offlineIdentifiers;
 - (void)deleteAllMetrics;
-- (void)deleteMetricsWithOfflineIdentifier:(id)a3;
-- (void)fetchNextMetricsUsingBlock:(id)a3;
-- (void)insertMetrics:(id)a3 withOfflineIdentifier:(id)a4;
+- (void)deleteMetricsWithOfflineIdentifier:(id)identifier;
+- (void)fetchNextMetricsUsingBlock:(id)block;
+- (void)insertMetrics:(id)metrics withOfflineIdentifier:(id)identifier;
 @end
 
 @implementation ADOfflineMetricsMap
 
 - (id)_offlineIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   offlineIdentifiers = self->_offlineIdentifiers;
   if (!offlineIdentifiers)
   {
-    v4 = v2->_path;
+    v4 = selfCopy->_path;
     +[NSFileManager defaultManager];
     v40 = v52 = 0;
     v41 = v4;
@@ -50,7 +50,7 @@
         v37 = v5;
         obj = v5;
         v11 = [obj countByEnumeratingWithState:&v47 objects:v57 count:16];
-        v38 = v2;
+        v38 = selfCopy;
         if (v11)
         {
           v12 = v11;
@@ -68,18 +68,18 @@
               }
 
               v16 = *(*(&v47 + 1) + 8 * v14);
-              v17 = [v16 pathExtension];
-              if ([v17 isEqualToString:@"plist"])
+              pathExtension = [v16 pathExtension];
+              if ([pathExtension isEqualToString:@"plist"])
               {
-                v18 = [v16 stringByDeletingPathExtension];
+                stringByDeletingPathExtension = [v16 stringByDeletingPathExtension];
               }
 
               else
               {
-                v18 = 0;
+                stringByDeletingPathExtension = 0;
               }
 
-              if (v18)
+              if (stringByDeletingPathExtension)
               {
                 v19 = [(NSString *)v41 stringByAppendingPathComponent:v16];
                 v46 = v15;
@@ -104,13 +104,13 @@
                   v22 = [v20 objectForKey:NSFileCreationDate];
                   if (v22)
                   {
-                    [v10 setObject:v18 forKey:v22];
+                    [v10 setObject:stringByDeletingPathExtension forKey:v22];
                   }
 
                   else
                   {
                     v23 = +[NSDate date];
-                    [v10 setObject:v18 forKey:v23];
+                    [v10 setObject:stringByDeletingPathExtension forKey:v23];
                   }
                 }
 
@@ -137,8 +137,8 @@
           v7 = 0;
         }
 
-        v24 = [v10 allKeys];
-        v25 = [v24 sortedArrayUsingSelector:"compare:"];
+        allKeys = [v10 allKeys];
+        v25 = [allKeys sortedArrayUsingSelector:"compare:"];
 
         v26 = [[NSMutableOrderedSet alloc] initWithCapacity:{objc_msgSend(obj, "count")}];
         v42 = 0u;
@@ -175,7 +175,7 @@
 
         v9 = [v26 copy];
         v5 = v37;
-        v2 = v38;
+        selfCopy = v38;
       }
     }
 
@@ -184,13 +184,13 @@
       v9 = 0;
     }
 
-    v33 = v2->_offlineIdentifiers;
-    v2->_offlineIdentifiers = v9;
+    v33 = selfCopy->_offlineIdentifiers;
+    selfCopy->_offlineIdentifiers = v9;
 
     v34 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
-      v35 = v2->_offlineIdentifiers;
+      v35 = selfCopy->_offlineIdentifiers;
       *v57 = 136315394;
       v58 = "[ADOfflineMetricsMap _offlineIdentifiers]";
       v59 = 2112;
@@ -198,7 +198,7 @@
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "%s offlineIdentifiers = %@", v57, 0x16u);
     }
 
-    offlineIdentifiers = v2->_offlineIdentifiers;
+    offlineIdentifiers = selfCopy->_offlineIdentifiers;
   }
 
   return offlineIdentifiers;
@@ -242,15 +242,15 @@ LABEL_4:
 LABEL_7:
 }
 
-- (void)deleteMetricsWithOfflineIdentifier:(id)a3
+- (void)deleteMetricsWithOfflineIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = +[NSFileManager defaultManager];
     path = self->_path;
-    v7 = sub_10026A698(v4);
+    v7 = sub_10026A698(identifierCopy);
     v8 = [(NSString *)path stringByAppendingPathComponent:v7];
 
     if ([v5 fileExistsAtPath:v8])
@@ -289,7 +289,7 @@ LABEL_12:
     }
 
     v11 = [(NSOrderedSet *)v12 mutableCopy];
-    [v11 removeObject:v4];
+    [v11 removeObject:identifierCopy];
     v13 = [v11 copy];
     v14 = self->_offlineIdentifiers;
     self->_offlineIdentifiers = v13;
@@ -300,7 +300,7 @@ LABEL_12:
       *buf = 136315394;
       v20 = "[ADOfflineMetricsMap deleteMetricsWithOfflineIdentifier:]";
       v21 = 2112;
-      v22 = v4;
+      v22 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s offlineIdentifiers -= %@", buf, 0x16u);
     }
 
@@ -312,13 +312,13 @@ LABEL_11:
 LABEL_13:
 }
 
-- (void)insertMetrics:(id)a3 withOfflineIdentifier:(id)a4
+- (void)insertMetrics:(id)metrics withOfflineIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  metricsCopy = metrics;
+  identifierCopy = identifier;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (v7 && (isKindOfClass & 1) != 0)
+  if (identifierCopy && (isKindOfClass & 1) != 0)
   {
     v9 = +[NSFileManager defaultManager];
     v52 = 0;
@@ -401,7 +401,7 @@ LABEL_34:
 
 LABEL_7:
     v13 = self->_path;
-    v14 = sub_10026A698(v7);
+    v14 = sub_10026A698(identifierCopy);
     v15 = [(NSString *)v13 stringByAppendingPathComponent:v14];
 
     if ([v9 fileExistsAtPath:v15])
@@ -419,9 +419,9 @@ LABEL_7:
       goto LABEL_33;
     }
 
-    v17 = [v6 dictionary];
+    dictionary = [metricsCopy dictionary];
     v48 = 0;
-    v18 = [NSPropertyListSerialization dataWithPropertyList:v17 format:200 options:0 error:&v48];
+    v18 = [NSPropertyListSerialization dataWithPropertyList:dictionary format:200 options:0 error:&v48];
     v19 = v48;
 
     if (v19)
@@ -430,11 +430,11 @@ LABEL_7:
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
       {
         v21 = v20;
-        v22 = [v6 dictionary];
+        dictionary2 = [metricsCopy dictionary];
         *buf = 136315650;
         v54 = "[ADOfflineMetricsMap insertMetrics:withOfflineIdentifier:]";
         v55 = 2112;
-        v56 = v22;
+        v56 = dictionary2;
         v57 = 2112;
         v58 = v19;
         v23 = "%s Unable to serialize offline metrics plist %@ due to error %@.";
@@ -469,7 +469,7 @@ LABEL_33:
           }
 
           v39 = [(NSOrderedSet *)offlineIdentifiers mutableCopy];
-          [(NSOrderedSet *)v39 addObject:v7];
+          [(NSOrderedSet *)v39 addObject:identifierCopy];
           v40 = [(NSOrderedSet *)v39 copy];
           v41 = self->_offlineIdentifiers;
           self->_offlineIdentifiers = v40;
@@ -480,7 +480,7 @@ LABEL_33:
             *buf = 136315394;
             v54 = "[ADOfflineMetricsMap insertMetrics:withOfflineIdentifier:]";
             v55 = 2112;
-            v56 = v7;
+            v56 = identifierCopy;
             _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "%s offlineIdentifiers += %@", buf, 0x16u);
           }
         }
@@ -515,11 +515,11 @@ LABEL_31:
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
       {
         v21 = v43;
-        v22 = [v6 dictionary];
+        dictionary2 = [metricsCopy dictionary];
         *buf = 136315906;
         v54 = "[ADOfflineMetricsMap insertMetrics:withOfflineIdentifier:]";
         v55 = 2112;
-        v56 = v22;
+        v56 = dictionary2;
         v57 = 2112;
         v58 = v15;
         v59 = 2112;
@@ -540,17 +540,17 @@ LABEL_31:
 LABEL_35:
 }
 
-- (void)fetchNextMetricsUsingBlock:(id)a3
+- (void)fetchNextMetricsUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = [(ADOfflineMetricsMap *)self _offlineIdentifiers];
-    v6 = [v5 firstObject];
+    _offlineIdentifiers = [(ADOfflineMetricsMap *)self _offlineIdentifiers];
+    firstObject = [_offlineIdentifiers firstObject];
 
-    if (!v6)
+    if (!firstObject)
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(blockCopy + 2))(blockCopy, 0, 0);
 LABEL_24:
 
       goto LABEL_25;
@@ -558,7 +558,7 @@ LABEL_24:
 
     v7 = +[NSFileManager defaultManager];
     path = self->_path;
-    v9 = sub_10026A698(v6);
+    v9 = sub_10026A698(firstObject);
     v10 = [(NSString *)path stringByAppendingPathComponent:v9];
 
     if (([v7 fileExistsAtPath:v10] & 1) == 0)
@@ -576,7 +576,7 @@ LABEL_24:
       offlineIdentifiers = self->_offlineIdentifiers;
       self->_offlineIdentifiers = 0;
 
-      (*(v4 + 2))(v4, 0, 0);
+      (*(blockCopy + 2))(blockCopy, 0, 0);
       goto LABEL_23;
     }
 
@@ -597,7 +597,7 @@ LABEL_24:
       v18 = self->_offlineIdentifiers;
       self->_offlineIdentifiers = 0;
 
-      (*(v4 + 2))(v4, 0, 0);
+      (*(blockCopy + 2))(blockCopy, 0, 0);
       goto LABEL_22;
     }
 
@@ -627,7 +627,7 @@ LABEL_24:
         v19 = [[SAMetrics alloc] initWithDictionary:v12];
         if (v19)
         {
-          (*(v4 + 2))(v4, v19, v6);
+          (*(blockCopy + 2))(blockCopy, v19, firstObject);
         }
 
         else
@@ -646,7 +646,7 @@ LABEL_24:
           v23 = self->_offlineIdentifiers;
           self->_offlineIdentifiers = 0;
 
-          (*(v4 + 2))(v4, 0, 0);
+          (*(blockCopy + 2))(blockCopy, 0, 0);
         }
 
         goto LABEL_21;
@@ -670,7 +670,7 @@ LABEL_24:
     v21 = self->_offlineIdentifiers;
     self->_offlineIdentifiers = 0;
 
-    (*(v4 + 2))(v4, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0);
 LABEL_21:
 
 LABEL_22:
@@ -682,17 +682,17 @@ LABEL_23:
 LABEL_25:
 }
 
-- (ADOfflineMetricsMap)initWithPath:(id)a3
+- (ADOfflineMetricsMap)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = ADOfflineMetricsMap;
   v5 = [(ADOfflineMetricsMap *)&v9 init];
   if (v5)
   {
-    v6 = [v4 stringByStandardizingPath];
+    stringByStandardizingPath = [pathCopy stringByStandardizingPath];
     path = v5->_path;
-    v5->_path = v6;
+    v5->_path = stringByStandardizingPath;
   }
 
   return v5;

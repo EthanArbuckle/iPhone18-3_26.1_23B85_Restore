@@ -1,7 +1,7 @@
 @interface HMFCache
 + (HMFCache)defaultCache;
 - (HMFCache)init;
-- (HMFCache)initWithName:(id)a3;
+- (HMFCache)initWithName:(id)name;
 @end
 
 @implementation HMFCache
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __24__HMFCache_defaultCache__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280AFC658 != -1)
   {
     dispatch_once(&qword_280AFC658, block);
@@ -35,27 +35,27 @@ void __24__HMFCache_defaultCache__block_invoke(uint64_t a1)
 
 - (HMFCache)init
 {
-  v3 = [MEMORY[0x277CCAC38] processInfo];
-  v4 = [v3 processName];
-  v5 = [(HMFCache *)self initWithName:v4];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  v5 = [(HMFCache *)self initWithName:processName];
 
   return v5;
 }
 
-- (HMFCache)initWithName:(id)a3
+- (HMFCache)initWithName:(id)name
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v35.receiver = self;
   v35.super_class = HMFCache;
   v5 = [(HMFCache *)&v35 init];
   if (v5)
   {
-    v34 = v4;
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    v7 = [v6 URLsForDirectory:13 inDomains:1];
+    v34 = nameCopy;
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v7 = [defaultManager URLsForDirectory:13 inDomains:1];
 
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
@@ -65,9 +65,9 @@ void __24__HMFCache_defaultCache__block_invoke(uint64_t a1)
     if (v10)
     {
       v11 = v10;
-      v31 = v8;
+      v31 = firstObject;
       v32 = v5;
-      v33 = v4;
+      v33 = nameCopy;
       v12 = *v37;
       while (2)
       {
@@ -82,17 +82,17 @@ void __24__HMFCache_defaultCache__block_invoke(uint64_t a1)
           v15 = *(*(&v36 + 1) + 8 * i);
           LOBYTE(buf) = 0;
           v16 = [v15 URLByAppendingPathComponent:{v34, v31}];
-          v17 = [MEMORY[0x277CCAA00] defaultManager];
-          v18 = [v16 path];
-          v19 = [v17 fileExistsAtPath:v18 isDirectory:&buf];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+          path = [v16 path];
+          v19 = [defaultManager2 fileExistsAtPath:path isDirectory:&buf];
           v20 = buf;
 
           if (v19 && (v20 & 1) != 0)
           {
-            v8 = v15;
+            firstObject = v15;
 
             v5 = v32;
-            v4 = v33;
+            nameCopy = v33;
             v9 = v13;
             goto LABEL_13;
           }
@@ -109,13 +109,13 @@ void __24__HMFCache_defaultCache__block_invoke(uint64_t a1)
       }
 
       v5 = v32;
-      v4 = v33;
-      v8 = v31;
+      nameCopy = v33;
+      firstObject = v31;
     }
 
 LABEL_13:
 
-    if (!v8)
+    if (!firstObject)
     {
       v21 = objc_autoreleasePoolPush();
       v22 = HMFGetOSLogHandle();
@@ -134,10 +134,10 @@ LABEL_13:
       *(&buf + 1) = @"Library";
       v41 = @"Caches";
       v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&buf count:3];
-      v8 = [v24 fileURLWithPathComponents:v26];
+      firstObject = [v24 fileURLWithPathComponents:v26];
     }
 
-    v27 = [v8 URLByAppendingPathComponent:v34];
+    v27 = [firstObject URLByAppendingPathComponent:v34];
 
     URL = v5->_URL;
     v5->_URL = v27;

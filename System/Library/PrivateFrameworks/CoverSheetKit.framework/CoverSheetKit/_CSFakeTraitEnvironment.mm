@@ -1,19 +1,19 @@
 @interface _CSFakeTraitEnvironment
-- (_CSFakeTraitEnvironment)initWithTraitCollection:(id)a3;
+- (_CSFakeTraitEnvironment)initWithTraitCollection:(id)collection;
 @end
 
 @implementation _CSFakeTraitEnvironment
 
-- (_CSFakeTraitEnvironment)initWithTraitCollection:(id)a3
+- (_CSFakeTraitEnvironment)initWithTraitCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = _CSFakeTraitEnvironment;
   v6 = [(_CSFakeTraitEnvironment *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_traitCollection, a3);
+    objc_storeStrong(&v6->_traitCollection, collection);
   }
 
   return v7;

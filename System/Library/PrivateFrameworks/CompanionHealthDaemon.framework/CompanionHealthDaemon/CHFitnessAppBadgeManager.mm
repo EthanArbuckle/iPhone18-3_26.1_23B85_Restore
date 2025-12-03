@@ -3,10 +3,10 @@
 - (int64_t)_badgeCount;
 - (int64_t)_loadBadgeCount;
 - (void)_launchFitnessApp;
-- (void)_storeBadgeCount:(int64_t)a3;
-- (void)registerProvider:(id)a3;
+- (void)_storeBadgeCount:(int64_t)count;
+- (void)registerProvider:(id)provider;
 - (void)requestBadgeUpdate;
-- (void)unregisterProvider:(id)a3;
+- (void)unregisterProvider:(id)provider;
 @end
 
 @implementation CHFitnessAppBadgeManager
@@ -18,9 +18,9 @@
   v2 = [(CHFitnessAppBadgeManager *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     providers = v2->_providers;
-    v2->_providers = v3;
+    v2->_providers = weakObjectsHashTable;
 
     v5 = HKCreateSerialDispatchQueue();
     serialQueue = v2->_serialQueue;
@@ -30,10 +30,10 @@
   return v2;
 }
 
-- (void)registerProvider:(id)a3
+- (void)registerProvider:(id)provider
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  providerCopy = provider;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC270];
   if (os_log_type_enabled(*MEMORY[0x277CCC270], OS_LOG_TYPE_DEFAULT))
@@ -51,26 +51,26 @@
   v13 = 3221225472;
   v14 = __45__CHFitnessAppBadgeManager_registerProvider___block_invoke;
   v15 = &unk_278DF0230;
-  v16 = self;
-  v17 = v4;
-  v10 = v4;
+  selfCopy = self;
+  v17 = providerCopy;
+  v10 = providerCopy;
   dispatch_async(serialQueue, &v12);
   [(CHFitnessAppBadgeManager *)self requestBadgeUpdate:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterProvider:(id)a3
+- (void)unregisterProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__CHFitnessAppBadgeManager_unregisterProvider___block_invoke;
   v7[3] = &unk_278DF0230;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = providerCopy;
+  v6 = providerCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -128,7 +128,7 @@ uint64_t __46__CHFitnessAppBadgeManager_requestBadgeUpdate__block_invoke(uint64_
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 badgeCount];
+        badgeCount = [v11 badgeCount];
         _HKInitializeLogging();
         v13 = *v9;
         if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
@@ -137,7 +137,7 @@ uint64_t __46__CHFitnessAppBadgeManager_requestBadgeUpdate__block_invoke(uint64_
           v15 = objc_opt_class();
           v16 = NSStringFromClass(v15);
           *buf = v19;
-          v25 = v12;
+          v25 = badgeCount;
           v26 = 2114;
           v27 = v16;
           _os_log_impl(&dword_243CCD000, v14, OS_LOG_TYPE_DEFAULT, "FitnessAppBadgeManager got badge count of %zd from provider %{public}@", buf, 0x16u);
@@ -164,35 +164,35 @@ uint64_t __46__CHFitnessAppBadgeManager_requestBadgeUpdate__block_invoke(uint64_
 - (int64_t)_loadBadgeCount
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"FitnessStoredBadgeCount"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"FitnessStoredBadgeCount"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)_storeBadgeCount:(int64_t)a3
+- (void)_storeBadgeCount:(int64_t)count
 {
   v10 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_serialQueue);
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v4 setObject:v5 forKey:@"FitnessStoredBadgeCount"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:count];
+  [standardUserDefaults setObject:v5 forKey:@"FitnessStoredBadgeCount"];
 
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC270];
   if (os_log_type_enabled(*MEMORY[0x277CCC270], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = a3;
+    countCopy = count;
     _os_log_impl(&dword_243CCD000, v6, OS_LOG_TYPE_DEFAULT, "FitnessAppBadgeManager stored badge count: %ld", &v8, 0xCu);
   }
 
@@ -220,8 +220,8 @@ uint64_t __46__CHFitnessAppBadgeManager_requestBadgeUpdate__block_invoke(uint64_
     _os_log_impl(&dword_243CCD000, v6, OS_LOG_TYPE_DEFAULT, "FitnessAppBadgeManager launching app", v9, 2u);
   }
 
-  v7 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
-  [v7 openApplication:@"com.apple.Fitness" withOptions:v5 completion:&__block_literal_global_0];
+  serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+  [serviceWithDefaultShellEndpoint openApplication:@"com.apple.Fitness" withOptions:v5 completion:&__block_literal_global_0];
 
   v8 = *MEMORY[0x277D85DE8];
 }

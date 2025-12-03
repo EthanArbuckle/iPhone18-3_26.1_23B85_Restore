@@ -1,19 +1,19 @@
 @interface AMSMockNetworkProxy
-+ (BOOL)canInitWithRequest:(id)a3;
++ (BOOL)canInitWithRequest:(id)request;
 + (NSArray)executedOverrides;
 + (NSArray)registeredOverrides;
 + (NSMutableArray)_executedOverrides;
 + (id)_overrides;
 + (void)_removeAllOverrides;
-+ (void)_removeOverride:(id)a3;
-+ (void)_sync:(id)a3;
-+ (void)addOverride:(id)a3;
++ (void)_removeOverride:(id)override;
++ (void)_sync:(id)_sync;
++ (void)addOverride:(id)override;
 + (void)clearOverrides;
-+ (void)removeOverride:(id)a3;
-- (void)finishWithData:(id)a3;
-- (void)finishWithError:(id)a3;
-- (void)performRedirectFromResponse:(id)a3;
-- (void)sendResponse:(id)a3;
++ (void)removeOverride:(id)override;
+- (void)finishWithData:(id)data;
+- (void)finishWithError:(id)error;
+- (void)performRedirectFromResponse:(id)response;
+- (void)sendResponse:(id)response;
 - (void)startLoading;
 - (void)stopLoading;
 @end
@@ -52,8 +52,8 @@ uint64_t __33__AMSMockNetworkProxy__overrides__block_invoke()
   v4[2] = __42__AMSMockNetworkProxy_registeredOverrides__block_invoke;
   v4[3] = &unk_1E73B5F60;
   v4[4] = &v5;
-  v4[5] = a1;
-  [a1 _sync:v4];
+  v4[5] = self;
+  [self _sync:v4];
   v2 = v6[5];
   _Block_object_dispose(&v5, 8);
 
@@ -83,7 +83,7 @@ void __42__AMSMockNetworkProxy_registeredOverrides__block_invoke(uint64_t a1)
   v6[2] = __40__AMSMockNetworkProxy_executedOverrides__block_invoke;
   v6[3] = &unk_1E73B5F60;
   v6[4] = &v7;
-  v6[5] = a1;
+  v6[5] = self;
   [v3 _sync:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -100,17 +100,17 @@ void __40__AMSMockNetworkProxy_executedOverrides__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-+ (void)addOverride:(id)a3
++ (void)addOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__AMSMockNetworkProxy_addOverride___block_invoke;
   v6[3] = &unk_1E73B40A8;
-  v7 = v4;
-  v8 = a1;
-  v5 = v4;
-  [a1 _sync:v6];
+  v7 = overrideCopy;
+  selfCopy = self;
+  v5 = overrideCopy;
+  [self _sync:v6];
 }
 
 void __35__AMSMockNetworkProxy_addOverride___block_invoke(uint64_t a1)
@@ -125,8 +125,8 @@ void __35__AMSMockNetworkProxy_addOverride___block_invoke(uint64_t a1)
   v2[1] = 3221225472;
   v2[2] = __37__AMSMockNetworkProxy_clearOverrides__block_invoke;
   v2[3] = &__block_descriptor_40_e5_v8__0l;
-  v2[4] = a1;
-  [a1 _sync:v2];
+  v2[4] = self;
+  [self _sync:v2];
 }
 
 void __37__AMSMockNetworkProxy_clearOverrides__block_invoke(uint64_t a1)
@@ -135,22 +135,22 @@ void __37__AMSMockNetworkProxy_clearOverrides__block_invoke(uint64_t a1)
   [v1 removeAllObjects];
 }
 
-+ (void)removeOverride:(id)a3
++ (void)removeOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__AMSMockNetworkProxy_removeOverride___block_invoke;
   v6[3] = &unk_1E73B40A8;
-  v7 = v4;
-  v8 = a1;
-  v5 = v4;
-  [a1 _sync:v6];
+  v7 = overrideCopy;
+  selfCopy = self;
+  v5 = overrideCopy;
+  [self _sync:v6];
 }
 
-+ (BOOL)canInitWithRequest:(id)a3
++ (BOOL)canInitWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -159,15 +159,15 @@ void __37__AMSMockNetworkProxy_clearOverrides__block_invoke(uint64_t a1)
   v7[1] = 3221225472;
   v7[2] = __42__AMSMockNetworkProxy_canInitWithRequest___block_invoke;
   v7[3] = &unk_1E73BA1C0;
-  v10 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = requestCopy;
   v8 = v5;
   v9 = &v11;
-  [a1 _sync:v7];
-  LOBYTE(a1) = *(v12 + 24);
+  [self _sync:v7];
+  LOBYTE(self) = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
-  return a1;
+  return self;
 }
 
 void __42__AMSMockNetworkProxy_canInitWithRequest___block_invoke(uint64_t a1)
@@ -227,17 +227,17 @@ LABEL_11:
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
-    v6 = [(NSURLProtocol *)self request];
-    v7 = AMSLogableURLRequest(v6);
+    request = [(NSURLProtocol *)self request];
+    v7 = AMSLogableURLRequest(request);
     *buf = 138543618;
     *&buf[4] = v5;
     *&buf[12] = 2114;
     *&buf[14] = v7;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Overriding request: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Overriding request: %{public}@", buf, 0x16u);
   }
 
   v8 = objc_opt_class();
@@ -249,12 +249,12 @@ LABEL_11:
   v14[5] = &v15;
   [v8 _sync:v14];
   [(AMSMockNetworkProxy *)self setCurrentOverride:v16[5]];
-  v9 = [v16[5] response];
+  response = [v16[5] response];
   memset(buf, 0, sizeof(buf));
-  v10 = [(NSURLProtocol *)self request];
-  if (v9)
+  request2 = [(NSURLProtocol *)self request];
+  if (response)
   {
-    [v9 handleReceivedRequest:v10];
+    [response handleReceivedRequest:request2];
   }
 
   else
@@ -270,15 +270,15 @@ LABEL_11:
   if (*&buf[16])
   {
     [(AMSMockNetworkProxy *)self finishWithError:?];
-    v11 = [v16[5] executedObservable];
-    [v11 sendFailure:*&buf[16]];
+    executedObservable = [v16[5] executedObservable];
+    [executedObservable sendFailure:*&buf[16]];
   }
 
   else
   {
     [(AMSMockNetworkProxy *)self finishWithData:*buf];
-    v11 = [v16[5] executedObservable];
-    [v11 sendResult:*&buf[8]];
+    executedObservable = [v16[5] executedObservable];
+    [executedObservable sendResult:*&buf[8]];
   }
 
   v12 = objc_opt_class();
@@ -326,18 +326,18 @@ void __35__AMSMockNetworkProxy_startLoading__block_invoke_3(uint64_t a1)
 
 - (void)stopLoading
 {
-  v3 = [(AMSMockNetworkProxy *)self currentOverride];
-  v2 = [v3 response];
-  [v2 stopRunningTasks];
+  currentOverride = [(AMSMockNetworkProxy *)self currentOverride];
+  response = [currentOverride response];
+  [response stopRunningTasks];
 }
 
-- (void)sendResponse:(id)a3
+- (void)sendResponse:(id)response
 {
-  v7 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v7;
+    v4 = responseCopy;
   }
 
   else
@@ -348,23 +348,23 @@ void __35__AMSMockNetworkProxy_startLoading__block_invoke_3(uint64_t a1)
   v5 = [v4 ams_valueForHTTPHeaderField:@"Location"];
   if ([v4 statusCode] >= 300 && objc_msgSend(v4, "statusCode") <= 399 && v5)
   {
-    [(AMSMockNetworkProxy *)self performRedirectFromResponse:v7];
+    [(AMSMockNetworkProxy *)self performRedirectFromResponse:responseCopy];
   }
 
   else
   {
-    v6 = [(NSURLProtocol *)self client];
-    [v6 URLProtocol:self didReceiveResponse:v7 cacheStoragePolicy:2];
+    client = [(NSURLProtocol *)self client];
+    [client URLProtocol:self didReceiveResponse:responseCopy cacheStoragePolicy:2];
   }
 }
 
-- (void)performRedirectFromResponse:(id)a3
+- (void)performRedirectFromResponse:(id)response
 {
-  v14 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v14;
+    v4 = responseCopy;
   }
 
   else
@@ -372,15 +372,15 @@ void __35__AMSMockNetworkProxy_startLoading__block_invoke_3(uint64_t a1)
     v4 = 0;
   }
 
-  v5 = [(NSURLProtocol *)self request];
-  v6 = [v5 mutableCopy];
+  request = [(NSURLProtocol *)self request];
+  v6 = [request mutableCopy];
 
   v7 = [v4 ams_valueForHTTPHeaderField:@"Location"];
   v8 = [MEMORY[0x1E695DFF8] URLWithString:v7];
   [v6 setURL:v8];
 
-  v9 = [v4 statusCode];
-  if (v9 == 303 || (v9 - 301) <= 1 && ([v6 HTTPMethod], (v10 = objc_claimAutoreleasedReturnValue()) != 0) && (v11 = v10, v12 = objc_msgSend(v10, "isEqualToString:", @"POST"), v11, v12))
+  statusCode = [v4 statusCode];
+  if (statusCode == 303 || (statusCode - 301) <= 1 && ([v6 HTTPMethod], (v10 = objc_claimAutoreleasedReturnValue()) != 0) && (v11 = v10, v12 = objc_msgSend(v10, "isEqualToString:", @"POST"), v11, v12))
   {
     [v6 setHTTPMethod:@"GET"];
     [v6 setHTTPBody:0];
@@ -389,25 +389,25 @@ void __35__AMSMockNetworkProxy_startLoading__block_invoke_3(uint64_t a1)
   }
 
   [v6 setValue:0 forHTTPHeaderField:@"Authorization"];
-  v13 = [(NSURLProtocol *)self client];
-  [v13 URLProtocol:self wasRedirectedToRequest:v6 redirectResponse:v14];
+  client = [(NSURLProtocol *)self client];
+  [client URLProtocol:self wasRedirectedToRequest:v6 redirectResponse:responseCopy];
 }
 
-- (void)finishWithData:(id)a3
+- (void)finishWithData:(id)data
 {
-  v4 = a3;
-  v5 = [(NSURLProtocol *)self client];
-  [v5 URLProtocol:self didLoadData:v4];
+  dataCopy = data;
+  client = [(NSURLProtocol *)self client];
+  [client URLProtocol:self didLoadData:dataCopy];
 
-  v6 = [(NSURLProtocol *)self client];
-  [v6 URLProtocolDidFinishLoading:self];
+  client2 = [(NSURLProtocol *)self client];
+  [client2 URLProtocolDidFinishLoading:self];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(NSURLProtocol *)self client];
-  [v5 URLProtocol:self didFailWithError:v4];
+  errorCopy = error;
+  client = [(NSURLProtocol *)self client];
+  [client URLProtocol:self didFailWithError:errorCopy];
 }
 
 + (NSMutableArray)_executedOverrides
@@ -431,22 +431,22 @@ uint64_t __41__AMSMockNetworkProxy__executedOverrides__block_invoke()
 
 + (void)_removeAllOverrides
 {
-  v2 = [a1 _overrides];
-  [v2 removeAllObjects];
+  _overrides = [self _overrides];
+  [_overrides removeAllObjects];
 }
 
-+ (void)_removeOverride:(id)a3
++ (void)_removeOverride:(id)override
 {
-  v8 = a3;
-  v4 = [a1 _overrides];
-  v5 = [v4 count];
+  overrideCopy = override;
+  _overrides = [self _overrides];
+  v5 = [_overrides count];
   if (v5 - 1 >= 0)
   {
     v6 = v5;
     while (1)
     {
-      v7 = [v4 objectAtIndexedSubscript:--v6];
-      if ([v8 isEqual:v7])
+      v7 = [_overrides objectAtIndexedSubscript:--v6];
+      if ([overrideCopy isEqual:v7])
       {
         break;
       }
@@ -457,16 +457,16 @@ uint64_t __41__AMSMockNetworkProxy__executedOverrides__block_invoke()
       }
     }
 
-    [v4 removeObjectAtIndex:v6];
+    [_overrides removeObjectAtIndex:v6];
   }
 
 LABEL_7:
 }
 
-+ (void)_sync:(id)a3
++ (void)_sync:(id)_sync
 {
   v3 = qword_1ED6E2FB0;
-  v4 = a3;
+  _syncCopy = _sync;
   if (v3 != -1)
   {
     dispatch_once(&qword_1ED6E2FB0, &__block_literal_global_12_3);
@@ -474,7 +474,7 @@ LABEL_7:
 
   v5 = qword_1ED6E2FB8;
   [v5 lock];
-  v4[2](v4);
+  _syncCopy[2](_syncCopy);
 
   [v5 unlock];
 }

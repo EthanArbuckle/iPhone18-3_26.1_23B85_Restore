@@ -3,8 +3,8 @@
 + (id)_task;
 - (AMSDCarrierOfferRegistrationActivity)init;
 - (id)criteria;
-- (void)_registerForNextAttemptWithScheduler:(id)a3;
-- (void)runActivityQueuedByScheduler:(id)a3;
+- (void)_registerForNextAttemptWithScheduler:(id)scheduler;
+- (void)runActivityQueuedByScheduler:(id)scheduler;
 @end
 
 @implementation AMSDCarrierOfferRegistrationActivity
@@ -30,33 +30,33 @@
   [objc_opt_class() _retrievePollingTime];
   v3 = [NSNumber numberWithDouble:?];
   v4 = [(AMSDXPCActivityCriteriaBuilder *)v2 initWithCanRunOnBattery:1 delay:v3 gracePeriod:0 inexpensiveNetworkConnection:1 priority:0 repeating:1 requiresNetwork:7200.0];
-  v5 = [(AMSDXPCActivityCriteriaBuilder *)v4 buildXPCObject];
+  buildXPCObject = [(AMSDXPCActivityCriteriaBuilder *)v4 buildXPCObject];
 
-  return v5;
+  return buildXPCObject;
 }
 
-- (void)runActivityQueuedByScheduler:(id)a3
+- (void)runActivityQueuedByScheduler:(id)scheduler
 {
-  v4 = a3;
-  v5 = [(AMSDCarrierOfferRegistrationActivity *)self workQueue];
+  schedulerCopy = scheduler;
+  workQueue = [(AMSDCarrierOfferRegistrationActivity *)self workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000469D4;
   v7[3] = &unk_1002B00E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccounts.carrierOfferRegistration.run" withQueue:v5 whilePerformingBlock:v7];
+  v8 = schedulerCopy;
+  v6 = schedulerCopy;
+  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccounts.carrierOfferRegistration.run" withQueue:workQueue whilePerformingBlock:v7];
 }
 
-- (void)_registerForNextAttemptWithScheduler:(id)a3
+- (void)_registerForNextAttemptWithScheduler:(id)scheduler
 {
-  v4 = a3;
-  v5 = [(AMSDCarrierOfferRegistrationActivity *)self activityIdentifier];
-  [v4 removeActivity:v5];
+  schedulerCopy = scheduler;
+  activityIdentifier = [(AMSDCarrierOfferRegistrationActivity *)self activityIdentifier];
+  [schedulerCopy removeActivity:activityIdentifier];
 
   v6 = objc_alloc_init(objc_opt_class());
-  [v4 scheduleIfNeededActivity:v6];
+  [schedulerCopy scheduleIfNeededActivity:v6];
 }
 
 + (double)_retrievePollingTime
@@ -79,21 +79,21 @@
         v7 = +[AMSLogConfig sharedConfig];
       }
 
-      v8 = [v7 OSLogObject];
-      if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v7 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_17;
       }
 
       v10 = AMSLogKey();
       *buf = 138543874;
-      v20 = a1;
+      selfCopy3 = self;
       v21 = 2114;
       v22 = v10;
       v23 = 2048;
       v24 = v9;
       v13 = "%{public}@: [%{public}@] Polling time retrieved: %f";
-      v14 = v8;
+      v14 = oSLogObject;
       v15 = OS_LOG_TYPE_DEFAULT;
       v16 = 32;
     }
@@ -106,20 +106,20 @@
         v7 = +[AMSLogConfig sharedConfig];
       }
 
-      v8 = [v7 OSLogObject];
+      oSLogObject = [v7 OSLogObject];
       v9 = 86400.0;
-      if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_17;
       }
 
       v10 = AMSLogKey();
       *buf = 138543618;
-      v20 = a1;
+      selfCopy3 = self;
       v21 = 2114;
       v22 = v10;
       v13 = "%{public}@: [%{public}@] Unexpected error - no delay\nFalling back to default";
-      v14 = v8;
+      v14 = oSLogObject;
       v15 = OS_LOG_TYPE_ERROR;
       v16 = 22;
     }
@@ -134,19 +134,19 @@
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
+  oSLogObject = [v7 OSLogObject];
   v9 = 86400.0;
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v10 = AMSLogKey();
     v11 = AMSLogableError();
     *buf = 138543874;
-    v20 = a1;
+    selfCopy3 = self;
     v21 = 2114;
     v22 = v10;
     v23 = 2114;
     v24 = *&v11;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Polling time retrieval error: %{public}@\nFalling back to default", buf, 0x20u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Polling time retrieval error: %{public}@\nFalling back to default", buf, 0x20u);
 
 LABEL_16:
   }
@@ -160,9 +160,9 @@ LABEL_17:
 {
   v2 = [AMSCarrierOfferRegistrationTask alloc];
   v3 = +[ACAccountStore ams_sharedAccountStore];
-  v4 = [v3 ams_activeiTunesAccount];
+  ams_activeiTunesAccount = [v3 ams_activeiTunesAccount];
   v5 = +[AMSCarrierOfferRegistrationTask createBagForSubProfile];
-  v6 = [v2 initWithAccount:v4 bag:v5];
+  v6 = [v2 initWithAccount:ams_activeiTunesAccount bag:v5];
 
   return v6;
 }

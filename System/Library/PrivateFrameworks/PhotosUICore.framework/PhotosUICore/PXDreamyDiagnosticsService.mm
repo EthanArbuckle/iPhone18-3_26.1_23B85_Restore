@@ -1,5 +1,5 @@
 @interface PXDreamyDiagnosticsService
-- (PXDreamyDiagnosticsService)initWithItemProviders:(id)a3;
+- (PXDreamyDiagnosticsService)initWithItemProviders:(id)providers;
 - (id)contextualViewController;
 @end
 
@@ -20,20 +20,20 @@
   return v3;
 }
 
-- (PXDreamyDiagnosticsService)initWithItemProviders:(id)a3
+- (PXDreamyDiagnosticsService)initWithItemProviders:(id)providers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  providersCopy = providers;
   v18.receiver = self;
   v18.super_class = PXDreamyDiagnosticsService;
-  v5 = [(PXDiagnosticsService *)&v18 initWithItemProviders:v4];
+  v5 = [(PXDiagnosticsService *)&v18 initWithItemProviders:providersCopy];
   if (v5)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = providersCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {

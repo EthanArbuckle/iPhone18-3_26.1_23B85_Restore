@@ -2,18 +2,18 @@
 - (BOOL)_importAlreadyInProgress;
 - (ContactsSettingsPlugin)init;
 - (__CTServerConnection)_ctServerConnection;
-- (id)_simPhonebookEntryAtIndex:(int)a3;
-- (id)contactProviderCount:(id)a3;
-- (id)contactStoreTitlesForSpecifier:(id)a3;
-- (id)contactsSortOrder:(id)a3;
-- (id)defaultContactsName:(id)a3;
-- (id)meCardName:(id)a3;
-- (id)personNameOrder:(id)a3;
-- (id)sharedNameAndPhotoAudience:(id)a3;
+- (id)_simPhonebookEntryAtIndex:(int)index;
+- (id)contactProviderCount:(id)count;
+- (id)contactStoreTitlesForSpecifier:(id)specifier;
+- (id)contactsSortOrder:(id)order;
+- (id)defaultContactsName:(id)name;
+- (id)meCardName:(id)name;
+- (id)personNameOrder:(id)order;
+- (id)sharedNameAndPhotoAudience:(id)audience;
 - (id)sharedNameAndPhotoSharingFooterText;
 - (id)specifiers;
 - (void)_SIMStatusChanged;
-- (void)_beginImportToStoreID:(int)a3;
+- (void)_beginImportToStoreID:(int)d;
 - (void)_clearSpecifiers;
 - (void)_erroredDuringSIMPhonebookFetch;
 - (void)_fetchSIMPhonebook;
@@ -23,24 +23,24 @@
 - (void)_phonebookSelected;
 - (void)_reloadMeCardCellIfVisible;
 - (void)_rootControllerDidSuspend;
-- (void)_setDefaultContacts:(id)a3 specifier:(id)a4;
+- (void)_setDefaultContacts:(id)contacts specifier:(id)specifier;
 - (void)_showMeCardPopover;
 - (void)_stopListeningForSIMPhonebookNotifications;
-- (void)_synchronizeNanoUserDefault:(id)a3;
+- (void)_synchronizeNanoUserDefault:(id)default;
 - (void)_updateABStoresAndNames;
-- (void)_updateSIMImportSpecifier:(BOOL)a3;
+- (void)_updateSIMImportSpecifier:(BOOL)specifier;
 - (void)_updateSIMImportVisibility;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
 - (void)dealloc;
-- (void)importFromSIM:(id)a3;
+- (void)importFromSIM:(id)m;
 - (void)provideSettingsNavigationDonation;
-- (void)setContactsSortOrder:(id)a3 specifier:(id)a4;
-- (void)setDefaultContacts:(id)a3 specifier:(id)a4;
-- (void)setPersonNameOrder:(id)a3 specifier:(id)a4;
-- (void)showMeCardPicker:(id)a3;
-- (void)showSharedNameAndPhotoSettings:(id)a3;
-- (void)windowDidRotate:(id)a3;
-- (void)windowWillRotate:(id)a3;
+- (void)setContactsSortOrder:(id)order specifier:(id)specifier;
+- (void)setDefaultContacts:(id)contacts specifier:(id)specifier;
+- (void)setPersonNameOrder:(id)order specifier:(id)specifier;
+- (void)showMeCardPicker:(id)picker;
+- (void)showSharedNameAndPhotoSettings:(id)settings;
+- (void)windowDidRotate:(id)rotate;
+- (void)windowWillRotate:(id)rotate;
 @end
 
 @implementation ContactsSettingsPlugin
@@ -59,9 +59,9 @@
     if (objc_opt_respondsToSelector())
     {
       v5 = +[UIDevice currentDevice];
-      v6 = [v5 userInterfaceIdiom];
+      userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-      if (v6 != &dword_0 + 1)
+      if (userInterfaceIdiom != &dword_0 + 1)
       {
         goto LABEL_6;
       }
@@ -85,9 +85,9 @@ LABEL_6:
     if (objc_opt_respondsToSelector())
     {
       v12 = +[UIDevice currentDevice];
-      v13 = [v12 userInterfaceIdiom];
+      userInterfaceIdiom2 = [v12 userInterfaceIdiom];
 
-      if (v13 == &dword_0 + 1)
+      if (userInterfaceIdiom2 == &dword_0 + 1)
       {
         v14 = @"helpkit://open?topic=ipad99df07d1";
 LABEL_11:
@@ -121,8 +121,8 @@ LABEL_12:
 
 - (BOOL)_importAlreadyInProgress
 {
-  v2 = [UIApp rootController];
-  v3 = [v2 taskIsRunning:@"importContactsFromSIM"];
+  rootController = [UIApp rootController];
+  v3 = [rootController taskIsRunning:@"importContactsFromSIM"];
 
   return v3;
 }
@@ -131,19 +131,19 @@ LABEL_12:
 {
   if (![(ContactsSettingsPlugin *)self _importAlreadyInProgress])
   {
-    v2 = [UIApp rootController];
-    [v2 addTask:@"importContactsFromSIM"];
+    rootController = [UIApp rootController];
+    [rootController addTask:@"importContactsFromSIM"];
   }
 }
 
-- (void)_updateSIMImportSpecifier:(BOOL)a3
+- (void)_updateSIMImportSpecifier:(BOOL)specifier
 {
   if (self->_shouldShowSIMImport)
   {
-    v3 = a3;
-    v5 = [(ContactsSettingsPlugin *)self _importAlreadyInProgress];
+    specifierCopy = specifier;
+    _importAlreadyInProgress = [(ContactsSettingsPlugin *)self _importAlreadyInProgress];
     SIMImportSpecifier = self->_SIMImportSpecifier;
-    if (v5)
+    if (_importAlreadyInProgress)
     {
       v7 = @"Importing contacts";
     }
@@ -154,7 +154,7 @@ LABEL_12:
     }
 
     v8 = &kCFBooleanFalse;
-    if (!v5)
+    if (!_importAlreadyInProgress)
     {
       v8 = &kCFBooleanTrue;
     }
@@ -165,7 +165,7 @@ LABEL_12:
     v11 = [v10 localizedStringForKey:v7 value:&stru_14F18 table:@"Contacts"];
     [(PSSpecifier *)v9 setName:v11];
 
-    if (v3)
+    if (specifierCopy)
     {
       v12 = self->_SIMImportSpecifier;
 
@@ -178,21 +178,21 @@ LABEL_12:
 {
   if ([(ContactsSettingsPlugin *)self _importAlreadyInProgress])
   {
-    v3 = [UIApp rootController];
-    v12 = [v3 viewControllers];
+    rootController = [UIApp rootController];
+    viewControllers = [rootController viewControllers];
 
-    v4 = [v12 count];
+    v4 = [viewControllers count];
     if (v4 >= 1)
     {
       v5 = v4 + 1;
       while (1)
       {
-        v6 = [v12 objectAtIndex:v5 - 2];
+        v6 = [viewControllers objectAtIndex:v5 - 2];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v7 = [(PSSpecifier *)self->_SIMImportSpecifier identifier];
-          v8 = [v6 specifierForID:v7];
+          identifier = [(PSSpecifier *)self->_SIMImportSpecifier identifier];
+          v8 = [v6 specifierForID:identifier];
 
           if (v8)
           {
@@ -215,8 +215,8 @@ LABEL_12:
     }
 
 LABEL_10:
-    v11 = [UIApp rootController];
-    [v11 taskFinished:@"importContactsFromSIM"];
+    rootController2 = [UIApp rootController];
+    [rootController2 taskFinished:@"importContactsFromSIM"];
   }
 }
 
@@ -273,11 +273,11 @@ LABEL_10:
   v7 = SpecifiersFromPlist();
   v8 = [v7 specifierForID:{@"ContactsHeader", 0}];
   v9 = [v7 specifierForID:@"ContactsPlacard"];
-  v10 = [(ContactsSettingsPlugin *)self traitCollection];
-  v11 = [v10 pe_isSettingsFeatureDescriptionCellSupported];
+  traitCollection = [(ContactsSettingsPlugin *)self traitCollection];
+  pe_isSettingsFeatureDescriptionCellSupported = [traitCollection pe_isSettingsFeatureDescriptionCellSupported];
 
   v52 = v3;
-  if (v11)
+  if (pe_isSettingsFeatureDescriptionCellSupported)
   {
     v12 = [NSBundle bundleForClass:objc_opt_class()];
     v13 = [v12 localizedStringForKey:@"SETTINGS_SUBTITLE" value:&stru_14F18 table:@"Contacts"];
@@ -285,8 +285,8 @@ LABEL_10:
     v14 = [NSBundle bundleForClass:objc_opt_class()];
     v15 = [v14 localizedStringForKey:@"LEARN_MORE" value:&stru_14F18 table:@"Contacts"];
 
-    v16 = [(ContactsSettingsPlugin *)self helpKitLink];
-    v17 = [NSString stringWithFormat:@"%@ [%@](%@)", v13, v15, v16];
+    helpKitLink = [(ContactsSettingsPlugin *)self helpKitLink];
+    v17 = [NSString stringWithFormat:@"%@ [%@](%@)", v13, v15, helpKitLink];
 
     [v9 setObject:v17 forKeyedSubscript:PSTableCellSubtitleTextKey];
   }
@@ -298,22 +298,22 @@ LABEL_10:
     v9 = 0;
   }
 
-  v18 = [(ContactsSettingsPlugin *)self appPolicy];
+  appPolicy = [(ContactsSettingsPlugin *)self appPolicy];
 
-  if (!v18)
+  if (!appPolicy)
   {
     v19 = [[PSSystemPolicyForApp alloc] initWithBundleIdentifier:@"com.apple.MobileAddressBook"];
     [(ContactsSettingsPlugin *)self setAppPolicy:v19];
 
-    v20 = [(ContactsSettingsPlugin *)self appPolicy];
-    [v20 setDelegate:self];
+    appPolicy2 = [(ContactsSettingsPlugin *)self appPolicy];
+    [appPolicy2 setDelegate:self];
   }
 
-  v21 = [(ContactsSettingsPlugin *)self appPolicy];
-  v22 = [v21 specifiersForPolicyOptions:0x800000 force:0];
+  appPolicy3 = [(ContactsSettingsPlugin *)self appPolicy];
+  v22 = [appPolicy3 specifiersForPolicyOptions:0x800000 force:0];
 
-  v23 = [(ContactsSettingsPlugin *)self appPolicy];
-  v24 = [v23 specifiersForPolicyOptions:0x8000000 force:0];
+  appPolicy4 = [(ContactsSettingsPlugin *)self appPolicy];
+  v24 = [appPolicy4 specifiersForPolicyOptions:0x8000000 force:0];
 
   v25 = [v7 mutableCopy];
   currentSpecifiers = self->_currentSpecifiers;
@@ -359,8 +359,8 @@ LABEL_13:
   [(ContactsSettingsPlugin *)self _updateABStoresAndNames];
   v53 = [(NSMutableArray *)self->_contactStores count];
   v32 = +[CNEnvironment currentEnvironment];
-  v33 = [v32 featureFlags];
-  v45 = [v33 isFeatureEnabled:12];
+  featureFlags = [v32 featureFlags];
+  v45 = [featureFlags isFeatureEnabled:12];
 
   v34 = [(NSMutableArray *)self->_currentSpecifiers count];
   if (v34 >= 1)
@@ -372,13 +372,13 @@ LABEL_13:
     while (1)
     {
       v38 = [(NSMutableArray *)self->_currentSpecifiers objectAtIndex:v35 - 2];
-      v39 = [v38 identifier];
-      if ([v39 isEqualToString:@"DefaultContacts"])
+      identifier = [v38 identifier];
+      if ([identifier isEqualToString:@"DefaultContacts"])
       {
         break;
       }
 
-      if ([v39 isEqualToString:@"SIMImport"])
+      if ([identifier isEqualToString:@"SIMImport"])
       {
         objc_storeStrong(&self->_SIMImportSpecifier, v38);
         objc_storeWeak(&v38[OBJC_IVAR___PSSpecifier_target], self);
@@ -386,9 +386,9 @@ LABEL_13:
 
       else
       {
-        if (![v39 isEqualToString:@"SIMImportSpacer"])
+        if (![identifier isEqualToString:@"SIMImportSpacer"])
         {
-          if ([v39 isEqualToString:@"MeCard"])
+          if ([identifier isEqualToString:@"MeCard"])
           {
             objc_storeStrong(&self->_MeCardSpecifier, v38);
 LABEL_29:
@@ -396,12 +396,12 @@ LABEL_29:
             goto LABEL_30;
           }
 
-          if ([v39 isEqualToString:@"ContactsSortOrder"] || objc_msgSend(v39, "isEqualToString:", @"PersonNameOrder") || objc_msgSend(v39, "isEqualToString:", @"ContactsInMail"))
+          if ([identifier isEqualToString:@"ContactsSortOrder"] || objc_msgSend(identifier, "isEqualToString:", @"PersonNameOrder") || objc_msgSend(identifier, "isEqualToString:", @"ContactsInMail"))
           {
             goto LABEL_29;
           }
 
-          if ([v39 isEqualToString:@"ContactProvider"])
+          if ([identifier isEqualToString:@"ContactProvider"])
           {
             objc_storeWeak(&v38[OBJC_IVAR___PSSpecifier_target], self);
 LABEL_35:
@@ -413,26 +413,26 @@ LABEL_35:
 
           else
           {
-            if ([v39 isEqualToString:@"ContactProviderSpacer"])
+            if ([identifier isEqualToString:@"ContactProviderSpacer"])
             {
               goto LABEL_35;
             }
 
-            if ([v39 isEqualToString:@"SharedNamePhotoSpacer"])
+            if ([identifier isEqualToString:@"SharedNamePhotoSpacer"])
             {
               objc_storeWeak(&v38[OBJC_IVAR___PSSpecifier_target], self);
-              v40 = [(ContactsSettingsPlugin *)self sharedNameAndPhotoSharingFooterText];
-              [v38 setProperty:v40 forKey:v44];
+              sharedNameAndPhotoSharingFooterText = [(ContactsSettingsPlugin *)self sharedNameAndPhotoSharingFooterText];
+              [v38 setProperty:sharedNameAndPhotoSharingFooterText forKey:v44];
 
               goto LABEL_30;
             }
 
-            if ([v39 isEqualToString:@"SharedNameAndPhoto"])
+            if ([identifier isEqualToString:@"SharedNameAndPhoto"])
             {
               goto LABEL_29;
             }
 
-            if (![v39 isEqualToString:@"ContactsHeader"])
+            if (![identifier isEqualToString:@"ContactsHeader"])
             {
               goto LABEL_30;
             }
@@ -485,30 +485,30 @@ LABEL_42:
   return v41;
 }
 
-- (void)setDefaultContacts:(id)a3 specifier:(id)a4
+- (void)setDefaultContacts:(id)contacts specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  contactsCopy = contacts;
+  specifierCopy = specifier;
   addressBookQueue = self->_addressBookQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_4608;
   block[3] = &unk_14B08;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = contactsCopy;
+  v13 = specifierCopy;
+  v9 = specifierCopy;
+  v10 = contactsCopy;
   dispatch_sync(addressBookQueue, block);
 }
 
-- (void)_setDefaultContacts:(id)a3 specifier:(id)a4
+- (void)_setDefaultContacts:(id)contacts specifier:(id)specifier
 {
-  v6 = [(NSMutableArray *)self->_contactStoreNames indexOfObject:a3, a4];
-  if (a3)
+  specifier = [(NSMutableArray *)self->_contactStoreNames indexOfObject:contacts, specifier];
+  if (contacts)
   {
-    v7 = v6;
-    if (v6 < [(NSMutableArray *)self->_contactStores count])
+    v7 = specifier;
+    if (specifier < [(NSMutableArray *)self->_contactStores count])
     {
       addressBook = self->_addressBook;
       v9 = [(NSMutableArray *)self->_contactStores objectAtIndex:v7];
@@ -518,9 +518,9 @@ LABEL_42:
   }
 }
 
-- (id)defaultContactsName:(id)a3
+- (id)defaultContactsName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -546,7 +546,7 @@ LABEL_42:
   return v6;
 }
 
-- (id)contactStoreTitlesForSpecifier:(id)a3
+- (id)contactStoreTitlesForSpecifier:(id)specifier
 {
   if (![(NSMutableArray *)self->_contactStoreNames count])
   {
@@ -615,10 +615,10 @@ LABEL_42:
   [(ContactsSettingsPlugin *)self _erroredDuringSIMPhonebookFetch];
 }
 
-- (id)_simPhonebookEntryAtIndex:(int)a3
+- (id)_simPhonebookEntryAtIndex:(int)index
 {
-  v4 = [(ContactsSettingsPlugin *)self _ctServerConnection];
-  if (v4)
+  _ctServerConnection = [(ContactsSettingsPlugin *)self _ctServerConnection];
+  if (_ctServerConnection)
   {
     if (_CTServerConnectionCopyPhoneBookEntry() >> 32)
     {
@@ -627,10 +627,10 @@ LABEL_42:
       [(ContactsSettingsPlugin *)self _erroredDuringSIMPhonebookFetch];
     }
 
-    v4 = 0;
+    _ctServerConnection = 0;
   }
 
-  return v4;
+  return _ctServerConnection;
 }
 
 - (void)_phonebookSelected
@@ -684,13 +684,13 @@ LABEL_42:
   }
 }
 
-- (void)_beginImportToStoreID:(int)a3
+- (void)_beginImportToStoreID:(int)d
 {
   if (self->_shouldShowSIMImport)
   {
     v11[9] = v3;
     v11[10] = v4;
-    self->_importStoreID = a3;
+    self->_importStoreID = d;
     [(ContactsSettingsPlugin *)self _noteImportStarted];
     [(ContactsSettingsPlugin *)self _updateSIMImportSpecifier:1];
     v6 = [NSBundle bundleForClass:objc_opt_class()];
@@ -709,7 +709,7 @@ LABEL_42:
   }
 }
 
-- (void)importFromSIM:(id)a3
+- (void)importFromSIM:(id)m
 {
   if (!self->_loadingContacts)
   {
@@ -855,7 +855,7 @@ LABEL_42:
   }
 }
 
-- (id)meCardName:(id)a3
+- (id)meCardName:(id)name
 {
   v3 = objc_alloc_init(CNContactStore);
   v4 = [CNContactFormatter descriptorForRequiredKeysForStyle:0];
@@ -870,15 +870,15 @@ LABEL_42:
 
 - (void)_showMeCardPopover
 {
-  v3 = [(ContactsSettingsPlugin *)self table];
+  table = [(ContactsSettingsPlugin *)self table];
   v4 = [(ContactsSettingsPlugin *)self indexPathForIndex:[(ContactsSettingsPlugin *)self indexOfSpecifier:self->_MeCardSpecifier]];
-  v5 = [v3 cellForRowAtIndexPath:v4];
+  v5 = [table cellForRowAtIndexPath:v4];
   if (!v5)
   {
     goto LABEL_9;
   }
 
-  [v3 bounds];
+  [table bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -900,18 +900,18 @@ LABEL_9:
       sub_AFA4();
     }
 
-    [v3 scrollToRowAtIndexPath:v4 atScrollPosition:3 animated:0];
-    v18 = [v3 cellForRowAtIndexPath:v4];
+    [table scrollToRowAtIndexPath:v4 atScrollPosition:3 animated:0];
+    v18 = [table cellForRowAtIndexPath:v4];
 
     v5 = v18;
   }
 
-  [v3 deselectRowAtIndexPath:v4 animated:1];
+  [table deselectRowAtIndexPath:v4 animated:1];
   [v5 frame];
-  [(UIPopoverController *)self->_meCardPopover presentPopoverFromRect:v3 inView:13 permittedArrowDirections:1 animated:?];
+  [(UIPopoverController *)self->_meCardPopover presentPopoverFromRect:table inView:13 permittedArrowDirections:1 animated:?];
 }
 
-- (void)showMeCardPicker:(id)a3
+- (void)showMeCardPicker:(id)picker
 {
   v4 = objc_alloc_init(CNContactPickerViewController);
   meCardPicker = self->_meCardPicker;
@@ -926,9 +926,9 @@ LABEL_9:
   if (objc_opt_respondsToSelector())
   {
     v7 = +[UIDevice currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    userInterfaceIdiom = [v7 userInterfaceIdiom];
 
-    if (v8 == &dword_0 + 1)
+    if (userInterfaceIdiom == &dword_0 + 1)
     {
       v9 = [[UIPopoverController alloc] initWithContentViewController:self->_meCardPicker];
       meCardPopover = self->_meCardPopover;
@@ -950,7 +950,7 @@ LABEL_9:
   [(ContactsSettingsPlugin *)self presentViewController:v11 animated:1 completion:0];
 }
 
-- (void)windowWillRotate:(id)a3
+- (void)windowWillRotate:(id)rotate
 {
   if ([(UIPopoverController *)self->_meCardPopover isPopoverVisible])
   {
@@ -960,7 +960,7 @@ LABEL_9:
   }
 }
 
-- (void)windowDidRotate:(id)a3
+- (void)windowDidRotate:(id)rotate
 {
   if (self->_meCardPopover)
   {
@@ -970,9 +970,9 @@ LABEL_9:
 
 - (void)_reloadMeCardCellIfVisible
 {
-  v3 = [(ContactsSettingsPlugin *)self table];
+  table = [(ContactsSettingsPlugin *)self table];
   v4 = [(ContactsSettingsPlugin *)self indexPathForIndex:[(ContactsSettingsPlugin *)self indexOfSpecifier:self->_MeCardSpecifier]];
-  v5 = [v3 cellForRowAtIndexPath:v4];
+  v5 = [table cellForRowAtIndexPath:v4];
 
   if (v5)
   {
@@ -983,16 +983,16 @@ LABEL_9:
     }
 
     v6 = [NSArray arrayWithObject:v4];
-    [v3 reloadRowsAtIndexPaths:v6 withRowAnimation:5];
+    [table reloadRowsAtIndexPaths:v6 withRowAnimation:5];
   }
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v5 = a4;
+  contactCopy = contact;
   v6 = objc_alloc_init(CNContactStore);
   v12 = 0;
-  v7 = [v6 setMeContact:v5 error:&v12];
+  v7 = [v6 setMeContact:contactCopy error:&v12];
   v8 = v12;
 
   if (v7)
@@ -1007,7 +1007,7 @@ LABEL_9:
 
   if (!v9)
   {
-    v10 = v5;
+    v10 = contactCopy;
     v11 = v8;
     _CNUILog();
   }
@@ -1016,18 +1016,18 @@ LABEL_9:
   [(ContactsSettingsPlugin *)self _dismissMeCardPickerAnimated:1];
 }
 
-- (id)contactsSortOrder:(id)a3
+- (id)contactsSortOrder:(id)order
 {
   SortOrdering = ABPersonGetSortOrdering();
 
   return [NSNumber numberWithInt:SortOrdering];
 }
 
-- (void)setContactsSortOrder:(id)a3 specifier:(id)a4
+- (void)setContactsSortOrder:(id)order specifier:(id)specifier
 {
-  v5 = a3;
+  orderCopy = order;
   v6 = ABPeoplePickerPrefs();
-  CFPreferencesSetAppValue(@"contactsSortOrder", v5, v6);
+  CFPreferencesSetAppValue(@"contactsSortOrder", orderCopy, v6);
 
   v7 = ABPeoplePickerPrefs();
   CFPreferencesAppSynchronize(v7);
@@ -1037,58 +1037,58 @@ LABEL_9:
   [(ContactsSettingsPlugin *)self _synchronizeNanoUserDefault:@"contactsSortOrder"];
 }
 
-- (id)personNameOrder:(id)a3
+- (id)personNameOrder:(id)order
 {
   CompositeNameFormatForRecord = ABPersonGetCompositeNameFormatForRecord(0);
 
   return [NSNumber numberWithInt:CompositeNameFormatForRecord];
 }
 
-- (void)setPersonNameOrder:(id)a3 specifier:(id)a4
+- (void)setPersonNameOrder:(id)order specifier:(id)specifier
 {
-  v4 = [a3 intValue];
+  intValue = [order intValue];
 
-  _ABPersonSetCompositeNameFormat(v4);
+  _ABPersonSetCompositeNameFormat(intValue);
 }
 
-- (id)contactProviderCount:(id)a3
+- (id)contactProviderCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   addressBookQueue = self->_addressBookQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_60BC;
   block[3] = &unk_14B80;
   block[4] = self;
-  v6 = v4;
+  v6 = countCopy;
   v11 = v6;
   dispatch_async(addressBookQueue, block);
-  v7 = [(ContactsSettingsPlugin *)self providerCount];
-  if (v7 < 1)
+  providerCount = [(ContactsSettingsPlugin *)self providerCount];
+  if (providerCount < 1)
   {
     v8 = &stru_14F18;
   }
 
   else
   {
-    v8 = [NSString stringWithFormat:@"%ld", v7];
+    v8 = [NSString stringWithFormat:@"%ld", providerCount];
   }
 
   return v8;
 }
 
-- (void)_synchronizeNanoUserDefault:(id)a3
+- (void)_synchronizeNanoUserDefault:(id)default
 {
-  v5 = a3;
+  defaultCopy = default;
   if (PSIsNanoMirroringDomain())
   {
     v3 = objc_opt_new();
-    v4 = [NSSet setWithObject:v5];
+    v4 = [NSSet setWithObject:defaultCopy];
     [v3 synchronizeUserDefaultsDomain:@"com.apple.PeoplePicker" keys:v4];
   }
 }
 
-- (void)showSharedNameAndPhotoSettings:(id)a3
+- (void)showSharedNameAndPhotoSettings:(id)settings
 {
   v5 = objc_alloc_init(CNContactStore);
   v4 = [[CNSharedProfileOnboardingController alloc] initWithContactStore:v5];
@@ -1100,26 +1100,26 @@ LABEL_9:
 - (id)sharedNameAndPhotoSharingFooterText
 {
   v2 = +[CNEnvironment currentEnvironment];
-  v3 = [v2 nicknameProvider];
-  v4 = [v3 isNicknameSharingEnabled];
+  nicknameProvider = [v2 nicknameProvider];
+  isNicknameSharingEnabled = [nicknameProvider isNicknameSharingEnabled];
 
-  if (!v4)
+  if (!isNicknameSharingEnabled)
   {
     v8 = @"NAME_AND_PHOTO_SHARING_NOT_SHARING_FOOTER";
     goto LABEL_7;
   }
 
   v5 = +[CNEnvironment currentEnvironment];
-  v6 = [v5 nicknameProvider];
-  v7 = [v6 sharingAudience];
+  nicknameProvider2 = [v5 nicknameProvider];
+  sharingAudience = [nicknameProvider2 sharingAudience];
 
-  if (v7 == &dword_0 + 2)
+  if (sharingAudience == &dword_0 + 2)
   {
     v8 = @"NAME_AND_PHOTO_SHARING_ALWAYS_ASK_FOOTER";
     goto LABEL_7;
   }
 
-  if (v7 == &dword_0 + 1)
+  if (sharingAudience == &dword_0 + 1)
   {
     v8 = @"NAME_AND_PHOTO_SHARING_CONTACTS_ONLY_FOOTER";
 LABEL_7:
@@ -1135,20 +1135,20 @@ LABEL_8:
   return v10;
 }
 
-- (id)sharedNameAndPhotoAudience:(id)a3
+- (id)sharedNameAndPhotoAudience:(id)audience
 {
   v3 = +[CNEnvironment currentEnvironment];
-  v4 = [v3 nicknameProvider];
-  v5 = [v4 isNicknameSharingEnabled];
+  nicknameProvider = [v3 nicknameProvider];
+  isNicknameSharingEnabled = [nicknameProvider isNicknameSharingEnabled];
 
-  if (v5)
+  if (isNicknameSharingEnabled)
   {
     objc_opt_class();
     v6 = +[CNEnvironment currentEnvironment];
-    v7 = [v6 nicknameProvider];
+    nicknameProvider2 = [v6 nicknameProvider];
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = nicknameProvider2;
     }
 
     else
@@ -1158,16 +1158,16 @@ LABEL_8:
 
     v9 = v8;
 
-    v10 = [v9 sharingAudienceDisplayString];
+    sharingAudienceDisplayString = [v9 sharingAudienceDisplayString];
   }
 
   else
   {
     v9 = [NSBundle bundleForClass:objc_opt_class()];
-    v10 = [v9 localizedStringForKey:@"NAME_AND_PHOTO_SHARING_OFF" value:&stru_14F18 table:@"Contacts"];
+    sharingAudienceDisplayString = [v9 localizedStringForKey:@"NAME_AND_PHOTO_SHARING_OFF" value:&stru_14F18 table:@"Contacts"];
   }
 
-  v11 = v10;
+  v11 = sharingAudienceDisplayString;
 
   return v11;
 }
@@ -1178,14 +1178,14 @@ LABEL_8:
   v4 = [_NSLocalizedStringResource alloc];
   v5 = +[NSLocale currentLocale];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
-  v7 = [v6 bundleURL];
-  v8 = [v4 initWithKey:@"CONTACTS" table:@"Contacts" locale:v5 bundleURL:v7];
+  bundleURL = [v6 bundleURL];
+  v8 = [v4 initWithKey:@"CONTACTS" table:@"Contacts" locale:v5 bundleURL:bundleURL];
 
   v9 = [_NSLocalizedStringResource alloc];
   v10 = +[NSLocale currentLocale];
   v11 = [NSBundle bundleForClass:objc_opt_class()];
-  v12 = [v11 bundleURL];
-  v13 = [v9 initWithKey:@"CONTACTS_SETTINGS_SUBTITLE" table:@"Contacts" locale:v10 bundleURL:v12];
+  bundleURL2 = [v11 bundleURL];
+  v13 = [v9 initWithKey:@"CONTACTS_SETTINGS_SUBTITLE" table:@"Contacts" locale:v10 bundleURL:bundleURL2];
 
   v15 = v13;
   v14 = [NSArray arrayWithObjects:&v15 count:1];

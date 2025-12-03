@@ -1,14 +1,14 @@
 @interface APDBAdFilterReasonsRow
-- (APDBAdFilterReasonsRow)initWithCandidate:(id)a3 policyID:(int64_t)a4 policyReason:(int64_t)a5 policyDetail:(id)a6 table:(id)a7;
+- (APDBAdFilterReasonsRow)initWithCandidate:(id)candidate policyID:(int64_t)d policyReason:(int64_t)reason policyDetail:(id)detail table:(id)table;
 - (NSDictionary)details;
-- (id)_dictionaryToJsonString:(id)a3;
-- (id)_jsonStringToDictionary:(id)a3 error:(id *)a4;
+- (id)_dictionaryToJsonString:(id)string;
+- (id)_jsonStringToDictionary:(id)dictionary error:(id *)error;
 - (id)readOnlyColumns;
 - (int64_t)policy;
 - (int64_t)policy_reason;
-- (void)setPolicy:(int64_t)a3;
-- (void)setPolicy_reason:(int64_t)a3;
-- (void)set_details:(id)a3;
+- (void)setPolicy:(int64_t)policy;
+- (void)setPolicy_reason:(int64_t)policy_reason;
+- (void)set_details:(id)set_details;
 @end
 
 @implementation APDBAdFilterReasonsRow
@@ -18,30 +18,30 @@
   v3 = [NSSet setWithObjects:@"details", 0];
   v7.receiver = self;
   v7.super_class = APDBAdFilterReasonsRow;
-  v4 = [(APDBAdFilterReasonsRow *)&v7 readOnlyColumns];
-  v5 = [v3 setByAddingObjectsFromSet:v4];
+  readOnlyColumns = [(APDBAdFilterReasonsRow *)&v7 readOnlyColumns];
+  v5 = [v3 setByAddingObjectsFromSet:readOnlyColumns];
 
   return v5;
 }
 
-- (APDBAdFilterReasonsRow)initWithCandidate:(id)a3 policyID:(int64_t)a4 policyReason:(int64_t)a5 policyDetail:(id)a6 table:(id)a7
+- (APDBAdFilterReasonsRow)initWithCandidate:(id)candidate policyID:(int64_t)d policyReason:(int64_t)reason policyDetail:(id)detail table:(id)table
 {
-  v12 = a3;
-  v13 = a6;
+  candidateCopy = candidate;
+  detailCopy = detail;
   v21.receiver = self;
   v21.super_class = APDBAdFilterReasonsRow;
-  v14 = [(APDBAdFilterReasonsRow *)&v21 initAsNewObjectWithTable:a7];
+  v14 = [(APDBAdFilterReasonsRow *)&v21 initAsNewObjectWithTable:table];
   v15 = v14;
   if (v14)
   {
-    [(APDBAdFilterReasonsRow *)v14 setValue:v12 forColumnName:@"candidate_id"];
-    v16 = [NSNumber numberWithInteger:a4];
+    [(APDBAdFilterReasonsRow *)v14 setValue:candidateCopy forColumnName:@"candidate_id"];
+    v16 = [NSNumber numberWithInteger:d];
     [(APDBAdFilterReasonsRow *)v15 setValue:v16 forColumnName:@"policy_id"];
 
-    v17 = [NSNumber numberWithInteger:a5];
+    v17 = [NSNumber numberWithInteger:reason];
     [(APDBAdFilterReasonsRow *)v15 setValue:v17 forColumnName:@"policy_reason"];
 
-    v18 = [(APDBAdFilterReasonsRow *)v15 _dictionaryToJsonString:v13];
+    v18 = [(APDBAdFilterReasonsRow *)v15 _dictionaryToJsonString:detailCopy];
     [(APDBAdFilterReasonsRow *)v15 setValue:v18 forColumnName:@"policy_detail"];
 
     v19 = +[NSDate now];
@@ -74,48 +74,48 @@
   return v6;
 }
 
-- (void)set_details:(id)a3
+- (void)set_details:(id)set_details
 {
-  v4 = [(APDBAdFilterReasonsRow *)self _dictionaryToJsonString:a3];
+  v4 = [(APDBAdFilterReasonsRow *)self _dictionaryToJsonString:set_details];
   [(APDBAdFilterReasonsRow *)self setValue:v4 forColumnName:@"policy_detail"];
 }
 
 - (int64_t)policy
 {
   v2 = [(APDBAdFilterReasonsRow *)self valueForColumnName:@"policy_id"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setPolicy:(int64_t)a3
+- (void)setPolicy:(int64_t)policy
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:policy];
   [(APDBAdFilterReasonsRow *)self setValue:v4 forColumnName:@"policy_id"];
 }
 
 - (int64_t)policy_reason
 {
   v2 = [(APDBAdFilterReasonsRow *)self valueForColumnName:@"policy_reason"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setPolicy_reason:(int64_t)a3
+- (void)setPolicy_reason:(int64_t)policy_reason
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:policy_reason];
   [(APDBAdFilterReasonsRow *)self setValue:v4 forColumnName:@"policy_reason"];
 }
 
-- (id)_jsonStringToDictionary:(id)a3 error:(id *)a4
+- (id)_jsonStringToDictionary:(id)dictionary error:(id *)error
 {
-  v5 = [a3 dataUsingEncoding:4];
+  v5 = [dictionary dataUsingEncoding:4];
   if (v5)
   {
-    v6 = [NSJSONSerialization JSONObjectWithData:v5 options:4 error:a4];
+    v6 = [NSJSONSerialization JSONObjectWithData:v5 options:4 error:error];
     v7 = v6;
-    if (a4 || !v6)
+    if (error || !v6)
     {
       v8 = APLogForCategory();
       if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -126,7 +126,7 @@ LABEL_14:
       }
 
       v15 = objc_opt_class();
-      v16 = *a4;
+      v16 = *error;
       v18 = 138478083;
       v19 = v15;
       v20 = 2112;
@@ -173,10 +173,10 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%{private}@: Value cannot be serialized to data", &v18, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
     [NSError errorWithDomain:@"kAPNSStringDictionaryErrorDomain" code:2001 userInfo:0];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else
@@ -189,11 +189,11 @@ LABEL_16:
   return v7;
 }
 
-- (id)_dictionaryToJsonString:(id)a3
+- (id)_dictionaryToJsonString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = [a3 jsonStringWithOptions:5];
+    v4 = [string jsonStringWithOptions:5];
   }
 
   else

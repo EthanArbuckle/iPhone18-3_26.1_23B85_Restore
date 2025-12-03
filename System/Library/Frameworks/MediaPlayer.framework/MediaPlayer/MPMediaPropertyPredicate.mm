@@ -1,17 +1,17 @@
 @interface MPMediaPropertyPredicate
 + (MPMediaPropertyPredicate)predicateWithValue:(id)value forProperty:(NSString *)property comparisonType:(MPMediaPredicateComparison)comparisonType;
-- (BOOL)isEqual:(id)a3;
-- (MPMediaPropertyPredicate)initWithCoder:(id)a3;
-- (MPMediaPropertyPredicate)initWithProtobufferDecodableObject:(id)a3 library:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MPMediaPropertyPredicate)initWithCoder:(id)coder;
+- (MPMediaPropertyPredicate)initWithProtobufferDecodableObject:(id)object library:(id)library;
 - (NSString)description;
 - (id)ML3PredicateForContainer;
 - (id)ML3PredicateForTrack;
-- (id)_ML3PredicateForML3EntityProperty:(id)a3;
-- (id)descriptionOfValue:(id)a3 forProperty:(id)a4;
-- (id)protobufferEncodableObjectFromLibrary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setProperty:(id)a3;
-- (void)setValue:(id)a3;
+- (id)_ML3PredicateForML3EntityProperty:(id)property;
+- (id)descriptionOfValue:(id)value forProperty:(id)property;
+- (id)protobufferEncodableObjectFromLibrary:(id)library;
+- (void)encodeWithCoder:(id)coder;
+- (void)setProperty:(id)property;
+- (void)setValue:(id)value;
 @end
 
 @implementation MPMediaPropertyPredicate
@@ -19,8 +19,8 @@
 - (id)ML3PredicateForContainer
 {
   v3 = MEMORY[0x1E69B34A0];
-  v4 = [(MPMediaPropertyPredicate *)self property];
-  v5 = [v3 propertyForMPMediaEntityProperty:v4];
+  property = [(MPMediaPropertyPredicate *)self property];
+  v5 = [v3 propertyForMPMediaEntityProperty:property];
 
   v6 = [(MPMediaPropertyPredicate *)self _ML3PredicateForML3EntityProperty:v5];
 
@@ -30,34 +30,34 @@
 - (id)ML3PredicateForTrack
 {
   v3 = MEMORY[0x1E69B3538];
-  v4 = [(MPMediaPropertyPredicate *)self property];
-  v5 = [v3 propertyForMPMediaEntityProperty:v4];
+  property = [(MPMediaPropertyPredicate *)self property];
+  v5 = [v3 propertyForMPMediaEntityProperty:property];
 
   v6 = [(MPMediaPropertyPredicate *)self _ML3PredicateForML3EntityProperty:v5];
 
   return v6;
 }
 
-- (id)_ML3PredicateForML3EntityProperty:(id)a3
+- (id)_ML3PredicateForML3EntityProperty:(id)property
 {
   v45[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  propertyCopy = property;
+  if (!propertyCopy)
   {
     v17 = 0;
     goto LABEL_60;
   }
 
-  v5 = [(MPMediaPropertyPredicate *)self comparisonType];
-  v6 = [(MPMediaPropertyPredicate *)self value];
-  if ([v4 isEqualToString:*MEMORY[0x1E69B2B30]])
+  comparisonType = [(MPMediaPropertyPredicate *)self comparisonType];
+  value = [(MPMediaPropertyPredicate *)self value];
+  if ([propertyCopy isEqualToString:*MEMORY[0x1E69B2B30]])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v7 = MEMORY[0x1E696AD98];
-      v8 = [v6 unsignedIntegerValue];
-      if (v8 == 0xFF)
+      unsignedIntegerValue = [value unsignedIntegerValue];
+      if (unsignedIntegerValue == 0xFF)
       {
         v9 = 255;
       }
@@ -67,7 +67,7 @@
         v9 = 0;
       }
 
-      if ((~v8 & 0xFF00) != 0)
+      if ((~unsignedIntegerValue & 0xFF00) != 0)
       {
         v10 = v9;
       }
@@ -77,11 +77,11 @@
         v10 = v9 | 0xFF00;
       }
 
-      v11 = vandq_s8(vshlq_u32(vdupq_n_s32(v8), xmmword_1A273DDC0), xmmword_1A273DDD0);
+      v11 = vandq_s8(vshlq_u32(vdupq_n_s32(unsignedIntegerValue), xmmword_1A273DDC0), xmmword_1A273DDD0);
       *v11.i8 = vorr_s8(*v11.i8, *&vextq_s8(v11, v11, 8uLL));
-      v12 = [v7 numberWithUnsignedInteger:v11.i32[0] | v8 & 0x3210 | v11.i32[1] | (v8 >> 1) & 2 | (v8 >> 2) & 0x100 | (v8 >> 1) & 0x400 | v10];
-      v13 = [MEMORY[0x1E69B3488] predicateWithProperty:v4 value:v12 comparison:10];
-      v14 = [MEMORY[0x1E69B3488] predicateWithProperty:v4 equalToInt64:0];
+      v12 = [v7 numberWithUnsignedInteger:v11.i32[0] | unsignedIntegerValue & 0x3210 | v11.i32[1] | (unsignedIntegerValue >> 1) & 2 | (unsignedIntegerValue >> 2) & 0x100 | (unsignedIntegerValue >> 1) & 0x400 | v10];
+      v13 = [MEMORY[0x1E69B3488] predicateWithProperty:propertyCopy value:v12 comparison:10];
+      v14 = [MEMORY[0x1E69B3488] predicateWithProperty:propertyCopy equalToInt64:0];
       v15 = MEMORY[0x1E69B3430];
       v45[0] = v13;
       v45[1] = v14;
@@ -94,29 +94,29 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+      v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(value, "count")}];
       v41[0] = MEMORY[0x1E69E9820];
       v41[1] = 3221225472;
       v41[2] = __76__MPMediaPropertyPredicate_ML3Additions___ML3PredicateForML3EntityProperty___block_invoke;
       v41[3] = &unk_1E76779B0;
       v19 = v18;
       v42 = v19;
-      [v6 enumerateObjectsUsingBlock:v41];
+      [value enumerateObjectsUsingBlock:v41];
       v20 = v19;
 
-      v5 = 108;
-      v6 = v20;
+      comparisonType = 108;
+      value = v20;
     }
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B3138]])
+  if ([propertyCopy isEqualToString:*MEMORY[0x1E69B3138]])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v21 = MEMORY[0x1E696AD98];
-      v22 = [v6 unsignedIntegerValue];
-      if (v22 == 0xFF)
+      unsignedIntegerValue2 = [value unsignedIntegerValue];
+      if (unsignedIntegerValue2 == 0xFF)
       {
         v23 = 255;
       }
@@ -126,7 +126,7 @@
         v23 = 0;
       }
 
-      if ((~v22 & 0xFF00) != 0)
+      if ((~unsignedIntegerValue2 & 0xFF00) != 0)
       {
         v24 = v23;
       }
@@ -136,38 +136,38 @@
         v24 = v23 | 0xFF00;
       }
 
-      v25 = vandq_s8(vshlq_u32(vdupq_n_s32(v22), xmmword_1A273DDC0), xmmword_1A273DDD0);
+      v25 = vandq_s8(vshlq_u32(vdupq_n_s32(unsignedIntegerValue2), xmmword_1A273DDC0), xmmword_1A273DDD0);
       *v25.i8 = vorr_s8(*v25.i8, *&vextq_s8(v25, v25, 8uLL));
-      v12 = [v21 numberWithUnsignedInteger:v25.i32[0] | v22 & 0x3210 | v25.i32[1] | (v22 >> 1) & 2 | (v22 >> 2) & 0x100 | (v22 >> 1) & 0x400 | v24];
-      v26 = [MEMORY[0x1E69B3488] predicateWithProperty:v4 value:v12 comparison:10];
+      v12 = [v21 numberWithUnsignedInteger:v25.i32[0] | unsignedIntegerValue2 & 0x3210 | v25.i32[1] | (unsignedIntegerValue2 >> 1) & 2 | (unsignedIntegerValue2 >> 2) & 0x100 | (unsignedIntegerValue2 >> 1) & 0x400 | v24];
+      v26 = [MEMORY[0x1E69B3488] predicateWithProperty:propertyCopy value:v12 comparison:10];
       goto LABEL_23;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v27 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+      v27 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(value, "count")}];
       v36 = MEMORY[0x1E69E9820];
       v37 = 3221225472;
       v38 = __76__MPMediaPropertyPredicate_ML3Additions___ML3PredicateForML3EntityProperty___block_invoke_2;
       v39 = &unk_1E76779B0;
       v28 = v27;
       v40 = v28;
-      [v6 enumerateObjectsUsingBlock:&v36];
+      [value enumerateObjectsUsingBlock:&v36];
       v29 = v28;
 
-      v6 = v29;
+      value = v29;
 LABEL_46:
-      v32 = [MEMORY[0x1E69B34B8] predicateWithProperty:v4 values:{v6, v36, v37, v38, v39}];
+      v32 = [MEMORY[0x1E69B34B8] predicateWithProperty:propertyCopy values:{value, v36, v37, v38, v39}];
       goto LABEL_58;
     }
   }
 
-  if (v5 <= 103)
+  if (comparisonType <= 103)
   {
-    if (v5 > 100)
+    if (comparisonType > 100)
     {
-      if (v5 == 101)
+      if (comparisonType == 101)
       {
         v30 = 0;
         v31 = 3;
@@ -176,7 +176,7 @@ LABEL_46:
       else
       {
         v30 = 0;
-        if (v5 == 102)
+        if (comparisonType == 102)
         {
           v31 = 4;
         }
@@ -190,7 +190,7 @@ LABEL_46:
       goto LABEL_57;
     }
 
-    switch(v5)
+    switch(comparisonType)
     {
       case 0:
         v30 = 0;
@@ -204,7 +204,7 @@ LABEL_46:
         v30 = 0;
         v31 = 2;
 LABEL_57:
-        v32 = [MEMORY[0x1E69B3488] predicateWithProperty:v4 value:v6 comparison:v31 caseInsensitive:v30];
+        v32 = [MEMORY[0x1E69B3488] predicateWithProperty:propertyCopy value:value comparison:v31 caseInsensitive:v30];
         goto LABEL_58;
     }
 
@@ -213,7 +213,7 @@ LABEL_54:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v44 = v5;
+      v44 = comparisonType;
       _os_log_impl(&dword_1A238D000, v33, OS_LOG_TYPE_ERROR, "Unknown comparison type %ld.", buf, 0xCu);
     }
 
@@ -222,9 +222,9 @@ LABEL_54:
     goto LABEL_57;
   }
 
-  if (v5 <= 106)
+  if (comparisonType <= 106)
   {
-    if (v5 == 104)
+    if (comparisonType == 104)
     {
       v30 = 0;
       v31 = 6;
@@ -233,7 +233,7 @@ LABEL_54:
     else
     {
       v30 = 1;
-      if (v5 == 105)
+      if (comparisonType == 105)
       {
         v31 = 8;
       }
@@ -247,33 +247,33 @@ LABEL_54:
     goto LABEL_57;
   }
 
-  if (v5 == 107)
+  if (comparisonType == 107)
   {
     v30 = 0;
     v31 = 10;
     goto LABEL_57;
   }
 
-  if (v5 == 108)
+  if (comparisonType == 108)
   {
     goto LABEL_46;
   }
 
-  if (v5 != 109)
+  if (comparisonType != 109)
   {
     goto LABEL_54;
   }
 
-  if (v6 && [v6 BOOLValue])
+  if (value && [value BOOLValue])
   {
-    v32 = [MEMORY[0x1E69B3508] predicateWithProperty:v4];
+    v32 = [MEMORY[0x1E69B3508] predicateWithProperty:propertyCopy];
 LABEL_58:
     v17 = v32;
     goto LABEL_59;
   }
 
   v35 = MEMORY[0x1E69B34F0];
-  v12 = [MEMORY[0x1E69B3508] predicateWithProperty:v4];
+  v12 = [MEMORY[0x1E69B3508] predicateWithProperty:propertyCopy];
   v26 = [v35 predicateWithPredicate:v12];
 LABEL_23:
   v17 = v26;
@@ -347,24 +347,24 @@ void __76__MPMediaPropertyPredicate_ML3Additions___ML3PredicateForML3EntityPrope
   [v2 addObject:v8];
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   value = self->_value;
   self->_value = v4;
 }
 
-- (void)setProperty:(id)a3
+- (void)setProperty:(id)property
 {
-  v4 = [a3 copy];
+  v4 = [property copy];
   property = self->_property;
   self->_property = v4;
 }
 
-- (id)protobufferEncodableObjectFromLibrary:(id)a3
+- (id)protobufferEncodableObjectFromLibrary:(id)library
 {
   v53[8] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   v5 = objc_alloc_init(MPPPropertyPredicate);
   [(MPPPropertyPredicate *)v5 setProperty:self->_property];
   comparisonType = self->_comparisonType;
@@ -493,11 +493,11 @@ void __76__MPMediaPropertyPredicate_ML3Additions___ML3PredicateForML3EntityPrope
   value = self->_value;
   if (IsPersistentIDProperty)
   {
-    v45 = [value longLongValue];
-    v46 = v4;
-    if (v4)
+    longLongValue = [value longLongValue];
+    v46 = libraryCopy;
+    if (libraryCopy)
     {
-      v20 = v4;
+      v20 = libraryCopy;
     }
 
     else
@@ -535,21 +535,21 @@ void __76__MPMediaPropertyPredicate_ML3Additions___ML3PredicateForML3EntityPrope
       v36 = [v34 dictionaryWithObjects:v53 forKeys:v52 count:8];
       v37 = [v36 objectForKey:v35];
 
-      v38 = [v37 integerValue];
-      v39 = [v28 multiverseIdentifierForCollectionWithPersistentID:v45 groupingType:v38];
+      integerValue = [v37 integerValue];
+      v39 = [v28 multiverseIdentifierForCollectionWithPersistentID:longLongValue groupingType:integerValue];
     }
 
     else
     {
-      v39 = [v28 multiverseIdentifierForTrackWithPersistentID:v45];
+      v39 = [v28 multiverseIdentifierForTrackWithPersistentID:longLongValue];
     }
 
     v21 = v39;
-    v4 = v46;
+    libraryCopy = v46;
     if (v39)
     {
-      v40 = [v39 data];
-      v41 = MPPCreatePredicateValueFromFoundationObject(v40);
+      data = [v39 data];
+      v41 = MPPCreatePredicateValueFromFoundationObject(data);
       [(MPPPropertyPredicate *)v5 setValue:v41];
     }
   }
@@ -614,16 +614,16 @@ void __76__MPMediaPropertyPredicate_ML3Additions___ML3PredicateForML3EntityPrope
   return v43;
 }
 
-- (MPMediaPropertyPredicate)initWithProtobufferDecodableObject:(id)a3 library:(id)a4
+- (MPMediaPropertyPredicate)initWithProtobufferDecodableObject:(id)object library:(id)library
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  libraryCopy = library;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"MPMediaQuery.m" lineNumber:1391 description:{@"Cannot decode object of type %@", objc_opt_class()}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaQuery.m" lineNumber:1391 description:{@"Cannot decode object of type %@", objc_opt_class()}];
   }
 
   v30.receiver = self;
@@ -631,19 +631,19 @@ void __76__MPMediaPropertyPredicate_ML3Additions___ML3PredicateForML3EntityPrope
   v9 = [(MPMediaPropertyPredicate *)&v30 init];
   if (v9)
   {
-    v10 = [v7 propertyPredicate];
-    v11 = [v10 property];
-    v12 = [v11 copy];
+    propertyPredicate = [objectCopy propertyPredicate];
+    property = [propertyPredicate property];
+    v12 = [property copy];
     property = v9->_property;
     v9->_property = v12;
 
-    v14 = [v10 comparisonType];
+    comparisonType = [propertyPredicate comparisonType];
     v15 = 0;
-    if (v14 <= 102)
+    if (comparisonType <= 102)
     {
-      if (v14 > 100)
+      if (comparisonType > 100)
       {
-        if (v14 == 101)
+        if (comparisonType == 101)
         {
           v15 = 101;
         }
@@ -654,20 +654,20 @@ void __76__MPMediaPropertyPredicate_ML3Additions___ML3PredicateForML3EntityPrope
         }
       }
 
-      else if (v14 == 2)
+      else if (comparisonType == 2)
       {
         v15 = 1;
       }
 
-      else if (v14 == 100)
+      else if (comparisonType == 100)
       {
         v15 = 100;
       }
     }
 
-    else if (v14 <= 104)
+    else if (comparisonType <= 104)
     {
-      if (v14 == 103)
+      if (comparisonType == 103)
       {
         v15 = 103;
       }
@@ -680,7 +680,7 @@ void __76__MPMediaPropertyPredicate_ML3Additions___ML3PredicateForML3EntityPrope
 
     else
     {
-      switch(v14)
+      switch(comparisonType)
       {
         case 'i':
           v15 = 105;
@@ -697,9 +697,9 @@ void __76__MPMediaPropertyPredicate_ML3Additions___ML3PredicateForML3EntityPrope
     v9->_comparisonType = v15;
     if (_MPMediaItemPropertyIsPersistentIDProperty(v9->_property))
     {
-      if (v8)
+      if (libraryCopy)
       {
-        v16 = v8;
+        v16 = libraryCopy;
       }
 
       else
@@ -707,19 +707,19 @@ void __76__MPMediaPropertyPredicate_ML3Additions___ML3PredicateForML3EntityPrope
         v16 = +[MPMediaLibrary defaultMediaLibrary];
       }
 
-      v17 = v16;
-      v20 = [v10 value];
-      v19 = MPPCreateFoundationObjectFromPredicateValue(v20);
+      value2 = v16;
+      value = [propertyPredicate value];
+      v19 = MPPCreateFoundationObjectFromPredicateValue(value);
 
       v21 = [objc_alloc(MEMORY[0x1E69B3400]) initWithData:v19];
-      v22 = [v17 entityWithMultiverseIdentifier:v21];
+      v22 = [value2 entityWithMultiverseIdentifier:v21];
       v23 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl_Oversize");
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
         v32 = v21;
         v33 = 2114;
-        v34 = v17;
+        v34 = value2;
         v35 = 2114;
         v36 = v22;
         _os_log_impl(&dword_1A238D000, v23, OS_LOG_TYPE_DEFAULT, "RPQ: [MPMediaQuery initWithProtobufferDecodableObject:library:] resolving PID predicate multiverseID=%{public}@ library=%{public}@ entity=%{public}@", buf, 0x20u);
@@ -741,8 +741,8 @@ void __76__MPMediaPropertyPredicate_ML3Additions___ML3PredicateForML3EntityPrope
 
     else
     {
-      v17 = [v10 value];
-      v18 = MPPCreateFoundationObjectFromPredicateValue(v17);
+      value2 = [propertyPredicate value];
+      v18 = MPPCreateFoundationObjectFromPredicateValue(value2);
       v19 = v9->_value;
       v9->_value = v18;
     }
@@ -751,22 +751,22 @@ void __76__MPMediaPropertyPredicate_ML3Additions___ML3PredicateForML3EntityPrope
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_7;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if (!-[NSString isEqualToString:](self->_property, "isEqualToString:", v5[1]) || self->_comparisonType != v5[3] || ([self->_value isEqual:v5[2]] & 1) == 0)
   {
 
 LABEL_7:
     v8.receiver = self;
     v8.super_class = MPMediaPropertyPredicate;
-    v6 = [(MPMediaPropertyPredicate *)&v8 isEqual:v4];
+    v6 = [(MPMediaPropertyPredicate *)&v8 isEqual:equalCopy];
     goto LABEL_8;
   }
 
@@ -877,29 +877,29 @@ LABEL_8:
   return v18;
 }
 
-- (id)descriptionOfValue:(id)a3 forProperty:(id)a4
+- (id)descriptionOfValue:(id)value forProperty:(id)property
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isEqualToString:@"mediaType"])
+  valueCopy = value;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"mediaType"])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v15 = MEMORY[0x1E696AEC0];
-      v16 = _NSStringFromMPMediaType([v5 integerValue], @" | ");
-      v14 = [v15 stringWithFormat:@"'%@' %@", v5, v16];
+      v16 = _NSStringFromMPMediaType([valueCopy integerValue], @" | ");
+      v14 = [v15 stringWithFormat:@"'%@' %@", valueCopy, v16];
 
       goto LABEL_17;
     }
 
-    v7 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"'%@'", v5];
+    valueCopy = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"'%@'", valueCopy];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = v5;
+    v8 = valueCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -915,7 +915,7 @@ LABEL_8:
           }
 
           v13 = _NSStringFromMPMediaType([*(*(&v18 + 1) + 8 * i) integerValue], @" | ");
-          [v7 appendFormat:@" %@", v13];
+          [valueCopy appendFormat:@" %@", v13];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -925,14 +925,14 @@ LABEL_8:
     }
   }
 
-  if ([v6 hasSuffix:@"PID"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([propertyCopy hasSuffix:@"PID"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", objc_msgSend(v5, "longLongValue")];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", objc_msgSend(valueCopy, "longLongValue")];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@'", v5];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@'", valueCopy];
   }
   v14 = ;
 LABEL_17:
@@ -940,47 +940,47 @@ LABEL_17:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   property = self->_property;
-  v5 = a3;
-  [v5 encodeObject:property forKey:@"MPProperty"];
-  [v5 encodeObject:self->_value forKey:@"MPValue"];
-  [v5 encodeInteger:self->_comparisonType forKey:@"MPComparisonType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:property forKey:@"MPProperty"];
+  [coderCopy encodeObject:self->_value forKey:@"MPValue"];
+  [coderCopy encodeInteger:self->_comparisonType forKey:@"MPComparisonType"];
 }
 
-- (MPMediaPropertyPredicate)initWithCoder:(id)a3
+- (MPMediaPropertyPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MPMediaPropertyPredicate;
   v5 = [(MPMediaPropertyPredicate *)&v15 init];
   if (v5)
   {
-    if ([v4 allowsKeyedCoding])
+    if ([coderCopy allowsKeyedCoding])
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPProperty"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPProperty"];
       property = v5->_property;
       v5->_property = v6;
 
-      v8 = [v4 decodePropertyListForKey:@"MPValue"];
+      v8 = [coderCopy decodePropertyListForKey:@"MPValue"];
       value = v5->_value;
       v5->_value = v8;
 
-      v5->_comparisonType = [v4 decodeIntegerForKey:@"MPComparisonType"];
+      v5->_comparisonType = [coderCopy decodeIntegerForKey:@"MPComparisonType"];
     }
 
     else
     {
-      v10 = [v4 decodeObject];
+      decodeObject = [coderCopy decodeObject];
       v11 = v5->_property;
-      v5->_property = v10;
+      v5->_property = decodeObject;
 
-      v12 = [v4 decodeObject];
+      decodeObject2 = [coderCopy decodeObject];
       v13 = v5->_value;
-      v5->_value = v12;
+      v5->_value = decodeObject2;
 
-      [v4 decodeValueOfObjCType:"q" at:&v5->_comparisonType size:8];
+      [coderCopy decodeValueOfObjCType:"q" at:&v5->_comparisonType size:8];
     }
   }
 

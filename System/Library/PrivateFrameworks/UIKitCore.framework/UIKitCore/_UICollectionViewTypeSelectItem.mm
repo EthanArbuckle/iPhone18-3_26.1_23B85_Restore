@@ -1,26 +1,26 @@
 @interface _UICollectionViewTypeSelectItem
-- (_UICollectionViewTypeSelectItem)initWithTypeSelectString:(id)a3 atIndexPath:(id)a4;
+- (_UICollectionViewTypeSelectItem)initWithTypeSelectString:(id)string atIndexPath:(id)path;
 @end
 
 @implementation _UICollectionViewTypeSelectItem
 
-- (_UICollectionViewTypeSelectItem)initWithTypeSelectString:(id)a3 atIndexPath:(id)a4
+- (_UICollectionViewTypeSelectItem)initWithTypeSelectString:(id)string atIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  stringCopy = string;
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UICollectionViewTypeSelectItem.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewTypeSelectItem.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
   }
 
   v13.receiver = self;
   v13.super_class = _UICollectionViewTypeSelectItem;
-  v9 = [(_UITypeSelectItem *)&v13 initWithTypeSelectString:v7];
+  v9 = [(_UITypeSelectItem *)&v13 initWithTypeSelectString:stringCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_indexPath, a4);
+    objc_storeStrong(&v9->_indexPath, path);
   }
 
   return v10;

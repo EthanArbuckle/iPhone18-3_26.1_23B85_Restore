@@ -1,27 +1,27 @@
 @interface FMMapViewController
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (void)_setUserTrackingMode:(int64_t)a3 animated:(BOOL)a4 fromTrackingButton:(BOOL)a5;
-- (void)cardPositionChangedWithNotification:(id)a3;
-- (void)mapView:(id)a3 canEnter3DModeDidChange:(BOOL)a4;
-- (void)mapView:(id)a3 didAddAnnotationViews:(id)a4;
-- (void)mapView:(id)a3 didBecomePitched:(BOOL)a4;
-- (void)mapView:(id)a3 didChangeMapType:(unint64_t)a4;
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5;
-- (void)mapView:(id)a3 didDeselectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 didSelectAnnotation:(id)a4;
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 didUpdateUserLocation:(id)a4;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)mapView:(id)a3 regionWillChangeAnimated:(BOOL)a4;
-- (void)mapViewDidStartUserInteraction:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (void)_setUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button;
+- (void)cardPositionChangedWithNotification:(id)notification;
+- (void)mapView:(id)view canEnter3DModeDidChange:(BOOL)change;
+- (void)mapView:(id)view didAddAnnotationViews:(id)views;
+- (void)mapView:(id)view didBecomePitched:(BOOL)pitched;
+- (void)mapView:(id)view didChangeMapType:(unint64_t)type;
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated;
+- (void)mapView:(id)view didDeselectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view didSelectAnnotation:(id)annotation;
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view didUpdateUserLocation:(id)location;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)mapView:(id)view regionWillChangeAnimated:(BOOL)animated;
+- (void)mapViewDidStartUserInteraction:(id)interaction;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation FMMapViewController
@@ -38,48 +38,48 @@
   v2[OBJC_IVAR____TtC6FindMy19FMMapViewController_isAnimationEnabled] = 1;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for FMMapViewController();
   v4 = v6.receiver;
-  [(FMMapViewController *)&v6 viewWillAppear:v3];
+  [(FMMapViewController *)&v6 viewWillAppear:appearCopy];
   sub_10004BC64();
-  v5 = [objc_opt_self() defaultCenter];
+  defaultCenter = [objc_opt_self() defaultCenter];
   if (qword_1006AEDB8 != -1)
   {
     swift_once();
   }
 
-  [v5 addObserver:v4 selector:? name:? object:?];
+  [defaultCenter addObserver:v4 selector:? name:? object:?];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_10004C204();
 }
 
-- (void)cardPositionChangedWithNotification:(id)a3
+- (void)cardPositionChangedWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_10004C6FC(v7);
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)mapView:(id)a3 didUpdateUserLocation:(id)a4
+- (void)mapView:(id)view didUpdateUserLocation:(id)location
 {
-  v5 = a3;
-  v9 = self;
-  v6 = [v5 annotations];
+  viewCopy = view;
+  selfCopy = self;
+  annotations = [viewCopy annotations];
   sub_10007EBC0(&qword_1006C1DD0);
   v7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -99,13 +99,13 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for FMMapViewController();
   v4 = v7.receiver;
-  [(FMMapViewController *)&v7 viewDidAppear:v3];
+  [(FMMapViewController *)&v7 viewDidAppear:appearCopy];
   v5 = *(*&v4[OBJC_IVAR____TtC6FindMy24FMMediatedViewController_mediator] + 56);
 
   v6 = sub_100057FBC(v4, v5);
@@ -115,36 +115,36 @@
   sub_10004BC64();
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_10005D540(v6, a4);
+  selfCopy = self;
+  v8 = sub_10005D540(viewCopy, annotation);
 
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (void)mapView:(id)a3 regionWillChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionWillChangeAnimated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = self;
-  sub_100060CA0(v5);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100060CA0(viewCopy);
 }
 
-- (void)mapView:(id)a3 canEnter3DModeDidChange:(BOOL)a4
+- (void)mapView:(id)view canEnter3DModeDidChange:(BOOL)change
 {
-  v6 = a3;
-  v7 = self;
-  sub_10005F6C4(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10005F6C4(change);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1003F91B8(a3);
+  selfCopy = self;
+  sub_1003F91B8(disappear);
 }
 
 - (void)viewSafeAreaInsetsDidChange
@@ -156,15 +156,15 @@
   sub_1003F9408();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = type metadata accessor for FMMapViewController();
   swift_unknownObjectRetain();
   v7 = v12.receiver;
-  [(FMMapViewController *)&v12 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(FMMapViewController *)&v12 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   v11[4] = sub_100406E84;
@@ -176,73 +176,73 @@
   v9 = _Block_copy(v11);
   v10 = v7;
 
-  [a4 animateAlongsideTransition:0 completion:v9];
+  [coordinator animateAlongsideTransition:0 completion:v9];
   swift_unknownObjectRelease();
 
   _Block_release(v9);
 }
 
-- (void)mapView:(id)a3 didBecomePitched:(BOOL)a4
+- (void)mapView:(id)view didBecomePitched:(BOOL)pitched
 {
-  v6 = a3;
-  v7 = self;
-  sub_100404030(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100404030(pitched);
 }
 
-- (void)mapView:(id)a3 didAddAnnotationViews:(id)a4
+- (void)mapView:(id)view didAddAnnotationViews:(id)views
 {
   sub_10000905C(0, &unk_1006BEEF0);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100404148(v6);
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_1004043A0(a4);
+  selfCopy = self;
+  v8 = sub_1004043A0(overlay);
 
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100404674(v7);
+  viewCopy = view;
+  annotationViewCopy = annotationView;
+  selfCopy = self;
+  sub_100404674(annotationViewCopy);
 }
 
-- (void)mapView:(id)a3 didSelectAnnotation:(id)a4
+- (void)mapView:(id)view didSelectAnnotation:(id)annotation
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_1003FEAAC(v5);
+  selfCopy = self;
+  sub_1003FEAAC(viewCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (void)mapView:(id)a3 didDeselectAnnotationView:(id)a4
+- (void)mapView:(id)view didDeselectAnnotationView:(id)annotationView
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100406210(v7);
+  viewCopy = view;
+  annotationViewCopy = annotationView;
+  selfCopy = self;
+  sub_100406210(annotationViewCopy);
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
   v5 = sub_10007EBC0(&unk_1006B0000);
   __chkstk_darwin(v5 - 8);
   v7 = &v12 - v6;
   v8 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy19FMMapViewController_isAutomaticCenteringEnabled);
-  v9 = self;
+  selfCopy = self;
   if ((v8 & 1) == 0)
   {
     Date.init()();
@@ -250,50 +250,50 @@
     (*(*(v10 - 8) + 56))(v7, 0, 1, v10);
     v11 = OBJC_IVAR____TtC6FindMy19FMMapViewController_lastCenterAnimationDisableDate;
     swift_beginAccess();
-    sub_10040682C(v7, v9 + v11);
+    sub_10040682C(v7, selfCopy + v11);
     swift_endAccess();
   }
 
   sub_10001ED48(1);
 }
 
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = self;
-  sub_100406764(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100406764(mode);
 }
 
-- (void)mapView:(id)a3 didChangeMapType:(unint64_t)a4
+- (void)mapView:(id)view didChangeMapType:(unint64_t)type
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy19FMMapViewController_mapOptionsView);
   if (v4)
   {
-    v7 = self;
+    selfCopy = self;
     v6 = v4;
-    sub_1002BDC9C(a4);
+    sub_1002BDC9C(type);
   }
 }
 
-- (void)_setUserTrackingMode:(int64_t)a3 animated:(BOOL)a4 fromTrackingButton:(BOOL)a5
+- (void)_setUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button
 {
-  v7 = self;
-  sub_10040689C(a3, a5);
+  selfCopy = self;
+  sub_10040689C(mode, button);
 }
 
-- (void)mapViewDidStartUserInteraction:(id)a3
+- (void)mapViewDidStartUserInteraction:(id)interaction
 {
   v4 = sub_10007EBC0(&unk_1006B0000);
   __chkstk_darwin(v4 - 8);
   v6 = &v10 - v5;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy19FMMapViewController_isAutomaticCenteringEnabled) = 0;
-  v7 = self;
+  selfCopy = self;
   Date.init()();
   v8 = type metadata accessor for Date();
   (*(*(v8 - 8) + 56))(v6, 0, 1, v8);
   v9 = OBJC_IVAR____TtC6FindMy19FMMapViewController_lastCenterAnimationDisableDate;
   swift_beginAccess();
-  sub_10040682C(v6, v7 + v9);
+  sub_10040682C(v6, selfCopy + v9);
   swift_endAccess();
 }
 

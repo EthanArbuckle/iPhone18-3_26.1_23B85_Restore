@@ -1,32 +1,32 @@
 @interface FLSpecifierTapHandler
 - (FLSpecifierTapHandlerDelegate)delegate;
 - (id)description;
-- (void)_handleActionForItem:(id)a3 fromSpecifier:(id)a4 eventSource:(unint64_t)a5 withCompletionHandler:(id)a6;
-- (void)actionTapped:(id)a3 eventSource:(unint64_t)a4 withCompletionHandler:(id)a5;
+- (void)_handleActionForItem:(id)item fromSpecifier:(id)specifier eventSource:(unint64_t)source withCompletionHandler:(id)handler;
+- (void)actionTapped:(id)tapped eventSource:(unint64_t)source withCompletionHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation FLSpecifierTapHandler
 
-- (void)actionTapped:(id)a3 eventSource:(unint64_t)a4 withCompletionHandler:(id)a5
+- (void)actionTapped:(id)tapped eventSource:(unint64_t)source withCompletionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  tappedCopy = tapped;
+  handlerCopy = handler;
   v10 = _FLLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v23 = v8;
+    v23 = tappedCopy;
     _os_log_impl(&dword_245383000, v10, OS_LOG_TYPE_DEFAULT, "Handling specifier %@", buf, 0xCu);
   }
 
-  [v8 fl_startSpinner];
-  v11 = [v8 propertyForKey:*MEMORY[0x277CFE418]];
-  v12 = [MEMORY[0x277CFE530] sharedTelemetryController];
-  [v12 captureActionForItem:v11 withEvent:2 source:4];
+  [tappedCopy fl_startSpinner];
+  v11 = [tappedCopy propertyForKey:*MEMORY[0x277CFE418]];
+  mEMORY[0x277CFE530] = [MEMORY[0x277CFE530] sharedTelemetryController];
+  [mEMORY[0x277CFE530] captureActionForItem:v11 withEvent:2 source:4];
 
-  v13 = [(FLSpecifierTapHandler *)self delegate];
+  delegate = [(FLSpecifierTapHandler *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) != 0 && ([v11 groupIdentifier], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", *MEMORY[0x277CFE430]), v14, v15))
   {
     v17[0] = MEMORY[0x277D85DD0];
@@ -35,15 +35,15 @@
     v17[3] = &unk_278E35EF8;
     v17[4] = self;
     v18 = v11;
-    v19 = v8;
-    v21 = a4;
-    v20 = v9;
-    [v13 preflightNetworkConnectivityForHandler:self withCompletionHandler:v17];
+    v19 = tappedCopy;
+    sourceCopy = source;
+    v20 = handlerCopy;
+    [delegate preflightNetworkConnectivityForHandler:self withCompletionHandler:v17];
   }
 
   else
   {
-    [(FLSpecifierTapHandler *)self _handleActionForItem:v11 fromSpecifier:v8 eventSource:a4 withCompletionHandler:v9];
+    [(FLSpecifierTapHandler *)self _handleActionForItem:v11 fromSpecifier:tappedCopy eventSource:source withCompletionHandler:handlerCopy];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -64,18 +64,18 @@ void __72__FLSpecifierTapHandler_actionTapped_eventSource_withCompletionHandler_
   }
 }
 
-- (void)_handleActionForItem:(id)a3 fromSpecifier:(id)a4 eventSource:(unint64_t)a5 withCompletionHandler:(id)a6
+- (void)_handleActionForItem:(id)item fromSpecifier:(id)specifier eventSource:(unint64_t)source withCompletionHandler:(id)handler
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  itemCopy = item;
+  specifierCopy = specifier;
+  handlerCopy = handler;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
   v32 = __Block_byref_object_copy__2;
   v33 = __Block_byref_object_dispose__2;
-  v34 = [(FLHeadlessActionHandler *)FLFollowUpActionHandler handlerWithItem:v10];
+  v34 = [(FLHeadlessActionHandler *)FLFollowUpActionHandler handlerWithItem:itemCopy];
   v13 = _FLLogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -92,20 +92,20 @@ void __72__FLSpecifierTapHandler_actionTapped_eventSource_withCompletionHandler_
   v26[2] = __94__FLSpecifierTapHandler__handleActionForItem_fromSpecifier_eventSource_withCompletionHandler___block_invoke;
   v26[3] = &unk_278E35F20;
   objc_copyWeak(&v28, buf);
-  v16 = v10;
+  v16 = itemCopy;
   v27 = v16;
   [v15 setExtensionRequestedViewControllerPresentation:v26];
-  v17 = [v11 propertyForKey:*MEMORY[0x277CFE410]];
-  [v17 setEventSource:a5];
+  v17 = [specifierCopy propertyForKey:*MEMORY[0x277CFE410]];
+  [v17 setEventSource:source];
   v18 = v30[5];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __94__FLSpecifierTapHandler__handleActionForItem_fromSpecifier_eventSource_withCompletionHandler___block_invoke_2;
   v22[3] = &unk_278E35F48;
-  v19 = v11;
+  v19 = specifierCopy;
   v23 = v19;
   v25 = &v29;
-  v20 = v12;
+  v20 = handlerCopy;
   v24 = v20;
   [v18 handleAction:v17 completion:v22];
 
@@ -170,7 +170,7 @@ void __94__FLSpecifierTapHandler__handleActionForItem_fromSpecifier_eventSource_
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_245383000, v3, OS_LOG_TYPE_DEFAULT, "%@ going away", buf, 0xCu);
   }
 

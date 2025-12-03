@@ -8,24 +8,24 @@
 - (id)createQuerySession;
 - (id)defaultCategoryList;
 - (id)mockQuerySuggestions;
-- (id)removeOutdatedReportedResults:(id)a3;
-- (id)resultsWithReportedImagesRemoved:(id)a3;
+- (id)removeOutdatedReportedResults:(id)results;
+- (id)resultsWithReportedImagesRemoved:(id)removed;
 - (unint64_t)numberOfReportedResults;
 - (void)_clearQuerySuggestionsAndNotifyDelegate;
 - (void)_clearSectionsAndNotifyDelegate;
-- (void)_performParsecdSearchQuery:(id)a3 requestType:(int64_t)a4 completion:(id)a5;
-- (void)_updateSearchProviderImageForResult:(id)a3;
-- (void)addSearchResultToReportConcernStore:(id)a3;
-- (void)appendQueryItemsForRequest:(id)a3 type:(int64_t)a4;
+- (void)_performParsecdSearchQuery:(id)query requestType:(int64_t)type completion:(id)completion;
+- (void)_updateSearchProviderImageForResult:(id)result;
+- (void)addSearchResultToReportConcernStore:(id)store;
+- (void)appendQueryItemsForRequest:(id)request type:(int64_t)type;
 - (void)fetchMoreResults;
 - (void)loadReportConcernStoreFromDefaults;
-- (void)performCategoryListRequest:(id)a3;
-- (void)performSearchWithQueryString:(id)a3 requestType:(int64_t)a4 completion:(id)a5;
-- (void)performZKWSearchQueryWithCompletion:(id)a3;
-- (void)prefetchRecentsWithCompletion:(id)a3;
-- (void)removeResultAtIndexPath:(id)a3;
+- (void)performCategoryListRequest:(id)request;
+- (void)performSearchWithQueryString:(id)string requestType:(int64_t)type completion:(id)completion;
+- (void)performZKWSearchQueryWithCompletion:(id)completion;
+- (void)prefetchRecentsWithCompletion:(id)completion;
+- (void)removeResultAtIndexPath:(id)path;
 - (void)saveReportConcernStoreToUserDefaults;
-- (void)session:(id)a3 bag:(id)a4 didLoadWithError:(id)a5;
+- (void)session:(id)session bag:(id)bag didLoadWithError:(id)error;
 @end
 
 @implementation STSSearchModel
@@ -57,9 +57,9 @@
     searchResultStore = v2->_searchResultStore;
     v2->_searchResultStore = v11;
 
-    v13 = [(STSSearchModel *)v2 defaultCategoryList];
+    defaultCategoryList = [(STSSearchModel *)v2 defaultCategoryList];
     categoryList = v2->_categoryList;
-    v2->_categoryList = v13;
+    v2->_categoryList = defaultCategoryList;
 
     v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
     recentsToDedup = v2->_recentsToDedup;
@@ -73,28 +73,28 @@
 
 - (void)fetchMoreResults
 {
-  v3 = [(NSArray *)self->_sections firstObject];
-  v4 = [v3 results];
-  v5 = v4;
+  firstObject = [(NSArray *)self->_sections firstObject];
+  results = [firstObject results];
+  v5 = results;
   v6 = MEMORY[0x277CBEBF8];
-  if (v4)
+  if (results)
   {
-    v6 = v4;
+    v6 = results;
   }
 
   v7 = v6;
 
-  v8 = [v7 lastObject];
-  v9 = [v8 moreResults];
+  lastObject = [v7 lastObject];
+  moreResults = [lastObject moreResults];
 
-  if (v9)
+  if (moreResults)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __34__STSSearchModel_fetchMoreResults__block_invoke;
     v11[3] = &unk_279B8B3B0;
     v11[4] = self;
-    [v9 loadSearchResultsWithCompletionHandler:v11];
+    [moreResults loadSearchResultsWithCompletionHandler:v11];
   }
 
   else
@@ -231,8 +231,8 @@ void __34__STSSearchModel_fetchMoreResults__block_invoke_4(void *a1)
 
 + (id)serverURLString
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 stringForKey:@"TCServerURLKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"TCServerURLKey"];
 
   if (![(__CFString *)v3 length])
   {
@@ -246,44 +246,44 @@ void __34__STSSearchModel_fetchMoreResults__block_invoke_4(void *a1)
 - (id)createQuerySession
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"TCUseThirdParty"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"TCUseThirdParty"];
 
-  v4 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
   v5 = [objc_alloc(MEMORY[0x277CCACD8]) initWithMemoryCapacity:0 diskCapacity:104857600 diskPath:@"Search"];
-  [v4 setURLCache:v5];
+  [defaultSessionConfiguration setURLCache:v5];
 
-  [v4 setHTTPCookieStorage:0];
-  [v4 setHTTPMaximumConnectionsPerHost:8];
-  [v4 set_connectionCacheCellPurgeTimeout:10.0];
-  [v4 set_allowsTCPFastOpen:1];
-  [v4 set_allowsTLSSessionTickets:1];
+  [defaultSessionConfiguration setHTTPCookieStorage:0];
+  [defaultSessionConfiguration setHTTPMaximumConnectionsPerHost:8];
+  [defaultSessionConfiguration set_connectionCacheCellPurgeTimeout:10.0];
+  [defaultSessionConfiguration set_allowsTCPFastOpen:1];
+  [defaultSessionConfiguration set_allowsTLSSessionTickets:1];
   if (v3)
   {
     v9 = @"User-Agent";
     v10[0] = @"Mozilla/5.0 (iPhone; CPU iPhone OS 9_2 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13C75 Safari/601.1";
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-    [v4 setHTTPAdditionalHeaders:v6];
+    [defaultSessionConfiguration setHTTPAdditionalHeaders:v6];
   }
 
-  v7 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v4];
+  v7 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
 
   return v7;
 }
 
-- (void)appendQueryItemsForRequest:(id)a3 type:(int64_t)a4
+- (void)appendQueryItemsForRequest:(id)request type:(int64_t)type
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  requestCopy = request;
   v6 = objc_opt_new();
-  if (a4 > 9)
+  if (type > 9)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = off_279B8B618[a4];
+    v7 = off_279B8B618[type];
   }
 
   v8 = [MEMORY[0x277CCAD18] queryItemWithName:@"qtype" value:v7];
@@ -291,16 +291,16 @@ void __34__STSSearchModel_fetchMoreResults__block_invoke_4(void *a1)
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   [v6 addObjectsFromArray:v9];
 
-  [v5 setQueryItems:v6];
+  [requestCopy setQueryItems:v6];
 }
 
-- (void)performSearchWithQueryString:(id)a3 requestType:(int64_t)a4 completion:(id)a5
+- (void)performSearchWithQueryString:(id)string requestType:(int64_t)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  stringCopy = string;
+  completionCopy = completion;
   [(STSSearchModel *)self _clearSectionsAndNotifyDelegate];
   [(NSMutableArray *)self->_recentsToDedup removeAllObjects];
-  if (!a4)
+  if (!type)
   {
     WeakRetained = objc_loadWeakRetained(&self->_querySuggestionsDelegate);
     v11 = objc_opt_respondsToSelector();
@@ -317,9 +317,9 @@ void __34__STSSearchModel_fetchMoreResults__block_invoke_4(void *a1)
   v14[2] = __70__STSSearchModel_performSearchWithQueryString_requestType_completion___block_invoke;
   v14[3] = &unk_279B8B428;
   v14[4] = self;
-  v15 = v9;
-  v13 = v9;
-  [(STSSearchModel *)self _performParsecdSearchQuery:v8 requestType:a4 completion:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [(STSSearchModel *)self _performParsecdSearchQuery:stringCopy requestType:type completion:v14];
 }
 
 void __70__STSSearchModel_performSearchWithQueryString_requestType_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4, void *a5, void *a6)
@@ -530,25 +530,25 @@ uint64_t __70__STSSearchModel_performSearchWithQueryString_requestType_completio
   return v11();
 }
 
-- (void)prefetchRecentsWithCompletion:(id)a3
+- (void)prefetchRecentsWithCompletion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if ([(NSArray *)self->_recentResults count])
   {
-    v24 = v4;
+    v24 = completionCopy;
     v5 = dispatch_group_create();
-    v26 = [MEMORY[0x277CBEB18] array];
-    v6 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-    [v6 setRequestCachePolicy:1];
-    [v6 setURLCache:0];
-    v23 = v6;
-    v7 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    [defaultSessionConfiguration setRequestCachePolicy:1];
+    [defaultSessionConfiguration setURLCache:0];
+    v23 = defaultSessionConfiguration;
+    v7 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v22 = self;
+    selfCopy = self;
     obj = self->_recentResults;
     v8 = [(NSArray *)obj countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v8)
@@ -567,19 +567,19 @@ uint64_t __70__STSSearchModel_performSearchWithQueryString_requestType_completio
 
           v12 = *(*(&v38 + 1) + 8 * v11);
           dispatch_group_enter(v5);
-          v13 = [v12 thumbnail];
-          v14 = [v13 urlValue];
-          v15 = [MEMORY[0x277CCAB70] requestWithURL:v14];
+          thumbnail = [v12 thumbnail];
+          urlValue = [thumbnail urlValue];
+          v15 = [MEMORY[0x277CCAB70] requestWithURL:urlValue];
           [v15 setHTTPMethod:@"HEAD"];
           v33[0] = MEMORY[0x277D85DD0];
           v33[1] = 3221225472;
           v33[2] = __48__STSSearchModel_prefetchRecentsWithCompletion___block_invoke;
           v33[3] = &unk_279B8B450;
-          v34 = v26;
+          v34 = array;
           v35 = v12;
-          v36 = v14;
+          v36 = urlValue;
           v37 = v5;
-          v16 = v14;
+          v16 = urlValue;
           v17 = [v7 dataTaskWithRequest:v15 completionHandler:v33];
           [v17 resume];
 
@@ -600,11 +600,11 @@ uint64_t __70__STSSearchModel_performSearchWithQueryString_requestType_completio
     block[3] = &unk_279B8B478;
     v28 = v5;
     v29 = v7;
-    v30 = v22;
-    v31 = v26;
-    v4 = v24;
+    v30 = selfCopy;
+    v31 = array;
+    completionCopy = v24;
     v32 = v24;
-    v19 = v26;
+    v19 = array;
     v20 = v7;
     v21 = v5;
     dispatch_async(v18, block);
@@ -612,7 +612,7 @@ uint64_t __70__STSSearchModel_performSearchWithQueryString_requestType_completio
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -676,9 +676,9 @@ void __48__STSSearchModel_prefetchRecentsWithCompletion___block_invoke_2(uint64_
   [WeakRetained updateRecentResults:*(*(a1 + 32) + 80)];
 }
 
-- (void)performZKWSearchQueryWithCompletion:(id)a3
+- (void)performZKWSearchQueryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(STSSearchModel *)self _clearSectionsAndNotifyDelegate];
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
@@ -693,10 +693,10 @@ void __48__STSSearchModel_prefetchRecentsWithCompletion___block_invoke_2(uint64_
   v9[1] = 3221225472;
   v9[2] = __54__STSSearchModel_performZKWSearchQueryWithCompletion___block_invoke_2;
   v9[3] = &unk_279B8B4F0;
-  v11 = self;
-  v12 = v4;
+  selfCopy = self;
+  v12 = completionCopy;
   v10 = v6;
-  v7 = v4;
+  v7 = completionCopy;
   v8 = v6;
   [(STSSearchModel *)self _performParsecdSearchQuery:&stru_2876AE098 requestType:4 completion:v9];
 }
@@ -918,20 +918,20 @@ void __54__STSSearchModel_performZKWSearchQueryWithCompletion___block_invoke_4(u
   }
 }
 
-- (void)_performParsecdSearchQuery:(id)a3 requestType:(int64_t)a4 completion:(id)a5
+- (void)_performParsecdSearchQuery:(id)query requestType:(int64_t)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 <= 3)
+  queryCopy = query;
+  completionCopy = completion;
+  if (type <= 3)
   {
-    if ((a4 - 2) < 2)
+    if ((type - 2) < 2)
     {
       goto LABEL_10;
     }
 
-    if (a4)
+    if (type)
     {
-      if (a4 != 1)
+      if (type != 1)
       {
         goto LABEL_18;
       }
@@ -947,20 +947,20 @@ void __54__STSSearchModel_performZKWSearchQueryWithCompletion___block_invoke_4(u
 LABEL_11:
     +[STSSearchModel incrementClientQueryId];
     v12 = +[STSSearchModel clientQueryId];
-    v10 = [MEMORY[0x277D007B8] searchRequestWithString:v8 triggerEvent:v11 queryId:v12];
+    v10 = [MEMORY[0x277D007B8] searchRequestWithString:queryCopy triggerEvent:v11 queryId:v12];
     goto LABEL_12;
   }
 
-  if (a4 > 6)
+  if (type > 6)
   {
-    if (a4 == 7)
+    if (type == 7)
     {
       v11 = 9;
     }
 
     else
     {
-      if (a4 != 8)
+      if (type != 8)
       {
         goto LABEL_18;
       }
@@ -971,14 +971,14 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ((a4 - 5) < 2)
+  if ((type - 5) < 2)
   {
 LABEL_10:
     v11 = 8;
     goto LABEL_11;
   }
 
-  if (a4 != 4)
+  if (type != 4)
   {
 LABEL_18:
     v11 = 0;
@@ -989,36 +989,36 @@ LABEL_18:
   v10 = [MEMORY[0x277D007D8] zeroKeywordRequest:{+[STSSearchModel clientQueryId](STSSearchModel, "clientQueryId")}];
 LABEL_12:
   v13 = v10;
-  v14 = [MEMORY[0x277D759A0] mainScreen];
-  [v14 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   [v13 setScale:?];
 
-  v15 = [MEMORY[0x277D75688] sharedInputModeController];
-  v16 = [v15 currentInputMode];
-  v17 = [v16 identifierWithLayouts];
-  [v13 setKeyboardInputMode:v17];
+  mEMORY[0x277D75688] = [MEMORY[0x277D75688] sharedInputModeController];
+  currentInputMode = [mEMORY[0x277D75688] currentInputMode];
+  identifierWithLayouts = [currentInputMode identifierWithLayouts];
+  [v13 setKeyboardInputMode:identifierWithLayouts];
 
-  [(STSSearchModel *)self appendQueryItemsForRequest:v13 type:a4];
-  v18 = [(STSSearchModel *)self parsecSession];
+  [(STSSearchModel *)self appendQueryItemsForRequest:v13 type:type];
+  parsecSession = [(STSSearchModel *)self parsecSession];
   v25 = MEMORY[0x277D85DD0];
   v26 = 3221225472;
   v27 = __68__STSSearchModel__performParsecdSearchQuery_requestType_completion___block_invoke;
   v28 = &unk_279B8B518;
-  v29 = self;
-  v31 = v9;
-  v19 = v8;
+  selfCopy = self;
+  v31 = completionCopy;
+  v19 = queryCopy;
   v30 = v19;
-  v32 = a4;
-  v20 = v9;
-  v21 = [v18 taskWithRequest:v13 completion:&v25];
+  typeCopy = type;
+  v20 = completionCopy;
+  v21 = [parsecSession taskWithRequest:v13 completion:&v25];
 
   currentQuery = self->_currentQuery;
   self->_currentQuery = v19;
   v23 = v19;
 
-  [(STSSearchModel *)self setCurrentTask:v21, v25, v26, v27, v28, v29];
-  v24 = [(STSSearchModel *)self currentTask];
-  [v24 resume];
+  [(STSSearchModel *)self setCurrentTask:v21, v25, v26, v27, v28, selfCopy];
+  currentTask = [(STSSearchModel *)self currentTask];
+  [currentTask resume];
 }
 
 void __68__STSSearchModel__performParsecdSearchQuery_requestType_completion___block_invoke(void *a1, void *a2, void *a3, void *a4)
@@ -1035,10 +1035,10 @@ void __68__STSSearchModel__performParsecdSearchQuery_requestType_completion___bl
   }
 }
 
-- (void)_updateSearchProviderImageForResult:(id)a3
+- (void)_updateSearchProviderImageForResult:(id)result
 {
-  v3 = [a3 sts_searchProviderImage];
-  [v3 loadImageDataWithCompletionHandler:&__block_literal_global_3];
+  sts_searchProviderImage = [result sts_searchProviderImage];
+  [sts_searchProviderImage loadImageDataWithCompletionHandler:&__block_literal_global_3];
 }
 
 void __54__STSSearchModel__updateSearchProviderImageForResult___block_invoke(uint64_t a1, void *a2)
@@ -1076,9 +1076,9 @@ void __54__STSSearchModel__updateSearchProviderImageForResult___block_invoke_2(u
 
 - (void)_clearSectionsAndNotifyDelegate
 {
-  v7 = [(NSArray *)self->_sections firstObject];
-  v3 = [v7 results];
-  v4 = [v3 sts_map:&__block_literal_global_105];
+  firstObject = [(NSArray *)self->_sections firstObject];
+  results = [firstObject results];
+  v4 = [results sts_map:&__block_literal_global_105];
 
   sections = self->_sections;
   self->_sections = MEMORY[0x277CBEBF8];
@@ -1113,25 +1113,25 @@ void __57__STSSearchModel__clearQuerySuggestionsAndNotifyDelegate__block_invoke(
   }
 }
 
-- (void)removeResultAtIndexPath:(id)a3
+- (void)removeResultAtIndexPath:(id)path
 {
   v11[1] = *MEMORY[0x277D85DE8];
   sections = self->_sections;
-  v5 = a3;
-  v6 = [(NSArray *)sections firstObject];
-  v7 = [v6 results];
-  v8 = [v7 mutableCopy];
+  pathCopy = path;
+  firstObject = [(NSArray *)sections firstObject];
+  results = [firstObject results];
+  v8 = [results mutableCopy];
 
-  [v8 removeObjectAtIndex:{objc_msgSend(v5, "row")}];
-  [v6 setResults:v8];
+  [v8 removeObjectAtIndex:{objc_msgSend(pathCopy, "row")}];
+  [firstObject setResults:v8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v11[0] = v5;
+  v11[0] = pathCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
 
   [WeakRetained searchModel:self insertedResultsAtIndexPaths:0 removedResultsAtIndexPaths:v10];
 }
 
-- (void)session:(id)a3 bag:(id)a4 didLoadWithError:(id)a5
+- (void)session:(id)session bag:(id)bag didLoadWithError:(id)error
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -1193,31 +1193,31 @@ void __38__STSSearchModel_mockQuerySuggestions__block_invoke(uint64_t a1, void *
   return parsecSession;
 }
 
-- (void)performCategoryListRequest:(id)a3
+- (void)performCategoryListRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[STSSearchModel clientQueryId];
   self->_categoryListRequestQueryId = v5;
   v6 = [MEMORY[0x277D007D8] zeroKeywordRequest:v5];
-  v7 = [MEMORY[0x277D75688] sharedInputModeController];
-  v8 = [v7 currentInputMode];
-  v9 = [v8 identifierWithLayouts];
-  [v6 setKeyboardInputMode:v9];
+  mEMORY[0x277D75688] = [MEMORY[0x277D75688] sharedInputModeController];
+  currentInputMode = [mEMORY[0x277D75688] currentInputMode];
+  identifierWithLayouts = [currentInputMode identifierWithLayouts];
+  [v6 setKeyboardInputMode:identifierWithLayouts];
 
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   [v6 setScale:?];
 
   [(STSSearchModel *)self appendQueryItemsForRequest:v6 type:7];
-  v11 = [(STSSearchModel *)self parsecSession];
+  parsecSession = [(STSSearchModel *)self parsecSession];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __45__STSSearchModel_performCategoryListRequest___block_invoke;
   v17 = &unk_279B8B5A8;
-  v18 = self;
-  v19 = v4;
-  v12 = v4;
-  v13 = [v11 taskWithRequest:v6 completion:&v14];
+  selfCopy = self;
+  v19 = requestCopy;
+  v12 = requestCopy;
+  v13 = [parsecSession taskWithRequest:v6 completion:&v14];
 
   [v13 resume];
 }
@@ -1269,19 +1269,19 @@ void __37__STSSearchModel_defaultCategoryList__block_invoke(uint64_t a1, void *a
   [*(a1 + 32) addObject:v5];
 }
 
-- (id)resultsWithReportedImagesRemoved:(id)a3
+- (id)resultsWithReportedImagesRemoved:(id)removed
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  removedCopy = removed;
   v6 = objc_alloc_init(v4);
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __51__STSSearchModel_resultsWithReportedImagesRemoved___block_invoke;
   v13 = &unk_279B8B360;
-  v14 = self;
+  selfCopy = self;
   v15 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:&v10];
+  [removedCopy enumerateObjectsUsingBlock:&v10];
 
   v8 = [v7 copy];
 
@@ -1311,29 +1311,29 @@ void __51__STSSearchModel_resultsWithReportedImagesRemoved___block_invoke(uint64
   }
 }
 
-- (void)addSearchResultToReportConcernStore:(id)a3
+- (void)addSearchResultToReportConcernStore:(id)store
 {
-  v4 = [a3 url];
-  v7 = [v4 absoluteString];
+  v4 = [store url];
+  absoluteString = [v4 absoluteString];
 
   v5 = [MEMORY[0x277CBEAA8] now];
-  v6 = [(NSMutableDictionary *)self->_reportConcernStore objectForKey:v7];
-  if (v6 || ![v7 length])
+  v6 = [(NSMutableDictionary *)self->_reportConcernStore objectForKey:absoluteString];
+  if (v6 || ![absoluteString length])
   {
   }
 
   else if (v5)
   {
-    [(NSMutableDictionary *)self->_reportConcernStore setObject:v5 forKey:v7];
+    [(NSMutableDictionary *)self->_reportConcernStore setObject:v5 forKey:absoluteString];
   }
 
   [(STSSearchModel *)self saveReportConcernStoreToUserDefaults];
 }
 
-- (id)removeOutdatedReportedResults:(id)a3
+- (id)removeOutdatedReportedResults:(id)results
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  resultsCopy = results;
   v5 = objc_alloc_init(v3);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -1341,7 +1341,7 @@ void __51__STSSearchModel_resultsWithReportedImagesRemoved___block_invoke(uint64
   v8[3] = &unk_279B8B5F8;
   v6 = v5;
   v9 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [resultsCopy enumerateKeysAndObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -1368,17 +1368,17 @@ void __48__STSSearchModel_removeOutdatedReportedResults___block_invoke(uint64_t 
 
 - (void)saveReportConcernStoreToUserDefaults
 {
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v3 = [(NSMutableDictionary *)self->_reportConcernStore copy];
-  [v4 setObject:v3 forKey:@"STSReportConcernResults"];
+  [standardUserDefaults setObject:v3 forKey:@"STSReportConcernResults"];
 
-  [v4 synchronize];
+  [standardUserDefaults synchronize];
 }
 
 - (void)loadReportConcernStoreFromDefaults
 {
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v7 dictionaryForKey:@"STSReportConcernResults"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults dictionaryForKey:@"STSReportConcernResults"];
   v4 = [(STSSearchModel *)self removeOutdatedReportedResults:v3];
   v5 = [v4 mutableCopy];
   reportConcernStore = self->_reportConcernStore;
@@ -1389,8 +1389,8 @@ void __48__STSSearchModel_removeOutdatedReportedResults___block_invoke(uint64_t 
 
 - (unint64_t)numberOfReportedResults
 {
-  v2 = [(NSMutableDictionary *)self->_reportConcernStore allKeys];
-  v3 = [v2 count];
+  allKeys = [(NSMutableDictionary *)self->_reportConcernStore allKeys];
+  v3 = [allKeys count];
 
   return v3;
 }

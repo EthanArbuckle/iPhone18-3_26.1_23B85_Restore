@@ -1,18 +1,18 @@
 @interface LoopQuicktimeMetadata
-+ (id)arrayFromDictionary:(id)a3;
-+ (id)metadataArrayForDictionary:(id)a3;
-+ (id)metadataDictionaryForAssetURL:(id)a3;
-+ (id)metadataStringArrayForAssetURL:(id)a3;
-+ (id)metadataStringForArray:(id)a3;
-+ (id)metadataStringForAssetURL:(id)a3;
++ (id)arrayFromDictionary:(id)dictionary;
++ (id)metadataArrayForDictionary:(id)dictionary;
++ (id)metadataDictionaryForAssetURL:(id)l;
++ (id)metadataStringArrayForAssetURL:(id)l;
++ (id)metadataStringForArray:(id)array;
++ (id)metadataStringForAssetURL:(id)l;
 @end
 
 @implementation LoopQuicktimeMetadata
 
-+ (id)metadataArrayForDictionary:(id)a3
++ (id)metadataArrayForDictionary:(id)dictionary
 {
   v9 = 0;
-  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a3 options:1 error:&v9];
+  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionary options:1 error:&v9];
   v4 = v9;
   if (v4)
   {
@@ -34,10 +34,10 @@
   return v5;
 }
 
-+ (id)metadataDictionaryForAssetURL:(id)a3
++ (id)metadataDictionaryForAssetURL:(id)l
 {
   v23 = *MEMORY[0x277D85DE8];
-  v16 = a3;
+  lCopy = l;
   v15 = [MEMORY[0x277CE63D8] assetWithURL:?];
   v3 = [v15 metadataForFormat:*MEMORY[0x277CE5F40]];
   [MEMORY[0x277CE6520] metadataItemsFromArray:v3 withKey:qword_27E54E9D0 keySpace:0];
@@ -62,8 +62,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * v9) stringValue];
-        v12 = [v11 dataUsingEncoding:4];
+        stringValue = [*(*(&v18 + 1) + 8 * v9) stringValue];
+        v12 = [stringValue dataUsingEncoding:4];
 
         v17 = 0;
         v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v12 options:0 error:&v17];
@@ -93,12 +93,12 @@
   return v7;
 }
 
-+ (id)arrayFromDictionary:(id)a3
++ (id)arrayFromDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && (v16 = 0u, v17 = 0u, v14 = 0u, v15 = 0u, (v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16]) != 0))
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  if (dictionaryCopy && (v16 = 0u, v17 = 0u, v14 = 0u, v15 = 0u, (v5 = [dictionaryCopy countByEnumeratingWithState:&v14 objects:v18 count:16]) != 0))
   {
     v6 = v5;
     v7 = 0;
@@ -137,21 +137,21 @@
   return v7;
 }
 
-+ (id)metadataStringArrayForAssetURL:(id)a3
++ (id)metadataStringArrayForAssetURL:(id)l
 {
-  v4 = [a1 metadataDictionaryForAssetURL:a3];
-  v5 = [a1 arrayFromDictionary:v4];
+  v4 = [self metadataDictionaryForAssetURL:l];
+  v5 = [self arrayFromDictionary:v4];
 
   return v5;
 }
 
-+ (id)metadataStringForArray:(id)a3
++ (id)metadataStringForArray:(id)array
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  arrayCopy = array;
+  v4 = arrayCopy;
+  if (arrayCopy)
   {
-    if ([v3 count])
+    if ([arrayCopy count])
     {
       v5 = 0;
       v6 = &stru_28537E390;
@@ -196,9 +196,9 @@
   return v11;
 }
 
-+ (id)metadataStringForAssetURL:(id)a3
++ (id)metadataStringForAssetURL:(id)l
 {
-  v3 = [LoopQuicktimeMetadata metadataStringArrayForAssetURL:a3];
+  v3 = [LoopQuicktimeMetadata metadataStringArrayForAssetURL:l];
   v4 = [LoopQuicktimeMetadata metadataStringForArray:v3];
 
   return v4;

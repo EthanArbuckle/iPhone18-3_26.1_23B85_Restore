@@ -3,24 +3,24 @@
 - (AVMobileAuxiliaryControlsViewDelegate)delegate;
 - (BOOL)_requiresOverflowControl;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeFittingControls:(id)a3;
+- (CGSize)sizeFittingControls:(id)controls;
 - (id)_controlsWithViewsInPriorityOrder;
 - (id)_overflowControl;
-- (id)overflowMenuItemsForControlOverflowButton:(id)a3;
+- (id)overflowMenuItemsForControlOverflowButton:(id)button;
 - (void)_updateHasOverflowOnlyControl;
 - (void)_updateOverflowControlContextMenu;
 - (void)_updatePriorityOrderControlsList;
 - (void)_updateTintColorsForOverflowControlButton;
-- (void)auxiliaryControlDidChangeState:(id)a3;
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3;
+- (void)auxiliaryControlDidChangeState:(id)state;
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated;
 - (void)layoutSubviews;
-- (void)overflowButtonDidHideContextMenu:(id)a3;
-- (void)overflowButtonWillShowContextMenu:(id)a3;
-- (void)setAvkit_extendedDynamicRangeGain:(double)a3;
-- (void)setControlSpacing:(double)a3;
-- (void)setControls:(id)a3;
-- (void)setHasOverflowOnlyControl:(BOOL)a3;
-- (void)viewIsOverVideoDidChange:(id)a3;
+- (void)overflowButtonDidHideContextMenu:(id)menu;
+- (void)overflowButtonWillShowContextMenu:(id)menu;
+- (void)setAvkit_extendedDynamicRangeGain:(double)gain;
+- (void)setControlSpacing:(double)spacing;
+- (void)setControls:(id)controls;
+- (void)setHasOverflowOnlyControl:(BOOL)control;
+- (void)viewIsOverVideoDidChange:(id)change;
 @end
 
 @implementation AVMobileAuxiliaryControlsView
@@ -36,9 +36,9 @@
 {
   overflowControl = self->_overflowControl;
   v4 = MEMORY[0x1E69DC888];
-  v5 = [(AVButton *)overflowControl isOverVideo];
-  v7 = [(AVMobileAuxiliaryControlsView *)self traitCollection];
-  v6 = [v4 avkit_tintColorForControlElementIsOverVideo:v5 withUserInterfaceStyle:{objc_msgSend(v7, "userInterfaceStyle")}];
+  isOverVideo = [(AVButton *)overflowControl isOverVideo];
+  traitCollection = [(AVMobileAuxiliaryControlsView *)self traitCollection];
+  v6 = [v4 avkit_tintColorForControlElementIsOverVideo:isOverVideo withUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
   [(AVControlOverflowButton *)overflowControl setTintColor:v6];
 }
 
@@ -156,8 +156,8 @@ LABEL_12:
         v14 = *(*(&v21 + 1) + 8 * i);
         if ([v14 isIncluded] && (objc_msgSend(v14, "canOnlyAppearInOverflowMenu") & 1) == 0)
         {
-          v15 = [v14 controlView];
-          [v15 intrinsicContentSize];
+          controlView = [v14 controlView];
+          [controlView intrinsicContentSize];
           v17 = v16;
           v19 = v18;
 
@@ -222,9 +222,9 @@ LABEL_17:
     [(AVButton *)v4 setInlineFont:v5];
 
     v6 = MEMORY[0x1E69DC888];
-    v7 = [(AVButton *)v4 isOverVideo];
-    v8 = [(AVMobileAuxiliaryControlsView *)self traitCollection];
-    v9 = [v6 avkit_tintColorForControlElementIsOverVideo:v7 withUserInterfaceStyle:{objc_msgSend(v8, "userInterfaceStyle")}];
+    isOverVideo = [(AVButton *)v4 isOverVideo];
+    traitCollection = [(AVMobileAuxiliaryControlsView *)self traitCollection];
+    v9 = [v6 avkit_tintColorForControlElementIsOverVideo:isOverVideo withUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
     [(AVControlOverflowButton *)v4 setTintColor:v9];
 
     [(AVControlOverflowButton *)v4 setDelegate:self];
@@ -281,28 +281,28 @@ LABEL_17:
   return v3;
 }
 
-- (void)setHasOverflowOnlyControl:(BOOL)a3
+- (void)setHasOverflowOnlyControl:(BOOL)control
 {
-  if (self->_hasOverflowOnlyControl != a3)
+  if (self->_hasOverflowOnlyControl != control)
   {
-    self->_hasOverflowOnlyControl = a3;
+    self->_hasOverflowOnlyControl = control;
     [(AVMobileAuxiliaryControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated
 {
   [(AVMobileAuxiliaryControlsView *)self setNeedsLayout];
-  v4 = [(AVMobileAuxiliaryControlsView *)self superview];
-  [v4 avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
+  superview = [(AVMobileAuxiliaryControlsView *)self superview];
+  [superview avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
 }
 
-- (void)setAvkit_extendedDynamicRangeGain:(double)a3
+- (void)setAvkit_extendedDynamicRangeGain:(double)gain
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (self->_extendedDynamicRangeGain != a3)
+  if (self->_extendedDynamicRangeGain != gain)
   {
-    self->_extendedDynamicRangeGain = a3;
+    self->_extendedDynamicRangeGain = gain;
     if (([(AVControlOverflowButton *)self->_overflowControl isHidden]& 1) == 0)
     {
       [(UIView *)self->_overflowControl setAvkit_extendedDynamicRangeGain:self->_extendedDynamicRangeGain];
@@ -328,14 +328,14 @@ LABEL_17:
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v9 controlView];
+          controlView = [v9 controlView];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v12 = [v9 controlView];
-            [v12 setAvkit_extendedDynamicRangeGain:self->_extendedDynamicRangeGain];
+            controlView2 = [v9 controlView];
+            [controlView2 setAvkit_extendedDynamicRangeGain:self->_extendedDynamicRangeGain];
           }
         }
 
@@ -352,7 +352,7 @@ LABEL_17:
   [(AVMobileAuxiliaryControlsView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(AVMobileAuxiliaryControlsView *)self _requiresOverflowControl];
+  _requiresOverflowControl = [(AVMobileAuxiliaryControlsView *)self _requiresOverflowControl];
   [(AVMobileAuxiliaryControlsView *)self intrinsicContentSize];
   if (v8 >= v6)
   {
@@ -365,12 +365,12 @@ LABEL_17:
   }
 
   v10 = v6 + v9 * -0.5;
-  v11 = [(AVMobileAuxiliaryControlsView *)self effectiveUserInterfaceLayoutDirection];
-  v12 = [(AVMobileAuxiliaryControlsView *)self _controlsWithViewsInPriorityOrder];
-  if (v7)
+  effectiveUserInterfaceLayoutDirection = [(AVMobileAuxiliaryControlsView *)self effectiveUserInterfaceLayoutDirection];
+  _controlsWithViewsInPriorityOrder = [(AVMobileAuxiliaryControlsView *)self _controlsWithViewsInPriorityOrder];
+  if (_requiresOverflowControl)
   {
-    v13 = [(AVMobileAuxiliaryControlsView *)self _overflowControl];
-    [v13 intrinsicContentSize];
+    _overflowControl = [(AVMobileAuxiliaryControlsView *)self _overflowControl];
+    [_overflowControl intrinsicContentSize];
     v15 = v14;
     v17 = v16;
     *&v14 = v14;
@@ -380,7 +380,7 @@ LABEL_17:
     if (v19 && ((v20 = v17, v21 = v6, v22 = vabds_f32(v20, v21), v20 >= v21) ? (v23 = v22 < 0.00000011921) : (v23 = 1), v23))
     {
       v4 = v4 - v15;
-      [(UIView *)self->_overflowControl avkit_setFrame:v11 inLayoutDirection:v4, v10 + v17 * -0.5];
+      [(UIView *)self->_overflowControl avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:v4, v10 + v17 * -0.5];
       v24 = 0;
     }
 
@@ -425,7 +425,7 @@ LABEL_24:
   }
 
   v28 = v4;
-  if (v7)
+  if (_requiresOverflowControl)
   {
 LABEL_43:
     v31 = -1;
@@ -433,7 +433,7 @@ LABEL_43:
   }
 
 LABEL_27:
-  if (![v12 count])
+  if (![_controlsWithViewsInPriorityOrder count])
   {
     goto LABEL_43;
   }
@@ -443,7 +443,7 @@ LABEL_27:
   v31 = -1;
   while (1)
   {
-    v32 = [v12 objectAtIndex:v29];
+    v32 = [_controlsWithViewsInPriorityOrder objectAtIndex:v29];
     if ([v32 isIncluded])
     {
       break;
@@ -451,14 +451,14 @@ LABEL_27:
 
 LABEL_41:
 
-    if (++v29 >= [v12 count])
+    if (++v29 >= [_controlsWithViewsInPriorityOrder count])
     {
       goto LABEL_45;
     }
   }
 
-  v33 = [v32 controlView];
-  [v33 intrinsicContentSize];
+  controlView = [v32 controlView];
+  [controlView intrinsicContentSize];
   v36 = v34;
   v37 = v28;
   v38 = vabds_f32(v36, v37);
@@ -477,21 +477,21 @@ LABEL_41:
 
 LABEL_45:
   v43 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v44 = [v12 count];
+  v44 = [_controlsWithViewsInPriorityOrder count];
   if (v44 - 1 >= 0)
   {
     v45 = v44;
     v46 = v24 ^ 1;
     while (1)
     {
-      v47 = [v12 objectAtIndex:--v45];
-      v48 = [v47 controlView];
+      v47 = [_controlsWithViewsInPriorityOrder objectAtIndex:--v45];
+      controlView2 = [v47 controlView];
       if (![v47 isIncluded])
       {
         break;
       }
 
-      [v48 intrinsicContentSize];
+      [controlView2 intrinsicContentSize];
       if (v45 <= v31)
       {
         v4 = v4 - v49;
@@ -500,14 +500,14 @@ LABEL_45:
           v4 = v4 - self->_controlSpacing;
         }
 
-        [v48 avkit_setFrame:v11 inLayoutDirection:{v4, v10 + v50 * -0.5, v49}];
-        if ([v48 isHidden])
+        [controlView2 avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:{v4, v10 + v50 * -0.5, v49}];
+        if ([controlView2 isHidden])
         {
           v51 = 0;
 LABEL_56:
           v46 = 1;
 LABEL_57:
-          [v48 setHidden:v51];
+          [controlView2 setHidden:v51];
           goto LABEL_58;
         }
       }
@@ -515,7 +515,7 @@ LABEL_57:
       else
       {
         [v43 addObject:v47];
-        if (![v48 isHidden])
+        if (![controlView2 isHidden])
         {
           v51 = 1;
           goto LABEL_56;
@@ -619,8 +619,8 @@ void __47__AVMobileAuxiliaryControlsView_layoutSubviews__block_invoke(uint64_t a
         v13 = *(*(&v21 + 1) + 8 * i);
         if ([v13 isIncluded] && (objc_msgSend(v13, "canOnlyAppearInOverflowMenu") & 1) == 0)
         {
-          v14 = [v13 controlView];
-          [v14 intrinsicContentSize];
+          controlView = [v13 controlView];
+          [controlView intrinsicContentSize];
           v16 = v15;
           v18 = v17;
 
@@ -647,20 +647,20 @@ void __47__AVMobileAuxiliaryControlsView_layoutSubviews__block_invoke(uint64_t a
   return result;
 }
 
-- (void)viewIsOverVideoDidChange:(id)a3
+- (void)viewIsOverVideoDidChange:(id)change
 {
   v4 = MEMORY[0x1E69DC888];
-  v5 = a3;
-  v6 = [v5 isOverVideo];
-  v8 = [(AVMobileAuxiliaryControlsView *)self traitCollection];
-  v7 = [v4 avkit_tintColorForControlElementIsOverVideo:v6 withUserInterfaceStyle:{objc_msgSend(v8, "userInterfaceStyle")}];
-  [v5 setTintColor:v7];
+  changeCopy = change;
+  isOverVideo = [changeCopy isOverVideo];
+  traitCollection = [(AVMobileAuxiliaryControlsView *)self traitCollection];
+  v7 = [v4 avkit_tintColorForControlElementIsOverVideo:isOverVideo withUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
+  [changeCopy setTintColor:v7];
 }
 
-- (id)overflowMenuItemsForControlOverflowButton:(id)a3
+- (id)overflowMenuItemsForControlOverflowButton:(id)button
 {
   v24 = *MEMORY[0x1E69E9840];
-  v17 = a3;
+  buttonCopy = button;
   v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->_controls, "count")}];
   v19 = 0u;
   v20 = 0u;
@@ -684,28 +684,28 @@ void __47__AVMobileAuxiliaryControlsView_layoutSubviews__block_invoke(uint64_t a
         v10 = *(*(&v19 + 1) + 8 * i);
         if ([v10 isIncluded])
         {
-          v11 = [v10 canOnlyAppearInOverflowMenu];
-          if ((v11 & 1) == 0)
+          canOnlyAppearInOverflowMenu = [v10 canOnlyAppearInOverflowMenu];
+          if ((canOnlyAppearInOverflowMenu & 1) == 0)
           {
-            v3 = [v10 controlView];
-            v12 = v3;
-            if (![v3 isHidden])
+            controlView = [v10 controlView];
+            v12 = controlView;
+            if (![controlView isHidden])
             {
               goto LABEL_14;
             }
           }
 
-          v13 = [(AVMobileAuxiliaryControlsView *)self delegate];
+          delegate = [(AVMobileAuxiliaryControlsView *)self delegate];
           v14 = objc_opt_respondsToSelector();
 
-          if ((v11 & 1) == 0)
+          if ((canOnlyAppearInOverflowMenu & 1) == 0)
           {
           }
 
           if (v14)
           {
-            v15 = [(AVMobileAuxiliaryControlsView *)self delegate];
-            v12 = [v15 auxiliaryControlsView:self menuElementForControl:v10];
+            delegate2 = [(AVMobileAuxiliaryControlsView *)self delegate];
+            v12 = [delegate2 auxiliaryControlsView:self menuElementForControl:v10];
 
             if (v12)
             {
@@ -728,25 +728,25 @@ LABEL_14:
   return v18;
 }
 
-- (void)overflowButtonWillShowContextMenu:(id)a3
+- (void)overflowButtonWillShowContextMenu:(id)menu
 {
-  v4 = [(AVMobileAuxiliaryControlsView *)self delegate];
+  delegate = [(AVMobileAuxiliaryControlsView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 auxiliaryControlsViewWillBeginShowingOverflowMenu:self];
+    [delegate auxiliaryControlsViewWillBeginShowingOverflowMenu:self];
   }
 }
 
-- (void)overflowButtonDidHideContextMenu:(id)a3
+- (void)overflowButtonDidHideContextMenu:(id)menu
 {
-  v4 = [(AVMobileAuxiliaryControlsView *)self delegate];
+  delegate = [(AVMobileAuxiliaryControlsView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 auxiliaryControlsViewDidEndShowingOverflowMenu:self];
+    [delegate auxiliaryControlsViewDidEndShowingOverflowMenu:self];
   }
 }
 
-- (void)auxiliaryControlDidChangeState:(id)a3
+- (void)auxiliaryControlDidChangeState:(id)state
 {
   [(AVMobileAuxiliaryControlsView *)self _updateHasOverflowOnlyControl];
   [(AVMobileAuxiliaryControlsView *)self setNeedsLayout];
@@ -754,13 +754,13 @@ LABEL_14:
   [(AVMobileAuxiliaryControlsView *)self updateOverflowMenu];
 }
 
-- (CGSize)sizeFittingControls:(id)a3
+- (CGSize)sizeFittingControls:(id)controls
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  controlsCopy = controls;
+  v5 = controlsCopy;
   hasOverflowOnlyControl = self->_hasOverflowOnlyControl;
-  if (!v4 || ![v4 count])
+  if (!controlsCopy || ![controlsCopy count])
   {
     v12 = 0;
     v15 = 0.0;
@@ -801,8 +801,8 @@ LABEL_5:
       v17 = *(*(&v32 + 1) + 8 * v16);
       if ([v17 isIncluded] && (objc_msgSend(v17, "canOnlyAppearInOverflowMenu") & 1) == 0)
       {
-        v18 = [v17 controlView];
-        [v18 intrinsicContentSize];
+        controlView = [v17 controlView];
+        [controlView intrinsicContentSize];
         v20 = v19;
         v22 = v21;
 
@@ -845,8 +845,8 @@ LABEL_5:
   if (v12 < v23 || v31)
   {
 LABEL_22:
-    v24 = [(AVMobileAuxiliaryControlsView *)self _overflowControl];
-    [v24 intrinsicContentSize];
+    _overflowControl = [(AVMobileAuxiliaryControlsView *)self _overflowControl];
+    [_overflowControl intrinsicContentSize];
     v15 = v15 + v26;
     if (v14 < v25)
     {
@@ -876,28 +876,28 @@ LABEL_25:
   return result;
 }
 
-- (void)setControlSpacing:(double)a3
+- (void)setControlSpacing:(double)spacing
 {
-  if (self->_controlSpacing != a3)
+  if (self->_controlSpacing != spacing)
   {
-    self->_controlSpacing = a3;
+    self->_controlSpacing = spacing;
     [(AVMobileAuxiliaryControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setControls:(id)a3
+- (void)setControls:(id)controls
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  controlsCopy = controls;
   controls = self->_controls;
-  if (controls != v5)
+  if (controls != controlsCopy)
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v7 = controls;
-    v8 = [(NSArray *)v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    controlsCopy2 = controls;
+    v8 = [(NSArray *)controlsCopy2 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v8)
     {
       v9 = v8;
@@ -908,35 +908,35 @@ LABEL_25:
         {
           if (*v31 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(controlsCopy2);
           }
 
           v12 = *(*(&v30 + 1) + 8 * i);
-          if (![(NSArray *)v5 containsObject:v12])
+          if (![(NSArray *)controlsCopy containsObject:v12])
           {
             [v12 setDelegate:0];
             if (([v12 canOnlyAppearInOverflowMenu] & 1) == 0)
             {
-              v13 = [v12 controlView];
-              [v13 removeFromSuperview];
+              controlView = [v12 controlView];
+              [controlView removeFromSuperview];
             }
           }
         }
 
-        v9 = [(NSArray *)v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v9 = [(NSArray *)controlsCopy2 countByEnumeratingWithState:&v30 objects:v35 count:16];
       }
 
       while (v9);
     }
 
     v14 = self->_controls;
-    objc_storeStrong(&self->_controls, a3);
+    objc_storeStrong(&self->_controls, controls);
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v25 = v5;
-    v15 = v5;
+    v25 = controlsCopy;
+    v15 = controlsCopy;
     v16 = [(NSArray *)v15 countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v16)
     {
@@ -952,15 +952,15 @@ LABEL_25:
           }
 
           v20 = *(*(&v26 + 1) + 8 * j);
-          v21 = [v20 controlView];
+          controlView2 = [v20 controlView];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v23 = [v20 controlView];
-            [v23 setPointerInteractionEnabled:1];
-            [v23 setAvkit_extendedDynamicRangeGain:self->_extendedDynamicRangeGain];
+            controlView3 = [v20 controlView];
+            [controlView3 setPointerInteractionEnabled:1];
+            [controlView3 setAvkit_extendedDynamicRangeGain:self->_extendedDynamicRangeGain];
           }
 
           if (![(NSArray *)v14 containsObject:v20])
@@ -968,8 +968,8 @@ LABEL_25:
             [v20 setDelegate:self];
             if (([v20 canOnlyAppearInOverflowMenu] & 1) == 0)
             {
-              v24 = [v20 controlView];
-              [(AVMobileAuxiliaryControlsView *)self addSubview:v24];
+              controlView4 = [v20 controlView];
+              [(AVMobileAuxiliaryControlsView *)self addSubview:controlView4];
             }
           }
         }
@@ -985,7 +985,7 @@ LABEL_25:
     [(AVMobileAuxiliaryControlsView *)self updateOverflowMenu];
     [(AVMobileAuxiliaryControlsView *)self setNeedsLayout];
 
-    v5 = v25;
+    controlsCopy = v25;
   }
 }
 

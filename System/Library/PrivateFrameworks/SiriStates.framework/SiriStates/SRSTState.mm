@@ -8,7 +8,7 @@
 + (SRSTState)resting;
 + (SRSTState)understanding;
 - (SRSTState)init;
-- (SRSTState)initWithUnderlyingObject:(id)a3;
+- (SRSTState)initWithUnderlyingObject:(id)object;
 - (id)makeProxy;
 - (unint64_t)hash;
 @end
@@ -56,8 +56,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_SRSTState *)self->_underlyingObject name];
-  v3 = [v2 hash];
+  name = [(_SRSTState *)self->_underlyingObject name];
+  v3 = [name hash];
 
   return v3;
 }
@@ -69,14 +69,14 @@
   return v2;
 }
 
-- (SRSTState)initWithUnderlyingObject:(id)a3
+- (SRSTState)initWithUnderlyingObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = SRSTState;
   v5 = [(SRSTState *)&v8 init];
   underlyingObject = v5->_underlyingObject;
-  v5->_underlyingObject = v4;
+  v5->_underlyingObject = objectCopy;
 
   return v5;
 }

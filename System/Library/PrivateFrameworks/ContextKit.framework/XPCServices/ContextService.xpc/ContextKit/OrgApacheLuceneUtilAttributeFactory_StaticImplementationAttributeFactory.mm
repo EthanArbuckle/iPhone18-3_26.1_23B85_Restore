@@ -1,28 +1,28 @@
 @interface OrgApacheLuceneUtilAttributeFactory_StaticImplementationAttributeFactory
-- (BOOL)isEqual:(id)a3;
-- (OrgApacheLuceneUtilAttributeFactory_StaticImplementationAttributeFactory)initWithOrgApacheLuceneUtilAttributeFactory:(id)a3 withIOSClass:(id)a4;
-- (id)createAttributeInstanceWithIOSClass:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (OrgApacheLuceneUtilAttributeFactory_StaticImplementationAttributeFactory)initWithOrgApacheLuceneUtilAttributeFactory:(id)factory withIOSClass:(id)class;
+- (id)createAttributeInstanceWithIOSClass:(id)class;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilAttributeFactory_StaticImplementationAttributeFactory
 
-- (OrgApacheLuceneUtilAttributeFactory_StaticImplementationAttributeFactory)initWithOrgApacheLuceneUtilAttributeFactory:(id)a3 withIOSClass:(id)a4
+- (OrgApacheLuceneUtilAttributeFactory_StaticImplementationAttributeFactory)initWithOrgApacheLuceneUtilAttributeFactory:(id)factory withIOSClass:(id)class
 {
-  JreStrongAssign(&self->delegate_, a3);
-  JreStrongAssign(&self->clazz_, a4);
+  JreStrongAssign(&self->delegate_, factory);
+  JreStrongAssign(&self->clazz_, class);
   return self;
 }
 
-- (id)createAttributeInstanceWithIOSClass:(id)a3
+- (id)createAttributeInstanceWithIOSClass:(id)class
 {
-  if (!a3)
+  if (!class)
   {
     goto LABEL_10;
   }
 
-  if ([a3 isAssignableFrom:self->clazz_])
+  if ([class isAssignableFrom:self->clazz_])
   {
 
     return [(OrgApacheLuceneUtilAttributeFactory_StaticImplementationAttributeFactory *)self createInstance];
@@ -35,17 +35,17 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneUtilAttributeFactory *)delegate createAttributeInstanceWithIOSClass:a3];
+  return [(OrgApacheLuceneUtilAttributeFactory *)delegate createAttributeInstanceWithIOSClass:class];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v6) = 1;
   }
 
-  else if (a3 && (v5 = [a3 getClass], v5 == -[OrgApacheLuceneUtilAttributeFactory_StaticImplementationAttributeFactory getClass](self, "getClass")))
+  else if (equal && (v5 = [equal getClass], v5 == -[OrgApacheLuceneUtilAttributeFactory_StaticImplementationAttributeFactory getClass](self, "getClass")))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -59,10 +59,10 @@ LABEL_10:
       JreThrowNullPointerException();
     }
 
-    v6 = [(OrgApacheLuceneUtilAttributeFactory *)delegate isEqual:*(a3 + 1)];
+    v6 = [(OrgApacheLuceneUtilAttributeFactory *)delegate isEqual:*(equal + 1)];
     if (v6)
     {
-      LOBYTE(v6) = self->clazz_ == *(a3 + 2);
+      LOBYTE(v6) = self->clazz_ == *(equal + 2);
     }
   }
 

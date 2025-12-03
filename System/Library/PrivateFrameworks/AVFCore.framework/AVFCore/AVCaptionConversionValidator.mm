@@ -2,11 +2,11 @@
 + (AVCaptionConversionValidator)captionConversionValidatorWithCaptions:(NSArray *)captions timeRange:(CMTimeRange *)timeRange conversionSettings:(NSDictionary *)conversionSettings;
 - (AVCaptionConversionValidator)initWithCaptions:(NSArray *)captions timeRange:(CMTimeRange *)timeRange conversionSettings:(NSDictionary *)conversionSettings;
 - (AVCaptionConversionValidatorStatus)status;
-- (BOOL)_isConversionToClosedCaptions:(id)a3;
+- (BOOL)_isConversionToClosedCaptions:(id)captions;
 - (CMTimeRange)timeRange;
 - (NSArray)warnings;
 - (void)_completeValidation;
-- (void)_issueWarningForFigDictionary:(__CFDictionary *)a3;
+- (void)_issueWarningForFigDictionary:(__CFDictionary *)dictionary;
 - (void)dealloc;
 - (void)stopValidating;
 - (void)validateCaptionConversionWithWarningHandler:(void *)handler;
@@ -24,13 +24,13 @@
   return [v8 initWithCaptions:captions timeRange:v11 conversionSettings:conversionSettings];
 }
 
-- (BOOL)_isConversionToClosedCaptions:(id)a3
+- (BOOL)_isConversionToClosedCaptions:(id)captions
 {
   result = 0;
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"AVCaptionMediaTypeKey", "isEqualToString:", @"clcp"}])
+  if ([objc_msgSend(captions objectForKeyedSubscript:{@"AVCaptionMediaTypeKey", "isEqualToString:", @"clcp"}])
   {
-    v4 = [a3 objectForKeyedSubscript:@"AVCaptionMediaSubTypeKey"];
-    if ([v4 isEqual:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithLong:", 1664495672)}] & 1) != 0 || (objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"AVCaptionMediaSubTypeKey"), "isEqual:", @"c608"))
+    v4 = [captions objectForKeyedSubscript:@"AVCaptionMediaSubTypeKey"];
+    if ([v4 isEqual:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithLong:", 1664495672)}] & 1) != 0 || (objc_msgSend(objc_msgSend(captions, "objectForKeyedSubscript:", @"AVCaptionMediaSubTypeKey"), "isEqual:", @"c608"))
     {
       return 1;
     }
@@ -44,7 +44,7 @@
   v41 = *MEMORY[0x1E69E9840];
   if (![(AVCaptionConversionValidator *)self _isConversionToClosedCaptions:conversionSettings])
   {
-    v28 = self;
+    selfCopy = self;
     v34 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"supports conversions only to mediaType 'clcp' and mediaSubType 'c608'", v29, v30, v31, v32, v33, v35.receiver), 0}];
     objc_exception_throw(v34);
   }
@@ -213,9 +213,9 @@ uint64_t __51__AVCaptionConversionValidator__completeValidation__block_invoke(ui
   return result;
 }
 
-- (void)_issueWarningForFigDictionary:(__CFDictionary *)a3
+- (void)_issueWarningForFigDictionary:(__CFDictionary *)dictionary
 {
-  v4 = [AVCaptionConversionWarning captionConversionWarningWithFigDictionary:a3];
+  v4 = [AVCaptionConversionWarning captionConversionWarningWithFigDictionary:dictionary];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3052000000;

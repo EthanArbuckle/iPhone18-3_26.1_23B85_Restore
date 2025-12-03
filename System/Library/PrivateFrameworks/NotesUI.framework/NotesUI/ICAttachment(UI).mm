@@ -28,32 +28,32 @@
 
 - (id)imageCacheKey
 {
-  v2 = [a1 media];
-  v3 = [v2 identifier];
-  v4 = v3;
-  if (v3)
+  media = [self media];
+  identifier = [media identifier];
+  v4 = identifier;
+  if (identifier)
   {
-    v5 = v3;
+    identifier2 = identifier;
   }
 
   else
   {
-    v5 = [a1 identifier];
+    identifier2 = [self identifier];
   }
 
-  v6 = v5;
+  v6 = identifier2;
 
   return v6;
 }
 
 - (uint64_t)isUnsupportedOnCurrentPlatform
 {
-  if ([a1 attachmentType] == 13 && !+[ICSystemPaperTextAttachment isEnabled](ICSystemPaperTextAttachment, "isEnabled"))
+  if ([self attachmentType] == 13 && !+[ICSystemPaperTextAttachment isEnabled](ICSystemPaperTextAttachment, "isEnabled"))
   {
     return 1;
   }
 
-  return [a1 isUnsupported];
+  return [self isUnsupported];
 }
 
 + (id)imageCache
@@ -82,26 +82,26 @@
 
 - (id)croppingQuad
 {
-  v2 = [a1 attachmentModel];
-  v3 = [v2 shouldCropImage];
+  attachmentModel = [self attachmentModel];
+  shouldCropImage = [attachmentModel shouldCropImage];
 
-  if (v3)
+  if (shouldCropImage)
   {
-    [a1 croppingQuadTopLeftX];
+    [self croppingQuadTopLeftX];
     v5 = v4;
-    [a1 croppingQuadTopLeftY];
+    [self croppingQuadTopLeftY];
     v7 = v6;
-    [a1 croppingQuadTopRightX];
+    [self croppingQuadTopRightX];
     v9 = v8;
-    [a1 croppingQuadTopRightY];
+    [self croppingQuadTopRightY];
     v11 = v10;
-    [a1 croppingQuadBottomLeftX];
+    [self croppingQuadBottomLeftX];
     v13 = v12;
-    [a1 croppingQuadBottomLeftY];
+    [self croppingQuadBottomLeftY];
     v15 = v14;
-    [a1 croppingQuadBottomRightX];
+    [self croppingQuadBottomRightX];
     v17 = v16;
-    [a1 croppingQuadBottomRightY];
+    [self croppingQuadBottomRightY];
     v19 = [objc_alloc(MEMORY[0x1E699A328]) initWithBottomLeft:v13 bottomRight:v15 topLeft:v17 topRight:{v18, v5, v7, v9, v11}];
   }
 
@@ -115,15 +115,15 @@
 
 - (ICDocumentMergeController)documentMergeController
 {
-  v2 = objc_getAssociatedObject(a1, &documentMergeController_documentMergeControllerHandle_0);
+  v2 = objc_getAssociatedObject(self, &documentMergeController_documentMergeControllerHandle_0);
   if (!v2)
   {
     v2 = objc_alloc_init(ICDocumentMergeController);
-    v3 = [a1 note];
-    v4 = [v3 documentMergeController];
-    [(ICDocumentMergeController *)v2 setParentController:v4];
+    note = [self note];
+    documentMergeController = [note documentMergeController];
+    [(ICDocumentMergeController *)v2 setParentController:documentMergeController];
 
-    objc_setAssociatedObject(a1, &documentMergeController_documentMergeControllerHandle_0, v2, 1);
+    objc_setAssociatedObject(self, &documentMergeController_documentMergeControllerHandle_0, v2, 1);
   }
 
   v5 = v2;
@@ -159,7 +159,7 @@
   v9 = &v10;
   v3 = v2;
   v8 = v3;
-  v4 = [a1 loadImage:v7];
+  v4 = [self loadImage:v7];
   dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
   v5 = v11[5];
 
@@ -170,28 +170,28 @@
 
 - (id)unprocessedDocumentImage
 {
-  v2 = [a1 parentAttachment];
-  v3 = [v2 attachmentType];
+  parentAttachment = [self parentAttachment];
+  attachmentType = [parentAttachment attachmentType];
 
-  if (v3 != 11)
+  if (attachmentType != 11)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"parentIsGallery" functionName:"-[ICAttachment(UI) unprocessedDocumentImage]" simulateCrash:1 showAlert:0 format:@"Trying to get un-processed image from type that is not a gallery sub attachment"];
     v10 = 0;
     goto LABEL_11;
   }
 
-  v4 = [a1 media];
-  v5 = [v4 isPasswordProtected];
+  media = [self media];
+  isPasswordProtected = [media isPasswordProtected];
 
-  v6 = [a1 media];
-  v7 = v6;
-  if (!v5)
+  media2 = [self media];
+  v7 = media2;
+  if (!isPasswordProtected)
   {
-    v8 = [v6 mediaURL];
+    mediaURL = [media2 mediaURL];
 
-    if (v8)
+    if (mediaURL)
     {
-      v9 = [MEMORY[0x1E69DCAB8] ic_imageWithContentsOfURL:v8];
+      v9 = [MEMORY[0x1E69DCAB8] ic_imageWithContentsOfURL:mediaURL];
       goto LABEL_8;
     }
 
@@ -200,14 +200,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v8 = [v6 decryptedData];
+  mediaURL = [media2 decryptedData];
 
-  if (!v8)
+  if (!mediaURL)
   {
     goto LABEL_9;
   }
 
-  v9 = [MEMORY[0x1E69DCAB8] ic_imageWithData:v8];
+  v9 = [MEMORY[0x1E69DCAB8] ic_imageWithData:mediaURL];
 LABEL_8:
   v10 = v9;
 LABEL_10:
@@ -220,26 +220,26 @@ LABEL_11:
 - (uint64_t)setCroppingQuad:()UI
 {
   v4 = a3;
-  [a1 setCachedImage:0];
-  [a1 invalidateAttachmentPreviewImages];
+  [self setCachedImage:0];
+  [self invalidateAttachmentPreviewImages];
   [v4 topLeft];
-  [a1 setCroppingQuadTopLeftX:?];
+  [self setCroppingQuadTopLeftX:?];
   [v4 topLeft];
-  [a1 setCroppingQuadTopLeftY:v5];
+  [self setCroppingQuadTopLeftY:v5];
   [v4 topRight];
-  [a1 setCroppingQuadTopRightX:?];
+  [self setCroppingQuadTopRightX:?];
   [v4 topRight];
-  [a1 setCroppingQuadTopRightY:v6];
+  [self setCroppingQuadTopRightY:v6];
   [v4 bottomLeft];
-  [a1 setCroppingQuadBottomLeftX:?];
+  [self setCroppingQuadBottomLeftX:?];
   [v4 bottomLeft];
-  [a1 setCroppingQuadBottomLeftY:v7];
+  [self setCroppingQuadBottomLeftY:v7];
   [v4 bottomRight];
-  [a1 setCroppingQuadBottomRightX:?];
+  [self setCroppingQuadBottomRightX:?];
   [v4 bottomRight];
   v9 = v8;
 
-  return [a1 setCroppingQuadBottomRightY:v9];
+  return [self setCroppingQuadBottomRightY:v9];
 }
 
 - (id)loadImage:()UI aboutToLoadHandler:forceFullSizeImage:
@@ -267,20 +267,20 @@ LABEL_11:
   v42 = &v41;
   v43 = 0x2020000000;
   v44 = 0;
-  v8 = [a1 managedObjectContext];
+  managedObjectContext = [self managedObjectContext];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __68__ICAttachment_UI__loadImage_aboutToLoadHandler_forceFullSizeImage___block_invoke;
   v40[3] = &unk_1E846D328;
-  v40[4] = a1;
+  v40[4] = self;
   v40[5] = &v55;
   v40[6] = &v49;
   v40[7] = &v45;
   v40[8] = &v41;
-  [v8 performBlockAndWait:v40];
+  [managedObjectContext performBlockAndWait:v40];
 
-  v9 = [objc_opt_class() imageCache];
-  v10 = [v9 objectForKey:v50[5]];
+  imageCache = [objc_opt_class() imageCache];
+  v10 = [imageCache objectForKey:v50[5]];
 
   if (v10 || !*(v46 + 12))
   {
@@ -304,14 +304,14 @@ LABEL_3:
     v31[2]();
   }
 
-  v29 = [objc_opt_class() imageLoadingOperationQueue];
-  [v29 setSuspended:1];
+  imageLoadingOperationQueue = [objc_opt_class() imageLoadingOperationQueue];
+  [imageLoadingOperationQueue setSuspended:1];
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v16 = [v29 operations];
-  v17 = [v16 countByEnumeratingWithState:&v36 objects:v61 count:16];
+  operations = [imageLoadingOperationQueue operations];
+  v17 = [operations countByEnumeratingWithState:&v36 objects:v61 count:16];
   if (v17)
   {
     v18 = *v37;
@@ -321,12 +321,12 @@ LABEL_14:
     {
       if (*v37 != v18)
       {
-        objc_enumerationMutation(v16);
+        objc_enumerationMutation(operations);
       }
 
       v20 = *(*(&v36 + 1) + 8 * v19);
-      v21 = [v20 cacheKey];
-      v22 = [v21 isEqual:v50[5]];
+      cacheKey = [v20 cacheKey];
+      v22 = [cacheKey isEqual:v50[5]];
 
       if (v22)
       {
@@ -335,7 +335,7 @@ LABEL_14:
 
       if (v17 == ++v19)
       {
-        v17 = [v16 countByEnumeratingWithState:&v36 objects:v61 count:16];
+        v17 = [operations countByEnumeratingWithState:&v36 objects:v61 count:16];
         if (v17)
         {
           goto LABEL_14;
@@ -361,14 +361,14 @@ LABEL_20:
   }
 
   v24 = [ICAttachmentImageLoadingOperation alloc];
-  v25 = [objc_opt_class() imageCache];
-  v26 = [(ICAttachmentImageLoadingOperation *)v24 initWithCache:v25 attachment:a1 attachmentType:*(v46 + 12) forceFullSizeImage:a5 completionHandler:0];
+  imageCache2 = [objc_opt_class() imageCache];
+  v26 = [(ICAttachmentImageLoadingOperation *)v24 initWithCache:imageCache2 attachment:self attachmentType:*(v46 + 12) forceFullSizeImage:a5 completionHandler:0];
 
-  [v29 addOperation:v26];
+  [imageLoadingOperationQueue addOperation:v26];
   v23 = v26;
 LABEL_26:
   v27 = [v23 addCompletionHandler:v7];
-  [v29 setSuspended:0];
+  [imageLoadingOperationQueue setSuspended:0];
   objc_initWeak(&location, v23);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -396,14 +396,14 @@ LABEL_4:
 
 - (id)cachedImage
 {
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = [v1 imageCacheKey];
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  imageCacheKey = [selfCopy imageCacheKey];
+  if (imageCacheKey)
   {
-    v3 = [objc_opt_class() imageCache];
-    v4 = [v1 imageCacheKey];
-    v5 = [v3 objectForKey:v4];
+    imageCache = [objc_opt_class() imageCache];
+    imageCacheKey2 = [selfCopy imageCacheKey];
+    v5 = [imageCache objectForKey:imageCacheKey2];
   }
 
   else
@@ -411,7 +411,7 @@ LABEL_4:
     v5 = 0;
   }
 
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -419,26 +419,26 @@ LABEL_4:
 - (void)setCachedImage:()UI
 {
   v8 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
-  v5 = [v4 imageCacheKey];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  imageCacheKey = [selfCopy imageCacheKey];
 
-  if (v5)
+  if (imageCacheKey)
   {
-    v6 = [objc_opt_class() imageCache];
-    v7 = [v4 imageCacheKey];
+    imageCache = [objc_opt_class() imageCache];
+    imageCacheKey2 = [selfCopy imageCacheKey];
     if (v8)
     {
-      [v6 setObject:v8 forKey:v7];
+      [imageCache setObject:v8 forKey:imageCacheKey2];
     }
 
     else
     {
-      [v6 removeObjectForKey:v7];
+      [imageCache removeObjectForKey:imageCacheKey2];
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)attributedString
@@ -449,21 +449,21 @@ LABEL_4:
   v13 = 0;
   v14 = 0;
   v12 = &unk_1D449C2A9;
-  v2 = [a1 note];
-  v3 = [v2 textStorage];
+  note = [self note];
+  textStorage = [note textStorage];
 
-  v4 = [v3 length];
+  v4 = [textStorage length];
   v5 = *MEMORY[0x1E69DB5F8];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __36__ICAttachment_UI__attributedString__block_invoke;
   v8[3] = &unk_1E846D378;
-  v8[4] = a1;
+  v8[4] = self;
   v8[5] = &v9;
-  [v3 enumerateAttribute:v5 inRange:0 options:v4 usingBlock:{0, v8}];
+  [textStorage enumerateAttribute:v5 inRange:0 options:v4 usingBlock:{0, v8}];
   if (v10[5])
   {
-    v6 = [v3 ic_attributedSubstringFromRange:v10[4]];
+    v6 = [textStorage ic_attributedSubstringFromRange:v10[4]];
   }
 
   else
@@ -478,19 +478,19 @@ LABEL_4:
 
 - (id)pasteboardData
 {
-  v2 = [a1 note];
-  v3 = [v2 textStorage];
+  note = [self note];
+  textStorage = [note textStorage];
 
-  v4 = [a1 note];
-  [v4 filterAttachmentsInTextStorage:v3 range:{0, objc_msgSend(v3, "length")}];
+  note2 = [self note];
+  [note2 filterAttachmentsInTextStorage:textStorage range:{0, objc_msgSend(textStorage, "length")}];
 
   v5 = objc_alloc(MEMORY[0x1E69B7730]);
-  v6 = [a1 identifier];
-  v7 = [v5 initWithObjectIdentifier:v6 forPasteboard:1];
+  identifier = [self identifier];
+  v7 = [v5 initWithObjectIdentifier:identifier forPasteboard:1];
 
-  v8 = [a1 attributedString];
-  v9 = [a1 managedObjectContext];
-  v10 = [v8 ic_serializeWithFlags:1 dataPersister:v7 managedObjectContext:v9 error:0];
+  attributedString = [self attributedString];
+  managedObjectContext = [self managedObjectContext];
+  v10 = [attributedString ic_serializeWithFlags:1 dataPersister:v7 managedObjectContext:managedObjectContext error:0];
 
   v11 = [objc_alloc(MEMORY[0x1E69B7810]) initWithAttributedStringData:v10 dataPersister:v7];
 
@@ -499,29 +499,29 @@ LABEL_4:
 
 - (id)activityItems
 {
-  v1 = [a1 attachmentModel];
-  v2 = [v1 activityItems];
+  attachmentModel = [self attachmentModel];
+  activityItems = [attachmentModel activityItems];
 
-  return v2;
+  return activityItems;
 }
 
 - (id)modificationDateForSpeaking
 {
   v2 = objc_alloc_init(MEMORY[0x1E696AB78]);
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  [v2 setLocale:v3];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  [v2 setLocale:currentLocale];
 
   [v2 setDateStyle:3];
   [v2 setTimeStyle:0];
-  v4 = [a1 modificationDate];
-  v5 = [v2 stringFromDate:v4];
+  modificationDate = [self modificationDate];
+  v5 = [v2 stringFromDate:modificationDate];
 
   return v5;
 }
 
 - (id)movieDurationForSpeaking
 {
-  [a1 duration];
+  [self duration];
   v8 = (v7 / 3600.0);
   v9 = v7 % 3600;
   v10 = (v7 % 60);
@@ -574,26 +574,26 @@ LABEL_9:
 - (id)deviceInfosWithoutPreviewImagesFromDeviceInfos:()UI
 {
   v4 = a3;
-  v5 = [a1 previewImages];
-  v6 = [v5 count];
+  previewImages = [self previewImages];
+  v6 = [previewImages count];
 
-  v7 = v4;
+  allObjects = v4;
   if (v6)
   {
     v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v4];
-    v9 = [a1 previewImages];
+    previewImages2 = [self previewImages];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __67__ICAttachment_UI__deviceInfosWithoutPreviewImagesFromDeviceInfos___block_invoke;
     v12[3] = &unk_1E846D3A0;
     v13 = v8;
     v10 = v8;
-    [v9 enumerateObjectsUsingBlock:v12];
+    [previewImages2 enumerateObjectsUsingBlock:v12];
 
-    v7 = [v10 allObjects];
+    allObjects = [v10 allObjects];
   }
 
-  return v7;
+  return allObjects;
 }
 
 - (id)updateAttachmentPreviewImageWithImage:()UI scale:appearanceType:scaleWhenDrawing:metadata:sendNotification:
@@ -603,12 +603,12 @@ LABEL_9:
   [v15 size];
   v17 = v16;
   v19 = v18;
-  v20 = [v15 ic_PNGData];
+  ic_PNGData = [v15 ic_PNGData];
 
-  v21 = [a1 updateAttachmentPreviewImageWithImageData:v20 size:a5 scale:a6 appearanceType:v14 scaleWhenDrawing:a8 metadata:v17 sendNotification:{v19, a2}];
+  v21 = [self updateAttachmentPreviewImageWithImageData:ic_PNGData size:a5 scale:a6 appearanceType:v14 scaleWhenDrawing:a8 metadata:v17 sendNotification:{v19, a2}];
 
-  v22 = [v21 managedObjectContext];
-  [v22 ic_saveWithLogDescription:@"Saving preview image"];
+  managedObjectContext = [v21 managedObjectContext];
+  [managedObjectContext ic_saveWithLogDescription:@"Saving preview image"];
 
   return v21;
 }
@@ -620,14 +620,14 @@ LABEL_9:
   *a10 = 0;
   *a11 = 0;
   v22 = 0;
-  if (([a1 markedForDeletion] & 1) == 0)
+  if (([self markedForDeletion] & 1) == 0)
   {
-    v23 = [a1 attachmentModel];
-    v24 = [v23 hasPreviews];
+    attachmentModel = [self attachmentModel];
+    hasPreviews = [attachmentModel hasPreviews];
 
-    if (v24)
+    if (hasPreviews)
     {
-      v25 = [a1 attachmentPreviewImageWithMinSize:a7 scale:a8 appearanceType:a2 requireAppearance:{a3, a4}];
+      v25 = [self attachmentPreviewImageWithMinSize:a7 scale:a8 appearanceType:a2 requireAppearance:{a3, a4}];
       *a6 = [v25 orientedImage];
       *a9 = [v25 scaleWhenDrawing];
 
@@ -636,13 +636,13 @@ LABEL_9:
 
     else
     {
-      v26 = [a1 media];
-      v27 = [v26 mediaURL];
+      media = [self media];
+      mediaURL = [media mediaURL];
 
-      if (v27)
+      if (mediaURL)
       {
-        v28 = [a1 attachmentModel];
-        *a6 = [v28 fileIconWithPreferredSize:{a2, a3}];
+        attachmentModel2 = [self attachmentModel];
+        *a6 = [attachmentModel2 fileIconWithPreferredSize:{a2, a3}];
 
         *a9 = 2;
         v22 = 1;
@@ -656,13 +656,13 @@ LABEL_9:
     }
 
     v29 = MEMORY[0x1E69B7680];
-    v30 = [a1 typeUTI];
-    LODWORD(v29) = [v29 typeUTIIsPlayableMovie:v30];
+    typeUTI = [self typeUTI];
+    LODWORD(v29) = [v29 typeUTIIsPlayableMovie:typeUTI];
 
     if (v29)
     {
       *a11 = 1;
-      [a1 duration];
+      [self duration];
       CMTimeMakeWithSeconds(&v33, v31, 1000000000);
       *a12 = v33;
     }
@@ -685,17 +685,17 @@ LABEL_9:
   v25 = a10;
   v26 = a11;
   v27 = a12;
-  v28 = [a1 markedForDeletion];
-  if ((v28 & 1) == 0)
+  markedForDeletion = [self markedForDeletion];
+  if ((markedForDeletion & 1) == 0)
   {
     v34 = v21;
-    v29 = [a1 attachmentModel];
-    v30 = [v29 needToGeneratePreviews];
+    attachmentModel = [self attachmentModel];
+    needToGeneratePreviews = [attachmentModel needToGeneratePreviews];
 
-    if (v30)
+    if (needToGeneratePreviews)
     {
       v31 = +[ICAttachmentPreviewGenerator sharedGenerator];
-      [v31 generatePreviewIfNeededForAttachment:a1];
+      [v31 generatePreviewIfNeededForAttachment:self];
     }
 
     v36 = 0;
@@ -708,7 +708,7 @@ LABEL_9:
     {
       v35 = v25;
       performBlockOnMainThreadAndWait();
-      v32 = v35;
+      thumbnailOperationQueue = v35;
     }
 
     else
@@ -718,24 +718,24 @@ LABEL_9:
         v27[2](v27);
       }
 
-      v32 = [objc_opt_class() thumbnailOperationQueue];
-      [v32 addOperationWithAttachment:a1 size:v34 scale:v22 appearanceInfo:v23 cache:v24 cacheKey:v25 processingBlock:a2 completionBlock:a3 fallbackBlock:{a4, v26}];
+      thumbnailOperationQueue = [objc_opt_class() thumbnailOperationQueue];
+      [thumbnailOperationQueue addOperationWithAttachment:self size:v34 scale:v22 appearanceInfo:v23 cache:v24 cacheKey:v25 processingBlock:a2 completionBlock:a3 fallbackBlock:{a4, v26}];
     }
 
     _Block_object_dispose(&v36, 8);
     v21 = v34;
   }
 
-  return v28 ^ 1u;
+  return markedForDeletion ^ 1u;
 }
 
 - (void)redactAuthorAttributionsToCurrentUser
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &off_1F5057F88;
   objc_msgSendSuper2(&v3, sel_redactAuthorAttributionsToCurrentUser);
-  v2 = [a1 attachmentModel];
-  [v2 redactAuthorAttributionsToCurrentUser];
+  attachmentModel = [self attachmentModel];
+  [attachmentModel redactAuthorAttributionsToCurrentUser];
 }
 
 @end

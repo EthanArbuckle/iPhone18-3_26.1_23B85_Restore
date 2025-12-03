@@ -1,22 +1,22 @@
 @interface AEAggregationPlugin
-- (AEAggregationPlugin)initWithFileExtension:(id)a3;
-- (AEAggregationPlugin)initWithUrlScheme:(id)a3;
-- (id)helperForURL:(id)a3 withOptions:(id)a4;
+- (AEAggregationPlugin)initWithFileExtension:(id)extension;
+- (AEAggregationPlugin)initWithUrlScheme:(id)scheme;
+- (id)helperForURL:(id)l withOptions:(id)options;
 - (id)supportedFileExtensions;
 - (id)supportedUrlSchemes;
-- (void)addPlugin:(id)a3;
+- (void)addPlugin:(id)plugin;
 - (void)dealloc;
 @end
 
 @implementation AEAggregationPlugin
 
-- (AEAggregationPlugin)initWithFileExtension:(id)a3
+- (AEAggregationPlugin)initWithFileExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = [(AEAggregationPlugin *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [extensionCopy copy];
     extension = v5->_extension;
     v5->_extension = v6;
   }
@@ -24,13 +24,13 @@
   return v5;
 }
 
-- (AEAggregationPlugin)initWithUrlScheme:(id)a3
+- (AEAggregationPlugin)initWithUrlScheme:(id)scheme
 {
-  v4 = a3;
+  schemeCopy = scheme;
   v5 = [(AEAggregationPlugin *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [schemeCopy copy];
     scheme = v5->_scheme;
     v5->_scheme = v6;
   }
@@ -49,22 +49,22 @@
   [(AEAggregationPlugin *)&v4 dealloc];
 }
 
-- (void)addPlugin:(id)a3
+- (void)addPlugin:(id)plugin
 {
-  v4 = a3;
+  pluginCopy = plugin;
   plugins = self->_plugins;
-  v8 = v4;
+  v8 = pluginCopy;
   if (!plugins)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_plugins;
     self->_plugins = v6;
 
-    v4 = v8;
+    pluginCopy = v8;
     plugins = self->_plugins;
   }
 
-  [(NSMutableArray *)plugins addObject:v4];
+  [(NSMutableArray *)plugins addObject:pluginCopy];
 }
 
 - (id)supportedFileExtensions
@@ -89,11 +89,11 @@
   return v3;
 }
 
-- (id)helperForURL:(id)a3 withOptions:(id)a4
+- (id)helperForURL:(id)l withOptions:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AEAggregationhelper alloc] initWithPlugins:self->_plugins forUrl:v7 withOptions:v6];
+  optionsCopy = options;
+  lCopy = l;
+  v8 = [[AEAggregationhelper alloc] initWithPlugins:self->_plugins forUrl:lCopy withOptions:optionsCopy];
 
   return v8;
 }

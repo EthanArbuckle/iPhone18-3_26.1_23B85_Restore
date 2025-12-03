@@ -1,13 +1,13 @@
 @interface ATConcreteAssetLink
 - (ATAssetLinkDelegate)delegate;
-- (ATConcreteAssetLink)initWithMessageLink:(id)a3;
+- (ATConcreteAssetLink)initWithMessageLink:(id)link;
 - (BOOL)open;
-- (id)_keyForATAssetInReaderMap:(id)a3;
-- (id)_urlForWritingAsset:(id)a3 withFileName:(id)a4;
-- (id)enqueueAssets:(id)a3 force:(BOOL)a4;
-- (void)_finishAsset:(id)a3 withError:(id)a4;
-- (void)_requestAsset:(id)a3;
-- (void)cancelAssets:(id)a3;
+- (id)_keyForATAssetInReaderMap:(id)map;
+- (id)_urlForWritingAsset:(id)asset withFileName:(id)name;
+- (id)enqueueAssets:(id)assets force:(BOOL)force;
+- (void)_finishAsset:(id)asset withError:(id)error;
+- (void)_requestAsset:(id)asset;
+- (void)cancelAssets:(id)assets;
 - (void)close;
 @end
 
@@ -20,45 +20,45 @@
   return WeakRetained;
 }
 
-- (id)_keyForATAssetInReaderMap:(id)a3
+- (id)_keyForATAssetInReaderMap:(id)map
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 assetParts];
+  mapCopy = map;
+  identifier = [mapCopy identifier];
+  assetParts = [mapCopy assetParts];
 
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v7 UUIDString];
-  v9 = [v3 stringWithFormat:@"%@-%ld-%@", v5, v6, v8];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v9 = [v3 stringWithFormat:@"%@-%ld-%@", identifier, assetParts, uUIDString];
 
   return v9;
 }
 
-- (void)_requestAsset:(id)a3
+- (void)_requestAsset:(id)asset
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 copy];
-  v6 = [v4 storeInfo];
-  v7 = [v6 syncID];
-  [v5 setIdentifier:v7];
+  assetCopy = asset;
+  v5 = [assetCopy copy];
+  storeInfo = [assetCopy storeInfo];
+  syncID = [storeInfo syncID];
+  [v5 setIdentifier:syncID];
 
   v8 = _ATLogCategoryDeviceSync();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
-    v21 = v4;
+    v21 = assetCopy;
     v22 = 2114;
     v23 = v5;
     _os_log_impl(&dword_22392A000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Cloning %{public}@ to %{public}@ to request asset from the companion", buf, 0x20u);
   }
 
   v9 = objc_alloc(MEMORY[0x277CEA458]);
-  v10 = [v4 dataclass];
-  v11 = [v5 serializedAsset];
-  v12 = [v9 initWithCommand:@"RequestAsset" dataClass:v10 parameters:v11];
+  dataclass = [assetCopy dataclass];
+  serializedAsset = [v5 serializedAsset];
+  v12 = [v9 initWithCommand:@"RequestAsset" dataClass:dataclass parameters:serializedAsset];
 
   messageLink = self->_messageLink;
   v16[0] = MEMORY[0x277D85DD0];
@@ -66,8 +66,8 @@
   v16[2] = __37__ATConcreteAssetLink__requestAsset___block_invoke;
   v16[3] = &unk_2784E96F8;
   v16[4] = self;
-  v17 = v4;
-  v14 = v4;
+  v17 = assetCopy;
+  v14 = assetCopy;
   [(ATMessageLink *)messageLink sendRequest:v12 withCompletion:v16];
 
   v15 = *MEMORY[0x277D85DE8];
@@ -641,44 +641,44 @@ void __37__ATConcreteAssetLink__requestAsset___block_invoke_45(void *a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_urlForWritingAsset:(id)a3 withFileName:(id)a4
+- (id)_urlForWritingAsset:(id)asset withFileName:(id)name
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CEA430] sharedInstance];
-  v8 = [v5 dataclass];
-  v9 = [v7 pathForDataclass:v8];
+  assetCopy = asset;
+  nameCopy = name;
+  mEMORY[0x277CEA430] = [MEMORY[0x277CEA430] sharedInstance];
+  dataclass = [assetCopy dataclass];
+  v9 = [mEMORY[0x277CEA430] pathForDataclass:dataclass];
 
-  v10 = [MEMORY[0x277CEA430] sharedInstance];
-  v11 = [v5 dataclass];
-  v33[0] = v11;
+  mEMORY[0x277CEA430]2 = [MEMORY[0x277CEA430] sharedInstance];
+  dataclass2 = [assetCopy dataclass];
+  v33[0] = dataclass2;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
-  [v10 createAirlockForDataclasses:v12];
+  [mEMORY[0x277CEA430]2 createAirlockForDataclasses:v12];
 
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
-  v31 = v6;
-  v32 = v5;
-  if (v6 && [v6 length])
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v31 = nameCopy;
+  v32 = assetCopy;
+  if (nameCopy && [nameCopy length])
   {
-    v14 = v6;
+    v14 = nameCopy;
   }
 
   else
   {
-    v15 = [v5 prettyName];
-    v16 = v15;
-    if (v15)
+    prettyName = [assetCopy prettyName];
+    v16 = prettyName;
+    if (prettyName)
     {
-      v17 = v15;
+      identifier = prettyName;
     }
 
     else
     {
-      v17 = [v5 identifier];
+      identifier = [assetCopy identifier];
     }
 
-    v14 = v17;
+    v14 = identifier;
   }
 
   v18 = 0;
@@ -688,9 +688,9 @@ void __37__ATConcreteAssetLink__requestAsset___block_invoke_45(void *a1)
     if (v18)
     {
       v20 = MEMORY[0x277CCACA8];
-      v21 = [v14 stringByDeletingPathExtension];
-      v22 = [v14 pathExtension];
-      v23 = [v20 stringWithFormat:@"%@_%d.%@", v21, v18, v22];
+      stringByDeletingPathExtension = [v14 stringByDeletingPathExtension];
+      pathExtension = [v14 pathExtension];
+      v23 = [v20 stringWithFormat:@"%@_%d.%@", stringByDeletingPathExtension, v18, pathExtension];
     }
 
     else
@@ -700,7 +700,7 @@ void __37__ATConcreteAssetLink__requestAsset___block_invoke_45(void *a1)
 
     v24 = [v9 stringByAppendingPathComponent:v23];
 
-    v25 = [v13 fileExistsAtPath:v24];
+    v25 = [defaultManager fileExistsAtPath:v24];
     ++v18;
 
     v19 = v24;
@@ -708,8 +708,8 @@ void __37__ATConcreteAssetLink__requestAsset___block_invoke_45(void *a1)
 
   while ((v25 & 1) != 0);
   v26 = [MEMORY[0x277CBEBC0] fileURLWithPath:v24];
-  v27 = [MEMORY[0x277CBEA90] data];
-  [v27 writeToURL:v26 options:0 error:0];
+  data = [MEMORY[0x277CBEA90] data];
+  [data writeToURL:v26 options:0 error:0];
 
   v28 = [MEMORY[0x277CBEBC0] fileURLWithPath:v24];
 
@@ -718,37 +718,37 @@ void __37__ATConcreteAssetLink__requestAsset___block_invoke_45(void *a1)
   return v28;
 }
 
-- (void)_finishAsset:(id)a3 withError:(id)a4
+- (void)_finishAsset:(id)asset withError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(NSMutableArray *)self->_outstandingAssets containsObject:v6])
+  assetCopy = asset;
+  errorCopy = error;
+  if ([(NSMutableArray *)self->_outstandingAssets containsObject:assetCopy])
   {
     v8 = _ATLogCategoryDeviceSync();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
-      v18 = v6;
+      v18 = assetCopy;
       v19 = 2114;
-      v20 = v7;
+      v20 = errorCopy;
       _os_log_impl(&dword_22392A000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Finished asset %{public}@: %{public}@", buf, 0x20u);
     }
 
     v9 = +[ATAssetLinkPowerLogger sharedInstance];
-    [v9 logAssetLinkOfType:1 didFinishAsset:v6 withError:v7];
+    [v9 logAssetLinkOfType:1 didFinishAsset:assetCopy withError:errorCopy];
 
-    [(NSMutableArray *)self->_outstandingAssets removeObject:v6];
+    [(NSMutableArray *)self->_outstandingAssets removeObject:assetCopy];
     callbackQueue = self->_callbackQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __46__ATConcreteAssetLink__finishAsset_withError___block_invoke;
     block[3] = &unk_2784E9568;
     block[4] = self;
-    v13 = v6;
-    v14 = v7;
+    v13 = assetCopy;
+    v14 = errorCopy;
     dispatch_async(callbackQueue, block);
   }
 
@@ -761,24 +761,24 @@ void __46__ATConcreteAssetLink__finishAsset_withError___block_invoke(uint64_t a1
   [v2 assetLink:*(a1 + 32) didFinishAsset:*(a1 + 40) error:*(a1 + 48) retryable:1];
 }
 
-- (void)cancelAssets:(id)a3
+- (void)cancelAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__2064;
   v11[4] = __Block_byref_object_dispose__2065;
-  v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(assetsCopy, "count")}];
   readerQueue = self->_readerQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__ATConcreteAssetLink_cancelAssets___block_invoke;
   block[3] = &unk_2784E9590;
-  v8 = v4;
-  v9 = self;
+  v8 = assetsCopy;
+  selfCopy = self;
   v10 = v11;
-  v6 = v4;
+  v6 = assetsCopy;
   dispatch_async(readerQueue, block);
 
   _Block_object_dispose(v11, 8);
@@ -853,16 +853,16 @@ void __36__ATConcreteAssetLink_cancelAssets___block_invoke(uint64_t a1)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)enqueueAssets:(id)a3 force:(BOOL)a4
+- (id)enqueueAssets:(id)assets force:(BOOL)force
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  assetsCopy = assets;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__2064;
   v34 = __Block_byref_object_dispose__2065;
-  v35 = [MEMORY[0x277CBEA60] array];
+  array = [MEMORY[0x277CBEA60] array];
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x2020000000;
@@ -882,8 +882,8 @@ void __36__ATConcreteAssetLink_cancelAssets___block_invoke(uint64_t a1)
   v23[3] = &unk_2784E9540;
   v23[4] = self;
   v25 = v29;
-  v27 = a4;
-  v9 = v6;
+  forceCopy = force;
+  v9 = assetsCopy;
   v24 = v9;
   v26 = &v30;
   dispatch_sync(accessQueue, v23);
@@ -1245,16 +1245,16 @@ void __27__ATConcreteAssetLink_open__block_invoke_2(uint64_t a1)
   }
 }
 
-- (ATConcreteAssetLink)initWithMessageLink:(id)a3
+- (ATConcreteAssetLink)initWithMessageLink:(id)link
 {
-  v5 = a3;
+  linkCopy = link;
   v29.receiver = self;
   v29.super_class = ATConcreteAssetLink;
   v6 = [(ATConcreteAssetLink *)&v29 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_messageLink, a3);
+    objc_storeStrong(&v6->_messageLink, link);
     v8 = dispatch_queue_create("com.apple.AirTraffic.ATFoundation.ATConcreteAssetLink.accessQueue", 0);
     accessQueue = v7->_accessQueue;
     v7->_accessQueue = v8;
@@ -1287,9 +1287,9 @@ void __27__ATConcreteAssetLink_open__block_invoke_2(uint64_t a1)
     readersPendingStop = v7->_readersPendingStop;
     v7->_readersPendingStop = v22;
 
-    v24 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     readersToAssetsMap = v7->_readersToAssetsMap;
-    v7->_readersToAssetsMap = v24;
+    v7->_readersToAssetsMap = dictionary;
 
     v26 = dispatch_semaphore_create(0);
     pendingWriteSemaphore = v7->_pendingWriteSemaphore;

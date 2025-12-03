@@ -1,14 +1,14 @@
 @interface BluetoothABCDE
 - (BOOL)shouldAllowCoreCapture;
-- (id)attachmentsForParameters:(id)a3;
-- (id)getFilesAtPathSortedByModificationDate:(id)a3 numberOfFirstNFiles:(int)a4;
+- (id)attachmentsForParameters:(id)parameters;
+- (id)getFilesAtPathSortedByModificationDate:(id)date numberOfFirstNFiles:(int)files;
 @end
 
 @implementation BluetoothABCDE
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = [a3 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  v4 = [parameters objectForKeyedSubscript:@"DEExtensionHostAppKey"];
   if ([v4 isEqualToString:@"com.apple.symptomsd"])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -58,10 +58,10 @@
           }
 
           v20 = *(*(&v70 + 1) + 8 * i);
-          v21 = [v20 filesize];
-          v22 = [v21 unsignedIntegerValue];
+          filesize = [v20 filesize];
+          unsignedIntegerValue = [filesize unsignedIntegerValue];
 
-          if (v22 <= 0x4C5054)
+          if (unsignedIntegerValue <= 0x4C5054)
           {
             [v8 addObject:v20];
           }
@@ -142,14 +142,14 @@
                   v61 = 0;
                   [v40 getResourceValue:&v61 forKey:NSURLNameKey error:0];
                   v41 = v61;
-                  v42 = [v40 lastPathComponent];
+                  lastPathComponent = [v40 lastPathComponent];
                   v43 = +[NSFileManager defaultManager];
-                  v44 = [v40 path];
-                  v45 = [v43 attributesOfItemAtPath:v44 error:0];
+                  path = [v40 path];
+                  v45 = [v43 attributesOfItemAtPath:path error:0];
 
-                  v46 = [v45 fileModificationDate];
+                  fileModificationDate = [v45 fileModificationDate];
                   v47 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v45 fileSize]);
-                  v48 = [DEAttachmentItem attachmentWithPath:v40 withDisplayName:v42 modificationDate:v46 andFilesize:v47];
+                  v48 = [DEAttachmentItem attachmentWithPath:v40 withDisplayName:lastPathComponent modificationDate:fileModificationDate andFilesize:v47];
 
                   [v60 addObject:v48];
                 }
@@ -182,21 +182,21 @@
   return v60;
 }
 
-- (id)getFilesAtPathSortedByModificationDate:(id)a3 numberOfFirstNFiles:(int)a4
+- (id)getFilesAtPathSortedByModificationDate:(id)date numberOfFirstNFiles:(int)files
 {
-  v5 = [a3 sortedArrayUsingComparator:&stru_100004160];
+  v5 = [date sortedArrayUsingComparator:&stru_100004160];
   v6 = [v5 count];
-  if (v6 >= a4)
+  if (v6 >= files)
   {
-    v7 = a4;
+    filesCopy = files;
   }
 
   else
   {
-    v7 = v6;
+    filesCopy = v6;
   }
 
-  if (v7)
+  if (filesCopy)
   {
     [v5 subarrayWithRange:0];
   }

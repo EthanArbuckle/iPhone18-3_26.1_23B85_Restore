@@ -1,12 +1,12 @@
 @interface TUIRenderUpdateChanges
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)unionChanges:(id)a3;
-- (void)unionInserts:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)unionChanges:(id)changes;
+- (void)unionInserts:(id)inserts;
 @end
 
 @implementation TUIRenderUpdateChanges
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TUIRenderUpdateChanges allocWithZone:?]];
   if (v4)
@@ -27,24 +27,24 @@
   return v4;
 }
 
-- (void)unionChanges:(id)a3
+- (void)unionChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v5 = objc_alloc_init(NSMutableSet);
   v6 = objc_alloc_init(NSMutableSet);
   v7 = objc_alloc_init(NSMutableSet);
   [(NSSet *)v5 unionSet:self->_inserts];
-  v8 = [v4 inserts];
-  [(NSSet *)v5 unionSet:v8];
+  inserts = [changesCopy inserts];
+  [(NSSet *)v5 unionSet:inserts];
 
   [(NSSet *)v6 unionSet:self->_updates];
-  v9 = [v4 updates];
-  [(NSSet *)v6 unionSet:v9];
+  updates = [changesCopy updates];
+  [(NSSet *)v6 unionSet:updates];
 
   [(NSSet *)v7 unionSet:self->_deletes];
-  v10 = [v4 deletes];
+  deletes = [changesCopy deletes];
 
-  [(NSSet *)v7 unionSet:v10];
+  [(NSSet *)v7 unionSet:deletes];
   inserts = self->_inserts;
   self->_inserts = v5;
   v15 = v5;
@@ -57,10 +57,10 @@
   self->_deletes = v7;
 }
 
-- (void)unionInserts:(id)a3
+- (void)unionInserts:(id)inserts
 {
-  v4 = a3;
-  v5 = [[NSMutableSet alloc] initWithArray:v4];
+  insertsCopy = inserts;
+  v5 = [[NSMutableSet alloc] initWithArray:insertsCopy];
 
   [(NSSet *)v5 unionSet:self->_inserts];
   inserts = self->_inserts;

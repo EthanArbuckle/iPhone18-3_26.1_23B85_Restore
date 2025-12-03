@@ -1,32 +1,32 @@
 @interface EKUIInviteeContextMenuData
-- (EKUIInviteeContextMenuData)initWithDefaultActionsForSection:(id)a3 indexPath:(id)a4 participant:(id)a5 interaction:(id)a6 participantSetRole:(id)a7;
+- (EKUIInviteeContextMenuData)initWithDefaultActionsForSection:(id)section indexPath:(id)path participant:(id)participant interaction:(id)interaction participantSetRole:(id)role;
 - (id)_buildCombinedCalendarAndContactsMenu;
-- (void)_setupCalendarMenuForSection:(id)a3 indexPath:(id)a4 participant:(id)a5 participantSetRole:(id)a6;
-- (void)_setupContactsOrbActionControllerForParticipant:(id)a3;
-- (void)contactOrbActionsController:(id)a3 didUpdateWithMenu:(id)a4;
+- (void)_setupCalendarMenuForSection:(id)section indexPath:(id)path participant:(id)participant participantSetRole:(id)role;
+- (void)_setupContactsOrbActionControllerForParticipant:(id)participant;
+- (void)contactOrbActionsController:(id)controller didUpdateWithMenu:(id)menu;
 @end
 
 @implementation EKUIInviteeContextMenuData
 
-- (EKUIInviteeContextMenuData)initWithDefaultActionsForSection:(id)a3 indexPath:(id)a4 participant:(id)a5 interaction:(id)a6 participantSetRole:(id)a7
+- (EKUIInviteeContextMenuData)initWithDefaultActionsForSection:(id)section indexPath:(id)path participant:(id)participant interaction:(id)interaction participantSetRole:(id)role
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  sectionCopy = section;
+  pathCopy = path;
+  participantCopy = participant;
+  interactionCopy = interaction;
+  roleCopy = role;
   v22.receiver = self;
   v22.super_class = EKUIInviteeContextMenuData;
   v17 = [(EKUIInviteeContextMenuData *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_interaction, a6);
-    [(EKUIInviteeContextMenuData *)v18 _setupContactsOrbActionControllerForParticipant:v14];
-    [(EKUIInviteeContextMenuData *)v18 _setupCalendarMenuForSection:v12 indexPath:v13 participant:v14 participantSetRole:v16];
-    v19 = [(EKUIInviteeContextMenuData *)v18 _buildCombinedCalendarAndContactsMenu];
+    objc_storeStrong(&v17->_interaction, interaction);
+    [(EKUIInviteeContextMenuData *)v18 _setupContactsOrbActionControllerForParticipant:participantCopy];
+    [(EKUIInviteeContextMenuData *)v18 _setupCalendarMenuForSection:sectionCopy indexPath:pathCopy participant:participantCopy participantSetRole:roleCopy];
+    _buildCombinedCalendarAndContactsMenu = [(EKUIInviteeContextMenuData *)v18 _buildCombinedCalendarAndContactsMenu];
     menu = v18->_menu;
-    v18->_menu = v19;
+    v18->_menu = _buildCombinedCalendarAndContactsMenu;
   }
 
   return v18;
@@ -34,25 +34,25 @@
 
 - (id)_buildCombinedCalendarAndContactsMenu
 {
-  v3 = [(EKUIInviteeContextMenuData *)self _contactsMenu];
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count") + -[NSArray count](self->_calendarMenuStartItems, "count") + -[NSArray count](self->_calendarMenuEndItems, "count")}];
+  _contactsMenu = [(EKUIInviteeContextMenuData *)self _contactsMenu];
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(_contactsMenu, "count") + -[NSArray count](self->_calendarMenuStartItems, "count") + -[NSArray count](self->_calendarMenuEndItems, "count")}];
   [v4 addObjectsFromArray:self->_calendarMenuStartItems];
-  [v4 addObjectsFromArray:v3];
+  [v4 addObjectsFromArray:_contactsMenu];
   [v4 addObjectsFromArray:self->_calendarMenuEndItems];
   v5 = [MEMORY[0x1E69DCC60] menuWithChildren:v4];
 
   return v5;
 }
 
-- (void)_setupContactsOrbActionControllerForParticipant:(id)a3
+- (void)_setupContactsOrbActionControllerForParticipant:(id)participant
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  participantCopy = participant;
   v5 = EKWeakLinkClass();
-  v6 = [v5 descriptorForRequiredKeys];
-  v11[0] = v6;
+  descriptorForRequiredKeys = [v5 descriptorForRequiredKeys];
+  v11[0] = descriptorForRequiredKeys;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  v8 = [EKIdentityViewController contactForIdentity:v4 keysToFetch:v7];
+  v8 = [EKIdentityViewController contactForIdentity:participantCopy keysToFetch:v7];
 
   v9 = [[v5 alloc] initWithContact:v8];
   [v9 setDelegate:self];
@@ -60,14 +60,14 @@
   self->_contactActionsController = v9;
 }
 
-- (void)_setupCalendarMenuForSection:(id)a3 indexPath:(id)a4 participant:(id)a5 participantSetRole:(id)a6
+- (void)_setupCalendarMenuForSection:(id)section indexPath:(id)path participant:(id)participant participantSetRole:(id)role
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v45 = a6;
-  v12 = [MEMORY[0x1E695DF70] array];
-  v13 = [MEMORY[0x1E695DF70] array];
+  sectionCopy = section;
+  pathCopy = path;
+  participantCopy = participant;
+  roleCopy = role;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v14 = MEMORY[0x1E69DC628];
   v15 = EventKitUIBundle();
   v16 = [v15 localizedStringForKey:@"View Contact" value:&stru_1F4EF6790 table:0];
@@ -76,20 +76,20 @@
   v57[1] = 3221225472;
   v57[2] = __100__EKUIInviteeContextMenuData__setupCalendarMenuForSection_indexPath_participant_participantSetRole___block_invoke;
   v57[3] = &unk_1E843F560;
-  v18 = v9;
+  v18 = sectionCopy;
   v58 = v18;
-  v19 = v10;
+  v19 = pathCopy;
   v59 = v19;
   v20 = [v14 actionWithTitle:v16 image:v17 identifier:0 handler:v57];
 
-  [(NSArray *)v12 addObject:v20];
+  [(NSArray *)array addObject:v20];
   if ([v18 canEditRow:v19])
   {
-    v21 = [v11 participantRole];
+    participantRole = [participantCopy participantRole];
     v22 = EventKitUIBundle();
     v23 = v22;
-    v43 = v11;
-    if (v21 == 2)
+    v43 = participantCopy;
+    if (participantRole == 2)
     {
       v24 = [v22 localizedStringForKey:@"Make Required" value:&stru_1F4EF6790 table:0];
 
@@ -100,9 +100,9 @@
       v53[2] = __100__EKUIInviteeContextMenuData__setupCalendarMenuForSection_indexPath_participant_participantSetRole___block_invoke_2;
       v53[3] = &unk_1E843F588;
       v42 = &v56;
-      v56 = v45;
+      v56 = roleCopy;
       v26 = &v54;
-      v27 = v11;
+      v27 = participantCopy;
       v28 = v24;
       v54 = v27;
       v29 = &v55;
@@ -121,9 +121,9 @@
       v49[2] = __100__EKUIInviteeContextMenuData__setupCalendarMenuForSection_indexPath_participant_participantSetRole___block_invoke_3;
       v49[3] = &unk_1E843F588;
       v42 = &v52;
-      v52 = v45;
+      v52 = roleCopy;
       v26 = &v50;
-      v31 = v11;
+      v31 = participantCopy;
       v28 = v24;
       v50 = v31;
       v29 = &v51;
@@ -133,7 +133,7 @@
 
     v32 = [v41 actionWithTitle:v24 image:v25 identifier:0 handler:v30];
 
-    [(NSArray *)v12 addObject:v32];
+    [(NSArray *)array addObject:v32];
     v33 = MEMORY[0x1E69DC628];
     v34 = [v18 titleForDeleteConfirmationButtonForRow:v19];
     v35 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"trash"];
@@ -146,18 +146,18 @@
     v36 = [v33 actionWithTitle:v34 image:v35 identifier:0 handler:v46];
 
     [v36 setAttributes:2];
-    [(NSArray *)v13 addObject:v36];
+    [(NSArray *)array2 addObject:v36];
 
-    v11 = v43;
+    participantCopy = v43;
   }
 
   calendarMenuStartItems = self->_calendarMenuStartItems;
-  self->_calendarMenuStartItems = v12;
-  v38 = v12;
+  self->_calendarMenuStartItems = array;
+  v38 = array;
 
   calendarMenuEndItems = self->_calendarMenuEndItems;
-  self->_calendarMenuEndItems = v13;
-  v40 = v13;
+  self->_calendarMenuEndItems = array2;
+  v40 = array2;
 }
 
 void __100__EKUIInviteeContextMenuData__setupCalendarMenuForSection_indexPath_participant_participantSetRole___block_invoke_2(uint64_t a1)
@@ -176,9 +176,9 @@ void __100__EKUIInviteeContextMenuData__setupCalendarMenuForSection_indexPath_pa
   (*(v2 + 16))(v2, v1, 2, v3);
 }
 
-- (void)contactOrbActionsController:(id)a3 didUpdateWithMenu:(id)a4
+- (void)contactOrbActionsController:(id)controller didUpdateWithMenu:(id)menu
 {
-  v5 = [(EKUIInviteeContextMenuData *)self _buildCombinedCalendarAndContactsMenu:a3];
+  v5 = [(EKUIInviteeContextMenuData *)self _buildCombinedCalendarAndContactsMenu:controller];
   menu = self->_menu;
   self->_menu = v5;
 

@@ -2,7 +2,7 @@
 - (BOOL)isCarrierNetworkReachable;
 - (MX_NetworkObserver)init;
 - (void)dealloc;
-- (void)networkPathUpdate:(id)a3;
+- (void)networkPathUpdate:(id)update;
 @end
 
 @implementation MX_NetworkObserver
@@ -83,10 +83,10 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)networkPathUpdate:(id)a3
+- (void)networkPathUpdate:(id)update
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (update)
   {
     mNetworkReachable = self->mNetworkReachable;
     mCurrentPath = self->mCurrentPath;
@@ -121,7 +121,7 @@
       goto LABEL_16;
     }
 
-    v10 = v7(a3);
+    v10 = v7(update);
     self->mCurrentPath = v10;
     v18 = 0;
     v19 = &v18;

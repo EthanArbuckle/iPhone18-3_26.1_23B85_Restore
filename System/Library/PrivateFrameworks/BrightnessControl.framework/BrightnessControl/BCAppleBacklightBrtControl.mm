@@ -1,17 +1,17 @@
 @interface BCAppleBacklightBrtControl
 + (id)copyAvailableControls;
-+ (id)newMonitorWithHandler:(id)a3 error:(id *)a4;
++ (id)newMonitorWithHandler:(id)handler error:(id *)error;
 + (void)copyAvailableControls;
 - (BCAppleBacklightBrtControl)init;
-- (BCAppleBacklightBrtControl)initWithService:(unsigned int)a3;
+- (BCAppleBacklightBrtControl)initWithService:(unsigned int)service;
 - (BOOL)parseAuroraCapabilities;
 - (BOOL)parseChromicCorrectionParams;
-- (BOOL)setNits:(double)a3 error:(id *)a4;
-- (BOOL)setProperty:(id)a3 value:(id)a4 error:(id *)a5;
-- (double)getNitsWithError:(id *)a3;
+- (BOOL)setNits:(double)nits error:(id *)error;
+- (BOOL)setProperty:(id)property value:(id)value error:(id *)error;
+- (double)getNitsWithError:(id *)error;
 - (id)ID;
 - (id)copyModuleIdentifier;
-- (id)copyProperty:(id)a3 error:(id *)a4;
+- (id)copyProperty:(id)property error:(id *)error;
 - (unint64_t)registryID;
 - (void)dealloc;
 - (void)parseAuroraCapabilities;
@@ -20,7 +20,7 @@
 
 @implementation BCAppleBacklightBrtControl
 
-+ (id)newMonitorWithHandler:(id)a3 error:(id *)a4
++ (id)newMonitorWithHandler:(id)handler error:(id *)error
 {
   v6 = objc_autoreleasePoolPush();
   v7 = &unk_2837438E8;
@@ -28,9 +28,9 @@
   v8 = dispatch_queue_create("com.apple.BCAppleBacklightBrtControl.global", 0);
   v9 = IONotificationPortCreate(*MEMORY[0x277CD2898]);
   IONotificationPortSetDispatchQueue(v9, v8);
-  if (a3)
+  if (handler)
   {
-    v10 = _Block_copy(a3);
+    v10 = _Block_copy(handler);
   }
 
   else
@@ -78,7 +78,7 @@
   if (os_log_type_enabled(inited, OS_LOG_TYPE_ERROR))
   {
     +[BCAppleBacklightBrtControl newMonitorWithHandler:error:];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -86,10 +86,10 @@
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_9:
-    *a4 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithIOKitError:v13];
+    *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithIOKitError:v13];
   }
 
 LABEL_10:
@@ -177,7 +177,7 @@ void __58__BCAppleBacklightBrtControl_newMonitorWithHandler_error___block_invoke
   return [v2 initWithString:@"com.apple.BCBrtControl.AppleBacklight"];
 }
 
-- (BCAppleBacklightBrtControl)initWithService:(unsigned int)a3
+- (BCAppleBacklightBrtControl)initWithService:(unsigned int)service
 {
   v119 = *MEMORY[0x277D85DE8];
   v114.receiver = self;
@@ -186,15 +186,15 @@ void __58__BCAppleBacklightBrtControl_newMonitorWithHandler_error___block_invoke
   if (v4)
   {
     context = objc_autoreleasePoolPush();
-    *(v4 + 29) = a3;
-    if (a3)
+    *(v4 + 29) = service;
+    if (service)
     {
       v5 = *MEMORY[0x277CBECE8];
-      CFProperty = IORegistryEntryCreateCFProperty(a3, @"IODisplayParameters", *MEMORY[0x277CBECE8], 0);
+      CFProperty = IORegistryEntryCreateCFProperty(service, @"IODisplayParameters", *MEMORY[0x277CBECE8], 0);
       v7 = CFProperty;
       if ([v4 logHandle])
       {
-        v8 = [v4 logHandle];
+        logHandle = [v4 logHandle];
       }
 
       else
@@ -373,15 +373,15 @@ LABEL_10:
               v40 = [v37 length];
               if (v40 >= 4)
               {
-                v41 = [v37 bytes];
-                if (v41)
+                bytes = [v37 bytes];
+                if (bytes)
                 {
                   v42 = v40 >> 2;
                   v43 = [MEMORY[0x277CBEB18] arrayWithCapacity:v42];
                   v45 = 0;
                   do
                   {
-                    *&v44 = *(v41 + 4 * v45) * 0.000015259;
+                    *&v44 = *(bytes + 4 * v45) * 0.000015259;
                     [v43 setObject:objc_msgSend(MEMORY[0x277CCABB0] atIndexedSubscript:{"numberWithFloat:", v44), v45++}];
                   }
 
@@ -772,7 +772,7 @@ LABEL_10:
             [v4 parseColorCapabilities];
             if ([v4 logHandle])
             {
-              v97 = [v4 logHandle];
+              logHandle2 = [v4 logHandle];
             }
 
             else
@@ -816,7 +816,7 @@ LABEL_162:
 
                 if ([v4 logHandle])
                 {
-                  v104 = [v4 logHandle];
+                  logHandle3 = [v4 logHandle];
                 }
 
                 else
@@ -835,23 +835,23 @@ LABEL_171:
                     goto LABEL_172;
                   }
 
-                  v104 = init_default_corebrightness_log();
+                  logHandle3 = init_default_corebrightness_log();
                 }
 
-                v105 = v104;
+                v105 = logHandle3;
                 goto LABEL_169;
               }
 
-              v97 = init_default_corebrightness_log();
+              logHandle2 = init_default_corebrightness_log();
             }
 
-            v98 = v97;
+            v98 = logHandle2;
             goto LABEL_162;
           }
 
           if ([v4 logHandle])
           {
-            v80 = [v4 logHandle];
+            logHandle4 = [v4 logHandle];
           }
 
           else
@@ -873,23 +873,23 @@ LABEL_172:
               goto LABEL_173;
             }
 
-            v80 = init_default_corebrightness_log();
+            logHandle4 = init_default_corebrightness_log();
           }
 
-          v81 = v80;
+          v81 = logHandle4;
           goto LABEL_136;
         }
 
-        v8 = init_default_corebrightness_log();
+        logHandle = init_default_corebrightness_log();
       }
 
-      v9 = v8;
+      v9 = logHandle;
       goto LABEL_10;
     }
 
     if ([v4 logHandle])
     {
-      v10 = [v4 logHandle];
+      logHandle5 = [v4 logHandle];
     }
 
     else
@@ -906,10 +906,10 @@ LABEL_132:
         goto LABEL_138;
       }
 
-      v10 = init_default_corebrightness_log();
+      logHandle5 = init_default_corebrightness_log();
     }
 
-    v11 = v10;
+    v11 = logHandle5;
     goto LABEL_132;
   }
 
@@ -1115,7 +1115,7 @@ LABEL_5:
   [(BCBrtControl *)&v6 dealloc];
 }
 
-- (BOOL)setNits:(double)a3 error:(id *)a4
+- (BOOL)setNits:(double)nits error:(id *)error
 {
   if (self->_isDFR || self->_override)
   {
@@ -1123,16 +1123,16 @@ LABEL_5:
     v12 = &v11;
     v13 = 0x2020000000;
     v14 = 1;
-    v7 = [(BCBrtControl *)self queue];
+    queue = [(BCBrtControl *)self queue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __44__BCAppleBacklightBrtControl_setNits_error___block_invoke;
     v10[3] = &unk_2784F8DA0;
     v10[5] = &v11;
-    v10[6] = a4;
+    v10[6] = error;
     v10[4] = self;
-    *&v10[7] = a3;
-    dispatch_sync(v7, v10);
+    *&v10[7] = nits;
+    dispatch_sync(queue, v10);
     v8 = *(v12 + 24);
     _Block_object_dispose(&v11, 8);
   }
@@ -1140,9 +1140,9 @@ LABEL_5:
   else
   {
     v8 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithBCError:16];
+      *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithBCError:16];
     }
   }
 
@@ -1232,7 +1232,7 @@ LABEL_15:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (double)getNitsWithError:(id *)a3
+- (double)getNitsWithError:(id *)error
 {
   if (self->_isDFR || self->_override)
   {
@@ -1240,15 +1240,15 @@ LABEL_15:
     v10 = &v9;
     v11 = 0x2020000000;
     v12 = 0;
-    v5 = [(BCBrtControl *)self queue];
+    queue = [(BCBrtControl *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __47__BCAppleBacklightBrtControl_getNitsWithError___block_invoke;
     block[3] = &unk_2784F8DC8;
     block[5] = &v9;
-    block[6] = a3;
+    block[6] = error;
     block[4] = self;
-    dispatch_sync(v5, block);
+    dispatch_sync(queue, block);
     v6 = v10[3];
     _Block_object_dispose(&v9, 8);
   }
@@ -1256,9 +1256,9 @@ LABEL_15:
   else
   {
     v6 = -1.0;
-    if (a3)
+    if (error)
     {
-      *a3 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithBCError:16];
+      *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithBCError:16];
     }
   }
 
@@ -1290,11 +1290,11 @@ void __47__BCAppleBacklightBrtControl_getNitsWithError___block_invoke(uint64_t a
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)setProperty:(id)a3 value:(id)a4 error:(id *)a5
+- (BOOL)setProperty:(id)property value:(id)value error:(id *)error
 {
   if (!_isIOKitCompatible())
   {
-    if (!a5)
+    if (!error)
     {
       return 0;
     }
@@ -1303,15 +1303,15 @@ void __47__BCAppleBacklightBrtControl_getNitsWithError___block_invoke(uint64_t a
 LABEL_7:
     v11 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithIOKitError:v10];
     result = 0;
-    *a5 = v11;
+    *error = v11;
     return result;
   }
 
-  v9 = IORegistryEntrySetCFProperty(*(&self->_backlightService + 1), a3, a4);
+  v9 = IORegistryEntrySetCFProperty(*(&self->_backlightService + 1), property, value);
   if (v9)
   {
     v10 = v9;
-    if (!a5)
+    if (!error)
     {
       return 0;
     }
@@ -1322,20 +1322,20 @@ LABEL_7:
   return 1;
 }
 
-- (id)copyProperty:(id)a3 error:(id *)a4
+- (id)copyProperty:(id)property error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
   if (_isIOKitCompatible())
   {
-    CFProperty = IORegistryEntryCreateCFProperty(*(&self->_backlightService + 1), a3, *MEMORY[0x277CBECE8], 0);
+    CFProperty = IORegistryEntryCreateCFProperty(*(&self->_backlightService + 1), property, *MEMORY[0x277CBECE8], 0);
   }
 
   else
   {
     CFProperty = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithIOKitError:18];
+      *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithIOKitError:18];
     }
   }
 
@@ -1357,9 +1357,9 @@ LABEL_7:
 LABEL_9:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    if (a4)
+    if (error)
     {
-      v10 = *a4;
+      v10 = *error;
     }
 
     else
@@ -1368,7 +1368,7 @@ LABEL_9:
     }
 
     v13 = 138412802;
-    v14 = a3;
+    propertyCopy = property;
     v15 = 2112;
     v16 = CFProperty;
     v17 = 2112;
@@ -1605,21 +1605,21 @@ LABEL_46:
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v95 = 0;
     if (load_int_from_edt(*(&self->_backlightService + 1), @"aurora-ignore-peak-apce", &v95))
     {
-      [v6 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithInt:", v95), @"AuroraIgnorePeakAPCE"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithInt:", v95), @"AuroraIgnorePeakAPCE"}];
     }
 
     *&v7 = load_float_from_edt(*(&self->_backlightService + 1), @"aurora-cltm-threshold");
-    [v6 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v7), @"AuroraCLTMThreshold"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v7), @"AuroraCLTMThreshold"}];
     *&v8 = load_float_from_edt(*(&self->_backlightService + 1), @"aurora-cltm-enter-multiplier");
-    [v6 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v8), @"AuroraCLTMEnterMultiplier"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v8), @"AuroraCLTMEnterMultiplier"}];
     *&v9 = load_float_from_edt(*(&self->_backlightService + 1), @"aurora-upo-threshold");
-    [v6 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v9), @"AuroraUPOThreshold"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v9), @"AuroraUPOThreshold"}];
     *&v10 = load_float_from_edt(*(&self->_backlightService + 1), @"aurora-upo-enter-multiplier");
-    [v6 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v10), @"AuroraUPOEnterMultiplier"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v10), @"AuroraUPOEnterMultiplier"}];
     *buf = 0;
     float_array_from_edt = load_float_array_from_edt(*(&self->_backlightService + 1), @"aurora-enter-lux", buf);
     v12 = *buf;
@@ -1632,7 +1632,7 @@ LABEL_46:
         [v13 setObject:objc_msgSend(MEMORY[0x277CCABB0] atIndexedSubscript:{"numberWithFloat:", v14), i}];
       }
 
-      [v6 setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v13), @"AuroraEnterLux"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v13), @"AuroraEnterLux"}];
       v12 = *buf;
     }
 
@@ -1649,7 +1649,7 @@ LABEL_46:
         [v18 setObject:objc_msgSend(MEMORY[0x277CCABB0] atIndexedSubscript:{"numberWithFloat:", v19), j}];
       }
 
-      [v6 setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v18), @"AuroraExitLux"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v18), @"AuroraExitLux"}];
       v17 = v93;
     }
 
@@ -1666,17 +1666,17 @@ LABEL_46:
         [v23 setObject:objc_msgSend(MEMORY[0x277CCABB0] atIndexedSubscript:{"numberWithFloat:", v24), k}];
       }
 
-      [v6 setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v23), @"AuroraSaturationLux"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v23), @"AuroraSaturationLux"}];
       v22 = v92;
     }
 
     free(v22);
     *&v26 = load_float_from_edt(*(&self->_backlightService + 1), @"aurora-avrg-apce-sampling-rate");
-    [v6 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v26), @"AuroraAverageAPCESamplingRate"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v26), @"AuroraAverageAPCESamplingRate"}];
     *&v27 = load_float_from_edt(*(&self->_backlightService + 1), @"aurora-ramp-up-speed");
-    [v6 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v27), @"AuroraRampUpSpeed"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v27), @"AuroraRampUpSpeed"}];
     *&v28 = load_float_from_edt(*(&self->_backlightService + 1), @"aurora-ramp-down-speed");
-    [v6 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v28), @"AuroraRampDownSpeed"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v28), @"AuroraRampDownSpeed"}];
     v91 = 0;
     v29 = load_float_array_from_edt(*(&self->_backlightService + 1), @"aurora-ramp-up-tap-points", &v91);
     if (v91)
@@ -1688,7 +1688,7 @@ LABEL_46:
         [v30 setObject:objc_msgSend(MEMORY[0x277CCABB0] atIndexedSubscript:{"numberWithFloat:", v31), 0}];
         LODWORD(v32) = *(v91 + 1);
         [v30 setObject:objc_msgSend(MEMORY[0x277CCABB0] atIndexedSubscript:{"numberWithFloat:", v32), 1}];
-        [v6 setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v30), @"AuroraRampUpTapAPCEPoints"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v30), @"AuroraRampUpTapAPCEPoints"}];
       }
 
       else
@@ -1722,7 +1722,7 @@ LABEL_46:
         [v37 setObject:objc_msgSend(MEMORY[0x277CCABB0] atIndexedSubscript:{"numberWithFloat:", v38), 0}];
         LODWORD(v39) = *(v90 + 1);
         [v37 setObject:objc_msgSend(MEMORY[0x277CCABB0] atIndexedSubscript:{"numberWithFloat:", v39), 1}];
-        [v6 setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v37), @"AuroraRampDownTapAPCEPoints"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v37), @"AuroraRampDownTapAPCEPoints"}];
       }
 
       else
@@ -1746,31 +1746,31 @@ LABEL_46:
 
     free(v90);
     *&v41 = load_float_from_edt(*(&self->_backlightService + 1), @"aurora-session-limit");
-    [v6 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v41), @"AuroraSessionLimit"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v41), @"AuroraSessionLimit"}];
     v89 = 0;
     if (load_int_from_edt(*(&self->_backlightService + 1), @"aurora-ignore-session-limit", &v89))
     {
-      [v6 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithInt:", v89), @"AuroraIgnoreSessionLimit"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithInt:", v89), @"AuroraIgnoreSessionLimit"}];
     }
 
     *&v42 = load_float_from_edt(*(&self->_backlightService + 1), @"aurora-maximum-nits");
-    [v6 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v42), @"AuroraMaxNits"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithFloat:", v42), @"AuroraMaxNits"}];
     v88 = 0;
     if (load_int_from_edt(*(&self->_backlightService + 1), @"aurora-ignore-apce", &v88))
     {
-      [v6 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithInt:", v88), @"AuroraIgnoreAPCE"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithInt:", v88), @"AuroraIgnoreAPCE"}];
     }
 
     v87 = 0;
     if (load_int_from_edt(*(&self->_backlightService + 1), @"aurora-allow-edr", &v87))
     {
-      [v6 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithInt:", v87), @"AuroraAllowEDR"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithInt:", v87), @"AuroraAllowEDR"}];
     }
 
     v86 = 0;
     if (load_int_from_edt(*(&self->_backlightService + 1), @"supports-cltm-aware-aurora", &v86))
     {
-      [v6 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithInt:", v86), @"SupportCLTMAwareAurora"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithInt:", v86), @"SupportCLTMAwareAurora"}];
     }
 
     v85 = 0;
@@ -1785,7 +1785,7 @@ LABEL_46:
         [v45 setObject:objc_msgSend(MEMORY[0x277CCABB0] atIndexedSubscript:{"numberWithFloat:", v46), m}];
       }
 
-      [v6 setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v45), @"PowerAwareAuroraSDRLUT"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v45), @"PowerAwareAuroraSDRLUT"}];
       v44 = v85;
     }
 
@@ -1802,7 +1802,7 @@ LABEL_46:
         [v50 setObject:objc_msgSend(MEMORY[0x277CCABB0] atIndexedSubscript:{"numberWithFloat:", v51), n}];
       }
 
-      [v6 setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v50), @"PAARampUpMinAPCEPoints"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v50), @"PAARampUpMinAPCEPoints"}];
       v49 = v84;
     }
 
@@ -1819,7 +1819,7 @@ LABEL_46:
         [v55 setObject:objc_msgSend(MEMORY[0x277CCABB0] atIndexedSubscript:{"numberWithFloat:", v56), ii}];
       }
 
-      [v6 setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v55), @"PAARampUpMaxAPCEPoints"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v55), @"PAARampUpMaxAPCEPoints"}];
       v54 = v83;
     }
 
@@ -1836,7 +1836,7 @@ LABEL_46:
         [v60 setObject:objc_msgSend(MEMORY[0x277CCABB0] atIndexedSubscript:{"numberWithFloat:", v61), jj}];
       }
 
-      [v6 setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v60), @"PAARampDownMinAPCEPoints"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v60), @"PAARampDownMinAPCEPoints"}];
       v59 = v82;
     }
 
@@ -1853,7 +1853,7 @@ LABEL_46:
         [v65 setObject:objc_msgSend(MEMORY[0x277CCABB0] atIndexedSubscript:{"numberWithFloat:", v66), kk}];
       }
 
-      [v6 setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v65), @"PAARampDownMaxAPCEPoints"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v65), @"PAARampDownMaxAPCEPoints"}];
       v64 = v81;
     }
 
@@ -1870,7 +1870,7 @@ LABEL_46:
         [v70 setObject:objc_msgSend(MEMORY[0x277CCABB0] atIndexedSubscript:{"numberWithFloat:", v71), mm}];
       }
 
-      [v6 setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v70), @"PAAMaxGain"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v70), @"PAAMaxGain"}];
       v69 = v80;
     }
 
@@ -1887,14 +1887,14 @@ LABEL_46:
         [v75 setObject:objc_msgSend(MEMORY[0x277CCABB0] atIndexedSubscript:{"numberWithFloat:", v76), nn}];
       }
 
-      [v6 setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v75), @"PAAEnergyConsumptionTarget"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CBEA60] forKeyedSubscript:{"arrayWithArray:", v75), @"PAAEnergyConsumptionTarget"}];
       v74 = v79;
     }
 
     free(v74);
-    if ([v6 count])
+    if ([dictionary count])
     {
-      -[NSMutableDictionary setObject:forKeyedSubscript:](self->super._capabilities, "setObject:forKeyedSubscript:", [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v6], @"Aurora");
+      -[NSMutableDictionary setObject:forKeyedSubscript:](self->super._capabilities, "setObject:forKeyedSubscript:", [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary], @"Aurora");
     }
 
     goto LABEL_89;
@@ -1902,16 +1902,16 @@ LABEL_46:
 
   if ([(BCBrtControl *)self logHandle])
   {
-    v33 = [(BCBrtControl *)self logHandle];
+    logHandle = [(BCBrtControl *)self logHandle];
 LABEL_27:
-    v34 = v33;
+    v34 = logHandle;
     goto LABEL_29;
   }
 
   v34 = _COREBRIGHTNESS_LOG_DEFAULT;
   if (!_COREBRIGHTNESS_LOG_DEFAULT)
   {
-    v33 = init_default_corebrightness_log();
+    logHandle = init_default_corebrightness_log();
     goto LABEL_27;
   }
 

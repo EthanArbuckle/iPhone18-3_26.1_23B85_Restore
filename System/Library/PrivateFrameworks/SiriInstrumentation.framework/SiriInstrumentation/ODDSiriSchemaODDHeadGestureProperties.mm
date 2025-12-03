@@ -1,49 +1,49 @@
 @interface ODDSiriSchemaODDHeadGestureProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDHeadGestureProperties)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDHeadGestureProperties)initWithJSON:(id)a3;
+- (ODDSiriSchemaODDHeadGestureProperties)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDHeadGestureProperties)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAcceptProceedGesture:(BOOL)a3;
-- (void)setHasDeclineDismissGesture:(BOOL)a3;
-- (void)setHasHeadGesturesEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAcceptProceedGesture:(BOOL)gesture;
+- (void)setHasDeclineDismissGesture:(BOOL)gesture;
+- (void)setHasHeadGesturesEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDHeadGestureProperties
 
-- (ODDSiriSchemaODDHeadGestureProperties)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDHeadGestureProperties)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ODDSiriSchemaODDHeadGestureProperties;
   v5 = [(ODDSiriSchemaODDHeadGestureProperties *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"headGesturesSupported"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"headGesturesSupported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDHeadGestureProperties setHeadGesturesSupported:](v5, "setHeadGesturesSupported:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"headGesturesEnabled"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"headGesturesEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDHeadGestureProperties setHeadGesturesEnabled:](v5, "setHeadGesturesEnabled:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"acceptProceedGesture"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"acceptProceedGesture"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDHeadGestureProperties setAcceptProceedGesture:](v5, "setAcceptProceedGesture:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"declineDismissGesture"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"declineDismissGesture"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDHeadGestureProperties)initWithJSON:(id)a3
+- (ODDSiriSchemaODDHeadGestureProperties)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDHeadGestureProperties *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDHeadGestureProperties *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDHeadGestureProperties *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,12 +92,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v5 = [(ODDSiriSchemaODDHeadGestureProperties *)self acceptProceedGesture];
-    if (v5 == 1)
+    acceptProceedGesture = [(ODDSiriSchemaODDHeadGestureProperties *)self acceptProceedGesture];
+    if (acceptProceedGesture == 1)
     {
       v6 = @"ORCHHEADGESTUREMAPPING_SIDE_TO_SIDE";
     }
@@ -107,7 +107,7 @@
       v6 = @"ORCHHEADGESTUREMAPPING_UNKNOWN";
     }
 
-    if (v5 == 2)
+    if (acceptProceedGesture == 2)
     {
       v7 = @"ORCHHEADGESTUREMAPPING_UP_AND_DOWN";
     }
@@ -117,14 +117,14 @@
       v7 = v6;
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"acceptProceedGesture"];
+    [dictionary setObject:v7 forKeyedSubscript:@"acceptProceedGesture"];
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    v8 = [(ODDSiriSchemaODDHeadGestureProperties *)self declineDismissGesture];
-    if (v8 == 1)
+    declineDismissGesture = [(ODDSiriSchemaODDHeadGestureProperties *)self declineDismissGesture];
+    if (declineDismissGesture == 1)
     {
       v9 = @"ORCHHEADGESTUREMAPPING_SIDE_TO_SIDE";
     }
@@ -134,7 +134,7 @@
       v9 = @"ORCHHEADGESTUREMAPPING_UNKNOWN";
     }
 
-    if (v8 == 2)
+    if (declineDismissGesture == 2)
     {
       v10 = @"ORCHHEADGESTUREMAPPING_UP_AND_DOWN";
     }
@@ -144,14 +144,14 @@
       v10 = v9;
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"declineDismissGesture"];
+    [dictionary setObject:v10 forKeyedSubscript:@"declineDismissGesture"];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDHeadGestureProperties headGesturesEnabled](self, "headGesturesEnabled")}];
-    [v3 setObject:v11 forKeyedSubscript:@"headGesturesEnabled"];
+    [dictionary setObject:v11 forKeyedSubscript:@"headGesturesEnabled"];
 
     has = self->_has;
   }
@@ -159,12 +159,12 @@
   if (has)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDHeadGestureProperties headGesturesSupported](self, "headGesturesSupported")}];
-    [v3 setObject:v12 forKeyedSubscript:@"headGesturesSupported"];
+    [dictionary setObject:v12 forKeyedSubscript:@"headGesturesSupported"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -221,16 +221,16 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[20];
+  v6 = equalCopy[20];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -239,13 +239,13 @@ LABEL_5:
   if (*&has)
   {
     headGesturesSupported = self->_headGesturesSupported;
-    if (headGesturesSupported != [v4 headGesturesSupported])
+    if (headGesturesSupported != [equalCopy headGesturesSupported])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -257,13 +257,13 @@ LABEL_5:
   if (v8)
   {
     headGesturesEnabled = self->_headGesturesEnabled;
-    if (headGesturesEnabled != [v4 headGesturesEnabled])
+    if (headGesturesEnabled != [equalCopy headGesturesEnabled])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -275,10 +275,10 @@ LABEL_5:
   if (v10)
   {
     acceptProceedGesture = self->_acceptProceedGesture;
-    if (acceptProceedGesture == [v4 acceptProceedGesture])
+    if (acceptProceedGesture == [equalCopy acceptProceedGesture])
     {
       has = self->_has;
-      v6 = v4[20];
+      v6 = equalCopy[20];
       goto LABEL_14;
     }
 
@@ -297,7 +297,7 @@ LABEL_14:
   if (v12)
   {
     declineDismissGesture = self->_declineDismissGesture;
-    if (declineDismissGesture != [v4 declineDismissGesture])
+    if (declineDismissGesture != [equalCopy declineDismissGesture])
     {
       goto LABEL_18;
     }
@@ -309,9 +309,9 @@ LABEL_19:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -358,9 +358,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasDeclineDismissGesture:(BOOL)a3
+- (void)setHasDeclineDismissGesture:(BOOL)gesture
 {
-  if (a3)
+  if (gesture)
   {
     v3 = 8;
   }
@@ -373,9 +373,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasAcceptProceedGesture:(BOOL)a3
+- (void)setHasAcceptProceedGesture:(BOOL)gesture
 {
-  if (a3)
+  if (gesture)
   {
     v3 = 4;
   }
@@ -388,9 +388,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasHeadGesturesEnabled:(BOOL)a3
+- (void)setHasHeadGesturesEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }

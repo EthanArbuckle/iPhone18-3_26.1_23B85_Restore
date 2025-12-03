@@ -1,25 +1,25 @@
 @interface PKSegmentedBarView
-- (PKSegmentedBarView)initWithFrame:(CGRect)a3;
+- (PKSegmentedBarView)initWithFrame:(CGRect)frame;
 - (void)_callCompletion;
-- (void)_generateImageForConfiguration:(id)a3 barLength:(double)a4 maximumLength:(double)a5 synchronous:(BOOL)a6;
-- (void)_updateImageWithImage:(id)a3;
+- (void)_generateImageForConfiguration:(id)configuration barLength:(double)length maximumLength:(double)maximumLength synchronous:(BOOL)synchronous;
+- (void)_updateImageWithImage:(id)image;
 - (void)_updatePlaceholder;
-- (void)configureWithBarConfiguration:(id)a3 axis:(unsigned int)a4 maximumLength:(double)a5 barLength:(double)a6 synchronous:(BOOL)a7 completion:(id)a8;
+- (void)configureWithBarConfiguration:(id)configuration axis:(unsigned int)axis maximumLength:(double)length barLength:(double)barLength synchronous:(BOOL)synchronous completion:(id)completion;
 - (void)layoutSubviews;
-- (void)setBlurDisabled:(BOOL)a3;
-- (void)setPlaceholderColor:(id)a3;
-- (void)setRoundBaselineCorners:(BOOL)a3;
-- (void)setShowPlaceholder:(BOOL)a3;
-- (void)setUseSmallCornerRadius:(BOOL)a3;
+- (void)setBlurDisabled:(BOOL)disabled;
+- (void)setPlaceholderColor:(id)color;
+- (void)setRoundBaselineCorners:(BOOL)corners;
+- (void)setShowPlaceholder:(BOOL)placeholder;
+- (void)setUseSmallCornerRadius:(BOOL)radius;
 @end
 
 @implementation PKSegmentedBarView
 
-- (PKSegmentedBarView)initWithFrame:(CGRect)a3
+- (PKSegmentedBarView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = PKSegmentedBarView;
-  v3 = [(PKSegmentedBarView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKSegmentedBarView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:0];
@@ -31,15 +31,15 @@
     placeholder = v3->_placeholder;
     v3->_placeholder = v7;
 
-    v9 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+    quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
     placeholderColor = v3->_placeholderColor;
-    v3->_placeholderColor = v9;
+    v3->_placeholderColor = quaternarySystemFillColor;
 
-    v11 = [(UIImageView *)v3->_bar layer];
-    __36__PKSegmentedBarView_initWithFrame___block_invoke(v11);
+    layer = [(UIImageView *)v3->_bar layer];
+    __36__PKSegmentedBarView_initWithFrame___block_invoke(layer);
 
-    v12 = [(UIView *)v3->_placeholder layer];
-    __36__PKSegmentedBarView_initWithFrame___block_invoke(v12);
+    layer2 = [(UIView *)v3->_placeholder layer];
+    __36__PKSegmentedBarView_initWithFrame___block_invoke(layer2);
 
     [(PKSegmentedBarView *)v3 addSubview:v3->_placeholder];
     [(PKSegmentedBarView *)v3 addSubview:v3->_bar];
@@ -56,24 +56,24 @@ void __36__PKSegmentedBarView_initWithFrame___block_invoke(void *a1)
   [v1 setCornerCurve:*MEMORY[0x1E69796E8]];
 }
 
-- (void)configureWithBarConfiguration:(id)a3 axis:(unsigned int)a4 maximumLength:(double)a5 barLength:(double)a6 synchronous:(BOOL)a7 completion:(id)a8
+- (void)configureWithBarConfiguration:(id)configuration axis:(unsigned int)axis maximumLength:(double)length barLength:(double)barLength synchronous:(BOOL)synchronous completion:(id)completion
 {
-  v9 = a7;
-  v23 = a3;
-  v15 = a8;
-  if (v15)
+  synchronousCopy = synchronous;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v16 = self->_configuration;
-    objc_storeStrong(&self->_configuration, a3);
+    objc_storeStrong(&self->_configuration, configuration);
     axis = self->_axis;
-    self->_axis = a4;
+    self->_axis = axis;
     barLength = self->_barLength;
-    self->_barLength = a6;
+    self->_barLength = barLength;
     maximumLength = self->_maximumLength;
-    self->_maximumLength = a5;
+    self->_maximumLength = length;
     if (PKEqualObjects() && self->_image && self->_barLength == barLength && self->_maximumLength == maximumLength && self->_axis == axis)
     {
-      v15[2](v15);
+      completionCopy[2](completionCopy);
     }
 
     else
@@ -86,11 +86,11 @@ void __36__PKSegmentedBarView_initWithFrame___block_invoke(void *a1)
         imageCompletion[2]();
       }
 
-      v21 = [v15 copy];
+      v21 = [completionCopy copy];
       v22 = self->_imageCompletion;
       self->_imageCompletion = v21;
 
-      [(PKSegmentedBarView *)self _generateImageForConfiguration:self->_configuration barLength:v9 maximumLength:a6 synchronous:a5];
+      [(PKSegmentedBarView *)self _generateImageForConfiguration:self->_configuration barLength:synchronousCopy maximumLength:barLength synchronous:length];
       [(PKSegmentedBarView *)self setNeedsLayout];
     }
   }
@@ -155,14 +155,14 @@ void __36__PKSegmentedBarView_initWithFrame___block_invoke(void *a1)
   [(UIImageView *)self->_bar setFrame:v4, v19, v16, v17];
 }
 
-- (void)_updateImageWithImage:(id)a3
+- (void)_updateImageWithImage:(id)image
 {
-  v7 = a3;
-  objc_storeStrong(&self->_image, a3);
-  v5 = [(UIImageView *)self->_bar image];
+  imageCopy = image;
+  objc_storeStrong(&self->_image, image);
+  image = [(UIImageView *)self->_bar image];
   image = self->_image;
 
-  if (v5 != image)
+  if (image != image)
   {
     [(UIImageView *)self->_bar setImage:self->_image];
   }
@@ -181,33 +181,33 @@ void __36__PKSegmentedBarView_initWithFrame___block_invoke(void *a1)
   }
 }
 
-- (void)_generateImageForConfiguration:(id)a3 barLength:(double)a4 maximumLength:(double)a5 synchronous:(BOOL)a6
+- (void)_generateImageForConfiguration:(id)configuration barLength:(double)length maximumLength:(double)maximumLength synchronous:(BOOL)synchronous
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = v10;
-  if (a4 <= 0.0)
+  synchronousCopy = synchronous;
+  configurationCopy = configuration;
+  v11 = configurationCopy;
+  if (length <= 0.0)
   {
-    [v10 totalValue];
+    [configurationCopy totalValue];
 LABEL_7:
     [(PKSegmentedBarView *)self _updateImageWithImage:0];
     [(PKSegmentedBarView *)self _callCompletion];
     goto LABEL_12;
   }
 
-  v12 = [v10 isReady];
+  isReady = [configurationCopy isReady];
   [v11 totalValue];
-  if (!v12 || v13 <= 0.0)
+  if (!isReady || v13 <= 0.0)
   {
     goto LABEL_7;
   }
 
-  v14 = [(PKSegmentedBarView *)self traitCollection];
+  traitCollection = [(PKSegmentedBarView *)self traitCollection];
   axis = self->_axis;
   v16 = !self->_blurDisabled;
-  if (v6)
+  if (synchronousCopy)
   {
-    BarImage = PKSegmentedBarCreateBarImage(v11, v14, self->_axis, v16, a4, a5);
+    BarImage = PKSegmentedBarCreateBarImage(v11, traitCollection, self->_axis, v16, length, maximumLength);
     [(PKSegmentedBarView *)self _updateImageWithImage:BarImage];
     [(PKSegmentedBarView *)self _callCompletion];
   }
@@ -230,10 +230,10 @@ LABEL_7:
     objc_copyWeak(v24, &location);
     v24[1] = v19;
     v22 = v11;
-    v23 = v14;
+    v23 = traitCollection;
     v25 = axis;
-    v24[2] = *&a4;
-    v24[3] = *&a5;
+    v24[2] = *&length;
+    v24[3] = *&maximumLength;
     v26 = v18;
     dispatch_async(v20, v21);
 
@@ -285,38 +285,38 @@ void __89__PKSegmentedBarView__generateImageForConfiguration_barLength_maximumLe
   }
 }
 
-- (void)setShowPlaceholder:(BOOL)a3
+- (void)setShowPlaceholder:(BOOL)placeholder
 {
-  if (self->_showPlaceholder == !a3)
+  if (self->_showPlaceholder == !placeholder)
   {
-    self->_showPlaceholder = a3;
+    self->_showPlaceholder = placeholder;
     [(PKSegmentedBarView *)self setNeedsLayout];
   }
 }
 
-- (void)setRoundBaselineCorners:(BOOL)a3
+- (void)setRoundBaselineCorners:(BOOL)corners
 {
-  if (self->_roundBaselineCorners == !a3)
+  if (self->_roundBaselineCorners == !corners)
   {
-    self->_roundBaselineCorners = a3;
+    self->_roundBaselineCorners = corners;
     [(PKSegmentedBarView *)self setNeedsLayout];
   }
 }
 
-- (void)setUseSmallCornerRadius:(BOOL)a3
+- (void)setUseSmallCornerRadius:(BOOL)radius
 {
-  if (self->_useSmallCornerRadius == !a3)
+  if (self->_useSmallCornerRadius == !radius)
   {
-    self->_useSmallCornerRadius = a3;
+    self->_useSmallCornerRadius = radius;
     [(PKSegmentedBarView *)self setNeedsLayout];
   }
 }
 
-- (void)setBlurDisabled:(BOOL)a3
+- (void)setBlurDisabled:(BOOL)disabled
 {
-  if (self->_blurDisabled == !a3)
+  if (self->_blurDisabled == !disabled)
   {
-    self->_blurDisabled = a3;
+    self->_blurDisabled = disabled;
     image = self->_image;
     self->_image = 0;
 
@@ -326,12 +326,12 @@ void __89__PKSegmentedBarView__generateImageForConfiguration_barLength_maximumLe
   }
 }
 
-- (void)setPlaceholderColor:(id)a3
+- (void)setPlaceholderColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_placeholderColor, a3);
+    objc_storeStrong(&self->_placeholderColor, color);
     [(PKSegmentedBarView *)self _updatePlaceholder];
   }
 }
@@ -372,11 +372,11 @@ void __89__PKSegmentedBarView__generateImageForConfiguration_barLength_maximumLe
   v10[4] = v6;
   *&v10[5] = v5;
   v7 = _Block_copy(v10);
-  v8 = [(UIImageView *)self->_bar layer];
-  v7[2](v7, v8);
+  layer = [(UIImageView *)self->_bar layer];
+  v7[2](v7, layer);
 
-  v9 = [(UIView *)self->_placeholder layer];
-  v7[2](v7, v9);
+  layer2 = [(UIView *)self->_placeholder layer];
+  v7[2](v7, layer2);
 
   [(UIView *)self->_placeholder setHidden:!self->_showPlaceholder];
 }

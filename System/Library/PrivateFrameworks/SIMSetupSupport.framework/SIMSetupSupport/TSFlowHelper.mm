@@ -1,20 +1,20 @@
 @interface TSFlowHelper
-+ (BOOL)hasTransferablePlanWithSameCarrierName:(id)a3 transferablePlans:(id)a4 inBuddy:(BOOL)a5 matchingSODACarrierWebsheetTransferPlanIndex:(id)a6;
-+ (id)getAccountMemberTransferablePlanWithSameCarrierName:(id)a3 transferablePlans:(id)a4;
-+ (id)sortIndexesInDescending:(id)a3;
-+ (id)unregisteredSelectedPlanItems:(id)a3;
-+ (int64_t)_slotForPlanItem:(id)a3;
-+ (void)registerIMessageWithPlanItems:(id)a3;
-+ (void)showBluetoothOffAlertForCrossPlatformTransfer:(id)a3 withCloseHandler:(id)a4;
++ (BOOL)hasTransferablePlanWithSameCarrierName:(id)name transferablePlans:(id)plans inBuddy:(BOOL)buddy matchingSODACarrierWebsheetTransferPlanIndex:(id)index;
++ (id)getAccountMemberTransferablePlanWithSameCarrierName:(id)name transferablePlans:(id)plans;
++ (id)sortIndexesInDescending:(id)descending;
++ (id)unregisteredSelectedPlanItems:(id)items;
++ (int64_t)_slotForPlanItem:(id)item;
++ (void)registerIMessageWithPlanItems:(id)items;
++ (void)showBluetoothOffAlertForCrossPlatformTransfer:(id)transfer withCloseHandler:(id)handler;
 @end
 
 @implementation TSFlowHelper
 
-+ (id)unregisteredSelectedPlanItems:(id)a3
++ (id)unregisteredSelectedPlanItems:(id)items
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
   v23 = +[TSIDSSubscriptionSelector activeIMessageSlots];
   if ([v23 count])
   {
@@ -22,8 +22,8 @@
     v27 = 0uLL;
     v24 = 0uLL;
     v25 = 0uLL;
-    v22 = v4;
-    v6 = v4;
+    v22 = itemsCopy;
+    v6 = itemsCopy;
     v7 = [v6 countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v7)
     {
@@ -46,7 +46,7 @@
               continue;
             }
 
-            v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "_slotForPlanItem:", v11)}];
+            v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "_slotForPlanItem:", v11)}];
             v13 = [v23 containsObject:v12];
 
             if (v13)
@@ -55,7 +55,7 @@
             }
           }
 
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -70,7 +70,7 @@
       +[TSFlowHelper unregisteredSelectedPlanItems:];
     }
 
-    v4 = v22;
+    itemsCopy = v22;
   }
 
   else
@@ -79,7 +79,7 @@
     v31 = 0uLL;
     v28 = 0uLL;
     v29 = 0uLL;
-    v14 = v4;
+    v14 = itemsCopy;
     v15 = [v14 countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v15)
     {
@@ -97,7 +97,7 @@
           v19 = *(*(&v28 + 1) + 8 * j);
           if ([v19 isSelected])
           {
-            [v5 addObject:v19];
+            [array addObject:v19];
           }
         }
 
@@ -110,19 +110,19 @@
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-+ (void)registerIMessageWithPlanItems:(id)a3
++ (void)registerIMessageWithPlanItems:(id)items
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -138,8 +138,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "_slotForPlanItem:", *(*(&v14 + 1) + 8 * v10), v14)}];
-        [v5 addObject:v11];
+        v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "_slotForPlanItem:", *(*(&v14 + 1) + 8 * v10), v14)}];
+        [array addObject:v11];
 
         ++v10;
       }
@@ -151,7 +151,7 @@
     while (v8);
   }
 
-  [TSIDSSubscriptionSelector registerSlotsForIMessage:v5];
+  [TSIDSSubscriptionSelector registerSlotsForIMessage:array];
   v12 = _TSLogDomain();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -161,28 +161,28 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)hasTransferablePlanWithSameCarrierName:(id)a3 transferablePlans:(id)a4 inBuddy:(BOOL)a5 matchingSODACarrierWebsheetTransferPlanIndex:(id)a6
++ (BOOL)hasTransferablePlanWithSameCarrierName:(id)name transferablePlans:(id)plans inBuddy:(BOOL)buddy matchingSODACarrierWebsheetTransferPlanIndex:(id)index
 {
-  v7 = a5;
+  buddyCopy = buddy;
   v48 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (!v9 || ([v9 plans], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, !v13))
+  nameCopy = name;
+  plansCopy = plans;
+  indexCopy = index;
+  if (!nameCopy || ([nameCopy plans], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, !v13))
   {
     v26 = 0;
     goto LABEL_27;
   }
 
-  v14 = [v9 plans];
-  v15 = [v14 objectAtIndexedSubscript:0];
-  v36 = [v15 carrierName];
+  plans = [nameCopy plans];
+  v15 = [plans objectAtIndexedSubscript:0];
+  carrierName = [v15 carrierName];
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v16 = v10;
+  v16 = plansCopy;
   v17 = [v16 countByEnumeratingWithState:&v37 objects:v47 count:16];
   if (!v17)
   {
@@ -191,9 +191,9 @@
   }
 
   v18 = v17;
-  v33 = v7;
-  v34 = v11;
-  v35 = v10;
+  v33 = buddyCopy;
+  v34 = indexCopy;
+  v35 = plansCopy;
   v19 = *v38;
   while (2)
   {
@@ -206,8 +206,8 @@
 
       v21 = *(*(&v37 + 1) + 8 * i);
       v22 = [v21 objectForKeyedSubscript:@"planItem"];
-      v23 = [v22 carrierName];
-      v24 = [TSUtilities isCaseInsensitiveEqual:v36 withString:v23];
+      carrierName2 = [v22 carrierName];
+      v24 = [TSUtilities isCaseInsensitiveEqual:carrierName withString:carrierName2];
 
       if (v24)
       {
@@ -223,7 +223,7 @@
           }
 
           v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v25];
-          v11 = v34;
+          indexCopy = v34;
           [v34 addObject:v28];
           v26 = 0;
         }
@@ -247,7 +247,7 @@
               }
 
               *buf = 138412802;
-              v42 = v36;
+              v42 = carrierName;
               v43 = 2112;
               v44 = v32;
               v45 = 2080;
@@ -255,16 +255,16 @@
               _os_log_impl(&dword_262AA8000, v31, OS_LOG_TYPE_DEFAULT, "Websheet transferrable plan exists with same carrier name [%@] %@ @%s", buf, 0x20u);
             }
 
-            v10 = v35;
+            plansCopy = v35;
             if (!v33)
             {
               v26 = 1;
-              v11 = v34;
+              indexCopy = v34;
               goto LABEL_25;
             }
 
             v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v25];
-            v11 = v34;
+            indexCopy = v34;
             [v34 addObject:v28];
             v26 = 0;
 LABEL_24:
@@ -274,11 +274,11 @@ LABEL_25:
           }
 
           v28 = _TSLogDomain();
-          v11 = v34;
+          indexCopy = v34;
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v42 = v36;
+            v42 = carrierName;
             v43 = 2080;
             v44 = "+[TSFlowHelper hasTransferablePlanWithSameCarrierName:transferablePlans:inBuddy:matchingSODACarrierWebsheetTransferPlanIndex:]";
             _os_log_impl(&dword_262AA8000, v28, OS_LOG_TYPE_DEFAULT, "One click transferrable plan exists with same carrier name [%@] @%s", buf, 0x16u);
@@ -287,7 +287,7 @@ LABEL_25:
           v26 = 1;
         }
 
-        v10 = v35;
+        plansCopy = v35;
         goto LABEL_24;
       }
 
@@ -304,8 +304,8 @@ LABEL_12:
   }
 
   v26 = 0;
-  v10 = v35;
-  v11 = v34;
+  plansCopy = v35;
+  indexCopy = v34;
 LABEL_26:
 
 LABEL_27:
@@ -313,30 +313,30 @@ LABEL_27:
   return v26;
 }
 
-+ (id)getAccountMemberTransferablePlanWithSameCarrierName:(id)a3 transferablePlans:(id)a4
++ (id)getAccountMemberTransferablePlanWithSameCarrierName:(id)name transferablePlans:(id)plans
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v28 = [MEMORY[0x277CBEB18] array];
-  if (v5)
+  nameCopy = name;
+  plansCopy = plans;
+  array = [MEMORY[0x277CBEB18] array];
+  if (nameCopy)
   {
-    v7 = [v5 plans];
-    v8 = [v7 count];
+    plans = [nameCopy plans];
+    v8 = [plans count];
 
     if (v8)
     {
-      v27 = v5;
-      v9 = [v5 plans];
-      v10 = [v9 objectAtIndexedSubscript:0];
-      v11 = [v10 carrierName];
+      v27 = nameCopy;
+      plans2 = [nameCopy plans];
+      v10 = [plans2 objectAtIndexedSubscript:0];
+      carrierName = [v10 carrierName];
 
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v26 = v6;
-      v12 = v6;
+      v26 = plansCopy;
+      v12 = plansCopy;
       v13 = [v12 countByEnumeratingWithState:&v29 objects:v35 count:16];
       if (v13)
       {
@@ -353,8 +353,8 @@ LABEL_27:
 
             v17 = *(*(&v29 + 1) + 8 * i);
             v18 = [v17 objectForKeyedSubscript:{@"planItem", v26}];
-            v19 = [v18 carrierName];
-            v20 = [v11 caseInsensitiveCompare:v19];
+            carrierName2 = [v18 carrierName];
+            v20 = [carrierName caseInsensitiveCompare:carrierName2];
 
             if (!v20)
             {
@@ -370,7 +370,7 @@ LABEL_27:
                 }
 
                 v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v21];
-                [v28 addObject:v23];
+                [array addObject:v23];
               }
             }
           }
@@ -381,22 +381,22 @@ LABEL_27:
         while (v14);
       }
 
-      v6 = v26;
-      v5 = v27;
+      plansCopy = v26;
+      nameCopy = v27;
     }
   }
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v28;
+  return array;
 }
 
-+ (int64_t)_slotForPlanItem:(id)a3
++ (int64_t)_slotForPlanItem:(id)item
 {
-  v3 = [a3 uuid];
-  v4 = [v3 integerValue];
+  uuid = [item uuid];
+  integerValue = [uuid integerValue];
 
-  if (v4 >= 0)
+  if (integerValue >= 0)
   {
     return 1;
   }
@@ -407,11 +407,11 @@ LABEL_27:
   }
 }
 
-+ (id)sortIndexesInDescending:(id)a3
++ (id)sortIndexesInDescending:(id)descending
 {
-  v3 = a3;
-  [v3 sortUsingComparator:&__block_literal_global_33];
-  v4 = [v3 copy];
+  descendingCopy = descending;
+  [descendingCopy sortUsingComparator:&__block_literal_global_33];
+  v4 = [descendingCopy copy];
 
   return v4;
 }
@@ -443,12 +443,12 @@ uint64_t __40__TSFlowHelper_sortIndexesInDescending___block_invoke(uint64_t a1, 
   }
 }
 
-+ (void)showBluetoothOffAlertForCrossPlatformTransfer:(id)a3 withCloseHandler:(id)a4
++ (void)showBluetoothOffAlertForCrossPlatformTransfer:(id)transfer withCloseHandler:(id)handler
 {
-  v23 = a3;
+  transferCopy = transfer;
   v5 = MEMORY[0x277D75110];
   v6 = MEMORY[0x277CCA8D8];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = [v6 bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"CROSSTRANSFER_CONN_BLUETOOTH_OFF" value:&stru_28753DF48 table:@"Localizable"];
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -463,7 +463,7 @@ uint64_t __40__TSFlowHelper_sortIndexesInDescending___block_invoke(uint64_t a1, 
   v17 = MEMORY[0x277D750F8];
   v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v19 = [v18 localizedStringForKey:@"CROSSTRANSFER_CONN_BLUETOOTH_OFF_CLOSE_ACTION" value:&stru_28753DF48 table:@"Localizable"];
-  v20 = [v17 actionWithTitle:v19 style:1 handler:v7];
+  v20 = [v17 actionWithTitle:v19 style:1 handler:handlerCopy];
 
   [v12 addAction:v16];
   [v12 addAction:v20];
@@ -471,10 +471,10 @@ uint64_t __40__TSFlowHelper_sortIndexesInDescending___block_invoke(uint64_t a1, 
   block[1] = 3221225472;
   block[2] = __79__TSFlowHelper_showBluetoothOffAlertForCrossPlatformTransfer_withCloseHandler___block_invoke_2;
   block[3] = &unk_279B44490;
-  v25 = v23;
+  v25 = transferCopy;
   v26 = v12;
   v21 = v12;
-  v22 = v23;
+  v22 = transferCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

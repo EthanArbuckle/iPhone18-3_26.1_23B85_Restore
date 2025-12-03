@@ -1,7 +1,7 @@
 @interface USKResourcePath
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SdfAssetPath)sdfAssetPath;
-- (USKResourcePath)initWithSdfAssetPath:(SdfAssetPath *)a3;
+- (USKResourcePath)initWithSdfAssetPath:(SdfAssetPath *)path;
 - (id)path;
 - (id)resolvedPath;
 - (unint64_t)hash;
@@ -33,7 +33,7 @@
   return result;
 }
 
-- (USKResourcePath)initWithSdfAssetPath:(SdfAssetPath *)a3
+- (USKResourcePath)initWithSdfAssetPath:(SdfAssetPath *)path
 {
   v8.receiver = self;
   v8.super_class = USKResourcePath;
@@ -41,8 +41,8 @@
   v5 = v4;
   if (v4)
   {
-    std::string::operator=((v4 + 8), a3);
-    std::string::operator=((v5 + 32), &a3->var0);
+    std::string::operator=((v4 + 8), path);
+    std::string::operator=((v5 + 32), &path->var0);
     v6 = v5;
   }
 
@@ -117,18 +117,18 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v23 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())

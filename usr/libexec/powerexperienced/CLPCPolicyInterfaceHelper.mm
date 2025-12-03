@@ -1,9 +1,9 @@
 @interface CLPCPolicyInterfaceHelper
 + (id)sharedInstance;
 - (CLPCPolicyInterfaceHelper)init;
-- (int64_t)adjustLPMOption:(int64_t)a3;
+- (int64_t)adjustLPMOption:(int64_t)option;
 - (void)registerForTrial;
-- (void)setPowerBudgetForWorkload:(unint64_t)a3 value:(float)a4;
+- (void)setPowerBudgetForWorkload:(unint64_t)workload value:(float)value;
 - (void)updateTrialParameters;
 @end
 
@@ -68,9 +68,9 @@
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Initialized internal CLPC Policy Interface", v17, 2u);
         }
 
-        v12 = [v2 clpcInternalAccessClient];
+        clpcInternalAccessClient = [v2 clpcInternalAccessClient];
 
-        if (v12)
+        if (clpcInternalAccessClient)
         {
           v13 = *(v2 + 2);
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -80,8 +80,8 @@
           }
 
           v14 = [NSNumber numberWithUnsignedInt:0x4000];
-          v15 = [v2 clpcInternalAccessClient];
-          [v15 setRPCBufferSize:v14];
+          clpcInternalAccessClient2 = [v2 clpcInternalAccessClient];
+          [clpcInternalAccessClient2 setRPCBufferSize:v14];
         }
 
 LABEL_19:
@@ -123,16 +123,16 @@ LABEL_25:
 
 - (void)registerForTrial
 {
-  v3 = [(CLPCPolicyInterfaceHelper *)self clpcInternalAccessClient];
-  if (v3)
+  clpcInternalAccessClient = [(CLPCPolicyInterfaceHelper *)self clpcInternalAccessClient];
+  if (clpcInternalAccessClient)
   {
   }
 
   else
   {
-    v4 = [(CLPCPolicyInterfaceHelper *)self clpcClient];
+    clpcClient = [(CLPCPolicyInterfaceHelper *)self clpcClient];
 
-    if (!v4)
+    if (!clpcClient)
     {
       return;
     }
@@ -150,24 +150,24 @@ LABEL_25:
   v6 = v5;
   if (!v4)
   {
-    v7 = 0;
+    longValue = 0;
     if (v5)
     {
       goto LABEL_5;
     }
 
 LABEL_12:
-    v9 = 0;
-    v11 = v7 != 0;
+    longValue2 = 0;
+    v11 = longValue != 0;
     goto LABEL_13;
   }
 
-  v7 = [v4 longValue];
+  longValue = [v4 longValue];
   v8 = [(CLPCPolicyInterfaceHelper *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v27 = v7;
+    v27 = longValue;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Trial:CLPC tuning factor %lld", buf, 0xCu);
   }
 
@@ -177,17 +177,17 @@ LABEL_12:
   }
 
 LABEL_5:
-  v9 = [v6 longValue];
+  longValue2 = [v6 longValue];
   v10 = [(CLPCPolicyInterfaceHelper *)self log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v27 = v9;
+    v27 = longValue2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Trial:CLPC LPMOption factor %lld", buf, 0xCu);
   }
 
-  v11 = v7 != 0;
-  if (v7 && v9)
+  v11 = longValue != 0;
+  if (longValue && longValue2)
   {
     v12 = [(CLPCPolicyInterfaceHelper *)self log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -196,12 +196,12 @@ LABEL_5:
     }
 
 LABEL_16:
-    v7 = 0;
+    longValue = 0;
     goto LABEL_17;
   }
 
 LABEL_13:
-  if (!(v7 | v9))
+  if (!(longValue | longValue2))
   {
     v12 = [(CLPCPolicyInterfaceHelper *)self log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -218,15 +218,15 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  v7 = [(CLPCPolicyInterfaceHelper *)self adjustLPMOption:v9];
+  longValue = [(CLPCPolicyInterfaceHelper *)self adjustLPMOption:longValue2];
   v12 = [(CLPCPolicyInterfaceHelper *)self log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v6 longValue];
+    longValue3 = [v6 longValue];
     *buf = 134218240;
-    v27 = v23;
+    v27 = longValue3;
     v28 = 2048;
-    v29 = v7;
+    v29 = longValue;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Trial:CLPC LPMOption %lld adjusted to %lld", buf, 0x16u);
   }
 
@@ -235,21 +235,21 @@ LABEL_17:
 LABEL_18:
   if ([(CLPCPolicyInterfaceHelper *)self isInternal])
   {
-    v13 = [(CLPCPolicyInterfaceHelper *)self clpcInternalAccessClient];
+    clpcInternalAccessClient = [(CLPCPolicyInterfaceHelper *)self clpcInternalAccessClient];
 
-    if (v13)
+    if (clpcInternalAccessClient)
     {
       v14 = [(CLPCPolicyInterfaceHelper *)self log];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v27 = v7;
+        v27 = longValue;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Trial: Setting TrialID: %lld with CLPCInternal", buf, 0xCu);
       }
 
-      v15 = [(CLPCPolicyInterfaceHelper *)self clpcInternalAccessClient];
+      clpcInternalAccessClient2 = [(CLPCPolicyInterfaceHelper *)self clpcInternalAccessClient];
       v25 = 0;
-      [v15 setCLPCTrialID:v7 error:&v25];
+      [clpcInternalAccessClient2 setCLPCTrialID:longValue error:&v25];
       v16 = v25;
 
       if (v16)
@@ -265,21 +265,21 @@ LABEL_18:
 
   if (![(CLPCPolicyInterfaceHelper *)self isInternal])
   {
-    v18 = [(CLPCPolicyInterfaceHelper *)self clpcClient];
+    clpcClient = [(CLPCPolicyInterfaceHelper *)self clpcClient];
 
-    if (v18)
+    if (clpcClient)
     {
       v19 = [(CLPCPolicyInterfaceHelper *)self log];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v27 = v7;
+        v27 = longValue;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Trial: Setting TrialID: %lld with CLPC", buf, 0xCu);
       }
 
-      v20 = [(CLPCPolicyInterfaceHelper *)self clpcClient];
+      clpcClient2 = [(CLPCPolicyInterfaceHelper *)self clpcClient];
       v24 = 0;
-      [v20 setCLPCTrialID:v7 error:&v24];
+      [clpcClient2 setCLPCTrialID:longValue error:&v24];
       v21 = v24;
 
       if (v21)
@@ -294,51 +294,51 @@ LABEL_18:
   }
 }
 
-- (void)setPowerBudgetForWorkload:(unint64_t)a3 value:(float)a4
+- (void)setPowerBudgetForWorkload:(unint64_t)workload value:(float)value
 {
-  v7 = [(CLPCPolicyInterfaceHelper *)self clpcClient];
+  clpcClient = [(CLPCPolicyInterfaceHelper *)self clpcClient];
 
-  if (v7)
+  if (clpcClient)
   {
-    if (a3 == 2)
+    if (workload == 2)
     {
-      v8 = [(CLPCPolicyInterfaceHelper *)self clpcClient];
-      v9 = v8;
+      clpcClient2 = [(CLPCPolicyInterfaceHelper *)self clpcClient];
+      v9 = clpcClient2;
       v16 = 0;
       v10 = &v16;
       v11 = &v16;
-      *&v12 = a4;
+      *&v12 = value;
       v13 = 2;
     }
 
     else
     {
-      if (a3 != 1)
+      if (workload != 1)
       {
 LABEL_12:
         v14 = [(CLPCPolicyInterfaceHelper *)self log];
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218240;
-          v19 = a3;
+          workloadCopy = workload;
           v20 = 2048;
-          v21 = a4;
+          valueCopy = value;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Updated CLPC with power target for workload %llu value %f", buf, 0x16u);
         }
 
         goto LABEL_14;
       }
 
-      v8 = [(CLPCPolicyInterfaceHelper *)self clpcClient];
-      v9 = v8;
+      clpcClient2 = [(CLPCPolicyInterfaceHelper *)self clpcClient];
+      v9 = clpcClient2;
       v17 = 0;
       v10 = &v17;
       v11 = &v17;
-      *&v12 = a4;
+      *&v12 = value;
       v13 = 1;
     }
 
-    [v8 setWorkloadPowerBudget:v13 options:v11 error:{v12, v16, v17}];
+    [clpcClient2 setWorkloadPowerBudget:v13 options:v11 error:{v12, v16, v17}];
     v14 = *v10;
 
     if (v14)
@@ -346,7 +346,7 @@ LABEL_12:
       v15 = [(CLPCPolicyInterfaceHelper *)self log];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        sub_100019694(v14, a3, v15);
+        sub_100019694(v14, workload, v15);
       }
 
       goto LABEL_14;
@@ -364,9 +364,9 @@ LABEL_12:
 LABEL_14:
 }
 
-- (int64_t)adjustLPMOption:(int64_t)a3
+- (int64_t)adjustLPMOption:(int64_t)option
 {
-  if (!a3)
+  if (!option)
   {
     return 0;
   }
@@ -415,14 +415,14 @@ LABEL_14:
       v10 = 150;
 LABEL_16:
 
-      if (a3 == 9)
+      if (option == 9)
       {
         return 100;
       }
 
       else
       {
-        return v10 + a3;
+        return v10 + option;
       }
     }
   }

@@ -1,7 +1,7 @@
 @interface MXUIServiceBanner
 + (id)_bundleID;
 - (BOOL)checkifVideoAssetExists;
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4;
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize;
 - (MXUIServiceBanner)init;
 - (NSString)requestIdentifier;
 - (NSString)requesterIdentifier;
@@ -12,45 +12,45 @@
 - (id)createDisconnectedButton;
 - (id)createInUseConnectButton;
 - (id)createReverseButton;
-- (id)fetchUIImageForClientConfig:(int)a3;
-- (id)getAppIcon:(id)a3;
-- (id)removedAccessoryColorCode:(id)a3;
+- (id)fetchUIImageForClientConfig:(int)config;
+- (id)getAppIcon:(id)icon;
+- (id)removedAccessoryColorCode:(id)code;
 - (id)userInfoForPosting;
 - (int)showBannerWithTimeout;
 - (int64_t)preferredLayoutMode;
 - (void)_createBannerTapView;
-- (void)_createConnectBannerTextLabel:(id)a3 bottomLabel:(id)a4;
+- (void)_createConnectBannerTextLabel:(id)label bottomLabel:(id)bottomLabel;
 - (void)_createConstraintsForConnectBannerIfNeeded;
 - (void)_createConstraintsForDisconnectedBannerIfNeeded;
 - (void)_createConstraintsForUndoBannerIfNeeded;
-- (void)_createDeviceReplacementBannerTextLabel:(id)a3;
-- (void)_createDisconnectedBannerTextLabel:(id)a3 bottomLabel:(id)a4;
-- (void)_createUndoBannerTextLabel:(id)a3 bottomLabel:(id)a4;
-- (void)activateWithActionHandler:(id)a3;
+- (void)_createDeviceReplacementBannerTextLabel:(id)label;
+- (void)_createDisconnectedBannerTextLabel:(id)label bottomLabel:(id)bottomLabel;
+- (void)_createUndoBannerTextLabel:(id)label bottomLabel:(id)bottomLabel;
+- (void)activateWithActionHandler:(id)handler;
 - (void)configureBannerViews;
-- (void)configureConnectBanner:(id)a3;
-- (void)configureDisconnectedBanner:(id)a3;
-- (void)configureInputDeviceReplacementPillForConnectedDevice:(id)a3 replacedDevice:(id)a4;
-- (void)configureUndoBanner:(id)a3;
-- (void)createCustomStaticImageView:(id)a3 withIcon:(id)a4;
-- (void)createCustomView:(id)a3 WithCustomIconName:(id)a4;
-- (void)handleTap:(id)a3;
+- (void)configureConnectBanner:(id)banner;
+- (void)configureDisconnectedBanner:(id)banner;
+- (void)configureInputDeviceReplacementPillForConnectedDevice:(id)device replacedDevice:(id)replacedDevice;
+- (void)configureUndoBanner:(id)banner;
+- (void)createCustomStaticImageView:(id)view withIcon:(id)icon;
+- (void)createCustomView:(id)view WithCustomIconName:(id)name;
+- (void)handleTap:(id)tap;
 - (void)invalidate;
-- (void)setActiveLayoutMode:(int64_t)a3;
+- (void)setActiveLayoutMode:(int64_t)mode;
 - (void)setBannerTimer;
-- (void)setCanRequestAlertingAssertion:(BOOL)a3;
+- (void)setCanRequestAlertingAssertion:(BOOL)assertion;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MXUIServiceBanner
 
-- (id)fetchUIImageForClientConfig:(int)a3
+- (id)fetchUIImageForClientConfig:(int)config
 {
   leadingAccessorySymbol = self->_leadingAccessorySymbol;
-  v5 = a3 - 1;
-  if ((a3 - 1) > 3)
+  v5 = config - 1;
+  if ((config - 1) > 3)
   {
     v8 = 25.0;
     v6 = @"speaker.bluetooth.fill";
@@ -85,17 +85,17 @@
   return v11;
 }
 
-- (void)setCanRequestAlertingAssertion:(BOOL)a3
+- (void)setCanRequestAlertingAssertion:(BOOL)assertion
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (self->_canRequestAlertingAssertion != a3)
+  if (self->_canRequestAlertingAssertion != assertion)
   {
-    self->_canRequestAlertingAssertion = a3;
-    if (a3 && self->_isAskOrReverseBanner)
+    self->_canRequestAlertingAssertion = assertion;
+    if (assertion && self->_isAskOrReverseBanner)
     {
-      v4 = [(MXUIServiceBanner *)self systemApertureElementContext];
-      v5 = [v4 requestAlertingAssertion];
-      [v5 setAutomaticallyInvalidatable:0];
+      systemApertureElementContext = [(MXUIServiceBanner *)self systemApertureElementContext];
+      requestAlertingAssertion = [systemApertureElementContext requestAlertingAssertion];
+      [requestAlertingAssertion setAutomaticallyInvalidatable:0];
 
       if (dword_27F8F0258)
       {
@@ -197,10 +197,10 @@ void __52__MXUIServiceBanner_setCanRequestAlertingAssertion___block_invoke(uint6
   return 3;
 }
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
-  self->_activeLayoutMode = a3;
-  if (a3 == -1)
+  self->_activeLayoutMode = mode;
+  if (mode == -1)
   {
     self->_bannerActive = 0;
     bannerTransaction = self->_bannerTransaction;
@@ -295,22 +295,22 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
   MEMORY[0x2821F96F8]();
 }
 
-- (void)configureConnectBanner:(id)a3
+- (void)configureConnectBanner:(id)banner
 {
   v42 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
-  v6 = [v4 mainBundle];
-  v7 = [v5 valueForKey:*MEMORY[0x277D25808]];
-  v8 = [v6 localizedStringForKey:v7 value:&stru_2868F10B0 table:0];
+  bannerCopy = banner;
+  mainBundle = [v4 mainBundle];
+  v7 = [bannerCopy valueForKey:*MEMORY[0x277D25808]];
+  v8 = [mainBundle localizedStringForKey:v7 value:&stru_2868F10B0 table:0];
 
-  v9 = [v5 valueForKey:*MEMORY[0x277D25810]];
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 localizedStringForKey:@"TAP_TO_AIRPLAY" value:&stru_2868F10B0 table:0];
+  v9 = [bannerCopy valueForKey:*MEMORY[0x277D25810]];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v11 = [mainBundle2 localizedStringForKey:@"TAP_TO_AIRPLAY" value:&stru_2868F10B0 table:0];
 
-  v12 = [v5 valueForKey:*MEMORY[0x277D25800]];
+  v12 = [bannerCopy valueForKey:*MEMORY[0x277D25800]];
 
-  v13 = [v12 intValue];
+  intValue = [v12 intValue];
   v14 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v9];
   uuid = self->_uuid;
   self->_uuid = v14;
@@ -323,31 +323,31 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
   {
     [(MXUIServiceBanner *)self _createConnectBannerTextLabel:v8 bottomLabel:v11];
     leadingAccessoryView = self->_leadingAccessoryView;
-    v17 = [(MXUIServiceBanner *)self fetchUIImageForClientConfig:v13];
+    v17 = [(MXUIServiceBanner *)self fetchUIImageForClientConfig:intValue];
     [(MXUIServiceBanner *)self createCustomStaticImageView:leadingAccessoryView withIcon:v17];
 
     [(MXUIServiceBanner *)self _createBannerTapView];
-    v18 = [(MXUIServiceBanner *)self createInUseConnectButton];
-    [(UIView *)self->_trailingAccessoryView addSubview:v18];
-    [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [v18 widthAnchor];
-    v20 = [(UIView *)self->_trailingAccessoryView widthAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    createInUseConnectButton = [(MXUIServiceBanner *)self createInUseConnectButton];
+    [(UIView *)self->_trailingAccessoryView addSubview:createInUseConnectButton];
+    [createInUseConnectButton setTranslatesAutoresizingMaskIntoConstraints:0];
+    widthAnchor = [createInUseConnectButton widthAnchor];
+    widthAnchor2 = [(UIView *)self->_trailingAccessoryView widthAnchor];
+    v21 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v21 setActive:1];
 
-    v22 = [v18 heightAnchor];
-    v23 = [(UIView *)self->_trailingAccessoryView heightAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    heightAnchor = [createInUseConnectButton heightAnchor];
+    heightAnchor2 = [(UIView *)self->_trailingAccessoryView heightAnchor];
+    v24 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     [v24 setActive:1];
 
-    v25 = [v18 centerXAnchor];
-    v26 = [(UIView *)self->_trailingAccessoryView centerXAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    centerXAnchor = [createInUseConnectButton centerXAnchor];
+    centerXAnchor2 = [(UIView *)self->_trailingAccessoryView centerXAnchor];
+    v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v27 setActive:1];
 
-    v28 = [v18 centerYAnchor];
-    v29 = [(UIView *)self->_trailingAccessoryView centerYAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    centerYAnchor = [createInUseConnectButton centerYAnchor];
+    centerYAnchor2 = [(UIView *)self->_trailingAccessoryView centerYAnchor];
+    v30 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v30 setActive:1];
 
     v31 = [MEMORY[0x277D75348] colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
@@ -362,11 +362,11 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
 
   else
   {
-    v18 = [objc_alloc(MEMORY[0x277D3D308]) initWithText:v8 style:1];
+    createInUseConnectButton = [objc_alloc(MEMORY[0x277D3D308]) initWithText:v8 style:1];
     v33 = [objc_alloc(MEMORY[0x277D3D308]) initWithText:v11 style:2];
-    if (v18)
+    if (createInUseConnectButton)
     {
-      [(NSMutableArray *)self->_centerContentItems addObject:v18];
+      [(NSMutableArray *)self->_centerContentItems addObject:createInUseConnectButton];
     }
 
     if (v33)
@@ -375,12 +375,12 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
     }
 
     v34 = self->_leadingAccessoryView;
-    v35 = [(MXUIServiceBanner *)self fetchUIImageForClientConfig:v13];
+    v35 = [(MXUIServiceBanner *)self fetchUIImageForClientConfig:intValue];
     [(MXUIServiceBanner *)self createCustomStaticImageView:v34 withIcon:v35];
 
-    v36 = [(MXUIServiceBanner *)self createInUseConnectButton];
-    [v36 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v37 = [objc_alloc(MEMORY[0x277D3D318]) initWithLeadingAccessoryView:self->_leadingAccessoryView trailingAccessoryView:v36];
+    createInUseConnectButton2 = [(MXUIServiceBanner *)self createInUseConnectButton];
+    [createInUseConnectButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
+    v37 = [objc_alloc(MEMORY[0x277D3D318]) initWithLeadingAccessoryView:self->_leadingAccessoryView trailingAccessoryView:createInUseConnectButton2];
     [v37 setTranslatesAutoresizingMaskIntoConstraints:0];
     objc_storeStrong(&self->_pillView, v37);
     if (self->_centerContentItems)
@@ -407,22 +407,22 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureUndoBanner:(id)a3
+- (void)configureUndoBanner:(id)banner
 {
   v44 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
-  v6 = [v4 mainBundle];
-  v7 = [v5 valueForKey:*MEMORY[0x277D25808]];
-  v8 = [v6 localizedStringForKey:v7 value:&stru_2868F10B0 table:0];
+  bannerCopy = banner;
+  mainBundle = [v4 mainBundle];
+  v7 = [bannerCopy valueForKey:*MEMORY[0x277D25808]];
+  v8 = [mainBundle localizedStringForKey:v7 value:&stru_2868F10B0 table:0];
 
-  v9 = [v5 valueForKey:*MEMORY[0x277D25810]];
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 localizedStringForKey:@"AIRPLAY_CONNECTED" value:&stru_2868F10B0 table:0];
+  v9 = [bannerCopy valueForKey:*MEMORY[0x277D25810]];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v11 = [mainBundle2 localizedStringForKey:@"AIRPLAY_CONNECTED" value:&stru_2868F10B0 table:0];
 
-  v12 = [v5 valueForKey:*MEMORY[0x277D25800]];
+  v12 = [bannerCopy valueForKey:*MEMORY[0x277D25800]];
 
-  v13 = [v12 intValue];
+  intValue = [v12 intValue];
   v14 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v9];
   uuid = self->_uuid;
   self->_uuid = v14;
@@ -435,30 +435,30 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
   {
     [(MXUIServiceBanner *)self _createUndoBannerTextLabel:v8 bottomLabel:v11];
     leadingAccessoryView = self->_leadingAccessoryView;
-    v17 = [(MXUIServiceBanner *)self fetchUIImageForClientConfig:v13];
+    v17 = [(MXUIServiceBanner *)self fetchUIImageForClientConfig:intValue];
     [(MXUIServiceBanner *)self createCustomStaticImageView:leadingAccessoryView withIcon:v17];
 
-    v18 = [(MXUIServiceBanner *)self createReverseButton];
-    [(UIView *)self->_trailingAccessoryView addSubview:v18];
-    [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [v18 widthAnchor];
-    v20 = [(UIView *)self->_trailingAccessoryView widthAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    createReverseButton = [(MXUIServiceBanner *)self createReverseButton];
+    [(UIView *)self->_trailingAccessoryView addSubview:createReverseButton];
+    [createReverseButton setTranslatesAutoresizingMaskIntoConstraints:0];
+    widthAnchor = [createReverseButton widthAnchor];
+    widthAnchor2 = [(UIView *)self->_trailingAccessoryView widthAnchor];
+    v21 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v21 setActive:1];
 
-    v22 = [v18 heightAnchor];
-    v23 = [(UIView *)self->_trailingAccessoryView heightAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    heightAnchor = [createReverseButton heightAnchor];
+    heightAnchor2 = [(UIView *)self->_trailingAccessoryView heightAnchor];
+    v24 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     [v24 setActive:1];
 
-    v25 = [v18 centerXAnchor];
-    v26 = [(UIView *)self->_trailingAccessoryView centerXAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    centerXAnchor = [createReverseButton centerXAnchor];
+    centerXAnchor2 = [(UIView *)self->_trailingAccessoryView centerXAnchor];
+    v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v27 setActive:1];
 
-    v28 = [v18 centerYAnchor];
-    v29 = [(UIView *)self->_trailingAccessoryView centerYAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    centerYAnchor = [createReverseButton centerYAnchor];
+    centerYAnchor2 = [(UIView *)self->_trailingAccessoryView centerYAnchor];
+    v30 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v30 setActive:1];
 
     v31 = [MEMORY[0x277D75348] colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
@@ -473,11 +473,11 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
 
   else
   {
-    v18 = [objc_alloc(MEMORY[0x277D3D308]) initWithText:v8 style:1];
+    createReverseButton = [objc_alloc(MEMORY[0x277D3D308]) initWithText:v8 style:1];
     v33 = [objc_alloc(MEMORY[0x277D3D308]) initWithText:v11 style:2];
-    if (v18)
+    if (createReverseButton)
     {
-      [(NSMutableArray *)self->_centerContentItems addObject:v18];
+      [(NSMutableArray *)self->_centerContentItems addObject:createReverseButton];
     }
 
     if (v33)
@@ -486,19 +486,19 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
     }
 
     v34 = self->_leadingAccessoryView;
-    v35 = [(MXUIServiceBanner *)self fetchUIImageForClientConfig:v13];
+    v35 = [(MXUIServiceBanner *)self fetchUIImageForClientConfig:intValue];
     [(MXUIServiceBanner *)self createCustomStaticImageView:v34 withIcon:v35];
 
-    v36 = [(MXUIServiceBanner *)self createReverseButton];
-    [v36 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v37 = [objc_alloc(MEMORY[0x277D3D318]) initWithLeadingAccessoryView:self->_leadingAccessoryView trailingAccessoryView:v36];
+    createReverseButton2 = [(MXUIServiceBanner *)self createReverseButton];
+    [createReverseButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
+    v37 = [objc_alloc(MEMORY[0x277D3D318]) initWithLeadingAccessoryView:self->_leadingAccessoryView trailingAccessoryView:createReverseButton2];
     [v37 setTranslatesAutoresizingMaskIntoConstraints:0];
     objc_storeStrong(&self->_pillView, v37);
-    v38 = [MEMORY[0x277D75348] systemBlueColor];
-    [(UIView *)self->_leadingAccessoryView setTintColor:v38];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [(UIView *)self->_leadingAccessoryView setTintColor:systemBlueColor];
 
-    v39 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)self->_trailingAccessoryView setTintColor:v39];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)self->_trailingAccessoryView setTintColor:clearColor];
 
     if (self->_centerContentItems)
     {
@@ -524,22 +524,22 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureDisconnectedBanner:(id)a3
+- (void)configureDisconnectedBanner:(id)banner
 {
   v44 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
-  v6 = [v4 mainBundle];
-  v7 = [v5 valueForKey:*MEMORY[0x277D25808]];
-  v8 = [v6 localizedStringForKey:v7 value:&stru_2868F10B0 table:0];
+  bannerCopy = banner;
+  mainBundle = [v4 mainBundle];
+  v7 = [bannerCopy valueForKey:*MEMORY[0x277D25808]];
+  v8 = [mainBundle localizedStringForKey:v7 value:&stru_2868F10B0 table:0];
 
-  v9 = [v5 valueForKey:*MEMORY[0x277D25810]];
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 localizedStringForKey:@"DISCONNECTED" value:&stru_2868F10B0 table:0];
+  v9 = [bannerCopy valueForKey:*MEMORY[0x277D25810]];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v11 = [mainBundle2 localizedStringForKey:@"DISCONNECTED" value:&stru_2868F10B0 table:0];
 
-  v12 = [v5 valueForKey:*MEMORY[0x277D25800]];
+  v12 = [bannerCopy valueForKey:*MEMORY[0x277D25800]];
 
-  v13 = [v12 intValue];
+  intValue = [v12 intValue];
   v14 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v9];
   uuid = self->_uuid;
   self->_uuid = v14;
@@ -552,30 +552,30 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
   {
     [(MXUIServiceBanner *)self _createDisconnectedBannerTextLabel:v8 bottomLabel:v11];
     leadingAccessoryView = self->_leadingAccessoryView;
-    v17 = [(MXUIServiceBanner *)self fetchUIImageForClientConfig:v13];
+    v17 = [(MXUIServiceBanner *)self fetchUIImageForClientConfig:intValue];
     [(MXUIServiceBanner *)self createCustomStaticImageView:leadingAccessoryView withIcon:v17];
 
-    v18 = [(MXUIServiceBanner *)self createDisconnectedButton];
-    [(UIView *)self->_trailingAccessoryView addSubview:v18];
-    [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [v18 widthAnchor];
-    v20 = [(UIView *)self->_trailingAccessoryView widthAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    createDisconnectedButton = [(MXUIServiceBanner *)self createDisconnectedButton];
+    [(UIView *)self->_trailingAccessoryView addSubview:createDisconnectedButton];
+    [createDisconnectedButton setTranslatesAutoresizingMaskIntoConstraints:0];
+    widthAnchor = [createDisconnectedButton widthAnchor];
+    widthAnchor2 = [(UIView *)self->_trailingAccessoryView widthAnchor];
+    v21 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v21 setActive:1];
 
-    v22 = [v18 heightAnchor];
-    v23 = [(UIView *)self->_trailingAccessoryView heightAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    heightAnchor = [createDisconnectedButton heightAnchor];
+    heightAnchor2 = [(UIView *)self->_trailingAccessoryView heightAnchor];
+    v24 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     [v24 setActive:1];
 
-    v25 = [v18 centerXAnchor];
-    v26 = [(UIView *)self->_trailingAccessoryView centerXAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    centerXAnchor = [createDisconnectedButton centerXAnchor];
+    centerXAnchor2 = [(UIView *)self->_trailingAccessoryView centerXAnchor];
+    v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v27 setActive:1];
 
-    v28 = [v18 centerYAnchor];
-    v29 = [(UIView *)self->_trailingAccessoryView centerYAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    centerYAnchor = [createDisconnectedButton centerYAnchor];
+    centerYAnchor2 = [(UIView *)self->_trailingAccessoryView centerYAnchor];
+    v30 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v30 setActive:1];
 
     v31 = [MEMORY[0x277D75348] colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5];
@@ -590,11 +590,11 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
 
   else
   {
-    v18 = [objc_alloc(MEMORY[0x277D3D308]) initWithText:v8 style:1];
+    createDisconnectedButton = [objc_alloc(MEMORY[0x277D3D308]) initWithText:v8 style:1];
     v33 = [objc_alloc(MEMORY[0x277D3D308]) initWithText:v11 style:2];
-    if (v18)
+    if (createDisconnectedButton)
     {
-      [(NSMutableArray *)self->_centerContentItems addObject:v18];
+      [(NSMutableArray *)self->_centerContentItems addObject:createDisconnectedButton];
     }
 
     if (v33)
@@ -603,19 +603,19 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
     }
 
     v34 = self->_leadingAccessoryView;
-    v35 = [(MXUIServiceBanner *)self fetchUIImageForClientConfig:v13];
+    v35 = [(MXUIServiceBanner *)self fetchUIImageForClientConfig:intValue];
     [(MXUIServiceBanner *)self createCustomStaticImageView:v34 withIcon:v35];
 
-    v36 = [(MXUIServiceBanner *)self createDisconnectedButton];
-    [v36 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v37 = [objc_alloc(MEMORY[0x277D3D318]) initWithLeadingAccessoryView:self->_leadingAccessoryView trailingAccessoryView:v36];
+    createDisconnectedButton2 = [(MXUIServiceBanner *)self createDisconnectedButton];
+    [createDisconnectedButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
+    v37 = [objc_alloc(MEMORY[0x277D3D318]) initWithLeadingAccessoryView:self->_leadingAccessoryView trailingAccessoryView:createDisconnectedButton2];
     [v37 setTranslatesAutoresizingMaskIntoConstraints:0];
     objc_storeStrong(&self->_pillView, v37);
-    v38 = [MEMORY[0x277D75348] systemBlueColor];
-    [(UIView *)self->_leadingAccessoryView setTintColor:v38];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [(UIView *)self->_leadingAccessoryView setTintColor:systemBlueColor];
 
-    v39 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)self->_trailingAccessoryView setTintColor:v39];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)self->_trailingAccessoryView setTintColor:clearColor];
 
     if (self->_centerContentItems)
     {
@@ -641,19 +641,19 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureInputDeviceReplacementPillForConnectedDevice:(id)a3 replacedDevice:(id)a4
+- (void)configureInputDeviceReplacementPillForConnectedDevice:(id)device replacedDevice:(id)replacedDevice
 {
   v21 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277D3D308];
-  v7 = a4;
-  v8 = a3;
+  replacedDeviceCopy = replacedDevice;
+  deviceCopy = device;
   v9 = [v6 alloc];
   v10 = MEMORY[0x277CCACA8];
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
-  v12 = [v11 localizedStringForKey:@"DEVICEA_REPLACED_DEVICEB" value:&stru_2868F10B0 table:0];
-  v13 = [v10 stringWithFormat:v12, v8, v7];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v12 = [mainBundle localizedStringForKey:@"DEVICEA_REPLACED_DEVICEB" value:&stru_2868F10B0 table:0];
+  replacedDeviceCopy = [v10 stringWithFormat:v12, deviceCopy, replacedDeviceCopy];
 
-  v14 = [v9 initWithText:v13];
+  v14 = [v9 initWithText:replacedDeviceCopy];
   self->_useJindoPath = 0;
   [(MXUIServiceBanner *)self configureBannerViews];
   if (v14)
@@ -668,8 +668,8 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
   v17 = [objc_alloc(MEMORY[0x277D3D318]) initWithLeadingAccessoryView:self->_leadingAccessoryView];
   [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
   objc_storeStrong(&self->_pillView, v17);
-  v18 = [MEMORY[0x277D75348] blackColor];
-  [(UIView *)self->_leadingAccessoryView setTintColor:v18];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(UIView *)self->_leadingAccessoryView setTintColor:blackColor];
 
   if (self->_centerContentItems)
   {
@@ -705,16 +705,16 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
   return v2;
 }
 
-- (void)_createConnectBannerTextLabel:(id)a3 bottomLabel:(id)a4
+- (void)_createConnectBannerTextLabel:(id)label bottomLabel:(id)bottomLabel
 {
   v6 = MEMORY[0x277D756B8];
-  v7 = a4;
-  v8 = a3;
+  bottomLabelCopy = bottomLabel;
+  labelCopy = label;
   v17 = [[v6 alloc] initWithFrame:{0.0, 0.0, 20.0, 20.0}];
-  [v17 setText:v8];
+  [v17 setText:labelCopy];
 
-  v9 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v17 setTextColor:v9];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [v17 setTextColor:systemWhiteColor];
 
   [v17 setAlpha:1.0];
   v10 = *MEMORY[0x277D74410];
@@ -727,10 +727,10 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
   [v17 addGestureRecognizer:v12];
   [(MXUIServiceBanner *)self setCcTopViewLabel:v17];
   v13 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{0.0, 0.0, 30.0, 30.0}];
-  [v13 setText:v7];
+  [v13 setText:bottomLabelCopy];
 
-  v14 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v13 setTextColor:v14];
+  systemWhiteColor2 = [MEMORY[0x277D75348] systemWhiteColor];
+  [v13 setTextColor:systemWhiteColor2];
 
   [v13 setAlpha:0.45];
   v15 = [MEMORY[0x277D74300] systemFontOfSize:13.0 weight:v10];
@@ -743,16 +743,16 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
   [(MXUIServiceBanner *)self setCcBottomViewLabel:v13];
 }
 
-- (void)_createUndoBannerTextLabel:(id)a3 bottomLabel:(id)a4
+- (void)_createUndoBannerTextLabel:(id)label bottomLabel:(id)bottomLabel
 {
   v6 = MEMORY[0x277D756B8];
-  v7 = a4;
-  v8 = a3;
+  bottomLabelCopy = bottomLabel;
+  labelCopy = label;
   v15 = [[v6 alloc] initWithFrame:{0.0, 0.0, 20.0, 20.0}];
-  [v15 setText:v8];
+  [v15 setText:labelCopy];
 
-  v9 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v15 setTextColor:v9];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [v15 setTextColor:systemWhiteColor];
 
   [v15 setAlpha:1.0];
   v10 = *MEMORY[0x277D74410];
@@ -762,7 +762,7 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
   [v15 setMarqueeEnabled:1];
   [(MXUIServiceBanner *)self setCcTopViewLabel:v15];
   v12 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{0.0, 0.0, 30.0, 30.0}];
-  [v12 setText:v7];
+  [v12 setText:bottomLabelCopy];
 
   v13 = [MEMORY[0x277D75348] colorWithRed:0.505882382 green:0.815686285 blue:0.980392158 alpha:1.0];
   [v12 setTextColor:v13];
@@ -774,16 +774,16 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
   [(MXUIServiceBanner *)self setCcBottomViewLabel:v12];
 }
 
-- (void)_createDisconnectedBannerTextLabel:(id)a3 bottomLabel:(id)a4
+- (void)_createDisconnectedBannerTextLabel:(id)label bottomLabel:(id)bottomLabel
 {
   v6 = MEMORY[0x277D756B8];
-  v7 = a4;
-  v8 = a3;
+  bottomLabelCopy = bottomLabel;
+  labelCopy = label;
   v15 = [[v6 alloc] initWithFrame:{0.0, 0.0, 20.0, 20.0}];
-  [v15 setText:v8];
+  [v15 setText:labelCopy];
 
-  v9 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v15 setTextColor:v9];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [v15 setTextColor:systemWhiteColor];
 
   [v15 setAlpha:1.0];
   v10 = *MEMORY[0x277D74410];
@@ -793,7 +793,7 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
   [v15 setMarqueeEnabled:1];
   [(MXUIServiceBanner *)self setCcTopViewLabel:v15];
   v12 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{0.0, 0.0, 30.0, 30.0}];
-  [v12 setText:v7];
+  [v12 setText:bottomLabelCopy];
 
   v13 = [MEMORY[0x277D75348] colorWithRed:0.505882382 green:0.815686285 blue:0.980392158 alpha:1.0];
   [v12 setTextColor:v13];
@@ -805,15 +805,15 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
   [(MXUIServiceBanner *)self setCcBottomViewLabel:v12];
 }
 
-- (void)_createDeviceReplacementBannerTextLabel:(id)a3
+- (void)_createDeviceReplacementBannerTextLabel:(id)label
 {
   v4 = MEMORY[0x277D756B8];
-  v5 = a3;
+  labelCopy = label;
   v8 = [[v4 alloc] initWithFrame:{0.0, 0.0, 20.0, 20.0}];
-  [v8 setText:v5];
+  [v8 setText:labelCopy];
 
-  v6 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v8 setTextColor:v6];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [v8 setTextColor:systemWhiteColor];
 
   [v8 setAlpha:1.0];
   v7 = [MEMORY[0x277D74300] systemFontOfSize:15.0 weight:*MEMORY[0x277D74410]];
@@ -826,26 +826,26 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
 - (void)_createBannerTapView
 {
   v6 = [objc_alloc(MEMORY[0x277D75220]) initWithFrame:{0.0, 0.0, 500.0, 150.0}];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  [v6 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v6 setBackgroundColor:clearColor];
 
   [v6 setUserInteractionEnabled:1];
   v4 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_handleTap_];
   [v6 addGestureRecognizer:v4];
-  v5 = [(MXUIServiceBanner *)self view];
-  [v5 addSubview:v6];
+  view = [(MXUIServiceBanner *)self view];
+  [view addSubview:v6];
 }
 
 - (void)_createConstraintsForConnectBannerIfNeeded
 {
   v97[18] = *MEMORY[0x277D85DE8];
-  v3 = [(MXUIServiceBanner *)self ccTopViewLabel];
-  if (v3)
+  ccTopViewLabel = [(MXUIServiceBanner *)self ccTopViewLabel];
+  if (ccTopViewLabel)
   {
-    v4 = v3;
-    v5 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+    v4 = ccTopViewLabel;
+    ccBottomViewLabel = [(MXUIServiceBanner *)self ccBottomViewLabel];
 
-    if (v5)
+    if (ccBottomViewLabel)
     {
       v6 = [(NSMutableDictionary *)self->_constraintsForLayoutMode objectForKeyedSubscript:&unk_2868F29B0];
 
@@ -853,114 +853,114 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
       {
         if (!self->_constraintsForLayoutMode)
         {
-          v7 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
           constraintsForLayoutMode = self->_constraintsForLayoutMode;
-          self->_constraintsForLayoutMode = v7;
+          self->_constraintsForLayoutMode = dictionary;
         }
 
-        v95 = [(SBUISystemApertureAccessoryView *)self->_leadingView leadingAnchor];
-        v96 = [(MXUIServiceBanner *)self view];
-        v94 = [v96 leadingAnchor];
-        v93 = [v95 constraintEqualToAnchor:v94 constant:20.0];
+        leadingAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView leadingAnchor];
+        view = [(MXUIServiceBanner *)self view];
+        leadingAnchor2 = [view leadingAnchor];
+        v93 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
         v97[0] = v93;
-        v91 = [(SBUISystemApertureAccessoryView *)self->_leadingView centerYAnchor];
-        v92 = [(MXUIServiceBanner *)self view];
-        v90 = [v92 centerYAnchor];
-        v89 = [v91 constraintEqualToAnchor:v90];
+        centerYAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView centerYAnchor];
+        view2 = [(MXUIServiceBanner *)self view];
+        centerYAnchor2 = [view2 centerYAnchor];
+        v89 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         v97[1] = v89;
-        v88 = [(MXUIServiceBanner *)self view];
-        v86 = [v88 widthAnchor];
-        v87 = [(MXUIServiceBanner *)self view];
-        v85 = [v87 window];
-        v84 = [v85 widthAnchor];
-        v83 = [v86 constraintEqualToAnchor:v84];
+        view3 = [(MXUIServiceBanner *)self view];
+        widthAnchor = [view3 widthAnchor];
+        view4 = [(MXUIServiceBanner *)self view];
+        window = [view4 window];
+        widthAnchor2 = [window widthAnchor];
+        v83 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
         v97[2] = v83;
-        v82 = [(MXUIServiceBanner *)self view];
-        v80 = [v82 heightAnchor];
-        v81 = [(MXUIServiceBanner *)self view];
-        v79 = [v81 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
-        v78 = [v79 heightAnchor];
-        v77 = [v80 constraintEqualToAnchor:v78];
+        view5 = [(MXUIServiceBanner *)self view];
+        heightAnchor = [view5 heightAnchor];
+        view6 = [(MXUIServiceBanner *)self view];
+        sBUISA_systemApertureTrailingConcentricContentLayoutGuide = [view6 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
+        heightAnchor2 = [sBUISA_systemApertureTrailingConcentricContentLayoutGuide heightAnchor];
+        v77 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
         v97[3] = v77;
-        v75 = [(SBUISystemApertureAccessoryView *)self->_leadingView trailingAnchor];
-        v76 = [(MXUIServiceBanner *)self view];
-        v74 = [v76 SBUISA_systemApertureObstructedAreaLayoutGuide];
-        v73 = [v74 leadingAnchor];
-        v72 = [v75 constraintLessThanOrEqualToAnchor:v73];
+        trailingAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView trailingAnchor];
+        view7 = [(MXUIServiceBanner *)self view];
+        sBUISA_systemApertureObstructedAreaLayoutGuide = [view7 SBUISA_systemApertureObstructedAreaLayoutGuide];
+        leadingAnchor3 = [sBUISA_systemApertureObstructedAreaLayoutGuide leadingAnchor];
+        v72 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor3];
         v97[4] = v72;
-        v71 = [(MXUIServiceBanner *)self ccTopViewLabel];
-        v69 = [v71 leadingAnchor];
-        v70 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-        v68 = [v70 leadingAnchor];
-        v67 = [v69 constraintEqualToAnchor:v68];
+        ccTopViewLabel2 = [(MXUIServiceBanner *)self ccTopViewLabel];
+        leadingAnchor4 = [ccTopViewLabel2 leadingAnchor];
+        ccBottomViewLabel2 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+        leadingAnchor5 = [ccBottomViewLabel2 leadingAnchor];
+        v67 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
         v97[5] = v67;
-        v66 = [(MXUIServiceBanner *)self ccTopViewLabel];
-        v65 = [v66 _tightBoundingBoxLayoutGuide];
-        v63 = [v65 topAnchor];
-        v64 = [(MXUIServiceBanner *)self view];
-        v62 = [v64 SBUISA_systemApertureObstructedAreaLayoutGuide];
-        v61 = [v62 bottomAnchor];
-        v60 = [v63 constraintEqualToAnchor:v61];
+        ccTopViewLabel3 = [(MXUIServiceBanner *)self ccTopViewLabel];
+        _tightBoundingBoxLayoutGuide = [ccTopViewLabel3 _tightBoundingBoxLayoutGuide];
+        topAnchor = [_tightBoundingBoxLayoutGuide topAnchor];
+        view8 = [(MXUIServiceBanner *)self view];
+        sBUISA_systemApertureObstructedAreaLayoutGuide2 = [view8 SBUISA_systemApertureObstructedAreaLayoutGuide];
+        bottomAnchor = [sBUISA_systemApertureObstructedAreaLayoutGuide2 bottomAnchor];
+        v60 = [topAnchor constraintEqualToAnchor:bottomAnchor];
         v97[6] = v60;
-        v59 = [(MXUIServiceBanner *)self ccTopViewLabel];
-        v58 = [v59 trailingAnchor];
-        v56 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
-        v57 = [(MXUIServiceBanner *)self view];
-        [v57 SBUISA_standardInteritemPadding];
-        v55 = [v58 constraintEqualToAnchor:v56 constant:-v9];
+        ccTopViewLabel4 = [(MXUIServiceBanner *)self ccTopViewLabel];
+        trailingAnchor2 = [ccTopViewLabel4 trailingAnchor];
+        leadingAnchor6 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
+        view9 = [(MXUIServiceBanner *)self view];
+        [view9 SBUISA_standardInteritemPadding];
+        v55 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor6 constant:-v9];
         v97[7] = v55;
-        v54 = [(MXUIServiceBanner *)self ccTopViewLabel];
-        v53 = [v54 heightAnchor];
-        v52 = [v53 constraintEqualToConstant:19.5];
+        ccTopViewLabel5 = [(MXUIServiceBanner *)self ccTopViewLabel];
+        heightAnchor3 = [ccTopViewLabel5 heightAnchor];
+        v52 = [heightAnchor3 constraintEqualToConstant:19.5];
         v97[8] = v52;
-        v51 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-        v49 = [v51 firstBaselineAnchor];
-        v50 = [(MXUIServiceBanner *)self view];
-        v48 = [v50 SBUISA_systemApertureLegibleContentLayoutMarginsGuide];
-        v47 = [v48 bottomAnchor];
-        v46 = [v49 constraintEqualToAnchor:v47 constant:2.0];
+        ccBottomViewLabel3 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+        firstBaselineAnchor = [ccBottomViewLabel3 firstBaselineAnchor];
+        view10 = [(MXUIServiceBanner *)self view];
+        sBUISA_systemApertureLegibleContentLayoutMarginsGuide = [view10 SBUISA_systemApertureLegibleContentLayoutMarginsGuide];
+        bottomAnchor2 = [sBUISA_systemApertureLegibleContentLayoutMarginsGuide bottomAnchor];
+        v46 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor2 constant:2.0];
         v97[9] = v46;
-        v45 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-        v43 = [v45 leadingAnchor];
-        v44 = [(MXUIServiceBanner *)self view];
-        v42 = [v44 leadingAnchor];
-        v41 = [v43 constraintEqualToAnchor:v42 constant:88.0];
+        ccBottomViewLabel4 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+        leadingAnchor7 = [ccBottomViewLabel4 leadingAnchor];
+        view11 = [(MXUIServiceBanner *)self view];
+        leadingAnchor8 = [view11 leadingAnchor];
+        v41 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:88.0];
         v97[10] = v41;
-        v40 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-        v39 = [v40 _tightBoundingBoxLayoutGuide];
-        v37 = [v39 topAnchor];
-        v38 = [(MXUIServiceBanner *)self ccTopViewLabel];
-        v36 = [v38 bottomAnchor];
-        v35 = [v37 constraintEqualToAnchor:v36];
+        ccBottomViewLabel5 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+        _tightBoundingBoxLayoutGuide2 = [ccBottomViewLabel5 _tightBoundingBoxLayoutGuide];
+        topAnchor2 = [_tightBoundingBoxLayoutGuide2 topAnchor];
+        ccTopViewLabel6 = [(MXUIServiceBanner *)self ccTopViewLabel];
+        bottomAnchor3 = [ccTopViewLabel6 bottomAnchor];
+        v35 = [topAnchor2 constraintEqualToAnchor:bottomAnchor3];
         v97[11] = v35;
-        v34 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-        v33 = [v34 trailingAnchor];
-        v31 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
-        v32 = [(MXUIServiceBanner *)self view];
-        [v32 SBUISA_standardInteritemPadding];
-        v30 = [v33 constraintEqualToAnchor:v31 constant:-v10];
+        ccBottomViewLabel6 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+        trailingAnchor3 = [ccBottomViewLabel6 trailingAnchor];
+        leadingAnchor9 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
+        view12 = [(MXUIServiceBanner *)self view];
+        [view12 SBUISA_standardInteritemPadding];
+        v30 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor9 constant:-v10];
         v97[12] = v30;
-        v29 = [(SBUISystemApertureAccessoryView *)self->_trailingView heightAnchor];
-        v28 = [v29 constraintEqualToConstant:55.0];
+        heightAnchor4 = [(SBUISystemApertureAccessoryView *)self->_trailingView heightAnchor];
+        v28 = [heightAnchor4 constraintEqualToConstant:55.0];
         v97[13] = v28;
-        v27 = [(SBUISystemApertureAccessoryView *)self->_trailingView widthAnchor];
-        v26 = [v27 constraintGreaterThanOrEqualToConstant:35.0];
+        widthAnchor3 = [(SBUISystemApertureAccessoryView *)self->_trailingView widthAnchor];
+        v26 = [widthAnchor3 constraintGreaterThanOrEqualToConstant:35.0];
         v97[14] = v26;
-        v24 = [(SBUISystemApertureAccessoryView *)self->_trailingView centerYAnchor];
-        v25 = [(MXUIServiceBanner *)self view];
-        v23 = [v25 centerYAnchor];
-        v22 = [v24 constraintEqualToAnchor:v23];
+        centerYAnchor3 = [(SBUISystemApertureAccessoryView *)self->_trailingView centerYAnchor];
+        view13 = [(MXUIServiceBanner *)self view];
+        centerYAnchor4 = [view13 centerYAnchor];
+        v22 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
         v97[15] = v22;
-        v21 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
-        v11 = [(MXUIServiceBanner *)self view];
-        v12 = [v11 SBUISA_systemApertureObstructedAreaLayoutGuide];
-        v13 = [v12 trailingAnchor];
-        v14 = [v21 constraintGreaterThanOrEqualToAnchor:v13];
+        leadingAnchor10 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
+        view14 = [(MXUIServiceBanner *)self view];
+        sBUISA_systemApertureObstructedAreaLayoutGuide3 = [view14 SBUISA_systemApertureObstructedAreaLayoutGuide];
+        trailingAnchor4 = [sBUISA_systemApertureObstructedAreaLayoutGuide3 trailingAnchor];
+        v14 = [leadingAnchor10 constraintGreaterThanOrEqualToAnchor:trailingAnchor4];
         v97[16] = v14;
-        v15 = [(SBUISystemApertureAccessoryView *)self->_trailingView trailingAnchor];
-        v16 = [(MXUIServiceBanner *)self view];
-        v17 = [v16 trailingAnchor];
-        v18 = [v15 constraintEqualToAnchor:v17 constant:-15.0];
+        trailingAnchor5 = [(SBUISystemApertureAccessoryView *)self->_trailingView trailingAnchor];
+        view15 = [(MXUIServiceBanner *)self view];
+        trailingAnchor6 = [view15 trailingAnchor];
+        v18 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-15.0];
         v97[17] = v18;
         v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v97 count:18];
         [(NSMutableDictionary *)self->_constraintsForLayoutMode setObject:v19 forKeyedSubscript:&unk_2868F29B0];
@@ -974,13 +974,13 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
 - (void)_createConstraintsForUndoBannerIfNeeded
 {
   v97[18] = *MEMORY[0x277D85DE8];
-  v3 = [(MXUIServiceBanner *)self ccTopViewLabel];
-  if (v3)
+  ccTopViewLabel = [(MXUIServiceBanner *)self ccTopViewLabel];
+  if (ccTopViewLabel)
   {
-    v4 = v3;
-    v5 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+    v4 = ccTopViewLabel;
+    ccBottomViewLabel = [(MXUIServiceBanner *)self ccBottomViewLabel];
 
-    if (v5)
+    if (ccBottomViewLabel)
     {
       v6 = [(NSMutableDictionary *)self->_constraintsForLayoutMode objectForKeyedSubscript:&unk_2868F29B0];
 
@@ -988,114 +988,114 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
       {
         if (!self->_constraintsForLayoutMode)
         {
-          v7 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
           constraintsForLayoutMode = self->_constraintsForLayoutMode;
-          self->_constraintsForLayoutMode = v7;
+          self->_constraintsForLayoutMode = dictionary;
         }
 
-        v95 = [(SBUISystemApertureAccessoryView *)self->_leadingView leadingAnchor];
-        v96 = [(MXUIServiceBanner *)self view];
-        v94 = [v96 leadingAnchor];
-        v93 = [v95 constraintEqualToAnchor:v94 constant:20.0];
+        leadingAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView leadingAnchor];
+        view = [(MXUIServiceBanner *)self view];
+        leadingAnchor2 = [view leadingAnchor];
+        v93 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
         v97[0] = v93;
-        v91 = [(SBUISystemApertureAccessoryView *)self->_leadingView centerYAnchor];
-        v92 = [(MXUIServiceBanner *)self view];
-        v90 = [v92 centerYAnchor];
-        v89 = [v91 constraintEqualToAnchor:v90];
+        centerYAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView centerYAnchor];
+        view2 = [(MXUIServiceBanner *)self view];
+        centerYAnchor2 = [view2 centerYAnchor];
+        v89 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         v97[1] = v89;
-        v88 = [(MXUIServiceBanner *)self view];
-        v86 = [v88 widthAnchor];
-        v87 = [(MXUIServiceBanner *)self view];
-        v85 = [v87 window];
-        v84 = [v85 widthAnchor];
-        v83 = [v86 constraintEqualToAnchor:v84];
+        view3 = [(MXUIServiceBanner *)self view];
+        widthAnchor = [view3 widthAnchor];
+        view4 = [(MXUIServiceBanner *)self view];
+        window = [view4 window];
+        widthAnchor2 = [window widthAnchor];
+        v83 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
         v97[2] = v83;
-        v82 = [(MXUIServiceBanner *)self view];
-        v80 = [v82 heightAnchor];
-        v81 = [(MXUIServiceBanner *)self view];
-        v79 = [v81 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
-        v78 = [v79 heightAnchor];
-        v77 = [v80 constraintEqualToAnchor:v78];
+        view5 = [(MXUIServiceBanner *)self view];
+        heightAnchor = [view5 heightAnchor];
+        view6 = [(MXUIServiceBanner *)self view];
+        sBUISA_systemApertureTrailingConcentricContentLayoutGuide = [view6 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
+        heightAnchor2 = [sBUISA_systemApertureTrailingConcentricContentLayoutGuide heightAnchor];
+        v77 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
         v97[3] = v77;
-        v75 = [(SBUISystemApertureAccessoryView *)self->_leadingView trailingAnchor];
-        v76 = [(MXUIServiceBanner *)self view];
-        v74 = [v76 SBUISA_systemApertureObstructedAreaLayoutGuide];
-        v73 = [v74 leadingAnchor];
-        v72 = [v75 constraintLessThanOrEqualToAnchor:v73];
+        trailingAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView trailingAnchor];
+        view7 = [(MXUIServiceBanner *)self view];
+        sBUISA_systemApertureObstructedAreaLayoutGuide = [view7 SBUISA_systemApertureObstructedAreaLayoutGuide];
+        leadingAnchor3 = [sBUISA_systemApertureObstructedAreaLayoutGuide leadingAnchor];
+        v72 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor3];
         v97[4] = v72;
-        v71 = [(MXUIServiceBanner *)self ccTopViewLabel];
-        v69 = [v71 leadingAnchor];
-        v70 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-        v68 = [v70 leadingAnchor];
-        v67 = [v69 constraintEqualToAnchor:v68];
+        ccTopViewLabel2 = [(MXUIServiceBanner *)self ccTopViewLabel];
+        leadingAnchor4 = [ccTopViewLabel2 leadingAnchor];
+        ccBottomViewLabel2 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+        leadingAnchor5 = [ccBottomViewLabel2 leadingAnchor];
+        v67 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
         v97[5] = v67;
-        v66 = [(MXUIServiceBanner *)self ccTopViewLabel];
-        v65 = [v66 _tightBoundingBoxLayoutGuide];
-        v63 = [v65 topAnchor];
-        v64 = [(MXUIServiceBanner *)self view];
-        v62 = [v64 SBUISA_systemApertureObstructedAreaLayoutGuide];
-        v61 = [v62 bottomAnchor];
-        v60 = [v63 constraintEqualToAnchor:v61];
+        ccTopViewLabel3 = [(MXUIServiceBanner *)self ccTopViewLabel];
+        _tightBoundingBoxLayoutGuide = [ccTopViewLabel3 _tightBoundingBoxLayoutGuide];
+        topAnchor = [_tightBoundingBoxLayoutGuide topAnchor];
+        view8 = [(MXUIServiceBanner *)self view];
+        sBUISA_systemApertureObstructedAreaLayoutGuide2 = [view8 SBUISA_systemApertureObstructedAreaLayoutGuide];
+        bottomAnchor = [sBUISA_systemApertureObstructedAreaLayoutGuide2 bottomAnchor];
+        v60 = [topAnchor constraintEqualToAnchor:bottomAnchor];
         v97[6] = v60;
-        v59 = [(MXUIServiceBanner *)self ccTopViewLabel];
-        v58 = [v59 trailingAnchor];
-        v56 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
-        v57 = [(MXUIServiceBanner *)self view];
-        [v57 SBUISA_standardInteritemPadding];
-        v55 = [v58 constraintEqualToAnchor:v56 constant:-v9];
+        ccTopViewLabel4 = [(MXUIServiceBanner *)self ccTopViewLabel];
+        trailingAnchor2 = [ccTopViewLabel4 trailingAnchor];
+        leadingAnchor6 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
+        view9 = [(MXUIServiceBanner *)self view];
+        [view9 SBUISA_standardInteritemPadding];
+        v55 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor6 constant:-v9];
         v97[7] = v55;
-        v54 = [(MXUIServiceBanner *)self ccTopViewLabel];
-        v53 = [v54 heightAnchor];
-        v52 = [v53 constraintEqualToConstant:19.5];
+        ccTopViewLabel5 = [(MXUIServiceBanner *)self ccTopViewLabel];
+        heightAnchor3 = [ccTopViewLabel5 heightAnchor];
+        v52 = [heightAnchor3 constraintEqualToConstant:19.5];
         v97[8] = v52;
-        v51 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-        v49 = [v51 firstBaselineAnchor];
-        v50 = [(MXUIServiceBanner *)self view];
-        v48 = [v50 SBUISA_systemApertureLegibleContentLayoutMarginsGuide];
-        v47 = [v48 bottomAnchor];
-        v46 = [v49 constraintEqualToAnchor:v47 constant:2.0];
+        ccBottomViewLabel3 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+        firstBaselineAnchor = [ccBottomViewLabel3 firstBaselineAnchor];
+        view10 = [(MXUIServiceBanner *)self view];
+        sBUISA_systemApertureLegibleContentLayoutMarginsGuide = [view10 SBUISA_systemApertureLegibleContentLayoutMarginsGuide];
+        bottomAnchor2 = [sBUISA_systemApertureLegibleContentLayoutMarginsGuide bottomAnchor];
+        v46 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor2 constant:2.0];
         v97[9] = v46;
-        v45 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-        v43 = [v45 leadingAnchor];
-        v44 = [(MXUIServiceBanner *)self view];
-        v42 = [v44 leadingAnchor];
-        v41 = [v43 constraintEqualToAnchor:v42 constant:88.0];
+        ccBottomViewLabel4 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+        leadingAnchor7 = [ccBottomViewLabel4 leadingAnchor];
+        view11 = [(MXUIServiceBanner *)self view];
+        leadingAnchor8 = [view11 leadingAnchor];
+        v41 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:88.0];
         v97[10] = v41;
-        v40 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-        v39 = [v40 _tightBoundingBoxLayoutGuide];
-        v37 = [v39 topAnchor];
-        v38 = [(MXUIServiceBanner *)self ccTopViewLabel];
-        v36 = [v38 bottomAnchor];
-        v35 = [v37 constraintEqualToAnchor:v36];
+        ccBottomViewLabel5 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+        _tightBoundingBoxLayoutGuide2 = [ccBottomViewLabel5 _tightBoundingBoxLayoutGuide];
+        topAnchor2 = [_tightBoundingBoxLayoutGuide2 topAnchor];
+        ccTopViewLabel6 = [(MXUIServiceBanner *)self ccTopViewLabel];
+        bottomAnchor3 = [ccTopViewLabel6 bottomAnchor];
+        v35 = [topAnchor2 constraintEqualToAnchor:bottomAnchor3];
         v97[11] = v35;
-        v34 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-        v33 = [v34 trailingAnchor];
-        v31 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
-        v32 = [(MXUIServiceBanner *)self view];
-        [v32 SBUISA_standardInteritemPadding];
-        v30 = [v33 constraintEqualToAnchor:v31 constant:-v10];
+        ccBottomViewLabel6 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+        trailingAnchor3 = [ccBottomViewLabel6 trailingAnchor];
+        leadingAnchor9 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
+        view12 = [(MXUIServiceBanner *)self view];
+        [view12 SBUISA_standardInteritemPadding];
+        v30 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor9 constant:-v10];
         v97[12] = v30;
-        v29 = [(SBUISystemApertureAccessoryView *)self->_trailingView heightAnchor];
-        v28 = [v29 constraintEqualToConstant:55.0];
+        heightAnchor4 = [(SBUISystemApertureAccessoryView *)self->_trailingView heightAnchor];
+        v28 = [heightAnchor4 constraintEqualToConstant:55.0];
         v97[13] = v28;
-        v27 = [(SBUISystemApertureAccessoryView *)self->_trailingView widthAnchor];
-        v26 = [v27 constraintGreaterThanOrEqualToConstant:35.0];
+        widthAnchor3 = [(SBUISystemApertureAccessoryView *)self->_trailingView widthAnchor];
+        v26 = [widthAnchor3 constraintGreaterThanOrEqualToConstant:35.0];
         v97[14] = v26;
-        v24 = [(SBUISystemApertureAccessoryView *)self->_trailingView centerYAnchor];
-        v25 = [(MXUIServiceBanner *)self view];
-        v23 = [v25 centerYAnchor];
-        v22 = [v24 constraintEqualToAnchor:v23];
+        centerYAnchor3 = [(SBUISystemApertureAccessoryView *)self->_trailingView centerYAnchor];
+        view13 = [(MXUIServiceBanner *)self view];
+        centerYAnchor4 = [view13 centerYAnchor];
+        v22 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
         v97[15] = v22;
-        v21 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
-        v11 = [(MXUIServiceBanner *)self view];
-        v12 = [v11 SBUISA_systemApertureObstructedAreaLayoutGuide];
-        v13 = [v12 trailingAnchor];
-        v14 = [v21 constraintGreaterThanOrEqualToAnchor:v13];
+        leadingAnchor10 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
+        view14 = [(MXUIServiceBanner *)self view];
+        sBUISA_systemApertureObstructedAreaLayoutGuide3 = [view14 SBUISA_systemApertureObstructedAreaLayoutGuide];
+        trailingAnchor4 = [sBUISA_systemApertureObstructedAreaLayoutGuide3 trailingAnchor];
+        v14 = [leadingAnchor10 constraintGreaterThanOrEqualToAnchor:trailingAnchor4];
         v97[16] = v14;
-        v15 = [(SBUISystemApertureAccessoryView *)self->_trailingView trailingAnchor];
-        v16 = [(MXUIServiceBanner *)self view];
-        v17 = [v16 trailingAnchor];
-        v18 = [v15 constraintEqualToAnchor:v17 constant:-15.0];
+        trailingAnchor5 = [(SBUISystemApertureAccessoryView *)self->_trailingView trailingAnchor];
+        view15 = [(MXUIServiceBanner *)self view];
+        trailingAnchor6 = [view15 trailingAnchor];
+        v18 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-15.0];
         v97[17] = v18;
         v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v97 count:18];
         [(NSMutableDictionary *)self->_constraintsForLayoutMode setObject:v19 forKeyedSubscript:&unk_2868F29B0];
@@ -1109,13 +1109,13 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
 - (void)_createConstraintsForDisconnectedBannerIfNeeded
 {
   v97[18] = *MEMORY[0x277D85DE8];
-  v3 = [(MXUIServiceBanner *)self ccTopViewLabel];
-  if (v3)
+  ccTopViewLabel = [(MXUIServiceBanner *)self ccTopViewLabel];
+  if (ccTopViewLabel)
   {
-    v4 = v3;
-    v5 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+    v4 = ccTopViewLabel;
+    ccBottomViewLabel = [(MXUIServiceBanner *)self ccBottomViewLabel];
 
-    if (v5)
+    if (ccBottomViewLabel)
     {
       v6 = [(NSMutableDictionary *)self->_constraintsForLayoutMode objectForKeyedSubscript:&unk_2868F29B0];
 
@@ -1123,114 +1123,114 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
       {
         if (!self->_constraintsForLayoutMode)
         {
-          v7 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
           constraintsForLayoutMode = self->_constraintsForLayoutMode;
-          self->_constraintsForLayoutMode = v7;
+          self->_constraintsForLayoutMode = dictionary;
         }
 
-        v95 = [(SBUISystemApertureAccessoryView *)self->_leadingView leadingAnchor];
-        v96 = [(MXUIServiceBanner *)self view];
-        v94 = [v96 leadingAnchor];
-        v93 = [v95 constraintEqualToAnchor:v94 constant:20.0];
+        leadingAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView leadingAnchor];
+        view = [(MXUIServiceBanner *)self view];
+        leadingAnchor2 = [view leadingAnchor];
+        v93 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
         v97[0] = v93;
-        v91 = [(SBUISystemApertureAccessoryView *)self->_leadingView centerYAnchor];
-        v92 = [(MXUIServiceBanner *)self view];
-        v90 = [v92 centerYAnchor];
-        v89 = [v91 constraintEqualToAnchor:v90];
+        centerYAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView centerYAnchor];
+        view2 = [(MXUIServiceBanner *)self view];
+        centerYAnchor2 = [view2 centerYAnchor];
+        v89 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         v97[1] = v89;
-        v88 = [(MXUIServiceBanner *)self view];
-        v86 = [v88 widthAnchor];
-        v87 = [(MXUIServiceBanner *)self view];
-        v85 = [v87 window];
-        v84 = [v85 widthAnchor];
-        v83 = [v86 constraintEqualToAnchor:v84];
+        view3 = [(MXUIServiceBanner *)self view];
+        widthAnchor = [view3 widthAnchor];
+        view4 = [(MXUIServiceBanner *)self view];
+        window = [view4 window];
+        widthAnchor2 = [window widthAnchor];
+        v83 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
         v97[2] = v83;
-        v82 = [(MXUIServiceBanner *)self view];
-        v80 = [v82 heightAnchor];
-        v81 = [(MXUIServiceBanner *)self view];
-        v79 = [v81 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
-        v78 = [v79 heightAnchor];
-        v77 = [v80 constraintEqualToAnchor:v78];
+        view5 = [(MXUIServiceBanner *)self view];
+        heightAnchor = [view5 heightAnchor];
+        view6 = [(MXUIServiceBanner *)self view];
+        sBUISA_systemApertureTrailingConcentricContentLayoutGuide = [view6 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
+        heightAnchor2 = [sBUISA_systemApertureTrailingConcentricContentLayoutGuide heightAnchor];
+        v77 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
         v97[3] = v77;
-        v75 = [(SBUISystemApertureAccessoryView *)self->_leadingView trailingAnchor];
-        v76 = [(MXUIServiceBanner *)self view];
-        v74 = [v76 SBUISA_systemApertureObstructedAreaLayoutGuide];
-        v73 = [v74 leadingAnchor];
-        v72 = [v75 constraintLessThanOrEqualToAnchor:v73];
+        trailingAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView trailingAnchor];
+        view7 = [(MXUIServiceBanner *)self view];
+        sBUISA_systemApertureObstructedAreaLayoutGuide = [view7 SBUISA_systemApertureObstructedAreaLayoutGuide];
+        leadingAnchor3 = [sBUISA_systemApertureObstructedAreaLayoutGuide leadingAnchor];
+        v72 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor3];
         v97[4] = v72;
-        v71 = [(MXUIServiceBanner *)self ccTopViewLabel];
-        v69 = [v71 leadingAnchor];
-        v70 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-        v68 = [v70 leadingAnchor];
-        v67 = [v69 constraintEqualToAnchor:v68];
+        ccTopViewLabel2 = [(MXUIServiceBanner *)self ccTopViewLabel];
+        leadingAnchor4 = [ccTopViewLabel2 leadingAnchor];
+        ccBottomViewLabel2 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+        leadingAnchor5 = [ccBottomViewLabel2 leadingAnchor];
+        v67 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
         v97[5] = v67;
-        v66 = [(MXUIServiceBanner *)self ccTopViewLabel];
-        v65 = [v66 _tightBoundingBoxLayoutGuide];
-        v63 = [v65 topAnchor];
-        v64 = [(MXUIServiceBanner *)self view];
-        v62 = [v64 SBUISA_systemApertureObstructedAreaLayoutGuide];
-        v61 = [v62 bottomAnchor];
-        v60 = [v63 constraintEqualToAnchor:v61];
+        ccTopViewLabel3 = [(MXUIServiceBanner *)self ccTopViewLabel];
+        _tightBoundingBoxLayoutGuide = [ccTopViewLabel3 _tightBoundingBoxLayoutGuide];
+        topAnchor = [_tightBoundingBoxLayoutGuide topAnchor];
+        view8 = [(MXUIServiceBanner *)self view];
+        sBUISA_systemApertureObstructedAreaLayoutGuide2 = [view8 SBUISA_systemApertureObstructedAreaLayoutGuide];
+        bottomAnchor = [sBUISA_systemApertureObstructedAreaLayoutGuide2 bottomAnchor];
+        v60 = [topAnchor constraintEqualToAnchor:bottomAnchor];
         v97[6] = v60;
-        v59 = [(MXUIServiceBanner *)self ccTopViewLabel];
-        v58 = [v59 trailingAnchor];
-        v56 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
-        v57 = [(MXUIServiceBanner *)self view];
-        [v57 SBUISA_standardInteritemPadding];
-        v55 = [v58 constraintEqualToAnchor:v56 constant:-v9];
+        ccTopViewLabel4 = [(MXUIServiceBanner *)self ccTopViewLabel];
+        trailingAnchor2 = [ccTopViewLabel4 trailingAnchor];
+        leadingAnchor6 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
+        view9 = [(MXUIServiceBanner *)self view];
+        [view9 SBUISA_standardInteritemPadding];
+        v55 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor6 constant:-v9];
         v97[7] = v55;
-        v54 = [(MXUIServiceBanner *)self ccTopViewLabel];
-        v53 = [v54 heightAnchor];
-        v52 = [v53 constraintEqualToConstant:19.5];
+        ccTopViewLabel5 = [(MXUIServiceBanner *)self ccTopViewLabel];
+        heightAnchor3 = [ccTopViewLabel5 heightAnchor];
+        v52 = [heightAnchor3 constraintEqualToConstant:19.5];
         v97[8] = v52;
-        v51 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-        v49 = [v51 firstBaselineAnchor];
-        v50 = [(MXUIServiceBanner *)self view];
-        v48 = [v50 SBUISA_systemApertureLegibleContentLayoutMarginsGuide];
-        v47 = [v48 bottomAnchor];
-        v46 = [v49 constraintEqualToAnchor:v47 constant:2.0];
+        ccBottomViewLabel3 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+        firstBaselineAnchor = [ccBottomViewLabel3 firstBaselineAnchor];
+        view10 = [(MXUIServiceBanner *)self view];
+        sBUISA_systemApertureLegibleContentLayoutMarginsGuide = [view10 SBUISA_systemApertureLegibleContentLayoutMarginsGuide];
+        bottomAnchor2 = [sBUISA_systemApertureLegibleContentLayoutMarginsGuide bottomAnchor];
+        v46 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor2 constant:2.0];
         v97[9] = v46;
-        v45 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-        v43 = [v45 leadingAnchor];
-        v44 = [(MXUIServiceBanner *)self view];
-        v42 = [v44 leadingAnchor];
-        v41 = [v43 constraintEqualToAnchor:v42 constant:88.0];
+        ccBottomViewLabel4 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+        leadingAnchor7 = [ccBottomViewLabel4 leadingAnchor];
+        view11 = [(MXUIServiceBanner *)self view];
+        leadingAnchor8 = [view11 leadingAnchor];
+        v41 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:88.0];
         v97[10] = v41;
-        v40 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-        v39 = [v40 _tightBoundingBoxLayoutGuide];
-        v37 = [v39 topAnchor];
-        v38 = [(MXUIServiceBanner *)self ccTopViewLabel];
-        v36 = [v38 bottomAnchor];
-        v35 = [v37 constraintEqualToAnchor:v36];
+        ccBottomViewLabel5 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+        _tightBoundingBoxLayoutGuide2 = [ccBottomViewLabel5 _tightBoundingBoxLayoutGuide];
+        topAnchor2 = [_tightBoundingBoxLayoutGuide2 topAnchor];
+        ccTopViewLabel6 = [(MXUIServiceBanner *)self ccTopViewLabel];
+        bottomAnchor3 = [ccTopViewLabel6 bottomAnchor];
+        v35 = [topAnchor2 constraintEqualToAnchor:bottomAnchor3];
         v97[11] = v35;
-        v34 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-        v33 = [v34 trailingAnchor];
-        v31 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
-        v32 = [(MXUIServiceBanner *)self view];
-        [v32 SBUISA_standardInteritemPadding];
-        v30 = [v33 constraintEqualToAnchor:v31 constant:-v10];
+        ccBottomViewLabel6 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+        trailingAnchor3 = [ccBottomViewLabel6 trailingAnchor];
+        leadingAnchor9 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
+        view12 = [(MXUIServiceBanner *)self view];
+        [view12 SBUISA_standardInteritemPadding];
+        v30 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor9 constant:-v10];
         v97[12] = v30;
-        v29 = [(SBUISystemApertureAccessoryView *)self->_trailingView heightAnchor];
-        v28 = [v29 constraintEqualToConstant:55.0];
+        heightAnchor4 = [(SBUISystemApertureAccessoryView *)self->_trailingView heightAnchor];
+        v28 = [heightAnchor4 constraintEqualToConstant:55.0];
         v97[13] = v28;
-        v27 = [(SBUISystemApertureAccessoryView *)self->_trailingView widthAnchor];
-        v26 = [v27 constraintGreaterThanOrEqualToConstant:35.0];
+        widthAnchor3 = [(SBUISystemApertureAccessoryView *)self->_trailingView widthAnchor];
+        v26 = [widthAnchor3 constraintGreaterThanOrEqualToConstant:35.0];
         v97[14] = v26;
-        v24 = [(SBUISystemApertureAccessoryView *)self->_trailingView centerYAnchor];
-        v25 = [(MXUIServiceBanner *)self view];
-        v23 = [v25 centerYAnchor];
-        v22 = [v24 constraintEqualToAnchor:v23];
+        centerYAnchor3 = [(SBUISystemApertureAccessoryView *)self->_trailingView centerYAnchor];
+        view13 = [(MXUIServiceBanner *)self view];
+        centerYAnchor4 = [view13 centerYAnchor];
+        v22 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
         v97[15] = v22;
-        v21 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
-        v11 = [(MXUIServiceBanner *)self view];
-        v12 = [v11 SBUISA_systemApertureObstructedAreaLayoutGuide];
-        v13 = [v12 trailingAnchor];
-        v14 = [v21 constraintGreaterThanOrEqualToAnchor:v13];
+        leadingAnchor10 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
+        view14 = [(MXUIServiceBanner *)self view];
+        sBUISA_systemApertureObstructedAreaLayoutGuide3 = [view14 SBUISA_systemApertureObstructedAreaLayoutGuide];
+        trailingAnchor4 = [sBUISA_systemApertureObstructedAreaLayoutGuide3 trailingAnchor];
+        v14 = [leadingAnchor10 constraintGreaterThanOrEqualToAnchor:trailingAnchor4];
         v97[16] = v14;
-        v15 = [(SBUISystemApertureAccessoryView *)self->_trailingView trailingAnchor];
-        v16 = [(MXUIServiceBanner *)self view];
-        v17 = [v16 trailingAnchor];
-        v18 = [v15 constraintEqualToAnchor:v17 constant:-15.0];
+        trailingAnchor5 = [(SBUISystemApertureAccessoryView *)self->_trailingView trailingAnchor];
+        view15 = [(MXUIServiceBanner *)self view];
+        trailingAnchor6 = [view15 trailingAnchor];
+        v18 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-15.0];
         v97[17] = v18;
         v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v97 count:18];
         [(NSMutableDictionary *)self->_constraintsForLayoutMode setObject:v19 forKeyedSubscript:&unk_2868F29B0];
@@ -1241,24 +1241,24 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(MXUIServiceBanner *)self minimalView];
-  [v5 setHidden:0];
+  coordinatorCopy = coordinator;
+  minimalView = [(MXUIServiceBanner *)self minimalView];
+  [minimalView setHidden:0];
 
-  v6 = [(MXUIServiceBanner *)self view];
-  [v6 addSubview:self->_leadingAccessoryView];
+  view = [(MXUIServiceBanner *)self view];
+  [view addSubview:self->_leadingAccessoryView];
 
-  v7 = [(MXUIServiceBanner *)self view];
-  [v7 addSubview:self->_minimalAccessoryView];
+  view2 = [(MXUIServiceBanner *)self view];
+  [view2 addSubview:self->_minimalAccessoryView];
 
-  v8 = [(MXUIServiceBanner *)self view];
-  [v8 addSubview:self->_trailingAccessoryView];
+  view3 = [(MXUIServiceBanner *)self view];
+  [view3 addSubview:self->_trailingAccessoryView];
 
-  v9 = [(MXUIServiceBanner *)self view];
-  v10 = [(MXUIServiceBanner *)self ccTopViewLabel];
-  [v9 addSubview:v10];
+  view4 = [(MXUIServiceBanner *)self view];
+  ccTopViewLabel = [(MXUIServiceBanner *)self ccTopViewLabel];
+  [view4 addSubview:ccTopViewLabel];
 
   if (self->_isAskOrReverseBanner)
   {
@@ -1268,28 +1268,28 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
 
   else
   {
-    v11 = [(MXUIServiceBanner *)self leadingView];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    leadingView = [(MXUIServiceBanner *)self leadingView];
+    [leadingView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v12 = [(MXUIServiceBanner *)self trailingView];
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+    trailingView = [(MXUIServiceBanner *)self trailingView];
+    [trailingView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v13 = [(MXUIServiceBanner *)self minimalView];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+    minimalView2 = [(MXUIServiceBanner *)self minimalView];
+    [minimalView2 setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
-  v14 = [(MXUIServiceBanner *)self ccTopViewLabel];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  ccTopViewLabel2 = [(MXUIServiceBanner *)self ccTopViewLabel];
+  [ccTopViewLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   if (self->_isAskOrReverseBanner)
   {
-    v15 = [(MXUIServiceBanner *)self view];
-    v16 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-    [v15 addSubview:v16];
+    view5 = [(MXUIServiceBanner *)self view];
+    ccBottomViewLabel = [(MXUIServiceBanner *)self ccBottomViewLabel];
+    [view5 addSubview:ccBottomViewLabel];
 
     [(MXUIServiceBanner *)self _createConstraintsForConnectBannerIfNeeded];
-    v17 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-    [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+    ccBottomViewLabel2 = [(MXUIServiceBanner *)self ccBottomViewLabel];
+    [ccBottomViewLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
   v18[0] = MEMORY[0x277D85DD0];
@@ -1297,7 +1297,7 @@ uint64_t __25__MXUIServiceBanner_init__block_invoke()
   v18[2] = __69__MXUIServiceBanner_viewWillLayoutSubviewsWithTransitionCoordinator___block_invoke;
   v18[3] = &unk_279850640;
   v18[4] = self;
-  [v4 animateAlongsideTransition:v18 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v18 completion:0];
 }
 
 uint64_t __69__MXUIServiceBanner_viewWillLayoutSubviewsWithTransitionCoordinator___block_invoke(uint64_t a1)
@@ -1343,10 +1343,10 @@ uint64_t __69__MXUIServiceBanner_viewWillLayoutSubviewsWithTransitionCoordinator
   return result;
 }
 
-- (void)activateWithActionHandler:(id)a3
+- (void)activateWithActionHandler:(id)handler
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v4 = MEMORY[0x259C6C950](a3, a2);
+  v4 = MEMORY[0x259C6C950](handler, a2);
   actionHandler = self->_actionHandler;
   self->_actionHandler = v4;
 
@@ -1356,8 +1356,8 @@ uint64_t __69__MXUIServiceBanner_viewWillLayoutSubviewsWithTransitionCoordinator
 
   v8 = MEMORY[0x277CF0A80];
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v10 = [v9 bundleIdentifier];
-  v11 = [v8 bannerSourceForDestination:0 forRequesterIdentifier:v10];
+  bundleIdentifier = [v9 bundleIdentifier];
+  v11 = [v8 bannerSourceForDestination:0 forRequesterIdentifier:bundleIdentifier];
   bannerSource = self->_bannerSource;
   self->_bannerSource = v11;
 
@@ -1495,10 +1495,10 @@ uint64_t __69__MXUIServiceBanner_viewWillLayoutSubviewsWithTransitionCoordinator
   self->_trailingAccessoryView = 0;
 }
 
-- (id)getAppIcon:(id)a3
+- (id)getAppIcon:(id)icon
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  iconCopy = icon;
   if (dword_27F8F0258)
   {
     v4 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -1507,82 +1507,82 @@ uint64_t __69__MXUIServiceBanner_viewWillLayoutSubviewsWithTransitionCoordinator
   }
 
   v5 = MEMORY[0x277D755B8];
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
-  v7 = [v5 _applicationIconImageForBundleIdentifier:v3 format:0 scale:?];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
+  v7 = [v5 _applicationIconImageForBundleIdentifier:iconCopy format:0 scale:?];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (void)createCustomView:(id)a3 WithCustomIconName:(id)a4
+- (void)createCustomView:(id)view WithCustomIconName:(id)name
 {
   v5 = MEMORY[0x277D755E8];
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  viewCopy = view;
   v8 = [v5 alloc];
-  v9 = [MEMORY[0x277D755B8] imageNamed:v6];
+  v9 = [MEMORY[0x277D755B8] imageNamed:nameCopy];
 
   v10 = [v8 initWithImage:v9];
   [v10 setContentMode:2];
-  [v7 bounds];
+  [viewCopy bounds];
   [v10 setFrame:?];
   [v10 setAutoresizingMask:18];
-  [v7 addSubview:v10];
+  [viewCopy addSubview:v10];
 }
 
-- (void)createCustomStaticImageView:(id)a3 withIcon:(id)a4
+- (void)createCustomStaticImageView:(id)view withIcon:(id)icon
 {
   v30[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  viewCopy = view;
   v7 = MEMORY[0x277D755E8];
-  v8 = a4;
+  iconCopy = icon;
   v9 = objc_alloc_init(v7);
-  [v6 addSubview:v9];
+  [viewCopy addSubview:v9];
   [v9 setBackgroundColor:0];
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
   objc_storeStrong(&self->_imageView, v9);
-  [(UIImageView *)self->_imageView setImage:v8];
+  [(UIImageView *)self->_imageView setImage:iconCopy];
 
   LODWORD(v7) = self->_useJindoPath;
-  v10 = [(UIImageView *)self->_imageView centerXAnchor];
-  v11 = [v6 centerXAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  centerXAnchor = [(UIImageView *)self->_imageView centerXAnchor];
+  centerXAnchor2 = [viewCopy centerXAnchor];
+  v12 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v13 = v12;
   if (v7 == 1)
   {
     v30[0] = v12;
-    v25 = [(UIImageView *)self->_imageView centerYAnchor];
-    v14 = [v6 centerYAnchor];
-    v15 = [v25 constraintEqualToAnchor:v14];
+    centerYAnchor = [(UIImageView *)self->_imageView centerYAnchor];
+    centerYAnchor2 = [viewCopy centerYAnchor];
+    v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v30[1] = v15;
-    v26 = [(UIImageView *)self->_imageView widthAnchor];
-    v24 = [v6 widthAnchor];
-    [v26 constraintEqualToAnchor:v24];
-    v16 = v28 = v10;
+    widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
+    widthAnchor2 = [viewCopy widthAnchor];
+    [widthAnchor constraintEqualToAnchor:widthAnchor2];
+    v16 = v28 = centerXAnchor;
     v30[2] = v16;
-    v17 = [(UIImageView *)self->_imageView heightAnchor];
-    [v6 heightAnchor];
+    heightAnchor = [(UIImageView *)self->_imageView heightAnchor];
+    [viewCopy heightAnchor];
     v18 = v27 = v13;
-    [v17 constraintEqualToAnchor:v18];
-    v20 = v19 = v11;
+    [heightAnchor constraintEqualToAnchor:v18];
+    v20 = v19 = centerXAnchor2;
     v30[3] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:4];
 
-    v11 = v19;
-    v22 = v25;
+    centerXAnchor2 = v19;
+    centerYAnchor3 = centerYAnchor;
 
     v13 = v27;
-    v10 = v28;
+    centerXAnchor = v28;
   }
 
   else
   {
     v29[0] = v12;
-    v22 = [(UIImageView *)self->_imageView centerYAnchor];
-    v14 = [v6 centerYAnchor];
-    v15 = [v22 constraintEqualToAnchor:v14];
+    centerYAnchor3 = [(UIImageView *)self->_imageView centerYAnchor];
+    centerYAnchor2 = [viewCopy centerYAnchor];
+    v15 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor2];
     v29[1] = v15;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
   }
@@ -1593,36 +1593,36 @@ uint64_t __69__MXUIServiceBanner_viewWillLayoutSubviewsWithTransitionCoordinator
 
 - (id)createInUseConnectButton
 {
-  v2 = self;
+  selfCopy = self;
   v32[1] = *MEMORY[0x277D85DE8];
   useJindoPath = self->_useJindoPath;
-  v4 = [MEMORY[0x277D75230] tintedButtonConfiguration];
+  tintedButtonConfiguration = [MEMORY[0x277D75230] tintedButtonConfiguration];
   if (useJindoPath)
   {
     v5 = [MEMORY[0x277D755D0] configurationWithPointSize:6 weight:17.0];
     v6 = [MEMORY[0x277D755B8] systemImageNamed:@"airplay.audio"];
     v7 = [v6 imageWithRenderingMode:2];
 
-    [v4 setImage:v7];
-    [v4 setPreferredSymbolConfigurationForImage:v5];
+    [tintedButtonConfiguration setImage:v7];
+    [tintedButtonConfiguration setPreferredSymbolConfigurationForImage:v5];
     v8 = [MEMORY[0x277D75348] colorWithRed:0.505882382 green:0.815686285 blue:0.980392158 alpha:1.0];
     v9 = [v8 colorWithAlphaComponent:0.0];
-    v10 = [v4 background];
-    [v10 setBackgroundColor:v9];
+    background = [tintedButtonConfiguration background];
+    [background setBackgroundColor:v9];
 
-    v11 = [v4 background];
-    [v11 setCornerRadius:28.0];
+    background2 = [tintedButtonConfiguration background];
+    [background2 setCornerRadius:28.0];
 
-    v12 = [MEMORY[0x277D67DD0] buttonWithConfiguration:v4 primaryAction:0];
-    [v12 setConfiguration:v4];
+    v12 = [MEMORY[0x277D67DD0] buttonWithConfiguration:tintedButtonConfiguration primaryAction:0];
+    [v12 setConfiguration:tintedButtonConfiguration];
     [v12 setUserInteractionEnabled:1];
     [v12 setFrame:{0.0, 0.0, 30.0, 30.0}];
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
     v13 = MEMORY[0x277CCAAD0];
-    v14 = [v12 widthAnchor];
+    widthAnchor = [v12 widthAnchor];
     [v12 intrinsicContentSize];
-    v15 = [v14 constraintEqualToConstant:?];
-    v32[0] = v15;
+    heightAnchor = [widthAnchor constraintEqualToConstant:?];
+    v32[0] = heightAnchor;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
     [v13 activateConstraints:v16];
   }
@@ -1633,38 +1633,38 @@ uint64_t __69__MXUIServiceBanner_viewWillLayoutSubviewsWithTransitionCoordinator
     v17 = [MEMORY[0x277D755B8] systemImageNamed:@"airplay.audio"];
     v30 = [v17 imageWithRenderingMode:2];
 
-    [v4 setImage:v30];
-    [v4 setPreferredSymbolConfigurationForImage:v29];
+    [tintedButtonConfiguration setImage:v30];
+    [tintedButtonConfiguration setPreferredSymbolConfigurationForImage:v29];
     v18 = [MEMORY[0x277D75348] colorWithRed:0.505882382 green:0.815686285 blue:0.980392158 alpha:1.0];
     v19 = [v18 colorWithAlphaComponent:0.0];
-    v20 = [v4 background];
-    [v20 setBackgroundColor:v19];
+    background3 = [tintedButtonConfiguration background];
+    [background3 setBackgroundColor:v19];
 
-    v21 = [v4 background];
-    [v21 setCornerRadius:28.0];
+    background4 = [tintedButtonConfiguration background];
+    [background4 setCornerRadius:28.0];
 
-    v12 = [MEMORY[0x277D75220] buttonWithConfiguration:v4 primaryAction:0];
+    v12 = [MEMORY[0x277D75220] buttonWithConfiguration:tintedButtonConfiguration primaryAction:0];
     [v12 setUserInteractionEnabled:1];
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
     v22 = MEMORY[0x277CCAAD0];
-    v14 = [v12 widthAnchor];
-    v15 = [v12 heightAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    widthAnchor = [v12 widthAnchor];
+    heightAnchor = [v12 heightAnchor];
+    v16 = [widthAnchor constraintEqualToAnchor:heightAnchor];
     v31[0] = v16;
-    v23 = [v12 widthAnchor];
-    v24 = [v23 constraintEqualToConstant:34.0];
+    widthAnchor2 = [v12 widthAnchor];
+    v24 = [widthAnchor2 constraintEqualToConstant:34.0];
     v31[1] = v24;
     [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:2];
-    v26 = v25 = v2;
+    v26 = v25 = selfCopy;
     [v22 activateConstraints:v26];
 
-    v2 = v25;
+    selfCopy = v25;
     v7 = v30;
 
     v5 = v29;
   }
 
-  [v12 addTarget:v2 action:sel_handleTap_ forControlEvents:64];
+  [v12 addTarget:selfCopy action:sel_handleTap_ forControlEvents:64];
   v27 = *MEMORY[0x277D85DE8];
 
   return v12;
@@ -1674,31 +1674,31 @@ uint64_t __69__MXUIServiceBanner_viewWillLayoutSubviewsWithTransitionCoordinator
 {
   v32[2] = *MEMORY[0x277D85DE8];
   useJindoPath = self->_useJindoPath;
-  v3 = [MEMORY[0x277D75230] tintedButtonConfiguration];
+  tintedButtonConfiguration = [MEMORY[0x277D75230] tintedButtonConfiguration];
   if (useJindoPath)
   {
     v4 = [MEMORY[0x277D755D0] configurationWithPointSize:6 weight:20.0];
     v5 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.uturn.backward"];
     v6 = [v5 imageWithRenderingMode:2];
 
-    [v3 setImage:v6];
+    [tintedButtonConfiguration setImage:v6];
     v29 = v4;
-    [v3 setPreferredSymbolConfigurationForImage:v4];
+    [tintedButtonConfiguration setPreferredSymbolConfigurationForImage:v4];
     v7 = [MEMORY[0x277D75348] colorWithRed:0.505882382 green:0.815686285 blue:0.980392158 alpha:1.0];
     v8 = [v7 colorWithAlphaComponent:0.3];
-    v9 = [v3 background];
-    [v9 setBackgroundColor:v8];
+    background = [tintedButtonConfiguration background];
+    [background setBackgroundColor:v8];
 
-    v10 = [v3 background];
-    [v10 setCornerRadius:28.0];
+    background2 = [tintedButtonConfiguration background];
+    [background2 setCornerRadius:28.0];
 
-    v11 = [MEMORY[0x277D75220] buttonWithConfiguration:v3 primaryAction:0];
+    v11 = [MEMORY[0x277D75220] buttonWithConfiguration:tintedButtonConfiguration primaryAction:0];
     [v11 setUserInteractionEnabled:1];
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
     v12 = MEMORY[0x277CCAAD0];
-    v13 = [v11 widthAnchor];
-    v14 = [v11 heightAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    widthAnchor = [v11 widthAnchor];
+    heightAnchor = [v11 heightAnchor];
+    v15 = [widthAnchor constraintEqualToAnchor:heightAnchor];
     v32[0] = v15;
     v16 = 30.0;
     v17 = v32;
@@ -1710,31 +1710,31 @@ uint64_t __69__MXUIServiceBanner_viewWillLayoutSubviewsWithTransitionCoordinator
     v19 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.uturn.backward.circle.fill"];
     v6 = [v19 imageWithRenderingMode:2];
 
-    [v3 setImage:v6];
+    [tintedButtonConfiguration setImage:v6];
     v29 = v18;
-    [v3 setPreferredSymbolConfigurationForImage:v18];
+    [tintedButtonConfiguration setPreferredSymbolConfigurationForImage:v18];
     v20 = [MEMORY[0x277D75348] colorWithRed:0.505882382 green:0.815686285 blue:0.980392158 alpha:1.0];
     v21 = [v20 colorWithAlphaComponent:0.0];
-    v22 = [v3 background];
-    [v22 setBackgroundColor:v21];
+    background3 = [tintedButtonConfiguration background];
+    [background3 setBackgroundColor:v21];
 
-    v23 = [v3 background];
-    [v23 setCornerRadius:28.0];
+    background4 = [tintedButtonConfiguration background];
+    [background4 setCornerRadius:28.0];
 
-    v11 = [MEMORY[0x277D75220] buttonWithConfiguration:v3 primaryAction:0];
+    v11 = [MEMORY[0x277D75220] buttonWithConfiguration:tintedButtonConfiguration primaryAction:0];
     [v11 setUserInteractionEnabled:1];
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
     v12 = MEMORY[0x277CCAAD0];
-    v13 = [v11 widthAnchor];
-    v14 = [v11 heightAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    widthAnchor = [v11 widthAnchor];
+    heightAnchor = [v11 heightAnchor];
+    v15 = [widthAnchor constraintEqualToAnchor:heightAnchor];
     v31 = v15;
     v17 = &v31;
     v16 = 34.0;
   }
 
-  v24 = [v11 widthAnchor];
-  v25 = [v24 constraintEqualToConstant:v16];
+  widthAnchor2 = [v11 widthAnchor];
+  v25 = [widthAnchor2 constraintEqualToConstant:v16];
   v17[1] = v25;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
   [v12 activateConstraints:v26];
@@ -1749,7 +1749,7 @@ uint64_t __69__MXUIServiceBanner_viewWillLayoutSubviewsWithTransitionCoordinator
 {
   v38[2] = *MEMORY[0x277D85DE8];
   useJindoPath = self->_useJindoPath;
-  v4 = [MEMORY[0x277D75230] tintedButtonConfiguration];
+  tintedButtonConfiguration = [MEMORY[0x277D75230] tintedButtonConfiguration];
   if (useJindoPath)
   {
     v35 = [MEMORY[0x277D755D0] configurationWithPointSize:6 weight:20.0];
@@ -1757,26 +1757,26 @@ uint64_t __69__MXUIServiceBanner_viewWillLayoutSubviewsWithTransitionCoordinator
     v6 = [v5 imageWithRenderingMode:2];
 
     v36 = v6;
-    [v4 setImage:v6];
-    [v4 setPreferredSymbolConfigurationForImage:v35];
+    [tintedButtonConfiguration setImage:v6];
+    [tintedButtonConfiguration setPreferredSymbolConfigurationForImage:v35];
     v7 = [MEMORY[0x277D75348] colorWithRed:0.505882382 green:0.815686285 blue:0.980392158 alpha:1.0];
     v8 = [v7 colorWithAlphaComponent:0.2];
-    v9 = [v4 background];
-    [v9 setBackgroundColor:v8];
+    background = [tintedButtonConfiguration background];
+    [background setBackgroundColor:v8];
 
-    v10 = [v4 background];
-    [v10 setCornerRadius:28.0];
+    background2 = [tintedButtonConfiguration background];
+    [background2 setCornerRadius:28.0];
 
-    v11 = [MEMORY[0x277D75220] buttonWithConfiguration:v4 primaryAction:0];
+    v11 = [MEMORY[0x277D75220] buttonWithConfiguration:tintedButtonConfiguration primaryAction:0];
     [v11 setUserInteractionEnabled:0];
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
     v12 = MEMORY[0x277CCAAD0];
-    v13 = [v11 widthAnchor];
-    v14 = [v11 heightAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    widthAnchor = [v11 widthAnchor];
+    heightAnchor = [v11 heightAnchor];
+    v15 = [widthAnchor constraintEqualToAnchor:heightAnchor];
     v38[0] = v15;
-    v16 = [v11 widthAnchor];
-    v17 = [v16 constraintEqualToConstant:30.0];
+    widthAnchor2 = [v11 widthAnchor];
+    v17 = [widthAnchor2 constraintEqualToConstant:30.0];
     v38[1] = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
     [v12 activateConstraints:v18];
@@ -1792,25 +1792,25 @@ uint64_t __69__MXUIServiceBanner_viewWillLayoutSubviewsWithTransitionCoordinator
     v21 = [v20 imageWithRenderingMode:2];
 
     v36 = v21;
-    [v4 setImage:v21];
-    [v4 setPreferredSymbolConfigurationForImage:v19];
+    [tintedButtonConfiguration setImage:v21];
+    [tintedButtonConfiguration setPreferredSymbolConfigurationForImage:v19];
     v22 = [MEMORY[0x277D75348] colorWithRed:0.505882382 green:0.815686285 blue:0.980392158 alpha:1.0];
     v23 = [v22 colorWithAlphaComponent:0.0];
-    v24 = [v4 background];
-    [v24 setBackgroundColor:v23];
+    background3 = [tintedButtonConfiguration background];
+    [background3 setBackgroundColor:v23];
 
-    v25 = [v4 background];
-    [v25 setCornerRadius:28.0];
+    background4 = [tintedButtonConfiguration background];
+    [background4 setCornerRadius:28.0];
 
-    v11 = [MEMORY[0x277D75220] buttonWithConfiguration:v4 primaryAction:0];
+    v11 = [MEMORY[0x277D75220] buttonWithConfiguration:tintedButtonConfiguration primaryAction:0];
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
     v26 = MEMORY[0x277CCAAD0];
-    v27 = [v11 widthAnchor];
-    v28 = [v11 heightAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    widthAnchor3 = [v11 widthAnchor];
+    heightAnchor2 = [v11 heightAnchor];
+    v29 = [widthAnchor3 constraintEqualToAnchor:heightAnchor2];
     v37[0] = v29;
-    v30 = [v11 widthAnchor];
-    v31 = [v30 constraintEqualToConstant:34.0];
+    widthAnchor4 = [v11 widthAnchor];
+    v31 = [widthAnchor4 constraintEqualToConstant:34.0];
     v37[1] = v31;
     v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:2];
     [v26 activateConstraints:v32];
@@ -1821,14 +1821,14 @@ uint64_t __69__MXUIServiceBanner_viewWillLayoutSubviewsWithTransitionCoordinator
   return v11;
 }
 
-- (id)removedAccessoryColorCode:(id)a3
+- (id)removedAccessoryColorCode:(id)code
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@"-"];
+  codeCopy = code;
+  v4 = [codeCopy componentsSeparatedByString:@"-"];
   v5 = [MEMORY[0x277CBEB18] arrayWithArray:v4];
-  v6 = [v4 lastObject];
-  if ([v6 length] <= 3)
+  lastObject = [v4 lastObject];
+  if ([lastObject length] <= 3)
   {
 
 LABEL_8:
@@ -1842,16 +1842,16 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7 = [v4 lastObject];
-  v8 = [v7 containsString:@"default"];
+  lastObject2 = [v4 lastObject];
+  v8 = [lastObject2 containsString:@"default"];
 
   if (v8)
   {
     goto LABEL_8;
   }
 
-  v9 = [v4 lastObject];
-  if ([v9 containsString:@"Case"])
+  lastObject3 = [v4 lastObject];
+  if ([lastObject3 containsString:@"Case"])
   {
     v10 = [v5 objectAtIndex:{objc_msgSend(v5, "count") - 2}];
     v11 = [v10 length];
@@ -1878,7 +1878,7 @@ LABEL_9:
   {
   }
 
-  v12 = v3;
+  v12 = codeCopy;
 LABEL_12:
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1912,29 +1912,29 @@ LABEL_12:
   v26.receiver = self;
   v26.super_class = MXUIServiceBanner;
   [(MXUIServiceBanner *)&v26 viewDidLoad];
-  v4 = [(MXUIServiceBanner *)self view];
-  v5 = v4;
+  view = [(MXUIServiceBanner *)self view];
+  v5 = view;
   if (!self->_useJindoPath)
   {
-    [v4 addSubview:self->_pillView];
-    v6 = [(PLPillView *)self->_pillView leadingAnchor];
-    v7 = [v5 leadingAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    [view addSubview:self->_pillView];
+    leadingAnchor = [(PLPillView *)self->_pillView leadingAnchor];
+    leadingAnchor2 = [v5 leadingAnchor];
+    v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v8 setActive:1];
 
-    v9 = [(PLPillView *)self->_pillView trailingAnchor];
-    v10 = [v5 trailingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    trailingAnchor = [(PLPillView *)self->_pillView trailingAnchor];
+    trailingAnchor2 = [v5 trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v11 setActive:1];
 
-    v12 = [(PLPillView *)self->_pillView topAnchor];
-    v13 = [v5 topAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    topAnchor = [(PLPillView *)self->_pillView topAnchor];
+    topAnchor2 = [v5 topAnchor];
+    v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v14 setActive:1];
 
-    v15 = [(PLPillView *)self->_pillView bottomAnchor];
-    v16 = [v5 bottomAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    bottomAnchor = [(PLPillView *)self->_pillView bottomAnchor];
+    bottomAnchor2 = [v5 bottomAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v17 setActive:1];
   }
 
@@ -1943,14 +1943,14 @@ LABEL_12:
   [v18 setNumberOfTouchesRequired:1];
   if (self->_useJindoPath)
   {
-    v19 = [(MXUIServiceBanner *)self ccTopViewLabel];
-    [v19 setMarqueeRunning:1];
+    ccTopViewLabel = [(MXUIServiceBanner *)self ccTopViewLabel];
+    [ccTopViewLabel setMarqueeRunning:1];
 
-    v20 = [(MXUIServiceBanner *)self ccBottomViewLabel];
-    [v20 setMarqueeRunning:1];
+    ccBottomViewLabel = [(MXUIServiceBanner *)self ccBottomViewLabel];
+    [ccBottomViewLabel setMarqueeRunning:1];
 
-    v21 = [(MXUIServiceBanner *)self view];
-    [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view2 = [(MXUIServiceBanner *)self view];
+    [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v22 = os_transaction_create();
     bannerAssetTransaction = self->_bannerAssetTransaction;
@@ -1992,10 +1992,10 @@ LABEL_10:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  tapCopy = tap;
   if (self->_bannerActive)
   {
     if (dword_27F8F0258)
@@ -2088,9 +2088,9 @@ LABEL_10:
   return result;
 }
 
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize
 {
-  [(PLPillView *)self->_pillView intrinsicContentSize:a3.width];
+  [(PLPillView *)self->_pillView intrinsicContentSize:size.width];
   result.height = v5;
   result.width = v4;
   return result;
@@ -2102,7 +2102,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __30__MXUIServiceBanner__bundleID__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_bundleID_onceToken != -1)
   {
     dispatch_once(&_bundleID_onceToken, block);
@@ -2143,9 +2143,9 @@ void __30__MXUIServiceBanner__bundleID__block_invoke(uint64_t a1)
     else
     {
       requestIdentifier = [MEMORY[0x277CCAD78] UUID];
-      v6 = [requestIdentifier UUIDString];
+      uUIDString = [requestIdentifier UUIDString];
       v7 = self->_requestIdentifier;
-      self->_requestIdentifier = v6;
+      self->_requestIdentifier = uUIDString;
     }
   }
 

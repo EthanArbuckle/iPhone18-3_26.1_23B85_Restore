@@ -25,20 +25,20 @@
 - (uint64_t)_isTransitionForcedUnanimatedWithPlatformProvider:()BacklightServicesHost
 {
   v4 = a3;
-  v5 = [a1 state];
-  v6 = [a1 previousState];
-  v7 = [a1 wasTransitioning];
-  if (v5 == v6 && !v7)
+  state = [self state];
+  previousState = [self previousState];
+  wasTransitioning = [self wasTransitioning];
+  if (state == previousState && !wasTransitioning)
   {
     goto LABEL_3;
   }
 
-  v10 = [a1 changeRequest];
-  v11 = [v10 sourceEvent];
+  changeRequest = [self changeRequest];
+  sourceEvent = [changeRequest sourceEvent];
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    if (((v11 - 7) & 0xFFFFFFFFFFFFFFF7) != 0)
+    if (((sourceEvent - 7) & 0xFFFFFFFFFFFFFFF7) != 0)
     {
       goto LABEL_9;
     }
@@ -48,7 +48,7 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  if ([v4 isTransitionForcedUnanimatedForSource:v11])
+  if ([v4 isTransitionForcedUnanimatedForSource:sourceEvent])
   {
     goto LABEL_3;
   }
@@ -56,12 +56,12 @@ LABEL_3:
 LABEL_9:
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v4 isTransitionForcedUnanimatedToState:v5 fromPreviousState:v6];
+    v8 = [v4 isTransitionForcedUnanimatedToState:state fromPreviousState:previousState];
   }
 
   else
   {
-    v8 = v5 == 2 && v6 == 3;
+    v8 = state == 2 && previousState == 3;
   }
 
 LABEL_4:
@@ -72,18 +72,18 @@ LABEL_4:
 - (uint64_t)_isEnvironmentTransitionAnimatedWithPlatformProvider:()BacklightServicesHost
 {
   v4 = a3;
-  v5 = [a1 state];
-  v6 = [a1 previousState];
+  state = [self state];
+  previousState = [self previousState];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v4 isEnvironmentTransitionAnimatedToState:v5 fromPreviousState:v6];
+    v7 = [v4 isEnvironmentTransitionAnimatedToState:state fromPreviousState:previousState];
   }
 
   else
   {
-    if (v5)
+    if (state)
     {
-      v8 = v6 == 0;
+      v8 = previousState == 0;
     }
 
     else
@@ -91,7 +91,7 @@ LABEL_4:
       v8 = 1;
     }
 
-    v7 = !v8 && v5 != 3;
+    v7 = !v8 && state != 3;
   }
 
   return v7;
@@ -100,7 +100,7 @@ LABEL_4:
 - (void)setAninmationPropertiesWithPlatformProvider:()BacklightServicesHost
 {
   v6 = a3;
-  v4 = [a1 _isTransitionForcedUnanimatedWithPlatformProvider:?];
+  v4 = [self _isTransitionForcedUnanimatedWithPlatformProvider:?];
   if (v4)
   {
     v5 = 0;
@@ -108,10 +108,10 @@ LABEL_4:
 
   else
   {
-    v5 = [a1 _isEnvironmentTransitionAnimatedWithPlatformProvider:v6];
+    v5 = [self _isEnvironmentTransitionAnimatedWithPlatformProvider:v6];
   }
 
-  [a1 setTransitionForcedUnanimated:v4 environmentTransitionAnimated:v5];
+  [self setTransitionForcedUnanimated:v4 environmentTransitionAnimated:v5];
 }
 
 @end

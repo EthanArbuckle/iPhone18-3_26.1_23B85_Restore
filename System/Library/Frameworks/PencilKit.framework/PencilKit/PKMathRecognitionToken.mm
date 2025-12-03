@@ -15,9 +15,9 @@
   v2 = [(PKMathRecognitionToken *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     uuid = v2->_uuid;
-    v2->_uuid = v3;
+    v2->_uuid = uUID;
 
     [(PKMathRecognitionToken *)v2 setType:0];
     [(PKMathRecognitionToken *)v2 setErrors:MEMORY[0x1E695E0F0]];
@@ -34,11 +34,11 @@
   v10.receiver = self;
   v10.super_class = PKMathRecognitionToken;
   v4 = [(PKMathRecognitionToken *)&v10 description];
-  v5 = [(PKMathRecognitionToken *)self text];
+  text = [(PKMathRecognitionToken *)self text];
   v12.location = [(PKMathRecognitionToken *)self characterRange];
   v6 = NSStringFromRange(v12);
-  v7 = [(PKMathRecognitionToken *)self errors];
-  v8 = [v3 stringWithFormat:@"%@ - text: %@, range: %@, errors: %lu", v4, v5, v6, objc_msgSend(v7, "count")];
+  errors = [(PKMathRecognitionToken *)self errors];
+  v8 = [v3 stringWithFormat:@"%@ - text: %@, range: %@, errors: %lu", v4, text, v6, objc_msgSend(errors, "count")];
 
   return v8;
 }

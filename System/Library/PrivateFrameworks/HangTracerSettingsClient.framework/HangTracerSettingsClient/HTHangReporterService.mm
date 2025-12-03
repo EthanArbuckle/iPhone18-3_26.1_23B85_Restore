@@ -1,6 +1,6 @@
 @interface HTHangReporterService
 - (HTHangReporterService)init;
-- (void)getProcessingHangsWithCompletion:(id)a3;
+- (void)getProcessingHangsWithCompletion:(id)completion;
 @end
 
 @implementation HTHangReporterService
@@ -98,9 +98,9 @@ LABEL_5:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getProcessingHangsWithCompletion:(id)a3
+- (void)getProcessingHangsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   empty = xpc_dictionary_create_empty();
   xpc_dictionary_set_string(empty, "message", "get-processing-hangs-list");
   hangReporterConnection = self->_hangReporterConnection;
@@ -108,8 +108,8 @@ LABEL_5:
   handler[1] = 3221225472;
   handler[2] = __58__HTHangReporterService_getProcessingHangsWithCompletion___block_invoke;
   handler[3] = &unk_2796A9440;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   xpc_connection_send_message_with_reply(hangReporterConnection, empty, 0, handler);
 }
 

@@ -1,5 +1,5 @@
 @interface EDFoundationModelContextGenerator
-+ (id)_messageInReplyToMessage:(id)a3 messagePersistence:(id)a4 error:(id *)a5;
++ (id)_messageInReplyToMessage:(id)message messagePersistence:(id)persistence error:(id *)error;
 + (id)log;
 @end
 
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __40__EDFoundationModelContextGenerator_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_40 != -1)
   {
     dispatch_once(&log_onceToken_40, block);
@@ -38,52 +38,52 @@ uint64_t __188__EDFoundationModelContextGenerator_originalContentMessageForMessa
   return v3 ^ 1u;
 }
 
-+ (id)_messageInReplyToMessage:(id)a3 messagePersistence:(id)a4 error:(id *)a5
++ (id)_messageInReplyToMessage:(id)message messagePersistence:(id)persistence error:(id *)error
 {
-  v7 = a4;
-  v8 = [a3 headersIfAvailable];
-  v9 = v8;
-  if (v8)
+  persistenceCopy = persistence;
+  headersIfAvailable = [message headersIfAvailable];
+  v9 = headersIfAvailable;
+  if (headersIfAvailable)
   {
-    v10 = [v8 firstMessageIDForKey:*MEMORY[0x1E699B108]];
+    v10 = [headersIfAvailable firstMessageIDForKey:*MEMORY[0x1E699B108]];
     v11 = [v9 messageIDListForKey:*MEMORY[0x1E699B140]];
     v12 = v11;
     if (v10)
     {
-      v13 = v10;
+      lastObject = v10;
     }
 
     else
     {
-      v13 = [v11 lastObject];
-      if (!v13)
+      lastObject = [v11 lastObject];
+      if (!lastObject)
       {
-        v14 = 0;
+        firstObject = 0;
         goto LABEL_8;
       }
     }
 
-    v15 = [v7 persistedMessagesForForMessageIDHeader:v13 requireProtectedData:1];
-    v14 = [v15 firstObject];
+    v15 = [persistenceCopy persistedMessagesForForMessageIDHeader:lastObject requireProtectedData:1];
+    firstObject = [v15 firstObject];
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] em_internalErrorWithReason:@"No headers available"];
-    *a5 = v14 = 0;
+    *error = firstObject = 0;
   }
 
   else
   {
-    v14 = 0;
+    firstObject = 0;
   }
 
 LABEL_9:
 
-  return v14;
+  return firstObject;
 }
 
 + (void)originalContentMessageForMessage:(os_log_t)log limitOfInReplyToAncestors:checkForForwardedMessages:condenseEmptyLines:messagePersistence:htmlStringFromMessage:error:.cold.1(void *a1, uint8_t *buf, os_log_t log)

@@ -1,6 +1,6 @@
 @interface MOContextHistoryWriter
 - (MOContextHistoryWriter)init;
-- (void)saveContextResults:(id)a3 usingOptions:(id)a4 clientBundleId:(id)a5 clientAlternateId:(id)a6;
+- (void)saveContextResults:(id)results usingOptions:(id)options clientBundleId:(id)id clientAlternateId:(id)alternateId;
 @end
 
 @implementation MOContextHistoryWriter
@@ -12,7 +12,7 @@
   return [(MOContextHistoryWriter *)&v3 init];
 }
 
-- (void)saveContextResults:(id)a3 usingOptions:(id)a4 clientBundleId:(id)a5 clientAlternateId:(id)a6
+- (void)saveContextResults:(id)results usingOptions:(id)options clientBundleId:(id)id clientAlternateId:(id)alternateId
 {
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityContextCrossPlatform);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))

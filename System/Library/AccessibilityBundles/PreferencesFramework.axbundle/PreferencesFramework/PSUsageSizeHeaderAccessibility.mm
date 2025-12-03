@@ -1,23 +1,23 @@
 @interface PSUsageSizeHeaderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation PSUsageSizeHeaderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PSUsageSizeHeader" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"PSUsageSizeHeader" hasInstanceVariable:@"_sizeLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PSUsageSizeHeader" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PSUsageSizeHeader" hasInstanceVariable:@"_sizeLabel" withType:"UILabel"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(PSUsageSizeHeaderAccessibility *)self safeValueForKey:@"_titleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v5 = [(PSUsageSizeHeaderAccessibility *)self safeValueForKey:@"_sizeLabel"];
-  v8 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;

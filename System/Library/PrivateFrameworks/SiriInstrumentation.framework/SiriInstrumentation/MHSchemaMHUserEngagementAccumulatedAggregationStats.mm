@@ -1,30 +1,30 @@
 @interface MHSchemaMHUserEngagementAccumulatedAggregationStats
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHUserEngagementAccumulatedAggregationStats)initWithDictionary:(id)a3;
-- (MHSchemaMHUserEngagementAccumulatedAggregationStats)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHUserEngagementAccumulatedAggregationStats)initWithDictionary:(id)dictionary;
+- (MHSchemaMHUserEngagementAccumulatedAggregationStats)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAggregationStats:(id)a3;
-- (void)setHasIntendedRequestRatio:(BOOL)a3;
-- (void)setHasNumberOfDaysAggregation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAggregationStats:(id)stats;
+- (void)setHasIntendedRequestRatio:(BOOL)ratio;
+- (void)setHasNumberOfDaysAggregation:(BOOL)aggregation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHUserEngagementAccumulatedAggregationStats
 
-- (MHSchemaMHUserEngagementAccumulatedAggregationStats)initWithDictionary:(id)a3
+- (MHSchemaMHUserEngagementAccumulatedAggregationStats)initWithDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = MHSchemaMHUserEngagementAccumulatedAggregationStats;
   v5 = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"aggregationStartTimestamp"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"aggregationStartTimestamp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,14 +32,14 @@
       [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)v5 setAggregationStartTimestamp:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"numberOfDaysAggregation"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"numberOfDaysAggregation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHUserEngagementAccumulatedAggregationStats setNumberOfDaysAggregation:](v5, "setNumberOfDaysAggregation:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"aggregationStats"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"aggregationStats"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,7 +82,7 @@
       v7 = v21;
     }
 
-    v16 = [v4 objectForKeyedSubscript:{@"cohortType", v21, v22, v23}];
+    v16 = [dictionaryCopy objectForKeyedSubscript:{@"cohortType", v21, v22, v23}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
       [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)v5 setCohortType:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"intendedRequestRatio"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"intendedRequestRatio"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -104,30 +104,30 @@
   return v5;
 }
 
-- (MHSchemaMHUserEngagementAccumulatedAggregationStats)initWithJSON:(id)a3
+- (MHSchemaMHUserEngagementAccumulatedAggregationStats)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -141,18 +141,18 @@
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = MEMORY[0x1E696AD98];
     [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self aggregationStartTimestamp];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"aggregationStartTimestamp"];
+    [dictionary setObject:v5 forKeyedSubscript:@"aggregationStartTimestamp"];
   }
 
   if ([(NSArray *)self->_aggregationStats count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -172,16 +172,16 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -191,14 +191,14 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"aggregationStats"];
+    [dictionary setObject:array forKeyedSubscript:@"aggregationStats"];
   }
 
   if (self->_cohortType)
   {
-    v14 = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self cohortType];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"cohortType"];
+    cohortType = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self cohortType];
+    v15 = [cohortType copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"cohortType"];
   }
 
   has = self->_has;
@@ -207,7 +207,7 @@
     v17 = MEMORY[0x1E696AD98];
     [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self intendedRequestRatio];
     v18 = [v17 numberWithDouble:?];
-    [v3 setObject:v18 forKeyedSubscript:@"intendedRequestRatio"];
+    [dictionary setObject:v18 forKeyedSubscript:@"intendedRequestRatio"];
 
     has = self->_has;
   }
@@ -215,12 +215,12 @@
   if ((has & 2) != 0)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithInt:{-[MHSchemaMHUserEngagementAccumulatedAggregationStats numberOfDaysAggregation](self, "numberOfDaysAggregation")}];
-    [v3 setObject:v19 forKeyedSubscript:@"numberOfDaysAggregation"];
+    [dictionary setObject:v19 forKeyedSubscript:@"numberOfDaysAggregation"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -306,16 +306,16 @@
   return v9 ^ v5 ^ v10 ^ v11 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   has = self->_has;
-  v6 = v4[48];
+  v6 = equalCopy[48];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_19;
@@ -324,14 +324,14 @@
   if (*&has)
   {
     aggregationStartTimestamp = self->_aggregationStartTimestamp;
-    [v4 aggregationStartTimestamp];
+    [equalCopy aggregationStartTimestamp];
     if (aggregationStartTimestamp != v8)
     {
       goto LABEL_19;
     }
 
     has = self->_has;
-    v6 = v4[48];
+    v6 = equalCopy[48];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -343,26 +343,26 @@
   if (v9)
   {
     numberOfDaysAggregation = self->_numberOfDaysAggregation;
-    if (numberOfDaysAggregation != [v4 numberOfDaysAggregation])
+    if (numberOfDaysAggregation != [equalCopy numberOfDaysAggregation])
     {
       goto LABEL_19;
     }
   }
 
-  v11 = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self aggregationStats];
-  v12 = [v4 aggregationStats];
-  if ((v11 != 0) == (v12 == 0))
+  aggregationStats = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self aggregationStats];
+  aggregationStats2 = [equalCopy aggregationStats];
+  if ((aggregationStats != 0) == (aggregationStats2 == 0))
   {
     goto LABEL_18;
   }
 
-  v13 = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self aggregationStats];
-  if (v13)
+  aggregationStats3 = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self aggregationStats];
+  if (aggregationStats3)
   {
-    v14 = v13;
-    v15 = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self aggregationStats];
-    v16 = [v4 aggregationStats];
-    v17 = [v15 isEqual:v16];
+    v14 = aggregationStats3;
+    aggregationStats4 = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self aggregationStats];
+    aggregationStats5 = [equalCopy aggregationStats];
+    v17 = [aggregationStats4 isEqual:aggregationStats5];
 
     if (!v17)
     {
@@ -374,22 +374,22 @@
   {
   }
 
-  v11 = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self cohortType];
-  v12 = [v4 cohortType];
-  if ((v11 != 0) == (v12 == 0))
+  aggregationStats = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self cohortType];
+  aggregationStats2 = [equalCopy cohortType];
+  if ((aggregationStats != 0) == (aggregationStats2 == 0))
   {
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v18 = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self cohortType];
-  if (v18)
+  cohortType = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self cohortType];
+  if (cohortType)
   {
-    v19 = v18;
-    v20 = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self cohortType];
-    v21 = [v4 cohortType];
-    v22 = [v20 isEqual:v21];
+    v19 = cohortType;
+    cohortType2 = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self cohortType];
+    cohortType3 = [equalCopy cohortType];
+    v22 = [cohortType2 isEqual:cohortType3];
 
     if (!v22)
     {
@@ -402,9 +402,9 @@ LABEL_18:
   }
 
   v25 = (*&self->_has >> 2) & 1;
-  if (v25 == ((v4[48] >> 2) & 1))
+  if (v25 == ((equalCopy[48] >> 2) & 1))
   {
-    if (!v25 || (intendedRequestRatio = self->_intendedRequestRatio, [v4 intendedRequestRatio], intendedRequestRatio == v27))
+    if (!v25 || (intendedRequestRatio = self->_intendedRequestRatio, [equalCopy intendedRequestRatio], intendedRequestRatio == v27))
     {
       v23 = 1;
       goto LABEL_20;
@@ -418,10 +418,10 @@ LABEL_20:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -462,9 +462,9 @@ LABEL_20:
     while (v8);
   }
 
-  v11 = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self cohortType];
+  cohortType = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self cohortType];
 
-  if (v11)
+  if (cohortType)
   {
     PBDataWriterWriteStringField();
   }
@@ -475,9 +475,9 @@ LABEL_20:
   }
 }
 
-- (void)setHasIntendedRequestRatio:(BOOL)a3
+- (void)setHasIntendedRequestRatio:(BOOL)ratio
 {
-  if (a3)
+  if (ratio)
   {
     v3 = 4;
   }
@@ -490,27 +490,27 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addAggregationStats:(id)a3
+- (void)addAggregationStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   aggregationStats = self->_aggregationStats;
-  v8 = v4;
+  v8 = statsCopy;
   if (!aggregationStats)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_aggregationStats;
-    self->_aggregationStats = v6;
+    self->_aggregationStats = array;
 
-    v4 = v8;
+    statsCopy = v8;
     aggregationStats = self->_aggregationStats;
   }
 
-  [(NSArray *)aggregationStats addObject:v4];
+  [(NSArray *)aggregationStats addObject:statsCopy];
 }
 
-- (void)setHasNumberOfDaysAggregation:(BOOL)a3
+- (void)setHasNumberOfDaysAggregation:(BOOL)aggregation
 {
-  if (a3)
+  if (aggregation)
   {
     v3 = 2;
   }
@@ -523,14 +523,14 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = MHSchemaMHUserEngagementAccumulatedAggregationStats;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self aggregationStats:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self setAggregationStats:v7];
 

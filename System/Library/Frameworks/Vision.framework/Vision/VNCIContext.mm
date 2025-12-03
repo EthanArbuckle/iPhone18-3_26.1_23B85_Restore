@@ -1,26 +1,26 @@
 @interface VNCIContext
-- (uint64_t)renderCIImage:(void *)a3 buffer:(int)a4 format:(void *)a5 error:;
+- (uint64_t)renderCIImage:(void *)image buffer:(int)buffer format:(void *)format error:;
 @end
 
 @implementation VNCIContext
 
-- (uint64_t)renderCIImage:(void *)a3 buffer:(int)a4 format:(void *)a5 error:
+- (uint64_t)renderCIImage:(void *)image buffer:(int)buffer format:(void *)format error:
 {
   v9 = a2;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_19;
   }
 
-  if (a4 <= 1278226533)
+  if (buffer <= 1278226533)
   {
-    if (a4 == 1111970369)
+    if (buffer == 1111970369)
     {
       v10 = MEMORY[0x1E695F8A8];
       goto LABEL_14;
     }
 
-    if (a4 != 1278226488)
+    if (buffer != 1278226488)
     {
       goto LABEL_17;
     }
@@ -30,7 +30,7 @@
 
   else
   {
-    switch(a4)
+    switch(buffer)
     {
       case 1278226534:
         v11 = MEMORY[0x1E695F8C8];
@@ -46,10 +46,10 @@ LABEL_14:
         goto LABEL_15;
       default:
 LABEL_17:
-        if (a5)
+        if (format)
         {
           [VNError errorForInternalErrorWithLocalizedDescription:@"unsupported pixel format"];
-          *a5 = v15 = 0;
+          *format = v15 = 0;
           goto LABEL_16;
         }
 
@@ -63,7 +63,7 @@ LABEL_19:
   v13 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F128]);
 LABEL_15:
   v14 = v13;
-  [*(a1 + 8) render:v9 toBitmap:*a3 rowBytes:a3[3] bounds:v12 format:v13 colorSpace:{0.0, 0.0, a3[2], a3[1]}];
+  [*(self + 8) render:v9 toBitmap:*image rowBytes:image[3] bounds:v12 format:v13 colorSpace:{0.0, 0.0, image[2], image[1]}];
   CGColorSpaceRelease(v14);
   v15 = 1;
 LABEL_16:

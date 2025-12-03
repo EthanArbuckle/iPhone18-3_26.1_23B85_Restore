@@ -1,7 +1,7 @@
 @interface HMDAppleAccountContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMDAppleAccountContext)init;
-- (HMDAppleAccountContext)initWithAccount:(id)a3;
+- (HMDAppleAccountContext)initWithAccount:(id)account;
 - (NSArray)attributeDescriptions;
 - (unint64_t)hash;
 @end
@@ -12,18 +12,18 @@
 {
   v18[3] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDAppleAccountContext *)self identifier];
-  v5 = [MEMORY[0x277D0F8D8] defaultFormatter];
-  v6 = [v3 initWithName:@"ID" value:v4 options:0 formatter:v5];
+  identifier = [(HMDAppleAccountContext *)self identifier];
+  defaultFormatter = [MEMORY[0x277D0F8D8] defaultFormatter];
+  v6 = [v3 initWithName:@"ID" value:identifier options:0 formatter:defaultFormatter];
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v8 = [(HMDAppleAccountContext *)self username];
+  username = [(HMDAppleAccountContext *)self username];
   v9 = +[HMDAccountHandleFormatter defaultFormatter];
-  v10 = [v7 initWithName:@"UN" value:v8 options:0 formatter:v9];
+  v10 = [v7 initWithName:@"UN" value:username options:0 formatter:v9];
   v18[1] = v10;
   v11 = objc_alloc(MEMORY[0x277D0F778]);
-  v12 = [(HMDAppleAccountContext *)self alternateDSID];
-  v13 = [MEMORY[0x277D0F8D8] defaultFormatter];
-  v14 = [v11 initWithName:@"ADSID" value:v12 options:0 formatter:v13];
+  alternateDSID = [(HMDAppleAccountContext *)self alternateDSID];
+  defaultFormatter2 = [MEMORY[0x277D0F8D8] defaultFormatter];
+  v14 = [v11 initWithName:@"ADSID" value:alternateDSID options:0 formatter:defaultFormatter2];
   v18[2] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:3];
 
@@ -32,10 +32,10 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -45,7 +45,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -59,8 +59,8 @@
       goto LABEL_9;
     }
 
-    v7 = [(HMDAppleAccountContext *)self identifier];
-    v8 = [(HMDAppleAccountContext *)v6 identifier];
+    identifier = [(HMDAppleAccountContext *)self identifier];
+    identifier2 = [(HMDAppleAccountContext *)v6 identifier];
     v9 = HMFEqualObjects();
 
     if (!v9)
@@ -68,14 +68,14 @@
       goto LABEL_9;
     }
 
-    v10 = [(HMDAppleAccountContext *)self username];
-    v11 = [(HMDAppleAccountContext *)v6 username];
+    username = [(HMDAppleAccountContext *)self username];
+    username2 = [(HMDAppleAccountContext *)v6 username];
     v12 = HMFEqualObjects();
 
     if (v12)
     {
-      v13 = [(HMDAppleAccountContext *)self alternateDSID];
-      v14 = [(HMDAppleAccountContext *)v6 alternateDSID];
+      alternateDSID = [(HMDAppleAccountContext *)self alternateDSID];
+      alternateDSID2 = [(HMDAppleAccountContext *)v6 alternateDSID];
       v15 = HMFEqualObjects();
     }
 
@@ -91,48 +91,48 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v2 = [(HMDAppleAccountContext *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMDAppleAccountContext *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (HMDAppleAccountContext)initWithAccount:(id)a3
+- (HMDAppleAccountContext)initWithAccount:(id)account
 {
-  v4 = a3;
-  if (v4)
+  accountCopy = account;
+  if (accountCopy)
   {
     v17.receiver = self;
     v17.super_class = HMDAppleAccountContext;
     v5 = [(HMDAppleAccountContext *)&v17 init];
     if (v5)
     {
-      v6 = [v4 username];
-      v7 = [v6 copy];
+      username = [accountCopy username];
+      v7 = [username copy];
       username = v5->_username;
       v5->_username = v7;
 
-      v9 = [v4 aa_personID];
-      v10 = [v9 copy];
+      aa_personID = [accountCopy aa_personID];
+      v10 = [aa_personID copy];
       identifier = v5->_identifier;
       v5->_identifier = v10;
 
-      v12 = [v4 aa_altDSID];
-      v13 = [v12 copy];
+      aa_altDSID = [accountCopy aa_altDSID];
+      v13 = [aa_altDSID copy];
       alternateDSID = v5->_alternateDSID;
       v5->_alternateDSID = v13;
     }
 
     self = v5;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (HMDAppleAccountContext)init

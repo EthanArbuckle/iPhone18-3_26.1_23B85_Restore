@@ -1,12 +1,12 @@
 @interface NUStoragePoolStats
 - (float)reusedRate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)totalBytes;
 - (int64_t)totalCount;
-- (void)setNonPurgeableBytes:(int64_t)a3;
-- (void)setUsedBytes:(int64_t)a3;
-- (void)setVolatileBytes:(int64_t)a3;
+- (void)setNonPurgeableBytes:(int64_t)bytes;
+- (void)setUsedBytes:(int64_t)bytes;
+- (void)setVolatileBytes:(int64_t)bytes;
 @end
 
 @implementation NUStoragePoolStats
@@ -34,14 +34,14 @@
   [(NUStoragePoolStats *)self purgedBytes];
   v3 = NSLocalizedFileSizeDescription();
   v13 = MEMORY[0x1E696AEC0];
-  v11 = [(NUStoragePoolStats *)self totalCount];
-  v10 = [(NUStoragePoolStats *)self usedCount];
-  v9 = [(NUStoragePoolStats *)self nonPurgeableCount];
-  v8 = [(NUStoragePoolStats *)self volatileCount];
-  v4 = [(NUStoragePoolStats *)self migrationCount];
-  v5 = [(NUStoragePoolStats *)self purgedCount];
+  totalCount = [(NUStoragePoolStats *)self totalCount];
+  usedCount = [(NUStoragePoolStats *)self usedCount];
+  nonPurgeableCount = [(NUStoragePoolStats *)self nonPurgeableCount];
+  volatileCount = [(NUStoragePoolStats *)self volatileCount];
+  migrationCount = [(NUStoragePoolStats *)self migrationCount];
+  purgedCount = [(NUStoragePoolStats *)self purgedCount];
   [(NUStoragePoolStats *)self reusedRate];
-  v14 = [v13 stringWithFormat:@"\tTotal:     %ld (%@/%@)\n\t Used:     %ld (%@/%@)\n\t   NP:     %ld (%@/%@)\n\t    V:     %ld (%@/%@) migrations: %ld (%@)\n\tPurge:     %ld (%@)\n\tReuse:     %d%% (%ld/%ld) NP: %ld V: %ld\n\tDiscarded: %ld\n", v11, v17, v15, v10, v22, v21, v9, v20, v19, v8, v18, v16, v4, v12, v5, v3, rintf(v6 * 100.0), -[NUStoragePoolStats reusedCount](self, "reusedCount"), -[NUStoragePoolStats requestCount](self, "requestCount"), -[NUStoragePoolStats reusedNonPurgeableCount](self, "reusedNonPurgeableCount"), -[NUStoragePoolStats reusedVolatileCount](self, "reusedVolatileCount"), -[NUStoragePoolStats discardedCount](self, "discardedCount")];
+  v14 = [v13 stringWithFormat:@"\tTotal:     %ld (%@/%@)\n\t Used:     %ld (%@/%@)\n\t   NP:     %ld (%@/%@)\n\t    V:     %ld (%@/%@) migrations: %ld (%@)\n\tPurge:     %ld (%@)\n\tReuse:     %d%% (%ld/%ld) NP: %ld V: %ld\n\tDiscarded: %ld\n", totalCount, v17, v15, usedCount, v22, v21, nonPurgeableCount, v20, v19, volatileCount, v18, v16, migrationCount, v12, purgedCount, v3, rintf(v6 * 100.0), -[NUStoragePoolStats reusedCount](self, "reusedCount"), -[NUStoragePoolStats requestCount](self, "requestCount"), -[NUStoragePoolStats reusedNonPurgeableCount](self, "reusedNonPurgeableCount"), -[NUStoragePoolStats reusedVolatileCount](self, "reusedVolatileCount"), -[NUStoragePoolStats discardedCount](self, "discardedCount")];
 
   return v14;
 }
@@ -53,39 +53,39 @@
     return 0.0;
   }
 
-  v3 = [(NUStoragePoolStats *)self reusedCount];
-  return v3 / [(NUStoragePoolStats *)self requestCount];
+  reusedCount = [(NUStoragePoolStats *)self reusedCount];
+  return reusedCount / [(NUStoragePoolStats *)self requestCount];
 }
 
 - (int64_t)totalBytes
 {
-  v3 = [(NUStoragePoolStats *)self usedBytes];
-  v4 = [(NUStoragePoolStats *)self volatileBytes]+ v3;
+  usedBytes = [(NUStoragePoolStats *)self usedBytes];
+  v4 = [(NUStoragePoolStats *)self volatileBytes]+ usedBytes;
   return v4 + [(NUStoragePoolStats *)self nonPurgeableBytes];
 }
 
 - (int64_t)totalCount
 {
-  v3 = [(NUStoragePoolStats *)self usedCount];
-  v4 = [(NUStoragePoolStats *)self volatileCount]+ v3;
+  usedCount = [(NUStoragePoolStats *)self usedCount];
+  v4 = [(NUStoragePoolStats *)self volatileCount]+ usedCount;
   return v4 + [(NUStoragePoolStats *)self nonPurgeableCount];
 }
 
-- (void)setVolatileBytes:(int64_t)a3
+- (void)setVolatileBytes:(int64_t)bytes
 {
   peakVolatileBytes = self->_peakVolatileBytes;
-  if (peakVolatileBytes <= a3)
+  if (peakVolatileBytes <= bytes)
   {
-    peakVolatileBytes = a3;
+    peakVolatileBytes = bytes;
   }
 
-  self->_volatileBytes = a3;
+  self->_volatileBytes = bytes;
   self->_peakVolatileBytes = peakVolatileBytes;
   peakTotalBytes = self->_peakTotalBytes;
-  v6 = [(NUStoragePoolStats *)self totalBytes];
-  if (peakTotalBytes <= v6)
+  totalBytes = [(NUStoragePoolStats *)self totalBytes];
+  if (peakTotalBytes <= totalBytes)
   {
-    v7 = v6;
+    v7 = totalBytes;
   }
 
   else
@@ -96,21 +96,21 @@
   self->_peakTotalBytes = v7;
 }
 
-- (void)setNonPurgeableBytes:(int64_t)a3
+- (void)setNonPurgeableBytes:(int64_t)bytes
 {
   peakNonPurgeableBytes = self->_peakNonPurgeableBytes;
-  if (peakNonPurgeableBytes <= a3)
+  if (peakNonPurgeableBytes <= bytes)
   {
-    peakNonPurgeableBytes = a3;
+    peakNonPurgeableBytes = bytes;
   }
 
-  self->_nonPurgeableBytes = a3;
+  self->_nonPurgeableBytes = bytes;
   self->_peakNonPurgeableBytes = peakNonPurgeableBytes;
   peakTotalBytes = self->_peakTotalBytes;
-  v6 = [(NUStoragePoolStats *)self totalBytes];
-  if (peakTotalBytes <= v6)
+  totalBytes = [(NUStoragePoolStats *)self totalBytes];
+  if (peakTotalBytes <= totalBytes)
   {
-    v7 = v6;
+    v7 = totalBytes;
   }
 
   else
@@ -121,21 +121,21 @@
   self->_peakTotalBytes = v7;
 }
 
-- (void)setUsedBytes:(int64_t)a3
+- (void)setUsedBytes:(int64_t)bytes
 {
   peakUsedBytes = self->_peakUsedBytes;
-  if (peakUsedBytes <= a3)
+  if (peakUsedBytes <= bytes)
   {
-    peakUsedBytes = a3;
+    peakUsedBytes = bytes;
   }
 
-  self->_usedBytes = a3;
+  self->_usedBytes = bytes;
   self->_peakUsedBytes = peakUsedBytes;
   peakTotalBytes = self->_peakTotalBytes;
-  v6 = [(NUStoragePoolStats *)self totalBytes];
-  if (peakTotalBytes <= v6)
+  totalBytes = [(NUStoragePoolStats *)self totalBytes];
+  if (peakTotalBytes <= totalBytes)
   {
-    v7 = v6;
+    v7 = totalBytes;
   }
 
   else
@@ -146,7 +146,7 @@
   self->_peakTotalBytes = v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[NUStoragePoolStats allocWithZone:?]];
   *(result + 1) = self->_peakTotalBytes;

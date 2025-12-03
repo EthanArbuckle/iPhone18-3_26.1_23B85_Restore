@@ -1,9 +1,9 @@
 @interface OKTimerAnimation
-+ (id)animationFromValues:(id)a3 toValues:(id)a4 withDuration:(double)a5 progressBlock:(id)a6 completionBlock:(id)a7;
++ (id)animationFromValues:(id)values toValues:(id)toValues withDuration:(double)duration progressBlock:(id)block completionBlock:(id)completionBlock;
 - (OKTimerAnimation)init;
 - (void)cancel;
 - (void)dealloc;
-- (void)handleTimer:(id)a3;
+- (void)handleTimer:(id)timer;
 @end
 
 @implementation OKTimerAnimation
@@ -23,17 +23,17 @@
   return v3;
 }
 
-+ (id)animationFromValues:(id)a3 toValues:(id)a4 withDuration:(double)a5 progressBlock:(id)a6 completionBlock:(id)a7
++ (id)animationFromValues:(id)values toValues:(id)toValues withDuration:(double)duration progressBlock:(id)block completionBlock:(id)completionBlock
 {
   v12 = objc_alloc_init(objc_opt_class());
   v12[5] = 0.0;
-  *(v12 + 7) = [a6 copy];
-  *(v12 + 8) = [a7 copy];
+  *(v12 + 7) = [block copy];
+  *(v12 + 8) = [completionBlock copy];
   v12[5] = 0.0;
-  *(v12 + 2) = a3;
-  *(v12 + 3) = a4;
-  v12[4] = a5;
-  *(v12 + 6) = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:a3];
+  *(v12 + 2) = values;
+  *(v12 + 3) = toValues;
+  v12[4] = duration;
+  *(v12 + 6) = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:values];
 
   return v12;
 }
@@ -155,24 +155,24 @@
   }
 }
 
-- (void)handleTimer:(id)a3
+- (void)handleTimer:(id)timer
 {
   v28 = *MEMORY[0x277D85DE8];
   currentInterval = self->_currentInterval;
-  [a3 timeInterval];
+  [timer timeInterval];
   if (currentInterval != 0.0)
   {
     v5 = v5 + self->_currentInterval;
   }
 
   self->_currentInterval = v5;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [(NSDictionary *)self->_toValues allKeys];
-  v8 = [(NSArray *)v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  allKeys = [(NSDictionary *)self->_toValues allKeys];
+  v8 = [(NSArray *)allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
@@ -183,7 +183,7 @@
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
@@ -203,10 +203,10 @@
           v19 = v19 - v21;
         }
 
-        [v6 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", v19), v12}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", v19), v12}];
       }
 
-      v9 = [(NSArray *)v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v9 = [(NSArray *)allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v9);
@@ -215,7 +215,7 @@
   progressBlock = self->_progressBlock;
   if (progressBlock)
   {
-    progressBlock[2](progressBlock, v6);
+    progressBlock[2](progressBlock, dictionary);
   }
 
   if (self->_currentInterval >= self->_duration)

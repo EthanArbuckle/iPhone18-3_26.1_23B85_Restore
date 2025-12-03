@@ -7,8 +7,8 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(UITextFieldAccessibility__ContactsUI__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:kAXPhotosTextFieldIdentifier];
+  accessibilityIdentification = [(UITextFieldAccessibility__ContactsUI__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:kAXPhotosTextFieldIdentifier];
 
   if (v4)
   {
@@ -22,30 +22,30 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = self;
-  v3 = [(UITextFieldAccessibility__ContactsUI__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:kAXPhotosTextFieldIdentifier];
+  selfCopy = self;
+  accessibilityIdentification = [(UITextFieldAccessibility__ContactsUI__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:kAXPhotosTextFieldIdentifier];
 
   if (v4)
   {
-    v2 = [v2 safeStringForKey:@"text"];
-    if (v2)
+    selfCopy = [selfCopy safeStringForKey:@"text"];
+    if (selfCopy)
     {
-      v5 = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
-      v6 = [v2 stringByTrimmingCharactersInSet:v5];
+      whitespaceCharacterSet = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
+      v6 = [selfCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-      LOBYTE(v2) = [v6 length] != 0;
+      LOBYTE(selfCopy) = [v6 length] != 0;
     }
   }
 
   else
   {
-    v8.receiver = v2;
+    v8.receiver = selfCopy;
     v8.super_class = UITextFieldAccessibility__ContactsUI__UIKit;
-    LOBYTE(v2) = [(UITextFieldAccessibility__ContactsUI__UIKit *)&v8 isAccessibilityElement];
+    LOBYTE(selfCopy) = [(UITextFieldAccessibility__ContactsUI__UIKit *)&v8 isAccessibilityElement];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

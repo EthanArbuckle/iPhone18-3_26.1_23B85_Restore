@@ -45,9 +45,9 @@
 
 - (BOOL)deleteDatabaseFile
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(BCSPersistentStore *)self databasePath];
-  v5 = [v3 removeItemAtPath:v4 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  databasePath = [(BCSPersistentStore *)self databasePath];
+  v5 = [defaultManager removeItemAtPath:databasePath error:0];
 
   return v5;
 }

@@ -1,26 +1,26 @@
 @interface CNReputationResult
-+ (id)descriptionForScore:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (CNReputationResult)initWithHandle:(id)a3 score:(int64_t)a4;
++ (id)descriptionForScore:(int64_t)score;
+- (BOOL)isEqual:(id)equal;
+- (CNReputationResult)initWithHandle:(id)handle score:(int64_t)score;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CNReputationResult
 
-- (CNReputationResult)initWithHandle:(id)a3 score:(int64_t)a4
+- (CNReputationResult)initWithHandle:(id)handle score:(int64_t)score
 {
-  v6 = a3;
+  handleCopy = handle;
   v12.receiver = self;
   v12.super_class = CNReputationResult;
   v7 = [(CNReputationResult *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [handleCopy copy];
     handle = v7->_handle;
     v7->_handle = v8;
 
-    v7->_score = a4;
+    v7->_score = score;
     v10 = v7;
   }
 
@@ -30,28 +30,28 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNReputationResult *)self handle];
-  v5 = [v3 appendName:@"handle" object:v4];
+  handle = [(CNReputationResult *)self handle];
+  v5 = [v3 appendName:@"handle" object:handle];
 
   v6 = [objc_opt_class() descriptionForScore:{-[CNReputationResult score](self, "score")}];
   v7 = [v3 appendName:@"score" object:v6];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-+ (id)descriptionForScore:(int64_t)a3
++ (id)descriptionForScore:(int64_t)score
 {
   v3 = MEMORY[0x1E696AEC0];
-  if (a3 > 2)
+  if (score > 2)
   {
     v4 = @"%@ (invalid)";
   }
 
   else
   {
-    v4 = off_1E7417468[a3];
+    v4 = off_1E7417468[score];
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:?];
@@ -60,25 +60,25 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __30__CNReputationResult_isEqual___block_invoke;
   v15[3] = &unk_1E7412228;
   v15[4] = self;
-  v16 = v4;
+  v16 = equalCopy;
   aBlock = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __30__CNReputationResult_isEqual___block_invoke_2;
   v12 = &unk_1E7412228;
-  v13 = self;
+  selfCopy = self;
   v14 = v16;
   v6 = v16;
   v7 = _Block_copy(&aBlock);
-  LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, v13}];
+  LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, selfCopy}];
 
   return self;
 }

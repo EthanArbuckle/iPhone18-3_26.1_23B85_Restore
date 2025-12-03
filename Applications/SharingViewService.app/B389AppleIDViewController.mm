@@ -1,34 +1,34 @@
 @interface B389AppleIDViewController
-- (_TtC18SharingViewService25B389AppleIDViewController)initWithMainController:(id)a3;
+- (_TtC18SharingViewService25B389AppleIDViewController)initWithMainController:(id)controller;
 - (void)dismissPressed;
 - (void)openSettingsPressed;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation B389AppleIDViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10005838C(a3);
+  selfCopy = self;
+  sub_10005838C(appear);
 }
 
 - (void)openSettingsPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_100058D14();
 }
 
 - (void)dismissPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_100058F34();
 }
 
-- (_TtC18SharingViewService25B389AppleIDViewController)initWithMainController:(id)a3
+- (_TtC18SharingViewService25B389AppleIDViewController)initWithMainController:(id)controller
 {
-  v3 = a3;
-  v4 = sub_1000667D8(v3);
+  controllerCopy = controller;
+  v4 = sub_1000667D8(controllerCopy);
 
   return v4;
 }

@@ -1,6 +1,6 @@
 @interface _DPCMSSequenceRecord
-- (BOOL)copyFromManagedObject:(id)a3;
-- (BOOL)copyToManagedObject:(id)a3;
+- (BOOL)copyFromManagedObject:(id)object;
+- (BOOL)copyToManagedObject:(id)object;
 - (id)description;
 @end
 
@@ -27,18 +27,18 @@
   return v10;
 }
 
-- (BOOL)copyToManagedObject:(id)a3
+- (BOOL)copyToManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = _DPCMSSequenceRecord, [(_DPCMSRecord *)&v10 copyToManagedObject:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = _DPCMSSequenceRecord, [(_DPCMSRecord *)&v10 copyToManagedObject:objectCopy]))
   {
-    v5 = v4;
-    v6 = [(_DPCMSSequenceRecord *)self plainSequence];
-    [v5 setPlainSequence:v6];
+    v5 = objectCopy;
+    plainSequence = [(_DPCMSSequenceRecord *)self plainSequence];
+    [v5 setPlainSequence:plainSequence];
 
-    v7 = [(_DPCMSSequenceRecord *)self sequence];
-    [v5 setSequence:v7];
+    sequence = [(_DPCMSSequenceRecord *)self sequence];
+    [v5 setSequence:sequence];
 
     [v5 setSequenceHashIndex:{-[_DPCMSSequenceRecord sequenceHashIndex](self, "sequenceHashIndex")}];
     v8 = 1;
@@ -52,21 +52,21 @@
   return v8;
 }
 
-- (BOOL)copyFromManagedObject:(id)a3
+- (BOOL)copyFromManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v11.receiver = self, v11.super_class = _DPCMSSequenceRecord, [(_DPCMSRecord *)&v11 copyFromManagedObject:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v11.receiver = self, v11.super_class = _DPCMSSequenceRecord, [(_DPCMSRecord *)&v11 copyFromManagedObject:objectCopy]))
   {
-    v5 = v4;
-    v6 = [v5 plainSequence];
-    [(_DPCMSSequenceRecord *)self setPlainSequence:v6];
+    v5 = objectCopy;
+    plainSequence = [v5 plainSequence];
+    [(_DPCMSSequenceRecord *)self setPlainSequence:plainSequence];
 
-    v7 = [v5 sequence];
-    [(_DPCMSSequenceRecord *)self setSequence:v7];
+    sequence = [v5 sequence];
+    [(_DPCMSSequenceRecord *)self setSequence:sequence];
 
-    v8 = [v5 sequenceHashIndex];
-    [(_DPCMSSequenceRecord *)self setSequenceHashIndex:v8];
+    sequenceHashIndex = [v5 sequenceHashIndex];
+    [(_DPCMSSequenceRecord *)self setSequenceHashIndex:sequenceHashIndex];
     v9 = 1;
   }
 

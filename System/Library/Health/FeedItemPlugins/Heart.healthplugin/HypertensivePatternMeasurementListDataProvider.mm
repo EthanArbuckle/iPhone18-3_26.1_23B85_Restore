@@ -1,11 +1,11 @@
 @interface HypertensivePatternMeasurementListDataProvider
 - (_TtC5Heart46HypertensivePatternMeasurementListDataProvider)init;
-- (_TtC5Heart46HypertensivePatternMeasurementListDataProvider)initWithDisplayType:(id)a3 profile:(id)a4;
-- (id)detailSectionForSample:(id)a3;
+- (_TtC5Heart46HypertensivePatternMeasurementListDataProvider)initWithDisplayType:(id)type profile:(id)profile;
+- (id)detailSectionForSample:(id)sample;
 - (id)sampleTypes;
-- (id)secondaryTextForObject:(id)a3;
-- (id)textForObject:(id)a3;
-- (id)titleForSection:(int64_t)a3;
+- (id)secondaryTextForObject:(id)object;
+- (id)textForObject:(id)object;
+- (id)titleForSection:(int64_t)section;
 @end
 
 @implementation HypertensivePatternMeasurementListDataProvider
@@ -24,10 +24,10 @@
   return v6;
 }
 
-- (id)textForObject:(id)a3
+- (id)textForObject:(id)object
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_29D93A868();
   sub_29D936978();
   sub_29D7F0DD4(v9);
@@ -47,7 +47,7 @@
   return v7;
 }
 
-- (id)secondaryTextForObject:(id)a3
+- (id)secondaryTextForObject:(id)object
 {
   swift_unknownObjectRetain();
   sub_29D93A868();
@@ -57,10 +57,10 @@
   return 0;
 }
 
-- (id)titleForSection:(int64_t)a3
+- (id)titleForSection:(int64_t)section
 {
   v3 = qword_2A17B0D68;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
@@ -73,11 +73,11 @@
   return v5;
 }
 
-- (id)detailSectionForSample:(id)a3
+- (id)detailSectionForSample:(id)sample
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_29D7F084C(v4);
+  sampleCopy = sample;
+  selfCopy = self;
+  v6 = sub_29D7F084C(sampleCopy);
 
   return v6;
 }
@@ -103,20 +103,20 @@
   return result;
 }
 
-- (_TtC5Heart46HypertensivePatternMeasurementListDataProvider)initWithDisplayType:(id)a3 profile:(id)a4
+- (_TtC5Heart46HypertensivePatternMeasurementListDataProvider)initWithDisplayType:(id)type profile:(id)profile
 {
   ObjectType = swift_getObjectType();
   sub_29D69567C(0, &qword_2A1A24910, 0x29EDBAD20);
   ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
-  v9 = a3;
-  v10 = a4;
+  typeCopy = type;
+  profileCopy = profile;
   result = [ObjCClassFromMetadata hypertensiveMeasurementType];
   if (result)
   {
     *(&self->super.super.isa + OBJC_IVAR____TtC5Heart46HypertensivePatternMeasurementListDataProvider_sampleType) = result;
     v13.receiver = self;
     v13.super_class = ObjectType;
-    v12 = [(WDSampleListDataProvider *)&v13 initWithDisplayType:v9 profile:v10];
+    v12 = [(WDSampleListDataProvider *)&v13 initWithDisplayType:typeCopy profile:profileCopy];
 
     return v12;
   }

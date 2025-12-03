@@ -1,26 +1,26 @@
 @interface ICASPartialCloudErrorItemData
-- (ICASPartialCloudErrorItemData)initWithSyncableDataType:(id)a3 errorCode:(id)a4 count:(id)a5 errorString:(id)a6;
+- (ICASPartialCloudErrorItemData)initWithSyncableDataType:(id)type errorCode:(id)code count:(id)count errorString:(id)string;
 - (id)toDict;
 @end
 
 @implementation ICASPartialCloudErrorItemData
 
-- (ICASPartialCloudErrorItemData)initWithSyncableDataType:(id)a3 errorCode:(id)a4 count:(id)a5 errorString:(id)a6
+- (ICASPartialCloudErrorItemData)initWithSyncableDataType:(id)type errorCode:(id)code count:(id)count errorString:(id)string
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  typeCopy = type;
+  codeCopy = code;
+  countCopy = count;
+  stringCopy = string;
   v18.receiver = self;
   v18.super_class = ICASPartialCloudErrorItemData;
   v15 = [(ICASPartialCloudErrorItemData *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_syncableDataType, a3);
-    objc_storeStrong(&v16->_errorCode, a4);
-    objc_storeStrong(&v16->_count, a5);
-    objc_storeStrong(&v16->_errorString, a6);
+    objc_storeStrong(&v15->_syncableDataType, type);
+    objc_storeStrong(&v16->_errorCode, code);
+    objc_storeStrong(&v16->_count, count);
+    objc_storeStrong(&v16->_errorString, string);
   }
 
   return v16;
@@ -30,33 +30,33 @@
 {
   v19[4] = *MEMORY[0x277D85DE8];
   v18[0] = @"syncableDataType";
-  v3 = [(ICASPartialCloudErrorItemData *)self syncableDataType];
-  if (v3)
+  syncableDataType = [(ICASPartialCloudErrorItemData *)self syncableDataType];
+  if (syncableDataType)
   {
-    v4 = [(ICASPartialCloudErrorItemData *)self syncableDataType];
+    syncableDataType2 = [(ICASPartialCloudErrorItemData *)self syncableDataType];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    syncableDataType2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v19[0] = v4;
+  v5 = syncableDataType2;
+  v19[0] = syncableDataType2;
   v18[1] = @"errorCode";
-  v6 = [(ICASPartialCloudErrorItemData *)self errorCode];
-  if (v6)
+  errorCode = [(ICASPartialCloudErrorItemData *)self errorCode];
+  if (errorCode)
   {
-    v7 = [(ICASPartialCloudErrorItemData *)self errorCode];
+    errorCode2 = [(ICASPartialCloudErrorItemData *)self errorCode];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    errorCode2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v19[1] = v7;
+  v8 = errorCode2;
+  v19[1] = errorCode2;
   v18[2] = @"count";
   v9 = [(ICASPartialCloudErrorItemData *)self count];
   if (v9)
@@ -72,19 +72,19 @@
   v11 = v10;
   v19[2] = v10;
   v18[3] = @"errorString";
-  v12 = [(ICASPartialCloudErrorItemData *)self errorString];
-  if (v12)
+  errorString = [(ICASPartialCloudErrorItemData *)self errorString];
+  if (errorString)
   {
-    v13 = [(ICASPartialCloudErrorItemData *)self errorString];
+    errorString2 = [(ICASPartialCloudErrorItemData *)self errorString];
   }
 
   else
   {
-    v13 = objc_opt_new();
+    errorString2 = objc_opt_new();
   }
 
-  v14 = v13;
-  v19[3] = v13;
+  v14 = errorString2;
+  v19[3] = errorString2;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:4];
 
   v16 = *MEMORY[0x277D85DE8];

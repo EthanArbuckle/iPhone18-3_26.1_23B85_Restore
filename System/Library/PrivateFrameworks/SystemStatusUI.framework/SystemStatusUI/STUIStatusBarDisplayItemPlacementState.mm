@@ -1,12 +1,12 @@
 @interface STUIStatusBarDisplayItemPlacementState
-+ (id)stateForDisplayItemPlacement:(id)a3 region:(id)a4;
++ (id)stateForDisplayItemPlacement:(id)placement region:(id)region;
 - (BOOL)areRelationsFulfilled;
 - (BOOL)canBeEnabled;
 - (BOOL)isEnabled;
 - (STUIStatusBarRegion)region;
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
@@ -16,9 +16,9 @@
 - (BOOL)canBeEnabled
 {
   WeakRetained = objc_loadWeakRetained(&self->_region);
-  v4 = [WeakRetained isEnabled];
+  isEnabled = [WeakRetained isEnabled];
 
-  if (!v4)
+  if (!isEnabled)
   {
     return 0;
   }
@@ -30,14 +30,14 @@
 
 - (BOOL)isEnabled
 {
-  v3 = [(STUIStatusBarDisplayItemPlacementState *)self canBeEnabled];
-  if (v3)
+  canBeEnabled = [(STUIStatusBarDisplayItemPlacementState *)self canBeEnabled];
+  if (canBeEnabled)
   {
 
-    LOBYTE(v3) = [(STUIStatusBarDisplayItemPlacementState *)self areRelationsFulfilled];
+    LOBYTE(canBeEnabled) = [(STUIStatusBarDisplayItemPlacementState *)self areRelationsFulfilled];
   }
 
-  return v3;
+  return canBeEnabled;
 }
 
 - (BOOL)areRelationsFulfilled
@@ -92,69 +92,69 @@ LABEL_11:
   return WeakRetained;
 }
 
-+ (id)stateForDisplayItemPlacement:(id)a3 region:(id)a4
++ (id)stateForDisplayItemPlacement:(id)placement region:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
-  v9 = [MEMORY[0x277CBEB18] array];
+  placementCopy = placement;
+  regionCopy = region;
+  v8 = objc_alloc_init(self);
+  array = [MEMORY[0x277CBEB18] array];
   v10 = *(v8 + 3);
-  *(v8 + 3) = v9;
+  *(v8 + 3) = array;
 
   v11 = *(v8 + 1);
-  *(v8 + 1) = v6;
+  *(v8 + 1) = placementCopy;
 
-  objc_storeWeak(v8 + 2, v7);
+  objc_storeWeak(v8 + 2, regionCopy);
 
   return v8;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STUIStatusBarDisplayItemPlacementState *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STUIStatusBarDisplayItemPlacementState *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   WeakRetained = objc_loadWeakRetained(&self->_region);
-  v5 = [WeakRetained identifier];
-  [v3 appendString:v5 withName:@"region"];
+  identifier = [WeakRetained identifier];
+  [v3 appendString:identifier withName:@"region"];
 
   v6 = [v3 appendBool:-[STUIStatusBarDisplayItemPlacementState isEnabled](self withName:{"isEnabled"), @"enabled"}];
   v7 = [v3 appendBool:-[STUIStatusBarDisplayItemPlacementState areRelationsFulfilled](self withName:{"areRelationsFulfilled"), @"relationsFulfilled"}];
-  v8 = [(STUIStatusBarDisplayItemPlacementState *)self relations];
-  v9 = [v3 appendUnsignedInteger:objc_msgSend(v8 withName:{"count"), @"relations.count"}];
+  relations = [(STUIStatusBarDisplayItemPlacementState *)self relations];
+  v9 = [v3 appendUnsignedInteger:objc_msgSend(relations withName:{"count"), @"relations.count"}];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBarDisplayItemPlacementState *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBarDisplayItemPlacementState *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBarDisplayItemPlacementState *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBarDisplayItemPlacementState *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug
 {
-  v4 = a4;
-  v5 = [(STUIStatusBarDisplayItemPlacementState *)self succinctDescriptionBuilder];
-  [v5 setUseDebugDescription:v4];
+  debugCopy = debug;
+  succinctDescriptionBuilder = [(STUIStatusBarDisplayItemPlacementState *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder setUseDebugDescription:debugCopy];
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
 @end

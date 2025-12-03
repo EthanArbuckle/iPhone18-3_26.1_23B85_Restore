@@ -1,5 +1,5 @@
 @interface FBKSCampaignError
-- (FBKSCampaignError)initWithSwiftObject:(id)a3;
+- (FBKSCampaignError)initWithSwiftObject:(id)object;
 - (NSDate)date;
 - (NSString)domain;
 - (NSString)errorDescription;
@@ -9,10 +9,10 @@
 
 @implementation FBKSCampaignError
 
-- (FBKSCampaignError)initWithSwiftObject:(id)a3
+- (FBKSCampaignError)initWithSwiftObject:(id)object
 {
-  v5 = a3;
-  if (v5)
+  objectCopy = object;
+  if (objectCopy)
   {
     v10.receiver = self;
     v10.super_class = FBKSCampaignError;
@@ -20,57 +20,57 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_swiftObject, a3);
+      objc_storeStrong(&v6->_swiftObject, object);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (NSDate)date
 {
-  v2 = [(FBKSCampaignError *)self swiftObject];
-  v3 = [v2 date];
+  swiftObject = [(FBKSCampaignError *)self swiftObject];
+  date = [swiftObject date];
 
-  return v3;
+  return date;
 }
 
 - (int64_t)code
 {
-  v2 = [(FBKSCampaignError *)self swiftObject];
-  v3 = [v2 code];
+  swiftObject = [(FBKSCampaignError *)self swiftObject];
+  code = [swiftObject code];
 
-  return v3;
+  return code;
 }
 
 - (NSString)domain
 {
-  v2 = [(FBKSCampaignError *)self swiftObject];
-  v3 = [v2 domain];
+  swiftObject = [(FBKSCampaignError *)self swiftObject];
+  domain = [swiftObject domain];
 
-  return v3;
+  return domain;
 }
 
 - (NSString)errorDescription
 {
-  v2 = [(FBKSCampaignError *)self swiftObject];
-  v3 = [v2 errorDescription];
+  swiftObject = [(FBKSCampaignError *)self swiftObject];
+  errorDescription = [swiftObject errorDescription];
 
-  return v3;
+  return errorDescription;
 }
 
 - (id)description
 {
-  v2 = [(FBKSCampaignError *)self swiftObject];
-  v3 = [v2 description];
+  swiftObject = [(FBKSCampaignError *)self swiftObject];
+  v3 = [swiftObject description];
 
   return v3;
 }

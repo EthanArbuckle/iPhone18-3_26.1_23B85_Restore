@@ -1,34 +1,34 @@
 @interface DOCFeatureStateFFSetting
-+ (id)defaultsOverrideForDomainID:(id)a3 featureID:(id)a4 overrideKey:(id)a5;
-- (DOCFeatureStateFFSetting)initWithDomainID:(id)a3 featureID:(id)a4 overrideKey:(id)a5 valueMode:(int64_t)a6 requirements:(id)a7;
++ (id)defaultsOverrideForDomainID:(id)d featureID:(id)iD overrideKey:(id)key;
+- (DOCFeatureStateFFSetting)initWithDomainID:(id)d featureID:(id)iD overrideKey:(id)key valueMode:(int64_t)mode requirements:(id)requirements;
 @end
 
 @implementation DOCFeatureStateFFSetting
 
-- (DOCFeatureStateFFSetting)initWithDomainID:(id)a3 featureID:(id)a4 overrideKey:(id)a5 valueMode:(int64_t)a6 requirements:(id)a7
+- (DOCFeatureStateFFSetting)initWithDomainID:(id)d featureID:(id)iD overrideKey:(id)key valueMode:(int64_t)mode requirements:(id)requirements
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  keyCopy = key;
+  requirementsCopy = requirements;
   v34.receiver = self;
   v34.super_class = DOCFeatureStateFFSetting;
   v17 = [(DOCFeatureStateFFSetting *)&v34 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_domainID, a3);
-    objc_storeStrong(&v18->_featureID, a4);
-    v18->_valueMode = a6;
-    v19 = [objc_opt_class() defaultsOverrideForDomainID:v13 featureID:v14 overrideKey:v15];
-    v20 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v17->_domainID, d);
+    objc_storeStrong(&v18->_featureID, iD);
+    v18->_valueMode = mode;
+    v19 = [objc_opt_class() defaultsOverrideForDomainID:dCopy featureID:iDCopy overrideKey:keyCopy];
+    array = [MEMORY[0x277CBEB18] array];
     v29 = MEMORY[0x277D85DD0];
     v30 = 3221225472;
     v31 = __90__DOCFeatureStateFFSetting_initWithDomainID_featureID_overrideKey_valueMode_requirements___block_invoke;
     v32 = &unk_278F9B820;
-    v21 = v20;
+    v21 = array;
     v33 = v21;
-    [v16 enumerateObjectsUsingBlock:&v29];
+    [requirementsCopy enumerateObjectsUsingBlock:&v29];
     if ([v21 count])
     {
       [(DOCFeatureState *)v18 setIsEnabled:0];
@@ -46,17 +46,17 @@
         v26 = @"DEBUG override";
       }
 
-      else if (a6)
+      else if (mode)
       {
-        [(DOCFeatureState *)v18 setIsEnabled:a6 == 1];
+        [(DOCFeatureState *)v18 setIsEnabled:mode == 1];
         v25 = MEMORY[0x277CCACA8];
         v26 = @"forced value";
       }
 
       else
       {
-        [v13 UTF8String];
-        [v14 UTF8String];
+        [dCopy UTF8String];
+        [iDCopy UTF8String];
         [(DOCFeatureState *)v18 setIsEnabled:_os_feature_enabled_impl()];
         v25 = MEMORY[0x277CCACA8];
         v26 = @"user setting";
@@ -65,7 +65,7 @@
       v24 = [v25 stringWithFormat:v26];
     }
 
-    v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"feature flag (%@): %@.%@", v24, v13, v14, v29, v30, v31, v32];
+    v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"feature flag (%@): %@.%@", v24, dCopy, iDCopy, v29, v30, v31, v32];
     _FFInitLog(v27, [(DOCFeatureState *)v18 isEnabled]);
   }
 
@@ -86,19 +86,19 @@ void __90__DOCFeatureStateFFSetting_initWithDomainID_featureID_overrideKey_value
   }
 }
 
-+ (id)defaultsOverrideForDomainID:(id)a3 featureID:(id)a4 overrideKey:(id)a5
++ (id)defaultsOverrideForDomainID:(id)d featureID:(id)iD overrideKey:(id)key
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 isEqual:@"UIKit"])
+  dCopy = d;
+  iDCopy = iD;
+  keyCopy = key;
+  if ([dCopy isEqual:@"UIKit"])
   {
     v10 = @"com.apple.UIKit";
-    if (v9)
+    if (keyCopy)
     {
 LABEL_3:
-      v11 = v9;
+      iDCopy = keyCopy;
       goto LABEL_6;
     }
   }
@@ -106,17 +106,17 @@ LABEL_3:
   else
   {
     v10 = @"com.apple.DocumentManager.defaults";
-    if (v9)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"DOCFeature.override.%@.%@", v7, v8];
+  iDCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"DOCFeature.override.%@.%@", dCopy, iDCopy];
 LABEL_6:
-  v12 = v11;
-  v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v14 = [v13 valueForKey:v12];
+  v12 = iDCopy;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v14 = [standardUserDefaults valueForKey:v12];
 
   if (!v14)
   {
@@ -125,16 +125,16 @@ LABEL_6:
 
     if (v16)
     {
-      v17 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
       v24 = v12;
       v25[0] = v16;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
-      [v17 registerDefaults:v18];
+      [standardUserDefaults2 registerDefaults:v18];
     }
   }
 
-  v19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v20 = [v19 valueForKey:v12];
+  standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v20 = [standardUserDefaults3 valueForKey:v12];
 
   if (!v20)
   {

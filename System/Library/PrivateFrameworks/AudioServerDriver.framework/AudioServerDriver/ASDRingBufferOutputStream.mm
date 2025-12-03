@@ -1,31 +1,31 @@
 @interface ASDRingBufferOutputStream
-- (ASDRingBufferOutputStream)initWithDirection:(unsigned int)a3 withPlugin:(id)a4;
-- (ASDRingBufferOutputStream)initWithRingBuffer:(id)a3 withPlugin:(id)a4;
+- (ASDRingBufferOutputStream)initWithDirection:(unsigned int)direction withPlugin:(id)plugin;
+- (ASDRingBufferOutputStream)initWithRingBuffer:(id)buffer withPlugin:(id)plugin;
 - (id)writeMixBlock;
-- (void)setPhysicalFormat:(id)a3;
+- (void)setPhysicalFormat:(id)format;
 - (void)startStream;
 - (void)stopStream;
 @end
 
 @implementation ASDRingBufferOutputStream
 
-- (ASDRingBufferOutputStream)initWithDirection:(unsigned int)a3 withPlugin:(id)a4
+- (ASDRingBufferOutputStream)initWithDirection:(unsigned int)direction withPlugin:(id)plugin
 {
-  v4 = a4;
+  pluginCopy = plugin;
   v5 = [MEMORY[0x277CBEAD8] exceptionWithName:@"UnavailableMethod" reason:@"Method is unavailable" userInfo:0];
   objc_exception_throw(v5);
 }
 
-- (ASDRingBufferOutputStream)initWithRingBuffer:(id)a3 withPlugin:(id)a4
+- (ASDRingBufferOutputStream)initWithRingBuffer:(id)buffer withPlugin:(id)plugin
 {
-  v7 = a3;
+  bufferCopy = buffer;
   v11.receiver = self;
   v11.super_class = ASDRingBufferOutputStream;
-  v8 = [(ASDStream *)&v11 initWithDirection:1869968496 withPlugin:a4];
+  v8 = [(ASDStream *)&v11 initWithDirection:1869968496 withPlugin:plugin];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_ringBuffer, a3);
+    objc_storeStrong(&v8->_ringBuffer, buffer);
   }
 
   return v9;
@@ -35,15 +35,15 @@
 {
   if (!self->_bufferList.__ptr_)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"ASDRingBufferStream.mm" lineNumber:47 description:@"Format must be set before starting stream"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ASDRingBufferStream.mm" lineNumber:47 description:@"Format must be set before starting stream"];
   }
 
   v6.receiver = self;
   v6.super_class = ASDRingBufferOutputStream;
   [(ASDStream *)&v6 startStream];
-  v3 = [(ASDRingBufferOutputStream *)self ringBuffer];
-  [v3 startWriter];
+  ringBuffer = [(ASDRingBufferOutputStream *)self ringBuffer];
+  [ringBuffer startWriter];
 }
 
 - (void)stopStream
@@ -51,19 +51,19 @@
   v4.receiver = self;
   v4.super_class = ASDRingBufferOutputStream;
   [(ASDStream *)&v4 stopStream];
-  v3 = [(ASDRingBufferOutputStream *)self ringBuffer];
-  [v3 stopWriter];
+  ringBuffer = [(ASDRingBufferOutputStream *)self ringBuffer];
+  [ringBuffer stopWriter];
 }
 
-- (void)setPhysicalFormat:(id)a3
+- (void)setPhysicalFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   v5.receiver = self;
   v5.super_class = ASDRingBufferOutputStream;
-  [(ASDStream *)&v5 setPhysicalFormat:v4];
-  if (v4)
+  [(ASDStream *)&v5 setPhysicalFormat:formatCopy];
+  if (formatCopy)
   {
-    [v4 audioStreamBasicDescription];
+    [formatCopy audioStreamBasicDescription];
   }
 
   operator new();
@@ -76,7 +76,7 @@
   v7[2] = 0x3032000000;
   v7[3] = __Block_byref_object_copy__6;
   v7[4] = __Block_byref_object_dispose__6;
-  v8 = [(ASDRingBuffer *)self->_ringBuffer writeBlock];
+  writeBlock = [(ASDRingBuffer *)self->_ringBuffer writeBlock];
   v6[0] = 0;
   v6[1] = v6;
   v6[2] = 0x2020000000;

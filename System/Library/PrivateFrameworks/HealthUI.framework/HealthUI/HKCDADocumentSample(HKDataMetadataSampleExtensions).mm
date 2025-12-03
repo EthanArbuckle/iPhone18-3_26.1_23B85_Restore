@@ -8,9 +8,9 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 document];
-  v9 = v8;
-  if (v8 && ([v8 documentData], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  document = [self document];
+  v9 = document;
+  if (document && ([document documentData], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v11 = v10;
     v7[2](v7, v10, 0);
@@ -32,8 +32,8 @@
     v23 = v7;
     v12 = _Block_copy(&v19);
     v13 = MEMORY[0x1E696C378];
-    v14 = [a1 UUID];
-    v15 = [v13 predicateForObjectWithUUID:v14];
+    uUID = [self UUID];
+    v15 = [v13 predicateForObjectWithUUID:uUID];
 
     v16 = objc_alloc(MEMORY[0x1E696C110]);
     v17 = [MEMORY[0x1E696C2E0] documentTypeForIdentifier:*MEMORY[0x1E696B7C0]];

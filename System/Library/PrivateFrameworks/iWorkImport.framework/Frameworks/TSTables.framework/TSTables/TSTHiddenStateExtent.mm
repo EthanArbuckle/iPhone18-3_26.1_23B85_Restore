@@ -1,143 +1,143 @@
 @interface TSTHiddenStateExtent
-+ (id)mutableIndexSetByIntersecting:(id)a3 withRange:(_NSRange)a4;
-+ (unint64_t)firstIndexNotInIndexSet:(id)a3 beginRange:(unint64_t)a4 pastEndRange:(unint64_t)a5;
-+ (unint64_t)firstIndexNotInIndexSet:(id)a3 orIndexSet:(id)a4 beginRange:(unint64_t)a5 pastEndRange:(unint64_t)a6;
-+ (unint64_t)lastIndexNotInIndexSet:(id)a3 beginRange:(unint64_t)a4 pastEndRange:(unint64_t)a5;
-+ (unint64_t)lastIndexNotInIndexSet:(id)a3 orIndexSet:(id)a4 beginRange:(unint64_t)a5 pastEndRange:(unint64_t)a6;
-+ (void)swapIndexesWithIndexSet:(id)a3 index:(unint64_t)a4 withIndex:(unint64_t)a5;
++ (id)mutableIndexSetByIntersecting:(id)intersecting withRange:(_NSRange)range;
++ (unint64_t)firstIndexNotInIndexSet:(id)set beginRange:(unint64_t)range pastEndRange:(unint64_t)endRange;
++ (unint64_t)firstIndexNotInIndexSet:(id)set orIndexSet:(id)indexSet beginRange:(unint64_t)range pastEndRange:(unint64_t)endRange;
++ (unint64_t)lastIndexNotInIndexSet:(id)set beginRange:(unint64_t)range pastEndRange:(unint64_t)endRange;
++ (unint64_t)lastIndexNotInIndexSet:(id)set orIndexSet:(id)indexSet beginRange:(unint64_t)range pastEndRange:(unint64_t)endRange;
++ (void)swapIndexesWithIndexSet:(id)set index:(unint64_t)index withIndex:(unint64_t)withIndex;
 - (BOOL)anyCollapsed;
 - (BOOL)anyHidden;
-- (BOOL)anyHiddenInRange:(_NSRange)a3;
-- (BOOL)anyHiddenInRange:(_NSRange)a3 forAction:(unsigned __int8)a4;
+- (BOOL)anyHiddenInRange:(_NSRange)range;
+- (BOOL)anyHiddenInRange:(_NSRange)range forAction:(unsigned __int8)action;
 - (BOOL)hasActiveFilters;
-- (BOOL)hasFilterRulesWithTable:(id)a3 inBaseColumns:(id)a4;
-- (BOOL)hasHiddenAtIndex:(unsigned int)a3;
-- (BOOL)hideAtBaseIndex:(TSUModelColumnOrRowIndex)a3 forAction:(unsigned __int8)a4;
-- (BOOL)hideAtUid:(const TSKUIDStruct *)a3 forAction:(unsigned __int8)a4;
-- (BOOL)hideAtUid:(const TSKUIDStruct *)a3 forIndex:(TSUModelColumnOrRowIndex)a4 forViewIndex:(TSUViewColumnOrRowIndex)a5 forAction:(unsigned __int8)a6;
-- (BOOL)hideAtViewIndex:(TSUViewColumnOrRowIndex)a3 forAction:(unsigned __int8)a4;
-- (BOOL)isGroupCollapsedAndVisible:(const TSKUIDStruct *)a3 dimension:(int64_t)a4;
-- (BOOL)isGroupOrParentsCollapsed:(const TSKUIDStruct *)a3 dimension:(int64_t)a4;
+- (BOOL)hasFilterRulesWithTable:(id)table inBaseColumns:(id)columns;
+- (BOOL)hasHiddenAtIndex:(unsigned int)index;
+- (BOOL)hideAtBaseIndex:(TSUModelColumnOrRowIndex)index forAction:(unsigned __int8)action;
+- (BOOL)hideAtUid:(const TSKUIDStruct *)uid forAction:(unsigned __int8)action;
+- (BOOL)hideAtUid:(const TSKUIDStruct *)uid forIndex:(TSUModelColumnOrRowIndex)index forViewIndex:(TSUViewColumnOrRowIndex)viewIndex forAction:(unsigned __int8)action;
+- (BOOL)hideAtViewIndex:(TSUViewColumnOrRowIndex)index forAction:(unsigned __int8)action;
+- (BOOL)isGroupCollapsedAndVisible:(const TSKUIDStruct *)visible dimension:(int64_t)dimension;
+- (BOOL)isGroupOrParentsCollapsed:(const TSKUIDStruct *)collapsed dimension:(int64_t)dimension;
 - (BOOL)needsFilterFormulaRewriteForImport;
 - (BOOL)p_canUsePrePivotFilterSet;
-- (BOOL)showAtBaseIndex:(TSUModelColumnOrRowIndex)a3 forAction:(unsigned __int8)a4;
-- (BOOL)showAtUid:(const TSKUIDStruct *)a3 forAction:(unsigned __int8)a4;
-- (BOOL)showAtUid:(const TSKUIDStruct *)a3 forIndex:(TSUModelColumnOrRowIndex)a4 forViewIndex:(TSUViewColumnOrRowIndex)a5 forAction:(unsigned __int8)a6;
-- (BOOL)showAtViewIndex:(TSUViewColumnOrRowIndex)a3 forAction:(unsigned __int8)a4;
-- (TSCECellRef)cellReferenceForIndex:(SEL)a3;
-- (TSCERecalculationState)evaluateFormulaAt:(TSUCellCoord)a3 withCalcEngine:(id)a4 recalcOptions:(TSCERecalculationState)a5;
+- (BOOL)showAtBaseIndex:(TSUModelColumnOrRowIndex)index forAction:(unsigned __int8)action;
+- (BOOL)showAtUid:(const TSKUIDStruct *)uid forAction:(unsigned __int8)action;
+- (BOOL)showAtUid:(const TSKUIDStruct *)uid forIndex:(TSUModelColumnOrRowIndex)index forViewIndex:(TSUViewColumnOrRowIndex)viewIndex forAction:(unsigned __int8)action;
+- (BOOL)showAtViewIndex:(TSUViewColumnOrRowIndex)index forAction:(unsigned __int8)action;
+- (TSCECellRef)cellReferenceForIndex:(SEL)index;
+- (TSCERecalculationState)evaluateFormulaAt:(TSUCellCoord)at withCalcEngine:(id)engine recalcOptions:(TSCERecalculationState)options;
 - (TSKUIDStruct)hiddenStateExtentUid;
 - (TSKUIDStruct)ownerUID;
-- (TSTHiddenStateExtent)initWithArchive:(const void *)a3 unarchiver:(id)a4 forHiddenStatesOwner:(id)a5;
-- (TSTHiddenStateExtent)initWithHiddenStatesOwner:(id)a3 forRows:(BOOL)a4;
+- (TSTHiddenStateExtent)initWithArchive:(const void *)archive unarchiver:(id)unarchiver forHiddenStatesOwner:(id)owner;
+- (TSTHiddenStateExtent)initWithHiddenStatesOwner:(id)owner forRows:(BOOL)rows;
 - (TSTHiddenStatesOwner)hiddenStatesOwner;
 - (TSTTableFilterSet)filterSet;
 - (TSTTableInfo)tableInfo;
 - (TSTTableModel)tableModel;
-- (TSUViewColumnOrRowIndex)p_viewIndexForBaseIndex:(TSUModelColumnOrRowIndex)a3;
+- (TSUViewColumnOrRowIndex)p_viewIndexForBaseIndex:(TSUModelColumnOrRowIndex)index;
 - (id).cxx_construct;
-- (id)applyCollapseExpandState:(id)a3 outUndoState:(id *)a4;
-- (id)collapseSummaryGroupUIDs:(id)a3;
-- (id)copyCollapsedStateToUpdatedGroupUids:(id)a3 dimension:(int64_t)a4;
+- (id)applyCollapseExpandState:(id)state outUndoState:(id *)undoState;
+- (id)collapseSummaryGroupUIDs:(id)ds;
+- (id)copyCollapsedStateToUpdatedGroupUids:(id)uids dimension:(int64_t)dimension;
 - (id)duplicateFilterSet;
-- (id)duplicateFilterSetInUidFormWithTable:(id)a3;
-- (id)expandSummaryGroupUIDs:(id)a3;
+- (id)duplicateFilterSetInUidFormWithTable:(id)table;
+- (id)expandSummaryGroupUIDs:(id)ds;
 - (id)hiddenOrCollapsedIndexes;
-- (id)indexesOfCollapsedInRange:(_NSRange)a3;
-- (id)indexesOfFilteredInRange:(_NSRange)a3;
-- (id)indexesOfHiddenInBaseRange:(_NSRange)a3;
-- (id)indexesOfHiddenInRange:(_NSRange)a3;
-- (id)indexesOfUserHiddenInRange:(_NSRange)a3;
-- (id)indexesOfUserVisibleInRange:(_NSRange)a3;
-- (id)indexesOfVisibleInRange:(_NSRange)a3;
-- (id)indexesOfVisibleIndexesInIndexes:(id)a3;
+- (id)indexesOfCollapsedInRange:(_NSRange)range;
+- (id)indexesOfFilteredInRange:(_NSRange)range;
+- (id)indexesOfHiddenInBaseRange:(_NSRange)range;
+- (id)indexesOfHiddenInRange:(_NSRange)range;
+- (id)indexesOfUserHiddenInRange:(_NSRange)range;
+- (id)indexesOfUserVisibleInRange:(_NSRange)range;
+- (id)indexesOfVisibleInRange:(_NSRange)range;
+- (id)indexesOfVisibleIndexesInIndexes:(id)indexes;
 - (id)linkedResolver;
 - (id)mutableFilteredIndexes;
 - (id)mutablePivotHiddenIndexes;
 - (id)mutableUserHiddenIndexes;
 - (id)p_baseHiddenIndexes;
-- (id)p_calculateAverageThresholdWithCalcEngine:(id)a3 formulaCoord:(const TSUCellCoord *)a4;
-- (id)p_calculateTopOrBottomThresholdWithCalcEngine:(id)a3 formulaCoord:(const TSUCellCoord *)a4 isTop:(BOOL)a5 keyScale:(unsigned __int8)a6;
-- (id)p_calculateUniqueThresholdWithCalcEngine:(id)a3 formulaCoord:(const TSUCellCoord *)a4;
+- (id)p_calculateAverageThresholdWithCalcEngine:(id)engine formulaCoord:(const TSUCellCoord *)coord;
+- (id)p_calculateTopOrBottomThresholdWithCalcEngine:(id)engine formulaCoord:(const TSUCellCoord *)coord isTop:(BOOL)top keyScale:(unsigned __int8)scale;
+- (id)p_calculateUniqueThresholdWithCalcEngine:(id)engine formulaCoord:(const TSUCellCoord *)coord;
 - (id)p_collapsedIndexes;
-- (id)p_createThresholdCellValue:(id)a3 locale:(id)a4;
+- (id)p_createThresholdCellValue:(id)value locale:(id)locale;
 - (id)p_filteredIndexes;
 - (id)p_hiddenIndexes;
 - (id)p_summaryFilteredIndexes;
 - (id)p_summaryHiddenIndexes;
 - (id)p_summaryPivotHiddenIndexes;
 - (id)p_userHiddenIndexes;
-- (id)precedentsForFilterSet:(id)a3 calcEngine:(id)a4 hostOwnerUID:(const TSKUIDStruct *)a5 hostCellID:(const TSUCellCoord *)a6;
-- (id)pruneCollapsedGroupsInDimension:(int64_t)a3;
+- (id)precedentsForFilterSet:(id)set calcEngine:(id)engine hostOwnerUID:(const TSKUIDStruct *)d hostCellID:(const TSUCellCoord *)iD;
+- (id)pruneCollapsedGroupsInDimension:(int64_t)dimension;
 - (id)tableTranslator;
-- (id)uniqueValuesForColumnUID:(const TSKUIDStruct *)a3;
-- (int)registerWithCalcEngine:(id)a3 baseOwnerUID:(const TSKUIDStruct *)a4;
-- (unsigned)findFirstVisibleIndexInBegin:(unsigned int)a3 afterEnd:(unsigned int)a4;
-- (unsigned)findLastVisibleIndexInBegin:(unsigned int)a3 afterEnd:(unsigned int)a4;
-- (unsigned)hidingActionForBaseIndex:(TSUModelColumnOrRowIndex)a3;
-- (unsigned)hidingActionForUid:(const TSKUIDStruct *)a3;
-- (unsigned)hidingActionForViewIndex:(TSUViewColumnOrRowIndex)a3;
-- (unsigned)indexOfVisibleAfterAndIncludingIndex:(unsigned int)a3;
-- (unsigned)indexOfVisibleAfterIndex:(unsigned int)a3;
+- (id)uniqueValuesForColumnUID:(const TSKUIDStruct *)d;
+- (int)registerWithCalcEngine:(id)engine baseOwnerUID:(const TSKUIDStruct *)d;
+- (unsigned)findFirstVisibleIndexInBegin:(unsigned int)begin afterEnd:(unsigned int)end;
+- (unsigned)findLastVisibleIndexInBegin:(unsigned int)begin afterEnd:(unsigned int)end;
+- (unsigned)hidingActionForBaseIndex:(TSUModelColumnOrRowIndex)index;
+- (unsigned)hidingActionForUid:(const TSKUIDStruct *)uid;
+- (unsigned)hidingActionForViewIndex:(TSUViewColumnOrRowIndex)index;
+- (unsigned)indexOfVisibleAfterAndIncludingIndex:(unsigned int)index;
+- (unsigned)indexOfVisibleAfterIndex:(unsigned int)index;
 - (unsigned)numberOfHidden;
-- (unsigned)numberOfHiddenInBaseRange:(_NSRange)a3;
-- (unsigned)numberOfHiddenInRange:(_NSRange)a3;
-- (unsigned)numberOfUserHiddenInRange:(_NSRange)a3;
+- (unsigned)numberOfHiddenInBaseRange:(_NSRange)range;
+- (unsigned)numberOfHiddenInRange:(_NSRange)range;
+- (unsigned)numberOfUserHiddenInRange:(_NSRange)range;
 - (unsigned)ownerKind;
 - (void)clearAllCachedRowIndexes;
 - (void)clearAllFiltered;
 - (void)clearAllPivotHidden;
 - (void)clearInvalidIndexes;
 - (void)dealloc;
-- (void)deleteBaseRange:(_NSRange)a3 withUids:(const void *)a4;
+- (void)deleteBaseRange:(_NSRange)range withUids:(const void *)uids;
 - (void)dirtyFilterState;
 - (void)dirtyFilterStateForFooters;
 - (void)dirtyFilterStateForHeaders;
-- (void)dirtyFilterStateForRowRange:(_NSRange)a3;
-- (void)enableFilterSet:(BOOL)a3;
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4;
+- (void)dirtyFilterStateForRowRange:(_NSRange)range;
+- (void)enableFilterSet:(BOOL)set;
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver;
 - (void)endOfGroupingChangesBatch;
 - (void)filterSetUpdated;
-- (void)hideAtViewIndexes:(id)a3 forAction:(unsigned __int8)a4;
-- (void)insertBaseRange:(_NSRange)a3;
-- (void)loadIndexesFromTable:(id)a3;
-- (void)moveBaseRangeFrom:(_NSRange)a3 toIndex:(TSUModelColumnOrRowIndex)a4;
-- (void)moveViewRangeOnlyFrom:(_NSRange)a3 toIndex:(TSUViewColumnOrRowIndex)a4;
-- (void)mutateFormulaFiltersWithTable:(id)a3 usingBlock:(id)a4;
-- (void)p_addHiddenIndex:(TSUModelColumnOrRowIndex)a3 viewIndex:(TSUViewColumnOrRowIndex)a4 forAction:(unsigned __int8)a5;
-- (void)p_calculateUniqueDistinctIndexWithCalcEngine:(id)a3 formulaCoord:(const TSUCellCoord *)a4 tableModel:(id)a5 rule:(id)a6;
-- (void)p_hiddenStateChangedForBaseIndex:(TSUModelColumnOrRowIndex)a3 viewIndex:(TSUViewColumnOrRowIndex)a4 forAction:(unsigned __int8)a5;
-- (void)p_registerAllFormulasReturningCoords:(void *)a3;
+- (void)hideAtViewIndexes:(id)indexes forAction:(unsigned __int8)action;
+- (void)insertBaseRange:(_NSRange)range;
+- (void)loadIndexesFromTable:(id)table;
+- (void)moveBaseRangeFrom:(_NSRange)from toIndex:(TSUModelColumnOrRowIndex)index;
+- (void)moveViewRangeOnlyFrom:(_NSRange)from toIndex:(TSUViewColumnOrRowIndex)index;
+- (void)mutateFormulaFiltersWithTable:(id)table usingBlock:(id)block;
+- (void)p_addHiddenIndex:(TSUModelColumnOrRowIndex)index viewIndex:(TSUViewColumnOrRowIndex)viewIndex forAction:(unsigned __int8)action;
+- (void)p_calculateUniqueDistinctIndexWithCalcEngine:(id)engine formulaCoord:(const TSUCellCoord *)coord tableModel:(id)model rule:(id)rule;
+- (void)p_hiddenStateChangedForBaseIndex:(TSUModelColumnOrRowIndex)index viewIndex:(TSUViewColumnOrRowIndex)viewIndex forAction:(unsigned __int8)action;
+- (void)p_registerAllFormulasReturningCoords:(void *)coords;
 - (void)p_removeAllFormulaFromCalculationEngine;
-- (void)p_removeHiddenIndex:(TSUModelColumnOrRowIndex)a3 viewIndex:(TSUViewColumnOrRowIndex)a4 forAction:(unsigned __int8)a5;
-- (void)remapTableUIDsInFormulasWithMap:(const void *)a3 calcEngine:(id)a4;
-- (void)removeUid:(const TSKUIDStruct *)a3;
-- (void)setFilterSet:(id)a3;
-- (void)setFilterSetType:(int)a3;
-- (void)setGroupUID:(const TSKUIDStruct *)a3 asCollapsed:(BOOL)a4;
-- (void)setHiddenStateExtentUid:(TSKUIDStruct)a3;
-- (void)setNeedsFilterFormulaRewriteForImport:(BOOL)a3;
-- (void)setNeedsToUpdateFilterSetForImport:(BOOL)a3;
+- (void)p_removeHiddenIndex:(TSUModelColumnOrRowIndex)index viewIndex:(TSUViewColumnOrRowIndex)viewIndex forAction:(unsigned __int8)action;
+- (void)remapTableUIDsInFormulasWithMap:(const void *)map calcEngine:(id)engine;
+- (void)removeUid:(const TSKUIDStruct *)uid;
+- (void)setFilterSet:(id)set;
+- (void)setFilterSetType:(int)type;
+- (void)setGroupUID:(const TSKUIDStruct *)d asCollapsed:(BOOL)collapsed;
+- (void)setHiddenStateExtentUid:(TSKUIDStruct)uid;
+- (void)setNeedsFilterFormulaRewriteForImport:(BOOL)import;
+- (void)setNeedsToUpdateFilterSetForImport:(BOOL)import;
 - (void)setupAfterUnarchive;
-- (void)showAtViewIndexes:(id)a3 forAction:(unsigned __int8)a4;
-- (void)swapBaseIndex:(TSUModelColumnOrRowIndex)a3 withIndex:(TSUModelColumnOrRowIndex)a4;
+- (void)showAtViewIndexes:(id)indexes forAction:(unsigned __int8)action;
+- (void)swapBaseIndex:(TSUModelColumnOrRowIndex)index withIndex:(TSUModelColumnOrRowIndex)withIndex;
 - (void)syncUpHiddenStateFormulaOwnerUIDs;
 - (void)unregisterFromCalcEngine;
-- (void)willApplyBaseCellMap:(id)a3 tableUID:(const TSKUIDStruct *)a4;
-- (void)willApplyCell:(id)a3 baseCellCoord:(TSUModelCellCoord)a4 tableUID:(const TSKUIDStruct *)a5;
-- (void)willApplyConcurrentCellMap:(id)a3 tableUID:(const TSKUIDStruct *)a4;
-- (void)willChangeGroupByTo:(id)a3;
-- (void)willRemoveRows:(const void *)a3 tableUID:(const TSKUIDStruct *)a4;
-- (void)writeResultsForCalcEngine:(id)a3;
+- (void)willApplyBaseCellMap:(id)map tableUID:(const TSKUIDStruct *)d;
+- (void)willApplyCell:(id)cell baseCellCoord:(TSUModelCellCoord)coord tableUID:(const TSKUIDStruct *)d;
+- (void)willApplyConcurrentCellMap:(id)map tableUID:(const TSKUIDStruct *)d;
+- (void)willChangeGroupByTo:(id)to;
+- (void)willRemoveRows:(const void *)rows tableUID:(const TSKUIDStruct *)d;
+- (void)writeResultsForCalcEngine:(id)engine;
 @end
 
 @implementation TSTHiddenStateExtent
 
-+ (id)mutableIndexSetByIntersecting:(id)a3 withRange:(_NSRange)a4
++ (id)mutableIndexSetByIntersecting:(id)intersecting withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
+  length = range.length;
+  location = range.location;
+  intersectingCopy = intersecting;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -149,67 +149,67 @@
   v14[2] = sub_221388348;
   v14[3] = &unk_278462AA8;
   v14[4] = &v15;
-  objc_msgSend_enumerateRangesInRange_options_usingBlock_(v6, v11, location, length, 0, v14);
+  objc_msgSend_enumerateRangesInRange_options_usingBlock_(intersectingCopy, v11, location, length, 0, v14);
   v12 = v16[5];
   _Block_object_dispose(&v15, 8);
 
   return v12;
 }
 
-+ (unint64_t)firstIndexNotInIndexSet:(id)a3 beginRange:(unint64_t)a4 pastEndRange:(unint64_t)a5
++ (unint64_t)firstIndexNotInIndexSet:(id)set beginRange:(unint64_t)range pastEndRange:(unint64_t)endRange
 {
-  v7 = a3;
-  v11 = v7;
-  if (a4 >= a5)
+  setCopy = set;
+  v11 = setCopy;
+  if (range >= endRange)
   {
-    a4 = 0x7FFFFFFFFFFFFFFFLL;
+    range = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_14;
   }
 
-  if (objc_msgSend_containsIndex_(v7, v8, a4, v9, v10))
+  if (objc_msgSend_containsIndex_(setCopy, v8, range, v9, v10))
   {
     while (1)
     {
-      v15 = a5 - a4;
-      if (a5 - a4 < 2)
+      v15 = endRange - range;
+      if (endRange - range < 2)
       {
-        v18 = a4;
+        rangeCopy2 = range;
         goto LABEL_11;
       }
 
       v16 = v15 >> 1;
-      v17 = objc_msgSend_countOfIndexesInRange_(v11, v12, a4, v15 >> 1, v14);
-      v18 = a4 + (v15 >> 1);
+      v17 = objc_msgSend_countOfIndexesInRange_(v11, v12, range, v15 >> 1, v14);
+      rangeCopy2 = range + (v15 >> 1);
       if (v17 != v16)
       {
         if (!v17)
         {
-          v18 = 0x7FFFFFFFFFFFFFFFLL;
-          if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+          rangeCopy2 = 0x7FFFFFFFFFFFFFFFLL;
+          if (range != 0x7FFFFFFFFFFFFFFFLL)
           {
             break;
           }
 
 LABEL_11:
-          if (objc_msgSend_containsIndex_(v11, v12, v18, v13, v14))
+          if (objc_msgSend_containsIndex_(v11, v12, rangeCopy2, v13, v14))
           {
-            a4 = 0x7FFFFFFFFFFFFFFFLL;
+            range = 0x7FFFFFFFFFFFFFFFLL;
           }
 
           else
           {
-            a4 = v18;
+            range = rangeCopy2;
           }
 
           break;
         }
 
-        a5 = v18 + 1;
-        v18 = a4;
+        endRange = rangeCopy2 + 1;
+        rangeCopy2 = range;
       }
 
-      a4 = v18;
-      if (v18 >= a5)
+      range = rangeCopy2;
+      if (rangeCopy2 >= endRange)
       {
         goto LABEL_11;
       }
@@ -218,40 +218,40 @@ LABEL_11:
 
 LABEL_14:
 
-  return a4;
+  return range;
 }
 
-+ (unint64_t)lastIndexNotInIndexSet:(id)a3 beginRange:(unint64_t)a4 pastEndRange:(unint64_t)a5
++ (unint64_t)lastIndexNotInIndexSet:(id)set beginRange:(unint64_t)range pastEndRange:(unint64_t)endRange
 {
-  v10 = a3;
-  if (a4 >= a5)
+  setCopy = set;
+  if (range >= endRange)
   {
-    v13 = 0x7FFFFFFFFFFFFFFFLL;
+    rangeCopy = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
     do
     {
-      v11 = a4 + ((a5 - a4) >> 1);
-      if (a5 == v11)
+      v11 = range + ((endRange - range) >> 1);
+      if (endRange == v11)
       {
         break;
       }
 
-      v12 = objc_msgSend_countOfIndexesInRange_(v10, v7, a4 + ((a5 - a4) >> 1), a5 - v11, v9);
-      if (v12 == a5 - v11)
+      v12 = objc_msgSend_countOfIndexesInRange_(setCopy, v7, range + ((endRange - range) >> 1), endRange - v11, v9);
+      if (v12 == endRange - v11)
       {
-        a5 = a4 + ((a5 - a4) >> 1);
+        endRange = range + ((endRange - range) >> 1);
       }
 
       else
       {
         if (!v12)
         {
-          v13 = a5 - 1;
-          a4 = v11;
-          if (v13 != 0x7FFFFFFFFFFFFFFFLL)
+          rangeCopy = endRange - 1;
+          range = v11;
+          if (rangeCopy != 0x7FFFFFFFFFFFFFFFLL)
           {
             goto LABEL_14;
           }
@@ -259,39 +259,39 @@ LABEL_14:
           break;
         }
 
-        a4 += (a5 - a4) >> 1;
+        range += (endRange - range) >> 1;
       }
     }
 
-    while (a4 < a5);
-    if (objc_msgSend_containsIndex_(v10, v7, a4, v8, v9))
+    while (range < endRange);
+    if (objc_msgSend_containsIndex_(setCopy, v7, range, v8, v9))
     {
-      v13 = 0x7FFFFFFFFFFFFFFFLL;
+      rangeCopy = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v13 = a4;
+      rangeCopy = range;
     }
   }
 
 LABEL_14:
 
-  return v13;
+  return rangeCopy;
 }
 
-+ (unint64_t)firstIndexNotInIndexSet:(id)a3 orIndexSet:(id)a4 beginRange:(unint64_t)a5 pastEndRange:(unint64_t)a6
++ (unint64_t)firstIndexNotInIndexSet:(id)set orIndexSet:(id)indexSet beginRange:(unint64_t)range pastEndRange:(unint64_t)endRange
 {
-  v9 = a3;
-  v11 = a4;
-  if (a5 >= a6)
+  setCopy = set;
+  indexSetCopy = indexSet;
+  if (range >= endRange)
   {
     v15 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    for (i = objc_msgSend_firstIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v10, v9, a5, a6); ; i = objc_msgSend_firstIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v22, v9, v18, v23 + 1))
+    for (i = objc_msgSend_firstIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v10, setCopy, range, endRange); ; i = objc_msgSend_firstIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v22, setCopy, v18, v23 + 1))
     {
       v14 = i;
       v15 = 0x7FFFFFFFFFFFFFFFLL;
@@ -300,7 +300,7 @@ LABEL_14:
         break;
       }
 
-      IndexNotInIndexSet_beginRange_pastEndRange = objc_msgSend_firstIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v13, v11, a5, a6);
+      IndexNotInIndexSet_beginRange_pastEndRange = objc_msgSend_firstIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v13, indexSetCopy, range, endRange);
       if (IndexNotInIndexSet_beginRange_pastEndRange == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
@@ -322,8 +322,8 @@ LABEL_14:
         v18 = v14;
       }
 
-      v19 = objc_msgSend_lastIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v17, v9, a5, a6);
-      v21 = objc_msgSend_lastIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v20, v11, a5, a6);
+      v19 = objc_msgSend_lastIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v17, setCopy, range, endRange);
+      v21 = objc_msgSend_lastIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v20, indexSetCopy, range, endRange);
       if (v21 >= v19)
       {
         v23 = v19;
@@ -334,26 +334,26 @@ LABEL_14:
         v23 = v21;
       }
 
-      a6 = v23 + 1;
-      a5 = v18;
+      endRange = v23 + 1;
+      range = v18;
     }
   }
 
   return v15;
 }
 
-+ (unint64_t)lastIndexNotInIndexSet:(id)a3 orIndexSet:(id)a4 beginRange:(unint64_t)a5 pastEndRange:(unint64_t)a6
++ (unint64_t)lastIndexNotInIndexSet:(id)set orIndexSet:(id)indexSet beginRange:(unint64_t)range pastEndRange:(unint64_t)endRange
 {
-  v9 = a3;
-  v11 = a4;
-  if (a5 >= a6)
+  setCopy = set;
+  indexSetCopy = indexSet;
+  if (range >= endRange)
   {
     v15 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    for (i = objc_msgSend_lastIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v10, v9, a5, a6); ; i = objc_msgSend_lastIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v22, v9, a5, v18 + 1))
+    for (i = objc_msgSend_lastIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v10, setCopy, range, endRange); ; i = objc_msgSend_lastIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v22, setCopy, range, v18 + 1))
     {
       v14 = i;
       v15 = 0x7FFFFFFFFFFFFFFFLL;
@@ -362,7 +362,7 @@ LABEL_14:
         break;
       }
 
-      IndexNotInIndexSet_beginRange_pastEndRange = objc_msgSend_lastIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v13, v11, a5, a6);
+      IndexNotInIndexSet_beginRange_pastEndRange = objc_msgSend_lastIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v13, indexSetCopy, range, endRange);
       if (IndexNotInIndexSet_beginRange_pastEndRange == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
@@ -384,40 +384,40 @@ LABEL_14:
         v18 = IndexNotInIndexSet_beginRange_pastEndRange;
       }
 
-      v19 = objc_msgSend_firstIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v17, v9, a5, a6);
-      v21 = objc_msgSend_firstIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v20, v11, a5, a6);
+      v19 = objc_msgSend_firstIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v17, setCopy, range, endRange);
+      v21 = objc_msgSend_firstIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v20, indexSetCopy, range, endRange);
       if (v19 <= v21)
       {
-        a5 = v21;
+        range = v21;
       }
 
       else
       {
-        a5 = v19;
+        range = v19;
       }
 
-      a6 = v18 + 1;
+      endRange = v18 + 1;
     }
   }
 
   return v15;
 }
 
-- (TSTHiddenStateExtent)initWithHiddenStatesOwner:(id)a3 forRows:(BOOL)a4
+- (TSTHiddenStateExtent)initWithHiddenStatesOwner:(id)owner forRows:(BOOL)rows
 {
-  v4 = a4;
+  rowsCopy = rows;
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  ownerCopy = owner;
   v20.receiver = self;
   v20.super_class = TSTHiddenStateExtent;
   v7 = [(TSTHiddenStateExtent *)&v20 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_hiddenStatesOwner, v6);
-    v21.__sig = objc_msgSend_baseTableUID(v6, v9, v10, v11, v12);
+    objc_storeWeak(&v7->_hiddenStatesOwner, ownerCopy);
+    v21.__sig = objc_msgSend_baseTableUID(ownerCopy, v9, v10, v11, v12);
     *v21.__opaque = v13;
-    if (v4)
+    if (rowsCopy)
     {
       v17 = 4;
     }
@@ -429,7 +429,7 @@ LABEL_14:
 
     v8->_hiddenStateExtentUid._lower = sub_2212C4930(&v21, v17, v14, v15, v16);
     v8->_hiddenStateExtentUid._upper = v18;
-    v8->_forRows = v4;
+    v8->_forRows = rowsCopy;
     v8->_uniqueValuesLock._os_unfair_lock_opaque = 0;
     v8->_pendingComputedLock._os_unfair_lock_opaque = 0;
     __dmb(0xBu);
@@ -640,11 +640,11 @@ LABEL_14:
   }
 }
 
-- (void)setHiddenStateExtentUid:(TSKUIDStruct)a3
+- (void)setHiddenStateExtentUid:(TSKUIDStruct)uid
 {
-  upper = a3._upper;
-  lower = a3._lower;
-  if (a3._lower != self->_hiddenStateExtentUid._lower || a3._upper != self->_hiddenStateExtentUid._upper)
+  upper = uid._upper;
+  lower = uid._lower;
+  if (uid._lower != self->_hiddenStateExtentUid._lower || uid._upper != self->_hiddenStateExtentUid._upper)
   {
     WeakRetained = objc_loadWeakRetained(&self->_calcEngine);
     if (objc_msgSend_duringSubOwnerUIDUpgrade(WeakRetained, v7, v8, v9, v10))
@@ -676,9 +676,9 @@ LABEL_8:
   }
 }
 
-- (void)willChangeGroupByTo:(id)a3
+- (void)willChangeGroupByTo:(id)to
 {
-  v45 = a3;
+  toCopy = to;
   WeakRetained = objc_loadWeakRetained(&self->_calcEngine);
 
   if (WeakRetained)
@@ -694,26 +694,26 @@ LABEL_8:
     objc_msgSend_removeReceiver_(v37, v38, self, v39, v40);
   }
 
-  v41 = objc_msgSend_groupByChangeDistributor(v45, v5, v6, v7, v8);
+  v41 = objc_msgSend_groupByChangeDistributor(toCopy, v5, v6, v7, v8);
   objc_msgSend_addReceiverIfMissing_(v41, v42, self, v43, v44);
 
   self->_invalidateViewGeometry = 1;
 }
 
-- (TSUViewColumnOrRowIndex)p_viewIndexForBaseIndex:(TSUModelColumnOrRowIndex)a3
+- (TSUViewColumnOrRowIndex)p_viewIndexForBaseIndex:(TSUModelColumnOrRowIndex)index
 {
-  v7 = objc_msgSend_tableTranslator(self, a2, *&a3._index, v3, v4);
+  v7 = objc_msgSend_tableTranslator(self, a2, *&index._index, v3, v4);
   if ((objc_msgSend_areMapsStale(v7, v8, v9, v10, v11) & 1) == 0)
   {
     if (objc_msgSend_forRows(self, v12, v13, v14, v15))
     {
-      v23.var0 = objc_msgSend_viewRowIndexForBaseRowIndex_(v7, v17, a3._index, v18, v19);
+      v23.var0 = objc_msgSend_viewRowIndexForBaseRowIndex_(v7, v17, index._index, v18, v19);
       v20 = TSUViewRowIndex::asColumnRowIndex(&v23);
     }
 
     else
     {
-      v22.var0 = objc_msgSend_viewColumnIndexForBaseColumnIndex_(v7, v17, LOWORD(a3._index), v18, v19);
+      v22.var0 = objc_msgSend_viewColumnIndexForBaseColumnIndex_(v7, v17, LOWORD(index._index), v18, v19);
       if (v22.var0 == 0x7FFF)
       {
         goto LABEL_3;
@@ -734,14 +734,14 @@ LABEL_9:
   return v16;
 }
 
-- (void)p_addHiddenIndex:(TSUModelColumnOrRowIndex)a3 viewIndex:(TSUViewColumnOrRowIndex)a4 forAction:(unsigned __int8)a5
+- (void)p_addHiddenIndex:(TSUModelColumnOrRowIndex)index viewIndex:(TSUViewColumnOrRowIndex)viewIndex forAction:(unsigned __int8)action
 {
-  v5 = a5;
-  index = a3._index;
-  if (a3._index == 0x7FFFFFFFLL)
+  actionCopy = action;
+  index = index._index;
+  if (index._index == 0x7FFFFFFFLL)
   {
-    LODWORD(v8) = a4;
-    if (a4._index == 0x7FFFFFFF)
+    LODWORD(v8) = viewIndex;
+    if (viewIndex._index == 0x7FFFFFFF)
     {
       return;
     }
@@ -749,17 +749,17 @@ LABEL_9:
 
   else
   {
-    LODWORD(v8) = objc_msgSend_p_viewIndexForBaseIndex_(self, a2, a3._index, *&a4._index, a5);
+    LODWORD(v8) = objc_msgSend_p_viewIndexForBaseIndex_(self, a2, index._index, *&viewIndex._index, action);
   }
 
-  if (v5 <= 3)
+  if (actionCopy <= 3)
   {
-    if (v5 == 1)
+    if (actionCopy == 1)
     {
       goto LABEL_17;
     }
 
-    if (v5 != 2)
+    if (actionCopy != 2)
     {
       goto LABEL_27;
     }
@@ -788,7 +788,7 @@ LABEL_37:
 
     else
     {
-      objc_msgSend_addIndex_(self->_baseFilteredIndexes, a2, index, *&a4._index, a5);
+      objc_msgSend_addIndex_(self->_baseFilteredIndexes, a2, index, *&viewIndex._index, action);
       if (v8 != 0x7FFFFFFF)
       {
         p_viewIndexesMutex = &self->_viewIndexesMutex;
@@ -807,7 +807,7 @@ LABEL_37:
     goto LABEL_56;
   }
 
-  switch(v5)
+  switch(actionCopy)
   {
     case 4:
       return;
@@ -823,7 +823,7 @@ LABEL_37:
       else
       {
         v74 = MEMORY[0x277D81150];
-        v75 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTHiddenStateExtent p_addHiddenIndex:viewIndex:forAction:]", *&a4._index, a5);
+        v75 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTHiddenStateExtent p_addHiddenIndex:viewIndex:forAction:]", *&viewIndex._index, action);
         v79 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v76, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTHiddenStateExtent.mm", v77, v78);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v74, v80, v75, v79, 576, 0, "Not allowing pivot-hidden for base indexes.");
 
@@ -852,7 +852,7 @@ LABEL_17:
       if (index == 0x7FFFFFFF)
       {
         v20 = MEMORY[0x277D81150];
-        v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTHiddenStateExtent p_addHiddenIndex:viewIndex:forAction:]", *&a4._index, a5);
+        v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTHiddenStateExtent p_addHiddenIndex:viewIndex:forAction:]", *&viewIndex._index, action);
         v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTHiddenStateExtent.mm", v23, v24);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v20, v26, v21, v25, 557, 0, "Not allowing user-hidden as view only");
 
@@ -861,7 +861,7 @@ LABEL_17:
 
       else
       {
-        objc_msgSend_addIndex_(self->_baseUserHiddenIndexes, a2, index, *&a4._index, a5);
+        objc_msgSend_addIndex_(self->_baseUserHiddenIndexes, a2, index, *&viewIndex._index, action);
       }
 
       if (v8 != 0x7FFFFFFF)
@@ -890,12 +890,12 @@ LABEL_27:
     self->_baseFilteredIndexes = v61;
   }
 
-  if ((v5 & 9) != 0)
+  if ((actionCopy & 9) != 0)
   {
     if (index == 0x7FFFFFFF)
     {
       v63 = MEMORY[0x277D81150];
-      v64 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTHiddenStateExtent p_addHiddenIndex:viewIndex:forAction:]", *&a4._index, a5);
+      v64 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTHiddenStateExtent p_addHiddenIndex:viewIndex:forAction:]", *&viewIndex._index, action);
       v68 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v65, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTHiddenStateExtent.mm", v66, v67);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v63, v69, v64, v68, 615, 0, "Not allowing user-hidden as view only");
 
@@ -904,7 +904,7 @@ LABEL_27:
 
     else
     {
-      objc_msgSend_addIndex_(self->_baseUserHiddenIndexes, a2, index, *&a4._index, a5);
+      objc_msgSend_addIndex_(self->_baseUserHiddenIndexes, a2, index, *&viewIndex._index, action);
     }
 
     if (v8 != 0x7FFFFFFF)
@@ -923,7 +923,7 @@ LABEL_27:
     objc_msgSend_markCellRefAsDirty_(v108, v121, v183, v122, v123);
   }
 
-  if ((v5 & 0x10) != 0)
+  if ((actionCopy & 0x10) != 0)
   {
     if (index == 0x7FFFFFFF)
     {
@@ -936,7 +936,7 @@ LABEL_27:
     else
     {
       v130 = MEMORY[0x277D81150];
-      v131 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTHiddenStateExtent p_addHiddenIndex:viewIndex:forAction:]", *&a4._index, a5);
+      v131 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTHiddenStateExtent p_addHiddenIndex:viewIndex:forAction:]", *&viewIndex._index, action);
       v135 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v132, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTHiddenStateExtent.mm", v133, v134);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v130, v136, v131, v135, 634, 0, "Not allowing pivot-hidden for base indexes.");
 
@@ -951,7 +951,7 @@ LABEL_27:
     objc_msgSend_markCellRefAsDirty_(v141, v154, v183, v155, v156);
   }
 
-  if ((v5 & 2) != 0)
+  if ((actionCopy & 2) != 0)
   {
     if (index == 0x7FFFFFFF)
     {
@@ -970,7 +970,7 @@ LABEL_54:
 
     else
     {
-      objc_msgSend_addIndex_(self->_baseFilteredIndexes, a2, index, *&a4._index, a5);
+      objc_msgSend_addIndex_(self->_baseFilteredIndexes, a2, index, *&viewIndex._index, action);
       if (v8 != 0x7FFFFFFF)
       {
         v157 = &self->_viewIndexesMutex;
@@ -990,14 +990,14 @@ LABEL_54:
   }
 }
 
-- (void)p_removeHiddenIndex:(TSUModelColumnOrRowIndex)a3 viewIndex:(TSUViewColumnOrRowIndex)a4 forAction:(unsigned __int8)a5
+- (void)p_removeHiddenIndex:(TSUModelColumnOrRowIndex)index viewIndex:(TSUViewColumnOrRowIndex)viewIndex forAction:(unsigned __int8)action
 {
-  v5 = a5;
-  index = a3._index;
-  if (a3._index == 0x7FFFFFFFLL)
+  actionCopy = action;
+  index = index._index;
+  if (index._index == 0x7FFFFFFFLL)
   {
-    v8 = a4._index;
-    if (a4._index == 0x7FFFFFFF)
+    v8 = viewIndex._index;
+    if (viewIndex._index == 0x7FFFFFFF)
     {
       return;
     }
@@ -1005,17 +1005,17 @@ LABEL_54:
 
   else
   {
-    v8 = objc_msgSend_p_viewIndexForBaseIndex_(self, a2, a3._index, *&a4._index, a5);
+    v8 = objc_msgSend_p_viewIndexForBaseIndex_(self, a2, index._index, *&viewIndex._index, action);
   }
 
-  if (v5 > 3)
+  if (actionCopy > 3)
   {
-    if (v5 == 4)
+    if (actionCopy == 4)
     {
       goto LABEL_42;
     }
 
-    if (v5 == 16)
+    if (actionCopy == 16)
     {
       if (index == 0x7FFFFFFF)
       {
@@ -1027,7 +1027,7 @@ LABEL_54:
       goto LABEL_21;
     }
 
-    if (v5 != 8)
+    if (actionCopy != 8)
     {
       goto LABEL_25;
     }
@@ -1035,7 +1035,7 @@ LABEL_54:
 LABEL_17:
     if (index != 0x7FFFFFFF)
     {
-      objc_msgSend_removeIndex_(self->_baseUserHiddenIndexes, a2, index, *&a4._index, a5);
+      objc_msgSend_removeIndex_(self->_baseUserHiddenIndexes, a2, index, *&viewIndex._index, action);
     }
 
     if (v8 != 0x7FFFFFFF)
@@ -1057,16 +1057,16 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  if (v5 == 1)
+  if (actionCopy == 1)
   {
     goto LABEL_17;
   }
 
-  if (v5 == 2)
+  if (actionCopy == 2)
   {
     if (index != 0x7FFFFFFF)
     {
-      objc_msgSend_removeIndex_(self->_baseFilteredIndexes, a2, index, *&a4._index, a5);
+      objc_msgSend_removeIndex_(self->_baseFilteredIndexes, a2, index, *&viewIndex._index, action);
     }
 
     if (v8 != 0x7FFFFFFF)
@@ -1087,11 +1087,11 @@ LABEL_41:
   }
 
 LABEL_25:
-  if ((v5 & 9) != 0)
+  if ((actionCopy & 9) != 0)
   {
     if (index != 0x7FFFFFFF)
     {
-      objc_msgSend_removeIndex_(self->_baseUserHiddenIndexes, a2, index, *&a4._index, a5);
+      objc_msgSend_removeIndex_(self->_baseUserHiddenIndexes, a2, index, *&viewIndex._index, action);
     }
 
     if (v8 != 0x7FFFFFFF)
@@ -1109,7 +1109,7 @@ LABEL_25:
     objc_msgSend_markCellRefAsDirty_(v54, v67, v127, v68, v69);
   }
 
-  if ((v5 & 0x10) != 0)
+  if ((actionCopy & 0x10) != 0)
   {
     if (index == 0x7FFFFFFF)
     {
@@ -1126,11 +1126,11 @@ LABEL_25:
     objc_msgSend_markCellRefAsDirty_(v73, v86, v127, v87, v88);
   }
 
-  if ((v5 & 2) != 0)
+  if ((actionCopy & 2) != 0)
   {
     if (index != 0x7FFFFFFF)
     {
-      objc_msgSend_removeIndex_(self->_baseFilteredIndexes, a2, index, *&a4._index, a5);
+      objc_msgSend_removeIndex_(self->_baseFilteredIndexes, a2, index, *&viewIndex._index, action);
     }
 
     if (v8 != 0x7FFFFFFF)
@@ -1153,7 +1153,7 @@ LABEL_25:
 LABEL_42:
   if (index == 0x7FFFFFFF)
   {
-    objc_msgSend_p_summaryFilteredIndexes(self, a2, *&a3._index, *&a4._index, a5);
+    objc_msgSend_p_summaryFilteredIndexes(self, a2, *&index._index, *&viewIndex._index, action);
 
     objc_msgSend_p_summaryPivotHiddenIndexes(self, v109, v110, v111, v112);
     if ((objc_msgSend_containsIndex_(self->_summaryFilteredIndexes, v113, v8, v114, v115) & 1) == 0 && (objc_msgSend_containsIndex_(self->_summaryPivotHiddenIndexes, v116, v8, v117, v118) & 1) == 0)
@@ -1165,16 +1165,16 @@ LABEL_49:
     }
   }
 
-  else if ((objc_msgSend_containsIndex_(self->_baseUserHiddenIndexes, a2, index, *&a4._index, a5) & 1) == 0 && (objc_msgSend_containsIndex_(self->_baseFilteredIndexes, v119, index, v120, v121) & 1) == 0 && v8 != 0x7FFFFFFF)
+  else if ((objc_msgSend_containsIndex_(self->_baseUserHiddenIndexes, a2, index, *&viewIndex._index, action) & 1) == 0 && (objc_msgSend_containsIndex_(self->_baseFilteredIndexes, v119, index, v120, v121) & 1) == 0 && v8 != 0x7FFFFFFF)
   {
     goto LABEL_49;
   }
 }
 
-- (BOOL)hideAtUid:(const TSKUIDStruct *)a3 forAction:(unsigned __int8)a4
+- (BOOL)hideAtUid:(const TSKUIDStruct *)uid forAction:(unsigned __int8)action
 {
-  v5 = a4;
-  v11 = objc_msgSend_tableTranslator(self, a2, a3, a4, v4);
+  actionCopy = action;
+  v11 = objc_msgSend_tableTranslator(self, a2, uid, action, v4);
   if (!v11)
   {
     v12 = MEMORY[0x277D81150];
@@ -1185,8 +1185,8 @@ LABEL_49:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
 
-  lower = a3->_lower;
-  upper = a3->_upper;
+  lower = uid->_lower;
+  upper = uid->_upper;
   if (self->_forRows)
   {
     v27 = objc_msgSend_baseRowIndexForRowUID_(v11, v8, lower, upper, v10);
@@ -1206,13 +1206,13 @@ LABEL_49:
     }
   }
 
-  v29 = a3->_lower;
-  v30 = a3->_upper;
+  v29 = uid->_lower;
+  v30 = uid->_upper;
   if (self->_forRows)
   {
     v31 = objc_msgSend_viewRowIndexForRowUID_(v11, v25, v29, v30, v26);
 LABEL_13:
-    v34 = objc_msgSend_hideAtUid_forIndex_forViewIndex_forAction_(self, v32, a3, v27, v31, v5);
+    v34 = objc_msgSend_hideAtUid_forIndex_forViewIndex_forAction_(self, v32, uid, v27, v31, actionCopy);
     goto LABEL_14;
   }
 
@@ -1223,31 +1223,31 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v34 = objc_msgSend_hideAtUid_forIndex_forViewIndex_forAction_(self, v32, a3, v27, 0x7FFFFFFFLL, v5);
+  v34 = objc_msgSend_hideAtUid_forIndex_forViewIndex_forAction_(self, v32, uid, v27, 0x7FFFFFFFLL, actionCopy);
 LABEL_14:
   v35 = v34;
 
   return v35;
 }
 
-- (BOOL)hideAtUid:(const TSKUIDStruct *)a3 forIndex:(TSUModelColumnOrRowIndex)a4 forViewIndex:(TSUViewColumnOrRowIndex)a5 forAction:(unsigned __int8)a6
+- (BOOL)hideAtUid:(const TSKUIDStruct *)uid forIndex:(TSUModelColumnOrRowIndex)index forViewIndex:(TSUViewColumnOrRowIndex)viewIndex forAction:(unsigned __int8)action
 {
-  v6 = a6 & 0xFB;
-  if ((a6 & 0xFFFFFFFB) == 0)
+  v6 = action & 0xFB;
+  if ((action & 0xFFFFFFFB) == 0)
   {
     return 0;
   }
 
-  v12 = objc_msgSend_hidingActionForUid_(self, a2, a3, *&a4._index, *&a5._index);
+  v12 = objc_msgSend_hidingActionForUid_(self, a2, uid, *&index._index, *&viewIndex._index);
   if ((v6 & ~v12) == 0)
   {
     return 0;
   }
 
   v17 = v12 | v6;
-  if (a4._index == 0x7FFFFFFF)
+  if (index._index == 0x7FFFFFFF)
   {
-    v41 = a3;
+    uidCopy2 = uid;
     p_summaryHiddenByUid = &self->_summaryHiddenByUid;
   }
 
@@ -1264,34 +1264,34 @@ LABEL_14:
       goto LABEL_11;
     }
 
-    v41 = a3;
+    uidCopy2 = uid;
     p_summaryHiddenByUid = &self->_baseHiddenByUid;
   }
 
-  *(sub_2213958D0(p_summaryHiddenByUid, a3) + 32) = v17;
+  *(sub_2213958D0(p_summaryHiddenByUid, uid) + 32) = v17;
 LABEL_11:
-  objc_msgSend_p_addHiddenIndex_viewIndex_forAction_(self, v19, a4._index, a5._index, v6);
-  objc_msgSend_p_hiddenStateChangedForBaseIndex_viewIndex_forAction_(self, v31, a4._index, a5._index, v6);
+  objc_msgSend_p_addHiddenIndex_viewIndex_forAction_(self, v19, index._index, viewIndex._index, v6);
+  objc_msgSend_p_hiddenStateChangedForBaseIndex_viewIndex_forAction_(self, v31, index._index, viewIndex._index, v6);
   result = 1;
-  if (a4._index != 0x7FFFFFFF && (a6 & 0x10) != 0)
+  if (index._index != 0x7FFFFFFF && (action & 0x10) != 0)
   {
     if (self->_forRows)
     {
-      LODWORD(v41) = a4;
+      LODWORD(uidCopy2) = index;
       v36 = objc_msgSend_tableModel(self, v32, v33, v34, v35);
-      objc_msgSend_setHidingState_atRowIndex_(v36, v37, v17 & 0xEB, &v41, v38);
+      objc_msgSend_setHidingState_atRowIndex_(v36, v37, v17 & 0xEB, &uidCopy2, v38);
     }
 
     else
     {
-      LOWORD(v41) = a4._index;
-      if (LOWORD(a4._index) == 0x7FFF)
+      LOWORD(uidCopy2) = index._index;
+      if (LOWORD(index._index) == 0x7FFF)
       {
         return 1;
       }
 
       v36 = objc_msgSend_tableModel(self, v32, v33, v34, v35);
-      objc_msgSend_setHidingState_atColumnIndex_(v36, v39, v17, &v41, v40);
+      objc_msgSend_setHidingState_atColumnIndex_(v36, v39, v17, &uidCopy2, v40);
     }
 
     return 1;
@@ -1300,10 +1300,10 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)showAtUid:(const TSKUIDStruct *)a3 forAction:(unsigned __int8)a4
+- (BOOL)showAtUid:(const TSKUIDStruct *)uid forAction:(unsigned __int8)action
 {
-  v5 = a4;
-  v11 = objc_msgSend_tableTranslator(self, a2, a3, a4, v4);
+  actionCopy = action;
+  v11 = objc_msgSend_tableTranslator(self, a2, uid, action, v4);
   if (!v11)
   {
     v12 = MEMORY[0x277D81150];
@@ -1314,8 +1314,8 @@ LABEL_11:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
 
-  lower = a3->_lower;
-  upper = a3->_upper;
+  lower = uid->_lower;
+  upper = uid->_upper;
   if (self->_forRows)
   {
     v27 = objc_msgSend_baseRowIndexForRowUID_(v11, v8, lower, upper, v10);
@@ -1335,13 +1335,13 @@ LABEL_11:
     }
   }
 
-  v29 = a3->_lower;
-  v30 = a3->_upper;
+  v29 = uid->_lower;
+  v30 = uid->_upper;
   if (self->_forRows)
   {
     v31 = objc_msgSend_viewRowIndexForRowUID_(v11, v25, v29, v30, v26);
 LABEL_13:
-    v34 = objc_msgSend_showAtUid_forIndex_forViewIndex_forAction_(self, v32, a3, v27, v31, v5);
+    v34 = objc_msgSend_showAtUid_forIndex_forViewIndex_forAction_(self, v32, uid, v27, v31, actionCopy);
     goto LABEL_14;
   }
 
@@ -1352,36 +1352,36 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v34 = objc_msgSend_showAtUid_forIndex_forViewIndex_forAction_(self, v32, a3, v27, 0x7FFFFFFFLL, v5);
+  v34 = objc_msgSend_showAtUid_forIndex_forViewIndex_forAction_(self, v32, uid, v27, 0x7FFFFFFFLL, actionCopy);
 LABEL_14:
   v35 = v34;
 
   return v35;
 }
 
-- (BOOL)showAtUid:(const TSKUIDStruct *)a3 forIndex:(TSUModelColumnOrRowIndex)a4 forViewIndex:(TSUViewColumnOrRowIndex)a5 forAction:(unsigned __int8)a6
+- (BOOL)showAtUid:(const TSKUIDStruct *)uid forIndex:(TSUModelColumnOrRowIndex)index forViewIndex:(TSUViewColumnOrRowIndex)viewIndex forAction:(unsigned __int8)action
 {
-  if (!a6)
+  if (!action)
   {
     return 0;
   }
 
-  v6 = a6;
-  v11 = objc_msgSend_hidingActionForUid_(self, a2, a3, *&a4._index, *&a5._index);
+  actionCopy = action;
+  v11 = objc_msgSend_hidingActionForUid_(self, a2, uid, *&index._index, *&viewIndex._index);
   v12 = v11;
-  if (v6 != 255)
+  if (actionCopy != 255)
   {
-    if ((v11 & v6) != 0)
+    if ((v11 & actionCopy) != 0)
     {
-      v13 = v11 & ~v6;
-      if (a4._index == 0x7FFFFFFF)
+      v13 = v11 & ~actionCopy;
+      if (index._index == 0x7FFFFFFF)
       {
         if (v13)
         {
-          v41 = a3;
+          uidCopy2 = uid;
           p_summaryHiddenByUid = &self->_summaryHiddenByUid;
 LABEL_13:
-          *(sub_2213958D0(p_summaryHiddenByUid, a3) + 32) = v13;
+          *(sub_2213958D0(p_summaryHiddenByUid, uid) + 32) = v13;
           goto LABEL_17;
         }
 
@@ -1392,7 +1392,7 @@ LABEL_13:
       {
         if (v13)
         {
-          v41 = a3;
+          uidCopy2 = uid;
           p_summaryHiddenByUid = &self->_baseHiddenByUid;
           goto LABEL_13;
         }
@@ -1400,7 +1400,7 @@ LABEL_13:
         p_baseHiddenByUid = &self->_baseHiddenByUid;
       }
 
-      sub_2211F2EF4(p_baseHiddenByUid, a3);
+      sub_2211F2EF4(p_baseHiddenByUid, uid);
       goto LABEL_17;
     }
 
@@ -1408,12 +1408,12 @@ LABEL_13:
   }
 
   v15 = 40;
-  if (a4._index == 0x7FFFFFFF)
+  if (index._index == 0x7FFFFFFF)
   {
     v15 = 80;
   }
 
-  sub_2211F2EF4((&self->super.isa + v15), a3);
+  sub_2211F2EF4((&self->super.isa + v15), uid);
   v13 = 0;
   if (!v12)
   {
@@ -1421,31 +1421,31 @@ LABEL_13:
   }
 
 LABEL_17:
-  objc_msgSend_p_removeHiddenIndex_viewIndex_forAction_(self, v16, a4._index, a5._index, v6);
-  objc_msgSend_p_hiddenStateChangedForBaseIndex_viewIndex_forAction_(self, v19, a4._index, a5._index, v6);
+  objc_msgSend_p_removeHiddenIndex_viewIndex_forAction_(self, v16, index._index, viewIndex._index, actionCopy);
+  objc_msgSend_p_hiddenStateChangedForBaseIndex_viewIndex_forAction_(self, v19, index._index, viewIndex._index, actionCopy);
   result = 1;
-  if (a4._index != 0x7FFFFFFF && (v6 & 0x14) != 0)
+  if (index._index != 0x7FFFFFFF && (actionCopy & 0x14) != 0)
   {
     v24 = objc_msgSend_tableTranslator(self, v20, v21, v22, v23);
     v27 = v24;
     if (self->_forRows)
     {
-      LODWORD(v41) = objc_msgSend_baseRowIndexForRowUID_(v24, v25, a3->_lower, a3->_upper, v26);
-      if (v41 != 0x7FFFFFFF)
+      LODWORD(uidCopy2) = objc_msgSend_baseRowIndexForRowUID_(v24, v25, uid->_lower, uid->_upper, v26);
+      if (uidCopy2 != 0x7FFFFFFF)
       {
         v32 = objc_msgSend_tableModel(self, v28, v29, v30, v31);
-        objc_msgSend_setHidingState_atRowIndex_(v32, v33, v13 & 0xEB, &v41, v34);
+        objc_msgSend_setHidingState_atRowIndex_(v32, v33, v13 & 0xEB, &uidCopy2, v34);
 LABEL_24:
       }
     }
 
     else
     {
-      LOWORD(v41) = objc_msgSend_baseColumnIndexForColumnUID_(v24, v25, a3->_lower, a3->_upper, v26);
-      if (v41 != 0x7FFF)
+      LOWORD(uidCopy2) = objc_msgSend_baseColumnIndexForColumnUID_(v24, v25, uid->_lower, uid->_upper, v26);
+      if (uidCopy2 != 0x7FFF)
       {
         v32 = objc_msgSend_tableModel(self, v35, v36, v37, v38);
-        objc_msgSend_setHidingState_atColumnIndex_(v32, v39, v13, &v41, v40);
+        objc_msgSend_setHidingState_atColumnIndex_(v32, v39, v13, &uidCopy2, v40);
         goto LABEL_24;
       }
     }
@@ -1456,9 +1456,9 @@ LABEL_24:
   return result;
 }
 
-- (unsigned)hidingActionForUid:(const TSKUIDStruct *)a3
+- (unsigned)hidingActionForUid:(const TSKUIDStruct *)uid
 {
-  v5 = sub_2210875C4(&self->_baseHiddenByUid.__table_.__bucket_list_.__ptr_, a3);
+  v5 = sub_2210875C4(&self->_baseHiddenByUid.__table_.__bucket_list_.__ptr_, uid);
   if (v5)
   {
     v6 = *(v5 + 32);
@@ -1469,7 +1469,7 @@ LABEL_24:
     v6 = 0;
   }
 
-  v7 = sub_2210875C4(&self->_summaryHiddenByUid.__table_.__bucket_list_.__ptr_, a3);
+  v7 = sub_2210875C4(&self->_summaryHiddenByUid.__table_.__bucket_list_.__ptr_, uid);
   if (v7)
   {
     v6 |= *(v7 + 32);
@@ -1478,11 +1478,11 @@ LABEL_24:
   return v6;
 }
 
-- (void)removeUid:(const TSKUIDStruct *)a3
+- (void)removeUid:(const TSKUIDStruct *)uid
 {
-  sub_2211F2EF4(&self->_baseHiddenByUid.__table_.__bucket_list_.__ptr_, a3);
+  sub_2211F2EF4(&self->_baseHiddenByUid.__table_.__bucket_list_.__ptr_, uid);
 
-  sub_2211F2EF4(&self->_summaryHiddenByUid.__table_.__bucket_list_.__ptr_, a3);
+  sub_2211F2EF4(&self->_summaryHiddenByUid.__table_.__bucket_list_.__ptr_, uid);
 }
 
 - (BOOL)anyHidden
@@ -1556,9 +1556,9 @@ LABEL_24:
   return v44;
 }
 
-- (void)loadIndexesFromTable:(id)a3
+- (void)loadIndexesFromTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v13 = objc_msgSend_tableTranslator(self, v5, v6, v7, v8);
   v61 = 0;
   v62 = 0;
@@ -1651,7 +1651,7 @@ LABEL_24:
 
   if (self->_needsSummaryUidUpgrade)
   {
-    objc_msgSend_willModifyForUpgrade(v4, v9, v10, v11, v12);
+    objc_msgSend_willModifyForUpgrade(tableCopy, v9, v10, v11, v12);
     if (objc_msgSend_count(self->_summaryPivotHiddenIndexes, v26, v27, v28, v29))
     {
       summaryPivotHiddenIndexes = self->_summaryPivotHiddenIndexes;
@@ -2252,11 +2252,11 @@ LABEL_30:
   return v6;
 }
 
-- (BOOL)hideAtViewIndex:(TSUViewColumnOrRowIndex)a3 forAction:(unsigned __int8)a4
+- (BOOL)hideAtViewIndex:(TSUViewColumnOrRowIndex)index forAction:(unsigned __int8)action
 {
-  v5 = a4;
-  v6 = *&a3._index;
-  v12 = objc_msgSend_tableTranslator(self, a2, *&a3._index, a4, v4);
+  actionCopy = action;
+  v6 = *&index._index;
+  v12 = objc_msgSend_tableTranslator(self, a2, *&index._index, action, v4);
   if (!v12)
   {
     v13 = MEMORY[0x277D81150];
@@ -2283,16 +2283,16 @@ LABEL_30:
 
   v34 = v29;
   v35 = v30;
-  v32 = objc_msgSend_hideAtUid_forAction_(self, v30, &v34, v5, v31);
+  v32 = objc_msgSend_hideAtUid_forAction_(self, v30, &v34, actionCopy, v31);
 
   return v32;
 }
 
-- (BOOL)showAtViewIndex:(TSUViewColumnOrRowIndex)a3 forAction:(unsigned __int8)a4
+- (BOOL)showAtViewIndex:(TSUViewColumnOrRowIndex)index forAction:(unsigned __int8)action
 {
-  v5 = a4;
-  v6 = *&a3._index;
-  v12 = objc_msgSend_tableTranslator(self, a2, *&a3._index, a4, v4);
+  actionCopy = action;
+  v6 = *&index._index;
+  v12 = objc_msgSend_tableTranslator(self, a2, *&index._index, action, v4);
   if (!v12)
   {
     v13 = MEMORY[0x277D81150];
@@ -2319,37 +2319,37 @@ LABEL_30:
 
   v34 = v29;
   v35 = v30;
-  v32 = objc_msgSend_showAtUid_forAction_(self, v30, &v34, v5, v31);
+  v32 = objc_msgSend_showAtUid_forAction_(self, v30, &v34, actionCopy, v31);
 
   return v32;
 }
 
-- (void)hideAtViewIndexes:(id)a3 forAction:(unsigned __int8)a4
+- (void)hideAtViewIndexes:(id)indexes forAction:(unsigned __int8)action
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_22138BFF8;
   v5[3] = &unk_278463938;
   v5[4] = self;
-  v6 = a4;
-  objc_msgSend_enumerateIndexesUsingBlock_(a3, a2, v5, a4, v4);
+  actionCopy = action;
+  objc_msgSend_enumerateIndexesUsingBlock_(indexes, a2, v5, action, v4);
 }
 
-- (void)showAtViewIndexes:(id)a3 forAction:(unsigned __int8)a4
+- (void)showAtViewIndexes:(id)indexes forAction:(unsigned __int8)action
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_22138C088;
   v5[3] = &unk_278463938;
   v5[4] = self;
-  v6 = a4;
-  objc_msgSend_enumerateIndexesUsingBlock_(a3, a2, v5, a4, v4);
+  actionCopy = action;
+  objc_msgSend_enumerateIndexesUsingBlock_(indexes, a2, v5, action, v4);
 }
 
-- (BOOL)hideAtBaseIndex:(TSUModelColumnOrRowIndex)a3 forAction:(unsigned __int8)a4
+- (BOOL)hideAtBaseIndex:(TSUModelColumnOrRowIndex)index forAction:(unsigned __int8)action
 {
-  v5 = a4;
-  v11 = objc_msgSend_tableTranslator(self, a2, *&a3._index, a4, v4);
+  actionCopy = action;
+  v11 = objc_msgSend_tableTranslator(self, a2, *&index._index, action, v4);
   if (!v11)
   {
     v12 = MEMORY[0x277D81150];
@@ -2363,16 +2363,16 @@ LABEL_30:
   self->_invalidateViewGeometry = 1;
   if (self->_forRows)
   {
-    v30 = objc_msgSend_rowUIDForBaseRowIndex_(v11, v8, a3._index, v9, v10);
+    v30 = objc_msgSend_rowUIDForBaseRowIndex_(v11, v8, index._index, v9, v10);
     v31 = v23;
-    v25 = objc_msgSend_hideAtUid_forAction_(self, v23, &v30, v5, v24);
+    v25 = objc_msgSend_hideAtUid_forAction_(self, v23, &v30, actionCopy, v24);
   }
 
   else
   {
-    v30 = objc_msgSend_columnUIDForBaseColumnIndex_(v11, v8, LOWORD(a3._index), v9, v10);
+    v30 = objc_msgSend_columnUIDForBaseColumnIndex_(v11, v8, LOWORD(index._index), v9, v10);
     v31 = v26;
-    v25 = objc_msgSend_hideAtUid_forAction_(self, v26, &v30, v5, v27);
+    v25 = objc_msgSend_hideAtUid_forAction_(self, v26, &v30, actionCopy, v27);
   }
 
   v28 = v25;
@@ -2380,10 +2380,10 @@ LABEL_30:
   return v28;
 }
 
-- (BOOL)showAtBaseIndex:(TSUModelColumnOrRowIndex)a3 forAction:(unsigned __int8)a4
+- (BOOL)showAtBaseIndex:(TSUModelColumnOrRowIndex)index forAction:(unsigned __int8)action
 {
-  v5 = a4;
-  v11 = objc_msgSend_tableTranslator(self, a2, *&a3._index, a4, v4);
+  actionCopy = action;
+  v11 = objc_msgSend_tableTranslator(self, a2, *&index._index, action, v4);
   if (!v11)
   {
     v12 = MEMORY[0x277D81150];
@@ -2397,16 +2397,16 @@ LABEL_30:
   self->_invalidateViewGeometry = 1;
   if (self->_forRows)
   {
-    v30 = objc_msgSend_rowUIDForBaseRowIndex_(v11, v8, a3._index, v9, v10);
+    v30 = objc_msgSend_rowUIDForBaseRowIndex_(v11, v8, index._index, v9, v10);
     v31 = v23;
-    v25 = objc_msgSend_showAtUid_forAction_(self, v23, &v30, v5, v24);
+    v25 = objc_msgSend_showAtUid_forAction_(self, v23, &v30, actionCopy, v24);
   }
 
   else
   {
-    v30 = objc_msgSend_columnUIDForBaseColumnIndex_(v11, v8, LOWORD(a3._index), v9, v10);
+    v30 = objc_msgSend_columnUIDForBaseColumnIndex_(v11, v8, LOWORD(index._index), v9, v10);
     v31 = v26;
-    v25 = objc_msgSend_showAtUid_forAction_(self, v26, &v30, v5, v27);
+    v25 = objc_msgSend_showAtUid_forAction_(self, v26, &v30, actionCopy, v27);
   }
 
   v28 = v25;
@@ -2625,10 +2625,10 @@ LABEL_33:
   }
 }
 
-- (unsigned)hidingActionForViewIndex:(TSUViewColumnOrRowIndex)a3
+- (unsigned)hidingActionForViewIndex:(TSUViewColumnOrRowIndex)index
 {
-  v5 = *&a3._index;
-  if (objc_msgSend_anyHidden(self, a2, *&a3._index, v3, v4))
+  v5 = *&index._index;
+  if (objc_msgSend_anyHidden(self, a2, *&index._index, v3, v4))
   {
     v11 = objc_msgSend_tableTranslator(self, v7, v8, v9, v10);
     v19 = objc_msgSend_viewMap(v11, v12, v13, v14, v15);
@@ -2678,9 +2678,9 @@ LABEL_33:
   return v35;
 }
 
-- (unsigned)hidingActionForBaseIndex:(TSUModelColumnOrRowIndex)a3
+- (unsigned)hidingActionForBaseIndex:(TSUModelColumnOrRowIndex)index
 {
-  if (!objc_msgSend_anyHidden(self, a2, *&a3._index, v3, v4))
+  if (!objc_msgSend_anyHidden(self, a2, *&index._index, v3, v4))
   {
     return 0;
   }
@@ -2700,12 +2700,12 @@ LABEL_33:
   v33 = 0;
   if (self->_forRows)
   {
-    v26 = objc_msgSend_rowUIDForBaseRowIndex_(v14, v11, a3._index, v12, v13, v32, v33);
+    v26 = objc_msgSend_rowUIDForBaseRowIndex_(v14, v11, index._index, v12, v13, v32, v33);
   }
 
   else
   {
-    v26 = objc_msgSend_columnUIDForBaseColumnIndex_(v14, v11, LOWORD(a3._index), v12, v13, v32, v33);
+    v26 = objc_msgSend_columnUIDForBaseColumnIndex_(v14, v11, LOWORD(index._index), v12, v13, v32, v33);
   }
 
   v32 = v26;
@@ -2715,11 +2715,11 @@ LABEL_33:
   return v30;
 }
 
-- (id)indexesOfHiddenInRange:(_NSRange)a3
+- (id)indexesOfHiddenInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (objc_msgSend_anyCollapsed(self, a2, a3.location, a3.length, v3))
+  length = range.length;
+  location = range.location;
+  if (objc_msgSend_anyCollapsed(self, a2, range.location, range.length, v3))
   {
     v11 = objc_msgSend_p_collapsedIndexes(self, v7, v8, v9, v10);
     if (objc_msgSend_anyHidden(self, v12, v13, v14, v15))
@@ -2754,11 +2754,11 @@ LABEL_9:
   return v30;
 }
 
-- (id)indexesOfHiddenInBaseRange:(_NSRange)a3
+- (id)indexesOfHiddenInBaseRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (!objc_msgSend_anyHidden(self, a2, a3.location, a3.length, v3) || (objc_msgSend_p_baseHiddenIndexes(self, v7, v8, v9, v10), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend_mutableIndexSetByIntersecting_withRange_(TSTHiddenStateExtent, v12, v11, location, length), v13 = objc_claimAutoreleasedReturnValue(), v11, !v13))
+  length = range.length;
+  location = range.location;
+  if (!objc_msgSend_anyHidden(self, a2, range.location, range.length, v3) || (objc_msgSend_p_baseHiddenIndexes(self, v7, v8, v9, v10), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend_mutableIndexSetByIntersecting_withRange_(TSTHiddenStateExtent, v12, v11, location, length), v13 = objc_claimAutoreleasedReturnValue(), v11, !v13))
   {
     v13 = objc_opt_new();
   }
@@ -2766,11 +2766,11 @@ LABEL_9:
   return v13;
 }
 
-- (id)indexesOfUserHiddenInRange:(_NSRange)a3
+- (id)indexesOfUserHiddenInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = objc_msgSend_p_userHiddenIndexes(self, a2, a3.location, a3.length, v3);
+  length = range.length;
+  location = range.location;
+  v7 = objc_msgSend_p_userHiddenIndexes(self, a2, range.location, range.length, v3);
   v12 = objc_msgSend_count(v7, v8, v9, v10, v11);
 
   if (v12)
@@ -2787,11 +2787,11 @@ LABEL_9:
   return v19;
 }
 
-- (id)indexesOfFilteredInRange:(_NSRange)a3
+- (id)indexesOfFilteredInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = objc_msgSend_p_filteredIndexes(self, a2, a3.location, a3.length, v3);
+  length = range.length;
+  location = range.location;
+  v7 = objc_msgSend_p_filteredIndexes(self, a2, range.location, range.length, v3);
   v12 = objc_msgSend_count(v7, v8, v9, v10, v11);
 
   if (v12)
@@ -2808,11 +2808,11 @@ LABEL_9:
   return v19;
 }
 
-- (id)indexesOfCollapsedInRange:(_NSRange)a3
+- (id)indexesOfCollapsedInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (objc_msgSend_anyCollapsed(self, a2, a3.location, a3.length, v3))
+  length = range.length;
+  location = range.location;
+  if (objc_msgSend_anyCollapsed(self, a2, range.location, range.length, v3))
   {
     v11 = objc_msgSend_p_collapsedIndexes(self, v7, v8, v9, v10);
     v13 = objc_msgSend_mutableIndexSetByIntersecting_withRange_(TSTHiddenStateExtent, v12, v11, location, length);
@@ -2826,17 +2826,17 @@ LABEL_9:
   return v13;
 }
 
-- (id)indexesOfVisibleInRange:(_NSRange)a3
+- (id)indexesOfVisibleInRange:(_NSRange)range
 {
-  v5 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAA78], a2, a3.location, a3.length, v3);
+  v5 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAA78], a2, range.location, range.length, v3);
   v9 = objc_msgSend_indexesOfVisibleIndexesInIndexes_(self, v6, v5, v7, v8);
 
   return v9;
 }
 
-- (id)indexesOfUserVisibleInRange:(_NSRange)a3
+- (id)indexesOfUserVisibleInRange:(_NSRange)range
 {
-  v5 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAB58], a2, a3.location, a3.length, v3);
+  v5 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAB58], a2, range.location, range.length, v3);
   v10 = objc_msgSend_p_userHiddenIndexes(self, v6, v7, v8, v9);
   if (objc_msgSend_count(v10, v11, v12, v13, v14))
   {
@@ -2846,12 +2846,12 @@ LABEL_9:
   return v5;
 }
 
-- (id)indexesOfVisibleIndexesInIndexes:(id)a3
+- (id)indexesOfVisibleIndexesInIndexes:(id)indexes
 {
-  v4 = a3;
-  if (((objc_msgSend_anyHidden(self, v5, v6, v7, v8) & 1) != 0 || objc_msgSend_anyCollapsed(self, v9, v10, v11, v12)) && objc_msgSend_count(v4, v9, v10, v11, v12))
+  indexesCopy = indexes;
+  if (((objc_msgSend_anyHidden(self, v5, v6, v7, v8) & 1) != 0 || objc_msgSend_anyCollapsed(self, v9, v10, v11, v12)) && objc_msgSend_count(indexesCopy, v9, v10, v11, v12))
   {
-    v17 = objc_msgSend_mutableCopy(v4, v13, v14, v15, v16);
+    v17 = objc_msgSend_mutableCopy(indexesCopy, v13, v14, v15, v16);
     v22 = objc_msgSend_p_hiddenIndexes(self, v18, v19, v20, v21);
     if (objc_msgSend_count(v22, v23, v24, v25, v26))
     {
@@ -2867,17 +2867,17 @@ LABEL_9:
 
   else
   {
-    v17 = v4;
+    v17 = indexesCopy;
   }
 
   return v17;
 }
 
-- (unsigned)numberOfHiddenInRange:(_NSRange)a3
+- (unsigned)numberOfHiddenInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (objc_msgSend_anyCollapsed(self, a2, a3.location, a3.length, v3))
+  length = range.length;
+  location = range.location;
+  if (objc_msgSend_anyCollapsed(self, a2, range.location, range.length, v3))
   {
     v11 = objc_msgSend_anyHidden(self, v7, v8, v9, v10);
     v16 = objc_msgSend_p_collapsedIndexes(self, v12, v13, v14, v15);
@@ -2907,19 +2907,19 @@ LABEL_9:
   return v31;
 }
 
-- (unsigned)numberOfHiddenInBaseRange:(_NSRange)a3
+- (unsigned)numberOfHiddenInBaseRange:(_NSRange)range
 {
-  v4 = objc_msgSend_indexesOfHiddenInBaseRange_(self, a2, a3.location, a3.length, v3);
+  v4 = objc_msgSend_indexesOfHiddenInBaseRange_(self, a2, range.location, range.length, v3);
   v9 = objc_msgSend_count(v4, v5, v6, v7, v8);
 
   return v9;
 }
 
-- (unsigned)numberOfUserHiddenInRange:(_NSRange)a3
+- (unsigned)numberOfUserHiddenInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = objc_msgSend_p_userHiddenIndexes(self, a2, a3.location, a3.length, v3);
+  length = range.length;
+  location = range.location;
+  v7 = objc_msgSend_p_userHiddenIndexes(self, a2, range.location, range.length, v3);
   if (objc_msgSend_count(v7, v8, v9, v10, v11))
   {
     v16 = objc_msgSend_p_userHiddenIndexes(self, v12, v13, v14, v15);
@@ -2934,11 +2934,11 @@ LABEL_9:
   return v19;
 }
 
-- (BOOL)anyHiddenInRange:(_NSRange)a3
+- (BOOL)anyHiddenInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (objc_msgSend_anyHidden(self, a2, a3.location, a3.length, v3))
+  length = range.length;
+  location = range.location;
+  if (objc_msgSend_anyHidden(self, a2, range.location, range.length, v3))
   {
     v11 = objc_msgSend_p_hiddenIndexes(self, v7, v8, v9, v10);
     if (objc_msgSend_count(v11, v12, v13, v14, v15))
@@ -2967,24 +2967,24 @@ LABEL_9:
   return v19;
 }
 
-- (BOOL)anyHiddenInRange:(_NSRange)a3 forAction:(unsigned __int8)a4
+- (BOOL)anyHiddenInRange:(_NSRange)range forAction:(unsigned __int8)action
 {
-  v4 = a4;
-  length = a3.length;
-  location = a3.location;
-  if (!objc_msgSend_anyHidden(self, a2, a3.location, a3.length, a4))
+  actionCopy = action;
+  length = range.length;
+  location = range.location;
+  if (!objc_msgSend_anyHidden(self, a2, range.location, range.length, action))
   {
     return 0;
   }
 
-  if (v4 <= 1)
+  if (actionCopy <= 1)
   {
-    if (!v4)
+    if (!actionCopy)
     {
       return 0;
     }
 
-    if (v4 == 1)
+    if (actionCopy == 1)
     {
 LABEL_6:
       v12 = objc_msgSend_p_userHiddenIndexes(self, v8, v9, v10, v11);
@@ -3005,7 +3005,7 @@ LABEL_32:
 
   else
   {
-    switch(v4)
+    switch(actionCopy)
     {
       case 2:
         v12 = objc_msgSend_p_filteredIndexes(self, v8, v9, v10, v11);
@@ -3031,7 +3031,7 @@ LABEL_16:
     }
   }
 
-  if ((v4 & 9) != 0)
+  if ((actionCopy & 9) != 0)
   {
     v25 = objc_msgSend_p_userHiddenIndexes(self, v8, v9, v10, v11);
     if (objc_msgSend_count(v25, v26, v27, v28, v29))
@@ -3051,7 +3051,7 @@ LABEL_16:
     v37 = 0;
   }
 
-  if ((v4 & 2) != 0 && (v37 & 1) == 0)
+  if ((actionCopy & 2) != 0 && (v37 & 1) == 0)
   {
     v52 = objc_msgSend_p_filteredIndexes(self, v8, v9, v10, v11);
     if (objc_msgSend_count(v52, v53, v54, v55, v56))
@@ -3066,7 +3066,7 @@ LABEL_16:
     }
   }
 
-  if ((v4 & 4) != 0 && (v37 & 1) == 0)
+  if ((actionCopy & 4) != 0 && (v37 & 1) == 0)
   {
     if (objc_msgSend_anyCollapsed(self, v8, v9, v10, v11))
     {
@@ -3082,10 +3082,10 @@ LABEL_31:
   return v37;
 }
 
-- (BOOL)hasHiddenAtIndex:(unsigned int)a3
+- (BOOL)hasHiddenAtIndex:(unsigned int)index
 {
-  v7 = objc_msgSend_p_hiddenIndexes(self, a2, *&a3, v3, v4);
-  if (objc_msgSend_count(v7, v8, v9, v10, v11) && (objc_msgSend_containsIndex_(v7, v12, a3, v14, v15) & 1) != 0)
+  v7 = objc_msgSend_p_hiddenIndexes(self, a2, *&index, v3, v4);
+  if (objc_msgSend_count(v7, v8, v9, v10, v11) && (objc_msgSend_containsIndex_(v7, v12, index, v14, v15) & 1) != 0)
   {
     v16 = 1;
   }
@@ -3093,7 +3093,7 @@ LABEL_31:
   else if (objc_msgSend_anyCollapsed(self, v12, v13, v14, v15))
   {
     v21 = objc_msgSend_p_collapsedIndexes(self, v17, v18, v19, v20);
-    v16 = objc_msgSend_containsIndex_(v21, v22, a3, v23, v24);
+    v16 = objc_msgSend_containsIndex_(v21, v22, index, v23, v24);
   }
 
   else
@@ -3104,20 +3104,20 @@ LABEL_31:
   return v16;
 }
 
-- (unsigned)findFirstVisibleIndexInBegin:(unsigned int)a3 afterEnd:(unsigned int)a4
+- (unsigned)findFirstVisibleIndexInBegin:(unsigned int)begin afterEnd:(unsigned int)end
 {
-  if (objc_msgSend_anyCollapsed(self, a2, *&a3, *&a4, v4))
+  if (objc_msgSend_anyCollapsed(self, a2, *&begin, *&end, v4))
   {
     v12 = objc_msgSend_p_collapsedIndexes(self, v8, v9, v10, v11);
     v17 = objc_msgSend_p_hiddenIndexes(self, v13, v14, v15, v16);
     if (objc_msgSend_count(v17, v18, v19, v20, v21))
     {
-      IndexNotInIndexSet_orIndexSet_beginRange_pastEndRange = objc_msgSend_firstIndexNotInIndexSet_orIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v22, v12, v17, a3, a4);
+      IndexNotInIndexSet_orIndexSet_beginRange_pastEndRange = objc_msgSend_firstIndexNotInIndexSet_orIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v22, v12, v17, begin, end);
     }
 
     else
     {
-      IndexNotInIndexSet_orIndexSet_beginRange_pastEndRange = objc_msgSend_firstIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v22, v12, a3, a4);
+      IndexNotInIndexSet_orIndexSet_beginRange_pastEndRange = objc_msgSend_firstIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v22, v12, begin, end);
     }
 
     IndexNotInIndexSet_beginRange_pastEndRange = IndexNotInIndexSet_orIndexSet_beginRange_pastEndRange;
@@ -3126,7 +3126,7 @@ LABEL_31:
   else
   {
     v12 = objc_msgSend_p_hiddenIndexes(self, v8, v9, v10, v11);
-    IndexNotInIndexSet_beginRange_pastEndRange = objc_msgSend_firstIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v24, v12, a3, a4);
+    IndexNotInIndexSet_beginRange_pastEndRange = objc_msgSend_firstIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v24, v12, begin, end);
   }
 
   if (IndexNotInIndexSet_beginRange_pastEndRange == 0x7FFFFFFFFFFFFFFFLL)
@@ -3140,20 +3140,20 @@ LABEL_31:
   }
 }
 
-- (unsigned)findLastVisibleIndexInBegin:(unsigned int)a3 afterEnd:(unsigned int)a4
+- (unsigned)findLastVisibleIndexInBegin:(unsigned int)begin afterEnd:(unsigned int)end
 {
-  if (objc_msgSend_anyCollapsed(self, a2, *&a3, *&a4, v4))
+  if (objc_msgSend_anyCollapsed(self, a2, *&begin, *&end, v4))
   {
     v12 = objc_msgSend_p_collapsedIndexes(self, v8, v9, v10, v11);
     v17 = objc_msgSend_p_hiddenIndexes(self, v13, v14, v15, v16);
     if (objc_msgSend_count(v17, v18, v19, v20, v21))
     {
-      IndexNotInIndexSet_orIndexSet_beginRange_pastEndRange = objc_msgSend_lastIndexNotInIndexSet_orIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v22, v12, v17, a3, a4);
+      IndexNotInIndexSet_orIndexSet_beginRange_pastEndRange = objc_msgSend_lastIndexNotInIndexSet_orIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v22, v12, v17, begin, end);
     }
 
     else
     {
-      IndexNotInIndexSet_orIndexSet_beginRange_pastEndRange = objc_msgSend_lastIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v22, v12, a3, a4);
+      IndexNotInIndexSet_orIndexSet_beginRange_pastEndRange = objc_msgSend_lastIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v22, v12, begin, end);
     }
 
     IndexNotInIndexSet_beginRange_pastEndRange = IndexNotInIndexSet_orIndexSet_beginRange_pastEndRange;
@@ -3162,7 +3162,7 @@ LABEL_31:
   else
   {
     v12 = objc_msgSend_p_hiddenIndexes(self, v8, v9, v10, v11);
-    IndexNotInIndexSet_beginRange_pastEndRange = objc_msgSend_lastIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v24, v12, a3, a4);
+    IndexNotInIndexSet_beginRange_pastEndRange = objc_msgSend_lastIndexNotInIndexSet_beginRange_pastEndRange_(TSTHiddenStateExtent, v24, v12, begin, end);
   }
 
   if (IndexNotInIndexSet_beginRange_pastEndRange == 0x7FFFFFFFFFFFFFFFLL)
@@ -3176,9 +3176,9 @@ LABEL_31:
   }
 }
 
-- (unsigned)indexOfVisibleAfterIndex:(unsigned int)a3
+- (unsigned)indexOfVisibleAfterIndex:(unsigned int)index
 {
-  v11 = objc_msgSend_tableTranslator(self, a2, *&a3, v3, v4);
+  v11 = objc_msgSend_tableTranslator(self, a2, *&index, v3, v4);
   if (!v11)
   {
     v12 = MEMORY[0x277D81150];
@@ -3201,23 +3201,23 @@ LABEL_31:
     v24 = TSUCellRect::lastColumn(&v29);
   }
 
-  if (v24 <= a3)
+  if (v24 <= index)
   {
     FirstVisibleIndexInBegin_afterEnd = 0x7FFFFFFF;
   }
 
   else
   {
-    FirstVisibleIndexInBegin_afterEnd = objc_msgSend_findFirstVisibleIndexInBegin_afterEnd_(self, v25, a3 + 1, v24 + 1, v26, *&v29.origin, *&v29.size);
+    FirstVisibleIndexInBegin_afterEnd = objc_msgSend_findFirstVisibleIndexInBegin_afterEnd_(self, v25, index + 1, v24 + 1, v26, *&v29.origin, *&v29.size);
   }
 
   return FirstVisibleIndexInBegin_afterEnd;
 }
 
-- (unsigned)indexOfVisibleAfterAndIncludingIndex:(unsigned int)a3
+- (unsigned)indexOfVisibleAfterAndIncludingIndex:(unsigned int)index
 {
-  v5 = *&a3;
-  v11 = objc_msgSend_tableTranslator(self, a2, *&a3, v3, v4);
+  v5 = *&index;
+  v11 = objc_msgSend_tableTranslator(self, a2, *&index, v3, v4);
   if (!v11)
   {
     v12 = MEMORY[0x277D81150];
@@ -3253,26 +3253,26 @@ LABEL_31:
   return FirstVisibleIndexInBegin_afterEnd;
 }
 
-- (void)insertBaseRange:(_NSRange)a3
+- (void)insertBaseRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  objc_msgSend_shiftIndexesStartingAtIndex_by_(self->_baseUserHiddenIndexes, a2, a3.location, a3.length, v3);
+  length = range.length;
+  location = range.location;
+  objc_msgSend_shiftIndexesStartingAtIndex_by_(self->_baseUserHiddenIndexes, a2, range.location, range.length, v3);
   objc_msgSend_shiftIndexesStartingAtIndex_by_(self->_baseFilteredIndexes, v7, location, length, v8);
   self->_invalidateViewGeometry = 1;
 
   objc_msgSend_clearAllCachedRowIndexes(self, v9, v10, v11, v12);
 }
 
-- (void)deleteBaseRange:(_NSRange)a3 withUids:(const void *)a4
+- (void)deleteBaseRange:(_NSRange)range withUids:(const void *)uids
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = -a3.length;
-  objc_msgSend_shiftIndexesStartingAtIndex_by_(self->_baseUserHiddenIndexes, a2, a3.location + a3.length, -a3.length, a4);
+  length = range.length;
+  location = range.location;
+  v8 = -range.length;
+  objc_msgSend_shiftIndexesStartingAtIndex_by_(self->_baseUserHiddenIndexes, a2, range.location + range.length, -range.length, uids);
   objc_msgSend_shiftIndexesStartingAtIndex_by_(self->_baseFilteredIndexes, v9, location + length, v8, v10);
-  v15 = *a4;
-  v16 = *(a4 + 1);
+  v15 = *uids;
+  v16 = *(uids + 1);
   while (v15 != v16)
   {
     sub_2211F2EF4(&self->_baseHiddenByUid.__table_.__bucket_list_.__ptr_, v15);
@@ -3284,12 +3284,12 @@ LABEL_31:
   objc_msgSend_clearAllCachedRowIndexes(self, v11, v12, v13, v14);
 }
 
-- (void)moveBaseRangeFrom:(_NSRange)a3 toIndex:(TSUModelColumnOrRowIndex)a4
+- (void)moveBaseRangeFrom:(_NSRange)from toIndex:(TSUModelColumnOrRowIndex)index
 {
-  length = a3.length;
-  location = a3.location;
-  index = a4._index;
-  objc_msgSend_tsu_moveIndexesInRange_toOffset_(self->_baseUserHiddenIndexes, a2, a3.location, a3.length, a4._index);
+  length = from.length;
+  location = from.location;
+  index = index._index;
+  objc_msgSend_tsu_moveIndexesInRange_toOffset_(self->_baseUserHiddenIndexes, a2, from.location, from.length, index._index);
   objc_msgSend_tsu_moveIndexesInRange_toOffset_(self->_baseFilteredIndexes, v8, location, length, index);
   self->_invalidateViewGeometry = 1;
   objc_msgSend_clearAllCachedRowIndexes(self, v9, v10, v11, v12);
@@ -3299,11 +3299,11 @@ LABEL_31:
   objc_msgSend_dirtyFilterStateForRowRange_(self, v21, index, length, v22);
 }
 
-- (void)moveViewRangeOnlyFrom:(_NSRange)a3 toIndex:(TSUViewColumnOrRowIndex)a4
+- (void)moveViewRangeOnlyFrom:(_NSRange)from toIndex:(TSUViewColumnOrRowIndex)index
 {
-  length = a3.length;
-  location = a3.location;
-  index = a4._index;
+  length = from.length;
+  location = from.location;
+  index = index._index;
   pthread_mutex_lock(&self->_viewIndexesMutex);
   objc_msgSend_tsu_moveIndexesInRange_toOffset_(self->_summaryFilteredIndexes, v8, location, length, index);
   objc_msgSend_tsu_moveIndexesInRange_toOffset_(self->_summaryPivotHiddenIndexes, v9, location, length, index);
@@ -3314,35 +3314,35 @@ LABEL_31:
   pthread_mutex_unlock(&self->_viewIndexesMutex);
 }
 
-+ (void)swapIndexesWithIndexSet:(id)a3 index:(unint64_t)a4 withIndex:(unint64_t)a5
++ (void)swapIndexesWithIndexSet:(id)set index:(unint64_t)index withIndex:(unint64_t)withIndex
 {
-  v24 = a3;
-  if (v24)
+  setCopy = set;
+  if (setCopy)
   {
-    v10 = objc_msgSend_containsIndex_(v24, v7, a4, v8, v9);
-    v17 = objc_msgSend_containsIndex_(v24, v11, a5, v12, v13);
+    v10 = objc_msgSend_containsIndex_(setCopy, v7, index, v8, v9);
+    v17 = objc_msgSend_containsIndex_(setCopy, v11, withIndex, v12, v13);
     if (v10 != v17)
     {
-      objc_msgSend_removeIndex_(v24, v14, a4, v15, v16);
-      objc_msgSend_removeIndex_(v24, v18, a5, v19, v20);
+      objc_msgSend_removeIndex_(setCopy, v14, index, v15, v16);
+      objc_msgSend_removeIndex_(setCopy, v18, withIndex, v19, v20);
       if (v10)
       {
-        objc_msgSend_addIndex_(v24, v21, a5, v22, v23);
+        objc_msgSend_addIndex_(setCopy, v21, withIndex, v22, v23);
       }
 
       if (v17)
       {
-        objc_msgSend_addIndex_(v24, v21, a4, v22, v23);
+        objc_msgSend_addIndex_(setCopy, v21, index, v22, v23);
       }
     }
   }
 }
 
-- (void)swapBaseIndex:(TSUModelColumnOrRowIndex)a3 withIndex:(TSUModelColumnOrRowIndex)a4
+- (void)swapBaseIndex:(TSUModelColumnOrRowIndex)index withIndex:(TSUModelColumnOrRowIndex)withIndex
 {
-  index = a3._index;
-  v6 = a4._index;
-  objc_msgSend_swapIndexesWithIndexSet_index_withIndex_(TSTHiddenStateExtent, a2, self->_baseUserHiddenIndexes, a3._index, a4._index);
+  index = index._index;
+  v6 = withIndex._index;
+  objc_msgSend_swapIndexesWithIndexSet_index_withIndex_(TSTHiddenStateExtent, a2, self->_baseUserHiddenIndexes, index._index, withIndex._index);
   objc_msgSend_swapIndexesWithIndexSet_index_withIndex_(TSTHiddenStateExtent, v7, self->_baseFilteredIndexes, index, v6);
   v11 = objc_msgSend_p_viewIndexForBaseIndex_(self, v8, index, v9, v10);
   v15 = objc_msgSend_p_viewIndexForBaseIndex_(self, v12, v6, v13, v14);
@@ -3540,16 +3540,16 @@ LABEL_9:
   return v12;
 }
 
-- (TSTHiddenStateExtent)initWithArchive:(const void *)a3 unarchiver:(id)a4 forHiddenStatesOwner:(id)a5
+- (TSTHiddenStateExtent)initWithArchive:(const void *)archive unarchiver:(id)unarchiver forHiddenStatesOwner:(id)owner
 {
-  v8 = a4;
-  obj = a5;
-  v12 = objc_msgSend_initWithHiddenStatesOwner_forRows_(self, v9, obj, *(a3 + 44) == 1, v10);
+  unarchiverCopy = unarchiver;
+  obj = owner;
+  v12 = objc_msgSend_initWithHiddenStatesOwner_forRows_(self, v9, obj, *(archive + 44) == 1, v10);
   if (v12)
   {
-    if (*(a3 + 18))
+    if (*(archive + 18))
     {
-      v13 = *(a3 + 18);
+      v13 = *(archive + 18);
     }
 
     else
@@ -3560,7 +3560,7 @@ LABEL_9:
     v12->_hiddenStateExtentUid._lower = TSKUIDStruct::loadFromMessage(v13, v11);
     v12->_hiddenStateExtentUid._upper = v14;
     v109 = objc_msgSend_currentLocale(MEMORY[0x277D81228], v14, v15, v16, v17);
-    v18 = *(a3 + 14);
+    v18 = *(archive + 14);
     if (v18 < 1)
     {
       thresholdCellValues = v12->_thresholdCellValues;
@@ -3577,7 +3577,7 @@ LABEL_9:
       v27 = 8;
       do
       {
-        v28 = objc_msgSend_cellValueWithArchive_locale_(TSCECellValue, v25, *(*(a3 + 8) + v27), v109, v26);
+        v28 = objc_msgSend_cellValueWithArchive_locale_(TSCECellValue, v25, *(*(archive + 8) + v27), v109, v26);
         objc_msgSend_addObject_(v12->_thresholdCellValues, v29, v28, v30, v31);
 
         v27 += 8;
@@ -3587,14 +3587,14 @@ LABEL_9:
       while (v18);
     }
 
-    v12->_needsToUpdateFilterSetForImport = *(a3 + 180);
-    v33 = *(a3 + 8);
+    v12->_needsToUpdateFilterSetForImport = *(archive + 180);
+    v33 = *(archive + 8);
     if (v33 >= 1)
     {
       v34 = 8;
       do
       {
-        v35 = *(*(a3 + 5) + v34);
+        v35 = *(*(archive + 5) + v34);
         *&v116 = 0;
         v116._singleRange._begin = 0;
         if (*(v35 + 24))
@@ -3652,14 +3652,14 @@ LABEL_24:
       while (v33);
     }
 
-    v40 = *(a3 + 32);
+    v40 = *(archive + 32);
     v108 = v12;
     if (v40 >= 1)
     {
       v41 = 8;
       while (1)
       {
-        v42 = *(*(a3 + 17) + v41);
+        v42 = *(*(archive + 17) + v41);
         *&v116 = 0;
         v116._singleRange._begin = 0;
         if (*(v42 + 24))
@@ -3722,10 +3722,10 @@ LABEL_41:
       }
     }
 
-    v46 = *(a3 + 4);
+    v46 = *(archive + 4);
     if ((v46 & 4) != 0)
     {
-      sub_22126A778(*(a3 + 20), &v116);
+      sub_22126A778(*(archive + 20), &v116);
       v47 = TSUIndexSet::asNSIndexSet(&v116);
       v52 = objc_msgSend_mutableCopy(v47, v48, v49, v50, v51);
       summaryPivotHiddenIndexes = v12->_summaryPivotHiddenIndexes;
@@ -3733,12 +3733,12 @@ LABEL_41:
 
       v12->_needsSummaryUidUpgrade = 1;
       TSUIndexSet::~TSUIndexSet(&v116);
-      v46 = *(a3 + 4);
+      v46 = *(archive + 4);
     }
 
     if ((v46 & 8) != 0)
     {
-      sub_22126A778(*(a3 + 21), &v116);
+      sub_22126A778(*(archive + 21), &v116);
       v54 = TSUIndexSet::asNSIndexSet(&v116);
       v59 = objc_msgSend_mutableCopy(v54, v55, v56, v57, v58);
       summaryFilteredIndexes = v12->_summaryFilteredIndexes;
@@ -3749,7 +3749,7 @@ LABEL_41:
     }
 
 LABEL_47:
-    v61 = *(a3 + 20);
+    v61 = *(archive + 20);
     if (v61 >= 1)
     {
       v62 = objc_opt_new();
@@ -3759,7 +3759,7 @@ LABEL_47:
       v65 = 8;
       do
       {
-        v66 = TSKUIDStruct::loadFromMessage(*(*(a3 + 11) + v65), v64);
+        v66 = TSKUIDStruct::loadFromMessage(*(*(archive + 11) + v65), v64);
         objc_msgSend_addUUID_(v12->_collapsedGroupUids, v67, v66, v67, v68);
         v65 += 8;
         --v61;
@@ -3768,21 +3768,21 @@ LABEL_47:
       while (v61);
     }
 
-    if ((*(a3 + 16) & 2) != 0)
+    if ((*(archive + 16) & 2) != 0)
     {
-      v69 = *(a3 + 19);
+      v69 = *(archive + 19);
       v114[0] = MEMORY[0x277D85DD0];
       v114[1] = 3221225472;
       v114[2] = sub_22138EAC0;
       v114[3] = &unk_27845E018;
       v115 = v12;
-      v70 = v8;
+      v70 = unarchiverCopy;
       v71 = objc_opt_class();
       objc_msgSend_readReferenceMessage_class_protocol_completion_(v70, v72, v69, v71, 0, v114);
     }
 
-    v104 = v8;
-    v107 = *(a3 + 26);
+    v104 = unarchiverCopy;
+    v107 = *(archive + 26);
     if (v107 >= 1)
     {
       v73 = objc_opt_new();
@@ -3790,10 +3790,10 @@ LABEL_47:
       v12->_uniqueValuesByColumnUid = v73;
 
       v76 = 0;
-      v106 = a3;
+      archiveCopy = archive;
       do
       {
-        v77 = *(*(a3 + 14) + 8 * v76 + 8);
+        v77 = *(*(archive + 14) + 8 * v76 + 8);
         v113._lower = 0;
         v113._upper = 0;
         if (*(v77 + 48))
@@ -3856,7 +3856,7 @@ LABEL_47:
         sub_2210C2B00(&v108->_columnUidsWithUniqueIndexes.__table_.__bucket_list_.__ptr_, &v113);
 
         ++v76;
-        a3 = v106;
+        archive = archiveCopy;
       }
 
       while (v76 != v107);
@@ -3864,57 +3864,57 @@ LABEL_47:
 
     objc_storeWeak(&v12->_hiddenStatesOwner, obj);
 
-    v8 = v104;
+    unarchiverCopy = v104;
   }
 
   return v12;
 }
 
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver
 {
   v161 = *MEMORY[0x277D85DE8];
-  v138 = a4;
-  *(a3 + 4) |= 1u;
-  v6 = *(a3 + 18);
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  v6 = *(archive + 18);
   if (!v6)
   {
-    v7 = *(a3 + 1);
+    v7 = *(archive + 1);
     if (v7)
     {
       v7 = *(v7 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v6 = MEMORY[0x223DA0360](v7);
-    *(a3 + 18) = v6;
+    *(archive + 18) = v6;
   }
 
   TSKUIDStruct::saveToMessage(&self->_hiddenStateExtentUid, v6);
   forRows = self->_forRows;
-  *(a3 + 4) |= 0x10u;
-  *(a3 + 44) = forRows;
+  *(archive + 4) |= 0x10u;
+  *(archive + 44) = forRows;
   v17 = objc_msgSend_count(self->_thresholdCellValues, v9, v10, v11, v12);
   if (v17)
   {
     v18 = 0;
     while (1)
     {
-      v19 = *(a3 + 8);
+      v19 = *(archive + 8);
       if (!v19)
       {
         goto LABEL_12;
       }
 
-      v20 = *(a3 + 14);
+      v20 = *(archive + 14);
       v21 = *v19;
       if (v20 >= *v19)
       {
         break;
       }
 
-      *(a3 + 14) = v20 + 1;
+      *(archive + 14) = v20 + 1;
       v22 = *&v19[2 * v20 + 2];
 LABEL_14:
-      v25 = objc_msgSend_objectAtIndex_(self->_thresholdCellValues, v13, v18, v15, v16, v138);
+      v25 = objc_msgSend_objectAtIndex_(self->_thresholdCellValues, v13, v18, v15, v16, archiverCopy);
       objc_msgSend_encodeCellValueToArchive_(v25, v26, v22, v27, v28);
 
       if (v17 == ++v18)
@@ -3923,50 +3923,50 @@ LABEL_14:
       }
     }
 
-    if (v21 == *(a3 + 15))
+    if (v21 == *(archive + 15))
     {
 LABEL_12:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 48));
-      v19 = *(a3 + 8);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 48));
+      v19 = *(archive + 8);
       v21 = *v19;
     }
 
     *v19 = v21 + 1;
-    v22 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CellValueArchive>(*(a3 + 6));
-    v23 = *(a3 + 14);
-    v24 = *(a3 + 8) + 8 * v23;
-    *(a3 + 14) = v23 + 1;
+    v22 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CellValueArchive>(*(archive + 6));
+    v23 = *(archive + 14);
+    v24 = *(archive + 8) + 8 * v23;
+    *(archive + 14) = v23 + 1;
     *(v24 + 8) = v22;
     goto LABEL_14;
   }
 
 LABEL_15:
   needsToUpdateFilterSetForImport = self->_needsToUpdateFilterSetForImport;
-  v30 = *(a3 + 4);
-  *(a3 + 4) = v30 | 0x20;
-  *(a3 + 180) = needsToUpdateFilterSetForImport;
+  v30 = *(archive + 4);
+  *(archive + 4) = v30 | 0x20;
+  *(archive + 180) = needsToUpdateFilterSetForImport;
   filterSet = self->_filterSet;
   if (filterSet)
   {
-    *(a3 + 4) = v30 | 0x22;
-    v32 = *(a3 + 19);
+    *(archive + 4) = v30 | 0x22;
+    v32 = *(archive + 19);
     if (!v32)
     {
-      v33 = *(a3 + 1);
+      v33 = *(archive + 1);
       if (v33)
       {
         v33 = *(v33 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v32 = MEMORY[0x223DA0390](v33);
-      *(a3 + 19) = v32;
+      *(archive + 19) = v32;
     }
 
-    objc_msgSend_setStrongReference_message_(v138, v13, filterSet, v32, v16, v138);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v13, filterSet, v32, v16, archiverCopy);
   }
 
-  v145 = a3;
-  v34 = self;
+  archiveCopy = archive;
+  selfCopy = self;
   next = self->_baseHiddenByUid.__table_.__first_node_.__next_;
   if (next)
   {
@@ -3986,17 +3986,17 @@ LABEL_38:
       }
     }
 
-    v37 = v145[5];
+    v37 = archiveCopy[5];
     if (!v37)
     {
       goto LABEL_28;
     }
 
-    v38 = *(v145 + 8);
+    v38 = *(archiveCopy + 8);
     v39 = *v37;
     if (v38 < *v37)
     {
-      *(v145 + 8) = v38 + 1;
+      *(archiveCopy + 8) = v38 + 1;
       v40 = *&v37[2 * v38 + 2];
 LABEL_30:
       *&__p = *(next + 1);
@@ -4030,26 +4030,26 @@ LABEL_30:
       goto LABEL_38;
     }
 
-    if (v39 == *(v145 + 9))
+    if (v39 == *(archiveCopy + 9))
     {
 LABEL_28:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((v145 + 3));
-      v37 = v145[5];
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archiveCopy + 3));
+      v37 = archiveCopy[5];
       v39 = *v37;
     }
 
     *v37 = v39 + 1;
-    v40 = google::protobuf::Arena::CreateMaybeMessage<TST::HiddenStateExtentArchive_RowOrColumnState>(v145[3]);
-    v41 = *(v145 + 8);
-    v42 = v145[5] + 8 * v41;
-    *(v145 + 8) = v41 + 1;
+    v40 = google::protobuf::Arena::CreateMaybeMessage<TST::HiddenStateExtentArchive_RowOrColumnState>(archiveCopy[3]);
+    v41 = *(archiveCopy + 8);
+    v42 = archiveCopy[5] + 8 * v41;
+    *(archiveCopy + 8) = v41 + 1;
     *(v42 + 8) = v40;
     goto LABEL_30;
   }
 
 LABEL_39:
-  p_isa = &v34->super.isa;
-  v46 = v34->_summaryHiddenByUid.__table_.__first_node_.__next_;
+  p_isa = &selfCopy->super.isa;
+  v46 = selfCopy->_summaryHiddenByUid.__table_.__first_node_.__next_;
   if (v46)
   {
     while (1)
@@ -4068,17 +4068,17 @@ LABEL_58:
       }
     }
 
-    v48 = v145[17];
+    v48 = archiveCopy[17];
     if (!v48)
     {
       goto LABEL_46;
     }
 
-    v49 = *(v145 + 32);
+    v49 = *(archiveCopy + 32);
     v50 = *v48;
     if (v49 < *v48)
     {
-      *(v145 + 32) = v49 + 1;
+      *(archiveCopy + 32) = v49 + 1;
       v51 = *&v48[2 * v49 + 2];
 LABEL_48:
       *&__p = *(v46 + 1);
@@ -4118,27 +4118,27 @@ LABEL_48:
       goto LABEL_58;
     }
 
-    if (v50 == *(v145 + 33))
+    if (v50 == *(archiveCopy + 33))
     {
 LABEL_46:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((v145 + 15));
-      v48 = v145[17];
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archiveCopy + 15));
+      v48 = archiveCopy[17];
       v50 = *v48;
     }
 
     *v48 = v50 + 1;
-    v51 = google::protobuf::Arena::CreateMaybeMessage<TST::HiddenStateExtentArchive_RowOrColumnState>(v145[15]);
-    v52 = *(v145 + 32);
-    v53 = v145[17] + 8 * v52;
-    *(v145 + 32) = v52 + 1;
+    v51 = google::protobuf::Arena::CreateMaybeMessage<TST::HiddenStateExtentArchive_RowOrColumnState>(archiveCopy[15]);
+    v52 = *(archiveCopy + 32);
+    v53 = archiveCopy[17] + 8 * v52;
+    *(archiveCopy + 32) = v52 + 1;
     *(v53 + 8) = v51;
     goto LABEL_48;
   }
 
 LABEL_59:
-  if (objc_msgSend_count(v34->_collapsedGroupUids, v13, v14, v15, v16, v138))
+  if (objc_msgSend_count(selfCopy->_collapsedGroupUids, v13, v14, v15, v16, archiverCopy))
   {
-    collapsedGroupUids = v34->_collapsedGroupUids;
+    collapsedGroupUids = selfCopy->_collapsedGroupUids;
     if (collapsedGroupUids)
     {
       objc_msgSend_uuidsAsVector(collapsedGroupUids, v56, v57, v58, v59);
@@ -4148,20 +4148,20 @@ LABEL_59:
       {
         while (1)
         {
-          v63 = v145[11];
+          v63 = archiveCopy[11];
           if (!v63)
           {
             goto LABEL_67;
           }
 
-          v64 = *(v145 + 20);
+          v64 = *(archiveCopy + 20);
           v65 = *v63;
           if (v64 >= *v63)
           {
             break;
           }
 
-          *(v145 + 20) = v64 + 1;
+          *(archiveCopy + 20) = v64 + 1;
           v66 = *&v63[2 * v64 + 2];
 LABEL_69:
           TSKUIDStruct::saveToMessage(v61++, v66);
@@ -4172,19 +4172,19 @@ LABEL_69:
           }
         }
 
-        if (v65 == *(v145 + 21))
+        if (v65 == *(archiveCopy + 21))
         {
 LABEL_67:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((v145 + 9));
-          v63 = v145[11];
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archiveCopy + 9));
+          v63 = archiveCopy[11];
           v65 = *v63;
         }
 
         *v63 = v65 + 1;
-        v66 = MEMORY[0x223DA0360](v145[9]);
-        v67 = *(v145 + 20);
-        v68 = v145[11] + 8 * v67;
-        *(v145 + 20) = v67 + 1;
+        v66 = MEMORY[0x223DA0360](archiveCopy[9]);
+        v67 = *(archiveCopy + 20);
+        v68 = archiveCopy[11] + 8 * v67;
+        *(archiveCopy + 20) = v67 + 1;
         *(v68 + 8) = v66;
         goto LABEL_69;
       }
@@ -4198,52 +4198,52 @@ LABEL_71:
     }
   }
 
-  v140 = objc_msgSend_p_summaryPivotHiddenIndexes(v34, v56, v57, v58, v59);
+  v140 = objc_msgSend_p_summaryPivotHiddenIndexes(selfCopy, v56, v57, v58, v59);
   if (objc_msgSend_count(v140, v69, v70, v71, v72))
   {
     MEMORY[0x223D9F7A0](&__p, v140);
-    *(v145 + 4) |= 4u;
-    if (!v145[20])
+    *(archiveCopy + 4) |= 4u;
+    if (!archiveCopy[20])
     {
-      v77 = v145[1];
+      v77 = archiveCopy[1];
       if (v77)
       {
         v77 = *(v77 & 0xFFFFFFFFFFFFFFFELL);
       }
 
-      v145[20] = google::protobuf::Arena::CreateMaybeMessage<TSCE::IndexSetArchive>(v77);
+      archiveCopy[20] = google::protobuf::Arena::CreateMaybeMessage<TSCE::IndexSetArchive>(v77);
     }
 
     sub_22126A644();
     TSUIndexSet::~TSUIndexSet(&__p);
   }
 
-  v141 = objc_msgSend_p_summaryFilteredIndexes(v34, v73, v74, v75, v76);
+  v141 = objc_msgSend_p_summaryFilteredIndexes(selfCopy, v73, v74, v75, v76);
   if (objc_msgSend_count(v141, v78, v79, v80, v81))
   {
     MEMORY[0x223D9F7A0](&__p, v141);
-    *(v145 + 4) |= 8u;
-    if (!v145[21])
+    *(archiveCopy + 4) |= 8u;
+    if (!archiveCopy[21])
     {
-      v86 = v145[1];
+      v86 = archiveCopy[1];
       if (v86)
       {
         v86 = *(v86 & 0xFFFFFFFFFFFFFFFELL);
       }
 
-      v145[21] = google::protobuf::Arena::CreateMaybeMessage<TSCE::IndexSetArchive>(v86);
+      archiveCopy[21] = google::protobuf::Arena::CreateMaybeMessage<TSCE::IndexSetArchive>(v86);
     }
 
     sub_22126A644();
     TSUIndexSet::~TSUIndexSet(&__p);
   }
 
-  objc_msgSend_uniqueValuesLock(v34, v82, v83, v84, v85);
+  objc_msgSend_uniqueValuesLock(selfCopy, v82, v83, v84, v85);
   v156 = 0u;
   v157 = 0u;
   v154 = 0u;
   v155 = 0u;
-  obj = v34->_uniqueValuesByColumnUid;
+  obj = selfCopy->_uniqueValuesByColumnUid;
   v144 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v87, &v154, v160, 16);
   if (v144)
   {
@@ -4258,34 +4258,34 @@ LABEL_71:
         }
 
         v91 = *(*(&v154 + 1) + 8 * i);
-        v92 = v145[14];
+        v92 = archiveCopy[14];
         if (!v92)
         {
           goto LABEL_95;
         }
 
-        v93 = *(v145 + 26);
+        v93 = *(archiveCopy + 26);
         v94 = *v92;
         if (v93 < *v92)
         {
-          *(v145 + 26) = v93 + 1;
+          *(archiveCopy + 26) = v93 + 1;
           v95 = *&v92[2 * v93 + 2];
           goto LABEL_97;
         }
 
-        if (v94 == *(v145 + 27))
+        if (v94 == *(archiveCopy + 27))
         {
 LABEL_95:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((v145 + 12));
-          v92 = v145[14];
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archiveCopy + 12));
+          v92 = archiveCopy[14];
           v94 = *v92;
         }
 
         *v92 = v94 + 1;
-        v95 = google::protobuf::Arena::CreateMaybeMessage<TST::UniqueIndexArchive>(v145[12]);
-        v96 = *(v145 + 26);
-        v97 = v145[14] + 8 * v96;
-        *(v145 + 26) = v96 + 1;
+        v95 = google::protobuf::Arena::CreateMaybeMessage<TST::UniqueIndexArchive>(archiveCopy[12]);
+        v96 = *(archiveCopy + 26);
+        v97 = archiveCopy[14] + 8 * v96;
+        *(archiveCopy + 26) = v96 + 1;
         *(v97 + 8) = v95;
 LABEL_97:
         v146 = objc_msgSend_objectForKey_(p_isa[35], v88, v91, v89, v90);
@@ -4393,7 +4393,7 @@ LABEL_112:
 LABEL_122:
             }
 
-            p_isa = &v34->super.isa;
+            p_isa = &selfCopy->super.isa;
             v109 = objc_msgSend_countByEnumeratingWithState_objects_count_(v104, v106, &v149, v159, 16);
           }
 
@@ -4410,16 +4410,16 @@ LABEL_122:
   objc_msgSend_uniqueValuesUnlock(p_isa, v134, v135, v136, v137);
 }
 
-- (int)registerWithCalcEngine:(id)a3 baseOwnerUID:(const TSKUIDStruct *)a4
+- (int)registerWithCalcEngine:(id)engine baseOwnerUID:(const TSKUIDStruct *)d
 {
-  v6 = a3;
+  engineCopy = engine;
   lower = self->_hiddenStateExtentUid._lower;
   upper = self->_hiddenStateExtentUid._upper;
-  v9 = a4->_lower;
-  v10 = a4->_upper;
+  v9 = d->_lower;
+  v10 = d->_upper;
   v17 = objc_msgSend_ownerKind(self, v11, v12, v13, v14);
-  LODWORD(v9) = objc_msgSend_registerOwnerWithOwnerUID_owner_referenceResolver_baseOwnerUID_ownerKind_(v6, v15, lower, upper, self, 0, v9, v10, v17);
-  objc_storeWeak(&self->_calcEngine, v6);
+  LODWORD(v9) = objc_msgSend_registerOwnerWithOwnerUID_owner_referenceResolver_baseOwnerUID_ownerKind_(engineCopy, v15, lower, upper, self, 0, v9, v10, v17);
+  objc_storeWeak(&self->_calcEngine, engineCopy);
 
   return v9;
 }
@@ -4432,10 +4432,10 @@ LABEL_122:
   objc_storeWeak(&self->_calcEngine, 0);
 }
 
-- (void)remapTableUIDsInFormulasWithMap:(const void *)a3 calcEngine:(id)a4
+- (void)remapTableUIDsInFormulasWithMap:(const void *)map calcEngine:(id)engine
 {
-  v6 = a4;
-  v7 = sub_221119F90(a3, &self->_hiddenStateExtentUid._lower);
+  engineCopy = engine;
+  v7 = sub_221119F90(map, &self->_hiddenStateExtentUid._lower);
   if (v7)
   {
     self->_hiddenStateExtentUid = v7[2];
@@ -4446,7 +4446,7 @@ LABEL_122:
   {
     objc_msgSend_willModify(filterSet, v8, v9, v10, v11);
     memset(&v37, 0, sizeof(v37));
-    TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v38, v6, &v37);
+    TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v38, engineCopy, &v37);
     v20 = objc_msgSend_ruleCount(self->_filterSet, v13, v14, v15, v16);
     if (v20)
     {
@@ -4456,7 +4456,7 @@ LABEL_122:
         v22 = objc_msgSend_ruleAtAbsoluteIndex_(self->_filterSet, v17, v21, v18, v19);
         LOBYTE(v37.coordinate.row) = 0;
         v27 = objc_msgSend_predicate(v22, v23, v24, v25, v26, *&v37.coordinate);
-        objc_msgSend_remapOwnerUIDsWithMap_rewriteContext_error_(v27, v28, a3, &v38, &v37);
+        objc_msgSend_remapOwnerUIDsWithMap_rewriteContext_error_(v27, v28, map, &v38, &v37);
 
         ++v21;
       }
@@ -4487,27 +4487,27 @@ LABEL_122:
   objc_msgSend_markCellRefAsDirty_(v7, v20, v24, v21, v22);
 }
 
-- (id)precedentsForFilterSet:(id)a3 calcEngine:(id)a4 hostOwnerUID:(const TSKUIDStruct *)a5 hostCellID:(const TSUCellCoord *)a6
+- (id)precedentsForFilterSet:(id)set calcEngine:(id)engine hostOwnerUID:(const TSKUIDStruct *)d hostCellID:(const TSUCellCoord *)iD
 {
-  v9 = a3;
-  v109 = a4;
-  v18 = objc_msgSend_emptyReferenceSetWrapper(v109, v10, v11, v12, v13);
-  for (i = 0; i < objc_msgSend_ruleCount(v9, v14, v15, v16, v17); ++i)
+  setCopy = set;
+  engineCopy = engine;
+  v18 = objc_msgSend_emptyReferenceSetWrapper(engineCopy, v10, v11, v12, v13);
+  for (i = 0; i < objc_msgSend_ruleCount(setCopy, v14, v15, v16, v17); ++i)
   {
-    v23 = objc_msgSend_ruleAtAbsoluteIndex_(v9, v20, i, v21, v22);
+    v23 = objc_msgSend_ruleAtAbsoluteIndex_(setCopy, v20, i, v21, v22);
     v32 = objc_msgSend_formula(v23, v24, v25, v26, v27);
     if (v32 && v18)
     {
       v33 = objc_msgSend_referenceSet(v18, v28, v29, v30, v31);
-      v110 = *a6;
-      v111 = *a5;
-      objc_msgSend_getPrecedents_calcEngine_hostCell_allowImplicitIntersection_returnUidReferences_(v32, v34, v33, v109, &v110, 1, 1);
+      v110 = *iD;
+      v111 = *d;
+      objc_msgSend_getPrecedents_calcEngine_hostCell_allowImplicitIntersection_returnUidReferences_(v32, v34, v33, engineCopy, &v110, 1, 1);
     }
 
     if (objc_msgSend_needsThreshold(v23, v28, v29, v30, v31))
     {
       v110 = objc_msgSend_filterFormulaCoordinateForType_columnOrRowIndex_(TSTHiddenStates, v35, 2, i, v38);
-      v111 = *a5;
+      v111 = *d;
       objc_msgSend_insertCellRef_(v18, v39, &v110, v40, v41);
     }
 
@@ -4528,7 +4528,7 @@ LABEL_122:
 
       else if (((1 << v47) & 0xC000000000000) != 0)
       {
-        v63 = objc_msgSend_tableInfoForTableUID_withCalcEngine_(TSTTableInfo, v48, a5->_lower, a5->_upper, v109);
+        v63 = objc_msgSend_tableInfoForTableUID_withCalcEngine_(TSTTableInfo, v48, d->_lower, d->_upper, engineCopy);
         v68 = objc_msgSend_pivotDataModel(v63, v64, v65, v66, v67);
         v73 = v68;
         if (v68)
@@ -4541,7 +4541,7 @@ LABEL_122:
       }
     }
 
-    if (objc_msgSend_needsFormulaRewriteForImport(v9, v48, v49, v50, v51))
+    if (objc_msgSend_needsFormulaRewriteForImport(setCopy, v48, v49, v50, v51))
     {
       if (objc_msgSend_needsFormulaRewriteForImport(v23, v80, v81, v82, v83))
       {
@@ -4564,7 +4564,7 @@ LABEL_122:
   return v18;
 }
 
-- (void)p_registerAllFormulasReturningCoords:(void *)a3
+- (void)p_registerAllFormulasReturningCoords:(void *)coords
 {
   WeakRetained = objc_loadWeakRetained(&self->_calcEngine);
 
@@ -4589,7 +4589,7 @@ LABEL_122:
     v22 = objc_loadWeakRetained(&self->_calcEngine);
     v264 = objc_msgSend_initWithCalcEngine_(v21, v23, v22, v24, v25);
 
-    v263 = a3;
+    coordsCopy = coords;
     if (!objc_msgSend_isAPivotTable(v262, v26, v27, v28, v29))
     {
       v132 = v261;
@@ -4622,9 +4622,9 @@ LABEL_122:
         TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v266, &v274);
         objc_msgSend_replaceFormulaAt_inOwner_precedents_replaceOptions_(v264, v153, &v267, &self->_hiddenStateExtentUid, v152, &v266);
 
-        if (a3)
+        if (coords)
         {
-          TSCECellCoordSet::addCellCoord(a3, &v267);
+          TSCECellCoordSet::addCellCoord(coords, &v267);
         }
 
         v148 = (v148 + 1);
@@ -4661,9 +4661,9 @@ LABEL_122:
             TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v265, &v274);
             objc_msgSend_replaceFormulaAt_inOwner_precedents_replaceOptions_(v264, v185, &v267, &self->_hiddenStateExtentUid, v177, &v265);
 
-            if (v263)
+            if (coordsCopy)
             {
-              TSCECellCoordSet::addCellCoord(v263, &v267);
+              TSCECellCoordSet::addCellCoord(coordsCopy, &v267);
             }
           }
         }
@@ -4751,9 +4751,9 @@ LABEL_122:
             TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v273, &v274);
             objc_msgSend_replaceFormulaAt_inOwner_precedents_replaceOptions_(v264, v131, &v268, &self->_hiddenStateExtentUid, v113, &v273);
 
-            if (v263)
+            if (coordsCopy)
             {
-              TSCECellCoordSet::addCellCoord(v263, &v268.origin);
+              TSCECellCoordSet::addCellCoord(coordsCopy, &v268.origin);
             }
 
             v63 = (v63 + 1);
@@ -4827,9 +4827,9 @@ LABEL_48:
             TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v269, &v274);
             objc_msgSend_replaceFormulaAt_inOwner_precedents_replaceOptions_(v264, v254, &v268, &self->_hiddenStateExtentUid, v236, &v269);
 
-            if (v263)
+            if (coordsCopy)
             {
-              TSCECellCoordSet::addCellCoord(v263, &v268.origin);
+              TSCECellCoordSet::addCellCoord(coordsCopy, &v268.origin);
             }
 
             v186 = (v186 + 1);
@@ -4850,16 +4850,16 @@ LABEL_50:
   }
 }
 
-- (BOOL)isGroupOrParentsCollapsed:(const TSKUIDStruct *)a3 dimension:(int64_t)a4
+- (BOOL)isGroupOrParentsCollapsed:(const TSKUIDStruct *)collapsed dimension:(int64_t)dimension
 {
-  if (!objc_msgSend_anyCollapsed(self, a2, a3, a4, v4))
+  if (!objc_msgSend_anyCollapsed(self, a2, collapsed, dimension, v4))
   {
     return 0;
   }
 
   v12 = objc_msgSend_tableInfo(self, v8, v9, v10, v11);
   v17 = v12;
-  if (a4)
+  if (dimension)
   {
     objc_msgSend_groupByForColumns(v12, v13, v14, v15, v16);
   }
@@ -4870,7 +4870,7 @@ LABEL_50:
   }
   v19 = ;
 
-  v26 = objc_msgSend_groupNodeForGroupUid_(v19, v20, a3->_lower, a3->_upper, v21);
+  v26 = objc_msgSend_groupNodeForGroupUid_(v19, v20, collapsed->_lower, collapsed->_upper, v21);
   if (v26)
   {
     do
@@ -4904,16 +4904,16 @@ LABEL_50:
   return v18;
 }
 
-- (BOOL)isGroupCollapsedAndVisible:(const TSKUIDStruct *)a3 dimension:(int64_t)a4
+- (BOOL)isGroupCollapsedAndVisible:(const TSKUIDStruct *)visible dimension:(int64_t)dimension
 {
-  if (!objc_msgSend_anyCollapsed(self, a2, a3, a4, v4))
+  if (!objc_msgSend_anyCollapsed(self, a2, visible, dimension, v4))
   {
     return 0;
   }
 
   v12 = objc_msgSend_tableInfo(self, v8, v9, v10, v11);
   v17 = v12;
-  if (a4)
+  if (dimension)
   {
     objc_msgSend_groupByForColumns(v12, v13, v14, v15, v16);
   }
@@ -4924,7 +4924,7 @@ LABEL_50:
   }
   v19 = ;
 
-  v22 = objc_msgSend_groupNodeForGroupUid_(v19, v20, a3->_lower, a3->_upper, v21);
+  v22 = objc_msgSend_groupNodeForGroupUid_(v19, v20, visible->_lower, visible->_upper, v21);
   v27 = v22;
   if (v22 && (v28 = self->_collapsedGroupUids, v29 = objc_msgSend_groupUid(v22, v23, v24, v25, v26), objc_msgSend_containsUuid_(v28, v30, v29, v30, v31)))
   {
@@ -4967,10 +4967,10 @@ LABEL_50:
   return v18;
 }
 
-- (void)setGroupUID:(const TSKUIDStruct *)a3 asCollapsed:(BOOL)a4
+- (void)setGroupUID:(const TSKUIDStruct *)d asCollapsed:(BOOL)collapsed
 {
   collapsedGroupUids = self->_collapsedGroupUids;
-  if (a4)
+  if (collapsed)
   {
     if (!collapsedGroupUids)
     {
@@ -4981,21 +4981,21 @@ LABEL_50:
       collapsedGroupUids = self->_collapsedGroupUids;
     }
 
-    objc_msgSend_addUUID_(collapsedGroupUids, a2, a3->_lower, a3->_upper, v4);
+    objc_msgSend_addUUID_(collapsedGroupUids, a2, d->_lower, d->_upper, v4);
   }
 
   else
   {
-    objc_msgSend_removeUUID_(collapsedGroupUids, a2, a3->_lower, a3->_upper, v4);
+    objc_msgSend_removeUUID_(collapsedGroupUids, a2, d->_lower, d->_upper, v4);
   }
 
   self->_invalidateCollapsed = 1;
 }
 
-- (id)collapseSummaryGroupUIDs:(id)a3
+- (id)collapseSummaryGroupUIDs:(id)ds
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6, v7, v8))
+  dsCopy = ds;
+  if (objc_msgSend_count(dsCopy, v5, v6, v7, v8))
   {
     v16 = objc_msgSend_p_collapsedIndexes(self, v9, v10, v11, v12);
     collapsedGroupUids = self->_collapsedGroupUids;
@@ -5008,7 +5008,7 @@ LABEL_50:
       collapsedGroupUids = self->_collapsedGroupUids;
     }
 
-    objc_msgSend_addUuidsFromSet_(collapsedGroupUids, v13, v4, v14, v15);
+    objc_msgSend_addUuidsFromSet_(collapsedGroupUids, v13, dsCopy, v14, v15);
     self->_invalidateCollapsed = 1;
     v24 = objc_msgSend_p_collapsedIndexes(self, v20, v21, v22, v23);
     v29 = objc_msgSend_count(v24, v25, v26, v27, v28);
@@ -5034,13 +5034,13 @@ LABEL_9:
   return v34;
 }
 
-- (id)expandSummaryGroupUIDs:(id)a3
+- (id)expandSummaryGroupUIDs:(id)ds
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6, v7, v8))
+  dsCopy = ds;
+  if (objc_msgSend_count(dsCopy, v5, v6, v7, v8))
   {
     v13 = objc_msgSend_p_collapsedIndexes(self, v9, v10, v11, v12);
-    objc_msgSend_removeUuidsFromSet_(self->_collapsedGroupUids, v14, v4, v15, v16);
+    objc_msgSend_removeUuidsFromSet_(self->_collapsedGroupUids, v14, dsCopy, v15, v16);
     self->_invalidateCollapsed = 1;
     v21 = objc_msgSend_p_collapsedIndexes(self, v17, v18, v19, v20);
     v26 = objc_msgSend_count(v13, v22, v23, v24, v25);
@@ -5066,27 +5066,27 @@ LABEL_7:
   return v31;
 }
 
-- (id)copyCollapsedStateToUpdatedGroupUids:(id)a3 dimension:(int64_t)a4
+- (id)copyCollapsedStateToUpdatedGroupUids:(id)uids dimension:(int64_t)dimension
 {
-  v6 = a3;
-  if (objc_msgSend_count(self->_collapsedGroupUids, v7, v8, v9, v10) && (collapsedGroupUids = self->_collapsedGroupUids, objc_msgSend_previousGroupNodeUids(v6, v11, v12, v13, v14), v16 = objc_claimAutoreleasedReturnValue(), LODWORD(collapsedGroupUids) = objc_msgSend_intersectsSet_(collapsedGroupUids, v17, v16, v18, v19), v16, collapsedGroupUids))
+  uidsCopy = uids;
+  if (objc_msgSend_count(self->_collapsedGroupUids, v7, v8, v9, v10) && (collapsedGroupUids = self->_collapsedGroupUids, objc_msgSend_previousGroupNodeUids(uidsCopy, v11, v12, v13, v14), v16 = objc_claimAutoreleasedReturnValue(), LODWORD(collapsedGroupUids) = objc_msgSend_intersectsSet_(collapsedGroupUids, v17, v16, v18, v19), v16, collapsedGroupUids))
   {
     v20 = objc_opt_new();
     v21 = objc_opt_new();
-    v26 = objc_msgSend_updatedGroupNodeUids(v6, v22, v23, v24, v25);
+    v26 = objc_msgSend_updatedGroupNodeUids(uidsCopy, v22, v23, v24, v25);
     v36 = MEMORY[0x277D85DD0];
     v37 = 3221225472;
     v38 = sub_221390F58;
     v39 = &unk_278463960;
-    v40 = v6;
-    v41 = self;
+    v40 = uidsCopy;
+    selfCopy = self;
     v27 = v20;
     v42 = v27;
     v28 = v21;
     v43 = v28;
     objc_msgSend_foreachUuid_(v26, v29, &v36, v30, v31);
     v32 = [TSTExpandCollapseState alloc];
-    v34 = objc_msgSend_initWithCollapsed_expanded_dimension_(v32, v33, v27, v28, a4, v36, v37, v38, v39);
+    v34 = objc_msgSend_initWithCollapsed_expanded_dimension_(v32, v33, v27, v28, dimension, v36, v37, v38, v39);
   }
 
   else
@@ -5097,9 +5097,9 @@ LABEL_7:
   return v34;
 }
 
-- (id)applyCollapseExpandState:(id)a3 outUndoState:(id *)a4
+- (id)applyCollapseExpandState:(id)state outUndoState:(id *)undoState
 {
-  v6 = a3;
+  stateCopy = state;
   v15 = objc_msgSend_p_collapsedIndexes(self, v7, v8, v9, v10);
   if (!self->_collapsedGroupUids)
   {
@@ -5108,35 +5108,35 @@ LABEL_7:
     self->_collapsedGroupUids = v16;
   }
 
-  v18 = objc_msgSend_uidsExpanded(v6, v11, v12, v13, v14);
+  v18 = objc_msgSend_uidsExpanded(stateCopy, v11, v12, v13, v14);
   v23 = objc_msgSend_count(v18, v19, v20, v21, v22);
 
   if (v23)
   {
     v28 = self->_collapsedGroupUids;
-    v29 = objc_msgSend_uidsExpanded(v6, v24, v25, v26, v27);
+    v29 = objc_msgSend_uidsExpanded(stateCopy, v24, v25, v26, v27);
     v23 = objc_msgSend_removeUuidsFromSetReturningRemoved_(v28, v30, v29, v31, v32);
 
     self->_invalidateCollapsed = 1;
   }
 
-  v33 = objc_msgSend_uidsCollapsed(v6, v24, v25, v26, v27);
+  v33 = objc_msgSend_uidsCollapsed(stateCopy, v24, v25, v26, v27);
   v38 = objc_msgSend_count(v33, v34, v35, v36, v37);
 
   if (v38)
   {
     v43 = self->_collapsedGroupUids;
-    v44 = objc_msgSend_uidsCollapsed(v6, v39, v40, v41, v42);
+    v44 = objc_msgSend_uidsCollapsed(stateCopy, v39, v40, v41, v42);
     v38 = objc_msgSend_addUuidsFromSetReturningAdded_(v43, v45, v44, v46, v47);
 
     self->_invalidateCollapsed = 1;
   }
 
-  if (a4)
+  if (undoState)
   {
     v48 = [TSTExpandCollapseState alloc];
-    v53 = objc_msgSend_dimension(v6, v49, v50, v51, v52);
-    *a4 = objc_msgSend_initWithCollapsed_expanded_dimension_(v48, v54, v23, v38, v53);
+    v53 = objc_msgSend_dimension(stateCopy, v49, v50, v51, v52);
+    *undoState = objc_msgSend_initWithCollapsed_expanded_dimension_(v48, v54, v23, v38, v53);
   }
 
   v55 = objc_msgSend_p_collapsedIndexes(self, v39, v40, v41, v42);
@@ -5150,11 +5150,11 @@ LABEL_7:
   return v56;
 }
 
-- (id)pruneCollapsedGroupsInDimension:(int64_t)a3
+- (id)pruneCollapsedGroupsInDimension:(int64_t)dimension
 {
-  v7 = objc_msgSend_tableInfo(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_tableInfo(self, a2, dimension, v3, v4);
   v12 = v7;
-  if (a3 == 1)
+  if (dimension == 1)
   {
     v13 = objc_msgSend_groupByForColumns(v7, v8, v9, v10, v11);
     v18 = objc_msgSend_maxColumnLevel(v12, v14, v15, v16, v17);
@@ -5177,17 +5177,17 @@ LABEL_7:
   v38 = v28;
   objc_msgSend_enumerateGroupsBetweenLevel_andLevel_withBlock_(v13, v29, 1, v23, v37);
   v30 = [TSTExpandCollapseState alloc];
-  v32 = objc_msgSend_initWithCollapsed_expanded_dimension_(v30, v31, 0, v28, a3);
+  v32 = objc_msgSend_initWithCollapsed_expanded_dimension_(v30, v31, 0, v28, dimension);
   v35 = objc_msgSend_applyCollapseExpandState_outUndoState_(self, v33, v32, 0, v34);
 
   return v35;
 }
 
-- (id)p_calculateAverageThresholdWithCalcEngine:(id)a3 formulaCoord:(const TSUCellCoord *)a4
+- (id)p_calculateAverageThresholdWithCalcEngine:(id)engine formulaCoord:(const TSUCellCoord *)coord
 {
-  v6 = a3;
-  row = a4->row;
-  v8 = *&a4->column;
+  engineCopy = engine;
+  row = coord->row;
+  v8 = *&coord->column;
   v13 = objc_msgSend_filterSet(self, v9, v10, v11, v12);
   v17 = objc_msgSend_ruleAtAbsoluteIndex_(v13, v14, row, v15, v16);
 
@@ -5195,16 +5195,16 @@ LABEL_7:
   v26 = objc_msgSend_baseColumnIndexForFilterRuleInTableModel_(v17, v23, v22, v24, v25);
   v34[0] = objc_msgSend_tableUID(v22, v27, v28, v29, v30);
   v34[1] = v31;
-  v32 = sub_221256390(v6, row | (v8 << 32), &self->_hiddenStateExtentUid, (v26 << 32) | 0x7FFFFFFF, (v26 << 32) | 0x7FFFFFFF, v34);
+  v32 = sub_221256390(engineCopy, row | (v8 << 32), &self->_hiddenStateExtentUid, (v26 << 32) | 0x7FFFFFFF, (v26 << 32) | 0x7FFFFFFF, v34);
 
   return v32;
 }
 
-- (id)p_calculateUniqueThresholdWithCalcEngine:(id)a3 formulaCoord:(const TSUCellCoord *)a4
+- (id)p_calculateUniqueThresholdWithCalcEngine:(id)engine formulaCoord:(const TSUCellCoord *)coord
 {
-  v6 = a3;
-  row = a4->row;
-  v8 = *&a4->column;
+  engineCopy = engine;
+  row = coord->row;
+  v8 = *&coord->column;
   v12 = objc_msgSend_ruleAtAbsoluteIndex_(self->_filterSet, v9, row, v10, v11);
   v17 = objc_msgSend_tableModel(self, v13, v14, v15, v16);
   v21 = objc_msgSend_baseColumnIndexForFilterRuleInTableModel_(v12, v18, v17, v19, v20);
@@ -5213,18 +5213,18 @@ LABEL_7:
   v34[0] = objc_msgSend_tableUID(v26, v27, v28, v29, v30);
   v34[1] = v31;
 
-  v32 = sub_22125668C(v6, row | (v8 << 32), &self->_hiddenStateExtentUid, (v21 << 32) | 0x7FFFFFFF, (v21 << 32) | 0x7FFFFFFF, v34);
+  v32 = sub_22125668C(engineCopy, row | (v8 << 32), &self->_hiddenStateExtentUid, (v21 << 32) | 0x7FFFFFFF, (v21 << 32) | 0x7FFFFFFF, v34);
 
   return v32;
 }
 
-- (id)p_calculateTopOrBottomThresholdWithCalcEngine:(id)a3 formulaCoord:(const TSUCellCoord *)a4 isTop:(BOOL)a5 keyScale:(unsigned __int8)a6
+- (id)p_calculateTopOrBottomThresholdWithCalcEngine:(id)engine formulaCoord:(const TSUCellCoord *)coord isTop:(BOOL)top keyScale:(unsigned __int8)scale
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  row = a4->row;
-  v12 = *&a4->column;
+  scaleCopy = scale;
+  topCopy = top;
+  engineCopy = engine;
+  row = coord->row;
+  v12 = *&coord->column;
   v17 = objc_msgSend_filterSet(self, v13, v14, v15, v16);
   v21 = objc_msgSend_ruleAtAbsoluteIndex_(v17, v18, row, v19, v20);
 
@@ -5235,10 +5235,10 @@ LABEL_7:
   v43 = objc_msgSend_nilValue(TSCENilValue, v35, v36, v37, v38);
   v44 = v30;
   v45 = ((v30 << 32) | 0x7FFFFFFF);
-  if (v6 == 9)
+  if (scaleCopy == 9)
   {
     v58 = row | (v12 << 32);
-    v59 = sub_221256DB8(v10, v58, &self->_hiddenStateExtentUid, ((v44 << 32) | 0x7FFFFFFF), (v44 << 32) | 0x7FFFFFFF, v107);
+    v59 = sub_221256DB8(engineCopy, v58, &self->_hiddenStateExtentUid, ((v44 << 32) | 0x7FFFFFFF), (v44 << 32) | 0x7FFFFFFF, v107);
     if ((objc_msgSend_isNil(v59, v60, v61, v62, v63) & 1) == 0)
     {
       v68 = objc_msgSend_predicate(v21, v64, v65, v66, v67);
@@ -5253,7 +5253,7 @@ LABEL_7:
 
       if (v86 >= 1.0)
       {
-        v91 = sub_221256984(v10, v58, &self->_hiddenStateExtentUid, v45, v45, v107, v7, 0);
+        v91 = sub_221256984(engineCopy, v58, &self->_hiddenStateExtentUid, v45, v45, v107, topCopy, 0);
       }
 
       else
@@ -5269,7 +5269,7 @@ LABEL_7:
     }
   }
 
-  else if (v6 == 10)
+  else if (scaleCopy == 10)
   {
     v46 = objc_msgSend_predicate(v21, v39, v40, v41, v42);
     objc_msgSend_numberParam1(v46, v47, v48, v49, v50);
@@ -5277,7 +5277,7 @@ LABEL_7:
 
     if (v52 >= 1.0)
     {
-      v57 = sub_221256984(v10, row | (v12 << 32), &self->_hiddenStateExtentUid, v45, v45, v107, v7, 1);
+      v57 = sub_221256984(engineCopy, row | (v12 << 32), &self->_hiddenStateExtentUid, v45, v45, v107, topCopy, 1);
     }
 
     else
@@ -5297,7 +5297,7 @@ LABEL_7:
     v92 = MEMORY[0x277D81150];
     v93 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v39, "[TSTHiddenStateExtent p_calculateTopOrBottomThresholdWithCalcEngine:formulaCoord:isTop:keyScale:]", v41, v42);
     v97 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v94, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTHiddenStateExtent.mm", v95, v96);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v92, v98, v93, v97, 2880, 0, "Unexpected key scale found: %d", v6);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v92, v98, v93, v97, 2880, 0, "Unexpected key scale found: %d", scaleCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v99, v100, v101, v102);
   }
@@ -5305,24 +5305,24 @@ LABEL_7:
   return v43;
 }
 
-- (id)p_createThresholdCellValue:(id)a3 locale:(id)a4
+- (id)p_createThresholdCellValue:(id)value locale:(id)locale
 {
-  v5 = a3;
-  v6 = a4;
-  v13 = objc_msgSend_deepType_(v5, v7, 0, v8, v9);
+  valueCopy = value;
+  localeCopy = locale;
+  v13 = objc_msgSend_deepType_(valueCopy, v7, 0, v8, v9);
   if (v13 > 4u)
   {
     if (v13 == 5)
     {
       v39 = [TSCENumberValue alloc];
-      v44 = objc_msgSend_number(v5, v40, v41, v42, v43);
+      v44 = objc_msgSend_number(valueCopy, v40, v41, v42, v43);
       v49 = objc_msgSend_rawDecimalValue(v44, v45, v46, v47, v48);
-      v54 = objc_msgSend_number(v5, v50, v51, v52, v53);
+      v54 = objc_msgSend_number(valueCopy, v50, v51, v52, v53);
       v59 = objc_msgSend_unit(v54, v55, v56, v57, v58);
       v19 = objc_msgSend_initWithDecimal_baseUnit_(v39, v60, v49, v59, v61);
 
       v62 = [TSCENumberCellValue alloc];
-      v22 = objc_msgSend_initWithNumberValue_locale_(v62, v63, v19, v6, v64);
+      v22 = objc_msgSend_initWithNumberValue_locale_(v62, v63, v19, localeCopy, v64);
       goto LABEL_10;
     }
 
@@ -5341,7 +5341,7 @@ LABEL_8:
 
 LABEL_7:
     v23 = [TSCENilCellValue alloc];
-    v27 = objc_msgSend_initWithLocale_(v23, v24, v6, v25, v26);
+    v27 = objc_msgSend_initWithLocale_(v23, v24, localeCopy, v25, v26);
     goto LABEL_11;
   }
 
@@ -5356,8 +5356,8 @@ LABEL_7:
   }
 
   v14 = [TSCEDateCellValue alloc];
-  v19 = objc_msgSend_date(v5, v15, v16, v17, v18);
-  v22 = objc_msgSend_initWithDate_locale_(v14, v20, v19, v6, v21);
+  v19 = objc_msgSend_date(valueCopy, v15, v16, v17, v18);
+  v22 = objc_msgSend_initWithDate_locale_(v14, v20, v19, localeCopy, v21);
 LABEL_10:
   v27 = v22;
 
@@ -5366,30 +5366,30 @@ LABEL_11:
   return v27;
 }
 
-- (void)p_calculateUniqueDistinctIndexWithCalcEngine:(id)a3 formulaCoord:(const TSUCellCoord *)a4 tableModel:(id)a5 rule:(id)a6
+- (void)p_calculateUniqueDistinctIndexWithCalcEngine:(id)engine formulaCoord:(const TSUCellCoord *)coord tableModel:(id)model rule:(id)rule
 {
   v109 = *MEMORY[0x277D85DE8];
-  v100 = a3;
-  v10 = a5;
-  v99 = a6;
-  v14 = objc_msgSend_baseColumnIndexForFilterRuleInTableModel_(v99, v11, v10, v12, v13);
-  v19 = objc_msgSend_columnRowUIDMap(v10, v15, v16, v17, v18);
+  engineCopy = engine;
+  modelCopy = model;
+  ruleCopy = rule;
+  v14 = objc_msgSend_baseColumnIndexForFilterRuleInTableModel_(ruleCopy, v11, modelCopy, v12, v13);
+  v19 = objc_msgSend_columnRowUIDMap(modelCopy, v15, v16, v17, v18);
   v107._lower = objc_msgSend_columnUIDForColumnIndex_(v19, v20, v14, v21, v22);
   v107._upper = v23;
 
   v102 = TSKUIDStruct::NSUUIDValue(&v107);
-  v24 = self;
-  objc_sync_enter(v24);
-  v101 = v24;
-  objc_msgSend_uniqueValuesLock(v24, v25, v26, v27, v28);
-  uniqueValuesByColumnUid = v24->_uniqueValuesByColumnUid;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v101 = selfCopy;
+  objc_msgSend_uniqueValuesLock(selfCopy, v25, v26, v27, v28);
+  uniqueValuesByColumnUid = selfCopy->_uniqueValuesByColumnUid;
   if (!uniqueValuesByColumnUid)
   {
     v33 = objc_opt_new();
-    v34 = v24->_uniqueValuesByColumnUid;
-    v24->_uniqueValuesByColumnUid = v33;
+    v34 = selfCopy->_uniqueValuesByColumnUid;
+    selfCopy->_uniqueValuesByColumnUid = v33;
 
-    uniqueValuesByColumnUid = v24->_uniqueValuesByColumnUid;
+    uniqueValuesByColumnUid = selfCopy->_uniqueValuesByColumnUid;
   }
 
   v35 = objc_msgSend_objectForKey_(uniqueValuesByColumnUid, v29, v102, v30, v31);
@@ -5397,7 +5397,7 @@ LABEL_11:
 
   if (v36)
   {
-    v97 = objc_msgSend_p_calculateUniqueThresholdWithCalcEngine_formulaCoord_(v101, v37, v100, a4, v40);
+    v97 = objc_msgSend_p_calculateUniqueThresholdWithCalcEngine_formulaCoord_(v101, v37, engineCopy, coord, v40);
     if (!v97)
     {
       v44 = MEMORY[0x277D81150];
@@ -5433,7 +5433,7 @@ LABEL_11:
 
           v76 = *(*(&v103 + 1) + 8 * i);
           v77 = objc_msgSend_objectForKey_(v68, v70, v76, v71, v72);
-          v82 = objc_msgSend_columnRowUIDMap(v10, v78, v79, v80, v81);
+          v82 = objc_msgSend_columnRowUIDMap(modelCopy, v78, v79, v80, v81);
           v85 = objc_msgSend_UIDSetForIndexes_isRows_(v82, v83, v77, 1, v84);
 
           objc_msgSend_setObject_forKey_(v67, v86, v85, v76, v87);
@@ -5448,7 +5448,7 @@ LABEL_11:
     v92 = v101;
     if (!v101->_columnUidsWithUniqueIndexes.__table_.__size_)
     {
-      v93 = objc_msgSend_cellWillChangeDistributor(v10, v88, v89, v90, v91);
+      v93 = objc_msgSend_cellWillChangeDistributor(modelCopy, v88, v89, v90, v91);
       objc_msgSend_addReceiver_(v93, v94, v101, v95, v96);
 
       v92 = v101;
@@ -5500,11 +5500,11 @@ LABEL_11:
   return v7;
 }
 
-- (TSCERecalculationState)evaluateFormulaAt:(TSUCellCoord)a3 withCalcEngine:(id)a4 recalcOptions:(TSCERecalculationState)a5
+- (TSCERecalculationState)evaluateFormulaAt:(TSUCellCoord)at withCalcEngine:(id)engine recalcOptions:(TSCERecalculationState)options
 {
-  v376[0] = a3;
-  v351 = a4;
-  if ((objc_msgSend_shouldAbortRecalculation(v351, v5, v6, v7, v8) & 1) == 0)
+  v376[0] = at;
+  engineCopy = engine;
+  if ((objc_msgSend_shouldAbortRecalculation(engineCopy, v5, v6, v7, v8) & 1) == 0)
   {
     v14 = objc_msgSend_filterCoordTypeForFilterCoordinate_(TSTHiddenStates, v9, v376, v10, v11);
     v346 = objc_msgSend_columnOrRowIndexForFilterCoordinate_(TSTHiddenStates, v15, v376, v16, v17);
@@ -5685,34 +5685,34 @@ LABEL_11:
           }
         }
 
-        if (objc_msgSend_rowIsShown_withHiddenStateExtent_withCalcEngine_(v122, v240, v346, self, v351))
+        if (objc_msgSend_rowIsShown_withHiddenStateExtent_withCalcEngine_(v122, v240, v346, self, engineCopy))
         {
 LABEL_106:
-          v245 = self;
+          selfCopy2 = self;
           os_unfair_lock_lock(&self->_pendingComputedLock);
           TSUIndexSet::addIndex(&self->_pendingColumnsOrRowsShown);
         }
 
         else
         {
-          v245 = self;
+          selfCopy2 = self;
           os_unfair_lock_lock(&self->_pendingComputedLock);
           TSUIndexSet::addIndex(&self->_pendingColumnsOrRowsHidden);
         }
 
-        os_unfair_lock_unlock(&v245->_pendingComputedLock);
+        os_unfair_lock_unlock(&selfCopy2->_pendingComputedLock);
         goto LABEL_156;
       }
 
       obja = self->_thresholdCellValues;
       if (!self->_thresholdCellValues)
       {
-        v130 = self;
-        objc_sync_enter(v130);
+        selfCopy3 = self;
+        objc_sync_enter(selfCopy3);
         thresholdCellValues = self->_thresholdCellValues;
         if (!thresholdCellValues)
         {
-          objc_msgSend_clearAllCachedRowIndexes(v130, v131, v132, v133, v134);
+          objc_msgSend_clearAllCachedRowIndexes(selfCopy3, v131, v132, v133, v134);
           v136 = objc_alloc(MEMORY[0x277CBEB18]);
           v140 = objc_msgSend_initWithCapacity_(v136, v137, 8, v138, v139);
           v141 = [TSCENilCellValue alloc];
@@ -5737,7 +5737,7 @@ LABEL_106:
 
         v164 = thresholdCellValues;
 
-        objc_sync_exit(v130);
+        objc_sync_exit(selfCopy3);
         obja = v164;
       }
 
@@ -5758,7 +5758,7 @@ LABEL_106:
           {
 LABEL_135:
             v299 = objc_msgSend_qualifier1(v175, v177, v178, v179, v180);
-            objc_msgSend_p_calculateTopOrBottomThresholdWithCalcEngine_formulaCoord_isTop_keyScale_(self, v300, v351, v376, 0, v299);
+            objc_msgSend_p_calculateTopOrBottomThresholdWithCalcEngine_formulaCoord_isTop_keyScale_(self, v300, engineCopy, v376, 0, v299);
             v289 = LABEL_144:;
             goto LABEL_145;
           }
@@ -5783,7 +5783,7 @@ LABEL_146:
         if ((v176 - 46) < 2)
         {
 LABEL_127:
-          v289 = objc_msgSend_p_calculateAverageThresholdWithCalcEngine_formulaCoord_(self, v177, v351, v376, v180);
+          v289 = objc_msgSend_p_calculateAverageThresholdWithCalcEngine_formulaCoord_(self, v177, engineCopy, v376, v180);
 LABEL_145:
           v305 = 1;
           v294 = v289;
@@ -5810,7 +5810,7 @@ LABEL_145:
 
 LABEL_132:
             v294 = 0;
-            objc_msgSend_p_calculateUniqueDistinctIndexWithCalcEngine_formulaCoord_tableModel_rule_(self, v177, v351, v376, v348, v165);
+            objc_msgSend_p_calculateUniqueDistinctIndexWithCalcEngine_formulaCoord_tableModel_rule_(self, v177, engineCopy, v376, v348, v165);
 LABEL_147:
             v305 = 0;
             v306 = objc_msgSend_nativeType(0, v295, v296, v297, v298);
@@ -5820,7 +5820,7 @@ LABEL_148:
               v327 = objc_msgSend_asReferenceValue(v294, v307, v308, v309, v310);
               v372 = objc_msgSend_tableUID(v348, v328, v329, v330, v331);
               v373 = v332;
-              v333 = objc_msgSend_contextForCalcEngine_containingTable_containingCell_inArrayMode_(TSCEEvaluationContext, v332, v351, &v372, v376[0], 0);
+              v333 = objc_msgSend_contextForCalcEngine_containingTable_containingCell_inArrayMode_(TSCEEvaluationContext, v332, engineCopy, &v372, v376[0], 0);
               v336 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(v327, v334, v333, 0, v335);
 
               if (!v305)
@@ -5846,10 +5846,10 @@ LABEL_155:
 
             if (v340)
             {
-              v341 = self;
-              objc_sync_enter(v341);
+              selfCopy4 = self;
+              objc_sync_enter(selfCopy4);
               objc_msgSend_replaceObjectAtIndex_withObject_(obja, v342, v346, v340, v343);
-              objc_sync_exit(v341);
+              objc_sync_exit(selfCopy4);
             }
 
             goto LABEL_154;
@@ -5870,7 +5870,7 @@ LABEL_155:
       }
 
       v303 = objc_msgSend_qualifier1(v175, v177, v178, v179, v180);
-      objc_msgSend_p_calculateTopOrBottomThresholdWithCalcEngine_formulaCoord_isTop_keyScale_(self, v304, v351, v376, 1, v303);
+      objc_msgSend_p_calculateTopOrBottomThresholdWithCalcEngine_formulaCoord_isTop_keyScale_(self, v304, engineCopy, v376, 1, v303);
       goto LABEL_144;
     }
 
@@ -5976,7 +5976,7 @@ LABEL_140:
 
 LABEL_156:
       v13 = 0;
-      v12 = a5.var0 & 0x5F;
+      v12 = options.var0 & 0x5F;
       goto LABEL_157;
     }
 
@@ -6031,16 +6031,16 @@ LABEL_138:
     goto LABEL_139;
   }
 
-  v12 = a5.var0 & 0x5F | 0x20;
+  v12 = options.var0 & 0x5F | 0x20;
   v13 = 0x80;
 LABEL_157:
 
   return (v13 | v12);
 }
 
-- (void)writeResultsForCalcEngine:(id)a3
+- (void)writeResultsForCalcEngine:(id)engine
 {
-  v10 = objc_msgSend_tableInfo(self, a2, a3, v3, v4);
+  v10 = objc_msgSend_tableInfo(self, a2, engine, v3, v4);
   if (self->_rewrittenFilterSet)
   {
     v11 = objc_msgSend_tableInfo(self, v6, v7, v8, v9);
@@ -6079,7 +6079,7 @@ LABEL_157:
     v52 = sub_221393AEC;
     v53 = &unk_278463A00;
     v55 = v30;
-    v54 = self;
+    selfCopy = self;
   }
 
   else
@@ -6090,11 +6090,11 @@ LABEL_157:
     v46 = sub_221393B3C;
     v47 = &unk_278463A00;
     v49 = v31;
-    v48 = self;
+    selfCopy2 = self;
   }
 
   TSUIndexSet::enumerateRangesUsingBlock();
-  if (objc_msgSend_isAPivotTable(v10, v32, v33, v34, v35, v44, v45, v46, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, 3221225472, sub_221393A88, &unk_2784639D8, self, &v59, v57, 3221225472, sub_2213939E0, &unk_2784639B0) && TSUIndexSet::count((v60 + 6)))
+  if (objc_msgSend_isAPivotTable(v10, v32, v33, v34, v35, v44, v45, v46, v47, selfCopy2, v49, v50, v51, v52, v53, selfCopy, v55, v56, 3221225472, sub_221393A88, &unk_2784639D8, self, &v59, v57, 3221225472, sub_2213939E0, &unk_2784639B0) && TSUIndexSet::count((v60 + 6)))
   {
     v40 = objc_msgSend_pivotOwner(v10, v36, v37, v38, v39);
     v41 = TSUIndexSet::asNSIndexSet((v60 + 6));
@@ -6112,10 +6112,10 @@ LABEL_157:
   TSUIndexSet::~TSUIndexSet(&v65);
 }
 
-- (void)setFilterSet:(id)a3
+- (void)setFilterSet:(id)set
 {
-  v49 = a3;
-  if (objc_msgSend_containsFilterRulesInUIDForm(v49, v5, v6, v7, v8))
+  setCopy = set;
+  if (objc_msgSend_containsFilterRulesInUIDForm(setCopy, v5, v6, v7, v8))
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSTHiddenStateExtent setFilterSet:]", v10, v11);
@@ -6125,7 +6125,7 @@ LABEL_157:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
 
-  objc_storeStrong(&self->_filterSet, a3);
+  objc_storeStrong(&self->_filterSet, set);
   if (objc_msgSend_p_canUsePrePivotFilterSet(self, v23, v24, v25, v26))
   {
     v31 = objc_msgSend_tableModel(self, v27, v28, v29, v30);
@@ -6174,11 +6174,11 @@ LABEL_157:
   return filterSet;
 }
 
-- (void)setNeedsToUpdateFilterSetForImport:(BOOL)a3
+- (void)setNeedsToUpdateFilterSetForImport:(BOOL)import
 {
-  v5 = a3;
-  self->_needsToUpdateFilterSetForImport = a3;
-  v7 = objc_msgSend_forRows(self, a2, a3, v3, v4);
+  importCopy = import;
+  self->_needsToUpdateFilterSetForImport = import;
+  v7 = objc_msgSend_forRows(self, a2, import, v3, v4);
   v12 = objc_msgSend_tableModel(self, v8, v9, v10, v11);
   v21 = v12;
   if (v7)
@@ -6191,7 +6191,7 @@ LABEL_157:
     objc_msgSend_hiddenStateFormulaOwnerForColumns(v12, v13, v14, v15, v16);
   }
   v17 = ;
-  objc_msgSend_setNeedsToUpdateFilterSetForImport_(v17, v18, v5, v19, v20);
+  objc_msgSend_setNeedsToUpdateFilterSetForImport_(v17, v18, importCopy, v19, v20);
 }
 
 - (id)duplicateFilterSet
@@ -6204,12 +6204,12 @@ LABEL_157:
   return v20;
 }
 
-- (id)duplicateFilterSetInUidFormWithTable:(id)a3
+- (id)duplicateFilterSetInUidFormWithTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v9 = objc_msgSend_filterSet(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_context(v4, v10, v11, v12, v13);
-  v17 = objc_msgSend_copyByRewritingFilterRulesToUidFormWithContext_withTableInfo_(v9, v15, v14, v4, v16);
+  v14 = objc_msgSend_context(tableCopy, v10, v11, v12, v13);
+  v17 = objc_msgSend_copyByRewritingFilterRulesToUidFormWithContext_withTableInfo_(v9, v15, v14, tableCopy, v16);
 
   return v17;
 }
@@ -6222,20 +6222,20 @@ LABEL_157:
   return v10;
 }
 
-- (void)setNeedsFilterFormulaRewriteForImport:(BOOL)a3
+- (void)setNeedsFilterFormulaRewriteForImport:(BOOL)import
 {
-  v5 = a3;
-  v9 = objc_msgSend_filterSet(self, a2, a3, v3, v4);
-  objc_msgSend_setNeedsFormulaRewriteForImport_(v9, v6, v5, v7, v8);
+  importCopy = import;
+  v9 = objc_msgSend_filterSet(self, a2, import, v3, v4);
+  objc_msgSend_setNeedsFormulaRewriteForImport_(v9, v6, importCopy, v7, v8);
 }
 
-- (void)mutateFormulaFiltersWithTable:(id)a3 usingBlock:(id)a4
+- (void)mutateFormulaFiltersWithTable:(id)table usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v37 = self;
+  tableCopy = table;
+  blockCopy = block;
+  selfCopy = self;
   v12 = objc_msgSend_filterSet(self, v8, v9, v10, v11);
-  v21 = objc_msgSend_baseTableModel(v6, v13, v14, v15, v16);
+  v21 = objc_msgSend_baseTableModel(tableCopy, v13, v14, v15, v16);
   for (i = 0; i < objc_msgSend_ruleCount(v12, v17, v18, v19, v20); ++i)
   {
     v27 = objc_msgSend_ruleAtAbsoluteIndex_(v12, v23, i, v25, v26);
@@ -6244,24 +6244,24 @@ LABEL_157:
     v38[1] = 3221225472;
     v38[2] = sub_221394330;
     v38[3] = &unk_278463A28;
-    v41 = v7;
+    v41 = blockCopy;
     v33 = v27;
     v39 = v33;
     v40 = v21;
     objc_msgSend_rewriteFormulaWithBlock_(v32, v34, v38, v35, v36);
   }
 
-  objc_msgSend_filterSetUpdated(v37, v23, v24, v25, v26);
+  objc_msgSend_filterSetUpdated(selfCopy, v23, v24, v25, v26);
 }
 
-- (void)enableFilterSet:(BOOL)a3
+- (void)enableFilterSet:(BOOL)set
 {
-  v5 = a3;
-  v22 = objc_msgSend_filterSet(self, a2, a3, v3, v4);
-  if (objc_msgSend_isEnabled(v22, v7, v8, v9, v10) != v5)
+  setCopy = set;
+  v22 = objc_msgSend_filterSet(self, a2, set, v3, v4);
+  if (objc_msgSend_isEnabled(v22, v7, v8, v9, v10) != setCopy)
   {
-    objc_msgSend_setIsEnabled_(v22, v11, v5, v12, v13);
-    if (v5)
+    objc_msgSend_setIsEnabled_(v22, v11, setCopy, v12, v13);
+    if (setCopy)
     {
       objc_msgSend_p_removeAllFormulaFromCalculationEngine(self, v14, v15, v16, v17);
       objc_msgSend_p_registerAllFormulas(self, v18, v19, v20, v21);
@@ -6274,10 +6274,10 @@ LABEL_157:
   }
 }
 
-- (void)setFilterSetType:(int)a3
+- (void)setFilterSetType:(int)type
 {
-  v5 = *&a3;
-  v7 = objc_msgSend_filterSet(self, a2, *&a3, v3, v4);
+  v5 = *&type;
+  v7 = objc_msgSend_filterSet(self, a2, *&type, v3, v4);
   objc_msgSend_setFilterSetType_(v7, v8, v5, v9, v10);
 
   objc_msgSend_filterSetUpdated(self, v11, v12, v13, v14);
@@ -6336,13 +6336,13 @@ LABEL_157:
   }
 }
 
-- (void)dirtyFilterStateForRowRange:(_NSRange)a3
+- (void)dirtyFilterStateForRowRange:(_NSRange)range
 {
-  if (a3.length)
+  if (range.length)
   {
-    length = a3.length;
-    location = a3.location;
-    v7 = objc_msgSend_tableInfo(self, a2, a3.location, a3.length, v3);
+    length = range.length;
+    location = range.location;
+    v7 = objc_msgSend_tableInfo(self, a2, range.location, range.length, v3);
     isAPivotTable = objc_msgSend_isAPivotTable(v7, v8, v9, v10, v11);
 
     v16 = (location + length - 1);
@@ -6432,10 +6432,10 @@ LABEL_7:
   objc_msgSend_dirtyFilterStateForRowRange_(self, v23, v22, v23, v24, *&v25.origin, *&v25.size);
 }
 
-- (BOOL)hasFilterRulesWithTable:(id)a3 inBaseColumns:(id)a4
+- (BOOL)hasFilterRulesWithTable:(id)table inBaseColumns:(id)columns
 {
-  v6 = a3;
-  v7 = a4;
+  tableCopy = table;
+  columnsCopy = columns;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -6445,38 +6445,38 @@ LABEL_7:
   v17[1] = 3221225472;
   v17[2] = sub_221394AEC;
   v17[3] = &unk_278463A50;
-  v13 = v7;
+  v13 = columnsCopy;
   v18 = v13;
   v19 = &v20;
-  objc_msgSend_enumerateFiltersInTable_usingBlock_(v12, v14, v6, v17, v15);
+  objc_msgSend_enumerateFiltersInTable_usingBlock_(v12, v14, tableCopy, v17, v15);
 
-  LOBYTE(v7) = *(v21 + 24);
+  LOBYTE(columnsCopy) = *(v21 + 24);
   _Block_object_dispose(&v20, 8);
 
-  return v7;
+  return columnsCopy;
 }
 
-- (TSCECellRef)cellReferenceForIndex:(SEL)a3
+- (TSCECellRef)cellReferenceForIndex:(SEL)index
 {
   retstr->coordinate = a4._index;
   retstr->_tableUID = *&self[1].coordinate.row;
   return self;
 }
 
-- (void)p_hiddenStateChangedForBaseIndex:(TSUModelColumnOrRowIndex)a3 viewIndex:(TSUViewColumnOrRowIndex)a4 forAction:(unsigned __int8)a5
+- (void)p_hiddenStateChangedForBaseIndex:(TSUModelColumnOrRowIndex)index viewIndex:(TSUViewColumnOrRowIndex)viewIndex forAction:(unsigned __int8)action
 {
-  v6 = *&a4._index;
-  v7 = *&a3._index;
-  if (a3._index != 0x7FFFFFFF)
+  v6 = *&viewIndex._index;
+  v7 = *&index._index;
+  if (index._index != 0x7FFFFFFF)
   {
-    objc_msgSend_cellReferenceForIndex_(self, a2, a3._index, *&a4._index, a5);
+    objc_msgSend_cellReferenceForIndex_(self, a2, index._index, *&viewIndex._index, action);
     WeakRetained = objc_loadWeakRetained(&self->_calcEngine);
     objc_msgSend_markCellRefAsDirty_(WeakRetained, v10, &v31, v11, v12);
   }
 
-  if ((a5 & 2) != 0)
+  if ((action & 2) != 0)
   {
-    v13 = objc_msgSend_tableInfo(self, a2, *&a3._index, *&a4._index, a5);
+    v13 = objc_msgSend_tableInfo(self, a2, *&index._index, *&viewIndex._index, action);
     isAPivotTable = objc_msgSend_isAPivotTable(v13, v14, v15, v16, v17);
 
     if (isAPivotTable)
@@ -6511,23 +6511,23 @@ LABEL_7:
   }
 }
 
-- (void)willApplyCell:(id)a3 baseCellCoord:(TSUModelCellCoord)a4 tableUID:(const TSKUIDStruct *)a5
+- (void)willApplyCell:(id)cell baseCellCoord:(TSUModelCellCoord)coord tableUID:(const TSKUIDStruct *)d
 {
-  v11 = a3;
-  if (v11)
+  cellCopy = cell;
+  if (cellCopy)
   {
     v12 = objc_msgSend_tableInfo(self, v7, v8, v9, v10);
     v17 = objc_msgSend_baseTableModel(v12, v13, v14, v15, v16);
 
     v95 = 0;
-    LODWORD(v12) = objc_msgSend_getValue_atBaseCellCoord_fetchRichTextAttributesIfPlainText_skipPendingWrites_(v17, v18, &v95, *&a4, 0, 1);
+    LODWORD(v12) = objc_msgSend_getValue_atBaseCellCoord_fetchRichTextAttributesIfPlainText_skipPendingWrites_(v17, v18, &v95, *&coord, 0, 1);
     v23 = v95;
-    if (v12 || (objc_msgSend_locale(v11, v19, v20, v21, v22), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend_asStringWithLocale_(v23, v26, v25, v27, v28), v24 = objc_claimAutoreleasedReturnValue(), v25, !v24))
+    if (v12 || (objc_msgSend_locale(cellCopy, v19, v20, v21, v22), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend_asStringWithLocale_(v23, v26, v25, v27, v28), v24 = objc_claimAutoreleasedReturnValue(), v25, !v24))
     {
       v24 = &stru_2834BADA0;
     }
 
-    v94[0] = objc_msgSend_columnUIDForColumnIndex_(v17, v19, a4._coord.column, v21, v22);
+    v94[0] = objc_msgSend_columnUIDForColumnIndex_(v17, v19, coord._coord.column, v21, v22);
     v94[1] = v29;
     objc_msgSend_uniqueValuesLock(self, v29, v30, v31, v32);
     v36 = objc_msgSend_uniqueValuesForColumnUID_(self, v33, v94, v34, v35);
@@ -6536,7 +6536,7 @@ LABEL_7:
     {
       v91 = v23;
       v42 = objc_msgSend_uniqueValueToRowUids(v36, v37, v38, v39, v40);
-      v47 = objc_msgSend_formattedValue(v11, v43, v44, v45, v46);
+      v47 = objc_msgSend_formattedValue(cellCopy, v43, v44, v45, v46);
       if (v47)
       {
         v51 = v47;
@@ -6551,7 +6551,7 @@ LABEL_7:
 
       if ((isEqualToString & 1) == 0)
       {
-        v56 = objc_msgSend_rowUIDForRowIndex_(v17, v53, *&a4, v54, v55);
+        v56 = objc_msgSend_rowUIDForRowIndex_(v17, v53, *&coord, v54, v55);
         v58 = v57;
         v90 = objc_msgSend_objectForKey_(v42, v57, v24, v59, v60);
         objc_msgSend_removeUUID_(v90, v61, v56, v58, v62);
@@ -6583,37 +6583,37 @@ LABEL_7:
   }
 }
 
-- (void)willApplyBaseCellMap:(id)a3 tableUID:(const TSKUIDStruct *)a4
+- (void)willApplyBaseCellMap:(id)map tableUID:(const TSKUIDStruct *)d
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_221395068;
   v5[3] = &unk_278463A78;
   v5[4] = self;
-  v5[5] = a4;
-  objc_msgSend_enumerateCellsWithIDsUsingBlock_(a3, a2, v5, a4, v4);
+  v5[5] = d;
+  objc_msgSend_enumerateCellsWithIDsUsingBlock_(map, a2, v5, d, v4);
 }
 
-- (void)willApplyConcurrentCellMap:(id)a3 tableUID:(const TSKUIDStruct *)a4
+- (void)willApplyConcurrentCellMap:(id)map tableUID:(const TSKUIDStruct *)d
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_2213950F0;
   v5[3] = &unk_278463AA0;
   v5[4] = self;
-  v5[5] = a4;
-  objc_msgSend_enumerateSeriallyUsingBlock_(a3, a2, v5, a4, v4);
+  v5[5] = d;
+  objc_msgSend_enumerateSeriallyUsingBlock_(map, a2, v5, d, v4);
 }
 
-- (void)willRemoveRows:(const void *)a3 tableUID:(const TSKUIDStruct *)a4
+- (void)willRemoveRows:(const void *)rows tableUID:(const TSKUIDStruct *)d
 {
   v76 = *MEMORY[0x277D85DE8];
-  objc_msgSend_uniqueValuesLock(self, a2, a3, a4, v4);
+  objc_msgSend_uniqueValuesLock(self, a2, rows, d, v4);
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v58 = self;
+  selfCopy = self;
   obj = self->_uniqueValuesByColumnUid;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v7, &v69, v75, 16);
   if (v8)
@@ -6629,7 +6629,7 @@ LABEL_7:
           objc_enumerationMutation(obj);
         }
 
-        v13 = objc_msgSend_objectForKey_(v58->_uniqueValuesByColumnUid, v9, *(*(&v69 + 1) + 8 * i), v10, v11);
+        v13 = objc_msgSend_objectForKey_(selfCopy->_uniqueValuesByColumnUid, v9, *(*(&v69 + 1) + 8 * i), v10, v11);
         v18 = objc_msgSend_uniqueValueToRowUids(v13, v14, v15, v16, v17);
         v60 = v13;
         v67 = 0u;
@@ -6653,7 +6653,7 @@ LABEL_7:
 
               v28 = *(*(&v65 + 1) + 8 * j);
               v29 = objc_msgSend_objectForKey_(v19, v22, v28, v23, v24);
-              objc_msgSend_removeUuidsFromVector_(v29, v30, a3, v31, v32);
+              objc_msgSend_removeUuidsFromVector_(v29, v30, rows, v31, v32);
               if (!objc_msgSend_count(v29, v33, v34, v35, v36))
               {
                 if (!v21)
@@ -6707,12 +6707,12 @@ LABEL_7:
     while (v8);
   }
 
-  objc_msgSend_uniqueValuesUnlock(v58, v52, v53, v54, v55);
+  objc_msgSend_uniqueValuesUnlock(selfCopy, v52, v53, v54, v55);
 }
 
-- (id)uniqueValuesForColumnUID:(const TSKUIDStruct *)a3
+- (id)uniqueValuesForColumnUID:(const TSKUIDStruct *)d
 {
-  if (*a3 == 0 || !sub_2210875C4(&self->_columnUidsWithUniqueIndexes.__table_.__bucket_list_.__ptr_, a3))
+  if (*d == 0 || !sub_2210875C4(&self->_columnUidsWithUniqueIndexes.__table_.__bucket_list_.__ptr_, d))
   {
     v10 = 0;
   }
@@ -6720,7 +6720,7 @@ LABEL_7:
   else
   {
     uniqueValuesByColumnUid = self->_uniqueValuesByColumnUid;
-    v6 = TSKUIDStruct::NSUUIDValue(a3);
+    v6 = TSKUIDStruct::NSUUIDValue(d);
     v10 = objc_msgSend_objectForKey_(uniqueValuesByColumnUid, v7, v6, v8, v9);
   }
 

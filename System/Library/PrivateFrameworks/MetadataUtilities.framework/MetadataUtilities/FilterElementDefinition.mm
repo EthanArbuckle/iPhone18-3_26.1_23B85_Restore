@@ -1,14 +1,14 @@
 @interface FilterElementDefinition
-- ($89967B733E8F0E8859294B5D59E7AF0F)encodeInto:(_MDPlistContainer *)a3 auxArray:(id)a4 namedRootMap:(id)a5;
+- ($89967B733E8F0E8859294B5D59E7AF0F)encodeInto:(_MDPlistContainer *)into auxArray:(id)array namedRootMap:(id)map;
 - (BOOL)isBottomValue;
-- (id)initAsRoot:(id)a3;
+- (id)initAsRoot:(id)root;
 - (void)dealloc;
-- (void)dumpAttributesInto:(char *)a3 forLevel:(int)a4;
+- (void)dumpAttributesInto:(char *)into forLevel:(int)level;
 @end
 
 @implementation FilterElementDefinition
 
-- (id)initAsRoot:(id)a3
+- (id)initAsRoot:(id)root
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -16,7 +16,7 @@
   v4 = [(FilterElementDefinition *)&v7 init];
   if (v4)
   {
-    v4->_rootName = a3;
+    v4->_rootName = root;
     v4->_setOfMatches = objc_alloc_init(MEMORY[0x1E695DF90]);
     v4->_setOfPrefixedWildCards = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
@@ -43,19 +43,19 @@
   return result;
 }
 
-- ($89967B733E8F0E8859294B5D59E7AF0F)encodeInto:(_MDPlistContainer *)a3 auxArray:(id)a4 namedRootMap:(id)a5
+- ($89967B733E8F0E8859294B5D59E7AF0F)encodeInto:(_MDPlistContainer *)into auxArray:(id)array namedRootMap:(id)map
 {
-  v9 = a4;
+  arrayCopy = array;
   v149 = *MEMORY[0x1E69E9840];
-  v12 = [a4 count];
+  v12 = [array count];
   if (self->_hasAuxValue)
   {
-    [v9 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithLongLong:", self->_auxValue)}];
+    [arrayCopy addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithLongLong:", self->_auxValue)}];
   }
 
   if (self->_namedLink)
   {
-    v13 = [a5 objectForKey:?];
+    v13 = [map objectForKey:?];
     if (!v13)
     {
       [FilterElementDefinition encodeInto:? auxArray:? namedRootMap:?];
@@ -120,10 +120,10 @@
   v111 = 0;
   v110 = 0;
   v109 = 0;
-  _MDPlistContainerAddDataValue(a3, &v117, 0x3CuLL, &v115, v20, v21, v22, v23);
+  _MDPlistContainerAddDataValue(into, &v117, 0x3CuLL, &v115, v20, v21, v22, v23);
   if ([(NSMutableDictionary *)self->_setOfMatches count])
   {
-    _MDPlistContainerBeginDictionary(a3, v25, v26, v27, v28, v29, v30, v31);
+    _MDPlistContainerBeginDictionary(into, v25, v26, v27, v28, v29, v30, v31);
     v147 = 0u;
     v148 = 0u;
     v145 = 0u;
@@ -145,8 +145,8 @@
 
           v43 = *(*(&v145 + 1) + 8 * i);
           v44 = [(NSMutableDictionary *)self->_setOfMatches objectForKey:v43];
-          _MDPlistContainerAddObject(a3, v43, 0);
-          [v44 encodeInto:a3 auxArray:v9 namedRootMap:a5];
+          _MDPlistContainerAddObject(into, v43, 0);
+          [v44 encodeInto:into auxArray:arrayCopy namedRootMap:map];
         }
 
         v40 = [(NSMutableDictionary *)setOfMatches countByEnumeratingWithState:&v145 objects:v144 count:16];
@@ -155,13 +155,13 @@
       while (v40);
     }
 
-    _MDPlistContainerEndDictionary(a3, &v113, v34, v35, v36, v37, v38, v39);
+    _MDPlistContainerEndDictionary(into, &v113, v34, v35, v36, v37, v38, v39);
   }
 
   if ([(NSMutableDictionary *)self->_setOfPrefixedWildCards count])
   {
-    v104 = v9;
-    v51 = [MEMORY[0x1E695DF70] array];
+    v104 = arrayCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v140 = 0u;
     v141 = 0u;
     v142 = 0u;
@@ -182,7 +182,7 @@
           }
 
           v57 = [[MDElementAndFED alloc] initWithElement:*(*(&v140 + 1) + 8 * j) fed:[(NSMutableDictionary *)self->_setOfPrefixedWildCards objectForKeyedSubscript:*(*(&v140 + 1) + 8 * j)]];
-          [v51 addObject:v57];
+          [array addObject:v57];
         }
 
         v54 = [(NSMutableDictionary *)setOfPrefixedWildCards countByEnumeratingWithState:&v140 objects:v139 count:16];
@@ -191,14 +191,14 @@
       while (v54);
     }
 
-    [v51 sortUsingComparator:&__block_literal_global_13];
-    _MDPlistContainerBeginArray(a3, v58, v59, v60, v61, v62, v63, v64);
+    [array sortUsingComparator:&__block_literal_global_13];
+    _MDPlistContainerBeginArray(into, v58, v59, v60, v61, v62, v63, v64);
     v137 = 0u;
     v138 = 0u;
     v135 = 0u;
     v136 = 0u;
-    v65 = [v51 countByEnumeratingWithState:&v135 objects:v134 count:16];
-    v9 = v104;
+    v65 = [array countByEnumeratingWithState:&v135 objects:v134 count:16];
+    arrayCopy = v104;
     if (v65)
     {
       v72 = v65;
@@ -209,25 +209,25 @@
         {
           if (*v136 != v73)
           {
-            objc_enumerationMutation(v51);
+            objc_enumerationMutation(array);
           }
 
-          _MDPlistContainerAddObject(a3, *(*(*(&v135 + 1) + 8 * k) + 8), 0);
+          _MDPlistContainerAddObject(into, *(*(*(&v135 + 1) + 8 * k) + 8), 0);
         }
 
-        v72 = [v51 countByEnumeratingWithState:&v135 objects:v134 count:16];
+        v72 = [array countByEnumeratingWithState:&v135 objects:v134 count:16];
       }
 
       while (v72);
     }
 
-    _MDPlistContainerEndArray(a3, &v111, v66, v67, v68, v69, v70, v71);
-    _MDPlistContainerBeginArray(a3, v75, v76, v77, v78, v79, v80, v81);
+    _MDPlistContainerEndArray(into, &v111, v66, v67, v68, v69, v70, v71);
+    _MDPlistContainerBeginArray(into, v75, v76, v77, v78, v79, v80, v81);
     v132 = 0u;
     v133 = 0u;
     v130 = 0u;
     v131 = 0u;
-    v82 = [v51 countByEnumeratingWithState:&v130 objects:v129 count:16];
+    v82 = [array countByEnumeratingWithState:&v130 objects:v129 count:16];
     if (v82)
     {
       v89 = v82;
@@ -238,25 +238,25 @@
         {
           if (*v131 != v90)
           {
-            objc_enumerationMutation(v51);
+            objc_enumerationMutation(array);
           }
 
-          [*(*(*(&v130 + 1) + 8 * m) + 16) encodeInto:a3 auxArray:v104 namedRootMap:a5];
+          [*(*(*(&v130 + 1) + 8 * m) + 16) encodeInto:into auxArray:v104 namedRootMap:map];
         }
 
-        v89 = [v51 countByEnumeratingWithState:&v130 objects:v129 count:16];
+        v89 = [array countByEnumeratingWithState:&v130 objects:v129 count:16];
       }
 
       while (v89);
     }
 
-    _MDPlistContainerEndArray(a3, &v109, v83, v84, v85, v86, v87, v88);
+    _MDPlistContainerEndArray(into, &v109, v83, v84, v85, v86, v87, v88);
   }
 
   wildCard = self->_wildCard;
   if (wildCard)
   {
-    v93 = [(FilterElementDefinition *)wildCard encodeInto:a3 auxArray:v9 namedRootMap:a5];
+    v93 = [(FilterElementDefinition *)wildCard encodeInto:into auxArray:arrayCopy namedRootMap:map];
   }
 
   else
@@ -267,7 +267,7 @@
   superWildCard = self->_superWildCard;
   if (superWildCard)
   {
-    v95 = [(FilterElementDefinition *)superWildCard encodeInto:a3 auxArray:v9 namedRootMap:a5];
+    v95 = [(FilterElementDefinition *)superWildCard encodeInto:into auxArray:arrayCopy namedRootMap:map];
   }
 
   else
@@ -277,10 +277,10 @@
 
   v128 = 0;
   v127 = 0;
-  _MDPlistContainerEndArray(a3, &v127, v45, v46, v47, v48, v49, v50);
+  _MDPlistContainerEndArray(into, &v127, v45, v46, v47, v48, v49, v50);
   v107 = 0uLL;
   v108 = 0;
-  _MDPlistReferenceToPlistObject(a3, v115 | (v116 << 32), v96, v97, v98, v99, v100, &v107);
+  _MDPlistReferenceToPlistObject(into, v115 | (v116 << 32), v96, v97, v98, v99, v100, &v107);
   v105 = v107;
   v106 = v108;
   BytePtr = _MDPlistDataGetBytePtr(&v105, 0);
@@ -312,13 +312,13 @@ uint64_t __60__FilterElementDefinition_encodeInto_auxArray_namedRootMap___block_
   return result;
 }
 
-- (void)dumpAttributesInto:(char *)a3 forLevel:(int)a4
+- (void)dumpAttributesInto:(char *)into forLevel:(int)level
 {
   v19 = *MEMORY[0x1E69E9840];
   rootName = self->_rootName;
   if (rootName)
   {
-    v7 = [(NSString *)rootName UTF8String];
+    uTF8String = [(NSString *)rootName UTF8String];
     rule = self->_rule;
     mask = self->_mask;
     subRule = self->_subRule;
@@ -326,7 +326,7 @@ uint64_t __60__FilterElementDefinition_encodeInto_auxArray_namedRootMap___block_
     [(FilterElementDefinition *)self isBottomValue];
     auxValue = self->_auxValue;
     subAuxValueCount = self->_subAuxValueCount;
-    sprintf(a3, "--| (name:%s rule:%llX %llX %s sub:%llX %llX bottom:%d auxValue:%lld count:%d %d)", v7, rule, mask);
+    sprintf(into, "--| (name:%s rule:%llX %llX %s sub:%llX %llX bottom:%d auxValue:%lld count:%d %d)", uTF8String, rule, mask);
   }
 
   else
@@ -338,7 +338,7 @@ uint64_t __60__FilterElementDefinition_encodeInto_auxArray_namedRootMap___block_
     [(FilterElementDefinition *)self isBottomValue];
     v15 = self->_auxValue;
     v17 = self->_subAuxValueCount;
-    sprintf(a3, "  (rule:%llX %llX %s sub:%llX %llX bottom:%d auxValue:%lld count:%d %d)", v12, v13);
+    sprintf(into, "  (rule:%llX %llX %s sub:%llX %llX bottom:%d auxValue:%lld count:%d %d)", v12, v13);
   }
 
   v16 = *MEMORY[0x1E69E9840];

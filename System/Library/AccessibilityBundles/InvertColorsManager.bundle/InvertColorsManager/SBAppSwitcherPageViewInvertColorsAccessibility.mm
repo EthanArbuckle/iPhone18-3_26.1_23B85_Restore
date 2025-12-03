@@ -30,9 +30,9 @@
     v4 = +[UIColor whiteColor];
 LABEL_8:
     v5 = v4;
-    v6 = [v4 CGColor];
-    v7 = [v8 layer];
-    [v7 setShadowColor:v6];
+    cGColor = [v4 CGColor];
+    layer = [v8 layer];
+    [layer setShadowColor:cGColor];
   }
 
 LABEL_9:

@@ -25,7 +25,7 @@
 
 - (unint64_t)currentBootIntentReason
 {
-  v2 = self;
+  selfCopy = self;
   sub_100039580(v4);
 
   sub_10003AF20(v4);
@@ -34,7 +34,7 @@
 
 - (id)bootIntentLocale
 {
-  v2 = self;
+  selfCopy = self;
   sub_100039580(v6);
 
   v8 = v7;
@@ -56,7 +56,7 @@
 
 - (id)bootIntentWifiSSID
 {
-  v2 = self;
+  selfCopy = self;
   sub_100039580(v6);
 
   v8 = v7;
@@ -78,7 +78,7 @@
 
 - (id)bootIntentWifiPassword
 {
-  v2 = self;
+  selfCopy = self;
   sub_100039580(v6);
 
   v8 = v7;
@@ -112,7 +112,7 @@
 
 - (BOOL)isCurrentProcessFirstToReadIntent
 {
-  v2 = self;
+  selfCopy = self;
   sub_100039580(v4);
 
   sub_10003AF20(v4);

@@ -1,24 +1,24 @@
 @interface PPRecordLoadingDelegate
-- (PPRecordLoadingDelegate)initWithName:(id)a3;
+- (PPRecordLoadingDelegate)initWithName:(id)name;
 - (id)description;
-- (unsigned)recentRecordLoadingHandler:(id)a3;
-- (unsigned)recordLoadingHandler:(id)a3;
+- (unsigned)recentRecordLoadingHandler:(id)handler;
+- (unsigned)recordLoadingHandler:(id)handler;
 @end
 
 @implementation PPRecordLoadingDelegate
 
-- (unsigned)recentRecordLoadingHandler:(id)a3
+- (unsigned)recentRecordLoadingHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   __break(1u);
-  return v3;
+  return handlerCopy;
 }
 
-- (unsigned)recordLoadingHandler:(id)a3
+- (unsigned)recordLoadingHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   __break(1u);
-  return v3;
+  return handlerCopy;
 }
 
 - (id)description
@@ -31,19 +31,19 @@
   return v6;
 }
 
-- (PPRecordLoadingDelegate)initWithName:(id)a3
+- (PPRecordLoadingDelegate)initWithName:(id)name
 {
-  v6 = a3;
-  if (!v6)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PPRecordLoadingDelegate.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"name != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPRecordLoadingDelegate.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"name != nil"}];
   }
 
-  if (![v6 length])
+  if (![nameCopy length])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PPRecordLoadingDelegate.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"name.length > 0"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PPRecordLoadingDelegate.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"name.length > 0"}];
   }
 
   v12.receiver = self;
@@ -52,7 +52,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_name, a3);
+    objc_storeStrong(&v7->_name, name);
   }
 
   return v8;

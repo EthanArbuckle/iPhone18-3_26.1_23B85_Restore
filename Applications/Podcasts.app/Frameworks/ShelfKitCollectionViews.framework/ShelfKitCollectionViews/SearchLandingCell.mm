@@ -1,36 +1,36 @@
 @interface SearchLandingCell
 - (NSString)accessibilityLabel;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setAccessibilityTraits:(unint64_t)a3;
-- (void)setIsAccessibilityElement:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setAccessibilityTraits:(unint64_t)traits;
+- (void)setIsAccessibilityElement:(BOOL)element;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SearchLandingCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_131C30(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_131C30(change);
 }
 
-- (void)setIsAccessibilityElement:(BOOL)a3
+- (void)setIsAccessibilityElement:(BOOL)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(SearchLandingCell *)&v4 setIsAccessibilityElement:v3];
+  [(SearchLandingCell *)&v4 setIsAccessibilityElement:elementCopy];
 }
 
 - (NSString)accessibilityLabel
 {
   v2 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews17SearchLandingCell_label);
-  v3 = self;
-  v4 = [v2 text];
-  if (v4)
+  selfCopy = self;
+  text = [v2 text];
+  if (text)
   {
-    v5 = v4;
+    v5 = text;
     sub_30C0D8();
 
     v6 = sub_30C098();
@@ -45,31 +45,31 @@
   return v6;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (label)
   {
     sub_30C0D8();
-    v6 = self;
-    a3 = sub_30C098();
+    selfCopy = self;
+    label = sub_30C098();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  [(SearchLandingCell *)&v8 setAccessibilityLabel:a3];
+  [(SearchLandingCell *)&v8 setAccessibilityLabel:label];
 }
 
-- (void)setAccessibilityTraits:(unint64_t)a3
+- (void)setAccessibilityTraits:(unint64_t)traits
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(SearchLandingCell *)&v4 setAccessibilityTraits:a3];
+  [(SearchLandingCell *)&v4 setAccessibilityTraits:traits];
 }
 
 @end

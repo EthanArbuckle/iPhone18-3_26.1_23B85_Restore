@@ -1,7 +1,7 @@
 @interface NFExtensionKitWrapper
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLaunched;
-- (NFExtensionKitWrapper)initWithExtensionIdentity:(id)a3 extensionProcess:(id)a4 xpc:(id)a5;
+- (NFExtensionKitWrapper)initWithExtensionIdentity:(id)identity extensionProcess:(id)process xpc:(id)xpc;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -11,18 +11,18 @@
 
 @implementation NFExtensionKitWrapper
 
-- (NFExtensionKitWrapper)initWithExtensionIdentity:(id)a3 extensionProcess:(id)a4 xpc:(id)a5
+- (NFExtensionKitWrapper)initWithExtensionIdentity:(id)identity extensionProcess:(id)process xpc:(id)xpc
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identityCopy = identity;
+  processCopy = process;
+  xpcCopy = xpc;
   if (objc_opt_class() && objc_opt_class() && (v17.receiver = self, v17.super_class = NFExtensionKitWrapper, v12 = [(NFExtensionKitWrapper *)&v17 init], (self = v12) != 0))
   {
-    objc_storeStrong(&v12->_xpcConnection, a5);
-    objc_storeStrong(&self->_identity, a3);
-    objc_storeStrong(&self->_extensionProcess, a4);
+    objc_storeStrong(&v12->_xpcConnection, xpc);
+    objc_storeStrong(&self->_identity, identity);
+    objc_storeStrong(&self->_extensionProcess, process);
     self->_presentUI = 1;
-    v13 = [v9 entitlementNamed:@"com.apple.nfcd.background.tag.reading.extension.swipeToDismiss" ofClass:objc_opt_class()];
+    v13 = [identityCopy entitlementNamed:@"com.apple.nfcd.background.tag.reading.extension.swipeToDismiss" ofClass:objc_opt_class()];
     v14 = v13;
     if (v13)
     {
@@ -41,21 +41,21 @@
     self->_swipeToDismiss = v13;
     self = self;
 
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -64,11 +64,11 @@
   {
     v9.receiver = self;
     v9.super_class = NFExtensionKitWrapper;
-    if ([(NFExtensionKitWrapper *)&v9 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(NFExtensionKitWrapper *)&v9 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = [(NFExtensionKitWrapper *)self identity];
-      v6 = [(NFExtensionKitWrapper *)v4 identity];
-      v7 = [v5 isEqual:v6];
+      identity = [(NFExtensionKitWrapper *)self identity];
+      identity2 = [(NFExtensionKitWrapper *)equalCopy identity];
+      v7 = [identity isEqual:identity2];
     }
 
     else
@@ -82,8 +82,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NFExtensionKitWrapper *)self identity];
-  v3 = [v2 hash];
+  identity = [(NFExtensionKitWrapper *)self identity];
+  v3 = [identity hash];
 
   return v3;
 }
@@ -128,9 +128,9 @@
 - (id)description
 {
   v3 = [NSString alloc];
-  v4 = [(NFExtensionKitWrapper *)self identity];
-  v5 = [v4 bundleIdentifier];
-  v6 = v5;
+  identity = [(NFExtensionKitWrapper *)self identity];
+  bundleIdentifier = [identity bundleIdentifier];
+  v6 = bundleIdentifier;
   if (self->_presentUI)
   {
     v7 = "";
@@ -141,7 +141,7 @@
     v7 = ", (nonui)";
   }
 
-  v8 = [v3 initWithFormat:@"%@%s", v5, v7];
+  v8 = [v3 initWithFormat:@"%@%s", bundleIdentifier, v7];
 
   return v8;
 }

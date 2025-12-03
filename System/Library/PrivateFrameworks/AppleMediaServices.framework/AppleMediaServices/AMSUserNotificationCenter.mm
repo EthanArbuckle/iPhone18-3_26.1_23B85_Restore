@@ -1,28 +1,28 @@
 @interface AMSUserNotificationCenter
-+ (BOOL)badgeBundleId:(id)a3 badgeId:(id)a4 enabled:(BOOL)a5 error:(id *)a6;
-+ (Class)_determineStrategyForBundleId:(id)a3;
-+ (id)activeNotificationsWithCenterBundleId:(id)a3;
-+ (id)postNotification:(id)a3 bag:(id)a4 centerBundleId:(id)a5;
-+ (id)removeNotification:(id)a3 centerBundleId:(id)a4;
-+ (id)removeNotificationWithIdentifier:(id)a3 centerBundleId:(id)a4 logKey:(id)a5 scheduledOnly:(BOOL)a6;
++ (BOOL)badgeBundleId:(id)id badgeId:(id)badgeId enabled:(BOOL)enabled error:(id *)error;
++ (Class)_determineStrategyForBundleId:(id)id;
++ (id)activeNotificationsWithCenterBundleId:(id)id;
++ (id)postNotification:(id)notification bag:(id)bag centerBundleId:(id)id;
++ (id)removeNotification:(id)notification centerBundleId:(id)id;
++ (id)removeNotificationWithIdentifier:(id)identifier centerBundleId:(id)id logKey:(id)key scheduledOnly:(BOOL)only;
 @end
 
 @implementation AMSUserNotificationCenter
 
-+ (id)activeNotificationsWithCenterBundleId:(id)a3
++ (id)activeNotificationsWithCenterBundleId:(id)id
 {
-  v4 = a3;
-  v5 = [objc_msgSend(a1 _determineStrategyForBundleId:{v4), "_activeNotificationsWithCenterBundleId:", v4}];
+  idCopy = id;
+  v5 = [objc_msgSend(self _determineStrategyForBundleId:{idCopy), "_activeNotificationsWithCenterBundleId:", idCopy}];
 
   return v5;
 }
 
-+ (BOOL)badgeBundleId:(id)a3 badgeId:(id)a4 enabled:(BOOL)a5 error:(id *)a6
++ (BOOL)badgeBundleId:(id)id badgeId:(id)badgeId enabled:(BOOL)enabled error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [a1 _determineStrategyForBundleId:v10];
-  if (v10 && v11)
+  idCopy = id;
+  badgeIdCopy = badgeId;
+  v12 = [self _determineStrategyForBundleId:idCopy];
+  if (idCopy && badgeIdCopy)
   {
     v18 = v12;
     v32 = 0;
@@ -39,16 +39,16 @@
     v21[1] = 3221225472;
     v21[2] = __65__AMSUserNotificationCenter_badgeBundleId_badgeId_enabled_error___block_invoke;
     v21[3] = &unk_1E73BDFC8;
-    v27 = a5;
-    v22 = v11;
+    enabledCopy = enabled;
+    v22 = badgeIdCopy;
     v24 = &v32;
     v25 = &v28;
     v26 = v18;
-    v23 = v10;
+    v23 = idCopy;
     [AMSDefaults updateBadgeIdsForBundle:v23 block:v21];
-    if (a6)
+    if (error)
     {
-      *a6 = v33[5];
+      *error = v33[5];
     }
 
     v19 = *(v29 + 24);
@@ -57,10 +57,10 @@
     _Block_object_dispose(&v32, 8);
   }
 
-  else if (a6)
+  else if (error)
   {
-    AMSErrorWithFormat(2, @"Failed To Badge", @"Invalid parameters. center:%@ badgeId:%@", v13, v14, v15, v16, v17, v10);
-    *a6 = v19 = 0;
+    AMSErrorWithFormat(2, @"Failed To Badge", @"Invalid parameters. center:%@ badgeId:%@", v13, v14, v15, v16, v17, idCopy);
+    *error = v19 = 0;
   }
 
   else
@@ -138,39 +138,39 @@ LABEL_13:
   return v18;
 }
 
-+ (id)postNotification:(id)a3 bag:(id)a4 centerBundleId:(id)a5
++ (id)postNotification:(id)notification bag:(id)bag centerBundleId:(id)id
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_msgSend(a1 _determineStrategyForBundleId:{v8), "_postNotification:bag:centerBundleId:", v10, v9, v8}];
+  idCopy = id;
+  bagCopy = bag;
+  notificationCopy = notification;
+  v11 = [objc_msgSend(self _determineStrategyForBundleId:{idCopy), "_postNotification:bag:centerBundleId:", notificationCopy, bagCopy, idCopy}];
 
   return v11;
 }
 
-+ (id)removeNotification:(id)a3 centerBundleId:(id)a4
++ (id)removeNotification:(id)notification centerBundleId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_msgSend(a1 _determineStrategyForBundleId:{v6), "_removeNotification:centerBundleId:", v7, v6}];
+  idCopy = id;
+  notificationCopy = notification;
+  v8 = [objc_msgSend(self _determineStrategyForBundleId:{idCopy), "_removeNotification:centerBundleId:", notificationCopy, idCopy}];
 
   return v8;
 }
 
-+ (id)removeNotificationWithIdentifier:(id)a3 centerBundleId:(id)a4 logKey:(id)a5 scheduledOnly:(BOOL)a6
++ (id)removeNotificationWithIdentifier:(id)identifier centerBundleId:(id)id logKey:(id)key scheduledOnly:(BOOL)only
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [objc_msgSend(a1 _determineStrategyForBundleId:{v11), "_removeNotificationWithIdentifier:centerBundleId:logKey:scheduledOnly:", v12, v11, v10, v6}];
+  onlyCopy = only;
+  keyCopy = key;
+  idCopy = id;
+  identifierCopy = identifier;
+  v13 = [objc_msgSend(self _determineStrategyForBundleId:{idCopy), "_removeNotificationWithIdentifier:centerBundleId:logKey:scheduledOnly:", identifierCopy, idCopy, keyCopy, onlyCopy}];
 
   return v13;
 }
 
-+ (Class)_determineStrategyForBundleId:(id)a3
++ (Class)_determineStrategyForBundleId:(id)id
 {
-  v3 = [a3 length];
+  v3 = [id length];
   if (v3)
   {
     v3 = objc_opt_class();

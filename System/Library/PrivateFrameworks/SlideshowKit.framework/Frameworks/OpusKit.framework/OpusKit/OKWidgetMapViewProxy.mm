@@ -1,32 +1,32 @@
 @interface OKWidgetMapViewProxy
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
-- (BOOL)prepareForDisplay:(BOOL)a3;
-- (BOOL)prepareForUnload:(BOOL)a3;
-- (BOOL)prepareForWarmup:(BOOL)a3;
++ (void)setupJavascriptContext:(id)context;
+- (BOOL)prepareForDisplay:(BOOL)display;
+- (BOOL)prepareForUnload:(BOOL)unload;
+- (BOOL)prepareForWarmup:(BOOL)warmup;
 - (CLLocationCoordinate2D)settingCenterCoordinate;
-- (OKWidgetMapViewProxy)initWithWidget:(id)a3;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (id)valueForUndefinedKey:(id)a3;
+- (OKWidgetMapViewProxy)initWithWidget:(id)widget;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (id)valueForUndefinedKey:(id)key;
 - (void)dealloc;
-- (void)mapView:(id)a3 annotationView:(id)a4 calloutAccessoryControlTapped:(id)a5;
-- (void)selectAnnotationWithIdentifier:(id)a3 animated:(BOOL)a4;
-- (void)setAntialiasing:(BOOL)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setSettingAnnotations:(id)a3;
-- (void)setSettingRegion:(id *)a3;
-- (void)setSettingZoomToFitAnnotations:(BOOL)a3;
-- (void)zoomToAnnotationsWithIdentifiers:(id)a3 animated:(BOOL)a4;
+- (void)mapView:(id)view annotationView:(id)annotationView calloutAccessoryControlTapped:(id)tapped;
+- (void)selectAnnotationWithIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)setAntialiasing:(BOOL)antialiasing;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setSettingAnnotations:(id)annotations;
+- (void)setSettingRegion:(id *)region;
+- (void)setSettingZoomToFitAnnotations:(BOOL)annotations;
+- (void)zoomToAnnotationsWithIdentifiers:(id)identifiers animated:(BOOL)animated;
 @end
 
 @implementation OKWidgetMapViewProxy
 
-- (OKWidgetMapViewProxy)initWithWidget:(id)a3
+- (OKWidgetMapViewProxy)initWithWidget:(id)widget
 {
   v7.receiver = self;
   v7.super_class = OKWidgetMapViewProxy;
-  v3 = [(OKWidgetViewProxy *)&v7 initWithWidget:a3];
+  v3 = [(OKWidgetViewProxy *)&v7 initWithWidget:widget];
   if (v3)
   {
     v4 = [OKMKMapView alloc];
@@ -67,12 +67,12 @@
   [(OKWidgetView *)&v4 dealloc];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(OKWidgetMapViewProxy *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -91,12 +91,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(OKWidgetMapViewProxy *)self frame];
   v9 = v8;
   v11 = v10;
@@ -118,7 +118,7 @@
 + (id)supportedSettings
 {
   v31[11] = *MEMORY[0x277D85DE8];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___OKWidgetMapViewProxy;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v7, sel_supportedSettings)}];
   v30[0] = @"mapType";
@@ -183,9 +183,9 @@
   v12[1] = @"class";
   v13[1] = objc_opt_class();
   v12[2] = @"default";
-  v5 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
   v12[3] = @"priority";
-  v13[2] = v5;
+  v13[2] = null;
   v13[3] = &unk_287AF12B0;
   v31[8] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:4];
   v30[9] = @"showsPointsOfInterest";
@@ -200,20 +200,20 @@
   return v2;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v4.receiver = self;
   v4.super_class = OKWidgetMapViewProxy;
-  return [(OKWidgetViewProxy *)&v4 valueForUndefinedKey:a3];
+  return [(OKWidgetViewProxy *)&v4 valueForUndefinedKey:key];
 }
 
-- (void)setSettingRegion:(id *)a3
+- (void)setSettingRegion:(id *)region
 {
   self->_region.center.latitude = v3;
   self->_region.center.longitude = v4;
   self->_region.span.latitudeDelta = v5;
   self->_region.span.longitudeDelta = v6;
-  [(OKMKMapView *)self->_mapView regionThatFits:a3];
+  [(OKMKMapView *)self->_mapView regionThatFits:region];
   mapView = self->_mapView;
 
   [(OKMKMapView *)mapView setRegion:?];
@@ -227,43 +227,43 @@
   return result;
 }
 
-- (void)setSettingAnnotations:(id)a3
+- (void)setSettingAnnotations:(id)annotations
 {
   [(OKMKMapView *)self->_mapView removeAnnotations:[(OKMKMapView *)self->_mapView annotations]];
-  if (a3)
+  if (annotations)
   {
-    [(OKMKMapView *)self->_mapView addAnnotations:a3];
+    [(OKMKMapView *)self->_mapView addAnnotations:annotations];
     if (self->_zoomToFitAnnotations)
     {
       mapView = self->_mapView;
 
-      [(OKMKMapView *)mapView showAnnotations:a3 animated:0];
+      [(OKMKMapView *)mapView showAnnotations:annotations animated:0];
     }
   }
 }
 
-- (void)setSettingZoomToFitAnnotations:(BOOL)a3
+- (void)setSettingZoomToFitAnnotations:(BOOL)annotations
 {
-  if (self->_zoomToFitAnnotations != a3)
+  if (self->_zoomToFitAnnotations != annotations)
   {
-    self->_zoomToFitAnnotations = a3;
-    if (a3)
+    self->_zoomToFitAnnotations = annotations;
+    if (annotations)
     {
       mapView = self->_mapView;
-      v5 = [(OKMKMapView *)mapView annotations];
+      annotations = [(OKMKMapView *)mapView annotations];
 
-      [(OKMKMapView *)mapView showAnnotations:v5 animated:0];
+      [(OKMKMapView *)mapView showAnnotations:annotations animated:0];
     }
   }
 }
 
-- (void)setAntialiasing:(BOOL)a3
+- (void)setAntialiasing:(BOOL)antialiasing
 {
-  v3 = a3;
+  antialiasingCopy = antialiasing;
   v6.receiver = self;
   v6.super_class = OKWidgetMapViewProxy;
   [(OKWidgetViewProxy *)&v6 setAntialiasing:?];
-  if (v3)
+  if (antialiasingCopy)
   {
     v5 = 15;
   }
@@ -276,38 +276,38 @@
   [-[OKMKMapView layer](self->_mapView "layer")];
 }
 
-- (BOOL)prepareForDisplay:(BOOL)a3
+- (BOOL)prepareForDisplay:(BOOL)display
 {
   v4.receiver = self;
   v4.super_class = OKWidgetMapViewProxy;
-  return [(OKWidgetViewProxy *)&v4 prepareForDisplay:a3];
+  return [(OKWidgetViewProxy *)&v4 prepareForDisplay:display];
 }
 
-- (BOOL)prepareForWarmup:(BOOL)a3
+- (BOOL)prepareForWarmup:(BOOL)warmup
 {
   v4.receiver = self;
   v4.super_class = OKWidgetMapViewProxy;
-  return [(OKWidgetViewProxy *)&v4 prepareForWarmup:a3];
+  return [(OKWidgetViewProxy *)&v4 prepareForWarmup:warmup];
 }
 
-- (BOOL)prepareForUnload:(BOOL)a3
+- (BOOL)prepareForUnload:(BOOL)unload
 {
   v4.receiver = self;
   v4.super_class = OKWidgetMapViewProxy;
-  return [(OKWidgetViewProxy *)&v4 prepareForUnload:a3];
+  return [(OKWidgetViewProxy *)&v4 prepareForUnload:unload];
 }
 
-- (void)mapView:(id)a3 annotationView:(id)a4 calloutAccessoryControlTapped:(id)a5
+- (void)mapView:(id)view annotationView:(id)annotationView calloutAccessoryControlTapped:(id)tapped
 {
-  v6 = [a4 annotation];
-  v7 = [(OKWidgetViewProxy *)self delegate];
-  v8 = [v6 actionScript];
+  annotation = [annotationView annotation];
+  delegate = [(OKWidgetViewProxy *)self delegate];
+  actionScript = [annotation actionScript];
   v9 = MEMORY[0x277CBEC10];
 
-  [(OKWidgetViewDelegate *)v7 evaluateScript:v8 withInfoDictionary:v9 andCompletionBlock:&__block_literal_global_27 forWidgetView:self];
+  [(OKWidgetViewDelegate *)delegate evaluateScript:actionScript withInfoDictionary:v9 andCompletionBlock:&__block_literal_global_27 forWidgetView:self];
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -321,7 +321,7 @@
     return 0;
   }
 
-  if ([a4 actionScript])
+  if ([annotation actionScript])
   {
     v6 = @"MKPinAnnotationView+Actions";
   }
@@ -331,20 +331,20 @@
     v6 = @"MKPinAnnotationView";
   }
 
-  v7 = [a3 dequeueReusableAnnotationViewWithIdentifier:v6];
+  v7 = [view dequeueReusableAnnotationViewWithIdentifier:v6];
   if (v7)
   {
     v8 = v7;
-    [v7 setAnnotation:a4];
+    [v7 setAnnotation:annotation];
   }
 
   else
   {
-    v8 = [objc_alloc(MEMORY[0x277CD4EF0]) initWithAnnotation:a4 reuseIdentifier:v6];
+    v8 = [objc_alloc(MEMORY[0x277CD4EF0]) initWithAnnotation:annotation reuseIdentifier:v6];
     [v8 setPinTintColor:{objc_msgSend(MEMORY[0x277CD4EF0], "redPinColor")}];
     [v8 setAnimatesDrop:0];
     [v8 setCanShowCallout:1];
-    if ([a4 actionScript])
+    if ([annotation actionScript])
     {
       [v8 setRightCalloutAccessoryView:{objc_msgSend(MEMORY[0x277D75220], "buttonWithType:", 2)}];
     }
@@ -353,16 +353,16 @@
   return v8;
 }
 
-- (void)selectAnnotationWithIdentifier:(id)a3 animated:(BOOL)a4
+- (void)selectAnnotationWithIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(OKMKMapView *)self->_mapView annotations];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  annotations = [(OKMKMapView *)self->_mapView annotations];
+  v8 = [annotations countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -373,7 +373,7 @@
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(annotations);
         }
 
         v12 = *(*(&v13 + 1) + 8 * i);
@@ -382,14 +382,14 @@
         {
           if (v12)
           {
-            [(OKMKMapView *)self->_mapView selectAnnotation:v12 animated:v4];
+            [(OKMKMapView *)self->_mapView selectAnnotation:v12 animated:animatedCopy];
           }
 
           return;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [annotations countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v9)
       {
         continue;
@@ -400,17 +400,17 @@
   }
 }
 
-- (void)zoomToAnnotationsWithIdentifiers:(id)a3 animated:(BOOL)a4
+- (void)zoomToAnnotationsWithIdentifiers:(id)identifiers animated:(BOOL)animated
 {
-  v13 = a4;
+  animatedCopy = animated;
   v19 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(OKMKMapView *)self->_mapView annotations];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  annotations = [(OKMKMapView *)self->_mapView annotations];
+  v8 = [annotations countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -422,38 +422,38 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(annotations);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && [a3 containsObject:{objc_msgSend(v12, "identifier")}])
+        if ((objc_opt_isKindOfClass() & 1) != 0 && [identifiers containsObject:{objc_msgSend(v12, "identifier")}])
         {
-          [v6 addObject:v12];
+          [array addObject:v12];
         }
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [annotations countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
   }
 
-  if (v6)
+  if (array)
   {
-    [(OKMKMapView *)self->_mapView showAnnotations:v6 animated:v13];
+    [(OKMKMapView *)self->_mapView showAnnotations:array animated:animatedCopy];
   }
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetMapView"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetMapView"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
 @end

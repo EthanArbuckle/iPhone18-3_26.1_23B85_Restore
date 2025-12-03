@@ -1,22 +1,22 @@
 @interface BKLastOpenBookManager
 + (id)sharedInstance;
-- (BOOL)_lastEngagedDateConsideredActive:(id)a3;
-- (BOOL)lastKnownSuccessfullyOpenedBookForAssetID:(id)a3;
-- (BOOL)shouldAutoOpenAsset:(id)a3;
+- (BOOL)_lastEngagedDateConsideredActive:(id)active;
+- (BOOL)lastKnownSuccessfullyOpenedBookForAssetID:(id)d;
+- (BOOL)shouldAutoOpenAsset:(id)asset;
 - (id)_computeAssetIDForSavingToUserDataLastBookKey;
 - (id)_computeLastSuccessfullyOpenedBookAssetID;
-- (id)_initWithConfiguration:(id)a3;
+- (id)_initWithConfiguration:(id)configuration;
 - (id)_lastKnownSuccessfullyOpenedBookForAssetIDMappings;
 - (unint64_t)_currentBookOpenBehavior;
 - (void)_clearCurrentBookIfNecessary;
 - (void)_updateLastOpenBookUserData;
 - (void)clearAllLastOpenBooks;
 - (void)dealloc;
-- (void)javascriptConfiguration:(id)a3 updatedKeys:(id)a4;
-- (void)removeSucessfullyOpenedBookAssetIDs:(id)a3;
+- (void)javascriptConfiguration:(id)configuration updatedKeys:(id)keys;
+- (void)removeSucessfullyOpenedBookAssetIDs:(id)ds;
 - (void)saveCurrentBookState;
-- (void)updateLastOpenBookByRemovingAssetID:(id)a3 addingAssetID:(id)a4;
-- (void)updateSuccessfullyOpenedBookForAssetID:(id)a3 successfullyOpenedBook:(BOOL)a4;
+- (void)updateLastOpenBookByRemovingAssetID:(id)d addingAssetID:(id)iD;
+- (void)updateSuccessfullyOpenedBookForAssetID:(id)d successfullyOpenedBook:(BOOL)book;
 @end
 
 @implementation BKLastOpenBookManager
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = sub_100026A70;
   block[3] = &unk_100A03560;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100AF7738 != -1)
   {
     dispatch_once(&qword_100AF7738, block);
@@ -58,17 +58,17 @@
   return v5;
 }
 
-- (id)_initWithConfiguration:(id)a3
+- (id)_initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = BKLastOpenBookManager;
   v6 = [(BKLastOpenBookManager *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
-    [v5 addObserver:v7];
+    objc_storeStrong(&v6->_config, configuration);
+    [configurationCopy addObserver:v7];
     v8 = objc_opt_new();
     openResultTracker = v7->_openResultTracker;
     v7->_openResultTracker = v8;
@@ -77,8 +77,8 @@
     lastOpenedBookAssetIDs = v7->_lastOpenedBookAssetIDs;
     v7->_lastOpenedBookAssetIDs = v10;
 
-    v12 = [(BKLastOpenBookManager *)v7 _lastKnownSuccessfullyOpenedBookForAssetIDMappings];
-    v13 = [v12 mutableCopy];
+    _lastKnownSuccessfullyOpenedBookForAssetIDMappings = [(BKLastOpenBookManager *)v7 _lastKnownSuccessfullyOpenedBookForAssetIDMappings];
+    v13 = [_lastKnownSuccessfullyOpenedBookForAssetIDMappings mutableCopy];
     sucessfullyOpenedBookForAssetID = v7->_sucessfullyOpenedBookForAssetID;
     v7->_sucessfullyOpenedBookForAssetID = v13;
   }
@@ -88,8 +88,8 @@
 
 - (void)dealloc
 {
-  v3 = [(BKLastOpenBookManager *)self config];
-  [v3 removeObserver:self];
+  config = [(BKLastOpenBookManager *)self config];
+  [config removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = BKLastOpenBookManager;
@@ -103,15 +103,15 @@
   [v2 setObject:v3 forKey:@"BKApplicationDidEnterBackgroundTimeKey"];
 }
 
-- (BOOL)_lastEngagedDateConsideredActive:(id)a3
+- (BOOL)_lastEngagedDateConsideredActive:(id)active
 {
-  v4 = a3;
-  v5 = [(BKLastOpenBookManager *)self config];
-  v6 = v5;
-  if (v4)
+  activeCopy = active;
+  config = [(BKLastOpenBookManager *)self config];
+  v6 = config;
+  if (activeCopy)
   {
-    v7 = [v5 dateRequiredForActiveBook];
-    v8 = [v7 compare:v4] != 1;
+    dateRequiredForActiveBook = [config dateRequiredForActiveBook];
+    v8 = [dateRequiredForActiveBook compare:activeCopy] != 1;
   }
 
   else
@@ -125,12 +125,12 @@
 - (unint64_t)_currentBookOpenBehavior
 {
   v3 = +[NSDate date];
-  v4 = [(BKLastOpenBookManager *)self config];
-  v5 = [v4 dateSinceLastActiveOverride];
-  v6 = v5;
-  if (v5)
+  config = [(BKLastOpenBookManager *)self config];
+  dateSinceLastActiveOverride = [config dateSinceLastActiveOverride];
+  v6 = dateSinceLastActiveOverride;
+  if (dateSinceLastActiveOverride)
   {
-    v7 = v5;
+    v7 = dateSinceLastActiveOverride;
   }
 
   else
@@ -144,16 +144,16 @@
 
   [v3 timeIntervalSinceDate:v7];
   v12 = v11;
-  v13 = [(BKLastOpenBookManager *)self config];
-  [v13 openBookDefaultBehaviorOverride];
+  config2 = [(BKLastOpenBookManager *)self config];
+  [config2 openBookDefaultBehaviorOverride];
   v15 = v14;
 
-  v16 = [(BKLastOpenBookManager *)self config];
-  [v16 openBookOpenBehaviorOverride];
+  config3 = [(BKLastOpenBookManager *)self config];
+  [config3 openBookOpenBehaviorOverride];
   v18 = v17;
 
-  v19 = [(BKLastOpenBookManager *)self config];
-  [v19 openBookClosedSpreadBehaviorOverride];
+  config4 = [(BKLastOpenBookManager *)self config];
+  [config4 openBookClosedSpreadBehaviorOverride];
   v21 = v20;
 
   if (v7)
@@ -202,7 +202,7 @@
   }
 }
 
-- (void)javascriptConfiguration:(id)a3 updatedKeys:(id)a4
+- (void)javascriptConfiguration:(id)configuration updatedKeys:(id)keys
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -235,10 +235,10 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(BKLastOpenBookManager *)self lastOpenedBookAssetIDs];
-  v4 = [v3 reverseObjectEnumerator];
+  lastOpenedBookAssetIDs = [(BKLastOpenBookManager *)self lastOpenedBookAssetIDs];
+  reverseObjectEnumerator = [lastOpenedBookAssetIDs reverseObjectEnumerator];
 
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -249,22 +249,22 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [(BKLastOpenBookManager *)self sucessfullyOpenedBookForAssetID];
-        v11 = [v10 objectForKeyedSubscript:v9];
-        v12 = [v11 BOOLValue];
+        sucessfullyOpenedBookForAssetID = [(BKLastOpenBookManager *)self sucessfullyOpenedBookForAssetID];
+        v11 = [sucessfullyOpenedBookForAssetID objectForKeyedSubscript:v9];
+        bOOLValue = [v11 BOOLValue];
 
-        if (v12)
+        if (bOOLValue)
         {
           v13 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -282,47 +282,47 @@ LABEL_11:
 
 - (id)_computeAssetIDForSavingToUserDataLastBookKey
 {
-  v3 = [(BKLastOpenBookManager *)self _computeLastSuccessfullyOpenedBookAssetID];
-  if (!v3)
+  _computeLastSuccessfullyOpenedBookAssetID = [(BKLastOpenBookManager *)self _computeLastSuccessfullyOpenedBookAssetID];
+  if (!_computeLastSuccessfullyOpenedBookAssetID)
   {
-    v4 = [(BKLastOpenBookManager *)self lastOpenedBookAssetIDs];
-    v3 = [v4 lastObject];
+    lastOpenedBookAssetIDs = [(BKLastOpenBookManager *)self lastOpenedBookAssetIDs];
+    _computeLastSuccessfullyOpenedBookAssetID = [lastOpenedBookAssetIDs lastObject];
   }
 
-  return v3;
+  return _computeLastSuccessfullyOpenedBookAssetID;
 }
 
 - (void)_updateLastOpenBookUserData
 {
-  v3 = [(BKLastOpenBookManager *)self _computeAssetIDForSavingToUserDataLastBookKey];
-  if (v3)
+  _computeAssetIDForSavingToUserDataLastBookKey = [(BKLastOpenBookManager *)self _computeAssetIDForSavingToUserDataLastBookKey];
+  if (_computeAssetIDForSavingToUserDataLastBookKey)
   {
-    v4 = [(BKLastOpenBookManager *)self sucessfullyOpenedBookForAssetID];
-    v5 = [v4 objectForKeyedSubscript:v3];
-    v6 = [v5 BOOLValue];
+    sucessfullyOpenedBookForAssetID = [(BKLastOpenBookManager *)self sucessfullyOpenedBookForAssetID];
+    v5 = [sucessfullyOpenedBookForAssetID objectForKeyedSubscript:_computeAssetIDForSavingToUserDataLastBookKey];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
   v7 = BCSceneLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = v3;
+    v12 = _computeAssetIDForSavingToUserDataLastBookKey;
     v13 = 1024;
-    v14 = v6;
+    v14 = bOOLValue;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Scene update last open book ID to %{public}@, successful? %d", &v11, 0x12u);
   }
 
   v8 = +[NSUserDefaults standardUserDefaults];
   v9 = v8;
-  if (v3)
+  if (_computeAssetIDForSavingToUserDataLastBookKey)
   {
-    [v8 setObject:v3 forKey:@"BKMainViewControllerLastBook"];
-    [v9 setBool:v6 forKey:@"BKMainViewControllerSuccessfullyOpenedBook"];
+    [v8 setObject:_computeAssetIDForSavingToUserDataLastBookKey forKey:@"BKMainViewControllerLastBook"];
+    [v9 setBool:bOOLValue forKey:@"BKMainViewControllerSuccessfullyOpenedBook"];
   }
 
   else
@@ -331,98 +331,98 @@ LABEL_11:
     [v9 removeObjectForKey:@"BKMainViewControllerSuccessfullyOpenedBook"];
   }
 
-  v10 = [(BKLastOpenBookManager *)self sucessfullyOpenedBookForAssetID];
-  [v9 setObject:v10 forKey:@"BKSuccessfullyOpenedBookForAssetIDMappings"];
+  sucessfullyOpenedBookForAssetID2 = [(BKLastOpenBookManager *)self sucessfullyOpenedBookForAssetID];
+  [v9 setObject:sucessfullyOpenedBookForAssetID2 forKey:@"BKSuccessfullyOpenedBookForAssetIDMappings"];
 
   [v9 synchronize];
 }
 
-- (void)updateLastOpenBookByRemovingAssetID:(id)a3 addingAssetID:(id)a4
+- (void)updateLastOpenBookByRemovingAssetID:(id)d addingAssetID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v8 = BCSceneLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543618;
-    v15 = v6;
+    v15 = dCopy;
     v16 = 2114;
-    v17 = v7;
+    v17 = iDCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Scene removing last open book ID=%{public}@, adding ID=%{public}@", &v14, 0x16u);
   }
 
-  if (v6)
+  if (dCopy)
   {
-    v9 = [(BKLastOpenBookManager *)self lastOpenedBookAssetIDs];
-    [v9 removeObject:v6];
+    lastOpenedBookAssetIDs = [(BKLastOpenBookManager *)self lastOpenedBookAssetIDs];
+    [lastOpenedBookAssetIDs removeObject:dCopy];
 
-    v10 = [(BKLastOpenBookManager *)self sucessfullyOpenedBookForAssetID];
-    [v10 removeObjectForKey:v6];
+    sucessfullyOpenedBookForAssetID = [(BKLastOpenBookManager *)self sucessfullyOpenedBookForAssetID];
+    [sucessfullyOpenedBookForAssetID removeObjectForKey:dCopy];
   }
 
-  if (v7)
+  if (iDCopy)
   {
-    v11 = [(BKLastOpenBookManager *)self lastOpenedBookAssetIDs];
-    v12 = [v11 containsObject:v7];
+    lastOpenedBookAssetIDs2 = [(BKLastOpenBookManager *)self lastOpenedBookAssetIDs];
+    v12 = [lastOpenedBookAssetIDs2 containsObject:iDCopy];
 
     if ((v12 & 1) == 0)
     {
-      v13 = [(BKLastOpenBookManager *)self lastOpenedBookAssetIDs];
-      [v13 addObject:v7];
+      lastOpenedBookAssetIDs3 = [(BKLastOpenBookManager *)self lastOpenedBookAssetIDs];
+      [lastOpenedBookAssetIDs3 addObject:iDCopy];
     }
   }
 
   [(BKLastOpenBookManager *)self _updateLastOpenBookUserData];
 }
 
-- (void)updateSuccessfullyOpenedBookForAssetID:(id)a3 successfullyOpenedBook:(BOOL)a4
+- (void)updateSuccessfullyOpenedBookForAssetID:(id)d successfullyOpenedBook:(BOOL)book
 {
-  v4 = a4;
-  v9 = a3;
-  if ([v9 length])
+  bookCopy = book;
+  dCopy = d;
+  if ([dCopy length])
   {
     openResultTracker = self->_openResultTracker;
-    if (v4)
+    if (bookCopy)
     {
-      [(BKRecentBookOpenResultTracker *)openResultTracker openDidFinishForAsset:v9];
+      [(BKRecentBookOpenResultTracker *)openResultTracker openDidFinishForAsset:dCopy];
     }
 
     else
     {
-      [(BKRecentBookOpenResultTracker *)openResultTracker openDidStartForAsset:v9];
+      [(BKRecentBookOpenResultTracker *)openResultTracker openDidStartForAsset:dCopy];
     }
   }
 
-  v7 = [NSNumber numberWithBool:v4];
-  v8 = [(BKLastOpenBookManager *)self sucessfullyOpenedBookForAssetID];
-  [v8 setObject:v7 forKeyedSubscript:v9];
+  v7 = [NSNumber numberWithBool:bookCopy];
+  sucessfullyOpenedBookForAssetID = [(BKLastOpenBookManager *)self sucessfullyOpenedBookForAssetID];
+  [sucessfullyOpenedBookForAssetID setObject:v7 forKeyedSubscript:dCopy];
 
   [(BKLastOpenBookManager *)self _updateLastOpenBookUserData];
 }
 
-- (void)removeSucessfullyOpenedBookAssetIDs:(id)a3
+- (void)removeSucessfullyOpenedBookAssetIDs:(id)ds
 {
-  v9 = a3;
+  dsCopy = ds;
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 objectForKey:@"BKMainViewControllerLastBook"];
-  if ([v5 length] && objc_msgSend(v9, "containsObject:", v5))
+  if ([v5 length] && objc_msgSend(dsCopy, "containsObject:", v5))
   {
     [v4 removeObjectForKey:@"BKMainViewControllerSuccessfullyOpenedBook"];
   }
 
-  v6 = [(BKLastOpenBookManager *)self sucessfullyOpenedBookForAssetID];
-  v7 = [v9 allObjects];
-  [v6 removeObjectsForKeys:v7];
+  sucessfullyOpenedBookForAssetID = [(BKLastOpenBookManager *)self sucessfullyOpenedBookForAssetID];
+  allObjects = [dsCopy allObjects];
+  [sucessfullyOpenedBookForAssetID removeObjectsForKeys:allObjects];
 
-  v8 = [(BKLastOpenBookManager *)self sucessfullyOpenedBookForAssetID];
-  [v4 setObject:v8 forKey:@"BKSuccessfullyOpenedBookForAssetIDMappings"];
+  sucessfullyOpenedBookForAssetID2 = [(BKLastOpenBookManager *)self sucessfullyOpenedBookForAssetID];
+  [v4 setObject:sucessfullyOpenedBookForAssetID2 forKey:@"BKSuccessfullyOpenedBookForAssetIDMappings"];
 
   [v4 synchronize];
 }
 
-- (BOOL)shouldAutoOpenAsset:(id)a3
+- (BOOL)shouldAutoOpenAsset:(id)asset
 {
-  v3 = [(BKRecentBookOpenResultTracker *)self->_openResultTracker shouldAutoOpenAsset:a3];
+  v3 = [(BKRecentBookOpenResultTracker *)self->_openResultTracker shouldAutoOpenAsset:asset];
   v4 = BCCurrentBookLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -434,23 +434,23 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)lastKnownSuccessfullyOpenedBookForAssetID:(id)a3
+- (BOOL)lastKnownSuccessfullyOpenedBookForAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [(BKLastOpenBookManager *)self _lastKnownSuccessfullyOpenedBookForAssetIDMappings];
-  v6 = v5;
-  if (v5)
+  dCopy = d;
+  _lastKnownSuccessfullyOpenedBookForAssetIDMappings = [(BKLastOpenBookManager *)self _lastKnownSuccessfullyOpenedBookForAssetIDMappings];
+  v6 = _lastKnownSuccessfullyOpenedBookForAssetIDMappings;
+  if (_lastKnownSuccessfullyOpenedBookForAssetIDMappings)
   {
-    v7 = [v5 objectForKeyedSubscript:v4];
-    v8 = [v7 BOOLValue];
+    v7 = [_lastKnownSuccessfullyOpenedBookForAssetIDMappings objectForKeyedSubscript:dCopy];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 - (void)clearAllLastOpenBooks
@@ -462,8 +462,8 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Clearing all known last open books", v5, 2u);
   }
 
-  v4 = [(BKLastOpenBookManager *)self lastOpenedBookAssetIDs];
-  [v4 removeAllObjects];
+  lastOpenedBookAssetIDs = [(BKLastOpenBookManager *)self lastOpenedBookAssetIDs];
+  [lastOpenedBookAssetIDs removeAllObjects];
 
   [(BKLastOpenBookManager *)self _updateLastOpenBookUserData];
 }

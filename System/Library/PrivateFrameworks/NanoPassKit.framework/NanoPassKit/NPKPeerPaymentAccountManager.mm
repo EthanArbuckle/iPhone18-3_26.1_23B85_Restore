@@ -1,6 +1,6 @@
 @interface NPKPeerPaymentAccountManager
 + (id)sharedInstance;
-- (NPKPeerPaymentAccountManager)initWithPeerPaymentService:(id)a3;
+- (NPKPeerPaymentAccountManager)initWithPeerPaymentService:(id)service;
 - (void)_updateAccount;
 @end
 
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __46__NPKPeerPaymentAccountManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_4 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_4, block);
@@ -31,17 +31,17 @@ void __46__NPKPeerPaymentAccountManager_sharedInstance__block_invoke(uint64_t a1
   sharedInstance_sharedInstance_2 = v2;
 }
 
-- (NPKPeerPaymentAccountManager)initWithPeerPaymentService:(id)a3
+- (NPKPeerPaymentAccountManager)initWithPeerPaymentService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v13.receiver = self;
   v13.super_class = NPKPeerPaymentAccountManager;
   v5 = [(NPKPeerPaymentAccountManager *)&v13 init];
   if (v5)
   {
-    if (v4)
+    if (serviceCopy)
     {
-      v6 = v4;
+      v6 = serviceCopy;
       peerPaymentService = v5->_peerPaymentService;
       v5->_peerPaymentService = v6;
     }
@@ -49,16 +49,16 @@ void __46__NPKPeerPaymentAccountManager_sharedInstance__block_invoke(uint64_t a1
     else
     {
       peerPaymentService = [MEMORY[0x277D381B0] sharedService];
-      v8 = [peerPaymentService peerPaymentService];
+      peerPaymentService = [peerPaymentService peerPaymentService];
       v9 = v5->_peerPaymentService;
-      v5->_peerPaymentService = v8;
+      v5->_peerPaymentService = peerPaymentService;
     }
 
-    v10 = [(PKPeerPaymentService *)v5->_peerPaymentService account];
-    [(NPKPeerPaymentAccountManager *)v5 setAccount:v10];
+    account = [(PKPeerPaymentService *)v5->_peerPaymentService account];
+    [(NPKPeerPaymentAccountManager *)v5 setAccount:account];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v5 selector:sel__handleAccountChanged_ name:*MEMORY[0x277D38968] object:v5->_peerPaymentService];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__handleAccountChanged_ name:*MEMORY[0x277D38968] object:v5->_peerPaymentService];
 
     [(NPKPeerPaymentAccountManager *)v5 _updateAccount];
   }
@@ -68,13 +68,13 @@ void __46__NPKPeerPaymentAccountManager_sharedInstance__block_invoke(uint64_t a1
 
 - (void)_updateAccount
 {
-  v3 = [(NPKPeerPaymentAccountManager *)self peerPaymentService];
+  peerPaymentService = [(NPKPeerPaymentAccountManager *)self peerPaymentService];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __46__NPKPeerPaymentAccountManager__updateAccount__block_invoke;
   v4[3] = &unk_279947C58;
   v4[4] = self;
-  [v3 accountWithCompletion:v4];
+  [peerPaymentService accountWithCompletion:v4];
 }
 
 void __46__NPKPeerPaymentAccountManager__updateAccount__block_invoke(uint64_t a1, uint64_t a2)

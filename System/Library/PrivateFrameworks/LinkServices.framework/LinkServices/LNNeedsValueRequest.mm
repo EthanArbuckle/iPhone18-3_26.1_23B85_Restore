@@ -1,21 +1,21 @@
 @interface LNNeedsValueRequest
-- (LNNeedsValueRequest)initWithCoder:(id)a3;
-- (LNNeedsValueRequest)initWithIdentifier:(id)a3 parameterName:(id)a4 dialog:(id)a5 viewSnippet:(id)a6;
-- (void)encodeWithCoder:(id)a3;
-- (void)respondWithError:(id)a3;
-- (void)respondWithUpdates:(id)a3;
-- (void)respondWithValue:(id)a3;
+- (LNNeedsValueRequest)initWithCoder:(id)coder;
+- (LNNeedsValueRequest)initWithIdentifier:(id)identifier parameterName:(id)name dialog:(id)dialog viewSnippet:(id)snippet;
+- (void)encodeWithCoder:(id)coder;
+- (void)respondWithError:(id)error;
+- (void)respondWithUpdates:(id)updates;
+- (void)respondWithValue:(id)value;
 @end
 
 @implementation LNNeedsValueRequest
 
-- (LNNeedsValueRequest)initWithCoder:(id)a3
+- (LNNeedsValueRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterName"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dialog"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"viewSnippet"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dialog"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"viewSnippet"];
 
   if (v5)
   {
@@ -29,43 +29,43 @@
 
   if (v9)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LNNeedsValueRequest *)self initWithIdentifier:v5 parameterName:v6 dialog:v7 viewSnippet:v8];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNNeedsValueRequest *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNNeedsValueRequest *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(LNNeedsValueRequest *)self parameterName];
-  [v4 encodeObject:v6 forKey:@"parameterName"];
+  parameterName = [(LNNeedsValueRequest *)self parameterName];
+  [coderCopy encodeObject:parameterName forKey:@"parameterName"];
 
-  v7 = [(LNNeedsValueRequest *)self dialog];
-  [v4 encodeObject:v7 forKey:@"dialog"];
+  dialog = [(LNNeedsValueRequest *)self dialog];
+  [coderCopy encodeObject:dialog forKey:@"dialog"];
 
-  v8 = [(LNNeedsValueRequest *)self viewSnippet];
-  [v4 encodeObject:v8 forKey:@"viewSnippet"];
+  viewSnippet = [(LNNeedsValueRequest *)self viewSnippet];
+  [coderCopy encodeObject:viewSnippet forKey:@"viewSnippet"];
 }
 
-- (void)respondWithError:(id)a3
+- (void)respondWithError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    v6 = [(LNRequest *)self responseContext];
-    v7 = [v4 errorWithResponseContext:v6];
+    responseContext = [(LNRequest *)self responseContext];
+    v7 = [errorCopy errorWithResponseContext:responseContext];
     completionHandler[2](completionHandler, 0, v7);
 
     v8 = self->_completionHandler;
@@ -78,27 +78,27 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = objc_opt_class();
-      v11 = [(LNNeedsValueRequest *)self identifier];
+      identifier = [(LNNeedsValueRequest *)self identifier];
       v13 = 138543618;
       v14 = v10;
       v15 = 2114;
-      v16 = v11;
+      v16 = identifier;
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)respondWithUpdates:(id)a3
+- (void)respondWithUpdates:(id)updates
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatesCopy = updates;
   if (self->_completionHandler)
   {
     v5 = [LNNeedsValueResponse alloc];
-    v6 = [(LNNeedsValueRequest *)self identifier];
-    v7 = [(LNRequest *)self responseContext];
-    v8 = [(LNNeedsValueResponse *)v5 initWithIdentifier:v6 context:v7 value:0 updates:v4];
+    identifier = [(LNNeedsValueRequest *)self identifier];
+    responseContext = [(LNRequest *)self responseContext];
+    v8 = [(LNNeedsValueResponse *)v5 initWithIdentifier:identifier context:responseContext value:0 updates:updatesCopy];
 
     (*(self->_completionHandler + 2))();
     completionHandler = self->_completionHandler;
@@ -111,27 +111,27 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v10 = objc_opt_class();
-      v11 = [(LNNeedsValueRequest *)self identifier];
+      identifier2 = [(LNNeedsValueRequest *)self identifier];
       v13 = 138543618;
       v14 = v10;
       v15 = 2114;
-      v16 = v11;
+      v16 = identifier2;
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)respondWithValue:(id)a3
+- (void)respondWithValue:(id)value
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valueCopy = value;
   if (self->_completionHandler)
   {
     v5 = [LNNeedsValueResponse alloc];
-    v6 = [(LNNeedsValueRequest *)self identifier];
-    v7 = [(LNRequest *)self responseContext];
-    v8 = [(LNNeedsValueResponse *)v5 initWithIdentifier:v6 context:v7 value:v4 updates:0];
+    identifier = [(LNNeedsValueRequest *)self identifier];
+    responseContext = [(LNRequest *)self responseContext];
+    v8 = [(LNNeedsValueResponse *)v5 initWithIdentifier:identifier context:responseContext value:valueCopy updates:0];
 
     (*(self->_completionHandler + 2))();
     completionHandler = self->_completionHandler;
@@ -144,26 +144,26 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v10 = objc_opt_class();
-      v11 = [(LNNeedsValueRequest *)self identifier];
+      identifier2 = [(LNNeedsValueRequest *)self identifier];
       v13 = 138543618;
       v14 = v10;
       v15 = 2114;
-      v16 = v11;
+      v16 = identifier2;
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (LNNeedsValueRequest)initWithIdentifier:(id)a3 parameterName:(id)a4 dialog:(id)a5 viewSnippet:(id)a6
+- (LNNeedsValueRequest)initWithIdentifier:(id)identifier parameterName:(id)name dialog:(id)dialog viewSnippet:(id)snippet
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  identifierCopy = identifier;
+  nameCopy = name;
+  dialogCopy = dialog;
+  snippetCopy = snippet;
+  if (identifierCopy)
   {
-    if (v13)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -171,17 +171,17 @@
 
   else
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"LNNeedsValueRequest.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNNeedsValueRequest.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
-    if (v13)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"LNNeedsValueRequest.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"parameterName"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNNeedsValueRequest.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"parameterName"}];
 
 LABEL_3:
   v27.receiver = self;
@@ -190,13 +190,13 @@ LABEL_3:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_identifier, a3);
-    objc_storeStrong(&v17->_parameterName, a4);
-    v18 = [v14 copy];
+    objc_storeStrong(&v16->_identifier, identifier);
+    objc_storeStrong(&v17->_parameterName, name);
+    v18 = [dialogCopy copy];
     dialog = v17->_dialog;
     v17->_dialog = v18;
 
-    v20 = [v15 copy];
+    v20 = [snippetCopy copy];
     viewSnippet = v17->_viewSnippet;
     v17->_viewSnippet = v20;
 

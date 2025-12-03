@@ -1,32 +1,32 @@
 @interface MCBookmark
-- (BOOL)isEqual:(id)a3;
-- (MCBookmark)initWithSerializableDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MCBookmark)initWithSerializableDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)serializableDictionary;
 @end
 
 @implementation MCBookmark
 
-- (MCBookmark)initWithSerializableDictionary:(id)a3
+- (MCBookmark)initWithSerializableDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = MCBookmark;
   v5 = [(MCBookmark *)&v15 init];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFF8];
-    v7 = [v4 objectForKeyedSubscript:@"address"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"address"];
     v8 = [v6 URLWithString:v7];
     URL = v5->_URL;
     v5->_URL = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"pageTitle"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"pageTitle"];
     title = v5->_title;
     v5->_title = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"bookmarkPath"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"bookmarkPath"];
     path = v5->_path;
     v5->_path = v12;
   }
@@ -36,40 +36,40 @@
 
 - (id)serializableDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [(MCBookmark *)self URL];
 
   if (v4)
   {
     v5 = [(MCBookmark *)self URL];
-    v6 = [v5 absoluteString];
-    [v3 setObject:v6 forKeyedSubscript:@"address"];
+    absoluteString = [v5 absoluteString];
+    [dictionary setObject:absoluteString forKeyedSubscript:@"address"];
   }
 
-  v7 = [(MCBookmark *)self title];
+  title = [(MCBookmark *)self title];
 
-  if (v7)
+  if (title)
   {
-    v8 = [(MCBookmark *)self title];
-    [v3 setObject:v8 forKeyedSubscript:@"pageTitle"];
+    title2 = [(MCBookmark *)self title];
+    [dictionary setObject:title2 forKeyedSubscript:@"pageTitle"];
   }
 
-  v9 = [(MCBookmark *)self path];
+  path = [(MCBookmark *)self path];
 
-  if (v9)
+  if (path)
   {
-    v10 = [(MCBookmark *)self path];
-    [v3 setObject:v10 forKeyedSubscript:@"bookmarkPath"];
+    path2 = [(MCBookmark *)self path];
+    [dictionary setObject:path2 forKeyedSubscript:@"bookmarkPath"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MCBookmark alloc];
-  v5 = [(MCBookmark *)self serializableDictionary];
-  v6 = [(MCBookmark *)v4 initWithSerializableDictionary:v5];
+  serializableDictionary = [(MCBookmark *)self serializableDictionary];
+  v6 = [(MCBookmark *)v4 initWithSerializableDictionary:serializableDictionary];
 
   return v6;
 }
@@ -89,32 +89,32 @@
     [v4 appendFormat:@", URL: %@", v6];
   }
 
-  v7 = [(MCBookmark *)self title];
+  title = [(MCBookmark *)self title];
 
-  if (v7)
+  if (title)
   {
-    v8 = [(MCBookmark *)self title];
-    [v4 appendFormat:@", Title: %@", v8];
+    title2 = [(MCBookmark *)self title];
+    [v4 appendFormat:@", Title: %@", title2];
   }
 
-  v9 = [(MCBookmark *)self path];
+  path = [(MCBookmark *)self path];
 
-  if (v9)
+  if (path)
   {
-    v10 = [(MCBookmark *)self path];
-    [v4 appendFormat:@", Path: %@", v10];
+    path2 = [(MCBookmark *)self path];
+    [v4 appendFormat:@", Path: %@", path2];
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = equalCopy;
     v8 = [(MCBookmark *)self URL];
     v9 = [v7 URL];
     if (v8 != v9)
@@ -128,32 +128,32 @@
       }
     }
 
-    v11 = [(MCBookmark *)self title];
-    v12 = [v7 title];
-    v13 = v12;
-    if (v11 == v12)
+    title = [(MCBookmark *)self title];
+    title2 = [v7 title];
+    v13 = title2;
+    if (title == title2)
     {
-      v28 = v12;
+      v28 = title2;
     }
 
     else
     {
-      v14 = [(MCBookmark *)self title];
-      v27 = [v7 title];
-      if (![v14 isEqualToString:?])
+      title3 = [(MCBookmark *)self title];
+      title4 = [v7 title];
+      if (![title3 isEqualToString:?])
       {
         v10 = 0;
         goto LABEL_15;
       }
 
-      v26 = v14;
+      v26 = title3;
       v28 = v13;
     }
 
-    v15 = [(MCBookmark *)self path];
-    v16 = [v7 path];
-    v17 = v16;
-    if (v15 == v16)
+    path = [(MCBookmark *)self path];
+    path2 = [v7 path];
+    v17 = path2;
+    if (path == path2)
     {
 
       v10 = 1;
@@ -164,7 +164,7 @@
       [(MCBookmark *)self path];
       v18 = v25 = v3;
       [v7 path];
-      v24 = v11;
+      v24 = title;
       v19 = v4;
       v20 = v9;
       v22 = v21 = v8;
@@ -173,14 +173,14 @@
       v8 = v21;
       v9 = v20;
       v4 = v19;
-      v11 = v24;
+      title = v24;
 
       v3 = v25;
     }
 
     v13 = v28;
-    v14 = v26;
-    if (v11 == v28)
+    title3 = v26;
+    if (title == v28)
     {
 LABEL_16:
 
@@ -203,7 +203,7 @@ LABEL_15:
 
   v29.receiver = self;
   v29.super_class = MCBookmark;
-  v10 = [(MCBookmark *)&v29 isEqual:v6];
+  v10 = [(MCBookmark *)&v29 isEqual:equalCopy];
 LABEL_19:
 
   return v10;

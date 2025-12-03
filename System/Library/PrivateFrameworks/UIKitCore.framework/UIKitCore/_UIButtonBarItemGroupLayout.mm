@@ -1,25 +1,25 @@
 @interface _UIButtonBarItemGroupLayout
 - (BOOL)isSpaceLayout;
-- (BOOL)shouldHorizontallyCenterView:(id)a3;
-- (_UIButtonBarItemGroupLayout)initWithLayoutMetrics:(id)a3;
-- (_UIButtonBarItemGroupLayout)initWithLayoutMetrics:(id)a3 barButtonItemGroup:(id)a4;
-- (double)minimumLayoutWidthGivenMinimumSpaceWidth:(double)a3;
-- (id)_newLayoutForBarButtonItem:(id)a3 useGroupSizing:(BOOL)a4;
+- (BOOL)shouldHorizontallyCenterView:(id)view;
+- (_UIButtonBarItemGroupLayout)initWithLayoutMetrics:(id)metrics;
+- (_UIButtonBarItemGroupLayout)initWithLayoutMetrics:(id)metrics barButtonItemGroup:(id)group;
+- (double)minimumLayoutWidthGivenMinimumSpaceWidth:(double)width;
+- (id)_newLayoutForBarButtonItem:(id)item useGroupSizing:(BOOL)sizing;
 - (id)description;
-- (id)layoutForBarButtonItem:(id)a3;
-- (id)layoutsForSpacerItem:(id)a3;
+- (id)layoutForBarButtonItem:(id)item;
+- (id)layoutsForSpacerItem:(id)item;
 - (id)subLayouts;
-- (void)_addConstraintsToActivate:(id)a3 toDeactivate:(id)a4;
-- (void)_addLayoutGuides:(id)a3;
-- (void)_addLayoutViews:(id)a3;
+- (void)_addConstraintsToActivate:(id)activate toDeactivate:(id)deactivate;
+- (void)_addLayoutGuides:(id)guides;
+- (void)_addLayoutViews:(id)views;
 - (void)_configure;
-- (void)_iterateConfiguredLayouts:(id)a3;
-- (void)dirtyLayoutForPlainAppearanceChange:(BOOL)a3 doneAppearanceChanged:(BOOL)a4;
-- (void)recalculateLayoutWidthsGivenItemSpaceWidth:(double)a3;
-- (void)setLeadingSpacerType:(int64_t)a3;
-- (void)setSuppressCustomSpacing:(BOOL)a3;
-- (void)setSuppressSpacing:(BOOL)a3;
-- (void)setUseGroupSizing:(BOOL)a3;
+- (void)_iterateConfiguredLayouts:(id)layouts;
+- (void)dirtyLayoutForPlainAppearanceChange:(BOOL)change doneAppearanceChanged:(BOOL)changed;
+- (void)recalculateLayoutWidthsGivenItemSpaceWidth:(double)width;
+- (void)setLeadingSpacerType:(int64_t)type;
+- (void)setSuppressCustomSpacing:(BOOL)spacing;
+- (void)setSuppressSpacing:(BOOL)spacing;
+- (void)setUseGroupSizing:(BOOL)sizing;
 @end
 
 @implementation _UIButtonBarItemGroupLayout
@@ -30,7 +30,7 @@
   v3 = 32;
   [(NSMutableArray *)self->_itemLayouts removeAllObjects];
   [(NSMutableArray *)self->_configuredItemLayouts removeAllObjects];
-  v4 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   if ([(UIBarButtonItemGroup *)self->_group _canCollapse]&& ([(UIBarButtonItemGroup *)self->_group representativeItem], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
@@ -44,7 +44,7 @@
       v10 = self->_representativeLayout;
       self->_representativeLayout = v9;
 
-      [v4 setObject:self->_representativeLayout forKey:v6];
+      [strongToStrongObjectsMapTable setObject:self->_representativeLayout forKey:v6];
     }
   }
 
@@ -85,9 +85,9 @@
       }
 
       v17 = *(*(&v36 + 1) + 8 * i);
-      v18 = [v17 isSpaceItem];
+      isSpaceItem = [v17 isSpaceItem];
       v19 = v15[197];
-      if (v18)
+      if (isSpaceItem)
       {
         [*(&self->super.super.isa + v19) removeObjectForKey:v17];
       }
@@ -98,14 +98,14 @@
         v20 = [(_UIButtonBarItemGroupLayout *)self _newLayoutForBarButtonItem:v17 useGroupSizing:self->_useGroupSizing];
       }
 
-      [v4 setObject:v20 forKey:v17];
+      [strongToStrongObjectsMapTable setObject:v20 forKey:v17];
       [*(&self->super.super.isa + v3) addObject:v20];
       [v20 setDirty:1];
       if (([v17 isHidden] & 1) == 0)
       {
         v21 = v15;
         v22 = v3;
-        v23 = v4;
+        v23 = strongToStrongObjectsMapTable;
         if (self->_suppressSpacing || self->_suppressCustomSpacing)
         {
           if (([v17 isSpaceItem] & 1) == 0)
@@ -129,8 +129,8 @@
           }
 
 LABEL_23:
-          v25 = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics _upcastIfReadOnly];
-          v26 = [_UIButtonBarSpacerLayout spacerForLayoutMetrics:v25 betweenLayout:v35 andLayout:v20];
+          _upcastIfReadOnly = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics _upcastIfReadOnly];
+          v26 = [_UIButtonBarSpacerLayout spacerForLayoutMetrics:_upcastIfReadOnly betweenLayout:v35 andLayout:v20];
 
           v24 = v35;
           if (v26)
@@ -145,7 +145,7 @@ LABEL_25:
           v35 = v27;
         }
 
-        v4 = v23;
+        strongToStrongObjectsMapTable = v23;
         v3 = v22;
         v15 = v21;
         v14 = v33;
@@ -157,12 +157,12 @@ LABEL_25:
 
   while (v13);
 LABEL_31:
-  objc_storeStrong((&self->super.super.isa + v19), v4);
+  objc_storeStrong((&self->super.super.isa + v19), strongToStrongObjectsMapTable);
   if (self->_leadingSpacerType)
   {
     leadingSpacerLayout = self->_leadingSpacerLayout;
-    v29 = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics _upcastIfReadOnly];
-    v30 = [_UIButtonBarSpacerLayout _updateSpacer:leadingSpacerLayout layoutMetrics:v29 spacerType:self->_leadingSpacerType];
+    _upcastIfReadOnly2 = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics _upcastIfReadOnly];
+    v30 = [_UIButtonBarSpacerLayout _updateSpacer:leadingSpacerLayout layoutMetrics:_upcastIfReadOnly2 spacerType:self->_leadingSpacerType];
     v31 = self->_leadingSpacerLayout;
     self->_leadingSpacerLayout = v30;
   }
@@ -185,17 +185,17 @@ LABEL_31:
   return v2;
 }
 
-- (_UIButtonBarItemGroupLayout)initWithLayoutMetrics:(id)a3
+- (_UIButtonBarItemGroupLayout)initWithLayoutMetrics:(id)metrics
 {
   [(_UIButtonBarItemGroupLayout *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (BOOL)shouldHorizontallyCenterView:(id)a3
+- (BOOL)shouldHorizontallyCenterView:(id)view
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -214,7 +214,7 @@ LABEL_31:
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) shouldHorizontallyCenterView:{v4, v10}])
+        if ([*(*(&v10 + 1) + 8 * i) shouldHorizontallyCenterView:{viewCopy, v10}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -236,13 +236,13 @@ LABEL_11:
   return v6;
 }
 
-- (_UIButtonBarItemGroupLayout)initWithLayoutMetrics:(id)a3 barButtonItemGroup:(id)a4
+- (_UIButtonBarItemGroupLayout)initWithLayoutMetrics:(id)metrics barButtonItemGroup:(id)group
 {
-  v7 = a4;
-  v8 = a3;
+  groupCopy = group;
+  metricsCopy = metrics;
   v9 = objc_alloc_init(UILayoutGuide);
-  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIButtonBar.sizingGuide.%p", v7];
-  [(UILayoutGuide *)v9 setIdentifier:v10];
+  groupCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIButtonBar.sizingGuide.%p", groupCopy];
+  [(UILayoutGuide *)v9 setIdentifier:groupCopy];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -250,7 +250,7 @@ LABEL_11:
   v21[3] = &unk_1E70F74A0;
   v11 = v9;
   v22 = v11;
-  v12 = [v8 _copyWithModifications:v21];
+  v12 = [metricsCopy _copyWithModifications:v21];
 
   v20.receiver = self;
   v20.super_class = _UIButtonBarItemGroupLayout;
@@ -258,7 +258,7 @@ LABEL_11:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_group, a4);
+    objc_storeStrong(&v13->_group, group);
     objc_storeStrong(&v14->_groupSizeGuide, v9);
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     itemLayouts = v14->_itemLayouts;
@@ -272,10 +272,10 @@ LABEL_11:
   return v14;
 }
 
-- (void)dirtyLayoutForPlainAppearanceChange:(BOOL)a3 doneAppearanceChanged:(BOOL)a4
+- (void)dirtyLayoutForPlainAppearanceChange:(BOOL)change doneAppearanceChanged:(BOOL)changed
 {
-  v4 = a4;
-  v5 = a3;
+  changedCopy = changed;
+  changeCopy = change;
   v17 = *MEMORY[0x1E69E9840];
   [_UIButtonBarLayout dirtyLayoutForPlainAppearanceChange:"dirtyLayoutForPlainAppearanceChange:doneAppearanceChanged:" doneAppearanceChanged:?];
   v14 = 0u;
@@ -298,7 +298,7 @@ LABEL_11:
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) dirtyLayoutForPlainAppearanceChange:v5 doneAppearanceChanged:{v4, v12}];
+        [*(*(&v12 + 1) + 8 * v11++) dirtyLayoutForPlainAppearanceChange:changeCopy doneAppearanceChanged:{changedCopy, v12}];
       }
 
       while (v9 != v11);
@@ -309,12 +309,12 @@ LABEL_11:
   }
 }
 
-- (void)setUseGroupSizing:(BOOL)a3
+- (void)setUseGroupSizing:(BOOL)sizing
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_useGroupSizing != a3)
+  if (self->_useGroupSizing != sizing)
   {
-    self->_useGroupSizing = a3;
+    self->_useGroupSizing = sizing;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -347,12 +347,12 @@ LABEL_11:
   }
 }
 
-- (void)setSuppressSpacing:(BOOL)a3
+- (void)setSuppressSpacing:(BOOL)spacing
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_suppressSpacing != a3)
+  if (self->_suppressSpacing != spacing)
   {
-    self->_suppressSpacing = a3;
+    self->_suppressSpacing = spacing;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -387,31 +387,31 @@ LABEL_11:
   }
 }
 
-- (void)setSuppressCustomSpacing:(BOOL)a3
+- (void)setSuppressCustomSpacing:(BOOL)spacing
 {
-  if (self->_suppressCustomSpacing != a3)
+  if (self->_suppressCustomSpacing != spacing)
   {
-    self->_suppressCustomSpacing = a3;
+    self->_suppressCustomSpacing = spacing;
     [(_UIButtonBarLayout *)self setDirty:1];
   }
 }
 
-- (void)setLeadingSpacerType:(int64_t)a3
+- (void)setLeadingSpacerType:(int64_t)type
 {
-  if (self->_leadingSpacerType != a3)
+  if (self->_leadingSpacerType != type)
   {
-    self->_leadingSpacerType = a3;
+    self->_leadingSpacerType = type;
     [(_UIButtonBarLayout *)self setDirty:1];
   }
 }
 
-- (id)layoutForBarButtonItem:(id)a3
+- (id)layoutForBarButtonItem:(id)item
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 isSpaceItem] & 1) == 0 && (objc_msgSend(v4, "buttonGroup"), v5 = objc_claimAutoreleasedReturnValue(), group = self->_group, v5, v5 == group))
+  itemCopy = item;
+  if (([itemCopy isSpaceItem] & 1) == 0 && (objc_msgSend(itemCopy, "buttonGroup"), v5 = objc_claimAutoreleasedReturnValue(), group = self->_group, v5, v5 == group))
   {
-    v7 = [(NSMapTable *)self->_itemLayoutMap objectForKey:v4];
+    v7 = [(NSMapTable *)self->_itemLayoutMap objectForKey:itemCopy];
     if (!v7)
     {
       v16 = 0u;
@@ -433,9 +433,9 @@ LABEL_11:
             }
 
             v12 = *(*(&v14 + 1) + 8 * i);
-            v13 = [v12 barButtonItem];
+            barButtonItem = [v12 barButtonItem];
 
-            if (v13 == v4)
+            if (barButtonItem == itemCopy)
             {
               v7 = v12;
               goto LABEL_18;
@@ -464,16 +464,16 @@ LABEL_18:
   return v7;
 }
 
-- (id)layoutsForSpacerItem:(id)a3
+- (id)layoutsForSpacerItem:(id)item
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isSpaceItem] && (objc_msgSend(v4, "buttonGroup"), v5 = objc_claimAutoreleasedReturnValue(), v6 = self->_group, v5, v5 == v6))
+  itemCopy = item;
+  if ([itemCopy isSpaceItem] && (objc_msgSend(itemCopy, "buttonGroup"), v5 = objc_claimAutoreleasedReturnValue(), v6 = self->_group, v5, v5 == v6))
   {
-    v9 = [v4 _owningButtonGroup];
+    _owningButtonGroup = [itemCopy _owningButtonGroup];
     group = self->_group;
 
-    if (v9 == group)
+    if (_owningButtonGroup == group)
     {
       v23[0] = self->_representativeLayout;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
@@ -502,9 +502,9 @@ LABEL_18:
             }
 
             v16 = *(*(&v18 + 1) + 8 * i);
-            v17 = [v16 barButtonItem];
+            barButtonItem = [v16 barButtonItem];
 
-            if (v17 == v4)
+            if (barButtonItem == itemCopy)
             {
               [v7 addObject:v16];
             }
@@ -526,7 +526,7 @@ LABEL_18:
   return v7;
 }
 
-- (double)minimumLayoutWidthGivenMinimumSpaceWidth:(double)a3
+- (double)minimumLayoutWidthGivenMinimumSpaceWidth:(double)width
 {
   v18 = *MEMORY[0x1E69E9840];
   [(_UIButtonBarLayout *)self configure];
@@ -550,7 +550,7 @@ LABEL_18:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v13 + 1) + 8 * i) minimumLayoutWidthGivenMinimumSpaceWidth:{a3, v13}];
+        [*(*(&v13 + 1) + 8 * i) minimumLayoutWidthGivenMinimumSpaceWidth:{width, v13}];
         v9 = v9 + v11;
       }
 
@@ -568,13 +568,13 @@ LABEL_18:
   return v9;
 }
 
-- (void)recalculateLayoutWidthsGivenItemSpaceWidth:(double)a3
+- (void)recalculateLayoutWidthsGivenItemSpaceWidth:(double)width
 {
   v25 = *MEMORY[0x1E69E9840];
   [(_UIButtonBarLayout *)self configure];
   if (self->_leadingSpacerType == 1)
   {
-    [(_UIButtonBarSpacerLayout *)self->_leadingSpacerLayout minimumLayoutWidthGivenMinimumSpaceWidth:a3];
+    [(_UIButtonBarSpacerLayout *)self->_leadingSpacerLayout minimumLayoutWidthGivenMinimumSpaceWidth:width];
     v6 = v5;
     v7 = [(NSMutableArray *)self->_configuredItemLayouts count];
     v8 = 0.0;
@@ -622,7 +622,7 @@ LABEL_18:
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v20 + 1) + 8 * i) minimumLayoutWidthGivenMinimumSpaceWidth:{a3, v20}];
+        [*(*(&v20 + 1) + 8 * i) minimumLayoutWidthGivenMinimumSpaceWidth:{width, v20}];
         self->_expandedWidth = v15 + self->_expandedWidth;
       }
 
@@ -638,7 +638,7 @@ LABEL_18:
   representativeLayout = self->_representativeLayout;
   if (representativeLayout)
   {
-    [(_UIButtonBarLayout *)representativeLayout minimumLayoutWidthGivenMinimumSpaceWidth:a3];
+    [(_UIButtonBarLayout *)representativeLayout minimumLayoutWidthGivenMinimumSpaceWidth:width];
     v17 = v19 + self->_compactWidth;
   }
 
@@ -649,48 +649,48 @@ LABEL_18:
 {
   if (self->_compact)
   {
-    v2 = self->_representativeLayout;
+    lastObject = self->_representativeLayout;
   }
 
   else
   {
-    v2 = [(NSMutableArray *)self->_configuredItemLayouts lastObject];
+    lastObject = [(NSMutableArray *)self->_configuredItemLayouts lastObject];
   }
 
-  v3 = v2;
-  v4 = [(_UIButtonBarLayout *)v2 isSpaceLayout];
+  v3 = lastObject;
+  isSpaceLayout = [(_UIButtonBarLayout *)lastObject isSpaceLayout];
 
-  return v4;
+  return isSpaceLayout;
 }
 
-- (id)_newLayoutForBarButtonItem:(id)a3 useGroupSizing:(BOOL)a4
+- (id)_newLayoutForBarButtonItem:(id)item useGroupSizing:(BOOL)sizing
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 isSystemItem] && (objc_msgSend(v6, "systemItem") - 5) <= 1)
+  sizingCopy = sizing;
+  itemCopy = item;
+  if ([itemCopy isSystemItem] && (objc_msgSend(itemCopy, "systemItem") - 5) <= 1)
   {
     v7 = [_UIButtonBarSpacerLayout alloc];
-    v8 = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics _upcastIfReadOnly];
-    v9 = [(_UIButtonBarSpacerLayout *)v7 initWithLayoutMetrics:v8 barButtonItem:v6];
+    _upcastIfReadOnly = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics _upcastIfReadOnly];
+    v9 = [(_UIButtonBarSpacerLayout *)v7 initWithLayoutMetrics:_upcastIfReadOnly barButtonItem:itemCopy];
   }
 
   else
   {
     v10 = [_UIButtonBarItemLayout alloc];
-    v11 = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics _upcastIfReadOnly];
-    v9 = [(_UIButtonBarItemLayout *)v10 initWithLayoutMetrics:v11 barButtonItem:v6];
+    _upcastIfReadOnly2 = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics _upcastIfReadOnly];
+    v9 = [(_UIButtonBarItemLayout *)v10 initWithLayoutMetrics:_upcastIfReadOnly2 barButtonItem:itemCopy];
 
-    [(_UIButtonBarLayout *)v9 setUseGroupSizing:v4];
+    [(_UIButtonBarLayout *)v9 setUseGroupSizing:sizingCopy];
     [(_UIButtonBarSpacerLayout *)v9 setItemViewGenerator:self->_itemViewGenerator];
   }
 
   return v9;
 }
 
-- (void)_iterateConfiguredLayouts:(id)a3
+- (void)_iterateConfiguredLayouts:(id)layouts
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  layoutsCopy = layouts;
   if (self->_spilled)
   {
     goto LABEL_18;
@@ -711,13 +711,13 @@ LABEL_18:
       goto LABEL_8;
     }
 
-    v4[2](v4, self->_leadingSpacerLayout);
+    layoutsCopy[2](layoutsCopy, self->_leadingSpacerLayout);
   }
 
 LABEL_8:
   if (self->_compact)
   {
-    v4[2](v4, self->_representativeLayout);
+    layoutsCopy[2](layoutsCopy, self->_representativeLayout);
   }
 
   else
@@ -742,7 +742,7 @@ LABEL_8:
             objc_enumerationMutation(v5);
           }
 
-          v4[2](v4, *(*(&v10 + 1) + 8 * v9++));
+          layoutsCopy[2](layoutsCopy, *(*(&v10 + 1) + 8 * v9++));
         }
 
         while (v7 != v9);
@@ -756,25 +756,25 @@ LABEL_8:
 LABEL_18:
 }
 
-- (void)_addLayoutViews:(id)a3
+- (void)_addLayoutViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47___UIButtonBarItemGroupLayout__addLayoutViews___block_invoke;
   v6[3] = &unk_1E70F74C8;
-  v7 = v4;
-  v5 = v4;
+  v7 = viewsCopy;
+  v5 = viewsCopy;
   [(_UIButtonBarItemGroupLayout *)self _iterateConfiguredLayouts:v6];
 }
 
-- (void)_addLayoutGuides:(id)a3
+- (void)_addLayoutGuides:(id)guides
 {
-  v4 = a3;
-  v5 = v4;
+  guidesCopy = guides;
+  v5 = guidesCopy;
   if (self->_useGroupSizing && !self->_compact)
   {
-    [v4 addObject:self->_groupSizeGuide];
+    [guidesCopy addObject:self->_groupSizeGuide];
   }
 
   v7[0] = MEMORY[0x1E69E9820];
@@ -786,18 +786,18 @@ LABEL_18:
   [(_UIButtonBarItemGroupLayout *)self _iterateConfiguredLayouts:v7];
 }
 
-- (void)_addConstraintsToActivate:(id)a3 toDeactivate:(id)a4
+- (void)_addConstraintsToActivate:(id)activate toDeactivate:(id)deactivate
 {
-  v6 = a3;
-  v7 = a4;
+  activateCopy = activate;
+  deactivateCopy = deactivate;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70___UIButtonBarItemGroupLayout__addConstraintsToActivate_toDeactivate___block_invoke;
   v10[3] = &unk_1E70F74F0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = activateCopy;
+  v12 = deactivateCopy;
+  v8 = deactivateCopy;
+  v9 = activateCopy;
   [(_UIButtonBarItemGroupLayout *)self _iterateConfiguredLayouts:v10];
 }
 
@@ -832,9 +832,9 @@ LABEL_18:
 
   if ([(UIBarButtonItemGroup *)self->_group _canCollapse])
   {
-    v5 = [(UIBarButtonItemGroup *)self->_group representativeItem];
+    representativeItem = [(UIBarButtonItemGroup *)self->_group representativeItem];
 
-    if (v5)
+    if (representativeItem)
     {
       [v4 appendFormat:@"\trepresentativeLayout=%@\n", self->_representativeLayout];
     }

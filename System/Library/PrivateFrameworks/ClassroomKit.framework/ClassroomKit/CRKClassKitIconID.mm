@@ -1,28 +1,28 @@
 @interface CRKClassKitIconID
-+ (id)stringBySanitizingString:(id)a3;
-- (CRKClassKitIconID)initWithClass:(id)a3;
-- (CRKClassKitIconID)initWithIconID:(id)a3;
-- (CRKClassKitIconID)initWithMascotIdentifier:(id)a3 colorIdentifier:(id)a4;
++ (id)stringBySanitizingString:(id)string;
+- (CRKClassKitIconID)initWithClass:(id)class;
+- (CRKClassKitIconID)initWithIconID:(id)d;
+- (CRKClassKitIconID)initWithMascotIdentifier:(id)identifier colorIdentifier:(id)colorIdentifier;
 - (NSString)stringValue;
 @end
 
 @implementation CRKClassKitIconID
 
-- (CRKClassKitIconID)initWithClass:(id)a3
+- (CRKClassKitIconID)initWithClass:(id)class
 {
-  v4 = [a3 iconID];
-  v5 = [(CRKClassKitIconID *)self initWithIconID:v4];
+  iconID = [class iconID];
+  v5 = [(CRKClassKitIconID *)self initWithIconID:iconID];
 
   return v5;
 }
 
-- (CRKClassKitIconID)initWithIconID:(id)a3
+- (CRKClassKitIconID)initWithIconID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
-    v6 = [v4 rangeOfString:@"*" options:4];
+    v6 = [dCopy rangeOfString:@"*" options:4];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = [objc_opt_class() stringBySanitizingString:v5];
@@ -51,12 +51,12 @@
   return v9;
 }
 
-+ (id)stringBySanitizingString:(id)a3
++ (id)stringBySanitizingString:(id)string
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  stringCopy = string;
+  whitespaceCharacterSet = [v3 whitespaceCharacterSet];
+  v6 = [stringCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if ([v6 length] && (objc_msgSend(v6, "isEqualToString:", @"(null)") & 1) == 0)
   {
@@ -71,20 +71,20 @@
   return v7;
 }
 
-- (CRKClassKitIconID)initWithMascotIdentifier:(id)a3 colorIdentifier:(id)a4
+- (CRKClassKitIconID)initWithMascotIdentifier:(id)identifier colorIdentifier:(id)colorIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  colorIdentifierCopy = colorIdentifier;
   v14.receiver = self;
   v14.super_class = CRKClassKitIconID;
   v8 = [(CRKClassKitIconID *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     mascotIdentifier = v8->_mascotIdentifier;
     v8->_mascotIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [colorIdentifierCopy copy];
     colorIdentifier = v8->_colorIdentifier;
     v8->_colorIdentifier = v11;
   }
@@ -94,11 +94,11 @@
 
 - (NSString)stringValue
 {
-  v3 = [(CRKClassKitIconID *)self mascotIdentifier];
-  v4 = v3;
-  if (v3)
+  mascotIdentifier = [(CRKClassKitIconID *)self mascotIdentifier];
+  v4 = mascotIdentifier;
+  if (mascotIdentifier)
   {
-    v5 = v3;
+    v5 = mascotIdentifier;
   }
 
   else
@@ -108,11 +108,11 @@
 
   v6 = v5;
 
-  v7 = [(CRKClassKitIconID *)self colorIdentifier];
-  v8 = v7;
-  if (v7)
+  colorIdentifier = [(CRKClassKitIconID *)self colorIdentifier];
+  v8 = colorIdentifier;
+  if (colorIdentifier)
   {
-    v9 = v7;
+    v9 = colorIdentifier;
   }
 
   else

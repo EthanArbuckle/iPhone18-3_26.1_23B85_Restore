@@ -2,7 +2,7 @@
 + (SCNAnimationEvent)animationEventWithKeyTime:(CGFloat)time block:(SCNAnimationEventBlock)eventBlock;
 - (SCNAnimationEvent)init;
 - (void)dealloc;
-- (void)setEventBlock:(id)a3;
+- (void)setEventBlock:(id)block;
 @end
 
 @implementation SCNAnimationEvent
@@ -27,7 +27,7 @@
   [(SCNAnimationEvent *)&v4 dealloc];
 }
 
-- (void)setEventBlock:(id)a3
+- (void)setEventBlock:(id)block
 {
   eventBlock = self->_eventBlock;
   if (eventBlock)
@@ -35,12 +35,12 @@
     _Block_release(eventBlock);
   }
 
-  self->_eventBlock = _Block_copy(a3);
+  self->_eventBlock = _Block_copy(block);
 }
 
 + (SCNAnimationEvent)animationEventWithKeyTime:(CGFloat)time block:(SCNAnimationEventBlock)eventBlock
 {
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   [(SCNAnimationEvent *)v6 setTime:time];
   [(SCNAnimationEvent *)v6 setEventBlock:eventBlock];
   return v6;

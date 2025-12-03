@@ -1,45 +1,45 @@
 @interface TINumericValueDescriptor
-+ (id)numericValueDescriptorWithMetricName:(id)a3 calculationExpression:(id)a4 calculationPrecondition:(id)a5 calculationDefaultValue:(id)a6 calculationDependencies:(id)a7 bucketThresholds:(id)a8 bucketValues:(id)a9;
-- (TINumericValueDescriptor)initWithMetricName:(id)a3 calculationExpression:(id)a4 calculationPrecondition:(id)a5 calculationDefaultValue:(id)a6 calculationDependencies:(id)a7 bucketThresholds:(id)a8 bucketValues:(id)a9;
++ (id)numericValueDescriptorWithMetricName:(id)name calculationExpression:(id)expression calculationPrecondition:(id)precondition calculationDefaultValue:(id)value calculationDependencies:(id)dependencies bucketThresholds:(id)thresholds bucketValues:(id)values;
+- (TINumericValueDescriptor)initWithMetricName:(id)name calculationExpression:(id)expression calculationPrecondition:(id)precondition calculationDefaultValue:(id)value calculationDependencies:(id)dependencies bucketThresholds:(id)thresholds bucketValues:(id)values;
 @end
 
 @implementation TINumericValueDescriptor
 
-- (TINumericValueDescriptor)initWithMetricName:(id)a3 calculationExpression:(id)a4 calculationPrecondition:(id)a5 calculationDefaultValue:(id)a6 calculationDependencies:(id)a7 bucketThresholds:(id)a8 bucketValues:(id)a9
+- (TINumericValueDescriptor)initWithMetricName:(id)name calculationExpression:(id)expression calculationPrecondition:(id)precondition calculationDefaultValue:(id)value calculationDependencies:(id)dependencies bucketThresholds:(id)thresholds bucketValues:(id)values
 {
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v16 = a8;
-  v17 = a9;
+  expressionCopy = expression;
+  preconditionCopy = precondition;
+  valueCopy = value;
+  dependenciesCopy = dependencies;
+  thresholdsCopy = thresholds;
+  valuesCopy = values;
   v25.receiver = self;
   v25.super_class = TINumericValueDescriptor;
-  v18 = [(TIMetricDescriptor *)&v25 initWithMetricName:a3];
+  v18 = [(TIMetricDescriptor *)&v25 initWithMetricName:name];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_calculationExpression, a4);
-    objc_storeStrong(&v19->_calculationPrecondition, a5);
-    objc_storeStrong(&v19->_calculationDefaultValue, a6);
-    objc_storeStrong(&v19->_calculationDependencies, a7);
-    objc_storeStrong(&v19->_bucketThresholds, a8);
-    objc_storeStrong(&v19->_bucketValues, a9);
+    objc_storeStrong(&v18->_calculationExpression, expression);
+    objc_storeStrong(&v19->_calculationPrecondition, precondition);
+    objc_storeStrong(&v19->_calculationDefaultValue, value);
+    objc_storeStrong(&v19->_calculationDependencies, dependencies);
+    objc_storeStrong(&v19->_bucketThresholds, thresholds);
+    objc_storeStrong(&v19->_bucketValues, values);
   }
 
   return v19;
 }
 
-+ (id)numericValueDescriptorWithMetricName:(id)a3 calculationExpression:(id)a4 calculationPrecondition:(id)a5 calculationDefaultValue:(id)a6 calculationDependencies:(id)a7 bucketThresholds:(id)a8 bucketValues:(id)a9
++ (id)numericValueDescriptorWithMetricName:(id)name calculationExpression:(id)expression calculationPrecondition:(id)precondition calculationDefaultValue:(id)value calculationDependencies:(id)dependencies bucketThresholds:(id)thresholds bucketValues:(id)values
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  v22 = [[TINumericValueDescriptor alloc] initWithMetricName:v21 calculationExpression:v20 calculationPrecondition:v19 calculationDefaultValue:v18 calculationDependencies:v17 bucketThresholds:v16 bucketValues:v15];
+  valuesCopy = values;
+  thresholdsCopy = thresholds;
+  dependenciesCopy = dependencies;
+  valueCopy = value;
+  preconditionCopy = precondition;
+  expressionCopy = expression;
+  nameCopy = name;
+  v22 = [[TINumericValueDescriptor alloc] initWithMetricName:nameCopy calculationExpression:expressionCopy calculationPrecondition:preconditionCopy calculationDefaultValue:valueCopy calculationDependencies:dependenciesCopy bucketThresholds:thresholdsCopy bucketValues:valuesCopy];
 
   return v22;
 }

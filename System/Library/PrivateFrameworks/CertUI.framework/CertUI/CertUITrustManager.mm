@@ -1,18 +1,18 @@
 @interface CertUITrustManager
 + (id)defaultTrustManager;
-- (BOOL)_hasExceptionsForSMIMETrust:(__SecTrust *)a3 sender:(id)a4;
-- (CertUITrustManager)initWithAccessGroup:(id)a3;
-- (id)_getExceptionsForSSLTrust:(__SecTrust *)a3 hostname:(id)a4 service:(id)a5;
-- (int)_actionForTrust:(__SecTrust *)a3 exceptions:(id)a4;
-- (int)actionForSMIMETrust:(__SecTrust *)a3 sender:(id)a4;
-- (int)actionForSSLTrust:(__SecTrust *)a3 hostname:(id)a4 service:(id)a5;
-- (unsigned)_rawTrustResultForTrust:(__SecTrust *)a3 exceptions:(id)a4;
-- (unsigned)rawTrustResultForSSLTrust:(__SecTrust *)a3 hostname:(id)a4 service:(id)a5;
-- (void)addSMIMETrust:(__SecTrust *)a3 sender:(id)a4;
-- (void)addSSLTrust:(__SecTrust *)a3 hostname:(id)a4 service:(id)a5;
+- (BOOL)_hasExceptionsForSMIMETrust:(__SecTrust *)trust sender:(id)sender;
+- (CertUITrustManager)initWithAccessGroup:(id)group;
+- (id)_getExceptionsForSSLTrust:(__SecTrust *)trust hostname:(id)hostname service:(id)service;
+- (int)_actionForTrust:(__SecTrust *)trust exceptions:(id)exceptions;
+- (int)actionForSMIMETrust:(__SecTrust *)trust sender:(id)sender;
+- (int)actionForSSLTrust:(__SecTrust *)trust hostname:(id)hostname service:(id)service;
+- (unsigned)_rawTrustResultForTrust:(__SecTrust *)trust exceptions:(id)exceptions;
+- (unsigned)rawTrustResultForSSLTrust:(__SecTrust *)trust hostname:(id)hostname service:(id)service;
+- (void)addSMIMETrust:(__SecTrust *)trust sender:(id)sender;
+- (void)addSSLTrust:(__SecTrust *)trust hostname:(id)hostname service:(id)service;
 - (void)removeAllTrusts;
-- (void)removeSMIMETrust:(__SecTrust *)a3 sender:(id)a4;
-- (void)removeSSLTrust:(__SecTrust *)a3 hostname:(id)a4 service:(id)a5;
+- (void)removeSMIMETrust:(__SecTrust *)trust sender:(id)sender;
+- (void)removeSSLTrust:(__SecTrust *)trust hostname:(id)hostname service:(id)service;
 @end
 
 @implementation CertUITrustManager
@@ -36,16 +36,16 @@ uint64_t __41__CertUITrustManager_defaultTrustManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (CertUITrustManager)initWithAccessGroup:(id)a3
+- (CertUITrustManager)initWithAccessGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v9.receiver = self;
   v9.super_class = CertUITrustManager;
   v5 = [(CertUITrustManager *)&v9 init];
   if (v5)
   {
     CertUILoggingInitialize();
-    v6 = [v4 copy];
+    v6 = [groupCopy copy];
     access = v5->_access;
     v5->_access = v6;
   }
@@ -53,12 +53,12 @@ uint64_t __41__CertUITrustManager_defaultTrustManager__block_invoke()
   return v5;
 }
 
-- (int)_actionForTrust:(__SecTrust *)a3 exceptions:(id)a4
+- (int)_actionForTrust:(__SecTrust *)trust exceptions:(id)exceptions
 {
   v18 = *MEMORY[0x277D85DE8];
-  SecTrustSetExceptions(a3, a4);
+  SecTrustSetExceptions(trust, exceptions);
   v15 = 0;
-  if (MEMORY[0x245D32EE0](a3, &v15))
+  if (MEMORY[0x245D32EE0](trust, &v15))
   {
     goto LABEL_2;
   }
@@ -139,11 +139,11 @@ LABEL_3:
   return v5;
 }
 
-- (unsigned)_rawTrustResultForTrust:(__SecTrust *)a3 exceptions:(id)a4
+- (unsigned)_rawTrustResultForTrust:(__SecTrust *)trust exceptions:(id)exceptions
 {
-  SecTrustSetExceptions(a3, a4);
+  SecTrustSetExceptions(trust, exceptions);
   v6 = 3;
-  if (MEMORY[0x245D32EE0](a3, &v6))
+  if (MEMORY[0x245D32EE0](trust, &v6))
   {
     return 3;
   }
@@ -154,12 +154,12 @@ LABEL_3:
   }
 }
 
-- (id)_getExceptionsForSSLTrust:(__SecTrust *)a3 hostname:(id)a4 service:(id)a5
+- (id)_getExceptionsForSSLTrust:(__SecTrust *)trust hostname:(id)hostname service:(id)service
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  if (!a3 || !v9 || SecTrustGetCertificateCount(a3) <= 0)
+  hostnameCopy = hostname;
+  serviceCopy = service;
+  if (!trust || !hostnameCopy || SecTrustGetCertificateCount(trust) <= 0)
   {
     v17 = _CertUILogObjects;
     if (os_log_type_enabled(_CertUILogObjects, OS_LOG_TYPE_ERROR))
@@ -169,9 +169,9 @@ LABEL_3:
       v22 = 138412802;
       v23 = v19;
       v24 = 2112;
-      v25 = v9;
+      v25 = hostnameCopy;
       v26 = 2112;
-      v27 = a3;
+      trustCopy = trust;
       _os_log_impl(&dword_2433D3000, v18, OS_LOG_TYPE_ERROR, "%@ Invalid arguments host: %@ trust: %@", &v22, 0x20u);
     }
 
@@ -180,12 +180,12 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  SecTrustGetCertificateAtIndex(a3, 0);
+  SecTrustGetCertificateAtIndex(trust, 0);
   SHA1Digest = SecCertificateGetSHA1Digest();
-  DictionaryForDigestHostService = _CopyVersion2QueryDictionaryForDigestHostService(self->_access, SHA1Digest, v9, v10);
+  DictionaryForDigestHostService = _CopyVersion2QueryDictionaryForDigestHostService(self->_access, SHA1Digest, hostnameCopy, serviceCopy);
   if (!DictionaryForDigestHostService || (v13 = DictionaryForDigestHostService, v14 = _CopyExceptionsForMutableQuery(DictionaryForDigestHostService), CFRelease(v13), !v14))
   {
-    v15 = _CopyVersion2QueryDictionaryForDigestHostService(self->_access, SHA1Digest, v9, 0);
+    v15 = _CopyVersion2QueryDictionaryForDigestHostService(self->_access, SHA1Digest, hostnameCopy, 0);
     if (v15)
     {
       v16 = v15;
@@ -204,15 +204,15 @@ LABEL_11:
   return v14;
 }
 
-- (int)actionForSSLTrust:(__SecTrust *)a3 hostname:(id)a4 service:(id)a5
+- (int)actionForSSLTrust:(__SecTrust *)trust hostname:(id)hostname service:(id)service
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  if (a3 && v9 && SecTrustGetCertificateCount(a3) > 0)
+  hostnameCopy = hostname;
+  serviceCopy = service;
+  if (trust && hostnameCopy && SecTrustGetCertificateCount(trust) > 0)
   {
-    v11 = [(CertUITrustManager *)self _getExceptionsForSSLTrust:a3 hostname:v9 service:v10];
-    v12 = [(CertUITrustManager *)self _actionForTrust:a3 exceptions:v11];
+    v11 = [(CertUITrustManager *)self _getExceptionsForSSLTrust:trust hostname:hostnameCopy service:serviceCopy];
+    v12 = [(CertUITrustManager *)self _actionForTrust:trust exceptions:v11];
   }
 
   else
@@ -225,9 +225,9 @@ LABEL_11:
       v18 = 138412802;
       v19 = v15;
       v20 = 2112;
-      v21 = v9;
+      v21 = hostnameCopy;
       v22 = 2112;
-      v23 = a3;
+      trustCopy = trust;
       _os_log_impl(&dword_2433D3000, v14, OS_LOG_TYPE_ERROR, "%@ Invalid arguments host: %@ trust: %@", &v18, 0x20u);
     }
 
@@ -238,15 +238,15 @@ LABEL_11:
   return v12;
 }
 
-- (unsigned)rawTrustResultForSSLTrust:(__SecTrust *)a3 hostname:(id)a4 service:(id)a5
+- (unsigned)rawTrustResultForSSLTrust:(__SecTrust *)trust hostname:(id)hostname service:(id)service
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  if (a3 && v9 && SecTrustGetCertificateCount(a3) > 0)
+  hostnameCopy = hostname;
+  serviceCopy = service;
+  if (trust && hostnameCopy && SecTrustGetCertificateCount(trust) > 0)
   {
-    v11 = [(CertUITrustManager *)self _getExceptionsForSSLTrust:a3 hostname:v9 service:v10];
-    v12 = [(CertUITrustManager *)self _rawTrustResultForTrust:a3 exceptions:v11];
+    v11 = [(CertUITrustManager *)self _getExceptionsForSSLTrust:trust hostname:hostnameCopy service:serviceCopy];
+    v12 = [(CertUITrustManager *)self _rawTrustResultForTrust:trust exceptions:v11];
   }
 
   else
@@ -259,9 +259,9 @@ LABEL_11:
       v18 = 138412802;
       v19 = v15;
       v20 = 2112;
-      v21 = v9;
+      v21 = hostnameCopy;
       v22 = 2112;
-      v23 = a3;
+      trustCopy = trust;
       _os_log_impl(&dword_2433D3000, v14, OS_LOG_TYPE_ERROR, "%@ Invalid arguments host: %@ trust: %@", &v18, 0x20u);
     }
 
@@ -272,14 +272,14 @@ LABEL_11:
   return v12;
 }
 
-- (int)actionForSMIMETrust:(__SecTrust *)a3 sender:(id)a4
+- (int)actionForSMIMETrust:(__SecTrust *)trust sender:(id)sender
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = v7;
-  if (a3 && v7 && SecTrustGetCertificateCount(a3) > 0)
+  senderCopy = sender;
+  v8 = senderCopy;
+  if (trust && senderCopy && SecTrustGetCertificateCount(trust) > 0)
   {
-    SecTrustGetCertificateAtIndex(a3, 0);
+    SecTrustGetCertificateAtIndex(trust, 0);
     SHA1Digest = SecCertificateGetSHA1Digest();
     DictionaryForDigestSender = _CopyVersion2QueryDictionaryForDigestSender(self->_access, SHA1Digest, v8);
     if (DictionaryForDigestSender)
@@ -294,7 +294,7 @@ LABEL_11:
       v12 = 0;
     }
 
-    v16 = [(CertUITrustManager *)self _actionForTrust:a3 exceptions:v12];
+    v16 = [(CertUITrustManager *)self _actionForTrust:trust exceptions:v12];
   }
 
   else
@@ -309,7 +309,7 @@ LABEL_11:
       v21 = 2112;
       v22 = v8;
       v23 = 2112;
-      v24 = a3;
+      trustCopy = trust;
       _os_log_impl(&dword_2433D3000, v14, OS_LOG_TYPE_ERROR, "%@ Invalid arguments sender: %@ trust: %@", &v19, 0x20u);
     }
 
@@ -320,17 +320,17 @@ LABEL_11:
   return v16;
 }
 
-- (void)addSSLTrust:(__SecTrust *)a3 hostname:(id)a4 service:(id)a5
+- (void)addSSLTrust:(__SecTrust *)trust hostname:(id)hostname service:(id)service
 {
   v25 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  if (a3 && v9 && SecTrustGetCertificateCount(a3) > 0)
+  hostnameCopy = hostname;
+  serviceCopy = service;
+  if (trust && hostnameCopy && SecTrustGetCertificateCount(trust) > 0)
   {
-    v11 = SecTrustCopyExceptions(a3);
-    SecTrustGetCertificateAtIndex(a3, 0);
+    v11 = SecTrustCopyExceptions(trust);
+    SecTrustGetCertificateAtIndex(trust, 0);
     SHA1Digest = SecCertificateGetSHA1Digest();
-    DictionaryForDigestHostService = _CopyVersion2QueryDictionaryForDigestHostService(self->_access, SHA1Digest, v9, v10);
+    DictionaryForDigestHostService = _CopyVersion2QueryDictionaryForDigestHostService(self->_access, SHA1Digest, hostnameCopy, serviceCopy);
     if (DictionaryForDigestHostService)
     {
       v14 = DictionaryForDigestHostService;
@@ -354,9 +354,9 @@ LABEL_11:
       v19 = 138412802;
       v20 = v17;
       v21 = 2112;
-      v22 = v9;
+      v22 = hostnameCopy;
       v23 = 2112;
-      v24 = a3;
+      trustCopy = trust;
       _os_log_impl(&dword_2433D3000, v16, OS_LOG_TYPE_ERROR, "%@ Invalid arguments host: %@ trust: %@", &v19, 0x20u);
     }
   }
@@ -364,15 +364,15 @@ LABEL_11:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSMIMETrust:(__SecTrust *)a3 sender:(id)a4
+- (void)addSMIMETrust:(__SecTrust *)trust sender:(id)sender
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = v7;
-  if (a3 && v7 && SecTrustGetCertificateCount(a3) > 0)
+  senderCopy = sender;
+  v8 = senderCopy;
+  if (trust && senderCopy && SecTrustGetCertificateCount(trust) > 0)
   {
-    v9 = SecTrustCopyExceptions(a3);
-    SecTrustGetCertificateAtIndex(a3, 0);
+    v9 = SecTrustCopyExceptions(trust);
+    SecTrustGetCertificateAtIndex(trust, 0);
     SHA1Digest = SecCertificateGetSHA1Digest();
     DictionaryForDigestSender = _CopyVersion2QueryDictionaryForDigestSender(self->_access, SHA1Digest, v8);
     if (DictionaryForDigestSender)
@@ -400,7 +400,7 @@ LABEL_11:
       v19 = 2112;
       v20 = v8;
       v21 = 2112;
-      v22 = a3;
+      trustCopy = trust;
       _os_log_impl(&dword_2433D3000, v14, OS_LOG_TYPE_ERROR, "%@ Invalid arguments sender: %@ trust: %@", &v17, 0x20u);
     }
   }
@@ -408,16 +408,16 @@ LABEL_11:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSSLTrust:(__SecTrust *)a3 hostname:(id)a4 service:(id)a5
+- (void)removeSSLTrust:(__SecTrust *)trust hostname:(id)hostname service:(id)service
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  if (a3 && v9 && SecTrustGetCertificateCount(a3) > 0)
+  hostnameCopy = hostname;
+  serviceCopy = service;
+  if (trust && hostnameCopy && SecTrustGetCertificateCount(trust) > 0)
   {
-    SecTrustGetCertificateAtIndex(a3, 0);
+    SecTrustGetCertificateAtIndex(trust, 0);
     SHA1Digest = SecCertificateGetSHA1Digest();
-    DictionaryForDigestHostService = _CopyVersion2QueryDictionaryForDigestHostService(self->_access, SHA1Digest, v9, v10);
+    DictionaryForDigestHostService = _CopyVersion2QueryDictionaryForDigestHostService(self->_access, SHA1Digest, hostnameCopy, serviceCopy);
     _DeleteExceptionsForQuery(DictionaryForDigestHostService);
     if (DictionaryForDigestHostService)
     {
@@ -435,9 +435,9 @@ LABEL_11:
       v17 = 138412802;
       v18 = v15;
       v19 = 2112;
-      v20 = v9;
+      v20 = hostnameCopy;
       v21 = 2112;
-      v22 = a3;
+      trustCopy = trust;
       _os_log_impl(&dword_2433D3000, v14, OS_LOG_TYPE_ERROR, "%@ Invalid arguments host: %@ trust: %@", &v17, 0x20u);
     }
   }
@@ -445,14 +445,14 @@ LABEL_11:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSMIMETrust:(__SecTrust *)a3 sender:(id)a4
+- (void)removeSMIMETrust:(__SecTrust *)trust sender:(id)sender
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = v7;
-  if (a3 && v7 && SecTrustGetCertificateCount(a3) > 0)
+  senderCopy = sender;
+  v8 = senderCopy;
+  if (trust && senderCopy && SecTrustGetCertificateCount(trust) > 0)
   {
-    SecTrustGetCertificateAtIndex(a3, 0);
+    SecTrustGetCertificateAtIndex(trust, 0);
     SHA1Digest = SecCertificateGetSHA1Digest();
     DictionaryForDigestSender = _CopyVersion2QueryDictionaryForDigestSender(self->_access, SHA1Digest, v8);
     _DeleteExceptionsForQuery(DictionaryForDigestSender);
@@ -474,7 +474,7 @@ LABEL_11:
       v17 = 2112;
       v18 = v8;
       v19 = 2112;
-      v20 = a3;
+      trustCopy = trust;
       _os_log_impl(&dword_2433D3000, v12, OS_LOG_TYPE_ERROR, "%@ Invalid arguments sender: %@ trust: %@", &v15, 0x20u);
     }
   }
@@ -493,12 +493,12 @@ LABEL_11:
   }
 }
 
-- (BOOL)_hasExceptionsForSMIMETrust:(__SecTrust *)a3 sender:(id)a4
+- (BOOL)_hasExceptionsForSMIMETrust:(__SecTrust *)trust sender:(id)sender
 {
   v45 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = v7;
-  if (!a3 || !v7 || SecTrustGetCertificateCount(a3) <= 0)
+  senderCopy = sender;
+  v8 = senderCopy;
+  if (!trust || !senderCopy || SecTrustGetCertificateCount(trust) <= 0)
   {
     v24 = _CertUILogObjects;
     if (os_log_type_enabled(_CertUILogObjects, OS_LOG_TYPE_ERROR))
@@ -510,14 +510,14 @@ LABEL_11:
       v41 = 2112;
       v42 = v8;
       v43 = 2112;
-      v44 = a3;
+      trustCopy = trust;
       _os_log_impl(&dword_2433D3000, v25, OS_LOG_TYPE_ERROR, "%@ Invalid arguments sender: %@ trust: %@", buf, 0x20u);
     }
 
     goto LABEL_19;
   }
 
-  SecTrustGetCertificateAtIndex(a3, 0);
+  SecTrustGetCertificateAtIndex(trust, 0);
   SHA1Digest = SecCertificateGetSHA1Digest();
   DictionaryForDigestSender = _CopyVersion2QueryDictionaryForDigestSender(self->_access, SHA1Digest, v8);
   v11 = _CertUILogObjects;
@@ -569,7 +569,7 @@ LABEL_11:
       v41 = 2112;
       v42 = v37;
       v43 = 1024;
-      LODWORD(v44) = v20;
+      LODWORD(trustCopy) = v20;
       _os_log_impl(&dword_2433D3000, v32, OS_LOG_TYPE_ERROR, "Couldn't find trust settings for %@ in %@ access group (%d)", buf, 0x1Cu);
     }
   }

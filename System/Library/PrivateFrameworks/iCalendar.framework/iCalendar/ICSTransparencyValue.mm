@@ -1,15 +1,15 @@
 @interface ICSTransparencyValue
-+ (id)transparencyTypeFromCode:(int)a3;
-+ (id)transparencyValueFromICSString:(id)a3;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
++ (id)transparencyTypeFromCode:(int)code;
++ (id)transparencyValueFromICSString:(id)string;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
 @end
 
 @implementation ICSTransparencyValue
 
-+ (id)transparencyValueFromICSString:(id)a3
++ (id)transparencyValueFromICSString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"TRANSPARENT"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"TRANSPARENT"])
   {
     v4 = 2;
 LABEL_5:
@@ -17,7 +17,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"OPAQUE"])
+  if ([stringCopy isEqualToString:@"OPAQUE"])
   {
     v4 = 1;
     goto LABEL_5;
@@ -29,17 +29,17 @@ LABEL_7:
   return v5;
 }
 
-+ (id)transparencyTypeFromCode:(int)a3
++ (id)transparencyTypeFromCode:(int)code
 {
-  v3 = [(ICSPredefinedValue *)[ICSTransparencyValue alloc] initWithLong:a3];
+  v3 = [(ICSPredefinedValue *)[ICSTransparencyValue alloc] initWithLong:code];
 
   return v3;
 }
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v4 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  stringCopy = string;
   if ([(ICSPredefinedValue *)self longValue]== 2)
   {
     v6 = @"TRANSPARENT";
@@ -50,7 +50,7 @@ LABEL_7:
     v6 = @"OPAQUE";
   }
 
-  iCalendarAppendStringToStringWithOptions(v6, v7, v4);
+  iCalendarAppendStringToStringWithOptions(v6, stringCopy, optionsCopy);
 }
 
 @end

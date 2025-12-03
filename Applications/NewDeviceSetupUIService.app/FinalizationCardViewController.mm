@@ -1,5 +1,5 @@
 @interface FinalizationCardViewController
-- (_TtC23NewDeviceSetupUIService30FinalizationCardViewController)initWithContentView:(id)a3;
+- (_TtC23NewDeviceSetupUIService30FinalizationCardViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000DC0C();
 }
 
-- (_TtC23NewDeviceSetupUIService30FinalizationCardViewController)initWithContentView:(id)a3
+- (_TtC23NewDeviceSetupUIService30FinalizationCardViewController)initWithContentView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

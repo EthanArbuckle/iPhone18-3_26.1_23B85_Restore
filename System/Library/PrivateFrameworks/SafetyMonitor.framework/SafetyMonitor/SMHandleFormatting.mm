@@ -1,15 +1,15 @@
 @interface SMHandleFormatting
-+ (id)canonicalIDSAddressForAddress:(id)a3;
++ (id)canonicalIDSAddressForAddress:(id)address;
 @end
 
 @implementation SMHandleFormatting
 
-+ (id)canonicalIDSAddressForAddress:(id)a3
++ (id)canonicalIDSAddressForAddress:(id)address
 {
-  v3 = a3;
+  addressCopy = address;
   if (IMSharedUtilitiesLibraryCore() && getIMChatCanonicalIDSIDsForAddressSymbolLoc())
   {
-    v4 = v3;
+    v4 = addressCopy;
     IMChatCanonicalIDSIDsForAddressSymbolLoc = getIMChatCanonicalIDSIDsForAddressSymbolLoc();
     if (!IMChatCanonicalIDSIDsForAddressSymbolLoc)
     {
@@ -20,11 +20,11 @@
 
     v6 = IMChatCanonicalIDSIDsForAddressSymbolLoc(v4);
 
-    v7 = [v6 _stripFZIDPrefix];
+    _stripFZIDPrefix = [v6 _stripFZIDPrefix];
 
-    if (v7 && ([v7 isEqualToString:@"(null)"] & 1) == 0)
+    if (_stripFZIDPrefix && ([_stripFZIDPrefix isEqualToString:@"(null)"] & 1) == 0)
     {
-      v8 = v7;
+      v8 = _stripFZIDPrefix;
     }
 
     else

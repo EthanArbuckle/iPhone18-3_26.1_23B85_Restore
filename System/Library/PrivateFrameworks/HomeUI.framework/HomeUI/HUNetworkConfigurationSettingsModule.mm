@@ -1,31 +1,31 @@
 @interface HUNetworkConfigurationSettingsModule
-+ (id)_allowedHostDescriptionForHostGroup:(id)a3;
-+ (id)_attributedIconNamed:(id)a3;
-- (BOOL)isItemNetworkProtectionModeOptionItem:(id)a3;
++ (id)_allowedHostDescriptionForHostGroup:(id)group;
++ (id)_attributedIconNamed:(id)named;
+- (BOOL)isItemNetworkProtectionModeOptionItem:(id)item;
 - (HFNetworkConfigurationGroupItem)sourceItem;
-- (HUNetworkConfigurationSettingsModule)initWithItemUpdater:(id)a3;
-- (HUNetworkConfigurationSettingsModule)initWithItemUpdater:(id)a3 group:(id)a4;
+- (HUNetworkConfigurationSettingsModule)initWithItemUpdater:(id)updater;
+- (HUNetworkConfigurationSettingsModule)initWithItemUpdater:(id)updater group:(id)group;
 - (HUNetworkConfigurationSettingsModuleDelegate)networkConfigurationSettingsModuleDelegate;
 - (id)_protectionModeOptionSectionFooter;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)description;
 - (id)itemProviders;
-- (id)updateProtectionMode:(int64_t)a3;
+- (id)updateProtectionMode:(int64_t)mode;
 @end
 
 @implementation HUNetworkConfigurationSettingsModule
 
-- (HUNetworkConfigurationSettingsModule)initWithItemUpdater:(id)a3 group:(id)a4
+- (HUNetworkConfigurationSettingsModule)initWithItemUpdater:(id)updater group:(id)group
 {
-  v7 = a4;
+  groupCopy = group;
   v13.receiver = self;
   v13.super_class = HUNetworkConfigurationSettingsModule;
-  v8 = [(HFItemModule *)&v13 initWithItemUpdater:a3];
+  v8 = [(HFItemModule *)&v13 initWithItemUpdater:updater];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_group, a4);
-    v10 = [[HUNetworkProtectionModeOptionItemProvider alloc] initWithGroup:v7];
+    objc_storeStrong(&v8->_group, group);
+    v10 = [[HUNetworkProtectionModeOptionItemProvider alloc] initWithGroup:groupCopy];
     networkProtectionModeOptionItemProvider = v9->_networkProtectionModeOptionItemProvider;
     v9->_networkProtectionModeOptionItemProvider = v10;
   }
@@ -33,21 +33,21 @@
   return v9;
 }
 
-- (HUNetworkConfigurationSettingsModule)initWithItemUpdater:(id)a3
+- (HUNetworkConfigurationSettingsModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_group_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUNetworkConfigurationSettingsModule.m" lineNumber:45 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkConfigurationSettingsModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUNetworkConfigurationSettingsModule.m" lineNumber:45 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkConfigurationSettingsModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
 
-- (BOOL)isItemNetworkProtectionModeOptionItem:(id)a3
+- (BOOL)isItemNetworkProtectionModeOptionItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUNetworkConfigurationSettingsModule *)self networkProtectionModeOptionItemProvider];
-  v6 = [v5 items];
-  v7 = [v6 containsObject:v4];
+  itemCopy = item;
+  networkProtectionModeOptionItemProvider = [(HUNetworkConfigurationSettingsModule *)self networkProtectionModeOptionItemProvider];
+  items = [networkProtectionModeOptionItemProvider items];
+  v7 = [items containsObject:itemCopy];
 
   return v7;
 }
@@ -55,10 +55,10 @@
 - (HFNetworkConfigurationGroupItem)sourceItem
 {
   objc_opt_class();
-  v3 = [(HFItemModule *)self itemUpdater];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = itemUpdater;
   }
 
   else
@@ -69,10 +69,10 @@
   v5 = v4;
 
   objc_opt_class();
-  v6 = [v5 sourceItem];
+  sourceItem = [v5 sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = sourceItem;
   }
 
   else
@@ -84,54 +84,54 @@
 
   if (!v8)
   {
-    v9 = [v5 sourceItem];
-    NSLog(&cfstr_InvalidSourceI.isa, v9, v5);
+    sourceItem2 = [v5 sourceItem];
+    NSLog(&cfstr_InvalidSourceI.isa, sourceItem2, v5);
   }
 
   return v8;
 }
 
-- (id)updateProtectionMode:(int64_t)a3
+- (id)updateProtectionMode:(int64_t)mode
 {
   v26 = *MEMORY[0x277D85DE8];
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(HUNetworkConfigurationSettingsModule *)self group];
+    group = [(HUNetworkConfigurationSettingsModule *)self group];
     *buf = 138412802;
-    v21 = self;
+    selfCopy2 = self;
     v22 = 2048;
-    v23 = a3;
+    modeCopy = mode;
     v24 = 2112;
-    v25 = v7;
+    v25 = group;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@: Updating protection mode to %lu for group %@", buf, 0x20u);
   }
 
-  v8 = [(HUNetworkConfigurationSettingsModule *)self group];
-  v9 = [v8 hf_updateProtectionMode:a3];
+  group2 = [(HUNetworkConfigurationSettingsModule *)self group];
+  v9 = [group2 hf_updateProtectionMode:mode];
   [(HUNetworkConfigurationSettingsModule *)self setIsUpdatingProtectionMode:1];
-  v10 = [(HUNetworkConfigurationSettingsModule *)self updateProtectionModeTimer];
+  updateProtectionModeTimer = [(HUNetworkConfigurationSettingsModule *)self updateProtectionModeTimer];
 
-  if (v10)
+  if (updateProtectionModeTimer)
   {
     v11 = HFLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(HUNetworkConfigurationSettingsModule *)self updateProtectionModeTimer];
+      updateProtectionModeTimer2 = [(HUNetworkConfigurationSettingsModule *)self updateProtectionModeTimer];
       *buf = 138412546;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
-      v23 = v12;
+      modeCopy = updateProtectionModeTimer2;
       _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "%@: Cancelling timer %@ and restarting mode update", buf, 0x16u);
     }
 
-    v13 = [(HUNetworkConfigurationSettingsModule *)self updateProtectionModeTimer];
-    [v13 invalidate];
+    updateProtectionModeTimer3 = [(HUNetworkConfigurationSettingsModule *)self updateProtectionModeTimer];
+    [updateProtectionModeTimer3 invalidate];
 
     [(HUNetworkConfigurationSettingsModule *)self setUpdateProtectionModeTimer:0];
   }
 
-  objc_initWeak(buf, v8);
+  objc_initWeak(buf, group2);
   objc_initWeak(&location, self);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -300,9 +300,9 @@ void __61__HUNetworkConfigurationSettingsModule_updateProtectionMode___block_inv
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HUNetworkConfigurationSettingsModule *)self group];
-  v5 = [v4 hf_title];
-  v6 = [v3 stringWithFormat:@"<HUNetworkConfigurationSettingsModule %p (%@)>", self, v5];
+  group = [(HUNetworkConfigurationSettingsModule *)self group];
+  hf_title = [group hf_title];
+  v6 = [v3 stringWithFormat:@"<HUNetworkConfigurationSettingsModule %p (%@)>", self, hf_title];
 
   return v6;
 }
@@ -310,35 +310,35 @@ void __61__HUNetworkConfigurationSettingsModule_updateProtectionMode___block_inv
 - (id)itemProviders
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HUNetworkConfigurationSettingsModule *)self networkProtectionModeOptionItemProvider];
-  v4 = [v2 setWithObject:v3];
+  networkProtectionModeOptionItemProvider = [(HUNetworkConfigurationSettingsModule *)self networkProtectionModeOptionItemProvider];
+  v4 = [v2 setWithObject:networkProtectionModeOptionItemProvider];
 
   return v4;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D14850];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [[v4 alloc] initWithIdentifier:@"HUNetworkConfigurationSettingsModuleProtectionModeOptionSectionIdentifier"];
   v7 = _HULocalizedStringWithDefaultValue(@"HUNetworkConfigurationSettingsSectionTitle", @"HUNetworkConfigurationSettingsSectionTitle", 1);
   [v6 setHeaderTitle:v7];
 
-  v8 = [(HUNetworkConfigurationSettingsModule *)self networkProtectionModeOptionItemProvider];
-  v9 = [v8 items];
-  v10 = [v9 allObjects];
-  v11 = [MEMORY[0x277D14778] itemResultManualSortComparator];
-  v12 = [v10 sortedArrayUsingComparator:v11];
+  networkProtectionModeOptionItemProvider = [(HUNetworkConfigurationSettingsModule *)self networkProtectionModeOptionItemProvider];
+  items = [networkProtectionModeOptionItemProvider items];
+  allObjects = [items allObjects];
+  itemResultManualSortComparator = [MEMORY[0x277D14778] itemResultManualSortComparator];
+  v12 = [allObjects sortedArrayUsingComparator:itemResultManualSortComparator];
   [v6 setItems:v12];
 
-  v13 = [(HUNetworkConfigurationSettingsModule *)self _protectionModeOptionSectionFooter];
-  [v6 setAttributedFooterTitle:v13];
+  _protectionModeOptionSectionFooter = [(HUNetworkConfigurationSettingsModule *)self _protectionModeOptionSectionFooter];
+  [v6 setAttributedFooterTitle:_protectionModeOptionSectionFooter];
 
   v14 = MEMORY[0x277D14778];
   v18[0] = v6;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-  v16 = [v14 filterSections:v15 toDisplayedItems:v5];
+  v16 = [v14 filterSections:v15 toDisplayedItems:itemsCopy];
 
   return v16;
 }
@@ -346,35 +346,35 @@ void __61__HUNetworkConfigurationSettingsModule_updateProtectionMode___block_inv
 - (id)_protectionModeOptionSectionFooter
 {
   v62 = *MEMORY[0x277D85DE8];
-  v3 = [(HUNetworkConfigurationSettingsModule *)self sourceItem];
-  v4 = [v3 latestResults];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D14048]];
-  v6 = [v5 unsignedIntegerValue];
+  sourceItem = [(HUNetworkConfigurationSettingsModule *)self sourceItem];
+  latestResults = [sourceItem latestResults];
+  v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14048]];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [v3 latestResults];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D14018]];
-  v9 = [v8 unsignedIntegerValue];
+  latestResults2 = [sourceItem latestResults];
+  v8 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D14018]];
+  unsignedIntegerValue2 = [v8 unsignedIntegerValue];
 
-  v10 = [v3 latestResults];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277D14030]];
-  v12 = [v11 BOOLValue];
+  latestResults3 = [sourceItem latestResults];
+  v11 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D14030]];
+  bOOLValue = [v11 BOOLValue];
 
-  v13 = [v3 latestResults];
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277D14028]];
-  v15 = [v14 BOOLValue];
+  latestResults4 = [sourceItem latestResults];
+  v14 = [latestResults4 objectForKeyedSubscript:*MEMORY[0x277D14028]];
+  bOOLValue2 = [v14 BOOLValue];
 
-  v16 = [v3 latestResults];
-  v17 = [v16 objectForKeyedSubscript:*MEMORY[0x277D14010]];
+  latestResults5 = [sourceItem latestResults];
+  v17 = [latestResults5 objectForKeyedSubscript:*MEMORY[0x277D14010]];
 
-  v18 = [v17 allObjects];
-  v33 = [v18 sortedArrayUsingComparator:&__block_literal_global_27];
+  allObjects = [v17 allObjects];
+  v33 = [allObjects sortedArrayUsingComparator:&__block_literal_global_27];
 
-  v19 = [v3 latestResults];
-  v20 = [v19 objectForKeyedSubscript:*MEMORY[0x277D14020]];
-  v21 = [v20 BOOLValue];
-  if (v9 == 2)
+  latestResults6 = [sourceItem latestResults];
+  v20 = [latestResults6 objectForKeyedSubscript:*MEMORY[0x277D14020]];
+  bOOLValue3 = [v20 BOOLValue];
+  if (unsignedIntegerValue2 == 2)
   {
-    v22 = v21;
+    v22 = bOOLValue3;
   }
 
   else
@@ -384,8 +384,8 @@ void __61__HUNetworkConfigurationSettingsModule_updateProtectionMode___block_inv
 
   v34 = v22;
 
-  v23 = [v3 latestResults];
-  v24 = [v23 objectForKeyedSubscript:*MEMORY[0x277D14040]];
+  latestResults7 = [sourceItem latestResults];
+  v24 = [latestResults7 objectForKeyedSubscript:*MEMORY[0x277D14040]];
   if ([v24 BOOLValue])
   {
     v25 = ![(HUNetworkConfigurationSettingsModule *)self isUpdatingProtectionMode];
@@ -400,21 +400,21 @@ void __61__HUNetworkConfigurationSettingsModule_updateProtectionMode___block_inv
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138414594;
-    v43 = self;
+    selfCopy = self;
     v44 = 2112;
-    v45 = v3;
+    v45 = sourceItem;
     v46 = 2048;
-    v47 = v6;
+    v47 = unsignedIntegerValue;
     v48 = 2048;
-    v49 = v9;
+    v49 = unsignedIntegerValue2;
     v50 = 1024;
-    v51 = [(HUNetworkConfigurationSettingsModule *)self isUpdatingProtectionMode];
+    isUpdatingProtectionMode = [(HUNetworkConfigurationSettingsModule *)self isUpdatingProtectionMode];
     v52 = 1024;
     v53 = v25;
     v54 = 1024;
-    v55 = v15;
+    v55 = bOOLValue2;
     v56 = 1024;
-    v57 = v12;
+    v57 = bOOLValue;
     v58 = 2048;
     v59 = [v17 count];
     v60 = 1024;
@@ -427,8 +427,8 @@ void __61__HUNetworkConfigurationSettingsModule_updateProtectionMode___block_inv
   v39[1] = 3221225472;
   v39[2] = __74__HUNetworkConfigurationSettingsModule__protectionModeOptionSectionFooter__block_invoke_38;
   v39[3] = &__block_descriptor_34_e25___NSAttributedString_8__0l;
-  v40 = v12;
-  v41 = v15;
+  v40 = bOOLValue;
+  v41 = bOOLValue2;
   v28 = __74__HUNetworkConfigurationSettingsModule__protectionModeOptionSectionFooter__block_invoke_38(v39);
   [v27 appendAttributedString:v28];
 
@@ -438,14 +438,14 @@ void __61__HUNetworkConfigurationSettingsModule_updateProtectionMode___block_inv
     [v27 appendAttributedString:v29];
   }
 
-  if (v9 == 2)
+  if (unsignedIntegerValue2 == 2)
   {
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __74__HUNetworkConfigurationSettingsModule__protectionModeOptionSectionFooter__block_invoke_3;
     v36[3] = &unk_277DB8DA8;
     v37 = v27;
-    v38 = self;
+    selfCopy2 = self;
     [v33 na_each:v36];
   }
 
@@ -598,27 +598,27 @@ id __74__HUNetworkConfigurationSettingsModule__protectionModeOptionSectionFooter
   return v2;
 }
 
-+ (id)_allowedHostDescriptionForHostGroup:(id)a3
++ (id)_allowedHostDescriptionForHostGroup:(id)group
 {
-  v3 = a3;
-  v4 = [v3 name];
-  v5 = [v3 purposeLocalizedDescription];
+  groupCopy = group;
+  name = [groupCopy name];
+  purposeLocalizedDescription = [groupCopy purposeLocalizedDescription];
 
-  v12 = HULocalizedStringWithFormat(@"HUNetworkConfigurationSettingsAllowedHostDescriptionFormat", @"%@%@", v6, v7, v8, v9, v10, v11, v4);
+  v12 = HULocalizedStringWithFormat(@"HUNetworkConfigurationSettingsAllowedHostDescriptionFormat", @"%@%@", v6, v7, v8, v9, v10, v11, name);
 
   return v12;
 }
 
-+ (id)_attributedIconNamed:(id)a3
++ (id)_attributedIconNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:@"\n"];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__HUNetworkConfigurationSettingsModule__attributedIconNamed___block_invoke;
   v9[3] = &unk_277DB8DD0;
-  v10 = v3;
-  v5 = v3;
+  v10 = namedCopy;
+  v5 = namedCopy;
   v6 = __61__HUNetworkConfigurationSettingsModule__attributedIconNamed___block_invoke(v9);
   [v4 appendAttributedString:v6];
 

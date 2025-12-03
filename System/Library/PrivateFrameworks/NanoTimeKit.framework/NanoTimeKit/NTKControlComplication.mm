@@ -1,32 +1,32 @@
 @interface NTKControlComplication
-+ (id)controlWithIdentity:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)controlWithIdentity:(id)identity;
+- (BOOL)isEqual:(id)equal;
 - (NSString)containerBundleIdentifier;
 - (NSString)extensionBundleIdentifier;
-- (NTKControlComplication)initWithCoder:(id)a3;
+- (NTKControlComplication)initWithCoder:(id)coder;
 - (id)_createUniqueIdentifier;
-- (id)_initWithComplicationType:(unint64_t)a3 JSONDictionary:(id)a4;
+- (id)_initWithComplicationType:(unint64_t)type JSONDictionary:(id)dictionary;
 - (id)analyticsIdentifier;
 - (id)appIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_addKeysToJSONDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_addKeysToJSONDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKControlComplication
 
-+ (id)controlWithIdentity:(id)a3
++ (id)controlWithIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithComplicationType:59];
-  v6 = [v4 copy];
+  identityCopy = identity;
+  v5 = [[self alloc] initWithComplicationType:59];
+  v6 = [identityCopy copy];
 
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [v5 _createUniqueIdentifier];
-  [v5 setUniqueIdentifier:v8];
+  _createUniqueIdentifier = [v5 _createUniqueIdentifier];
+  [v5 setUniqueIdentifier:_createUniqueIdentifier];
 
   return v5;
 }
@@ -35,12 +35,12 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = NTKReportingValueForComplication(self);
-  v5 = [(NTKControlComplication *)self identity];
-  v6 = [v5 extensionIdentity];
-  v7 = [v6 extensionBundleIdentifier];
-  v8 = [(NTKControlComplication *)self identity];
-  v9 = [v8 kind];
-  v10 = [v3 stringWithFormat:@"%@:%@:%@", v4, v7, v9];
+  identity = [(NTKControlComplication *)self identity];
+  extensionIdentity = [identity extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+  identity2 = [(NTKControlComplication *)self identity];
+  kind = [identity2 kind];
+  v10 = [v3 stringWithFormat:@"%@:%@:%@", v4, extensionBundleIdentifier, kind];
 
   return v10;
 }
@@ -48,83 +48,83 @@
 - (id)_createUniqueIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v15 = [(NTKControlComplication *)self identity];
-  v4 = [v15 extensionIdentity];
-  v5 = [v4 containerBundleIdentifier];
-  v6 = [(NTKControlComplication *)self identity];
-  v7 = [v6 extensionIdentity];
-  v8 = [v7 extensionBundleIdentifier];
-  v9 = [(NTKControlComplication *)self identity];
-  v10 = [v9 kind];
-  v11 = [(NTKControlComplication *)self identity];
-  v12 = [v11 intentReference];
-  v13 = [v3 stringWithFormat:@"%@-%@-%@-%li", v5, v8, v10, objc_msgSend(v12, "stableHash")];
+  identity = [(NTKControlComplication *)self identity];
+  extensionIdentity = [identity extensionIdentity];
+  containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+  identity2 = [(NTKControlComplication *)self identity];
+  extensionIdentity2 = [identity2 extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity2 extensionBundleIdentifier];
+  identity3 = [(NTKControlComplication *)self identity];
+  kind = [identity3 kind];
+  identity4 = [(NTKControlComplication *)self identity];
+  intentReference = [identity4 intentReference];
+  v13 = [v3 stringWithFormat:@"%@-%@-%@-%li", containerBundleIdentifier, extensionBundleIdentifier, kind, objc_msgSend(intentReference, "stableHash")];
 
   return v13;
 }
 
 - (id)appIdentifier
 {
-  v2 = [(NTKControlComplication *)self identity];
-  v3 = [v2 extensionIdentity];
-  v4 = [v3 containerBundleIdentifier];
+  identity = [(NTKControlComplication *)self identity];
+  extensionIdentity = [identity extensionIdentity];
+  containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
 
-  return v4;
+  return containerBundleIdentifier;
 }
 
 - (NSString)containerBundleIdentifier
 {
-  v2 = [(CHSControlIdentity *)self->_identity extensionIdentity];
-  v3 = [v2 containerBundleIdentifier];
+  extensionIdentity = [(CHSControlIdentity *)self->_identity extensionIdentity];
+  containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
 
-  return v3;
+  return containerBundleIdentifier;
 }
 
 - (NSString)extensionBundleIdentifier
 {
-  v2 = [(CHSControlIdentity *)self->_identity extensionIdentity];
-  v3 = [v2 extensionBundleIdentifier];
+  extensionIdentity = [(CHSControlIdentity *)self->_identity extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
 
-  return v3;
+  return extensionBundleIdentifier;
 }
 
-- (NTKControlComplication)initWithCoder:(id)a3
+- (NTKControlComplication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = NTKControlComplication;
-  v5 = [(NTKComplication *)&v10 initWithCoder:v4];
+  v5 = [(NTKComplication *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
     identity = v5->_identity;
     v5->_identity = v6;
 
-    v8 = [(NTKControlComplication *)v5 _createUniqueIdentifier];
-    [(NTKComplication *)v5 setUniqueIdentifier:v8];
+    _createUniqueIdentifier = [(NTKControlComplication *)v5 _createUniqueIdentifier];
+    [(NTKComplication *)v5 setUniqueIdentifier:_createUniqueIdentifier];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = NTKControlComplication;
-  v4 = a3;
-  [(NTKThirdPartyComplication *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_identity forKey:{@"identity", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(NTKThirdPartyComplication *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_identity forKey:{@"identity", v5.receiver, v5.super_class}];
 }
 
-- (id)_initWithComplicationType:(unint64_t)a3 JSONDictionary:(id)a4
+- (id)_initWithComplicationType:(unint64_t)type JSONDictionary:(id)dictionary
 {
-  v6 = a4;
+  dictionaryCopy = dictionary;
   v31.receiver = self;
   v31.super_class = NTKControlComplication;
-  v7 = [(NTKComplication *)&v31 _initWithComplicationType:a3 JSONDictionary:v6];
+  v7 = [(NTKComplication *)&v31 _initWithComplicationType:type JSONDictionary:dictionaryCopy];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"identity"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"identity"];
     if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCA2A8] format:@"NTKControlComplication dictionary is nil or not a dictionary"];
@@ -190,44 +190,44 @@
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCA2A8] format:@"NTKControlComplication: CHSControlIdentity is not defined or an incorrect class"];
     }
 
-    v24 = [v7 _createUniqueIdentifier];
-    [v7 setUniqueIdentifier:v24];
+    _createUniqueIdentifier = [v7 _createUniqueIdentifier];
+    [v7 setUniqueIdentifier:_createUniqueIdentifier];
   }
 
   return v7;
 }
 
-- (void)_addKeysToJSONDictionary:(id)a3
+- (void)_addKeysToJSONDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = NTKControlComplication;
-  [(NTKThirdPartyComplication *)&v21 _addKeysToJSONDictionary:v4];
-  v5 = [(NTKControlComplication *)self identity];
-  v6 = [v5 extensionIdentity];
-  v7 = [v6 containerBundleIdentifier];
-  [v4 setObject:v7 forKeyedSubscript:@"app"];
+  [(NTKThirdPartyComplication *)&v21 _addKeysToJSONDictionary:dictionaryCopy];
+  identity = [(NTKControlComplication *)self identity];
+  extensionIdentity = [identity extensionIdentity];
+  containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+  [dictionaryCopy setObject:containerBundleIdentifier forKeyedSubscript:@"app"];
 
   v8 = objc_opt_new();
-  v9 = [(CHSControlIdentity *)self->_identity extensionIdentity];
-  v10 = [v9 containerBundleIdentifier];
-  [v8 setObject:v10 forKeyedSubscript:@"containerBundleIdentifier"];
+  extensionIdentity2 = [(CHSControlIdentity *)self->_identity extensionIdentity];
+  containerBundleIdentifier2 = [extensionIdentity2 containerBundleIdentifier];
+  [v8 setObject:containerBundleIdentifier2 forKeyedSubscript:@"containerBundleIdentifier"];
 
-  v11 = [(CHSControlIdentity *)self->_identity extensionIdentity];
-  v12 = [v11 extensionBundleIdentifier];
-  [v8 setObject:v12 forKeyedSubscript:@"extensionBundleIdentifier"];
+  extensionIdentity3 = [(CHSControlIdentity *)self->_identity extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity3 extensionBundleIdentifier];
+  [v8 setObject:extensionBundleIdentifier forKeyedSubscript:@"extensionBundleIdentifier"];
 
-  v13 = [(CHSControlIdentity *)self->_identity kind];
-  [v8 setObject:v13 forKeyedSubscript:@"kind"];
+  kind = [(CHSControlIdentity *)self->_identity kind];
+  [v8 setObject:kind forKeyedSubscript:@"kind"];
 
-  v14 = [(CHSControlIdentity *)self->_identity intentReference];
+  intentReference = [(CHSControlIdentity *)self->_identity intentReference];
 
-  if (v14)
+  if (intentReference)
   {
     v15 = MEMORY[0x277CCAAB0];
-    v16 = [(CHSControlIdentity *)self->_identity intentReference];
+    intentReference2 = [(CHSControlIdentity *)self->_identity intentReference];
     v20 = 0;
-    v17 = [v15 archivedDataWithRootObject:v16 requiringSecureCoding:1 error:&v20];
+    v17 = [v15 archivedDataWithRootObject:intentReference2 requiringSecureCoding:1 error:&v20];
     v18 = v20;
 
     if (!v17 && v18)
@@ -239,7 +239,7 @@
     [v8 setObject:v19 forKeyedSubscript:@"intentReference"];
   }
 
-  [v4 setObject:v8 forKeyedSubscript:@"identity"];
+  [dictionaryCopy setObject:v8 forKeyedSubscript:@"identity"];
 }
 
 - (id)description
@@ -248,33 +248,33 @@
   v11.receiver = self;
   v11.super_class = NTKControlComplication;
   v4 = [(NTKComplication *)&v11 description];
-  v5 = [(CHSControlIdentity *)self->_identity extensionIdentity];
-  v6 = [v5 extensionBundleIdentifier];
-  v7 = [(CHSControlIdentity *)self->_identity kind];
-  v8 = [(CHSControlIdentity *)self->_identity intentReference];
-  v9 = [v3 stringWithFormat:@"%@ (%@, %@, %lli)", v4, v6, v7, objc_msgSend(v8, "stableHash")];
+  extensionIdentity = [(CHSControlIdentity *)self->_identity extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+  kind = [(CHSControlIdentity *)self->_identity kind];
+  intentReference = [(CHSControlIdentity *)self->_identity intentReference];
+  v9 = [v3 stringWithFormat:@"%@ (%@, %@, %lli)", v4, extensionBundleIdentifier, kind, objc_msgSend(intentReference, "stableHash")];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NTKControlComplication;
-  v4 = [(NTKComplication *)&v6 copyWithZone:a3];
+  v4 = [(NTKComplication *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 4, self->_identity);
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[NTKControlComplication identity](self, "identity"), v5 = objc_claimAutoreleasedReturnValue(), [v4 identity], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqual:", v6), v6, v5, v7))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[NTKControlComplication identity](self, "identity"), v5 = objc_claimAutoreleasedReturnValue(), [equalCopy identity], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqual:", v6), v6, v5, v7))
   {
     v10.receiver = self;
     v10.super_class = NTKControlComplication;
-    v8 = [(NTKComplication *)&v10 isEqual:v4];
+    v8 = [(NTKComplication *)&v10 isEqual:equalCopy];
   }
 
   else

@@ -1,20 +1,20 @@
 @interface WidgetsURLRequestFactoryProxy
-+ (void)createRoute:(NSString *)a3 completion:(id)a4;
++ (void)createRoute:(NSString *)route completion:(id)completion;
 - (_TtC17TVWidgetExtension29WidgetsURLRequestFactoryProxy)init;
 @end
 
 @implementation WidgetsURLRequestFactoryProxy
 
-+ (void)createRoute:(NSString *)a3 completion:(id)a4
++ (void)createRoute:(NSString *)route completion:(id)completion
 {
   v7 = sub_100006334(&qword_100125288);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = route;
   v11[3] = v10;
-  v11[4] = a1;
+  v11[4] = self;
   v12 = sub_1000D372C();
   (*(*(v12 - 8) + 56))(v9, 1, 1, v12);
   v13 = swift_allocObject();
@@ -27,7 +27,7 @@
   v14[3] = 0;
   v14[4] = &unk_1000EDA80;
   v14[5] = v13;
-  v15 = a3;
+  routeCopy = route;
   sub_1000CEE14(0, 0, v9, &unk_1000E6730, v14);
 }
 

@@ -1,19 +1,19 @@
 @interface MKStandardMapConfiguration
-+ (BOOL)_overlayRequiresModernMap:(id)a3;
-+ (BOOL)_overlaySupportsElevation:(id)a3;
-+ (BOOL)_overlaysRequireModernMap:(id)a3;
-+ (BOOL)_overlaysSupportElevation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStandardMapConfiguration:(id)a3;
++ (BOOL)_overlayRequiresModernMap:(id)map;
++ (BOOL)_overlaySupportsElevation:(id)elevation;
++ (BOOL)_overlaysRequireModernMap:(id)map;
++ (BOOL)_overlaysSupportElevation:(id)elevation;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStandardMapConfiguration:(id)configuration;
 - (MKStandardMapConfiguration)init;
-- (MKStandardMapConfiguration)initWithCoder:(id)a3;
+- (MKStandardMapConfiguration)initWithCoder:(id)coder;
 - (MKStandardMapConfiguration)initWithElevationStyle:(MKMapElevationStyle)elevationStyle;
 - (MKStandardMapConfiguration)initWithElevationStyle:(MKMapElevationStyle)elevationStyle emphasisStyle:(MKStandardMapEmphasisStyle)emphasisStyle;
 - (MKStandardMapConfiguration)initWithEmphasisStyle:(MKStandardMapEmphasisStyle)emphasisStyle;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_addObserver:(id)a3 options:(unint64_t)a4 context:(void *)a5;
-- (void)_removeObserver:(id)a3 context:(void *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_addObserver:(id)observer options:(unint64_t)options context:(void *)context;
+- (void)_removeObserver:(id)observer context:(void *)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MKStandardMapConfiguration
@@ -25,33 +25,33 @@
   return [(MKMapConfiguration *)&v3 initWithElevationStyle:0];
 }
 
-- (void)_removeObserver:(id)a3 context:(void *)a4
+- (void)_removeObserver:(id)observer context:(void *)context
 {
   v7.receiver = self;
   v7.super_class = MKStandardMapConfiguration;
-  v6 = a3;
-  [(MKMapConfiguration *)&v7 _removeObserver:v6 context:a4];
-  [(MKStandardMapConfiguration *)self removeObserver:v6 forKeyPath:@"emphasisStyle" context:a4, v7.receiver, v7.super_class];
+  observerCopy = observer;
+  [(MKMapConfiguration *)&v7 _removeObserver:observerCopy context:context];
+  [(MKStandardMapConfiguration *)self removeObserver:observerCopy forKeyPath:@"emphasisStyle" context:context, v7.receiver, v7.super_class];
 }
 
-- (void)_addObserver:(id)a3 options:(unint64_t)a4 context:(void *)a5
+- (void)_addObserver:(id)observer options:(unint64_t)options context:(void *)context
 {
   v9.receiver = self;
   v9.super_class = MKStandardMapConfiguration;
-  v8 = a3;
-  [(MKMapConfiguration *)&v9 _addObserver:v8 options:a4 context:a5];
-  [(MKStandardMapConfiguration *)self addObserver:v8 forKeyPath:@"emphasisStyle" options:a4 context:a5, v9.receiver, v9.super_class];
+  observerCopy = observer;
+  [(MKMapConfiguration *)&v9 _addObserver:observerCopy options:options context:context];
+  [(MKStandardMapConfiguration *)self addObserver:observerCopy forKeyPath:@"emphasisStyle" options:options context:context, v9.receiver, v9.super_class];
 }
 
-- (BOOL)isEqualToStandardMapConfiguration:(id)a3
+- (BOOL)isEqualToStandardMapConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4 && (v14.receiver = self, v14.super_class = MKStandardMapConfiguration, -[MKMapConfiguration isEqual:](&v14, sel_isEqual_, v4)) && (emphasisStyle = self->_emphasisStyle, emphasisStyle == [v4 emphasisStyle]))
+  configurationCopy = configuration;
+  if (configurationCopy && (v14.receiver = self, v14.super_class = MKStandardMapConfiguration, -[MKMapConfiguration isEqual:](&v14, sel_isEqual_, configurationCopy)) && (emphasisStyle = self->_emphasisStyle, emphasisStyle == [configurationCopy emphasisStyle]))
   {
-    v6 = [(MKStandardMapConfiguration *)self pointOfInterestFilter];
-    v7 = [v4 pointOfInterestFilter];
-    v8 = v6;
-    v9 = v7;
+    pointOfInterestFilter = [(MKStandardMapConfiguration *)self pointOfInterestFilter];
+    pointOfInterestFilter2 = [configurationCopy pointOfInterestFilter];
+    v8 = pointOfInterestFilter;
+    v9 = pointOfInterestFilter2;
     if (v8 | v9 && (v10 = [v8 isEqual:v9], v9, v8, !v10))
     {
       LOBYTE(v12) = 0;
@@ -59,8 +59,8 @@
 
     else
     {
-      v11 = [(MKStandardMapConfiguration *)self showsTraffic];
-      v12 = v11 ^ [v4 showsTraffic] ^ 1;
+      showsTraffic = [(MKStandardMapConfiguration *)self showsTraffic];
+      v12 = showsTraffic ^ [configurationCopy showsTraffic] ^ 1;
     }
   }
 
@@ -72,44 +72,44 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MKStandardMapConfiguration *)self isEqualToStandardMapConfiguration:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MKStandardMapConfiguration *)self isEqualToStandardMapConfiguration:equalCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = MKStandardMapConfiguration;
-  result = [(MKMapConfiguration *)&v5 copyWithZone:a3];
+  result = [(MKMapConfiguration *)&v5 copyWithZone:zone];
   *(result + 4) = self->_emphasisStyle;
   return result;
 }
 
-- (MKStandardMapConfiguration)initWithCoder:(id)a3
+- (MKStandardMapConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MKStandardMapConfiguration;
-  v5 = [(MKMapConfiguration *)&v7 initWithCoder:v4];
+  v5 = [(MKMapConfiguration *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_emphasisStyle = [v4 decodeIntegerForKey:@"MKStandardMapConfigurationEmphasisStyle"];
+    v5->_emphasisStyle = [coderCopy decodeIntegerForKey:@"MKStandardMapConfigurationEmphasisStyle"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MKStandardMapConfiguration;
-  v4 = a3;
-  [(MKMapConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_emphasisStyle forKey:{@"MKStandardMapConfigurationEmphasisStyle", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(MKMapConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_emphasisStyle forKey:{@"MKStandardMapConfigurationEmphasisStyle", v5.receiver, v5.super_class}];
 }
 
 - (MKStandardMapConfiguration)initWithElevationStyle:(MKMapElevationStyle)elevationStyle emphasisStyle:(MKStandardMapEmphasisStyle)emphasisStyle
@@ -148,15 +148,15 @@
   return v5;
 }
 
-+ (BOOL)_overlaysSupportElevation:(id)a3
++ (BOOL)_overlaysSupportElevation:(id)elevation
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  elevationCopy = elevation;
+  v5 = [elevationCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -167,17 +167,17 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(elevationCopy);
         }
 
-        if (![a1 _overlaySupportsElevation:{*(*(&v11 + 1) + 8 * i), v11}])
+        if (![self _overlaySupportsElevation:{*(*(&v11 + 1) + 8 * i), v11}])
         {
           v9 = 0;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [elevationCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -193,23 +193,23 @@ LABEL_11:
   return v9;
 }
 
-+ (BOOL)_overlaySupportsElevation:(id)a3
++ (BOOL)_overlaySupportsElevation:(id)elevation
 {
-  v4 = a3;
-  v5 = ([a1 _overlayRequiresModernMap:v4] & 1) == 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && objc_msgSend(v4, "elevations") != 0;
+  elevationCopy = elevation;
+  v5 = ([self _overlayRequiresModernMap:elevationCopy] & 1) == 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && objc_msgSend(elevationCopy, "elevations") != 0;
 
   return v5;
 }
 
-+ (BOOL)_overlaysRequireModernMap:(id)a3
++ (BOOL)_overlaysRequireModernMap:(id)map
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  mapCopy = map;
+  v5 = [mapCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -220,17 +220,17 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mapCopy);
         }
 
-        if ([a1 _overlayRequiresModernMap:{*(*(&v11 + 1) + 8 * i), v11}])
+        if ([self _overlayRequiresModernMap:{*(*(&v11 + 1) + 8 * i), v11}])
         {
           v9 = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [mapCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -246,20 +246,20 @@ LABEL_11:
   return v9;
 }
 
-+ (BOOL)_overlayRequiresModernMap:(id)a3
++ (BOOL)_overlayRequiresModernMap:(id)map
 {
-  v3 = a3;
+  mapCopy = map;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 _requiresModernMap];
+    _requiresModernMap = [mapCopy _requiresModernMap];
   }
 
   else
   {
-    v4 = 0;
+    _requiresModernMap = 0;
   }
 
-  return v4;
+  return _requiresModernMap;
 }
 
 @end

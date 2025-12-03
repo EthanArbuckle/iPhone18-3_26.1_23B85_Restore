@@ -1,56 +1,56 @@
 @interface MailActionsViewController
-- (BOOL)_cardActionIsUnflag:(id)a3;
-- (BOOL)_insertActions:(id)a3 after:(id)a4;
-- (BOOL)collectionView:(id)a3 canPerformPrimaryActionForItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
+- (BOOL)_cardActionIsUnflag:(id)unflag;
+- (BOOL)_insertActions:(id)actions after:(id)after;
+- (BOOL)collectionView:(id)view canPerformPrimaryActionForItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
 - (BOOL)useActionSheetStyleCard;
-- (MailActionsViewController)initWithDelegate:(id)a3 messageHeaderView:(id)a4 didDismissHandler:(id)a5;
+- (MailActionsViewController)initWithDelegate:(id)delegate messageHeaderView:(id)view didDismissHandler:(id)handler;
 - (MailActionsViewDelegate)delegate;
 - (NSArray)sectionData;
 - (double)_bottomInsetForCollectionView;
-- (double)_maxLabelWidthInSection:(id)a3;
+- (double)_maxLabelWidthInSection:(id)section;
 - (double)_topInsetForCollectionView;
 - (double)approximateHeightForActionSheetStyleCard;
 - (double)approximateHeightNeededForAccessibilityContentSizeCategory;
 - (id)compositionalLayout;
 - (void)_configureCollectionViewIfNeeded;
 - (void)_configureNavigationTitleViewIfNeeded;
-- (void)_expandRecategorizationHeader:(id)a3;
+- (void)_expandRecategorizationHeader:(id)header;
 - (void)_loadData;
-- (void)_performDataSourceUpdate:(id)a3;
-- (void)_reloadRecategorizationHeaderCellForAction:(id)a3;
-- (void)_updateFlagCardActionCell:(BOOL)a3;
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4;
+- (void)_performDataSourceUpdate:(id)update;
+- (void)_reloadRecategorizationHeaderCellForAction:(id)action;
+- (void)_updateFlagCardActionCell:(BOOL)cell;
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path;
 - (void)loadView;
-- (void)mailActionCatchUpFeedbackCell:(id)a3 didTapOnFeedbackType:(int64_t)a4;
-- (void)mailActionFlagColorCell:(id)a3 didTapOnFlagColor:(id)a4;
+- (void)mailActionCatchUpFeedbackCell:(id)cell didTapOnFeedbackType:(int64_t)type;
+- (void)mailActionFlagColorCell:(id)cell didTapOnFlagColor:(id)color;
 - (void)reloadFlagItem;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateHeaderDisplayMetrics:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateHeaderDisplayMetrics:(id)metrics;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewLayoutMarginsDidChange;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MailActionsViewController
 
-- (MailActionsViewController)initWithDelegate:(id)a3 messageHeaderView:(id)a4 didDismissHandler:(id)a5
+- (MailActionsViewController)initWithDelegate:(id)delegate messageHeaderView:(id)view didDismissHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  viewCopy = view;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = MailActionsViewController;
   v11 = [(MailActionsViewController *)&v16 initWithNibName:0 bundle:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v8);
-    objc_storeStrong(&v12->_messageHeaderView, a4);
-    v13 = objc_retainBlock(v10);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v12->_messageHeaderView, view);
+    v13 = objc_retainBlock(handlerCopy);
     didDismissHandler = v12->_didDismissHandler;
     v12->_didDismissHandler = v13;
   }
@@ -58,16 +58,16 @@
   return v12;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = MailActionsViewController;
-  [(MailActionsViewController *)&v6 viewDidDisappear:a3];
-  v4 = [(MailActionsViewController *)self didDismissHandler];
-  v5 = v4;
-  if (v4)
+  [(MailActionsViewController *)&v6 viewDidDisappear:disappear];
+  didDismissHandler = [(MailActionsViewController *)self didDismissHandler];
+  v5 = didDismissHandler;
+  if (didDismissHandler)
   {
-    (*(v4 + 16))(v4);
+    (*(didDismissHandler + 16))(didDismissHandler);
   }
 
   [(MailActionsViewController *)self setDidDismissHandler:0];
@@ -92,64 +92,64 @@
   [(MailActionsViewController *)&v30 viewDidLayoutSubviews];
   if (MUISolariumFeatureEnabled())
   {
-    v3 = [(MailActionsViewController *)self messageHeaderView];
-    v4 = [v3 avatarView];
-    v5 = [v4 window];
+    messageHeaderView = [(MailActionsViewController *)self messageHeaderView];
+    avatarView = [messageHeaderView avatarView];
+    window = [avatarView window];
 
-    if (v5)
+    if (window)
     {
-      v6 = [(MailActionsViewController *)self messageHeaderView];
-      v7 = [v6 avatarView];
-      v8 = [v7 superview];
-      v9 = [(MailActionsViewController *)self messageHeaderView];
-      v10 = [v9 avatarView];
-      [v10 frame];
+      messageHeaderView2 = [(MailActionsViewController *)self messageHeaderView];
+      avatarView2 = [messageHeaderView2 avatarView];
+      superview = [avatarView2 superview];
+      messageHeaderView3 = [(MailActionsViewController *)self messageHeaderView];
+      avatarView3 = [messageHeaderView3 avatarView];
+      [avatarView3 frame];
       v12 = v11;
       v14 = v13;
       v16 = v15;
       v18 = v17;
-      v19 = [(MailActionsViewController *)self messageHeaderView];
-      [v8 convertRect:v19 toView:{v12, v14, v16, v18}];
+      messageHeaderView4 = [(MailActionsViewController *)self messageHeaderView];
+      [superview convertRect:messageHeaderView4 toView:{v12, v14, v16, v18}];
       v21 = v20;
 
-      v22 = [(MailActionsViewController *)self messageHeaderViewTopConstraint];
-      [v22 setConstant:-v21];
+      messageHeaderViewTopConstraint = [(MailActionsViewController *)self messageHeaderViewTopConstraint];
+      [messageHeaderViewTopConstraint setConstant:-v21];
     }
 
     else
     {
-      v22 = [(MailActionsViewController *)self messageHeaderViewTopConstraint];
-      [v22 setConstant:0.0];
+      messageHeaderViewTopConstraint = [(MailActionsViewController *)self messageHeaderViewTopConstraint];
+      [messageHeaderViewTopConstraint setConstant:0.0];
     }
 
-    v23 = [(MailActionsViewController *)self view];
-    [v23 layoutMargins];
+    view = [(MailActionsViewController *)self view];
+    [view layoutMargins];
     v25 = v24;
-    v26 = [(MailActionsViewController *)self titleView];
-    [v26 layoutMargins];
+    titleView = [(MailActionsViewController *)self titleView];
+    [titleView layoutMargins];
     v28 = v27;
-    v29 = [(MailActionsViewController *)self messageHeaderViewLeadingConstraint];
-    [v29 setConstant:v25 - v28];
+    messageHeaderViewLeadingConstraint = [(MailActionsViewController *)self messageHeaderViewLeadingConstraint];
+    [messageHeaderViewLeadingConstraint setConstant:v25 - v28];
   }
 }
 
 - (void)reloadFlagItem
 {
-  v15 = [(MailActionsViewController *)self flagCardAction];
-  [v15 setAccessibilityIdentifier:MSAccessibilityIdentifierActionsViewControllerFlag];
-  if (v15)
+  flagCardAction = [(MailActionsViewController *)self flagCardAction];
+  [flagCardAction setAccessibilityIdentifier:MSAccessibilityIdentifierActionsViewControllerFlag];
+  if (flagCardAction)
   {
-    v3 = [(MailActionsViewController *)self flagColorCardAction];
-    if ([v3 count])
+    flagColorCardAction = [(MailActionsViewController *)self flagColorCardAction];
+    if ([flagColorCardAction count])
     {
-      v4 = [(MailActionsViewController *)self collectionViewDataSource];
-      v5 = [v3 firstObject];
-      v6 = [v4 indexPathForItemIdentifier:v5];
+      collectionViewDataSource = [(MailActionsViewController *)self collectionViewDataSource];
+      firstObject = [flagColorCardAction firstObject];
+      v6 = [collectionViewDataSource indexPathForItemIdentifier:firstObject];
 
-      v7 = [(MailActionsViewController *)self collectionView];
-      v8 = [v7 cellForItemAtIndexPath:v6];
+      collectionView = [(MailActionsViewController *)self collectionView];
+      v8 = [collectionView cellForItemAtIndexPath:v6];
 
-      v9 = [(MailActionsViewController *)self _cardActionIsUnflag:v15];
+      v9 = [(MailActionsViewController *)self _cardActionIsUnflag:flagCardAction];
       if (v9)
       {
         v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", +[MFFlagTriageInteraction defaultColor]);
@@ -166,45 +166,45 @@
       }
     }
 
-    v11 = [(MailActionsViewController *)self collectionView];
-    v12 = [(MailActionsViewController *)self collectionViewDataSource];
-    v13 = [v12 indexPathForItemIdentifier:v15];
-    v14 = [v11 cellForItemAtIndexPath:v13];
+    collectionView2 = [(MailActionsViewController *)self collectionView];
+    collectionViewDataSource2 = [(MailActionsViewController *)self collectionViewDataSource];
+    v13 = [collectionViewDataSource2 indexPathForItemIdentifier:flagCardAction];
+    v14 = [collectionView2 cellForItemAtIndexPath:v13];
 
-    [v14 setCardAction:v15];
+    [v14 setCardAction:flagCardAction];
   }
 }
 
-- (void)_reloadRecategorizationHeaderCellForAction:(id)a3
+- (void)_reloadRecategorizationHeaderCellForAction:(id)action
 {
-  v8 = a3;
-  [v8 setAccessibilityIdentifier:MSAccessibilityIdentifierActionsViewControllerRecategorization];
-  if (v8)
+  actionCopy = action;
+  [actionCopy setAccessibilityIdentifier:MSAccessibilityIdentifierActionsViewControllerRecategorization];
+  if (actionCopy)
   {
-    v4 = [(MailActionsViewController *)self collectionView];
-    v5 = [(MailActionsViewController *)self collectionViewDataSource];
-    v6 = [v5 indexPathForItemIdentifier:v8];
-    v7 = [v4 cellForItemAtIndexPath:v6];
+    collectionView = [(MailActionsViewController *)self collectionView];
+    collectionViewDataSource = [(MailActionsViewController *)self collectionViewDataSource];
+    v6 = [collectionViewDataSource indexPathForItemIdentifier:actionCopy];
+    v7 = [collectionView cellForItemAtIndexPath:v6];
 
-    [v7 setCardAction:v8];
+    [v7 setCardAction:actionCopy];
   }
 }
 
-- (BOOL)_cardActionIsUnflag:(id)a3
+- (BOOL)_cardActionIsUnflag:(id)unflag
 {
-  v3 = [a3 imageName];
-  v4 = [v3 isEqualToString:MFImageGlyphUnflag];
+  imageName = [unflag imageName];
+  v4 = [imageName isEqualToString:MFImageGlyphUnflag];
 
   return v4;
 }
 
 - (double)_bottomInsetForCollectionView
 {
-  v3 = [(MailActionsViewController *)self view];
-  [v3 layoutMargins];
+  view = [(MailActionsViewController *)self view];
+  [view layoutMargins];
   v5 = v4;
-  v6 = [(MailActionsViewController *)self view];
-  [v6 safeAreaInsets];
+  view2 = [(MailActionsViewController *)self view];
+  [view2 safeAreaInsets];
   v8 = v5 + v7;
 
   return v8;
@@ -212,27 +212,27 @@
 
 - (BOOL)useActionSheetStyleCard
 {
-  v2 = [(MailActionsViewController *)self sectionData];
-  v3 = [v2 count] == 1;
+  sectionData = [(MailActionsViewController *)self sectionData];
+  v3 = [sectionData count] == 1;
 
   return v3;
 }
 
 - (double)approximateHeightForActionSheetStyleCard
 {
-  v3 = [(MailActionsViewController *)self useActionSheetStyleCard];
+  useActionSheetStyleCard = [(MailActionsViewController *)self useActionSheetStyleCard];
   result = 0.0;
-  if (v3)
+  if (useActionSheetStyleCard)
   {
-    v5 = [(MailActionsViewController *)self messageHeaderView];
-    [v5 frame];
+    messageHeaderView = [(MailActionsViewController *)self messageHeaderView];
+    [messageHeaderView frame];
     Height = CGRectGetHeight(v24);
 
     [(MailActionsViewController *)self _topInsetForCollectionView];
     v8 = v7;
-    v9 = [(MailActionsViewController *)self traitCollection];
-    v10 = [v9 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v10);
+    traitCollection = [(MailActionsViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
@@ -249,10 +249,10 @@
       v13 = v16 + v17;
     }
 
-    v18 = [(MailActionsViewController *)self sectionData];
-    v19 = [v18 firstObject];
-    v20 = [v19 actions];
-    v21 = Height + 0.0 + v8 + [v20 count] * v13;
+    sectionData = [(MailActionsViewController *)self sectionData];
+    firstObject = [sectionData firstObject];
+    actions = [firstObject actions];
+    v21 = Height + 0.0 + v8 + [actions count] * v13;
 
     if (self)
     {
@@ -277,17 +277,17 @@
 
 - (double)approximateHeightNeededForAccessibilityContentSizeCategory
 {
-  v3 = [(MailActionsViewController *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(MailActionsViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   result = 0.0;
   if (IsAccessibilityCategory)
   {
-    v7 = [(MailActionsViewController *)self sectionData];
-    v8 = [v7 firstObject];
-    v9 = [v8 actions];
-    v10 = [v9 count];
+    sectionData = [(MailActionsViewController *)self sectionData];
+    firstObject = [sectionData firstObject];
+    actions = [firstObject actions];
+    v10 = [actions count];
 
     +[MailActionCell approximateHeightForAccessibilityContentSizeCategory];
     v12 = v11;
@@ -311,8 +311,8 @@
 
     [(MailActionsViewController *)self _topInsetForCollectionView];
     v15 = v14;
-    v16 = [(MailActionsViewController *)self messageHeaderView];
-    [v16 frame];
+    messageHeaderView = [(MailActionsViewController *)self messageHeaderView];
+    [messageHeaderView frame];
     Height = CGRectGetHeight(v18);
 
     return v15 + v13 * (v10 - 1) + v10 * v12 + Height;
@@ -323,18 +323,18 @@
 
 - (void)_loadData
 {
-  v4 = [(MailActionsViewController *)self dataSource];
-  if (v4)
+  dataSource = [(MailActionsViewController *)self dataSource];
+  if (dataSource)
   {
-    v3 = [(MailActionsViewController *)self sectionData];
-    [(MailActionsViewController *)self _performDataSourceUpdate:v3];
+    sectionData = [(MailActionsViewController *)self sectionData];
+    [(MailActionsViewController *)self _performDataSourceUpdate:sectionData];
   }
 }
 
 - (NSArray)sectionData
 {
-  v3 = [(MailActionsViewController *)self dataSource];
-  v4 = v3;
+  dataSource = [(MailActionsViewController *)self dataSource];
+  v4 = dataSource;
   sectionData = self->_sectionData;
   if (sectionData)
   {
@@ -343,12 +343,12 @@
 
   else
   {
-    v6 = v3 == 0;
+    v6 = dataSource == 0;
   }
 
   if (!v6)
   {
-    v7 = [v3 sectionDataForMailActionsViewController:self];
+    v7 = [dataSource sectionDataForMailActionsViewController:self];
     v8 = self->_sectionData;
     self->_sectionData = v7;
 
@@ -362,19 +362,19 @@
 
 - (void)_configureCollectionViewIfNeeded
 {
-  v3 = [(MailActionsViewController *)self collectionView];
+  collectionView = [(MailActionsViewController *)self collectionView];
 
-  if (!v3)
+  if (!collectionView)
   {
-    v46 = [(MailActionsViewController *)self view];
+    view = [(MailActionsViewController *)self view];
     v4 = [UICollectionView alloc];
-    [v46 bounds];
+    [view bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(MailActionsViewController *)self compositionalLayout];
-    v14 = [v4 initWithFrame:v13 collectionViewLayout:{v6, v8, v10, v12}];
+    compositionalLayout = [(MailActionsViewController *)self compositionalLayout];
+    v14 = [v4 initWithFrame:compositionalLayout collectionViewLayout:{v6, v8, v10, v12}];
 
     [v14 setDelegate:self];
     [v14 setDelaysContentTouches:0];
@@ -417,47 +417,47 @@
 
     [v14 setAccessibilityIdentifier:MSAccessibilityIdentifierActionsViewController];
     [(MailActionsViewController *)self setCollectionView:v14];
-    [v46 addSubview:v14];
+    [view addSubview:v14];
     if (MUISolariumFeatureEnabled())
     {
-      v45 = [v14 topAnchor];
-      v44 = [v46 topAnchor];
-      v40 = [v45 constraintEqualToAnchor:?];
-      v51[0] = v40;
-      v43 = [v14 leadingAnchor];
-      v42 = [v46 leadingAnchor];
-      v39 = [v43 constraintEqualToAnchor:?];
-      v51[1] = v39;
-      v41 = [v14 bottomAnchor];
-      v30 = [v46 bottomAnchor];
-      v31 = [v41 constraintEqualToAnchor:v30];
-      v51[2] = v31;
-      v32 = [v14 trailingAnchor];
-      v33 = [v46 trailingAnchor];
-      v34 = [v32 constraintEqualToAnchor:v33];
-      v51[3] = v34;
+      topAnchor = [v14 topAnchor];
+      topAnchor2 = [view topAnchor];
+      v45TopAnchor = [topAnchor constraintEqualToAnchor:?];
+      v51[0] = v45TopAnchor;
+      leadingAnchor = [v14 leadingAnchor];
+      leadingAnchor2 = [view leadingAnchor];
+      leadingAnchor3 = [leadingAnchor constraintEqualToAnchor:?];
+      v51[1] = leadingAnchor3;
+      bottomAnchor = [v14 bottomAnchor];
+      bottomAnchor2 = [view bottomAnchor];
+      bottomAnchor3 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+      v51[2] = bottomAnchor3;
+      trailingAnchor = [v14 trailingAnchor];
+      trailingAnchor2 = [view trailingAnchor];
+      trailingAnchor3 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+      v51[3] = trailingAnchor3;
       v35 = [NSArray arrayWithObjects:v51 count:4];
       [NSLayoutConstraint activateConstraints:v35];
     }
 
     else
     {
-      v45 = [v46 safeAreaLayoutGuide];
-      v44 = [v14 topAnchor];
-      v40 = [v45 topAnchor];
-      v43 = [v44 constraintEqualToAnchor:?];
-      v50[0] = v43;
-      v42 = [v14 leadingAnchor];
-      v39 = [v45 leadingAnchor];
-      v41 = [v42 constraintEqualToAnchor:?];
-      v50[1] = v41;
-      v30 = [v14 bottomAnchor];
-      v31 = [v45 bottomAnchor];
-      v32 = [v30 constraintEqualToAnchor:v31];
-      v50[2] = v32;
-      v33 = [v14 trailingAnchor];
-      v34 = [v45 trailingAnchor];
-      v35 = [v33 constraintEqualToAnchor:v34];
+      topAnchor = [view safeAreaLayoutGuide];
+      topAnchor2 = [v14 topAnchor];
+      v45TopAnchor = [topAnchor topAnchor];
+      leadingAnchor = [topAnchor2 constraintEqualToAnchor:?];
+      v50[0] = leadingAnchor;
+      leadingAnchor2 = [v14 leadingAnchor];
+      leadingAnchor3 = [topAnchor leadingAnchor];
+      bottomAnchor = [leadingAnchor2 constraintEqualToAnchor:?];
+      v50[1] = bottomAnchor;
+      bottomAnchor2 = [v14 bottomAnchor];
+      bottomAnchor3 = [topAnchor bottomAnchor];
+      trailingAnchor = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
+      v50[2] = trailingAnchor;
+      trailingAnchor2 = [v14 trailingAnchor];
+      trailingAnchor3 = [topAnchor trailingAnchor];
+      v35 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
       v50[3] = v35;
       v36 = [NSArray arrayWithObjects:v50 count:4];
       [NSLayoutConstraint activateConstraints:v36];
@@ -496,13 +496,13 @@
   return v4;
 }
 
-- (double)_maxLabelWidthInSection:(id)a3
+- (double)_maxLabelWidthInSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   v5 = +[MailActionCell preferredFontForHorizontalTitle];
-  v6 = [(MailActionsViewController *)self collectionViewDataSource];
-  v7 = [v6 snapshot];
-  v8 = [v7 itemIdentifiersInSectionWithIdentifier:v4];
+  collectionViewDataSource = [(MailActionsViewController *)self collectionViewDataSource];
+  snapshot = [collectionViewDataSource snapshot];
+  v8 = [snapshot itemIdentifiersInSectionWithIdentifier:sectionCopy];
 
   v24 = NSFontAttributeName;
   v25 = v5;
@@ -526,8 +526,8 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v19 + 1) + 8 * i) shortTitle];
-        [v15 sizeWithAttributes:v9];
+        shortTitle = [*(*(&v19 + 1) + 8 * i) shortTitle];
+        [shortTitle sizeWithAttributes:v9];
         v17 = v16;
 
         v13 = fmax(v17, v13);
@@ -547,37 +547,37 @@
   return ceil(v13);
 }
 
-- (void)_performDataSourceUpdate:(id)a3
+- (void)_performDataSourceUpdate:(id)update
 {
-  v6 = self;
-  v3 = a3;
-  v7 = v3;
+  selfCopy = self;
+  updateCopy = update;
+  v7 = updateCopy;
   v4 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v4 performBlock:&v5];
 }
 
-- (void)_expandRecategorizationHeader:(id)a3
+- (void)_expandRecategorizationHeader:(id)header
 {
-  v5 = a3;
-  v4 = [v5 children];
-  [v5 setIsExpanded:{-[MailActionsViewController _insertActions:after:](self, "_insertActions:after:", v4, v5)}];
+  headerCopy = header;
+  children = [headerCopy children];
+  [headerCopy setIsExpanded:{-[MailActionsViewController _insertActions:after:](self, "_insertActions:after:", children, headerCopy)}];
 
-  [(MailActionsViewController *)self _reloadRecategorizationHeaderCellForAction:v5];
+  [(MailActionsViewController *)self _reloadRecategorizationHeaderCellForAction:headerCopy];
 }
 
-- (BOOL)_insertActions:(id)a3 after:(id)a4
+- (BOOL)_insertActions:(id)actions after:(id)after
 {
-  v6 = a3;
-  v7 = a4;
+  actionsCopy = actions;
+  afterCopy = after;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v8 = v6;
+  v8 = actionsCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = afterCopy;
   v14 = v9;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
   v10 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v10 performBlock:&v12];
@@ -593,28 +593,28 @@
   v5.receiver = self;
   v5.super_class = MailActionsViewController;
   [(MailActionsViewController *)&v5 viewLayoutMarginsDidChange];
-  v3 = [(MailActionsViewController *)self collectionView];
-  v4 = [v3 collectionViewLayout];
-  [v4 invalidateLayout];
+  collectionView = [(MailActionsViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v12.receiver = self;
   v12.super_class = MailActionsViewController;
-  [(MailActionsViewController *)&v12 traitCollectionDidChange:v4];
+  [(MailActionsViewController *)&v12 traitCollectionDidChange:changeCopy];
   [(MailActionsViewController *)self _loadData];
-  v5 = [(MailActionsViewController *)self collectionView];
-  v6 = [v5 collectionViewLayout];
-  [v6 invalidateLayout];
+  collectionView = [(MailActionsViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
-  v7 = [(MailActionsViewController *)self messageHeaderView];
-  v8 = [v7 displayMetrics];
-  [MailActionViewHeader defaultHeightWithDisplayMetrics:v8];
+  messageHeaderView = [(MailActionsViewController *)self messageHeaderView];
+  displayMetrics = [messageHeaderView displayMetrics];
+  [MailActionViewHeader defaultHeightWithDisplayMetrics:displayMetrics];
   v10 = v9;
-  v11 = [(MailActionsViewController *)self titleView];
-  [v11 setHeight:v10];
+  titleView = [(MailActionsViewController *)self titleView];
+  [titleView setHeight:v10];
 }
 
 - (void)viewSafeAreaInsetsDidChange
@@ -622,12 +622,12 @@
   v10.receiver = self;
   v10.super_class = MailActionsViewController;
   [(MailActionsViewController *)&v10 viewSafeAreaInsetsDidChange];
-  v3 = [(MailActionsViewController *)self view];
-  v4 = [(MailActionsViewController *)self collectionView];
+  view = [(MailActionsViewController *)self view];
+  collectionView = [(MailActionsViewController *)self collectionView];
 
-  if (v4)
+  if (collectionView)
   {
-    v5 = [(MailActionsViewController *)self collectionView];
+    collectionView2 = [(MailActionsViewController *)self collectionView];
     if (self)
     {
       if (MUISolariumFeatureEnabled())
@@ -646,36 +646,36 @@
       v6 = 0.0;
     }
 
-    [v3 layoutMargins];
+    [view layoutMargins];
     v8 = v7;
-    [v3 safeAreaInsets];
-    [v5 setContentInset:{v6, 0.0, v8 + v9, 0.0}];
+    [view safeAreaInsets];
+    [collectionView2 setContentInset:{v6, 0.0, v8 + v9, 0.0}];
   }
 
-  [v3 setNeedsLayout];
+  [view setNeedsLayout];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v9.receiver = self;
   v9.super_class = MailActionsViewController;
-  [(MailActionsViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(MailActionsViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000C6C64;
   v8[3] = &unk_10064CC00;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(MailActionsViewController *)self collectionViewDataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  collectionViewDataSource = [(MailActionsViewController *)self collectionViewDataSource];
+  v7 = [collectionViewDataSource itemIdentifierForIndexPath:pathCopy];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -687,8 +687,8 @@
   v9 = objc_retainBlock(v13);
   if ([v8 shouldDeferDismissHandler])
   {
-    v10 = [(MailActionsViewController *)self didDismissHandler];
-    [v8 setDismissHandler:v10];
+    didDismissHandler = [(MailActionsViewController *)self didDismissHandler];
+    [v8 setDismissHandler:didDismissHandler];
 
     [(MailActionsViewController *)self setDidDismissHandler:0];
   }
@@ -709,25 +709,25 @@
   }
 }
 
-- (void)_updateFlagCardActionCell:(BOOL)a3
+- (void)_updateFlagCardActionCell:(BOOL)cell
 {
-  v3 = a3;
-  v5 = [(MailActionsViewController *)self flagCardAction];
+  cellCopy = cell;
+  flagCardAction = [(MailActionsViewController *)self flagCardAction];
   v6 = &MFImageGlyphFlag;
-  if (!v3)
+  if (!cellCopy)
   {
     v6 = &MFImageGlyphUnflag;
   }
 
-  v12 = v5;
-  [v5 setImageName:*v6];
-  v7 = [(MailActionsViewController *)self dataSource];
+  v12 = flagCardAction;
+  [flagCardAction setImageName:*v6];
+  dataSource = [(MailActionsViewController *)self dataSource];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(MailActionsViewController *)self dataSource];
-    v10 = [v9 messageCountForMailActionsViewController:self];
+    dataSource2 = [(MailActionsViewController *)self dataSource];
+    v10 = [dataSource2 messageCountForMailActionsViewController:self];
   }
 
   else
@@ -735,88 +735,88 @@
     v10 = 1;
   }
 
-  v11 = [MFFlagTriageInteraction titleForFlagAction:v3 messageCount:v10];
+  v11 = [MFFlagTriageInteraction titleForFlagAction:cellCopy messageCount:v10];
   [v12 setTitle:v11];
 
   [(MailActionsViewController *)self reloadFlagItem];
 }
 
-- (BOOL)collectionView:(id)a3 canPerformPrimaryActionForItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canPerformPrimaryActionForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(MailActionsViewController *)self collectionViewDataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  collectionViewDataSource = [(MailActionsViewController *)self collectionViewDataSource];
+  v7 = [collectionViewDataSource itemIdentifierForIndexPath:pathCopy];
 
   objc_opt_class();
-  LOBYTE(v6) = objc_opt_isKindOfClass();
+  LOBYTE(collectionViewDataSource) = objc_opt_isKindOfClass();
   objc_opt_class();
-  LOBYTE(v6) = v6 | objc_opt_isKindOfClass();
+  LOBYTE(collectionViewDataSource) = collectionViewDataSource | objc_opt_isKindOfClass();
 
-  return (v6 & 1) == 0;
+  return (collectionViewDataSource & 1) == 0;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(MailActionsViewController *)self collectionViewDataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  collectionViewDataSource = [(MailActionsViewController *)self collectionViewDataSource];
+  v7 = [collectionViewDataSource itemIdentifierForIndexPath:pathCopy];
 
   objc_opt_class();
-  LODWORD(v6) = objc_opt_isKindOfClass();
+  LODWORD(collectionViewDataSource) = objc_opt_isKindOfClass();
   objc_opt_class();
-  v8 = ((v6 | objc_opt_isKindOfClass()) & 1) == 0 && ([v7 handlerEnabled] & 1) != 0;
+  v8 = ((collectionViewDataSource | objc_opt_isKindOfClass()) & 1) == 0 && ([v7 handlerEnabled] & 1) != 0;
 
   return v8;
 }
 
 - (void)_configureNavigationTitleViewIfNeeded
 {
-  v3 = [(MailActionsViewController *)self titleView];
+  titleView = [(MailActionsViewController *)self titleView];
 
-  if (!v3)
+  if (!titleView)
   {
-    v39 = [(MailActionsViewController *)self messageHeaderView];
-    [v39 setTranslatesAutoresizingMaskIntoConstraints:0];
+    messageHeaderView = [(MailActionsViewController *)self messageHeaderView];
+    [messageHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
     v4 = [[_UINavigationBarTitleView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v4 setPreservesSuperviewLayoutMargins:1];
     [v4 setHideStandardTitle:1];
-    [v39 frame];
+    [messageHeaderView frame];
     [v4 setHeight:CGRectGetHeight(v41)];
     v5 = +[UIColor clearColor];
     [v4 setBackgroundColor:v5];
 
-    [v4 addSubview:v39];
-    v6 = [(MailActionsViewController *)self navigationItem];
-    [v6 setTitleView:v4];
+    [v4 addSubview:messageHeaderView];
+    navigationItem = [(MailActionsViewController *)self navigationItem];
+    [navigationItem setTitleView:v4];
 
     [(MailActionsViewController *)self setTitleView:v4];
     if (!MUISolariumFeatureEnabled() || (+[UIDevice mf_isPadIdiom]& 1) == 0)
     {
       v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:24 target:self action:"dismissSelf"];
-      v8 = [(MailActionsViewController *)self navigationItem];
-      [v8 setRightBarButtonItem:v7];
+      navigationItem2 = [(MailActionsViewController *)self navigationItem];
+      [navigationItem2 setRightBarButtonItem:v7];
     }
 
     v9 = objc_opt_new();
     if (MUISolariumFeatureEnabled())
     {
-      v10 = [v39 topAnchor];
-      v11 = [v4 topAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11 constant:0.0];
+      topAnchor = [messageHeaderView topAnchor];
+      topAnchor2 = [v4 topAnchor];
+      v12 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
       [(MailActionsViewController *)self setMessageHeaderViewTopConstraint:v12];
 
-      v13 = [(MailActionsViewController *)self messageHeaderViewTopConstraint];
-      [v9 addObject:v13];
+      messageHeaderViewTopConstraint = [(MailActionsViewController *)self messageHeaderViewTopConstraint];
+      [v9 addObject:messageHeaderViewTopConstraint];
 
-      v14 = [v39 leadingAnchor];
-      v15 = [v4 layoutMarginsGuide];
-      v16 = [v15 leadingAnchor];
-      v17 = [v14 constraintEqualToAnchor:v16 constant:0.0];
+      leadingAnchor = [messageHeaderView leadingAnchor];
+      layoutMarginsGuide = [v4 layoutMarginsGuide];
+      leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+      v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
       [(MailActionsViewController *)self setMessageHeaderViewLeadingConstraint:v17];
 
-      v18 = [(MailActionsViewController *)self messageHeaderViewLeadingConstraint];
-      [v9 addObject:v18];
+      messageHeaderViewLeadingConstraint = [(MailActionsViewController *)self messageHeaderViewLeadingConstraint];
+      [v9 addObject:messageHeaderViewLeadingConstraint];
 
       if (+[UIDevice mf_isPadIdiom])
       {
@@ -831,118 +831,118 @@
 
     else
     {
-      v20 = [v39 leadingAnchor];
-      v21 = [v4 layoutMarginsGuide];
-      v22 = [v21 leadingAnchor];
-      v23 = [v20 constraintEqualToAnchor:v22];
+      leadingAnchor3 = [messageHeaderView leadingAnchor];
+      layoutMarginsGuide2 = [v4 layoutMarginsGuide];
+      leadingAnchor4 = [layoutMarginsGuide2 leadingAnchor];
+      v23 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       [v9 addObject:v23];
 
       v19 = 24.0;
     }
 
-    v24 = [v39 trailingAnchor];
-    v25 = [v4 layoutMarginsGuide];
-    v26 = [v25 trailingAnchor];
-    v27 = [v24 constraintEqualToAnchor:v26 constant:-v19];
+    trailingAnchor = [messageHeaderView trailingAnchor];
+    layoutMarginsGuide3 = [v4 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide3 trailingAnchor];
+    v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v19];
     [v9 addObject:v27];
 
-    v28 = [v39 heightAnchor];
-    v29 = [v4 heightAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    heightAnchor = [messageHeaderView heightAnchor];
+    heightAnchor2 = [v4 heightAnchor];
+    v30 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     [v9 addObject:v30];
 
-    v31 = [v39 centerYAnchor];
-    v32 = [v4 centerYAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
+    centerYAnchor = [messageHeaderView centerYAnchor];
+    centerYAnchor2 = [v4 centerYAnchor];
+    v33 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v9 addObject:v33];
 
     [NSLayoutConstraint activateConstraints:v9];
-    v34 = [(MailActionsViewController *)self navigationItem];
-    [v34 _setManualScrollEdgeAppearanceEnabled:1];
+    navigationItem3 = [(MailActionsViewController *)self navigationItem];
+    [navigationItem3 _setManualScrollEdgeAppearanceEnabled:1];
 
     v35 = objc_alloc_init(UINavigationBarAppearance);
     [v35 configureWithDefaultBackground];
     v36 = +[UIColor separatorColor];
     [v35 setShadowColor:v36];
 
-    v37 = [(MailActionsViewController *)self navigationItem];
-    [v37 setStandardAppearance:v35];
+    navigationItem4 = [(MailActionsViewController *)self navigationItem];
+    [navigationItem4 setStandardAppearance:v35];
 
-    v38 = [(MailActionsViewController *)self navigationItem];
-    [v38 _setManualScrollEdgeAppearanceProgress:0.0];
+    navigationItem5 = [(MailActionsViewController *)self navigationItem];
+    [navigationItem5 _setManualScrollEdgeAppearanceProgress:0.0];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v11 = a3;
+  scrollCopy = scroll;
   if ((MUISolariumFeatureEnabled() & 1) == 0)
   {
-    v4 = [(MailActionsViewController *)self collectionView];
+    collectionView = [(MailActionsViewController *)self collectionView];
 
-    if (v4 == v11)
+    if (collectionView == scrollCopy)
     {
-      v5 = [(MailActionsViewController *)self messageHeaderView];
-      [v5 frame];
+      messageHeaderView = [(MailActionsViewController *)self messageHeaderView];
+      [messageHeaderView frame];
       Height = CGRectGetHeight(v13);
 
-      [v11 contentOffset];
+      [scrollCopy contentOffset];
       if (v7 <= -Height)
       {
-        v10 = [(MailActionsViewController *)self navigationItem];
-        [v10 _setManualScrollEdgeAppearanceProgress:0.0];
+        navigationItem = [(MailActionsViewController *)self navigationItem];
+        [navigationItem _setManualScrollEdgeAppearanceProgress:0.0];
       }
 
       else
       {
-        [v11 contentOffset];
+        [scrollCopy contentOffset];
         v9 = v8;
-        v10 = [(MailActionsViewController *)self navigationItem];
-        [v10 _setManualScrollEdgeAppearanceProgress:{fmin((Height + v9) * 10.0, 100.0) / 100.0}];
+        navigationItem = [(MailActionsViewController *)self navigationItem];
+        [navigationItem _setManualScrollEdgeAppearanceProgress:{fmin((Height + v9) * 10.0, 100.0) / 100.0}];
       }
     }
   }
 }
 
-- (void)updateHeaderDisplayMetrics:(id)a3
+- (void)updateHeaderDisplayMetrics:(id)metrics
 {
-  v5 = a3;
-  v4 = [(MailActionsViewController *)self messageHeaderView];
-  [v4 setDisplayMetrics:v5];
+  metricsCopy = metrics;
+  messageHeaderView = [(MailActionsViewController *)self messageHeaderView];
+  [messageHeaderView setDisplayMetrics:metricsCopy];
 }
 
-- (void)mailActionFlagColorCell:(id)a3 didTapOnFlagColor:(id)a4
+- (void)mailActionFlagColorCell:(id)cell didTapOnFlagColor:(id)color
 {
-  v12 = a3;
-  v6 = a4;
-  [v12 selectColor:v6];
-  v7 = [(MailActionsViewController *)self collectionView];
-  v8 = [v7 indexPathForCell:v12];
+  cellCopy = cell;
+  colorCopy = color;
+  [cellCopy selectColor:colorCopy];
+  collectionView = [(MailActionsViewController *)self collectionView];
+  v8 = [collectionView indexPathForCell:cellCopy];
 
-  v9 = [(MailActionsViewController *)self collectionViewDataSource];
-  v10 = [v9 itemIdentifierForIndexPath:v8];
+  collectionViewDataSource = [(MailActionsViewController *)self collectionViewDataSource];
+  v10 = [collectionViewDataSource itemIdentifierForIndexPath:v8];
 
-  v11 = [v10 flagColor];
+  flagColor = [v10 flagColor];
 
-  if (v11 != v6)
+  if (flagColor != colorCopy)
   {
-    [v10 setFlagColor:v6];
+    [v10 setFlagColor:colorCopy];
     [v10 executeHandler];
   }
 
   [(MailActionsViewController *)self _updateFlagCardActionCell:0];
 }
 
-- (void)mailActionCatchUpFeedbackCell:(id)a3 didTapOnFeedbackType:(int64_t)a4
+- (void)mailActionCatchUpFeedbackCell:(id)cell didTapOnFeedbackType:(int64_t)type
 {
-  v10 = a3;
-  v6 = [(MailActionsViewController *)self collectionView];
-  v7 = [v6 indexPathForCell:v10];
+  cellCopy = cell;
+  collectionView = [(MailActionsViewController *)self collectionView];
+  v7 = [collectionView indexPathForCell:cellCopy];
 
-  v8 = [(MailActionsViewController *)self collectionViewDataSource];
-  v9 = [v8 itemIdentifierForIndexPath:v7];
+  collectionViewDataSource = [(MailActionsViewController *)self collectionViewDataSource];
+  v9 = [collectionViewDataSource itemIdentifierForIndexPath:v7];
 
-  [v9 setSelectedFeedbackType:a4];
+  [v9 setSelectedFeedbackType:type];
   [v9 executeHandler];
 }
 

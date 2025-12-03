@@ -1,37 +1,37 @@
 @interface NSPPrivacyProxyAuxiliaryAuthInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAuthType:(id)a3;
+- (int)StringAsAuthType:(id)type;
 - (unint64_t)hash;
-- (void)addContentList:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addContentList:(id)list;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyAuxiliaryAuthInfo
 
-- (int)StringAsAuthType:(id)a3
+- (int)StringAsAuthType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"HPKE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"HPKE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ATHM_TOKEN"])
+  else if ([typeCopy isEqualToString:@"ATHM_TOKEN"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ATHM_TOKEN_REQUEST_RESPONSE"])
+  else if ([typeCopy isEqualToString:@"ATHM_TOKEN_REQUEST_RESPONSE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"OAI_COST_JWT"])
+  else if ([typeCopy isEqualToString:@"OAI_COST_JWT"])
   {
     v4 = 3;
   }
@@ -44,22 +44,22 @@
   return v4;
 }
 
-- (void)addContentList:(id)a3
+- (void)addContentList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   contentLists = self->_contentLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!contentLists)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_contentLists;
     self->_contentLists = v6;
 
-    v4 = v8;
+    listCopy = v8;
     contentLists = self->_contentLists;
   }
 
-  [(NSMutableArray *)contentLists addObject:v4];
+  [(NSMutableArray *)contentLists addObject:listCopy];
 }
 
 - (id)description
@@ -68,15 +68,15 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyAuxiliaryAuthInfo;
   v4 = [(NSPPrivacyProxyAuxiliaryAuthInfo *)&v8 description];
-  v5 = [(NSPPrivacyProxyAuxiliaryAuthInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyAuxiliaryAuthInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   authType = self->_authType;
   if (authType >= 4)
   {
@@ -88,27 +88,27 @@
     v5 = off_1E7A31258[authType];
   }
 
-  [v3 setObject:v5 forKey:@"authType"];
+  [dictionary setObject:v5 forKey:@"authType"];
 
   label = self->_label;
   if (label)
   {
-    [v3 setObject:label forKey:@"label"];
+    [dictionary setObject:label forKey:@"label"];
   }
 
   contentLists = self->_contentLists;
   if (contentLists)
   {
-    [v3 setObject:contentLists forKey:@"contentList"];
+    [dictionary setObject:contentLists forKey:@"contentList"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   authType = self->_authType;
   PBDataWriterWriteInt32Field();
   if (self->_label)
@@ -151,37 +151,37 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  v8[2] = self->_authType;
+  toCopy = to;
+  toCopy[2] = self->_authType;
   if (self->_label)
   {
-    [v8 setLabel:?];
+    [toCopy setLabel:?];
   }
 
   if ([(NSPPrivacyProxyAuxiliaryAuthInfo *)self contentListsCount])
   {
-    [v8 clearContentLists];
-    v4 = [(NSPPrivacyProxyAuxiliaryAuthInfo *)self contentListsCount];
-    if (v4)
+    [toCopy clearContentLists];
+    contentListsCount = [(NSPPrivacyProxyAuxiliaryAuthInfo *)self contentListsCount];
+    if (contentListsCount)
     {
-      v5 = v4;
+      v5 = contentListsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NSPPrivacyProxyAuxiliaryAuthInfo *)self contentListAtIndex:i];
-        [v8 addContentList:v7];
+        [toCopy addContentList:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_authType;
-  v6 = [(NSString *)self->_label copyWithZone:a3];
+  v6 = [(NSString *)self->_label copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -205,7 +205,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addContentList:v13];
 
         ++v12;
@@ -222,13 +222,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_authType == *(v4 + 2) && ((label = self->_label, !(label | v4[3])) || -[NSString isEqual:](label, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_authType == *(equalCopy + 2) && ((label = self->_label, !(label | equalCopy[3])) || -[NSString isEqual:](label, "isEqual:")))
   {
     contentLists = self->_contentLists;
-    if (contentLists | v4[2])
+    if (contentLists | equalCopy[2])
     {
       v7 = [(NSMutableArray *)contentLists isEqual:?];
     }
@@ -254,12 +254,12 @@
   return v4 ^ [(NSMutableArray *)self->_contentLists hash]^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  self->_authType = *(v4 + 2);
-  if (*(v4 + 3))
+  fromCopy = from;
+  self->_authType = *(fromCopy + 2);
+  if (*(fromCopy + 3))
   {
     [(NSPPrivacyProxyAuxiliaryAuthInfo *)self setLabel:?];
   }
@@ -268,7 +268,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

@@ -1,19 +1,19 @@
 @interface MailStatusBarView
 + (id)log;
-- (MailStatusBarView)initWithFrame:(CGRect)a3;
+- (MailStatusBarView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)setNeedsDisplay;
-- (void)setNeedsDisplayWithStatusInfo:(id)a3;
-- (void)setShouldShowLargeTitle:(BOOL)a3;
-- (void)setTarget:(id)a3 withAction:(SEL)a4;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)showFilterCriteriaButtonWithStatusInfo:(id)a3;
-- (void)showIndeterminateStatusWithStatusInfo:(id)a3;
-- (void)showProgressBarWithStatusInfo:(id)a3;
-- (void)showUndoButtonWithStatusInfo:(id)a3;
-- (void)showUpdateStatusWithStatusInfo:(id)a3;
-- (void)switchSubviewToView:(id)a3;
+- (void)setNeedsDisplayWithStatusInfo:(id)info;
+- (void)setShouldShowLargeTitle:(BOOL)title;
+- (void)setTarget:(id)target withAction:(SEL)action;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)showFilterCriteriaButtonWithStatusInfo:(id)info;
+- (void)showIndeterminateStatusWithStatusInfo:(id)info;
+- (void)showProgressBarWithStatusInfo:(id)info;
+- (void)showUndoButtonWithStatusInfo:(id)info;
+- (void)showUpdateStatusWithStatusInfo:(id)info;
+- (void)switchSubviewToView:(id)view;
 @end
 
 @implementation MailStatusBarView
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = sub_100130094;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD190 != -1)
   {
     dispatch_once(&qword_1006DD190, block);
@@ -49,12 +49,12 @@
   return v2;
 }
 
-- (MailStatusBarView)initWithFrame:(CGRect)a3
+- (MailStatusBarView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (pthread_main_np() != 1)
   {
     v17 = +[NSAssertionHandler currentHandler];
@@ -63,23 +63,23 @@
 
   v18.receiver = self;
   v18.super_class = MailStatusBarView;
-  v9 = [(MailStatusBarView *)&v18 initWithFrame:x, y, width, height];
-  v10 = v9;
-  if (v9)
+  height = [(MailStatusBarView *)&v18 initWithFrame:x, y, width, height];
+  v10 = height;
+  if (height)
   {
-    v9->_textAlignment = 1;
-    [(MailStatusBarView *)v9 setOpaque:0];
+    height->_textAlignment = 1;
+    [(MailStatusBarView *)height setOpaque:0];
     if ((MUISolariumFeatureEnabled() & 1) == 0)
     {
       [(MailStatusBarView *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v11 = [(MailStatusBarView *)v10 widthAnchor];
-      v12 = [v11 constraintEqualToConstant:230.0];
+      widthAnchor = [(MailStatusBarView *)v10 widthAnchor];
+      v12 = [widthAnchor constraintEqualToConstant:230.0];
 
       LODWORD(v13) = 1144750080;
       [v12 setPriority:v13];
       [v12 setActive:1];
-      v14 = [(MailStatusBarView *)v10 heightAnchor];
-      v15 = [v14 constraintEqualToConstant:23.0];
+      heightAnchor = [(MailStatusBarView *)v10 heightAnchor];
+      v15 = [heightAnchor constraintEqualToConstant:23.0];
       [v15 setActive:1];
     }
   }
@@ -87,12 +87,12 @@
   return v10;
 }
 
-- (void)setTarget:(id)a3 withAction:(SEL)a4
+- (void)setTarget:(id)target withAction:(SEL)action
 {
-  v7 = a3;
-  if (v7 && a4)
+  targetCopy = target;
+  if (targetCopy && action)
   {
-    v6 = [[UITapGestureRecognizer alloc] initWithTarget:v7 action:a4];
+    v6 = [[UITapGestureRecognizer alloc] initWithTarget:targetCopy action:action];
     [(MailStatusBarView *)self addGestureRecognizer:v6];
   }
 
@@ -102,50 +102,50 @@
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
-  objc_storeStrong(&self->_delegate, a3);
+  delegateCopy = delegate;
+  objc_storeStrong(&self->_delegate, delegate);
   [(MailStatusLabelView *)self->_updateView setDelegate:self->_delegate];
   [(MailStatusLabelView *)self->_progressStatusView setDelegate:self->_delegate];
 }
 
-- (void)switchSubviewToView:(id)a3
+- (void)switchSubviewToView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(MailStatusBarView *)self bounds];
-  [v4 setFrame:?];
-  v5 = [(MailStatusBarView *)self subviews];
-  if ([v5 count] == 1 && (objc_msgSend(v5, "objectAtIndex:", 0), v6 = objc_claimAutoreleasedReturnValue(), v6, v6 == v4))
+  [viewCopy setFrame:?];
+  subviews = [(MailStatusBarView *)self subviews];
+  if ([subviews count] == 1 && (objc_msgSend(subviews, "objectAtIndex:", 0), v6 = objc_claimAutoreleasedReturnValue(), v6, v6 == viewCopy))
   {
-    [v4 setNeedsDisplay];
+    [viewCopy setNeedsDisplay];
   }
 
   else
   {
     v7 = objc_alloc_init(NSMutableArray);
     v8 = objc_alloc_init(NSMutableArray);
-    [v7 addObjectsFromArray:v5];
-    if (v4)
+    [v7 addObjectsFromArray:subviews];
+    if (viewCopy)
     {
-      [v8 addObject:v4];
-      if ([v7 containsObject:v4])
+      [v8 addObject:viewCopy];
+      if ([v7 containsObject:viewCopy])
       {
-        [v7 removeObject:v4];
+        [v7 removeObject:viewCopy];
       }
 
       else
       {
-        [v4 setAlpha:0.0];
-        [(MailStatusBarView *)self addSubview:v4];
+        [viewCopy setAlpha:0.0];
+        [(MailStatusBarView *)self addSubview:viewCopy];
         if (MUISolariumFeatureEnabled())
         {
-          [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-          [v4 mf_pinToView:self usingLayoutMargins:0];
+          [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+          [viewCopy mf_pinToView:self usingLayoutMargins:0];
         }
       }
 
-      [v4 setNeedsDisplay];
+      [viewCopy setNeedsDisplay];
     }
 
     v13[0] = _NSConcreteStackBlock;
@@ -165,11 +165,11 @@
   }
 }
 
-- (void)showUpdateStatusWithStatusInfo:(id)a3
+- (void)showUpdateStatusWithStatusInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   updateView = self->_updateView;
-  v9 = v4;
+  v9 = infoCopy;
   if (!updateView)
   {
     v6 = [MailStatusUpdateView alloc];
@@ -182,18 +182,18 @@
     [(MailStatusLabelView *)self->_updateView setTextAlignment:[(MailStatusBarView *)self textAlignment]];
     [(MailStatusLabelView *)self->_updateView setShouldShowLargeTitle:[(MailStatusBarView *)self shouldShowLargeTitle]];
     updateView = self->_updateView;
-    v4 = v9;
+    infoCopy = v9;
   }
 
-  [(MailStatusUpdateView *)updateView updateWithStatusInfo:v4];
+  [(MailStatusUpdateView *)updateView updateWithStatusInfo:infoCopy];
   [(MailStatusBarView *)self switchSubviewToView:self->_updateView];
 }
 
-- (void)showProgressBarWithStatusInfo:(id)a3
+- (void)showProgressBarWithStatusInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   progressStatusView = self->_progressStatusView;
-  v9 = v4;
+  v9 = infoCopy;
   if (!progressStatusView)
   {
     v6 = [MailStatusProgressBarView alloc];
@@ -204,19 +204,19 @@
 
     [(MailStatusLabelView *)self->_progressStatusView setDelegate:self->_delegate];
     progressStatusView = self->_progressStatusView;
-    v4 = v9;
+    infoCopy = v9;
   }
 
-  [(MailStatusProgressBarView *)progressStatusView updateWithStatusInfo:v4];
+  [(MailStatusProgressBarView *)progressStatusView updateWithStatusInfo:infoCopy];
   [(MailStatusBarView *)self switchSubviewToView:self->_progressStatusView];
 }
 
-- (void)showIndeterminateStatusWithStatusInfo:(id)a3
+- (void)showIndeterminateStatusWithStatusInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 status];
+  infoCopy = info;
+  status = [infoCopy status];
 
-  if (v5)
+  if (status)
   {
     indeterminateView = self->_indeterminateView;
     if (!indeterminateView)
@@ -231,7 +231,7 @@
       indeterminateView = self->_indeterminateView;
     }
 
-    [(MailStatusIndeterminateView *)indeterminateView updateWithStatusInfo:v4];
+    [(MailStatusIndeterminateView *)indeterminateView updateWithStatusInfo:infoCopy];
     [(MailStatusBarView *)self switchSubviewToView:self->_indeterminateView];
   }
 
@@ -240,15 +240,15 @@
     v10 = +[MailStatusBarView log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
-      v11 = [v4 debugDescription];
+      v11 = [infoCopy debugDescription];
       sub_100489830(v11, v12, v10);
     }
   }
 }
 
-- (void)showUndoButtonWithStatusInfo:(id)a3
+- (void)showUndoButtonWithStatusInfo:(id)info
 {
-  v8 = a3;
+  infoCopy = info;
   undoView = self->_undoView;
   if (!undoView)
   {
@@ -265,9 +265,9 @@
   [(MailStatusBarView *)self switchSubviewToView:undoView];
 }
 
-- (void)showFilterCriteriaButtonWithStatusInfo:(id)a3
+- (void)showFilterCriteriaButtonWithStatusInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (!self->_filterCriteriaButton)
   {
     v5 = +[UIButtonConfiguration plainButtonConfiguration];
@@ -288,8 +288,8 @@
     self->_filterCriteriaButton = v7;
 
     v9 = [UIFont _preferredFontForTextStyle:UIFontTextStyleCaption1 maximumContentSizeCategory:UIContentSizeCategoryExtraLarge];
-    v10 = [(UIButton *)self->_filterCriteriaButton titleLabel];
-    [v10 setFont:v9];
+    titleLabel = [(UIButton *)self->_filterCriteriaButton titleLabel];
+    [titleLabel setFont:v9];
 
     [(UIButton *)self->_filterCriteriaButton setContentHorizontalAlignment:1];
     [(UIButton *)self->_filterCriteriaButton setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -303,36 +303,36 @@
   v12 = [v11 localizedStringForKey:@"Filtered By: %@" value:&stru_100662A88 table:0];
 
   v13 = self->_filterCriteriaButton;
-  v14 = [v4 filterCriteria];
-  v15 = [NSString localizedStringWithFormat:v12, v14];
+  filterCriteria = [infoCopy filterCriteria];
+  v15 = [NSString localizedStringWithFormat:v12, filterCriteria];
   [(UIButton *)v13 setTitle:v15 forState:0];
 
   [(MailStatusBarView *)self switchSubviewToView:self->_filterCriteriaButton];
 }
 
-- (void)setNeedsDisplayWithStatusInfo:(id)a3
+- (void)setNeedsDisplayWithStatusInfo:(id)info
 {
-  v4 = a3;
-  v7 = v4;
-  v8 = self;
+  infoCopy = info;
+  v7 = infoCopy;
+  selfCopy = self;
   v5 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v5 performBlock:&v6];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
+    self->_textAlignment = alignment;
     [(MailStatusLabelView *)self->_updateView setTextAlignment:?];
   }
 }
 
-- (void)setShouldShowLargeTitle:(BOOL)a3
+- (void)setShouldShowLargeTitle:(BOOL)title
 {
-  if (self->_shouldShowLargeTitle != a3)
+  if (self->_shouldShowLargeTitle != title)
   {
-    self->_shouldShowLargeTitle = a3;
+    self->_shouldShowLargeTitle = title;
     [(MailStatusLabelView *)self->_updateView setShouldShowLargeTitle:?];
   }
 }

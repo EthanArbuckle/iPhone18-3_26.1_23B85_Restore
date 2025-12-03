@@ -1,10 +1,10 @@
 @interface HMDMediaEndpoint
 + (id)logCategory;
-- (BOOL)doesContainAnyAccessory:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEndpoint:(id)a3;
+- (BOOL)doesContainAnyAccessory:(id)accessory;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEndpoint:(id)endpoint;
 - (HMDMediaBrowser)browser;
-- (HMDMediaEndpoint)initWithEndpoint:(id)a3;
+- (HMDMediaEndpoint)initWithEndpoint:(id)endpoint;
 - (MRAVEndpoint)retainedEndpoint;
 - (MRExternalDevice)externalDevice;
 - (NSArray)advertisements;
@@ -12,22 +12,22 @@
 - (NSString)description;
 - (id)copyOrigin;
 - (unsigned)connectionState;
-- (void)_connectWithCompletionHandler:(id)a3;
-- (void)_getPlaybackStateWithCompletionHandler:(id)a3;
-- (void)_notifyPendingBlocksOfError:(id)a3;
-- (void)_setPlaybackState:(unsigned int)a3 completionHandler:(id)a4;
+- (void)_connectWithCompletionHandler:(id)handler;
+- (void)_getPlaybackStateWithCompletionHandler:(id)handler;
+- (void)_notifyPendingBlocksOfError:(id)error;
+- (void)_setPlaybackState:(unsigned int)state completionHandler:(id)handler;
 - (void)_updateOutputDeviceIdentifiers;
-- (void)_updateOutputDevicesAndConnectWithCompletionHandler:(id)a3;
+- (void)_updateOutputDevicesAndConnectWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)disconnectFromEndpoint:(id)a3;
-- (void)disconnectWithCompletionHandler:(id)a3;
-- (void)getPlaybackStateWithCompletionHandler:(id)a3;
-- (void)setConnectionState:(unsigned int)a3;
-- (void)setOutputDeviceIdentifiers:(id)a3;
-- (void)setPlaybackState:(unsigned int)a3 completionHandler:(id)a4;
-- (void)setRetainedEndpoint:(id)a3;
-- (void)updateOutputDevicesAndConnectWithCompletionHandler:(id)a3;
-- (void)updateWithEndpoint:(id)a3;
+- (void)disconnectFromEndpoint:(id)endpoint;
+- (void)disconnectWithCompletionHandler:(id)handler;
+- (void)getPlaybackStateWithCompletionHandler:(id)handler;
+- (void)setConnectionState:(unsigned int)state;
+- (void)setOutputDeviceIdentifiers:(id)identifiers;
+- (void)setPlaybackState:(unsigned int)state completionHandler:(id)handler;
+- (void)setRetainedEndpoint:(id)endpoint;
+- (void)updateOutputDevicesAndConnectWithCompletionHandler:(id)handler;
+- (void)updateWithEndpoint:(id)endpoint;
 @end
 
 @implementation HMDMediaEndpoint
@@ -41,28 +41,28 @@
 
 - (NSString)description
 {
-  v3 = [(HMDMediaEndpoint *)self retainedEndpoint];
+  retainedEndpoint = [(HMDMediaEndpoint *)self retainedEndpoint];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(HMDMediaEndpoint *)self localizedName];
-  v6 = [(HMDMediaEndpoint *)self sessionIdentifier];
-  v7 = [(HMDMediaEndpoint *)self advertisements];
-  v8 = [v4 stringWithFormat:@"Endpoint(%@/%@) - sessionIdentifier %@  advertisements:\n%@", v3, v5, v6, v7];
+  localizedName = [(HMDMediaEndpoint *)self localizedName];
+  sessionIdentifier = [(HMDMediaEndpoint *)self sessionIdentifier];
+  advertisements = [(HMDMediaEndpoint *)self advertisements];
+  v8 = [v4 stringWithFormat:@"Endpoint(%@/%@) - sessionIdentifier %@  advertisements:\n%@", retainedEndpoint, localizedName, sessionIdentifier, advertisements];
 
   return v8;
 }
 
-- (void)_setPlaybackState:(unsigned int)a3 completionHandler:(id)a4
+- (void)_setPlaybackState:(unsigned int)state completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__HMDMediaEndpoint__setPlaybackState_completionHandler___block_invoke;
   v8[3] = &unk_278679DC0;
   objc_copyWeak(&v10, &location);
-  v7 = v6;
+  v7 = handlerCopy;
   v9 = v7;
-  v11 = a3;
+  stateCopy = state;
   [(HMDMediaEndpoint *)self _connectWithCompletionHandler:v8];
 
   objc_destroyWeak(&v10);
@@ -168,31 +168,31 @@ LABEL_19:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPlaybackState:(unsigned int)a3 completionHandler:(id)a4
+- (void)setPlaybackState:(unsigned int)state completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(HMDMediaEndpoint *)self workQueue];
+  handlerCopy = handler;
+  workQueue = [(HMDMediaEndpoint *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__HMDMediaEndpoint_setPlaybackState_completionHandler___block_invoke;
   block[3] = &unk_27867A1C0;
-  v11 = a3;
+  stateCopy = state;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)_getPlaybackStateWithCompletionHandler:(id)a3
+- (void)_getPlaybackStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__HMDMediaEndpoint__getPlaybackStateWithCompletionHandler___block_invoke;
   v6[3] = &unk_278686D60;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = handlerCopy;
   v7 = v5;
   [(HMDMediaEndpoint *)self _connectWithCompletionHandler:v6];
 
@@ -311,30 +311,30 @@ void __59__HMDMediaEndpoint__getPlaybackStateWithCompletionHandler___block_invok
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getPlaybackStateWithCompletionHandler:(id)a3
+- (void)getPlaybackStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMDMediaEndpoint *)self workQueue];
+  handlerCopy = handler;
+  workQueue = [(HMDMediaEndpoint *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__HMDMediaEndpoint_getPlaybackStateWithCompletionHandler___block_invoke;
   v7[3] = &unk_27868A7A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)_notifyPendingBlocksOfError:(id)a3
+- (void)_notifyPendingBlocksOfError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(HMDMediaEndpoint *)self pendingBlocks];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  pendingBlocks = [(HMDMediaEndpoint *)self pendingBlocks];
+  v6 = [pendingBlocks countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -346,57 +346,57 @@ void __59__HMDMediaEndpoint__getPlaybackStateWithCompletionHandler___block_invok
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pendingBlocks);
         }
 
         (*(*(*(&v12 + 1) + 8 * v9++) + 16))();
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [pendingBlocks countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(HMDMediaEndpoint *)self pendingBlocks];
-  [v10 removeAllObjects];
+  pendingBlocks2 = [(HMDMediaEndpoint *)self pendingBlocks];
+  [pendingBlocks2 removeAllObjects];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)doesContainAnyAccessory:(id)a3
+- (BOOL)doesContainAnyAccessory:(id)accessory
 {
   outputDeviceIdentifiers = self->_outputDeviceIdentifiers;
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = [(NSSet *)outputDeviceIdentifiers mutableCopy];
-  v6 = [MEMORY[0x277CBEB98] setWithArray:v4];
+  v6 = [MEMORY[0x277CBEB98] setWithArray:accessoryCopy];
 
   [v5 intersectSet:v6];
-  LOBYTE(v4) = [v5 count] != 0;
+  LOBYTE(accessoryCopy) = [v5 count] != 0;
 
-  return v4;
+  return accessoryCopy;
 }
 
 - (NSArray)advertisements
 {
-  v2 = [(HMDMediaEndpoint *)self retainedEndpoint];
-  v3 = v2;
-  if (v2)
+  retainedEndpoint = [(HMDMediaEndpoint *)self retainedEndpoint];
+  v3 = retainedEndpoint;
+  if (retainedEndpoint)
   {
-    v4 = [v2 outputDevices];
-    if (v4)
+    outputDevices = [retainedEndpoint outputDevices];
+    if (outputDevices)
     {
-      v5 = [HMDMediaBrowser advertisementsFromOutputDevices:v4];
-      v6 = [v5 allObjects];
+      v5 = [HMDMediaBrowser advertisementsFromOutputDevices:outputDevices];
+      allObjects = [v5 allObjects];
     }
 
     else
     {
-      v6 = 0;
+      allObjects = 0;
     }
 
-    v7 = v6;
+    v7 = allObjects;
   }
 
   else
@@ -407,27 +407,27 @@ void __59__HMDMediaEndpoint__getPlaybackStateWithCompletionHandler___block_invok
   return v7;
 }
 
-- (void)_connectWithCompletionHandler:(id)a3
+- (void)_connectWithCompletionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(HMDMediaEndpoint *)self pendingBlocks];
-    v6 = _Block_copy(v4);
-    [v5 addObject:v6];
+    pendingBlocks = [(HMDMediaEndpoint *)self pendingBlocks];
+    v6 = _Block_copy(handlerCopy);
+    [pendingBlocks addObject:v6];
   }
 
-  v7 = [(HMDMediaEndpoint *)self externalDevice];
-  v8 = v7;
-  if (v7)
+  externalDevice = [(HMDMediaEndpoint *)self externalDevice];
+  v8 = externalDevice;
+  if (externalDevice)
   {
-    v9 = [v7 connectionState];
-    [(HMDMediaEndpoint *)self setConnectionState:v9];
-    if (v9 == 1)
+    connectionState = [externalDevice connectionState];
+    [(HMDMediaEndpoint *)self setConnectionState:connectionState];
+    if (connectionState == 1)
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
@@ -440,7 +440,7 @@ void __59__HMDMediaEndpoint__getPlaybackStateWithCompletionHandler___block_invok
       objc_autoreleasePoolPop(v11);
     }
 
-    else if (v9 == 2)
+    else if (connectionState == 2)
     {
       [(HMDMediaEndpoint *)self _notifyPendingBlocksOfError:0];
     }
@@ -448,7 +448,7 @@ void __59__HMDMediaEndpoint__getPlaybackStateWithCompletionHandler___block_invok
     else
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy2 = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
@@ -459,14 +459,14 @@ void __59__HMDMediaEndpoint__getPlaybackStateWithCompletionHandler___block_invok
       }
 
       objc_autoreleasePoolPop(v15);
-      [(HMDMediaEndpoint *)v16 setConnectionState:1];
-      v19 = [(HMDMediaEndpoint *)v16 sessionIdentifier];
-      objc_initWeak(buf, v16);
+      [(HMDMediaEndpoint *)selfCopy2 setConnectionState:1];
+      sessionIdentifier = [(HMDMediaEndpoint *)selfCopy2 sessionIdentifier];
+      objc_initWeak(buf, selfCopy2);
       v23 = MEMORY[0x277D85DD0];
       objc_copyWeak(&v25, buf);
-      v20 = v19;
+      v20 = sessionIdentifier;
       v24 = v20;
-      v21 = [(HMDMediaEndpoint *)v16 workQueue:v23];
+      v21 = [(HMDMediaEndpoint *)selfCopy2 workQueue:v23];
       [v8 setConnectionStateCallback:&v23 withQueue:v21];
 
       [v8 connectWithOptions:0];
@@ -552,39 +552,39 @@ void __50__HMDMediaEndpoint__connectWithCompletionHandler___block_invoke(uint64_
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateOutputDevicesAndConnectWithCompletionHandler:(id)a3
+- (void)updateOutputDevicesAndConnectWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMDMediaEndpoint *)self workQueue];
+  handlerCopy = handler;
+  workQueue = [(HMDMediaEndpoint *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__HMDMediaEndpoint_updateOutputDevicesAndConnectWithCompletionHandler___block_invoke;
   v7[3] = &unk_27868A7A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)_updateOutputDevicesAndConnectWithCompletionHandler:(id)a3
+- (void)_updateOutputDevicesAndConnectWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(HMDMediaEndpoint *)self _updateOutputDeviceIdentifiers];
-  [(HMDMediaEndpoint *)self _connectWithCompletionHandler:v4];
+  [(HMDMediaEndpoint *)self _connectWithCompletionHandler:handlerCopy];
 }
 
-- (void)disconnectWithCompletionHandler:(id)a3
+- (void)disconnectWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMDMediaEndpoint *)self workQueue];
+  handlerCopy = handler;
+  workQueue = [(HMDMediaEndpoint *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__HMDMediaEndpoint_disconnectWithCompletionHandler___block_invoke;
   v7[3] = &unk_27868A7A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __52__HMDMediaEndpoint_disconnectWithCompletionHandler___block_invoke(uint64_t a1)
@@ -607,36 +607,36 @@ void __52__HMDMediaEndpoint_disconnectWithCompletionHandler___block_invoke(uint6
   [v3 _notifyPendingBlocksOfError:v4];
 }
 
-- (void)disconnectFromEndpoint:(id)a3
+- (void)disconnectFromEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [(HMDMediaEndpoint *)self workQueue];
+  endpointCopy = endpoint;
+  workQueue = [(HMDMediaEndpoint *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__HMDMediaEndpoint_disconnectFromEndpoint___block_invoke;
   block[3] = &unk_27868A728;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = endpointCopy;
+  v6 = endpointCopy;
+  dispatch_async(workQueue, block);
 }
 
 - (id)copyOrigin
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMediaEndpoint *)self externalDevice];
-  v4 = v3;
-  if (!v3)
+  externalDevice = [(HMDMediaEndpoint *)self externalDevice];
+  v4 = externalDevice;
+  if (!externalDevice)
   {
 LABEL_6:
-    v5 = 0;
+    customOrigin = 0;
     goto LABEL_7;
   }
 
-  v5 = [v3 customOrigin];
-  if (!v5)
+  customOrigin = [externalDevice customOrigin];
+  if (!customOrigin)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -653,24 +653,24 @@ LABEL_6:
 LABEL_7:
 
   v10 = *MEMORY[0x277D85DE8];
-  return v5;
+  return customOrigin;
 }
 
 - (MRExternalDevice)externalDevice
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMediaEndpoint *)self retainedEndpoint];
-  v4 = v3;
-  if (v3)
+  retainedEndpoint = [(HMDMediaEndpoint *)self retainedEndpoint];
+  v4 = retainedEndpoint;
+  if (retainedEndpoint)
   {
-    v5 = [v3 externalDevice];
-    if (v5)
+    externalDevice = [retainedEndpoint externalDevice];
+    if (externalDevice)
     {
       goto LABEL_9;
     }
 
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -690,7 +690,7 @@ LABEL_7:
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -705,20 +705,20 @@ LABEL_7:
   }
 
   objc_autoreleasePoolPop(v6);
-  v5 = 0;
+  externalDevice = 0;
 LABEL_9:
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return externalDevice;
 }
 
-- (void)setOutputDeviceIdentifiers:(id)a3
+- (void)setOutputDeviceIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   os_unfair_lock_lock_with_options();
   outputDeviceIdentifiers = self->_outputDeviceIdentifiers;
-  self->_outputDeviceIdentifiers = v4;
+  self->_outputDeviceIdentifiers = identifiersCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -732,10 +732,10 @@ LABEL_9:
   return v3;
 }
 
-- (void)setConnectionState:(unsigned int)a3
+- (void)setConnectionState:(unsigned int)state
 {
   os_unfair_lock_lock_with_options();
-  self->_connectionState = a3;
+  self->_connectionState = state;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -748,11 +748,11 @@ LABEL_9:
   return connectionState;
 }
 
-- (void)updateWithEndpoint:(id)a3
+- (void)updateWithEndpoint:(id)endpoint
 {
-  v5 = *(a3 + 2);
-  v6 = a3;
-  v7 = [(HMDMediaEndpoint *)self workQueue];
+  v5 = *(endpoint + 2);
+  endpointCopy = endpoint;
+  workQueue = [(HMDMediaEndpoint *)self workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __39__HMDMediaEndpoint_updateWithEndpoint___block_invoke;
@@ -760,7 +760,7 @@ LABEL_9:
   v9[4] = self;
   v10 = v5;
   v8 = v5;
-  dispatch_async(v7, v9);
+  dispatch_async(workQueue, v9);
 }
 
 void __39__HMDMediaEndpoint_updateWithEndpoint___block_invoke(uint64_t a1)
@@ -843,17 +843,17 @@ LABEL_6:
 - (void)_updateOutputDeviceIdentifiers
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMediaEndpoint *)self retainedEndpoint];
-  v4 = v3;
-  if (v3)
+  retainedEndpoint = [(HMDMediaEndpoint *)self retainedEndpoint];
+  v4 = retainedEndpoint;
+  if (retainedEndpoint)
   {
-    v5 = [v3 outputDevices];
-    v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v5, "count")}];
+    outputDevices = [retainedEndpoint outputDevices];
+    v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(outputDevices, "count")}];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v5;
+    v7 = outputDevices;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
@@ -892,13 +892,13 @@ LABEL_6:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRetainedEndpoint:(id)a3
+- (void)setRetainedEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   os_unfair_lock_lock_with_options();
-  if (self->_retainedEndpoint != v5)
+  if (self->_retainedEndpoint != endpointCopy)
   {
-    objc_storeStrong(&self->_retainedEndpoint, a3);
+    objc_storeStrong(&self->_retainedEndpoint, endpoint);
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -913,20 +913,20 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)isEqualToEndpoint:(id)a3
+- (BOOL)isEqualToEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   os_unfair_lock_lock_with_options();
-  v5 = self->_retainedEndpoint == v4;
+  v5 = self->_retainedEndpoint == endpointCopy;
 
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -936,7 +936,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -947,8 +947,8 @@ LABEL_6:
     v6 = v5;
     if (v6 && (-[HMDMediaEndpoint sessionIdentifier](self, "sessionIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), -[HMDMediaEndpoint sessionIdentifier](v6, "sessionIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 isEqual:v8], v8, v7, v9))
     {
-      v10 = [(HMDMediaEndpoint *)v6 retainedEndpoint];
-      v11 = [(HMDMediaEndpoint *)self isEqualToEndpoint:v10];
+      retainedEndpoint = [(HMDMediaEndpoint *)v6 retainedEndpoint];
+      v11 = [(HMDMediaEndpoint *)self isEqualToEndpoint:retainedEndpoint];
     }
 
     else
@@ -973,50 +973,50 @@ LABEL_6:
   [(HMDMediaEndpoint *)&v4 dealloc];
 }
 
-- (HMDMediaEndpoint)initWithEndpoint:(id)a3
+- (HMDMediaEndpoint)initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v28.receiver = self;
   v28.super_class = HMDMediaEndpoint;
   v6 = [(HMDMediaEndpoint *)&v28 init];
   v7 = v6;
   if (v6)
   {
-    if (!v5)
+    if (!endpointCopy)
     {
       v26 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v6->_retainedEndpoint, a3);
+    objc_storeStrong(&v6->_retainedEndpoint, endpoint);
     v8 = HMDispatchQueueNameString();
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_create(v9, v10);
+    v11 = dispatch_queue_create(uTF8String, v10);
     workQueue = v7->_workQueue;
     v7->_workQueue = v11;
 
-    v13 = [v5 uniqueIdentifier];
-    v14 = [v13 copy];
+    uniqueIdentifier = [endpointCopy uniqueIdentifier];
+    v14 = [uniqueIdentifier copy];
     sessionIdentifier = v7->_sessionIdentifier;
     v7->_sessionIdentifier = v14;
 
-    v16 = [v5 localizedName];
-    v17 = [v16 copy];
+    localizedName = [endpointCopy localizedName];
+    v17 = [localizedName copy];
     localizedName = v7->_localizedName;
     v7->_localizedName = v17;
 
     v19 = MEMORY[0x277CCACA8];
-    v20 = [(HMDMediaEndpoint *)v7 localizedName];
-    v21 = [(HMDMediaEndpoint *)v7 sessionIdentifier];
-    v22 = [v19 stringWithFormat:@"Endpoint(%@/%@)", v20, v21];
+    localizedName2 = [(HMDMediaEndpoint *)v7 localizedName];
+    sessionIdentifier = [(HMDMediaEndpoint *)v7 sessionIdentifier];
+    v22 = [v19 stringWithFormat:@"Endpoint(%@/%@)", localizedName2, sessionIdentifier];
     logID = v7->_logID;
     v7->_logID = v22;
 
     v7->_connectionState = 0;
-    v24 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     pendingBlocks = v7->_pendingBlocks;
-    v7->_pendingBlocks = v24;
+    v7->_pendingBlocks = array;
 
     [(HMDMediaEndpoint *)v7 updateOutputDevicesAndConnectWithCompletionHandler:0];
   }

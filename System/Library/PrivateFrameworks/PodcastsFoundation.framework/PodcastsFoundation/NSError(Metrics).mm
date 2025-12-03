@@ -9,31 +9,31 @@
 {
   v15[4] = *MEMORY[0x1E69E9840];
   v14[0] = @"code";
-  v2 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "code")}];
+  v2 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "code")}];
   v15[0] = v2;
   v14[1] = @"domain";
-  v3 = [a1 domain];
-  v4 = v3;
+  domain = [self domain];
+  v4 = domain;
   v5 = &stru_1F548B930;
-  if (v3)
+  if (domain)
   {
-    v5 = v3;
+    v5 = domain;
   }
 
   v15[1] = v5;
   v14[2] = @"user_info";
-  v6 = [a1 userInfo];
-  v7 = v6;
+  userInfo = [self userInfo];
+  v7 = userInfo;
   v8 = MEMORY[0x1E695E0F8];
-  if (v6)
+  if (userInfo)
   {
-    v8 = v6;
+    v8 = userInfo;
   }
 
   v15[2] = v8;
   v14[3] = @"call_stack";
-  v9 = [MEMORY[0x1E696AF00] callStackSymbols];
-  v10 = [v9 description];
+  callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+  v10 = [callStackSymbols description];
   v15[3] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
 
@@ -45,9 +45,9 @@
 - (id)metricsContentIdentifier
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 code];
-  v4 = [a1 domain];
-  v5 = [v2 stringWithFormat:@"NSError: %ld-%@", v3, v4];
+  code = [self code];
+  domain = [self domain];
+  v5 = [v2 stringWithFormat:@"NSError: %ld-%@", code, domain];
 
   return v5;
 }

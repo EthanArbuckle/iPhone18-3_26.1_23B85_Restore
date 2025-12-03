@@ -1,6 +1,6 @@
 @interface PUFilmStripViewIndicatorInfo
-- (BOOL)isEqual:(id)a3;
-- (PUFilmStripViewIndicatorInfo)initWithLocation:(double)a3 preferredColor:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (PUFilmStripViewIndicatorInfo)initWithLocation:(double)location preferredColor:(id)color;
 - (unint64_t)hash;
 @end
 
@@ -15,23 +15,23 @@
   return v3 + [(UIColor *)self->_preferredColor hash]+ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = PUFilmStripViewIndicatorInfo;
-  if (-[PUFilmStripViewIndicatorInfo isEqual:](&v11, sel_isEqual_, v4) && (normalizedLocation = self->_normalizedLocation, [v4 normalizedLocation], normalizedLocation == v6))
+  if (-[PUFilmStripViewIndicatorInfo isEqual:](&v11, sel_isEqual_, equalCopy) && (normalizedLocation = self->_normalizedLocation, [equalCopy normalizedLocation], normalizedLocation == v6))
   {
     preferredColor = self->_preferredColor;
-    v8 = [v4 preferredColor];
-    if (preferredColor == v8)
+    preferredColor = [equalCopy preferredColor];
+    if (preferredColor == preferredColor)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = [(UIColor *)preferredColor isEqual:v8];
+      v9 = [(UIColor *)preferredColor isEqual:preferredColor];
     }
   }
 
@@ -43,17 +43,17 @@
   return v9;
 }
 
-- (PUFilmStripViewIndicatorInfo)initWithLocation:(double)a3 preferredColor:(id)a4
+- (PUFilmStripViewIndicatorInfo)initWithLocation:(double)location preferredColor:(id)color
 {
-  v7 = a4;
+  colorCopy = color;
   v11.receiver = self;
   v11.super_class = PUFilmStripViewIndicatorInfo;
   v8 = [(PUFilmStripViewIndicatorInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_normalizedLocation = a3;
-    objc_storeStrong(&v8->_preferredColor, a4);
+    v8->_normalizedLocation = location;
+    objc_storeStrong(&v8->_preferredColor, color);
   }
 
   return v9;

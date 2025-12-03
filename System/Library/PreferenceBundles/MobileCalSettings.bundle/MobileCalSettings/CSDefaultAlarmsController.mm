@@ -1,19 +1,19 @@
 @interface CSDefaultAlarmsController
 - (CSDefaultAlarmsController)init;
-- (id)_alarmTitlesForAllDay:(BOOL)a3 shortened:(BOOL)a4;
-- (id)_alarmValuesForAllDay:(BOOL)a3;
-- (id)_enableTravelAdvisoriesForAutomaticBehavior:(id)a3;
-- (id)defaultAlarmOffsetForSpecifier:(id)a3;
+- (id)_alarmTitlesForAllDay:(BOOL)day shortened:(BOOL)shortened;
+- (id)_alarmValuesForAllDay:(BOOL)day;
+- (id)_enableTravelAdvisoriesForAutomaticBehavior:(id)behavior;
+- (id)defaultAlarmOffsetForSpecifier:(id)specifier;
 - (id)specifiers;
 - (void)_defaultAlarmChanged;
-- (void)_setEnableTravelAdvisoriesForAutomaticBehavior:(id)a3 specifier:(id)a4;
+- (void)_setEnableTravelAdvisoriesForAutomaticBehavior:(id)behavior specifier:(id)specifier;
 - (void)_travelAdvisoriesEnabledChanged;
 - (void)configureTTL;
-- (void)locationAuthorizationChanged:(id)a3;
-- (void)setDefaultAlarmOffset:(id)a3 specifier:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)locationAuthorizationChanged:(id)changed;
+- (void)setDefaultAlarmOffset:(id)offset specifier:(id)specifier;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CSDefaultAlarmsController
@@ -32,23 +32,23 @@
   return v2;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v18.receiver = self;
   v18.super_class = CSDefaultAlarmsController;
-  [(CSDefaultAlarmsController *)&v18 viewDidAppear:a3];
+  [(CSDefaultAlarmsController *)&v18 viewDidAppear:appear];
   v4 = [NSURL URLWithString:@"settings-navigation://com.apple.Settings.Apps/com.apple.mobilecal/defaultAlertTimes"];
   v5 = [_NSLocalizedStringResource alloc];
   v6 = +[NSLocale currentLocale];
   v7 = [NSBundle bundleForClass:objc_opt_class()];
-  v8 = [v7 bundleURL];
-  v9 = [v5 initWithKey:@"Default Alert Times" table:@"MobileCalSettings" locale:v6 bundleURL:v8];
+  bundleURL = [v7 bundleURL];
+  v9 = [v5 initWithKey:@"Default Alert Times" table:@"MobileCalSettings" locale:v6 bundleURL:bundleURL];
 
   v10 = [_NSLocalizedStringResource alloc];
   v11 = +[NSLocale currentLocale];
   v12 = [NSBundle bundleForClass:objc_opt_class()];
-  v13 = [v12 bundleURL];
-  v14 = [v10 initWithKey:@"Calendar" table:@"MobileCalSettings" locale:v11 bundleURL:v13];
+  bundleURL2 = [v12 bundleURL];
+  v14 = [v10 initWithKey:@"Calendar" table:@"MobileCalSettings" locale:v11 bundleURL:bundleURL2];
 
   v19 = v14;
   v15 = [NSArray arrayWithObjects:&v19 count:1];
@@ -64,11 +64,11 @@
   self->_hasEverAppeared = 1;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CSDefaultAlarmsController;
-  [(CSDefaultAlarmsController *)&v4 viewWillAppear:a3];
+  [(CSDefaultAlarmsController *)&v4 viewWillAppear:appear];
   if (self->_hasEverAppeared)
   {
     [(CSDefaultAlarmsController *)self _defaultAlarmChanged];
@@ -76,11 +76,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = CSDefaultAlarmsController;
-  [(CSDefaultAlarmsController *)&v6 viewWillDisappear:a3];
+  [(CSDefaultAlarmsController *)&v6 viewWillDisappear:disappear];
   [CalDistributedNotificationCenter removeObserver:self name:kCalDefaultAlarmChangedNote];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:EKEventStoreChangedNotification object:0];
@@ -106,20 +106,20 @@
   [(CSDefaultAlarmsController *)self reloadSpecifier:timeToLeaveAlertsSpecifier];
 }
 
-- (id)_alarmTitlesForAllDay:(BOOL)a3 shortened:(BOOL)a4
+- (id)_alarmTitlesForAllDay:(BOOL)day shortened:(BOOL)shortened
 {
-  v4 = a3;
+  dayCopy = day;
   v5 = objc_alloc_init(CalendarEventAlarmTable);
-  [v5 setUseAllDayAlarms:v4];
-  v6 = [v5 countOfPresets];
-  v7 = [NSMutableArray arrayWithCapacity:v6 + 1];
+  [v5 setUseAllDayAlarms:dayCopy];
+  countOfPresets = [v5 countOfPresets];
+  v7 = [NSMutableArray arrayWithCapacity:countOfPresets + 1];
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"None Alert" value:@"None" table:@"MobileCalSettings"];
   [v7 addObject:v9];
 
-  if (v6)
+  if (countOfPresets)
   {
-    for (i = 0; i != v6; ++i)
+    for (i = 0; i != countOfPresets; ++i)
     {
       [v5 intervalForPresetIdentifier:i];
       v11 = CUIKStringForRelativeOffset();
@@ -130,19 +130,19 @@
   return v7;
 }
 
-- (id)_alarmValuesForAllDay:(BOOL)a3
+- (id)_alarmValuesForAllDay:(BOOL)day
 {
-  v3 = a3;
+  dayCopy = day;
   v4 = objc_alloc_init(CalendarEventAlarmTable);
-  [v4 setUseAllDayAlarms:v3];
-  v5 = [v4 countOfPresets];
-  v6 = [NSMutableArray arrayWithCapacity:v5 + 1];
+  [v4 setUseAllDayAlarms:dayCopy];
+  countOfPresets = [v4 countOfPresets];
+  v6 = [NSMutableArray arrayWithCapacity:countOfPresets + 1];
   v7 = [NSNumber numberWithInteger:0x7FFFFFFFFFFFFFFFLL];
   [v6 addObject:v7];
 
-  if (v5)
+  if (countOfPresets)
   {
-    for (i = 0; i != v5; ++i)
+    for (i = 0; i != countOfPresets; ++i)
     {
       v9 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 intervalForPresetIdentifier:i]);
       [v6 addObject:v9];
@@ -239,15 +239,15 @@
 {
   v6 = [CUIKTimeToLeaveDescriptionGenerator explanatoryTextForTTLStatus:self->currentTTLStatus];
   [(PSSpecifier *)self->_timeToLeaveGroupSpecifier setProperty:v6 forKey:PSFooterTextGroupKey];
-  v3 = [(CSDefaultAlarmsController *)self ttlAlertsEffectivelyDisabledDueToLocationAuthorization];
+  ttlAlertsEffectivelyDisabledDueToLocationAuthorization = [(CSDefaultAlarmsController *)self ttlAlertsEffectivelyDisabledDueToLocationAuthorization];
   timeToLeaveAlertsSpecifier = self->_timeToLeaveAlertsSpecifier;
-  v5 = [NSNumber numberWithBool:v3 ^ 1];
+  v5 = [NSNumber numberWithBool:ttlAlertsEffectivelyDisabledDueToLocationAuthorization ^ 1];
   [(PSSpecifier *)timeToLeaveAlertsSpecifier setProperty:v5 forKey:PSEnabledKey];
 
   [(PSSpecifier *)self->_timeToLeaveAlertsSpecifier setIdentifier:@"timeToLeaveAlerts"];
 }
 
-- (void)locationAuthorizationChanged:(id)a3
+- (void)locationAuthorizationChanged:(id)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -257,17 +257,17 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_setEnableTravelAdvisoriesForAutomaticBehavior:(id)a3 specifier:(id)a4
+- (void)_setEnableTravelAdvisoriesForAutomaticBehavior:(id)behavior specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  v6 = [(CSDefaultAlarmsController *)self ttlAlertsEffectivelyDisabledDueToLocationAuthorization];
+  bOOLValue = [behavior BOOLValue];
+  ttlAlertsEffectivelyDisabledDueToLocationAuthorization = [(CSDefaultAlarmsController *)self ttlAlertsEffectivelyDisabledDueToLocationAuthorization];
   v7 = kCSLogHandle;
-  if (v6)
+  if (ttlAlertsEffectivelyDisabledDueToLocationAuthorization)
   {
     if (os_log_type_enabled(kCSLogHandle, OS_LOG_TYPE_INFO))
     {
       v8 = @"NO";
-      if (v5)
+      if (bOOLValue)
       {
         v8 = @"YES";
       }
@@ -282,7 +282,7 @@
   {
     if (os_log_type_enabled(kCSLogHandle, OS_LOG_TYPE_DEBUG))
     {
-      if (v5)
+      if (bOOLValue)
       {
         v9 = @"YES";
       }
@@ -298,7 +298,7 @@
     }
 
     v10 = +[CDBPreferences shared];
-    [v10 set_enableTravelAdvisoriesForAutomaticBehavior:v5];
+    [v10 set_enableTravelAdvisoriesForAutomaticBehavior:bOOLValue];
 
     v11 = kCSLogHandle;
     if (os_log_type_enabled(kCSLogHandle, OS_LOG_TYPE_DEBUG))
@@ -322,7 +322,7 @@
   }
 }
 
-- (id)_enableTravelAdvisoriesForAutomaticBehavior:(id)a3
+- (id)_enableTravelAdvisoriesForAutomaticBehavior:(id)behavior
 {
   if ([(CSDefaultAlarmsController *)self ttlAlertsEffectivelyDisabledDueToLocationAuthorization])
   {
@@ -332,13 +332,13 @@
   else
   {
     v4 = +[CDBPreferences shared];
-    v5 = [v4 get_enableTravelAdvisoriesForAutomaticBehavior];
+    get_enableTravelAdvisoriesForAutomaticBehavior = [v4 get_enableTravelAdvisoriesForAutomaticBehavior];
 
     v6 = kCSLogHandle;
     if (os_log_type_enabled(kCSLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v7 = @"NO";
-      if (v5)
+      if (get_enableTravelAdvisoriesForAutomaticBehavior)
       {
         v7 = @"YES";
       }
@@ -348,31 +348,31 @@
       _os_log_impl(&def_F7BC, v6, OS_LOG_TYPE_DEBUG, "The value of 'enableTravelAdvisoriesForAutomaticBehavior' is: [%@]", &v9, 0xCu);
     }
 
-    v3 = [NSNumber numberWithBool:v5];
+    v3 = [NSNumber numberWithBool:get_enableTravelAdvisoriesForAutomaticBehavior];
   }
 
   return v3;
 }
 
-- (id)defaultAlarmOffsetForSpecifier:(id)a3
+- (id)defaultAlarmOffsetForSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:@"DefaultAlarmType"];
-  v5 = [v4 intValue];
+  v4 = [specifier propertyForKey:@"DefaultAlarmType"];
+  intValue = [v4 intValue];
 
   v6 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"EKEventStore"];
-  v7 = [CUIKDefaultAlarmPreferences defaultAlarmOffsetForAlarmType:v5 eventStore:v6];
+  v7 = [CUIKDefaultAlarmPreferences defaultAlarmOffsetForAlarmType:intValue eventStore:v6];
 
   return v7;
 }
 
-- (void)setDefaultAlarmOffset:(id)a3 specifier:(id)a4
+- (void)setDefaultAlarmOffset:(id)offset specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = [a4 propertyForKey:@"DefaultAlarmType"];
-  v8 = [v7 intValue];
+  offsetCopy = offset;
+  v7 = [specifier propertyForKey:@"DefaultAlarmType"];
+  intValue = [v7 intValue];
 
   v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"EKEventStore"];
-  [CUIKDefaultAlarmPreferences setDefaultAlarmOffset:v6 forAlarmType:v8 eventStore:v9];
+  [CUIKDefaultAlarmPreferences setDefaultAlarmOffset:offsetCopy forAlarmType:intValue eventStore:v9];
 }
 
 @end

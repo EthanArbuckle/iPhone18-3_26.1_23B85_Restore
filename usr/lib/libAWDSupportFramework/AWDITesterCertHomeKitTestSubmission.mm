@@ -1,13 +1,13 @@
 @interface AWDITesterCertHomeKitTestSubmission
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDITesterCertHomeKitTestSubmission
@@ -32,40 +32,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   accessoryManufacturer = self->_accessoryManufacturer;
   if (accessoryManufacturer)
   {
-    [v3 setObject:accessoryManufacturer forKey:@"accessoryManufacturer"];
+    [dictionary setObject:accessoryManufacturer forKey:@"accessoryManufacturer"];
   }
 
   accessoryName = self->_accessoryName;
   if (accessoryName)
   {
-    [v3 setObject:accessoryName forKey:@"accessoryName"];
+    [dictionary setObject:accessoryName forKey:@"accessoryName"];
   }
 
   testUUID = self->_testUUID;
   if (testUUID)
   {
-    [v3 setObject:testUUID forKey:@"testUUID"];
+    [dictionary setObject:testUUID forKey:@"testUUID"];
   }
 
   testName = self->_testName;
   if (testName)
   {
-    [v3 setObject:testName forKey:@"testName"];
+    [dictionary setObject:testName forKey:@"testName"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -95,39 +95,39 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 48) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 48) |= 1u;
   }
 
   if (self->_accessoryManufacturer)
   {
-    [a3 setAccessoryManufacturer:?];
+    [to setAccessoryManufacturer:?];
   }
 
   if (self->_accessoryName)
   {
-    [a3 setAccessoryName:?];
+    [to setAccessoryName:?];
   }
 
   if (self->_testUUID)
   {
-    [a3 setTestUUID:?];
+    [to setTestUUID:?];
   }
 
   if (self->_testName)
   {
 
-    [a3 setTestName:?];
+    [to setTestName:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -135,29 +135,29 @@
     *(v5 + 48) |= 1u;
   }
 
-  *(v6 + 16) = [(NSString *)self->_accessoryManufacturer copyWithZone:a3];
-  *(v6 + 24) = [(NSString *)self->_accessoryName copyWithZone:a3];
+  *(v6 + 16) = [(NSString *)self->_accessoryManufacturer copyWithZone:zone];
+  *(v6 + 24) = [(NSString *)self->_accessoryName copyWithZone:zone];
 
-  *(v6 + 40) = [(NSString *)self->_testUUID copyWithZone:a3];
-  *(v6 + 32) = [(NSString *)self->_testName copyWithZone:a3];
+  *(v6 + 40) = [(NSString *)self->_testUUID copyWithZone:zone];
+  *(v6 + 32) = [(NSString *)self->_testName copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 48);
+    v6 = *(equal + 48);
     if (*&self->_has)
     {
-      if ((*(a3 + 48) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 48) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_15;
       }
     }
 
-    else if (*(a3 + 48))
+    else if (*(equal + 48))
     {
 LABEL_15:
       LOBYTE(v5) = 0;
@@ -165,16 +165,16 @@ LABEL_15:
     }
 
     accessoryManufacturer = self->_accessoryManufacturer;
-    if (!(accessoryManufacturer | *(a3 + 2)) || (v5 = [(NSString *)accessoryManufacturer isEqual:?]) != 0)
+    if (!(accessoryManufacturer | *(equal + 2)) || (v5 = [(NSString *)accessoryManufacturer isEqual:?]) != 0)
     {
       accessoryName = self->_accessoryName;
-      if (!(accessoryName | *(a3 + 3)) || (v5 = [(NSString *)accessoryName isEqual:?]) != 0)
+      if (!(accessoryName | *(equal + 3)) || (v5 = [(NSString *)accessoryName isEqual:?]) != 0)
       {
         testUUID = self->_testUUID;
-        if (!(testUUID | *(a3 + 5)) || (v5 = [(NSString *)testUUID isEqual:?]) != 0)
+        if (!(testUUID | *(equal + 5)) || (v5 = [(NSString *)testUUID isEqual:?]) != 0)
         {
           testName = self->_testName;
-          if (testName | *(a3 + 4))
+          if (testName | *(equal + 4))
           {
 
             LOBYTE(v5) = [(NSString *)testName isEqual:?];
@@ -210,30 +210,30 @@ LABEL_15:
   return v6 ^ [(NSString *)self->_testName hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 48))
+  if (*(from + 48))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDITesterCertHomeKitTestSubmission *)self setAccessoryManufacturer:?];
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDITesterCertHomeKitTestSubmission *)self setAccessoryName:?];
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDITesterCertHomeKitTestSubmission *)self setTestUUID:?];
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
 
     [(AWDITesterCertHomeKitTestSubmission *)self setTestName:?];

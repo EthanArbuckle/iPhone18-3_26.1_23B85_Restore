@@ -1,13 +1,13 @@
 @interface ParameterValuePickerViewController
 - (WFVariableProvider)variableProvider;
 - (WFVariableUIDelegate)variableUIDelegate;
-- (_TtC14WorkflowEditor34ParameterValuePickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC14WorkflowEditor34ParameterValuePickerViewController)initWithParameter:(id)a3 allowsVariables:(BOOL)a4 allowsMultipleSelection:(BOOL)a5 initialCollection:(id)a6 currentState:(id)a7;
+- (_TtC14WorkflowEditor34ParameterValuePickerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC14WorkflowEditor34ParameterValuePickerViewController)initWithParameter:(id)parameter allowsVariables:(BOOL)variables allowsMultipleSelection:(BOOL)selection initialCollection:(id)collection currentState:(id)state;
 - (_TtP14WorkflowEditor42ParameterValuePickerViewControllerDelegate_)delegate;
 - (void)loadView;
-- (void)setDelegate:(id)a3;
-- (void)setVariableProvider:(id)a3;
-- (void)setVariableUIDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setVariableProvider:(id)provider;
+- (void)setVariableUIDelegate:(id)delegate;
 @end
 
 @implementation ParameterValuePickerViewController
@@ -19,10 +19,10 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_27445449C();
 }
 
@@ -33,10 +33,10 @@
   return v2;
 }
 
-- (void)setVariableProvider:(id)a3
+- (void)setVariableProvider:(id)provider
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_274454584();
 }
 
@@ -47,35 +47,35 @@
   return v2;
 }
 
-- (void)setVariableUIDelegate:(id)a3
+- (void)setVariableUIDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_27445466C();
 }
 
-- (_TtC14WorkflowEditor34ParameterValuePickerViewController)initWithParameter:(id)a3 allowsVariables:(BOOL)a4 allowsMultipleSelection:(BOOL)a5 initialCollection:(id)a6 currentState:(id)a7
+- (_TtC14WorkflowEditor34ParameterValuePickerViewController)initWithParameter:(id)parameter allowsVariables:(BOOL)variables allowsMultipleSelection:(BOOL)selection initialCollection:(id)collection currentState:(id)state
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a7;
+  parameterCopy = parameter;
+  collectionCopy = collection;
+  stateCopy = state;
   return ParameterValuePickerViewController.init(parameter:allowsVariables:allowsMultipleSelection:initialCollection:currentState:)();
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_2744549BC();
 }
 
-- (_TtC14WorkflowEditor34ParameterValuePickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14WorkflowEditor34ParameterValuePickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_27463B6AC();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   ParameterValuePickerViewController.init(nibName:bundle:)();
 }
 

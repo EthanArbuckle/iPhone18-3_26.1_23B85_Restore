@@ -1,26 +1,26 @@
 @interface ATXMagicalMomentsPredictionTableEntry
-+ (id)compoundPredicateFromPredicateArray:(id)a3;
-- (ATXMagicalMomentsPredictionTableEntry)initWithCoder:(id)a3;
-- (ATXMagicalMomentsPredictionTableEntry)initWithPrediction:(id)a3 applicableCompoundPredicate:(id)a4;
-- (ATXMagicalMomentsPredictionTableEntry)initWithPrediction:(id)a3 applicablePredicates:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)compoundPredicateFromPredicateArray:(id)array;
+- (ATXMagicalMomentsPredictionTableEntry)initWithCoder:(id)coder;
+- (ATXMagicalMomentsPredictionTableEntry)initWithPrediction:(id)prediction applicableCompoundPredicate:(id)predicate;
+- (ATXMagicalMomentsPredictionTableEntry)initWithPrediction:(id)prediction applicablePredicates:(id)predicates;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXMagicalMomentsPredictionTableEntry
 
-- (ATXMagicalMomentsPredictionTableEntry)initWithPrediction:(id)a3 applicablePredicates:(id)a4
+- (ATXMagicalMomentsPredictionTableEntry)initWithPrediction:(id)prediction applicablePredicates:(id)predicates
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7 && [v7 count])
+  predictionCopy = prediction;
+  predicatesCopy = predicates;
+  v8 = predicatesCopy;
+  if (predictionCopy && predicatesCopy && [predicatesCopy count])
   {
     v9 = [objc_opt_class() compoundPredicateFromPredicateArray:v8];
-    self = [(ATXMagicalMomentsPredictionTableEntry *)self initWithPrediction:v6 applicableCompoundPredicate:v9];
+    self = [(ATXMagicalMomentsPredictionTableEntry *)self initWithPrediction:predictionCopy applicableCompoundPredicate:v9];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -31,18 +31,18 @@
       [ATXMagicalMomentsPredictionTableEntry initWithPrediction:applicablePredicates:];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (ATXMagicalMomentsPredictionTableEntry)initWithPrediction:(id)a3 applicableCompoundPredicate:(id)a4
+- (ATXMagicalMomentsPredictionTableEntry)initWithPrediction:(id)prediction applicableCompoundPredicate:(id)predicate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7 && v8)
+  predictionCopy = prediction;
+  predicateCopy = predicate;
+  v9 = predicateCopy;
+  if (predictionCopy && predicateCopy)
   {
     v15.receiver = self;
     v15.super_class = ATXMagicalMomentsPredictionTableEntry;
@@ -50,12 +50,12 @@
     p_isa = &v10->super.isa;
     if (v10)
     {
-      objc_storeStrong(&v10->_prediction, a3);
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(&v10->_prediction, prediction);
+      objc_storeStrong(p_isa + 2, predicate);
     }
 
     self = p_isa;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -66,26 +66,26 @@
       [ATXMagicalMomentsPredictionTableEntry initWithPrediction:applicableCompoundPredicate:];
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ATXMagicalMomentsPrediction *)self->_prediction predictionIdentifier];
+  predictionIdentifier = [(ATXMagicalMomentsPrediction *)self->_prediction predictionIdentifier];
   [(ATXMagicalMomentsPrediction *)self->_prediction confidence];
-  v6 = [v3 stringWithFormat:@"Prediction: %@, Confidence: %f, Predicate: %@", v4, v5, self->_compoundPredicate];
+  v6 = [v3 stringWithFormat:@"Prediction: %@, Confidence: %f, Predicate: %@", predictionIdentifier, v5, self->_compoundPredicate];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -95,14 +95,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       prediction = self->_prediction;
-      v7 = [(ATXMagicalMomentsPredictionTableEntry *)v5 prediction];
-      if ([(ATXMagicalMomentsPrediction *)prediction isEqual:v7])
+      prediction = [(ATXMagicalMomentsPredictionTableEntry *)v5 prediction];
+      if ([(ATXMagicalMomentsPrediction *)prediction isEqual:prediction])
       {
         compoundPredicate = self->_compoundPredicate;
-        v9 = [(ATXMagicalMomentsPredictionTableEntry *)v5 compoundPredicate];
-        v10 = [(NSCompoundPredicate *)compoundPredicate isEqual:v9];
+        compoundPredicate = [(ATXMagicalMomentsPredictionTableEntry *)v5 compoundPredicate];
+        v10 = [(NSCompoundPredicate *)compoundPredicate isEqual:compoundPredicate];
       }
 
       else
@@ -120,32 +120,32 @@
   return v10;
 }
 
-+ (id)compoundPredicateFromPredicateArray:(id)a3
++ (id)compoundPredicateFromPredicateArray:(id)array
 {
-  v5 = a3;
-  if (!v5)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
-    [(ATXMagicalMomentsPredictionTableEntry *)a2 compoundPredicateFromPredicateArray:a1];
+    [(ATXMagicalMomentsPredictionTableEntry *)a2 compoundPredicateFromPredicateArray:self];
   }
 
-  v6 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:1 subpredicates:v5];
+  v6 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:1 subpredicates:arrayCopy];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   prediction = self->_prediction;
-  v5 = a3;
-  [v5 encodeObject:prediction forKey:@"prediction"];
-  [v5 encodeObject:self->_compoundPredicate forKey:@"compoundPredicate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:prediction forKey:@"prediction"];
+  [coderCopy encodeObject:self->_compoundPredicate forKey:@"compoundPredicate"];
 }
 
-- (ATXMagicalMomentsPredictionTableEntry)initWithCoder:(id)a3
+- (ATXMagicalMomentsPredictionTableEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prediction"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"compoundPredicate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prediction"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"compoundPredicate"];
 
   v7 = [(ATXMagicalMomentsPredictionTableEntry *)self initWithPrediction:v5 applicableCompoundPredicate:v6];
   return v7;

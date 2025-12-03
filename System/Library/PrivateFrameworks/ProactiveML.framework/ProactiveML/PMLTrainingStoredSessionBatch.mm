@@ -1,14 +1,14 @@
 @interface PMLTrainingStoredSessionBatch
-- (PMLTrainingStoredSessionBatch)initWithCovariates:(id)a3 outcomes:(id)a4;
-- (id)minibatchStatsForPositiveLabel:(unint64_t)a3;
-- (id)minibatchStatsForPositiveLabels:(id)a3;
+- (PMLTrainingStoredSessionBatch)initWithCovariates:(id)covariates outcomes:(id)outcomes;
+- (id)minibatchStatsForPositiveLabel:(unint64_t)label;
+- (id)minibatchStatsForPositiveLabels:(id)labels;
 @end
 
 @implementation PMLTrainingStoredSessionBatch
 
-- (id)minibatchStatsForPositiveLabels:(id)a3
+- (id)minibatchStatsForPositiveLabels:(id)labels
 {
-  v23 = a3;
+  labelsCopy = labels;
   v4 = objc_opt_new();
   v5 = [(PMLTrainingStoredSessionBatch *)self count];
   v6 = objc_opt_new();
@@ -48,7 +48,7 @@
   v28 = v5;
   v15 = v4;
   v25 = v15;
-  v16 = v23;
+  v16 = labelsCopy;
   v26 = v16;
   v27 = &v29;
   [v6 enumerateKeysAndObjectsUsingBlock:v24];
@@ -85,10 +85,10 @@ void __65__PMLTrainingStoredSessionBatch_minibatchStatsForPositiveLabels___block
   }
 }
 
-- (id)minibatchStatsForPositiveLabel:(unint64_t)a3
+- (id)minibatchStatsForPositiveLabel:(unint64_t)label
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:label];
   v9[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   v6 = [(PMLTrainingStoredSessionBatch *)self minibatchStatsForPositiveLabels:v5];
@@ -98,15 +98,15 @@ void __65__PMLTrainingStoredSessionBatch_minibatchStatsForPositiveLabels___block
   return v6;
 }
 
-- (PMLTrainingStoredSessionBatch)initWithCovariates:(id)a3 outcomes:(id)a4
+- (PMLTrainingStoredSessionBatch)initWithCovariates:(id)covariates outcomes:(id)outcomes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 numberOfRows];
-  if (v10 != [v9 count])
+  covariatesCopy = covariates;
+  outcomesCopy = outcomes;
+  numberOfRows = [covariatesCopy numberOfRows];
+  if (numberOfRows != [outcomesCopy count])
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PMLTrainingStoredSessionBatch.m" lineNumber:19 description:{@"Covariates and outcomes need to have the same length, but got %lu and %d.", objc_msgSend(v8, "numberOfRows"), objc_msgSend(v9, "count")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLTrainingStoredSessionBatch.m" lineNumber:19 description:{@"Covariates and outcomes need to have the same length, but got %lu and %d.", objc_msgSend(covariatesCopy, "numberOfRows"), objc_msgSend(outcomesCopy, "count")}];
   }
 
   v15.receiver = self;
@@ -115,9 +115,9 @@ void __65__PMLTrainingStoredSessionBatch_minibatchStatsForPositiveLabels___block
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_covariates, a3);
-    objc_storeStrong(&v12->_outcomes, a4);
-    v12->_count = [v8 numberOfRows];
+    objc_storeStrong(&v11->_covariates, covariates);
+    objc_storeStrong(&v12->_outcomes, outcomes);
+    v12->_count = [covariatesCopy numberOfRows];
   }
 
   return v12;

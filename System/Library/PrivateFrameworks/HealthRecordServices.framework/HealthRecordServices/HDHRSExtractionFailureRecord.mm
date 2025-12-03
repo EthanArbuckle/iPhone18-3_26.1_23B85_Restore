@@ -1,27 +1,27 @@
 @interface HDHRSExtractionFailureRecord
-+ (id)extractionFailureRecordWithCode:(int64_t)a3 propertyName:(id)a4 resourceKeyPath:(id)a5;
-- (HDHRSExtractionFailureRecord)initWithCoder:(id)a3;
++ (id)extractionFailureRecordWithCode:(int64_t)code propertyName:(id)name resourceKeyPath:(id)path;
+- (HDHRSExtractionFailureRecord)initWithCoder:(id)coder;
 - (NSString)internalDisplaySafeDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDHRSExtractionFailureRecord
 
-+ (id)extractionFailureRecordWithCode:(int64_t)a3 propertyName:(id)a4 resourceKeyPath:(id)a5
++ (id)extractionFailureRecordWithCode:(int64_t)code propertyName:(id)name resourceKeyPath:(id)path
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = objc_alloc_init(a1);
+  nameCopy = name;
+  pathCopy = path;
+  v10 = objc_alloc_init(self);
   v11 = v10;
   if (v10)
   {
-    v10[1] = a3;
-    v12 = [v8 copy];
+    v10[1] = code;
+    v12 = [nameCopy copy];
     v13 = v11[2];
     v11[2] = v12;
 
-    v14 = [v9 copy];
+    v14 = [pathCopy copy];
     v15 = v11[3];
     v11[3] = v14;
   }
@@ -29,46 +29,46 @@
   return v11;
 }
 
-- (HDHRSExtractionFailureRecord)initWithCoder:(id)a3
+- (HDHRSExtractionFailureRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"FailureCode"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"FailureCode"])
   {
     v12.receiver = self;
     v12.super_class = HDHRSExtractionFailureRecord;
     v5 = [(HDHRSExtractionFailureRecord *)&v12 init];
     if (v5)
     {
-      v5->_failureCode = [v4 decodeIntegerForKey:@"FailureCode"];
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PropertyName"];
+      v5->_failureCode = [coderCopy decodeIntegerForKey:@"FailureCode"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PropertyName"];
       propertyName = v5->_propertyName;
       v5->_propertyName = v6;
 
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ResourceKeyPath"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ResourceKeyPath"];
       resourceKeyPath = v5->_resourceKeyPath;
       v5->_resourceKeyPath = v8;
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v10 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   failureCode = self->_failureCode;
-  v5 = a3;
-  [v5 encodeInteger:failureCode forKey:@"FailureCode"];
-  [v5 encodeObject:self->_propertyName forKey:@"PropertyName"];
-  [v5 encodeObject:self->_resourceKeyPath forKey:@"ResourceKeyPath"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:failureCode forKey:@"FailureCode"];
+  [coderCopy encodeObject:self->_propertyName forKey:@"PropertyName"];
+  [coderCopy encodeObject:self->_resourceKeyPath forKey:@"ResourceKeyPath"];
 }
 
 - (NSString)internalDisplaySafeDescription

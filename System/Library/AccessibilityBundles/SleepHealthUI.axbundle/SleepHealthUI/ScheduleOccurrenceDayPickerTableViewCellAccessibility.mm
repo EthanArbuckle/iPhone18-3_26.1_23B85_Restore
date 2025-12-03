@@ -1,15 +1,15 @@
 @interface ScheduleOccurrenceDayPickerTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation ScheduleOccurrenceDayPickerTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SleepHealthUI.ScheduleOccurrenceDayPickerTableViewCell" hasInstanceMethod:@"accessibilityDayPicker" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleDayPicker" hasInstanceMethod:@"accessibilityPickerDays" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SleepHealthUI.ScheduleOccurrenceDayPickerTableViewCell" hasInstanceMethod:@"accessibilityDayPicker" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleDayPicker" hasInstanceMethod:@"accessibilityPickerDays" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityElements

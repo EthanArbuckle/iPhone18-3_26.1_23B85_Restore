@@ -1,29 +1,29 @@
 @interface TSUChunkedString
-- (TSUChunkedString)initWithChunkLength:(unint64_t)a3;
+- (TSUChunkedString)initWithChunkLength:(unint64_t)length;
 - (id).cxx_construct;
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (void)appendString:(id)a3;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (void)appendString:(id)string;
 - (void)dealloc;
-- (void)deleteCharactersInRange:(_NSRange)a3;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
-- (void)insertString:(id)a3 atIndex:(unint64_t)a4;
-- (void)p_appendRange:(_NSRange)a3 fromString:(id)a4;
-- (void)p_compactChunksInRange:(_NSRange)a3;
-- (void)p_deleteCharactersInRange:(_NSRange)a3 chunkIndex:(unint64_t)a4;
-- (void)p_insertCharactersInRange:(_NSRange)a3 fromString:(id)a4 atIndex:(unint64_t)a5 chunkIndex:(unint64_t)a6;
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4;
+- (void)deleteCharactersInRange:(_NSRange)range;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
+- (void)insertString:(id)string atIndex:(unint64_t)index;
+- (void)p_appendRange:(_NSRange)range fromString:(id)string;
+- (void)p_compactChunksInRange:(_NSRange)range;
+- (void)p_deleteCharactersInRange:(_NSRange)range chunkIndex:(unint64_t)index;
+- (void)p_insertCharactersInRange:(_NSRange)range fromString:(id)string atIndex:(unint64_t)index chunkIndex:(unint64_t)chunkIndex;
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string;
 @end
 
 @implementation TSUChunkedString
 
-- (TSUChunkedString)initWithChunkLength:(unint64_t)a3
+- (TSUChunkedString)initWithChunkLength:(unint64_t)length
 {
   v5.receiver = self;
   v5.super_class = TSUChunkedString;
   result = [(TSUChunkedString *)&v5 init];
   if (result)
   {
-    result->_chunkLength = a3;
+    result->_chunkLength = length;
   }
 
   return result;
@@ -37,22 +37,22 @@
   [(TSUChunkedString *)&v3 dealloc];
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
-  if (self->_length <= a3)
+  if (self->_length <= index)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE730] format:@"character index out of bounds"];
   }
 
-  v5 = *(self->_chunks.__begin_ + 2 * p_chunkIndexForCharacterIndex(a3, &self->_chunks.__begin_));
-  return *(v5 + a3 - *v5 + 12);
+  v5 = *(self->_chunks.__begin_ + 2 * p_chunkIndexForCharacterIndex(index, &self->_chunks.__begin_));
+  return *(v5 + index - *v5 + 12);
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a4.location + a4.length > self->_length)
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > self->_length)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE730] format:@"range out of bounds"];
   }
@@ -75,8 +75,8 @@
         v12 = length;
       }
 
-      memmove(a3, v10 + 2 * v11 + 24, 2 * v12);
-      a3 += v12;
+      memmove(characters, v10 + 2 * v11 + 24, 2 * v12);
+      characters += v12;
       location += v12;
       v9 += 16;
       length -= v12;
@@ -86,20 +86,20 @@
   }
 }
 
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.location + a3.length > self->_length)
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > self->_length)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE730] format:@"range out of bounds"];
   }
 
-  v16 = [a4 length];
+  v16 = [string length];
   v8 = length;
-  if ([a4 length] < length)
+  if ([string length] < length)
   {
-    v8 = [a4 length];
+    v8 = [string length];
   }
 
   v9 = p_chunkIndexForCharacterIndex(location, &self->_chunks.__begin_);
@@ -117,7 +117,7 @@
       v20.location = v10;
       v20.length = v8;
       v14 = NSIntersectionRange(v19, v20);
-      [a4 getCharacters:begin[2 * v9] + 2 * (v14.location - v13) + 24 range:{v10 - location, v14.length}];
+      [string getCharacters:begin[2 * v9] + 2 * (v14.location - v13) + 24 range:{v10 - location, v14.length}];
       v10 += v14.length;
       v8 -= v14.length;
       if (!v8)
@@ -144,47 +144,47 @@
     if (v17 + location == self->_length)
     {
 
-      [(TSUChunkedString *)self p_appendRange:v17 fromString:v15, a4];
+      [(TSUChunkedString *)self p_appendRange:v17 fromString:v15, string];
     }
 
     else
     {
 
-      [(TSUChunkedString *)self p_insertCharactersInRange:v17 fromString:v15 atIndex:a4 chunkIndex:?];
+      [(TSUChunkedString *)self p_insertCharactersInRange:v17 fromString:v15 atIndex:string chunkIndex:?];
     }
   }
 }
 
-- (void)insertString:(id)a3 atIndex:(unint64_t)a4
+- (void)insertString:(id)string atIndex:(unint64_t)index
 {
-  if (self->_length < a4)
+  if (self->_length < index)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE730] format:@"range out of bounds"];
   }
 
-  if ([a3 length])
+  if ([string length])
   {
-    if (self->_length == a4)
+    if (self->_length == index)
     {
 
-      [(TSUChunkedString *)self appendString:a3];
+      [(TSUChunkedString *)self appendString:string];
     }
 
     else
     {
-      v7 = p_chunkIndexForCharacterIndex(a4, &self->_chunks.__begin_);
-      v8 = [a3 length];
+      v7 = p_chunkIndexForCharacterIndex(index, &self->_chunks.__begin_);
+      v8 = [string length];
 
-      [(TSUChunkedString *)self p_insertCharactersInRange:0 fromString:v8 atIndex:a3 chunkIndex:a4, v7];
+      [(TSUChunkedString *)self p_insertCharactersInRange:0 fromString:v8 atIndex:string chunkIndex:index, v7];
     }
   }
 }
 
-- (void)deleteCharactersInRange:(_NSRange)a3
+- (void)deleteCharactersInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.location + a3.length > self->_length)
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > self->_length)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE730] format:@"range out of bounds"];
   }
@@ -197,11 +197,11 @@
   }
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v5 = [a3 length];
+  v5 = [string length];
 
-  [(TSUChunkedString *)self p_appendRange:0 fromString:v5, a3];
+  [(TSUChunkedString *)self p_appendRange:0 fromString:v5, string];
 }
 
 - (id).cxx_construct
@@ -212,12 +212,12 @@
   return self;
 }
 
-- (void)p_appendRange:(_NSRange)a3 fromString:(id)a4
+- (void)p_appendRange:(_NSRange)range fromString:(id)string
 {
-  if (a3.length)
+  if (range.length)
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     p_chunks = &self->_chunks;
     do
     {
@@ -245,7 +245,7 @@
         v17 = length;
       }
 
-      [a4 getCharacters:v10 + 2 * *(v10 + 16) + 24 range:{location, v17, v18}];
+      [string getCharacters:v10 + 2 * *(v10 + 16) + 24 range:{location, v17, v18}];
       *(v19 + 16) += v17;
       self->_length += v17;
       if (*(&v19 + 1))
@@ -261,12 +261,12 @@
   }
 }
 
-- (void)p_insertCharactersInRange:(_NSRange)a3 fromString:(id)a4 atIndex:(unint64_t)a5 chunkIndex:(unint64_t)a6
+- (void)p_insertCharactersInRange:(_NSRange)range fromString:(id)string atIndex:(unint64_t)index chunkIndex:(unint64_t)chunkIndex
 {
-  v6 = a6;
-  length = a3.length;
-  location = a3.location;
-  v10 = self;
+  chunkIndexCopy = chunkIndex;
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
   p_chunks = &self->_chunks;
   begin = self->_chunks.__begin_;
   if (self->_chunks.__end_ == begin)
@@ -274,8 +274,8 @@
     operator new();
   }
 
-  v13 = begin[a6];
-  v14 = *(&begin[a6] + 1);
+  v13 = begin[chunkIndex];
+  v14 = *(&begin[chunkIndex] + 1);
   if (v14)
   {
     atomic_fetch_add_explicit((v14 + 8), 1uLL, memory_order_relaxed);
@@ -304,18 +304,18 @@ LABEL_6:
   v18 = v15[2];
   if (v15[1] - v18 < length)
   {
-    v19 = v6;
+    v19 = chunkIndexCopy;
     v79 = location;
-    v82 = a5;
+    indexCopy = index;
     v20 = (v18 + length);
-    if (vcvtps_u32_f32(v20 / v10->_chunkLength) != 1)
+    if (vcvtps_u32_f32(v20 / selfCopy->_chunkLength) != 1)
     {
       operator new();
     }
 
-    v78 = v10;
-    v21 = *(p_chunks->__begin_ + v6);
-    v22 = *(p_chunks->__begin_ + 2 * v6 + 1);
+    v78 = selfCopy;
+    v21 = *(p_chunks->__begin_ + chunkIndexCopy);
+    v22 = *(p_chunks->__begin_ + 2 * chunkIndexCopy + 1);
     if (v22)
     {
       atomic_fetch_add_explicit((v22 + 8), 1uLL, memory_order_relaxed);
@@ -336,19 +336,19 @@ LABEL_6:
     }
 
     v80 = length;
-    v30 = v82 - *v25;
+    v30 = indexCopy - *v25;
     v31 = v30 - v23;
     if (v30 <= v23)
     {
       v36 = 0;
-      v31 = v82 - *v25;
-      v32 = v6;
+      v31 = indexCopy - *v25;
+      v32 = chunkIndexCopy;
     }
 
     else
     {
-      v32 = v6 + 1;
-      v33 = p_chunks->__begin_ + 16 * v6 + 16;
+      v32 = chunkIndexCopy + 1;
+      v33 = p_chunks->__begin_ + 16 * chunkIndexCopy + 16;
       v34 = *v33;
       v35 = *(v33 + 8);
       if (v35)
@@ -366,7 +366,7 @@ LABEL_6:
         v25 = v84;
       }
 
-      v6 = v19;
+      chunkIndexCopy = v19;
     }
 
     v37 = v25[2];
@@ -384,7 +384,7 @@ LABEL_6:
       v41 = v39;
       memmove(v39, v40, 2 * v38);
       v36 -= v38;
-      v42 = p_chunks->__begin_ + 16 * v6;
+      v42 = p_chunks->__begin_ + 16 * chunkIndexCopy;
       v44 = *(v42 + 16);
       v43 = *(v42 + 24);
       if (v43)
@@ -424,7 +424,7 @@ LABEL_6:
 
     v49 = *v48;
     v50 = v80;
-    v51 = v79 - v82;
+    v51 = v79 - indexCopy;
     while (1)
     {
       v52 = *(p_chunks->__begin_ + v32);
@@ -451,11 +451,11 @@ LABEL_6:
       if (v56)
       {
         v58 = v50 >= v56 ? v23 - *(v55 + 16) : v50;
-        [a4 getCharacters:v55 + 2 * v31 + 24 range:{v51 + v82, v58}];
+        [string getCharacters:v55 + 2 * v31 + 24 range:{v51 + indexCopy, v58}];
         *v83 = v49;
         v57 = *(v83 + 16) + v58;
         *(v83 + 16) = v57;
-        v82 += v58;
+        indexCopy += v58;
         v50 -= v58;
       }
 
@@ -506,9 +506,9 @@ LABEL_6:
 LABEL_74:
         free(v77);
 LABEL_75:
-        v6 = v32;
+        chunkIndexCopy = v32;
         length = v80;
-        v10 = v78;
+        selfCopy = v78;
         goto LABEL_76;
       }
     }
@@ -567,7 +567,7 @@ LABEL_75:
     goto LABEL_74;
   }
 
-  v26 = a5 - *v15;
+  v26 = index - *v15;
   v27 = v18 > v26;
   v28 = v18 - v26;
   if (v27 && length != 0)
@@ -576,14 +576,14 @@ LABEL_75:
     v15 = v83;
   }
 
-  [a4 getCharacters:v15 + 2 * v26 + 24 range:{location, length}];
+  [string getCharacters:v15 + 2 * v26 + 24 range:{location, length}];
   *(v83 + 16) += length;
 LABEL_76:
   v73 = (p_chunks->__end_ - p_chunks->__begin_) >> 4;
-  if (v73 > v6 + 1)
+  if (v73 > chunkIndexCopy + 1)
   {
-    v74 = ~v6 + v73;
-    v75 = (p_chunks->__begin_ + 16 * v6 + 16);
+    v74 = ~chunkIndexCopy + v73;
+    v75 = (p_chunks->__begin_ + 16 * chunkIndexCopy + 16);
     do
     {
       v76 = *v75;
@@ -595,26 +595,26 @@ LABEL_76:
     while (v74);
   }
 
-  v10->_length += length;
+  selfCopy->_length += length;
   if (*(&v83 + 1))
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](*(&v83 + 1));
   }
 }
 
-- (void)p_deleteCharactersInRange:(_NSRange)a3 chunkIndex:(unint64_t)a4
+- (void)p_deleteCharactersInRange:(_NSRange)range chunkIndex:(unint64_t)index
 {
-  if (a3.length)
+  if (range.length)
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     v7 = 0;
-    v26 = self;
+    selfCopy = self;
     p_chunks = &self->_chunks;
-    v9 = 0x7FFFFFFFFFFFFFFFLL;
+    indexCopy = 0x7FFFFFFFFFFFFFFFLL;
     do
     {
-      v10 = (p_chunks->__begin_ + 16 * a4);
+      v10 = (p_chunks->__begin_ + 16 * index);
       v28.location = **v10;
       v28.length = (*v10)[2];
       v29.location = location;
@@ -647,17 +647,17 @@ LABEL_76:
       v12[2] = v17;
       if (v17)
       {
-        if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+        if (indexCopy == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v9 = a4;
+          indexCopy = index;
         }
 
-        ++a4;
+        ++index;
       }
 
       else
       {
-        std::__move_impl<std::_ClassicAlgPolicy>::operator()[abi:ne200100]<std::shared_ptr<TSUStringChunk> *,std::shared_ptr<TSUStringChunk> *,std::shared_ptr<TSUStringChunk> *>(&v27, p_chunks->__begin_ + a4 + 1, p_chunks->__end_, p_chunks->__begin_ + 16 * a4);
+        std::__move_impl<std::_ClassicAlgPolicy>::operator()[abi:ne200100]<std::shared_ptr<TSUStringChunk> *,std::shared_ptr<TSUStringChunk> *,std::shared_ptr<TSUStringChunk> *>(&v27, p_chunks->__begin_ + index + 1, p_chunks->__end_, p_chunks->__begin_ + 16 * index);
         v19 = v18;
         end = p_chunks->__end_;
         if (end != v18)
@@ -685,20 +685,20 @@ LABEL_76:
     }
 
     while (length);
-    self = v26;
+    self = selfCopy;
   }
 
   else
   {
     v7 = 0;
-    v9 = 0x7FFFFFFFFFFFFFFFLL;
+    indexCopy = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   v22 = (self->_chunks.__end_ - self->_chunks.__begin_) >> 4;
-  v23 = v22 - a4;
-  if (v22 > a4)
+  v23 = v22 - index;
+  if (v22 > index)
   {
-    v24 = (self->_chunks.__begin_ + 16 * a4);
+    v24 = (self->_chunks.__begin_ + 16 * index);
     do
     {
       v25 = *v24;
@@ -711,17 +711,17 @@ LABEL_76:
   }
 
   self->_length -= v7;
-  if (v9 != 0x7FFFFFFFFFFFFFFFLL)
+  if (indexCopy != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(TSUChunkedString *)self p_compactChunksInRange:?];
   }
 }
 
-- (void)p_compactChunksInRange:(_NSRange)a3
+- (void)p_compactChunksInRange:(_NSRange)range
 {
-  if (a3.length)
+  if (range.length)
   {
-    if (a3.location >= a3.location + a3.length)
+    if (range.location >= range.location + range.length)
     {
       v3 = 0;
     }
@@ -729,8 +729,8 @@ LABEL_76:
     else
     {
       v3 = 0;
-      v4 = (self->_chunks.__begin_ + 16 * a3.location);
-      length = a3.length;
+      v4 = (self->_chunks.__begin_ + 16 * range.location);
+      length = range.length;
       do
       {
         v6 = *v4;
@@ -743,11 +743,11 @@ LABEL_76:
     }
 
     chunkLength = self->_chunkLength;
-    if (v3 + (chunkLength >> 2) - 1 < chunkLength * (a3.length - 1))
+    if (v3 + (chunkLength >> 2) - 1 < chunkLength * (range.length - 1))
     {
       v8 = chunkLength;
       begin = self->_chunks.__begin_;
-      v10 = &begin[16 * a3.location];
+      v10 = &begin[16 * range.location];
       v12 = *v10;
       v11 = *(v10 + 1);
       if (v11)
@@ -757,9 +757,9 @@ LABEL_76:
       }
 
       v13 = v12[2];
-      location = a3.location;
-      v14 = a3.location + 1;
-      v15 = &begin[16 * a3.location + 16];
+      location = range.location;
+      v14 = range.location + 1;
+      v15 = &begin[16 * range.location + 16];
       v17 = *v15;
       v16 = *(v15 + 1);
       if (v16)
@@ -771,13 +771,13 @@ LABEL_76:
       v41 = v16;
       v39 = v11;
       v34 = vcvtps_u32_f32(v3 / v8);
-      v35 = a3.location + a3.length;
+      v35 = range.location + range.length;
       if (v18 < v3)
       {
         v19 = v12 + 2 * v13 + 24;
         v20 = (v17 + 3);
         v37 = *v12;
-        v38 = a3.location;
+        v38 = range.location;
         do
         {
           v21 = v12[1];

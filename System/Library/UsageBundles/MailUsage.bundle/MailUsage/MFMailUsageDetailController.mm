@@ -1,6 +1,6 @@
 @interface MFMailUsageDetailController
 - (id)specifiers;
-- (void)launchMail:(id)a3;
+- (void)launchMail:(id)mail;
 - (void)loadView;
 @end
 
@@ -22,8 +22,8 @@
   {
     v14.receiver = self;
     v14.super_class = MFMailUsageDetailController;
-    v5 = [(MFMailUsageDetailController *)&v14 specifiers];
-    v6 = [v5 mutableCopy];
+    specifiers = [(MFMailUsageDetailController *)&v14 specifiers];
+    v6 = [specifiers mutableCopy];
 
     v7 = [PSSpecifier preferenceSpecifierNamed:&stru_4218 target:0 set:0 get:0 detail:0 cell:0 edit:0];
     v8 = [NSBundle bundleForClass:objc_opt_class()];
@@ -45,7 +45,7 @@
   return v4;
 }
 
-- (void)launchMail:(id)a3
+- (void)launchMail:(id)mail
 {
   v5 = FBSOpenApplicationOptionKeyActivateSuspended;
   v6 = &__kCFBooleanFalse;

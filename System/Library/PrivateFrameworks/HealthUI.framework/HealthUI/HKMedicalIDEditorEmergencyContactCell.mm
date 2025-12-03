@@ -1,47 +1,47 @@
 @interface HKMedicalIDEditorEmergencyContactCell
-- (HKMedicalIDEditorEmergencyContactCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HKMedicalIDEditorEmergencyContactCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)formattedValue;
-- (void)_labelTapped:(id)a3;
-- (void)setContact:(id)a3;
+- (void)_labelTapped:(id)tapped;
+- (void)setContact:(id)contact;
 @end
 
 @implementation HKMedicalIDEditorEmergencyContactCell
 
-- (HKMedicalIDEditorEmergencyContactCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HKMedicalIDEditorEmergencyContactCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v13.receiver = self;
   v13.super_class = HKMedicalIDEditorEmergencyContactCell;
-  v4 = [(HKMedicalIDEditorCell *)&v13 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HKMedicalIDEditorCell *)&v13 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(HKMedicalIDEditorCell *)v4 inputTextField];
-    [v6 setClearButtonMode:0];
+    inputTextField = [(HKMedicalIDEditorCell *)v4 inputTextField];
+    [inputTextField setClearButtonMode:0];
 
-    v7 = [(HKMedicalIDEditorCell *)v5 inputTextField];
-    [v7 setAllowsSelection:1];
+    inputTextField2 = [(HKMedicalIDEditorCell *)v5 inputTextField];
+    [inputTextField2 setAllowsSelection:1];
 
-    v8 = [(HKMedicalIDEditorCell *)v5 inputTextField];
-    [v8 setUserInteractionEnabled:0];
+    inputTextField3 = [(HKMedicalIDEditorCell *)v5 inputTextField];
+    [inputTextField3 setUserInteractionEnabled:0];
 
     v9 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v5 action:sel__labelTapped_];
-    v10 = [(HKMedicalIDEditorCell *)v5 labelLabel];
-    [v10 addGestureRecognizer:v9];
+    labelLabel = [(HKMedicalIDEditorCell *)v5 labelLabel];
+    [labelLabel addGestureRecognizer:v9];
 
-    v11 = [(HKMedicalIDEditorCell *)v5 labelLabel];
-    [v11 setUserInteractionEnabled:1];
+    labelLabel2 = [(HKMedicalIDEditorCell *)v5 labelLabel];
+    [labelLabel2 setUserInteractionEnabled:1];
   }
 
   return v5;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  objc_storeStrong(&self->_contact, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_contact, contact);
+  contactCopy = contact;
   v6 = MEMORY[0x1E695CEE0];
-  v7 = [v5 relationship];
-  v8 = [v6 localizedStringForLabel:v7];
+  relationship = [contactCopy relationship];
+  v8 = [v6 localizedStringForLabel:relationship];
 
   [(HKMedicalIDEditorCell *)self setLabel:v8];
 
@@ -50,27 +50,27 @@
 
 - (id)formattedValue
 {
-  v3 = [(_HKEmergencyContact *)self->_contact name];
-  v4 = v3;
-  if (v3)
+  name = [(_HKEmergencyContact *)self->_contact name];
+  v4 = name;
+  if (name)
   {
-    v5 = v3;
+    phoneNumber = name;
   }
 
   else
   {
-    v5 = [(_HKEmergencyContact *)self->_contact phoneNumber];
+    phoneNumber = [(_HKEmergencyContact *)self->_contact phoneNumber];
   }
 
-  v6 = v5;
+  v6 = phoneNumber;
 
   return v6;
 }
 
-- (void)_labelTapped:(id)a3
+- (void)_labelTapped:(id)tapped
 {
-  v4 = [(HKMedicalIDEditorCell *)self editDelegate];
-  [v4 medicalIDEditorCellDidTapLabel:self];
+  editDelegate = [(HKMedicalIDEditorCell *)self editDelegate];
+  [editDelegate medicalIDEditorCellDidTapLabel:self];
 }
 
 @end

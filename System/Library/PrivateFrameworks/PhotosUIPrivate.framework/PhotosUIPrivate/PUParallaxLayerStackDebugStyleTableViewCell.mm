@@ -1,13 +1,13 @@
 @interface PUParallaxLayerStackDebugStyleTableViewCell
 - (PUParallaxLayerStackDebugStyleTableViewCellDelegate)styleCellDelegate;
-- (id)colorButtonWithColor:(id)a3 title:(id)a4;
-- (id)intensitySliderWithWidth:(double)a3;
+- (id)colorButtonWithColor:(id)color title:(id)title;
+- (id)intensitySliderWithWidth:(double)width;
 - (id)newTonalityControl;
-- (void)applyToStyle:(id)a3;
-- (void)rebuildControlsViewForStyle:(id)a3;
-- (void)updateColor:(id)a3;
-- (void)updateDelegate:(id)a3;
-- (void)updateSlider:(id)a3;
+- (void)applyToStyle:(id)style;
+- (void)rebuildControlsViewForStyle:(id)style;
+- (void)updateColor:(id)color;
+- (void)updateDelegate:(id)delegate;
+- (void)updateSlider:(id)slider;
 @end
 
 @implementation PUParallaxLayerStackDebugStyleTableViewCell
@@ -19,20 +19,20 @@
   return WeakRetained;
 }
 
-- (void)updateDelegate:(id)a3
+- (void)updateDelegate:(id)delegate
 {
-  v4 = [(PUParallaxLayerStackDebugStyleTableViewCell *)self styleCellDelegate];
-  [v4 cellValueUpdated:self];
+  styleCellDelegate = [(PUParallaxLayerStackDebugStyleTableViewCell *)self styleCellDelegate];
+  [styleCellDelegate cellValueUpdated:self];
 }
 
-- (void)updateSlider:(id)a3
+- (void)updateSlider:(id)slider
 {
-  v13 = a3;
+  sliderCopy = slider;
   if ([(NSString *)self->_styleKind isEqualToString:*MEMORY[0x1E69C0AF0]])
   {
     v4 = MEMORY[0x1E69C0750];
-    v5 = [(UIColorWell *)self->_colorButton1 selectedColor];
-    v6 = [v4 colorWithCGColor:{objc_msgSend(v5, "CGColor")}];
+    selectedColor = [(UIColorWell *)self->_colorButton1 selectedColor];
+    v6 = [v4 colorWithCGColor:{objc_msgSend(selectedColor, "CGColor")}];
 
     v7 = objc_alloc(MEMORY[0x1E69C0750]);
     [v6 hue];
@@ -43,33 +43,33 @@
     [(UIColorWell *)self->_colorButton1 setSelectedColor:v12];
   }
 
-  [(PUParallaxLayerStackDebugStyleTableViewCell *)self updateDelegate:v13];
+  [(PUParallaxLayerStackDebugStyleTableViewCell *)self updateDelegate:sliderCopy];
 }
 
-- (void)updateColor:(id)a3
+- (void)updateColor:(id)color
 {
-  v8 = a3;
+  colorCopy = color;
   if ([(NSString *)self->_styleKind isEqualToString:*MEMORY[0x1E69C0AF0]])
   {
     v4 = MEMORY[0x1E69C0750];
-    v5 = [v8 selectedColor];
-    v6 = [v4 colorWithCGColor:{objc_msgSend(v5, "CGColor")}];
+    selectedColor = [colorCopy selectedColor];
+    v6 = [v4 colorWithCGColor:{objc_msgSend(selectedColor, "CGColor")}];
 
     [v6 tone];
     *&v7 = v7;
     [(UISlider *)self->_colorSlider setValue:v7];
   }
 
-  [(PUParallaxLayerStackDebugStyleTableViewCell *)self updateDelegate:v8];
+  [(PUParallaxLayerStackDebugStyleTableViewCell *)self updateDelegate:colorCopy];
 }
 
-- (void)applyToStyle:(id)a3
+- (void)applyToStyle:(id)style
 {
-  v21 = a3;
+  styleCopy = style;
   if ([(NSString *)self->_styleKind isEqualToString:*MEMORY[0x1E69C0B30]]|| [(NSString *)self->_styleKind isEqualToString:*MEMORY[0x1E69C0AE0]])
   {
     tonalityControl = self->_tonalityControl;
-    v5 = v21;
+    selectedColor2 = styleCopy;
     if ([(UISegmentedControl *)tonalityControl selectedSegmentIndex])
     {
       v6 = 1;
@@ -80,7 +80,7 @@
       v6 = 3;
     }
 
-    [v5 setTonality:v6];
+    [selectedColor2 setTonality:v6];
     goto LABEL_14;
   }
 
@@ -88,11 +88,11 @@
   {
     v7 = MEMORY[0x1E69C0750];
     colorButton1 = self->_colorButton1;
-    v9 = v21;
-    v10 = [(UIColorWell *)colorButton1 selectedColor];
-    v5 = [v7 colorWithCGColor:{objc_msgSend(v10, "CGColor")}];
+    v9 = styleCopy;
+    selectedColor = [(UIColorWell *)colorButton1 selectedColor];
+    selectedColor2 = [v7 colorWithCGColor:{objc_msgSend(selectedColor, "CGColor")}];
 
-    [v5 hue];
+    [selectedColor2 hue];
     v12 = v11;
     v13 = objc_alloc(MEMORY[0x1E69C0750]);
     [(UISlider *)self->_colorSlider value];
@@ -108,52 +108,52 @@ LABEL_14:
   if ([(NSString *)self->_styleKind isEqualToString:*MEMORY[0x1E69C0B00]]|| [(NSString *)self->_styleKind isEqualToString:*MEMORY[0x1E69C0B08]]|| [(NSString *)self->_styleKind isEqualToString:*MEMORY[0x1E69C0B20]])
   {
     v16 = MEMORY[0x1E69C0750];
-    v5 = [(UIColorWell *)self->_colorButton1 selectedColor];
-    v15 = [v16 colorWithCGColor:{objc_msgSend(v5, "CGColor")}];
-    [v21 setColor:v15];
+    selectedColor2 = [(UIColorWell *)self->_colorButton1 selectedColor];
+    v15 = [v16 colorWithCGColor:{objc_msgSend(selectedColor2, "CGColor")}];
+    [styleCopy setColor:v15];
     goto LABEL_13;
   }
 
   if ([(NSString *)self->_styleKind isEqualToString:*MEMORY[0x1E69C0AF8]])
   {
     v17 = MEMORY[0x1E69C0750];
-    v18 = [(UIColorWell *)self->_colorButton1 selectedColor];
-    v19 = [v17 colorWithCGColor:{objc_msgSend(v18, "CGColor")}];
-    [v21 setPrimaryColor:v19];
+    selectedColor3 = [(UIColorWell *)self->_colorButton1 selectedColor];
+    v19 = [v17 colorWithCGColor:{objc_msgSend(selectedColor3, "CGColor")}];
+    [styleCopy setPrimaryColor:v19];
 
     v20 = MEMORY[0x1E69C0750];
-    v5 = [(UIColorWell *)self->_colorButton2 selectedColor];
-    v15 = [v20 colorWithCGColor:{objc_msgSend(v5, "CGColor")}];
-    [v21 setSecondaryColor:v15];
+    selectedColor2 = [(UIColorWell *)self->_colorButton2 selectedColor];
+    v15 = [v20 colorWithCGColor:{objc_msgSend(selectedColor2, "CGColor")}];
+    [styleCopy setSecondaryColor:v15];
     goto LABEL_13;
   }
 
 LABEL_15:
 }
 
-- (void)rebuildControlsViewForStyle:(id)a3
+- (void)rebuildControlsViewForStyle:(id)style
 {
   v54[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 kind];
+  styleCopy = style;
+  kind = [styleCopy kind];
   styleKind = self->_styleKind;
-  self->_styleKind = v5;
+  self->_styleKind = kind;
 
-  v7 = [(PUParallaxLayerStackDebugStyleTableViewCell *)self controlsView];
-  [v7 removeFromSuperview];
+  controlsView = [(PUParallaxLayerStackDebugStyleTableViewCell *)self controlsView];
+  [controlsView removeFromSuperview];
 
   [(PUParallaxLayerStackDebugStyleTableViewCell *)self setControlsView:0];
   if ([(NSString *)self->_styleKind isEqualToString:*MEMORY[0x1E69C0B30]]|| [(NSString *)self->_styleKind isEqualToString:*MEMORY[0x1E69C0AE0]])
   {
-    v8 = v4;
+    v8 = styleCopy;
     v9 = StackView(1);
     [v9 setAlignment:1];
-    v10 = [(PUParallaxLayerStackDebugStyleTableViewCell *)self newTonalityControl];
+    newTonalityControl = [(PUParallaxLayerStackDebugStyleTableViewCell *)self newTonalityControl];
     tonalityControl = self->_tonalityControl;
-    self->_tonalityControl = v10;
+    self->_tonalityControl = newTonalityControl;
 
-    v12 = [v8 tonality];
-    [(UISegmentedControl *)self->_tonalityControl setSelectedSegmentIndex:v12 != 3];
+    tonality = [v8 tonality];
+    [(UISegmentedControl *)self->_tonalityControl setSelectedSegmentIndex:tonality != 3];
     [v9 addArrangedSubview:self->_tonalityControl];
     [(PUParallaxLayerStackDebugStyleTableViewCell *)self setControlsView:v9];
 LABEL_17:
@@ -163,12 +163,12 @@ LABEL_17:
 
   if ([(NSString *)self->_styleKind isEqualToString:*MEMORY[0x1E69C0AF0]])
   {
-    v13 = v4;
+    v13 = styleCopy;
     v9 = StackView(1);
     [v9 setAlignment:1];
     v14 = StackView(0);
-    v15 = [v13 color];
-    [v15 tone];
+    color = [v13 color];
+    [color tone];
     v17 = v16;
 
     [MEMORY[0x1E69BDE90] lowKeyTone];
@@ -202,9 +202,9 @@ LABEL_17:
     [(UISlider *)self->_colorSlider setValue:v26];
     [v14 addArrangedSubview:self->_colorSlider];
     v27 = objc_alloc(MEMORY[0x1E69DC888]);
-    v28 = [v13 color];
+    color2 = [v13 color];
 
-    v29 = [v27 initWithCGColor:{objc_msgSend(v28, "CGColor")}];
+    v29 = [v27 initWithCGColor:{objc_msgSend(color2, "CGColor")}];
     goto LABEL_15;
   }
 
@@ -214,8 +214,8 @@ LABEL_17:
     [v9 setAlignment:1];
     v14 = StackView(0);
     v30 = MEMORY[0x1E69DC888];
-    v31 = [v4 color];
-    v29 = [v30 colorWithCGColor:{objc_msgSend(v31, "CGColor")}];
+    color3 = [styleCopy color];
+    v29 = [v30 colorWithCGColor:{objc_msgSend(color3, "CGColor")}];
 
 LABEL_15:
     v32 = [(PUParallaxLayerStackDebugStyleTableViewCell *)self colorButtonWithColor:v29 title:@"Color"];
@@ -232,13 +232,13 @@ LABEL_16:
 
   if ([(NSString *)self->_styleKind isEqualToString:*MEMORY[0x1E69C0AF8]])
   {
-    v44 = v4;
+    v44 = styleCopy;
     v9 = StackView(1);
     [v9 setAlignment:1];
     v14 = StackView(0);
     v45 = MEMORY[0x1E69DC888];
-    v46 = [v44 primaryColor];
-    v29 = [v45 colorWithCGColor:{objc_msgSend(v46, "CGColor")}];
+    primaryColor = [v44 primaryColor];
+    v29 = [v45 colorWithCGColor:{objc_msgSend(primaryColor, "CGColor")}];
 
     v47 = [(PUParallaxLayerStackDebugStyleTableViewCell *)self colorButtonWithColor:v29 title:@"Primary Color"];
     v48 = self->_colorButton1;
@@ -246,9 +246,9 @@ LABEL_16:
 
     [v14 addArrangedSubview:self->_colorButton1];
     v49 = MEMORY[0x1E69DC888];
-    v50 = [v44 secondaryColor];
+    secondaryColor = [v44 secondaryColor];
 
-    v51 = [v49 colorWithCGColor:{objc_msgSend(v50, "CGColor")}];
+    v51 = [v49 colorWithCGColor:{objc_msgSend(secondaryColor, "CGColor")}];
 
     v52 = [(PUParallaxLayerStackDebugStyleTableViewCell *)self colorButtonWithColor:v51 title:@"Secondary Color"];
     colorButton2 = self->_colorButton2;
@@ -264,26 +264,26 @@ LABEL_16:
 LABEL_18:
   if (self->_controlsView)
   {
-    v34 = [(PUParallaxLayerStackDebugStyleTableViewCell *)self contentView];
-    [v34 addSubview:self->_controlsView];
+    contentView = [(PUParallaxLayerStackDebugStyleTableViewCell *)self contentView];
+    [contentView addSubview:self->_controlsView];
 
     [(UIView *)self->_controlsView setTranslatesAutoresizingMaskIntoConstraints:0];
     v35 = MEMORY[0x1E696ACD8];
-    v36 = [(UIView *)self->_controlsView trailingAnchor];
-    v37 = [(PUParallaxLayerStackDebugStyleTableViewCell *)self trailingAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37 constant:-50.0];
+    trailingAnchor = [(UIView *)self->_controlsView trailingAnchor];
+    trailingAnchor2 = [(PUParallaxLayerStackDebugStyleTableViewCell *)self trailingAnchor];
+    v38 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-50.0];
     v54[0] = v38;
-    v39 = [(UIView *)self->_controlsView centerYAnchor];
-    v40 = [(PUParallaxLayerStackDebugStyleTableViewCell *)self contentView];
-    v41 = [v40 centerYAnchor];
-    v42 = [v39 constraintEqualToAnchor:v41];
+    centerYAnchor = [(UIView *)self->_controlsView centerYAnchor];
+    contentView2 = [(PUParallaxLayerStackDebugStyleTableViewCell *)self contentView];
+    centerYAnchor2 = [contentView2 centerYAnchor];
+    v42 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v54[1] = v42;
     v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:2];
     [v35 activateConstraints:v43];
   }
 }
 
-- (id)intensitySliderWithWidth:(double)a3
+- (id)intensitySliderWithWidth:(double)width
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc(MEMORY[0x1E69DCF60]);
@@ -295,8 +295,8 @@ LABEL_18:
   [v6 setValue:v8];
   [v6 addTarget:self action:sel_updateSlider_ forControlEvents:4096];
   v9 = MEMORY[0x1E696ACD8];
-  v10 = [v6 widthAnchor];
-  v11 = [v10 constraintEqualToConstant:a3];
+  widthAnchor = [v6 widthAnchor];
+  v11 = [widthAnchor constraintEqualToConstant:width];
   v14[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   [v9 activateConstraints:v12];
@@ -304,17 +304,17 @@ LABEL_18:
   return v6;
 }
 
-- (id)colorButtonWithColor:(id)a3 title:(id)a4
+- (id)colorButtonWithColor:(id)color title:(id)title
 {
   v6 = MEMORY[0x1E69DC8A8];
-  v7 = a4;
-  v8 = a3;
+  titleCopy = title;
+  colorCopy = color;
   v9 = [v6 alloc];
   v10 = [v9 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [v10 setSupportsAlpha:0];
-  [v10 setSelectedColor:v8];
+  [v10 setSelectedColor:colorCopy];
 
-  [v10 setTitle:v7];
+  [v10 setTitle:titleCopy];
   [v10 addTarget:self action:sel_updateColor_ forControlEvents:4096];
 
   return v10;

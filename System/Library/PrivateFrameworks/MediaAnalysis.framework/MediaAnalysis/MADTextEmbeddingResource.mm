@@ -1,5 +1,5 @@
 @interface MADTextEmbeddingResource
-+ (id)sharedResource:(unint64_t)a3 extendedContextLength:(BOOL)a4;
++ (id)sharedResource:(unint64_t)resource extendedContextLength:(BOOL)length;
 - (BOOL)isTextEncoderWarm;
 - (MADSharedTextEncoder)textEncoder;
 - (MADTextEmbeddingResource)init;
@@ -29,15 +29,15 @@
   return v2;
 }
 
-+ (id)sharedResource:(unint64_t)a3 extendedContextLength:(BOOL)a4
++ (id)sharedResource:(unint64_t)resource extendedContextLength:(BOOL)length
 {
-  v4 = a3;
+  resourceCopy = resource;
   v10 = *MEMORY[0x1E69E9840];
-  if (a3 > 4)
+  if (resource > 4)
   {
-    if (a3 > 7)
+    if (resource > 7)
     {
-      if (a3 == 8)
+      if (resource == 8)
       {
         if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
@@ -46,12 +46,12 @@
         }
       }
 
-      else if (a3 != 9)
+      else if (resource != 9)
       {
         goto LABEL_15;
       }
 
-      if (a4)
+      if (length)
       {
         v5 = MADTextEmbeddingMD7v2ExtendedResource;
       }
@@ -64,9 +64,9 @@
       goto LABEL_31;
     }
 
-    if (a3 == 5)
+    if (resource == 5)
     {
-      if (a4)
+      if (length)
       {
         v5 = MADTextEmbeddingMD5ExtendedResource;
       }
@@ -79,9 +79,9 @@
       goto LABEL_31;
     }
 
-    if (a3 == 7)
+    if (resource == 7)
     {
-      if (a4)
+      if (length)
       {
         v5 = MADTextEmbeddingMD6ExtendedResource;
       }
@@ -97,9 +97,9 @@
 
   else
   {
-    if (a3 > 2)
+    if (resource > 2)
     {
-      if (a3 == 3)
+      if (resource == 3)
       {
         v5 = MADTextEmbeddingMD3Resource;
       }
@@ -112,17 +112,17 @@
       goto LABEL_31;
     }
 
-    if (a3 == 1)
+    if (resource == 1)
     {
       v5 = MADTextEmbeddingMD1Resource;
       goto LABEL_31;
     }
 
-    if (a3 == 2)
+    if (resource == 2)
     {
       v5 = MADTextEmbeddingMD2Resource;
 LABEL_31:
-      v7 = [(__objc2_class *)v5 sharedResource];
+      sharedResource = [(__objc2_class *)v5 sharedResource];
       goto LABEL_32;
     }
   }
@@ -131,14 +131,14 @@ LABEL_15:
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9[0] = 67109120;
-    v9[1] = v4;
+    v9[1] = resourceCopy;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unsupported text encoder version (%d) requested", v9, 8u);
   }
 
-  v7 = 0;
+  sharedResource = 0;
 LABEL_32:
 
-  return v7;
+  return sharedResource;
 }
 
 - (int64_t)activeCost

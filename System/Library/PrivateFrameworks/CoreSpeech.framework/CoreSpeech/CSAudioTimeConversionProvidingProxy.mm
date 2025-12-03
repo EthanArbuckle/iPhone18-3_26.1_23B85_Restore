@@ -1,18 +1,18 @@
 @interface CSAudioTimeConversionProvidingProxy
-- (void)_handleXPCTimeConvertProvidingTypeHostTimeFromSampleCountMessage:(id)a3 messageBody:(id)a4 client:(id)a5 streamHandleId:(unint64_t)a6;
-- (void)_handleXPCTimeConvertProvidingTypeSampleCountFromHostTimeMessage:(id)a3 messageBody:(id)a4 client:(id)a5 streamHandleId:(unint64_t)a6;
-- (void)handleXPCMessage:(id)a3 messageBody:(id)a4 client:(id)a5 audioStreamHandleId:(unint64_t)a6;
+- (void)_handleXPCTimeConvertProvidingTypeHostTimeFromSampleCountMessage:(id)message messageBody:(id)body client:(id)client streamHandleId:(unint64_t)id;
+- (void)_handleXPCTimeConvertProvidingTypeSampleCountFromHostTimeMessage:(id)message messageBody:(id)body client:(id)client streamHandleId:(unint64_t)id;
+- (void)handleXPCMessage:(id)message messageBody:(id)body client:(id)client audioStreamHandleId:(unint64_t)id;
 @end
 
 @implementation CSAudioTimeConversionProvidingProxy
 
-- (void)_handleXPCTimeConvertProvidingTypeSampleCountFromHostTimeMessage:(id)a3 messageBody:(id)a4 client:(id)a5 streamHandleId:(unint64_t)a6
+- (void)_handleXPCTimeConvertProvidingTypeSampleCountFromHostTimeMessage:(id)message messageBody:(id)body client:(id)client streamHandleId:(unint64_t)id
 {
-  v9 = a5;
-  v10 = a3;
-  uint64 = xpc_dictionary_get_uint64(a4, "hostTime");
+  clientCopy = client;
+  messageCopy = message;
+  uint64 = xpc_dictionary_get_uint64(body, "hostTime");
   v12 = +[CSAudioTimeConverterPool sharedInstance];
-  v13 = [v12 converterForAudioStreamId:a6];
+  v13 = [v12 converterForAudioStreamId:id];
 
   v14 = [v13 sampleCountFromHostTime:uint64];
   v15 = CSLogContextFacilityCoreSpeech;
@@ -27,20 +27,20 @@
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s From hostTime %{public}llu fetched sampleCount = %{public}llu", &v17, 0x20u);
   }
 
-  reply = xpc_dictionary_create_reply(v10);
+  reply = xpc_dictionary_create_reply(messageCopy);
 
   xpc_dictionary_set_BOOL(reply, "result", 1);
   xpc_dictionary_set_uint64(reply, "replySampleCount", v14);
-  xpc_connection_send_message(v9, reply);
+  xpc_connection_send_message(clientCopy, reply);
 }
 
-- (void)_handleXPCTimeConvertProvidingTypeHostTimeFromSampleCountMessage:(id)a3 messageBody:(id)a4 client:(id)a5 streamHandleId:(unint64_t)a6
+- (void)_handleXPCTimeConvertProvidingTypeHostTimeFromSampleCountMessage:(id)message messageBody:(id)body client:(id)client streamHandleId:(unint64_t)id
 {
-  v9 = a5;
-  v10 = a3;
-  uint64 = xpc_dictionary_get_uint64(a4, "sampleCount");
+  clientCopy = client;
+  messageCopy = message;
+  uint64 = xpc_dictionary_get_uint64(body, "sampleCount");
   v12 = +[CSAudioTimeConverterPool sharedInstance];
-  v13 = [v12 converterForAudioStreamId:a6];
+  v13 = [v12 converterForAudioStreamId:id];
 
   v14 = [v13 hostTimeFromSampleCount:uint64];
   v15 = CSLogContextFacilityCoreSpeech;
@@ -55,22 +55,22 @@
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s From sampleCount %{public}llu fetched hostTime = %{public}llu", &v17, 0x20u);
   }
 
-  reply = xpc_dictionary_create_reply(v10);
+  reply = xpc_dictionary_create_reply(messageCopy);
 
   xpc_dictionary_set_BOOL(reply, "result", 1);
   xpc_dictionary_set_uint64(reply, "replyHostTime", v14);
-  xpc_connection_send_message(v9, reply);
+  xpc_connection_send_message(clientCopy, reply);
 }
 
-- (void)handleXPCMessage:(id)a3 messageBody:(id)a4 client:(id)a5 audioStreamHandleId:(unint64_t)a6
+- (void)handleXPCMessage:(id)message messageBody:(id)body client:(id)client audioStreamHandleId:(unint64_t)id
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  int64 = xpc_dictionary_get_int64(v11, "type");
+  messageCopy = message;
+  bodyCopy = body;
+  clientCopy = client;
+  int64 = xpc_dictionary_get_int64(bodyCopy, "type");
   if (int64 == 2)
   {
-    [(CSAudioTimeConversionProvidingProxy *)self _handleXPCTimeConvertProvidingTypeSampleCountFromHostTimeMessage:v10 messageBody:v11 client:v12 streamHandleId:a6];
+    [(CSAudioTimeConversionProvidingProxy *)self _handleXPCTimeConvertProvidingTypeSampleCountFromHostTimeMessage:messageCopy messageBody:bodyCopy client:clientCopy streamHandleId:id];
   }
 
   else
@@ -78,7 +78,7 @@
     v14 = int64;
     if (int64 == 1)
     {
-      [(CSAudioTimeConversionProvidingProxy *)self _handleXPCTimeConvertProvidingTypeHostTimeFromSampleCountMessage:v10 messageBody:v11 client:v12 streamHandleId:a6];
+      [(CSAudioTimeConversionProvidingProxy *)self _handleXPCTimeConvertProvidingTypeHostTimeFromSampleCountMessage:messageCopy messageBody:bodyCopy client:clientCopy streamHandleId:id];
     }
 
     else

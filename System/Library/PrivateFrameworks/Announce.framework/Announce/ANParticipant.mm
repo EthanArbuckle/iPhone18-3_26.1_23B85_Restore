@@ -1,8 +1,8 @@
 @interface ANParticipant
-- (ANParticipant)initWithCoder:(id)a3;
-- (ANParticipant)initWithMessage:(id)a3;
-- (ANParticipant)initWithSender:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ANParticipant)initWithCoder:(id)coder;
+- (ANParticipant)initWithMessage:(id)message;
+- (ANParticipant)initWithSender:(id)sender;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isUser;
 - (NSDictionary)info;
 - (NSString)description;
@@ -11,35 +11,35 @@
 - (id)messageForCompanion;
 - (unint64_t)hash;
 - (void)clearIdentifiers;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANParticipant
 
-- (ANParticipant)initWithSender:(id)a3
+- (ANParticipant)initWithSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   v12.receiver = self;
   v12.super_class = ANParticipant;
   v5 = [(ANParticipant *)&v12 init];
   if (v5)
   {
-    v6 = [v4 type];
-    if (v6 == 2)
+    type = [senderCopy type];
+    if (type == 2)
     {
 LABEL_5:
-      v9 = [v4 identifier];
+      identifier = [senderCopy identifier];
       rapportID = v5->_rapportID;
-      v5->_rapportID = v9;
+      v5->_rapportID = identifier;
 
       goto LABEL_6;
     }
 
-    if (v6 == 1)
+    if (type == 1)
     {
-      v7 = [v4 identifier];
+      identifier2 = [senderCopy identifier];
       idsID = v5->_idsID;
-      v5->_idsID = v7;
+      v5->_idsID = identifier2;
 
       goto LABEL_5;
     }
@@ -53,26 +53,26 @@ LABEL_6:
 - (NSDictionary)info
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(ANParticipant *)self name];
-  [v3 setObject:v4 forKeyedSubscript:@"name"];
+  name = [(ANParticipant *)self name];
+  [v3 setObject:name forKeyedSubscript:@"name"];
 
-  v5 = [(ANParticipant *)self rapportID];
-  [v3 setObject:v5 forKeyedSubscript:@"rapportID"];
+  rapportID = [(ANParticipant *)self rapportID];
+  [v3 setObject:rapportID forKeyedSubscript:@"rapportID"];
 
-  v6 = [(ANParticipant *)self idsID];
-  [v3 setObject:v6 forKeyedSubscript:@"idsID"];
+  idsID = [(ANParticipant *)self idsID];
+  [v3 setObject:idsID forKeyedSubscript:@"idsID"];
 
-  v7 = [(ANParticipant *)self homeKitID];
-  [v3 setObject:v7 forKeyedSubscript:@"homeKitID"];
+  homeKitID = [(ANParticipant *)self homeKitID];
+  [v3 setObject:homeKitID forKeyedSubscript:@"homeKitID"];
 
-  v8 = [(ANParticipant *)self homeKitUserID];
-  [v3 setObject:v8 forKeyedSubscript:@"homeKitUserID"];
+  homeKitUserID = [(ANParticipant *)self homeKitUserID];
+  [v3 setObject:homeKitUserID forKeyedSubscript:@"homeKitUserID"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[ANParticipant isAccessory](self, "isAccessory")}];
   [v3 setObject:v9 forKeyedSubscript:@"isAccessory"];
 
-  v10 = [(ANParticipant *)self userID];
-  [v3 setObject:v10 forKeyedSubscript:@"userID"];
+  userID = [(ANParticipant *)self userID];
+  [v3 setObject:userID forKeyedSubscript:@"userID"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[ANParticipant isEndpoint](self, "isEndpoint")}];
   [v3 setObject:v11 forKeyedSubscript:@"isEndpoint"];
@@ -84,37 +84,37 @@ LABEL_6:
 
 - (NSString)description
 {
-  v2 = [(ANParticipant *)self info];
-  v3 = [v2 description];
+  info = [(ANParticipant *)self info];
+  v3 = [info description];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  equalCopy = equal;
+  v7 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_26;
   }
 
-  v8 = [v6 homeKitID];
-  if (!v8)
+  homeKitID = [equalCopy homeKitID];
+  if (!homeKitID)
   {
 LABEL_7:
-    v9 = [v7 homeKitUserID];
-    if (v9)
+    homeKitUserID = [v7 homeKitUserID];
+    if (homeKitUserID)
     {
-      v3 = [(ANParticipant *)self homeKitUserID];
-      v4 = [v7 homeKitUserID];
-      if ([v3 isEqualToString:v4])
+      homeKitUserID2 = [(ANParticipant *)self homeKitUserID];
+      homeKitUserID3 = [v7 homeKitUserID];
+      if ([homeKitUserID2 isEqualToString:homeKitUserID3])
       {
         v10 = 1;
 LABEL_21:
 
 LABEL_22:
-        if (v8)
+        if (homeKitID)
         {
         }
 
@@ -129,33 +129,33 @@ LABEL_26:
       }
     }
 
-    v11 = [v7 idsID];
-    if (v11)
+    idsID = [v7 idsID];
+    if (idsID)
     {
-      v12 = [(ANParticipant *)self idsID];
-      v13 = [v7 idsID];
-      if ([v12 isEqualToString:v13])
+      idsID2 = [(ANParticipant *)self idsID];
+      idsID3 = [v7 idsID];
+      if ([idsID2 isEqualToString:idsID3])
       {
         v10 = 1;
         goto LABEL_19;
       }
 
-      v22 = v13;
-      v24 = v12;
+      v22 = idsID3;
+      v24 = idsID2;
     }
 
-    v14 = [v7 rapportID];
-    if (v14)
+    rapportID = [v7 rapportID];
+    if (rapportID)
     {
-      v15 = v14;
+      v15 = rapportID;
       [(ANParticipant *)self rapportID];
-      v16 = v4;
-      v18 = v17 = v3;
-      v19 = [v7 rapportID];
-      v10 = [v18 isEqualToString:v19];
+      v16 = homeKitUserID3;
+      v18 = v17 = homeKitUserID2;
+      rapportID2 = [v7 rapportID];
+      v10 = [v18 isEqualToString:rapportID2];
 
-      v3 = v17;
-      v4 = v16;
+      homeKitUserID2 = v17;
+      homeKitUserID3 = v16;
     }
 
     else
@@ -163,12 +163,12 @@ LABEL_26:
       v10 = 0;
     }
 
-    v13 = v23;
-    v12 = v25;
-    if (!v11)
+    idsID3 = v23;
+    idsID2 = v25;
+    if (!idsID)
     {
 LABEL_20:
-      if (!v9)
+      if (!homeKitUserID)
       {
         goto LABEL_22;
       }
@@ -181,12 +181,12 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v3 = [(ANParticipant *)self homeKitID];
-  v4 = [v7 homeKitID];
-  if (![v3 isEqualToString:v4])
+  homeKitUserID2 = [(ANParticipant *)self homeKitID];
+  homeKitUserID3 = [v7 homeKitID];
+  if (![homeKitUserID2 isEqualToString:homeKitUserID3])
   {
-    v26 = v4;
-    v27 = v3;
+    v26 = homeKitUserID3;
+    v27 = homeKitUserID2;
     goto LABEL_7;
   }
 
@@ -199,14 +199,14 @@ LABEL_27:
 
 - (unint64_t)hash
 {
-  v3 = [(ANParticipant *)self homeKitID];
-  v4 = [v3 hash];
-  v5 = [(ANParticipant *)self homeKitUserID];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(ANParticipant *)self idsID];
-  v8 = [v7 hash];
-  v9 = [(ANParticipant *)self rapportID];
-  v10 = v8 ^ [v9 hash];
+  homeKitID = [(ANParticipant *)self homeKitID];
+  v4 = [homeKitID hash];
+  homeKitUserID = [(ANParticipant *)self homeKitUserID];
+  v6 = [homeKitUserID hash] ^ v4;
+  idsID = [(ANParticipant *)self idsID];
+  v8 = [idsID hash];
+  rapportID = [(ANParticipant *)self rapportID];
+  v10 = v8 ^ [rapportID hash];
 
   return v6 ^ v10;
 }
@@ -214,23 +214,23 @@ LABEL_27:
 - (id)copy
 {
   v3 = objc_opt_new();
-  v4 = [(ANParticipant *)self name];
-  [v3 setName:v4];
+  name = [(ANParticipant *)self name];
+  [v3 setName:name];
 
-  v5 = [(ANParticipant *)self rapportID];
-  [v3 setRapportID:v5];
+  rapportID = [(ANParticipant *)self rapportID];
+  [v3 setRapportID:rapportID];
 
-  v6 = [(ANParticipant *)self idsID];
-  [v3 setIdsID:v6];
+  idsID = [(ANParticipant *)self idsID];
+  [v3 setIdsID:idsID];
 
-  v7 = [(ANParticipant *)self homeKitID];
-  [v3 setHomeKitID:v7];
+  homeKitID = [(ANParticipant *)self homeKitID];
+  [v3 setHomeKitID:homeKitID];
 
-  v8 = [(ANParticipant *)self homeKitUserID];
-  [v3 setHomeKitUserID:v8];
+  homeKitUserID = [(ANParticipant *)self homeKitUserID];
+  [v3 setHomeKitUserID:homeKitUserID];
 
-  v9 = [(ANParticipant *)self userID];
-  [v3 setUserID:v9];
+  userID = [(ANParticipant *)self userID];
+  [v3 setUserID:userID];
 
   [v3 setIsAccessory:{-[ANParticipant isAccessory](self, "isAccessory")}];
   [v3 setIsEndpoint:{-[ANParticipant isEndpoint](self, "isEndpoint")}];
@@ -259,67 +259,67 @@ LABEL_27:
     return 1;
   }
 
-  v3 = [(ANParticipant *)self homeKitUserID];
-  v4 = v3 != 0;
+  homeKitUserID = [(ANParticipant *)self homeKitUserID];
+  v4 = homeKitUserID != 0;
 
   return v4;
 }
 
-- (ANParticipant)initWithMessage:(id)a3
+- (ANParticipant)initWithMessage:(id)message
 {
-  v4 = a3;
-  if ([v4 count])
+  messageCopy = message;
+  if ([messageCopy count])
   {
     v18.receiver = self;
     v18.super_class = ANParticipant;
     v5 = [(ANParticipant *)&v18 init];
     if (v5)
     {
-      v6 = [v4 objectForKeyedSubscript:@"homeKitID"];
+      v6 = [messageCopy objectForKeyedSubscript:@"homeKitID"];
       homeKitID = v5->_homeKitID;
       v5->_homeKitID = v6;
 
-      v8 = [v4 objectForKeyedSubscript:@"homeKitUserID"];
+      v8 = [messageCopy objectForKeyedSubscript:@"homeKitUserID"];
       homeKitUserID = v5->_homeKitUserID;
       v5->_homeKitUserID = v8;
 
-      v10 = [v4 objectForKeyedSubscript:@"userID"];
+      v10 = [messageCopy objectForKeyedSubscript:@"userID"];
       userID = v5->_userID;
       v5->_userID = v10;
 
-      v12 = [v4 objectForKeyedSubscript:@"name"];
+      v12 = [messageCopy objectForKeyedSubscript:@"name"];
       name = v5->_name;
       v5->_name = v12;
 
-      v14 = [v4 objectForKeyedSubscript:@"isAccessory"];
+      v14 = [messageCopy objectForKeyedSubscript:@"isAccessory"];
       v5->_isAccessory = [v14 BOOLValue];
-      v15 = [v4 objectForKeyedSubscript:@"isEndpoint"];
+      v15 = [messageCopy objectForKeyedSubscript:@"isEndpoint"];
       v5->_isEndpoint = [v15 BOOLValue];
     }
 
     self = v5;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (id)message
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(ANParticipant *)self homeKitID];
-  [v3 setObject:v4 forKeyedSubscript:@"homeKitID"];
+  homeKitID = [(ANParticipant *)self homeKitID];
+  [v3 setObject:homeKitID forKeyedSubscript:@"homeKitID"];
 
-  v5 = [(ANParticipant *)self homeKitUserID];
-  [v3 setObject:v5 forKeyedSubscript:@"homeKitUserID"];
+  homeKitUserID = [(ANParticipant *)self homeKitUserID];
+  [v3 setObject:homeKitUserID forKeyedSubscript:@"homeKitUserID"];
 
-  v6 = [(ANParticipant *)self userID];
-  [v3 setObject:v6 forKeyedSubscript:@"userID"];
+  userID = [(ANParticipant *)self userID];
+  [v3 setObject:userID forKeyedSubscript:@"userID"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[ANParticipant isAccessory](self, "isAccessory")}];
   [v3 setObject:v7 forKeyedSubscript:@"isAccessory"];
@@ -333,66 +333,66 @@ LABEL_27:
 - (id)messageForCompanion
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = [(ANParticipant *)self message];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  message = [(ANParticipant *)self message];
+  v5 = [v3 dictionaryWithDictionary:message];
 
   [v5 setObject:self->_name forKeyedSubscript:@"name"];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_rapportID forKey:@"rapportID"];
-  [v5 encodeObject:self->_idsID forKey:@"idsID"];
-  [v5 encodeObject:self->_homeKitID forKey:@"homeKitID"];
-  [v5 encodeObject:self->_homeKitUserID forKey:@"homeKitUserID"];
-  [v5 encodeObject:self->_userID forKey:@"userID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_rapportID forKey:@"rapportID"];
+  [coderCopy encodeObject:self->_idsID forKey:@"idsID"];
+  [coderCopy encodeObject:self->_homeKitID forKey:@"homeKitID"];
+  [coderCopy encodeObject:self->_homeKitUserID forKey:@"homeKitUserID"];
+  [coderCopy encodeObject:self->_userID forKey:@"userID"];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_isAccessory];
-  [v5 encodeObject:v6 forKey:@"isAccessory"];
+  [coderCopy encodeObject:v6 forKey:@"isAccessory"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_isEndpoint];
-  [v5 encodeObject:v7 forKey:@"isEndpoint"];
+  [coderCopy encodeObject:v7 forKey:@"isEndpoint"];
 }
 
-- (ANParticipant)initWithCoder:(id)a3
+- (ANParticipant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = ANParticipant;
   v5 = [(ANParticipant *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rapportID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rapportID"];
     rapportID = v5->_rapportID;
     v5->_rapportID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"idsID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idsID"];
     idsID = v5->_idsID;
     v5->_idsID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeKitID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeKitID"];
     homeKitID = v5->_homeKitID;
     v5->_homeKitID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeKitUserID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeKitUserID"];
     homeKitUserID = v5->_homeKitUserID;
     v5->_homeKitUserID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userID"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userID"];
     userID = v5->_userID;
     v5->_userID = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isAccessory"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isAccessory"];
     v5->_isAccessory = [v18 BOOLValue];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isEndpoint"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isEndpoint"];
     v5->_isEndpoint = [v19 BOOLValue];
   }
 

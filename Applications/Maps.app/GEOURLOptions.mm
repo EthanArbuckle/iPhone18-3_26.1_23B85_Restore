@@ -1,22 +1,22 @@
 @interface GEOURLOptions
-+ (id)accumulateObjects:(id)a3;
++ (id)accumulateObjects:(id)objects;
 @end
 
 @implementation GEOURLOptions
 
-+ (id)accumulateObjects:(id)a3
++ (id)accumulateObjects:(id)objects
 {
-  v3 = a3;
-  if ([v3 count])
+  objectsCopy = objects;
+  if ([objectsCopy count])
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 copy];
+    firstObject = [objectsCopy firstObject];
+    v5 = [firstObject copy];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [v3 subarrayWithRange:{1, objc_msgSend(v3, "count", 0) - 1}];
+    v6 = [objectsCopy subarrayWithRange:{1, objc_msgSend(objectsCopy, "count", 0) - 1}];
     v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
@@ -49,20 +49,20 @@
 
           if ([v11 hasReferralIdentifier])
           {
-            v12 = [v11 referralIdentifier];
-            [v5 setReferralIdentifier:v12];
+            referralIdentifier = [v11 referralIdentifier];
+            [v5 setReferralIdentifier:referralIdentifier];
           }
 
           if ([v11 hasRouteHandle])
           {
-            v13 = [v11 routeHandle];
-            [v5 setRouteHandle:v13];
+            routeHandle = [v11 routeHandle];
+            [v5 setRouteHandle:routeHandle];
           }
 
           if ([v11 hasTimePoint])
           {
-            v14 = [v11 timePoint];
-            [v5 setTimePoint:v14];
+            timePoint = [v11 timePoint];
+            [v5 setTimePoint:timePoint];
           }
 
           if ([v11 hasConnectedToCar])
@@ -81,16 +81,16 @@
           {
             [v5 setCenterSpan:0];
             [v5 setHasUserTrackingMode:0];
-            v15 = [v11 centerSpan];
-            [v5 setCenterSpan:v15];
+            centerSpan = [v11 centerSpan];
+            [v5 setCenterSpan:centerSpan];
           }
 
           if ([v11 hasCamera])
           {
             [v5 setHasUserTrackingMode:0];
             [v5 setCenterSpan:0];
-            v16 = [v11 camera];
-            [v5 setCamera:v16];
+            camera = [v11 camera];
+            [v5 setCamera:camera];
           }
         }
 

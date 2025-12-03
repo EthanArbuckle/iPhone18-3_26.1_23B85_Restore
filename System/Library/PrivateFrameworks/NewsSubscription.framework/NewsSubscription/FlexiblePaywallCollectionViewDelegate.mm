@@ -1,14 +1,14 @@
 @interface FlexiblePaywallCollectionViewDelegate
 - (_TtC16NewsSubscription37FlexiblePaywallCollectionViewDelegate)init;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didEndDisplayingSupplementaryView:(id)a4 forElementOfKind:(id)a5 atIndexPath:(id)a6;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didEndDisplayingSupplementaryView:(id)supplementaryView forElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path;
 @end
 
 @implementation FlexiblePaywallCollectionViewDelegate
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_1D78B34F4();
   v9 = *(v8 - 8);
@@ -16,11 +16,11 @@
   v11 = &v14 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D78B34C4();
   swift_getObjectType();
-  if (swift_conformsToProtocol2() && a4)
+  if (swift_conformsToProtocol2() && cell)
   {
-    v12 = a4;
-    v13 = a3;
-    v15 = self;
+    cellCopy = cell;
+    viewCopy = view;
+    selfCopy = self;
     sub_1D78B4AE4();
     swift_getObjectType();
     sub_1D78B4E34();
@@ -36,7 +36,7 @@
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v7 = sub_1D78B34F4();
   v8 = *(v7 - 8);
@@ -44,10 +44,10 @@
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D78B34C4();
   swift_getObjectType();
-  if (swift_conformsToProtocol2() && a4)
+  if (swift_conformsToProtocol2() && cell)
   {
-    v11 = a4;
-    v12 = self;
+    cellCopy = cell;
+    selfCopy = self;
     sub_1D78B4B04();
     swift_getObjectType();
     sub_1D78B4E34();
@@ -63,7 +63,7 @@
   }
 }
 
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path
 {
   v9 = sub_1D78B34F4();
   v10 = *(v9 - 8);
@@ -71,11 +71,11 @@
   v12 = &v15 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D78B34C4();
   swift_getObjectType();
-  if (swift_conformsToProtocol2() && a4)
+  if (swift_conformsToProtocol2() && supplementaryView)
   {
-    v13 = a3;
-    v14 = a4;
-    v16 = self;
+    viewCopy = view;
+    supplementaryViewCopy = supplementaryView;
+    selfCopy = self;
     sub_1D78B4AE4();
     swift_getObjectType();
     sub_1D78B4DA4();
@@ -89,7 +89,7 @@
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingSupplementaryView:(id)a4 forElementOfKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view didEndDisplayingSupplementaryView:(id)supplementaryView forElementOfKind:(id)kind atIndexPath:(id)path
 {
   v8 = sub_1D78B34F4();
   v9 = *(v8 - 8);
@@ -97,10 +97,10 @@
   v11 = &v14 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D78B34C4();
   swift_getObjectType();
-  if (swift_conformsToProtocol2() && a4)
+  if (swift_conformsToProtocol2() && supplementaryView)
   {
-    v12 = a4;
-    v13 = self;
+    supplementaryViewCopy = supplementaryView;
+    selfCopy = self;
     sub_1D78B4B04();
     swift_getObjectType();
     sub_1D78B4DB4();

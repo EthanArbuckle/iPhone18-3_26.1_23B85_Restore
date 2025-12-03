@@ -1,33 +1,33 @@
 @interface NSPPrivacyProxyTransparencyOHTTPEntry
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTargetInformation:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTargetInformation:(id)information;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyTransparencyOHTTPEntry
 
-- (void)addTargetInformation:(id)a3
+- (void)addTargetInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   targetInformations = self->_targetInformations;
-  v8 = v4;
+  v8 = informationCopy;
   if (!targetInformations)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_targetInformations;
     self->_targetInformations = v6;
 
-    v4 = v8;
+    informationCopy = v8;
     targetInformations = self->_targetInformations;
   }
 
-  [(NSMutableArray *)targetInformations addObject:v4];
+  [(NSMutableArray *)targetInformations addObject:informationCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyTransparencyOHTTPEntry;
   v4 = [(NSPPrivacyProxyTransparencyOHTTPEntry *)&v8 description];
-  v5 = [(NSPPrivacyProxyTransparencyOHTTPEntry *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyTransparencyOHTTPEntry *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_configurationDeliveryStart];
-  [v3 setObject:v4 forKey:@"configurationDeliveryStart"];
+  [dictionary setObject:v4 forKey:@"configurationDeliveryStart"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_configurationDeliveryEnd];
-  [v3 setObject:v5 forKey:@"configurationDeliveryEnd"];
+  [dictionary setObject:v5 forKey:@"configurationDeliveryEnd"];
 
   if ([(NSMutableArray *)self->_targetInformations count])
   {
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -84,24 +84,24 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"targetInformation"];
+    [dictionary setObject:v6 forKey:@"targetInformation"];
   }
 
   keyConfiguration = self->_keyConfiguration;
   if (keyConfiguration)
   {
-    [v3 setObject:keyConfiguration forKey:@"keyConfiguration"];
+    [dictionary setObject:keyConfiguration forKey:@"keyConfiguration"];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   configurationDeliveryStart = self->_configurationDeliveryStart;
   PBDataWriterWriteUint64Field();
   configurationDeliveryEnd = self->_configurationDeliveryEnd;
@@ -148,19 +148,19 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[2] = self->_configurationDeliveryStart;
-  v9 = v4;
-  v4[1] = self->_configurationDeliveryEnd;
+  toCopy = to;
+  toCopy[2] = self->_configurationDeliveryStart;
+  v9 = toCopy;
+  toCopy[1] = self->_configurationDeliveryEnd;
   if ([(NSPPrivacyProxyTransparencyOHTTPEntry *)self targetInformationsCount])
   {
     [v9 clearTargetInformations];
-    v5 = [(NSPPrivacyProxyTransparencyOHTTPEntry *)self targetInformationsCount];
-    if (v5)
+    targetInformationsCount = [(NSPPrivacyProxyTransparencyOHTTPEntry *)self targetInformationsCount];
+    if (targetInformationsCount)
     {
-      v6 = v5;
+      v6 = targetInformationsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NSPPrivacyProxyTransparencyOHTTPEntry *)self targetInformationAtIndex:i];
@@ -172,10 +172,10 @@
   [v9 setKeyConfiguration:self->_keyConfiguration];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[2] = self->_configurationDeliveryStart;
   v5[1] = self->_configurationDeliveryEnd;
   v16 = 0u;
@@ -198,7 +198,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * v10) copyWithZone:{a3, v16}];
+        v11 = [*(*(&v16 + 1) + 8 * v10) copyWithZone:{zone, v16}];
         [v5 addTargetInformation:v11];
 
         ++v10;
@@ -211,7 +211,7 @@
     while (v8);
   }
 
-  v12 = [(NSData *)self->_keyConfiguration copyWithZone:a3];
+  v12 = [(NSData *)self->_keyConfiguration copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
@@ -219,13 +219,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_configurationDeliveryStart == v4[2] && self->_configurationDeliveryEnd == v4[1] && ((targetInformations = self->_targetInformations, !(targetInformations | v4[4])) || -[NSMutableArray isEqual:](targetInformations, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_configurationDeliveryStart == equalCopy[2] && self->_configurationDeliveryEnd == equalCopy[1] && ((targetInformations = self->_targetInformations, !(targetInformations | equalCopy[4])) || -[NSMutableArray isEqual:](targetInformations, "isEqual:")))
   {
     keyConfiguration = self->_keyConfiguration;
-    if (keyConfiguration | v4[3])
+    if (keyConfiguration | equalCopy[3])
     {
       v7 = [(NSData *)keyConfiguration isEqual:?];
     }
@@ -251,17 +251,17 @@
   return v3 ^ v4 ^ [(NSData *)self->_keyConfiguration hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  self->_configurationDeliveryStart = *(v4 + 2);
-  self->_configurationDeliveryEnd = *(v4 + 1);
+  fromCopy = from;
+  self->_configurationDeliveryStart = *(fromCopy + 2);
+  self->_configurationDeliveryEnd = *(fromCopy + 1);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -285,7 +285,7 @@
     while (v7);
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NSPPrivacyProxyTransparencyOHTTPEntry *)self setKeyConfiguration:?];
   }

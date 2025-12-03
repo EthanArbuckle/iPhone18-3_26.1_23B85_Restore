@@ -1,23 +1,23 @@
 @interface OKWidgetTextView
 + (id)supportedSettings;
-- (OKWidgetTextView)initWithWidget:(id)a3;
+- (OKWidgetTextView)initWithWidget:(id)widget;
 - (UIEdgeInsets)settingContentEdgeInsets;
 - (float)settingFontSize;
 - (id)settingFontName;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setSettingFontName:(id)a3;
-- (void)setSettingFontSize:(float)a3;
-- (void)setSettingOverflowEnabled:(BOOL)a3;
+- (void)setSettingFontName:(id)name;
+- (void)setSettingFontSize:(float)size;
+- (void)setSettingOverflowEnabled:(BOOL)enabled;
 @end
 
 @implementation OKWidgetTextView
 
-- (OKWidgetTextView)initWithWidget:(id)a3
+- (OKWidgetTextView)initWithWidget:(id)widget
 {
   v7.receiver = self;
   v7.super_class = OKWidgetTextView;
-  v3 = [(OKWidgetTextViewProxy *)&v7 initWithWidget:a3];
+  v3 = [(OKWidgetTextViewProxy *)&v7 initWithWidget:widget];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75C40]);
@@ -61,7 +61,7 @@
 + (id)supportedSettings
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___OKWidgetTextView;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v5, sel_supportedSettings)}];
   v10[0] = @"contentInset";
@@ -92,18 +92,18 @@
 
 - (id)settingFontName
 {
-  v2 = [(UITextView *)self->_textView font];
+  font = [(UITextView *)self->_textView font];
 
-  return [(UIFont *)v2 fontName];
+  return [(UIFont *)font fontName];
 }
 
-- (void)setSettingFontName:(id)a3
+- (void)setSettingFontName:(id)name
 {
-  v5 = [(UITextView *)self->_textView font];
-  if (v5)
+  font = [(UITextView *)self->_textView font];
+  if (font)
   {
     v6 = MEMORY[0x277D74300];
-    [(UIFont *)v5 pointSize];
+    [(UIFont *)font pointSize];
     v8 = v6;
   }
 
@@ -119,7 +119,7 @@
     v7 = v9 * 12.0;
   }
 
-  v11 = [v8 fontWithName:a3 size:v7];
+  v11 = [v8 fontWithName:name size:v7];
   textView = self->_textView;
 
   [(UITextView *)textView setFont:v11];
@@ -144,18 +144,18 @@
   return v7 / v8;
 }
 
-- (void)setSettingFontSize:(float)a3
+- (void)setSettingFontSize:(float)size
 {
-  v5 = [(UITextView *)self->_textView font];
+  font = [(UITextView *)self->_textView font];
   [(OKWidgetViewProxy *)self layoutFactor];
-  if (v5)
+  if (font)
   {
     if (v6 >= v7)
     {
       v6 = v7;
     }
 
-    v8 = [(UIFont *)v5 fontWithSize:v6 * a3];
+    v8 = [(UIFont *)font fontWithSize:v6 * size];
   }
 
   else
@@ -165,7 +165,7 @@
       v6 = v7;
     }
 
-    v8 = [MEMORY[0x277D74300] systemFontOfSize:v6 * a3];
+    v8 = [MEMORY[0x277D74300] systemFontOfSize:v6 * size];
   }
 
   v9 = v8;
@@ -184,13 +184,13 @@
   return result;
 }
 
-- (void)setSettingOverflowEnabled:(BOOL)a3
+- (void)setSettingOverflowEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  [(UITextView *)self->_textView setClipsToBounds:!a3];
-  [(OFUIView *)[(OKWidgetViewProxy *)self contentView] setClipsToBounds:!v3];
+  enabledCopy = enabled;
+  [(UITextView *)self->_textView setClipsToBounds:!enabled];
+  [(OFUIView *)[(OKWidgetViewProxy *)self contentView] setClipsToBounds:!enabledCopy];
 
-  [(OKWidgetTextView *)self setClipsToBounds:!v3];
+  [(OKWidgetTextView *)self setClipsToBounds:!enabledCopy];
 }
 
 @end

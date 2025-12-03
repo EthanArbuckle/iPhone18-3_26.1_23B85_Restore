@@ -2,9 +2,9 @@
 - (NSDate)endDate;
 - (NSDate)startDate;
 - (NSSet)assets;
-- (PLPhotosHighlightCluster)initWithMoments:(id)a3;
+- (PLPhotosHighlightCluster)initWithMoments:(id)moments;
 - (void)_calculatePropertyValues;
-- (void)setMoments:(id)a3;
+- (void)setMoments:(id)moments;
 @end
 
 @implementation PLPhotosHighlightCluster
@@ -21,8 +21,8 @@
   if (v2)
   {
     v3 = v2;
-    v4 = 0;
-    v20 = 0;
+    timeZoneOffset2 = 0;
+    timeZoneOffset = 0;
     v5 = 0;
     v6 = 0;
     v7 = *v22;
@@ -36,18 +36,18 @@
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
-        v10 = [v9 startDate];
-        v11 = [v9 endDate];
-        if (!v6 || [v10 compare:v6] == -1)
+        startDate = [v9 startDate];
+        endDate = [v9 endDate];
+        if (!v6 || [startDate compare:v6] == -1)
         {
-          v12 = v10;
+          v12 = startDate;
 
-          v20 = [v9 timeZoneOffset];
+          timeZoneOffset = [v9 timeZoneOffset];
           v6 = v12;
           if (v5)
           {
 LABEL_11:
-            if ([v11 compare:v5] != 1)
+            if ([endDate compare:v5] != 1)
             {
               goto LABEL_13;
             }
@@ -59,9 +59,9 @@ LABEL_11:
           goto LABEL_11;
         }
 
-        v13 = v11;
+        v13 = endDate;
 
-        v4 = [v9 timeZoneOffset];
+        timeZoneOffset2 = [v9 timeZoneOffset];
         v5 = v13;
 LABEL_13:
       }
@@ -74,8 +74,8 @@ LABEL_13:
     }
   }
 
-  v4 = 0;
-  v20 = 0;
+  timeZoneOffset2 = 0;
+  timeZoneOffset = 0;
   v5 = 0;
   v6 = 0;
 LABEL_17:
@@ -88,8 +88,8 @@ LABEL_17:
   self->_endDate = v5;
   v17 = v5;
 
-  self->_startTimeZoneOffset = v20;
-  self->_endTimeZoneOffset = v4;
+  self->_startTimeZoneOffset = timeZoneOffset;
+  self->_endTimeZoneOffset = timeZoneOffset2;
 }
 
 - (NSSet)assets
@@ -103,8 +103,8 @@ LABEL_17:
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(PLPhotosHighlightCluster *)self moments];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    moments = [(PLPhotosHighlightCluster *)self moments];
+    v6 = [moments countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -116,17 +116,17 @@ LABEL_17:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(moments);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * v9) assets];
-          [v4 unionSet:v10];
+          assets = [*(*(&v14 + 1) + 8 * v9) assets];
+          [v4 unionSet:assets];
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [moments countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -166,13 +166,13 @@ LABEL_17:
   return startDate;
 }
 
-- (void)setMoments:(id)a3
+- (void)setMoments:(id)moments
 {
-  v5 = a3;
-  if (self->_moments != v5)
+  momentsCopy = moments;
+  if (self->_moments != momentsCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_moments, a3);
+    v9 = momentsCopy;
+    objc_storeStrong(&self->_moments, moments);
     assets = self->_assets;
     self->_assets = 0;
 
@@ -182,20 +182,20 @@ LABEL_17:
     endDate = self->_endDate;
     self->_endDate = 0;
 
-    v5 = v9;
+    momentsCopy = v9;
   }
 }
 
-- (PLPhotosHighlightCluster)initWithMoments:(id)a3
+- (PLPhotosHighlightCluster)initWithMoments:(id)moments
 {
-  v5 = a3;
+  momentsCopy = moments;
   v9.receiver = self;
   v9.super_class = PLPhotosHighlightCluster;
   v6 = [(PLPhotosHighlightCluster *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_moments, a3);
+    objc_storeStrong(&v6->_moments, moments);
     *&v7->_category = 0;
   }
 

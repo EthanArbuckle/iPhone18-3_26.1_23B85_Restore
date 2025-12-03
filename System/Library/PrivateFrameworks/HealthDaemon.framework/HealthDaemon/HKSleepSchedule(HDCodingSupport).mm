@@ -13,11 +13,11 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [[a1 alloc] _init];
-    if ([v5 applyToObject:v6])
+    _init = [[self alloc] _init];
+    if ([v5 applyToObject:_init])
     {
       v7 = HKDefaultObjectValidationConfigurationIgnoringAllOptions();
-      v9 = [v6 _validateWithConfiguration:{v7, v8}];
+      v9 = [_init _validateWithConfiguration:{v7, v8}];
       if (v9)
       {
         v10 = 0;
@@ -25,7 +25,7 @@
 
       else
       {
-        v10 = v6;
+        v10 = _init;
       }
 
       v11 = v10;
@@ -48,47 +48,47 @@
 - (HDCodableSleepSchedule)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableSleepSchedule);
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = &off_283D44CF8;
   v3 = objc_msgSendSuper2(&v14, sel_codableRepresentationForSync);
   [(HDCodableSleepSchedule *)v2 setSample:v3];
 
-  v4 = [a1 weekdays];
-  [(HDCodableSleepSchedule *)v2 setMonday:v4 & 1];
-  [(HDCodableSleepSchedule *)v2 setTuesday:(v4 >> 1) & 1];
-  [(HDCodableSleepSchedule *)v2 setWednesday:(v4 >> 2) & 1];
-  [(HDCodableSleepSchedule *)v2 setThursday:(v4 >> 3) & 1];
-  [(HDCodableSleepSchedule *)v2 setFriday:(v4 >> 4) & 1];
-  [(HDCodableSleepSchedule *)v2 setSaturday:(v4 >> 5) & 1];
-  [(HDCodableSleepSchedule *)v2 setSunday:(v4 >> 6) & 1];
-  v5 = [a1 wakeTimeComponents];
+  weekdays = [self weekdays];
+  [(HDCodableSleepSchedule *)v2 setMonday:weekdays & 1];
+  [(HDCodableSleepSchedule *)v2 setTuesday:(weekdays >> 1) & 1];
+  [(HDCodableSleepSchedule *)v2 setWednesday:(weekdays >> 2) & 1];
+  [(HDCodableSleepSchedule *)v2 setThursday:(weekdays >> 3) & 1];
+  [(HDCodableSleepSchedule *)v2 setFriday:(weekdays >> 4) & 1];
+  [(HDCodableSleepSchedule *)v2 setSaturday:(weekdays >> 5) & 1];
+  [(HDCodableSleepSchedule *)v2 setSunday:(weekdays >> 6) & 1];
+  wakeTimeComponents = [self wakeTimeComponents];
 
-  if (v5)
+  if (wakeTimeComponents)
   {
-    v6 = [a1 wakeTimeComponents];
-    -[HDCodableSleepSchedule setWakeHour:](v2, "setWakeHour:", [v6 hour]);
+    wakeTimeComponents2 = [self wakeTimeComponents];
+    -[HDCodableSleepSchedule setWakeHour:](v2, "setWakeHour:", [wakeTimeComponents2 hour]);
 
-    v7 = [a1 wakeTimeComponents];
-    -[HDCodableSleepSchedule setWakeMinute:](v2, "setWakeMinute:", [v7 minute]);
+    wakeTimeComponents3 = [self wakeTimeComponents];
+    -[HDCodableSleepSchedule setWakeMinute:](v2, "setWakeMinute:", [wakeTimeComponents3 minute]);
   }
 
-  v8 = [a1 bedTimeComponents];
+  bedTimeComponents = [self bedTimeComponents];
 
-  if (v8)
+  if (bedTimeComponents)
   {
-    v9 = [a1 bedTimeComponents];
-    -[HDCodableSleepSchedule setBedHour:](v2, "setBedHour:", [v9 hour]);
+    bedTimeComponents2 = [self bedTimeComponents];
+    -[HDCodableSleepSchedule setBedHour:](v2, "setBedHour:", [bedTimeComponents2 hour]);
 
-    v10 = [a1 bedTimeComponents];
-    -[HDCodableSleepSchedule setBedMinute:](v2, "setBedMinute:", [v10 minute]);
+    bedTimeComponents3 = [self bedTimeComponents];
+    -[HDCodableSleepSchedule setBedMinute:](v2, "setBedMinute:", [bedTimeComponents3 minute]);
   }
 
-  v11 = [a1 overrideDayIndex];
+  overrideDayIndex = [self overrideDayIndex];
 
-  if (v11)
+  if (overrideDayIndex)
   {
-    v12 = [a1 overrideDayIndex];
-    -[HDCodableSleepSchedule setOverrideDayIndex:](v2, "setOverrideDayIndex:", [v12 integerValue]);
+    overrideDayIndex2 = [self overrideDayIndex];
+    -[HDCodableSleepSchedule setOverrideDayIndex:](v2, "setOverrideDayIndex:", [overrideDayIndex2 integerValue]);
   }
 
   return v2;
@@ -97,13 +97,13 @@
 - (BOOL)addCodableRepresentationToCollection:()HDCodingSupport
 {
   v4 = a3;
-  v5 = [a1 codableRepresentationForSync];
-  if (v5)
+  codableRepresentationForSync = [self codableRepresentationForSync];
+  if (codableRepresentationForSync)
   {
-    [v4 addSleepSchedules:v5];
+    [v4 addSleepSchedules:codableRepresentationForSync];
   }
 
-  return v5 != 0;
+  return codableRepresentationForSync != 0;
 }
 
 @end

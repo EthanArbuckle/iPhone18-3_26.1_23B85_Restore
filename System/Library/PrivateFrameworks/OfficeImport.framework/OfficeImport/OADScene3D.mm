@@ -1,8 +1,8 @@
 @interface OADScene3D
 + (id)nullScene3D;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADScene3D)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -45,18 +45,18 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(OADCamera *)self->mCamera copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(OADCamera *)self->mCamera copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(OADLightRig *)self->mLightRig copyWithZone:a3];
+  v8 = [(OADLightRig *)self->mLightRig copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(OADBackdrop *)self->mBackdrop copyWithZone:a3];
+  v10 = [(OADBackdrop *)self->mBackdrop copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
@@ -70,24 +70,24 @@
   return v4 ^ [(OADBackdrop *)self->mBackdrop hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = v4) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = equalCopy) != 0)
   {
     v6 = v5;
     mCamera = self->mCamera;
-    v8 = [v5 camera];
-    if ([(OADCamera *)mCamera isEqual:v8])
+    camera = [v5 camera];
+    if ([(OADCamera *)mCamera isEqual:camera])
     {
       mLightRig = self->mLightRig;
-      v10 = [v6 lightRig];
-      if ([(OADLightRig *)mLightRig isEqual:v10])
+      lightRig = [v6 lightRig];
+      if ([(OADLightRig *)mLightRig isEqual:lightRig])
       {
         mBackdrop = self->mBackdrop;
-        v12 = [v6 backdrop];
-        v13 = [(OADBackdrop *)mBackdrop isEqual:v12];
+        backdrop = [v6 backdrop];
+        v13 = [(OADBackdrop *)mBackdrop isEqual:backdrop];
       }
 
       else

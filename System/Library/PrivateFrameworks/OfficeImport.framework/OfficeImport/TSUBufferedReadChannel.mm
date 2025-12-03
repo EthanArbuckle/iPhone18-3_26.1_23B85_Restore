@@ -1,31 +1,31 @@
 @interface TSUBufferedReadChannel
-- (TSUBufferedReadChannel)initWithReadChannel:(id)a3 sourceReadBufferSize:(unint64_t)a4 blockInfos:(id)a5 streamReadChannelBlock:(id)a6;
-- (id)_currentDataIntersectionWithOffset:(int64_t)a3 length:(unint64_t)a4 isReadDone:(BOOL *)a5;
+- (TSUBufferedReadChannel)initWithReadChannel:(id)channel sourceReadBufferSize:(unint64_t)size blockInfos:(id)infos streamReadChannelBlock:(id)block;
+- (id)_currentDataIntersectionWithOffset:(int64_t)offset length:(unint64_t)length isReadDone:(BOOL *)done;
 - (void)_close;
 - (void)_closeStreamReadChannel;
-- (void)_readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5;
-- (void)_resetStreamReadChannelIfNeededForOffset:(int64_t)a3 length:(unint64_t)a4;
+- (void)_readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler;
+- (void)_resetStreamReadChannelIfNeededForOffset:(int64_t)offset length:(unint64_t)length;
 - (void)close;
 - (void)dealloc;
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5;
-- (void)setStreamReadChannelSourceHandler:(id)a3;
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler;
+- (void)setStreamReadChannelSourceHandler:(id)handler;
 @end
 
 @implementation TSUBufferedReadChannel
 
-- (TSUBufferedReadChannel)initWithReadChannel:(id)a3 sourceReadBufferSize:(unint64_t)a4 blockInfos:(id)a5 streamReadChannelBlock:(id)a6
+- (TSUBufferedReadChannel)initWithReadChannel:(id)channel sourceReadBufferSize:(unint64_t)size blockInfos:(id)infos streamReadChannelBlock:(id)block
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  channelCopy = channel;
+  infosCopy = infos;
+  blockCopy = block;
   v28.receiver = self;
   v28.super_class = TSUBufferedReadChannel;
   v14 = [(TSUBufferedReadChannel *)&v28 init];
   if (v14)
   {
-    if (v11)
+    if (channelCopy)
     {
-      if (v13)
+      if (blockCopy)
       {
         goto LABEL_4;
       }
@@ -38,27 +38,27 @@
       [OITSUAssertionHandler handleFailureInFunction:v21 file:v22 lineNumber:60 isFatal:0 description:"invalid nil value for '%{public}s'", "sourceReadChannel"];
 
       +[OITSUAssertionHandler logBacktraceThrottled];
-      if (v13)
+      if (blockCopy)
       {
 LABEL_4:
-        if (a4)
+        if (size)
         {
 LABEL_5:
-          if (v11 && v13)
+          if (channelCopy && blockCopy)
           {
             v15 = dispatch_queue_create("TSUBufferedReadChannel.Read", 0);
             v16 = *(v14 + 1);
             *(v14 + 1) = v15;
 
             dispatch_queue_set_specific(*(v14 + 1), TSUBufferedReadChannelReadQueueSpecific, TSUBufferedReadChannelReadQueueSpecific, 0);
-            objc_storeStrong(v14 + 2, a3);
-            *(v14 + 3) = a4;
+            objc_storeStrong(v14 + 2, channel);
+            *(v14 + 3) = size;
             *(v14 + 4) = 0x7FFFFFFFFFFFFFFFLL;
-            v17 = [v12 copy];
+            v17 = [infosCopy copy];
             v18 = *(v14 + 7);
             *(v14 + 7) = v17;
 
-            v19 = _Block_copy(v13);
+            v19 = _Block_copy(blockCopy);
             v20 = *(v14 + 8);
             *(v14 + 8) = v19;
 
@@ -87,7 +87,7 @@ LABEL_10:
     [OITSUAssertionHandler handleFailureInFunction:v23 file:v24 lineNumber:61 isFatal:0 description:"invalid nil value for '%{public}s'", "streamReadChannelBlock"];
 
     +[OITSUAssertionHandler logBacktraceThrottled];
-    if (a4)
+    if (size)
     {
       goto LABEL_5;
     }
@@ -147,16 +147,16 @@ LABEL_12:
   self->_streamReadChannel = 0;
 }
 
-- (void)_resetStreamReadChannelIfNeededForOffset:(int64_t)a3 length:(unint64_t)a4
+- (void)_resetStreamReadChannelIfNeededForOffset:(int64_t)offset length:(unint64_t)length
 {
-  v5 = a3;
+  offsetCopy = offset;
   v43 = *MEMORY[0x277D85DE8];
   streamOutputOffset = self->_streamOutputOffset;
-  if (streamOutputOffset <= a3)
+  if (streamOutputOffset <= offset)
   {
     streamOutputOutstandingLength = self->_streamOutputOutstandingLength;
     v9 = streamOutputOutstandingLength + streamOutputOffset;
-    if (streamOutputOutstandingLength == -1 || v9 > a3)
+    if (streamOutputOutstandingLength == -1 || v9 > offset)
     {
       return;
     }
@@ -187,7 +187,7 @@ LABEL_12:
   }
 
   v14 = 0;
-  v15 = 0;
+  decodedLength = 0;
   v16 = 0;
   v35 = *v39;
   v33 = v13;
@@ -203,20 +203,20 @@ LABEL_12:
 
       v18 = *(*(&v38 + 1) + 8 * v17);
       v14 += [v18 decodedLength];
-      if (v15)
+      if (decodedLength)
       {
         [v16 addObject:v18];
         self->_sourceLength += [v18 encodedLength];
-        v15 += [v18 decodedLength];
-        v19 = self->_streamOutputOutstandingLength + [v18 decodedLength];
+        decodedLength += [v18 decodedLength];
+        decodedLength2 = self->_streamOutputOutstandingLength + [v18 decodedLength];
       }
 
       else
       {
-        if (v14 <= v5)
+        if (v14 <= offsetCopy)
         {
           self->_sourceOffset += [v18 encodedLength];
-          v15 = 0;
+          decodedLength = 0;
           self->_streamOutputOffset += [v18 decodedLength];
           goto LABEL_19;
         }
@@ -225,13 +225,13 @@ LABEL_12:
         {
           [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUBufferedReadChannel _resetStreamReadChannelIfNeededForOffset:length:]"];
           v34 = v16;
-          v20 = v5;
-          v22 = v21 = a4;
+          v20 = offsetCopy;
+          v22 = v21 = length;
           v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUBufferedReadChannel.m"];
           [OITSUAssertionHandler handleFailureInFunction:v22 file:v23 lineNumber:138 isFatal:0 description:"expected nil value for '%{public}s'", "blockInfos"];
 
-          a4 = v21;
-          v5 = v20;
+          length = v21;
+          offsetCopy = v20;
           v16 = v34;
           +[OITSUAssertionHandler logBacktraceThrottled];
         }
@@ -240,14 +240,14 @@ LABEL_12:
 
         [v24 addObject:v18];
         self->_sourceLength = [v18 encodedLength];
-        v15 = [v18 decodedLength];
-        v19 = [v18 decodedLength];
+        decodedLength = [v18 decodedLength];
+        decodedLength2 = [v18 decodedLength];
         v16 = v24;
         v13 = v33;
       }
 
-      self->_streamOutputOutstandingLength = v19;
-      if (v15 > a4)
+      self->_streamOutputOutstandingLength = decodedLength2;
+      if (decodedLength > length)
       {
         goto LABEL_28;
       }
@@ -338,26 +338,26 @@ void __74__TSUBufferedReadChannel__resetStreamReadChannelIfNeededForOffset_lengt
   }
 }
 
-- (void)setStreamReadChannelSourceHandler:(id)a3
+- (void)setStreamReadChannelSourceHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   streamReadChannelSourceHandler = self->_streamReadChannelSourceHandler;
   self->_streamReadChannelSourceHandler = v4;
 }
 
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   readQueue = self->_readQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__TSUBufferedReadChannel_readFromOffset_length_handler___block_invoke;
   v11[3] = &unk_2799C6F50;
-  v13 = a3;
-  v14 = a4;
+  offsetCopy = offset;
+  lengthCopy = length;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   dispatch_async(readQueue, v11);
 }
 
@@ -383,11 +383,11 @@ uint64_t __56__TSUBufferedReadChannel_readFromOffset_length_handler___block_invo
   }
 }
 
-- (void)_readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5
+- (void)_readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler
 {
-  v8 = a5;
-  v9 = (a3 & (a3 >> 63)) + a4;
-  v10 = a3 & ~(a3 >> 63);
+  handlerCopy = handler;
+  v9 = (offset & (offset >> 63)) + length;
+  v10 = offset & ~(offset >> 63);
   [(TSUBufferedReadChannel *)self _resetStreamReadChannelIfNeededForOffset:v10 length:v9];
   v28 = 0;
   v11 = [(TSUBufferedReadChannel *)self _currentDataIntersectionWithOffset:v10 length:v9 isReadDone:&v28];
@@ -409,7 +409,7 @@ uint64_t __56__TSUBufferedReadChannel_readFromOffset_length_handler___block_invo
     }
   }
 
-  (*(v8 + 2))(v8, v14 & 1, v12, 0);
+  (*(handlerCopy + 2))(handlerCopy, v14 & 1, v12, 0);
   if (v28)
   {
     dispatch_resume(self->_readQueue);
@@ -451,7 +451,7 @@ LABEL_6:
   v21[2] = __57__TSUBufferedReadChannel__readFromOffset_length_handler___block_invoke;
   v21[3] = &unk_2799C6F78;
   v21[4] = self;
-  v22 = v8;
+  v22 = handlerCopy;
   v23 = v27;
   v24 = sourceReadBufferSize;
   v25 = v10;
@@ -558,16 +558,16 @@ LABEL_4:
 LABEL_22:
 }
 
-- (id)_currentDataIntersectionWithOffset:(int64_t)a3 length:(unint64_t)a4 isReadDone:(BOOL *)a5
+- (id)_currentDataIntersectionWithOffset:(int64_t)offset length:(unint64_t)length isReadDone:(BOOL *)done
 {
-  if (__CFADD__(a3, a4))
+  if (__CFADD__(offset, length))
   {
     v8 = -1;
   }
 
   else
   {
-    v8 = a3 + a4;
+    v8 = offset + length;
   }
 
   streamOutputOffset = self->_streamOutputOffset;
@@ -583,14 +583,14 @@ LABEL_22:
     streamOutputLength = self->_streamOutputLength;
   }
 
-  if (streamOutputOffset <= a3)
+  if (streamOutputOffset <= offset)
   {
-    v13 = a3;
+    offsetCopy = offset;
   }
 
   else
   {
-    v13 = streamOutputOffset;
+    offsetCopy = streamOutputOffset;
   }
 
   v14 = streamOutputLength + streamOutputOffset;
@@ -604,10 +604,10 @@ LABEL_22:
     v15 = v8;
   }
 
-  if (v15 <= v13)
+  if (v15 <= offsetCopy)
   {
     subrange = 0;
-    if (!a5)
+    if (!done)
     {
       goto LABEL_17;
     }
@@ -615,11 +615,11 @@ LABEL_22:
     goto LABEL_16;
   }
 
-  subrange = dispatch_data_create_subrange(self->_currentStreamOutputData, v13 - streamOutputOffset, v15 - v13);
-  if (a5)
+  subrange = dispatch_data_create_subrange(self->_currentStreamOutputData, offsetCopy - streamOutputOffset, v15 - offsetCopy);
+  if (done)
   {
 LABEL_16:
-    *a5 = v8 <= v14 || self->_isStreamOutputDone;
+    *done = v8 <= v14 || self->_isStreamOutputDone;
   }
 
 LABEL_17:

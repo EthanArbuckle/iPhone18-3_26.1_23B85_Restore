@@ -3,21 +3,21 @@
 - (BOOL)dictationAvailable;
 - (BOOL)dictationEnabledInKeyboardSettings;
 - (CRDictationService)init;
-- (void)_failWithError:(id)a3;
+- (void)_failWithError:(id)error;
 - (void)_finishIfPossible;
-- (void)_fireHandler:(id)a3 withState:(int64_t)a4 result:(id)a5 error:(id)a6;
+- (void)_fireHandler:(id)handler withState:(int64_t)state result:(id)result error:(id)error;
 - (void)_processingTimeLimitReached;
-- (void)_transitionToState:(int64_t)a3;
-- (void)beginRecordingWithCompletion:(id)a3;
+- (void)_transitionToState:(int64_t)state;
+- (void)beginRecordingWithCompletion:(id)completion;
 - (void)cancelRecording;
-- (void)dictationConnection:(id)a3 didRecognizeTokens:(id)a4 languageModel:(id)a5;
-- (void)dictationConnection:(id)a3 speechRecognitionDidFail:(id)a4;
-- (void)dictationConnection:(id)a3 speechRecordingDidFail:(id)a4;
-- (void)dictationConnectionSpeechRecognitionDidSucceed:(id)a3;
-- (void)dictationConnectionSpeechRecordingDidBegin:(id)a3;
-- (void)dictationConnectionSpeechRecordingDidCancel:(id)a3;
-- (void)dictationConnectionSpeechRecordingDidEnd:(id)a3;
-- (void)dictationConnectionSpeechRecordingWillBegin:(id)a3;
+- (void)dictationConnection:(id)connection didRecognizeTokens:(id)tokens languageModel:(id)model;
+- (void)dictationConnection:(id)connection speechRecognitionDidFail:(id)fail;
+- (void)dictationConnection:(id)connection speechRecordingDidFail:(id)fail;
+- (void)dictationConnectionSpeechRecognitionDidSucceed:(id)succeed;
+- (void)dictationConnectionSpeechRecordingDidBegin:(id)begin;
+- (void)dictationConnectionSpeechRecordingDidCancel:(id)cancel;
+- (void)dictationConnectionSpeechRecordingDidEnd:(id)end;
+- (void)dictationConnectionSpeechRecordingWillBegin:(id)begin;
 - (void)reset;
 - (void)stopRecording;
 @end
@@ -75,9 +75,9 @@
 - (BOOL)dictationEnabledInKeyboardSettings
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 dictationIsEnabled];
+  dictationIsEnabled = [v2 dictationIsEnabled];
 
-  return v3;
+  return dictationIsEnabled;
 }
 
 - (BOOL)dictationAvailable
@@ -87,8 +87,8 @@
     return 0;
   }
 
-  v3 = [(CRDictationService *)self dictationConnection];
-  v4 = [v3 dictationIsAvailableForLanguage:@"en_US"];
+  dictationConnection = [(CRDictationService *)self dictationConnection];
+  v4 = [dictationConnection dictationIsAvailableForLanguage:@"en_US"];
 
   return v4;
 }
@@ -105,8 +105,8 @@
 
     else
     {
-      v3 = [(CRDictationService *)self dictationConnection];
-      [v3 stopSpeechWithOptions:0];
+      dictationConnection = [(CRDictationService *)self dictationConnection];
+      [dictationConnection stopSpeechWithOptions:0];
     }
   }
 }
@@ -130,15 +130,15 @@
 
     else
     {
-      v4 = [(CRDictationService *)self dictationConnection];
-      [v4 stopSpeechWithOptions:0];
+      dictationConnection = [(CRDictationService *)self dictationConnection];
+      [dictationConnection stopSpeechWithOptions:0];
     }
   }
 }
 
-- (void)beginRecordingWithCompletion:(id)a3
+- (void)beginRecordingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = CarDiagnosticsLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -150,7 +150,7 @@
   {
     if ([(CRDictationService *)self state]< 1)
     {
-      [(CRDictationService *)self setHandler:v4];
+      [(CRDictationService *)self setHandler:completionCopy];
       [(CRDictationService *)self setResult:0];
       [(CRDictationService *)self setError:0];
       [(CRDictationService *)self _transitionToState:1];
@@ -160,8 +160,8 @@
       [v9 setReturnKeyType:10];
       [v9 setReleaseAudioSessionOnRecordingCompletion:1];
       v10 = objc_alloc_init(AFSpeechRequestOptions);
-      v11 = [(CRDictationService *)self dictationConnection];
-      [v11 startDictationWithLanguageCode:@"en_US" options:v9 speechOptions:v10];
+      dictationConnection = [(CRDictationService *)self dictationConnection];
+      [dictationConnection startDictationWithLanguageCode:@"en_US" options:v9 speechOptions:v10];
 
       goto LABEL_11;
     }
@@ -189,73 +189,73 @@ LABEL_9:
     }
   }
 
-  [(CRDictationService *)self _fireHandler:v4 withState:-1 result:0 error:0];
+  [(CRDictationService *)self _fireHandler:completionCopy withState:-1 result:0 error:0];
 LABEL_11:
 }
 
-- (void)_fireHandler:(id)a3 withState:(int64_t)a4 result:(id)a5 error:(id)a6
+- (void)_fireHandler:(id)handler withState:(int64_t)state result:(id)result error:(id)error
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (v9)
+  handlerCopy = handler;
+  resultCopy = result;
+  errorCopy = error;
+  if (handlerCopy)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10000C678;
     v12[3] = &unk_1000DD638;
-    v16 = a4;
-    v13 = v10;
-    v14 = v11;
-    v15 = v9;
+    stateCopy = state;
+    v13 = resultCopy;
+    v14 = errorCopy;
+    v15 = handlerCopy;
     dispatch_async(&_dispatch_main_q, v12);
   }
 }
 
-- (void)_transitionToState:(int64_t)a3
+- (void)_transitionToState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    v5 = [(CRDictationService *)self state];
-    self->_state = a3;
+    state = [(CRDictationService *)self state];
+    self->_state = state;
     v6 = CarDiagnosticsLogging();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      if ((v5 + 1) >= 6)
+      if ((state + 1) >= 6)
       {
-        v7 = [NSString stringWithFormat:@"Unknown (%ld)", v5];
+        v7 = [NSString stringWithFormat:@"Unknown (%ld)", state];
       }
 
       else
       {
-        v7 = off_1000DD6B8[v5 + 1];
+        v7 = off_1000DD6B8[state + 1];
       }
 
       v8 = v7;
-      if ((a3 + 1) >= 6)
+      if ((state + 1) >= 6)
       {
-        v9 = [NSString stringWithFormat:@"Unknown (%ld)", a3];
+        state2 = [NSString stringWithFormat:@"Unknown (%ld)", state];
       }
 
       else
       {
-        v9 = off_1000DD6B8[a3 + 1];
+        state2 = off_1000DD6B8[state + 1];
       }
 
       *buf = 138412546;
       v17 = v8;
       v18 = 2112;
-      v19 = v9;
+      v19 = state2;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Dictation transitioning from %@ to %@", buf, 0x16u);
     }
 
-    v10 = [(CRDictationService *)self handler];
-    v11 = [(CRDictationService *)self state];
-    v12 = [(CRDictationService *)self result];
-    v13 = [(CRDictationService *)self error];
-    [(CRDictationService *)self _fireHandler:v10 withState:v11 result:v12 error:v13];
+    handler = [(CRDictationService *)self handler];
+    state3 = [(CRDictationService *)self state];
+    result = [(CRDictationService *)self result];
+    error = [(CRDictationService *)self error];
+    [(CRDictationService *)self _fireHandler:handler withState:state3 result:result error:error];
 
-    if (a3 == 3)
+    if (state == 3)
     {
       v14 = [NSTimer scheduledTimerWithTimeInterval:self target:"_processingTimeLimitReached" selector:0 userInfo:0 repeats:2.0];
       [(CRDictationService *)self setProcessingTimer:v14];
@@ -263,11 +263,11 @@ LABEL_11:
 
     else
     {
-      v15 = [(CRDictationService *)self processingTimer];
-      [v15 invalidate];
+      processingTimer = [(CRDictationService *)self processingTimer];
+      [processingTimer invalidate];
 
       [(CRDictationService *)self setProcessingTimer:0];
-      if (a3 == 4)
+      if (state == 4)
       {
         [(AFDictationConnection *)self->_dictationConnection stopSpeechWithOptions:0];
         [(CRDictationService *)self reset];
@@ -321,9 +321,9 @@ LABEL_11:
 {
   if ([(CRDictationService *)self state]== 3)
   {
-    v3 = [(CRDictationService *)self result];
-    v4 = [v3 transcription];
-    v5 = [v4 length];
+    result = [(CRDictationService *)self result];
+    transcription = [result transcription];
+    v5 = [transcription length];
 
     if (v5)
     {
@@ -339,14 +339,14 @@ LABEL_11:
   }
 }
 
-- (void)_failWithError:(id)a3
+- (void)_failWithError:(id)error
 {
-  [(CRDictationService *)self setError:a3];
+  [(CRDictationService *)self setError:error];
 
   [(CRDictationService *)self _transitionToState:4];
 }
 
-- (void)dictationConnectionSpeechRecordingWillBegin:(id)a3
+- (void)dictationConnectionSpeechRecordingWillBegin:(id)begin
 {
   v4 = CarDiagnosticsLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -358,7 +358,7 @@ LABEL_11:
   [(CRDictationService *)self _transitionToState:2];
 }
 
-- (void)dictationConnectionSpeechRecordingDidBegin:(id)a3
+- (void)dictationConnectionSpeechRecordingDidBegin:(id)begin
 {
   v3 = CarDiagnosticsLogging();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -368,7 +368,7 @@ LABEL_11:
   }
 }
 
-- (void)dictationConnectionSpeechRecordingDidEnd:(id)a3
+- (void)dictationConnectionSpeechRecordingDidEnd:(id)end
 {
   v4 = CarDiagnosticsLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -380,7 +380,7 @@ LABEL_11:
   [(CRDictationService *)self _transitionToState:3];
 }
 
-- (void)dictationConnectionSpeechRecognitionDidSucceed:(id)a3
+- (void)dictationConnectionSpeechRecognitionDidSucceed:(id)succeed
 {
   v4 = CarDiagnosticsLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -393,9 +393,9 @@ LABEL_11:
   [(CRDictationService *)self _finishIfPossible];
 }
 
-- (void)dictationConnection:(id)a3 didRecognizeTokens:(id)a4 languageModel:(id)a5
+- (void)dictationConnection:(id)connection didRecognizeTokens:(id)tokens languageModel:(id)model
 {
-  v6 = a4;
+  tokensCopy = tokens;
   if ([(CRDictationService *)self state]>= 2)
   {
     v7 = +[NSMutableString string];
@@ -403,12 +403,12 @@ LABEL_11:
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = v6;
+    v8 = tokensCopy;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
       v10 = v9;
-      v18 = v6;
+      v18 = tokensCopy;
       v11 = 0;
       v12 = *v20;
       do
@@ -427,8 +427,8 @@ LABEL_11:
             [v7 appendString:@" "];
           }
 
-          v16 = [v15 text];
-          [v7 appendString:v16];
+          text = [v15 text];
+          [v7 appendString:text];
 
           v11 = v15;
         }
@@ -438,7 +438,7 @@ LABEL_11:
 
       while (v10);
 
-      v6 = v18;
+      tokensCopy = v18;
     }
 
     v17 = [[CARDictationResult alloc] initWithText:v7];
@@ -448,7 +448,7 @@ LABEL_11:
   }
 }
 
-- (void)dictationConnectionSpeechRecordingDidCancel:(id)a3
+- (void)dictationConnectionSpeechRecordingDidCancel:(id)cancel
 {
   v4 = CarDiagnosticsLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -460,32 +460,32 @@ LABEL_11:
   [(CRDictationService *)self _transitionToState:4];
 }
 
-- (void)dictationConnection:(id)a3 speechRecordingDidFail:(id)a4
+- (void)dictationConnection:(id)connection speechRecordingDidFail:(id)fail
 {
-  v5 = a4;
+  failCopy = fail;
   v6 = CarDiagnosticsLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v5;
+    v8 = failCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Speech recording failed with error: %{public}@", &v7, 0xCu);
   }
 
-  [(CRDictationService *)self _failWithError:v5];
+  [(CRDictationService *)self _failWithError:failCopy];
 }
 
-- (void)dictationConnection:(id)a3 speechRecognitionDidFail:(id)a4
+- (void)dictationConnection:(id)connection speechRecognitionDidFail:(id)fail
 {
-  v5 = a4;
+  failCopy = fail;
   v6 = CarDiagnosticsLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v5;
+    v8 = failCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Speech recognition failed with error: %{public}@", &v7, 0xCu);
   }
 
-  [(CRDictationService *)self _failWithError:v5];
+  [(CRDictationService *)self _failWithError:failCopy];
 }
 
 @end

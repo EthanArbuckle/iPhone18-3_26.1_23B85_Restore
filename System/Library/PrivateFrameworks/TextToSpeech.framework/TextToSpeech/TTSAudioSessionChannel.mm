@@ -1,7 +1,7 @@
 @interface TTSAudioSessionChannel
-+ (id)channelWithChannel:(id)a3;
-+ (id)convertChannels:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)channelWithChannel:(id)channel;
++ (id)convertChannels:(id)channels;
+- (BOOL)isEqual:(id)equal;
 - (NSString)channelName;
 - (NSString)owningPortUID;
 - (TTSAudioSessionChannel)init;
@@ -13,25 +13,25 @@
 
 @implementation TTSAudioSessionChannel
 
-+ (id)channelWithChannel:(id)a3
++ (id)channelWithChannel:(id)channel
 {
-  v3 = a3;
+  channelCopy = channel;
   v4 = objc_opt_new();
-  objc_msgSend_setChannel_(v4, v5, v3, v6, v7);
+  objc_msgSend_setChannel_(v4, v5, channelCopy, v6, v7);
 
   return v4;
 }
 
-+ (id)convertChannels:(id)a3
++ (id)convertChannels:(id)channels
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  channelsCopy = channels;
   v8 = objc_msgSend_array(MEMORY[0x1E695DF70], v4, v5, v6, v7);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v9 = v3;
+  v9 = channelsCopy;
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v35, v39, 16);
   if (v11)
   {
@@ -164,23 +164,23 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self->_channelNumber == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend_channelNumber(v4, v5, v6, v7, v8) == 0x7FFFFFFFFFFFFFFFLL)
+    if (self->_channelNumber == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend_channelNumber(equalCopy, v5, v6, v7, v8) == 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = objc_msgSend_channel(self, v5, v6, v7, v8);
-      v14 = objc_msgSend_channel(v4, v10, v11, v12, v13);
+      v14 = objc_msgSend_channel(equalCopy, v10, v11, v12, v13);
       isEqual = objc_msgSend_isEqual_(v9, v15, v14, v16, v17);
     }
 
     else
     {
       channelNumber = self->_channelNumber;
-      isEqual = channelNumber == objc_msgSend_channelNumber(v4, v5, v6, v7, v8);
+      isEqual = channelNumber == objc_msgSend_channelNumber(equalCopy, v5, v6, v7, v8);
     }
   }
 

@@ -1,12 +1,12 @@
 @interface CPUIButton
-+ (id)buttonWithType:(int64_t)a3;
++ (id)buttonWithType:(int64_t)type;
 - (CPUIButtonDelegate)cpui_delegate;
 - (void)_addGestureRecognizers;
-- (void)_buttonPressed:(id)a3;
-- (void)_buttonTapped:(id)a3;
+- (void)_buttonPressed:(id)pressed;
+- (void)_buttonTapped:(id)tapped;
 - (void)didMoveToWindow;
-- (void)setEnabled:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CPUIButton
@@ -23,47 +23,47 @@
   v3 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__buttonPressed_];
   [(CPUIButton *)self setPressTapRecognizer:v3];
 
-  v4 = [(CPUIButton *)self pressTapRecognizer];
-  [v4 setAllowedPressTypes:&unk_2855D8470];
+  pressTapRecognizer = [(CPUIButton *)self pressTapRecognizer];
+  [pressTapRecognizer setAllowedPressTypes:&unk_2855D8470];
 
-  v5 = [(CPUIButton *)self pressTapRecognizer];
-  [v5 setEnabled:{-[CPUIButton isEnabled](self, "isEnabled")}];
+  pressTapRecognizer2 = [(CPUIButton *)self pressTapRecognizer];
+  [pressTapRecognizer2 setEnabled:{-[CPUIButton isEnabled](self, "isEnabled")}];
 
-  v6 = [(CPUIButton *)self pressTapRecognizer];
-  [(CPUIButton *)self addGestureRecognizer:v6];
+  pressTapRecognizer3 = [(CPUIButton *)self pressTapRecognizer];
+  [(CPUIButton *)self addGestureRecognizer:pressTapRecognizer3];
 
   v7 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__buttonTapped_];
   [(CPUIButton *)self setTouchTapRecognizer:v7];
 
-  v8 = [(CPUIButton *)self touchTapRecognizer];
-  [v8 setAllowedTouchTypes:&unk_2855D8488];
+  touchTapRecognizer = [(CPUIButton *)self touchTapRecognizer];
+  [touchTapRecognizer setAllowedTouchTypes:&unk_2855D8488];
 
-  v9 = [(CPUIButton *)self touchTapRecognizer];
-  [v9 setEnabled:{-[CPUIButton isEnabled](self, "isEnabled")}];
+  touchTapRecognizer2 = [(CPUIButton *)self touchTapRecognizer];
+  [touchTapRecognizer2 setEnabled:{-[CPUIButton isEnabled](self, "isEnabled")}];
 
-  v10 = [(CPUIButton *)self touchTapRecognizer];
-  [(CPUIButton *)self addGestureRecognizer:v10];
+  touchTapRecognizer3 = [(CPUIButton *)self touchTapRecognizer];
+  [(CPUIButton *)self addGestureRecognizer:touchTapRecognizer3];
 }
 
-+ (id)buttonWithType:(int64_t)a3
++ (id)buttonWithType:(int64_t)type
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CPUIButton;
-  v3 = objc_msgSendSuper2(&v5, sel_buttonWithType_, a3);
+  v3 = objc_msgSendSuper2(&v5, sel_buttonWithType_, type);
   [v3 _addGestureRecognizers];
 
   return v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = CPUIButton;
-  [(CPUIButton *)&v6 traitCollectionDidChange:a3];
-  v4 = [(CPUIButton *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  [(CPUIButton *)&v6 traitCollectionDidChange:change];
+  traitCollection = [(CPUIButton *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v5 == 3)
+  if (userInterfaceIdiom == 3)
   {
     [(CPUIButton *)self removeAllGestureRecognizers];
     [(CPUIButton *)self _addGestureRecognizers];
@@ -79,41 +79,41 @@
   [(CPUIButton *)self _addGestureRecognizers];
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
-  v4 = [(CPUIButton *)self cpui_delegate];
+  cpui_delegate = [(CPUIButton *)self cpui_delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CPUIButton *)self cpui_delegate];
-    [v6 didSelectButton:self withInteractionModel:2];
+    cpui_delegate2 = [(CPUIButton *)self cpui_delegate];
+    [cpui_delegate2 didSelectButton:self withInteractionModel:2];
   }
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
-  v4 = [(CPUIButton *)self cpui_delegate];
+  cpui_delegate = [(CPUIButton *)self cpui_delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CPUIButton *)self cpui_delegate];
-    [v6 didSelectButton:self withInteractionModel:1];
+    cpui_delegate2 = [(CPUIButton *)self cpui_delegate];
+    [cpui_delegate2 didSelectButton:self withInteractionModel:1];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7.receiver = self;
   v7.super_class = CPUIButton;
   [(CPUIButton *)&v7 setEnabled:?];
-  v5 = [(CPUIButton *)self pressTapRecognizer];
-  [v5 setEnabled:v3];
+  pressTapRecognizer = [(CPUIButton *)self pressTapRecognizer];
+  [pressTapRecognizer setEnabled:enabledCopy];
 
-  v6 = [(CPUIButton *)self touchTapRecognizer];
-  [v6 setEnabled:v3];
+  touchTapRecognizer = [(CPUIButton *)self touchTapRecognizer];
+  [touchTapRecognizer setEnabled:enabledCopy];
 }
 
 @end

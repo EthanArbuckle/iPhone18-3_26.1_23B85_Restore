@@ -1,12 +1,12 @@
 @interface CHRecentCall
-+ (id)predicateForRecentCallsMatchingCallStatus:(unsigned int)a3;
-+ (id)predicateForRecentCallsMatchingRead:(BOOL)a3;
++ (id)predicateForRecentCallsMatchingCallStatus:(unsigned int)status;
++ (id)predicateForRecentCallsMatchingRead:(BOOL)read;
 - (BOOL)carrierAllowsReportVoiceCall;
 - (BOOL)isComingFaceTimeCall;
 - (BOOL)isFaceTime;
 - (BOOL)isOneToOne;
 - (BOOL)isTelephony;
-- (BOOL)ph_canAssociateWithMessage:(id)a3;
+- (BOOL)ph_canAssociateWithMessage:(id)message;
 - (BOOL)ph_supportsLocalParticipantBadge;
 - (NSSet)ph_uniqueIDs;
 - (TUHandle)handle;
@@ -18,17 +18,17 @@
 
 @implementation CHRecentCall
 
-+ (id)predicateForRecentCallsMatchingCallStatus:(unsigned int)a3
++ (id)predicateForRecentCallsMatchingCallStatus:(unsigned int)status
 {
-  v3 = [NSNumber numberWithUnsignedInt:*&a3];
+  v3 = [NSNumber numberWithUnsignedInt:*&status];
   v4 = [NSPredicate predicateWithFormat:@"(callStatus == %@)", v3];
 
   return v4;
 }
 
-+ (id)predicateForRecentCallsMatchingRead:(BOOL)a3
++ (id)predicateForRecentCallsMatchingRead:(BOOL)read
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:read];
   v4 = [NSPredicate predicateWithFormat:@"(read == %@)", v3];
 
   return v4;
@@ -36,18 +36,18 @@
 
 - (TUHandle)handle
 {
-  v3 = [(CHRecentCall *)self callerId];
-  if (![v3 length])
+  callerId = [(CHRecentCall *)self callerId];
+  if (![callerId length])
   {
     v5 = 0;
     goto LABEL_16;
   }
 
-  v4 = [(CHRecentCall *)self handleType];
+  handleType = [(CHRecentCall *)self handleType];
   v5 = 0;
-  if (v4 > 1)
+  if (handleType > 1)
   {
-    if (v4 == 2)
+    if (handleType == 2)
     {
       v6 = [TUHandle alloc];
       v7 = 2;
@@ -55,7 +55,7 @@
 
     else
     {
-      if (v4 != 3)
+      if (handleType != 3)
       {
         goto LABEL_16;
       }
@@ -67,7 +67,7 @@
 
   else
   {
-    if (!v4)
+    if (!handleType)
     {
       v8 = PHDefaultLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -75,11 +75,11 @@
         [(CHRecentCall(PhoneKit) *)v8 handle];
       }
 
-      v9 = [TUHandle handleWithDestinationID:v3];
+      v9 = [TUHandle handleWithDestinationID:callerId];
       goto LABEL_15;
     }
 
-    if (v4 != 1)
+    if (handleType != 1)
     {
       goto LABEL_16;
     }
@@ -88,7 +88,7 @@
     v7 = 1;
   }
 
-  v9 = [v6 initWithType:v7 value:v3];
+  v9 = [v6 initWithType:v7 value:callerId];
 LABEL_15:
   v5 = v9;
 LABEL_16:
@@ -98,13 +98,13 @@ LABEL_16:
 
 - (BOOL)ph_supportsLocalParticipantBadge
 {
-  v3 = [(CHRecentCall *)self localParticipantUUID];
-  v4 = [(CHRecentCall *)self outgoingLocalParticipantUUID];
-  v5 = v4;
+  localParticipantUUID = [(CHRecentCall *)self localParticipantUUID];
+  outgoingLocalParticipantUUID = [(CHRecentCall *)self outgoingLocalParticipantUUID];
+  v5 = outgoingLocalParticipantUUID;
   v6 = 0;
-  if (v3 && v4)
+  if (localParticipantUUID && outgoingLocalParticipantUUID)
   {
-    v6 = [v3 isEqual:v4];
+    v6 = [localParticipantUUID isEqual:outgoingLocalParticipantUUID];
   }
 
   return v6;
@@ -113,15 +113,15 @@ LABEL_16:
 - (NSSet)ph_uniqueIDs
 {
   v3 = +[NSMutableSet set];
-  v4 = [(CHRecentCall *)self uniqueId];
-  [v3 addObject:v4];
+  uniqueId = [(CHRecentCall *)self uniqueId];
+  [v3 addObject:uniqueId];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(CHRecentCall *)self callOccurrences];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  callOccurrences = [(CHRecentCall *)self callOccurrences];
+  v6 = [callOccurrences countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -133,7 +133,7 @@ LABEL_16:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(callOccurrences);
         }
 
         v11 = [*(*(&v14 + 1) + 8 * i) objectForKeyedSubscript:v9];
@@ -143,7 +143,7 @@ LABEL_16:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [callOccurrences countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -154,18 +154,18 @@ LABEL_16:
   return v12;
 }
 
-- (BOOL)ph_canAssociateWithMessage:(id)a3
+- (BOOL)ph_canAssociateWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(CHRecentCall *)self remoteParticipantHandles];
-  if ([v5 count] == 1)
+  messageCopy = message;
+  remoteParticipantHandles = [(CHRecentCall *)self remoteParticipantHandles];
+  if ([remoteParticipantHandles count] == 1)
   {
-    v6 = [v5 anyObject];
-    v7 = [v6 value];
-    v8 = [TUHandle normalizedHandleWithDestinationID:v7];
+    anyObject = [remoteParticipantHandles anyObject];
+    value = [anyObject value];
+    v8 = [TUHandle normalizedHandleWithDestinationID:value];
 
-    v9 = [v4 senderDestinationID];
-    v10 = [TUHandle normalizedHandleWithDestinationID:v9];
+    senderDestinationID = [messageCopy senderDestinationID];
+    v10 = [TUHandle normalizedHandleWithDestinationID:senderDestinationID];
 
     v11 = [v10 isEquivalentToHandle:v8];
   }
@@ -180,63 +180,63 @@ LABEL_16:
 
 - (id)fullName
 {
-  v3 = [(CHRecentCall *)self name];
-  v4 = [(CHRecentCall *)self identityExtension];
+  name = [(CHRecentCall *)self name];
+  identityExtension = [(CHRecentCall *)self identityExtension];
 
-  if (v4)
+  if (identityExtension)
   {
-    v5 = [(CHRecentCall *)self name];
-    v6 = [(CHRecentCall *)self identityExtension];
-    v7 = [NSString stringWithFormat:@"%@: ", v6];
-    v8 = [v5 stringByReplacingOccurrencesOfString:v7 withString:&stru_10028F310];
+    name2 = [(CHRecentCall *)self name];
+    identityExtension2 = [(CHRecentCall *)self identityExtension];
+    v7 = [NSString stringWithFormat:@"%@: ", identityExtension2];
+    v8 = [name2 stringByReplacingOccurrencesOfString:v7 withString:&stru_10028F310];
 
-    v3 = v8;
+    name = v8;
   }
 
-  return v3;
+  return name;
 }
 
 - (id)givenName
 {
-  v2 = [(CHRecentCall *)self fullName];
-  v3 = [v2 componentsSeparatedByString:@" "];
+  fullName = [(CHRecentCall *)self fullName];
+  v3 = [fullName componentsSeparatedByString:@" "];
 
   if (v3 && [v3 count])
   {
-    v4 = [v3 firstObject];
+    firstObject = [v3 firstObject];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
 - (id)familyName
 {
-  v2 = [(CHRecentCall *)self fullName];
-  v3 = [v2 componentsSeparatedByString:@" "];
+  fullName = [(CHRecentCall *)self fullName];
+  v3 = [fullName componentsSeparatedByString:@" "];
 
   if (v3 && [v3 count] >= 2)
   {
-    v4 = [v3 lastObject];
+    lastObject = [v3 lastObject];
   }
 
   else
   {
-    v4 = 0;
+    lastObject = 0;
   }
 
-  return v4;
+  return lastObject;
 }
 
 - (id)parsedNamesStrippingEmoji
 {
-  v3 = [(CHRecentCall *)self fullName];
+  fullName = [(CHRecentCall *)self fullName];
 
-  if (v3)
+  if (fullName)
   {
     [(CHRecentCall *)self fullName];
     v4 = CEMCreateStringByStrippingEmojiCharacters();
@@ -256,7 +256,7 @@ LABEL_16:
 
 - (BOOL)isTelephony
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CHRecentCall.isTelephony.getter();
 
   return v3 & 1;
@@ -264,7 +264,7 @@ LABEL_16:
 
 - (BOOL)isFaceTime
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CHRecentCall.isFaceTime.getter();
 
   return v3 & 1;
@@ -272,7 +272,7 @@ LABEL_16:
 
 - (BOOL)isOneToOne
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CHRecentCall.isOneToOne.getter();
 
   return v3 & 1;
@@ -281,15 +281,15 @@ LABEL_16:
 - (BOOL)carrierAllowsReportVoiceCall
 {
   type metadata accessor for VoiceSpamReportTelephonyManager();
-  v3 = self;
+  selfCopy = self;
   static VoiceSpamReportTelephonyManager.shared.getter();
   type metadata accessor for CarrierVoiceSpamReportHelper();
   swift_allocObject();
   CarrierVoiceSpamReportHelper.init(voiceSpamReportTelephonyManager:)();
   v7[3] = type metadata accessor for NSMutableArray(0, &lazy cache variable for type metadata for CHRecentCall);
   v7[4] = &protocol witness table for CHRecentCall;
-  v7[0] = v3;
-  v4 = v3;
+  v7[0] = selfCopy;
+  v4 = selfCopy;
   v5 = dispatch thunk of CarrierVoiceSpamReportHelper.carrierAllowsReportVoiceCall(for:)();
 
   __swift_destroy_boxed_opaque_existential_0(v7);
@@ -298,18 +298,18 @@ LABEL_16:
 
 - (BOOL)isComingFaceTimeCall
 {
-  v2 = self;
-  if ([(CHRecentCall *)v2 isIncoming])
+  selfCopy = self;
+  if ([(CHRecentCall *)selfCopy isIncoming])
   {
-    v3 = [(CHRecentCall *)v2 isFaceTime];
+    isFaceTime = [(CHRecentCall *)selfCopy isFaceTime];
   }
 
   else
   {
-    v3 = 0;
+    isFaceTime = 0;
   }
 
-  return v3;
+  return isFaceTime;
 }
 
 @end

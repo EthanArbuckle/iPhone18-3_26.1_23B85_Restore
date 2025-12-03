@@ -1,25 +1,25 @@
 @interface ExecutorSiriSchemaExecutorAppIntentCallFailed
-- (BOOL)isEqual:(id)a3;
-- (ExecutorSiriSchemaExecutorAppIntentCallFailed)initWithDictionary:(id)a3;
-- (ExecutorSiriSchemaExecutorAppIntentCallFailed)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ExecutorSiriSchemaExecutorAppIntentCallFailed)initWithDictionary:(id)dictionary;
+- (ExecutorSiriSchemaExecutorAppIntentCallFailed)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ExecutorSiriSchemaExecutorAppIntentCallFailed
 
-- (ExecutorSiriSchemaExecutorAppIntentCallFailed)initWithDictionary:(id)a3
+- (ExecutorSiriSchemaExecutorAppIntentCallFailed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ExecutorSiriSchemaExecutorAppIntentCallFailed;
   v5 = [(ExecutorSiriSchemaExecutorAppIntentCallFailed *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"reason"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"reason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,30 +32,30 @@
   return v5;
 }
 
-- (ExecutorSiriSchemaExecutorAppIntentCallFailed)initWithJSON:(id)a3
+- (ExecutorSiriSchemaExecutorAppIntentCallFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ExecutorSiriSchemaExecutorAppIntentCallFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ExecutorSiriSchemaExecutorAppIntentCallFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ExecutorSiriSchemaExecutorAppIntentCallFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -68,27 +68,27 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    v4 = [(ExecutorSiriSchemaExecutorAppIntentCallFailed *)self reason];
+    reason = [(ExecutorSiriSchemaExecutorAppIntentCallFailed *)self reason];
     v5 = @"EXECUTORAPPINTENTERROR_UNKNOWN";
-    if (v4 <= 99)
+    if (reason <= 99)
     {
       v6 = @"EXECUTORAPPINTENTERROR_ACTIONFAILURE_ENTITY_NOT_FOUND";
       v7 = @"EXECUTORAPPINTENTERROR_ACTIONFAILURE_ACTION_NOT_ALLOWED";
       v8 = @"EXECUTORAPPINTENTERROR_ACTIONFAILURE_DEVELOPER_DEFINED_ERROR";
-      if (v4 != 12)
+      if (reason != 12)
       {
         v8 = @"EXECUTORAPPINTENTERROR_UNKNOWN";
       }
 
-      if (v4 != 11)
+      if (reason != 11)
       {
         v7 = v8;
       }
 
-      if (v4 != 10)
+      if (reason != 10)
       {
         v6 = v7;
       }
@@ -96,22 +96,22 @@
       v9 = @"EXECUTORAPPINTENTERROR_ACTIONFAILURE_PARTIAL_FAILURE";
       v10 = @"EXECUTORAPPINTENTERROR_ACTIONFAILURE_UNSUPPORTED_ON_DEVICE";
       v11 = @"EXECUTORAPPINTENTERROR_ACTIONFAILURE_FEATURE_CURRENTLY_RESTRICTED";
-      if (v4 != 9)
+      if (reason != 9)
       {
         v11 = @"EXECUTORAPPINTENTERROR_UNKNOWN";
       }
 
-      if (v4 != 8)
+      if (reason != 8)
       {
         v10 = v11;
       }
 
-      if (v4 != 7)
+      if (reason != 7)
       {
         v9 = v10;
       }
 
-      if (v4 <= 9)
+      if (reason <= 9)
       {
         v6 = v9;
       }
@@ -119,17 +119,17 @@
       v12 = @"EXECUTORAPPINTENTERROR_ACTIONFAILURE_WIFI_DISABLED";
       v13 = @"EXECUTORAPPINTENTERROR_ACTIONFAILURE_BLUETOOTH_DISABLED";
       v14 = @"EXECUTORAPPINTENTERROR_ACTIONFAILURE_NETWORK_FAILURE";
-      if (v4 != 6)
+      if (reason != 6)
       {
         v14 = @"EXECUTORAPPINTENTERROR_UNKNOWN";
       }
 
-      if (v4 != 5)
+      if (reason != 5)
       {
         v13 = v14;
       }
 
-      if (v4 != 4)
+      if (reason != 4)
       {
         v12 = v13;
       }
@@ -137,27 +137,27 @@
       v15 = @"EXECUTORAPPINTENTERROR_ACTIONFAILURE_PRE_FLIGHT_CHECK_FAILURE";
       v16 = @"EXECUTORAPPINTENTERROR_ACTIONFAILURE_PRECISE_LOCATION_DISABLED";
       v17 = @"EXECUTORAPPINTENTERROR_ACTIONFAILURE_LOCATION_DISABLED";
-      if (v4 != 3)
+      if (reason != 3)
       {
         v17 = @"EXECUTORAPPINTENTERROR_UNKNOWN";
       }
 
-      if (v4 != 2)
+      if (reason != 2)
       {
         v16 = v17;
       }
 
-      if (v4 != 1)
+      if (reason != 1)
       {
         v15 = v16;
       }
 
-      if (v4 <= 3)
+      if (reason <= 3)
       {
         v12 = v15;
       }
 
-      if (v4 <= 6)
+      if (reason <= 6)
       {
         v5 = v12;
       }
@@ -168,21 +168,21 @@
       }
     }
 
-    else if (v4 > 199)
+    else if (reason > 199)
     {
       v18 = @"EXECUTORAPPINTENTERROR_RUNTIMEERROR_PROTECTED_APP_UNLOCK_REQUIRED";
       v19 = @"EXECUTORAPPINTENTERROR_TOOLEXECUTOR_PREDEFINED";
-      if (v4 != 301)
+      if (reason != 301)
       {
         v19 = @"EXECUTORAPPINTENTERROR_UNKNOWN";
       }
 
-      if (v4 != 201)
+      if (reason != 201)
       {
         v18 = v19;
       }
 
-      if (v4 == 200)
+      if (reason == 200)
       {
         v5 = @"EXECUTORAPPINTENTERROR_ACTIONREQUIREMENT_UNKNOWN";
       }
@@ -195,7 +195,7 @@
 
     else
     {
-      switch(v4)
+      switch(reason)
       {
         case 'd':
           v5 = @"EXECUTORAPPINTENTERROR_ACTIONFAILURE_UNKNOWN";
@@ -241,12 +241,12 @@
       }
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"reason"];
+    [dictionary setObject:v5 forKeyedSubscript:@"reason"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -262,15 +262,15 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[12] & 1))
+    if ((*&self->_has & 1) == (equalCopy[12] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (reason = self->_reason, reason == [v4 reason]))
+      if ((*&self->_has & 1) == 0 || (reason = self->_reason, reason == [equalCopy reason]))
       {
         v6 = 1;
       }
@@ -280,7 +280,7 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {

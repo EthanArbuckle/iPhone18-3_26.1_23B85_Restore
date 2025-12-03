@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (MigrationBroadcaster)init;
 - (id)getRefactoredServiceUUID;
-- (void)peripheralManagerDidUpdateState:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setMigrationPercentage:(unsigned __int16)a3 minsRemaining:(unsigned __int16)a4 didFinish:(BOOL)a5;
-- (void)startAdvertising:(id)a3;
+- (void)peripheralManagerDidUpdateState:(id)state;
+- (void)setIdentifier:(id)identifier;
+- (void)setMigrationPercentage:(unsigned __int16)percentage minsRemaining:(unsigned __int16)remaining didFinish:(BOOL)finish;
+- (void)startAdvertising:(id)advertising;
 - (void)stopAdvertising;
 - (void)updateAdvertising;
 @end
@@ -50,42 +50,42 @@
   return v3;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   obj = self;
   objc_sync_enter(obj);
   identifier = obj->_identifier;
-  obj->_identifier = v4;
+  obj->_identifier = identifierCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setMigrationPercentage:(unsigned __int16)a3 minsRemaining:(unsigned __int16)a4 didFinish:(BOOL)a5
+- (void)setMigrationPercentage:(unsigned __int16)percentage minsRemaining:(unsigned __int16)remaining didFinish:(BOOL)finish
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_percentage = a3;
-  obj->_minutes = a4;
-  obj->_didFinish = a5;
+  obj->_percentage = percentage;
+  obj->_minutes = remaining;
+  obj->_didFinish = finish;
   obj->_needUpdate = 1;
   objc_sync_exit(obj);
 }
 
 - (id)getRefactoredServiceUUID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_needUpdate = 0;
-  v3 = [NSString stringWithFormat:@"%@-%04X-%02X%02X-%04X-%@", @"B323B328", 0xFFFFLL, v2->_didFinish, v2->_percentage, v2->_minutes, v2->_identifier];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_needUpdate = 0;
+  v3 = [NSString stringWithFormat:@"%@-%04X-%02X%02X-%04X-%@", @"B323B328", 0xFFFFLL, selfCopy->_didFinish, selfCopy->_percentage, selfCopy->_minutes, selfCopy->_identifier];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)startAdvertising:(id)a3
+- (void)startAdvertising:(id)advertising
 {
-  v4 = a3;
+  advertisingCopy = advertising;
   [(MigrationBroadcaster *)self stopAdvertising];
   broadcastQ = self->_broadcastQ;
   v7[0] = _NSConcreteStackBlock;
@@ -93,8 +93,8 @@
   v7[2] = sub_100001734;
   v7[3] = &unk_1000208D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = advertisingCopy;
+  v6 = advertisingCopy;
   dispatch_async(broadcastQ, v7);
 }
 
@@ -121,17 +121,17 @@
   dispatch_async(broadcastQ, block);
 }
 
-- (void)peripheralManagerDidUpdateState:(id)a3
+- (void)peripheralManagerDidUpdateState:(id)state
 {
-  if ([a3 state] == 5)
+  if ([state state] == 5)
   {
     v4 = [NSString stringWithFormat:@"Bluetooth is ON."];
-    v5 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
       v8 = v4;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", &v7, 0xCu);
+      _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", &v7, 0xCu);
     }
 
     v6 = 1;
@@ -140,10 +140,10 @@
   else
   {
     v4 = [NSString stringWithFormat:@"Bluetooth is OFF or unavailable."];
-    v5 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
-      sub_100012C38(v4, v5);
+      sub_100012C38(v4, logger);
     }
 
     v6 = 0;

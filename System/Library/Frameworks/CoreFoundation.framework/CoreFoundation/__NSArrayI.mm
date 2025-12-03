@@ -1,10 +1,10 @@
 @interface __NSArrayI
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)dealloc;
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)getObjects:(id *)a3 range:(_NSRange)a4;
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)getObjects:(id *)objects range:(_NSRange)range;
 @end
 
 @implementation __NSArrayI
@@ -35,23 +35,23 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   used = self->used;
-  if (used <= a3)
+  if (used <= index)
   {
-    __boundsFail(a3, used);
+    __boundsFail(index, used);
   }
 
-  return *(&self->list + a3);
+  return *(&self->list + index);
 }
 
-- (void)getObjects:(id *)a3 range:(_NSRange)a4
+- (void)getObjects:(id *)objects range:(_NSRange)range
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  if (!a3 && a4.length)
+  if (!objects && range.length)
   {
-    length = a4.length;
+    length = range.length;
     v12 = _os_log_pack_size();
     v13 = v28 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
     v14 = _os_log_pack_fill();
@@ -63,9 +63,9 @@
     goto LABEL_22;
   }
 
-  if (a4.length >> 61)
+  if (range.length >> 61)
   {
-    v16 = a4.length;
+    v16 = range.length;
     v12 = _os_log_pack_size();
     v13 = v28 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
     v17 = _os_log_pack_fill();
@@ -80,10 +80,10 @@ LABEL_22:
   }
 
   used = self->used;
-  if ((a4.location & 0x8000000000000000) != 0 || used < a4.location + a4.length)
+  if ((range.location & 0x8000000000000000) != 0 || used < range.location + range.length)
   {
-    location = a4.location;
-    v20 = a4.length;
+    location = range.location;
+    v20 = range.length;
     v21 = _os_log_pack_size();
     v22 = _os_log_pack_fill();
     if (used)
@@ -103,53 +103,53 @@ LABEL_22:
     objc_exception_throw(v27);
   }
 
-  v5 = (&self->list + a4.location);
-  if (a4.length <= 4)
+  v5 = (&self->list + range.location);
+  if (range.length <= 4)
   {
-    if (a4.length > 2)
+    if (range.length > 2)
     {
-      if (a4.length != 3)
+      if (range.length != 3)
       {
         v7 = *v5;
-        v5 = (&self[1].super.super.isa + a4.location);
-        *a3++ = v7;
+        v5 = (&self[1].super.super.isa + range.location);
+        *objects++ = v7;
       }
 
       v8 = *v5++;
-      *a3++ = v8;
+      *objects++ = v8;
     }
 
     else
     {
-      if (a4.length == 1)
+      if (range.length == 1)
       {
 LABEL_18:
-        *a3 = *v5;
+        *objects = *v5;
 LABEL_19:
         v10 = *MEMORY[0x1E69E9840];
         return;
       }
 
-      if (a4.length != 2)
+      if (range.length != 2)
       {
         goto LABEL_19;
       }
     }
 
     v9 = *v5++;
-    *a3++ = v9;
+    *objects++ = v9;
     goto LABEL_18;
   }
 
   v6 = *MEMORY[0x1E69E9840];
 
-  memmove(a3, v5, 8 * a4.length);
+  memmove(objects, v5, 8 * range.length);
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  if (!a4 && a5)
+  if (!objects && count)
   {
     v8 = _os_log_pack_size();
     v9 = v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -157,12 +157,12 @@ LABEL_19:
     *v10 = 136315394;
     *(v10 + 4) = "[__NSArrayI countByEnumeratingWithState:objects:count:]";
     *(v10 + 12) = 2048;
-    *(v10 + 14) = a5;
-    v11 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSArrayI countByEnumeratingWithState:objects:count:]", a5);
+    *(v10 + 14) = count;
+    v11 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSArrayI countByEnumeratingWithState:objects:count:]", count);
     goto LABEL_10;
   }
 
-  if (a5 >> 61)
+  if (count >> 61)
   {
     v8 = _os_log_pack_size();
     v9 = v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -170,23 +170,23 @@ LABEL_19:
     *v13 = 136315394;
     *(v13 + 4) = "[__NSArrayI countByEnumeratingWithState:objects:count:]";
     *(v13 + 12) = 2048;
-    *(v13 + 14) = a5;
-    v11 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSArrayI countByEnumeratingWithState:objects:count:]", a5);
+    *(v13 + 14) = count;
+    v11 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSArrayI countByEnumeratingWithState:objects:count:]", count);
 LABEL_10:
     v14 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v11) osLogPack:0 size:v9, v8];
     objc_exception_throw(v14);
   }
 
-  if (a3->var0)
+  if (state->var0)
   {
     result = 0;
   }
 
   else
   {
-    a3->var0 = -1;
-    a3->var1 = &self->list;
-    a3->var2 = &countByEnumeratingWithState_objects_count__const_mu_6;
+    state->var0 = -1;
+    state->var1 = &self->list;
+    state->var2 = &countByEnumeratingWithState_objects_count__const_mu_6;
     result = self->used;
   }
 
@@ -194,10 +194,10 @@ LABEL_10:
   return result;
 }
 
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block
 {
   v25[6] = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!block)
   {
     v18 = _os_log_pack_size();
     v20 = &v25[-1] - ((MEMORY[0x1EEE9AC00](v18, v19) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -209,7 +209,7 @@ LABEL_10:
     objc_exception_throw(v23);
   }
 
-  v5 = a3;
+  optionsCopy = options;
   p_used = &self->used;
   used = self->used;
   v25[0] = MEMORY[0x1E69E9820];
@@ -217,10 +217,10 @@ LABEL_10:
   v25[2] = __53____NSArrayI_enumerateObjectsWithOptions_usingBlock___block_invoke;
   v25[3] = &unk_1E6A55E70;
   v25[4] = self;
-  v25[5] = a4;
-  if ((__NSCollectionHandleConcurrentEnumerationIfSpecified(v5, 1, used, v25) & 1) == 0)
+  v25[5] = block;
+  if ((__NSCollectionHandleConcurrentEnumerationIfSpecified(optionsCopy, 1, used, v25) & 1) == 0)
   {
-    if ((v5 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
       HIBYTE(v24) = 0;
       v14 = *p_used;
@@ -234,7 +234,7 @@ LABEL_10:
         v15 = v14 - 1;
         v16 = p_used[v14];
         v17 = _CFAutoreleasePoolPush();
-        __NSARRAY_IS_CALLING_OUT_TO_A_BLOCK__(a4);
+        __NSARRAY_IS_CALLING_OUT_TO_A_BLOCK__(block);
         _CFAutoreleasePoolPop(v17);
         v14 = v15;
       }
@@ -253,7 +253,7 @@ LABEL_10:
         {
           v12 = p_list[v10];
           v13 = _CFAutoreleasePoolPush();
-          __NSARRAY_IS_CALLING_OUT_TO_A_BLOCK__(a4);
+          __NSARRAY_IS_CALLING_OUT_TO_A_BLOCK__(block);
           _CFAutoreleasePoolPop(v13);
           if (HIBYTE(v24) == 1)
           {
@@ -271,15 +271,15 @@ LABEL_10:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
   used = self->used;
-  if (used <= a3)
+  if (used <= subscript)
   {
-    __boundsFail(a3, used);
+    __boundsFail(subscript, used);
   }
 
-  return *(&self->list + a3);
+  return *(&self->list + subscript);
 }
 
 @end

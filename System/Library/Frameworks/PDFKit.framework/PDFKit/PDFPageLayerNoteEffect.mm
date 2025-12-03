@@ -40,25 +40,25 @@
   if (WeakRetained)
   {
     v12 = WeakRetained;
-    v5 = [WeakRetained markupStyle];
+    markupStyle = [WeakRetained markupStyle];
     v6 = +[PDFAnnotation PDFTextColors];
-    v7 = [v6 objectAtIndex:v5];
-    v8 = [v7 CGColor];
+    v7 = [v6 objectAtIndex:markupStyle];
+    cGColor = [v7 CGColor];
 
     v9 = +[PDFAnnotation PDFTextBorderColors];
-    v10 = [v9 objectAtIndex:v5];
-    v11 = [v10 CGColor];
+    v10 = [v9 objectAtIndex:markupStyle];
+    cGColor2 = [v10 CGColor];
 
-    if (!CGColorEqualToColor([(PDFPageLayerNoteEffect *)self backgroundColor], v8))
+    if (!CGColorEqualToColor([(PDFPageLayerNoteEffect *)self backgroundColor], cGColor))
     {
-      [(PDFPageLayerNoteEffect *)self setBackgroundColor:v8];
+      [(PDFPageLayerNoteEffect *)self setBackgroundColor:cGColor];
     }
 
-    WeakRetained = CGColorEqualToColor([(PDFPageLayerNoteEffect *)self borderColor], v11);
+    WeakRetained = CGColorEqualToColor([(PDFPageLayerNoteEffect *)self borderColor], cGColor2);
     v4 = v12;
     if ((WeakRetained & 1) == 0)
     {
-      WeakRetained = [(PDFPageLayerNoteEffect *)self setBorderColor:v11];
+      WeakRetained = [(PDFPageLayerNoteEffect *)self setBorderColor:cGColor2];
       v4 = v12;
     }
   }

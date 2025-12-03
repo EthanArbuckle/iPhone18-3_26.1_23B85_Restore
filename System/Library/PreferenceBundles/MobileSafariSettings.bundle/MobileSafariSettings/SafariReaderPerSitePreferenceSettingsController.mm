@@ -24,10 +24,10 @@
 
 - (id)preference
 {
-  v2 = [(SafariReaderPerSitePreferenceSettingsController *)self preferenceManager];
-  v3 = [v2 readerPreference];
+  preferenceManager = [(SafariReaderPerSitePreferenceSettingsController *)self preferenceManager];
+  readerPreference = [preferenceManager readerPreference];
 
-  return v3;
+  return readerPreference;
 }
 
 @end

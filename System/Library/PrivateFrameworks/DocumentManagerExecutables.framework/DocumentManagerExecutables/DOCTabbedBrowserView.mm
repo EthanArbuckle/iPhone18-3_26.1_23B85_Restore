@@ -1,24 +1,24 @@
 @interface DOCTabbedBrowserView
 - (DOCTabbedBrowserViewDelegate)delegate;
 - (void)didMoveToWindow;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation DOCTabbedBrowserView
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v8.receiver = self;
   v8.super_class = DOCTabbedBrowserView;
-  [(DOCTabbedBrowserView *)&v8 willMoveToWindow:v4];
-  v5 = [(DOCTabbedBrowserView *)self delegate];
+  [(DOCTabbedBrowserView *)&v8 willMoveToWindow:windowCopy];
+  delegate = [(DOCTabbedBrowserView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(DOCTabbedBrowserView *)self delegate];
-    [v7 tabbedBrowserView:self willMoveToWindow:v4];
+    delegate2 = [(DOCTabbedBrowserView *)self delegate];
+    [delegate2 tabbedBrowserView:self willMoveToWindow:windowCopy];
   }
 }
 
@@ -27,14 +27,14 @@
   v7.receiver = self;
   v7.super_class = DOCTabbedBrowserView;
   [(DOCTabbedBrowserView *)&v7 didMoveToWindow];
-  v3 = [(DOCTabbedBrowserView *)self delegate];
+  delegate = [(DOCTabbedBrowserView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(DOCTabbedBrowserView *)self delegate];
-    v6 = [(DOCTabbedBrowserView *)self window];
-    [v5 tabbedBrowserView:self didMoveToWindow:v6];
+    delegate2 = [(DOCTabbedBrowserView *)self delegate];
+    window = [(DOCTabbedBrowserView *)self window];
+    [delegate2 tabbedBrowserView:self didMoveToWindow:window];
   }
 }
 

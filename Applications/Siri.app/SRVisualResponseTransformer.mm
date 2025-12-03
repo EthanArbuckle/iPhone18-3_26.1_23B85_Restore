@@ -1,48 +1,48 @@
 @interface SRVisualResponseTransformer
-+ (id)_splitVisualResponse:(id)a3 forVisualResponseSnippet:(id)a4;
-+ (id)transformVisualResponse:(id)a3 forMode:(unint64_t)a4 idiom:(int64_t)a5 shouldHideSnippet:(BOOL)a6;
++ (id)_splitVisualResponse:(id)response forVisualResponseSnippet:(id)snippet;
++ (id)transformVisualResponse:(id)response forMode:(unint64_t)mode idiom:(int64_t)idiom shouldHideSnippet:(BOOL)snippet;
 + (int64_t)currentIdiom;
 @end
 
 @implementation SRVisualResponseTransformer
 
-+ (id)transformVisualResponse:(id)a3 forMode:(unint64_t)a4 idiom:(int64_t)a5 shouldHideSnippet:(BOOL)a6
++ (id)transformVisualResponse:(id)response forMode:(unint64_t)mode idiom:(int64_t)idiom shouldHideSnippet:(BOOL)snippet
 {
-  v9 = a3;
+  responseCopy = response;
   v10 = objc_alloc_init(NSMutableArray);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v26 = v9;
-  v11 = [v9 views];
-  v12 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  v26 = responseCopy;
+  views = [responseCopy views];
+  v12 = [views countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v32;
-    v28 = v11;
-    v29 = a4;
-    v27 = a6;
+    v28 = views;
+    modeCopy = mode;
+    snippetCopy = snippet;
     do
     {
       for (i = 0; i != v13; i = i + 1)
       {
         if (*v32 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(views);
         }
 
         v16 = *(*(&v31 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if (a6)
+          if (snippet)
           {
             continue;
           }
 
-          [a1 setVisualMode:{objc_msgSend(a1, "_dialogModeToVisualModeConverter:", a4)}];
+          [self setVisualMode:{objc_msgSend(self, "_dialogModeToVisualModeConverter:", mode)}];
 LABEL_12:
           [v10 addObject:v16];
           continue;
@@ -54,28 +54,28 @@ LABEL_12:
           goto LABEL_12;
         }
 
-        if (!a6)
+        if (!snippet)
         {
           v17 = v16;
           v18 = v10;
-          v19 = [a1 _dialogModeToVisualModeConverter:a4];
-          [a1 setVisualMode:v19];
-          v20 = [v17 modelData];
+          v19 = [self _dialogModeToVisualModeConverter:mode];
+          [self setVisualMode:v19];
+          modelData = [v17 modelData];
           v21 = v19;
           v10 = v18;
-          a6 = v27;
-          v22 = [VRXVisualResponseProvider transformModel:v20 mode:v21 currentIdiom:a5];
+          snippet = snippetCopy;
+          v22 = [VRXVisualResponseProvider transformModel:modelData mode:v21 currentIdiom:idiom];
 
-          v23 = [a1 _splitVisualResponse:v22 forVisualResponseSnippet:v17];
+          v23 = [self _splitVisualResponse:v22 forVisualResponseSnippet:v17];
 
           [v10 addObjectsFromArray:v23];
-          a4 = v29;
+          mode = modeCopy;
 
-          v11 = v28;
+          views = v28;
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v13 = [views countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v13);
@@ -102,16 +102,16 @@ LABEL_12:
   return 1;
 }
 
-+ (id)_splitVisualResponse:(id)a3 forVisualResponseSnippet:(id)a4
++ (id)_splitVisualResponse:(id)response forVisualResponseSnippet:(id)snippet
 {
-  v5 = a3;
-  v6 = a4;
+  responseCopy = response;
+  snippetCopy = snippet;
   v7 = objc_alloc_init(NSMutableArray);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v5;
+  obj = responseCopy;
   v8 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
@@ -132,13 +132,13 @@ LABEL_12:
         }
 
         v14 = *(*(&v26 + 1) + 8 * v13);
-        v15 = [v6 copy];
-        v16 = [v14 model];
-        [v15 setModelData:v16];
+        v15 = [snippetCopy copy];
+        model = [v14 model];
+        [v15 setModelData:model];
 
-        v17 = [v14 responseType];
+        responseType = [v14 responseType];
         v18 = v12;
-        if (v17 == 1 || (v19 = [v14 responseType], v18 = v24, v19 == 2))
+        if (responseType == 1 || (v19 = [v14 responseType], v18 = v24, v19 == 2))
         {
           [v15 setItemType:v18];
         }
@@ -146,8 +146,8 @@ LABEL_12:
         if (v10 >= 1)
         {
           v20 = +[NSUUID UUID];
-          v21 = [v20 UUIDString];
-          [v15 setAceId:v21];
+          uUIDString = [v20 UUIDString];
+          [v15 setAceId:uUIDString];
         }
 
         [v7 addObject:v15];

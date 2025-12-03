@@ -1,16 +1,16 @@
 @interface OrgApacheLuceneUtilPackedPackedInts_ReaderIteratorImpl
-- (OrgApacheLuceneUtilPackedPackedInts_ReaderIteratorImpl)initWithInt:(int)a3 withInt:(int)a4 withOrgApacheLuceneStoreDataInput:(id)a5;
+- (OrgApacheLuceneUtilPackedPackedInts_ReaderIteratorImpl)initWithInt:(int)int withInt:(int)withInt withOrgApacheLuceneStoreDataInput:(id)input;
 - (int64_t)next;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilPackedPackedInts_ReaderIteratorImpl
 
-- (OrgApacheLuceneUtilPackedPackedInts_ReaderIteratorImpl)initWithInt:(int)a3 withInt:(int)a4 withOrgApacheLuceneStoreDataInput:(id)a5
+- (OrgApacheLuceneUtilPackedPackedInts_ReaderIteratorImpl)initWithInt:(int)int withInt:(int)withInt withOrgApacheLuceneStoreDataInput:(id)input
 {
-  JreStrongAssign(&self->in_, a5);
-  self->bitsPerValue_ = a4;
-  self->valueCount_ = a3;
+  JreStrongAssign(&self->in_, input);
+  self->bitsPerValue_ = withInt;
+  self->valueCount_ = int;
   return self;
 }
 

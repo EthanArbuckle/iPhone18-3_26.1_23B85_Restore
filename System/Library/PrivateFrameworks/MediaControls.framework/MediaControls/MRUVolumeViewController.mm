@@ -1,77 +1,77 @@
 @interface MRUVolumeViewController
 - (BOOL)isGroupRenderingRequired;
 - (MRUVisualStylingProvider)stylingProvider;
-- (MRUVolumeViewController)initWithAudioModuleController:(id)a3;
+- (MRUVolumeViewController)initWithAudioModuleController:(id)controller;
 - (MRUVolumeViewControllerDelegate)delegate;
 - (NSArray)containerViewsForPlatterTreatment;
 - (NSArray)punchOutRenderingViews;
 - (NSString)volumeAudioCategory;
 - (UIWindowScene)windowSceneForVolumeDisplay;
 - (double)preferredExpandedContentWidth;
-- (void)audioModuleController:(id)a3 hearingServiceController:(id)a4 didChangePrimaryAmplification:(float)a5;
-- (void)audioModuleController:(id)a3 volumeController:(id)a4 didChangeVolumeControlCapabilities:(unsigned int)a5 effectiveVolumeValue:(float)a6 forType:(int64_t)a7;
+- (void)audioModuleController:(id)controller hearingServiceController:(id)serviceController didChangePrimaryAmplification:(float)amplification;
+- (void)audioModuleController:(id)controller volumeController:(id)volumeController didChangeVolumeControlCapabilities:(unsigned int)capabilities effectiveVolumeValue:(float)value forType:(int64_t)type;
 - (void)dealloc;
-- (void)decreaseTouchUpInside:(id)a3;
-- (void)didTransitionToExpandedContentMode:(BOOL)a3;
-- (void)environmentSliderValueDidChange:(id)a3;
-- (void)increaseTouchUpInside:(id)a3;
+- (void)decreaseTouchUpInside:(id)inside;
+- (void)didTransitionToExpandedContentMode:(BOOL)mode;
+- (void)environmentSliderValueDidChange:(id)change;
+- (void)increaseTouchUpInside:(id)inside;
 - (void)loadView;
-- (void)primarySliderValueDidChange:(id)a3;
-- (void)secondarySliderValueDidChange:(id)a3;
-- (void)setCompactContinuousCornerRadius:(double)a3;
-- (void)setContentMetrics:(id)a3;
-- (void)setContentRenderingMode:(unint64_t)a3;
-- (void)setPrimaryGlyphShouldBeTinted:(BOOL)a3;
-- (void)setPrimaryInteractionEnabled:(BOOL)a3;
-- (void)setSecondaryInteractionEnabled:(BOOL)a3;
-- (void)updateEnvironmentSliderValueAnimated:(BOOL)a3;
+- (void)primarySliderValueDidChange:(id)change;
+- (void)secondarySliderValueDidChange:(id)change;
+- (void)setCompactContinuousCornerRadius:(double)radius;
+- (void)setContentMetrics:(id)metrics;
+- (void)setContentRenderingMode:(unint64_t)mode;
+- (void)setPrimaryGlyphShouldBeTinted:(BOOL)tinted;
+- (void)setPrimaryInteractionEnabled:(BOOL)enabled;
+- (void)setSecondaryInteractionEnabled:(BOOL)enabled;
+- (void)updateEnvironmentSliderValueAnimated:(BOOL)animated;
 - (void)updatePrimarySliderVolumeValueAfterDelay;
-- (void)updatePrimarySliderVolumeValueAnimated:(BOOL)a3;
-- (void)updateSecondarySliderVolumeValueAnimated:(BOOL)a3;
+- (void)updatePrimarySliderVolumeValueAnimated:(BOOL)animated;
+- (void)updateSecondarySliderVolumeValueAnimated:(BOOL)animated;
 - (void)updateSliderAsset;
 - (void)updateSliderInteractionEnabled;
 - (void)updateSliderTint;
 - (void)updateVisibility;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MRUVolumeViewController
 
 - (void)updateVisibility
 {
-  v3 = [(MRUAudioModuleController *)self->_audioModuleController spatialAudioController];
-  v4 = [v3 availableModes];
-  v5 = [v4 count];
+  spatialAudioController = [(MRUAudioModuleController *)self->_audioModuleController spatialAudioController];
+  availableModes = [spatialAudioController availableModes];
+  v5 = [availableModes count];
   v6 = v5 > 1;
 
-  v7 = [(MRUAudioModuleController *)self->_audioModuleController outputDeviceRouteController];
-  v8 = [v7 isSplitRoute];
+  outputDeviceRouteController = [(MRUAudioModuleController *)self->_audioModuleController outputDeviceRouteController];
+  isSplitRoute = [outputDeviceRouteController isSplitRoute];
 
-  v9 = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
-  v10 = [v9 volumeCapabilitiesForType:0];
+  volumeController = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
+  v10 = [volumeController volumeCapabilitiesForType:0];
 
   v11 = +[MRUFeatureFlagProvider isRelativeVolumeUIEnabled];
   v12 = (v10 & 5) != 0 && v11;
-  v13 = [(MRUAudioModuleController *)self->_audioModuleController hearingServiceController];
-  v14 = [v13 primaryHearingAidEnabled] & (v8 ^ 1);
+  hearingServiceController = [(MRUAudioModuleController *)self->_audioModuleController hearingServiceController];
+  v14 = [hearingServiceController primaryHearingAidEnabled] & (isSplitRoute ^ 1);
 
-  v15 = [(MRUVolumeViewController *)self view];
-  v16 = v8 ^ [v15 showSecondarySlider];
+  view = [(MRUVolumeViewController *)self view];
+  v16 = isSplitRoute ^ [view showSecondarySlider];
   if (v16)
   {
     goto LABEL_5;
   }
 
-  v17 = [(MRUVolumeViewController *)self view];
-  v18 = [v17 showEnvironmentSlider];
+  view2 = [(MRUVolumeViewController *)self view];
+  showEnvironmentSlider = [view2 showEnvironmentSlider];
 
-  if (v14 == v18)
+  if (v14 == showEnvironmentSlider)
   {
-    v15 = [(MRUVolumeViewController *)self view];
-    if (v12 != [v15 showStepper])
+    view = [(MRUVolumeViewController *)self view];
+    if (v12 != [view showStepper])
     {
 LABEL_5:
 
@@ -79,8 +79,8 @@ LABEL_5:
     }
 
     v23 = v5 > 1;
-    v24 = [(MRUVolumeViewController *)self view];
-    v25 = v23 ^ [v24 showSpatialAudioModeButton];
+    view3 = [(MRUVolumeViewController *)self view];
+    v25 = v23 ^ [view3 showSpatialAudioModeButton];
 
     if ((v25 & 1) == 0)
     {
@@ -97,18 +97,18 @@ LABEL_5:
 
 LABEL_8:
   v19 = MEMORY[0x1E6997258];
-  v20 = [(MRUVolumeViewController *)self view];
-  v21 = [v20 window];
+  view4 = [(MRUVolumeViewController *)self view];
+  window = [view4 window];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __43__MRUVolumeViewController_updateVisibility__block_invoke;
   v26[3] = &unk_1E7664308;
   v26[4] = self;
-  v27 = v8;
+  v27 = isSplitRoute;
   v28 = v14;
   v29 = v12;
   v30 = v6;
-  [v19 performWithoutAnimationWhileHiddenInWindow:v21 actions:v26];
+  [v19 performWithoutAnimationWhileHiddenInWindow:window actions:v26];
 
   if (v16)
   {
@@ -121,38 +121,38 @@ LABEL_8:
 {
   if (self->_contentRenderingMode == 1)
   {
-    v11 = +[MRUOutputDeviceAsset speakerAsset];
+    systemOutputDeviceAssetWithInCall = +[MRUOutputDeviceAsset speakerAsset];
     CCUISliderPreviewRenderingModeValue();
     v4 = v3;
   }
 
   else
   {
-    v5 = [(MRUAudioModuleController *)self->_audioModuleController outputDeviceRouteController];
-    v11 = [v5 systemOutputDeviceAssetWithInCall];
+    outputDeviceRouteController = [(MRUAudioModuleController *)self->_audioModuleController outputDeviceRouteController];
+    systemOutputDeviceAssetWithInCall = [outputDeviceRouteController systemOutputDeviceAssetWithInCall];
 
-    v6 = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
-    [v6 volumeValueForType:0];
+    volumeController = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
+    [volumeController volumeValueForType:0];
     v4 = v7;
   }
 
   *&v3 = v4;
   v8 = [MRUSystemVolumeController packageStateForVolumeValue:v3];
-  v9 = [(MRUVolumeViewController *)self view];
-  v10 = [v9 primarySlider];
-  [v10 setOutputDeviceAsset:v11 state:v8 animated:{-[MRUVolumeViewController isOnScreen](self, "isOnScreen")}];
+  view = [(MRUVolumeViewController *)self view];
+  primarySlider = [view primarySlider];
+  [primarySlider setOutputDeviceAsset:systemOutputDeviceAssetWithInCall state:v8 animated:{-[MRUVolumeViewController isOnScreen](self, "isOnScreen")}];
 }
 
-- (MRUVolumeViewController)initWithAudioModuleController:(id)a3
+- (MRUVolumeViewController)initWithAudioModuleController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = MRUVolumeViewController;
   v6 = [(MRUVolumeViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_audioModuleController, a3);
+    objc_storeStrong(&v6->_audioModuleController, controller);
   }
 
   return v7;
@@ -160,8 +160,8 @@ LABEL_8:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E6970A38] sharedInstance];
-  [v3 removeVolumeDisplay:self];
+  mEMORY[0x1E6970A38] = [MEMORY[0x1E6970A38] sharedInstance];
+  [mEMORY[0x1E6970A38] removeVolumeDisplay:self];
 
   v4.receiver = self;
   v4.super_class = MRUVolumeViewController;
@@ -180,32 +180,32 @@ LABEL_8:
   v18.receiver = self;
   v18.super_class = MRUVolumeViewController;
   [(MRUVolumeViewController *)&v18 viewDidLoad];
-  v3 = [(MRUVolumeViewController *)self view];
-  v4 = [v3 primarySlider];
-  [v4 addTarget:self action:sel_primarySliderValueDidChange_ forControlEvents:4096];
+  view = [(MRUVolumeViewController *)self view];
+  primarySlider = [view primarySlider];
+  [primarySlider addTarget:self action:sel_primarySliderValueDidChange_ forControlEvents:4096];
 
-  v5 = [(MRUVolumeViewController *)self view];
-  v6 = [v5 secondarySlider];
-  [v6 addTarget:self action:sel_secondarySliderValueDidChange_ forControlEvents:4096];
+  view2 = [(MRUVolumeViewController *)self view];
+  secondarySlider = [view2 secondarySlider];
+  [secondarySlider addTarget:self action:sel_secondarySliderValueDidChange_ forControlEvents:4096];
 
-  v7 = [(MRUVolumeViewController *)self view];
-  v8 = [v7 environmentSlider];
-  [v8 addTarget:self action:sel_environmentSliderValueDidChange_ forControlEvents:0x40000];
+  view3 = [(MRUVolumeViewController *)self view];
+  environmentSlider = [view3 environmentSlider];
+  [environmentSlider addTarget:self action:sel_environmentSliderValueDidChange_ forControlEvents:0x40000];
 
-  v9 = [(MRUVolumeViewController *)self view];
-  v10 = [v9 stepper];
-  v11 = [v10 increaseButton];
-  [v11 addTarget:self action:sel_increaseTouchUpInside_ forControlEvents:64];
+  view4 = [(MRUVolumeViewController *)self view];
+  stepper = [view4 stepper];
+  increaseButton = [stepper increaseButton];
+  [increaseButton addTarget:self action:sel_increaseTouchUpInside_ forControlEvents:64];
 
-  v12 = [(MRUVolumeViewController *)self view];
-  v13 = [v12 stepper];
-  v14 = [v13 decreaseButton];
-  [v14 addTarget:self action:sel_decreaseTouchUpInside_ forControlEvents:64];
+  view5 = [(MRUVolumeViewController *)self view];
+  stepper2 = [view5 stepper];
+  decreaseButton = [stepper2 decreaseButton];
+  [decreaseButton addTarget:self action:sel_decreaseTouchUpInside_ forControlEvents:64];
 
   [(MRUVolumeViewController *)self compactContinuousCornerRadius];
   v16 = v15;
-  v17 = [(MRUVolumeViewController *)self view];
-  [v17 setCompactContinuousCornerRadius:v16];
+  view6 = [(MRUVolumeViewController *)self view];
+  [view6 setCompactContinuousCornerRadius:v16];
 
   [(MRUAudioModuleController *)self->_audioModuleController addObserver:self];
   [(MRUVolumeViewController *)self updateSliderTint];
@@ -216,44 +216,44 @@ LABEL_8:
   [(MRUVolumeViewController *)self setSecondaryInteractionEnabled:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = MRUVolumeViewController;
   [(MRUVolumeViewController *)&v6 viewWillAppear:?];
   [(MRUVolumeViewController *)self updateSliderInteractionEnabled];
-  [(MRUVolumeViewController *)self updatePrimarySliderVolumeValueAnimated:v3];
-  v5 = [MEMORY[0x1E6970A38] sharedInstance];
-  [v5 addVolumeDisplay:self];
+  [(MRUVolumeViewController *)self updatePrimarySliderVolumeValueAnimated:appearCopy];
+  mEMORY[0x1E6970A38] = [MEMORY[0x1E6970A38] sharedInstance];
+  [mEMORY[0x1E6970A38] addVolumeDisplay:self];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MRUVolumeViewController;
-  [(MRUVolumeViewController *)&v5 viewWillDisappear:a3];
+  [(MRUVolumeViewController *)&v5 viewWillDisappear:disappear];
   [(MRUVolumeViewController *)self updateSliderInteractionEnabled];
-  v4 = [MEMORY[0x1E6970A38] sharedInstance];
-  [v4 removeVolumeDisplay:self];
+  mEMORY[0x1E6970A38] = [MEMORY[0x1E6970A38] sharedInstance];
+  [mEMORY[0x1E6970A38] removeVolumeDisplay:self];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v11.receiver = self;
   v11.super_class = MRUVolumeViewController;
-  v7 = a4;
-  [(MRUVolumeViewController *)&v11 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [v7 isAnimated];
+  coordinatorCopy = coordinator;
+  [(MRUVolumeViewController *)&v11 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  isAnimated = [coordinatorCopy isAnimated];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __78__MRUVolumeViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v9[3] = &unk_1E76642B8;
   v9[4] = self;
-  v10 = v8;
-  [v7 animateAlongsideTransition:v9 completion:0];
+  v10 = isAnimated;
+  [coordinatorCopy animateAlongsideTransition:v9 completion:0];
 }
 
 uint64_t __78__MRUVolumeViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -283,62 +283,62 @@ void __78__MRUVolumeViewController_viewWillTransitionToSize_withTransitionCoordi
 
 - (MRUVisualStylingProvider)stylingProvider
 {
-  v2 = [(MRUVolumeViewController *)self view];
-  v3 = [v2 stylingProvider];
+  view = [(MRUVolumeViewController *)self view];
+  stylingProvider = [view stylingProvider];
 
-  return v3;
+  return stylingProvider;
 }
 
-- (void)setPrimaryInteractionEnabled:(BOOL)a3
+- (void)setPrimaryInteractionEnabled:(BOOL)enabled
 {
-  if (self->_primaryInteractionEnabled != a3)
+  if (self->_primaryInteractionEnabled != enabled)
   {
-    v4 = a3;
-    self->_primaryInteractionEnabled = a3;
-    v6 = [(MRUVolumeViewController *)self view];
-    [v6 setPrimaryInteractionEnabled:v4];
+    enabledCopy = enabled;
+    self->_primaryInteractionEnabled = enabled;
+    view = [(MRUVolumeViewController *)self view];
+    [view setPrimaryInteractionEnabled:enabledCopy];
 
     [(MRUVolumeViewController *)self updatePrimarySliderVolumeValueAnimated:0];
   }
 }
 
-- (void)setPrimaryGlyphShouldBeTinted:(BOOL)a3
+- (void)setPrimaryGlyphShouldBeTinted:(BOOL)tinted
 {
-  if (self->_primaryGlyphShouldBeTinted != a3)
+  if (self->_primaryGlyphShouldBeTinted != tinted)
   {
-    self->_primaryGlyphShouldBeTinted = a3;
+    self->_primaryGlyphShouldBeTinted = tinted;
     [(MRUVolumeViewController *)self updateSliderTint];
   }
 }
 
-- (void)setSecondaryInteractionEnabled:(BOOL)a3
+- (void)setSecondaryInteractionEnabled:(BOOL)enabled
 {
-  if (self->_secondaryInteractionEnabled != a3)
+  if (self->_secondaryInteractionEnabled != enabled)
   {
-    v4 = a3;
-    self->_secondaryInteractionEnabled = a3;
-    v6 = [(MRUVolumeViewController *)self view];
-    [v6 setSecondaryInteractionEnabled:v4];
+    enabledCopy = enabled;
+    self->_secondaryInteractionEnabled = enabled;
+    view = [(MRUVolumeViewController *)self view];
+    [view setSecondaryInteractionEnabled:enabledCopy];
 
     [(MRUVolumeViewController *)self updateSecondarySliderVolumeValueAnimated:0];
   }
 }
 
-- (void)primarySliderValueDidChange:(id)a3
+- (void)primarySliderValueDidChange:(id)change
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MRUVolumeViewController *)self view];
-  if ([v5 isExpanded])
+  changeCopy = change;
+  view = [(MRUVolumeViewController *)self view];
+  if ([view isExpanded])
   {
-    v6 = [(MRUVolumeViewController *)self view];
-    v7 = [v6 showSecondarySlider];
+    view2 = [(MRUVolumeViewController *)self view];
+    showSecondarySlider = [view2 showSecondarySlider];
 
-    if (v7)
+    if (showSecondarySlider)
     {
-      v8 = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
-      [v4 value];
-      [v8 setVolumeValue:1 forType:?];
+      volumeController = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
+      [changeCopy value];
+      [volumeController setVolumeValue:1 forType:?];
 
       goto LABEL_8;
     }
@@ -348,12 +348,12 @@ void __78__MRUVolumeViewController_viewWillTransitionToSize_withTransitionCoordi
   {
   }
 
-  v9 = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
-  [v4 value];
-  [v9 setVolumeValue:0 forType:?];
+  volumeController2 = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
+  [changeCopy value];
+  [volumeController2 setVolumeValue:0 forType:?];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [v4 value];
+  [changeCopy value];
   [WeakRetained volumeViewController:self didChangeSystemVolumeValue:?];
 
   v11 = MCLogCategoryDefault();
@@ -361,87 +361,87 @@ void __78__MRUVolumeViewController_viewWillTransitionToSize_withTransitionCoordi
   {
     v12 = objc_opt_class();
     v13 = MEMORY[0x1E696AD98];
-    [v4 value];
+    [changeCopy value];
     v14 = [v13 numberWithFloat:?];
     v16 = 138544130;
     v17 = v12;
     v18 = 2114;
     v19 = v14;
     v20 = 1024;
-    v21 = [v4 isEditingValue];
+    isEditingValue = [changeCopy isEditingValue];
     v22 = 1024;
-    v23 = [v4 isTracking];
+    isTracking = [changeCopy isTracking];
     _os_log_impl(&dword_1A20FC000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ slider value changed: %{public}@ | editing: %{BOOL}u | tracking: %{BOOL}u", &v16, 0x22u);
   }
 
   [(MRUVolumeViewController *)self updatePrimarySliderVolumeValueAfterDelay];
 LABEL_8:
-  [v4 value];
+  [changeCopy value];
   v15 = [MRUSystemVolumeController packageStateForVolumeValue:?];
-  [v4 setGlyphState:v15];
+  [changeCopy setGlyphState:v15];
 }
 
-- (void)secondarySliderValueDidChange:(id)a3
+- (void)secondarySliderValueDidChange:(id)change
 {
   audioModuleController = self->_audioModuleController;
-  v4 = a3;
-  v8 = [(MRUAudioModuleController *)audioModuleController volumeController];
-  [v4 value];
+  changeCopy = change;
+  volumeController = [(MRUAudioModuleController *)audioModuleController volumeController];
+  [changeCopy value];
   v6 = v5;
 
   LODWORD(v7) = v6;
-  [v8 setVolumeValue:2 forType:v7];
+  [volumeController setVolumeValue:2 forType:v7];
 }
 
-- (void)environmentSliderValueDidChange:(id)a3
+- (void)environmentSliderValueDidChange:(id)change
 {
-  [a3 value];
+  [change value];
   v5 = v4;
-  v7 = [(MRUAudioModuleController *)self->_audioModuleController hearingServiceController];
+  hearingServiceController = [(MRUAudioModuleController *)self->_audioModuleController hearingServiceController];
   LODWORD(v6) = v5;
-  [v7 setPrimaryAmplification:v6];
+  [hearingServiceController setPrimaryAmplification:v6];
 }
 
-- (void)increaseTouchUpInside:(id)a3
+- (void)increaseTouchUpInside:(id)inside
 {
-  v3 = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
-  [v3 increaseVolume];
+  volumeController = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
+  [volumeController increaseVolume];
 }
 
-- (void)decreaseTouchUpInside:(id)a3
+- (void)decreaseTouchUpInside:(id)inside
 {
-  v3 = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
-  [v3 decreaseVolume];
+  volumeController = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
+  [volumeController decreaseVolume];
 }
 
 - (NSArray)containerViewsForPlatterTreatment
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(MRUVolumeViewController *)self view];
-  v5 = [v4 primarySlider];
-  v6 = [v5 elasticContentView];
-  v7 = [v3 arrayWithObject:v6];
+  view = [(MRUVolumeViewController *)self view];
+  primarySlider = [view primarySlider];
+  elasticContentView = [primarySlider elasticContentView];
+  v7 = [v3 arrayWithObject:elasticContentView];
 
-  v8 = [(MRUVolumeViewController *)self view];
-  LODWORD(v5) = [v8 showSecondarySlider];
+  view2 = [(MRUVolumeViewController *)self view];
+  LODWORD(primarySlider) = [view2 showSecondarySlider];
 
-  if (v5)
+  if (primarySlider)
   {
-    v9 = [(MRUVolumeViewController *)self view];
-    v10 = [v9 secondarySlider];
-    v11 = [v10 elasticContentView];
-    [v7 addObject:v11];
+    view3 = [(MRUVolumeViewController *)self view];
+    secondarySlider = [view3 secondarySlider];
+    elasticContentView2 = [secondarySlider elasticContentView];
+    [v7 addObject:elasticContentView2];
   }
 
-  v12 = [(MRUVolumeViewController *)self view];
-  v13 = [v12 showEnvironmentSlider];
+  view4 = [(MRUVolumeViewController *)self view];
+  showEnvironmentSlider = [view4 showEnvironmentSlider];
 
-  if (v13)
+  if (showEnvironmentSlider)
   {
-    v14 = [(MRUVolumeViewController *)self view];
-    v15 = [v14 environmentSlider];
-    v16 = [v15 elasticContentView];
-    [v7 addObject:v16];
+    view5 = [(MRUVolumeViewController *)self view];
+    environmentSlider = [view5 environmentSlider];
+    elasticContentView3 = [environmentSlider elasticContentView];
+    [v7 addObject:elasticContentView3];
   }
 
   return v7;
@@ -449,7 +449,7 @@ LABEL_8:
 
 - (double)preferredExpandedContentWidth
 {
-  v3 = [(MRUVolumeViewController *)self view];
+  view = [(MRUVolumeViewController *)self view];
   ShouldBeVertical = MRULayoutShouldBeVertical();
   if (ShouldBeVertical)
   {
@@ -458,45 +458,45 @@ LABEL_8:
 
   else
   {
-    v6 = [(MRUVolumeViewController *)self view];
-    v7 = [v6 window];
-    [v7 bounds];
+    view2 = [(MRUVolumeViewController *)self view];
+    window = [view2 window];
+    [window bounds];
     Width = CGRectGetWidth(v9);
   }
 
   return Width;
 }
 
-- (void)setCompactContinuousCornerRadius:(double)a3
+- (void)setCompactContinuousCornerRadius:(double)radius
 {
-  if (self->_compactContinuousCornerRadius != a3)
+  if (self->_compactContinuousCornerRadius != radius)
   {
-    self->_compactContinuousCornerRadius = a3;
-    v4 = [(MRUVolumeViewController *)self viewIfLoaded];
-    [v4 setCompactContinuousCornerRadius:a3];
+    self->_compactContinuousCornerRadius = radius;
+    viewIfLoaded = [(MRUVolumeViewController *)self viewIfLoaded];
+    [viewIfLoaded setCompactContinuousCornerRadius:radius];
   }
 }
 
-- (void)setContentRenderingMode:(unint64_t)a3
+- (void)setContentRenderingMode:(unint64_t)mode
 {
-  self->_contentRenderingMode = a3;
+  self->_contentRenderingMode = mode;
   [(MRUVolumeViewController *)self updateSliderAsset];
   [(MRUVolumeViewController *)self updatePrimarySliderVolumeValueAnimated:0];
 
   [(MRUVolumeViewController *)self updateSliderInteractionEnabled];
 }
 
-- (void)setContentMetrics:(id)a3
+- (void)setContentMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = [(MRUVolumeViewController *)self view];
-  [v5 setContentMetrics:v4];
+  metricsCopy = metrics;
+  view = [(MRUVolumeViewController *)self view];
+  [view setContentMetrics:metricsCopy];
 }
 
-- (void)didTransitionToExpandedContentMode:(BOOL)a3
+- (void)didTransitionToExpandedContentMode:(BOOL)mode
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (mode)
   {
     v7 = *MEMORY[0x1E69B0B90];
     v3 = +[MRUSystemOutputDeviceRouteController outputContextDescription];
@@ -511,51 +511,51 @@ LABEL_8:
 
 - (BOOL)isGroupRenderingRequired
 {
-  v2 = [(MRUVolumeViewController *)self view];
-  v3 = [v2 isGroupRenderingRequired];
+  view = [(MRUVolumeViewController *)self view];
+  isGroupRenderingRequired = [view isGroupRenderingRequired];
 
-  return v3;
+  return isGroupRenderingRequired;
 }
 
 - (NSArray)punchOutRenderingViews
 {
-  v2 = [(MRUVolumeViewController *)self view];
-  v3 = [v2 punchOutRenderingViews];
+  view = [(MRUVolumeViewController *)self view];
+  punchOutRenderingViews = [view punchOutRenderingViews];
 
-  return v3;
+  return punchOutRenderingViews;
 }
 
 - (UIWindowScene)windowSceneForVolumeDisplay
 {
-  v2 = [(MRUVolumeViewController *)self viewIfLoaded];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
+  viewIfLoaded = [(MRUVolumeViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
 
-  return v4;
+  return windowScene;
 }
 
 - (NSString)volumeAudioCategory
 {
-  v2 = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
-  v3 = [v2 volumeAudioCategory];
+  volumeController = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
+  volumeAudioCategory = [volumeController volumeAudioCategory];
 
-  return v3;
+  return volumeAudioCategory;
 }
 
-- (void)audioModuleController:(id)a3 volumeController:(id)a4 didChangeVolumeControlCapabilities:(unsigned int)a5 effectiveVolumeValue:(float)a6 forType:(int64_t)a7
+- (void)audioModuleController:(id)controller volumeController:(id)volumeController didChangeVolumeControlCapabilities:(unsigned int)capabilities effectiveVolumeValue:(float)value forType:(int64_t)type
 {
   v36 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  if (a7 >= 2)
+  controllerCopy = controller;
+  volumeControllerCopy = volumeController;
+  if (type >= 2)
   {
-    if (a7 == 2)
+    if (type == 2)
     {
-      v24 = [(MRUVolumeViewController *)self view];
-      v25 = [v24 secondarySlider];
-      v26 = [v25 isEditingValue];
+      view = [(MRUVolumeViewController *)self view];
+      secondarySlider = [view secondarySlider];
+      isEditingValue = [secondarySlider isEditingValue];
 
-      if ((v26 & 1) == 0)
+      if ((isEditingValue & 1) == 0)
       {
         [(MRUVolumeViewController *)self updateSecondarySliderVolumeValueAnimated:1];
       }
@@ -564,11 +564,11 @@ LABEL_8:
 
   else
   {
-    v13 = [(MRUVolumeViewController *)self view];
-    v14 = [v13 primarySlider];
-    v15 = [v14 isEditingValue];
+    view2 = [(MRUVolumeViewController *)self view];
+    primarySlider = [view2 primarySlider];
+    isEditingValue2 = [primarySlider isEditingValue];
 
-    if ((v15 & 1) == 0)
+    if ((isEditingValue2 & 1) == 0)
     {
       [(MRUVolumeViewController *)self updatePrimarySliderVolumeValueAnimated:1];
     }
@@ -577,21 +577,21 @@ LABEL_8:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v27 = objc_opt_class();
-      *&v17 = a6;
+      *&v17 = value;
       v18 = [MEMORY[0x1E696AD98] numberWithFloat:v17];
-      v19 = [(MRUVolumeViewController *)self view];
-      v20 = [v19 primarySlider];
-      v21 = [v20 isEditingValue];
-      v22 = [(MRUVolumeViewController *)self view];
-      v23 = [v22 primarySlider];
+      view3 = [(MRUVolumeViewController *)self view];
+      primarySlider2 = [view3 primarySlider];
+      isEditingValue3 = [primarySlider2 isEditingValue];
+      view4 = [(MRUVolumeViewController *)self view];
+      primarySlider3 = [view4 primarySlider];
       *buf = 138544130;
       v29 = v27;
       v30 = 2114;
       v31 = v18;
       v32 = 1024;
-      v33 = v21;
+      v33 = isEditingValue3;
       v34 = 1024;
-      v35 = [v23 isTracking];
+      isTracking = [primarySlider3 isTracking];
       _os_log_impl(&dword_1A20FC000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ system volume changed: %{public}@ | editing: %{BOOL}u | tracking: %{BOOL}u", buf, 0x22u);
     }
   }
@@ -599,13 +599,13 @@ LABEL_8:
   [(MRUVolumeViewController *)self updateVisibility];
 }
 
-- (void)audioModuleController:(id)a3 hearingServiceController:(id)a4 didChangePrimaryAmplification:(float)a5
+- (void)audioModuleController:(id)controller hearingServiceController:(id)serviceController didChangePrimaryAmplification:(float)amplification
 {
-  v6 = [(MRUVolumeViewController *)self view:a3];
-  v7 = [v6 environmentSlider];
-  v8 = [v7 isEditingValue];
+  v6 = [(MRUVolumeViewController *)self view:controller];
+  environmentSlider = [v6 environmentSlider];
+  isEditingValue = [environmentSlider isEditingValue];
 
-  if ((v8 & 1) == 0)
+  if ((isEditingValue & 1) == 0)
   {
 
     [(MRUVolumeViewController *)self updateEnvironmentSliderValueAnimated:1];
@@ -616,27 +616,27 @@ LABEL_8:
 {
   if ([(MRUVolumeViewController *)self primaryGlyphShouldBeTinted])
   {
-    v7 = [MEMORY[0x1E69DC888] systemCyanColor];
+    systemCyanColor = [MEMORY[0x1E69DC888] systemCyanColor];
   }
 
   else
   {
-    v7 = 0;
+    systemCyanColor = 0;
   }
 
-  v3 = [(MRUVolumeViewController *)self view];
-  v4 = [v3 primarySlider];
-  [v4 setGlyphTintColor:v7];
+  view = [(MRUVolumeViewController *)self view];
+  primarySlider = [view primarySlider];
+  [primarySlider setGlyphTintColor:systemCyanColor];
 
-  v5 = [(MRUVolumeViewController *)self view];
-  v6 = [v5 environmentSlider];
-  [v6 setGlyphTintColor:v7];
+  view2 = [(MRUVolumeViewController *)self view];
+  environmentSlider = [view2 environmentSlider];
+  [environmentSlider setGlyphTintColor:systemCyanColor];
 }
 
 - (void)updateSliderInteractionEnabled
 {
-  v3 = [(MRUVolumeViewController *)self bs_isAppearingOrAppeared];
-  if (v3)
+  bs_isAppearingOrAppeared = [(MRUVolumeViewController *)self bs_isAppearingOrAppeared];
+  if (bs_isAppearingOrAppeared)
   {
     v4 = self->_contentRenderingMode != 1;
   }
@@ -646,23 +646,23 @@ LABEL_8:
     v4 = 0;
   }
 
-  v5 = [(MRUVolumeViewController *)self view];
-  v6 = [v5 primarySlider];
-  [v6 setUserInteractionEnabled:v4];
+  view = [(MRUVolumeViewController *)self view];
+  primarySlider = [view primarySlider];
+  [primarySlider setUserInteractionEnabled:v4];
 
-  v8 = [(MRUVolumeViewController *)self view];
-  v7 = [v8 secondarySlider];
-  [v7 setUserInteractionEnabled:v3];
+  view2 = [(MRUVolumeViewController *)self view];
+  secondarySlider = [view2 secondarySlider];
+  [secondarySlider setUserInteractionEnabled:bs_isAppearingOrAppeared];
 }
 
 - (void)updatePrimarySliderVolumeValueAfterDelay
 {
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_updatePrimarySliderVolumeValueAfterDelay object:0];
-  v3 = [(MRUVolumeViewController *)self view];
-  v4 = [v3 primarySlider];
-  v5 = [v4 isEditingValue];
+  view = [(MRUVolumeViewController *)self view];
+  primarySlider = [view primarySlider];
+  isEditingValue = [primarySlider isEditingValue];
 
-  if (v5)
+  if (isEditingValue)
   {
 
     [(MRUVolumeViewController *)self performSelector:sel_updatePrimarySliderVolumeValueAfterDelay withObject:0 afterDelay:0.25];
@@ -675,27 +675,27 @@ LABEL_8:
   }
 }
 
-- (void)updatePrimarySliderVolumeValueAnimated:(BOOL)a3
+- (void)updatePrimarySliderVolumeValueAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(MRUVolumeViewController *)self view];
-  if ([v5 isExpanded])
+  animatedCopy = animated;
+  view = [(MRUVolumeViewController *)self view];
+  if ([view isExpanded])
   {
-    v6 = [(MRUVolumeViewController *)self view];
-    v7 = [v6 showSecondarySlider];
+    view2 = [(MRUVolumeViewController *)self view];
+    showSecondarySlider = [view2 showSecondarySlider];
   }
 
   else
   {
-    v7 = 0;
+    showSecondarySlider = 0;
   }
 
-  v8 = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
-  [v8 volumeValueForType:v7];
+  volumeController = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
+  [volumeController volumeValueForType:showSecondarySlider];
   v10 = v9;
 
-  v11 = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
-  v12 = [v11 volumeCapabilitiesForType:v7];
+  volumeController2 = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
+  v12 = [volumeController2 volumeCapabilitiesForType:showSecondarySlider];
 
   if (self->_contentRenderingMode == 1)
   {
@@ -711,66 +711,66 @@ LABEL_8:
 
   v14 = !self->_primaryInteractionEnabled;
 LABEL_9:
-  v15 = [(MRUVolumeViewController *)self view];
-  v16 = [v15 primarySlider];
+  view3 = [(MRUVolumeViewController *)self view];
+  primarySlider = [view3 primarySlider];
   *&v17 = v10;
-  [v16 setValue:v3 animated:v17];
+  [primarySlider setValue:animatedCopy animated:v17];
 
-  v18 = [(MRUVolumeViewController *)self view];
-  v19 = [v18 primarySlider];
-  [v19 setInoperative:v14];
+  view4 = [(MRUVolumeViewController *)self view];
+  primarySlider2 = [view4 primarySlider];
+  [primarySlider2 setInoperative:v14];
 
   *&v20 = v10;
   v21 = [MRUSystemVolumeController packageStateForVolumeValue:v20];
-  v22 = [(MRUVolumeViewController *)self view];
-  v23 = [v22 primarySlider];
-  [v23 setGlyphState:v21];
+  view5 = [(MRUVolumeViewController *)self view];
+  primarySlider3 = [view5 primarySlider];
+  [primarySlider3 setGlyphState:v21];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   *&v24 = v10;
   [WeakRetained volumeViewController:self didChangeSystemVolumeValue:v24];
 }
 
-- (void)updateSecondarySliderVolumeValueAnimated:(BOOL)a3
+- (void)updateSecondarySliderVolumeValueAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
-  [v5 volumeValueForType:2];
+  animatedCopy = animated;
+  volumeController = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
+  [volumeController volumeValueForType:2];
   v7 = v6;
 
-  v8 = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
-  v9 = [v8 volumeCapabilitiesForType:2];
+  volumeController2 = [(MRUAudioModuleController *)self->_audioModuleController volumeController];
+  v9 = [volumeController2 volumeCapabilitiesForType:2];
 
   v10 = (v9 & 2) == 0 || !self->_secondaryInteractionEnabled;
-  v11 = [(MRUVolumeViewController *)self view];
-  v12 = [v11 secondarySlider];
+  view = [(MRUVolumeViewController *)self view];
+  secondarySlider = [view secondarySlider];
   LODWORD(v13) = v7;
-  [v12 setValue:v3 animated:v13];
+  [secondarySlider setValue:animatedCopy animated:v13];
 
-  v15 = [(MRUVolumeViewController *)self view];
-  v14 = [v15 secondarySlider];
-  [v14 setInoperative:v10];
+  view2 = [(MRUVolumeViewController *)self view];
+  secondarySlider2 = [view2 secondarySlider];
+  [secondarySlider2 setInoperative:v10];
 }
 
-- (void)updateEnvironmentSliderValueAnimated:(BOOL)a3
+- (void)updateEnvironmentSliderValueAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(MRUAudioModuleController *)self->_audioModuleController listeningModeController];
-  v6 = [v5 primaryListeningMode];
-  v7 = [v6 isEqualToString:*MEMORY[0x1E6958738]];
+  animatedCopy = animated;
+  listeningModeController = [(MRUAudioModuleController *)self->_audioModuleController listeningModeController];
+  primaryListeningMode = [listeningModeController primaryListeningMode];
+  v7 = [primaryListeningMode isEqualToString:*MEMORY[0x1E6958738]];
 
-  v8 = [(MRUAudioModuleController *)self->_audioModuleController hearingServiceController];
-  [v8 primaryAmplification];
+  hearingServiceController = [(MRUAudioModuleController *)self->_audioModuleController hearingServiceController];
+  [hearingServiceController primaryAmplification];
   v10 = v9;
 
-  v11 = [(MRUVolumeViewController *)self view];
-  v12 = [v11 environmentSlider];
+  view = [(MRUVolumeViewController *)self view];
+  environmentSlider = [view environmentSlider];
   LODWORD(v13) = v10;
-  [v12 setValue:v3 animated:v13];
+  [environmentSlider setValue:animatedCopy animated:v13];
 
-  v15 = [(MRUVolumeViewController *)self view];
-  v14 = [v15 environmentSlider];
-  [v14 setInoperative:v7];
+  view2 = [(MRUVolumeViewController *)self view];
+  environmentSlider2 = [view2 environmentSlider];
+  [environmentSlider2 setInoperative:v7];
 }
 
 uint64_t __43__MRUVolumeViewController_updateVisibility__block_invoke(uint64_t a1)

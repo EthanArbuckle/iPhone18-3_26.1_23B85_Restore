@@ -1,49 +1,49 @@
 @interface HFPredictionsManager
-+ (double)normalizedScoreWithIndex:(int64_t)a3 predictionsCount:(int64_t)a4;
++ (double)normalizedScoreWithIndex:(int64_t)index predictionsCount:(int64_t)count;
 - (HFPredictionsManager)init;
-- (HFPredictionsManager)initWithHome:(id)a3 predictionsController:(id)a4 delegate:(id)a5 predictionLimit:(unint64_t)a6 filterTypes:(id)a7;
+- (HFPredictionsManager)initWithHome:(id)home predictionsController:(id)controller delegate:(id)delegate predictionLimit:(unint64_t)limit filterTypes:(id)types;
 - (HFPredictionsManagerDelegate)delegate;
-- (id)_homeKitObjectForAccessoryUUID:(id)a3;
-- (id)_homeKitObjectForMediaSystemUUID:(id)a3;
-- (id)_homeKitObjectForSceneUUID:(id)a3;
-- (id)_homeKitObjectForServiceGroupUUID:(id)a3;
-- (id)_homeKitObjectForServiceUUID:(id)a3;
-- (id)_processUserActionPredictions:(id)a3;
-- (id)fetchUserActionPredictionsAndWaitForInitialUpdate:(BOOL)a3;
-- (id)normalizedPredictionConfidenceForObject:(id)a3;
-- (id)predictionConfidenceForObject:(id)a3;
-- (id)predictionIndexForObject:(id)a3;
-- (void)_didReceivePredictions:(id)a3;
+- (id)_homeKitObjectForAccessoryUUID:(id)d;
+- (id)_homeKitObjectForMediaSystemUUID:(id)d;
+- (id)_homeKitObjectForSceneUUID:(id)d;
+- (id)_homeKitObjectForServiceGroupUUID:(id)d;
+- (id)_homeKitObjectForServiceUUID:(id)d;
+- (id)_processUserActionPredictions:(id)predictions;
+- (id)fetchUserActionPredictionsAndWaitForInitialUpdate:(BOOL)update;
+- (id)normalizedPredictionConfidenceForObject:(id)object;
+- (id)predictionConfidenceForObject:(id)object;
+- (id)predictionIndexForObject:(id)object;
+- (void)_didReceivePredictions:(id)predictions;
 - (void)_queryUserActionPredictions;
 - (void)_queryUserActionPredictionsOnQueue;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveActionSet:(id)a4;
-- (void)home:(id)a3 didRemoveMediaSystem:(id)a4;
-- (void)home:(id)a3 didRemoveServiceGroup:(id)a4;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)home:(id)home didRemoveActionSet:(id)set;
+- (void)home:(id)home didRemoveMediaSystem:(id)system;
+- (void)home:(id)home didRemoveServiceGroup:(id)group;
 - (void)invalidateUserActionPredictions;
 - (void)prepopulateWithCache;
-- (void)saveAnalyticsScoresForPredictions:(id)a3;
-- (void)setFilterTypes:(id)a3;
-- (void)submitPredictionsFetchEventWithDuration:(double)a3 numberOfPredictions:(unint64_t)a4 receivedBeforeModuleFreeze:(BOOL)a5;
-- (void)userActionPredictionController:(id)a3 didUpdatePredictions:(id)a4;
+- (void)saveAnalyticsScoresForPredictions:(id)predictions;
+- (void)setFilterTypes:(id)types;
+- (void)submitPredictionsFetchEventWithDuration:(double)duration numberOfPredictions:(unint64_t)predictions receivedBeforeModuleFreeze:(BOOL)freeze;
+- (void)userActionPredictionController:(id)controller didUpdatePredictions:(id)predictions;
 @end
 
 @implementation HFPredictionsManager
 
-- (void)submitPredictionsFetchEventWithDuration:(double)a3 numberOfPredictions:(unint64_t)a4 receivedBeforeModuleFreeze:(BOOL)a5
+- (void)submitPredictionsFetchEventWithDuration:(double)duration numberOfPredictions:(unint64_t)predictions receivedBeforeModuleFreeze:(BOOL)freeze
 {
-  v8 = self;
-  HFPredictionsManager.submitPredictionsFetchEvent(duration:numberOfPredictions:receivedBeforeModuleFreeze:)(a3, a4, a5);
+  selfCopy = self;
+  HFPredictionsManager.submitPredictionsFetchEvent(duration:numberOfPredictions:receivedBeforeModuleFreeze:)(duration, predictions, freeze);
 }
 
-+ (double)normalizedScoreWithIndex:(int64_t)a3 predictionsCount:(int64_t)a4
++ (double)normalizedScoreWithIndex:(int64_t)index predictionsCount:(int64_t)count
 {
   sub_20DA1D190();
   sub_20DD63914();
   return result;
 }
 
-- (void)saveAnalyticsScoresForPredictions:(id)a3
+- (void)saveAnalyticsScoresForPredictions:(id)predictions
 {
   ObjectType = swift_getObjectType();
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C8443F0, &qword_20DD93820);
@@ -52,8 +52,8 @@
   v8 = &v13 - v7;
   sub_20D9D7510(0, &unk_280E01F40, 0x277CD1EE8);
   v9 = sub_20DD64FD4();
-  v14 = self;
-  if ([(HFPredictionsManager *)v14 submitsAnalytics])
+  selfCopy = self;
+  if ([(HFPredictionsManager *)selfCopy submitsAnalytics])
   {
     v10 = sub_20DD65114();
     (*(*(v10 - 8) + 56))(v8, 1, 1, v10);
@@ -61,7 +61,7 @@
     v11[2] = 0;
     v11[3] = 0;
     v11[4] = v9;
-    v11[5] = v14;
+    v11[5] = selfCopy;
     v11[6] = ObjectType;
     sub_20DA1C514(0, 0, v8, &unk_20DD94AD8, v11);
   }
@@ -69,35 +69,35 @@
   else
   {
 
-    v12 = v14;
+    v12 = selfCopy;
   }
 }
 
 - (HFPredictionsManager)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_predictionsController_delegate_predictionLimit_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFPredictionsManager.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HFPredictionsManager init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFPredictionsManager.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HFPredictionsManager init]", v5}];
 
   return 0;
 }
 
-- (HFPredictionsManager)initWithHome:(id)a3 predictionsController:(id)a4 delegate:(id)a5 predictionLimit:(unint64_t)a6 filterTypes:(id)a7
+- (HFPredictionsManager)initWithHome:(id)home predictionsController:(id)controller delegate:(id)delegate predictionLimit:(unint64_t)limit filterTypes:(id)types
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  homeCopy = home;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  typesCopy = types;
   v24.receiver = self;
   v24.super_class = HFPredictionsManager;
   v17 = [(HFPredictionsManager *)&v24 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_delegate, v15);
-    v18->_predictionLimit = a6;
-    objc_storeStrong(&v18->_home, a3);
-    objc_storeStrong(&v18->_predictionsController, a4);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    v18->_predictionLimit = limit;
+    objc_storeStrong(&v18->_home, home);
+    objc_storeStrong(&v18->_predictionsController, controller);
     [(HFPredictionsController *)v18->_predictionsController setDelegate:v18];
     predictions = v18->_predictions;
     v18->_predictions = MEMORY[0x277CBEBF8];
@@ -105,7 +105,7 @@
     v18->_cachesRawPredictions = 0;
     v18->_moduleItemsFrozen = 0;
     v18->_submitsAnalytics = !+[HFUtilities isInternalTest];
-    objc_storeStrong(&v18->_filterTypes, a7);
+    objc_storeStrong(&v18->_filterTypes, types);
     v20 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
     v21 = dispatch_queue_create("com.apple.Home.predictionFetchQueue", v20);
     predictionQueue = v18->_predictionQueue;
@@ -117,49 +117,49 @@
   return v18;
 }
 
-- (id)predictionConfidenceForObject:(id)a3
+- (id)predictionConfidenceForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(HFPredictionsManager *)self predictionConfidence];
-  v6 = [v4 uniqueIdentifier];
+  objectCopy = object;
+  predictionConfidence = [(HFPredictionsManager *)self predictionConfidence];
+  uniqueIdentifier = [objectCopy uniqueIdentifier];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [predictionConfidence objectForKey:uniqueIdentifier];
 
   return v7;
 }
 
 - (void)prepopulateWithCache
 {
-  v3 = [(HFPredictionsManager *)self home];
-  v4 = [v3 cachedPredictions];
+  home = [(HFPredictionsManager *)self home];
+  cachedPredictions = [home cachedPredictions];
 
   if ([(HFPredictionsManager *)self submitsAnalytics])
   {
-    [(HFPredictionsManager *)self saveAnalyticsScoresForPredictions:v4];
+    [(HFPredictionsManager *)self saveAnalyticsScoresForPredictions:cachedPredictions];
   }
 
-  if ([v4 count])
+  if ([cachedPredictions count])
   {
-    [(HFPredictionsManager *)self _didReceivePredictions:v4];
+    [(HFPredictionsManager *)self _didReceivePredictions:cachedPredictions];
   }
 }
 
-- (id)predictionIndexForObject:(id)a3
+- (id)predictionIndexForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(HFPredictionsManager *)self predictionConfidence];
-  v6 = [v4 uniqueIdentifier];
-  v7 = [v5 objectForKey:v6];
+  objectCopy = object;
+  predictionConfidence = [(HFPredictionsManager *)self predictionConfidence];
+  uniqueIdentifier = [objectCopy uniqueIdentifier];
+  v7 = [predictionConfidence objectForKey:uniqueIdentifier];
 
   if (v7)
   {
-    v8 = [(HFPredictionsManager *)self predictions];
+    predictions = [(HFPredictionsManager *)self predictions];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __49__HFPredictionsManager_predictionIndexForObject___block_invoke;
     v12[3] = &unk_277DF9CC8;
-    v13 = v4;
-    v9 = [v8 indexOfObjectPassingTest:v12];
+    v13 = objectCopy;
+    v9 = [predictions indexOfObjectPassingTest:v12];
 
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -194,13 +194,13 @@ uint64_t __49__HFPredictionsManager_predictionIndexForObject___block_invoke(uint
   return v8;
 }
 
-- (id)normalizedPredictionConfidenceForObject:(id)a3
+- (id)normalizedPredictionConfidenceForObject:(id)object
 {
-  v4 = [(HFPredictionsManager *)self predictionIndexForObject:a3];
+  v4 = [(HFPredictionsManager *)self predictionIndexForObject:object];
   if (v4)
   {
-    v5 = [(HFPredictionsManager *)self predictions];
-    v6 = [v5 count];
+    predictions = [(HFPredictionsManager *)self predictions];
+    v6 = [predictions count];
 
     if (v6 <= 20)
     {
@@ -224,9 +224,9 @@ uint64_t __49__HFPredictionsManager_predictionIndexForObject___block_invoke(uint
   return v9;
 }
 
-- (void)setFilterTypes:(id)a3
+- (void)setFilterTypes:(id)types
 {
-  objc_storeStrong(&self->_filterTypes, a3);
+  objc_storeStrong(&self->_filterTypes, types);
   if ([(HFPredictionsManager *)self cachesRawPredictions])
   {
     [(HFPredictionsManager *)self prepopulateWithCache];
@@ -235,17 +235,17 @@ uint64_t __49__HFPredictionsManager_predictionIndexForObject___block_invoke(uint
   [(HFPredictionsManager *)self _queryUserActionPredictions];
 }
 
-- (id)fetchUserActionPredictionsAndWaitForInitialUpdate:(BOOL)a3
+- (id)fetchUserActionPredictionsAndWaitForInitialUpdate:(BOOL)update
 {
   objc_initWeak(&location, self);
-  v4 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__HFPredictionsManager_fetchUserActionPredictionsAndWaitForInitialUpdate___block_invoke;
   v7[3] = &unk_277DF9CF0;
   objc_copyWeak(&v8, &location);
-  v9 = a3;
-  v5 = [v4 flatMap:v7];
+  updateCopy = update;
+  v5 = [futureWithNoResult flatMap:v7];
   objc_destroyWeak(&v8);
 
   objc_destroyWeak(&location);
@@ -317,9 +317,9 @@ LABEL_9:
   v3 = HFLogForCategory(0x38uLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HFPredictionsManager *)self home];
+    home = [(HFPredictionsManager *)self home];
     v7 = 138412290;
-    v8 = v4;
+    v8 = home;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Invalidating predictions and performing full fetch for %@", &v7, 0xCu);
   }
 
@@ -341,13 +341,13 @@ LABEL_9:
   else
   {
     objc_initWeak(&location, self);
-    v3 = [(HFPredictionsManager *)self predictionQueue];
+    predictionQueue = [(HFPredictionsManager *)self predictionQueue];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __51__HFPredictionsManager__queryUserActionPredictions__block_invoke;
     v4[3] = &unk_277DF4460;
     objc_copyWeak(&v5, &location);
-    dispatch_async(v3, v4);
+    dispatch_async(predictionQueue, v4);
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
@@ -367,22 +367,22 @@ void __51__HFPredictionsManager__queryUserActionPredictions__block_invoke(uint64
   v3 = HFLogForCategory(0x38uLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HFPredictionsManager *)self home];
+    home = [(HFPredictionsManager *)self home];
     *buf = 138412290;
-    v14 = v4;
+    v14 = home;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Performing full fetch for %@", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [(HFPredictionsManager *)self predictionsController];
+  date = [MEMORY[0x277CBEAA8] date];
+  predictionsController = [(HFPredictionsManager *)self predictionsController];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__HFPredictionsManager__queryUserActionPredictionsOnQueue__block_invoke;
   v9[3] = &unk_277DF9D18;
   objc_copyWeak(&v11, &location);
-  v7 = v5;
+  v7 = date;
   v10 = v7;
-  [v6 fetchPredictionsWithCompletion:v9];
+  [predictionsController fetchPredictionsWithCompletion:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -417,43 +417,43 @@ void __58__HFPredictionsManager__queryUserActionPredictionsOnQueue__block_invoke
   [WeakRetained _didReceivePredictions:v10];
 }
 
-- (void)_didReceivePredictions:(id)a3
+- (void)_didReceivePredictions:(id)predictions
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predictionsCopy = predictions;
   objc_initWeak(&location, self);
   if ([(HFPredictionsManager *)self submitsAnalytics])
   {
-    [(HFPredictionsManager *)self saveAnalyticsScoresForPredictions:v4];
+    [(HFPredictionsManager *)self saveAnalyticsScoresForPredictions:predictionsCopy];
   }
 
   v5 = HFLogForCategory(0x38uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 count];
-    v7 = [(HFPredictionsManager *)self home];
-    v8 = [v4 hf_prettyDescription];
+    v6 = [predictionsCopy count];
+    home = [(HFPredictionsManager *)self home];
+    hf_prettyDescription = [predictionsCopy hf_prettyDescription];
     *buf = 134218498;
     v20 = v6;
     v21 = 2112;
-    v22 = v7;
+    v22 = home;
     v23 = 2112;
-    v24 = v8;
+    v24 = hf_prettyDescription;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Fetched %lu predictions for home %@: %@", buf, 0x20u);
   }
 
-  v9 = [(HFPredictionsManager *)self _processUserActionPredictions:v4];
-  v10 = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v9 = [(HFPredictionsManager *)self _processUserActionPredictions:predictionsCopy];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __47__HFPredictionsManager__didReceivePredictions___block_invoke;
   v14[3] = &unk_277DF6458;
   objc_copyWeak(&v17, &location);
-  v11 = v4;
+  v11 = predictionsCopy;
   v15 = v11;
   v12 = v9;
   v16 = v12;
-  [v10 performBlock:v14];
+  [mainThreadScheduler performBlock:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -502,18 +502,18 @@ void __47__HFPredictionsManager__didReceivePredictions___block_invoke(uint64_t a
   }
 }
 
-- (id)_processUserActionPredictions:(id)a3
+- (id)_processUserActionPredictions:(id)predictions
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predictionsCopy = predictions;
   v39 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[HFPredictionsManager predictionLimit](self, "predictionLimit")}];
   v5 = [MEMORY[0x277CBEB58] setWithCapacity:{-[HFPredictionsManager predictionLimit](self, "predictionLimit")}];
-  v37 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v4;
+  obj = predictionsCopy;
   v6 = [obj countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v6)
   {
@@ -532,20 +532,20 @@ void __47__HFPredictionsManager__didReceivePredictions___block_invoke(uint64_t a
         v11 = HFLogForCategory(0x38uLL);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [v10 hf_prettyDescription];
+          hf_prettyDescription = [v10 hf_prettyDescription];
           *buf = 138412290;
-          v45 = v12;
+          v45 = hf_prettyDescription;
           _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "Processing user action prediction: %@", buf, 0xCu);
         }
 
-        v13 = [(HFPredictionsManager *)self filterTypes];
-        if (v13)
+        filterTypes = [(HFPredictionsManager *)self filterTypes];
+        if (filterTypes)
         {
-          v14 = v13;
-          v15 = [(HFPredictionsManager *)self filterTypes];
+          v14 = filterTypes;
+          filterTypes2 = [(HFPredictionsManager *)self filterTypes];
           v16 = v5;
           v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "predictionType")}];
-          v18 = [v15 containsObject:v17];
+          v18 = [filterTypes2 containsObject:v17];
 
           v5 = v16;
           if ((v18 & 1) == 0)
@@ -553,9 +553,9 @@ void __47__HFPredictionsManager__didReceivePredictions___block_invoke(uint64_t a
             v22 = HFLogForCategory(0x38uLL);
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
             {
-              v23 = [v10 predictionType];
+              predictionType = [v10 predictionType];
               *buf = 134217984;
-              v45 = v23;
+              v45 = predictionType;
               _os_log_impl(&dword_20D9BF000, v22, OS_LOG_TYPE_DEFAULT, "Skipping prediction that does not match any of the filtered types: %lu", buf, 0xCu);
             }
 
@@ -563,15 +563,15 @@ void __47__HFPredictionsManager__didReceivePredictions___block_invoke(uint64_t a
           }
         }
 
-        v19 = [v10 predictionType];
-        if (v19 <= 1)
+        predictionType2 = [v10 predictionType];
+        if (predictionType2 <= 1)
         {
-          if (!v19)
+          if (!predictionType2)
           {
             goto LABEL_31;
           }
 
-          if (v19 != 1)
+          if (predictionType2 != 1)
           {
 LABEL_25:
             v25 = NSStringFromHMUserActionPredictionType([v10 predictionType]);
@@ -580,37 +580,37 @@ LABEL_25:
             goto LABEL_31;
           }
 
-          v20 = [v10 predictionTargetUUID];
-          v21 = [(HFPredictionsManager *)self _homeKitObjectForSceneUUID:v20];
+          predictionTargetUUID = [v10 predictionTargetUUID];
+          v21 = [(HFPredictionsManager *)self _homeKitObjectForSceneUUID:predictionTargetUUID];
         }
 
         else
         {
-          switch(v19)
+          switch(predictionType2)
           {
             case 2:
-              v24 = [v10 targetServiceUUID];
+              targetServiceUUID = [v10 targetServiceUUID];
 
-              if (v24)
+              if (targetServiceUUID)
               {
-                v20 = [v10 targetServiceUUID];
-                [(HFPredictionsManager *)self _homeKitObjectForServiceUUID:v20];
+                predictionTargetUUID = [v10 targetServiceUUID];
+                [(HFPredictionsManager *)self _homeKitObjectForServiceUUID:predictionTargetUUID];
               }
 
               else
               {
-                v20 = [v10 predictionTargetUUID];
-                [(HFPredictionsManager *)self _homeKitObjectForAccessoryUUID:v20];
+                predictionTargetUUID = [v10 predictionTargetUUID];
+                [(HFPredictionsManager *)self _homeKitObjectForAccessoryUUID:predictionTargetUUID];
               }
               v21 = ;
               break;
             case 3:
-              v20 = [v10 predictionTargetUUID];
-              v21 = [(HFPredictionsManager *)self _homeKitObjectForServiceGroupUUID:v20];
+              predictionTargetUUID = [v10 predictionTargetUUID];
+              v21 = [(HFPredictionsManager *)self _homeKitObjectForServiceGroupUUID:predictionTargetUUID];
               break;
             case 4:
-              v20 = [v10 predictionTargetUUID];
-              v21 = [(HFPredictionsManager *)self _homeKitObjectForMediaSystemUUID:v20];
+              predictionTargetUUID = [v10 predictionTargetUUID];
+              v21 = [(HFPredictionsManager *)self _homeKitObjectForMediaSystemUUID:predictionTargetUUID];
               break;
             default:
               goto LABEL_25;
@@ -621,10 +621,10 @@ LABEL_25:
 
         if (v26)
         {
-          v27 = [v26 uniqueIdentifier];
-          v28 = [v27 UUIDString];
+          uniqueIdentifier = [v26 uniqueIdentifier];
+          uUIDString = [uniqueIdentifier UUIDString];
 
-          if ([v5 containsObject:v28])
+          if ([v5 containsObject:uUIDString])
           {
             v29 = HFLogForCategory(0x38uLL);
             if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -637,13 +637,13 @@ LABEL_25:
 
           else
           {
-            [v5 addObject:v28];
+            [v5 addObject:uUIDString];
             [v39 addObject:v26];
             v30 = MEMORY[0x277CCABB0];
             [v10 predictionScore];
             v29 = [v30 numberWithDouble:?];
-            v31 = [v26 uniqueIdentifier];
-            [v37 setObject:v29 forKey:v31];
+            uniqueIdentifier2 = [v26 uniqueIdentifier];
+            [dictionary setObject:v29 forKey:uniqueIdentifier2];
           }
 
           goto LABEL_35;
@@ -656,11 +656,11 @@ LABEL_31:
           goto LABEL_36;
         }
 
-        v28 = [(HFPredictionsManager *)self home];
+        uUIDString = [(HFPredictionsManager *)self home];
         *buf = 138412546;
         v45 = v10;
         v46 = 2112;
-        v47 = v28;
+        v47 = uUIDString;
         _os_log_error_impl(&dword_20D9BF000, v26, OS_LOG_TYPE_ERROR, "Prediction %@ couldn't be mapped to a HomeKit object in home: %@", buf, 0x16u);
 LABEL_35:
 
@@ -680,7 +680,7 @@ LABEL_36:
 
 LABEL_39:
 
-  v33 = [v37 copy];
+  v33 = [dictionary copy];
   [(HFPredictionsManager *)self setPredictionConfidence:v33];
 
   v34 = [MEMORY[0x277CBEA60] arrayWithArray:v39];
@@ -690,12 +690,12 @@ LABEL_39:
   return v34;
 }
 
-- (id)_homeKitObjectForSceneUUID:(id)a3
+- (id)_homeKitObjectForSceneUUID:(id)d
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFPredictionsManager *)self home];
-  v6 = [v5 hf_actionSetWithUUID:v4];
+  dCopy = d;
+  home = [(HFPredictionsManager *)self home];
+  v6 = [home hf_actionSetWithUUID:dCopy];
 
   v7 = HFLogForCategory(0x38uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -710,12 +710,12 @@ LABEL_39:
   return v6;
 }
 
-- (id)_homeKitObjectForServiceUUID:(id)a3
+- (id)_homeKitObjectForServiceUUID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFPredictionsManager *)self home];
-  v6 = [v5 hf_serviceWithIdentifier:v4];
+  dCopy = d;
+  home = [(HFPredictionsManager *)self home];
+  v6 = [home hf_serviceWithIdentifier:dCopy];
 
   v7 = HFLogForCategory(0x38uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -727,51 +727,51 @@ LABEL_39:
 
   if ([v6 hf_isChildService])
   {
-    v8 = [v6 hf_parentService];
+    hf_parentService = [v6 hf_parentService];
 
     v9 = HFLogForCategory(0x38uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v25 = 138412290;
-      v26 = v8;
+      v26 = hf_parentService;
       _os_log_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEFAULT, "Child service - using parent service instead: %@", &v25, 0xCu);
     }
   }
 
   else
   {
-    v8 = v6;
+    hf_parentService = v6;
   }
 
-  if (![v8 hf_isVisible] || !objc_msgSend(v8, "hf_showsAsServiceInControlCentre"))
+  if (![hf_parentService hf_isVisible] || !objc_msgSend(hf_parentService, "hf_showsAsServiceInControlCentre"))
   {
     v14 = HFLogForCategory(0x38uLL);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v25 = 138412290;
-      v26 = v8;
+      v26 = hf_parentService;
       _os_log_impl(&dword_20D9BF000, v14, OS_LOG_TYPE_DEFAULT, "Service %@ is non visible, so skipping this service entirely", &v25, 0xCu);
     }
 
     goto LABEL_16;
   }
 
-  v10 = [v8 accessory];
-  v11 = [v10 hf_showAsAccessoryTile];
+  accessory = [hf_parentService accessory];
+  hf_showAsAccessoryTile = [accessory hf_showAsAccessoryTile];
 
-  if (v11)
+  if (hf_showAsAccessoryTile)
   {
-    v12 = [v8 accessory];
-    v13 = [v12 hf_isCamera];
+    accessory2 = [hf_parentService accessory];
+    hf_isCamera = [accessory2 hf_isCamera];
 
-    if (v13)
+    if (hf_isCamera)
     {
       v14 = HFLogForCategory(0x38uLL);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v8 accessory];
+        accessory3 = [hf_parentService accessory];
         v25 = 138412290;
-        v26 = v15;
+        v26 = accessory3;
         v16 = "Service is normally shown as accessory, but accessory %@ is a camera, so skipping this service entirely";
 LABEL_28:
         _os_log_impl(&dword_20D9BF000, v14, OS_LOG_TYPE_DEFAULT, v16, &v25, 0xCu);
@@ -782,18 +782,18 @@ LABEL_28:
       goto LABEL_16;
     }
 
-    v21 = [v8 accessory];
-    v22 = [v21 hf_isVisibleAccessory];
+    accessory4 = [hf_parentService accessory];
+    hf_isVisibleAccessory = [accessory4 hf_isVisibleAccessory];
 
     v14 = HFLogForCategory(0x38uLL);
     v23 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if ((v22 & 1) == 0)
+    if ((hf_isVisibleAccessory & 1) == 0)
     {
       if (v23)
       {
-        v15 = [v8 accessory];
+        accessory3 = [hf_parentService accessory];
         v25 = 138412290;
-        v26 = v15;
+        v26 = accessory3;
         v16 = "Service is normally shown as accessory, but accessory %@ is non visible, so skipping this service entirely";
         goto LABEL_28;
       }
@@ -806,21 +806,21 @@ LABEL_16:
 
     if (v23)
     {
-      v24 = [v8 accessory];
+      accessory5 = [hf_parentService accessory];
       v25 = 138412290;
-      v26 = v24;
+      v26 = accessory5;
       _os_log_impl(&dword_20D9BF000, v14, OS_LOG_TYPE_DEFAULT, "Service is normally shown as accessory, using accessory %@ instead", &v25, 0xCu);
     }
 
-    v20 = [v8 accessory];
+    accessory6 = [hf_parentService accessory];
   }
 
   else
   {
-    v20 = v8;
+    accessory6 = hf_parentService;
   }
 
-  v17 = v20;
+  v17 = accessory6;
 LABEL_17:
 
   v18 = *MEMORY[0x277D85DE8];
@@ -828,12 +828,12 @@ LABEL_17:
   return v17;
 }
 
-- (id)_homeKitObjectForServiceGroupUUID:(id)a3
+- (id)_homeKitObjectForServiceGroupUUID:(id)d
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFPredictionsManager *)self home];
-  v6 = [v5 hf_serviceGroupWithIdentifier:v4];
+  dCopy = d;
+  home = [(HFPredictionsManager *)self home];
+  v6 = [home hf_serviceGroupWithIdentifier:dCopy];
 
   v7 = HFLogForCategory(0x38uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -848,12 +848,12 @@ LABEL_17:
   return v6;
 }
 
-- (id)_homeKitObjectForAccessoryUUID:(id)a3
+- (id)_homeKitObjectForAccessoryUUID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFPredictionsManager *)self home];
-  v6 = [v5 hf_accessoryWithIdentifier:v4];
+  dCopy = d;
+  home = [(HFPredictionsManager *)self home];
+  v6 = [home hf_accessoryWithIdentifier:dCopy];
 
   v7 = HFLogForCategory(0x38uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -886,12 +886,12 @@ LABEL_17:
   return v8;
 }
 
-- (id)_homeKitObjectForMediaSystemUUID:(id)a3
+- (id)_homeKitObjectForMediaSystemUUID:(id)d
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFPredictionsManager *)self home];
-  v6 = [v5 hf_mediaSystemWithIdentifier:v4];
+  dCopy = d;
+  home = [(HFPredictionsManager *)self home];
+  v6 = [home hf_mediaSystemWithIdentifier:dCopy];
 
   v7 = HFLogForCategory(0x38uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -906,19 +906,19 @@ LABEL_17:
   return v6;
 }
 
-- (void)userActionPredictionController:(id)a3 didUpdatePredictions:(id)a4
+- (void)userActionPredictionController:(id)controller didUpdatePredictions:(id)predictions
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  predictionsCopy = predictions;
   v6 = HFLogForCategory(0x38uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 count];
-    v8 = [v5 hf_prettyDescription];
+    v7 = [predictionsCopy count];
+    hf_prettyDescription = [predictionsCopy hf_prettyDescription];
     *buf = 134218242;
     v15 = v7;
     v16 = 2112;
-    v17 = v8;
+    v17 = hf_prettyDescription;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Predictions manager updated with %lu predictions: %@", buf, 0x16u);
   }
 
@@ -928,8 +928,8 @@ LABEL_17:
   v11[2] = __76__HFPredictionsManager_userActionPredictionController_didUpdatePredictions___block_invoke;
   v11[3] = &unk_277DF3A68;
   objc_copyWeak(&v13, buf);
-  v12 = v5;
-  v9 = v5;
+  v12 = predictionsCopy;
+  v9 = predictionsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v11);
 
   objc_destroyWeak(&v13);
@@ -948,29 +948,29 @@ void __76__HFPredictionsManager_userActionPredictionController_didUpdatePredicti
   [v3 predictionsManagerDidUpdatePredictions:WeakRetained];
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  accessoryCopy = accessory;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v8 = [(HFPredictionsManager *)self predictions];
+  predictions = [(HFPredictionsManager *)self predictions];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __48__HFPredictionsManager_home_didRemoveAccessory___block_invoke;
   v15 = &unk_277DF9D40;
-  v9 = v7;
+  v9 = accessoryCopy;
   v16 = v9;
   v17 = &v18;
-  v10 = [v8 na_filter:&v12];
+  v10 = [predictions na_filter:&v12];
   [(HFPredictionsManager *)self setPredictions:v10, v12, v13, v14, v15];
 
   if (*(v19 + 24) == 1)
   {
-    v11 = [(HFPredictionsManager *)self delegate];
-    [v11 predictionsManagerDidUpdatePredictions:self];
+    delegate = [(HFPredictionsManager *)self delegate];
+    [delegate predictionsManagerDidUpdatePredictions:self];
 
     [(HFPredictionsManager *)self _queryUserActionPredictions];
   }
@@ -998,29 +998,29 @@ uint64_t __48__HFPredictionsManager_home_didRemoveAccessory___block_invoke(uint6
   return v6;
 }
 
-- (void)home:(id)a3 didRemoveMediaSystem:(id)a4
+- (void)home:(id)home didRemoveMediaSystem:(id)system
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  systemCopy = system;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v8 = [(HFPredictionsManager *)self predictions];
+  predictions = [(HFPredictionsManager *)self predictions];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __50__HFPredictionsManager_home_didRemoveMediaSystem___block_invoke;
   v15 = &unk_277DF9D40;
-  v9 = v7;
+  v9 = systemCopy;
   v16 = v9;
   v17 = &v18;
-  v10 = [v8 na_filter:&v12];
+  v10 = [predictions na_filter:&v12];
   [(HFPredictionsManager *)self setPredictions:v10, v12, v13, v14, v15];
 
   if (*(v19 + 24) == 1)
   {
-    v11 = [(HFPredictionsManager *)self delegate];
-    [v11 predictionsManagerDidUpdatePredictions:self];
+    delegate = [(HFPredictionsManager *)self delegate];
+    [delegate predictionsManagerDidUpdatePredictions:self];
 
     [(HFPredictionsManager *)self _queryUserActionPredictions];
   }
@@ -1041,29 +1041,29 @@ BOOL __50__HFPredictionsManager_home_didRemoveMediaSystem___block_invoke(uint64_
   return v3 != v4;
 }
 
-- (void)home:(id)a3 didRemoveServiceGroup:(id)a4
+- (void)home:(id)home didRemoveServiceGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  groupCopy = group;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v8 = [(HFPredictionsManager *)self predictions];
+  predictions = [(HFPredictionsManager *)self predictions];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __51__HFPredictionsManager_home_didRemoveServiceGroup___block_invoke;
   v15 = &unk_277DF9D40;
-  v9 = v7;
+  v9 = groupCopy;
   v16 = v9;
   v17 = &v18;
-  v10 = [v8 na_filter:&v12];
+  v10 = [predictions na_filter:&v12];
   [(HFPredictionsManager *)self setPredictions:v10, v12, v13, v14, v15];
 
   if (*(v19 + 24) == 1)
   {
-    v11 = [(HFPredictionsManager *)self delegate];
-    [v11 predictionsManagerDidUpdatePredictions:self];
+    delegate = [(HFPredictionsManager *)self delegate];
+    [delegate predictionsManagerDidUpdatePredictions:self];
 
     [(HFPredictionsManager *)self _queryUserActionPredictions];
   }
@@ -1084,29 +1084,29 @@ BOOL __51__HFPredictionsManager_home_didRemoveServiceGroup___block_invoke(uint64
   return v3 != v4;
 }
 
-- (void)home:(id)a3 didRemoveActionSet:(id)a4
+- (void)home:(id)home didRemoveActionSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  setCopy = set;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v8 = [(HFPredictionsManager *)self predictions];
+  predictions = [(HFPredictionsManager *)self predictions];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __48__HFPredictionsManager_home_didRemoveActionSet___block_invoke;
   v15 = &unk_277DF9D40;
-  v9 = v7;
+  v9 = setCopy;
   v16 = v9;
   v17 = &v18;
-  v10 = [v8 na_filter:&v12];
+  v10 = [predictions na_filter:&v12];
   [(HFPredictionsManager *)self setPredictions:v10, v12, v13, v14, v15];
 
   if (*(v19 + 24) == 1)
   {
-    v11 = [(HFPredictionsManager *)self delegate];
-    [v11 predictionsManagerDidUpdatePredictions:self];
+    delegate = [(HFPredictionsManager *)self delegate];
+    [delegate predictionsManagerDidUpdatePredictions:self];
 
     [(HFPredictionsManager *)self _queryUserActionPredictions];
   }

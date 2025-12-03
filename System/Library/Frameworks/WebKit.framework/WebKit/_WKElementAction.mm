@@ -1,37 +1,37 @@
 @interface _WKElementAction
-+ (id)_elementActionWithType:(int64_t)a3 customTitle:(id)a4 assistant:(id)a5 disabled:(BOOL)a6;
-+ (id)_elementActionWithType:(int64_t)a3 info:(id)a4 assistant:(id)a5 disabled:(BOOL)a6;
-+ (id)_elementActionWithType:(int64_t)a3 title:(id)a4 actionHandler:(id)a5;
-+ (id)elementActionWithTitle:(id)a3 actionHandler:(id)a4;
-+ (id)imageForElementActionType:(int64_t)a3;
-+ (int64_t)elementActionTypeForUIActionIdentifier:(id)a3;
++ (id)_elementActionWithType:(int64_t)type customTitle:(id)title assistant:(id)assistant disabled:(BOOL)disabled;
++ (id)_elementActionWithType:(int64_t)type info:(id)info assistant:(id)assistant disabled:(BOOL)disabled;
++ (id)_elementActionWithType:(int64_t)type title:(id)title actionHandler:(id)handler;
++ (id)elementActionWithTitle:(id)title actionHandler:(id)handler;
++ (id)imageForElementActionType:(int64_t)type;
++ (int64_t)elementActionTypeForUIActionIdentifier:(id)identifier;
 - (id).cxx_construct;
-- (id)_initWithTitle:(id)a3 actionHandler:(id)a4 type:(int64_t)a5 assistant:(id)a6 disabled:(BOOL)a7;
-- (id)uiActionForElementInfo:(id)a3;
+- (id)_initWithTitle:(id)title actionHandler:(id)handler type:(int64_t)type assistant:(id)assistant disabled:(BOOL)disabled;
+- (id)uiActionForElementInfo:(id)info;
 - (void)dealloc;
-- (void)runActionWithElementInfo:(id)a3;
+- (void)runActionWithElementInfo:(id)info;
 @end
 
 @implementation _WKElementAction
 
-- (id)_initWithTitle:(id)a3 actionHandler:(id)a4 type:(int64_t)a5 assistant:(id)a6 disabled:(BOOL)a7
+- (id)_initWithTitle:(id)title actionHandler:(id)handler type:(int64_t)type assistant:(id)assistant disabled:(BOOL)disabled
 {
   v16.receiver = self;
   v16.super_class = _WKElementAction;
   v12 = [(_WKElementAction *)&v16 init];
   if (v12)
   {
-    v13 = [a3 copy];
+    v13 = [title copy];
     m_ptr = v12->_title.m_ptr;
     v12->_title.m_ptr = v13;
     if (m_ptr)
     {
     }
 
-    v12->_type = a5;
-    v12->_actionHandler = [a4 copy];
-    v12->_disabled = a7;
-    objc_storeWeak(&v12->_defaultActionSheetAssistant.m_weakReference, a6);
+    v12->_type = type;
+    v12->_actionHandler = [handler copy];
+    v12->_disabled = disabled;
+    objc_storeWeak(&v12->_defaultActionSheetAssistant.m_weakReference, assistant);
   }
 
   return v12;
@@ -44,15 +44,15 @@
   [(_WKElementAction *)&v3 dealloc];
 }
 
-+ (id)elementActionWithTitle:(id)a3 actionHandler:(id)a4
++ (id)elementActionWithTitle:(id)title actionHandler:(id)handler
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __57___WKElementAction_elementActionWithTitle_actionHandler___block_invoke;
   v11[3] = &unk_1E7631768;
-  v11[4] = a4;
-  v7 = [v6 _initWithTitle:a3 actionHandler:v11 type:0 assistant:0];
+  v11[4] = handler;
+  v7 = [v6 _initWithTitle:title actionHandler:v11 type:0 assistant:0];
   v8 = v7;
   if (v7)
   {
@@ -62,14 +62,14 @@
   return v8;
 }
 
-+ (id)_elementActionWithType:(int64_t)a3 title:(id)a4 actionHandler:(id)a5
++ (id)_elementActionWithType:(int64_t)type title:(id)title actionHandler:(id)handler
 {
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63___WKElementAction__elementActionWithType_title_actionHandler___block_invoke;
   v9[3] = &unk_1E7631768;
-  v9[4] = a5;
-  v5 = [[a1 alloc] _initWithTitle:a4 actionHandler:v9 type:a3 assistant:0];
+  v9[4] = handler;
+  v5 = [[self alloc] _initWithTitle:title actionHandler:v9 type:type assistant:0];
   v6 = v5;
   if (v5)
   {
@@ -79,16 +79,16 @@
   return v6;
 }
 
-+ (id)_elementActionWithType:(int64_t)a3 customTitle:(id)a4 assistant:(id)a5 disabled:(BOOL)a6
++ (id)_elementActionWithType:(int64_t)type customTitle:(id)title assistant:(id)assistant disabled:(BOOL)disabled
 {
-  v6 = a6;
+  disabledCopy = disabled;
   v11 = &stru_1F1147748;
   v12 = &stru_1F1147748;
-  if (a3 <= 10)
+  if (type <= 10)
   {
-    if (a3 <= 2)
+    if (type <= 2)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         WebCore::localizedString(&v90, @"Open", v13);
         v22 = v90;
@@ -134,7 +134,7 @@
 
       else
       {
-        if (a3 != 2)
+        if (type != 2)
         {
           goto LABEL_45;
         }
@@ -184,7 +184,7 @@
 
     else
     {
-      switch(a3)
+      switch(type)
       {
         case 3:
           WebCore::localizedString(&v90, @"Save to Photos", v13);
@@ -315,14 +315,14 @@
 
   else
   {
-    if (a3 <= 13)
+    if (type <= 13)
     {
-      if (a3 == 11)
+      if (type == 11)
       {
         v32 = 0;
       }
 
-      else if (a3 == 12)
+      else if (type == 12)
       {
         WebCore::localizedString(&v90, @"Show Text", v13);
         v26 = v90;
@@ -413,7 +413,7 @@
       goto LABEL_116;
     }
 
-    switch(a3)
+    switch(type)
     {
       case 14:
         WebCore::contextMenuItemTagCopySubject(&v90, v12);
@@ -543,7 +543,7 @@
         break;
       default:
 LABEL_45:
-        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"There is no standard web element action of type %ld.", a3}];
+        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"There is no standard web element action of type %ld.", type}];
         v35 = 0;
 LABEL_122:
 
@@ -552,18 +552,18 @@ LABEL_122:
   }
 
 LABEL_116:
-  v76 = [a1 alloc];
-  if (a4)
+  v76 = [self alloc];
+  if (title)
   {
-    v77 = a4;
+    titleCopy = title;
   }
 
   else
   {
-    v77 = v11;
+    titleCopy = v11;
   }
 
-  v78 = [v76 _initWithTitle:v77 actionHandler:v32 type:a3 assistant:a5 disabled:v6];
+  v78 = [v76 _initWithTitle:titleCopy actionHandler:v32 type:type assistant:assistant disabled:disabledCopy];
   v35 = v78;
   if (v78)
   {
@@ -578,10 +578,10 @@ LABEL_116:
   return v35;
 }
 
-+ (id)_elementActionWithType:(int64_t)a3 info:(id)a4 assistant:(id)a5 disabled:(BOOL)a6
++ (id)_elementActionWithType:(int64_t)type info:(id)info assistant:(id)assistant disabled:(BOOL)disabled
 {
-  v6 = a6;
-  if (a3 != 2 || [a4 type] || (objc_msgSend(a4, "_isImage") & 1) != 0)
+  disabledCopy = disabled;
+  if (type != 2 || [info type] || (objc_msgSend(info, "_isImage") & 1) != 0)
   {
     v12 = 0;
   }
@@ -616,7 +616,7 @@ LABEL_116:
     }
   }
 
-  v13 = [a1 _elementActionWithType:a3 customTitle:v12 assistant:a5 disabled:{v6, v19, v20}];
+  v13 = [self _elementActionWithType:type customTitle:v12 assistant:assistant disabled:{disabledCopy, v19, v20}];
   if (v12)
   {
   }
@@ -624,18 +624,18 @@ LABEL_116:
   return v13;
 }
 
-- (void)runActionWithElementInfo:(id)a3
+- (void)runActionWithElementInfo:(id)info
 {
   WeakRetained = objc_loadWeakRetained(&self->_defaultActionSheetAssistant.m_weakReference);
-  [(_WKElementAction *)self _runActionWithElementInfo:a3 forActionSheetAssistant:?];
+  [(_WKElementAction *)self _runActionWithElementInfo:info forActionSheetAssistant:?];
   if (WeakRetained)
   {
   }
 }
 
-+ (id)imageForElementActionType:(int64_t)a3
++ (id)imageForElementActionType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 1:
     case 5:
@@ -704,89 +704,89 @@ LABEL_3:
   return result;
 }
 
-+ (int64_t)elementActionTypeForUIActionIdentifier:(id)a3
++ (int64_t)elementActionTypeForUIActionIdentifier:(id)identifier
 {
-  if ([a3 isEqualToString:@"WKElementActionTypeCustom"])
+  if ([identifier isEqualToString:@"WKElementActionTypeCustom"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"WKElementActionTypeOpen"])
+  if ([identifier isEqualToString:@"WKElementActionTypeOpen"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"WKElementActionTypeCopy"])
+  if ([identifier isEqualToString:@"WKElementActionTypeCopy"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"WKElementActionTypeSaveImage"])
+  if ([identifier isEqualToString:@"WKElementActionTypeSaveImage"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"WKElementActionTypeAddToReadingList"])
+  if ([identifier isEqualToString:@"WKElementActionTypeAddToReadingList"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"WKElementActionTypeOpenInDefaultBrowser"])
+  if ([identifier isEqualToString:@"WKElementActionTypeOpenInDefaultBrowser"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"WKElementActionTypeOpenInExternalApplication"])
+  if ([identifier isEqualToString:@"WKElementActionTypeOpenInExternalApplication"])
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:@"WKElementActionTypeShare"])
+  if ([identifier isEqualToString:@"WKElementActionTypeShare"])
   {
     return 7;
   }
 
-  if ([a3 isEqualToString:@"WKElementActionTypeOpenInNewTab"])
+  if ([identifier isEqualToString:@"WKElementActionTypeOpenInNewTab"])
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"WKElementActionTypeOpenInNewWindow"])
+  if ([identifier isEqualToString:@"WKElementActionTypeOpenInNewWindow"])
   {
     return 9;
   }
 
-  if ([a3 isEqualToString:@"WKElementActionTypeDownload"])
+  if ([identifier isEqualToString:@"WKElementActionTypeDownload"])
   {
     return 10;
   }
 
-  if ([a3 isEqualToString:@"WKElementActionTypeToggleShowLinkPreviews"])
+  if ([identifier isEqualToString:@"WKElementActionTypeToggleShowLinkPreviews"])
   {
     return 11;
   }
 
-  if ([a3 isEqualToString:@"WKElementActionTypeImageExtraction"])
+  if ([identifier isEqualToString:@"WKElementActionTypeImageExtraction"])
   {
     return 12;
   }
 
-  if ([a3 isEqualToString:@"WKElementActionTypeRevealImage"])
+  if ([identifier isEqualToString:@"WKElementActionTypeRevealImage"])
   {
     return 13;
   }
 
-  if ([a3 isEqualToString:@"WKElementActionTypeCopySubject"])
+  if ([identifier isEqualToString:@"WKElementActionTypeCopySubject"])
   {
     return 14;
   }
 
-  if ([a3 isEqualToString:@"WKElementActionPlayAnimation"])
+  if ([identifier isEqualToString:@"WKElementActionPlayAnimation"])
   {
     return 15;
   }
 
-  if ([a3 isEqualToString:@"WKElementActionPauseAnimation"])
+  if ([identifier isEqualToString:@"WKElementActionPauseAnimation"])
   {
     return 16;
   }
@@ -794,40 +794,40 @@ LABEL_3:
   return 0;
 }
 
-- (id)uiActionForElementInfo:(id)a3
+- (id)uiActionForElementInfo:(id)info
 {
   v5 = [_WKElementAction imageForElementActionType:[(_WKElementAction *)self type]];
   v6 = elementActionTypeToUIActionIdentifier([(_WKElementAction *)self type]);
   v7 = MEMORY[0x1E69DC628];
-  v8 = [(_WKElementAction *)self title];
+  title = [(_WKElementAction *)self title];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3321888768;
   v19 = __43___WKElementAction_uiActionForElementInfo___block_invoke;
   v20 = &__block_descriptor_48_e8_32c56_ZTSKZ43___WKElementAction_uiActionForElementInfo__E3__2_e18_v16__0__UIAction_8l;
   if (self)
   {
-    v9 = self;
+    selfCopy = self;
   }
 
-  if (a3)
+  if (info)
   {
-    v10 = a3;
+    infoCopy = info;
   }
 
-  v21 = self;
+  selfCopy2 = self;
   if (self)
   {
-    v11 = self;
+    selfCopy3 = self;
   }
 
-  v22 = a3;
-  if (a3)
+  infoCopy2 = info;
+  if (info)
   {
-    v12 = a3;
+    infoCopy3 = info;
   }
 
-  v13 = [v7 actionWithTitle:v8 image:v5 identifier:v6 handler:&v17];
-  if (a3)
+  v13 = [v7 actionWithTitle:title image:v5 identifier:v6 handler:&v17];
+  if (info)
   {
   }
 
@@ -840,14 +840,14 @@ LABEL_3:
     [v13 setAttributes:{objc_msgSend(v13, "attributes") | 1}];
   }
 
-  v14 = v22;
-  v22 = 0;
+  v14 = infoCopy2;
+  infoCopy2 = 0;
   if (v14)
   {
   }
 
-  v15 = v21;
-  v21 = 0;
+  v15 = selfCopy2;
+  selfCopy2 = 0;
   if (v15)
   {
   }

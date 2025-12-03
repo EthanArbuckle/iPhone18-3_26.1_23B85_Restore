@@ -1,31 +1,31 @@
 @interface PHAudioCallControlsView
 - (BOOL)needsReloadButtonViews;
 - (CGSize)intrinsicContentSize;
-- (PHAudioCallControlsView)initWithCallDisplayStyleManager:(id)a3;
+- (PHAudioCallControlsView)initWithCallDisplayStyleManager:(id)manager;
 - (PHAudioCallControlsViewDelegate)delegate;
 - (double)_horizontalSpacing;
 - (double)_verticalSpacing;
-- (id)buttonForControlType:(unint64_t)a3;
-- (id)menuForAudioControlsButton:(id)a3;
-- (void)assignControlType:(unint64_t)a3 toButton:(id)a4 completion:(id)a5;
-- (void)buttonLongPressGestureRecognizer:(id)a3;
-- (void)buttonShortPressGestureRecognizer:(id)a3;
-- (void)buttonTapped:(id)a3;
-- (void)changeVideoStreamingButtonTitleWithIsSharing:(BOOL)a3;
+- (id)buttonForControlType:(unint64_t)type;
+- (id)menuForAudioControlsButton:(id)button;
+- (void)assignControlType:(unint64_t)type toButton:(id)button completion:(id)completion;
+- (void)buttonLongPressGestureRecognizer:(id)recognizer;
+- (void)buttonShortPressGestureRecognizer:(id)recognizer;
+- (void)buttonTapped:(id)tapped;
+- (void)changeVideoStreamingButtonTitleWithIsSharing:(BOOL)sharing;
 - (void)dismissAudioRoutesMenu;
-- (void)forceUpdateAudioRoutesImageForButton:(id)a3 completion:(id)a4;
+- (void)forceUpdateAudioRoutesImageForButton:(id)button completion:(id)completion;
 - (void)reloadButtonViewStates;
 - (void)reloadButtonViews;
-- (void)replaceBlock:(id)a3 currentButton:(id)a4;
-- (void)setButtonsEnabled:(BOOL)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPrefersWhiteButtonTextColor:(BOOL)a3;
-- (void)setSelectedState:(BOOL)a3 forControlType:(unint64_t)a4;
-- (void)setupStackViewForRowCount:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateBackgroundMaterial:(unint64_t)a3;
+- (void)replaceBlock:(id)block currentButton:(id)button;
+- (void)setButtonsEnabled:(BOOL)enabled;
+- (void)setCenter:(CGPoint)center;
+- (void)setDelegate:(id)delegate;
+- (void)setFrame:(CGRect)frame;
+- (void)setPrefersWhiteButtonTextColor:(BOOL)color;
+- (void)setSelectedState:(BOOL)state forControlType:(unint64_t)type;
+- (void)setupStackViewForRowCount:(int64_t)count;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateBackgroundMaterial:(unint64_t)material;
 - (void)updateControls;
 @end
 
@@ -41,23 +41,23 @@
   }
 
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 delegate];
-  v6 = [v5 mostRecentlyDisconnectedAudioCall];
+  delegate = [v4 delegate];
+  mostRecentlyDisconnectedAudioCall = [delegate mostRecentlyDisconnectedAudioCall];
 
-  if (v6 && [v6 isEmergency])
+  if (mostRecentlyDisconnectedAudioCall && [mostRecentlyDisconnectedAudioCall isEmergency])
   {
-    v7 = [v6 disconnectedReasonRequiresCallBackUI];
+    disconnectedReasonRequiresCallBackUI = [mostRecentlyDisconnectedAudioCall disconnectedReasonRequiresCallBackUI];
   }
 
   else
   {
-    v7 = 0;
+    disconnectedReasonRequiresCallBackUI = 0;
   }
 
   v8 = +[TUCallCenter sharedInstance];
-  v9 = [v8 frontmostCall];
+  frontmostCall = [v8 frontmostCall];
 
-  if (v9 || v7)
+  if (frontmostCall || disconnectedReasonRequiresCallBackUI)
   {
     if ([(PHAudioCallControlsView *)self needsReloadButtonViews])
     {
@@ -83,9 +83,9 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = +[TUCallCenter sharedInstance];
-      v12 = [v11 currentCalls];
+      currentCalls = [v11 currentCalls];
       v14 = 138412290;
-      v15 = v12;
+      v15 = currentCalls;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "(UI) Ignoring call to update controls since frontmostCall is nil (current calls are %@).", &v14, 0xCu);
     }
   }
@@ -93,11 +93,11 @@
 
 - (BOOL)needsReloadButtonViews
 {
-  v3 = [(PHAudioCallControlsView *)self delegate];
-  v4 = [v3 numberOfRowsInControlsView:self];
+  delegate = [(PHAudioCallControlsView *)self delegate];
+  v4 = [delegate numberOfRowsInControlsView:self];
 
-  v5 = [(PHAudioCallControlsView *)self delegate];
-  v6 = [v5 numberOfColumnsInControlsView:self];
+  delegate2 = [(PHAudioCallControlsView *)self delegate];
+  v6 = [delegate2 numberOfColumnsInControlsView:self];
 
   if (!v4)
   {
@@ -120,19 +120,19 @@ LABEL_11:
   v9 = 0;
   while (1)
   {
-    v10 = [(PHAudioCallControlsView *)self buttonsArray];
-    v11 = [v10 count];
+    buttonsArray = [(PHAudioCallControlsView *)self buttonsArray];
+    v11 = [buttonsArray count];
 
     if (v11 <= v7 + v9)
     {
       return 1;
     }
 
-    v12 = [(PHAudioCallControlsView *)self delegate];
-    v13 = [v12 controlTypeAtRow:v8 column:v9];
+    delegate3 = [(PHAudioCallControlsView *)self delegate];
+    v13 = [delegate3 controlTypeAtRow:v8 column:v9];
 
-    v14 = [(PHAudioCallControlsView *)self buttonsArray];
-    v15 = [v14 objectAtIndex:v7 + v9];
+    buttonsArray2 = [(PHAudioCallControlsView *)self buttonsArray];
+    v15 = [buttonsArray2 objectAtIndex:v7 + v9];
 
     if (v13 != [v15 controlType])
     {
@@ -159,19 +159,19 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v17 = [(PHAudioCallControlsView *)self buttonsArray];
-  v18 = [v17 objectAtIndexedSubscript:v7 + v9];
+  buttonsArray3 = [(PHAudioCallControlsView *)self buttonsArray];
+  v18 = [buttonsArray3 objectAtIndexedSubscript:v7 + v9];
 
-  v19 = [(PHAudioCallControlsView *)self delegate];
-  v20 = [v19 imageForControlType:v13];
+  delegate4 = [(PHAudioCallControlsView *)self delegate];
+  v20 = [delegate4 imageForControlType:v13];
 
-  v21 = [v20 iconImage];
-  v22 = [v18 image];
-  if (v21 == v22)
+  iconImage = [v20 iconImage];
+  image = [v18 image];
+  if (iconImage == image)
   {
-    v23 = [v20 iconView];
-    v24 = [v18 controlView];
-    v16 = v23 != v24;
+    iconView = [v20 iconView];
+    controlView = [v18 controlView];
+    v16 = iconView != controlView;
   }
 
   else
@@ -192,11 +192,11 @@ LABEL_19:
 
 - (void)reloadButtonViewStates
 {
-  v3 = [(PHAudioCallControlsView *)self delegate];
-  v4 = [v3 numberOfRowsInControlsView:self];
+  delegate = [(PHAudioCallControlsView *)self delegate];
+  v4 = [delegate numberOfRowsInControlsView:self];
 
-  v5 = [(PHAudioCallControlsView *)self delegate];
-  v6 = [v5 numberOfColumnsInControlsView:self];
+  delegate2 = [(PHAudioCallControlsView *)self delegate];
+  v6 = [delegate2 numberOfColumnsInControlsView:self];
 
   if (v4)
   {
@@ -209,19 +209,19 @@ LABEL_19:
       {
         do
         {
-          v11 = [(PHAudioCallControlsView *)self buttonsArray];
-          v12 = [v11 count];
+          buttonsArray = [(PHAudioCallControlsView *)self buttonsArray];
+          v12 = [buttonsArray count];
 
           if (v12 > v10)
           {
-            v13 = [(PHAudioCallControlsView *)self buttonsArray];
-            v14 = [v13 objectAtIndex:v10];
+            buttonsArray2 = [(PHAudioCallControlsView *)self buttonsArray];
+            v14 = [buttonsArray2 objectAtIndex:v10];
 
-            v15 = [v14 controlType];
+            controlType = [v14 controlType];
             if ([(PHAudioCallControlsView *)self buttonsEnabled])
             {
-              v16 = [(PHAudioCallControlsView *)self delegate];
-              [v14 setEnabled:{objc_msgSend(v16, "controlTypeIsEnabled:", v15)}];
+              delegate3 = [(PHAudioCallControlsView *)self delegate];
+              [v14 setEnabled:{objc_msgSend(delegate3, "controlTypeIsEnabled:", controlType)}];
             }
 
             else
@@ -229,20 +229,20 @@ LABEL_19:
               [v14 setEnabled:0];
             }
 
-            v17 = [(PHAudioCallControlsView *)self delegate];
-            if ([v17 controlTypeIsSelected:v15])
+            delegate4 = [(PHAudioCallControlsView *)self delegate];
+            if ([delegate4 controlTypeIsSelected:controlType])
             {
-              v18 = [v14 isEnabled];
+              isEnabled = [v14 isEnabled];
             }
 
             else
             {
-              v18 = 0;
+              isEnabled = 0;
             }
 
-            [v14 setSelected:v18];
+            [v14 setSelected:isEnabled];
 
-            [(PHAudioCallControlsView *)self assignControlType:v15 toButton:v14];
+            [(PHAudioCallControlsView *)self assignControlType:controlType toButton:v14];
           }
 
           ++v10;
@@ -257,26 +257,26 @@ LABEL_19:
   }
 }
 
-- (PHAudioCallControlsView)initWithCallDisplayStyleManager:(id)a3
+- (PHAudioCallControlsView)initWithCallDisplayStyleManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = PHAudioCallControlsView;
   v5 = [(PHAudioCallControlsView *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(PHAudioCallControlsView *)v5 layer];
-    [v7 setAllowsGroupBlending:0];
+    layer = [(PHAudioCallControlsView *)v5 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v8 = [(PHAudioCallControlsView *)v6 layer];
-    [v8 setAllowsGroupOpacity:0];
+    layer2 = [(PHAudioCallControlsView *)v6 layer];
+    [layer2 setAllowsGroupOpacity:0];
 
     v9 = +[UIColor clearColor];
     [(PHAudioCallControlsView *)v6 setBackgroundColor:v9];
 
     v6->_buttonsEnabled = 1;
-    v6->_callDisplayStyleManager = v4;
+    v6->_callDisplayStyleManager = managerCopy;
     v10 = objc_opt_new();
     buttonUpdates = v6->_buttonUpdates;
     v6->_buttonUpdates = v10;
@@ -287,16 +287,16 @@ LABEL_19:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
-  v4 = [v3 usesLargeFormatUI];
+  callDisplayStyleManager = [(PHAudioCallControlsView *)self callDisplayStyleManager];
+  usesLargeFormatUI = [callDisplayStyleManager usesLargeFormatUI];
 
-  if (!v4)
+  if (!usesLargeFormatUI)
   {
-    v9 = [(PHAudioCallControlsView *)self delegate];
-    v10 = [v9 numberOfRowsInControlsView:self];
+    delegate = [(PHAudioCallControlsView *)self delegate];
+    v10 = [delegate numberOfRowsInControlsView:self];
 
-    v11 = [(PHAudioCallControlsView *)self buttonsArray];
-    v12 = [v11 objectAtIndexedSubscript:0];
+    buttonsArray = [(PHAudioCallControlsView *)self buttonsArray];
+    v12 = [buttonsArray objectAtIndexedSubscript:0];
     [v12 intrinsicContentSize];
     v14 = v13;
     v15 = v10;
@@ -308,23 +308,23 @@ LABEL_19:
     [(PHAudioCallControlsView *)self _verticalSpacing];
     v8 = v20 + v21 * 0.5;
 
-    v22 = +[PHInCallUtilities sharedInstance];
-    v23 = [v22 isIPadIdiom];
-    if (v23 && (-[PHAudioCallControlsView callDisplayStyleManager](self, "callDisplayStyleManager"), v10 = objc_claimAutoreleasedReturnValue(), ![v10 usesLargeFormatUI]))
+    buttonsArray2 = +[PHInCallUtilities sharedInstance];
+    isIPadIdiom = [buttonsArray2 isIPadIdiom];
+    if (isIPadIdiom && (-[PHAudioCallControlsView callDisplayStyleManager](self, "callDisplayStyleManager"), v10 = objc_claimAutoreleasedReturnValue(), ![v10 usesLargeFormatUI]))
     {
       v6 = 320.0;
     }
 
     else
     {
-      v24 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
-      v25 = [v24 callDisplayStyle];
+      callDisplayStyleManager2 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
+      callDisplayStyle = [callDisplayStyleManager2 callDisplayStyle];
 
-      if (v23)
+      if (isIPadIdiom)
       {
       }
 
-      if (v25 == 3)
+      if (callDisplayStyle == 3)
       {
         v6 = 320.0;
         goto LABEL_14;
@@ -340,8 +340,8 @@ LABEL_19:
         v6 = v28;
       }
 
-      v22 = [(PHAudioCallControlsView *)self buttonsArray];
-      v10 = [v22 objectAtIndexedSubscript:0];
+      buttonsArray2 = [(PHAudioCallControlsView *)self buttonsArray];
+      v10 = [buttonsArray2 objectAtIndexedSubscript:0];
       [v10 intrinsicContentSize];
       v31 = v30;
       [(PHAudioCallControlsView *)self _topMargin];
@@ -366,65 +366,65 @@ LABEL_14:
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    objc_storeWeak(&self->_delegate, a3);
+    objc_storeWeak(&self->_delegate, delegate);
 
     [(PHAudioCallControlsView *)self reloadButtonViews];
   }
 }
 
-- (void)setupStackViewForRowCount:(int64_t)a3
+- (void)setupStackViewForRowCount:(int64_t)count
 {
-  v5 = [(PHAudioCallControlsView *)self buttonStackView];
+  buttonStackView = [(PHAudioCallControlsView *)self buttonStackView];
 
-  if (!v5)
+  if (!buttonStackView)
   {
     v6 = objc_alloc_init(UIStackView);
     [(PHAudioCallControlsView *)self setButtonStackView:v6];
 
-    v7 = [(PHAudioCallControlsView *)self buttonStackView];
-    [v7 setAxis:1];
+    buttonStackView2 = [(PHAudioCallControlsView *)self buttonStackView];
+    [buttonStackView2 setAxis:1];
 
-    v8 = [(PHAudioCallControlsView *)self buttonStackView];
-    [v8 setSpacing:56.0];
+    buttonStackView3 = [(PHAudioCallControlsView *)self buttonStackView];
+    [buttonStackView3 setSpacing:56.0];
 
-    v9 = [(PHAudioCallControlsView *)self buttonStackView];
-    [v9 setDistribution:3];
+    buttonStackView4 = [(PHAudioCallControlsView *)self buttonStackView];
+    [buttonStackView4 setDistribution:3];
 
-    v10 = [(PHAudioCallControlsView *)self buttonStackView];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    buttonStackView5 = [(PHAudioCallControlsView *)self buttonStackView];
+    [buttonStackView5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v11 = [(PHAudioCallControlsView *)self buttonStackView];
-    [(PHAudioCallControlsView *)self addSubview:v11];
+    buttonStackView6 = [(PHAudioCallControlsView *)self buttonStackView];
+    [(PHAudioCallControlsView *)self addSubview:buttonStackView6];
 
-    v32 = [(PHAudioCallControlsView *)self buttonStackView];
-    v31 = [v32 leadingAnchor];
-    v30 = [(PHAudioCallControlsView *)self leadingAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    buttonStackView7 = [(PHAudioCallControlsView *)self buttonStackView];
+    leadingAnchor = [buttonStackView7 leadingAnchor];
+    leadingAnchor2 = [(PHAudioCallControlsView *)self leadingAnchor];
+    v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v34[0] = v29;
-    v28 = [(PHAudioCallControlsView *)self buttonStackView];
-    v27 = [v28 trailingAnchor];
-    v26 = [(PHAudioCallControlsView *)self trailingAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26];
+    buttonStackView8 = [(PHAudioCallControlsView *)self buttonStackView];
+    trailingAnchor = [buttonStackView8 trailingAnchor];
+    trailingAnchor2 = [(PHAudioCallControlsView *)self trailingAnchor];
+    v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v34[1] = v25;
-    v24 = [(PHAudioCallControlsView *)self buttonStackView];
-    v12 = [v24 topAnchor];
-    v13 = [(PHAudioCallControlsView *)self topAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    buttonStackView9 = [(PHAudioCallControlsView *)self buttonStackView];
+    topAnchor = [buttonStackView9 topAnchor];
+    topAnchor2 = [(PHAudioCallControlsView *)self topAnchor];
+    v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v34[2] = v14;
-    v15 = [(PHAudioCallControlsView *)self buttonStackView];
-    v16 = [v15 bottomAnchor];
-    v17 = [(PHAudioCallControlsView *)self bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    buttonStackView10 = [(PHAudioCallControlsView *)self buttonStackView];
+    bottomAnchor = [buttonStackView10 bottomAnchor];
+    bottomAnchor2 = [(PHAudioCallControlsView *)self bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v34[3] = v18;
     v19 = [NSArray arrayWithObjects:v34 count:4];
     [NSLayoutConstraint activateConstraints:v19];
 
     v20 = objc_opt_new();
-    if (a3 >= 1)
+    if (count >= 1)
     {
       do
       {
@@ -432,13 +432,13 @@ LABEL_14:
         [v21 setAxis:0];
         [v21 setDistribution:3];
         [v20 addObject:v21];
-        v22 = [(PHAudioCallControlsView *)self buttonStackView];
-        [v22 addArrangedSubview:v21];
+        buttonStackView11 = [(PHAudioCallControlsView *)self buttonStackView];
+        [buttonStackView11 addArrangedSubview:v21];
 
-        --a3;
+        --count;
       }
 
-      while (a3);
+      while (count);
     }
 
     v23 = [v20 copy];
@@ -466,8 +466,8 @@ LABEL_14:
   v134 = 0u;
   v131 = 0u;
   v132 = 0u;
-  v5 = [(PHAudioCallControlsView *)self buttonsArray];
-  v6 = [v5 countByEnumeratingWithState:&v131 objects:v139 count:16];
+  buttonsArray = [(PHAudioCallControlsView *)self buttonsArray];
+  v6 = [buttonsArray countByEnumeratingWithState:&v131 objects:v139 count:16];
   if (v6)
   {
     v7 = v6;
@@ -478,13 +478,13 @@ LABEL_14:
       {
         if (*v132 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(buttonsArray);
         }
 
         [*(*(&v131 + 1) + 8 * i) removeFromSuperview];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v131 objects:v139 count:16];
+      v7 = [buttonsArray countByEnumeratingWithState:&v131 objects:v139 count:16];
     }
 
     while (v7);
@@ -492,16 +492,16 @@ LABEL_14:
 
   [(PHAudioCallControlsView *)self setButtonsArray:0];
   v119 = +[NSMutableArray array];
-  v9 = [(PHAudioCallControlsView *)self delegate];
-  v118 = [v9 numberOfRowsInControlsView:self];
+  delegate = [(PHAudioCallControlsView *)self delegate];
+  v118 = [delegate numberOfRowsInControlsView:self];
 
-  v10 = [(PHAudioCallControlsView *)self delegate];
-  v120 = [v10 numberOfColumnsInControlsView:self];
+  delegate2 = [(PHAudioCallControlsView *)self delegate];
+  v120 = [delegate2 numberOfColumnsInControlsView:self];
 
-  v11 = +[PHInCallUtilities sharedInstance];
-  v12 = [v11 isIPadIdiom];
-  v13 = v12;
-  if (v12)
+  captureView5 = +[PHInCallUtilities sharedInstance];
+  isIPadIdiom = [captureView5 isIPadIdiom];
+  v13 = isIPadIdiom;
+  if (isIPadIdiom)
   {
     i = [(PHAudioCallControlsView *)self callDisplayStyleManager];
     if (![i usesLargeFormatUI])
@@ -510,8 +510,8 @@ LABEL_14:
     }
   }
 
-  v14 = [(PHAudioCallControlsView *)self captureView];
-  if (v14)
+  captureView = [(PHAudioCallControlsView *)self captureView];
+  if (captureView)
   {
 
     if ((v13 & 1) == 0)
@@ -535,35 +535,35 @@ LABEL_14:
     v17 = [v16 initWithFrame:?];
     [(PHAudioCallControlsView *)self setCaptureView:v17];
 
-    v18 = [(PHAudioCallControlsView *)self captureView];
-    [v18 setAutoresizingMask:18];
+    captureView2 = [(PHAudioCallControlsView *)self captureView];
+    [captureView2 setAutoresizingMask:18];
 
-    v19 = [(PHAudioCallControlsView *)self captureView];
-    [(PHAudioCallControlsView *)self insertSubview:v19 atIndex:0];
+    captureView3 = [(PHAudioCallControlsView *)self captureView];
+    [(PHAudioCallControlsView *)self insertSubview:captureView3 atIndex:0];
 
-    v20 = [(PHAudioCallControlsView *)self captureView];
-    [v20 setRenderMode:1];
+    captureView4 = [(PHAudioCallControlsView *)self captureView];
+    [captureView4 setRenderMode:1];
 
-    v11 = [(PHAudioCallControlsView *)self captureView];
-    i = [v11 captureGroup];
+    captureView5 = [(PHAudioCallControlsView *)self captureView];
+    i = [captureView5 captureGroup];
     [i setGroupName:@"InCallButtonsCaptureGroup"];
 LABEL_19:
 
 LABEL_20:
   }
 
-  v21 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
-  v22 = [v21 usesLargeFormatUI];
+  callDisplayStyleManager = [(PHAudioCallControlsView *)self callDisplayStyleManager];
+  usesLargeFormatUI = [callDisplayStyleManager usesLargeFormatUI];
 
-  if (v22)
+  if (usesLargeFormatUI)
   {
     [(PHAudioCallControlsView *)self setupStackViewForRowCount:v118];
     v129 = 0u;
     v130 = 0u;
     v127 = 0u;
     v128 = 0u;
-    v23 = [(PHAudioCallControlsView *)self stacks];
-    v24 = [v23 countByEnumeratingWithState:&v127 objects:v138 count:16];
+    stacks = [(PHAudioCallControlsView *)self stacks];
+    v24 = [stacks countByEnumeratingWithState:&v127 objects:v138 count:16];
     if (v24)
     {
       v25 = v24;
@@ -574,16 +574,16 @@ LABEL_20:
         {
           if (*v128 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(stacks);
           }
 
           v28 = *(*(&v127 + 1) + 8 * j);
-          v29 = [v28 arrangedSubviews];
+          arrangedSubviews = [v28 arrangedSubviews];
           v123 = 0u;
           v124 = 0u;
           v125 = 0u;
           v126 = 0u;
-          v30 = [v29 countByEnumeratingWithState:&v123 objects:v137 count:16];
+          v30 = [arrangedSubviews countByEnumeratingWithState:&v123 objects:v137 count:16];
           if (v30)
           {
             v31 = v30;
@@ -594,20 +594,20 @@ LABEL_20:
               {
                 if (*v124 != v32)
                 {
-                  objc_enumerationMutation(v29);
+                  objc_enumerationMutation(arrangedSubviews);
                 }
 
                 [v28 removeArrangedSubview:*(*(&v123 + 1) + 8 * k)];
               }
 
-              v31 = [v29 countByEnumeratingWithState:&v123 objects:v137 count:16];
+              v31 = [arrangedSubviews countByEnumeratingWithState:&v123 objects:v137 count:16];
             }
 
             while (v31);
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v127 objects:v138 count:16];
+        v25 = [stacks countByEnumeratingWithState:&v127 objects:v138 count:16];
       }
 
       while (v25);
@@ -632,19 +632,19 @@ LABEL_80:
     v37 = v120 - 1;
     while (1)
     {
-      v38 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
-      v39 = [v38 callDisplayStyle];
+      callDisplayStyleManager2 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
+      callDisplayStyle = [callDisplayStyleManager2 callDisplayStyle];
 
       v122 = v37;
-      if (v39 == 3)
+      if (callDisplayStyle == 3)
       {
         break;
       }
 
-      v42 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
-      v43 = [v42 usesLargeFormatUI];
+      callDisplayStyleManager3 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
+      usesLargeFormatUI2 = [callDisplayStyleManager3 usesLargeFormatUI];
 
-      if (v43)
+      if (usesLargeFormatUI2)
       {
         v44 = +[UIScreen mainScreen];
         [v44 bounds];
@@ -672,27 +672,27 @@ LABEL_50:
       [(PHAudioControlsButton *)v51 setOpaque:0];
       v52 = v35;
       v53 = v35[356];
-      v54 = [(PHAudioControlsButton *)v51 widthAnchor];
+      widthAnchor = [(PHAudioControlsButton *)v51 widthAnchor];
       [(PHAudioControlsButton *)v51 intrinsicContentSize];
-      v55 = [v54 constraintEqualToConstant:?];
+      v55 = [widthAnchor constraintEqualToConstant:?];
       v136[0] = v55;
-      v56 = [(PHAudioControlsButton *)v51 heightAnchor];
+      heightAnchor = [(PHAudioControlsButton *)v51 heightAnchor];
       [(PHAudioControlsButton *)v51 intrinsicContentSize];
-      v58 = [v56 constraintEqualToConstant:v57];
+      v58 = [heightAnchor constraintEqualToConstant:v57];
       v136[1] = v58;
       v59 = [NSArray arrayWithObjects:v136 count:2];
       [v53 activateConstraints:v59];
 
-      v60 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
-      if ([v60 usesLargeFormatUI])
+      callDisplayStyleManager4 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager4 usesLargeFormatUI])
       {
-        v61 = [(PHAudioCallControlsView *)self stacks];
+        stacks2 = [(PHAudioCallControlsView *)self stacks];
 
         v35 = v52;
-        if (v61)
+        if (stacks2)
         {
-          v62 = [(PHAudioCallControlsView *)self stacks];
-          v63 = [v62 objectAtIndex:v121];
+          stacks3 = [(PHAudioCallControlsView *)self stacks];
+          v63 = [stacks3 objectAtIndex:v121];
 
           [v63 addArrangedSubview:v51];
           v64 = v122;
@@ -744,10 +744,10 @@ LABEL_57:
         v77 = *&v76 + (v72 * -0.5);
         [(PHAudioControlsButton *)v51 intrinsicContentSize];
         v79 = v78 * 0.5 + v77;
-        v80 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
-        v81 = [v80 usesLargeFormatUI];
+        callDisplayStyleManager5 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
+        usesLargeFormatUI3 = [callDisplayStyleManager5 usesLargeFormatUI];
 
-        if (v81)
+        if (usesLargeFormatUI3)
         {
           [(PHAudioCallControlsView *)self frame];
           v83 = v82;
@@ -760,15 +760,15 @@ LABEL_57:
         v87 = 1.0;
         v88 = v51;
         v89 = 9;
-        v90 = self;
+        selfCopy2 = self;
         v91 = 9;
         goto LABEL_70;
       }
 
-      v66 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
-      v67 = [v66 callDisplayStyle];
+      callDisplayStyleManager6 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
+      callDisplayStyle2 = [callDisplayStyleManager6 callDisplayStyle];
 
-      if (v67 == 3)
+      if (callDisplayStyle2 == 3)
       {
         goto LABEL_57;
       }
@@ -798,10 +798,10 @@ LABEL_57:
       v87 = 1.0;
       v88 = v51;
       v89 = 5;
-      v90 = self;
+      selfCopy2 = self;
       v91 = 5;
 LABEL_70:
-      v103 = [v85 constraintWithItem:v88 attribute:v89 relatedBy:0 toItem:v90 attribute:v91 multiplier:v87 constant:v86];
+      v103 = [v85 constraintWithItem:v88 attribute:v89 relatedBy:0 toItem:selfCopy2 attribute:v91 multiplier:v87 constant:v86];
       [(PHAudioCallControlsView *)self addConstraint:v103];
 
       v104 = v35[356];
@@ -814,8 +814,8 @@ LABEL_70:
       [(PHAudioCallControlsView *)self addConstraint:v63];
 LABEL_71:
 
-      v110 = [(PHAudioCallControlsView *)self delegate];
-      v111 = [v110 controlTypeAtRow:v121 column:v36];
+      delegate3 = [(PHAudioCallControlsView *)self delegate];
+      v111 = [delegate3 controlTypeAtRow:v121 column:v36];
 
       [(PHAudioControlsButton *)v51 setControlType:v111];
       if (v111 == 3)
@@ -840,10 +840,10 @@ LABEL_71:
       v114 = +[PHInCallUtilities sharedInstance];
       if ([v114 isIPadIdiom])
       {
-        v115 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
-        v116 = [v115 usesLargeFormatUI];
+        callDisplayStyleManager7 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
+        usesLargeFormatUI4 = [callDisplayStyleManager7 usesLargeFormatUI];
 
-        if (!v116)
+        if (!usesLargeFormatUI4)
         {
           goto LABEL_79;
         }
@@ -853,8 +853,8 @@ LABEL_71:
       {
       }
 
-      v117 = [(PHAudioCallControlsView *)self captureView];
-      [(PHAudioControlsButton *)v51 setCaptureView:v117];
+      captureView6 = [(PHAudioCallControlsView *)self captureView];
+      [(PHAudioControlsButton *)v51 setCaptureView:captureView6];
 
 LABEL_79:
       ++v36;
@@ -878,41 +878,41 @@ LABEL_81:
   [(PHAudioCallControlsView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)replaceBlock:(id)a3 currentButton:(id)a4
+- (void)replaceBlock:(id)block currentButton:(id)button
 {
-  v13 = a3;
-  v6 = a4;
-  if (v6)
+  blockCopy = block;
+  buttonCopy = button;
+  if (buttonCopy)
   {
-    v7 = [(PHAudioCallControlsView *)self buttonUpdates];
-    v8 = [v6 uuid];
-    v9 = [v7 objectForKey:v8];
+    buttonUpdates = [(PHAudioCallControlsView *)self buttonUpdates];
+    uuid = [buttonCopy uuid];
+    v9 = [buttonUpdates objectForKey:uuid];
 
     if (v9)
     {
       dispatch_block_cancel(v9);
     }
 
-    v10 = [(PHAudioCallControlsView *)self buttonUpdates];
-    if (v13)
+    buttonUpdates2 = [(PHAudioCallControlsView *)self buttonUpdates];
+    if (blockCopy)
     {
-      v11 = objc_retainBlock(v13);
-      v12 = [v6 uuid];
-      [v10 setObject:v11 forKey:v12];
+      uuid3 = objc_retainBlock(blockCopy);
+      uuid2 = [buttonCopy uuid];
+      [buttonUpdates2 setObject:uuid3 forKey:uuid2];
     }
 
     else
     {
-      v11 = [v6 uuid];
-      [v10 removeObjectForKey:v11];
+      uuid3 = [buttonCopy uuid];
+      [buttonUpdates2 removeObjectForKey:uuid3];
     }
   }
 }
 
-- (void)forceUpdateAudioRoutesImageForButton:(id)a3 completion:(id)a4
+- (void)forceUpdateAudioRoutesImageForButton:(id)button completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  buttonCopy = button;
+  completionCopy = completion;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
@@ -924,11 +924,11 @@ LABEL_81:
   block[2] = sub_1000AB4C4;
   block[3] = &unk_1003578D8;
   v19 = v20;
-  v8 = v6;
+  v8 = buttonCopy;
   v18 = v8;
   v9 = dispatch_block_create(0, block);
   [(PHAudioCallControlsView *)self replaceBlock:v9 currentButton:v8];
-  v10 = [(PHAudioCallControlsView *)self delegate];
+  delegate = [(PHAudioCallControlsView *)self delegate];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000AB5B8;
@@ -936,9 +936,9 @@ LABEL_81:
   v16 = v20;
   v11 = v9;
   v14 = v11;
-  v12 = v7;
+  v12 = completionCopy;
   v15 = v12;
-  [v10 fetchAudioRoutesImageWithCompletion:v13];
+  [delegate fetchAudioRoutesImageWithCompletion:v13];
 
   _Block_object_dispose(v20, 8);
 }
@@ -946,24 +946,24 @@ LABEL_81:
 - (void)dismissAudioRoutesMenu
 {
   v3 = [(PHAudioCallControlsView *)self buttonForControlType:3];
-  v2 = [v3 contextMenuInteraction];
-  [v2 dismissMenu];
+  contextMenuInteraction = [v3 contextMenuInteraction];
+  [contextMenuInteraction dismissMenu];
 }
 
-- (void)assignControlType:(unint64_t)a3 toButton:(id)a4 completion:(id)a5
+- (void)assignControlType:(unint64_t)type toButton:(id)button completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (v8 && ([v8 imageForState:0], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
+  buttonCopy = button;
+  completionCopy = completion;
+  if (buttonCopy && ([buttonCopy imageForState:0], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
   {
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
     v35[2] = sub_1000ABAE0;
     v35[3] = &unk_100358860;
-    v11 = v8;
+    v11 = buttonCopy;
     v36 = v11;
-    v37 = self;
-    v38 = a3;
+    selfCopy = self;
+    typeCopy = type;
     v12 = objc_retainBlock(v35);
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
@@ -971,10 +971,10 @@ LABEL_81:
     v31[3] = &unk_100358888;
     v13 = v11;
     v32 = v13;
-    v33 = self;
-    v34 = a3;
+    selfCopy2 = self;
+    typeCopy2 = type;
     v14 = objc_retainBlock(v31);
-    if (a3 == 3)
+    if (type == 3)
     {
       v15 = +[TURoute speakerAudioRouteGlyph];
       v16 = [v15 imageWithRenderingMode:2];
@@ -994,7 +994,7 @@ LABEL_81:
       v28 = v29;
       v17 = dispatch_block_create(0, block);
       [(PHAudioCallControlsView *)self replaceBlock:v17 currentButton:v13];
-      v18 = [(PHAudioCallControlsView *)self delegate];
+      delegate = [(PHAudioCallControlsView *)self delegate];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_1000ABDD4;
@@ -1003,8 +1003,8 @@ LABEL_81:
       v22[4] = self;
       v19 = v17;
       v23 = v19;
-      v24 = v9;
-      [v18 fetchAudioRoutesImageWithCompletion:v22];
+      v24 = completionCopy;
+      [delegate fetchAudioRoutesImageWithCompletion:v22];
 
       _Block_object_dispose(v29, 8);
     }
@@ -1012,67 +1012,67 @@ LABEL_81:
     else
     {
       [(PHAudioCallControlsView *)self replaceBlock:0 currentButton:v13];
-      v20 = [(PHAudioCallControlsView *)self delegate];
-      v21 = [v20 imageForControlType:a3];
+      delegate2 = [(PHAudioCallControlsView *)self delegate];
+      v21 = [delegate2 imageForControlType:type];
       (v12[2])(v12, v21);
 
-      if (v9)
+      if (completionCopy)
       {
-        v9[2](v9);
+        completionCopy[2](completionCopy);
       }
     }
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(PHAudioCallControlsView *)self delegate];
-  [v5 controlTypeTapped:objc_msgSend(v4 forView:{"controlType"), v4}];
+  tappedCopy = tapped;
+  delegate = [(PHAudioCallControlsView *)self delegate];
+  [delegate controlTypeTapped:objc_msgSend(tappedCopy forView:{"controlType"), tappedCopy}];
 }
 
-- (void)buttonShortPressGestureRecognizer:(id)a3
+- (void)buttonShortPressGestureRecognizer:(id)recognizer
 {
-  v6 = a3;
-  if ([v6 state] == 1)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] == 1)
   {
-    v4 = [(PHAudioCallControlsView *)self delegate];
-    v5 = [v6 view];
-    [v4 controlTypeShortPressed:{objc_msgSend(v5, "controlType")}];
+    delegate = [(PHAudioCallControlsView *)self delegate];
+    view = [recognizerCopy view];
+    [delegate controlTypeShortPressed:{objc_msgSend(view, "controlType")}];
   }
 }
 
-- (void)buttonLongPressGestureRecognizer:(id)a3
+- (void)buttonLongPressGestureRecognizer:(id)recognizer
 {
-  v6 = a3;
-  if ([v6 state] == 1)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] == 1)
   {
-    v4 = [(PHAudioCallControlsView *)self delegate];
-    v5 = [v6 view];
-    [v4 controlTypeLongPressed:{objc_msgSend(v5, "controlType")}];
+    delegate = [(PHAudioCallControlsView *)self delegate];
+    view = [recognizerCopy view];
+    [delegate controlTypeLongPressed:{objc_msgSend(view, "controlType")}];
   }
 }
 
-- (void)setSelectedState:(BOOL)a3 forControlType:(unint64_t)a4
+- (void)setSelectedState:(BOOL)state forControlType:(unint64_t)type
 {
-  v4 = a3;
-  v5 = [(PHAudioCallControlsView *)self buttonForControlType:a4];
-  [v5 setSelected:v4];
+  stateCopy = state;
+  v5 = [(PHAudioCallControlsView *)self buttonForControlType:type];
+  [v5 setSelected:stateCopy];
 }
 
-- (id)buttonForControlType:(unint64_t)a3
+- (id)buttonForControlType:(unint64_t)type
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PHAudioCallControlsView *)self buttonsArray];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  buttonsArray = [(PHAudioCallControlsView *)self buttonsArray];
+  v5 = [buttonsArray countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1083,18 +1083,18 @@ LABEL_81:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(buttonsArray);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 controlType] == a3)
+        if ([v9 controlType] == type)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [buttonsArray countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -1110,17 +1110,17 @@ LABEL_11:
   return v10;
 }
 
-- (void)setButtonsEnabled:(BOOL)a3
+- (void)setButtonsEnabled:(BOOL)enabled
 {
-  if (self->_buttonsEnabled != a3)
+  if (self->_buttonsEnabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(PHAudioCallControlsView *)self buttonsArray];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    buttonsArray = [(PHAudioCallControlsView *)self buttonsArray];
+    v6 = [buttonsArray countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1132,38 +1132,38 @@ LABEL_11:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(buttonsArray);
           }
 
           v10 = *(*(&v11 + 1) + 8 * v9);
-          if (!v3)
+          if (!enabledCopy)
           {
             [*(*(&v11 + 1) + 8 * v9) setSelected:0];
           }
 
-          [v10 setEnabled:v3];
+          [v10 setEnabled:enabledCopy];
           v9 = v9 + 1;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [buttonsArray countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
     }
 
-    self->_buttonsEnabled = v3;
+    self->_buttonsEnabled = enabledCopy;
   }
 }
 
-- (void)setPrefersWhiteButtonTextColor:(BOOL)a3
+- (void)setPrefersWhiteButtonTextColor:(BOOL)color
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(PHAudioCallControlsView *)self buttonsArray];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  buttonsArray = [(PHAudioCallControlsView *)self buttonsArray];
+  v5 = [buttonsArray countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1174,11 +1174,11 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(buttonsArray);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if (a3)
+        if (color)
         {
           v10 = +[UIColor whiteColor];
           [v9 setTitleColor:v10 forState:0];
@@ -1197,20 +1197,20 @@ LABEL_11:
         [v9 setTitleColor:v12 forState:2];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [buttonsArray countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)updateBackgroundMaterial:(unint64_t)a3
+- (void)updateBackgroundMaterial:(unint64_t)material
 {
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v17 = a3;
+    materialCopy = material;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "SNAP: Setting button background material to type: %lu", buf, 0xCu);
   }
 
@@ -1218,8 +1218,8 @@ LABEL_11:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(PHAudioCallControlsView *)self buttonsArray];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  buttonsArray = [(PHAudioCallControlsView *)self buttonsArray];
+  v7 = [buttonsArray countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1231,30 +1231,30 @@ LABEL_11:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(buttonsArray);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) updateBackgroundMaterial:a3];
+        [*(*(&v11 + 1) + 8 * v10) updateBackgroundMaterial:material];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [buttonsArray countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)changeVideoStreamingButtonTitleWithIsSharing:(BOOL)a3
+- (void)changeVideoStreamingButtonTitleWithIsSharing:(BOOL)sharing
 {
-  v3 = a3;
+  sharingCopy = sharing;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(PHAudioCallControlsView *)self buttonsArray];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  buttonsArray = [(PHAudioCallControlsView *)self buttonsArray];
+  v5 = [buttonsArray countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1265,7 +1265,7 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(buttonsArray);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -1273,7 +1273,7 @@ LABEL_11:
         {
           v10 = +[NSBundle mainBundle];
           v11 = v10;
-          if (v3)
+          if (sharingCopy)
           {
             v12 = @"LIVE_VIDEO";
           }
@@ -1290,7 +1290,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [buttonsArray countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -1303,10 +1303,10 @@ LABEL_11:
 LABEL_14:
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   [(PHAudioCallControlsView *)self transform];
   if (CGAffineTransformIsIdentity(&v7))
   {
@@ -1316,12 +1316,12 @@ LABEL_14:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PHAudioCallControlsView *)self transform];
   if (CGAffineTransformIsIdentity(&v9))
   {
@@ -1331,28 +1331,28 @@ LABEL_14:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = PHAudioCallControlsView;
-  v4 = a3;
-  [(PHAudioCallControlsView *)&v11 traitCollectionDidChange:v4];
-  v5 = [v4 _backlightLuminance];
+  changeCopy = change;
+  [(PHAudioCallControlsView *)&v11 traitCollectionDidChange:changeCopy];
+  _backlightLuminance = [changeCopy _backlightLuminance];
 
-  v6 = [(PHAudioCallControlsView *)self traitCollection];
-  v7 = [v6 _backlightLuminance];
+  traitCollection = [(PHAudioCallControlsView *)self traitCollection];
+  _backlightLuminance2 = [traitCollection _backlightLuminance];
 
-  if (v5 != v7)
+  if (_backlightLuminance != _backlightLuminance2)
   {
-    v8 = [(PHAudioCallControlsView *)self traitCollection];
-    v9 = [v8 _backlightLuminance];
+    traitCollection2 = [(PHAudioCallControlsView *)self traitCollection];
+    _backlightLuminance3 = [traitCollection2 _backlightLuminance];
 
-    [(PHAudioCallControlsView *)self setUserInteractionEnabled:v9 != 1];
+    [(PHAudioCallControlsView *)self setUserInteractionEnabled:_backlightLuminance3 != 1];
     v10 = sub_100004F84();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v13 = v9 != 1;
+      v13 = _backlightLuminance3 != 1;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Setting userInteractionEnabled of controls view to %d because of back light change", buf, 8u);
     }
   }
@@ -1360,19 +1360,19 @@ LABEL_14:
 
 - (double)_verticalSpacing
 {
-  v3 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
-  v4 = [v3 callDisplayStyle];
+  callDisplayStyleManager = [(PHAudioCallControlsView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
   v5 = 0.0;
-  if (v4 == 3)
+  if (callDisplayStyle == 3)
   {
     return v5;
   }
 
-  v6 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
-  v7 = [v6 usesLargeFormatUI];
+  callDisplayStyleManager2 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
+  usesLargeFormatUI = [callDisplayStyleManager2 usesLargeFormatUI];
 
-  if (v7)
+  if (usesLargeFormatUI)
   {
     v8 = +[UIScreen mainScreen];
     [v8 bounds];
@@ -1395,10 +1395,10 @@ LABEL_14:
   v14 = +[PHInCallUtilities sharedInstance];
   if ([v14 isIPadIdiom])
   {
-    v15 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
-    v16 = [v15 usesLargeFormatUI];
+    callDisplayStyleManager3 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
+    usesLargeFormatUI2 = [callDisplayStyleManager3 usesLargeFormatUI];
 
-    if (!v16)
+    if (!usesLargeFormatUI2)
     {
       v17 = +[PHUIConfiguration inCallControlSpacing];
       if (v17 <= 5)
@@ -1430,10 +1430,10 @@ LABEL_14:
 
 - (double)_horizontalSpacing
 {
-  v2 = [(PHAudioCallControlsView *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle];
+  callDisplayStyleManager = [(PHAudioCallControlsView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v3 == 3)
+  if (callDisplayStyle == 3)
   {
 
     +[PHUIConfiguration ambientInCallControlSpacing];
@@ -1452,12 +1452,12 @@ LABEL_14:
   return result;
 }
 
-- (id)menuForAudioControlsButton:(id)a3
+- (id)menuForAudioControlsButton:(id)button
 {
-  v3 = [(PHAudioCallControlsView *)self delegate];
-  v4 = [v3 audioRouteMenu];
+  delegate = [(PHAudioCallControlsView *)self delegate];
+  audioRouteMenu = [delegate audioRouteMenu];
 
-  return v4;
+  return audioRouteMenu;
 }
 
 @end

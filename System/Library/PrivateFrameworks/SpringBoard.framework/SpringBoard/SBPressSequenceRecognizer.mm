@@ -1,34 +1,34 @@
 @interface SBPressSequenceRecognizer
 - (SBPressSequenceRecognizer)init;
-- (SBPressSequenceRecognizer)initWithValidator:(id)a3 numberOfPresses:(unint64_t)a4;
+- (SBPressSequenceRecognizer)initWithValidator:(id)validator numberOfPresses:(unint64_t)presses;
 - (SBPressSequenceRecognizerDelegate)delegate;
 - (void)_complete;
-- (void)_handlePressDownWithTimestamp:(double)a3;
-- (void)_handlePressUpWithTimestamp:(double)a3;
+- (void)_handlePressDownWithTimestamp:(double)timestamp;
+- (void)_handlePressUpWithTimestamp:(double)timestamp;
 - (void)_reset;
-- (void)_resetAfterDelay:(double)a3;
+- (void)_resetAfterDelay:(double)delay;
 - (void)_resetAndNotify;
 - (void)_resetWatchdogIfNecessary;
 - (void)dealloc;
-- (void)registerPressDownWithTimestamp:(double)a3;
-- (void)registerPressUpWithTimestamp:(double)a3;
-- (void)resetWithNewValidator:(id)a3 numberOfPresses:(unint64_t)a4;
+- (void)registerPressDownWithTimestamp:(double)timestamp;
+- (void)registerPressUpWithTimestamp:(double)timestamp;
+- (void)resetWithNewValidator:(id)validator numberOfPresses:(unint64_t)presses;
 @end
 
 @implementation SBPressSequenceRecognizer
 
 - (SBPressSequenceRecognizer)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBPressSequenceRecognizer.m" lineNumber:35 description:@"Use initWithValidator:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBPressSequenceRecognizer.m" lineNumber:35 description:@"Use initWithValidator:"];
 
   return [(SBPressSequenceRecognizer *)self initWithValidator:0 numberOfPresses:0];
 }
 
-- (SBPressSequenceRecognizer)initWithValidator:(id)a3 numberOfPresses:(unint64_t)a4
+- (SBPressSequenceRecognizer)initWithValidator:(id)validator numberOfPresses:(unint64_t)presses
 {
-  v8 = a3;
-  if (!v8)
+  validatorCopy = validator;
+  if (!validatorCopy)
   {
     [SBPressSequenceRecognizer initWithValidator:a2 numberOfPresses:self];
   }
@@ -39,8 +39,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_validator, a3);
-    v10->_numberOfPresses = a4;
+    objc_storeStrong(&v9->_validator, validator);
+    v10->_numberOfPresses = presses;
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     currentSequence = v10->_currentSequence;
     v10->_currentSequence = v11;
@@ -57,11 +57,11 @@
   [(SBPressSequenceRecognizer *)&v3 dealloc];
 }
 
-- (void)registerPressDownWithTimestamp:(double)a3
+- (void)registerPressDownWithTimestamp:(double)timestamp
 {
   if (self->_currentPressTuple)
   {
-    [(SBPressSequenceRecognizer *)self _handlePressDownWithTimestamp:a3];
+    [(SBPressSequenceRecognizer *)self _handlePressDownWithTimestamp:timestamp];
   }
 
   else
@@ -70,31 +70,31 @@
     [WeakRetained pressSequenceRecognizer:self didBeginPressDownAtIndex:0];
   }
 
-  self->_lastPressDownEvent = a3;
+  self->_lastPressDownEvent = timestamp;
 }
 
-- (void)registerPressUpWithTimestamp:(double)a3
+- (void)registerPressUpWithTimestamp:(double)timestamp
 {
   if (!self->_currentPressTuple && (BSFloatIsZero() & 1) == 0)
   {
-    [(SBPressSequenceRecognizer *)self _handlePressUpWithTimestamp:a3];
+    [(SBPressSequenceRecognizer *)self _handlePressUpWithTimestamp:timestamp];
   }
 
-  self->_lastPressUpEvent = a3;
+  self->_lastPressUpEvent = timestamp;
 }
 
-- (void)resetWithNewValidator:(id)a3 numberOfPresses:(unint64_t)a4
+- (void)resetWithNewValidator:(id)validator numberOfPresses:(unint64_t)presses
 {
-  objc_storeStrong(&self->_validator, a3);
-  self->_numberOfPresses = a4;
+  objc_storeStrong(&self->_validator, validator);
+  self->_numberOfPresses = presses;
 
   [(SBPressSequenceRecognizer *)self _resetAndNotify];
 }
 
-- (void)_handlePressDownWithTimestamp:(double)a3
+- (void)_handlePressDownWithTimestamp:(double)timestamp
 {
   [(SBPressSequenceRecognizer *)self _resetWatchdogIfNecessary];
-  v5 = a3 - self->_lastPressUpEvent;
+  v5 = timestamp - self->_lastPressUpEvent;
   validator = self->_validator;
   v7 = [(NSMutableArray *)self->_currentSequence copy];
   LODWORD(validator) = [(SBPressSequenceValidator *)validator pressEventIsValidInSequence:v7 endingDownEvent:0 duration:v5];
@@ -125,10 +125,10 @@
   [(SBPressSequenceRecognizer *)self _resetAfterDelay:v10];
 }
 
-- (void)_handlePressUpWithTimestamp:(double)a3
+- (void)_handlePressUpWithTimestamp:(double)timestamp
 {
   [(SBPressSequenceRecognizer *)self _resetWatchdogIfNecessary];
-  v5 = a3 - self->_lastPressDownEvent;
+  v5 = timestamp - self->_lastPressDownEvent;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__SBPressSequenceRecognizer__handlePressUpWithTimestamp___block_invoke;
@@ -237,7 +237,7 @@ uint64_t __57__SBPressSequenceRecognizer__handlePressUpWithTimestamp___block_inv
   }
 }
 
-- (void)_resetAfterDelay:(double)a3
+- (void)_resetAfterDelay:(double)delay
 {
   if (BSFloatLessThanOrEqualToFloat())
   {
@@ -253,7 +253,7 @@ uint64_t __57__SBPressSequenceRecognizer__handlePressUpWithTimestamp___block_inv
     self->_watchdogTimer = v5;
 
     v7 = self->_watchdogTimer;
-    [(SBPressSequenceRecognizer *)self _watchdogTimeIntervalFromDelay:a3];
+    [(SBPressSequenceRecognizer *)self _watchdogTimeIntervalFromDelay:delay];
     v9 = v8;
     v10 = MEMORY[0x277D85CD0];
     v11 = MEMORY[0x277D85CD0];

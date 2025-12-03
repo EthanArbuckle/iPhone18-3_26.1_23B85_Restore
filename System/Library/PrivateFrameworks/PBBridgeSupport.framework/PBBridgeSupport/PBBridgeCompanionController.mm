@@ -1,92 +1,92 @@
 @interface PBBridgeCompanionController
-+ (id)displayNameWithFirstName:(id)a3 lastName:(id)a4;
-+ (void)iCloudFirstName:(id *)a3 lastName:(id *)a4;
-+ (void)meCardFirstName:(id *)a3 lastName:(id *)a4;
-- (BOOL)shouldHandleMessageType:(unsigned __int16)a3 fromId:(id)a4;
++ (id)displayNameWithFirstName:(id)name lastName:(id)lastName;
++ (void)iCloudFirstName:(id *)name lastName:(id *)lastName;
++ (void)meCardFirstName:(id *)name lastName:(id *)lastName;
+- (BOOL)shouldHandleMessageType:(unsigned __int16)type fromId:(id)id;
 - (PBBridgeCompanionController)init;
 - (PBBridgeConnectionDelegate)delegate;
 - (RUILoaderDelegate)ruiDelegate;
-- (id)_connectionWithRequest:(id)a3;
-- (id)connection:(id)a3 willSendRequest:(id)a4 redirectResponse:(id)a5;
-- (id)currentNetworks:(BOOL)a3;
+- (id)_connectionWithRequest:(id)request;
+- (id)connection:(id)connection willSendRequest:(id)request redirectResponse:(id)response;
+- (id)currentNetworks:(BOOL)networks;
 - (id)currentWiFiNetworkName;
 - (id)viewControllerForAlertPresentation;
 - (void)_cleanup;
 - (void)_processActivationData;
-- (void)acknowledgeBuysOnWatchCredentialIngestion:(id)a3;
+- (void)acknowledgeBuysOnWatchCredentialIngestion:(id)ingestion;
 - (void)activationTimedOut;
 - (void)beganWaitingForPresentationOfActivationEvent;
 - (void)beganWaitingForUserResponseToActivationEvent;
 - (void)beginSetupTransaction;
-- (void)checkApplicationInstallAllowedWithCompletion:(id)a3;
-- (void)connection:(id)a3 didFailWithError:(id)a4;
-- (void)connection:(id)a3 didReceiveData:(id)a4;
-- (void)connection:(id)a3 didReceiveResponse:(id)a4;
-- (void)connectionDidFinishLoading:(id)a3;
-- (void)enableSiriForGizmo:(id)a3;
+- (void)checkApplicationInstallAllowedWithCompletion:(id)completion;
+- (void)connection:(id)connection didFailWithError:(id)error;
+- (void)connection:(id)connection didReceiveData:(id)data;
+- (void)connection:(id)connection didReceiveResponse:(id)response;
+- (void)connectionDidFinishLoading:(id)loading;
+- (void)enableSiriForGizmo:(id)gizmo;
 - (void)endSetupTransaction;
-- (void)getCompanionLanguage:(id)a3;
-- (void)getCompanionRegion:(id)a3;
-- (void)getSiriState:(id)a3;
-- (void)gizmoActivationFailed:(id)a3;
-- (void)gizmoBecameAvailableWantsConfirmation:(id)a3;
-- (void)gizmoDidBeginActivating:(id)a3;
-- (void)gizmoDidBeginUnlockPairing:(id)a3;
-- (void)gizmoDidEndPasscodeChange:(id)a3;
-- (void)gizmoDidEndPasscodeCreation:(id)a3;
-- (void)gizmoDidEndUnlockPairing:(id)a3;
-- (void)gizmoDidFinishActivating:(id)a3;
-- (void)gizmoFailedToCreatePasscode:(id)a3;
-- (void)handleAppViewListImageResponse:(id)a3;
-- (void)handleApplicationInstallRestrictionResponse:(id)a3;
-- (void)handleDeviceManagementResponse:(id)a3;
-- (void)handleOfflineTermsResponse:(id)a3;
-- (void)handlePerformanceResults:(id)a3;
-- (void)handleRemoteActivationDetails:(id)a3;
-- (void)handleWarrantySentinelResponse:(id)a3;
-- (void)invalidateTimeoutTimerWithNewActivationGranularState:(unsigned __int16)a3;
-- (void)loader:(id)a3 didFailWithError:(id)a4;
-- (void)loader:(id)a3 didReceiveHTTPResponse:(id)a4;
-- (void)loader:(id)a3 receivedObjectModel:(id)a4 actionSignal:(unint64_t)a5;
-- (void)objectModel:(id)a3 pressedButton:(id)a4 attributes:(id)a5;
+- (void)getCompanionLanguage:(id)language;
+- (void)getCompanionRegion:(id)region;
+- (void)getSiriState:(id)state;
+- (void)gizmoActivationFailed:(id)failed;
+- (void)gizmoBecameAvailableWantsConfirmation:(id)confirmation;
+- (void)gizmoDidBeginActivating:(id)activating;
+- (void)gizmoDidBeginUnlockPairing:(id)pairing;
+- (void)gizmoDidEndPasscodeChange:(id)change;
+- (void)gizmoDidEndPasscodeCreation:(id)creation;
+- (void)gizmoDidEndUnlockPairing:(id)pairing;
+- (void)gizmoDidFinishActivating:(id)activating;
+- (void)gizmoFailedToCreatePasscode:(id)passcode;
+- (void)handleAppViewListImageResponse:(id)response;
+- (void)handleApplicationInstallRestrictionResponse:(id)response;
+- (void)handleDeviceManagementResponse:(id)response;
+- (void)handleOfflineTermsResponse:(id)response;
+- (void)handlePerformanceResults:(id)results;
+- (void)handleRemoteActivationDetails:(id)details;
+- (void)handleWarrantySentinelResponse:(id)response;
+- (void)invalidateTimeoutTimerWithNewActivationGranularState:(unsigned __int16)state;
+- (void)loader:(id)loader didFailWithError:(id)error;
+- (void)loader:(id)loader didReceiveHTTPResponse:(id)response;
+- (void)loader:(id)loader receivedObjectModel:(id)model actionSignal:(unint64_t)signal;
+- (void)objectModel:(id)model pressedButton:(id)button attributes:(id)attributes;
 - (void)queryGizmoForOfflineTerms;
-- (void)queryGizmoForShowWarrantySentinelAndRestoreDeviceName:(id)a3;
-- (void)refreshTimeoutTimerWithNewActivationGranularState:(unsigned __int16)a3;
-- (void)requestProxiedDeviceForWatchWithCompletion:(id)a3;
-- (void)retrieveAppViewListImageFromGizmo:(CGSize)a3 completion:(id)a4;
-- (void)returnedRemoteAccountForDevice:(id)a3;
-- (void)sendBuysOnWatchUsername:(id)a3 andPassword:(id)a4 withCompletion:(id)a5;
+- (void)queryGizmoForShowWarrantySentinelAndRestoreDeviceName:(id)name;
+- (void)refreshTimeoutTimerWithNewActivationGranularState:(unsigned __int16)state;
+- (void)requestProxiedDeviceForWatchWithCompletion:(id)completion;
+- (void)retrieveAppViewListImageFromGizmo:(CGSize)gizmo completion:(id)completion;
+- (void)returnedRemoteAccountForDevice:(id)device;
+- (void)sendBuysOnWatchUsername:(id)username andPassword:(id)password withCompletion:(id)completion;
 - (void)sendComputedTimeZoneToGizmo;
 - (void)sendDemoWatchWirelessCredentials;
 - (void)sendGizmoPasscodeRestrictions;
-- (void)sendProxyActivationRequest:(id)a3;
-- (void)sendProxyActivationWithCustomRequest:(id)a3;
-- (void)sendTinkerAccountCredentialsWithContext:(id)a3 completion:(id)a4;
+- (void)sendProxyActivationRequest:(id)request;
+- (void)sendProxyActivationWithCustomRequest:(id)request;
+- (void)sendTinkerAccountCredentialsWithContext:(id)context completion:(id)completion;
 - (void)setupServiceMessageSelectorMappings;
 - (void)tellGizmoToBeginActivation;
 - (void)tellGizmoToDeleteWarrantySentinel;
 - (void)tellGizmoToKeepAliveForActivationEvent;
-- (void)tellGizmoToPopToControllerType:(unint64_t)a3;
-- (void)tellGizmoToPrepareForInitialSyncWithCompletion:(id)a3;
-- (void)tellGizmoToPushControllerType:(unint64_t)a3;
+- (void)tellGizmoToPopToControllerType:(unint64_t)type;
+- (void)tellGizmoToPrepareForInitialSyncWithCompletion:(id)completion;
+- (void)tellGizmoToPushControllerType:(unint64_t)type;
 - (void)tellGizmoToRetryActivation;
-- (void)tellGizmoToShowLockedOnAnimationTimeToFlash:(double)a3 animationCompletion:(id)a4;
+- (void)tellGizmoToShowLockedOnAnimationTimeToFlash:(double)flash animationCompletion:(id)completion;
 - (void)tellGizmoToUpdateNanoRegistryToNormalState;
-- (void)tellGizmoToUpdateSyncProgressTo:(double)a3 withState:(int64_t)a4;
-- (void)tellWatchLanguagesAndLocaleSupportingTermOfAddress:(BOOL)a3 withCompletion:(id)a4;
-- (void)tellWatchToChangeDeviceNameFor:(id)a3;
-- (void)tellWatchToConfigureDeviceManagementWithData:(id)a3 completion:(id)a4;
-- (void)tellWatchToPrepareForForcedSUWithCompletion:(id)a3;
-- (void)tellWatchToSetLauncherViewMode:(int64_t)a3;
-- (void)tinkerFinishedHealthSharingOptIn:(id)a3;
-- (void)tinkerWatchIngestedCredentials:(id)a3;
+- (void)tellGizmoToUpdateSyncProgressTo:(double)to withState:(int64_t)state;
+- (void)tellWatchLanguagesAndLocaleSupportingTermOfAddress:(BOOL)address withCompletion:(id)completion;
+- (void)tellWatchToChangeDeviceNameFor:(id)for;
+- (void)tellWatchToConfigureDeviceManagementWithData:(id)data completion:(id)completion;
+- (void)tellWatchToPrepareForForcedSUWithCompletion:(id)completion;
+- (void)tellWatchToSetLauncherViewMode:(int64_t)mode;
+- (void)tinkerFinishedHealthSharingOptIn:(id)in;
+- (void)tinkerWatchIngestedCredentials:(id)credentials;
 - (void)transportBecameReachable;
 - (void)transportBecameUnreachable;
-- (void)watchDidApplyWirelessCredentials:(id)a3;
-- (void)watchDidIngestWirelessCredentials:(id)a3;
-- (void)watchDidPrepareForForcedSU:(id)a3;
-- (void)watchDidPrepareForInitialSync:(id)a3;
-- (void)watchDidRespondWithLanguageAndLocaleStatus:(id)a3;
+- (void)watchDidApplyWirelessCredentials:(id)credentials;
+- (void)watchDidIngestWirelessCredentials:(id)credentials;
+- (void)watchDidPrepareForForcedSU:(id)u;
+- (void)watchDidPrepareForInitialSync:(id)sync;
+- (void)watchDidRespondWithLanguageAndLocaleStatus:(id)status;
 @end
 
 @implementation PBBridgeCompanionController
@@ -101,8 +101,8 @@
     xpc_set_event_stream_handler("com.apple.notifyd.matching", MEMORY[0x277D85CD0], &__block_literal_global_8);
     if (PBIsInternalInstall())
     {
-      v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v2->_allowAnyHTTPSCertificate = [v3 BOOLForKey:@"ActivationAllowAnyHTTPSCertificate"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v2->_allowAnyHTTPSCertificate = [standardUserDefaults BOOLForKey:@"ActivationAllowAnyHTTPSCertificate"];
     }
 
     v4 = dispatch_queue_create("com.apple.Bridge.timeout.tracker.queue", 0);
@@ -115,95 +115,95 @@
 
 - (void)setupServiceMessageSelectorMappings
 {
-  v3 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v3 setProtobufAction:sel_gizmoBecameAvailableWantsConfirmation_ forIncomingRequestsOfType:1];
+  service = [(PBBridgeIDSServiceDelegate *)self service];
+  [service setProtobufAction:sel_gizmoBecameAvailableWantsConfirmation_ forIncomingRequestsOfType:1];
 
-  v4 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v4 setProtobufAction:sel_sendProxyActivationRequest_ forIncomingRequestsOfType:2];
+  service2 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service2 setProtobufAction:sel_sendProxyActivationRequest_ forIncomingRequestsOfType:2];
 
-  v5 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v5 setProtobufAction:sel_gizmoDidBeginActivating_ forIncomingRequestsOfType:3];
+  service3 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service3 setProtobufAction:sel_gizmoDidBeginActivating_ forIncomingRequestsOfType:3];
 
-  v6 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v6 setProtobufAction:sel_gizmoDidFinishActivating_ forIncomingRequestsOfType:4];
+  service4 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service4 setProtobufAction:sel_gizmoDidFinishActivating_ forIncomingRequestsOfType:4];
 
-  v7 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v7 setProtobufAction:sel_gizmoDidFinishActivating_ forIncomingRequestsOfType:21];
+  service5 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service5 setProtobufAction:sel_gizmoDidFinishActivating_ forIncomingRequestsOfType:21];
 
-  v8 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v8 setProtobufAction:sel_getCompanionLanguage_ forIncomingRequestsOfType:5];
+  service6 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service6 setProtobufAction:sel_getCompanionLanguage_ forIncomingRequestsOfType:5];
 
-  v9 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v9 setProtobufAction:sel_getCompanionRegion_ forIncomingRequestsOfType:6];
+  service7 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service7 setProtobufAction:sel_getCompanionRegion_ forIncomingRequestsOfType:6];
 
-  v10 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v10 setProtobufAction:sel_gizmoDidEndPasscodeCreation_ forIncomingRequestsOfType:7];
+  service8 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service8 setProtobufAction:sel_gizmoDidEndPasscodeCreation_ forIncomingRequestsOfType:7];
 
-  v11 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v11 setProtobufAction:sel_gizmoDidEndPasscodeChange_ forIncomingRequestsOfType:28];
+  service9 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service9 setProtobufAction:sel_gizmoDidEndPasscodeChange_ forIncomingRequestsOfType:28];
 
-  v12 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v12 setProtobufAction:sel_gizmoDidBeginUnlockPairing_ forIncomingRequestsOfType:19];
+  service10 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service10 setProtobufAction:sel_gizmoDidBeginUnlockPairing_ forIncomingRequestsOfType:19];
 
-  v13 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v13 setProtobufAction:sel_gizmoDidEndUnlockPairing_ forIncomingRequestsOfType:13];
+  service11 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service11 setProtobufAction:sel_gizmoDidEndUnlockPairing_ forIncomingRequestsOfType:13];
 
-  v14 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v14 setProtobufAction:sel_getSiriState_ forIncomingRequestsOfType:8];
+  service12 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service12 setProtobufAction:sel_getSiriState_ forIncomingRequestsOfType:8];
 
-  v15 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v15 setProtobufAction:sel_gizmoActivationFailed_ forIncomingRequestsOfType:12];
+  service13 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service13 setProtobufAction:sel_gizmoActivationFailed_ forIncomingRequestsOfType:12];
 
-  v16 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v16 setProtobufAction:sel_handlePerformanceResults_ forIncomingRequestsOfType:16];
+  service14 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service14 setProtobufAction:sel_handlePerformanceResults_ forIncomingRequestsOfType:16];
 
-  v17 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v17 setProtobufAction:sel_handleWarrantySentinelResponse_ forIncomingResponsesOfType:14];
+  service15 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service15 setProtobufAction:sel_handleWarrantySentinelResponse_ forIncomingResponsesOfType:14];
 
-  v18 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v18 setProtobufAction:sel_handleOfflineTermsResponse_ forIncomingResponsesOfType:15];
+  service16 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service16 setProtobufAction:sel_handleOfflineTermsResponse_ forIncomingResponsesOfType:15];
 
-  v19 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v19 setProtobufAction:sel_gizmoFailedToCreatePasscode_ forIncomingRequestsOfType:17];
+  service17 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service17 setProtobufAction:sel_gizmoFailedToCreatePasscode_ forIncomingRequestsOfType:17];
 
-  v20 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v20 setProtobufAction:sel_watchDidPrepareForInitialSync_ forIncomingResponsesOfType:18];
+  service18 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service18 setProtobufAction:sel_watchDidPrepareForInitialSync_ forIncomingResponsesOfType:18];
 
-  v21 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v21 setProtobufAction:sel_watchDidRespondWithLanguageAndLocaleStatus_ forIncomingRequestsOfType:20];
+  service19 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service19 setProtobufAction:sel_watchDidRespondWithLanguageAndLocaleStatus_ forIncomingRequestsOfType:20];
 
-  v22 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v22 setProtobufAction:sel_watchDidIngestWirelessCredentials_ forIncomingRequestsOfType:22];
+  service20 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service20 setProtobufAction:sel_watchDidIngestWirelessCredentials_ forIncomingRequestsOfType:22];
 
-  v23 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v23 setProtobufAction:sel_watchDidPrepareForForcedSU_ forIncomingResponsesOfType:23];
+  service21 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service21 setProtobufAction:sel_watchDidPrepareForForcedSU_ forIncomingResponsesOfType:23];
 
-  v24 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v24 setProtobufAction:sel_handleRemoteActivationDetails_ forIncomingRequestsOfType:27];
+  service22 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service22 setProtobufAction:sel_handleRemoteActivationDetails_ forIncomingRequestsOfType:27];
 
-  v25 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v25 setProtobufAction:sel_returnedRemoteAccountForDevice_ forIncomingResponsesOfType:25];
+  service23 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service23 setProtobufAction:sel_returnedRemoteAccountForDevice_ forIncomingResponsesOfType:25];
 
-  v26 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v26 setProtobufAction:sel_tinkerWatchIngestedCredentials_ forIncomingResponsesOfType:26];
+  service24 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service24 setProtobufAction:sel_tinkerWatchIngestedCredentials_ forIncomingResponsesOfType:26];
 
-  v27 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v27 setProtobufAction:sel_tinkerFinishedHealthSharingOptIn_ forIncomingRequestsOfType:29];
+  service25 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service25 setProtobufAction:sel_tinkerFinishedHealthSharingOptIn_ forIncomingRequestsOfType:29];
 
-  v28 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v28 setProtobufAction:sel_acknowledgeBuysOnWatchCredentialIngestion_ forIncomingResponsesOfType:30];
+  service26 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service26 setProtobufAction:sel_acknowledgeBuysOnWatchCredentialIngestion_ forIncomingResponsesOfType:30];
 
-  v29 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v29 setProtobufAction:sel_handleAppViewListImageResponse_ forIncomingResponsesOfType:102];
+  service27 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service27 setProtobufAction:sel_handleAppViewListImageResponse_ forIncomingResponsesOfType:102];
 
-  v30 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v30 setProtobufAction:sel_handleDeviceManagementResponse_ forIncomingResponsesOfType:31];
+  service28 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service28 setProtobufAction:sel_handleDeviceManagementResponse_ forIncomingResponsesOfType:31];
 
-  v31 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v31 setProtobufAction:sel_handleApplicationInstallRestrictionResponse_ forIncomingResponsesOfType:32];
+  service29 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service29 setProtobufAction:sel_handleApplicationInstallRestrictionResponse_ forIncomingResponsesOfType:32];
 
-  v32 = [(PBBridgeIDSServiceDelegate *)self service];
-  [v32 setProtobufAction:sel_watchDidApplyWirelessCredentials_ forIncomingResponsesOfType:33];
+  service30 = [(PBBridgeIDSServiceDelegate *)self service];
+  [service30 setProtobufAction:sel_watchDidApplyWirelessCredentials_ forIncomingResponsesOfType:33];
 }
 
 - (void)beginSetupTransaction
@@ -250,24 +250,24 @@
   self->_sentActivationRequest = 0;
 }
 
-- (BOOL)shouldHandleMessageType:(unsigned __int16)a3 fromId:(id)a4
+- (BOOL)shouldHandleMessageType:(unsigned __int16)type fromId:(id)id
 {
-  v4 = a3;
+  typeCopy = type;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(PBBridgeIDSServiceDelegate *)self service];
-  v8 = [v7 linkedDeviceForFromID:v6 withRelationship:3];
+  idCopy = id;
+  service = [(PBBridgeIDSServiceDelegate *)self service];
+  v8 = [service linkedDeviceForFromID:idCopy withRelationship:3];
 
   if (!v8)
   {
     v9 = pbb_setupflow_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = PBBCMessageDescription(v4);
+      v10 = PBBCMessageDescription(typeCopy);
       v13 = 138412546;
       v14 = v10;
       v15 = 2114;
-      v16 = v6;
+      v16 = idCopy;
       _os_log_impl(&dword_25DE64000, v9, OS_LOG_TYPE_DEFAULT, "Dropping stale message %@ received from: %{public}@", &v13, 0x16u);
     }
   }
@@ -276,10 +276,10 @@
   return v8 != 0;
 }
 
-- (void)getCompanionLanguage:(id)a3
+- (void)getCompanionLanguage:(id)language
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  languageCopy = language;
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -290,18 +290,18 @@
     _os_log_impl(&dword_25DE64000, v5, OS_LOG_TYPE_DEFAULT, "%d %s", buf, 0x12u);
   }
 
-  v6 = [v4 type];
-  v7 = [v4 context];
+  type = [languageCopy type];
+  context = [languageCopy context];
 
-  v8 = [v7 fromID];
-  LODWORD(v6) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v6 fromId:v8];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v6)
+  if (type)
   {
-    v9 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v10 = [v9 firstObject];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    firstObject = [preferredLanguages firstObject];
 
-    v13 = v10;
+    v13 = firstObject;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
     [(PBBridgeCompanionController *)self _sendRemoteCommandWithMessageID:5 withArguments:v11];
   }
@@ -309,10 +309,10 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getCompanionRegion:(id)a3
+- (void)getCompanionRegion:(id)region
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  regionCopy = region;
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -323,16 +323,16 @@
     _os_log_impl(&dword_25DE64000, v5, OS_LOG_TYPE_DEFAULT, "%d %s", buf, 0x12u);
   }
 
-  v6 = [v4 type];
-  v7 = [v4 context];
+  type = [regionCopy type];
+  context = [regionCopy context];
 
-  v8 = [v7 fromID];
-  LODWORD(v6) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v6 fromId:v8];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v6)
+  if (type)
   {
-    v9 = [MEMORY[0x277CBEAF8] currentLocale];
-    v12 = v9;
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v12 = currentLocale;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v12 count:1];
     [(PBBridgeCompanionController *)self _sendRemoteCommandWithMessageID:6 withArguments:v10];
   }
@@ -340,20 +340,20 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)gizmoBecameAvailableWantsConfirmation:(id)a3
+- (void)gizmoBecameAvailableWantsConfirmation:(id)confirmation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 context];
-  v7 = [v6 fromID];
-  LODWORD(v5) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v5 fromId:v7];
+  confirmationCopy = confirmation;
+  type = [confirmationCopy type];
+  context = [confirmationCopy context];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v5)
+  if (type)
   {
     v8 = [PBBProtoBecameActive alloc];
-    v9 = [v4 data];
-    v10 = [(PBBProtoBecameActive *)v8 initWithData:v9];
+    data = [confirmationCopy data];
+    v10 = [(PBBProtoBecameActive *)v8 initWithData:data];
 
     v11 = pbb_setupflow_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -379,29 +379,29 @@
       Current = CFAbsoluteTimeGetCurrent();
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      v17 = [v4 context];
-      v18 = [v17 outgoingResponseIdentifier];
-      [v13 addMilestone:v16 activityType:v18 activityIdentifier:Current];
+      context2 = [confirmationCopy context];
+      outgoingResponseIdentifier = [context2 outgoingResponseIdentifier];
+      [v13 addMilestone:v16 activityType:outgoingResponseIdentifier activityIdentifier:Current];
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getSiriState:(id)a3
+- (void)getSiriState:(id)state
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 context];
+  stateCopy = state;
+  type = [stateCopy type];
+  context = [stateCopy context];
 
-  v7 = [v6 fromID];
-  LODWORD(v5) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v5 fromId:v7];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v5)
+  if (type)
   {
-    v8 = [MEMORY[0x277D262A0] sharedConnection];
-    v9 = [v8 effectiveBoolValueForSetting:*MEMORY[0x277D25D30]] != 0;
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v9 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25D30]] != 0;
 
     v10 = [MEMORY[0x277CCABB0] numberWithBool:v9];
     v13[0] = v10;
@@ -412,7 +412,7 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableSiriForGizmo:(id)a3
+- (void)enableSiriForGizmo:(id)gizmo
 {
   v9 = *MEMORY[0x277D85DE8];
   v3 = pbb_setupflow_log();
@@ -425,16 +425,16 @@
     _os_log_impl(&dword_25DE64000, v3, OS_LOG_TYPE_DEFAULT, "%d %s", v6, 0x12u);
   }
 
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  [v4 setBoolValue:1 forSetting:*MEMORY[0x277D25D30]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] setBoolValue:1 forSetting:*MEMORY[0x277D25D30]];
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellWatchLanguagesAndLocaleSupportingTermOfAddress:(BOOL)a3 withCompletion:(id)a4
+- (void)tellWatchLanguagesAndLocaleSupportingTermOfAddress:(BOOL)address withCompletion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = pbb_setupflow_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -448,28 +448,28 @@
     [(PBBridgeCompanionController *)self refreshTimeoutTimerWithNewActivationGranularState:6];
   }
 
-  v8 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v9 localeIdentifier];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v11 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:v10];
+  v11 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:localeIdentifier];
   v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CBE690]];
-  v13 = [MEMORY[0x277CBEAF8] archivedPreferences];
+  archivedPreferences = [MEMORY[0x277CBEAF8] archivedPreferences];
   v14 = pbb_setupflow_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v32 = v13;
+    v32 = archivedPreferences;
     _os_log_impl(&dword_25DE64000, v14, OS_LOG_TYPE_DEFAULT, "archivedPreferences dictionary contains:\n%@", buf, 0xCu);
   }
 
-  if (!a3)
+  if (!address)
   {
-    v15 = [v13 objectForKey:@"ArchivedInflection"];
+    v15 = [archivedPreferences objectForKey:@"ArchivedInflection"];
 
     if (v15)
     {
-      v16 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v13];
+      v16 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:archivedPreferences];
       [v16 removeObjectForKey:@"ArchivedInflection"];
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v16];
 
@@ -480,12 +480,12 @@
         _os_log_impl(&dword_25DE64000, v18, OS_LOG_TYPE_DEFAULT, "Pairing watch doesn't support term of address; removed ArchivedInflection key", buf, 2u);
       }
 
-      v13 = v17;
+      archivedPreferences = v17;
     }
   }
 
-  v19 = v8;
-  if (v8)
+  v19 = preferredLanguages;
+  if (preferredLanguages)
   {
     if (v12)
     {
@@ -500,7 +500,7 @@ LABEL_20:
     }
 
     v12 = &stru_286FA8098;
-    if (v13)
+    if (archivedPreferences)
     {
       goto LABEL_26;
     }
@@ -521,7 +521,7 @@ LABEL_20:
   }
 
 LABEL_14:
-  if (!v13)
+  if (!archivedPreferences)
   {
 LABEL_23:
     v22 = pbb_setupflow_log();
@@ -530,47 +530,47 @@ LABEL_23:
       [PBBridgeCompanionController tellWatchLanguagesAndLocaleSupportingTermOfAddress:withCompletion:];
     }
 
-    v13 = MEMORY[0x277CBEC10];
+    archivedPreferences = MEMORY[0x277CBEC10];
     goto LABEL_26;
   }
 
-  if (!v8)
+  if (!preferredLanguages)
   {
 LABEL_26:
     getpid();
     v23 = MEMORY[0x277CCACA8];
-    v24 = [v19 firstObject];
-    v25 = [v23 stringWithFormat:@"Error! Invalid Language/Locale/Region/archivedPreferences (%@/%@/%@/%@)", v24, v10, v12, v13];
+    firstObject = [v19 firstObject];
+    v25 = [v23 stringWithFormat:@"Error! Invalid Language/Locale/Region/archivedPreferences (%@/%@/%@/%@)", firstObject, localeIdentifier, v12, archivedPreferences];
     SimulateCrash();
   }
 
-  v26 = MEMORY[0x25F8A6750](v6);
+  v26 = MEMORY[0x25F8A6750](completionCopy);
   languageLocaleCompletion = self->_languageLocaleCompletion;
   self->_languageLocaleCompletion = v26;
 
   v30[0] = v19;
   v30[1] = v12;
-  v30[2] = v13;
+  v30[2] = archivedPreferences;
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:3];
   [(PBBridgeCompanionController *)self _sendRemoteCommandWithMessageID:25 withArguments:v28];
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)watchDidRespondWithLanguageAndLocaleStatus:(id)a3
+- (void)watchDidRespondWithLanguageAndLocaleStatus:(id)status
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 context];
-  v7 = [v6 fromID];
-  LODWORD(v5) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v5 fromId:v7];
+  statusCopy = status;
+  type = [statusCopy type];
+  context = [statusCopy context];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v5)
+  if (type)
   {
     v8 = [PBBProtoTellCompanionLanguageAndLocaleChangeStatus alloc];
-    v9 = [v4 data];
-    v10 = [(PBBProtoTellCompanionLanguageAndLocaleChangeStatus *)v8 initWithData:v9];
+    data = [statusCopy data];
+    v10 = [(PBBProtoTellCompanionLanguageAndLocaleChangeStatus *)v8 initWithData:data];
 
     [(PBBProtoTellCompanionLanguageAndLocaleChangeStatus *)v10 status];
     v12 = v11;
@@ -657,10 +657,10 @@ void __74__PBBridgeCompanionController_watchDidRespondWithLanguageAndLocaleStatu
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)gizmoDidBeginActivating:(id)a3
+- (void)gizmoDidBeginActivating:(id)activating
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activatingCopy = activating;
   v5 = pbb_activation_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -669,24 +669,24 @@ void __74__PBBridgeCompanionController_watchDidRespondWithLanguageAndLocaleStatu
     _os_log_impl(&dword_25DE64000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v15, 0xCu);
   }
 
-  v6 = [v4 type];
-  v7 = [v4 context];
-  v8 = [v7 fromID];
-  LODWORD(v6) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v6 fromId:v8];
+  type = [activatingCopy type];
+  context = [activatingCopy context];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v6)
+  if (type)
   {
     [(PBBridgeCompanionController *)self refreshTimeoutTimerWithNewActivationGranularState:4];
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 postNotificationName:@"PBBridgeGizmoDidBeginActivatingNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"PBBridgeGizmoDidBeginActivatingNotification" object:0];
 
     if (PBLogPerformanceMetrics())
     {
       v10 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
       Current = CFAbsoluteTimeGetCurrent();
-      v12 = [v4 context];
-      v13 = [v12 outgoingResponseIdentifier];
-      [v10 addMilestone:@"GizmoDidBeginActivating" activityType:v13 activityIdentifier:Current];
+      context2 = [activatingCopy context];
+      outgoingResponseIdentifier = [context2 outgoingResponseIdentifier];
+      [v10 addMilestone:@"GizmoDidBeginActivating" activityType:outgoingResponseIdentifier activityIdentifier:Current];
     }
 
     PBNotifyClientOfActivity();
@@ -695,10 +695,10 @@ void __74__PBBridgeCompanionController_watchDidRespondWithLanguageAndLocaleStatu
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)gizmoDidFinishActivating:(id)a3
+- (void)gizmoDidFinishActivating:(id)activating
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activatingCopy = activating;
   v5 = pbb_activation_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -707,15 +707,15 @@ void __74__PBBridgeCompanionController_watchDidRespondWithLanguageAndLocaleStatu
     _os_log_impl(&dword_25DE64000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v16, 0xCu);
   }
 
-  v6 = [v4 type];
-  v7 = [v4 context];
-  v8 = [v7 fromID];
-  LODWORD(v6) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v6 fromId:v8];
+  type = [activatingCopy type];
+  context = [activatingCopy context];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v6)
+  if (type)
   {
     [(PBBridgeCompanionController *)self invalidateTimeoutTimerWithNewActivationGranularState:0xFFFFLL];
-    if ([v4 type] == 21)
+    if ([activatingCopy type] == 21)
     {
       v9 = @"DeKOTA";
     }
@@ -725,16 +725,16 @@ void __74__PBBridgeCompanionController_watchDidRespondWithLanguageAndLocaleStatu
       v9 = 0;
     }
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 postNotificationName:@"PBBridgeGizmoDidFinishActivatingNotification" object:v9];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"PBBridgeGizmoDidFinishActivatingNotification" object:v9];
 
     if (PBLogPerformanceMetrics())
     {
       v11 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
       Current = CFAbsoluteTimeGetCurrent();
-      v13 = [v4 context];
-      v14 = [v13 outgoingResponseIdentifier];
-      [v11 addMilestone:@"GizmoDidFinishActivating" activityType:v14 activityIdentifier:Current];
+      context2 = [activatingCopy context];
+      outgoingResponseIdentifier = [context2 outgoingResponseIdentifier];
+      [v11 addMilestone:@"GizmoDidFinishActivating" activityType:outgoingResponseIdentifier activityIdentifier:Current];
     }
 
     PBNotifyClientOfActivity();
@@ -743,10 +743,10 @@ void __74__PBBridgeCompanionController_watchDidRespondWithLanguageAndLocaleStatu
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)gizmoActivationFailed:(id)a3
+- (void)gizmoActivationFailed:(id)failed
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  failedCopy = failed;
   v5 = pbb_activation_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -755,19 +755,19 @@ void __74__PBBridgeCompanionController_watchDidRespondWithLanguageAndLocaleStatu
     _os_log_impl(&dword_25DE64000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v22, 0xCu);
   }
 
-  v6 = [v4 type];
-  v7 = [v4 context];
-  v8 = [v7 fromID];
-  LODWORD(v6) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v6 fromId:v8];
+  type = [failedCopy type];
+  context = [failedCopy context];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v6)
+  if (type)
   {
     v9 = [PBBProtoGizmoActivationFailed alloc];
-    v10 = [v4 data];
-    v11 = [(PBBProtoGizmoActivationFailed *)v9 initWithData:v10];
+    data = [failedCopy data];
+    v11 = [(PBBProtoGizmoActivationFailed *)v9 initWithData:data];
 
     [(PBBridgeCompanionController *)self invalidateTimeoutTimerWithNewActivationGranularState:5];
-    v12 = [(PBBProtoGizmoActivationFailed *)v11 failureDescription];
+    failureDescription = [(PBBProtoGizmoActivationFailed *)v11 failureDescription];
     v13 = pbb_activation_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -775,7 +775,7 @@ void __74__PBBridgeCompanionController_watchDidRespondWithLanguageAndLocaleStatu
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained remoteDidFailActivation:4 description:v12];
+    [WeakRetained remoteDidFailActivation:4 description:failureDescription];
 
     if (PBLogPerformanceMetrics())
     {
@@ -783,19 +783,19 @@ void __74__PBBridgeCompanionController_watchDidRespondWithLanguageAndLocaleStatu
       Current = CFAbsoluteTimeGetCurrent();
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
-      v19 = [v4 context];
-      v20 = [v19 outgoingResponseIdentifier];
-      [v15 addMilestone:v18 activityType:v20 activityIdentifier:Current];
+      context2 = [failedCopy context];
+      outgoingResponseIdentifier = [context2 outgoingResponseIdentifier];
+      [v15 addMilestone:v18 activityType:outgoingResponseIdentifier activityIdentifier:Current];
     }
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlePerformanceResults:(id)a3
+- (void)handlePerformanceResults:(id)results
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v5 = pbb_activation_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -804,29 +804,29 @@ void __74__PBBridgeCompanionController_watchDidRespondWithLanguageAndLocaleStatu
     _os_log_impl(&dword_25DE64000, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v6 = [v4 type];
-  v7 = [v4 context];
-  v8 = [v7 fromID];
-  LODWORD(v6) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v6 fromId:v8];
+  type = [resultsCopy type];
+  context = [resultsCopy context];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v6)
+  if (type)
   {
-    v35 = self;
+    selfCopy = self;
     v9 = [PBBProtoTransferPerformanceResults alloc];
-    v10 = [v4 data];
-    v11 = [(PBBProtoTransferPerformanceResults *)v9 initWithData:v10];
+    data = [resultsCopy data];
+    v11 = [(PBBProtoTransferPerformanceResults *)v9 initWithData:data];
 
     v12 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
-    v13 = [(PBBProtoTransferPerformanceResults *)v11 measures];
-    [v12 setRemoteMeasurements:v13];
+    measures = [(PBBProtoTransferPerformanceResults *)v11 measures];
+    [v12 setRemoteMeasurements:measures];
 
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v15 = [(PBBProtoTransferPerformanceResults *)v11 macroActivites];
-    v16 = [v15 countByEnumeratingWithState:&v40 objects:v45 count:16];
+    macroActivites = [(PBBProtoTransferPerformanceResults *)v11 macroActivites];
+    v16 = [macroActivites countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v16)
     {
       v17 = v16;
@@ -837,29 +837,29 @@ void __74__PBBridgeCompanionController_watchDidRespondWithLanguageAndLocaleStatu
         {
           if (*v41 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(macroActivites);
           }
 
           v20 = *(*(&v40 + 1) + 8 * i);
-          v21 = [v20 activityType];
-          [v14 setObject:v20 forKey:v21];
+          activityType = [v20 activityType];
+          [dictionary setObject:v20 forKey:activityType];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v40 objects:v45 count:16];
+        v17 = [macroActivites countByEnumeratingWithState:&v40 objects:v45 count:16];
       }
 
       while (v17);
     }
 
-    [v12 setRemoteMacroActivities:v14];
-    v22 = [MEMORY[0x277CBEB38] dictionary];
+    [v12 setRemoteMacroActivities:dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v34 = v11;
-    v23 = [(PBBProtoTransferPerformanceResults *)v11 milestones];
-    v24 = [v23 countByEnumeratingWithState:&v36 objects:v44 count:16];
+    milestones = [(PBBProtoTransferPerformanceResults *)v11 milestones];
+    v24 = [milestones countByEnumeratingWithState:&v36 objects:v44 count:16];
     if (v24)
     {
       v25 = v24;
@@ -870,28 +870,28 @@ void __74__PBBridgeCompanionController_watchDidRespondWithLanguageAndLocaleStatu
         {
           if (*v37 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(milestones);
           }
 
           v28 = *(*(&v36 + 1) + 8 * j);
-          v29 = [v28 identifier];
-          [v22 setObject:v28 forKey:v29];
+          identifier = [v28 identifier];
+          [dictionary2 setObject:v28 forKey:identifier];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v36 objects:v44 count:16];
+        v25 = [milestones countByEnumeratingWithState:&v36 objects:v44 count:16];
       }
 
       while (v25);
     }
 
-    [v12 setRemoteMilestones:v22];
+    [v12 setRemoteMilestones:dictionary2];
     [v12 endMonitorTransaction];
-    WeakRetained = objc_loadWeakRetained(&v35->_delegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
     v31 = objc_opt_respondsToSelector();
 
     if (v31)
     {
-      v32 = objc_loadWeakRetained(&v35->_delegate);
+      v32 = objc_loadWeakRetained(&selfCopy->_delegate);
       [v32 didHandlePerformanceResults];
     }
   }
@@ -899,24 +899,24 @@ void __74__PBBridgeCompanionController_watchDidRespondWithLanguageAndLocaleStatu
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_connectionWithRequest:(id)a3
+- (id)_connectionWithRequest:(id)request
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = pbb_activation_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "[PBBridgeCompanionController _connectionWithRequest:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = requestCopy;
     _os_log_impl(&dword_25DE64000, v5, OS_LOG_TYPE_DEFAULT, "%s: Request (%@)", &v11, 0x16u);
   }
 
   v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:1];
-  [v4 setValue:@"WiFi" forHTTPHeaderField:@"X-iOS-Activation-Medium"];
+  [requestCopy setValue:@"WiFi" forHTTPHeaderField:@"X-iOS-Activation-Medium"];
   self->_connectionFailed = 0;
-  v7 = [objc_alloc(MEMORY[0x277CCACE8]) _initWithRequest:v4 delegate:self usesCache:1 maxContentLength:0 startImmediately:1 connectionProperties:v6];
+  v7 = [objc_alloc(MEMORY[0x277CCACE8]) _initWithRequest:requestCopy delegate:self usesCache:1 maxContentLength:0 startImmediately:1 connectionProperties:v6];
   p_sentSessionRequest = &self->_sentSessionRequest;
   if (!self->_sentSessionRequest || (p_sentSessionRequest = &self->_sentActivationRequest, !self->_sentActivationRequest))
   {
@@ -928,19 +928,19 @@ void __74__PBBridgeCompanionController_watchDidRespondWithLanguageAndLocaleStatu
   return v7;
 }
 
-- (void)sendProxyActivationRequest:(id)a3
+- (void)sendProxyActivationRequest:(id)request
 {
   v71 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 context];
-  v7 = [v6 fromID];
-  LODWORD(v5) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v5 fromId:v7];
+  requestCopy = request;
+  type = [requestCopy type];
+  context = [requestCopy context];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v5)
+  if (type)
   {
-    v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v9 = [v8 BOOLForKey:@"__SkipReachabilityChecks"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v9 = [standardUserDefaults BOOLForKey:@"__SkipReachabilityChecks"];
 
     if (v9)
     {
@@ -957,8 +957,8 @@ LABEL_38:
     }
 
     v11 = [PBBProtoProxyActivationFetch alloc];
-    v12 = [v4 data];
-    v10 = [(PBBProtoProxyActivationFetch *)v11 initWithData:v12];
+    data = [requestCopy data];
+    v10 = [(PBBProtoProxyActivationFetch *)v11 initWithData:data];
 
     if (PBLogPerformanceMetrics())
     {
@@ -966,9 +966,9 @@ LABEL_38:
       Current = CFAbsoluteTimeGetCurrent();
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      v17 = [v4 context];
-      v18 = [v17 outgoingResponseIdentifier];
-      [v13 addMilestone:v16 activityType:v18 activityIdentifier:Current];
+      context2 = [requestCopy context];
+      outgoingResponseIdentifier = [context2 outgoingResponseIdentifier];
+      [v13 addMilestone:v16 activityType:outgoingResponseIdentifier activityIdentifier:Current];
 
       v19 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
       [v19 endMacroActivity:@"PBBridgeProxyActivationStageOneActivityName" beginTime:CFAbsoluteTimeGetCurrent()];
@@ -979,9 +979,9 @@ LABEL_38:
       [v22 beginMacroActivity:@"PBBridgeProxyActivationStageTwoActivityName" beginTime:CFAbsoluteTimeGetCurrent()];
     }
 
-    v23 = [v10 request];
+    request = [v10 request];
 
-    v24 = v23 == 0;
+    v24 = request == 0;
     v25 = pbb_activation_log();
     v26 = v25;
     if (v24)
@@ -999,18 +999,18 @@ LABEL_38:
 
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [v10 request];
+      request2 = [v10 request];
       *buf = 136315394;
       v68 = "[PBBridgeCompanionController sendProxyActivationRequest:]";
       v69 = 2048;
-      v70 = [v27 length];
+      v70 = [request2 length];
       _os_log_impl(&dword_25DE64000, v26, OS_LOG_TYPE_DEFAULT, "%s request length (%ld bytes)", buf, 0x16u);
     }
 
     v28 = objc_alloc(MEMORY[0x277CCAAC8]);
-    v29 = [v10 request];
+    request3 = [v10 request];
     v66 = 0;
-    v30 = [v28 initForReadingFromData:v29 error:&v66];
+    v30 = [v28 initForReadingFromData:request3 error:&v66];
     v31 = v66;
 
     if (v31)
@@ -1021,8 +1021,8 @@ LABEL_38:
         v33 = v32;
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
-          v60 = [v10 request];
-          v61 = [v60 length];
+          request4 = [v10 request];
+          v61 = [request4 length];
           *buf = 138412546;
           v68 = v31;
           v69 = 2048;
@@ -1059,11 +1059,11 @@ LABEL_38:
         v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Bridge-Activation-Request-%f.txt", CFAbsoluteTimeGetCurrent()];
         v43 = MEMORY[0x277CCACA8];
         v44 = [(NSMutableURLRequest *)self->_activationRequest URL];
-        v45 = [(NSMutableURLRequest *)self->_activationRequest allHTTPHeaderFields];
+        allHTTPHeaderFields = [(NSMutableURLRequest *)self->_activationRequest allHTTPHeaderFields];
         v46 = objc_alloc(MEMORY[0x277CCACA8]);
-        v47 = [(NSMutableURLRequest *)self->_activationRequest HTTPBody];
-        v48 = [v46 initWithData:v47 encoding:4];
-        v49 = [v43 stringWithFormat:@"%@\n%@\n%@", v44, v45, v48];
+        hTTPBody = [(NSMutableURLRequest *)self->_activationRequest HTTPBody];
+        v48 = [v46 initWithData:hTTPBody encoding:4];
+        v49 = [v43 stringWithFormat:@"%@\n%@\n%@", v44, allHTTPHeaderFields, v48];
 
         [v49 writeToFile:v42 atomically:1 encoding:4 error:0];
         v50 = pbb_activation_log();
@@ -1106,11 +1106,11 @@ LABEL_38:
       v55 = v54;
       if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
       {
-        v62 = [v30 error];
-        v63 = [v10 request];
-        v64 = [v63 length];
+        error = [v30 error];
+        request5 = [v10 request];
+        v64 = [request5 length];
         *buf = 138543618;
-        v68 = v62;
+        v68 = error;
         v69 = 2048;
         v70 = v64;
         _os_log_error_impl(&dword_25DE64000, v55, OS_LOG_TYPE_ERROR, "Decoding error (%{public}@) while decoding request (%ld bytes)", buf, 0x16u);
@@ -1159,12 +1159,12 @@ void __58__PBBridgeCompanionController_sendProxyActivationRequest___block_invoke
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendProxyActivationWithCustomRequest:(id)a3
+- (void)sendProxyActivationWithCustomRequest:(id)request
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  requestCopy = request;
+  v5 = requestCopy;
+  if (requestCopy)
   {
     if (self->_granularActivationState == -1)
     {
@@ -1179,7 +1179,7 @@ void __58__PBBridgeCompanionController_sendProxyActivationRequest___block_invoke
     else
     {
       self->_awaitingCustomResponse = 1;
-      v6 = [v4 mutableCopy];
+      v6 = [requestCopy mutableCopy];
       activationRequest = self->_activationRequest;
       self->_activationRequest = v6;
 
@@ -1189,11 +1189,11 @@ void __58__PBBridgeCompanionController_sendProxyActivationRequest___block_invoke
         v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Bridge-BuddyML-CustomRequest-%f.txt", CFAbsoluteTimeGetCurrent()];
         v9 = MEMORY[0x277CCACA8];
         v10 = [v5 URL];
-        v11 = [v5 allHTTPHeaderFields];
+        allHTTPHeaderFields = [v5 allHTTPHeaderFields];
         v12 = objc_alloc(MEMORY[0x277CCACA8]);
-        v13 = [v5 HTTPBody];
-        v14 = [v12 initWithData:v13 encoding:4];
-        v15 = [v9 stringWithFormat:@"%@\n%@\n%@", v10, v11, v14];
+        hTTPBody = [v5 HTTPBody];
+        v14 = [v12 initWithData:hTTPBody encoding:4];
+        v15 = [v9 stringWithFormat:@"%@\n%@\n%@", v10, allHTTPHeaderFields, v14];
 
         [v15 writeToFile:v8 atomically:1 encoding:4 error:0];
         v16 = pbb_activation_log();
@@ -1210,7 +1210,7 @@ void __58__PBBridgeCompanionController_sendProxyActivationRequest___block_invoke
       block[2] = __68__PBBridgeCompanionController_sendProxyActivationWithCustomRequest___block_invoke;
       block[3] = &unk_2799F4710;
       v21 = v5;
-      v22 = self;
+      selfCopy = self;
       dispatch_async(MEMORY[0x277D85CD0], block);
       WeakRetained = v21;
     }
@@ -1267,31 +1267,31 @@ void __68__PBBridgeCompanionController_sendProxyActivationWithCustomRequest___bl
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectionDidFinishLoading:(id)a3
+- (void)connectionDidFinishLoading:(id)loading
 {
   v37 = *MEMORY[0x277D85DE8];
-  if (self->_activationConnection != a3)
+  if (self->_activationConnection != loading)
   {
     goto LABEL_44;
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"PBBridgeActivationServerRespondedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"PBBridgeActivationServerRespondedNotification" object:0];
 
-  v5 = [(PBBridgeCompanionController *)self _testActivationResponseType];
-  if (v5)
+  _testActivationResponseType = [(PBBridgeCompanionController *)self _testActivationResponseType];
+  if (_testActivationResponseType)
   {
     v6 = pbb_activation_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      if (v5 > 5)
+      if (_testActivationResponseType > 5)
       {
         v7 = &stru_286FA8098;
       }
 
       else
       {
-        v7 = off_2799F4C10[v5 - 1];
+        v7 = off_2799F4C10[_testActivationResponseType - 1];
       }
 
       *buf = 138412290;
@@ -1299,7 +1299,7 @@ void __68__PBBridgeCompanionController_sendProxyActivationWithCustomRequest___bl
       _os_log_impl(&dword_25DE64000, v6, OS_LOG_TYPE_DEFAULT, "Testing Fake Activation Response Type: %@", buf, 0xCu);
     }
 
-    v8 = _ResponseDataForTestType(v5);
+    v8 = _ResponseDataForTestType(_testActivationResponseType);
     activationData = self->_activationData;
     self->_activationData = v8;
   }
@@ -1332,7 +1332,7 @@ void __68__PBBridgeCompanionController_sendProxyActivationWithCustomRequest___bl
   }
 
   v16 = !v12;
-  if (v5)
+  if (_testActivationResponseType)
   {
     v16 = 0;
   }
@@ -1441,19 +1441,19 @@ LABEL_44:
 - (id)viewControllerForAlertPresentation
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained navigationController];
+  navigationController = [WeakRetained navigationController];
 
-  return v3;
+  return navigationController;
 }
 
-- (void)loader:(id)a3 didFailWithError:(id)a4
+- (void)loader:(id)loader didFailWithError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  loaderCopy = loader;
   WeakRetained = objc_loadWeakRetained(&self->_ruiDelegate);
-  [WeakRetained loader:v7 didFailWithError:v6];
+  [WeakRetained loader:loaderCopy didFailWithError:errorCopy];
 
-  if (v6)
+  if (errorCopy)
   {
     v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:self->_activationData encoding:4];
     v10 = pbb_setupflow_log();
@@ -1464,26 +1464,26 @@ LABEL_44:
   }
 }
 
-- (void)loader:(id)a3 receivedObjectModel:(id)a4 actionSignal:(unint64_t)a5
+- (void)loader:(id)loader receivedObjectModel:(id)model actionSignal:(unint64_t)signal
 {
-  v8 = a4;
-  v9 = a3;
+  modelCopy = model;
+  loaderCopy = loader;
   WeakRetained = objc_loadWeakRetained(&self->_ruiDelegate);
-  [WeakRetained loader:v9 receivedObjectModel:v8 actionSignal:a5];
+  [WeakRetained loader:loaderCopy receivedObjectModel:modelCopy actionSignal:signal];
 }
 
-- (void)loader:(id)a3 didReceiveHTTPResponse:(id)a4
+- (void)loader:(id)loader didReceiveHTTPResponse:(id)response
 {
-  v6 = a4;
-  v7 = a3;
+  responseCopy = response;
+  loaderCopy = loader;
   WeakRetained = objc_loadWeakRetained(&self->_ruiDelegate);
-  [WeakRetained loader:v7 didReceiveHTTPResponse:v6];
+  [WeakRetained loader:loaderCopy didReceiveHTTPResponse:responseCopy];
 }
 
-- (void)connection:(id)a3 didFailWithError:(id)a4
+- (void)connection:(id)connection didFailWithError:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   self->_awaitingCustomResponse = 0;
   v6 = pbb_activation_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1514,9 +1514,9 @@ LABEL_44:
     }
   }
 
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (errorCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v9 = PBUserCorrectableNetworkError([v5 code]);
+    v9 = PBUserCorrectableNetworkError([errorCopy code]);
   }
 
   else
@@ -1546,36 +1546,36 @@ LABEL_44:
   {
     [(PBBridgeCompanionController *)self _processActivationData];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Proxy Activation Request Failed: (%@)", v5];
-    [WeakRetained remoteDidFailActivation:5 description:v11 userActionable:v9];
+    errorCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Proxy Activation Request Failed: (%@)", errorCopy];
+    [WeakRetained remoteDidFailActivation:5 description:errorCopy userActionable:v9];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)connection:(id)a3 willSendRequest:(id)a4 redirectResponse:(id)a5
+- (id)connection:(id)connection willSendRequest:(id)request redirectResponse:(id)response
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  requestCopy = request;
+  responseCopy = response;
   v11 = pbb_activation_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    [PBBridgeCompanionController connection:v9 willSendRequest:self redirectResponse:v11];
+    [PBBridgeCompanionController connection:requestCopy willSendRequest:self redirectResponse:v11];
   }
 
-  if (v10)
+  if (responseCopy)
   {
-    if ([v10 statusCode] == 302)
+    if ([responseCopy statusCode] == 302)
     {
       activationRequest = self->_activationRequest;
       if (activationRequest)
       {
-        v13 = [(NSMutableURLRequest *)activationRequest HTTPBody];
+        hTTPBody = [(NSMutableURLRequest *)activationRequest HTTPBody];
 
-        if (v13)
+        if (hTTPBody)
         {
-          v14 = [(NSMutableURLRequest *)v9 mutableCopy];
+          v14 = [(NSMutableURLRequest *)requestCopy mutableCopy];
           [(NSMutableURLRequest *)v14 setHTTPMethod:@"POST"];
           v15 = [(NSMutableURLRequest *)self->_activationRequest valueForHTTPHeaderField:@"Content-Type"];
           [(NSMutableURLRequest *)v14 setValue:v15 forHTTPHeaderField:@"Content-Type"];
@@ -1583,29 +1583,29 @@ LABEL_44:
           v16 = [(NSMutableURLRequest *)self->_activationRequest valueForHTTPHeaderField:@"Content-Length"];
           [(NSMutableURLRequest *)v14 setValue:v16 forHTTPHeaderField:@"Content-Length"];
 
-          v17 = [(NSMutableURLRequest *)self->_activationRequest HTTPBody];
-          [(NSMutableURLRequest *)v14 setHTTPBody:v17];
+          hTTPBody2 = [(NSMutableURLRequest *)self->_activationRequest HTTPBody];
+          [(NSMutableURLRequest *)v14 setHTTPBody:hTTPBody2];
 
-          v9 = v14;
+          requestCopy = v14;
         }
       }
     }
   }
 
-  if (self->_activationConnection == v8 && self->_activationRequest != v9)
+  if (self->_activationConnection == connectionCopy && self->_activationRequest != requestCopy)
   {
-    v18 = [(NSMutableURLRequest *)v9 mutableCopy];
+    v18 = [(NSMutableURLRequest *)requestCopy mutableCopy];
     v19 = self->_activationRequest;
     self->_activationRequest = v18;
   }
 
-  return v9;
+  return requestCopy;
 }
 
-- (void)connection:(id)a3 didReceiveResponse:(id)a4
+- (void)connection:(id)connection didReceiveResponse:(id)response
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  responseCopy = response;
   v6 = pbb_activation_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1614,20 +1614,20 @@ LABEL_44:
     *&v40[4] = 2080;
     *&v40[6] = "[PBBridgeCompanionController connection:didReceiveResponse:]";
     v41 = 2112;
-    v42 = v5;
+    v42 = responseCopy;
     _os_log_impl(&dword_25DE64000, v6, OS_LOG_TYPE_DEFAULT, "%d %s -- %@", buf, 0x1Cu);
   }
 
-  v7 = [v5 statusCode];
+  statusCode = [responseCopy statusCode];
   self->_activationRetries = 0;
   if (PBIsInternalInstall() && [(PBBridgeCompanionController *)self _dumpActivationRequests])
   {
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Bridge-Activation-Response-%f.txt", CFAbsoluteTimeGetCurrent()];
     v9 = MEMORY[0x277CCACA8];
-    v10 = [v5 URL];
-    v11 = [MEMORY[0x277CCABB0] numberWithInteger:v7];
-    v12 = [v5 allHeaderFields];
-    v13 = [v9 stringWithFormat:@"%@\n%@\n%@", v10, v11, v12];
+    v10 = [responseCopy URL];
+    v11 = [MEMORY[0x277CCABB0] numberWithInteger:statusCode];
+    allHeaderFields = [responseCopy allHeaderFields];
+    v13 = [v9 stringWithFormat:@"%@\n%@\n%@", v10, v11, allHeaderFields];
 
     v38 = v13;
     [v13 writeToFile:v8 atomically:1 encoding:4 error:0];
@@ -1642,11 +1642,11 @@ LABEL_44:
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Bridge-Activation-Request-%f.txt", CFAbsoluteTimeGetCurrent()];
     v16 = MEMORY[0x277CCACA8];
     v17 = [(NSMutableURLRequest *)self->_activationRequest URL];
-    v18 = [(NSMutableURLRequest *)self->_activationRequest allHTTPHeaderFields];
+    allHTTPHeaderFields = [(NSMutableURLRequest *)self->_activationRequest allHTTPHeaderFields];
     v19 = objc_alloc(MEMORY[0x277CCACA8]);
-    v20 = [(NSMutableURLRequest *)self->_activationRequest HTTPBody];
-    v21 = [v19 initWithData:v20 encoding:4];
-    v22 = [v16 stringWithFormat:@"%@%@\n%@", v17, v18, v21];
+    hTTPBody = [(NSMutableURLRequest *)self->_activationRequest HTTPBody];
+    v21 = [v19 initWithData:hTTPBody encoding:4];
+    v22 = [v16 stringWithFormat:@"%@%@\n%@", v17, allHTTPHeaderFields, v21];
 
     [v22 writeToFile:v15 atomically:1 encoding:4 error:0];
     v23 = pbb_activation_log();
@@ -1658,7 +1658,7 @@ LABEL_44:
     }
   }
 
-  if (v7 < 400)
+  if (statusCode < 400)
   {
     goto LABEL_18;
   }
@@ -1683,9 +1683,9 @@ LABEL_18:
     activationData = self->_activationData;
     self->_activationData = v32;
 
-    v34 = [v5 allHeaderFields];
+    allHeaderFields2 = [responseCopy allHeaderFields];
     allHeaders = self->_allHeaders;
-    self->_allHeaders = v34;
+    self->_allHeaders = allHeaderFields2;
 
     WeakRetained = [(NSDictionary *)self->_allHeaders objectForKey:@"Content-Type"];
     v36 = [WeakRetained copy];
@@ -1708,41 +1708,41 @@ LABEL_18:
   self->_activationData = 0;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  contentType = [MEMORY[0x277CCACA8] stringWithFormat:@"Activation Failed with Status: %d", v7];
+  contentType = [MEMORY[0x277CCACA8] stringWithFormat:@"Activation Failed with Status: %d", statusCode];
   [WeakRetained remoteDidFailActivation:7 description:contentType];
 LABEL_19:
 
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didReceiveData:(id)a4
+- (void)connection:(id)connection didReceiveData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  dataCopy = data;
+  connectionCopy = connection;
   v8 = pbb_activation_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 136315394;
     v15 = "[PBBridgeCompanionController connection:didReceiveData:]";
     v16 = 2048;
-    v17 = [v6 length];
+    v17 = [dataCopy length];
     _os_log_impl(&dword_25DE64000, v8, OS_LOG_TYPE_DEFAULT, "%s: Bytes received %lu", &v14, 0x16u);
   }
 
   activationConnection = self->_activationConnection;
-  if (activationConnection == v7)
+  if (activationConnection == connectionCopy)
   {
     [(PBBridgeCompanionController *)self refreshTimeoutTimerWithNewActivationGranularState:3];
     activationData = self->_activationData;
     if (activationData)
     {
-      [(NSMutableData *)activationData appendData:v6];
+      [(NSMutableData *)activationData appendData:dataCopy];
     }
 
     else
     {
-      v11 = [objc_alloc(MEMORY[0x277CBEB28]) initWithData:v6];
+      v11 = [objc_alloc(MEMORY[0x277CBEB28]) initWithData:dataCopy];
       v12 = self->_activationData;
       self->_activationData = v11;
     }
@@ -1828,21 +1828,21 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
   self->_activationRetries = 0;
 }
 
-- (void)objectModel:(id)a3 pressedButton:(id)a4 attributes:(id)a5
+- (void)objectModel:(id)model pressedButton:(id)button attributes:(id)attributes
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  buttonCopy = button;
+  attributesCopy = attributes;
   v11 = pbb_setupflow_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412802;
-    v14 = v8;
+    v14 = modelCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = buttonCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = attributesCopy;
     _os_log_impl(&dword_25DE64000, v11, OS_LOG_TYPE_DEFAULT, "Pressed RUI Button... (RUIObjectModel %@, buttonName %@, attributes %@)", &v13, 0x20u);
   }
 
@@ -1850,33 +1850,33 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)gizmoDidEndPasscodeCreation:(id)a3
+- (void)gizmoDidEndPasscodeCreation:(id)creation
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 context];
-  v7 = [v6 fromID];
-  LODWORD(v5) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v5 fromId:v7];
+  creationCopy = creation;
+  type = [creationCopy type];
+  context = [creationCopy context];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v5)
+  if (type)
   {
     v8 = [PBBProtoDidEndPasscodeCreation alloc];
-    v9 = [v4 data];
-    v10 = [(PBBProtoDidEndPasscodeCreation *)v8 initWithData:v9];
+    data = [creationCopy data];
+    v10 = [(PBBProtoDidEndPasscodeCreation *)v8 initWithData:data];
 
     self->_passcodeSet = [(PBBProtoDidEndPasscodeCreation *)v10 success];
-    v11 = [(PBBProtoDidEndPasscodeCreation *)v10 isLong];
-    if (v11)
+    isLong = [(PBBProtoDidEndPasscodeCreation *)v10 isLong];
+    if (isLong)
     {
-      v12 = [MEMORY[0x277D75128] sharedApplication];
-      v13 = [v12 activeWatch];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      activeWatch = [mEMORY[0x277D75128] activeWatch];
 
-      v14 = [v13 valueForProperty:*MEMORY[0x277D2BBB8]];
-      v15 = [v13 valueForProperty:*MEMORY[0x277D2BB60]];
+      v14 = [activeWatch valueForProperty:*MEMORY[0x277D2BBB8]];
+      v15 = [activeWatch valueForProperty:*MEMORY[0x277D2BB60]];
       v16 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.nanosystemsettings" pairingID:v14 pairingDataStore:v15];
       [v16 setBool:0 forKey:@"simple-passcode"];
-      v17 = [v16 synchronize];
+      synchronize = [v16 synchronize];
     }
 
     v18 = pbb_setupflow_log();
@@ -1890,12 +1890,12 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
       v31 = 1024;
       v32 = passcodeSet;
       v33 = 1024;
-      v34 = v11;
+      v34 = isLong;
       _os_log_impl(&dword_25DE64000, v18, OS_LOG_TYPE_DEFAULT, "%d %s (Enabled Passcode: %d, is long: %d)", v28, 0x1Eu);
     }
 
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 postNotificationName:@"PBBridgeDidCompletePasscodeCreationNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"PBBridgeDidCompletePasscodeCreationNotification" object:0];
 
     if (PBLogPerformanceMetrics())
     {
@@ -1903,9 +1903,9 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
       Current = CFAbsoluteTimeGetCurrent();
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
-      v25 = [v4 context];
-      v26 = [v25 outgoingResponseIdentifier];
-      [v21 addMilestone:v24 activityType:v26 activityIdentifier:Current];
+      context2 = [creationCopy context];
+      outgoingResponseIdentifier = [context2 outgoingResponseIdentifier];
+      [v21 addMilestone:v24 activityType:outgoingResponseIdentifier activityIdentifier:Current];
     }
 
     PBNotifyClientOfActivity();
@@ -1914,19 +1914,19 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)gizmoFailedToCreatePasscode:(id)a3
+- (void)gizmoFailedToCreatePasscode:(id)passcode
 {
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 context];
-  v7 = [v6 fromID];
-  LODWORD(self) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v5 fromId:v7];
+  passcodeCopy = passcode;
+  type = [passcodeCopy type];
+  context = [passcodeCopy context];
+  fromID = [context fromID];
+  LODWORD(self) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
   if (self)
   {
     v8 = [PBBProtoDidFailToCreatePasscode alloc];
-    v9 = [v4 data];
-    v10 = [(PBBProtoDidFailToCreatePasscode *)v8 initWithData:v9];
+    data = [passcodeCopy data];
+    v10 = [(PBBProtoDidFailToCreatePasscode *)v8 initWithData:data];
 
     [(PBBProtoDidFailToCreatePasscode *)v10 error];
     v11 = pbb_setupflow_log();
@@ -1935,40 +1935,40 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
       [PBBridgeCompanionController gizmoFailedToCreatePasscode:];
     }
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 postNotificationName:@"PBBridgeDidFailToCreatePasscodeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"PBBridgeDidFailToCreatePasscodeNotification" object:0];
 
     PBNotifyClientOfActivity();
   }
 }
 
-- (void)gizmoDidEndPasscodeChange:(id)a3
+- (void)gizmoDidEndPasscodeChange:(id)change
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 context];
-  v7 = [v6 fromID];
-  LODWORD(v5) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v5 fromId:v7];
+  changeCopy = change;
+  type = [changeCopy type];
+  context = [changeCopy context];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v5)
+  if (type)
   {
     v8 = [PBBProtoDidEndPasscodeCreation alloc];
-    v9 = [v4 data];
-    v10 = [(PBBProtoDidEndPasscodeCreation *)v8 initWithData:v9];
+    data = [changeCopy data];
+    v10 = [(PBBProtoDidEndPasscodeCreation *)v8 initWithData:data];
 
     self->_passcodeSet = [(PBBProtoDidEndPasscodeCreation *)v10 success];
-    v11 = [(PBBProtoDidEndPasscodeCreation *)v10 isLong];
-    if (v11)
+    isLong = [(PBBProtoDidEndPasscodeCreation *)v10 isLong];
+    if (isLong)
     {
-      v12 = [MEMORY[0x277D75128] sharedApplication];
-      v13 = [v12 activeWatch];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      activeWatch = [mEMORY[0x277D75128] activeWatch];
 
-      v14 = [v13 valueForProperty:*MEMORY[0x277D2BBB8]];
-      v15 = [v13 valueForProperty:*MEMORY[0x277D2BB60]];
+      v14 = [activeWatch valueForProperty:*MEMORY[0x277D2BBB8]];
+      v15 = [activeWatch valueForProperty:*MEMORY[0x277D2BB60]];
       v16 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.nanosystemsettings" pairingID:v14 pairingDataStore:v15];
       [v16 setBool:0 forKey:@"simple-passcode"];
-      v17 = [v16 synchronize];
+      synchronize = [v16 synchronize];
     }
 
     v18 = pbb_setupflow_log();
@@ -1982,12 +1982,12 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
       v31 = 1024;
       v32 = passcodeSet;
       v33 = 1024;
-      v34 = v11;
+      v34 = isLong;
       _os_log_impl(&dword_25DE64000, v18, OS_LOG_TYPE_DEFAULT, "%d %s (Enabled Passcode: %d, is long: %d)", v28, 0x1Eu);
     }
 
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 postNotificationName:@"PBBridgeDidCompletePasscodeChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"PBBridgeDidCompletePasscodeChangeNotification" object:0];
 
     if (PBLogPerformanceMetrics())
     {
@@ -1995,9 +1995,9 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
       Current = CFAbsoluteTimeGetCurrent();
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
-      v25 = [v4 context];
-      v26 = [v25 outgoingResponseIdentifier];
-      [v21 addMilestone:v24 activityType:v26 activityIdentifier:Current];
+      context2 = [changeCopy context];
+      outgoingResponseIdentifier = [context2 outgoingResponseIdentifier];
+      [v21 addMilestone:v24 activityType:outgoingResponseIdentifier activityIdentifier:Current];
     }
 
     PBNotifyClientOfActivity();
@@ -2006,10 +2006,10 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)gizmoDidBeginUnlockPairing:(id)a3
+- (void)gizmoDidBeginUnlockPairing:(id)pairing
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pairingCopy = pairing;
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2020,13 +2020,13 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
     _os_log_impl(&dword_25DE64000, v5, OS_LOG_TYPE_DEFAULT, "%d %s", buf, 0x12u);
   }
 
-  v6 = [v4 type];
-  v7 = [v4 context];
+  type = [pairingCopy type];
+  context = [pairingCopy context];
 
-  v8 = [v7 fromID];
-  LODWORD(v6) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v6 fromId:v8];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v6)
+  if (type)
   {
     unlockPairingAssertion = self->_unlockPairingAssertion;
     if (unlockPairingAssertion)
@@ -2045,20 +2045,20 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)gizmoDidEndUnlockPairing:(id)a3
+- (void)gizmoDidEndUnlockPairing:(id)pairing
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 context];
-  v7 = [v6 fromID];
-  LODWORD(v5) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v5 fromId:v7];
+  pairingCopy = pairing;
+  type = [pairingCopy type];
+  context = [pairingCopy context];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v5)
+  if (type)
   {
     v8 = [PBBProtoDidMakeAutoLockChoice alloc];
-    v9 = [v4 data];
-    v10 = [(PBBProtoDidMakeAutoLockChoice *)v8 initWithData:v9];
+    data = [pairingCopy data];
+    v10 = [(PBBProtoDidMakeAutoLockChoice *)v8 initWithData:data];
 
     self->_selectedPairedUnlock = [(PBBProtoDidMakeAutoLockChoice *)v10 accept];
     v11 = pbb_setupflow_log();
@@ -2074,8 +2074,8 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
       _os_log_impl(&dword_25DE64000, v11, OS_LOG_TYPE_DEFAULT, "%d %s (Enabled Paired Unlock %d)", v22, 0x18u);
     }
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 postNotificationName:@"PBBridgeDidCompleteUnlockPairingNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"PBBridgeDidCompleteUnlockPairingNotification" object:0];
 
     if (PBLogPerformanceMetrics())
     {
@@ -2083,9 +2083,9 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
       Current = CFAbsoluteTimeGetCurrent();
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
-      v18 = [v4 context];
-      v19 = [v18 outgoingResponseIdentifier];
-      [v14 addMilestone:v17 activityType:v19 activityIdentifier:Current];
+      context2 = [pairingCopy context];
+      outgoingResponseIdentifier = [context2 outgoingResponseIdentifier];
+      [v14 addMilestone:v17 activityType:outgoingResponseIdentifier activityIdentifier:Current];
     }
 
     unlockPairingAssertion = self->_unlockPairingAssertion;
@@ -2104,11 +2104,11 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
 - (void)sendGizmoPasscodeRestrictions
 {
   v38 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveRestrictions];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  effectiveRestrictions = [mEMORY[0x277D262A0] effectiveRestrictions];
 
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [v3 objectForKey:*MEMORY[0x277D26158]];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v5 = [effectiveRestrictions objectForKey:*MEMORY[0x277D26158]];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -2134,7 +2134,7 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
 
         if (v13)
         {
-          [v4 setObject:v13 forKey:v11];
+          [dictionary setObject:v13 forKey:v11];
         }
       }
 
@@ -2144,8 +2144,8 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
     while (v7);
   }
 
-  v26 = v3;
-  v14 = [v3 objectForKey:*MEMORY[0x277D26168]];
+  v26 = effectiveRestrictions;
+  v14 = [effectiveRestrictions objectForKey:*MEMORY[0x277D26168]];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -2171,7 +2171,7 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
 
         if (v22)
         {
-          [v4 setObject:v22 forKey:v20];
+          [dictionary setObject:v22 forKey:v20];
         }
       }
 
@@ -2181,17 +2181,17 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
     while (v16);
   }
 
-  v35 = v4;
+  v35 = dictionary;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
   [(PBBridgeCompanionController *)self _sendRemoteCommandWithMessageID:20 withArguments:v23];
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellWatchToSetLauncherViewMode:(int64_t)a3
+- (void)tellWatchToSetLauncherViewMode:(int64_t)mode
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
   v7[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   [(PBBridgeCompanionController *)self _sendRemoteCommandWithMessageID:112 withArguments:v5];
@@ -2199,24 +2199,24 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrieveAppViewListImageFromGizmo:(CGSize)a3 completion:(id)a4
+- (void)retrieveAppViewListImageFromGizmo:(CGSize)gizmo completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
+  height = gizmo.height;
+  width = gizmo.width;
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  completionCopy = completion;
   appViewListImageCompletion = self->_appViewListImageCompletion;
   if (appViewListImageCompletion)
   {
     appViewListImageCompletion[2](appViewListImageCompletion, 0);
   }
 
-  v9 = [v7 copy];
+  v9 = [completionCopy copy];
   v10 = self->_appViewListImageCompletion;
   self->_appViewListImageCompletion = v9;
 
-  v11 = [MEMORY[0x277D759A0] mainScreen];
-  [v11 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v13 = v12;
 
   v14 = pbb_setupflow_log();
@@ -2244,19 +2244,19 @@ void __53__PBBridgeCompanionController__processActivationData__block_invoke_581(
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAppViewListImageResponse:(id)a3
+- (void)handleAppViewListImageResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 context];
-  v7 = [v6 fromID];
-  LODWORD(v5) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v5 fromId:v7];
+  responseCopy = response;
+  type = [responseCopy type];
+  context = [responseCopy context];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v5)
+  if (type)
   {
     v8 = [PBBProtoAppViewListImageResponse alloc];
-    v9 = [v4 data];
-    v10 = [(PBBProtoAppViewListImageResponse *)v8 initWithData:v9];
+    data = [responseCopy data];
+    v10 = [(PBBProtoAppViewListImageResponse *)v8 initWithData:data];
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -2292,21 +2292,21 @@ void __62__PBBridgeCompanionController_handleAppViewListImageResponse___block_in
   }
 }
 
-- (void)tellGizmoToPushControllerType:(unint64_t)a3
+- (void)tellGizmoToPushControllerType:(unint64_t)type
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = PBBuddyControllerDescription(a3);
+    v6 = PBBuddyControllerDescription(type);
     *buf = 67109378;
-    v12 = a3;
+    typeCopy = type;
     v13 = 2112;
     v14 = v6;
     _os_log_impl(&dword_25DE64000, v5, OS_LOG_TYPE_DEFAULT, "Telling Gizmo to push (%d - %@)", buf, 0x12u);
   }
 
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v10 = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
   [(PBBridgeCompanionController *)self _sendRemoteCommandWithMessageID:3 withArguments:v8];
@@ -2314,21 +2314,21 @@ void __62__PBBridgeCompanionController_handleAppViewListImageResponse___block_in
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellGizmoToPopToControllerType:(unint64_t)a3
+- (void)tellGizmoToPopToControllerType:(unint64_t)type
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = PBBuddyControllerDescription(a3);
+    v6 = PBBuddyControllerDescription(type);
     *buf = 67109378;
-    v12 = a3;
+    typeCopy = type;
     v13 = 2112;
     v14 = v6;
     _os_log_impl(&dword_25DE64000, v5, OS_LOG_TYPE_DEFAULT, "Telling Gizmo to pop to (%d - %@)", buf, 0x12u);
   }
 
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v10 = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
   [(PBBridgeCompanionController *)self _sendRemoteCommandWithMessageID:4 withArguments:v8];
@@ -2336,22 +2336,22 @@ void __62__PBBridgeCompanionController_handleAppViewListImageResponse___block_in
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellGizmoToShowLockedOnAnimationTimeToFlash:(double)a3 animationCompletion:(id)a4
+- (void)tellGizmoToShowLockedOnAnimationTimeToFlash:(double)flash animationCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = [a4 copy];
+  v6 = [completion copy];
   lockedOnAnimationCompletion = self->_lockedOnAnimationCompletion;
   self->_lockedOnAnimationCompletion = v6;
 
-  v8 = *&PBBridgeAnimationSyncOffsetTime - a3;
+  v8 = *&PBBridgeAnimationSyncOffsetTime - flash;
   v9 = 0.0;
-  if (*&PBBridgeAnimationSyncOffsetTime - a3 < 0.0)
+  if (*&PBBridgeAnimationSyncOffsetTime - flash < 0.0)
   {
     v10 = pbb_setupflow_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v19 = a3;
+      flashCopy = flash;
       v20 = 2048;
       v21 = PBBridgeAnimationSyncOffsetTime;
       _os_log_impl(&dword_25DE64000, v10, OS_LOG_TYPE_DEFAULT, "Time to flash is too long (%f vs %f). Pushing back animation.", buf, 0x16u);
@@ -2396,21 +2396,21 @@ void __95__PBBridgeCompanionController_tellGizmoToShowLockedOnAnimationTimeToFla
   }
 }
 
-- (void)tellGizmoToUpdateSyncProgressTo:(double)a3 withState:(int64_t)a4
+- (void)tellGizmoToUpdateSyncProgressTo:(double)to withState:(int64_t)state
 {
   v17 = *MEMORY[0x277D85DE8];
   v7 = pbb_setupflow_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v14 = a3;
+    toCopy = to;
     v15 = 2048;
-    v16 = a4;
+    stateCopy = state;
     _os_log_impl(&dword_25DE64000, v7, OS_LOG_TYPE_DEFAULT, "Telling Gizmo To Update Sync Progress to: %f and state: %ld", buf, 0x16u);
   }
 
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{a4, v8}];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:to];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{state, v8}];
   v12[1] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
   [(PBBridgeCompanionController *)self _sendRemoteCommandWithMessageID:19 withArguments:v10];
@@ -2430,11 +2430,11 @@ void __95__PBBridgeCompanionController_tellGizmoToShowLockedOnAnimationTimeToFla
   }
 
   [(PBBridgeCompanionController *)self refreshTimeoutTimerWithNewActivationGranularState:1];
-  v4 = [*MEMORY[0x277D76620] setupController];
-  v5 = [v4 pairingReportManager];
+  setupController = [*MEMORY[0x277D76620] setupController];
+  pairingReportManager = [setupController pairingReportManager];
 
-  [v5 addPairingTimeEventToPairingReportPlist:12 withValue:MEMORY[0x277CBEC38] withError:0];
-  [v5 checkInWithOpenPairingTimeEvent:18];
+  [pairingReportManager addPairingTimeEventToPairingReportPlist:12 withValue:MEMORY[0x277CBEC38] withError:0];
+  [pairingReportManager checkInWithOpenPairingTimeEvent:18];
   [(PBBridgeCompanionController *)self _sendRemoteCommandWithMessageID:11 withArguments:0];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -2456,7 +2456,7 @@ void __95__PBBridgeCompanionController_tellGizmoToShowLockedOnAnimationTimeToFla
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidateTimeoutTimerWithNewActivationGranularState:(unsigned __int16)a3
+- (void)invalidateTimeoutTimerWithNewActivationGranularState:(unsigned __int16)state
 {
   dispatch_assert_queue_not_V2(self->_timeoutTrackerQueue);
   timeoutTrackerQueue = self->_timeoutTrackerQueue;
@@ -2464,7 +2464,7 @@ void __95__PBBridgeCompanionController_tellGizmoToShowLockedOnAnimationTimeToFla
   v6[1] = 3221225472;
   v6[2] = __84__PBBridgeCompanionController_invalidateTimeoutTimerWithNewActivationGranularState___block_invoke;
   v6[3] = &unk_2799F4BC8;
-  v7 = a3;
+  stateCopy = state;
   v6[4] = self;
   dispatch_sync(timeoutTrackerQueue, v6);
 }
@@ -2496,7 +2496,7 @@ void __84__PBBridgeCompanionController_invalidateTimeoutTimerWithNewActivationGr
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshTimeoutTimerWithNewActivationGranularState:(unsigned __int16)a3
+- (void)refreshTimeoutTimerWithNewActivationGranularState:(unsigned __int16)state
 {
   dispatch_assert_queue_not_V2(self->_timeoutTrackerQueue);
   timeoutTrackerQueue = self->_timeoutTrackerQueue;
@@ -2504,7 +2504,7 @@ void __84__PBBridgeCompanionController_invalidateTimeoutTimerWithNewActivationGr
   v6[1] = 3221225472;
   v6[2] = __81__PBBridgeCompanionController_refreshTimeoutTimerWithNewActivationGranularState___block_invoke;
   v6[3] = &unk_2799F4BC8;
-  v7 = a3;
+  stateCopy = state;
   v6[4] = self;
   dispatch_sync(timeoutTrackerQueue, v6);
 }
@@ -2602,7 +2602,7 @@ void __81__PBBridgeCompanionController_refreshTimeoutTimerWithNewActivationGranu
 - (void)activationTimedOut
 {
   v12 = *MEMORY[0x277D85DE8];
-  v10 = PBActivationGranularStateDescription(a1);
+  v10 = PBActivationGranularStateDescription(self);
   v11 = *(a2 + 168);
   OUTLINED_FUNCTION_4(&dword_25DE64000, v3, v4, "%s: Activation time out in phase %@ (Last message sent was %@)", v5, v6, v7, v8, 2u);
 
@@ -2626,30 +2626,30 @@ void __81__PBBridgeCompanionController_refreshTimeoutTimerWithNewActivationGranu
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRemoteActivationDetails:(id)a3
+- (void)handleRemoteActivationDetails:(id)details
 {
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 context];
-  v7 = [v6 fromID];
-  LODWORD(self) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v5 fromId:v7];
+  detailsCopy = details;
+  type = [detailsCopy type];
+  context = [detailsCopy context];
+  fromID = [context fromID];
+  LODWORD(self) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
   if (self)
   {
     v8 = [PBBProtoRemoteActivationFailureReport alloc];
-    v9 = [v4 data];
-    v10 = [(PBBProtoRemoteActivationFailureReport *)v8 initWithData:v9];
+    data = [detailsCopy data];
+    v10 = [(PBBProtoRemoteActivationFailureReport *)v8 initWithData:data];
 
-    v11 = [(PBBProtoRemoteActivationFailureReport *)v10 activationError];
+    activationError = [(PBBProtoRemoteActivationFailureReport *)v10 activationError];
     v17 = 0;
-    v12 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v11 error:&v17];
+    v12 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:activationError error:&v17];
     v13 = v17;
     if (v13)
     {
       v14 = pbb_activation_log();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [(PBBridgeCompanionController *)v13 handleRemoteActivationDetails:v11];
+        [(PBBridgeCompanionController *)v13 handleRemoteActivationDetails:activationError];
       }
     }
 
@@ -2663,10 +2663,10 @@ void __81__PBBridgeCompanionController_refreshTimeoutTimerWithNewActivationGranu
   }
 }
 
-- (void)queryGizmoForShowWarrantySentinelAndRestoreDeviceName:(id)a3
+- (void)queryGizmoForShowWarrantySentinelAndRestoreDeviceName:(id)name
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2675,15 +2675,15 @@ void __81__PBBridgeCompanionController_refreshTimeoutTimerWithNewActivationGranu
     v24 = 2080;
     v25 = "[PBBridgeCompanionController queryGizmoForShowWarrantySentinelAndRestoreDeviceName:]";
     v26 = 2112;
-    v27 = v4;
+    v27 = nameCopy;
     _os_log_impl(&dword_25DE64000, v5, OS_LOG_TYPE_DEFAULT, "%d %s -- Querying for Warranty Sentinel; Device name: %@", buf, 0x1Cu);
   }
 
-  v6 = [MEMORY[0x277CBEB68] null];
-  v21 = v6;
+  null = [MEMORY[0x277CBEB68] null];
+  v21 = null;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
 
-  if (v4)
+  if (nameCopy)
   {
     goto LABEL_7;
   }
@@ -2712,14 +2712,14 @@ void __81__PBBridgeCompanionController_refreshTimeoutTimerWithNewActivationGranu
   v12 = MEMORY[0x277CCACA8];
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v14 = [v13 localizedStringForKey:@"DEVICE_NAME" value:&stru_286FA8098 table:@"Localizable"];
-  v4 = [v12 stringWithFormat:v14, v11];
+  nameCopy = [v12 stringWithFormat:v14, v11];
 
-  if (v4)
+  if (nameCopy)
   {
 LABEL_7:
-    v15 = [v7 arrayByAddingObject:v4];
+    v15 = [v7 arrayByAddingObject:nameCopy];
 
-    v10 = v4;
+    v10 = nameCopy;
     v7 = v15;
 LABEL_8:
   }
@@ -2746,20 +2746,20 @@ LABEL_8:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleWarrantySentinelResponse:(id)a3
+- (void)handleWarrantySentinelResponse:(id)response
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 context];
-  v7 = [v6 fromID];
-  LODWORD(self) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v5 fromId:v7];
+  responseCopy = response;
+  type = [responseCopy type];
+  context = [responseCopy context];
+  fromID = [context fromID];
+  LODWORD(self) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
   if (self)
   {
     v8 = [PBBProtoWarrantySentinel alloc];
-    v9 = [v4 data];
-    v10 = [(PBBProtoWarrantySentinel *)v8 initWithData:v9];
+    data = [responseCopy data];
+    v10 = [(PBBProtoWarrantySentinel *)v8 initWithData:data];
 
     v11 = pbb_setupflow_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2776,22 +2776,22 @@ LABEL_8:
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
       v14 = [v13 mutableCopy];
 
-      v15 = [(PBBProtoWarrantySentinel *)v10 appleLanguages];
+      appleLanguages = [(PBBProtoWarrantySentinel *)v10 appleLanguages];
 
-      if (v15)
+      if (appleLanguages)
       {
-        v16 = [(PBBProtoWarrantySentinel *)v10 appleLanguages];
-        [v14 setObject:v16 forKeyedSubscript:@"PBBridgeGizmoAppleLanguagesKey"];
+        appleLanguages2 = [(PBBProtoWarrantySentinel *)v10 appleLanguages];
+        [v14 setObject:appleLanguages2 forKeyedSubscript:@"PBBridgeGizmoAppleLanguagesKey"];
       }
 
       if ([(PBBProtoWarrantySentinel *)v10 hasAppleLocale])
       {
-        v17 = [(PBBProtoWarrantySentinel *)v10 appleLocale];
-        [v14 setObject:v17 forKeyedSubscript:@"PBBridgeGizmoAppleLocaleKey"];
+        appleLocale = [(PBBProtoWarrantySentinel *)v10 appleLocale];
+        [v14 setObject:appleLocale forKeyedSubscript:@"PBBridgeGizmoAppleLocaleKey"];
       }
 
-      v18 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v18 postNotificationName:@"PBBridgeWarrantySentinelNotification" object:0 userInfo:v14];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"PBBridgeWarrantySentinelNotification" object:0 userInfo:v14];
     }
 
     if (PBLogPerformanceMetrics())
@@ -2800,19 +2800,19 @@ LABEL_8:
       Current = CFAbsoluteTimeGetCurrent();
       v21 = objc_opt_class();
       v22 = NSStringFromClass(v21);
-      v23 = [v4 context];
-      v24 = [v23 outgoingResponseIdentifier];
-      [v19 addMilestone:v22 activityType:v24 activityIdentifier:Current];
+      context2 = [responseCopy context];
+      outgoingResponseIdentifier = [context2 outgoingResponseIdentifier];
+      [v19 addMilestone:v22 activityType:outgoingResponseIdentifier activityIdentifier:Current];
     }
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellGizmoToPrepareForInitialSyncWithCompletion:(id)a3
+- (void)tellGizmoToPrepareForInitialSyncWithCompletion:(id)completion
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [a3 copy];
+  v4 = [completion copy];
   initialSyncPrepCompletion = self->_initialSyncPrepCompletion;
   self->_initialSyncPrepCompletion = v4;
 
@@ -2830,17 +2830,17 @@ LABEL_8:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)watchDidPrepareForInitialSync:(id)a3
+- (void)watchDidPrepareForInitialSync:(id)sync
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 context];
+  syncCopy = sync;
+  type = [syncCopy type];
+  context = [syncCopy context];
 
-  v7 = [v6 fromID];
-  LODWORD(v5) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v5 fromId:v7];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v5)
+  if (type)
   {
     v8 = pbb_setupflow_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2881,29 +2881,29 @@ LABEL_8:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleOfflineTermsResponse:(id)a3
+- (void)handleOfflineTermsResponse:(id)response
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 context];
-  v7 = [v6 fromID];
-  LODWORD(self) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v5 fromId:v7];
+  responseCopy = response;
+  type = [responseCopy type];
+  context = [responseCopy context];
+  fromID = [context fromID];
+  LODWORD(self) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
   if (self)
   {
     v8 = [PBBProtoOfflineTerms alloc];
-    v9 = [v4 data];
-    v10 = [(PBBProtoOfflineTerms *)v8 initWithData:v9];
+    data = [responseCopy data];
+    v10 = [(PBBProtoOfflineTerms *)v8 initWithData:data];
 
     v11 = pbb_setupflow_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(PBBProtoOfflineTerms *)v10 license];
-      v13 = [v12 length];
-      v14 = [(PBBProtoOfflineTerms *)v10 multiterms];
-      v15 = [v14 length];
-      v16 = [(PBBProtoOfflineTerms *)v10 warranty];
+      license = [(PBBProtoOfflineTerms *)v10 license];
+      v13 = [license length];
+      multiterms = [(PBBProtoOfflineTerms *)v10 multiterms];
+      v15 = [multiterms length];
+      warranty = [(PBBProtoOfflineTerms *)v10 warranty];
       *buf = 134218752;
       v57 = v10;
       v58 = 2048;
@@ -2911,7 +2911,7 @@ LABEL_8:
       v60 = 2048;
       v61 = v15;
       v62 = 2048;
-      v63 = [v16 length];
+      v63 = [warranty length];
       _os_log_impl(&dword_25DE64000, v11, OS_LOG_TYPE_DEFAULT, "Got Offline Terms Response: (%p); license: (%lu bytes); multiterms: (%lu bytes); warranty: (%lu bytes);", buf, 0x2Au);
     }
 
@@ -2921,22 +2921,22 @@ LABEL_8:
       Current = CFAbsoluteTimeGetCurrent();
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
-      v21 = [v4 context];
-      v22 = [v21 outgoingResponseIdentifier];
-      [v17 addMilestone:v20 activityType:v22 activityIdentifier:Current];
+      context2 = [responseCopy context];
+      outgoingResponseIdentifier = [context2 outgoingResponseIdentifier];
+      [v17 addMilestone:v20 activityType:outgoingResponseIdentifier activityIdentifier:Current];
     }
 
     v54 = @"PBBridgeOfflineTermsLicenseKey";
-    v23 = [(PBBProtoOfflineTerms *)v10 license];
-    v55 = v23;
+    license2 = [(PBBProtoOfflineTerms *)v10 license];
+    v55 = license2;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
     v25 = [v24 mutableCopy];
 
     if ([(PBBProtoOfflineTerms *)v10 hasMultiterms])
     {
       v26 = objc_alloc(MEMORY[0x277CCACA8]);
-      v27 = [(PBBProtoOfflineTerms *)v10 multiterms];
-      v53 = [v26 initWithData:v27 encoding:4];
+      multiterms2 = [(PBBProtoOfflineTerms *)v10 multiterms];
+      v53 = [v26 initWithData:multiterms2 encoding:4];
 
       v47 = MEMORY[0x277CCACA8];
       v50 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -2967,12 +2967,12 @@ LABEL_8:
 
     if ([(PBBProtoOfflineTerms *)v10 hasWarranty])
     {
-      v35 = [(PBBProtoOfflineTerms *)v10 warranty];
-      [v25 setObject:v35 forKeyedSubscript:@"PBBridgeOfflineTermsWarrantyKey"];
+      warranty2 = [(PBBProtoOfflineTerms *)v10 warranty];
+      [v25 setObject:warranty2 forKeyedSubscript:@"PBBridgeOfflineTermsWarrantyKey"];
     }
 
-    v36 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v36 postNotificationName:@"PBBridgeOfflineTermsNotification" object:0 userInfo:v25];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"PBBridgeOfflineTermsNotification" object:0 userInfo:v25];
   }
 
   v37 = *MEMORY[0x277D85DE8];
@@ -3056,7 +3056,7 @@ LABEL_8:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)meCardFirstName:(id *)a3 lastName:(id *)a4
++ (void)meCardFirstName:(id *)name lastName:(id *)lastName
 {
   v23[2] = *MEMORY[0x277D85DE8];
   v6 = objc_alloc_init(MEMORY[0x277CBDAB8]);
@@ -3098,32 +3098,32 @@ LABEL_8:
 
     if (v10)
     {
-      *a3 = [v10 givenName];
-      *a4 = [v10 familyName];
+      *name = [v10 givenName];
+      *lastName = [v10 familyName];
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)iCloudFirstName:(id *)a3 lastName:(id *)a4
++ (void)iCloudFirstName:(id *)name lastName:(id *)lastName
 {
   v7 = objc_alloc_init(MEMORY[0x277CB8F48]);
-  v6 = [v7 aa_primaryAppleAccount];
-  *a3 = [v6 aa_firstName];
-  *a4 = [v6 aa_lastName];
+  aa_primaryAppleAccount = [v7 aa_primaryAppleAccount];
+  *name = [aa_primaryAppleAccount aa_firstName];
+  *lastName = [aa_primaryAppleAccount aa_lastName];
 }
 
-+ (id)displayNameWithFirstName:(id)a3 lastName:(id)a4
++ (id)displayNameWithFirstName:(id)name lastName:(id)lastName
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  nameCopy = name;
+  lastNameCopy = lastName;
+  if (nameCopy)
   {
-    v7 = v5;
-    if ([v7 _containsCJKScriptsOnly] && objc_msgSend(v6, "length") && objc_msgSend(v6, "_containsCJKScriptsOnly"))
+    v7 = nameCopy;
+    if ([v7 _containsCJKScriptsOnly] && objc_msgSend(lastNameCopy, "length") && objc_msgSend(lastNameCopy, "_containsCJKScriptsOnly"))
     {
-      v8 = [v6 stringByAppendingString:v7];
+      v8 = [lastNameCopy stringByAppendingString:v7];
 
       v7 = v8;
     }
@@ -3137,17 +3137,17 @@ LABEL_8:
   return v7;
 }
 
-- (void)tellWatchToChangeDeviceNameFor:(id)a3
+- (void)tellWatchToChangeDeviceNameFor:(id)for
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (for)
   {
-    v4 = a3;
+    forCopy = for;
     v5 = objc_opt_class();
-    v6 = [v4 firstName];
-    v7 = [v4 lastName];
+    firstName = [forCopy firstName];
+    lastName = [forCopy lastName];
 
-    v8 = [v5 displayNameWithFirstName:v6 lastName:v7];
+    v8 = [v5 displayNameWithFirstName:firstName lastName:lastName];
 
     v9 = MEMORY[0x277CCACA8];
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -3166,9 +3166,9 @@ LABEL_8:
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v3 = [(PBBridgeCompanionController *)self currentNetworks:0];
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  v5 = [v4 objectForKey:@"SSID_STR"];
+  v5 = [firstObject objectForKey:@"SSID_STR"];
   v6 = v5;
   if (v5)
   {
@@ -3182,7 +3182,7 @@ LABEL_8:
 
   v8 = v7;
 
-  v9 = [v4 objectForKey:*MEMORY[0x277D29878]];
+  v9 = [firstObject objectForKey:*MEMORY[0x277D29878]];
   v10 = v9;
   if (v9)
   {
@@ -3204,9 +3204,9 @@ LABEL_8:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)currentNetworks:(BOOL)a3
+- (id)currentNetworks:(BOOL)networks
 {
-  v3 = a3;
+  networksCopy = networks;
   v46 = *MEMORY[0x277D85DE8];
   v4 = 0x277CBE000uLL;
   v5 = objc_opt_new();
@@ -3220,7 +3220,7 @@ LABEL_8:
       if (CFArrayGetCount(v7) >= 1)
       {
         CFArrayGetValueAtIndex(v8, 0);
-        if (v3)
+        if (networksCopy)
         {
           v9 = WiFiManagerClientCopyNetworks();
         }
@@ -3401,10 +3401,10 @@ LABEL_10:
   return v5;
 }
 
-- (void)watchDidIngestWirelessCredentials:(id)a3
+- (void)watchDidIngestWirelessCredentials:(id)credentials
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  credentialsCopy = credentials;
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3413,19 +3413,19 @@ LABEL_10:
     _os_log_impl(&dword_25DE64000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v10, 0xCu);
   }
 
-  v6 = [v4 type];
-  v7 = [v4 context];
+  type = [credentialsCopy type];
+  context = [credentialsCopy context];
 
-  v8 = [v7 fromID];
-  [(PBBridgeCompanionController *)self shouldHandleMessageType:v6 fromId:v8];
+  fromID = [context fromID];
+  [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)watchDidApplyWirelessCredentials:(id)a3
+- (void)watchDidApplyWirelessCredentials:(id)credentials
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  credentialsCopy = credentials;
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3434,26 +3434,26 @@ LABEL_10:
     _os_log_impl(&dword_25DE64000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v13, 0xCu);
   }
 
-  v6 = [v4 type];
-  v7 = [v4 context];
+  type = [credentialsCopy type];
+  context = [credentialsCopy context];
 
-  v8 = [v7 fromID];
-  v9 = [(PBBridgeCompanionController *)self shouldHandleMessageType:v6 fromId:v8];
+  fromID = [context fromID];
+  v9 = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
   if (v9)
   {
-    v10 = [*MEMORY[0x277D76620] setupController];
-    v11 = [v10 linkUpgradeMonitor];
-    [v11 wirelessCredentialUpdateCompletedWithResult:1];
+    setupController = [*MEMORY[0x277D76620] setupController];
+    linkUpgradeMonitor = [setupController linkUpgradeMonitor];
+    [linkUpgradeMonitor wirelessCredentialUpdateCompletedWithResult:1];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellWatchToPrepareForForcedSUWithCompletion:(id)a3
+- (void)tellWatchToPrepareForForcedSUWithCompletion:(id)completion
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3462,7 +3462,7 @@ LABEL_10:
     _os_log_impl(&dword_25DE64000, v5, OS_LOG_TYPE_DEFAULT, "%s:", &v9, 0xCu);
   }
 
-  v6 = [v4 copy];
+  v6 = [completionCopy copy];
   prepareWatchForForcedSUCompletion = self->_prepareWatchForForcedSUCompletion;
   self->_prepareWatchForForcedSUCompletion = v6;
 
@@ -3470,10 +3470,10 @@ LABEL_10:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)watchDidPrepareForForcedSU:(id)a3
+- (void)watchDidPrepareForForcedSU:(id)u
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  uCopy = u;
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3482,13 +3482,13 @@ LABEL_10:
     _os_log_impl(&dword_25DE64000, v5, OS_LOG_TYPE_DEFAULT, "%s:", &v12, 0xCu);
   }
 
-  v6 = [v4 type];
-  v7 = [v4 context];
+  type = [uCopy type];
+  context = [uCopy context];
 
-  v8 = [v7 fromID];
-  LODWORD(v6) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v6 fromId:v8];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v6)
+  if (type)
   {
     prepareWatchForForcedSUCompletion = self->_prepareWatchForForcedSUCompletion;
     if (prepareWatchForForcedSUCompletion)
@@ -3502,12 +3502,12 @@ LABEL_10:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendBuysOnWatchUsername:(id)a3 andPassword:(id)a4 withCompletion:(id)a5
+- (void)sendBuysOnWatchUsername:(id)username andPassword:(id)password withCompletion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [a5 copy];
+  usernameCopy = username;
+  passwordCopy = password;
+  v10 = [completion copy];
   buysOnWatchCredentialsIngestedCompletion = self->_buysOnWatchCredentialsIngestedCompletion;
   self->_buysOnWatchCredentialsIngestedCompletion = v10;
 
@@ -3517,22 +3517,22 @@ LABEL_10:
     *buf = 136315394;
     v17 = "[PBBridgeCompanionController sendBuysOnWatchUsername:andPassword:withCompletion:]";
     v18 = 2112;
-    v19 = v8;
+    v19 = usernameCopy;
     _os_log_impl(&dword_25DE64000, v12, OS_LOG_TYPE_DEFAULT, "%s -- username %@", buf, 0x16u);
   }
 
-  v15[0] = v8;
-  v15[1] = v9;
+  v15[0] = usernameCopy;
+  v15[1] = passwordCopy;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
   [(PBBridgeCompanionController *)self _sendRemoteCommandWithMessageID:32 withArguments:v13];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestProxiedDeviceForWatchWithCompletion:(id)a3
+- (void)requestProxiedDeviceForWatchWithCompletion:(id)completion
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = [a3 copy];
+  v4 = [completion copy];
   remoteAccountForDeviceCompletion = self->_remoteAccountForDeviceCompletion;
   self->_remoteAccountForDeviceCompletion = v4;
 
@@ -3548,20 +3548,20 @@ LABEL_10:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)returnedRemoteAccountForDevice:(id)a3
+- (void)returnedRemoteAccountForDevice:(id)device
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 context];
-  v7 = [v6 fromID];
-  LODWORD(v5) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v5 fromId:v7];
+  deviceCopy = device;
+  type = [deviceCopy type];
+  context = [deviceCopy context];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v5)
+  if (type)
   {
     v8 = [PBBProtoRemoteAccountForDevice alloc];
-    v9 = [v4 data];
-    v10 = [(PBBProtoRemoteAccountForDevice *)v8 initWithData:v9];
+    data = [deviceCopy data];
+    v10 = [(PBBProtoRemoteAccountForDevice *)v8 initWithData:data];
 
     v11 = pbb_accountsignin_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -3571,8 +3571,8 @@ LABEL_10:
       _os_log_impl(&dword_25DE64000, v11, OS_LOG_TYPE_DEFAULT, "%s:", &v17, 0xCu);
     }
 
-    v12 = [(PBBProtoRemoteAccountForDevice *)v10 serializedDevice];
-    v13 = [MEMORY[0x277CF0218] deviceWithSerializedData:v12];
+    serializedDevice = [(PBBProtoRemoteAccountForDevice *)v10 serializedDevice];
+    v13 = [MEMORY[0x277CF0218] deviceWithSerializedData:serializedDevice];
     [v13 setLinkType:2];
     remoteAccountForDeviceCompletion = self->_remoteAccountForDeviceCompletion;
     if (remoteAccountForDeviceCompletion)
@@ -3610,38 +3610,38 @@ LABEL_10:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendTinkerAccountCredentialsWithContext:(id)a3 completion:(id)a4
+- (void)sendTinkerAccountCredentialsWithContext:(id)context completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a4 copy];
+  contextCopy = context;
+  v7 = [completion copy];
   tinkerCredentialsIngestedCompletion = self->_tinkerCredentialsIngestedCompletion;
-  v34 = self;
+  selfCopy = self;
   self->_tinkerCredentialsIngestedCompletion = v7;
 
-  v9 = [*MEMORY[0x277D76620] setupController];
-  v10 = [v6 username];
-  [v9 setTinkerSignInId:v10];
+  setupController = [*MEMORY[0x277D76620] setupController];
+  username = [contextCopy username];
+  [setupController setTinkerSignInId:username];
 
   v11 = pbb_accountsignin_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v6 username];
+    username2 = [contextCopy username];
     *buf = 136315394;
     v38 = "[PBBridgeCompanionController sendTinkerAccountCredentialsWithContext:completion:]";
     v39 = 2112;
-    v40 = v12;
+    v40 = username2;
     _os_log_impl(&dword_25DE64000, v11, OS_LOG_TYPE_DEFAULT, "%s: username %@", buf, 0x16u);
   }
 
-  v13 = [v6 acceptedTermsInfo];
+  acceptedTermsInfo = [contextCopy acceptedTermsInfo];
 
-  if (v13)
+  if (acceptedTermsInfo)
   {
     v14 = MEMORY[0x277CCAAB0];
-    v15 = [v6 acceptedTermsInfo];
+    acceptedTermsInfo2 = [contextCopy acceptedTermsInfo];
     v35 = 0;
-    v16 = [v14 archivedDataWithRootObject:v15 requiringSecureCoding:1 error:&v35];
+    v16 = [v14 archivedDataWithRootObject:acceptedTermsInfo2 requiringSecureCoding:1 error:&v35];
     v17 = v35;
 
     if (v17)
@@ -3667,53 +3667,53 @@ LABEL_10:
     v16 = 0;
   }
 
-  v19 = [v6 username];
-  v20 = v19;
-  if (!v19)
+  username3 = [contextCopy username];
+  v20 = username3;
+  if (!username3)
   {
-    v19 = [MEMORY[0x277CBEB68] null];
+    username3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v32 = v19;
-  v36[0] = v19;
-  v21 = [v6 password];
-  v22 = v21;
-  if (!v21)
+  v32 = username3;
+  v36[0] = username3;
+  password = [contextCopy password];
+  v22 = password;
+  if (!password)
   {
-    v21 = [MEMORY[0x277CBEB68] null];
+    password = [MEMORY[0x277CBEB68] null];
   }
 
-  v30 = v21;
-  v36[1] = v21;
-  v23 = v16;
+  v30 = password;
+  v36[1] = password;
+  null = v16;
   if (!v16)
   {
-    v23 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v36[2] = v23;
-  v24 = [v6 pairingParentUsername];
-  v25 = v24;
-  if (!v24)
+  v36[2] = null;
+  pairingParentUsername = [contextCopy pairingParentUsername];
+  null2 = pairingParentUsername;
+  if (!pairingParentUsername)
   {
-    v25 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v36[3] = v25;
-  v26 = [v6 pairingParentAltDSID];
-  v27 = v26;
-  if (!v26)
+  v36[3] = null2;
+  pairingParentAltDSID = [contextCopy pairingParentAltDSID];
+  null3 = pairingParentAltDSID;
+  if (!pairingParentAltDSID)
   {
-    v27 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v36[4] = v27;
+  v36[4] = null3;
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:5];
-  if (!v26)
+  if (!pairingParentAltDSID)
   {
   }
 
-  if (!v24)
+  if (!pairingParentUsername)
   {
   }
 
@@ -3739,33 +3739,33 @@ LABEL_26:
   {
   }
 
-  [(PBBridgeCompanionController *)v34 _sendRemoteCommandWithMessageID:30 withArguments:v28];
+  [(PBBridgeCompanionController *)selfCopy _sendRemoteCommandWithMessageID:30 withArguments:v28];
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tinkerWatchIngestedCredentials:(id)a3
+- (void)tinkerWatchIngestedCredentials:(id)credentials
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 context];
-  v7 = [v6 fromID];
-  LODWORD(v5) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v5 fromId:v7];
+  credentialsCopy = credentials;
+  type = [credentialsCopy type];
+  context = [credentialsCopy context];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v5)
+  if (type)
   {
     v8 = [PBBProtoTinkerAccountCredentialsIngested alloc];
-    v9 = [v4 data];
-    v10 = [(PBBProtoTinkerAccountCredentialsIngested *)v8 initWithData:v9];
+    data = [credentialsCopy data];
+    v10 = [(PBBProtoTinkerAccountCredentialsIngested *)v8 initWithData:data];
 
-    v11 = [(PBBProtoTinkerAccountCredentialsIngested *)v10 success];
-    v12 = [(PBBProtoTinkerAccountCredentialsIngested *)v10 cdpStatus];
-    v13 = [(PBBProtoTinkerAccountCredentialsIngested *)v10 errorDescription];
-    v14 = [(PBBProtoTinkerAccountCredentialsIngested *)v10 detailedError];
-    if (v14)
+    success = [(PBBProtoTinkerAccountCredentialsIngested *)v10 success];
+    cdpStatus = [(PBBProtoTinkerAccountCredentialsIngested *)v10 cdpStatus];
+    errorDescription = [(PBBProtoTinkerAccountCredentialsIngested *)v10 errorDescription];
+    detailedError = [(PBBProtoTinkerAccountCredentialsIngested *)v10 detailedError];
+    if (detailedError)
     {
       v22 = 0;
-      v15 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v14 error:&v22];
+      v15 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:detailedError error:&v22];
       v16 = v22;
       if (v16)
       {
@@ -3785,79 +3785,79 @@ LABEL_26:
     v18 = pbb_accountsignin_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [MEMORY[0x277CCABB0] numberWithBool:v11];
+      v19 = [MEMORY[0x277CCABB0] numberWithBool:success];
       *buf = 136316162;
       v24 = "[PBBridgeCompanionController tinkerWatchIngestedCredentials:]";
       v25 = 2112;
       v26 = v19;
       v27 = 2114;
-      v28 = v13;
+      v28 = errorDescription;
       v29 = 2114;
       v30 = v15;
       v31 = 2048;
-      v32 = v12;
+      v32 = cdpStatus;
       _os_log_impl(&dword_25DE64000, v18, OS_LOG_TYPE_DEFAULT, " %s: Success %@ (Error message %{public}@) detailed: %{public}@ status: %ld", buf, 0x34u);
     }
 
     tinkerCredentialsIngestedCompletion = self->_tinkerCredentialsIngestedCompletion;
     if (tinkerCredentialsIngestedCompletion)
     {
-      tinkerCredentialsIngestedCompletion[2](tinkerCredentialsIngestedCompletion, v11, v12, v13, v15);
+      tinkerCredentialsIngestedCompletion[2](tinkerCredentialsIngestedCompletion, success, cdpStatus, errorDescription, v15);
     }
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tinkerFinishedHealthSharingOptIn:(id)a3
+- (void)tinkerFinishedHealthSharingOptIn:(id)in
 {
-  v14 = a3;
-  v4 = [v14 type];
-  v5 = [v14 context];
-  v6 = [v5 fromID];
-  LODWORD(v4) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v4 fromId:v6];
+  inCopy = in;
+  type = [inCopy type];
+  context = [inCopy context];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v4)
+  if (type)
   {
     v7 = [PBBProtoHealthSharingEnabled alloc];
-    v8 = [v14 data];
-    v9 = [(PBBProtoHealthSharingEnabled *)v7 initWithData:v8];
+    data = [inCopy data];
+    v9 = [(PBBProtoHealthSharingEnabled *)v7 initWithData:data];
 
-    v10 = [(PBBProtoHealthSharingEnabled *)v9 enabled];
+    enabled = [(PBBProtoHealthSharingEnabled *)v9 enabled];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
       v13 = objc_loadWeakRetained(&self->_delegate);
-      [v13 remoteFinishedHealthSharingOptInWithSelection:v10];
+      [v13 remoteFinishedHealthSharingOptInWithSelection:enabled];
     }
   }
 }
 
-- (void)acknowledgeBuysOnWatchCredentialIngestion:(id)a3
+- (void)acknowledgeBuysOnWatchCredentialIngestion:(id)ingestion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 context];
-  v7 = [v6 fromID];
-  LODWORD(v5) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v5 fromId:v7];
+  ingestionCopy = ingestion;
+  type = [ingestionCopy type];
+  context = [ingestionCopy context];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v5)
+  if (type)
   {
     v8 = [PBBProtoAcknowledgeBuysOnWatchCredentialIngestion alloc];
-    v9 = [v4 data];
-    v10 = [(PBBProtoAcknowledgeBuysOnWatchCredentialIngestion *)v8 initWithData:v9];
+    data = [ingestionCopy data];
+    v10 = [(PBBProtoAcknowledgeBuysOnWatchCredentialIngestion *)v8 initWithData:data];
 
-    v11 = [(PBBProtoAcknowledgeBuysOnWatchCredentialIngestion *)v10 success];
-    v12 = [(PBBProtoAcknowledgeBuysOnWatchCredentialIngestion *)v10 errorCode];
-    v13 = [(PBBProtoAcknowledgeBuysOnWatchCredentialIngestion *)v10 errorDescription];
+    success = [(PBBProtoAcknowledgeBuysOnWatchCredentialIngestion *)v10 success];
+    errorCode = [(PBBProtoAcknowledgeBuysOnWatchCredentialIngestion *)v10 errorCode];
+    errorDescription = [(PBBProtoAcknowledgeBuysOnWatchCredentialIngestion *)v10 errorDescription];
     v14 = pbb_accountsignin_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [MEMORY[0x277CCABB0] numberWithBool:v11];
-      v16 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
+      v15 = [MEMORY[0x277CCABB0] numberWithBool:success];
+      v16 = [MEMORY[0x277CCABB0] numberWithInteger:errorCode];
       v20 = 136315906;
       v21 = "[PBBridgeCompanionController acknowledgeBuysOnWatchCredentialIngestion:]";
       v22 = 2112;
@@ -3865,14 +3865,14 @@ LABEL_26:
       v24 = 2112;
       v25 = v16;
       v26 = 2112;
-      v27 = v13;
+      v27 = errorDescription;
       _os_log_impl(&dword_25DE64000, v14, OS_LOG_TYPE_DEFAULT, "%s -- success: %@ (Error: %@ %@)", &v20, 0x2Au);
     }
 
     buysOnWatchCredentialsIngestedCompletion = self->_buysOnWatchCredentialsIngestedCompletion;
     if (buysOnWatchCredentialsIngestedCompletion)
     {
-      buysOnWatchCredentialsIngestedCompletion[2](buysOnWatchCredentialsIngestedCompletion, v11, v12, v13);
+      buysOnWatchCredentialsIngestedCompletion[2](buysOnWatchCredentialsIngestedCompletion, success, errorCode, errorDescription);
       v18 = self->_buysOnWatchCredentialsIngestedCompletion;
       self->_buysOnWatchCredentialsIngestedCompletion = 0;
     }
@@ -3881,11 +3881,11 @@ LABEL_26:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellWatchToConfigureDeviceManagementWithData:(id)a3 completion:(id)a4
+- (void)tellWatchToConfigureDeviceManagementWithData:(id)data completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = MEMORY[0x25F8A6750](a4);
+  dataCopy = data;
+  v7 = MEMORY[0x25F8A6750](completion);
   setupDeviceManagementCompletion = self->_setupDeviceManagementCompletion;
   self->_setupDeviceManagementCompletion = v7;
 
@@ -3895,37 +3895,37 @@ LABEL_26:
     *buf = 136315394;
     v14 = "[PBBridgeCompanionController tellWatchToConfigureDeviceManagementWithData:completion:]";
     v15 = 1024;
-    v16 = v6 != 0;
+    v16 = dataCopy != 0;
     _os_log_impl(&dword_25DE64000, v9, OS_LOG_TYPE_DEFAULT, "%s -- configuration data: %{BOOL}d", buf, 0x12u);
   }
 
-  v12 = v6;
+  v12 = dataCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v12 count:1];
   [(PBBridgeCompanionController *)self _sendRemoteCommandWithMessageID:34 withArguments:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleDeviceManagementResponse:(id)a3
+- (void)handleDeviceManagementResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 context];
-  v7 = [v6 fromID];
-  LODWORD(v5) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v5 fromId:v7];
+  responseCopy = response;
+  type = [responseCopy type];
+  context = [responseCopy context];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v5)
+  if (type)
   {
     v8 = [PBBProtoDeviceManagementSetupResponse alloc];
-    v9 = [v4 data];
-    v10 = [(PBBProtoDeviceManagementSetupResponse *)v8 initWithData:v9];
+    data = [responseCopy data];
+    v10 = [(PBBProtoDeviceManagementSetupResponse *)v8 initWithData:data];
 
-    v11 = [(PBBProtoDeviceManagementSetupResponse *)v10 success];
-    v12 = [(PBBProtoDeviceManagementSetupResponse *)v10 error];
-    if (v12)
+    success = [(PBBProtoDeviceManagementSetupResponse *)v10 success];
+    error = [(PBBProtoDeviceManagementSetupResponse *)v10 error];
+    if (error)
     {
       v18 = 0;
-      v13 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v12 error:&v18];
+      v13 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:error error:&v18];
       v14 = v18;
       if (v14)
       {
@@ -3945,16 +3945,16 @@ LABEL_26:
     setupDeviceManagementCompletion = self->_setupDeviceManagementCompletion;
     if (setupDeviceManagementCompletion)
     {
-      setupDeviceManagementCompletion[2](setupDeviceManagementCompletion, v11, v13);
+      setupDeviceManagementCompletion[2](setupDeviceManagementCompletion, success, v13);
       v17 = self->_setupDeviceManagementCompletion;
       self->_setupDeviceManagementCompletion = 0;
     }
   }
 }
 
-- (void)checkApplicationInstallAllowedWithCompletion:(id)a3
+- (void)checkApplicationInstallAllowedWithCompletion:(id)completion
 {
-  v4 = MEMORY[0x25F8A6750](a3, a2);
+  v4 = MEMORY[0x25F8A6750](completion, a2);
   applicationInstallAllowedCompletion = self->_applicationInstallAllowedCompletion;
   self->_applicationInstallAllowedCompletion = v4;
 
@@ -3963,25 +3963,25 @@ LABEL_26:
   [(PBBridgeCompanionController *)self _sendRemoteCommandWithMessageID:35 withArguments:v6];
 }
 
-- (void)handleApplicationInstallRestrictionResponse:(id)a3
+- (void)handleApplicationInstallRestrictionResponse:(id)response
 {
-  v13 = a3;
-  v4 = [v13 type];
-  v5 = [v13 context];
-  v6 = [v5 fromID];
-  LODWORD(v4) = [(PBBridgeCompanionController *)self shouldHandleMessageType:v4 fromId:v6];
+  responseCopy = response;
+  type = [responseCopy type];
+  context = [responseCopy context];
+  fromID = [context fromID];
+  LODWORD(type) = [(PBBridgeCompanionController *)self shouldHandleMessageType:type fromId:fromID];
 
-  if (v4)
+  if (type)
   {
     v7 = [PBBProtoApplicationInstallRestrictionResponse alloc];
-    v8 = [v13 data];
-    v9 = [(PBBProtoApplicationInstallRestrictionResponse *)v7 initWithData:v8];
+    data = [responseCopy data];
+    v9 = [(PBBProtoApplicationInstallRestrictionResponse *)v7 initWithData:data];
 
-    v10 = [(PBBProtoApplicationInstallRestrictionResponse *)v9 allowed];
+    allowed = [(PBBProtoApplicationInstallRestrictionResponse *)v9 allowed];
     applicationInstallAllowedCompletion = self->_applicationInstallAllowedCompletion;
     if (applicationInstallAllowedCompletion)
     {
-      applicationInstallAllowedCompletion[2](applicationInstallAllowedCompletion, v10);
+      applicationInstallAllowedCompletion[2](applicationInstallAllowedCompletion, allowed);
       v12 = self->_applicationInstallAllowedCompletion;
       self->_applicationInstallAllowedCompletion = 0;
     }

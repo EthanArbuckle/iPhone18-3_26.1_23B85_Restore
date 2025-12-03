@@ -1,75 +1,75 @@
 @interface USOSerializedIdentifier
-- (USOSerializedIdentifier)initWithCoder:(id)a3;
-- (USOSerializedIdentifier)initWithNodeIndex:(unint64_t)a3 value:(id)a4 appBundleId:(id)a5 namespaceString:(id)a6 probability:(id)a7 sourceComponent:(id)a8 groupIndex:(id)a9 interpretationGroup:(id)a10;
-- (void)encodeWithCoder:(id)a3;
+- (USOSerializedIdentifier)initWithCoder:(id)coder;
+- (USOSerializedIdentifier)initWithNodeIndex:(unint64_t)index value:(id)value appBundleId:(id)id namespaceString:(id)string probability:(id)probability sourceComponent:(id)component groupIndex:(id)groupIndex interpretationGroup:(id)self0;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation USOSerializedIdentifier
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedLongLong:{-[USOSerializedIdentifier nodeIndex](self, "nodeIndex")}];
-  [v5 encodeObject:v6 forKey:@"nodeIndex"];
+  [coderCopy encodeObject:v6 forKey:@"nodeIndex"];
 
-  v7 = [(USOSerializedIdentifier *)self value];
-  [v5 encodeObject:v7 forKey:@"value"];
+  value = [(USOSerializedIdentifier *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 
-  v8 = [(USOSerializedIdentifier *)self appBundleId];
-  [v5 encodeObject:v8 forKey:@"appBundleId"];
+  appBundleId = [(USOSerializedIdentifier *)self appBundleId];
+  [coderCopy encodeObject:appBundleId forKey:@"appBundleId"];
 
-  v9 = [(USOSerializedIdentifier *)self namespaceString];
-  [v5 encodeObject:v9 forKey:@"namespaceString"];
+  namespaceString = [(USOSerializedIdentifier *)self namespaceString];
+  [coderCopy encodeObject:namespaceString forKey:@"namespaceString"];
 
-  v10 = [(USOSerializedIdentifier *)self probability];
-  [v5 encodeObject:v10 forKey:@"probability"];
+  probability = [(USOSerializedIdentifier *)self probability];
+  [coderCopy encodeObject:probability forKey:@"probability"];
 
-  v11 = [(USOSerializedIdentifier *)self sourceComponent];
-  [v5 encodeObject:v11 forKey:@"sourceComponent"];
+  sourceComponent = [(USOSerializedIdentifier *)self sourceComponent];
+  [coderCopy encodeObject:sourceComponent forKey:@"sourceComponent"];
 
-  v12 = [(USOSerializedIdentifier *)self groupIndex];
-  [v5 encodeObject:v12 forKey:@"groupIndex"];
+  groupIndex = [(USOSerializedIdentifier *)self groupIndex];
+  [coderCopy encodeObject:groupIndex forKey:@"groupIndex"];
 
-  v13 = [(USOSerializedIdentifier *)self interpretationGroup];
-  [v5 encodeObject:v13 forKey:@"interpretationGroup"];
+  interpretationGroup = [(USOSerializedIdentifier *)self interpretationGroup];
+  [coderCopy encodeObject:interpretationGroup forKey:@"interpretationGroup"];
 }
 
-- (USOSerializedIdentifier)initWithCoder:(id)a3
+- (USOSerializedIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = USOSerializedIdentifier;
   v5 = [(USOSerializedIdentifier *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nodeIndex"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nodeIndex"];
     v5->_nodeIndex = [v6 unsignedLongLongValue];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     value = v5->_value;
     v5->_value = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appBundleId"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appBundleId"];
     appBundleId = v5->_appBundleId;
     v5->_appBundleId = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"namespaceString"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"namespaceString"];
     namespaceString = v5->_namespaceString;
     v5->_namespaceString = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"probability"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"probability"];
     probability = v5->_probability;
     v5->_probability = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceComponent"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceComponent"];
     sourceComponent = v5->_sourceComponent;
     v5->_sourceComponent = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupIndex"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupIndex"];
     groupIndex = v5->_groupIndex;
     v5->_groupIndex = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interpretationGroup"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interpretationGroup"];
     interpretationGroup = v5->_interpretationGroup;
     v5->_interpretationGroup = v19;
   }
@@ -77,29 +77,29 @@
   return v5;
 }
 
-- (USOSerializedIdentifier)initWithNodeIndex:(unint64_t)a3 value:(id)a4 appBundleId:(id)a5 namespaceString:(id)a6 probability:(id)a7 sourceComponent:(id)a8 groupIndex:(id)a9 interpretationGroup:(id)a10
+- (USOSerializedIdentifier)initWithNodeIndex:(unint64_t)index value:(id)value appBundleId:(id)id namespaceString:(id)string probability:(id)probability sourceComponent:(id)component groupIndex:(id)groupIndex interpretationGroup:(id)self0
 {
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v16 = a9;
-  v17 = a10;
+  valueCopy = value;
+  idCopy = id;
+  stringCopy = string;
+  probabilityCopy = probability;
+  componentCopy = component;
+  groupIndexCopy = groupIndex;
+  groupCopy = group;
   v27.receiver = self;
   v27.super_class = USOSerializedIdentifier;
   v18 = [(USOSerializedIdentifier *)&v27 init];
   v19 = v18;
   if (v18)
   {
-    v18->_nodeIndex = a3;
-    objc_storeStrong(&v18->_value, a4);
-    objc_storeStrong(&v19->_appBundleId, a5);
-    objc_storeStrong(&v19->_namespaceString, a6);
-    objc_storeStrong(&v19->_probability, a7);
-    objc_storeStrong(&v19->_sourceComponent, a8);
-    objc_storeStrong(&v19->_groupIndex, a9);
-    objc_storeStrong(&v19->_interpretationGroup, a10);
+    v18->_nodeIndex = index;
+    objc_storeStrong(&v18->_value, value);
+    objc_storeStrong(&v19->_appBundleId, id);
+    objc_storeStrong(&v19->_namespaceString, string);
+    objc_storeStrong(&v19->_probability, probability);
+    objc_storeStrong(&v19->_sourceComponent, component);
+    objc_storeStrong(&v19->_groupIndex, groupIndex);
+    objc_storeStrong(&v19->_interpretationGroup, group);
   }
 
   return v19;

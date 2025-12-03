@@ -1,23 +1,23 @@
 @interface SiriUIBackgroundBlurViewController
-- (SiriUIBackgroundBlurViewController)initWithDelegate:(id)a3;
+- (SiriUIBackgroundBlurViewController)initWithDelegate:(id)delegate;
 - (SiriUIBackgroundBlurViewControllerDelegate)backgroundBlurViewControllerDelegate;
-- (void)requestBackgroundBlurVisible:(BOOL)a3 forReason:(int64_t)a4;
-- (void)setBackgroundBlurIsVisible:(BOOL)a3;
+- (void)requestBackgroundBlurVisible:(BOOL)visible forReason:(int64_t)reason;
+- (void)setBackgroundBlurIsVisible:(BOOL)visible;
 - (void)viewDidLoad;
 @end
 
 @implementation SiriUIBackgroundBlurViewController
 
-- (SiriUIBackgroundBlurViewController)initWithDelegate:(id)a3
+- (SiriUIBackgroundBlurViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SiriUIBackgroundBlurViewController;
   v5 = [(SiriUIBackgroundBlurViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(SiriUIBackgroundBlurViewController *)v5 setBackgroundBlurViewControllerDelegate:v4];
+    [(SiriUIBackgroundBlurViewController *)v5 setBackgroundBlurViewControllerDelegate:delegateCopy];
   }
 
   return v6;
@@ -31,19 +31,19 @@
   [(SiriUIBackgroundBlurViewController *)self setBackgroundBlurIsVisible:0];
   [(SiriUIBackgroundBlurViewController *)self setBackgroundBlurVisibleReason:5];
   v3 = [SiriUIBackgroundBlurView alloc];
-  v4 = [(SiriUIBackgroundBlurViewController *)self view];
-  [v4 bounds];
+  view = [(SiriUIBackgroundBlurViewController *)self view];
+  [view bounds];
   v5 = [(SiriUIBackgroundBlurView *)v3 initWithFrame:?];
   [(SiriUIBackgroundBlurViewController *)self setBackgroundBlurView:v5];
 
-  v6 = [(SiriUIBackgroundBlurViewController *)self view];
-  v7 = [(SiriUIBackgroundBlurViewController *)self backgroundBlurView];
-  [v6 addSubview:v7];
+  view2 = [(SiriUIBackgroundBlurViewController *)self view];
+  backgroundBlurView = [(SiriUIBackgroundBlurViewController *)self backgroundBlurView];
+  [view2 addSubview:backgroundBlurView];
 }
 
-- (void)requestBackgroundBlurVisible:(BOOL)a3 forReason:(int64_t)a4
+- (void)requestBackgroundBlurVisible:(BOOL)visible forReason:(int64_t)reason
 {
-  v5 = a3;
+  visibleCopy = visible;
   v40 = *MEMORY[0x277D85DE8];
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -54,7 +54,7 @@
   v9 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
-    if (v5)
+    if (visibleCopy)
     {
       v10 = @"show";
     }
@@ -65,7 +65,7 @@
     }
 
     v11 = v9;
-    v12 = [SiriUIUtilities stringForSiriUIBackgroundBlurReason:a4];
+    v12 = [SiriUIUtilities stringForSiriUIBackgroundBlurReason:reason];
     if ([(SiriUIBackgroundBlurViewController *)self backgroundBlurIsVisible])
     {
       v13 = @"showing";
@@ -90,11 +90,11 @@
     _os_log_impl(&dword_26948D000, v11, OS_LOG_TYPE_DEFAULT, "%s Request to %@ blur for reason %@. Current visibility: %@ and reason: %@", &v30, 0x34u);
   }
 
-  if ([(SiriUIBackgroundBlurViewController *)self backgroundBlurIsVisible]!= v5)
+  if ([(SiriUIBackgroundBlurViewController *)self backgroundBlurIsVisible]!= visibleCopy)
   {
-    if (v5)
+    if (visibleCopy)
     {
-      if (!a4)
+      if (!reason)
       {
         v15 = *v8;
         if (os_log_type_enabled(*v8, OS_LOG_TYPE_ERROR))
@@ -111,14 +111,14 @@
     goto LABEL_26;
   }
 
-  if (v5 && [(SiriUIBackgroundBlurViewController *)self backgroundBlurVisibleReason]> a4)
+  if (visibleCopy && [(SiriUIBackgroundBlurViewController *)self backgroundBlurVisibleReason]> reason)
   {
-    [(SiriUIBackgroundBlurViewController *)self setBackgroundBlurVisibleReason:a4];
+    [(SiriUIBackgroundBlurViewController *)self setBackgroundBlurVisibleReason:reason];
     v16 = *v8;
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
     {
       v17 = v16;
-      v18 = [SiriUIUtilities stringForSiriUIBackgroundBlurReason:a4];
+      v18 = [SiriUIUtilities stringForSiriUIBackgroundBlurReason:reason];
       v30 = 136315394;
       v31 = "[SiriUIBackgroundBlurViewController requestBackgroundBlurVisible:forReason:]";
       v32 = 2112;
@@ -127,18 +127,18 @@
     }
   }
 
-  if (a4 == 4 && [(SiriUIBackgroundBlurViewController *)self backgroundBlurVisibleReason]>= 4)
+  if (reason == 4 && [(SiriUIBackgroundBlurViewController *)self backgroundBlurVisibleReason]>= 4)
   {
-    if (v5)
+    if (visibleCopy)
     {
 LABEL_23:
-      [(SiriUIBackgroundBlurViewController *)self setBackgroundBlurVisibleReason:a4];
+      [(SiriUIBackgroundBlurViewController *)self setBackgroundBlurVisibleReason:reason];
       [(SiriUIBackgroundBlurViewController *)self setBackgroundBlurIsVisible:1];
       v19 = *v8;
       if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
       {
         v20 = v19;
-        v21 = [SiriUIUtilities stringForSiriUIBackgroundBlurReason:a4];
+        v21 = [SiriUIUtilities stringForSiriUIBackgroundBlurReason:reason];
         v30 = 136315394;
         v31 = "[SiriUIBackgroundBlurViewController requestBackgroundBlurVisible:forReason:]";
         v32 = 2112;
@@ -146,14 +146,14 @@ LABEL_23:
         _os_log_impl(&dword_26948D000, v20, OS_LOG_TYPE_DEFAULT, "%s Showing the background blur for reason: %@", &v30, 0x16u);
       }
 
-      v22 = [(SiriUIBackgroundBlurViewController *)self backgroundBlurView];
-      v23 = v22;
+      backgroundBlurView = [(SiriUIBackgroundBlurViewController *)self backgroundBlurView];
+      v23 = backgroundBlurView;
       v24 = 1;
       goto LABEL_32;
     }
 
 LABEL_26:
-    if ([(SiriUIBackgroundBlurViewController *)self backgroundBlurVisibleReason]< a4)
+    if ([(SiriUIBackgroundBlurViewController *)self backgroundBlurVisibleReason]< reason)
     {
       v25 = *v8;
       if (!os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
@@ -162,7 +162,7 @@ LABEL_26:
       }
 
       v23 = v25;
-      v26 = [SiriUIUtilities stringForSiriUIBackgroundBlurReason:a4];
+      v26 = [SiriUIUtilities stringForSiriUIBackgroundBlurReason:reason];
       v30 = 136315394;
       v31 = "[SiriUIBackgroundBlurViewController requestBackgroundBlurVisible:forReason:]";
       v32 = 2112;
@@ -178,7 +178,7 @@ LABEL_26:
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
     {
       v28 = v27;
-      v29 = [SiriUIUtilities stringForSiriUIBackgroundBlurReason:a4];
+      v29 = [SiriUIUtilities stringForSiriUIBackgroundBlurReason:reason];
       v30 = 136315394;
       v31 = "[SiriUIBackgroundBlurViewController requestBackgroundBlurVisible:forReason:]";
       v32 = 2112;
@@ -186,22 +186,22 @@ LABEL_26:
       _os_log_impl(&dword_26948D000, v28, OS_LOG_TYPE_DEFAULT, "%s Hiding the background blur for reason: %@", &v30, 0x16u);
     }
 
-    v22 = [(SiriUIBackgroundBlurViewController *)self backgroundBlurView];
-    v23 = v22;
+    backgroundBlurView = [(SiriUIBackgroundBlurViewController *)self backgroundBlurView];
+    v23 = backgroundBlurView;
     v24 = 0;
 LABEL_32:
-    [v22 setVisible:v24];
+    [backgroundBlurView setVisible:v24];
 LABEL_33:
   }
 }
 
-- (void)setBackgroundBlurIsVisible:(BOOL)a3
+- (void)setBackgroundBlurIsVisible:(BOOL)visible
 {
-  if (self->_backgroundBlurIsVisible != a3)
+  if (self->_backgroundBlurIsVisible != visible)
   {
-    self->_backgroundBlurIsVisible = a3;
-    v4 = [(SiriUIBackgroundBlurViewController *)self backgroundBlurViewControllerDelegate];
-    [v4 backgroundBlurViewController:self didSetBlurVisibilityTo:self->_backgroundBlurIsVisible];
+    self->_backgroundBlurIsVisible = visible;
+    backgroundBlurViewControllerDelegate = [(SiriUIBackgroundBlurViewController *)self backgroundBlurViewControllerDelegate];
+    [backgroundBlurViewControllerDelegate backgroundBlurViewController:self didSetBlurVisibilityTo:self->_backgroundBlurIsVisible];
   }
 }
 

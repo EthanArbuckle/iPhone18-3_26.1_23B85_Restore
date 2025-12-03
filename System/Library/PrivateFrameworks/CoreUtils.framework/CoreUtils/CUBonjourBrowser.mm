@@ -1,12 +1,12 @@
 @interface CUBonjourBrowser
 - (CUBonjourBrowser)init;
 - (NSArray)devices;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (int)_bonjourStart;
-- (void)_activateSafeInvokeBlock:(id)a3;
-- (void)_bonjourHandleAddOrUpdateDevice:(id)a3;
-- (void)_bonjourHandleEventType:(unsigned int)a3 info:(id)a4;
-- (void)_bonjourHandleRemoveDevice:(id)a3;
+- (void)_activateSafeInvokeBlock:(id)block;
+- (void)_bonjourHandleAddOrUpdateDevice:(id)device;
+- (void)_bonjourHandleEventType:(unsigned int)type info:(id)info;
+- (void)_bonjourHandleRemoveDevice:(id)device;
 - (void)_interrupted;
 - (void)_invalidated;
 - (void)_lostAllDevices;
@@ -15,30 +15,30 @@
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setBrowseFlags:(unint64_t)a3;
-- (void)setLabel:(id)a3;
+- (void)setBrowseFlags:(unint64_t)flags;
+- (void)setLabel:(id)label;
 - (void)update;
 @end
 
 @implementation CUBonjourBrowser
 
-- (void)_bonjourHandleRemoveDevice:(id)a3
+- (void)_bonjourHandleRemoveDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v29 = 0;
-  BonjourDevice_GetDeviceID(v4, v28, &v29);
+  BonjourDevice_GetDeviceID(deviceCopy, v28, &v29);
   if (!v29)
   {
     v10 = NSStringWithMACAddress(v28);
     v15 = [(NSMutableDictionary *)self->_deviceMap objectForKeyedSubscript:v10];
     if (v15)
     {
-      v16 = self;
-      objc_sync_enter(v16);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       [(NSMutableDictionary *)self->_deviceMap setObject:0 forKeyedSubscript:v10];
-      objc_sync_exit(v16);
+      objc_sync_exit(selfCopy);
 
-      ucat = v16->_ucat;
+      ucat = selfCopy->_ucat;
       if (ucat->var0 <= 30)
       {
         if (ucat->var0 != -1)
@@ -47,7 +47,7 @@ LABEL_8:
           v18 = v15;
           if (objc_opt_respondsToSelector())
           {
-            v19 = [v18 shortDescription];
+            shortDescription = [v18 shortDescription];
           }
 
           else
@@ -61,24 +61,24 @@ LABEL_8:
             {
               [v18 description];
             }
-            v19 = ;
+            shortDescription = ;
           }
 
-          v21 = v19;
+          v21 = shortDescription;
 
           LogPrintF(ucat, "[CUBonjourBrowser _bonjourHandleRemoveDevice:]", 0x1Eu, "Lost %@\n", v22, v23, v24, v25, v21);
           goto LABEL_24;
         }
 
-        if (_LogCategory_Initialize(v16->_ucat, 0x1Eu))
+        if (_LogCategory_Initialize(selfCopy->_ucat, 0x1Eu))
         {
-          ucat = v16->_ucat;
+          ucat = selfCopy->_ucat;
           goto LABEL_8;
         }
       }
 
 LABEL_24:
-      deviceLostHandler = v16->_deviceLostHandler;
+      deviceLostHandler = selfCopy->_deviceLostHandler;
       if (deviceLostHandler)
       {
         deviceLostHandler[2](deviceLostHandler, v15);
@@ -121,20 +121,20 @@ LABEL_26:
       v9 = self->_ucat;
     }
 
-    LogPrintF(v9, "[CUBonjourBrowser _bonjourHandleRemoveDevice:]", 0x5Au, "### Bonjour device found without identifier: %@\n", v5, v6, v7, v8, v4);
+    LogPrintF(v9, "[CUBonjourBrowser _bonjourHandleRemoveDevice:]", 0x5Au, "### Bonjour device found without identifier: %@\n", v5, v6, v7, v8, deviceCopy);
   }
 
 LABEL_27:
 }
 
-- (void)_bonjourHandleAddOrUpdateDevice:(id)a3
+- (void)_bonjourHandleAddOrUpdateDevice:(id)device
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deviceCopy = device;
   v39 = 0;
   v40 = 0;
   v41[0] = 0;
-  BonjourDevice_GetDeviceID(v4, v41 + 2, &v39);
+  BonjourDevice_GetDeviceID(deviceCopy, v41 + 2, &v39);
   if (!v39)
   {
     v10 = NSStringWithMACAddress(v41 + 2);
@@ -142,7 +142,7 @@ LABEL_27:
     v12 = v11;
     if (v11)
     {
-      v13 = [(CUBonjourDevice *)v11 updateWithBonjourDeviceInfo:v4];
+      v13 = [(CUBonjourDevice *)v11 updateWithBonjourDeviceInfo:deviceCopy];
       ucat = self->_ucat;
       if (ucat->var0 <= 30)
       {
@@ -152,7 +152,7 @@ LABEL_8:
           v15 = v12;
           if (objc_opt_respondsToSelector())
           {
-            v16 = [(CUBonjourDevice *)v15 shortDescription];
+            shortDescription = [(CUBonjourDevice *)v15 shortDescription];
           }
 
           else
@@ -166,10 +166,10 @@ LABEL_8:
             {
               [(CUBonjourDevice *)v15 description];
             }
-            v16 = ;
+            shortDescription = ;
           }
 
-          v27 = v16;
+          v27 = shortDescription;
 
           LogPrintF(ucat, "[CUBonjourBrowser _bonjourHandleAddOrUpdateDevice:]", 0x1Eu, "Changed %@ %#{flags}\n", v28, v29, v30, v31, v27);
           goto LABEL_30;
@@ -202,9 +202,9 @@ LABEL_37:
     [(CUBonjourDevice *)v12 setIdentifier:v18];
     [(CUBonjourDevice *)v12 setIdentifierUUID:v18];
     [(CUBonjourDevice *)v12 setIdentifierStr:v10];
-    [(CUBonjourDevice *)v12 updateWithBonjourDeviceInfo:v4];
-    v19 = self;
-    objc_sync_enter(v19);
+    [(CUBonjourDevice *)v12 updateWithBonjourDeviceInfo:deviceCopy];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     deviceMap = self->_deviceMap;
     if (!deviceMap)
     {
@@ -217,9 +217,9 @@ LABEL_37:
     }
 
     [(NSMutableDictionary *)deviceMap setObject:v12 forKeyedSubscript:v10];
-    objc_sync_exit(v19);
+    objc_sync_exit(selfCopy);
 
-    v24 = v19->_ucat;
+    v24 = selfCopy->_ucat;
     if (v24->var0 <= 30)
     {
       if (v24->var0 != -1)
@@ -228,7 +228,7 @@ LABEL_14:
         v25 = v12;
         if (objc_opt_respondsToSelector())
         {
-          v26 = [(CUBonjourDevice *)v25 shortDescription];
+          shortDescription2 = [(CUBonjourDevice *)v25 shortDescription];
         }
 
         else
@@ -242,24 +242,24 @@ LABEL_14:
           {
             [(CUBonjourDevice *)v25 description];
           }
-          v26 = ;
+          shortDescription2 = ;
         }
 
-        v33 = v26;
+        v33 = shortDescription2;
 
         LogPrintF(v24, "[CUBonjourBrowser _bonjourHandleAddOrUpdateDevice:]", 0x1Eu, "Found %@\n", v34, v35, v36, v37, v33);
         goto LABEL_34;
       }
 
-      if (_LogCategory_Initialize(v19->_ucat, 0x1Eu))
+      if (_LogCategory_Initialize(selfCopy->_ucat, 0x1Eu))
       {
-        v24 = v19->_ucat;
+        v24 = selfCopy->_ucat;
         goto LABEL_14;
       }
     }
 
 LABEL_34:
-    deviceFoundHandler = v19->_deviceFoundHandler;
+    deviceFoundHandler = selfCopy->_deviceFoundHandler;
     if (deviceFoundHandler)
     {
       deviceFoundHandler[2](deviceFoundHandler, v12);
@@ -281,33 +281,33 @@ LABEL_34:
       v9 = self->_ucat;
     }
 
-    LogPrintF(v9, "[CUBonjourBrowser _bonjourHandleAddOrUpdateDevice:]", 0x5Au, "### Bonjour device found without identifier: %@\n", v5, v6, v7, v8, v4);
+    LogPrintF(v9, "[CUBonjourBrowser _bonjourHandleAddOrUpdateDevice:]", 0x5Au, "### Bonjour device found without identifier: %@\n", v5, v6, v7, v8, deviceCopy);
   }
 
 LABEL_38:
 }
 
-- (void)_bonjourHandleEventType:(unsigned int)a3 info:(id)a4
+- (void)_bonjourHandleEventType:(unsigned int)type info:(id)info
 {
-  v6 = a4;
-  if (a3 <= 2)
+  infoCopy = info;
+  if (type <= 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      v6 = [(CUBonjourBrowser *)self _bonjourHandleAddOrUpdateDevice:?];
+      infoCopy = [(CUBonjourBrowser *)self _bonjourHandleAddOrUpdateDevice:?];
     }
 
-    else if (a3 == 2)
+    else if (type == 2)
     {
-      v6 = [(CUBonjourBrowser *)self _bonjourHandleRemoveDevice:?];
+      infoCopy = [(CUBonjourBrowser *)self _bonjourHandleRemoveDevice:?];
     }
 
     goto LABEL_20;
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
-    if (a3 != 4)
+    if (type != 4)
     {
       goto LABEL_20;
     }
@@ -330,7 +330,7 @@ LABEL_38:
 
     LogPrintF(ucat, "[CUBonjourBrowser _bonjourHandleEventType:info:]", 0x3Cu, "### Bonjour daemon crashed\n", v7, v8, v9, v10, v14);
 LABEL_15:
-    v6 = [(CUBonjourBrowser *)self _interrupted];
+    infoCopy = [(CUBonjourBrowser *)self _interrupted];
     goto LABEL_20;
   }
 
@@ -360,10 +360,10 @@ LABEL_17:
     self->_bonjourBrowser = 0;
   }
 
-  v6 = [(CUBonjourBrowser *)self _invalidated];
+  infoCopy = [(CUBonjourBrowser *)self _invalidated];
 LABEL_20:
 
-  MEMORY[0x1EEE66BE0](v6);
+  MEMORY[0x1EEE66BE0](infoCopy);
 }
 
 - (int)_bonjourStart
@@ -496,10 +496,10 @@ LABEL_5:
     [(NSMutableDictionary *)deviceMap enumerateKeysAndObjectsUsingBlock:v5];
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableDictionary *)v4->_deviceMap removeAllObjects];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_deviceMap removeAllObjects];
+  objc_sync_exit(selfCopy);
 }
 
 void __35__CUBonjourBrowser__lostAllDevices__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -666,29 +666,29 @@ LABEL_6:
   [(CUBonjourBrowser *)self _lostAllDevices];
 }
 
-- (void)_activateSafeInvokeBlock:(id)a3
+- (void)_activateSafeInvokeBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_activateCalled)
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activateCalled)
   {
-    dispatchQueue = v5->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __45__CUBonjourBrowser__activateSafeInvokeBlock___block_invoke;
     v7[3] = &unk_1E73A49A0;
-    v7[4] = v5;
-    v8 = v4;
+    v7[4] = selfCopy;
+    v8 = blockCopy;
     dispatch_async(dispatchQueue, v7);
   }
 
   else
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __45__CUBonjourBrowser__activateSafeInvokeBlock___block_invoke(uint64_t a1)
@@ -701,17 +701,17 @@ uint64_t __45__CUBonjourBrowser__activateSafeInvokeBlock___block_invoke(uint64_t
 
 - (void)activate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_activateCalled = 1;
-  dispatchQueue = v2->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __28__CUBonjourBrowser_activate__block_invoke;
   block[3] = &unk_1E73A4F68;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __28__CUBonjourBrowser_activate__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)
@@ -744,44 +744,44 @@ LABEL_5:
   return [v12 _bonjourStart];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADE9648;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 
 - (NSArray)devices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  deviceMap = v2->_deviceMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  deviceMap = selfCopy->_deviceMap;
   if (deviceMap)
   {
-    v4 = [(NSMutableDictionary *)deviceMap allValues];
+    allValues = [(NSMutableDictionary *)deviceMap allValues];
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F0];
+    allValues = MEMORY[0x1E695E0F0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return allValues;
 }
 
-- (void)setBrowseFlags:(unint64_t)a3
+- (void)setBrowseFlags:(unint64_t)flags
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __35__CUBonjourBrowser_setBrowseFlags___block_invoke;
   v3[3] = &unk_1E73A4340;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = flags;
   [(CUBonjourBrowser *)self _activateSafeInvokeBlock:v3];
 }
 
@@ -798,7 +798,7 @@ uint64_t __35__CUBonjourBrowser_setBrowseFlags___block_invoke(uint64_t result)
   return result;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v69 = 0;
   v70 = &v69;
@@ -807,7 +807,7 @@ uint64_t __35__CUBonjourBrowser_setBrowseFlags___block_invoke(uint64_t result)
   v73 = __Block_byref_object_dispose__2720;
   v74 = 0;
   v68 = 0;
-  NSAppendPrintF(&v68, "CUBonjourBrowser %@", *&a3, v3, v4, v5, v6, v7, self->_serviceType);
+  NSAppendPrintF(&v68, "CUBonjourBrowser %@", *&level, v3, v4, v5, v6, v7, self->_serviceType);
   objc_storeStrong(&v74, v68);
   browseFlags = self->_browseFlags;
   if (browseFlags)
@@ -852,7 +852,7 @@ uint64_t __35__CUBonjourBrowser_setBrowseFlags___block_invoke(uint64_t result)
   v39 = [(NSMutableDictionary *)self->_deviceMap count];
   NSAppendPrintF(&v63, ", %d device(s)", v40, v41, v42, v43, v44, v45, v39);
   objc_storeStrong(v38 + 5, v63);
-  if (a3 <= 20)
+  if (level <= 20)
   {
     v52 = v70;
     v62 = v70[5];
@@ -863,7 +863,7 @@ uint64_t __35__CUBonjourBrowser_setBrowseFlags___block_invoke(uint64_t result)
     v61[1] = v61;
     v61[2] = 0x2020000000;
     v61[3] = 0;
-    if (a3 >= 11)
+    if (level >= 11)
     {
       v54 = 50;
     }

@@ -1,37 +1,37 @@
 @interface VKLabelNavRoad
-- (BOOL)_findLabelAnchorPoint:(void *)a3 isShieldLabel:(BOOL)a4 desiredOffsetDistance:(float)a5 maxOffsetDistance:(float)a6 minJunctionDistance:(float)a7 roadGraph:(id)a8;
-- (BOOL)_worldPointForRoadOffset:(float)a3 worldPoint:(void *)a4;
+- (BOOL)_findLabelAnchorPoint:(void *)point isShieldLabel:(BOOL)label desiredOffsetDistance:(float)distance maxOffsetDistance:(float)offsetDistance minJunctionDistance:(float)junctionDistance roadGraph:(id)graph;
+- (BOOL)_worldPointForRoadOffset:(float)offset worldPoint:(void *)point;
 - (BOOL)isAwayFromRoute;
 - (BOOL)isOnewayToJunction;
 - (BOOL)isRamp;
 - (BOOL)isValid;
-- (BOOL)matchesRoad:(id)a3;
-- (BOOL)matchesRoadEdge:(const GeoCodecsRoadEdge *)a3;
+- (BOOL)matchesRoad:(id)road;
+- (BOOL)matchesRoadEdge:(const GeoCodecsRoadEdge *)edge;
 - (Matrix<float,)direction2D;
 - (Matrix<float,)direction3D;
 - (NSString)shieldDisplayGroup;
 - (NSString)shieldGroup;
 - (VKLabelNavJunction)navJunctionA;
-- (VKLabelNavRoad)initWithRoadEdge:(const GeoCodecsRoadEdge *)a3 navJunctionA:(id)a4 routeOffset:(PolylineCoordinate)a5 tile:(const void *)a6;
+- (VKLabelNavRoad)initWithRoadEdge:(const GeoCodecsRoadEdge *)edge navJunctionA:(id)a routeOffset:(PolylineCoordinate)offset tile:(const void *)tile;
 - (double)length;
-- (float)_findRoadOffsetForDistanceToRay:(float)a3 rayStart:()Matrix<double rayVector:()3 roadGraph:(1>)a4;
+- (float)_findRoadOffsetForDistanceToRay:(float)ray rayStart:()Matrix<double rayVector:()3 roadGraph:(1>)graph;
 - (id).cxx_construct;
-- (id)_newLabelWithNavContext:(NavContext *)a3 isShieldLabel:(BOOL)a4 worldPoint:(Mercator3<double>)a5 alignment:(unsigned __int8)a6 artworkCache:(void *)a7;
+- (id)_newLabelWithNavContext:(NavContext *)context isShieldLabel:(BOOL)label worldPoint:(Mercator3<double>)point alignment:(unsigned __int8)alignment artworkCache:(void *)cache;
 - (id)description;
-- (id)labelWithType:(BOOL)a3;
+- (id)labelWithType:(BOOL)type;
 - (unsigned)roadSignAlignment;
-- (void)_updateWithNavContext:(NavContext *)a3 threshold:(double)a4;
-- (void)_worldRoadPoints:(void *)a3 elevations:(void *)a4;
-- (void)appendSimplifiedWorldRoadPoints:(void *)a3 pointElevations:(void *)a4;
+- (void)_updateWithNavContext:(NavContext *)context threshold:(double)threshold;
+- (void)_worldRoadPoints:(void *)points elevations:(void *)elevations;
+- (void)appendSimplifiedWorldRoadPoints:(void *)points pointElevations:(void *)elevations;
 - (void)clearRoadShield;
 - (void)clearRoadSign;
-- (void)createLabelWithNavContext:(NavContext *)a3 isShieldLabel:(BOOL)a4 desiredOffsetDistance:(float)a5 maxOffsetDistance:(float)a6 minJunctionDistance:(float)a7 minRouteDistance:(float)a8 roadGraph:(id)a9 artworkCache:(void *)a10;
+- (void)createLabelWithNavContext:(NavContext *)context isShieldLabel:(BOOL)label desiredOffsetDistance:(float)distance maxOffsetDistance:(float)offsetDistance minJunctionDistance:(float)junctionDistance minRouteDistance:(float)routeDistance roadGraph:(id)graph artworkCache:(void *)self0;
 - (void)dealloc;
-- (void)getRoadEdge:(GeoCodecsRoadEdge *)a3;
-- (void)layoutWithNavContext:(NavContext *)a3;
-- (void)prepareStyleVarsWithContext:(NavContext *)a3;
-- (void)recreateRoadShieldWithNavContext:(NavContext *)a3 artworkCache:(void *)a4;
-- (void)recreateRoadSignWithAlignment:(unsigned __int8)a3 navContext:(NavContext *)a4 artworkCache:(void *)a5;
+- (void)getRoadEdge:(GeoCodecsRoadEdge *)edge;
+- (void)layoutWithNavContext:(NavContext *)context;
+- (void)prepareStyleVarsWithContext:(NavContext *)context;
+- (void)recreateRoadShieldWithNavContext:(NavContext *)context artworkCache:(void *)cache;
+- (void)recreateRoadSignWithAlignment:(unsigned __int8)alignment navContext:(NavContext *)context artworkCache:(void *)cache;
 @end
 
 @implementation VKLabelNavRoad
@@ -47,9 +47,9 @@
 - (BOOL)isAwayFromRoute
 {
   WeakRetained = objc_loadWeakRetained(&self->_navJunctionA);
-  v3 = [WeakRetained isAwayFromRoute];
+  isAwayFromRoute = [WeakRetained isAwayFromRoute];
 
-  return v3;
+  return isAwayFromRoute;
 }
 
 - (unsigned)roadSignAlignment
@@ -214,10 +214,10 @@
   return result;
 }
 
-- (id)_newLabelWithNavContext:(NavContext *)a3 isShieldLabel:(BOOL)a4 worldPoint:(Mercator3<double>)a5 alignment:(unsigned __int8)a6 artworkCache:(void *)a7
+- (id)_newLabelWithNavContext:(NavContext *)context isShieldLabel:(BOOL)label worldPoint:(Mercator3<double>)point alignment:(unsigned __int8)alignment artworkCache:(void *)cache
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = *(*(a3->var1 + 21) + 32);
+  v8 = *(*(context->var1 + 21) + 32);
   v9 = (*(*v8 + 96))(v8, &self->_routeOffset);
   isOnRoute = self->_isOnRoute;
   v11 = 2 * ([objc_loadWeakRetained(&self->_navJunctionA) depthFromRoute] == 0);
@@ -234,7 +234,7 @@
   GetLabelNavStyleAttributes(&v14, 0, v12, *&self->_lineType, v9);
 }
 
-- (BOOL)_worldPointForRoadOffset:(float)a3 worldPoint:(void *)a4
+- (BOOL)_worldPointForRoadOffset:(float)offset worldPoint:(void *)point
 {
   v36 = 0;
   v37 = 0;
@@ -265,7 +265,7 @@
     labelVertexIndexB = self->_labelVertexIndexB;
     if (labelVertexIndexA != labelVertexIndexB)
     {
-      v20 = v12 * a3 / (v14 - v15);
+      v20 = v12 * offset / (v14 - v15);
       v21 = 1;
       if (labelVertexIndexA >= labelVertexIndexB)
       {
@@ -335,14 +335,14 @@ LABEL_18:
       }
     }
 
-    *a4 = vmlaq_f64(*(self->_tile.__ptr_ + 20), vcvtq_f64_f32(v18), vsubq_f64(*(self->_tile.__ptr_ + 21), *(self->_tile.__ptr_ + 20)));
-    *(a4 + 2) = v17;
+    *point = vmlaq_f64(*(self->_tile.__ptr_ + 20), vcvtq_f64_f32(v18), vsubq_f64(*(self->_tile.__ptr_ + 21), *(self->_tile.__ptr_ + 20)));
+    *(point + 2) = v17;
   }
 
   return v8 > 1;
 }
 
-- (void)_worldRoadPoints:(void *)a3 elevations:(void *)a4
+- (void)_worldRoadPoints:(void *)points elevations:(void *)elevations
 {
   __src = 0;
   v69 = 0;
@@ -350,7 +350,7 @@ LABEL_18:
   if (v69)
   {
     v8 = v7;
-    v66 = a4;
+    elevationsCopy = elevations;
     labelVertexIndexA = self->_labelVertexIndexA;
     labelVertexIndexB = self->_labelVertexIndexB;
     if (labelVertexIndexA < labelVertexIndexB)
@@ -374,18 +374,18 @@ LABEL_18:
       v13 = -v12;
     }
 
-    if (v13 >= (*(a3 + 2) - *a3) >> 4)
+    if (v13 >= (*(points + 2) - *points) >> 4)
     {
-      v14 = *(a3 + 1) - *a3;
-      v74 = a3 + 24;
+      v14 = *(points + 1) - *points;
+      v74 = points + 24;
       v15 = mdm::zone_mallocator::instance(v7);
       v16 = geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::allocate<gm::Matrix<double,2,1>>(v15, v13 + 1);
-      v17 = *a3;
-      v18 = *(a3 + 1);
-      v19 = &v16[v14 + *a3 - v18];
-      if (*a3 != v18)
+      v17 = *points;
+      v18 = *(points + 1);
+      v19 = &v16[v14 + *points - v18];
+      if (*points != v18)
       {
-        v20 = &v16[v14 + *a3 - v18];
+        v20 = &v16[v14 + *points - v18];
         do
         {
           v21 = *v17++;
@@ -394,13 +394,13 @@ LABEL_18:
         }
 
         while (v17 != v18);
-        v17 = *a3;
+        v17 = *points;
       }
 
-      *a3 = v19;
-      *(a3 + 1) = &v16[v14];
-      v22 = *(a3 + 2);
-      *(a3 + 2) = &v16[16 * v13 + 16];
+      *points = v19;
+      *(points + 1) = &v16[v14];
+      v22 = *(points + 2);
+      *(points + 2) = &v16[16 * v13 + 16];
       v72 = v17;
       v73 = v22;
       v70 = v17;
@@ -411,21 +411,21 @@ LABEL_18:
 
     v65 = v13 + 1;
     v23 = 0;
-    v24 = *(a3 + 1);
+    v24 = *(points + 1);
     v25 = (v8 + 8 * labelVertexIndexA);
     do
     {
       v26 = vmlaq_f64(*(self->_tile.__ptr_ + 20), vcvtq_f64_f32(*v25), vsubq_f64(*(self->_tile.__ptr_ + 21), *(self->_tile.__ptr_ + 20)));
-      v27 = *(a3 + 2);
+      v27 = *(points + 2);
       if (v24 >= v27)
       {
-        v28 = (v24 - *a3) >> 4;
+        v28 = (v24 - *points) >> 4;
         if ((v28 + 1) >> 60)
         {
           std::__throw_bad_array_new_length[abi:nn200100]();
         }
 
-        v29 = v27 - *a3;
+        v29 = v27 - *points;
         v30 = v29 >> 3;
         if (v29 >> 3 <= (v28 + 1))
         {
@@ -442,7 +442,7 @@ LABEL_18:
           v31 = v30;
         }
 
-        v74 = a3 + 24;
+        v74 = points + 24;
         if (v31)
         {
           v67 = v26;
@@ -458,12 +458,12 @@ LABEL_18:
 
         v34 = &v33[16 * v28];
         *v34 = v26;
-        v35 = *a3;
-        v36 = *(a3 + 1);
-        v37 = v34 + *a3 - v36;
-        if (v36 != *a3)
+        v35 = *points;
+        v36 = *(points + 1);
+        v37 = v34 + *points - v36;
+        if (v36 != *points)
         {
-          v38 = (v34->f64 + *a3 - v36);
+          v38 = (v34->f64 + *points - v36);
           do
           {
             v39 = *v35++;
@@ -471,14 +471,14 @@ LABEL_18:
           }
 
           while (v35 != v36);
-          v35 = *a3;
+          v35 = *points;
         }
 
         v24 = v34 + 1;
-        *a3 = v37;
-        *(a3 + 1) = v34 + 1;
-        v40 = *(a3 + 2);
-        *(a3 + 2) = &v33[16 * v31];
+        *points = v37;
+        *(points + 1) = v34 + 1;
+        v40 = *(points + 2);
+        *(points + 2) = &v33[16 * v31];
         v72 = v35;
         v73 = v40;
         v70 = v35;
@@ -491,32 +491,32 @@ LABEL_18:
         *v24++ = v26;
       }
 
-      *(a3 + 1) = v24;
+      *(points + 1) = v24;
       v25 += v11;
     }
 
     while (v23++ != v13);
-    if (v66)
+    if (elevationsCopy)
     {
-      v42 = v66[1];
+      v42 = elevationsCopy[1];
       if (__src)
       {
-        std::vector<float>::__insert_with_size[abi:nn200100]<float const*,float const*>(v66, v66[1], __src, __src + 4 * v65, v65);
+        std::vector<float>::__insert_with_size[abi:nn200100]<float const*,float const*>(elevationsCopy, elevationsCopy[1], __src, __src + 4 * v65, v65);
       }
 
       else
       {
-        v43 = v66[2];
+        v43 = elevationsCopy[2];
         if (v13 >= (v43 - v42) >> 2)
         {
-          v50 = v42 - *v66;
+          v50 = v42 - *elevationsCopy;
           v51 = v65 + (v50 >> 2);
           if (v51 >> 62)
           {
             std::__throw_bad_array_new_length[abi:nn200100]();
           }
 
-          v52 = v43 - *v66;
+          v52 = v43 - *elevationsCopy;
           if (v52 >> 1 > v51)
           {
             v51 = v52 >> 1;
@@ -567,16 +567,16 @@ LABEL_18:
 
           while ((v13 & 0x3FFFFFFFFFFFFFFFLL) - (v13 & 3) + 4 != v54);
           v60 = (v55 + 4 * v65);
-          memcpy(v60, v42, v66[1] - v42);
-          v61 = *v66;
-          v62 = &v60[v66[1] - v42];
-          v66[1] = v42;
+          memcpy(v60, v42, elevationsCopy[1] - v42);
+          v61 = *elevationsCopy;
+          v62 = &v60[elevationsCopy[1] - v42];
+          elevationsCopy[1] = v42;
           v63 = (v55 - (v42 - v61));
           memcpy(v63, v61, v42 - v61);
-          v64 = *v66;
-          *v66 = v63;
-          v66[1] = v62;
-          v66[2] = 0;
+          v64 = *elevationsCopy;
+          *elevationsCopy = v63;
+          elevationsCopy[1] = v62;
+          elevationsCopy[2] = 0;
           if (v64)
           {
             operator delete(v64);
@@ -615,16 +615,16 @@ LABEL_18:
           }
 
           while (v44);
-          v66[1] = &v42[v65];
+          elevationsCopy[1] = &v42[v65];
         }
       }
     }
   }
 }
 
-- (void)appendSimplifiedWorldRoadPoints:(void *)a3 pointElevations:(void *)a4
+- (void)appendSimplifiedWorldRoadPoints:(void *)points pointElevations:(void *)elevations
 {
-  v6 = self;
+  selfCopy = self;
   v108 = *MEMORY[0x1E69E9840];
   begin = self->_simplifiedPoints.__begin_;
   end = self->_simplifiedPoints.__end_;
@@ -656,7 +656,7 @@ LABEL_18:
     if (v12)
     {
 LABEL_6:
-      WeakRetained = objc_loadWeakRetained(&v6->_navJunctionA);
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_navJunctionA);
       [WeakRetained worldUnitsPerMeter];
       v15 = v14;
 
@@ -668,8 +668,8 @@ LABEL_6:
         goto LABEL_26;
       }
 
-      v18 = v6->_simplifiedPoints.__begin_;
-      v19 = v6->_simplifiedPoints.__end_;
+      v18 = selfCopy->_simplifiedPoints.__begin_;
+      v19 = selfCopy->_simplifiedPoints.__end_;
       v20 = v19 - v18;
       v21 = (v19 - v18) >> 4;
       if (v96 <= v21)
@@ -685,7 +685,7 @@ LABEL_6:
       else
       {
         v22 = v96 - v21;
-        cap = v6->_simplifiedPoints.__cap_;
+        cap = selfCopy->_simplifiedPoints.__cap_;
         if (v22 > (cap - v19) >> 4)
         {
           if (v96 >> 60)
@@ -710,11 +710,11 @@ LABEL_6:
             v26 = v25;
           }
 
-          anon_68 = v6->_anon_68;
+          anon_68 = selfCopy->_anon_68;
           v27 = mdm::zone_mallocator::instance(v16);
           v28 = geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::allocate<gm::Matrix<double,2,1>>(v27, v26);
-          v29 = v6->_simplifiedPoints.__begin_;
-          v30 = v6->_simplifiedPoints.__end_;
+          v29 = selfCopy->_simplifiedPoints.__begin_;
+          v30 = selfCopy->_simplifiedPoints.__end_;
           v31 = &v28[v20 + v29 - v30];
           if (v30 != v29)
           {
@@ -728,13 +728,13 @@ LABEL_6:
             }
 
             while (v29 != v30);
-            v29 = v6->_simplifiedPoints.__begin_;
+            v29 = selfCopy->_simplifiedPoints.__begin_;
           }
 
-          v6->_simplifiedPoints.__begin_ = v31;
-          v6->_simplifiedPoints.__end_ = &v28[16 * v22 + v20];
-          v34 = v6->_simplifiedPoints.__cap_;
-          v6->_simplifiedPoints.__cap_ = &v28[16 * v26];
+          selfCopy->_simplifiedPoints.__begin_ = v31;
+          selfCopy->_simplifiedPoints.__end_ = &v28[16 * v22 + v20];
+          v34 = selfCopy->_simplifiedPoints.__cap_;
+          selfCopy->_simplifiedPoints.__cap_ = &v28[16 * v26];
           v102 = v29;
           v103 = v34;
           v100 = v29;
@@ -746,13 +746,13 @@ LABEL_6:
         v35 = &v19[16 * v22];
       }
 
-      v6->_simplifiedPoints.__end_ = v35;
+      selfCopy->_simplifiedPoints.__end_ = v35;
 LABEL_24:
-      std::vector<float,geo::allocator_adapter<float,mdm::zone_mallocator>>::resize(&v6->_simplifiedPointElevations, v17);
+      std::vector<float,geo::allocator_adapter<float,mdm::zone_mallocator>>::resize(&selfCopy->_simplifiedPointElevations, v17);
       v36 = v105;
       v37 = v97;
-      v38 = v6->_simplifiedPointElevations.__begin_;
-      v39 = v6->_simplifiedPoints.__begin_ + 8;
+      v38 = selfCopy->_simplifiedPointElevations.__begin_;
+      v39 = selfCopy->_simplifiedPoints.__begin_ + 8;
       v40 = v12;
       do
       {
@@ -781,8 +781,8 @@ LABEL_26:
   }
 
   std::vector<gm::Matrix<double,2,1>,geo::allocator_adapter<gm::Matrix<double,2,1>,mdm::zone_mallocator>>::__destroy_vector::operator()[abi:nn200100](&v105);
-  begin = v6->_simplifiedPoints.__begin_;
-  end = v6->_simplifiedPoints.__end_;
+  begin = selfCopy->_simplifiedPoints.__begin_;
+  end = selfCopy->_simplifiedPoints.__end_;
 LABEL_31:
   v43 = end - begin;
   v44 = end - begin;
@@ -791,8 +791,8 @@ LABEL_31:
     goto LABEL_44;
   }
 
-  v46 = *(a3 + 1);
-  v45 = *(a3 + 2);
+  v46 = *(points + 1);
+  v45 = *(points + 2);
   if (v45 - v46 >= v43)
   {
     while (begin != end)
@@ -802,9 +802,9 @@ LABEL_31:
       v46 += 16;
     }
 
-    *(a3 + 1) = v46;
+    *(points + 1) = v46;
 LABEL_44:
-    if (!a4)
+    if (!elevations)
     {
       return;
     }
@@ -812,8 +812,8 @@ LABEL_44:
     goto LABEL_59;
   }
 
-  v47 = *a3;
-  v48 = &v46[-*a3];
+  v47 = *points;
+  v48 = &v46[-*points];
   v49 = v44 + (v48 >> 4);
   if (v49 >> 60)
   {
@@ -838,7 +838,7 @@ LABEL_77:
     v52 = v49;
   }
 
-  anon_68 = a3 + 24;
+  anon_68 = points + 24;
   if (v52)
   {
     v53 = mdm::zone_mallocator::instance(self);
@@ -866,7 +866,7 @@ LABEL_77:
 
   while (v43);
   v102 = v57;
-  v60 = *(a3 + 1);
+  v60 = *(points + 1);
   if (v60 == v46)
   {
     v64 = v46;
@@ -884,15 +884,15 @@ LABEL_77:
     }
 
     while (v61 != v60);
-    v64 = *(a3 + 1);
+    v64 = *(points + 1);
   }
 
   v65 = &v57[v64 - v46];
   v102 = v65;
-  *(a3 + 1) = v46;
-  v66 = *a3;
-  v67 = &v56[*a3 - v46];
-  if (*a3 != v46)
+  *(points + 1) = v46;
+  v66 = *points;
+  v67 = &v56[*points - v46];
+  if (*points != v46)
   {
     v68 = v67;
     do
@@ -904,43 +904,43 @@ LABEL_77:
     }
 
     while (v66 != v46);
-    v66 = *a3;
+    v66 = *points;
   }
 
-  *a3 = v67;
-  *(a3 + 1) = v65;
-  v70 = *(a3 + 2);
-  *(a3 + 2) = &v54[16 * v52];
+  *points = v67;
+  *(points + 1) = v65;
+  v70 = *(points + 2);
+  *(points + 2) = &v54[16 * v52];
   v102 = v66;
   v103 = v70;
   v100 = v66;
   v101 = v66;
   self = std::__split_buffer<gm::Matrix<double,2,1>,geo::allocator_adapter<gm::Matrix<double,2,1>,mdm::zone_mallocator> &>::~__split_buffer(&v100);
-  if (a4)
+  if (elevations)
   {
 LABEL_59:
-    v72 = v6->_simplifiedPointElevations.__begin_;
-    v71 = v6->_simplifiedPointElevations.__end_;
+    v72 = selfCopy->_simplifiedPointElevations.__begin_;
+    v71 = selfCopy->_simplifiedPointElevations.__end_;
     v73 = v71 - v72;
     v74 = v71 - v72;
     if (v74 >= 1)
     {
-      v76 = *(a4 + 1);
-      v75 = *(a4 + 2);
+      v76 = *(elevations + 1);
+      v75 = *(elevations + 2);
       if (v75 - v76 >= v73)
       {
         if (v72 != v71)
         {
-          memmove(*(a4 + 1), v72, v71 - v72);
+          memmove(*(elevations + 1), v72, v71 - v72);
         }
 
-        *(a4 + 1) = &v76[v73];
+        *(elevations + 1) = &v76[v73];
       }
 
       else
       {
-        v77 = *a4;
-        v78 = &v76[-*a4];
+        v77 = *elevations;
+        v78 = &v76[-*elevations];
         v79 = v74 + (v78 >> 2);
         if (v79 >> 62)
         {
@@ -964,7 +964,7 @@ LABEL_59:
           v82 = v79;
         }
 
-        anon_68 = a4 + 24;
+        anon_68 = elevations + 24;
         if (v82)
         {
           v83 = mdm::zone_mallocator::instance(self);
@@ -989,18 +989,18 @@ LABEL_59:
 
         while (v73);
         v89 = &v84[4 * v82];
-        memcpy(v86, v76, *(a4 + 1) - v76);
-        v90 = *a4;
-        v91 = &v86[*(a4 + 1) - v76];
-        *(a4 + 1) = v76;
+        memcpy(v86, v76, *(elevations + 1) - v76);
+        v90 = *elevations;
+        v91 = &v86[*(elevations + 1) - v76];
+        *(elevations + 1) = v76;
         v92 = v76 - v90;
         v93 = &v85[-(v76 - v90)];
         memcpy(v93, v90, v92);
-        v94 = *a4;
-        *a4 = v93;
-        *(a4 + 1) = v91;
-        v95 = *(a4 + 2);
-        *(a4 + 2) = v89;
+        v94 = *elevations;
+        *elevations = v93;
+        *(elevations + 1) = v91;
+        v95 = *(elevations + 2);
+        *(elevations + 2) = v89;
         v102 = v94;
         v103 = v95;
         v100 = v94;
@@ -1011,11 +1011,11 @@ LABEL_59:
   }
 }
 
-- (void)recreateRoadShieldWithNavContext:(NavContext *)a3 artworkCache:(void *)a4
+- (void)recreateRoadShieldWithNavContext:(NavContext *)context artworkCache:(void *)cache
 {
-  v7 = [(VKLabelNavRoadLabel *)self->_roadShield label];
-  v8 = *v7;
-  v9 = *(*v7 + 20);
+  label = [(VKLabelNavRoadLabel *)self->_roadShield label];
+  v8 = *label;
+  v9 = *(*label + 20);
   if (v9)
   {
     v10 = (*(*v9 + 56))(v9);
@@ -1031,7 +1031,7 @@ LABEL_59:
   }
 
   [(VKLabelNavRoad *)self clearRoadShield];
-  v15 = [(VKLabelNavRoad *)self _newLabelWithNavContext:a3 isShieldLabel:1 worldPoint:0 alignment:a4 artworkCache:v10, v12, v14];
+  v15 = [(VKLabelNavRoad *)self _newLabelWithNavContext:context isShieldLabel:1 worldPoint:0 alignment:cache artworkCache:v10, v12, v14];
   v16 = v15;
   if (v15 && self->_isRoadLabelUnique)
   {
@@ -1053,12 +1053,12 @@ LABEL_59:
   self->_roadShield = v16;
 }
 
-- (void)recreateRoadSignWithAlignment:(unsigned __int8)a3 navContext:(NavContext *)a4 artworkCache:(void *)a5
+- (void)recreateRoadSignWithAlignment:(unsigned __int8)alignment navContext:(NavContext *)context artworkCache:(void *)cache
 {
-  v7 = a3;
-  v9 = [(VKLabelNavRoadLabel *)self->_roadSign label];
-  v10 = *v9;
-  v11 = *(*v9 + 20);
+  alignmentCopy = alignment;
+  label = [(VKLabelNavRoadLabel *)self->_roadSign label];
+  v10 = *label;
+  v11 = *(*label + 20);
   if (v11)
   {
     v12 = (*(*v11 + 56))(v11);
@@ -1074,7 +1074,7 @@ LABEL_59:
   }
 
   [(VKLabelNavRoad *)self clearRoadSign];
-  v17 = [(VKLabelNavRoad *)self _newLabelWithNavContext:a4 isShieldLabel:0 worldPoint:v7 alignment:a5 artworkCache:v12, v14, v16];
+  v17 = [(VKLabelNavRoad *)self _newLabelWithNavContext:context isShieldLabel:0 worldPoint:alignmentCopy alignment:cache artworkCache:v12, v14, v16];
   v18 = v17;
   if (v17 && self->_isRoadLabelUnique)
   {
@@ -1096,25 +1096,25 @@ LABEL_59:
   self->_roadSign = v18;
 }
 
-- (void)createLabelWithNavContext:(NavContext *)a3 isShieldLabel:(BOOL)a4 desiredOffsetDistance:(float)a5 maxOffsetDistance:(float)a6 minJunctionDistance:(float)a7 minRouteDistance:(float)a8 roadGraph:(id)a9 artworkCache:(void *)a10
+- (void)createLabelWithNavContext:(NavContext *)context isShieldLabel:(BOOL)label desiredOffsetDistance:(float)distance maxOffsetDistance:(float)offsetDistance minJunctionDistance:(float)junctionDistance minRouteDistance:(float)routeDistance roadGraph:(id)graph artworkCache:(void *)self0
 {
-  v15 = a4;
-  v18 = a9;
+  labelCopy = label;
+  graphCopy = graph;
   if (!self->_areLabelsDisabled)
   {
-    [(VKLabelNavRoad *)self _updateWithNavContext:a3];
-    v19 = [(VKLabelNavRoad *)self labelWithType:v15];
+    [(VKLabelNavRoad *)self _updateWithNavContext:context];
+    v19 = [(VKLabelNavRoad *)self labelWithType:labelCopy];
     v23 = v19;
     if (v19)
     {
       [v19 desiredOffsetDistance];
-      if (vabds_f32(a5, *&v20) < 0.01)
+      if (vabds_f32(distance, *&v20) < 0.01)
       {
         goto LABEL_35;
       }
     }
 
-    if (v15)
+    if (labelCopy)
     {
       if (!self->_hasVisibleShields)
       {
@@ -1131,63 +1131,63 @@ LABEL_35:
 
     if (*(self->_data + 153) != 6)
     {
-      v24 = a5;
+      distanceCopy4 = distance;
       if (!self->_isOnRoute)
       {
         WeakRetained = objc_loadWeakRetained(&self->_navJunctionA);
-        v24 = a5;
+        distanceCopy4 = distance;
         if (WeakRetained)
         {
           v26 = WeakRetained;
           v27 = objc_loadWeakRetained(&self->_navJunctionA);
-          v28 = [v27 isOnRoute];
+          isOnRoute = [v27 isOnRoute];
 
-          v24 = a5;
-          if (v28)
+          distanceCopy4 = distance;
+          if (isOnRoute)
           {
             v29 = objc_loadWeakRetained(&self->_navJunctionA);
-            v30 = [v29 outgoingRoad];
+            outgoingRoad = [v29 outgoingRoad];
 
-            v24 = a5;
-            if (v30)
+            distanceCopy4 = distance;
+            if (outgoingRoad)
             {
               v31 = objc_loadWeakRetained(&self->_navJunctionA);
-              v32 = [v31 mercatorCoordinate];
-              v33 = *v32;
-              v34 = v32[1];
-              v35 = v32[2];
+              mercatorCoordinate = [v31 mercatorCoordinate];
+              v33 = *mercatorCoordinate;
+              v34 = mercatorCoordinate[1];
+              v35 = mercatorCoordinate[2];
               v36 = objc_loadWeakRetained(&self->_navJunctionA);
-              v37 = [v36 outgoingRoad];
-              [v37 direction2D];
+              outgoingRoad2 = [v36 outgoingRoad];
+              [outgoingRoad2 direction2D];
               LODWORD(v39) = v38;
               LODWORD(v41) = v40;
-              *&v42 = a8;
-              [(VKLabelNavRoad *)self _findRoadOffsetForDistanceToRay:v18 rayStart:v42 rayVector:v33 roadGraph:v34, v35, v39, v41];
+              *&v42 = routeDistance;
+              [(VKLabelNavRoad *)self _findRoadOffsetForDistanceToRay:graphCopy rayStart:v42 rayVector:v33 roadGraph:v34, v35, v39, v41];
               LODWORD(v33) = v43;
 
-              v24 = fmaxf(*&v33, a5);
+              distanceCopy4 = fmaxf(*&v33, distance);
             }
 
             v44 = objc_loadWeakRetained(&self->_navJunctionA);
-            v45 = [v44 incomingRoad];
+            incomingRoad = [v44 incomingRoad];
 
-            if (v45)
+            if (incomingRoad)
             {
               v46 = objc_loadWeakRetained(&self->_navJunctionA);
-              v47 = [v46 mercatorCoordinate];
-              v48 = *v47;
-              v49 = v47[1];
-              v50 = v47[2];
+              mercatorCoordinate2 = [v46 mercatorCoordinate];
+              v48 = *mercatorCoordinate2;
+              v49 = mercatorCoordinate2[1];
+              v50 = mercatorCoordinate2[2];
               v51 = objc_loadWeakRetained(&self->_navJunctionA);
-              v52 = [v51 incomingRoad];
-              [v52 direction2D];
+              incomingRoad2 = [v51 incomingRoad];
+              [incomingRoad2 direction2D];
               LODWORD(v54) = v53;
               LODWORD(v56) = v55;
-              *&v57 = a8;
-              [(VKLabelNavRoad *)self _findRoadOffsetForDistanceToRay:v18 rayStart:v57 rayVector:v48 roadGraph:v49, v50, v54, v56];
+              *&v57 = routeDistance;
+              [(VKLabelNavRoad *)self _findRoadOffsetForDistanceToRay:graphCopy rayStart:v57 rayVector:v48 roadGraph:v49, v50, v54, v56];
               v59 = v58;
 
-              v24 = fmaxf(v24, v59);
+              distanceCopy4 = fmaxf(distanceCopy4, v59);
             }
           }
         }
@@ -1196,18 +1196,18 @@ LABEL_35:
       v75 = 0.0;
       v76 = 0.0;
       v77 = 0.0;
-      *&v20 = v24;
-      *&v21 = a6;
-      *&v22 = a7;
-      if ([(VKLabelNavRoad *)self _findLabelAnchorPoint:&v75 isShieldLabel:v15 desiredOffsetDistance:v18 maxOffsetDistance:v20 minJunctionDistance:v21 roadGraph:v22])
+      *&v20 = distanceCopy4;
+      *&v21 = offsetDistance;
+      *&v22 = junctionDistance;
+      if ([(VKLabelNavRoad *)self _findLabelAnchorPoint:&v75 isShieldLabel:labelCopy desiredOffsetDistance:graphCopy maxOffsetDistance:v20 minJunctionDistance:v21 roadGraph:v22])
       {
         if (v23)
         {
-          *&v60 = a5;
+          *&v60 = distance;
           [v23 setDesiredOffsetDistance:v60];
-          v61 = [v23 label];
-          v62 = *v61;
-          v63 = *(*v61 + 160);
+          label = [v23 label];
+          v62 = *label;
+          v63 = *(*label + 160);
           if (v63)
           {
             (*(*v63 + 80))(v63, v75, v76, v77);
@@ -1226,10 +1226,10 @@ LABEL_35:
             while (v69 != 24);
           }
 
-          v71 = [v23 label];
-          v72 = *v71;
+          label2 = [v23 label];
+          v72 = *label2;
           isOnRoute = self->_isOnRoute;
-          *(*v71 + 24) = !isOnRoute;
+          *(*label2 + 24) = !isOnRoute;
           if (isOnRoute)
           {
             v74 = 2;
@@ -1245,8 +1245,8 @@ LABEL_35:
 
         else
         {
-          v64 = [(VKLabelNavRoad *)self _newLabelWithNavContext:a3 isShieldLabel:v15 worldPoint:[(VKLabelNavRoad *)self roadSignAlignment] alignment:a10 artworkCache:v75, v76, v77];
-          *&v65 = a5;
+          v64 = [(VKLabelNavRoad *)self _newLabelWithNavContext:context isShieldLabel:labelCopy worldPoint:[(VKLabelNavRoad *)self roadSignAlignment] alignment:cache artworkCache:v75, v76, v77];
+          *&v65 = distance;
           [v64 setDesiredOffsetDistance:v65];
           if (v64 && self->_isRoadLabelUnique)
           {
@@ -1265,7 +1265,7 @@ LABEL_35:
           }
 
           v67 = 232;
-          if (v15)
+          if (labelCopy)
           {
             v67 = 240;
           }
@@ -1282,42 +1282,42 @@ LABEL_35:
 LABEL_36:
 }
 
-- (BOOL)_findLabelAnchorPoint:(void *)a3 isShieldLabel:(BOOL)a4 desiredOffsetDistance:(float)a5 maxOffsetDistance:(float)a6 minJunctionDistance:(float)a7 roadGraph:(id)a8
+- (BOOL)_findLabelAnchorPoint:(void *)point isShieldLabel:(BOOL)label desiredOffsetDistance:(float)distance maxOffsetDistance:(float)offsetDistance minJunctionDistance:(float)junctionDistance roadGraph:(id)graph
 {
-  v10 = a4;
-  v13 = a8;
-  v14 = self;
-  [(VKLabelNavRoad *)v14 length];
+  labelCopy = label;
+  graphCopy = graph;
+  selfCopy = self;
+  [(VKLabelNavRoad *)selfCopy length];
   v16 = v15;
-  v50 = a7;
-  v17 = a7 + a7;
+  junctionDistanceCopy = junctionDistance;
+  v17 = junctionDistance + junctionDistance;
   v18 = 0.0;
-  if (v16 <= a5 || v17 > v16)
+  if (v16 <= distance || v17 > v16)
   {
     v20 = 0;
     v21 = 0.0;
-    v22 = v14;
+    v22 = selfCopy;
     v23 = 0.0;
     v24 = v16;
     v25 = v16;
-    while (v23 <= a6 && v20 <= 7)
+    while (v23 <= offsetDistance && v20 <= 7)
     {
-      v27 = [v13 junctionForRoad:v22 nearJunction:0 crossTileEdge:0];
-      v28 = [v27 isMultiRoadIntersection];
-      if ((v28 & (v16 > v25)) != 0)
+      v27 = [graphCopy junctionForRoad:v22 nearJunction:0 crossTileEdge:0];
+      isMultiRoadIntersection = [v27 isMultiRoadIntersection];
+      if ((isMultiRoadIntersection & (v16 > v25)) != 0)
       {
         v18 = v21;
         v25 = v16;
       }
 
-      if (v28)
+      if (isMultiRoadIntersection)
       {
         v21 = v24;
       }
 
-      v29 = [v13 nextRoadSegmentForRoad:v22];
+      v29 = [graphCopy nextRoadSegmentForRoad:v22];
 
-      if (!v29 || !v10 && v14->_isOnRoute && ![(VKLabelNavRoad *)v29 isOnRoute])
+      if (!v29 || !labelCopy && selfCopy->_isOnRoute && ![(VKLabelNavRoad *)v29 isOnRoute])
       {
 
         goto LABEL_31;
@@ -1328,7 +1328,7 @@ LABEL_36:
 
       v16 = v31 - v21;
       ++v20;
-      v32 = v31 <= a5 || v16 < v17;
+      v32 = v31 <= distance || v16 < v17;
       v22 = v29;
       v23 = v24;
       v24 = v31;
@@ -1344,16 +1344,16 @@ LABEL_36:
   v25 = v15;
   v31 = v15;
   v21 = 0.0;
-  v29 = v14;
+  v29 = selfCopy;
 LABEL_24:
-  v33 = fminf(fmaxf(v21 + v50, a5), v31 - v50);
+  v33 = fminf(fmaxf(v21 + junctionDistanceCopy, distance), v31 - junctionDistanceCopy);
   if (v33 == 0.0)
   {
     v24 = v31;
 LABEL_31:
     v22 = v29;
 LABEL_32:
-    if (!v14->_isOnRoute && v24 < 30.0)
+    if (!selfCopy->_isOnRoute && v24 < 30.0)
     {
       v37 = 0;
       goto LABEL_46;
@@ -1361,24 +1361,24 @@ LABEL_32:
 
     v33 = v18 + (v25 * 0.5);
     v38 = 184;
-    if (v10)
+    if (labelCopy)
     {
       v38 = 192;
     }
 
-    v35 = (v14 + v38);
+    v35 = (selfCopy + v38);
     v29 = v22;
     goto LABEL_38;
   }
 
   v34 = 184;
-  if (v10)
+  if (labelCopy)
   {
     v34 = 192;
   }
 
-  v35 = (v14 + v34);
-  if (v33 < (a5 + ((a6 - a5) * 0.5)))
+  v35 = (selfCopy + v34);
+  if (v33 < (distance + ((offsetDistance - distance) * 0.5)))
   {
     v36 = *v35 | 1;
     goto LABEL_39;
@@ -1388,7 +1388,7 @@ LABEL_38:
   v36 = *v35 & 0xFFFFFFFFFFFFFFFELL;
 LABEL_39:
   *v35 = v36;
-  v39 = v14;
+  v39 = selfCopy;
 
   v40 = v39;
   v41 = 0;
@@ -1403,7 +1403,7 @@ LABEL_39:
 
     [(VKLabelNavRoad *)v42 length];
     v45 = v44;
-    v46 = [v13 nextRoadSegmentForRoad:v42];
+    v46 = [graphCopy nextRoadSegmentForRoad:v42];
 
     if (v46)
     {
@@ -1424,18 +1424,18 @@ LABEL_39:
 
   v22 = v42;
   *&v43 = v33;
-  v37 = [(VKLabelNavRoad *)v42 _worldPointForRoadOffset:a3 worldPoint:v43];
+  v37 = [(VKLabelNavRoad *)v42 _worldPointForRoadOffset:point worldPoint:v43];
 
 LABEL_46:
   return v37;
 }
 
-- (float)_findRoadOffsetForDistanceToRay:(float)a3 rayStart:()Matrix<double rayVector:()3 roadGraph:(1>)a4
+- (float)_findRoadOffsetForDistanceToRay:(float)ray rayStart:()Matrix<double rayVector:()3 roadGraph:(1>)graph
 {
   v6 = a5._e[1];
   v7 = a5._e[0];
-  v8 = a4._e[1];
-  v9 = a4._e[0];
+  v8 = graph._e[1];
+  v9 = graph._e[0];
   v39 = *MEMORY[0x1E69E9840];
   v12 = a6;
   WeakRetained = objc_loadWeakRetained(&self->_navJunctionA);
@@ -1445,12 +1445,12 @@ LABEL_46:
   v36 = 0;
   v37 = 0;
   v38 = 0;
-  v16 = self;
-  if (v16)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v17 = v16;
+    v17 = selfCopy;
     v18 = 0;
-    v19 = v15 * a3;
+    v19 = v15 * ray;
     v20 = v7;
     v21 = v6;
     v22 = 0.0;
@@ -1526,10 +1526,10 @@ LABEL_13:
   return v23 / v34;
 }
 
-- (id)labelWithType:(BOOL)a3
+- (id)labelWithType:(BOOL)type
 {
   v3 = 232;
-  if (a3)
+  if (type)
   {
     v3 = 240;
   }
@@ -1572,15 +1572,15 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)matchesRoad:(id)a3
+- (BOOL)matchesRoad:(id)road
 {
-  if (self->_data != *(a3 + 3))
+  if (self->_data != *(road + 3))
   {
     return 0;
   }
 
-  v4 = *(a3 + 9);
-  v5 = *(a3 + 10);
+  v4 = *(road + 9);
+  v5 = *(road + 10);
   if (__PAIR64__(v5, v4) == *&self->_vertexIndexA)
   {
     return 1;
@@ -1594,15 +1594,15 @@ LABEL_13:
   return v4 == self->_vertexIndexB;
 }
 
-- (BOOL)matchesRoadEdge:(const GeoCodecsRoadEdge *)a3
+- (BOOL)matchesRoadEdge:(const GeoCodecsRoadEdge *)edge
 {
-  if (self->_data != a3->var0)
+  if (self->_data != edge->var0)
   {
     return 0;
   }
 
-  var1 = a3->var1;
-  var2 = a3->var2;
+  var1 = edge->var1;
+  var2 = edge->var2;
   vertexIndexA = self->_vertexIndexA;
   if (__PAIR128__(var2, var1) == __PAIR128__(self->_vertexIndexB, vertexIndexA))
   {
@@ -1617,19 +1617,19 @@ LABEL_13:
   return var1 == self->_vertexIndexB;
 }
 
-- (void)getRoadEdge:(GeoCodecsRoadEdge *)a3
+- (void)getRoadEdge:(GeoCodecsRoadEdge *)edge
 {
-  a3->var6 = 0;
-  *&a3->var2 = 0u;
-  *&a3->var4 = 0u;
-  *&a3->var0 = 0u;
+  edge->var6 = 0;
+  *&edge->var2 = 0u;
+  *&edge->var4 = 0u;
+  *&edge->var0 = 0u;
   v3 = *&self->_vertexIndexA;
   *&v4 = v3;
   *(&v4 + 1) = HIDWORD(v3);
-  *&a3->var1 = v4;
-  a3->var5 = self->_junctionA;
-  a3->var6 = self->_junctionB;
-  a3->var0 = self->_data;
+  *&edge->var1 = v4;
+  edge->var5 = self->_junctionA;
+  edge->var6 = self->_junctionB;
+  edge->var0 = self->_data;
 }
 
 - (BOOL)isOnewayToJunction
@@ -1655,11 +1655,11 @@ LABEL_13:
   return v2;
 }
 
-- (void)prepareStyleVarsWithContext:(NavContext *)a3
+- (void)prepareStyleVarsWithContext:(NavContext *)context
 {
-  v5 = *(*(a3->var1 + 21) + 32);
+  v5 = *(*(context->var1 + 21) + 32);
   v6 = (*(*v5 + 96))(v5, &self->_routeOffset);
-  v7 = (***(*(a3->var1 + 21) + 32))();
+  v7 = (***(*(context->var1 + 21) + 32))();
   v8 = v6;
   if ((v6 & 0x100) == 0)
   {
@@ -1699,13 +1699,13 @@ LABEL_13:
   self->_hasVisibleShields = self->_cachedShieldVisibility[v10];
 }
 
-- (void)layoutWithNavContext:(NavContext *)a3
+- (void)layoutWithNavContext:(NavContext *)context
 {
   [(VKLabelNavRoad *)self _updateWithNavContext:20.0 threshold:?];
   roadSign = self->_roadSign;
   if (roadSign && *[(VKLabelNavRoadLabel *)roadSign label])
   {
-    [(VKLabelNavRoadLabel *)self->_roadSign layoutWithNavContext:a3];
+    [(VKLabelNavRoadLabel *)self->_roadSign layoutWithNavContext:context];
   }
 
   roadShield = self->_roadShield;
@@ -1713,14 +1713,14 @@ LABEL_13:
   {
     v7 = self->_roadShield;
 
-    [(VKLabelNavRoadLabel *)v7 layoutWithNavContext:a3];
+    [(VKLabelNavRoadLabel *)v7 layoutWithNavContext:context];
   }
 }
 
-- (void)_updateWithNavContext:(NavContext *)a3 threshold:(double)a4
+- (void)_updateWithNavContext:(NavContext *)context threshold:(double)threshold
 {
   WeakRetained = objc_loadWeakRetained(&self->_navJunctionA);
-  self->_hasVisibleSigns &= DetermineJunctionVisibility(WeakRetained, a3, a4);
+  self->_hasVisibleSigns &= DetermineJunctionVisibility(WeakRetained, context, threshold);
 
   roadSign = self->_roadSign;
   if (roadSign)
@@ -1728,11 +1728,11 @@ LABEL_13:
     if (*[(VKLabelNavRoadLabel *)roadSign label])
     {
       v9 = *[(VKLabelNavRoadLabel *)self->_roadSign label];
-      v10 = [(VKLabelNavRoad *)self hasVisibleSigns];
-      v9[313] = v10;
+      hasVisibleSigns = [(VKLabelNavRoad *)self hasVisibleSigns];
+      v9[313] = hasVisibleSigns;
       if (v9[312] == 1)
       {
-        v9[314] = v10;
+        v9[314] = hasVisibleSigns;
       }
     }
   }
@@ -1741,11 +1741,11 @@ LABEL_13:
   if (roadShield && *[(VKLabelNavRoadLabel *)roadShield label])
   {
     v12 = *[(VKLabelNavRoadLabel *)self->_roadShield label];
-    v13 = [(VKLabelNavRoad *)self hasVisibleShields];
-    v12[313] = v13;
+    hasVisibleShields = [(VKLabelNavRoad *)self hasVisibleShields];
+    v12[313] = hasVisibleShields;
     if (v12[312] == 1)
     {
-      v12[314] = v13;
+      v12[314] = hasVisibleShields;
     }
   }
 }
@@ -1764,9 +1764,9 @@ LABEL_13:
   self->_roadSign = 0;
 }
 
-- (VKLabelNavRoad)initWithRoadEdge:(const GeoCodecsRoadEdge *)a3 navJunctionA:(id)a4 routeOffset:(PolylineCoordinate)a5 tile:(const void *)a6
+- (VKLabelNavRoad)initWithRoadEdge:(const GeoCodecsRoadEdge *)edge navJunctionA:(id)a routeOffset:(PolylineCoordinate)offset tile:(const void *)tile
 {
-  v10 = a4;
+  aCopy = a;
   v58.receiver = self;
   v58.super_class = VKLabelNavRoad;
   v11 = [(VKLabelNavRoad *)&v58 init];
@@ -1779,8 +1779,8 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  v15 = *a6;
-  v14 = *(a6 + 1);
+  v15 = *tile;
+  v14 = *(tile + 1);
   if (v14)
   {
     atomic_fetch_add_explicit((v14 + 8), 1uLL, memory_order_relaxed);
@@ -1794,12 +1794,12 @@ LABEL_38:
     std::__shared_weak_count::__release_shared[abi:nn200100](cntrl);
   }
 
-  *&v13->_vertexIndexA = vuzp1q_s32(*&a3->var1, *&a3->var1);
-  objc_storeWeak(&v12->_navJunctionA, v10);
-  v13->_junctionA = a3->var5;
-  v13->_junctionB = a3->var6;
-  var0 = a3->var0;
-  v13->_data = a3->var0;
+  *&v13->_vertexIndexA = vuzp1q_s32(*&edge->var1, *&edge->var1);
+  objc_storeWeak(&v12->_navJunctionA, aCopy);
+  v13->_junctionA = edge->var5;
+  v13->_junctionB = edge->var6;
+  var0 = edge->var0;
+  v13->_data = edge->var0;
   if (var0)
   {
     v18 = *(var0 + 3);
@@ -1858,11 +1858,11 @@ LABEL_11:
   name = v13->_name;
   v13->_name = v28;
 
-  v30 = [(VKLabelNavRoad *)v13 roadHasName];
+  roadHasName = [(VKLabelNavRoad *)v13 roadHasName];
   data = v13->_data;
-  v32 = !v30 && LOBYTE(data[3].__vftable) == 0;
+  v32 = !roadHasName && LOBYTE(data[3].__vftable) == 0;
   v13->_areLabelsDisabled = v32;
-  v13->_routeOffset = a5;
+  v13->_routeOffset = offset;
   *&v13->_intraRoadPriorityForRoadLabel = vdupq_n_s64(1uLL);
   v56 = 0;
   v57 = 0;

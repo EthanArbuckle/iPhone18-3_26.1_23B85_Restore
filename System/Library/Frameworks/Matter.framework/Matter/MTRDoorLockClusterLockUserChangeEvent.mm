@@ -1,6 +1,6 @@
 @interface MTRDoorLockClusterLockUserChangeEvent
 - (MTRDoorLockClusterLockUserChangeEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -39,29 +39,29 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterLockUserChangeEvent);
-  v5 = [(MTRDoorLockClusterLockUserChangeEvent *)self lockDataType];
-  [(MTRDoorLockClusterLockUserChangeEvent *)v4 setLockDataType:v5];
+  lockDataType = [(MTRDoorLockClusterLockUserChangeEvent *)self lockDataType];
+  [(MTRDoorLockClusterLockUserChangeEvent *)v4 setLockDataType:lockDataType];
 
-  v6 = [(MTRDoorLockClusterLockUserChangeEvent *)self dataOperationType];
-  [(MTRDoorLockClusterLockUserChangeEvent *)v4 setDataOperationType:v6];
+  dataOperationType = [(MTRDoorLockClusterLockUserChangeEvent *)self dataOperationType];
+  [(MTRDoorLockClusterLockUserChangeEvent *)v4 setDataOperationType:dataOperationType];
 
-  v7 = [(MTRDoorLockClusterLockUserChangeEvent *)self operationSource];
-  [(MTRDoorLockClusterLockUserChangeEvent *)v4 setOperationSource:v7];
+  operationSource = [(MTRDoorLockClusterLockUserChangeEvent *)self operationSource];
+  [(MTRDoorLockClusterLockUserChangeEvent *)v4 setOperationSource:operationSource];
 
-  v8 = [(MTRDoorLockClusterLockUserChangeEvent *)self userIndex];
-  [(MTRDoorLockClusterLockUserChangeEvent *)v4 setUserIndex:v8];
+  userIndex = [(MTRDoorLockClusterLockUserChangeEvent *)self userIndex];
+  [(MTRDoorLockClusterLockUserChangeEvent *)v4 setUserIndex:userIndex];
 
-  v9 = [(MTRDoorLockClusterLockUserChangeEvent *)self fabricIndex];
-  [(MTRDoorLockClusterLockUserChangeEvent *)v4 setFabricIndex:v9];
+  fabricIndex = [(MTRDoorLockClusterLockUserChangeEvent *)self fabricIndex];
+  [(MTRDoorLockClusterLockUserChangeEvent *)v4 setFabricIndex:fabricIndex];
 
-  v10 = [(MTRDoorLockClusterLockUserChangeEvent *)self sourceNode];
-  [(MTRDoorLockClusterLockUserChangeEvent *)v4 setSourceNode:v10];
+  sourceNode = [(MTRDoorLockClusterLockUserChangeEvent *)self sourceNode];
+  [(MTRDoorLockClusterLockUserChangeEvent *)v4 setSourceNode:sourceNode];
 
-  v11 = [(MTRDoorLockClusterLockUserChangeEvent *)self dataIndex];
-  [(MTRDoorLockClusterLockUserChangeEvent *)v4 setDataIndex:v11];
+  dataIndex = [(MTRDoorLockClusterLockUserChangeEvent *)self dataIndex];
+  [(MTRDoorLockClusterLockUserChangeEvent *)v4 setDataIndex:dataIndex];
 
   return v4;
 }

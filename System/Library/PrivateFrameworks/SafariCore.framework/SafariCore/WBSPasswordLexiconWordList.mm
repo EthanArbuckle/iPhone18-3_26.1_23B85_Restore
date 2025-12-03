@@ -1,20 +1,20 @@
 @interface WBSPasswordLexiconWordList
-+ (id)lexiconWordListWithIdentifier:(id)a3 localeIdentifier:(id)a4;
-- (WBSPasswordLexiconWordList)initWithIdentifier:(id)a3 lexicon:(_LXLexicon *)a4;
++ (id)lexiconWordListWithIdentifier:(id)identifier localeIdentifier:(id)localeIdentifier;
+- (WBSPasswordLexiconWordList)initWithIdentifier:(id)identifier lexicon:(_LXLexicon *)lexicon;
 - (void)dealloc;
-- (void)enumerateEntriesForString:(id)a3 withBlock:(id)a4;
+- (void)enumerateEntriesForString:(id)string withBlock:(id)block;
 @end
 
 @implementation WBSPasswordLexiconWordList
 
-- (WBSPasswordLexiconWordList)initWithIdentifier:(id)a3 lexicon:(_LXLexicon *)a4
+- (WBSPasswordLexiconWordList)initWithIdentifier:(id)identifier lexicon:(_LXLexicon *)lexicon
 {
   v8.receiver = self;
   v8.super_class = WBSPasswordLexiconWordList;
-  v5 = [(WBSPasswordWordList *)&v8 initWithIdentifier:a3];
+  v5 = [(WBSPasswordWordList *)&v8 initWithIdentifier:identifier];
   if (v5)
   {
-    v5->_lexicon = CFRetain(a4);
+    v5->_lexicon = CFRetain(lexicon);
     v6 = v5;
   }
 
@@ -29,16 +29,16 @@
   [(WBSPasswordLexiconWordList *)&v3 dealloc];
 }
 
-- (void)enumerateEntriesForString:(id)a3 withBlock:(id)a4
+- (void)enumerateEntriesForString:(id)string withBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WBSPasswordWordList *)self identifier];
+  blockCopy = block;
+  stringCopy = string;
+  identifier = [(WBSPasswordWordList *)self identifier];
   lexicon = self->_lexicon;
-  v12 = v8;
-  v13 = v6;
-  v10 = v6;
-  v11 = v8;
+  v12 = identifier;
+  v13 = blockCopy;
+  v10 = blockCopy;
+  v11 = identifier;
   LXLexiconEnumerateEntriesForString();
 }
 
@@ -56,19 +56,19 @@ void __66__WBSPasswordLexiconWordList_enumerateEntriesForString_withBlock___bloc
   (*(*(a1 + 40) + 16))();
 }
 
-+ (id)lexiconWordListWithIdentifier:(id)a3 localeIdentifier:(id)a4
++ (id)lexiconWordListWithIdentifier:(id)identifier localeIdentifier:(id)localeIdentifier
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  localeIdentifierCopy = localeIdentifier;
   v14 = *MEMORY[0x1E69ABFE8];
-  v15[0] = v7;
+  v15[0] = localeIdentifierCopy;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v8 = LXLexiconCreate();
   if (v8)
   {
     v9 = v8;
-    v10 = [[a1 alloc] initWithIdentifier:v6 lexicon:v8];
+    v10 = [[self alloc] initWithIdentifier:identifierCopy lexicon:v8];
     CFRelease(v9);
   }
 

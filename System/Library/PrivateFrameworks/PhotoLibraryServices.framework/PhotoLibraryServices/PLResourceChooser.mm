@@ -1,14 +1,14 @@
 @interface PLResourceChooser
-+ (id)_chooseFileReservationForLargeDisplayableImageFileForAsset:(id)a3 format:(id)a4 forceLarge:(BOOL)a5 allowMetadataSnapshot:(BOOL)a6 outFilePath:(id *)a7 outImageType:(int64_t *)a8;
-+ (id)_filteredArrayUsingPredicate:(id)a3 originalItems:(id)a4 nonMatchingItems:(id *)a5;
-+ (id)_itemMatchingFormat:(id)a3 allItems:(id)a4 acceptableSortedAlternatives:(id *)a5;
-+ (id)_originalItemFromAllItems:(id)a3;
-+ (id)_penultimateItemFromAllItems:(id)a3;
-+ (id)fileReservationForImageFileForAsset:(id)a3 format:(id)a4 outFilePath:(id *)a5 outImageType:(int64_t *)a6;
-+ (id)fileReservationForLargeDisplayableImageFileForAsset:(id)a3 format:(id)a4 allowMetadataSnapshot:(BOOL)a5 forceLarge:(BOOL)a6 outFilePath:(id *)a7 outImageType:(int64_t *)a8;
-+ (int64_t)_fileResourceTypeForCloudResourceType:(unint64_t)a3 hasAdjustments:(BOOL)a4 requiresUnadjustedVersion:(BOOL)a5;
-+ (unint64_t)cloudResourceTypeForAsset:(id)a3 format:(id)a4 filePath:(id *)a5 imageType:(int64_t *)a6;
-+ (void)_chooseCloudResourceTypeForFormat:(id)a3 asset:(id)a4 optimalCPLResourceType:(unint64_t *)a5 localCPLResourceType:(unint64_t *)a6 localCPLResourceFilePath:(id *)a7 fileReservation:(id *)a8;
++ (id)_chooseFileReservationForLargeDisplayableImageFileForAsset:(id)asset format:(id)format forceLarge:(BOOL)large allowMetadataSnapshot:(BOOL)snapshot outFilePath:(id *)path outImageType:(int64_t *)type;
++ (id)_filteredArrayUsingPredicate:(id)predicate originalItems:(id)items nonMatchingItems:(id *)matchingItems;
++ (id)_itemMatchingFormat:(id)format allItems:(id)items acceptableSortedAlternatives:(id *)alternatives;
++ (id)_originalItemFromAllItems:(id)items;
++ (id)_penultimateItemFromAllItems:(id)items;
++ (id)fileReservationForImageFileForAsset:(id)asset format:(id)format outFilePath:(id *)path outImageType:(int64_t *)type;
++ (id)fileReservationForLargeDisplayableImageFileForAsset:(id)asset format:(id)format allowMetadataSnapshot:(BOOL)snapshot forceLarge:(BOOL)large outFilePath:(id *)path outImageType:(int64_t *)type;
++ (int64_t)_fileResourceTypeForCloudResourceType:(unint64_t)type hasAdjustments:(BOOL)adjustments requiresUnadjustedVersion:(BOOL)version;
++ (unint64_t)cloudResourceTypeForAsset:(id)asset format:(id)format filePath:(id *)path imageType:(int64_t *)type;
++ (void)_chooseCloudResourceTypeForFormat:(id)format asset:(id)asset optimalCPLResourceType:(unint64_t *)type localCPLResourceType:(unint64_t *)resourceType localCPLResourceFilePath:(id *)path fileReservation:(id *)reservation;
 - (PLResourceChooser)init;
 @end
 
@@ -21,20 +21,20 @@
   return [(PLResourceChooser *)&v3 init];
 }
 
-+ (unint64_t)cloudResourceTypeForAsset:(id)a3 format:(id)a4 filePath:(id *)a5 imageType:(int64_t *)a6
++ (unint64_t)cloudResourceTypeForAsset:(id)asset format:(id)format filePath:(id *)path imageType:(int64_t *)type
 {
-  v10 = a3;
-  v11 = a4;
+  assetCopy = asset;
+  formatCopy = format;
   v20 = 0;
   v21 = 0;
   v19 = 0;
   v12 = &v21;
-  [a1 _chooseCloudResourceTypeForFormat:v11 asset:v10 optimalCPLResourceType:&v21 localCPLResourceType:&v20 localCPLResourceFilePath:&v19 fileReservation:0];
+  [self _chooseCloudResourceTypeForFormat:formatCopy asset:assetCopy optimalCPLResourceType:&v21 localCPLResourceType:&v20 localCPLResourceFilePath:&v19 fileReservation:0];
   v13 = v19;
   if (v20)
   {
-    v14 = [v10 hasAdjustments];
-    v15 = [a1 _fileResourceTypeForCloudResourceType:v20 hasAdjustments:v14 requiresUnadjustedVersion:{objc_msgSend(v11, "refersToUnadjustedVersion")}];
+    hasAdjustments = [assetCopy hasAdjustments];
+    v15 = [self _fileResourceTypeForCloudResourceType:v20 hasAdjustments:hasAdjustments requiresUnadjustedVersion:{objc_msgSend(formatCopy, "refersToUnadjustedVersion")}];
     v12 = &v20;
   }
 
@@ -44,33 +44,33 @@
   }
 
   v16 = *v12;
-  if (a5)
+  if (path)
   {
     v17 = v13;
-    *a5 = v13;
+    *path = v13;
   }
 
-  if (a6)
+  if (type)
   {
-    *a6 = v15;
+    *type = v15;
   }
 
   return v16;
 }
 
-+ (int64_t)_fileResourceTypeForCloudResourceType:(unint64_t)a3 hasAdjustments:(BOOL)a4 requiresUnadjustedVersion:(BOOL)a5
++ (int64_t)_fileResourceTypeForCloudResourceType:(unint64_t)type hasAdjustments:(BOOL)adjustments requiresUnadjustedVersion:(BOOL)version
 {
-  result = a3;
-  if (a3 > 3)
+  result = type;
+  if (type > 3)
   {
-    if (a3 > 16)
+    if (type > 16)
     {
-      if (a3 == 23)
+      if (type == 23)
       {
         return 4;
       }
 
-      if (a3 == 17)
+      if (type == 17)
       {
         return 2;
       }
@@ -78,12 +78,12 @@
 
     else
     {
-      if (a3 == 4)
+      if (type == 4)
       {
         return 9;
       }
 
-      if (a3 == 15)
+      if (type == 15)
       {
         return 6;
       }
@@ -92,14 +92,14 @@
     return 0;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return result;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       return 8;
     }
@@ -107,7 +107,7 @@
     return 0;
   }
 
-  if (!a4 || a5)
+  if (!adjustments || version)
   {
     return 3;
   }
@@ -118,11 +118,11 @@
   }
 }
 
-+ (void)_chooseCloudResourceTypeForFormat:(id)a3 asset:(id)a4 optimalCPLResourceType:(unint64_t *)a5 localCPLResourceType:(unint64_t *)a6 localCPLResourceFilePath:(id *)a7 fileReservation:(id *)a8
++ (void)_chooseCloudResourceTypeForFormat:(id)format asset:(id)asset optimalCPLResourceType:(unint64_t *)type localCPLResourceType:(unint64_t *)resourceType localCPLResourceFilePath:(id *)path fileReservation:(id *)reservation
 {
   v71 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v45 = a4;
+  formatCopy = format;
+  assetCopy = asset;
   v65 = 0;
   v66 = &v65;
   v67 = 0x2020000000;
@@ -133,35 +133,35 @@
   v62 = __Block_byref_object_copy__51940;
   v63 = __Block_byref_object_dispose__51941;
   v64 = 0;
-  if (([v10 refersToUnadjustedVersion] & 1) != 0 || (objc_msgSend(v45, "hasAdjustments") & 1) == 0)
+  if (([formatCopy refersToUnadjustedVersion] & 1) != 0 || (objc_msgSend(assetCopy, "hasAdjustments") & 1) == 0)
   {
-    v13 = [v45 availableUnadjustedCloudResourcesForPhotos];
-    v14 = [v13 mutableCopy];
+    availableUnadjustedCloudResourcesForPhotos = [assetCopy availableUnadjustedCloudResourcesForPhotos];
+    v14 = [availableUnadjustedCloudResourcesForPhotos mutableCopy];
   }
 
   else
   {
     v11 = [MEMORY[0x1E69BF260] formatWithID:9997];
-    v12 = [v10 isEqualToFormat:v11];
+    v12 = [formatCopy isEqualToFormat:v11];
 
     if (v12)
     {
-      [v45 availableAdjustedCloudResourcesForPhotos:1];
+      [assetCopy availableAdjustedCloudResourcesForPhotos:1];
     }
 
     else
     {
-      [v45 availableAdjustedCloudResourcesForPhotos:0];
+      [assetCopy availableAdjustedCloudResourcesForPhotos:0];
     }
-    v13 = ;
-    v14 = [v13 mutableCopy];
+    availableUnadjustedCloudResourcesForPhotos = ;
+    v14 = [availableUnadjustedCloudResourcesForPhotos mutableCopy];
   }
 
   v15 = v14;
 
-  if ([v10 formatID] == 10000)
+  if ([formatCopy formatID] == 10000)
   {
-    if ([v45 isRAWPlusJPEG])
+    if ([assetCopy isRAWPlusJPEG])
     {
       [MEMORY[0x1E696AE18] predicateWithFormat:@"cplType == %d", 17];
     }
@@ -178,19 +178,19 @@ LABEL_14:
     goto LABEL_31;
   }
 
-  if ([v45 hasAdjustments])
+  if ([assetCopy hasAdjustments])
   {
-    v18 = [v45 isOriginalRAW];
+    isOriginalRAW = [assetCopy isOriginalRAW];
   }
 
   else
   {
-    v18 = [v45 isRAW];
+    isOriginalRAW = [assetCopy isRAW];
   }
 
-  v20 = v18;
-  v21 = [v45 isRAWPlusJPEG];
-  if (((v20 | v21) & 1) != 0 && [v15 count] >= 2)
+  v20 = isOriginalRAW;
+  isRAWPlusJPEG = [assetCopy isRAWPlusJPEG];
+  if (((v20 | isRAWPlusJPEG) & 1) != 0 && [v15 count] >= 2)
   {
     v57 = 0u;
     v58 = 0u;
@@ -211,7 +211,7 @@ LABEL_14:
           }
 
           v25 = *(*(&v55 + 1) + 8 * i);
-          if (v20 && [*(*(&v55 + 1) + 8 * i) cplType] == 1 || v21 && objc_msgSend(v25, "cplType") == 17)
+          if (v20 && [*(*(&v55 + 1) + 8 * i) cplType] == 1 || isRAWPlusJPEG && objc_msgSend(v25, "cplType") == 17)
           {
             [v16 removeObject:v25];
             v19 = v16;
@@ -237,11 +237,11 @@ LABEL_14:
 LABEL_31:
   v26 = [PLChoosableItem choosableItemsFromCloudResources:v19];
   v54 = 0;
-  v27 = [a1 _itemMatchingFormat:v10 allItems:v26 acceptableSortedAlternatives:&v54];
+  v27 = [self _itemMatchingFormat:formatCopy allItems:v26 acceptableSortedAlternatives:&v54];
   v28 = v54;
   if (v27)
   {
-    v29 = [v27 type];
+    type = [v27 type];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __146__PLResourceChooser__chooseCloudResourceTypeForFormat_asset_optimalCPLResourceType_localCPLResourceType_localCPLResourceFilePath_fileReservation___block_invoke;
@@ -255,7 +255,7 @@ LABEL_31:
     {
       if ([v28 count])
       {
-        v40 = v29;
+        v40 = type;
         v48 = 0u;
         v49 = 0u;
         v46 = 0u;
@@ -263,7 +263,7 @@ LABEL_31:
         v32 = v28;
         v33 = [v32 countByEnumeratingWithState:&v46 objects:v69 count:16];
         v38 = v28;
-        v39 = v10;
+        v39 = formatCopy;
         if (v33)
         {
           v34 = *v47;
@@ -302,8 +302,8 @@ LABEL_42:
         }
 
         v28 = v38;
-        v10 = v39;
-        v29 = v40;
+        formatCopy = v39;
+        type = v40;
       }
 
       else
@@ -312,7 +312,7 @@ LABEL_42:
       }
     }
 
-    v36 = v29;
+    v36 = type;
   }
 
   else
@@ -321,25 +321,25 @@ LABEL_42:
     v36 = 0;
   }
 
-  if (a5)
+  if (type)
   {
-    *a5 = v36;
+    *type = v36;
   }
 
-  if (a6)
+  if (resourceType)
   {
-    *a6 = v66[3];
+    *resourceType = v66[3];
   }
 
-  if (a7)
+  if (path)
   {
-    *a7 = v60[5];
+    *path = v60[5];
   }
 
-  if (a8)
+  if (reservation)
   {
     v37 = v31;
-    *a8 = v31;
+    *reservation = v31;
   }
 
   _Block_object_dispose(&v59, 8);
@@ -368,24 +368,24 @@ id __146__PLResourceChooser__chooseCloudResourceTypeForFormat_asset_optimalCPLRe
   return v7;
 }
 
-+ (id)_itemMatchingFormat:(id)a3 allItems:(id)a4 acceptableSortedAlternatives:(id *)a5
++ (id)_itemMatchingFormat:(id)format allItems:(id)items acceptableSortedAlternatives:(id *)alternatives
 {
   v37[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 refersToOriginalVersion])
+  formatCopy = format;
+  itemsCopy = items;
+  if ([formatCopy refersToOriginalVersion])
   {
-    v10 = [a1 _originalItemFromAllItems:v9];
+    v10 = [self _originalItemFromAllItems:itemsCopy];
     goto LABEL_5;
   }
 
-  if ([v8 refersToPenultimateVersion])
+  if ([formatCopy refersToPenultimateVersion])
   {
-    v10 = [a1 _penultimateItemFromAllItems:v9];
+    v10 = [self _penultimateItemFromAllItems:itemsCopy];
 LABEL_5:
-    v11 = v10;
+    firstObject = v10;
     v12 = 0;
-    if (!a5)
+    if (!alternatives)
     {
       goto LABEL_7;
     }
@@ -398,22 +398,22 @@ LABEL_5:
     dispatch_once(&_itemMatchingFormat_allItems_acceptableSortedAlternatives__onceToken1, &__block_literal_global_86);
   }
 
-  v35 = [a1 _filteredArrayUsingPredicate:_itemMatchingFormat_allItems_acceptableSortedAlternatives__displayablePredicate originalItems:v9 nonMatchingItems:0];
+  v35 = [self _filteredArrayUsingPredicate:_itemMatchingFormat_allItems_acceptableSortedAlternatives__displayablePredicate originalItems:itemsCopy nonMatchingItems:0];
   v15 = [v35 sortedArrayUsingComparator:&__block_literal_global_97];
-  v16 = [v15 lastObject];
-  [v8 size];
-  v18 = v17;
-  v20 = v19;
-  if ((PLImageFormatSizeIsMaxSize() & 1) != 0 || v18 > [v16 width] || v20 > objc_msgSend(v16, "height"))
+  lastObject = [v15 lastObject];
+  [formatCopy size];
+  width = v17;
+  height = v19;
+  if ((PLImageFormatSizeIsMaxSize() & 1) != 0 || width > [lastObject width] || height > objc_msgSend(lastObject, "height"))
   {
-    v18 = [v16 width];
-    v20 = [v16 height];
+    width = [lastObject width];
+    height = [lastObject height];
   }
 
-  v33 = v16;
-  if ([v8 isThumbnail])
+  v33 = lastObject;
+  if ([formatCopy isThumbnail])
   {
-    v21 = [v8 isTable] ^ 1;
+    v21 = [formatCopy isTable] ^ 1;
   }
 
   else
@@ -421,7 +421,7 @@ LABEL_5:
     v21 = 0;
   }
 
-  v22 = [MEMORY[0x1E696AE18] predicateWithFormat:@"width >= %f AND height >= %f", *&v18, *&v20];
+  v22 = [MEMORY[0x1E696AE18] predicateWithFormat:@"width >= %f AND height >= %f", *&width, *&height];
   v23 = v22;
   v32 = v22;
   if (v21)
@@ -439,7 +439,7 @@ LABEL_5:
     v27 = v22;
   }
 
-  v28 = [a1 _filteredArrayUsingPredicate:v27 originalItems:v15 nonMatchingItems:0];
+  v28 = [self _filteredArrayUsingPredicate:v27 originalItems:v15 nonMatchingItems:0];
   v34 = v15;
   if (_itemMatchingFormat_allItems_acceptableSortedAlternatives__onceToken2 != -1)
   {
@@ -447,29 +447,29 @@ LABEL_5:
   }
 
   v36 = 0;
-  v29 = [a1 _filteredArrayUsingPredicate:_itemMatchingFormat_allItems_acceptableSortedAlternatives__jpegPredicate originalItems:v28 nonMatchingItems:&v36];
+  v29 = [self _filteredArrayUsingPredicate:_itemMatchingFormat_allItems_acceptableSortedAlternatives__jpegPredicate originalItems:v28 nonMatchingItems:&v36];
   v30 = v36;
-  v31 = [MEMORY[0x1E695DF70] array];
-  [v31 addObjectsFromArray:v29];
-  [v31 addObjectsFromArray:v30];
-  v11 = [v31 firstObject];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObjectsFromArray:v29];
+  [array addObjectsFromArray:v30];
+  firstObject = [array firstObject];
   v12 = 0;
-  if ([v31 count] >= 2)
+  if ([array count] >= 2)
   {
-    [v31 removeObjectAtIndex:0];
-    v12 = v31;
+    [array removeObjectAtIndex:0];
+    v12 = array;
   }
 
-  if (a5)
+  if (alternatives)
   {
 LABEL_6:
     v13 = v12;
-    *a5 = v12;
+    *alternatives = v12;
   }
 
 LABEL_7:
 
-  return v11;
+  return firstObject;
 }
 
 void __79__PLResourceChooser__itemMatchingFormat_allItems_acceptableSortedAlternatives___block_invoke_3()
@@ -501,18 +501,18 @@ void __79__PLResourceChooser__itemMatchingFormat_allItems_acceptableSortedAltern
   _itemMatchingFormat_allItems_acceptableSortedAlternatives__displayablePredicate = v8;
 }
 
-+ (id)_filteredArrayUsingPredicate:(id)a3 originalItems:(id)a4 nonMatchingItems:(id *)a5
++ (id)_filteredArrayUsingPredicate:(id)predicate originalItems:(id)items nonMatchingItems:(id *)matchingItems
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [MEMORY[0x1E695DF70] array];
+  predicateCopy = predicate;
+  itemsCopy = items;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = v8;
+  v11 = itemsCopy;
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
@@ -528,14 +528,14 @@ void __79__PLResourceChooser__itemMatchingFormat_allItems_acceptableSortedAltern
         }
 
         v16 = *(*(&v20 + 1) + 8 * i);
-        if ([v7 evaluateWithObject:{v16, v20}])
+        if ([predicateCopy evaluateWithObject:{v16, v20}])
         {
-          v17 = v9;
+          v17 = array;
         }
 
         else
         {
-          v17 = v10;
+          v17 = array2;
         }
 
         [v17 addObject:v16];
@@ -547,21 +547,21 @@ void __79__PLResourceChooser__itemMatchingFormat_allItems_acceptableSortedAltern
     while (v13);
   }
 
-  if (a5)
+  if (matchingItems)
   {
-    v18 = v10;
-    *a5 = v10;
+    v18 = array2;
+    *matchingItems = array2;
   }
 
-  return v9;
+  return array;
 }
 
-+ (id)_penultimateItemFromAllItems:(id)a3
++ (id)_penultimateItemFromAllItems:(id)items
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = a3;
+  itemsCopy = items;
   v5 = [v3 predicateWithFormat:@"type == %d", 15];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [itemsCopy filteredArrayUsingPredicate:v5];
 
   if ([v6 count])
   {
@@ -576,12 +576,12 @@ void __79__PLResourceChooser__itemMatchingFormat_allItems_acceptableSortedAltern
   return v7;
 }
 
-+ (id)_originalItemFromAllItems:(id)a3
++ (id)_originalItemFromAllItems:(id)items
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = a3;
+  itemsCopy = items;
   v5 = [v3 predicateWithFormat:@"type == %d OR type == %d", 17, 1];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [itemsCopy filteredArrayUsingPredicate:v5];
 
   if ([v6 count] < 2)
   {
@@ -610,11 +610,11 @@ LABEL_6:
   return v8;
 }
 
-+ (id)fileReservationForImageFileForAsset:(id)a3 format:(id)a4 outFilePath:(id *)a5 outImageType:(int64_t *)a6
++ (id)fileReservationForImageFileForAsset:(id)asset format:(id)format outFilePath:(id *)path outImageType:(int64_t *)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v10 formatID];
+  assetCopy = asset;
+  formatCopy = format;
+  formatID = [formatCopy formatID];
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -639,20 +639,20 @@ LABEL_6:
   aBlock[5] = &v29;
   aBlock[6] = &v35;
   v12 = _Block_copy(aBlock);
-  if (v11 == 9997)
+  if (formatID == 9997)
   {
-    v15 = [v9 pathForPenultimateFullsizeRenderImageFile];
-    v12[2](v12, v15, 6);
+    pathForPenultimateFullsizeRenderImageFile = [assetCopy pathForPenultimateFullsizeRenderImageFile];
+    v12[2](v12, pathForPenultimateFullsizeRenderImageFile, 6);
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  if (v11 == 10000)
+  if (formatID == 10000)
   {
-    v13 = [v9 urlForSideCarImageFile];
-    v14 = [v13 path];
-    v12[2](v12, v14, 2);
+    urlForSideCarImageFile = [assetCopy urlForSideCarImageFile];
+    path = [urlForSideCarImageFile path];
+    v12[2](v12, path, 2);
 
     if (v24[5])
     {
@@ -662,34 +662,34 @@ LABEL_10:
     goto LABEL_19;
   }
 
-  if (v11 != 9999)
+  if (formatID != 9999)
   {
     v16 = (v30 + 5);
     obj = v30[5];
-    v17 = [PLResourceChooser fileReservationForLargeDisplayableImageFileForAsset:v9 format:v10 allowMetadataSnapshot:0 forceLarge:1 outFilePath:&obj outImageType:v36 + 3];
+    v17 = [PLResourceChooser fileReservationForLargeDisplayableImageFileForAsset:assetCopy format:formatCopy allowMetadataSnapshot:0 forceLarge:1 outFilePath:&obj outImageType:v36 + 3];
     objc_storeStrong(v16, obj);
-    v15 = v24[5];
+    pathForPenultimateFullsizeRenderImageFile = v24[5];
     v24[5] = v17;
     goto LABEL_10;
   }
 
-  if ([v9 isPrimaryImageFormat] || (objc_msgSend(v9, "pathForNonAdjustedFullsizeImageFile"), v20 = objc_claimAutoreleasedReturnValue(), v12[2](v12, v20, 3), v20, !v24[5]))
+  if ([assetCopy isPrimaryImageFormat] || (objc_msgSend(assetCopy, "pathForNonAdjustedFullsizeImageFile"), v20 = objc_claimAutoreleasedReturnValue(), v12[2](v12, v20, 3), v20, !v24[5]))
   {
 LABEL_19:
-    v15 = [v9 pathForOriginalFile];
-    v12[2](v12, v15, 1);
+    pathForPenultimateFullsizeRenderImageFile = [assetCopy pathForOriginalFile];
+    v12[2](v12, pathForPenultimateFullsizeRenderImageFile, 1);
     goto LABEL_10;
   }
 
 LABEL_11:
-  if (a5)
+  if (path)
   {
-    *a5 = v30[5];
+    *path = v30[5];
   }
 
-  if (a6)
+  if (type)
   {
-    *a6 = v36[3];
+    *type = v36[3];
   }
 
   v18 = v24[5];
@@ -723,13 +723,13 @@ void __89__PLResourceChooser_fileReservationForImageFileForAsset_format_outFileP
   }
 }
 
-+ (id)fileReservationForLargeDisplayableImageFileForAsset:(id)a3 format:(id)a4 allowMetadataSnapshot:(BOOL)a5 forceLarge:(BOOL)a6 outFilePath:(id *)a7 outImageType:(int64_t *)a8
++ (id)fileReservationForLargeDisplayableImageFileForAsset:(id)asset format:(id)format allowMetadataSnapshot:(BOOL)snapshot forceLarge:(BOOL)large outFilePath:(id *)path outImageType:(int64_t *)type
 {
-  v10 = a6;
-  v11 = a5;
+  largeCopy = large;
+  snapshotCopy = snapshot;
   v65 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
+  assetCopy = asset;
+  formatCopy = format;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
@@ -754,37 +754,37 @@ void __89__PLResourceChooser_fileReservationForImageFileForAsset_format_outFileP
   aBlock[5] = &v47;
   aBlock[6] = &v43;
   v16 = _Block_copy(aBlock);
-  if (([v14 isCloudSharedAsset] & 1) != 0 || objc_msgSend(v14, "isStreamedVideo"))
+  if (([assetCopy isCloudSharedAsset] & 1) != 0 || objc_msgSend(assetCopy, "isStreamedVideo"))
   {
-    v17 = [v14 pathForOriginalFile];
+    pathForOriginalFile = [assetCopy pathForOriginalFile];
     v18 = v48[5];
-    v48[5] = v17;
+    v48[5] = pathForOriginalFile;
 
     v44[3] = 1;
   }
 
   else
   {
-    v26 = [v14 kind];
-    if (v26)
+    kind = [assetCopy kind];
+    if (kind)
     {
-      if (v26 == 1)
+      if (kind == 1)
       {
-        v27 = [v14 pathForVideoPreviewFile];
-        v16[2](v16, v27, 0);
+        pathForVideoPreviewFile = [assetCopy pathForVideoPreviewFile];
+        v16[2](v16, pathForVideoPreviewFile, 0);
 
         if (v54[5])
         {
           v28 = PLImageManagerGetLog();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
           {
-            v29 = [v14 uuid];
+            uuid = [assetCopy uuid];
             v30 = v48[5];
             *buf = 138412546;
-            v60 = v29;
+            v60 = uuid;
             v61 = 2112;
             v62 = v30;
-            v38 = v29;
+            v38 = uuid;
             _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_DEBUG, "Found video preview for asset: %@, path: %@", buf, 0x16u);
           }
         }
@@ -794,10 +794,10 @@ void __89__PLResourceChooser_fileReservationForImageFileForAsset_format_outFileP
           v28 = PLImageManagerGetLog();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
           {
-            v34 = [v14 uuid];
+            uuid2 = [assetCopy uuid];
             *buf = 138412290;
-            v60 = v34;
-            v39 = v34;
+            v60 = uuid2;
+            v39 = uuid2;
             _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_DEBUG, "No video preview for asset: %@", buf, 0xCu);
           }
         }
@@ -806,7 +806,7 @@ void __89__PLResourceChooser_fileReservationForImageFileForAsset_format_outFileP
         {
           v35 = (v48 + 5);
           v41 = v48[5];
-          v36 = [a1 _chooseFileReservationForLargeDisplayableImageFileForAsset:v14 format:v15 forceLarge:v10 allowMetadataSnapshot:v11 outFilePath:&v41 outImageType:v44 + 3];
+          v36 = [self _chooseFileReservationForLargeDisplayableImageFileForAsset:assetCopy format:formatCopy forceLarge:largeCopy allowMetadataSnapshot:snapshotCopy outFilePath:&v41 outImageType:v44 + 3];
           objc_storeStrong(v35, v41);
           v37 = v54[5];
           v54[5] = v36;
@@ -818,21 +818,21 @@ void __89__PLResourceChooser_fileReservationForImageFileForAsset_format_outFileP
     {
       v31 = (v48 + 5);
       obj = v48[5];
-      v32 = [a1 _chooseFileReservationForLargeDisplayableImageFileForAsset:v14 format:v15 forceLarge:v10 allowMetadataSnapshot:v11 outFilePath:&obj outImageType:v44 + 3];
+      v32 = [self _chooseFileReservationForLargeDisplayableImageFileForAsset:assetCopy format:formatCopy forceLarge:largeCopy allowMetadataSnapshot:snapshotCopy outFilePath:&obj outImageType:v44 + 3];
       objc_storeStrong(v31, obj);
       v33 = v54[5];
       v54[5] = v32;
     }
   }
 
-  if (a7)
+  if (path)
   {
-    *a7 = v48[5];
+    *path = v48[5];
   }
 
-  if (a8)
+  if (type)
   {
-    *a8 = v44[3];
+    *type = v44[3];
   }
 
   if (v48[5])
@@ -840,11 +840,11 @@ void __89__PLResourceChooser_fileReservationForImageFileForAsset_format_outFileP
     v19 = PLImageManagerGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [v14 uuid];
+      uuid3 = [assetCopy uuid];
       v21 = v44[3];
       v22 = v48[5];
       *buf = 138412802;
-      v60 = v20;
+      v60 = uuid3;
       v61 = 2048;
       v62 = v21;
       v63 = 2112;
@@ -858,9 +858,9 @@ void __89__PLResourceChooser_fileReservationForImageFileForAsset_format_outFileP
     v19 = PLImageManagerGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v23 = [v14 uuid];
+      uuid4 = [assetCopy uuid];
       *buf = 138412290;
-      v60 = v23;
+      v60 = uuid4;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "Did not find large displayable image on disk for asset: %@", buf, 0xCu);
     }
   }
@@ -895,10 +895,10 @@ void __138__PLResourceChooser_fileReservationForLargeDisplayableImageFileForAsse
   }
 }
 
-+ (id)_chooseFileReservationForLargeDisplayableImageFileForAsset:(id)a3 format:(id)a4 forceLarge:(BOOL)a5 allowMetadataSnapshot:(BOOL)a6 outFilePath:(id *)a7 outImageType:(int64_t *)a8
++ (id)_chooseFileReservationForLargeDisplayableImageFileForAsset:(id)asset format:(id)format forceLarge:(BOOL)large allowMetadataSnapshot:(BOOL)snapshot outFilePath:(id *)path outImageType:(int64_t *)type
 {
-  v12 = a3;
-  v13 = a4;
+  assetCopy = asset;
+  formatCopy = format;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
@@ -928,10 +928,10 @@ void __138__PLResourceChooser_fileReservationForLargeDisplayableImageFileForAsse
   v28[2] = __145__PLResourceChooser__chooseFileReservationForLargeDisplayableImageFileForAsset_format_forceLarge_allowMetadataSnapshot_outFilePath_outImageType___block_invoke_2;
   v28[3] = &unk_1E756D918;
   v31 = &v46;
-  v15 = v12;
+  v15 = assetCopy;
   v29 = v15;
   v16 = v14;
-  v34 = a5;
+  largeCopy = large;
   v30 = v16;
   v32 = &v40;
   v33 = &v36;
@@ -944,14 +944,14 @@ void __138__PLResourceChooser_fileReservationForLargeDisplayableImageFileForAsse
   v18 = v47;
   if (!v47[5])
   {
-    if (v13)
+    if (formatCopy)
     {
-      v19 = [v13 isAlwaysFullScreen];
+      isAlwaysFullScreen = [formatCopy isAlwaysFullScreen];
       v18 = v47;
-      if ((v19 & 1) == 0 && !v47[5])
+      if ((isAlwaysFullScreen & 1) == 0 && !v47[5])
       {
-        v20 = [v15 pathForLargeThumbnailFile];
-        (*(v16 + 2))(v16, v20, 9);
+        pathForLargeThumbnailFile = [v15 pathForLargeThumbnailFile];
+        (*(v16 + 2))(v16, pathForLargeThumbnailFile, 9);
 
         v18 = v47;
       }
@@ -959,23 +959,23 @@ void __138__PLResourceChooser_fileReservationForLargeDisplayableImageFileForAsse
 
     if (!v18[5])
     {
-      v21 = [v15 pathForFullsizeRenderImageFile];
-      (*(v16 + 2))(v16, v21, 5);
+      pathForFullsizeRenderImageFile = [v15 pathForFullsizeRenderImageFile];
+      (*(v16 + 2))(v16, pathForFullsizeRenderImageFile, 5);
 
       if (!v47[5])
       {
-        v22 = [v15 pathForSubstandardFullsizeRenderImageFile];
-        (*(v16 + 2))(v16, v22, 7);
+        pathForSubstandardFullsizeRenderImageFile = [v15 pathForSubstandardFullsizeRenderImageFile];
+        (*(v16 + 2))(v16, pathForSubstandardFullsizeRenderImageFile, 7);
 
         if (!v47[5] && ([v15 hasAdjustments] & 1) == 0)
         {
-          v23 = [v15 pathForNonAdjustedFullsizeImageFile];
-          (*(v16 + 2))(v16, v23, 3);
+          pathForNonAdjustedFullsizeImageFile = [v15 pathForNonAdjustedFullsizeImageFile];
+          (*(v16 + 2))(v16, pathForNonAdjustedFullsizeImageFile, 3);
 
           if (!v47[5] && ([v15 isVideo] & 1) == 0 && __145__PLResourceChooser__chooseFileReservationForLargeDisplayableImageFileForAsset_format_forceLarge_allowMetadataSnapshot_outFilePath_outImageType___block_invoke_71(v15, 0))
           {
-            v24 = [v15 pathForOriginalFile];
-            (*(v16 + 2))(v16, v24, 1);
+            pathForOriginalFile = [v15 pathForOriginalFile];
+            (*(v16 + 2))(v16, pathForOriginalFile, 1);
           }
         }
       }
@@ -987,19 +987,19 @@ void __138__PLResourceChooser_fileReservationForLargeDisplayableImageFileForAsse
     v17[2](v17);
     if (!v47[5] && ([v15 isVideo] & 1) == 0 && __145__PLResourceChooser__chooseFileReservationForLargeDisplayableImageFileForAsset_format_forceLarge_allowMetadataSnapshot_outFilePath_outImageType___block_invoke_71(v15, 1) && (objc_msgSend(v15, "hasAdjustments") & 1) == 0)
     {
-      v25 = [v15 pathForOriginalFile];
-      (*(v16 + 2))(v16, v25, 1);
+      pathForOriginalFile2 = [v15 pathForOriginalFile];
+      (*(v16 + 2))(v16, pathForOriginalFile2, 1);
     }
   }
 
-  if (a7)
+  if (path)
   {
-    *a7 = v41[5];
+    *path = v41[5];
   }
 
-  if (a8)
+  if (type)
   {
-    *a8 = v37[3];
+    *type = v37[3];
   }
 
   v26 = v47[5];

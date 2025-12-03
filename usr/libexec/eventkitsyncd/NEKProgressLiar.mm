@@ -1,7 +1,7 @@
 @interface NEKProgressLiar
-- (NEKProgressLiar)initWithSpan:(double)a3 session:(id)a4;
-- (void)_doneForRealNotifyingPairedSync:(BOOL)a3;
-- (void)doneForRealNotifyingPairedSync:(BOOL)a3;
+- (NEKProgressLiar)initWithSpan:(double)span session:(id)session;
+- (void)_doneForRealNotifyingPairedSync:(BOOL)sync;
+- (void)doneForRealNotifyingPairedSync:(BOOL)sync;
 - (void)pause;
 - (void)resume;
 - (void)start;
@@ -9,28 +9,28 @@
 
 @implementation NEKProgressLiar
 
-- (NEKProgressLiar)initWithSpan:(double)a3 session:(id)a4
+- (NEKProgressLiar)initWithSpan:(double)span session:(id)session
 {
-  v7 = a4;
+  sessionCopy = session;
   v14.receiver = self;
   v14.super_class = NEKProgressLiar;
   v8 = [(NEKProgressLiar *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    v10 = 1.0;
-    if (a3 != 0.0)
+    spanCopy = 1.0;
+    if (span != 0.0)
     {
-      v10 = a3;
+      spanCopy = span;
     }
 
-    v8->_span = v10;
+    v8->_span = spanCopy;
     v8->_previousFraction = -0.02;
     v11 = sub_100004B98("com.apple.eventkitsync.progressliar");
     q = v9->_q;
     v9->_q = v11;
 
-    objc_storeStrong(&v9->_session, a4);
+    objc_storeStrong(&v9->_session, session);
   }
 
   return v9;
@@ -87,7 +87,7 @@
   dispatch_sync(q, block);
 }
 
-- (void)doneForRealNotifyingPairedSync:(BOOL)a3
+- (void)doneForRealNotifyingPairedSync:(BOOL)sync
 {
   q = self->_q;
   v4[0] = _NSConcreteStackBlock;
@@ -95,20 +95,20 @@
   v4[2] = sub_100036330;
   v4[3] = &unk_1000B5650;
   v4[4] = self;
-  v5 = a3;
+  syncCopy = sync;
   dispatch_sync(q, v4);
 }
 
-- (void)_doneForRealNotifyingPairedSync:(BOOL)a3
+- (void)_doneForRealNotifyingPairedSync:(BOOL)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   v5 = os_transaction_create();
   dispatch_assert_queue_V2(self->_q);
   v6 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10[0] = 67109120;
-    v10[1] = v3;
+    v10[1] = syncCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "doneForRealNotifyingPairedSync: %{BOOL}d", v10, 8u);
   }
 
@@ -120,11 +120,11 @@
     self->_timeToLie = 0;
   }
 
-  if (v3 && !self->_calledDidComplete)
+  if (syncCopy && !self->_calledDidComplete)
   {
     self->_calledDidComplete = 1;
-    v9 = [(NEKProgressLiar *)self session];
-    [v9 syncDidComplete];
+    session = [(NEKProgressLiar *)self session];
+    [session syncDidComplete];
   }
 }
 

@@ -1,5 +1,5 @@
 @interface WFHotspotCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axHideBatteryView;
@@ -8,19 +8,19 @@
 
 @implementation WFHotspotCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"didMoveToWindow" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"WFHotspotCell" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"WFAssociationStateView" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"WFHotspotCell" hasInstanceMethod:@"associationStateView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFHotspotCell" hasInstanceMethod:@"hotspotDetailsView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFHotspotCell" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFHotspotDetailsView" hasInstanceMethod:@"batteryCharge" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WFHotspotDetailsView" hasInstanceMethod:@"cellularProtocolString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFHotspotDetailsView" hasInstanceMethod:@"signalBars" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WFHotspotDetailsView" hasInstanceMethod:@"batteryView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"didMoveToWindow" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"WFHotspotCell" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"WFAssociationStateView" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"WFHotspotCell" hasInstanceMethod:@"associationStateView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFHotspotCell" hasInstanceMethod:@"hotspotDetailsView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFHotspotCell" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFHotspotDetailsView" hasInstanceMethod:@"batteryCharge" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WFHotspotDetailsView" hasInstanceMethod:@"cellularProtocolString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFHotspotDetailsView" hasInstanceMethod:@"signalBars" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WFHotspotDetailsView" hasInstanceMethod:@"batteryView" withFullSignature:{"@", 0}];
 }
 
 - (void)_axHideBatteryView
@@ -62,7 +62,7 @@
   v11 = [v8 stringWithFormat:v9, v10];
 
   v12 = [(WFHotspotCellAccessibility *)self safeValueForKey:@"nameLabel"];
-  v13 = [v12 accessibilityLabel];
+  accessibilityLabel = [v12 accessibilityLabel];
   v16 = [v3 safeStringForKey:@"cellularProtocolString"];
   v14 = __UIAXStringForVariables();
 

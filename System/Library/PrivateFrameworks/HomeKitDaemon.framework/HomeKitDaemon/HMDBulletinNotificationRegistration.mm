@@ -1,15 +1,15 @@
 @interface HMDBulletinNotificationRegistration
-+ (BOOL)doesTypeMatch:(id)a3 against:(id)a4;
++ (BOOL)doesTypeMatch:(id)match against:(id)against;
 + (id)type;
-- (BOOL)isEqual:(id)a3;
-- (HMDBulletinNotificationRegistration)initWithCoder:(id)a3;
-- (HMDBulletinNotificationRegistration)initWithConditions:(id)a3;
-- (HMDBulletinNotificationRegistration)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMDBulletinNotificationRegistration)initWithCoder:(id)coder;
+- (HMDBulletinNotificationRegistration)initWithConditions:(id)conditions;
+- (HMDBulletinNotificationRegistration)initWithDictionary:(id)dictionary;
 - (NSPredicate)predicate;
 - (id)attributeDescriptions;
 - (id)serializedRegistrationForRemoteMessage;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDBulletinNotificationRegistration
@@ -18,8 +18,8 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDBulletinNotificationRegistration *)self conditions];
-  v5 = [v3 initWithName:@"conditions" value:v4];
+  conditions = [(HMDBulletinNotificationRegistration *)self conditions];
+  v5 = [v3 initWithName:@"conditions" value:conditions];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -28,27 +28,27 @@
   return v6;
 }
 
-- (HMDBulletinNotificationRegistration)initWithCoder:(id)a3
+- (HMDBulletinNotificationRegistration)initWithCoder:(id)coder
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEB98];
   v20[0] = objc_opt_class();
   v20[1] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
   v7 = [v5 setWithArray:v6];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"HMDBNR.ck.c"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"HMDBNR.ck.c"];
 
   if (v8)
   {
-    v9 = [(HMDBulletinNotificationRegistration *)self initWithConditions:v8];
-    v10 = v9;
+    selfCopy = [(HMDBulletinNotificationRegistration *)self initWithConditions:v8];
+    v10 = selfCopy;
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -68,28 +68,28 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDBulletinNotificationRegistration *)self conditions];
-  [v4 encodeObject:v5 forKey:@"HMDBNR.ck.c"];
+  coderCopy = coder;
+  conditions = [(HMDBulletinNotificationRegistration *)self conditions];
+  [coderCopy encodeObject:conditions forKey:@"HMDBNR.ck.c"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMDBulletinNotificationRegistration *)self conditions];
-  v3 = [v2 hash];
+  conditions = [(HMDBulletinNotificationRegistration *)self conditions];
+  v3 = [conditions hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -100,9 +100,9 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDBulletinNotificationRegistration *)self conditions];
-    v8 = [v6 conditions];
-    v9 = [v7 isEqualToSet:v8];
+    conditions = [(HMDBulletinNotificationRegistration *)self conditions];
+    conditions2 = [v6 conditions];
+    v9 = [conditions isEqualToSet:conditions2];
   }
 
   else
@@ -117,10 +117,10 @@
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(HMDBulletinNotificationRegistration *)self conditions];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  conditions = [(HMDBulletinNotificationRegistration *)self conditions];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(conditions, "count")}];
 
-  v6 = [(HMDBulletinNotificationRegistration *)self conditions];
+  conditions2 = [(HMDBulletinNotificationRegistration *)self conditions];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__HMDBulletinNotificationRegistration_serializedRegistrationForRemoteMessage__block_invoke;
@@ -128,11 +128,11 @@
   v13[4] = self;
   v14 = v5;
   v7 = v5;
-  [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v13];
+  [conditions2 hmf_enumerateWithAutoreleasePoolUsingBlock:v13];
 
   v15[0] = @"HMDBNR.reg.type";
-  v8 = [objc_opt_class() type];
-  v16[0] = v8;
+  type = [objc_opt_class() type];
+  v16[0] = type;
   v15[1] = @"HMDBNR.ck.c";
   v9 = [v7 copy];
   v16[1] = v9;
@@ -174,23 +174,23 @@ void __77__HMDBulletinNotificationRegistration_serializedRegistrationForRemoteMe
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDBulletinNotificationRegistration)initWithDictionary:(id)a3
+- (HMDBulletinNotificationRegistration)initWithDictionary:(id)dictionary
 {
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = [v4 set];
-  v7 = [v5 objectForKeyedSubscript:@"HMDBNR.ck.c"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"HMDBNR.ck.c"];
 
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __58__HMDBulletinNotificationRegistration_initWithDictionary___block_invoke;
   v15 = &unk_278689E38;
-  v8 = self;
-  v16 = v8;
+  selfCopy = self;
+  v16 = selfCopy;
   v17 = v6;
   v9 = v6;
   [v7 hmf_enumerateWithAutoreleasePoolUsingBlock:&v12];
-  v10 = [(HMDBulletinNotificationRegistration *)v8 initWithConditions:v9, v12, v13, v14, v15];
+  v10 = [(HMDBulletinNotificationRegistration *)selfCopy initWithConditions:v9, v12, v13, v14, v15];
 
   return v10;
 }
@@ -237,16 +237,16 @@ void __58__HMDBulletinNotificationRegistration_initWithDictionary___block_invoke
 
 - (NSPredicate)predicate
 {
-  v2 = [(HMDBulletinNotificationRegistration *)self conditions];
-  v3 = [HMDNotificationConditionConverter predicatesFromConditions:v2];
-  v4 = [v3 allObjects];
+  conditions = [(HMDBulletinNotificationRegistration *)self conditions];
+  v3 = [HMDNotificationConditionConverter predicatesFromConditions:conditions];
+  allObjects = [v3 allObjects];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__HMDBulletinNotificationRegistration_predicate__block_invoke;
   v8[3] = &unk_2786842B0;
-  v9 = v4;
-  v5 = v4;
+  v9 = allObjects;
+  v5 = allObjects;
   v6 = __48__HMDBulletinNotificationRegistration_predicate__block_invoke(v8);
 
   return v6;
@@ -275,19 +275,19 @@ id __48__HMDBulletinNotificationRegistration_predicate__block_invoke(uint64_t a1
   return v2;
 }
 
-- (HMDBulletinNotificationRegistration)initWithConditions:(id)a3
+- (HMDBulletinNotificationRegistration)initWithConditions:(id)conditions
 {
-  v5 = a3;
-  if (v5)
+  conditionsCopy = conditions;
+  if (conditionsCopy)
   {
-    v6 = v5;
+    v6 = conditionsCopy;
     v14.receiver = self;
     v14.super_class = HMDBulletinNotificationRegistration;
     v7 = [(HMDBulletinNotificationRegistration *)&v14 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_conditions, a3);
+      objc_storeStrong(&v7->_conditions, conditions);
     }
 
     return v8;
@@ -300,11 +300,11 @@ id __48__HMDBulletinNotificationRegistration_predicate__block_invoke(uint64_t a1
   }
 }
 
-+ (BOOL)doesTypeMatch:(id)a3 against:(id)a4
++ (BOOL)doesTypeMatch:(id)match against:(id)against
 {
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"HMDBNR.reg.type"];
-  v7 = [v6 isEqualToString:v5];
+  againstCopy = against;
+  v6 = [match objectForKeyedSubscript:@"HMDBNR.reg.type"];
+  v7 = [v6 isEqualToString:againstCopy];
 
   return v7;
 }

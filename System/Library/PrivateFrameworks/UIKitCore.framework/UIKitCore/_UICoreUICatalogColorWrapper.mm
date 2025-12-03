@@ -1,39 +1,39 @@
 @interface _UICoreUICatalogColorWrapper
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCoreUICatalogColor:(id)a3;
-- (CGColor)cgColorForTraitCollection:(id)a3;
-- (_UICoreUICatalogColorWrapper)initWithCoder:(id)a3;
-- (_UICoreUICatalogColorWrapper)initWithName:(id)a3 bundleID:(id)a4 fallbackColor:(id)a5;
-- (id)_uikit_valueForTraitCollection:(id)a3;
-- (id)cachedColorForDisplayGamut:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCoreUICatalogColor:(id)color;
+- (CGColor)cgColorForTraitCollection:(id)collection;
+- (_UICoreUICatalogColorWrapper)initWithCoder:(id)coder;
+- (_UICoreUICatalogColorWrapper)initWithName:(id)name bundleID:(id)d fallbackColor:(id)color;
+- (id)_uikit_valueForTraitCollection:(id)collection;
+- (id)cachedColorForDisplayGamut:(int64_t)gamut;
 - (id)colorCache;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCachedColor:(id)a3 forDisplayGamut:(int64_t)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCachedColor:(id)color forDisplayGamut:(int64_t)gamut;
 @end
 
 @implementation _UICoreUICatalogColorWrapper
 
-- (_UICoreUICatalogColorWrapper)initWithName:(id)a3 bundleID:(id)a4 fallbackColor:(id)a5
+- (_UICoreUICatalogColorWrapper)initWithName:(id)name bundleID:(id)d fallbackColor:(id)color
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  dCopy = d;
+  colorCopy = color;
   v18.receiver = self;
   v18.super_class = _UICoreUICatalogColorWrapper;
   v12 = [(_UICoreUICatalogColorWrapper *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a3);
-    objc_storeStrong(&v13->_bundleID, a4);
-    objc_storeStrong(&v13->_fallbackColor, a5);
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v13->_bundleID, d);
+    objc_storeStrong(&v13->_fallbackColor, color);
     if (!v13->_bundleID)
     {
-      v14 = [MEMORY[0x1E696AAE8] currentNibLoadingBundle];
-      v15 = [v14 bundleIdentifier];
+      currentNibLoadingBundle = [MEMORY[0x1E696AAE8] currentNibLoadingBundle];
+      bundleIdentifier = [currentNibLoadingBundle bundleIdentifier];
       nibLoadingBundleID = v13->_nibLoadingBundleID;
-      v13->_nibLoadingBundleID = v15;
+      v13->_nibLoadingBundleID = bundleIdentifier;
     }
   }
 
@@ -45,9 +45,9 @@
   colorCache = self->_colorCache;
   if (!colorCache)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = self->_colorCache;
-    self->_colorCache = v4;
+    self->_colorCache = dictionary;
 
     colorCache = self->_colorCache;
   }
@@ -55,34 +55,34 @@
   return colorCache;
 }
 
-- (id)cachedColorForDisplayGamut:(int64_t)a3
+- (id)cachedColorForDisplayGamut:(int64_t)gamut
 {
-  v4 = [(_UICoreUICatalogColorWrapper *)self colorCache];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKey:v5];
+  colorCache = [(_UICoreUICatalogColorWrapper *)self colorCache];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:gamut];
+  v6 = [colorCache objectForKey:v5];
 
   return v6;
 }
 
-- (void)setCachedColor:(id)a3 forDisplayGamut:(int64_t)a4
+- (void)setCachedColor:(id)color forDisplayGamut:(int64_t)gamut
 {
-  v6 = a3;
-  v8 = [(_UICoreUICatalogColorWrapper *)self colorCache];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v8 setObject:v6 forKey:v7];
+  colorCopy = color;
+  colorCache = [(_UICoreUICatalogColorWrapper *)self colorCache];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:gamut];
+  [colorCache setObject:colorCopy forKey:v7];
 }
 
-- (CGColor)cgColorForTraitCollection:(id)a3
+- (CGColor)cgColorForTraitCollection:(id)collection
 {
-  v3 = [(_UICoreUICatalogColorWrapper *)self _uikit_valueForTraitCollection:a3];
-  v4 = [v3 CGColor];
+  v3 = [(_UICoreUICatalogColorWrapper *)self _uikit_valueForTraitCollection:collection];
+  cGColor = [v3 CGColor];
 
-  return v4;
+  return cGColor;
 }
 
-- (id)_uikit_valueForTraitCollection:(id)a3
+- (id)_uikit_valueForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -95,7 +95,7 @@
   aBlock[3] = &unk_1E710D8F8;
   v19 = &v20;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = collectionCopy;
   v18 = v5;
   v6 = _Block_copy(aBlock);
   v7 = v6;
@@ -119,18 +119,18 @@
       goto LABEL_12;
     }
 
-    v10 = [MEMORY[0x1E695DF70] array];
-    v11 = v10;
+    array = [MEMORY[0x1E695DF70] array];
+    v11 = array;
     if (self->_bundleID)
     {
-      [v10 addObject:?];
+      [array addObject:?];
     }
 
     else
     {
       if (self->_nibLoadingBundleID)
       {
-        [v10 addObject:?];
+        [array addObject:?];
       }
 
       v12 = _UIMainBundleIdentifier();
@@ -157,45 +157,45 @@ LABEL_12:
   return v15;
 }
 
-- (_UICoreUICatalogColorWrapper)initWithCoder:(id)a3
+- (_UICoreUICatalogColorWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = _UICoreUICatalogColorWrapper;
   v5 = [(_UICoreUICatalogColorWrapper *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UIAssetName"];
+    v6 = [coderCopy decodeObjectForKey:@"UIAssetName"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectForKey:@"UIAssetBundleID"];
+    v8 = [coderCopy decodeObjectForKey:@"UIAssetBundleID"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v8;
 
-    v10 = [v4 decodeObjectForKey:@"UIFallbackColor"];
+    v10 = [coderCopy decodeObjectForKey:@"UIFallbackColor"];
     fallbackColor = v5->_fallbackColor;
     v5->_fallbackColor = v10;
 
     if (!v5->_bundleID)
     {
-      v12 = [MEMORY[0x1E696AAE8] currentNibLoadingBundle];
-      v13 = [v12 bundleIdentifier];
+      currentNibLoadingBundle = [MEMORY[0x1E696AAE8] currentNibLoadingBundle];
+      bundleIdentifier = [currentNibLoadingBundle bundleIdentifier];
       nibLoadingBundleID = v5->_nibLoadingBundleID;
-      v5->_nibLoadingBundleID = v13;
+      v5->_nibLoadingBundleID = bundleIdentifier;
     }
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"UIAssetName"];
-  [v5 encodeObject:self->_bundleID forKey:@"UIAssetBundleID"];
-  [v5 encodeObject:self->_fallbackColor forKey:@"UIFallbackColor"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"UIAssetName"];
+  [coderCopy encodeObject:self->_bundleID forKey:@"UIAssetBundleID"];
+  [coderCopy encodeObject:self->_fallbackColor forKey:@"UIFallbackColor"];
 }
 
 - (id)description
@@ -213,16 +213,16 @@ LABEL_12:
     bundleID = @"<main>";
   }
 
-  v7 = [(_UICoreUICatalogColorWrapper *)self name];
-  v8 = [v3 stringWithFormat:@"<%@: %p: %@ %@>", v5, self, bundleID, v7];
+  name = [(_UICoreUICatalogColorWrapper *)self name];
+  v8 = [v3 stringWithFormat:@"<%@: %p: %@ %@>", v5, self, bundleID, name];
 
   return v8;
 }
 
-- (BOOL)isEqualToCoreUICatalogColor:(id)a3
+- (BOOL)isEqualToCoreUICatalogColor:(id)color
 {
-  v5 = a3;
-  if (v5 == self)
+  colorCopy = color;
+  if (colorCopy == self)
   {
     v10 = 1;
   }
@@ -232,14 +232,14 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = colorCopy;
       name = self->_name;
-      v8 = [(_UICoreUICatalogColorWrapper *)v6 name];
-      if (name == v8 || (v9 = self->_name, [(_UICoreUICatalogColorWrapper *)v6 name], v3 = objc_claimAutoreleasedReturnValue(), [(NSString *)v9 isEqualToString:v3]))
+      name = [(_UICoreUICatalogColorWrapper *)v6 name];
+      if (name == name || (v9 = self->_name, [(_UICoreUICatalogColorWrapper *)v6 name], v3 = objc_claimAutoreleasedReturnValue(), [(NSString *)v9 isEqualToString:v3]))
       {
         bundleID = self->_bundleID;
-        v12 = [(_UICoreUICatalogColorWrapper *)v6 bundleID];
-        if (bundleID == v12)
+        bundleID = [(_UICoreUICatalogColorWrapper *)v6 bundleID];
+        if (bundleID == bundleID)
         {
           v10 = 1;
         }
@@ -247,11 +247,11 @@ LABEL_12:
         else
         {
           v13 = self->_bundleID;
-          v14 = [(_UICoreUICatalogColorWrapper *)v6 bundleID];
-          v10 = [(NSString *)v13 isEqualToString:v14];
+          bundleID2 = [(_UICoreUICatalogColorWrapper *)v6 bundleID];
+          v10 = [(NSString *)v13 isEqualToString:bundleID2];
         }
 
-        if (name == v8)
+        if (name == name)
         {
           goto LABEL_13;
         }
@@ -274,11 +274,11 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_UICoreUICatalogColorWrapper *)self isEqualToCoreUICatalogColor:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_UICoreUICatalogColorWrapper *)self isEqualToCoreUICatalogColor:equalCopy];
 
   return v5;
 }

@@ -1,20 +1,20 @@
 @interface WCDataMessageRecord
 - (BOOL)expectsResponse;
-- (WCDataMessageRecord)initWithIdentifier:(id)a3 responseHandler:(id)a4 errorHandler:(id)a5;
+- (WCDataMessageRecord)initWithIdentifier:(id)identifier responseHandler:(id)handler errorHandler:(id)errorHandler;
 - (id)description;
 @end
 
 @implementation WCDataMessageRecord
 
-- (WCDataMessageRecord)initWithIdentifier:(id)a3 responseHandler:(id)a4 errorHandler:(id)a5
+- (WCDataMessageRecord)initWithIdentifier:(id)identifier responseHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v8 = a4;
+  handlerCopy = handler;
   v13.receiver = self;
   v13.super_class = WCDataMessageRecord;
-  v9 = [(WCMessageRecord *)&v13 initWithIdentifier:a3 errorHandler:a5];
+  v9 = [(WCMessageRecord *)&v13 initWithIdentifier:identifier errorHandler:errorHandler];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [handlerCopy copy];
     responseHandler = v9->_responseHandler;
     v9->_responseHandler = v10;
   }
@@ -24,8 +24,8 @@
 
 - (BOOL)expectsResponse
 {
-  v2 = [(WCDataMessageRecord *)self responseHandler];
-  v3 = v2 != 0;
+  responseHandler = [(WCDataMessageRecord *)self responseHandler];
+  v3 = responseHandler != 0;
 
   return v3;
 }
@@ -35,9 +35,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WCMessageRecord *)self identifier];
-  v7 = [(WCDataMessageRecord *)self responseHandler];
-  if (v7)
+  identifier = [(WCMessageRecord *)self identifier];
+  responseHandler = [(WCDataMessageRecord *)self responseHandler];
+  if (responseHandler)
   {
     v8 = "YES";
   }
@@ -47,8 +47,8 @@
     v8 = "NO";
   }
 
-  v9 = [(WCMessageRecord *)self errorHandler];
-  if (v9)
+  errorHandler = [(WCMessageRecord *)self errorHandler];
+  if (errorHandler)
   {
     v10 = "YES";
   }
@@ -58,7 +58,7 @@
     v10 = "NO";
   }
 
-  v11 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, hasResponseHandler %s, hasErrorHandler: %s>", v5, self, v6, v8, v10];
+  v11 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, hasResponseHandler %s, hasErrorHandler: %s>", v5, self, identifier, v8, v10];
 
   return v11;
 }

@@ -1,10 +1,10 @@
 @interface MKTiltGestureRecognizer
-- (MKTiltGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (id)_activeTouchesForEvent:(id)a3;
+- (MKTiltGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (id)_activeTouchesForEvent:(id)event;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation MKTiltGestureRecognizer
@@ -22,13 +22,13 @@
   [(MKTiltGestureRecognizer *)&v5 reset];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = MKTiltGestureRecognizer;
-  v6 = a4;
-  [(MKTiltGestureRecognizer *)&v10 touchesEnded:a3 withEvent:v6];
-  v7 = [(MKTiltGestureRecognizer *)self _activeTouchesForEvent:v6, v10.receiver, v10.super_class];
+  eventCopy = event;
+  [(MKTiltGestureRecognizer *)&v10 touchesEnded:ended withEvent:eventCopy];
+  v7 = [(MKTiltGestureRecognizer *)self _activeTouchesForEvent:eventCopy, v10.receiver, v10.super_class];
 
   v8 = [v7 count];
   if (v8 < [(MKTiltGestureRecognizer *)self minimumNumberOfTouches])
@@ -52,16 +52,16 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   if ([(MKTiltGestureRecognizer *)self state])
   {
     goto LABEL_2;
   }
 
-  v8 = [(MKTiltGestureRecognizer *)self _activeTouchesForEvent:v7];
+  v8 = [(MKTiltGestureRecognizer *)self _activeTouchesForEvent:eventCopy];
   v9 = [v8 count];
   if (v9 < [(MKTiltGestureRecognizer *)self minimumNumberOfTouches])
   {
@@ -106,46 +106,46 @@ LABEL_17:
 LABEL_2:
   v27.receiver = self;
   v27.super_class = MKTiltGestureRecognizer;
-  [(MKTiltGestureRecognizer *)&v27 touchesMoved:v6 withEvent:v7];
+  [(MKTiltGestureRecognizer *)&v27 touchesMoved:movedCopy withEvent:eventCopy];
 LABEL_19:
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if (![(MKTiltGestureRecognizer *)self state])
   {
-    v8 = [(MKTiltGestureRecognizer *)self _activeTouchesForEvent:v7];
-    v9 = [v8 allObjects];
+    v8 = [(MKTiltGestureRecognizer *)self _activeTouchesForEvent:eventCopy];
+    allObjects = [v8 allObjects];
     if ([v8 count])
     {
       if (!self->_touch1)
       {
-        v10 = [v9 objectAtIndex:0];
+        v10 = [allObjects objectAtIndex:0];
         touch1 = self->_touch1;
         self->_touch1 = v10;
 
         v12 = v8;
         v13 = self->_touch1;
         [(MKTiltGestureRecognizer *)self view];
-        v15 = v14 = v9;
+        v15 = v14 = allObjects;
         v16 = v13;
         v8 = v12;
         [(UITouch *)v16 locationInView:v15];
         self->_initialTouch1Point.x = v17;
         self->_initialTouch1Point.y = v18;
 
-        v9 = v14;
+        allObjects = v14;
       }
 
       if (!self->_touch2)
       {
-        v30 = v9;
+        v30 = allObjects;
         v31 = v8;
-        v32 = v7;
-        v33 = v6;
+        v32 = eventCopy;
+        v33 = beganCopy;
         v37 = 0u;
         v38 = 0u;
         v35 = 0u;
@@ -171,8 +171,8 @@ LABEL_19:
               {
                 objc_storeStrong(&self->_touch2, v24);
                 touch2 = self->_touch2;
-                v26 = [(MKTiltGestureRecognizer *)self view];
-                [(UITouch *)touch2 locationInView:v26];
+                view = [(MKTiltGestureRecognizer *)self view];
+                [(UITouch *)touch2 locationInView:view];
                 self->_initialTouch2Point.x = v27;
                 self->_initialTouch2Point.y = v28;
               }
@@ -187,9 +187,9 @@ LABEL_19:
           while (v21);
         }
 
-        v7 = v32;
-        v6 = v33;
-        v9 = v30;
+        eventCopy = v32;
+        beganCopy = v33;
+        allObjects = v30;
         v8 = v31;
       }
 
@@ -203,18 +203,18 @@ LABEL_19:
 
   v34.receiver = self;
   v34.super_class = MKTiltGestureRecognizer;
-  [(MKTiltGestureRecognizer *)&v34 touchesBegan:v6 withEvent:v7, v30, v31, v32, v33];
+  [(MKTiltGestureRecognizer *)&v34 touchesBegan:beganCopy withEvent:eventCopy, v30, v31, v32, v33];
 }
 
-- (id)_activeTouchesForEvent:(id)a3
+- (id)_activeTouchesForEvent:(id)event
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 touchesForGestureRecognizer:{self, 0}];
+  v5 = [eventCopy touchesForGestureRecognizer:{self, 0}];
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -256,11 +256,11 @@ LABEL_19:
   return v8;
 }
 
-- (MKTiltGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (MKTiltGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v8.receiver = self;
   v8.super_class = MKTiltGestureRecognizer;
-  v4 = [(MKTiltGestureRecognizer *)&v8 initWithTarget:a3 action:a4];
+  v4 = [(MKTiltGestureRecognizer *)&v8 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {

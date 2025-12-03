@@ -10,22 +10,22 @@
 
 - (uint64_t)layoutRole
 {
-  if (![a1 isSpringBoardElement])
+  if (![self isSpringBoardElement])
   {
     return 0;
   }
 
-  v2 = [a1 otherSettings];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 integerValue];
+  otherSettings = [self otherSettings];
+  v3 = [otherSettings objectForSetting:1];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (uint64_t)isSpringBoardElement
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:0];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:0];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -54,25 +54,25 @@
 
 - (uint64_t)zOrderIndex
 {
-  if (![a1 isSpringBoardElement])
+  if (![self isSpringBoardElement])
   {
     return 0;
   }
 
-  v2 = [a1 otherSettings];
-  v3 = [v2 objectForSetting:4];
-  v4 = [v3 integerValue];
+  otherSettings = [self otherSettings];
+  v3 = [otherSettings objectForSetting:4];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (uint64_t)sb_isTransitioning
 {
-  result = [a1 isSpringBoardElement];
+  result = [self isSpringBoardElement];
   if (result)
   {
-    v3 = [a1 otherSettings];
-    v4 = [v3 BOOLForSetting:2];
+    otherSettings = [self otherSettings];
+    v4 = [otherSettings BOOLForSetting:2];
 
     return v4;
   }
@@ -82,11 +82,11 @@
 
 - (uint64_t)sb_isStashedPIP
 {
-  result = [a1 isSpringBoardElement];
+  result = [self isSpringBoardElement];
   if (result)
   {
-    v3 = [a1 otherSettings];
-    v4 = [v3 BOOLForSetting:3];
+    otherSettings = [self otherSettings];
+    v4 = [otherSettings BOOLForSetting:3];
 
     return v4;
   }

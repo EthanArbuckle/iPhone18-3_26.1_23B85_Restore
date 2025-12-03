@@ -1,71 +1,71 @@
 @interface SBIconListViewInvertColorsAccessibility
-- (void)_accessibilityForceRefreshOfInvertColors:(id)a3;
+- (void)_accessibilityForceRefreshOfInvertColors:(id)colors;
 - (void)_accessibilityLoadInvertColors;
-- (void)addSubview:(id)a3;
-- (void)insertSubview:(id)a3 aboveSubview:(id)a4;
-- (void)insertSubview:(id)a3 atIndex:(int64_t)a4;
-- (void)insertSubview:(id)a3 belowSubview:(id)a4;
+- (void)addSubview:(id)subview;
+- (void)insertSubview:(id)subview aboveSubview:(id)aboveSubview;
+- (void)insertSubview:(id)subview atIndex:(int64_t)index;
+- (void)insertSubview:(id)subview belowSubview:(id)belowSubview;
 @end
 
 @implementation SBIconListViewInvertColorsAccessibility
 
-- (void)_accessibilityForceRefreshOfInvertColors:(id)a3
+- (void)_accessibilityForceRefreshOfInvertColors:(id)colors
 {
-  v3 = a3;
-  if (_AXSInvertColorsEnabledGlobalCached() && [v3 accessibilityIgnoresInvertColors])
+  colorsCopy = colors;
+  if (_AXSInvertColorsEnabledGlobalCached() && [colorsCopy accessibilityIgnoresInvertColors])
   {
-    [v3 setAccessibilityIgnoresInvertColors:0];
-    [v3 setAccessibilityIgnoresInvertColors:1];
+    [colorsCopy setAccessibilityIgnoresInvertColors:0];
+    [colorsCopy setAccessibilityIgnoresInvertColors:1];
   }
 }
 
-- (void)insertSubview:(id)a3 atIndex:(int64_t)a4
+- (void)insertSubview:(id)subview atIndex:(int64_t)index
 {
   v7.receiver = self;
   v7.super_class = SBIconListViewInvertColorsAccessibility;
-  v6 = a3;
-  [(SBIconListViewInvertColorsAccessibility *)&v7 insertSubview:v6 atIndex:a4];
-  [(SBIconListViewInvertColorsAccessibility *)self _accessibilityForceRefreshOfInvertColors:v6, v7.receiver, v7.super_class];
+  subviewCopy = subview;
+  [(SBIconListViewInvertColorsAccessibility *)&v7 insertSubview:subviewCopy atIndex:index];
+  [(SBIconListViewInvertColorsAccessibility *)self _accessibilityForceRefreshOfInvertColors:subviewCopy, v7.receiver, v7.super_class];
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
   v5.receiver = self;
   v5.super_class = SBIconListViewInvertColorsAccessibility;
-  v4 = a3;
-  [(SBIconListViewInvertColorsAccessibility *)&v5 addSubview:v4];
-  [(SBIconListViewInvertColorsAccessibility *)self _accessibilityForceRefreshOfInvertColors:v4, v5.receiver, v5.super_class];
+  subviewCopy = subview;
+  [(SBIconListViewInvertColorsAccessibility *)&v5 addSubview:subviewCopy];
+  [(SBIconListViewInvertColorsAccessibility *)self _accessibilityForceRefreshOfInvertColors:subviewCopy, v5.receiver, v5.super_class];
 }
 
-- (void)insertSubview:(id)a3 belowSubview:(id)a4
+- (void)insertSubview:(id)subview belowSubview:(id)belowSubview
 {
   v7.receiver = self;
   v7.super_class = SBIconListViewInvertColorsAccessibility;
-  v6 = a3;
-  [(SBIconListViewInvertColorsAccessibility *)&v7 insertSubview:v6 belowSubview:a4];
-  [(SBIconListViewInvertColorsAccessibility *)self _accessibilityForceRefreshOfInvertColors:v6, v7.receiver, v7.super_class];
+  subviewCopy = subview;
+  [(SBIconListViewInvertColorsAccessibility *)&v7 insertSubview:subviewCopy belowSubview:belowSubview];
+  [(SBIconListViewInvertColorsAccessibility *)self _accessibilityForceRefreshOfInvertColors:subviewCopy, v7.receiver, v7.super_class];
 }
 
-- (void)insertSubview:(id)a3 aboveSubview:(id)a4
+- (void)insertSubview:(id)subview aboveSubview:(id)aboveSubview
 {
   v7.receiver = self;
   v7.super_class = SBIconListViewInvertColorsAccessibility;
-  v6 = a3;
-  [(SBIconListViewInvertColorsAccessibility *)&v7 insertSubview:v6 aboveSubview:a4];
-  [(SBIconListViewInvertColorsAccessibility *)self _accessibilityForceRefreshOfInvertColors:v6, v7.receiver, v7.super_class];
+  subviewCopy = subview;
+  [(SBIconListViewInvertColorsAccessibility *)&v7 insertSubview:subviewCopy aboveSubview:aboveSubview];
+  [(SBIconListViewInvertColorsAccessibility *)self _accessibilityForceRefreshOfInvertColors:subviewCopy, v7.receiver, v7.super_class];
 }
 
 - (void)_accessibilityLoadInvertColors
 {
   if (_AXSInvertColorsEnabled())
   {
-    v3 = [(SBIconListViewInvertColorsAccessibility *)self subviews];
+    subviews = [(SBIconListViewInvertColorsAccessibility *)self subviews];
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_1800C;
     v4[3] = &unk_44A10;
     v4[4] = self;
-    [v3 enumerateObjectsUsingBlock:v4];
+    [subviews enumerateObjectsUsingBlock:v4];
   }
 }
 

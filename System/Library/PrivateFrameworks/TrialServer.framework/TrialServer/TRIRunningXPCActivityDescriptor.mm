@@ -1,19 +1,19 @@
 @interface TRIRunningXPCActivityDescriptor
-- (TRIRunningXPCActivityDescriptor)initWithActivity:(id)a3 capabilities:(unint64_t)a4 name:(id)a5;
+- (TRIRunningXPCActivityDescriptor)initWithActivity:(id)activity capabilities:(unint64_t)capabilities name:(id)name;
 - (id)description;
-- (id)initForImmediateWorkWithCapabilities:(unint64_t)a3;
+- (id)initForImmediateWorkWithCapabilities:(unint64_t)capabilities;
 @end
 
 @implementation TRIRunningXPCActivityDescriptor
 
-- (TRIRunningXPCActivityDescriptor)initWithActivity:(id)a3 capabilities:(unint64_t)a4 name:(id)a5
+- (TRIRunningXPCActivityDescriptor)initWithActivity:(id)activity capabilities:(unint64_t)capabilities name:(id)name
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  activityCopy = activity;
+  nameCopy = name;
+  v12 = nameCopy;
+  if (activityCopy)
   {
-    if (v11)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -21,8 +21,8 @@
 
   else
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"TRIXPCActivitySupport.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"activity"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCActivitySupport.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"activity"}];
 
     if (v12)
     {
@@ -30,8 +30,8 @@
     }
   }
 
-  v26 = [MEMORY[0x277CCA890] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"TRIXPCActivitySupport.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCActivitySupport.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
 LABEL_3:
   v34.receiver = self;
@@ -40,15 +40,15 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_activity, a3);
-    objc_storeStrong(&v14->_name, a5);
-    v14->_capabilities = a4;
+    objc_storeStrong(&v13->_activity, activity);
+    objc_storeStrong(&v14->_name, name);
+    v14->_capabilities = capabilities;
     v14->_generationCount = atomic_fetch_add(nextActivityGenerationCount, 1u);
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __70__TRIRunningXPCActivityDescriptor_initWithActivity_capabilities_name___block_invoke;
     v31[3] = &unk_279DE01E0;
-    v15 = v10;
+    v15 = activityCopy;
     v32 = v15;
     v16 = v12;
     v33 = v16;
@@ -69,8 +69,8 @@ LABEL_3:
 
     if (![v19 UTF8String])
     {
-      v27 = [MEMORY[0x277CCA890] currentHandler];
-      [v27 handleFailureInMethod:a2 object:v14 file:@"TRIXPCActivitySupport.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"txnName"}];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:v14 file:@"TRIXPCActivitySupport.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"txnName"}];
     }
 
     v22 = os_transaction_create();
@@ -149,7 +149,7 @@ void __70__TRIRunningXPCActivityDescriptor_initWithActivity_capabilities_name___
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initForImmediateWorkWithCapabilities:(unint64_t)a3
+- (id)initForImmediateWorkWithCapabilities:(unint64_t)capabilities
 {
   v18.receiver = self;
   v18.super_class = TRIRunningXPCActivityDescriptor;
@@ -157,9 +157,9 @@ void __70__TRIRunningXPCActivityDescriptor_initWithActivity_capabilities_name___
   if (v5)
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [MEMORY[0x277CCAD78] UUID];
-    v8 = [v7 UUIDString];
-    v9 = [v6 stringWithFormat:@"com.apple.triald.immediate.%@", v8];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v9 = [v6 stringWithFormat:@"com.apple.triald.immediate.%@", uUIDString];
     name = v5->_name;
     v5->_name = v9;
 
@@ -172,11 +172,11 @@ void __70__TRIRunningXPCActivityDescriptor_initWithActivity_capabilities_name___
     completion = v5->_completion;
     v5->_completion = &__block_literal_global_35;
 
-    v5->_capabilities = a3;
+    v5->_capabilities = capabilities;
     if (![(NSString *)v5->_name UTF8String])
     {
-      v17 = [MEMORY[0x277CCA890] currentHandler];
-      [v17 handleFailureInMethod:a2 object:v5 file:@"TRIXPCActivitySupport.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"txnName"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v5 file:@"TRIXPCActivitySupport.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"txnName"}];
     }
 
     v14 = os_transaction_create();

@@ -1,6 +1,6 @@
 @interface FTRegionSupport
 + (id)sharedInstance;
-- (id)regionForID:(id)a3;
+- (id)regionForID:(id)d;
 - (void)_buildMessageDeliveryIfNeeded;
 - (void)dealloc;
 - (void)flushRegions;
@@ -73,16 +73,16 @@
   [(FTMessageDelivery *)delivery invalidate];
 }
 
-- (id)regionForID:(id)a3
+- (id)regionForID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(FTRegionSupport *)self regions];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  regions = [(FTRegionSupport *)self regions];
+  v6 = [regions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -93,10 +93,10 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(regions);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) regionWithID:v4];
+        v10 = [*(*(&v14 + 1) + 8 * i) regionWithID:dCopy];
         if (v10)
         {
           v11 = v10;
@@ -104,7 +104,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [regions countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;

@@ -1,6 +1,6 @@
 @interface ClimateGroupedDefrostsButton
 - (_TtC7Climate28ClimateGroupedDefrostsButton)init;
-- (void)defrostService:(id)a3 didUpdateLevel:(unsigned __int8)a4;
+- (void)defrostService:(id)service didUpdateLevel:(unsigned __int8)level;
 - (void)layoutSubviews;
 @end
 
@@ -26,9 +26,9 @@
   [v2 _setCornerRadius:{15.0, v3.receiver, v3.super_class}];
 }
 
-- (void)defrostService:(id)a3 didUpdateLevel:(unsigned __int8)a4
+- (void)defrostService:(id)service didUpdateLevel:(unsigned __int8)level
 {
-  v4 = self;
+  selfCopy = self;
   sub_100069244();
 }
 

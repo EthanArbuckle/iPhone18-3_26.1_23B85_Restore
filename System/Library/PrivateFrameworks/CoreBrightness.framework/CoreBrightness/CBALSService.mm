@@ -1,11 +1,11 @@
 @interface CBALSService
 - (BOOL)updateEventData;
-- (CBALSService)initWithHIDALSServiceClient:(__IOHIDServiceClient *)a3;
+- (CBALSService)initWithHIDALSServiceClient:(__IOHIDServiceClient *)client;
 - (id)copyDataInDictionary;
 - (id)description;
 - (void)dealloc;
 - (void)resetEventData;
-- (void)setEvent:(__IOHIDEvent *)a3;
+- (void)setEvent:(__IOHIDEvent *)event;
 @end
 
 @implementation CBALSService
@@ -27,18 +27,18 @@
 
 - (id)copyDataInDictionary
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   v12 = 0;
   v3[17] = 0x1E696A000uLL;
   v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:self->_desc];
-  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:v14->_location];
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v14->super._builtIn];
-  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:*(&v14->super._builtIn + 1)];
-  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:*&v14->_validData];
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:v14->_y];
-  v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:*&v14->_colorSupport];
-  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:v14->_x];
+  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:selfCopy->_location];
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:selfCopy->super._builtIn];
+  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:*(&selfCopy->super._builtIn + 1)];
+  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:*&selfCopy->_validData];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:selfCopy->_y];
+  v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:*&selfCopy->_colorSupport];
+  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:selfCopy->_x];
   if (v11 && v10 && v9 && v8 && v7 && v6 && v5 && v4)
   {
     v3[16] = v3;
@@ -56,116 +56,116 @@
   return v12;
 }
 
-- (CBALSService)initWithHIDALSServiceClient:(__IOHIDServiceClient *)a3
+- (CBALSService)initWithHIDALSServiceClient:(__IOHIDServiceClient *)client
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.CBALSService.%lu", objc_msgSend(IOHIDServiceClientGetRegistryID(a3), "unsignedIntegerValue")];
-  v13.receiver = v17;
+  clientCopy = client;
+  v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.CBALSService.%lu", objc_msgSend(IOHIDServiceClientGetRegistryID(client), "unsignedIntegerValue")];
+  v13.receiver = selfCopy;
   v13.super_class = CBALSService;
-  v17 = [(CBHIDService *)&v13 initWithHIDServiceClient:v15 andIdentifier:v14];
-  if (v17)
+  selfCopy = [(CBHIDService *)&v13 initWithHIDServiceClient:clientCopy andIdentifier:v14];
+  if (selfCopy)
   {
-    v12 = IOHIDServiceClientCopyProperty(v17->super._service, @"SensorLocation");
+    v12 = IOHIDServiceClientCopyProperty(selfCopy->super._service, @"SensorLocation");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [v12 unsignedIntegerValue];
-      v17->_desc = v3;
+      unsignedIntegerValue = [v12 unsignedIntegerValue];
+      selfCopy->_desc = unsignedIntegerValue;
     }
 
     MEMORY[0x1E69E5920](v12);
-    v11 = IOHIDServiceClientCopyProperty(v17->super._service, @"Placement");
+    v11 = IOHIDServiceClientCopyProperty(selfCopy->super._service, @"Placement");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v11 unsignedIntegerValue];
-      v17->_location = v4;
+      unsignedIntegerValue2 = [v11 unsignedIntegerValue];
+      selfCopy->_location = unsignedIntegerValue2;
     }
 
     MEMORY[0x1E69E5920](v11);
-    v10 = IOHIDServiceClientCopyProperty(v17->super._service, @"Built-In");
+    v10 = IOHIDServiceClientCopyProperty(selfCopy->super._service, @"Built-In");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v10 BOOLValue];
-      v17->super._builtIn = v5;
+      bOOLValue = [v10 BOOLValue];
+      selfCopy->super._builtIn = bOOLValue;
     }
 
     MEMORY[0x1E69E5920](v10);
-    v9 = IOHIDServiceClientCopyProperty(v17->super._service, @"ColorSupport");
+    v9 = IOHIDServiceClientCopyProperty(selfCopy->super._service, @"ColorSupport");
     if (!v9)
     {
-      v9 = IOHIDServiceClientCopyProperty(v17->super._service, @"crgb");
+      v9 = IOHIDServiceClientCopyProperty(selfCopy->super._service, @"crgb");
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v9 BOOLValue];
-      LOBYTE(v17->_lux) = v6;
+      bOOLValue2 = [v9 BOOLValue];
+      LOBYTE(selfCopy->_lux) = bOOLValue2;
     }
 
     *&v7 = MEMORY[0x1E69E5920](v9).n128_u64[0];
-    [(CBALSService *)v17 updateEventData];
+    [(CBALSService *)selfCopy updateEventData];
   }
 
   MEMORY[0x1E69E5920](v14);
-  return v17;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   *&v2 = MEMORY[0x1E69E5920](*&self->_CCT).n128_u64[0];
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBALSService;
   [(CBHIDService *)&v3 dealloc];
 }
 
-- (void)setEvent:(__IOHIDEvent *)a3
+- (void)setEvent:(__IOHIDEvent *)event
 {
   v33 = *MEMORY[0x1E69E9840];
-  v31 = self;
+  selfCopy = self;
   v30 = a2;
-  v29 = a3;
+  eventCopy = event;
   [(CBALSService *)self resetEventData];
-  if (v29)
+  if (eventCopy)
   {
-    v31->super._event = v29;
-    CFRetain(v31->super._event);
-    event = v31->super._event;
+    selfCopy->super._event = eventCopy;
+    CFRetain(selfCopy->super._event);
+    event = selfCopy->super._event;
     IOHIDEventGetDoubleValue();
-    *&v31->_validData = v4;
-    if (*&v31->_validData < 0.0)
+    *&selfCopy->_validData = v4;
+    if (*&selfCopy->_validData < 0.0)
     {
-      *&v31->_validData = 0;
+      *&selfCopy->_validData = 0;
     }
 
-    v5 = v31->super._event;
+    v5 = selfCopy->super._event;
     if (IOHIDEventGetIntegerValue() == 1)
     {
-      v6 = v31->super._event;
+      v6 = selfCopy->super._event;
       IOHIDEventGetDoubleValue();
-      *&v31->_validData = v7;
-      v8 = v31->super._event;
+      *&selfCopy->_validData = v7;
+      v8 = selfCopy->super._event;
       IOHIDEventGetDoubleValue();
-      v31->_y = v9;
-      v10 = v31->super._event;
+      selfCopy->_y = v9;
+      v10 = selfCopy->super._event;
       IOHIDEventGetDoubleValue();
       v25 = v11;
-      v12 = v31->super._event;
+      v12 = selfCopy->super._event;
       IOHIDEventGetDoubleValue();
       v24 = v13;
-      v14 = v31->super._event;
+      v14 = selfCopy->super._event;
       IOHIDEventGetDoubleValue();
       v23 = *&v15;
       v22 = *&v25 + *&v24 + v15;
-      if (v31->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        logHandle = v31->super._logHandle;
+        logHandle = selfCopy->super._logHandle;
       }
 
       else
@@ -185,25 +185,25 @@
 
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
       {
-        __os_log_helper_16_0_6_8_0_8_0_8_0_8_0_8_0_8_0(v32, *&v22, v25, v24, v23, *&v31->_validData, *&v31->_y);
+        __os_log_helper_16_0_6_8_0_8_0_8_0_8_0_8_0_8_0(v32, *&v22, v25, v24, v23, *&selfCopy->_validData, *&selfCopy->_y);
         _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "sum:%f tempX=%f tempY=%f tempZ:%f lux=%f CCT=%f", v32, 0x3Eu);
       }
 
       if (v22 != 0.0)
       {
-        *&v31->_colorSupport = *&v25 / v22;
-        v31->_x = *&v24 / v22;
+        *&selfCopy->_colorSupport = *&v25 / v22;
+        selfCopy->_x = *&v24 / v22;
       }
     }
 
-    *(&v31->super._builtIn + 1) = 1;
+    *(&selfCopy->super._builtIn + 1) = 1;
   }
 
   else
   {
-    if (v31->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v21 = v31->super._logHandle;
+      v21 = selfCopy->super._logHandle;
     }
 
     else
@@ -237,32 +237,32 @@
 
 - (id)description
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   if (*&self->_CCT)
   {
-    MEMORY[0x1E69E5920](*&v15->_CCT);
+    MEMORY[0x1E69E5920](*&selfCopy->_CCT);
   }
 
   v13 = 0;
   v12 = 0;
-  v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"id=0x%lX location=%lu internal=%d placement=%lu", v15->super._registryID, v15->_desc, v15->super._builtIn, v15->_location];
-  if (*(&v15->super._builtIn + 1))
+  v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"id=0x%lX location=%lu internal=%d placement=%lu", selfCopy->super._registryID, selfCopy->_desc, selfCopy->super._builtIn, selfCopy->_location];
+  if (*(&selfCopy->super._builtIn + 1))
   {
-    if (LOBYTE(v15->_lux))
+    if (LOBYTE(selfCopy->_lux))
     {
       v2 = objc_alloc(MEMORY[0x1E696AEC0]);
-      y = v15->_y;
-      v4 = *&v15->_colorSupport;
-      x = v15->_x;
-      v10 = *&v15->_validData;
+      y = selfCopy->_y;
+      v4 = *&selfCopy->_colorSupport;
+      x = selfCopy->_x;
+      v10 = *&selfCopy->_validData;
       v13 = [v2 initWithFormat:@"lux=%f CCT=%f xy= %f | %f", v10, *&y, v4, *&x];
     }
 
     else
     {
       v6 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v10 = *&v15->_validData;
+      v10 = *&selfCopy->_validData;
       v13 = [v6 initWithFormat:@"lux=%f", v10];
     }
   }
@@ -270,10 +270,10 @@
   v7 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8 = [v7 initWithFormat:@"service %@ | data %@", v12, v13];
   v11 = &OBJC_IVAR___CBAODState__thresholdsAPDeltaPBrightenBuckets;
-  *&v15->_CCT = v8;
+  *&selfCopy->_CCT = v8;
   MEMORY[0x1E69E5920](v13);
   MEMORY[0x1E69E5920](v12);
-  return *(&v15->super.super.isa + v11[653]);
+  return *(&selfCopy->super.super.isa + v11[653]);
 }
 
 - (BOOL)updateEventData

@@ -1,27 +1,27 @@
 @interface _BKSHIDStringIdentifierEventDeferringToken
 + (id)protobufSchema;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_BKSHIDStringIdentifierEventDeferringToken)init;
-- (_BKSHIDStringIdentifierEventDeferringToken)initWithCoder:(id)a3;
-- (id)_initWithString:(id)a3;
+- (_BKSHIDStringIdentifierEventDeferringToken)initWithCoder:(id)coder;
+- (id)_initWithString:(id)string;
 - (id)initForProtobufDecoding;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BKSHIDStringIdentifierEventDeferringToken
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v6 = a3;
-  v4 = [(_BKSHIDStringIdentifierEventDeferringToken *)self _string];
-  v5 = [v6 appendObject:v4 withName:0 skipIfNil:0];
+  formatterCopy = formatter;
+  _string = [(_BKSHIDStringIdentifierEventDeferringToken *)self _string];
+  v5 = [formatterCopy appendObject:_string withName:0 skipIfNil:0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -31,7 +31,7 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v6 = [(NSString *)self->_stringIdentifier isEqual:v4->_stringIdentifier];
+      v6 = [(NSString *)self->_stringIdentifier isEqual:equalCopy->_stringIdentifier];
     }
 
     else
@@ -43,23 +43,23 @@
   return v6;
 }
 
-- (_BKSHIDStringIdentifierEventDeferringToken)initWithCoder:(id)a3
+- (_BKSHIDStringIdentifierEventDeferringToken)initWithCoder:(id)coder
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = _BKSHIDStringIdentifierEventDeferringToken;
-  v5 = [(BKSHIDEventDeferringToken *)&v22 _init];
+  _init = [(BKSHIDEventDeferringToken *)&v22 _init];
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stringIdentifier"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stringIdentifier"];
     if ([v13 length])
     {
-      v14 = v5[1];
-      v5[1] = v13;
+      v14 = _init[1];
+      _init[1] = v13;
 
-      v12 = v5;
+      v12 = _init;
       goto LABEL_6;
     }
 
@@ -70,7 +70,7 @@
     v26[0] = v19;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v21 = [v17 errorWithDomain:v18 code:4866 userInfo:v20];
-    [v4 failWithError:v21];
+    [coderCopy failWithError:v21];
   }
 
   else
@@ -82,7 +82,7 @@
     v24 = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v11 = [v7 errorWithDomain:v8 code:4866 userInfo:v10];
-    [v4 failWithError:v11];
+    [coderCopy failWithError:v11];
   }
 
   v12 = 0;
@@ -92,12 +92,12 @@ LABEL_6:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if ([(NSString *)self->_stringIdentifier length])
   {
-    [v4 encodeObject:self->_stringIdentifier forKey:@"stringIdentifier"];
+    [coderCopy encodeObject:self->_stringIdentifier forKey:@"stringIdentifier"];
   }
 }
 
@@ -106,7 +106,7 @@ LABEL_6:
   v24 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = _BKSHIDStringIdentifierEventDeferringToken;
-  v3 = [(BKSHIDEventDeferringToken *)&v11 _init];
+  _init = [(BKSHIDEventDeferringToken *)&v11 _init];
   v4 = objc_opt_class();
   if (v4 != objc_opt_class())
   {
@@ -121,7 +121,7 @@ LABEL_6:
       v14 = 2114;
       v15 = v10;
       v16 = 2048;
-      v17 = v3;
+      v17 = _init;
       v18 = 2114;
       v19 = @"BKSHIDEventDeferringToken.m";
       v20 = 1024;
@@ -138,23 +138,23 @@ LABEL_6:
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return _init;
 }
 
-- (id)_initWithString:(id)a3
+- (id)_initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = _BKSHIDStringIdentifierEventDeferringToken;
-  v5 = [(BKSHIDEventDeferringToken *)&v9 _init];
-  if (v5)
+  _init = [(BKSHIDEventDeferringToken *)&v9 _init];
+  if (_init)
   {
-    v6 = [v4 copy];
-    v7 = v5[1];
-    v5[1] = v6;
+    v6 = [stringCopy copy];
+    v7 = _init[1];
+    _init[1] = v6;
   }
 
-  return v5;
+  return _init;
 }
 
 - (_BKSHIDStringIdentifierEventDeferringToken)init
@@ -170,7 +170,7 @@ LABEL_6:
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventDeferringToken.m";
     v17 = 1024;
@@ -192,7 +192,7 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = __60___BKSHIDStringIdentifierEventDeferringToken_protobufSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (protobufSchema_onceToken_54 != -1)
   {
     dispatch_once(&protobufSchema_onceToken_54, block);

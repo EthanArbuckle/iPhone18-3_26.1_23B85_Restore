@@ -1,41 +1,41 @@
 @interface IMOverrideOffGridStatusPipelineComponent
-- (id)runIndividuallyWithInput:(id)a3;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMOverrideOffGridStatusPipelineComponent
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
-  v3 = a3;
-  v4 = [v3 senderRegistrationProperties];
-  v5 = [v4 containsObject:*MEMORY[0x277D18910]];
+  inputCopy = input;
+  senderRegistrationProperties = [inputCopy senderRegistrationProperties];
+  v5 = [senderRegistrationProperties containsObject:*MEMORY[0x277D18910]];
 
-  v6 = [v3 chat];
-  v7 = v6;
-  if (v5 && [v6 style] == 45)
+  chat = [inputCopy chat];
+  v7 = chat;
+  if (v5 && [chat style] == 45)
   {
-    v8 = [v7 participants];
-    v9 = [v8 firstObject];
+    participants = [v7 participants];
+    firstObject = [participants firstObject];
 
-    if ([v9 cachedOffGridMode])
+    if ([firstObject cachedOffGridMode])
     {
       v10 = MEMORY[0x277CBEAA8];
-      v11 = [v3 timestamp];
-      v12 = [v10 __im_iMessageDateFromTimeStamp:v11];
+      timestamp = [inputCopy timestamp];
+      v12 = [v10 __im_iMessageDateFromTimeStamp:timestamp];
 
-      v13 = [MEMORY[0x277D1A9F8] sharedInstance];
-      v14 = [v9 ID];
-      [v13 overrideStatusForHandleWithID:v14 publishedBeforeDate:v12];
+      mEMORY[0x277D1A9F8] = [MEMORY[0x277D1A9F8] sharedInstance];
+      v14 = [firstObject ID];
+      [mEMORY[0x277D1A9F8] overrideStatusForHandleWithID:v14 publishedBeforeDate:v12];
 
       v15 = +[IMDBroadcastController sharedProvider];
-      v16 = [v15 broadcasterForChatListeners];
-      v17 = [v7 accountID];
-      v18 = [v9 ID];
-      [v16 account:v17 handleID:v18 updatedLastReceivedOnGridMessageDate:v12];
+      broadcasterForChatListeners = [v15 broadcasterForChatListeners];
+      accountID = [v7 accountID];
+      v18 = [firstObject ID];
+      [broadcasterForChatListeners account:accountID handleID:v18 updatedLastReceivedOnGridMessageDate:v12];
     }
   }
 
-  v19 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v3];
+  v19 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
 
   return v19;
 }

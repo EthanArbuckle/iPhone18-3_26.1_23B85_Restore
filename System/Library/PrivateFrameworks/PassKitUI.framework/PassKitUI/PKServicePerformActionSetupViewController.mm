@@ -1,10 +1,10 @@
 @interface PKServicePerformActionSetupViewController
 - (unint64_t)supportedInterfaceOrientations;
-- (void)configureWithPassUniqueIdentifier:(id)a3 actionType:(unint64_t)a4 completion:(id)a5;
+- (void)configureWithPassUniqueIdentifier:(id)identifier actionType:(unint64_t)type completion:(id)completion;
 - (void)dismiss;
-- (void)performActionViewControllerDidCancel:(id)a3;
-- (void)performActionViewControllerDidPerformAction:(id)a3;
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4;
+- (void)performActionViewControllerDidCancel:(id)cancel;
+- (void)performActionViewControllerDidPerformAction:(id)action;
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation PKServicePerformActionSetupViewController
@@ -22,10 +22,10 @@
   }
 }
 
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v13 = *MEMORY[0x1E69E9840];
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -36,18 +36,18 @@
     v9 = 138543618;
     v10 = v8;
     v11 = 2048;
-    v12 = a4;
+    scaleCopy = scale;
     _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Setting display properties with screenSize=%{public}@ scale=%.f", &v9, 0x16u);
   }
 
   PKSetDisplayProperties();
 }
 
-- (void)configureWithPassUniqueIdentifier:(id)a3 actionType:(unint64_t)a4 completion:(id)a5
+- (void)configureWithPassUniqueIdentifier:(id)identifier actionType:(unint64_t)type completion:(id)completion
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   [(PKServicePerformActionSetupViewController *)self _hostAuditToken];
   v10 = SecTaskCreateWithAuditToken(0, &token);
   if (!v10)
@@ -60,10 +60,10 @@
   if (![v12 BOOLValue])
   {
     v13 = SecTaskCopyValueForEntitlement(v11, *MEMORY[0x1E69B9368], 0);
-    v14 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
 
     CFRelease(v11);
-    if (v14)
+    if (bOOLValue)
     {
       goto LABEL_5;
     }
@@ -72,18 +72,18 @@ LABEL_16:
     v27 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      v36 = [(PKServicePerformActionSetupViewController *)self _hostApplicationBundleIdentifier];
+      _hostApplicationBundleIdentifier = [(PKServicePerformActionSetupViewController *)self _hostApplicationBundleIdentifier];
       token.val[0] = 138543362;
-      *&token.val[1] = v36;
+      *&token.val[1] = _hostApplicationBundleIdentifier;
       _os_log_error_impl(&dword_1BD026000, v27, OS_LOG_TYPE_ERROR, "%{public}@ missing entitlement", &token, 0xCu);
       goto LABEL_38;
     }
 
 LABEL_17:
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     [(PKServicePerformActionSetupViewController *)self dismiss];
@@ -93,25 +93,25 @@ LABEL_17:
   CFRelease(v11);
 
 LABEL_5:
-  v15 = [MEMORY[0x1E69B8A58] sharedInstance];
-  v16 = [v15 passWithUniqueID:v8];
-  v17 = [v16 paymentPass];
+  mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+  v16 = [mEMORY[0x1E69B8A58] passWithUniqueID:identifierCopy];
+  paymentPass = [v16 paymentPass];
 
-  if (!v17)
+  if (!paymentPass)
   {
-    v18 = [MEMORY[0x1E69B8A58] sharedInstanceWithRemoteLibrary];
-    v19 = [v18 _remoteLibrary];
-    v20 = [v19 passWithUniqueID:v8];
-    v17 = [v20 paymentPass];
+    mEMORY[0x1E69B8A58]2 = [MEMORY[0x1E69B8A58] sharedInstanceWithRemoteLibrary];
+    _remoteLibrary = [mEMORY[0x1E69B8A58]2 _remoteLibrary];
+    v20 = [_remoteLibrary passWithUniqueID:identifierCopy];
+    paymentPass = [v20 paymentPass];
 
-    if (!v17)
+    if (!paymentPass)
     {
       v27 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v36 = PKPaymentPassActionTypeToString();
+        _hostApplicationBundleIdentifier = PKPaymentPassActionTypeToString();
         token.val[0] = 138412290;
-        *&token.val[1] = v36;
+        *&token.val[1] = _hostApplicationBundleIdentifier;
         _os_log_impl(&dword_1BD026000, v27, OS_LOG_TYPE_DEFAULT, "No payment pass to perform top up action %@", &token, 0xCu);
 LABEL_38:
 
@@ -122,7 +122,7 @@ LABEL_38:
     }
   }
 
-  [v17 availableActions];
+  [paymentPass availableActions];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -142,29 +142,29 @@ LABEL_38:
         }
 
         v26 = *(*(&v46 + 1) + 8 * i);
-        if ([v26 type] == a4)
+        if ([v26 type] == type)
         {
           v44 = 0;
           v45 = 0;
-          v28 = [v17 canPerformAction:v26 unableReason:&v45 displayableError:&v44];
+          v28 = [paymentPass canPerformAction:v26 unableReason:&v45 displayableError:&v44];
           v29 = v44;
           if ((v28 & 1) != 0 || v45 == 2)
           {
             if ([v26 hasExternalActionContent])
             {
-              v34 = [v26 externalActionContent];
-              v35 = [v26 title];
+              externalActionContent = [v26 externalActionContent];
+              title = [v26 title];
               v43[0] = MEMORY[0x1E69E9820];
               v43[1] = 3221225472;
               v43[2] = __101__PKServicePerformActionSetupViewController_configureWithPassUniqueIdentifier_actionType_completion___block_invoke;
               v43[3] = &unk_1E8014560;
               v43[4] = self;
-              PKPaymentPassActionPerformExternalActionContent(v17, v34, v35, v43);
+              PKPaymentPassActionPerformExternalActionContent(paymentPass, externalActionContent, title, v43);
             }
 
             else
             {
-              v37 = [[PKPerformActionViewController alloc] initWithPass:v17 action:v26];
+              v37 = [[PKPerformActionViewController alloc] initWithPass:paymentPass action:v26];
               [(PKPerformActionViewController *)v37 setDelegate:self];
               v38 = objc_alloc_init(PKNavigationController);
               [(PKNavigationController *)v38 setSupportedInterfaceOrientations:2];
@@ -223,9 +223,9 @@ LABEL_38:
 
 LABEL_33:
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
 LABEL_36:
@@ -249,22 +249,22 @@ void __101__PKServicePerformActionSetupViewController_configureWithPassUniqueIde
 
 - (void)dismiss
 {
-  v2 = [(PKServicePerformActionSetupViewController *)self _remoteViewControllerProxy];
-  [v2 didCancelAction];
+  _remoteViewControllerProxy = [(PKServicePerformActionSetupViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy didCancelAction];
 }
 
-- (void)performActionViewControllerDidCancel:(id)a3
+- (void)performActionViewControllerDidCancel:(id)cancel
 {
-  [a3 setDelegate:0];
+  [cancel setDelegate:0];
 
   [(PKServicePerformActionSetupViewController *)self dismiss];
 }
 
-- (void)performActionViewControllerDidPerformAction:(id)a3
+- (void)performActionViewControllerDidPerformAction:(id)action
 {
-  [a3 setDelegate:0];
-  v4 = [(PKServicePerformActionSetupViewController *)self _remoteViewControllerProxy];
-  [v4 didPerformAction];
+  [action setDelegate:0];
+  _remoteViewControllerProxy = [(PKServicePerformActionSetupViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy didPerformAction];
 }
 
 @end

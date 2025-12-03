@@ -1,13 +1,13 @@
 @interface GKContactsIntegrationCohortState
-+ (GKContactsIntegrationCohortState)stateWithMoc:(id)a3;
-- (id)initWithFetchResult:(id)a3;
++ (GKContactsIntegrationCohortState)stateWithMoc:(id)moc;
+- (id)initWithFetchResult:(id)result;
 @end
 
 @implementation GKContactsIntegrationCohortState
 
-+ (GKContactsIntegrationCohortState)stateWithMoc:(id)a3
++ (GKContactsIntegrationCohortState)stateWithMoc:(id)moc
 {
-  v3 = a3;
+  mocCopy = moc;
   v4 = +[GKCDIDSInfo _gkFetchRequest];
   v5 = [NSExpression expressionForKeyPath:@"cohort"];
   v20 = v5;
@@ -29,7 +29,7 @@
 
   [v4 setResultType:2];
   v17 = 0;
-  v11 = [v3 executeFetchRequest:v4 error:&v17];
+  v11 = [mocCopy executeFetchRequest:v4 error:&v17];
 
   v12 = v17;
   if (v12)
@@ -56,14 +56,14 @@
   return v15;
 }
 
-- (id)initWithFetchResult:(id)a3
+- (id)initWithFetchResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v4 = [resultCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v4)
   {
     v5 = v4;
@@ -79,44 +79,44 @@
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(resultCopy);
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
         v10 = [v9 objectForKeyedSubscript:@"cohort"];
-        v11 = [v10 intValue];
+        intValue = [v10 intValue];
 
         v12 = [v9 objectForKeyedSubscript:@"count"];
-        v13 = [v12 integerValue];
+        integerValue = [v12 integerValue];
 
-        if (v11 <= 0)
+        if (intValue <= 0)
         {
-          if (v11 == -1)
+          if (intValue == -1)
           {
-            v17 = v13;
+            v17 = integerValue;
           }
         }
 
         else
         {
-          switch(v11)
+          switch(intValue)
           {
             case 1:
-              v20 = v13;
+              v20 = integerValue;
               break;
             case 3:
-              v19 = v13;
+              v19 = integerValue;
               break;
             case 2:
-              v18 = v13;
+              v18 = integerValue;
               break;
           }
         }
 
-        v6 += v13;
+        v6 += integerValue;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v5 = [resultCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v5);

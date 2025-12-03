@@ -6,8 +6,8 @@
 
 + (NSString)footerString
 {
-  v2 = [MEMORY[0x1E698E020] biometryType];
-  if (v2 == 1 || v2 == 2)
+  biometryType = [MEMORY[0x1E698E020] biometryType];
+  if (biometryType == 1 || biometryType == 2)
   {
     [MEMORY[0x1E698E020] deviceClass];
   }

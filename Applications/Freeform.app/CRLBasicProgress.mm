@@ -1,27 +1,27 @@
 @interface CRLBasicProgress
-- (CRLBasicProgress)initWithMaxValue:(double)a3;
+- (CRLBasicProgress)initWithMaxValue:(double)value;
 - (id)initForSubclass;
-- (void)setIndeterminate:(BOOL)a3;
-- (void)setValue:(double)a3;
+- (void)setIndeterminate:(BOOL)indeterminate;
+- (void)setValue:(double)value;
 @end
 
 @implementation CRLBasicProgress
 
-- (CRLBasicProgress)initWithMaxValue:(double)a3
+- (CRLBasicProgress)initWithMaxValue:(double)value
 {
   v8.receiver = self;
   v8.super_class = CRLBasicProgress;
-  v4 = [(CRLProgress *)&v8 initForSubclass];
-  if (v4)
+  initForSubclass = [(CRLProgress *)&v8 initForSubclass];
+  if (initForSubclass)
   {
     v5 = objc_alloc_init(CRLBasicProgressStorage);
-    storage = v4->_storage;
-    v4->_storage = v5;
+    storage = initForSubclass->_storage;
+    initForSubclass->_storage = v5;
 
-    [(CRLBasicProgressStorage *)v4->_storage setMaxValue:a3];
+    [(CRLBasicProgressStorage *)initForSubclass->_storage setMaxValue:value];
   }
 
-  return v4;
+  return initForSubclass;
 }
 
 - (id)initForSubclass
@@ -74,16 +74,16 @@
   objc_exception_throw(v10);
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  [(CRLBasicProgressStorage *)self->_storage setValue:a3];
+  [(CRLBasicProgressStorage *)self->_storage setValue:value];
 
   [(CRLProgress *)self protected_progressDidChange];
 }
 
-- (void)setIndeterminate:(BOOL)a3
+- (void)setIndeterminate:(BOOL)indeterminate
 {
-  [(CRLBasicProgressStorage *)self->_storage setIndeterminate:a3];
+  [(CRLBasicProgressStorage *)self->_storage setIndeterminate:indeterminate];
 
   [(CRLProgress *)self protected_progressDidChange];
 }

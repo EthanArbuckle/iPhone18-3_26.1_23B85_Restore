@@ -1,5 +1,5 @@
 @interface PTInferenceANEConfig
-- (PTInferenceANEConfig)initWithEspressoPlanPriority:(int)a3 espressoEngine:(int)a4;
+- (PTInferenceANEConfig)initWithEspressoPlanPriority:(int)priority espressoEngine:(int)engine;
 - (id)MLANEExecutionPriority;
 - (int)E5ExecutionPriority;
 - (unint64_t)VNRequestModelExecutionPriority;
@@ -7,7 +7,7 @@
 
 @implementation PTInferenceANEConfig
 
-- (PTInferenceANEConfig)initWithEspressoPlanPriority:(int)a3 espressoEngine:(int)a4
+- (PTInferenceANEConfig)initWithEspressoPlanPriority:(int)priority espressoEngine:(int)engine
 {
   v10.receiver = self;
   v10.super_class = PTInferenceANEConfig;
@@ -15,8 +15,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_espressoPlanPriority = a3;
-    v6->_espressoEngine = a4;
+    v6->_espressoPlanPriority = priority;
+    v6->_espressoEngine = engine;
     v8 = v6;
   }
 

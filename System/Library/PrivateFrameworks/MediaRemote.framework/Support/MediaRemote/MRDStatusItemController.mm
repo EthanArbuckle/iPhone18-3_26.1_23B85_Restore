@@ -1,41 +1,41 @@
 @interface MRDStatusItemController
-+ (id)controllerForStatusItemIdentifier:(id)a3;
-- (MRDStatusItemController)initWithStatusItemIdentifier:(id)a3;
++ (id)controllerForStatusItemIdentifier:(id)identifier;
+- (MRDStatusItemController)initWithStatusItemIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)publishNewData;
-- (void)setIsStatusItemActive:(BOOL)a3;
+- (void)setIsStatusItemActive:(BOOL)active;
 @end
 
 @implementation MRDStatusItemController
 
-+ (id)controllerForStatusItemIdentifier:(id)a3
++ (id)controllerForStatusItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (qword_100529518 != -1)
   {
     sub_1003AA714();
   }
 
-  v5 = [qword_100529520 objectForKeyedSubscript:v4];
+  v5 = [qword_100529520 objectForKeyedSubscript:identifierCopy];
   v6 = v5;
-  if (v4 && !v5)
+  if (identifierCopy && !v5)
   {
-    v6 = [[a1 alloc] initWithStatusItemIdentifier:v4];
-    [qword_100529520 setObject:v6 forKeyedSubscript:v4];
+    v6 = [[self alloc] initWithStatusItemIdentifier:identifierCopy];
+    [qword_100529520 setObject:v6 forKeyedSubscript:identifierCopy];
   }
 
   return v6;
 }
 
-- (MRDStatusItemController)initWithStatusItemIdentifier:(id)a3
+- (MRDStatusItemController)initWithStatusItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = MRDStatusItemController;
   v5 = [(MRDStatusItemController *)&v14 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     statusItemIdentifier = v5->_statusItemIdentifier;
     v5->_statusItemIdentifier = v6;
 
@@ -48,7 +48,7 @@
     v12[1] = 3221225472;
     v12[2] = sub_100141630;
     v12[3] = &unk_1004BEA78;
-    v13 = v4;
+    v13 = identifierCopy;
     [(STStatusItemsStatusDomainPublisher *)v10 handleUserInteractionsWithBlock:v12];
   }
 
@@ -63,11 +63,11 @@
   [(MRDStatusItemController *)&v3 dealloc];
 }
 
-- (void)setIsStatusItemActive:(BOOL)a3
+- (void)setIsStatusItemActive:(BOOL)active
 {
-  if (self->_statusItemActive != a3)
+  if (self->_statusItemActive != active)
   {
-    self->_statusItemActive = a3;
+    self->_statusItemActive = active;
     [(MRDStatusItemController *)self publishNewData];
   }
 }

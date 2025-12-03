@@ -1,20 +1,20 @@
 @interface MKFilesystemHelpers
-+ (BOOL)registerFilesystemBarrierAtURL:(id)a3 error:(id *)a4;
++ (BOOL)registerFilesystemBarrierAtURL:(id)l error:(id *)error;
 @end
 
 @implementation MKFilesystemHelpers
 
-+ (BOOL)registerFilesystemBarrierAtURL:(id)a3 error:(id *)a4
++ (BOOL)registerFilesystemBarrierAtURL:(id)l error:(id *)error
 {
-  v5 = open([a3 fileSystemRepresentation], 0);
+  v5 = open([l fileSystemRepresentation], 0);
   if (v5 < 0)
   {
-    if (a4)
+    if (error)
     {
       v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
       v9 = v8;
       result = 0;
-      *a4 = v8;
+      *error = v8;
       return result;
     }
   }
@@ -28,9 +28,9 @@
       return 1;
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
     }
 
     close(v6);

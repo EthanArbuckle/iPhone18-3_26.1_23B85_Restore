@@ -1,6 +1,6 @@
 @interface PXCuratedLibraryLabelConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -8,16 +8,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PXCuratedLibraryLabelConfiguration *)self text];
-  v3 = [v2 hash];
+  text = [(PXCuratedLibraryLabelConfiguration *)self text];
+  v3 = [text hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -27,14 +27,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXCuratedLibraryLabelConfiguration *)self text];
-      v7 = [(PXCuratedLibraryLabelConfiguration *)v5 text];
-      if ((v6 == v7 || [v6 isEqualToString:v7]) && (v8 = -[PXCuratedLibraryLabelConfiguration textAlignment](self, "textAlignment"), v8 == -[PXCuratedLibraryLabelConfiguration textAlignment](v5, "textAlignment")))
+      v5 = equalCopy;
+      text = [(PXCuratedLibraryLabelConfiguration *)self text];
+      text2 = [(PXCuratedLibraryLabelConfiguration *)v5 text];
+      if ((text == text2 || [text isEqualToString:text2]) && (v8 = -[PXCuratedLibraryLabelConfiguration textAlignment](self, "textAlignment"), v8 == -[PXCuratedLibraryLabelConfiguration textAlignment](v5, "textAlignment")))
       {
-        v9 = [(PXCuratedLibraryLabelConfiguration *)self textColor];
-        v10 = [(PXCuratedLibraryLabelConfiguration *)v5 textColor];
-        v11 = v9 == v10;
+        textColor = [(PXCuratedLibraryLabelConfiguration *)self textColor];
+        textColor2 = [(PXCuratedLibraryLabelConfiguration *)v5 textColor];
+        v11 = textColor == textColor2;
       }
 
       else
@@ -52,15 +52,15 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(PXCuratedLibraryLabelConfiguration *)self text];
-  [v4 setText:v5];
+  text = [(PXCuratedLibraryLabelConfiguration *)self text];
+  [v4 setText:text];
 
   [v4 setTextAlignment:{-[PXCuratedLibraryLabelConfiguration textAlignment](self, "textAlignment")}];
-  v6 = [(PXCuratedLibraryLabelConfiguration *)self textColor];
-  [v4 setTextColor:v6];
+  textColor = [(PXCuratedLibraryLabelConfiguration *)self textColor];
+  [v4 setTextColor:textColor];
 
   return v4;
 }

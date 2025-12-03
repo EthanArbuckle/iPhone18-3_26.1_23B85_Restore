@@ -5,10 +5,10 @@
 - (BOOL)initialized;
 - (BOOL)syncsBulletinDismissal;
 - (NSString)description;
-- (id)debugDescriptionWithChildren:(unint64_t)a3;
+- (id)debugDescriptionWithChildren:(unint64_t)children;
 - (id)defaultSectionInfo;
 - (id)defaultSubsectionInfos;
-- (id)displayNameForSubsectionID:(id)a3;
+- (id)displayNameForSubsectionID:(id)d;
 - (id)parentSectionIdentifier;
 - (id)sectionBundlePath;
 - (id)sectionDisplayName;
@@ -18,14 +18,14 @@
 - (id)sortDescriptors;
 - (id)sortKey;
 - (id)universalSectionIdentifier;
-- (void)bulletinsWithRequestParameters:(id)a3 lastCleared:(id)a4 completion:(id)a5;
-- (void)clearedInfoForBulletins:(id)a3 lastClearedInfo:(id)a4 completion:(id)a5;
-- (void)clearedInfoForClearingAllBulletinsWithLastClearedInfo:(id)a3 completion:(id)a4;
-- (void)clearedInfoForClearingBulletinsFromDate:(id)a3 toDate:(id)a4 lastClearedInfo:(id)a5 completion:(id)a6;
-- (void)reloadIdentityWithCompletion:(id)a3;
-- (void)setIdentity:(id)a3;
-- (void)updateClearedInfoWithClearedInfo:(id)a3 handler:(id)a4 completion:(id)a5;
-- (void)updateSectionInfoWithSectionInfo:(id)a3 handler:(id)a4 completion:(id)a5;
+- (void)bulletinsWithRequestParameters:(id)parameters lastCleared:(id)cleared completion:(id)completion;
+- (void)clearedInfoForBulletins:(id)bulletins lastClearedInfo:(id)info completion:(id)completion;
+- (void)clearedInfoForClearingAllBulletinsWithLastClearedInfo:(id)info completion:(id)completion;
+- (void)clearedInfoForClearingBulletinsFromDate:(id)date toDate:(id)toDate lastClearedInfo:(id)info completion:(id)completion;
+- (void)reloadIdentityWithCompletion:(id)completion;
+- (void)setIdentity:(id)identity;
+- (void)updateClearedInfoWithClearedInfo:(id)info handler:(id)handler completion:(id)completion;
+- (void)updateSectionInfoWithSectionInfo:(id)info handler:(id)handler completion:(id)completion;
 @end
 
 @implementation BBDataProvider
@@ -34,248 +34,248 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(BBDataProvider *)self sectionIdentifier];
-  v6 = [v3 stringWithFormat:@"<%@ %p %@>", v4, self, v5];;
+  sectionIdentifier = [(BBDataProvider *)self sectionIdentifier];
+  v6 = [v3 stringWithFormat:@"<%@ %p %@>", v4, self, sectionIdentifier];;
 
   return v6;
 }
 
 - (BBDataProviderIdentity)identity
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_identity;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_identity;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setIdentity:(id)a3
+- (void)setIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   obj = self;
   objc_sync_enter(obj);
   identity = obj->_identity;
-  obj->_identity = v4;
+  obj->_identity = identityCopy;
 
   objc_sync_exit(obj);
 }
 
 - (BOOL)initialized
 {
-  v2 = [(BBDataProvider *)self identity];
-  v3 = v2 != 0;
+  identity = [(BBDataProvider *)self identity];
+  v3 = identity != 0;
 
   return v3;
 }
 
 - (id)sectionIdentifier
 {
-  v2 = [(BBDataProvider *)self identity];
-  v3 = [v2 sectionIdentifier];
+  identity = [(BBDataProvider *)self identity];
+  sectionIdentifier = [identity sectionIdentifier];
 
-  return v3;
+  return sectionIdentifier;
 }
 
 - (id)universalSectionIdentifier
 {
-  v2 = [(BBDataProvider *)self identity];
-  v3 = [v2 universalSectionIdentifier];
+  identity = [(BBDataProvider *)self identity];
+  universalSectionIdentifier = [identity universalSectionIdentifier];
 
-  return v3;
+  return universalSectionIdentifier;
 }
 
 - (id)defaultSectionInfo
 {
-  v2 = [(BBDataProvider *)self identity];
-  v3 = [v2 defaultSectionInfo];
+  identity = [(BBDataProvider *)self identity];
+  defaultSectionInfo = [identity defaultSectionInfo];
 
-  return v3;
+  return defaultSectionInfo;
 }
 
 - (id)defaultSubsectionInfos
 {
-  v2 = [(BBDataProvider *)self identity];
-  v3 = [v2 defaultSubsectionInfos];
+  identity = [(BBDataProvider *)self identity];
+  defaultSubsectionInfos = [identity defaultSubsectionInfos];
 
-  return v3;
+  return defaultSubsectionInfos;
 }
 
 - (id)sectionDisplayName
 {
-  v2 = [(BBDataProvider *)self identity];
-  v3 = [v2 sectionDisplayName];
+  identity = [(BBDataProvider *)self identity];
+  sectionDisplayName = [identity sectionDisplayName];
 
-  return v3;
+  return sectionDisplayName;
 }
 
 - (id)sectionIcon
 {
-  v2 = [(BBDataProvider *)self identity];
-  v3 = [v2 sectionIcon];
+  identity = [(BBDataProvider *)self identity];
+  sectionIcon = [identity sectionIcon];
 
-  return v3;
+  return sectionIcon;
 }
 
-- (id)displayNameForSubsectionID:(id)a3
+- (id)displayNameForSubsectionID:(id)d
 {
-  v4 = a3;
-  v5 = [(BBDataProvider *)self identity];
-  v6 = [v5 subsectionDisplayNames];
-  v7 = [v6 objectForKey:v4];
+  dCopy = d;
+  identity = [(BBDataProvider *)self identity];
+  subsectionDisplayNames = [identity subsectionDisplayNames];
+  v7 = [subsectionDisplayNames objectForKey:dCopy];
 
   return v7;
 }
 
 - (id)sectionParameters
 {
-  v2 = [(BBDataProvider *)self identity];
-  v3 = [v2 sectionParameters];
+  identity = [(BBDataProvider *)self identity];
+  sectionParameters = [identity sectionParameters];
 
-  return v3;
+  return sectionParameters;
 }
 
 - (id)sortDescriptors
 {
-  v2 = [(BBDataProvider *)self identity];
-  v3 = [v2 sortDescriptors];
+  identity = [(BBDataProvider *)self identity];
+  sortDescriptors = [identity sortDescriptors];
 
-  return v3;
+  return sortDescriptors;
 }
 
 - (id)sortKey
 {
-  v2 = [(BBDataProvider *)self identity];
-  v3 = [v2 sortKey];
+  identity = [(BBDataProvider *)self identity];
+  sortKey = [identity sortKey];
 
-  return v3;
+  return sortKey;
 }
 
 - (BOOL)syncsBulletinDismissal
 {
-  v2 = [(BBDataProvider *)self identity];
-  v3 = [v2 syncsBulletinDismissal];
+  identity = [(BBDataProvider *)self identity];
+  syncsBulletinDismissal = [identity syncsBulletinDismissal];
 
-  return v3;
+  return syncsBulletinDismissal;
 }
 
 - (BOOL)canClearAllBulletins
 {
-  v2 = [(BBDataProvider *)self identity];
-  v3 = ([v2 traits] >> 6) & 1;
+  identity = [(BBDataProvider *)self identity];
+  v3 = ([identity traits] >> 6) & 1;
 
   return v3;
 }
 
 - (BOOL)canClearBulletinsByDate
 {
-  v2 = [(BBDataProvider *)self identity];
-  v3 = ([v2 traits] >> 7) & 1;
+  identity = [(BBDataProvider *)self identity];
+  v3 = ([identity traits] >> 7) & 1;
 
   return v3;
 }
 
 - (id)parentSectionIdentifier
 {
-  v2 = [(BBDataProvider *)self identity];
-  v3 = [v2 parentSectionIdentifier];
+  identity = [(BBDataProvider *)self identity];
+  parentSectionIdentifier = [identity parentSectionIdentifier];
 
-  return v3;
+  return parentSectionIdentifier;
 }
 
 - (id)sectionBundlePath
 {
-  v2 = [(BBDataProvider *)self identity];
-  v3 = [v2 sectionBundlePath];
+  identity = [(BBDataProvider *)self identity];
+  sectionBundlePath = [identity sectionBundlePath];
 
-  return v3;
+  return sectionBundlePath;
 }
 
-- (void)bulletinsWithRequestParameters:(id)a3 lastCleared:(id)a4 completion:(id)a5
+- (void)bulletinsWithRequestParameters:(id)parameters lastCleared:(id)cleared completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   NSLog(&cfstr_SNotImplemente.isa, "[BBDataProvider bulletinsWithRequestParameters:lastCleared:completion:]");
-  v5 = v6;
-  if (v6)
+  v5 = completionCopy;
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
-    v5 = v6;
+    (*(completionCopy + 2))(completionCopy, 0);
+    v5 = completionCopy;
   }
 }
 
-- (void)clearedInfoForBulletins:(id)a3 lastClearedInfo:(id)a4 completion:(id)a5
+- (void)clearedInfoForBulletins:(id)bulletins lastClearedInfo:(id)info completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   NSLog(&cfstr_SNotImplemente.isa, "[BBDataProvider clearedInfoForBulletins:lastClearedInfo:completion:]");
-  v5 = v6;
-  if (v6)
+  v5 = completionCopy;
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
-    v5 = v6;
+    (*(completionCopy + 2))(completionCopy, 0);
+    v5 = completionCopy;
   }
 }
 
-- (void)clearedInfoForClearingAllBulletinsWithLastClearedInfo:(id)a3 completion:(id)a4
+- (void)clearedInfoForClearingAllBulletinsWithLastClearedInfo:(id)info completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   NSLog(&cfstr_SNotImplemente.isa, "[BBDataProvider clearedInfoForClearingAllBulletinsWithLastClearedInfo:completion:]");
-  v4 = v5;
-  if (v5)
+  v4 = completionCopy;
+  if (completionCopy)
   {
-    (*(v5 + 2))(v5, 0);
-    v4 = v5;
+    (*(completionCopy + 2))(completionCopy, 0);
+    v4 = completionCopy;
   }
 }
 
-- (void)clearedInfoForClearingBulletinsFromDate:(id)a3 toDate:(id)a4 lastClearedInfo:(id)a5 completion:(id)a6
+- (void)clearedInfoForClearingBulletinsFromDate:(id)date toDate:(id)toDate lastClearedInfo:(id)info completion:(id)completion
 {
-  v7 = a6;
+  completionCopy = completion;
   NSLog(&cfstr_SNotImplemente.isa, "[BBDataProvider clearedInfoForClearingBulletinsFromDate:toDate:lastClearedInfo:completion:]");
-  v6 = v7;
-  if (v7)
+  v6 = completionCopy;
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
-    v6 = v7;
+    (*(completionCopy + 2))(completionCopy, 0);
+    v6 = completionCopy;
   }
 }
 
-- (void)reloadIdentityWithCompletion:(id)a3
+- (void)reloadIdentityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   NSLog(&cfstr_SNotImplemente.isa, "[BBDataProvider reloadIdentityWithCompletion:]");
-  v3 = v4;
-  if (v4)
+  v3 = completionCopy;
+  if (completionCopy)
   {
-    (*(v4 + 2))(v4);
-    v3 = v4;
+    (*(completionCopy + 2))(completionCopy);
+    v3 = completionCopy;
   }
 }
 
-- (void)updateClearedInfoWithClearedInfo:(id)a3 handler:(id)a4 completion:(id)a5
+- (void)updateClearedInfoWithClearedInfo:(id)info handler:(id)handler completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   NSLog(&cfstr_SNotImplemente.isa, "[BBDataProvider updateClearedInfoWithClearedInfo:handler:completion:]");
-  v5 = v6;
-  if (v6)
+  v5 = completionCopy;
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
-    v5 = v6;
+    (*(completionCopy + 2))(completionCopy, 0);
+    v5 = completionCopy;
   }
 }
 
-- (void)updateSectionInfoWithSectionInfo:(id)a3 handler:(id)a4 completion:(id)a5
+- (void)updateSectionInfoWithSectionInfo:(id)info handler:(id)handler completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   NSLog(&cfstr_SNotImplemente.isa, "[BBDataProvider updateSectionInfoWithSectionInfo:handler:completion:]");
-  v5 = v6;
-  if (v6)
+  v5 = completionCopy;
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
-    v5 = v6;
+    (*(completionCopy + 2))(completionCopy, 0);
+    v5 = completionCopy;
   }
 }
 
-- (id)debugDescriptionWithChildren:(unint64_t)a3
+- (id)debugDescriptionWithChildren:(unint64_t)children
 {
   for (i = [MEMORY[0x277CCAB68] stringWithString:&stru_28541A970];
   {
@@ -285,8 +285,8 @@
   v6 = MEMORY[0x277CCACA8];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [(BBDataProvider *)self sectionIdentifier];
-  v10 = [v6 stringWithFormat:@"%@<%@: %p>: %@", i, v8, self, v9];
+  sectionIdentifier = [(BBDataProvider *)self sectionIdentifier];
+  v10 = [v6 stringWithFormat:@"%@<%@: %p>: %@", i, v8, self, sectionIdentifier];
 
   return v10;
 }

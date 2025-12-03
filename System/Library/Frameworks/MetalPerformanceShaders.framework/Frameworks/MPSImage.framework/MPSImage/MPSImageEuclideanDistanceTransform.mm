@@ -1,7 +1,7 @@
 @interface MPSImageEuclideanDistanceTransform
 - (MPSImageEuclideanDistanceTransform)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSImageEuclideanDistanceTransform)initWithDevice:(id)device;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSImageEuclideanDistanceTransform
@@ -70,14 +70,14 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 2;
   v10.receiver = self;
   v10.super_class = MPSImageEuclideanDistanceTransform;
   [(MPSUnaryImageKernel *)&v10 encodeWithCoder:?];
   *&v5 = self->_searchLimitRadius;
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"MPSImageDistanceTransform.searchLimitRadius", v7, v8, v9, v5);
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"MPSImageDistanceTransform.searchLimitRadius", v7, v8, v9, v5);
 }
 
 @end

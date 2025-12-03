@@ -1,18 +1,18 @@
 @interface NEIPsecNexus
-- (BOOL)setDefaultInputHandler:(nw_protocol *)a3;
-- (uint64_t)initializeWithCount:(void *)a1;
-- (void)setRemotePacketProxy:(id)a3;
+- (BOOL)setDefaultInputHandler:(nw_protocol *)handler;
+- (uint64_t)initializeWithCount:(void *)count;
+- (void)setRemotePacketProxy:(id)proxy;
 @end
 
 @implementation NEIPsecNexus
 
-- (void)setRemotePacketProxy:(id)a3
+- (void)setRemotePacketProxy:(id)proxy
 {
-  v4 = a3;
-  [(NEInternetNexus *)self setPacketProxy:v4];
-  if (v4)
+  proxyCopy = proxy;
+  [(NEInternetNexus *)self setPacketProxy:proxyCopy];
+  if (proxyCopy)
   {
-    -[NEIPsecNexus setDefaultInputHandler:](self, "setDefaultInputHandler:", [v4 protocol]);
+    -[NEIPsecNexus setDefaultInputHandler:](self, "setDefaultInputHandler:", [proxyCopy protocol]);
     if (self)
     {
       Property = objc_getProperty(self, v5, 112, 1);
@@ -33,7 +33,7 @@
 
     if (protocol_handler)
     {
-      [v4 setDefaultOutputProtocolHandler:protocol_handler];
+      [proxyCopy setDefaultOutputProtocolHandler:protocol_handler];
     }
 
     else
@@ -48,10 +48,10 @@
   }
 }
 
-- (BOOL)setDefaultInputHandler:(nw_protocol *)a3
+- (BOOL)setDefaultInputHandler:(nw_protocol *)handler
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!handler)
   {
     v10 = ne_log_obj();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -98,19 +98,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  (**(protocol_handler + 24))(protocol_handler, a3);
+  (**(protocol_handler + 24))(protocol_handler, handler);
   result = 1;
 LABEL_10:
   v11 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (uint64_t)initializeWithCount:(void *)a1
+- (uint64_t)initializeWithCount:(void *)count
 {
   v23 = *MEMORY[0x1E69E9840];
-  if ([a1 virtualInterface])
+  if ([count virtualInterface])
   {
-    v4 = NEVirtualInterfaceCopyNexusInstances([a1 virtualInterface], a2);
+    v4 = NEVirtualInterfaceCopyNexusInstances([count virtualInterface], a2);
     if (v4)
     {
       v5 = v4;
@@ -137,7 +137,7 @@ LABEL_10:
         }
 
         CFRelease(v5);
-        [a1 setNexusInstances:v7];
+        [count setNexusInstances:v7];
 
         goto LABEL_8;
       }

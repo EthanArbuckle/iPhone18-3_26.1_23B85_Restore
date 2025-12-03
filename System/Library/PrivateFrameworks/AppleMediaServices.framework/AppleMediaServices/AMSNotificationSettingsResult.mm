@@ -1,19 +1,19 @@
 @interface AMSNotificationSettingsResult
-+ (id)_sectionsFromDictionaryRepresentation:(id)a3;
-- (AMSNotificationSettingsResult)initWithDictionaryRepresentation:(id)a3;
++ (id)_sectionsFromDictionaryRepresentation:(id)representation;
+- (AMSNotificationSettingsResult)initWithDictionaryRepresentation:(id)representation;
 @end
 
 @implementation AMSNotificationSettingsResult
 
-- (AMSNotificationSettingsResult)initWithDictionaryRepresentation:(id)a3
+- (AMSNotificationSettingsResult)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v9.receiver = self;
   v9.super_class = AMSNotificationSettingsResult;
   v5 = [(AMSNotificationSettingsResult *)&v9 init];
   if (v5)
   {
-    v6 = [objc_opt_class() _sectionsFromDictionaryRepresentation:v4];
+    v6 = [objc_opt_class() _sectionsFromDictionaryRepresentation:representationCopy];
     sections = v5->_sections;
     v5->_sections = v6;
   }
@@ -21,9 +21,9 @@
   return v5;
 }
 
-+ (id)_sectionsFromDictionaryRepresentation:(id)a3
++ (id)_sectionsFromDictionaryRepresentation:(id)representation
 {
-  v3 = [a3 objectForKeyedSubscript:@"results"];
+  v3 = [representation objectForKeyedSubscript:@"results"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

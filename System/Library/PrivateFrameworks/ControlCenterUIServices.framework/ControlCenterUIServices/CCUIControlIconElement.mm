@@ -1,8 +1,8 @@
 @interface CCUIControlIconElement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CCUIControlIconElement)init;
-- (CCUIControlIconElement)initWithKind:(id)a3 controlType:(unint64_t)a4 extensionBundleIdentifier:(id)a5 containerBundleIdentifier:(id)a6;
-- (CCUIControlIconElement)initWithUniqueIdentifier:(id)a3 kind:(id)a4 controlType:(unint64_t)a5 extensionBundleIdentifier:(id)a6 containerBundleIdentifier:(id)a7;
+- (CCUIControlIconElement)initWithKind:(id)kind controlType:(unint64_t)type extensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier;
+- (CCUIControlIconElement)initWithUniqueIdentifier:(id)identifier kind:(id)kind controlType:(unint64_t)type extensionBundleIdentifier:(id)bundleIdentifier containerBundleIdentifier:(id)containerBundleIdentifier;
 - (NSString)containerBundleIdentifier;
 - (NSString)description;
 - (NSString)displayName;
@@ -11,16 +11,16 @@
 - (NSString)sbh_widgetName;
 - (SBHIconGridSizeClassSet)supportedGridSizeClasses;
 - (id)copyWithUniqueIdentifier;
-- (id)copyWithZone:(void *)a3;
-- (id)icon:(id)a3 displayNameForLocation:(id)a4;
-- (id)supportedGridSizeClassesForIcon:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (id)icon:(id)icon displayNameForLocation:(id)location;
+- (id)supportedGridSizeClassesForIcon:(id)icon;
 - (int64_t)hash;
 - (int64_t)preferredGallerySizeClass;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setPreferredGallerySizeClass:(int64_t)a3;
-- (void)set_supportedGridSizeClasses:(id)a3;
-- (void)updateSupportedGridSizeClassesForAccessibilityContentSizeCategory:(BOOL)a3;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)setDisplayName:(id)name;
+- (void)setPreferredGallerySizeClass:(int64_t)class;
+- (void)set_supportedGridSizeClasses:(id)classes;
+- (void)updateSupportedGridSizeClassesForAccessibilityContentSizeCategory:(BOOL)category;
 @end
 
 @implementation CCUIControlIconElement
@@ -62,9 +62,9 @@
   return v4;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_2442B48A8();
     v6 = v5;
@@ -90,26 +90,26 @@
   return *(self + v3);
 }
 
-- (void)setPreferredGallerySizeClass:(int64_t)a3
+- (void)setPreferredGallerySizeClass:(int64_t)class
 {
   v5 = OBJC_IVAR___CCUIControlIconElement_preferredGallerySizeClass;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = class;
 }
 
 - (SBHIconGridSizeClassSet)supportedGridSizeClasses
 {
-  v2 = [(CCUIControlIconElement *)self _supportedGridSizeClasses];
+  _supportedGridSizeClasses = [(CCUIControlIconElement *)self _supportedGridSizeClasses];
 
-  return v2;
+  return _supportedGridSizeClasses;
 }
 
-- (void)updateSupportedGridSizeClassesForAccessibilityContentSizeCategory:(BOOL)a3
+- (void)updateSupportedGridSizeClassesForAccessibilityContentSizeCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v4 = qword_280F722D0;
-    v5 = self;
+    selfCopy = self;
     if (v4 != -1)
     {
       swift_once();
@@ -121,7 +121,7 @@
   else
   {
     v7 = qword_280F722E8;
-    v8 = self;
+    selfCopy2 = self;
     if (v7 != -1)
     {
       swift_once();
@@ -131,17 +131,17 @@
   }
 
   [(CCUIControlIconElement *)self set_supportedGridSizeClasses:*v6];
-  v9 = [objc_opt_self() sbh_leafIconDataSourceNotificationCenter];
-  [v9 postNotificationName:*MEMORY[0x277D66730] object:self];
+  sbh_leafIconDataSourceNotificationCenter = [objc_opt_self() sbh_leafIconDataSourceNotificationCenter];
+  [sbh_leafIconDataSourceNotificationCenter postNotificationName:*MEMORY[0x277D66730] object:self];
 }
 
-- (CCUIControlIconElement)initWithKind:(id)a3 controlType:(unint64_t)a4 extensionBundleIdentifier:(id)a5 containerBundleIdentifier:(id)a6
+- (CCUIControlIconElement)initWithKind:(id)kind controlType:(unint64_t)type extensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier
 {
   v8 = sub_2442B48A8();
   v10 = v9;
   v11 = sub_2442B48A8();
   v13 = v12;
-  if (a6)
+  if (bundleIdentifier)
   {
     v14 = sub_2442B48A8();
     v16 = v15;
@@ -153,10 +153,10 @@
     v16 = 0;
   }
 
-  return CCUIControlIconElement.init(kind:controlType:extensionBundleIdentifier:containerBundleIdentifier:)(v8, v10, a4, v11, v13, v14, v16);
+  return CCUIControlIconElement.init(kind:controlType:extensionBundleIdentifier:containerBundleIdentifier:)(v8, v10, type, v11, v13, v14, v16);
 }
 
-- (CCUIControlIconElement)initWithUniqueIdentifier:(id)a3 kind:(id)a4 controlType:(unint64_t)a5 extensionBundleIdentifier:(id)a6 containerBundleIdentifier:(id)a7
+- (CCUIControlIconElement)initWithUniqueIdentifier:(id)identifier kind:(id)kind controlType:(unint64_t)type extensionBundleIdentifier:(id)bundleIdentifier containerBundleIdentifier:(id)containerBundleIdentifier
 {
   v9 = sub_2442B48A8();
   v11 = v10;
@@ -164,7 +164,7 @@
   v14 = v13;
   v15 = sub_2442B48A8();
   v17 = v16;
-  if (a7)
+  if (containerBundleIdentifier)
   {
     v19 = sub_2442B48A8();
   }
@@ -175,16 +175,16 @@
     v18 = 0;
   }
 
-  return CCUIControlIconElement.init(uniqueIdentifier:kind:controlType:extensionBundleIdentifier:containerBundleIdentifier:)(v9, v11, v12, v14, a5, v15, v17, v19, v18);
+  return CCUIControlIconElement.init(uniqueIdentifier:kind:controlType:extensionBundleIdentifier:containerBundleIdentifier:)(v9, v11, v12, v14, type, v15, v17, v19, v18);
 }
 
-- (id)icon:(id)a3 displayNameForLocation:(id)a4
+- (id)icon:(id)icon displayNameForLocation:(id)location
 {
-  v4 = self;
-  v5 = [(CCUIControlIconElement *)v4 displayName];
-  if (v5)
+  selfCopy = self;
+  displayName = [(CCUIControlIconElement *)selfCopy displayName];
+  if (displayName)
   {
-    v6 = v5;
+    v6 = displayName;
     sub_2442B48A8();
 
     v7 = sub_2442B4878();
@@ -199,16 +199,16 @@
   return v7;
 }
 
-- (id)supportedGridSizeClassesForIcon:(id)a3
+- (id)supportedGridSizeClassesForIcon:(id)icon
 {
-  v3 = [(CCUIControlIconElement *)self supportedGridSizeClasses];
+  supportedGridSizeClasses = [(CCUIControlIconElement *)self supportedGridSizeClasses];
 
-  return v3;
+  return supportedGridSizeClasses;
 }
 
 - (id)copyWithUniqueIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CCUIControlIconElement.copyWithUniqueIdentifier()();
 
   return v3;
@@ -216,17 +216,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CCUIControlIconElement.hash.getter();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2442B4AF8();
     swift_unknownObjectRelease();
@@ -235,7 +235,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CCUIControlIconElement.isEqual(_:)(v8);
@@ -247,20 +247,20 @@
 - (NSString)description
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 descriptionForRootObject_];
-  if (!v5)
+  selfCopy = self;
+  descriptionForRootObject_ = [v3 descriptionForRootObject_];
+  if (!descriptionForRootObject_)
   {
     sub_2442B48A8();
-    v5 = sub_2442B4878();
+    descriptionForRootObject_ = sub_2442B4878();
   }
 
-  return v5;
+  return descriptionForRootObject_;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   CCUIControlIconElement.copy(with:)(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);
@@ -269,18 +269,18 @@
   return v4;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
-  v5 = self;
-  CCUIControlIconElement.appendDescription(to:)(v4);
+  streamCopy = stream;
+  selfCopy = self;
+  CCUIControlIconElement.appendDescription(to:)(streamCopy);
 }
 
-- (void)set_supportedGridSizeClasses:(id)a3
+- (void)set_supportedGridSizeClasses:(id)classes
 {
   v4 = *(self + OBJC_IVAR___CCUIControlIconElement__supportedGridSizeClasses);
-  *(self + OBJC_IVAR___CCUIControlIconElement__supportedGridSizeClasses) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___CCUIControlIconElement__supportedGridSizeClasses) = classes;
+  classesCopy = classes;
 }
 
 - (CCUIControlIconElement)init
@@ -292,10 +292,10 @@
 
 - (NSString)sbh_galleryItemIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_2442B4B58();
 
-  v3 = [(CCUIControlIconElement *)v2 uniqueIdentifier:0xD00000000000001ELL];
+  v3 = [(CCUIControlIconElement *)selfCopy uniqueIdentifier:0xD00000000000001ELL];
   v4 = sub_2442B48A8();
   v6 = v5;
 
@@ -308,7 +308,7 @@
 
 - (NSString)sbh_appName
 {
-  v2 = self;
+  selfCopy = self;
   CCUIControlIconElement.sbh_appName.getter();
   v4 = v3;
 
@@ -327,14 +327,14 @@
 
 - (NSString)sbh_widgetName
 {
-  v2 = self;
-  v3 = [(CCUIControlIconElement *)v2 displayName];
-  if (!v3)
+  selfCopy = self;
+  displayName = [(CCUIControlIconElement *)selfCopy displayName];
+  if (!displayName)
   {
-    v3 = [(CCUIControlIconElement *)v2 kind];
+    displayName = [(CCUIControlIconElement *)selfCopy kind];
   }
 
-  v4 = v3;
+  v4 = displayName;
   sub_2442B48A8();
 
   v5 = sub_2442B4878();

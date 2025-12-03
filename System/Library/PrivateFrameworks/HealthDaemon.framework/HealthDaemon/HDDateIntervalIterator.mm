@@ -1,20 +1,20 @@
 @interface HDDateIntervalIterator
-- (HDDateIntervalIterator)initWithDateIntervals:(id)a3;
+- (HDDateIntervalIterator)initWithDateIntervals:(id)intervals;
 - (NSDateInterval)currentDateInterval;
-- (id)nextDateIntervalPassingTest:(id)a3;
+- (id)nextDateIntervalPassingTest:(id)test;
 @end
 
 @implementation HDDateIntervalIterator
 
-- (HDDateIntervalIterator)initWithDateIntervals:(id)a3
+- (HDDateIntervalIterator)initWithDateIntervals:(id)intervals
 {
-  v4 = a3;
+  intervalsCopy = intervals;
   v9.receiver = self;
   v9.super_class = HDDateIntervalIterator;
   v5 = [(HDDateIntervalIterator *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [intervalsCopy copy];
     dateIntervals = v5->_dateIntervals;
     v5->_dateIntervals = v6;
 
@@ -44,22 +44,22 @@
   return v3;
 }
 
-- (id)nextDateIntervalPassingTest:(id)a3
+- (id)nextDateIntervalPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   currentIndex = self->_currentIndex;
   if (currentIndex >= [(NSArray *)self->_dateIntervals count])
   {
 LABEL_4:
-    v6 = 0;
+    currentDateInterval = 0;
   }
 
   else
   {
     while (1)
     {
-      v6 = [(HDDateIntervalIterator *)self currentDateInterval];
-      if (v4[2](v4, v6))
+      currentDateInterval = [(HDDateIntervalIterator *)self currentDateInterval];
+      if (testCopy[2](testCopy, currentDateInterval))
       {
         break;
       }
@@ -74,7 +74,7 @@ LABEL_4:
     }
   }
 
-  return v6;
+  return currentDateInterval;
 }
 
 @end

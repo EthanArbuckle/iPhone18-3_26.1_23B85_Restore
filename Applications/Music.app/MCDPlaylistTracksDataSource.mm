@@ -1,5 +1,5 @@
 @interface MCDPlaylistTracksDataSource
-- (MCDPlaylistTracksDataSource)initWithPlaylist:(id)a3;
+- (MCDPlaylistTracksDataSource)initWithPlaylist:(id)playlist;
 - (id)itemSortDescriptors;
 - (id)requestItemKind;
 - (id)requestItemProperties;
@@ -8,16 +8,16 @@
 
 @implementation MCDPlaylistTracksDataSource
 
-- (MCDPlaylistTracksDataSource)initWithPlaylist:(id)a3
+- (MCDPlaylistTracksDataSource)initWithPlaylist:(id)playlist
 {
-  v5 = a3;
+  playlistCopy = playlist;
   v9.receiver = self;
   v9.super_class = MCDPlaylistTracksDataSource;
   v6 = [(MCDPlaylistTracksDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_playlist, a3);
+    objc_storeStrong(&v6->_playlist, playlist);
   }
 
   return v7;
@@ -88,16 +88,16 @@
 
 - (id)itemSortDescriptors
 {
-  v2 = [(MCDPlaylistTracksDataSource *)self playlist];
-  v3 = [v2 preferredTracklistSortDescriptors];
+  playlist = [(MCDPlaylistTracksDataSource *)self playlist];
+  preferredTracklistSortDescriptors = [playlist preferredTracklistSortDescriptors];
 
-  return v3;
+  return preferredTracklistSortDescriptors;
 }
 
 - (id)scopedContainers
 {
-  v2 = [(MCDPlaylistTracksDataSource *)self playlist];
-  v5 = v2;
+  playlist = [(MCDPlaylistTracksDataSource *)self playlist];
+  v5 = playlist;
   v3 = [NSArray arrayWithObjects:&v5 count:1];
 
   return v3;

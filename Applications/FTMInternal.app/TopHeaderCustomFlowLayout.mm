@@ -1,18 +1,18 @@
 @interface TopHeaderCustomFlowLayout
 - (_TtC11FTMInternal25TopHeaderCustomFlowLayout)init;
-- (_TtC11FTMInternal25TopHeaderCustomFlowLayout)initWithCoder:(id)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (_TtC11FTMInternal25TopHeaderCustomFlowLayout)initWithCoder:(id)coder;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 @end
 
 @implementation TopHeaderCustomFlowLayout
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = sub_10021FE84(x, y, width, height);
 
   if (v8)
@@ -36,12 +36,12 @@
   return [(TopHeaderCustomFlowLayout *)&v3 init];
 }
 
-- (_TtC11FTMInternal25TopHeaderCustomFlowLayout)initWithCoder:(id)a3
+- (_TtC11FTMInternal25TopHeaderCustomFlowLayout)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for TopHeaderCustomFlowLayout();
-  v4 = a3;
-  v5 = [(TopHeaderCustomFlowLayout *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(TopHeaderCustomFlowLayout *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

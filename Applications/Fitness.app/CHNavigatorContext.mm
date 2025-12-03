@@ -1,16 +1,16 @@
 @interface CHNavigatorContext
 + (id)canonical;
 - (CHNavigatorContext)init;
-- (CHNavigatorContext)initWithHasActiveWorkout:(BOOL)a3;
+- (CHNavigatorContext)initWithHasActiveWorkout:(BOOL)workout;
 - (NSString)description;
 @end
 
 @implementation CHNavigatorContext
 
-- (CHNavigatorContext)initWithHasActiveWorkout:(BOOL)a3
+- (CHNavigatorContext)initWithHasActiveWorkout:(BOOL)workout
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR___CHNavigatorContext_hasActiveWorkout) = a3;
+  *(&self->super.isa + OBJC_IVAR___CHNavigatorContext_hasActiveWorkout) = workout;
   v7.receiver = self;
   v7.super_class = ObjectType;
   return [(CHNavigatorContext *)&v7 init];
@@ -18,7 +18,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_100209504();
 
   v3 = String._bridgeToObjectiveC()();

@@ -5,19 +5,19 @@
 - (ICItemIdentifier)identifier;
 - (NSString)displayText;
 - (UICellConfigurationState)_bridgedConfigurationState;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (unint64_t)accessibilityTraits;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)contentSizeCategoryDidChange:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)contentSizeCategoryDidChange:(id)change;
 - (void)layoutSubviews;
-- (void)setAccessibilityTraits:(unint64_t)a3;
-- (void)setDisplayImage:(id)a3;
-- (void)setDisplayText:(id)a3;
-- (void)setDisplayText:(id)a3 includeSymbolPrefix:(BOOL)a4 hasGroupInset:(BOOL)a5;
-- (void)setHasGroupInset:(BOOL)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setIsExcluded:(BOOL)a3;
-- (void)setIsPreviewing:(BOOL)a3;
+- (void)setAccessibilityTraits:(unint64_t)traits;
+- (void)setDisplayImage:(id)image;
+- (void)setDisplayText:(id)text;
+- (void)setDisplayText:(id)text includeSymbolPrefix:(BOOL)prefix hasGroupInset:(BOOL)inset;
+- (void)setHasGroupInset:(BOOL)inset;
+- (void)setIdentifier:(id)identifier;
+- (void)setIsExcluded:(BOOL)excluded;
+- (void)setIsPreviewing:(BOOL)previewing;
 - (void)updateColors;
 - (void)updateWidthConstraints;
 @end
@@ -40,9 +40,9 @@
   return v2;
 }
 
-- (void)setDisplayText:(id)a3
+- (void)setDisplayText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -58,17 +58,17 @@
   v6[1] = v5;
 }
 
-- (void)setDisplayImage:(id)a3
+- (void)setDisplayImage:(id)image
 {
-  v5 = a3;
-  v6 = self;
-  sub_10047E78C(a3);
+  imageCopy = image;
+  selfCopy = self;
+  sub_10047E78C(image);
 }
 
-- (void)setHasGroupInset:(BOOL)a3
+- (void)setHasGroupInset:(BOOL)inset
 {
-  *(self + OBJC_IVAR___ICTagCell_hasGroupInset) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR___ICTagCell_hasGroupInset) = inset;
+  selfCopy = self;
   sub_10047EB28();
 }
 
@@ -82,22 +82,22 @@
   }
 
   v3 = result;
-  v4 = [(UIFont *)result ic_fontWithSingleLineA];
+  ic_fontWithSingleLineA = [(UIFont *)result ic_fontWithSingleLineA];
 
-  if (!v4)
+  if (!ic_fontWithSingleLineA)
   {
 LABEL_7:
     __break(1u);
     return result;
   }
 
-  return v4;
+  return ic_fontWithSingleLineA;
 }
 
-- (void)setIsPreviewing:(BOOL)a3
+- (void)setIsPreviewing:(BOOL)previewing
 {
-  *(self + OBJC_IVAR___ICTagCell_isPreviewing) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR___ICTagCell_isPreviewing) = previewing;
+  selfCopy = self;
   sub_10047EED4();
 }
 
@@ -108,9 +108,9 @@ LABEL_7:
   return v2;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  *(self + OBJC_IVAR___ICTagCell_identifier) = a3;
+  *(self + OBJC_IVAR___ICTagCell_identifier) = identifier;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -141,10 +141,10 @@ LABEL_7:
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v2 = v7.receiver;
-  v3 = [(ICTagCell *)&v7 accessibilityTraits];
+  accessibilityTraits = [(ICTagCell *)&v7 accessibilityTraits];
   v4 = UIAccessibilityTraitButton;
 
-  if ((v4 & ~v3) != 0)
+  if ((v4 & ~accessibilityTraits) != 0)
   {
     v5 = v4;
   }
@@ -154,20 +154,20 @@ LABEL_7:
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
-- (void)setAccessibilityTraits:(unint64_t)a3
+- (void)setAccessibilityTraits:(unint64_t)traits
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(ICTagCell *)&v4 setAccessibilityTraits:a3];
+  [(ICTagCell *)&v4 setAccessibilityTraits:traits];
 }
 
-- (void)setIsExcluded:(BOOL)a3
+- (void)setIsExcluded:(BOOL)excluded
 {
-  *(self + OBJC_IVAR___ICTagCell_isExcluded) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR___ICTagCell_isExcluded) = excluded;
+  selfCopy = self;
   sub_10047EED4();
 }
 
@@ -180,9 +180,9 @@ LABEL_7:
   sub_10047EB28();
 }
 
-- (void)setDisplayText:(id)a3 includeSymbolPrefix:(BOOL)a4 hasGroupInset:(BOOL)a5
+- (void)setDisplayText:(id)text includeSymbolPrefix:(BOOL)prefix hasGroupInset:(BOOL)inset
 {
-  if (a3)
+  if (text)
   {
     v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = v9;
@@ -194,8 +194,8 @@ LABEL_7:
     v10 = 0;
   }
 
-  v11 = self;
-  sub_10047E884(v8, v10, a4, a5);
+  selfCopy = self;
+  sub_10047E884(v8, v10, prefix, inset);
 }
 
 - (UICellConfigurationState)_bridgedConfigurationState
@@ -204,7 +204,7 @@ LABEL_7:
   v4 = *(v3 - 8);
   __chkstk_darwin(v3);
   v6 = &v10 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   TagCell.configurationState.getter();
 
   v8.super.super.isa = UICellConfigurationState._bridgeToObjectiveC()().super.super.isa;
@@ -213,37 +213,37 @@ LABEL_7:
   return v8.super.super.isa;
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   TagCell.updateConfiguration(using:)();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   ObjectType = swift_getObjectType();
-  v6 = a3;
-  v7 = self;
+  attributesCopy = attributes;
+  selfCopy = self;
   sub_10047EB28();
-  v10.receiver = v7;
+  v10.receiver = selfCopy;
   v10.super_class = ObjectType;
-  v8 = [(ICTagCell *)&v10 preferredLayoutAttributesFittingAttributes:v6];
+  v8 = [(ICTagCell *)&v10 preferredLayoutAttributesFittingAttributes:attributesCopy];
 
   return v8;
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
-  if (a3)
+  if (change)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -252,7 +252,7 @@ LABEL_7:
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_100480A74();
@@ -262,13 +262,13 @@ LABEL_7:
 
 - (void)updateColors
 {
-  v2 = self;
+  selfCopy = self;
   sub_10047EED4();
 }
 
 - (void)updateWidthConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_10047EB28();
 }
 
@@ -278,11 +278,11 @@ LABEL_7:
   if (v0)
   {
     v1 = v0;
-    v2 = [v0 ic_fontWithSingleLineA];
+    ic_fontWithSingleLineA = [v0 ic_fontWithSingleLineA];
 
-    if (v2)
+    if (ic_fontWithSingleLineA)
     {
-      v3 = [objc_opt_self() configurationWithFont:v2 scale:2];
+      v3 = [objc_opt_self() configurationWithFont:ic_fontWithSingleLineA scale:2];
 
       v4 = v3;
       v5 = String._bridgeToObjectiveC()();

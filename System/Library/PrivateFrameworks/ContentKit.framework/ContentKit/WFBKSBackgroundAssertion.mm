@@ -1,6 +1,6 @@
 @interface WFBKSBackgroundAssertion
-+ (id)backgroundAssertionWithName:(id)a3 expirationHandler:(id)a4;
-- (WFBKSBackgroundAssertion)initWithName:(id)a3 expirationHandler:(id)a4;
++ (id)backgroundAssertionWithName:(id)name expirationHandler:(id)handler;
+- (WFBKSBackgroundAssertion)initWithName:(id)name expirationHandler:(id)handler;
 - (void)end;
 @end
 
@@ -12,26 +12,26 @@
   v3 = getWFBackgroundAssertionLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(WFBKSBackgroundAssertion *)self taskName];
+    taskName = [(WFBKSBackgroundAssertion *)self taskName];
     v6 = 136315394;
     v7 = "[WFBKSBackgroundAssertion end]";
     v8 = 2114;
-    v9 = v4;
+    v9 = taskName;
     _os_log_impl(&dword_21E1BD000, v3, OS_LOG_TYPE_INFO, "%s Finished background assertion for %{public}@", &v6, 0x16u);
   }
 
-  v5 = [(WFBKSBackgroundAssertion *)self assertion];
-  [v5 invalidate];
+  assertion = [(WFBKSBackgroundAssertion *)self assertion];
+  [assertion invalidate];
 
   [(WFBKSBackgroundAssertion *)self setAssertion:0];
   [(WFBKSBackgroundAssertion *)self setObserver:0];
 }
 
-- (WFBKSBackgroundAssertion)initWithName:(id)a3 expirationHandler:(id)a4
+- (WFBKSBackgroundAssertion)initWithName:(id)name expirationHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   v27.receiver = self;
   v27.super_class = WFBKSBackgroundAssertion;
   v9 = [(WFBKSBackgroundAssertion *)&v27 init];
@@ -43,8 +43,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  objc_storeStrong(&v9->_taskName, a3);
-  v11 = [v8 copy];
+  objc_storeStrong(&v9->_taskName, name);
+  v11 = [handlerCopy copy];
   expirationHandler = v10->_expirationHandler;
   v10->_expirationHandler = v11;
 
@@ -66,7 +66,7 @@ LABEL_12:
 
   v14 = v13;
   _Block_object_dispose(&v28, 8);
-  v15 = [[v13 alloc] initWithPID:getpid() flags:1 reason:4 name:v7];
+  v15 = [[v13 alloc] initWithPID:getpid() flags:1 reason:4 name:nameCopy];
   assertion = v10->_assertion;
   v10->_assertion = v15;
 
@@ -78,13 +78,13 @@ LABEL_12:
       *buf = 136315394;
       *&buf[4] = "[WFBKSBackgroundAssertion initWithName:expirationHandler:]";
       *&buf[12] = 2114;
-      *&buf[14] = v7;
+      *&buf[14] = nameCopy;
       _os_log_impl(&dword_21E1BD000, v23, OS_LOG_TYPE_INFO, "%s Failed to acquire background assertion for %{public}@", buf, 0x16u);
     }
 
-    if (v8)
+    if (handlerCopy)
     {
-      v8[2](v8);
+      handlerCopy[2](handlerCopy);
     }
 
     goto LABEL_12;
@@ -137,11 +137,11 @@ uint64_t __59__WFBKSBackgroundAssertion_initWithName_expirationHandler___block_i
   return [v2 end];
 }
 
-+ (id)backgroundAssertionWithName:(id)a3 expirationHandler:(id)a4
++ (id)backgroundAssertionWithName:(id)name expirationHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithName:v7 expirationHandler:v6];
+  handlerCopy = handler;
+  nameCopy = name;
+  v8 = [[self alloc] initWithName:nameCopy expirationHandler:handlerCopy];
 
   return v8;
 }

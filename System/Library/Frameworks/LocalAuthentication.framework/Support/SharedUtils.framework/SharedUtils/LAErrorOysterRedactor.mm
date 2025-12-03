@@ -1,10 +1,10 @@
 @interface LAErrorOysterRedactor
 - (LAErrorOysterRedactor)init;
-- (id)redactError:(id)a3;
+- (id)redactError:(id)error;
 - (uint64_t)_linkedAgainstRequiredSDKVersion;
 - (uint64_t)_shouldMaskOysterBiometry;
 - (uint64_t)_shouldVerifySDKVersion;
-- (void)setMinSDKVersion:(id)a3;
+- (void)setMinSDKVersion:(id)version;
 @end
 
 @implementation LAErrorOysterRedactor
@@ -28,30 +28,30 @@
   return v3;
 }
 
-- (id)redactError:(id)a3
+- (id)redactError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (!errorCopy)
   {
     goto LABEL_8;
   }
 
-  v6 = [v4 domain];
-  if (![v6 isEqualToString:@"com.apple.LocalAuthentication"])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:@"com.apple.LocalAuthentication"])
   {
     goto LABEL_7;
   }
 
-  v7 = [v5 userInfo];
-  if (!v7)
+  userInfo = [v5 userInfo];
+  if (!userInfo)
   {
     goto LABEL_7;
   }
 
-  v8 = v7;
-  v9 = [v5 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"BiometryType"];
+  v8 = userInfo;
+  userInfo2 = [v5 userInfo];
+  v10 = [userInfo2 objectForKeyedSubscript:@"BiometryType"];
 
   if (!v10)
   {
@@ -60,8 +60,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = [v5 userInfo];
-  v11 = [v6 objectForKeyedSubscript:@"BiometryType"];
+  domain = [v5 userInfo];
+  v11 = [domain objectForKeyedSubscript:@"BiometryType"];
   if ([v11 integerValue] != 4)
   {
 
@@ -76,22 +76,22 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v15 = [v5 userInfo];
-  v16 = [v15 mutableCopy];
+  userInfo3 = [v5 userInfo];
+  v16 = [userInfo3 mutableCopy];
 
   [v16 setObject:&unk_1F5A79308 forKeyedSubscript:@"BiometryType"];
   v17 = MEMORY[0x1E696ABC0];
-  v18 = [v5 domain];
-  v12 = [v17 errorWithDomain:v18 code:objc_msgSend(v5 userInfo:{"code"), v16}];
+  domain2 = [v5 domain];
+  v12 = [v17 errorWithDomain:domain2 code:objc_msgSend(v5 userInfo:{"code"), v16}];
 
 LABEL_9:
 
   return v12;
 }
 
-- (void)setMinSDKVersion:(id)a3
+- (void)setMinSDKVersion:(id)version
 {
-  self->_minSDKVersion = a3;
+  self->_minSDKVersion = version;
   v3 = _hasSDKRequirements;
   _hasSDKRequirements = 0;
 }
@@ -114,9 +114,9 @@ LABEL_9:
 - (uint64_t)_shouldVerifySDKVersion
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
     if (v1)
     {
       v2 = v1;
@@ -124,8 +124,8 @@ LABEL_9:
 
     else
     {
-      v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v2 = [v3 persistentDomainForName:*MEMORY[0x1E696A400]];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v2 = [standardUserDefaults persistentDomainForName:*MEMORY[0x1E696A400]];
     }
 
     v4 = [v2 objectForKeyedSubscript:@"LA.oyster.skipSDKVerification"];
@@ -135,13 +135,13 @@ LABEL_9:
       v4 = MEMORY[0x1E695E110];
     }
 
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
 
     v7 = LA_LOG();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"perform";
-      if (v6)
+      if (bOOLValue)
       {
         v8 = @"skip";
       }
@@ -151,7 +151,7 @@ LABEL_9:
       _os_log_impl(&dword_1DF403000, v7, OS_LOG_TYPE_DEFAULT, "Will %@ SDK verification", &v12, 0xCu);
     }
 
-    v9 = v6 ^ 1u;
+    v9 = bOOLValue ^ 1u;
   }
 
   else

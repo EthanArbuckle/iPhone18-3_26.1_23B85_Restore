@@ -1,34 +1,34 @@
 @interface DDRange
-+ (id)rangeWithDOMRange:(id)a3;
-- (DDRange)initWithDOMRange:(id)a3;
++ (id)rangeWithDOMRange:(id)range;
+- (DDRange)initWithDOMRange:(id)range;
 - (void)dealloc;
 @end
 
 @implementation DDRange
 
-- (DDRange)initWithDOMRange:(id)a3
+- (DDRange)initWithDOMRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   v9.receiver = self;
   v9.super_class = DDRange;
   v5 = [(DDRange *)&v9 init];
   if (v5)
   {
-    v6 = [v4 startContainer];
+    startContainer = [rangeCopy startContainer];
     node = v5->_node;
-    v5->_node = v6;
+    v5->_node = startContainer;
 
-    v5->_startOffset = [v4 startOffset];
-    v5->_endOffset = [v4 endOffset];
+    v5->_startOffset = [rangeCopy startOffset];
+    v5->_endOffset = [rangeCopy endOffset];
   }
 
   return v5;
 }
 
-+ (id)rangeWithDOMRange:(id)a3
++ (id)rangeWithDOMRange:(id)range
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDOMRange:v4];
+  rangeCopy = range;
+  v5 = [[self alloc] initWithDOMRange:rangeCopy];
 
   return v5;
 }

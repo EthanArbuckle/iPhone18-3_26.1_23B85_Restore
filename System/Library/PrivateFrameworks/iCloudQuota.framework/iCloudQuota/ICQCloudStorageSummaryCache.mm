@@ -2,15 +2,15 @@
 + (id)sharedInstance;
 - (BOOL)hasDisplayedDetailsPage;
 - (ICQCloudStorageSummaryCache)init;
-- (id)storageSummaryForAltDSID:(id)a3;
+- (id)storageSummaryForAltDSID:(id)d;
 - (void)_cleanupCacheForPrimaryAccount;
 - (void)_startObservingCloudSubscriptionFeaturesNotifications;
 - (void)_startObservingQuotaChangeNotifications;
 - (void)_stopObservingCloudSubscriptionFeaturesNotifications;
 - (void)_stopObservingQuotaChangeNotifications;
 - (void)dealloc;
-- (void)setHasDisplayedDetailsPage:(BOOL)a3;
-- (void)setStorageSummary:(id)a3 forAltDSID:(id)a4;
+- (void)setHasDisplayedDetailsPage:(BOOL)page;
+- (void)setStorageSummary:(id)summary forAltDSID:(id)d;
 @end
 
 @implementation ICQCloudStorageSummaryCache
@@ -72,29 +72,29 @@ uint64_t __45__ICQCloudStorageSummaryCache_sharedInstance__block_invoke()
   return hasDisplayedDetailsPage;
 }
 
-- (void)setHasDisplayedDetailsPage:(BOOL)a3
+- (void)setHasDisplayedDetailsPage:(BOOL)page
 {
   os_unfair_lock_lock(&self->_cacheLock);
-  self->_hasDisplayedDetailsPage = a3;
+  self->_hasDisplayedDetailsPage = page;
 
   os_unfair_lock_unlock(&self->_cacheLock);
 }
 
-- (void)setStorageSummary:(id)a3 forAltDSID:(id)a4
+- (void)setStorageSummary:(id)summary forAltDSID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  summaryCopy = summary;
   os_unfair_lock_lock(&self->_cacheLock);
-  [(NSMutableDictionary *)self->_summaryCache setObject:v7 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_summaryCache setObject:summaryCopy forKeyedSubscript:dCopy];
 
   os_unfair_lock_unlock(&self->_cacheLock);
 }
 
-- (id)storageSummaryForAltDSID:(id)a3
+- (id)storageSummaryForAltDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_cacheLock);
-  v5 = [(NSMutableDictionary *)self->_summaryCache objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_summaryCache objectForKeyedSubscript:dCopy];
 
   os_unfair_lock_unlock(&self->_cacheLock);
 
@@ -106,25 +106,25 @@ uint64_t __45__ICQCloudStorageSummaryCache_sharedInstance__block_invoke()
   if (!self->_quotaChangeNotificationObserver)
   {
     objc_initWeak(&location, self);
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    v4 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __70__ICQCloudStorageSummaryCache__startObservingQuotaChangeNotifications__block_invoke;
     v13[3] = &unk_27A652D88;
     objc_copyWeak(&v14, &location);
-    v5 = [v3 addObserverForName:@"QuotaDidChange" object:0 queue:v4 usingBlock:v13];
+    v5 = [defaultCenter addObserverForName:@"QuotaDidChange" object:0 queue:mainQueue usingBlock:v13];
     quotaChangeNotificationObserver = self->_quotaChangeNotificationObserver;
     self->_quotaChangeNotificationObserver = v5;
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    v8 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue2 = [MEMORY[0x277CCABD8] mainQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __70__ICQCloudStorageSummaryCache__startObservingQuotaChangeNotifications__block_invoke_8;
     v11[3] = &unk_27A652D88;
     objc_copyWeak(&v12, &location);
-    v9 = [v7 addObserverForName:@"QuotaInformationChanged" object:0 queue:v8 usingBlock:v11];
+    v9 = [defaultCenter2 addObserverForName:@"QuotaInformationChanged" object:0 queue:mainQueue2 usingBlock:v11];
     quotaInfoChangeNotificationObserver = self->_quotaInfoChangeNotificationObserver;
     self->_quotaInfoChangeNotificationObserver = v9;
 
@@ -201,11 +201,11 @@ void __84__ICQCloudStorageSummaryCache__startObservingCloudSubscriptionFeaturesN
 {
   if (self->_quotaChangeNotificationObserver)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_quotaChangeNotificationObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_quotaChangeNotificationObserver];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self->_quotaInfoChangeNotificationObserver];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 removeObserver:self->_quotaInfoChangeNotificationObserver];
 
     quotaChangeNotificationObserver = self->_quotaChangeNotificationObserver;
     self->_quotaChangeNotificationObserver = 0;
@@ -227,14 +227,14 @@ void __84__ICQCloudStorageSummaryCache__startObservingCloudSubscriptionFeaturesN
 
 - (void)_cleanupCacheForPrimaryAccount
 {
-  v3 = [MEMORY[0x277CB8F48] defaultStore];
-  v5 = [v3 aa_primaryAppleAccount];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
-  v4 = [v5 aa_altDSID];
-  if (v4)
+  aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
+  if (aa_altDSID)
   {
     os_unfair_lock_lock(&self->_cacheLock);
-    [(NSMutableDictionary *)self->_summaryCache setObject:0 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_summaryCache setObject:0 forKeyedSubscript:aa_altDSID];
     os_unfair_lock_unlock(&self->_cacheLock);
   }
 }

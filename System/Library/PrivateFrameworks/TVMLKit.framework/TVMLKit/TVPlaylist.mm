@@ -1,30 +1,30 @@
 @interface TVPlaylist
-- (void)addObject:(id)a3;
-- (void)insertObjects:(id)a3 atIndexes:(id)a4;
-- (void)removeObjectsAtIndexes:(id)a3;
+- (void)addObject:(id)object;
+- (void)insertObjects:(id)objects atIndexes:(id)indexes;
+- (void)removeObjectsAtIndexes:(id)indexes;
 @end
 
 @implementation TVPlaylist
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
-  v5 = [(TVPlaylist *)self mediaItems];
-  v6 = [v5 mutableCopy];
+  objectCopy = object;
+  mediaItems = [(TVPlaylist *)self mediaItems];
+  v6 = [mediaItems mutableCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    array = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  v11 = v8;
+  v11 = array;
 
-  [v11 addObject:v4];
+  [v11 addObject:objectCopy];
   [(TVPlaylist *)self willChangeValueForKey:@"mediaItems"];
   v9 = [v11 copy];
   mediaItems = self->_mediaItems;
@@ -33,13 +33,13 @@
   [(TVPlaylist *)self didChangeValueForKey:@"mediaItems"];
 }
 
-- (void)removeObjectsAtIndexes:(id)a3
+- (void)removeObjectsAtIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(TVPlaylist *)self mediaItems];
-  v8 = [v5 mutableCopy];
+  indexesCopy = indexes;
+  mediaItems = [(TVPlaylist *)self mediaItems];
+  v8 = [mediaItems mutableCopy];
 
-  [v8 removeObjectsAtIndexes:v4];
+  [v8 removeObjectsAtIndexes:indexesCopy];
   [(TVPlaylist *)self willChangeValueForKey:@"mediaItems"];
   v6 = [v8 copy];
   mediaItems = self->_mediaItems;
@@ -48,12 +48,12 @@
   [(TVPlaylist *)self didChangeValueForKey:@"mediaItems"];
 }
 
-- (void)insertObjects:(id)a3 atIndexes:(id)a4
+- (void)insertObjects:(id)objects atIndexes:(id)indexes
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(TVPlaylist *)self mediaItems];
-  v8 = [v7 mutableCopy];
+  objectsCopy = objects;
+  indexesCopy = indexes;
+  mediaItems = [(TVPlaylist *)self mediaItems];
+  v8 = [mediaItems mutableCopy];
   v9 = v8;
   if (v8)
   {
@@ -62,12 +62,12 @@
 
   else
   {
-    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v14, "count")}];
+    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(objectsCopy, "count")}];
   }
 
   v11 = v10;
 
-  [v11 insertObjects:v14 atIndexes:v6];
+  [v11 insertObjects:objectsCopy atIndexes:indexesCopy];
   [(TVPlaylist *)self willChangeValueForKey:@"mediaItems"];
   v12 = [v11 copy];
   mediaItems = self->_mediaItems;

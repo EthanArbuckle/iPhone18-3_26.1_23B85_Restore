@@ -1,10 +1,10 @@
 @interface BaseDoubleColumnSplitViewController
-- (_TtC12GameCenterUI35BaseDoubleColumnSplitViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (int64_t)splitViewController:(id)a3 displayModeForExpandingToProposedDisplayMode:(int64_t)a4;
-- (int64_t)splitViewController:(id)a3 topColumnForCollapsingToProposedTopColumn:(int64_t)a4;
-- (void)setViewController:(id)a3 forColumn:(int64_t)a4;
-- (void)showDetailViewController:(id)a3 sender:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC12GameCenterUI35BaseDoubleColumnSplitViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (int64_t)splitViewController:(id)controller displayModeForExpandingToProposedDisplayMode:(int64_t)mode;
+- (int64_t)splitViewController:(id)controller topColumnForCollapsingToProposedTopColumn:(int64_t)column;
+- (void)setViewController:(id)controller forColumn:(int64_t)column;
+- (void)showDetailViewController:(id)controller sender:(id)sender;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -12,30 +12,30 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E26D778();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E26D964(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24E26D964(change);
 }
 
-- (void)setViewController:(id)a3 forColumn:(int64_t)a4
+- (void)setViewController:(id)controller forColumn:(int64_t)column
 {
-  v7 = a3;
-  v8 = self;
-  sub_24E26DA18(a3, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_24E26DA18(controller, column);
 }
 
-- (void)showDetailViewController:(id)a3 sender:(id)a4
+- (void)showDetailViewController:(id)controller sender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = a3;
-    v7 = self;
+    controllerCopy = controller;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_24E3487A8();
     swift_unknownObjectRelease();
@@ -44,41 +44,41 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    controllerCopy2 = controller;
+    selfCopy2 = self;
   }
 
-  sub_24E26DBDC(a3);
+  sub_24E26DBDC(controller);
 
   sub_24DF8894C(v10);
 }
 
-- (int64_t)splitViewController:(id)a3 topColumnForCollapsingToProposedTopColumn:(int64_t)a4
+- (int64_t)splitViewController:(id)controller topColumnForCollapsingToProposedTopColumn:(int64_t)column
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_24E26C9C0(v7, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v8 = sub_24E26C9C0(selfCopy, column);
 
   return v8;
 }
 
-- (int64_t)splitViewController:(id)a3 displayModeForExpandingToProposedDisplayMode:(int64_t)a4
+- (int64_t)splitViewController:(id)controller displayModeForExpandingToProposedDisplayMode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = self;
-  sub_24E26CB38(v7, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_24E26CB38(selfCopy, mode);
 
-  return a4;
+  return mode;
 }
 
-- (_TtC12GameCenterUI35BaseDoubleColumnSplitViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12GameCenterUI35BaseDoubleColumnSplitViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_24E347CF8();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   BaseDoubleColumnSplitViewController.init(nibName:bundle:)();
 }
 

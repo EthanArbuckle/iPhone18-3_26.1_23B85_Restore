@@ -1,19 +1,19 @@
 @interface CKPackageDatabase
 + (id)_bundleIdForCurrentProcess;
-+ (id)_usingAnchor:(id)a3 performBlock:(id)a4;
-+ (id)descriptionOfAnchor:(id)a3;
-+ (id)liftAnchor:(id)a3;
-+ (id)packageDatabaseForBundleID:(id)a3 error:(id *)a4;
-+ (id)packageDatabasePathForBundleID:(id)a3;
-+ (id)packageFromAnchor:(id)a3 error:(id *)a4;
-+ (unint64_t)packageCount:(id *)a3;
-- (id)anchorWithPackageInfo:(id)a3 expirationDate:(id)a4 error:(id *)a5;
++ (id)_usingAnchor:(id)anchor performBlock:(id)block;
++ (id)descriptionOfAnchor:(id)anchor;
++ (id)liftAnchor:(id)anchor;
++ (id)packageDatabaseForBundleID:(id)d error:(id *)error;
++ (id)packageDatabasePathForBundleID:(id)d;
++ (id)packageFromAnchor:(id)anchor error:(id *)error;
++ (unint64_t)packageCount:(id *)count;
+- (id)anchorWithPackageInfo:(id)info expirationDate:(id)date error:(id *)error;
 - (id)bundleID;
-- (id)existingPackage:(id)a3 error:(id *)a4;
+- (id)existingPackage:(id)package error:(id *)error;
 - (id)finishInitializing;
-- (id)newPackage:(id *)a3;
-- (id)packageReferenceFromAnchorDictionary:(id)a3 error:(id *)a4;
-- (id)refcountBecameZeroForPackage:(id)a3 packageID:(id)a4;
+- (id)newPackage:(id *)package;
+- (id)packageReferenceFromAnchorDictionary:(id)dictionary error:(id *)error;
+- (id)refcountBecameZeroForPackage:(id)package packageID:(id)d;
 - (void)createTables;
 @end
 
@@ -42,27 +42,27 @@
 {
   v11.receiver = self;
   v11.super_class = CKPackageDatabase;
-  v3 = [(CKSQLiteTableGroup *)&v11 finishInitializing];
-  if (!v3)
+  finishInitializing = [(CKSQLiteTableGroup *)&v11 finishInitializing];
+  if (!finishInitializing)
   {
-    if (!objc_msgSend_isFirstInstanceInProcess(self, v4, v5) || (objc_msgSend_removeInvalidReferences(self->_referenceTable, v7, v8), (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!objc_msgSend_isFirstInstanceInProcess(self, v4, v5) || (objc_msgSend_removeInvalidReferences(self->_referenceTable, v7, v8), (finishInitializing = objc_claimAutoreleasedReturnValue()) == 0))
     {
       if (objc_msgSend_isFirstInstanceSinceBoot(self, v7, v8))
       {
-        v3 = objc_msgSend_removeExpiredPackages(self->_directoryTable, v9, v10);
+        finishInitializing = objc_msgSend_removeExpiredPackages(self->_directoryTable, v9, v10);
       }
 
       else
       {
-        v3 = 0;
+        finishInitializing = 0;
       }
     }
   }
 
-  return v3;
+  return finishInitializing;
 }
 
-- (id)newPackage:(id *)a3
+- (id)newPackage:(id *)package
 {
   v11 = 0;
   v12 = &v11;
@@ -78,10 +78,10 @@
   v10[5] = &v11;
   v4 = objc_msgSend_performTransaction_(self, a2, v10);
   v5 = v4;
-  if (a3 && v4)
+  if (package && v4)
   {
     v6 = v4;
-    *a3 = v5;
+    *package = v5;
     v7 = v12[5];
     v12[5] = 0;
   }
@@ -92,9 +92,9 @@
   return v8;
 }
 
-- (id)existingPackage:(id)a3 error:(id *)a4
+- (id)existingPackage:(id)package error:(id *)error
 {
-  v6 = a3;
+  packageCopy = package;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -106,15 +106,15 @@
   v15[2] = sub_188524340;
   v15[3] = &unk_1E70BC0C0;
   v15[4] = self;
-  v7 = v6;
+  v7 = packageCopy;
   v16 = v7;
   v17 = &v18;
   v9 = objc_msgSend_performTransaction_(self, v8, v15);
   v10 = v9;
-  if (a4 && v9)
+  if (error && v9)
   {
     v11 = v9;
-    *a4 = v10;
+    *error = v10;
     v12 = v19[5];
     v19[5] = 0;
   }
@@ -126,10 +126,10 @@
   return v13;
 }
 
-- (id)anchorWithPackageInfo:(id)a3 expirationDate:(id)a4 error:(id *)a5
+- (id)anchorWithPackageInfo:(id)info expirationDate:(id)date error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  infoCopy = info;
+  dateCopy = date;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -140,20 +140,20 @@
   v19[1] = 3221225472;
   v19[2] = sub_1885245E0;
   v19[3] = &unk_1E70BC240;
-  v10 = v8;
+  v10 = infoCopy;
   v20 = v10;
-  v21 = self;
-  v11 = v9;
+  selfCopy = self;
+  v11 = dateCopy;
   v22 = v11;
   v23 = &v24;
   v13 = objc_msgSend_performTransaction_(self, v12, v19);
   v14 = v13;
   if (v13)
   {
-    if (a5)
+    if (error)
     {
       v15 = v13;
-      *a5 = v14;
+      *error = v14;
     }
 
     v16 = v25[5];
@@ -167,11 +167,11 @@
   return v17;
 }
 
-+ (id)_usingAnchor:(id)a3 performBlock:(id)a4
++ (id)_usingAnchor:(id)anchor performBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v17 = 0;
-  v7 = sub_1885248A0(a1, a3, &v17);
+  v7 = sub_1885248A0(self, anchor, &v17);
   v9 = v17;
   if (v7)
   {
@@ -184,7 +184,7 @@
 
       if (v12)
       {
-        v14 = v6[2](v6, v12, v7);
+        v14 = blockCopy[2](blockCopy, v12, v7);
 
         v13 = v14;
       }
@@ -196,18 +196,18 @@
   return v9;
 }
 
-- (id)packageReferenceFromAnchorDictionary:(id)a3 error:(id *)a4
+- (id)packageReferenceFromAnchorDictionary:(id)dictionary error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v8 = objc_msgSend_objectForKey_(v6, v7, @"referenceID");
+  dictionaryCopy = dictionary;
+  v8 = objc_msgSend_objectForKey_(dictionaryCopy, v7, @"referenceID");
   v26 = 0;
   v10 = objc_msgSend_referenceWithID_error_(self, v9, v8, &v26);
   v11 = v26;
   v13 = v11;
   if (v10)
   {
-    v14 = objc_msgSend_objectForKey_(v6, v12, @"packageDBCreationDate");
+    v14 = objc_msgSend_objectForKey_(dictionaryCopy, v12, @"packageDBCreationDate");
     v17 = objc_msgSend_creationDate(self, v15, v16);
     isEqualToDate = objc_msgSend_isEqualToDate_(v14, v18, v17);
 
@@ -245,7 +245,7 @@
     if (os_log_type_enabled(ck_log_facility_package, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v28 = v6;
+      v28 = dictionaryCopy;
       _os_log_error_impl(&dword_1883EA000, v25, OS_LOG_TYPE_ERROR, "reference entry missing for anchor: %@", buf, 0xCu);
     }
 
@@ -259,10 +259,10 @@ LABEL_12:
     v10 = 0;
   }
 
-  if (a4 && v13)
+  if (error && v13)
   {
     v22 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -270,9 +270,9 @@ LABEL_12:
   return v10;
 }
 
-+ (id)packageFromAnchor:(id)a3 error:(id *)a4
++ (id)packageFromAnchor:(id)anchor error:(id *)error
 {
-  v6 = a3;
+  anchorCopy = anchor;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -284,12 +284,12 @@ LABEL_12:
   v13[2] = sub_188524F94;
   v13[3] = &unk_1E70BC268;
   v13[4] = &v14;
-  v8 = objc_msgSend__usingAnchor_performBlock_(a1, v7, v6, v13);
+  v8 = objc_msgSend__usingAnchor_performBlock_(self, v7, anchorCopy, v13);
   v9 = v8;
-  if (a4 && v8)
+  if (error && v8)
   {
     v10 = v8;
-    *a4 = v9;
+    *error = v9;
   }
 
   v11 = v15[5];
@@ -299,10 +299,10 @@ LABEL_12:
   return v11;
 }
 
-+ (id)liftAnchor:(id)a3
++ (id)liftAnchor:(id)anchor
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  anchorCopy = anchor;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
@@ -314,7 +314,7 @@ LABEL_12:
   v10[2] = sub_188525250;
   v10[3] = &unk_1E70BC268;
   v10[4] = v11;
-  v6 = objc_msgSend__usingAnchor_performBlock_(a1, v5, v4, v10);
+  v6 = objc_msgSend__usingAnchor_performBlock_(self, v5, anchorCopy, v10);
   if (v6)
   {
     if (ck_log_initialization_predicate != -1)
@@ -338,12 +338,12 @@ LABEL_12:
   return v6;
 }
 
-+ (id)descriptionOfAnchor:(id)a3
++ (id)descriptionOfAnchor:(id)anchor
 {
-  if (a3)
+  if (anchor)
   {
     v14 = 0;
-    v3 = sub_1885248A0(a1, a3, &v14);
+    v3 = sub_1885248A0(self, anchor, &v14);
     v5 = v14;
     if (v3)
     {
@@ -367,11 +367,11 @@ LABEL_12:
   return v12;
 }
 
-- (id)refcountBecameZeroForPackage:(id)a3 packageID:(id)a4
+- (id)refcountBecameZeroForPackage:(id)package packageID:(id)d
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  packageCopy = package;
+  dCopy = d;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -381,18 +381,18 @@ LABEL_12:
   if (os_log_type_enabled(ck_log_facility_package, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v31 = v7;
+    v31 = dCopy;
     _os_log_impl(&dword_1883EA000, v8, OS_LOG_TYPE_INFO, "Deleting package with packageID=%{public}@ (zero refcount)", buf, 0xCu);
   }
 
   v34 = @"PACKAGEID";
-  v35[0] = v7;
+  v35[0] = dCopy;
   v10 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v9, v35, &v34, 1);
   referenceTable = self->_referenceTable;
   v29 = 0;
   objc_msgSend_deleteEntriesMatching_label_error_predicate_(referenceTable, v12, v10, 0, &v29, &unk_1EFA2E5A8);
   v13 = v29;
-  if (v13 || (objc_msgSend_deletePrimaryKeyValue_(self->_directoryTable, v14, v7), (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v13 || (objc_msgSend_deletePrimaryKeyValue_(self->_directoryTable, v14, dCopy), (v13 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v17 = v13;
     if (ck_log_initialization_predicate != -1)
@@ -404,7 +404,7 @@ LABEL_12:
     if (os_log_type_enabled(ck_log_facility_package, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v31 = v7;
+      v31 = dCopy;
       v32 = 2114;
       v33 = v17;
       _os_log_error_impl(&dword_1883EA000, v18, OS_LOG_TYPE_ERROR, "Failed to delete package with packageID=%{public}@: %{public}@", buf, 0x16u);
@@ -413,9 +413,9 @@ LABEL_12:
 
   else
   {
-    if (v6)
+    if (packageCopy)
     {
-      v21 = v6;
+      v21 = packageCopy;
       v17 = 0;
       v23 = objc_msgSend_purgeGroup_(CKSQLitePackage, v22, v21);
     }
@@ -424,7 +424,7 @@ LABEL_12:
     {
       v24 = objc_msgSend_db(self, v15, v16);
       v28 = 0;
-      v21 = objc_msgSend_tableGroupInDatabase_withID_error_(CKSQLitePackage, v25, v24, v7, &v28);
+      v21 = objc_msgSend_tableGroupInDatabase_withID_error_(CKSQLitePackage, v25, v24, dCopy, &v28);
       v17 = v28;
 
       if (!v21)
@@ -445,10 +445,10 @@ LABEL_11:
   return v17;
 }
 
-+ (unint64_t)packageCount:(id *)a3
++ (unint64_t)packageCount:(id *)count
 {
-  v4 = objc_msgSend_packageDatabaseForBundleID_error_(CKPackageDatabase, a2, 0, a3);
-  v6 = objc_msgSend_packageCount_(v4, v5, a3);
+  v4 = objc_msgSend_packageDatabaseForBundleID_error_(CKPackageDatabase, a2, 0, count);
+  v6 = objc_msgSend_packageCount_(v4, v5, count);
 
   return v6;
 }
@@ -462,10 +462,10 @@ LABEL_11:
   return v9;
 }
 
-+ (id)packageDatabasePathForBundleID:(id)a3
++ (id)packageDatabasePathForBundleID:(id)d
 {
-  v5 = a3;
-  if (v5)
+  dCopy = d;
+  if (dCopy)
   {
     goto LABEL_5;
   }
@@ -473,20 +473,20 @@ LABEL_11:
   if ((byte_1EA90C538 & 1) == 0)
   {
     v31 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v6, v7);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v31, v32, a2, a1, @"CKSQLitePackageDatabase.m", 650, @"Adopter only");
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v31, v32, a2, self, @"CKSQLitePackageDatabase.m", 650, @"Adopter only");
   }
 
-  v5 = objc_msgSend__bundleIdForCurrentProcess(a1, v6, v7);
-  if (v5)
+  dCopy = objc_msgSend__bundleIdForCurrentProcess(self, v6, v7);
+  if (dCopy)
   {
 LABEL_5:
-    v9 = v5;
+    v9 = dCopy;
     if (__sTestOverridesAvailable[0] != 1)
     {
       goto LABEL_8;
     }
 
-    if (!objc_msgSend_isEqualToString_(v5, v6, @"com.apple.cloudkit.CloudKitUnitTestsHost"))
+    if (!objc_msgSend_isEqualToString_(dCopy, v6, @"com.apple.cloudkit.CloudKitUnitTestsHost"))
     {
       goto LABEL_8;
     }
@@ -532,11 +532,11 @@ LABEL_8:
   return result;
 }
 
-+ (id)packageDatabaseForBundleID:(id)a3 error:(id *)a4
++ (id)packageDatabaseForBundleID:(id)d error:(id *)error
 {
-  v5 = objc_msgSend_packageDatabasePathForBundleID_(a1, a2, a3);
-  v7 = objc_msgSend_databaseInDirectory_registryDatabase_options_error_(CKSQLiteDatabase, v6, v5, 0, 512, a4);
-  v9 = objc_msgSend_packageDatabaseInSQLiteDatabase_error_(CKPackageDatabase, v8, v7, a4);
+  v5 = objc_msgSend_packageDatabasePathForBundleID_(self, a2, d);
+  v7 = objc_msgSend_databaseInDirectory_registryDatabase_options_error_(CKSQLiteDatabase, v6, v5, 0, 512, error);
+  v9 = objc_msgSend_packageDatabaseInSQLiteDatabase_error_(CKPackageDatabase, v8, v7, error);
 
   return v9;
 }

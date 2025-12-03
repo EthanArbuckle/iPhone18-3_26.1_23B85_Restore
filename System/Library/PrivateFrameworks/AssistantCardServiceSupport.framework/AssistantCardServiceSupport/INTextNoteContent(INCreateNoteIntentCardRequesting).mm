@@ -6,19 +6,19 @@
 
 - (id)acs_cardSection
 {
-  v1 = [a1 text];
-  if ([v1 length])
+  text = [self text];
+  if ([text length])
   {
-    v2 = [MEMORY[0x277D4C320] acs_uniquelyIdentifiedCardSection];
-    [v2 setTitle:v1];
+    acs_uniquelyIdentifiedCardSection = [MEMORY[0x277D4C320] acs_uniquelyIdentifiedCardSection];
+    [acs_uniquelyIdentifiedCardSection setTitle:text];
   }
 
   else
   {
-    v2 = 0;
+    acs_uniquelyIdentifiedCardSection = 0;
   }
 
-  return v2;
+  return acs_uniquelyIdentifiedCardSection;
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface AMSUIWebDiagnosticsPageModel
-- (AMSUIWebDiagnosticsPageModel)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebDiagnosticsPageModel)initWithJSObject:(id)object context:(id)context;
 - (CGSize)windowSize;
-- (id)createViewControllerForContainer:(id)a3;
-- (void)_parseflowFromDictionary:(id)a3;
+- (id)createViewControllerForContainer:(id)container;
+- (void)_parseflowFromDictionary:(id)dictionary;
 @end
 
 @implementation AMSUIWebDiagnosticsPageModel
 
-- (AMSUIWebDiagnosticsPageModel)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebDiagnosticsPageModel)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v22.receiver = self;
   v22.super_class = AMSUIWebDiagnosticsPageModel;
   v8 = [(AMSUIWebDiagnosticsPageModel *)&v22 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_context, a4);
-    v10 = [v6 objectForKeyedSubscript:@"requiredSerialNumbers"];
+    objc_storeStrong(&v8->_context, context);
+    v10 = [objectCopy objectForKeyedSubscript:@"requiredSerialNumbers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
     requiredSerialNumbers = v9->_requiredSerialNumbers;
     v9->_requiredSerialNumbers = v11;
 
-    v13 = [v6 objectForKeyedSubscript:@"selectableSerialNumbers"];
+    v13 = [objectCopy objectForKeyedSubscript:@"selectableSerialNumbers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
     selectableSerialNumbers = v9->_selectableSerialNumbers;
     v9->_selectableSerialNumbers = v14;
 
-    v16 = [v6 objectForKeyedSubscript:@"sessionToken"];
+    v16 = [objectCopy objectForKeyedSubscript:@"sessionToken"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,7 +63,7 @@
     sessionToken = v9->_sessionToken;
     v9->_sessionToken = v17;
 
-    v19 = [v6 objectForKeyedSubscript:@"flow"];
+    v19 = [objectCopy objectForKeyedSubscript:@"flow"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,13 +81,13 @@
   return v9;
 }
 
-- (void)_parseflowFromDictionary:(id)a3
+- (void)_parseflowFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v11 = v4;
-    v5 = [v4 objectForKeyedSubscript:@"destination"];
+    v11 = dictionaryCopy;
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"destination"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -126,15 +126,15 @@
     }
 
     [(AMSUIWebDiagnosticsPageModel *)self setFlowSessionID:v10];
-    v4 = v11;
+    dictionaryCopy = v11;
   }
 }
 
-- (id)createViewControllerForContainer:(id)a3
+- (id)createViewControllerForContainer:(id)container
 {
   v4 = [AMSUIWebDiagnosticsWrapperViewController alloc];
-  v5 = [(AMSUIWebDiagnosticsPageModel *)self context];
-  v6 = [(AMSUIWebDiagnosticsWrapperViewController *)v4 initWithContext:v5];
+  context = [(AMSUIWebDiagnosticsPageModel *)self context];
+  v6 = [(AMSUIWebDiagnosticsWrapperViewController *)v4 initWithContext:context];
 
   return v6;
 }

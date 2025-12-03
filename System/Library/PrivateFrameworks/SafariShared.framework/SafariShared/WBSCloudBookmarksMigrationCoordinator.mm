@@ -1,14 +1,14 @@
 @interface WBSCloudBookmarksMigrationCoordinator
 - (BOOL)isMigrationEnabled;
-- (WBSCloudBookmarksMigrationCoordinator)initWithSyncAgent:(id)a3 localDataProvider:(id)a4;
+- (WBSCloudBookmarksMigrationCoordinator)initWithSyncAgent:(id)agent localDataProvider:(id)provider;
 - (WBSCloudBookmarksMigrationCoordinatorLocalDataProvider)localDataProvider;
 - (WBSSafariBookmarksSyncAgentProtocol)syncAgent;
 - (void)_beginMigrationIfPossible;
 - (void)_determineCourseOfActionFromRemoteMigrationState;
 - (void)_determineCourseOfActionFromSyncAgentMigrationState;
-- (void)_logErrorAsKeyAction:(id)a3;
-- (void)_logKeyAction:(id)a3;
-- (void)setMigrationEnabled:(BOOL)a3;
+- (void)_logErrorAsKeyAction:(id)action;
+- (void)_logKeyAction:(id)action;
+- (void)setMigrationEnabled:(BOOL)enabled;
 - (void)startCoordinatingMigration;
 @end
 
@@ -143,18 +143,18 @@ void __92__WBSCloudBookmarksMigrationCoordinator__determineCourseOfActionFromSyn
   }
 }
 
-- (WBSCloudBookmarksMigrationCoordinator)initWithSyncAgent:(id)a3 localDataProvider:(id)a4
+- (WBSCloudBookmarksMigrationCoordinator)initWithSyncAgent:(id)agent localDataProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  agentCopy = agent;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = WBSCloudBookmarksMigrationCoordinator;
   v9 = [(WBSCloudBookmarksMigrationCoordinator *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_syncAgent, a3);
-    objc_storeWeak(&v10->_localDataProvider, v8);
+    objc_storeStrong(&v9->_syncAgent, agent);
+    objc_storeWeak(&v10->_localDataProvider, providerCopy);
     v11 = dispatch_queue_create("com.apple.SafariShared.WBSCloudBookmarksMigrationCoordinatorProcessingQueue", 0);
     processingQueue = v10->_processingQueue;
     v10->_processingQueue = v11;
@@ -188,14 +188,14 @@ void __92__WBSCloudBookmarksMigrationCoordinator__determineCourseOfActionFromSyn
   return v3;
 }
 
-- (void)setMigrationEnabled:(BOOL)a3
+- (void)setMigrationEnabled:(BOOL)enabled
 {
   processingQueue = self->_processingQueue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __61__WBSCloudBookmarksMigrationCoordinator_setMigrationEnabled___block_invoke;
   v4[3] = &unk_1E7FB74B8;
-  v5 = a3;
+  enabledCopy = enabled;
   v4[4] = self;
   dispatch_async(processingQueue, v4);
 }
@@ -236,31 +236,31 @@ uint64_t __61__WBSCloudBookmarksMigrationCoordinator_setMigrationEnabled___block
   return v3;
 }
 
-- (void)_logKeyAction:(id)a3
+- (void)_logKeyAction:(id)action
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   v5 = WBS_LOG_CHANNEL_PREFIXCloudBookmarks();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = actionCopy;
     _os_log_impl(&dword_1BB6F3000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", &v6, 0xCu);
   }
 
-  [(WBSLogger *)self->_keyActionsLogger logMessage:v4];
+  [(WBSLogger *)self->_keyActionsLogger logMessage:actionCopy];
 }
 
-- (void)_logErrorAsKeyAction:(id)a3
+- (void)_logErrorAsKeyAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = WBS_LOG_CHANNEL_PREFIXCloudBookmarks();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(WBSCloudBookmarksMigrationCoordinator *)v4 _logErrorAsKeyAction:v5];
+    [(WBSCloudBookmarksMigrationCoordinator *)actionCopy _logErrorAsKeyAction:v5];
   }
 
-  [(WBSLogger *)self->_keyActionsLogger logMessage:v4];
+  [(WBSLogger *)self->_keyActionsLogger logMessage:actionCopy];
 }
 
 void __92__WBSCloudBookmarksMigrationCoordinator__determineCourseOfActionFromSyncAgentMigrationState__block_invoke(uint64_t a1, uint64_t a2)

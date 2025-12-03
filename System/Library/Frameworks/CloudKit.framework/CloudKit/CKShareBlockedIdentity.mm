@@ -1,27 +1,27 @@
 @interface CKShareBlockedIdentity
-- (BOOL)isEqual:(id)a3;
-- (CKShareBlockedIdentity)initWithCoder:(id)a3;
-- (CKShareBlockedIdentity)initWithUserIdentity:(id)a3;
-- (CKShareBlockedIdentity)initWithUserIdentity:(id)a3 contactStore:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CKShareBlockedIdentity)initWithCoder:(id)coder;
+- (CKShareBlockedIdentity)initWithUserIdentity:(id)identity;
+- (CKShareBlockedIdentity)initWithUserIdentity:(id)identity contactStore:(id)store;
 - (CNContact)contact;
 - (NSString)debugDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)CKDescribePropertiesUsing:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)CKDescribePropertiesUsing:(id)using;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKShareBlockedIdentity
 
-- (CKShareBlockedIdentity)initWithUserIdentity:(id)a3
+- (CKShareBlockedIdentity)initWithUserIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v11.receiver = self;
   v11.super_class = CKShareBlockedIdentity;
   v7 = [(CKShareBlockedIdentity *)&v11 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(identityCopy, v5, v6);
     userIdentity = v7->_userIdentity;
     v7->_userIdentity = v8;
   }
@@ -29,33 +29,33 @@
   return v7;
 }
 
-- (CKShareBlockedIdentity)initWithUserIdentity:(id)a3 contactStore:(id)a4
+- (CKShareBlockedIdentity)initWithUserIdentity:(id)identity contactStore:(id)store
 {
-  v7 = a4;
-  v9 = objc_msgSend_initWithUserIdentity_(self, v8, a3);
+  storeCopy = store;
+  v9 = objc_msgSend_initWithUserIdentity_(self, v8, identity);
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong((v9 + 16), a4);
+    objc_storeStrong((v9 + 16), store);
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_userIdentity(self, v8, v9);
   v12 = objc_msgSend_initWithUserIdentity_(v7, v11, v10);
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     isEqual = 1;
   }
@@ -65,7 +65,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_userIdentity(self, v6, v7);
       v11 = objc_msgSend_userIdentity(v5, v9, v10);
 
@@ -89,11 +89,11 @@
   return v6;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v8 = objc_msgSend_userIdentity(self, v5, v6);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v7, @"identity", v8, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v7, @"identity", v8, 0);
 }
 
 - (NSString)debugDescription
@@ -108,23 +108,23 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8 = objc_msgSend_userIdentity(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v4, v7, v8, @"UserIdentity");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, v8, @"UserIdentity");
 }
 
-- (CKShareBlockedIdentity)initWithCoder:(id)a3
+- (CKShareBlockedIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CKShareBlockedIdentity;
   v5 = [(CKShareBlockedIdentity *)&v11 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"UserIdentity");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"UserIdentity");
     userIdentity = v5->_userIdentity;
     v5->_userIdentity = v8;
   }

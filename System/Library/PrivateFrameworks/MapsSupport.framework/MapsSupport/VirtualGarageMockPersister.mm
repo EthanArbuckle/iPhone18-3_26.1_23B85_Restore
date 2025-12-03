@@ -2,8 +2,8 @@
 - (VGVirtualGaragePersistingDelegate)delegate;
 - (VirtualGarageMockPersister)init;
 - (id)_dummyVehicles;
-- (id)persistedVehicleForVehicle:(id)a3;
-- (void)loadVehiclesWithCompletion:(id)a3;
+- (id)persistedVehicleForVehicle:(id)vehicle;
+- (void)loadVehiclesWithCompletion:(id)completion;
 @end
 
 @implementation VirtualGarageMockPersister
@@ -16,9 +16,9 @@
   if (v2)
   {
     v3 = [NSString stringWithFormat:@"com.apple.Navigation.persister.%@.%p", objc_opt_class(), v2];
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     queue = v2->_queue;
     v2->_queue = v6;
   }
@@ -26,9 +26,9 @@
   return v2;
 }
 
-- (void)loadVehiclesWithCompletion:(id)a3
+- (void)loadVehiclesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -36,8 +36,8 @@
   block[2] = sub_1000255A0;
   block[3] = &unk_100066000;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -72,15 +72,15 @@
   if (v15)
   {
     v16 = [[GEOLPRRoot alloc] initWithData:v15];
-    v17 = [v16 powerTypes];
-    v18 = [v17 allKeys];
-    v19 = [v18 firstObject];
-    [v13 setLprPowerType:v19];
+    powerTypes = [v16 powerTypes];
+    allKeys = [powerTypes allKeys];
+    firstObject = [allKeys firstObject];
+    [v13 setLprPowerType:firstObject];
 
-    v20 = [v16 vehicleTypes];
-    v21 = [v20 allKeys];
-    v22 = [v21 firstObject];
-    [v13 setLprVehicleType:v22];
+    vehicleTypes = [v16 vehicleTypes];
+    allKeys2 = [vehicleTypes allKeys];
+    firstObject2 = [allKeys2 firstObject];
+    [v13 setLprVehicleType:firstObject2];
   }
 
   v31[0] = v26;
@@ -100,25 +100,25 @@
   return v23;
 }
 
-- (id)persistedVehicleForVehicle:(id)a3
+- (id)persistedVehicleForVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_100025EA4;
   v17 = sub_100025EB4;
   v18 = 0;
-  v5 = [v4 identifier];
+  identifier = [vehicleCopy identifier];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100025EBC;
   block[3] = &unk_100066050;
   block[4] = self;
-  v11 = v5;
+  v11 = identifier;
   v12 = &v13;
-  v7 = v5;
+  v7 = identifier;
   dispatch_sync(queue, block);
   v8 = v14[5];
 

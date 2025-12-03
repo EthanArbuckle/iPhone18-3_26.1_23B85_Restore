@@ -1,26 +1,26 @@
 @interface MNHybridLocationProvider
-- (BOOL)locationProviderShouldPauseLocationUpdates:(id)a3;
-- (MNHybridLocationProvider)initWithEffectiveBundle:(id)a3;
-- (MNHybridLocationProvider)initWithEffectiveBundleIdentifier:(id)a3;
+- (BOOL)locationProviderShouldPauseLocationUpdates:(id)updates;
+- (MNHybridLocationProvider)initWithEffectiveBundle:(id)bundle;
+- (MNHybridLocationProvider)initWithEffectiveBundleIdentifier:(id)identifier;
 - (MNLocationProviderDelegate)delegate;
-- (void)_setEffectiveAccuracy:(double)a3;
+- (void)_setEffectiveAccuracy:(double)accuracy;
 - (void)_sharedInit;
-- (void)locationProvider:(id)a3 didEnterRegion:(id)a4;
-- (void)locationProvider:(id)a3 didExitRegion:(id)a4;
-- (void)locationProvider:(id)a3 didReceiveError:(id)a4;
-- (void)locationProvider:(id)a3 didUpdateHeading:(id)a4;
-- (void)locationProvider:(id)a3 didUpdateLocation:(id)a4;
-- (void)locationProvider:(id)a3 didUpdateVehicleHeading:(double)a4 timestamp:(id)a5;
-- (void)locationProvider:(id)a3 didUpdateVehicleSpeed:(double)a4 timestamp:(id)a5;
-- (void)locationProvider:(id)a3 monitoringDidFailForRegion:(id)a4 withError:(id)a5;
-- (void)locationProviderDidChangeAuthorizationStatus:(id)a3;
-- (void)locationProviderDidPauseLocationUpdates:(id)a3;
-- (void)locationProviderDidResumeLocationUpdates:(id)a3;
+- (void)locationProvider:(id)provider didEnterRegion:(id)region;
+- (void)locationProvider:(id)provider didExitRegion:(id)region;
+- (void)locationProvider:(id)provider didReceiveError:(id)error;
+- (void)locationProvider:(id)provider didUpdateHeading:(id)heading;
+- (void)locationProvider:(id)provider didUpdateLocation:(id)location;
+- (void)locationProvider:(id)provider didUpdateVehicleHeading:(double)heading timestamp:(id)timestamp;
+- (void)locationProvider:(id)provider didUpdateVehicleSpeed:(double)speed timestamp:(id)timestamp;
+- (void)locationProvider:(id)provider monitoringDidFailForRegion:(id)region withError:(id)error;
+- (void)locationProviderDidChangeAuthorizationStatus:(id)status;
+- (void)locationProviderDidPauseLocationUpdates:(id)updates;
+- (void)locationProviderDidResumeLocationUpdates:(id)updates;
 - (void)resetForActiveTileGroupChanged;
-- (void)setDesiredAccuracy:(double)a3;
-- (void)setDistanceFilter:(double)a3;
-- (void)setHeadingOrientation:(int)a3;
-- (void)setMode:(unint64_t)a3;
+- (void)setDesiredAccuracy:(double)accuracy;
+- (void)setDistanceFilter:(double)filter;
+- (void)setHeadingOrientation:(int)orientation;
+- (void)setMode:(unint64_t)mode;
 - (void)startUpdatingHeading;
 - (void)startUpdatingLocation;
 - (void)startUpdatingVehicleHeading;
@@ -40,120 +40,120 @@
   return WeakRetained;
 }
 
-- (void)locationProvider:(id)a3 monitoringDidFailForRegion:(id)a4 withError:(id)a5
+- (void)locationProvider:(id)provider monitoringDidFailForRegion:(id)region withError:(id)error
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(MNHybridLocationProvider *)self delegate];
+  regionCopy = region;
+  errorCopy = error;
+  delegate = [(MNHybridLocationProvider *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(MNHybridLocationProvider *)self delegate];
-    [v10 locationProvider:self monitoringDidFailForRegion:v11 withError:v7];
+    delegate2 = [(MNHybridLocationProvider *)self delegate];
+    [delegate2 locationProvider:self monitoringDidFailForRegion:regionCopy withError:errorCopy];
   }
 }
 
-- (void)locationProvider:(id)a3 didExitRegion:(id)a4
+- (void)locationProvider:(id)provider didExitRegion:(id)region
 {
-  v8 = a4;
-  v5 = [(MNHybridLocationProvider *)self delegate];
+  regionCopy = region;
+  delegate = [(MNHybridLocationProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MNHybridLocationProvider *)self delegate];
-    [v7 locationProvider:self didExitRegion:v8];
+    delegate2 = [(MNHybridLocationProvider *)self delegate];
+    [delegate2 locationProvider:self didExitRegion:regionCopy];
   }
 }
 
-- (void)locationProvider:(id)a3 didEnterRegion:(id)a4
+- (void)locationProvider:(id)provider didEnterRegion:(id)region
 {
-  v8 = a4;
-  v5 = [(MNHybridLocationProvider *)self delegate];
+  regionCopy = region;
+  delegate = [(MNHybridLocationProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MNHybridLocationProvider *)self delegate];
-    [v7 locationProvider:self didEnterRegion:v8];
+    delegate2 = [(MNHybridLocationProvider *)self delegate];
+    [delegate2 locationProvider:self didEnterRegion:regionCopy];
   }
 }
 
-- (void)locationProvider:(id)a3 didUpdateVehicleHeading:(double)a4 timestamp:(id)a5
+- (void)locationProvider:(id)provider didUpdateVehicleHeading:(double)heading timestamp:(id)timestamp
 {
-  v7 = a5;
-  v8 = [(MNHybridLocationProvider *)self delegate];
-  [v8 locationProvider:self didUpdateVehicleHeading:v7 timestamp:a4];
+  timestampCopy = timestamp;
+  delegate = [(MNHybridLocationProvider *)self delegate];
+  [delegate locationProvider:self didUpdateVehicleHeading:timestampCopy timestamp:heading];
 }
 
-- (void)locationProvider:(id)a3 didUpdateVehicleSpeed:(double)a4 timestamp:(id)a5
+- (void)locationProvider:(id)provider didUpdateVehicleSpeed:(double)speed timestamp:(id)timestamp
 {
-  v7 = a5;
-  v8 = [(MNHybridLocationProvider *)self delegate];
-  [v8 locationProvider:self didUpdateVehicleSpeed:v7 timestamp:a4];
+  timestampCopy = timestamp;
+  delegate = [(MNHybridLocationProvider *)self delegate];
+  [delegate locationProvider:self didUpdateVehicleSpeed:timestampCopy timestamp:speed];
 }
 
-- (void)locationProviderDidResumeLocationUpdates:(id)a3
+- (void)locationProviderDidResumeLocationUpdates:(id)updates
 {
-  v4 = [(MNHybridLocationProvider *)self delegate];
-  [v4 locationProviderDidResumeLocationUpdates:self];
+  delegate = [(MNHybridLocationProvider *)self delegate];
+  [delegate locationProviderDidResumeLocationUpdates:self];
 }
 
-- (void)locationProviderDidPauseLocationUpdates:(id)a3
+- (void)locationProviderDidPauseLocationUpdates:(id)updates
 {
-  v4 = [(MNHybridLocationProvider *)self delegate];
-  [v4 locationProviderDidPauseLocationUpdates:self];
+  delegate = [(MNHybridLocationProvider *)self delegate];
+  [delegate locationProviderDidPauseLocationUpdates:self];
 }
 
-- (BOOL)locationProviderShouldPauseLocationUpdates:(id)a3
+- (BOOL)locationProviderShouldPauseLocationUpdates:(id)updates
 {
-  v3 = self;
-  v4 = [(MNHybridLocationProvider *)self delegate];
-  LOBYTE(v3) = [v4 locationProviderShouldPauseLocationUpdates:v3];
+  selfCopy = self;
+  delegate = [(MNHybridLocationProvider *)self delegate];
+  LOBYTE(selfCopy) = [delegate locationProviderShouldPauseLocationUpdates:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)locationProviderDidChangeAuthorizationStatus:(id)a3
+- (void)locationProviderDidChangeAuthorizationStatus:(id)status
 {
-  v4 = [(MNHybridLocationProvider *)self delegate];
-  [v4 locationProviderDidChangeAuthorizationStatus:self];
+  delegate = [(MNHybridLocationProvider *)self delegate];
+  [delegate locationProviderDidChangeAuthorizationStatus:self];
 }
 
-- (void)locationProvider:(id)a3 didReceiveError:(id)a4
+- (void)locationProvider:(id)provider didReceiveError:(id)error
 {
-  v5 = a4;
-  v6 = [(MNHybridLocationProvider *)self delegate];
-  [v6 locationProvider:self didReceiveError:v5];
+  errorCopy = error;
+  delegate = [(MNHybridLocationProvider *)self delegate];
+  [delegate locationProvider:self didReceiveError:errorCopy];
 }
 
-- (void)locationProvider:(id)a3 didUpdateHeading:(id)a4
+- (void)locationProvider:(id)provider didUpdateHeading:(id)heading
 {
-  v5 = a4;
-  v6 = [(MNHybridLocationProvider *)self delegate];
-  [v6 locationProvider:self didUpdateHeading:v5];
+  headingCopy = heading;
+  delegate = [(MNHybridLocationProvider *)self delegate];
+  [delegate locationProvider:self didUpdateHeading:headingCopy];
 }
 
-- (void)locationProvider:(id)a3 didUpdateLocation:(id)a4
+- (void)locationProvider:(id)provider didUpdateLocation:(id)location
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  locationCopy = location;
   v6 = MNGetPuckTrackingLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 uuid];
+    uuid = [locationCopy uuid];
     v13 = 138412290;
-    v14 = v7;
+    v14 = uuid;
     _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_INFO, "[MN] [%@] - Processing - in MNHybridLocationProvider::locationProvider:didUpdateLocation:", &v13, 0xCu);
   }
 
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(MNHybridLocationProvider *)self mode];
+    mode = [(MNHybridLocationProvider *)self mode];
     v10 = @"Default";
-    if (v9 == 1)
+    if (mode == 1)
     {
       v10 = @"Leeching";
     }
@@ -161,18 +161,18 @@
     v13 = 138412546;
     v14 = v10;
     v15 = 2112;
-    v16 = v5;
+    v16 = locationCopy;
     _os_log_impl(&dword_1D311E000, v8, OS_LOG_TYPE_DEBUG, "Received location while in %@ mode:%@", &v13, 0x16u);
   }
 
-  [v5 setIsLeeched:self->_mode == 1];
-  v11 = [(MNHybridLocationProvider *)self delegate];
-  [v11 locationProvider:self didUpdateLocation:v5];
+  [locationCopy setIsLeeched:self->_mode == 1];
+  delegate = [(MNHybridLocationProvider *)self delegate];
+  [delegate locationProvider:self didUpdateLocation:locationCopy];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHeadingOrientation:(int)a3
+- (void)setHeadingOrientation:(int)orientation
 {
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
@@ -180,7 +180,7 @@
   block[2] = __50__MNHybridLocationProvider_setHeadingOrientation___block_invoke;
   block[3] = &unk_1E842FD50;
   objc_copyWeak(&v5, &location);
-  v6 = a3;
+  orientationCopy = orientation;
   dispatch_async(MEMORY[0x1E69E96A0], block);
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -373,16 +373,16 @@ void __49__MNHybridLocationProvider_startUpdatingLocation__block_invoke(uint64_t
   [v1 startUpdatingLocation];
 }
 
-- (void)_setEffectiveAccuracy:(double)a3
+- (void)_setEffectiveAccuracy:(double)accuracy
 {
-  self->_effectiveAccuracy = a3;
+  self->_effectiveAccuracy = accuracy;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__MNHybridLocationProvider__setEffectiveAccuracy___block_invoke;
   block[3] = &unk_1E8430F10;
   objc_copyWeak(v5, &location);
-  v5[1] = *&a3;
+  v5[1] = *&accuracy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
   objc_destroyWeak(v5);
   objc_destroyWeak(&location);
@@ -424,25 +424,25 @@ void __50__MNHybridLocationProvider__setEffectiveAccuracy___block_invoke(uint64_
   [(MNCoreLocationProvider *)self->_coreLocationProvider setDelegate:self];
 }
 
-- (void)setDesiredAccuracy:(double)a3
+- (void)setDesiredAccuracy:(double)accuracy
 {
-  self->_nonLeechedDesiredAccuracy = a3;
+  self->_nonLeechedDesiredAccuracy = accuracy;
   if (!self->_mode)
   {
     [(MNHybridLocationProvider *)self _setEffectiveAccuracy:?];
   }
 }
 
-- (void)setDistanceFilter:(double)a3
+- (void)setDistanceFilter:(double)filter
 {
-  self->_distanceFilter = a3;
+  self->_distanceFilter = filter;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__MNHybridLocationProvider_setDistanceFilter___block_invoke;
   block[3] = &unk_1E8430F10;
   objc_copyWeak(v5, &location);
-  v5[1] = *&a3;
+  v5[1] = *&filter;
   dispatch_async(MEMORY[0x1E69E96A0], block);
   objc_destroyWeak(v5);
   objc_destroyWeak(&location);
@@ -472,24 +472,24 @@ void __46__MNHybridLocationProvider_setDistanceFilter___block_invoke(uint64_t a1
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
     p_nonLeechedDesiredAccuracy = &self->_nonLeechedDesiredAccuracy;
-    if (a3 == 1)
+    if (mode == 1)
     {
       p_nonLeechedDesiredAccuracy = MEMORY[0x1E6985C98];
     }
 
     [(MNHybridLocationProvider *)self _setEffectiveAccuracy:*p_nonLeechedDesiredAccuracy];
-    self->_mode = a3;
+    self->_mode = mode;
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v7 = @"Default";
-      if (a3 == 1)
+      if (mode == 1)
       {
         v7 = @"Leeching";
       }
@@ -503,15 +503,15 @@ void __46__MNHybridLocationProvider_setDistanceFilter___block_invoke(uint64_t a1
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (MNHybridLocationProvider)initWithEffectiveBundleIdentifier:(id)a3
+- (MNHybridLocationProvider)initWithEffectiveBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = MNHybridLocationProvider;
   v5 = [(MNHybridLocationProvider *)&v9 init];
   if (v5)
   {
-    v6 = [[MNCoreLocationProvider alloc] initWithEffectiveBundleIdentifier:v4];
+    v6 = [[MNCoreLocationProvider alloc] initWithEffectiveBundleIdentifier:identifierCopy];
     coreLocationProvider = v5->_coreLocationProvider;
     v5->_coreLocationProvider = v6;
 
@@ -521,15 +521,15 @@ void __46__MNHybridLocationProvider_setDistanceFilter___block_invoke(uint64_t a1
   return v5;
 }
 
-- (MNHybridLocationProvider)initWithEffectiveBundle:(id)a3
+- (MNHybridLocationProvider)initWithEffectiveBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v9.receiver = self;
   v9.super_class = MNHybridLocationProvider;
   v5 = [(MNHybridLocationProvider *)&v9 init];
   if (v5)
   {
-    v6 = [[MNCoreLocationProvider alloc] initWithEffectiveBundle:v4];
+    v6 = [[MNCoreLocationProvider alloc] initWithEffectiveBundle:bundleCopy];
     coreLocationProvider = v5->_coreLocationProvider;
     v5->_coreLocationProvider = v6;
 

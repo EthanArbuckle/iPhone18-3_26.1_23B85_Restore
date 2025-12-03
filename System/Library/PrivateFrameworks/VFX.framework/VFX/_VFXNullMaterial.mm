@@ -1,6 +1,6 @@
 @interface _VFXNullMaterial
 + (id)nullMaterial;
-- (_VFXNullMaterial)initWithCoder:(id)a3;
+- (_VFXNullMaterial)initWithCoder:(id)coder;
 @end
 
 @implementation _VFXNullMaterial
@@ -15,11 +15,11 @@
   return qword_1EB658868;
 }
 
-- (_VFXNullMaterial)initWithCoder:(id)a3
+- (_VFXNullMaterial)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = _VFXNullMaterial;
-  result = [(VFXMaterial *)&v7 initWithCoder:a3];
+  result = [(VFXMaterial *)&v7 initWithCoder:coder];
   if (result)
   {
 

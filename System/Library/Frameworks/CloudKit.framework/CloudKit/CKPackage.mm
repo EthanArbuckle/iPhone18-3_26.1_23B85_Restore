@@ -1,35 +1,35 @@
 @interface CKPackage
-+ (id)clonedPackageWithRecordID:(id)a3 databaseScope:(int64_t)a4 fieldName:(id)a5 error:(id *)a6;
-+ (id)packageFromAnchor:(id)a3 error:(id *)a4;
-+ (id)packageWithPackage:(id)a3 error:(id *)a4;
-- (BOOL)deleteFilesWithError:(id *)a3;
-- (BOOL)setArchiverInfo:(id)a3 error:(id *)a4;
++ (id)clonedPackageWithRecordID:(id)d databaseScope:(int64_t)scope fieldName:(id)name error:(id *)error;
++ (id)packageFromAnchor:(id)anchor error:(id *)error;
++ (id)packageWithPackage:(id)package error:(id *)error;
+- (BOOL)deleteFilesWithError:(id *)error;
+- (BOOL)setArchiverInfo:(id)info error:(id *)error;
 - (BOOL)useMMCSEncryptionV2;
-- (CKPackage)initWithCoder:(id)a3;
+- (CKPackage)initWithCoder:(id)coder;
 - (id)UUID;
-- (id)addItem:(id)a3;
-- (id)anchorWithExpirationDate:(id)a3 error:(id *)a4;
+- (id)addItem:(id)item;
+- (id)anchorWithExpirationDate:(id)date error:(id *)error;
 - (id)archiverInfo;
 - (id)assetTransferOptions;
 - (id)boundaryKey;
-- (id)clonedPackageWithBundle:(id)a3 filesDuplicatedIntoDirectory:(id)a4 error:(id *)a5;
-- (id)itemAtIndex:(unint64_t)a3 error:(id *)a4;
+- (id)clonedPackageWithBundle:(id)bundle filesDuplicatedIntoDirectory:(id)directory error:(id *)error;
+- (id)itemAtIndex:(unint64_t)index error:(id *)error;
 - (id)itemEnumerator;
 - (id)packageID;
-- (id)setBoundaryKey:(id)a3;
+- (id)setBoundaryKey:(id)key;
 - (unint64_t)itemCount;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAssetTransferOptions:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAssetTransferOptions:(id)options;
 @end
 
 @implementation CKPackage
 
-+ (id)packageWithPackage:(id)a3 error:(id *)a4
++ (id)packageWithPackage:(id)package error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v7 = objc_msgSend_packageWithError_(CKConcretePackage, v6, a4);
-  objc_msgSend_itemEnumerator(v5, v8, v9);
+  packageCopy = package;
+  v7 = objc_msgSend_packageWithError_(CKConcretePackage, v6, error);
+  objc_msgSend_itemEnumerator(packageCopy, v8, v9);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -68,7 +68,7 @@ LABEL_3:
 
     v20 = v17;
 
-    if (a4)
+    if (error)
     {
       goto LABEL_11;
     }
@@ -84,11 +84,11 @@ LABEL_9:
       goto LABEL_13;
     }
 
-    if (a4)
+    if (error)
     {
 LABEL_11:
       v21 = v20;
-      *a4 = v20;
+      *error = v20;
     }
   }
 
@@ -100,12 +100,12 @@ LABEL_13:
   return v7;
 }
 
-+ (id)clonedPackageWithRecordID:(id)a3 databaseScope:(int64_t)a4 fieldName:(id)a5 error:(id *)a6
++ (id)clonedPackageWithRecordID:(id)d databaseScope:(int64_t)scope fieldName:(id)name error:(id *)error
 {
-  v8 = a5;
-  v9 = a3;
+  nameCopy = name;
+  dCopy = d;
   v10 = [CKPackageReference alloc];
-  v12 = objc_msgSend_initWithRecordID_databaseScope_fieldName_(v10, v11, v9, a4, v8);
+  v12 = objc_msgSend_initWithRecordID_databaseScope_fieldName_(v10, v11, dCopy, scope, nameCopy);
 
   v13 = [CKReferencePackage alloc];
   v15 = objc_msgSend_initWithPackageReference_uuid_(v13, v14, v12, 0);
@@ -113,9 +113,9 @@ LABEL_13:
   return v15;
 }
 
-+ (id)packageFromAnchor:(id)a3 error:(id *)a4
++ (id)packageFromAnchor:(id)anchor error:(id *)error
 {
-  v4 = objc_msgSend_packageFromAnchor_error_(CKPackageDatabase, a2, a3, a4);
+  v4 = objc_msgSend_packageFromAnchor_error_(CKPackageDatabase, a2, anchor, error);
   if (v4)
   {
     v5 = [CKConcretePackage alloc];
@@ -139,21 +139,21 @@ LABEL_13:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = objc_opt_class();
   v6 = NSStringFromClass(v4);
-  objc_msgSend_encodeObject_forKey_(v3, v5, v6, @"class");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, v6, @"class");
 }
 
-- (CKPackage)initWithCoder:(id)a3
+- (CKPackage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v7 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"class");
+  v7 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"class");
   v8 = objc_alloc(NSClassFromString(v7));
-  v10 = objc_msgSend_initWithCoder_(v8, v9, v4);
+  v10 = objc_msgSend_initWithCoder_(v8, v9, coderCopy);
 
   if (!v10)
   {
@@ -163,9 +163,9 @@ LABEL_13:
   return &v10->super;
 }
 
-- (id)addItem:(id)a3
+- (id)addItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v6 = objc_msgSend_currentHandler(CKSignificantIssueHandler, v4, v5);
   v7 = [CKSignificantIssue alloc];
   v8 = [CKSourceCodeLocation alloc];
@@ -180,9 +180,9 @@ LABEL_13:
   return result;
 }
 
-- (id)itemAtIndex:(unint64_t)a3 error:(id *)a4
+- (id)itemAtIndex:(unint64_t)index error:(id *)error
 {
-  v4 = objc_msgSend_currentHandler(CKSignificantIssueHandler, a2, a3, a4);
+  v4 = objc_msgSend_currentHandler(CKSignificantIssueHandler, a2, index, error);
   v5 = [CKSignificantIssue alloc];
   v6 = [CKSourceCodeLocation alloc];
   v8 = objc_msgSend_initWithFilePath_lineNumber_(v6, v7, @"/Library/Caches/com.apple.xbs/Sources/CloudKit/Sources/CloudKit/CKItems/Asset/Package/CKPackage.m", 154);
@@ -244,9 +244,9 @@ LABEL_13:
   return result;
 }
 
-- (id)anchorWithExpirationDate:(id)a3 error:(id *)a4
+- (id)anchorWithExpirationDate:(id)date error:(id *)error
 {
-  v4 = a3;
+  dateCopy = date;
   v7 = objc_msgSend_currentHandler(CKSignificantIssueHandler, v5, v6);
   v8 = [CKSignificantIssue alloc];
   v9 = [CKSourceCodeLocation alloc];
@@ -277,9 +277,9 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)setArchiverInfo:(id)a3 error:(id *)a4
+- (BOOL)setArchiverInfo:(id)info error:(id *)error
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_currentHandler(CKSignificantIssueHandler, v5, v6);
   v8 = [CKSignificantIssue alloc];
   v9 = [CKSourceCodeLocation alloc];
@@ -310,9 +310,9 @@ LABEL_13:
   return result;
 }
 
-- (void)setAssetTransferOptions:(id)a3
+- (void)setAssetTransferOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v6 = objc_msgSend_currentHandler(CKSignificantIssueHandler, v4, v5);
   v7 = [CKSignificantIssue alloc];
   v8 = [CKSourceCodeLocation alloc];
@@ -342,9 +342,9 @@ LABEL_13:
   return result;
 }
 
-- (id)setBoundaryKey:(id)a3
+- (id)setBoundaryKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v6 = objc_msgSend_currentHandler(CKSignificantIssueHandler, v4, v5);
   v7 = [CKSignificantIssue alloc];
   v8 = [CKSourceCodeLocation alloc];
@@ -375,26 +375,26 @@ LABEL_13:
   return result;
 }
 
-- (id)clonedPackageWithBundle:(id)a3 filesDuplicatedIntoDirectory:(id)a4 error:(id *)a5
+- (id)clonedPackageWithBundle:(id)bundle filesDuplicatedIntoDirectory:(id)directory error:(id *)error
 {
   v79 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  if (a5)
+  directoryCopy = directory;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   v76 = 0;
-  v10 = objc_msgSend_packageForBundleID_error_(CKConcretePackage, v8, a3, &v76);
+  v10 = objc_msgSend_packageForBundleID_error_(CKConcretePackage, v8, bundle, &v76);
   v11 = v76;
   v14 = v11;
   if (v11)
   {
-    if (a5)
+    if (error)
     {
       v15 = v11;
       v16 = 0;
-      *a5 = v14;
+      *error = v14;
     }
 
     else
@@ -416,7 +416,7 @@ LABEL_13:
       v22 = v19;
       v23 = *v73;
       obj = v17;
-      v66 = v9;
+      v66 = directoryCopy;
       v64 = 0;
 LABEL_8:
       v24 = 0;
@@ -428,13 +428,13 @@ LABEL_8:
         }
 
         v25 = *(*(&v72 + 1) + 8 * v24);
-        if (v9)
+        if (directoryCopy)
         {
           v26 = v10;
           v27 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], v20, v21);
           v30 = objc_msgSend_UUIDString(v27, v28, v29);
 
-          v32 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(v9, v31, v30, 0);
+          v32 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(directoryCopy, v31, v30, 0);
           v35 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v33, v34);
           v38 = objc_msgSend_fileURL(v25, v36, v37);
           v71 = 0;
@@ -467,11 +467,11 @@ LABEL_8:
           if (!v66)
           {
 LABEL_31:
-            if (a5)
+            if (error)
             {
               v61 = v40;
               v16 = 0;
-              *a5 = v40;
+              *error = v40;
             }
 
             else
@@ -479,7 +479,7 @@ LABEL_31:
               v16 = 0;
             }
 
-            v9 = v66;
+            directoryCopy = v66;
             v14 = v64;
             goto LABEL_35;
           }
@@ -521,7 +521,7 @@ LABEL_23:
         }
 
         ++v24;
-        v9 = v66;
+        directoryCopy = v66;
         if (v22 == v24)
         {
           v17 = obj;
@@ -547,14 +547,14 @@ LABEL_35:
   return v16;
 }
 
-- (BOOL)deleteFilesWithError:(id *)a3
+- (BOOL)deleteFilesWithError:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v4 = objc_msgSend_itemEnumerator(self, a2, a3);
+  v4 = objc_msgSend_itemEnumerator(self, a2, error);
   v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v26, v30, 16);
   if (v6)
   {
@@ -607,10 +607,10 @@ LABEL_35:
     v10 = 0;
   }
 
-  if (a3)
+  if (error)
   {
     v22 = v10;
-    *a3 = v10;
+    *error = v10;
   }
 
   v23 = *MEMORY[0x1E69E9840];

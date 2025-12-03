@@ -1,32 +1,32 @@
 @interface CPRouteLine
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRouteLine:(id)a3;
-- (CPRouteLine)initWithCoder:(id)a3;
-- (CPRouteLine)initWithGeodeticSystem:(unsigned __int8)a3 originLocation:(id)a4 destinationLocation:(id)a5 routeLegs:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRouteLine:(id)line;
+- (CPRouteLine)initWithCoder:(id)coder;
+- (CPRouteLine)initWithGeodeticSystem:(unsigned __int8)system originLocation:(id)location destinationLocation:(id)destinationLocation routeLegs:(id)legs;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPRouteLine
 
-- (CPRouteLine)initWithGeodeticSystem:(unsigned __int8)a3 originLocation:(id)a4 destinationLocation:(id)a5 routeLegs:(id)a6
+- (CPRouteLine)initWithGeodeticSystem:(unsigned __int8)system originLocation:(id)location destinationLocation:(id)destinationLocation routeLegs:(id)legs
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  locationCopy = location;
+  destinationLocationCopy = destinationLocation;
+  legsCopy = legs;
   v20.receiver = self;
   v20.super_class = CPRouteLine;
   v14 = [(CPRouteLine *)&v20 init];
   if (v14)
   {
-    v15 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v14->_identifier;
-    v14->_identifier = v15;
+    v14->_identifier = uUID;
 
-    v14->_geodeticSystem = a3;
-    objc_storeStrong(&v14->_originLocation, a4);
-    objc_storeStrong(&v14->_destinationLocation, a5);
-    v17 = [v13 copy];
+    v14->_geodeticSystem = system;
+    objc_storeStrong(&v14->_originLocation, location);
+    objc_storeStrong(&v14->_destinationLocation, destinationLocation);
+    v17 = [legsCopy copy];
     routeLegs = v14->_routeLegs;
     v14->_routeLegs = v17;
   }
@@ -34,28 +34,28 @@
   return v14;
 }
 
-- (CPRouteLine)initWithCoder:(id)a3
+- (CPRouteLine)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CPRouteLine;
   v5 = [(CPRouteLine *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPRouteLineIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPRouteLineIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_geodeticSystem = [v4 decodeIntegerForKey:@"kCPRouteLineGeodeticSystemKey"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPRouteLineOriginKey"];
+    v5->_geodeticSystem = [coderCopy decodeIntegerForKey:@"kCPRouteLineGeodeticSystemKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPRouteLineOriginKey"];
     originLocation = v5->_originLocation;
     v5->_originLocation = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPRouteLineDestinationKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPRouteLineDestinationKey"];
     destinationLocation = v5->_destinationLocation;
     v5->_destinationLocation = v10;
 
-    v12 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"kCPRouteLineRouteLegsKey"];
+    v12 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"kCPRouteLineRouteLegsKey"];
     routeLegs = v5->_routeLegs;
     v5->_routeLegs = v12;
   }
@@ -63,31 +63,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"kCPRouteLineIdentifier"];
-  [v5 encodeInteger:self->_geodeticSystem forKey:@"kCPRouteLineGeodeticSystemKey"];
-  [v5 encodeObject:self->_origin forKey:@"kCPRouteLineOriginKey"];
-  [v5 encodeObject:self->_destination forKey:@"kCPRouteLineDestinationKey"];
-  [v5 encodeObject:self->_routeLegs forKey:@"kCPRouteLineRouteLegsKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"kCPRouteLineIdentifier"];
+  [coderCopy encodeInteger:self->_geodeticSystem forKey:@"kCPRouteLineGeodeticSystemKey"];
+  [coderCopy encodeObject:self->_origin forKey:@"kCPRouteLineOriginKey"];
+  [coderCopy encodeObject:self->_destination forKey:@"kCPRouteLineDestinationKey"];
+  [coderCopy encodeObject:self->_routeLegs forKey:@"kCPRouteLineRouteLegsKey"];
 }
 
-- (BOOL)isEqualToRouteLine:(id)a3
+- (BOOL)isEqualToRouteLine:(id)line
 {
-  v4 = a3;
-  v5 = [(CPRouteLine *)self identifier];
-  v6 = [v4 identifier];
+  lineCopy = line;
+  identifier = [(CPRouteLine *)self identifier];
+  identifier2 = [lineCopy identifier];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(lineCopy) = [identifier isEqual:identifier2];
+  return lineCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -96,9 +96,9 @@
   {
     v7.receiver = self;
     v7.super_class = CPRouteLine;
-    if ([(CPRouteLine *)&v7 isEqual:v4])
+    if ([(CPRouteLine *)&v7 isEqual:equalCopy])
     {
-      v5 = [(CPRouteLine *)self isEqualToRouteLine:v4];
+      v5 = [(CPRouteLine *)self isEqualToRouteLine:equalCopy];
     }
 
     else
@@ -112,8 +112,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CPRouteLine *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(CPRouteLine *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

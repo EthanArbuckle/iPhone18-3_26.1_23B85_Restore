@@ -1,35 +1,35 @@
 @interface TLKFontUtilities
-+ (BOOL)formattedTextItemIsColoredImage:(id)a3;
-+ (id)attributedStringForFormattedText:(id)a3 appearance:(id)a4 prominence:(unint64_t)a5 alignment:(int64_t)a6 font:(id)a7 isButton:(BOOL)a8 scale:(double)a9 isDark:(BOOL)a10;
-+ (id)attributedStringForRichText:(id)a3 appearance:(id)a4 prominence:(unint64_t)a5 alignment:(int64_t)a6 coloredRanges:(id)a7 nonColoredRanges:(id)a8 rangesForNonTemplateImageAttachments:(id)a9 rangesForTemplateImageAttachments:(id)a10 font:(id)a11 isButton:(BOOL)a12 scale:(double)a13 isDark:(BOOL)a14;
-+ (id)attributedStringForRichText:(id)a3 appearance:(id)a4 prominence:(unint64_t)a5 alignment:(int64_t)a6 font:(id)a7 isButton:(BOOL)a8 scale:(double)a9 isDark:(BOOL)a10;
-+ (id)cachedFontForKey:(id)a3 creatorBlock:(id)a4;
-+ (id)cachedFontForTextStyle:(id)a3 isShort:(BOOL)a4 isBold:(BOOL)a5 useCustomWeight:(BOOL)a6 customFontWeight:(double)a7 isMacStyle:(BOOL)a8 fontFeatures:(id)a9;
-+ (id)clearTextAttachmentForTextAttachment:(id)a3;
-+ (id)preferredFontDescriptorWithTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4 isMacStyle:(BOOL)a5;
-+ (id)preferredFontWithTextStyle:(id)a3 isShort:(BOOL)a4 isBold:(BOOL)a5 useCustomWeight:(BOOL)a6 customFontWeight:(double)a7 isMonoSpaced:(BOOL)a8 isMacStyle:(BOOL)a9 fontFeatures:(id)a10;
-+ (id)textAttachmentForImage:(id)a3 size:(CGSize)a4 cornerRoundingStyle:(unint64_t)a5 appearance:(id)a6;
-+ (id)thinFontOfSize:(double)a3 grade:(unint64_t)a4;
-+ (id)updateAttributedStringUnderlineStyle:(id)a3 isUnderlineVisible:(BOOL)a4;
-+ (void)cacheInlineImagesForRichText:(id)a3 inView:(id)a4 updateHandler:(id)a5;
++ (BOOL)formattedTextItemIsColoredImage:(id)image;
++ (id)attributedStringForFormattedText:(id)text appearance:(id)appearance prominence:(unint64_t)prominence alignment:(int64_t)alignment font:(id)font isButton:(BOOL)button scale:(double)scale isDark:(BOOL)self0;
++ (id)attributedStringForRichText:(id)text appearance:(id)appearance prominence:(unint64_t)prominence alignment:(int64_t)alignment coloredRanges:(id)ranges nonColoredRanges:(id)coloredRanges rangesForNonTemplateImageAttachments:(id)attachments rangesForTemplateImageAttachments:(id)self0 font:(id)self1 isButton:(BOOL)self2 scale:(double)self3 isDark:(BOOL)self4;
++ (id)attributedStringForRichText:(id)text appearance:(id)appearance prominence:(unint64_t)prominence alignment:(int64_t)alignment font:(id)font isButton:(BOOL)button scale:(double)scale isDark:(BOOL)self0;
++ (id)cachedFontForKey:(id)key creatorBlock:(id)block;
++ (id)cachedFontForTextStyle:(id)style isShort:(BOOL)short isBold:(BOOL)bold useCustomWeight:(BOOL)weight customFontWeight:(double)fontWeight isMacStyle:(BOOL)macStyle fontFeatures:(id)features;
++ (id)clearTextAttachmentForTextAttachment:(id)attachment;
++ (id)preferredFontDescriptorWithTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits isMacStyle:(BOOL)macStyle;
++ (id)preferredFontWithTextStyle:(id)style isShort:(BOOL)short isBold:(BOOL)bold useCustomWeight:(BOOL)weight customFontWeight:(double)fontWeight isMonoSpaced:(BOOL)spaced isMacStyle:(BOOL)macStyle fontFeatures:(id)self0;
++ (id)textAttachmentForImage:(id)image size:(CGSize)size cornerRoundingStyle:(unint64_t)style appearance:(id)appearance;
++ (id)thinFontOfSize:(double)size grade:(unint64_t)grade;
++ (id)updateAttributedStringUnderlineStyle:(id)style isUnderlineVisible:(BOOL)visible;
++ (void)cacheInlineImagesForRichText:(id)text inView:(id)view updateHandler:(id)handler;
 @end
 
 @implementation TLKFontUtilities
 
-+ (id)cachedFontForKey:(id)a3 creatorBlock:(id)a4
++ (id)cachedFontForKey:(id)key creatorBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  blockCopy = block;
   if (cachedFontForKey_creatorBlock__onceToken != -1)
   {
     +[TLKFontUtilities cachedFontForKey:creatorBlock:];
   }
 
-  v7 = [cachedFontForKey_creatorBlock__fontCache objectForKey:v5];
+  v7 = [cachedFontForKey_creatorBlock__fontCache objectForKey:keyCopy];
   if (!v7)
   {
-    v7 = v6[2](v6);
-    [cachedFontForKey_creatorBlock__fontCache setObject:v7 forKey:v5];
+    v7 = blockCopy[2](blockCopy);
+    [cachedFontForKey_creatorBlock__fontCache setObject:v7 forKey:keyCopy];
   }
 
   return v7;
@@ -52,24 +52,24 @@ void __50__TLKFontUtilities_cachedFontForKey_creatorBlock___block_invoke_2()
   [v0 postNotificationName:@"TLKContentSizeCategoryDidChangeNotification" object:0];
 }
 
-+ (id)cachedFontForTextStyle:(id)a3 isShort:(BOOL)a4 isBold:(BOOL)a5 useCustomWeight:(BOOL)a6 customFontWeight:(double)a7 isMacStyle:(BOOL)a8 fontFeatures:(id)a9
++ (id)cachedFontForTextStyle:(id)style isShort:(BOOL)short isBold:(BOOL)bold useCustomWeight:(BOOL)weight customFontWeight:(double)fontWeight isMacStyle:(BOOL)macStyle fontFeatures:(id)features
 {
-  v35 = a8;
-  v11 = a6;
-  v12 = a5;
-  v37 = a4;
+  macStyleCopy = macStyle;
+  weightCopy = weight;
+  boldCopy = bold;
+  shortCopy = short;
   v52 = *MEMORY[0x1E69E9840];
-  v34 = a3;
-  v13 = a9;
+  styleCopy = style;
+  featuresCopy = features;
   v14 = objc_opt_new();
-  v33 = v13;
-  if ([v13 count])
+  v33 = featuresCopy;
+  if ([featuresCopy count])
   {
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v15 = v13;
+    v15 = featuresCopy;
     v16 = [v15 countByEnumeratingWithState:&v47 objects:v51 count:16];
     if (v16)
     {
@@ -106,52 +106,52 @@ void __50__TLKFontUtilities_cachedFontForKey_creatorBlock___block_invoke_2()
   }
 
   v21 = MEMORY[0x1E696AEC0];
-  v22 = [MEMORY[0x1E696AD98] numberWithBool:v37];
-  v23 = [MEMORY[0x1E696AD98] numberWithBool:v12];
-  v24 = [MEMORY[0x1E696AD98] numberWithBool:v11];
-  v25 = [MEMORY[0x1E696AD98] numberWithDouble:a7];
-  v32 = v12;
-  v26 = [MEMORY[0x1E696AD98] numberWithBool:v35];
-  v27 = [v21 stringWithFormat:@"%@-%@-%@-%@-%@-%@-%@", v34, v22, v23, v24, v25, v26, v14];
+  v22 = [MEMORY[0x1E696AD98] numberWithBool:shortCopy];
+  v23 = [MEMORY[0x1E696AD98] numberWithBool:boldCopy];
+  v24 = [MEMORY[0x1E696AD98] numberWithBool:weightCopy];
+  v25 = [MEMORY[0x1E696AD98] numberWithDouble:fontWeight];
+  v32 = boldCopy;
+  v26 = [MEMORY[0x1E696AD98] numberWithBool:macStyleCopy];
+  v27 = [v21 stringWithFormat:@"%@-%@-%@-%@-%@-%@-%@", styleCopy, v22, v23, v24, v25, v26, v14];
 
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __115__TLKFontUtilities_cachedFontForTextStyle_isShort_isBold_useCustomWeight_customFontWeight_isMacStyle_fontFeatures___block_invoke;
   v38[3] = &unk_1E7FD8D08;
-  v43 = v37;
+  v43 = shortCopy;
   v44 = v32;
-  v45 = v11;
-  v42 = a7;
-  v46 = v35;
-  v39 = v34;
+  v45 = weightCopy;
+  fontWeightCopy = fontWeight;
+  v46 = macStyleCopy;
+  v39 = styleCopy;
   v40 = v33;
-  v41 = a1;
+  selfCopy = self;
   v28 = v33;
-  v29 = v34;
-  v30 = [a1 cachedFontForKey:v27 creatorBlock:v38];
+  v29 = styleCopy;
+  v30 = [self cachedFontForKey:v27 creatorBlock:v38];
 
   return v30;
 }
 
-+ (id)thinFontOfSize:(double)a3 grade:(unint64_t)a4
++ (id)thinFontOfSize:(double)size grade:(unint64_t)grade
 {
-  UIFontForLanguage = CTFontCreateUIFontForLanguage(kCTFontMenuItemFontType|0x80, a3, 0);
+  UIFontForLanguage = CTFontCreateUIFontForLanguage(kCTFontMenuItemFontType|0x80, size, 0);
   CopyOfSystemUIFontWithGrade = CTFontCreateCopyOfSystemUIFontWithGrade();
   CFRelease(UIFontForLanguage);
 
   return CopyOfSystemUIFontWithGrade;
 }
 
-+ (id)preferredFontWithTextStyle:(id)a3 isShort:(BOOL)a4 isBold:(BOOL)a5 useCustomWeight:(BOOL)a6 customFontWeight:(double)a7 isMonoSpaced:(BOOL)a8 isMacStyle:(BOOL)a9 fontFeatures:(id)a10
++ (id)preferredFontWithTextStyle:(id)style isShort:(BOOL)short isBold:(BOOL)bold useCustomWeight:(BOOL)weight customFontWeight:(double)fontWeight isMonoSpaced:(BOOL)spaced isMacStyle:(BOOL)macStyle fontFeatures:(id)self0
 {
-  v10 = a9;
-  v11 = a8;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
+  macStyleCopy = macStyle;
+  spacedCopy = spaced;
+  weightCopy = weight;
+  boldCopy = bold;
+  shortCopy = short;
   v31[1] = *MEMORY[0x1E69E9840];
-  v18 = a10;
-  if (v15)
+  featuresCopy = features;
+  if (shortCopy)
   {
     v19 = 0x8000;
   }
@@ -162,17 +162,17 @@ void __50__TLKFontUtilities_cachedFontForKey_creatorBlock___block_invoke_2()
   }
 
   v20 = v19 | 2;
-  if (v13)
+  if (weightCopy)
   {
     v20 = v19;
   }
 
-  if (v14)
+  if (boldCopy)
   {
     v19 = v20;
   }
 
-  if (v11)
+  if (spacedCopy)
   {
     v21 = v19 | 0x400;
   }
@@ -182,18 +182,18 @@ void __50__TLKFontUtilities_cachedFontForKey_creatorBlock___block_invoke_2()
     v21 = v19;
   }
 
-  v22 = [a1 preferredFontDescriptorWithTextStyle:a3 addingSymbolicTraits:v21 isMacStyle:v10];
+  v22 = [self preferredFontDescriptorWithTextStyle:style addingSymbolicTraits:v21 isMacStyle:macStyleCopy];
   v23 = objc_opt_new();
-  if ([v18 count])
+  if ([featuresCopy count])
   {
-    v24 = [v18 copy];
+    v24 = [featuresCopy copy];
     [v23 setObject:v24 forKeyedSubscript:*MEMORY[0x1E69DB8B0]];
   }
 
-  if (v13)
+  if (weightCopy)
   {
     v30 = *MEMORY[0x1E69DB990];
-    v25 = [MEMORY[0x1E696AD98] numberWithDouble:a7];
+    v25 = [MEMORY[0x1E696AD98] numberWithDouble:fontWeight];
     v31[0] = v25;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
     [v23 setObject:v26 forKeyedSubscript:*MEMORY[0x1E69DB8F0]];
@@ -211,33 +211,33 @@ void __50__TLKFontUtilities_cachedFontForKey_creatorBlock___block_invoke_2()
   return v28;
 }
 
-+ (id)preferredFontDescriptorWithTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4 isMacStyle:(BOOL)a5
++ (id)preferredFontDescriptorWithTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits isMacStyle:(BOOL)macStyle
 {
-  v5 = *&a4;
-  v6 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:{a3, *&a4, a5}];
+  v5 = *&traits;
+  v6 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:{style, *&traits, macStyle}];
   v7 = [v6 fontDescriptorWithSymbolicTraits:v5];
 
   return v7;
 }
 
-+ (id)attributedStringForRichText:(id)a3 appearance:(id)a4 prominence:(unint64_t)a5 alignment:(int64_t)a6 font:(id)a7 isButton:(BOOL)a8 scale:(double)a9 isDark:(BOOL)a10
++ (id)attributedStringForRichText:(id)text appearance:(id)appearance prominence:(unint64_t)prominence alignment:(int64_t)alignment font:(id)font isButton:(BOOL)button scale:(double)scale isDark:(BOOL)self0
 {
-  BYTE1(v11) = a10;
-  LOBYTE(v11) = a8;
-  return [TLKFontUtilities attributedStringForRichText:a3 appearance:a4 prominence:a5 alignment:a6 coloredRanges:0 nonColoredRanges:0 rangesForNonTemplateImageAttachments:a9 rangesForTemplateImageAttachments:0 font:0 isButton:a7 scale:v11 isDark:?];
+  BYTE1(v11) = dark;
+  LOBYTE(v11) = button;
+  return [TLKFontUtilities attributedStringForRichText:text appearance:appearance prominence:prominence alignment:alignment coloredRanges:0 nonColoredRanges:0 rangesForNonTemplateImageAttachments:scale rangesForTemplateImageAttachments:0 font:0 isButton:font scale:v11 isDark:?];
 }
 
-+ (id)attributedStringForRichText:(id)a3 appearance:(id)a4 prominence:(unint64_t)a5 alignment:(int64_t)a6 coloredRanges:(id)a7 nonColoredRanges:(id)a8 rangesForNonTemplateImageAttachments:(id)a9 rangesForTemplateImageAttachments:(id)a10 font:(id)a11 isButton:(BOOL)a12 scale:(double)a13 isDark:(BOOL)a14
++ (id)attributedStringForRichText:(id)text appearance:(id)appearance prominence:(unint64_t)prominence alignment:(int64_t)alignment coloredRanges:(id)ranges nonColoredRanges:(id)coloredRanges rangesForNonTemplateImageAttachments:(id)attachments rangesForTemplateImageAttachments:(id)self0 font:(id)self1 isButton:(BOOL)self2 scale:(double)self3 isDark:(BOOL)self4
 {
   v74 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v65 = a4;
-  v56 = a7;
-  v59 = a8;
-  v55 = a9;
-  v57 = a10;
-  v64 = a11;
-  if (v19)
+  textCopy = text;
+  appearanceCopy = appearance;
+  rangesCopy = ranges;
+  coloredRangesCopy = coloredRanges;
+  attachmentsCopy = attachments;
+  imageAttachmentsCopy = imageAttachments;
+  fontCopy = font;
+  if (textCopy)
   {
     v66 = objc_opt_new();
   }
@@ -247,12 +247,12 @@ void __50__TLKFontUtilities_cachedFontForKey_creatorBlock___block_invoke_2()
     v66 = 0;
   }
 
-  v20 = [v19 formattedTextItems];
+  formattedTextItems = [textCopy formattedTextItems];
   v21 = 0x1E7FD8000uLL;
-  if ([v20 count] == 1)
+  if ([formattedTextItems count] == 1)
   {
-    v22 = [v19 formattedTextItems];
-    v23 = [v22 firstObject];
+    formattedTextItems2 = [textCopy formattedTextItems];
+    firstObject = [formattedTextItems2 firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -261,8 +261,8 @@ void __50__TLKFontUtilities_cachedFontForKey_creatorBlock___block_invoke_2()
       goto LABEL_8;
     }
 
-    v20 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1F3A9C828];
-    [v66 appendAttributedString:v20];
+    formattedTextItems = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1F3A9C828];
+    [v66 appendAttributedString:formattedTextItems];
   }
 
 LABEL_8:
@@ -270,8 +270,8 @@ LABEL_8:
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v54 = v19;
-  obj = [v19 formattedTextItems];
+  v54 = textCopy;
+  obj = [textCopy formattedTextItems];
   v25 = v66;
   v68 = [obj countByEnumeratingWithState:&v69 objects:v73 count:16];
   if (v68)
@@ -304,26 +304,26 @@ LABEL_8:
         v30 = objc_opt_isKindOfClass();
         if (v30)
         {
-          v14 = [v27 string];
-          if ([v14 length])
+          string = [v27 string];
+          if ([string length])
           {
 
 LABEL_22:
             v32 = v21;
-            LOBYTE(v53) = a14;
-            v33 = [a1 attributedStringForFormattedText:v27 appearance:v65 prominence:a5 alignment:a6 font:v64 isButton:a12 scale:a13 isDark:v53];
+            LOBYTE(v53) = dark;
+            v33 = [self attributedStringForFormattedText:v27 appearance:appearanceCopy prominence:prominence alignment:alignment font:fontCopy isButton:button scale:scale isDark:v53];
             v34 = [MEMORY[0x1E696B098] valueWithRange:{objc_msgSend(v25, "length"), objc_msgSend(v33, "length")}];
-            v35 = [a1 formattedTextItemIsColoredImage:v27];
+            v35 = [self formattedTextItemIsColoredImage:v27];
             if ((v35 & 1) == 0)
             {
-              v36 = [v27 color];
-              v37 = v59;
-              if (v36)
+              color = [v27 color];
+              v37 = coloredRangesCopy;
+              if (color)
               {
                 objc_opt_class();
-                if ((objc_opt_isKindOfClass() & 1) == 0 || (v38 = [v27 encapsulationStyle], v37 = v59, !v38))
+                if ((objc_opt_isKindOfClass() & 1) == 0 || (v38 = [v27 encapsulationStyle], v37 = coloredRangesCopy, !v38))
                 {
-                  v37 = v56;
+                  v37 = rangesCopy;
                 }
               }
 
@@ -344,18 +344,18 @@ LABEL_22:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v40 = [v39 isPlaceholder];
-              v41 = v40;
+              isPlaceholder = [v39 isPlaceholder];
+              v41 = isPlaceholder;
               if (v35)
               {
-                if (v40)
+                if (isPlaceholder)
                 {
-                  v42 = v57;
+                  v42 = imageAttachmentsCopy;
                   goto LABEL_37;
                 }
 
 LABEL_36:
-                v42 = v55;
+                v42 = attachmentsCopy;
 LABEL_37:
                 v43 = v42;
 LABEL_43:
@@ -385,16 +385,16 @@ LABEL_45:
               v41 = 0;
             }
 
-            v44 = [v29 tlkImage];
-            v45 = [v44 isTemplate];
-            v46 = v57;
-            if (v45)
+            tlkImage = [v29 tlkImage];
+            isTemplate = [tlkImage isTemplate];
+            v46 = imageAttachmentsCopy;
+            if (isTemplate)
             {
               v47 = (([v29 color] == 0) | v41 & 1) == 0;
-              v46 = v55;
+              v46 = attachmentsCopy;
               if (!v47)
               {
-                v46 = v57;
+                v46 = imageAttachmentsCopy;
               }
             }
 
@@ -404,13 +404,13 @@ LABEL_45:
           }
         }
 
-        v31 = [v29 tlkImage];
+        tlkImage2 = [v29 tlkImage];
 
         if (v30)
         {
         }
 
-        if (v31)
+        if (tlkImage2)
         {
           goto LABEL_22;
         }
@@ -431,20 +431,20 @@ LABEL_48:
 
   else
   {
-    v50 = [v54 text];
-    v51 = [TLKFormattedText formattedTextWithString:v50];
-    LOBYTE(v53) = a14;
-    v48 = [a1 attributedStringForFormattedText:v51 appearance:v65 prominence:a5 alignment:a6 font:v64 isButton:a12 scale:a13 isDark:v53];
+    text = [v54 text];
+    v51 = [TLKFormattedText formattedTextWithString:text];
+    LOBYTE(v53) = dark;
+    v48 = [self attributedStringForFormattedText:v51 appearance:appearanceCopy prominence:prominence alignment:alignment font:fontCopy isButton:button scale:scale isDark:v53];
   }
 
   return v48;
 }
 
-+ (BOOL)formattedTextItemIsColoredImage:(id)a3
++ (BOOL)formattedTextItemIsColoredImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 tlkImage], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([imageCopy tlkImage], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
     v6 = [v4 isTemplate] ^ 1;
@@ -458,18 +458,18 @@ LABEL_48:
   return v6;
 }
 
-+ (id)attributedStringForFormattedText:(id)a3 appearance:(id)a4 prominence:(unint64_t)a5 alignment:(int64_t)a6 font:(id)a7 isButton:(BOOL)a8 scale:(double)a9 isDark:(BOOL)a10
++ (id)attributedStringForFormattedText:(id)text appearance:(id)appearance prominence:(unint64_t)prominence alignment:(int64_t)alignment font:(id)font isButton:(BOOL)button scale:(double)scale isDark:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a7;
+  textCopy = text;
+  appearanceCopy = appearance;
+  fontCopy = font;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = v16;
+    v19 = textCopy;
     v20 = objc_alloc(MEMORY[0x1E696AD40]);
-    v21 = [v19 string];
-    v22 = [v20 initWithString:v21];
+    string = [v19 string];
+    v22 = [v20 initWithString:string];
   }
 
   else
@@ -482,22 +482,22 @@ LABEL_48:
       goto LABEL_11;
     }
 
-    v21 = [v16 tlkImage];
-    v23 = [v21 uiImage];
-    if (!v23)
+    string = [textCopy tlkImage];
+    uiImage = [string uiImage];
+    if (!uiImage)
     {
-      v23 = [v21 cachedImageForScale:a10 isDarkStyle:a9];
+      uiImage = [string cachedImageForScale:dark isDarkStyle:scale];
     }
 
-    if ([v21 isTemplate])
+    if ([string isTemplate])
     {
-      v24 = [TLKImage templateImageForImage:v23];
+      v24 = [TLKImage templateImageForImage:uiImage];
 
-      v23 = v24;
+      uiImage = v24;
     }
 
-    [v21 size];
-    v27 = [a1 textAttachmentForImage:v23 size:objc_msgSend(v21 cornerRoundingStyle:"cornerRoundingStyle") appearance:{v17, v25, v26}];
+    [string size];
+    v27 = [self textAttachmentForImage:uiImage size:objc_msgSend(string cornerRoundingStyle:"cornerRoundingStyle") appearance:{appearanceCopy, v25, v26}];
     v28 = [MEMORY[0x1E696AD40] attributedStringWithAttachment:v27];
     v22 = [v28 mutableCopy];
 
@@ -506,39 +506,39 @@ LABEL_48:
 
 LABEL_11:
   v29 = [v22 length];
-  v30 = [v16 isEmphasized];
+  isEmphasized = [textCopy isEmphasized];
   v31 = MEMORY[0x1E69DB650];
-  if (v17 && v30)
+  if (appearanceCopy && isEmphasized)
   {
-    if (a5 == 3)
+    if (prominence == 3)
     {
       v32 = 2;
     }
 
     else
     {
-      v32 = a5 == 2;
+      v32 = prominence == 2;
     }
 
-    if (a8)
+    if (button)
     {
-      [v17 buttonColorForProminence:v32];
+      [appearanceCopy buttonColorForProminence:v32];
     }
 
     else
     {
-      [v17 colorForProminence:v32];
+      [appearanceCopy colorForProminence:v32];
     }
     v33 = ;
     [v22 addAttribute:*v31 value:v33 range:{0, v29}];
   }
 
-  v34 = v18;
+  v34 = fontCopy;
   v35 = v34;
-  if ([v16 isBold])
+  if ([textCopy isBold])
   {
-    v36 = [v34 fontDescriptor];
-    v37 = [v36 fontDescriptorWithSymbolicTraits:2 mask:2];
+    fontDescriptor = [v34 fontDescriptor];
+    v37 = [fontDescriptor fontDescriptorWithSymbolicTraits:2 mask:2];
 
     v35 = [MEMORY[0x1E69DB878] fontWithDescriptor:v37 size:0.0];
   }
@@ -547,52 +547,52 @@ LABEL_11:
   if (v19 && [v19 encapsulationStyle])
   {
     v38 = objc_opt_new();
-    v39 = [v19 encapsulationStyle];
-    [v38 setStyle:v39 == 2];
-    if (v39 != 2 || ([v16 isEmphasized] & 1) != 0)
+    encapsulationStyle = [v19 encapsulationStyle];
+    [v38 setStyle:encapsulationStyle == 2];
+    if (encapsulationStyle != 2 || ([textCopy isEmphasized] & 1) != 0)
     {
       goto LABEL_31;
     }
 
     [v38 setScale:2];
-    if ([v16 color])
+    if ([textCopy color])
     {
-      [v17 textColorForColor:8];
+      [appearanceCopy textColorForColor:8];
     }
 
     else
     {
-      [v17 quaternaryColor];
+      [appearanceCopy quaternaryColor];
     }
     v40 = ;
     [v38 setColor:v40];
 
-    if ([v16 color])
+    if ([textCopy color])
     {
-      v41 = [v38 color];
+      color = [v38 color];
     }
 
     else
     {
 LABEL_31:
-      v41 = 0;
+      color = 0;
     }
 
     [v22 addAttribute:*MEMORY[0x1E69DC5C8] value:v38 range:{0, v29}];
 
-    if (v41)
+    if (color)
     {
       goto LABEL_35;
     }
   }
 
-  if ([v16 color])
+  if ([textCopy color])
   {
-    v41 = [v17 textColorForColor:{objc_msgSend(v16, "color")}];
-    if (v41)
+    color = [appearanceCopy textColorForColor:{objc_msgSend(textCopy, "color")}];
+    if (color)
     {
 LABEL_35:
-      [v22 addAttribute:*v31 value:v41 range:{0, v29}];
+      [v22 addAttribute:*v31 value:color range:{0, v29}];
     }
   }
 
@@ -601,13 +601,13 @@ LABEL_35:
   return v22;
 }
 
-+ (id)textAttachmentForImage:(id)a3 size:(CGSize)a4 cornerRoundingStyle:(unint64_t)a5 appearance:(id)a6
++ (id)textAttachmentForImage:(id)image size:(CGSize)size cornerRoundingStyle:(unint64_t)style appearance:(id)appearance
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = a6;
-  if (+[TLKImage imageIsSymbol:](TLKImage, "imageIsSymbol:", v10) && (width == *MEMORY[0x1E695F060] ? (v12 = height == *(MEMORY[0x1E695F060] + 8)) : (v12 = 0), v12 && ([MEMORY[0x1E69DB7F0] textAttachmentWithImage:v10], (v13 = objc_claimAutoreleasedReturnValue()) != 0)))
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  appearanceCopy = appearance;
+  if (+[TLKImage imageIsSymbol:](TLKImage, "imageIsSymbol:", imageCopy) && (width == *MEMORY[0x1E695F060] ? (v12 = height == *(MEMORY[0x1E695F060] + 8)) : (v12 = 0), v12 && ([MEMORY[0x1E69DB7F0] textAttachmentWithImage:imageCopy], (v13 = objc_claimAutoreleasedReturnValue()) != 0)))
   {
     v14 = v13;
   }
@@ -615,47 +615,47 @@ LABEL_35:
   else
   {
     v14 = objc_opt_new();
-    if (!v10)
+    if (!imageCopy)
     {
-      if (a5)
+      if (style)
       {
-        v15 = [v11 colorForProminence:3];
-        v16 = [TLKUtilities testImageWithSize:v15 color:width, height];
-        v10 = [v16 uiImage];
+        v15 = [appearanceCopy colorForProminence:3];
+        height = [TLKUtilities testImageWithSize:v15 color:width, height];
+        imageCopy = [height uiImage];
       }
 
       else
       {
-        v10 = objc_opt_new();
+        imageCopy = objc_opt_new();
       }
 
       [v14 setIsPlaceholder:1];
     }
 
     v17 = objc_opt_new();
-    [v17 cornerRadiusForSize:a5 roundingStyle:{width, height}];
+    [v17 cornerRadiusForSize:style roundingStyle:{width, height}];
     v19 = v18;
 
     if (v19 != 0.0)
     {
-      v20 = [TLKImage isTemplateImage:v10];
+      v20 = [TLKImage isTemplateImage:imageCopy];
       v21 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{width, height}];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __79__TLKFontUtilities_textAttachmentForImage_size_cornerRoundingStyle_appearance___block_invoke;
       v24[3] = &unk_1E7FD8D30;
       v26 = v19;
-      v25 = v10;
-      v10 = [v21 imageWithActions:v24];
+      v25 = imageCopy;
+      imageCopy = [v21 imageWithActions:v24];
       if (v20)
       {
-        v22 = [TLKImage templateImageForImage:v10];
+        v22 = [TLKImage templateImageForImage:imageCopy];
 
-        v10 = v22;
+        imageCopy = v22;
       }
     }
 
-    [v14 setImage:v10];
+    [v14 setImage:imageCopy];
     [v14 setSize:{width, height}];
   }
 
@@ -678,13 +678,13 @@ void __79__TLKFontUtilities_textAttachmentForImage_size_cornerRoundingStyle_appe
   [v7 drawInRect:?];
 }
 
-+ (id)clearTextAttachmentForTextAttachment:(id)a3
++ (id)clearTextAttachmentForTextAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 size];
+    [attachmentCopy size];
     v6 = v5;
     v8 = v7;
   }
@@ -695,34 +695,34 @@ void __79__TLKFontUtilities_textAttachmentForImage_size_cornerRoundingStyle_appe
     v8 = *(MEMORY[0x1E695F060] + 8);
   }
 
-  v9 = [MEMORY[0x1E69DC888] clearColor];
-  v10 = [v4 image];
-  v11 = [TLKImage applyTintColor:v9 toImage:v10];
-  v12 = [a1 textAttachmentForImage:v11 size:0 cornerRoundingStyle:0 appearance:{v6, v8}];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  image = [attachmentCopy image];
+  v11 = [TLKImage applyTintColor:clearColor toImage:image];
+  v12 = [self textAttachmentForImage:v11 size:0 cornerRoundingStyle:0 appearance:{v6, v8}];
 
   return v12;
 }
 
-+ (id)updateAttributedStringUnderlineStyle:(id)a3 isUnderlineVisible:(BOOL)a4
++ (id)updateAttributedStringUnderlineStyle:(id)style isUnderlineVisible:(BOOL)visible
 {
-  v5 = a3;
-  v6 = [v5 length];
+  styleCopy = style;
+  v6 = [styleCopy length];
   v7 = *MEMORY[0x1E69DB758];
-  if (a4)
+  if (visible)
   {
-    [v5 addAttribute:v7 value:&unk_1F3AA82D8 range:{0, v6}];
-    if ([v5 containsAttachmentsInRange:{0, v6}])
+    [styleCopy addAttribute:v7 value:&unk_1F3AA82D8 range:{0, v6}];
+    if ([styleCopy containsAttachmentsInRange:{0, v6}])
     {
-      v8 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
       v9 = *MEMORY[0x1E69DB5F8];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __76__TLKFontUtilities_updateAttributedStringUnderlineStyle_isUnderlineVisible___block_invoke;
       v15[3] = &unk_1E7FD8D58;
-      v16 = v8;
-      v10 = v5;
+      v16 = whitespaceCharacterSet;
+      v10 = styleCopy;
       v17 = v10;
-      v11 = v8;
+      v11 = whitespaceCharacterSet;
       [v10 enumerateAttribute:v9 inRange:0 options:v6 usingBlock:{0, v15}];
       v12 = v10;
 
@@ -732,13 +732,13 @@ void __79__TLKFontUtilities_textAttachmentForImage_size_cornerRoundingStyle_appe
 
   else
   {
-    [v5 removeAttribute:v7 range:{0, v6}];
+    [styleCopy removeAttribute:v7 range:{0, v6}];
   }
 
-  v13 = v5;
+  v13 = styleCopy;
 LABEL_6:
 
-  return v5;
+  return styleCopy;
 }
 
 uint64_t __76__TLKFontUtilities_updateAttributedStringUnderlineStyle_isUnderlineVisible___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -782,23 +782,23 @@ uint64_t __76__TLKFontUtilities_updateAttributedStringUnderlineStyle_isUnderline
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)cacheInlineImagesForRichText:(id)a3 inView:(id)a4 updateHandler:(id)a5
++ (void)cacheInlineImagesForRichText:(id)text inView:(id)view updateHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v8 effectiveScreenScale];
+  textCopy = text;
+  viewCopy = view;
+  handlerCopy = handler;
+  [viewCopy effectiveScreenScale];
   v11 = v10;
-  v12 = [TLKAppearance bestAppearanceForView:v8];
-  v13 = [v12 isDark];
+  v12 = [TLKAppearance bestAppearanceForView:viewCopy];
+  isDark = [v12 isDark];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v14 = [v7 formattedTextItems];
-  v15 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  formattedTextItems = [textCopy formattedTextItems];
+  v15 = [formattedTextItems countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v15)
   {
     v16 = v15;
@@ -809,15 +809,15 @@ uint64_t __76__TLKFontUtilities_updateAttributedStringUnderlineStyle_isUnderline
       {
         if (*v29 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(formattedTextItems);
         }
 
         v19 = *(*(&v28 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v20 = [v19 tlkImage];
-          v21 = [v20 cachedImageForScale:v13 isDarkStyle:v11];
+          tlkImage = [v19 tlkImage];
+          v21 = [tlkImage cachedImageForScale:isDark isDarkStyle:v11];
 
           if (!v21)
           {
@@ -825,17 +825,17 @@ uint64_t __76__TLKFontUtilities_updateAttributedStringUnderlineStyle_isUnderline
             v23[1] = 3221225472;
             v23[2] = __70__TLKFontUtilities_cacheInlineImagesForRichText_inView_updateHandler___block_invoke;
             v23[3] = &unk_1E7FD8D80;
-            v22 = v20;
+            v22 = tlkImage;
             v24 = v22;
             v26 = v11;
-            v27 = v13;
-            v25 = v9;
-            [v22 loadImageWithScale:v13 isDarkStyle:v23 completionHandler:v11];
+            v27 = isDark;
+            v25 = handlerCopy;
+            [v22 loadImageWithScale:isDark isDarkStyle:v23 completionHandler:v11];
           }
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v16 = [formattedTextItems countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v16);

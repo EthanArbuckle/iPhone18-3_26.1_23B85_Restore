@@ -1,30 +1,30 @@
 @interface PGRecentSyndicatedAssetSuggester
-- (BOOL)canGenerateSuggestionWithAsset:(id)a3 onDate:(id)a4;
-- (id)createSuggestionWithAsset:(id)a3;
-- (id)eligibleAssetsBetweenStartDate:(id)a3 andEndDate:(id)a4 matchingAssetUUID:(id)a5 progress:(id)a6;
-- (id)nextSuggestionWithProgress:(id)a3;
-- (id)reasonsForSuggestion:(id)a3;
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4;
+- (BOOL)canGenerateSuggestionWithAsset:(id)asset onDate:(id)date;
+- (id)createSuggestionWithAsset:(id)asset;
+- (id)eligibleAssetsBetweenStartDate:(id)date andEndDate:(id)endDate matchingAssetUUID:(id)d progress:(id)progress;
+- (id)nextSuggestionWithProgress:(id)progress;
+- (id)reasonsForSuggestion:(id)suggestion;
+- (id)suggestionsWithOptions:(id)options progress:(id)progress;
 - (void)reset;
-- (void)startSuggestingWithOptions:(id)a3;
+- (void)startSuggestingWithOptions:(id)options;
 @end
 
 @implementation PGRecentSyndicatedAssetSuggester
 
-- (id)eligibleAssetsBetweenStartDate:(id)a3 andEndDate:(id)a4 matchingAssetUUID:(id)a5 progress:(id)a6
+- (id)eligibleAssetsBetweenStartDate:(id)date andEndDate:(id)endDate matchingAssetUUID:(id)d progress:(id)progress
 {
   v71 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = _Block_copy(a6);
+  dateCopy = date;
+  endDateCopy = endDate;
+  dCopy = d;
+  v13 = _Block_copy(progress);
   v14 = 0.0;
   if (!v13 || (v15 = CFAbsoluteTimeGetCurrent(), v15 < 0.01))
   {
 LABEL_8:
-    v17 = [(PGAbstractSuggester *)self session];
-    v18 = v17;
-    if (!v17)
+    session = [(PGAbstractSuggester *)self session];
+    v18 = session;
+    if (!session)
     {
       v16 = MEMORY[0x277CBEBF8];
 LABEL_53:
@@ -32,59 +32,59 @@ LABEL_53:
       goto LABEL_54;
     }
 
-    v65 = v17;
-    v19 = [v17 loggingConnection];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    v65 = session;
+    loggingConnection = [session loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *v70 = v10;
+      *v70 = dateCopy;
       *&v70[8] = 2112;
-      *&v70[10] = v11;
-      _os_log_impl(&dword_22F0FC000, v19, OS_LOG_TYPE_DEFAULT, "Recent Syndicated Asset: Computing eligible assets between %@ and %@", buf, 0x16u);
+      *&v70[10] = endDateCopy;
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Recent Syndicated Asset: Computing eligible assets between %@ and %@", buf, 0x16u);
     }
 
-    v64 = v19;
-    v20 = [MEMORY[0x277CCAC30] predicateWithFormat:@"overallAestheticScore >= %f", 0x3FE0000000000000];
+    v64 = loggingConnection;
+    0x3FE0000000000000 = [MEMORY[0x277CCAC30] predicateWithFormat:@"overallAestheticScore >= %f", 0x3FE0000000000000];
     v21 = [MEMORY[0x277CCAC30] predicateWithFormat:@"curationScore >= %f", *MEMORY[0x277D3C768]];
-    v22 = [objc_opt_class() noVideoPredicate];
+    noVideoPredicate = [objc_opt_class() noVideoPredicate];
     v57 = [MEMORY[0x277D3B248] predicateForIncludeMask:objc_msgSend(MEMORY[0x277D3B248] useIndex:{"maskForGuestAsset"), 0}];
-    v58 = v22;
+    v58 = noVideoPredicate;
     v59 = v21;
-    v60 = v20;
-    v23 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v20, v21, v22, v57, 0}];
-    if (v10)
+    v60 = 0x3FE0000000000000;
+    v23 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{0x3FE0000000000000, v21, noVideoPredicate, v57, 0}];
+    if (dateCopy)
     {
-      v24 = [MEMORY[0x277CCAC30] predicateWithFormat:@"dateCreated >= %@", v10];
-      [v23 addObject:v24];
+      dateCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"dateCreated >= %@", dateCopy];
+      [v23 addObject:dateCopy];
     }
 
-    if (v11)
+    if (endDateCopy)
     {
-      v25 = [MEMORY[0x277CCAC30] predicateWithFormat:@"dateCreated <= %@", v11];
-      [v23 addObject:v25];
+      endDateCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"dateCreated <= %@", endDateCopy];
+      [v23 addObject:endDateCopy];
     }
 
-    v62 = v11;
-    v63 = v10;
+    v62 = endDateCopy;
+    v63 = dateCopy;
     v18 = v65;
-    if (v12)
+    if (dCopy)
     {
-      v26 = [MEMORY[0x277CCAC30] predicateWithFormat:@"uuid == %@", v12];
-      [v23 addObject:v26];
+      dCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"uuid == %@", dCopy];
+      [v23 addObject:dCopy];
     }
 
-    v61 = v12;
+    v61 = dCopy;
     v27 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v23];
-    v28 = [v65 photoLibrary];
-    v29 = [v28 librarySpecificFetchOptions];
+    photoLibrary = [v65 photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
     v56 = v27;
-    [v29 setInternalPredicate:v27];
+    [librarySpecificFetchOptions setInternalPredicate:v27];
     v30 = +[PGCurationManager assetPropertySetsForCuration];
-    [v29 setFetchPropertySets:v30];
+    [librarySpecificFetchOptions setFetchPropertySets:v30];
 
-    [v29 setIncludeGuestAssets:1];
-    v31 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v29];
+    [librarySpecificFetchOptions setIncludeGuestAssets:1];
+    v31 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
     v55 = v31;
     if (v13)
     {
@@ -113,10 +113,10 @@ LABEL_53:
       }
     }
 
-    v34 = [MEMORY[0x277CD97A8] clsPrefetchOptionsForKeyAsset];
+    clsPrefetchOptionsForKeyAsset = [MEMORY[0x277CD97A8] clsPrefetchOptionsForKeyAsset];
     v35 = MEMORY[0x277CD97A8];
-    v36 = [v65 curationContext];
-    v37 = [v35 clsAllAssetsFromFetchResult:v31 prefetchOptions:v34 curationContext:v36];
+    curationContext = [v65 curationContext];
+    v37 = [v35 clsAllAssetsFromFetchResult:v31 prefetchOptions:clsPrefetchOptionsForKeyAsset curationContext:curationContext];
 
     if (v13)
     {
@@ -197,9 +197,9 @@ LABEL_50:
 LABEL_51:
 LABEL_52:
 
-          v11 = v62;
-          v10 = v63;
-          v12 = v61;
+          endDateCopy = v62;
+          dateCopy = v63;
+          dCopy = v61;
           goto LABEL_53;
         }
 
@@ -295,17 +295,17 @@ uint64_t __105__PGRecentSyndicatedAssetSuggester_eligibleAssetsBetweenStartDate_
   return v4;
 }
 
-- (id)reasonsForSuggestion:(id)a3
+- (id)reasonsForSuggestion:(id)suggestion
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v3 = [a3 keyAssets];
-  v4 = [v3 firstObject];
+  keyAssets = [suggestion keyAssets];
+  firstObject = [keyAssets firstObject];
 
   v5 = MEMORY[0x277CCACA8];
-  [v4 overallAestheticScore];
+  [firstObject overallAestheticScore];
   v7 = [v5 stringWithFormat:@"aesthetics = %.3f", v6];
   v8 = MEMORY[0x277CCACA8];
-  [v4 curationScore];
+  [firstObject curationScore];
   v10 = [v8 stringWithFormat:@"curation = %.3f", v9];
   v14[0] = v7;
   v14[1] = v10;
@@ -316,10 +316,10 @@ uint64_t __105__PGRecentSyndicatedAssetSuggester_eligibleAssetsBetweenStartDate_
   return v11;
 }
 
-- (id)createSuggestionWithAsset:(id)a3
+- (id)createSuggestionWithAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [[PGSingleAssetSuggestion alloc] initWithType:3 subtype:306 asset:v4];
+  assetCopy = asset;
+  v5 = [[PGSingleAssetSuggestion alloc] initWithType:3 subtype:306 asset:assetCopy];
 
   if ([(PGSuggestionOptions *)self->_options computeReasons])
   {
@@ -332,30 +332,30 @@ uint64_t __105__PGRecentSyndicatedAssetSuggester_eligibleAssetsBetweenStartDate_
 
 - (void)reset
 {
-  v3 = [(PGAbstractSuggester *)self session];
-  v4 = [v3 loggingConnection];
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
-    _os_log_impl(&dword_22F0FC000, v4, OS_LOG_TYPE_DEFAULT, "Recent Syndicated Asset: Resetting", v6, 2u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Recent Syndicated Asset: Resetting", v6, 2u);
   }
 
   suggestedAssetEnumerator = self->_suggestedAssetEnumerator;
   self->_suggestedAssetEnumerator = 0;
 }
 
-- (id)nextSuggestionWithProgress:(id)a3
+- (id)nextSuggestionWithProgress:(id)progress
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGAbstractSuggester *)self session];
-  v6 = [v5 loggingConnection];
+  progressCopy = progress;
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(v19) = 0;
-    _os_log_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_DEFAULT, "Recent Syndicated Asset: nextSuggestion", &v19, 2u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Recent Syndicated Asset: nextSuggestion", &v19, 2u);
   }
 
   suggestedAssetEnumerator = self->_suggestedAssetEnumerator;
@@ -364,40 +364,40 @@ uint64_t __105__PGRecentSyndicatedAssetSuggester_eligibleAssetsBetweenStartDate_
     suggestedAssets = self->_suggestedAssets;
     if (!suggestedAssets)
     {
-      v9 = [(PGSuggestionOptions *)self->_options universalStartDate];
-      v10 = [(PGSuggestionOptions *)self->_options universalEndDate];
-      v11 = [(PGRecentSyndicatedAssetSuggester *)self eligibleAssetsBetweenStartDate:v9 andEndDate:v10 matchingAssetUUID:0 progress:v4];
+      universalStartDate = [(PGSuggestionOptions *)self->_options universalStartDate];
+      universalEndDate = [(PGSuggestionOptions *)self->_options universalEndDate];
+      v11 = [(PGRecentSyndicatedAssetSuggester *)self eligibleAssetsBetweenStartDate:universalStartDate andEndDate:universalEndDate matchingAssetUUID:0 progress:progressCopy];
       v12 = self->_suggestedAssets;
       self->_suggestedAssets = v11;
 
       suggestedAssets = self->_suggestedAssets;
     }
 
-    v13 = [(NSArray *)suggestedAssets objectEnumerator];
+    objectEnumerator = [(NSArray *)suggestedAssets objectEnumerator];
     v14 = self->_suggestedAssetEnumerator;
-    self->_suggestedAssetEnumerator = v13;
+    self->_suggestedAssetEnumerator = objectEnumerator;
 
     suggestedAssetEnumerator = self->_suggestedAssetEnumerator;
   }
 
-  v15 = [(NSEnumerator *)suggestedAssetEnumerator nextObject];
-  if (v15)
+  nextObject = [(NSEnumerator *)suggestedAssetEnumerator nextObject];
+  if (nextObject)
   {
-    v16 = [(PGRecentSyndicatedAssetSuggester *)self createSuggestionWithAsset:v15];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    v16 = [(PGRecentSyndicatedAssetSuggester *)self createSuggestionWithAsset:nextObject];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138477827;
       v20 = v16;
-      _os_log_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_DEFAULT, "Recent Syndicated Asset: Suggesting %{private}@", &v19, 0xCu);
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Recent Syndicated Asset: Suggesting %{private}@", &v19, 0xCu);
     }
   }
 
   else
   {
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v19) = 0;
-      _os_log_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_DEFAULT, "Recent Syndicated Asset: Nothing to suggest", &v19, 2u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Recent Syndicated Asset: Nothing to suggest", &v19, 2u);
     }
 
     v16 = 0;
@@ -408,16 +408,16 @@ uint64_t __105__PGRecentSyndicatedAssetSuggester_eligibleAssetsBetweenStartDate_
   return v16;
 }
 
-- (void)startSuggestingWithOptions:(id)a3
+- (void)startSuggestingWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(PGAbstractSuggester *)self session];
-  v6 = [v5 loggingConnection];
+  optionsCopy = options;
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     *v10 = 0;
-    _os_log_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_DEFAULT, "Recent Syndicated Asset: Starting suggesting", v10, 2u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Recent Syndicated Asset: Starting suggesting", v10, 2u);
   }
 
   suggestedAssets = self->_suggestedAssets;
@@ -427,21 +427,21 @@ uint64_t __105__PGRecentSyndicatedAssetSuggester_eligibleAssetsBetweenStartDate_
   self->_suggestedAssetEnumerator = 0;
 
   options = self->_options;
-  self->_options = v4;
+  self->_options = optionsCopy;
 }
 
-- (BOOL)canGenerateSuggestionWithAsset:(id)a3 onDate:(id)a4
+- (BOOL)canGenerateSuggestionWithAsset:(id)asset onDate:(id)date
 {
-  v5 = a3;
-  v6 = [v5 uuid];
-  v7 = [(PGRecentSyndicatedAssetSuggester *)self eligibleAssetsBetweenStartDate:0 andEndDate:0 matchingAssetUUID:v6 progress:&__block_literal_global_55126];
+  assetCopy = asset;
+  uuid = [assetCopy uuid];
+  v7 = [(PGRecentSyndicatedAssetSuggester *)self eligibleAssetsBetweenStartDate:0 andEndDate:0 matchingAssetUUID:uuid progress:&__block_literal_global_55126];
 
   if ([v7 count] == 1)
   {
-    v8 = [v7 firstObject];
-    v9 = [v8 uuid];
-    v10 = [v5 uuid];
-    v11 = [v9 isEqualToString:v10];
+    firstObject = [v7 firstObject];
+    uuid2 = [firstObject uuid];
+    uuid3 = [assetCopy uuid];
+    v11 = [uuid2 isEqualToString:uuid3];
   }
 
   else
@@ -452,12 +452,12 @@ uint64_t __105__PGRecentSyndicatedAssetSuggester_eligibleAssetsBetweenStartDate_
   return v11;
 }
 
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)suggestionsWithOptions:(id)options progress:(id)progress
 {
   v68 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  aBlock = a4;
-  objc_storeStrong(&self->_options, a3);
+  optionsCopy = options;
+  aBlock = progress;
+  objc_storeStrong(&self->_options, options);
   v7 = _Block_copy(aBlock);
   v59 = 0;
   v60 = &v59;
@@ -470,8 +470,8 @@ uint64_t __105__PGRecentSyndicatedAssetSuggester_eligibleAssetsBetweenStartDate_
   if (!v7 || (v8 = CFAbsoluteTimeGetCurrent(), v8 - v56[3] < 0.01) || (v56[3] = v8, v54 = 0, (*(v7 + 2))(v7, &v54, 0.0), v9 = *(v60 + 24) | v54, *(v60 + 24) = v9, (v9 & 1) == 0))
   {
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v12 = [v43 universalStartDate];
-    v13 = [v43 universalEndDate];
+    universalStartDate = [optionsCopy universalStartDate];
+    universalEndDate = [optionsCopy universalEndDate];
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __68__PGRecentSyndicatedAssetSuggester_suggestionsWithOptions_progress___block_invoke;
@@ -481,9 +481,9 @@ uint64_t __105__PGRecentSyndicatedAssetSuggester_eligibleAssetsBetweenStartDate_
     v51 = &v55;
     v52 = &v59;
     v53 = 0x3F847AE147AE147BLL;
-    v14 = [(PGRecentSyndicatedAssetSuggester *)self eligibleAssetsBetweenStartDate:v12 andEndDate:v13 matchingAssetUUID:0 progress:v49];
-    v39 = v12;
-    v40 = v13;
+    v14 = [(PGRecentSyndicatedAssetSuggester *)self eligibleAssetsBetweenStartDate:universalStartDate andEndDate:universalEndDate matchingAssetUUID:0 progress:v49];
+    v39 = universalStartDate;
+    v40 = universalEndDate;
     if (*(v60 + 24) == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -529,10 +529,10 @@ LABEL_10:
 
       if ([v14 count])
       {
-        v18 = [v43 maximumNumberOfSuggestions];
-        if (v18)
+        maximumNumberOfSuggestions = [optionsCopy maximumNumberOfSuggestions];
+        if (maximumNumberOfSuggestions)
         {
-          v19 = v18;
+          v19 = maximumNumberOfSuggestions;
         }
 
         else

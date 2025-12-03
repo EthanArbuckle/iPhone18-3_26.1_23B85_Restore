@@ -1,97 +1,97 @@
 @interface MRLayerNavigator
 - (BOOL)_isNative3D;
-- (BOOL)canTransitionToMoreSlides:(BOOL)a3;
-- (BOOL)enterSlideFocusModeWithState:(id)a3;
+- (BOOL)canTransitionToMoreSlides:(BOOL)slides;
+- (BOOL)enterSlideFocusModeWithState:(id)state;
 - (BOOL)hasAudio;
-- (BOOL)hasMoreSlidesFromTime:(double)a3 backwards:(BOOL)a4 startTime:(double *)a5 duration:(double *)a6;
+- (BOOL)hasMoreSlidesFromTime:(double)time backwards:(BOOL)backwards startTime:(double *)startTime duration:(double *)duration;
 - (BOOL)hasSomethingToRender;
 - (BOOL)isAlphaFriendly;
-- (BOOL)isLoadedForTime:(double)a3;
+- (BOOL)isLoadedForTime:(double)time;
 - (BOOL)isOpaque;
 - (BOOL)isReadyToTransitionToNextSublayer;
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (BOOL)willFocusOnNextSlideWithState:(id)a3 animate:(BOOL)a4;
-- (BOOL)willFocusOnPreviousSlideWithState:(id)a3 animate:(BOOL)a4;
-- (MRLayerNavigator)initWithParameters:(id)a3;
-- (MRLayerNavigator)initWithPlug:(id)a3 andParameters:(id)a4 inSuperlayer:(id)a5;
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (BOOL)willFocusOnNextSlideWithState:(id)state animate:(BOOL)animate;
+- (BOOL)willFocusOnPreviousSlideWithState:(id)state animate:(BOOL)animate;
+- (MRLayerNavigator)initWithParameters:(id)parameters;
+- (MRLayerNavigator)initWithPlug:(id)plug andParameters:(id)parameters inSuperlayer:(id)superlayer;
 - (NSArray)sublayers;
-- (double)abortTransition:(id)a3;
-- (double)attemptToFinishTransition:(id)a3 didTransition:(BOOL *)a4 gotReversed:(BOOL *)a5;
-- (double)doActionTrigger:(id)a3;
-- (double)doTransition:(id)a3 backwards:(BOOL)a4 updateHistory:(BOOL)a5 deltaStartTime:(double)a6 pzr:(id)a7;
-- (double)fastScrubCancel:(id)a3;
-- (double)fastScrubEnd:(id)a3;
-- (double)fastScrubStart:(id)a3;
-- (double)fastScrubUpdate:(id)a3;
-- (double)finishTransition:(id)a3;
+- (double)abortTransition:(id)transition;
+- (double)attemptToFinishTransition:(id)transition didTransition:(BOOL *)didTransition gotReversed:(BOOL *)reversed;
+- (double)doActionTrigger:(id)trigger;
+- (double)doTransition:(id)transition backwards:(BOOL)backwards updateHistory:(BOOL)history deltaStartTime:(double)time pzr:(id)pzr;
+- (double)fastScrubCancel:(id)cancel;
+- (double)fastScrubEnd:(id)end;
+- (double)fastScrubStart:(id)start;
+- (double)fastScrubUpdate:(id)update;
+- (double)finishTransition:(id)transition;
 - (double)goBack;
 - (double)goForth;
-- (double)gotoMoreSlidesWithAction:(id)a3 backwards:(BOOL)a4 animate:(BOOL)a5 canCatchCurrentTransition:(BOOL)a6;
-- (double)gotoNextOrPreviousSlideInCurrentSublayer:(BOOL)a3;
-- (double)gotoNextSublayer:(id)a3 animate:(BOOL)a4;
-- (double)gotoPreviousSublayer:(id)a3 animate:(BOOL)a4;
-- (double)interestingTimeForElement:(id)a3;
-- (double)interestingTimeForTime:(double)a3;
-- (double)startMovingCurrentSublayer:(BOOL)a3;
-- (double)transitionToNextSublayerWithDeltaStartTime:(double)a3;
-- (id)_createSublayerForPlug:(id)a3;
-- (id)_createSublayerForPrecomputingWithPlug:(id)a3;
+- (double)gotoMoreSlidesWithAction:(id)action backwards:(BOOL)backwards animate:(BOOL)animate canCatchCurrentTransition:(BOOL)transition;
+- (double)gotoNextOrPreviousSlideInCurrentSublayer:(BOOL)sublayer;
+- (double)gotoNextSublayer:(id)sublayer animate:(BOOL)animate;
+- (double)gotoPreviousSublayer:(id)sublayer animate:(BOOL)animate;
+- (double)interestingTimeForElement:(id)element;
+- (double)interestingTimeForTime:(double)time;
+- (double)startMovingCurrentSublayer:(BOOL)sublayer;
+- (double)transitionToNextSublayerWithDeltaStartTime:(double)time;
+- (id)_createSublayerForPlug:(id)plug;
+- (id)_createSublayerForPrecomputingWithPlug:(id)plug;
 - (id)_currentState;
-- (id)_dumpLayerWithOptions:(unint64_t)a3;
-- (id)_retainedByUserRenderedImageAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (id)_transitionWithTransitionTrigger:(id)a3;
-- (id)patchworkAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (id)sublayerForKey:(id)a3;
-- (id)sublayerForPlugObjectID:(id)a3 recursive:(BOOL)a4;
-- (id)sublayerHitAtPoint:(CGPoint)a3 onlyIfHitElement:(BOOL)a4 localPoint:(CGPoint *)a5;
+- (id)_dumpLayerWithOptions:(unint64_t)options;
+- (id)_retainedByUserRenderedImageAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (id)_transitionWithTransitionTrigger:(id)trigger;
+- (id)patchworkAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (id)sublayerForKey:(id)key;
+- (id)sublayerForPlugObjectID:(id)d recursive:(BOOL)recursive;
+- (id)sublayerHitAtPoint:(CGPoint)point onlyIfHitElement:(BOOL)element localPoint:(CGPoint *)localPoint;
 - (void)_createExtraSublayer;
-- (void)_deleteSublayer:(id)a3;
+- (void)_deleteSublayer:(id)sublayer;
 - (void)_executeLayerCommandQueue;
 - (void)_getInterestingTimesForSublayerControl;
 - (void)_observePlug;
 - (void)_observePlugOnPreactivate;
-- (void)_observeSublayer:(id)a3;
-- (void)_precomputeAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (void)_prerenderSublayersAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (void)_registerTransitionForHistory:(id)a3 withDestinationPlugID:(id)a4 backwards:(BOOL)a5;
+- (void)_observeSublayer:(id)sublayer;
+- (void)_precomputeAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (void)_prerenderSublayersAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (void)_registerTransitionForHistory:(id)history withDestinationPlugID:(id)d backwards:(BOOL)backwards;
 - (void)_removeExtraSublayer;
-- (void)_renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (void)_resyncToSerializerForTime:(double)a3;
-- (void)_setNeedsToRequestRebuildAudio:(BOOL)a3;
+- (void)_renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (void)_resyncToSerializerForTime:(double)time;
+- (void)_setNeedsToRequestRebuildAudio:(BOOL)audio;
 - (void)_unobservePlug;
 - (void)_unobservePlugOnDepreactivate;
-- (void)_unobserveSublayer:(id)a3;
+- (void)_unobserveSublayer:(id)sublayer;
 - (void)activate;
-- (void)beginMorphingToAspectRatio:(double)a3 withDuration:(double)a4;
+- (void)beginMorphingToAspectRatio:(double)ratio withDuration:(double)duration;
 - (void)cleanup;
 - (void)deactivate;
-- (void)depreactivate:(BOOL)a3;
-- (void)didFocusOnNextSlideWithState:(id)a3;
-- (void)didFocusOnPreviousSlideWithState:(id)a3;
+- (void)depreactivate:(BOOL)depreactivate;
+- (void)didFocusOnNextSlideWithState:(id)state;
+- (void)didFocusOnPreviousSlideWithState:(id)state;
 - (void)endMorphing;
 - (void)endMovingCurrentSublayer;
 - (void)endTransitionToSublayer;
-- (void)exitSlideFocusModeWithState:(id)a3;
-- (void)fillInNextSlideInformationInState:(id)a3;
-- (void)fillInPreviousSlideInformationInState:(id)a3;
-- (void)getLazyDuration:(double *)a3 lazyFactor:(double *)a4 animationDuration:(double *)a5 fromInterestingTime:(double)a6;
-- (void)jumpToNextMarker:(id)a3;
-- (void)jumpToPreviousMarker:(id)a3;
-- (void)jumpToSublayer:(id)a3 atTime:(double)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setPixelSize:(CGSize)a3;
-- (void)setSublayer:(id)a3 forKey:(id)a4;
+- (void)exitSlideFocusModeWithState:(id)state;
+- (void)fillInNextSlideInformationInState:(id)state;
+- (void)fillInPreviousSlideInformationInState:(id)state;
+- (void)getLazyDuration:(double *)duration lazyFactor:(double *)factor animationDuration:(double *)animationDuration fromInterestingTime:(double)time;
+- (void)jumpToNextMarker:(id)marker;
+- (void)jumpToPreviousMarker:(id)marker;
+- (void)jumpToSublayer:(id)sublayer atTime:(double)time;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setPixelSize:(CGSize)size;
+- (void)setSublayer:(id)sublayer forKey:(id)key;
 - (void)synchronizeTime;
-- (void)updateTransition:(id)a3;
+- (void)updateTransition:(id)transition;
 @end
 
 @implementation MRLayerNavigator
 
-- (MRLayerNavigator)initWithPlug:(id)a3 andParameters:(id)a4 inSuperlayer:(id)a5
+- (MRLayerNavigator)initWithPlug:(id)plug andParameters:(id)parameters inSuperlayer:(id)superlayer
 {
   v8.receiver = self;
   v8.super_class = MRLayerNavigator;
-  v5 = [(MRLayer *)&v8 initWithPlug:a3 andParameters:a4 inSuperlayer:a5];
+  v5 = [(MRLayer *)&v8 initWithPlug:plug andParameters:parameters inSuperlayer:superlayer];
   v6 = v5;
   if (v5)
   {
@@ -118,11 +118,11 @@
   return v6;
 }
 
-- (MRLayerNavigator)initWithParameters:(id)a3
+- (MRLayerNavigator)initWithParameters:(id)parameters
 {
   v5.receiver = self;
   v5.super_class = MRLayerNavigator;
-  v3 = [(MRLayer *)&v5 initWithParameters:a3];
+  v3 = [(MRLayer *)&v5 initWithParameters:parameters];
   if (v3)
   {
     v3->mSublayers = objc_alloc_init(NSMutableArray);
@@ -196,23 +196,23 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:@"plugs"])
+  if ([path isEqualToString:@"plugs"])
   {
-    v11 = [objc_msgSend(a5 objectForKey:{NSKeyValueChangeKindKey), "unsignedIntegerValue"}];
-    v26 = a6;
-    v27 = a4;
+    v11 = [objc_msgSend(change objectForKey:{NSKeyValueChangeKindKey), "unsignedIntegerValue"}];
+    contextCopy2 = context;
+    objectCopy2 = object;
     if (v11 == &dword_0 + 2)
     {
-      v20 = [a5 objectForKey:NSKeyValueChangeNewKey];
+      plugs = [change objectForKey:NSKeyValueChangeNewKey];
     }
 
     else
     {
       if (v11 == &dword_0 + 3)
       {
-        v12 = [a5 objectForKey:NSKeyValueChangeOldKey];
+        v12 = [change objectForKey:NSKeyValueChangeOldKey];
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
@@ -250,15 +250,15 @@
         goto LABEL_28;
       }
 
-      v20 = [(MCContainer *)self->mContainer plugs];
+      plugs = [(MCContainer *)self->mContainer plugs];
     }
 
-    v21 = v20;
+    v21 = plugs;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v22 = [v20 countByEnumeratingWithState:&v29 objects:v37 count:{16, a6}];
+    v22 = [plugs countByEnumeratingWithState:&v29 objects:v37 count:{16, context}];
     if (v22)
     {
       v23 = v22;
@@ -284,29 +284,29 @@
     goto LABEL_28;
   }
 
-  if (![a3 isEqualToString:@"container"])
+  if (![path isEqualToString:@"container"])
   {
     goto LABEL_30;
   }
 
-  v26 = a6;
-  v19 = -[NSMutableDictionary objectForKey:](self->mSublayersForPlugs, "objectForKey:", [a4 objectID]);
+  contextCopy2 = context;
+  v19 = -[NSMutableDictionary objectForKey:](self->mSublayersForPlugs, "objectForKey:", [object objectID]);
   if (([v19 isScheduledForDestruction] & 1) == 0)
   {
     [(MRLayerNavigator *)self _unobserveSublayer:v19];
     [v19 scheduleForDestruction];
-    [(MRLayer *)self _queueLayerCommand:1 object:a4];
+    [(MRLayer *)self _queueLayerCommand:1 object:object];
   }
 
-  v27 = a4;
-  if ([a4 container])
+  objectCopy2 = object;
+  if ([object container])
   {
-    [(MRLayer *)self _queueLayerCommand:0 object:a4];
+    [(MRLayer *)self _queueLayerCommand:0 object:object];
   }
 
 LABEL_28:
-  a6 = v26;
-  a4 = v27;
+  context = contextCopy2;
+  object = objectCopy2;
   if (!self->super.mIsPrecomputing)
   {
     [(MRLayer *)self->super.mSuperlayer setNeedsUpdateForPluggerOfSublayer:self];
@@ -316,14 +316,14 @@ LABEL_28:
 LABEL_30:
   v28.receiver = self;
   v28.super_class = MRLayerNavigator;
-  [(MRLayer *)&v28 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:a6, v26];
+  [(MRLayer *)&v28 observeValueForKeyPath:path ofObject:object change:change context:context, contextCopy2];
 }
 
-- (void)setPixelSize:(CGSize)a3
+- (void)setPixelSize:(CGSize)size
 {
   v13.receiver = self;
   v13.super_class = MRLayerNavigator;
-  [(MRLayer *)&v13 setPixelSize:a3.width, a3.height];
+  [(MRLayer *)&v13 setPixelSize:size.width, size.height];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
@@ -360,27 +360,27 @@ LABEL_30:
 {
   v6.receiver = self;
   v6.super_class = MRLayerNavigator;
-  v3 = [(MRLayer *)&v6 hasSomethingToRender];
-  if (v3)
+  hasSomethingToRender = [(MRLayer *)&v6 hasSomethingToRender];
+  if (hasSomethingToRender)
   {
     mCurrentSublayer = self->mCurrentSublayer;
     if (mCurrentSublayer && [(MRLayer *)mCurrentSublayer hasSomethingToRender])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(hasSomethingToRender) = 1;
     }
 
     else if (self->mIsTransitioning)
     {
-      LOBYTE(v3) = [(MRLayer *)self->mNextSublayer hasSomethingToRender];
+      LOBYTE(hasSomethingToRender) = [(MRLayer *)self->mNextSublayer hasSomethingToRender];
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(hasSomethingToRender) = 0;
     }
   }
 
-  return v3;
+  return hasSomethingToRender;
 }
 
 - (void)synchronizeTime
@@ -399,14 +399,14 @@ LABEL_30:
   }
 }
 
-- (void)beginMorphingToAspectRatio:(double)a3 withDuration:(double)a4
+- (void)beginMorphingToAspectRatio:(double)ratio withDuration:(double)duration
 {
   if (self->mIsTransitioning)
   {
     [(MRLayerNavigator *)self endTransitionToSublayer];
   }
 
-  [(MRLayer *)self->mCurrentSublayer beginMorphingToAspectRatio:a3 withDuration:a4];
+  [(MRLayer *)self->mCurrentSublayer beginMorphingToAspectRatio:ratio withDuration:duration];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -429,7 +429,7 @@ LABEL_30:
         v12 = *(*(&v13 + 1) + 8 * i);
         if (v12 != self->mCurrentSublayer)
         {
-          [(MRLayer *)v12 beginMorphingToAspectRatio:a3 withDuration:a4];
+          [(MRLayer *)v12 beginMorphingToAspectRatio:ratio withDuration:duration];
         }
       }
 
@@ -531,9 +531,9 @@ LABEL_30:
   [(MRLayer *)&v11 deactivate];
 }
 
-- (void)depreactivate:(BOOL)a3
+- (void)depreactivate:(BOOL)depreactivate
 {
-  v3 = a3;
+  depreactivateCopy = depreactivate;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -556,7 +556,7 @@ LABEL_30:
         v10 = *(*(&v12 + 1) + 8 * i);
         if ([v10 isPreactivated])
         {
-          [v10 depreactivate:v3];
+          [v10 depreactivate:depreactivateCopy];
         }
       }
 
@@ -568,10 +568,10 @@ LABEL_30:
 
   v11.receiver = self;
   v11.super_class = MRLayerNavigator;
-  [(MRLayer *)&v11 depreactivate:v3];
+  [(MRLayer *)&v11 depreactivate:depreactivateCopy];
 }
 
-- (BOOL)isLoadedForTime:(double)a3
+- (BOOL)isLoadedForTime:(double)time
 {
   v21.receiver = self;
   v21.super_class = MRLayerNavigator;
@@ -602,7 +602,7 @@ LABEL_6:
         v14 = v13;
         if ([v12 isPreactivated])
         {
-          v15 = a3 - v14;
+          v15 = time - v14;
           if ([v12 shouldBeActivatedAtTime:v15])
           {
             v5 = [v12 isLoadedForTime:v15];
@@ -677,7 +677,7 @@ LABEL_6:
   return [(MRLayer *)mCurrentSublayer isAlphaFriendly];
 }
 
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   if (self->super.mLayerCommandQueueNeedsAttention)
   {
@@ -686,7 +686,7 @@ LABEL_6:
 
   v105.receiver = self;
   v105.super_class = MRLayerNavigator;
-  v9 = [(MRLayer *)&v105 prerenderForTime:a4 inContext:a5 withArguments:a3];
+  v9 = [(MRLayer *)&v105 prerenderForTime:context inContext:arguments withArguments:time];
   v10 = [(NSMutableArray *)self->mSublayers count];
   if (!v10)
   {
@@ -707,15 +707,15 @@ LABEL_6:
   mCurrentSublayer = self->mCurrentSublayer;
   mNextSublayer = self->mNextSublayer;
   mCurrentTransition = self->mCurrentTransition;
-  v14 = [a5 forcedState];
-  if (!v14)
+  forcedState = [arguments forcedState];
+  if (!forcedState)
   {
     v99 = 0;
     goto LABEL_17;
   }
 
-  v15 = v14;
-  v99 = [v14 objectForKey:@"currentSublayerState"];
+  v15 = forcedState;
+  v99 = [forcedState objectForKey:@"currentSublayerState"];
   if (self->mIsSerializerBased)
   {
     v16 = [v15 objectForKey:@"currentSublayerIndex"];
@@ -744,10 +744,10 @@ LABEL_6:
     [(MRLayerNavigator *)self endTransitionToSublayer];
     v20 = v9;
     mSublayersForPlugs = self->mSublayersForPlugs;
-    v22 = [v19 objectID];
+    objectID = [v19 objectID];
     v23 = mSublayersForPlugs;
     v9 = v20;
-    self->mCurrentSublayer = [(NSMutableDictionary *)v23 objectForKey:v22];
+    self->mCurrentSublayer = [(NSMutableDictionary *)v23 objectForKey:objectID];
     [objc_msgSend(v99 objectForKey:{@"timeIn", "doubleValue"}];
     [(MRLayer *)self->mCurrentSublayer setTimeIn:?];
     self->mNeedsToUpdatePotentialTargetSublayers = 1;
@@ -756,7 +756,7 @@ LABEL_6:
 
 LABEL_17:
   v24 = &OBJC_IVAR___MPLayerGroup__parent;
-  if ((([a5 timeWasSet] & 1) != 0 || self->mNeedsToResyncToSerializer) && self->mIsSerializerBased)
+  if ((([arguments timeWasSet] & 1) != 0 || self->mNeedsToResyncToSerializer) && self->mIsSerializerBased)
   {
     goto LABEL_20;
   }
@@ -816,7 +816,7 @@ LABEL_118:
   self->mNeedsToUpdatePotentialTargetSublayers = 1;
 LABEL_22:
   self->mElementToDraw = 0;
-  [(MRLayerNavigator *)self _prerenderSublayersAtTime:a4 inContext:a5 withArguments:a3];
+  [(MRLayerNavigator *)self _prerenderSublayersAtTime:context inContext:arguments withArguments:time];
   v25 = self->mCurrentSublayer;
   if (v25 != mCurrentSublayer || self->mCurrentTransition != mCurrentTransition || self->mIsTransitioning && self->mNextSublayer != mNextSublayer)
   {
@@ -845,12 +845,12 @@ LABEL_43:
   if (self->mIsSerializerBased && (v27 != mCurrentSublayer || self->_needsToRecomputeCurrentSublayerTheoreticalTimeIn))
   {
     v28 = v9;
-    v29 = [(MCContainer *)self->mContainer orderedPlugs];
+    orderedPlugs = [(MCContainer *)self->mContainer orderedPlugs];
     v101 = 0u;
     v102 = 0u;
     v103 = 0u;
     v104 = 0u;
-    v30 = [v29 countByEnumeratingWithState:&v101 objects:v106 count:16];
+    v30 = [orderedPlugs countByEnumeratingWithState:&v101 objects:v106 count:16];
     if (v30)
     {
       v31 = v30;
@@ -862,7 +862,7 @@ LABEL_36:
       {
         if (*v102 != v32)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(orderedPlugs);
         }
 
         v35 = *(*(&v101 + 1) + 8 * v34);
@@ -877,7 +877,7 @@ LABEL_36:
         v33 = v33 + v37 - v38;
         if (v31 == ++v34)
         {
-          v31 = [v29 countByEnumeratingWithState:&v101 objects:v106 count:16];
+          v31 = [orderedPlugs countByEnumeratingWithState:&v101 objects:v106 count:16];
           if (v31)
           {
             goto LABEL_36;
@@ -912,7 +912,7 @@ LABEL_36:
         [(MRLayer *)self->mCurrentSublayer _applyState:v53];
       }
 
-      [a5 setForcedState:v99];
+      [arguments setForcedState:v99];
     }
 
     if (!self->mIsInnerTransitioning)
@@ -1009,7 +1009,7 @@ LABEL_106:
 LABEL_107:
     v76 = self->mCurrentSublayer;
     [(MRLayerClock *)[(MRLayer *)v76 clock] externalTime];
-    v9 |= [(MRLayer *)v76 prerenderForTime:a4 inContext:a5 withArguments:?];
+    v9 |= [(MRLayer *)v76 prerenderForTime:context inContext:arguments withArguments:?];
     self->mElementToDraw = 1;
     goto LABEL_132;
   }
@@ -1105,10 +1105,10 @@ LABEL_107:
       [(MRLayerClock *)[(MRLayer *)self->mNextSublayer clock] setContainerTime:(1.0 - v43) * v47 / v77 + self->mNextSublayerInterestingTime];
       v78 = self->mCurrentSublayer;
       [(MRLayerClock *)[(MRLayer *)v78 clock] externalTime];
-      [(MRLayer *)v78 prerenderForTime:a4 inContext:a5 withArguments:?];
+      [(MRLayer *)v78 prerenderForTime:context inContext:arguments withArguments:?];
       v79 = self->mNextSublayer;
       [(MRLayerClock *)[(MRLayer *)v79 clock] externalTime];
-      v9 |= [(MRLayer *)v79 prerenderForTime:a4 inContext:a5 withArguments:?];
+      v9 |= [(MRLayer *)v79 prerenderForTime:context inContext:arguments withArguments:?];
       v75 = 2;
       goto LABEL_129;
     }
@@ -1127,7 +1127,7 @@ LABEL_107:
 LABEL_124:
     [(MRLayerClock *)[(MRLayer *)self->mNextSublayer clock] setContainerTime:v83];
 LABEL_125:
-    if ([(MRTransition *)self->mCurrentTransition prerenderForTime:a4 inContext:a5 withArguments:v66]&& v66 != self->_previouslyRenderedTransitionProgress)
+    if ([(MRTransition *)self->mCurrentTransition prerenderForTime:context inContext:arguments withArguments:v66]&& v66 != self->_previouslyRenderedTransitionProgress)
     {
       v9 = 1;
     }
@@ -1141,10 +1141,10 @@ LABEL_104:
   [(MRLayerClock *)[(MRLayer *)self->mCurrentSublayer clock] setContainerTime:v52];
   v73 = self->mCurrentSublayer;
   [(MRLayerClock *)[(MRLayer *)v73 clock] externalTime];
-  v9 |= [(MRLayer *)v73 prerenderForTime:a4 inContext:a5 withArguments:?];
+  v9 |= [(MRLayer *)v73 prerenderForTime:context inContext:arguments withArguments:?];
   v74 = self->mNextSublayer;
   [(MRLayerClock *)[(MRLayer *)v74 clock] externalTime];
-  [(MRLayer *)v74 prerenderForTime:a4 inContext:a5 withArguments:?];
+  [(MRLayer *)v74 prerenderForTime:context inContext:arguments withArguments:?];
   v75 = 1;
 LABEL_129:
   self->mElementToDraw = v75;
@@ -1159,7 +1159,7 @@ LABEL_132:
     [(MRLayer *)self->mCurrentSublayer synchronizeTime];
   }
 
-  [(MRLayerNavigator *)self _preprecomputeAtTime:a4 inContext:a5 withArguments:a3];
+  [(MRLayerNavigator *)self _preprecomputeAtTime:context inContext:arguments withArguments:time];
   if (self->super.mIsActivated)
   {
     if (self->mIsSerializerBased)
@@ -1184,10 +1184,10 @@ LABEL_132:
     switch(mElementToDraw)
     {
       case 3:
-        v94 = [(MRLayer *)self->mCurrentSublayer renderingState];
-        *&v94->var4 = xmmword_1633A0;
-        *&v94->var8 = xmmword_163390;
-        *&v94->var0 = xmmword_1633B0;
+        renderingState = [(MRLayer *)self->mCurrentSublayer renderingState];
+        *&renderingState->var4 = xmmword_1633A0;
+        *&renderingState->var8 = xmmword_163390;
+        *&renderingState->var0 = xmmword_1633B0;
         v93 = self->mNextSublayer;
         if (v93)
         {
@@ -1201,10 +1201,10 @@ LABEL_132:
       case 1:
         v93 = self->mCurrentSublayer;
 LABEL_149:
-        v95 = [(MRLayer *)v93 renderingState];
-        *&v95->var4 = xmmword_1633A0;
-        *&v95->var8 = xmmword_163390;
-        *&v95->var0 = xmmword_1633B0;
+        renderingState2 = [(MRLayer *)v93 renderingState];
+        *&renderingState2->var4 = xmmword_1633A0;
+        *&renderingState2->var8 = xmmword_163390;
+        *&renderingState2->var0 = xmmword_1633B0;
         break;
     }
   }
@@ -1218,7 +1218,7 @@ LABEL_149:
   return v9 & 1;
 }
 
-- (id)patchworkAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (id)patchworkAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   if (self->super.mPixelSize.width <= 0.0 || self->super.mPixelSize.height <= 0.0)
   {
@@ -1230,7 +1230,7 @@ LABEL_149:
   {
     mCurrentTransition = self->mCurrentTransition;
     [(MRTransition *)mCurrentTransition progress];
-    v11 = [(MRTransition *)mCurrentTransition patchworkAtTime:a4 inContext:a5 withArguments:?];
+    v11 = [(MRTransition *)mCurrentTransition patchworkAtTime:context inContext:arguments withArguments:?];
     [(MRTransition *)self->mCurrentTransition progress];
     self->_previouslyRenderedTransitionProgress = v15;
     if (v11)
@@ -1252,14 +1252,14 @@ LABEL_149:
 LABEL_13:
     v16.receiver = self;
     v16.super_class = MRLayerNavigator;
-    return [(MRLayer *)&v16 patchworkAtTime:a4 inContext:a5 withArguments:a3];
+    return [(MRLayer *)&v16 patchworkAtTime:context inContext:arguments withArguments:time];
   }
 
   v10 = 240;
 LABEL_10:
   v13 = *(&self->super.super.isa + v10);
   [objc_msgSend(v13 "clock")];
-  v11 = [v13 patchworkAtTime:a4 inContext:a5 withArguments:?];
+  v11 = [v13 patchworkAtTime:context inContext:arguments withArguments:?];
   if (!v11)
   {
     goto LABEL_13;
@@ -1280,7 +1280,7 @@ LABEL_10:
   return [NSArray arrayWithObject:v2];
 }
 
-- (id)sublayerHitAtPoint:(CGPoint)a3 onlyIfHitElement:(BOOL)a4 localPoint:(CGPoint *)a5
+- (id)sublayerHitAtPoint:(CGPoint)point onlyIfHitElement:(BOOL)element localPoint:(CGPoint *)localPoint
 {
   if (!self->super.mIsActivated)
   {
@@ -1298,9 +1298,9 @@ LABEL_10:
     return 0;
   }
 
-  v13 = a4;
-  y = a3.y;
-  x = a3.x;
+  elementCopy = element;
+  y = point.y;
+  x = point.x;
   if (self->mIsTransitioning)
   {
     if ([(MRLayer *)self->mNextSublayer isActivated])
@@ -1324,8 +1324,8 @@ LABEL_10:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    result = [(MRLayer *)self->mCurrentSublayer sublayerHitAtPoint:v13 onlyIfHitElement:&v20 localPoint:x, y];
-    if (!a5)
+    result = [(MRLayer *)self->mCurrentSublayer sublayerHitAtPoint:elementCopy onlyIfHitElement:&v20 localPoint:x, y];
+    if (!localPoint)
     {
       return result;
     }
@@ -1333,17 +1333,17 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  if (!v13 || (result = [(MRLayer *)self->mCurrentSublayer elementHitAtPoint:0 localPoint:x, y]) != 0)
+  if (!elementCopy || (result = [(MRLayer *)self->mCurrentSublayer elementHitAtPoint:0 localPoint:x, y]) != 0)
   {
     result = self->mCurrentSublayer;
     v20.x = x;
     v20.y = y;
-    if (a5)
+    if (localPoint)
     {
 LABEL_16:
       if (result)
       {
-        *a5 = v20;
+        *localPoint = v20;
       }
     }
   }
@@ -1353,8 +1353,8 @@ LABEL_16:
 
 - (BOOL)hasAudio
 {
-  v3 = [(MCAudioPlaylist *)[(MCContainer *)self->mContainer audioPlaylist] songs];
-  if (!v3 || ![(NSSet *)v3 count])
+  songs = [(MCAudioPlaylist *)[(MCContainer *)self->mContainer audioPlaylist] songs];
+  if (!songs || ![(NSSet *)songs count])
   {
     v12 = 0u;
     v13 = 0u;
@@ -1421,7 +1421,7 @@ LABEL_6:
   return [mCurrentTransition isNative3D];
 }
 
-- (id)sublayerForKey:(id)a3
+- (id)sublayerForKey:(id)key
 {
   v12 = 0;
   v13 = &v12;
@@ -1429,7 +1429,7 @@ LABEL_6:
   v15 = sub_5C6A4;
   v16 = sub_5C6B4;
   v17 = 0;
-  if (a3)
+  if (key)
   {
     mSublayers = self->mSublayers;
     objc_sync_enter(mSublayers);
@@ -1438,12 +1438,12 @@ LABEL_6:
     {
       if (self->mIsSerializerBased)
       {
-        v7 = -[MCContainer plugAtIndex:](mContainer, "plugAtIndex:", [a3 intValue]);
+        v7 = -[MCContainer plugAtIndex:](mContainer, "plugAtIndex:", [key intValue]);
       }
 
       else
       {
-        v7 = [(MCContainer *)self->mContainer plugForID:a3];
+        v7 = [(MCContainer *)self->mContainer plugForID:key];
       }
 
       if (v7)
@@ -1461,7 +1461,7 @@ LABEL_6:
       v11[1] = 3221225472;
       v11[2] = sub_5C6C0;
       v11[3] = &unk_1AAE60;
-      v11[4] = a3;
+      v11[4] = key;
       v11[5] = &v12;
       [(NSMutableArray *)v9 enumerateObjectsUsingBlock:v11];
     }
@@ -1479,29 +1479,29 @@ LABEL_6:
   return v8;
 }
 
-- (void)setSublayer:(id)a3 forKey:(id)a4
+- (void)setSublayer:(id)sublayer forKey:(id)key
 {
   [(MRLayerNavigator *)self _removeExtraSublayer];
-  v8 = -[MCObject _initWithObjectID:]([MCPlugHaven alloc], "_initWithObjectID:", [a3 uuid]);
-  [a3 setIdInSupercontainer:a4];
-  [v8 setIDInSupercontainer:a4];
+  v8 = -[MCObject _initWithObjectID:]([MCPlugHaven alloc], "_initWithObjectID:", [sublayer uuid]);
+  [sublayer setIdInSupercontainer:key];
+  [v8 setIDInSupercontainer:key];
   [v8 setPreactivatesWithParent:1];
   [v8 setLoopDuration:1.0e10];
-  [a3 _setPlug:v8 andSuperlayer:self];
+  [sublayer _setPlug:v8 andSuperlayer:self];
   mSublayers = self->mSublayers;
   objc_sync_enter(mSublayers);
-  [(NSMutableArray *)self->mSublayers addObject:a3];
-  -[NSMutableDictionary setObject:forKey:](self->mSublayersForPlugs, "setObject:forKey:", a3, [a3 uuid]);
-  [(MRLayerNavigator *)self _observeSublayer:a3];
+  [(NSMutableArray *)self->mSublayers addObject:sublayer];
+  -[NSMutableDictionary setObject:forKey:](self->mSublayersForPlugs, "setObject:forKey:", sublayer, [sublayer uuid]);
+  [(MRLayerNavigator *)self _observeSublayer:sublayer];
   objc_sync_exit(mSublayers);
 }
 
-- (id)sublayerForPlugObjectID:(id)a3 recursive:(BOOL)a4
+- (id)sublayerForPlugObjectID:(id)d recursive:(BOOL)recursive
 {
-  v4 = a4;
+  recursiveCopy = recursive;
   mSublayers = self->mSublayers;
   objc_sync_enter(mSublayers);
-  v8 = [(NSMutableDictionary *)self->mSublayersForPlugs objectForKey:a3];
+  v8 = [(NSMutableDictionary *)self->mSublayersForPlugs objectForKey:d];
   if (v8)
   {
     v9 = 1;
@@ -1509,7 +1509,7 @@ LABEL_6:
 
   else
   {
-    v9 = !v4;
+    v9 = !recursiveCopy;
   }
 
   if (!v9)
@@ -1535,7 +1535,7 @@ LABEL_7:
         v14 = *(*(&v16 + 1) + 8 * v13);
         if (v14 != self->mExtraSublayer && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v8 = [(MRLayer *)v14 sublayerForPlugObjectID:a3 recursive:1];
+          v8 = [(MRLayer *)v14 sublayerForPlugObjectID:d recursive:1];
           if (v8)
           {
             break;
@@ -1566,45 +1566,45 @@ LABEL_15:
   return v8;
 }
 
-- (double)doActionTrigger:(id)a3
+- (double)doActionTrigger:(id)trigger
 {
   result = 0.0;
   if (self->super.mIsActivated)
   {
-    v6 = [a3 mcAction];
-    if ([objc_msgSend(v6 "actionKey")])
+    mcAction = [trigger mcAction];
+    if ([objc_msgSend(mcAction "actionKey")])
     {
 
-      [(MRLayerNavigator *)self gotoNextSublayer:a3 animate:1];
+      [(MRLayerNavigator *)self gotoNextSublayer:trigger animate:1];
     }
 
-    else if ([objc_msgSend(v6 "actionKey")])
+    else if ([objc_msgSend(mcAction "actionKey")])
     {
 
-      [(MRLayerNavigator *)self gotoPreviousSublayer:a3 animate:1];
+      [(MRLayerNavigator *)self gotoPreviousSublayer:trigger animate:1];
     }
 
     else
     {
       v7.receiver = self;
       v7.super_class = MRLayerNavigator;
-      [(MRLayer *)&v7 doActionTrigger:a3];
+      [(MRLayer *)&v7 doActionTrigger:trigger];
     }
   }
 
   return result;
 }
 
-- (void)updateTransition:(id)a3
+- (void)updateTransition:(id)transition
 {
   if (self->super.mIsActivated && (self->mCurrentTransition || self->mIsInnerTransitioning))
   {
-    v5 = [a3 specificObject];
-    v6 = v5;
+    specificObject = [transition specificObject];
+    v6 = specificObject;
     if (self->mNextSublayer || self->mIsInnerTransitioning)
     {
       mTransitionStartedWithNext = self->mTransitionStartedWithNext;
-      v8 = v5[4];
+      v8 = specificObject[4];
       if (self->mTransitionStartedWithNext)
       {
         v8 = -v8;
@@ -1615,7 +1615,7 @@ LABEL_15:
 
     else
     {
-      v11 = v5[4];
+      v11 = specificObject[4];
       mTransitionStartedWithNext = self->mTransitionStartedWithNext;
       if (mTransitionStartedWithNext == v11 >= 0.0)
       {
@@ -1636,7 +1636,7 @@ LABEL_15:
     }
 
     self->mForcedTransitionProgress = v9;
-    v10 = v5[13];
+    v10 = specificObject[13];
     if (v10 != -10.0)
     {
       if (mTransitionStartedWithNext)
@@ -1671,7 +1671,7 @@ LABEL_15:
     {
       mTransitionIsSubzero = self->mTransitionIsSubzero;
       v14 = self->mTransitionStartedWithNext;
-      -[MRTransition pzrCancel:](self->mCurrentTransition, "pzrCancel:", [a3 specificObject]);
+      -[MRTransition pzrCancel:](self->mCurrentTransition, "pzrCancel:", [transition specificObject]);
       self->mTransitionWasAborted = 1;
       v15 = -self->mForcedTransitionProgress;
       if (self->mIsInnerTransitioning)
@@ -1684,7 +1684,7 @@ LABEL_15:
         [(MRLayerNavigator *)self endTransitionToSublayer];
       }
 
-      [(MRLayerNavigator *)self gotoMoreSlidesWithAction:a3 backwards:mTransitionIsSubzero != v14 animate:1 canCatchCurrentTransition:0];
+      [(MRLayerNavigator *)self gotoMoreSlidesWithAction:transition backwards:mTransitionIsSubzero != v14 animate:1 canCatchCurrentTransition:0];
       self->mForcedTransitionProgress = v15;
       self->mTransitionStartedWithNext = v14;
       self->mTransitionIsSubzero = mTransitionIsSubzero ^ 1;
@@ -1704,12 +1704,12 @@ LABEL_15:
   }
 }
 
-- (double)attemptToFinishTransition:(id)a3 didTransition:(BOOL *)a4 gotReversed:(BOOL *)a5
+- (double)attemptToFinishTransition:(id)transition didTransition:(BOOL *)didTransition gotReversed:(BOOL *)reversed
 {
-  v9 = [a3 specificObject];
+  specificObject = [transition specificObject];
   mForcedTransitionProgressOffset = self->mForcedTransitionProgressOffset;
-  v11 = v9[4];
-  v12 = v9[8];
+  v11 = specificObject[4];
+  v12 = specificObject[8];
   v13 = mForcedTransitionProgressOffset + v11 * 0.5 * 1.5;
   v14 = mForcedTransitionProgressOffset + v11 * -0.5 * 1.5;
   if (self->mTransitionStartedWithNext)
@@ -1722,16 +1722,16 @@ LABEL_15:
     v14 = v13;
   }
 
-  v15 = v9[13];
+  v15 = specificObject[13];
   if (v15 != -10.0)
   {
     v16 = -v15;
     if (!self->mTransitionStartedWithNext)
     {
-      v16 = v9[13];
+      v16 = specificObject[13];
     }
 
-    v12 = v9[14];
+    v12 = specificObject[14];
     v17 = mForcedTransitionProgressOffset + v16;
     if (self->mTransitionStartedWithNext)
     {
@@ -1775,36 +1775,36 @@ LABEL_15:
     v19 = 1;
   }
 
-  if (*(v9 + 120))
+  if (*(specificObject + 120))
   {
     v19 = v18 < 0.0;
   }
 
-  if (a4)
+  if (didTransition)
   {
-    *a4 = !v19;
+    *didTransition = !v19;
   }
 
   if (v19)
   {
 
-    [(MRLayerNavigator *)self abortTransition:a3];
+    [(MRLayerNavigator *)self abortTransition:transition];
   }
 
   else
   {
-    if (a5)
+    if (reversed)
     {
-      *a5 = self->mTransitionIsSubzero;
+      *reversed = self->mTransitionIsSubzero;
     }
 
-    [(MRLayerNavigator *)self finishTransition:a3];
+    [(MRLayerNavigator *)self finishTransition:transition];
   }
 
   return result;
 }
 
-- (double)finishTransition:(id)a3
+- (double)finishTransition:(id)transition
 {
   v3 = 0.0;
   if (!self->super.mIsActivated || !self->mCurrentTransition && !self->mIsInnerTransitioning && !self->mTransitionChanges || self->mForcedTransitionProgress < 0.0)
@@ -1812,9 +1812,9 @@ LABEL_15:
     return v3;
   }
 
-  v6 = [a3 specificObject];
+  specificObject = [transition specificObject];
   mIsInnerTransitioning = self->mIsInnerTransitioning;
-  if (v6)
+  if (specificObject)
   {
     v8 = 1.0;
     if (!mIsInnerTransitioning)
@@ -1822,9 +1822,9 @@ LABEL_15:
       v8 = 1.0 / self->mTotalMotionDuration;
     }
 
-    if (v6[13] == -10.0)
+    if (specificObject[13] == -10.0)
     {
-      v10 = v6[8];
+      v10 = specificObject[8];
       if (self->mTransitionStartedWithNext)
       {
         v10 = -v10;
@@ -1835,7 +1835,7 @@ LABEL_15:
 
     else
     {
-      v9 = v6[14];
+      v9 = specificObject[14];
       if (self->mTransitionStartedWithNext)
       {
         v9 = -v9;
@@ -1882,7 +1882,7 @@ LABEL_25:
   mCurrentTransition = self->mCurrentTransition;
   if (mCurrentTransition)
   {
-    -[MRTransition pzrEnd:](mCurrentTransition, "pzrEnd:", [a3 specificObject]);
+    -[MRTransition pzrEnd:](mCurrentTransition, "pzrEnd:", [transition specificObject]);
   }
 
   mTransitionChanges = self->mTransitionChanges;
@@ -1894,7 +1894,7 @@ LABEL_25:
   return v3;
 }
 
-- (double)abortTransition:(id)a3
+- (double)abortTransition:(id)transition
 {
   mForcedTransitionProgress = 0.0;
   if (self->super.mIsActivated && (self->mCurrentTransition || self->mIsInnerTransitioning || self->mTransitionChanges) && self->mForcedTransitionProgress >= 0.0)
@@ -1926,7 +1926,7 @@ LABEL_25:
     mCurrentTransition = self->mCurrentTransition;
     if (mCurrentTransition)
     {
-      -[MRTransition pzrCancel:](mCurrentTransition, "pzrCancel:", [a3 specificObject]);
+      -[MRTransition pzrCancel:](mCurrentTransition, "pzrCancel:", [transition specificObject]);
     }
 
     self->mForcedTransitionProgress = -1.0;
@@ -1945,16 +1945,16 @@ LABEL_25:
   return mForcedTransitionProgress;
 }
 
-- (double)doTransition:(id)a3 backwards:(BOOL)a4 updateHistory:(BOOL)a5 deltaStartTime:(double)a6 pzr:(id)a7
+- (double)doTransition:(id)transition backwards:(BOOL)backwards updateHistory:(BOOL)history deltaStartTime:(double)time pzr:(id)pzr
 {
   v7 = 0.0;
   if (self->super.mIsPreactivated)
   {
-    v10 = a5;
-    v11 = a4;
+    historyCopy = history;
+    backwardsCopy = backwards;
     mSublayers = self->mSublayers;
     objc_sync_enter(mSublayers);
-    v15 = -[MRLayerNavigator sublayerForKey:](self, "sublayerForKey:", [a3 transitionDestinationPlugID]);
+    v15 = -[MRLayerNavigator sublayerForKey:](self, "sublayerForKey:", [transition transitionDestinationPlugID]);
     mExtraSublayer = v15;
     if (self->super.mIsActivated && (mCurrentSublayer = self->mCurrentSublayer) != 0)
     {
@@ -1974,7 +1974,7 @@ LABEL_25:
         [(MRLayer *)mExtraSublayer preactivate];
       }
 
-      if (a7 && ![(MRLayer *)mExtraSublayer hasSlides])
+      if (pzr && ![(MRLayer *)mExtraSublayer hasSlides])
       {
         mExtraSublayer = 0;
       }
@@ -1982,9 +1982,9 @@ LABEL_25:
       v18 = self->mCurrentSublayer;
       if (mExtraSublayer != v18)
       {
-        if (self->mHistoryIsEnabled && v10)
+        if (self->mHistoryIsEnabled && historyCopy)
         {
-          [(MRLayerNavigator *)self _registerTransitionForHistory:a3 withDestinationPlugID:[(MRLayer *)v18 idInSupercontainer] backwards:v11];
+          [(MRLayerNavigator *)self _registerTransitionForHistory:transition withDestinationPlugID:[(MRLayer *)v18 idInSupercontainer] backwards:backwardsCopy];
         }
 
         mTransitionChanges = self->mTransitionChanges;
@@ -1994,16 +1994,16 @@ LABEL_25:
 
         v20 = objc_alloc_init(MRTransitionChanges);
         self->mTransitionChanges = v20;
-        [(MRTransitionChanges *)v20 setTransition:a3];
+        [(MRTransitionChanges *)v20 setTransition:transition];
         [(MRTransitionChanges *)self->mTransitionChanges setCurrentSublayer:v18];
         [(MRTransitionChanges *)self->mTransitionChanges setNextSublayer:mExtraSublayer];
         [(MRLayerClock *)self->super.mClock containerTime];
-        self->mTransitionChanges->startTime = v21 - a6;
-        [a3 transitionDuration];
+        self->mTransitionChanges->startTime = v21 - time;
+        [transition transitionDuration];
         self->mTransitionChanges->duration = v22;
-        self->mTransitionChanges->isBackwards = v11;
-        [(MRTransitionChanges *)self->mTransitionChanges setPzr:a7];
-        [a3 transitionDuration];
+        self->mTransitionChanges->isBackwards = backwardsCopy;
+        [(MRTransitionChanges *)self->mTransitionChanges setPzr:pzr];
+        [transition transitionDuration];
         v7 = v23;
       }
     }
@@ -2020,7 +2020,7 @@ LABEL_25:
   return v7;
 }
 
-- (void)jumpToSublayer:(id)a3 atTime:(double)a4
+- (void)jumpToSublayer:(id)sublayer atTime:(double)time
 {
   if (self->super.mIsPreactivated)
   {
@@ -2032,9 +2032,9 @@ LABEL_25:
     }
 
     mCurrentSublayer = self->mCurrentSublayer;
-    if (mCurrentSublayer != a3)
+    if (mCurrentSublayer != sublayer)
     {
-      self->mCurrentSublayer = a3;
+      self->mCurrentSublayer = sublayer;
       [(MRLayerClock *)self->super.mClock containerTime];
       [(MRLayer *)self->mCurrentSublayer setTimeIn:?];
       mCurrentSublayer = self->mCurrentSublayer;
@@ -2054,7 +2054,7 @@ LABEL_25:
       }
     }
 
-    [(MRLayerClock *)[(MRLayer *)self->mCurrentSublayer clock] setContainerTime:a4];
+    [(MRLayerClock *)[(MRLayer *)self->mCurrentSublayer clock] setContainerTime:time];
     [(MRLayer *)self->mCurrentSublayer setNeedsToSynchronizeTime:1];
     self->_needsToRecomputeCurrentSublayerTheoreticalTimeIn = self->mIsSerializerBased;
 
@@ -2071,8 +2071,8 @@ LABEL_25:
     objc_sync_enter(mSublayers);
     if ([(NSMutableArray *)self->mHistoryForth count])
     {
-      v5 = [(NSMutableArray *)self->mHistoryForth lastObject];
-      [(MRLayerNavigator *)self doTransition:v5 backwards:0 pzr:0];
+      lastObject = [(NSMutableArray *)self->mHistoryForth lastObject];
+      [(MRLayerNavigator *)self doTransition:lastObject backwards:0 pzr:0];
       v2 = v6;
     }
 
@@ -2091,8 +2091,8 @@ LABEL_25:
     objc_sync_enter(mSublayers);
     if ([(NSMutableArray *)self->mHistoryBack count])
     {
-      v5 = [(NSMutableArray *)self->mHistoryBack lastObject];
-      [(MRLayerNavigator *)self doTransition:v5 backwards:1 pzr:0];
+      lastObject = [(NSMutableArray *)self->mHistoryBack lastObject];
+      [(MRLayerNavigator *)self doTransition:lastObject backwards:1 pzr:0];
       v2 = v6;
     }
 
@@ -2198,54 +2198,54 @@ LABEL_25:
   objc_sync_exit(mSublayers);
 }
 
-- (BOOL)canTransitionToMoreSlides:(BOOL)a3
+- (BOOL)canTransitionToMoreSlides:(BOOL)slides
 {
-  v3 = a3;
+  slidesCopy = slides;
   v9 = 0;
   v10 = 0;
   mCurrentSublayer = self->mCurrentSublayer;
   [(MRLayerClock *)[(MRLayer *)mCurrentSublayer clock:0] containerTime];
-  if (![(MRLayer *)mCurrentSublayer hasMoreSlidesFromTime:v3 backwards:&v10 startTime:&v9 duration:?])
+  if (![(MRLayer *)mCurrentSublayer hasMoreSlidesFromTime:slidesCopy backwards:&v10 startTime:&v9 duration:?])
   {
     v7 = self->mCurrentSublayer;
-    if (v3)
+    if (slidesCopy)
     {
-      v6 = [(MRLayer *)v7 previousTransition];
-      if (!v6)
+      previousTransition = [(MRLayer *)v7 previousTransition];
+      if (!previousTransition)
       {
-        return v6;
+        return previousTransition;
       }
     }
 
     else
     {
-      v6 = [(MRLayer *)v7 nextTransition];
-      if (!v6)
+      previousTransition = [(MRLayer *)v7 nextTransition];
+      if (!previousTransition)
       {
-        return v6;
+        return previousTransition;
       }
     }
 
-    LOBYTE(v6) = [(MRLayerNavigator *)self sublayerForKey:[(MCTransitionTrigger *)v6 transitionDestinationPlugID]]!= 0;
-    return v6;
+    LOBYTE(previousTransition) = [(MRLayerNavigator *)self sublayerForKey:[(MCTransitionTrigger *)previousTransition transitionDestinationPlugID]]!= 0;
+    return previousTransition;
   }
 
-  LOBYTE(v6) = 1;
-  return v6;
+  LOBYTE(previousTransition) = 1;
+  return previousTransition;
 }
 
-- (double)gotoMoreSlidesWithAction:(id)a3 backwards:(BOOL)a4 animate:(BOOL)a5 canCatchCurrentTransition:(BOOL)a6
+- (double)gotoMoreSlidesWithAction:(id)action backwards:(BOOL)backwards animate:(BOOL)animate canCatchCurrentTransition:(BOOL)transition
 {
-  v6 = a5;
-  v7 = a4;
-  if (a5 && (a6 || self->mForcedTransitionProgress == -1.0) && self->mIsTransitioning && [a3 specificObject])
+  animateCopy = animate;
+  backwardsCopy = backwards;
+  if (animate && (transition || self->mForcedTransitionProgress == -1.0) && self->mIsTransitioning && [action specificObject])
   {
     if (self->mCurrentTransition)
     {
       self->mPausedSublayersForTransition = 1;
-      v10 = [(MRTransition *)self->mCurrentTransition controlsLayersTime];
-      self->mControlsSublayerTimes = v10;
-      if (v10)
+      controlsLayersTime = [(MRTransition *)self->mCurrentTransition controlsLayersTime];
+      self->mControlsSublayerTimes = controlsLayersTime;
+      if (controlsLayersTime)
       {
         [(MRLayerNavigator *)self _getInterestingTimesForSublayerControl];
       }
@@ -2260,7 +2260,7 @@ LABEL_25:
 
       self->mForcedTransitionProgressOffset = v12;
       self->mForcedTransitionProgress = v12;
-      -[MRTransition pzrStart:](self->mCurrentTransition, "pzrStart:", [a3 specificObject]);
+      -[MRTransition pzrStart:](self->mCurrentTransition, "pzrStart:", [action specificObject]);
     }
 
     v13 = 0.0;
@@ -2287,27 +2287,27 @@ LABEL_25:
     v18 = 0;
     mCurrentSublayer = self->mCurrentSublayer;
     [(MRLayerClock *)[(MRLayer *)mCurrentSublayer clock:0] containerTime];
-    if ([(MRLayer *)mCurrentSublayer hasMoreSlidesFromTime:v7 backwards:&v18 startTime:&v17 duration:?])
+    if ([(MRLayer *)mCurrentSublayer hasMoreSlidesFromTime:backwardsCopy backwards:&v18 startTime:&v17 duration:?])
     {
-      if (v6)
+      if (animateCopy)
       {
-        [(MRLayerNavigator *)self startMovingCurrentSublayer:v7];
+        [(MRLayerNavigator *)self startMovingCurrentSublayer:backwardsCopy];
       }
 
       else
       {
-        [(MRLayerNavigator *)self gotoNextOrPreviousSlideInCurrentSublayer:v7];
+        [(MRLayerNavigator *)self gotoNextOrPreviousSlideInCurrentSublayer:backwardsCopy];
       }
     }
 
-    else if (v7)
+    else if (backwardsCopy)
     {
-      [(MRLayerNavigator *)self gotoPreviousSublayer:a3 animate:v6];
+      [(MRLayerNavigator *)self gotoPreviousSublayer:action animate:animateCopy];
     }
 
     else
     {
-      [(MRLayerNavigator *)self gotoNextSublayer:a3 animate:v6];
+      [(MRLayerNavigator *)self gotoNextSublayer:action animate:animateCopy];
     }
 
     return v15;
@@ -2316,7 +2316,7 @@ LABEL_25:
   return v13;
 }
 
-- (double)transitionToNextSublayerWithDeltaStartTime:(double)a3
+- (double)transitionToNextSublayerWithDeltaStartTime:(double)time
 {
   if (!self->super.mIsActivated)
   {
@@ -2329,21 +2329,21 @@ LABEL_25:
     return 0.0;
   }
 
-  v6 = [(MCAction *)[(MRLayer *)mCurrentSublayer nextTransition] snapshot];
-  if (!v6 && self->mIsSerializerBased && [(NSString *)[(MCObject *)[(MRLayer *)self plug] objectID] isEqualToString:[(MRRenderer *)self->super.mRenderer transitionLayerPlugObjectID]])
+  snapshot = [(MCAction *)[(MRLayer *)mCurrentSublayer nextTransition] snapshot];
+  if (!snapshot && self->mIsSerializerBased && [(NSString *)[(MCObject *)[(MRLayer *)self plug] objectID] isEqualToString:[(MRRenderer *)self->super.mRenderer transitionLayerPlugObjectID]])
   {
     [(MRRenderer *)self->super.mRenderer _playbackIsOverWithTime:1 sendNotification:-1.0];
     return 0.0;
   }
 
-  if (![v6 transitionID])
+  if (![snapshot transitionID])
   {
-    [v6 setTransitionID:kMRLayerTransitionIDPhaseInOut];
+    [snapshot setTransitionID:kMRLayerTransitionIDPhaseInOut];
   }
 
   self->mTransitionStartedWithNext = 1;
 
-  [(MRLayerNavigator *)self doTransition:v6 withDeltaStartTime:a3];
+  [(MRLayerNavigator *)self doTransition:snapshot withDeltaStartTime:time];
   return result;
 }
 
@@ -2376,7 +2376,7 @@ LABEL_25:
   return mCurrentSublayer;
 }
 
-- (double)gotoNextSublayer:(id)a3 animate:(BOOL)a4
+- (double)gotoNextSublayer:(id)sublayer animate:(BOOL)animate
 {
   if (!self->super.mIsActivated)
   {
@@ -2394,16 +2394,16 @@ LABEL_25:
     mCurrentSublayer = self->mNextSublayer;
   }
 
-  v8 = [(MCAction *)[(MRLayer *)mCurrentSublayer nextTransition] snapshot];
-  if (!v8)
+  snapshot = [(MCAction *)[(MRLayer *)mCurrentSublayer nextTransition] snapshot];
+  if (!snapshot)
   {
     return 0.0;
   }
 
-  v9 = v8;
-  if (a4)
+  v9 = snapshot;
+  if (animate)
   {
-    if (![v8 transitionID])
+    if (![snapshot transitionID])
     {
       [v9 setTransitionID:kMRLayerTransitionIDPhaseInOut];
     }
@@ -2411,18 +2411,18 @@ LABEL_25:
 
   else
   {
-    [v8 setTransitionDuration:0.0];
+    [snapshot setTransitionDuration:0.0];
   }
 
   self->mTransitionStartedWithNext = 1;
   self->mTransitionIsNextPrevious = 1;
-  v11 = [a3 specificObject];
+  specificObject = [sublayer specificObject];
 
-  [(MRLayerNavigator *)self doTransition:v9 backwards:0 pzr:v11];
+  [(MRLayerNavigator *)self doTransition:v9 backwards:0 pzr:specificObject];
   return result;
 }
 
-- (double)gotoPreviousSublayer:(id)a3 animate:(BOOL)a4
+- (double)gotoPreviousSublayer:(id)sublayer animate:(BOOL)animate
 {
   if (!self->super.mIsActivated)
   {
@@ -2440,16 +2440,16 @@ LABEL_25:
     mCurrentSublayer = self->mNextSublayer;
   }
 
-  v8 = [(MCAction *)[(MRLayer *)mCurrentSublayer previousTransition] snapshot];
-  if (!v8)
+  snapshot = [(MCAction *)[(MRLayer *)mCurrentSublayer previousTransition] snapshot];
+  if (!snapshot)
   {
     return 0.0;
   }
 
-  v9 = v8;
-  if (a4)
+  v9 = snapshot;
+  if (animate)
   {
-    if (![v8 transitionID])
+    if (![snapshot transitionID])
     {
       [v9 setTransitionID:kMRLayerTransitionIDPhaseInOut];
     }
@@ -2457,73 +2457,73 @@ LABEL_25:
 
   else
   {
-    [v8 setTransitionDuration:0.0];
+    [snapshot setTransitionDuration:0.0];
   }
 
   self->mTransitionIsNextPrevious = 1;
   self->mTransitionStartedWithNext = 0;
-  v11 = [a3 specificObject];
+  specificObject = [sublayer specificObject];
 
-  [(MRLayerNavigator *)self doTransition:v9 backwards:1 pzr:v11];
+  [(MRLayerNavigator *)self doTransition:v9 backwards:1 pzr:specificObject];
   return result;
 }
 
-- (void)jumpToNextMarker:(id)a3
+- (void)jumpToNextMarker:(id)marker
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [-[MRLayer effect](self->mCurrentSublayer "effect")])
   {
-    v5 = [(MRLayer *)self->mCurrentSublayer effect];
+    effect = [(MRLayer *)self->mCurrentSublayer effect];
     [(MRLayerClock *)[(MRLayer *)self->mCurrentSublayer clock] containerTime];
-    [v5 timeForNextChapterAfterTime:?];
+    [effect timeForNextChapterAfterTime:?];
     v7 = v6;
-    v8 = [(MRLayer *)self->mCurrentSublayer clock];
+    clock = [(MRLayer *)self->mCurrentSublayer clock];
 
-    [(MRLayerClock *)v8 setContainerTime:v7];
+    [(MRLayerClock *)clock setContainerTime:v7];
   }
 
   else
   {
 
-    [(MRLayerNavigator *)self gotoNextSublayer:a3 animate:0];
+    [(MRLayerNavigator *)self gotoNextSublayer:marker animate:0];
   }
 }
 
-- (void)jumpToPreviousMarker:(id)a3
+- (void)jumpToPreviousMarker:(id)marker
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [-[MRLayer effect](self->mCurrentSublayer "effect")])
   {
-    v5 = [(MRLayer *)self->mCurrentSublayer effect];
+    effect = [(MRLayer *)self->mCurrentSublayer effect];
     [(MRLayerClock *)[(MRLayer *)self->mCurrentSublayer clock] containerTime];
-    [v5 timeForPreviousChapterBeforeTime:?];
+    [effect timeForPreviousChapterBeforeTime:?];
     v7 = v6;
-    v8 = [(MRLayer *)self->mCurrentSublayer clock];
+    clock = [(MRLayer *)self->mCurrentSublayer clock];
 
-    [(MRLayerClock *)v8 setContainerTime:v7];
+    [(MRLayerClock *)clock setContainerTime:v7];
   }
 
   else
   {
 
-    [(MRLayerNavigator *)self gotoPreviousSublayer:a3 animate:0];
+    [(MRLayerNavigator *)self gotoPreviousSublayer:marker animate:0];
   }
 }
 
-- (void)_registerTransitionForHistory:(id)a3 withDestinationPlugID:(id)a4 backwards:(BOOL)a5
+- (void)_registerTransitionForHistory:(id)history withDestinationPlugID:(id)d backwards:(BOOL)backwards
 {
-  v5 = a5;
-  v9 = +[MCTransitionTrigger transitionForTargetPlugObjectID:withTransitionID:](MCTransitionTrigger, "transitionForTargetPlugObjectID:withTransitionID:", [a3 targetObjectID], objc_msgSend(a3, "transitionID"));
-  [a3 transitionDuration];
+  backwardsCopy = backwards;
+  v9 = +[MCTransitionTrigger transitionForTargetPlugObjectID:withTransitionID:](MCTransitionTrigger, "transitionForTargetPlugObjectID:withTransitionID:", [history targetObjectID], objc_msgSend(history, "transitionID"));
+  [history transitionDuration];
   [v9 setTransitionDuration:?];
-  [v9 setTransitionAttributes:{objc_msgSend(a3, "transitionAttributes")}];
-  [v9 setTransitionDestinationPlugID:a4];
+  [v9 setTransitionAttributes:{objc_msgSend(history, "transitionAttributes")}];
+  [v9 setTransitionDestinationPlugID:d];
   mHistoryBack = self->mHistoryBack;
-  if (v5)
+  if (backwardsCopy)
   {
-    v11 = [(NSMutableArray *)mHistoryBack lastObject];
+    lastObject = [(NSMutableArray *)mHistoryBack lastObject];
     mHistoryForth = self->mHistoryForth;
-    if (v11 != a3)
+    if (lastObject != history)
     {
       [(NSMutableArray *)mHistoryForth removeAllObjects];
       [(MRRenderer *)self->super.mRenderer removeNavigatorFromForthHistory:self];
@@ -2537,7 +2537,7 @@ LABEL_25:
 
       [(NSMutableArray *)v13 addObject:v9];
       [(MRRenderer *)self->super.mRenderer addNavigatorToBackHistory:self];
-      v14 = v9;
+      lastObject2 = v9;
       goto LABEL_14;
     }
 
@@ -2553,13 +2553,13 @@ LABEL_25:
     [(MRRenderer *)self->super.mRenderer moveNavigatorFromBackToForthHistory:self];
     if ([(NSMutableArray *)self->mHistoryBack count])
     {
-      v14 = [(NSMutableArray *)self->mHistoryBack lastObject];
+      lastObject2 = [(NSMutableArray *)self->mHistoryBack lastObject];
 LABEL_14:
-      v17 = [v14 transitionDestinationPlugID];
+      transitionDestinationPlugID = [lastObject2 transitionDestinationPlugID];
       v18 = @"backPlugID";
 LABEL_18:
 
-      [(MRLayer *)self _setStateValue:v17 forKey:v18];
+      [(MRLayer *)self _setStateValue:transitionDestinationPlugID forKey:v18];
       return;
     }
 
@@ -2577,9 +2577,9 @@ LABEL_18:
 
     [(NSMutableArray *)mHistoryBack addObject:v9];
     -[MRLayer _setStateValue:forKey:](self, "_setStateValue:forKey:", [v9 transitionDestinationPlugID], @"backPlugID");
-    v15 = [(NSMutableArray *)self->mHistoryForth lastObject];
+    lastObject3 = [(NSMutableArray *)self->mHistoryForth lastObject];
     v16 = self->mHistoryForth;
-    if (v15 == a3)
+    if (lastObject3 == history)
     {
       [(NSMutableArray *)v16 removeLastObject];
       [(MRRenderer *)self->super.mRenderer moveNavigatorFromForthToBackHistory:self];
@@ -2594,7 +2594,7 @@ LABEL_18:
 
     if ([(NSMutableArray *)self->mHistoryForth count])
     {
-      v17 = [-[NSMutableArray lastObject](self->mHistoryForth "lastObject")];
+      transitionDestinationPlugID = [-[NSMutableArray lastObject](self->mHistoryForth "lastObject")];
       v18 = @"forthPlugID";
       goto LABEL_18;
     }
@@ -2606,15 +2606,15 @@ LABEL_18:
   [(NSMutableDictionary *)mPersistentState removeObjectForKey:v20];
 }
 
-- (double)startMovingCurrentSublayer:(BOOL)a3
+- (double)startMovingCurrentSublayer:(BOOL)sublayer
 {
-  v3 = a3;
+  sublayerCopy = sublayer;
   [(MRLayerClock *)[(MRLayer *)self->mCurrentSublayer clock] containerTime];
   self->mCurrentSublayerContainerTimeOnTransitionStart = v5;
   [(MRLayer *)self->mCurrentSublayer interestingTimeForTime:?];
   self->mCurrentSublayerInterestingTime = v6;
   [(MRLayer *)self->mCurrentSublayer getLazyDuration:&self->mCurrentSublayerLazyDuration lazyFactor:&self->mCurrentSublayerLazyFactor animationDuration:&self->mCurrentSublayerAnimationDuration fromInterestingTime:?];
-  if (!v3)
+  if (!sublayerCopy)
   {
     mCurrentSublayerInterestingTime = self->mCurrentSublayerInterestingTime + self->mCurrentSublayerLazyDuration + self->mCurrentSublayerAnimationDuration;
     v8 = 0.01;
@@ -2641,11 +2641,11 @@ LABEL_5:
   self->mCurrentSublayerInterestingTime = v11;
   [(MRLayer *)self->mCurrentSublayer getLazyDuration:&self->mCurrentSublayerLazyDuration lazyFactor:&self->mCurrentSublayerLazyFactor animationDuration:&self->mCurrentSublayerAnimationDuration fromInterestingTime:?];
 LABEL_7:
-  self->mTransitionStartedWithNext = !v3;
+  self->mTransitionStartedWithNext = !sublayerCopy;
   self->mTransitionIsNextPrevious = 1;
   self->mIsInnerTransitioning = 1;
-  self->mTransitionIsBackwards = v3;
-  if (v3)
+  self->mTransitionIsBackwards = sublayerCopy;
+  if (sublayerCopy)
   {
     mNextSublayerAnimationDuration = self->mNextSublayerAnimationDuration;
     p_mTransitionDuration = &self->mTransitionDuration;
@@ -2779,15 +2779,15 @@ LABEL_7:
   objc_sync_exit(mSublayers);
 }
 
-- (double)gotoNextOrPreviousSlideInCurrentSublayer:(BOOL)a3
+- (double)gotoNextOrPreviousSlideInCurrentSublayer:(BOOL)sublayer
 {
-  v3 = a3;
+  sublayerCopy = sublayer;
   [(MRLayerClock *)[(MRLayer *)self->mCurrentSublayer clock] containerTime];
   self->mCurrentSublayerContainerTimeOnTransitionStart = v5;
   [(MRLayer *)self->mCurrentSublayer interestingTimeForTime:?];
   self->mCurrentSublayerInterestingTime = v6;
   [(MRLayer *)self->mCurrentSublayer getLazyDuration:&self->mCurrentSublayerLazyDuration lazyFactor:&self->mCurrentSublayerLazyFactor animationDuration:&self->mCurrentSublayerAnimationDuration fromInterestingTime:?];
-  if (!v3)
+  if (!sublayerCopy)
   {
     v8 = self->mCurrentSublayerInterestingTime + self->mCurrentSublayerLazyDuration + self->mCurrentSublayerAnimationDuration + 0.01;
     goto LABEL_5;
@@ -2811,26 +2811,26 @@ LABEL_5:
 {
   v7.receiver = self;
   v7.super_class = MRLayerNavigator;
-  v3 = [(MRLayer *)&v7 _currentState];
+  _currentState = [(MRLayer *)&v7 _currentState];
   mCurrentSublayer = self->mCurrentSublayer;
   if (mCurrentSublayer)
   {
-    [v3 setObject:-[MRLayer idInSupercontainer](mCurrentSublayer forKey:{"idInSupercontainer"), @"currentSublayerID"}];
-    v5 = [(MRLayer *)self->mCurrentSublayer _currentState];
+    [_currentState setObject:-[MRLayer idInSupercontainer](mCurrentSublayer forKey:{"idInSupercontainer"), @"currentSublayerID"}];
+    _currentState2 = [(MRLayer *)self->mCurrentSublayer _currentState];
     [(MRLayer *)self->mCurrentSublayer timeIn];
-    [v5 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"timeIn"}];
-    [v3 setObject:v5 forKey:@"currentSublayerState"];
+    [_currentState2 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"timeIn"}];
+    [_currentState setObject:_currentState2 forKey:@"currentSublayerState"];
   }
 
-  return v3;
+  return _currentState;
 }
 
-- (id)_dumpLayerWithOptions:(unint64_t)a3
+- (id)_dumpLayerWithOptions:(unint64_t)options
 {
   v18.receiver = self;
   v18.super_class = MRLayerNavigator;
   v5 = [(MRLayer *)&v18 _dumpLayerWithOptions:?];
-  if ((a3 & 1) == 0)
+  if ((options & 1) == 0)
   {
     v6 = [[NSMutableArray alloc] initWithObjects:{v5, 0}];
     v14 = 0u;
@@ -2855,7 +2855,7 @@ LABEL_5:
           v12 = *(*(&v14 + 1) + 8 * i);
           if ([v12 isActivated])
           {
-            [v6 addObject:{objc_msgSend(v12, "_dumpLayerWithOptions:", a3 + 256)}];
+            [v6 addObject:{objc_msgSend(v12, "_dumpLayerWithOptions:", options + 256)}];
           }
         }
 
@@ -2871,7 +2871,7 @@ LABEL_5:
   return v5;
 }
 
-- (void)_resyncToSerializerForTime:(double)a3
+- (void)_resyncToSerializerForTime:(double)time
 {
   mNeedsToResyncToSerializer = self->mNeedsToResyncToSerializer;
   self->mNeedsToResyncToSerializer = 0;
@@ -2886,7 +2886,7 @@ LABEL_5:
   }
 
   mContainer = self->mContainer;
-  v7 = [(MCContainer *)mContainer orderedPlugs];
+  orderedPlugs = [(MCContainer *)mContainer orderedPlugs];
   v40 = mContainer;
   [(MCContainer *)mContainer initialTransitionDuration];
   v9 = v8;
@@ -2894,7 +2894,7 @@ LABEL_5:
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v10 = [v7 countByEnumeratingWithState:&v41 objects:v45 count:16];
+  v10 = [orderedPlugs countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2911,7 +2911,7 @@ LABEL_5:
       {
         if (*v42 != v14)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(orderedPlugs);
         }
 
         v13 = *(*(&v41 + 1) + 8 * v17);
@@ -2922,7 +2922,7 @@ LABEL_5:
           v19 = v9 + v20;
         }
 
-        if (v19 > a3)
+        if (v19 > time)
         {
           v23 = v13;
           v13 = v18;
@@ -2940,7 +2940,7 @@ LABEL_5:
       }
 
       while (v11 != v17);
-      v11 = [v7 countByEnumeratingWithState:&v41 objects:v45 count:16];
+      v11 = [orderedPlugs countByEnumeratingWithState:&v41 objects:v45 count:16];
       if (v11)
       {
         continue;
@@ -2981,7 +2981,7 @@ LABEL_17:
 LABEL_22:
   if (v23)
   {
-    v31 = v26 <= a3 || v13 == 0;
+    v31 = v26 <= time || v13 == 0;
     v32 = v31;
     self->mIsTransitioning = v32;
     if (!v31)
@@ -3032,7 +3032,7 @@ LABEL_44:
     [(MRLayer *)self->mNextSublayer setTimeIn:v37];
     [v23 fullDuration];
     [(MRLayer *)self->mNextSublayer setDuration:?];
-    [(MRLayerClock *)[(MRLayer *)self->mNextSublayer clock] setContainerTime:a3 - v37];
+    [(MRLayerClock *)[(MRLayer *)self->mNextSublayer clock] setContainerTime:time - v37];
     if (![(MRLayer *)self->mNextSublayer isActivated])
     {
       [(MRLayer *)self->mNextSublayer activate];
@@ -3107,7 +3107,7 @@ LABEL_35:
 
   [(MRLayer *)self->mCurrentSublayer setTimeIn:v15];
   [(MRLayer *)self->mCurrentSublayer setDuration:v24 - v15];
-  [(MRLayerClock *)[(MRLayer *)self->mCurrentSublayer clock] setContainerTime:a3 - v15];
+  [(MRLayerClock *)[(MRLayer *)self->mCurrentSublayer clock] setContainerTime:time - v15];
   v35 = 0;
   self->_currentSublayerTheoreticalTimeIn = v15;
   self->_needsToRecomputeCurrentSublayerTheoreticalTimeIn = 0;
@@ -3121,20 +3121,20 @@ LABEL_60:
   self->mNeedsToUpdatePotentialTargetSublayers = 1;
 }
 
-- (id)_transitionWithTransitionTrigger:(id)a3
+- (id)_transitionWithTransitionTrigger:(id)trigger
 {
-  v5 = [a3 transitionID];
-  v6 = [a3 transitionAttributes];
-  v7 = [v6 objectForKey:@"PresetID"];
-  if ([v5 isEqualToString:@"Random"])
+  transitionID = [trigger transitionID];
+  transitionAttributes = [trigger transitionAttributes];
+  v7 = [transitionAttributes objectForKey:@"PresetID"];
+  if ([transitionID isEqualToString:@"Random"])
   {
     v8 = [(MRRenderer *)self->super.mRenderer chooseTransitionIDForRandomTransitionPresetID:v7];
-    v9 = [v8 lastPathComponent];
+    lastPathComponent = [v8 lastPathComponent];
     v10 = +[MRTransition retainedTransitionWithTransitionID:forTransitioner:](MRTransition, "retainedTransitionWithTransitionID:forTransitioner:", [v8 stringByDeletingLastPathComponent], self);
     v11 = v10;
     if (v10)
     {
-      [v10 setPresetID:v9];
+      [v10 setPresetID:lastPathComponent];
 LABEL_6:
       [v11 setPixelSize:{self->super.mPixelSize.width, self->super.mPixelSize.height}];
     }
@@ -3142,11 +3142,11 @@ LABEL_6:
 
   else
   {
-    v12 = [MRTransition retainedTransitionWithTransitionID:v5 forTransitioner:self];
+    v12 = [MRTransition retainedTransitionWithTransitionID:transitionID forTransitioner:self];
     v11 = v12;
     if (v12)
     {
-      [v12 setAttributes:v6];
+      [v12 setAttributes:transitionAttributes];
       goto LABEL_6;
     }
   }
@@ -3154,7 +3154,7 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)enterSlideFocusModeWithState:(id)a3
+- (BOOL)enterSlideFocusModeWithState:(id)state
 {
   mIsTransitioning = self->mIsTransitioning;
   if (!mIsTransitioning)
@@ -3162,15 +3162,15 @@ LABEL_6:
     mCurrentSublayer = self->mCurrentSublayer;
     [(MRLayerClock *)[(MRLayer *)mCurrentSublayer clock] pauseOnNextUpdate];
     self->mIsInSlideFocusMode = 1;
-    [a3 setSlideInfo:{-[MRLayer currentSlideInfoForElement:](mCurrentSublayer, "currentSlideInfoForElement:", objc_msgSend(a3, "slideID"))}];
-    [(MRLayerNavigator *)self fillInNextSlideInformationInState:a3];
-    [(MRLayerNavigator *)self fillInPreviousSlideInformationInState:a3];
+    [state setSlideInfo:{-[MRLayer currentSlideInfoForElement:](mCurrentSublayer, "currentSlideInfoForElement:", objc_msgSend(state, "slideID"))}];
+    [(MRLayerNavigator *)self fillInNextSlideInformationInState:state];
+    [(MRLayerNavigator *)self fillInPreviousSlideInformationInState:state];
   }
 
   return !mIsTransitioning;
 }
 
-- (void)fillInNextSlideInformationInState:(id)a3
+- (void)fillInNextSlideInformationInState:(id)state
 {
   if (self->mIsTransitioning)
   {
@@ -3189,7 +3189,7 @@ LABEL_6:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ((v7 = [objc_msgSend(+[MREffectManager sharedManager](MREffectManager "sharedManager")]) == 0 ? (v8 = objc_msgSend(objc_msgSend(v6, "container"), "countOfSlides")) : (v8 = objc_msgSend(v7, "intValue")), (v9 = objc_msgSend(objc_msgSend(a3, "slideInfo"), "index") + 1, v9 < v8) && (v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"image%d", v9)) != 0))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ((v7 = [objc_msgSend(+[MREffectManager sharedManager](MREffectManager "sharedManager")]) == 0 ? (v8 = objc_msgSend(objc_msgSend(v6, "container"), "countOfSlides")) : (v8 = objc_msgSend(v7, "intValue")), (v9 = objc_msgSend(objc_msgSend(state, "slideInfo"), "index") + 1, v9 < v8) && (v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"image%d", v9)) != 0))
   {
     v11 = v10;
   }
@@ -3210,12 +3210,12 @@ LABEL_6:
 
   v13 = [v6 currentSlideInfoForElement:v11];
 LABEL_17:
-  [a3 setNextSlideInfo:v13];
+  [state setNextSlideInfo:v13];
 
-  [a3 setNextSlideID:v11];
+  [state setNextSlideID:v11];
 }
 
-- (void)fillInPreviousSlideInformationInState:(id)a3
+- (void)fillInPreviousSlideInformationInState:(id)state
 {
   if (self->mIsTransitioning)
   {
@@ -3233,7 +3233,7 @@ LABEL_17:
     return;
   }
 
-  v7 = [objc_msgSend(a3 "slideInfo")];
+  v7 = [objc_msgSend(state "slideInfo")];
   if (!v7)
   {
     v9 = -[MRLayerNavigator sublayerForKey:](self, "sublayerForKey:", [objc_msgSend(v6 "previousTransition")]);
@@ -3283,14 +3283,14 @@ LABEL_6:
 LABEL_15:
   v11 = [v6 currentSlideInfoForElement:v8];
 LABEL_19:
-  [a3 setPreviousSlideInfo:v11];
+  [state setPreviousSlideInfo:v11];
 
-  [a3 setPreviousSlideID:v8];
+  [state setPreviousSlideID:v8];
 }
 
-- (BOOL)willFocusOnNextSlideWithState:(id)a3 animate:(BOOL)a4
+- (BOOL)willFocusOnNextSlideWithState:(id)state animate:(BOOL)animate
 {
-  v4 = a4;
+  animateCopy = animate;
   if (self->mIsTransitioning)
   {
     v7 = &OBJC_IVAR___MRLayerNavigator_mNextSublayer;
@@ -3301,23 +3301,23 @@ LABEL_19:
     v7 = &OBJC_IVAR___MRLayerNavigator_mCurrentSublayer;
   }
 
-  v8 = [*(&self->super.super.isa + *v7) isActivated];
-  if (v8)
+  isActivated = [*(&self->super.super.isa + *v7) isActivated];
+  if (isActivated)
   {
-    v9 = [objc_msgSend(a3 "nextSlideInfo")];
-    v10 = [objc_msgSend(a3 "slideInfo")];
+    v9 = [objc_msgSend(state "nextSlideInfo")];
+    v10 = [objc_msgSend(state "slideInfo")];
     if (v9 <= v10)
     {
-      -[MRLayerNavigator gotoNextSublayer:animate:](self, "gotoNextSublayer:animate:", [a3 action], v4);
+      -[MRLayerNavigator gotoNextSublayer:animate:](self, "gotoNextSublayer:animate:", [state action], animateCopy);
     }
 
-    [a3 setDelegateIsTransitioningToo:v9 <= v10];
+    [state setDelegateIsTransitioningToo:v9 <= v10];
   }
 
-  return v8;
+  return isActivated;
 }
 
-- (void)didFocusOnNextSlideWithState:(id)a3
+- (void)didFocusOnNextSlideWithState:(id)state
 {
   if (self->mIsTransitioning)
   {
@@ -3332,16 +3332,16 @@ LABEL_19:
   v6 = *(&self->super.super.isa + *v5);
   if ([v6 isActivated])
   {
-    [v6 interestingTimeForElement:{objc_msgSend(a3, "slideID")}];
+    [v6 interestingTimeForElement:{objc_msgSend(state, "slideID")}];
     [objc_msgSend(v6 "clock")];
 
-    [(MRLayerNavigator *)self fillInNextSlideInformationInState:a3];
+    [(MRLayerNavigator *)self fillInNextSlideInformationInState:state];
   }
 }
 
-- (BOOL)willFocusOnPreviousSlideWithState:(id)a3 animate:(BOOL)a4
+- (BOOL)willFocusOnPreviousSlideWithState:(id)state animate:(BOOL)animate
 {
-  v4 = a4;
+  animateCopy = animate;
   if (self->mIsTransitioning)
   {
     v7 = &OBJC_IVAR___MRLayerNavigator_mNextSublayer;
@@ -3352,23 +3352,23 @@ LABEL_19:
     v7 = &OBJC_IVAR___MRLayerNavigator_mCurrentSublayer;
   }
 
-  v8 = [*(&self->super.super.isa + *v7) isActivated];
-  if (v8)
+  isActivated = [*(&self->super.super.isa + *v7) isActivated];
+  if (isActivated)
   {
-    v9 = [objc_msgSend(a3 "previousSlideInfo")];
-    v10 = [objc_msgSend(a3 "slideInfo")];
+    v9 = [objc_msgSend(state "previousSlideInfo")];
+    v10 = [objc_msgSend(state "slideInfo")];
     if (v9 >= v10)
     {
-      -[MRLayerNavigator gotoPreviousSublayer:animate:](self, "gotoPreviousSublayer:animate:", [a3 action], v4);
+      -[MRLayerNavigator gotoPreviousSublayer:animate:](self, "gotoPreviousSublayer:animate:", [state action], animateCopy);
     }
 
-    [a3 setDelegateIsTransitioningToo:v9 >= v10];
+    [state setDelegateIsTransitioningToo:v9 >= v10];
   }
 
-  return v8;
+  return isActivated;
 }
 
-- (void)didFocusOnPreviousSlideWithState:(id)a3
+- (void)didFocusOnPreviousSlideWithState:(id)state
 {
   if (self->mIsTransitioning)
   {
@@ -3383,14 +3383,14 @@ LABEL_19:
   v6 = *(&self->super.super.isa + *v5);
   if ([v6 isActivated])
   {
-    [v6 interestingTimeForElement:{objc_msgSend(a3, "slideID")}];
+    [v6 interestingTimeForElement:{objc_msgSend(state, "slideID")}];
     [objc_msgSend(v6 "clock")];
 
-    [(MRLayerNavigator *)self fillInPreviousSlideInformationInState:a3];
+    [(MRLayerNavigator *)self fillInPreviousSlideInformationInState:state];
   }
 }
 
-- (void)exitSlideFocusModeWithState:(id)a3
+- (void)exitSlideFocusModeWithState:(id)state
 {
   if (self->mIsTransitioning)
   {
@@ -3408,7 +3408,7 @@ LABEL_19:
     self->mIsInSlideFocusMode = 0;
     [objc_msgSend(v6 "clock")];
     v8 = v7;
-    [objc_msgSend(a3 "slideInfo")];
+    [objc_msgSend(state "slideInfo")];
     v10 = v8 + v9;
     if ([v6 plugAsSerial])
     {
@@ -3424,13 +3424,13 @@ LABEL_19:
 
     [objc_msgSend(v6 "clock")];
     [objc_msgSend(v6 "clock")];
-    v15 = [v6 currentSlideInfoForElement:{objc_msgSend(a3, "slideID")}];
+    v15 = [v6 currentSlideInfoForElement:{objc_msgSend(state, "slideID")}];
 
-    [a3 setSlideInfo:v15];
+    [state setSlideInfo:v15];
   }
 }
 
-- (double)fastScrubStart:(id)a3
+- (double)fastScrubStart:(id)start
 {
   if (self->mIsSerializerBased)
   {
@@ -3454,16 +3454,16 @@ LABEL_19:
   return 0.0;
 }
 
-- (double)fastScrubUpdate:(id)a3
+- (double)fastScrubUpdate:(id)update
 {
   if (!self->mIsFastScrubbing)
   {
     return 0.0;
   }
 
-  v4 = [a3 specificObject];
+  specificObject = [update specificObject];
   mFastScrubbingStartIndex = self->mFastScrubbingStartIndex;
-  v6 = v4[4] * 0.5;
+  v6 = specificObject[4] * 0.5;
   v7 = [(NSMutableArray *)self->mSublayers count];
   if (v7 > 50.0)
   {
@@ -3476,7 +3476,7 @@ LABEL_19:
   }
 
   v8 = (mFastScrubbingStartIndex + v6 * v7);
-  v9 = v4[4] * 0.5;
+  v9 = specificObject[4] * 0.5;
   v10 = [(NSMutableArray *)self->mSublayers count];
   if (v10 > 50.0)
   {
@@ -3503,7 +3503,7 @@ LABEL_19:
       v12 = 1.0;
     }
 
-    v13 = v4[4];
+    v13 = specificObject[4];
     v14 = [(NSMutableArray *)self->mSublayers count];
     if (v14 > 50.0)
     {
@@ -3533,7 +3533,7 @@ LABEL_19:
       v8 = (v16 - 1);
     }
 
-    v18 = v4[4];
+    v18 = specificObject[4];
     v19 = [(NSMutableArray *)self->mSublayers count];
     if (v19 > 50.0)
     {
@@ -3563,67 +3563,67 @@ LABEL_29:
   return 0.0;
 }
 
-- (double)fastScrubEnd:(id)a3
+- (double)fastScrubEnd:(id)end
 {
   if (self->mIsFastScrubbing)
   {
     self->mIsFastScrubbing = 0;
     self->mFastScrubbingStartIndex = 0x7FFFFFFFFFFFFFFFLL;
     self->mFastScrubbingProgress = 0.0;
-    [(MRLayerClock *)self->super.mClock resumeOnNextUpdate:a3];
+    [(MRLayerClock *)self->super.mClock resumeOnNextUpdate:end];
   }
 
   return 0.0;
 }
 
-- (double)fastScrubCancel:(id)a3
+- (double)fastScrubCancel:(id)cancel
 {
   if (self->mIsFastScrubbing)
   {
     self->mIsFastScrubbing = 0;
     self->mFastScrubbingStartIndex = 0x7FFFFFFFFFFFFFFFLL;
     self->mFastScrubbingProgress = 0.0;
-    [(MRLayerClock *)self->super.mClock resumeOnNextUpdate:a3];
+    [(MRLayerClock *)self->super.mClock resumeOnNextUpdate:cancel];
   }
 
   return 0.0;
 }
 
-- (BOOL)hasMoreSlidesFromTime:(double)a3 backwards:(BOOL)a4 startTime:(double *)a5 duration:(double *)a6
+- (BOOL)hasMoreSlidesFromTime:(double)time backwards:(BOOL)backwards startTime:(double *)startTime duration:(double *)duration
 {
-  v8 = a4;
+  backwardsCopy = backwards;
   mCurrentSublayer = self->mCurrentSublayer;
   [(MRLayer *)mCurrentSublayer timeIn];
-  v12 = a3 - v11;
+  v12 = time - v11;
 
-  return [(MRLayer *)mCurrentSublayer hasMoreSlidesFromTime:v8 backwards:a5 startTime:a6 duration:v12];
+  return [(MRLayer *)mCurrentSublayer hasMoreSlidesFromTime:backwardsCopy backwards:startTime startTime:duration duration:v12];
 }
 
-- (double)interestingTimeForTime:(double)a3
+- (double)interestingTimeForTime:(double)time
 {
   mCurrentSublayer = self->mCurrentSublayer;
   [(MRLayer *)mCurrentSublayer timeIn];
-  [(MRLayer *)mCurrentSublayer interestingTimeForTime:a3 - v6];
+  [(MRLayer *)mCurrentSublayer interestingTimeForTime:time - v6];
   v8 = v7;
   [(MRLayer *)self->mCurrentSublayer timeIn];
   return v8 + v9;
 }
 
-- (double)interestingTimeForElement:(id)a3
+- (double)interestingTimeForElement:(id)element
 {
-  [(MRLayer *)self->mCurrentSublayer interestingTimeForElement:a3];
+  [(MRLayer *)self->mCurrentSublayer interestingTimeForElement:element];
   v5 = v4;
   [(MRLayer *)self->mCurrentSublayer timeIn];
   return v5 + v6;
 }
 
-- (void)getLazyDuration:(double *)a3 lazyFactor:(double *)a4 animationDuration:(double *)a5 fromInterestingTime:(double)a6
+- (void)getLazyDuration:(double *)duration lazyFactor:(double *)factor animationDuration:(double *)animationDuration fromInterestingTime:(double)time
 {
   mCurrentSublayer = self->mCurrentSublayer;
   [(MRLayer *)mCurrentSublayer timeIn];
-  v12 = a6 - v11;
+  v12 = time - v11;
 
-  [(MRLayer *)mCurrentSublayer getLazyDuration:a3 lazyFactor:a4 animationDuration:a5 fromInterestingTime:v12];
+  [(MRLayer *)mCurrentSublayer getLazyDuration:duration lazyFactor:factor animationDuration:animationDuration fromInterestingTime:v12];
 }
 
 - (void)_executeLayerCommandQueue
@@ -3721,41 +3721,41 @@ LABEL_29:
   }
 }
 
-- (id)_createSublayerForPlug:(id)a3
+- (id)_createSublayerForPlug:(id)plug
 {
-  if (![a3 container])
+  if (![plug container])
   {
     return 0;
   }
 
-  v5 = [MRLayer layerWithPlug:a3 andParameters:self->super.mParameters inSuperlayer:self];
+  v5 = [MRLayer layerWithPlug:plug andParameters:self->super.mParameters inSuperlayer:self];
   mSublayers = self->mSublayers;
   objc_sync_enter(mSublayers);
   [(NSMutableArray *)self->mSublayers addObject:v5];
-  -[NSMutableDictionary setObject:forKey:](self->mSublayersForPlugs, "setObject:forKey:", v5, [a3 objectID]);
+  -[NSMutableDictionary setObject:forKey:](self->mSublayersForPlugs, "setObject:forKey:", v5, [plug objectID]);
   self->mNeedsToUpdatePotentialTargetSublayers = 1;
   objc_sync_exit(mSublayers);
   return v5;
 }
 
-- (void)_deleteSublayer:(id)a3
+- (void)_deleteSublayer:(id)sublayer
 {
-  v4 = a3;
+  sublayerCopy = sublayer;
   mSublayers = self->mSublayers;
   objc_sync_enter(mSublayers);
-  [(NSMutableArray *)self->mSublayers removeObject:a3];
-  -[NSMutableDictionary removeObjectForKey:](self->mSublayersForPlugs, "removeObjectForKey:", [objc_msgSend(a3 "plug")]);
+  [(NSMutableArray *)self->mSublayers removeObject:sublayer];
+  -[NSMutableDictionary removeObjectForKey:](self->mSublayersForPlugs, "removeObjectForKey:", [objc_msgSend(sublayer "plug")]);
   if (self->mIsTransitioning)
   {
     [(MRLayerNavigator *)self endTransitionToSublayer];
   }
 
-  if (self->mCurrentSublayer == a3)
+  if (self->mCurrentSublayer == sublayer)
   {
     self->mCurrentSublayer = 0;
   }
 
-  if (self->mNextSublayer == a3)
+  if (self->mNextSublayer == sublayer)
   {
     self->mNextSublayer = 0;
   }
@@ -3763,17 +3763,17 @@ LABEL_29:
   [(NSMutableSet *)self->mPotentialTargetSublayers removeObject:?];
   self->mNeedsToUpdatePotentialTargetSublayers = 1;
   objc_sync_exit(mSublayers);
-  [a3 cleanup];
+  [sublayer cleanup];
 }
 
-- (id)_createSublayerForPrecomputingWithPlug:(id)a3
+- (id)_createSublayerForPrecomputingWithPlug:(id)plug
 {
   v5 = [NSMutableDictionary dictionaryWithDictionary:self->super.mParameters];
   [(NSMutableDictionary *)v5 setObject:&__kCFBooleanTrue forKey:@"precomputing"];
   [(NSMutableDictionary *)v5 setObject:&__kCFBooleanTrue forKey:@"readonly"];
   [(NSMutableDictionary *)v5 setObject:&__kCFBooleanTrue forKey:@"noAudio"];
 
-  return [MRLayer layerWithPlug:a3 andParameters:v5 inSuperlayer:self];
+  return [MRLayer layerWithPlug:plug andParameters:v5 inSuperlayer:self];
 }
 
 - (void)_createExtraSublayer
@@ -3817,29 +3817,29 @@ LABEL_29:
   objc_sync_exit(mSublayers);
 }
 
-- (void)_observeSublayer:(id)a3
+- (void)_observeSublayer:(id)sublayer
 {
-  [a3 addObserver:self forKeyPath:@"timeStamp" options:0 context:0];
-  if ([objc_msgSend(a3 "plug")] && !self->super.mIsReadonly)
+  [sublayer addObserver:self forKeyPath:@"timeStamp" options:0 context:0];
+  if ([objc_msgSend(sublayer "plug")] && !self->super.mIsReadonly)
   {
-    v5 = [a3 plugAsHaven];
+    plugAsHaven = [sublayer plugAsHaven];
 
-    [v5 addObserver:self forKeyPath:@"container" options:0 context:0];
+    [plugAsHaven addObserver:self forKeyPath:@"container" options:0 context:0];
   }
 }
 
-- (void)_unobserveSublayer:(id)a3
+- (void)_unobserveSublayer:(id)sublayer
 {
-  if (([a3 isScheduledForDestruction] & 1) == 0)
+  if (([sublayer isScheduledForDestruction] & 1) == 0)
   {
-    [a3 removeObserver:self forKeyPath:@"timeStamp"];
-    if ([objc_msgSend(a3 "plug")])
+    [sublayer removeObserver:self forKeyPath:@"timeStamp"];
+    if ([objc_msgSend(sublayer "plug")])
     {
       if (!self->super.mIsReadonly)
       {
-        v5 = [a3 plugAsHaven];
+        plugAsHaven = [sublayer plugAsHaven];
 
-        [v5 removeObserver:self forKeyPath:@"container"];
+        [plugAsHaven removeObserver:self forKeyPath:@"container"];
       }
     }
   }
@@ -3886,10 +3886,10 @@ LABEL_29:
   [(MRLayer *)&v3 _unobservePlugOnDepreactivate];
 }
 
-- (void)_setNeedsToRequestRebuildAudio:(BOOL)a3
+- (void)_setNeedsToRequestRebuildAudio:(BOOL)audio
 {
   self->super.mNeedsToRequestRebuildAudio = self->super.mDoAudio;
-  if (a3)
+  if (audio)
   {
     v10 = 0u;
     v11 = 0u;
@@ -3921,7 +3921,7 @@ LABEL_29:
   }
 }
 
-- (void)_precomputeAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (void)_precomputeAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   if (!self->mSublayerToPrecompute)
   {
@@ -3955,7 +3955,7 @@ LABEL_6:
 LABEL_7:
   v9 = self->mSublayerToPrecompute;
   [(MRLayerClock *)[(MRLayer *)v9 clock] externalTime];
-  v10 = [(MRLayer *)v9 retainedByUserRenderedImageAtTime:a4 inContext:a5 withArguments:?];
+  v10 = [(MRLayer *)v9 retainedByUserRenderedImageAtTime:context inContext:arguments withArguments:?];
   mPrecomputingType = self->mPrecomputingType;
   if (mPrecomputingType == 3)
   {
@@ -3977,16 +3977,16 @@ LABEL_7:
   self->mPrecomputingType = 0;
 }
 
-- (void)_renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (void)_renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
-  [MRLayerNavigator _precomputeAtTime:"_precomputeAtTime:inContext:withArguments:" inContext:a3 withArguments:?];
+  [MRLayerNavigator _precomputeAtTime:"_precomputeAtTime:inContext:withArguments:" inContext:time withArguments:?];
   mElementToDraw = self->mElementToDraw;
   if (mElementToDraw == 3)
   {
     [(MRRenderer *)self->super.mRenderer addIDToDisplay:[(MRTransition *)self->mCurrentTransition transitionID]];
     mCurrentTransition = self->mCurrentTransition;
     [(MRTransition *)mCurrentTransition progress];
-    [(MRTransition *)mCurrentTransition renderAtTime:a4 inContext:a5 withArguments:?];
+    [(MRTransition *)mCurrentTransition renderAtTime:context inContext:arguments withArguments:?];
     [(MRTransition *)self->mCurrentTransition progress];
     self->_previouslyRenderedTransitionProgress = v12;
   }
@@ -4010,30 +4010,30 @@ LABEL_7:
 
     v10 = *(&self->super.super.isa + v9);
     [objc_msgSend(v10 "clock")];
-    [v10 renderAtTime:a4 inContext:a5 withArguments:?];
+    [v10 renderAtTime:context inContext:arguments withArguments:?];
   }
 
 LABEL_8:
   if (self->mIsFastScrubbing)
   {
-    [a4 depthTest:1];
-    v13 = [a4 modelViewMatrix];
-    v15 = *v13;
-    v14 = v13[1];
-    v16 = v13[3];
-    v41[2] = v13[2];
+    [context depthTest:1];
+    modelViewMatrix = [context modelViewMatrix];
+    v15 = *modelViewMatrix;
+    v14 = modelViewMatrix[1];
+    v16 = modelViewMatrix[3];
+    v41[2] = modelViewMatrix[2];
     v42 = v16;
     v41[0] = v15;
     v41[1] = v14;
     v33 = DWORD2(v16);
-    [a4 setShader:@"PlainTexture"];
+    [context setShader:@"PlainTexture"];
     v17 = [-[MCContainer orderedPlugs](self->mContainer "orderedPlugs")];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v18 = [(MCContainer *)self->mContainer orderedPlugs];
-    v19 = [v18 countByEnumeratingWithState:&v36 objects:v40 count:16];
+    orderedPlugs = [(MCContainer *)self->mContainer orderedPlugs];
+    v19 = [orderedPlugs countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v19)
     {
       v20 = v19;
@@ -4046,7 +4046,7 @@ LABEL_8:
         {
           if (*v37 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(orderedPlugs);
           }
 
           v23 = *(*(&v36 + 1) + 8 * i);
@@ -4057,37 +4057,37 @@ LABEL_8:
             v24 = [objc_msgSend(v23 "container")];
             if (v24)
             {
-              v25 = [objc_msgSend(a4 "imageManager")];
+              v25 = [objc_msgSend(context "imageManager")];
               v26 = (([v23 index] - self->mFastScrubbingStartIndex) - self->mFastScrubbingProgress) / v35 * 10.0;
               v27 = exp(-(v26 * v26));
               *(&v42 + 2) = v27;
-              [a4 setModelViewMatrix:v41 saveTo:0];
-              v28 = [v23 index];
+              [context setModelViewMatrix:v41 saveTo:0];
+              index = [v23 index];
               v29 = v27 * -0.577 + 1.0;
-              v30 = (v28 * 1.8 / v34 + -0.9) * v29;
+              v30 = (index * 1.8 / v34 + -0.9) * v29;
               v31 = v29 * -0.8;
-              [a4 localAspectRatio];
-              [MRCroppingSprite renderDumbImage:v25 inContext:a4 atPosition:v30 andSize:v31, 0.1, 0.15 / v32];
+              [context localAspectRatio];
+              [MRCroppingSprite renderDumbImage:v25 inContext:context atPosition:v30 andSize:v31, 0.1, 0.15 / v32];
             }
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v36 objects:v40 count:16];
+        v20 = [orderedPlugs countByEnumeratingWithState:&v36 objects:v40 count:16];
       }
 
       while (v20);
     }
 
-    [a4 unsetShader];
+    [context unsetShader];
     DWORD2(v42) = v33;
-    [a4 setModelViewMatrix:v41 saveTo:0];
-    [a4 depthTest:0];
+    [context setModelViewMatrix:v41 saveTo:0];
+    [context depthTest:0];
   }
 }
 
-- (id)_retainedByUserRenderedImageAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (id)_retainedByUserRenderedImageAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
-  [MRLayerNavigator _precomputeAtTime:"_precomputeAtTime:inContext:withArguments:" inContext:a3 withArguments:?];
+  [MRLayerNavigator _precomputeAtTime:"_precomputeAtTime:inContext:withArguments:" inContext:time withArguments:?];
   mElementToDraw = self->mElementToDraw;
   if ((mElementToDraw - 1) >= 2)
   {
@@ -4096,7 +4096,7 @@ LABEL_8:
       [(MRRenderer *)self->super.mRenderer addIDToDisplay:[(MRTransition *)self->mCurrentTransition transitionID]];
       mCurrentTransition = self->mCurrentTransition;
       [(MRTransition *)mCurrentTransition progress];
-      v14 = [(MRTransition *)mCurrentTransition retainedByUserRenderedImageAtTime:a4 inContext:a5 withArguments:?];
+      v14 = [(MRTransition *)mCurrentTransition retainedByUserRenderedImageAtTime:context inContext:arguments withArguments:?];
       [(MRTransition *)self->mCurrentTransition progress];
       self->_previouslyRenderedTransitionProgress = v15;
       return v14;
@@ -4121,22 +4121,22 @@ LABEL_8:
     }
 
     v10 = *(&self->super.super.isa + *v9);
-    v11 = [v10 renderingState];
-    v11[240] = 1;
-    *(v11 + 4) = 0;
-    *(v11 + 1) = 0;
-    *(v11 + 11) = 1065353216;
-    *(v11 + 28) = xmmword_1636D0;
-    v11[244] = self->super.mRenderingState->var19;
+    renderingState = [v10 renderingState];
+    renderingState[240] = 1;
+    *(renderingState + 4) = 0;
+    *(renderingState + 1) = 0;
+    *(renderingState + 11) = 1065353216;
+    *(renderingState + 28) = xmmword_1636D0;
+    renderingState[244] = self->super.mRenderingState->var19;
     [objc_msgSend(v10 "clock")];
-    result = [v10 retainedByUserRenderedImageAtTime:a4 inContext:a5 withArguments:?];
-    v11[244] = 0;
+    result = [v10 retainedByUserRenderedImageAtTime:context inContext:arguments withArguments:?];
+    renderingState[244] = 0;
   }
 
   return result;
 }
 
-- (void)_prerenderSublayersAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (void)_prerenderSublayersAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   mForcedTransitionProgress = self->mForcedTransitionProgress;
   if (mForcedTransitionProgress > -1.0)
@@ -4190,7 +4190,7 @@ LABEL_11:
     [(MRTransition *)mCurrentTransition releaseByTransitioner:self];
   }
 
-  if ([a5 skipsAnimations])
+  if ([arguments skipsAnimations])
   {
     goto LABEL_17;
   }
@@ -4213,9 +4213,9 @@ LABEL_35:
     if (!v28)
     {
 LABEL_63:
-      v39 = [(MRLayer *)*p_mNextSublayer isPreactivated];
+      isPreactivated = [(MRLayer *)*p_mNextSublayer isPreactivated];
       v40 = *p_mNextSublayer;
-      if (v39)
+      if (isPreactivated)
       {
         if ([(MRLayer *)v40 isActivated])
         {
@@ -4396,19 +4396,19 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  v13 = [(MCTransitionTrigger *)[(MRTransitionChanges *)mTransitionChanges transition] transitionID];
-  if (v13 == kMRLayerTransitionIDPhaseInOut)
+  transitionID = [(MCTransitionTrigger *)[(MRTransitionChanges *)mTransitionChanges transition] transitionID];
+  if (transitionID == kMRLayerTransitionIDPhaseInOut)
   {
     mTransitionChanges = self->mTransitionChanges;
     goto LABEL_35;
   }
 
 LABEL_17:
-  v14 = [(MRTransitionChanges *)self->mTransitionChanges nextSublayer];
-  self->mCurrentSublayer = v14;
-  v15 = [(MRLayer *)v14 isPreactivated];
+  nextSublayer = [(MRTransitionChanges *)self->mTransitionChanges nextSublayer];
+  self->mCurrentSublayer = nextSublayer;
+  isPreactivated2 = [(MRLayer *)nextSublayer isPreactivated];
   mCurrentSublayer = self->mCurrentSublayer;
-  if (v15)
+  if (isPreactivated2)
   {
     if ([(MRLayer *)mCurrentSublayer isActivated])
     {
@@ -4432,14 +4432,14 @@ LABEL_17:
     v20 = self->mCurrentSublayer;
     if (isKindOfClass)
     {
-      v21 = [(MRLayer *)v20 effect];
+      effect = [(MRLayer *)v20 effect];
       v22 = 1000000000.0;
       if (self->mTransitionStartedWithNext)
       {
         v22 = 0.0;
       }
 
-      [v21 interestingTimeForTime:v22];
+      [effect interestingTimeForTime:v22];
     }
 
     else
@@ -4484,11 +4484,11 @@ LABEL_82:
     v49 = self->mCurrentSublayer;
     if (self->mIsSerializerBased)
     {
-      v50 = [(MCPlugSerial *)[(MRLayer *)v49 plugAsSerial] index];
+      index = [(MCPlugSerial *)[(MRLayer *)v49 plugAsSerial] index];
       v51 = [(NSMutableArray *)self->mSublayers count];
-      if (v50)
+      if (index)
       {
-        v52 = v50;
+        v52 = index;
       }
 
       else
@@ -4497,7 +4497,7 @@ LABEL_82:
       }
 
       mExtraSublayer = self->mExtraSublayer;
-      if ((mExtraSublayer || (mExtraSublayer = -[NSMutableDictionary objectForKey:](self->mSublayersForPlugs, "objectForKey:", [-[MCContainer plugAtIndex:](self->mContainer plugAtIndex:{(v50 + 1) % v51), "objectID"}])) != 0) && mExtraSublayer != self->mCurrentSublayer)
+      if ((mExtraSublayer || (mExtraSublayer = -[NSMutableDictionary objectForKey:](self->mSublayersForPlugs, "objectForKey:", [-[MCContainer plugAtIndex:](self->mContainer plugAtIndex:{(index + 1) % v51), "objectID"}])) != 0) && mExtraSublayer != self->mCurrentSublayer)
       {
         [(NSMutableSet *)self->mPotentialTargetSublayers addObject:mExtraSublayer];
         if (!self->mNextSublayer)
@@ -4520,9 +4520,9 @@ LABEL_82:
 
     else
     {
-      v60 = [(MRLayer *)v49 nextTransition];
+      nextTransition = [(MRLayer *)v49 nextTransition];
       v61 = self->mExtraSublayer;
-      if ((v61 || (v61 = [(MRLayerNavigator *)self sublayerForKey:[(MCTransitionTrigger *)v60 transitionDestinationPlugID]]) != 0) && v61 != self->mCurrentSublayer)
+      if ((v61 || (v61 = [(MRLayerNavigator *)self sublayerForKey:[(MCTransitionTrigger *)nextTransition transitionDestinationPlugID]]) != 0) && v61 != self->mCurrentSublayer)
       {
         [(NSMutableSet *)self->mPotentialTargetSublayers addObject:v61];
         if (v61 != self->mNextSublayer)
@@ -4531,9 +4531,9 @@ LABEL_82:
         }
       }
 
-      v62 = [(MRLayer *)self->mCurrentSublayer previousTransition];
+      previousTransition = [(MRLayer *)self->mCurrentSublayer previousTransition];
       v63 = self->mExtraSublayer;
-      if ((v63 || (v63 = [(MRLayerNavigator *)self sublayerForKey:[(MCTransitionTrigger *)v62 transitionDestinationPlugID]]) != 0) && v63 != v61 && v63 != self->mCurrentSublayer)
+      if ((v63 || (v63 = [(MRLayerNavigator *)self sublayerForKey:[(MCTransitionTrigger *)previousTransition transitionDestinationPlugID]]) != 0) && v63 != v61 && v63 != self->mCurrentSublayer)
       {
         [(NSMutableSet *)self->mPotentialTargetSublayers addObject:v63];
         if (v63 != self->mNextSublayer)
@@ -4565,8 +4565,8 @@ LABEL_82:
         }
 
         v68 = *(*(&v90 + 1) + 8 * i);
-        v69 = [(MRLayer *)v68 isPreactivated];
-        v70 = [(MRLayer *)v68 isActivated];
+        isPreactivated3 = [(MRLayer *)v68 isPreactivated];
+        isActivated = [(MRLayer *)v68 isActivated];
         if (self->super.mIsPreactivated)
         {
           if (v68 == self->mCurrentSublayer || v68 == self->mNextSublayer || [(MCPlug *)[(MRLayer *)v68 plug] preactivatesWithParent])
@@ -4617,12 +4617,12 @@ LABEL_125:
         if (!v71)
         {
 LABEL_141:
-          if (v70)
+          if (isActivated)
           {
             [(MRLayer *)v68 deactivate];
           }
 
-          if (v69)
+          if (isPreactivated3)
           {
             [(MRLayer *)v68 depreactivate:1];
           }
@@ -4631,14 +4631,14 @@ LABEL_141:
         }
 
 LABEL_126:
-        if ((v69 & 1) == 0)
+        if ((isPreactivated3 & 1) == 0)
         {
           [(MRLayer *)v68 preactivate];
         }
 
-        if (v70 & 1 | !v72)
+        if (isActivated & 1 | !v72)
         {
-          if (!v72 && (v70 & 1) != 0)
+          if (!v72 && (isActivated & 1) != 0)
           {
             [(MRLayer *)v68 deactivate];
           }
@@ -4692,7 +4692,7 @@ LABEL_126:
             }
           }
 
-          [(MRLayer *)v68 prerenderForTime:a4 inContext:a5 withArguments:v76, v73];
+          [(MRLayer *)v68 prerenderForTime:context inContext:arguments withArguments:v76, v73];
           if ([(MRLayerClock *)[(MRLayer *)v68 clock] jumpedBackInTime])
           {
             [(MRLayer *)v68 synchronizeTime];
@@ -4716,10 +4716,10 @@ LABEL_126:
   mCurrentSublayer = self->mCurrentSublayer;
   if (isKindOfClass)
   {
-    v6 = [(MRLayer *)mCurrentSublayer effect];
-    [v6 interestingTimeForTime:self->mCurrentSublayerContainerTimeOnTransitionStart];
+    effect = [(MRLayer *)mCurrentSublayer effect];
+    [effect interestingTimeForTime:self->mCurrentSublayerContainerTimeOnTransitionStart];
     self->mCurrentSublayerInterestingTime = v7;
-    [v6 getLazyDuration:&self->mCurrentSublayerLazyDuration lazyFactor:&self->mCurrentSublayerLazyFactor animationDuration:&self->mCurrentSublayerAnimationDuration fromInterestingTime:?];
+    [effect getLazyDuration:&self->mCurrentSublayerLazyDuration lazyFactor:&self->mCurrentSublayerLazyFactor animationDuration:&self->mCurrentSublayerAnimationDuration fromInterestingTime:?];
   }
 
   else
@@ -4738,15 +4738,15 @@ LABEL_126:
   mNextSublayer = self->mNextSublayer;
   if (v11)
   {
-    v13 = [(MRLayer *)mNextSublayer effect];
-    v14 = v13;
+    effect2 = [(MRLayer *)mNextSublayer effect];
+    v14 = effect2;
     v15 = 1000000000.0;
     if (!self->mTransitionIsBackwards)
     {
       v15 = 0.0;
     }
 
-    [v13 interestingTimeForTime:v15];
+    [effect2 interestingTimeForTime:v15];
     self->mNextSublayerInterestingTime = v16;
     [v14 getLazyDuration:&self->mNextSublayerLazyDuration lazyFactor:&self->mNextSublayerLazyFactor animationDuration:&self->mNextSublayerAnimationDuration fromInterestingTime:?];
   }

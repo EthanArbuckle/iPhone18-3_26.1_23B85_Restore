@@ -1,37 +1,37 @@
 @interface HKCDADocumentReportViewController
 + (id)xmlToHTMLTranslator;
-- (HKCDADocumentReportViewController)initWithDocumentData:(id)a3;
+- (HKCDADocumentReportViewController)initWithDocumentData:(id)data;
 - (id)buildDisclosureView;
 - (void)_finishJavascriptOperation;
-- (void)_incrementCurrentHitBy:(int64_t)a3;
-- (void)_runJavascript:(id)a3 clearQueuedCommands:(BOOL)a4 completion:(id)a5;
-- (void)_runJavascriptOperation:(id)a3 clearQueuedCommands:(BOOL)a4;
+- (void)_incrementCurrentHitBy:(int64_t)by;
+- (void)_runJavascript:(id)javascript clearQueuedCommands:(BOOL)commands completion:(id)completion;
+- (void)_runJavascriptOperation:(id)operation clearQueuedCommands:(BOOL)commands;
 - (void)_translateXMLInBackground;
-- (void)_updateMatchDisplayString:(int64_t)a3 numMatches:(int64_t)a4;
+- (void)_updateMatchDisplayString:(int64_t)string numMatches:(int64_t)matches;
 - (void)_updateSearchBarState;
-- (void)_updateSearchHits:(int64_t)a3;
-- (void)hideDisclosure:(id)a3;
-- (void)searchBarChangeSearch:(id)a3 searchString:(id)a4;
-- (void)searchBarDoneAction:(id)a3;
-- (void)searchBarDownAction:(id)a3;
-- (void)searchBarUpAction:(id)a3;
+- (void)_updateSearchHits:(int64_t)hits;
+- (void)hideDisclosure:(id)disclosure;
+- (void)searchBarChangeSearch:(id)search searchString:(id)string;
+- (void)searchBarDoneAction:(id)action;
+- (void)searchBarDownAction:(id)action;
+- (void)searchBarUpAction:(id)action;
 - (void)startIncrementalSearch;
 - (void)viewDidLoad;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation HKCDADocumentReportViewController
 
-- (HKCDADocumentReportViewController)initWithDocumentData:(id)a3
+- (HKCDADocumentReportViewController)initWithDocumentData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = HKCDADocumentReportViewController;
   v6 = [(HKCDADocumentReportViewController *)&v14 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_documentData, a3);
+    objc_storeStrong(&v6->_documentData, data);
     disclosureView = v7->_disclosureView;
     v7->_disclosureView = 0;
 
@@ -79,7 +79,7 @@ void __56__HKCDADocumentReportViewController_xmlToHTMLTranslator__block_invoke()
   xmlToHTMLTranslator_translator = v3;
 }
 
-- (void)hideDisclosure:(id)a3
+- (void)hideDisclosure:(id)disclosure
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -87,8 +87,8 @@ void __56__HKCDADocumentReportViewController_xmlToHTMLTranslator__block_invoke()
   v5[3] = &unk_1E81B55A8;
   v5[4] = self;
   [MEMORY[0x1E69DD250] animateWithDuration:v5 animations:0.3];
-  v4 = [(HKCDADocumentReportViewController *)self view];
-  [v4 setNeedsLayout];
+  view = [(HKCDADocumentReportViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (id)buildDisclosureView
@@ -97,8 +97,8 @@ void __56__HKCDADocumentReportViewController_xmlToHTMLTranslator__block_invoke()
   v3 = [_DisclosureLabel alloc];
   v4 = [(_DisclosureLabel *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v5 = [MEMORY[0x1E69DC738] buttonWithType:122];
-  v6 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v5 setBackgroundColor:v6];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v5 setBackgroundColor:systemBackgroundColor];
 
   LODWORD(v7) = 1148846080;
   [v5 setContentCompressionResistancePriority:0 forAxis:v7];
@@ -125,9 +125,9 @@ void __56__HKCDADocumentReportViewController_xmlToHTMLTranslator__block_invoke()
   v3 = objc_alloc(MEMORY[0x1E69DCF90]);
   v4 = [v3 initWithArrangedSubviews:MEMORY[0x1E695E0F0]];
   [v4 setAxis:1];
-  v5 = [(HKCDADocumentReportViewController *)self buildDisclosureView];
+  buildDisclosureView = [(HKCDADocumentReportViewController *)self buildDisclosureView];
   disclosureView = self->_disclosureView;
-  self->_disclosureView = v5;
+  self->_disclosureView = buildDisclosureView;
 
   [v4 addArrangedSubview:self->_disclosureView];
   LODWORD(v7) = 1148846080;
@@ -151,8 +151,8 @@ void __56__HKCDADocumentReportViewController_xmlToHTMLTranslator__block_invoke()
   v9 = v8;
   _Block_object_dispose(&v26, 8);
   v10 = objc_alloc_init(v8);
-  v11 = [v10 preferences];
-  [v11 setJavaScriptEnabled:1];
+  preferences = [v10 preferences];
+  [preferences setJavaScriptEnabled:1];
 
   v26 = 0;
   v27 = &v26;
@@ -232,16 +232,16 @@ void __62__HKCDADocumentReportViewController__translateXMLInBackground__block_in
   if (self->_javascriptSearchInstalled)
   {
     [(HKIncrementalSearchBar *)self->_incrementalSearchBar activateSearch:1];
-    v9 = [(HKCDADocumentReportViewController *)self view];
-    [v9 setNeedsLayout];
+    view = [(HKCDADocumentReportViewController *)self view];
+    [view setNeedsLayout];
   }
 
   else
   {
     v3 = HKHealthUIFrameworkBundle();
     v4 = [v3 pathForResource:@"HKHTMLIncrementalSearch" ofType:@"js"];
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v5 contentsAtPath:v4];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v6 = [defaultManager contentsAtPath:v4];
 
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v6 encoding:4];
     webView = self->_webView;
@@ -266,28 +266,28 @@ void __59__HKCDADocumentReportViewController_startIncrementalSearch__block_invok
   }
 }
 
-- (void)_runJavascript:(id)a3 clearQueuedCommands:(BOOL)a4 completion:(id)a5
+- (void)_runJavascript:(id)javascript clearQueuedCommands:(BOOL)commands completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [[_JavascriptOperation alloc] initWithJavascript:v9 completion:v8];
+  commandsCopy = commands;
+  completionCopy = completion;
+  javascriptCopy = javascript;
+  v10 = [[_JavascriptOperation alloc] initWithJavascript:javascriptCopy completion:completionCopy];
 
-  [(HKCDADocumentReportViewController *)self _runJavascriptOperation:v10 clearQueuedCommands:v5];
+  [(HKCDADocumentReportViewController *)self _runJavascriptOperation:v10 clearQueuedCommands:commandsCopy];
 }
 
-- (void)_runJavascriptOperation:(id)a3 clearQueuedCommands:(BOOL)a4
+- (void)_runJavascriptOperation:(id)operation clearQueuedCommands:(BOOL)commands
 {
-  v4 = a4;
-  v6 = a3;
+  commandsCopy = commands;
+  operationCopy = operation;
   if (self->_javascriptIsRunning || [(NSMutableArray *)self->_javascriptOperationQueue count])
   {
-    if (v4)
+    if (commandsCopy)
     {
       [(NSMutableArray *)self->_javascriptOperationQueue removeAllObjects];
     }
 
-    [(NSMutableArray *)self->_javascriptOperationQueue addObject:v6];
+    [(NSMutableArray *)self->_javascriptOperationQueue addObject:operationCopy];
   }
 
   else
@@ -299,7 +299,7 @@ void __59__HKCDADocumentReportViewController_startIncrementalSearch__block_invok
     v8[2] = __81__HKCDADocumentReportViewController__runJavascriptOperation_clearQueuedCommands___block_invoke;
     v8[3] = &unk_1E81B55A8;
     v8[4] = self;
-    [v6 submitJavascript:webView finishBlock:v8];
+    [operationCopy submitJavascript:webView finishBlock:v8];
   }
 }
 
@@ -308,7 +308,7 @@ void __59__HKCDADocumentReportViewController_startIncrementalSearch__block_invok
   self->_javascriptIsRunning = 0;
   if ([(NSMutableArray *)self->_javascriptOperationQueue count])
   {
-    v3 = [(NSMutableArray *)self->_javascriptOperationQueue firstObject];
+    firstObject = [(NSMutableArray *)self->_javascriptOperationQueue firstObject];
     [(NSMutableArray *)self->_javascriptOperationQueue removeObjectAtIndex:0];
     self->_javascriptIsRunning = 1;
     webView = self->_webView;
@@ -317,14 +317,14 @@ void __59__HKCDADocumentReportViewController_startIncrementalSearch__block_invok
     v5[2] = __63__HKCDADocumentReportViewController__finishJavascriptOperation__block_invoke;
     v5[3] = &unk_1E81B55A8;
     v5[4] = self;
-    [v3 submitJavascript:webView finishBlock:v5];
+    [firstObject submitJavascript:webView finishBlock:v5];
   }
 }
 
-- (void)_updateSearchHits:(int64_t)a3
+- (void)_updateSearchHits:(int64_t)hits
 {
   hitCount = self->_hitCount;
-  if (a3 < 0)
+  if (hits < 0)
   {
     if (!hitCount)
     {
@@ -334,7 +334,7 @@ void __59__HKCDADocumentReportViewController_startIncrementalSearch__block_invok
 
   else
   {
-    self->_hitCount = hitCount + a3;
+    self->_hitCount = hitCount + hits;
     objc_initWeak(&location, self);
     v5 = MEMORY[0x1E69E9820];
     v6 = 3221225472;
@@ -375,11 +375,11 @@ void __55__HKCDADocumentReportViewController__updateSearchHits___block_invoke(ui
   [(HKCDADocumentReportViewController *)self _updateMatchDisplayString:currentHighlightedHit numMatches:v10];
 }
 
-- (void)_updateMatchDisplayString:(int64_t)a3 numMatches:(int64_t)a4
+- (void)_updateMatchDisplayString:(int64_t)string numMatches:(int64_t)matches
 {
-  if (a4 < 1)
+  if (matches < 1)
   {
-    if ((a4 & 0x8000000000000000) == 0 || (-[HKIncrementalSearchBar searchText](self->_incrementalSearchBar, "searchText", a3), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 length], v20, !v21))
+    if ((matches & 0x8000000000000000) == 0 || (-[HKIncrementalSearchBar searchText](self->_incrementalSearchBar, "searchText", string), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 length], v20, !v21))
     {
       v10 = 0;
       goto LABEL_13;
@@ -391,7 +391,7 @@ void __55__HKCDADocumentReportViewController__updateSearchHits___block_invoke(ui
 
   else
   {
-    if (a4 == 1)
+    if (matches == 1)
     {
       v12 = HKLocalizedStringForNumberWithTemplate(&unk_1F43846C0, 0);
       v6 = MEMORY[0x1E696AEC0];
@@ -402,10 +402,10 @@ void __55__HKCDADocumentReportViewController__updateSearchHits___block_invoke(ui
 
     else
     {
-      v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3 + 1];
+      v11 = [MEMORY[0x1E696AD98] numberWithInteger:string + 1];
       v12 = HKLocalizedStringForNumberWithTemplate(v11, 1);
 
-      if (a4 > 0x3E6)
+      if (matches > 0x3E6)
       {
         v17 = [MEMORY[0x1E696AD98] numberWithInteger:999];
         v7 = HKLocalizedStringForNumberWithTemplate(v17, 1);
@@ -418,7 +418,7 @@ void __55__HKCDADocumentReportViewController__updateSearchHits___block_invoke(ui
 
       else
       {
-        v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+        v13 = [MEMORY[0x1E696AD98] numberWithInteger:matches];
         v7 = HKLocalizedStringForNumberWithTemplate(v13, 1);
 
         v14 = MEMORY[0x1E696AEC0];
@@ -440,9 +440,9 @@ LABEL_13:
   [(HKIncrementalSearchBar *)incrementalSearchBar setMatchDisplayVisible:v10];
 }
 
-- (void)_incrementCurrentHitBy:(int64_t)a3
+- (void)_incrementCurrentHitBy:(int64_t)by
 {
-  v3 = self->_currentHighlightedHit + a3;
+  v3 = self->_currentHighlightedHit + by;
   if (v3 >= 0 && v3 < self->_hitCount)
   {
     self->_currentHighlightedHit = v3;
@@ -450,9 +450,9 @@ LABEL_13:
   }
 }
 
-- (void)searchBarUpAction:(id)a3
+- (void)searchBarUpAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -473,9 +473,9 @@ void __55__HKCDADocumentReportViewController_searchBarUpAction___block_invoke(ui
   }
 }
 
-- (void)searchBarDownAction:(id)a3
+- (void)searchBarDownAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -496,19 +496,19 @@ void __57__HKCDADocumentReportViewController_searchBarDownAction___block_invoke(
   }
 }
 
-- (void)searchBarDoneAction:(id)a3
+- (void)searchBarDoneAction:(id)action
 {
   [(HKIncrementalSearchBar *)self->_incrementalSearchBar activateSearch:0];
 
   [(HKCDADocumentReportViewController *)self _runJavascript:@"searchController.setSearchPattern('' clearQueuedCommands:'');" completion:1, 0];
 }
 
-- (void)searchBarChangeSearch:(id)a3 searchString:(id)a4
+- (void)searchBarChangeSearch:(id)search searchString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  searchCopy = search;
+  stringCopy = string;
   v14 = 0;
-  v8 = [HKIncrementalSearchBar regularExpressionFromString:v7 quoteForJavascript:1 caseless:&v14];
+  v8 = [HKIncrementalSearchBar regularExpressionFromString:stringCopy quoteForJavascript:1 caseless:&v14];
   if (v14)
   {
     v9 = @"searchController.setSearchPattern('%@', 'mi');";
@@ -543,11 +543,11 @@ void __72__HKCDADocumentReportViewController_searchBarChangeSearch_searchString_
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 verticalSizeClass] == 1;
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
+  v8 = [collectionCopy verticalSizeClass] == 1;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -555,10 +555,10 @@ void __72__HKCDADocumentReportViewController_searchBarChangeSearch_searchString_
   v10[3] = &unk_1E81BB488;
   objc_copyWeak(&v11, &location);
   v12 = v8;
-  [v7 animateAlongsideTransition:v10 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v10 completion:0];
   v9.receiver = self;
   v9.super_class = HKCDADocumentReportViewController;
-  [(HKCDADocumentReportViewController *)&v9 willTransitionToTraitCollection:v6 withTransitionCoordinator:v7];
+  [(HKCDADocumentReportViewController *)&v9 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }

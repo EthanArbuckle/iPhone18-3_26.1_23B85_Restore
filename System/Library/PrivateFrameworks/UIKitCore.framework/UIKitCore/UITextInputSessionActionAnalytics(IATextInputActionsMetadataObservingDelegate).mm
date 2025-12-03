@@ -33,12 +33,12 @@
   overrideInputModeString = self->_overrideInputModeString;
   if (overrideInputModeString)
   {
-    v8 = overrideInputModeString;
+    identifierWithLayouts = overrideInputModeString;
     v9 = UITextInputSessionLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       LODWORD(buf) = 138477827;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = identifierWithLayouts;
       _os_log_debug_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] inputMode - overrode with '%{private}@'", &buf, 0xCu);
     }
 
@@ -72,7 +72,7 @@ LABEL_10:
     _Block_object_dispose(&v27, 8);
     if ((objc_opt_respondsToSelector() & (v16 != 0)) == 1)
     {
-      [v6 setInputModeIdentifier:{objc_msgSend(v16, "performSelector:withObject:", sel_TIInputModeGetFullInputModeIdentifier_, v8, v27)}];
+      [v6 setInputModeIdentifier:{objc_msgSend(v16, "performSelector:withObject:", sel_TIInputModeGetFullInputModeIdentifier_, identifierWithLayouts, v27)}];
     }
 
     if (self->_useOverrideSourceCounter < 1)
@@ -118,18 +118,18 @@ LABEL_10:
   }
 
   v10 = +[UIKeyboardInputModeController sharedInputModeController];
-  v11 = [v10 currentInputMode];
-  v8 = [v11 identifierWithLayouts];
+  currentInputMode = [v10 currentInputMode];
+  identifierWithLayouts = [currentInputMode identifierWithLayouts];
 
   v12 = UITextInputSessionLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 138477827;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = identifierWithLayouts;
     _os_log_debug_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] inputMode - fetched '%{private}@'", &buf, 0xCu);
   }
 
-  if (v8)
+  if (identifierWithLayouts)
   {
     goto LABEL_10;
   }
@@ -141,7 +141,7 @@ LABEL_10:
     _os_log_error_impl(&dword_188A29000, v21, OS_LOG_TYPE_ERROR, "[UITextInputSessionActionAnalytics] inputMode - nil inputMode", &buf, 2u);
   }
 
-  v8 = 0;
+  identifierWithLayouts = 0;
 LABEL_25:
 
   v23 = UITextInputSessionLog();

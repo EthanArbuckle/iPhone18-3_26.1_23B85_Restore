@@ -1,11 +1,11 @@
 @interface FSItemAttributes
-+ (id)requestWithData:(id)a3;
-+ (id)requestWithLIAttributes:(const _LIFileAttributes *)a3;
++ (id)requestWithData:(id)data;
++ (id)requestWithLIAttributes:(const _LIFileAttributes *)attributes;
 - (BOOL)hasMinimalRequiredAttributes;
-- (BOOL)isValid:(int64_t)a3;
+- (BOOL)isValid:(int64_t)valid;
 - (FSItemAttributes)init;
-- (FSItemAttributes)initWithCoder:(id)a3;
-- (FSItemAttributes)initWithLIAttributes:(const _LIFileAttributes *)a3;
+- (FSItemAttributes)initWithCoder:(id)coder;
+- (FSItemAttributes)initWithLIAttributes:(const _LIFileAttributes *)attributes;
 - (int64_t)type;
 - (timespec)accessTime;
 - (timespec)addedTime;
@@ -23,18 +23,18 @@
 - (unsigned)linkCount;
 - (unsigned)mode;
 - (unsigned)uid;
-- (void)encodeWithCoder:(id)a3;
-- (void)getLIAttributes:(_LIFileAttributes *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)getLIAttributes:(_LIFileAttributes *)attributes;
 - (void)hasMinimalRequiredAttributes;
-- (void)setSupportsLimitedXAttrs:(BOOL)a3;
-- (void)setType:(int64_t)a3;
+- (void)setSupportsLimitedXAttrs:(BOOL)attrs;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation FSItemAttributes
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -42,12 +42,12 @@
     objc_exception_throw(v4);
   }
 
-  [v5 encodeBytes:&self->attrs length:184 forKey:@"FSItemAttr"];
+  [coderCopy encodeBytes:&self->attrs length:184 forKey:@"FSItemAttr"];
 }
 
-- (FSItemAttributes)initWithCoder:(id)a3
+- (FSItemAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = FSItemAttributes;
   v19 = 0;
@@ -61,7 +61,7 @@
       objc_exception_throw(v17);
     }
 
-    v6 = [v4 decodeBytesForKey:@"FSItemAttr" returnedLength:&v19];
+    v6 = [coderCopy decodeBytesForKey:@"FSItemAttr" returnedLength:&v19];
     if (v6 && v19 == 184)
     {
       v7 = *v6;
@@ -123,18 +123,18 @@
   return v3;
 }
 
-- (FSItemAttributes)initWithLIAttributes:(const _LIFileAttributes *)a3
+- (FSItemAttributes)initWithLIAttributes:(const _LIFileAttributes *)attributes
 {
   v6.receiver = self;
   v6.super_class = FSItemAttributes;
   result = [(FSItemAttributes *)&v6 init];
   if (result)
   {
-    fa_validmask = a3->fa_validmask;
+    fa_validmask = attributes->fa_validmask;
     result->attrs.fa_validmask = fa_validmask;
     if (fa_validmask)
     {
-      result->attrs.fa_type = a3->fa_type;
+      result->attrs.fa_type = attributes->fa_type;
       if ((fa_validmask & 2) == 0)
       {
 LABEL_4:
@@ -152,7 +152,7 @@ LABEL_4:
       goto LABEL_4;
     }
 
-    result->attrs.fa_mode = a3->fa_mode;
+    result->attrs.fa_mode = attributes->fa_mode;
     if ((fa_validmask & 8) == 0)
     {
 LABEL_5:
@@ -165,7 +165,7 @@ LABEL_5:
     }
 
 LABEL_24:
-    result->attrs.fa_uid = a3->fa_uid;
+    result->attrs.fa_uid = attributes->fa_uid;
     if ((fa_validmask & 4) == 0)
     {
 LABEL_6:
@@ -178,7 +178,7 @@ LABEL_6:
     }
 
 LABEL_25:
-    result->attrs.fa_nlink = a3->fa_nlink;
+    result->attrs.fa_nlink = attributes->fa_nlink;
     if ((fa_validmask & 0x10) == 0)
     {
 LABEL_7:
@@ -191,7 +191,7 @@ LABEL_7:
     }
 
 LABEL_26:
-    result->attrs.fa_gid = a3->fa_gid;
+    result->attrs.fa_gid = attributes->fa_gid;
     if ((fa_validmask & 0x20) == 0)
     {
 LABEL_8:
@@ -204,7 +204,7 @@ LABEL_8:
     }
 
 LABEL_27:
-    result->attrs.fa_bsd_flags = a3->fa_bsd_flags;
+    result->attrs.fa_bsd_flags = attributes->fa_bsd_flags;
     if ((fa_validmask & 0x40) == 0)
     {
 LABEL_9:
@@ -217,7 +217,7 @@ LABEL_9:
     }
 
 LABEL_28:
-    result->attrs.fa_size = a3->fa_size;
+    result->attrs.fa_size = attributes->fa_size;
     if ((fa_validmask & 0x80) == 0)
     {
 LABEL_10:
@@ -230,7 +230,7 @@ LABEL_10:
     }
 
 LABEL_29:
-    result->attrs.fa_allocsize = a3->fa_allocsize;
+    result->attrs.fa_allocsize = attributes->fa_allocsize;
     if ((fa_validmask & 0x100) == 0)
     {
 LABEL_11:
@@ -243,7 +243,7 @@ LABEL_11:
     }
 
 LABEL_30:
-    result->attrs.fa_fileid = a3->fa_fileid;
+    result->attrs.fa_fileid = attributes->fa_fileid;
     if ((fa_validmask & 0x200) == 0)
     {
 LABEL_12:
@@ -256,7 +256,7 @@ LABEL_12:
     }
 
 LABEL_31:
-    result->attrs.fa_parentid = a3->fa_parentid;
+    result->attrs.fa_parentid = attributes->fa_parentid;
     if ((fa_validmask & 0x400) == 0)
     {
 LABEL_13:
@@ -269,7 +269,7 @@ LABEL_13:
     }
 
 LABEL_32:
-    result->attrs.fa_atime = a3->fa_atime;
+    result->attrs.fa_atime = attributes->fa_atime;
     if ((fa_validmask & 0x800) == 0)
     {
 LABEL_14:
@@ -282,7 +282,7 @@ LABEL_14:
     }
 
 LABEL_33:
-    result->attrs.fa_mtime = a3->fa_mtime;
+    result->attrs.fa_mtime = attributes->fa_mtime;
     if ((fa_validmask & 0x1000) == 0)
     {
 LABEL_15:
@@ -295,7 +295,7 @@ LABEL_15:
     }
 
 LABEL_34:
-    result->attrs.fa_ctime = a3->fa_ctime;
+    result->attrs.fa_ctime = attributes->fa_ctime;
     if ((fa_validmask & 0x2000) == 0)
     {
 LABEL_16:
@@ -308,7 +308,7 @@ LABEL_16:
     }
 
 LABEL_35:
-    result->attrs.fa_birthtime = a3->fa_birthtime;
+    result->attrs.fa_birthtime = attributes->fa_birthtime;
     if ((fa_validmask & 0x4000) == 0)
     {
 LABEL_17:
@@ -321,7 +321,7 @@ LABEL_17:
     }
 
 LABEL_36:
-    result->attrs.fa_backuptime = a3->fa_backuptime;
+    result->attrs.fa_backuptime = attributes->fa_backuptime;
     if ((fa_validmask & 0x8000) == 0)
     {
 LABEL_18:
@@ -333,12 +333,12 @@ LABEL_20:
       }
 
 LABEL_19:
-      result->attrs.fa_int_flags = a3->fa_int_flags;
+      result->attrs.fa_int_flags = attributes->fa_int_flags;
       goto LABEL_20;
     }
 
 LABEL_37:
-    result->attrs.fa_addedtime = a3->fa_addedtime;
+    result->attrs.fa_addedtime = attributes->fa_addedtime;
     if ((fa_validmask & 0x4000000000000000) == 0)
     {
       goto LABEL_20;
@@ -350,20 +350,20 @@ LABEL_37:
   return result;
 }
 
-+ (id)requestWithLIAttributes:(const _LIFileAttributes *)a3
++ (id)requestWithLIAttributes:(const _LIFileAttributes *)attributes
 {
-  v3 = [[a1 alloc] initWithLIAttributes:a3];
+  v3 = [[self alloc] initWithLIAttributes:attributes];
 
   return v3;
 }
 
-+ (id)requestWithData:(id)a3
++ (id)requestWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 bytes];
-  if ([v4 length] > 0xB7)
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  if ([dataCopy length] > 0xB7)
   {
-    v7 = [a1 requestWithLIAttributes:v5];
+    v7 = [self requestWithLIAttributes:bytes];
   }
 
   else
@@ -371,7 +371,7 @@ LABEL_37:
     v6 = fskit_std_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(FSItemAttributes *)v4 requestWithData:v6];
+      [(FSItemAttributes *)dataCopy requestWithData:v6];
     }
 
     v7 = 0;
@@ -380,73 +380,73 @@ LABEL_37:
   return v7;
 }
 
-- (void)getLIAttributes:(_LIFileAttributes *)a3
+- (void)getLIAttributes:(_LIFileAttributes *)attributes
 {
   v3 = *&self->attrs.__fa_rsvd0;
   v4 = *&self->attrs.fa_seqno;
   v5 = *&self->attrs.fa_size;
-  *&a3->fa_nlink = *&self->attrs.fa_nlink;
-  *&a3->fa_size = v5;
-  *&a3->__fa_rsvd0 = v3;
-  *&a3->fa_seqno = v4;
+  *&attributes->fa_nlink = *&self->attrs.fa_nlink;
+  *&attributes->fa_size = v5;
+  *&attributes->__fa_rsvd0 = v3;
+  *&attributes->fa_seqno = v4;
   v6 = *&self->attrs.fa_fileid;
   fa_atime = self->attrs.fa_atime;
   fa_ctime = self->attrs.fa_ctime;
-  a3->fa_mtime = self->attrs.fa_mtime;
-  a3->fa_ctime = fa_ctime;
-  *&a3->fa_fileid = v6;
-  a3->fa_atime = fa_atime;
+  attributes->fa_mtime = self->attrs.fa_mtime;
+  attributes->fa_ctime = fa_ctime;
+  *&attributes->fa_fileid = v6;
+  attributes->fa_atime = fa_atime;
   fa_birthtime = self->attrs.fa_birthtime;
   fa_backuptime = self->attrs.fa_backuptime;
   fa_addedtime = self->attrs.fa_addedtime;
-  *&a3->fa_int_flags = *&self->attrs.fa_int_flags;
-  a3->fa_backuptime = fa_backuptime;
-  a3->fa_addedtime = fa_addedtime;
-  a3->fa_birthtime = fa_birthtime;
+  *&attributes->fa_int_flags = *&self->attrs.fa_int_flags;
+  attributes->fa_backuptime = fa_backuptime;
+  attributes->fa_addedtime = fa_addedtime;
+  attributes->fa_birthtime = fa_birthtime;
 }
 
-- (BOOL)isValid:(int64_t)a3
+- (BOOL)isValid:(int64_t)valid
 {
   result = 0;
-  if (a3 <= 255)
+  if (valid <= 255)
   {
-    if ((a3 - 1) <= 0x3F && ((1 << (a3 - 1)) & 0x800000008000808BLL) != 0 || a3 == 128)
+    if ((valid - 1) <= 0x3F && ((1 << (valid - 1)) & 0x800000008000808BLL) != 0 || valid == 128)
     {
-      return (self->attrs.fa_validmask & a3) != 0;
+      return (self->attrs.fa_validmask & valid) != 0;
     }
   }
 
-  else if (a3 <= 4095)
+  else if (valid <= 4095)
   {
-    if (a3 > 1023)
+    if (valid > 1023)
     {
-      if (a3 == 1024 || a3 == 2048)
+      if (valid == 1024 || valid == 2048)
       {
-        return (self->attrs.fa_validmask & a3) != 0;
+        return (self->attrs.fa_validmask & valid) != 0;
       }
     }
 
-    else if (a3 == 256 || a3 == 512)
+    else if (valid == 256 || valid == 512)
     {
-      return (self->attrs.fa_validmask & a3) != 0;
+      return (self->attrs.fa_validmask & valid) != 0;
     }
   }
 
   else
   {
-    if (a3 >= 0x4000)
+    if (valid >= 0x4000)
     {
-      if (a3 != 0x4000 && a3 != 0x4000000000000000 && a3 != 0x8000)
+      if (valid != 0x4000 && valid != 0x4000000000000000 && valid != 0x8000)
       {
         return result;
       }
 
-      return (self->attrs.fa_validmask & a3) != 0;
+      return (self->attrs.fa_validmask & valid) != 0;
     }
 
-    if (a3 == 4096 || a3 == 0x2000)
+    if (valid == 4096 || valid == 0x2000)
     {
-      return (self->attrs.fa_validmask & a3) != 0;
+      return (self->attrs.fa_validmask & valid) != 0;
     }
   }
 
@@ -537,9 +537,9 @@ LABEL_37:
   return self->attrs.fa_bsd_flags;
 }
 
-- (void)setSupportsLimitedXAttrs:(BOOL)a3
+- (void)setSupportsLimitedXAttrs:(BOOL)attrs
 {
-  if (a3)
+  if (attrs)
   {
     v3 = 4;
   }
@@ -631,19 +631,19 @@ LABEL_37:
   }
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  if ((a3 - 1) < 7)
+  if ((type - 1) < 7)
   {
-    v3 = a3;
+    typeCopy = type;
   }
 
   else
   {
-    v3 = 0;
+    typeCopy = 0;
   }
 
-  self->attrs.fa_type = v3;
+  self->attrs.fa_type = typeCopy;
   self->attrs.fa_validmask |= 1uLL;
 }
 
@@ -783,7 +783,7 @@ LABEL_37:
 - (void)hasMinimalRequiredAttributes
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v4 = 134218240;
   v5 = v2;
   v6 = 2048;

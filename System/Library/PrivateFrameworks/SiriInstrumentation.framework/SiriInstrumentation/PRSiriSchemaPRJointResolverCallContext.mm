@@ -1,35 +1,35 @@
 @interface PRSiriSchemaPRJointResolverCallContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PRSiriSchemaPRJointResolverCallContext)initWithDictionary:(id)a3;
-- (PRSiriSchemaPRJointResolverCallContext)initWithJSON:(id)a3;
+- (PRSiriSchemaPRJointResolverCallContext)initWithDictionary:(id)dictionary;
+- (PRSiriSchemaPRJointResolverCallContext)initWithJSON:(id)n;
 - (PRSiriSchemaPRJointResolverCallEnded)ended;
 - (PRSiriSchemaPRJointResolverCallFailed)failed;
 - (PRSiriSchemaPRJointResolverCallStarted)startedOrChanged;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteEnded;
 - (void)deleteFailed;
 - (void)deleteStartedOrChanged;
-- (void)setEnded:(id)a3;
-- (void)setFailed:(id)a3;
-- (void)setStartedOrChanged:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setEnded:(id)ended;
+- (void)setFailed:(id)failed;
+- (void)setStartedOrChanged:(id)changed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PRSiriSchemaPRJointResolverCallContext
 
-- (PRSiriSchemaPRJointResolverCallContext)initWithDictionary:(id)a3
+- (PRSiriSchemaPRJointResolverCallContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = PRSiriSchemaPRJointResolverCallContext;
   v5 = [(PRSiriSchemaPRJointResolverCallContext *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"startedOrChanged"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"startedOrChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(PRSiriSchemaPRJointResolverCallContext *)v5 setStartedOrChanged:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"ended"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ended"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(PRSiriSchemaPRJointResolverCallContext *)v5 setEnded:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"failed"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"failed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
       [(PRSiriSchemaPRJointResolverCallContext *)v5 setFailed:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"planEventId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"planEventId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,14 +61,14 @@
       [(PRSiriSchemaPRJointResolverCallContext *)v5 setPlanEventId:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"actionStatementId"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"actionStatementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PRSiriSchemaPRJointResolverCallContext setActionStatementId:](v5, "setActionStatementId:", [v14 unsignedIntValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"traceId"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"traceId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,30 +82,30 @@
   return v5;
 }
 
-- (PRSiriSchemaPRJointResolverCallContext)initWithJSON:(id)a3
+- (PRSiriSchemaPRJointResolverCallContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PRSiriSchemaPRJointResolverCallContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PRSiriSchemaPRJointResolverCallContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PRSiriSchemaPRJointResolverCallContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,96 +118,96 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PRSiriSchemaPRJointResolverCallContext actionStatementId](self, "actionStatementId")}];
-    [v3 setObject:v4 forKeyedSubscript:@"actionStatementId"];
+    [dictionary setObject:v4 forKeyedSubscript:@"actionStatementId"];
   }
 
   if (self->_ended)
   {
-    v5 = [(PRSiriSchemaPRJointResolverCallContext *)self ended];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    ended = [(PRSiriSchemaPRJointResolverCallContext *)self ended];
+    dictionaryRepresentation = [ended dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"ended"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"ended"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"ended"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"ended"];
     }
   }
 
   if (self->_failed)
   {
-    v8 = [(PRSiriSchemaPRJointResolverCallContext *)self failed];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    failed = [(PRSiriSchemaPRJointResolverCallContext *)self failed];
+    dictionaryRepresentation2 = [failed dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"failed"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"failed"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"failed"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"failed"];
     }
   }
 
   if (self->_planEventId)
   {
-    v11 = [(PRSiriSchemaPRJointResolverCallContext *)self planEventId];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    planEventId = [(PRSiriSchemaPRJointResolverCallContext *)self planEventId];
+    dictionaryRepresentation3 = [planEventId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"planEventId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"planEventId"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"planEventId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"planEventId"];
     }
   }
 
   if (self->_startedOrChanged)
   {
-    v14 = [(PRSiriSchemaPRJointResolverCallContext *)self startedOrChanged];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    startedOrChanged = [(PRSiriSchemaPRJointResolverCallContext *)self startedOrChanged];
+    dictionaryRepresentation4 = [startedOrChanged dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"startedOrChanged"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"startedOrChanged"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"startedOrChanged"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"startedOrChanged"];
     }
   }
 
   if (self->_traceId)
   {
-    v17 = [(PRSiriSchemaPRJointResolverCallContext *)self traceId];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    traceId = [(PRSiriSchemaPRJointResolverCallContext *)self traceId];
+    dictionaryRepresentation5 = [traceId dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"traceId"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"traceId"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"traceId"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"traceId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -229,34 +229,34 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(SISchemaUUID *)self->_traceId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   v5 = *&self->_hasTraceId;
-  if (v5 != [v4 whichContextevent])
+  if (v5 != [equalCopy whichContextevent])
   {
     goto LABEL_31;
   }
 
-  v6 = [(PRSiriSchemaPRJointResolverCallContext *)self startedOrChanged];
-  v7 = [v4 startedOrChanged];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(PRSiriSchemaPRJointResolverCallContext *)self startedOrChanged];
+  startedOrChanged2 = [equalCopy startedOrChanged];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_30;
   }
 
-  v8 = [(PRSiriSchemaPRJointResolverCallContext *)self startedOrChanged];
-  if (v8)
+  startedOrChanged3 = [(PRSiriSchemaPRJointResolverCallContext *)self startedOrChanged];
+  if (startedOrChanged3)
   {
-    v9 = v8;
-    v10 = [(PRSiriSchemaPRJointResolverCallContext *)self startedOrChanged];
-    v11 = [v4 startedOrChanged];
-    v12 = [v10 isEqual:v11];
+    v9 = startedOrChanged3;
+    startedOrChanged4 = [(PRSiriSchemaPRJointResolverCallContext *)self startedOrChanged];
+    startedOrChanged5 = [equalCopy startedOrChanged];
+    v12 = [startedOrChanged4 isEqual:startedOrChanged5];
 
     if (!v12)
     {
@@ -268,20 +268,20 @@
   {
   }
 
-  v6 = [(PRSiriSchemaPRJointResolverCallContext *)self ended];
-  v7 = [v4 ended];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(PRSiriSchemaPRJointResolverCallContext *)self ended];
+  startedOrChanged2 = [equalCopy ended];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_30;
   }
 
-  v13 = [(PRSiriSchemaPRJointResolverCallContext *)self ended];
-  if (v13)
+  ended = [(PRSiriSchemaPRJointResolverCallContext *)self ended];
+  if (ended)
   {
-    v14 = v13;
-    v15 = [(PRSiriSchemaPRJointResolverCallContext *)self ended];
-    v16 = [v4 ended];
-    v17 = [v15 isEqual:v16];
+    v14 = ended;
+    ended2 = [(PRSiriSchemaPRJointResolverCallContext *)self ended];
+    ended3 = [equalCopy ended];
+    v17 = [ended2 isEqual:ended3];
 
     if (!v17)
     {
@@ -293,20 +293,20 @@
   {
   }
 
-  v6 = [(PRSiriSchemaPRJointResolverCallContext *)self failed];
-  v7 = [v4 failed];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(PRSiriSchemaPRJointResolverCallContext *)self failed];
+  startedOrChanged2 = [equalCopy failed];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_30;
   }
 
-  v18 = [(PRSiriSchemaPRJointResolverCallContext *)self failed];
-  if (v18)
+  failed = [(PRSiriSchemaPRJointResolverCallContext *)self failed];
+  if (failed)
   {
-    v19 = v18;
-    v20 = [(PRSiriSchemaPRJointResolverCallContext *)self failed];
-    v21 = [v4 failed];
-    v22 = [v20 isEqual:v21];
+    v19 = failed;
+    failed2 = [(PRSiriSchemaPRJointResolverCallContext *)self failed];
+    failed3 = [equalCopy failed];
+    v22 = [failed2 isEqual:failed3];
 
     if (!v22)
     {
@@ -318,20 +318,20 @@
   {
   }
 
-  v6 = [(PRSiriSchemaPRJointResolverCallContext *)self planEventId];
-  v7 = [v4 planEventId];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(PRSiriSchemaPRJointResolverCallContext *)self planEventId];
+  startedOrChanged2 = [equalCopy planEventId];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_30;
   }
 
-  v23 = [(PRSiriSchemaPRJointResolverCallContext *)self planEventId];
-  if (v23)
+  planEventId = [(PRSiriSchemaPRJointResolverCallContext *)self planEventId];
+  if (planEventId)
   {
-    v24 = v23;
-    v25 = [(PRSiriSchemaPRJointResolverCallContext *)self planEventId];
-    v26 = [v4 planEventId];
-    v27 = [v25 isEqual:v26];
+    v24 = planEventId;
+    planEventId2 = [(PRSiriSchemaPRJointResolverCallContext *)self planEventId];
+    planEventId3 = [equalCopy planEventId];
+    v27 = [planEventId2 isEqual:planEventId3];
 
     if (!v27)
     {
@@ -343,7 +343,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[56] & 1))
+  if ((*&self->_has & 1) != (equalCopy[56] & 1))
   {
     goto LABEL_31;
   }
@@ -351,18 +351,18 @@
   if (*&self->_has)
   {
     actionStatementId = self->_actionStatementId;
-    if (actionStatementId != [v4 actionStatementId])
+    if (actionStatementId != [equalCopy actionStatementId])
     {
       goto LABEL_31;
     }
   }
 
-  v6 = [(PRSiriSchemaPRJointResolverCallContext *)self traceId];
-  v7 = [v4 traceId];
-  if ((v6 != 0) != (v7 == 0))
+  startedOrChanged = [(PRSiriSchemaPRJointResolverCallContext *)self traceId];
+  startedOrChanged2 = [equalCopy traceId];
+  if ((startedOrChanged != 0) != (startedOrChanged2 == 0))
   {
-    v29 = [(PRSiriSchemaPRJointResolverCallContext *)self traceId];
-    if (!v29)
+    traceId = [(PRSiriSchemaPRJointResolverCallContext *)self traceId];
+    if (!traceId)
     {
 
 LABEL_34:
@@ -370,10 +370,10 @@ LABEL_34:
       goto LABEL_32;
     }
 
-    v30 = v29;
-    v31 = [(PRSiriSchemaPRJointResolverCallContext *)self traceId];
-    v32 = [v4 traceId];
-    v33 = [v31 isEqual:v32];
+    v30 = traceId;
+    traceId2 = [(PRSiriSchemaPRJointResolverCallContext *)self traceId];
+    traceId3 = [equalCopy traceId];
+    v33 = [traceId2 isEqual:traceId3];
 
     if (v33)
     {
@@ -393,38 +393,38 @@ LABEL_32:
   return v34;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(PRSiriSchemaPRJointResolverCallContext *)self startedOrChanged];
+  toCopy = to;
+  startedOrChanged = [(PRSiriSchemaPRJointResolverCallContext *)self startedOrChanged];
 
-  if (v4)
+  if (startedOrChanged)
   {
-    v5 = [(PRSiriSchemaPRJointResolverCallContext *)self startedOrChanged];
+    startedOrChanged2 = [(PRSiriSchemaPRJointResolverCallContext *)self startedOrChanged];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PRSiriSchemaPRJointResolverCallContext *)self ended];
+  ended = [(PRSiriSchemaPRJointResolverCallContext *)self ended];
 
-  if (v6)
+  if (ended)
   {
-    v7 = [(PRSiriSchemaPRJointResolverCallContext *)self ended];
+    ended2 = [(PRSiriSchemaPRJointResolverCallContext *)self ended];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(PRSiriSchemaPRJointResolverCallContext *)self failed];
+  failed = [(PRSiriSchemaPRJointResolverCallContext *)self failed];
 
-  if (v8)
+  if (failed)
   {
-    v9 = [(PRSiriSchemaPRJointResolverCallContext *)self failed];
+    failed2 = [(PRSiriSchemaPRJointResolverCallContext *)self failed];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(PRSiriSchemaPRJointResolverCallContext *)self planEventId];
+  planEventId = [(PRSiriSchemaPRJointResolverCallContext *)self planEventId];
 
-  if (v10)
+  if (planEventId)
   {
-    v11 = [(PRSiriSchemaPRJointResolverCallContext *)self planEventId];
+    planEventId2 = [(PRSiriSchemaPRJointResolverCallContext *)self planEventId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -433,15 +433,15 @@ LABEL_32:
     PBDataWriterWriteUint32Field();
   }
 
-  v12 = [(PRSiriSchemaPRJointResolverCallContext *)self traceId];
+  traceId = [(PRSiriSchemaPRJointResolverCallContext *)self traceId];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (traceId)
   {
-    v14 = [(PRSiriSchemaPRJointResolverCallContext *)self traceId];
+    traceId2 = [(PRSiriSchemaPRJointResolverCallContext *)self traceId];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
@@ -470,9 +470,9 @@ LABEL_32:
   return v3;
 }
 
-- (void)setFailed:(id)a3
+- (void)setFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
@@ -480,14 +480,14 @@ LABEL_32:
   self->_ended = 0;
 
   v7 = 3;
-  if (!v4)
+  if (!failedCopy)
   {
     v7 = 0;
   }
 
   *&self->_hasTraceId = v7;
   failed = self->_failed;
-  self->_failed = v4;
+  self->_failed = failedCopy;
 }
 
 - (void)deleteEnded
@@ -515,18 +515,18 @@ LABEL_32:
   return v3;
 }
 
-- (void)setEnded:(id)a3
+- (void)setEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
   failed = self->_failed;
   self->_failed = 0;
 
-  *&self->_hasTraceId = 2 * (v4 != 0);
+  *&self->_hasTraceId = 2 * (endedCopy != 0);
   ended = self->_ended;
-  self->_ended = v4;
+  self->_ended = endedCopy;
 }
 
 - (void)deleteStartedOrChanged
@@ -554,67 +554,67 @@ LABEL_32:
   return v3;
 }
 
-- (void)setStartedOrChanged:(id)a3
+- (void)setStartedOrChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   ended = self->_ended;
   self->_ended = 0;
 
   failed = self->_failed;
   self->_failed = 0;
 
-  *&self->_hasTraceId = v4 != 0;
+  *&self->_hasTraceId = changedCopy != 0;
   startedOrChanged = self->_startedOrChanged;
-  self->_startedOrChanged = v4;
+  self->_startedOrChanged = changedCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v22.receiver = self;
   v22.super_class = PRSiriSchemaPRJointResolverCallContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:v4];
-  v6 = [(PRSiriSchemaPRJointResolverCallContext *)self startedOrChanged];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:policyCopy];
+  startedOrChanged = [(PRSiriSchemaPRJointResolverCallContext *)self startedOrChanged];
+  v7 = [startedOrChanged applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PRSiriSchemaPRJointResolverCallContext *)self deleteStartedOrChanged];
   }
 
-  v9 = [(PRSiriSchemaPRJointResolverCallContext *)self ended];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  ended = [(PRSiriSchemaPRJointResolverCallContext *)self ended];
+  v10 = [ended applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PRSiriSchemaPRJointResolverCallContext *)self deleteEnded];
   }
 
-  v12 = [(PRSiriSchemaPRJointResolverCallContext *)self failed];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  failed = [(PRSiriSchemaPRJointResolverCallContext *)self failed];
+  v13 = [failed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PRSiriSchemaPRJointResolverCallContext *)self deleteFailed];
   }
 
-  v15 = [(PRSiriSchemaPRJointResolverCallContext *)self planEventId];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  planEventId = [(PRSiriSchemaPRJointResolverCallContext *)self planEventId];
+  v16 = [planEventId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PRSiriSchemaPRJointResolverCallContext *)self deletePlanEventId];
   }
 
-  v18 = [(PRSiriSchemaPRJointResolverCallContext *)self traceId];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  traceId = [(PRSiriSchemaPRJointResolverCallContext *)self traceId];
+  v19 = [traceId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(PRSiriSchemaPRJointResolverCallContext *)self deleteTraceId];
   }

@@ -1,27 +1,27 @@
 @interface AUParameterGroup
-- (AUParameterGroup)initWithCoder:(id)a3;
-- (AUParameterGroup)initWithID:(id)a3 name:(id)a4 children:(id)a5;
-- (AUParameterGroup)initWithTemplate:(id)a3 identifier:(id)a4 name:(id)a5 addressOffset:(unint64_t)a6;
+- (AUParameterGroup)initWithCoder:(id)coder;
+- (AUParameterGroup)initWithID:(id)d name:(id)name children:(id)children;
+- (AUParameterGroup)initWithTemplate:(id)template identifier:(id)identifier name:(id)name addressOffset:(unint64_t)offset;
 - (NSArray)allParameters;
-- (id)copyNodeWithOffset:(unint64_t)a3;
-- (id)valueForKey:(id)a3;
+- (id)copyNodeWithOffset:(unint64_t)offset;
+- (id)valueForKey:(id)key;
 - (void)_indexChildren;
-- (void)_serialize:(CASerializer *)a3;
+- (void)_serialize:(CASerializer *)_serialize;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AUParameterGroup
 
-- (void)_serialize:(CASerializer *)a3
+- (void)_serialize:(CASerializer *)_serialize
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(AUParameterGroup *)self children];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  children = [(AUParameterGroup *)self children];
+  v5 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = *v15;
@@ -31,43 +31,43 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(children);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v13 = [v8 isGroup];
-        CASerializer::Write(a3, &v13);
-        v9 = [v8 identifier];
-        v12 = v9;
+        isGroup = [v8 isGroup];
+        CASerializer::Write(_serialize, &isGroup);
+        identifier = [v8 identifier];
+        v12 = identifier;
         operator<<();
 
-        if (v13)
+        if (isGroup)
         {
-          [v8 _serialize:a3];
+          [v8 _serialize:_serialize];
         }
 
         else
         {
           [v8 value];
           LODWORD(v12) = v10;
-          CASerializer::Write(a3, &v12);
+          CASerializer::Write(_serialize, &v12);
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
   }
 
   LOBYTE(v12) = -1;
-  CASerializer::Write(a3, &v12);
+  CASerializer::Write(_serialize, &v12);
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (AUParameterGroup)initWithCoder:(id)a3
+- (AUParameterGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   {
     v15 = objc_alloc(MEMORY[0x1E695DFD8]);
     v16 = objc_opt_self();
@@ -87,21 +87,21 @@
   }
 
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"id"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"id"];
 
   v7 = objc_opt_self();
-  v8 = [v4 decodeObjectOfClass:v7 forKey:@"name"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"name"];
 
   v25.receiver = self;
   v25.super_class = AUParameterGroup;
   v9 = [(AUParameterNode *)&v25 initWithID:v6 name:v8];
   if (v9)
   {
-    v10 = [v4 decodeObjectOfClasses:-[AUParameterGroup initWithCoder:]::childIndexClasses forKey:@"childIndex"];
+    v10 = [coderCopy decodeObjectOfClasses:-[AUParameterGroup initWithCoder:]::childIndexClasses forKey:@"childIndex"];
     childIndicesByIdentifier = v9->_childIndicesByIdentifier;
     v9->_childIndicesByIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClasses:-[AUParameterGroup initWithCoder:]::childrenClasses forKey:@"children"];
+    v12 = [coderCopy decodeObjectOfClasses:-[AUParameterGroup initWithCoder:]::childrenClasses forKey:@"children"];
     children = v9->_children;
     v9->_children = v12;
 
@@ -111,28 +111,28 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(AUParameterNode *)self identifier];
-  [v7 encodeObject:v4 forKey:@"id"];
+  coderCopy = coder;
+  identifier = [(AUParameterNode *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"id"];
 
-  v5 = [(AUParameterNode *)self displayName];
-  [v7 encodeObject:v5 forKey:@"name"];
+  displayName = [(AUParameterNode *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"name"];
 
-  [v7 encodeObject:self->_childIndicesByIdentifier forKey:@"childIndex"];
-  v6 = [(AUParameterGroup *)self children];
-  [v7 encodeObject:v6 forKey:@"children"];
+  [coderCopy encodeObject:self->_childIndicesByIdentifier forKey:@"childIndex"];
+  children = [(AUParameterGroup *)self children];
+  [coderCopy encodeObject:children forKey:@"children"];
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = [(NSMutableDictionary *)self->_childIndicesByIdentifier objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_childIndicesByIdentifier objectForKey:key];
   v5 = v4;
   if (v4 && (v6 = [v4 unsignedIntegerValue], -[AUParameterGroup children](self, "children"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6 < v8))
   {
-    v9 = [(AUParameterGroup *)self children];
-    v10 = [v9 objectAtIndexedSubscript:v6];
+    children = [(AUParameterGroup *)self children];
+    v10 = [children objectAtIndexedSubscript:v6];
   }
 
   else
@@ -146,7 +146,7 @@
 - (NSArray)allParameters
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -168,13 +168,13 @@
         v8 = *(*(&v12 + 1) + 8 * i);
         if ([v8 isGroup])
         {
-          v9 = [v8 allParameters];
-          [v3 addObjectsFromArray:v9];
+          allParameters = [v8 allParameters];
+          [array addObjectsFromArray:allParameters];
         }
 
         else
         {
-          [v3 addObject:v8];
+          [array addObject:v8];
         }
       }
 
@@ -186,7 +186,7 @@
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
 - (void)dealloc
@@ -196,23 +196,23 @@
   [(AUParameterNode *)&v2 dealloc];
 }
 
-- (AUParameterGroup)initWithTemplate:(id)a3 identifier:(id)a4 name:(id)a5 addressOffset:(unint64_t)a6
+- (AUParameterGroup)initWithTemplate:(id)template identifier:(id)identifier name:(id)name addressOffset:(unint64_t)offset
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  templateCopy = template;
   v27.receiver = self;
   v27.super_class = AUParameterGroup;
-  v11 = [(AUParameterNode *)&v27 initWithID:a4 name:a5];
+  v11 = [(AUParameterNode *)&v27 initWithID:identifier name:name];
   if (v11)
   {
-    v12 = [v10 children];
-    v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v12, "count")}];
+    children = [templateCopy children];
+    v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(children, "count")}];
     objc_storeStrong(&v11->_children, v13);
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v14 = v12;
+    v14 = children;
     v15 = [v14 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v15)
     {
@@ -227,7 +227,7 @@
             objc_enumerationMutation(v14);
           }
 
-          v18 = [*(*(&v23 + 1) + 8 * v17) copyNodeWithOffset:{a6, v23}];
+          v18 = [*(*(&v23 + 1) + 8 * v17) copyNodeWithOffset:{offset, v23}];
           [v13 addObject:v18];
           [v18 setParentNode:v11];
 
@@ -241,39 +241,39 @@
       while (v15);
     }
 
-    v19 = [v10 childIndicesByIdentifier];
+    childIndicesByIdentifier = [templateCopy childIndicesByIdentifier];
     childIndicesByIdentifier = v11->_childIndicesByIdentifier;
-    v11->_childIndicesByIdentifier = v19;
+    v11->_childIndicesByIdentifier = childIndicesByIdentifier;
   }
 
   v21 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (AUParameterGroup)initWithID:(id)a3 name:(id)a4 children:(id)a5
+- (AUParameterGroup)initWithID:(id)d name:(id)name children:(id)children
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  nameCopy = name;
+  childrenCopy = children;
   v14.receiver = self;
   v14.super_class = AUParameterGroup;
-  v11 = [(AUParameterNode *)&v14 initWithID:v8 name:v9];
+  v11 = [(AUParameterNode *)&v14 initWithID:dCopy name:nameCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_children, a5);
+    objc_storeStrong(&v11->_children, children);
     [(AUParameterGroup *)v12 _indexChildren];
   }
 
   return v12;
 }
 
-- (id)copyNodeWithOffset:(unint64_t)a3
+- (id)copyNodeWithOffset:(unint64_t)offset
 {
   v5 = [AUParameterGroup alloc];
-  v6 = [(AUParameterNode *)self identifier];
-  v7 = [(AUParameterNode *)self displayName];
-  v8 = [(AUParameterGroup *)v5 initWithTemplate:self identifier:v6 name:v7 addressOffset:a3];
+  identifier = [(AUParameterNode *)self identifier];
+  displayName = [(AUParameterNode *)self displayName];
+  v8 = [(AUParameterGroup *)v5 initWithTemplate:self identifier:identifier name:displayName addressOffset:offset];
 
   return v8;
 }
@@ -312,9 +312,9 @@
         [v11 setIndexInGroup:v8];
         if (!childIndicesByIdentifier)
         {
-          v12 = [v11 identifier];
-          v13 = v12;
-          if (v12 && [v12 length])
+          identifier = [v11 identifier];
+          v13 = identifier;
+          if (identifier && [identifier length])
           {
             v14 = [(NSMutableDictionary *)self->_childIndicesByIdentifier objectForKeyedSubscript:v13];
             v15 = v14 == 0;

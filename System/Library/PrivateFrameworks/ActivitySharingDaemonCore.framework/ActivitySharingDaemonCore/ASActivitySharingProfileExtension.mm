@@ -1,23 +1,23 @@
 @interface ASActivitySharingProfileExtension
-+ (id)activitySharingManagerForProfile:(id)a3;
-- (ASActivitySharingProfileExtension)initWithProfile:(id)a3;
++ (id)activitySharingManagerForProfile:(id)profile;
+- (ASActivitySharingProfileExtension)initWithProfile:(id)profile;
 - (HDProfile)profile;
-- (void)daemonReady:(id)a3;
+- (void)daemonReady:(id)ready;
 @end
 
 @implementation ASActivitySharingProfileExtension
 
-- (ASActivitySharingProfileExtension)initWithProfile:(id)a3
+- (ASActivitySharingProfileExtension)initWithProfile:(id)profile
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   v29.receiver = self;
   v29.super_class = ASActivitySharingProfileExtension;
   v5 = [(ASActivitySharingProfileExtension *)&v29 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = ASActivitySharingDaemonEnabled();
     if (v7)
     {
@@ -40,15 +40,15 @@
       v17 = v6->_databaseClient;
       WeakRetained = objc_loadWeakRetained(&v6->_profile);
       daemonWakeCoordinator = [WeakRetained daemon];
-      v18 = [daemonWakeCoordinator behavior];
-      v19 = -[ASActivitySharingManager initWithDatabaseClient:isWatch:](v16, "initWithDatabaseClient:isWatch:", v17, [v18 isAppleWatch]);
+      behavior = [daemonWakeCoordinator behavior];
+      v19 = -[ASActivitySharingManager initWithDatabaseClient:isWatch:](v16, "initWithDatabaseClient:isWatch:", v17, [behavior isAppleWatch]);
       activitySharingManager = v6->_activitySharingManager;
       v6->_activitySharingManager = v19;
     }
 
     v21 = objc_loadWeakRetained(&v6->_profile);
-    v22 = [v21 daemon];
-    [v22 registerForDaemonReady:v6];
+    daemon = [v21 daemon];
+    [daemon registerForDaemonReady:v6];
 
     ASLoggingInitialize();
     v23 = *MEMORY[0x277CE8FE8];
@@ -69,19 +69,19 @@
   return v6;
 }
 
-+ (id)activitySharingManagerForProfile:(id)a3
++ (id)activitySharingManagerForProfile:(id)profile
 {
-  v3 = [a3 profileExtensionWithIdentifier:*MEMORY[0x277CE92A8]];
-  v4 = [v3 activitySharingManager];
+  v3 = [profile profileExtensionWithIdentifier:*MEMORY[0x277CE92A8]];
+  activitySharingManager = [v3 activitySharingManager];
 
-  return v4;
+  return activitySharingManager;
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained database];
-  [v4 addProtectedDataObserver:self];
+  database = [WeakRetained database];
+  [database addProtectedDataObserver:self];
 }
 
 - (HDProfile)profile

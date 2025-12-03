@@ -1,7 +1,7 @@
 @interface USBAnalytics
 - (BOOL)_startEventMonitoring;
 - (USBAnalytics)init;
-- (void)_handleServiceMatched:(unsigned int)a3;
+- (void)_handleServiceMatched:(unsigned int)matched;
 - (void)_stopEventMonitoring;
 - (void)start;
 - (void)stop;
@@ -46,13 +46,13 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Starting %@...", buf, 0xCu);
   }
 
-  v6 = [(USBAnalytics *)self queue];
+  queue = [(USBAnalytics *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __21__USBAnalytics_start__block_invoke;
   block[3] = &unk_20408;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(queue, block);
 }
 
 void __21__USBAnalytics_start__block_invoke(uint64_t a1)
@@ -89,13 +89,13 @@ void __21__USBAnalytics_start__block_invoke(uint64_t a1)
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Stopping %@...", buf, 0xCu);
   }
 
-  v6 = [(USBAnalytics *)self queue];
+  queue = [(USBAnalytics *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __20__USBAnalytics_stop__block_invoke;
   block[3] = &unk_20408;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(queue, block);
 }
 
 void __20__USBAnalytics_stop__block_invoke(uint64_t a1)
@@ -146,14 +146,14 @@ void __20__USBAnalytics_stop__block_invoke(uint64_t a1)
 
     [(USBAnalytics *)self setMonitoring:1];
     [(USBAnalytics *)self setIoNotificationPort:IONotificationPortCreate(kIOMainPortDefault)];
-    v5 = [(USBAnalytics *)self ioNotificationPort];
-    v6 = [(USBAnalytics *)self queue];
-    IONotificationPortSetDispatchQueue(v5, v6);
+    ioNotificationPort = [(USBAnalytics *)self ioNotificationPort];
+    queue = [(USBAnalytics *)self queue];
+    IONotificationPortSetDispatchQueue(ioNotificationPort, queue);
 
     v7 = IOServiceMatching("IOUSBHostDevice");
-    v8 = [(USBAnalytics *)self ioNotificationPort];
+    ioNotificationPort2 = [(USBAnalytics *)self ioNotificationPort];
     v9 = v7;
-    v10 = IOServiceAddMatchingNotification(v8, "IOServiceFirstMatch", v9, _servicesMatched_2, self, &self->_ioServiceMatchingIterator);
+    v10 = IOServiceAddMatchingNotification(ioNotificationPort2, "IOServiceFirstMatch", v9, _servicesMatched_2, self, &self->_ioServiceMatchingIterator);
     if (v10)
     {
       [(AUVDMAnalytics *)self _startEventMonitoring];
@@ -193,12 +193,12 @@ void __20__USBAnalytics_stop__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_handleServiceMatched:(unsigned int)a3
+- (void)_handleServiceMatched:(unsigned int)matched
 {
-  if (a3)
+  if (matched)
   {
     memset(name, 0, 128);
-    IORegistryEntryGetName(a3, name);
+    IORegistryEntryGetName(matched, name);
     v5 = [(USBAnalytics *)self log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -210,7 +210,7 @@ void __20__USBAnalytics_stop__block_invoke(uint64_t a1)
     if ([(USBAnalytics *)self analyticsEventsEnabled])
     {
       HIDWORD(v139) = 0;
-      if (!IORegistryEntryGetParentEntry(a3, "IOPort", &v139 + 1) && HIDWORD(v139))
+      if (!IORegistryEntryGetParentEntry(matched, "IOPort", &v139 + 1) && HIDWORD(v139))
       {
         if (!IOObjectConformsTo(HIDWORD(v139), "IOPortTransportStateUSB"))
         {
@@ -410,30 +410,30 @@ LABEL_44:
         v89 = castNSObjectToType(v88);
 
 LABEL_59:
-        v90 = [NSNumber numberWithUnsignedInt:v83, v131];
+        v131 = [NSNumber numberWithUnsignedInt:v83, v131];
         OUTLINED_FUNCTION_4_1();
 
         if (v89)
         {
-          v91 = [v89 intValue];
-          if (v91 - 1 >= 3)
+          intValue = [v89 intValue];
+          if (intValue - 1 >= 3)
           {
             v92 = 0;
           }
 
           else
           {
-            v92 = v91 + 3;
+            v92 = intValue + 3;
           }
 
-          if (v91 - 1 >= 3)
+          if (intValue - 1 >= 3)
           {
             v93 = 0;
           }
 
           else
           {
-            v93 = v91;
+            v93 = intValue;
           }
 
           if (v83 != 1)

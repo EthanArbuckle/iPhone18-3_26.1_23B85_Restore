@@ -1,14 +1,14 @@
 @interface NearbySessionInvitation
 - (NSString)description;
 - (_TtC14NearbySessions23NearbySessionInvitation)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NearbySessionInvitation
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = NearbySessionInvitation.description.getter();
   v5 = v4;
 
@@ -17,11 +17,11 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  NearbySessionInvitation.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  NearbySessionInvitation.encode(with:)(coderCopy);
 }
 
 - (_TtC14NearbySessions23NearbySessionInvitation)init

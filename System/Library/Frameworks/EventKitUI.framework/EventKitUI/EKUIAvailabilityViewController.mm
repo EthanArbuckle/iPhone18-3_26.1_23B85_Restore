@@ -2,75 +2,75 @@
 + (double)defaultTimelineHeight;
 + (id)cancelNextTimeString;
 + (id)nextTimeString;
-+ (id)presentAvailabilityViewControllerForEvent:(id)a3 fromViewController:(id)a4;
-- (BOOL)span:(id)a3 overlapsWithDate:(id)a4;
-- (BOOL)span:(id)a3 overlapsWithStartDate:(id)a4 endDate:(id)a5;
-- (BOOL)updateCurrentEventAtTime:(id)a3;
-- (CGRect)frameForFreeSpanViewAtStart:(id)a3 endDate:(id)a4 duration:(double)a5;
++ (id)presentAvailabilityViewControllerForEvent:(id)event fromViewController:(id)controller;
+- (BOOL)span:(id)span overlapsWithDate:(id)date;
+- (BOOL)span:(id)span overlapsWithStartDate:(id)date endDate:(id)endDate;
+- (BOOL)updateCurrentEventAtTime:(id)time;
+- (CGRect)frameForFreeSpanViewAtStart:(id)start endDate:(id)date duration:(double)duration;
 - (CGSize)preferredContentSize;
-- (EKUIAvailabilityViewController)initWithEvent:(id)a3 isAttendeeProposeTime:(BOOL)a4 proposedStartDate:(id)a5 proposedEndDate:(id)a6;
-- (double)convertDateIntoOffset:(id)a3;
-- (id)dedupSpans:(id)a3;
-- (id)eventFreeSpanAtStart:(id)a3 endDate:(id)a4 isFreeSpan:(BOOL)a5;
-- (id)mergeSpan:(id)a3 intoSpans:(id)a4;
-- (void)cancelTapped:(id)a3;
+- (EKUIAvailabilityViewController)initWithEvent:(id)event isAttendeeProposeTime:(BOOL)time proposedStartDate:(id)date proposedEndDate:(id)endDate;
+- (double)convertDateIntoOffset:(id)offset;
+- (id)dedupSpans:(id)spans;
+- (id)eventFreeSpanAtStart:(id)start endDate:(id)date isFreeSpan:(BOOL)span;
+- (id)mergeSpan:(id)span intoSpans:(id)spans;
+- (void)cancelTapped:(id)tapped;
 - (void)clearFreeSpanViews;
 - (void)configureNavBarAndToolBar;
 - (void)configureParticipants;
 - (void)configureUnavailableStateForEvent;
-- (void)doneTapped:(id)a3;
+- (void)doneTapped:(id)tapped;
 - (void)fetchAvailability;
 - (void)findNextFreeSpan;
 - (void)findPossibleEventRanges;
 - (void)layout;
 - (void)loadView;
-- (void)nextAvailableTimeTapped:(id)a3;
-- (void)nextDayTapped:(id)a3;
-- (void)previousDayTapped:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setAvailabilityPanelAvailable:(BOOL)a3 unavailableMessage:(id)a4;
-- (void)setDate:(id)a3;
-- (void)singleTap:(id)a3;
-- (void)sizeWillBeCompact:(BOOL)a3;
+- (void)nextAvailableTimeTapped:(id)tapped;
+- (void)nextDayTapped:(id)tapped;
+- (void)previousDayTapped:(id)tapped;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setAvailabilityPanelAvailable:(BOOL)available unavailableMessage:(id)message;
+- (void)setDate:(id)date;
+- (void)singleTap:(id)tap;
+- (void)sizeWillBeCompact:(BOOL)compact;
 - (void)updateForContentCategory;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewPinched:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewPinched:(id)pinched;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation EKUIAvailabilityViewController
 
-+ (id)presentAvailabilityViewControllerForEvent:(id)a3 fromViewController:(id)a4
++ (id)presentAvailabilityViewControllerForEvent:(id)event fromViewController:(id)controller
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[EKUIAvailabilityViewController alloc] initWithEvent:v6];
+  controllerCopy = controller;
+  eventCopy = event;
+  v7 = [[EKUIAvailabilityViewController alloc] initWithEvent:eventCopy];
 
   [(EKUIAvailabilityViewController *)v7 setFromDetail:1];
   v8 = [[EKUIAvailabilityNavigationController alloc] initWithRootViewController:v7];
   [(EKUIAvailabilityViewController *)v7 preferredContentSize];
   [(EKUIAvailabilityNavigationController *)v8 setPreferredContentSize:?];
-  [v5 presentViewController:v8 animated:1 completion:0];
+  [controllerCopy presentViewController:v8 animated:1 completion:0];
 
   return v7;
 }
 
-- (EKUIAvailabilityViewController)initWithEvent:(id)a3 isAttendeeProposeTime:(BOOL)a4 proposedStartDate:(id)a5 proposedEndDate:(id)a6
+- (EKUIAvailabilityViewController)initWithEvent:(id)event isAttendeeProposeTime:(BOOL)time proposedStartDate:(id)date proposedEndDate:(id)endDate
 {
   v96[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  eventCopy = event;
+  dateCopy = date;
+  endDateCopy = endDate;
   v90.receiver = self;
   v90.super_class = EKUIAvailabilityViewController;
   v14 = [(EKUIAvailabilityViewController *)&v90 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_event, a3);
-    v15->_isAttendeeProposeTime = a4;
+    objc_storeStrong(&v14->_event, event);
+    v15->_isAttendeeProposeTime = time;
     v15->_availableWidth = 1440.0;
     v16 = objc_opt_new();
     participantAvailabilityViews = v15->_participantAvailabilityViews;
@@ -80,49 +80,49 @@
     freeSpanViews = v15->_freeSpanViews;
     v15->_freeSpanViews = v18;
 
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 addObserver:v15 selector:sel__contentSizeCategoryChanged_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__contentSizeCategoryChanged_ name:*MEMORY[0x1E69DDC48] object:0];
 
-    if (v12)
+    if (dateCopy)
     {
-      v21 = v12;
+      startDate = dateCopy;
     }
 
     else
     {
-      v21 = [v11 startDate];
+      startDate = [eventCopy startDate];
     }
 
-    v22 = v21;
-    v89 = v13;
-    if (v13)
+    v22 = startDate;
+    v89 = endDateCopy;
+    if (endDateCopy)
     {
-      v23 = v13;
+      endDateUnadjustedForLegacyClients = endDateCopy;
     }
 
     else
     {
-      v23 = [v11 endDateUnadjustedForLegacyClients];
+      endDateUnadjustedForLegacyClients = [eventCopy endDateUnadjustedForLegacyClients];
     }
 
-    v24 = v23;
-    v25 = v22;
-    if (!a4)
+    endDateUnadjustedForLegacyClients2 = endDateUnadjustedForLegacyClients;
+    startDate2 = v22;
+    if (!time)
     {
-      v25 = [v11 startDate];
+      startDate2 = [eventCopy startDate];
     }
 
-    objc_storeStrong(&v15->_modifiedStartDate, v25);
-    v87 = v24;
-    if (!a4)
+    objc_storeStrong(&v15->_modifiedStartDate, startDate2);
+    v87 = endDateUnadjustedForLegacyClients2;
+    if (!time)
     {
 
-      v24 = [v11 endDateUnadjustedForLegacyClients];
+      endDateUnadjustedForLegacyClients2 = [eventCopy endDateUnadjustedForLegacyClients];
     }
 
     v88 = v22;
-    objc_storeStrong(&v15->_modifiedEndDate, v24);
-    if (!a4)
+    objc_storeStrong(&v15->_modifiedEndDate, endDateUnadjustedForLegacyClients2);
+    if (!time)
     {
     }
 
@@ -213,8 +213,8 @@
 
     else
     {
-      v63 = [(EKUIAvailabilityViewController *)v15 event];
-      -[UIBarButtonItem setEnabled:](v15->_topNextTime, "setEnabled:", [v63 isEditable]);
+      event = [(EKUIAvailabilityViewController *)v15 event];
+      -[UIBarButtonItem setEnabled:](v15->_topNextTime, "setEnabled:", [event isEditable]);
     }
 
     v64 = MEMORY[0x1E695DFD8];
@@ -247,16 +247,16 @@
 
     else
     {
-      v76 = [(EKUIAvailabilityViewController *)v15 event];
-      -[UIBarButtonItem setEnabled:](v15->_doneButton, "setEnabled:", [v76 isEditable]);
+      event2 = [(EKUIAvailabilityViewController *)v15 event];
+      -[UIBarButtonItem setEnabled:](v15->_doneButton, "setEnabled:", [event2 isEditable]);
     }
 
     v91[0] = v15->_topSpacer;
     v91[1] = v15->_topSpinner;
     v91[2] = v15->_doneButton;
     v77 = [MEMORY[0x1E695DEC8] arrayWithObjects:v91 count:3];
-    v78 = [(EKUIAvailabilityViewController *)v15 navigationItem];
-    [v78 setRightBarButtonItems:v77];
+    navigationItem = [(EKUIAvailabilityViewController *)v15 navigationItem];
+    [navigationItem setRightBarButtonItems:v77];
 
     v79 = objc_opt_new();
     [v79 startAnimating];
@@ -271,7 +271,7 @@
     v15->_bottomNextTime = v84;
 
     v15->_fetchingData = 1;
-    v13 = v89;
+    endDateCopy = v89;
   }
 
   return v15;
@@ -297,8 +297,8 @@
 {
   [EKUILargeTextUtilities contentSizeCategoryScaledValueForDefaultValue:0 shouldScaleForSmallerSizes:18.0];
   v4 = v3 + 13.0;
-  v5 = [(EKUIAvailabilityViewController *)self participants];
-  v6 = [v5 count];
+  participants = [(EKUIAvailabilityViewController *)self participants];
+  v6 = [participants count];
 
   v7 = 5;
   if (v6 > 5)
@@ -317,27 +317,27 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(EKUIAvailabilityViewController *)self traitCollection];
-  -[EKUIAvailabilityViewController sizeWillBeCompact:](self, "sizeWillBeCompact:", [v3 horizontalSizeClass] == 1);
+  traitCollection = [(EKUIAvailabilityViewController *)self traitCollection];
+  -[EKUIAvailabilityViewController sizeWillBeCompact:](self, "sizeWillBeCompact:", [traitCollection horizontalSizeClass] == 1);
 
   v4.receiver = self;
   v4.super_class = EKUIAvailabilityViewController;
   [(EKUIAvailabilityViewController *)&v4 viewWillLayoutSubviews];
 }
 
-- (void)sizeWillBeCompact:(BOOL)a3
+- (void)sizeWillBeCompact:(BOOL)compact
 {
-  v3 = a3;
-  if ([(EKUIAvailabilityViewController *)self compact]!= a3)
+  compactCopy = compact;
+  if ([(EKUIAvailabilityViewController *)self compact]!= compact)
   {
-    v5 = [(EKUIAvailabilityViewController *)self view];
-    v6 = [v5 window];
-    v7 = EKUIInterfaceOrientationForViewHierarchy(v6);
+    view = [(EKUIAvailabilityViewController *)self view];
+    window = [view window];
+    v7 = EKUIInterfaceOrientationForViewHierarchy(window);
 
-    v8 = [(EKUIAvailabilityViewController *)self traitCollection];
-    v9 = [v8 verticalSizeClass];
+    traitCollection = [(EKUIAvailabilityViewController *)self traitCollection];
+    verticalSizeClass = [traitCollection verticalSizeClass];
 
-    if (v9 == 2)
+    if (verticalSizeClass == 2)
     {
       v10 = 1;
     }
@@ -347,12 +347,12 @@
       v10 = v7;
     }
 
-    [EKUIAvailabilityParticipantList listWidthForCompact:v3 orientation:v10];
+    [EKUIAvailabilityParticipantList listWidthForCompact:compactCopy orientation:v10];
     v12 = v11;
-    v13 = [(EKUIAvailabilityViewController *)self participantWidthConstraint];
-    [v13 setConstant:v12];
+    participantWidthConstraint = [(EKUIAvailabilityViewController *)self participantWidthConstraint];
+    [participantWidthConstraint setConstant:v12];
 
-    [(EKUIAvailabilityViewController *)self setCompact:v3];
+    [(EKUIAvailabilityViewController *)self setCompact:compactCopy];
     [(EKUIAvailabilityViewController *)self configureNavBarAndToolBar];
 
     [(EKUIAvailabilityViewController *)self layout];
@@ -361,7 +361,7 @@
 
 + (double)defaultTimelineHeight
 {
-  v2 = MEMORY[0x1D38B98D0](a1, a2);
+  v2 = MEMORY[0x1D38B98D0](self, a2);
   [EKUILargeTextUtilities contentSizeCategoryScaledValueForDefaultValue:0 shouldScaleForSmallerSizes:18.0];
   v4 = 68.0;
   if (v2)
@@ -375,151 +375,151 @@
 - (void)configureNavBarAndToolBar
 {
   v65[3] = *MEMORY[0x1E69E9840];
-  v3 = [(EKUIAvailabilityViewController *)self navigationController];
-  [v3 setToolbarHidden:-[EKUIAvailabilityViewController compact](self animated:{"compact") ^ 1, 0}];
+  navigationController = [(EKUIAvailabilityViewController *)self navigationController];
+  [navigationController setToolbarHidden:-[EKUIAvailabilityViewController compact](self animated:{"compact") ^ 1, 0}];
 
-  v4 = [(EKUIAvailabilityViewController *)self searchingForNextAvailableTime];
-  v5 = [(EKUIAvailabilityViewController *)self topNextTime];
-  if (v4)
+  searchingForNextAvailableTime = [(EKUIAvailabilityViewController *)self searchingForNextAvailableTime];
+  topNextTime = [(EKUIAvailabilityViewController *)self topNextTime];
+  if (searchingForNextAvailableTime)
   {
     v6 = +[EKUIAvailabilityViewController cancelNextTimeString];
-    [v5 setTitle:v6];
+    [topNextTime setTitle:v6];
 
-    v7 = [(EKUIAvailabilityViewController *)self bottomNextTime];
+    bottomNextTime = [(EKUIAvailabilityViewController *)self bottomNextTime];
     +[EKUIAvailabilityViewController cancelNextTimeString];
   }
 
   else
   {
     v8 = +[EKUIAvailabilityViewController nextTimeString];
-    [v5 setTitle:v8];
+    [topNextTime setTitle:v8];
 
-    v7 = [(EKUIAvailabilityViewController *)self bottomNextTime];
+    bottomNextTime = [(EKUIAvailabilityViewController *)self bottomNextTime];
     +[EKUIAvailabilityViewController nextTimeString];
   }
   v9 = ;
-  [v7 setTitle:v9];
+  [bottomNextTime setTitle:v9];
 
   +[EKUIAvailabilityViewController defaultTimelineHeight];
   v11 = v10;
-  v12 = [(EKUIAvailabilityViewController *)self timelineHeightConstraint];
-  [v12 setConstant:v11];
+  timelineHeightConstraint = [(EKUIAvailabilityViewController *)self timelineHeightConstraint];
+  [timelineHeightConstraint setConstant:v11];
 
   if ([(EKUIAvailabilityViewController *)self compact])
   {
     if ([(EKUIAvailabilityViewController *)self fetchingData]&& ![(EKUIAvailabilityViewController *)self searchingForNextAvailableTime])
     {
-      v13 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-      v65[0] = v13;
-      v14 = [(EKUIAvailabilityViewController *)self bottomSpinner];
-      v65[1] = v14;
+      flexibleSpaceItem = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+      v65[0] = flexibleSpaceItem;
+      bottomSpinner = [(EKUIAvailabilityViewController *)self bottomSpinner];
+      v65[1] = bottomSpinner;
       v15 = v65;
     }
 
     else
     {
-      v13 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-      v64[0] = v13;
-      v14 = [(EKUIAvailabilityViewController *)self bottomNextTime];
-      v64[1] = v14;
+      flexibleSpaceItem = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+      v64[0] = flexibleSpaceItem;
+      bottomSpinner = [(EKUIAvailabilityViewController *)self bottomNextTime];
+      v64[1] = bottomSpinner;
       v15 = v64;
     }
 
-    v22 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-    v15[2] = v22;
+    flexibleSpaceItem2 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+    v15[2] = flexibleSpaceItem2;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:3];
     [(EKUIAvailabilityViewController *)self setToolbarItems:v23 animated:1];
 
-    v24 = [(EKUIAvailabilityViewController *)self cancelButton];
-    [v24 setSharesBackground:0];
+    cancelButton = [(EKUIAvailabilityViewController *)self cancelButton];
+    [cancelButton setSharesBackground:0];
 
     v25 = objc_alloc(MEMORY[0x1E69DC720]);
-    v26 = [(EKUIAvailabilityViewController *)self cancelButton];
-    v62 = v26;
+    cancelButton2 = [(EKUIAvailabilityViewController *)self cancelButton];
+    v62 = cancelButton2;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v62 count:1];
     v28 = [v25 initWithBarButtonItems:v27 representativeItem:0];
     v63[0] = v28;
     v29 = objc_alloc(MEMORY[0x1E69DC720]);
-    v30 = [(EKUIAvailabilityViewController *)self previousButton];
-    v61 = v30;
+    previousButton = [(EKUIAvailabilityViewController *)self previousButton];
+    v61 = previousButton;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v61 count:1];
     v32 = [v29 initWithBarButtonItems:v31 representativeItem:0];
     v63[1] = v32;
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:2];
-    v34 = [(EKUIAvailabilityViewController *)self navigationItem];
-    [v34 setLeadingItemGroups:v33];
+    navigationItem = [(EKUIAvailabilityViewController *)self navigationItem];
+    [navigationItem setLeadingItemGroups:v33];
 
-    v35 = [(EKUIAvailabilityViewController *)self titleContainer];
-    v36 = [(EKUIAvailabilityViewController *)self navigationItem];
-    [v36 setTitleView:v35];
+    titleContainer = [(EKUIAvailabilityViewController *)self titleContainer];
+    navigationItem2 = [(EKUIAvailabilityViewController *)self navigationItem];
+    [navigationItem2 setTitleView:titleContainer];
 
-    v37 = [(EKUIAvailabilityViewController *)self navigationItem];
-    v38 = [(EKUIAvailabilityViewController *)self doneButton];
-    v60[0] = v38;
-    v39 = [(EKUIAvailabilityViewController *)self nextButton];
-    v60[1] = v39;
+    navigationItem3 = [(EKUIAvailabilityViewController *)self navigationItem];
+    doneButton = [(EKUIAvailabilityViewController *)self doneButton];
+    v60[0] = doneButton;
+    nextButton = [(EKUIAvailabilityViewController *)self nextButton];
+    v60[1] = nextButton;
     v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:2];
-    [v37 setRightBarButtonItems:v40 animated:0];
+    [navigationItem3 setRightBarButtonItems:v40 animated:0];
   }
 
   else
   {
-    v16 = [(EKUIAvailabilityViewController *)self navigationItem];
-    [v16 setTitleView:0];
+    navigationItem4 = [(EKUIAvailabilityViewController *)self navigationItem];
+    [navigationItem4 setTitleView:0];
 
     if ([(EKUIAvailabilityViewController *)self fetchingData]&& ![(EKUIAvailabilityViewController *)self searchingForNextAvailableTime])
     {
-      v17 = [(EKUIAvailabilityViewController *)self navigationItem];
-      v18 = [(EKUIAvailabilityViewController *)self doneButton];
-      v59[0] = v18;
-      v19 = [(EKUIAvailabilityViewController *)self topSpacer];
-      v59[1] = v19;
-      v20 = [(EKUIAvailabilityViewController *)self topSpinner];
-      v59[2] = v20;
+      navigationItem5 = [(EKUIAvailabilityViewController *)self navigationItem];
+      doneButton2 = [(EKUIAvailabilityViewController *)self doneButton];
+      v59[0] = doneButton2;
+      topSpacer = [(EKUIAvailabilityViewController *)self topSpacer];
+      v59[1] = topSpacer;
+      topSpinner = [(EKUIAvailabilityViewController *)self topSpinner];
+      v59[2] = topSpinner;
       v21 = v59;
     }
 
     else
     {
-      v17 = [(EKUIAvailabilityViewController *)self navigationItem];
-      v18 = [(EKUIAvailabilityViewController *)self doneButton];
-      v58[0] = v18;
-      v19 = [(EKUIAvailabilityViewController *)self topSpacer];
-      v58[1] = v19;
-      v20 = [(EKUIAvailabilityViewController *)self topNextTime];
-      v58[2] = v20;
+      navigationItem5 = [(EKUIAvailabilityViewController *)self navigationItem];
+      doneButton2 = [(EKUIAvailabilityViewController *)self doneButton];
+      v58[0] = doneButton2;
+      topSpacer = [(EKUIAvailabilityViewController *)self topSpacer];
+      v58[1] = topSpacer;
+      topSpinner = [(EKUIAvailabilityViewController *)self topNextTime];
+      v58[2] = topSpinner;
       v21 = v58;
     }
 
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:3];
-    [v17 setRightBarButtonItems:v41 animated:1];
+    [navigationItem5 setRightBarButtonItems:v41 animated:1];
 
     v42 = objc_alloc(MEMORY[0x1E69DC720]);
-    v43 = [(EKUIAvailabilityViewController *)self cancelButton];
-    v57 = v43;
+    cancelButton3 = [(EKUIAvailabilityViewController *)self cancelButton];
+    v57 = cancelButton3;
     v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v57 count:1];
-    v37 = [v42 initWithBarButtonItems:v44 representativeItem:0];
+    navigationItem3 = [v42 initWithBarButtonItems:v44 representativeItem:0];
 
     v45 = objc_alloc(MEMORY[0x1E69DC720]);
-    v46 = [(EKUIAvailabilityViewController *)self previousButton];
-    v56[0] = v46;
-    v47 = [(EKUIAvailabilityViewController *)self nextButton];
-    v56[1] = v47;
+    previousButton2 = [(EKUIAvailabilityViewController *)self previousButton];
+    v56[0] = previousButton2;
+    nextButton2 = [(EKUIAvailabilityViewController *)self nextButton];
+    v56[1] = nextButton2;
     v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:2];
-    v38 = [v45 initWithBarButtonItems:v48 representativeItem:0];
+    doneButton = [v45 initWithBarButtonItems:v48 representativeItem:0];
 
     v49 = objc_alloc(MEMORY[0x1E69DC720]);
-    v50 = [(EKUIAvailabilityViewController *)self largeDateNavItem];
-    v55 = v50;
+    largeDateNavItem = [(EKUIAvailabilityViewController *)self largeDateNavItem];
+    v55 = largeDateNavItem;
     v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v55 count:1];
-    v39 = [v49 initWithBarButtonItems:v51 representativeItem:0];
+    nextButton = [v49 initWithBarButtonItems:v51 representativeItem:0];
 
-    v54[0] = v37;
-    v54[1] = v38;
-    v54[2] = v39;
+    v54[0] = navigationItem3;
+    v54[1] = doneButton;
+    v54[2] = nextButton;
     v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:3];
-    v52 = [(EKUIAvailabilityViewController *)self navigationItem];
-    [v52 setLeadingItemGroups:v40];
+    navigationItem6 = [(EKUIAvailabilityViewController *)self navigationItem];
+    [navigationItem6 setLeadingItemGroups:v40];
   }
 
   v53[0] = MEMORY[0x1E69E9820];
@@ -531,43 +531,43 @@
   [(EKUIAvailabilityViewController *)self configureUnavailableStateForEvent];
 }
 
-- (void)cancelTapped:(id)a3
+- (void)cancelTapped:(id)tapped
 {
-  v4 = [(EKUIAvailabilityViewController *)self availabilityRequestsQueue];
-  [v4 cancelAllOperations];
+  availabilityRequestsQueue = [(EKUIAvailabilityViewController *)self availabilityRequestsQueue];
+  [availabilityRequestsQueue cancelAllOperations];
 
-  v5 = [(EKEditItemViewController *)self editDelegate];
+  editDelegate = [(EKEditItemViewController *)self editDelegate];
 
-  if (v5)
+  if (editDelegate)
   {
-    v6 = [(EKEditItemViewController *)self editDelegate];
-    [v6 editItemViewController:self didCompleteWithAction:0];
+    editDelegate2 = [(EKEditItemViewController *)self editDelegate];
+    [editDelegate2 editItemViewController:self didCompleteWithAction:0];
   }
 
   else
   {
-    v6 = [(EKUIAvailabilityViewController *)self presentingViewController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    editDelegate2 = [(EKUIAvailabilityViewController *)self presentingViewController];
+    [editDelegate2 dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)nextDayTapped:(id)a3
+- (void)nextDayTapped:(id)tapped
 {
-  v6 = [(EKUIAvailabilityViewController *)self currentStartDate];
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v5 = [v6 dateByAddingDays:1 inCalendar:v4];
+  currentStartDate = [(EKUIAvailabilityViewController *)self currentStartDate];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v5 = [currentStartDate dateByAddingDays:1 inCalendar:currentCalendar];
   [(EKUIAvailabilityViewController *)self setDate:v5];
 }
 
-- (void)previousDayTapped:(id)a3
+- (void)previousDayTapped:(id)tapped
 {
-  v6 = [(EKUIAvailabilityViewController *)self currentStartDate];
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v5 = [v6 dateByAddingDays:-1 inCalendar:v4];
+  currentStartDate = [(EKUIAvailabilityViewController *)self currentStartDate];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v5 = [currentStartDate dateByAddingDays:-1 inCalendar:currentCalendar];
   [(EKUIAvailabilityViewController *)self setDate:v5];
 }
 
-- (void)nextAvailableTimeTapped:(id)a3
+- (void)nextAvailableTimeTapped:(id)tapped
 {
   if ([(EKUIAvailabilityViewController *)self searchingForNextAvailableTime])
   {
@@ -580,14 +580,14 @@
   {
     [(EKUIAvailabilityViewController *)self setSearchingForNextAvailableTime:1];
     v4 = [MEMORY[0x1E695DF00] now];
-    v5 = [(EKUIAvailabilityViewController *)self event];
-    v6 = [v5 timeZone];
-    v8 = [v4 dateForStartOfDayInTimeZone:v6];
+    event = [(EKUIAvailabilityViewController *)self event];
+    timeZone = [event timeZone];
+    v8 = [v4 dateForStartOfDayInTimeZone:timeZone];
 
-    v7 = [(EKUIAvailabilityViewController *)self currentStartDate];
-    LODWORD(v5) = [v7 isBeforeDate:v8];
+    currentStartDate = [(EKUIAvailabilityViewController *)self currentStartDate];
+    LODWORD(event) = [currentStartDate isBeforeDate:v8];
 
-    if (v5)
+    if (event)
     {
       [(EKUIAvailabilityViewController *)self setDate:v8];
     }
@@ -599,27 +599,27 @@
   }
 }
 
-- (void)doneTapped:(id)a3
+- (void)doneTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(EKUIAvailabilityViewController *)self availabilityRequestsQueue];
-  [v5 cancelAllOperations];
+  tappedCopy = tapped;
+  availabilityRequestsQueue = [(EKUIAvailabilityViewController *)self availabilityRequestsQueue];
+  [availabilityRequestsQueue cancelAllOperations];
 
-  v6 = [(EKUIAvailabilityViewController *)self modifiedStartDate];
-  v7 = [(EKUIAvailabilityViewController *)self isAttendeeProposeTime];
-  v8 = [(EKUIAvailabilityViewController *)self event];
-  v9 = v8;
-  if (v7)
+  modifiedStartDate = [(EKUIAvailabilityViewController *)self modifiedStartDate];
+  isAttendeeProposeTime = [(EKUIAvailabilityViewController *)self isAttendeeProposeTime];
+  event = [(EKUIAvailabilityViewController *)self event];
+  v9 = event;
+  if (isAttendeeProposeTime)
   {
-    [v8 proposedStartDate];
+    [event proposedStartDate];
   }
 
   else
   {
-    [v8 startDate];
+    [event startDate];
   }
   v10 = ;
-  v11 = [v6 isEqualToDate:v10];
+  v11 = [modifiedStartDate isEqualToDate:v10];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -629,20 +629,20 @@
   v12 = _Block_copy(aBlock);
   if (!-[EKUIAvailabilityViewController isAttendeeProposeTime](self, "isAttendeeProposeTime") && -[EKUIAvailabilityViewController fromDetail](self, "fromDetail") && (v13 = v11 ^ 1, -[EKUIAvailabilityViewController event](self, "event"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 hasChanges] | v13, v14, (v15 & 1) != 0))
   {
-    v16 = [(EKUIAvailabilityViewController *)self event];
+    event2 = [(EKUIAvailabilityViewController *)self event];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __45__EKUIAvailabilityViewController_doneTapped___block_invoke_2;
     v23[3] = &unk_1E843FA10;
-    v24 = v16;
-    v25 = self;
-    v26 = v4;
+    v24 = event2;
+    selfCopy = self;
+    v26 = tappedCopy;
     v27 = v12;
     v17 = *MEMORY[0x1E695F050];
     v18 = *(MEMORY[0x1E695F050] + 8);
     v19 = *(MEMORY[0x1E695F050] + 16);
     v20 = *(MEMORY[0x1E695F050] + 24);
-    v21 = v16;
+    v21 = event2;
     v22 = [EKUISendInviteAlertController presentInviteAlertWithOptions:4 sourceView:0 sourceRect:v26 sourceItem:self viewController:v23 withCompletionHandler:v17, v18, v19, v20];
   }
 
@@ -756,8 +756,8 @@ void __45__EKUIAvailabilityViewController_doneTapped___block_invoke_133(uint64_t
 {
   v178[4] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v4 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  [v3 setBackgroundColor:systemGroupedBackgroundColor];
 
   v155 = v3;
   [(EKUIAvailabilityViewController *)self setView:v3];
@@ -775,65 +775,65 @@ void __45__EKUIAvailabilityViewController_doneTapped___block_invoke_133(uint64_t
   v11 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:?];
   [v10 setFont:v11];
 
-  v12 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v10 setTextColor:v12];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v10 setTextColor:secondaryLabelColor];
 
   [v10 setAdjustsFontForContentSizeCategory:1];
   [(EKUIAvailabilityViewController *)self setUnavailableLabel:v10];
-  v13 = [(EKUIAvailabilityViewController *)self view];
-  [v13 addSubview:v10];
+  view = [(EKUIAvailabilityViewController *)self view];
+  [view addSubview:v10];
 
   v14 = MEMORY[0x1E696ACD8];
-  v172 = [(EKUIAvailabilityViewController *)self view];
-  v15 = [v14 constraintWithItem:v10 attribute:9 relatedBy:0 toItem:v172 attribute:9 multiplier:1.0 constant:0.0];
+  view2 = [(EKUIAvailabilityViewController *)self view];
+  v15 = [v14 constraintWithItem:v10 attribute:9 relatedBy:0 toItem:view2 attribute:9 multiplier:1.0 constant:0.0];
   v178[0] = v15;
   v16 = MEMORY[0x1E696ACD8];
-  v17 = [(EKUIAvailabilityViewController *)self view];
-  v18 = [v16 constraintWithItem:v10 attribute:10 relatedBy:0 toItem:v17 attribute:10 multiplier:1.0 constant:0.0];
+  view3 = [(EKUIAvailabilityViewController *)self view];
+  v18 = [v16 constraintWithItem:v10 attribute:10 relatedBy:0 toItem:view3 attribute:10 multiplier:1.0 constant:0.0];
   v178[1] = v18;
   v19 = MEMORY[0x1E696ACD8];
-  v20 = [(EKUIAvailabilityViewController *)self view];
-  v21 = [v19 constraintWithItem:v10 attribute:5 relatedBy:0 toItem:v20 attribute:5 multiplier:1.0 constant:16.0];
+  view4 = [(EKUIAvailabilityViewController *)self view];
+  v21 = [v19 constraintWithItem:v10 attribute:5 relatedBy:0 toItem:view4 attribute:5 multiplier:1.0 constant:16.0];
   v178[2] = v21;
   v22 = MEMORY[0x1E696ACD8];
-  v23 = [(EKUIAvailabilityViewController *)self view];
+  view5 = [(EKUIAvailabilityViewController *)self view];
   v154 = v10;
-  v24 = [v22 constraintWithItem:v10 attribute:3 relatedBy:0 toItem:v23 attribute:3 multiplier:1.0 constant:16.0];
+  v24 = [v22 constraintWithItem:v10 attribute:3 relatedBy:0 toItem:view5 attribute:3 multiplier:1.0 constant:16.0];
   v178[3] = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v178 count:4];
   [v14 activateConstraints:v25];
 
   v26 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v6, v7, v8, v9}];
   [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v27 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v26 setBackgroundColor:v27];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v26 setBackgroundColor:systemBackgroundColor];
 
   [(EKUIAvailabilityViewController *)self setContainerView:v26];
-  v28 = [(EKUIAvailabilityViewController *)self view];
-  v29 = [(EKUIAvailabilityViewController *)self containerView];
-  [v28 addSubview:v29];
+  view6 = [(EKUIAvailabilityViewController *)self view];
+  containerView = [(EKUIAvailabilityViewController *)self containerView];
+  [view6 addSubview:containerView];
 
   v152 = MEMORY[0x1E696ACD8];
-  v166 = [v26 topAnchor];
-  v170 = [(EKUIAvailabilityViewController *)self view];
-  v164 = [v170 topAnchor];
-  v162 = [v166 constraintEqualToAnchor:v164];
+  topAnchor = [v26 topAnchor];
+  view7 = [(EKUIAvailabilityViewController *)self view];
+  topAnchor2 = [view7 topAnchor];
+  v162 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v177[0] = v162;
-  v158 = [v26 leadingAnchor];
-  v160 = [(EKUIAvailabilityViewController *)self view];
-  v156 = [v160 leadingAnchor];
-  v150 = [v158 constraintEqualToAnchor:v156];
+  leadingAnchor = [v26 leadingAnchor];
+  view8 = [(EKUIAvailabilityViewController *)self view];
+  leadingAnchor2 = [view8 leadingAnchor];
+  v150 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v177[1] = v150;
-  v30 = [v26 trailingAnchor];
-  v31 = [(EKUIAvailabilityViewController *)self view];
-  v32 = [v31 trailingAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32];
+  trailingAnchor = [v26 trailingAnchor];
+  view9 = [(EKUIAvailabilityViewController *)self view];
+  trailingAnchor2 = [view9 trailingAnchor];
+  v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v177[2] = v33;
   v173 = v26;
-  v34 = [v26 bottomAnchor];
-  v35 = [(EKUIAvailabilityViewController *)self view];
-  v36 = [v35 bottomAnchor];
-  v37 = [v34 constraintEqualToAnchor:v36];
+  bottomAnchor = [v26 bottomAnchor];
+  view10 = [(EKUIAvailabilityViewController *)self view];
+  bottomAnchor2 = [view10 bottomAnchor];
+  v37 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v177[3] = v37;
   v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v177 count:4];
   [v152 activateConstraints:v38];
@@ -854,8 +854,8 @@ void __45__EKUIAvailabilityViewController_doneTapped___block_invoke_133(uint64_t
   [v173 addSubview:v39];
   v40 = objc_opt_new();
   [v40 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v41 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v40 setBackgroundColor:v41];
+  systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v40 setBackgroundColor:systemBackgroundColor2];
 
   [v173 addSubview:v40];
   v42 = objc_opt_new();
@@ -865,15 +865,15 @@ void __45__EKUIAvailabilityViewController_doneTapped___block_invoke_133(uint64_t
   v44 = MEMORY[0x1E696AEC0];
   v45 = EventKitUIBundle();
   v46 = [v45 localizedStringForKey:@"Invitees (%lu)" value:&stru_1F4EF6790 table:0];
-  v47 = [(EKUIAvailabilityViewController *)self participants];
-  v48 = [v44 stringWithFormat:v46, objc_msgSend(v47, "count")];
+  participants = [(EKUIAvailabilityViewController *)self participants];
+  v48 = [v44 stringWithFormat:v46, objc_msgSend(participants, "count")];
   [(UILabel *)self->_inviteesLabel setText:v48];
 
   v49 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v168];
   [(UILabel *)self->_inviteesLabel setFont:v49];
 
-  v50 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)self->_inviteesLabel setTextColor:v50];
+  secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)self->_inviteesLabel setTextColor:secondaryLabelColor2];
 
   [(UILabel *)self->_inviteesLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_inviteesLabel setAdjustsFontForContentSizeCategory:1];
@@ -882,17 +882,17 @@ void __45__EKUIAvailabilityViewController_doneTapped___block_invoke_133(uint64_t
   [v40 addSubview:self->_inviteesLabel];
   v52 = objc_opt_new();
   [v52 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v53 = [MEMORY[0x1E69DC888] separatorColor];
-  [v52 setBackgroundColor:v53];
+  separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+  [v52 setBackgroundColor:separatorColor];
 
   v169 = v40;
   v165 = v52;
   [v40 addSubview:v52];
   v54 = [EKUIHorizontalGradientView alloc];
-  v55 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v56 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v57 = [v56 colorWithAlphaComponent:0.0];
-  v58 = [(EKUIHorizontalGradientView *)v54 initWithStartColor:v55 endColor:v57 start:0.0 end:1.0];
+  systemBackgroundColor3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  systemBackgroundColor4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v57 = [systemBackgroundColor4 colorWithAlphaComponent:0.0];
+  v58 = [(EKUIHorizontalGradientView *)v54 initWithStartColor:systemBackgroundColor3 endColor:v57 start:0.0 end:1.0];
 
   v163 = v58;
   [v173 addSubview:v58];
@@ -905,8 +905,8 @@ void __45__EKUIAvailabilityViewController_doneTapped___block_invoke_133(uint64_t
 
   else
   {
-    v60 = [(EKUIAvailabilityViewController *)self event];
-    [v59 setEnabled:{objc_msgSend(v60, "isEditable")}];
+    event = [(EKUIAvailabilityViewController *)self event];
+    [v59 setEnabled:{objc_msgSend(event, "isEditable")}];
   }
 
   [v59 setCancelsTouchesInView:0];
@@ -915,14 +915,14 @@ void __45__EKUIAvailabilityViewController_doneTapped___block_invoke_133(uint64_t
   v151 = [objc_alloc(MEMORY[0x1E69DCD80]) initWithTarget:self action:sel_viewPinched_];
   [v171 addGestureRecognizer:?];
   v61 = [EKUIAvailabilityParticipantList alloc];
-  v62 = [(EKUIAvailabilityViewController *)self participants];
-  v63 = [(EKUIAvailabilityParticipantList *)v61 initWithParticipants:v62 viewController:self];
+  participants2 = [(EKUIAvailabilityViewController *)self participants];
+  v63 = [(EKUIAvailabilityParticipantList *)v61 initWithParticipants:participants2 viewController:self];
 
   [(EKUIAvailabilityParticipantList *)v63 setDelegate:self];
   [(EKUIAvailabilityParticipantList *)v63 setBounces:0];
   [(EKUIAvailabilityParticipantList *)v63 setShowsVerticalScrollIndicator:0];
-  v64 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(EKUIAvailabilityParticipantList *)v63 setBackgroundColor:v64];
+  systemBackgroundColor5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(EKUIAvailabilityParticipantList *)v63 setBackgroundColor:systemBackgroundColor5];
 
   if (MEMORY[0x1D38B98D0]([(EKUIAvailabilityParticipantList *)v63 setContentInset:10.0, 0.0, 10.0, 0.0]))
   {
@@ -935,23 +935,23 @@ void __45__EKUIAvailabilityViewController_doneTapped___block_invoke_133(uint64_t
   [v173 addSubview:v63];
   v65 = objc_opt_new();
   [v65 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v66 = [MEMORY[0x1E69DC888] separatorColor];
-  [v65 setBackgroundColor:v66];
+  separatorColor2 = [MEMORY[0x1E69DC888] separatorColor];
+  [v65 setBackgroundColor:separatorColor2];
 
   v167 = v65;
   [v173 addSubview:v65];
   v67 = [EKUIHorizontalGradientView alloc];
-  v68 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v69 = [v68 colorWithAlphaComponent:0.0];
-  v70 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v71 = [(EKUIHorizontalGradientView *)v67 initWithStartColor:v69 endColor:v70 start:0.0 end:1.0];
+  systemBackgroundColor6 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v69 = [systemBackgroundColor6 colorWithAlphaComponent:0.0];
+  systemBackgroundColor7 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v71 = [(EKUIHorizontalGradientView *)v67 initWithStartColor:v69 endColor:systemBackgroundColor7 start:0.0 end:1.0];
 
   v159 = v71;
   [v173 addSubview:v71];
   v72 = objc_opt_new();
   [v72 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v73 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v72 setBackgroundColor:v73];
+  systemBackgroundColor8 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v72 setBackgroundColor:systemBackgroundColor8];
 
   [v72 setDelegate:self];
   [v72 setBounces:0];
@@ -969,14 +969,14 @@ void __45__EKUIAvailabilityViewController_doneTapped___block_invoke_133(uint64_t
   [v171 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(EKUIAvailabilityParticipantList *)v161 setTranslatesAutoresizingMaskIntoConstraints:0];
   v75 = MEMORY[0x1E696ACD8];
-  v76 = [(EKUIAvailabilityViewController *)self view];
-  v77 = [v76 window];
-  [EKUIAvailabilityParticipantList listWidthForCompact:0 orientation:EKUIInterfaceOrientationForViewHierarchy(v77)];
+  view11 = [(EKUIAvailabilityViewController *)self view];
+  window = [view11 window];
+  [EKUIAvailabilityParticipantList listWidthForCompact:0 orientation:EKUIInterfaceOrientationForViewHierarchy(window)];
   v79 = [v75 constraintWithItem:v161 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v78];
   [(EKUIAvailabilityViewController *)self setParticipantWidthConstraint:v79];
 
-  v80 = [(EKUIAvailabilityViewController *)self participantWidthConstraint];
-  [v80 setActive:1];
+  participantWidthConstraint = [(EKUIAvailabilityViewController *)self participantWidthConstraint];
+  [participantWidthConstraint setActive:1];
 
   v81 = [MEMORY[0x1E696ACD8] constraintWithItem:v40 attribute:7 relatedBy:0 toItem:v161 attribute:7 multiplier:1.0 constant:0.0];
   [v81 setActive:1];
@@ -989,11 +989,11 @@ void __45__EKUIAvailabilityViewController_doneTapped___block_invoke_133(uint64_t
   v85 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[participantList][scrollView]|" options:0 metrics:&unk_1F4F32978 views:v74];
   [v84 activateConstraints:v85];
 
-  v86 = [(UILabel *)self->_inviteesLabel leadingAnchor];
-  v87 = [(EKUIAvailabilityViewController *)self view];
-  v88 = [v87 safeAreaLayoutGuide];
-  v89 = [v88 leadingAnchor];
-  v90 = [v86 constraintEqualToAnchor:v89];
+  leadingAnchor3 = [(UILabel *)self->_inviteesLabel leadingAnchor];
+  view12 = [(EKUIAvailabilityViewController *)self view];
+  safeAreaLayoutGuide = [view12 safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide leadingAnchor];
+  v90 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
 
   [v90 setConstant:22.0];
   v148 = v90;
@@ -1039,8 +1039,8 @@ void __45__EKUIAvailabilityViewController_doneTapped___block_invoke_133(uint64_t
   v107 = [v105 constraintWithItem:v157 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v106];
   [(EKUIAvailabilityViewController *)self setTimelineHeightConstraint:v107];
 
-  v108 = [(EKUIAvailabilityViewController *)self timelineHeightConstraint];
-  [v108 setActive:1];
+  timelineHeightConstraint = [(EKUIAvailabilityViewController *)self timelineHeightConstraint];
+  [timelineHeightConstraint setActive:1];
 
   v109 = MEMORY[0x1D38B98D0]();
   if (v109)
@@ -1076,35 +1076,35 @@ void __45__EKUIAvailabilityViewController_doneTapped___block_invoke_133(uint64_t
   [v116 setActive:1];
 
   v138 = MEMORY[0x1E696ACD8];
-  v147 = [v163 leadingAnchor];
-  v146 = [v40 trailingAnchor];
-  v145 = [v147 constraintEqualToAnchor:v146];
+  leadingAnchor5 = [v163 leadingAnchor];
+  trailingAnchor3 = [v40 trailingAnchor];
+  v145 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3];
   v175[0] = v145;
-  v144 = [v163 widthAnchor];
-  v143 = [v144 constraintEqualToConstant:10.0];
+  widthAnchor = [v163 widthAnchor];
+  v143 = [widthAnchor constraintEqualToConstant:10.0];
   v175[1] = v143;
-  v142 = [v163 topAnchor];
-  v141 = [v40 topAnchor];
-  v140 = [v142 constraintEqualToAnchor:v141];
+  topAnchor3 = [v163 topAnchor];
+  topAnchor4 = [v40 topAnchor];
+  v140 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v175[2] = v140;
-  v139 = [v163 bottomAnchor];
-  v137 = [v40 bottomAnchor];
-  v136 = [v139 constraintEqualToAnchor:v137];
+  bottomAnchor3 = [v163 bottomAnchor];
+  bottomAnchor4 = [v40 bottomAnchor];
+  v136 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v175[3] = v136;
-  v135 = [v159 trailingAnchor];
-  v134 = [(EKUIAvailabilityParticipantList *)v161 trailingAnchor];
-  v133 = [v135 constraintEqualToAnchor:v134];
+  trailingAnchor4 = [v159 trailingAnchor];
+  trailingAnchor5 = [(EKUIAvailabilityParticipantList *)v161 trailingAnchor];
+  v133 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v175[4] = v133;
-  v117 = [v159 widthAnchor];
-  v118 = [v117 constraintEqualToConstant:10.0];
+  widthAnchor2 = [v159 widthAnchor];
+  v118 = [widthAnchor2 constraintEqualToConstant:10.0];
   v175[5] = v118;
-  v119 = [v159 topAnchor];
-  v120 = [(EKUIAvailabilityParticipantList *)v161 topAnchor];
-  v121 = [v119 constraintEqualToAnchor:v120];
+  topAnchor5 = [v159 topAnchor];
+  topAnchor6 = [(EKUIAvailabilityParticipantList *)v161 topAnchor];
+  v121 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v175[6] = v121;
-  v122 = [v159 bottomAnchor];
-  v123 = [(EKUIAvailabilityParticipantList *)v161 bottomAnchor];
-  v124 = [v122 constraintEqualToAnchor:v123];
+  bottomAnchor5 = [v159 bottomAnchor];
+  bottomAnchor6 = [(EKUIAvailabilityParticipantList *)v161 bottomAnchor];
+  v124 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v175[7] = v124;
   v125 = [MEMORY[0x1E695DEC8] arrayWithObjects:v175 count:8];
   [v138 activateConstraints:v125];
@@ -1113,33 +1113,33 @@ void __45__EKUIAvailabilityViewController_doneTapped___block_invoke_133(uint64_t
   do
   {
     v127 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v6, v7, v8, v9}];
-    v128 = [MEMORY[0x1E69DC888] separatorColor];
-    [v127 setBackgroundColor:v128];
+    separatorColor3 = [MEMORY[0x1E69DC888] separatorColor];
+    [v127 setBackgroundColor:separatorColor3];
 
-    v129 = [(EKUIAvailabilityViewController *)self scrollView];
-    [v129 addSubview:v127];
+    scrollView = [(EKUIAvailabilityViewController *)self scrollView];
+    [scrollView addSubview:v127];
 
-    v130 = [(EKUIAvailabilityViewController *)self hourLines];
-    [v130 addObject:v127];
+    hourLines = [(EKUIAvailabilityViewController *)self hourLines];
+    [hourLines addObject:v127];
 
     --v126;
   }
 
   while (v126);
-  v131 = [(EKUIAvailabilityViewController *)self participants];
+  participants3 = [(EKUIAvailabilityViewController *)self participants];
   v174[0] = MEMORY[0x1E69E9820];
   v174[1] = 3221225472;
   v174[2] = __42__EKUIAvailabilityViewController_loadView__block_invoke;
   v174[3] = &unk_1E84414F0;
   v174[4] = self;
-  [v131 enumerateObjectsUsingBlock:v174];
+  [participants3 enumerateObjectsUsingBlock:v174];
 
   [v173 bringSubviewToFront:v159];
   [v173 bringSubviewToFront:v163];
   [v173 bringSubviewToFront:v167];
   [(EKUIAvailabilityViewController *)self updateForContentCategory];
-  v132 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v132 addObserver:self selector:sel_contentCategorySizeChanged_ name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_contentCategorySizeChanged_ name:*MEMORY[0x1E69DDC48] object:0];
 }
 
 void __42__EKUIAvailabilityViewController_loadView__block_invoke(uint64_t a1, void *a2, char a3)
@@ -1172,8 +1172,8 @@ void __42__EKUIAvailabilityViewController_loadView__block_invoke(uint64_t a1, vo
 - (void)configureUnavailableStateForEvent
 {
   v3 = MEMORY[0x1E6966988];
-  v4 = [(EKUIAvailabilityViewController *)self event];
-  v5 = [v3 availabilityPanelVisibilityForEvent:v4];
+  event = [(EKUIAvailabilityViewController *)self event];
+  v5 = [v3 availabilityPanelVisibilityForEvent:event];
 
   if (v5 > 2)
   {
@@ -1248,15 +1248,15 @@ LABEL_19:
   [(EKUIAvailabilityViewController *)self setAvailabilityPanelAvailable:1 unavailableMessage:0];
 }
 
-- (void)setAvailabilityPanelAvailable:(BOOL)a3 unavailableMessage:(id)a4
+- (void)setAvailabilityPanelAvailable:(BOOL)available unavailableMessage:(id)message
 {
-  v4 = a3;
-  v16 = a4;
-  v6 = [(EKUIAvailabilityViewController *)self unavailableLabel];
-  v7 = v6;
-  if (v4)
+  availableCopy = available;
+  messageCopy = message;
+  unavailableLabel = [(EKUIAvailabilityViewController *)self unavailableLabel];
+  v7 = unavailableLabel;
+  if (availableCopy)
   {
-    [v6 setHidden:1];
+    [unavailableLabel setHidden:1];
 
     [(UIBarButtonItem *)self->_previousButton setEnabled:1];
     [(UIBarButtonItem *)self->_nextButton setEnabled:1];
@@ -1267,8 +1267,8 @@ LABEL_19:
 
     else
     {
-      v13 = [(EKUIAvailabilityViewController *)self event];
-      -[UIBarButtonItem setEnabled:](self->_topNextTime, "setEnabled:", [v13 isEditable]);
+      event = [(EKUIAvailabilityViewController *)self event];
+      -[UIBarButtonItem setEnabled:](self->_topNextTime, "setEnabled:", [event isEditable]);
     }
 
     if ([(EKUIAvailabilityViewController *)self isAttendeeProposeTime])
@@ -1278,139 +1278,139 @@ LABEL_19:
 
     else
     {
-      v14 = [(EKUIAvailabilityViewController *)self event];
-      -[UIBarButtonItem setEnabled:](self->_doneButton, "setEnabled:", [v14 isEditable]);
+      event2 = [(EKUIAvailabilityViewController *)self event];
+      -[UIBarButtonItem setEnabled:](self->_doneButton, "setEnabled:", [event2 isEditable]);
     }
 
-    v15 = [(EKUIAvailabilityViewController *)self containerView];
-    [v15 setHidden:0];
+    containerView = [(EKUIAvailabilityViewController *)self containerView];
+    [containerView setHidden:0];
 
-    v11 = [(EKUIAvailabilityViewController *)self navigationController];
+    navigationController = [(EKUIAvailabilityViewController *)self navigationController];
     v12 = [(EKUIAvailabilityViewController *)self compact]^ 1;
-    v10 = v11;
+    navigationController2 = navigationController;
   }
 
   else
   {
-    [v6 setHidden:0];
+    [unavailableLabel setHidden:0];
 
-    v8 = [(EKUIAvailabilityViewController *)self unavailableLabel];
-    [v8 setText:v16];
+    unavailableLabel2 = [(EKUIAvailabilityViewController *)self unavailableLabel];
+    [unavailableLabel2 setText:messageCopy];
 
     [(UIBarButtonItem *)self->_previousButton setEnabled:0];
     [(UIBarButtonItem *)self->_nextButton setEnabled:0];
     [(UIBarButtonItem *)self->_topNextTime setEnabled:0];
     [(UIBarButtonItem *)self->_doneButton setEnabled:0];
-    v9 = [(EKUIAvailabilityViewController *)self containerView];
-    [v9 setHidden:1];
+    containerView2 = [(EKUIAvailabilityViewController *)self containerView];
+    [containerView2 setHidden:1];
 
-    v10 = [(EKUIAvailabilityViewController *)self navigationController];
-    v11 = v10;
+    navigationController2 = [(EKUIAvailabilityViewController *)self navigationController];
+    navigationController = navigationController2;
     v12 = 1;
   }
 
-  [v10 setToolbarHidden:v12 animated:0];
+  [navigationController2 setToolbarHidden:v12 animated:0];
 }
 
 - (void)updateForContentCategory
 {
   [EKUILargeTextUtilities contentSizeCategoryScaledValueForDefaultValue:0 shouldScaleForSmallerSizes:58.0];
   [(EKUIAvailabilityViewController *)self setRowHeight:?];
-  v3 = [(EKUIAvailabilityViewController *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(EKUIAvailabilityViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   v5 = *MEMORY[0x1E69DDC60];
 
-  if (v4 <= v5)
+  if (preferredContentSizeCategory <= v5)
   {
     v13 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:18.0];
-    v14 = [(EKUIAvailabilityViewController *)self weekdayLabel];
-    [v14 setFont:v13];
+    weekdayLabel = [(EKUIAvailabilityViewController *)self weekdayLabel];
+    [weekdayLabel setFont:v13];
 
     v15 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:18.0];
-    v16 = [(EKUIAvailabilityViewController *)self largeWeekdayLabel];
-    [v16 setFont:v15];
+    largeWeekdayLabel = [(EKUIAvailabilityViewController *)self largeWeekdayLabel];
+    [largeWeekdayLabel setFont:v15];
 
     v17 = MEMORY[0x1E696AEC0];
     v10 = EventKitUIBundle();
     v11 = [v10 localizedStringForKey:@"Invitees (%lu)" value:&stru_1F4EF6790 table:0];
-    v12 = [(EKUIAvailabilityViewController *)self participants];
-    v18 = [v17 stringWithFormat:v11, objc_msgSend(v12, "count")];
-    v19 = [(EKUIAvailabilityViewController *)self inviteesLabel];
-    [v19 setText:v18];
+    participants = [(EKUIAvailabilityViewController *)self participants];
+    v18 = [v17 stringWithFormat:v11, objc_msgSend(participants, "count")];
+    inviteesLabel = [(EKUIAvailabilityViewController *)self inviteesLabel];
+    [inviteesLabel setText:v18];
   }
 
   else
   {
     v6 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:22.0];
-    v7 = [(EKUIAvailabilityViewController *)self weekdayLabel];
-    [v7 setFont:v6];
+    weekdayLabel2 = [(EKUIAvailabilityViewController *)self weekdayLabel];
+    [weekdayLabel2 setFont:v6];
 
     v8 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:22.0];
-    v9 = [(EKUIAvailabilityViewController *)self largeWeekdayLabel];
-    [v9 setFont:v8];
+    largeWeekdayLabel2 = [(EKUIAvailabilityViewController *)self largeWeekdayLabel];
+    [largeWeekdayLabel2 setFont:v8];
 
     v10 = EventKitUIBundle();
     v11 = [v10 localizedStringForKey:@"Invitees" value:&stru_1F4EF6790 table:0];
-    v12 = [(EKUIAvailabilityViewController *)self inviteesLabel];
-    [v12 setText:v11];
+    participants = [(EKUIAvailabilityViewController *)self inviteesLabel];
+    [participants setText:v11];
   }
 
   +[EKUIAvailabilityViewController defaultTimelineHeight];
   v21 = v20;
-  v22 = [(EKUIAvailabilityViewController *)self timelineHeightConstraint];
-  [v22 setConstant:v21];
+  timelineHeightConstraint = [(EKUIAvailabilityViewController *)self timelineHeightConstraint];
+  [timelineHeightConstraint setConstant:v21];
 
-  v23 = [(EKUIAvailabilityViewController *)self timelineView];
-  [v23 setLabels];
+  timelineView = [(EKUIAvailabilityViewController *)self timelineView];
+  [timelineView setLabels];
 
-  v24 = [(EKUIAvailabilityViewController *)self view];
-  [v24 setNeedsLayout];
+  view = [(EKUIAvailabilityViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)configureParticipants
 {
   v3 = MEMORY[0x1E69933A8];
-  v5 = [(EKUIAvailabilityViewController *)self event];
-  v4 = [v3 participantsForAvailabilityViewControllerFromEvent:v5];
+  event = [(EKUIAvailabilityViewController *)self event];
+  v4 = [v3 participantsForAvailabilityViewControllerFromEvent:event];
   [(EKUIAvailabilityViewController *)self setParticipants:v4];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = EKUIAvailabilityViewController;
-  [(EKEditItemViewController *)&v5 viewWillAppear:a3];
-  v4 = [(EKUIAvailabilityViewController *)self modifiedStartDate];
-  [(EKUIAvailabilityViewController *)self setDate:v4];
+  [(EKEditItemViewController *)&v5 viewWillAppear:appear];
+  modifiedStartDate = [(EKUIAvailabilityViewController *)self modifiedStartDate];
+  [(EKUIAvailabilityViewController *)self setDate:modifiedStartDate];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = EKUIAvailabilityViewController;
-  [(EKUIAvailabilityViewController *)&v7 viewDidAppear:a3];
-  v4 = [(EKUIAvailabilityViewController *)self modifiedStartDate];
-  v5 = [(EKUIAvailabilityViewController *)self updateCurrentEventAtTime:v4];
+  [(EKUIAvailabilityViewController *)&v7 viewDidAppear:appear];
+  modifiedStartDate = [(EKUIAvailabilityViewController *)self modifiedStartDate];
+  v5 = [(EKUIAvailabilityViewController *)self updateCurrentEventAtTime:modifiedStartDate];
 
   if (!v5)
   {
-    v6 = [(EKUIAvailabilityViewController *)self scrollView];
-    [v6 setContentOffset:{510.0, 0.0}];
+    scrollView = [(EKUIAvailabilityViewController *)self scrollView];
+    [scrollView setContentOffset:{510.0, 0.0}];
   }
 }
 
 - (void)layout
 {
   v60 = *MEMORY[0x1E69E9840];
-  v3 = [(EKUIAvailabilityViewController *)self weekdayLabel];
-  [v3 layoutSubviews];
+  weekdayLabel = [(EKUIAvailabilityViewController *)self weekdayLabel];
+  [weekdayLabel layoutSubviews];
 
-  v4 = [(EKUIAvailabilityViewController *)self largeWeekdayLabel];
-  [v4 layoutSubviews];
+  largeWeekdayLabel = [(EKUIAvailabilityViewController *)self largeWeekdayLabel];
+  [largeWeekdayLabel layoutSubviews];
 
-  v5 = [(EKUIAvailabilityViewController *)self view];
-  v6 = [v5 window];
-  v7 = EKUIInterfaceOrientationForViewHierarchy(v6);
+  view = [(EKUIAvailabilityViewController *)self view];
+  window = [view window];
+  v7 = EKUIInterfaceOrientationForViewHierarchy(window);
 
   if (![(EKUIAvailabilityViewController *)self compact])
   {
@@ -1421,45 +1421,45 @@ LABEL_19:
 
     else
     {
-      v8 = [(EKUIAvailabilityViewController *)self view];
-      [v8 frame];
+      view2 = [(EKUIAvailabilityViewController *)self view];
+      [view2 frame];
       [EKUIAvailabilityParticipantList listWidthForCompact:0 orientation:v7];
     }
   }
 
-  v9 = [(EKUIAvailabilityViewController *)self participantAvailabilityViews];
-  v10 = [v9 count];
+  participantAvailabilityViews = [(EKUIAvailabilityViewController *)self participantAvailabilityViews];
+  v10 = [participantAvailabilityViews count];
   [(EKUIAvailabilityViewController *)self rowHeight];
   v12 = v11 * v10;
 
-  v13 = [(EKUIAvailabilityViewController *)self participantList];
+  participantList = [(EKUIAvailabilityViewController *)self participantList];
   [(EKUIAvailabilityViewController *)self rowHeight];
-  [v13 setRowHeight:?];
+  [participantList setRowHeight:?];
 
   [EKUIAvailabilityParticipantList listWidthForCompact:[(EKUIAvailabilityViewController *)self compact] orientation:v7];
   v15 = v14;
-  v16 = [(EKUIAvailabilityViewController *)self participantList];
-  [v16 setContentSize:{v15, v12}];
+  participantList2 = [(EKUIAvailabilityViewController *)self participantList];
+  [participantList2 setContentSize:{v15, v12}];
 
-  v17 = [(EKUIAvailabilityViewController *)self timelineView];
+  timelineView = [(EKUIAvailabilityViewController *)self timelineView];
   [(EKUIAvailabilityViewController *)self timelineWidth];
-  [v17 setContentWidth:?];
+  [timelineView setContentWidth:?];
 
-  v18 = [(EKUIAvailabilityViewController *)self hourLines];
+  hourLines = [(EKUIAvailabilityViewController *)self hourLines];
   v57[0] = MEMORY[0x1E69E9820];
   v57[1] = 3221225472;
   v57[2] = __40__EKUIAvailabilityViewController_layout__block_invoke;
   v57[3] = &unk_1E8441518;
   v57[4] = self;
   *&v57[5] = v12;
-  [v18 enumerateObjectsUsingBlock:v57];
+  [hourLines enumerateObjectsUsingBlock:v57];
 
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v19 = [(EKUIAvailabilityViewController *)self participantAvailabilityViews];
-  v20 = [v19 countByEnumeratingWithState:&v53 objects:v59 count:16];
+  participantAvailabilityViews2 = [(EKUIAvailabilityViewController *)self participantAvailabilityViews];
+  v20 = [participantAvailabilityViews2 countByEnumeratingWithState:&v53 objects:v59 count:16];
   if (v20)
   {
     v21 = v20;
@@ -1471,7 +1471,7 @@ LABEL_19:
       {
         if (*v54 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(participantAvailabilityViews2);
         }
 
         v25 = *(*(&v53 + 1) + 8 * i);
@@ -1483,7 +1483,7 @@ LABEL_19:
         v23 = v23 + v29;
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v53 objects:v59 count:16];
+      v21 = [participantAvailabilityViews2 countByEnumeratingWithState:&v53 objects:v59 count:16];
     }
 
     while (v21);
@@ -1493,8 +1493,8 @@ LABEL_19:
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v30 = [(EKUIAvailabilityViewController *)self freeSpanViews];
-  v31 = [v30 countByEnumeratingWithState:&v49 objects:v58 count:16];
+  freeSpanViews = [(EKUIAvailabilityViewController *)self freeSpanViews];
+  v31 = [freeSpanViews countByEnumeratingWithState:&v49 objects:v58 count:16];
   if (v31)
   {
     v32 = v31;
@@ -1505,40 +1505,40 @@ LABEL_19:
       {
         if (*v50 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(freeSpanViews);
         }
 
         v35 = *(*(&v49 + 1) + 8 * j);
-        v36 = [v35 startDate];
-        v37 = [v35 endDate];
-        [(EKUIAvailabilityViewController *)self frameForFreeSpanViewAtStart:v36 endDate:v37 duration:0.0];
+        startDate = [v35 startDate];
+        endDate = [v35 endDate];
+        [(EKUIAvailabilityViewController *)self frameForFreeSpanViewAtStart:startDate endDate:endDate duration:0.0];
         [v35 setFrame:?];
 
         [v35 setNeedsDisplay];
       }
 
-      v32 = [v30 countByEnumeratingWithState:&v49 objects:v58 count:16];
+      v32 = [freeSpanViews countByEnumeratingWithState:&v49 objects:v58 count:16];
     }
 
     while (v32);
   }
 
-  v38 = [(EKUIAvailabilityViewController *)self eventTime];
-  v39 = [(EKUIAvailabilityViewController *)self eventTime];
-  v40 = [v39 startDate];
-  v41 = [(EKUIAvailabilityViewController *)self event];
-  [v41 duration];
-  [(EKUIAvailabilityViewController *)self frameForFreeSpanViewAtStart:v40 endDate:0 duration:?];
-  [v38 setFrame:?];
+  eventTime = [(EKUIAvailabilityViewController *)self eventTime];
+  eventTime2 = [(EKUIAvailabilityViewController *)self eventTime];
+  startDate2 = [eventTime2 startDate];
+  event = [(EKUIAvailabilityViewController *)self event];
+  [event duration];
+  [(EKUIAvailabilityViewController *)self frameForFreeSpanViewAtStart:startDate2 endDate:0 duration:?];
+  [eventTime setFrame:?];
 
   [(EKUIAvailabilityViewController *)self availableWidth];
   v43 = v42;
-  v44 = [(EKUIAvailabilityViewController *)self participantAvailabilityViews];
-  v45 = [v44 count];
+  participantAvailabilityViews3 = [(EKUIAvailabilityViewController *)self participantAvailabilityViews];
+  v45 = [participantAvailabilityViews3 count];
   [(EKUIAvailabilityViewController *)self rowHeight];
   v47 = v46 * v45;
-  v48 = [(EKUIAvailabilityViewController *)self scrollView];
-  [v48 setContentSize:{v43, v47}];
+  scrollView = [(EKUIAvailabilityViewController *)self scrollView];
+  [scrollView setContentSize:{v43, v47}];
 }
 
 void __40__EKUIAvailabilityViewController_layout__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1565,31 +1565,31 @@ void __40__EKUIAvailabilityViewController_layout__block_invoke(uint64_t a1, void
   [v13 setFrame:{v7, -10.0, 0.5, v12 + 20.0}];
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v13 = a3;
-  v4 = [(EKUIAvailabilityViewController *)self event];
-  v5 = [v4 timeZone];
-  v6 = [v13 dateForStartOfDayInTimeZone:v5];
+  dateCopy = date;
+  event = [(EKUIAvailabilityViewController *)self event];
+  timeZone = [event timeZone];
+  v6 = [dateCopy dateForStartOfDayInTimeZone:timeZone];
 
-  v7 = [(EKUIAvailabilityViewController *)self currentStartDate];
-  LOBYTE(v5) = [v6 isEqualToDate:v7];
+  currentStartDate = [(EKUIAvailabilityViewController *)self currentStartDate];
+  LOBYTE(timeZone) = [v6 isEqualToDate:currentStartDate];
 
-  if ((v5 & 1) == 0)
+  if ((timeZone & 1) == 0)
   {
     [(EKUIAvailabilityViewController *)self setCurrentStartDate:v6];
-    v8 = [(EKUIAvailabilityViewController *)self weekdayLabel];
-    [v8 setDate:v13];
+    weekdayLabel = [(EKUIAvailabilityViewController *)self weekdayLabel];
+    [weekdayLabel setDate:dateCopy];
 
-    v9 = [(EKUIAvailabilityViewController *)self largeWeekdayLabel];
-    [v9 setDate:v13];
+    largeWeekdayLabel = [(EKUIAvailabilityViewController *)self largeWeekdayLabel];
+    [largeWeekdayLabel setDate:dateCopy];
 
     v10 = CUIKLongDayStringForDate();
-    v11 = [(EKUIAvailabilityViewController *)self largeDateNavItem];
-    [v11 setTitle:v10];
+    largeDateNavItem = [(EKUIAvailabilityViewController *)self largeDateNavItem];
+    [largeDateNavItem setTitle:v10];
 
-    v12 = [(EKUIAvailabilityViewController *)self eventTime];
-    [v12 removeFromSuperview];
+    eventTime = [(EKUIAvailabilityViewController *)self eventTime];
+    [eventTime removeFromSuperview];
 
     [(EKUIAvailabilityViewController *)self setEventTime:0];
     [(EKUIAvailabilityViewController *)self clearFreeSpanViews];
@@ -1604,8 +1604,8 @@ void __40__EKUIAvailabilityViewController_layout__block_invoke(uint64_t a1, void
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(EKUIAvailabilityViewController *)self freeSpanViews];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  freeSpanViews = [(EKUIAvailabilityViewController *)self freeSpanViews];
+  v4 = [freeSpanViews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1617,21 +1617,21 @@ void __40__EKUIAvailabilityViewController_layout__block_invoke(uint64_t a1, void
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(freeSpanViews);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) removeFromSuperview];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [freeSpanViews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(EKUIAvailabilityViewController *)self freeSpanViews];
-  [v8 removeAllObjects];
+  freeSpanViews2 = [(EKUIAvailabilityViewController *)self freeSpanViews];
+  [freeSpanViews2 removeAllObjects];
 }
 
 - (void)fetchAvailability
@@ -1639,20 +1639,20 @@ void __40__EKUIAvailabilityViewController_layout__block_invoke(uint64_t a1, void
   v45 = *MEMORY[0x1E69E9840];
   [(EKUIAvailabilityViewController *)self setFetchingData:1];
   [(EKUIAvailabilityViewController *)self configureNavBarAndToolBar];
-  v3 = [(EKUIAvailabilityViewController *)self currentStartDate];
-  v28 = [v3 dateByAddingTimeInterval:86399.0];
+  currentStartDate = [(EKUIAvailabilityViewController *)self currentStartDate];
+  v28 = [currentStartDate dateByAddingTimeInterval:86399.0];
 
   objc_initWeak(&location, self);
-  v4 = [(EKUIAvailabilityViewController *)self availabilityRequestsQueue];
-  [v4 cancelAllOperations];
+  availabilityRequestsQueue = [(EKUIAvailabilityViewController *)self availabilityRequestsQueue];
+  [availabilityRequestsQueue cancelAllOperations];
 
   v5 = objc_opt_new();
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v6 = [(EKUIAvailabilityViewController *)self participantAvailabilityViews];
-  v7 = [v6 countByEnumeratingWithState:&v39 objects:v44 count:16];
+  participantAvailabilityViews = [(EKUIAvailabilityViewController *)self participantAvailabilityViews];
+  v7 = [participantAvailabilityViews countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v7)
   {
     v8 = *v40;
@@ -1663,46 +1663,46 @@ void __40__EKUIAvailabilityViewController_layout__block_invoke(uint64_t a1, void
       {
         if (*v40 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(participantAvailabilityViews);
         }
 
         v10 = *(*(&v39 + 1) + 8 * v9);
-        v11 = [(EKUIAvailabilityViewController *)self currentStartDate];
-        [v10 startLoadForDate:v11];
+        currentStartDate2 = [(EKUIAvailabilityViewController *)self currentStartDate];
+        [v10 startLoadForDate:currentStartDate2];
 
-        v12 = [v10 participant];
-        v13 = [v12 URL];
-        v14 = [v13 absoluteString];
+        participant = [v10 participant];
+        v13 = [participant URL];
+        absoluteString = [v13 absoluteString];
 
-        [v5 setObject:v10 forKeyedSubscript:v14];
+        [v5 setObject:v10 forKeyedSubscript:absoluteString];
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v39 objects:v44 count:16];
+      v7 = [participantAvailabilityViews countByEnumeratingWithState:&v39 objects:v44 count:16];
     }
 
     while (v7);
   }
 
-  v15 = [(EKUIAvailabilityViewController *)self currentStartDate];
+  currentStartDate3 = [(EKUIAvailabilityViewController *)self currentStartDate];
   v16 = objc_alloc(MEMORY[0x1E6966AE0]);
-  v17 = [(EKUIAvailabilityViewController *)self event];
-  v18 = [v17 calendar];
-  v19 = [v18 source];
-  v20 = [(EKUIAvailabilityViewController *)self currentStartDate];
-  v21 = [(EKUIAvailabilityViewController *)self event];
-  v22 = [v5 allKeys];
+  event = [(EKUIAvailabilityViewController *)self event];
+  calendar = [event calendar];
+  source = [calendar source];
+  currentStartDate4 = [(EKUIAvailabilityViewController *)self currentStartDate];
+  event2 = [(EKUIAvailabilityViewController *)self event];
+  allKeys = [v5 allKeys];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __51__EKUIAvailabilityViewController_fetchAvailability__block_invoke;
   v35[3] = &unk_1E8441540;
   objc_copyWeak(&v38, &location);
-  v23 = v15;
+  v23 = currentStartDate3;
   v36 = v23;
   v24 = v5;
   v37 = v24;
-  v25 = [v16 initWithSource:v19 startDate:v20 endDate:v28 ignoredEvent:v21 addresses:v22 resultsBlock:v35];
+  v25 = [v16 initWithSource:source startDate:currentStartDate4 endDate:v28 ignoredEvent:event2 addresses:allKeys resultsBlock:v35];
 
   objc_initWeak(&from, v25);
   v29[0] = MEMORY[0x1E69E9820];
@@ -1713,10 +1713,10 @@ void __40__EKUIAvailabilityViewController_layout__block_invoke(uint64_t a1, void
   v26 = v23;
   v30 = v26;
   objc_copyWeak(&v33, &from);
-  v31 = self;
+  selfCopy = self;
   [v25 setCompletionBlock:v29];
-  v27 = [(EKUIAvailabilityViewController *)self availabilityRequestsQueue];
-  [v27 addOperation:v25];
+  availabilityRequestsQueue2 = [(EKUIAvailabilityViewController *)self availabilityRequestsQueue];
+  [availabilityRequestsQueue2 addOperation:v25];
 
   objc_destroyWeak(&v33);
   objc_destroyWeak(&v32);
@@ -1848,15 +1848,15 @@ void __51__EKUIAvailabilityViewController_fetchAvailability__block_invoke_3(uint
   }
 }
 
-- (BOOL)span:(id)a3 overlapsWithDate:(id)a4
+- (BOOL)span:(id)span overlapsWithDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 startDate];
-  if ([v7 CalIsBeforeOrSameAsDate:v6])
+  spanCopy = span;
+  dateCopy = date;
+  startDate = [spanCopy startDate];
+  if ([startDate CalIsBeforeOrSameAsDate:dateCopy])
   {
-    v8 = [v5 endDate];
-    v9 = [v8 CalIsAfterOrSameAsDate:v6];
+    endDate = [spanCopy endDate];
+    v9 = [endDate CalIsAfterOrSameAsDate:dateCopy];
   }
 
   else
@@ -1867,16 +1867,16 @@ void __51__EKUIAvailabilityViewController_fetchAvailability__block_invoke_3(uint
   return v9;
 }
 
-- (id)dedupSpans:(id)a3
+- (id)dedupSpans:(id)spans
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  spansCopy = spans;
   v24 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v3;
+  obj = spansCopy;
   v25 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v25)
   {
@@ -1920,16 +1920,16 @@ LABEL_18:
             }
 
             v12 = *(*(&v28 + 1) + 8 * j);
-            v13 = [v12 startDate];
-            v14 = [v5 startDate];
-            if ([v13 isEqualToDate:v14])
+            startDate = [v12 startDate];
+            startDate2 = [v5 startDate];
+            if ([startDate isEqualToDate:startDate2])
             {
-              v15 = [v12 endDate];
+              endDate = [v12 endDate];
               [v5 endDate];
               v16 = v10;
               v18 = v17 = v9;
               v19 = v6;
-              v20 = [v15 isEqualToDate:v18];
+              v20 = [endDate isEqualToDate:v18];
 
               LODWORD(v18) = v17;
               v10 = v16;
@@ -1961,12 +1961,12 @@ LABEL_18:
   return v24;
 }
 
-- (id)mergeSpan:(id)a3 intoSpans:(id)a4
+- (id)mergeSpan:(id)span intoSpans:(id)spans
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (![MEMORY[0x1E6966988] showTypeAsBusy:{objc_msgSend(v6, "type")}])
+  spanCopy = span;
+  spansCopy = spans;
+  if (![MEMORY[0x1E6966988] showTypeAsBusy:{objc_msgSend(spanCopy, "type")}])
   {
     goto LABEL_22;
   }
@@ -1975,27 +1975,27 @@ LABEL_18:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v8 = [v7 copy];
+  v8 = [spansCopy copy];
   v9 = [v8 countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (!v9)
   {
 
 LABEL_20:
     v30 = objc_alloc(MEMORY[0x1E6966980]);
-    v31 = [v6 startDate];
-    v32 = [v6 endDate];
-    v28 = [v30 initWithStartDate:v31 endDate:v32 type:{objc_msgSend(v6, "type")}];
+    startDate = [spanCopy startDate];
+    endDate = [spanCopy endDate];
+    v28 = [v30 initWithStartDate:startDate endDate:endDate type:{objc_msgSend(spanCopy, "type")}];
 
-    [v7 addObject:v28];
+    [spansCopy addObject:v28];
     goto LABEL_21;
   }
 
   v10 = v9;
-  v37 = v7;
-  v38 = self;
+  v37 = spansCopy;
+  selfCopy = self;
   v40 = 0;
   v11 = *v42;
-  v39 = v6;
+  v39 = spanCopy;
   do
   {
     for (i = 0; i != v10; ++i)
@@ -2006,11 +2006,11 @@ LABEL_20:
       }
 
       v13 = *(*(&v41 + 1) + 8 * i);
-      v14 = [v6 startDate];
-      v15 = [v13 startDate];
-      if ([v14 CalIsAfterOrSameAsDate:v15])
+      startDate2 = [spanCopy startDate];
+      startDate3 = [v13 startDate];
+      if ([startDate2 CalIsAfterOrSameAsDate:startDate3])
       {
-        [v6 endDate];
+        [spanCopy endDate];
         v16 = v11;
         v18 = v17 = v8;
         [v13 endDate];
@@ -2020,8 +2020,8 @@ LABEL_20:
         v10 = v19;
         v8 = v17;
         v11 = v16;
-        self = v38;
-        v6 = v39;
+        self = selfCopy;
+        spanCopy = v39;
 
         if (v21)
         {
@@ -2035,24 +2035,24 @@ LABEL_20:
       {
       }
 
-      v22 = [v13 startDate];
-      v23 = [(EKUIAvailabilityViewController *)self span:v6 overlapsWithDate:v22];
+      startDate4 = [v13 startDate];
+      v23 = [(EKUIAvailabilityViewController *)self span:spanCopy overlapsWithDate:startDate4];
 
       if (v23)
       {
-        v24 = [v6 startDate];
-        [v13 setStartDate:v24];
+        startDate5 = [spanCopy startDate];
+        [v13 setStartDate:startDate5];
 
         v40 = 1;
       }
 
-      v25 = [v13 endDate];
-      v26 = [(EKUIAvailabilityViewController *)self span:v6 overlapsWithDate:v25];
+      endDate2 = [v13 endDate];
+      v26 = [(EKUIAvailabilityViewController *)self span:spanCopy overlapsWithDate:endDate2];
 
       if (v26)
       {
-        v27 = [v6 endDate];
-        [v13 setEndDate:v27];
+        endDate3 = [spanCopy endDate];
+        [v13 setEndDate:endDate3];
 
         v40 = 1;
       }
@@ -2063,23 +2063,23 @@ LABEL_20:
 
   while (v10);
 
-  v7 = v37;
+  spansCopy = v37;
   if ((v40 & 1) == 0)
   {
     goto LABEL_20;
   }
 
   [(EKUIAvailabilityViewController *)self dedupSpans:v37];
-  v7 = v28 = v37;
+  spansCopy = v28 = v37;
 LABEL_21:
 
   v33 = MEMORY[0x1E695DF70];
-  v34 = [v7 sortedArrayUsingComparator:&__block_literal_global_35];
+  v34 = [spansCopy sortedArrayUsingComparator:&__block_literal_global_35];
   v35 = [v33 arrayWithArray:v34];
 
-  v7 = v35;
+  spansCopy = v35;
 LABEL_22:
-  v29 = v7;
+  v29 = spansCopy;
 LABEL_23:
 
   return v29;
@@ -2123,8 +2123,8 @@ uint64_t __54__EKUIAvailabilityViewController_mergeSpan_intoSpans___block_invoke
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v9 = [v8 spans];
-        v10 = [v9 countByEnumeratingWithState:&v37 objects:v46 count:16];
+        spans = [v8 spans];
+        v10 = [spans countByEnumeratingWithState:&v37 objects:v46 count:16];
         if (v10)
         {
           v11 = v10;
@@ -2137,7 +2137,7 @@ uint64_t __54__EKUIAvailabilityViewController_mergeSpan_intoSpans___block_invoke
             {
               if (*v38 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(spans);
               }
 
               v3 = [(EKUIAvailabilityViewController *)self mergeSpan:*(*(&v37 + 1) + 8 * v13) intoSpans:v14];
@@ -2147,7 +2147,7 @@ uint64_t __54__EKUIAvailabilityViewController_mergeSpan_intoSpans___block_invoke
             }
 
             while (v11 != v13);
-            v11 = [v9 countByEnumeratingWithState:&v37 objects:v46 count:16];
+            v11 = [spans countByEnumeratingWithState:&v37 objects:v46 count:16];
           }
 
           while (v11);
@@ -2161,7 +2161,7 @@ uint64_t __54__EKUIAvailabilityViewController_mergeSpan_intoSpans___block_invoke
   }
 
   v15 = objc_opt_new();
-  v16 = [(EKUIAvailabilityViewController *)self currentStartDate];
+  currentStartDate = [(EKUIAvailabilityViewController *)self currentStartDate];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -2175,7 +2175,7 @@ uint64_t __54__EKUIAvailabilityViewController_mergeSpan_intoSpans___block_invoke
     do
     {
       v21 = 0;
-      v22 = v16;
+      v22 = currentStartDate;
       do
       {
         if (*v34 != v20)
@@ -2184,22 +2184,22 @@ uint64_t __54__EKUIAvailabilityViewController_mergeSpan_intoSpans___block_invoke
         }
 
         v23 = *(*(&v33 + 1) + 8 * v21);
-        v24 = [v23 startDate];
-        v25 = [v22 CalIsBeforeDate:v24];
+        startDate = [v23 startDate];
+        v25 = [v22 CalIsBeforeDate:startDate];
 
         if (v25)
         {
           v26 = objc_alloc(MEMORY[0x1E6966980]);
-          v27 = [v23 startDate];
-          v28 = [v26 initWithStartDate:v22 endDate:v27 type:2];
+          startDate2 = [v23 startDate];
+          v28 = [v26 initWithStartDate:v22 endDate:startDate2 type:2];
 
           [v15 addObject:v28];
         }
 
-        v16 = [v23 endDate];
+        currentStartDate = [v23 endDate];
 
         ++v21;
-        v22 = v16;
+        v22 = currentStartDate;
       }
 
       while (v19 != v21);
@@ -2293,8 +2293,8 @@ uint64_t __57__EKUIAvailabilityViewController_findPossibleEventRanges__block_inv
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v3 = [(EKUIAvailabilityViewController *)self freeSpanViews];
-  v4 = [v3 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  freeSpanViews = [(EKUIAvailabilityViewController *)self freeSpanViews];
+  v4 = [freeSpanViews countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2305,49 +2305,49 @@ LABEL_3:
     {
       if (*v30 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(freeSpanViews);
       }
 
       v8 = *(*(&v29 + 1) + 8 * v7);
-      v9 = [v8 startDate];
-      v10 = [(EKUIAvailabilityViewController *)self modifiedStartDate];
-      v11 = [v9 isAfterDate:v10];
+      startDate = [v8 startDate];
+      modifiedStartDate = [(EKUIAvailabilityViewController *)self modifiedStartDate];
+      v11 = [startDate isAfterDate:modifiedStartDate];
 
       if (v11)
       {
         break;
       }
 
-      v12 = [v8 endDate];
-      v13 = [(EKUIAvailabilityViewController *)self modifiedEndDate];
-      v14 = [v12 isAfterDate:v13];
+      endDate = [v8 endDate];
+      modifiedEndDate = [(EKUIAvailabilityViewController *)self modifiedEndDate];
+      v14 = [endDate isAfterDate:modifiedEndDate];
 
       if (v14)
       {
-        v17 = [(EKUIAvailabilityViewController *)self modifiedStartDate];
-        v18 = [MEMORY[0x1E695DEE8] currentCalendar];
-        v19 = [v17 dateByAddingHours:1 inCalendar:v18];
+        modifiedStartDate2 = [(EKUIAvailabilityViewController *)self modifiedStartDate];
+        currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+        v19 = [modifiedStartDate2 dateByAddingHours:1 inCalendar:currentCalendar];
         [(EKUIAvailabilityViewController *)self setModifiedStartDate:v19];
 
-        v20 = [(EKUIAvailabilityViewController *)self modifiedStartDate];
-        v21 = [(EKUIAvailabilityViewController *)self event];
-        [v21 duration];
-        v22 = [v20 dateByAddingTimeInterval:?];
+        modifiedStartDate3 = [(EKUIAvailabilityViewController *)self modifiedStartDate];
+        event = [(EKUIAvailabilityViewController *)self event];
+        [event duration];
+        v22 = [modifiedStartDate3 dateByAddingTimeInterval:?];
 
-        v23 = [v8 endDate];
-        LOBYTE(v21) = [v22 isBeforeDate:v23];
+        endDate2 = [v8 endDate];
+        LOBYTE(event) = [v22 isBeforeDate:endDate2];
 
-        if ((v21 & 1) == 0)
+        if ((event & 1) == 0)
         {
-          v24 = [v8 endDate];
-          v25 = [(EKUIAvailabilityViewController *)self event];
-          [v25 duration];
-          v27 = [v24 dateByAddingTimeInterval:-v26];
+          endDate3 = [v8 endDate];
+          event2 = [(EKUIAvailabilityViewController *)self event];
+          [event2 duration];
+          v27 = [endDate3 dateByAddingTimeInterval:-v26];
           [(EKUIAvailabilityViewController *)self setModifiedStartDate:v27];
         }
 
-        v28 = [(EKUIAvailabilityViewController *)self modifiedStartDate];
-        [(EKUIAvailabilityViewController *)self updateCurrentEventAtTime:v28];
+        modifiedStartDate4 = [(EKUIAvailabilityViewController *)self modifiedStartDate];
+        [(EKUIAvailabilityViewController *)self updateCurrentEventAtTime:modifiedStartDate4];
 
         [(EKUIAvailabilityViewController *)self setSearchingForNextAvailableTime:0];
         goto LABEL_15;
@@ -2355,7 +2355,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v5 = [freeSpanViews countByEnumeratingWithState:&v29 objects:v33 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -2365,11 +2365,11 @@ LABEL_3:
       }
     }
 
-    v15 = [v8 startDate];
-    [(EKUIAvailabilityViewController *)self setModifiedStartDate:v15];
+    startDate2 = [v8 startDate];
+    [(EKUIAvailabilityViewController *)self setModifiedStartDate:startDate2];
 
-    v16 = [(EKUIAvailabilityViewController *)self modifiedStartDate];
-    [(EKUIAvailabilityViewController *)self updateCurrentEventAtTime:v16];
+    modifiedStartDate5 = [(EKUIAvailabilityViewController *)self modifiedStartDate];
+    [(EKUIAvailabilityViewController *)self updateCurrentEventAtTime:modifiedStartDate5];
 
     [(EKUIAvailabilityViewController *)self setSearchingForNextAvailableTime:0];
 LABEL_15:
@@ -2382,18 +2382,18 @@ LABEL_10:
   [(EKUIAvailabilityViewController *)self nextDayTapped:0];
 }
 
-- (void)singleTap:(id)a3
+- (void)singleTap:(id)tap
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EKUIAvailabilityViewController *)self scrollView];
-  [v4 locationInView:v5];
+  tapCopy = tap;
+  scrollView = [(EKUIAvailabilityViewController *)self scrollView];
+  [tapCopy locationInView:scrollView];
   v7 = v6;
 
   [(EKUIAvailabilityViewController *)self timelineWidth];
   v9 = v8 / 24.0;
-  v10 = [(EKUIAvailabilityViewController *)self event];
-  [v10 duration];
+  event = [(EKUIAvailabilityViewController *)self event];
+  [event duration];
   v12 = v9 * (v11 / 3600.0);
 
   v37 = v12;
@@ -2409,8 +2409,8 @@ LABEL_10:
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v16 = [(EKUIAvailabilityViewController *)self freeSpanViews];
-  v17 = [v16 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  freeSpanViews = [(EKUIAvailabilityViewController *)self freeSpanViews];
+  v17 = [freeSpanViews countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v17)
   {
     v18 = v17;
@@ -2422,7 +2422,7 @@ LABEL_10:
       {
         if (*v39 != v20)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(freeSpanViews);
         }
 
         v22 = *(*(&v38 + 1) + 8 * i);
@@ -2463,7 +2463,7 @@ LABEL_10:
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v18 = [freeSpanViews countByEnumeratingWithState:&v38 objects:v43 count:16];
       if (v18)
       {
         continue;
@@ -2537,26 +2537,26 @@ void __44__EKUIAvailabilityViewController_singleTap___block_invoke(uint64_t a1, 
   [v27 updateCurrentEventAtTime:v29];
 }
 
-- (void)viewPinched:(id)a3
+- (void)viewPinched:(id)pinched
 {
-  v38 = a3;
-  v4 = [v38 state];
-  if ((v4 - 3) <= 2)
+  pinchedCopy = pinched;
+  state = [pinchedCopy state];
+  if ((state - 3) <= 2)
   {
     [(EKUIAvailabilityViewController *)self layout];
   }
 
-  if (([v38 numberOfTouches] & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  if (([pinchedCopy numberOfTouches] & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
-    if (v4 == 2)
+    if (state == 2)
     {
-      v9 = [(EKUIAvailabilityViewController *)self timelineView];
-      [v9 minWidth];
+      timelineView = [(EKUIAvailabilityViewController *)self timelineView];
+      [timelineView minWidth];
       v11 = v10;
 
       [(EKUIAvailabilityViewController *)self pinchStartWidth];
       v13 = v12;
-      [v38 scale];
+      [pinchedCopy scale];
       v15 = v13 * v14;
       if (v11 >= v15)
       {
@@ -2569,21 +2569,21 @@ void __44__EKUIAvailabilityViewController_singleTap___block_invoke(uint64_t a1, 
       }
 
       [(EKUIAvailabilityViewController *)self setAvailableWidth:v15];
-      v16 = [(EKUIAvailabilityViewController *)self view];
-      [v38 locationOfTouch:0 inView:v16];
+      view = [(EKUIAvailabilityViewController *)self view];
+      [pinchedCopy locationOfTouch:0 inView:view];
       v18 = v17;
-      v19 = [(EKUIAvailabilityViewController *)self compact];
-      v20 = [(EKUIAvailabilityViewController *)self view];
-      v21 = [v20 window];
-      [EKUIAvailabilityParticipantList listWidthForCompact:v19 orientation:EKUIInterfaceOrientationForViewHierarchy(v21)];
+      compact = [(EKUIAvailabilityViewController *)self compact];
+      view2 = [(EKUIAvailabilityViewController *)self view];
+      window = [view2 window];
+      [EKUIAvailabilityParticipantList listWidthForCompact:compact orientation:EKUIInterfaceOrientationForViewHierarchy(window)];
       v23 = v18 - v22;
 
       [(EKUIAvailabilityViewController *)self pinchStartRatio];
       v25 = v24;
       [(EKUIAvailabilityViewController *)self availableWidth];
       v27 = -(v23 - v25 * v26);
-      v28 = [(EKUIAvailabilityViewController *)self scrollView];
-      [v28 contentOffset];
+      scrollView = [(EKUIAvailabilityViewController *)self scrollView];
+      [scrollView contentOffset];
       v30 = v29;
 
       if (v27 >= 0.0)
@@ -2598,8 +2598,8 @@ void __44__EKUIAvailabilityViewController_singleTap___block_invoke(uint64_t a1, 
 
       [(EKUIAvailabilityViewController *)self availableWidth];
       v33 = v32;
-      v34 = [(EKUIAvailabilityViewController *)self scrollView];
-      [v34 frame];
+      scrollView2 = [(EKUIAvailabilityViewController *)self scrollView];
+      [scrollView2 frame];
       v36 = v33 - v35;
 
       if (v31 < v36)
@@ -2607,18 +2607,18 @@ void __44__EKUIAvailabilityViewController_singleTap___block_invoke(uint64_t a1, 
         v36 = v31;
       }
 
-      v37 = [(EKUIAvailabilityViewController *)self scrollView];
-      [v37 setContentOffset:0 animated:{v36, v30}];
+      scrollView3 = [(EKUIAvailabilityViewController *)self scrollView];
+      [scrollView3 setContentOffset:0 animated:{v36, v30}];
 
       [(EKUIAvailabilityViewController *)self layout];
     }
 
-    else if (v4 == 1)
+    else if (state == 1)
     {
       [(EKUIAvailabilityViewController *)self availableWidth];
       [(EKUIAvailabilityViewController *)self setPinchStartWidth:?];
-      v5 = [(EKUIAvailabilityViewController *)self scrollView];
-      [v38 locationOfTouch:0 inView:v5];
+      scrollView4 = [(EKUIAvailabilityViewController *)self scrollView];
+      [pinchedCopy locationOfTouch:0 inView:scrollView4];
       v7 = v6;
       [(EKUIAvailabilityViewController *)self pinchStartWidth];
       [(EKUIAvailabilityViewController *)self setPinchStartRatio:v7 / v8];
@@ -2626,18 +2626,18 @@ void __44__EKUIAvailabilityViewController_singleTap___block_invoke(uint64_t a1, 
   }
 }
 
-- (BOOL)span:(id)a3 overlapsWithStartDate:(id)a4 endDate:(id)a5
+- (BOOL)span:(id)span overlapsWithStartDate:(id)date endDate:(id)endDate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([MEMORY[0x1E6966988] showTypeAsBusy:{objc_msgSend(v7, "type")}])
+  spanCopy = span;
+  dateCopy = date;
+  endDateCopy = endDate;
+  if ([MEMORY[0x1E6966988] showTypeAsBusy:{objc_msgSend(spanCopy, "type")}])
   {
-    v10 = [v7 startDate];
-    if ([v10 CalIsBeforeOrSameAsDate:v8])
+    startDate = [spanCopy startDate];
+    if ([startDate CalIsBeforeOrSameAsDate:dateCopy])
     {
-      v11 = [v7 endDate];
-      v12 = [v11 CalIsAfterDate:v8];
+      endDate = [spanCopy endDate];
+      v12 = [endDate CalIsAfterDate:dateCopy];
 
       if (v12)
       {
@@ -2649,11 +2649,11 @@ void __44__EKUIAvailabilityViewController_singleTap___block_invoke(uint64_t a1, 
     {
     }
 
-    v14 = [v7 startDate];
-    if ([v14 CalIsBeforeDate:v9])
+    startDate2 = [spanCopy startDate];
+    if ([startDate2 CalIsBeforeDate:endDateCopy])
     {
-      v15 = [v7 endDate];
-      v16 = [v15 CalIsAfterOrSameAsDate:v9];
+      endDate2 = [spanCopy endDate];
+      v16 = [endDate2 CalIsAfterOrSameAsDate:endDateCopy];
 
       if (v16)
       {
@@ -2667,11 +2667,11 @@ LABEL_9:
     {
     }
 
-    v17 = [v7 startDate];
-    if ([v17 CalIsAfterOrSameAsDate:v8])
+    startDate3 = [spanCopy startDate];
+    if ([startDate3 CalIsAfterOrSameAsDate:dateCopy])
     {
-      v18 = [v7 endDate];
-      v13 = [v18 CalIsBeforeOrSameAsDate:v9];
+      endDate3 = [spanCopy endDate];
+      v13 = [endDate3 CalIsBeforeOrSameAsDate:endDateCopy];
     }
 
     else
@@ -2690,37 +2690,37 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)updateCurrentEventAtTime:(id)a3
+- (BOOL)updateCurrentEventAtTime:(id)time
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EKUIAvailabilityViewController *)self event];
-  [v5 duration];
-  v6 = [v4 dateByAddingTimeInterval:?];
+  timeCopy = time;
+  event = [(EKUIAvailabilityViewController *)self event];
+  [event duration];
+  v6 = [timeCopy dateByAddingTimeInterval:?];
 
-  [(EKUIAvailabilityViewController *)self setModifiedStartDate:v4];
+  [(EKUIAvailabilityViewController *)self setModifiedStartDate:timeCopy];
   [(EKUIAvailabilityViewController *)self setModifiedEndDate:v6];
-  v7 = [(EKUIAvailabilityViewController *)self eventTime];
-  [v7 removeFromSuperview];
+  eventTime = [(EKUIAvailabilityViewController *)self eventTime];
+  [eventTime removeFromSuperview];
 
   v8 = objc_alloc(MEMORY[0x1E6992F70]);
-  v9 = [(EKUIAvailabilityViewController *)self currentStartDate];
-  v10 = [v8 initWithStartDate:v9 duration:86400.0];
+  currentStartDate = [(EKUIAvailabilityViewController *)self currentStartDate];
+  v10 = [v8 initWithStartDate:currentStartDate duration:86400.0];
 
-  if (([v10 containsDate:v4] & 1) != 0 || objc_msgSend(v10, "containsDate:", v6))
+  if (([v10 containsDate:timeCopy] & 1) != 0 || objc_msgSend(v10, "containsDate:", v6))
   {
-    v11 = [(EKUIAvailabilityViewController *)self eventFreeSpanAtStart:v4 endDate:v6 isFreeSpan:0];
+    v11 = [(EKUIAvailabilityViewController *)self eventFreeSpanAtStart:timeCopy endDate:v6 isFreeSpan:0];
     [(EKUIAvailabilityViewController *)self setEventTime:v11];
 
-    v12 = [(EKUIAvailabilityViewController *)self scrollView];
-    v13 = [(EKUIAvailabilityViewController *)self eventTime];
-    [v12 addSubview:v13];
+    scrollView = [(EKUIAvailabilityViewController *)self scrollView];
+    eventTime2 = [(EKUIAvailabilityViewController *)self eventTime];
+    [scrollView addSubview:eventTime2];
 
-    v14 = [(EKUIAvailabilityViewController *)self scrollView];
-    v15 = [(EKUIAvailabilityViewController *)self eventTime];
-    [v15 frame];
+    scrollView2 = [(EKUIAvailabilityViewController *)self scrollView];
+    eventTime3 = [(EKUIAvailabilityViewController *)self eventTime];
+    [eventTime3 frame];
     v16 = 1;
-    [v14 scrollRectToVisible:1 animated:?];
+    [scrollView2 scrollRectToVisible:1 animated:?];
 
     if (![(EKUIAvailabilityViewController *)self fetchingData])
     {
@@ -2750,8 +2750,8 @@ LABEL_15:
             v36 = 0u;
             v37 = 0u;
             v38 = 0u;
-            v21 = [v20 spans];
-            v22 = [v21 countByEnumeratingWithState:&v35 objects:v43 count:16];
+            spans = [v20 spans];
+            v22 = [spans countByEnumeratingWithState:&v35 objects:v43 count:16];
             if (v22)
             {
               v23 = v22;
@@ -2762,21 +2762,21 @@ LABEL_15:
                 {
                   if (*v36 != v24)
                   {
-                    objc_enumerationMutation(v21);
+                    objc_enumerationMutation(spans);
                   }
 
-                  if ([(EKUIAvailabilityViewController *)self span:*(*(&v35 + 1) + 8 * j) overlapsWithStartDate:v4 endDate:v6])
+                  if ([(EKUIAvailabilityViewController *)self span:*(*(&v35 + 1) + 8 * j) overlapsWithStartDate:timeCopy endDate:v6])
                   {
                     v26 = MEMORY[0x1E6966A88];
-                    v27 = [v20 participant];
-                    v28 = [v26 participantForSortingWithEKParticipant:v27];
+                    participant = [v20 participant];
+                    v28 = [v26 participantForSortingWithEKParticipant:participant];
 
                     [v33 addObject:v28];
                     goto LABEL_19;
                   }
                 }
 
-                v23 = [v21 countByEnumeratingWithState:&v35 objects:v43 count:16];
+                v23 = [spans countByEnumeratingWithState:&v35 objects:v43 count:16];
                 if (v23)
                 {
                   continue;
@@ -2796,8 +2796,8 @@ LABEL_19:
       }
 
       [(EKUIAvailabilityViewController *)self setBusyParticipants:v33];
-      v29 = [(EKUIAvailabilityViewController *)self participantList];
-      [v29 setBusyParticipants:v33];
+      participantList = [(EKUIAvailabilityViewController *)self participantList];
+      [participantList setBusyParticipants:v33];
 
       v16 = 1;
       v10 = v31;
@@ -2812,14 +2812,14 @@ LABEL_19:
   return v16;
 }
 
-- (CGRect)frameForFreeSpanViewAtStart:(id)a3 endDate:(id)a4 duration:(double)a5
+- (CGRect)frameForFreeSpanViewAtStart:(id)start endDate:(id)date duration:(double)duration
 {
-  v7 = a4;
-  [(EKUIAvailabilityViewController *)self convertDateIntoOffset:a3];
+  dateCopy = date;
+  [(EKUIAvailabilityViewController *)self convertDateIntoOffset:start];
   v9 = v8;
-  if (v7)
+  if (dateCopy)
   {
-    [(EKUIAvailabilityViewController *)self convertDateIntoOffset:v7];
+    [(EKUIAvailabilityViewController *)self convertDateIntoOffset:dateCopy];
     v11 = v10;
     if (CalTimeDirectionIsLeftToRight())
     {
@@ -2834,8 +2834,8 @@ LABEL_19:
 
   else
   {
-    v13 = [(EKUIAvailabilityViewController *)self event];
-    [v13 duration];
+    event = [(EKUIAvailabilityViewController *)self event];
+    [event duration];
     v15 = v14 / 86400.0;
     [(EKUIAvailabilityViewController *)self timelineWidth];
     v17 = v16;
@@ -2870,8 +2870,8 @@ LABEL_19:
     v24 = v11 - v21;
   }
 
-  v25 = [(EKUIAvailabilityViewController *)self participantAvailabilityViews];
-  v26 = [v25 count];
+  participantAvailabilityViews = [(EKUIAvailabilityViewController *)self participantAvailabilityViews];
+  v26 = [participantAvailabilityViews count];
   [(EKUIAvailabilityViewController *)self rowHeight];
   v28 = v21 * -2.0 + v26 * v27;
 
@@ -2886,37 +2886,37 @@ LABEL_19:
   return result;
 }
 
-- (id)eventFreeSpanAtStart:(id)a3 endDate:(id)a4 isFreeSpan:(BOOL)a5
+- (id)eventFreeSpanAtStart:(id)start endDate:(id)date isFreeSpan:(BOOL)span
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(EKUIAvailabilityViewController *)self event];
-  v11 = [v10 calendar];
-  v12 = [v11 displayColor];
+  spanCopy = span;
+  dateCopy = date;
+  startCopy = start;
+  event = [(EKUIAvailabilityViewController *)self event];
+  calendar = [event calendar];
+  displayColor = [calendar displayColor];
 
-  [(EKUIAvailabilityViewController *)self frameForFreeSpanViewAtStart:v9 endDate:v8 duration:0.0];
-  v17 = [[EKUIAvailabilityFreeSpanView alloc] initWithFrame:v12 andColor:v9 startDate:v8 endDate:v5 isFreeSpan:v13, v14, v15, v16];
+  [(EKUIAvailabilityViewController *)self frameForFreeSpanViewAtStart:startCopy endDate:dateCopy duration:0.0];
+  v17 = [[EKUIAvailabilityFreeSpanView alloc] initWithFrame:displayColor andColor:startCopy startDate:dateCopy endDate:spanCopy isFreeSpan:v13, v14, v15, v16];
 
   return v17;
 }
 
-- (double)convertDateIntoOffset:(id)a3
+- (double)convertDateIntoOffset:(id)offset
 {
-  v4 = a3;
-  v5 = [(EKUIAvailabilityViewController *)self event];
-  v6 = [v5 timeZone];
-  v7 = [(EKUIAvailabilityViewController *)self currentStartDate];
-  [v6 daylightSavingTimeOffsetForDate:v7];
+  offsetCopy = offset;
+  event = [(EKUIAvailabilityViewController *)self event];
+  timeZone = [event timeZone];
+  currentStartDate = [(EKUIAvailabilityViewController *)self currentStartDate];
+  [timeZone daylightSavingTimeOffsetForDate:currentStartDate];
   v9 = v8;
 
-  v10 = [(EKUIAvailabilityViewController *)self event];
-  v11 = [v10 timeZone];
-  [v11 daylightSavingTimeOffsetForDate:v4];
+  event2 = [(EKUIAvailabilityViewController *)self event];
+  timeZone2 = [event2 timeZone];
+  [timeZone2 daylightSavingTimeOffsetForDate:offsetCopy];
   v13 = v12;
 
-  v14 = [(EKUIAvailabilityViewController *)self currentStartDate];
-  [v4 timeIntervalSinceDate:v14];
+  currentStartDate2 = [(EKUIAvailabilityViewController *)self currentStartDate];
+  [offsetCopy timeIntervalSinceDate:currentStartDate2];
   v16 = v15;
 
   [(EKUIAvailabilityViewController *)self timelineWidth];
@@ -2930,44 +2930,44 @@ LABEL_19:
   return v18;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v18 = a3;
-  v4 = [(EKUIAvailabilityViewController *)self scrollView];
+  scrollCopy = scroll;
+  scrollView = [(EKUIAvailabilityViewController *)self scrollView];
 
-  if (v4 == v18)
+  if (scrollView == scrollCopy)
   {
-    v5 = [(EKUIAvailabilityViewController *)self timelineView];
-    [v18 contentOffset];
-    [v5 setHorizontalScrollOffset:?];
+    timelineView = [(EKUIAvailabilityViewController *)self timelineView];
+    [scrollCopy contentOffset];
+    [timelineView setHorizontalScrollOffset:?];
 
-    v6 = [(EKUIAvailabilityViewController *)self participantList];
-    [v18 contentOffset];
-    [v6 setVerticalScrollOffset:v7];
+    participantList = [(EKUIAvailabilityViewController *)self participantList];
+    [scrollCopy contentOffset];
+    [participantList setVerticalScrollOffset:v7];
   }
 
-  v8 = [(EKUIAvailabilityViewController *)self participantList];
+  participantList2 = [(EKUIAvailabilityViewController *)self participantList];
 
-  if (v8 == v18)
+  if (participantList2 == scrollCopy)
   {
-    v9 = [(EKUIAvailabilityViewController *)self scrollView];
-    v10 = [(EKUIAvailabilityViewController *)self scrollView];
-    [v10 contentOffset];
+    scrollView2 = [(EKUIAvailabilityViewController *)self scrollView];
+    scrollView3 = [(EKUIAvailabilityViewController *)self scrollView];
+    [scrollView3 contentOffset];
     v12 = v11;
-    [v18 contentOffset];
-    [v9 setContentOffset:v12];
+    [scrollCopy contentOffset];
+    [scrollView2 setContentOffset:v12];
   }
 
-  v13 = [(EKUIAvailabilityViewController *)self timelineView];
+  timelineView2 = [(EKUIAvailabilityViewController *)self timelineView];
 
-  if (v13 == v18)
+  if (timelineView2 == scrollCopy)
   {
-    v14 = [(EKUIAvailabilityViewController *)self scrollView];
-    [v18 contentOffset];
+    scrollView4 = [(EKUIAvailabilityViewController *)self scrollView];
+    [scrollCopy contentOffset];
     v16 = v15;
-    v17 = [(EKUIAvailabilityViewController *)self scrollView];
-    [v17 contentOffset];
-    [v14 setContentOffset:v16];
+    scrollView5 = [(EKUIAvailabilityViewController *)self scrollView];
+    [scrollView5 contentOffset];
+    [scrollView4 setContentOffset:v16];
   }
 }
 

@@ -1,52 +1,52 @@
 @interface SNAudioConfiguration
 + (id)shazamAudioConfiguration;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)category;
 - (NSString)description;
 - (NSString)mode;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCategory:(id)a3;
-- (void)setChannelMap:(id)a3;
-- (void)setMode:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCategory:(id)category;
+- (void)setChannelMap:(id)map;
+- (void)setMode:(id)mode;
 @end
 
 @implementation SNAudioConfiguration
 
 - (NSString)category
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C99732D4();
 
   return v3;
 }
 
-- (void)setCategory:(id)a3
+- (void)setCategory:(id)category
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C997337C(v4);
+  categoryCopy = category;
+  selfCopy = self;
+  sub_1C997337C(categoryCopy);
 }
 
 - (NSString)mode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C997341C();
 
   return v3;
 }
 
-- (void)setMode:(id)a3
+- (void)setMode:(id)mode
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C99734C4(v4);
+  modeCopy = mode;
+  selfCopy = self;
+  sub_1C99734C4(modeCopy);
 }
 
-- (void)setChannelMap:(id)a3
+- (void)setChannelMap:(id)map
 {
-  if (a3)
+  if (map)
   {
     v4 = sub_1C9A92798();
   }
@@ -56,13 +56,13 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_1C997363C(v4);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   SNAudioConfiguration.description.getter();
 
   v3 = sub_1C9A92478();
@@ -70,9 +70,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   SNAudioConfiguration.copy(with:)(v6);
 
   sub_1C97A5A8C(v6, v6[3]);
@@ -83,17 +83,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SNAudioConfiguration.hash.getter();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C9A93318();
     swift_unknownObjectRelease();
@@ -102,7 +102,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = SNAudioConfiguration.isEqual(_:)(v8);
@@ -111,11 +111,11 @@
   return v6 & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SNAudioConfiguration.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SNAudioConfiguration.encode(with:)(coderCopy);
 }
 
 + (id)shazamAudioConfiguration

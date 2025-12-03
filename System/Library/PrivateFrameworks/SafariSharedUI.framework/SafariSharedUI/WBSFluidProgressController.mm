@@ -2,18 +2,18 @@
 - (WBSFluidProgressController)init;
 - (WBSFluidProgressControllerDelegate)delegate;
 - (WBSFluidProgressControllerWindowDelegate)windowDelegate;
-- (void)_sendUpdateFluidProgressToObservers:(id)a3 progressState:(id)a4 source:(id)a5 updateAnimationPhase:(BOOL)a6;
-- (void)_updateFluidProgressWithProgressStateSource:(id)a3;
-- (void)animationStepCompleted:(id)a3;
-- (void)cancelFluidProgressWithProgressStateSource:(id)a3;
-- (void)finishFluidProgressWithProgressStateSource:(id)a3;
+- (void)_sendUpdateFluidProgressToObservers:(id)observers progressState:(id)state source:(id)source updateAnimationPhase:(BOOL)phase;
+- (void)_updateFluidProgressWithProgressStateSource:(id)source;
+- (void)animationStepCompleted:(id)completed;
+- (void)cancelFluidProgressWithProgressStateSource:(id)source;
+- (void)finishFluidProgressWithProgressStateSource:(id)source;
 - (void)frontmostTabDidChange;
-- (void)progressStateSourceDidCommitLoad:(id)a3 loadingSingleResource:(BOOL)a4;
-- (void)setDelegate:(id)a3;
-- (void)setProgressAnimationSuppressed:(BOOL)a3 forProgressStateSource:(id)a4 animated:(BOOL)a5;
-- (void)startFluidProgressWithProgressStateSource:(id)a3;
-- (void)startRocketEffectWithProgressStateSource:(id)a3;
-- (void)updateFluidProgressWithProgressStateSource:(id)a3;
+- (void)progressStateSourceDidCommitLoad:(id)load loadingSingleResource:(BOOL)resource;
+- (void)setDelegate:(id)delegate;
+- (void)setProgressAnimationSuppressed:(BOOL)suppressed forProgressStateSource:(id)source animated:(BOOL)animated;
+- (void)startFluidProgressWithProgressStateSource:(id)source;
+- (void)startRocketEffectWithProgressStateSource:(id)source;
+- (void)updateFluidProgressWithProgressStateSource:(id)source;
 @end
 
 @implementation WBSFluidProgressController
@@ -25,9 +25,9 @@
   v2 = [(WBSFluidProgressController *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     v5 = v2;
   }
@@ -35,9 +35,9 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained != obj)
   {
@@ -54,16 +54,16 @@
   }
 }
 
-- (void)startFluidProgressWithProgressStateSource:(id)a3
+- (void)startFluidProgressWithProgressStateSource:(id)source
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 progressState];
-  v6 = [v4 expectedOrCurrentURL];
-  v7 = [v6 safari_originalDataAsString];
+  sourceCopy = source;
+  progressState = [sourceCopy progressState];
+  expectedOrCurrentURL = [sourceCopy expectedOrCurrentURL];
+  safari_originalDataAsString = [expectedOrCurrentURL safari_originalDataAsString];
 
-  v8 = [v5 loadURL];
-  v9 = [v8 isEqualToString:v7];
+  loadURL = [progressState loadURL];
+  v9 = [loadURL isEqualToString:safari_originalDataAsString];
 
   if (v9)
   {
@@ -71,18 +71,18 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_windowDelegate);
-  v12 = [WeakRetained currentFluidProgressStateSource];
+  currentFluidProgressStateSource = [WeakRetained currentFluidProgressStateSource];
 
-  if (v5 && v12 == v4)
+  if (progressState && currentFluidProgressStateSource == sourceCopy)
   {
-    [v4 clearFluidProgressState];
+    [sourceCopy clearFluidProgressState];
   }
 
-  if ([v4 createFluidProgressState] && v12 == v4)
+  if ([sourceCopy createFluidProgressState] && currentFluidProgressStateSource == sourceCopy)
   {
-    v10 = [v4 progressState];
+    progressState2 = [sourceCopy progressState];
 
-    [v10 setFluidProgressAnimationPhase:0];
+    [progressState2 setFluidProgressAnimationPhase:0];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -102,7 +102,7 @@
             objc_enumerationMutation(v13);
           }
 
-          [*(*(&v17 + 1) + 8 * v16++) fluidProgressController:self startFluidProgressBar:v10 animateFillFade:{1, v17}];
+          [*(*(&v17 + 1) + 8 * v16++) fluidProgressController:self startFluidProgressBar:progressState2 animateFillFade:{1, v17}];
         }
 
         while (v14 != v16);
@@ -112,39 +112,39 @@
       while (v14);
     }
 
-    [(WBSFluidProgressController *)self _updateFluidProgressWithProgressStateSource:v4];
+    [(WBSFluidProgressController *)self _updateFluidProgressWithProgressStateSource:sourceCopy];
   }
 
   else
   {
 LABEL_2:
-    v10 = v5;
+    progressState2 = progressState;
   }
 }
 
-- (void)updateFluidProgressWithProgressStateSource:(id)a3
+- (void)updateFluidProgressWithProgressStateSource:(id)source
 {
-  v7 = a3;
-  v4 = [v7 progressState];
-  if (v7)
+  sourceCopy = source;
+  progressState = [sourceCopy progressState];
+  if (sourceCopy)
   {
-    if (v4)
+    if (progressState)
     {
-      v5 = [v4 fluidProgressAnimationPhase];
-      if ((v5 & 0xFFFFFFFFFFFFFFFELL) != 4 && ([v4 hasCompletedLoad] & 1) == 0)
+      fluidProgressAnimationPhase = [progressState fluidProgressAnimationPhase];
+      if ((fluidProgressAnimationPhase & 0xFFFFFFFFFFFFFFFELL) != 4 && ([progressState hasCompletedLoad] & 1) == 0)
       {
-        [v7 estimatedProgress];
+        [sourceCopy estimatedProgress];
         if (v6 == 1.0)
         {
-          [(WBSFluidProgressController *)self startRocketEffectWithProgressStateSource:v7];
+          [(WBSFluidProgressController *)self startRocketEffectWithProgressStateSource:sourceCopy];
         }
 
         else
         {
-          [v4 setWebKitProgressValue:?];
-          if (v5 == 2)
+          [progressState setWebKitProgressValue:?];
+          if (fluidProgressAnimationPhase == 2)
           {
-            [(WBSFluidProgressController *)self _updateFluidProgressWithProgressStateSource:v7];
+            [(WBSFluidProgressController *)self _updateFluidProgressWithProgressStateSource:sourceCopy];
           }
         }
       }
@@ -152,71 +152,71 @@ LABEL_2:
   }
 }
 
-- (void)finishFluidProgressWithProgressStateSource:(id)a3
+- (void)finishFluidProgressWithProgressStateSource:(id)source
 {
-  v9 = a3;
-  v4 = [v9 progressState];
-  v5 = v4;
-  if (v4 && ([v4 hasCommittedLoad] & 1) != 0)
+  sourceCopy = source;
+  progressState = [sourceCopy progressState];
+  v5 = progressState;
+  if (progressState && ([progressState hasCommittedLoad] & 1) != 0)
   {
     [v5 setHasCompletedLoad:1];
     WeakRetained = objc_loadWeakRetained(&self->_windowDelegate);
-    v7 = [WeakRetained currentFluidProgressStateSource];
-    v8 = [v7 progressState];
+    currentFluidProgressStateSource = [WeakRetained currentFluidProgressStateSource];
+    progressState2 = [currentFluidProgressStateSource progressState];
 
-    if ([v5 fluidProgressAnimationPhase] != 4 || v5 != v8)
+    if ([v5 fluidProgressAnimationPhase] != 4 || v5 != progressState2)
     {
-      if ([v5 fluidProgressAnimationPhase] == 5 || v5 != v8 || (objc_msgSend(v9, "hasFailedURL") & 1) != 0)
+      if ([v5 fluidProgressAnimationPhase] == 5 || v5 != progressState2 || (objc_msgSend(sourceCopy, "hasFailedURL") & 1) != 0)
       {
         if ([v5 fluidProgressAnimationPhase] == 4)
         {
           [v5 setFluidProgressAnimationPhase:5];
         }
 
-        [(WBSFluidProgressController *)self _updateFluidProgressWithProgressStateSource:v9];
+        [(WBSFluidProgressController *)self _updateFluidProgressWithProgressStateSource:sourceCopy];
       }
 
       else
       {
-        [(WBSFluidProgressController *)self startRocketEffectWithProgressStateSource:v9];
+        [(WBSFluidProgressController *)self startRocketEffectWithProgressStateSource:sourceCopy];
       }
     }
   }
 }
 
-- (void)cancelFluidProgressWithProgressStateSource:(id)a3
+- (void)cancelFluidProgressWithProgressStateSource:(id)source
 {
-  v6 = a3;
-  v4 = [v6 progressState];
-  v5 = v4;
-  if (v4)
+  sourceCopy = source;
+  progressState = [sourceCopy progressState];
+  v5 = progressState;
+  if (progressState)
   {
-    [v4 setHasCanceledLoad:1];
-    [(WBSFluidProgressController *)self _updateFluidProgressWithProgressStateSource:v6];
+    [progressState setHasCanceledLoad:1];
+    [(WBSFluidProgressController *)self _updateFluidProgressWithProgressStateSource:sourceCopy];
   }
 }
 
-- (void)startRocketEffectWithProgressStateSource:(id)a3
+- (void)startRocketEffectWithProgressStateSource:(id)source
 {
-  v9 = a3;
-  v4 = [v9 progressState];
-  v5 = v4;
-  if (v4)
+  sourceCopy = source;
+  progressState = [sourceCopy progressState];
+  v5 = progressState;
+  if (progressState)
   {
-    if ([v4 hasCommittedLoad])
+    if ([progressState hasCommittedLoad])
     {
-      if (([v9 hasFailedURL] & 1) == 0)
+      if (([sourceCopy hasFailedURL] & 1) == 0)
       {
-        v6 = [v5 fluidProgressAnimationPhase];
-        if ((v6 & 0xFFFFFFFFFFFFFFFELL) != 4)
+        fluidProgressAnimationPhase = [v5 fluidProgressAnimationPhase];
+        if ((fluidProgressAnimationPhase & 0xFFFFFFFFFFFFFFFELL) != 4)
         {
           WeakRetained = objc_loadWeakRetained(&self->_windowDelegate);
-          v8 = [WeakRetained currentFluidProgressStateSource];
+          currentFluidProgressStateSource = [WeakRetained currentFluidProgressStateSource];
 
-          if (v8 == v9)
+          if (currentFluidProgressStateSource == sourceCopy)
           {
             [v5 setFluidProgressAnimationPhase:4];
-            if (v6 != 2)
+            if (fluidProgressAnimationPhase != 2)
             {
               goto LABEL_9;
             }
@@ -227,7 +227,7 @@ LABEL_2:
             [v5 setFluidProgressAnimationPhase:5];
           }
 
-          [(WBSFluidProgressController *)self _updateFluidProgressWithProgressStateSource:v9];
+          [(WBSFluidProgressController *)self _updateFluidProgressWithProgressStateSource:sourceCopy];
         }
       }
     }
@@ -240,10 +240,10 @@ LABEL_9:
 {
   v32 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_windowDelegate);
-  v4 = [WeakRetained currentFluidProgressStateSource];
-  v5 = [v4 progressState];
+  currentFluidProgressStateSource = [WeakRetained currentFluidProgressStateSource];
+  progressState = [currentFluidProgressStateSource progressState];
 
-  if (v5)
+  if (progressState)
   {
     v23 = 0uLL;
     v24 = 0uLL;
@@ -263,7 +263,7 @@ LABEL_9:
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v21 + 1) + 8 * i) fluidProgressController:self startFluidProgressBar:v5 animateFillFade:0];
+          [*(*(&v21 + 1) + 8 * i) fluidProgressController:self startFluidProgressBar:progressState animateFillFade:0];
         }
 
         v7 = [(NSHashTable *)v6 countByEnumeratingWithState:&v21 objects:v30 count:16];
@@ -272,15 +272,15 @@ LABEL_9:
       while (v7);
     }
 
-    if (![v5 isFluidProgressStalled])
+    if (![progressState isFluidProgressStalled])
     {
-      [v5 setShouldAnimateUsingInitialPosition:1];
+      [progressState setShouldAnimateUsingInitialPosition:1];
       [(WBSFluidProgressController *)self _updateFluidProgressWithProgressStateSource:0];
       goto LABEL_27;
     }
 
-    [v5 setFluidProgressAnimationPhase:2];
-    [v5 updateFluidProgressValue];
+    [progressState setFluidProgressAnimationPhase:2];
+    [progressState updateFluidProgressValue];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -299,7 +299,7 @@ LABEL_9:
             objc_enumerationMutation(v10);
           }
 
-          [*(*(&v17 + 1) + 8 * j) fluidProgressController:self setProgressToCurrentPosition:{v5, v17}];
+          [*(*(&v17 + 1) + 8 * j) fluidProgressController:self setProgressToCurrentPosition:{progressState, v17}];
         }
 
         v11 = [(NSHashTable *)v10 countByEnumeratingWithState:&v17 objects:v29 count:16];
@@ -342,55 +342,55 @@ LABEL_9:
 LABEL_27:
 }
 
-- (void)animationStepCompleted:(id)a3
+- (void)animationStepCompleted:(id)completed
 {
-  v5 = a3;
-  if ([v5 fluidProgressAnimationPhase] == 5)
+  completedCopy = completed;
+  if ([completedCopy fluidProgressAnimationPhase] == 5)
   {
     WeakRetained = objc_loadWeakRetained(&self->_windowDelegate);
     [WeakRetained fluidProgressRocketAnimationDidComplete];
   }
 
-  if ([v5 fluidProgressAnimationPhase] == 3)
+  if ([completedCopy fluidProgressAnimationPhase] == 3)
   {
-    [v5 setFluidProgressAnimationPhase:2];
+    [completedCopy setFluidProgressAnimationPhase:2];
   }
 
   [(WBSFluidProgressController *)self _updateFluidProgressWithProgressStateSource:0];
 }
 
-- (void)progressStateSourceDidCommitLoad:(id)a3 loadingSingleResource:(BOOL)a4
+- (void)progressStateSourceDidCommitLoad:(id)load loadingSingleResource:(BOOL)resource
 {
-  v4 = a4;
-  v5 = [a3 progressState];
-  if (v5)
+  resourceCopy = resource;
+  progressState = [load progressState];
+  if (progressState)
   {
-    if (v4)
+    if (resourceCopy)
     {
-      [v5 setFluidProgressType:1];
+      [progressState setFluidProgressType:1];
     }
 
-    [v5 setHasCommittedLoad:1];
+    [progressState setHasCommittedLoad:1];
   }
 }
 
-- (void)setProgressAnimationSuppressed:(BOOL)a3 forProgressStateSource:(id)a4 animated:(BOOL)a5
+- (void)setProgressAnimationSuppressed:(BOOL)suppressed forProgressStateSource:(id)source animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a3;
+  animatedCopy = animated;
+  suppressedCopy = suppressed;
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (!v8)
+  sourceCopy = source;
+  if (!sourceCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_windowDelegate);
-    v10 = [WeakRetained currentFluidProgressStateSource];
+    currentFluidProgressStateSource = [WeakRetained currentFluidProgressStateSource];
 
-    v8 = v10;
+    sourceCopy = currentFluidProgressStateSource;
   }
 
-  v17 = v8;
-  v11 = [v8 progressState];
-  if (v11)
+  v17 = sourceCopy;
+  progressState = [sourceCopy progressState];
+  if (progressState)
   {
     v20 = 0u;
     v21 = 0u;
@@ -414,7 +414,7 @@ LABEL_27:
           v16 = *(*(&v18 + 1) + 8 * v15);
           if (objc_opt_respondsToSelector())
           {
-            [v16 fluidProgressController:self suppressProgressAnimation:v6 duringFluidProgressState:v11 animated:v5];
+            [v16 fluidProgressController:self suppressProgressAnimation:suppressedCopy duringFluidProgressState:progressState animated:animatedCopy];
           }
 
           ++v15;
@@ -427,9 +427,9 @@ LABEL_27:
       while (v13);
     }
 
-    if ([v11 fluidProgressAnimationPhase] != 5)
+    if ([progressState fluidProgressAnimationPhase] != 5)
     {
-      [(WBSFluidProgressController *)self _sendUpdateFluidProgressToObservers:0 progressState:v11 source:v17 updateAnimationPhase:0];
+      [(WBSFluidProgressController *)self _sendUpdateFluidProgressToObservers:0 progressState:progressState source:v17 updateAnimationPhase:0];
     }
   }
 }
@@ -448,26 +448,26 @@ LABEL_27:
   return WeakRetained;
 }
 
-- (void)_updateFluidProgressWithProgressStateSource:(id)a3
+- (void)_updateFluidProgressWithProgressStateSource:(id)source
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_windowDelegate);
   v6 = WeakRetained;
-  if (!v4)
+  if (!sourceCopy)
   {
-    v4 = [WeakRetained currentFluidProgressStateSource];
+    sourceCopy = [WeakRetained currentFluidProgressStateSource];
   }
 
-  v7 = [v4 progressState];
-  if (v7)
+  progressState = [sourceCopy progressState];
+  if (progressState)
   {
-    v8 = [v6 currentFluidProgressStateSource];
-    v9 = [v8 progressState];
+    currentFluidProgressStateSource = [v6 currentFluidProgressStateSource];
+    progressState2 = [currentFluidProgressStateSource progressState];
 
-    if ([v7 hasCompletedLoad] && objc_msgSend(v7, "fluidProgressAnimationPhase") != 4 || objc_msgSend(v7, "hasCanceledLoad"))
+    if ([progressState hasCompletedLoad] && objc_msgSend(progressState, "fluidProgressAnimationPhase") != 4 || objc_msgSend(progressState, "hasCanceledLoad"))
     {
-      if (v9 == v7)
+      if (progressState2 == progressState)
       {
         v17 = 0u;
         v18 = 0u;
@@ -499,33 +499,33 @@ LABEL_27:
         }
       }
 
-      [v4 clearFluidProgressState];
+      [sourceCopy clearFluidProgressState];
     }
 
-    else if (v9 == v7)
+    else if (progressState2 == progressState)
     {
-      v14 = [v7 fluidProgressAnimationPhase];
-      if (v14 != 2 && v14 != 5)
+      fluidProgressAnimationPhase = [progressState fluidProgressAnimationPhase];
+      if (fluidProgressAnimationPhase != 2 && fluidProgressAnimationPhase != 5)
       {
-        [(WBSFluidProgressController *)self _sendUpdateFluidProgressToObservers:0 progressState:v7 source:v4 updateAnimationPhase:1];
+        [(WBSFluidProgressController *)self _sendUpdateFluidProgressToObservers:0 progressState:progressState source:sourceCopy updateAnimationPhase:1];
       }
     }
   }
 }
 
-- (void)_sendUpdateFluidProgressToObservers:(id)a3 progressState:(id)a4 source:(id)a5 updateAnimationPhase:(BOOL)a6
+- (void)_sendUpdateFluidProgressToObservers:(id)observers progressState:(id)state source:(id)source updateAnimationPhase:(BOOL)phase
 {
-  v6 = a6;
+  phaseCopy = phase;
   v45 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  val = a5;
-  if (v6)
+  observersCopy = observers;
+  stateCopy = state;
+  val = source;
+  if (phaseCopy)
   {
-    [v10 updateNextFluidProgressAnimation];
+    [stateCopy updateNextFluidProgressAnimation];
   }
 
-  v11 = [v10 fluidProgressAnimationPhase];
+  fluidProgressAnimationPhase = [stateCopy fluidProgressAnimationPhase];
   v12 = dispatch_group_create();
   v42[0] = 0;
   v42[1] = v42;
@@ -535,15 +535,15 @@ LABEL_27:
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  observers = v9;
-  if (!v9)
+  observers = observersCopy;
+  if (!observersCopy)
   {
     observers = self->_observers;
   }
 
   obj = observers;
   v14 = [(NSHashTable *)obj countByEnumeratingWithState:&v38 objects:v44 count:16];
-  v21 = v6;
+  v21 = phaseCopy;
   if (v14)
   {
     v15 = *v39;
@@ -564,7 +564,7 @@ LABEL_27:
         v35[3] = &unk_1E8284D98;
         v37 = v42;
         v36 = v12;
-        [v17 fluidProgressController:self updateFluidProgressBar:v10 completion:v35];
+        [v17 fluidProgressController:self updateFluidProgressBar:stateCopy completion:v35];
       }
 
       v14 = [(NSHashTable *)obj countByEnumeratingWithState:&v38 objects:v44 count:16];
@@ -578,17 +578,17 @@ LABEL_27:
   block[1] = 3221225472;
   block[2] = __118__WBSFluidProgressController_Internal___sendUpdateFluidProgressToObservers_progressState_source_updateAnimationPhase___block_invoke_2;
   block[3] = &unk_1E8284DC0;
-  v26 = v10;
-  v18 = v10;
+  v26 = stateCopy;
+  v18 = stateCopy;
   objc_copyWeak(&v31, &location);
-  v32 = v11 == 4;
+  v32 = fluidProgressAnimationPhase == 4;
   v33 = v21;
-  v27 = self;
-  v28 = v9;
+  selfCopy = self;
+  v28 = observersCopy;
   v30 = v42;
   v29 = val;
   v19 = val;
-  v20 = v9;
+  v20 = observersCopy;
   dispatch_group_notify(v12, MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v31);

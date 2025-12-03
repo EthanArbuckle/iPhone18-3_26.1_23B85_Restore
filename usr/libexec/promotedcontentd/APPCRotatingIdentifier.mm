@@ -1,10 +1,10 @@
 @interface APPCRotatingIdentifier
 - (APPCRotatingIdentifier)init;
-- (APPCRotatingIdentifier)initWithRotatingIdentifier:(id)a3;
+- (APPCRotatingIdentifier)initWithRotatingIdentifier:(id)identifier;
 - (NSString)value;
 - (int64_t)type;
-- (void)setType:(int64_t)a3;
-- (void)setValue:(id)a3;
+- (void)setType:(int64_t)type;
+- (void)setValue:(id)value;
 @end
 
 @implementation APPCRotatingIdentifier
@@ -18,7 +18,7 @@
   return v2;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v4 = sub_100398F58();
   v6 = v5;
@@ -35,16 +35,16 @@
   return *(self + v3);
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   v5 = OBJC_IVAR___APPCRotatingIdentifier_type;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
-- (APPCRotatingIdentifier)initWithRotatingIdentifier:(id)a3
+- (APPCRotatingIdentifier)initWithRotatingIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = sub_100384890();
 
   return v4;

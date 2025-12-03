@@ -1,12 +1,12 @@
 @interface BuddySMC
 + (unsigned)_connectToService;
-- (BOOL)hasKey:(id)a3;
-- (BOOL)writeNumber:(unsigned __int8)a3 forKey:(id)a4;
+- (BOOL)hasKey:(id)key;
+- (BOOL)writeNumber:(unsigned __int8)number forKey:(id)key;
 - (BuddySMC)init;
-- (id)numberForKey:(id)a3;
-- (int)_valueForKey:(id)a3 outputData:(void *)a4 outputSize:(unsigned int *)a5;
-- (int)_writeData:(void *)a3 writeDataSize:(unint64_t)a4 forKey:(id)a5;
-- (unsigned)_stringToKey:(const char *)a3;
+- (id)numberForKey:(id)key;
+- (int)_valueForKey:(id)key outputData:(void *)data outputSize:(unsigned int *)size;
+- (int)_writeData:(void *)data writeDataSize:(unint64_t)size forKey:(id)key;
+- (unsigned)_stringToKey:(const char *)key;
 - (void)dealloc;
 @end
 
@@ -33,12 +33,12 @@
 
 - (void)dealloc
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   connect = [(BuddySMC *)self port];
   if (connect)
   {
-    v7 = IOConnectCallScalarMethod([(BuddySMC *)v11 port], 1u, 0, 0, 0, 0);
+    v7 = IOConnectCallScalarMethod([(BuddySMC *)selfCopy port], 1u, 0, 0, 0, 0);
     if (v7)
     {
       v4 = _BYLoggingFacility();
@@ -70,7 +70,7 @@
 
       else
       {
-        [(BuddySMC *)v11 setPort:0];
+        [(BuddySMC *)selfCopy setPort:0];
       }
     }
 
@@ -82,31 +82,31 @@
     v8 = 1;
   }
 
-  v2.receiver = v11;
+  v2.receiver = selfCopy;
   v2.super_class = BuddySMC;
   [(BuddySMC *)&v2 dealloc];
 }
 
-- (BOOL)hasKey:(id)a3
+- (BOOL)hasKey:(id)key
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v4 = 0;
-  v7 = [(BuddySMC *)v6 _valueForKey:location[0] outputData:v8 outputSize:&v4]== 0;
+  v7 = [(BuddySMC *)selfCopy _valueForKey:location[0] outputData:v8 outputSize:&v4]== 0;
   objc_storeStrong(location, 0);
   return v7;
 }
 
-- (id)numberForKey:(id)a3
+- (id)numberForKey:(id)key
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v10 = 0;
-  v9 = [(BuddySMC *)v12 _valueForKey:location[0] outputData:v16 outputSize:&v10];
+  v9 = [(BuddySMC *)selfCopy _valueForKey:location[0] outputData:v16 outputSize:&v10];
   if (v9)
   {
     oslog = _BYLoggingFacility();
@@ -159,20 +159,20 @@
   return v3;
 }
 
-- (BOOL)writeNumber:(unsigned __int8)a3 forKey:(id)a4
+- (BOOL)writeNumber:(unsigned __int8)number forKey:(id)key
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  numberCopy = number;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v7 = [(BuddySMC *)v11 _writeData:&v9 writeDataSize:1 forKey:location];
+  objc_storeStrong(&location, key);
+  v7 = [(BuddySMC *)selfCopy _writeData:&numberCopy writeDataSize:1 forKey:location];
   if (v7)
   {
     oslog = _BYLoggingFacility();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      sub_10021E7D8(buf, v9, location, v7);
+      sub_10021E7D8(buf, numberCopy, location, v7);
       _os_log_error_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_ERROR, "Failed to write value %u to key %@: %d", buf, 0x18u);
     }
 
@@ -193,7 +193,7 @@
 
 + (unsigned)_connectToService
 {
-  v16 = a1;
+  selfCopy = self;
   v15 = a2;
   v2 = IOServiceMatching("AppleSMC");
   service = IOServiceGetMatchingService(kIOMainPortDefault, v2);
@@ -256,15 +256,15 @@
   }
 }
 
-- (int)_valueForKey:(id)a3 outputData:(void *)a4 outputSize:(unsigned int *)a5
+- (int)_valueForKey:(id)key outputData:(void *)data outputSize:(unsigned int *)size
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v22 = a4;
-  v21 = a5;
-  v20 = -[BuddySMC _stringToKey:](v24, "_stringToKey:", [location[0] UTF8String]);
+  objc_storeStrong(location, key);
+  dataCopy = data;
+  sizeCopy = size;
+  v20 = -[BuddySMC _stringToKey:](selfCopy, "_stringToKey:", [location[0] UTF8String]);
   v19 = 0;
   outputStructCnt = 168;
   v17 = 120;
@@ -272,7 +272,7 @@
   memset(outputStruct, 0, sizeof(outputStruct));
   __b[0] = v20;
   BYTE2(__b[10]) = 9;
-  v16 = IOConnectCallStructMethod([(BuddySMC *)v24 port], 2u, __b, 0xA8uLL, outputStruct, &outputStructCnt);
+  v16 = IOConnectCallStructMethod([(BuddySMC *)selfCopy port], 2u, __b, 0xA8uLL, outputStruct, &outputStructCnt);
   if (v16 || LOBYTE(outputStruct[10]))
   {
     oslog = _BYLoggingFacility();
@@ -293,9 +293,9 @@
     v19 = outputStruct[7];
     if (v17 >= outputStruct[7])
     {
-      if (v21)
+      if (sizeCopy)
       {
-        *v21 = v19;
+        *sizeCopy = v19;
       }
 
       memset(__b, 0, sizeof(__b));
@@ -303,7 +303,7 @@
       __b[0] = v20;
       __b[7] = v19;
       BYTE2(__b[10]) = 5;
-      v16 = IOConnectCallStructMethod([(BuddySMC *)v24 port], 2u, __b, 0xA8uLL, outputStruct, &outputStructCnt);
+      v16 = IOConnectCallStructMethod([(BuddySMC *)selfCopy port], 2u, __b, 0xA8uLL, outputStruct, &outputStructCnt);
       if (v16 || LOBYTE(outputStruct[10]))
       {
         v10 = _BYLoggingFacility();
@@ -370,27 +370,27 @@
   return v25;
 }
 
-- (int)_writeData:(void *)a3 writeDataSize:(unint64_t)a4 forKey:(id)a5
+- (int)_writeData:(void *)data writeDataSize:(unint64_t)size forKey:(id)key
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  v12 = a4;
+  dataCopy = data;
+  sizeCopy = size;
   location = 0;
-  objc_storeStrong(&location, a5);
-  v10 = -[BuddySMC _stringToKey:](v15, "_stringToKey:", [location UTF8String]);
+  objc_storeStrong(&location, key);
+  v10 = -[BuddySMC _stringToKey:](selfCopy, "_stringToKey:", [location UTF8String]);
   outputStructCnt = 80;
   memset(__b, 0, sizeof(__b));
   memset(outputStruct, 0, sizeof(outputStruct));
   __b[0] = v10;
   BYTE2(__b[10]) = 6;
-  __b[7] = v12;
+  __b[7] = sizeCopy;
   for (i = 0; ; ++i)
   {
     v5 = 0;
     if (i < 32)
     {
-      v5 = i < v12;
+      v5 = i < sizeCopy;
     }
 
     if (!v5)
@@ -398,10 +398,10 @@
       break;
     }
 
-    *(&__b[12] + i) = v13[i];
+    *(&__b[12] + i) = dataCopy[i];
   }
 
-  v7 = IOConnectCallStructMethod([(BuddySMC *)v15 port], 2u, __b, 0x50uLL, outputStruct, &outputStructCnt);
+  v7 = IOConnectCallStructMethod([(BuddySMC *)selfCopy port], 2u, __b, 0x50uLL, outputStruct, &outputStructCnt);
   if (v7 || outputStruct[40])
   {
     NSLog(@"Write failed for key '%@' (0x%X, 0x%X)\n", location, v7, outputStruct[40]);
@@ -418,12 +418,12 @@
   return v16;
 }
 
-- (unsigned)_stringToKey:(const char *)a3
+- (unsigned)_stringToKey:(const char *)key
 {
   v5 = 0;
   for (i = 0; i < 4; ++i)
   {
-    v5 = (v5 << 8) | a3[i];
+    v5 = (v5 << 8) | key[i];
   }
 
   return v5;

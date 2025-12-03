@@ -1,7 +1,7 @@
 @interface LockScreenBlurOpacityRadialMask
 - (_TtC11MediaCoreUI31LockScreenBlurOpacityRadialMask)init;
-- (_TtC11MediaCoreUI31LockScreenBlurOpacityRadialMask)initWithCoder:(id)a3;
-- (_TtC11MediaCoreUI31LockScreenBlurOpacityRadialMask)initWithLayer:(id)a3;
+- (_TtC11MediaCoreUI31LockScreenBlurOpacityRadialMask)initWithCoder:(id)coder;
+- (_TtC11MediaCoreUI31LockScreenBlurOpacityRadialMask)initWithLayer:(id)layer;
 @end
 
 @implementation LockScreenBlurOpacityRadialMask
@@ -18,7 +18,7 @@
   return v4;
 }
 
-- (_TtC11MediaCoreUI31LockScreenBlurOpacityRadialMask)initWithLayer:(id)a3
+- (_TtC11MediaCoreUI31LockScreenBlurOpacityRadialMask)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_1C5BCB8D4();
@@ -37,7 +37,7 @@
   return v7;
 }
 
-- (_TtC11MediaCoreUI31LockScreenBlurOpacityRadialMask)initWithCoder:(id)a3
+- (_TtC11MediaCoreUI31LockScreenBlurOpacityRadialMask)initWithCoder:(id)coder
 {
   result = sub_1C5BCBBC4();
   __break(1u);

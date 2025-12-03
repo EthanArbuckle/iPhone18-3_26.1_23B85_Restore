@@ -1,27 +1,27 @@
 @interface CHCachedRecognizerWrapper
-- (CHCachedRecognizerWrapper)initWithRecognizer:(id)a3;
+- (CHCachedRecognizerWrapper)initWithRecognizer:(id)recognizer;
 - (void)checkInRecognizer;
 - (void)dealloc;
 @end
 
 @implementation CHCachedRecognizerWrapper
 
-- (CHCachedRecognizerWrapper)initWithRecognizer:(id)a3
+- (CHCachedRecognizerWrapper)initWithRecognizer:(id)recognizer
 {
-  v5 = a3;
+  recognizerCopy = recognizer;
   v10.receiver = self;
   v10.super_class = CHCachedRecognizerWrapper;
   v6 = [(CHCachedRecognizerWrapper *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recognizer, a3);
+    objc_storeStrong(&v6->_recognizer, recognizer);
     v7->_activeRequestCount = 0;
     +[NSDate timeIntervalSinceReferenceDate];
     v7->_lastActiveTimestamp = v8;
     v7->_targetIdleLifetime = 120.0;
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 recognitionMode] == 6)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [recognizerCopy recognitionMode] == 6)
     {
       v7->_targetIdleLifetime = 12.0;
     }

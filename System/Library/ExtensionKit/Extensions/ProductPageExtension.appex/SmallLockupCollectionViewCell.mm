@@ -1,12 +1,12 @@
 @interface SmallLockupCollectionViewCell
-- (_TtC20ProductPageExtension29SmallLockupCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension29SmallLockupCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SmallLockupCollectionViewCell
 
-- (_TtC20ProductPageExtension29SmallLockupCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension29SmallLockupCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension29SmallLockupCollectionViewCell_itemLayoutContext;
   v5 = sub_10076341C();
@@ -25,7 +25,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002A6ABC();
 }
 

@@ -1,12 +1,12 @@
 @interface NTKDArgonServiceXPCWrapper
 + (id)sharedXPCWrapper;
-- (void)displayUserNotificationForKeyDescriptor:(id)a3 completion:(id)a4;
-- (void)ingestKeyDescriptor:(id)a3 withMethod:(unint64_t)a4 completion:(id)a5;
-- (void)knownKeyDescriptors:(id)a3;
-- (void)queryForNewFaces:(id)a3;
-- (void)requestCurrentEnvironment:(id)a3;
-- (void)requestResetOnNextLaunch:(id)a3;
-- (void)setCurrentEnvironment:(int64_t)a3 completion:(id)a4;
+- (void)displayUserNotificationForKeyDescriptor:(id)descriptor completion:(id)completion;
+- (void)ingestKeyDescriptor:(id)descriptor withMethod:(unint64_t)method completion:(id)completion;
+- (void)knownKeyDescriptors:(id)descriptors;
+- (void)queryForNewFaces:(id)faces;
+- (void)requestCurrentEnvironment:(id)environment;
+- (void)requestResetOnNextLaunch:(id)launch;
+- (void)setCurrentEnvironment:(int64_t)environment completion:(id)completion;
 @end
 
 @implementation NTKDArgonServiceXPCWrapper
@@ -30,23 +30,23 @@ void __46__NTKDArgonServiceXPCWrapper_sharedXPCWrapper__block_invoke()
   sharedXPCWrapper_wrapper = v0;
 }
 
-- (void)ingestKeyDescriptor:(id)a3 withMethod:(unint64_t)a4 completion:(id)a5
+- (void)ingestKeyDescriptor:(id)descriptor withMethod:(unint64_t)method completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    v7 = a5;
-    v8 = a3;
+    completionCopy = completion;
+    descriptorCopy = descriptor;
     v9 = +[NTKFaceSupportUnlockAttemptEventRecorder sharedRecorder];
-    v10 = [v8 fileName];
+    fileName = [descriptorCopy fileName];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __72__NTKDArgonServiceXPCWrapper_ingestKeyDescriptor_withMethod_completion___block_invoke;
     v13[3] = &unk_27877E820;
-    v14 = v10;
-    v11 = v10;
-    [v9 beginRecordingForIdentifier:v11 method:a4 completion:v13];
+    v14 = fileName;
+    v11 = fileName;
+    [v9 beginRecordingForIdentifier:v11 method:method completion:v13];
     v12 = +[NTKDArgonService sharedService];
-    [v12 ingestKeyDescriptor:v8 withMethod:a4 completion:v7];
+    [v12 ingestKeyDescriptor:descriptorCopy withMethod:method completion:completionCopy];
   }
 }
 
@@ -63,47 +63,47 @@ void __72__NTKDArgonServiceXPCWrapper_ingestKeyDescriptor_withMethod_completion_
   }
 }
 
-- (void)queryForNewFaces:(id)a3
+- (void)queryForNewFaces:(id)faces
 {
-  v3 = a3;
+  facesCopy = faces;
   v4 = +[NTKDArgonService sharedService];
-  [v4 queryForNewFaces:v3];
+  [v4 queryForNewFaces:facesCopy];
 }
 
-- (void)requestResetOnNextLaunch:(id)a3
+- (void)requestResetOnNextLaunch:(id)launch
 {
-  v3 = a3;
+  launchCopy = launch;
   v4 = +[NTKDArgonService sharedService];
-  [v4 requestResetOnNextLaunch:v3];
+  [v4 requestResetOnNextLaunch:launchCopy];
 }
 
-- (void)knownKeyDescriptors:(id)a3
+- (void)knownKeyDescriptors:(id)descriptors
 {
-  v3 = a3;
+  descriptorsCopy = descriptors;
   v4 = +[NTKDArgonService sharedService];
-  [v4 knownKeyDescriptors:v3];
+  [v4 knownKeyDescriptors:descriptorsCopy];
 }
 
-- (void)displayUserNotificationForKeyDescriptor:(id)a3 completion:(id)a4
+- (void)displayUserNotificationForKeyDescriptor:(id)descriptor completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  descriptorCopy = descriptor;
   v7 = +[NTKDArgonService sharedService];
-  [v7 displayUserNotificationForKeyDescriptor:v6 completion:v5];
+  [v7 displayUserNotificationForKeyDescriptor:descriptorCopy completion:completionCopy];
 }
 
-- (void)requestCurrentEnvironment:(id)a3
+- (void)requestCurrentEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   v4 = +[NTKDArgonService sharedService];
-  [v4 requestCurrentEnvironment:v3];
+  [v4 requestCurrentEnvironment:environmentCopy];
 }
 
-- (void)setCurrentEnvironment:(int64_t)a3 completion:(id)a4
+- (void)setCurrentEnvironment:(int64_t)environment completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = +[NTKDArgonService sharedService];
-  [v6 setCurrentEnvironment:a3 completion:v5];
+  [v6 setCurrentEnvironment:environment completion:completionCopy];
 }
 
 void __72__NTKDArgonServiceXPCWrapper_ingestKeyDescriptor_withMethod_completion___block_invoke_cold_1()

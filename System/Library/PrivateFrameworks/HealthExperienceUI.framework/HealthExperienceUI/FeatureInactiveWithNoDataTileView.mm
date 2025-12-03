@@ -1,10 +1,10 @@
 @interface FeatureInactiveWithNoDataTileView
-- (_TtC18HealthExperienceUI33FeatureInactiveWithNoDataTileView)initWithCoder:(id)a3;
+- (_TtC18HealthExperienceUI33FeatureInactiveWithNoDataTileView)initWithCoder:(id)coder;
 @end
 
 @implementation FeatureInactiveWithNoDataTileView
 
-- (_TtC18HealthExperienceUI33FeatureInactiveWithNoDataTileView)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI33FeatureInactiveWithNoDataTileView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC18HealthExperienceUI33FeatureInactiveWithNoDataTileView_context;
   *v3 = 0u;

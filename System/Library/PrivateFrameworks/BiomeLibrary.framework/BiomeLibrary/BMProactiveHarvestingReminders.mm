@@ -1,41 +1,41 @@
 @interface BMProactiveHarvestingReminders
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMProactiveHarvestingReminders)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMProactiveHarvestingReminders)initWithUniqueID:(id)a3 domainID:(id)a4 absoluteTimestamp:(id)a5 title:(id)a6 notes:(id)a7 isAllDay:(id)a8 completionDateTimestamp:(id)a9 dueDateTimestamp:(id)a10 priority:(id)a11 contentProtection:(id)a12 personaId:(id)a13;
-- (BOOL)isEqual:(id)a3;
+- (BMProactiveHarvestingReminders)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMProactiveHarvestingReminders)initWithUniqueID:(id)d domainID:(id)iD absoluteTimestamp:(id)timestamp title:(id)title notes:(id)notes isAllDay:(id)day completionDateTimestamp:(id)dateTimestamp dueDateTimestamp:(id)self0 priority:(id)self1 contentProtection:(id)self2 personaId:(id)self3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSDate)completionDateTimestamp;
 - (NSDate)dueDateTimestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMProactiveHarvestingReminders
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMProactiveHarvestingReminders *)self uniqueID];
-    v7 = [v5 uniqueID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    uniqueID = [(BMProactiveHarvestingReminders *)self uniqueID];
+    uniqueID2 = [v5 uniqueID];
+    v8 = uniqueID2;
+    if (uniqueID == uniqueID2)
     {
     }
 
     else
     {
-      v9 = [(BMProactiveHarvestingReminders *)self uniqueID];
-      v10 = [v5 uniqueID];
-      v11 = [v9 isEqual:v10];
+      uniqueID3 = [(BMProactiveHarvestingReminders *)self uniqueID];
+      uniqueID4 = [v5 uniqueID];
+      v11 = [uniqueID3 isEqual:uniqueID4];
 
       if (!v11)
       {
@@ -43,18 +43,18 @@
       }
     }
 
-    v13 = [(BMProactiveHarvestingReminders *)self domainID];
-    v14 = [v5 domainID];
-    v15 = v14;
-    if (v13 == v14)
+    domainID = [(BMProactiveHarvestingReminders *)self domainID];
+    domainID2 = [v5 domainID];
+    v15 = domainID2;
+    if (domainID == domainID2)
     {
     }
 
     else
     {
-      v16 = [(BMProactiveHarvestingReminders *)self domainID];
-      v17 = [v5 domainID];
-      v18 = [v16 isEqual:v17];
+      domainID3 = [(BMProactiveHarvestingReminders *)self domainID];
+      domainID4 = [v5 domainID];
+      v18 = [domainID3 isEqual:domainID4];
 
       if (!v18)
       {
@@ -62,18 +62,18 @@
       }
     }
 
-    v19 = [(BMProactiveHarvestingReminders *)self absoluteTimestamp];
-    v20 = [v5 absoluteTimestamp];
-    v21 = v20;
-    if (v19 == v20)
+    absoluteTimestamp = [(BMProactiveHarvestingReminders *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v21 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v22 = [(BMProactiveHarvestingReminders *)self absoluteTimestamp];
-      v23 = [v5 absoluteTimestamp];
-      v24 = [v22 isEqual:v23];
+      absoluteTimestamp3 = [(BMProactiveHarvestingReminders *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v24 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v24)
       {
@@ -81,18 +81,18 @@
       }
     }
 
-    v25 = [(BMProactiveHarvestingReminders *)self title];
-    v26 = [v5 title];
-    v27 = v26;
-    if (v25 == v26)
+    title = [(BMProactiveHarvestingReminders *)self title];
+    title2 = [v5 title];
+    v27 = title2;
+    if (title == title2)
     {
     }
 
     else
     {
-      v28 = [(BMProactiveHarvestingReminders *)self title];
-      v29 = [v5 title];
-      v30 = [v28 isEqual:v29];
+      title3 = [(BMProactiveHarvestingReminders *)self title];
+      title4 = [v5 title];
+      v30 = [title3 isEqual:title4];
 
       if (!v30)
       {
@@ -100,18 +100,18 @@
       }
     }
 
-    v31 = [(BMProactiveHarvestingReminders *)self notes];
-    v32 = [v5 notes];
-    v33 = v32;
-    if (v31 == v32)
+    notes = [(BMProactiveHarvestingReminders *)self notes];
+    notes2 = [v5 notes];
+    v33 = notes2;
+    if (notes == notes2)
     {
     }
 
     else
     {
-      v34 = [(BMProactiveHarvestingReminders *)self notes];
-      v35 = [v5 notes];
-      v36 = [v34 isEqual:v35];
+      notes3 = [(BMProactiveHarvestingReminders *)self notes];
+      notes4 = [v5 notes];
+      v36 = [notes3 isEqual:notes4];
 
       if (!v36)
       {
@@ -131,25 +131,25 @@
         goto LABEL_43;
       }
 
-      v37 = [(BMProactiveHarvestingReminders *)self isAllDay];
-      if (v37 != [v5 isAllDay])
+      isAllDay = [(BMProactiveHarvestingReminders *)self isAllDay];
+      if (isAllDay != [v5 isAllDay])
       {
         goto LABEL_43;
       }
     }
 
-    v38 = [(BMProactiveHarvestingReminders *)self completionDateTimestamp];
-    v39 = [v5 completionDateTimestamp];
-    v40 = v39;
-    if (v38 == v39)
+    completionDateTimestamp = [(BMProactiveHarvestingReminders *)self completionDateTimestamp];
+    completionDateTimestamp2 = [v5 completionDateTimestamp];
+    v40 = completionDateTimestamp2;
+    if (completionDateTimestamp == completionDateTimestamp2)
     {
     }
 
     else
     {
-      v41 = [(BMProactiveHarvestingReminders *)self completionDateTimestamp];
-      v42 = [v5 completionDateTimestamp];
-      v43 = [v41 isEqual:v42];
+      completionDateTimestamp3 = [(BMProactiveHarvestingReminders *)self completionDateTimestamp];
+      completionDateTimestamp4 = [v5 completionDateTimestamp];
+      v43 = [completionDateTimestamp3 isEqual:completionDateTimestamp4];
 
       if (!v43)
       {
@@ -157,18 +157,18 @@
       }
     }
 
-    v44 = [(BMProactiveHarvestingReminders *)self dueDateTimestamp];
-    v45 = [v5 dueDateTimestamp];
-    v46 = v45;
-    if (v44 == v45)
+    dueDateTimestamp = [(BMProactiveHarvestingReminders *)self dueDateTimestamp];
+    dueDateTimestamp2 = [v5 dueDateTimestamp];
+    v46 = dueDateTimestamp2;
+    if (dueDateTimestamp == dueDateTimestamp2)
     {
     }
 
     else
     {
-      v47 = [(BMProactiveHarvestingReminders *)self dueDateTimestamp];
-      v48 = [v5 dueDateTimestamp];
-      v49 = [v47 isEqual:v48];
+      dueDateTimestamp3 = [(BMProactiveHarvestingReminders *)self dueDateTimestamp];
+      dueDateTimestamp4 = [v5 dueDateTimestamp];
+      v49 = [dueDateTimestamp3 isEqual:dueDateTimestamp4];
 
       if (!v49)
       {
@@ -188,25 +188,25 @@
         goto LABEL_43;
       }
 
-      v50 = [(BMProactiveHarvestingReminders *)self priority];
-      if (v50 != [v5 priority])
+      priority = [(BMProactiveHarvestingReminders *)self priority];
+      if (priority != [v5 priority])
       {
         goto LABEL_43;
       }
     }
 
-    v51 = [(BMProactiveHarvestingReminders *)self contentProtection];
-    v52 = [v5 contentProtection];
-    v53 = v52;
-    if (v51 == v52)
+    contentProtection = [(BMProactiveHarvestingReminders *)self contentProtection];
+    contentProtection2 = [v5 contentProtection];
+    v53 = contentProtection2;
+    if (contentProtection == contentProtection2)
     {
     }
 
     else
     {
-      v54 = [(BMProactiveHarvestingReminders *)self contentProtection];
-      v55 = [v5 contentProtection];
-      v56 = [v54 isEqual:v55];
+      contentProtection3 = [(BMProactiveHarvestingReminders *)self contentProtection];
+      contentProtection4 = [v5 contentProtection];
+      v56 = [contentProtection3 isEqual:contentProtection4];
 
       if (!v56)
       {
@@ -218,18 +218,18 @@ LABEL_44:
       }
     }
 
-    v58 = [(BMProactiveHarvestingReminders *)self personaId];
-    v59 = [v5 personaId];
-    if (v58 == v59)
+    personaId = [(BMProactiveHarvestingReminders *)self personaId];
+    personaId2 = [v5 personaId];
+    if (personaId == personaId2)
     {
       v12 = 1;
     }
 
     else
     {
-      v60 = [(BMProactiveHarvestingReminders *)self personaId];
-      v61 = [v5 personaId];
-      v12 = [v60 isEqual:v61];
+      personaId3 = [(BMProactiveHarvestingReminders *)self personaId];
+      personaId4 = [v5 personaId];
+      v12 = [personaId3 isEqual:personaId4];
     }
 
     goto LABEL_44;
@@ -295,14 +295,14 @@ LABEL_45:
 - (id)jsonDictionary
 {
   v48[11] = *MEMORY[0x1E69E9840];
-  v3 = [(BMProactiveHarvestingReminders *)self uniqueID];
-  v4 = [(BMProactiveHarvestingReminders *)self domainID];
-  v5 = [(BMProactiveHarvestingReminders *)self absoluteTimestamp];
-  if (v5)
+  uniqueID = [(BMProactiveHarvestingReminders *)self uniqueID];
+  domainID = [(BMProactiveHarvestingReminders *)self domainID];
+  absoluteTimestamp = [(BMProactiveHarvestingReminders *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v6 = MEMORY[0x1E696AD98];
-    v7 = [(BMProactiveHarvestingReminders *)self absoluteTimestamp];
-    [v7 timeIntervalSinceReferenceDate];
+    absoluteTimestamp2 = [(BMProactiveHarvestingReminders *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSinceReferenceDate];
     v8 = [v6 numberWithDouble:?];
   }
 
@@ -311,8 +311,8 @@ LABEL_45:
     v8 = 0;
   }
 
-  v9 = [(BMProactiveHarvestingReminders *)self title];
-  v10 = [(BMProactiveHarvestingReminders *)self notes];
+  title = [(BMProactiveHarvestingReminders *)self title];
+  notes = [(BMProactiveHarvestingReminders *)self notes];
   if ([(BMProactiveHarvestingReminders *)self hasIsAllDay])
   {
     v46 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMProactiveHarvestingReminders isAllDay](self, "isAllDay")}];
@@ -323,12 +323,12 @@ LABEL_45:
     v46 = 0;
   }
 
-  v11 = [(BMProactiveHarvestingReminders *)self completionDateTimestamp];
-  if (v11)
+  completionDateTimestamp = [(BMProactiveHarvestingReminders *)self completionDateTimestamp];
+  if (completionDateTimestamp)
   {
     v12 = MEMORY[0x1E696AD98];
-    v13 = [(BMProactiveHarvestingReminders *)self completionDateTimestamp];
-    [v13 timeIntervalSinceReferenceDate];
+    completionDateTimestamp2 = [(BMProactiveHarvestingReminders *)self completionDateTimestamp];
+    [completionDateTimestamp2 timeIntervalSinceReferenceDate];
     v45 = [v12 numberWithDouble:?];
   }
 
@@ -337,12 +337,12 @@ LABEL_45:
     v45 = 0;
   }
 
-  v14 = [(BMProactiveHarvestingReminders *)self dueDateTimestamp];
-  if (v14)
+  dueDateTimestamp = [(BMProactiveHarvestingReminders *)self dueDateTimestamp];
+  if (dueDateTimestamp)
   {
     v15 = MEMORY[0x1E696AD98];
-    v16 = [(BMProactiveHarvestingReminders *)self dueDateTimestamp];
-    [v16 timeIntervalSinceReferenceDate];
+    dueDateTimestamp2 = [(BMProactiveHarvestingReminders *)self dueDateTimestamp];
+    [dueDateTimestamp2 timeIntervalSinceReferenceDate];
     v44 = [v15 numberWithDouble:?];
   }
 
@@ -361,110 +361,110 @@ LABEL_45:
     v17 = 0;
   }
 
-  v18 = [(BMProactiveHarvestingReminders *)self contentProtection];
-  v19 = [(BMProactiveHarvestingReminders *)self personaId];
+  contentProtection = [(BMProactiveHarvestingReminders *)self contentProtection];
+  personaId = [(BMProactiveHarvestingReminders *)self personaId];
   v47[0] = @"uniqueID";
-  v20 = v3;
-  if (!v3)
+  null = uniqueID;
+  if (!uniqueID)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38 = v20;
-  v48[0] = v20;
+  v38 = null;
+  v48[0] = null;
   v47[1] = @"domainID";
-  v21 = v4;
-  if (!v4)
+  null2 = domainID;
+  if (!domainID)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37 = v21;
-  v48[1] = v21;
+  v37 = null2;
+  v48[1] = null2;
   v47[2] = @"absoluteTimestamp";
-  v22 = v8;
+  null3 = v8;
   if (!v8)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v36 = v22;
-  v48[2] = v22;
+  v36 = null3;
+  v48[2] = null3;
   v47[3] = @"title";
-  v23 = v9;
-  if (!v9)
+  null4 = title;
+  if (!title)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v43 = v3;
-  v35 = v23;
-  v48[3] = v23;
+  v43 = uniqueID;
+  v35 = null4;
+  v48[3] = null4;
   v47[4] = @"notes";
-  v24 = v10;
-  if (!v10)
+  null5 = notes;
+  if (!notes)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v42 = v4;
-  v34 = v24;
-  v48[4] = v24;
+  v42 = domainID;
+  v34 = null5;
+  v48[4] = null5;
   v47[5] = @"isAllDay";
-  v25 = v46;
+  null6 = v46;
   if (!v46)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v41 = v8;
-  v48[5] = v25;
+  v48[5] = null6;
   v47[6] = @"completionDateTimestamp";
-  v26 = v45;
+  null7 = v45;
   if (!v45)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40 = v9;
-  v48[6] = v26;
+  v40 = title;
+  v48[6] = null7;
   v47[7] = @"dueDateTimestamp";
-  v27 = v44;
+  null8 = v44;
   if (!v44)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v10;
-  v48[7] = v27;
+  v28 = notes;
+  v48[7] = null8;
   v47[8] = @"priority";
-  v29 = v17;
+  null9 = v17;
   if (!v17)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v48[8] = v29;
+  v48[8] = null9;
   v47[9] = @"contentProtection";
-  v30 = v18;
-  if (!v18)
+  null10 = contentProtection;
+  if (!contentProtection)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v48[9] = v30;
+  v48[9] = null10;
   v47[10] = @"personaId";
-  v31 = v19;
-  if (!v19)
+  null11 = personaId;
+  if (!personaId)
   {
-    v31 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v48[10] = v31;
+  v48[10] = null11;
   v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:11];
-  if (v19)
+  if (personaId)
   {
-    if (v18)
+    if (contentProtection)
     {
       goto LABEL_40;
     }
@@ -479,7 +479,7 @@ LABEL_57:
     goto LABEL_58;
   }
 
-  if (!v18)
+  if (!contentProtection)
   {
     goto LABEL_57;
   }
@@ -558,22 +558,22 @@ LABEL_53:
   return v39;
 }
 
-- (BMProactiveHarvestingReminders)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMProactiveHarvestingReminders)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v152[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"uniqueID"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"uniqueID"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
 LABEL_4:
-    v8 = [v5 objectForKeyedSubscript:@"domainID"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"domainID"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v21 = 0;
           v22 = 0;
@@ -582,7 +582,7 @@ LABEL_4:
 
         v23 = v6;
         v24 = v7;
-        v25 = a4;
+        errorCopy = error;
         v26 = objc_alloc(MEMORY[0x1E696ABC0]);
         v27 = *MEMORY[0x1E698F240];
         v149 = *MEMORY[0x1E696A578];
@@ -593,7 +593,7 @@ LABEL_4:
         v9 = v29;
         v21 = 0;
         v22 = 0;
-        *v25 = [v26 initWithDomain:v30 code:2 userInfo:v29];
+        *errorCopy = [v26 initWithDomain:v30 code:2 userInfo:v29];
         v7 = v24;
         v6 = v23;
         v10 = v28;
@@ -608,20 +608,20 @@ LABEL_4:
       v128 = 0;
     }
 
-    v9 = [v5 objectForKeyedSubscript:@"absoluteTimestamp"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v11 = MEMORY[0x1E695DF00];
-        v12 = a4;
+        errorCopy2 = error;
         v13 = v9;
         v14 = [v11 alloc];
         [v13 doubleValue];
         v16 = v15;
 
-        a4 = v12;
+        error = errorCopy2;
         v17 = [v14 initWithTimeIntervalSinceReferenceDate:v16];
       }
 
@@ -639,7 +639,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v10 = 0;
             v22 = 0;
@@ -649,7 +649,7 @@ LABEL_4:
 
           v90 = v6;
           v91 = v7;
-          v92 = a4;
+          errorCopy3 = error;
           v93 = objc_alloc(MEMORY[0x1E696ABC0]);
           v94 = v9;
           v95 = *MEMORY[0x1E698F240];
@@ -660,7 +660,7 @@ LABEL_4:
           v96 = v95;
           v9 = v94;
           v22 = 0;
-          *v92 = [v93 initWithDomain:v96 code:2 userInfo:v32];
+          *errorCopy3 = [v93 initWithDomain:v96 code:2 userInfo:v32];
           v7 = v91;
           v6 = v90;
           v10 = 0;
@@ -683,7 +683,7 @@ LABEL_80:
     }
 
 LABEL_23:
-    v32 = [v5 objectForKeyedSubscript:@"title"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     v124 = v32;
     v126 = v10;
     if (v32 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -691,7 +691,7 @@ LABEL_23:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v127 = 0;
           v22 = 0;
@@ -699,7 +699,7 @@ LABEL_23:
           goto LABEL_79;
         }
 
-        v115 = a4;
+        errorCopy4 = error;
         v43 = objc_alloc(MEMORY[0x1E696ABC0]);
         v44 = v9;
         v45 = *MEMORY[0x1E698F240];
@@ -713,7 +713,7 @@ LABEL_23:
         v9 = v44;
         v127 = 0;
         v22 = 0;
-        *v115 = [v47 initWithDomain:v49 code:2 userInfo:v46];
+        *errorCopy4 = [v47 initWithDomain:v49 code:2 userInfo:v46];
         v21 = v128;
         goto LABEL_78;
       }
@@ -726,13 +726,13 @@ LABEL_23:
       v127 = 0;
     }
 
-    v33 = [v5 objectForKeyedSubscript:@"notes"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"notes"];
     if (v33 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v125 = 0;
           v22 = 0;
@@ -743,7 +743,7 @@ LABEL_23:
 
         v122 = v6;
         v118 = v7;
-        v50 = a4;
+        errorCopy5 = error;
         v51 = objc_alloc(MEMORY[0x1E696ABC0]);
         v52 = v9;
         v53 = *MEMORY[0x1E698F240];
@@ -757,7 +757,7 @@ LABEL_23:
         v120 = v54;
         v125 = 0;
         v22 = 0;
-        *v50 = [v51 initWithDomain:v55 code:2 userInfo:?];
+        *errorCopy5 = [v51 initWithDomain:v55 code:2 userInfo:?];
         v7 = v118;
         v6 = v122;
         goto LABEL_75;
@@ -773,9 +773,9 @@ LABEL_23:
       v125 = 0;
     }
 
-    v34 = [v5 objectForKeyedSubscript:@"isAllDay"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"isAllDay"];
     v120 = v34;
-    v114 = a4;
+    errorCopy6 = error;
     if (v34)
     {
       objc_opt_class();
@@ -789,7 +789,7 @@ LABEL_23:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v34 = 0;
             v22 = 0;
@@ -816,7 +816,7 @@ LABEL_23:
           v34 = 0;
           v22 = 0;
           v48 = v116;
-          *v114 = v63;
+          *errorCopy6 = v63;
           goto LABEL_74;
         }
 
@@ -824,7 +824,7 @@ LABEL_23:
       }
     }
 
-    v35 = [v5 objectForKeyedSubscript:@"completionDateTimestamp"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"completionDateTimestamp"];
     v112 = v35;
     if (v35 && (v36 = v35, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -856,7 +856,7 @@ LABEL_23:
         {
           v97 = v6;
           v98 = v7;
-          if (!v114)
+          if (!errorCopy6)
           {
             v121 = 0;
             v22 = 0;
@@ -877,7 +877,7 @@ LABEL_23:
           v9 = v100;
           v121 = 0;
           v22 = 0;
-          *v114 = [v99 initWithDomain:v102 code:2 userInfo:v65];
+          *errorCopy6 = [v99 initWithDomain:v102 code:2 userInfo:v65];
           v7 = v98;
           v6 = v97;
 LABEL_73:
@@ -909,7 +909,7 @@ LABEL_78:
     }
 
 LABEL_52:
-    v65 = [v5 objectForKeyedSubscript:@"dueDateTimestamp"];
+    v65 = [dictionaryCopy objectForKeyedSubscript:@"dueDateTimestamp"];
     v119 = v7;
     v110 = v9;
     v111 = v8;
@@ -943,7 +943,7 @@ LABEL_52:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v114)
+          if (!errorCopy6)
           {
             v117 = 0;
             v22 = 0;
@@ -962,7 +962,7 @@ LABEL_52:
           v7 = v119;
           v117 = 0;
           v22 = 0;
-          *v114 = [v105 initWithDomain:v106 code:2 userInfo:v74];
+          *errorCopy6 = [v105 initWithDomain:v106 code:2 userInfo:v74];
           goto LABEL_72;
         }
 
@@ -978,14 +978,14 @@ LABEL_52:
     }
 
 LABEL_60:
-    v74 = [v5 objectForKeyedSubscript:@"priority"];
+    v74 = [dictionaryCopy objectForKeyedSubscript:@"priority"];
     v113 = v34;
     if (v74 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v114)
+        if (!errorCopy6)
         {
           v75 = 0;
           v22 = 0;
@@ -1001,7 +1001,7 @@ LABEL_60:
         v85 = [v83 initWithDomain:v84 code:2 userInfo:v76];
         v75 = 0;
         v22 = 0;
-        *v114 = v85;
+        *errorCopy6 = v85;
 LABEL_71:
 
         v7 = v119;
@@ -1021,21 +1021,21 @@ LABEL_72:
       v75 = 0;
     }
 
-    v76 = [v5 objectForKeyedSubscript:@"contentProtection"];
+    v76 = [dictionaryCopy objectForKeyedSubscript:@"contentProtection"];
     v123 = v6;
     if (v76 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v114)
+        if (!errorCopy6)
         {
           v78 = 0;
           v22 = 0;
           goto LABEL_71;
         }
 
-        v77 = self;
+        selfCopy3 = self;
         v108 = objc_alloc(MEMORY[0x1E696ABC0]);
         v86 = *MEMORY[0x1E698F240];
         v133 = *MEMORY[0x1E696A578];
@@ -1045,27 +1045,27 @@ LABEL_72:
         v87 = [v108 initWithDomain:v86 code:2 userInfo:v79];
         v78 = 0;
         v22 = 0;
-        *v114 = v87;
+        *errorCopy6 = v87;
         goto LABEL_70;
       }
 
-      v77 = self;
+      selfCopy3 = self;
       v78 = v76;
     }
 
     else
     {
-      v77 = self;
+      selfCopy3 = self;
       v78 = 0;
     }
 
-    v79 = [v5 objectForKeyedSubscript:@"personaId"];
+    v79 = [dictionaryCopy objectForKeyedSubscript:@"personaId"];
     if (v79 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v114)
+        if (errorCopy6)
         {
           v130 = objc_alloc(MEMORY[0x1E696ABC0]);
           v109 = *MEMORY[0x1E698F240];
@@ -1073,7 +1073,7 @@ LABEL_72:
           v88 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"personaId"];
           v132 = v88;
           v89 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v132 forKeys:&v131 count:1];
-          *v114 = [v130 initWithDomain:v109 code:2 userInfo:v89];
+          *errorCopy6 = [v130 initWithDomain:v109 code:2 userInfo:v89];
         }
 
         v80 = 0;
@@ -1089,10 +1089,10 @@ LABEL_72:
       v80 = 0;
     }
 
-    v22 = [(BMProactiveHarvestingReminders *)v77 initWithUniqueID:v119 domainID:v128 absoluteTimestamp:v126 title:v127 notes:v125 isAllDay:v113 completionDateTimestamp:v121 dueDateTimestamp:v117 priority:v75 contentProtection:v78 personaId:v80];
-    v77 = v22;
+    v22 = [(BMProactiveHarvestingReminders *)selfCopy3 initWithUniqueID:v119 domainID:v128 absoluteTimestamp:v126 title:v127 notes:v125 isAllDay:v113 completionDateTimestamp:v121 dueDateTimestamp:v117 priority:v75 contentProtection:v78 personaId:v80];
+    selfCopy3 = v22;
 LABEL_70:
-    self = v77;
+    self = selfCopy3;
 
     v6 = v123;
     goto LABEL_71;
@@ -1105,14 +1105,14 @@ LABEL_70:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v7 = 0;
     v22 = 0;
     goto LABEL_82;
   }
 
-  v18 = a4;
+  errorCopy7 = error;
   v19 = objc_alloc(MEMORY[0x1E696ABC0]);
   v20 = *MEMORY[0x1E698F240];
   v151 = *MEMORY[0x1E696A578];
@@ -1120,7 +1120,7 @@ LABEL_70:
   v152[0] = v21;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v152 forKeys:&v151 count:1];
   v22 = 0;
-  *v18 = [v19 initWithDomain:v20 code:2 userInfo:v8];
+  *errorCopy7 = [v19 initWithDomain:v20 code:2 userInfo:v8];
   v7 = 0;
 LABEL_81:
 
@@ -1133,90 +1133,90 @@ LABEL_82:
 {
   v3 = objc_opt_new();
   [(BMProactiveHarvestingReminders *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_uniqueID)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_domainID)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_hasRaw_absoluteTimestamp)
   {
     raw_absoluteTimestamp = self->_raw_absoluteTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_notes)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_hasIsAllDay)
   {
     isAllDay = self->_isAllDay;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_hasRaw_completionDateTimestamp)
   {
     raw_completionDateTimestamp = self->_raw_completionDateTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_hasRaw_dueDateTimestamp)
   {
     raw_dueDateTimestamp = self->_raw_dueDateTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_hasPriority)
   {
     priority = self->_priority;
     PBDataWriterWriteSint32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_contentProtection)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_personaId)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v47.receiver = self;
   v47.super_class = BMProactiveHarvestingReminders;
   v5 = [(BMEventBase *)&v47 init];
@@ -1225,12 +1225,12 @@ LABEL_82:
     goto LABEL_84;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1241,18 +1241,18 @@ LABEL_82:
       while (1)
       {
         LOBYTE(v48) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v48 & 0x7F) << v7;
@@ -1270,9 +1270,9 @@ LABEL_82:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -1313,18 +1313,18 @@ LABEL_66:
             case 3:
               v5->_hasRaw_absoluteTimestamp = 1;
               v48 = 0;
-              v23 = [v4 position] + 8;
-              if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 8, v24 <= objc_msgSend(v4, "length")))
+              v23 = [fromCopy position] + 8;
+              if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 8, v24 <= objc_msgSend(fromCopy, "length")))
               {
-                v42 = [v4 data];
-                [v42 getBytes:&v48 range:{objc_msgSend(v4, "position"), 8}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v40 = v48;
@@ -1360,18 +1360,18 @@ LABEL_80:
               while (1)
               {
                 LOBYTE(v48) = 0;
-                v28 = [v4 position] + 1;
-                if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+                v28 = [fromCopy position] + 1;
+                if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
                 {
-                  v30 = [v4 data];
-                  [v30 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+                  data3 = [fromCopy data];
+                  [data3 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                  [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                  [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
                 }
 
                 else
                 {
-                  [v4 _setError];
+                  [fromCopy _setError];
                 }
 
                 v27 |= (v48 & 0x7F) << v25;
@@ -1389,25 +1389,25 @@ LABEL_80:
                 }
               }
 
-              v31 = (v27 != 0) & ~[v4 hasError];
+              v31 = (v27 != 0) & ~[fromCopy hasError];
 LABEL_69:
               v5->_isAllDay = v31;
               goto LABEL_81;
             case 7:
               v5->_hasRaw_completionDateTimestamp = 1;
               v48 = 0;
-              v20 = [v4 position] + 8;
-              if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 8, v21 <= objc_msgSend(v4, "length")))
+              v20 = [fromCopy position] + 8;
+              if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 8, v21 <= objc_msgSend(fromCopy, "length")))
               {
-                v39 = [v4 data];
-                [v39 getBytes:&v48 range:{objc_msgSend(v4, "position"), 8}];
+                data4 = [fromCopy data];
+                [data4 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v40 = v48;
@@ -1416,18 +1416,18 @@ LABEL_69:
             case 8:
               v5->_hasRaw_dueDateTimestamp = 1;
               v48 = 0;
-              v16 = [v4 position] + 8;
-              if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 8, v17 <= objc_msgSend(v4, "length")))
+              v16 = [fromCopy position] + 8;
+              if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 8, v17 <= objc_msgSend(fromCopy, "length")))
               {
-                v43 = [v4 data];
-                [v43 getBytes:&v48 range:{objc_msgSend(v4, "position"), 8}];
+                data5 = [fromCopy data];
+                [data5 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v40 = v48;
@@ -1450,18 +1450,18 @@ LABEL_69:
             while (1)
             {
               LOBYTE(v48) = 0;
-              v35 = [v4 position] + 1;
-              if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 1, v36 <= objc_msgSend(v4, "length")))
+              v35 = [fromCopy position] + 1;
+              if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 1, v36 <= objc_msgSend(fromCopy, "length")))
               {
-                v37 = [v4 data];
-                [v37 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+                data6 = [fromCopy data];
+                [data6 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v34 |= (v48 & 0x7F) << v32;
@@ -1479,7 +1479,7 @@ LABEL_69:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v38 = 0;
             }
@@ -1509,13 +1509,13 @@ LABEL_73:
       *(&v5->super.super.isa + v19) = v18;
 
 LABEL_81:
-      v44 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v44 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_83:
     v45 = 0;
@@ -1533,49 +1533,49 @@ LABEL_84:
 - (NSString)description
 {
   v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v16 = [(BMProactiveHarvestingReminders *)self uniqueID];
-  v3 = [(BMProactiveHarvestingReminders *)self domainID];
-  v4 = [(BMProactiveHarvestingReminders *)self absoluteTimestamp];
-  v5 = [(BMProactiveHarvestingReminders *)self title];
-  v6 = [(BMProactiveHarvestingReminders *)self notes];
+  uniqueID = [(BMProactiveHarvestingReminders *)self uniqueID];
+  domainID = [(BMProactiveHarvestingReminders *)self domainID];
+  absoluteTimestamp = [(BMProactiveHarvestingReminders *)self absoluteTimestamp];
+  title = [(BMProactiveHarvestingReminders *)self title];
+  notes = [(BMProactiveHarvestingReminders *)self notes];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMProactiveHarvestingReminders isAllDay](self, "isAllDay")}];
-  v8 = [(BMProactiveHarvestingReminders *)self completionDateTimestamp];
-  v9 = [(BMProactiveHarvestingReminders *)self dueDateTimestamp];
+  completionDateTimestamp = [(BMProactiveHarvestingReminders *)self completionDateTimestamp];
+  dueDateTimestamp = [(BMProactiveHarvestingReminders *)self dueDateTimestamp];
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMProactiveHarvestingReminders priority](self, "priority")}];
-  v11 = [(BMProactiveHarvestingReminders *)self contentProtection];
-  v12 = [(BMProactiveHarvestingReminders *)self personaId];
-  v15 = [v14 initWithFormat:@"BMProactiveHarvestingReminders with uniqueID: %@, domainID: %@, absoluteTimestamp: %@, title: %@, notes: %@, isAllDay: %@, completionDateTimestamp: %@, dueDateTimestamp: %@, priority: %@, contentProtection: %@, personaId: %@", v16, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  contentProtection = [(BMProactiveHarvestingReminders *)self contentProtection];
+  personaId = [(BMProactiveHarvestingReminders *)self personaId];
+  v15 = [v14 initWithFormat:@"BMProactiveHarvestingReminders with uniqueID: %@, domainID: %@, absoluteTimestamp: %@, title: %@, notes: %@, isAllDay: %@, completionDateTimestamp: %@, dueDateTimestamp: %@, priority: %@, contentProtection: %@, personaId: %@", uniqueID, domainID, absoluteTimestamp, title, notes, v7, completionDateTimestamp, dueDateTimestamp, v10, contentProtection, personaId];
 
   return v15;
 }
 
-- (BMProactiveHarvestingReminders)initWithUniqueID:(id)a3 domainID:(id)a4 absoluteTimestamp:(id)a5 title:(id)a6 notes:(id)a7 isAllDay:(id)a8 completionDateTimestamp:(id)a9 dueDateTimestamp:(id)a10 priority:(id)a11 contentProtection:(id)a12 personaId:(id)a13
+- (BMProactiveHarvestingReminders)initWithUniqueID:(id)d domainID:(id)iD absoluteTimestamp:(id)timestamp title:(id)title notes:(id)notes isAllDay:(id)day completionDateTimestamp:(id)dateTimestamp dueDateTimestamp:(id)self0 priority:(id)self1 contentProtection:(id)self2 personaId:(id)self3
 {
-  v38 = a3;
-  v31 = a4;
-  v37 = a4;
-  v18 = a5;
-  v36 = a6;
-  v32 = a7;
-  v35 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
-  v34 = a13;
+  dCopy = d;
+  iDCopy = iD;
+  iDCopy2 = iD;
+  timestampCopy = timestamp;
+  titleCopy = title;
+  notesCopy = notes;
+  notesCopy2 = notes;
+  dayCopy = day;
+  dateTimestampCopy = dateTimestamp;
+  dueDateTimestampCopy = dueDateTimestamp;
+  priorityCopy = priority;
+  protectionCopy = protection;
+  idCopy = id;
   v39.receiver = self;
   v39.super_class = BMProactiveHarvestingReminders;
   v24 = [(BMEventBase *)&v39 init];
   if (v24)
   {
     v24->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v24->_uniqueID, a3);
-    objc_storeStrong(&v24->_domainID, v31);
-    if (v18)
+    objc_storeStrong(&v24->_uniqueID, d);
+    objc_storeStrong(&v24->_domainID, iDCopy);
+    if (timestampCopy)
     {
       v24->_hasRaw_absoluteTimestamp = 1;
-      [v18 timeIntervalSinceReferenceDate];
+      [timestampCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -1585,12 +1585,12 @@ LABEL_84:
     }
 
     v24->_raw_absoluteTimestamp = v25;
-    objc_storeStrong(&v24->_title, a6);
-    objc_storeStrong(&v24->_notes, v32);
-    if (v19)
+    objc_storeStrong(&v24->_title, title);
+    objc_storeStrong(&v24->_notes, notesCopy);
+    if (dayCopy)
     {
       v24->_hasIsAllDay = 1;
-      v24->_isAllDay = [v19 BOOLValue];
+      v24->_isAllDay = [dayCopy BOOLValue];
     }
 
     else
@@ -1599,10 +1599,10 @@ LABEL_84:
       v24->_isAllDay = 0;
     }
 
-    if (v20)
+    if (dateTimestampCopy)
     {
       v24->_hasRaw_completionDateTimestamp = 1;
-      [v20 timeIntervalSinceReferenceDate];
+      [dateTimestampCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -1612,10 +1612,10 @@ LABEL_84:
     }
 
     v24->_raw_completionDateTimestamp = v26;
-    if (v21)
+    if (dueDateTimestampCopy)
     {
       v24->_hasRaw_dueDateTimestamp = 1;
-      [v21 timeIntervalSinceReferenceDate];
+      [dueDateTimestampCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -1625,21 +1625,21 @@ LABEL_84:
     }
 
     v24->_raw_dueDateTimestamp = v27;
-    if (v22)
+    if (priorityCopy)
     {
       v24->_hasPriority = 1;
-      v28 = [v22 intValue];
+      intValue = [priorityCopy intValue];
     }
 
     else
     {
       v24->_hasPriority = 0;
-      v28 = -1;
+      intValue = -1;
     }
 
-    v24->_priority = v28;
-    objc_storeStrong(&v24->_contentProtection, a12);
-    objc_storeStrong(&v24->_personaId, a13);
+    v24->_priority = intValue;
+    objc_storeStrong(&v24->_contentProtection, protection);
+    objc_storeStrong(&v24->_personaId, id);
   }
 
   return v24;
@@ -1709,13 +1709,13 @@ LABEL_84:
   return v13;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMProactiveHarvestingReminders alloc] initByReadFrom:v6];
     v8 = v7;

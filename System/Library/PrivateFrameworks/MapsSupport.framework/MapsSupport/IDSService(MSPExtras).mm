@@ -12,18 +12,18 @@
 
 - (BOOL)_msp_hasValidIDSAccount
 {
-  v1 = [a1 _msp_currentAccount];
-  v2 = v1 != 0;
+  _msp_currentAccount = [self _msp_currentAccount];
+  v2 = _msp_currentAccount != 0;
 
   return v2;
 }
 
 - (id)_msp_currentAccount
 {
-  v1 = [a1 accounts];
-  v2 = [v1 allObjects];
+  accounts = [self accounts];
+  allObjects = [accounts allObjects];
 
-  v3 = [v2 count];
+  v3 = [allObjects count];
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -36,7 +36,7 @@
   v6[3] = &unk_279867EB0;
   v6[4] = &v7;
   v6[5] = v3;
-  [v2 enumerateObjectsUsingBlock:v6];
+  [allObjects enumerateObjectsUsingBlock:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 
@@ -49,16 +49,16 @@
   v2 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [a1 _msp_currentAccount];
-    v4 = [v3 aliasStrings];
+    _msp_currentAccount = [self _msp_currentAccount];
+    aliasStrings = [_msp_currentAccount aliasStrings];
     *buf = 138412290;
-    v40 = v4;
+    v40 = aliasStrings;
     _os_log_impl(&dword_25813A000, v2, OS_LOG_TYPE_DEFAULT, "_msp_currentAccountIdentifier choosing from aliasStrings %@", buf, 0xCu);
   }
 
-  v5 = [a1 _msp_currentAccount];
-  v6 = [v5 aliasStrings];
-  v7 = [v6 count];
+  _msp_currentAccount2 = [self _msp_currentAccount];
+  aliasStrings2 = [_msp_currentAccount2 aliasStrings];
+  v7 = [aliasStrings2 count];
 
   if (v7)
   {
@@ -66,10 +66,10 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v8 = [a1 _msp_currentAccount];
-    v9 = [v8 aliasStrings];
+    _msp_currentAccount3 = [self _msp_currentAccount];
+    aliasStrings3 = [_msp_currentAccount3 aliasStrings];
 
-    v10 = [v9 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    v10 = [aliasStrings3 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v10)
     {
       v11 = v10;
@@ -80,23 +80,23 @@
         {
           if (*v34 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(aliasStrings3);
           }
 
           v14 = *(*(&v33 + 1) + 8 * i);
-          v15 = [a1 _msp_currentAccount];
-          v16 = [v15 loginID];
-          LOBYTE(v14) = [v14 isEqualToString:v16];
+          _msp_currentAccount4 = [self _msp_currentAccount];
+          loginID = [_msp_currentAccount4 loginID];
+          LOBYTE(v14) = [v14 isEqualToString:loginID];
 
           if (v14)
           {
-            v23 = [a1 _msp_currentAccount];
-            v24 = [v23 loginID];
+            _msp_currentAccount5 = [self _msp_currentAccount];
+            loginID2 = [_msp_currentAccount5 loginID];
             goto LABEL_22;
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v11 = [aliasStrings3 countByEnumeratingWithState:&v33 objects:v38 count:16];
         if (v11)
         {
           continue;
@@ -110,10 +110,10 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v17 = [a1 _msp_currentAccount];
-    v9 = [v17 aliasStrings];
+    _msp_currentAccount6 = [self _msp_currentAccount];
+    aliasStrings3 = [_msp_currentAccount6 aliasStrings];
 
-    v18 = [v9 countByEnumeratingWithState:&v29 objects:v37 count:16];
+    v18 = [aliasStrings3 countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v18)
     {
       v19 = v18;
@@ -124,18 +124,18 @@
         {
           if (*v30 != v20)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(aliasStrings3);
           }
 
           v22 = *(*(&v29 + 1) + 8 * j);
           if ([v22 containsString:@"@"])
           {
-            v26 = v22;
+            loginID3 = v22;
             goto LABEL_25;
           }
         }
 
-        v19 = [v9 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        v19 = [aliasStrings3 countByEnumeratingWithState:&v29 objects:v37 count:16];
         if (v19)
         {
           continue;
@@ -145,19 +145,19 @@
       }
     }
 
-    v9 = [a1 _msp_currentAccount];
-    v23 = [v9 aliasStrings];
-    v24 = [v23 objectAtIndexedSubscript:0];
+    aliasStrings3 = [self _msp_currentAccount];
+    _msp_currentAccount5 = [aliasStrings3 aliasStrings];
+    loginID2 = [_msp_currentAccount5 objectAtIndexedSubscript:0];
 LABEL_22:
-    v25 = v24;
+    v25 = loginID2;
   }
 
   else
   {
-    v9 = [a1 _msp_currentAccount];
-    v26 = [v9 loginID];
+    aliasStrings3 = [self _msp_currentAccount];
+    loginID3 = [aliasStrings3 loginID];
 LABEL_25:
-    v25 = v26;
+    v25 = loginID3;
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -169,29 +169,29 @@ LABEL_25:
 {
   v22 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 accounts];
+  accounts = [self accounts];
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"uniqueID == %@", v4];
-  v7 = [v5 filteredSetUsingPredicate:v6];
+  v7 = [accounts filteredSetUsingPredicate:v6];
 
-  v8 = [v7 allObjects];
-  v9 = [v8 firstObject];
+  allObjects = [v7 allObjects];
+  firstObject = [allObjects firstObject];
 
   v10 = MSPGetSharedTripLog();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
-  if (v9)
+  if (firstObject)
   {
     if (v11)
     {
       *buf = 138412802;
-      v17 = v9;
+      v17 = firstObject;
       v18 = 2112;
       v19 = v4;
       v20 = 2112;
-      v21 = v5;
+      v21 = accounts;
       _os_log_impl(&dword_25813A000, v10, OS_LOG_TYPE_INFO, "_msp_accountFromIdentifier foundAccount %@ for identifier %@ from set %@", buf, 0x20u);
     }
 
-    v12 = v9;
+    firstObject2 = firstObject;
   }
 
   else
@@ -201,17 +201,17 @@ LABEL_25:
       *buf = 138412546;
       v17 = v4;
       v18 = 2112;
-      v19 = v5;
+      v19 = accounts;
       _os_log_impl(&dword_25813A000, v10, OS_LOG_TYPE_INFO, "_msp_accountFromIdentifier no account for identifier %@ from set %@", buf, 0x16u);
     }
 
-    v13 = [v5 allObjects];
-    v12 = [v13 firstObject];
+    allObjects2 = [accounts allObjects];
+    firstObject2 = [allObjects2 firstObject];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return firstObject2;
 }
 
 - (id)_msp_removeSelfFrom:()MSPExtras
@@ -223,8 +223,8 @@ LABEL_25:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [a1 activeAliases];
-  v6 = [v5 copy];
+  activeAliases = [self activeAliases];
+  v6 = [activeAliases copy];
 
   obj = v6;
   v7 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -333,8 +333,8 @@ LABEL_25:
 + (id)_msp_IDSIdentifierFor:()MSPExtras
 {
   v3 = a3;
-  v4 = [MEMORY[0x277D0EC70] sharedPlatform];
-  if ([v4 isInternalInstall])
+  mEMORY[0x277D0EC70] = [MEMORY[0x277D0EC70] sharedPlatform];
+  if ([mEMORY[0x277D0EC70] isInternalInstall])
   {
     IsValid = MSPSharedTripVirtualReceiverIsValid(v3);
 

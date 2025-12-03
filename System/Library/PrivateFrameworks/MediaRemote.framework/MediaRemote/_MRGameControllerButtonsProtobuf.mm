@@ -1,33 +1,33 @@
 @interface _MRGameControllerButtonsProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasB:(BOOL)a3;
-- (void)setHasDPadX:(BOOL)a3;
-- (void)setHasDPadY:(BOOL)a3;
-- (void)setHasLeftShoulder:(BOOL)a3;
-- (void)setHasLeftThumbstickX:(BOOL)a3;
-- (void)setHasLeftThumbstickY:(BOOL)a3;
-- (void)setHasLeftTrigger:(BOOL)a3;
-- (void)setHasPause:(BOOL)a3;
-- (void)setHasRightShoulder:(BOOL)a3;
-- (void)setHasRightThumbstickX:(BOOL)a3;
-- (void)setHasRightThumbstickY:(BOOL)a3;
-- (void)setHasRightTrigger:(BOOL)a3;
-- (void)setHasX:(BOOL)a3;
-- (void)setHasY:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasB:(BOOL)b;
+- (void)setHasDPadX:(BOOL)x;
+- (void)setHasDPadY:(BOOL)y;
+- (void)setHasLeftShoulder:(BOOL)shoulder;
+- (void)setHasLeftThumbstickX:(BOOL)x;
+- (void)setHasLeftThumbstickY:(BOOL)y;
+- (void)setHasLeftTrigger:(BOOL)trigger;
+- (void)setHasPause:(BOOL)pause;
+- (void)setHasRightShoulder:(BOOL)shoulder;
+- (void)setHasRightThumbstickX:(BOOL)x;
+- (void)setHasRightThumbstickY:(BOOL)y;
+- (void)setHasRightTrigger:(BOOL)trigger;
+- (void)setHasX:(BOOL)x;
+- (void)setHasY:(BOOL)y;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRGameControllerButtonsProtobuf
 
-- (void)setHasDPadX:(BOOL)a3
+- (void)setHasDPadX:(BOOL)x
 {
-  if (a3)
+  if (x)
   {
     v3 = 4;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasDPadY:(BOOL)a3
+- (void)setHasDPadY:(BOOL)y
 {
-  if (a3)
+  if (y)
   {
     v3 = 8;
   }
@@ -55,9 +55,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasB:(BOOL)a3
+- (void)setHasB:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 2;
   }
@@ -70,9 +70,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasX:(BOOL)a3
+- (void)setHasX:(BOOL)x
 {
-  if (a3)
+  if (x)
   {
     v3 = 0x2000;
   }
@@ -85,9 +85,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasY:(BOOL)a3
+- (void)setHasY:(BOOL)y
 {
-  if (a3)
+  if (y)
   {
     v3 = 0x4000;
   }
@@ -100,9 +100,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasLeftShoulder:(BOOL)a3
+- (void)setHasLeftShoulder:(BOOL)shoulder
 {
-  if (a3)
+  if (shoulder)
   {
     v3 = 16;
   }
@@ -115,9 +115,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasRightShoulder:(BOOL)a3
+- (void)setHasRightShoulder:(BOOL)shoulder
 {
-  if (a3)
+  if (shoulder)
   {
     v3 = 512;
   }
@@ -130,9 +130,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasLeftThumbstickX:(BOOL)a3
+- (void)setHasLeftThumbstickX:(BOOL)x
 {
-  if (a3)
+  if (x)
   {
     v3 = 32;
   }
@@ -145,9 +145,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasLeftThumbstickY:(BOOL)a3
+- (void)setHasLeftThumbstickY:(BOOL)y
 {
-  if (a3)
+  if (y)
   {
     v3 = 64;
   }
@@ -160,9 +160,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasRightThumbstickX:(BOOL)a3
+- (void)setHasRightThumbstickX:(BOOL)x
 {
-  if (a3)
+  if (x)
   {
     v3 = 1024;
   }
@@ -175,9 +175,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasRightThumbstickY:(BOOL)a3
+- (void)setHasRightThumbstickY:(BOOL)y
 {
-  if (a3)
+  if (y)
   {
     v3 = 2048;
   }
@@ -190,9 +190,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasLeftTrigger:(BOOL)a3
+- (void)setHasLeftTrigger:(BOOL)trigger
 {
-  if (a3)
+  if (trigger)
   {
     v3 = 128;
   }
@@ -205,9 +205,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasRightTrigger:(BOOL)a3
+- (void)setHasRightTrigger:(BOOL)trigger
 {
-  if (a3)
+  if (trigger)
   {
     v3 = 4096;
   }
@@ -220,9 +220,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasPause:(BOOL)a3
+- (void)setHasPause:(BOOL)pause
 {
-  if (a3)
+  if (pause)
   {
     v3 = 256;
   }
@@ -241,21 +241,21 @@
   v8.receiver = self;
   v8.super_class = _MRGameControllerButtonsProtobuf;
   v4 = [(_MRGameControllerButtonsProtobuf *)&v8 description];
-  v5 = [(_MRGameControllerButtonsProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRGameControllerButtonsProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     *&v4 = self->_dPadX;
     v8 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-    [v3 setObject:v8 forKey:@"dPadX"];
+    [dictionary setObject:v8 forKey:@"dPadX"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -277,7 +277,7 @@ LABEL_3:
 
   *&v4 = self->_dPadY;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v9 forKey:@"dPadY"];
+  [dictionary setObject:v9 forKey:@"dPadY"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -294,7 +294,7 @@ LABEL_4:
 LABEL_22:
   *&v4 = self->_a;
   v10 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v10 forKey:@"a"];
+  [dictionary setObject:v10 forKey:@"a"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -311,7 +311,7 @@ LABEL_5:
 LABEL_23:
   *&v4 = self->_b;
   v11 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v11 forKey:@"b"];
+  [dictionary setObject:v11 forKey:@"b"];
 
   has = self->_has;
   if ((has & 0x2000) == 0)
@@ -328,7 +328,7 @@ LABEL_6:
 LABEL_24:
   *&v4 = self->_x;
   v12 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v12 forKey:@"x"];
+  [dictionary setObject:v12 forKey:@"x"];
 
   has = self->_has;
   if ((has & 0x4000) == 0)
@@ -345,7 +345,7 @@ LABEL_7:
 LABEL_25:
   *&v4 = self->_y;
   v13 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v13 forKey:@"y"];
+  [dictionary setObject:v13 forKey:@"y"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -362,7 +362,7 @@ LABEL_8:
 LABEL_26:
   *&v4 = self->_leftShoulder;
   v14 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v14 forKey:@"leftShoulder"];
+  [dictionary setObject:v14 forKey:@"leftShoulder"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -379,7 +379,7 @@ LABEL_9:
 LABEL_27:
   *&v4 = self->_rightShoulder;
   v15 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v15 forKey:@"rightShoulder"];
+  [dictionary setObject:v15 forKey:@"rightShoulder"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -396,7 +396,7 @@ LABEL_10:
 LABEL_28:
   *&v4 = self->_leftThumbstickX;
   v16 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v16 forKey:@"leftThumbstickX"];
+  [dictionary setObject:v16 forKey:@"leftThumbstickX"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -413,7 +413,7 @@ LABEL_11:
 LABEL_29:
   *&v4 = self->_leftThumbstickY;
   v17 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v17 forKey:@"leftThumbstickY"];
+  [dictionary setObject:v17 forKey:@"leftThumbstickY"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -430,7 +430,7 @@ LABEL_12:
 LABEL_30:
   *&v4 = self->_rightThumbstickX;
   v18 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v18 forKey:@"rightThumbstickX"];
+  [dictionary setObject:v18 forKey:@"rightThumbstickX"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -447,7 +447,7 @@ LABEL_13:
 LABEL_31:
   *&v4 = self->_rightThumbstickY;
   v19 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v19 forKey:@"rightThumbstickY"];
+  [dictionary setObject:v19 forKey:@"rightThumbstickY"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -464,7 +464,7 @@ LABEL_14:
 LABEL_32:
   *&v4 = self->_leftTrigger;
   v20 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v20 forKey:@"leftTrigger"];
+  [dictionary setObject:v20 forKey:@"leftTrigger"];
 
   has = self->_has;
   if ((has & 0x1000) == 0)
@@ -481,24 +481,24 @@ LABEL_15:
 LABEL_33:
   *&v4 = self->_rightTrigger;
   v21 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v21 forKey:@"rightTrigger"];
+  [dictionary setObject:v21 forKey:@"rightTrigger"];
 
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_16:
     *&v4 = self->_pause;
     v6 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-    [v3 setObject:v6 forKey:@"pause"];
+    [dictionary setObject:v6 forKey:@"pause"];
   }
 
 LABEL_17:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v20 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -714,14 +714,14 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[4] = LODWORD(self->_dPadX);
-    *(v4 + 34) |= 4u;
+    toCopy[4] = LODWORD(self->_dPadX);
+    *(toCopy + 34) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -740,8 +740,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[5] = LODWORD(self->_dPadY);
-  *(v4 + 34) |= 8u;
+  toCopy[5] = LODWORD(self->_dPadY);
+  *(toCopy + 34) |= 8u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -755,8 +755,8 @@ LABEL_4:
   }
 
 LABEL_22:
-  v4[2] = LODWORD(self->_a);
-  *(v4 + 34) |= 1u;
+  toCopy[2] = LODWORD(self->_a);
+  *(toCopy + 34) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -770,8 +770,8 @@ LABEL_5:
   }
 
 LABEL_23:
-  v4[3] = LODWORD(self->_b);
-  *(v4 + 34) |= 2u;
+  toCopy[3] = LODWORD(self->_b);
+  *(toCopy + 34) |= 2u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -785,8 +785,8 @@ LABEL_6:
   }
 
 LABEL_24:
-  v4[15] = LODWORD(self->_x);
-  *(v4 + 34) |= 0x2000u;
+  toCopy[15] = LODWORD(self->_x);
+  *(toCopy + 34) |= 0x2000u;
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -800,8 +800,8 @@ LABEL_7:
   }
 
 LABEL_25:
-  v4[16] = LODWORD(self->_y);
-  *(v4 + 34) |= 0x4000u;
+  toCopy[16] = LODWORD(self->_y);
+  *(toCopy + 34) |= 0x4000u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -815,8 +815,8 @@ LABEL_8:
   }
 
 LABEL_26:
-  v4[6] = LODWORD(self->_leftShoulder);
-  *(v4 + 34) |= 0x10u;
+  toCopy[6] = LODWORD(self->_leftShoulder);
+  *(toCopy + 34) |= 0x10u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -830,8 +830,8 @@ LABEL_9:
   }
 
 LABEL_27:
-  v4[11] = LODWORD(self->_rightShoulder);
-  *(v4 + 34) |= 0x200u;
+  toCopy[11] = LODWORD(self->_rightShoulder);
+  *(toCopy + 34) |= 0x200u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -845,8 +845,8 @@ LABEL_10:
   }
 
 LABEL_28:
-  v4[7] = LODWORD(self->_leftThumbstickX);
-  *(v4 + 34) |= 0x20u;
+  toCopy[7] = LODWORD(self->_leftThumbstickX);
+  *(toCopy + 34) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -860,8 +860,8 @@ LABEL_11:
   }
 
 LABEL_29:
-  v4[8] = LODWORD(self->_leftThumbstickY);
-  *(v4 + 34) |= 0x40u;
+  toCopy[8] = LODWORD(self->_leftThumbstickY);
+  *(toCopy + 34) |= 0x40u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -875,8 +875,8 @@ LABEL_12:
   }
 
 LABEL_30:
-  v4[12] = LODWORD(self->_rightThumbstickX);
-  *(v4 + 34) |= 0x400u;
+  toCopy[12] = LODWORD(self->_rightThumbstickX);
+  *(toCopy + 34) |= 0x400u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -890,8 +890,8 @@ LABEL_13:
   }
 
 LABEL_31:
-  v4[13] = LODWORD(self->_rightThumbstickY);
-  *(v4 + 34) |= 0x800u;
+  toCopy[13] = LODWORD(self->_rightThumbstickY);
+  *(toCopy + 34) |= 0x800u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -905,8 +905,8 @@ LABEL_14:
   }
 
 LABEL_32:
-  v4[9] = LODWORD(self->_leftTrigger);
-  *(v4 + 34) |= 0x80u;
+  toCopy[9] = LODWORD(self->_leftTrigger);
+  *(toCopy + 34) |= 0x80u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -920,21 +920,21 @@ LABEL_15:
   }
 
 LABEL_33:
-  v4[14] = LODWORD(self->_rightTrigger);
-  *(v4 + 34) |= 0x1000u;
+  toCopy[14] = LODWORD(self->_rightTrigger);
+  *(toCopy + 34) |= 0x1000u;
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_16:
-    v4[10] = LODWORD(self->_pause);
-    *(v4 + 34) |= 0x100u;
+    toCopy[10] = LODWORD(self->_pause);
+    *(toCopy + 34) |= 0x100u;
   }
 
 LABEL_17:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -1151,19 +1151,19 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_77;
   }
 
   has = self->_has;
-  v6 = *(v4 + 34);
+  v6 = *(equalCopy + 34);
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_dPadX != *(v4 + 4))
+    if ((v6 & 4) == 0 || self->_dPadX != *(equalCopy + 4))
     {
       goto LABEL_77;
     }
@@ -1178,7 +1178,7 @@ LABEL_77:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_dPadY != *(v4 + 5))
+    if ((v6 & 8) == 0 || self->_dPadY != *(equalCopy + 5))
     {
       goto LABEL_77;
     }
@@ -1191,7 +1191,7 @@ LABEL_77:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_a != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_a != *(equalCopy + 2))
     {
       goto LABEL_77;
     }
@@ -1204,7 +1204,7 @@ LABEL_77:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_b != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_b != *(equalCopy + 3))
     {
       goto LABEL_77;
     }
@@ -1217,33 +1217,33 @@ LABEL_77:
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 34) & 0x2000) == 0 || self->_x != *(v4 + 15))
+    if ((*(equalCopy + 34) & 0x2000) == 0 || self->_x != *(equalCopy + 15))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 34) & 0x2000) != 0)
+  else if ((*(equalCopy + 34) & 0x2000) != 0)
   {
     goto LABEL_77;
   }
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(v4 + 34) & 0x4000) == 0 || self->_y != *(v4 + 16))
+    if ((*(equalCopy + 34) & 0x4000) == 0 || self->_y != *(equalCopy + 16))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 34) & 0x4000) != 0)
+  else if ((*(equalCopy + 34) & 0x4000) != 0)
   {
     goto LABEL_77;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_leftShoulder != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_leftShoulder != *(equalCopy + 6))
     {
       goto LABEL_77;
     }
@@ -1256,20 +1256,20 @@ LABEL_77:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 34) & 0x200) == 0 || self->_rightShoulder != *(v4 + 11))
+    if ((*(equalCopy + 34) & 0x200) == 0 || self->_rightShoulder != *(equalCopy + 11))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 34) & 0x200) != 0)
+  else if ((*(equalCopy + 34) & 0x200) != 0)
   {
     goto LABEL_77;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_leftThumbstickX != *(v4 + 7))
+    if ((v6 & 0x20) == 0 || self->_leftThumbstickX != *(equalCopy + 7))
     {
       goto LABEL_77;
     }
@@ -1282,7 +1282,7 @@ LABEL_77:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_leftThumbstickY != *(v4 + 8))
+    if ((v6 & 0x40) == 0 || self->_leftThumbstickY != *(equalCopy + 8))
     {
       goto LABEL_77;
     }
@@ -1295,33 +1295,33 @@ LABEL_77:
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 34) & 0x400) == 0 || self->_rightThumbstickX != *(v4 + 12))
+    if ((*(equalCopy + 34) & 0x400) == 0 || self->_rightThumbstickX != *(equalCopy + 12))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 34) & 0x400) != 0)
+  else if ((*(equalCopy + 34) & 0x400) != 0)
   {
     goto LABEL_77;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 34) & 0x800) == 0 || self->_rightThumbstickY != *(v4 + 13))
+    if ((*(equalCopy + 34) & 0x800) == 0 || self->_rightThumbstickY != *(equalCopy + 13))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 34) & 0x800) != 0)
+  else if ((*(equalCopy + 34) & 0x800) != 0)
   {
     goto LABEL_77;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_leftTrigger != *(v4 + 9))
+    if ((v6 & 0x80) == 0 || self->_leftTrigger != *(equalCopy + 9))
     {
       goto LABEL_77;
     }
@@ -1334,20 +1334,20 @@ LABEL_77:
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 34) & 0x1000) == 0 || self->_rightTrigger != *(v4 + 14))
+    if ((*(equalCopy + 34) & 0x1000) == 0 || self->_rightTrigger != *(equalCopy + 14))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 34) & 0x1000) != 0)
+  else if ((*(equalCopy + 34) & 0x1000) != 0)
   {
     goto LABEL_77;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 34) & 0x100) == 0 || self->_pause != *(v4 + 10))
+    if ((*(equalCopy + 34) & 0x100) == 0 || self->_pause != *(equalCopy + 10))
     {
       goto LABEL_77;
     }
@@ -1880,15 +1880,15 @@ LABEL_78:
   return v9 ^ v5 ^ v13 ^ v17 ^ v21 ^ v25 ^ v29 ^ v33 ^ v37 ^ v41 ^ v45 ^ v49 ^ v53 ^ v57 ^ v61;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 34);
+  fromCopy = from;
+  v5 = *(fromCopy + 34);
   if ((v5 & 4) != 0)
   {
-    self->_dPadX = *(v4 + 4);
+    self->_dPadX = *(fromCopy + 4);
     *&self->_has |= 4u;
-    v5 = *(v4 + 34);
+    v5 = *(fromCopy + 34);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -1906,9 +1906,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_dPadY = *(v4 + 5);
+  self->_dPadY = *(fromCopy + 5);
   *&self->_has |= 8u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 1) == 0)
   {
 LABEL_4:
@@ -1921,9 +1921,9 @@ LABEL_4:
   }
 
 LABEL_22:
-  self->_a = *(v4 + 2);
+  self->_a = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 2) == 0)
   {
 LABEL_5:
@@ -1936,9 +1936,9 @@ LABEL_5:
   }
 
 LABEL_23:
-  self->_b = *(v4 + 3);
+  self->_b = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_6:
@@ -1951,9 +1951,9 @@ LABEL_6:
   }
 
 LABEL_24:
-  self->_x = *(v4 + 15);
+  self->_x = *(fromCopy + 15);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_7:
@@ -1966,9 +1966,9 @@ LABEL_7:
   }
 
 LABEL_25:
-  self->_y = *(v4 + 16);
+  self->_y = *(fromCopy + 16);
   *&self->_has |= 0x4000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x10) == 0)
   {
 LABEL_8:
@@ -1981,9 +1981,9 @@ LABEL_8:
   }
 
 LABEL_26:
-  self->_leftShoulder = *(v4 + 6);
+  self->_leftShoulder = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x200) == 0)
   {
 LABEL_9:
@@ -1996,9 +1996,9 @@ LABEL_9:
   }
 
 LABEL_27:
-  self->_rightShoulder = *(v4 + 11);
+  self->_rightShoulder = *(fromCopy + 11);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x20) == 0)
   {
 LABEL_10:
@@ -2011,9 +2011,9 @@ LABEL_10:
   }
 
 LABEL_28:
-  self->_leftThumbstickX = *(v4 + 7);
+  self->_leftThumbstickX = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x40) == 0)
   {
 LABEL_11:
@@ -2026,9 +2026,9 @@ LABEL_11:
   }
 
 LABEL_29:
-  self->_leftThumbstickY = *(v4 + 8);
+  self->_leftThumbstickY = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x400) == 0)
   {
 LABEL_12:
@@ -2041,9 +2041,9 @@ LABEL_12:
   }
 
 LABEL_30:
-  self->_rightThumbstickX = *(v4 + 12);
+  self->_rightThumbstickX = *(fromCopy + 12);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x800) == 0)
   {
 LABEL_13:
@@ -2056,9 +2056,9 @@ LABEL_13:
   }
 
 LABEL_31:
-  self->_rightThumbstickY = *(v4 + 13);
+  self->_rightThumbstickY = *(fromCopy + 13);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x80) == 0)
   {
 LABEL_14:
@@ -2071,9 +2071,9 @@ LABEL_14:
   }
 
 LABEL_32:
-  self->_leftTrigger = *(v4 + 9);
+  self->_leftTrigger = *(fromCopy + 9);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_15:
@@ -2086,12 +2086,12 @@ LABEL_15:
   }
 
 LABEL_33:
-  self->_rightTrigger = *(v4 + 14);
+  self->_rightTrigger = *(fromCopy + 14);
   *&self->_has |= 0x1000u;
-  if ((*(v4 + 34) & 0x100) != 0)
+  if ((*(fromCopy + 34) & 0x100) != 0)
   {
 LABEL_16:
-    self->_pause = *(v4 + 10);
+    self->_pause = *(fromCopy + 10);
     *&self->_has |= 0x100u;
   }
 

@@ -1,11 +1,11 @@
 @interface IMTapToRadarDraft
-+ (void)submitAndOpenTapToRadarWithNotificationIdentifier:(id)a3 notificationTitle:(id)a4 notificationBody:(id)a5 draftTitle:(id)a6 problemDescription:(id)a7 attachments:(id)a8 deviceClasses:(id)a9 classification:(id)a10 reproducibility:(id)a11;
++ (void)submitAndOpenTapToRadarWithNotificationIdentifier:(id)identifier notificationTitle:(id)title notificationBody:(id)body draftTitle:(id)draftTitle problemDescription:(id)description attachments:(id)attachments deviceClasses:(id)classes classification:(id)self0 reproducibility:(id)self1;
 - (IMTapToRadarDraft)init;
 @end
 
 @implementation IMTapToRadarDraft
 
-+ (void)submitAndOpenTapToRadarWithNotificationIdentifier:(id)a3 notificationTitle:(id)a4 notificationBody:(id)a5 draftTitle:(id)a6 problemDescription:(id)a7 attachments:(id)a8 deviceClasses:(id)a9 classification:(id)a10 reproducibility:(id)a11
++ (void)submitAndOpenTapToRadarWithNotificationIdentifier:(id)identifier notificationTitle:(id)title notificationBody:(id)body draftTitle:(id)draftTitle problemDescription:(id)description attachments:(id)attachments deviceClasses:(id)classes classification:(id)self0 reproducibility:(id)self1
 {
   v32 = sub_1A88C82E8();
   v31 = v11;

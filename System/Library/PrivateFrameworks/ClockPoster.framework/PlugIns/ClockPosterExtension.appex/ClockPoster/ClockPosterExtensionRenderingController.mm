@@ -1,34 +1,34 @@
 @interface ClockPosterExtensionRenderingController
-- (void)renderer:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)renderer:(id)a3 didReceiveTapAtPoint:(CGPoint)a4;
-- (void)renderer:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5;
-- (void)rendererDidInvalidate:(id)a3;
+- (void)renderer:(id)renderer didInitializeWithEnvironment:(id)environment;
+- (void)renderer:(id)renderer didReceiveTapAtPoint:(CGPoint)point;
+- (void)renderer:(id)renderer didUpdateEnvironment:(id)environment withTransition:(id)transition;
+- (void)rendererDidInvalidate:(id)invalidate;
 @end
 
 @implementation ClockPosterExtensionRenderingController
 
-- (void)renderer:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)renderer:(id)renderer didInitializeWithEnvironment:(id)environment
 {
-  v6 = a3;
+  rendererCopy = renderer;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1000037A4(v6, a4);
+  selfCopy = self;
+  sub_1000037A4(rendererCopy, environment);
 
   swift_unknownObjectRelease();
 }
 
-- (void)renderer:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5
+- (void)renderer:(id)renderer didUpdateEnvironment:(id)environment withTransition:(id)transition
 {
   if (*(&self->super.super.isa + OBJC_IVAR____TtC20ClockPosterExtension30ClockPosterExtensionController_clockFaceController))
   {
     swift_unknownObjectRetain();
-    v7 = self;
+    selfCopy = self;
 
     sub_1000041FC();
     sub_100008978();
 
     swift_getObjectType();
-    sub_100007700(a4, v7);
+    sub_100007700(environment, selfCopy);
     swift_unknownObjectRelease();
   }
 
@@ -38,17 +38,17 @@
   }
 }
 
-- (void)rendererDidInvalidate:(id)a3
+- (void)rendererDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   sub_1000080A0(&OBJC_IVAR____TtC20ClockPosterExtension39ClockPosterExtensionRenderingController_renderer);
 }
 
-- (void)renderer:(id)a3 didReceiveTapAtPoint:(CGPoint)a4
+- (void)renderer:(id)renderer didReceiveTapAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v7 = sub_100001C28(&qword_100016460, &qword_100009CE8);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
@@ -58,7 +58,7 @@
   v12 = swift_allocObject();
   swift_unknownObjectWeakInit();
   sub_100008D38();
-  v13 = self;
+  selfCopy = self;
 
   v14 = sub_100008D28();
   v15 = swift_allocObject();

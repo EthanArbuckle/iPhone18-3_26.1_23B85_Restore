@@ -1,18 +1,18 @@
 @interface WBSLPLinkMetadataRequest
-- (WBSLPLinkMetadataRequest)initWithURL:(id)a3 allowFetching:(BOOL)a4;
+- (WBSLPLinkMetadataRequest)initWithURL:(id)l allowFetching:(BOOL)fetching;
 @end
 
 @implementation WBSLPLinkMetadataRequest
 
-- (WBSLPLinkMetadataRequest)initWithURL:(id)a3 allowFetching:(BOOL)a4
+- (WBSLPLinkMetadataRequest)initWithURL:(id)l allowFetching:(BOOL)fetching
 {
   v9.receiver = self;
   v9.super_class = WBSLPLinkMetadataRequest;
-  v5 = [(WBSSiteMetadataRequest *)&v9 initWithURL:a3 extraInfo:0];
+  v5 = [(WBSSiteMetadataRequest *)&v9 initWithURL:l extraInfo:0];
   v6 = v5;
   if (v5)
   {
-    v5->_allowFetching = a4;
+    v5->_allowFetching = fetching;
     v7 = v5;
   }
 

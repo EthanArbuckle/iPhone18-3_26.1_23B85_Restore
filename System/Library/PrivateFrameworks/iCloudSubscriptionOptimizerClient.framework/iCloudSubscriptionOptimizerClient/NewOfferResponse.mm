@@ -22,7 +22,7 @@
   sub_275A33260(self + OBJC_IVAR____TtC33iCloudSubscriptionOptimizerClient16NewOfferResponse_context, v5);
   if ((*(v7 + 48))(v5, 1, v6) == 1)
   {
-    v11 = self;
+    selfCopy = self;
     sub_275A332D0(v5);
     if (qword_280A23AB8 != -1)
     {
@@ -61,7 +61,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_275A33A1C();
 
   v3 = sub_275A3D924();
@@ -78,7 +78,7 @@
 
 - (BOOL)shouldDisplayOfferNow
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_275A33BF4();
 
   return v3;

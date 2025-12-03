@@ -1,17 +1,17 @@
 @interface TSTFontInfoCache
-- (TSTFontInfoCache)initWithName:(id)a3;
+- (TSTFontInfoCache)initWithName:(id)name;
 - (id).cxx_construct;
-- (id)fontInfoForTextStyle:(id)a3;
-- (id)fontInfoForTextStyle:(id)a3 withString:(id)a4;
-- (id)resolvedTextStyleWithPropertyMap:(id)a3;
+- (id)fontInfoForTextStyle:(id)style;
+- (id)fontInfoForTextStyle:(id)style withString:(id)string;
+- (id)resolvedTextStyleWithPropertyMap:(id)map;
 - (void)dealloc;
-- (void)p_didEnterBackground:(id)a3;
-- (void)p_didReceiveMemoryWarning:(id)a3;
+- (void)p_didEnterBackground:(id)background;
+- (void)p_didReceiveMemoryWarning:(id)warning;
 @end
 
 @implementation TSTFontInfoCache
 
-- (TSTFontInfoCache)initWithName:(id)a3
+- (TSTFontInfoCache)initWithName:(id)name
 {
   v24.receiver = self;
   v24.super_class = TSTFontInfoCache;
@@ -50,9 +50,9 @@
   [(TSTFontInfoCache *)&v3 dealloc];
 }
 
-- (id)fontInfoForTextStyle:(id)a3
+- (id)fontInfoForTextStyle:(id)style
 {
-  v25[0] = a3;
+  v25[0] = style;
   pthread_rwlock_rdlock(&self->_rwlock);
   v5 = sub_2210BE30C(&self->_cache.__table_.__bucket_list_.__ptr_, v25);
   if (v5)
@@ -65,7 +65,7 @@
   else
   {
     pthread_rwlock_unlock(&self->_rwlock);
-    if (objc_msgSend_canQuicklyMeasureParagraphStyle_(MEMORY[0x277D80F78], v8, a3, v9, v10))
+    if (objc_msgSend_canQuicklyMeasureParagraphStyle_(MEMORY[0x277D80F78], v8, style, v9, v10))
     {
       pthread_rwlock_wrlock(&self->_rwlock);
       v11 = sub_2210BE30C(&self->_cache.__table_.__bucket_list_.__ptr_, v25);
@@ -76,13 +76,13 @@
 
       else
       {
-        v15 = objc_msgSend_textMeasurerBundleForParagraphStyle_(MEMORY[0x277D80F78], v12, a3, v13, v14);
+        v15 = objc_msgSend_textMeasurerBundleForParagraphStyle_(MEMORY[0x277D80F78], v12, style, v13, v14);
         v16 = [TSTFontInfoCacheEntry alloc];
         v7 = objc_msgSend_initWithTextMeasurerBundle_(v16, v17, v15, v18, v19);
         v25[2] = v25;
         v20 = sub_221406DB0(&self->_cache.__table_.__bucket_list_.__ptr_, v25);
         objc_storeStrong(v20 + 3, v7);
-        objc_msgSend_addObject_(self->_strongReferences, v21, a3, v22, v23);
+        objc_msgSend_addObject_(self->_strongReferences, v21, style, v22, v23);
       }
 
       pthread_rwlock_unlock(&self->_rwlock);
@@ -97,18 +97,18 @@
   return v7;
 }
 
-- (id)fontInfoForTextStyle:(id)a3 withString:(id)a4
+- (id)fontInfoForTextStyle:(id)style withString:(id)string
 {
-  v9 = a4;
-  if (v9)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v10 = objc_msgSend_fontInfoForTextStyle_(self, v6, a3, v7, v8);
+    v10 = objc_msgSend_fontInfoForTextStyle_(self, v6, style, v7, v8);
     v15 = v10;
     if (v10)
     {
       v16 = MEMORY[0x277D80F78];
       v17 = objc_msgSend_textMeasurerBundle(v10, v11, v12, v13, v14);
-      LODWORD(v16) = objc_msgSend_canQuicklyMeasureString_textMeasurerBundle_(v16, v18, v9, v17, v19);
+      LODWORD(v16) = objc_msgSend_canQuicklyMeasureString_textMeasurerBundle_(v16, v18, stringCopy, v17, v19);
 
       if (v16)
       {
@@ -130,16 +130,16 @@ LABEL_7:
   return v20;
 }
 
-- (id)resolvedTextStyleWithPropertyMap:(id)a3
+- (id)resolvedTextStyleWithPropertyMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   os_unfair_lock_lock(&self->_resolvedTextStyleLock);
-  isVariation = objc_msgSend_objectForKey_(self->_propertyMapToTextStyleMap, v5, v4, v6, v7);
+  isVariation = objc_msgSend_objectForKey_(self->_propertyMapToTextStyleMap, v5, mapCopy, v6, v7);
   if (!isVariation)
   {
     v9 = objc_alloc(MEMORY[0x277D80EC8]);
-    isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v9, v10, 0, 0, v4, 0);
-    objc_msgSend_setObject_forKey_(self->_propertyMapToTextStyleMap, v11, isVariation, v4, v12);
+    isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v9, v10, 0, 0, mapCopy, 0);
+    objc_msgSend_setObject_forKey_(self->_propertyMapToTextStyleMap, v11, isVariation, mapCopy, v12);
   }
 
   os_unfair_lock_unlock(&self->_resolvedTextStyleLock);
@@ -147,7 +147,7 @@ LABEL_7:
   return isVariation;
 }
 
-- (void)p_didReceiveMemoryWarning:(id)a3
+- (void)p_didReceiveMemoryWarning:(id)warning
 {
   pthread_rwlock_wrlock(&self->_rwlock);
   sub_2211A89A4(&self->_cache);
@@ -158,7 +158,7 @@ LABEL_7:
   os_unfair_lock_unlock(&self->_resolvedTextStyleLock);
 }
 
-- (void)p_didEnterBackground:(id)a3
+- (void)p_didEnterBackground:(id)background
 {
   pthread_rwlock_wrlock(&self->_rwlock);
   sub_2211A89A4(&self->_cache);

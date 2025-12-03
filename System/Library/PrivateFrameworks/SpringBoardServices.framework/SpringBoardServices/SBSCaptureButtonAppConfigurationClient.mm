@@ -2,11 +2,11 @@
 - (BSServiceConnection)_connection;
 - (SBSCaptureButtonAppConfigurationClient)init;
 - (SBSCaptureButtonAppConfigurationClientDelegate)delegate;
-- (void)_setConnection:(id)a3;
+- (void)_setConnection:(id)connection;
 - (void)establishConnectionIfNeeded;
-- (void)receiveInitialOrUpdatedAssociatedAppBundleIdentifier:(id)a3;
-- (void)receiveInitialOrUpdatedEligibleApps:(id)a3;
-- (void)setCurrentAssociatedAppUsingBundleIdentifier:(id)a3;
+- (void)receiveInitialOrUpdatedAssociatedAppBundleIdentifier:(id)identifier;
+- (void)receiveInitialOrUpdatedEligibleApps:(id)apps;
+- (void)setCurrentAssociatedAppUsingBundleIdentifier:(id)identifier;
 @end
 
 @implementation SBSCaptureButtonAppConfigurationClient
@@ -26,14 +26,14 @@
 
 - (void)establishConnectionIfNeeded
 {
-  v3 = [(SBSCaptureButtonAppConfigurationClient *)self _connection];
+  _connection = [(SBSCaptureButtonAppConfigurationClient *)self _connection];
 
-  if (!v3)
+  if (!_connection)
   {
     v4 = MEMORY[0x1E698F498];
-    v5 = [MEMORY[0x1E698F498] defaultShellMachName];
+    defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
     v6 = +[SBSCaptureButtonAppConfigurationServiceSpecification identifier];
-    v7 = [v4 endpointForMachName:v5 service:v6 instance:0];
+    v7 = [v4 endpointForMachName:defaultShellMachName service:v6 instance:0];
 
     v8 = [MEMORY[0x1E698F490] connectionWithEndpoint:v7];
     [(SBSCaptureButtonAppConfigurationClient *)self _setConnection:v8];
@@ -114,12 +114,12 @@ void __69__SBSCaptureButtonAppConfigurationClient_establishConnectionIfNeeded__b
   return v3;
 }
 
-- (void)_setConnection:(id)a3
+- (void)_setConnection:(id)connection
 {
-  v6 = a3;
+  connectionCopy = connection;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = v6;
+    v4 = connectionCopy;
     os_unfair_lock_lock(&self->_lock);
     lock_connection = self->_lock_connection;
     self->_lock_connection = v4;
@@ -128,27 +128,27 @@ void __69__SBSCaptureButtonAppConfigurationClient_establishConnectionIfNeeded__b
   }
 }
 
-- (void)setCurrentAssociatedAppUsingBundleIdentifier:(id)a3
+- (void)setCurrentAssociatedAppUsingBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = [(SBSCaptureButtonAppConfigurationClient *)self _connection];
-  v5 = [v6 remoteTarget];
-  [v5 setCurrentAssociatedAppUsingBundleIdentifier:v4];
+  identifierCopy = identifier;
+  _connection = [(SBSCaptureButtonAppConfigurationClient *)self _connection];
+  remoteTarget = [_connection remoteTarget];
+  [remoteTarget setCurrentAssociatedAppUsingBundleIdentifier:identifierCopy];
 }
 
-- (void)receiveInitialOrUpdatedAssociatedAppBundleIdentifier:(id)a3
+- (void)receiveInitialOrUpdatedAssociatedAppBundleIdentifier:(id)identifier
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = SBLogCameraCaptureAppConfiguration();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = v3;
+    v7 = identifierCopy;
     _os_log_impl(&dword_19169D000, v4, OS_LOG_TYPE_DEFAULT, "SBSCaptureButtonAppConfigurationClient received initial or updated active app bundle identifier: %{public}@.", buf, 0xCu);
   }
 
-  v5 = v3;
+  v5 = identifierCopy;
   BSDispatchMain();
 }
 
@@ -158,19 +158,19 @@ void __95__SBSCaptureButtonAppConfigurationClient_receiveInitialOrUpdatedAssocia
   [v2 captureButtonAppConfigurationClient:*(a1 + 32) receiveInitialOrUpdatedAssociatedAppBundleIdentifier:*(a1 + 40)];
 }
 
-- (void)receiveInitialOrUpdatedEligibleApps:(id)a3
+- (void)receiveInitialOrUpdatedEligibleApps:(id)apps
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  appsCopy = apps;
   v4 = SBLogCameraCaptureAppConfiguration();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = v3;
+    v7 = appsCopy;
     _os_log_impl(&dword_19169D000, v4, OS_LOG_TYPE_DEFAULT, "SBSCaptureButtonAppConfigurationClient received initial or updated eligible apps: %{public}@.", buf, 0xCu);
   }
 
-  v5 = v3;
+  v5 = appsCopy;
   BSDispatchMain();
 }
 

@@ -1,15 +1,15 @@
 @interface DB_R151924382
 + (id)fetchRequest;
-+ (id)insertNewObjectInManagedObjectContext:(id)a3;
++ (id)insertNewObjectInManagedObjectContext:(id)context;
 @end
 
 @implementation DB_R151924382
 
-+ (id)insertNewObjectInManagedObjectContext:(id)a3
++ (id)insertNewObjectInManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 entityName];
-  v6 = [NSEntityDescription insertNewObjectForEntityForName:v5 inManagedObjectContext:v4];
+  contextCopy = context;
+  entityName = [self entityName];
+  v6 = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:contextCopy];
 
   return v6;
 }

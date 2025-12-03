@@ -1,34 +1,34 @@
 @interface PGDefaultEnrichmentProfile
-+ (double)evaluatedDurationsWithAssets:(id)a3 options:(id)a4;
-+ (double)targetCurationDurationWithPrivateAssets:(id)a3 sharedAssets:(id)a4 sharingFilter:(unsigned __int16)a5 options:(id)a6;
-- (BOOL)canEnrichHighlight:(id)a3 withOptions:(unint64_t)a4;
++ (double)evaluatedDurationsWithAssets:(id)assets options:(id)options;
++ (double)targetCurationDurationWithPrivateAssets:(id)assets sharedAssets:(id)sharedAssets sharingFilter:(unsigned __int16)filter options:(id)options;
+- (BOOL)canEnrichHighlight:(id)highlight withOptions:(unint64_t)options;
 - (PGCurationOptions)curationOptions;
-- (PGDefaultEnrichmentProfile)initWithCurationManager:(id)a3 loggingConnection:(id)a4;
+- (PGDefaultEnrichmentProfile)initWithCurationManager:(id)manager loggingConnection:(id)connection;
 - (PGKeyAssetCurationOptions)keyAssetCurationOptions;
-- (double)promotionScoreWithHighlightInfo:(id)a3;
-- (id)debugInfoDictionaryByAddingItemInfosToDebugInfo:(id)a3;
-- (id)faceInfosWithAsset:(id)a3;
-- (id)highlightInfoWithHighlight:(id)a3 graph:(id)a4 highlightTailorContext:(id)a5;
-- (id)keyAssetCurationCriteriaWithHighlightInfo:(id)a3 graph:(id)a4;
-- (id)momentProcessedLocationByMomentUUIDWithHighlightInfo:(id)a3 graph:(id)a4;
-- (id)momentTitleByMomentUUIDWithHighlightInfo:(id)a3;
+- (double)promotionScoreWithHighlightInfo:(id)info;
+- (id)debugInfoDictionaryByAddingItemInfosToDebugInfo:(id)info;
+- (id)faceInfosWithAsset:(id)asset;
+- (id)highlightInfoWithHighlight:(id)highlight graph:(id)graph highlightTailorContext:(id)context;
+- (id)keyAssetCurationCriteriaWithHighlightInfo:(id)info graph:(id)graph;
+- (id)momentProcessedLocationByMomentUUIDWithHighlightInfo:(id)info graph:(id)graph;
+- (id)momentTitleByMomentUUIDWithHighlightInfo:(id)info;
 @end
 
 @implementation PGDefaultEnrichmentProfile
 
-- (id)faceInfosWithAsset:(id)a3
+- (id)faceInfosWithAsset:(id)asset
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(PGCurationManager *)self->_curationManager photoLibrary];
-  v7 = [v6 librarySpecificFetchOptions];
+  assetCopy = asset;
+  photoLibrary = [(PGCurationManager *)self->_curationManager photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v39[0] = *MEMORY[0x277CD9BC0];
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
-  [v7 setFetchPropertySets:v8];
+  [librarySpecificFetchOptions setFetchPropertySets:v8];
 
-  v27 = v5;
-  v9 = [MEMORY[0x277CD9868] fetchFacesInAsset:v5 options:v7];
+  v27 = assetCopy;
+  v9 = [MEMORY[0x277CD9868] fetchFacesInAsset:assetCopy options:librarySpecificFetchOptions];
   v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v32 = 0u;
   v33 = 0u;
@@ -49,16 +49,16 @@
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
-        v12 = [v11 faceClusteringProperties];
-        v13 = [v12 faceprint];
+        faceClusteringProperties = [v11 faceClusteringProperties];
+        faceprint = [faceClusteringProperties faceprint];
 
         v36[0] = @"personLocalIdentifier";
-        v14 = [v11 personLocalIdentifier];
-        v15 = v14;
+        personLocalIdentifier = [v11 personLocalIdentifier];
+        v15 = personLocalIdentifier;
         v16 = @"unknown";
-        if (v14)
+        if (personLocalIdentifier)
         {
-          v16 = v14;
+          v16 = personLocalIdentifier;
         }
 
         v37[0] = v16;
@@ -73,21 +73,21 @@
         v20 = [v19 numberWithDouble:?];
         v37[2] = v20;
         v36[3] = @"faceprint";
-        v21 = [v13 faceprintData];
-        v22 = v21;
-        if (!v21)
+        faceprintData = [faceprint faceprintData];
+        v22 = faceprintData;
+        if (!faceprintData)
         {
-          v3 = [MEMORY[0x277CBEA90] data];
-          v22 = v3;
+          data = [MEMORY[0x277CBEA90] data];
+          v22 = data;
         }
 
         v37[3] = v22;
         v36[4] = @"faceprintVersion";
-        v23 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v13, "faceprintVersion")}];
+        v23 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(faceprint, "faceprintVersion")}];
         v37[4] = v23;
         v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:5];
 
-        if (!v21)
+        if (!faceprintData)
         {
         }
 
@@ -105,19 +105,19 @@
   return v30;
 }
 
-- (id)debugInfoDictionaryByAddingItemInfosToDebugInfo:(id)a3
+- (id)debugInfoDictionaryByAddingItemInfosToDebugInfo:(id)info
 {
   v4 = MEMORY[0x277D3C7A0];
-  v5 = a3;
+  infoCopy = info;
   v6 = objc_alloc_init(v4);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __78__PGDefaultEnrichmentProfile_debugInfoDictionaryByAddingItemInfosToDebugInfo___block_invoke;
   v10[3] = &unk_278883A40;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v7 = v6;
-  v8 = [v5 dictionaryRepresentationWithAppendExtraItemInfoBlock:v10];
+  v8 = [infoCopy dictionaryRepresentationWithAppendExtraItemInfoBlock:v10];
 
   return v8;
 }
@@ -381,29 +381,29 @@ void __90__PGDefaultEnrichmentProfile_keyAssetWithHighlightInfo_sharingFilter_gr
   }
 }
 
-- (double)promotionScoreWithHighlightInfo:(id)a3
+- (double)promotionScoreWithHighlightInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 highlightNode];
-  v6 = [(PGDefaultEnrichmentProfile *)self targetEnrichmentState];
-  v7 = [v4 numberOfExtendedAssets];
-  v8 = [v4 highlightTailorContext];
+  infoCopy = info;
+  highlightNode = [infoCopy highlightNode];
+  targetEnrichmentState = [(PGDefaultEnrichmentProfile *)self targetEnrichmentState];
+  numberOfExtendedAssets = [infoCopy numberOfExtendedAssets];
+  highlightTailorContext = [infoCopy highlightTailorContext];
 
-  v9 = [v8 neighborScoreComputer];
-  [PGGraphHighlightNode promotionScoreWithHighlightNode:v5 enrichmentState:v6 numberOfExtendedAssets:v7 neighborScoreComputer:v9];
+  neighborScoreComputer = [highlightTailorContext neighborScoreComputer];
+  [PGGraphHighlightNode promotionScoreWithHighlightNode:highlightNode enrichmentState:targetEnrichmentState numberOfExtendedAssets:numberOfExtendedAssets neighborScoreComputer:neighborScoreComputer];
   v11 = v10;
 
   return v11;
 }
 
-- (id)momentProcessedLocationByMomentUUIDWithHighlightInfo:(id)a3 graph:(id)a4
+- (id)momentProcessedLocationByMomentUUIDWithHighlightInfo:(id)info graph:(id)graph
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  infoCopy = info;
+  graphCopy = graph;
   v7 = [PGGraphMomentNodeCollection alloc];
-  v8 = [v5 momentNodes];
-  v9 = [(MAElementCollection *)v7 initWithSet:v8 graph:v6];
+  momentNodes = [infoCopy momentNodes];
+  v9 = [(MAElementCollection *)v7 initWithSet:momentNodes graph:graphCopy];
 
   v10 = MEMORY[0x277D22BF8];
   v11 = +[PGGraphMomentNode poiOfMoment];
@@ -420,13 +420,13 @@ void __90__PGDefaultEnrichmentProfile_keyAssetWithHighlightInfo_sharingFilter_gr
   if ([v14 count])
   {
     v26 = v9;
-    v27 = v6;
-    v15 = [v5 momentFetchResult];
+    v27 = graphCopy;
+    momentFetchResult = [infoCopy momentFetchResult];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v16 = [v15 countByEnumeratingWithState:&v28 objects:v34 count:16];
+    v16 = [momentFetchResult countByEnumeratingWithState:&v28 objects:v34 count:16];
     if (v16)
     {
       v17 = v16;
@@ -437,20 +437,20 @@ void __90__PGDefaultEnrichmentProfile_keyAssetWithHighlightInfo_sharingFilter_gr
         {
           if (*v29 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(momentFetchResult);
           }
 
           v20 = *(*(&v28 + 1) + 8 * i);
-          v21 = [v20 uuid];
-          v22 = [v14 objectForKeyedSubscript:v21];
+          uuid = [v20 uuid];
+          v22 = [v14 objectForKeyedSubscript:uuid];
 
           if (v22 && [v20 processedLocation] != 6)
           {
-            [v14 removeObjectForKey:v21];
+            [v14 removeObjectForKey:uuid];
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v28 objects:v34 count:16];
+        v17 = [momentFetchResult countByEnumeratingWithState:&v28 objects:v34 count:16];
       }
 
       while (v17);
@@ -467,7 +467,7 @@ void __90__PGDefaultEnrichmentProfile_keyAssetWithHighlightInfo_sharingFilter_gr
     }
 
     v9 = v26;
-    v6 = v27;
+    graphCopy = v27;
   }
 
   else
@@ -495,23 +495,23 @@ void __89__PGDefaultEnrichmentProfile_momentProcessedLocationByMomentUUIDWithHig
   }
 }
 
-- (id)momentTitleByMomentUUIDWithHighlightInfo:(id)a3
+- (id)momentTitleByMomentUUIDWithHighlightInfo:(id)info
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 momentNodes];
-  v25 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  v21 = v3;
-  v5 = [v3 highlightTailorContext];
-  v6 = [v5 titleGenerationContext];
+  infoCopy = info;
+  momentNodes = [infoCopy momentNodes];
+  v25 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(momentNodes, "count")}];
+  v21 = infoCopy;
+  highlightTailorContext = [infoCopy highlightTailorContext];
+  titleGenerationContext = [highlightTailorContext titleGenerationContext];
 
-  v24 = v6;
-  v7 = [v6 locationHelper];
+  v24 = titleGenerationContext;
+  locationHelper = [titleGenerationContext locationHelper];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v4;
+  obj = momentNodes;
   v26 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v26)
   {
@@ -529,15 +529,15 @@ void __89__PGDefaultEnrichmentProfile_momentProcessedLocationByMomentUUIDWithHig
         v9 = [[PGTitleGenerator alloc] initWithMomentNode:v29 type:0 titleGenerationContext:v24];
         [(PGTitleGenerator *)v9 setPreferredTitleType:2];
         [(PGTitleGenerator *)v9 setLineBreakBehavior:2];
-        v28 = [(PGTitleGenerator *)v9 title];
-        v27 = [(PGTitleGenerator *)v9 subtitle];
-        v10 = [MEMORY[0x277CBEB18] array];
+        title = [(PGTitleGenerator *)v9 title];
+        subtitle = [(PGTitleGenerator *)v9 subtitle];
+        array = [MEMORY[0x277CBEB18] array];
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v11 = [(PGTitleGenerator *)v9 usedLocationNodes];
-        v12 = [v11 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        usedLocationNodes = [(PGTitleGenerator *)v9 usedLocationNodes];
+        v12 = [usedLocationNodes countByEnumeratingWithState:&v30 objects:v38 count:16];
         if (v12)
         {
           v13 = v12;
@@ -548,25 +548,25 @@ void __89__PGDefaultEnrichmentProfile_momentProcessedLocationByMomentUUIDWithHig
             {
               if (*v31 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(usedLocationNodes);
               }
 
-              v16 = [PGLocationTitleUtility beautifiedLocationNodeStringWithPlaceNode:*(*(&v30 + 1) + 8 * j) locationHelper:v7];
+              v16 = [PGLocationTitleUtility beautifiedLocationNodeStringWithPlaceNode:*(*(&v30 + 1) + 8 * j) locationHelper:locationHelper];
               if (v16)
               {
-                [v10 addObject:v16];
+                [array addObject:v16];
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v30 objects:v38 count:16];
+            v13 = [usedLocationNodes countByEnumeratingWithState:&v30 objects:v38 count:16];
           }
 
           while (v13);
         }
 
-        v17 = [[PGTitleTuple alloc] initWithWithTitle:v28 subtitle:v27 locationNames:v10];
-        v18 = [v29 uuid];
-        [v25 setObject:v17 forKeyedSubscript:v18];
+        v17 = [[PGTitleTuple alloc] initWithWithTitle:title subtitle:subtitle locationNames:array];
+        uuid = [v29 uuid];
+        [v25 setObject:v17 forKeyedSubscript:uuid];
       }
 
       v26 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -580,19 +580,19 @@ void __89__PGDefaultEnrichmentProfile_momentProcessedLocationByMomentUUIDWithHig
   return v25;
 }
 
-- (id)highlightInfoWithHighlight:(id)a3 graph:(id)a4 highlightTailorContext:(id)a5
+- (id)highlightInfoWithHighlight:(id)highlight graph:(id)graph highlightTailorContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[PGHighlightTailorHighlightInfo alloc] initWithHighlight:v9 graph:v8 highlightTailorContext:v7];
+  contextCopy = context;
+  graphCopy = graph;
+  highlightCopy = highlight;
+  v10 = [[PGHighlightTailorHighlightInfo alloc] initWithHighlight:highlightCopy graph:graphCopy highlightTailorContext:contextCopy];
 
   return v10;
 }
 
-- (BOOL)canEnrichHighlight:(id)a3 withOptions:(unint64_t)a4
+- (BOOL)canEnrichHighlight:(id)highlight withOptions:(unint64_t)options
 {
-  v4 = a3;
+  highlightCopy = highlight;
   if (_os_feature_enabled_impl())
   {
     LOBYTE(v5) = 1;
@@ -600,22 +600,22 @@ void __89__PGDefaultEnrichmentProfile_momentProcessedLocationByMomentUUIDWithHig
 
   else
   {
-    v5 = [v4 isRecent] ^ 1;
+    v5 = [highlightCopy isRecent] ^ 1;
   }
 
   return v5;
 }
 
-- (id)keyAssetCurationCriteriaWithHighlightInfo:(id)a3 graph:(id)a4
+- (id)keyAssetCurationCriteriaWithHighlightInfo:(id)info graph:(id)graph
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 highlightNode];
-  v9 = [v6 meaningLabels];
-  if ([v9 count])
+  infoCopy = info;
+  graphCopy = graph;
+  highlightNode = [infoCopy highlightNode];
+  meaningLabels = [infoCopy meaningLabels];
+  if ([meaningLabels count])
   {
-    v50 = self;
+    selfCopy = self;
     +[PGMeaningfulEventRequiredCriteriaFactory availableMeaningLabels];
     v55 = 0u;
     v56 = 0u;
@@ -625,8 +625,8 @@ void __89__PGDefaultEnrichmentProfile_momentProcessedLocationByMomentUUIDWithHig
     if (v11)
     {
       v12 = v11;
-      v48 = v8;
-      v49 = v7;
+      v48 = highlightNode;
+      v49 = graphCopy;
       v13 = 0;
       v14 = *v56;
 LABEL_4:
@@ -641,7 +641,7 @@ LABEL_4:
 
         v13 = *(*(&v55 + 1) + 8 * v15);
 
-        if ([v9 containsObject:v13])
+        if ([meaningLabels containsObject:v13])
         {
           break;
         }
@@ -660,8 +660,8 @@ LABEL_4:
           v17 = 0;
           v18 = 0;
           v19 = v10;
-          v8 = v48;
-          v7 = v49;
+          highlightNode = v48;
+          graphCopy = v49;
           goto LABEL_33;
         }
       }
@@ -670,30 +670,30 @@ LABEL_4:
       {
         v17 = 0;
         v18 = 0;
-        v8 = v48;
-        v7 = v49;
+        highlightNode = v48;
+        graphCopy = v49;
         goto LABEL_39;
       }
 
-      v20 = [(PGCurationManager *)v50->_curationManager curationCriteriaFactory];
-      v8 = v48;
-      v7 = v49;
-      v18 = [v20 curationCriteriaWithCollection:v48 meaningLabel:v13 inGraph:v49 client:0];
+      curationCriteriaFactory = [(PGCurationManager *)selfCopy->_curationManager curationCriteriaFactory];
+      highlightNode = v48;
+      graphCopy = v49;
+      v18 = [curationCriteriaFactory curationCriteriaWithCollection:v48 meaningLabel:v13 inGraph:v49 client:0];
 
-      v21 = [v18 scenesTrait];
-      [v21 setTargetNumberOfMatches:3];
+      scenesTrait = [v18 scenesTrait];
+      [scenesTrait setTargetNumberOfMatches:3];
 
-      if (!v50->_collectsDebugInfo)
+      if (!selfCopy->_collectsDebugInfo)
       {
         v17 = 0;
         goto LABEL_39;
       }
 
       v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]", v13];
-      if ([v9 count] >= 2)
+      if ([meaningLabels count] >= 2)
       {
         v46 = v19;
-        v47 = v6;
+        v47 = infoCopy;
         v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v51 = 0u;
         v52 = 0u;
@@ -715,7 +715,7 @@ LABEL_4:
               }
 
               v28 = *(*(&v51 + 1) + 8 * i);
-              if (v28 != v13 && [v9 containsObject:*(*(&v51 + 1) + 8 * i)])
+              if (v28 != v13 && [meaningLabels containsObject:*(*(&v51 + 1) + 8 * i)])
               {
                 [v22 addObject:v28];
               }
@@ -730,9 +730,9 @@ LABEL_4:
         v29 = [v22 componentsJoinedByString:@") - ("];
         v19 = [v46 stringByAppendingFormat:@" - (%@)", v29];
 
-        v6 = v47;
-        v8 = v48;
-        v7 = v49;
+        infoCopy = v47;
+        highlightNode = v48;
+        graphCopy = v49;
       }
 
       v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Meanings: %@", v19];
@@ -749,7 +749,7 @@ LABEL_4:
 LABEL_33:
 
 LABEL_39:
-    self = v50;
+    self = selfCopy;
     if (v18)
     {
       goto LABEL_40;
@@ -758,14 +758,14 @@ LABEL_39:
     goto LABEL_42;
   }
 
-  v30 = [v8 isPartOfTrip];
-  v31 = [(PGCurationManager *)self->_curationManager curationCriteriaFactory];
-  v32 = v31;
-  if (!v30)
+  isPartOfTrip = [highlightNode isPartOfTrip];
+  curationCriteriaFactory2 = [(PGCurationManager *)self->_curationManager curationCriteriaFactory];
+  v32 = curationCriteriaFactory2;
+  if (!isPartOfTrip)
   {
-    v40 = [v6 highlightTailorContext];
-    v41 = [v40 curationContext];
-    v18 = [v32 petCurationCriteriaWithCollection:v8 client:0 curationContext:v41];
+    highlightTailorContext = [infoCopy highlightTailorContext];
+    curationContext = [highlightTailorContext curationContext];
+    v18 = [v32 petCurationCriteriaWithCollection:highlightNode client:0 curationContext:curationContext];
 
 LABEL_35:
     v17 = 0;
@@ -777,10 +777,10 @@ LABEL_35:
     goto LABEL_40;
   }
 
-  v18 = [v31 tripCurationCriteriaWithCollection:v8 client:0];
+  v18 = [curationCriteriaFactory2 tripCurationCriteriaWithCollection:highlightNode client:0];
 
-  v33 = [v7 infoNode];
-  [v33 topTierAestheticScoreForTripKeyAsset];
+  infoNode = [graphCopy infoNode];
+  [infoNode topTierAestheticScoreForTripKeyAsset];
   v35 = v34;
 
   v36 = [PGCurationContentOrAestheticScoreTrait alloc];
@@ -792,9 +792,9 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  v38 = [v8 isPartOfShortTrip];
+  isPartOfShortTrip = [highlightNode isPartOfShortTrip];
   v39 = @"Part of Long Trip";
-  if (v38)
+  if (isPartOfShortTrip)
   {
     v39 = @"Part of Short Trip";
   }
@@ -806,7 +806,7 @@ LABEL_40:
     if (self->_collectsDebugInfo)
     {
       [(NSMutableDictionary *)self->_debugInfos setObject:v17 forKeyedSubscript:@"keyAssetReason"];
-      v42 = [v18 niceDescriptionWithGraph:v7];
+      v42 = [v18 niceDescriptionWithGraph:graphCopy];
       [(NSMutableDictionary *)self->_debugInfos setObject:v42 forKeyedSubscript:@"keyAssetCurationCriteria"];
     }
   }
@@ -834,18 +834,18 @@ LABEL_42:
   return v2;
 }
 
-- (PGDefaultEnrichmentProfile)initWithCurationManager:(id)a3 loggingConnection:(id)a4
+- (PGDefaultEnrichmentProfile)initWithCurationManager:(id)manager loggingConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  connectionCopy = connection;
   v14.receiver = self;
   v14.super_class = PGDefaultEnrichmentProfile;
   v9 = [(PGDefaultEnrichmentProfile *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_curationManager, a3);
-    objc_storeStrong(&v10->_loggingConnection, a4);
+    objc_storeStrong(&v9->_curationManager, manager);
+    objc_storeStrong(&v10->_loggingConnection, connection);
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     debugInfos = v10->_debugInfos;
     v10->_debugInfos = v11;
@@ -854,22 +854,22 @@ LABEL_42:
   return v10;
 }
 
-+ (double)evaluatedDurationsWithAssets:(id)a3 options:(id)a4
++ (double)evaluatedDurationsWithAssets:(id)assets options:(id)options
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 uuidsOfEligibleAssets];
+  assetsCopy = assets;
+  optionsCopy = options;
+  uuidsOfEligibleAssets = [optionsCopy uuidsOfEligibleAssets];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = v5;
+  v8 = assetsCopy;
   v9 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v9)
   {
     v10 = v9;
-    v29 = v6;
+    v29 = optionsCopy;
     v30 = 0;
     v11 = 0;
     v12 = 0;
@@ -884,10 +884,10 @@ LABEL_42:
         }
 
         v15 = *(*(&v31 + 1) + 8 * i);
-        if (v7)
+        if (uuidsOfEligibleAssets)
         {
-          v16 = [*(*(&v31 + 1) + 8 * i) uuid];
-          v17 = [v7 containsObject:v16];
+          uuid = [*(*(&v31 + 1) + 8 * i) uuid];
+          v17 = [uuidsOfEligibleAssets containsObject:uuid];
 
           if (!v17)
           {
@@ -916,7 +916,7 @@ LABEL_42:
 
     while (v10);
     v18 = v12;
-    v6 = v29;
+    optionsCopy = v29;
     v19 = v30;
     v20 = v11;
   }
@@ -928,28 +928,28 @@ LABEL_42:
     v18 = 0.0;
   }
 
-  [v6 defaultDurationOfStillPhoto];
+  [optionsCopy defaultDurationOfStillPhoto];
   v22 = v21;
-  [v6 defaultDurationOfLivePhoto];
+  [optionsCopy defaultDurationOfLivePhoto];
   v24 = v23;
-  [v6 defaultDurationOfVideo];
+  [optionsCopy defaultDurationOfVideo];
   v26 = v25;
 
   v27 = *MEMORY[0x277D85DE8];
   return v24 * v19 + v22 * v18 + v26 * v20;
 }
 
-+ (double)targetCurationDurationWithPrivateAssets:(id)a3 sharedAssets:(id)a4 sharingFilter:(unsigned __int16)a5 options:(id)a6
++ (double)targetCurationDurationWithPrivateAssets:(id)assets sharedAssets:(id)sharedAssets sharingFilter:(unsigned __int16)filter options:(id)options
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  [a1 evaluatedDurationsWithAssets:a3 options:v10];
+  filterCopy = filter;
+  optionsCopy = options;
+  sharedAssetsCopy = sharedAssets;
+  [self evaluatedDurationsWithAssets:assets options:optionsCopy];
   v13 = v12;
-  [a1 evaluatedDurationsWithAssets:v11 options:v10];
+  [self evaluatedDurationsWithAssets:sharedAssetsCopy options:optionsCopy];
   v15 = v14;
 
-  if (v6)
+  if (filterCopy)
   {
     v16 = v15;
   }

@@ -1,13 +1,13 @@
 @interface MPSBenchmarkLoopStatistics
 - (BOOL)hasConverged;
 - (MPSBenchmarkLoopStatistics)init;
-- (double)getValueAtIndex:(unint64_t)a3;
+- (double)getValueAtIndex:(unint64_t)index;
 - (double)standardDeviation;
 - (id)debugDescription;
-- (void)addSumOfNValues:(double)a3 n:(unint64_t)a4;
-- (void)addValue:(double)a3;
+- (void)addSumOfNValues:(double)values n:(unint64_t)n;
+- (void)addValue:(double)value;
 - (void)dealloc;
-- (void)ignoreNextNValues:(unint64_t)a3;
+- (void)ignoreNextNValues:(unint64_t)values;
 - (void)removeLastValue;
 - (void)reset;
 @end
@@ -54,9 +54,9 @@
   operator new();
 }
 
-- (void)addValue:(double)a3
+- (void)addValue:(double)value
 {
-  v11 = a3;
+  valueCopy = value;
   dispatch_semaphore_wait(self->_statisticsSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   ignoreNextN = self->_ignoreNextN;
   if (ignoreNextN)
@@ -67,15 +67,15 @@
 
   else
   {
-    sub_239911620(self->_values, &v11);
-    v6.f64[0] = a3;
-    v6.f64[1] = a3 * a3;
+    sub_239911620(self->_values, &valueCopy);
+    v6.f64[0] = value;
+    v6.f64[1] = value * value;
     v7 = vaddq_f64(v6, *&self->_sum);
     v8 = ((*(self->_values + 1) - *self->_values) >> 3);
     *&self->_sum = v7;
     self->_mean = v7.f64[0] / v8;
-    v9 = fmax(a3, self->_max);
-    self->_min = fmin(a3, self->_min);
+    v9 = fmax(value, self->_max);
+    self->_min = fmin(value, self->_min);
     self->_max = v9;
     ++self->_numOfUniqueSamples;
     statisticsSemaphore = self->_statisticsSemaphore;
@@ -128,14 +128,14 @@
   dispatch_semaphore_signal(statisticsSemaphore);
 }
 
-- (void)addSumOfNValues:(double)a3 n:(unint64_t)a4
+- (void)addSumOfNValues:(double)values n:(unint64_t)n
 {
   dispatch_semaphore_wait(self->_statisticsSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  v13 = a3 / a4;
+  v13 = values / n;
   v14 = v13;
-  if (a4)
+  if (n)
   {
-    v7.f64[0] = a3 / a4;
+    v7.f64[0] = values / n;
     v7.f64[1] = v7.f64[0] * v7.f64[0];
     v12 = v7;
     while (1)
@@ -153,7 +153,7 @@
       v10 = fmax(v13, self->_max);
       self->_min = fmin(v13, self->_min);
       self->_max = v10;
-      if (!--a4)
+      if (!--n)
       {
         goto LABEL_5;
       }
@@ -173,18 +173,18 @@ LABEL_5:
   dispatch_semaphore_signal(statisticsSemaphore);
 }
 
-- (double)getValueAtIndex:(unint64_t)a3
+- (double)getValueAtIndex:(unint64_t)index
 {
   dispatch_semaphore_wait(self->_statisticsSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  v5 = *(*self->_values + 8 * a3);
+  v5 = *(*self->_values + 8 * index);
   dispatch_semaphore_signal(self->_statisticsSemaphore);
   return v5;
 }
 
-- (void)ignoreNextNValues:(unint64_t)a3
+- (void)ignoreNextNValues:(unint64_t)values
 {
   dispatch_semaphore_wait(self->_statisticsSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  self->_ignoreNextN = a3;
+  self->_ignoreNextN = values;
   statisticsSemaphore = self->_statisticsSemaphore;
 
   dispatch_semaphore_signal(statisticsSemaphore);

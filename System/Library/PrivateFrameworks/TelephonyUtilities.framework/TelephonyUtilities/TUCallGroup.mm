@@ -1,14 +1,14 @@
 @interface TUCallGroup
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCallGroup:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCallGroup:(id)group;
 - (NSString)displayName;
-- (TUCallGroup)initWithCall:(id)a3;
-- (TUCallGroup)initWithCalls:(id)a3;
+- (TUCallGroup)initWithCall:(id)call;
+- (TUCallGroup)initWithCalls:(id)calls;
 - (id)description;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (int)status;
 - (unint64_t)hash;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation TUCallGroup
@@ -16,12 +16,12 @@
 - (int)status
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(TUCallGroup *)self calls];
-  v4 = [v3 firstObject];
-  v5 = [v4 status];
+  calls = [(TUCallGroup *)self calls];
+  firstObject = [calls firstObject];
+  status = [firstObject status];
 
-  v6 = [(TUCallGroup *)self calls];
-  v7 = [v6 count];
+  calls2 = [(TUCallGroup *)self calls];
+  v7 = [calls2 count];
 
   if (v7 >= 2)
   {
@@ -29,8 +29,8 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(TUCallGroup *)self calls];
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    calls3 = [(TUCallGroup *)self calls];
+    v9 = [calls3 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -41,17 +41,17 @@
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(calls3);
           }
 
           if ([*(*(&v15 + 1) + 8 * i) status] == 1)
           {
-            v5 = 1;
+            status = 1;
             goto LABEL_12;
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [calls3 countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v10)
         {
           continue;
@@ -65,15 +65,15 @@ LABEL_12:
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v5;
+  return status;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(TUCallGroup *)self calls];
-  v6 = [v3 stringWithFormat:@"<%@ %p calls=%@>", v4, self, v5];
+  calls = [(TUCallGroup *)self calls];
+  v6 = [v3 stringWithFormat:@"<%@ %p calls=%@>", v4, self, calls];
 
   return v6;
 }
@@ -81,27 +81,27 @@ LABEL_12:
 - (NSString)displayName
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = [(TUCallGroup *)self calls];
-  v5 = [v4 count];
+  calls = [(TUCallGroup *)self calls];
+  v5 = [calls count];
 
-  v6 = [(TUCallGroup *)self calls];
-  v7 = v6;
+  calls2 = [(TUCallGroup *)self calls];
+  v7 = calls2;
   if (v5 == 1)
   {
-    v8 = [v6 firstObject];
-    v9 = [v8 displayName];
+    firstObject = [calls2 firstObject];
+    displayName = [firstObject displayName];
   }
 
   else
   {
-    v10 = [v6 count];
+    v10 = [calls2 count];
 
     if (v10 < 2)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:a2 object:self file:@"TUCallGroup.m" lineNumber:68 description:{@"Could not determine display name for TUCallGroup with an empty list of calls: %@", self}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"TUCallGroup.m" lineNumber:68 description:{@"Could not determine display name for TUCallGroup with an empty list of calls: %@", self}];
 
-      v9 = 0;
+      displayName = 0;
     }
 
     else
@@ -110,12 +110,12 @@ LABEL_12:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v11 = [(TUCallGroup *)self calls];
-      v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      calls3 = [(TUCallGroup *)self calls];
+      v12 = [calls3 countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v12)
       {
         v13 = v12;
-        v9 = 0;
+        displayName = 0;
         v14 = *v26;
         do
         {
@@ -123,28 +123,28 @@ LABEL_12:
           {
             if (*v26 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(calls3);
             }
 
-            v16 = [*(*(&v25 + 1) + 8 * i) displayFirstName];
-            v17 = v16;
-            if (v9)
+            displayFirstName = [*(*(&v25 + 1) + 8 * i) displayFirstName];
+            v17 = displayFirstName;
+            if (displayName)
             {
               v18 = MEMORY[0x1E696AEC0];
               v19 = TUBundle();
               v20 = [v19 localizedStringForKey:@"%@_AND_%@" value:&stru_1F098C218 table:@"TelephonyUtilities"];
-              v21 = [v18 stringWithFormat:v20, v9, v17];
+              v21 = [v18 stringWithFormat:v20, displayName, v17];
 
-              v9 = v21;
+              displayName = v21;
             }
 
             else
             {
-              v9 = v16;
+              displayName = displayFirstName;
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v13 = [calls3 countByEnumeratingWithState:&v25 objects:v29 count:16];
         }
 
         while (v13);
@@ -152,20 +152,20 @@ LABEL_12:
 
       else
       {
-        v9 = 0;
+        displayName = 0;
       }
     }
   }
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return displayName;
 }
 
-- (TUCallGroup)initWithCalls:(id)a3
+- (TUCallGroup)initWithCalls:(id)calls
 {
-  v5 = a3;
-  if (![v5 count])
+  callsCopy = calls;
+  if (![callsCopy count])
   {
     [(TUCallGroup *)a2 initWithCalls:?];
   }
@@ -175,7 +175,7 @@ LABEL_12:
   v6 = [(TUCallGroup *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [callsCopy copy];
     calls = v6->_calls;
     v6->_calls = v7;
   }
@@ -183,16 +183,16 @@ LABEL_12:
   return v6;
 }
 
-- (TUCallGroup)initWithCall:(id)a3
+- (TUCallGroup)initWithCall:(id)call
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  callCopy = call;
+  if (!callCopy)
   {
     [(TUCallGroup *)a2 initWithCall:?];
   }
 
-  v10[0] = v5;
+  v10[0] = callCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   v7 = [(TUCallGroup *)self initWithCalls:v6];
 
@@ -200,61 +200,61 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUCallGroup *)self isEqualToCallGroup:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUCallGroup *)self isEqualToCallGroup:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToCallGroup:(id)a3
+- (BOOL)isEqualToCallGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(TUCallGroup *)self calls];
-  v6 = [v4 calls];
+  groupCopy = group;
+  calls = [(TUCallGroup *)self calls];
+  calls2 = [groupCopy calls];
 
-  LOBYTE(v4) = [v5 isEqualToArray:v6];
-  return v4;
+  LOBYTE(groupCopy) = [calls isEqualToArray:calls2];
+  return groupCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(TUCallGroup *)self calls];
-  v3 = [v2 hash];
+  calls = [(TUCallGroup *)self calls];
+  v3 = [calls hash];
 
   return v3;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v9.receiver = self;
   v9.super_class = TUCallGroup;
   v5 = [(TUCallGroup *)&v9 methodSignatureForSelector:?];
   if (!v5)
   {
-    v6 = [(TUCallGroup *)self calls];
-    v7 = [v6 firstObject];
-    v5 = [v7 methodSignatureForSelector:a3];
+    calls = [(TUCallGroup *)self calls];
+    firstObject = [calls firstObject];
+    v5 = [firstObject methodSignatureForSelector:selector];
   }
 
   return v5;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v9 = a3;
-  [v9 selector];
-  v4 = [(TUCallGroup *)self calls];
-  v5 = [v4 firstObject];
+  invocationCopy = invocation;
+  [invocationCopy selector];
+  calls = [(TUCallGroup *)self calls];
+  firstObject = [calls firstObject];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(TUCallGroup *)self calls];
-    v8 = [v7 firstObject];
-    [v9 invokeWithTarget:v8];
+    calls2 = [(TUCallGroup *)self calls];
+    firstObject2 = [calls2 firstObject];
+    [invocationCopy invokeWithTarget:firstObject2];
   }
 }
 

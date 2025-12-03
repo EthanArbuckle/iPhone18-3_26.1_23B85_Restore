@@ -1,13 +1,13 @@
 @interface SGLowMemoryContactEnumeration
-+ (void)enumerateContactIdentifierBatchesUsingBlock:(id)a3;
-+ (void)enumerateContactIdentifiersUsingBlock:(id)a3;
++ (void)enumerateContactIdentifierBatchesUsingBlock:(id)block;
++ (void)enumerateContactIdentifiersUsingBlock:(id)block;
 @end
 
 @implementation SGLowMemoryContactEnumeration
 
-+ (void)enumerateContactIdentifiersUsingBlock:(id)a3
++ (void)enumerateContactIdentifiersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -16,10 +16,10 @@
   v6[1] = 3221225472;
   v6[2] = __71__SGLowMemoryContactEnumeration_enumerateContactIdentifiersUsingBlock___block_invoke;
   v6[3] = &unk_27894D470;
-  v5 = v4;
+  v5 = blockCopy;
   v7 = v5;
   v8 = v9;
-  [a1 enumerateContactIdentifierBatchesUsingBlock:v6];
+  [self enumerateContactIdentifierBatchesUsingBlock:v6];
 
   _Block_object_dispose(v9, 8);
 }
@@ -52,10 +52,10 @@ void __71__SGLowMemoryContactEnumeration_enumerateContactIdentifiersUsingBlock__
   }
 }
 
-+ (void)enumerateContactIdentifierBatchesUsingBlock:(id)a3
++ (void)enumerateContactIdentifierBatchesUsingBlock:(id)block
 {
   v40[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_opt_new();
   [v4 setLowPriority:1];
   [v4 setFetchAttributes:MEMORY[0x277CBEBF8]];
@@ -117,7 +117,7 @@ void __71__SGLowMemoryContactEnumeration_enumerateContactIdentifiersUsingBlock__
     }
 
     v15 = objc_autoreleasePoolPush();
-    v3[2](v3, v35[5], (v31 + 3));
+    blockCopy[2](blockCopy, v35[5], (v31 + 3));
     if (*(v31 + 24) == 1)
     {
       [v5 cancel];

@@ -1,8 +1,8 @@
 @interface MTLMotionKeyframeData
 + (MTLMotionKeyframeData)data;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLMotionKeyframeData)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -37,7 +37,7 @@
   [(MTLMotionKeyframeData *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setBuffer:self->_buffer];
@@ -45,27 +45,27 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     return 0;
   }
 
-  v6 = [(MTLMotionKeyframeData *)self buffer];
-  if (v6 != [a3 buffer])
+  buffer = [(MTLMotionKeyframeData *)self buffer];
+  if (buffer != [equal buffer])
   {
     return 0;
   }
 
-  v8 = [(MTLMotionKeyframeData *)self offset];
-  return v8 == [a3 offset];
+  offset = [(MTLMotionKeyframeData *)self offset];
+  return offset == [equal offset];
 }
 
 - (unint64_t)hash

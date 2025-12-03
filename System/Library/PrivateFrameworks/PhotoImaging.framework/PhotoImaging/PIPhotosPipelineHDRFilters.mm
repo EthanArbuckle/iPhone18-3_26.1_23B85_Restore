@@ -1,25 +1,25 @@
 @interface PIPhotosPipelineHDRFilters
-+ (id)HDRFilterForSDRFilter:(id)a3;
++ (id)HDRFilterForSDRFilter:(id)filter;
 + (id)_map;
 + (id)getMap;
 @end
 
 @implementation PIPhotosPipelineHDRFilters
 
-+ (id)HDRFilterForSDRFilter:(id)a3
++ (id)HDRFilterForSDRFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [a1 getMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  filterCopy = filter;
+  getMap = [self getMap];
+  v6 = [getMap objectForKeyedSubscript:filterCopy];
 
   if (v6)
   {
-    v7 = (v6)[2](v6, v4);
+    v7 = (v6)[2](v6, filterCopy);
   }
 
   else
   {
-    v7 = v4;
+    v7 = filterCopy;
   }
 
   v8 = v7;
@@ -33,7 +33,7 @@
   block[1] = 3221225472;
   block[2] = __36__PIPhotosPipelineHDRFilters_getMap__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (getMap_onceToken != -1)
   {
     dispatch_once(&getMap_onceToken, block);

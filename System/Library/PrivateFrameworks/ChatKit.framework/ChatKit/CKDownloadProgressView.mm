@@ -1,11 +1,11 @@
 @interface CKDownloadProgressView
-- (_TtC7ChatKit22CKDownloadProgressView)initWithCoder:(id)a3;
+- (_TtC7ChatKit22CKDownloadProgressView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation CKDownloadProgressView
 
-- (_TtC7ChatKit22CKDownloadProgressView)initWithCoder:(id)a3
+- (_TtC7ChatKit22CKDownloadProgressView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7ChatKit22CKDownloadProgressView_circularProgressView;
   type metadata accessor for CircularProgressView();

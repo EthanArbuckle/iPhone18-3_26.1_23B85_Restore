@@ -9,9 +9,9 @@
 {
   v2 = objc_allocWithZone(MEMORY[0x277CCAE58]);
   v3 = sub_2459109C4();
-  v4 = [v2 initWithActivityType_];
+  initWithActivityType_ = [v2 initWithActivityType_];
 
-  return v4;
+  return initWithActivityType_;
 }
 
 - (_TtC9CoreIDVUI44IdentityCredentialProviderSceneSpecification)init

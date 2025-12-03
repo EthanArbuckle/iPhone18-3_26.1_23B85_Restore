@@ -1,5 +1,5 @@
 @interface PXTitleSubtitleUILabelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,17 +7,17 @@
 
 @implementation PXTitleSubtitleUILabelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXTitleSubtitleUILabel" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXTitleSubtitleUILabel" hasInstanceMethod:@"subtitleText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXTitleSubtitleUILabel" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXTitleSubtitleUILabel" hasInstanceMethod:@"subtitleText" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(PXTitleSubtitleUILabelAccessibility *)self accessibilityIdentification];
-  v3 = [v2 isEqualToString:@"AXMemoryTileHeadingLabel"];
+  accessibilityIdentification = [(PXTitleSubtitleUILabelAccessibility *)self accessibilityIdentification];
+  v3 = [accessibilityIdentification isEqualToString:@"AXMemoryTileHeadingLabel"];
 
   return v3 ^ 1;
 }

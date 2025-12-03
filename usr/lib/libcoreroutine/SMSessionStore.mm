@@ -1,64 +1,64 @@
 @interface SMSessionStore
-+ (BOOL)areSessionConfigsInTheSameInterval:(id)a3 config2:(id)a4 timeInADayInterval:(id)a5 error:(id *)a6;
-+ (BOOL)isDateBetweenStartDate:(id)a3 endDate:(id)a4 targetDate:(id)a5 error:(id *)a6;
-+ (id)getDateUsingYearMonthDayFromDate:(id)a3 hoursMinsSecsFromDate:(id)a4;
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (void)_clearSessionMonitorStatesWithHandler:(id)a3;
-- (void)_clearSessionsWithHandler:(id)a3;
-- (void)_clearTriggerDestinationStatesWithHandler:(id)a3;
-- (void)_deleteSMLocationMOPredating:(id)a3 handler:(id)a4;
-- (void)_deleteSMWorkoutEventMOPredating:(id)a3 handler:(id)a4;
-- (void)_deleteSessionMonitorStatesPredating:(id)a3 handler:(id)a4;
-- (void)_deleteSessionsAssociatedWithSessionConfiguration:(id)a3 handler:(id)a4;
-- (void)_deleteSessionsPredating:(id)a3 handler:(id)a4;
-- (void)_deleteTriggerDestinationStatesPredating:(id)a3 handler:(id)a4;
-- (void)_fetchMostRecentSessionManagerStateWithHandler:(id)a3;
-- (void)_fetchMostRecentSessionMonitorStateWithSessionID:(id)a3 handler:(id)a4;
-- (void)_fetchSessionConfigurationsWithOptions:(id)a3 handler:(id)a4;
-- (void)_fetchSessionCountWithDateInterval:(id)a3 handler:(id)a4;
-- (void)_fetchSessionManagerStatesWithOptions:(id)a3 handler:(id)a4;
-- (void)_fetchTriggerDestinationStateWithSessionID:(id)a3 handler:(id)a4;
-- (void)_logStoreWithReason:(id)a3 handler:(id)a4;
-- (void)clearSessionMonitorStatesWithHandler:(id)a3;
-- (void)clearSessionsWithHandler:(id)a3;
-- (void)clearTriggerDestinationStatesWithHandler:(id)a3;
-- (void)deleteSMLocationMOPredating:(id)a3 handler:(id)a4;
-- (void)deleteSMWorkoutEventMOPredating:(id)a3 handler:(id)a4;
-- (void)deleteSessionMonitorStatesPredating:(id)a3 handler:(id)a4;
-- (void)deleteSessionsAssociatedWithSessionConfiguration:(id)a3 handler:(id)a4;
-- (void)deleteSessionsPredating:(id)a3 handler:(id)a4;
-- (void)deleteTriggerDestinationStatesPredating:(id)a3 handler:(id)a4;
-- (void)fetchMostRecentSessionManagerStateWithHandler:(id)a3;
-- (void)fetchMostRecentSessionMonitorStateWithSessionID:(id)a3 handler:(id)a4;
-- (void)fetchSessionConfigurationsWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchSessionCountWithDateInterval:(id)a3 handler:(id)a4;
-- (void)fetchSessionManagerStatesWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchSessionStatusWithHandler:(id)a3;
-- (void)fetchTriggerDestinationStateWithSessionID:(id)a3 handler:(id)a4;
-- (void)logStoreWithReason:(id)a3 handler:(id)a4;
-- (void)removeSessionManagerStatus:(id)a3 handler:(id)a4;
-- (void)storeSessionConfigurations:(id)a3 handler:(id)a4;
-- (void)storeSessionManagerStates:(id)a3 handler:(id)a4;
-- (void)storeSessionManagerStatus:(id)a3 handler:(id)a4;
-- (void)storeSessionMonitorStates:(id)a3 handler:(id)a4;
-- (void)storeTriggerDestinationStates:(id)a3 handler:(id)a4;
-- (void)updateSessionManagerStatus:(id)a3 handler:(id)a4;
++ (BOOL)areSessionConfigsInTheSameInterval:(id)interval config2:(id)config2 timeInADayInterval:(id)dayInterval error:(id *)error;
++ (BOOL)isDateBetweenStartDate:(id)date endDate:(id)endDate targetDate:(id)targetDate error:(id *)error;
++ (id)getDateUsingYearMonthDayFromDate:(id)date hoursMinsSecsFromDate:(id)fromDate;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (void)_clearSessionMonitorStatesWithHandler:(id)handler;
+- (void)_clearSessionsWithHandler:(id)handler;
+- (void)_clearTriggerDestinationStatesWithHandler:(id)handler;
+- (void)_deleteSMLocationMOPredating:(id)predating handler:(id)handler;
+- (void)_deleteSMWorkoutEventMOPredating:(id)predating handler:(id)handler;
+- (void)_deleteSessionMonitorStatesPredating:(id)predating handler:(id)handler;
+- (void)_deleteSessionsAssociatedWithSessionConfiguration:(id)configuration handler:(id)handler;
+- (void)_deleteSessionsPredating:(id)predating handler:(id)handler;
+- (void)_deleteTriggerDestinationStatesPredating:(id)predating handler:(id)handler;
+- (void)_fetchMostRecentSessionManagerStateWithHandler:(id)handler;
+- (void)_fetchMostRecentSessionMonitorStateWithSessionID:(id)d handler:(id)handler;
+- (void)_fetchSessionConfigurationsWithOptions:(id)options handler:(id)handler;
+- (void)_fetchSessionCountWithDateInterval:(id)interval handler:(id)handler;
+- (void)_fetchSessionManagerStatesWithOptions:(id)options handler:(id)handler;
+- (void)_fetchTriggerDestinationStateWithSessionID:(id)d handler:(id)handler;
+- (void)_logStoreWithReason:(id)reason handler:(id)handler;
+- (void)clearSessionMonitorStatesWithHandler:(id)handler;
+- (void)clearSessionsWithHandler:(id)handler;
+- (void)clearTriggerDestinationStatesWithHandler:(id)handler;
+- (void)deleteSMLocationMOPredating:(id)predating handler:(id)handler;
+- (void)deleteSMWorkoutEventMOPredating:(id)predating handler:(id)handler;
+- (void)deleteSessionMonitorStatesPredating:(id)predating handler:(id)handler;
+- (void)deleteSessionsAssociatedWithSessionConfiguration:(id)configuration handler:(id)handler;
+- (void)deleteSessionsPredating:(id)predating handler:(id)handler;
+- (void)deleteTriggerDestinationStatesPredating:(id)predating handler:(id)handler;
+- (void)fetchMostRecentSessionManagerStateWithHandler:(id)handler;
+- (void)fetchMostRecentSessionMonitorStateWithSessionID:(id)d handler:(id)handler;
+- (void)fetchSessionConfigurationsWithOptions:(id)options handler:(id)handler;
+- (void)fetchSessionCountWithDateInterval:(id)interval handler:(id)handler;
+- (void)fetchSessionManagerStatesWithOptions:(id)options handler:(id)handler;
+- (void)fetchSessionStatusWithHandler:(id)handler;
+- (void)fetchTriggerDestinationStateWithSessionID:(id)d handler:(id)handler;
+- (void)logStoreWithReason:(id)reason handler:(id)handler;
+- (void)removeSessionManagerStatus:(id)status handler:(id)handler;
+- (void)storeSessionConfigurations:(id)configurations handler:(id)handler;
+- (void)storeSessionManagerStates:(id)states handler:(id)handler;
+- (void)storeSessionManagerStatus:(id)status handler:(id)handler;
+- (void)storeSessionMonitorStates:(id)states handler:(id)handler;
+- (void)storeTriggerDestinationStates:(id)states handler:(id)handler;
+- (void)updateSessionManagerStatus:(id)status handler:(id)handler;
 @end
 
 @implementation SMSessionStore
 
-- (void)fetchSessionStatusWithHandler:(id)a3
+- (void)fetchSessionStatusWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__SMSessionStore_fetchSessionStatusWithHandler___block_invoke;
   v7[3] = &unk_2788C4D38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __48__SMSessionStore_fetchSessionStatusWithHandler___block_invoke(uint64_t a1)
@@ -160,32 +160,32 @@ void __48__SMSessionStore_fetchSessionStatusWithHandler___block_invoke_20(uint64
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchMostRecentSessionManagerStateWithHandler:(id)a3
+- (void)fetchMostRecentSessionManagerStateWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__SMSessionStore_fetchMostRecentSessionManagerStateWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_fetchMostRecentSessionManagerStateWithHandler:(id)a3
+- (void)_fetchMostRecentSessionManagerStateWithHandler:(id)handler
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = [objc_alloc(MEMORY[0x277D4ABF0]) initWithBatchSize:1 fetchLimit:1 sortByCreationDate:1 ascending:0 dateInterval:0];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __65__SMSessionStore__fetchMostRecentSessionManagerStateWithHandler___block_invoke;
     v11[3] = &unk_2788C6D60;
-    v12 = v4;
+    v12 = handlerCopy;
     [(SMSessionStore *)self _fetchSessionManagerStatesWithOptions:v5 handler:v11];
     v6 = v12;
   }
@@ -263,36 +263,36 @@ LABEL_5:
   (*(v8 + 16))(v8, v9, v6);
 }
 
-- (void)fetchSessionManagerStatesWithOptions:(id)a3 handler:(id)a4
+- (void)fetchSessionManagerStatesWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__SMSessionStore_fetchSessionManagerStatesWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchSessionManagerStatesWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchSessionManagerStatesWithOptions:(id)options handler:(id)handler
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __64__SMSessionStore__fetchSessionManagerStatesWithOptions_handler___block_invoke;
     aBlock[3] = &unk_2788C4898;
-    v19 = v6;
-    v8 = v7;
+    v19 = optionsCopy;
+    v8 = handlerCopy;
     v20 = v8;
     v9 = _Block_copy(aBlock);
     v16[0] = MEMORY[0x277D85DD0];
@@ -526,37 +526,37 @@ void __64__SMSessionStore__fetchSessionManagerStatesWithOptions_handler___block_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchSessionConfigurationsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchSessionConfigurationsWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__SMSessionStore_fetchSessionConfigurationsWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchSessionConfigurationsWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchSessionConfigurationsWithOptions:(id)options handler:(id)handler
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __65__SMSessionStore__fetchSessionConfigurationsWithOptions_handler___block_invoke;
     aBlock[3] = &unk_2788C4F38;
-    v19 = v6;
-    v20 = self;
-    v8 = v7;
+    v19 = optionsCopy;
+    selfCopy = self;
+    v8 = handlerCopy;
     v21 = v8;
     v9 = _Block_copy(aBlock);
     v16[0] = MEMORY[0x277D85DD0];
@@ -1286,21 +1286,21 @@ uint64_t __65__SMSessionStore__fetchSessionConfigurationsWithOptions_handler___b
   return v13;
 }
 
-- (void)storeSessionManagerStatus:(id)a3 handler:(id)a4
+- (void)storeSessionManagerStatus:(id)status handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  statusCopy = status;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__SMSessionStore_storeSessionManagerStatus_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = statusCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = statusCopy;
+  dispatch_async(queue, block);
 }
 
 void __52__SMSessionStore_storeSessionManagerStatus_handler___block_invoke(void *a1)
@@ -1310,21 +1310,21 @@ void __52__SMSessionStore_storeSessionManagerStatus_handler___block_invoke(void 
   [v2 storeWritableObjects:v3 handler:a1[6]];
 }
 
-- (void)updateSessionManagerStatus:(id)a3 handler:(id)a4
+- (void)updateSessionManagerStatus:(id)status handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  statusCopy = status;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__SMSessionStore_updateSessionManagerStatus_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = statusCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = statusCopy;
+  dispatch_async(queue, block);
 }
 
 void __53__SMSessionStore_updateSessionManagerStatus_handler___block_invoke(void *a1)
@@ -1334,55 +1334,55 @@ void __53__SMSessionStore_updateSessionManagerStatus_handler___block_invoke(void
   [v2 updateWritableObjects:v3 handler:a1[6]];
 }
 
-- (void)storeSessionManagerStates:(id)a3 handler:(id)a4
+- (void)storeSessionManagerStates:(id)states handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  statesCopy = states;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__SMSessionStore_storeSessionManagerStates_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = statesCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = statesCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)storeSessionConfigurations:(id)a3 handler:(id)a4
+- (void)storeSessionConfigurations:(id)configurations handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  configurationsCopy = configurations;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__SMSessionStore_storeSessionConfigurations_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = configurationsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = configurationsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)removeSessionManagerStatus:(id)a3 handler:(id)a4
+- (void)removeSessionManagerStatus:(id)status handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  statusCopy = status;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__SMSessionStore_removeSessionManagerStatus_handler___block_invoke;
   block[3] = &unk_2788C67D8;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = statusCopy;
+  v9 = handlerCopy;
+  v10 = statusCopy;
+  dispatch_async(queue, block);
 }
 
 void __53__SMSessionStore_removeSessionManagerStatus_handler___block_invoke(uint64_t a1)
@@ -1465,60 +1465,60 @@ void __53__SMSessionStore_removeSessionManagerStatus_handler___block_invoke_3(ui
   }
 }
 
-- (void)clearSessionsWithHandler:(id)a3
+- (void)clearSessionsWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__SMSessionStore_clearSessionsWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_clearSessionsWithHandler:(id)a3
+- (void)_clearSessionsWithHandler:(id)handler
 {
   v6[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = objc_opt_class();
   v6[1] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:2];
-  [(RTStore *)self removeAll:v5 handler:v4];
+  [(RTStore *)self removeAll:v5 handler:handlerCopy];
 }
 
-- (void)deleteSessionsPredating:(id)a3 handler:(id)a4
+- (void)deleteSessionsPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__SMSessionStore_deleteSessionsPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_deleteSessionsPredating:(id)a3 handler:(id)a4
+- (void)_deleteSessionsPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  predatingCopy = predating;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __51__SMSessionStore__deleteSessionsPredating_handler___block_invoke;
     aBlock[3] = &unk_2788C4F38;
-    v11 = v6;
-    v12 = self;
-    v8 = v7;
+    v11 = predatingCopy;
+    selfCopy = self;
+    v8 = handlerCopy;
     v13 = v8;
     v9 = _Block_copy(aBlock);
     [(RTStore *)self _performBlock:v9 contextType:0 errorHandler:v8];
@@ -1541,36 +1541,36 @@ void __51__SMSessionStore__deleteSessionsPredating_handler___block_invoke(void *
   [v7 executeDeleteRequests:v8 context:v3 handler:a1[6]];
 }
 
-- (void)deleteSessionMonitorStatesPredating:(id)a3 handler:(id)a4
+- (void)deleteSessionMonitorStatesPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__SMSessionStore_deleteSessionMonitorStatesPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_deleteSessionMonitorStatesPredating:(id)a3 handler:(id)a4
+- (void)_deleteSessionMonitorStatesPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  predatingCopy = predating;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __63__SMSessionStore__deleteSessionMonitorStatesPredating_handler___block_invoke;
     aBlock[3] = &unk_2788C4F38;
-    v11 = v6;
-    v12 = self;
-    v8 = v7;
+    v11 = predatingCopy;
+    selfCopy = self;
+    v8 = handlerCopy;
     v13 = v8;
     v9 = _Block_copy(aBlock);
     [(RTStore *)self _performBlock:v9 contextType:0 errorHandler:v8];
@@ -1593,36 +1593,36 @@ void __63__SMSessionStore__deleteSessionMonitorStatesPredating_handler___block_i
   [v7 executeDeleteRequests:v8 context:v3 handler:a1[6]];
 }
 
-- (void)deleteTriggerDestinationStatesPredating:(id)a3 handler:(id)a4
+- (void)deleteTriggerDestinationStatesPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__SMSessionStore_deleteTriggerDestinationStatesPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_deleteTriggerDestinationStatesPredating:(id)a3 handler:(id)a4
+- (void)_deleteTriggerDestinationStatesPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  predatingCopy = predating;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __67__SMSessionStore__deleteTriggerDestinationStatesPredating_handler___block_invoke;
     aBlock[3] = &unk_2788C4F38;
-    v11 = v6;
-    v12 = self;
-    v8 = v7;
+    v11 = predatingCopy;
+    selfCopy = self;
+    v8 = handlerCopy;
     v13 = v8;
     v9 = _Block_copy(aBlock);
     [(RTStore *)self _performBlock:v9 contextType:0 errorHandler:v8];
@@ -1645,39 +1645,39 @@ void __67__SMSessionStore__deleteTriggerDestinationStatesPredating_handler___blo
   [v7 executeDeleteRequests:v8 context:v3 handler:a1[6]];
 }
 
-- (void)deleteSessionsAssociatedWithSessionConfiguration:(id)a3 handler:(id)a4
+- (void)deleteSessionsAssociatedWithSessionConfiguration:(id)configuration handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__SMSessionStore_deleteSessionsAssociatedWithSessionConfiguration_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = configurationCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = configurationCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_deleteSessionsAssociatedWithSessionConfiguration:(id)a3 handler:(id)a4
+- (void)_deleteSessionsAssociatedWithSessionConfiguration:(id)configuration handler:(id)handler
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  configurationCopy = configuration;
+  v7 = configurationCopy;
+  if (configurationCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __76__SMSessionStore__deleteSessionsAssociatedWithSessionConfiguration_handler___block_invoke;
     aBlock[3] = &unk_2788C7208;
-    v17 = v6;
-    v18 = self;
-    v8 = a4;
+    v17 = configurationCopy;
+    selfCopy = self;
+    handlerCopy = handler;
     v9 = _Block_copy(aBlock);
-    [(RTStore *)self _performBlock:v9 contextType:0 errorHandler:v8];
+    [(RTStore *)self _performBlock:v9 contextType:0 errorHandler:handlerCopy];
 
     v10 = v17;
   }
@@ -1689,10 +1689,10 @@ void __67__SMSessionStore__deleteTriggerDestinationStatesPredating_handler___blo
     v19 = *MEMORY[0x277CCA450];
     v20[0] = @"requires valid sessionConfiguration.";
     v13 = MEMORY[0x277CBEAC0];
-    v14 = a4;
+    handlerCopy2 = handler;
     v10 = [v13 dictionaryWithObjects:v20 forKeys:&v19 count:1];
     v15 = [v11 errorWithDomain:v12 code:0 userInfo:v10];
-    (*(a4 + 2))(v14, v15);
+    (*(handler + 2))(handlerCopy2, v15);
   }
 }
 
@@ -1732,36 +1732,36 @@ void __76__SMSessionStore__deleteSessionsAssociatedWithSessionConfiguration_hand
   }
 }
 
-- (void)deleteSMLocationMOPredating:(id)a3 handler:(id)a4
+- (void)deleteSMLocationMOPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__SMSessionStore_deleteSMLocationMOPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_deleteSMLocationMOPredating:(id)a3 handler:(id)a4
+- (void)_deleteSMLocationMOPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  predatingCopy = predating;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __55__SMSessionStore__deleteSMLocationMOPredating_handler___block_invoke;
     aBlock[3] = &unk_2788C4F38;
-    v11 = v6;
-    v12 = self;
-    v8 = v7;
+    v11 = predatingCopy;
+    selfCopy = self;
+    v8 = handlerCopy;
     v13 = v8;
     v9 = _Block_copy(aBlock);
     [(RTStore *)self _performBlock:v9 contextType:0 errorHandler:v8];
@@ -1785,36 +1785,36 @@ void __55__SMSessionStore__deleteSMLocationMOPredating_handler___block_invoke(vo
   [v7 executeDeleteRequests:v8 context:v3 handler:a1[6]];
 }
 
-- (void)deleteSMWorkoutEventMOPredating:(id)a3 handler:(id)a4
+- (void)deleteSMWorkoutEventMOPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__SMSessionStore_deleteSMWorkoutEventMOPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_deleteSMWorkoutEventMOPredating:(id)a3 handler:(id)a4
+- (void)_deleteSMWorkoutEventMOPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  predatingCopy = predating;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __59__SMSessionStore__deleteSMWorkoutEventMOPredating_handler___block_invoke;
     aBlock[3] = &unk_2788C4F38;
-    v11 = v6;
-    v12 = self;
-    v8 = v7;
+    v11 = predatingCopy;
+    selfCopy = self;
+    v8 = handlerCopy;
     v13 = v8;
     v9 = _Block_copy(aBlock);
     [(RTStore *)self _performBlock:v9 contextType:0 errorHandler:v8];
@@ -1838,14 +1838,14 @@ void __59__SMSessionStore__deleteSMWorkoutEventMOPredating_handler___block_invok
   [v7 executeDeleteRequests:v8 context:v3 handler:a1[6]];
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a5)
+  optionsCopy = options;
+  v7 = optionsCopy;
+  if (error)
   {
-    if (v6)
+    if (optionsCopy)
     {
       v8 = MEMORY[0x277CCA9B8];
       v9 = *MEMORY[0x277D01448];
@@ -1855,7 +1855,7 @@ void __59__SMSessionStore__deleteSMWorkoutEventMOPredating_handler___block_invok
       v11 = [v8 errorWithDomain:v9 code:7 userInfo:v10];
 
       v12 = v11;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -1867,7 +1867,7 @@ void __59__SMSessionStore__deleteSMWorkoutEventMOPredating_handler___block_invok
         _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: options", v16, 2u);
       }
 
-      *a5 = _RTErrorInvalidParameterCreate(@"options");
+      *error = _RTErrorInvalidParameterCreate(@"options");
     }
   }
 
@@ -1884,29 +1884,29 @@ void __59__SMSessionStore__deleteSMWorkoutEventMOPredating_handler___block_invok
   return 0;
 }
 
-- (void)fetchSessionCountWithDateInterval:(id)a3 handler:(id)a4
+- (void)fetchSessionCountWithDateInterval:(id)interval handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  intervalCopy = interval;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__SMSessionStore_fetchSessionCountWithDateInterval_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = intervalCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = intervalCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchSessionCountWithDateInterval:(id)a3 handler:(id)a4
+- (void)_fetchSessionCountWithDateInterval:(id)interval handler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  intervalCopy = interval;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1927,22 +1927,22 @@ void __59__SMSessionStore__deleteSMWorkoutEventMOPredating_handler___block_invok
       *buf = 136315394;
       v19 = "[SMSessionStore _fetchSessionCountWithDateInterval:handler:]";
       v20 = 2112;
-      v21 = v6;
+      v21 = intervalCopy;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%s, fetching session count with date interval, %@", buf, 0x16u);
     }
   }
 
   v10 = objc_alloc(MEMORY[0x277D4AB80]);
   LOBYTE(v14) = 0;
-  v11 = [v10 initWithBatchSize:*MEMORY[0x277D4AF00] fetchLimit:*MEMORY[0x277D4AF00] sortBySessionStartDate:0 ascending:0 sessionTypes:0 timeInADayInterval:0 pickOneConfigInTimeInADayInterval:v14 dateInterval:v6 startBoundingBoxLocation:0 destinationBoundingBoxLocation:0 boundingBoxRadius:0 sessionIdentifier:0];
+  v11 = [v10 initWithBatchSize:*MEMORY[0x277D4AF00] fetchLimit:*MEMORY[0x277D4AF00] sortBySessionStartDate:0 ascending:0 sessionTypes:0 timeInADayInterval:0 pickOneConfigInTimeInADayInterval:v14 dateInterval:intervalCopy startBoundingBoxLocation:0 destinationBoundingBoxLocation:0 boundingBoxRadius:0 sessionIdentifier:0];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __61__SMSessionStore__fetchSessionCountWithDateInterval_handler___block_invoke;
   v15[3] = &unk_2788C5558;
-  v16 = v6;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
+  v16 = intervalCopy;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = intervalCopy;
   [(SMSessionStore *)self _fetchSessionConfigurationsWithOptions:v11 handler:v15];
 }
 
@@ -2072,53 +2072,53 @@ LABEL_27:
   (*(*(v24 + 40) + 16))(*(v24 + 40), [obj count], v30, v25);
 }
 
-- (void)storeTriggerDestinationStates:(id)a3 handler:(id)a4
+- (void)storeTriggerDestinationStates:(id)states handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  statesCopy = states;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__SMSessionStore_storeTriggerDestinationStates_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = statesCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = statesCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)fetchTriggerDestinationStateWithSessionID:(id)a3 handler:(id)a4
+- (void)fetchTriggerDestinationStateWithSessionID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  dCopy = d;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__SMSessionStore_fetchTriggerDestinationStateWithSessionID_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchTriggerDestinationStateWithSessionID:(id)a3 handler:(id)a4
+- (void)_fetchTriggerDestinationStateWithSessionID:(id)d handler:(id)handler
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __69__SMSessionStore__fetchTriggerDestinationStateWithSessionID_handler___block_invoke;
     aBlock[3] = &unk_2788C4898;
-    v17 = v6;
-    v8 = v7;
+    v17 = dCopy;
+    v8 = handlerCopy;
     v18 = v8;
     v9 = _Block_copy(aBlock);
     v14[0] = MEMORY[0x277D85DD0];
@@ -2269,76 +2269,76 @@ void __69__SMSessionStore__fetchTriggerDestinationStateWithSessionID_handler___b
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)clearTriggerDestinationStatesWithHandler:(id)a3
+- (void)clearTriggerDestinationStatesWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__SMSessionStore_clearTriggerDestinationStatesWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_clearTriggerDestinationStatesWithHandler:(id)a3
+- (void)_clearTriggerDestinationStatesWithHandler:(id)handler
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  [(RTStore *)self removeAll:v5 handler:v4];
+  [(RTStore *)self removeAll:v5 handler:handlerCopy];
 }
 
-- (void)storeSessionMonitorStates:(id)a3 handler:(id)a4
+- (void)storeSessionMonitorStates:(id)states handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  statesCopy = states;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__SMSessionStore_storeSessionMonitorStates_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = statesCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = statesCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)fetchMostRecentSessionMonitorStateWithSessionID:(id)a3 handler:(id)a4
+- (void)fetchMostRecentSessionMonitorStateWithSessionID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  dCopy = d;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__SMSessionStore_fetchMostRecentSessionMonitorStateWithSessionID_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchMostRecentSessionMonitorStateWithSessionID:(id)a3 handler:(id)a4
+- (void)_fetchMostRecentSessionMonitorStateWithSessionID:(id)d handler:(id)handler
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __75__SMSessionStore__fetchMostRecentSessionMonitorStateWithSessionID_handler___block_invoke;
     aBlock[3] = &unk_2788C4898;
-    v17 = v6;
-    v8 = v7;
+    v17 = dCopy;
+    v8 = handlerCopy;
     v18 = v8;
     v9 = _Block_copy(aBlock);
     v14[0] = MEMORY[0x277D85DD0];
@@ -2490,56 +2490,56 @@ void __75__SMSessionStore__fetchMostRecentSessionMonitorStateWithSessionID_handl
   (*(v25 + 16))(v25, v26, v12);
 }
 
-- (void)clearSessionMonitorStatesWithHandler:(id)a3
+- (void)clearSessionMonitorStatesWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__SMSessionStore_clearSessionMonitorStatesWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_clearSessionMonitorStatesWithHandler:(id)a3
+- (void)_clearSessionMonitorStatesWithHandler:(id)handler
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  [(RTStore *)self removeAll:v5 handler:v4];
+  [(RTStore *)self removeAll:v5 handler:handlerCopy];
 }
 
-+ (id)getDateUsingYearMonthDayFromDate:(id)a3 hoursMinsSecsFromDate:(id)a4
++ (id)getDateUsingYearMonthDayFromDate:(id)date hoursMinsSecsFromDate:(id)fromDate
 {
   v5 = MEMORY[0x277CBEA80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 currentCalendar];
-  v9 = [v8 components:28 fromDate:v7];
+  fromDateCopy = fromDate;
+  dateCopy = date;
+  currentCalendar = [v5 currentCalendar];
+  v9 = [currentCalendar components:28 fromDate:dateCopy];
 
-  v10 = [MEMORY[0x277CBEA80] currentCalendar];
-  v11 = [v10 components:224 fromDate:v6];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+  v11 = [currentCalendar2 components:224 fromDate:fromDateCopy];
 
   [v11 setDay:{objc_msgSend(v9, "day")}];
   [v11 setMonth:{objc_msgSend(v9, "month")}];
   [v11 setYear:{objc_msgSend(v9, "year")}];
-  v12 = [MEMORY[0x277CBEA80] currentCalendar];
-  v13 = [v12 dateFromComponents:v11];
+  currentCalendar3 = [MEMORY[0x277CBEA80] currentCalendar];
+  v13 = [currentCalendar3 dateFromComponents:v11];
 
   return v13;
 }
 
-+ (BOOL)isDateBetweenStartDate:(id)a3 endDate:(id)a4 targetDate:(id)a5 error:(id *)a6
++ (BOOL)isDateBetweenStartDate:(id)date endDate:(id)endDate targetDate:(id)targetDate error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  dateCopy = date;
+  endDateCopy = endDate;
+  targetDateCopy = targetDate;
+  v12 = targetDateCopy;
+  if (!dateCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -2548,7 +2548,7 @@ void __75__SMSessionStore__fetchMostRecentSessionMonitorStateWithSessionID_handl
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: startDate", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -2557,7 +2557,7 @@ void __75__SMSessionStore__fetchMostRecentSessionMonitorStateWithSessionID_handl
     goto LABEL_19;
   }
 
-  if (!v10)
+  if (!endDateCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -2566,7 +2566,7 @@ void __75__SMSessionStore__fetchMostRecentSessionMonitorStateWithSessionID_handl
       _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: endDate", v21, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -2576,11 +2576,11 @@ LABEL_19:
     v18 = _RTErrorInvalidParameterCreate(v15);
     v13 = 0;
 LABEL_23:
-    *a6 = v18;
+    *error = v18;
     goto LABEL_24;
   }
 
-  if (!v11)
+  if (!targetDateCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -2589,7 +2589,7 @@ LABEL_23:
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: targetDate", v20, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v15 = @"targetDate";
       goto LABEL_19;
@@ -2600,10 +2600,10 @@ LABEL_20:
     goto LABEL_24;
   }
 
-  if ([v9 compare:v11] == 1)
+  if ([dateCopy compare:targetDateCopy] == 1)
   {
     v13 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -2611,8 +2611,8 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  v13 = [v12 compare:v10] != 1;
-  if (a6)
+  v13 = [v12 compare:endDateCopy] != 1;
+  if (error)
   {
 LABEL_22:
     v18 = 0;
@@ -2624,52 +2624,52 @@ LABEL_24:
   return v13;
 }
 
-+ (BOOL)areSessionConfigsInTheSameInterval:(id)a3 config2:(id)a4 timeInADayInterval:(id)a5 error:(id *)a6
++ (BOOL)areSessionConfigsInTheSameInterval:(id)interval config2:(id)config2 timeInADayInterval:(id)dayInterval error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  intervalCopy = interval;
+  config2Copy = config2;
+  dayIntervalCopy = dayInterval;
+  if (intervalCopy)
   {
-    if (v10)
+    if (config2Copy)
     {
-      v41 = a6;
+      errorCopy = error;
       v12 = objc_opt_class();
-      v13 = [v9 sessionStartDate];
-      v14 = [v11 startDate];
-      v15 = [v12 getDateUsingYearMonthDayFromDate:v13 hoursMinsSecsFromDate:v14];
+      sessionStartDate = [intervalCopy sessionStartDate];
+      startDate = [dayIntervalCopy startDate];
+      v15 = [v12 getDateUsingYearMonthDayFromDate:sessionStartDate hoursMinsSecsFromDate:startDate];
 
-      [v11 duration];
+      [dayIntervalCopy duration];
       v39 = [v15 dateByAddingTimeInterval:?];
       v16 = objc_opt_class();
-      v17 = [v9 sessionStartDate];
-      v18 = [v11 endDate];
-      v19 = [v16 getDateUsingYearMonthDayFromDate:v17 hoursMinsSecsFromDate:v18];
+      sessionStartDate2 = [intervalCopy sessionStartDate];
+      endDate = [dayIntervalCopy endDate];
+      v19 = [v16 getDateUsingYearMonthDayFromDate:sessionStartDate2 hoursMinsSecsFromDate:endDate];
 
-      [v11 duration];
+      [dayIntervalCopy duration];
       v43 = v19;
       v42 = [v19 dateByAddingTimeInterval:-v20];
       v21 = objc_opt_class();
-      v22 = [v10 sessionStartDate];
-      v23 = [v11 startDate];
-      [v21 getDateUsingYearMonthDayFromDate:v22 hoursMinsSecsFromDate:v23];
-      v25 = v24 = v10;
+      sessionStartDate3 = [config2Copy sessionStartDate];
+      startDate2 = [dayIntervalCopy startDate];
+      [v21 getDateUsingYearMonthDayFromDate:sessionStartDate3 hoursMinsSecsFromDate:startDate2];
+      v25 = v24 = config2Copy;
 
-      [v11 duration];
+      [dayIntervalCopy duration];
       v26 = [v25 dateByAddingTimeInterval:?];
       v27 = objc_opt_class();
       v40 = v24;
-      v28 = [v24 sessionStartDate];
-      v29 = [v11 endDate];
-      v30 = [v27 getDateUsingYearMonthDayFromDate:v28 hoursMinsSecsFromDate:v29];
+      sessionStartDate4 = [v24 sessionStartDate];
+      endDate2 = [dayIntervalCopy endDate];
+      v30 = [v27 getDateUsingYearMonthDayFromDate:sessionStartDate4 hoursMinsSecsFromDate:endDate2];
 
-      [v11 duration];
+      [dayIntervalCopy duration];
       v32 = [v30 dateByAddingTimeInterval:-v31];
       if ([v15 isEqualToDate:v25] && (objc_msgSend(v39, "isEqualToDate:", v26) & 1) != 0)
       {
         v33 = 1;
-        v34 = v41;
-        if (!v41)
+        v34 = errorCopy;
+        if (!errorCopy)
         {
           goto LABEL_22;
         }
@@ -2677,11 +2677,11 @@ LABEL_24:
 
       else
       {
-        v34 = v41;
+        v34 = errorCopy;
         if ([v43 isEqualToDate:v30])
         {
           v33 = [v42 isEqualToDate:v32];
-          if (!v41)
+          if (!errorCopy)
           {
             goto LABEL_22;
           }
@@ -2690,11 +2690,11 @@ LABEL_24:
         else
         {
           v33 = 0;
-          if (!v41)
+          if (!errorCopy)
           {
 LABEL_22:
 
-            v10 = v40;
+            config2Copy = v40;
             goto LABEL_23;
           }
         }
@@ -2711,7 +2711,7 @@ LABEL_22:
       _os_log_error_impl(&dword_2304B3000, v37, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: config2", v44, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v36 = @"config2";
       goto LABEL_18;
@@ -2729,7 +2729,7 @@ LABEL_19:
     _os_log_error_impl(&dword_2304B3000, v35, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: config1", buf, 2u);
   }
 
-  if (!a6)
+  if (!error)
   {
     goto LABEL_19;
   }
@@ -2737,30 +2737,30 @@ LABEL_19:
   v36 = @"config1";
 LABEL_18:
   _RTErrorInvalidParameterCreate(v36);
-  *a6 = v33 = 0;
+  *error = v33 = 0;
 LABEL_23:
 
   return v33;
 }
 
-- (void)_logStoreWithReason:(id)a3 handler:(id)a4
+- (void)_logStoreWithReason:(id)reason handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  reasonCopy = reason;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __46__SMSessionStore__logStoreWithReason_handler___block_invoke;
   v13[3] = &unk_2788C4FB0;
-  v14 = v7;
+  v14 = reasonCopy;
   v16 = a2;
-  v15 = v8;
+  v15 = handlerCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __46__SMSessionStore__logStoreWithReason_handler___block_invoke_161;
   v11[3] = &unk_2788C48C0;
   v12 = v15;
   v9 = v15;
-  v10 = v7;
+  v10 = reasonCopy;
   [(RTStore *)self _performBlock:v13 contextType:1 errorHandler:v11];
 }
 
@@ -2897,21 +2897,21 @@ uint64_t __46__SMSessionStore__logStoreWithReason_handler___block_invoke_161(uin
   return result;
 }
 
-- (void)logStoreWithReason:(id)a3 handler:(id)a4
+- (void)logStoreWithReason:(id)reason handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  reasonCopy = reason;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__SMSessionStore_logStoreWithReason_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = reasonCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = reasonCopy;
+  dispatch_async(queue, block);
 }
 
 @end

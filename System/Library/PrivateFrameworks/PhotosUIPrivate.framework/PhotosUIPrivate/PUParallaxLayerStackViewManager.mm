@@ -3,7 +3,7 @@
 - (PUParallaxDebugInfoView)debugInfoView;
 - (PUParallaxDebugInfoView)debugInfoViewIfLoaded;
 - (PUParallaxLayerStackViewManager)init;
-- (PUParallaxLayerStackViewManager)initWithViewModel:(id)a3;
+- (PUParallaxLayerStackViewManager)initWithViewModel:(id)model;
 - (PUParallaxLayerStackViewModel)viewModel;
 - (PUParallaxVideoLayerView)videoLayerView;
 - (PUPosterDebugRectsView)debugRectsView;
@@ -12,15 +12,15 @@
 - (_TtC15PhotosUIPrivate31PUParallaxSpatialPhotoLayerView)spatialPhotoBackgroundLayerView;
 - (_TtC15PhotosUIPrivate40PUParallaxSpatialPhotoOcclusionLayerView)spatialPhotoForegroundBackfillLayerView;
 - (_TtC15PhotosUIPrivate40PUParallaxSpatialPhotoOcclusionLayerView)spatialPhotoForegroundLayerView;
-- (id)_layerLayoutInfoForViewModel:(id)a3 animateChanges:(BOOL)a4;
-- (id)existingViewForLayerID:(id)a3;
-- (id)viewForLayer:(id)a3;
-- (id)viewForLayerID:(id)a3;
-- (void)_layoutLayerView:(id)a3 animated:(BOOL)a4;
-- (void)_layoutViewsAnimated:(BOOL)a3;
+- (id)_layerLayoutInfoForViewModel:(id)model animateChanges:(BOOL)changes;
+- (id)existingViewForLayerID:(id)d;
+- (id)viewForLayer:(id)layer;
+- (id)viewForLayerID:(id)d;
+- (void)_layoutLayerView:(id)view animated:(BOOL)animated;
+- (void)_layoutViewsAnimated:(BOOL)animated;
 - (void)_updateViewContents;
-- (void)layoutViewsWithDefaultAnimations:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)layoutViewsWithDefaultAnimations:(id)animations;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)releaseSpatialPhotoLayerViews;
 - (void)releaseVideoLayerView;
 @end
@@ -34,16 +34,16 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (a5 != "ViewModelObservationContext")
+  observableCopy = observable;
+  if (context != "ViewModelObservationContext")
   {
     goto LABEL_16;
   }
 
-  v18 = v9;
-  v10 = v9;
+  v18 = observableCopy;
+  v10 = observableCopy;
   if (v10)
   {
     objc_opt_class();
@@ -52,69 +52,69 @@
       goto LABEL_4;
     }
 
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = objc_opt_class();
     v15 = NSStringFromClass(v16);
-    v17 = [v10 px_descriptionForAssertionMessage];
-    [v13 handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackViewManager.m" lineNumber:364 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v15, v17}];
+    px_descriptionForAssertionMessage = [v10 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackViewManager.m" lineNumber:364 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v15, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    [v13 handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackViewManager.m" lineNumber:364 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackViewManager.m" lineNumber:364 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v15}];
   }
 
 LABEL_4:
-  v11 = [v10 currentLayerStackPropertiesChange];
-  v12 = [v10 stylePropertiesChange];
-  if ((a4 & 4) != 0 && (v11 & 2) != 0)
+  currentLayerStackPropertiesChange = [v10 currentLayerStackPropertiesChange];
+  stylePropertiesChange = [v10 stylePropertiesChange];
+  if ((change & 4) != 0 && (currentLayerStackPropertiesChange & 2) != 0)
   {
     [(PUParallaxLayerStackViewManager *)self _updateViewContents];
   }
 
-  if ((a4 & 2) != 0)
+  if ((change & 2) != 0)
   {
     [(PUParallaxLayerStackViewManager *)self _updateViewContents];
   }
 
-  if ((a4 & 0x5A6660) != 0)
+  if ((change & 0x5A6660) != 0)
   {
-    -[PUParallaxLayerStackViewManager _layoutViewsAnimated:](self, "_layoutViewsAnimated:", ([v10 allowedBehaviors] >> 7) & 1 & (a4 >> 22));
+    -[PUParallaxLayerStackViewManager _layoutViewsAnimated:](self, "_layoutViewsAnimated:", ([v10 allowedBehaviors] >> 7) & 1 & (change >> 22));
   }
 
-  if ((v12 & 6) != 0)
+  if ((stylePropertiesChange & 6) != 0)
   {
     [(PUParallaxLayerStackViewManager *)self _layoutViewsAnimated:0];
   }
 
-  if ((a4 & 0x100000000) != 0)
+  if ((change & 0x100000000) != 0)
   {
     [(PUParallaxLayerStackViewManager *)self _layoutViewsAnimated:1];
   }
 
-  v9 = v18;
+  observableCopy = v18;
 LABEL_16:
 }
 
-- (id)_layerLayoutInfoForViewModel:(id)a3 animateChanges:(BOOL)a4
+- (id)_layerLayoutInfoForViewModel:(id)model animateChanges:(BOOL)changes
 {
-  v4 = a3;
-  v5 = [v4 layoutOrder];
-  [v4 visibilityAmount];
+  modelCopy = model;
+  layoutOrder = [modelCopy layoutOrder];
+  [modelCopy visibilityAmount];
   v7 = v6;
   v8 = *MEMORY[0x1E695F058];
   v9 = *(MEMORY[0x1E695F058] + 8);
   v10 = *(MEMORY[0x1E695F058] + 16);
   v11 = *(MEMORY[0x1E695F058] + 24);
   v80 = v6;
-  if ([v4 settlingEffectEnabled] && v7 == 1.0)
+  if ([modelCopy settlingEffectEnabled] && v7 == 1.0)
   {
-    v12 = [v4 currentLayerStack];
-    v13 = [v12 settlingEffectLayer];
-    [v13 frame];
+    currentLayerStack = [modelCopy currentLayerStack];
+    settlingEffectLayer = [currentLayerStack settlingEffectLayer];
+    [settlingEffectLayer frame];
     v8 = v14;
     v9 = v15;
     v10 = v16;
@@ -124,25 +124,25 @@ LABEL_16:
   v77 = v10;
   v78 = v9;
   v79 = v8;
-  v18 = [v4 currentLayerStack];
-  v19 = [v18 layout];
+  currentLayerStack2 = [modelCopy currentLayerStack];
+  layout = [currentLayerStack2 layout];
 
   v20 = +[PUPosterHeadroomSettings sharedInstance];
   [v20 falloffHeight];
 
-  [v19 extendedImageSize];
-  [v19 extendedImageSize];
-  [v19 imageSize];
-  [v19 imageSize];
+  [layout extendedImageSize];
+  [layout extendedImageSize];
+  [layout imageSize];
+  [layout imageSize];
   PXRectWithOriginAndSize();
   v74 = v22;
   v75 = v21;
   v72 = v24;
   v73 = v23;
-  v25 = [v4 style];
-  if ([v25 hasTonalityMode])
+  style = [modelCopy style];
+  if ([style hasTonalityMode])
   {
-    v26 = [v25 tonality] == 3;
+    v26 = [style tonality] == 3;
   }
 
   else
@@ -150,18 +150,18 @@ LABEL_16:
     v26 = 0;
   }
 
-  if ([v25 hasHeadroomLook])
+  if ([style hasHeadroomLook])
   {
-    v26 = [v25 headroomLook] == 2;
+    v26 = [style headroomLook] == 2;
   }
 
   v76 = v11;
   v71 = v26;
-  if ([v25 hasColorParameter])
+  if ([style hasColorParameter])
   {
     v27 = MEMORY[0x1E69DC888];
-    v28 = [v25 color];
-    v70 = [v27 colorWithCGColor:{objc_msgSend(v28, "CGColor")}];
+    color = [style color];
+    v70 = [v27 colorWithCGColor:{objc_msgSend(color, "CGColor")}];
   }
 
   else
@@ -173,31 +173,31 @@ LABEL_16:
   [v29 parallaxAmount];
   v69 = v30;
 
-  v31 = [v4 allowedBehaviors];
+  allowedBehaviors = [modelCopy allowedBehaviors];
   v68 = [PUParallaxLayerLayoutInfo alloc];
-  v32 = [v4 deviceOrientation];
-  [v4 containerFrame];
+  deviceOrientation = [modelCopy deviceOrientation];
+  [modelCopy containerFrame];
   v66 = v34;
   v67 = v33;
   v64 = v36;
   v65 = v35;
-  [v4 visibleFrame];
+  [modelCopy visibleFrame];
   v38 = v37;
   v40 = v39;
   v63 = v41;
   v43 = v42;
-  [v4 headroomVisibilityAmount];
+  [modelCopy headroomVisibilityAmount];
   v45 = v44;
-  [v4 clockAreaLuminance];
+  [modelCopy clockAreaLuminance];
   v47 = v46;
-  v48 = [v4 canApplyParallax];
-  [v4 parallaxVector];
+  canApplyParallax = [modelCopy canApplyParallax];
+  [modelCopy parallaxVector];
   v50 = v49;
   v52 = v51;
-  v53 = [v4 visibilityEffects];
-  if (v4)
+  visibilityEffects = [modelCopy visibilityEffects];
+  if (modelCopy)
   {
-    [v4 adaptiveLayoutTransform];
+    [modelCopy adaptiveLayoutTransform];
   }
 
   else
@@ -205,7 +205,7 @@ LABEL_16:
     memset(v82, 0, 48);
   }
 
-  if (v5 == 1)
+  if (layoutOrder == 1)
   {
     v54 = 8;
   }
@@ -215,44 +215,44 @@ LABEL_16:
     v54 = 2;
   }
 
-  [v4 animationDuration];
+  [modelCopy animationDuration];
   v56 = v55;
-  v57 = [v4 animationCurve];
-  v58 = [v4 legibilityVignetteVisible];
-  BYTE2(v62) = [v4 bottomContentExtensionVisible];
-  BYTE1(v62) = v58;
-  LOBYTE(v62) = v31 & 1;
-  LOBYTE(v61) = a4;
-  v59 = [(PUParallaxLayerLayoutInfo *)v68 initWithDeviceOrientation:v32 containerFrame:v71 visibleFrame:v70 settlingEffectFrame:v48 headroomFrame:v54 headroomVisibilityAmount:v53 styleIsHighKey:v67 clockAreaLuminance:v66 primaryStyleColor:v65 canApplyParallax:v64 parallaxVector:v38 parallaxAmount:v40 visibilityAmount:v63 visibilityEdge:v43 visibilityEffects:v79 animateChanges:v78 adaptiveLayoutTransform:v77 animationDuration:v76 animationCurve:v75 wantsLegibilityVignette:v74 legibilityVignetteVisible:v73 bottomContentExtensionEnabled:v72, v45, v47, v50, v52, v69, *&v80, v61, v82, v56, v57, v62];
+  animationCurve = [modelCopy animationCurve];
+  legibilityVignetteVisible = [modelCopy legibilityVignetteVisible];
+  BYTE2(v62) = [modelCopy bottomContentExtensionVisible];
+  BYTE1(v62) = legibilityVignetteVisible;
+  LOBYTE(v62) = allowedBehaviors & 1;
+  LOBYTE(v61) = changes;
+  v59 = [(PUParallaxLayerLayoutInfo *)v68 initWithDeviceOrientation:deviceOrientation containerFrame:v71 visibleFrame:v70 settlingEffectFrame:canApplyParallax headroomFrame:v54 headroomVisibilityAmount:visibilityEffects styleIsHighKey:v67 clockAreaLuminance:v66 primaryStyleColor:v65 canApplyParallax:v64 parallaxVector:v38 parallaxAmount:v40 visibilityAmount:v63 visibilityEdge:v43 visibilityEffects:v79 animateChanges:v78 adaptiveLayoutTransform:v77 animationDuration:v76 animationCurve:v75 wantsLegibilityVignette:v74 legibilityVignetteVisible:v73 bottomContentExtensionEnabled:v72, v45, v47, v50, v52, v69, *&v80, v61, v82, v56, animationCurve, v62];
 
   return v59;
 }
 
-- (void)_layoutLayerView:(id)a3 animated:(BOOL)a4
+- (void)_layoutLayerView:(id)view animated:(BOOL)animated
 {
-  if (a3)
+  if (view)
   {
-    v4 = a4;
-    v6 = a3;
-    v7 = [(PUParallaxLayerStackViewManager *)self viewModel];
-    v8 = [(PUParallaxLayerStackViewManager *)self _layerLayoutInfoForViewModel:v7 animateChanges:v4];
+    animatedCopy = animated;
+    viewCopy = view;
+    viewModel = [(PUParallaxLayerStackViewManager *)self viewModel];
+    v8 = [(PUParallaxLayerStackViewManager *)self _layerLayoutInfoForViewModel:viewModel animateChanges:animatedCopy];
 
-    [v6 layoutWithInfo:v8];
+    [viewCopy layoutWithInfo:v8];
   }
 }
 
-- (void)_layoutViewsAnimated:(BOOL)a3
+- (void)_layoutViewsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(PUParallaxLayerStackViewManager *)self viewsByLayerIdentifier];
-  v6 = [v5 allValues];
+  viewsByLayerIdentifier = [(PUParallaxLayerStackViewManager *)self viewsByLayerIdentifier];
+  allValues = [viewsByLayerIdentifier allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -264,47 +264,47 @@ LABEL_16:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
-        [(PUParallaxLayerStackViewManager *)self _layoutLayerView:*(*(&v15 + 1) + 8 * v10++) animated:v3];
+        [(PUParallaxLayerStackViewManager *)self _layoutLayerView:*(*(&v15 + 1) + 8 * v10++) animated:animatedCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  v11 = [(PUParallaxLayerStackViewManager *)self viewsByLayerIdentifier];
-  v12 = [v11 count];
+  viewsByLayerIdentifier2 = [(PUParallaxLayerStackViewManager *)self viewsByLayerIdentifier];
+  v12 = [viewsByLayerIdentifier2 count];
 
   if (v12)
   {
-    v13 = [(PUParallaxLayerStackViewManager *)self debugInfoViewIfLoaded];
-    [(PUParallaxLayerStackViewManager *)self _layoutLayerView:v13 animated:v3];
+    debugInfoViewIfLoaded = [(PUParallaxLayerStackViewManager *)self debugInfoViewIfLoaded];
+    [(PUParallaxLayerStackViewManager *)self _layoutLayerView:debugInfoViewIfLoaded animated:animatedCopy];
 
-    v14 = [(PUParallaxLayerStackViewManager *)self debugRectsViewIfLoaded];
-    [(PUParallaxLayerStackViewManager *)self _layoutLayerView:v14 animated:v3];
+    debugRectsViewIfLoaded = [(PUParallaxLayerStackViewManager *)self debugRectsViewIfLoaded];
+    [(PUParallaxLayerStackViewManager *)self _layoutLayerView:debugRectsViewIfLoaded animated:animatedCopy];
   }
 }
 
 - (void)_updateViewContents
 {
-  v4 = [(PUParallaxLayerStackViewManager *)self viewModel];
-  v5 = [v4 currentLayerStack];
+  viewModel = [(PUParallaxLayerStackViewManager *)self viewModel];
+  currentLayerStack = [viewModel currentLayerStack];
 
-  v6 = [(PUParallaxLayerStackViewManager *)self viewsByLayerIdentifier];
+  viewsByLayerIdentifier = [(PUParallaxLayerStackViewManager *)self viewsByLayerIdentifier];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__PUParallaxLayerStackViewManager__updateViewContents__block_invoke;
   v8[3] = &unk_1E7B7F220;
-  v10 = self;
+  selfCopy = self;
   v11 = a2;
-  v9 = v5;
-  v7 = v5;
-  [v6 enumerateKeysAndObjectsUsingBlock:v8];
+  v9 = currentLayerStack;
+  v7 = currentLayerStack;
+  [viewsByLayerIdentifier enumerateKeysAndObjectsUsingBlock:v8];
 }
 
 void __54__PUParallaxLayerStackViewManager__updateViewContents__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -481,21 +481,21 @@ LABEL_42:
 LABEL_43:
 }
 
-- (void)layoutViewsWithDefaultAnimations:(id)a3
+- (void)layoutViewsWithDefaultAnimations:(id)animations
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __68__PUParallaxLayerStackViewManager_layoutViewsWithDefaultAnimations___block_invoke;
   v3[3] = &unk_1E7B80DD0;
   v3[4] = self;
-  [MEMORY[0x1E69DD250] animateWithDuration:v3 animations:a3 completion:0.3];
+  [MEMORY[0x1E69DD250] animateWithDuration:v3 animations:animations completion:0.3];
 }
 
 - (NSArray)createdLayerViews
 {
-  v3 = [(PUParallaxLayerStackViewManager *)self viewsByLayerIdentifier];
-  v4 = [v3 allValues];
-  v5 = [v4 mutableCopy];
+  viewsByLayerIdentifier = [(PUParallaxLayerStackViewManager *)self viewsByLayerIdentifier];
+  allValues = [viewsByLayerIdentifier allValues];
+  v5 = [allValues mutableCopy];
 
   if (self->_debugInfoView)
   {
@@ -525,8 +525,8 @@ LABEL_43:
   if (!self->_debugRectsView)
   {
     v3 = [PUPosterDebugRectsView alloc];
-    v4 = [(PUParallaxLayerStackViewManager *)self viewModel];
-    v5 = [(PUPosterDebugRectsView *)v3 initWithViewModel:v4];
+    viewModel = [(PUParallaxLayerStackViewManager *)self viewModel];
+    v5 = [(PUPosterDebugRectsView *)v3 initWithViewModel:viewModel];
     debugRectsView = self->_debugRectsView;
     self->_debugRectsView = v5;
   }
@@ -547,8 +547,8 @@ LABEL_43:
   if (!self->_debugInfoView)
   {
     v3 = [PUParallaxDebugInfoView alloc];
-    v4 = [(PUParallaxLayerStackViewManager *)self viewModel];
-    v5 = [(PUParallaxDebugInfoView *)v3 initWithViewModel:v4];
+    viewModel = [(PUParallaxLayerStackViewManager *)self viewModel];
+    v5 = [(PUParallaxDebugInfoView *)v3 initWithViewModel:viewModel];
     debugInfoView = self->_debugInfoView;
     self->_debugInfoView = v5;
   }
@@ -564,17 +564,17 @@ LABEL_43:
   aBlock[3] = &unk_1E7B7F1F8;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(PUParallaxLayerStackViewManager *)self spatialPhotoBackgroundLayerView];
-  v3[2](v3, v4);
+  spatialPhotoBackgroundLayerView = [(PUParallaxLayerStackViewManager *)self spatialPhotoBackgroundLayerView];
+  v3[2](v3, spatialPhotoBackgroundLayerView);
 
-  v5 = [(PUParallaxLayerStackViewManager *)self spatialPhotoForegroundLayerView];
-  v3[2](v3, v5);
+  spatialPhotoForegroundLayerView = [(PUParallaxLayerStackViewManager *)self spatialPhotoForegroundLayerView];
+  v3[2](v3, spatialPhotoForegroundLayerView);
 
-  v6 = [(PUParallaxLayerStackViewManager *)self spatialPhotoBackgroundBackfillLayerView];
-  v3[2](v3, v6);
+  spatialPhotoBackgroundBackfillLayerView = [(PUParallaxLayerStackViewManager *)self spatialPhotoBackgroundBackfillLayerView];
+  v3[2](v3, spatialPhotoBackgroundBackfillLayerView);
 
-  v7 = [(PUParallaxLayerStackViewManager *)self spatialPhotoForegroundBackfillLayerView];
-  v3[2](v3, v7);
+  spatialPhotoForegroundBackfillLayerView = [(PUParallaxLayerStackViewManager *)self spatialPhotoForegroundBackfillLayerView];
+  v3[2](v3, spatialPhotoForegroundBackfillLayerView);
 }
 
 void __64__PUParallaxLayerStackViewManager_releaseSpatialPhotoLayerViews__block_invoke(uint64_t a1, void *a2)
@@ -593,11 +593,11 @@ void __64__PUParallaxLayerStackViewManager_releaseSpatialPhotoLayerViews__block_
 
 - (_TtC15PhotosUIPrivate40PUParallaxSpatialPhotoOcclusionLayerView)spatialPhotoForegroundBackfillLayerView
 {
-  v3 = [(PUParallaxLayerStackViewManager *)self viewModel];
-  v4 = [v3 currentLayerStack];
+  viewModel = [(PUParallaxLayerStackViewManager *)self viewModel];
+  currentLayerStack = [viewModel currentLayerStack];
 
-  v5 = [v4 spatialPhotoForegroundBackfillLayer];
-  v6 = [(PUParallaxLayerStackViewManager *)self viewForLayer:v5];
+  spatialPhotoForegroundBackfillLayer = [currentLayerStack spatialPhotoForegroundBackfillLayer];
+  v6 = [(PUParallaxLayerStackViewManager *)self viewForLayer:spatialPhotoForegroundBackfillLayer];
 
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
@@ -614,11 +614,11 @@ void __64__PUParallaxLayerStackViewManager_releaseSpatialPhotoLayerViews__block_
 
 - (_TtC15PhotosUIPrivate31PUParallaxSpatialPhotoLayerView)spatialPhotoBackgroundBackfillLayerView
 {
-  v3 = [(PUParallaxLayerStackViewManager *)self viewModel];
-  v4 = [v3 currentLayerStack];
+  viewModel = [(PUParallaxLayerStackViewManager *)self viewModel];
+  currentLayerStack = [viewModel currentLayerStack];
 
-  v5 = [v4 spatialPhotoBackgroundBackfillLayer];
-  v6 = [(PUParallaxLayerStackViewManager *)self viewForLayer:v5];
+  spatialPhotoBackgroundBackfillLayer = [currentLayerStack spatialPhotoBackgroundBackfillLayer];
+  v6 = [(PUParallaxLayerStackViewManager *)self viewForLayer:spatialPhotoBackgroundBackfillLayer];
 
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
@@ -635,11 +635,11 @@ void __64__PUParallaxLayerStackViewManager_releaseSpatialPhotoLayerViews__block_
 
 - (_TtC15PhotosUIPrivate40PUParallaxSpatialPhotoOcclusionLayerView)spatialPhotoForegroundLayerView
 {
-  v3 = [(PUParallaxLayerStackViewManager *)self viewModel];
-  v4 = [v3 currentLayerStack];
+  viewModel = [(PUParallaxLayerStackViewManager *)self viewModel];
+  currentLayerStack = [viewModel currentLayerStack];
 
-  v5 = [v4 spatialPhotoForegroundLayer];
-  v6 = [(PUParallaxLayerStackViewManager *)self viewForLayer:v5];
+  spatialPhotoForegroundLayer = [currentLayerStack spatialPhotoForegroundLayer];
+  v6 = [(PUParallaxLayerStackViewManager *)self viewForLayer:spatialPhotoForegroundLayer];
 
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
@@ -656,11 +656,11 @@ void __64__PUParallaxLayerStackViewManager_releaseSpatialPhotoLayerViews__block_
 
 - (_TtC15PhotosUIPrivate31PUParallaxSpatialPhotoLayerView)spatialPhotoBackgroundLayerView
 {
-  v3 = [(PUParallaxLayerStackViewManager *)self viewModel];
-  v4 = [v3 currentLayerStack];
+  viewModel = [(PUParallaxLayerStackViewManager *)self viewModel];
+  currentLayerStack = [viewModel currentLayerStack];
 
-  v5 = [v4 spatialPhotoBackgroundLayer];
-  v6 = [(PUParallaxLayerStackViewManager *)self viewForLayer:v5];
+  spatialPhotoBackgroundLayer = [currentLayerStack spatialPhotoBackgroundLayer];
+  v6 = [(PUParallaxLayerStackViewManager *)self viewForLayer:spatialPhotoBackgroundLayer];
 
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
@@ -677,27 +677,27 @@ void __64__PUParallaxLayerStackViewManager_releaseSpatialPhotoLayerViews__block_
 
 - (void)releaseVideoLayerView
 {
-  v3 = [(PUParallaxLayerStackViewManager *)self viewModel];
-  v4 = [v3 viewManager];
-  v8 = [v4 videoLayerView];
+  viewModel = [(PUParallaxLayerStackViewManager *)self viewModel];
+  viewManager = [viewModel viewManager];
+  videoLayerView = [viewManager videoLayerView];
 
-  if (v8)
+  if (videoLayerView)
   {
-    [v8 removeFromSuperview];
-    v5 = [(PUParallaxLayerStackViewManager *)self viewsByLayerIdentifier];
-    v6 = [v8 parallaxVideoLayer];
-    v7 = [v6 identifier];
-    [v5 removeObjectForKey:v7];
+    [videoLayerView removeFromSuperview];
+    viewsByLayerIdentifier = [(PUParallaxLayerStackViewManager *)self viewsByLayerIdentifier];
+    parallaxVideoLayer = [videoLayerView parallaxVideoLayer];
+    identifier = [parallaxVideoLayer identifier];
+    [viewsByLayerIdentifier removeObjectForKey:identifier];
   }
 }
 
 - (PUParallaxVideoLayerView)videoLayerView
 {
-  v3 = [(PUParallaxLayerStackViewManager *)self viewModel];
-  v4 = [v3 currentLayerStack];
+  viewModel = [(PUParallaxLayerStackViewManager *)self viewModel];
+  currentLayerStack = [viewModel currentLayerStack];
 
-  v5 = [v4 settlingEffectLayer];
-  v6 = [(PUParallaxLayerStackViewManager *)self viewForLayer:v5];
+  settlingEffectLayer = [currentLayerStack settlingEffectLayer];
+  v6 = [(PUParallaxLayerStackViewManager *)self viewForLayer:settlingEffectLayer];
 
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
@@ -712,14 +712,14 @@ void __64__PUParallaxLayerStackViewManager_releaseSpatialPhotoLayerViews__block_
   return v7;
 }
 
-- (id)viewForLayerID:(id)a3
+- (id)viewForLayerID:(id)d
 {
-  v4 = a3;
-  v5 = [(PUParallaxLayerStackViewManager *)self existingViewForLayerID:v4];
+  dCopy = d;
+  v5 = [(PUParallaxLayerStackViewManager *)self existingViewForLayerID:dCopy];
   if (!v5)
   {
-    v6 = [(PUParallaxLayerStackViewManager *)self viewModel];
-    v7 = [v6 environment];
+    viewModel = [(PUParallaxLayerStackViewManager *)self viewModel];
+    environment = [viewModel environment];
 
     if (PFParallaxLayerIDIsAnySpatialPhoto())
     {
@@ -744,8 +744,8 @@ void __64__PUParallaxLayerStackViewManager_releaseSpatialPhotoLayerViews__block_
     v10 = PFParallaxLayerIDIsSettlingVideo();
     v11 = PFParallaxLayerIDIsBackfill();
     WeakRetained = objc_loadWeakRetained(&self->_viewModel);
-    v13 = [WeakRetained currentLayerStack];
-    v14 = [v13 layerWithIdentifier:v4];
+    currentLayerStack = [WeakRetained currentLayerStack];
+    v14 = [currentLayerStack layerWithIdentifier:dCopy];
 
     v15 = v14;
     if (v8)
@@ -756,8 +756,8 @@ void __64__PUParallaxLayerStackViewManager_releaseSpatialPhotoLayerViews__block_
 
         if (v16)
         {
-          v17 = [(PUParallaxLayerStackViewManager *)self viewModel];
-          if (![v17 spatialPhotoEnabled] || !PFPosterIsSpatialPhotoEnabled())
+          viewModel2 = [(PUParallaxLayerStackViewManager *)self viewModel];
+          if (![viewModel2 spatialPhotoEnabled] || !PFPosterIsSpatialPhotoEnabled())
           {
             v31 = 0;
 LABEL_54:
@@ -765,24 +765,24 @@ LABEL_54:
             goto LABEL_63;
           }
 
-          v18 = [(PUParallaxLayerStackViewManager *)self viewModel];
-          v19 = [v18 canCreateSpatialPhotoLayerView];
+          viewModel3 = [(PUParallaxLayerStackViewManager *)self viewModel];
+          canCreateSpatialPhotoLayerView = [viewModel3 canCreateSpatialPhotoLayerView];
 
-          if (v19)
+          if (canCreateSpatialPhotoLayerView)
           {
             if (v11)
             {
-              v17 = 0;
+              viewModel2 = 0;
             }
 
             else
             {
               v51 = objc_loadWeakRetained(&self->_viewModel);
-              v52 = [v51 currentLayerStack];
-              v17 = [v52 inactiveSpatialPhotoDataLayer];
+              currentLayerStack2 = [v51 currentLayerStack];
+              viewModel2 = [currentLayerStack2 inactiveSpatialPhotoDataLayer];
             }
 
-            v31 = [[_TtC15PhotosUIPrivate31PUParallaxSpatialPhotoLayerView alloc] initWithParallaxSpatialPhotoLayer:v16 inactiveStyleDataLayer:v17 isEditing:v7 == 2];
+            v31 = [[_TtC15PhotosUIPrivate31PUParallaxSpatialPhotoLayerView alloc] initWithParallaxSpatialPhotoLayer:v16 inactiveStyleDataLayer:viewModel2 isEditing:environment == 2];
             v53 = MEMORY[0x1E69C0AC0];
             if (!v11)
             {
@@ -804,13 +804,13 @@ LABEL_54:
             [(PUParallaxSpatialPhotoLayerView *)v31 setOcclusionLayerView:v56];
             if ([(PUParallaxLayerStackViewManager *)self _debugColorsEnabled])
             {
-              v57 = [(PUParallaxSpatialPhotoLayerView *)v31 layer];
-              [v57 setBorderWidth:12.0];
+              layer = [(PUParallaxSpatialPhotoLayerView *)v31 layer];
+              [layer setBorderWidth:12.0];
 
-              v58 = [MEMORY[0x1E69DC888] greenColor];
-              v59 = [v58 CGColor];
-              v60 = [(PUParallaxSpatialPhotoLayerView *)v31 layer];
-              [v60 setBorderColor:v59];
+              greenColor = [MEMORY[0x1E69DC888] greenColor];
+              cGColor = [greenColor CGColor];
+              layer2 = [(PUParallaxSpatialPhotoLayerView *)v31 layer];
+              [layer2 setBorderColor:cGColor];
             }
 
             goto LABEL_54;
@@ -842,18 +842,18 @@ LABEL_38:
         goto LABEL_39;
       }
 
-      v20 = [(PUParallaxLayerStackViewManager *)self viewModel];
-      if ([(PUParallaxSpatialPhotoOcclusionLayerView *)v20 spatialPhotoEnabled]&& PFPosterIsSpatialPhotoOcclusionEnabled())
+      viewModel4 = [(PUParallaxLayerStackViewManager *)self viewModel];
+      if ([(PUParallaxSpatialPhotoOcclusionLayerView *)viewModel4 spatialPhotoEnabled]&& PFPosterIsSpatialPhotoOcclusionEnabled())
       {
-        v21 = [(PUParallaxLayerStackViewManager *)self viewModel];
-        v22 = [v21 canCreateSpatialPhotoLayerView];
+        viewModel5 = [(PUParallaxLayerStackViewManager *)self viewModel];
+        canCreateSpatialPhotoLayerView2 = [viewModel5 canCreateSpatialPhotoLayerView];
 
-        if (!v22)
+        if (!canCreateSpatialPhotoLayerView2)
         {
           goto LABEL_39;
         }
 
-        v23 = [[_TtC15PhotosUIPrivate40PUParallaxSpatialPhotoOcclusionLayerView alloc] initWithParallaxSpatialPhotoOcclusionLayer:v16 isEditing:v7 == 2];
+        v23 = [[_TtC15PhotosUIPrivate40PUParallaxSpatialPhotoOcclusionLayerView alloc] initWithParallaxSpatialPhotoOcclusionLayer:v16 isEditing:environment == 2];
         v24 = MEMORY[0x1E69C0AB0];
         if (!v11)
         {
@@ -875,18 +875,18 @@ LABEL_38:
         [v27 setOcclusionLayerView:v23];
         if ([(PUParallaxLayerStackViewManager *)self _debugColorsEnabled])
         {
-          v61 = [(PUParallaxSpatialPhotoOcclusionLayerView *)v23 layer];
-          [v61 setBorderWidth:12.0];
+          layer3 = [(PUParallaxSpatialPhotoOcclusionLayerView *)v23 layer];
+          [layer3 setBorderWidth:12.0];
 
-          v62 = [MEMORY[0x1E69DC888] magentaColor];
-          v63 = [v62 CGColor];
-          v64 = [(PUParallaxSpatialPhotoOcclusionLayerView *)v23 layer];
-          [v64 setBorderColor:v63];
+          magentaColor = [MEMORY[0x1E69DC888] magentaColor];
+          cGColor2 = [magentaColor CGColor];
+          layer4 = [(PUParallaxSpatialPhotoOcclusionLayerView *)v23 layer];
+          [layer4 setBorderColor:cGColor2];
         }
 
-        v20 = v23;
+        viewModel4 = v23;
 
-        v31 = v20;
+        v31 = viewModel4;
       }
 
       else
@@ -902,12 +902,12 @@ LABEL_63:
         v66 = 3221225472;
         v67 = __50__PUParallaxLayerStackViewManager_viewForLayerID___block_invoke;
         v68 = &unk_1E7B80C38;
-        v69 = self;
+        selfCopy = self;
         v5 = v31;
         v70 = v5;
         [v49 performWithoutAnimation:&v65];
         v50 = [(PUParallaxLayerStackViewManager *)self viewsByLayerIdentifier:v65];
-        [v50 setObject:v5 forKeyedSubscript:v4];
+        [v50 setObject:v5 forKeyedSubscript:dCopy];
 
         goto LABEL_41;
       }
@@ -933,13 +933,13 @@ LABEL_41:
         goto LABEL_39;
       }
 
-      v28 = [(PUParallaxLayerStackViewManager *)self viewModel];
-      if ([v28 settlingEffectEnabled] && PFPosterEnableSettlingEffect())
+      viewModel6 = [(PUParallaxLayerStackViewManager *)self viewModel];
+      if ([viewModel6 settlingEffectEnabled] && PFPosterEnableSettlingEffect())
       {
-        v29 = [(PUParallaxLayerStackViewManager *)self viewModel];
-        v30 = [v29 canCreateSettlingEffectLayerView];
+        viewModel7 = [(PUParallaxLayerStackViewManager *)self viewModel];
+        canCreateSettlingEffectLayerView = [viewModel7 canCreateSettlingEffectLayerView];
 
-        if (!v30)
+        if (!canCreateSettlingEffectLayerView)
         {
           goto LABEL_39;
         }
@@ -950,13 +950,13 @@ LABEL_41:
           goto LABEL_63;
         }
 
-        v32 = [(PUParallaxSpatialPhotoLayerView *)v31 layer];
-        [v32 setBorderWidth:12.0];
+        layer5 = [(PUParallaxSpatialPhotoLayerView *)v31 layer];
+        [layer5 setBorderWidth:12.0];
 
-        v28 = [MEMORY[0x1E69DC888] yellowColor];
-        v33 = [v28 CGColor];
-        v34 = [(PUParallaxSpatialPhotoLayerView *)v31 layer];
-        [v34 setBorderColor:v33];
+        viewModel6 = [MEMORY[0x1E69DC888] yellowColor];
+        cGColor3 = [viewModel6 CGColor];
+        layer6 = [(PUParallaxSpatialPhotoLayerView *)v31 layer];
+        [layer6 setBorderColor:cGColor3];
       }
 
       else
@@ -977,24 +977,24 @@ LABEL_41:
         v16 = 0;
       }
 
-      v31 = [[PUParallaxImageLayerView alloc] initWithParallaxImageLayer:v16 isEditing:v7 == 2];
+      v31 = [[PUParallaxImageLayerView alloc] initWithParallaxImageLayer:v16 isEditing:environment == 2];
       if (PFParallaxLayerIDIsForeground())
       {
         if ([(PUParallaxLayerStackViewManager *)self _debugColorsEnabled])
         {
-          v36 = [(PUParallaxSpatialPhotoLayerView *)v31 layer];
-          [v36 setBorderWidth:4.0];
+          layer7 = [(PUParallaxSpatialPhotoLayerView *)v31 layer];
+          [layer7 setBorderWidth:4.0];
 
-          v37 = [MEMORY[0x1E69DC888] blueColor];
-          v38 = [v37 CGColor];
-          v39 = [(PUParallaxSpatialPhotoLayerView *)v31 layer];
-          [v39 setBorderColor:v38];
+          blueColor = [MEMORY[0x1E69DC888] blueColor];
+          cGColor4 = [blueColor CGColor];
+          layer8 = [(PUParallaxSpatialPhotoLayerView *)v31 layer];
+          [layer8 setBorderColor:cGColor4];
         }
 
         v40 = objc_loadWeakRetained(&self->_viewModel);
-        v41 = [v40 currentLayerStack];
-        v42 = [v41 foregroundBackfillLayer];
-        [(PUParallaxSpatialPhotoLayerView *)v31 setBackfillParallaxImageLayer:v42];
+        currentLayerStack3 = [v40 currentLayerStack];
+        foregroundBackfillLayer = [currentLayerStack3 foregroundBackfillLayer];
+        [(PUParallaxSpatialPhotoLayerView *)v31 setBackfillParallaxImageLayer:foregroundBackfillLayer];
 
         [(PUParallaxSpatialPhotoLayerView *)v31 setBackfillMaskingEnabled:1];
         goto LABEL_63;
@@ -1007,19 +1007,19 @@ LABEL_41:
 
       if ([(PUParallaxLayerStackViewManager *)self _debugColorsEnabled])
       {
-        v43 = [(PUParallaxSpatialPhotoLayerView *)v31 layer];
-        [v43 setBorderWidth:8.0];
+        layer9 = [(PUParallaxSpatialPhotoLayerView *)v31 layer];
+        [layer9 setBorderWidth:8.0];
 
-        v44 = [MEMORY[0x1E69DC888] redColor];
-        v45 = [v44 CGColor];
-        v46 = [(PUParallaxSpatialPhotoLayerView *)v31 layer];
-        [v46 setBorderColor:v45];
+        redColor = [MEMORY[0x1E69DC888] redColor];
+        cGColor5 = [redColor CGColor];
+        layer10 = [(PUParallaxSpatialPhotoLayerView *)v31 layer];
+        [layer10 setBorderColor:cGColor5];
       }
 
-      v28 = objc_loadWeakRetained(&self->_viewModel);
-      v47 = [v28 currentLayerStack];
-      v48 = [v47 backgroundBackfillLayer];
-      [(PUParallaxSpatialPhotoLayerView *)v31 setBackfillParallaxImageLayer:v48];
+      viewModel6 = objc_loadWeakRetained(&self->_viewModel);
+      currentLayerStack4 = [viewModel6 currentLayerStack];
+      backgroundBackfillLayer = [currentLayerStack4 backgroundBackfillLayer];
+      [(PUParallaxSpatialPhotoLayerView *)v31 setBackfillParallaxImageLayer:backgroundBackfillLayer];
     }
 
     goto LABEL_63;
@@ -1030,21 +1030,21 @@ LABEL_42:
   return v5;
 }
 
-- (id)existingViewForLayerID:(id)a3
+- (id)existingViewForLayerID:(id)d
 {
-  v4 = a3;
-  v5 = [(PUParallaxLayerStackViewManager *)self viewsByLayerIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  viewsByLayerIdentifier = [(PUParallaxLayerStackViewManager *)self viewsByLayerIdentifier];
+  v6 = [viewsByLayerIdentifier objectForKeyedSubscript:dCopy];
 
   return v6;
 }
 
-- (id)viewForLayer:(id)a3
+- (id)viewForLayer:(id)layer
 {
-  if (a3)
+  if (layer)
   {
-    v4 = [a3 identifier];
-    v5 = [(PUParallaxLayerStackViewManager *)self viewForLayerID:v4];
+    identifier = [layer identifier];
+    v5 = [(PUParallaxLayerStackViewManager *)self viewForLayerID:identifier];
   }
 
   else
@@ -1057,15 +1057,15 @@ LABEL_42:
 
 - (PUParallaxLayerStackViewManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackViewManager.m" lineNumber:56 description:{@"%s is not available as initializer", "-[PUParallaxLayerStackViewManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackViewManager.m" lineNumber:56 description:{@"%s is not available as initializer", "-[PUParallaxLayerStackViewManager init]"}];
 
   abort();
 }
 
-- (PUParallaxLayerStackViewManager)initWithViewModel:(id)a3
+- (PUParallaxLayerStackViewManager)initWithViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v10.receiver = self;
   v10.super_class = PUParallaxLayerStackViewManager;
   v5 = [(PUParallaxLayerStackViewManager *)&v10 init];
@@ -1075,8 +1075,8 @@ LABEL_42:
     viewsByLayerIdentifier = v5->_viewsByLayerIdentifier;
     v5->_viewsByLayerIdentifier = v6;
 
-    objc_storeWeak(&v5->_viewModel, v4);
-    [v4 registerChangeObserver:v5 context:"ViewModelObservationContext"];
+    objc_storeWeak(&v5->_viewModel, modelCopy);
+    [modelCopy registerChangeObserver:v5 context:"ViewModelObservationContext"];
     [(PUParallaxLayerStackViewManager *)v5 _layoutViewsAnimated:0];
     v8 = +[PUPosterHeadroomSettings sharedInstance];
     [v8 addKeyObserver:v5];

@@ -1,20 +1,20 @@
 @interface UIInputViewSetPlacement_UndockedApplicator
-- (void)applyChanges:(id)a3;
+- (void)applyChanges:(id)changes;
 - (void)resetConstantsIfNeeded;
 @end
 
 @implementation UIInputViewSetPlacement_UndockedApplicator
 
-- (void)applyChanges:(id)a3
+- (void)applyChanges:(id)changes
 {
   v11.receiver = self;
   v11.super_class = UIInputViewSetPlacement_UndockedApplicator;
-  [(UIInputViewSetPlacement_GenericApplicator *)&v11 applyChanges:a3];
+  [(UIInputViewSetPlacement_GenericApplicator *)&v11 applyChanges:changes];
   WeakRetained = objc_loadWeakRetained(&self->super._owner);
-  v5 = [WeakRetained containerView];
-  v6 = [v5 _window];
+  containerView = [WeakRetained containerView];
+  _window = [containerView _window];
 
-  [v6 slideOverWindowVerticalOffset];
+  [_window slideOverWindowVerticalOffset];
   v8 = v7;
   verticalConstraint = self->super._verticalConstraint;
   [(NSLayoutConstraint *)verticalConstraint constant];

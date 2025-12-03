@@ -1,23 +1,23 @@
 @interface FMDDigestSanitizer
-+ (id)_digestObject:(id)a3 withExclusionKeys:(id)a4;
-+ (id)_sanitizeArray:(id)a3 withExclusionKeys:(id)a4;
-+ (id)_sanitizeDictionary:(id)a3 withExclusionKeys:(id)a4;
++ (id)_digestObject:(id)object withExclusionKeys:(id)keys;
++ (id)_sanitizeArray:(id)array withExclusionKeys:(id)keys;
++ (id)_sanitizeDictionary:(id)dictionary withExclusionKeys:(id)keys;
 @end
 
 @implementation FMDDigestSanitizer
 
-+ (id)_digestObject:(id)a3 withExclusionKeys:(id)a4
++ (id)_digestObject:(id)object withExclusionKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  objectCopy = object;
+  keysCopy = keys;
+  v8 = keysCopy;
+  if (!objectCopy)
   {
     v10 = 0;
     goto LABEL_11;
   }
 
-  if (!v7 || ![v7 count])
+  if (!keysCopy || ![keysCopy count])
   {
     goto LABEL_9;
   }
@@ -28,16 +28,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [a1 _sanitizeArray:v6 withExclusionKeys:v8];
+      v9 = [self _sanitizeArray:objectCopy withExclusionKeys:v8];
       goto LABEL_10;
     }
 
 LABEL_9:
-    v9 = v6;
+    v9 = objectCopy;
     goto LABEL_10;
   }
 
-  v9 = [a1 _sanitizeDictionary:v6 withExclusionKeys:v8];
+  v9 = [self _sanitizeDictionary:objectCopy withExclusionKeys:v8];
 LABEL_10:
   v10 = v9;
 LABEL_11:
@@ -45,40 +45,40 @@ LABEL_11:
   return v10;
 }
 
-+ (id)_sanitizeDictionary:(id)a3 withExclusionKeys:(id)a4
++ (id)_sanitizeDictionary:(id)dictionary withExclusionKeys:(id)keys
 {
-  v6 = a4;
-  v7 = a3;
+  keysCopy = keys;
+  dictionaryCopy = dictionary;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100151BD0;
   v12[3] = &unk_1002CE4E8;
   v14 = objc_opt_new();
-  v15 = a1;
-  v13 = v6;
+  selfCopy = self;
+  v13 = keysCopy;
   v8 = v14;
-  v9 = v6;
-  [v7 enumerateKeysAndObjectsUsingBlock:v12];
+  v9 = keysCopy;
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v12];
 
   v10 = [v8 copy];
 
   return v10;
 }
 
-+ (id)_sanitizeArray:(id)a3 withExclusionKeys:(id)a4
++ (id)_sanitizeArray:(id)array withExclusionKeys:(id)keys
 {
-  v6 = a4;
-  v7 = a3;
+  keysCopy = keys;
+  arrayCopy = array;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100151D64;
   v12[3] = &unk_1002CE510;
   v14 = objc_opt_new();
-  v15 = a1;
-  v13 = v6;
+  selfCopy = self;
+  v13 = keysCopy;
   v8 = v14;
-  v9 = v6;
-  [v7 enumerateObjectsUsingBlock:v12];
+  v9 = keysCopy;
+  [arrayCopy enumerateObjectsUsingBlock:v12];
 
   v10 = [v8 copy];
 

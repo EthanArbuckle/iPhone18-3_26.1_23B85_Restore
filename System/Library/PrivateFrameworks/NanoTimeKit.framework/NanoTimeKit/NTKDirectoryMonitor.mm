@@ -1,7 +1,7 @@
 @interface NTKDirectoryMonitor
 - (NSString)path;
 - (NTKDirectoryMonitor)init;
-- (NTKDirectoryMonitor)initWithPath:(id)a3 handler:(id)a4;
+- (NTKDirectoryMonitor)initWithPath:(id)path handler:(id)handler;
 @end
 
 @implementation NTKDirectoryMonitor
@@ -14,9 +14,9 @@
   return v2;
 }
 
-- (NTKDirectoryMonitor)initWithPath:(id)a3 handler:(id)a4
+- (NTKDirectoryMonitor)initWithPath:(id)path handler:(id)handler
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(handler);
   v5 = sub_22DCB612C();
   v7 = v6;
   v8 = swift_allocObject();

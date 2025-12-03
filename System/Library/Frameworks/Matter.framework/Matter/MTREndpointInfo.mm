@@ -1,19 +1,19 @@
 @interface MTREndpointInfo
-- (BOOL)isEqual:(id)a3;
-- (MTREndpointInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTREndpointInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTREndpointInfo
 
-- (MTREndpointInfo)initWithCoder:(id)a3
+- (MTREndpointInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MTREndpointInfo;
   v5 = [(MTREndpointInfo *)&v14 init];
-  v5->_endpointID = [v4 decodeIntegerForKey:@"id"];
-  v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"dt"];
+  v5->_endpointID = [coderCopy decodeIntegerForKey:@"id"];
+  v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"dt"];
   deviceTypes = v5->_deviceTypes;
   v5->_deviceTypes = v6;
 
@@ -22,7 +22,7 @@
     goto LABEL_5;
   }
 
-  v8 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"pl"];
+  v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"pl"];
   partsList = v5->_partsList;
   v5->_partsList = v8;
 
@@ -31,7 +31,7 @@
     goto LABEL_5;
   }
 
-  v10 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"ch"];
+  v10 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"ch"];
   children = v5->_children;
   v5->_children = v10;
 
@@ -49,22 +49,22 @@ LABEL_5:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:self->_endpointID forKey:@"id"];
-  [v4 encodeObject:self->_deviceTypes forKey:@"dt"];
-  [v4 encodeObject:self->_partsList forKey:@"pl"];
-  [v4 encodeObject:self->_children forKey:@"ch"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_endpointID forKey:@"id"];
+  [coderCopy encodeObject:self->_deviceTypes forKey:@"dt"];
+  [coderCopy encodeObject:self->_partsList forKey:@"pl"];
+  [coderCopy encodeObject:self->_children forKey:@"ch"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     if (self->_endpointID == *(v7 + 4) && ([(NSArray *)self->_deviceTypes isEqual:v7[2]]& 1) != 0)
     {
       v6 = [(NSArray *)self->_partsList isEqual:v7[3]];

@@ -9,9 +9,9 @@
   v15 = *MEMORY[0x1E69E9840];
   v6 = a4;
   v10 = 0;
-  LOBYTE(a1) = [a1 accessBundleContentForBundleIdentifiers:a3 withBlock:v6 error:&v10];
+  LOBYTE(self) = [self accessBundleContentForBundleIdentifiers:a3 withBlock:v6 error:&v10];
   v7 = v10;
-  if ((a1 & 1) == 0)
+  if ((self & 1) == 0)
   {
     v8 = getWFIntentExecutionLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))

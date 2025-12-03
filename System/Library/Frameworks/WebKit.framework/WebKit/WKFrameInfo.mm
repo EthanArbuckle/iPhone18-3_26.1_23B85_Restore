@@ -32,7 +32,7 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WKFrameInfo *)self webView];
+  webView = [(WKFrameInfo *)self webView];
   if ([(WKFrameInfo *)self isMainFrame])
   {
     v7 = "YES";
@@ -43,7 +43,7 @@
     v7 = "NO";
   }
 
-  return [v3 stringWithFormat:@"<%@: %p; webView = %p; isMainFrame = %s; request = %@>", v5, self, v6, v7, -[WKFrameInfo request](self, "request")];
+  return [v3 stringWithFormat:@"<%@: %p; webView = %p; isMainFrame = %s; request = %@>", v5, self, webView, v7, -[WKFrameInfo request](self, "request")];
 }
 
 - (NSURLRequest)request

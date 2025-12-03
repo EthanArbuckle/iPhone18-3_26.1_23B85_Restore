@@ -1,21 +1,21 @@
 @interface STStorageFPItemCell
-+ (id)specifierForFPItem:(id)a3 recurseIntoFolders:(BOOL)a4;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
++ (id)specifierForFPItem:(id)item recurseIntoFolders:(BOOL)folders;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation STStorageFPItemCell
 
-+ (id)specifierForFPItem:(id)a3 recurseIntoFolders:(BOOL)a4
++ (id)specifierForFPItem:(id)item recurseIntoFolders:(BOOL)folders
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  foldersCopy = folders;
+  itemCopy = item;
+  v6 = itemCopy;
+  if (foldersCopy)
   {
-    v7 = [v5 childItemCount];
-    v8 = [v7 longValue];
+    childItemCount = [itemCopy childItemCount];
+    longValue = [childItemCount longValue];
 
-    if (v8 <= 0)
+    if (longValue <= 0)
     {
       v9 = -1;
     }
@@ -38,13 +38,13 @@
   return v10;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v18.receiver = self;
   v18.super_class = STStorageFPItemCell;
-  [(STStorageFPItemCell *)&v18 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:STStorageFPItemKey];
+  [(STStorageFPItemCell *)&v18 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:STStorageFPItemKey];
   v6 = [QLThumbnailGenerationRequest alloc];
   ScreenScale();
   v8 = [v6 initWithFPItem:v5 size:-1 scale:29.0 representationTypes:{29.0, v7}];
@@ -57,22 +57,22 @@
   objc_copyWeak(&v16, &location);
   [v9 generateBestRepresentationForRequest:v8 completionHandler:v15];
 
-  v10 = [v5 displayName];
-  [(STStorageFPItemCell *)self setTitle:v10];
+  displayName = [v5 displayName];
+  [(STStorageFPItemCell *)self setTitle:displayName];
 
-  v11 = [v5 documentSize];
-  -[STStorageFPItemCell setSize:](self, "setSize:", [v11 longLongValue]);
+  documentSize = [v5 documentSize];
+  -[STStorageFPItemCell setSize:](self, "setSize:", [documentSize longLongValue]);
 
-  v12 = [v5 childItemCount];
-  if (v12)
+  childItemCount = [v5 childItemCount];
+  if (childItemCount)
   {
-    v13 = STStorageLocStr(@"ITEMS_FMT");
-    +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v13, [v12 longValue]);
+    contentModificationDate = STStorageLocStr(@"ITEMS_FMT");
+    +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", contentModificationDate, [childItemCount longValue]);
   }
 
   else
   {
-    v13 = [v5 contentModificationDate];
+    contentModificationDate = [v5 contentModificationDate];
     STFormattedShortDate();
   }
   v14 = ;

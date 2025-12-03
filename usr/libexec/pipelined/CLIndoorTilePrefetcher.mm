@@ -1,55 +1,55 @@
 @interface CLIndoorTilePrefetcher
-+ (id)createNewRequest:(int)a3 forURL:(id)a4 lastRelevant:(id)a5;
-+ (id)foregroundSessionConfigurationWithTimeout:(double)a3;
-+ (id)urlForAsset:(id)a3 forFloor:(id)a4 withTileServer:(id)a5;
-+ (id)urlForFloor:(id)a3 withTileServer:(id)a4;
-- (BOOL)shouldPrefetchFloorMetadataForFloorUuid:(const void *)a3 forSession:(int)a4 withLocationContext:(int64_t)a5;
++ (id)createNewRequest:(int)request forURL:(id)l lastRelevant:(id)relevant;
++ (id)foregroundSessionConfigurationWithTimeout:(double)timeout;
++ (id)urlForAsset:(id)asset forFloor:(id)floor withTileServer:(id)server;
++ (id)urlForFloor:(id)floor withTileServer:(id)server;
+- (BOOL)shouldPrefetchFloorMetadataForFloorUuid:(const void *)uuid forSession:(int)session withLocationContext:(int64_t)context;
 - (CLIndoorTilePrefetcher)init;
-- (CLIndoorTilePrefetcher)initWithServerConfiguration:(const void *)a3 usingDelegate:(id)a4 queue:(id)a5 forTest:(BOOL)a6;
+- (CLIndoorTilePrefetcher)initWithServerConfiguration:(const void *)configuration usingDelegate:(id)delegate queue:(id)queue forTest:(BOOL)test;
 - (CLIndoorTilePrefetcherDelegate)delegate;
 - (CLQueuedNSURLSession)availableFloorForegroundSessionQueue;
 - (CLQueuedNSURLSession)backgroundSessionQueue;
 - (CLQueuedNSURLSession)unavailableFloorForegroundSessionQueue;
 - (NSDate)now;
 - (OS_dispatch_queue)delegateQ;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
 - (void)allDownloadItemsCompleted;
-- (void)cancelDownloadTasksMatching:(id)a3 onSession:(id)a4;
-- (void)cancelInflightBackgroundTasksMatching:(id)a3;
-- (void)cancelInflightForegroundTasksMatching:(id)a3;
+- (void)cancelDownloadTasksMatching:(id)matching onSession:(id)session;
+- (void)cancelInflightBackgroundTasksMatching:(id)matching;
+- (void)cancelInflightForegroundTasksMatching:(id)matching;
 - (void)invalidate;
 - (void)invalidateSessions;
 - (void)notifyDelegateForegroundFetchComplete;
-- (void)notifyDelegateForegroundTaskCompleted:(id)a3;
-- (void)notifyDelegateForegroundTaskCompleted:(id)a3 withError:(id)a4;
+- (void)notifyDelegateForegroundTaskCompleted:(id)completed;
+- (void)notifyDelegateForegroundTaskCompleted:(id)completed withError:(id)error;
 - (void)notifyDelegateIfPrefetchComplete;
 - (void)notifyDelegatePrefetchComplete;
 - (void)onQueueNotifyDelegateForegroundFetchComplete;
 - (void)onQueueNotifyDelegatePrefetchComplete;
-- (void)onQueueSession:(id)a3 didFinishDownloadTask:(id)a4 toPath:(id)a5 inTempPath:(shared_ptr<TemporaryPath>)a6;
-- (void)onQueueSessionDidCompleteTask:(id)a3 withError:(id)a4;
-- (void)onQueueSessionWillSendRequestForEstablishedConnection:(id)a3 task:(id)a4 completionHandler:(id)a5;
-- (void)prefetch:(id)a3;
-- (void)requestForegroundFetchForFloors:(id)a3 withRequestUUID:(id)a4;
+- (void)onQueueSession:(id)session didFinishDownloadTask:(id)task toPath:(id)path inTempPath:(shared_ptr<TemporaryPath>)tempPath;
+- (void)onQueueSessionDidCompleteTask:(id)task withError:(id)error;
+- (void)onQueueSessionWillSendRequestForEstablishedConnection:(id)connection task:(id)task completionHandler:(id)handler;
+- (void)prefetch:(id)prefetch;
+- (void)requestForegroundFetchForFloors:(id)floors withRequestUUID:(id)d;
 - (void)resetSessions;
-- (void)runFromNetworkCallback:(id)a3;
-- (void)scheduleDownloadForRequest:(id)a3 withResumeData:(id)a4 withSession:(int)a5 andExpectedByteSize:(int64_t)a6;
-- (void)scheduleForegroundDownloadForFloors:(id)a3 withRequestUUID:(id)a4;
-- (void)session:(id)a3 didFinishDownloadTask:(id)a4 toPath:(id)a5 inTempPath:(shared_ptr<TemporaryPath>)a6;
-- (void)session:(id)a3 didResumeRequest:(id)a4 withRemainingRequests:(unint64_t)a5;
-- (void)sessionDidCompleteTask:(id)a3 withError:(id)a4;
-- (void)sessionWillSendRequestForEstablishedConnection:(id)a3 task:(id)a4 completionHandler:(id)a5;
-- (void)setNow:(id)a3;
+- (void)runFromNetworkCallback:(id)callback;
+- (void)scheduleDownloadForRequest:(id)request withResumeData:(id)data withSession:(int)session andExpectedByteSize:(int64_t)size;
+- (void)scheduleForegroundDownloadForFloors:(id)floors withRequestUUID:(id)d;
+- (void)session:(id)session didFinishDownloadTask:(id)task toPath:(id)path inTempPath:(shared_ptr<TemporaryPath>)tempPath;
+- (void)session:(id)session didResumeRequest:(id)request withRemainingRequests:(unint64_t)requests;
+- (void)sessionDidCompleteTask:(id)task withError:(id)error;
+- (void)sessionWillSendRequestForEstablishedConnection:(id)connection task:(id)task completionHandler:(id)handler;
+- (void)setNow:(id)now;
 @end
 
 @implementation CLIndoorTilePrefetcher
 
-+ (id)createNewRequest:(int)a3 forURL:(id)a4 lastRelevant:(id)a5
++ (id)createNewRequest:(int)request forURL:(id)l lastRelevant:(id)relevant
 {
-  v5 = a4;
+  lCopy = l;
   v6 = objc_alloc_init(NSMutableURLRequest);
-  [v6 setURL:v5];
+  [v6 setURL:lCopy];
 
   return v6;
 }
@@ -61,28 +61,28 @@
   return 0;
 }
 
-- (CLIndoorTilePrefetcher)initWithServerConfiguration:(const void *)a3 usingDelegate:(id)a4 queue:(id)a5 forTest:(BOOL)a6
+- (CLIndoorTilePrefetcher)initWithServerConfiguration:(const void *)configuration usingDelegate:(id)delegate queue:(id)queue forTest:(BOOL)test
 {
-  v10 = a4;
-  v11 = a5;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v26.receiver = self;
   v26.super_class = CLIndoorTilePrefetcher;
   v12 = [(CLIndoorTilePrefetcher *)&v26 init];
   v13 = v12;
   if (v12)
   {
-    v12->_isDaemon = !a6;
-    v12->_discretionaryBackground = !a6;
-    v12->_isTest = a6;
+    v12->_isDaemon = !test;
+    v12->_discretionaryBackground = !test;
+    v12->_isTest = test;
     v14 = v12;
-    objc_storeWeak(&v12->_delegate, v10);
-    objc_storeWeak(&v14->_delegateQ, v11);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    objc_storeWeak(&v14->_delegateQ, queueCopy);
     if (!v13->_isTest)
     {
-      [v10 reloadAvailabilityTilePrefetchParameters];
+      [delegateCopy reloadAvailabilityTilePrefetchParameters];
     }
 
-    v15 = sub_100322C78(a3);
+    v15 = sub_100322C78(configuration);
     tileServer = v13->_tileServer;
     v13->_tileServer = v15;
 
@@ -97,11 +97,11 @@
       {
 LABEL_7:
         v20 = dispatch_queue_create("com.apple.indoord.DownloadQueue", 0);
-        v21 = [(CLIndoorTilePrefetcher *)v13 downloadQ];
-        [v21 setMaxConcurrentOperationCount:1];
+        downloadQ = [(CLIndoorTilePrefetcher *)v13 downloadQ];
+        [downloadQ setMaxConcurrentOperationCount:1];
 
-        v22 = [(CLIndoorTilePrefetcher *)v13 downloadQ];
-        [v22 setUnderlyingQueue:v20];
+        downloadQ2 = [(CLIndoorTilePrefetcher *)v13 downloadQ];
+        [downloadQ2 setUnderlyingQueue:v20];
 
         [NSURLSession _getActiveSessionIdentifiersWithCompletionHandler:&stru_10044B770];
         v23 = v13;
@@ -145,19 +145,19 @@ LABEL_8:
     v4 = qword_10045B078;
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(CLIndoorTilePrefetcher *)self availableFloorForegroundSessionQueue];
-      v6 = [v5 session];
-      v7 = [v6 description];
+      availableFloorForegroundSessionQueue = [(CLIndoorTilePrefetcher *)self availableFloorForegroundSessionQueue];
+      session = [availableFloorForegroundSessionQueue session];
+      v7 = [session description];
       v31 = 138543362;
       v32 = v7;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Requesting invalidation of available floor session %{public}@", &v31, 0xCu);
     }
 
-    v8 = [(CLIndoorTilePrefetcher *)self sessionInvalidationGroup];
-    dispatch_group_enter(v8);
+    sessionInvalidationGroup = [(CLIndoorTilePrefetcher *)self sessionInvalidationGroup];
+    dispatch_group_enter(sessionInvalidationGroup);
 
-    v9 = [(CLIndoorTilePrefetcher *)self availableFloorForegroundSessionQueue];
-    [v9 invalidateAndCancel];
+    availableFloorForegroundSessionQueue2 = [(CLIndoorTilePrefetcher *)self availableFloorForegroundSessionQueue];
+    [availableFloorForegroundSessionQueue2 invalidateAndCancel];
   }
 
   if (self->_unavailableFloorForegroundSessionQueue)
@@ -170,19 +170,19 @@ LABEL_8:
     v10 = qword_10045B078;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(CLIndoorTilePrefetcher *)self unavailableFloorForegroundSessionQueue];
-      v12 = [v11 session];
-      v13 = [v12 description];
+      unavailableFloorForegroundSessionQueue = [(CLIndoorTilePrefetcher *)self unavailableFloorForegroundSessionQueue];
+      session2 = [unavailableFloorForegroundSessionQueue session];
+      v13 = [session2 description];
       v31 = 138543362;
       v32 = v13;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Requesting invalidation of unavailable floor session %{public}@", &v31, 0xCu);
     }
 
-    v14 = [(CLIndoorTilePrefetcher *)self sessionInvalidationGroup];
-    dispatch_group_enter(v14);
+    sessionInvalidationGroup2 = [(CLIndoorTilePrefetcher *)self sessionInvalidationGroup];
+    dispatch_group_enter(sessionInvalidationGroup2);
 
-    v15 = [(CLIndoorTilePrefetcher *)self unavailableFloorForegroundSessionQueue];
-    [v15 invalidateAndCancel];
+    unavailableFloorForegroundSessionQueue2 = [(CLIndoorTilePrefetcher *)self unavailableFloorForegroundSessionQueue];
+    [unavailableFloorForegroundSessionQueue2 invalidateAndCancel];
   }
 
   if (self->_backgroundSessionQueue)
@@ -195,19 +195,19 @@ LABEL_8:
     v16 = qword_10045B078;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [(CLIndoorTilePrefetcher *)self backgroundSessionQueue];
-      v18 = [v17 session];
-      v19 = [v18 description];
+      backgroundSessionQueue = [(CLIndoorTilePrefetcher *)self backgroundSessionQueue];
+      session3 = [backgroundSessionQueue session];
+      v19 = [session3 description];
       v31 = 138543362;
       v32 = v19;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Requesting invalidation of background session %{public}@", &v31, 0xCu);
     }
 
-    v20 = [(CLIndoorTilePrefetcher *)self sessionInvalidationGroup];
-    dispatch_group_enter(v20);
+    sessionInvalidationGroup3 = [(CLIndoorTilePrefetcher *)self sessionInvalidationGroup];
+    dispatch_group_enter(sessionInvalidationGroup3);
 
-    v21 = [(CLIndoorTilePrefetcher *)self backgroundSessionQueue];
-    [v21 invalidateAndCancel];
+    backgroundSessionQueue2 = [(CLIndoorTilePrefetcher *)self backgroundSessionQueue];
+    [backgroundSessionQueue2 invalidateAndCancel];
   }
 
   if (qword_10045B070 != -1)
@@ -222,9 +222,9 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Waiting for sessions to be invalidated", &v31, 2u);
   }
 
-  v23 = [(CLIndoorTilePrefetcher *)self sessionInvalidationGroup];
+  sessionInvalidationGroup4 = [(CLIndoorTilePrefetcher *)self sessionInvalidationGroup];
   v24 = dispatch_time(0, 30000000000);
-  v25 = dispatch_group_wait(v23, v24);
+  v25 = dispatch_group_wait(sessionInvalidationGroup4, v24);
 
   if (v25)
   {
@@ -276,13 +276,13 @@ LABEL_32:
       {
 LABEL_5:
         dispatch_group_enter(v3);
-        v5 = [(CLIndoorTilePrefetcher *)self unavailableFloorForegroundSessionQueue];
+        unavailableFloorForegroundSessionQueue = [(CLIndoorTilePrefetcher *)self unavailableFloorForegroundSessionQueue];
         v17[0] = _NSConcreteStackBlock;
         v17[1] = 3221225472;
         v17[2] = sub_10036C404;
         v17[3] = &unk_100432828;
         v18 = v3;
-        [v5 resetWithCompletionHandler:v17];
+        [unavailableFloorForegroundSessionQueue resetWithCompletionHandler:v17];
 
         goto LABEL_6;
       }
@@ -331,13 +331,13 @@ LABEL_9:
 
 LABEL_10:
   dispatch_group_enter(v3);
-  v7 = [(CLIndoorTilePrefetcher *)self availableFloorForegroundSessionQueue];
+  availableFloorForegroundSessionQueue = [(CLIndoorTilePrefetcher *)self availableFloorForegroundSessionQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10036C4A4;
   v15[3] = &unk_100432828;
   v16 = v3;
-  [v7 resetWithCompletionHandler:v15];
+  [availableFloorForegroundSessionQueue resetWithCompletionHandler:v15];
 
 LABEL_11:
   if (!self->_backgroundSessionQueue)
@@ -367,13 +367,13 @@ LABEL_14:
 
 LABEL_15:
   dispatch_group_enter(v3);
-  v9 = [(CLIndoorTilePrefetcher *)self backgroundSessionQueue];
+  backgroundSessionQueue = [(CLIndoorTilePrefetcher *)self backgroundSessionQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10036C544;
   v13[3] = &unk_100432828;
   v14 = v3;
-  [v9 resetWithCompletionHandler:v13];
+  [backgroundSessionQueue resetWithCompletionHandler:v13];
 
 LABEL_16:
   if (qword_10045B070 == -1)
@@ -454,11 +454,11 @@ LABEL_3:
   }
 
 LABEL_4:
-  v4 = [(CLIndoorTilePrefetcher *)self delegateQ];
-  dispatch_assert_queue_V2(v4);
-  v5 = [(CLIndoorTilePrefetcher *)self sessionInvalidationGroup];
+  delegateQ = [(CLIndoorTilePrefetcher *)self delegateQ];
+  dispatch_assert_queue_V2(delegateQ);
+  sessionInvalidationGroup = [(CLIndoorTilePrefetcher *)self sessionInvalidationGroup];
 
-  if (v5)
+  if (sessionInvalidationGroup)
   {
     sub_100387D80();
 
@@ -502,8 +502,8 @@ LABEL_12:
   v7 = [(CLIndoorTilePrefetcher *)self downloadQ:v10];
   [v7 cancelAllOperations];
 
-  v8 = [(CLIndoorTilePrefetcher *)self downloadQ];
-  [v8 waitUntilAllOperationsAreFinished];
+  downloadQ = [(CLIndoorTilePrefetcher *)self downloadQ];
+  [downloadQ waitUntilAllOperationsAreFinished];
 
   [(CLIndoorTilePrefetcher *)self setDownloadQ:0];
   if (qword_10045B070 != -1)
@@ -539,8 +539,8 @@ LABEL_15:
     v12 = sub_1000DD5B0();
     v13 = v6;
     v7 = sub_100005C94(&v12, &v13 + 1);
-    v8 = [(CLIndoorTilePrefetcher *)self downloadQ];
-    v9 = [(CLQueuedNSURLSession *)v5 initWithMaxTasks:v7 usingDelegate:self withSessionConfiguration:v4 andProxiedSessionDelegate:self andSessionDelegateQueue:v8];
+    downloadQ = [(CLIndoorTilePrefetcher *)self downloadQ];
+    v9 = [(CLQueuedNSURLSession *)v5 initWithMaxTasks:v7 usingDelegate:self withSessionConfiguration:v4 andProxiedSessionDelegate:self andSessionDelegateQueue:downloadQ];
     v10 = self->_backgroundSessionQueue;
     self->_backgroundSessionQueue = v9;
 
@@ -550,14 +550,14 @@ LABEL_15:
   return backgroundSessionQueue;
 }
 
-+ (id)foregroundSessionConfigurationWithTimeout:(double)a3
++ (id)foregroundSessionConfigurationWithTimeout:(double)timeout
 {
   v4 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
   [v4 setNetworkServiceType:0];
   [v4 set_allowsExpensiveAccess:1];
   [v4 setRequestCachePolicy:1];
   [v4 setURLCache:0];
-  [v4 setTimeoutIntervalForResource:a3];
+  [v4 setTimeoutIntervalForResource:timeout];
 
   return v4;
 }
@@ -573,8 +573,8 @@ LABEL_15:
     v12 = sub_1000DD5B0();
     v13 = v6;
     v7 = sub_100005C94(&v12, &v13 + 1);
-    v8 = [(CLIndoorTilePrefetcher *)self downloadQ];
-    v9 = [(CLQueuedNSURLSession *)v5 initWithMaxTasks:v7 usingDelegate:self withSessionConfiguration:v4 andProxiedSessionDelegate:self andSessionDelegateQueue:v8];
+    downloadQ = [(CLIndoorTilePrefetcher *)self downloadQ];
+    v9 = [(CLQueuedNSURLSession *)v5 initWithMaxTasks:v7 usingDelegate:self withSessionConfiguration:v4 andProxiedSessionDelegate:self andSessionDelegateQueue:downloadQ];
     v10 = self->_unavailableFloorForegroundSessionQueue;
     self->_unavailableFloorForegroundSessionQueue = v9;
 
@@ -595,8 +595,8 @@ LABEL_15:
     v12 = sub_1000DD5B0();
     v13 = v6;
     v7 = sub_100005C94(&v12, &v13 + 1);
-    v8 = [(CLIndoorTilePrefetcher *)self downloadQ];
-    v9 = [(CLQueuedNSURLSession *)v5 initWithMaxTasks:v7 usingDelegate:self withSessionConfiguration:v4 andProxiedSessionDelegate:self andSessionDelegateQueue:v8];
+    downloadQ = [(CLIndoorTilePrefetcher *)self downloadQ];
+    v9 = [(CLQueuedNSURLSession *)v5 initWithMaxTasks:v7 usingDelegate:self withSessionConfiguration:v4 andProxiedSessionDelegate:self andSessionDelegateQueue:downloadQ];
     v10 = self->_availableFloorForegroundSessionQueue;
     self->_availableFloorForegroundSessionQueue = v9;
 
@@ -631,17 +631,17 @@ LABEL_15:
   return v4;
 }
 
-- (void)setNow:(id)a3
+- (void)setNow:(id)now
 {
-  v8 = self;
-  v7 = a3;
+  selfCopy = self;
+  nowCopy = now;
   std::promise<void>::promise(&v6);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3321888768;
   v5[2] = sub_10036D068;
   v5[3] = &unk_10044B7B8;
-  v5[4] = &v8;
-  v5[5] = &v7;
+  v5[4] = &selfCopy;
+  v5[5] = &nowCopy;
   v5[6] = &v6;
   [(CLIndoorTilePrefetcher *)self runFromNetworkCallback:v5];
   std::promise<void>::get_future(&v6);
@@ -650,11 +650,11 @@ LABEL_15:
   std::promise<void>::~promise(&v6);
 }
 
-+ (id)urlForFloor:(id)a3 withTileServer:(id)a4
++ (id)urlForFloor:(id)floor withTileServer:(id)server
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 length];
+  floorCopy = floor;
+  serverCopy = server;
+  v7 = [floorCopy length];
   v8 = v7;
   if (v7 >= 6)
   {
@@ -666,47 +666,47 @@ LABEL_15:
     v9 = v7;
   }
 
-  v10 = [[NSMutableString alloc] initWithCapacity:{objc_msgSend(v5, "length") + 3 * (v9 >> 1) + 1}];
+  v10 = [[NSMutableString alloc] initWithCapacity:{objc_msgSend(floorCopy, "length") + 3 * (v9 >> 1) + 1}];
   if (v8 >= 2)
   {
-    v11 = [v5 substringWithRange:{0, 2}];
+    v11 = [floorCopy substringWithRange:{0, 2}];
     [v10 appendString:v11];
 
     if (v8 > 3)
     {
       [v10 appendString:@"/"];
-      v12 = [v5 substringWithRange:{2, 2}];
+      v12 = [floorCopy substringWithRange:{2, 2}];
       [v10 appendString:v12];
 
       if (v8 >= 6)
       {
         [v10 appendString:@"/"];
-        v13 = [v5 substringWithRange:{4, 2}];
+        v13 = [floorCopy substringWithRange:{4, 2}];
         [v10 appendString:v13];
       }
     }
   }
 
   [v10 appendString:@"/"];
-  [v10 appendString:v5];
+  [v10 appendString:floorCopy];
   [v10 appendString:@"/"];
-  v14 = [NSURL URLWithString:v10 relativeToURL:v6];
+  v14 = [NSURL URLWithString:v10 relativeToURL:serverCopy];
 
   return v14;
 }
 
-+ (id)urlForAsset:(id)a3 forFloor:(id)a4 withTileServer:(id)a5
++ (id)urlForAsset:(id)asset forFloor:(id)floor withTileServer:(id)server
 {
-  v7 = a3;
-  v8 = [CLIndoorTilePrefetcher urlForFloor:a4 withTileServer:a5];
-  v9 = [NSURL URLWithString:v7 relativeToURL:v8];
+  assetCopy = asset;
+  v8 = [CLIndoorTilePrefetcher urlForFloor:floor withTileServer:server];
+  v9 = [NSURL URLWithString:assetCopy relativeToURL:v8];
 
   return v9;
 }
 
-- (void)prefetch:(id)a3
+- (void)prefetch:(id)prefetch
 {
-  v31 = a3;
+  prefetchCopy = prefetch;
   if (qword_10045B070 != -1)
   {
     sub_100387C38();
@@ -715,13 +715,13 @@ LABEL_15:
   v3 = qword_10045B078;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [v31 count];
-    v5 = [(CLIndoorTilePrefetcher *)self tileServer];
-    v6 = [v5 absoluteString];
+    v4 = [prefetchCopy count];
+    tileServer = [(CLIndoorTilePrefetcher *)self tileServer];
+    absoluteString = [tileServer absoluteString];
     *buf = 134349315;
     *v41 = v4;
     *&v41[8] = 2081;
-    *v42 = [v6 UTF8String];
+    *v42 = [absoluteString UTF8String];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "TileFetch, count, %{public}lu, server, %{private}s", buf, 0x16u);
   }
 
@@ -733,21 +733,21 @@ LABEL_15:
   v7 = qword_10045B078;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v31 description];
+    v8 = [prefetchCopy description];
     *buf = 138477827;
     *v41 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Request to prefetch: %{private}@", buf, 0xCu);
   }
 
-  v9 = [(CLIndoorTilePrefetcher *)self backgroundSessionQueue];
-  v10 = [v9 session];
-  [v10 getTasksWithCompletionHandler:&stru_10044B808];
+  backgroundSessionQueue = [(CLIndoorTilePrefetcher *)self backgroundSessionQueue];
+  session = [backgroundSessionQueue session];
+  [session getTasksWithCompletionHandler:&stru_10044B808];
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v31;
+  obj = prefetchCopy;
   v11 = [obj countByEnumeratingWithState:&v36 objects:v46 count:16];
   if (v11)
   {
@@ -764,11 +764,11 @@ LABEL_15:
         }
 
         v14 = *(*(&v36 + 1) + 8 * i);
-        v15 = [v14 floorUuid];
-        v16 = [v14 venueUuid];
-        v17 = [v14 locationContext];
-        v18 = [v14 relevancy];
-        v19 = -[CLIndoorTilePrefetcher scheduleDownloadForFloorMetadata:inVenue:withContext:lastRelevant:allowCellularDownload:onSession:withResumeData:withRequestUUID:](self, "scheduleDownloadForFloorMetadata:inVenue:withContext:lastRelevant:allowCellularDownload:onSession:withResumeData:withRequestUUID:", v15, v16, v17, v18, [v14 allowCellularDownload], 0, 0, 0);
+        floorUuid = [v14 floorUuid];
+        venueUuid = [v14 venueUuid];
+        locationContext = [v14 locationContext];
+        relevancy = [v14 relevancy];
+        v19 = -[CLIndoorTilePrefetcher scheduleDownloadForFloorMetadata:inVenue:withContext:lastRelevant:allowCellularDownload:onSession:withResumeData:withRequestUUID:](self, "scheduleDownloadForFloorMetadata:inVenue:withContext:lastRelevant:allowCellularDownload:onSession:withResumeData:withRequestUUID:", floorUuid, venueUuid, locationContext, relevancy, [v14 allowCellularDownload], 0, 0, 0);
 
         if (qword_10045B070 != -1)
         {
@@ -778,24 +778,24 @@ LABEL_15:
         v20 = qword_10045B078;
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [v14 venueUuid];
-          v22 = v21;
-          v23 = [v21 UTF8String];
-          v24 = [v14 priority];
-          v25 = [v14 relevancy];
-          [v25 timeIntervalSinceNow];
+          venueUuid2 = [v14 venueUuid];
+          v22 = venueUuid2;
+          uTF8String = [venueUuid2 UTF8String];
+          priority = [v14 priority];
+          relevancy2 = [v14 relevancy];
+          [relevancy2 timeIntervalSinceNow];
           v27 = v26;
-          v28 = [v14 allowCellularDownload];
+          allowCellularDownload = [v14 allowCellularDownload];
           *buf = 136381699;
-          *v41 = v23;
+          *v41 = uTF8String;
           *&v41[8] = 1026;
           *v42 = v19;
           *&v42[4] = 2050;
-          *&v42[6] = v24;
+          *&v42[6] = priority;
           *v43 = 2050;
           *&v43[2] = v27 / 3600.0;
           v44 = 1026;
-          v45 = v28;
+          v45 = allowCellularDownload;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "@TileFetch, reqcheck, %{private}s, %{public}d, priority, %{public}ld, relevancy, %{public}.1f, cell, %{public}d", buf, 0x2Cu);
         }
 
@@ -866,20 +866,20 @@ LABEL_15:
   }
 }
 
-- (void)cancelDownloadTasksMatching:(id)a3 onSession:(id)a4
+- (void)cancelDownloadTasksMatching:(id)matching onSession:(id)session
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10036DC4C;
   v6[3] = &unk_10044B858;
-  v7 = a3;
-  v5 = v7;
-  [a4 getTasksWithCompletionHandler:v6];
+  matchingCopy = matching;
+  v5 = matchingCopy;
+  [session getTasksWithCompletionHandler:v6];
 }
 
-- (void)cancelInflightBackgroundTasksMatching:(id)a3
+- (void)cancelInflightBackgroundTasksMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   if (self->_backgroundSessionQueue)
   {
     if (qword_10045B070 == -1)
@@ -888,9 +888,9 @@ LABEL_15:
       if (!os_log_type_enabled(qword_10045B078, OS_LOG_TYPE_INFO))
       {
 LABEL_5:
-        v6 = [(CLIndoorTilePrefetcher *)self backgroundSessionQueue];
-        v7 = [v6 session];
-        [(CLIndoorTilePrefetcher *)self cancelDownloadTasksMatching:v4 onSession:v7];
+        backgroundSessionQueue = [(CLIndoorTilePrefetcher *)self backgroundSessionQueue];
+        session = [backgroundSessionQueue session];
+        [(CLIndoorTilePrefetcher *)self cancelDownloadTasksMatching:matchingCopy onSession:session];
 
         goto LABEL_6;
       }
@@ -914,9 +914,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)cancelInflightForegroundTasksMatching:(id)a3
+- (void)cancelInflightForegroundTasksMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   if (*&self->_availableFloorForegroundSessionQueue != 0)
   {
     if (qword_10045B070 == -1)
@@ -925,13 +925,13 @@ LABEL_6:
       if (!os_log_type_enabled(qword_10045B078, OS_LOG_TYPE_INFO))
       {
 LABEL_5:
-        v6 = [(CLIndoorTilePrefetcher *)self unavailableFloorForegroundSessionQueue];
-        v7 = [v6 session];
-        [(CLIndoorTilePrefetcher *)self cancelDownloadTasksMatching:v4 onSession:v7];
+        unavailableFloorForegroundSessionQueue = [(CLIndoorTilePrefetcher *)self unavailableFloorForegroundSessionQueue];
+        session = [unavailableFloorForegroundSessionQueue session];
+        [(CLIndoorTilePrefetcher *)self cancelDownloadTasksMatching:matchingCopy onSession:session];
 
-        v8 = [(CLIndoorTilePrefetcher *)self availableFloorForegroundSessionQueue];
-        v9 = [v8 session];
-        [(CLIndoorTilePrefetcher *)self cancelDownloadTasksMatching:v4 onSession:v9];
+        availableFloorForegroundSessionQueue = [(CLIndoorTilePrefetcher *)self availableFloorForegroundSessionQueue];
+        session2 = [availableFloorForegroundSessionQueue session];
+        [(CLIndoorTilePrefetcher *)self cancelDownloadTasksMatching:matchingCopy onSession:session2];
 
         goto LABEL_6;
       }
@@ -955,12 +955,12 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)scheduleForegroundDownloadForFloors:(id)a3 withRequestUUID:(id)a4
+- (void)scheduleForegroundDownloadForFloors:(id)floors withRequestUUID:(id)d
 {
-  v5 = a3;
-  v41 = a4;
-  v36 = v5;
-  v6 = [v5 count];
+  floorsCopy = floors;
+  dCopy = d;
+  v36 = floorsCopy;
+  v6 = [floorsCopy count];
   if (qword_10045B070 != -1)
   {
     sub_100387C38();
@@ -969,23 +969,23 @@ LABEL_6:
   v7 = qword_10045B078;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [v41 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 67240451;
     v49 = v6;
     v50 = 2113;
-    *v51 = v8;
+    *v51 = uUIDString;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Processing %{public}d foreground fetch requests for request UUID %{private}@", buf, 0x12u);
   }
 
   if (v6)
   {
-    [(CLIndoorTilePrefetcher *)self cancelInflightBackgroundTasksMatching:v5];
-    [(CLIndoorTilePrefetcher *)self cancelInflightForegroundTasksMatching:v5];
+    [(CLIndoorTilePrefetcher *)self cancelInflightBackgroundTasksMatching:floorsCopy];
+    [(CLIndoorTilePrefetcher *)self cancelInflightForegroundTasksMatching:floorsCopy];
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    obj = v5;
+    obj = floorsCopy;
     v9 = [obj countByEnumeratingWithState:&v44 objects:v58 count:16];
     if (v9)
     {
@@ -1014,11 +1014,11 @@ LABEL_6:
             v12 = 2;
           }
 
-          v13 = [v11 floorUuid];
-          v14 = [v11 venueUuid];
-          v15 = [v11 locationContext];
-          v16 = [v11 relevancy];
-          v17 = -[CLIndoorTilePrefetcher scheduleDownloadForFloorMetadata:inVenue:withContext:lastRelevant:allowCellularDownload:onSession:withResumeData:withRequestUUID:](self, "scheduleDownloadForFloorMetadata:inVenue:withContext:lastRelevant:allowCellularDownload:onSession:withResumeData:withRequestUUID:", v13, v14, v15, v16, [v11 allowCellularDownload], v12, 0, v41);
+          floorUuid = [v11 floorUuid];
+          venueUuid = [v11 venueUuid];
+          locationContext = [v11 locationContext];
+          relevancy = [v11 relevancy];
+          v17 = -[CLIndoorTilePrefetcher scheduleDownloadForFloorMetadata:inVenue:withContext:lastRelevant:allowCellularDownload:onSession:withResumeData:withRequestUUID:](self, "scheduleDownloadForFloorMetadata:inVenue:withContext:lastRelevant:allowCellularDownload:onSession:withResumeData:withRequestUUID:", floorUuid, venueUuid, locationContext, relevancy, [v11 allowCellularDownload], v12, 0, dCopy);
 
           if (qword_10045B070 != -1)
           {
@@ -1028,9 +1028,9 @@ LABEL_6:
           v18 = qword_10045B078;
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [v11 venueUuid];
-            v20 = v19;
-            v21 = [v19 UTF8String];
+            venueUuid2 = [v11 venueUuid];
+            v20 = venueUuid2;
+            uTF8String = [venueUuid2 UTF8String];
             if ([v11 locationContext] == 1)
             {
               v22 = 82;
@@ -1041,23 +1041,23 @@ LABEL_6:
               v22 = 73;
             }
 
-            v23 = [v11 priority];
-            v24 = [v11 relevancy];
-            [v24 timeIntervalSinceNow];
+            priority = [v11 priority];
+            relevancy2 = [v11 relevancy];
+            [relevancy2 timeIntervalSinceNow];
             v26 = v25;
-            v27 = [v11 allowCellularDownload];
+            allowCellularDownload = [v11 allowCellularDownload];
             *buf = 67241474;
             v49 = v17;
             v50 = 2082;
-            *v51 = v21;
+            *v51 = uTF8String;
             *&v51[8] = 1026;
             *v52 = v22;
             *&v52[4] = 2050;
-            v53 = v23;
+            v53 = priority;
             v54 = 2050;
             v55 = v26 / 3600.0;
             v56 = 1026;
-            v57 = v27;
+            v57 = allowCellularDownload;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "@TileFetch, reqcheck, %{public}d, %{public}s, %{public}c, priority, %{public}ld, relevancy, %{public}.1f, cell, %{public}d", buf, 0x32u);
           }
 
@@ -1103,9 +1103,9 @@ LABEL_6:
             LODWORD(v37) = v28;
           }
 
-          v30 = [v11 locationContext];
-          v31 = v30 == 1;
-          if (v30 == 1)
+          locationContext2 = [v11 locationContext];
+          v31 = locationContext2 == 1;
+          if (locationContext2 == 1)
           {
             v32 = HIDWORD(v43) + 1;
           }
@@ -1201,10 +1201,10 @@ LABEL_6:
   }
 }
 
-- (void)requestForegroundFetchForFloors:(id)a3 withRequestUUID:(id)a4
+- (void)requestForegroundFetchForFloors:(id)floors withRequestUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  floorsCopy = floors;
+  dCopy = d;
   if (qword_10045B070 != -1)
   {
     sub_100387C38();
@@ -1213,13 +1213,13 @@ LABEL_6:
   v8 = qword_10045B078;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v7 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v10 = 138477827;
-    v11 = v9;
+    v11 = uUIDString;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Request foreground fetch requests for request UUID %{private}@", &v10, 0xCu);
   }
 
-  [(CLIndoorTilePrefetcher *)self scheduleForegroundDownloadForFloors:v6 withRequestUUID:v7];
+  [(CLIndoorTilePrefetcher *)self scheduleForegroundDownloadForFloors:floorsCopy withRequestUUID:dCopy];
 }
 
 - (void)allDownloadItemsCompleted
@@ -1248,18 +1248,18 @@ LABEL_4:
   [(CLIndoorTilePrefetcher *)self notifyDelegatePrefetchComplete];
 }
 
-- (void)scheduleDownloadForRequest:(id)a3 withResumeData:(id)a4 withSession:(int)a5 andExpectedByteSize:(int64_t)a6
+- (void)scheduleDownloadForRequest:(id)request withResumeData:(id)data withSession:(int)session andExpectedByteSize:(int64_t)size
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = v10;
-  v31 = v11;
-  v30 = [IndoorRequestInfo indoorRequestInfoFromRequest:v10];
-  v13 = [v30 session];
-  v29 = [v30 venueUuid];
+  requestCopy = request;
+  dataCopy = data;
+  v12 = requestCopy;
+  v31 = dataCopy;
+  v30 = [IndoorRequestInfo indoorRequestInfoFromRequest:requestCopy];
+  session = [v30 session];
+  venueUuid = [v30 venueUuid];
   *(&v32.__r_.__value_.__s + 23) = 0;
   v32.__r_.__value_.__s.__data_[0] = 0;
-  if (v13)
+  if (session)
   {
     if ([v30 session] == 1)
     {
@@ -1282,9 +1282,9 @@ LABEL_4:
   v15 = qword_10045B078;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = a5;
-    v28 = v10;
-    if (v13)
+    sessionCopy = session;
+    v28 = requestCopy;
+    if (session)
     {
       v17 = "foreground";
     }
@@ -1321,7 +1321,7 @@ LABEL_4:
     v34 = 2082;
     v35 = v18;
     v36 = 2113;
-    v37 = v29;
+    v37 = venueUuid;
     v38 = 2113;
     v39 = v19;
     v40 = 2113;
@@ -1329,41 +1329,41 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Scheduling %{public}s download %{public}s of '%{private}@' (%{private}@): %{private}@", buf, 0x34u);
 
     v12 = v28;
-    a5 = v16;
+    session = sessionCopy;
   }
 
-  if (!v13)
+  if (!session)
   {
-    v25 = [(CLIndoorTilePrefetcher *)self backgroundSessionQueue];
+    backgroundSessionQueue = [(CLIndoorTilePrefetcher *)self backgroundSessionQueue];
     v26 = [[CLQueuedNSURLRequest alloc] initWithRequest:v12 withPriority:1];
-    [v25 resumeRequestIfAllowedOrEnqueue:v26];
+    [backgroundSessionQueue resumeRequestIfAllowedOrEnqueue:v26];
     goto LABEL_33;
   }
 
-  v22 = self;
-  v23 = v22;
-  if (a5 == 2)
+  selfCopy = self;
+  v23 = selfCopy;
+  if (session == 2)
   {
-    v24 = [(CLIndoorTilePrefetcher *)v22 unavailableFloorForegroundSessionQueue];
+    unavailableFloorForegroundSessionQueue = [(CLIndoorTilePrefetcher *)selfCopy unavailableFloorForegroundSessionQueue];
   }
 
   else
   {
-    if (a5 == 1)
+    if (session == 1)
     {
-      [(CLIndoorTilePrefetcher *)v22 availableFloorForegroundSessionQueue];
+      [(CLIndoorTilePrefetcher *)selfCopy availableFloorForegroundSessionQueue];
     }
 
     else
     {
-      [(CLIndoorTilePrefetcher *)v22 backgroundSessionQueue];
+      [(CLIndoorTilePrefetcher *)selfCopy backgroundSessionQueue];
     }
-    v24 = ;
+    unavailableFloorForegroundSessionQueue = ;
   }
 
-  v25 = v24;
+  backgroundSessionQueue = unavailableFloorForegroundSessionQueue;
 
-  if (!v25)
+  if (!backgroundSessionQueue)
   {
     sub_100387EC4();
 
@@ -1393,8 +1393,8 @@ LABEL_30:
   }
 
 LABEL_32:
-  v26 = [[CLQueuedNSURLRequest alloc] initWithRequest:v12 withPriority:0 andResumeData:v31 andCountOfBytesClientExpectsToReceive:a6];
-  [v25 resumeRequestIfAllowedOrEnqueue:v26];
+  v26 = [[CLQueuedNSURLRequest alloc] initWithRequest:v12 withPriority:0 andResumeData:v31 andCountOfBytesClientExpectsToReceive:size];
+  [backgroundSessionQueue resumeRequestIfAllowedOrEnqueue:v26];
 LABEL_33:
 
   if (SHIBYTE(v32.__r_.__value_.__r.__words[2]) < 0)
@@ -1403,13 +1403,13 @@ LABEL_33:
   }
 }
 
-- (BOOL)shouldPrefetchFloorMetadataForFloorUuid:(const void *)a3 forSession:(int)a4 withLocationContext:(int64_t)a5
+- (BOOL)shouldPrefetchFloorMetadataForFloorUuid:(const void *)uuid forSession:(int)session withLocationContext:(int64_t)context
 {
-  v8 = [(CLIndoorTilePrefetcher *)self delegate];
-  v9 = v8;
-  if (a4 || a5)
+  delegate = [(CLIndoorTilePrefetcher *)self delegate];
+  v9 = delegate;
+  if (session || context)
   {
-    v11 = [v8 tilePrefetchShouldPrefetchMetadataForFloor:sub_100118234(a3) withLocationContext:a5];
+    v11 = [delegate tilePrefetchShouldPrefetchMetadataForFloor:sub_100118234(uuid) withLocationContext:context];
 
     return v11;
   }
@@ -1421,9 +1421,9 @@ LABEL_33:
   }
 }
 
-- (void)runFromNetworkCallback:(id)a3
+- (void)runFromNetworkCallback:(id)callback
 {
-  v5 = a3;
+  callbackCopy = callback;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
@@ -1431,35 +1431,35 @@ LABEL_33:
   v18[4] = sub_10036CEE8;
   sel_getName(a2);
   v19 = os_transaction_create();
-  v6 = [(CLIndoorTilePrefetcher *)self downloadQ];
-  v7 = [v6 maxConcurrentOperationCount];
+  downloadQ = [(CLIndoorTilePrefetcher *)self downloadQ];
+  maxConcurrentOperationCount = [downloadQ maxConcurrentOperationCount];
 
-  if (v7 < 2)
+  if (maxConcurrentOperationCount < 2)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = [(CLIndoorTilePrefetcher *)self downloadQ];
+    downloadQ2 = [(CLIndoorTilePrefetcher *)self downloadQ];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1003700B0;
     v12[3] = &unk_10044B8A0;
-    v13 = v5;
+    v13 = callbackCopy;
     v14 = v18;
-    [v11 addOperationWithBlock:v12];
+    [downloadQ2 addOperationWithBlock:v12];
 
     objc_autoreleasePoolPop(v10);
   }
 
   else
   {
-    v8 = [(CLIndoorTilePrefetcher *)self downloadQ];
-    v9 = [v8 underlyingQueue];
+    downloadQ3 = [(CLIndoorTilePrefetcher *)self downloadQ];
+    underlyingQueue = [downloadQ3 underlyingQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100370050;
     block[3] = &unk_10044B8A0;
-    v16 = v5;
+    v16 = callbackCopy;
     v17 = v18;
-    dispatch_barrier_async(v9, block);
+    dispatch_barrier_async(underlyingQueue, block);
   }
 
   _Block_object_dispose(v18, 8);
@@ -1474,8 +1474,8 @@ LABEL_33:
   v8[4] = sub_10036CEE8;
   sel_getName(a2);
   v9 = os_transaction_create();
-  v3 = [(CLIndoorTilePrefetcher *)self delegateQ];
-  if (!v3)
+  delegateQ = [(CLIndoorTilePrefetcher *)self delegateQ];
+  if (!delegateQ)
   {
     if (qword_10045B070 == -1)
     {
@@ -1508,7 +1508,7 @@ LABEL_33:
   v5[3] = &unk_10044B8C8;
   objc_copyWeak(&v6, location);
   v5[4] = v8;
-  dispatch_async(v3, v5);
+  dispatch_async(delegateQ, v5);
   objc_destroyWeak(&v6);
   objc_destroyWeak(location);
 LABEL_6:
@@ -1518,8 +1518,8 @@ LABEL_6:
 
 - (void)onQueueNotifyDelegateForegroundFetchComplete
 {
-  v2 = [(CLIndoorTilePrefetcher *)self delegate];
-  [v2 tileForegroundFetchFinishedAllDownloads];
+  delegate = [(CLIndoorTilePrefetcher *)self delegate];
+  [delegate tileForegroundFetchFinishedAllDownloads];
 }
 
 - (void)notifyDelegatePrefetchComplete
@@ -1531,8 +1531,8 @@ LABEL_6:
   v8[4] = sub_10036CEE8;
   sel_getName(a2);
   v9 = os_transaction_create();
-  v3 = [(CLIndoorTilePrefetcher *)self delegateQ];
-  if (!v3)
+  delegateQ = [(CLIndoorTilePrefetcher *)self delegateQ];
+  if (!delegateQ)
   {
     if (qword_10045B070 == -1)
     {
@@ -1565,7 +1565,7 @@ LABEL_6:
   v5[3] = &unk_10044B8C8;
   objc_copyWeak(&v6, location);
   v5[4] = v8;
-  dispatch_async(v3, v5);
+  dispatch_async(delegateQ, v5);
   objc_destroyWeak(&v6);
   objc_destroyWeak(location);
 LABEL_6:
@@ -1575,14 +1575,14 @@ LABEL_6:
 
 - (void)onQueueNotifyDelegatePrefetchComplete
 {
-  v2 = [(CLIndoorTilePrefetcher *)self delegate];
-  [v2 tilePrefetchFinishedAllDownloads];
+  delegate = [(CLIndoorTilePrefetcher *)self delegate];
+  [delegate tilePrefetchFinishedAllDownloads];
 }
 
 - (void)notifyDelegateIfPrefetchComplete
 {
-  v4 = [(CLIndoorTilePrefetcher *)self delegateQ];
-  dispatch_assert_queue_V2(v4);
+  delegateQ = [(CLIndoorTilePrefetcher *)self delegateQ];
+  dispatch_assert_queue_V2(delegateQ);
 
   objc_initWeak(&location, self);
   v7[0] = 0;
@@ -1605,40 +1605,40 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (void)notifyDelegateForegroundTaskCompleted:(id)a3
+- (void)notifyDelegateForegroundTaskCompleted:(id)completed
 {
-  v5 = a3;
-  v6 = [(CLIndoorTilePrefetcher *)self delegateQ];
-  dispatch_assert_queue_V2(v6);
+  completedCopy = completed;
+  delegateQ = [(CLIndoorTilePrefetcher *)self delegateQ];
+  dispatch_assert_queue_V2(delegateQ);
 
   Name = sel_getName(a2);
   sub_100364B68(v9, Name);
-  v8 = [(CLIndoorTilePrefetcher *)self delegate];
-  [v8 prefetcher:self didFinishForegroundRequest:v5];
+  delegate = [(CLIndoorTilePrefetcher *)self delegate];
+  [delegate prefetcher:self didFinishForegroundRequest:completedCopy];
 
   sub_100364D88(v9);
 }
 
-- (void)notifyDelegateForegroundTaskCompleted:(id)a3 withError:(id)a4
+- (void)notifyDelegateForegroundTaskCompleted:(id)completed withError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(CLIndoorTilePrefetcher *)self delegateQ];
-  dispatch_assert_queue_V2(v9);
+  completedCopy = completed;
+  errorCopy = error;
+  delegateQ = [(CLIndoorTilePrefetcher *)self delegateQ];
+  dispatch_assert_queue_V2(delegateQ);
 
   Name = sel_getName(a2);
   sub_100364B68(v12, Name);
-  v11 = [(CLIndoorTilePrefetcher *)self delegate];
-  [v11 prefetcher:self didFinishForegroundRequest:v7 withError:v8];
+  delegate = [(CLIndoorTilePrefetcher *)self delegate];
+  [delegate prefetcher:self didFinishForegroundRequest:completedCopy withError:errorCopy];
 
   sub_100364D88(v12);
 }
 
-- (void)sessionWillSendRequestForEstablishedConnection:(id)a3 task:(id)a4 completionHandler:(id)a5
+- (void)sessionWillSendRequestForEstablishedConnection:(id)connection task:(id)task completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  connectionCopy = connection;
+  taskCopy = task;
+  handlerCopy = handler;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
@@ -1646,10 +1646,10 @@ LABEL_6:
   v21[4] = sub_10036CEE8;
   sel_getName(a2);
   v22 = os_transaction_create();
-  v12 = [(CLIndoorTilePrefetcher *)self delegateQ];
-  if (!v12)
+  delegateQ = [(CLIndoorTilePrefetcher *)self delegateQ];
+  if (!delegateQ)
   {
-    v11[2](v11, 0);
+    handlerCopy[2](handlerCopy, 0);
     if (qword_10045B070 == -1)
     {
       v13 = qword_10045B078;
@@ -1680,11 +1680,11 @@ LABEL_6:
   block[2] = sub_100370ED4;
   block[3] = &unk_10044B958;
   objc_copyWeak(&v19, location);
-  v15 = v9;
-  v16 = v10;
-  v17 = v11;
+  v15 = connectionCopy;
+  v16 = taskCopy;
+  v17 = handlerCopy;
   v18 = v21;
-  dispatch_async(v12, block);
+  dispatch_async(delegateQ, block);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(location);
@@ -1693,16 +1693,16 @@ LABEL_6:
   _Block_object_dispose(v21, 8);
 }
 
-- (void)onQueueSessionWillSendRequestForEstablishedConnection:(id)a3 task:(id)a4 completionHandler:(id)a5
+- (void)onQueueSessionWillSendRequestForEstablishedConnection:(id)connection task:(id)task completionHandler:(id)handler
 {
-  v42 = a3;
-  v44 = a4;
-  v43 = a5;
-  v9 = [(CLIndoorTilePrefetcher *)self delegateQ];
-  dispatch_assert_queue_V2(v9);
+  connectionCopy = connection;
+  taskCopy = task;
+  handlerCopy = handler;
+  delegateQ = [(CLIndoorTilePrefetcher *)self delegateQ];
+  dispatch_assert_queue_V2(delegateQ);
 
   v10 = objc_autoreleasePoolPush();
-  v11 = [IndoorRequestInfo indoorRequestInfoFromTask:v44];
+  v11 = [IndoorRequestInfo indoorRequestInfoFromTask:taskCopy];
   if (qword_10045B070 != -1)
   {
     sub_100387C38();
@@ -1717,11 +1717,11 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Download of %{private}@ starting", buf, 0xCu);
   }
 
-  v14 = [v11 venueUuid];
-  v15 = v14;
-  if (v14)
+  venueUuid = [v11 venueUuid];
+  v15 = venueUuid;
+  if (venueUuid)
   {
-    [v14 ps_STLString];
+    [venueUuid ps_STLString];
   }
 
   else
@@ -1730,11 +1730,11 @@ LABEL_6:
     v55 = 0;
   }
 
-  v16 = [v11 floorUuid];
-  v17 = v16;
-  if (v16)
+  floorUuid = [v11 floorUuid];
+  v17 = floorUuid;
+  if (floorUuid)
   {
-    [v16 ps_STLString];
+    [floorUuid ps_STLString];
   }
 
   else
@@ -1744,7 +1744,7 @@ LABEL_6:
     v53 = 0;
   }
 
-  v18 = [(CLIndoorTilePrefetcher *)self delegate];
+  delegate = [(CLIndoorTilePrefetcher *)self delegate];
   if ((sub_100372C44(v11, self->_now) & 1) == 0)
   {
     if (qword_10045B070 != -1)
@@ -1755,7 +1755,7 @@ LABEL_6:
     v20 = qword_10045B078;
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = v18;
+      v21 = delegate;
       if (v55 >= 0)
       {
         v22 = &v54;
@@ -1766,15 +1766,15 @@ LABEL_6:
         v22 = v54;
       }
 
-      v23 = [v11 lastRelevant];
-      [v23 timeIntervalSinceNow];
+      lastRelevant = [v11 lastRelevant];
+      [lastRelevant timeIntervalSinceNow];
       *buf = 136380931;
       *&buf[4] = v22;
       v57 = 2050;
       v58 = v24 / 3600.0;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "TileFetch, reqcb, %{private}s, tooold, %{public}.1f", buf, 0x16u);
 
-      v18 = v21;
+      delegate = v21;
     }
 
     v5 = 1;
@@ -1787,10 +1787,10 @@ LABEL_23:
     goto LABEL_51;
   }
 
-  v19 = [v11 kind];
-  if (v19 != 1)
+  kind = [v11 kind];
+  if (kind != 1)
   {
-    if (!v19)
+    if (!kind)
     {
       sub_1001181E4(buf, v52);
     }
@@ -1798,7 +1798,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if ([v18 tilePrefetchShouldPrefetchTileDataForFloor:v52])
+  if ([delegate tilePrefetchShouldPrefetchTileDataForFloor:v52])
   {
     v5 = 0;
   }
@@ -1849,8 +1849,8 @@ LABEL_24:
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "Cancelling download of %{private}@ as it's too old", buf, 0xCu);
       }
 
-      [v44 cancel];
-      v43[2](v43, 0);
+      [taskCopy cancel];
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else if (!v5)
@@ -1873,8 +1873,8 @@ LABEL_24:
       v49[1] = 3221225472;
       v49[2] = sub_10037190C;
       v49[3] = &unk_100432620;
-      v51 = v43;
-      v50 = v42;
+      v51 = handlerCopy;
+      v50 = connectionCopy;
       [(CLIndoorTilePrefetcher *)self runFromNetworkCallback:v49];
     }
 
@@ -1937,10 +1937,10 @@ LABEL_62:
   }
 
 LABEL_58:
-  v34 = [v11 lastRelevant];
-  [v18 tilePrefetchForTileId:buf updateRelevancy:v34];
+  lastRelevant2 = [v11 lastRelevant];
+  [delegate tilePrefetchForTileId:buf updateRelevancy:lastRelevant2];
 
-  [v44 cancel];
+  [taskCopy cancel];
   if ([v11 kind])
   {
     if ([v11 session])
@@ -1951,17 +1951,17 @@ LABEL_58:
 
   else
   {
-    v35 = [v11 floorUuid];
-    v41 = [v11 venueUuid];
-    v36 = [v11 context];
-    v37 = [v11 lastRelevant];
-    v38 = [v11 allowCellularDownloadTile];
-    v39 = [v11 session];
-    v40 = [v11 requestUUID];
-    [(CLIndoorTilePrefetcher *)self scheduleDownloadForTile:v35 inVenue:v41 withContext:v36 lastRelevant:v37 allowCellularDownload:v38 onSession:v39 withResumeData:0 withRequestUUID:v40];
+    floorUuid2 = [v11 floorUuid];
+    venueUuid2 = [v11 venueUuid];
+    context = [v11 context];
+    lastRelevant3 = [v11 lastRelevant];
+    allowCellularDownloadTile = [v11 allowCellularDownloadTile];
+    session = [v11 session];
+    requestUUID = [v11 requestUUID];
+    [(CLIndoorTilePrefetcher *)self scheduleDownloadForTile:floorUuid2 inVenue:venueUuid2 withContext:context lastRelevant:lastRelevant3 allowCellularDownload:allowCellularDownloadTile onSession:session withResumeData:0 withRequestUUID:requestUUID];
   }
 
-  v43[2](v43, 0);
+  handlerCopy[2](handlerCopy, 0);
   if (v61 < 0)
   {
     operator delete(v60);
@@ -2002,12 +2002,12 @@ LABEL_68:
   objc_autoreleasePoolPop(v10);
 }
 
-- (void)session:(id)a3 didFinishDownloadTask:(id)a4 toPath:(id)a5 inTempPath:(shared_ptr<TemporaryPath>)a6
+- (void)session:(id)session didFinishDownloadTask:(id)task toPath:(id)path inTempPath:(shared_ptr<TemporaryPath>)tempPath
 {
-  var0 = a6.var0;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  var0 = tempPath.var0;
+  sessionCopy = session;
+  taskCopy = task;
+  pathCopy = path;
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x3032000000;
@@ -2015,8 +2015,8 @@ LABEL_68:
   v28[4] = sub_10036CEE8;
   sel_getName(a2);
   v29 = os_transaction_create();
-  v14 = [(CLIndoorTilePrefetcher *)self delegateQ];
-  if (!v14)
+  delegateQ = [(CLIndoorTilePrefetcher *)self delegateQ];
+  if (!delegateQ)
   {
     if (qword_10045B070 == -1)
     {
@@ -2048,9 +2048,9 @@ LABEL_68:
   block[2] = sub_100371BD8;
   block[3] = &unk_10044B980;
   objc_copyWeak(v25, location);
-  v21 = v11;
-  v22 = v12;
-  v15 = v13;
+  v21 = sessionCopy;
+  v22 = taskCopy;
+  v15 = pathCopy;
   v17 = *var0;
   v16 = *(var0 + 1);
   v23 = v15;
@@ -2062,7 +2062,7 @@ LABEL_68:
   }
 
   v24 = v28;
-  dispatch_async(v14, block);
+  dispatch_async(delegateQ, block);
   v18 = v26;
   if (v26 && !atomic_fetch_add(&v26->__shared_owners_, 0xFFFFFFFFFFFFFFFFLL))
   {
@@ -2077,19 +2077,19 @@ LABEL_11:
   _Block_object_dispose(v28, 8);
 }
 
-- (void)onQueueSession:(id)a3 didFinishDownloadTask:(id)a4 toPath:(id)a5 inTempPath:(shared_ptr<TemporaryPath>)a6
+- (void)onQueueSession:(id)session didFinishDownloadTask:(id)task toPath:(id)path inTempPath:(shared_ptr<TemporaryPath>)tempPath
 {
-  v28 = a3;
-  v31 = a4;
-  v9 = a5;
-  v10 = [(CLIndoorTilePrefetcher *)self delegateQ];
-  dispatch_assert_queue_V2(v10);
+  sessionCopy = session;
+  taskCopy = task;
+  pathCopy = path;
+  delegateQ = [(CLIndoorTilePrefetcher *)self delegateQ];
+  dispatch_assert_queue_V2(delegateQ);
 
   context = objc_autoreleasePoolPush();
-  v11 = [IndoorRequestInfo indoorRequestInfoFromTask:v31];
-  v29 = [v31 response];
-  v12 = [v9 UTF8String];
-  v13 = strlen(v12);
+  v11 = [IndoorRequestInfo indoorRequestInfoFromTask:taskCopy];
+  response = [taskCopy response];
+  uTF8String = [pathCopy UTF8String];
+  v13 = strlen(uTF8String);
   if (v13 >= 0x7FFFFFFFFFFFFFF8)
   {
     sub_10000D39C();
@@ -2104,7 +2104,7 @@ LABEL_11:
   v33 = v13;
   if (v13)
   {
-    memmove(&__dst, v12, v13);
+    memmove(&__dst, uTF8String, v13);
   }
 
   *(&__dst + v14) = 0;
@@ -2133,10 +2133,10 @@ LABEL_11:
   }
 
   [WeakRetained tilePrefetchDidDownload:&__dst forRequest:v11];
-  v19 = [v11 kind];
-  if (v19)
+  kind = [v11 kind];
+  if (kind)
   {
-    if (v19 == 1)
+    if (kind == 1)
     {
       if ([v11 session])
       {
@@ -2152,14 +2152,14 @@ LABEL_11:
 
   else
   {
-    v20 = [v11 floorUuid];
-    v21 = [v11 venueUuid];
-    v22 = [v11 context];
-    v23 = [v11 lastRelevant];
-    v24 = [v11 allowCellularDownloadTile];
-    v25 = [v11 session];
-    v26 = [v11 requestUUID];
-    [(CLIndoorTilePrefetcher *)self scheduleDownloadForTile:v20 inVenue:v21 withContext:v22 lastRelevant:v23 allowCellularDownload:v24 onSession:v25 withResumeData:0 withRequestUUID:v26];
+    floorUuid = [v11 floorUuid];
+    venueUuid = [v11 venueUuid];
+    context = [v11 context];
+    lastRelevant = [v11 lastRelevant];
+    allowCellularDownloadTile = [v11 allowCellularDownloadTile];
+    session = [v11 session];
+    requestUUID = [v11 requestUUID];
+    [(CLIndoorTilePrefetcher *)self scheduleDownloadForTile:floorUuid inVenue:venueUuid withContext:context lastRelevant:lastRelevant allowCellularDownload:allowCellularDownloadTile onSession:session withResumeData:0 withRequestUUID:requestUUID];
   }
 
   if (v33 < 0)
@@ -2170,17 +2170,17 @@ LABEL_11:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
-  v29 = a3;
-  v8 = a4;
-  v28 = a5;
-  v30 = v8;
-  v27 = [IndoorRequestInfo indoorRequestInfoFromTask:v8];
+  sessionCopy = session;
+  taskCopy = task;
+  lCopy = l;
+  v30 = taskCopy;
+  v27 = [IndoorRequestInfo indoorRequestInfoFromTask:taskCopy];
   if (sub_100372C44(v27, self->_now))
   {
-    v9 = [v8 response];
-    if ([v9 statusCode] >= 200 && objc_msgSend(v9, "statusCode") < 400)
+    response = [taskCopy response];
+    if ([response statusCode] >= 200 && objc_msgSend(response, "statusCode") < 400)
     {
       operator new();
     }
@@ -2197,13 +2197,13 @@ LABEL_11:
       *buf = 138478083;
       v32 = v11;
       v33 = 2050;
-      v34 = [v9 statusCode];
+      statusCode = [response statusCode];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Download of %{private}@ failed with response code %{public}ld. Synthesizing error", buf, 0x16u);
     }
 
-    v12 = [v9 statusCode];
+    statusCode2 = [response statusCode];
     v35[0] = @"response";
-    v13 = v9;
+    v13 = response;
     v14 = v13;
     if (v13)
     {
@@ -2219,8 +2219,8 @@ LABEL_11:
 
     v36[0] = v19;
     v35[1] = NSURLErrorKey;
-    v20 = [v8 currentRequest];
-    v21 = [v20 URL];
+    currentRequest = [taskCopy currentRequest];
+    v21 = [currentRequest URL];
     v22 = v21;
     if (v21)
     {
@@ -2236,9 +2236,9 @@ LABEL_11:
 
     v36[1] = v24;
     v25 = [NSDictionary dictionaryWithObjects:v36 forKeys:v35 count:2];
-    v26 = [NSError errorWithDomain:@"indoor tile prefetch" code:v12 userInfo:v25];
+    v26 = [NSError errorWithDomain:@"indoor tile prefetch" code:statusCode2 userInfo:v25];
 
-    [(CLIndoorTilePrefetcher *)self URLSession:v29 task:v30 didCompleteWithError:v26];
+    [(CLIndoorTilePrefetcher *)self URLSession:sessionCopy task:v30 didCompleteWithError:v26];
     v18 = v14;
   }
 
@@ -2259,14 +2259,14 @@ LABEL_11:
     }
 
     v18 = [NSError errorWithDomain:@"foobar" code:-1 userInfo:&__NSDictionary0__struct];
-    [(CLIndoorTilePrefetcher *)self URLSession:v29 task:v8 didCompleteWithError:v18];
+    [(CLIndoorTilePrefetcher *)self URLSession:sessionCopy task:taskCopy didCompleteWithError:v18];
   }
 }
 
-- (void)sessionDidCompleteTask:(id)a3 withError:(id)a4
+- (void)sessionDidCompleteTask:(id)task withError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  taskCopy = task;
+  errorCopy = error;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
@@ -2274,8 +2274,8 @@ LABEL_11:
   v17[4] = sub_10036CEE8;
   sel_getName(a2);
   v18 = os_transaction_create();
-  v9 = [(CLIndoorTilePrefetcher *)self delegateQ];
-  if (!v9)
+  delegateQ = [(CLIndoorTilePrefetcher *)self delegateQ];
+  if (!delegateQ)
   {
     if (qword_10045B070 == -1)
     {
@@ -2307,10 +2307,10 @@ LABEL_11:
   v11[2] = sub_100373128;
   v11[3] = &unk_10044B9B8;
   objc_copyWeak(&v15, location);
-  v12 = v7;
-  v13 = v8;
+  v12 = taskCopy;
+  v13 = errorCopy;
   v14 = v17;
-  dispatch_async(v9, v11);
+  dispatch_async(delegateQ, v11);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(location);
@@ -2319,27 +2319,27 @@ LABEL_6:
   _Block_object_dispose(v17, 8);
 }
 
-- (void)onQueueSessionDidCompleteTask:(id)a3 withError:(id)a4
+- (void)onQueueSessionDidCompleteTask:(id)task withError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(CLIndoorTilePrefetcher *)self delegateQ];
-  dispatch_assert_queue_V2(v9);
+  taskCopy = task;
+  errorCopy = error;
+  delegateQ = [(CLIndoorTilePrefetcher *)self delegateQ];
+  dispatch_assert_queue_V2(delegateQ);
 
-  v10 = [v7 response];
-  v11 = [v10 statusCode];
+  response = [taskCopy response];
+  statusCode = [response statusCode];
 
-  if (v8 || v11 != 200)
+  if (errorCopy || statusCode != 200)
   {
     sub_100364B68(buf, "prefetch didCompleteWithError:");
     context = objc_autoreleasePoolPush();
-    v13 = [IndoorRequestInfo indoorRequestInfoFromTask:v7];
-    if (v8)
+    v13 = [IndoorRequestInfo indoorRequestInfoFromTask:taskCopy];
+    if (errorCopy)
     {
-      v4 = [v8 description];
+      v4 = [errorCopy description];
       v14 = v4;
-      v15 = [v4 UTF8String];
-      v16 = strlen(v15);
+      uTF8String = [v4 UTF8String];
+      v16 = strlen(uTF8String);
       if (v16 < 0x7FFFFFFFFFFFFFF8)
       {
         goto LABEL_9;
@@ -2348,7 +2348,7 @@ LABEL_6:
 
     else
     {
-      v15 = "no error object";
+      uTF8String = "no error object";
       v16 = strlen("no error object");
       if (v16 < 0x7FFFFFFFFFFFFFF8)
       {
@@ -2362,9 +2362,9 @@ LABEL_9:
         *(&__dst.__r_.__value_.__s + 23) = v16;
         if (v16)
         {
-          memmove(&__dst, v15, v16);
+          memmove(&__dst, uTF8String, v16);
           __dst.__r_.__value_.__s.__data_[v17] = 0;
-          if (!v8)
+          if (!errorCopy)
           {
             goto LABEL_16;
           }
@@ -2373,10 +2373,10 @@ LABEL_9:
         else
         {
           __dst.__r_.__value_.__s.__data_[0] = 0;
-          if (!v8)
+          if (!errorCopy)
           {
 LABEL_16:
-            std::to_string(&v42, v11);
+            std::to_string(&v42, statusCode);
             v18 = std::string::insert(&v42, 0, ". status = ");
             v19 = *&v18->__r_.__value_.__l.__data_;
             v43.__r_.__value_.__r.__words[2] = v18->__r_.__value_.__r.__words[2];
@@ -2391,7 +2391,7 @@ LABEL_16:
             v20->__r_.__value_.__l.__size_ = 0;
             v20->__r_.__value_.__r.__words[2] = 0;
             v20->__r_.__value_.__r.__words[0] = 0;
-            v22 = [NSHTTPURLResponse localizedStringForStatusCode:v11];
+            v22 = [NSHTTPURLResponse localizedStringForStatusCode:statusCode];
             v23 = v22;
             v24 = std::string::append(&v48, [v22 UTF8String]);
             v25 = *&v24->__r_.__value_.__l.__data_;
@@ -2440,12 +2440,12 @@ LABEL_26:
 LABEL_33:
                 operator delete(v42.__r_.__value_.__l.__data_);
 LABEL_27:
-                v28 = [v13 session];
-                v29 = [v13 floorUuid];
-                v30 = v29;
-                if (v29)
+                session = [v13 session];
+                floorUuid = [v13 floorUuid];
+                v30 = floorUuid;
+                if (floorUuid)
                 {
-                  [v29 ps_STLString];
+                  [floorUuid ps_STLString];
                 }
 
                 else
@@ -2455,7 +2455,7 @@ LABEL_27:
                   v45 = 0;
                 }
 
-                if ([v8 code] == -999)
+                if ([errorCopy code] == -999)
                 {
                   if (qword_10045B070 != -1)
                   {
@@ -2481,7 +2481,7 @@ LABEL_27:
                   }
                 }
 
-                else if ([v8 code] == -1001)
+                else if ([errorCopy code] == -1001)
                 {
                   if (qword_10045B070 != -1)
                   {
@@ -2533,9 +2533,9 @@ LABEL_27:
                   }
                 }
 
-                if (v28)
+                if (session)
                 {
-                  [(CLIndoorTilePrefetcher *)self notifyDelegateForegroundTaskCompleted:v13 withError:v8];
+                  [(CLIndoorTilePrefetcher *)self notifyDelegateForegroundTaskCompleted:v13 withError:errorCopy];
                 }
 
                 else
@@ -2603,10 +2603,10 @@ LABEL_60:
 LABEL_61:
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   if (qword_10045B070 != -1)
   {
     sub_100387C38();
@@ -2615,8 +2615,8 @@ LABEL_61:
   v8 = qword_10045B078;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 description];
-    v10 = [v7 description];
+    v9 = [sessionCopy description];
+    v10 = [errorCopy description];
     v14 = 138543619;
     v15 = v9;
     v16 = 2113;
@@ -2624,23 +2624,23 @@ LABEL_61:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Session %{public}@ invalidated with error: %{private}@", &v14, 0x16u);
   }
 
-  v11 = [(CLIndoorTilePrefetcher *)self delegateQ];
-  dispatch_assert_queue_not_V2(v11);
+  delegateQ = [(CLIndoorTilePrefetcher *)self delegateQ];
+  dispatch_assert_queue_not_V2(delegateQ);
 
-  v12 = [(CLIndoorTilePrefetcher *)self sessionInvalidationGroup];
-  LOBYTE(v11) = v12 == 0;
+  sessionInvalidationGroup = [(CLIndoorTilePrefetcher *)self sessionInvalidationGroup];
+  LOBYTE(delegateQ) = sessionInvalidationGroup == 0;
 
-  if ((v11 & 1) == 0)
+  if ((delegateQ & 1) == 0)
   {
-    v13 = [(CLIndoorTilePrefetcher *)self sessionInvalidationGroup];
-    dispatch_group_leave(v13);
+    sessionInvalidationGroup2 = [(CLIndoorTilePrefetcher *)self sessionInvalidationGroup];
+    dispatch_group_leave(sessionInvalidationGroup2);
   }
 }
 
-- (void)session:(id)a3 didResumeRequest:(id)a4 withRemainingRequests:(unint64_t)a5
+- (void)session:(id)session didResumeRequest:(id)request withRemainingRequests:(unint64_t)requests
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  requestCopy = request;
   if (qword_10045B070 != -1)
   {
     sub_100387C38();
@@ -2650,9 +2650,9 @@ LABEL_61:
   if (os_log_type_enabled(qword_10045B078, OS_LOG_TYPE_INFO))
   {
     v10 = 138478083;
-    v11 = v8;
+    v11 = requestCopy;
     v12 = 2050;
-    v13 = a5;
+    requestsCopy = requests;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Resuming request: %{private}@ with %{public}lu remaining", &v10, 0x16u);
   }
 }

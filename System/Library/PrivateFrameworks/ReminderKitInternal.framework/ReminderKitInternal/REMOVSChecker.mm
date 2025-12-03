@@ -1,17 +1,17 @@
 @interface REMOVSChecker
-+ (BOOL)profanityInTokens:(id)a3 forLocaleIdentifier:(id)a4;
-+ (unsigned)_lexiconTokenForToken:(id)a3 inLexicon:(_LXLexicon *)a4;
++ (BOOL)profanityInTokens:(id)tokens forLocaleIdentifier:(id)identifier;
++ (unsigned)_lexiconTokenForToken:(id)token inLexicon:(_LXLexicon *)lexicon;
 @end
 
 @implementation REMOVSChecker
 
-+ (BOOL)profanityInTokens:(id)a3 forLocaleIdentifier:(id)a4
++ (BOOL)profanityInTokens:(id)tokens forLocaleIdentifier:(id)identifier
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tokensCopy = tokens;
+  identifierCopy = identifier;
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-  CFDictionaryAddValue(Mutable, *MEMORY[0x277D23168], v7);
+  CFDictionaryAddValue(Mutable, *MEMORY[0x277D23168], identifierCopy);
   err = 0;
   v9 = LXLexiconCreate();
   CFRelease(Mutable);
@@ -21,7 +21,7 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = v6;
+    v10 = tokensCopy;
     v11 = [v10 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v11)
     {
@@ -42,7 +42,7 @@
             goto LABEL_19;
           }
 
-          if ([a1 _lexiconTokenForToken:v15 inLexicon:{v9, v22}])
+          if ([self _lexiconTokenForToken:v15 inLexicon:{v9, v22}])
           {
             v16 = LXLexiconCopyEntryForTokenID();
             MetaFlags = LXEntryGetMetaFlags();
@@ -100,9 +100,9 @@ LABEL_22:
   return v20;
 }
 
-+ (unsigned)_lexiconTokenForToken:(id)a3 inLexicon:(_LXLexicon *)a4
++ (unsigned)_lexiconTokenForToken:(id)token inLexicon:(_LXLexicon *)lexicon
 {
-  v4 = a3;
+  tokenCopy = token;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;

@@ -1,64 +1,64 @@
 @interface ICFlowControlBasic
 - (BOOL)ICShouldBeCanceled;
-- (ICFlowControlBasic)initWithCancel:(id)a3;
-- (ICFlowControlBasic)initWithProgress:(id)a3;
-- (void)ICReportProgress:(float)a3;
+- (ICFlowControlBasic)initWithCancel:(id)cancel;
+- (ICFlowControlBasic)initWithProgress:(id)progress;
+- (void)ICReportProgress:(float)progress;
 @end
 
 @implementation ICFlowControlBasic
 
-- (ICFlowControlBasic)initWithCancel:(id)a3
+- (ICFlowControlBasic)initWithCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   v8.receiver = self;
   v8.super_class = ICFlowControlBasic;
   v5 = [(ICFlowControlBasic *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICFlowControlBasic *)v5 setShouldBeCanceled:v4];
+    [(ICFlowControlBasic *)v5 setShouldBeCanceled:cancelCopy];
   }
 
   return v6;
 }
 
-- (ICFlowControlBasic)initWithProgress:(id)a3
+- (ICFlowControlBasic)initWithProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   v8.receiver = self;
   v8.super_class = ICFlowControlBasic;
   v5 = [(ICFlowControlBasic *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICFlowControlBasic *)v5 setReportProgress:v4];
+    [(ICFlowControlBasic *)v5 setReportProgress:progressCopy];
   }
 
   return v6;
 }
 
-- (void)ICReportProgress:(float)a3
+- (void)ICReportProgress:(float)progress
 {
-  v5 = [(ICFlowControlBasic *)self reportProgress];
+  reportProgress = [(ICFlowControlBasic *)self reportProgress];
 
-  if (v5)
+  if (reportProgress)
   {
-    v6 = [(ICFlowControlBasic *)self reportProgress];
-    v6[2](a3);
+    reportProgress2 = [(ICFlowControlBasic *)self reportProgress];
+    reportProgress2[2](progress);
   }
 }
 
 - (BOOL)ICShouldBeCanceled
 {
-  v3 = [(ICFlowControlBasic *)self shouldBeCanceled];
+  shouldBeCanceled = [(ICFlowControlBasic *)self shouldBeCanceled];
 
-  if (v3)
+  if (shouldBeCanceled)
   {
-    v4 = [(ICFlowControlBasic *)self shouldBeCanceled];
-    LOBYTE(v3) = v4[2]();
+    shouldBeCanceled2 = [(ICFlowControlBasic *)self shouldBeCanceled];
+    LOBYTE(shouldBeCanceled) = shouldBeCanceled2[2]();
   }
 
-  return v3;
+  return shouldBeCanceled;
 }
 
 @end

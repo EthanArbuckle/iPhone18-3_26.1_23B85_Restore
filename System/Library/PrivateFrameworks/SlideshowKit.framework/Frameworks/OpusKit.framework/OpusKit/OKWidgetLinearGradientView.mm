@@ -1,28 +1,28 @@
 @interface OKWidgetLinearGradientView
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
-- (BOOL)prepareForDisplay:(BOOL)a3;
-- (BOOL)prepareForUnload:(BOOL)a3;
-- (BOOL)prepareForWarmup:(BOOL)a3;
++ (void)setupJavascriptContext:(id)context;
+- (BOOL)prepareForDisplay:(BOOL)display;
+- (BOOL)prepareForUnload:(BOOL)unload;
+- (BOOL)prepareForWarmup:(BOOL)warmup;
 - (CGPoint)settingEndPoint;
 - (CGPoint)settingStartPoint;
-- (OKWidgetLinearGradientView)initWithWidget:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (OKWidgetLinearGradientView)initWithWidget:(id)widget;
+- (id)valueForUndefinedKey:(id)key;
 - (void)dealloc;
-- (void)setAntialiasing:(BOOL)a3;
-- (void)setSettingGradientColors:(id)a3;
-- (void)setSettingGradientLocations:(id)a3;
-- (void)setSettingOpaque:(BOOL)a3;
+- (void)setAntialiasing:(BOOL)antialiasing;
+- (void)setSettingGradientColors:(id)colors;
+- (void)setSettingGradientLocations:(id)locations;
+- (void)setSettingOpaque:(BOOL)opaque;
 - (void)updateGradient;
 @end
 
 @implementation OKWidgetLinearGradientView
 
-- (OKWidgetLinearGradientView)initWithWidget:(id)a3
+- (OKWidgetLinearGradientView)initWithWidget:(id)widget
 {
   v7.receiver = self;
   v7.super_class = OKWidgetLinearGradientView;
-  v3 = [(OKWidgetViewProxy *)&v7 initWithWidget:a3];
+  v3 = [(OKWidgetViewProxy *)&v7 initWithWidget:widget];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D627B0]);
@@ -70,7 +70,7 @@
 + (id)supportedSettings
 {
   v20[5] = *MEMORY[0x277D85DE8];
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___OKWidgetLinearGradientView;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v8, sel_supportedSettings)}];
   v19[0] = @"gradientColors";
@@ -79,18 +79,18 @@
   v18[0] = &unk_287AF10A0;
   v18[1] = &unk_287AF10B8;
   v17[2] = @"default";
-  v3 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
   v17[3] = @"jsExport";
-  v18[2] = v3;
+  v18[2] = null;
   v18[3] = @"readwrite";
   v20[0] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:4];
   v19[1] = @"gradientLocations";
   v16[0] = &unk_287AF10A0;
   v15[0] = @"type";
   v15[1] = @"default";
-  v4 = [MEMORY[0x277CBEB68] null];
+  null2 = [MEMORY[0x277CBEB68] null];
   v15[2] = @"jsExport";
-  v16[1] = v4;
+  v16[1] = null2;
   v16[2] = @"readwrite";
   v20[1] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
   v19[2] = @"startPoint";
@@ -121,14 +121,14 @@
   return v2;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v4.receiver = self;
   v4.super_class = OKWidgetLinearGradientView;
-  return [(OKWidgetViewProxy *)&v4 valueForUndefinedKey:a3];
+  return [(OKWidgetViewProxy *)&v4 valueForUndefinedKey:key];
 }
 
-- (void)setSettingGradientLocations:(id)a3
+- (void)setSettingGradientLocations:(id)locations
 {
   gradientLocations = self->_gradientLocations;
   if (gradientLocations)
@@ -137,7 +137,7 @@
     self->_gradientLocations = 0;
   }
 
-  self->_gradientLocations = a3;
+  self->_gradientLocations = locations;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__OKWidgetLinearGradientView_setSettingGradientLocations___block_invoke;
@@ -146,7 +146,7 @@
   [OKSettings applyUpdateBlockOnce:v6 forKey:@"updateGradient"];
 }
 
-- (void)setSettingGradientColors:(id)a3
+- (void)setSettingGradientColors:(id)colors
 {
   v17 = *MEMORY[0x277D85DE8];
   gradientColors = self->_gradientColors;
@@ -156,12 +156,12 @@
     self->_gradientColors = 0;
   }
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [colors countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -173,20 +173,20 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(colors);
         }
 
-        [v6 addObject:{objc_msgSend(*(*(&v12 + 1) + 8 * v10++), "CGColor")}];
+        [array addObject:{objc_msgSend(*(*(&v12 + 1) + 8 * v10++), "CGColor")}];
       }
 
       while (v8 != v10);
-      v8 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [colors countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 
-  self->_gradientColors = v6;
+  self->_gradientColors = array;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__OKWidgetLinearGradientView_setSettingGradientColors___block_invoke;
@@ -211,23 +211,23 @@
   return result;
 }
 
-- (void)setSettingOpaque:(BOOL)a3
+- (void)setSettingOpaque:(BOOL)opaque
 {
-  v3 = a3;
-  if (a3)
+  opaqueCopy = opaque;
+  if (opaque)
   {
-    v5 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] clearColor];
+    blackColor = [MEMORY[0x277D75348] clearColor];
   }
 
-  [(OFLinearGradientView *)self->_gradientView setBackgroundColor:v5];
+  [(OFLinearGradientView *)self->_gradientView setBackgroundColor:blackColor];
   gradientView = self->_gradientView;
 
-  [(OFLinearGradientView *)gradientView setOpaque:v3];
+  [(OFLinearGradientView *)gradientView setOpaque:opaqueCopy];
 }
 
 - (void)updateGradient
@@ -252,13 +252,13 @@
   }
 }
 
-- (void)setAntialiasing:(BOOL)a3
+- (void)setAntialiasing:(BOOL)antialiasing
 {
-  v3 = a3;
+  antialiasingCopy = antialiasing;
   v6.receiver = self;
   v6.super_class = OKWidgetLinearGradientView;
   [(OKWidgetViewProxy *)&v6 setAntialiasing:?];
-  if (v3)
+  if (antialiasingCopy)
   {
     v5 = 15;
   }
@@ -271,33 +271,33 @@
   [-[OFLinearGradientView layer](self->_gradientView "layer")];
 }
 
-- (BOOL)prepareForDisplay:(BOOL)a3
+- (BOOL)prepareForDisplay:(BOOL)display
 {
   v4.receiver = self;
   v4.super_class = OKWidgetLinearGradientView;
-  return [(OKWidgetViewProxy *)&v4 prepareForDisplay:a3];
+  return [(OKWidgetViewProxy *)&v4 prepareForDisplay:display];
 }
 
-- (BOOL)prepareForWarmup:(BOOL)a3
+- (BOOL)prepareForWarmup:(BOOL)warmup
 {
   v4.receiver = self;
   v4.super_class = OKWidgetLinearGradientView;
-  return [(OKWidgetViewProxy *)&v4 prepareForWarmup:a3];
+  return [(OKWidgetViewProxy *)&v4 prepareForWarmup:warmup];
 }
 
-- (BOOL)prepareForUnload:(BOOL)a3
+- (BOOL)prepareForUnload:(BOOL)unload
 {
   v4.receiver = self;
   v4.super_class = OKWidgetLinearGradientView;
-  return [(OKWidgetViewProxy *)&v4 prepareForUnload:a3];
+  return [(OKWidgetViewProxy *)&v4 prepareForUnload:unload];
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetLinearGradientView"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetLinearGradientView"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
 @end

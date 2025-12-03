@@ -1,15 +1,15 @@
 @interface CSAdjunctListItem
-- (CSAdjunctListItem)initWithIdentifier:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (CSAdjunctListItem)initWithIdentifier:(id)identifier;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
 @implementation CSAdjunctListItem
 
-- (CSAdjunctListItem)initWithIdentifier:(id)a3
+- (CSAdjunctListItem)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CSAdjunctListItem;
   v5 = [(CSAdjunctListItem *)&v11 init];
@@ -19,7 +19,7 @@
     actions = v5->_actions;
     v5->_actions = v6;
 
-    v8 = [v4 copy];
+    v8 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
@@ -31,34 +31,34 @@
 
 - (id)succinctDescription
 {
-  v2 = [(CSAdjunctListItem *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CSAdjunctListItem *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CSAdjunctListItem *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CSAdjunctListItem *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(CSAdjunctListItem *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_identifier withName:@"identifier"];
-  v6 = [v4 appendObject:self->_actions withName:@"actions"];
-  v7 = [v4 appendBool:self->_animatePresentation withName:@"animatePresentation"];
-  v8 = [v4 appendBool:self->_animateDismissal withName:@"animateDismissal"];
-  v9 = [(CSAdjunctListItem *)self itemView];
-  v10 = [v4 appendObject:v9 withName:@"itemView"];
+  succinctDescriptionBuilder = [(CSAdjunctListItem *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_identifier withName:@"identifier"];
+  v6 = [succinctDescriptionBuilder appendObject:self->_actions withName:@"actions"];
+  v7 = [succinctDescriptionBuilder appendBool:self->_animatePresentation withName:@"animatePresentation"];
+  v8 = [succinctDescriptionBuilder appendBool:self->_animateDismissal withName:@"animateDismissal"];
+  itemView = [(CSAdjunctListItem *)self itemView];
+  v10 = [succinctDescriptionBuilder appendObject:itemView withName:@"itemView"];
 
-  v11 = [(CSAdjunctListItem *)self contentHost];
-  v12 = [v4 appendObject:v11 withName:@"contentHost"];
+  contentHost = [(CSAdjunctListItem *)self contentHost];
+  v12 = [succinctDescriptionBuilder appendObject:contentHost withName:@"contentHost"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

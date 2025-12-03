@@ -1,16 +1,16 @@
 @interface NCNotificationManagementAlertController
 - (BOOL)shouldAutorotate;
-- (NCNotificationManagementAlertController)initWithRequest:(id)a3 withPresentingView:(id)a4 settingsDelegate:(id)a5;
+- (NCNotificationManagementAlertController)initWithRequest:(id)request withPresentingView:(id)view settingsDelegate:(id)delegate;
 - (NCNotificationManagementControllerSettingsDelegate)settingsDelegate;
 - (void)viewDidLoad;
 @end
 
 @implementation NCNotificationManagementAlertController
 
-- (NCNotificationManagementAlertController)initWithRequest:(id)a3 withPresentingView:(id)a4 settingsDelegate:(id)a5
+- (NCNotificationManagementAlertController)initWithRequest:(id)request withPresentingView:(id)view settingsDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a5;
+  requestCopy = request;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = NCNotificationManagementAlertController;
   v9 = [(NCNotificationManagementAlertController *)&v12 init];
@@ -18,8 +18,8 @@
   if (v9)
   {
     [(NCNotificationManagementAlertController *)v9 setPreferredStyle:0];
-    [(NCNotificationManagementAlertController *)v10 setRequest:v7];
-    [(NCNotificationManagementAlertController *)v10 setSettingsDelegate:v8];
+    [(NCNotificationManagementAlertController *)v10 setRequest:requestCopy];
+    [(NCNotificationManagementAlertController *)v10 setSettingsDelegate:delegateCopy];
   }
 
   return v10;
@@ -35,19 +35,19 @@
 
 - (BOOL)shouldAutorotate
 {
-  v3 = [(NCNotificationManagementAlertController *)self presentingViewController];
-  if (v3)
+  presentingViewController = [(NCNotificationManagementAlertController *)self presentingViewController];
+  if (presentingViewController)
   {
-    v4 = [(NCNotificationManagementAlertController *)self presentingViewController];
-    v5 = [v4 shouldAutorotate];
+    presentingViewController2 = [(NCNotificationManagementAlertController *)self presentingViewController];
+    shouldAutorotate = [presentingViewController2 shouldAutorotate];
   }
 
   else
   {
-    v5 = 1;
+    shouldAutorotate = 1;
   }
 
-  return v5;
+  return shouldAutorotate;
 }
 
 - (NCNotificationManagementControllerSettingsDelegate)settingsDelegate

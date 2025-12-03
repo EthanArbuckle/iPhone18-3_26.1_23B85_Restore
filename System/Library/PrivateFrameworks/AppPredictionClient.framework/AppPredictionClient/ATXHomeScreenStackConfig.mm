@@ -1,21 +1,21 @@
 @interface ATXHomeScreenStackConfig
 - (ATXHomeScreenPage)page;
 - (ATXHomeScreenStackConfig)init;
-- (ATXHomeScreenStackConfig)initWithCoder:(id)a3;
+- (ATXHomeScreenStackConfig)initWithCoder:(id)coder;
 - (BOOL)isAppPredictionPanel;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPinnedSuggestionsWidget;
 - (id)compactDescription;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)initFromDictionaryRepresentation:(id)a3;
+- (id)initFromDictionaryRepresentation:(id)representation;
 - (unint64_t)hash;
 - (unint64_t)numberOfLeafIconSpots;
 - (void)_updateWidgetBackpointers;
-- (void)assignWidgetSpaceCoordinateWithRow:(int64_t)a3 column:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPage:(id)a3;
-- (void)setWidgets:(id)a3;
+- (void)assignWidgetSpaceCoordinateWithRow:(int64_t)row column:(int64_t)column;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPage:(id)page;
+- (void)setWidgets:(id)widgets;
 @end
 
 @implementation ATXHomeScreenStackConfig
@@ -44,8 +44,8 @@
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(ATXHomeScreenStackConfig *)self page];
-        [v8 setPage:v9];
+        page = [(ATXHomeScreenStackConfig *)self page];
+        [v8 setPage:page];
 
         ++v7;
       }
@@ -82,54 +82,54 @@
 
 - (BOOL)isAppPredictionPanel
 {
-  v3 = [(ATXHomeScreenStackConfig *)self isPinnedWidget];
-  if (v3)
+  isPinnedWidget = [(ATXHomeScreenStackConfig *)self isPinnedWidget];
+  if (isPinnedWidget)
   {
-    v4 = [(NSArray *)self->_widgets firstObject];
-    v5 = [v4 extensionBundleId];
-    v6 = [v5 isEqualToString:@"com.apple.proactive.appprediction.panel"];
+    firstObject = [(NSArray *)self->_widgets firstObject];
+    extensionBundleId = [firstObject extensionBundleId];
+    v6 = [extensionBundleId isEqualToString:@"com.apple.proactive.appprediction.panel"];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(isPinnedWidget) = v6;
   }
 
-  return v3;
+  return isPinnedWidget;
 }
 
 - (BOOL)isPinnedSuggestionsWidget
 {
-  v3 = [(ATXHomeScreenStackConfig *)self isPinnedWidget];
-  if (v3)
+  isPinnedWidget = [(ATXHomeScreenStackConfig *)self isPinnedWidget];
+  if (isPinnedWidget)
   {
-    v4 = [(NSArray *)self->_widgets firstObject];
-    v5 = [v4 extensionBundleId];
-    v6 = [v5 isEqualToString:*MEMORY[0x1E698AFC0]];
+    firstObject = [(NSArray *)self->_widgets firstObject];
+    extensionBundleId = [firstObject extensionBundleId];
+    v6 = [extensionBundleId isEqualToString:*MEMORY[0x1E698AFC0]];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(isPinnedWidget) = v6;
   }
 
-  return v3;
+  return isPinnedWidget;
 }
 
 - (unint64_t)numberOfLeafIconSpots
 {
-  v3 = [MEMORY[0x1E69C5CF8] isiPad];
+  isiPad = [MEMORY[0x1E69C5CF8] isiPad];
   result = [(ATXHomeScreenStackConfig *)self stackLayoutSize];
   if (result > 1)
   {
     switch(result)
     {
       case 2uLL:
-        v5 = v3 == 0;
+        v5 = isiPad == 0;
         v6 = 16;
         v7 = 4;
         break;
       case 3uLL:
-        v5 = v3 == 0;
+        v5 = isiPad == 0;
         v6 = 24;
         v7 = 6;
         break;
       case 4uLL:
-        v5 = v3 == 0;
+        v5 = isiPad == 0;
         v6 = 32;
         v7 = 8;
         break;
@@ -156,13 +156,13 @@ LABEL_11:
       return result;
     }
 
-    v5 = v3 == 0;
+    v5 = isiPad == 0;
     v6 = 8;
     v7 = 2;
     goto LABEL_11;
   }
 
-  if (v3)
+  if (isiPad)
   {
     return 1;
   }
@@ -173,35 +173,35 @@ LABEL_11:
   }
 }
 
-- (ATXHomeScreenStackConfig)initWithCoder:(id)a3
+- (ATXHomeScreenStackConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = ATXHomeScreenStackConfig;
   v5 = [(ATXHomeScreenStackConfig *)&v12 init];
   if (v5)
   {
-    -[ATXHomeScreenStackConfig setAllowsSmartRotate:](v5, "setAllowsSmartRotate:", [v4 decodeBoolForKey:@"allowsSmartRotate"]);
-    -[ATXHomeScreenStackConfig setAllowsNewWidget:](v5, "setAllowsNewWidget:", [v4 decodeBoolForKey:@"allowsNewWidget"]);
+    -[ATXHomeScreenStackConfig setAllowsSmartRotate:](v5, "setAllowsSmartRotate:", [coderCopy decodeBoolForKey:@"allowsSmartRotate"]);
+    -[ATXHomeScreenStackConfig setAllowsNewWidget:](v5, "setAllowsNewWidget:", [coderCopy decodeBoolForKey:@"allowsNewWidget"]);
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"widgets"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"widgets"];
     [(ATXHomeScreenStackConfig *)v5 setWidgets:v9];
 
-    -[ATXHomeScreenStackConfig setStackLayoutSize:](v5, "setStackLayoutSize:", [v4 decodeIntegerForKey:@"stackLayoutSize"]);
-    -[ATXHomeScreenStackConfig setCoordinateRow:](v5, "setCoordinateRow:", [v4 decodeIntegerForKey:@"coordinateRow"]);
-    -[ATXHomeScreenStackConfig setCoordinateColumn:](v5, "setCoordinateColumn:", [v4 decodeIntegerForKey:@"coordinateColumn"]);
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    -[ATXHomeScreenStackConfig setStackLayoutSize:](v5, "setStackLayoutSize:", [coderCopy decodeIntegerForKey:@"stackLayoutSize"]);
+    -[ATXHomeScreenStackConfig setCoordinateRow:](v5, "setCoordinateRow:", [coderCopy decodeIntegerForKey:@"coordinateRow"]);
+    -[ATXHomeScreenStackConfig setCoordinateColumn:](v5, "setCoordinateColumn:", [coderCopy decodeIntegerForKey:@"coordinateColumn"]);
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(ATXHomeScreenStackConfig *)v5 setIdentifier:v10];
   }
 
   return v5;
 }
 
-- (void)setPage:(id)a3
+- (void)setPage:(id)page
 {
-  obj = a3;
+  obj = page;
   WeakRetained = objc_loadWeakRetained(&self->_page);
 
   v5 = obj;
@@ -213,11 +213,11 @@ LABEL_11:
   }
 }
 
-- (void)setWidgets:(id)a3
+- (void)setWidgets:(id)widgets
 {
-  if (self->_widgets != a3)
+  if (self->_widgets != widgets)
   {
-    v5 = [a3 copy];
+    v5 = [widgets copy];
     widgets = self->_widgets;
     self->_widgets = v5;
 
@@ -225,41 +225,41 @@ LABEL_11:
   }
 }
 
-- (void)assignWidgetSpaceCoordinateWithRow:(int64_t)a3 column:(int64_t)a4
+- (void)assignWidgetSpaceCoordinateWithRow:(int64_t)row column:(int64_t)column
 {
   v7 = [MEMORY[0x1E69C5CF8] isiPad] ^ 1;
-  [(ATXHomeScreenStackConfig *)self setCoordinateRow:a3 << v7];
+  [(ATXHomeScreenStackConfig *)self setCoordinateRow:row << v7];
 
-  [(ATXHomeScreenStackConfig *)self setCoordinateColumn:a4 << v7];
+  [(ATXHomeScreenStackConfig *)self setCoordinateColumn:column << v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[ATXHomeScreenStackConfig allowsNewWidget](self forKey:{"allowsNewWidget"), @"allowsNewWidget"}];
-  [v4 encodeBool:-[ATXHomeScreenStackConfig allowsSmartRotate](self forKey:{"allowsSmartRotate"), @"allowsSmartRotate"}];
-  v5 = [(ATXHomeScreenStackConfig *)self widgets];
-  [v4 encodeObject:v5 forKey:@"widgets"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[ATXHomeScreenStackConfig allowsNewWidget](self forKey:{"allowsNewWidget"), @"allowsNewWidget"}];
+  [coderCopy encodeBool:-[ATXHomeScreenStackConfig allowsSmartRotate](self forKey:{"allowsSmartRotate"), @"allowsSmartRotate"}];
+  widgets = [(ATXHomeScreenStackConfig *)self widgets];
+  [coderCopy encodeObject:widgets forKey:@"widgets"];
 
-  [v4 encodeInteger:-[ATXHomeScreenStackConfig stackLayoutSize](self forKey:{"stackLayoutSize"), @"stackLayoutSize"}];
-  [v4 encodeInteger:-[ATXHomeScreenStackConfig coordinateRow](self forKey:{"coordinateRow"), @"coordinateRow"}];
-  [v4 encodeInteger:-[ATXHomeScreenStackConfig coordinateColumn](self forKey:{"coordinateColumn"), @"coordinateColumn"}];
-  v6 = [(ATXHomeScreenStackConfig *)self identifier];
-  [v4 encodeObject:v6 forKey:@"identifier"];
+  [coderCopy encodeInteger:-[ATXHomeScreenStackConfig stackLayoutSize](self forKey:{"stackLayoutSize"), @"stackLayoutSize"}];
+  [coderCopy encodeInteger:-[ATXHomeScreenStackConfig coordinateRow](self forKey:{"coordinateRow"), @"coordinateRow"}];
+  [coderCopy encodeInteger:-[ATXHomeScreenStackConfig coordinateColumn](self forKey:{"coordinateColumn"), @"coordinateColumn"}];
+  identifier = [(ATXHomeScreenStackConfig *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(ATXHomeScreenStackConfig *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(ATXHomeScreenStackConfig *)self identifier];
+  v4 = [identifier hash];
 
   return [(ATXHomeScreenStackConfig *)self stackLayoutSize]- v4 + 32 * v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
     goto LABEL_14;
@@ -272,7 +272,7 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if (self->_allowsNewWidget != [(ATXHomeScreenStackConfig *)v5 allowsNewWidget]|| self->_allowsSmartRotate != [(ATXHomeScreenStackConfig *)v5 allowsSmartRotate]|| [(ATXHomeScreenStackConfig *)v5 stackLayoutSize]!= self->_stackLayoutSize || [(ATXHomeScreenStackConfig *)v5 coordinateRow]!= self->_coordinateRow || [(ATXHomeScreenStackConfig *)v5 coordinateColumn]!= self->_coordinateColumn)
   {
     goto LABEL_10;
@@ -339,7 +339,7 @@ LABEL_14:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v14 = self;
+  selfCopy = self;
   obj = self->_widgets;
   v4 = [(NSArray *)obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
@@ -356,11 +356,11 @@ LABEL_14:
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
-        v9 = [v8 extensionBundleId];
-        v10 = [v8 widgetKind];
-        v11 = [v8 intent];
-        v12 = [v8 widgetUniqueId];
-        [v3 appendFormat:@"  %@ : %@ : hasIntent=%d : %@\n", v9, v10, v11 != 0, v12];
+        extensionBundleId = [v8 extensionBundleId];
+        widgetKind = [v8 widgetKind];
+        intent = [v8 intent];
+        widgetUniqueId = [v8 widgetUniqueId];
+        [v3 appendFormat:@"  %@ : %@ : hasIntent=%d : %@\n", extensionBundleId, widgetKind, intent != 0, widgetUniqueId];
       }
 
       v5 = [(NSArray *)obj countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -370,8 +370,8 @@ LABEL_14:
   }
 
   [v3 appendFormat:@"]; "];
-  [v3 appendFormat:@"Layout size: %lu; ", v14->_stackLayoutSize];
-  [v3 appendFormat:@"Row: %lu, Column: %lu; ", v14->_coordinateRow, v14->_coordinateColumn];
+  [v3 appendFormat:@"Layout size: %lu; ", selfCopy->_stackLayoutSize];
+  [v3 appendFormat:@"Row: %lu, Column: %lu; ", selfCopy->_coordinateRow, selfCopy->_coordinateColumn];
 
   return v3;
 }
@@ -400,8 +400,8 @@ LABEL_14:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-        [v4 addObject:v10];
+        dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+        [v4 addObject:dictionaryRepresentation];
       }
 
       v7 = [(NSArray *)v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -432,35 +432,35 @@ LABEL_14:
   return v16;
 }
 
-- (id)initFromDictionaryRepresentation:(id)a3
+- (id)initFromDictionaryRepresentation:(id)representation
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v29.receiver = self;
   v29.super_class = ATXHomeScreenStackConfig;
   v5 = [(ATXHomeScreenStackConfig *)&v29 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"allowsNewWidget"];
+    v6 = [representationCopy objectForKeyedSubscript:@"allowsNewWidget"];
     v5->_allowsNewWidget = [v6 BOOLValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"allowsSmartRotate"];
+    v7 = [representationCopy objectForKeyedSubscript:@"allowsSmartRotate"];
     v5->_allowsSmartRotate = [v7 BOOLValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"stackLayoutSize"];
+    v8 = [representationCopy objectForKeyedSubscript:@"stackLayoutSize"];
     v5->_stackLayoutSize = [v8 unsignedIntegerValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"coordinateRow"];
+    v9 = [representationCopy objectForKeyedSubscript:@"coordinateRow"];
     v5->_coordinateRow = [v9 unsignedIntegerValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"coordinateColumn"];
+    v10 = [representationCopy objectForKeyedSubscript:@"coordinateColumn"];
     v5->_coordinateColumn = [v10 unsignedIntegerValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"identifier"];
+    v11 = [representationCopy objectForKeyedSubscript:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v11;
 
-    v13 = [v4 objectForKeyedSubscript:@"widgets"];
+    v13 = [representationCopy objectForKeyedSubscript:@"widgets"];
     v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v13, "count")}];
     v25 = 0u;
     v26 = 0u;

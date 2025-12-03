@@ -1,10 +1,10 @@
 @interface PerfDiagsSelfEnablementController
-+ (BOOL)getKillSwitchSettingForPrefix:(id)a3;
-+ (BOOL)hasTimeoutExpiredForPrefix:(id)a3;
++ (BOOL)getKillSwitchSettingForPrefix:(id)prefix;
++ (BOOL)hasTimeoutExpiredForPrefix:(id)prefix;
 + (BOOL)isAnyModeActive;
-+ (double)getTimeoutForPrefix:(id)a3;
++ (double)getTimeoutForPrefix:(id)prefix;
 + (id)clientClasses;
-+ (id)timeoutPrefNameForPrefix:(id)a3;
++ (id)timeoutPrefNameForPrefix:(id)prefix;
 + (void)evaluateSelfEnablement;
 @end
 
@@ -76,19 +76,19 @@
   v104 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v3 = [a1 clientClasses];
-  v4 = [v3 countByEnumeratingWithState:&v103 objects:v113 count:16];
-  v75 = a1;
+  clientClasses = [self clientClasses];
+  v4 = [clientClasses countByEnumeratingWithState:&v103 objects:v113 count:16];
+  selfCopy = self;
   if (!v4)
   {
 
-    LOBYTE(v20) = 0;
+    LOBYTE(willEnableDiagnostics) = 0;
 LABEL_26:
     v92 = 0u;
     v93 = 0u;
     v90 = 0u;
     v91 = 0u;
-    obja = [a1 clientClasses];
+    obja = [self clientClasses];
     v74 = [obja countByEnumeratingWithState:&v90 objects:v111 count:16];
     if (!v74)
     {
@@ -107,14 +107,14 @@ LABEL_26:
         }
 
         v23 = *(*(&v90 + 1) + 8 * i);
-        v24 = [v23 prefixForDefaults];
-        v25 = [a1 getKillSwitchSettingForPrefix:v24];
+        prefixForDefaults = [v23 prefixForDefaults];
+        v25 = [self getKillSwitchSettingForPrefix:prefixForDefaults];
         v26 = DiagnosticLogSubmissionEnabled();
         v27 = sub_10000B598();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138413058;
-          v108 = v24;
+          v108 = prefixForDefaults;
           v109 = 1024;
           *v110 = v25;
           *&v110[4] = 1024;
@@ -142,11 +142,11 @@ LABEL_26:
           if (v31)
           {
             *buf = 138412290;
-            v108 = v24;
+            v108 = prefixForDefaults;
             _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "PDSE: evaluateSelfEnablement %@: shouldDisable == TRUE, do not enable today", buf, 0xCu);
           }
 
-          v32 = 0;
+          wantsEnablement = 0;
         }
 
         else
@@ -154,53 +154,53 @@ LABEL_26:
           if (v31)
           {
             *buf = 138412290;
-            v108 = v24;
+            v108 = prefixForDefaults;
             _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "PDSE: evaluateSelfEnablement %@: calling client's to determine if it wantsEnablement", buf, 0xCu);
           }
 
-          v32 = [v23 wantsEnablement];
+          wantsEnablement = [v23 wantsEnablement];
           v30 = sub_10000B598();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
             v33 = @"NO";
-            if (v32)
+            if (wantsEnablement)
             {
               v33 = @"YES";
             }
 
-            v108 = v24;
+            v108 = prefixForDefaults;
             v109 = 2112;
             *v110 = v33;
             _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "PDSE: evaluateSelfEnablement %@: client's wantsEnablement returned %@", buf, 0x16u);
           }
         }
 
-        v34 = sub_100000F48(@"com.apple.da", @"mobile", v24);
+        v34 = sub_100000F48(@"com.apple.da", @"mobile", prefixForDefaults);
         v35 = [v34 count];
 
         v36 = sub_10000B598();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138413058;
-          v108 = v24;
+          v108 = prefixForDefaults;
           v109 = 1024;
           *v110 = v35 != 0;
           *&v110[4] = 2048;
           *&v110[6] = v35;
           *&v110[14] = 2112;
-          *&v110[16] = v24;
+          *&v110[16] = prefixForDefaults;
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "PDSE: evaluateSelfEnablement %@: client enabled state = %{BOOL}i, found %lu settings with prefix %@", buf, 0x26u);
         }
 
-        a1 = v75;
-        if (!((v35 != 0) | v32 & 1))
+        self = selfCopy;
+        if (!((v35 != 0) | wantsEnablement & 1))
         {
           v37 = sub_10000B598();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v108 = v24;
+            v108 = prefixForDefaults;
             _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "PDSE: evaluateSelfEnablement %@: Transition from Disable to Disable", buf, 0xCu);
           }
 
@@ -208,19 +208,19 @@ LABEL_26:
           v86 = 3221225472;
           v87 = sub_100003878;
           v88 = &unk_1000188A0;
-          v89 = v24;
+          v89 = prefixForDefaults;
           AnalyticsSendEventLazy();
         }
 
-        if (!v35 && ((v32 ^ 1) & 1) == 0)
+        if (!v35 && ((wantsEnablement ^ 1) & 1) == 0)
         {
           v38 = sub_10000B598();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v108 = v24;
+            v108 = prefixForDefaults;
             v109 = 2112;
-            *v110 = v24;
+            *v110 = prefixForDefaults;
             _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "PDSE: evaluateSelfEnablement %@: Transition from Disable to Enable, calling %@'s willEnableDiagnostics", buf, 0x16u);
           }
 
@@ -239,13 +239,13 @@ LABEL_26:
           [v41 timeIntervalSinceReferenceDate];
           v43 = v40 + v42;
 
-          CFPreferencesSetValue([v75 timeoutPrefNameForPrefix:v24], +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v43), @"com.apple.da", @"mobile", kCFPreferencesAnyHost);
+          CFPreferencesSetValue([selfCopy timeoutPrefNameForPrefix:prefixForDefaults], +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v43), @"com.apple.da", @"mobile", kCFPreferencesAnyHost);
           v44 = sub_10000B598();
           if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
           {
-            v45 = [v75 timeoutPrefNameForPrefix:v24];
+            v45 = [selfCopy timeoutPrefNameForPrefix:prefixForDefaults];
             *buf = 138413058;
-            v108 = v24;
+            v108 = prefixForDefaults;
             v109 = 2112;
             *v110 = v45;
             *&v110[8] = 2048;
@@ -255,15 +255,15 @@ LABEL_26:
             _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "PDSE: evaluateSelfEnablement %@: set setting %@ to %f secs_after_ref_date, which is %f seconds in the future", buf, 0x2Au);
           }
 
-          v20 = [v23 willEnableDiagnostics];
+          willEnableDiagnostics = [v23 willEnableDiagnostics];
           v46 = sub_10000B598();
           v47 = v46;
-          if (v20)
+          if (willEnableDiagnostics)
           {
             if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v108 = v24;
+              v108 = prefixForDefaults;
               _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "PDSE: evaluateSelfEnablement %@: Successful Transition from Disable to Enable", buf, 0xCu);
             }
           }
@@ -271,7 +271,7 @@ LABEL_26:
           else if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v108 = v24;
+            v108 = prefixForDefaults;
             _os_log_error_impl(&_mh_execute_header, v47, OS_LOG_TYPE_ERROR, "PDSE: evaluateSelfEnablement %@: FAILED Transition from Disable to Enable", buf, 0xCu);
           }
 
@@ -280,34 +280,34 @@ LABEL_26:
           v83[1] = 3221225472;
           v83[2] = sub_100003910;
           v83[3] = &unk_1000188C8;
-          v83[4] = v24;
-          v84 = v20;
+          v83[4] = prefixForDefaults;
+          v84 = willEnableDiagnostics;
 LABEL_80:
           AnalyticsSendEventLazy();
 
           goto LABEL_81;
         }
 
-        if (!((v35 == 0) | v32 & 1))
+        if (!((v35 == 0) | wantsEnablement & 1))
         {
           v48 = sub_10000B598();
           if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v108 = v24;
+            v108 = prefixForDefaults;
             _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "PDSE: evaluateSelfEnablement %@: Transition from Enable to Disable", buf, 0xCu);
           }
 
-          CFPreferencesSetValue([v75 timeoutPrefNameForPrefix:v24], 0, @"com.apple.da", @"mobile", kCFPreferencesAnyHost);
-          v49 = [v23 didDisableDiagnostics];
+          CFPreferencesSetValue([selfCopy timeoutPrefNameForPrefix:prefixForDefaults], 0, @"com.apple.da", @"mobile", kCFPreferencesAnyHost);
+          didDisableDiagnostics = [v23 didDisableDiagnostics];
           v50 = sub_10000B598();
           v51 = v50;
-          if (v49)
+          if (didDisableDiagnostics)
           {
             if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v108 = v24;
+              v108 = prefixForDefaults;
               _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "PDSE: evaluateSelfEnablement %@: Successful Transition from Enable to Disable", buf, 0xCu);
             }
           }
@@ -315,7 +315,7 @@ LABEL_80:
           else if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v108 = v24;
+            v108 = prefixForDefaults;
             _os_log_error_impl(&_mh_execute_header, v51, OS_LOG_TYPE_ERROR, "PDSE: evaluateSelfEnablement %@: FAILED Transition from Enable to Disable", buf, 0xCu);
           }
 
@@ -323,20 +323,20 @@ LABEL_80:
           v80[6] = 3221225472;
           v80[7] = sub_1000039E8;
           v80[8] = &unk_1000188C8;
-          v81 = v24;
-          v82 = v49;
+          v81 = prefixForDefaults;
+          v82 = didDisableDiagnostics;
           AnalyticsSendEventLazy();
 
-          LOBYTE(v20) = 1;
+          LOBYTE(willEnableDiagnostics) = 1;
         }
 
-        if (((v35 != 0) & v32) == 1)
+        if (((v35 != 0) & wantsEnablement) == 1)
         {
           v53 = sub_10000B598();
           if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v108 = v24;
+            v108 = prefixForDefaults;
             _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_INFO, "PDSE: evaluateSelfEnablement %@: Transition from Enable to Enable", buf, 0xCu);
           }
 
@@ -345,34 +345,34 @@ LABEL_80:
           v80[1] = 3221225472;
           v80[2] = sub_100003AC0;
           v80[3] = &unk_1000188A0;
-          v80[4] = v24;
+          v80[4] = prefixForDefaults;
           goto LABEL_80;
         }
 
 LABEL_81:
-        if (!v32)
+        if (!wantsEnablement)
         {
           goto LABEL_91;
         }
 
         v54 = +[HTPrefs sharedPrefs];
-        v55 = [v54 pdseAllowEnableTailspin];
+        pdseAllowEnableTailspin = [v54 pdseAllowEnableTailspin];
 
         v56 = sub_10000B598();
         v57 = v56;
-        if (v55)
+        if (pdseAllowEnableTailspin)
         {
           if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v108 = v24;
+            v108 = prefixForDefaults;
             _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "PDSE: evaluateSelfEnablement %@: get desired tailspin config", buf, 0xCu);
           }
 
-          v58 = [v23 desiredTailspinConfig];
-          if (v58)
+          desiredTailspinConfig = [v23 desiredTailspinConfig];
+          if (desiredTailspinConfig)
           {
-            v59 = v58;
+            v59 = desiredTailspinConfig;
             tailspin_config_free();
             v21 = 1;
             v66 = v59;
@@ -390,7 +390,7 @@ LABEL_81:
 
         v21 = 1;
 LABEL_91:
-        v60 = v24;
+        v60 = prefixForDefaults;
         AnalyticsSendEventLazy();
       }
 
@@ -408,7 +408,7 @@ LABEL_93:
   v5 = 0;
   v73 = *v104;
   v6 = v4;
-  obj = v3;
+  obj = clientClasses;
   do
   {
     v7 = 0;
@@ -417,20 +417,20 @@ LABEL_93:
     {
       if (*v104 != v73)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(clientClasses);
       }
 
       v76 = *(*(&v103 + 1) + 8 * v7);
-      v8 = [v76 prefixForDefaults];
-      if ([a1 hasTimeoutExpiredForPrefix:v8])
+      prefixForDefaults2 = [v76 prefixForDefaults];
+      if ([self hasTimeoutExpiredForPrefix:prefixForDefaults2])
       {
         v71 = v7;
         v101 = 0u;
         v102 = 0u;
         v99 = 0u;
         v100 = 0u;
-        v77 = v8;
-        v9 = sub_100000F48(@"com.apple.da", @"mobile", v8);
+        v77 = prefixForDefaults2;
+        v9 = sub_100000F48(@"com.apple.da", @"mobile", prefixForDefaults2);
         v10 = [v9 countByEnumeratingWithState:&v99 objects:v112 count:16];
         if (v10)
         {
@@ -462,12 +462,12 @@ LABEL_93:
           while (v11);
         }
 
-        a1 = v75;
-        CFPreferencesSetValue([v75 timeoutPrefNameForPrefix:v77], 0, @"com.apple.da", @"mobile", kCFPreferencesAnyHost);
+        self = selfCopy;
+        CFPreferencesSetValue([selfCopy timeoutPrefNameForPrefix:v77], 0, @"com.apple.da", @"mobile", kCFPreferencesAnyHost);
         v16 = sub_10000B598();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [v75 timeoutPrefNameForPrefix:v77];
+          v17 = [selfCopy timeoutPrefNameForPrefix:v77];
           *buf = 138412290;
           v108 = v17;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "PDSE: Timeout Force Disable, delete timeout setting %@", buf, 0xCu);
@@ -482,7 +482,7 @@ LABEL_93:
         v98 = v18;
         AnalyticsSendEventLazy();
         v19 = sub_10000B598();
-        v3 = obj;
+        clientClasses = obj;
         v7 = v71;
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
@@ -495,19 +495,19 @@ LABEL_93:
         hostName = 1;
         v5 = 1;
         v6 = v70;
-        v8 = v77;
+        prefixForDefaults2 = v77;
       }
 
       v7 = v7 + 1;
     }
 
     while (v7 != v6);
-    v6 = [v3 countByEnumeratingWithState:&v103 objects:v113 count:16];
+    v6 = [clientClasses countByEnumeratingWithState:&v103 objects:v113 count:16];
   }
 
   while (v6);
 
-  LOBYTE(v20) = v5;
+  LOBYTE(willEnableDiagnostics) = v5;
   if ((hostName & 1) == 0)
   {
     goto LABEL_26;
@@ -516,11 +516,11 @@ LABEL_93:
 LABEL_94:
   sub_10000A628();
   v61 = +[HTPrefs sharedPrefs];
-  v62 = [v61 isInternal];
+  isInternal = [v61 isInternal];
 
   v63 = sub_10000B598();
   v64 = os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT);
-  if (v62)
+  if (isInternal)
   {
     if (v64)
     {
@@ -542,7 +542,7 @@ LABEL_94:
   }
 
   tailspin_config_free();
-  if (v20)
+  if (willEnableDiagnostics)
   {
     v65 = sub_10000B598();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
@@ -555,79 +555,79 @@ LABEL_94:
   }
 }
 
-+ (BOOL)getKillSwitchSettingForPrefix:(id)a3
++ (BOOL)getKillSwitchSettingForPrefix:(id)prefix
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PDSEHangTracer"])
+  prefixCopy = prefix;
+  if ([prefixCopy isEqualToString:@"PDSEHangTracer"])
   {
     v4 = +[HTPrefs sharedPrefs];
-    v5 = [v4 pdseHangTracerKillSwitch];
+    pdseHangTracerKillSwitch = [v4 pdseHangTracerKillSwitch];
   }
 
-  else if ([v3 isEqualToString:@"PDSEHTBadDay"])
+  else if ([prefixCopy isEqualToString:@"PDSEHTBadDay"])
   {
     v4 = +[HTPrefs sharedPrefs];
-    v5 = [v4 pdseHTBadDayKillSwitch];
+    pdseHangTracerKillSwitch = [v4 pdseHTBadDayKillSwitch];
   }
 
-  else if ([v3 isEqualToString:@"PDSEHTRateOnly"])
+  else if ([prefixCopy isEqualToString:@"PDSEHTRateOnly"])
   {
     v4 = +[HTPrefs sharedPrefs];
-    v5 = [v4 pdseHTRateOnlyKillSwitch];
+    pdseHangTracerKillSwitch = [v4 pdseHTRateOnlyKillSwitch];
   }
 
-  else if ([v3 isEqualToString:@"PDSEHTThirdParty"])
+  else if ([prefixCopy isEqualToString:@"PDSEHTThirdParty"])
   {
     v4 = +[HTPrefs sharedPrefs];
-    v5 = [v4 pdseHTThirdPartyKillSwitch];
+    pdseHangTracerKillSwitch = [v4 pdseHTThirdPartyKillSwitch];
   }
 
-  else if ([v3 isEqualToString:@"PDSESentry"])
+  else if ([prefixCopy isEqualToString:@"PDSESentry"])
   {
     v4 = +[HTPrefs sharedPrefs];
-    v5 = [v4 pdseSentryKillSwitch];
+    pdseHangTracerKillSwitch = [v4 pdseSentryKillSwitch];
   }
 
-  else if ([v3 isEqualToString:@"PDSEWorkflowResponsiveness"])
+  else if ([prefixCopy isEqualToString:@"PDSEWorkflowResponsiveness"])
   {
     v4 = +[HTPrefs sharedPrefs];
-    v5 = [v4 pdseWorkflowResponsivenessKillSwitch];
+    pdseHangTracerKillSwitch = [v4 pdseWorkflowResponsivenessKillSwitch];
   }
 
-  else if ([v3 isEqualToString:@"PDSECATailspin"])
+  else if ([prefixCopy isEqualToString:@"PDSECATailspin"])
   {
     v4 = +[HTPrefs sharedPrefs];
-    v5 = [v4 pdseCATailspinKillSwitch];
+    pdseHangTracerKillSwitch = [v4 pdseCATailspinKillSwitch];
   }
 
-  else if ([v3 isEqualToString:@"PDSEAppLaunch"])
+  else if ([prefixCopy isEqualToString:@"PDSEAppLaunch"])
   {
     v4 = +[HTPrefs sharedPrefs];
-    v5 = [v4 pdseAppLaunchKillSwitch];
+    pdseHangTracerKillSwitch = [v4 pdseAppLaunchKillSwitch];
   }
 
   else
   {
-    if (![v3 isEqualToString:@"PDSEWBClientHang"])
+    if (![prefixCopy isEqualToString:@"PDSEWBClientHang"])
     {
       v6 = 1;
       goto LABEL_20;
     }
 
     v4 = +[HTPrefs sharedPrefs];
-    v5 = [v4 pdseWBClientHangKillSwitch];
+    pdseHangTracerKillSwitch = [v4 pdseWBClientHangKillSwitch];
   }
 
-  v6 = v5;
+  v6 = pdseHangTracerKillSwitch;
 
 LABEL_20:
   return v6;
 }
 
-+ (id)timeoutPrefNameForPrefix:(id)a3
++ (id)timeoutPrefNameForPrefix:(id)prefix
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PDSEHangTracer"])
+  prefixCopy = prefix;
+  if ([prefixCopy isEqualToString:@"PDSEHangTracer"])
   {
     v4 = &off_1000186D0;
 LABEL_19:
@@ -635,49 +635,49 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ([v3 isEqualToString:@"PDSEHTBadDay"])
+  if ([prefixCopy isEqualToString:@"PDSEHTBadDay"])
   {
     v4 = &off_1000186D8;
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"PDSEHTRateOnly"])
+  if ([prefixCopy isEqualToString:@"PDSEHTRateOnly"])
   {
     v4 = &off_1000186E0;
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"PDSEHTThirdParty"])
+  if ([prefixCopy isEqualToString:@"PDSEHTThirdParty"])
   {
     v4 = &off_1000186E8;
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"PDSESentry"])
+  if ([prefixCopy isEqualToString:@"PDSESentry"])
   {
     v4 = &off_1000186F0;
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"PDSEWorkflowResponsiveness"])
+  if ([prefixCopy isEqualToString:@"PDSEWorkflowResponsiveness"])
   {
     v4 = &off_100018708;
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"PDSECATailspin"])
+  if ([prefixCopy isEqualToString:@"PDSECATailspin"])
   {
     v4 = &off_1000186F8;
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"PDSEAppLaunch"])
+  if ([prefixCopy isEqualToString:@"PDSEAppLaunch"])
   {
     v4 = &off_100018700;
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"PDSEWBClientHang"])
+  if ([prefixCopy isEqualToString:@"PDSEWBClientHang"])
   {
     v4 = &off_100018710;
     goto LABEL_19;
@@ -689,9 +689,9 @@ LABEL_20:
   return v5;
 }
 
-+ (double)getTimeoutForPrefix:(id)a3
++ (double)getTimeoutForPrefix:(id)prefix
 {
-  v3 = CFPreferencesCopyValue([a1 timeoutPrefNameForPrefix:a3], @"com.apple.da", @"mobile", kCFPreferencesAnyHost);
+  v3 = CFPreferencesCopyValue([self timeoutPrefNameForPrefix:prefix], @"com.apple.da", @"mobile", kCFPreferencesAnyHost);
   v4 = 0.0;
   if (objc_opt_respondsToSelector())
   {
@@ -702,16 +702,16 @@ LABEL_20:
   return v4;
 }
 
-+ (BOOL)hasTimeoutExpiredForPrefix:(id)a3
++ (BOOL)hasTimeoutExpiredForPrefix:(id)prefix
 {
-  v4 = a3;
-  [a1 getTimeoutForPrefix:v4];
+  prefixCopy = prefix;
+  [self getTimeoutForPrefix:prefixCopy];
   v6 = v5;
   v7 = sub_10000B598();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v16 = 138412546;
-    v17 = v4;
+    v17 = prefixCopy;
     v18 = 2048;
     v19 = v6;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "PDSE: Fetching timeout for %@, it has value = %f", &v16, 0x16u);
@@ -725,7 +725,7 @@ LABEL_20:
       v12 = +[NSDate date];
       [v12 timeIntervalSinceReferenceDate];
       v16 = 138412802;
-      v17 = v4;
+      v17 = prefixCopy;
       v18 = 2048;
       v19 = v6;
       v20 = 2048;
@@ -741,7 +741,7 @@ LABEL_20:
     v11 = sub_10000B598();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_10000C3C8(v4, v11, v6);
+      sub_10000C3C8(prefixCopy, v11, v6);
     }
 
     v14 = 1;

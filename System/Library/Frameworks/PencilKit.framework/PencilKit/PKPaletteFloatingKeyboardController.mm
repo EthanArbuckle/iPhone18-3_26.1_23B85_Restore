@@ -4,16 +4,16 @@
 - (id)keyboardSelectionMenu;
 - (uint64_t)_currentSystemFloatingKeyboardType;
 - (void)_clearMenuStateIfNecessary;
-- (void)_presentOrDismissWithKeyboardType:(uint64_t)a1;
-- (void)_setTraitsForActiveKeyboard:(void *)a3 forResponder:;
-- (void)_updateKeyboardInputModeToFloatingKeyboardType:(uint64_t)a1;
+- (void)_presentOrDismissWithKeyboardType:(uint64_t)type;
+- (void)_setTraitsForActiveKeyboard:(void *)keyboard forResponder:;
+- (void)_updateKeyboardInputModeToFloatingKeyboardType:(uint64_t)type;
 - (void)_updateKeyboardMenuIfNecessary;
 - (void)dealloc;
 - (void)didChangeInputMode;
-- (void)dismissWithReason:(uint64_t)a1;
+- (void)dismissWithReason:(uint64_t)reason;
 - (void)notifyDelegateDidChangeKeyboardType;
 - (void)presentOrDismissIfPresented;
-- (void)setDelegate:(uint64_t)a1;
+- (void)setDelegate:(uint64_t)delegate;
 @end
 
 @implementation PKPaletteFloatingKeyboardController
@@ -29,8 +29,8 @@
     emojiInputMode = v2->_emojiInputMode;
     v2->_emojiInputMode = v3;
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel_didChangeInputMode name:*MEMORY[0x1E69DE6B8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_didChangeInputMode name:*MEMORY[0x1E69DE6B8] object:0];
   }
 
   return v2;
@@ -38,27 +38,27 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE6B8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE6B8] object:0];
 
   v4.receiver = self;
   v4.super_class = PKPaletteFloatingKeyboardController;
   [(PKPaletteFloatingKeyboardController *)&v4 dealloc];
 }
 
-- (void)setDelegate:(uint64_t)a1
+- (void)setDelegate:(uint64_t)delegate
 {
   v3 = a2;
-  if (a1)
+  if (delegate)
   {
     obj = v3;
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
+    WeakRetained = objc_loadWeakRetained((delegate + 24));
 
     v3 = obj;
     if (WeakRetained != obj)
     {
-      objc_storeWeak((a1 + 24), obj);
-      [(PKPaletteFloatingKeyboardController *)a1 notifyDelegateDidChangeKeyboardType];
+      objc_storeWeak((delegate + 24), obj);
+      [(PKPaletteFloatingKeyboardController *)delegate notifyDelegateDidChangeKeyboardType];
       v3 = obj;
     }
   }
@@ -66,15 +66,15 @@
 
 - (void)notifyDelegateDidChangeKeyboardType
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
+    WeakRetained = objc_loadWeakRetained((self + 24));
     v3 = objc_opt_respondsToSelector();
 
     if (v3)
     {
-      v4 = objc_loadWeakRetained((a1 + 24));
-      [v4 floatingKeyboardController:a1 didChangeKeyboardType:__PKFloatingKeyboardType];
+      v4 = objc_loadWeakRetained((self + 24));
+      [v4 floatingKeyboardController:self didChangeKeyboardType:__PKFloatingKeyboardType];
     }
   }
 }
@@ -88,8 +88,8 @@
 
   if (self && __PKFloatingKeyboardType == 1)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
-    [v3 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceReferenceDate];
     v5 = v4;
 
     if (v5 - self->_latestUserInitiatedInputModeChangeTimestamp < 1.0)
@@ -97,8 +97,8 @@
       v6 = __PKFloatingKeyboardType;
       if (__PKFloatingKeyboardType == 1)
       {
-        v7 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-        [v7 updateCurrentInputMode:self->_emojiInputMode];
+        mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+        [mEMORY[0x1E69DCBF0] updateCurrentInputMode:self->_emojiInputMode];
 
         v6 = __PKFloatingKeyboardType;
       }
@@ -121,27 +121,27 @@ LABEL_12:
 
 - (BOOL)isPresentingKeyboard
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-  v2 = [v1 _overrideTextInputTraits];
-  v3 = v2 != 0;
+  activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+  _overrideTextInputTraits = [activeKeyboard _overrideTextInputTraits];
+  v3 = _overrideTextInputTraits != 0;
 
   return v3;
 }
 
-- (void)_updateKeyboardInputModeToFloatingKeyboardType:(uint64_t)a1
+- (void)_updateKeyboardInputModeToFloatingKeyboardType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
     if (a2 == 1)
     {
-      v6 = [MEMORY[0x1E69DCBE0] sharedInstance];
-      v2 = [*(a1 + 32) identifier];
-      [v6 setInputMode:v2 userInitiated:1];
+      mEMORY[0x1E69DCBE0] = [MEMORY[0x1E69DCBE0] sharedInstance];
+      identifier = [*(type + 32) identifier];
+      [mEMORY[0x1E69DCBE0] setInputMode:identifier userInitiated:1];
     }
 
     else
@@ -151,11 +151,11 @@ LABEL_12:
         return;
       }
 
-      v6 = [MEMORY[0x1E69DCBE0] sharedInstance];
-      v2 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-      v3 = [v2 currentInputModeInPreference];
-      v4 = [v3 identifier];
-      [v6 setInputMode:v4 userInitiated:1];
+      mEMORY[0x1E69DCBE0] = [MEMORY[0x1E69DCBE0] sharedInstance];
+      identifier = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+      currentInputModeInPreference = [identifier currentInputModeInPreference];
+      identifier2 = [currentInputModeInPreference identifier];
+      [mEMORY[0x1E69DCBE0] setInputMode:identifier2 userInitiated:1];
     }
   }
 }
@@ -190,16 +190,16 @@ LABEL_12:
 
     v9 = MEMORY[0x1E69DC628];
     v10 = val[4];
-    v11 = [v10 extendedDisplayName];
+    extendedDisplayName = [v10 extendedDisplayName];
     v12 = +[UIImage _pk_emojiButtonImage];
     v13 = val[4];
-    v14 = [v13 primaryLanguage];
+    primaryLanguage = [v13 primaryLanguage];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __69__PKPaletteFloatingKeyboardController__updateKeyboardMenuIfNecessary__block_invoke_2;
     v21[3] = &unk_1E82D9BF0;
     objc_copyWeak(&v22, &location);
-    v15 = [v9 actionWithTitle:v11 image:v12 identifier:v14 handler:v21];
+    v15 = [v9 actionWithTitle:extendedDisplayName image:v12 identifier:primaryLanguage handler:v21];
 
     v16 = MEMORY[0x1E69DCC60];
     v26[0] = v8;
@@ -223,35 +223,35 @@ void __69__PKPaletteFloatingKeyboardController__updateKeyboardMenuIfNecessary__b
   [(PKPaletteFloatingKeyboardController *)WeakRetained _presentOrDismissWithKeyboardType:?];
 }
 
-- (void)_presentOrDismissWithKeyboardType:(uint64_t)a1
+- (void)_presentOrDismissWithKeyboardType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
-    if (![(PKPaletteFloatingKeyboardController *)a1 isPresentingKeyboard]|| __PKFloatingKeyboardType == a2)
+    if (![(PKPaletteFloatingKeyboardController *)type isPresentingKeyboard]|| __PKFloatingKeyboardType == a2)
     {
-      if ([(PKPaletteFloatingKeyboardController *)a1 isPresentingKeyboard])
+      if ([(PKPaletteFloatingKeyboardController *)type isPresentingKeyboard])
       {
 
-        [(PKPaletteFloatingKeyboardController *)a1 presentOrDismissIfPresented];
+        [(PKPaletteFloatingKeyboardController *)type presentOrDismissIfPresented];
       }
 
       else
       {
         __PKFloatingKeyboardType = a2;
-        [(PKPaletteFloatingKeyboardController *)a1 presentOrDismissIfPresented];
-        [(PKPaletteFloatingKeyboardController *)a1 _updateKeyboardInputModeToFloatingKeyboardType:a2];
-        v5 = [MEMORY[0x1E695DF00] date];
-        [v5 timeIntervalSinceReferenceDate];
-        *(a1 + 40) = v4;
+        [(PKPaletteFloatingKeyboardController *)type presentOrDismissIfPresented];
+        [(PKPaletteFloatingKeyboardController *)type _updateKeyboardInputModeToFloatingKeyboardType:a2];
+        date = [MEMORY[0x1E695DF00] date];
+        [date timeIntervalSinceReferenceDate];
+        *(type + 40) = v4;
       }
     }
 
     else
     {
-      [(PKPaletteFloatingKeyboardController *)a1 _updateKeyboardInputModeToFloatingKeyboardType:a2];
-      __PKFloatingKeyboardType = [(PKPaletteFloatingKeyboardController *)a1 _currentSystemFloatingKeyboardType];
+      [(PKPaletteFloatingKeyboardController *)type _updateKeyboardInputModeToFloatingKeyboardType:a2];
+      __PKFloatingKeyboardType = [(PKPaletteFloatingKeyboardController *)type _currentSystemFloatingKeyboardType];
 
-      [(PKPaletteFloatingKeyboardController *)a1 notifyDelegateDidChangeKeyboardType];
+      [(PKPaletteFloatingKeyboardController *)type notifyDelegateDidChangeKeyboardType];
     }
   }
 }
@@ -265,14 +265,14 @@ void __69__PKPaletteFloatingKeyboardController__updateKeyboardMenuIfNecessary__b
 - (void)_clearMenuStateIfNecessary
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v8 = 0u;
     v9 = 0u;
     v6 = 0u;
     v7 = 0u;
-    v1 = [*(a1 + 8) children];
-    v2 = [v1 countByEnumeratingWithState:&v6 objects:v10 count:16];
+    children = [*(self + 8) children];
+    v2 = [children countByEnumeratingWithState:&v6 objects:v10 count:16];
     if (v2)
     {
       v3 = v2;
@@ -284,14 +284,14 @@ void __69__PKPaletteFloatingKeyboardController__updateKeyboardMenuIfNecessary__b
         {
           if (*v7 != v4)
           {
-            objc_enumerationMutation(v1);
+            objc_enumerationMutation(children);
           }
 
           [*(*(&v6 + 1) + 8 * v5++) setAttributes:0];
         }
 
         while (v3 != v5);
-        v3 = [v1 countByEnumeratingWithState:&v6 objects:v10 count:16];
+        v3 = [children countByEnumeratingWithState:&v6 objects:v10 count:16];
       }
 
       while (v3);
@@ -301,24 +301,24 @@ void __69__PKPaletteFloatingKeyboardController__updateKeyboardMenuIfNecessary__b
 
 - (id)keyboardSelectionMenu
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    [(PKPaletteFloatingKeyboardController *)a1 _updateKeyboardMenuIfNecessary];
-    [(PKPaletteFloatingKeyboardController *)v2 _clearMenuStateIfNecessary];
-    a1 = *(v2 + 8);
+    selfCopy = self;
+    [(PKPaletteFloatingKeyboardController *)self _updateKeyboardMenuIfNecessary];
+    [(PKPaletteFloatingKeyboardController *)selfCopy _clearMenuStateIfNecessary];
+    self = *(selfCopy + 8);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)presentOrDismissIfPresented
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 17) == 1)
+    if (*(self + 17) == 1)
     {
       v2 = os_log_create("com.apple.pencilkit", "PKPalette");
       if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -329,21 +329,21 @@ void __69__PKPaletteFloatingKeyboardController__updateKeyboardMenuIfNecessary__b
       }
     }
 
-    else if ([(PKPaletteFloatingKeyboardController *)a1 isPresentingKeyboard])
+    else if ([(PKPaletteFloatingKeyboardController *)self isPresentingKeyboard])
     {
 
-      [(PKPaletteFloatingKeyboardController *)a1 dismissWithReason:?];
+      [(PKPaletteFloatingKeyboardController *)self dismissWithReason:?];
     }
 
     else
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 24));
+      WeakRetained = objc_loadWeakRetained((self + 24));
       v4 = objc_opt_respondsToSelector();
 
       if (v4)
       {
-        v5 = objc_loadWeakRetained((a1 + 24));
-        v6 = [v5 responderForFloatingKeyboardController:a1];
+        v5 = objc_loadWeakRetained((self + 24));
+        v6 = [v5 responderForFloatingKeyboardController:self];
       }
 
       else
@@ -366,22 +366,22 @@ void __69__PKPaletteFloatingKeyboardController__updateKeyboardMenuIfNecessary__b
 
         v11 = __PKFloatingKeyboardType;
         v12 = v6;
-        v8 = objc_loadWeakRetained((a1 + 24));
-        if (![(PKPaletteFloatingKeyboardController *)a1 isPresentingKeyboard]&& (objc_opt_respondsToSelector() & 1) != 0)
+        v8 = objc_loadWeakRetained((self + 24));
+        if (![(PKPaletteFloatingKeyboardController *)self isPresentingKeyboard]&& (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v8 floatingKeyboardControllerWillShow:a1];
+          [v8 floatingKeyboardControllerWillShow:self];
         }
 
         if (v11 == 1)
         {
-          v13 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-          [v13 updateCurrentInputMode:*(a1 + 32)];
+          mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+          [mEMORY[0x1E69DCBF0] updateCurrentInputMode:*(self + 32)];
         }
 
-        v14 = [MEMORY[0x1E69DD108] defaultTextInputTraits];
-        [v14 setForceFloatingKeyboard:1];
-        [v14 setAcceptsInitialEmojiKeyboard:1];
-        [(PKPaletteFloatingKeyboardController *)a1 _setTraitsForActiveKeyboard:v14 forResponder:v12];
+        defaultTextInputTraits = [MEMORY[0x1E69DD108] defaultTextInputTraits];
+        [defaultTextInputTraits setForceFloatingKeyboard:1];
+        [defaultTextInputTraits setAcceptsInitialEmojiKeyboard:1];
+        [(PKPaletteFloatingKeyboardController *)self _setTraitsForActiveKeyboard:defaultTextInputTraits forResponder:v12];
       }
 
       else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -393,13 +393,13 @@ void __69__PKPaletteFloatingKeyboardController__updateKeyboardMenuIfNecessary__b
   }
 }
 
-- (void)dismissWithReason:(uint64_t)a1
+- (void)dismissWithReason:(uint64_t)reason
 {
   v13 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (reason)
   {
-    if (*(a1 + 17) == 1)
+    if (*(reason + 17) == 1)
     {
       WeakRetained = os_log_create("com.apple.pencilkit", "PKPalette");
       if (os_log_type_enabled(WeakRetained, OS_LOG_TYPE_DEBUG))
@@ -410,24 +410,24 @@ void __69__PKPaletteFloatingKeyboardController__updateKeyboardMenuIfNecessary__b
       }
     }
 
-    else if ([(PKPaletteFloatingKeyboardController *)a1 isPresentingKeyboard])
+    else if ([(PKPaletteFloatingKeyboardController *)reason isPresentingKeyboard])
     {
-      __PKFloatingKeyboardType = [(PKPaletteFloatingKeyboardController *)a1 _currentSystemFloatingKeyboardType];
-      WeakRetained = objc_loadWeakRetained((a1 + 24));
-      if ([(PKPaletteFloatingKeyboardController *)a1 isPresentingKeyboard]&& (objc_opt_respondsToSelector() & 1) != 0)
+      __PKFloatingKeyboardType = [(PKPaletteFloatingKeyboardController *)reason _currentSystemFloatingKeyboardType];
+      WeakRetained = objc_loadWeakRetained((reason + 24));
+      if ([(PKPaletteFloatingKeyboardController *)reason isPresentingKeyboard]&& (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [WeakRetained floatingKeyboardControllerWillHide:a1];
+        [WeakRetained floatingKeyboardControllerWillHide:reason];
       }
 
-      v5 = objc_loadWeakRetained((a1 + 24));
-      v6 = [v5 responderForFloatingKeyboardController:a1];
+      v5 = objc_loadWeakRetained((reason + 24));
+      v6 = [v5 responderForFloatingKeyboardController:reason];
 
       if (objc_opt_respondsToSelector())
       {
         [v6 set_textInputSource:3];
       }
 
-      [(PKPaletteFloatingKeyboardController *)a1 _setTraitsForActiveKeyboard:v6 forResponder:?];
+      [(PKPaletteFloatingKeyboardController *)reason _setTraitsForActiveKeyboard:v6 forResponder:?];
       v7 = os_log_create("com.apple.pencilkit", "PKPalette");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
@@ -436,13 +436,13 @@ void __69__PKPaletteFloatingKeyboardController__updateKeyboardMenuIfNecessary__b
         _os_log_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEFAULT, "Dismissing UCB-Keyboard with reason: '%@'", &v11, 0xCu);
       }
 
-      v8 = objc_loadWeakRetained((a1 + 24));
+      v8 = objc_loadWeakRetained((reason + 24));
       v9 = objc_opt_respondsToSelector();
 
       if (v9)
       {
-        v10 = objc_loadWeakRetained((a1 + 24));
-        [v10 floatingKeyboardController:a1 didDismissWithReason:v3];
+        v10 = objc_loadWeakRetained((reason + 24));
+        [v10 floatingKeyboardController:reason didDismissWithReason:v3];
       }
     }
 
@@ -459,27 +459,27 @@ void __69__PKPaletteFloatingKeyboardController__updateKeyboardMenuIfNecessary__b
   }
 }
 
-- (void)_setTraitsForActiveKeyboard:(void *)a3 forResponder:
+- (void)_setTraitsForActiveKeyboard:(void *)keyboard forResponder:
 {
   v5 = MEMORY[0x1E69DCBB8];
-  v6 = a3;
+  keyboardCopy = keyboard;
   v7 = a2;
-  v8 = [v5 activeKeyboard];
-  [v8 set_overrideTextInputTraits:v7];
+  activeKeyboard = [v5 activeKeyboard];
+  [activeKeyboard set_overrideTextInputTraits:v7];
 
-  *(a1 + 17) = 1;
-  [v6 reloadInputViews];
+  *(self + 17) = 1;
+  [keyboardCopy reloadInputViews];
 
-  *(a1 + 17) = 0;
+  *(self + 17) = 0;
 }
 
 - (uint64_t)_currentSystemFloatingKeyboardType
 {
-  v2 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-  v3 = [v2 currentInputMode];
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  currentInputMode = [mEMORY[0x1E69DCBF0] currentInputMode];
 
-  LODWORD(a1) = [v3 isEqual:*(a1 + 32)];
-  return a1;
+  LODWORD(self) = [currentInputMode isEqual:*(self + 32)];
+  return self;
 }
 
 @end

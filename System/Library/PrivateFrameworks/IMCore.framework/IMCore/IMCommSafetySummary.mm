@@ -1,8 +1,8 @@
 @interface IMCommSafetySummary
 + (id)primaryiCloudAccountIdentifier;
-+ (id)recipientStrings:(id)a3;
-+ (void)registerEvent:(unint64_t)a3 eventType:(unint64_t)a4 messageGUID:(id)a5 chat:(id)a6 forImages:(id)a7;
-+ (void)registerEvent:(unint64_t)a3 eventType:(unint64_t)a4 messageGUID:(id)a5 chat:(id)a6 forImages:(id)a7 childID:(id)a8 deviceID:(id)a9 senderID:(id)a10 eventSender:(id)a11;
++ (id)recipientStrings:(id)strings;
++ (void)registerEvent:(unint64_t)event eventType:(unint64_t)type messageGUID:(id)d chat:(id)chat forImages:(id)images;
++ (void)registerEvent:(unint64_t)event eventType:(unint64_t)type messageGUID:(id)d chat:(id)chat forImages:(id)images childID:(id)iD deviceID:(id)deviceID senderID:(id)self0 eventSender:(id)self1;
 @end
 
 @implementation IMCommSafetySummary
@@ -19,16 +19,16 @@
   return v3;
 }
 
-+ (id)recipientStrings:(id)a3
++ (id)recipientStrings:(id)strings
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stringsCopy = strings;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = objc_msgSend_participants(v3, v5, v6, 0);
+  v7 = objc_msgSend_participants(stringsCopy, v5, v6, 0);
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v20, v24, 16);
   if (v9)
   {
@@ -68,12 +68,12 @@
   return v4;
 }
 
-+ (void)registerEvent:(unint64_t)a3 eventType:(unint64_t)a4 messageGUID:(id)a5 chat:(id)a6 forImages:(id)a7
++ (void)registerEvent:(unint64_t)event eventType:(unint64_t)type messageGUID:(id)d chat:(id)chat forImages:(id)images
 {
   v45 = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  dCopy = d;
+  chatCopy = chat;
+  imagesCopy = images;
   v17 = objc_msgSend_sharedManager(MEMORY[0x1E69A7FC8], v15, v16);
   if (objc_msgSend_shouldNotifyParentAboutSensitivePhotos(v17, v18, v19))
   {
@@ -84,9 +84,9 @@
     {
       v42 = objc_msgSend_primaryiCloudAccountIdentifier(IMCommSafetySummary, v26, v27);
       v29 = MGCopyAnswer();
-      if (v12)
+      if (dCopy)
       {
-        v30 = objc_msgSend_messageForGUID_(v13, v28, v12);
+        v30 = objc_msgSend_messageForGUID_(chatCopy, v28, dCopy);
         v33 = v30;
         if (v30)
         {
@@ -112,7 +112,7 @@
         v37 = v40;
       }
 
-      objc_msgSend_registerEvent_eventType_messageGUID_chat_forImages_childID_deviceID_senderID_eventSender_(a1, v39, a3, a4, v12, v13, v14, v42, v29, v37, &unk_1F1B6F2E0);
+      objc_msgSend_registerEvent_eventType_messageGUID_chat_forImages_childID_deviceID_senderID_eventSender_(self, v39, event, type, dCopy, chatCopy, imagesCopy, v42, v29, v37, &unk_1F1B6F2E0);
 
       goto LABEL_17;
     }
@@ -128,7 +128,7 @@
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v44 = a4;
+      typeCopy = type;
       _os_log_impl(&dword_1A823F000, v38, OS_LOG_TYPE_INFO, "Not registering event %lu because setting is not enabled!", buf, 0xCu);
     }
   }
@@ -138,35 +138,35 @@ LABEL_17:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)registerEvent:(unint64_t)a3 eventType:(unint64_t)a4 messageGUID:(id)a5 chat:(id)a6 forImages:(id)a7 childID:(id)a8 deviceID:(id)a9 senderID:(id)a10 eventSender:(id)a11
++ (void)registerEvent:(unint64_t)event eventType:(unint64_t)type messageGUID:(id)d chat:(id)chat forImages:(id)images childID:(id)iD deviceID:(id)deviceID senderID:(id)self0 eventSender:(id)self1
 {
   v142 = *MEMORY[0x1E69E9840];
-  v113 = a5;
-  v99 = a6;
-  v14 = a7;
-  v105 = a8;
-  v104 = a9;
-  v110 = a10;
-  v106 = a11;
+  dCopy = d;
+  chatCopy = chat;
+  imagesCopy = images;
+  iDCopy = iD;
+  deviceIDCopy = deviceID;
+  senderIDCopy = senderID;
+  senderCopy = sender;
   v107 = objc_msgSend_sharedRegistry(IMChatRegistry, v15, v16);
-  v111 = objc_msgSend_chatIdentifier(v99, v17, v18);
-  v112 = objc_msgSend_messagesURLWithChat_(v107, v19, v99);
-  v103 = objc_msgSend_recipientStrings_(IMCommSafetySummary, v20, v99);
-  if (!v14)
+  v111 = objc_msgSend_chatIdentifier(chatCopy, v17, v18);
+  v112 = objc_msgSend_messagesURLWithChat_(v107, v19, chatCopy);
+  v103 = objc_msgSend_recipientStrings_(IMCommSafetySummary, v20, chatCopy);
+  if (!imagesCopy)
   {
     v21 = objc_alloc(MEMORY[0x1E698F260]);
     v24 = objc_msgSend_now(MEMORY[0x1E695DF00], v22, v23);
     objc_msgSend_timeIntervalSinceReferenceDate(v24, v25, v26);
-    v28 = objc_msgSend_initWithChildID_deviceID_sourceBundleID_absoluteTimeStamp_eventDirection_eventType_contentType_contactHandles_contentID_conversationID_imageData_senderHandle_contentURL_conversationURL_(v21, v27, v105, v104, @"com.apple.MobileSMS", a3, a4, 0, v103, &stru_1F1B76F98, v111, 0, 0, 0, v112);
+    v28 = objc_msgSend_initWithChildID_deviceID_sourceBundleID_absoluteTimeStamp_eventDirection_eventType_contentType_contactHandles_contentID_conversationID_imageData_senderHandle_contentURL_conversationURL_(v21, v27, iDCopy, deviceIDCopy, @"com.apple.MobileSMS", event, type, 0, v103, &stru_1F1B76F98, v111, 0, 0, 0, v112);
 
-    v106[2](v106, v28, v28);
+    senderCopy[2](senderCopy, v28, v28);
     if (IMOSLoggingEnabled())
     {
       v29 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v128 = a4;
+        typeCopy = type;
         _os_log_impl(&dword_1A823F000, v29, OS_LOG_TYPE_INFO, "Registered event of type %lu with Biome", buf, 0xCu);
       }
     }
@@ -176,7 +176,7 @@ LABEL_17:
   v126 = 0u;
   v123 = 0u;
   v124 = 0u;
-  v100 = v14;
+  v100 = imagesCopy;
   v108 = objc_msgSend_countByEnumeratingWithState_objects_count_(v100, v30, &v123, v141, 16);
   if (v108)
   {
@@ -195,14 +195,14 @@ LABEL_17:
         v33 = objc_msgSend_imageData(v122, v31, v32);
         v119 = IMRescaledImageDataFromDataForBiomeDonation();
 
-        if (v113)
+        if (dCopy)
         {
-          objc_msgSend_messagesURLWithMessageGUID_(v107, v34, v113);
+          objc_msgSend_messagesURLWithMessageGUID_(v107, v34, dCopy);
         }
 
         else
         {
-          objc_msgSend_messagesURLWithChat_(v107, v34, v99);
+          objc_msgSend_messagesURLWithChat_(v107, v34, chatCopy);
         }
         v121 = ;
         v35 = objc_alloc(MEMORY[0x1E698F260]);
@@ -210,7 +210,7 @@ LABEL_17:
         objc_msgSend_timeIntervalSinceReferenceDate(v38, v39, v40);
         v42 = v41;
         v45 = objc_msgSend_identifier(v122, v43, v44);
-        v47 = objc_msgSend_initWithChildID_deviceID_sourceBundleID_absoluteTimeStamp_eventDirection_eventType_contentType_contactHandles_contentID_conversationID_imageData_senderHandle_contentURL_conversationURL_(v35, v46, v105, v104, @"com.apple.MobileSMS", a3, a4, 0, v42, v103, v45, v111, v119, v110, v121, v112);
+        v47 = objc_msgSend_initWithChildID_deviceID_sourceBundleID_absoluteTimeStamp_eventDirection_eventType_contentType_contactHandles_contentID_conversationID_imageData_senderHandle_contentURL_conversationURL_(v35, v46, iDCopy, deviceIDCopy, @"com.apple.MobileSMS", event, type, 0, v42, v103, v45, v111, v119, senderIDCopy, v121, v112);
 
         v115 = objc_alloc(MEMORY[0x1E698F260]);
         v118 = objc_msgSend_childID(v47, v48, v49);
@@ -229,7 +229,7 @@ LABEL_17:
         v84 = objc_msgSend_conversationURL(v47, v82, v83);
         v86 = objc_msgSend_initWithChildID_deviceID_sourceBundleID_absoluteTimeStamp_eventDirection_eventType_contentType_contactHandles_contentID_conversationID_imageData_senderHandle_contentURL_conversationURL_(v115, v85, v118, v117, v116, v60, v63, v66, v57, v69, v72, v75, 0, v78, v81, v84);
 
-        v106[2](v106, v47, v86);
+        senderCopy[2](senderCopy, v47, v86);
         if (IMOSLoggingEnabled())
         {
           v87 = OSLogHandleForIMFoundationCategory();
@@ -239,11 +239,11 @@ LABEL_17:
             v93 = objc_msgSend_absoluteString(v121, v91, v92);
             v96 = objc_msgSend_absoluteString(v112, v94, v95);
             *buf = 138413826;
-            v128 = v113;
+            typeCopy = dCopy;
             v129 = 2048;
-            v130 = a4;
+            typeCopy2 = type;
             v131 = 2112;
-            v132 = v110;
+            v132 = senderIDCopy;
             v133 = 2112;
             v134 = v90;
             v135 = 2112;

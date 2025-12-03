@@ -1,14 +1,14 @@
 @interface DSNSURLBatchEnumerator
-- (DSNSURLBatchEnumerator)initWithURLs:(id)a3 targets:(id)a4 batchSize:(unint64_t)a5;
+- (DSNSURLBatchEnumerator)initWithURLs:(id)ls targets:(id)targets batchSize:(unint64_t)size;
 - (id)nextBatch;
 @end
 
 @implementation DSNSURLBatchEnumerator
 
-- (DSNSURLBatchEnumerator)initWithURLs:(id)a3 targets:(id)a4 batchSize:(unint64_t)a5
+- (DSNSURLBatchEnumerator)initWithURLs:(id)ls targets:(id)targets batchSize:(unint64_t)size
 {
-  v9 = a3;
-  v10 = a4;
+  lsCopy = ls;
+  targetsCopy = targets;
   v14.receiver = self;
   v14.super_class = DSNSURLBatchEnumerator;
   v11 = [(DSNSURLBatchEnumerator *)&v14 init];
@@ -16,9 +16,9 @@
   if (v11)
   {
     v11->_index = 0;
-    v11->_batchSize = a5;
-    objc_storeStrong(&v11->_urls, a3);
-    objc_storeStrong(&v12->_targetNames, a4);
+    v11->_batchSize = size;
+    objc_storeStrong(&v11->_urls, ls);
+    objc_storeStrong(&v12->_targetNames, targets);
   }
 
   return v12;

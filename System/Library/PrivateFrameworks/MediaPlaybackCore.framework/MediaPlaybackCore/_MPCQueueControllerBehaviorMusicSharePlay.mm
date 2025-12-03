@@ -1,76 +1,76 @@
 @interface _MPCQueueControllerBehaviorMusicSharePlay
-+ (BOOL)canLoadQueue:(id)a3 reason:(id *)a4;
-- (BOOL)_useItemPlaceholderForContentItemID:(id)a3;
-- (BOOL)_useItemPlaceholderForItemID:(id)a3;
-- (BOOL)canJumpToContentItemID:(id)a3 reason:(id *)a4;
-- (BOOL)canNextItemFromContentItemID:(id)a3 reason:(id *)a4;
-- (BOOL)canPreviousItemFromContentItemID:(id)a3 reason:(id *)a4;
-- (BOOL)canUserChangeRepeatTypeWithReason:(id *)a3;
-- (BOOL)canUserChangeShuffleModeWithReason:(id *)a3;
-- (BOOL)canUserEnableAutoPlayWithReason:(id *)a3;
-- (BOOL)isAutoPlayContentItemID:(id)a3;
++ (BOOL)canLoadQueue:(id)queue reason:(id *)reason;
+- (BOOL)_useItemPlaceholderForContentItemID:(id)d;
+- (BOOL)_useItemPlaceholderForItemID:(id)d;
+- (BOOL)canJumpToContentItemID:(id)d reason:(id *)reason;
+- (BOOL)canNextItemFromContentItemID:(id)d reason:(id *)reason;
+- (BOOL)canPreviousItemFromContentItemID:(id)d reason:(id *)reason;
+- (BOOL)canUserChangeRepeatTypeWithReason:(id *)reason;
+- (BOOL)canUserChangeShuffleModeWithReason:(id *)reason;
+- (BOOL)canUserEnableAutoPlayWithReason:(id *)reason;
+- (BOOL)isAutoPlayContentItemID:(id)d;
 - (BOOL)isEmpty;
-- (BOOL)isSupportedInsertionPosition:(int64_t)a3 fromContentItemID:(id)a4 reason:(id *)a5;
-- (BOOL)itemExistsForContentItemID:(id)a3;
+- (BOOL)isSupportedInsertionPosition:(int64_t)position fromContentItemID:(id)d reason:(id *)reason;
+- (BOOL)itemExistsForContentItemID:(id)d;
 - (MPCQueueControllerBehaviorHost)host;
 - (MPCQueueControllerBehaviorMusicDelegate)musicBehaviorDelegate;
 - (MPCQueueControllerBehaviorMusicSharePlayDelegate)musicSharePlayBehaviorDelegate;
 - (MPCQueueControllerExternalSyncBehaviorHost)externalSyncHost;
-- (_MPCQueueControllerBehaviorMusicSharePlay)initWithSessionID:(id)a3;
-- (id)_componentsForContentItemID:(id)a3;
-- (id)_componentsForSharedListeningItemID:(id)a3;
-- (id)_itemForContentItemID:(id)a3 allowReuse:(BOOL)a4;
-- (id)_itemObjectForSharedListeningItemID:(id)a3;
-- (id)_mpcSharedListeningEventForICLiveLinkEvent:(id)a3;
+- (_MPCQueueControllerBehaviorMusicSharePlay)initWithSessionID:(id)d;
+- (id)_componentsForContentItemID:(id)d;
+- (id)_componentsForSharedListeningItemID:(id)d;
+- (id)_itemForContentItemID:(id)d allowReuse:(BOOL)reuse;
+- (id)_itemObjectForSharedListeningItemID:(id)d;
+- (id)_mpcSharedListeningEventForICLiveLinkEvent:(id)event;
 - (id)_queueAsStateDictionary;
-- (id)_sectionObjectForSharedListeningContainerID:(id)a3;
-- (id)_sectionedCollectionForQueue:(id)a3;
-- (id)_stateDictionaryIncludingQueue:(BOOL)a3;
-- (id)contentItemIDEnumeratorStartingAfterContentItemID:(id)a3 mode:(int64_t)a4 options:(unint64_t)a5;
-- (id)contentItemIDWithoutRepeatIteration:(id)a3;
-- (id)copyContentItemID:(id)a3 repeatIteration:(int64_t)a4;
-- (id)performLoadCommand:(id)a3 completion:(id)a4;
-- (id)playbackCoordinator:(id)a3 identifierForPlayerItem:(id)a4;
+- (id)_sectionObjectForSharedListeningContainerID:(id)d;
+- (id)_sectionedCollectionForQueue:(id)queue;
+- (id)_stateDictionaryIncludingQueue:(BOOL)queue;
+- (id)contentItemIDEnumeratorStartingAfterContentItemID:(id)d mode:(int64_t)mode options:(unint64_t)options;
+- (id)contentItemIDWithoutRepeatIteration:(id)iteration;
+- (id)copyContentItemID:(id)d repeatIteration:(int64_t)iteration;
+- (id)performLoadCommand:(id)command completion:(id)completion;
+- (id)playbackCoordinator:(id)coordinator identifierForPlayerItem:(id)item;
 - (int64_t)displayItemCount;
 - (int64_t)queueExplicitContentState;
 - (void)_dequeuePendingActions;
-- (void)_emitEventsForAddedSharedListeningContainer:(id)a3;
-- (void)_emitEventsForParticipants:(id)a3 localUserIdentity:(id)a4;
+- (void)_emitEventsForAddedSharedListeningContainer:(id)container;
+- (void)_emitEventsForParticipants:(id)participants localUserIdentity:(id)identity;
 - (void)_emitEventsForPlaybackBehaviorChange;
-- (void)_enqueuePendingActionWithLabel:(id)a3 itemIdentifier:(id)a4 block:(id)a5;
-- (void)_initializeWithQueue:(id)a3;
-- (void)_purgePendingActionsWithLabel:(id)a3;
-- (void)_reloadCacheDataWithOptions:(unint64_t)a3;
-- (void)_setQueue:(id)a3;
-- (void)canReuseQueue:(id)a3 completion:(id)a4;
-- (void)clearAllItemsAfterContentItemID:(id)a3;
-- (void)controller:(id)a3 defersResponseReplacement:(id)a4;
-- (void)didConnectToHost:(id)a3;
-- (void)didJumpToTargetContentItemID:(id)a3;
-- (void)didStopLiveLink:(id)a3;
-- (void)disconnectFromHost:(id)a3;
+- (void)_enqueuePendingActionWithLabel:(id)label itemIdentifier:(id)identifier block:(id)block;
+- (void)_initializeWithQueue:(id)queue;
+- (void)_purgePendingActionsWithLabel:(id)label;
+- (void)_reloadCacheDataWithOptions:(unint64_t)options;
+- (void)_setQueue:(id)queue;
+- (void)canReuseQueue:(id)queue completion:(id)completion;
+- (void)clearAllItemsAfterContentItemID:(id)d;
+- (void)controller:(id)controller defersResponseReplacement:(id)replacement;
+- (void)didConnectToHost:(id)host;
+- (void)didJumpToTargetContentItemID:(id)d;
+- (void)didStopLiveLink:(id)link;
+- (void)disconnectFromHost:(id)host;
 - (void)endSynchronizedPlayback;
-- (void)findFirstContentItemIDForItemIntersectingIdentifierSet:(id)a3 completion:(id)a4;
-- (void)getExpectedCurrentItemModelObjectWithCompletion:(id)a3;
-- (void)getSharedQueueTracklistWithStartingContentItemID:(id)a3 completion:(id)a4;
-- (void)liveLink:(id)a3 didEncounterError:(id)a4 willRetry:(BOOL)a5;
-- (void)liveLink:(id)a3 didReceiveDirectCurrentItemChanged:(id)a4 fromParticipant:(id)a5;
-- (void)liveLink:(id)a3 didReceiveEvent:(id)a4;
-- (void)liveLink:(id)a3 didUpdateParticipants:(id)a4;
-- (void)liveLink:(id)a3 didUpdateQueue:(id)a4;
-- (void)liveLinkDidReconnect:(id)a3;
-- (void)moveContentItemID:(id)a3 afterContentItemID:(id)a4 completion:(id)a5;
-- (void)moveContentItemID:(id)a3 beforeContentItemID:(id)a4 completion:(id)a5;
-- (void)performInsertCommand:(id)a3 targetContentItemID:(id)a4 completion:(id)a5;
-- (void)removeContentItemID:(id)a3 completion:(id)a4;
-- (void)reshuffleWithTargetContentItemID:(id)a3 completion:(id)a4;
-- (void)setAllowsQueueModifications:(BOOL)a3;
-- (void)setAutoPlayEnabled:(BOOL)a3 targetContentItemID:(id)a4 completion:(id)a5;
-- (void)setHostingSharedSessionID:(id)a3 reason:(id)a4;
-- (void)setRepeatType:(int64_t)a3 completion:(id)a4;
-- (void)setRequestedPropertySetForEvents:(id)a3;
-- (void)setShuffleType:(int64_t)a3 targetContentItemID:(id)a4 completion:(id)a5;
-- (void)updatePlaybackCoordinator:(id)a3;
+- (void)findFirstContentItemIDForItemIntersectingIdentifierSet:(id)set completion:(id)completion;
+- (void)getExpectedCurrentItemModelObjectWithCompletion:(id)completion;
+- (void)getSharedQueueTracklistWithStartingContentItemID:(id)d completion:(id)completion;
+- (void)liveLink:(id)link didEncounterError:(id)error willRetry:(BOOL)retry;
+- (void)liveLink:(id)link didReceiveDirectCurrentItemChanged:(id)changed fromParticipant:(id)participant;
+- (void)liveLink:(id)link didReceiveEvent:(id)event;
+- (void)liveLink:(id)link didUpdateParticipants:(id)participants;
+- (void)liveLink:(id)link didUpdateQueue:(id)queue;
+- (void)liveLinkDidReconnect:(id)reconnect;
+- (void)moveContentItemID:(id)d afterContentItemID:(id)iD completion:(id)completion;
+- (void)moveContentItemID:(id)d beforeContentItemID:(id)iD completion:(id)completion;
+- (void)performInsertCommand:(id)command targetContentItemID:(id)d completion:(id)completion;
+- (void)removeContentItemID:(id)d completion:(id)completion;
+- (void)reshuffleWithTargetContentItemID:(id)d completion:(id)completion;
+- (void)setAllowsQueueModifications:(BOOL)modifications;
+- (void)setAutoPlayEnabled:(BOOL)enabled targetContentItemID:(id)d completion:(id)completion;
+- (void)setHostingSharedSessionID:(id)d reason:(id)reason;
+- (void)setRepeatType:(int64_t)type completion:(id)completion;
+- (void)setRequestedPropertySetForEvents:(id)events;
+- (void)setShuffleType:(int64_t)type targetContentItemID:(id)d completion:(id)completion;
+- (void)updatePlaybackCoordinator:(id)coordinator;
 @end
 
 @implementation _MPCQueueControllerBehaviorMusicSharePlay
@@ -103,55 +103,55 @@
   return WeakRetained;
 }
 
-- (BOOL)_useItemPlaceholderForContentItemID:(id)a3
+- (BOOL)_useItemPlaceholderForContentItemID:(id)d
 {
-  v5 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:a3];
+  v5 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:d];
   if ([v5 type])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusicSharePlay.m" lineNumber:1813 description:@"This method only supports MPCQueueControllerBehaviorItemTypeItem"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusicSharePlay.m" lineNumber:1813 description:@"This method only supports MPCQueueControllerBehaviorItemTypeItem"];
   }
 
-  v6 = [v5 itemID];
-  v7 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _useItemPlaceholderForItemID:v6];
+  itemID = [v5 itemID];
+  v7 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _useItemPlaceholderForItemID:itemID];
 
   return v7;
 }
 
-- (BOOL)_useItemPlaceholderForItemID:(id)a3
+- (BOOL)_useItemPlaceholderForItemID:(id)d
 {
   requestController = self->_requestController;
-  v5 = a3;
-  v6 = [(MPRequestResponseController *)requestController response];
-  v7 = [v6 modelResponse];
-  v8 = [v7 results];
+  dCopy = d;
+  response = [(MPRequestResponseController *)requestController response];
+  modelResponse = [response modelResponse];
+  results = [modelResponse results];
 
-  v9 = [(NSDictionary *)self->_resultsIndexPathMap objectForKeyedSubscript:v5];
+  v9 = [(NSDictionary *)self->_resultsIndexPathMap objectForKeyedSubscript:dCopy];
 
   if (v9)
   {
-    v10 = [v8 identifiersForItemAtIndexPath:v9];
-    v11 = [v10 isPlaceholder];
+    v10 = [results identifiersForItemAtIndexPath:v9];
+    isPlaceholder = [v10 isPlaceholder];
   }
 
   else
   {
-    v11 = 1;
+    isPlaceholder = 1;
   }
 
-  return v11;
+  return isPlaceholder;
 }
 
-- (void)_setQueue:(id)a3
+- (void)_setQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   p_queue = &self->_queue;
   queue = self->_queue;
-  if (queue != v5)
+  if (queue != queueCopy)
   {
-    if (!queue || (v8 = [(ICSharedListeningQueue *)queue isAutoPlayEnabled], v8 != [(ICSharedListeningQueue *)v5 isAutoPlayEnabled]))
+    if (!queue || (v8 = [(ICSharedListeningQueue *)queue isAutoPlayEnabled], v8 != [(ICSharedListeningQueue *)queueCopy isAutoPlayEnabled]))
     {
-      v9 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self musicBehaviorDelegate];
+      musicBehaviorDelegate = [(_MPCQueueControllerBehaviorMusicSharePlay *)self musicBehaviorDelegate];
       if ([(_MPCQueueControllerBehaviorMusicSharePlay *)self autoPlayEnabled])
       {
         v10 = 3;
@@ -162,47 +162,47 @@
         v10 = 2;
       }
 
-      [v9 behavior:self didChangeActionAtQueueEnd:v10];
+      [musicBehaviorDelegate behavior:self didChangeActionAtQueueEnd:v10];
 
       [(_MPCQueueControllerBehaviorMusicSharePlay *)self _emitEventsForPlaybackBehaviorChange];
     }
 
-    if (!*p_queue || (v11 = [*p_queue explicitContentState], v11 != -[ICSharedListeningQueue explicitContentState](v5, "explicitContentState")))
+    if (!*p_queue || (v11 = [*p_queue explicitContentState], v11 != -[ICSharedListeningQueue explicitContentState](queueCopy, "explicitContentState")))
     {
-      v12 = [(ICSharedListeningQueue *)v5 explicitContentState];
-      if (v12 == 2)
+      explicitContentState = [(ICSharedListeningQueue *)queueCopy explicitContentState];
+      if (explicitContentState == 2)
       {
         v13 = 2;
       }
 
       else
       {
-        v13 = v12 == 1;
+        v13 = explicitContentState == 1;
       }
 
-      v14 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self musicSharePlayBehaviorDelegate];
-      [v14 behavior:self didChangeExplicitContentState:v13];
+      musicSharePlayBehaviorDelegate = [(_MPCQueueControllerBehaviorMusicSharePlay *)self musicSharePlayBehaviorDelegate];
+      [musicSharePlayBehaviorDelegate behavior:self didChangeExplicitContentState:v13];
     }
 
-    objc_storeStrong(&self->_queue, a3);
-    v15 = [(ICSharedListeningQueue *)self->_queue tracklist];
+    objc_storeStrong(&self->_queue, queue);
+    tracklist = [(ICSharedListeningQueue *)self->_queue tracklist];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __55___MPCQueueControllerBehaviorMusicSharePlay__setQueue___block_invoke;
     v16[3] = &unk_1E8233248;
     v16[4] = self;
-    [v15 enumerateSectionsUsingBlock:v16];
+    [tracklist enumerateSectionsUsingBlock:v16];
 
     [(_MPCQueueControllerBehaviorMusicSharePlay *)self _reloadCacheDataWithOptions:0];
   }
 }
 
-- (id)_sectionObjectForSharedListeningContainerID:(id)a3
+- (id)_sectionObjectForSharedListeningContainerID:(id)d
 {
-  v4 = a3;
-  v5 = [(MPRequestResponseController *)self->_requestController response];
-  v6 = [v5 modelResponse];
-  v7 = [v6 results];
+  dCopy = d;
+  response = [(MPRequestResponseController *)self->_requestController response];
+  modelResponse = [response modelResponse];
+  results = [modelResponse results];
 
   v14 = 0;
   v15 = &v14;
@@ -214,10 +214,10 @@
   v11[1] = 3221225472;
   v11[2] = __89___MPCQueueControllerBehaviorMusicSharePlay__sectionObjectForSharedListeningContainerID___block_invoke;
   v11[3] = &unk_1E8233220;
-  v8 = v4;
+  v8 = dCopy;
   v12 = v8;
   v13 = &v14;
-  [v7 enumerateSectionsUsingBlock:v11];
+  [results enumerateSectionsUsingBlock:v11];
   v9 = v15[5];
 
   _Block_object_dispose(&v14, 8);
@@ -225,61 +225,61 @@
   return v9;
 }
 
-- (id)_sectionedCollectionForQueue:(id)a3
+- (id)_sectionedCollectionForQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
+  queueCopy = queue;
+  host = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
   v6 = objc_alloc_init(MEMORY[0x1E6970818]);
-  v7 = [v4 tracklist];
+  tracklist = [queueCopy tracklist];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __74___MPCQueueControllerBehaviorMusicSharePlay__sectionedCollectionForQueue___block_invoke;
   v13[3] = &unk_1E82331F8;
   v8 = v6;
   v14 = v8;
-  v15 = v4;
-  v16 = v5;
-  v17 = self;
-  v9 = v5;
-  v10 = v4;
-  [v7 enumerateSectionsUsingBlock:v13];
+  v15 = queueCopy;
+  v16 = host;
+  selfCopy = self;
+  v9 = host;
+  v10 = queueCopy;
+  [tracklist enumerateSectionsUsingBlock:v13];
 
   v11 = v8;
   return v8;
 }
 
-- (void)_reloadCacheDataWithOptions:(unint64_t)a3
+- (void)_reloadCacheDataWithOptions:(unint64_t)options
 {
-  if (a3)
+  if (options)
   {
-    v4 = [(MPRequestResponseController *)self->_requestController response];
-    v5 = [v4 modelResponse];
-    v6 = [v5 results];
+    response = [(MPRequestResponseController *)self->_requestController response];
+    modelResponse = [response modelResponse];
+    results = [modelResponse results];
 
-    v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "totalItemCount")}];
+    v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(results, "totalItemCount")}];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __73___MPCQueueControllerBehaviorMusicSharePlay__reloadCacheDataWithOptions___block_invoke;
     v24[3] = &unk_1E82331A8;
     v25 = v7;
     v8 = v7;
-    [v6 enumerateItemIdentifiersUsingBlock:v24];
+    [results enumerateItemIdentifiersUsingBlock:v24];
     v9 = [v8 copy];
     resultsIndexPathMap = self->_resultsIndexPathMap;
     self->_resultsIndexPathMap = v9;
   }
 
-  v11 = [(ICSharedListeningQueue *)self->_queue tracklist];
-  v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v11, "totalItemCount")}];
+  tracklist = [(ICSharedListeningQueue *)self->_queue tracklist];
+  v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(tracklist, "totalItemCount")}];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __73___MPCQueueControllerBehaviorMusicSharePlay__reloadCacheDataWithOptions___block_invoke_2;
   v20 = &unk_1E8233180;
-  v21 = v11;
-  v22 = self;
+  v21 = tracklist;
+  selfCopy = self;
   v23 = v12;
   v13 = v12;
-  v14 = v11;
+  v14 = tracklist;
   [v14 enumerateSectionsUsingBlock:&v17];
   v15 = [v13 copy];
   enumeratorContentItemIDs = self->_enumeratorContentItemIDs;
@@ -296,9 +296,9 @@
 
   else
   {
-    v4 = [(ICSharedListeningQueue *)self->_queue explicitContentState];
+    explicitContentState = [(ICSharedListeningQueue *)self->_queue explicitContentState];
     v3 = @"Neutral";
-    if (v4 == 2)
+    if (explicitContentState == 2)
     {
       v3 = @"Restricted";
     }
@@ -306,20 +306,20 @@
 
   queue = self->_queue;
   v6 = v3;
-  v7 = [(ICSharedListeningQueue *)queue tracklist];
-  v8 = [MEMORY[0x1E695DF70] array];
+  tracklist = [(ICSharedListeningQueue *)queue tracklist];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __68___MPCQueueControllerBehaviorMusicSharePlay__queueAsStateDictionary__block_invoke;
   v19 = &unk_1E8233180;
-  v20 = self;
-  v21 = v8;
-  v22 = v7;
-  v9 = v7;
-  v10 = v8;
+  selfCopy = self;
+  v21 = array;
+  v22 = tracklist;
+  v9 = tracklist;
+  v10 = array;
   [v9 enumerateSectionsUsingBlock:&v16];
   v23[0] = @"_autoPlayAvailable";
-  v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[ICSharedListeningQueue isAutoPlayAvailable](self->_queue, "isAutoPlayAvailable", v16, v17, v18, v19, v20)}];
+  v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[ICSharedListeningQueue isAutoPlayAvailable](self->_queue, "isAutoPlayAvailable", v16, v17, v18, v19, selfCopy)}];
   v24[0] = v11;
   v23[1] = @"_autoPlayEnabled";
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[ICSharedListeningQueue isAutoPlayEnabled](self->_queue, "isAutoPlayEnabled")}];
@@ -336,23 +336,23 @@
   return v14;
 }
 
-- (void)_purgePendingActionsWithLabel:(id)a3
+- (void)_purgePendingActionsWithLabel:(id)label
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  labelCopy = label;
   pendingActions = self->_pendingActions;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __75___MPCQueueControllerBehaviorMusicSharePlay__purgePendingActionsWithLabel___block_invoke;
   v26[3] = &unk_1E8233130;
-  v18 = v4;
+  v18 = labelCopy;
   v27 = v18;
   v6 = [(NSMutableArray *)pendingActions indexesOfObjectsPassingTest:v26];
   v7 = [(NSMutableArray *)self->_pendingActions objectsAtIndexes:v6];
   v17 = v6;
   [(NSMutableArray *)self->_pendingActions removeObjectsAtIndexes:v6];
-  v19 = self;
-  v20 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
+  selfCopy = self;
+  host = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -376,19 +376,19 @@
         v13 = os_log_create("com.apple.amp.mediaplaybackcore", "MusicSharePlayBehavior");
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v20 engineID];
-          v15 = [(_MPCQueueControllerBehaviorMusicSharePlay *)v19 sessionID];
+          engineID = [host engineID];
+          sessionID = [(_MPCQueueControllerBehaviorMusicSharePlay *)selfCopy sessionID];
           *buf = 138543874;
-          v29 = v14;
+          v29 = engineID;
           v30 = 2114;
-          v31 = v15;
+          v31 = sessionID;
           v32 = 2114;
           v33 = v12;
           _os_log_impl(&dword_1C5C61000, v13, OS_LOG_TYPE_DEFAULT, "[BMSP:%{public}@:%{public}@] _purgePendingActionsWithLabel: | calling action [purged] action=%{public}@", buf, 0x20u);
         }
 
-        v16 = [v12 block];
-        v16[2](v16, 2);
+        block = [v12 block];
+        block[2](block, 2);
       }
 
       v9 = [obj countByEnumeratingWithState:&v22 objects:v34 count:16];
@@ -398,36 +398,36 @@
   }
 }
 
-- (id)_mpcSharedListeningEventForICLiveLinkEvent:(id)a3
+- (id)_mpcSharedListeningEventForICLiveLinkEvent:(id)event
 {
   v117 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 participant];
-  v6 = [v5 identifier];
-  v7 = [v4 participant];
-  v8 = [v7 externalIdentifier];
-  v9 = [MPCSharedListeningEventParticipant participantWithSharedListeningIdentifier:v6 externalIdentifier:v8];
+  eventCopy = event;
+  participant = [eventCopy participant];
+  identifier = [participant identifier];
+  participant2 = [eventCopy participant];
+  externalIdentifier = [participant2 externalIdentifier];
+  v9 = [MPCSharedListeningEventParticipant participantWithSharedListeningIdentifier:identifier externalIdentifier:externalIdentifier];
 
-  v10 = [(MPRequestResponseController *)self->_requestController response];
-  v11 = [v10 modelResponse];
-  v12 = [v11 results];
+  response = [(MPRequestResponseController *)self->_requestController response];
+  modelResponse = [response modelResponse];
+  results = [modelResponse results];
 
-  v13 = [v4 type];
+  type = [eventCopy type];
   v14 = 0;
-  if (v13 <= 2)
+  if (type <= 2)
   {
-    if (v13 == 1)
+    if (type == 1)
     {
-      v15 = [v4 sessionEvent];
-      v42 = [v15 kind];
-      if ((v42 - 1) >= 5)
+      sessionEvent = [eventCopy sessionEvent];
+      kind = [sessionEvent kind];
+      if ((kind - 1) >= 5)
       {
         v43 = 0;
       }
 
       else
       {
-        v43 = v42;
+        v43 = kind;
       }
 
       v18 = [[MPCSharedListeningSessionEvent alloc] initWithKind:v43];
@@ -436,14 +436,14 @@
 
     else
     {
-      if (v13 != 2)
+      if (type != 2)
       {
         goto LABEL_69;
       }
 
-      v15 = [v4 playbackEvent];
-      v20 = [v15 kind];
-      if ((v20 - 1) > 3 || (v21 = [[MPCSharedListeningPlaybackEvent alloc] initWithKind:v20]) == 0)
+      sessionEvent = [eventCopy playbackEvent];
+      kind2 = [sessionEvent kind];
+      if ((kind2 - 1) > 3 || (v21 = [[MPCSharedListeningPlaybackEvent alloc] initWithKind:kind2]) == 0)
       {
         v14 = 0;
         goto LABEL_26;
@@ -460,35 +460,35 @@ LABEL_26:
     goto LABEL_69;
   }
 
-  if (v13 == 3)
+  if (type == 3)
   {
-    v22 = [v4 queueEvent];
-    v23 = [v22 kind];
+    queueEvent = [eventCopy queueEvent];
+    kind3 = [queueEvent kind];
     v14 = 0;
-    if (v23 <= 3)
+    if (kind3 <= 3)
     {
-      switch(v23)
+      switch(kind3)
       {
         case 1:
-          v56 = [v22 contentAdded];
+          contentAdded = [queueEvent contentAdded];
           *buf = 0;
           *&buf[8] = buf;
           *&buf[16] = 0x3032000000;
           v114 = __Block_byref_object_copy__7744;
           v115 = __Block_byref_object_dispose__7745;
           v116 = 0;
-          v57 = [v56 containerIdentifier];
-          v58 = [v56 itemIdentifiers];
-          v59 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v58, "count")}];
+          containerIdentifier = [contentAdded containerIdentifier];
+          itemIdentifiers = [contentAdded itemIdentifiers];
+          v59 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemIdentifiers, "count")}];
           v107[0] = MEMORY[0x1E69E9820];
           v107[1] = 3221225472;
           v107[2] = __88___MPCQueueControllerBehaviorMusicSharePlay__mpcSharedListeningEventForICLiveLinkEvent___block_invoke;
           v107[3] = &unk_1E82330B8;
-          v60 = v57;
+          v60 = containerIdentifier;
           v108 = v60;
           v112 = buf;
-          v109 = v12;
-          v110 = self;
+          v109 = results;
+          selfCopy = self;
           v61 = v59;
           v111 = v61;
           [v109 enumerateSectionsUsingBlock:v107];
@@ -499,14 +499,14 @@ LABEL_26:
           _Block_object_dispose(buf, 8);
           goto LABEL_65;
         case 2:
-          v24 = [v22 contentRemoved];
+          contentRemoved = [queueEvent contentRemoved];
           resultsIndexPathMap = self->_resultsIndexPathMap;
-          v80 = [v24 itemIdentifier];
-          v81 = [(NSDictionary *)resultsIndexPathMap objectForKeyedSubscript:v80];
+          itemIdentifier = [contentRemoved itemIdentifier];
+          v81 = [(NSDictionary *)resultsIndexPathMap objectForKeyedSubscript:itemIdentifier];
 
           if (v81)
           {
-            v82 = [v12 itemAtIndexPath:v81];
+            v82 = [results itemAtIndexPath:v81];
             v83 = [v82 copyWithPropertySet:self->_requestedPropertySetForEvents];
           }
 
@@ -520,14 +520,14 @@ LABEL_26:
 
           goto LABEL_64;
         case 3:
-          v24 = [v22 contentReordered];
+          contentRemoved = [queueEvent contentReordered];
           v48 = self->_resultsIndexPathMap;
-          v49 = [v24 itemIdentifier];
-          v27 = [(NSDictionary *)v48 objectForKeyedSubscript:v49];
+          itemIdentifier2 = [contentRemoved itemIdentifier];
+          v27 = [(NSDictionary *)v48 objectForKeyedSubscript:itemIdentifier2];
 
           if (v27)
           {
-            v50 = [v12 itemAtIndexPath:v27];
+            v50 = [results itemAtIndexPath:v27];
             v29 = [v50 copyWithPropertySet:self->_requestedPropertySetForEvents];
 
             if (v29)
@@ -546,18 +546,18 @@ LABEL_41:
 
     else
     {
-      if (v23 <= 5)
+      if (kind3 <= 5)
       {
-        if (v23 != 4)
+        if (kind3 != 4)
         {
-          v24 = [v22 contentReplaced];
+          contentRemoved = [queueEvent contentReplaced];
           v25 = self->_resultsIndexPathMap;
-          v26 = [v24 startItemIdentifier];
-          v27 = [(NSDictionary *)v25 objectForKeyedSubscript:v26];
+          startItemIdentifier = [contentRemoved startItemIdentifier];
+          v27 = [(NSDictionary *)v25 objectForKeyedSubscript:startItemIdentifier];
 
           if (v27)
           {
-            v28 = [v12 itemAtIndexPath:v27];
+            v28 = [results itemAtIndexPath:v27];
             v29 = [v28 copyWithPropertySet:self->_requestedPropertySetForEvents];
 
             if (v29)
@@ -588,19 +588,19 @@ LABEL_65:
           goto LABEL_41;
         }
 
-        v24 = [v22 playbackModeChanged];
-        v64 = [v24 kind];
-        switch(v64)
+        contentRemoved = [queueEvent playbackModeChanged];
+        kind4 = [contentRemoved kind];
+        switch(kind4)
         {
           case 3:
             v88 = [MPCSharedListeningQueueEventPlaybackModeChanged alloc];
-            v66 = [v24 autoPlayEnabled];
-            v69 = [(MPCSharedListeningQueueEventPlaybackModeChanged *)v88 initWithUpdatedAutoPlayEnabled:v66[2]()];
+            autoPlayEnabled = [contentRemoved autoPlayEnabled];
+            v69 = [(MPCSharedListeningQueueEventPlaybackModeChanged *)v88 initWithUpdatedAutoPlayEnabled:autoPlayEnabled[2]()];
             break;
           case 2:
             v85 = [MPCSharedListeningQueueEventPlaybackModeChanged alloc];
-            v66 = [v24 repeatType];
-            v86 = v66[2]();
+            autoPlayEnabled = [contentRemoved repeatType];
+            v86 = autoPlayEnabled[2]();
             if (v86 == 3)
             {
               v87 = 2;
@@ -615,8 +615,8 @@ LABEL_65:
             break;
           case 1:
             v65 = [MPCSharedListeningQueueEventPlaybackModeChanged alloc];
-            v66 = [v24 shuffleType];
-            v67 = v66[2]();
+            autoPlayEnabled = [contentRemoved shuffleType];
+            v67 = autoPlayEnabled[2]();
             if (v67 == 3)
             {
               v68 = 2;
@@ -646,34 +646,34 @@ LABEL_72:
         goto LABEL_64;
       }
 
-      if (v23 == 6)
+      if (kind3 == 6)
       {
-        v70 = [v22 contentPlayedNow];
+        contentPlayedNow = [queueEvent contentPlayedNow];
         *buf = 0;
         *&buf[8] = buf;
         *&buf[16] = 0x3032000000;
         v114 = __Block_byref_object_copy__7744;
         v115 = __Block_byref_object_dispose__7745;
         v116 = 0;
-        v71 = [v70 containerIdentifier];
+        containerIdentifier2 = [contentPlayedNow containerIdentifier];
         v101 = 0;
         v102 = &v101;
         v103 = 0x3032000000;
         v104 = __Block_byref_object_copy__7744;
         v105 = __Block_byref_object_dispose__7745;
         v106 = 0;
-        v72 = [v70 itemIdentifiers];
-        v73 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v72, "count")}];
+        itemIdentifiers2 = [contentPlayedNow itemIdentifiers];
+        v73 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemIdentifiers2, "count")}];
         v90 = MEMORY[0x1E69E9820];
         v91 = 3221225472;
         v92 = __88___MPCQueueControllerBehaviorMusicSharePlay__mpcSharedListeningEventForICLiveLinkEvent___block_invoke_3;
         v93 = &unk_1E8233108;
-        v74 = v71;
+        v74 = containerIdentifier2;
         v94 = v74;
         v99 = buf;
-        v95 = v12;
-        v96 = self;
-        v75 = v70;
+        v95 = results;
+        selfCopy2 = self;
+        v75 = contentPlayedNow;
         v97 = v75;
         v100 = &v101;
         v76 = v73;
@@ -689,13 +689,13 @@ LABEL_72:
         goto LABEL_65;
       }
 
-      if (v23 == 7)
+      if (kind3 == 7)
       {
-        v24 = [v22 contentUpdatedMessage];
+        contentRemoved = [queueEvent contentUpdatedMessage];
         v52 = [MPCSharedListeningQueueEventContentUpdatedMessage alloc];
-        v53 = [v24 localizedTitle];
-        v54 = [v24 localizedMessage];
-        v27 = [(MPCSharedListeningQueueEventContentUpdatedMessage *)v52 initWithLocalizedTitle:v53 localizedMessage:v54];
+        localizedTitle = [contentRemoved localizedTitle];
+        localizedMessage = [contentRemoved localizedMessage];
+        v27 = [(MPCSharedListeningQueueEventContentUpdatedMessage *)v52 initWithLocalizedTitle:localizedTitle localizedMessage:localizedMessage];
 
         v55 = [MPCSharedListeningQueueEvent queueEventWithContentUpdatedMessage:v27];
 LABEL_62:
@@ -709,52 +709,52 @@ LABEL_68:
     goto LABEL_69;
   }
 
-  if (v13 != 4)
+  if (type != 4)
   {
-    if (v13 != 5)
+    if (type != 5)
     {
       goto LABEL_69;
     }
 
-    v15 = [v4 customEvent];
+    sessionEvent = [eventCopy customEvent];
     v16 = [MPCSharedListeningCustomEvent alloc];
-    v17 = [v15 localizedMessage];
-    v18 = [(MPCSharedListeningCustomEvent *)v16 initWithLocalizedMessage:v17];
+    localizedMessage2 = [sessionEvent localizedMessage];
+    v18 = [(MPCSharedListeningCustomEvent *)v16 initWithLocalizedMessage:localizedMessage2];
 
     v19 = [MPCSharedListeningEvent eventWithCustomEvent:v18 participant:v9];
     goto LABEL_24;
   }
 
-  v32 = [v4 reactionEvent];
+  reactionEvent = [eventCopy reactionEvent];
   v33 = self->_resultsIndexPathMap;
-  v34 = [v32 itemIdentifier];
-  v35 = [(NSDictionary *)v33 objectForKeyedSubscript:v34];
+  itemIdentifier3 = [reactionEvent itemIdentifier];
+  v35 = [(NSDictionary *)v33 objectForKeyedSubscript:itemIdentifier3];
 
-  if (v35 && ([v12 itemAtIndexPath:v35], v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "copyWithPropertySet:", self->_requestedPropertySetForEvents), v36, v37))
+  if (v35 && ([results itemAtIndexPath:v35], v36 = objc_claimAutoreleasedReturnValue(), host = objc_msgSend(v36, "copyWithPropertySet:", self->_requestedPropertySetForEvents), v36, host))
   {
     v38 = [MPCSharedListeningReactionEvent alloc];
-    v39 = [v32 reaction];
-    v40 = [v32 reactionIdentifier];
-    v41 = [(MPCSharedListeningReactionEvent *)v38 initWithReaction:v39 reactionIdentifier:v40 item:v37];
+    reaction = [reactionEvent reaction];
+    reactionIdentifier = [reactionEvent reactionIdentifier];
+    v41 = [(MPCSharedListeningReactionEvent *)v38 initWithReaction:reaction reactionIdentifier:reactionIdentifier item:host];
 
     v14 = [MPCSharedListeningEvent eventWithReactionEvent:v41 participant:v9];
   }
 
   else
   {
-    v37 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
+    host = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
     v44 = os_log_create("com.apple.amp.mediaplaybackcore", "MusicSharePlayBehavior");
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
     {
-      v45 = [v37 engineID];
-      v46 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
-      v47 = [v32 itemIdentifier];
+      engineID = [host engineID];
+      sessionID = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+      itemIdentifier4 = [reactionEvent itemIdentifier];
       *buf = 138543874;
-      *&buf[4] = v45;
+      *&buf[4] = engineID;
       *&buf[12] = 2114;
-      *&buf[14] = v46;
+      *&buf[14] = sessionID;
       *&buf[22] = 2114;
-      v114 = v47;
+      v114 = itemIdentifier4;
       _os_log_impl(&dword_1C5C61000, v44, OS_LOG_TYPE_ERROR, "[BMSP:%{public}@:%{public}@] _mpcSharedListeningEventForICLiveLinkEvent: | dropping event [unknown item] event=Reaction itemIdentifier=%{public}@", buf, 0x20u);
     }
 
@@ -766,19 +766,19 @@ LABEL_69:
   return v14;
 }
 
-- (id)_itemObjectForSharedListeningItemID:(id)a3
+- (id)_itemObjectForSharedListeningItemID:(id)d
 {
   requestController = self->_requestController;
-  v5 = a3;
-  v6 = [(MPRequestResponseController *)requestController response];
-  v7 = [v6 modelResponse];
-  v8 = [v7 results];
+  dCopy = d;
+  response = [(MPRequestResponseController *)requestController response];
+  modelResponse = [response modelResponse];
+  results = [modelResponse results];
 
-  v9 = [(NSDictionary *)self->_resultsIndexPathMap objectForKeyedSubscript:v5];
+  v9 = [(NSDictionary *)self->_resultsIndexPathMap objectForKeyedSubscript:dCopy];
 
   if (v9)
   {
-    v10 = [v8 itemAtIndexPath:v9];
+    v10 = [results itemAtIndexPath:v9];
   }
 
   else
@@ -789,68 +789,68 @@ LABEL_69:
   return v10;
 }
 
-- (void)_initializeWithQueue:(id)a3
+- (void)_initializeWithQueue:(id)queue
 {
-  v5 = a3;
-  v6 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
-  v7 = [v6 beginEditWithReason:@"BehaviorMusicSharePlay-initialLoad"];
+  queueCopy = queue;
+  host = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
+  v7 = [host beginEditWithReason:@"BehaviorMusicSharePlay-initialLoad"];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66___MPCQueueControllerBehaviorMusicSharePlay__initializeWithQueue___block_invoke;
   v11[3] = &unk_1E8233068;
-  v12 = v6;
-  v13 = self;
-  v15 = v5;
+  v12 = host;
+  selfCopy = self;
+  v15 = queueCopy;
   v16 = a2;
   v14 = v7;
-  v8 = v5;
+  v8 = queueCopy;
   v9 = v7;
-  v10 = v6;
+  v10 = host;
   [v8 getExpectedCurrentItemWithCompletion:v11];
 }
 
-- (void)_enqueuePendingActionWithLabel:(id)a3 itemIdentifier:(id)a4 block:(id)a5
+- (void)_enqueuePendingActionWithLabel:(id)label itemIdentifier:(id)identifier block:(id)block
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  labelCopy = label;
+  identifierCopy = identifier;
+  blockCopy = block;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v11 = [(NSDictionary *)self->_resultsIndexPathMap objectForKeyedSubscript:v9];
+  v11 = [(NSDictionary *)self->_resultsIndexPathMap objectForKeyedSubscript:identifierCopy];
   if (v11)
   {
-    v12 = [(MPRequestResponseController *)self->_requestController response];
-    v13 = [v12 modelResponse];
-    v14 = [v13 results];
+    response = [(MPRequestResponseController *)self->_requestController response];
+    modelResponse = [response modelResponse];
+    results = [modelResponse results];
 
-    v15 = [(_MPCQCBMSPPendingAction *)v14 identifiersForItemAtIndexPath:v11];
-    if (([v15 isPlaceholder] & 1) == 0)
+    host = [(_MPCQCBMSPPendingAction *)results identifiersForItemAtIndexPath:v11];
+    if (([host isPlaceholder] & 1) == 0)
     {
-      v10[2](v10, 0);
+      blockCopy[2](blockCopy, 0);
       goto LABEL_8;
     }
   }
 
-  v14 = objc_alloc_init(_MPCQCBMSPPendingAction);
-  [(_MPCQCBMSPPendingAction *)v14 setLabel:v8];
-  [(_MPCQCBMSPPendingAction *)v14 setItemIdentifier:v9];
+  results = objc_alloc_init(_MPCQCBMSPPendingAction);
+  [(_MPCQCBMSPPendingAction *)results setLabel:labelCopy];
+  [(_MPCQCBMSPPendingAction *)results setItemIdentifier:identifierCopy];
   v16 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:5.0];
-  [(_MPCQCBMSPPendingAction *)v14 setExpirationDate:v16];
+  [(_MPCQCBMSPPendingAction *)results setExpirationDate:v16];
 
-  [(_MPCQCBMSPPendingAction *)v14 setBlock:v10];
-  [(NSMutableArray *)self->_pendingActions addObject:v14];
-  v15 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
+  [(_MPCQCBMSPPendingAction *)results setBlock:blockCopy];
+  [(NSMutableArray *)self->_pendingActions addObject:results];
+  host = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
   v17 = os_log_create("com.apple.amp.mediaplaybackcore", "MusicSharePlayBehavior");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v15 engineID];
-    v19 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+    engineID = [host engineID];
+    sessionID = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
     v20 = 138543874;
-    v21 = v18;
+    v21 = engineID;
     v22 = 2114;
-    v23 = v19;
+    v23 = sessionID;
     v24 = 2114;
-    v25 = v14;
+    v25 = results;
     _os_log_impl(&dword_1C5C61000, v17, OS_LOG_TYPE_DEFAULT, "[BMSP:%{public}@:%{public}@] _enqueuePendingActionWithLabel:itemIdentifier:block: | enqueuing [] action=%{public}@", &v20, 0x20u);
   }
 
@@ -870,59 +870,59 @@ LABEL_8:
     v3 = 1;
   }
 
-  v4 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
-  v5 = [v4 eventStream];
+  host = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
+  eventStream = [host eventStream];
   v13[0] = @"session-id";
-  v6 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
-  v7 = v6;
-  if (!v6)
+  sessionID = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+  null = sessionID;
+  if (!sessionID)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v13[1] = @"playback-behavior-metadata";
-  v14[0] = v7;
+  v14[0] = null;
   v11 = @"autoplay-mode";
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:v3];
   v12 = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   v14[1] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
-  [v5 emitEventType:@"playback-behavior-changed" payload:v10];
+  [eventStream emitEventType:@"playback-behavior-changed" payload:v10];
 
-  if (!v6)
+  if (!sessionID)
   {
   }
 }
 
-- (void)_emitEventsForParticipants:(id)a3 localUserIdentity:(id)a4
+- (void)_emitEventsForParticipants:(id)participants localUserIdentity:(id)identity
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  identityCopy = identity;
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __90___MPCQueueControllerBehaviorMusicSharePlay__emitEventsForParticipants_localUserIdentity___block_invoke;
   v20 = &unk_1E8233018;
-  v7 = v6;
+  v7 = identityCopy;
   v21 = v7;
-  v8 = [a3 msv_compactMap:&v17];
+  v8 = [participants msv_compactMap:&v17];
   v9 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host:v17];
-  v10 = [v9 eventStream];
+  eventStream = [v9 eventStream];
   v22[0] = @"session-id";
-  v11 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
-  v12 = v11;
-  if (!v11)
+  sessionID = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+  null = sessionID;
+  if (!sessionID)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[0] = v12;
+  v23[0] = null;
   v22[1] = @"shared-session-id";
-  v13 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
-  v14 = v13;
-  if (!v13)
+  sessionID2 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+  null2 = sessionID2;
+  if (!sessionID2)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
   v22[2] = @"participants";
@@ -932,52 +932,52 @@ LABEL_8:
     v15 = v8;
   }
 
-  v23[1] = v14;
+  v23[1] = null2;
   v23[2] = v15;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:3];
-  [v10 emitEventType:@"shared-session-participants-changed" payload:v16];
+  [eventStream emitEventType:@"shared-session-participants-changed" payload:v16];
 
-  if (!v13)
+  if (!sessionID2)
   {
   }
 
-  if (!v11)
+  if (!sessionID)
   {
   }
 }
 
-- (void)_emitEventsForAddedSharedListeningContainer:(id)a3
+- (void)_emitEventsForAddedSharedListeningContainer:(id)container
 {
   v19[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v14 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
-  v15 = [v14 eventStream];
+  containerCopy = container;
+  host = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
+  eventStream = [host eventStream];
   v18[0] = @"queue-section-id";
-  v5 = [v4 identifier];
-  v19[0] = v5;
+  identifier = [containerCopy identifier];
+  v19[0] = identifier;
   v18[1] = @"account-id";
   v6 = +[MPCPlaybackAccountManager sharedManager];
-  v7 = [v6 activeAccount];
-  v8 = [v7 hashedDSID];
-  v9 = v8;
-  if (!v8)
+  activeAccount = [v6 activeAccount];
+  hashedDSID = [activeAccount hashedDSID];
+  null = hashedDSID;
+  if (!hashedDSID)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[1] = v9;
+  v19[1] = null;
   v19[2] = &unk_1F4599220;
   v18[2] = @"private-listening-source";
   v18[3] = @"queue-reporting-metadata";
   v16[0] = @"feature-name";
-  v10 = [v4 featureName];
-  v11 = v10;
-  if (!v10)
+  featureName = [containerCopy featureName];
+  null2 = featureName;
+  if (!featureName)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[0] = v11;
+  v17[0] = null2;
   v17[1] = @"MusicSharePlayBehavior";
   v16[1] = @"playback-context-class-name";
   v16[2] = @"private-listening-enabled";
@@ -985,13 +985,13 @@ LABEL_8:
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
   v19[3] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:4];
-  [v15 emitEventType:@"queue-add" payload:v13];
+  [eventStream emitEventType:@"queue-add" payload:v13];
 
-  if (!v10)
+  if (!featureName)
   {
   }
 
-  if (!v8)
+  if (!hashedDSID)
   {
   }
 }
@@ -1000,8 +1000,8 @@ LABEL_8:
 {
   v53 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [MEMORY[0x1E695DF00] date];
-  v37 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
+  date = [MEMORY[0x1E695DF00] date];
+  host = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -1016,7 +1016,7 @@ LABEL_8:
 
   v41 = 0;
   v39 = *v43;
-  v36 = v3;
+  v36 = date;
   while (2)
   {
     for (i = 0; i != v40; ++i)
@@ -1027,35 +1027,35 @@ LABEL_8:
       }
 
       v5 = *(*(&v42 + 1) + 8 * i);
-      v6 = [v5 expirationDate];
-      v7 = [v3 laterDate:v6];
+      expirationDate = [v5 expirationDate];
+      v7 = [date laterDate:expirationDate];
 
-      if (v7 == v3)
+      if (v7 == date)
       {
         v23 = os_log_create("com.apple.amp.mediaplaybackcore", "MusicSharePlayBehavior");
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
-          v24 = [v37 engineID];
-          v25 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+          engineID = [host engineID];
+          sessionID = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
           *buf = 138543874;
-          v47 = v24;
+          v47 = engineID;
           v48 = 2114;
-          v49 = v25;
+          v49 = sessionID;
           v50 = 2114;
           v51 = v5;
           _os_log_impl(&dword_1C5C61000, v23, OS_LOG_TYPE_ERROR, "[BMSP:%{public}@:%{public}@] _dequeuePendingActions | calling action [expired] action=%{public}@", buf, 0x20u);
         }
 
         ++v41;
-        v26 = [v5 block];
-        v26[2](v26, 1);
+        block = [v5 block];
+        block[2](block, 1);
 
         continue;
       }
 
       queue = self->_queue;
-      v9 = [v5 itemIdentifier];
-      v10 = [(ICSharedListeningQueue *)queue itemForIdentifier:v9];
+      itemIdentifier = [v5 itemIdentifier];
+      v10 = [(ICSharedListeningQueue *)queue itemForIdentifier:itemIdentifier];
 
       if (!v10)
       {
@@ -1067,86 +1067,86 @@ LABEL_30:
           goto LABEL_31;
         }
 
-        v13 = [v37 engineID];
-        v31 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
-        v32 = [v5 itemIdentifier];
+        engineID2 = [host engineID];
+        sessionID2 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+        itemIdentifier2 = [v5 itemIdentifier];
         *buf = 138543874;
-        v47 = v13;
+        v47 = engineID2;
         v48 = 2114;
-        v49 = v31;
+        v49 = sessionID2;
         v50 = 2114;
-        v51 = v32;
+        v51 = itemIdentifier2;
         _os_log_impl(&dword_1C5C61000, v10, OS_LOG_TYPE_DEFAULT, "[BMSP:%{public}@:%{public}@] _dequeuePendingActions | stopping [no such item] missingItemID=%{public}@", buf, 0x20u);
         goto LABEL_28;
       }
 
-      v11 = [(MPRequestResponseController *)self->_requestController response];
-      v12 = [v11 modelResponse];
-      v13 = [v12 results];
+      response = [(MPRequestResponseController *)self->_requestController response];
+      modelResponse = [response modelResponse];
+      engineID2 = [modelResponse results];
 
       resultsIndexPathMap = self->_resultsIndexPathMap;
-      v15 = [v5 itemIdentifier];
-      v16 = [(NSDictionary *)resultsIndexPathMap objectForKeyedSubscript:v15];
+      itemIdentifier3 = [v5 itemIdentifier];
+      v16 = [(NSDictionary *)resultsIndexPathMap objectForKeyedSubscript:itemIdentifier3];
 
       if (!v16)
       {
-        v31 = os_log_create("com.apple.amp.mediaplaybackcore", "MusicSharePlayBehavior");
-        if (!os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+        sessionID2 = os_log_create("com.apple.amp.mediaplaybackcore", "MusicSharePlayBehavior");
+        if (!os_log_type_enabled(sessionID2, OS_LOG_TYPE_DEFAULT))
         {
 LABEL_29:
 
           goto LABEL_30;
         }
 
-        v32 = [v37 engineID];
-        v33 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
-        v34 = [v5 itemIdentifier];
+        itemIdentifier2 = [host engineID];
+        sessionID3 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+        itemIdentifier4 = [v5 itemIdentifier];
         *buf = 138543874;
-        v47 = v32;
+        v47 = itemIdentifier2;
         v48 = 2114;
-        v49 = v33;
+        v49 = sessionID3;
         v50 = 2114;
-        v51 = v34;
-        _os_log_impl(&dword_1C5C61000, v31, OS_LOG_TYPE_DEFAULT, "[BMSP:%{public}@:%{public}@] _dequeuePendingActions | stopping [waiting for item metadata] itemID=%{public}@", buf, 0x20u);
+        v51 = itemIdentifier4;
+        _os_log_impl(&dword_1C5C61000, sessionID2, OS_LOG_TYPE_DEFAULT, "[BMSP:%{public}@:%{public}@] _dequeuePendingActions | stopping [waiting for item metadata] itemID=%{public}@", buf, 0x20u);
 
 LABEL_28:
         goto LABEL_29;
       }
 
-      v17 = [v13 identifiersForItemAtIndexPath:v16];
-      v18 = [v17 isPlaceholder];
+      v17 = [engineID2 identifiersForItemAtIndexPath:v16];
+      isPlaceholder = [v17 isPlaceholder];
       v19 = os_log_create("com.apple.amp.mediaplaybackcore", "MusicSharePlayBehavior");
       v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
-      if (v18)
+      if (isPlaceholder)
       {
         if (v20)
         {
-          v21 = [v37 engineID];
-          v22 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+          engineID3 = [host engineID];
+          sessionID4 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
           *buf = 138543874;
-          v47 = v21;
+          v47 = engineID3;
           v48 = 2114;
-          v49 = v22;
+          v49 = sessionID4;
           v50 = 2114;
           v51 = v17;
           _os_log_impl(&dword_1C5C61000, v19, OS_LOG_TYPE_DEFAULT, "[BMSP:%{public}@:%{public}@] _dequeuePendingActions | stopping [placeholder item] idSet=%{public}@", buf, 0x20u);
 
-          v3 = v36;
+          date = v36;
         }
       }
 
       else
       {
-        v27 = self;
+        selfCopy = self;
         if (v20)
         {
-          [v37 engineID];
+          [host engineID];
           v28 = v35 = v10;
-          v29 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+          sessionID5 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
           *buf = 138543874;
           v47 = v28;
           v48 = 2114;
-          v49 = v29;
+          v49 = sessionID5;
           v50 = 2114;
           v51 = v5;
           _os_log_impl(&dword_1C5C61000, v19, OS_LOG_TYPE_DEFAULT, "[BMSP:%{public}@:%{public}@] _dequeuePendingActions | calling action [satisfied] action=%{public}@", buf, 0x20u);
@@ -1154,15 +1154,15 @@ LABEL_28:
           v10 = v35;
         }
 
-        v30 = [v5 block];
-        v30[2](v30, 0);
+        block2 = [v5 block];
+        block2[2](block2, 0);
 
         ++v41;
-        self = v27;
-        v3 = v36;
+        self = selfCopy;
+        date = v36;
       }
 
-      if (v18)
+      if (isPlaceholder)
       {
         goto LABEL_31;
       }
@@ -1182,25 +1182,25 @@ LABEL_31:
   [(NSMutableArray *)self->_pendingActions removeObjectsInRange:0, v41];
 }
 
-- (id)_componentsForSharedListeningItemID:(id)a3
+- (id)_componentsForSharedListeningItemID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__7744;
   v17 = __Block_byref_object_dispose__7745;
   v18 = 0;
-  v5 = [(ICSharedListeningQueue *)self->_queue tracklist];
+  tracklist = [(ICSharedListeningQueue *)self->_queue tracklist];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __81___MPCQueueControllerBehaviorMusicSharePlay__componentsForSharedListeningItemID___block_invoke;
   v9[3] = &unk_1E8232FE0;
-  v6 = v4;
+  v6 = dCopy;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
-  [v5 enumerateItemsUsingBlock:v9];
+  [tracklist enumerateItemsUsingBlock:v9];
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -1208,93 +1208,93 @@ LABEL_31:
   return v7;
 }
 
-- (id)_componentsForContentItemID:(id)a3
+- (id)_componentsForContentItemID:(id)d
 {
-  v5 = a3;
-  if (![v5 length])
+  dCopy = d;
+  if (![dCopy length])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusicSharePlay.m" lineNumber:1207 description:{@"Invalid parameter not satisfying: %@", @"contentItemID.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusicSharePlay.m" lineNumber:1207 description:{@"Invalid parameter not satisfying: %@", @"contentItemID.length > 0"}];
   }
 
-  v6 = MPCQueueControllerBehaviorMusicIdentifierComponentsFromContentItemID(v5);
+  v6 = MPCQueueControllerBehaviorMusicIdentifierComponentsFromContentItemID(dCopy);
   queue = self->_queue;
-  v8 = [v6 itemID];
-  v9 = [(ICSharedListeningQueue *)queue itemForIdentifier:v8];
+  itemID = [v6 itemID];
+  v9 = [(ICSharedListeningQueue *)queue itemForIdentifier:itemID];
 
   v10 = [v6 copyWithBehaviorFlags:{objc_msgSend(v9, "isAutoPlayItem")}];
 
   return v10;
 }
 
-- (void)liveLink:(id)a3 didReceiveEvent:(id)a4
+- (void)liveLink:(id)link didReceiveEvent:(id)event
 {
-  v5 = a4;
-  v4 = v5;
+  eventCopy = event;
+  v4 = eventCopy;
   msv_dispatch_on_main_queue();
 }
 
-- (void)liveLink:(id)a3 didReceiveDirectCurrentItemChanged:(id)a4 fromParticipant:(id)a5
+- (void)liveLink:(id)link didReceiveDirectCurrentItemChanged:(id)changed fromParticipant:(id)participant
 {
-  v8 = a4;
-  v9 = a5;
+  changedCopy = changed;
+  participantCopy = participant;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __105___MPCQueueControllerBehaviorMusicSharePlay_liveLink_didReceiveDirectCurrentItemChanged_fromParticipant___block_invoke;
   v12[3] = &unk_1E8238588;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
+  v13 = changedCopy;
+  v14 = participantCopy;
   v15 = a2;
-  v10 = v9;
-  v11 = v8;
+  v10 = participantCopy;
+  v11 = changedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v12);
 }
 
-- (void)liveLink:(id)a3 didUpdateQueue:(id)a4
+- (void)liveLink:(id)link didUpdateQueue:(id)queue
 {
-  v5 = a4;
+  queueCopy = queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69___MPCQueueControllerBehaviorMusicSharePlay_liveLink_didUpdateQueue___block_invoke;
   v7[3] = &unk_1E82392C0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = queueCopy;
+  v6 = queueCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
-- (void)liveLink:(id)a3 didUpdateParticipants:(id)a4
+- (void)liveLink:(id)link didUpdateParticipants:(id)participants
 {
-  v6 = a3;
-  v7 = a4;
+  linkCopy = link;
+  participantsCopy = participants;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76___MPCQueueControllerBehaviorMusicSharePlay_liveLink_didUpdateParticipants___block_invoke;
   block[3] = &unk_1E82391C0;
   block[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = participantsCopy;
+  v12 = linkCopy;
+  v8 = linkCopy;
+  v9 = participantsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)liveLink:(id)a3 didEncounterError:(id)a4 willRetry:(BOOL)a5
+- (void)liveLink:(id)link didEncounterError:(id)error willRetry:(BOOL)retry
 {
-  v7 = a4;
+  errorCopy = error;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82___MPCQueueControllerBehaviorMusicSharePlay_liveLink_didEncounterError_willRetry___block_invoke;
   block[3] = &unk_1E8232F70;
-  v11 = a5;
+  retryCopy = retry;
   block[4] = self;
-  v10 = v7;
-  v8 = v7;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)didStopLiveLink:(id)a3
+- (void)didStopLiveLink:(id)link
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1304,7 +1304,7 @@ LABEL_31:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)liveLinkDidReconnect:(id)a3
+- (void)liveLinkDidReconnect:(id)reconnect
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1314,200 +1314,200 @@ LABEL_31:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (id)playbackCoordinator:(id)a3 identifierForPlayerItem:(id)a4
+- (id)playbackCoordinator:(id)coordinator identifierForPlayerItem:(id)item
 {
-  v5 = [a4 contentItemID];
-  v6 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:v5];
-  v7 = [v6 itemID];
+  contentItemID = [item contentItemID];
+  v6 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:contentItemID];
+  itemID = [v6 itemID];
 
-  return v7;
+  return itemID;
 }
 
-- (void)controller:(id)a3 defersResponseReplacement:(id)a4
+- (void)controller:(id)controller defersResponseReplacement:(id)replacement
 {
-  v5 = a4;
+  replacementCopy = replacement;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __82___MPCQueueControllerBehaviorMusicSharePlay_controller_defersResponseReplacement___block_invoke;
   v7[3] = &unk_1E8239170;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = replacementCopy;
+  v6 = replacementCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
 - (int64_t)displayItemCount
 {
-  v2 = [(ICSharedListeningQueue *)self->_queue tracklist];
-  v3 = [v2 totalItemCount];
+  tracklist = [(ICSharedListeningQueue *)self->_queue tracklist];
+  totalItemCount = [tracklist totalItemCount];
 
-  return v3;
+  return totalItemCount;
 }
 
-- (void)clearAllItemsAfterContentItemID:(id)a3
+- (void)clearAllItemsAfterContentItemID:(id)d
 {
-  v4 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:a3];
+  v4 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:d];
   queue = self->_queue;
   v10 = v4;
-  v6 = [v4 itemID];
-  v7 = [(ICSharedListeningQueue *)queue itemForIdentifier:v6];
+  itemID = [v4 itemID];
+  v7 = [(ICSharedListeningQueue *)queue itemForIdentifier:itemID];
 
   if (v7)
   {
     v8 = self->_queue;
-    v9 = [v10 itemID];
-    [(ICSharedListeningQueue *)v8 removeAllItemIdentifiersAfterItemIdentifier:v9];
+    itemID2 = [v10 itemID];
+    [(ICSharedListeningQueue *)v8 removeAllItemIdentifiersAfterItemIdentifier:itemID2];
   }
 }
 
-- (void)removeContentItemID:(id)a3 completion:(id)a4
+- (void)removeContentItemID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:a3];
+  completionCopy = completion;
+  v7 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:d];
   queue = self->_queue;
   v14 = v7;
-  v9 = [v7 itemID];
-  v10 = [(ICSharedListeningQueue *)queue itemForIdentifier:v9];
+  itemID = [v7 itemID];
+  v10 = [(ICSharedListeningQueue *)queue itemForIdentifier:itemID];
 
   if (v10)
   {
     v11 = self->_queue;
-    v12 = [v14 itemID];
-    [(ICSharedListeningQueue *)v11 removeItemIdentifier:v12];
+    itemID2 = [v14 itemID];
+    [(ICSharedListeningQueue *)v11 removeItemIdentifier:itemID2];
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
     v13 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCMusicSharePlayBehaviorError" code:8 debugDescription:@"Received a remove command but the item is not available in the queue."];
-    v6[2](v6, v13);
+    completionCopy[2](completionCopy, v13);
 
-    v6 = v13;
+    completionCopy = v13;
   }
 }
 
-- (void)moveContentItemID:(id)a3 afterContentItemID:(id)a4 completion:(id)a5
+- (void)moveContentItemID:(id)d afterContentItemID:(id)iD completion:(id)completion
 {
-  v21 = a4;
-  v8 = a5;
-  v9 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:a3];
+  iDCopy = iD;
+  completionCopy = completion;
+  v9 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:d];
   queue = self->_queue;
-  v11 = [v9 itemID];
-  v12 = [(ICSharedListeningQueue *)queue itemForIdentifier:v11];
+  itemID = [v9 itemID];
+  v12 = [(ICSharedListeningQueue *)queue itemForIdentifier:itemID];
 
   if (v12)
   {
-    v13 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:v21];
+    v13 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:iDCopy];
     v14 = self->_queue;
-    v15 = [v13 itemID];
-    v16 = [(ICSharedListeningQueue *)v14 itemForIdentifier:v15];
+    itemID2 = [v13 itemID];
+    v16 = [(ICSharedListeningQueue *)v14 itemForIdentifier:itemID2];
 
     if (v16)
     {
       v17 = self->_queue;
-      v18 = [v9 itemID];
-      v19 = [v13 itemID];
-      [(ICSharedListeningQueue *)v17 moveItemIdentifier:v18 afterItemIdentifier:v19];
+      itemID3 = [v9 itemID];
+      itemID4 = [v13 itemID];
+      [(ICSharedListeningQueue *)v17 moveItemIdentifier:itemID3 afterItemIdentifier:itemID4];
 
-      v8[2](v8, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
     {
       v20 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCMusicSharePlayBehaviorError" code:8 debugDescription:@"Received a move command but the target is not available in the queue."];
-      (v8)[2](v8, v20);
+      (completionCopy)[2](completionCopy, v20);
     }
   }
 
   else
   {
     v13 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCMusicSharePlayBehaviorError" code:8 debugDescription:@"Received a move command but the source is not available in the queue."];
-    (v8)[2](v8, v13);
+    (completionCopy)[2](completionCopy, v13);
   }
 }
 
-- (void)moveContentItemID:(id)a3 beforeContentItemID:(id)a4 completion:(id)a5
+- (void)moveContentItemID:(id)d beforeContentItemID:(id)iD completion:(id)completion
 {
-  v21 = a4;
-  v8 = a5;
-  v9 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:a3];
+  iDCopy = iD;
+  completionCopy = completion;
+  v9 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:d];
   queue = self->_queue;
-  v11 = [v9 itemID];
-  v12 = [(ICSharedListeningQueue *)queue itemForIdentifier:v11];
+  itemID = [v9 itemID];
+  v12 = [(ICSharedListeningQueue *)queue itemForIdentifier:itemID];
 
   if (v12)
   {
-    v13 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:v21];
+    v13 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:iDCopy];
     v14 = self->_queue;
-    v15 = [v13 itemID];
-    v16 = [(ICSharedListeningQueue *)v14 itemForIdentifier:v15];
+    itemID2 = [v13 itemID];
+    v16 = [(ICSharedListeningQueue *)v14 itemForIdentifier:itemID2];
 
     if (v16)
     {
       v17 = self->_queue;
-      v18 = [v9 itemID];
-      v19 = [v13 itemID];
-      [(ICSharedListeningQueue *)v17 moveItemIdentifier:v18 beforeItemIdentifier:v19];
+      itemID3 = [v9 itemID];
+      itemID4 = [v13 itemID];
+      [(ICSharedListeningQueue *)v17 moveItemIdentifier:itemID3 beforeItemIdentifier:itemID4];
 
-      v8[2](v8, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
     {
       v20 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCMusicSharePlayBehaviorError" code:8 debugDescription:@"Received a move command but the target is not available in the queue."];
-      (v8)[2](v8, v20);
+      (completionCopy)[2](completionCopy, v20);
     }
   }
 
   else
   {
     v13 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCMusicSharePlayBehaviorError" code:8 debugDescription:@"Received a move command but the source is not available in the queue."];
-    (v8)[2](v8, v13);
+    (completionCopy)[2](completionCopy, v13);
   }
 }
 
-- (void)performInsertCommand:(id)a3 targetContentItemID:(id)a4 completion:(id)a5
+- (void)performInsertCommand:(id)command targetContentItemID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 playbackQueue];
-  v11 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self externalSyncHost];
-  v12 = [v11 beginExternalSyncEditWithReason:@"PerformInsertCommand"];
+  commandCopy = command;
+  completionCopy = completion;
+  playbackQueue = [commandCopy playbackQueue];
+  externalSyncHost = [(_MPCQueueControllerBehaviorMusicSharePlay *)self externalSyncHost];
+  v12 = [externalSyncHost beginExternalSyncEditWithReason:@"PerformInsertCommand"];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __97___MPCQueueControllerBehaviorMusicSharePlay_performInsertCommand_targetContentItemID_completion___block_invoke;
   v17[3] = &unk_1E8232F40;
-  v18 = v10;
+  v18 = playbackQueue;
   v19 = v12;
-  v20 = v8;
-  v21 = self;
-  v22 = v9;
+  v20 = commandCopy;
+  selfCopy = self;
+  v22 = completionCopy;
   v23 = a2;
-  v13 = v8;
+  v13 = commandCopy;
   v14 = v12;
-  v15 = v9;
-  v16 = v10;
+  v15 = completionCopy;
+  v16 = playbackQueue;
   [v16 getMusicPlaybackContextWithOptions:0 completion:v17];
 }
 
-- (BOOL)isSupportedInsertionPosition:(int64_t)a3 fromContentItemID:(id)a4 reason:(id *)a5
+- (BOOL)isSupportedInsertionPosition:(int64_t)position fromContentItemID:(id)d reason:(id *)reason
 {
-  v8 = a4;
+  dCopy = d;
   v9 = 1;
-  if (a3 <= 1)
+  if (position <= 1)
   {
-    if (!a3)
+    if (!position)
     {
       goto LABEL_21;
     }
 
-    if (a3 == 1)
+    if (position == 1)
     {
-      if (a5)
+      if (reason)
       {
-        v10 = @"cannot insert at Tail";
+        position = @"cannot insert at Tail";
         goto LABEL_19;
       }
 
@@ -1519,28 +1519,28 @@ LABEL_20:
     goto LABEL_15;
   }
 
-  if (a3 == 4)
+  if (position == 4)
   {
-    if (a5)
+    if (reason)
     {
-      v10 = @"cannot insert at Start";
+      position = @"cannot insert at Start";
       goto LABEL_19;
     }
 
     goto LABEL_20;
   }
 
-  if (a3 == 3)
+  if (position == 3)
   {
     goto LABEL_21;
   }
 
-  if (a3 != 2)
+  if (position != 2)
   {
 LABEL_15:
-    if (a5)
+    if (reason)
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown insertion position: %d", a3];
+      position = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown insertion position: %d", position];
       goto LABEL_19;
     }
 
@@ -1549,9 +1549,9 @@ LABEL_15:
 
   if (self->_activeItemFlags)
   {
-    if (a5)
+    if (reason)
     {
-      v10 = @"active item from auto play";
+      position = @"active item from auto play";
       goto LABEL_19;
     }
 
@@ -1560,12 +1560,12 @@ LABEL_15:
 
   if ([(ICSharedListeningQueue *)self->_queue hasActiveRadioStation])
   {
-    if (a5)
+    if (reason)
     {
-      v10 = @"queue contains radio station";
+      position = @"queue contains radio station";
 LABEL_19:
       v9 = 0;
-      *a5 = v10;
+      *reason = position;
       goto LABEL_21;
     }
 
@@ -1577,28 +1577,28 @@ LABEL_21:
   return v9;
 }
 
-- (void)setAllowsQueueModifications:(BOOL)a3
+- (void)setAllowsQueueModifications:(BOOL)modifications
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
+  host = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
   v5 = os_log_create("com.apple.amp.mediaplaybackcore", "MusicSharePlayBehavior");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    v6 = [v4 engineID];
-    v7 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+    engineID = [host engineID];
+    sessionID = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
     v8 = 138543618;
-    v9 = v6;
+    v9 = engineID;
     v10 = 2114;
-    v11 = v7;
+    v11 = sessionID;
     _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_ERROR, "[BMSP:%{public}@:%{public}@] setAllowsQueueModifications: | ignoring unsupported option [cannot disable queue modifications]", &v8, 0x16u);
   }
 }
 
-- (void)canReuseQueue:(id)a3 completion:(id)a4
+- (void)canReuseQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 replaceIntent] == 3)
+  queueCopy = queue;
+  completionCopy = completion;
+  if ([queueCopy replaceIntent] == 3)
   {
     goto LABEL_9;
   }
@@ -1607,52 +1607,52 @@ LABEL_21:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_6:
-    if ([_MPCQueueControllerBehaviorMusic canLoadQueue:v6 reason:0]&& self->_queue)
+    if ([_MPCQueueControllerBehaviorMusic canLoadQueue:queueCopy reason:0]&& self->_queue)
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __70___MPCQueueControllerBehaviorMusicSharePlay_canReuseQueue_completion___block_invoke;
       v9[3] = &unk_1E8237C68;
       v9[4] = self;
-      v10 = v7;
-      [v6 getMusicPlaybackContextWithOptions:0 completion:v9];
+      v10 = completionCopy;
+      [queueCopy getMusicPlaybackContextWithOptions:0 completion:v9];
 
       goto LABEL_10;
     }
 
 LABEL_9:
-    (*(v7 + 2))(v7, 0, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0);
     goto LABEL_10;
   }
 
-  v8 = [v6 identifier];
-  if (![@"InProcess-com.apple.music.playbackqueue.sharedlistening" isEqualToString:v8])
+  identifier = [queueCopy identifier];
+  if (![@"InProcess-com.apple.music.playbackqueue.sharedlistening" isEqualToString:identifier])
   {
 
     goto LABEL_6;
   }
 
-  (*(v7 + 2))(v7, 0, 0, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0);
 
 LABEL_10:
 }
 
-- (void)setRequestedPropertySetForEvents:(id)a3
+- (void)setRequestedPropertySetForEvents:(id)events
 {
-  v4 = a3;
-  if (!v4)
+  eventsCopy = events;
+  if (!eventsCopy)
   {
-    v4 = [MEMORY[0x1E69708B0] emptyPropertySet];
+    eventsCopy = [MEMORY[0x1E69708B0] emptyPropertySet];
   }
 
-  if (self->_requestedPropertySetForEvents != v4)
+  if (self->_requestedPropertySetForEvents != eventsCopy)
   {
-    v7 = v4;
-    v5 = [(MPPropertySet *)v4 copy];
+    v7 = eventsCopy;
+    v5 = [(MPPropertySet *)eventsCopy copy];
     requestedPropertySetForEvents = self->_requestedPropertySetForEvents;
     self->_requestedPropertySetForEvents = v5;
 
-    v4 = v7;
+    eventsCopy = v7;
   }
 }
 
@@ -1667,39 +1667,39 @@ LABEL_10:
   return result;
 }
 
-- (void)updatePlaybackCoordinator:(id)a3
+- (void)updatePlaybackCoordinator:(id)coordinator
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  coordinatorCopy = coordinator;
   playbackCoordinator = self->_playbackCoordinator;
-  if (playbackCoordinator != v5)
+  if (playbackCoordinator != coordinatorCopy)
   {
-    v7 = [(AVPlayerPlaybackCoordinator *)playbackCoordinator delegate];
+    delegate = [(AVPlayerPlaybackCoordinator *)playbackCoordinator delegate];
 
-    if (v7 == self)
+    if (delegate == self)
     {
       [(AVPlayerPlaybackCoordinator *)self->_playbackCoordinator setDelegate:0];
     }
 
-    objc_storeStrong(&self->_playbackCoordinator, a3);
+    objc_storeStrong(&self->_playbackCoordinator, coordinator);
     [(AVPlayerPlaybackCoordinator *)self->_playbackCoordinator setDelegate:self];
     if (self->_playbackCoordinator)
     {
-      v8 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self queue];
+      queue = [(_MPCQueueControllerBehaviorMusicSharePlay *)self queue];
 
-      if (v8)
+      if (queue)
       {
-        v9 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
+        host = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
         v10 = os_log_create("com.apple.amp.mediaplaybackcore", "MusicSharePlayBehavior");
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [v9 engineID];
-          v12 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+          engineID = [host engineID];
+          sessionID = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
           v13 = self->_playbackCoordinator;
           v14 = 138543874;
-          v15 = v11;
+          v15 = engineID;
           v16 = 2114;
-          v17 = v12;
+          v17 = sessionID;
           v18 = 2114;
           v19 = v13;
           _os_log_impl(&dword_1C5C61000, v10, OS_LOG_TYPE_DEFAULT, "[BMSP:%{public}@:%{public}@] updatePlaybackCoordinator: | begin synchronized playback with AVPlaybackCoordinator [] playbackCoordinator=%{public}@", &v14, 0x20u);
@@ -1714,9 +1714,9 @@ LABEL_10:
 - (void)endSynchronizedPlayback
 {
   v5 = self->_playbackCoordinator;
-  v3 = [(AVPlayerPlaybackCoordinator *)v5 delegate];
+  delegate = [(AVPlayerPlaybackCoordinator *)v5 delegate];
 
-  if (v3 == self)
+  if (delegate == self)
   {
     [(AVPlayerPlaybackCoordinator *)v5 setDelegate:0];
   }
@@ -1727,24 +1727,24 @@ LABEL_10:
   [(ICLiveLink *)self->_liveLink endSynchronizedPlayback];
 }
 
-- (id)copyContentItemID:(id)a3 repeatIteration:(int64_t)a4
+- (id)copyContentItemID:(id)d repeatIteration:(int64_t)iteration
 {
-  v5 = MPCQueueControllerBehaviorMusicIdentifierComponentsFromContentItemID(a3);
-  if ([v5 repeatIteration] != a4)
+  v5 = MPCQueueControllerBehaviorMusicIdentifierComponentsFromContentItemID(d);
+  if ([v5 repeatIteration] != iteration)
   {
-    v6 = [v5 copyWithRepeatIteration:a4];
+    v6 = [v5 copyWithRepeatIteration:iteration];
 
     v5 = v6;
   }
 
-  v7 = [v5 contentItemID];
+  contentItemID = [v5 contentItemID];
 
-  return v7;
+  return contentItemID;
 }
 
-- (id)contentItemIDWithoutRepeatIteration:(id)a3
+- (id)contentItemIDWithoutRepeatIteration:(id)iteration
 {
-  v3 = MPCQueueControllerBehaviorMusicIdentifierComponentsFromContentItemID(a3);
+  v3 = MPCQueueControllerBehaviorMusicIdentifierComponentsFromContentItemID(iteration);
   if ([v3 repeatIteration])
   {
     v4 = [v3 copyWithRepeatIteration:0];
@@ -1752,66 +1752,66 @@ LABEL_10:
     v3 = v4;
   }
 
-  v5 = [v3 contentItemID];
+  contentItemID = [v3 contentItemID];
 
-  return v5;
+  return contentItemID;
 }
 
-- (void)setHostingSharedSessionID:(id)a3 reason:(id)a4
+- (void)setHostingSharedSessionID:(id)d reason:(id)reason
 {
-  if (a3)
+  if (d)
   {
-    v5 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self musicSharePlayBehaviorDelegate:a3];
+    v5 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self musicSharePlayBehaviorDelegate:d];
     [v5 behavior:self didEndSharePlaySessionWithReason:2];
   }
 }
 
-- (void)findFirstContentItemIDForItemIntersectingIdentifierSet:(id)a3 completion:(id)a4
+- (void)findFirstContentItemIDForItemIntersectingIdentifierSet:(id)set completion:(id)completion
 {
-  v16 = a4;
+  completionCopy = completion;
   requestController = self->_requestController;
-  v7 = a3;
-  v8 = [(MPRequestResponseController *)requestController response];
-  v9 = [v8 modelResponse];
-  v10 = [v9 results];
+  setCopy = set;
+  response = [(MPRequestResponseController *)requestController response];
+  modelResponse = [response modelResponse];
+  results = [modelResponse results];
 
-  v11 = [v10 indexPathForItemWithIdentifiersIntersectingSet:v7];
+  v11 = [results indexPathForItemWithIdentifiersIntersectingSet:setCopy];
 
   if (v11)
   {
-    v12 = [v10 identifiersForItemAtIndexPath:v11];
-    v13 = [v12 vendorID];
-    v14 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForSharedListeningItemID:v13];
+    v12 = [results identifiersForItemAtIndexPath:v11];
+    vendorID = [v12 vendorID];
+    v14 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForSharedListeningItemID:vendorID];
 
-    v15 = [v14 contentItemID];
-    v16[2](v16, v15, 0);
+    contentItemID = [v14 contentItemID];
+    completionCopy[2](completionCopy, contentItemID, 0);
   }
 
   else
   {
-    v16[2](v16, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 
-- (void)getSharedQueueTracklistWithStartingContentItemID:(id)a3 completion:(id)a4
+- (void)getSharedQueueTracklistWithStartingContentItemID:(id)d completion:(id)completion
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusicSharePlay.m" lineNumber:637 description:@"Cannot get a shared queue tracklist from an existing shared queue."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusicSharePlay.m" lineNumber:637 description:@"Cannot get a shared queue tracklist from an existing shared queue."];
 }
 
-- (BOOL)isAutoPlayContentItemID:(id)a3
+- (BOOL)isAutoPlayContentItemID:(id)d
 {
-  v3 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:a3];
-  v4 = [v3 behaviorFlags];
+  v3 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:d];
+  behaviorFlags = [v3 behaviorFlags];
 
-  return v4 & 1;
+  return behaviorFlags & 1;
 }
 
-- (void)setAutoPlayEnabled:(BOOL)a3 targetContentItemID:(id)a4 completion:(id)a5
+- (void)setAutoPlayEnabled:(BOOL)enabled targetContentItemID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  enabledCopy = enabled;
+  dCopy = d;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v12[0] = MEMORY[0x1E69E9820];
@@ -1819,87 +1819,87 @@ LABEL_10:
   v12[2] = __95___MPCQueueControllerBehaviorMusicSharePlay_setAutoPlayEnabled_targetContentItemID_completion___block_invoke;
   v12[3] = &unk_1E8232EA0;
   objc_copyWeak(&v14, &location);
-  v15 = v6;
-  v11 = v9;
+  v15 = enabledCopy;
+  v11 = completionCopy;
   v13 = v11;
-  [(ICSharedListeningQueue *)queue setAutoPlayEnabled:v6 completion:v12];
+  [(ICSharedListeningQueue *)queue setAutoPlayEnabled:enabledCopy completion:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)canUserEnableAutoPlayWithReason:(id *)a3
+- (BOOL)canUserEnableAutoPlayWithReason:(id *)reason
 {
   result = [(ICSharedListeningQueue *)self->_queue isAutoPlayAvailable];
-  if (a3)
+  if (reason)
   {
     if (!result)
     {
-      *a3 = @"AutoPlay unavailable in this SharePlay session";
+      *reason = @"AutoPlay unavailable in this SharePlay session";
     }
   }
 
   return result;
 }
 
-- (void)reshuffleWithTargetContentItemID:(id)a3 completion:(id)a4
+- (void)reshuffleWithTargetContentItemID:(id)d completion:(id)completion
 {
   v5 = MEMORY[0x1E696ABC0];
-  v6 = a4;
+  completionCopy = completion;
   v7 = [v5 msv_errorWithDomain:@"MPCMusicSharePlayBehaviorError" code:3 debugDescription:@"Shuffle is not supported in SharePlay."];
-  (*(a4 + 2))(v6, v7);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)setShuffleType:(int64_t)a3 targetContentItemID:(id)a4 completion:(id)a5
+- (void)setShuffleType:(int64_t)type targetContentItemID:(id)d completion:(id)completion
 {
   v6 = MEMORY[0x1E696ABC0];
-  v7 = a5;
+  completionCopy = completion;
   v8 = [v6 msv_errorWithDomain:@"MPCMusicSharePlayBehaviorError" code:3 debugDescription:@"Shuffle is not supported in SharePlay."];
-  (*(a5 + 2))(v7, v8);
+  (*(completion + 2))(completionCopy, v8);
 }
 
-- (BOOL)canUserChangeShuffleModeWithReason:(id *)a3
+- (BOOL)canUserChangeShuffleModeWithReason:(id *)reason
 {
-  if (a3)
+  if (reason)
   {
-    *a3 = @"in shared listening mode";
+    *reason = @"in shared listening mode";
   }
 
   return 0;
 }
 
-- (void)setRepeatType:(int64_t)a3 completion:(id)a4
+- (void)setRepeatType:(int64_t)type completion:(id)completion
 {
   v5 = MEMORY[0x1E696ABC0];
-  v6 = a4;
+  completionCopy = completion;
   v7 = [v5 msv_errorWithDomain:@"MPCMusicSharePlayBehaviorError" code:3 debugDescription:@"Repeat is not supported in SharePlay."];
-  (*(a4 + 2))(v6, v7);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (BOOL)canUserChangeRepeatTypeWithReason:(id *)a3
+- (BOOL)canUserChangeRepeatTypeWithReason:(id *)reason
 {
-  if (a3)
+  if (reason)
   {
-    *a3 = @"in shared listening mode";
+    *reason = @"in shared listening mode";
   }
 
   return 0;
 }
 
-- (void)didJumpToTargetContentItemID:(id)a3
+- (void)didJumpToTargetContentItemID:(id)d
 {
-  v6 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:a3];
+  v6 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:d];
   liveLink = self->_liveLink;
-  v5 = [v6 itemID];
-  [(ICLiveLink *)liveLink broadcastDirectCurrentItemChangedToItemIdentifier:v5];
+  itemID = [v6 itemID];
+  [(ICLiveLink *)liveLink broadcastDirectCurrentItemChangedToItemIdentifier:itemID];
 }
 
-- (id)_itemForContentItemID:(id)a3 allowReuse:(BOOL)a4
+- (id)_itemForContentItemID:(id)d allowReuse:(BOOL)reuse
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v44 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
-  v6 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:v5];
+  dCopy = d;
+  host = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
+  v6 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:dCopy];
   if ([v6 type])
   {
     v7 = objc_alloc_init(MEMORY[0x1E6970880]);
@@ -1907,56 +1907,56 @@ LABEL_10:
     v9 = [v8 localizedStringForKey:@"LOADING_AUDIO_LABEL" value:&stru_1F454A698 table:@"MediaPlayer"];
     [(MPCModelGenericAVItem *)v7 setMainTitle:v9];
 
-    v10 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self queue];
-    v11 = [v6 itemID];
-    v12 = [v10 itemForIdentifier:v11];
-    v13 = [v12 mediaIdentifier];
-    -[MPCModelGenericAVItem setStoreItemInt64ID:](v7, "setStoreItemInt64ID:", [v13 longLongValue]);
+    queue = [(_MPCQueueControllerBehaviorMusicSharePlay *)self queue];
+    itemID = [v6 itemID];
+    v12 = [queue itemForIdentifier:itemID];
+    mediaIdentifier = [v12 mediaIdentifier];
+    -[MPCModelGenericAVItem setStoreItemInt64ID:](v7, "setStoreItemInt64ID:", [mediaIdentifier longLongValue]);
 
-    v14 = [v6 itemID];
-    [(MPCModelGenericAVItem *)v7 setQueueIdentifier:v14];
+    itemID2 = [v6 itemID];
+    [(MPCModelGenericAVItem *)v7 setQueueIdentifier:itemID2];
 
-    v15 = [v6 contentItemID];
-    v16 = [v6 sectionID];
-    v17 = [v6 itemID];
-    [(MPCModelGenericAVItem *)v7 setContentItemID:v15 queueSectionID:v16 queueItemID:v17];
+    contentItemID = [v6 contentItemID];
+    sectionID = [v6 sectionID];
+    itemID3 = [v6 itemID];
+    [(MPCModelGenericAVItem *)v7 setContentItemID:contentItemID queueSectionID:sectionID queueItemID:itemID3];
     goto LABEL_5;
   }
 
-  v18 = [(MPRequestResponseController *)self->_requestController response];
-  v19 = [v18 modelResponse];
-  v15 = [v19 results];
+  response = [(MPRequestResponseController *)self->_requestController response];
+  modelResponse = [response modelResponse];
+  contentItemID = [modelResponse results];
 
   resultsIndexPathMap = self->_resultsIndexPathMap;
-  v21 = [v6 itemID];
-  v16 = [(NSDictionary *)resultsIndexPathMap objectForKeyedSubscript:v21];
+  itemID4 = [v6 itemID];
+  sectionID = [(NSDictionary *)resultsIndexPathMap objectForKeyedSubscript:itemID4];
 
-  if (v16)
+  if (sectionID)
   {
-    v17 = [v15 itemAtIndexPath:v16];
-    v42 = -[NSObject sectionAtIndex:](v15, "sectionAtIndex:", [v16 section]);
-    v22 = [(MPRequestResponseController *)self->_requestController request];
-    v23 = [v22 modelRequest];
-    v24 = [v23 playbackRequestEnvironment];
+    itemID3 = [contentItemID itemAtIndexPath:sectionID];
+    v42 = -[NSObject sectionAtIndex:](contentItemID, "sectionAtIndex:", [sectionID section]);
+    request = [(MPRequestResponseController *)self->_requestController request];
+    modelRequest = [request modelRequest];
+    playbackRequestEnvironment = [modelRequest playbackRequestEnvironment];
 
     v25 = [MPCModelGenericAVItem alloc];
-    v26 = [(MPRequestResponseController *)self->_requestController request];
-    v27 = [v26 modelRequest];
-    [v27 itemProperties];
-    v28 = v43 = v5;
-    v7 = [(MPCModelGenericAVItem *)v25 initWithGenericObject:v17 itemProperties:v28 playbackRequestEnvironment:v24 identityPropertySet:self->_identityPropertySet];
+    request2 = [(MPRequestResponseController *)self->_requestController request];
+    modelRequest2 = [request2 modelRequest];
+    [modelRequest2 itemProperties];
+    v28 = v43 = dCopy;
+    v7 = [(MPCModelGenericAVItem *)v25 initWithGenericObject:itemID3 itemProperties:v28 playbackRequestEnvironment:playbackRequestEnvironment identityPropertySet:self->_identityPropertySet];
 
-    v29 = [v6 itemID];
-    [(MPCModelGenericAVItem *)v7 setQueueIdentifier:v29];
+    itemID5 = [v6 itemID];
+    [(MPCModelGenericAVItem *)v7 setQueueIdentifier:itemID5];
 
-    v30 = [v6 contentItemID];
-    v31 = [v6 sectionID];
-    v32 = [v6 itemID];
-    [(MPCModelGenericAVItem *)v7 setContentItemID:v30 queueSectionID:v31 queueItemID:v32];
+    contentItemID2 = [v6 contentItemID];
+    sectionID2 = [v6 sectionID];
+    itemID6 = [v6 itemID];
+    [(MPCModelGenericAVItem *)v7 setContentItemID:contentItemID2 queueSectionID:sectionID2 queueItemID:itemID6];
 
-    v5 = v43;
-    v33 = [v24 userIdentity];
-    v34 = [MPCMediaLibraryPlaybackAssetCacheProvider deviceLibraryProviderWithUserIdentity:v33];
+    dCopy = v43;
+    userIdentity = [playbackRequestEnvironment userIdentity];
+    v34 = [MPCMediaLibraryPlaybackAssetCacheProvider deviceLibraryProviderWithUserIdentity:userIdentity];
     [(MPCModelGenericAVItem *)v7 setAssetCacheProvider:v34];
 
     v35 = [MEMORY[0x1E6970708] playEventWithModelObject:v42 featureName:@"MusicSharePlayBehavior"];
@@ -1966,18 +1966,18 @@ LABEL_10:
     [(NSHashTable *)self->_activeModelGenericAVItems addObject:v7];
 
 LABEL_5:
-    v15 = os_log_create("com.apple.amp.mediaplaybackcore", "MusicSharePlayBehavior");
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    contentItemID = os_log_create("com.apple.amp.mediaplaybackcore", "MusicSharePlayBehavior");
+    if (os_log_type_enabled(contentItemID, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [v44 engineID];
-      v37 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+      engineID = [host engineID];
+      sessionID = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
       *buf = 138543874;
-      v46 = v36;
+      v46 = engineID;
       v47 = 2114;
-      v48 = v37;
+      v48 = sessionID;
       v49 = 2114;
       v50 = v7;
-      _os_log_impl(&dword_1C5C61000, v15, OS_LOG_TYPE_DEFAULT, "[ITFIT:%{public}@:%{public}@] _itemForComponents | returning item [] item=%{public}@", buf, 0x20u);
+      _os_log_impl(&dword_1C5C61000, contentItemID, OS_LOG_TYPE_DEFAULT, "[ITFIT:%{public}@:%{public}@] _itemForComponents | returning item [] item=%{public}@", buf, 0x20u);
     }
 
     goto LABEL_10;
@@ -1986,14 +1986,14 @@ LABEL_5:
   v38 = os_log_create("com.apple.amp.mediaplaybackcore", "MusicSharePlayBehavior");
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
   {
-    v39 = [v44 engineID];
-    v40 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+    engineID2 = [host engineID];
+    sessionID2 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
     *buf = 138543874;
-    v46 = v39;
+    v46 = engineID2;
     v47 = 2114;
-    v48 = v40;
+    v48 = sessionID2;
     v49 = 2114;
-    v50 = v5;
+    v50 = dCopy;
     _os_log_impl(&dword_1C5C61000, v38, OS_LOG_TYPE_DEFAULT, "[ITFIT:%{public}@:%{public}@] _itemForContentItemID: | returning nil [unknown contentItemID] contentItemID=%{public}@", buf, 0x20u);
   }
 
@@ -2003,20 +2003,20 @@ LABEL_10:
   return v7;
 }
 
-- (id)_stateDictionaryIncludingQueue:(BOOL)a3
+- (id)_stateDictionaryIncludingQueue:(BOOL)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v12[1] = *MEMORY[0x1E69E9840];
   v11 = @"_obj";
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), self];
   v12[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  if (v3)
+  if (queueCopy)
   {
     v7 = [v6 mutableCopy];
-    v8 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _queueAsStateDictionary];
-    [v7 setObject:v8 forKeyedSubscript:@"queue"];
+    _queueAsStateDictionary = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _queueAsStateDictionary];
+    [v7 setObject:_queueAsStateDictionary forKeyedSubscript:@"queue"];
 
     v9 = [v7 copy];
     v6 = v9;
@@ -2025,18 +2025,18 @@ LABEL_10:
   return v6;
 }
 
-- (id)contentItemIDEnumeratorStartingAfterContentItemID:(id)a3 mode:(int64_t)a4 options:(unint64_t)a5
+- (id)contentItemIDEnumeratorStartingAfterContentItemID:(id)d mode:(int64_t)mode options:(unint64_t)options
 {
-  v5 = a5;
+  optionsCopy = options;
   v23[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  dCopy = d;
   if (self->_liveLinkStopped)
   {
     v8 = [MPCQueueControllerBehaviorMusicIdentifierComponents placeholderComponentsWithLoadingSectionID:@"LiveLinkStopped"];
-    v9 = [v8 contentItemID];
-    v23[0] = v9;
-    v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
-    v11 = [v10 objectEnumerator];
+    contentItemID = [v8 contentItemID];
+    v23[0] = contentItemID;
+    v9ContentItemID = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
+    objectEnumerator = [v9ContentItemID objectEnumerator];
 LABEL_19:
 
 LABEL_20:
@@ -2045,17 +2045,17 @@ LABEL_20:
 
   v12 = [(NSArray *)self->_enumeratorContentItemIDs copy];
   v8 = v12;
-  if (v7)
+  if (dCopy)
   {
-    v13 = [v12 indexOfObject:v7];
+    v13 = [v12 indexOfObject:dCopy];
     if (v13 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v14 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:v7];
-      v15 = [v14 itemSpecificContentItemID];
+      v14 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:dCopy];
+      itemSpecificContentItemID = [v14 itemSpecificContentItemID];
 
-      if (!v15 || ([v14 itemSpecificContentItemID], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v8, "indexOfObject:", v16), v16, v17 == 0x7FFFFFFFFFFFFFFFLL) || ((v5 & 1) != 0 ? (v13 = v17 + 1) : (v13 = v17 - 1), v13 == 0x7FFFFFFFFFFFFFFFLL))
+      if (!itemSpecificContentItemID || ([v14 itemSpecificContentItemID], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v8, "indexOfObject:", v16), v16, v17 == 0x7FFFFFFFFFFFFFFFLL) || ((optionsCopy & 1) != 0 ? (v13 = v17 + 1) : (v13 = v17 - 1), v13 == 0x7FFFFFFFFFFFFFFFLL))
       {
-        v11 = [MEMORY[0x1E695E0F0] objectEnumerator];
+        objectEnumerator = [MEMORY[0x1E695E0F0] objectEnumerator];
 
         goto LABEL_21;
       }
@@ -2069,65 +2069,65 @@ LABEL_20:
 
   if (!self->_queue)
   {
-    v9 = [MPCQueueControllerBehaviorMusicIdentifierComponents placeholderComponentsWithLoadingSectionID:@"WaitingForFirstQueue"];
-    v10 = [v9 contentItemID];
-    v22 = v10;
+    contentItemID = [MPCQueueControllerBehaviorMusicIdentifierComponents placeholderComponentsWithLoadingSectionID:@"WaitingForFirstQueue"];
+    v9ContentItemID = [contentItemID contentItemID];
+    v22 = v9ContentItemID;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
-    v11 = [v19 objectEnumerator];
+    objectEnumerator = [v19 objectEnumerator];
 
     goto LABEL_19;
   }
 
-  if (v5)
+  if (optionsCopy)
   {
     if (v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [v8 subarrayWithRange:{0, v13}];
-      v21 = [v9 reverseObjectEnumerator];
+      contentItemID = [v8 subarrayWithRange:{0, v13}];
+      reverseObjectEnumerator = [contentItemID reverseObjectEnumerator];
       goto LABEL_28;
     }
 
-    v18 = [v8 reverseObjectEnumerator];
+    reverseObjectEnumerator2 = [v8 reverseObjectEnumerator];
   }
 
   else
   {
     if (v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [v8 subarrayWithRange:{v13 + 1, objc_msgSend(v8, "count") + ~v13}];
-      v21 = [v9 objectEnumerator];
+      contentItemID = [v8 subarrayWithRange:{v13 + 1, objc_msgSend(v8, "count") + ~v13}];
+      reverseObjectEnumerator = [contentItemID objectEnumerator];
 LABEL_28:
-      v11 = v21;
+      objectEnumerator = reverseObjectEnumerator;
       goto LABEL_20;
     }
 
-    v18 = [v8 objectEnumerator];
+    reverseObjectEnumerator2 = [v8 objectEnumerator];
   }
 
-  v11 = v18;
+  objectEnumerator = reverseObjectEnumerator2;
 LABEL_21:
 
-  return v11;
+  return objectEnumerator;
 }
 
 - (BOOL)isEmpty
 {
-  v2 = [(ICSharedListeningQueue *)self->_queue items];
-  v3 = [v2 count] == 0;
+  items = [(ICSharedListeningQueue *)self->_queue items];
+  v3 = [items count] == 0;
 
   return v3;
 }
 
-- (BOOL)canNextItemFromContentItemID:(id)a3 reason:(id *)a4
+- (BOOL)canNextItemFromContentItemID:(id)d reason:(id *)reason
 {
-  v6 = a3;
-  v7 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:v6];
+  dCopy = d;
+  v7 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:dCopy];
   if ([v7 type] == 3)
   {
-    if (a4)
+    if (reason)
     {
       v8 = 0;
-      *a4 = @"tail placeholder";
+      *reason = @"tail placeholder";
       goto LABEL_12;
     }
 
@@ -2137,81 +2137,81 @@ LABEL_11:
   }
 
   queue = self->_queue;
-  v10 = [v7 itemID];
-  v11 = [(ICSharedListeningQueue *)queue itemForIdentifier:v10];
+  itemID = [v7 itemID];
+  v11 = [(ICSharedListeningQueue *)queue itemForIdentifier:itemID];
 
   if (!v11)
   {
-    if (a4)
+    if (reason)
     {
       v14 = MEMORY[0x1E696AEC0];
-      v15 = [v7 itemID];
-      *a4 = [v14 stringWithFormat:@"ICSharedListeningQueue does not contain itemID: %@", v15];
+      itemID2 = [v7 itemID];
+      *reason = [v14 stringWithFormat:@"ICSharedListeningQueue does not contain itemID: %@", itemID2];
     }
 
     goto LABEL_11;
   }
 
-  v12 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self contentItemIDEnumeratorStartingAfterContentItemID:v6 mode:2 options:0];
-  v13 = [v12 nextObject];
-  v8 = v13 != 0;
-  if (a4 && !v13)
+  v12 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self contentItemIDEnumeratorStartingAfterContentItemID:dCopy mode:2 options:0];
+  nextObject = [v12 nextObject];
+  v8 = nextObject != 0;
+  if (reason && !nextObject)
   {
-    *a4 = @"end of shared listening queue";
+    *reason = @"end of shared listening queue";
   }
 
 LABEL_12:
   return v8;
 }
 
-- (BOOL)canPreviousItemFromContentItemID:(id)a3 reason:(id *)a4
+- (BOOL)canPreviousItemFromContentItemID:(id)d reason:(id *)reason
 {
-  v6 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:a3];
+  v6 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:d];
   queue = self->_queue;
-  v8 = [v6 itemID];
-  v9 = [(ICSharedListeningQueue *)queue itemForIdentifier:v8];
+  itemID = [v6 itemID];
+  v9 = [(ICSharedListeningQueue *)queue itemForIdentifier:itemID];
 
-  if (a4 && !v9)
+  if (reason && !v9)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [v6 itemID];
-    *a4 = [v10 stringWithFormat:@"ICSharedListeningQueue does not contain itemID: %@", v11];
+    itemID2 = [v6 itemID];
+    *reason = [v10 stringWithFormat:@"ICSharedListeningQueue does not contain itemID: %@", itemID2];
   }
 
   return v9 != 0;
 }
 
-- (BOOL)canJumpToContentItemID:(id)a3 reason:(id *)a4
+- (BOOL)canJumpToContentItemID:(id)d reason:(id *)reason
 {
-  v6 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:a3];
+  v6 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:d];
   queue = self->_queue;
-  v8 = [v6 itemID];
-  v9 = [(ICSharedListeningQueue *)queue itemForIdentifier:v8];
+  itemID = [v6 itemID];
+  v9 = [(ICSharedListeningQueue *)queue itemForIdentifier:itemID];
 
-  if (a4 && !v9)
+  if (reason && !v9)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [v6 itemID];
-    *a4 = [v10 stringWithFormat:@"ICSharedListeningQueue does not contain itemID: %@", v11];
+    itemID2 = [v6 itemID];
+    *reason = [v10 stringWithFormat:@"ICSharedListeningQueue does not contain itemID: %@", itemID2];
   }
 
   return v9 != 0;
 }
 
-- (BOOL)itemExistsForContentItemID:(id)a3
+- (BOOL)itemExistsForContentItemID:(id)d
 {
-  v5 = a3;
-  v6 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:v5];
+  dCopy = d;
+  v6 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _componentsForContentItemID:dCopy];
   v7 = v6;
   if (self->_liveLinkStopped)
   {
     if ([v6 type] == 2)
     {
-      v8 = [v7 sectionID];
-      v9 = v8;
+      sectionID = [v7 sectionID];
+      itemID = sectionID;
       v10 = @"LiveLinkStopped";
 LABEL_11:
-      LOBYTE(v12) = [v8 isEqualToString:v10];
+      LOBYTE(currentHandler) = [sectionID isEqualToString:v10];
       goto LABEL_21;
     }
   }
@@ -2220,51 +2220,51 @@ LABEL_11:
   {
     if (self->_queue)
     {
-      v9 = [v6 itemID];
-      v11 = [v7 type];
-      LOBYTE(v12) = 0;
-      if (v11 > 1)
+      itemID = [v6 itemID];
+      type = [v7 type];
+      LOBYTE(currentHandler) = 0;
+      if (type > 1)
       {
-        if (v11 == 2)
+        if (type == 2)
         {
-          LOBYTE(v12) = self->_queue != 0;
+          LOBYTE(currentHandler) = self->_queue != 0;
         }
 
-        else if (v11 == 3)
+        else if (type == 3)
         {
-          v12 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v12 handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusicSharePlay.m" lineNumber:384 description:{@"Unexpected contentItemID in itemExistsForContentItemID (MPCQueueControllerBehaviorItemTypeEndOfQueuePlaceholder): %@", v5}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusicSharePlay.m" lineNumber:384 description:{@"Unexpected contentItemID in itemExistsForContentItemID (MPCQueueControllerBehaviorItemTypeEndOfQueuePlaceholder): %@", dCopy}];
 
-          LOBYTE(v12) = 0;
+          LOBYTE(currentHandler) = 0;
         }
 
         goto LABEL_21;
       }
 
-      if (v11)
+      if (type)
       {
-        if (v11 != 1)
+        if (type != 1)
         {
 LABEL_21:
 
           goto LABEL_22;
         }
 
-        v13 = [v7 itemSpecificContentItemID];
-        LOBYTE(v12) = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _useItemPlaceholderForContentItemID:v13];
+        itemSpecificContentItemID = [v7 itemSpecificContentItemID];
+        LOBYTE(currentHandler) = [(_MPCQueueControllerBehaviorMusicSharePlay *)self _useItemPlaceholderForContentItemID:itemSpecificContentItemID];
       }
 
       else
       {
-        v13 = [(ICSharedListeningQueue *)self->_queue itemForIdentifier:v9];
-        if (v13)
+        itemSpecificContentItemID = [(ICSharedListeningQueue *)self->_queue itemForIdentifier:itemID];
+        if (itemSpecificContentItemID)
         {
-          LODWORD(v12) = ![(_MPCQueueControllerBehaviorMusicSharePlay *)self _useItemPlaceholderForContentItemID:v5];
+          LODWORD(currentHandler) = ![(_MPCQueueControllerBehaviorMusicSharePlay *)self _useItemPlaceholderForContentItemID:dCopy];
         }
 
         else
         {
-          LOBYTE(v12) = 0;
+          LOBYTE(currentHandler) = 0;
         }
       }
 
@@ -2273,70 +2273,70 @@ LABEL_21:
 
     if ([v6 type] == 2)
     {
-      v8 = [v7 sectionID];
-      v9 = v8;
+      sectionID = [v7 sectionID];
+      itemID = sectionID;
       v10 = @"WaitingForFirstQueue";
       goto LABEL_11;
     }
   }
 
-  LOBYTE(v12) = 0;
+  LOBYTE(currentHandler) = 0;
 LABEL_22:
 
-  return v12;
+  return currentHandler;
 }
 
-- (id)performLoadCommand:(id)a3 completion:(id)a4
+- (id)performLoadCommand:(id)command completion:(id)completion
 {
   v64 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   v9 = objc_opt_class();
-  v10 = [v7 playbackQueue];
+  playbackQueue = [commandCopy playbackQueue];
   v55 = 0;
-  v11 = [v9 canLoadQueue:v10 reason:&v55];
+  v11 = [v9 canLoadQueue:playbackQueue reason:&v55];
   v12 = v55;
 
   if ((v11 & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusicSharePlay.m" lineNumber:291 description:{@"unsupported playback queue: %@", v12}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusicSharePlay.m" lineNumber:291 description:{@"unsupported playback queue: %@", v12}];
   }
 
-  v14 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
-  v15 = [v7 mediaRemoteOptions];
-  v16 = [v15 objectForKeyedSubscript:@"sharedListeningToken"];
+  host = [(_MPCQueueControllerBehaviorMusicSharePlay *)self host];
+  mediaRemoteOptions = [commandCopy mediaRemoteOptions];
+  v16 = [mediaRemoteOptions objectForKeyedSubscript:@"sharedListeningToken"];
 
   if (v16)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [v7 playbackQueue];
-      self->_joiningAsInitiator = [v17 isRequestingImmediatePlayback];
+      playbackQueue2 = [commandCopy playbackQueue];
+      self->_joiningAsInitiator = [playbackQueue2 isRequestingImmediatePlayback];
 
       v18 = +[MPCPlaybackRequestEnvironment activeAccountRequestEnvironment];
       playbackRequestEnvironment = self->_playbackRequestEnvironment;
       self->_playbackRequestEnvironment = v18;
 
-      v20 = [(MPCPlaybackRequestEnvironment *)self->_playbackRequestEnvironment _createStoreRequestContext];
+      _createStoreRequestContext = [(MPCPlaybackRequestEnvironment *)self->_playbackRequestEnvironment _createStoreRequestContext];
       v54 = 0;
-      v21 = [[MPCModelGenericAVItemUserIdentityPropertySet alloc] initWithRequestContext:v20 error:&v54];
+      v21 = [[MPCModelGenericAVItemUserIdentityPropertySet alloc] initWithRequestContext:_createStoreRequestContext error:&v54];
       v22 = v54;
       identityPropertySet = self->_identityPropertySet;
       self->_identityPropertySet = v21;
 
-      v52 = v14;
+      v52 = host;
       if (v22 || !self->_identityPropertySet)
       {
         v24 = os_log_create("com.apple.amp.mediaplaybackcore", "MusicSharePlayBehavior");
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [v14 engineID];
+          engineID = [host engineID];
           [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
           v27 = v26 = v12;
           *buf = 138543874;
-          v57 = v25;
+          v57 = engineID;
           v58 = 2114;
           v59 = v27;
           v60 = 2114;
@@ -2344,42 +2344,42 @@ LABEL_22:
           _os_log_impl(&dword_1C5C61000, v24, OS_LOG_TYPE_DEFAULT, "[BMSP:%{public}@:%{public}@] performLoadCommand:completion: | failing command [failed to load identity properties] error=%{public}@", buf, 0x20u);
 
           v12 = v26;
-          v14 = v52;
+          host = v52;
         }
 
         v28 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCMusicSharePlayBehaviorError" code:2 underlyingError:v22 debugDescription:@"failed to load identity properties"];
 
-        v8[2](v8, v28);
+        completionCopy[2](completionCopy, v28);
       }
 
-      v32 = _Block_copy(v8);
+      v32 = _Block_copy(completionCopy);
       loadingCompletionHandler = self->_loadingCompletionHandler;
       self->_loadingCompletionHandler = v32;
 
-      v34 = [v16 sharedListeningProperties];
-      v35 = [v34 sessionIdentifier];
+      sharedListeningProperties = [v16 sharedListeningProperties];
+      sessionIdentifier = [sharedListeningProperties sessionIdentifier];
 
-      v36 = [v16 identity];
+      identity = [v16 identity];
       v51 = +[MPCSharedListeningLiveLinkReusePool sharedReusePool];
-      v37 = [v51 liveLinkForSessionID:v35];
-      v53 = v36;
+      v37 = [v51 liveLinkForSessionID:sessionIdentifier];
+      v53 = identity;
       if (v37)
       {
         v38 = v37;
         v39 = os_log_create("com.apple.amp.mediaplaybackcore", "MusicSharePlayBehavior");
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
         {
-          v40 = [v14 engineID];
+          engineID2 = [host engineID];
           [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
           v41 = v49 = v12;
           *buf = 138544130;
-          v57 = v40;
+          v57 = engineID2;
           v58 = 2114;
           v59 = v41;
           v60 = 2048;
           v61 = v38;
           v62 = 2114;
-          v63 = v35;
+          v63 = sessionIdentifier;
           _os_log_impl(&dword_1C5C61000, v39, OS_LOG_TYPE_DEFAULT, "[BMSP:%{public}@:%{public}@] performLoadCommand:completion: | reusing live link [] liveLink=%p sessionID=%{public}@", buf, 0x2Au);
 
           v12 = v49;
@@ -2388,24 +2388,24 @@ LABEL_22:
 
       else
       {
-        v38 = [MEMORY[0x1E69E4448] linkWithSessionIdentifier:v35 identity:v36];
+        v38 = [MEMORY[0x1E69E4448] linkWithSessionIdentifier:sessionIdentifier identity:identity];
         v42 = os_log_create("com.apple.amp.mediaplaybackcore", "MusicSharePlayBehavior");
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
         {
-          v43 = [v14 engineID];
-          v50 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+          engineID3 = [host engineID];
+          sessionID = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
           *buf = 138544130;
-          v57 = v43;
+          v57 = engineID3;
           v58 = 2114;
-          v59 = v50;
+          v59 = sessionID;
           v60 = 2048;
           v61 = v38;
           v62 = 2114;
-          v63 = v35;
+          v63 = sessionIdentifier;
           _os_log_impl(&dword_1C5C61000, v42, OS_LOG_TYPE_DEFAULT, "[BMSP:%{public}@:%{public}@] performLoadCommand:completion: | allocating live link [] liveLink=%p sessionID=%{public}@", buf, 0x2Au);
         }
 
-        [v51 storeLiveLink:v38 forSessionID:v35];
+        [v51 storeLiveLink:v38 forSessionID:sessionIdentifier];
       }
 
       [v38 setDelegate:self];
@@ -2417,12 +2417,12 @@ LABEL_22:
       [(ICLiveLink *)self->_liveLink updateWithIdentity:v53];
       if (([(ICLiveLink *)self->_liveLink isStarted]& 1) != 0)
       {
-        v47 = [v45 queue];
+        queue = [v45 queue];
 
-        if (v47)
+        if (queue)
         {
-          [(_MPCQueueControllerBehaviorMusicSharePlay *)self _initializeWithQueue:v47];
-          v45 = v47;
+          [(_MPCQueueControllerBehaviorMusicSharePlay *)self _initializeWithQueue:queue];
+          v45 = queue;
         }
 
         else
@@ -2430,14 +2430,14 @@ LABEL_22:
           v45 = 0;
         }
 
-        v14 = v52;
+        host = v52;
         v46 = v53;
       }
 
       else
       {
         [(ICLiveLink *)self->_liveLink start];
-        v14 = v52;
+        host = v52;
       }
     }
 
@@ -2445,109 +2445,109 @@ LABEL_22:
     {
       v29 = MEMORY[0x1E696ABC0];
       v30 = objc_opt_class();
-      v20 = NSStringFromClass(v30);
-      v31 = [v29 msv_errorWithDomain:@"MPCMusicSharePlayBehaviorError" code:1 debugDescription:{@"Unsupported playback queue for SharePlay behavior [sharedListeningToken is unknown type: %@]", v20}];
-      v8[2](v8, v31);
+      _createStoreRequestContext = NSStringFromClass(v30);
+      v31 = [v29 msv_errorWithDomain:@"MPCMusicSharePlayBehaviorError" code:1 debugDescription:{@"Unsupported playback queue for SharePlay behavior [sharedListeningToken is unknown type: %@]", _createStoreRequestContext}];
+      completionCopy[2](completionCopy, v31);
     }
   }
 
   else
   {
-    v20 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCMusicSharePlayBehaviorError" code:1 debugDescription:@"Unsupported playback queue for SharePlay behavior [options did not contain 'sharedListeningToken']"];
-    v8[2](v8, v20);
+    _createStoreRequestContext = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCMusicSharePlayBehaviorError" code:1 debugDescription:@"Unsupported playback queue for SharePlay behavior [options did not contain 'sharedListeningToken']"];
+    completionCopy[2](completionCopy, _createStoreRequestContext);
   }
 
   return 0;
 }
 
-- (void)disconnectFromHost:(id)a3
+- (void)disconnectFromHost:(id)host
 {
   v10[2] = *MEMORY[0x1E69E9840];
   [(_MPCQueueControllerBehaviorMusicSharePlay *)self endSynchronizedPlayback];
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v5 = [WeakRetained eventStream];
+  eventStream = [WeakRetained eventStream];
   v9[0] = @"session-id";
-  v6 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
-  v7 = v6;
-  if (!v6)
+  sessionID = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+  null = sessionID;
+  if (!sessionID)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v9[1] = @"shared-session-event-reason";
-  v10[0] = v7;
+  v10[0] = null;
   v10[1] = @"MusicSharePlayBehavior Teardown";
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
-  [v5 emitEventType:@"shared-session-end" payload:v8];
+  [eventStream emitEventType:@"shared-session-end" payload:v8];
 
-  if (!v6)
+  if (!sessionID)
   {
   }
 
   objc_storeWeak(&self->_host, 0);
 }
 
-- (void)didConnectToHost:(id)a3
+- (void)didConnectToHost:(id)host
 {
   v11[4] = *MEMORY[0x1E69E9840];
-  v4 = [a3 eventStream];
+  eventStream = [host eventStream];
   v10[0] = @"session-id";
-  v5 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
-  v6 = v5;
-  if (!v5)
+  sessionID = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+  null = sessionID;
+  if (!sessionID)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[0] = v6;
+  v11[0] = null;
   v10[1] = @"shared-session-id";
-  v7 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
-  v8 = v7;
-  if (!v7)
+  sessionID2 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self sessionID];
+  null2 = sessionID2;
+  if (!sessionID2)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v8;
+  v11[1] = null2;
   v11[2] = &unk_1F4599208;
   v10[2] = @"shared-session-type";
   v10[3] = @"shared-session-event-reason";
   v11[3] = @"MusicSharePlayBehavior Setup";
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:4];
-  [v4 emitEventType:@"shared-session-begin" payload:v9];
+  [eventStream emitEventType:@"shared-session-begin" payload:v9];
 
-  if (!v7)
+  if (!sessionID2)
   {
   }
 
-  if (!v5)
+  if (!sessionID)
   {
   }
 }
 
-- (_MPCQueueControllerBehaviorMusicSharePlay)initWithSessionID:(id)a3
+- (_MPCQueueControllerBehaviorMusicSharePlay)initWithSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = _MPCQueueControllerBehaviorMusicSharePlay;
   v5 = [(_MPCQueueControllerBehaviorMusicSharePlay *)&v17 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     sessionID = v5->_sessionID;
     v5->_sessionID = v6;
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     pendingActions = v5->_pendingActions;
-    v5->_pendingActions = v8;
+    v5->_pendingActions = array;
 
     v10 = [MEMORY[0x1E695DFA8] set];
     knownContainerIDs = v5->_knownContainerIDs;
     v5->_knownContainerIDs = v10;
 
-    v12 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     activeModelGenericAVItems = v5->_activeModelGenericAVItems;
-    v5->_activeModelGenericAVItems = v12;
+    v5->_activeModelGenericAVItems = weakObjectsHashTable;
 
     v14 = objc_alloc_init(MEMORY[0x1E6970910]);
     requestController = v5->_requestController;
@@ -2560,50 +2560,50 @@ LABEL_22:
   return v5;
 }
 
-- (void)getExpectedCurrentItemModelObjectWithCompletion:(id)a3
+- (void)getExpectedCurrentItemModelObjectWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self queue];
+  completionCopy = completion;
+  queue = [(_MPCQueueControllerBehaviorMusicSharePlay *)self queue];
 
-  if (v6)
+  if (queue)
   {
-    v7 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self queue];
+    queue2 = [(_MPCQueueControllerBehaviorMusicSharePlay *)self queue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __93___MPCQueueControllerBehaviorMusicSharePlay_getExpectedCurrentItemModelObjectWithCompletion___block_invoke;
     v9[3] = &unk_1E8232E50;
     v9[4] = self;
-    v10 = v5;
+    v10 = completionCopy;
     v11 = a2;
-    [v7 getExpectedCurrentItemWithCompletion:v9];
+    [queue2 getExpectedCurrentItemWithCompletion:v9];
   }
 
   else
   {
     v8 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCMusicSharePlayBehaviorError" code:14 debugDescription:@"Cannot get model object before the live link queue has loaded"];
-    (*(v5 + 2))(v5, 0, v8);
+    (*(completionCopy + 2))(completionCopy, 0, v8);
   }
 }
 
-+ (BOOL)canLoadQueue:(id)a3 reason:(id *)a4
++ (BOOL)canLoadQueue:(id)queue reason:(id *)reason
 {
-  v5 = a3;
+  queueCopy = queue;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 identifier];
-    v7 = [@"InProcess-com.apple.music.playbackqueue.sharedlistening" isEqualToString:v6];
+    identifier = [queueCopy identifier];
+    v7 = [@"InProcess-com.apple.music.playbackqueue.sharedlistening" isEqualToString:identifier];
     v8 = v7;
-    if (a4 && (v7 & 1) == 0)
+    if (reason && (v7 & 1) == 0)
     {
-      *a4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported custom data playback queue: %@", v6];
+      *reason = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported custom data playback queue: %@", identifier];
     }
   }
 
-  else if (a4)
+  else if (reason)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported playback queue: %@", objc_opt_class()];
-    *a4 = v8 = 0;
+    *reason = v8 = 0;
   }
 
   else

@@ -1,10 +1,10 @@
 @interface HDMedicationScheduleIntervalDataEntity
-+ (BOOL)addIntervalDataToCodable:(id)a3 withScheduleID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)enumerateMedicationScheduleIntervalDataWithOwnerID:(int64_t)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6;
++ (BOOL)addIntervalDataToCodable:(id)codable withScheduleID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)enumerateMedicationScheduleIntervalDataWithOwnerID:(int64_t)d transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
 + (id)_medicationScheduleIntervalDataEntityPropertiesForModel;
-+ (id)_medicationScheduleIntervalDataFromRow:(HDSQLiteRow *)a3;
++ (id)_medicationScheduleIntervalDataFromRow:(HDSQLiteRow *)row;
 + (id)foreignKeys;
-+ (id)insertPersistableMedicationScheduleIntervalData:(id)a3 ownerID:(id)a4 database:(id)a5 error:(id *)a6;
++ (id)insertPersistableMedicationScheduleIntervalData:(id)data ownerID:(id)d database:(id)database error:(id *)error;
 @end
 
 @implementation HDMedicationScheduleIntervalDataEntity
@@ -24,7 +24,7 @@
   return v2;
 }
 
-+ (id)_medicationScheduleIntervalDataFromRow:(HDSQLiteRow *)a3
++ (id)_medicationScheduleIntervalDataFromRow:(HDSQLiteRow *)row
 {
   objc_opt_class();
   v3 = HDSQLiteColumnWithNameAsObject();
@@ -50,19 +50,19 @@
   return v3;
 }
 
-+ (BOOL)enumerateMedicationScheduleIntervalDataWithOwnerID:(int64_t)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6
++ (BOOL)enumerateMedicationScheduleIntervalDataWithOwnerID:(int64_t)d transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
   v25[6] = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  handlerCopy = handler;
   v11 = MEMORY[0x277D10B18];
   v12 = MEMORY[0x277CCABB0];
-  v13 = a4;
-  v14 = [v12 numberWithLongLong:a3];
+  transactionCopy = transaction;
+  v14 = [v12 numberWithLongLong:d];
   v15 = [v11 predicateWithProperty:@"schedule_id" equalToValue:v14];
 
-  v16 = [v13 databaseForEntityClass:a1];
+  v16 = [transactionCopy databaseForEntityClass:self];
 
-  v17 = [a1 queryWithDatabase:v16 predicate:v15];
+  v17 = [self queryWithDatabase:v16 predicate:v15];
 
   v25[0] = @"schedule_id";
   v25[1] = @"start_time_components";
@@ -75,13 +75,13 @@
   v22[1] = 3221225472;
   v22[2] = __130__HDMedicationScheduleIntervalDataEntity_enumerateMedicationScheduleIntervalDataWithOwnerID_transaction_error_enumerationHandler___block_invoke;
   v22[3] = &unk_2796CEDB8;
-  v23 = v10;
-  v24 = a1;
-  v19 = v10;
-  LOBYTE(a5) = [v17 enumerateProperties:v18 error:a5 enumerationHandler:v22];
+  v23 = handlerCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  LOBYTE(error) = [v17 enumerateProperties:v18 error:error enumerationHandler:v22];
 
   v20 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
 uint64_t __130__HDMedicationScheduleIntervalDataEntity_enumerateMedicationScheduleIntervalDataWithOwnerID_transaction_error_enumerationHandler___block_invoke(uint64_t a1)
@@ -92,21 +92,21 @@ uint64_t __130__HDMedicationScheduleIntervalDataEntity_enumerateMedicationSchedu
   return v3;
 }
 
-+ (id)insertPersistableMedicationScheduleIntervalData:(id)a3 ownerID:(id)a4 database:(id)a5 error:(id *)a6
++ (id)insertPersistableMedicationScheduleIntervalData:(id)data ownerID:(id)d database:(id)database error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [a1 _medicationScheduleIntervalDataEntityPropertiesForModel];
+  dataCopy = data;
+  dCopy = d;
+  databaseCopy = database;
+  _medicationScheduleIntervalDataEntityPropertiesForModel = [self _medicationScheduleIntervalDataEntityPropertiesForModel];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __113__HDMedicationScheduleIntervalDataEntity_insertPersistableMedicationScheduleIntervalData_ownerID_database_error___block_invoke;
   v18[3] = &unk_2796CEDE0;
-  v19 = v11;
-  v20 = v10;
-  v14 = v10;
-  v15 = v11;
-  v16 = [a1 insertOrReplaceEntity:0 database:v12 properties:v13 error:a6 bindingHandler:v18];
+  v19 = dCopy;
+  v20 = dataCopy;
+  v14 = dataCopy;
+  v15 = dCopy;
+  v16 = [self insertOrReplaceEntity:0 database:databaseCopy properties:_medicationScheduleIntervalDataEntityPropertiesForModel error:error bindingHandler:v18];
 
   return v16;
 }
@@ -156,19 +156,19 @@ void __113__HDMedicationScheduleIntervalDataEntity_insertPersistableMedicationSc
   }
 }
 
-+ (BOOL)addIntervalDataToCodable:(id)a3 withScheduleID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)addIntervalDataToCodable:(id)codable withScheduleID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
+  codableCopy = codable;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __100__HDMedicationScheduleIntervalDataEntity_addIntervalDataToCodable_withScheduleID_transaction_error___block_invoke;
   v13[3] = &unk_2796CEE08;
-  v14 = v10;
-  v15 = a1;
-  v11 = v10;
-  LOBYTE(a6) = [a1 enumerateMedicationScheduleIntervalDataWithOwnerID:a4 transaction:a5 error:a6 enumerationHandler:v13];
+  v14 = codableCopy;
+  selfCopy = self;
+  v11 = codableCopy;
+  LOBYTE(error) = [self enumerateMedicationScheduleIntervalDataWithOwnerID:d transaction:transaction error:error enumerationHandler:v13];
 
-  return a6;
+  return error;
 }
 
 uint64_t __100__HDMedicationScheduleIntervalDataEntity_addIntervalDataToCodable_withScheduleID_transaction_error___block_invoke(uint64_t a1, uint64_t a2)

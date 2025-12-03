@@ -17,13 +17,13 @@
 
 - (void)willBeginDynamicOperation
 {
-  v2 = self;
+  selfCopy = self;
   sub_100635FC4();
 }
 
 - (void)didEndDynamicOperation
 {
-  v2 = self;
+  selfCopy = self;
   sub_100636014();
 }
 

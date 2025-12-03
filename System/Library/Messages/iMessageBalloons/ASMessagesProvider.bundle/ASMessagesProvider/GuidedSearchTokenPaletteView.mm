@@ -1,27 +1,27 @@
 @interface GuidedSearchTokenPaletteView
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)layoutSubviews;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation GuidedSearchTokenPaletteView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AC2DC();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
-  v5 = [(GuidedSearchTokenPaletteView *)v4 traitCollection];
+  width = fits.width;
+  selfCopy = self;
+  traitCollection = [(GuidedSearchTokenPaletteView *)selfCopy traitCollection];
 
   v6 = 60.0;
   v7 = width;
@@ -30,7 +30,7 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v5 = sub_757640();
   v6 = *(v5 - 8);
@@ -40,7 +40,7 @@
   v9 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider28GuidedSearchTokenPaletteView_onSelect);
   if (v9)
   {
-    v10 = self;
+    selfCopy = self;
     sub_F714(v9);
     v11 = sub_7575A0();
     v9(v11);
@@ -52,44 +52,44 @@
   else
   {
     v12 = *(v6 + 8);
-    v13 = self;
+    selfCopy2 = self;
     v12(v8, v5);
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_757640();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_757590();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_1AD0E0(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_1AD0E0(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v7 = sub_757640();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v18 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_757590();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1AD208(&v19);
   if (*(&v20 + 1))
   {
     v22 = v19;
     v23 = v20;
     v24 = v21;
-    [v11 bounds];
-    v13 = sub_1ADB08(&v22, v11);
+    [viewCopy bounds];
+    v13 = sub_1ADB08(&v22, viewCopy);
     v15 = v14;
     v25 = v22;
     sub_10A2C(&v25, &qword_941BA0);
@@ -111,13 +111,13 @@
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v5 = a3;
-  v6 = [v5 traitCollection];
-  v7 = [v6 horizontalSizeClass];
+  viewCopy = view;
+  traitCollection = [viewCopy traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v7 == &dword_0 + 1)
+  if (horizontalSizeClass == &dword_0 + 1)
   {
 
     v8 = 20.0;
@@ -125,7 +125,7 @@
 
   else
   {
-    [v5 bounds];
+    [viewCopy bounds];
     Width = CGRectGetWidth(v13);
 
     v8 = 52.0;
@@ -145,29 +145,29 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_757640();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_757590();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_1AF2C8(v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_1AF2C8(cellCopy);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider28GuidedSearchTokenPaletteView_impressionsScrollObserver))
   {
-    v4 = a3;
-    v6 = self;
+    scrollCopy = scroll;
+    selfCopy = self;
 
-    v5.super.super.super.isa = v4;
+    v5.super.super.super.isa = scrollCopy;
     sub_7614D0(v5);
   }
 }

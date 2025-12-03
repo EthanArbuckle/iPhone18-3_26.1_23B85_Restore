@@ -1,40 +1,40 @@
 @interface _INPBPrivateMediaIntentData
-- (BOOL)isEqual:(id)a3;
-- (_INPBPrivateMediaIntentData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBPrivateMediaIntentData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsAsrConfidenceLevel:(id)a3;
-- (int)StringAsNlConfidenceLevel:(id)a3;
+- (int)StringAsAsrConfidenceLevel:(id)level;
+- (int)StringAsNlConfidenceLevel:(id)level;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAsrConfidenceLevel:(int)a3;
-- (void)setHasAsrConfidenceScore:(BOOL)a3;
-- (void)setHasIsAppAttributionRequired:(BOOL)a3;
-- (void)setHasIsAppCorrection:(BOOL)a3;
-- (void)setHasNlConfidenceLevel:(BOOL)a3;
-- (void)setHasNlConfidenceScore:(BOOL)a3;
-- (void)setHasUseDialogMemoryForAttribution:(BOOL)a3;
-- (void)setNlConfidenceLevel:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAsrConfidenceLevel:(int)level;
+- (void)setHasAsrConfidenceScore:(BOOL)score;
+- (void)setHasIsAppAttributionRequired:(BOOL)required;
+- (void)setHasIsAppCorrection:(BOOL)correction;
+- (void)setHasNlConfidenceLevel:(BOOL)level;
+- (void)setHasNlConfidenceScore:(BOOL)score;
+- (void)setHasUseDialogMemoryForAttribution:(BOOL)attribution;
+- (void)setNlConfidenceLevel:(int)level;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBPrivateMediaIntentData
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBPrivateMediaIntentData *)self hasAsrConfidenceLevel])
   {
-    v4 = [(_INPBPrivateMediaIntentData *)self asrConfidenceLevel];
-    if (v4 > 19)
+    asrConfidenceLevel = [(_INPBPrivateMediaIntentData *)self asrConfidenceLevel];
+    if (asrConfidenceLevel > 19)
     {
-      if (v4 == 20)
+      if (asrConfidenceLevel == 20)
       {
         v5 = @"MEDIUM";
         goto LABEL_12;
       }
 
-      if (v4 == 30)
+      if (asrConfidenceLevel == 30)
       {
         v5 = @"HIGH";
         goto LABEL_12;
@@ -43,23 +43,23 @@
 
     else
     {
-      if (!v4)
+      if (!asrConfidenceLevel)
       {
         v5 = @"UNKNOWN_CONFIDENCE_LEVEL";
         goto LABEL_12;
       }
 
-      if (v4 == 10)
+      if (asrConfidenceLevel == 10)
       {
         v5 = @"LOW";
 LABEL_12:
-        [v3 setObject:v5 forKeyedSubscript:@"asrConfidenceLevel"];
+        [dictionary setObject:v5 forKeyedSubscript:@"asrConfidenceLevel"];
 
         goto LABEL_13;
       }
     }
 
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", asrConfidenceLevel];
     goto LABEL_12;
   }
 
@@ -69,41 +69,41 @@ LABEL_13:
     v6 = MEMORY[0x1E696AD98];
     [(_INPBPrivateMediaIntentData *)self asrConfidenceScore];
     v7 = [v6 numberWithFloat:?];
-    [v3 setObject:v7 forKeyedSubscript:@"asrConfidenceScore"];
+    [dictionary setObject:v7 forKeyedSubscript:@"asrConfidenceScore"];
   }
 
-  v8 = [(_INPBPrivateMediaIntentData *)self fallbackUsername];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"fallbackUsername"];
+  fallbackUsername = [(_INPBPrivateMediaIntentData *)self fallbackUsername];
+  dictionaryRepresentation = [fallbackUsername dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"fallbackUsername"];
 
-  v10 = [(_INPBPrivateMediaIntentData *)self homeAutomationEntityProvider];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"homeAutomationEntityProvider"];
+  homeAutomationEntityProvider = [(_INPBPrivateMediaIntentData *)self homeAutomationEntityProvider];
+  dictionaryRepresentation2 = [homeAutomationEntityProvider dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"homeAutomationEntityProvider"];
 
   if ([(_INPBPrivateMediaIntentData *)self hasIsAppAttributionRequired])
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBPrivateMediaIntentData isAppAttributionRequired](self, "isAppAttributionRequired")}];
-    [v3 setObject:v12 forKeyedSubscript:@"isAppAttributionRequired"];
+    [dictionary setObject:v12 forKeyedSubscript:@"isAppAttributionRequired"];
   }
 
   if ([(_INPBPrivateMediaIntentData *)self hasIsAppCorrection])
   {
     v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBPrivateMediaIntentData isAppCorrection](self, "isAppCorrection")}];
-    [v3 setObject:v13 forKeyedSubscript:@"isAppCorrection"];
+    [dictionary setObject:v13 forKeyedSubscript:@"isAppCorrection"];
   }
 
   if ([(_INPBPrivateMediaIntentData *)self hasNlConfidenceLevel])
   {
-    v14 = [(_INPBPrivateMediaIntentData *)self nlConfidenceLevel];
-    if (v14 > 19)
+    nlConfidenceLevel = [(_INPBPrivateMediaIntentData *)self nlConfidenceLevel];
+    if (nlConfidenceLevel > 19)
     {
-      if (v14 == 20)
+      if (nlConfidenceLevel == 20)
       {
         v15 = @"MEDIUM";
         goto LABEL_30;
       }
 
-      if (v14 == 30)
+      if (nlConfidenceLevel == 30)
       {
         v15 = @"HIGH";
         goto LABEL_30;
@@ -112,23 +112,23 @@ LABEL_13:
 
     else
     {
-      if (!v14)
+      if (!nlConfidenceLevel)
       {
         v15 = @"UNKNOWN_CONFIDENCE_LEVEL";
         goto LABEL_30;
       }
 
-      if (v14 == 10)
+      if (nlConfidenceLevel == 10)
       {
         v15 = @"LOW";
 LABEL_30:
-        [v3 setObject:v15 forKeyedSubscript:@"nlConfidenceLevel"];
+        [dictionary setObject:v15 forKeyedSubscript:@"nlConfidenceLevel"];
 
         goto LABEL_31;
       }
     }
 
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v14];
+    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", nlConfidenceLevel];
     goto LABEL_30;
   }
 
@@ -138,32 +138,32 @@ LABEL_31:
     v16 = MEMORY[0x1E696AD98];
     [(_INPBPrivateMediaIntentData *)self nlConfidenceScore];
     v17 = [v16 numberWithFloat:?];
-    [v3 setObject:v17 forKeyedSubscript:@"nlConfidenceScore"];
+    [dictionary setObject:v17 forKeyedSubscript:@"nlConfidenceScore"];
   }
 
-  v18 = [(_INPBPrivateMediaIntentData *)self proxiedThirdPartyAppInfo];
-  v19 = [v18 dictionaryRepresentation];
-  [v3 setObject:v19 forKeyedSubscript:@"proxiedThirdPartyAppInfo"];
+  proxiedThirdPartyAppInfo = [(_INPBPrivateMediaIntentData *)self proxiedThirdPartyAppInfo];
+  dictionaryRepresentation3 = [proxiedThirdPartyAppInfo dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"proxiedThirdPartyAppInfo"];
 
-  v20 = [(_INPBPrivateMediaIntentData *)self resolvedSharedUserID];
-  v21 = [v20 dictionaryRepresentation];
-  [v3 setObject:v21 forKeyedSubscript:@"resolvedSharedUserID"];
+  resolvedSharedUserID = [(_INPBPrivateMediaIntentData *)self resolvedSharedUserID];
+  dictionaryRepresentation4 = [resolvedSharedUserID dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"resolvedSharedUserID"];
 
-  v22 = [(_INPBPrivateMediaIntentData *)self speakerIDInfo];
-  v23 = [v22 dictionaryRepresentation];
-  [v3 setObject:v23 forKeyedSubscript:@"speakerIDInfo"];
+  speakerIDInfo = [(_INPBPrivateMediaIntentData *)self speakerIDInfo];
+  dictionaryRepresentation5 = [speakerIDInfo dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"speakerIDInfo"];
 
   if ([(_INPBPrivateMediaIntentData *)self hasUseDialogMemoryForAttribution])
   {
     v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBPrivateMediaIntentData useDialogMemoryForAttribution](self, "useDialogMemoryForAttribution")}];
-    [v3 setObject:v24 forKeyedSubscript:@"useDialogMemoryForAttribution"];
+    [dictionary setObject:v24 forKeyedSubscript:@"useDialogMemoryForAttribution"];
   }
 
-  v25 = [(_INPBPrivateMediaIntentData *)self wholeHouseAudioMetadata];
-  v26 = [v25 dictionaryRepresentation];
-  [v3 setObject:v26 forKeyedSubscript:@"wholeHouseAudioMetadata"];
+  wholeHouseAudioMetadata = [(_INPBPrivateMediaIntentData *)self wholeHouseAudioMetadata];
+  dictionaryRepresentation6 = [wholeHouseAudioMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"wholeHouseAudioMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -302,44 +302,44 @@ LABEL_31:
   return v9 ^ v27 ^ v26 ^ v25 ^ v10 ^ v11 ^ v12 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ [(_INPBWholeHouseAudioMetadata *)self->_wholeHouseAudioMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_60;
   }
 
-  v5 = [(_INPBPrivateMediaIntentData *)self hasAsrConfidenceLevel];
-  if (v5 != [v4 hasAsrConfidenceLevel])
+  hasAsrConfidenceLevel = [(_INPBPrivateMediaIntentData *)self hasAsrConfidenceLevel];
+  if (hasAsrConfidenceLevel != [equalCopy hasAsrConfidenceLevel])
   {
     goto LABEL_60;
   }
 
   if ([(_INPBPrivateMediaIntentData *)self hasAsrConfidenceLevel])
   {
-    if ([v4 hasAsrConfidenceLevel])
+    if ([equalCopy hasAsrConfidenceLevel])
     {
       asrConfidenceLevel = self->_asrConfidenceLevel;
-      if (asrConfidenceLevel != [v4 asrConfidenceLevel])
+      if (asrConfidenceLevel != [equalCopy asrConfidenceLevel])
       {
         goto LABEL_60;
       }
     }
   }
 
-  v7 = [(_INPBPrivateMediaIntentData *)self hasAsrConfidenceScore];
-  if (v7 != [v4 hasAsrConfidenceScore])
+  hasAsrConfidenceScore = [(_INPBPrivateMediaIntentData *)self hasAsrConfidenceScore];
+  if (hasAsrConfidenceScore != [equalCopy hasAsrConfidenceScore])
   {
     goto LABEL_60;
   }
 
   if ([(_INPBPrivateMediaIntentData *)self hasAsrConfidenceScore])
   {
-    if ([v4 hasAsrConfidenceScore])
+    if ([equalCopy hasAsrConfidenceScore])
     {
       asrConfidenceScore = self->_asrConfidenceScore;
-      [v4 asrConfidenceScore];
+      [equalCopy asrConfidenceScore];
       if (asrConfidenceScore != v9)
       {
         goto LABEL_60;
@@ -347,20 +347,20 @@ LABEL_31:
     }
   }
 
-  v10 = [(_INPBPrivateMediaIntentData *)self fallbackUsername];
-  v11 = [v4 fallbackUsername];
-  if ((v10 != 0) == (v11 == 0))
+  fallbackUsername = [(_INPBPrivateMediaIntentData *)self fallbackUsername];
+  fallbackUsername2 = [equalCopy fallbackUsername];
+  if ((fallbackUsername != 0) == (fallbackUsername2 == 0))
   {
     goto LABEL_59;
   }
 
-  v12 = [(_INPBPrivateMediaIntentData *)self fallbackUsername];
-  if (v12)
+  fallbackUsername3 = [(_INPBPrivateMediaIntentData *)self fallbackUsername];
+  if (fallbackUsername3)
   {
-    v13 = v12;
-    v14 = [(_INPBPrivateMediaIntentData *)self fallbackUsername];
-    v15 = [v4 fallbackUsername];
-    v16 = [v14 isEqual:v15];
+    v13 = fallbackUsername3;
+    fallbackUsername4 = [(_INPBPrivateMediaIntentData *)self fallbackUsername];
+    fallbackUsername5 = [equalCopy fallbackUsername];
+    v16 = [fallbackUsername4 isEqual:fallbackUsername5];
 
     if (!v16)
     {
@@ -372,20 +372,20 @@ LABEL_31:
   {
   }
 
-  v10 = [(_INPBPrivateMediaIntentData *)self homeAutomationEntityProvider];
-  v11 = [v4 homeAutomationEntityProvider];
-  if ((v10 != 0) == (v11 == 0))
+  fallbackUsername = [(_INPBPrivateMediaIntentData *)self homeAutomationEntityProvider];
+  fallbackUsername2 = [equalCopy homeAutomationEntityProvider];
+  if ((fallbackUsername != 0) == (fallbackUsername2 == 0))
   {
     goto LABEL_59;
   }
 
-  v17 = [(_INPBPrivateMediaIntentData *)self homeAutomationEntityProvider];
-  if (v17)
+  homeAutomationEntityProvider = [(_INPBPrivateMediaIntentData *)self homeAutomationEntityProvider];
+  if (homeAutomationEntityProvider)
   {
-    v18 = v17;
-    v19 = [(_INPBPrivateMediaIntentData *)self homeAutomationEntityProvider];
-    v20 = [v4 homeAutomationEntityProvider];
-    v21 = [v19 isEqual:v20];
+    v18 = homeAutomationEntityProvider;
+    homeAutomationEntityProvider2 = [(_INPBPrivateMediaIntentData *)self homeAutomationEntityProvider];
+    homeAutomationEntityProvider3 = [equalCopy homeAutomationEntityProvider];
+    v21 = [homeAutomationEntityProvider2 isEqual:homeAutomationEntityProvider3];
 
     if (!v21)
     {
@@ -397,72 +397,72 @@ LABEL_31:
   {
   }
 
-  v22 = [(_INPBPrivateMediaIntentData *)self hasIsAppAttributionRequired];
-  if (v22 != [v4 hasIsAppAttributionRequired])
+  hasIsAppAttributionRequired = [(_INPBPrivateMediaIntentData *)self hasIsAppAttributionRequired];
+  if (hasIsAppAttributionRequired != [equalCopy hasIsAppAttributionRequired])
   {
     goto LABEL_60;
   }
 
   if ([(_INPBPrivateMediaIntentData *)self hasIsAppAttributionRequired])
   {
-    if ([v4 hasIsAppAttributionRequired])
+    if ([equalCopy hasIsAppAttributionRequired])
     {
       isAppAttributionRequired = self->_isAppAttributionRequired;
-      if (isAppAttributionRequired != [v4 isAppAttributionRequired])
+      if (isAppAttributionRequired != [equalCopy isAppAttributionRequired])
       {
         goto LABEL_60;
       }
     }
   }
 
-  v24 = [(_INPBPrivateMediaIntentData *)self hasIsAppCorrection];
-  if (v24 != [v4 hasIsAppCorrection])
+  hasIsAppCorrection = [(_INPBPrivateMediaIntentData *)self hasIsAppCorrection];
+  if (hasIsAppCorrection != [equalCopy hasIsAppCorrection])
   {
     goto LABEL_60;
   }
 
   if ([(_INPBPrivateMediaIntentData *)self hasIsAppCorrection])
   {
-    if ([v4 hasIsAppCorrection])
+    if ([equalCopy hasIsAppCorrection])
     {
       isAppCorrection = self->_isAppCorrection;
-      if (isAppCorrection != [v4 isAppCorrection])
+      if (isAppCorrection != [equalCopy isAppCorrection])
       {
         goto LABEL_60;
       }
     }
   }
 
-  v26 = [(_INPBPrivateMediaIntentData *)self hasNlConfidenceLevel];
-  if (v26 != [v4 hasNlConfidenceLevel])
+  hasNlConfidenceLevel = [(_INPBPrivateMediaIntentData *)self hasNlConfidenceLevel];
+  if (hasNlConfidenceLevel != [equalCopy hasNlConfidenceLevel])
   {
     goto LABEL_60;
   }
 
   if ([(_INPBPrivateMediaIntentData *)self hasNlConfidenceLevel])
   {
-    if ([v4 hasNlConfidenceLevel])
+    if ([equalCopy hasNlConfidenceLevel])
     {
       nlConfidenceLevel = self->_nlConfidenceLevel;
-      if (nlConfidenceLevel != [v4 nlConfidenceLevel])
+      if (nlConfidenceLevel != [equalCopy nlConfidenceLevel])
       {
         goto LABEL_60;
       }
     }
   }
 
-  v28 = [(_INPBPrivateMediaIntentData *)self hasNlConfidenceScore];
-  if (v28 != [v4 hasNlConfidenceScore])
+  hasNlConfidenceScore = [(_INPBPrivateMediaIntentData *)self hasNlConfidenceScore];
+  if (hasNlConfidenceScore != [equalCopy hasNlConfidenceScore])
   {
     goto LABEL_60;
   }
 
   if ([(_INPBPrivateMediaIntentData *)self hasNlConfidenceScore])
   {
-    if ([v4 hasNlConfidenceScore])
+    if ([equalCopy hasNlConfidenceScore])
     {
       nlConfidenceScore = self->_nlConfidenceScore;
-      [v4 nlConfidenceScore];
+      [equalCopy nlConfidenceScore];
       if (nlConfidenceScore != v30)
       {
         goto LABEL_60;
@@ -470,20 +470,20 @@ LABEL_31:
     }
   }
 
-  v10 = [(_INPBPrivateMediaIntentData *)self proxiedThirdPartyAppInfo];
-  v11 = [v4 proxiedThirdPartyAppInfo];
-  if ((v10 != 0) == (v11 == 0))
+  fallbackUsername = [(_INPBPrivateMediaIntentData *)self proxiedThirdPartyAppInfo];
+  fallbackUsername2 = [equalCopy proxiedThirdPartyAppInfo];
+  if ((fallbackUsername != 0) == (fallbackUsername2 == 0))
   {
     goto LABEL_59;
   }
 
-  v31 = [(_INPBPrivateMediaIntentData *)self proxiedThirdPartyAppInfo];
-  if (v31)
+  proxiedThirdPartyAppInfo = [(_INPBPrivateMediaIntentData *)self proxiedThirdPartyAppInfo];
+  if (proxiedThirdPartyAppInfo)
   {
-    v32 = v31;
-    v33 = [(_INPBPrivateMediaIntentData *)self proxiedThirdPartyAppInfo];
-    v34 = [v4 proxiedThirdPartyAppInfo];
-    v35 = [v33 isEqual:v34];
+    v32 = proxiedThirdPartyAppInfo;
+    proxiedThirdPartyAppInfo2 = [(_INPBPrivateMediaIntentData *)self proxiedThirdPartyAppInfo];
+    proxiedThirdPartyAppInfo3 = [equalCopy proxiedThirdPartyAppInfo];
+    v35 = [proxiedThirdPartyAppInfo2 isEqual:proxiedThirdPartyAppInfo3];
 
     if (!v35)
     {
@@ -495,20 +495,20 @@ LABEL_31:
   {
   }
 
-  v10 = [(_INPBPrivateMediaIntentData *)self resolvedSharedUserID];
-  v11 = [v4 resolvedSharedUserID];
-  if ((v10 != 0) == (v11 == 0))
+  fallbackUsername = [(_INPBPrivateMediaIntentData *)self resolvedSharedUserID];
+  fallbackUsername2 = [equalCopy resolvedSharedUserID];
+  if ((fallbackUsername != 0) == (fallbackUsername2 == 0))
   {
     goto LABEL_59;
   }
 
-  v36 = [(_INPBPrivateMediaIntentData *)self resolvedSharedUserID];
-  if (v36)
+  resolvedSharedUserID = [(_INPBPrivateMediaIntentData *)self resolvedSharedUserID];
+  if (resolvedSharedUserID)
   {
-    v37 = v36;
-    v38 = [(_INPBPrivateMediaIntentData *)self resolvedSharedUserID];
-    v39 = [v4 resolvedSharedUserID];
-    v40 = [v38 isEqual:v39];
+    v37 = resolvedSharedUserID;
+    resolvedSharedUserID2 = [(_INPBPrivateMediaIntentData *)self resolvedSharedUserID];
+    resolvedSharedUserID3 = [equalCopy resolvedSharedUserID];
+    v40 = [resolvedSharedUserID2 isEqual:resolvedSharedUserID3];
 
     if (!v40)
     {
@@ -520,20 +520,20 @@ LABEL_31:
   {
   }
 
-  v10 = [(_INPBPrivateMediaIntentData *)self speakerIDInfo];
-  v11 = [v4 speakerIDInfo];
-  if ((v10 != 0) == (v11 == 0))
+  fallbackUsername = [(_INPBPrivateMediaIntentData *)self speakerIDInfo];
+  fallbackUsername2 = [equalCopy speakerIDInfo];
+  if ((fallbackUsername != 0) == (fallbackUsername2 == 0))
   {
     goto LABEL_59;
   }
 
-  v41 = [(_INPBPrivateMediaIntentData *)self speakerIDInfo];
-  if (v41)
+  speakerIDInfo = [(_INPBPrivateMediaIntentData *)self speakerIDInfo];
+  if (speakerIDInfo)
   {
-    v42 = v41;
-    v43 = [(_INPBPrivateMediaIntentData *)self speakerIDInfo];
-    v44 = [v4 speakerIDInfo];
-    v45 = [v43 isEqual:v44];
+    v42 = speakerIDInfo;
+    speakerIDInfo2 = [(_INPBPrivateMediaIntentData *)self speakerIDInfo];
+    speakerIDInfo3 = [equalCopy speakerIDInfo];
+    v45 = [speakerIDInfo2 isEqual:speakerIDInfo3];
 
     if (!v45)
     {
@@ -545,30 +545,30 @@ LABEL_31:
   {
   }
 
-  v46 = [(_INPBPrivateMediaIntentData *)self hasUseDialogMemoryForAttribution];
-  if (v46 != [v4 hasUseDialogMemoryForAttribution])
+  hasUseDialogMemoryForAttribution = [(_INPBPrivateMediaIntentData *)self hasUseDialogMemoryForAttribution];
+  if (hasUseDialogMemoryForAttribution != [equalCopy hasUseDialogMemoryForAttribution])
   {
     goto LABEL_60;
   }
 
   if ([(_INPBPrivateMediaIntentData *)self hasUseDialogMemoryForAttribution])
   {
-    if ([v4 hasUseDialogMemoryForAttribution])
+    if ([equalCopy hasUseDialogMemoryForAttribution])
     {
       useDialogMemoryForAttribution = self->_useDialogMemoryForAttribution;
-      if (useDialogMemoryForAttribution != [v4 useDialogMemoryForAttribution])
+      if (useDialogMemoryForAttribution != [equalCopy useDialogMemoryForAttribution])
       {
         goto LABEL_60;
       }
     }
   }
 
-  v10 = [(_INPBPrivateMediaIntentData *)self wholeHouseAudioMetadata];
-  v11 = [v4 wholeHouseAudioMetadata];
-  if ((v10 != 0) != (v11 == 0))
+  fallbackUsername = [(_INPBPrivateMediaIntentData *)self wholeHouseAudioMetadata];
+  fallbackUsername2 = [equalCopy wholeHouseAudioMetadata];
+  if ((fallbackUsername != 0) != (fallbackUsername2 == 0))
   {
-    v48 = [(_INPBPrivateMediaIntentData *)self wholeHouseAudioMetadata];
-    if (!v48)
+    wholeHouseAudioMetadata = [(_INPBPrivateMediaIntentData *)self wholeHouseAudioMetadata];
+    if (!wholeHouseAudioMetadata)
     {
 
 LABEL_63:
@@ -576,10 +576,10 @@ LABEL_63:
       goto LABEL_61;
     }
 
-    v49 = v48;
-    v50 = [(_INPBPrivateMediaIntentData *)self wholeHouseAudioMetadata];
-    v51 = [v4 wholeHouseAudioMetadata];
-    v52 = [v50 isEqual:v51];
+    v49 = wholeHouseAudioMetadata;
+    wholeHouseAudioMetadata2 = [(_INPBPrivateMediaIntentData *)self wholeHouseAudioMetadata];
+    wholeHouseAudioMetadata3 = [equalCopy wholeHouseAudioMetadata];
+    v52 = [wholeHouseAudioMetadata2 isEqual:wholeHouseAudioMetadata3];
 
     if (v52)
     {
@@ -599,7 +599,7 @@ LABEL_61:
   return v53;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBPrivateMediaIntentData allocWithZone:](_INPBPrivateMediaIntentData init];
   if ([(_INPBPrivateMediaIntentData *)self hasAsrConfidenceLevel])
@@ -613,10 +613,10 @@ LABEL_61:
     [(_INPBPrivateMediaIntentData *)v5 setAsrConfidenceScore:?];
   }
 
-  v6 = [(_INPBString *)self->_fallbackUsername copyWithZone:a3];
+  v6 = [(_INPBString *)self->_fallbackUsername copyWithZone:zone];
   [(_INPBPrivateMediaIntentData *)v5 setFallbackUsername:v6];
 
-  v7 = [(_INPBHomeAutomationEntityProvider *)self->_homeAutomationEntityProvider copyWithZone:a3];
+  v7 = [(_INPBHomeAutomationEntityProvider *)self->_homeAutomationEntityProvider copyWithZone:zone];
   [(_INPBPrivateMediaIntentData *)v5 setHomeAutomationEntityProvider:v7];
 
   if ([(_INPBPrivateMediaIntentData *)self hasIsAppAttributionRequired])
@@ -640,13 +640,13 @@ LABEL_61:
     [(_INPBPrivateMediaIntentData *)v5 setNlConfidenceScore:?];
   }
 
-  v8 = [(_INPBAppIdentifier *)self->_proxiedThirdPartyAppInfo copyWithZone:a3];
+  v8 = [(_INPBAppIdentifier *)self->_proxiedThirdPartyAppInfo copyWithZone:zone];
   [(_INPBPrivateMediaIntentData *)v5 setProxiedThirdPartyAppInfo:v8];
 
-  v9 = [(_INPBString *)self->_resolvedSharedUserID copyWithZone:a3];
+  v9 = [(_INPBString *)self->_resolvedSharedUserID copyWithZone:zone];
   [(_INPBPrivateMediaIntentData *)v5 setResolvedSharedUserID:v9];
 
-  v10 = [(_INPBSpeakerIDInfo *)self->_speakerIDInfo copyWithZone:a3];
+  v10 = [(_INPBSpeakerIDInfo *)self->_speakerIDInfo copyWithZone:zone];
   [(_INPBPrivateMediaIntentData *)v5 setSpeakerIDInfo:v10];
 
   if ([(_INPBPrivateMediaIntentData *)self hasUseDialogMemoryForAttribution])
@@ -654,39 +654,39 @@ LABEL_61:
     [(_INPBPrivateMediaIntentData *)v5 setUseDialogMemoryForAttribution:[(_INPBPrivateMediaIntentData *)self useDialogMemoryForAttribution]];
   }
 
-  v11 = [(_INPBWholeHouseAudioMetadata *)self->_wholeHouseAudioMetadata copyWithZone:a3];
+  v11 = [(_INPBWholeHouseAudioMetadata *)self->_wholeHouseAudioMetadata copyWithZone:zone];
   [(_INPBPrivateMediaIntentData *)v5 setWholeHouseAudioMetadata:v11];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBPrivateMediaIntentData *)self data];
+  coderCopy = coder;
+  data = [(_INPBPrivateMediaIntentData *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBPrivateMediaIntentData)initWithCoder:(id)a3
+- (_INPBPrivateMediaIntentData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBPrivateMediaIntentData *)self initWithData:v6];
+    self = [(_INPBPrivateMediaIntentData *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v24 = a3;
+  toCopy = to;
   if ([(_INPBPrivateMediaIntentData *)self hasAsrConfidenceLevel])
   {
     asrConfidenceLevel = self->_asrConfidenceLevel;
@@ -699,19 +699,19 @@ LABEL_61:
     PBDataWriterWriteFloatField();
   }
 
-  v6 = [(_INPBPrivateMediaIntentData *)self fallbackUsername];
+  fallbackUsername = [(_INPBPrivateMediaIntentData *)self fallbackUsername];
 
-  if (v6)
+  if (fallbackUsername)
   {
-    v7 = [(_INPBPrivateMediaIntentData *)self fallbackUsername];
+    fallbackUsername2 = [(_INPBPrivateMediaIntentData *)self fallbackUsername];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBPrivateMediaIntentData *)self homeAutomationEntityProvider];
+  homeAutomationEntityProvider = [(_INPBPrivateMediaIntentData *)self homeAutomationEntityProvider];
 
-  if (v8)
+  if (homeAutomationEntityProvider)
   {
-    v9 = [(_INPBPrivateMediaIntentData *)self homeAutomationEntityProvider];
+    homeAutomationEntityProvider2 = [(_INPBPrivateMediaIntentData *)self homeAutomationEntityProvider];
     PBDataWriterWriteSubmessage();
   }
 
@@ -739,27 +739,27 @@ LABEL_61:
     PBDataWriterWriteFloatField();
   }
 
-  v14 = [(_INPBPrivateMediaIntentData *)self proxiedThirdPartyAppInfo];
+  proxiedThirdPartyAppInfo = [(_INPBPrivateMediaIntentData *)self proxiedThirdPartyAppInfo];
 
-  if (v14)
+  if (proxiedThirdPartyAppInfo)
   {
-    v15 = [(_INPBPrivateMediaIntentData *)self proxiedThirdPartyAppInfo];
+    proxiedThirdPartyAppInfo2 = [(_INPBPrivateMediaIntentData *)self proxiedThirdPartyAppInfo];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(_INPBPrivateMediaIntentData *)self resolvedSharedUserID];
+  resolvedSharedUserID = [(_INPBPrivateMediaIntentData *)self resolvedSharedUserID];
 
-  if (v16)
+  if (resolvedSharedUserID)
   {
-    v17 = [(_INPBPrivateMediaIntentData *)self resolvedSharedUserID];
+    resolvedSharedUserID2 = [(_INPBPrivateMediaIntentData *)self resolvedSharedUserID];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(_INPBPrivateMediaIntentData *)self speakerIDInfo];
+  speakerIDInfo = [(_INPBPrivateMediaIntentData *)self speakerIDInfo];
 
-  if (v18)
+  if (speakerIDInfo)
   {
-    v19 = [(_INPBPrivateMediaIntentData *)self speakerIDInfo];
+    speakerIDInfo2 = [(_INPBPrivateMediaIntentData *)self speakerIDInfo];
     PBDataWriterWriteSubmessage();
   }
 
@@ -769,21 +769,21 @@ LABEL_61:
     PBDataWriterWriteBOOLField();
   }
 
-  v21 = [(_INPBPrivateMediaIntentData *)self wholeHouseAudioMetadata];
+  wholeHouseAudioMetadata = [(_INPBPrivateMediaIntentData *)self wholeHouseAudioMetadata];
 
-  v22 = v24;
-  if (v21)
+  v22 = toCopy;
+  if (wholeHouseAudioMetadata)
   {
-    v23 = [(_INPBPrivateMediaIntentData *)self wholeHouseAudioMetadata];
+    wholeHouseAudioMetadata2 = [(_INPBPrivateMediaIntentData *)self wholeHouseAudioMetadata];
     PBDataWriterWriteSubmessage();
 
-    v22 = v24;
+    v22 = toCopy;
   }
 }
 
-- (void)setHasUseDialogMemoryForAttribution:(BOOL)a3
+- (void)setHasUseDialogMemoryForAttribution:(BOOL)attribution
 {
-  if (a3)
+  if (attribution)
   {
     v3 = 64;
   }
@@ -796,9 +796,9 @@ LABEL_61:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasNlConfidenceScore:(BOOL)a3
+- (void)setHasNlConfidenceScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 32;
   }
@@ -811,25 +811,25 @@ LABEL_61:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsNlConfidenceLevel:(id)a3
+- (int)StringAsNlConfidenceLevel:(id)level
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_CONFIDENCE_LEVEL"])
+  levelCopy = level;
+  if ([levelCopy isEqualToString:@"UNKNOWN_CONFIDENCE_LEVEL"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LOW"])
+  else if ([levelCopy isEqualToString:@"LOW"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"MEDIUM"])
+  else if ([levelCopy isEqualToString:@"MEDIUM"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"HIGH"])
+  else if ([levelCopy isEqualToString:@"HIGH"])
   {
     v4 = 30;
   }
@@ -842,9 +842,9 @@ LABEL_61:
   return v4;
 }
 
-- (void)setHasNlConfidenceLevel:(BOOL)a3
+- (void)setHasNlConfidenceLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 16;
   }
@@ -857,10 +857,10 @@ LABEL_61:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setNlConfidenceLevel:(int)a3
+- (void)setNlConfidenceLevel:(int)level
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (level == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xEF;
   }
@@ -868,13 +868,13 @@ LABEL_61:
   else
   {
     *&self->_has = has | 0x10;
-    self->_nlConfidenceLevel = a3;
+    self->_nlConfidenceLevel = level;
   }
 }
 
-- (void)setHasIsAppCorrection:(BOOL)a3
+- (void)setHasIsAppCorrection:(BOOL)correction
 {
-  if (a3)
+  if (correction)
   {
     v3 = 8;
   }
@@ -887,9 +887,9 @@ LABEL_61:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsAppAttributionRequired:(BOOL)a3
+- (void)setHasIsAppAttributionRequired:(BOOL)required
 {
-  if (a3)
+  if (required)
   {
     v3 = 4;
   }
@@ -902,9 +902,9 @@ LABEL_61:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAsrConfidenceScore:(BOOL)a3
+- (void)setHasAsrConfidenceScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -917,25 +917,25 @@ LABEL_61:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsAsrConfidenceLevel:(id)a3
+- (int)StringAsAsrConfidenceLevel:(id)level
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_CONFIDENCE_LEVEL"])
+  levelCopy = level;
+  if ([levelCopy isEqualToString:@"UNKNOWN_CONFIDENCE_LEVEL"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LOW"])
+  else if ([levelCopy isEqualToString:@"LOW"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"MEDIUM"])
+  else if ([levelCopy isEqualToString:@"MEDIUM"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"HIGH"])
+  else if ([levelCopy isEqualToString:@"HIGH"])
   {
     v4 = 30;
   }
@@ -948,10 +948,10 @@ LABEL_61:
   return v4;
 }
 
-- (void)setAsrConfidenceLevel:(int)a3
+- (void)setAsrConfidenceLevel:(int)level
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (level == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -959,7 +959,7 @@ LABEL_61:
   else
   {
     *&self->_has = has | 1;
-    self->_asrConfidenceLevel = a3;
+    self->_asrConfidenceLevel = level;
   }
 }
 

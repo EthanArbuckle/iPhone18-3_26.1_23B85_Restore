@@ -1,19 +1,19 @@
 @interface CPSAppClipRecord
-- (CPSAppClipRecord)initWithBundleID:(id)a3;
-- (CPSAppClipRecord)initWithSQLiteRow:(id)a3 bundleID:(id)a4;
+- (CPSAppClipRecord)initWithBundleID:(id)d;
+- (CPSAppClipRecord)initWithSQLiteRow:(id)row bundleID:(id)d;
 @end
 
 @implementation CPSAppClipRecord
 
-- (CPSAppClipRecord)initWithBundleID:(id)a3
+- (CPSAppClipRecord)initWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = CPSAppClipRecord;
   v5 = [(CPSAppClipRecord *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
 
@@ -23,42 +23,42 @@
   return v5;
 }
 
-- (CPSAppClipRecord)initWithSQLiteRow:(id)a3 bundleID:(id)a4
+- (CPSAppClipRecord)initWithSQLiteRow:(id)row bundleID:(id)d
 {
-  v6 = a3;
-  v7 = [(CPSAppClipRecord *)self initWithBundleID:a4];
+  rowCopy = row;
+  v7 = [(CPSAppClipRecord *)self initWithBundleID:d];
   if (v7)
   {
-    v8 = [v6 objectAtIndex:0];
+    v8 = [rowCopy objectAtIndex:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_storeStrong(&v7->_userNotificationGranted, v8);
     }
 
-    v9 = [v6 objectAtIndex:1];
+    v9 = [rowCopy objectAtIndex:1];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_storeStrong(&v7->_locationConfirmationGranted, v9);
     }
 
-    v7->_locationConfirmationState = [v6 intAtIndex:2];
-    [v6 doubleAtIndex:3];
+    v7->_locationConfirmationState = [rowCopy intAtIndex:2];
+    [rowCopy doubleAtIndex:3];
     v7->_lastProxCardLaunchTime = v10;
-    [v6 doubleAtIndex:4];
+    [rowCopy doubleAtIndex:4];
     v7->_lastVersionCheckTime = v11;
-    [v6 doubleAtIndex:5];
+    [rowCopy doubleAtIndex:5];
     v7->_lastInstallTime = v12;
-    v13 = [v6 stringAtIndex:6];
+    v13 = [rowCopy stringAtIndex:6];
     fullApplicationName = v7->_fullApplicationName;
     v7->_fullApplicationName = v13;
 
-    v15 = [v6 stringAtIndex:7];
+    v15 = [rowCopy stringAtIndex:7];
     fullApplicationCaption = v7->_fullApplicationCaption;
     v7->_fullApplicationCaption = v15;
 
-    v17 = [v6 stringAtIndex:8];
+    v17 = [rowCopy stringAtIndex:8];
     if (v17)
     {
       v18 = [MEMORY[0x277CBEBC0] URLWithString:v17];

@@ -1,23 +1,23 @@
 @interface AAFPromise
-+ (id)all:(id)a3;
-- (AAFPromise)initWithBlock:(id)a3;
-- (AAFPromise)initWithError:(id)a3;
-- (AAFPromise)initWithValue:(id)a3;
-- (id)_chain:(id)a3;
-- (id)_placeBlock:(id)a3 onQueue:(id)a4;
++ (id)all:(id)all;
+- (AAFPromise)initWithBlock:(id)block;
+- (AAFPromise)initWithError:(id)error;
+- (AAFPromise)initWithValue:(id)value;
+- (id)_chain:(id)_chain;
+- (id)_placeBlock:(id)block onQueue:(id)queue;
 - (id)catch;
-- (id)catch:(id)a3;
-- (id)catch:(id)a3 onQueue:(id)a4;
+- (id)catch:(id)catch;
+- (id)catch:(id)catch onQueue:(id)queue;
 - (id)catchOnQueue;
 - (id)then;
-- (id)then:(id)a3;
-- (id)then:(id)a3 onQueue:(id)a4;
+- (id)then:(id)then;
+- (id)then:(id)then onQueue:(id)queue;
 - (id)thenOnQueue;
-- (void)_completeWithValue:(id)a3 error:(id)a4;
-- (void)_handleChainingResult:(id)a3 withCompletion:(id)a4;
-- (void)_startWithBlock:(id)a3;
-- (void)onComplete:(id)a3;
-- (void)onComplete:(id)a3 onQueue:(id)a4;
+- (void)_completeWithValue:(id)value error:(id)error;
+- (void)_handleChainingResult:(id)result withCompletion:(id)completion;
+- (void)_startWithBlock:(id)block;
+- (void)onComplete:(id)complete;
+- (void)onComplete:(id)complete onQueue:(id)queue;
 @end
 
 @implementation AAFPromise
@@ -46,9 +46,9 @@
   return v2;
 }
 
-- (AAFPromise)initWithBlock:(id)a3
+- (AAFPromise)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12.receiver = self;
   v12.super_class = AAFPromise;
   v5 = [(AAFPromise *)&v12 init];
@@ -59,70 +59,70 @@
     queue = v5->_queue;
     v5->_queue = v7;
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     callbacks = v5->_callbacks;
-    v5->_callbacks = v9;
+    v5->_callbacks = array;
 
-    [(AAFPromise *)v5 _startWithBlock:v4];
+    [(AAFPromise *)v5 _startWithBlock:blockCopy];
   }
 
   return v5;
 }
 
-- (AAFPromise)initWithValue:(id)a3
+- (AAFPromise)initWithValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __28__AAFPromise_initWithValue___block_invoke;
   v8[3] = &unk_1E831BE88;
-  v9 = v4;
-  v5 = v4;
+  v9 = valueCopy;
+  v5 = valueCopy;
   v6 = [(AAFPromise *)self initWithBlock:v8];
 
   return v6;
 }
 
-- (AAFPromise)initWithError:(id)a3
+- (AAFPromise)initWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __28__AAFPromise_initWithError___block_invoke;
   v8[3] = &unk_1E831BE88;
-  v9 = v4;
-  v5 = v4;
+  v9 = errorCopy;
+  v5 = errorCopy;
   v6 = [(AAFPromise *)self initWithBlock:v8];
 
   return v6;
 }
 
-- (void)_startWithBlock:(id)a3
+- (void)_startWithBlock:(id)block
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __30__AAFPromise__startWithBlock___block_invoke;
   v5[3] = &unk_1E831BEB0;
   v5[4] = self;
-  v3 = a3;
+  blockCopy = block;
   v4 = MEMORY[0x1CCA79A70](v5);
-  v3[2](v3, v4);
+  blockCopy[2](blockCopy, v4);
 }
 
-- (void)_completeWithValue:(id)a3 error:(id)a4
+- (void)_completeWithValue:(id)value error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__AAFPromise__completeWithValue_error___block_invoke;
   block[3] = &unk_1E831BED8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = valueCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = valueCopy;
   dispatch_async(queue, block);
 }
 
@@ -177,17 +177,17 @@ void __39__AAFPromise__completeWithValue_error___block_invoke(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_chain:(id)a3
+- (id)_chain:(id)_chain
 {
-  v4 = a3;
+  _chainCopy = _chain;
   v5 = [AAFPromise alloc];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __21__AAFPromise__chain___block_invoke;
   v9[3] = &unk_1E831BF28;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = _chainCopy;
+  v6 = _chainCopy;
   v7 = [(AAFPromise *)v5 initWithBlock:v9];
 
   return v7;
@@ -215,20 +215,20 @@ void __21__AAFPromise__chain___block_invoke_2(uint64_t a1)
   [*(a1 + 32) _handleChainingResult:v2 withCompletion:*(a1 + 48)];
 }
 
-- (id)_placeBlock:(id)a3 onQueue:(id)a4
+- (id)_placeBlock:(id)block onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  queueCopy = queue;
   v8 = [AAFPromise alloc];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __34__AAFPromise__placeBlock_onQueue___block_invoke;
   v13[3] = &unk_1E831BF78;
-  v14 = v7;
-  v15 = self;
-  v16 = v6;
-  v9 = v6;
-  v10 = v7;
+  v14 = queueCopy;
+  selfCopy = self;
+  v16 = blockCopy;
+  v9 = blockCopy;
+  v10 = queueCopy;
   v11 = [(AAFPromise *)v8 initWithBlock:v13];
 
   return v11;
@@ -257,14 +257,14 @@ void __34__AAFPromise__placeBlock_onQueue___block_invoke_2(void *a1)
   [v2 _handleChainingResult:v3 withCompletion:a1[6]];
 }
 
-- (void)_handleChainingResult:(id)a3 withCompletion:(id)a4
+- (void)_handleChainingResult:(id)result withCompletion:(id)completion
 {
-  v9 = a3;
-  v5 = a4;
+  resultCopy = result;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v9 onComplete:v5];
+    [resultCopy onComplete:completionCopy];
   }
 
   else
@@ -272,33 +272,33 @@ void __34__AAFPromise__placeBlock_onQueue___block_invoke_2(void *a1)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = completionCopy;
       v7 = 0;
-      v8 = v9;
+      v8 = resultCopy;
     }
 
     else
     {
-      v6 = v5;
-      v7 = v9;
+      v6 = completionCopy;
+      v7 = resultCopy;
       v8 = 0;
     }
 
-    (*(v5 + 2))(v6, v7, v8);
+    (*(completionCopy + 2))(v6, v7, v8);
   }
 }
 
-- (void)onComplete:(id)a3
+- (void)onComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __25__AAFPromise_onComplete___block_invoke;
   v7[3] = &unk_1E831BFC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completeCopy;
+  v6 = completeCopy;
   dispatch_async(queue, v7);
 }
 
@@ -331,18 +331,18 @@ void __25__AAFPromise_onComplete___block_invoke(uint64_t a1)
   }
 }
 
-- (void)onComplete:(id)a3 onQueue:(id)a4
+- (void)onComplete:(id)complete onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  completeCopy = complete;
+  queueCopy = queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __33__AAFPromise_onComplete_onQueue___block_invoke;
   v10[3] = &unk_1E831BFA0;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = queueCopy;
+  v12 = completeCopy;
+  v8 = completeCopy;
+  v9 = queueCopy;
   [(AAFPromise *)self onComplete:v10];
 }
 
@@ -364,15 +364,15 @@ void __33__AAFPromise_onComplete_onQueue___block_invoke(uint64_t a1, void *a2, v
   dispatch_async(v7, block);
 }
 
-- (id)then:(id)a3
+- (id)then:(id)then
 {
-  v4 = a3;
+  thenCopy = then;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __19__AAFPromise_then___block_invoke;
   v8[3] = &unk_1E831C018;
-  v9 = v4;
-  v5 = v4;
+  v9 = thenCopy;
+  v5 = thenCopy;
   v6 = [(AAFPromise *)self _chain:v8];
 
   return v6;
@@ -397,19 +397,19 @@ id __19__AAFPromise_then___block_invoke(uint64_t a1, uint64_t a2, void *a3)
   return v7;
 }
 
-- (id)then:(id)a3 onQueue:(id)a4
+- (id)then:(id)then onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  thenCopy = then;
+  queueCopy = queue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __27__AAFPromise_then_onQueue___block_invoke;
   v12[3] = &unk_1E831C068;
-  v13 = v7;
-  v14 = v6;
+  v13 = queueCopy;
+  v14 = thenCopy;
   v12[4] = self;
-  v8 = v7;
-  v9 = v6;
+  v8 = queueCopy;
+  v9 = thenCopy;
   v10 = [(AAFPromise *)self then:v12];
 
   return v10;
@@ -433,15 +433,15 @@ id __27__AAFPromise_then_onQueue___block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-- (id)catch:(id)a3
+- (id)catch:(id)catch
 {
-  v4 = a3;
+  catchCopy = catch;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __20__AAFPromise_catch___block_invoke;
   v8[3] = &unk_1E831C018;
-  v9 = v4;
-  v5 = v4;
+  v9 = catchCopy;
+  v5 = catchCopy;
   v6 = [(AAFPromise *)self _chain:v8];
 
   return v6;
@@ -466,19 +466,19 @@ id __20__AAFPromise_catch___block_invoke(uint64_t a1, void *a2, uint64_t a3)
   return v8;
 }
 
-- (id)catch:(id)a3 onQueue:(id)a4
+- (id)catch:(id)catch onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  catchCopy = catch;
+  queueCopy = queue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __28__AAFPromise_catch_onQueue___block_invoke;
   v12[3] = &unk_1E831C068;
-  v13 = v7;
-  v14 = v6;
+  v13 = queueCopy;
+  v14 = catchCopy;
   v12[4] = self;
-  v8 = v7;
-  v9 = v6;
+  v8 = queueCopy;
+  v9 = catchCopy;
   v10 = [(AAFPromise *)self catch:v12];
 
   return v10;
@@ -502,9 +502,9 @@ id __28__AAFPromise_catch_onQueue___block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-+ (id)all:(id)a3
++ (id)all:(id)all
 {
-  v3 = [a3 copy];
+  v3 = [all copy];
   v4 = [AAFPromise alloc];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;

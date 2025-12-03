@@ -1,20 +1,20 @@
 @interface HDMedicationScheduleItemQueryServer
-- (HDMedicationScheduleItemQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDMedicationScheduleItemQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_queue_start;
 @end
 
 @implementation HDMedicationScheduleItemQueryServer
 
-- (HDMedicationScheduleItemQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDMedicationScheduleItemQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v11 = a4;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = HDMedicationScheduleItemQueryServer;
-  v12 = [(HDQueryServer *)&v15 initWithUUID:a3 configuration:v11 client:a5 delegate:a6];
+  v12 = [(HDQueryServer *)&v15 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_configuration, a4);
+    objc_storeStrong(&v12->_configuration, configuration);
   }
 
   return v13;
@@ -22,20 +22,20 @@
 
 - (void)_queue_start
 {
-  v2 = self;
+  selfCopy = self;
   v56 = *MEMORY[0x277D85DE8];
   v54.receiver = self;
   v54.super_class = HDMedicationScheduleItemQueryServer;
   [(HDQueryServer *)&v54 _queue_start];
-  v3 = [(HDQueryServer *)v2 queryUUID];
-  v4 = [(HDQueryServer *)v2 clientProxy];
-  v5 = [v4 remoteObjectProxy];
+  queryUUID = [(HDQueryServer *)selfCopy queryUUID];
+  clientProxy = [(HDQueryServer *)selfCopy clientProxy];
+  remoteObjectProxy = [clientProxy remoteObjectProxy];
 
-  v6 = [(HKMedicationScheduleItemQueryConfiguration *)v2->_configuration fromDate];
+  fromDate = [(HKMedicationScheduleItemQueryConfiguration *)selfCopy->_configuration fromDate];
 
-  if (v6)
+  if (fromDate)
   {
-    v7 = [(HKMedicationScheduleItemQueryConfiguration *)v2->_configuration fromDate];
+    fromDate2 = [(HKMedicationScheduleItemQueryConfiguration *)selfCopy->_configuration fromDate];
     v8 = HDMedicationScheduleItemPredicateForScheduledDateTime(6);
   }
 
@@ -44,11 +44,11 @@
     v8 = 0;
   }
 
-  v9 = [(HKMedicationScheduleItemQueryConfiguration *)v2->_configuration toDate];
+  toDate = [(HKMedicationScheduleItemQueryConfiguration *)selfCopy->_configuration toDate];
 
-  if (v9)
+  if (toDate)
   {
-    v10 = [(HKMedicationScheduleItemQueryConfiguration *)v2->_configuration toDate];
+    toDate2 = [(HKMedicationScheduleItemQueryConfiguration *)selfCopy->_configuration toDate];
     v11 = HDMedicationScheduleItemPredicateForScheduledDateTime(3);
 
     if (v8)
@@ -64,12 +64,12 @@
     }
   }
 
-  v13 = [(HKMedicationScheduleItemQueryConfiguration *)v2->_configuration identifier];
+  identifier = [(HKMedicationScheduleItemQueryConfiguration *)selfCopy->_configuration identifier];
 
-  if (v13)
+  if (identifier)
   {
-    v14 = [(HKMedicationScheduleItemQueryConfiguration *)v2->_configuration identifier];
-    v15 = HDMedicationScheduleItemPredicateForIdentifier(v14, 1);
+    identifier2 = [(HKMedicationScheduleItemQueryConfiguration *)selfCopy->_configuration identifier];
+    v15 = HDMedicationScheduleItemPredicateForIdentifier(identifier2, 1);
 
     if (v8)
     {
@@ -84,21 +84,21 @@
     }
   }
 
-  v17 = [(HKMedicationScheduleItemQueryConfiguration *)v2->_configuration sortDescriptors];
+  sortDescriptors = [(HKMedicationScheduleItemQueryConfiguration *)selfCopy->_configuration sortDescriptors];
 
   v18 = 0x277CBE000uLL;
-  if (v17)
+  if (sortDescriptors)
   {
-    v43 = v5;
-    v44 = v3;
+    v43 = remoteObjectProxy;
+    v44 = queryUUID;
     v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v42 = v2;
-    v20 = [(HKMedicationScheduleItemQueryConfiguration *)v2->_configuration sortDescriptors];
-    v21 = [v20 countByEnumeratingWithState:&v50 objects:v55 count:16];
+    v42 = selfCopy;
+    sortDescriptors2 = [(HKMedicationScheduleItemQueryConfiguration *)selfCopy->_configuration sortDescriptors];
+    v21 = [sortDescriptors2 countByEnumeratingWithState:&v50 objects:v55 count:16];
     if (v21)
     {
       v22 = v21;
@@ -110,7 +110,7 @@
         {
           if (*v51 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(sortDescriptors2);
           }
 
           v26 = *(*(&v50 + 1) + 8 * i);
@@ -126,7 +126,7 @@
             v35 = [v32 stringWithFormat:@"%@ Invalid sort descriptor key passed: '%@", v33, v34];
             v36 = [v31 hk_error:3 description:v35];
 
-            v5 = v43;
+            remoteObjectProxy = v43;
             v37 = v44;
             [v43 client_deliverError:v36 forQuery:v44];
             goto LABEL_30;
@@ -136,7 +136,7 @@
           [v19 addObject:v29];
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v50 objects:v55 count:16];
+        v22 = [sortDescriptors2 countByEnumeratingWithState:&v50 objects:v55 count:16];
         if (v22)
         {
           continue;
@@ -146,21 +146,21 @@
       }
     }
 
-    v5 = v43;
+    remoteObjectProxy = v43;
     v30 = v44;
-    v2 = v42;
+    selfCopy = v42;
     v18 = 0x277CBE000;
   }
 
   else
   {
-    v30 = v3;
+    v30 = queryUUID;
     v19 = 0;
   }
 
   v38 = objc_alloc_init(*(v18 + 2840));
-  v39 = [(HDQueryServer *)v2 profile];
-  v40 = [v39 database];
+  profile = [(HDQueryServer *)selfCopy profile];
+  database = [profile database];
   v49 = 0;
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
@@ -169,21 +169,21 @@
   v46 = v8;
   v19 = v19;
   v47 = v19;
-  v20 = v38;
-  v48 = v20;
-  LODWORD(v38) = [(HDHealthEntity *)HDMedicationScheduleItemEntity performReadTransactionWithHealthDatabase:v40 error:&v49 block:v45];
+  sortDescriptors2 = v38;
+  v48 = sortDescriptors2;
+  LODWORD(v38) = [(HDHealthEntity *)HDMedicationScheduleItemEntity performReadTransactionWithHealthDatabase:database error:&v49 block:v45];
   v36 = v49;
 
   if (v38)
   {
     v37 = v30;
-    [v5 client_deliverScheduleItems:v20 queryUUID:v30];
+    [remoteObjectProxy client_deliverScheduleItems:sortDescriptors2 queryUUID:v30];
   }
 
   else
   {
     v37 = v30;
-    [v5 client_deliverError:v36 forQuery:v30];
+    [remoteObjectProxy client_deliverError:v36 forQuery:v30];
   }
 
 LABEL_30:

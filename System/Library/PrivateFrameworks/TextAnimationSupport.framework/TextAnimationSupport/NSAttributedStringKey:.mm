@@ -7,7 +7,7 @@
 
 - (uint64_t)Any
 {
-  v8 = *(a1 + 32);
+  v8 = *(self + 32);
   type metadata accessor for NSAttributedStringKey(0);
   lazy protocol witness table accessor for type CFStringRef and conformance CFStringRef(&lazy protocol witness table cache variable for type NSAttributedStringKey and conformance NSAttributedStringKey, type metadata accessor for NSAttributedStringKey);
   v9 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
@@ -16,7 +16,7 @@
 
 - (void)Any
 {
-  v8 = *(a1 + 32);
+  v8 = *(self + 32);
   type metadata accessor for NSAttributedStringKey(0);
   lazy protocol witness table accessor for type Text.Effect.BaseContent and conformance Text.Effect.BaseContent(&lazy protocol witness table cache variable for type NSAttributedStringKey and conformance NSAttributedStringKey, type metadata accessor for NSAttributedStringKey);
   v9 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();

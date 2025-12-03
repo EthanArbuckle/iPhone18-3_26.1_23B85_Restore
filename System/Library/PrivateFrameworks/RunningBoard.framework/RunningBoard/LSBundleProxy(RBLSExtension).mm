@@ -9,16 +9,16 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 extensionPoint];
-    v3 = [v2 identifier];
+    extensionPoint = [self extensionPoint];
+    identifier = [extensionPoint identifier];
   }
 
   else
   {
-    v3 = 0;
+    identifier = 0;
   }
 
-  return v3;
+  return identifier;
 }
 
 @end

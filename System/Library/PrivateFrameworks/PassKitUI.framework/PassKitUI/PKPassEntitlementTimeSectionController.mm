@@ -1,18 +1,18 @@
 @interface PKPassEntitlementTimeSectionController
-- (PKPassEntitlementTimeSectionController)initWithMode:(unint64_t)a3 entitlementComposer:(id)a4 delegate:(id)a5;
-- (id)_summaryForTimeConfiguration:(id)a3 isUsingAdvancedSchedules:(BOOL)a4;
-- (id)decorateListCell:(id)a3 forRowItem:(id)a4;
-- (void)didSelectItem:(id)a3;
-- (void)reloadItemsAnimated:(BOOL)a3;
+- (PKPassEntitlementTimeSectionController)initWithMode:(unint64_t)mode entitlementComposer:(id)composer delegate:(id)delegate;
+- (id)_summaryForTimeConfiguration:(id)configuration isUsingAdvancedSchedules:(BOOL)schedules;
+- (id)decorateListCell:(id)cell forRowItem:(id)item;
+- (void)didSelectItem:(id)item;
+- (void)reloadItemsAnimated:(BOOL)animated;
 @end
 
 @implementation PKPassEntitlementTimeSectionController
 
-- (PKPassEntitlementTimeSectionController)initWithMode:(unint64_t)a3 entitlementComposer:(id)a4 delegate:(id)a5
+- (PKPassEntitlementTimeSectionController)initWithMode:(unint64_t)mode entitlementComposer:(id)composer delegate:(id)delegate
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  composerCopy = composer;
+  delegateCopy = delegate;
   v24[0] = @"EntitlementTimeSectionController";
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
   v23.receiver = self;
@@ -21,9 +21,9 @@
 
   if (v12)
   {
-    v12->_mode = a3;
-    objc_storeStrong(&v12->_entitlementComposer, a4);
-    objc_storeWeak(&v12->_delegate, v10);
+    v12->_mode = mode;
+    objc_storeStrong(&v12->_entitlementComposer, composer);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
     objc_initWeak(&location, v12);
     v13 = MEMORY[0x1E69DC800];
     v14 = objc_opt_class();
@@ -55,14 +55,14 @@ void __84__PKPassEntitlementTimeSectionController_initWithMode_entitlementCompos
   }
 }
 
-- (void)reloadItemsAnimated:(BOOL)a3
+- (void)reloadItemsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
-  v6 = [v5 timeConfiguration];
-  v7 = [v5 isManagingTimeConfiguration] ^ 1;
-  if (v6 && ![v6 isEmpty])
+  globalView = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
+  timeConfiguration = [globalView timeConfiguration];
+  v7 = [globalView isManagingTimeConfiguration] ^ 1;
+  if (timeConfiguration && ![timeConfiguration isEmpty])
   {
     v8 = 1;
   }
@@ -72,10 +72,10 @@ void __84__PKPassEntitlementTimeSectionController_initWithMode_entitlementCompos
     v8 = v7;
   }
 
-  v9 = [(PKPassEntitlementsComposer *)self->_entitlementComposer editable];
-  v10 = [v5 possibleTimeConfiguration];
+  editable = [(PKPassEntitlementsComposer *)self->_entitlementComposer editable];
+  possibleTimeConfiguration = [globalView possibleTimeConfiguration];
 
-  if ((v8 & 1) != 0 || ((v10 != 0) & v9) != 0)
+  if ((v8 & 1) != 0 || ((possibleTimeConfiguration != 0) & editable) != 0)
   {
     v19[0] = @"EntitlementTimeSectionController";
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
@@ -89,13 +89,13 @@ void __84__PKPassEntitlementTimeSectionController_initWithMode_entitlementCompos
     v16 = PKLocalizedShareableCredentialString(&cfstr_ShareSchedules.isa);
     [(PKSharePreviewRowItem *)v14 setTitle:v16];
 
-    v17 = [(PKPassEntitlementTimeSectionController *)self _summaryForTimeConfiguration:v6 isUsingAdvancedSchedules:v7];
+    v17 = [(PKPassEntitlementTimeSectionController *)self _summaryForTimeConfiguration:timeConfiguration isUsingAdvancedSchedules:v7];
     [(PKSharePreviewRowItem *)v14 setSubtitle:v17];
     [(PKSharePreviewRowItem *)v14 setDisplayChevron:1];
     [v13 addObject:v14];
     [(PKPaymentSetupListSectionController *)self setItems:v13];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained reloadDataAnimated:v3];
+    [WeakRetained reloadDataAnimated:animatedCopy];
   }
 
   else
@@ -106,16 +106,16 @@ void __84__PKPassEntitlementTimeSectionController_initWithMode_entitlementCompos
   }
 }
 
-- (id)_summaryForTimeConfiguration:(id)a3 isUsingAdvancedSchedules:(BOOL)a4
+- (id)_summaryForTimeConfiguration:(id)configuration isUsingAdvancedSchedules:(BOOL)schedules
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  configurationCopy = configuration;
+  v6 = configurationCopy;
+  if (schedules)
   {
     v7 = @"SHARE_SCHEDULES_LIMIT_ADVANCED";
   }
 
-  else if (v5 && ![v5 isEmpty])
+  else if (configurationCopy && ![configurationCopy isEmpty])
   {
     v7 = @"SHARE_SCHEDULES_LIMIT_RESTRICTED";
   }
@@ -130,56 +130,56 @@ void __84__PKPassEntitlementTimeSectionController_initWithMode_entitlementCompos
   return v8;
 }
 
-- (id)decorateListCell:(id)a3 forRowItem:(id)a4
+- (id)decorateListCell:(id)cell forRowItem:(id)item
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  v9 = [v7 title];
-  [v8 setText:v9];
+  cellCopy = cell;
+  itemCopy = item;
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  title = [itemCopy title];
+  [valueCellConfiguration setText:title];
 
-  v10 = [v7 subtitle];
-  [v8 setSecondaryText:v10];
+  subtitle = [itemCopy subtitle];
+  [valueCellConfiguration setSecondaryText:subtitle];
 
-  v11 = [v8 secondaryTextProperties];
-  v12 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v11 setColor:v12];
+  secondaryTextProperties = [valueCellConfiguration secondaryTextProperties];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [secondaryTextProperties setColor:secondaryLabelColor];
 
-  [v8 setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 8.0}];
-  v13 = [v7 icon];
+  [valueCellConfiguration setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 8.0}];
+  icon = [itemCopy icon];
 
-  if (v13)
+  if (icon)
   {
-    v14 = [v7 icon];
-    [v8 setImage:v14];
+    icon2 = [itemCopy icon];
+    [valueCellConfiguration setImage:icon2];
 
-    v15 = [v8 imageProperties];
-    v16 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v15 setTintColor:v16];
+    imageProperties = [valueCellConfiguration imageProperties];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [imageProperties setTintColor:systemBlueColor];
   }
 
-  [v6 setContentConfiguration:v8];
+  [cellCopy setContentConfiguration:valueCellConfiguration];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __70__PKPassEntitlementTimeSectionController_decorateListCell_forRowItem___block_invoke;
   v21[3] = &unk_1E8012AC8;
   v21[4] = self;
-  [v6 setConfigurationUpdateHandler:v21];
-  if ([v7 displayChevron] && (v17 = objc_alloc_init(MEMORY[0x1E69DC7A8])) != 0)
+  [cellCopy setConfigurationUpdateHandler:v21];
+  if ([itemCopy displayChevron] && (v17 = objc_alloc_init(MEMORY[0x1E69DC7A8])) != 0)
   {
     v18 = v17;
     v22[0] = v17;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-    [v6 setAccessories:v19];
+    [cellCopy setAccessories:v19];
   }
 
   else
   {
-    [v6 setAccessories:MEMORY[0x1E695E0F0]];
+    [cellCopy setAccessories:MEMORY[0x1E695E0F0]];
   }
 
-  return v8;
+  return valueCellConfiguration;
 }
 
 void __70__PKPassEntitlementTimeSectionController_decorateListCell_forRowItem___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -212,7 +212,7 @@ void __70__PKPassEntitlementTimeSectionController_decorateListCell_forRowItem___
   [v6 setBackgroundConfiguration:v7];
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained didTapPassEntitlementTimeSectionController:self];

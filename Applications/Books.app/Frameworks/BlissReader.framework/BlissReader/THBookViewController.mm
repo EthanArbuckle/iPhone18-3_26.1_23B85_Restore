@@ -1,72 +1,72 @@
 @interface THBookViewController
-+ (BOOL)allBodiesExist:(id)a3;
++ (BOOL)allBodiesExist:(id)exist;
 + (id)themeMap;
 + (void)initialize;
 - (AEAsset)asset;
 - (BOOL)_canSearch;
 - (BOOL)allowCopy;
-- (BOOL)autoNightModeEnabled:(id)a3;
+- (BOOL)autoNightModeEnabled:(id)enabled;
 - (BOOL)bookIsPaginatedForPortrait;
 - (BOOL)canDecreaseFontSize;
 - (BOOL)canIncreaseFontSize;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canRevealTOC;
 - (BOOL)canTrustCalculatedPageNumbers;
-- (BOOL)chapterBrowserController:(id)a3 shouldShowShroudForVisibleSize:(CGSize)a4;
+- (BOOL)chapterBrowserController:(id)controller shouldShowShroudForVisibleSize:(CGSize)size;
 - (BOOL)disableRotationEdgeClip;
-- (BOOL)dismissShouldBegin:(id)a3;
-- (BOOL)flowModeEnabled:(id)a3;
-- (BOOL)followAnchor:(id)a3 pulse:(BOOL)a4;
-- (BOOL)followLink:(id)a3 animated:(BOOL)a4;
+- (BOOL)dismissShouldBegin:(id)begin;
+- (BOOL)flowModeEnabled:(id)enabled;
+- (BOOL)followAnchor:(id)anchor pulse:(BOOL)pulse;
+- (BOOL)followLink:(id)link animated:(BOOL)animated;
 - (BOOL)isAnnotationWriteEnabled;
 - (BOOL)isBookEpub;
 - (BOOL)isBookPortraitOnly;
 - (BOOL)isBookmarkApplicable;
-- (BOOL)isCurrentPageBookmarkedForBookmarkMenuPopoverViewController:(id)a3;
+- (BOOL)isCurrentPageBookmarkedForBookmarkMenuPopoverViewController:(id)controller;
 - (BOOL)isGlossaryPresenting;
 - (BOOL)isGlossaryVisible;
-- (BOOL)isLastPageInChapterForChapterBrowserController:(id)a3 pageIndex:(unint64_t)a4 chapterIndex:(unint64_t)a5;
+- (BOOL)isLastPageInChapterForChapterBrowserController:(id)controller pageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex;
 - (BOOL)isNotesFullscreenVisible;
 - (BOOL)isPageBookmarked;
-- (BOOL)isPageBookmarkedForDocumentViewController:(id)a3;
-- (BOOL)isSinglePageInChapterForChapterBrowserController:(id)a3 chapterIndex:(unint64_t)a4;
+- (BOOL)isPageBookmarkedForDocumentViewController:(id)controller;
+- (BOOL)isSinglePageInChapterForChapterBrowserController:(id)controller chapterIndex:(unint64_t)index;
 - (BOOL)isStudyViewControllerVisible;
 - (BOOL)isTOCVisible;
 - (BOOL)isToolbarHidden;
-- (BOOL)isTwoUpForChapterBrowserController:(id)a3;
-- (BOOL)jumpToPageLocation:(id)a3 touchHistory:(BOOL)a4 minor:(BOOL)a5;
-- (BOOL)navigateToAnchorInDVC:(id)a3 pulse:(BOOL)a4;
-- (BOOL)navigateToLinkInDVC:(id)a3;
-- (BOOL)navigationBarIsTranslucent:(id)a3;
-- (BOOL)p_isPageLocationValid:(id)a3;
+- (BOOL)isTwoUpForChapterBrowserController:(id)controller;
+- (BOOL)jumpToPageLocation:(id)location touchHistory:(BOOL)history minor:(BOOL)minor;
+- (BOOL)navigateToAnchorInDVC:(id)c pulse:(BOOL)pulse;
+- (BOOL)navigateToLinkInDVC:(id)c;
+- (BOOL)navigationBarIsTranslucent:(id)translucent;
+- (BOOL)p_isPageLocationValid:(id)valid;
 - (BOOL)p_isPreorderBook;
 - (BOOL)p_isSampleBook;
-- (BOOL)p_isTOCViewController:(id)a3;
-- (BOOL)p_jumpToBKCFIString:(id)a3;
-- (BOOL)p_jumpToFragment:(id)a3;
-- (BOOL)p_jumpToLocation:(id)a3;
+- (BOOL)p_isTOCViewController:(id)controller;
+- (BOOL)p_jumpToBKCFIString:(id)string;
+- (BOOL)p_jumpToFragment:(id)fragment;
+- (BOOL)p_jumpToLocation:(id)location;
 - (BOOL)p_restoreToLaunchPage;
 - (BOOL)p_shouldAlertAboutRetinaUpdate;
-- (BOOL)p_shouldSendVantageChangedNotificationWithReason:(id)a3;
-- (BOOL)p_shouldShowShroudForVisibleSize:(CGSize)a3;
+- (BOOL)p_shouldSendVantageChangedNotificationWithReason:(id)reason;
+- (BOOL)p_shouldShowShroudForVisibleSize:(CGSize)size;
 - (BOOL)p_showBuyButton;
 - (BOOL)prefersHomeIndicatorAutoHidden;
-- (BOOL)readingStatisticsCollector:(id)a3 needTOCEntriesForOrdinal:(int64_t)a4;
-- (BOOL)readingStatisticsCollector:(id)a3 needTextNodeCharacterCountsForOrdinal:(int64_t)a4;
+- (BOOL)readingStatisticsCollector:(id)collector needTOCEntriesForOrdinal:(int64_t)ordinal;
+- (BOOL)readingStatisticsCollector:(id)collector needTextNodeCharacterCountsForOrdinal:(int64_t)ordinal;
 - (BOOL)setupLoadSpinner;
 - (BOOL)shouldAllowToolbarHover;
 - (BOOL)shouldAutorotate;
 - (BOOL)shouldShowChapterTitle;
-- (BOOL)shouldShowFontResizeControls:(id)a3;
+- (BOOL)shouldShowFontResizeControls:(id)controls;
 - (BOOL)useWhiteTheme;
-- (CGImage)thumbnailImageForAbsolutePageIndex:(unint64_t)a3;
-- (CGRect)chapterBrowserController:(id)a3 rectForRelativePageIndex:(unint64_t)a4 chapterIndex:(unint64_t)a5;
-- (CGRect)chapterBrowserController:(id)a3 targetRelativeRectForPoint:(CGPoint)a4 atPageIndex:(unint64_t)a5 chapterIndex:(unint64_t)a6;
-- (CGRect)chapterBrowserController:(id)a3 targetRelativeRectForRelativePoint:(CGPoint)a4 atPageIndex:(unint64_t)a5 chapterIndex:(unint64_t)a6;
-- (CGRect)frameForHUDFromVendor:(id)a3;
+- (CGImage)thumbnailImageForAbsolutePageIndex:(unint64_t)index;
+- (CGRect)chapterBrowserController:(id)controller rectForRelativePageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex;
+- (CGRect)chapterBrowserController:(id)controller targetRelativeRectForPoint:(CGPoint)point atPageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex;
+- (CGRect)chapterBrowserController:(id)controller targetRelativeRectForRelativePoint:(CGPoint)point atPageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex;
+- (CGRect)frameForHUDFromVendor:(id)vendor;
 - (CGRect)p_navigationOverlayFrame;
 - (CGRect)pageTargetRectForRevealingTOC;
-- (THBookViewController)initWithBookDescription:(id)a3;
+- (THBookViewController)initWithBookDescription:(id)description;
 - (THBookspotHistoryStack)bookspotHistoryStack;
 - (THChapterBrowserController)chapterBrowserController;
 - (THDocumentNavigationModel)navigationModel;
@@ -85,90 +85,90 @@
 - (UIBarButtonItem)tocGlossaryButtonItem;
 - (UIButton)bookmarkButton;
 - (double)toolbarHeight;
-- (id)TOCViewControllerToolbarBackgroundColor:(id)a3;
+- (id)TOCViewControllerToolbarBackgroundColor:(id)color;
 - (id)_analyticsContentSettingsData;
 - (id)_analyticsReadingProgress;
 - (id)_analyticsReadingSettingsData;
 - (id)_analyticsSessionHost;
 - (id)_currentLocation;
 - (id)_storageAnchorForPageBookmark;
-- (id)activityItemProviderWithCachedAnnotation:(id)a3;
-- (id)activityItemProviderWithCachedAnnotations:(id)a3;
-- (id)anchorFromLink:(id)a3;
+- (id)activityItemProviderWithCachedAnnotation:(id)annotation;
+- (id)activityItemProviderWithCachedAnnotations:(id)annotations;
+- (id)anchorFromLink:(id)link;
 - (id)annotationID;
 - (id)assetViewControllerViewForLiveResizeSnapshot;
-- (id)backgroundColorForNavigationBar:(id)a3;
+- (id)backgroundColorForNavigationBar:(id)bar;
 - (id)bookmarkFetchedResultsController;
-- (id)cachedAnnotationForFetchedObject:(id)a3;
-- (id)canvasScrollViewForChapterBrowserController:(id)a3;
-- (id)chapterBrowserController:(id)a3 pageNumberStringForRelativePageIndex:(unint64_t)a4 andChapterIndex:(unint64_t)a5;
-- (id)chapterBrowserController:(id)a3 tocTileModelAtIndex:(unint64_t)a4;
+- (id)cachedAnnotationForFetchedObject:(id)object;
+- (id)canvasScrollViewForChapterBrowserController:(id)controller;
+- (id)chapterBrowserController:(id)controller pageNumberStringForRelativePageIndex:(unint64_t)index andChapterIndex:(unint64_t)chapterIndex;
+- (id)chapterBrowserController:(id)controller tocTileModelAtIndex:(unint64_t)index;
 - (id)childViewControllerForStatusBarHidden;
 - (id)contentData;
-- (id)createButtonItemConfigurationWithImageName:(id)a3 forSelector:(SEL)a4;
+- (id)createButtonItemConfigurationWithImageName:(id)name forSelector:(SEL)selector;
 - (id)currentPageInfoForBookmarks;
 - (id)currentPresentationType;
 - (id)documentRoot;
-- (id)documentViewControllerWithDocument:(id)a3;
-- (id)foregroundTintColorForNavigationBar:(id)a3;
-- (id)htmlGeneratorWithAnnotations:(id)a3;
+- (id)documentViewControllerWithDocument:(id)document;
+- (id)foregroundTintColorForNavigationBar:(id)bar;
+- (id)htmlGeneratorWithAnnotations:(id)annotations;
 - (id)keyCommands;
-- (id)leftToolbarItems:(BOOL)a3;
-- (id)navigationUnitForChapterBrowserController:(id)a3 chapterIndex:(unint64_t)a4;
+- (id)leftToolbarItems:(BOOL)items;
+- (id)navigationUnitForChapterBrowserController:(id)controller chapterIndex:(unint64_t)index;
 - (id)overlayViewColorForLiveResize;
-- (id)p_THCFIReaderStringFromBKCFIString:(id)a3;
+- (id)p_THCFIReaderStringFromBKCFIString:(id)string;
 - (id)p_retinaUpdateAlertAttemptsKey;
 - (id)p_retinaUpdateAlertDateKey;
-- (id)p_selectedTocViewControllerCreateIfNecessary:(BOOL)a3;
+- (id)p_selectedTocViewControllerCreateIfNecessary:(BOOL)necessary;
 - (id)p_unselectedTocViewController;
-- (id)pageNumberStringForAnnotation:(id)a3;
-- (id)pageNumberStringForLocation:(id)a3;
-- (id)presentationController:(id)a3 viewControllerForAdaptivePresentationStyle:(int64_t)a4;
-- (id)presentationTypeForChapterBrowserController:(id)a3;
+- (id)pageNumberStringForAnnotation:(id)annotation;
+- (id)pageNumberStringForLocation:(id)location;
+- (id)presentationController:(id)controller viewControllerForAdaptivePresentationStyle:(int64_t)style;
+- (id)presentationTypeForChapterBrowserController:(id)controller;
 - (id)readingSessionData;
-- (id)rightToolbarItems:(BOOL)a3;
-- (id)sectionNumberStringForLocation:(id)a3;
-- (id)sectionTitleStringForLocation:(id)a3;
-- (id)storageForCFI:(id)a3;
-- (id)storeURLForHTMLGenerator:(id)a3;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
-- (id)tellAFriendBaseURLForHTMLGenerator:(id)a3;
-- (id)themeForStyle:(int64_t)a3;
-- (id)titleColorForNavigationBar:(id)a3;
+- (id)rightToolbarItems:(BOOL)items;
+- (id)sectionNumberStringForLocation:(id)location;
+- (id)sectionTitleStringForLocation:(id)location;
+- (id)storageForCFI:(id)i;
+- (id)storeURLForHTMLGenerator:(id)generator;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
+- (id)tellAFriendBaseURLForHTMLGenerator:(id)generator;
+- (id)themeForStyle:(int64_t)style;
+- (id)titleColorForNavigationBar:(id)bar;
 - (id)transitionContentBackgroundColor;
 - (id)transitionContentView;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
 - (int64_t)appearanceStyle;
 - (int64_t)overrideUserInterfaceStyle;
-- (int64_t)pageNumberForAnnotation:(id)a3;
-- (int64_t)positionForBar:(id)a3;
-- (unint64_t)absolutePageIndexForCFI:(id)a3;
-- (unint64_t)absolutePageIndexForTileEntry:(id)a3;
-- (unint64_t)chapterBrowserController:(id)a3 relativePageIndexForLink:(id)a4;
-- (unint64_t)chapterCountForChapterBrowserController:(id)a3;
+- (int64_t)pageNumberForAnnotation:(id)annotation;
+- (int64_t)positionForBar:(id)bar;
+- (unint64_t)absolutePageIndexForCFI:(id)i;
+- (unint64_t)absolutePageIndexForTileEntry:(id)entry;
+- (unint64_t)chapterBrowserController:(id)controller relativePageIndexForLink:(id)link;
+- (unint64_t)chapterCountForChapterBrowserController:(id)controller;
 - (unint64_t)currentAbsolutePageIndex;
 - (unint64_t)currentAbsolutePageIndexForBookmarks;
-- (unint64_t)maxAbsolutePageIndexForNodeAtTileEntry:(id)a3;
-- (void)TOCHideToolbarAnimated:(BOOL)a3;
-- (void)TOCShowToolbarAnimated:(BOOL)a3;
-- (void)_accessibilityInvertColorsStatusDidChange:(id)a3;
-- (void)_adjustSizeIncreasing:(BOOL)a3;
+- (unint64_t)maxAbsolutePageIndexForNodeAtTileEntry:(id)entry;
+- (void)TOCHideToolbarAnimated:(BOOL)animated;
+- (void)TOCShowToolbarAnimated:(BOOL)animated;
+- (void)_accessibilityInvertColorsStatusDidChange:(id)change;
+- (void)_adjustSizeIncreasing:(BOOL)increasing;
 - (void)_adjustTitleLabelTopConstraint;
 - (void)_checkIfScanningReadingStatisticsCanBegin;
 - (void)_disableAutoNightMode;
 - (void)_enableAutoNightMode;
-- (void)_showSearchPopoverFromSourceItem:(id)a3 withText:(id)a4;
-- (void)_showSearchPopoverShowingToolbarIfNeededFromBarButtonItem:(id)a3 text:(id)a4;
+- (void)_showSearchPopoverFromSourceItem:(id)item withText:(id)text;
+- (void)_showSearchPopoverShowingToolbarIfNeededFromBarButtonItem:(id)item text:(id)text;
 - (void)_teardown;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
-- (void)_updateAppearanceFromLightLevelController:(id)a3;
-- (void)_updateBuyButtonForDarkTheme:(BOOL)a3;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
+- (void)_updateAppearanceFromLightLevelController:(id)controller;
+- (void)_updateBuyButtonForDarkTheme:(BOOL)theme;
 - (void)_updateCloseButtonItem;
 - (void)addRemoveBookmarkCurrentPage;
-- (void)appearanceViewController:(id)a3 brightnessLevelDidChange:(float)a4;
-- (void)applyAppearanceStyle:(int64_t)a3;
-- (void)assetViewControllerDidOpenAnimated:(BOOL)a3;
+- (void)appearanceViewController:(id)controller brightnessLevelDidChange:(float)change;
+- (void)applyAppearanceStyle:(int64_t)style;
+- (void)assetViewControllerDidOpenAnimated:(BOOL)animated;
 - (void)assetViewControllerPrepareForReload;
 - (void)assetViewControllerReadyToAnswerReadingStatisticsQueries;
 - (void)assetViewControllerUpdateToolbars;
@@ -176,76 +176,76 @@
 - (void)bc_analyticsVisibilityDidAppear;
 - (void)bc_analyticsVisibilityWillDisappear;
 - (void)bookOpenTransitionDidEnd;
-- (void)bookView:(id)a3 didMoveToWindow:(id)a4;
-- (void)books_showGlossary:(id)a3;
-- (void)books_showHighlightsAndNotes:(id)a3;
-- (void)books_showStudyCards:(id)a3;
-- (void)books_showTableOfContents:(id)a3;
+- (void)bookView:(id)view didMoveToWindow:(id)window;
+- (void)books_showGlossary:(id)glossary;
+- (void)books_showHighlightsAndNotes:(id)notes;
+- (void)books_showStudyCards:(id)cards;
+- (void)books_showTableOfContents:(id)contents;
 - (void)buildHoverRegions;
 - (void)cancelPreloadOfContentNodes;
-- (void)chapterBrowserController:(id)a3 cancelledTransitionToPageIndex:(unint64_t)a4 chapterIndex:(unint64_t)a5;
-- (void)chapterBrowserController:(id)a3 didTransitionToPageIndex:(unint64_t)a4 chapterIndex:(unint64_t)a5 relativeTargetRect:(CGRect)a6;
-- (void)chapterBrowserController:(id)a3 willTransitionToPageIndex:(unint64_t)a4 chapterIndex:(unint64_t)a5 freeTransform:(BOOL)a6;
-- (void)close:(BOOL)a3;
+- (void)chapterBrowserController:(id)controller cancelledTransitionToPageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex;
+- (void)chapterBrowserController:(id)controller didTransitionToPageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex relativeTargetRect:(CGRect)rect;
+- (void)chapterBrowserController:(id)controller willTransitionToPageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex freeTransform:(BOOL)transform;
+- (void)close:(BOOL)close;
 - (void)closeDocument;
-- (void)closeDocumentWithErrorBlock:(id)a3;
-- (void)closeDocumentWithReadLock:(id)a3;
-- (void)coordinator:(id)a3 observer:(id)a4 didChangeLayout:(unint64_t)a5;
-- (void)coordinator:(id)a3 observer:(id)a4 didChangeStyle:(unint64_t)a5;
-- (void)coordinator:(id)a3 observerDidDecreaseFontSize:(id)a4;
-- (void)coordinator:(id)a3 observerDidIncreaseFontSize:(id)a4;
+- (void)closeDocumentWithErrorBlock:(id)block;
+- (void)closeDocumentWithReadLock:(id)lock;
+- (void)coordinator:(id)coordinator observer:(id)observer didChangeLayout:(unint64_t)layout;
+- (void)coordinator:(id)coordinator observer:(id)observer didChangeStyle:(unint64_t)style;
+- (void)coordinator:(id)coordinator observerDidDecreaseFontSize:(id)size;
+- (void)coordinator:(id)coordinator observerDidIncreaseFontSize:(id)size;
 - (void)dealloc;
-- (void)decreaseFontSize:(id)a3;
-- (void)didJumpToPageLocation:(id)a3;
-- (void)didLoadBook:(id)a3;
+- (void)decreaseFontSize:(id)size;
+- (void)didJumpToPageLocation:(id)location;
+- (void)didLoadBook:(id)book;
 - (void)didReceiveMemoryWarning;
 - (void)didRevealTOC;
-- (void)didSetNavigationBarHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)didTransitionFromViewController:(id)a3 toTOCViewController:(id)a4;
-- (void)dismissActivePopoverIsTransitioning:(BOOL)a3;
-- (void)dismissBookmarkMenu:(BOOL)a3 completion:(id)a4;
-- (void)dismissDisplaySettings:(BOOL)a3;
-- (void)dismissSearchPopover:(BOOL)a3 completion:(id)a4;
-- (void)dismissSharePopover:(BOOL)a3;
-- (void)dismissTOCGlossaryView:(BOOL)a3 completion:(id)a4;
-- (void)displaySettingsController:(id)a3 didChangeAutoNightMode:(BOOL)a4;
-- (void)displaySettingsController:(id)a3 didChangeStyle:(int64_t)a4;
-- (void)displaySettingsControllerDidChangeFlowMode:(id)a3 notifyingCoordinator:(BOOL)a4;
-- (void)displaySettingsControllerDidChangeFontSize:(id)a3 toFlowSizeScale:(unint64_t)a4;
-- (void)documentViewController:(id)a3 bodyReps:(id)a4 visibleRectIs:(CGRect)a5;
+- (void)didSetNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)didTransitionFromViewController:(id)controller toTOCViewController:(id)viewController;
+- (void)dismissActivePopoverIsTransitioning:(BOOL)transitioning;
+- (void)dismissBookmarkMenu:(BOOL)menu completion:(id)completion;
+- (void)dismissDisplaySettings:(BOOL)settings;
+- (void)dismissSearchPopover:(BOOL)popover completion:(id)completion;
+- (void)dismissSharePopover:(BOOL)popover;
+- (void)dismissTOCGlossaryView:(BOOL)view completion:(id)completion;
+- (void)displaySettingsController:(id)controller didChangeAutoNightMode:(BOOL)mode;
+- (void)displaySettingsController:(id)controller didChangeStyle:(int64_t)style;
+- (void)displaySettingsControllerDidChangeFlowMode:(id)mode notifyingCoordinator:(BOOL)coordinator;
+- (void)displaySettingsControllerDidChangeFontSize:(id)size toFlowSizeScale:(unint64_t)scale;
+- (void)documentViewController:(id)controller bodyReps:(id)reps visibleRectIs:(CGRect)is;
 - (void)emitReadingOrientationChangeEventIfNeeded;
 - (void)endRevealTOC;
-- (void)followAbsolutePageIndex:(unint64_t)a3;
-- (void)hideFullscreenNotesView:(id)a3 andSearchForText:(id)a4 animated:(BOOL)a5 force:(BOOL)a6 completion:(id)a7;
-- (void)hideGlossaryWithDestinationViewController:(id)a3;
-- (void)hideGlossaryWithDestinationViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)hideHUDForVendor:(id)a3;
+- (void)followAbsolutePageIndex:(unint64_t)index;
+- (void)hideFullscreenNotesView:(id)view andSearchForText:(id)text animated:(BOOL)animated force:(BOOL)force completion:(id)completion;
+- (void)hideGlossaryWithDestinationViewController:(id)controller;
+- (void)hideGlossaryWithDestinationViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)hideHUDForVendor:(id)vendor;
 - (void)hideLoadSpinner;
 - (void)hideTOC;
-- (void)hideToolbarAnimated:(BOOL)a3;
-- (void)hoverInteraction:(id)a3 didChangeStateForRegionWithKeys:(id)a4;
-- (void)hoverInteractionDidSettle:(id)a3;
-- (void)increaseFontSize:(id)a3;
+- (void)hideToolbarAnimated:(BOOL)animated;
+- (void)hoverInteraction:(id)interaction didChangeStateForRegionWithKeys:(id)keys;
+- (void)hoverInteractionDidSettle:(id)settle;
+- (void)increaseFontSize:(id)size;
 - (void)introMediaControllerMoviePlayerWillHideControls;
 - (void)introMediaControllerMoviePlayerWillShowControls;
-- (void)loadStudyViewControllerForAnimation:(BOOL)a3;
+- (void)loadStudyViewControllerForAnimation:(BOOL)animation;
 - (void)loadView;
-- (void)navigateFromNotesViewToAnchorInDVC:(id)a3 completion:(id)a4;
-- (void)open:(BOOL)a3;
-- (void)openToLocation:(id)a3 animated:(BOOL)a4;
+- (void)navigateFromNotesViewToAnchorInDVC:(id)c completion:(id)completion;
+- (void)open:(BOOL)open;
+- (void)openToLocation:(id)location animated:(BOOL)animated;
 - (void)p_TOCGlossaryPopoverDidHide;
-- (void)p_addViewControllerInBack:(id)a3 animated:(BOOL)a4;
-- (void)p_addViewControllerInFront:(id)a3 reason:(id)a4;
+- (void)p_addViewControllerInBack:(id)back animated:(BOOL)animated;
+- (void)p_addViewControllerInFront:(id)front reason:(id)reason;
 - (void)p_alertUserAboutAnnotationBehavior;
 - (void)p_alertUserAboutDenyingBookmarkEditing;
 - (void)p_alertUserAboutFontDownload;
 - (void)p_alertUserAboutRetinaUpdate;
-- (void)p_applyAccessibilityLabelForButton:(id)a3 withImageNamed:(id)a4;
+- (void)p_applyAccessibilityLabelForButton:(id)button withImageNamed:(id)named;
 - (void)p_bookContentDidLoad;
-- (void)p_bookViewDidRotateTransitionToSize:(CGSize)a3 withContext:(id)a4;
-- (void)p_bookViewWillAnimateRotationToSize:(CGSize)a3 withContext:(id)a4;
-- (void)p_bookViewWillRotateTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)p_bookViewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)p_bookViewDidRotateTransitionToSize:(CGSize)size withContext:(id)context;
+- (void)p_bookViewWillAnimateRotationToSize:(CGSize)size withContext:(id)context;
+- (void)p_bookViewWillRotateTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)p_bookViewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)p_bookmarkPopoverDidHide;
 - (void)p_buildIntroMediaViewController;
 - (void)p_cancelBookOpen;
@@ -258,121 +258,121 @@
 - (void)p_finishBookLoad;
 - (void)p_finishBookLoadIfReady;
 - (void)p_hideHUDView;
-- (void)p_insertDVCInBackAnimated:(BOOL)a3;
+- (void)p_insertDVCInBackAnimated:(BOOL)animated;
 - (void)p_kickOffIntroMediaIfNecessary;
 - (void)p_loadNavigationOverlay;
 - (void)p_loadTitleLabel;
 - (void)p_loadToolbar;
-- (void)p_navigationHistoryDidChange:(id)a3;
+- (void)p_navigationHistoryDidChange:(id)change;
 - (void)p_openBook;
 - (void)p_placeholderLocationDidChange;
 - (void)p_postponeAlertForRetinaUpdate;
-- (void)p_removeViewController:(id)a3;
+- (void)p_removeViewController:(id)controller;
 - (void)p_savePlaceholder;
 - (void)p_searchDidHide;
-- (void)p_setCenterTitleForNavigationUnit:(id)a3;
+- (void)p_setCenterTitleForNavigationUnit:(id)unit;
 - (void)p_setCenterTitleForTOC;
 - (void)p_setCenterTitleToBookTitle;
-- (void)p_setNavigationOverlayHidden:(BOOL)a3 animated:(BOOL)a4 autoHides:(BOOL)a5;
-- (void)p_setVisibleViewControllerToViewController:(id)a3 reason:(id)a4;
+- (void)p_setNavigationOverlayHidden:(BOOL)hidden animated:(BOOL)animated autoHides:(BOOL)hides;
+- (void)p_setVisibleViewControllerToViewController:(id)controller reason:(id)reason;
 - (void)p_setupCanvasExitTransformController;
 - (void)p_setupDisplaySettingsIfNeeded;
 - (void)p_shareDidHide;
 - (void)p_showBookmarkMenu;
 - (void)p_showDVC;
-- (void)p_showDVCAnimated:(BOOL)a3 withLink:(id)a4;
+- (void)p_showDVCAnimated:(BOOL)animated withLink:(id)link;
 - (void)p_showGlossary;
 - (void)p_syncActionlessBookmarkToolbarButtonFrame;
 - (void)p_unloadGlossaryViewControllerIfHiding;
 - (void)p_unloadStudyViewController;
 - (void)p_updateCanvasWithPendingPageIndexPath;
 - (void)p_updateCenterTitle;
-- (void)p_updateFromTheme:(BOOL)a3;
+- (void)p_updateFromTheme:(BOOL)theme;
 - (void)p_updateTOCForPresentationModeChange;
 - (void)p_updateTOCForUpcomingPresentationModeChange;
-- (void)p_updateTitleLabelToolbarVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)p_updateToolbarButtonStatesWithTraits:(id)a3;
+- (void)p_updateTitleLabelToolbarVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)p_updateToolbarButtonStatesWithTraits:(id)traits;
 - (void)paginationDidComplete;
-- (void)preloadContentNodesForPageRange:(_NSRange)a3 chapterIndex:(unint64_t)a4;
-- (void)prepareForPopoverPresentation:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)preloadContentNodesForPageRange:(_NSRange)range chapterIndex:(unint64_t)index;
+- (void)prepareForPopoverPresentation:(id)presentation;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)putTOCInBack;
-- (void)readingStatisticsCollector:(id)a3 addTOCEntries:(id)a4 ordinal:(int64_t)a5 completion:(id)a6;
-- (void)readingStatisticsCollector:(id)a3 addTextNodeCharacterCounts:(id)a4 ordinal:(int64_t)a5 completion:(id)a6;
-- (void)readingStatisticsCollector:(id)a3 didShowContentWithCFIs:(id)a4;
-- (void)readingStatisticsCollector:(id)a3 willHideContentWithCFIs:(id)a4;
+- (void)readingStatisticsCollector:(id)collector addTOCEntries:(id)entries ordinal:(int64_t)ordinal completion:(id)completion;
+- (void)readingStatisticsCollector:(id)collector addTextNodeCharacterCounts:(id)counts ordinal:(int64_t)ordinal completion:(id)completion;
+- (void)readingStatisticsCollector:(id)collector didShowContentWithCFIs:(id)is;
+- (void)readingStatisticsCollector:(id)collector willHideContentWithCFIs:(id)is;
 - (void)recordCurrentLocationInHistory;
 - (void)recordOutgoingMajorNavigationJump;
-- (void)removeBookmark:(id)a3;
+- (void)removeBookmark:(id)bookmark;
 - (void)removeTOC;
-- (void)requestClose:(BOOL)a3;
-- (void)revealTOCAnimated:(BOOL)a3 duration:(double)a4;
+- (void)requestClose:(BOOL)close;
+- (void)revealTOCAnimated:(BOOL)animated duration:(double)duration;
 - (void)runPreloadOptimizations;
-- (void)searchFinished:(BOOL)a3 completion:(id)a4;
-- (void)setAppearanceStyle:(int64_t)a3;
-- (void)setCenterTitle:(id)a3;
+- (void)searchFinished:(BOOL)finished completion:(id)completion;
+- (void)setAppearanceStyle:(int64_t)style;
+- (void)setCenterTitle:(id)title;
 - (void)setCenterTitleForCurrentNavigationUnit;
-- (void)setCurrentPageBookmarked:(BOOL)a3 forBookmarkMenuPopoverViewController:(id)a4;
-- (void)setPageBookmarked:(BOOL)a3;
-- (void)setPageBookmarked:(BOOL)a3 forDocumentViewController:(id)a4;
-- (void)setPageIndexForProofing:(int64_t)a3;
-- (void)setPerformanceModeBookOpening:(BOOL)a3;
-- (void)setToolbarHiddenFromAccessibility:(BOOL)a3;
-- (void)settingNavigationBarHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setupDVCForTOCController:(id)a3;
-- (void)showBookmarkMenu:(BOOL)a3 fromItem:(id)a4;
-- (void)showBookmarksView:(id)a3;
-- (void)showDisplaySettingsPopover:(id)a3;
-- (void)showFullscreenNotesView:(id)a3 completion:(id)a4;
-- (void)showGlossary:(id)a3;
-- (void)showGlossaryEntry:(id)a3;
-- (void)showGlossaryEntryAtPath:(id)a3;
-- (void)showHUDForVendor:(id)a3;
-- (void)showPageForModelLink:(id)a3 animated:(BOOL)a4;
-- (void)showSharePopover:(id)a3;
-- (void)showStudyCardsForNavigationUnit:(id)a3 useChapterTitle:(id)a4;
+- (void)setCurrentPageBookmarked:(BOOL)bookmarked forBookmarkMenuPopoverViewController:(id)controller;
+- (void)setPageBookmarked:(BOOL)bookmarked;
+- (void)setPageBookmarked:(BOOL)bookmarked forDocumentViewController:(id)controller;
+- (void)setPageIndexForProofing:(int64_t)proofing;
+- (void)setPerformanceModeBookOpening:(BOOL)opening;
+- (void)setToolbarHiddenFromAccessibility:(BOOL)accessibility;
+- (void)settingNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setupDVCForTOCController:(id)controller;
+- (void)showBookmarkMenu:(BOOL)menu fromItem:(id)item;
+- (void)showBookmarksView:(id)view;
+- (void)showDisplaySettingsPopover:(id)popover;
+- (void)showFullscreenNotesView:(id)view completion:(id)completion;
+- (void)showGlossary:(id)glossary;
+- (void)showGlossaryEntry:(id)entry;
+- (void)showGlossaryEntryAtPath:(id)path;
+- (void)showHUDForVendor:(id)vendor;
+- (void)showPageForModelLink:(id)link animated:(BOOL)animated;
+- (void)showSharePopover:(id)popover;
+- (void)showStudyCardsForNavigationUnit:(id)unit useChapterTitle:(id)title;
 - (void)showTOC;
-- (void)showTOCGlossaryPopover:(id)a3;
-- (void)showToolbarAnimated:(BOOL)a3;
-- (void)studyViewControllerIsDone:(id)a3;
-- (void)temporarilySetHUDViewHidden:(BOOL)a3;
-- (void)textForPagesLeftInChapterDidChangeTo:(id)a3;
-- (void)tocIsReadyToPresent:(id)a3;
-- (void)transitionDidFinish:(id)a3;
-- (void)transitionWillBegin:(id)a3;
-- (void)unrevealTOCAnimated:(BOOL)a3 duration:(double)a4;
+- (void)showTOCGlossaryPopover:(id)popover;
+- (void)showToolbarAnimated:(BOOL)animated;
+- (void)studyViewControllerIsDone:(id)done;
+- (void)temporarilySetHUDViewHidden:(BOOL)hidden;
+- (void)textForPagesLeftInChapterDidChangeTo:(id)to;
+- (void)tocIsReadyToPresent:(id)present;
+- (void)transitionDidFinish:(id)finish;
+- (void)transitionWillBegin:(id)begin;
+- (void)unrevealTOCAnimated:(BOOL)animated duration:(double)duration;
 - (void)updateBookmarkButton;
 - (void)updateNavigationAffordances;
 - (void)updatePageNumberWidth;
 - (void)updateViewBackgroundColor;
 - (void)userWillInteractInToolbar;
-- (void)validateCommand:(id)a3;
-- (void)vantageChangeWasCancelledBy:(id)a3 reason:(id)a4;
-- (void)vantageDidChangeBy:(id)a3 reason:(id)a4;
-- (void)vantageWillChangeBy:(id)a3 reason:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)validateCommand:(id)command;
+- (void)vantageChangeWasCancelledBy:(id)by reason:(id)reason;
+- (void)vantageDidChangeBy:(id)by reason:(id)reason;
+- (void)vantageWillChangeBy:(id)by reason:(id)reason;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)viewsAreReadyForOpenAnimation;
 - (void)viewsDidResize;
-- (void)willFollowAnchor:(id)a3 pulse:(BOOL)a4;
-- (void)willJumpToPageLocation:(id)a3;
+- (void)willFollowAnchor:(id)anchor pulse:(BOOL)pulse;
+- (void)willJumpToPageLocation:(id)location;
 - (void)willJumpToTOC;
 - (void)willRevealTOC;
-- (void)willSetNavigationBarHidden:(BOOL)a3 animated:(BOOL)a4;
+- (void)willSetNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated;
 @end
 
 @implementation THBookViewController
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [NSDictionary alloc];
     v3 = [v2 initWithObjectsAndKeys:{&off_49D0F0, qword_5677B8, 0}];
@@ -380,14 +380,14 @@
   }
 }
 
-- (THBookViewController)initWithBookDescription:(id)a3
+- (THBookViewController)initWithBookDescription:(id)description
 {
   v7.receiver = self;
   v7.super_class = THBookViewController;
   v4 = [(THBookViewController *)&v7 init];
   if (v4)
   {
-    v4->mBookDescription = a3;
+    v4->mBookDescription = description;
     v4->mIsCompleteBook = 1;
     [(THBookViewController *)v4 setOpeningAbsolutePageIndexOverride:0x7FFFFFFFFFFFFFFFLL];
     [(THBookViewController *)v4 setTheme:[(THBookViewController *)v4 themeForStyle:[(THBookViewController *)v4 appearanceStyle]]];
@@ -443,9 +443,9 @@
 
 - (BOOL)prefersHomeIndicatorAutoHidden
 {
-  v2 = [(THBookViewController *)self titleLabelNavigationBar];
+  titleLabelNavigationBar = [(THBookViewController *)self titleLabelNavigationBar];
 
-  return [(BCDisplayOnlyNavigationBar *)v2 isHidden];
+  return [(BCDisplayOnlyNavigationBar *)titleLabelNavigationBar isHidden];
 }
 
 - (void)p_cleanupAfterViewUnload
@@ -551,13 +551,13 @@
 
 - (id)documentRoot
 {
-  v2 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentRoot];
-  if (!v2)
+  documentRoot = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentRoot];
+  if (!documentRoot)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  return v2;
+  return documentRoot;
 }
 
 - (THDocumentNavigationModel)navigationModel
@@ -633,38 +633,38 @@
   self->mNotesFullscreenViewController = 0;
 }
 
-- (void)appearanceViewController:(id)a3 brightnessLevelDidChange:(float)a4
+- (void)appearanceViewController:(id)controller brightnessLevelDidChange:(float)change
 {
   v6 = +[BAEventReporter sharedReporter];
-  v7 = [(THBookViewController *)self ba_effectiveAnalyticsTracker];
-  v8 = [(THBookViewController *)self readingSessionData];
-  v9 = [(THBookViewController *)self contentData];
-  LODWORD(v10) = llroundf(a4 * 100.0);
+  ba_effectiveAnalyticsTracker = [(THBookViewController *)self ba_effectiveAnalyticsTracker];
+  readingSessionData = [(THBookViewController *)self readingSessionData];
+  contentData = [(THBookViewController *)self contentData];
+  LODWORD(v10) = llroundf(change * 100.0);
 
-  [v6 emitReadingBrightnessChangeEventWithTracker:v7 readingSessionData:v8 contentData:v9 brightness:v10];
+  [v6 emitReadingBrightnessChangeEventWithTracker:ba_effectiveAnalyticsTracker readingSessionData:readingSessionData contentData:contentData brightness:v10];
 }
 
-- (void)displaySettingsControllerDidChangeFontSize:(id)a3 toFlowSizeScale:(unint64_t)a4
+- (void)displaySettingsControllerDidChangeFontSize:(id)size toFlowSizeScale:(unint64_t)scale
 {
   v6 = +[BAEventReporter sharedReporter];
-  v7 = [(THBookViewController *)self ba_effectiveAnalyticsTracker];
-  v8 = [(THBookViewController *)self readingSessionData];
-  v9 = [(THBookViewController *)self contentData];
-  *&v10 = a4;
-  [v6 emitReadingFontSizeChangeEventWithTracker:v7 readingSessionData:v8 contentData:v9 fontSize:v10];
-  v11 = [(THBookViewController *)self visibleViewController];
-  if (v11 == [(THBookViewController *)self documentViewController])
+  ba_effectiveAnalyticsTracker = [(THBookViewController *)self ba_effectiveAnalyticsTracker];
+  readingSessionData = [(THBookViewController *)self readingSessionData];
+  contentData = [(THBookViewController *)self contentData];
+  *&v10 = scale;
+  [v6 emitReadingFontSizeChangeEventWithTracker:ba_effectiveAnalyticsTracker readingSessionData:readingSessionData contentData:contentData fontSize:v10];
+  visibleViewController = [(THBookViewController *)self visibleViewController];
+  if (visibleViewController == [(THBookViewController *)self documentViewController])
   {
-    v12 = [(THBookViewController *)self documentViewController];
+    documentViewController = [(THBookViewController *)self documentViewController];
 
-    [(THDocumentViewController *)v12 changeFontSize:a4];
+    [(THDocumentViewController *)documentViewController changeFontSize:scale];
   }
 }
 
-- (BOOL)shouldShowFontResizeControls:(id)a3
+- (BOOL)shouldShowFontResizeControls:(id)controls
 {
-  v4 = [(THBookViewController *)self visibleViewController];
-  if (v4 != [(THBookViewController *)self documentViewController])
+  visibleViewController = [(THBookViewController *)self visibleViewController];
+  if (visibleViewController != [(THBookViewController *)self documentViewController])
   {
     return 0;
   }
@@ -677,20 +677,20 @@
   return [(THBookViewController *)self isBookEpub];
 }
 
-- (void)displaySettingsController:(id)a3 didChangeStyle:(int64_t)a4
+- (void)displaySettingsController:(id)controller didChangeStyle:(int64_t)style
 {
   [+[BAEventReporter sharedReporter](BAEventReporter "sharedReporter")];
 
-  [(THBookViewController *)self applyAppearanceStyle:a4];
+  [(THBookViewController *)self applyAppearanceStyle:style];
 }
 
-- (void)displaySettingsController:(id)a3 didChangeAutoNightMode:(BOOL)a4
+- (void)displaySettingsController:(id)controller didChangeAutoNightMode:(BOOL)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   [+[BAEventReporter sharedReporter](BAEventReporter sharedReporter];
   v6 = +[IMTheme isAutoNightModeEnabled];
-  [IMTheme setAutoNightModeEnabled:v4];
-  if (v4)
+  [IMTheme setAutoNightModeEnabled:modeCopy];
+  if (modeCopy)
   {
     if ((v6 & 1) == 0)
     {
@@ -706,29 +706,29 @@
       [(THBookViewController *)self _disableAutoNightMode];
     }
 
-    v7 = [(THBookViewController *)self styleBeforeAutoNight];
+    styleBeforeAutoNight = [(THBookViewController *)self styleBeforeAutoNight];
 
-    [(THBookViewController *)self applyAppearanceStyle:v7];
+    [(THBookViewController *)self applyAppearanceStyle:styleBeforeAutoNight];
   }
 }
 
-- (BOOL)flowModeEnabled:(id)a3
+- (BOOL)flowModeEnabled:(id)enabled
 {
-  v3 = [(THBookViewController *)self documentViewController];
+  documentViewController = [(THBookViewController *)self documentViewController];
 
-  return [(THDocumentViewController *)v3 showFlowModeIfAvailable];
+  return [(THDocumentViewController *)documentViewController showFlowModeIfAvailable];
 }
 
-- (BOOL)autoNightModeEnabled:(id)a3
+- (BOOL)autoNightModeEnabled:(id)enabled
 {
-  v3 = [(THBookViewController *)self isBookEpub];
-  if (v3)
+  isBookEpub = [(THBookViewController *)self isBookEpub];
+  if (isBookEpub)
   {
 
-    LOBYTE(v3) = +[IMTheme isAutoNightModeEnabled];
+    LOBYTE(isBookEpub) = +[IMTheme isAutoNightModeEnabled];
   }
 
-  return v3;
+  return isBookEpub;
 }
 
 - (void)_enableAutoNightMode
@@ -756,12 +756,12 @@
   [(BCLightLevelController *)v3 removeObserver:self];
 }
 
-- (void)_updateAppearanceFromLightLevelController:(id)a3
+- (void)_updateAppearanceFromLightLevelController:(id)controller
 {
-  if (-[THBookViewController isBookEpub](self, "isBookEpub") && +[IMTheme isAutoNightModeEnabled](IMTheme, "isAutoNightModeEnabled") && [a3 shouldMonitorLightLevel])
+  if (-[THBookViewController isBookEpub](self, "isBookEpub") && +[IMTheme isAutoNightModeEnabled](IMTheme, "isAutoNightModeEnabled") && [controller shouldMonitorLightLevel])
   {
     styleBeforeAutoNight = self->_styleBeforeAutoNight;
-    if ([a3 currentLightLevel] == &dword_0 + 2)
+    if ([controller currentLightLevel] == &dword_0 + 2)
     {
       v6 = 3;
     }
@@ -775,15 +775,15 @@
   }
 }
 
-- (void)displaySettingsControllerDidChangeFlowMode:(id)a3 notifyingCoordinator:(BOOL)a4
+- (void)displaySettingsControllerDidChangeFlowMode:(id)mode notifyingCoordinator:(BOOL)coordinator
 {
-  v4 = a4;
+  coordinatorCopy = coordinator;
   [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] configuration] invalidate];
   [(THDocumentViewController *)[(THBookViewController *)self documentViewController] toggleFlowPresentation];
   [(THBookViewController *)self p_updateFromTheme:0];
   v6 = +[NSNotificationCenter defaultCenter];
   [(NSNotificationCenter *)v6 postNotificationName:THScrollingViewDidChangeNotification object:0];
-  if (v4)
+  if (coordinatorCopy)
   {
     if ([(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] configuration] isScroll])
     {
@@ -801,19 +801,19 @@
   }
 }
 
-- (BOOL)p_isTOCViewController:(id)a3
+- (BOOL)p_isTOCViewController:(id)controller
 {
-  if (!a3)
+  if (!controller)
   {
     return 0;
   }
 
-  if (self->mFlowTocViewController == a3 || self->mChapterBrowserController == a3)
+  if (self->mFlowTocViewController == controller || self->mChapterBrowserController == controller)
   {
     return 1;
   }
 
-  return self->mFlowToCTableViewController == a3;
+  return self->mFlowToCTableViewController == controller;
 }
 
 - (void)loadView
@@ -893,9 +893,9 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] setNavigationBarHidden:[(THBookViewController *)self shouldAutohideNavigationBar] animated:0];
   [+[BCThemeCoordinator shared](BCThemeCoordinator "shared")];
   if (![(THBookViewController *)self bc_contextualPresentedViewController]&& +[IMTheme isAutoNightModeEnabled])
@@ -915,39 +915,39 @@
 
   v5.receiver = self;
   v5.super_class = THBookViewController;
-  [(THBookViewController *)&v5 viewWillAppear:v3];
+  [(THBookViewController *)&v5 viewWillAppear:appearCopy];
   if (self->mHaveCalledDidOpen)
   {
     [(THBookViewController *)self viewsAreReadyForOpenAnimation];
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = THBookViewController;
-  [(THBookViewController *)&v6 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  if (a3)
+  [(THBookViewController *)&v6 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  if (window)
   {
     [(THBookViewController *)self _updateCloseButtonItem];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = THBookViewController;
-  [(THBookViewController *)&v4 viewWillDisappear:a3];
+  [(THBookViewController *)&v4 viewWillDisappear:disappear];
   [+[BCThemeCoordinator shared](BCThemeCoordinator "shared")];
   [(THBookViewController *)self bc_analyticsVisibilitySubtreeWillDisappear];
   [+[NSNotificationCenter defaultCenter](NSNotificationCenter postNotificationName:"postNotificationName:object:" object:@"kTHPPT_bookControllerChange", 0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = THBookViewController;
-  [(THBookViewController *)&v4 viewDidDisappear:a3];
+  [(THBookViewController *)&v4 viewDidDisappear:disappear];
   [(THBookViewController *)self bc_analyticsVisibilitySubtreeDidDisappear];
   if (![(THBookViewController *)self presentedViewController])
   {
@@ -960,11 +960,11 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = THBookViewController;
-  [(THBookViewController *)&v5 viewDidAppear:a3];
+  [(THBookViewController *)&v5 viewDidAppear:appear];
   [(THBookViewController *)self bc_analyticsVisibilityUpdateSubtree];
   [objc_msgSend(-[THBookViewController view](self "view")];
   [(THBookViewController *)self p_updateCenterTitle];
@@ -977,17 +977,17 @@
   [+[NSNotificationCenter defaultCenter](NSNotificationCenter postNotificationName:"postNotificationName:object:" object:@"kTHPPT_bookControllerChange", self];
 }
 
-- (void)p_updateTitleLabelToolbarVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)p_updateTitleLabelToolbarVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3 && [-[THBookViewController currentPresentationType](self "currentPresentationType")])
+  animatedCopy = animated;
+  if (visible && [-[THBookViewController currentPresentationType](self "currentPresentationType")])
   {
     [-[THBookViewController view](self "view")];
     [(BCDisplayOnlyNavigationBar *)[(THBookViewController *)self titleLabelNavigationBar] setLeftItems:&__NSArray0__struct rightItems:&__NSArray0__struct titleView:[(THBookViewController *)self titleLabel] animated:0];
     [(UILabel *)[(THBookViewController *)self titleLabel] sizeToFit];
     [-[THBookViewController view](self "view")];
     [(THBookViewController *)self p_syncActionlessBookmarkToolbarButtonFrame];
-    if (!v4)
+    if (!animatedCopy)
     {
       [(BCDisplayOnlyNavigationBar *)[(THBookViewController *)self titleLabelNavigationBar] setAlpha:1.0];
       [(BCDisplayOnlyNavigationBar *)[(THBookViewController *)self titleLabelNavigationBar] setHidden:0];
@@ -998,19 +998,19 @@
     v24 = 3221225472;
     v25 = sub_7F4DC;
     v26 = &unk_45AE00;
-    v27 = self;
+    selfCopy = self;
     v18 = _NSConcreteStackBlock;
     v19 = 3221225472;
     v20 = sub_7F50C;
     v21 = &unk_45B188;
-    v22 = self;
+    selfCopy2 = self;
     v6 = &v23;
     v7 = &v18;
   }
 
   else
   {
-    if (!v4)
+    if (!animatedCopy)
     {
       [(BCDisplayOnlyNavigationBar *)[(THBookViewController *)self titleLabelNavigationBar] setLeftItems:&__NSArray0__struct rightItems:&__NSArray0__struct titleView:0 animated:0];
       [(BCDisplayOnlyNavigationBar *)[(THBookViewController *)self titleLabelNavigationBar] setAlpha:0.0];
@@ -1023,17 +1023,17 @@
     v14 = 3221225472;
     v15 = sub_7F53C;
     v16 = &unk_45AE00;
-    v17 = self;
+    selfCopy3 = self;
     v8 = _NSConcreteStackBlock;
     v9 = 3221225472;
     v10 = sub_7F588;
     v11 = &unk_45B188;
-    v12 = self;
+    selfCopy4 = self;
     v6 = &v13;
     v7 = &v8;
   }
 
-  [UIView animateWithDuration:v6 animations:v7 completion:0.15, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27];
+  [UIView animateWithDuration:v6 animations:v7 completion:0.15, v8, v9, v10, v11, selfCopy4, v13, v14, v15, v16, selfCopy3, v18, v19, v20, v21, selfCopy2, v23, v24, v25, v26, selfCopy];
 LABEL_10:
   [(THBookViewController *)self setNeedsUpdateOfHomeIndicatorAutoHidden];
 }
@@ -1048,17 +1048,17 @@ LABEL_10:
     v4 = -v5;
   }
 
-  v6 = [(THBookViewController *)self titleLabelNavigationBarTopConstraint];
+  titleLabelNavigationBarTopConstraint = [(THBookViewController *)self titleLabelNavigationBarTopConstraint];
 
-  [(NSLayoutConstraint *)v6 setConstant:v4];
+  [(NSLayoutConstraint *)titleLabelNavigationBarTopConstraint setConstant:v4];
 }
 
 - (void)viewWillLayoutSubviews
 {
   [(THBookViewController *)self _adjustTitleLabelTopConstraint];
-  v3 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] configuration];
+  configuration = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] configuration];
 
-  [(THDocumentReflowableLayoutConfiguration *)v3 invalidate];
+  [(THDocumentReflowableLayoutConfiguration *)configuration invalidate];
 }
 
 - (void)viewDidLayoutSubviews
@@ -1108,16 +1108,16 @@ LABEL_14:
 
 - (void)p_syncActionlessBookmarkToolbarButtonFrame
 {
-  v3 = [(THBookViewController *)self view];
+  view = [(THBookViewController *)self view];
   [(UIButton *)[(THBookViewController *)self bookmarkButton] frame];
-  [v3 convertRect:-[UIButton superview](-[THBookViewController bookmarkButton](self fromView:{"bookmarkButton"), "superview"), v4, v5, v6, v7}];
+  [view convertRect:-[UIButton superview](-[THBookViewController bookmarkButton](self fromView:{"bookmarkButton"), "superview"), v4, v5, v6, v7}];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(THBookViewController *)self actionlessBookmarkButton];
+  actionlessBookmarkButton = [(THBookViewController *)self actionlessBookmarkButton];
 
-  [(UIButton *)v16 setFrame:v9, v11, v13, v15];
+  [(UIButton *)actionlessBookmarkButton setFrame:v9, v11, v13, v15];
 }
 
 - (int64_t)overrideUserInterfaceStyle
@@ -1139,9 +1139,9 @@ LABEL_14:
   return result;
 }
 
-- (void)p_bookViewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)p_bookViewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v5 = [(THBookViewController *)self visibleViewController:a4];
+  v5 = [(THBookViewController *)self visibleViewController:coordinator];
   if (v5 == [(THBookViewController *)self documentViewController]&& [(THBookViewController *)self tocViewControllerMayBeShrouded:[(THBookViewController *)self p_selectedTocViewController]])
   {
     mChapterBrowserController = self->mChapterBrowserController;
@@ -1150,9 +1150,9 @@ LABEL_14:
   }
 }
 
-- (void)p_bookViewWillRotateTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)p_bookViewWillRotateTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v5 = [(THBookViewController *)self visibleViewController:a4];
+  v5 = [(THBookViewController *)self visibleViewController:coordinator];
   if (v5 == [(THBookViewController *)self documentViewController]&& [(THBookViewController *)self tocViewControllerMayBeShrouded:[(THBookViewController *)self p_selectedTocViewController]])
   {
     [(THTOCViewController *)self->mChapterBrowserController setShrouded:1 animated:0 duration:0.0];
@@ -1165,16 +1165,16 @@ LABEL_14:
   [(NSNotificationCenter *)v6 postNotificationName:v7 object:self userInfo:v8];
 }
 
-- (void)p_bookViewWillAnimateRotationToSize:(CGSize)a3 withContext:(id)a4
+- (void)p_bookViewWillAnimateRotationToSize:(CGSize)size withContext:(id)context
 {
-  [(THBookViewController *)self temporarilySetHUDViewHidden:1, a3.width, a3.height];
+  [(THBookViewController *)self temporarilySetHUDViewHidden:1, size.width, size.height];
 
   [(THBookViewController *)self updateBookmarkButton];
 }
 
-- (void)p_bookViewDidRotateTransitionToSize:(CGSize)a3 withContext:(id)a4
+- (void)p_bookViewDidRotateTransitionToSize:(CGSize)size withContext:(id)context
 {
-  v5 = [(THBookViewController *)self visibleViewController:a4];
+  v5 = [(THBookViewController *)self visibleViewController:context];
   if (v5 == [(THBookViewController *)self documentViewController]&& [(THBookViewController *)self tocViewControllerMayBeShrouded:[(THBookViewController *)self p_selectedTocViewController]])
   {
     [(THTOCViewController *)self->mChapterBrowserController setShrouded:1 animated:0 duration:0.0];
@@ -1187,23 +1187,23 @@ LABEL_14:
   [(NSNotificationCenter *)v6 postNotificationName:v7 object:self userInfo:v8];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(AEAssetViewControllerDelegate *)[(THBookViewController *)self assetViewControllerDelegate] inLiveResize])
   {
     v18.receiver = self;
     v18.super_class = THBookViewController;
-    [(THBookViewController *)&v18 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+    [(THBookViewController *)&v18 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   }
 
   else
   {
     [(THBookViewController *)self dismissActivePopoverIsTransitioning:1];
-    if (a4)
+    if (coordinator)
     {
-      [a4 targetTransform];
+      [coordinator targetTransform];
     }
 
     else
@@ -1215,12 +1215,12 @@ LABEL_14:
     v9 = !IsIdentity;
     if (IsIdentity)
     {
-      [(THBookViewController *)self p_bookViewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+      [(THBookViewController *)self p_bookViewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
     }
 
     else
     {
-      [(THBookViewController *)self p_bookViewWillRotateTransitionToSize:a4 withTransitionCoordinator:width, height];
+      [(THBookViewController *)self p_bookViewWillRotateTransitionToSize:coordinator withTransitionCoordinator:width, height];
     }
 
     v17.a = 0.0;
@@ -1245,13 +1245,13 @@ LABEL_14:
     v14 = v9;
     *&v13[6] = width;
     *&v13[7] = height;
-    v10 = [a4 animateAlongsideTransition:v15 completion:v13];
+    v10 = [coordinator animateAlongsideTransition:v15 completion:v13];
     *(*&v17.b + 24) = v10;
     v12.receiver = self;
     v12.super_class = THBookViewController;
-    [(THBookViewController *)&v12 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
-    v11 = [(THBookViewController *)self visibleViewController];
-    if (v11 != [(THBookViewController *)self documentViewController])
+    [(THBookViewController *)&v12 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
+    visibleViewController = [(THBookViewController *)self visibleViewController];
+    if (visibleViewController != [(THBookViewController *)self documentViewController])
     {
       [(THDocumentViewController *)[(THBookViewController *)self documentViewController] updateTwoUpForSize:width, height];
     }
@@ -1260,26 +1260,26 @@ LABEL_14:
   }
 }
 
-- (void)p_updateToolbarButtonStatesWithTraits:(id)a3
+- (void)p_updateToolbarButtonStatesWithTraits:(id)traits
 {
-  v5 = [(THBookViewController *)self im_isCompactWidth];
-  if (a3)
+  im_isCompactWidth = [(THBookViewController *)self im_isCompactWidth];
+  if (traits)
   {
-    v6 = [a3 horizontalSizeClass] == &dword_0 + 1;
+    v6 = [traits horizontalSizeClass] == &dword_0 + 1;
   }
 
   else
   {
-    v6 = v5;
+    v6 = im_isCompactWidth;
   }
 
   [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] setLeftItems:[(THBookViewController *)self leftToolbarItems:v6] rightItems:[(THBookViewController *)self rightToolbarItems:v6]];
   if ([(THBookViewController *)self p_showBuyButton])
   {
-    v7 = [(THBookViewController *)self buyButtonItem];
-    if (v7)
+    buyButtonItem = [(THBookViewController *)self buyButtonItem];
+    if (buyButtonItem)
     {
-      v11 = v7;
+      v11 = buyButtonItem;
       -[BCNavigationBar setPinnedTrailingGroup:](-[THNavigationBarController navigationBar](-[THBookViewController navigationBarController](self, "navigationBarController"), "navigationBar"), "setPinnedTrailingGroup:", [[UIBarButtonItemGroup alloc] initWithBarButtonItems:+[NSArray arrayWithObjects:count:](NSArray representativeItem:{"arrayWithObjects:count:", &v11, 1), 0}]);
     }
   }
@@ -1290,31 +1290,31 @@ LABEL_14:
   [(UIBarButtonItem *)[(THBookViewController *)self tocGlossaryButtonItem] setEnabled:v9];
   if ([(THBookViewController *)self isBookEpub])
   {
-    v10 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] isDocumentLoaded];
+    isDocumentLoaded = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] isDocumentLoaded];
   }
 
   else
   {
-    v10 = &dword_0 + 1;
+    isDocumentLoaded = &dword_0 + 1;
   }
 
-  [(UIBarButtonItem *)[(THBookViewController *)self searchButtonItem] setEnabled:v10];
+  [(UIBarButtonItem *)[(THBookViewController *)self searchButtonItem] setEnabled:isDocumentLoaded];
   [(THBookViewController *)self p_updateCenterTitle];
 }
 
-- (void)p_updateFromTheme:(BOOL)a3
+- (void)p_updateFromTheme:(BOOL)theme
 {
-  v3 = a3;
-  v5 = [(THBookViewController *)self theme];
-  [(THNavigationOverlayView *)[(THBookViewController *)self navigationOverlayView] setTheme:v5 force:v3];
+  themeCopy = theme;
+  theme = [(THBookViewController *)self theme];
+  [(THNavigationOverlayView *)[(THBookViewController *)self navigationOverlayView] setTheme:theme force:themeCopy];
   [(THBookViewController *)self p_navigationOverlayFrame];
   [(THNavigationOverlayView *)[(THBookViewController *)self navigationOverlayView] setFrame:v6, v7, v8, v9];
   if ([(THBookViewController *)self isBookEpub])
   {
-    [(THTheme *)v5 stylizeOuterView:[(THBookViewController *)self view]];
+    [(THTheme *)theme stylizeOuterView:[(THBookViewController *)self view]];
     [-[THBookViewController view](self "view")];
-    [(THTheme *)v5 stylizeBCNavigationBar:[(THBookViewController *)self titleLabelNavigationBar]];
-    [(UILabel *)[(THBookViewController *)self titleLabel] setTextColor:[(THTheme *)v5 headerTextColorDimmed]];
+    [(THTheme *)theme stylizeBCNavigationBar:[(THBookViewController *)self titleLabelNavigationBar]];
+    [(UILabel *)[(THBookViewController *)self titleLabel] setTextColor:[(THTheme *)theme headerTextColorDimmed]];
     [(THNotesViewController *)self->mNotesFullscreenViewController setTheme:[(THBookViewController *)self theme]];
     [(THTOCGlossaryMenuPopoverViewController *)[(THBookViewController *)self TOCGlossaryViewController] setTheme:[(THBookViewController *)self theme]];
     [(THBookViewController *)self _updateBuyButtonForDarkTheme:[(THTheme *)[(THBookViewController *)self theme] isNight:self]];
@@ -1327,53 +1327,53 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] setCenterItemTextColor:[(THTheme *)v5 headerTextColor]];
+      [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] setCenterItemTextColor:[(THTheme *)theme headerTextColor]];
     }
   }
 
   [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] clearAutohideTimer];
-  v10 = [(THBookViewController *)self visibleViewController];
-  if (v10 == [(THBookViewController *)self documentViewController]&& [(THBookViewController *)self isBookEpub])
+  visibleViewController = [(THBookViewController *)self visibleViewController];
+  if (visibleViewController == [(THBookViewController *)self documentViewController]&& [(THBookViewController *)self isBookEpub])
   {
     [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] configuration] chromeAnimationInterval];
     [(THNavigationOverlayView *)[(THBookViewController *)self navigationOverlayView] setShowHideAnimationDuration:v11];
     [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] configuration] chromeAnimationInterval];
     [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] setShowHideDuration:v12];
-    v13 = [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] configuration] toolbarSeparatorsVisible];
+    toolbarSeparatorsVisible = [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] configuration] toolbarSeparatorsVisible];
   }
 
   else
   {
     [(THNavigationOverlayView *)[(THBookViewController *)self navigationOverlayView] setShowHideAnimationDuration:0.15];
     [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] setShowHideDuration:0.15];
-    v13 = 0;
+    toolbarSeparatorsVisible = 0;
   }
 
-  [(THDocumentViewController *)[(THBookViewController *)self documentViewController] updateForTheme:v5];
+  [(THDocumentViewController *)[(THBookViewController *)self documentViewController] updateForTheme:theme];
   if ([(THBookViewController *)self isBookEpub])
   {
-    [(THFlowTOCViewController *)self->mFlowTocViewController setTheme:v5];
-    [(THiOSFlowToCTableViewController *)self->mFlowToCTableViewController setTheme:v5];
-    [(THNotesViewController *)self->mNotesFullscreenViewController setTheme:v5];
-    [(THSearchViewController *)[(THBookViewController *)self searchViewController] setTheme:v5];
-    [(THBookmarkMenuPopoverViewController *)[(THBookViewController *)self bookmarkViewController] setTheme:v5];
+    [(THFlowTOCViewController *)self->mFlowTocViewController setTheme:theme];
+    [(THiOSFlowToCTableViewController *)self->mFlowToCTableViewController setTheme:theme];
+    [(THNotesViewController *)self->mNotesFullscreenViewController setTheme:theme];
+    [(THSearchViewController *)[(THBookViewController *)self searchViewController] setTheme:theme];
+    [(THBookmarkMenuPopoverViewController *)[(THBookViewController *)self bookmarkViewController] setTheme:theme];
   }
 
-  [(THDisplaySettingsViewController *)[(THBookViewController *)self displaySettingsViewController] setTheme:v5];
-  [(THNavigationOverlayView *)[(THBookViewController *)self navigationOverlayView] setSeparatorsVisible:v13];
-  [(BCNavigationBar *)[(THNavigationBarController *)[(THBookViewController *)self navigationBarController] navigationBar] setSeparatorsVisible:v13];
-  v14 = [(THBookViewController *)self titleLabelNavigationBar];
+  [(THDisplaySettingsViewController *)[(THBookViewController *)self displaySettingsViewController] setTheme:theme];
+  [(THNavigationOverlayView *)[(THBookViewController *)self navigationOverlayView] setSeparatorsVisible:toolbarSeparatorsVisible];
+  [(BCNavigationBar *)[(THNavigationBarController *)[(THBookViewController *)self navigationBarController] navigationBar] setSeparatorsVisible:toolbarSeparatorsVisible];
+  titleLabelNavigationBar = [(THBookViewController *)self titleLabelNavigationBar];
 
-  [(BCDisplayOnlyNavigationBar *)v14 setSeparatorsVisible:v13];
+  [(BCDisplayOnlyNavigationBar *)titleLabelNavigationBar setSeparatorsVisible:toolbarSeparatorsVisible];
 }
 
-- (void)_updateBuyButtonForDarkTheme:(BOOL)a3
+- (void)_updateBuyButtonForDarkTheme:(BOOL)theme
 {
-  v3 = a3;
-  v5 = [(THBookViewController *)self assetViewControllerDelegate];
-  v6 = [(THBookViewController *)self buyButtonItem];
+  themeCopy = theme;
+  assetViewControllerDelegate = [(THBookViewController *)self assetViewControllerDelegate];
+  buyButtonItem = [(THBookViewController *)self buyButtonItem];
 
-  [(AEAssetViewControllerDelegate *)v5 assetViewController:self updateBuyButton:v6 setIsDark:v3];
+  [(AEAssetViewControllerDelegate *)assetViewControllerDelegate assetViewController:self updateBuyButton:buyButtonItem setIsDark:themeCopy];
 }
 
 - (BOOL)disableRotationEdgeClip
@@ -1384,9 +1384,9 @@ LABEL_14:
     return 0;
   }
 
-  v3 = [(THBookViewController *)self visibleViewController];
+  visibleViewController = [(THBookViewController *)self visibleViewController];
 
-  return [(UIViewController *)v3 disableRotationEdgeClip];
+  return [(UIViewController *)visibleViewController disableRotationEdgeClip];
 }
 
 - (id)keyCommands
@@ -1417,71 +1417,71 @@ LABEL_14:
   return v3;
 }
 
-- (void)_adjustSizeIncreasing:(BOOL)a3
+- (void)_adjustSizeIncreasing:(BOOL)increasing
 {
-  v5 = [(THBookViewController *)self displaySettingsViewController];
-  if (!v5)
+  displaySettingsViewController = [(THBookViewController *)self displaySettingsViewController];
+  if (!displaySettingsViewController)
   {
-    v5 = [[THDisplaySettingsViewController alloc] initWithNibName:0 bundle:0];
+    displaySettingsViewController = [[THDisplaySettingsViewController alloc] initWithNibName:0 bundle:0];
   }
 
   [(THBookViewController *)self visibleViewController];
-  [(THDisplaySettingsViewController *)v5 setDelegate:TSUProtocolCast()];
-  [(THDisplaySettingsViewController *)v5 setTheme:[(THBookViewController *)self theme]];
-  if (a3)
+  [(THDisplaySettingsViewController *)displaySettingsViewController setDelegate:TSUProtocolCast()];
+  [(THDisplaySettingsViewController *)displaySettingsViewController setTheme:[(THBookViewController *)self theme]];
+  if (increasing)
   {
 
-    [(THDisplaySettingsViewController *)v5 increaseFontSize:self];
+    [(THDisplaySettingsViewController *)displaySettingsViewController increaseFontSize:self];
   }
 
   else
   {
 
-    [(THDisplaySettingsViewController *)v5 decreaseFontSize:self];
+    [(THDisplaySettingsViewController *)displaySettingsViewController decreaseFontSize:self];
   }
 }
 
-- (void)p_insertDVCInBackAnimated:(BOOL)a3
+- (void)p_insertDVCInBackAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(THBookViewController *)self documentViewController];
+  animatedCopy = animated;
+  documentViewController = [(THBookViewController *)self documentViewController];
 
-  [(THBookViewController *)self p_addViewControllerInBack:v5 animated:v3];
+  [(THBookViewController *)self p_addViewControllerInBack:documentViewController animated:animatedCopy];
 }
 
 - (void)p_showDVC
 {
-  v3 = [(THBookViewController *)self visibleViewController];
-  if (v3 != [(THBookViewController *)self documentViewController])
+  visibleViewController = [(THBookViewController *)self visibleViewController];
+  if (visibleViewController != [(THBookViewController *)self documentViewController])
   {
     [(THBookViewController *)self p_addViewControllerInFront:[(THBookViewController *)self documentViewController] reason:@"THVantageChangeReasonTransitionToDVC"];
     [(THFlowTOCViewController *)[(THBookViewController *)self flowTocViewController] setReflowablePaginationController:[(THDocumentViewController *)[(THBookViewController *)self documentViewController] reflowablePaginationController]];
     [(THBookViewController *)self p_setupCanvasExitTransformController];
     [-[THBookViewController p_selectedTocViewController](self "p_selectedTocViewController")];
     [(THBookViewController *)self removeTOC];
-    v4 = [(THBookViewController *)self documentViewController];
+    documentViewController = [(THBookViewController *)self documentViewController];
 
-    [(THDocumentViewController *)v4 setVisibleInfoUpdatesAllowedInLandscape:1];
+    [(THDocumentViewController *)documentViewController setVisibleInfoUpdatesAllowedInLandscape:1];
   }
 }
 
-- (void)p_showDVCAnimated:(BOOL)a3 withLink:(id)a4
+- (void)p_showDVCAnimated:(BOOL)animated withLink:(id)link
 {
-  v4 = a4;
-  v5 = a3;
-  if (!a4)
+  linkCopy = link;
+  animatedCopy = animated;
+  if (!link)
   {
     if ([(THDocumentViewController *)[(THBookViewController *)self documentViewController] isDocumentLoaded]&& [(THDocumentNavigator *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentNavigator] currentContentNode])
     {
-      v4 = 0;
+      linkCopy = 0;
 LABEL_9:
       v8 = 0;
       v7 = 1;
       goto LABEL_10;
     }
 
-    v4 = [-[THBookViewController documentRoot](self "documentRoot")];
-    if (!v4)
+    linkCopy = [-[THBookViewController documentRoot](self "documentRoot")];
+    if (!linkCopy)
     {
       goto LABEL_9;
     }
@@ -1489,7 +1489,7 @@ LABEL_9:
 
   if ([(THDocumentViewController *)[(THBookViewController *)self documentViewController] isDocumentLoaded])
   {
-    [(THDocumentViewController *)[(THBookViewController *)self documentViewController] followLink:v4];
+    [(THDocumentViewController *)[(THBookViewController *)self documentViewController] followLink:linkCopy];
     v7 = 0;
     v8 = 1;
   }
@@ -1501,16 +1501,16 @@ LABEL_9:
   }
 
 LABEL_10:
-  v9 = [(THBookViewController *)self visibleViewController];
-  if (v9 != [(THBookViewController *)self documentViewController])
+  visibleViewController = [(THBookViewController *)self visibleViewController];
+  if (visibleViewController != [(THBookViewController *)self documentViewController])
   {
     [(THBookViewController *)self p_addViewControllerInFront:[(THBookViewController *)self documentViewController] reason:@"THVantageChangeReasonTransitionToDVC"];
     [(THFlowTOCViewController *)[(THBookViewController *)self flowTocViewController] setReflowablePaginationController:[(THDocumentViewController *)[(THBookViewController *)self documentViewController] reflowablePaginationController]];
     [(THDocumentViewController *)[(THBookViewController *)self documentViewController] setVisibleInfoUpdatesAllowedInLandscape:1];
     if (((v7 | v8) & 1) == 0)
     {
-      [(THDocumentViewController *)[(THBookViewController *)self documentViewController] followLink:v4];
-      if (!v5)
+      [(THDocumentViewController *)[(THBookViewController *)self documentViewController] followLink:linkCopy];
+      if (!animatedCopy)
       {
         return;
       }
@@ -1521,14 +1521,14 @@ LABEL_10:
     [(THBookViewController *)self dismissActivePopover];
   }
 
-  if (!v5)
+  if (!animatedCopy)
   {
     return;
   }
 
 LABEL_14:
-  v10 = [(THBookViewController *)self documentViewController];
-  [(THFlowTOCViewController *)self->mFlowTocViewController bottomSeparatorYPositionForChapterIndex:[(THDocumentViewController *)v10 currentChapter] lessonIndex:[(THDocumentViewController *)v10 currentTOCLessonIndex]];
+  documentViewController = [(THBookViewController *)self documentViewController];
+  [(THFlowTOCViewController *)self->mFlowTocViewController bottomSeparatorYPositionForChapterIndex:[(THDocumentViewController *)documentViewController currentChapter] lessonIndex:[(THDocumentViewController *)documentViewController currentTOCLessonIndex]];
   [-[THFlowTOCViewController view](self->mFlowTocViewController "view")];
   v13 = v12;
   [(THBookViewController *)self setDisallowRotate:1];
@@ -1545,7 +1545,7 @@ LABEL_14:
   }
 
   [(THTransitionView *)self->mDocumentToTOCViewTransitionView setFromViewController:mFlowToCTableViewController];
-  [(THTransitionView *)self->mDocumentToTOCViewTransitionView setToViewController:v10];
+  [(THTransitionView *)self->mDocumentToTOCViewTransitionView setToViewController:documentViewController];
   [(THTOCSplitTransitionView *)self->mDocumentToTOCViewTransitionView setAnimationDuration:0.65];
   [-[THBookViewController view](self "view")];
   [(THTOCSplitTransitionView *)self->mDocumentToTOCViewTransitionView beginTransition];
@@ -1553,13 +1553,13 @@ LABEL_14:
   [(THBookViewController *)self vantageDidChangeBy:self reason:@"THVantageChangeReasonTransitionToDVC"];
 }
 
-- (void)p_setVisibleViewControllerToViewController:(id)a3 reason:(id)a4
+- (void)p_setVisibleViewControllerToViewController:(id)controller reason:(id)reason
 {
-  if ([(THBookViewController *)self visibleViewController]!= a3)
+  if ([(THBookViewController *)self visibleViewController]!= controller)
   {
-    [(THBookViewController *)self vantageWillChangeBy:self reason:a4];
-    [(THBookViewController *)self setVisibleViewController:a3];
-    [(THBookViewController *)self vantageDidChangeBy:self reason:a4];
+    [(THBookViewController *)self vantageWillChangeBy:self reason:reason];
+    [(THBookViewController *)self setVisibleViewController:controller];
+    [(THBookViewController *)self vantageDidChangeBy:self reason:reason];
     if ([(THBookViewController *)self isBookEpub])
     {
       v7[0] = _NSConcreteStackBlock;
@@ -1581,15 +1581,15 @@ LABEL_14:
       [(THBookViewController *)self p_setNavigationOverlayHidden:1 animated:1 autoHides:0];
     }
 
-    [(THBookspotHistoryStack *)[(THBookViewController *)self bookspotHistoryStack] setSeekDistinctSpots:[(THBookViewController *)self documentViewController]== a3];
+    [(THBookspotHistoryStack *)[(THBookViewController *)self bookspotHistoryStack] setSeekDistinctSpots:[(THBookViewController *)self documentViewController]== controller];
     [(THBookViewController *)self buildHoverRegions];
     [(THBookViewController *)self setNeedsWhitePointAdaptivityStyleUpdate];
   }
 }
 
-- (void)transitionWillBegin:(id)a3
+- (void)transitionWillBegin:(id)begin
 {
-  if (self->mDocumentToTOCViewTransitionView == a3)
+  if (self->mDocumentToTOCViewTransitionView == begin)
   {
     [-[THDocumentViewController interactiveCanvasController](-[THBookViewController documentViewController](self "documentViewController")];
     [-[THDocumentViewController interactiveCanvasController](-[THBookViewController documentViewController](self "documentViewController")];
@@ -1600,7 +1600,7 @@ LABEL_14:
     +[CATransaction flush];
   }
 
-  else if (self->mTOCToDocumentViewTransitionView == a3)
+  else if (self->mTOCToDocumentViewTransitionView == begin)
   {
     [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] setNavigationBarHidden:1 animated:0];
 
@@ -1608,9 +1608,9 @@ LABEL_14:
   }
 }
 
-- (void)transitionDidFinish:(id)a3
+- (void)transitionDidFinish:(id)finish
 {
-  if (self->mDocumentToTOCViewTransitionView == a3)
+  if (self->mDocumentToTOCViewTransitionView == finish)
   {
     [objc_msgSend(objc_msgSend(-[THDocumentViewController interactiveCanvasController](-[THBookViewController documentViewController](self "documentViewController")];
     [(THBookViewController *)self hideTOC];
@@ -1622,7 +1622,7 @@ LABEL_14:
   else
   {
     mTOCToDocumentViewTransitionView = self->mTOCToDocumentViewTransitionView;
-    if (mTOCToDocumentViewTransitionView == a3)
+    if (mTOCToDocumentViewTransitionView == finish)
     {
       if ([(THTOCSplitTransitionView *)mTOCToDocumentViewTransitionView wasReversed])
       {
@@ -1641,15 +1641,15 @@ LABEL_14:
     }
   }
 
-  [a3 removeFromSuperview];
+  [finish removeFromSuperview];
 
   [(THBookViewController *)self setDisallowRotate:0];
 }
 
 - (void)p_setupCanvasExitTransformController
 {
-  v3 = [(THBookViewController *)self currentPresentationType];
-  if (self->mDocumentViewController && (v4 = v3, ([v3 isFlow] & 1) == 0) && -[THDocumentViewController isDocumentLoaded](self->mDocumentViewController, "isDocumentLoaded") && !-[THBookViewController isBookEpub](self, "isBookEpub"))
+  currentPresentationType = [(THBookViewController *)self currentPresentationType];
+  if (self->mDocumentViewController && (v4 = currentPresentationType, ([currentPresentationType isFlow] & 1) == 0) && -[THDocumentViewController isDocumentLoaded](self->mDocumentViewController, "isDocumentLoaded") && !-[THBookViewController isBookEpub](self, "isBookEpub"))
   {
     if (self->mDocumentViewController && ([v4 isFlow] & 1) == 0 && !self->mCanvasExitTransformDelegate && !self->mCanvasExitTransformController)
     {
@@ -1675,25 +1675,25 @@ LABEL_14:
   }
 }
 
-- (unint64_t)absolutePageIndexForCFI:(id)a3
+- (unint64_t)absolutePageIndexForCFI:(id)i
 {
-  v4 = [(THBookViewController *)self documentRoot];
+  documentRoot = [(THBookViewController *)self documentRoot];
 
-  return [v4 absolutePageIndexForCFI:a3];
+  return [documentRoot absolutePageIndexForCFI:i];
 }
 
-- (id)storageForCFI:(id)a3
+- (id)storageForCFI:(id)i
 {
-  v4 = [(THBookViewController *)self documentRoot];
+  documentRoot = [(THBookViewController *)self documentRoot];
 
-  return [v4 storageForCFI:a3];
+  return [documentRoot storageForCFI:i];
 }
 
-- (void)hideGlossaryWithDestinationViewController:(id)a3
+- (void)hideGlossaryWithDestinationViewController:(id)controller
 {
   v5 = +[UIView areAnimationsEnabled];
 
-  [(THBookViewController *)self hideGlossaryWithDestinationViewController:a3 animated:v5 completion:0];
+  [(THBookViewController *)self hideGlossaryWithDestinationViewController:controller animated:v5 completion:0];
 }
 
 - (void)p_unloadGlossaryViewControllerIfHiding
@@ -1710,17 +1710,17 @@ LABEL_14:
   }
 }
 
-- (void)hideGlossaryWithDestinationViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)hideGlossaryWithDestinationViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  animatedCopy = animated;
   [(THBookViewController *)self setPresentingGlossary:0];
   if (self->mHidingGlossary || ![(THBookViewController *)self isGlossaryVisible])
   {
-    if (a5)
+    if (completion)
     {
-      v9 = *(a5 + 2);
+      v9 = *(completion + 2);
 
-      v9(a5);
+      v9(completion);
     }
   }
 
@@ -1729,14 +1729,14 @@ LABEL_14:
     self->mHidingGlossary = 1;
     [(THBookViewController *)self vantageWillChangeBy:self reason:@"THVantageChangeReasonTransitionFromGlossary"];
     [(THBookViewController *)self hideToolbarAnimated:0];
-    if (!a3 || [(THBookViewController *)self documentViewController]== a3)
+    if (!controller || [(THBookViewController *)self documentViewController]== controller)
     {
       [(THBookViewController *)self p_showDVC];
     }
 
     else
     {
-      [(THBookViewController *)self p_addViewControllerInFront:a3 reason:@"THVantageChangeReasonTransitionFromGlossary"];
+      [(THBookViewController *)self p_addViewControllerInFront:controller reason:@"THVantageChangeReasonTransitionFromGlossary"];
     }
 
     v10[0] = _NSConcreteStackBlock;
@@ -1744,8 +1744,8 @@ LABEL_14:
     v10[2] = sub_812B8;
     v10[3] = &unk_45AEA8;
     v10[4] = self;
-    v10[5] = a5;
-    [(THGlossaryViewController *)[(THBookViewController *)self glossaryViewController] dismissViewControllerAnimated:v6 completion:v10];
+    v10[5] = completion;
+    [(THGlossaryViewController *)[(THBookViewController *)self glossaryViewController] dismissViewControllerAnimated:animatedCopy completion:v10];
     [(THBookViewController *)self vantageDidChangeBy:self reason:@"THVantageChangeReasonTransitionFromGlossary"];
   }
 }
@@ -1762,10 +1762,10 @@ LABEL_14:
     [(THGlossaryViewController *)self->mGlossaryViewController setBookViewController:self];
     [(THGlossaryViewController *)self->mGlossaryViewController setModalPresentationStyle:0];
     [(THGlossaryViewController *)self->mGlossaryViewController setOverrideUserInterfaceStyle:1];
-    v4 = [(THGlossaryViewController *)self->mGlossaryViewController glossaryLinkResolver];
-    v5 = [(THBookViewController *)self bookLinkResolver];
+    glossaryLinkResolver = [(THGlossaryViewController *)self->mGlossaryViewController glossaryLinkResolver];
+    bookLinkResolver = [(THBookViewController *)self bookLinkResolver];
 
-    [(THBookLinkResolver *)v5 setGlossaryLinkResolver:v4];
+    [(THBookLinkResolver *)bookLinkResolver setGlossaryLinkResolver:glossaryLinkResolver];
   }
 }
 
@@ -1779,13 +1779,13 @@ LABEL_14:
   _os_activity_initiate(&dword_0, "Show Glossary", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)showGlossary:(id)a3
+- (void)showGlossary:(id)glossary
 {
   if ([(THBookViewController *)self isGlossaryVisible])
   {
-    v4 = [(THGlossaryViewController *)[(THBookViewController *)self glossaryViewController] originalViewController];
+    originalViewController = [(THGlossaryViewController *)[(THBookViewController *)self glossaryViewController] originalViewController];
 
-    [(THBookViewController *)self hideGlossaryWithDestinationViewController:v4];
+    [(THBookViewController *)self hideGlossaryWithDestinationViewController:originalViewController];
   }
 
   else
@@ -1799,35 +1799,35 @@ LABEL_14:
   }
 }
 
-- (void)showGlossaryEntry:(id)a3
+- (void)showGlossaryEntry:(id)entry
 {
   if (![(THBookViewController *)self isGlossaryVisible])
   {
     [(THBookViewController *)self p_showGlossary];
   }
 
-  v5 = [(THBookViewController *)self glossaryViewController];
+  glossaryViewController = [(THBookViewController *)self glossaryViewController];
 
-  [(THGlossaryViewController *)v5 showEntry:a3];
+  [(THGlossaryViewController *)glossaryViewController showEntry:entry];
 }
 
-- (void)showGlossaryEntryAtPath:(id)a3
+- (void)showGlossaryEntryAtPath:(id)path
 {
   if (![(THBookViewController *)self isGlossaryVisible])
   {
     [(THBookViewController *)self p_showGlossary];
   }
 
-  v5 = [(THBookViewController *)self glossaryViewController];
+  glossaryViewController = [(THBookViewController *)self glossaryViewController];
 
-  [(THGlossaryViewController *)v5 showEntryAtPath:a3];
+  [(THGlossaryViewController *)glossaryViewController showEntryAtPath:path];
 }
 
 - (void)introMediaControllerMoviePlayerWillShowControls
 {
-  v3 = [(THBookViewController *)self visibleViewController];
+  visibleViewController = [(THBookViewController *)self visibleViewController];
   mFlowTocViewController = self->mFlowTocViewController;
-  if (v3 == mFlowTocViewController || (v5 = [(THBookViewController *)self visibleViewController], mFlowTocViewController = self->mChapterBrowserController, v5 == mFlowTocViewController))
+  if (visibleViewController == mFlowTocViewController || (v5 = [(THBookViewController *)self visibleViewController], mFlowTocViewController = self->mChapterBrowserController, v5 == mFlowTocViewController))
   {
 
     [(UIViewController *)mFlowTocViewController introMediaControllerMoviePlayerWillShowControls];
@@ -1836,26 +1836,26 @@ LABEL_14:
 
 - (void)introMediaControllerMoviePlayerWillHideControls
 {
-  v3 = [(THBookViewController *)self visibleViewController];
+  visibleViewController = [(THBookViewController *)self visibleViewController];
   mFlowTocViewController = self->mFlowTocViewController;
-  if (v3 == mFlowTocViewController || (v5 = [(THBookViewController *)self visibleViewController], mFlowTocViewController = self->mChapterBrowserController, v5 == mFlowTocViewController))
+  if (visibleViewController == mFlowTocViewController || (v5 = [(THBookViewController *)self visibleViewController], mFlowTocViewController = self->mChapterBrowserController, v5 == mFlowTocViewController))
   {
 
     [(UIViewController *)mFlowTocViewController introMediaControllerMoviePlayerWillHideControls];
   }
 }
 
-- (id)TOCViewControllerToolbarBackgroundColor:(id)a3
+- (id)TOCViewControllerToolbarBackgroundColor:(id)color
 {
-  v4 = [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] navigationBar];
+  navigationBar = [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] navigationBar];
 
-  return [(THBookViewController *)self backgroundColorForNavigationBar:v4];
+  return [(THBookViewController *)self backgroundColorForNavigationBar:navigationBar];
 }
 
-- (BOOL)p_shouldShowShroudForVisibleSize:(CGSize)a3
+- (BOOL)p_shouldShowShroudForVisibleSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (TSUPhoneUI())
   {
     return 1;
@@ -1880,12 +1880,12 @@ LABEL_14:
   [(THBookViewController *)self setIntroMediaViewController:v3];
 }
 
-- (id)p_selectedTocViewControllerCreateIfNecessary:(BOOL)a3
+- (id)p_selectedTocViewControllerCreateIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   if (([-[THBookViewController currentPresentationType](self "currentPresentationType")] & 1) != 0 || -[THBookViewController isBookEpub](self, "isBookEpub"))
   {
-    if (v3)
+    if (necessaryCopy)
     {
 
       return [(THBookViewController *)self flowTocViewController];
@@ -1895,7 +1895,7 @@ LABEL_14:
     return *(&self->super.super.super.super.isa + v6);
   }
 
-  if (!v3)
+  if (!necessaryCopy)
   {
     v6 = 80;
     return *(&self->super.super.super.super.isa + v6);
@@ -1921,28 +1921,28 @@ LABEL_14:
 
 - (void)p_updateTOCForUpcomingPresentationModeChange
 {
-  v3 = [(THBookViewController *)self p_selectedTocViewController];
+  p_selectedTocViewController = [(THBookViewController *)self p_selectedTocViewController];
 
-  [(THBookViewController *)self p_removeViewController:v3];
+  [(THBookViewController *)self p_removeViewController:p_selectedTocViewController];
 }
 
 - (void)p_updateTOCForPresentationModeChange
 {
   [(THBookViewController *)self p_removeViewController:[(THBookViewController *)self p_unselectedTocViewController]];
-  v3 = [(THBookViewController *)self p_selectedTocViewController];
-  if (![(UIViewController *)v3 introMediaViewController]&& [(THBookViewController *)self introMediaViewController])
+  p_selectedTocViewController = [(THBookViewController *)self p_selectedTocViewController];
+  if (![(UIViewController *)p_selectedTocViewController introMediaViewController]&& [(THBookViewController *)self introMediaViewController])
   {
-    [(UIViewController *)v3 setIntroMediaViewController:[(THBookViewController *)self introMediaViewController] showIt:[(THBookViewController *)self p_introMediaIsUnseenAndSeeable]];
+    [(UIViewController *)p_selectedTocViewController setIntroMediaViewController:[(THBookViewController *)self introMediaViewController] showIt:[(THBookViewController *)self p_introMediaIsUnseenAndSeeable]];
   }
 
-  if ([(THBookViewController *)self shouldKeepTOCInBackground:v3]&& [(THBookViewController *)self visibleViewController]!= v3 && ![[(UIViewController *)v3 view] superview])
+  if ([(THBookViewController *)self shouldKeepTOCInBackground:p_selectedTocViewController]&& [(THBookViewController *)self visibleViewController]!= p_selectedTocViewController && ![[(UIViewController *)p_selectedTocViewController view] superview])
   {
-    [(THBookViewController *)self p_addViewControllerInBack:v3];
-    [(UIViewController *)v3 setShrouded:1 animated:0 duration:0.0];
+    [(THBookViewController *)self p_addViewControllerInBack:p_selectedTocViewController];
+    [(UIViewController *)p_selectedTocViewController setShrouded:1 animated:0 duration:0.0];
   }
 
-  v4 = [(THBookViewController *)self visibleViewController];
-  if (v4 == [(THBookViewController *)self documentViewController])
+  visibleViewController = [(THBookViewController *)self visibleViewController];
+  if (visibleViewController == [(THBookViewController *)self documentViewController])
   {
 
     [(THBookViewController *)self p_setupCanvasExitTransformController];
@@ -1951,18 +1951,18 @@ LABEL_14:
 
 - (void)putTOCInBack
 {
-  v3 = [(THBookViewController *)self p_selectedTocViewController];
+  p_selectedTocViewController = [(THBookViewController *)self p_selectedTocViewController];
 
-  [(THBookViewController *)self p_addViewControllerInBack:v3];
+  [(THBookViewController *)self p_addViewControllerInBack:p_selectedTocViewController];
 }
 
 - (void)showTOC
 {
   [(THBookViewController *)self temporarilySetHUDViewHidden:1];
   [(THBookViewController *)self hideNavigationHistory];
-  v3 = [(THBookViewController *)self p_selectedTocViewController];
-  v4 = [(THBookViewController *)self visibleViewController];
-  if (v4 == [(THBookViewController *)self documentViewController]&& v3 == [(THBookViewController *)self chapterBrowserController])
+  p_selectedTocViewController = [(THBookViewController *)self p_selectedTocViewController];
+  visibleViewController = [(THBookViewController *)self visibleViewController];
+  if (visibleViewController == [(THBookViewController *)self documentViewController]&& p_selectedTocViewController == [(THBookViewController *)self chapterBrowserController])
   {
     [(THDocumentViewController *)self->mDocumentViewController willStartRevealTOC];
     [(THDocumentViewController *)[(THBookViewController *)self documentViewController] zoomOutIfNecessaryPriorToNavigation];
@@ -1972,13 +1972,13 @@ LABEL_14:
     }
 
     [(THBookViewController *)self p_addViewControllerInBack:[(THBookViewController *)self chapterBrowserController]];
-    v5 = [(THDocumentViewController *)self->mDocumentViewController currentRelativePageIndex];
-    v6 = [(THDocumentViewController *)self->mDocumentViewController currentChapter];
-    [(THChapterBrowserController *)[(THBookViewController *)self chapterBrowserController] willTransitionFromChapterIndex:v6];
-    [(THChapterBrowserController *)[(THBookViewController *)self chapterBrowserController] prepareToScrollToThumbnailAtIndex:v5 chapterIndex:v6];
-    [(THChapterBrowserController *)[(THBookViewController *)self chapterBrowserController] hidePageThumbnailAtIndex:v5 chapterIndex:v6 scrollIfNecessary:1];
-    [(THChapterBrowserController *)[(THBookViewController *)self chapterBrowserController] scrollToThumbnailAtIndex:v5];
-    -[THChapterBrowserController rectForPageThumbnailAtIndex:chapterIndex:inLayer:](-[THBookViewController chapterBrowserController](self, "chapterBrowserController"), "rectForPageThumbnailAtIndex:chapterIndex:inLayer:", v5, v6, [objc_msgSend(-[THDocumentViewController view](-[THBookViewController documentViewController](self "documentViewController")]);
+    currentRelativePageIndex = [(THDocumentViewController *)self->mDocumentViewController currentRelativePageIndex];
+    currentChapter = [(THDocumentViewController *)self->mDocumentViewController currentChapter];
+    [(THChapterBrowserController *)[(THBookViewController *)self chapterBrowserController] willTransitionFromChapterIndex:currentChapter];
+    [(THChapterBrowserController *)[(THBookViewController *)self chapterBrowserController] prepareToScrollToThumbnailAtIndex:currentRelativePageIndex chapterIndex:currentChapter];
+    [(THChapterBrowserController *)[(THBookViewController *)self chapterBrowserController] hidePageThumbnailAtIndex:currentRelativePageIndex chapterIndex:currentChapter scrollIfNecessary:1];
+    [(THChapterBrowserController *)[(THBookViewController *)self chapterBrowserController] scrollToThumbnailAtIndex:currentRelativePageIndex];
+    -[THChapterBrowserController rectForPageThumbnailAtIndex:chapterIndex:inLayer:](-[THBookViewController chapterBrowserController](self, "chapterBrowserController"), "rectForPageThumbnailAtIndex:chapterIndex:inLayer:", currentRelativePageIndex, currentChapter, [objc_msgSend(-[THDocumentViewController view](-[THBookViewController documentViewController](self "documentViewController")]);
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -1991,10 +1991,10 @@ LABEL_14:
     v30 = 0u;
     v31 = 0u;
     v29 = 0u;
-    v23 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] canvasScrollView];
-    if (v23)
+    canvasScrollView = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] canvasScrollView];
+    if (canvasScrollView)
     {
-      [v23 transform];
+      [canvasScrollView transform];
     }
 
     else
@@ -2025,18 +2025,18 @@ LABEL_14:
     v24[2] = sub_8207C;
     v24[3] = &unk_45C4D8;
     v24[4] = self;
-    v24[5] = v5;
+    v24[5] = currentRelativePageIndex;
     v27 = v31;
     v26 = v30;
     v25 = v29;
     [UIView animateWithDuration:0x20000 delay:v28 options:v24 animations:0.300000012 completion:0.0];
-    [(THTOCViewController *)v3 setShrouded:0 animated:1 duration:0.300000012];
+    [(THTOCViewController *)p_selectedTocViewController setShrouded:0 animated:1 duration:0.300000012];
   }
 
   else
   {
-    [(THTOCViewController *)v3 setShrouded:0 animated:0 duration:0.0];
-    [(THBookViewController *)self p_addViewControllerInFront:v3 reason:@"THVantageChangeReasonTransitionToTOC"];
+    [(THTOCViewController *)p_selectedTocViewController setShrouded:0 animated:0 duration:0.0];
+    [(THBookViewController *)self p_addViewControllerInFront:p_selectedTocViewController reason:@"THVantageChangeReasonTransitionToTOC"];
     if ([(THBookViewController *)self isBookEpub])
     {
       [(THFlowTOCViewController *)[(THBookViewController *)self flowTocViewController] setReflowablePaginationController:[(THDocumentViewController *)[(THBookViewController *)self documentViewController] reflowablePaginationController]];
@@ -2046,20 +2046,20 @@ LABEL_14:
   [(THBookViewController *)self dismissTOCGlossaryView:1];
 }
 
-- (void)didTransitionFromViewController:(id)a3 toTOCViewController:(id)a4
+- (void)didTransitionFromViewController:(id)controller toTOCViewController:(id)viewController
 {
-  [(THBookViewController *)self p_addViewControllerInFront:a4 reason:@"THVantageChangeReasonTransitionToTOC"];
+  [(THBookViewController *)self p_addViewControllerInFront:viewController reason:@"THVantageChangeReasonTransitionToTOC"];
 
-  [(THBookViewController *)self p_removeViewController:a3];
+  [(THBookViewController *)self p_removeViewController:controller];
 }
 
 - (void)removeTOC
 {
-  v3 = [(THBookViewController *)self p_selectedTocViewController];
-  if (![(THBookViewController *)self shouldKeepTOCInBackground:v3])
+  p_selectedTocViewController = [(THBookViewController *)self p_selectedTocViewController];
+  if (![(THBookViewController *)self shouldKeepTOCInBackground:p_selectedTocViewController])
   {
 
-    [(THBookViewController *)self p_removeViewController:v3];
+    [(THBookViewController *)self p_removeViewController:p_selectedTocViewController];
   }
 }
 
@@ -2075,20 +2075,20 @@ LABEL_14:
 
 - (id)currentPresentationType
 {
-  v2 = [(THBookViewController *)self documentViewController];
+  documentViewController = [(THBookViewController *)self documentViewController];
 
-  return [(THDocumentViewController *)v2 currentPresentationType];
+  return [(THDocumentViewController *)documentViewController currentPresentationType];
 }
 
-- (void)showFullscreenNotesView:(id)a3 completion:(id)a4
+- (void)showFullscreenNotesView:(id)view completion:(id)completion
 {
   if (-[THBookViewController isNotesFullscreenVisible](self, "isNotesFullscreenVisible") || (objc_opt_class(), v6 = TSUDynamicCast(), [v6 setEnabled:0], -[THBookViewController dismissActivePopover](self, "dismissActivePopover"), -[THNavigationOverlayView setOverlayHidden:animated:](-[THBookViewController navigationOverlayView](self, "navigationOverlayView"), "setOverlayHidden:animated:", 1, 0), !-[THBookViewController notesFullscreenViewController](self, "notesFullscreenViewController")))
   {
-    if (a4)
+    if (completion)
     {
-      v7 = *(a4 + 2);
+      v7 = *(completion + 2);
 
-      v7(a4);
+      v7(completion);
     }
   }
 
@@ -2103,26 +2103,26 @@ LABEL_14:
     v8[2] = sub_8245C;
     v8[3] = &unk_45AEA8;
     v8[4] = v6;
-    v8[5] = a4;
+    v8[5] = completion;
     [(THBookViewController *)self presentViewController:[(THBookViewController *)self notesFullscreenViewController] animated:1 completion:v8];
     [(THBookViewController *)self vantageDidChangeBy:self reason:@"THVantageChangeReasonTransitionToNotesVC"];
   }
 }
 
-- (void)hideFullscreenNotesView:(id)a3 andSearchForText:(id)a4 animated:(BOOL)a5 force:(BOOL)a6 completion:(id)a7
+- (void)hideFullscreenNotesView:(id)view andSearchForText:(id)text animated:(BOOL)animated force:(BOOL)force completion:(id)completion
 {
-  if (!self->mHidingNotesVC && ((v8 = a6, v9 = a5, [(THBookViewController *)self isNotesFullscreenVisible]) || v8))
+  if (!self->mHidingNotesVC && ((v8 = force, v9 = animated, [(THBookViewController *)self isNotesFullscreenVisible]) || v8))
   {
     self->mHidingNotesVC = 1;
     [(THBookViewController *)self vantageWillChangeBy:self reason:@"THVantageChangeReasonTransitionFromStudyVC"];
-    if (!a3 || [(THBookViewController *)self documentViewController]== a3)
+    if (!view || [(THBookViewController *)self documentViewController]== view)
     {
       [(THBookViewController *)self p_showDVC];
     }
 
     else
     {
-      [(THBookViewController *)self p_addViewControllerInFront:a3 reason:@"THVantageChangeReasonTransitionFromStudyVC"];
+      [(THBookViewController *)self p_addViewControllerInFront:view reason:@"THVantageChangeReasonTransitionFromStudyVC"];
     }
 
     v14[0] = _NSConcreteStackBlock;
@@ -2130,40 +2130,40 @@ LABEL_14:
     v14[2] = sub_82644;
     v14[3] = &unk_45B3A8;
     v14[4] = self;
-    v14[5] = a4;
-    v14[6] = a7;
+    v14[5] = text;
+    v14[6] = completion;
     [(THNotesViewController *)[(THBookViewController *)self notesFullscreenViewController] dismissViewControllerAnimated:v9 completion:v14];
     [(THBookViewController *)self vantageDidChangeBy:self reason:@"THVantageChangeReasonTransitionFromStudyVC"];
   }
 
-  else if (a7)
+  else if (completion)
   {
-    v13 = *(a7 + 2);
+    v13 = *(completion + 2);
 
-    v13(a7, 0);
+    v13(completion, 0);
   }
 }
 
-- (BOOL)navigateToAnchorInDVC:(id)a3 pulse:(BOOL)a4
+- (BOOL)navigateToAnchorInDVC:(id)c pulse:(BOOL)pulse
 {
-  v4 = a4;
+  pulseCopy = pulse;
   [(THBookViewController *)self p_showDVC];
-  LOBYTE(v4) = [(THBookViewController *)self followAnchor:a3 pulse:v4];
+  LOBYTE(pulseCopy) = [(THBookViewController *)self followAnchor:c pulse:pulseCopy];
   [-[THDocumentViewController interactiveCanvasController](self->mDocumentViewController "interactiveCanvasController")];
   +[CATransaction flush];
-  return v4;
+  return pulseCopy;
 }
 
-- (BOOL)navigateToLinkInDVC:(id)a3
+- (BOOL)navigateToLinkInDVC:(id)c
 {
   if ([(THBookViewController *)self visibleViewController]== self->mChapterBrowserController)
   {
     [(THBookViewController *)self p_insertDVCInBack];
-    v6 = [(THChapterBrowserController *)self->mChapterBrowserController chapterIndex];
-    v7 = [a3 cachedAbsolutePageIndex];
-    if (v7 == 0x7FFFFFFFFFFFFFFFLL || (v8 = -[THDocumentNavigationModel navigationUnitRelativePageIndexForAbsolutePageIndex:forPresentationType:](-[THBookViewController navigationModel](self, "navigationModel"), "navigationUnitRelativePageIndexForAbsolutePageIndex:forPresentationType:", v7, +[THPresentationType paginatedPresentationTypeInContext:](THPresentationType, "paginatedPresentationTypeInContext:", [-[THDocumentViewController documentRoot](-[THBookViewController documentViewController](self "documentViewController")])), v8 == 0x7FFFFFFFFFFFFFFFLL))
+    chapterIndex = [(THChapterBrowserController *)self->mChapterBrowserController chapterIndex];
+    cachedAbsolutePageIndex = [c cachedAbsolutePageIndex];
+    if (cachedAbsolutePageIndex == 0x7FFFFFFFFFFFFFFFLL || (v8 = -[THDocumentNavigationModel navigationUnitRelativePageIndexForAbsolutePageIndex:forPresentationType:](-[THBookViewController navigationModel](self, "navigationModel"), "navigationUnitRelativePageIndexForAbsolutePageIndex:forPresentationType:", cachedAbsolutePageIndex, +[THPresentationType paginatedPresentationTypeInContext:](THPresentationType, "paginatedPresentationTypeInContext:", [-[THDocumentViewController documentRoot](-[THBookViewController documentViewController](self "documentViewController")])), v8 == 0x7FFFFFFFFFFFFFFFLL))
     {
-      v9 = [(THBookViewController *)self chapterBrowserController:self->mChapterBrowserController relativePageIndexForLink:a3];
+      v9 = [(THBookViewController *)self chapterBrowserController:self->mChapterBrowserController relativePageIndexForLink:c];
       if (v9 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v8 = 0;
@@ -2175,25 +2175,25 @@ LABEL_14:
       }
     }
 
-    [(THChapterBrowserController *)self->mChapterBrowserController transitionPageToDVC:v8 chapterIndex:v6];
+    [(THChapterBrowserController *)self->mChapterBrowserController transitionPageToDVC:v8 chapterIndex:chapterIndex];
     return 1;
   }
 
   else
   {
-    v5 = [(THBookLinkResolver *)[(THBookViewController *)self bookLinkResolver] anchorFromAbsoluteLink:a3 presentationType:[(THDocumentViewController *)[(THBookViewController *)self documentViewController] currentPresentationType]];
+    v5 = [(THBookLinkResolver *)[(THBookViewController *)self bookLinkResolver] anchorFromAbsoluteLink:c presentationType:[(THDocumentViewController *)[(THBookViewController *)self documentViewController] currentPresentationType]];
 
     return [(THBookViewController *)self navigateToAnchorInDVC:v5];
   }
 }
 
-- (void)navigateFromNotesViewToAnchorInDVC:(id)a3 completion:(id)a4
+- (void)navigateFromNotesViewToAnchorInDVC:(id)c completion:(id)completion
 {
-  v7 = [(THBookViewController *)self setupLoadSpinner];
+  setupLoadSpinner = [(THBookViewController *)self setupLoadSpinner];
   v8 = [-[THBookViewController documentRoot](self "documentRoot")];
   if (!v8)
   {
-    [(THBookViewController *)self followAnchor:a3 pulse:0];
+    [(THBookViewController *)self followAnchor:c pulse:0];
   }
 
   v9[0] = _NSConcreteStackBlock;
@@ -2202,24 +2202,24 @@ LABEL_14:
   v9[3] = &unk_45C500;
   v10 = v8 != 0;
   v9[4] = self;
-  v9[5] = a3;
-  v11 = v7;
-  v9[6] = a4;
+  v9[5] = c;
+  v11 = setupLoadSpinner;
+  v9[6] = completion;
   [(THBookViewController *)self hideFullscreenNotesView:[(THBookViewController *)self visibleViewController] andSearchForText:0 completion:v9];
 }
 
 - (BOOL)isStudyViewControllerVisible
 {
-  v3 = [(THiOSStudyViewController *)[(THBookViewController *)self studyViewController] isViewLoaded];
-  if (v3)
+  isViewLoaded = [(THiOSStudyViewController *)[(THBookViewController *)self studyViewController] isViewLoaded];
+  if (isViewLoaded)
   {
-    LOBYTE(v3) = [-[THiOSStudyViewController view](-[THBookViewController studyViewController](self "studyViewController")] != 0;
+    LOBYTE(isViewLoaded) = [-[THiOSStudyViewController view](-[THBookViewController studyViewController](self "studyViewController")] != 0;
   }
 
-  return v3;
+  return isViewLoaded;
 }
 
-- (void)loadStudyViewControllerForAnimation:(BOOL)a3
+- (void)loadStudyViewControllerForAnimation:(BOOL)animation
 {
   if ([(THBookViewController *)self studyViewController])
   {
@@ -2232,9 +2232,9 @@ LABEL_14:
   [(THBookViewController *)self setStudyViewController:v4];
 }
 
-- (void)showStudyCardsForNavigationUnit:(id)a3 useChapterTitle:(id)a4
+- (void)showStudyCardsForNavigationUnit:(id)unit useChapterTitle:(id)title
 {
-  if (!a3)
+  if (!unit)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -2248,37 +2248,37 @@ LABEL_14:
   [-[THiOSStudyViewController view](-[THBookViewController studyViewController](self "studyViewController")];
   v11 = +[NSMutableArray array];
   v12 = [objc_msgSend(-[THDocumentViewController documentRoot](-[THBookViewController documentViewController](self "documentViewController")];
-  v13 = [v12 entryCount];
-  if (v13)
+  entryCount = [v12 entryCount];
+  if (entryCount)
   {
-    v14 = v13;
+    v14 = entryCount;
     for (i = 0; i != v14; ++i)
     {
       [v11 addObject:{objc_msgSend(v12, "entryAtIndex:", i)}];
     }
   }
 
-  if (!a4 || ![a4 length])
+  if (!title || ![title length])
   {
-    a4 = [(THDocumentNavigationModel *)[(THBookViewController *)self navigationModel] titleStringForNavigationUnit:a3];
+    title = [(THDocumentNavigationModel *)[(THBookViewController *)self navigationModel] titleStringForNavigationUnit:unit];
   }
 
-  if (![a4 length])
+  if (![title length])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v16 = [(THiOSStudyViewController *)[(THBookViewController *)self studyViewController] parentViewController];
-  if (v16 != self)
+  parentViewController = [(THiOSStudyViewController *)[(THBookViewController *)self studyViewController] parentViewController];
+  if (parentViewController != self)
   {
     [(THNotesViewController *)[(THBookViewController *)self notesFullscreenViewController] addChildViewController:[(THBookViewController *)self studyViewController]];
   }
 
   if ([(THBookViewController *)self isStudyViewControllerVisible])
   {
-    v17 = [(THBookViewController *)self studyViewController];
+    studyViewController = [(THBookViewController *)self studyViewController];
 
-    [(THiOSStudyViewController *)v17 updateWithNavigationUnit:a3 title:a4];
+    [(THiOSStudyViewController *)studyViewController updateWithNavigationUnit:unit title:title];
   }
 
   else
@@ -2288,48 +2288,48 @@ LABEL_14:
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    [(THiOSStudyViewController *)[(THBookViewController *)self studyViewController] updateWithNavigationUnit:a3 title:a4];
+    [(THiOSStudyViewController *)[(THBookViewController *)self studyViewController] updateWithNavigationUnit:unit title:title];
     [-[THNotesViewController view](-[THBookViewController notesFullscreenViewController](self "notesFullscreenViewController")];
     [(THBookViewController *)self p_setVisibleViewControllerToViewController:[(THBookViewController *)self studyViewController] reason:@"THVantageChangeReasonTransitionToStudyVC"];
-    if (v16 != self)
+    if (parentViewController != self)
     {
       [(THiOSStudyViewController *)[(THBookViewController *)self studyViewController] didMoveToParentViewController:[(THBookViewController *)self notesFullscreenViewController]];
     }
 
-    v18 = [(THBookViewController *)self studyViewController];
+    studyViewController2 = [(THBookViewController *)self studyViewController];
 
-    [(THiOSStudyViewController *)v18 transitionInWithCompletion:0];
+    [(THiOSStudyViewController *)studyViewController2 transitionInWithCompletion:0];
   }
 }
 
 - (void)p_unloadStudyViewController
 {
-  v3 = [(THBookViewController *)self studyViewController];
-  [(THiOSStudyViewController *)v3 removeFromParentViewController];
-  [(THiOSStudyViewController *)v3 viewWillDisappear:0];
-  [-[THiOSStudyViewController view](v3 "view")];
-  [(THiOSStudyViewController *)v3 viewDidDisappear:0];
+  studyViewController = [(THBookViewController *)self studyViewController];
+  [(THiOSStudyViewController *)studyViewController removeFromParentViewController];
+  [(THiOSStudyViewController *)studyViewController viewWillDisappear:0];
+  [-[THiOSStudyViewController view](studyViewController "view")];
+  [(THiOSStudyViewController *)studyViewController viewDidDisappear:0];
   [(THBookViewController *)self setStudyViewController:0];
   v4 = UIAccessibilityScreenChangedNotification;
 
   UIAccessibilityPostNotification(v4, 0);
 }
 
-- (void)studyViewControllerIsDone:(id)a3
+- (void)studyViewControllerIsDone:(id)done
 {
   if (![(THBookViewController *)self isStudyViewControllerVisible])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v4 = [(THBookViewController *)self studyViewController];
+  studyViewController = [(THBookViewController *)self studyViewController];
   [(THBookViewController *)self p_setVisibleViewControllerToViewController:[(THBookViewController *)self notesFullscreenViewController] reason:@"THVantageChangeReasonTransitionFromStudyVC"];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_8306C;
   v5[3] = &unk_45AE00;
   v5[4] = self;
-  [(THiOSStudyViewController *)v4 transitionOutWithCompletion:v5];
+  [(THiOSStudyViewController *)studyViewController transitionOutWithCompletion:v5];
 }
 
 - (BOOL)canTrustCalculatedPageNumbers
@@ -2347,25 +2347,25 @@ LABEL_14:
   return [v4 presentationTypeMatchesPageSize:?];
 }
 
-- (int64_t)pageNumberForAnnotation:(id)a3
+- (int64_t)pageNumberForAnnotation:(id)annotation
 {
   if (![(THBookViewController *)self canTrustCalculatedPageNumbers])
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [(THBookViewController *)self documentRoot];
+  documentRoot = [(THBookViewController *)self documentRoot];
 
-  return [v5 absolutePageIndexForAnnotation:a3];
+  return [documentRoot absolutePageIndexForAnnotation:annotation];
 }
 
-- (id)pageNumberStringForAnnotation:(id)a3
+- (id)pageNumberStringForAnnotation:(id)annotation
 {
   if ([(THBookViewController *)self canTrustCalculatedPageNumbers])
   {
-    v5 = [(THBookViewController *)self documentRoot];
+    documentRoot = [(THBookViewController *)self documentRoot];
 
-    return [v5 pageNumberStringForAnnotation:a3];
+    return [documentRoot pageNumberStringForAnnotation:annotation];
   }
 
   else
@@ -2376,27 +2376,27 @@ LABEL_14:
   }
 }
 
-- (id)documentViewControllerWithDocument:(id)a3
+- (id)documentViewControllerWithDocument:(id)document
 {
-  v5 = [[THDocumentViewController alloc] initWithDefaultView];
-  [(THBookViewController *)self addChildViewController:v5];
-  [(THDocumentViewController *)v5 setDocument:a3];
-  [(THDocumentViewController *)v5 setDocumentLinkResolver:[[THDocumentLinkResolver alloc] initWithDocumentRoot:[(THDocumentViewController *)v5 documentRoot]]];
-  [(THDocumentViewController *)v5 setToolbarDelegate:self];
-  [(THDocumentViewController *)v5 setBookNavigationDelegate:self];
-  [(THDocumentViewController *)v5 setUserAnnotationDelegate:self];
-  [(THDocumentViewController *)v5 setSpinnerProvider:self];
-  [(THDocumentViewController *)v5 setBookPropertiesDelegate:self];
-  [(THDocumentViewController *)v5 setRevealTOCDelegate:self];
-  [(THDocumentViewController *)v5 setThemeDelegate:self];
-  [(THDocumentViewController *)v5 setReadingStatisticsDelegate:self];
-  [(THDocumentViewController *)v5 setPaginationDelegate:self];
-  return v5;
+  initWithDefaultView = [[THDocumentViewController alloc] initWithDefaultView];
+  [(THBookViewController *)self addChildViewController:initWithDefaultView];
+  [(THDocumentViewController *)initWithDefaultView setDocument:document];
+  [(THDocumentViewController *)initWithDefaultView setDocumentLinkResolver:[[THDocumentLinkResolver alloc] initWithDocumentRoot:[(THDocumentViewController *)initWithDefaultView documentRoot]]];
+  [(THDocumentViewController *)initWithDefaultView setToolbarDelegate:self];
+  [(THDocumentViewController *)initWithDefaultView setBookNavigationDelegate:self];
+  [(THDocumentViewController *)initWithDefaultView setUserAnnotationDelegate:self];
+  [(THDocumentViewController *)initWithDefaultView setSpinnerProvider:self];
+  [(THDocumentViewController *)initWithDefaultView setBookPropertiesDelegate:self];
+  [(THDocumentViewController *)initWithDefaultView setRevealTOCDelegate:self];
+  [(THDocumentViewController *)initWithDefaultView setThemeDelegate:self];
+  [(THDocumentViewController *)initWithDefaultView setReadingStatisticsDelegate:self];
+  [(THDocumentViewController *)initWithDefaultView setPaginationDelegate:self];
+  return initWithDefaultView;
 }
 
-+ (BOOL)allBodiesExist:(id)a3
++ (BOOL)allBodiesExist:(id)exist
 {
-  if (!a3)
+  if (!exist)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -2417,7 +2417,7 @@ LABEL_14:
         v11 = v9 - 1;
         do
         {
-          v6 = [a1 allBodiesExist:{objc_msgSend(v8, "nodeAtIndex:", v10)}];
+          v6 = [self allBodiesExist:{objc_msgSend(v8, "nodeAtIndex:", v10)}];
           if (!v6)
           {
             break;
@@ -2481,7 +2481,7 @@ LABEL_14:
   [(THBookViewController *)self p_bookContentDidLoad];
 }
 
-- (void)didLoadBook:(id)a3
+- (void)didLoadBook:(id)book
 {
   [(UIAlertController *)[(THBookViewController *)self fontDownloadAlertController] dismissViewControllerAnimated:1 completion:0];
 
@@ -2497,13 +2497,13 @@ LABEL_14:
   }
 }
 
-- (void)setPerformanceModeBookOpening:(BOOL)a3
+- (void)setPerformanceModeBookOpening:(BOOL)opening
 {
-  v3 = a3;
-  self->_performanceModeBookOpening = a3;
-  v4 = [(THBookViewController *)self documentViewController];
+  openingCopy = opening;
+  self->_performanceModeBookOpening = opening;
+  documentViewController = [(THBookViewController *)self documentViewController];
 
-  [(THDocumentViewController *)v4 setPerformanceModeBookOpening:v3];
+  [(THDocumentViewController *)documentViewController setPerformanceModeBookOpening:openingCopy];
 }
 
 - (void)p_finishBookLoad
@@ -2518,23 +2518,23 @@ LABEL_14:
   if (![(THBookViewController *)self bookOpenFailed])
   {
     [+[AVAudioSession sharedInstance](AVAudioSession setCategory:"setCategory:error:" error:AVAudioSessionCategoryPlayback, 0];
-    v6 = [(THiOSDocument *)self->mDocument documentRoot];
-    [v6 setSuppliedAnnotationProvider:{objc_msgSend(+[THApplePubAssetPlugin sharedPlugin](THApplePubAssetPlugin, "sharedPlugin"), "sharedAnnotationProvider")}];
-    [v6 documentDidLoad];
+    documentRoot = [(THiOSDocument *)self->mDocument documentRoot];
+    [documentRoot setSuppliedAnnotationProvider:{objc_msgSend(+[THApplePubAssetPlugin sharedPlugin](THApplePubAssetPlugin, "sharedPlugin"), "sharedAnnotationProvider")}];
+    [documentRoot documentDidLoad];
     [(THBookViewController *)self setDocumentViewController:[(THBookViewController *)self documentViewControllerWithDocument:self->mDocument]];
     if ([(THBookViewController *)self isBookEpub])
     {
       if ([(THBookViewController *)self appearanceStyle]== &dword_0 + 3)
       {
-        v7 = [+[NSUserDefaults standardUserDefaults](NSUserDefaults integerForKey:"integerForKey:", @"THBookViewControllerStyleBeforeAutoNight"];
+        appearanceStyle = [+[NSUserDefaults standardUserDefaults](NSUserDefaults integerForKey:"integerForKey:", @"THBookViewControllerStyleBeforeAutoNight"];
       }
 
       else
       {
-        v7 = [(THBookViewController *)self appearanceStyle];
+        appearanceStyle = [(THBookViewController *)self appearanceStyle];
       }
 
-      [(THBookViewController *)self setStyleBeforeAutoNight:v7];
+      [(THBookViewController *)self setStyleBeforeAutoNight:appearanceStyle];
       if (+[IMTheme isAutoNightModeEnabled])
       {
         [(THBookViewController *)self _updateAppearanceFromLightLevelController:+[BCLightLevelController sharedInstance]];
@@ -2551,13 +2551,13 @@ LABEL_14:
       [objc_msgSend(-[THBookViewController documentRoot](self "documentRoot")];
     }
 
-    -[THBookViewController setBookLinkResolver:](self, "setBookLinkResolver:", -[THBookLinkResolver initWithDocumentLinkResolver:glossaryLinkResolver:]([THBookLinkResolver alloc], "initWithDocumentLinkResolver:glossaryLinkResolver:", -[THDocumentViewController documentLinkResolver](-[THBookViewController documentViewController](self, "documentViewController"), "documentLinkResolver"), +[THGlossaryLinkResolver glossaryLinkResolverWithGlossaryController:](THGlossaryLinkResolver, "glossaryLinkResolverWithGlossaryController:", [v6 glossaryController])));
-    self->mIsCompleteBook = [objc_opt_class() allBodiesExist:{objc_msgSend(v6, "rootNode")}];
+    -[THBookViewController setBookLinkResolver:](self, "setBookLinkResolver:", -[THBookLinkResolver initWithDocumentLinkResolver:glossaryLinkResolver:]([THBookLinkResolver alloc], "initWithDocumentLinkResolver:glossaryLinkResolver:", -[THDocumentViewController documentLinkResolver](-[THBookViewController documentViewController](self, "documentViewController"), "documentLinkResolver"), +[THGlossaryLinkResolver glossaryLinkResolverWithGlossaryController:](THGlossaryLinkResolver, "glossaryLinkResolverWithGlossaryController:", [documentRoot glossaryController])));
+    self->mIsCompleteBook = [objc_opt_class() allBodiesExist:{objc_msgSend(documentRoot, "rootNode")}];
     if ([(THBookViewController *)self isCompleteBook])
     {
-      v8 = [v6 tocModel];
-      [v8 setBookTitle:{-[THBookDescription bookTitle](-[THBookViewController bookDescription](self, "bookDescription"), "bookTitle")}];
-      [v8 setBookSubtitle:{-[THBookDescription bookSubtitle](-[THBookViewController bookDescription](self, "bookDescription"), "bookSubtitle")}];
+      tocModel = [documentRoot tocModel];
+      [tocModel setBookTitle:{-[THBookDescription bookTitle](-[THBookViewController bookDescription](self, "bookDescription"), "bookTitle")}];
+      [tocModel setBookSubtitle:{-[THBookDescription bookSubtitle](-[THBookViewController bookDescription](self, "bookDescription"), "bookSubtitle")}];
       [(THBookViewController *)self p_buildIntroMediaViewController];
       [(THBookViewController *)self setBookOpenDestinationIsTOC:[(THBookViewController *)self p_wantsToOpenToTOC]];
       if (![(THBookViewController *)self p_hasDestinationPage])
@@ -2600,7 +2600,7 @@ LABEL_14:
       [(THBookViewController *)self p_showDVC];
       [(THDocumentViewController *)[(THBookViewController *)self documentViewController] setVisibleInfoUpdatesAllowedInLandscape:1];
       [(THDocumentViewController *)[(THBookViewController *)self documentViewController] setAllowPortraitTOC:0];
-      -[THDocumentViewController followLink:](-[THBookViewController documentViewController](self, "documentViewController"), "followLink:", [v6 linkForNavigationUnitIndex:0]);
+      -[THDocumentViewController followLink:](-[THBookViewController documentViewController](self, "documentViewController"), "followLink:", [documentRoot linkForNavigationUnitIndex:0]);
     }
 
     [(THBookViewController *)self viewsAreReadyForOpenAnimation];
@@ -2612,11 +2612,11 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v3 = [(THBookOpener *)self->mBookOpener error];
-  v4 = [(NSError *)v3 domain];
-  if (v3)
+  error = [(THBookOpener *)self->mBookOpener error];
+  domain = [(NSError *)error domain];
+  if (error)
   {
-    v5 = [(NSError *)v3 code]+ 42594 < 0xFFFFFFFFFFFFFFFDLL;
+    v5 = [(NSError *)error code]+ 42594 < 0xFFFFFFFFFFFFFFFDLL;
   }
 
   else
@@ -2625,7 +2625,7 @@ LABEL_31:
     v5 = 1;
   }
 
-  if (![(NSString *)v4 isEqualToString:@"ibookserrors"]|| v5)
+  if (![(NSString *)domain isEqualToString:@"ibookserrors"]|| v5)
   {
     [(THBookViewController *)self bookOpenTransitionDidEnd];
   }
@@ -2696,37 +2696,37 @@ LABEL_32:
   }
 }
 
-- (void)setPageIndexForProofing:(int64_t)a3
+- (void)setPageIndexForProofing:(int64_t)proofing
 {
   if ([(THBookViewController *)self isCompleteBook])
   {
-    [(THDocumentNavigator *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentNavigator] setVisibleAbsolutePhysicalPageIndex:a3];
+    [(THDocumentNavigator *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentNavigator] setVisibleAbsolutePhysicalPageIndex:proofing];
   }
 
   else
   {
-    [(THDocumentViewController *)[(THBookViewController *)self documentViewController] setCurrentNavigationUnit:[(NSArray *)[(THDocumentNavigationModel *)[(THBookViewController *)self navigationModel] navigationUnits] objectAtIndex:0] withRelativePageIndex:a3 animated:0];
+    [(THDocumentViewController *)[(THBookViewController *)self documentViewController] setCurrentNavigationUnit:[(NSArray *)[(THDocumentNavigationModel *)[(THBookViewController *)self navigationModel] navigationUnits] objectAtIndex:0] withRelativePageIndex:proofing animated:0];
   }
 
-  v5 = [(THBookViewController *)self documentViewController];
+  documentViewController = [(THBookViewController *)self documentViewController];
 
-  [(THDocumentViewController *)v5 updateVisibleInfos];
+  [(THDocumentViewController *)documentViewController updateVisibleInfos];
 }
 
-- (unint64_t)absolutePageIndexForTileEntry:(id)a3
+- (unint64_t)absolutePageIndexForTileEntry:(id)entry
 {
   if (![(THReflowablePaginationController *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] reflowablePaginationController] paginationComplete])
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [(THBookViewController *)self documentNavigator];
-  v6 = [a3 modelLink];
+  documentNavigator = [(THBookViewController *)self documentNavigator];
+  modelLink = [entry modelLink];
 
-  return [(THDocumentNavigator *)v5 absolutePageIndexForLink:v6];
+  return [(THDocumentNavigator *)documentNavigator absolutePageIndexForLink:modelLink];
 }
 
-- (unint64_t)maxAbsolutePageIndexForNodeAtTileEntry:(id)a3
+- (unint64_t)maxAbsolutePageIndexForNodeAtTileEntry:(id)entry
 {
   if (![(THReflowablePaginationController *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] reflowablePaginationController] paginationComplete])
   {
@@ -2746,19 +2746,19 @@ LABEL_32:
     v8 = v6;
     if ([v6 firstPageIndex] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [v8 firstPageIndex];
-      return v9 + [v8 pageCount];
+      firstPageIndex = [v8 firstPageIndex];
+      return firstPageIndex + [v8 pageCount];
     }
   }
 
   return v7;
 }
 
-- (void)showPageForModelLink:(id)a3 animated:(BOOL)a4
+- (void)showPageForModelLink:(id)link animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(THBookViewController *)self recordOutgoingMajorNavigationJump];
-  [(THBookViewController *)self p_showDVCAnimated:v4 withLink:a3];
+  [(THBookViewController *)self p_showDVCAnimated:animatedCopy withLink:link];
 
   [(THBookViewController *)self recordCurrentLocationInHistory];
 }
@@ -2913,9 +2913,9 @@ LABEL_32:
   }
 
   v3 = +[NSUserDefaults standardUserDefaults];
-  v4 = [(THBookViewController *)self p_retinaUpdateAlertDateKey];
-  v5 = [(THBookViewController *)self p_retinaUpdateAlertAttemptsKey];
-  v6 = [(NSUserDefaults *)v3 integerForKey:v5];
+  p_retinaUpdateAlertDateKey = [(THBookViewController *)self p_retinaUpdateAlertDateKey];
+  p_retinaUpdateAlertAttemptsKey = [(THBookViewController *)self p_retinaUpdateAlertAttemptsKey];
+  v6 = [(NSUserDefaults *)v3 integerForKey:p_retinaUpdateAlertAttemptsKey];
   v7 = v6;
   if (!v6)
   {
@@ -2928,7 +2928,7 @@ LABEL_32:
     v8 = 86400.0;
 LABEL_11:
     v9 = [NSDate dateWithTimeIntervalSinceNow:v8];
-    [(NSUserDefaults *)v3 setInteger:v7 + 1 forKey:v5];
+    [(NSUserDefaults *)v3 setInteger:v7 + 1 forKey:p_retinaUpdateAlertAttemptsKey];
     goto LABEL_12;
   }
 
@@ -2944,9 +2944,9 @@ LABEL_11:
   }
 
   v9 = +[NSDate distantFuture];
-  [(NSUserDefaults *)v3 removeObjectForKey:v5];
+  [(NSUserDefaults *)v3 removeObjectForKey:p_retinaUpdateAlertAttemptsKey];
 LABEL_12:
-  [(NSUserDefaults *)v3 setObject:v9 forKey:v4];
+  [(NSUserDefaults *)v3 setObject:v9 forKey:p_retinaUpdateAlertDateKey];
 
   [(NSUserDefaults *)v3 synchronize];
 }
@@ -2984,9 +2984,9 @@ LABEL_12:
   [v2 setPlaceholder:0 pageHistoryDictionary:0 withContentNode:0];
 }
 
-- (void)open:(BOOL)a3
+- (void)open:(BOOL)open
 {
-  v3 = a3;
+  openCopy = open;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_84F9C;
@@ -3000,15 +3000,15 @@ LABEL_12:
   }
 
   [+[THApplePubAssetPlugin sharedPlugin](THApplePubAssetPlugin "sharedPlugin")];
-  [(AEAssetViewControllerDelegate *)[(THBookViewController *)self assetViewControllerDelegate] assetViewController:self willOpen:v3];
+  [(AEAssetViewControllerDelegate *)[(THBookViewController *)self assetViewControllerDelegate] assetViewController:self willOpen:openCopy];
   [(THBookViewController *)self p_openBook];
 }
 
-- (BOOL)p_jumpToLocation:(id)a3
+- (BOOL)p_jumpToLocation:(id)location
 {
   if (objc_opt_respondsToSelector())
   {
-    v5 = [a3 performSelector:"cfiString"];
+    v5 = [location performSelector:"cfiString"];
     if (v5)
     {
 
@@ -3020,7 +3020,7 @@ LABEL_12:
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [a3 performSelector:"anchor"];
+    v7 = [location performSelector:"anchor"];
     if (!v7)
     {
       return 0;
@@ -3036,7 +3036,7 @@ LABEL_12:
       return 0;
     }
 
-    v8 = [a3 performSelector:"pageOffset"];
+    v8 = [location performSelector:"pageOffset"];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
@@ -3048,9 +3048,9 @@ LABEL_12:
   }
 }
 
-- (void)openToLocation:(id)a3 animated:(BOOL)a4
+- (void)openToLocation:(id)location animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(THBookViewController *)self setOpeningCFIOverride:0];
   [(THBookViewController *)self setOpeningFragmentOverride:0];
   [(THBookViewController *)self setOpeningAbsolutePageIndexOverride:0x7FFFFFFFFFFFFFFFLL];
@@ -3066,21 +3066,21 @@ LABEL_12:
         v7[2] = sub_85354;
         v7[3] = &unk_45AE58;
         v7[4] = self;
-        v7[5] = a3;
+        v7[5] = location;
         [(THWExpandedViewController *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] expandedViewController] dismissExpandedAnimatedWithCompletionBlock:v7];
       }
 
       else
       {
 
-        [(THBookViewController *)self p_jumpToLocation:a3];
+        [(THBookViewController *)self p_jumpToLocation:location];
       }
     }
 
     else
     {
 
-      [(THBookViewController *)self setOpeningLocationOverride:a3];
+      [(THBookViewController *)self setOpeningLocationOverride:location];
     }
   }
 
@@ -3088,24 +3088,24 @@ LABEL_12:
   {
     if (objc_opt_respondsToSelector())
     {
-      -[THBookViewController setOpeningCFIOverride:](self, "setOpeningCFIOverride:", [a3 performSelector:"cfiString"]);
+      -[THBookViewController setOpeningCFIOverride:](self, "setOpeningCFIOverride:", [location performSelector:"cfiString"]);
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      -[THBookViewController setOpeningFragmentOverride:](self, "setOpeningFragmentOverride:", [a3 performSelector:"anchor"]);
+      -[THBookViewController setOpeningFragmentOverride:](self, "setOpeningFragmentOverride:", [location performSelector:"anchor"]);
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      -[THBookViewController setOpeningAbsolutePageIndexOverride:](self, "setOpeningAbsolutePageIndexOverride:", [a3 performSelector:"pageOffset"]);
+      -[THBookViewController setOpeningAbsolutePageIndexOverride:](self, "setOpeningAbsolutePageIndexOverride:", [location performSelector:"pageOffset"]);
     }
 
-    [(THBookViewController *)self open:v4];
+    [(THBookViewController *)self open:animatedCopy];
   }
 }
 
-- (void)assetViewControllerDidOpenAnimated:(BOOL)a3
+- (void)assetViewControllerDidOpenAnimated:(BOOL)animated
 {
   [(THBookViewController *)self setPerformanceModeBookOpening:0];
   [(THDocumentViewController *)[(THBookViewController *)self documentViewController] popMinimizeLayoutPadding];
@@ -3151,9 +3151,9 @@ LABEL_12:
 
 - (void)assetViewControllerUpdateToolbars
 {
-  v3 = [(THBookViewController *)self traitCollection];
+  traitCollection = [(THBookViewController *)self traitCollection];
 
-  [(THBookViewController *)self p_updateToolbarButtonStatesWithTraits:v3];
+  [(THBookViewController *)self p_updateToolbarButtonStatesWithTraits:traitCollection];
 }
 
 - (void)assetViewControllerUpdateToolbarsAfterOpenAnimation
@@ -3167,13 +3167,13 @@ LABEL_12:
       {
         if ([(THBookViewController *)self p_isSampleBook])
         {
-          v4 = [(THBookViewController *)self documentViewController];
-          if (![(THDocumentViewController *)v4 showingExpandedWidgetView])
+          documentViewController = [(THBookViewController *)self documentViewController];
+          if (![(THDocumentViewController *)documentViewController showingExpandedWidgetView])
           {
-            [(THDocumentViewController *)v4 showToolbarAnimated:1];
-            v5 = [(THBookViewController *)self navigationBarController];
+            [(THDocumentViewController *)documentViewController showToolbarAnimated:1];
+            navigationBarController = [(THBookViewController *)self navigationBarController];
 
-            [(THNavigationBarController *)v5 clearAutohideTimer];
+            [(THNavigationBarController *)navigationBarController clearAutohideTimer];
           }
         }
       }
@@ -3181,13 +3181,13 @@ LABEL_12:
   }
 }
 
-- (void)closeDocumentWithReadLock:(id)a3
+- (void)closeDocumentWithReadLock:(id)lock
 {
-  v4 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentRoot];
+  documentRoot = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentRoot];
   self->mIsClosing = 1;
-  v5 = [v4 context];
-  v6 = v5;
-  [v4 willClose];
+  context = [documentRoot context];
+  v6 = context;
+  [documentRoot willClose];
   [+[TSWPLoadableFonts sharedInstance](TSWPLoadableFonts pauseBackgroundLoading];
   -[TSWPLoadableFonts unregisterFontsForGroup:](+[TSWPLoadableFonts sharedInstance](TSWPLoadableFonts, "sharedInstance"), "unregisterFontsForGroup:", [objc_msgSend(objc_msgSend(-[THBookViewController documentRoot](self "documentRoot")]);
   [(THFlowTOCViewController *)self->mFlowTocViewController setReflowablePaginationController:0];
@@ -3209,9 +3209,9 @@ LABEL_12:
   }
 }
 
-- (void)close:(BOOL)a3
+- (void)close:(BOOL)close
 {
-  v3 = a3;
+  closeCopy = close;
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"pAutoHideNavOverlay" object:0];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -3224,24 +3224,24 @@ LABEL_12:
   [(THBookViewController *)self hideGlossaryWithDestinationViewController:[(THBookViewController *)self visibleViewController] animated:0 completion:0];
   [(THWAutoplayController *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] autoplayController] stop];
   [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] clearAutohideTimer];
-  v5 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentRoot];
-  [objc_msgSend(v5 "userDataManager")];
-  v6 = [(THBookViewController *)self visibleViewController];
-  if (v6 == [(THBookViewController *)self documentViewController])
+  documentRoot = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentRoot];
+  [objc_msgSend(documentRoot "userDataManager")];
+  visibleViewController = [(THBookViewController *)self visibleViewController];
+  if (visibleViewController == [(THBookViewController *)self documentViewController])
   {
     [(THBookViewController *)self hideTOC];
   }
 
-  [(AEAssetViewControllerDelegate *)[(THBookViewController *)self assetViewControllerDelegate] assetViewController:self willClose:v3];
+  [(AEAssetViewControllerDelegate *)[(THBookViewController *)self assetViewControllerDelegate] assetViewController:self willClose:closeCopy];
   [+[THApplePubAssetPlugin sharedPlugin](THApplePubAssetPlugin "sharedPlugin")];
 }
 
-- (void)requestClose:(BOOL)a3
+- (void)requestClose:(BOOL)close
 {
-  v3 = a3;
-  v5 = [(THBookViewController *)self assetViewControllerDelegate];
+  closeCopy = close;
+  assetViewControllerDelegate = [(THBookViewController *)self assetViewControllerDelegate];
 
-  [(AEAssetViewControllerDelegate *)v5 assetViewController:self requestClose:v3 error:0];
+  [(AEAssetViewControllerDelegate *)assetViewControllerDelegate assetViewController:self requestClose:closeCopy error:0];
 }
 
 - (void)_teardown
@@ -3255,28 +3255,28 @@ LABEL_12:
     [(THTOCViewController *)self->mChapterBrowserController setDelegate:0];
     [(THBookViewController *)self setChapterBrowserController:0];
     [(THGlossaryViewController *)[(THBookViewController *)self glossaryViewController] unload];
-    v4 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentRoot];
-    if (v4)
+    documentRoot = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentRoot];
+    if (documentRoot)
     {
-      v5 = v4;
-      [v4 cancelApplePubRead];
-      v6 = [v5 accessController];
-      v7 = v6;
-      [v6 performRead:"closeDocumentWithReadLock:" withTarget:self argument:0];
+      v5 = documentRoot;
+      [documentRoot cancelApplePubRead];
+      accessController = [v5 accessController];
+      v7 = accessController;
+      [accessController performRead:"closeDocumentWithReadLock:" withTarget:self argument:0];
     }
 
     [(THBookViewController *)self setBookDescription:0];
-    v8 = [(THBookViewController *)self documentViewController];
+    documentViewController = [(THBookViewController *)self documentViewController];
 
-    [(THBookViewController *)self p_removeViewController:v8];
+    [(THBookViewController *)self p_removeViewController:documentViewController];
   }
 }
 
-- (BOOL)dismissShouldBegin:(id)a3
+- (BOOL)dismissShouldBegin:(id)begin
 {
-  [a3 velocity];
+  [begin velocity];
   v6 = v5;
-  [a3 velocity];
+  [begin velocity];
   if (v6 >= v7)
   {
     return 0;
@@ -3287,13 +3287,13 @@ LABEL_12:
     return 0;
   }
 
-  v9 = [(THBookViewController *)self visibleViewController];
-  if (v9 == [(THBookViewController *)self documentViewController]&& [(THDocumentViewController *)[(THBookViewController *)self documentViewController] showingExpandedWidgetView])
+  visibleViewController = [(THBookViewController *)self visibleViewController];
+  if (visibleViewController == [(THBookViewController *)self documentViewController]&& [(THDocumentViewController *)[(THBookViewController *)self documentViewController] showingExpandedWidgetView])
   {
     return 0;
   }
 
-  return [a3 proposedBeginState];
+  return [begin proposedBeginState];
 }
 
 - (void)assetViewControllerReadyToAnswerReadingStatisticsQueries
@@ -3308,8 +3308,8 @@ LABEL_12:
 
 - (id)assetViewControllerViewForLiveResizeSnapshot
 {
-  v3 = [(THBookViewController *)self visibleViewController];
-  if (v3 == [(THBookViewController *)self documentViewController])
+  visibleViewController = [(THBookViewController *)self visibleViewController];
+  if (visibleViewController == [(THBookViewController *)self documentViewController])
   {
     v6 = [-[THDocumentViewController canvasViewController](-[THBookViewController documentViewController](self "documentViewController")];
 
@@ -3318,9 +3318,9 @@ LABEL_12:
 
   else
   {
-    v4 = [(THBookViewController *)self visibleViewController];
+    visibleViewController2 = [(THBookViewController *)self visibleViewController];
 
-    return [(UIViewController *)v4 view];
+    return [(UIViewController *)visibleViewController2 view];
   }
 }
 
@@ -3328,10 +3328,10 @@ LABEL_12:
 {
   if ([(THBookViewController *)self isBookEpub])
   {
-    v3 = [(THBookViewController *)self theme];
+    theme = [(THBookViewController *)self theme];
     v4 = [-[THBookViewController view](self "view")];
 
-    return [(THTheme *)v3 backgroundColorForTraitCollection:v4];
+    return [(THTheme *)theme backgroundColorForTraitCollection:v4];
   }
 
   else
@@ -3345,26 +3345,26 @@ LABEL_12:
 {
   if ([(THBookViewController *)self _inAnalyticsReadSession]&& ![(THBookViewController *)self analyticsReadStartProgress])
   {
-    v3 = [(THBookViewController *)self _analyticsReadingProgress];
+    _analyticsReadingProgress = [(THBookViewController *)self _analyticsReadingProgress];
 
-    [(THBookViewController *)self setAnalyticsReadStartProgress:v3];
+    [(THBookViewController *)self setAnalyticsReadStartProgress:_analyticsReadingProgress];
   }
 }
 
-- (BOOL)p_shouldSendVantageChangedNotificationWithReason:(id)a3
+- (BOOL)p_shouldSendVantageChangedNotificationWithReason:(id)reason
 {
   result = 0;
   if (![(THDocumentViewController *)[(THBookViewController *)self documentViewController] showingExpandedWidgetView])
   {
-    if (![a3 isEqualToString:@"THVantageChangeReasonRotation"])
+    if (![reason isEqualToString:@"THVantageChangeReasonRotation"])
     {
       return 1;
     }
 
     if (![(THBookViewController *)self isNotesFullscreenVisible]&& ![(THBookViewController *)self isGlossaryVisible]&& ![(THBookViewController *)self isStudyViewControllerVisible])
     {
-      v6 = [(THBookViewController *)self documentViewController];
-      if (v6 == [(THBookViewController *)self visibleViewController])
+      documentViewController = [(THBookViewController *)self documentViewController];
+      if (documentViewController == [(THBookViewController *)self visibleViewController])
       {
         return 1;
       }
@@ -3374,41 +3374,41 @@ LABEL_12:
   return result;
 }
 
-- (void)vantageWillChangeBy:(id)a3 reason:(id)a4
+- (void)vantageWillChangeBy:(id)by reason:(id)reason
 {
-  if ([(THBookViewController *)self p_shouldSendVantageChangedNotificationWithReason:a4])
+  if ([(THBookViewController *)self p_shouldSendVantageChangedNotificationWithReason:reason])
   {
     v7 = @"THVantageChangeReason";
-    v8 = a4;
-    [+[NSNotificationCenter defaultCenter](NSNotificationCenter postNotificationName:"postNotificationName:object:userInfo:" object:@"THVantageWillChangeNotification" userInfo:a3, [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1]];
+    reasonCopy = reason;
+    [+[NSNotificationCenter defaultCenter](NSNotificationCenter postNotificationName:"postNotificationName:object:userInfo:" object:@"THVantageWillChangeNotification" userInfo:by, [NSDictionary dictionaryWithObjects:&reasonCopy forKeys:&v7 count:1]];
   }
 
-  if ([a4 isEqualToString:@"THVantageChangeReasonPresentationMode"])
+  if ([reason isEqualToString:@"THVantageChangeReasonPresentationMode"])
   {
     [(THBookViewController *)self p_updateTOCForUpcomingPresentationModeChange];
   }
 }
 
-- (void)vantageChangeWasCancelledBy:(id)a3 reason:(id)a4
+- (void)vantageChangeWasCancelledBy:(id)by reason:(id)reason
 {
-  if ([(THBookViewController *)self p_shouldSendVantageChangedNotificationWithReason:a4])
+  if ([(THBookViewController *)self p_shouldSendVantageChangedNotificationWithReason:reason])
   {
     v6 = @"THVantageChangeReason";
-    v7 = a4;
-    [+[NSNotificationCenter defaultCenter](NSNotificationCenter postNotificationName:"postNotificationName:object:userInfo:" object:@"THVantageChangeWasCancelledNotification" userInfo:a3, [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1]];
+    reasonCopy = reason;
+    [+[NSNotificationCenter defaultCenter](NSNotificationCenter postNotificationName:"postNotificationName:object:userInfo:" object:@"THVantageChangeWasCancelledNotification" userInfo:by, [NSDictionary dictionaryWithObjects:&reasonCopy forKeys:&v6 count:1]];
   }
 }
 
-- (void)vantageDidChangeBy:(id)a3 reason:(id)a4
+- (void)vantageDidChangeBy:(id)by reason:(id)reason
 {
-  if ([(THBookViewController *)self p_shouldSendVantageChangedNotificationWithReason:a4])
+  if ([(THBookViewController *)self p_shouldSendVantageChangedNotificationWithReason:reason])
   {
     v7 = @"THVantageChangeReason";
-    v8 = a4;
-    [+[NSNotificationCenter defaultCenter](NSNotificationCenter postNotificationName:"postNotificationName:object:userInfo:" object:@"THVantageDidChangeNotification" userInfo:a3, [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1]];
+    reasonCopy = reason;
+    [+[NSNotificationCenter defaultCenter](NSNotificationCenter postNotificationName:"postNotificationName:object:userInfo:" object:@"THVantageDidChangeNotification" userInfo:by, [NSDictionary dictionaryWithObjects:&reasonCopy forKeys:&v7 count:1]];
   }
 
-  if ([a4 isEqualToString:@"THVantageChangeReasonPresentationMode"])
+  if ([reason isEqualToString:@"THVantageChangeReasonPresentationMode"])
   {
     [(THBookViewController *)self p_updateTOCForPresentationModeChange];
   }
@@ -3418,62 +3418,62 @@ LABEL_12:
 
 - (BOOL)bookIsPaginatedForPortrait
 {
-  v3 = [(THBookViewController *)self bookDescription];
-  if (v3)
+  bookDescription = [(THBookViewController *)self bookDescription];
+  if (bookDescription)
   {
-    LOBYTE(v3) = [(THBookDescription *)[(THBookViewController *)self bookDescription] orientationLock]== 1;
+    LOBYTE(bookDescription) = [(THBookDescription *)[(THBookViewController *)self bookDescription] orientationLock]== 1;
   }
 
-  return v3;
+  return bookDescription;
 }
 
 - (BOOL)allowCopy
 {
-  v2 = [(THBookViewController *)self bookDescription];
+  bookDescription = [(THBookViewController *)self bookDescription];
 
-  return [(THBookDescription *)v2 allowCopy];
+  return [(THBookDescription *)bookDescription allowCopy];
 }
 
-- (id)activityItemProviderWithCachedAnnotation:(id)a3
+- (id)activityItemProviderWithCachedAnnotation:(id)annotation
 {
-  v4 = [(THBookViewController *)self documentRoot];
+  documentRoot = [(THBookViewController *)self documentRoot];
 
-  return [v4 activityItemProviderWithAnnotation:a3];
+  return [documentRoot activityItemProviderWithAnnotation:annotation];
 }
 
-- (id)activityItemProviderWithCachedAnnotations:(id)a3
+- (id)activityItemProviderWithCachedAnnotations:(id)annotations
 {
-  v4 = [(THBookViewController *)self documentRoot];
+  documentRoot = [(THBookViewController *)self documentRoot];
 
-  return [v4 activityItemProviderWithAnnotations:a3];
+  return [documentRoot activityItemProviderWithAnnotations:annotations];
 }
 
-- (id)htmlGeneratorWithAnnotations:(id)a3
+- (id)htmlGeneratorWithAnnotations:(id)annotations
 {
   v5 = objc_alloc_init(AEAnnotationGroupHTMLGenerator);
-  v6 = [(THBookViewController *)self bookDescription];
+  bookDescription = [(THBookViewController *)self bookDescription];
   v7 = [-[THBookViewController documentRoot](self "documentRoot")];
   [v5 setDataSource:self];
-  [v5 setStoreId:{-[THBookDescription storeID](v6, "storeID")}];
-  v8 = [v7 objectForKey:@"itemName"];
-  if (!v8)
+  [v5 setStoreId:{-[THBookDescription storeID](bookDescription, "storeID")}];
+  bookTitle = [v7 objectForKey:@"itemName"];
+  if (!bookTitle)
   {
-    v8 = [(THBookDescription *)v6 bookTitle];
+    bookTitle = [(THBookDescription *)bookDescription bookTitle];
   }
 
-  [v5 setTitle:v8];
-  v9 = [v7 objectForKey:@"artistName"];
-  if (!v9)
+  [v5 setTitle:bookTitle];
+  bookAuthor = [v7 objectForKey:@"artistName"];
+  if (!bookAuthor)
   {
-    v9 = [(THBookDescription *)v6 bookAuthor];
+    bookAuthor = [(THBookDescription *)bookDescription bookAuthor];
   }
 
-  [v5 setAuthor:v9];
+  [v5 setAuthor:bookAuthor];
   [v5 setPublisherName:{objc_msgSend(v7, "objectForKey:", @"publisher"}];
   [v5 setPublisherYear:{objc_msgSend(-[THBookViewController documentRoot](self, "documentRoot"), "yearFromReleaseDate")}];
-  [v5 setContentProtected:{-[PFDContext kiUanAfQBD5qIUraolUj](-[THBookDescription drmContext](v6, "drmContext"), "kiUanAfQBD5qIUraolUj")}];
+  [v5 setContentProtected:{-[PFDContext kiUanAfQBD5qIUraolUj](-[THBookDescription drmContext](bookDescription, "drmContext"), "kiUanAfQBD5qIUraolUj")}];
   [v5 setCitationsAllowed:{-[THBookViewController allowCopy](self, "allowCopy")}];
-  [v5 setAnnotations:a3];
+  [v5 setAnnotations:annotations];
   return v5;
 }
 
@@ -3484,11 +3484,11 @@ LABEL_12:
   return [v2 annotationID];
 }
 
-- (BOOL)followAnchor:(id)a3 pulse:(BOOL)a4
+- (BOOL)followAnchor:(id)anchor pulse:(BOOL)pulse
 {
-  v4 = a4;
+  pulseCopy = pulse;
   [(THDocumentViewController *)[(THBookViewController *)self documentViewController] zoomOutIfNecessaryPriorToNavigation];
-  if ([a3 contentNode])
+  if ([anchor contentNode])
   {
     if ([(THBookViewController *)self isGlossaryVisible])
     {
@@ -3504,31 +3504,31 @@ LABEL_12:
       [(THBookViewController *)self p_showDVC];
     }
 
-    v8 = [(THBookViewController *)self documentViewController];
+    documentViewController = [(THBookViewController *)self documentViewController];
   }
 
   else
   {
-    v7 = [a3 glossaryEntry];
-    if (!v7)
+    glossaryEntry = [anchor glossaryEntry];
+    if (!glossaryEntry)
     {
-      return v7;
+      return glossaryEntry;
     }
 
     [(THBookViewController *)self p_showGlossary];
-    v8 = [(THBookViewController *)self glossaryViewController];
+    documentViewController = [(THBookViewController *)self glossaryViewController];
   }
 
-  LOBYTE(v7) = [(THDocumentViewController *)v8 followAnchor:a3 pulse:v4];
-  return v7;
+  LOBYTE(glossaryEntry) = [(THDocumentViewController *)documentViewController followAnchor:anchor pulse:pulseCopy];
+  return glossaryEntry;
 }
 
-- (void)willFollowAnchor:(id)a3 pulse:(BOOL)a4
+- (void)willFollowAnchor:(id)anchor pulse:(BOOL)pulse
 {
-  if ([a3 contentNode])
+  if ([anchor contentNode])
   {
-    v5 = [(THBookViewController *)self visibleViewController];
-    if (v5 != [(THBookViewController *)self documentViewController])
+    visibleViewController = [(THBookViewController *)self visibleViewController];
+    if (visibleViewController != [(THBookViewController *)self documentViewController])
     {
 
       [(THBookViewController *)self p_showDVC];
@@ -3536,30 +3536,30 @@ LABEL_12:
   }
 }
 
-- (BOOL)followLink:(id)a3 animated:(BOOL)a4
+- (BOOL)followLink:(id)link animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(THBookViewController *)self anchorFromLink:a3];
+  animatedCopy = animated;
+  v6 = [(THBookViewController *)self anchorFromLink:link];
   v7 = +[UIView areAnimationsEnabled];
-  [UIView setAnimationsEnabled:v4];
-  LOBYTE(v4) = [(THBookViewController *)self followAnchor:v6 pulse:1];
+  [UIView setAnimationsEnabled:animatedCopy];
+  LOBYTE(animatedCopy) = [(THBookViewController *)self followAnchor:v6 pulse:1];
   [UIView setAnimationsEnabled:v7];
-  return v4;
+  return animatedCopy;
 }
 
-- (id)anchorFromLink:(id)a3
+- (id)anchorFromLink:(id)link
 {
-  v5 = [(THBookViewController *)self bookLinkResolver];
-  v6 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] currentPresentationType];
+  bookLinkResolver = [(THBookViewController *)self bookLinkResolver];
+  currentPresentationType = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] currentPresentationType];
 
-  return [(THBookLinkResolver *)v5 anchorFromAbsoluteLink:a3 presentationType:v6];
+  return [(THBookLinkResolver *)bookLinkResolver anchorFromAbsoluteLink:link presentationType:currentPresentationType];
 }
 
-- (void)followAbsolutePageIndex:(unint64_t)a3
+- (void)followAbsolutePageIndex:(unint64_t)index
 {
   [(THBookViewController *)self p_showDVC];
   [(THBookViewController *)self hideGlossaryWithDestinationViewController:[(THBookViewController *)self visibleViewController]];
-  [(THDocumentViewController *)[(THBookViewController *)self documentViewController] followAbsolutePageIndex:a3];
+  [(THDocumentViewController *)[(THBookViewController *)self documentViewController] followAbsolutePageIndex:index];
   [-[THDocumentViewController interactiveCanvasController](self->mDocumentViewController "interactiveCanvasController")];
 
   +[CATransaction flush];
@@ -3571,49 +3571,49 @@ LABEL_12:
   {
     if ([(THBookViewController *)self isStudyViewControllerVisible])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isViewLoaded) = 0;
     }
 
     else
     {
-      v3 = [(THNotesViewController *)[(THBookViewController *)self notesFullscreenViewController] isViewLoaded];
-      if (v3)
+      isViewLoaded = [(THNotesViewController *)[(THBookViewController *)self notesFullscreenViewController] isViewLoaded];
+      if (isViewLoaded)
       {
-        LOBYTE(v3) = [-[THNotesViewController view](-[THBookViewController notesFullscreenViewController](self "notesFullscreenViewController")] != 0;
+        LOBYTE(isViewLoaded) = [-[THNotesViewController view](-[THBookViewController notesFullscreenViewController](self "notesFullscreenViewController")] != 0;
       }
     }
   }
 
   else
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(isViewLoaded) = 0;
   }
 
-  return v3;
+  return isViewLoaded;
 }
 
 - (BOOL)isGlossaryVisible
 {
-  v3 = [(THBookViewController *)self glossaryViewController];
-  if (v3)
+  glossaryViewController = [(THBookViewController *)self glossaryViewController];
+  if (glossaryViewController)
   {
-    v4 = [(THBookViewController *)self glossaryViewController];
+    glossaryViewController2 = [(THBookViewController *)self glossaryViewController];
 
-    LOBYTE(v3) = [(THGlossaryViewController *)v4 isGlossaryVisible];
+    LOBYTE(glossaryViewController) = [(THGlossaryViewController *)glossaryViewController2 isGlossaryVisible];
   }
 
-  return v3;
+  return glossaryViewController;
 }
 
 - (BOOL)isTOCVisible
 {
-  v3 = [(THBookViewController *)self visibleViewController];
-  if (!v3)
+  visibleViewController = [(THBookViewController *)self visibleViewController];
+  if (!visibleViewController)
   {
     return 0;
   }
 
-  v4 = v3 == self->mFlowTocViewController || v3 == self->mChapterBrowserController || v3 == self->mFlowToCTableViewController;
+  v4 = visibleViewController == self->mFlowTocViewController || visibleViewController == self->mChapterBrowserController || visibleViewController == self->mFlowToCTableViewController;
   if ([(THBookViewController *)self isGlossaryVisible]|| [(THBookViewController *)self isNotesFullscreenVisible]|| [(THBookViewController *)self isStudyViewControllerVisible])
   {
     return 0;
@@ -3624,23 +3624,23 @@ LABEL_12:
 
 - (BOOL)isGlossaryPresenting
 {
-  v3 = [(THBookViewController *)self presentingGlossary];
-  if (v3)
+  presentingGlossary = [(THBookViewController *)self presentingGlossary];
+  if (presentingGlossary)
   {
-    LOBYTE(v3) = [(THBookViewController *)self glossaryViewController]!= 0;
+    LOBYTE(presentingGlossary) = [(THBookViewController *)self glossaryViewController]!= 0;
   }
 
-  return v3;
+  return presentingGlossary;
 }
 
-- (void)willJumpToPageLocation:(id)a3
+- (void)willJumpToPageLocation:(id)location
 {
   [(THBookViewController *)self vantageWillChangeBy:self reason:@"THVantageChangeReasonNavigation"];
 
   [(THBookViewController *)self p_showDVC];
 }
 
-- (void)didJumpToPageLocation:(id)a3
+- (void)didJumpToPageLocation:(id)location
 {
   [-[THDocumentViewController interactiveCanvasController](self->mDocumentViewController interactiveCanvasController];
   +[CATransaction flush];
@@ -3648,7 +3648,7 @@ LABEL_12:
   [(THBookViewController *)self vantageDidChangeBy:self reason:@"THVantageChangeReasonNavigation"];
 }
 
-- (void)showBookmarksView:(id)a3
+- (void)showBookmarksView:(id)view
 {
   [(THNavigationOverlayView *)[(THBookViewController *)self navigationOverlayView] setOverlayHidden:0 animated:1];
 
@@ -3657,19 +3657,19 @@ LABEL_12:
 
 - (BOOL)canIncreaseFontSize
 {
-  v3 = [(THBookViewController *)self displaySettingsViewController];
+  displaySettingsViewController = [(THBookViewController *)self displaySettingsViewController];
 
-  return [(THBookViewController *)self shouldShowFontResizeControls:v3];
+  return [(THBookViewController *)self shouldShowFontResizeControls:displaySettingsViewController];
 }
 
 - (BOOL)canDecreaseFontSize
 {
-  v3 = [(THBookViewController *)self displaySettingsViewController];
+  displaySettingsViewController = [(THBookViewController *)self displaySettingsViewController];
 
-  return [(THBookViewController *)self shouldShowFontResizeControls:v3];
+  return [(THBookViewController *)self shouldShowFontResizeControls:displaySettingsViewController];
 }
 
-- (void)increaseFontSize:(id)a3
+- (void)increaseFontSize:(id)size
 {
   [(THBookViewController *)self p_setupDisplaySettingsIfNeeded];
   [(THDisplaySettingsViewController *)[(THBookViewController *)self displaySettingsViewController] increaseFontSize:self];
@@ -3677,7 +3677,7 @@ LABEL_12:
   [(THBookViewController *)self setDisplaySettingsViewController:0];
 }
 
-- (void)decreaseFontSize:(id)a3
+- (void)decreaseFontSize:(id)size
 {
   [(THBookViewController *)self p_setupDisplaySettingsIfNeeded];
   [(THDisplaySettingsViewController *)[(THBookViewController *)self displaySettingsViewController] decreaseFontSize:self];
@@ -3685,19 +3685,19 @@ LABEL_12:
   [(THBookViewController *)self setDisplaySettingsViewController:0];
 }
 
-- (void)searchFinished:(BOOL)a3 completion:(id)a4
+- (void)searchFinished:(BOOL)finished completion:(id)completion
 {
-  v5 = a3;
+  finishedCopy = finished;
   if ([(THBookViewController *)self p_isSearchVisible])
   {
 
-    [(THBookViewController *)self dismissSearchPopover:v5 completion:a4];
+    [(THBookViewController *)self dismissSearchPopover:finishedCopy completion:completion];
   }
 }
 
 - (BOOL)canRevealTOC
 {
-  v3 = [(THBookViewController *)self p_selectedTocViewController];
+  p_selectedTocViewController = [(THBookViewController *)self p_selectedTocViewController];
   mChapterBrowserController = self->mChapterBrowserController;
   [-[THBookViewController view](self "view")];
   if (v5 <= 0.0)
@@ -3713,7 +3713,7 @@ LABEL_12:
     v9 = v7 / v8 < 0.5;
   }
 
-  if (v3 != mChapterBrowserController)
+  if (p_selectedTocViewController != mChapterBrowserController)
   {
     return 0;
   }
@@ -3729,19 +3729,19 @@ LABEL_12:
 - (void)willRevealTOC
 {
   [(THDocumentViewController *)self->mDocumentViewController willStartRevealTOC];
-  v3 = [(THDocumentViewController *)self->mDocumentViewController currentChapter];
-  v4 = [(THDocumentViewController *)self->mDocumentViewController currentRelativePageIndex];
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+  currentChapter = [(THDocumentViewController *)self->mDocumentViewController currentChapter];
+  currentRelativePageIndex = [(THDocumentViewController *)self->mDocumentViewController currentRelativePageIndex];
+  if (currentRelativePageIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
   [(THChapterBrowserController *)self->mChapterBrowserController setIsPinchingDownFromCanvas:1];
-  [(THChapterBrowserController *)self->mChapterBrowserController setChapterIndex:v3];
+  [(THChapterBrowserController *)self->mChapterBrowserController setChapterIndex:currentChapter];
   [(THTOCViewController *)self->mChapterBrowserController setShroudedFraction:1.0];
   [(THBookViewController *)self p_addViewControllerInBack:self->mChapterBrowserController];
-  [(THChapterBrowserController *)self->mChapterBrowserController willTransitionFromChapterIndex:v3];
-  [(THChapterBrowserController *)self->mChapterBrowserController hidePageThumbnailAtIndex:v4 chapterIndex:v3 scrollIfNecessary:1];
+  [(THChapterBrowserController *)self->mChapterBrowserController willTransitionFromChapterIndex:currentChapter];
+  [(THChapterBrowserController *)self->mChapterBrowserController hidePageThumbnailAtIndex:currentRelativePageIndex chapterIndex:currentChapter scrollIfNecessary:1];
   [(THChapterBrowserController *)self->mChapterBrowserController scrollToThumbnailAtIndex:[(THDocumentViewController *)self->mDocumentViewController currentRelativePageIndex]];
   mDocumentViewController = self->mDocumentViewController;
 
@@ -3751,10 +3751,10 @@ LABEL_12:
 - (CGRect)pageTargetRectForRevealingTOC
 {
   mChapterBrowserController = self->mChapterBrowserController;
-  v4 = [(THDocumentViewController *)self->mDocumentViewController currentRelativePageIndex];
+  currentRelativePageIndex = [(THDocumentViewController *)self->mDocumentViewController currentRelativePageIndex];
   v5 = [-[THBookViewController unmovingViewForRevealingTOC](self "unmovingViewForRevealingTOC")];
 
-  [(THChapterBrowserController *)mChapterBrowserController rectForPageThumbnailAtIndex:v4 inLayer:v5];
+  [(THChapterBrowserController *)mChapterBrowserController rectForPageThumbnailAtIndex:currentRelativePageIndex inLayer:v5];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -3762,22 +3762,22 @@ LABEL_12:
   return result;
 }
 
-- (void)revealTOCAnimated:(BOOL)a3 duration:(double)a4
+- (void)revealTOCAnimated:(BOOL)animated duration:(double)duration
 {
-  v5 = a3;
-  [(THDocumentViewController *)self->mDocumentViewController showPageThumbnailsForPageIndexes:[NSIndexSet indexSetWithIndex:?], 1, a4];
+  animatedCopy = animated;
+  [(THDocumentViewController *)self->mDocumentViewController showPageThumbnailsForPageIndexes:[NSIndexSet indexSetWithIndex:?], 1, duration];
   mChapterBrowserController = self->mChapterBrowserController;
 
-  [(THTOCViewController *)mChapterBrowserController setShrouded:0 animated:v5 duration:a4];
+  [(THTOCViewController *)mChapterBrowserController setShrouded:0 animated:animatedCopy duration:duration];
 }
 
-- (void)unrevealTOCAnimated:(BOOL)a3 duration:(double)a4
+- (void)unrevealTOCAnimated:(BOOL)animated duration:(double)duration
 {
-  v5 = a3;
+  animatedCopy = animated;
   [THDocumentViewController hidePageThumbnailsAnimated:"hidePageThumbnailsAnimated:duration:" duration:?];
   mChapterBrowserController = self->mChapterBrowserController;
 
-  [(THTOCViewController *)mChapterBrowserController setShrouded:1 animated:v5 duration:a4];
+  [(THTOCViewController *)mChapterBrowserController setShrouded:1 animated:animatedCopy duration:duration];
 }
 
 - (void)didRevealTOC
@@ -3808,23 +3808,23 @@ LABEL_12:
 
 - (void)viewsDidResize
 {
-  v3 = [(THBookViewController *)self assetViewControllerDelegate];
+  assetViewControllerDelegate = [(THBookViewController *)self assetViewControllerDelegate];
 
-  [(AEAssetViewControllerDelegate *)v3 didFinishUpdateForAssetViewController:self];
+  [(AEAssetViewControllerDelegate *)assetViewControllerDelegate didFinishUpdateForAssetViewController:self];
 }
 
 - (void)recordOutgoingMajorNavigationJump
 {
-  v2 = [(THBookViewController *)self bookspotHistoryStack];
+  bookspotHistoryStack = [(THBookViewController *)self bookspotHistoryStack];
 
-  [(THBookspotHistoryStack *)v2 recordOutgoingMajorNavigationJump];
+  [(THBookspotHistoryStack *)bookspotHistoryStack recordOutgoingMajorNavigationJump];
 }
 
 - (void)willJumpToTOC
 {
-  v2 = [(THBookViewController *)self bookspotHistoryStack];
+  bookspotHistoryStack = [(THBookViewController *)self bookspotHistoryStack];
 
-  [(THBookspotHistoryStack *)v2 recordOutgoingMajorNavigationJumpSuppressingToolbar:1];
+  [(THBookspotHistoryStack *)bookspotHistoryStack recordOutgoingMajorNavigationJumpSuppressingToolbar:1];
 }
 
 - (void)updateNavigationAffordances
@@ -3845,10 +3845,10 @@ LABEL_12:
   MinX = CGRectGetMinX(v16);
   [(THNavigationOverlayView *)[(THBookViewController *)self navigationOverlayView] frame];
   v6 = MinX - CGRectGetWidth(v17) * 0.5;
-  v7 = [(THBookViewController *)self navigationOverlayView];
+  navigationOverlayView = [(THBookViewController *)self navigationOverlayView];
   if (v4 >= v6)
   {
-    [(UIButton *)[(THNavigationOverlayView *)v7 nextButton] frame];
+    [(UIButton *)[(THNavigationOverlayView *)navigationOverlayView nextButton] frame];
     v10 = CGRectGetMinX(v20);
     [(THNavigationOverlayView *)[(THBookViewController *)self navigationOverlayView] frame];
     v9 = v10 + CGRectGetWidth(v21) * -0.5;
@@ -3856,19 +3856,19 @@ LABEL_12:
 
   else
   {
-    [(THNavigationOverlayView *)v7 frame];
+    [(THNavigationOverlayView *)navigationOverlayView frame];
     v8 = CGRectGetWidth(v18) * 0.5;
     [(UIButton *)[(THNavigationOverlayView *)[(THBookViewController *)self navigationOverlayView] prevButton] frame];
     v9 = v8 - CGRectGetMaxX(v19);
   }
 
   v11 = v9 + v9;
-  v12 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] navOverlayPageNumberView];
+  navOverlayPageNumberView = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] navOverlayPageNumberView];
 
-  [(THPageNumberView *)v12 updateMaxWidth:v11];
+  [(THPageNumberView *)navOverlayPageNumberView updateMaxWidth:v11];
 }
 
-- (void)tocIsReadyToPresent:(id)a3
+- (void)tocIsReadyToPresent:(id)present
 {
   if ([(THBookViewController *)self bookOpenDestinationIsTOC])
   {
@@ -3877,28 +3877,28 @@ LABEL_12:
   }
 }
 
-- (void)setupDVCForTOCController:(id)a3
+- (void)setupDVCForTOCController:(id)controller
 {
-  v4 = [(THBookViewController *)self visibleViewController];
-  if (v4 != [(THBookViewController *)self documentViewController])
+  visibleViewController = [(THBookViewController *)self visibleViewController];
+  if (visibleViewController != [(THBookViewController *)self documentViewController])
   {
 
     [(THBookViewController *)self p_insertDVCInBack];
   }
 }
 
-- (id)navigationUnitForChapterBrowserController:(id)a3 chapterIndex:(unint64_t)a4
+- (id)navigationUnitForChapterBrowserController:(id)controller chapterIndex:(unint64_t)index
 {
-  v5 = [(THBookViewController *)self documentViewController];
+  documentViewController = [(THBookViewController *)self documentViewController];
 
-  return [(THDocumentViewController *)v5 navigationUnitForChapterIndex:a4];
+  return [(THDocumentViewController *)documentViewController navigationUnitForChapterIndex:index];
 }
 
-- (id)presentationTypeForChapterBrowserController:(id)a3
+- (id)presentationTypeForChapterBrowserController:(id)controller
 {
-  v3 = [-[THDocumentViewController documentRoot](-[THBookViewController documentViewController](self documentViewController];
+  documentViewController = [-[THDocumentViewController documentRoot](-[THBookViewController documentViewController](self documentViewController];
 
-  return [v3 chapterBrowserPagePresentationType];
+  return [documentViewController chapterBrowserPagePresentationType];
 }
 
 - (void)p_updateCanvasWithPendingPageIndexPath
@@ -3912,14 +3912,14 @@ LABEL_12:
   }
 }
 
-- (void)preloadContentNodesForPageRange:(_NSRange)a3 chapterIndex:(unint64_t)a4
+- (void)preloadContentNodesForPageRange:(_NSRange)range chapterIndex:(unint64_t)index
 {
-  if (a3.location != NSInvalidRange[0] || a3.length != NSInvalidRange[1])
+  if (range.location != NSInvalidRange[0] || range.length != NSInvalidRange[1])
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     v9 = +[THPresentationType paginatedPresentationTypeInContext:](THPresentationType, "paginatedPresentationTypeInContext:", [objc_msgSend(-[THBookViewController documentRoot](self "documentRoot")]);
-    v10 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] navigationUnitForChapterIndex:a4];
+    v10 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] navigationUnitForChapterIndex:index];
     v11 = objc_alloc_init(NSMutableSet);
     if (length)
     {
@@ -4007,21 +4007,21 @@ LABEL_12:
   [(NSMutableSet *)mPreloadingContentNodes removeAllObjects];
 }
 
-- (void)chapterBrowserController:(id)a3 willTransitionToPageIndex:(unint64_t)a4 chapterIndex:(unint64_t)a5 freeTransform:(BOOL)a6
+- (void)chapterBrowserController:(id)controller willTransitionToPageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex freeTransform:(BOOL)transform
 {
-  v6 = a6;
+  transformCopy = transform;
   [(THBookViewController *)self setDisallowRotate:1];
-  if (!v6)
+  if (!transformCopy)
   {
     [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] setNavigationBarHidden:1 animated:1];
   }
 
   [(THBookViewController *)self p_insertDVCInBackAnimated:1];
-  [(THDocumentViewController *)[(THBookViewController *)self documentViewController] switchToNavigationUnitForChapterIndex:a5];
+  [(THDocumentViewController *)[(THBookViewController *)self documentViewController] switchToNavigationUnitForChapterIndex:chapterIndex];
   [(THBookLinkResolver *)[(THBookViewController *)self bookLinkResolver] setDocumentLinkResolver:[(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentLinkResolver]];
   [(THDocumentNavigator *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentNavigator] setVisitedPagesAfterOpening:1];
-  v17[0] = a5;
-  v17[1] = a4;
+  v17[0] = chapterIndex;
+  v17[1] = index;
   v10 = [[NSIndexPath alloc] initWithIndexes:v17 length:2];
   if (self->mPendingPageIndexPath)
   {
@@ -4032,7 +4032,7 @@ LABEL_12:
   [-[THDocumentViewController interactiveCanvasController](-[THBookViewController documentViewController](self "documentViewController")];
   [-[THDocumentViewController interactiveCanvasController](-[THBookViewController documentViewController](self "documentViewController")];
   [-[THDocumentViewController interactiveCanvasController](-[THBookViewController documentViewController](self "documentViewController")];
-  v11 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] contentNodeForPageIndex:a4];
+  v11 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] contentNodeForPageIndex:index];
   [v11 startLoading];
   v16[0] = 0;
   v16[1] = v16;
@@ -4060,7 +4060,7 @@ LABEL_12:
   v13[5] = v10;
   v13[6] = v16;
   v13[7] = v14;
-  v13[8] = a4;
+  v13[8] = index;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_87A2C;
@@ -4074,13 +4074,13 @@ LABEL_12:
   _Block_object_dispose(v16, 8);
 }
 
-- (void)chapterBrowserController:(id)a3 didTransitionToPageIndex:(unint64_t)a4 chapterIndex:(unint64_t)a5 relativeTargetRect:(CGRect)a6
+- (void)chapterBrowserController:(id)controller didTransitionToPageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex relativeTargetRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = [(THBookViewController *)self setupLoadSpinner:a3];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v13 = [(THBookViewController *)self setupLoadSpinner:controller];
   [-[THDocumentViewController contentNodeForPageIndex:](-[THBookViewController documentViewController](self "documentViewController")];
   +[CATransaction begin];
   [(THBookViewController *)self p_updateCanvasWithPendingPageIndexPath];
@@ -4098,9 +4098,9 @@ LABEL_12:
   [-[THDocumentViewController interactiveCanvasController](-[THBookViewController documentViewController](self "documentViewController")];
   [-[THDocumentViewController interactiveCanvasController](-[THBookViewController documentViewController](self "documentViewController")];
   [-[THDocumentViewController interactiveCanvasController](-[THBookViewController documentViewController](self "documentViewController")];
-  if ([(THBookViewController *)self shouldKeepTOCInBackground:a3])
+  if ([(THBookViewController *)self shouldKeepTOCInBackground:controller])
   {
-    [(THBookViewController *)self p_addViewControllerInBack:a3];
+    [(THBookViewController *)self p_addViewControllerInBack:controller];
   }
 
   else
@@ -4117,18 +4117,18 @@ LABEL_12:
   }
 
   [(THBookViewController *)self recordCurrentLocationInHistory];
-  [(THDocumentViewController *)[(THBookViewController *)self documentViewController] zoomToRelativeTargetRect:a4 atPageIndex:x, y, width, height];
+  [(THDocumentViewController *)[(THBookViewController *)self documentViewController] zoomToRelativeTargetRect:index atPageIndex:x, y, width, height];
   [(THBookViewController *)self setDisallowRotate:0];
 
   [(THBookViewController *)self refreshStatusBarAppearance];
 }
 
-- (void)chapterBrowserController:(id)a3 cancelledTransitionToPageIndex:(unint64_t)a4 chapterIndex:(unint64_t)a5
+- (void)chapterBrowserController:(id)controller cancelledTransitionToPageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex
 {
-  v7 = [(THBookViewController *)self documentViewController:a3];
+  v7 = [(THBookViewController *)self documentViewController:controller];
   [-[THDocumentViewController interactiveCanvasController](v7 "interactiveCanvasController")];
   [-[THDocumentViewController interactiveCanvasController](v7 "interactiveCanvasController")];
-  [-[THDocumentViewController contentNodeForPageIndex:](v7 contentNodeForPageIndex:{a4), "cancelLoading"}];
+  [-[THDocumentViewController contentNodeForPageIndex:](v7 contentNodeForPageIndex:{index), "cancelLoading"}];
   [(THBookViewController *)self p_removeViewController:v7];
   [(THDocumentViewController *)v7 setVisibleInfoUpdatesAllowedInLandscape:0];
 
@@ -4137,11 +4137,11 @@ LABEL_12:
   [(THBookViewController *)self setDisallowRotate:0];
 }
 
-- (CGRect)chapterBrowserController:(id)a3 rectForRelativePageIndex:(unint64_t)a4 chapterIndex:(unint64_t)a5
+- (CGRect)chapterBrowserController:(id)controller rectForRelativePageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex
 {
-  v7 = [(THBookViewController *)self documentViewController];
+  documentViewController = [(THBookViewController *)self documentViewController];
 
-  [(THDocumentViewController *)v7 rectForRelativePageIndex:a4 chapterIndex:a5];
+  [(THDocumentViewController *)documentViewController rectForRelativePageIndex:index chapterIndex:chapterIndex];
   result.size.height = v11;
   result.size.width = v10;
   result.origin.y = v9;
@@ -4149,52 +4149,52 @@ LABEL_12:
   return result;
 }
 
-- (id)chapterBrowserController:(id)a3 pageNumberStringForRelativePageIndex:(unint64_t)a4 andChapterIndex:(unint64_t)a5
+- (id)chapterBrowserController:(id)controller pageNumberStringForRelativePageIndex:(unint64_t)index andChapterIndex:(unint64_t)chapterIndex
 {
   v8 = [-[THDocumentViewController navigationUnitForChapterIndex:](-[THBookViewController documentViewController](self "documentViewController")];
-  v9 = [(THBookViewController *)self navigationModel];
-  v10 = [(THBookViewController *)self presentationTypeForChapterBrowserController:a3];
+  navigationModel = [(THBookViewController *)self navigationModel];
+  v10 = [(THBookViewController *)self presentationTypeForChapterBrowserController:controller];
 
-  return [(THDocumentNavigationModel *)v9 pageNumberStringForAbsolutePageIndex:&v8[a4] forPresentationType:v10];
+  return [(THDocumentNavigationModel *)navigationModel pageNumberStringForAbsolutePageIndex:&v8[index] forPresentationType:v10];
 }
 
-- (unint64_t)chapterCountForChapterBrowserController:(id)a3
+- (unint64_t)chapterCountForChapterBrowserController:(id)controller
 {
-  v3 = [objc_msgSend(-[THBookViewController documentRoot](self documentRoot];
+  documentRoot = [objc_msgSend(-[THBookViewController documentRoot](self documentRoot];
 
-  return [v3 count];
+  return [documentRoot count];
 }
 
-- (id)chapterBrowserController:(id)a3 tocTileModelAtIndex:(unint64_t)a4
+- (id)chapterBrowserController:(id)controller tocTileModelAtIndex:(unint64_t)index
 {
-  v5 = [objc_msgSend(-[THBookViewController documentRoot](self documentRoot];
+  documentRoot = [objc_msgSend(-[THBookViewController documentRoot](self documentRoot];
 
-  return [v5 objectAtIndex:a4];
+  return [documentRoot objectAtIndex:index];
 }
 
-- (id)canvasScrollViewForChapterBrowserController:(id)a3
+- (id)canvasScrollViewForChapterBrowserController:(id)controller
 {
-  v3 = [-[THDocumentViewController interactiveCanvasController](-[THBookViewController documentViewController](self documentViewController];
+  documentViewController = [-[THDocumentViewController interactiveCanvasController](-[THBookViewController documentViewController](self documentViewController];
 
-  return [v3 enclosingScrollView];
+  return [documentViewController enclosingScrollView];
 }
 
-- (unint64_t)chapterBrowserController:(id)a3 relativePageIndexForLink:(id)a4
+- (unint64_t)chapterBrowserController:(id)controller relativePageIndexForLink:(id)link
 {
-  v5 = [(THBookViewController *)self documentViewController];
-  [(THDocumentViewController *)v5 ensureDocumentIsLoaded];
-  v6 = [(THDocumentViewController *)v5 documentNavigator];
+  documentViewController = [(THBookViewController *)self documentViewController];
+  [(THDocumentViewController *)documentViewController ensureDocumentIsLoaded];
+  documentNavigator = [(THDocumentViewController *)documentViewController documentNavigator];
 
-  return [(THDocumentNavigator *)v6 relativePageIndexForLink:a4];
+  return [(THDocumentNavigator *)documentNavigator relativePageIndexForLink:link];
 }
 
-- (CGRect)chapterBrowserController:(id)a3 targetRelativeRectForPoint:(CGPoint)a4 atPageIndex:(unint64_t)a5 chapterIndex:(unint64_t)a6
+- (CGRect)chapterBrowserController:(id)controller targetRelativeRectForPoint:(CGPoint)point atPageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = [(THBookViewController *)self documentViewController];
+  y = point.y;
+  x = point.x;
+  documentViewController = [(THBookViewController *)self documentViewController];
 
-  [(THDocumentViewController *)v10 targetRelativeRectForPoint:a5 atPageIndex:a6 chapterIndex:0 waitForContentNodeLoad:x, y];
+  [(THDocumentViewController *)documentViewController targetRelativeRectForPoint:index atPageIndex:chapterIndex chapterIndex:0 waitForContentNodeLoad:x, y];
   result.size.height = v14;
   result.size.width = v13;
   result.origin.y = v12;
@@ -4202,13 +4202,13 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)chapterBrowserController:(id)a3 targetRelativeRectForRelativePoint:(CGPoint)a4 atPageIndex:(unint64_t)a5 chapterIndex:(unint64_t)a6
+- (CGRect)chapterBrowserController:(id)controller targetRelativeRectForRelativePoint:(CGPoint)point atPageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = [(THBookViewController *)self documentViewController];
+  y = point.y;
+  x = point.x;
+  documentViewController = [(THBookViewController *)self documentViewController];
 
-  [(THDocumentViewController *)v10 targetRelativeRectForRelativePoint:a5 atPageIndex:a6 chapterIndex:0 waitForContentNodeLoad:x, y];
+  [(THDocumentViewController *)documentViewController targetRelativeRectForRelativePoint:index atPageIndex:chapterIndex chapterIndex:0 waitForContentNodeLoad:x, y];
   result.size.height = v14;
   result.size.width = v13;
   result.origin.y = v12;
@@ -4216,11 +4216,11 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)chapterBrowserController:(id)a3 shouldShowShroudForVisibleSize:(CGSize)a4
+- (BOOL)chapterBrowserController:(id)controller shouldShowShroudForVisibleSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  if ([(THBookViewController *)self visibleViewController]== a3 || [(THBookViewController *)self transitioningTOCSize])
+  height = size.height;
+  width = size.width;
+  if ([(THBookViewController *)self visibleViewController]== controller || [(THBookViewController *)self transitioningTOCSize])
   {
     return 0;
   }
@@ -4228,52 +4228,52 @@ LABEL_12:
   return [(THBookViewController *)self p_shouldShowShroudForVisibleSize:width, height];
 }
 
-- (BOOL)isTwoUpForChapterBrowserController:(id)a3
+- (BOOL)isTwoUpForChapterBrowserController:(id)controller
 {
-  v3 = [(THBookViewController *)self documentViewController];
+  documentViewController = [(THBookViewController *)self documentViewController];
 
-  return [(THDocumentViewController *)v3 isTwoUp];
+  return [(THDocumentViewController *)documentViewController isTwoUp];
 }
 
-- (BOOL)isLastPageInChapterForChapterBrowserController:(id)a3 pageIndex:(unint64_t)a4 chapterIndex:(unint64_t)a5
+- (BOOL)isLastPageInChapterForChapterBrowserController:(id)controller pageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex
 {
-  v7 = [(THBookViewController *)self documentViewController];
+  documentViewController = [(THBookViewController *)self documentViewController];
 
-  return [(THDocumentViewController *)v7 isLastPageInChapterForRelativePageIndex:a4 chapterIndex:a5];
+  return [(THDocumentViewController *)documentViewController isLastPageInChapterForRelativePageIndex:index chapterIndex:chapterIndex];
 }
 
-- (BOOL)isSinglePageInChapterForChapterBrowserController:(id)a3 chapterIndex:(unint64_t)a4
+- (BOOL)isSinglePageInChapterForChapterBrowserController:(id)controller chapterIndex:(unint64_t)index
 {
-  v5 = [(THBookViewController *)self documentViewController];
+  documentViewController = [(THBookViewController *)self documentViewController];
 
-  return [(THDocumentViewController *)v5 isSinglePageChapterForChapterIndex:a4];
+  return [(THDocumentViewController *)documentViewController isSinglePageChapterForChapterIndex:index];
 }
 
-- (void)TOCShowToolbarAnimated:(BOOL)a3
+- (void)TOCShowToolbarAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(THBookViewController *)self visibleViewController];
-  if (v5 == [(THBookViewController *)self chapterBrowserController])
+  animatedCopy = animated;
+  visibleViewController = [(THBookViewController *)self visibleViewController];
+  if (visibleViewController == [(THBookViewController *)self chapterBrowserController])
   {
 
-    [(THBookViewController *)self showToolbarAnimated:v3];
+    [(THBookViewController *)self showToolbarAnimated:animatedCopy];
   }
 }
 
-- (void)TOCHideToolbarAnimated:(BOOL)a3
+- (void)TOCHideToolbarAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(THBookViewController *)self visibleViewController];
-  if (v5 == [(THBookViewController *)self chapterBrowserController])
+  animatedCopy = animated;
+  visibleViewController = [(THBookViewController *)self visibleViewController];
+  if (visibleViewController == [(THBookViewController *)self chapterBrowserController])
   {
 
-    [(THBookViewController *)self hideToolbarAnimated:v3];
+    [(THBookViewController *)self hideToolbarAnimated:animatedCopy];
   }
 }
 
-- (BOOL)isPageBookmarkedForDocumentViewController:(id)a3
+- (BOOL)isPageBookmarkedForDocumentViewController:(id)controller
 {
-  if ([(THBookViewController *)self documentViewController]!= a3)
+  if ([(THBookViewController *)self documentViewController]!= controller)
   {
     return 0;
   }
@@ -4281,13 +4281,13 @@ LABEL_12:
   return [(THBookViewController *)self isPageBookmarked];
 }
 
-- (void)setPageBookmarked:(BOOL)a3 forDocumentViewController:(id)a4
+- (void)setPageBookmarked:(BOOL)bookmarked forDocumentViewController:(id)controller
 {
-  v4 = a3;
-  if ([(THBookViewController *)self documentViewController]== a4)
+  bookmarkedCopy = bookmarked;
+  if ([(THBookViewController *)self documentViewController]== controller)
   {
 
-    [(THBookViewController *)self setPageBookmarked:v4];
+    [(THBookViewController *)self setPageBookmarked:bookmarkedCopy];
   }
 }
 
@@ -4320,9 +4320,9 @@ LABEL_12:
     [(CALayer *)[(UIView *)self->mSpinnerView layer] setZPosition:10.0];
     [-[THBookViewController view](self "view")];
     [(UIView *)self->mSpinnerView setAlpha:0.0];
-    v5 = [(THBookViewController *)self isBookEpub];
+    isBookEpub = [(THBookViewController *)self isBookEpub];
     v6 = 3.0;
-    if (!v5)
+    if (!isBookEpub)
     {
       v6 = 2.0;
     }
@@ -4353,45 +4353,45 @@ LABEL_12:
   self->mSpinnerView = 0;
 }
 
-- (void)p_applyAccessibilityLabelForButton:(id)a3 withImageNamed:(id)a4
+- (void)p_applyAccessibilityLabelForButton:(id)button withImageNamed:(id)named
 {
-  if ([a4 hasPrefix:@"list.bullet"])
+  if ([named hasPrefix:@"list.bullet"])
   {
     v6 = @"toc.and.glossary.button";
 LABEL_11:
     v7 = THAccessibilityLocalizedString(v6);
 
-    [a3 setAccessibilityLabel:v7];
+    [button setAccessibilityLabel:v7];
     return;
   }
 
-  if ([a4 hasPrefix:@"rectangle"])
+  if ([named hasPrefix:@"rectangle"])
   {
     v6 = @"annotation.button";
     goto LABEL_11;
   }
 
-  if ([a4 hasPrefix:@"sun.max"])
+  if ([named hasPrefix:@"sun.max"])
   {
     v6 = @"brightness.button";
     goto LABEL_11;
   }
 
-  if ([a4 hasPrefix:@"textformat.size"])
+  if ([named hasPrefix:@"textformat.size"])
   {
     v6 = @"font.size.and.brightness.button";
     goto LABEL_11;
   }
 
-  if ([a4 hasPrefix:@"magnifyingglass"])
+  if ([named hasPrefix:@"magnifyingglass"])
   {
     v6 = @"search.button";
     goto LABEL_11;
   }
 
-  if (![a4 hasPrefix:@"bookmark"])
+  if (![named hasPrefix:@"bookmark"])
   {
-    if (![a4 hasPrefix:@"chevron.backward"])
+    if (![named hasPrefix:@"chevron.backward"])
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
       return;
@@ -4401,10 +4401,10 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  [a3 setAccessibilityLabel:THAccessibilityLocalizedString(@"bookmark.button")];
+  [button setAccessibilityLabel:THAccessibilityLocalizedString(@"bookmark.button")];
   v8 = THAccessibilityLocalizedString(@"bookmark.button.hint.iOS");
 
-  [a3 setAccessibilityHint:v8];
+  [button setAccessibilityHint:v8];
 }
 
 - (void)p_loadToolbar
@@ -4432,7 +4432,7 @@ LABEL_11:
   [(THBookViewController *)self closeDocumentWithErrorBlock:0];
 }
 
-- (void)closeDocumentWithErrorBlock:(id)a3
+- (void)closeDocumentWithErrorBlock:(id)block
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -4461,7 +4461,7 @@ LABEL_11:
   v5[4] = self;
   [THPerformanceRegressionLogger logEventWithBlock:v5];
   [(THBookViewController *)self vantageWillChangeBy:self reason:@"THVantageChangeReasonBookClose"];
-  [(AEAssetViewControllerDelegate *)[(THBookViewController *)self assetViewControllerDelegate] assetViewController:self requestClose:1 finishedConsuming:0 error:0 withErrorBlock:a3];
+  [(AEAssetViewControllerDelegate *)[(THBookViewController *)self assetViewControllerDelegate] assetViewController:self requestClose:1 finishedConsuming:0 error:0 withErrorBlock:block];
   [(THBookViewController *)self vantageDidChangeBy:self reason:@"THVantageChangeReasonBookClose"];
 }
 
@@ -4474,41 +4474,41 @@ LABEL_11:
 
 - (BOOL)p_showBuyButton
 {
-  v3 = [(THBookViewController *)self p_isSampleBook];
-  if (v3)
+  p_isSampleBook = [(THBookViewController *)self p_isSampleBook];
+  if (p_isSampleBook)
   {
-    LOBYTE(v3) = ![(THBookViewController *)self p_isPreorderBook];
+    LOBYTE(p_isSampleBook) = ![(THBookViewController *)self p_isPreorderBook];
   }
 
-  return v3;
+  return p_isSampleBook;
 }
 
-- (id)rightToolbarItems:(BOOL)a3
+- (id)rightToolbarItems:(BOOL)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v5 = +[NSMutableArray array];
   if ([(THBookViewController *)self documentViewController])
   {
     if ([(THBookViewController *)self p_shouldShowAppearanceImage])
     {
-      v6 = [(THBookViewController *)self appearanceButtonItem];
+      appearanceButtonItem = [(THBookViewController *)self appearanceButtonItem];
     }
 
     else
     {
-      v6 = [(THBookViewController *)self brightnessButtonItem];
+      appearanceButtonItem = [(THBookViewController *)self brightnessButtonItem];
     }
 
-    v7 = v6;
-    v8 = [(THBookViewController *)self visibleViewController];
-    if (v8 == self->mFlowTocViewController || v8 == self->mFlowToCTableViewController)
+    v7 = appearanceButtonItem;
+    visibleViewController = [(THBookViewController *)self visibleViewController];
+    if (visibleViewController == self->mFlowTocViewController || visibleViewController == self->mFlowToCTableViewController)
     {
       [v5 tsu_addObjects:{-[THBookViewController closeTOCButtonItem](self, "closeTOCButtonItem"), -[THBookViewController searchButtonItem](self, "searchButtonItem"), 0}];
     }
 
     else
     {
-      if (!v3 || ![(THBookViewController *)self p_showBuyButton])
+      if (!itemsCopy || ![(THBookViewController *)self p_showBuyButton])
       {
         [v5 addObject:{-[THBookViewController bookmarkButtonItem](self, "bookmarkButtonItem")}];
       }
@@ -4563,11 +4563,11 @@ LABEL_11:
     [(UIBarButtonItem *)self->_bookmarkButtonItem setWidth:v7];
 
     objc_initWeak(&location, self);
-    v8 = [(UIBarButtonItem *)self->_bookmarkButtonItem accessibilityLabel];
+    accessibilityLabel = [(UIBarButtonItem *)self->_bookmarkButtonItem accessibilityLabel];
     v9 = [(UIButton *)self->_bookmarkButton imageForState:0];
-    if (!v8)
+    if (!accessibilityLabel)
     {
-      v8 = &stru_471858;
+      accessibilityLabel = &stru_471858;
     }
 
     v11 = _NSConcreteStackBlock;
@@ -4575,7 +4575,7 @@ LABEL_11:
     v13 = sub_89010;
     v14 = &unk_45C550;
     objc_copyWeak(&v15, &location);
-    v10 = [UIAction actionWithTitle:v8 image:v9 identifier:0 handler:&v11];
+    v10 = [UIAction actionWithTitle:accessibilityLabel image:v9 identifier:0 handler:&v11];
     [(UIBarButtonItem *)self->_bookmarkButtonItem setMenuRepresentation:v10, v11, v12, v13, v14];
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -4678,27 +4678,27 @@ LABEL_11:
   if ((isKindOfClass & 1) == 0)
   {
 LABEL_6:
-    v6 = 0;
+    title = 0;
     goto LABEL_7;
   }
 
-  v5 = [(UIBarButtonItem *)closeButtonItem image];
+  image = [(UIBarButtonItem *)closeButtonItem image];
   closeButtonItem = self->_closeButtonItem;
-  if (v5)
+  if (image)
   {
-    v6 = &stru_471858;
+    title = &stru_471858;
   }
 
   else
   {
-    v6 = [(UIBarButtonItem *)closeButtonItem title];
+    title = [(UIBarButtonItem *)closeButtonItem title];
     closeButtonItem = self->_closeButtonItem;
   }
 
 LABEL_7:
 
   self->_closeButtonItem = [(AEAssetViewControllerDelegate *)[(THBookViewController *)self assetViewControllerDelegate] libraryButtonItemForViewController:self selector:"closeDocument"];
-  if ([(AEAssetViewControllerDelegate *)[(THBookViewController *)self assetViewControllerDelegate] canUpdateLibraryBarButtonItem:self->_closeButtonItem withOldString:v6])
+  if ([(AEAssetViewControllerDelegate *)[(THBookViewController *)self assetViewControllerDelegate] canUpdateLibraryBarButtonItem:self->_closeButtonItem withOldString:title])
   {
     [(THBookViewController *)self assetViewControllerUpdateToolbars];
   }
@@ -4758,16 +4758,16 @@ LABEL_7:
   return result;
 }
 
-- (id)createButtonItemConfigurationWithImageName:(id)a3 forSelector:(SEL)a4
+- (id)createButtonItemConfigurationWithImageName:(id)name forSelector:(SEL)selector
 {
-  v7 = [UIBarButtonItem bc_readingExperienceBarItem:a3 target:self action:a4];
-  [(THBookViewController *)self p_applyAccessibilityLabelForButton:v7 withImageNamed:a3];
+  v7 = [UIBarButtonItem bc_readingExperienceBarItem:name target:self action:selector];
+  [(THBookViewController *)self p_applyAccessibilityLabelForButton:v7 withImageNamed:name];
   objc_initWeak(&location, self);
-  v8 = [v7 accessibilityLabel];
-  v9 = [v7 image];
-  if (!v8)
+  accessibilityLabel = [v7 accessibilityLabel];
+  image = [v7 image];
+  if (!accessibilityLabel)
   {
-    v8 = &stru_471858;
+    accessibilityLabel = &stru_471858;
   }
 
   v12[0] = _NSConcreteStackBlock;
@@ -4775,21 +4775,21 @@ LABEL_7:
   v12[2] = sub_896B4;
   v12[3] = &unk_45C578;
   objc_copyWeak(v13, &location);
-  v13[1] = a4;
-  [v7 setMenuRepresentation:{+[UIAction actionWithTitle:image:identifier:handler:](UIAction, "actionWithTitle:image:identifier:handler:", v8, v9, 0, v12)}];
+  v13[1] = selector;
+  [v7 setMenuRepresentation:{+[UIAction actionWithTitle:image:identifier:handler:](UIAction, "actionWithTitle:image:identifier:handler:", accessibilityLabel, image, 0, v12)}];
   v10 = v7;
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
   return v10;
 }
 
-- (id)leftToolbarItems:(BOOL)a3
+- (id)leftToolbarItems:(BOOL)items
 {
   v4 = +[NSMutableArray array];
   if ([(THBookViewController *)self documentViewController])
   {
-    v5 = [(THBookViewController *)self visibleViewController];
-    if (v5 == self->mFlowTocViewController || v5 == self->mFlowToCTableViewController)
+    visibleViewController = [(THBookViewController *)self visibleViewController];
+    if (visibleViewController == self->mFlowTocViewController || visibleViewController == self->mFlowToCTableViewController)
     {
       [v4 tsu_addObjects:{-[THBookViewController closeButtonItem](self, "closeButtonItem"), -[THBookViewController shareButtonItem](self, "shareButtonItem"), 0}];
     }
@@ -4837,16 +4837,16 @@ LABEL_7:
 
 - (BOOL)p_isSampleBook
 {
-  v2 = [(THBookViewController *)self bookDescription];
+  bookDescription = [(THBookViewController *)self bookDescription];
 
-  return [(THBookDescription *)v2 isSample];
+  return [(THBookDescription *)bookDescription isSample];
 }
 
 - (BOOL)p_isPreorderBook
 {
-  v2 = [(THBookViewController *)self bookDescription];
+  bookDescription = [(THBookViewController *)self bookDescription];
 
-  return [(THBookDescription *)v2 isPreorderBook];
+  return [(THBookDescription *)bookDescription isPreorderBook];
 }
 
 - (void)p_setupDisplaySettingsIfNeeded
@@ -4866,7 +4866,7 @@ LABEL_7:
   }
 }
 
-- (void)showDisplaySettingsPopover:(id)a3
+- (void)showDisplaySettingsPopover:(id)popover
 {
   if ([-[THDisplaySettingsViewController view](-[THBookViewController displaySettingsViewController](self "displaySettingsViewController")])
   {
@@ -4881,35 +4881,35 @@ LABEL_7:
     [(THBookViewController *)self dismissActivePopover];
     [(THToolbarDelegate *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] toolbarDelegate] userWillInteractInToolbar];
     [(THBookViewController *)self p_setupDisplaySettingsIfNeeded];
-    v5 = [(THBookViewController *)self displaySettingsViewController];
-    [(THDisplaySettingsViewController *)v5 setModalPresentationStyle:7];
+    displaySettingsViewController = [(THBookViewController *)self displaySettingsViewController];
+    [(THDisplaySettingsViewController *)displaySettingsViewController setModalPresentationStyle:7];
     objc_opt_class();
     if (BUDynamicCast())
     {
-      v6 = [(THDisplaySettingsViewController *)v5 popoverPresentationController];
-      [v6 setBarButtonItem:a3];
-      [v6 setPermittedArrowDirections:1];
-      [v6 setDelegate:self];
-      [v6 setPassthroughViews:{-[THBookViewController p_popoverPassthroughViews](self, "p_popoverPassthroughViews")}];
-      [v6 bc_applyTraitOverridesWithOverrideUserInterfaceStyleFromViewController:v5];
+      popoverPresentationController = [(THDisplaySettingsViewController *)displaySettingsViewController popoverPresentationController];
+      [popoverPresentationController setBarButtonItem:popover];
+      [popoverPresentationController setPermittedArrowDirections:1];
+      [popoverPresentationController setDelegate:self];
+      [popoverPresentationController setPassthroughViews:{-[THBookViewController p_popoverPassthroughViews](self, "p_popoverPassthroughViews")}];
+      [popoverPresentationController bc_applyTraitOverridesWithOverrideUserInterfaceStyleFromViewController:displaySettingsViewController];
       v7[0] = _NSConcreteStackBlock;
       v7[1] = 3221225472;
       v7[2] = sub_89BE4;
       v7[3] = &unk_45AE00;
-      v7[4] = a3;
-      [(THBookViewController *)self presentViewController:v5 animated:1 completion:v7];
+      v7[4] = popover;
+      [(THBookViewController *)self presentViewController:displaySettingsViewController animated:1 completion:v7];
     }
   }
 }
 
-- (void)dismissDisplaySettings:(BOOL)a3
+- (void)dismissDisplaySettings:(BOOL)settings
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_89CB0;
   v3[3] = &unk_45AE00;
   v3[4] = self;
-  [(THDisplaySettingsViewController *)[(THBookViewController *)self displaySettingsViewController] dismissViewControllerAnimated:a3 completion:v3];
+  [(THDisplaySettingsViewController *)[(THBookViewController *)self displaySettingsViewController] dismissViewControllerAnimated:settings completion:v3];
 }
 
 - (void)p_displaySettingsDidHide
@@ -4919,11 +4919,11 @@ LABEL_7:
   [(THBookViewController *)self setDisplaySettingsViewController:0];
 }
 
-- (void)_showSearchPopoverFromSourceItem:(id)a3 withText:(id)a4
+- (void)_showSearchPopoverFromSourceItem:(id)item withText:(id)text
 {
-  v7 = [(THBookViewController *)self searchViewController];
-  v8 = v7;
-  if (a4 || !v7)
+  searchViewController = [(THBookViewController *)self searchViewController];
+  v8 = searchViewController;
+  if (text || !searchViewController)
   {
     [(THBookViewController *)self dismissActivePopover];
     if (!v8)
@@ -4948,7 +4948,7 @@ LABEL_7:
     [(THBookViewController *)self dismissActivePopover];
   }
 
-  -[THSearchViewController setSearchingForPredeterminedString:](v8, "setSearchingForPredeterminedString:", [a4 length] != 0);
+  -[THSearchViewController setSearchingForPredeterminedString:](v8, "setSearchingForPredeterminedString:", [text length] != 0);
   [(THSearchViewController *)v8 setModalPresentationStyle:7];
   [(THSearchViewController *)v8 setOverrideUserInterfaceStyle:[(THBookViewController *)self overrideUserInterfaceStyle]];
   if (([(THBookViewController *)self im_isCompactWidth]& 1) == 0 && ([(THBookViewController *)self im_isCompactHeight]& 1) == 0)
@@ -4956,18 +4956,18 @@ LABEL_7:
     [(THToolbarDelegate *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] toolbarDelegate] userWillInteractInToolbar];
   }
 
-  v10 = [(THSearchViewController *)v8 popoverPresentationController];
-  [v10 setBackgroundColor:{-[THTheme popoverBackgroundColor](-[THBookViewController theme](self, "theme"), "popoverBackgroundColor")}];
-  [v10 setSourceItem:a3];
-  [v10 setPermittedArrowDirections:1];
-  [v10 setDelegate:self];
-  [v10 setPassthroughViews:{-[THBookViewController p_popoverPassthroughViews](self, "p_popoverPassthroughViews")}];
-  [v10 bc_applyTraitOverridesWithOverrideUserInterfaceStyleFromViewController:v8];
+  popoverPresentationController = [(THSearchViewController *)v8 popoverPresentationController];
+  [popoverPresentationController setBackgroundColor:{-[THTheme popoverBackgroundColor](-[THBookViewController theme](self, "theme"), "popoverBackgroundColor")}];
+  [popoverPresentationController setSourceItem:item];
+  [popoverPresentationController setPermittedArrowDirections:1];
+  [popoverPresentationController setDelegate:self];
+  [popoverPresentationController setPassthroughViews:{-[THBookViewController p_popoverPassthroughViews](self, "p_popoverPassthroughViews")}];
+  [popoverPresentationController bc_applyTraitOverridesWithOverrideUserInterfaceStyleFromViewController:v8];
   [(THBookViewController *)self presentViewController:v8 animated:1 completion:&stru_45C598];
-  if (a4 && [a4 length])
+  if (text && [text length])
   {
 
-    [(THSearchViewController *)v8 searchForString:a4];
+    [(THSearchViewController *)v8 searchForString:text];
   }
 }
 
@@ -4983,15 +4983,15 @@ LABEL_7:
   }
 }
 
-- (void)dismissSearchPopover:(BOOL)a3 completion:(id)a4
+- (void)dismissSearchPopover:(BOOL)popover completion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_8A050;
   v4[3] = &unk_45B2E8;
   v4[4] = self;
-  v4[5] = a4;
-  [(THSearchViewController *)[(THBookViewController *)self searchViewController] dismissViewControllerAnimated:a3 completion:v4];
+  v4[5] = completion;
+  [(THSearchViewController *)[(THBookViewController *)self searchViewController] dismissViewControllerAnimated:popover completion:v4];
 }
 
 - (CGRect)p_navigationOverlayFrame
@@ -5064,10 +5064,10 @@ LABEL_7:
 
 - (void)p_loadNavigationOverlay
 {
-  v3 = [(THBookViewController *)self isBookEpub];
-  v4 = [[THNavigationOverlayView alloc] initWithFrame:v3 ^ 1 blissClassicStyle:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+  isBookEpub = [(THBookViewController *)self isBookEpub];
+  v4 = [[THNavigationOverlayView alloc] initWithFrame:isBookEpub ^ 1 blissClassicStyle:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v5 = v4;
-  if (v3)
+  if (isBookEpub)
   {
     v6 = 0;
   }
@@ -5088,17 +5088,17 @@ LABEL_7:
   [(THNavigationOverlayView *)v5 setOverlayHidden:1 animated:0];
   [(THBookViewController *)self setNavigationOverlayView:v5];
   [(THBookViewController *)self setNavigationHistoryStepperController:v7];
-  if (v3)
+  if (isBookEpub)
   {
-    v8 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] navigationOverlayContainer];
+    navigationOverlayContainer = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] navigationOverlayContainer];
   }
 
   else
   {
-    v8 = [(THBookViewController *)self view];
+    navigationOverlayContainer = [(THBookViewController *)self view];
   }
 
-  [(UIView *)v8 addSubview:v5];
+  [(UIView *)navigationOverlayContainer addSubview:v5];
 }
 
 - (void)p_loadTitleLabel
@@ -5140,9 +5140,9 @@ LABEL_7:
   }
 }
 
-- (int64_t)positionForBar:(id)a3
+- (int64_t)positionForBar:(id)bar
 {
-  if (self->mTitleLabelNavigationBar == a3)
+  if (self->mTitleLabelNavigationBar == bar)
   {
     return 3;
   }
@@ -5155,61 +5155,61 @@ LABEL_7:
 
 - (void)p_savePlaceholder
 {
-  v2 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentNavigator];
+  documentNavigator = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentNavigator];
 
-  [(THDocumentNavigator *)v2 savePlaceholder];
+  [(THDocumentNavigator *)documentNavigator savePlaceholder];
 }
 
-- (BOOL)p_isPageLocationValid:(id)a3
+- (BOOL)p_isPageLocationValid:(id)valid
 {
-  if (!a3)
+  if (!valid)
   {
-    LOBYTE(v5) = 0;
-    return v5;
+    LOBYTE(storageUID) = 0;
+    return storageUID;
   }
 
   if ([(THBookViewController *)self isBookEpub])
   {
-    v5 = [a3 storageUID];
-    if (!v5)
+    storageUID = [valid storageUID];
+    if (!storageUID)
     {
-      return v5;
+      return storageUID;
     }
 
-    v6 = [a3 range] == 0x7FFFFFFFFFFFFFFFLL;
+    v6 = [valid range] == 0x7FFFFFFFFFFFFFFFLL;
 LABEL_5:
-    LOBYTE(v5) = !v6;
-    return v5;
+    LOBYTE(storageUID) = !v6;
+    return storageUID;
   }
 
-  v7 = [(THDocumentNavigationModel *)[(THBookViewController *)self navigationModel] pageCount];
-  v8 = [a3 absolutePhysicalPageIndex];
-  LOBYTE(v5) = 0;
-  if (v8 != 0x7FFFFFFFFFFFFFFFLL && v7 != 0x7FFFFFFFFFFFFFFFLL)
+  pageCount = [(THDocumentNavigationModel *)[(THBookViewController *)self navigationModel] pageCount];
+  absolutePhysicalPageIndex = [valid absolutePhysicalPageIndex];
+  LOBYTE(storageUID) = 0;
+  if (absolutePhysicalPageIndex != 0x7FFFFFFFFFFFFFFFLL && pageCount != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [a3 absolutePhysicalPageIndex];
-    if (v9 >= [(THDocumentNavigationModel *)[(THBookViewController *)self navigationModel] pageCount])
+    absolutePhysicalPageIndex2 = [valid absolutePhysicalPageIndex];
+    if (absolutePhysicalPageIndex2 >= [(THDocumentNavigationModel *)[(THBookViewController *)self navigationModel] pageCount])
     {
-      LOBYTE(v5) = 0;
-      return v5;
+      LOBYTE(storageUID) = 0;
+      return storageUID;
     }
 
-    if ([objc_msgSend(a3 "storageUID")])
+    if ([objc_msgSend(valid "storageUID")])
     {
-      LOBYTE(v5) = 1;
-      return v5;
+      LOBYTE(storageUID) = 1;
+      return storageUID;
     }
 
-    v6 = [objc_msgSend(a3 "contentNodeGUID")] == 0;
+    v6 = [objc_msgSend(valid "contentNodeGUID")] == 0;
     goto LABEL_5;
   }
 
-  return v5;
+  return storageUID;
 }
 
-- (id)p_THCFIReaderStringFromBKCFIString:(id)a3
+- (id)p_THCFIReaderStringFromBKCFIString:(id)string
 {
-  if ([a3 rangeOfString:@"epubcfi(/"]
+  if ([string rangeOfString:@"epubcfi(/"]
   {
     v5 = 1;
   }
@@ -5221,15 +5221,15 @@ LABEL_5:
 
   if (v5)
   {
-    return a3;
+    return string;
   }
 
-  return [@"#" stringByAppendingString:a3];
+  return [@"#" stringByAppendingString:string];
 }
 
-- (BOOL)p_jumpToBKCFIString:(id)a3
+- (BOOL)p_jumpToBKCFIString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
@@ -5244,29 +5244,29 @@ LABEL_5:
     [(THBookViewController *)self navigateToAnchorInDVC:v5 pulse:1];
     v8 = [(THBookViewController *)self absolutePageIndexForCFI:v4];
     v9 = [THPageLocation alloc];
-    v10 = [v7 range];
-    -[THBookspotHistoryStack gotoBookspot:minor:](-[THBookViewController bookspotHistoryStack](self, "bookspotHistoryStack"), "gotoBookspot:minor:", -[THPageLocation initWithAbsolutePageIndex:range:storageUID:contentNodeGUID:](v9, "initWithAbsolutePageIndex:range:storageUID:contentNodeGUID:", v8, v10, v11, [v7 storageUID], objc_msgSend(objc_msgSend(v7, "contentNode"), "nodeGUID")), 0);
+    range = [v7 range];
+    -[THBookspotHistoryStack gotoBookspot:minor:](-[THBookViewController bookspotHistoryStack](self, "bookspotHistoryStack"), "gotoBookspot:minor:", -[THPageLocation initWithAbsolutePageIndex:range:storageUID:contentNodeGUID:](v9, "initWithAbsolutePageIndex:range:storageUID:contentNodeGUID:", v8, range, v11, [v7 storageUID], objc_msgSend(objc_msgSend(v7, "contentNode"), "nodeGUID")), 0);
   }
 
   return v6;
 }
 
-- (BOOL)p_jumpToFragment:(id)a3
+- (BOOL)p_jumpToFragment:(id)fragment
 {
-  if (!a3)
+  if (!fragment)
   {
     return 0;
   }
 
-  v5 = [(THDocumentNavigationModel *)[(THBookViewController *)self navigationModel] contentNodeForGUID:a3];
+  v5 = [(THDocumentNavigationModel *)[(THBookViewController *)self navigationModel] contentNodeForGUID:fragment];
   if (v5)
   {
-    v6 = [[THModelStorageAnchor alloc] initWithContentNode:v5 storageUID:a3 range:0, 0];
+    v6 = [[THModelStorageAnchor alloc] initWithContentNode:v5 storageUID:fragment range:0, 0];
   }
 
   else
   {
-    v6 = -[THDocumentLinkResolver anchorFromCustomLink:presentationType:](-[THBookLinkResolver documentLinkResolver](-[THBookViewController bookLinkResolver](self, "bookLinkResolver"), "documentLinkResolver"), "anchorFromCustomLink:presentationType:", -[THModelLink initWithTarget:context:]([THModelLink alloc], "initWithTarget:context:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"ibooks://#%@", a3), [-[THBookViewController documentRoot](self "documentRoot")]), +[THPresentationType paginatedPresentationTypeInContext:](THPresentationType, "paginatedPresentationTypeInContext:", objc_msgSend(-[THBookViewController documentRoot](self, "documentRoot"), "context")));
+    v6 = -[THDocumentLinkResolver anchorFromCustomLink:presentationType:](-[THBookLinkResolver documentLinkResolver](-[THBookViewController bookLinkResolver](self, "bookLinkResolver"), "documentLinkResolver"), "anchorFromCustomLink:presentationType:", -[THModelLink initWithTarget:context:]([THModelLink alloc], "initWithTarget:context:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"ibooks://#%@", fragment), [-[THBookViewController documentRoot](self "documentRoot")]), +[THPresentationType paginatedPresentationTypeInContext:](THPresentationType, "paginatedPresentationTypeInContext:", objc_msgSend(-[THBookViewController documentRoot](self, "documentRoot"), "context")));
   }
 
   if (!v6)
@@ -5281,19 +5281,19 @@ LABEL_5:
   {
     objc_opt_class();
     v9 = TSUDynamicCast();
-    v10 = [v9 range];
+    range = [v9 range];
     v12 = v11;
-    v13 = [v9 storageUID];
+    storageUID = [v9 storageUID];
   }
 
   else
   {
-    v13 = 0;
+    storageUID = 0;
     v12 = 0;
-    v10 = 0x7FFFFFFFFFFFFFFFLL;
+    range = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  -[THBookspotHistoryStack gotoBookspot:minor:](-[THBookViewController bookspotHistoryStack](self, "bookspotHistoryStack"), "gotoBookspot:minor:", -[THPageLocation initWithAbsolutePageIndex:range:storageUID:contentNodeGUID:]([THPageLocation alloc], "initWithAbsolutePageIndex:range:storageUID:contentNodeGUID:", v8, v10, v12, v13, [v5 nodeGUID]), 0);
+  -[THBookspotHistoryStack gotoBookspot:minor:](-[THBookViewController bookspotHistoryStack](self, "bookspotHistoryStack"), "gotoBookspot:minor:", -[THPageLocation initWithAbsolutePageIndex:range:storageUID:contentNodeGUID:]([THPageLocation alloc], "initWithAbsolutePageIndex:range:storageUID:contentNodeGUID:", v8, range, v12, storageUID, [v5 nodeGUID]), 0);
   return 1;
 }
 
@@ -5356,8 +5356,8 @@ LABEL_5:
           [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
         }
 
-        v8 = [(THBookViewController *)self documentRoot];
-        [v8 resetWithDictionaryRepresentation:v15];
+        documentRoot = [(THBookViewController *)self documentRoot];
+        [documentRoot resetWithDictionaryRepresentation:v15];
         if (v7)
         {
           goto LABEL_20;
@@ -5388,22 +5388,22 @@ LABEL_20:
 
 - (void)p_placeholderLocationDidChange
 {
-  v3 = [(THBookViewController *)self readingProgressHighwaterMark];
-  if (!v3)
+  readingProgressHighwaterMark = [(THBookViewController *)self readingProgressHighwaterMark];
+  if (!readingProgressHighwaterMark)
   {
-    v3 = [objc_msgSend(-[THDocumentViewController documentRoot](-[THBookViewController documentViewController](self "documentViewController")];
-    [(THBookViewController *)self setReadingProgressHighwaterMark:v3];
+    readingProgressHighwaterMark = [objc_msgSend(-[THDocumentViewController documentRoot](-[THBookViewController documentViewController](self "documentViewController")];
+    [(THBookViewController *)self setReadingProgressHighwaterMark:readingProgressHighwaterMark];
   }
 
-  v4 = [(THDocumentNavigator *)[(THBookViewController *)self documentNavigator] readingProgress];
-  if (v4)
+  readingProgress = [(THDocumentNavigator *)[(THBookViewController *)self documentNavigator] readingProgress];
+  if (readingProgress)
   {
-    v5 = v4;
-    v6 = [(THBookViewController *)self assetViewControllerDelegate];
+    v5 = readingProgress;
+    assetViewControllerDelegate = [(THBookViewController *)self assetViewControllerDelegate];
     v10 = BCAssetReadingProgressKey;
     v11 = v5;
-    [(AEAssetViewControllerDelegate *)v6 assetViewController:self assetPropertyChanged:[NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1]];
-    [(NSNumber *)v3 floatValue];
+    [(AEAssetViewControllerDelegate *)assetViewControllerDelegate assetViewController:self assetPropertyChanged:[NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1]];
+    [(NSNumber *)readingProgressHighwaterMark floatValue];
     v7 = kAEAnnotationReadingLocationSignificantHighwaterMark;
     if (v8 < kAEAnnotationReadingLocationSignificantHighwaterMark)
     {
@@ -5419,9 +5419,9 @@ LABEL_20:
   [+[BCProgressKitController sharedController](BCProgressKitController "sharedController")];
 }
 
-- (void)dismissTOCGlossaryView:(BOOL)a3 completion:(id)a4
+- (void)dismissTOCGlossaryView:(BOOL)view completion:(id)completion
 {
-  v5 = a3;
+  viewCopy = view;
   if ([(THBookViewController *)self TOCGlossaryViewController])
   {
     v8[0] = _NSConcreteStackBlock;
@@ -5429,15 +5429,15 @@ LABEL_20:
     v8[2] = sub_8B088;
     v8[3] = &unk_45AEA8;
     v8[4] = self;
-    v8[5] = a4;
-    [(THTOCGlossaryMenuPopoverViewController *)[(THBookViewController *)self TOCGlossaryViewController] dismissViewControllerAnimated:v5 completion:v8];
+    v8[5] = completion;
+    [(THTOCGlossaryMenuPopoverViewController *)[(THBookViewController *)self TOCGlossaryViewController] dismissViewControllerAnimated:viewCopy completion:v8];
   }
 
-  else if (a4)
+  else if (completion)
   {
-    v7 = *(a4 + 2);
+    v7 = *(completion + 2);
 
-    v7(a4);
+    v7(completion);
   }
 }
 
@@ -5448,7 +5448,7 @@ LABEL_20:
   [(THBookViewController *)self setTOCGlossaryViewController:0];
 }
 
-- (void)showSharePopover:(id)a3
+- (void)showSharePopover:(id)popover
 {
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
@@ -5457,7 +5457,7 @@ LABEL_20:
   v6[3] = &unk_45C608;
   objc_copyWeak(&v7, &location);
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = popover;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_8B4F0;
@@ -5468,14 +5468,14 @@ LABEL_20:
   objc_destroyWeak(&location);
 }
 
-- (void)dismissSharePopover:(BOOL)a3
+- (void)dismissSharePopover:(BOOL)popover
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_8B600;
   v3[3] = &unk_45AE00;
   v3[4] = self;
-  [(UIViewController *)[(THBookViewController *)self activityViewController] dismissViewControllerAnimated:a3 completion:v3];
+  [(UIViewController *)[(THBookViewController *)self activityViewController] dismissViewControllerAnimated:popover completion:v3];
 }
 
 - (void)p_shareDidHide
@@ -5485,13 +5485,13 @@ LABEL_20:
   [(THBookViewController *)self setActivityViewController:0];
 }
 
-- (void)showBookmarkMenu:(BOOL)a3 fromItem:(id)a4
+- (void)showBookmarkMenu:(BOOL)menu fromItem:(id)item
 {
-  v4 = a3;
+  menuCopy = menu;
   if ([-[THBookmarkMenuPopoverViewController view](-[THBookViewController bookmarkViewController](self "bookmarkViewController")])
   {
 
-    [(THBookViewController *)self dismissBookmarkMenu:v4 completion:0];
+    [(THBookViewController *)self dismissBookmarkMenu:menuCopy completion:0];
   }
 
   else
@@ -5514,15 +5514,15 @@ LABEL_20:
       v7 = v6;
       v8 = [[THNavigationController alloc] initWithRootViewController:[(THBookViewController *)self bookmarkViewController]];
       [(THNavigationController *)v8 setModalPresentationStyle:7];
-      v9 = [(THNavigationController *)v8 popoverPresentationController];
-      [v9 setSourceView:v7];
+      popoverPresentationController = [(THNavigationController *)v8 popoverPresentationController];
+      [popoverPresentationController setSourceView:v7];
       [v7 bounds];
-      [v9 setSourceRect:?];
-      [v9 setPermittedArrowDirections:1];
-      [v9 setDelegate:self];
-      [v9 setPassthroughViews:{-[THBookViewController p_popoverPassthroughViews](self, "p_popoverPassthroughViews")}];
-      [v9 bc_applyTraitOverridesWithOverrideUserInterfaceStyleFromViewController:{-[THBookViewController bookmarkViewController](self, "bookmarkViewController")}];
-      [(THBookViewController *)self presentViewController:v8 animated:v4 completion:0];
+      [popoverPresentationController setSourceRect:?];
+      [popoverPresentationController setPermittedArrowDirections:1];
+      [popoverPresentationController setDelegate:self];
+      [popoverPresentationController setPassthroughViews:{-[THBookViewController p_popoverPassthroughViews](self, "p_popoverPassthroughViews")}];
+      [popoverPresentationController bc_applyTraitOverridesWithOverrideUserInterfaceStyleFromViewController:{-[THBookViewController bookmarkViewController](self, "bookmarkViewController")}];
+      [(THBookViewController *)self presentViewController:v8 animated:menuCopy completion:0];
     }
   }
 }
@@ -5537,41 +5537,41 @@ LABEL_20:
   [(THBookViewController *)self setBookmarkViewController:0];
 }
 
-- (void)dismissBookmarkMenu:(BOOL)a3 completion:(id)a4
+- (void)dismissBookmarkMenu:(BOOL)menu completion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_8B97C;
   v4[3] = &unk_45B2E8;
   v4[4] = self;
-  v4[5] = a4;
-  [(THBookmarkMenuPopoverViewController *)[(THBookViewController *)self bookmarkViewController] dismissViewControllerAnimated:a3 completion:v4];
+  v4[5] = completion;
+  [(THBookmarkMenuPopoverViewController *)[(THBookViewController *)self bookmarkViewController] dismissViewControllerAnimated:menu completion:v4];
 }
 
 - (void)p_showBookmarkMenu
 {
-  v3 = [(THBookViewController *)self bookmarkButton];
+  bookmarkButton = [(THBookViewController *)self bookmarkButton];
 
-  [(THBookViewController *)self showBookmarkMenu:1 fromItem:v3];
+  [(THBookViewController *)self showBookmarkMenu:1 fromItem:bookmarkButton];
 }
 
-- (void)prepareForPopoverPresentation:(id)a3
+- (void)prepareForPopoverPresentation:(id)presentation
 {
-  v4 = [(THBookViewController *)self bookmarkViewController];
-  v5 = [a3 presentedViewController];
-  if (v5 == [(THBookmarkMenuPopoverViewController *)v4 navigationController])
+  bookmarkViewController = [(THBookViewController *)self bookmarkViewController];
+  presentedViewController = [presentation presentedViewController];
+  if (presentedViewController == [(THBookmarkMenuPopoverViewController *)bookmarkViewController navigationController])
   {
-    v6 = [(THBookmarkMenuPopoverViewController *)v4 navigationItem];
+    navigationItem = [(THBookmarkMenuPopoverViewController *)bookmarkViewController navigationItem];
 
-    [v6 setRightBarButtonItem:0 animated:0];
+    [navigationItem setRightBarButtonItem:0 animated:0];
   }
 }
 
-- (id)presentationController:(id)a3 viewControllerForAdaptivePresentationStyle:(int64_t)a4
+- (id)presentationController:(id)controller viewControllerForAdaptivePresentationStyle:(int64_t)style
 {
-  v6 = [(THBookViewController *)self bookmarkViewController:a3];
-  v7 = [a3 presentedViewController];
-  if (v7 == [(THBookmarkMenuPopoverViewController *)v6 navigationController])
+  v6 = [(THBookViewController *)self bookmarkViewController:controller];
+  presentedViewController = [controller presentedViewController];
+  if (presentedViewController == [(THBookmarkMenuPopoverViewController *)v6 navigationController])
   {
     [-[THBookmarkMenuPopoverViewController navigationController](v6 "navigationController")];
     v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"p_dismissBookmarkMenu"];
@@ -5581,58 +5581,58 @@ LABEL_20:
   return 0;
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [a3 presentedViewController];
-  if (v4 == [(THBookmarkMenuPopoverViewController *)[(THBookViewController *)self bookmarkViewController] navigationController])
+  presentedViewController = [dismiss presentedViewController];
+  if (presentedViewController == [(THBookmarkMenuPopoverViewController *)[(THBookViewController *)self bookmarkViewController] navigationController])
   {
 
     [(THBookViewController *)self p_bookmarkPopoverDidHide];
   }
 
-  else if (v4 == [(THBookViewController *)self TOCGlossaryViewController])
+  else if (presentedViewController == [(THBookViewController *)self TOCGlossaryViewController])
   {
 
     [(THBookViewController *)self p_TOCGlossaryPopoverDidHide];
   }
 
-  else if (v4 == [(THBookViewController *)self displaySettingsViewController])
+  else if (presentedViewController == [(THBookViewController *)self displaySettingsViewController])
   {
 
     [(THBookViewController *)self p_displaySettingsDidHide];
   }
 
-  else if (v4 == [(THBookViewController *)self searchViewController])
+  else if (presentedViewController == [(THBookViewController *)self searchViewController])
   {
     [(THBookViewController *)self p_searchDidHide];
-    v5 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] interactiveCanvasController];
+    interactiveCanvasController = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] interactiveCanvasController];
 
-    [v5 resumeEditing];
+    [interactiveCanvasController resumeEditing];
   }
 
-  else if (v4 == [(THBookViewController *)self activityViewController])
+  else if (presentedViewController == [(THBookViewController *)self activityViewController])
   {
 
     [(THBookViewController *)self p_shareDidHide];
   }
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller
 {
-  v5 = [(THBookViewController *)self traitCollection];
+  traitCollection = [(THBookViewController *)self traitCollection];
 
-  return [(THBookViewController *)self adaptivePresentationStyleForPresentationController:a3 traitCollection:v5];
+  return [(THBookViewController *)self adaptivePresentationStyleForPresentationController:controller traitCollection:traitCollection];
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
-  v4 = a4;
-  if (a4 || (v4 = [(THBookViewController *)self traitCollection]) != 0)
+  collectionCopy = collection;
+  if (collection || (collectionCopy = [(THBookViewController *)self traitCollection]) != 0)
   {
-    v7 = [v4 horizontalSizeClass] == &dword_0 + 1;
-    v8 = [v4 verticalSizeClass];
-    v9 = v8 == &dword_0 + 1;
-    if (v8 == &dword_0 + 1 || v7)
+    v7 = [collectionCopy horizontalSizeClass] == &dword_0 + 1;
+    verticalSizeClass = [collectionCopy verticalSizeClass];
+    v9 = verticalSizeClass == &dword_0 + 1;
+    if (verticalSizeClass == &dword_0 + 1 || v7)
     {
       v11 = 0;
     }
@@ -5650,15 +5650,15 @@ LABEL_20:
     v9 = 1;
   }
 
-  v12 = [a3 presentedViewController];
-  if (v12 == [(THBookViewController *)self TOCGlossaryViewController]|| v12 == [(THBookViewController *)self displaySettingsViewController])
+  presentedViewController = [controller presentedViewController];
+  if (presentedViewController == [(THBookViewController *)self TOCGlossaryViewController]|| presentedViewController == [(THBookViewController *)self displaySettingsViewController])
   {
     return -1;
   }
 
-  if (v12 != [(THBookViewController *)self activityViewController]&& v12 != [(THBookmarkMenuPopoverViewController *)[(THBookViewController *)self bookmarkViewController] navigationController])
+  if (presentedViewController != [(THBookViewController *)self activityViewController]&& presentedViewController != [(THBookmarkMenuPopoverViewController *)[(THBookViewController *)self bookmarkViewController] navigationController])
   {
-    if (v12 == [(THBookViewController *)self searchViewController]&& v9)
+    if (presentedViewController == [(THBookViewController *)self searchViewController]&& v9)
     {
       return 0;
     }
@@ -5672,32 +5672,32 @@ LABEL_20:
   return v11;
 }
 
-- (id)pageNumberStringForLocation:(id)a3
+- (id)pageNumberStringForLocation:(id)location
 {
-  v4 = [(THBookViewController *)self documentRoot];
+  documentRoot = [(THBookViewController *)self documentRoot];
 
-  return [v4 pageNumberStringForLocation:a3];
+  return [documentRoot pageNumberStringForLocation:location];
 }
 
-- (CGImage)thumbnailImageForAbsolutePageIndex:(unint64_t)a3
+- (CGImage)thumbnailImageForAbsolutePageIndex:(unint64_t)index
 {
-  v4 = [(THBookViewController *)self documentRoot];
+  documentRoot = [(THBookViewController *)self documentRoot];
 
-  return [v4 thumbnailImageForAbsolutePageIndex:a3];
+  return [documentRoot thumbnailImageForAbsolutePageIndex:index];
 }
 
-- (id)sectionTitleStringForLocation:(id)a3
+- (id)sectionTitleStringForLocation:(id)location
 {
-  v4 = [(THBookViewController *)self documentRoot];
+  documentRoot = [(THBookViewController *)self documentRoot];
 
-  return [v4 sectionTitleStringForLocation:a3];
+  return [documentRoot sectionTitleStringForLocation:location];
 }
 
-- (id)sectionNumberStringForLocation:(id)a3
+- (id)sectionNumberStringForLocation:(id)location
 {
-  v4 = [(THBookViewController *)self documentRoot];
+  documentRoot = [(THBookViewController *)self documentRoot];
 
-  return [v4 sectionNumberStringForLocation:a3];
+  return [documentRoot sectionNumberStringForLocation:location];
 }
 
 - (BOOL)isAnnotationWriteEnabled
@@ -5721,9 +5721,9 @@ LABEL_20:
   [(THBookViewController *)self setPageBookmarked:v3];
 }
 
-- (BOOL)isCurrentPageBookmarkedForBookmarkMenuPopoverViewController:(id)a3
+- (BOOL)isCurrentPageBookmarkedForBookmarkMenuPopoverViewController:(id)controller
 {
-  if ([(THBookViewController *)self bookmarkViewController]!= a3)
+  if ([(THBookViewController *)self bookmarkViewController]!= controller)
   {
     return 0;
   }
@@ -5731,28 +5731,28 @@ LABEL_20:
   return [(THBookViewController *)self isPageBookmarked];
 }
 
-- (void)setCurrentPageBookmarked:(BOOL)a3 forBookmarkMenuPopoverViewController:(id)a4
+- (void)setCurrentPageBookmarked:(BOOL)bookmarked forBookmarkMenuPopoverViewController:(id)controller
 {
-  v4 = a3;
-  if ([(THBookViewController *)self bookmarkViewController]== a4)
+  bookmarkedCopy = bookmarked;
+  if ([(THBookViewController *)self bookmarkViewController]== controller)
   {
 
-    [(THBookViewController *)self setPageBookmarked:v4];
+    [(THBookViewController *)self setPageBookmarked:bookmarkedCopy];
   }
 }
 
-- (void)removeBookmark:(id)a3
+- (void)removeBookmark:(id)bookmark
 {
   [objc_msgSend(-[THDocumentViewController documentRoot](-[THBookViewController documentViewController](self "documentViewController")];
 
   [(THBookViewController *)self updateBookmarkButton];
 }
 
-- (void)p_navigationHistoryDidChange:(id)a3
+- (void)p_navigationHistoryDidChange:(id)change
 {
-  v4 = [a3 object];
-  v5 = [objc_msgSend(v4 objectForKey:{@"minor", "BOOLValue"}];
-  v6 = [objc_msgSend(v4 objectForKey:{@"suppressToolbar", "BOOLValue"}];
+  object = [change object];
+  v5 = [objc_msgSend(object objectForKey:{@"minor", "BOOLValue"}];
+  v6 = [objc_msgSend(object objectForKey:{@"suppressToolbar", "BOOLValue"}];
   if ((v5 & 1) == 0)
   {
     if (v6 & 1 | ![(THBookViewController *)self isBookEpub])
@@ -5763,9 +5763,9 @@ LABEL_20:
 
     else
     {
-      v7 = [(THBookViewController *)self navigationBarController];
+      navigationBarController = [(THBookViewController *)self navigationBarController];
 
-      [(THNavigationBarController *)v7 setNavigationBarHidden:0 animated:1];
+      [(THNavigationBarController *)navigationBarController setNavigationBarHidden:0 animated:1];
     }
   }
 }
@@ -5777,28 +5777,28 @@ LABEL_20:
     return 0;
   }
 
-  v4 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentNavigator];
+  documentNavigator = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentNavigator];
 
-  return [(THDocumentNavigator *)v4 currentBookspotLocation];
+  return [(THDocumentNavigator *)documentNavigator currentBookspotLocation];
 }
 
 - (void)recordCurrentLocationInHistory
 {
-  v3 = [(THBookViewController *)self _currentLocation];
-  v4 = [(THBookViewController *)self bookspotHistoryStack];
+  _currentLocation = [(THBookViewController *)self _currentLocation];
+  bookspotHistoryStack = [(THBookViewController *)self bookspotHistoryStack];
 
-  [(THBookspotHistoryStack *)v4 gotoBookspot:v3 minor:1];
+  [(THBookspotHistoryStack *)bookspotHistoryStack gotoBookspot:_currentLocation minor:1];
 }
 
-- (BOOL)jumpToPageLocation:(id)a3 touchHistory:(BOOL)a4 minor:(BOOL)a5
+- (BOOL)jumpToPageLocation:(id)location touchHistory:(BOOL)history minor:(BOOL)minor
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = [(THBookViewController *)self isBookEpub];
-  if ((v9 & 1) == 0)
+  minorCopy = minor;
+  historyCopy = history;
+  isBookEpub = [(THBookViewController *)self isBookEpub];
+  if ((isBookEpub & 1) == 0)
   {
-    v10 = [a3 absolutePhysicalPageIndex];
-    if (!v6)
+    absolutePhysicalPageIndex = [location absolutePhysicalPageIndex];
+    if (!historyCopy)
     {
       goto LABEL_6;
     }
@@ -5806,8 +5806,8 @@ LABEL_20:
     goto LABEL_5;
   }
 
-  v10 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v6)
+  absolutePhysicalPageIndex = 0x7FFFFFFFFFFFFFFFLL;
+  if (historyCopy)
   {
 LABEL_5:
     [(THBookViewController *)self recordCurrentLocationInHistory];
@@ -5816,38 +5816,38 @@ LABEL_5:
 LABEL_6:
   [(THBookViewController *)self p_insertDVCInBack];
   [(THDocumentViewController *)[(THBookViewController *)self documentViewController] zoomOutIfNecessaryPriorToNavigation];
-  v11 = [(THBookViewController *)self navigationModel];
-  if (v9)
+  navigationModel = [(THBookViewController *)self navigationModel];
+  if (isBookEpub)
   {
-    v12 = -[THDocumentNavigationModel contentNodeForBodyStorageID:](v11, "contentNodeForBodyStorageID:", [a3 storageUID]);
+    v12 = -[THDocumentNavigationModel contentNodeForBodyStorageID:](navigationModel, "contentNodeForBodyStorageID:", [location storageUID]);
   }
 
   else
   {
-    v12 = [(THDocumentNavigationModel *)v11 contentNodeForAbsolutePageIndex:v10];
+    v12 = [(THDocumentNavigationModel *)navigationModel contentNodeForAbsolutePageIndex:absolutePhysicalPageIndex];
   }
 
   v13 = v12;
   if (v12)
   {
     [(THBookViewController *)self vantageWillChangeBy:self reason:@"THVantageChangeReasonNavigation"];
-    if ([a3 storageUID])
+    if ([location storageUID])
     {
-      v14 = [THModelStorageAnchor storageAnchorWithContentNode:v13 pageLocation:a3];
-      [(THModelStorageAnchor *)v14 setAbsolutePageIndex:v10];
+      v14 = [THModelStorageAnchor storageAnchorWithContentNode:v13 pageLocation:location];
+      [(THModelStorageAnchor *)v14 setAbsolutePageIndex:absolutePhysicalPageIndex];
     }
 
     else
     {
       v15 = +[THPresentationType paginatedPresentationTypeInContext:](THPresentationType, "paginatedPresentationTypeInContext:", [objc_msgSend(-[THBookViewController documentRoot](self "documentRoot")]);
-      v14 = -[THModelPageAnchor initWithContentNode:relativePageIndex:presentationType:]([THModelPageAnchor alloc], "initWithContentNode:relativePageIndex:presentationType:", v13, [v13 relativePageIndexForAbsolutePageIndex:v10 forPresentationType:v15], v15);
+      v14 = -[THModelPageAnchor initWithContentNode:relativePageIndex:presentationType:]([THModelPageAnchor alloc], "initWithContentNode:relativePageIndex:presentationType:", v13, [v13 relativePageIndexForAbsolutePageIndex:absolutePhysicalPageIndex forPresentationType:v15], v15);
     }
 
     [(THBookViewController *)self navigateToAnchorInDVC:v14 pulse:0];
-    v16 = [a3 copy];
-    if (v6)
+    v16 = [location copy];
+    if (historyCopy)
     {
-      [(THBookspotHistoryStack *)[(THBookViewController *)self bookspotHistoryStack] gotoBookspot:v16 minor:v5];
+      [(THBookspotHistoryStack *)[(THBookViewController *)self bookspotHistoryStack] gotoBookspot:v16 minor:minorCopy];
     }
 
     [(THBookViewController *)self vantageDidChangeBy:self reason:@"THVantageChangeReasonNavigation"];
@@ -5856,7 +5856,7 @@ LABEL_6:
     v20[0] = @"pageLocation";
     v20[1] = @"minor";
     v21[0] = v16;
-    v21[1] = [NSNumber numberWithBool:v5];
+    v21[1] = [NSNumber numberWithBool:minorCopy];
     [(NSNotificationCenter *)v17 postNotificationName:v18 object:[NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:2]];
     [(THBookViewController *)self removeTOC];
   }
@@ -5866,41 +5866,41 @@ LABEL_6:
 
 - (BOOL)isPageBookmarked
 {
-  v3 = [(THBookViewController *)self isBookmarkApplicable];
-  if (v3)
+  isBookmarkApplicable = [(THBookViewController *)self isBookmarkApplicable];
+  if (isBookmarkApplicable)
   {
     v4 = [-[THDocumentViewController documentRoot](-[THBookViewController documentViewController](self "documentViewController")];
     if ([(THBookViewController *)self isBookEpub])
     {
-      v5 = [(THBookViewController *)self currentPageInfoForBookmarks];
+      currentPageInfoForBookmarks = [(THBookViewController *)self currentPageInfoForBookmarks];
 
-      LOBYTE(v3) = [v4 isPageInfoBookmarked:v5];
+      LOBYTE(isBookmarkApplicable) = [v4 isPageInfoBookmarked:currentPageInfoForBookmarks];
     }
 
     else
     {
-      v6 = [(THBookViewController *)self currentAbsolutePageIndexForBookmarks];
+      currentAbsolutePageIndexForBookmarks = [(THBookViewController *)self currentAbsolutePageIndexForBookmarks];
 
-      LOBYTE(v3) = [v4 isAbsolutePhysicalPageBookmarked:v6];
+      LOBYTE(isBookmarkApplicable) = [v4 isAbsolutePhysicalPageBookmarked:currentAbsolutePageIndexForBookmarks];
     }
   }
 
-  return v3;
+  return isBookmarkApplicable;
 }
 
 - (id)_storageAnchorForPageBookmark
 {
-  v2 = [(THBookViewController *)self documentViewController];
-  v3 = [(THDocumentViewController *)v2 documentNavigator];
-  v4 = [(THDocumentViewController *)v2 isTwoUp]^ 1;
+  documentViewController = [(THBookViewController *)self documentViewController];
+  documentNavigator = [(THDocumentViewController *)documentViewController documentNavigator];
+  v4 = [(THDocumentViewController *)documentViewController isTwoUp]^ 1;
 
-  return [(THDocumentNavigator *)v3 storageAnchorForBookmarksUsingViewCenter:v4];
+  return [(THDocumentNavigator *)documentNavigator storageAnchorForBookmarksUsingViewCenter:v4];
 }
 
-- (void)setPageBookmarked:(BOOL)a3
+- (void)setPageBookmarked:(BOOL)bookmarked
 {
-  v3 = a3;
-  if (![(THBookViewController *)self isBookmarkApplicable]|| [(THBookViewController *)self isPageBookmarked]== v3)
+  bookmarkedCopy = bookmarked;
+  if (![(THBookViewController *)self isBookmarkApplicable]|| [(THBookViewController *)self isPageBookmarked]== bookmarkedCopy)
   {
     return;
   }
@@ -5908,32 +5908,32 @@ LABEL_6:
   v5 = [-[THDocumentViewController documentRoot](-[THBookViewController documentViewController](self "documentViewController")];
   if ([(THBookViewController *)self isBookEpub])
   {
-    v6 = [(THBookViewController *)self currentPageInfoForBookmarks];
-    if (v3)
+    currentPageInfoForBookmarks = [(THBookViewController *)self currentPageInfoForBookmarks];
+    if (bookmarkedCopy)
     {
-      v7 = [(THBookViewController *)self _storageAnchorForPageBookmark];
-      if (v7)
+      _storageAnchorForPageBookmark = [(THBookViewController *)self _storageAnchorForPageBookmark];
+      if (_storageAnchorForPageBookmark)
       {
-        [v5 bookmarkPageInfo:v6 anchor:v7];
+        [v5 bookmarkPageInfo:currentPageInfoForBookmarks anchor:_storageAnchorForPageBookmark];
       }
 
       goto LABEL_14;
     }
 
     v10 = v5;
-    v11 = v6;
+    v11 = currentPageInfoForBookmarks;
     v12 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v8 = [(THBookViewController *)self currentAbsolutePageIndexForBookmarks];
-    if (v3)
+    currentAbsolutePageIndexForBookmarks = [(THBookViewController *)self currentAbsolutePageIndexForBookmarks];
+    if (bookmarkedCopy)
     {
-      v9 = [(THBookViewController *)self _storageAnchorForPageBookmark];
-      if (v9)
+      _storageAnchorForPageBookmark2 = [(THBookViewController *)self _storageAnchorForPageBookmark];
+      if (_storageAnchorForPageBookmark2)
       {
-        [v5 bookmarkAbsolutePhysicalPage:v8 anchor:v9];
+        [v5 bookmarkAbsolutePhysicalPage:currentAbsolutePageIndexForBookmarks anchor:_storageAnchorForPageBookmark2];
       }
 
       goto LABEL_14;
@@ -5941,7 +5941,7 @@ LABEL_6:
 
     v10 = v5;
     v11 = 0;
-    v12 = v8;
+    v12 = currentAbsolutePageIndexForBookmarks;
   }
 
   [v10 unbookmarkPageInfo:v11 absolutePageIndex:v12];
@@ -5952,14 +5952,14 @@ LABEL_14:
 
 - (unint64_t)currentAbsolutePageIndex
 {
-  v2 = [(THBookViewController *)self documentNavigator];
+  documentNavigator = [(THBookViewController *)self documentNavigator];
 
-  return [(THDocumentNavigator *)v2 currentAbsolutePageIndex];
+  return [(THDocumentNavigator *)documentNavigator currentAbsolutePageIndex];
 }
 
 - (unint64_t)currentAbsolutePageIndexForBookmarks
 {
-  v3 = [(THBookViewController *)self documentNavigator];
+  documentNavigator = [(THBookViewController *)self documentNavigator];
   if ([(THDocumentViewController *)[(THBookViewController *)self documentViewController] isTwoUp])
   {
     v4 = [-[THBookViewController currentPresentationType](self "currentPresentationType")];
@@ -5970,33 +5970,33 @@ LABEL_14:
     v4 = &dword_0 + 1;
   }
 
-  return [(THDocumentNavigator *)v3 currentAbsolutePageIndexForBookmarksUsingViewCenter:v4];
+  return [(THDocumentNavigator *)documentNavigator currentAbsolutePageIndexForBookmarksUsingViewCenter:v4];
 }
 
 - (id)currentPageInfoForBookmarks
 {
   if ([-[THBookViewController currentPresentationType](self "currentPresentationType")] && -[THBookViewController isBookEpub](self, "isBookEpub"))
   {
-    v3 = [(THBookViewController *)self currentAbsolutePageIndex];
-    if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+    currentAbsolutePageIndex = [(THBookViewController *)self currentAbsolutePageIndex];
+    if (currentAbsolutePageIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
 
     else
     {
-      v7 = v3;
+      v7 = currentAbsolutePageIndex;
       v8 = +[THPresentationType paginatedPresentationTypeInContext:](THPresentationType, "paginatedPresentationTypeInContext:", [-[THDocumentViewController documentRoot](-[THBookViewController documentViewController](self "documentViewController")]);
       v9 = [-[THDocumentViewController currentNavigationUnit](-[THBookViewController documentViewController](self "documentViewController")];
-      v10 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] currentNavigationUnit];
+      currentNavigationUnit = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] currentNavigationUnit];
 
-      return [v10 pageInfoForRelativePageIndex:v9 forPresentationType:v8];
+      return [currentNavigationUnit pageInfoForRelativePageIndex:v9 forPresentationType:v8];
     }
   }
 
   else
   {
-    v5 = [(THBookViewController *)self documentNavigator];
+    documentNavigator = [(THBookViewController *)self documentNavigator];
     if ([(THDocumentViewController *)[(THBookViewController *)self documentViewController] isTwoUp])
     {
       v6 = [-[THBookViewController currentPresentationType](self "currentPresentationType")];
@@ -6007,62 +6007,62 @@ LABEL_14:
       v6 = &dword_0 + 1;
     }
 
-    return [(THDocumentNavigator *)v5 currentPageInfoForBookmarksUsingViewCenter:v6];
+    return [(THDocumentNavigator *)documentNavigator currentPageInfoForBookmarksUsingViewCenter:v6];
   }
 }
 
 - (BOOL)isBookmarkApplicable
 {
-  v3 = [(THBookViewController *)self isAnnotationWriteEnabled];
-  if (v3)
+  isAnnotationWriteEnabled = [(THBookViewController *)self isAnnotationWriteEnabled];
+  if (isAnnotationWriteEnabled)
   {
-    v4 = [(THBookViewController *)self visibleViewController];
-    if (v4 != [(THBookViewController *)self documentViewController])
+    visibleViewController = [(THBookViewController *)self visibleViewController];
+    if (visibleViewController != [(THBookViewController *)self documentViewController])
     {
-      LOBYTE(v3) = 0;
-      return v3;
+      LOBYTE(isAnnotationWriteEnabled) = 0;
+      return isAnnotationWriteEnabled;
     }
 
     if (![(THBookViewController *)self isBookEpub])
     {
       v5 = [(THBookViewController *)self currentAbsolutePageIndexForBookmarks]== 0x7FFFFFFFFFFFFFFFLL;
 LABEL_9:
-      LOBYTE(v3) = !v5;
-      return v3;
+      LOBYTE(isAnnotationWriteEnabled) = !v5;
+      return isAnnotationWriteEnabled;
     }
 
-    if (([-[THBookViewController currentPresentationType](self "currentPresentationType")] & 1) != 0 || (v3 = -[THReflowablePaginationController paginationComplete](-[THDocumentViewController reflowablePaginationController](-[THBookViewController documentViewController](self, "documentViewController"), "reflowablePaginationController"), "paginationComplete")))
+    if (([-[THBookViewController currentPresentationType](self "currentPresentationType")] & 1) != 0 || (isAnnotationWriteEnabled = -[THReflowablePaginationController paginationComplete](-[THDocumentViewController reflowablePaginationController](-[THBookViewController documentViewController](self, "documentViewController"), "reflowablePaginationController"), "paginationComplete")))
     {
       v5 = [(THBookViewController *)self currentPageInfoForBookmarks]== 0;
       goto LABEL_9;
     }
   }
 
-  return v3;
+  return isAnnotationWriteEnabled;
 }
 
 - (BOOL)isBookPortraitOnly
 {
-  v2 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentRoot];
+  documentRoot = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] documentRoot];
 
-  return [v2 isPortraitOnlyBook];
+  return [documentRoot isPortraitOnlyBook];
 }
 
 - (BOOL)isBookEpub
 {
-  v2 = [(THBookViewController *)self bookDescription];
+  bookDescription = [(THBookViewController *)self bookDescription];
 
-  return [(THBookDescription *)v2 isEpub];
+  return [(THBookDescription *)bookDescription isEpub];
 }
 
-- (id)cachedAnnotationForFetchedObject:(id)a3
+- (id)cachedAnnotationForFetchedObject:(id)object
 {
   v4 = [-[THDocumentViewController documentRoot](-[THBookViewController documentViewController](self "documentViewController")];
 
-  return [v4 cachedAnnotationForFetchedObject:a3];
+  return [v4 cachedAnnotationForFetchedObject:object];
 }
 
-- (void)showTOCGlossaryPopover:(id)a3
+- (void)showTOCGlossaryPopover:(id)popover
 {
   if ([(THBookViewController *)self TOCGlossaryViewController])
   {
@@ -6075,7 +6075,7 @@ LABEL_9:
     [(THBookViewController *)self dismissActivePopover];
     if ([objc_msgSend(objc_msgSend(-[THDocumentViewController documentRoot](-[THBookViewController documentViewController](self "documentViewController")])
     {
-      [a3 setEnabled:0];
+      [popover setEnabled:0];
       [(THToolbarDelegate *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] toolbarDelegate] userWillInteractInToolbar];
       v5 = objc_alloc_init(THTOCGlossaryMenuPopoverViewController);
       if ([(THBookViewController *)self isBookEpub])
@@ -6087,17 +6087,17 @@ LABEL_9:
       [(THBookViewController *)self setTOCGlossaryViewController:v5];
       [(THTOCGlossaryMenuPopoverViewController *)v5 setModalPresentationStyle:7];
       [(THTOCGlossaryMenuPopoverViewController *)v5 setOverrideUserInterfaceStyle:[(THBookViewController *)self overrideUserInterfaceStyle]];
-      v6 = [(THTOCGlossaryMenuPopoverViewController *)v5 popoverPresentationController];
-      [v6 setBarButtonItem:a3];
-      [v6 setPermittedArrowDirections:1];
-      [v6 setDelegate:self];
-      [v6 setPassthroughViews:{-[THBookViewController p_popoverPassthroughViews](self, "p_popoverPassthroughViews")}];
-      [v6 bc_applyTraitOverridesWithOverrideUserInterfaceStyleFromViewController:v5];
+      popoverPresentationController = [(THTOCGlossaryMenuPopoverViewController *)v5 popoverPresentationController];
+      [popoverPresentationController setBarButtonItem:popover];
+      [popoverPresentationController setPermittedArrowDirections:1];
+      [popoverPresentationController setDelegate:self];
+      [popoverPresentationController setPassthroughViews:{-[THBookViewController p_popoverPassthroughViews](self, "p_popoverPassthroughViews")}];
+      [popoverPresentationController bc_applyTraitOverridesWithOverrideUserInterfaceStyleFromViewController:v5];
       v7[0] = _NSConcreteStackBlock;
       v7[1] = 3221225472;
       v7[2] = sub_8CB50;
       v7[3] = &unk_45AE00;
-      v7[4] = a3;
+      v7[4] = popover;
       [(THBookViewController *)self presentViewController:v5 animated:1 completion:v7];
     }
 
@@ -6130,11 +6130,11 @@ LABEL_9:
   }
 }
 
-- (void)setCenterTitle:(id)a3
+- (void)setCenterTitle:(id)title
 {
-  v4 = [(THBookViewController *)self navigationBarController];
+  navigationBarController = [(THBookViewController *)self navigationBarController];
 
-  [(THNavigationBarController *)v4 setCenterTitle:a3];
+  [(THNavigationBarController *)navigationBarController setCenterTitle:title];
 }
 
 - (void)p_setCenterTitleForTOC
@@ -6152,7 +6152,7 @@ LABEL_9:
   [(THBookViewController *)self setCenterTitle:v3];
 }
 
-- (void)p_setCenterTitleForNavigationUnit:(id)a3
+- (void)p_setCenterTitleForNavigationUnit:(id)unit
 {
   if ([(THBookViewController *)self shouldShowChapterTitle])
   {
@@ -6169,21 +6169,21 @@ LABEL_9:
 
 - (void)setCenterTitleForCurrentNavigationUnit
 {
-  v3 = [(THBookViewController *)self documentViewController];
-  if ([(THDocumentViewController *)v3 currentNavigationUnit])
+  documentViewController = [(THBookViewController *)self documentViewController];
+  if ([(THDocumentViewController *)documentViewController currentNavigationUnit])
   {
-    v4 = [(THDocumentViewController *)v3 currentNavigationUnit];
+    currentNavigationUnit = [(THDocumentViewController *)documentViewController currentNavigationUnit];
 
-    [(THBookViewController *)self p_setCenterTitleForNavigationUnit:v4];
+    [(THBookViewController *)self p_setCenterTitleForNavigationUnit:currentNavigationUnit];
   }
 }
 
 - (void)p_setCenterTitleToBookTitle
 {
-  v3 = [(THBookDescription *)[(THBookViewController *)self bookDescription] bookTitle];
-  if (v3)
+  bookTitle = [(THBookDescription *)[(THBookViewController *)self bookDescription] bookTitle];
+  if (bookTitle)
   {
-    v4 = v3;
+    v4 = bookTitle;
   }
 
   else
@@ -6194,36 +6194,36 @@ LABEL_9:
   [(THBookViewController *)self setCenterTitle:v4];
 }
 
-- (void)p_setNavigationOverlayHidden:(BOOL)a3 animated:(BOOL)a4 autoHides:(BOOL)a5
+- (void)p_setNavigationOverlayHidden:(BOOL)hidden animated:(BOOL)animated autoHides:(BOOL)hides
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = self;
-  v9 = [(THBookViewController *)self visibleViewController];
-  if (v9 == [(THBookViewController *)self documentViewController])
+  hidesCopy = hides;
+  animatedCopy = animated;
+  selfCopy = self;
+  visibleViewController = [(THBookViewController *)self visibleViewController];
+  if (visibleViewController == [(THBookViewController *)self documentViewController])
   {
-    v10 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] showingExpandedWidgetView];
+    showingExpandedWidgetView = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] showingExpandedWidgetView];
   }
 
   else
   {
-    v10 = 0;
+    showingExpandedWidgetView = 0;
   }
 
-  if ([(THBookViewController *)self isTOCVisible]|| (v10 & 1) != 0 || [(THBookViewController *)self isStudyViewControllerVisible]|| [(THBookViewController *)self isGlossaryPresenting]|| [(THBookViewController *)self isGlossaryVisible]|| (v11 = [(THBookViewController *)self isNotesFullscreenVisible], a3) || (v11 & 1) != 0)
+  if ([(THBookViewController *)self isTOCVisible]|| (showingExpandedWidgetView & 1) != 0 || [(THBookViewController *)self isStudyViewControllerVisible]|| [(THBookViewController *)self isGlossaryPresenting]|| [(THBookViewController *)self isGlossaryVisible]|| (v11 = [(THBookViewController *)self isNotesFullscreenVisible], hidden) || (v11 & 1) != 0)
   {
-    [(THNavigationOverlayView *)[(THBookViewController *)self navigationOverlayView] setOverlayHidden:1 animated:v6];
+    [(THNavigationOverlayView *)[(THBookViewController *)self navigationOverlayView] setOverlayHidden:1 animated:animatedCopy];
   }
 
   else
   {
     [(THNavigationHistoryStepperController *)[(THBookViewController *)self navigationHistoryStepperController] updateHistoryNavigation];
-    v12 = [(THNavigationHistoryStepperController *)[(THBookViewController *)self navigationHistoryStepperController] bookspotHistoryStack];
-    if ((-[THBookspotHistoryStack hasPrevBookspot](v12, "hasPrevBookspot") & 1) != 0 || (-[THBookspotHistoryStack hasNextBookspot](v12, "hasNextBookspot") & 1) != 0 || [objc_msgSend(-[THBookViewController documentRoot](self "documentRoot")])
+    bookspotHistoryStack = [(THNavigationHistoryStepperController *)[(THBookViewController *)self navigationHistoryStepperController] bookspotHistoryStack];
+    if ((-[THBookspotHistoryStack hasPrevBookspot](bookspotHistoryStack, "hasPrevBookspot") & 1) != 0 || (-[THBookspotHistoryStack hasNextBookspot](bookspotHistoryStack, "hasNextBookspot") & 1) != 0 || [objc_msgSend(-[THBookViewController documentRoot](self "documentRoot")])
     {
-      [(THNavigationOverlayView *)[(THBookViewController *)self navigationOverlayView] setOverlayHidden:0 animated:v6];
+      [(THNavigationOverlayView *)[(THBookViewController *)self navigationOverlayView] setOverlayHidden:0 animated:animatedCopy];
       [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"pAutoHideNavOverlay" object:0];
-      if (v5)
+      if (hidesCopy)
       {
         [(THBookViewController *)self performSelector:"pAutoHideNavOverlay" withObject:0 afterDelay:4.0];
       }
@@ -6244,24 +6244,24 @@ LABEL_9:
   return CGRectGetWidth(v4) >= kIMConfigurationSize_largePhone[1];
 }
 
-- (void)willSetNavigationBarHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)willSetNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  hiddenCopy = hidden;
   [(THBookViewController *)self setSettingToolbarHidden:?];
   [(THBookViewController *)self refreshStatusBarAppearance];
 
-  [(THBookViewController *)self p_setNavigationOverlayHidden:v5 animated:v4 autoHides:0];
+  [(THBookViewController *)self p_setNavigationOverlayHidden:hiddenCopy animated:animatedCopy autoHides:0];
 }
 
-- (void)settingNavigationBarHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)settingNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(THBookViewController *)self view];
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  view = [(THBookViewController *)self view];
   v8 = [-[THBookViewController p_selectedTocViewControllerCreateIfNecessary:](self p_selectedTocViewControllerCreateIfNecessary:{0), "shroudOverlayView"}];
-  v9 = [(THBookViewController *)self viewBackgroundColor];
-  if (v4)
+  viewBackgroundColor = [(THBookViewController *)self viewBackgroundColor];
+  if (animatedCopy)
   {
     v10 = 0.15;
   }
@@ -6271,14 +6271,14 @@ LABEL_9:
     v10 = 0.0;
   }
 
-  if (v7)
+  if (view)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_8D1A8;
     v12[3] = &unk_45AE58;
-    v12[4] = v7;
-    v12[5] = v9;
+    v12[4] = view;
+    v12[5] = viewBackgroundColor;
     [UIView animateWithDuration:v12 animations:v10];
   }
 
@@ -6289,63 +6289,63 @@ LABEL_9:
     v11[2] = sub_8D1B0;
     v11[3] = &unk_45AE58;
     v11[4] = v8;
-    v11[5] = v9;
+    v11[5] = viewBackgroundColor;
     [UIView animateWithDuration:v11 animations:v10];
   }
 
-  [(THDocumentViewController *)[(THBookViewController *)self documentViewController] settingToolbarHidden:v5 animated:v4];
+  [(THDocumentViewController *)[(THBookViewController *)self documentViewController] settingToolbarHidden:hiddenCopy animated:animatedCopy];
 }
 
-- (void)didSetNavigationBarHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)didSetNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if ([(THDocumentViewController *)[(THBookViewController *)self documentViewController:a3] showingExpandedWidgetView])
+  if ([(THDocumentViewController *)[(THBookViewController *)self documentViewController:hidden] showingExpandedWidgetView])
   {
     [-[THBookViewController view](self "view")];
   }
 
   [(THDocumentViewController *)[(THBookViewController *)self documentViewController] setNeedsStatusBarAppearanceUpdate];
-  v5 = [(THBookViewController *)self documentViewController];
+  documentViewController = [(THBookViewController *)self documentViewController];
 
-  [(THDocumentViewController *)v5 setNeedsUpdateOfHomeIndicatorAutoHidden];
+  [(THDocumentViewController *)documentViewController setNeedsUpdateOfHomeIndicatorAutoHidden];
 }
 
 - (void)userWillInteractInToolbar
 {
-  v2 = [(THBookViewController *)self navigationBarController];
+  navigationBarController = [(THBookViewController *)self navigationBarController];
 
-  [(THNavigationBarController *)v2 resetAutohideTimer];
+  [(THNavigationBarController *)navigationBarController resetAutohideTimer];
 }
 
-- (void)showToolbarAnimated:(BOOL)a3
+- (void)showToolbarAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(THBookViewController *)self userWillInteractInToolbar];
-  [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] setNavigationBarHidden:0 animated:v3];
+  [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] setNavigationBarHidden:0 animated:animatedCopy];
 
-  [(THBookViewController *)self p_updateTitleLabelToolbarVisible:0 animated:v3];
+  [(THBookViewController *)self p_updateTitleLabelToolbarVisible:0 animated:animatedCopy];
 }
 
-- (void)hideToolbarAnimated:(BOOL)a3
+- (void)hideToolbarAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(THBookViewController *)self dismissActivePopoverIsTransitioning:0];
-  [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] setNavigationBarHidden:1 animated:v3];
+  [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] setNavigationBarHidden:1 animated:animatedCopy];
 
-  [(THBookViewController *)self p_updateTitleLabelToolbarVisible:1 animated:v3];
+  [(THBookViewController *)self p_updateTitleLabelToolbarVisible:1 animated:animatedCopy];
 }
 
 - (BOOL)isToolbarHidden
 {
-  v2 = [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] navigationBar];
+  navigationBar = [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] navigationBar];
 
-  return [(BCNavigationBar *)v2 isHidden];
+  return [(BCNavigationBar *)navigationBar isHidden];
 }
 
 - (void)updateBookmarkButton
 {
-  v3 = [(THBookViewController *)self isPageBookmarked];
-  v4 = v3;
-  if (v3)
+  isPageBookmarked = [(THBookViewController *)self isPageBookmarked];
+  v4 = isPageBookmarked;
+  if (isPageBookmarked)
   {
     v5 = @"bookmark.fill";
   }
@@ -6411,13 +6411,13 @@ LABEL_15:
   }
 }
 
-- (void)_showSearchPopoverShowingToolbarIfNeededFromBarButtonItem:(id)a3 text:(id)a4
+- (void)_showSearchPopoverShowingToolbarIfNeededFromBarButtonItem:(id)item text:(id)text
 {
   v8 = sub_8D710;
   v9 = &unk_45AE58;
-  v10 = self;
-  v11 = a4;
-  [(THBookViewController *)self userWillInteractInToolbar:a3];
+  selfCopy = self;
+  textCopy = text;
+  [(THBookViewController *)self userWillInteractInToolbar:item];
   if (![(THBookViewController *)self isToolbarHidden]|| ([(THBookViewController *)self im_isCompactWidth]& 1) != 0 || ([(THBookViewController *)self im_isCompactHeight]& 1) != 0)
   {
     if ([(THBookViewController *)self isToolbarHidden]|| ![(THBookViewController *)self im_isCompactWidth]|| UIAccessibilityIsVoiceOverRunning())
@@ -6426,31 +6426,31 @@ LABEL_15:
       return;
     }
 
-    v5 = [(THBookViewController *)self navigationBarController];
+    navigationBarController = [(THBookViewController *)self navigationBarController];
     v6 = 1;
   }
 
   else
   {
-    v5 = [(THBookViewController *)self navigationBarController];
+    navigationBarController = [(THBookViewController *)self navigationBarController];
     v6 = 0;
   }
 
-  [(THNavigationBarController *)v5 setNavigationBarHidden:v6 animated:1 completion:&v7];
+  [(THNavigationBarController *)navigationBarController setNavigationBarHidden:v6 animated:1 completion:&v7];
 }
 
 - (double)toolbarHeight
 {
-  v2 = [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] view];
+  view = [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] view];
 
-  [v2 frameHeight];
+  [view frameHeight];
   return result;
 }
 
 - (BOOL)useWhiteTheme
 {
-  v3 = [(THBookViewController *)self visibleViewController];
-  if (v3 != [(THBookViewController *)self documentViewController])
+  visibleViewController = [(THBookViewController *)self visibleViewController];
+  if (visibleViewController != [(THBookViewController *)self documentViewController])
   {
     return 0;
   }
@@ -6458,77 +6458,77 @@ LABEL_15:
   return [(THBookViewController *)self isBookEpub];
 }
 
-- (void)textForPagesLeftInChapterDidChangeTo:(id)a3
+- (void)textForPagesLeftInChapterDidChangeTo:(id)to
 {
-  if (a3)
+  if (to)
   {
-    v3 = a3;
+    toCopy = to;
   }
 
   else
   {
-    v3 = &stru_471858;
+    toCopy = &stru_471858;
   }
 
-  v4 = [(THBookViewController *)self navigationOverlayView];
+  navigationOverlayView = [(THBookViewController *)self navigationOverlayView];
 
-  [(THNavigationOverlayView *)v4 setAlternativeNextCaption:v3];
+  [(THNavigationOverlayView *)navigationOverlayView setAlternativeNextCaption:toCopy];
 }
 
-- (void)setToolbarHiddenFromAccessibility:(BOOL)a3
+- (void)setToolbarHiddenFromAccessibility:(BOOL)accessibility
 {
-  v3 = a3;
-  v4 = [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] navigationBar];
+  accessibilityCopy = accessibility;
+  navigationBar = [(THNavigationBarController *)[(THBookViewController *)self navigationBarController] navigationBar];
 
-  [(BCNavigationBar *)v4 setAccessibilityElementsHidden:v3];
+  [(BCNavigationBar *)navigationBar setAccessibilityElementsHidden:accessibilityCopy];
 }
 
-- (id)foregroundTintColorForNavigationBar:(id)a3
+- (id)foregroundTintColorForNavigationBar:(id)bar
 {
-  if ([(THNavigationBarController *)[(THBookViewController *)self navigationBarController] navigationBar]!= a3)
+  if ([(THNavigationBarController *)[(THBookViewController *)self navigationBarController] navigationBar]!= bar)
   {
     return 0;
   }
 
-  v6 = [(THBookViewController *)self theme];
+  theme = [(THBookViewController *)self theme];
 
-  return [(THTheme *)v6 foregroundTintColorForNavigationBar:a3];
+  return [(THTheme *)theme foregroundTintColorForNavigationBar:bar];
 }
 
-- (id)backgroundColorForNavigationBar:(id)a3
+- (id)backgroundColorForNavigationBar:(id)bar
 {
-  v4 = [(THBookViewController *)self theme];
+  theme = [(THBookViewController *)self theme];
 
-  return [(THTheme *)v4 backgroundColorForNavigationBar:a3];
+  return [(THTheme *)theme backgroundColorForNavigationBar:bar];
 }
 
-- (id)titleColorForNavigationBar:(id)a3
+- (id)titleColorForNavigationBar:(id)bar
 {
-  v4 = [(THBookViewController *)self theme];
+  theme = [(THBookViewController *)self theme];
 
-  return [(THTheme *)v4 titleColorForNavigationBar:a3];
+  return [(THTheme *)theme titleColorForNavigationBar:bar];
 }
 
-- (BOOL)navigationBarIsTranslucent:(id)a3
+- (BOOL)navigationBarIsTranslucent:(id)translucent
 {
-  v4 = [(THBookViewController *)self theme];
+  theme = [(THBookViewController *)self theme];
 
-  return [(THTheme *)v4 navigationBarIsTranslucent:a3];
+  return [(THTheme *)theme navigationBarIsTranslucent:translucent];
 }
 
-- (id)storeURLForHTMLGenerator:(id)a3
+- (id)storeURLForHTMLGenerator:(id)generator
 {
-  v4 = [+[AEAssetEngine storeMgr](AEAssetEngine storeMgr];
+  storeMgr = [+[AEAssetEngine storeMgr](AEAssetEngine storeMgr];
   v5 = [-[THBookViewController documentRoot](self "documentRoot")];
 
-  return [v4 bookUrlForStoreId:v5];
+  return [storeMgr bookUrlForStoreId:v5];
 }
 
-- (id)tellAFriendBaseURLForHTMLGenerator:(id)a3
+- (id)tellAFriendBaseURLForHTMLGenerator:(id)generator
 {
-  v3 = [+[AEAssetEngine storeMgr](AEAssetEngine storeMgr];
+  storeMgr = [+[AEAssetEngine storeMgr](AEAssetEngine storeMgr];
   objc_opt_class();
-  [v3 tellAFriendEmailBodyURLBase];
+  [storeMgr tellAFriendEmailBodyURLBase];
 
   return BUDynamicCast();
 }
@@ -6550,14 +6550,14 @@ LABEL_15:
   return result;
 }
 
-- (void)setAppearanceStyle:(int64_t)a3
+- (void)setAppearanceStyle:(int64_t)style
 {
-  if ([(THBookViewController *)self isBookEpub]&& [(THBookViewController *)self appearanceStyle]!= a3)
+  if ([(THBookViewController *)self isBookEpub]&& [(THBookViewController *)self appearanceStyle]!= style)
   {
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL && a3)
+    if (style != 0x7FFFFFFFFFFFFFFFLL && style)
     {
       v6 = +[NSUserDefaults standardUserDefaults];
-      [(NSUserDefaults *)v6 setInteger:a3 forKey:qword_5677B8];
+      [(NSUserDefaults *)v6 setInteger:style forKey:qword_5677B8];
     }
 
     else
@@ -6566,15 +6566,15 @@ LABEL_15:
       [(NSUserDefaults *)v5 removeObjectForKey:qword_5677B8];
     }
 
-    if (a3 != 3)
+    if (style != 3)
     {
       self->_styleBeforeAutoNight = [(THBookViewController *)self appearanceStyle];
     }
 
     [(BCNavigationBar *)[(THNavigationBarController *)[(THBookViewController *)self navigationBarController] navigationBar] setOverrideUserInterfaceStyle:[(THBookViewController *)self overrideUserInterfaceStyle]];
-    if ([(THDisplaySettingsViewController *)self->mDisplaySettingsViewController appearanceStyle]!= a3)
+    if ([(THDisplaySettingsViewController *)self->mDisplaySettingsViewController appearanceStyle]!= style)
     {
-      [(THDisplaySettingsViewController *)self->mDisplaySettingsViewController setAppearanceStyle:a3];
+      [(THDisplaySettingsViewController *)self->mDisplaySettingsViewController setAppearanceStyle:style];
       mDisplaySettingsViewController = self->mDisplaySettingsViewController;
 
       [(THDisplaySettingsViewController *)mDisplaySettingsViewController setAutoNightModeSwitch:1];
@@ -6582,10 +6582,10 @@ LABEL_15:
   }
 }
 
-- (void)applyAppearanceStyle:(int64_t)a3
+- (void)applyAppearanceStyle:(int64_t)style
 {
   [(THBookViewController *)self setTheme:[(THBookViewController *)self themeForStyle:?]];
-  [(THBookViewController *)self setAppearanceStyle:a3];
+  [(THBookViewController *)self setAppearanceStyle:style];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_8DC58;
@@ -6594,54 +6594,54 @@ LABEL_15:
   [UIView animateWithDuration:v5 animations:&stru_45C650 completion:0.1];
 }
 
-- (id)themeForStyle:(int64_t)a3
+- (id)themeForStyle:(int64_t)style
 {
   v4 = +[THBookViewController themeMap];
-  v5 = [NSNumber numberWithInt:a3];
+  v5 = [NSNumber numberWithInt:style];
 
   return [v4 objectForKey:v5];
 }
 
-- (void)coordinator:(id)a3 observer:(id)a4 didChangeLayout:(unint64_t)a5
+- (void)coordinator:(id)coordinator observer:(id)observer didChangeLayout:(unint64_t)layout
 {
-  if ([(THBookViewController *)self shouldShowFlowModeSwitch:[(THBookViewController *)self displaySettingsViewController:a3]])
+  if ([(THBookViewController *)self shouldShowFlowModeSwitch:[(THBookViewController *)self displaySettingsViewController:coordinator]])
   {
-    v6 = [(THBookViewController *)self displaySettingsViewController];
+    displaySettingsViewController = [(THBookViewController *)self displaySettingsViewController];
 
-    [(THBookViewController *)self displaySettingsControllerDidChangeFlowMode:v6 notifyingCoordinator:0];
+    [(THBookViewController *)self displaySettingsControllerDidChangeFlowMode:displaySettingsViewController notifyingCoordinator:0];
   }
 }
 
-- (void)coordinator:(id)a3 observer:(id)a4 didChangeStyle:(unint64_t)a5
+- (void)coordinator:(id)coordinator observer:(id)observer didChangeStyle:(unint64_t)style
 {
-  v7 = [(THBookViewController *)self displaySettingsViewController:a3];
+  v7 = [(THBookViewController *)self displaySettingsViewController:coordinator];
 
-  [(THBookViewController *)self displaySettingsController:v7 didChangeStyle:a5];
+  [(THBookViewController *)self displaySettingsController:v7 didChangeStyle:style];
 }
 
-- (void)coordinator:(id)a3 observerDidIncreaseFontSize:(id)a4
+- (void)coordinator:(id)coordinator observerDidIncreaseFontSize:(id)size
 {
-  if (![(THBookViewController *)self displaySettingsViewController:a3])
+  if (![(THBookViewController *)self displaySettingsViewController:coordinator])
   {
-    v5 = [(THBookViewController *)self displaySettingsViewController];
+    displaySettingsViewController = [(THBookViewController *)self displaySettingsViewController];
     v6 = [+[THApplicationSettings sharedSettings](THApplicationSettings "sharedSettings")];
 
-    [(THBookViewController *)self displaySettingsControllerDidChangeFontSize:v5 toFlowSizeScale:v6];
+    [(THBookViewController *)self displaySettingsControllerDidChangeFontSize:displaySettingsViewController toFlowSizeScale:v6];
   }
 }
 
-- (void)coordinator:(id)a3 observerDidDecreaseFontSize:(id)a4
+- (void)coordinator:(id)coordinator observerDidDecreaseFontSize:(id)size
 {
-  if (![(THBookViewController *)self displaySettingsViewController:a3])
+  if (![(THBookViewController *)self displaySettingsViewController:coordinator])
   {
-    v5 = [(THBookViewController *)self displaySettingsViewController];
+    displaySettingsViewController = [(THBookViewController *)self displaySettingsViewController];
     v6 = [+[THApplicationSettings sharedSettings](THApplicationSettings "sharedSettings")];
 
-    [(THBookViewController *)self displaySettingsControllerDidChangeFontSize:v5 toFlowSizeScale:v6];
+    [(THBookViewController *)self displaySettingsControllerDidChangeFontSize:displaySettingsViewController toFlowSizeScale:v6];
   }
 }
 
-- (void)_accessibilityInvertColorsStatusDidChange:(id)a3
+- (void)_accessibilityInvertColorsStatusDidChange:(id)change
 {
   IsInvertColorsEnabled = UIAccessibilityIsInvertColorsEnabled();
   if (self->_smartInvertEnabled != IsInvertColorsEnabled)
@@ -6653,9 +6653,9 @@ LABEL_15:
   }
 }
 
-- (void)dismissActivePopoverIsTransitioning:(BOOL)a3
+- (void)dismissActivePopoverIsTransitioning:(BOOL)transitioning
 {
-  if (!a3)
+  if (!transitioning)
   {
     [(THBookViewController *)self dismissBookmarkMenu:0 completion:0];
     [(THBookViewController *)self dismissTOCGlossaryView:0];
@@ -6670,12 +6670,12 @@ LABEL_15:
 
 - (THDocumentNavigator)documentNavigator
 {
-  v2 = [(THBookViewController *)self documentViewController];
+  documentViewController = [(THBookViewController *)self documentViewController];
 
-  return [(THDocumentViewController *)v2 documentNavigator];
+  return [(THDocumentViewController *)documentViewController documentNavigator];
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
   [(THBookViewController *)self updateViewBackgroundColor];
   if ((!-[THBookDescription isEpub](self->mBookDescription, "isEpub") || -[THTheme isNight:](-[THBookViewController theme](self, "theme"), "isNight:", self)) && ([-[THBookViewController traitCollection](self "traitCollection")] & 1) == 0)
@@ -6684,21 +6684,21 @@ LABEL_15:
     [(THBookViewController *)self settingNavigationBarHidden:[(THBookViewController *)self settingToolbarHidden] animated:0];
   }
 
-  v6 = [(THBookViewController *)self traitCollection];
+  traitCollection = [(THBookViewController *)self traitCollection];
 
-  [(THBookViewController *)self p_updateToolbarButtonStatesWithTraits:v6];
+  [(THBookViewController *)self p_updateToolbarButtonStatesWithTraits:traitCollection];
 }
 
-- (void)showHUDForVendor:(id)a3
+- (void)showHUDForVendor:(id)vendor
 {
-  v5 = [a3 viewForHUD];
-  if (v5)
+  viewForHUD = [vendor viewForHUD];
+  if (viewForHUD)
   {
-    v6 = v5;
-    if ([(THBookViewController *)self HUDOverlayView]!= v5)
+    v6 = viewForHUD;
+    if ([(THBookViewController *)self HUDOverlayView]!= viewForHUD)
     {
-      v7 = [(THBookViewController *)self HUDOverlayView];
-      [(THBookViewController *)self setHUDVendor:a3];
+      hUDOverlayView = [(THBookViewController *)self HUDOverlayView];
+      [(THBookViewController *)self setHUDVendor:vendor];
       [(THBookViewController *)self setHUDOverlayView:v6];
       v8 = 0.0;
       [(UIView *)[(THBookViewController *)self HUDOverlayView] setAlpha:0.0];
@@ -6725,57 +6725,57 @@ LABEL_15:
       v9[1] = 3221225472;
       v9[2] = sub_8E1E0;
       v9[3] = &unk_45C678;
-      v9[4] = v7;
+      v9[4] = hUDOverlayView;
       v9[5] = v6;
       [UIView animateWithDuration:v10 animations:v9 completion:v8];
     }
   }
 }
 
-- (void)hideHUDForVendor:(id)a3
+- (void)hideHUDForVendor:(id)vendor
 {
-  if ([(THBookViewController *)self HUDVendor]== a3)
+  if ([(THBookViewController *)self HUDVendor]== vendor)
   {
 
     [(THBookViewController *)self p_hideHUDView];
   }
 }
 
-- (void)temporarilySetHUDViewHidden:(BOOL)a3
+- (void)temporarilySetHUDViewHidden:(BOOL)hidden
 {
-  v3 = !a3;
-  v4 = [(THBookViewController *)self HUDOverlayView];
+  v3 = !hidden;
+  hUDOverlayView = [(THBookViewController *)self HUDOverlayView];
 
-  [(UIView *)v4 setAlpha:v3];
+  [(UIView *)hUDOverlayView setAlpha:v3];
 }
 
 - (void)p_hideHUDView
 {
   if ([(THBookViewController *)self HUDOverlayView])
   {
-    v3 = [(THBookViewController *)self HUDOverlayView];
+    hUDOverlayView = [(THBookViewController *)self HUDOverlayView];
     [(THBookViewController *)self setHUDOverlayView:0];
     [(THBookViewController *)self setHUDVendor:0];
-    v4 = [(UIView *)v3 superview];
-    if (v4 == [(THBookViewController *)self viewIfLoaded])
+    superview = [(UIView *)hUDOverlayView superview];
+    if (superview == [(THBookViewController *)self viewIfLoaded])
     {
       v6[0] = _NSConcreteStackBlock;
       v6[1] = 3221225472;
       v6[2] = sub_8E4D4;
       v6[3] = &unk_45AE00;
-      v6[4] = v3;
+      v6[4] = hUDOverlayView;
       v5[0] = _NSConcreteStackBlock;
       v5[1] = 3221225472;
       v5[2] = sub_8E4E0;
       v5[3] = &unk_45C678;
-      v5[4] = v3;
+      v5[4] = hUDOverlayView;
       v5[5] = self;
       [UIView animateWithDuration:v6 animations:v5 completion:0.2];
     }
   }
 }
 
-- (CGRect)frameForHUDFromVendor:(id)a3
+- (CGRect)frameForHUDFromVendor:(id)vendor
 {
   [-[THBookViewController view](self view];
   x = v13.origin.x;
@@ -6831,9 +6831,9 @@ LABEL_15:
 
   else
   {
-    v5 = [(THBookViewController *)self visibleViewController];
+    visibleViewController = [(THBookViewController *)self visibleViewController];
 
-    return [(UIViewController *)v5 contentScrollView];
+    return [(UIViewController *)visibleViewController contentScrollView];
   }
 }
 
@@ -6864,7 +6864,7 @@ LABEL_15:
 
   if ([(THDocumentViewController *)[(THBookViewController *)self documentViewController] showingExpandedWidgetView])
   {
-    v4 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] expandedViewController];
+    expandedViewController = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] expandedViewController];
   }
 
   else
@@ -6874,98 +6874,98 @@ LABEL_15:
       return 1;
     }
 
-    v4 = [(THBookViewController *)self visibleViewController];
+    expandedViewController = [(THBookViewController *)self visibleViewController];
   }
 
-  return [(THWExpandedViewController *)v4 shouldAutorotate];
+  return [(THWExpandedViewController *)expandedViewController shouldAutorotate];
 }
 
-- (void)p_addViewControllerInFront:(id)a3 reason:(id)a4
+- (void)p_addViewControllerInFront:(id)front reason:(id)reason
 {
-  if ([(THBookViewController *)self visibleViewController]!= a3)
+  if ([(THBookViewController *)self visibleViewController]!= front)
   {
-    [a3 beginAppearanceTransition:1 animated:0];
+    [front beginAppearanceTransition:1 animated:0];
     if ([(THBookViewController *)self visibleViewController])
     {
-      v7 = [(THBookViewController *)self visibleViewController];
-      if (v7 == [(THBookViewController *)self studyViewController])
+      visibleViewController = [(THBookViewController *)self visibleViewController];
+      if (visibleViewController == [(THBookViewController *)self studyViewController])
       {
         [(THBookViewController *)self p_unloadStudyViewController];
       }
     }
 
-    v8 = [a3 parentViewController];
-    if (v8 != self)
+    parentViewController = [front parentViewController];
+    if (parentViewController != self)
     {
-      [(THBookViewController *)self addChildViewController:a3];
+      [(THBookViewController *)self addChildViewController:front];
     }
 
     [-[THBookViewController view](self "view")];
-    [objc_msgSend(a3 "view")];
+    [objc_msgSend(front "view")];
     [-[THBookViewController view](self "view")];
-    if (v8 != self)
+    if (parentViewController != self)
     {
-      [a3 didMoveToParentViewController:self];
+      [front didMoveToParentViewController:self];
     }
 
-    [a3 endAppearanceTransition];
+    [front endAppearanceTransition];
 
-    [(THBookViewController *)self p_setVisibleViewControllerToViewController:a3 reason:a4];
+    [(THBookViewController *)self p_setVisibleViewControllerToViewController:front reason:reason];
   }
 }
 
-- (void)p_addViewControllerInBack:(id)a3 animated:(BOOL)a4
+- (void)p_addViewControllerInBack:(id)back animated:(BOOL)animated
 {
-  [a3 beginAppearanceTransition:1 animated:0];
-  if ([(THBookViewController *)self visibleViewController]== a3)
+  [back beginAppearanceTransition:1 animated:0];
+  if ([(THBookViewController *)self visibleViewController]== back)
   {
     [(THBookViewController *)self setVisibleViewController:0];
   }
 
-  v6 = [a3 parentViewController];
-  if (v6 == self)
+  parentViewController = [back parentViewController];
+  if (parentViewController == self)
   {
-    [(THBookViewController *)self addChildViewController:a3];
+    [(THBookViewController *)self addChildViewController:back];
   }
 
   [-[THBookViewController view](self "view")];
-  [objc_msgSend(a3 "view")];
+  [objc_msgSend(back "view")];
   [-[THBookViewController view](self "view")];
-  if (v6 == self)
+  if (parentViewController == self)
   {
-    [a3 didMoveToParentViewController:self];
+    [back didMoveToParentViewController:self];
   }
 
-  [a3 endAppearanceTransition];
+  [back endAppearanceTransition];
 }
 
-- (void)p_removeViewController:(id)a3
+- (void)p_removeViewController:(id)controller
 {
-  if ([a3 isViewLoaded])
+  if ([controller isViewLoaded])
   {
-    v5 = [objc_msgSend(a3 "view")];
+    v5 = [objc_msgSend(controller "view")];
     if (v5 == [(THBookViewController *)self viewIfLoaded])
     {
-      [a3 beginAppearanceTransition:0 animated:0];
-      if ([(THBookViewController *)self visibleViewController]== a3)
+      [controller beginAppearanceTransition:0 animated:0];
+      if ([(THBookViewController *)self visibleViewController]== controller)
       {
         [(THBookViewController *)self setVisibleViewController:0];
       }
 
-      [objc_msgSend(a3 "view")];
-      if ([(THBookViewController *)self documentViewController]== a3)
+      [objc_msgSend(controller "view")];
+      if ([(THBookViewController *)self documentViewController]== controller)
       {
         [(THBookViewController *)self p_hideHUDView];
       }
 
-      [a3 endAppearanceTransition];
+      [controller endAppearanceTransition];
     }
   }
 }
 
-- (void)bookView:(id)a3 didMoveToWindow:(id)a4
+- (void)bookView:(id)view didMoveToWindow:(id)window
 {
-  if (a4)
+  if (window)
   {
     if (self->mBookOpener)
     {
@@ -6974,81 +6974,81 @@ LABEL_15:
   }
 }
 
-- (void)readingStatisticsCollector:(id)a3 didShowContentWithCFIs:(id)a4
+- (void)readingStatisticsCollector:(id)collector didShowContentWithCFIs:(id)is
 {
-  if ([(THBookViewController *)self readingStatisticsCollector]== a3)
+  if ([(THBookViewController *)self readingStatisticsCollector]== collector)
   {
-    v6 = [(THBookViewController *)self assetViewControllerDelegate];
+    assetViewControllerDelegate = [(THBookViewController *)self assetViewControllerDelegate];
 
-    [(AEAssetViewControllerDelegate *)v6 assetViewController:self didShowContentWithCFIs:a4];
+    [(AEAssetViewControllerDelegate *)assetViewControllerDelegate assetViewController:self didShowContentWithCFIs:is];
   }
 }
 
-- (void)readingStatisticsCollector:(id)a3 willHideContentWithCFIs:(id)a4
+- (void)readingStatisticsCollector:(id)collector willHideContentWithCFIs:(id)is
 {
-  if ([(THBookViewController *)self readingStatisticsCollector]== a3)
+  if ([(THBookViewController *)self readingStatisticsCollector]== collector)
   {
-    v6 = [(THBookViewController *)self assetViewControllerDelegate];
+    assetViewControllerDelegate = [(THBookViewController *)self assetViewControllerDelegate];
 
-    [(AEAssetViewControllerDelegate *)v6 assetViewController:self willHideContentWithCFIs:a4];
+    [(AEAssetViewControllerDelegate *)assetViewControllerDelegate assetViewController:self willHideContentWithCFIs:is];
   }
 }
 
-- (BOOL)readingStatisticsCollector:(id)a3 needTextNodeCharacterCountsForOrdinal:(int64_t)a4
+- (BOOL)readingStatisticsCollector:(id)collector needTextNodeCharacterCountsForOrdinal:(int64_t)ordinal
 {
-  if ([(THBookViewController *)self readingStatisticsCollector]!= a3)
+  if ([(THBookViewController *)self readingStatisticsCollector]!= collector)
   {
     return 0;
   }
 
-  v7 = [(THBookViewController *)self assetViewControllerDelegate];
+  assetViewControllerDelegate = [(THBookViewController *)self assetViewControllerDelegate];
 
-  return [(AEAssetViewControllerDelegate *)v7 needTextNodeCharacterCountsForOrdinal:a4];
+  return [(AEAssetViewControllerDelegate *)assetViewControllerDelegate needTextNodeCharacterCountsForOrdinal:ordinal];
 }
 
-- (void)readingStatisticsCollector:(id)a3 addTextNodeCharacterCounts:(id)a4 ordinal:(int64_t)a5 completion:(id)a6
+- (void)readingStatisticsCollector:(id)collector addTextNodeCharacterCounts:(id)counts ordinal:(int64_t)ordinal completion:(id)completion
 {
-  if ([(THBookViewController *)self readingStatisticsCollector]== a3)
+  if ([(THBookViewController *)self readingStatisticsCollector]== collector)
   {
-    v10 = [(THBookViewController *)self assetViewControllerDelegate];
+    assetViewControllerDelegate = [(THBookViewController *)self assetViewControllerDelegate];
 
-    [(AEAssetViewControllerDelegate *)v10 addTextNodeCharacterCounts:a4 ordinal:a5 completion:a6];
+    [(AEAssetViewControllerDelegate *)assetViewControllerDelegate addTextNodeCharacterCounts:counts ordinal:ordinal completion:completion];
   }
 }
 
-- (BOOL)readingStatisticsCollector:(id)a3 needTOCEntriesForOrdinal:(int64_t)a4
+- (BOOL)readingStatisticsCollector:(id)collector needTOCEntriesForOrdinal:(int64_t)ordinal
 {
-  if ([(THBookViewController *)self readingStatisticsCollector]!= a3)
+  if ([(THBookViewController *)self readingStatisticsCollector]!= collector)
   {
     return 0;
   }
 
-  v7 = [(THBookViewController *)self assetViewControllerDelegate];
+  assetViewControllerDelegate = [(THBookViewController *)self assetViewControllerDelegate];
 
-  return [(AEAssetViewControllerDelegate *)v7 needTOCEntriesForOrdinal:a4];
+  return [(AEAssetViewControllerDelegate *)assetViewControllerDelegate needTOCEntriesForOrdinal:ordinal];
 }
 
-- (void)readingStatisticsCollector:(id)a3 addTOCEntries:(id)a4 ordinal:(int64_t)a5 completion:(id)a6
+- (void)readingStatisticsCollector:(id)collector addTOCEntries:(id)entries ordinal:(int64_t)ordinal completion:(id)completion
 {
-  if ([(THBookViewController *)self readingStatisticsCollector]== a3)
+  if ([(THBookViewController *)self readingStatisticsCollector]== collector)
   {
-    v10 = [(THBookViewController *)self assetViewControllerDelegate];
+    assetViewControllerDelegate = [(THBookViewController *)self assetViewControllerDelegate];
 
-    [(AEAssetViewControllerDelegate *)v10 addTOCEntries:a4 ordinal:a5 completion:a6];
+    [(AEAssetViewControllerDelegate *)assetViewControllerDelegate addTOCEntries:entries ordinal:ordinal completion:completion];
   }
 }
 
-- (void)documentViewController:(id)a3 bodyReps:(id)a4 visibleRectIs:(CGRect)a5
+- (void)documentViewController:(id)controller bodyReps:(id)reps visibleRectIs:(CGRect)is
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  if ([(THBookViewController *)self documentViewController]== a3)
+  height = is.size.height;
+  width = is.size.width;
+  y = is.origin.y;
+  x = is.origin.x;
+  if ([(THBookViewController *)self documentViewController]== controller)
   {
-    v11 = [(THBookViewController *)self readingStatisticsCollector];
+    readingStatisticsCollector = [(THBookViewController *)self readingStatisticsCollector];
 
-    [(THReadingStatisticsCollector *)v11 bodyReps:a4 visibleRectIs:x, y, width, height];
+    [(THReadingStatisticsCollector *)readingStatisticsCollector bodyReps:reps visibleRectIs:x, y, width, height];
   }
 }
 
@@ -7058,10 +7058,10 @@ LABEL_15:
   if ([(THBookViewController *)self bookLoadedSuccessfully]&& [(THBookViewController *)self readingStatisticsControllerLoaded]&& ![(THBookViewController *)self startedScanningReadingStatistics])
   {
     [(THBookViewController *)self setStartedScanningReadingStatistics:1];
-    v3 = [(THBookViewController *)self readingStatisticsCollector];
-    v4 = [(THBookViewController *)self documentRoot];
+    readingStatisticsCollector = [(THBookViewController *)self readingStatisticsCollector];
+    documentRoot = [(THBookViewController *)self documentRoot];
 
-    [(THReadingStatisticsCollector *)v3 scanReadingStatisticsWithDocumentRoot:v4];
+    [(THReadingStatisticsCollector *)readingStatisticsCollector scanReadingStatisticsWithDocumentRoot:documentRoot];
   }
 }
 
@@ -7085,34 +7085,34 @@ LABEL_15:
 
 - (void)bc_analyticsVisibilityWillDisappear
 {
-  v3 = [(THBookViewController *)self ba_effectiveAnalyticsTracker];
+  ba_effectiveAnalyticsTracker = [(THBookViewController *)self ba_effectiveAnalyticsTracker];
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3052000000;
   v17[3] = sub_8747C;
   v17[4] = sub_8748C;
-  v17[5] = [v3 newSessionAssertion];
-  v4 = [(THBookViewController *)self contentData];
-  v5 = [(THBookViewController *)self _analyticsContentSettingsData];
-  v6 = [(THBookViewController *)self _analyticsReadingSettingsData];
-  v7 = [(THBookViewController *)self readingSessionData];
+  v17[5] = [ba_effectiveAnalyticsTracker newSessionAssertion];
+  contentData = [(THBookViewController *)self contentData];
+  _analyticsContentSettingsData = [(THBookViewController *)self _analyticsContentSettingsData];
+  _analyticsReadingSettingsData = [(THBookViewController *)self _analyticsReadingSettingsData];
+  readingSessionData = [(THBookViewController *)self readingSessionData];
   v11 = 0;
   v12 = &v11;
   v13 = 0x3052000000;
   v14 = sub_8747C;
   v15 = sub_8748C;
-  v16 = [(THBookViewController *)self analyticsReadStartDate];
+  analyticsReadStartDate = [(THBookViewController *)self analyticsReadStartDate];
   v8 = v12[5];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_8F3D8;
   v10[3] = &unk_45C6C0;
-  v10[4] = v3;
+  v10[4] = ba_effectiveAnalyticsTracker;
   v10[5] = self;
-  v10[6] = v7;
-  v10[7] = v4;
-  v10[8] = v6;
-  v10[9] = v5;
+  v10[6] = readingSessionData;
+  v10[7] = contentData;
+  v10[8] = _analyticsReadingSettingsData;
+  v10[9] = _analyticsContentSettingsData;
   v10[10] = &v11;
   v10[11] = v17;
   [BADoNotDisturbHelper fetchCurrentState:v10];
@@ -7145,35 +7145,35 @@ LABEL_15:
 
 - (id)readingSessionData
 {
-  v3 = [(THBookViewController *)self _analyticsReadingProgress];
+  _analyticsReadingProgress = [(THBookViewController *)self _analyticsReadingProgress];
   v4 = [NSNumber numberWithBool:[(THBookViewController *)self p_isSampleBook]];
   v5 = [BAReadingSessionData alloc];
-  v6 = [(THBookViewController *)self analyticsReadStartProgress];
-  v7 = [(THBookViewController *)self lastAnalyticsDeviceOrientationReported];
+  analyticsReadStartProgress = [(THBookViewController *)self analyticsReadStartProgress];
+  lastAnalyticsDeviceOrientationReported = [(THBookViewController *)self lastAnalyticsDeviceOrientationReported];
 
-  return [v5 initWithPercentCompletionStart:v6 percentCompletionEnd:v3 isFreeSample:v4 deviceOrientation:v7];
+  return [v5 initWithPercentCompletionStart:analyticsReadStartProgress percentCompletionEnd:_analyticsReadingProgress isFreeSample:v4 deviceOrientation:lastAnalyticsDeviceOrientationReported];
 }
 
 - (id)contentData
 {
-  v3 = [(THBookViewController *)self ba_effectiveAnalyticsTracker];
-  result = [(AEAssetViewControllerDelegate *)[(THBookViewController *)self assetViewControllerDelegate] analyticsContentDataForAssetViewController:self contentSubType:[(THBookViewController *)self contentSubType] tracker:v3];
+  ba_effectiveAnalyticsTracker = [(THBookViewController *)self ba_effectiveAnalyticsTracker];
+  result = [(AEAssetViewControllerDelegate *)[(THBookViewController *)self assetViewControllerDelegate] analyticsContentDataForAssetViewController:self contentSubType:[(THBookViewController *)self contentSubType] tracker:ba_effectiveAnalyticsTracker];
   if (!result)
   {
-    v5 = [(AEAsset *)[(THBookViewController *)self asset] assetID];
+    assetID = [(AEAsset *)[(THBookViewController *)self asset] assetID];
     v6 = BCCurrentBookLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412802;
-      v8 = v5;
+      v8 = assetID;
       v9 = 2112;
-      v10 = [(THBookViewController *)self assetViewControllerDelegate];
+      assetViewControllerDelegate = [(THBookViewController *)self assetViewControllerDelegate];
       v11 = 2112;
-      v12 = v3;
+      v12 = ba_effectiveAnalyticsTracker;
       _os_log_fault_impl(&dword_0, v6, OS_LOG_TYPE_FAULT, "Failed to create ContentData for asset %@ from assetViewControllerDelegate %@. Creating a fallback with tracker %@.", buf, 0x20u);
     }
 
-    return [[BAContentData alloc] initWithContentID:v5 contentType:+[BAUtilities contentTypeFromAssetType:](BAUtilities contentPrivateID:"contentTypeFromAssetType:" contentUserID:0) contentAcquisitionType:objc_msgSend(v3 contentSubType:"contentPrivateIDForContentID:" contentLength:v5) supplementalContentCount:objc_msgSend(v3 seriesType:"contentUserIDForContentID:" productionType:v5) isUnified:0 contentKind:{-[THBookViewController contentSubType](self, "contentSubType"), 0, 0, objc_msgSend(+[BAEventReporter sharedReporter](BAEventReporter, "sharedReporter"), "seriesTypeForContentID:", v5), 0, 0, 0}];
+    return [[BAContentData alloc] initWithContentID:assetID contentType:+[BAUtilities contentTypeFromAssetType:](BAUtilities contentPrivateID:"contentTypeFromAssetType:" contentUserID:0) contentAcquisitionType:objc_msgSend(ba_effectiveAnalyticsTracker contentSubType:"contentPrivateIDForContentID:" contentLength:assetID) supplementalContentCount:objc_msgSend(ba_effectiveAnalyticsTracker seriesType:"contentUserIDForContentID:" productionType:assetID) isUnified:0 contentKind:{-[THBookViewController contentSubType](self, "contentSubType"), 0, 0, objc_msgSend(+[BAEventReporter sharedReporter](BAEventReporter, "sharedReporter"), "seriesTypeForContentID:", assetID), 0, 0, 0}];
   }
 
   return result;
@@ -7183,9 +7183,9 @@ LABEL_15:
 {
   if ([(THBookViewController *)self p_isSampleBook])
   {
-    v3 = [(THBookViewController *)self documentNavigator];
+    documentNavigator = [(THBookViewController *)self documentNavigator];
 
-    return [(THDocumentNavigator *)v3 readingProgressAllowSample:1];
+    return [(THDocumentNavigator *)documentNavigator readingProgressAllowSample:1];
   }
 
   else
@@ -7206,13 +7206,13 @@ LABEL_15:
 - (id)_analyticsContentSettingsData
 {
   v2 = [-[THDocumentViewController documentRoot](-[THBookViewController documentViewController](self "documentViewController")];
-  v3 = [v2 numberOfBookmarks];
-  v4 = [v2 allAnnotations];
+  numberOfBookmarks = [v2 numberOfBookmarks];
+  allAnnotations = [v2 allAnnotations];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [allAnnotations countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -7225,7 +7225,7 @@ LABEL_15:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allAnnotations);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
@@ -7243,7 +7243,7 @@ LABEL_15:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allAnnotations countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -7255,15 +7255,15 @@ LABEL_15:
     v8 = 0;
   }
 
-  return [[BAContentSettingsData alloc] initWithBookmarkCount:+[NSNumber numberWithUnsignedInteger:](NSNumber noteCount:"numberWithUnsignedInteger:" highlightCount:{v3), +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", v8), +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", v7)}];
+  return [[BAContentSettingsData alloc] initWithBookmarkCount:+[NSNumber numberWithUnsignedInteger:](NSNumber noteCount:"numberWithUnsignedInteger:" highlightCount:{numberOfBookmarks), +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", v8), +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", v7)}];
 }
 
 - (id)_analyticsReadingSettingsData
 {
-  v3 = [(THBookDescription *)[(THBookViewController *)self bookDescription] isEpub];
-  v4 = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] inFlowMode];
-  v5 = v4;
-  if ((v3 & 1) != 0 || v4)
+  isEpub = [(THBookDescription *)[(THBookViewController *)self bookDescription] isEpub];
+  inFlowMode = [(THDocumentViewController *)[(THBookViewController *)self documentViewController] inFlowMode];
+  v5 = inFlowMode;
+  if ((isEpub & 1) != 0 || inFlowMode)
   {
     [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)[(THBookViewController *)self documentViewController] configuration] fontSize];
     v6 = [NSNumber numberWithDouble:?];
@@ -7276,7 +7276,7 @@ LABEL_15:
 
   [+[UIScreen mainScreen](UIScreen brightness];
   v8 = v7;
-  if (v3)
+  if (isEpub)
   {
     if (+[IMTheme isAutoNightModeEnabled])
     {
@@ -7325,10 +7325,10 @@ LABEL_15:
     return 0;
   }
 
-  v4 = [(THBookViewController *)self p_selectedTocViewController];
-  if (v4 == [(THBookViewController *)self visibleViewController])
+  p_selectedTocViewController = [(THBookViewController *)self p_selectedTocViewController];
+  if (p_selectedTocViewController == [(THBookViewController *)self visibleViewController])
   {
-    return [(UIViewController *)v4 introMediaControllerIsActive]^ 1;
+    return [(UIViewController *)p_selectedTocViewController introMediaControllerIsActive]^ 1;
   }
 
   else
@@ -7337,11 +7337,11 @@ LABEL_15:
   }
 }
 
-- (void)hoverInteraction:(id)a3 didChangeStateForRegionWithKeys:(id)a4
+- (void)hoverInteraction:(id)interaction didChangeStateForRegionWithKeys:(id)keys
 {
-  if (self->_hoverInteraction == a3 && [a3 isHovering] && -[THBookViewController shouldAllowToolbarHover](self, "shouldAllowToolbarHover") && objc_msgSend(a4, "containsObject:", @"control"))
+  if (self->_hoverInteraction == interaction && [interaction isHovering] && -[THBookViewController shouldAllowToolbarHover](self, "shouldAllowToolbarHover") && objc_msgSend(keys, "containsObject:", @"control"))
   {
-    if ([a3 stateForRegionWithKey:@"control"])
+    if ([interaction stateForRegionWithKey:@"control"])
     {
       [(THBookViewController *)self showToolbarAnimated:1];
       [(THDocumentViewController *)[(THBookViewController *)self documentViewController] setScrubberHiddenAnimated:0];
@@ -7350,9 +7350,9 @@ LABEL_15:
   }
 }
 
-- (void)hoverInteractionDidSettle:(id)a3
+- (void)hoverInteractionDidSettle:(id)settle
 {
-  if (([a3 stateForRegionWithKey:@"control"] & 1) == 0 && objc_msgSend(a3, "isHovering") && -[THBookViewController shouldAllowToolbarHover](self, "shouldAllowToolbarHover") && self->_toolbarEnabledViaHover)
+  if (([settle stateForRegionWithKey:@"control"] & 1) == 0 && objc_msgSend(settle, "isHovering") && -[THBookViewController shouldAllowToolbarHover](self, "shouldAllowToolbarHover") && self->_toolbarEnabledViaHover)
   {
     [(THBookViewController *)self hideToolbarAnimated:1];
     [(THDocumentViewController *)[(THBookViewController *)self documentViewController] setScrubberHiddenAnimated:1];
@@ -7371,7 +7371,7 @@ LABEL_15:
   [(BCUIHoverInteraction *)hoverInteraction rebuildRegionWithKey:@"control" block:v3];
 }
 
-- (void)books_showTableOfContents:(id)a3
+- (void)books_showTableOfContents:(id)contents
 {
   if (![(THBookViewController *)self isTOCVisible])
   {
@@ -7380,25 +7380,25 @@ LABEL_15:
   }
 }
 
-- (void)books_showHighlightsAndNotes:(id)a3
+- (void)books_showHighlightsAndNotes:(id)notes
 {
   if (![(THBookViewController *)self isNotesFullscreenVisible])
   {
 
-    [(THBookViewController *)self showFullscreenNotesView:a3];
+    [(THBookViewController *)self showFullscreenNotesView:notes];
   }
 }
 
-- (void)books_showGlossary:(id)a3
+- (void)books_showGlossary:(id)glossary
 {
   if (![(THBookViewController *)self isGlossaryPresenting])
   {
 
-    [(THBookViewController *)self showGlossary:a3];
+    [(THBookViewController *)self showGlossary:glossary];
   }
 }
 
-- (void)books_showStudyCards:(id)a3
+- (void)books_showStudyCards:(id)cards
 {
   if ([(THBookViewController *)self isNotesFullscreenVisible])
   {
@@ -7408,7 +7408,7 @@ LABEL_15:
       [(THBookViewController *)self notesFullscreenViewController];
       v5 = BUDynamicCast();
 
-      [v5 handleStudy:a3];
+      [v5 handleStudy:cards];
     }
   }
 
@@ -7419,25 +7419,25 @@ LABEL_15:
     v6[2] = sub_901D0;
     v6[3] = &unk_45AE58;
     v6[4] = self;
-    v6[5] = a3;
-    [(THBookViewController *)self showFullscreenNotesView:a3 completion:v6];
+    v6[5] = cards;
+    [(THBookViewController *)self showFullscreenNotesView:cards completion:v6];
   }
 }
 
 - (BOOL)_canSearch
 {
-  v3 = [(THBookViewController *)self _isShowingContent];
-  if (v3)
+  _isShowingContent = [(THBookViewController *)self _isShowingContent];
+  if (_isShowingContent)
   {
-    LOBYTE(v3) = [(THBookViewController *)self presentedViewController]== 0;
+    LOBYTE(_isShowingContent) = [(THBookViewController *)self presentedViewController]== 0;
   }
 
-  return v3;
+  return _isShowingContent;
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  if ([(UIViewController *)[(THBookViewController *)self visibleViewController] canPerformAction:a3 withSender:a4])
+  if ([(UIViewController *)[(THBookViewController *)self visibleViewController] canPerformAction:action withSender:sender])
   {
 
     return [(THBookViewController *)self visibleViewController];
@@ -7447,16 +7447,16 @@ LABEL_15:
   {
     v8.receiver = self;
     v8.super_class = THBookViewController;
-    return [(THBookViewController *)&v8 targetForAction:a3 withSender:a4];
+    return [(THBookViewController *)&v8 targetForAction:action withSender:sender];
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   v9.receiver = self;
   v9.super_class = THBookViewController;
-  v6 = [(THBookViewController *)&v9 canPerformAction:a3 withSender:a4];
-  if (sel_isEqual(a3, "books_toggleBookmark:"))
+  v6 = [(THBookViewController *)&v9 canPerformAction:action withSender:sender];
+  if (sel_isEqual(action, "books_toggleBookmark:"))
   {
     if (v6)
     {
@@ -7466,7 +7466,7 @@ LABEL_15:
     return 0;
   }
 
-  if (sel_isEqual(a3, "books_setThemeWhite:") || sel_isEqual(a3, "books_setThemeSepia:") || sel_isEqual(a3, "books_setThemeGray:") || sel_isEqual(a3, "books_setThemeNight:"))
+  if (sel_isEqual(action, "books_setThemeWhite:") || sel_isEqual(action, "books_setThemeSepia:") || sel_isEqual(action, "books_setThemeGray:") || sel_isEqual(action, "books_setThemeNight:"))
   {
     if (v6)
     {
@@ -7476,7 +7476,7 @@ LABEL_15:
     return 0;
   }
 
-  if (sel_isEqual(a3, "books_find:"))
+  if (sel_isEqual(action, "books_find:"))
   {
     if (v6)
     {
@@ -7486,7 +7486,7 @@ LABEL_15:
     return 0;
   }
 
-  if (sel_isEqual(a3, "books_increaseSize:"))
+  if (sel_isEqual(action, "books_increaseSize:"))
   {
     if (v6)
     {
@@ -7496,7 +7496,7 @@ LABEL_15:
     return 0;
   }
 
-  if (sel_isEqual(a3, "books_decreaseSize:"))
+  if (sel_isEqual(action, "books_decreaseSize:"))
   {
     if (v6)
     {
@@ -7506,9 +7506,9 @@ LABEL_15:
     return 0;
   }
 
-  if (!sel_isEqual(a3, "books_showStudyCards:"))
+  if (!sel_isEqual(action, "books_showStudyCards:"))
   {
-    isEqual = sel_isEqual(a3, "books_showGlossary:");
+    isEqual = sel_isEqual(action, "books_showGlossary:");
     if ((isEqual & v6 & 1) == 0)
     {
       return !isEqual & v6;
@@ -7525,18 +7525,18 @@ LABEL_15:
   return 0;
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
   v13.receiver = self;
   v13.super_class = THBookViewController;
   [(THBookViewController *)&v13 validateCommand:?];
-  v5 = [a3 action];
-  v6 = [(THBookViewController *)self theme];
-  if (v5 == "books_toggleBookmark:")
+  action = [command action];
+  theme = [(THBookViewController *)self theme];
+  if (action == "books_toggleBookmark:")
   {
-    v10 = [(THBookViewController *)self isPageBookmarked];
+    isPageBookmarked = [(THBookViewController *)self isPageBookmarked];
     v11 = THBundle();
-    if (v10)
+    if (isPageBookmarked)
     {
       v12 = @"Remove Bookmark";
     }
@@ -7546,42 +7546,42 @@ LABEL_15:
       v12 = @"Bookmark Page";
     }
 
-    [a3 setTitle:{objc_msgSend(v11, "localizedStringForKey:value:table:", v12, &stru_471858, 0)}];
+    [command setTitle:{objc_msgSend(v11, "localizedStringForKey:value:table:", v12, &stru_471858, 0)}];
   }
 
   else
   {
-    v7 = v6;
-    if (sel_isEqual(v5, "books_setThemeWhite:"))
+    v7 = theme;
+    if (sel_isEqual(action, "books_setThemeWhite:"))
     {
-      v8 = [(THTheme *)v7 themeIdentifier];
+      themeIdentifier = [(THTheme *)v7 themeIdentifier];
       v9 = &kIMThemeIdentifierWhitePageTheme;
     }
 
-    else if (sel_isEqual(v5, "books_setThemeSepia:"))
+    else if (sel_isEqual(action, "books_setThemeSepia:"))
     {
-      v8 = [(THTheme *)v7 themeIdentifier];
+      themeIdentifier = [(THTheme *)v7 themeIdentifier];
       v9 = &kIMThemeIdentifierSepiaPageTheme;
     }
 
-    else if (sel_isEqual(v5, "books_setThemeGray:"))
+    else if (sel_isEqual(action, "books_setThemeGray:"))
     {
-      v8 = [(THTheme *)v7 themeIdentifier];
+      themeIdentifier = [(THTheme *)v7 themeIdentifier];
       v9 = &kIMThemeIdentifierGrayPageTheme;
     }
 
     else
     {
-      if (!sel_isEqual(v5, "books_setThemeNight:"))
+      if (!sel_isEqual(action, "books_setThemeNight:"))
       {
         return;
       }
 
-      v8 = [(THTheme *)v7 themeIdentifier];
+      themeIdentifier = [(THTheme *)v7 themeIdentifier];
       v9 = &kIMThemeIdentifierNightPageTheme;
     }
 
-    [a3 setState:{objc_msgSend(v8, "isEqualToString:", *v9)}];
+    [command setState:{objc_msgSend(themeIdentifier, "isEqualToString:", *v9)}];
   }
 }
 

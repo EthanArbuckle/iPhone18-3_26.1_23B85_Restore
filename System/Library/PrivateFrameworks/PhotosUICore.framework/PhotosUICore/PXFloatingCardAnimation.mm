@@ -1,13 +1,13 @@
 @interface PXFloatingCardAnimation
-+ (id)animationUsingDefaultSpringWithInitialVelocity:(double)a3 delay:(double)a4;
-+ (id)animationWithDuration:(double)a3 curve:(int64_t)a4 delay:(double)a5;
-+ (id)animationWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 initialVelocity:(double)a6 delay:(double)a7;
++ (id)animationUsingDefaultSpringWithInitialVelocity:(double)velocity delay:(double)delay;
++ (id)animationWithDuration:(double)duration curve:(int64_t)curve delay:(double)delay;
++ (id)animationWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping initialVelocity:(double)velocity delay:(double)delay;
 - (PXFloatingCardAnimation)coordinatedUnitAnimation;
-- (PXFloatingCardAnimation)initWithDuration:(double)a3 curve:(int64_t)a4 delay:(double)a5;
-- (PXFloatingCardAnimation)initWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 initialVelocity:(double)a6 delay:(double)a7 calculateCoordinatedAnimation:(BOOL)a8;
+- (PXFloatingCardAnimation)initWithDuration:(double)duration curve:(int64_t)curve delay:(double)delay;
+- (PXFloatingCardAnimation)initWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping initialVelocity:(double)velocity delay:(double)delay calculateCoordinatedAnimation:(BOOL)animation;
 - (id)description;
-- (id)initUsingDefaultSpringWithInitialVelocity:(double)a3 delay:(double)a4;
-- (void)applyAnimations:(id)a3 completion:(id)a4;
+- (id)initUsingDefaultSpringWithInitialVelocity:(double)velocity delay:(double)delay;
+- (void)applyAnimations:(id)animations completion:(id)completion;
 @end
 
 @implementation PXFloatingCardAnimation
@@ -40,18 +40,18 @@ LABEL_8:
   return a2;
 }
 
-- (void)applyAnimations:(id)a3 completion:(id)a4
+- (void)applyAnimations:(id)animations completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
+  animationsCopy = animations;
+  completionCopy = completion;
   type = self->_type;
   switch(type)
   {
     case 2uLL:
-      [MEMORY[0x1E69DD250] _animateUsingDefaultDampedSpringWithDelay:2 initialSpringVelocity:v10 options:v6 animations:self->_delay completion:self->_typeParameters.spring.mass];
+      [MEMORY[0x1E69DD250] _animateUsingDefaultDampedSpringWithDelay:2 initialSpringVelocity:animationsCopy options:completionCopy animations:self->_delay completion:self->_typeParameters.spring.mass];
       break;
     case 1uLL:
-      [MEMORY[0x1E69DD250] _animateUsingSpringWithDuration:2 delay:v10 options:v6 mass:self->_duration stiffness:self->_delay damping:self->_typeParameters.spring.mass initialVelocity:self->_typeParameters.spring.stiffness animations:self->_typeParameters.spring.damping completion:self->_typeParameters.spring.initialVelocity];
+      [MEMORY[0x1E69DD250] _animateUsingSpringWithDuration:2 delay:animationsCopy options:completionCopy mass:self->_duration stiffness:self->_delay damping:self->_typeParameters.spring.mass initialVelocity:self->_typeParameters.spring.stiffness animations:self->_typeParameters.spring.damping completion:self->_typeParameters.spring.initialVelocity];
       break;
     case 0uLL:
       v8 = self->_typeParameters.basic.curve - 1;
@@ -65,7 +65,7 @@ LABEL_8:
         v9 = (v8 << 16) + 65538;
       }
 
-      [MEMORY[0x1E69DD250] animateWithDuration:v9 delay:v10 options:v6 animations:self->_duration completion:self->_delay];
+      [MEMORY[0x1E69DD250] animateWithDuration:v9 delay:animationsCopy options:completionCopy animations:self->_duration completion:self->_delay];
       break;
   }
 }
@@ -80,7 +80,7 @@ LABEL_8:
   return self;
 }
 
-- (id)initUsingDefaultSpringWithInitialVelocity:(double)a3 delay:(double)a4
+- (id)initUsingDefaultSpringWithInitialVelocity:(double)velocity delay:(double)delay
 {
   v7.receiver = self;
   v7.super_class = PXFloatingCardAnimation;
@@ -88,16 +88,16 @@ LABEL_8:
   if (result)
   {
     *(result + 1) = 2;
-    *(result + 2) = a3;
-    *(result + 7) = a4;
+    *(result + 2) = velocity;
+    *(result + 7) = delay;
   }
 
   return result;
 }
 
-- (PXFloatingCardAnimation)initWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 initialVelocity:(double)a6 delay:(double)a7 calculateCoordinatedAnimation:(BOOL)a8
+- (PXFloatingCardAnimation)initWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping initialVelocity:(double)velocity delay:(double)delay calculateCoordinatedAnimation:(BOOL)animation
 {
-  v8 = a8;
+  animationCopy = animation;
   v31.receiver = self;
   v31.super_class = PXFloatingCardAnimation;
   v14 = [(PXFloatingCardAnimation *)&v31 init];
@@ -105,15 +105,15 @@ LABEL_8:
   if (v14)
   {
     v14->_type = 1;
-    v14->_typeParameters.spring.mass = a3;
-    v14->_typeParameters.spring.stiffness = a4;
-    v14->_typeParameters.spring.damping = a5;
-    v14->_typeParameters.spring.initialVelocity = a6;
-    v16 = [[PXFloatingCardSpringInfo alloc] initWithMass:a3 stiffness:a4 damping:a5 initialVelocity:a6];
+    v14->_typeParameters.spring.mass = mass;
+    v14->_typeParameters.spring.stiffness = stiffness;
+    v14->_typeParameters.spring.damping = damping;
+    v14->_typeParameters.spring.initialVelocity = velocity;
+    v16 = [[PXFloatingCardSpringInfo alloc] initWithMass:mass stiffness:stiffness damping:damping initialVelocity:velocity];
     [(PXFloatingCardSpringInfo *)v16 settlingTime];
     v15->_duration = v17;
-    v15->_delay = a7;
-    if (v8)
+    v15->_delay = delay;
+    if (animationCopy)
     {
       [(PXFloatingCardSpringInfo *)v16 undershootTime];
       v19 = v18;
@@ -139,26 +139,26 @@ LABEL_8:
           if (v23)
           {
             v26 = v21 - v19;
-            v27 = v19 + a7;
+            delayCopy = v19 + delay;
           }
 
           else
           {
             v26 = v21;
-            v27 = a7;
+            delayCopy = delay;
           }
 
-          v28 = [(PXFloatingCardAnimation *)v25 initWithDuration:5 curve:v26 delay:v27];
+          delay = [(PXFloatingCardAnimation *)v25 initWithDuration:5 curve:v26 delay:delayCopy];
           goto LABEL_14;
         }
       }
 
       if (v23)
       {
-        v28 = [[PXFloatingCardAnimation alloc] initWithMass:0 stiffness:a3 damping:a4 initialVelocity:a5 delay:0.0 calculateCoordinatedAnimation:v19 + a7];
+        delay = [[PXFloatingCardAnimation alloc] initWithMass:0 stiffness:mass damping:stiffness initialVelocity:damping delay:0.0 calculateCoordinatedAnimation:v19 + delay];
 LABEL_14:
         coordinatedUnitAnimation = v15->_coordinatedUnitAnimation;
-        v15->_coordinatedUnitAnimation = v28;
+        v15->_coordinatedUnitAnimation = delay;
       }
     }
   }
@@ -166,7 +166,7 @@ LABEL_14:
   return v15;
 }
 
-- (PXFloatingCardAnimation)initWithDuration:(double)a3 curve:(int64_t)a4 delay:(double)a5
+- (PXFloatingCardAnimation)initWithDuration:(double)duration curve:(int64_t)curve delay:(double)delay
 {
   v9.receiver = self;
   v9.super_class = PXFloatingCardAnimation;
@@ -174,31 +174,31 @@ LABEL_14:
   if (result)
   {
     result->_type = 0;
-    result->_typeParameters.basic.curve = a4;
-    result->_duration = a3;
-    result->_delay = a5;
+    result->_typeParameters.basic.curve = curve;
+    result->_duration = duration;
+    result->_delay = delay;
   }
 
   return result;
 }
 
-+ (id)animationUsingDefaultSpringWithInitialVelocity:(double)a3 delay:(double)a4
++ (id)animationUsingDefaultSpringWithInitialVelocity:(double)velocity delay:(double)delay
 {
-  v4 = [[a1 alloc] initUsingDefaultSpringWithInitialVelocity:a3 delay:a4];
+  v4 = [[self alloc] initUsingDefaultSpringWithInitialVelocity:velocity delay:delay];
 
   return v4;
 }
 
-+ (id)animationWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 initialVelocity:(double)a6 delay:(double)a7
++ (id)animationWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping initialVelocity:(double)velocity delay:(double)delay
 {
-  v7 = [[a1 alloc] initWithMass:a3 stiffness:a4 damping:a5 initialVelocity:a6 delay:a7];
+  v7 = [[self alloc] initWithMass:mass stiffness:stiffness damping:damping initialVelocity:velocity delay:delay];
 
   return v7;
 }
 
-+ (id)animationWithDuration:(double)a3 curve:(int64_t)a4 delay:(double)a5
++ (id)animationWithDuration:(double)duration curve:(int64_t)curve delay:(double)delay
 {
-  v5 = [[a1 alloc] initWithDuration:a4 curve:a3 delay:a5];
+  v5 = [[self alloc] initWithDuration:curve curve:duration delay:delay];
 
   return v5;
 }

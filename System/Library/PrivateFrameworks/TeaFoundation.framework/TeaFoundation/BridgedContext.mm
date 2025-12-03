@@ -1,16 +1,16 @@
 @interface BridgedContext
-- (void)useObject:(id)a3 forClass:(Class)a4;
-- (void)useObject:(id)a3 forClass:(Class)a4 name:(id)a5;
-- (void)useObject:(id)a3 forProtocol:(id)a4;
-- (void)useObject:(id)a3 forProtocol:(id)a4 name:(id)a5;
+- (void)useObject:(id)object forClass:(Class)class;
+- (void)useObject:(id)object forClass:(Class)class name:(id)name;
+- (void)useObject:(id)object forProtocol:(id)protocol;
+- (void)useObject:(id)object forProtocol:(id)protocol name:(id)name;
 @end
 
 @implementation BridgedContext
 
-- (void)useObject:(id)a3 forClass:(Class)a4
+- (void)useObject:(id)object forClass:(Class)class
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_1BF17B01C();
   swift_unknownObjectRelease();
   ObjCClassMetadata = swift_getObjCClassMetadata();
@@ -19,11 +19,11 @@
   __swift_destroy_boxed_opaque_existential_1(v7);
 }
 
-- (void)useObject:(id)a3 forClass:(Class)a4 name:(id)a5
+- (void)useObject:(id)object forClass:(Class)class name:(id)name
 {
   swift_unknownObjectRetain();
-  v7 = a5;
-  v8 = self;
+  nameCopy = name;
+  selfCopy = self;
   sub_1BF17B01C();
   swift_unknownObjectRelease();
   ObjCClassMetadata = swift_getObjCClassMetadata();
@@ -34,29 +34,29 @@
   __swift_destroy_boxed_opaque_existential_1(v10);
 }
 
-- (void)useObject:(id)a3 forProtocol:(id)a4
+- (void)useObject:(id)object forProtocol:(id)protocol
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  protocolCopy = protocol;
+  selfCopy = self;
   sub_1BF17B01C();
   swift_unknownObjectRelease();
-  sub_1BF0B67A8(v8, v6);
+  sub_1BF0B67A8(v8, protocolCopy);
 
   __swift_destroy_boxed_opaque_existential_1(v8);
 }
 
-- (void)useObject:(id)a3 forProtocol:(id)a4 name:(id)a5
+- (void)useObject:(id)object forProtocol:(id)protocol name:(id)name
 {
   swift_unknownObjectRetain();
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
+  protocolCopy = protocol;
+  nameCopy = name;
+  selfCopy = self;
   sub_1BF17B01C();
   swift_unknownObjectRelease();
   sub_1BF17A0AC();
 
-  sub_1BF0B68E4(v11, v8);
+  sub_1BF0B68E4(v11, protocolCopy);
 
   __swift_destroy_boxed_opaque_existential_1(v11);
 }

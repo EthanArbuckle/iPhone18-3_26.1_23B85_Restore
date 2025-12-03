@@ -1,48 +1,48 @@
 @interface TLKTableRow
-- (void)setData:(id)a3;
-- (void)setIsSubHeader:(BOOL)a3;
+- (void)setData:(id)data;
+- (void)setIsSubHeader:(BOOL)header;
 @end
 
 @implementation TLKTableRow
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v10 = a3;
-  if (self->_data != v10)
+  dataCopy = data;
+  if (self->_data != dataCopy)
   {
-    objc_storeStrong(&self->_data, a3);
-    v5 = [(TLKObject *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_data, data);
+    observer = [(TLKObject *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKObject *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKObject *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKObject *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKObject *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setIsSubHeader:(BOOL)a3
+- (void)setIsSubHeader:(BOOL)header
 {
-  if (self->_isSubHeader != a3)
+  if (self->_isSubHeader != header)
   {
-    self->_isSubHeader = a3;
-    v4 = [(TLKObject *)self observer];
-    if (v4)
+    self->_isSubHeader = header;
+    observer = [(TLKObject *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKObject *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKObject *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKObject *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKObject *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }

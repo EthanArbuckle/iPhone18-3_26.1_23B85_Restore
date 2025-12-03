@@ -1,26 +1,26 @@
 @interface ACXPendingAppUpdateState
-- (ACXPendingAppUpdateState)initWithCoder:(id)a3;
-- (ACXPendingAppUpdateState)initWithCompanionBundleID:(id)a3;
+- (ACXPendingAppUpdateState)initWithCoder:(id)coder;
+- (ACXPendingAppUpdateState)initWithCompanionBundleID:(id)d;
 - (BOOL)hasExpired;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ACXPendingAppUpdateState
 
-- (ACXPendingAppUpdateState)initWithCompanionBundleID:(id)a3
+- (ACXPendingAppUpdateState)initWithCompanionBundleID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = ACXPendingAppUpdateState;
   v6 = [(ACXPendingAppUpdateState *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_companionAppBundleID, a3);
+    objc_storeStrong(&v6->_companionAppBundleID, d);
     +[NSDate timeIntervalSinceReferenceDate];
     v7->_creationTime = v8;
   }
@@ -36,48 +36,48 @@
   return v4 - v5 > 604800.0;
 }
 
-- (ACXPendingAppUpdateState)initWithCoder:(id)a3
+- (ACXPendingAppUpdateState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = ACXPendingAppUpdateState;
   v5 = [(ACXPendingAppUpdateState *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"companionAppBundleID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"companionAppBundleID"];
     companionAppBundleID = v5->_companionAppBundleID;
     v5->_companionAppBundleID = v6;
 
-    [v4 decodeDoubleForKey:@"timestamp"];
+    [coderCopy decodeDoubleForKey:@"timestamp"];
     v5->_creationTime = v8;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   creationTime = self->_creationTime;
-  v5 = a3;
-  [v5 encodeDouble:@"creationTime" forKey:creationTime];
-  [v5 encodeObject:self->_companionAppBundleID forKey:@"companionAppBundleID"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"creationTime" forKey:creationTime];
+  [coderCopy encodeObject:self->_companionAppBundleID forKey:@"companionAppBundleID"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(ACXPendingAppUpdateState *)self companionAppBundleID];
-  v6 = [v4 initWithCompanionBundleID:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  companionAppBundleID = [(ACXPendingAppUpdateState *)self companionAppBundleID];
+  v6 = [v4 initWithCompanionBundleID:companionAppBundleID];
 
   [(ACXPendingAppUpdateState *)self creationTime];
   v6[2] = v7;
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -87,11 +87,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ACXPendingAppUpdateState *)self companionAppBundleID];
-      v7 = [(ACXPendingAppUpdateState *)v5 companionAppBundleID];
+      v5 = equalCopy;
+      companionAppBundleID = [(ACXPendingAppUpdateState *)self companionAppBundleID];
+      companionAppBundleID2 = [(ACXPendingAppUpdateState *)v5 companionAppBundleID];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [companionAppBundleID isEqual:companionAppBundleID2];
     }
 
     else
@@ -105,8 +105,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(ACXPendingAppUpdateState *)self companionAppBundleID];
-  v3 = [v2 hash];
+  companionAppBundleID = [(ACXPendingAppUpdateState *)self companionAppBundleID];
+  v3 = [companionAppBundleID hash];
 
   return v3;
 }
@@ -115,10 +115,10 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(ACXPendingAppUpdateState *)self companionAppBundleID];
+  companionAppBundleID = [(ACXPendingAppUpdateState *)self companionAppBundleID];
   [(ACXPendingAppUpdateState *)self creationTime];
   v6 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-  v7 = [NSString stringWithFormat:@"<%@<%p> companionAppBundleID:%@ creationTime:%@>", v4, self, v5, v6];
+  v7 = [NSString stringWithFormat:@"<%@<%p> companionAppBundleID:%@ creationTime:%@>", v4, self, companionAppBundleID, v6];
 
   return v7;
 }

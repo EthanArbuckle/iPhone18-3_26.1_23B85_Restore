@@ -1,25 +1,25 @@
 @interface PPTemporalClusterStore
-- (BOOL)iterRankedTemporalClustersForStartDate:(id)a3 endDate:(id)a4 error:(id *)a5 block:(id)a6;
+- (BOOL)iterRankedTemporalClustersForStartDate:(id)date endDate:(id)endDate error:(id *)error block:(id)block;
 - (PPTemporalClusterStore)init;
 @end
 
 @implementation PPTemporalClusterStore
 
-- (BOOL)iterRankedTemporalClustersForStartDate:(id)a3 endDate:(id)a4 error:(id *)a5 block:(id)a6
+- (BOOL)iterRankedTemporalClustersForStartDate:(id)date endDate:(id)endDate error:(id *)error block:(id)block
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
+  blockCopy = block;
+  endDateCopy = endDate;
+  dateCopy = date;
   v12 = +[PPTemporalClusterClient sharedInstance];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __85__PPTemporalClusterStore_iterRankedTemporalClustersForStartDate_endDate_error_block___block_invoke;
   v15[3] = &unk_1E77F7D70;
-  v16 = v9;
-  v13 = v9;
-  LOBYTE(a5) = [v12 rankedTemporalClustersForStartDate:v11 endDate:v10 error:a5 handleBatch:v15];
+  v16 = blockCopy;
+  v13 = blockCopy;
+  LOBYTE(error) = [v12 rankedTemporalClustersForStartDate:dateCopy endDate:endDateCopy error:error handleBatch:v15];
 
-  return a5;
+  return error;
 }
 
 void __85__PPTemporalClusterStore_iterRankedTemporalClustersForStartDate_endDate_error_block___block_invoke(uint64_t a1, void *a2, _BYTE *a3)

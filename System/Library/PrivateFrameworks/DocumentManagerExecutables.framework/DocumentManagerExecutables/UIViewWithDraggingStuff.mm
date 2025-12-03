@@ -1,16 +1,16 @@
 @interface UIViewWithDraggingStuff
 - (void)beginColumnDrag;
 - (void)singleTapHit;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)willMoveToWindow:(id)a3;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation UIViewWithDraggingStuff
 
 - (void)beginColumnDrag
 {
-  v2 = self;
+  selfCopy = self;
   UIViewWithDraggingStuff.beginColumnDrag()();
 }
 
@@ -18,25 +18,25 @@
 {
   v2 = MEMORY[0x277D85000];
   v3 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0x88);
-  v7 = self;
+  selfCopy = self;
   if (v3())
   {
     v5 = v4;
     ObjectType = swift_getObjectType();
-    (*((*v2 & v7->super.super.super.isa) + 0xA0))();
+    (*((*v2 & selfCopy->super.super.super.isa) + 0xA0))();
     (*(v5 + 32))(ObjectType, v5);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for UIViewWithDraggingStuff();
   v4 = v7.receiver;
-  v5 = a3;
-  v6 = [(UIViewWithDraggingStuff *)&v7 willMoveToWindow:v5];
-  if (v5)
+  windowCopy = window;
+  v6 = [(UIViewWithDraggingStuff *)&v7 willMoveToWindow:windowCopy];
+  if (windowCopy)
   {
   }
 
@@ -46,16 +46,16 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = a4;
-  v6 = self;
+  eventCopy = event;
+  selfCopy = self;
   specialized UIViewWithDraggingStuff.touchesEnded(_:with:)();
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v4 = self;
+  selfCopy = self;
   UIViewWithDraggingStuff.finishedAnimation()();
 }
 

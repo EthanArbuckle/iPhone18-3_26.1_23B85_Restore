@@ -1,17 +1,17 @@
 @interface ClarityUIOnboardingSettingsWrapperController
-- (ClarityUIOnboardingSettingsWrapperController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 controller:(id)a6;
-- (double)tableView:(id)a3 estimatedHeightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (ClarityUIOnboardingSettingsWrapperController)initWithTitle:(id)title detailText:(id)text icon:(id)icon controller:(id)controller;
+- (double)tableView:(id)view estimatedHeightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_addButtonTray;
-- (void)cancelButtonTapped:(id)a3;
-- (void)didUpdateIsContinueButtonEnabledForController:(id)a3;
-- (void)displaySetupController:(id)a3;
-- (void)nextButtonTapped:(id)a3;
-- (void)setNextButtonEnabled:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)cancelButtonTapped:(id)tapped;
+- (void)didUpdateIsContinueButtonEnabledForController:(id)controller;
+- (void)displaySetupController:(id)controller;
+- (void)nextButtonTapped:(id)tapped;
+- (void)setNextButtonEnabled:(BOOL)enabled;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -20,9 +20,9 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3)
+  if (userInterfaceIdiom)
   {
     return 30;
   }
@@ -33,35 +33,35 @@
   }
 }
 
-- (ClarityUIOnboardingSettingsWrapperController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 controller:(id)a6
+- (ClarityUIOnboardingSettingsWrapperController)initWithTitle:(id)title detailText:(id)text icon:(id)icon controller:(id)controller
 {
-  v11 = a6;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = ClarityUIOnboardingSettingsWrapperController;
-  v12 = [(ClarityUIOnboardingSettingsWrapperController *)&v20 initWithTitle:a3 detailText:a4 icon:a5 adoptTableViewScrollView:1];
+  v12 = [(ClarityUIOnboardingSettingsWrapperController *)&v20 initWithTitle:title detailText:text icon:icon adoptTableViewScrollView:1];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_controller, a6);
+    objc_storeStrong(&v12->_controller, controller);
     v14 = +[OBBoldTrayButton boldButton];
     v15 = settingsLocString(@"CONTINUE", @"ClarityUISettings");
     [v14 setTitle:v15 forState:0];
 
     [v14 setAccessibilityIdentifier:@"APP_ONBOARDING_CONTINUE"];
     [v14 addTarget:v13 action:"nextButtonTapped:" forControlEvents:0x2000];
-    if ([v11 conformsToProtocol:&OBJC_PROTOCOL___AXOnboardingContinueButtonEnabling])
+    if ([controllerCopy conformsToProtocol:&OBJC_PROTOCOL___AXOnboardingContinueButtonEnabling])
     {
-      v16 = v11;
-      v17 = [v16 isContinueButtonEnabled];
+      v16 = controllerCopy;
+      isContinueButtonEnabled = [v16 isContinueButtonEnabled];
       [v16 setContinueButtonEnablingDelegate:v13];
     }
 
     else
     {
-      v17 = &dword_0 + 1;
+      isContinueButtonEnabled = &dword_0 + 1;
     }
 
-    [v14 setEnabled:v17];
+    [v14 setEnabled:isContinueButtonEnabled];
     nextButton = v13->_nextButton;
     v13->_nextButton = v14;
   }
@@ -75,121 +75,121 @@
   v5.super_class = ClarityUIOnboardingSettingsWrapperController;
   [(ClarityUIOnboardingSettingsWrapperController *)&v5 viewDidLoad];
   v3 = [objc_allocWithZone(UIBarButtonItem) initWithBarButtonSystemItem:1 target:self action:"cancelButtonTapped:"];
-  v4 = [(ClarityUIOnboardingSettingsWrapperController *)self navigationItem];
-  [v4 setLeftBarButtonItem:v3];
+  navigationItem = [(ClarityUIOnboardingSettingsWrapperController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v3];
 
   [(ClarityUIOnboardingSettingsWrapperController *)self displaySetupController:self->_controller];
 }
 
-- (void)displaySetupController:(id)a3
+- (void)displaySetupController:(id)controller
 {
-  v4 = a3;
-  [(ClarityUIOnboardingSettingsWrapperController *)self addChildViewController:v4];
-  [v4 loadViewIfNeeded];
-  v5 = [(ClarityUIOnboardingSettingsWrapperController *)self contentView];
-  [v5 frame];
+  controllerCopy = controller;
+  [(ClarityUIOnboardingSettingsWrapperController *)self addChildViewController:controllerCopy];
+  [controllerCopy loadViewIfNeeded];
+  contentView = [(ClarityUIOnboardingSettingsWrapperController *)self contentView];
+  [contentView frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v4 view];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  view = [controllerCopy view];
+  [view setFrame:{v7, v9, v11, v13}];
 
-  v15 = [(ClarityUIOnboardingSettingsWrapperController *)self contentView];
-  v16 = [v4 view];
-  [v15 addSubview:v16];
+  contentView2 = [(ClarityUIOnboardingSettingsWrapperController *)self contentView];
+  view2 = [controllerCopy view];
+  [contentView2 addSubview:view2];
 
-  v17 = [v4 table];
-  [(ClarityUIOnboardingSettingsWrapperController *)self setTableView:v17];
+  table = [controllerCopy table];
+  [(ClarityUIOnboardingSettingsWrapperController *)self setTableView:table];
 
-  [v4 didMoveToParentViewController:self];
-  v18 = [(ClarityUIOnboardingSettingsWrapperController *)self tableView];
-  [v18 setBackgroundView:0];
+  [controllerCopy didMoveToParentViewController:self];
+  tableView = [(ClarityUIOnboardingSettingsWrapperController *)self tableView];
+  [tableView setBackgroundView:0];
 
-  v19 = [(ClarityUIOnboardingSettingsWrapperController *)self tableView];
+  tableView2 = [(ClarityUIOnboardingSettingsWrapperController *)self tableView];
   v20 = +[UIColor systemBackgroundColor];
-  [v19 setBackgroundColor:v20];
+  [tableView2 setBackgroundColor:v20];
 
   [(ClarityUIOnboardingSettingsWrapperController *)self _addButtonTray];
 }
 
 - (void)_addButtonTray
 {
-  v3 = [(ClarityUIOnboardingSettingsWrapperController *)self buttonTray];
-  [v3 addButton:self->_nextButton];
+  buttonTray = [(ClarityUIOnboardingSettingsWrapperController *)self buttonTray];
+  [buttonTray addButton:self->_nextButton];
 }
 
-- (void)setNextButtonEnabled:(BOOL)a3
+- (void)setNextButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(ClarityUIOnboardingSettingsWrapperController *)self isNextButtonEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(ClarityUIOnboardingSettingsWrapperController *)self isNextButtonEnabled]!= enabled)
   {
     nextButton = self->_nextButton;
 
-    [(OBBoldTrayButton *)nextButton setEnabled:v3];
+    [(OBBoldTrayButton *)nextButton setEnabled:enabledCopy];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   controller = self->_controller;
-  v6 = a4;
-  v7 = a3;
-  [(PSListController *)controller tableView:v7 didSelectRowAtIndexPath:v6];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  viewCopy = view;
+  [(PSListController *)controller tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  cellCopy = cell;
   v6 = +[UIColor secondarySystemBackgroundColor];
-  [v5 setBackgroundColor:v6];
+  [cellCopy setBackgroundColor:v6];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(ClarityUIOnboardingSettingsWrapperController *)self controller];
-  v8 = [v7 tableView:v6 viewForHeaderInSection:a4];
+  viewCopy = view;
+  controller = [(ClarityUIOnboardingSettingsWrapperController *)self controller];
+  v8 = [controller tableView:viewCopy viewForHeaderInSection:section];
 
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(ClarityUIOnboardingSettingsWrapperController *)self controller];
-  [v7 tableView:v6 heightForHeaderInSection:a4];
+  viewCopy = view;
+  controller = [(ClarityUIOnboardingSettingsWrapperController *)self controller];
+  [controller tableView:viewCopy heightForHeaderInSection:section];
   v9 = v8;
 
   return v9;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view estimatedHeightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(ClarityUIOnboardingSettingsWrapperController *)self controller];
-  [v7 tableView:v6 estimatedHeightForHeaderInSection:a4];
+  viewCopy = view;
+  controller = [(ClarityUIOnboardingSettingsWrapperController *)self controller];
+  [controller tableView:viewCopy estimatedHeightForHeaderInSection:section];
   v9 = v8;
 
   return v9;
 }
 
-- (void)didUpdateIsContinueButtonEnabledForController:(id)a3
+- (void)didUpdateIsContinueButtonEnabledForController:(id)controller
 {
-  v4 = [a3 isContinueButtonEnabled];
+  isContinueButtonEnabled = [controller isContinueButtonEnabled];
 
-  [(ClarityUIOnboardingSettingsWrapperController *)self setNextButtonEnabled:v4];
+  [(ClarityUIOnboardingSettingsWrapperController *)self setNextButtonEnabled:isContinueButtonEnabled];
 }
 
-- (void)nextButtonTapped:(id)a3
+- (void)nextButtonTapped:(id)tapped
 {
   objc_opt_class();
 
   NSRequestConcreteImplementation();
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   objc_opt_class();
 

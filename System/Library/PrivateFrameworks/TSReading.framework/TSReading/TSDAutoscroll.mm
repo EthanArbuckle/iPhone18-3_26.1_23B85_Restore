@@ -1,14 +1,14 @@
 @interface TSDAutoscroll
-+ (void)startAutoscroll:(id)a3 unscaledPoint:(CGPoint)a4;
-- (BOOL)startAutoscroll:(id)a3 unscaledPoint:(CGPoint)a4 directions:(int)a5 repeatInterval:(double)a6;
++ (void)startAutoscroll:(id)autoscroll unscaledPoint:(CGPoint)point;
+- (BOOL)startAutoscroll:(id)autoscroll unscaledPoint:(CGPoint)point directions:(int)directions repeatInterval:(double)interval;
 - (CGPoint)lastAutoscrollDelta;
 - (CGPoint)point;
-- (unint64_t)p_deltaForCount:(unint64_t)a3;
+- (unint64_t)p_deltaForCount:(unint64_t)count;
 - (void)dealloc;
 - (void)invalidate;
 - (void)p_cleanup;
-- (void)setTarget:(id)a3;
-- (void)timerFired:(id)a3;
+- (void)setTarget:(id)target;
+- (void)timerFired:(id)fired;
 @end
 
 @implementation TSDAutoscroll
@@ -22,26 +22,26 @@
   [(TSDAutoscroll *)&v3 dealloc];
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
   mTarget = self->mTarget;
-  if (mTarget != a3)
+  if (mTarget != target)
   {
 
-    self->mTarget = a3;
+    self->mTarget = target;
   }
 }
 
-+ (void)startAutoscroll:(id)a3 unscaledPoint:(CGPoint)a4
++ (void)startAutoscroll:(id)autoscroll unscaledPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [a3 icc];
+  y = point.y;
+  x = point.x;
+  v7 = [autoscroll icc];
   [v7 viewScale];
   v9 = 20.0 / v8;
-  if (a3 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (autoscroll && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [a3 unscaledStartAutoscrollThreshold];
+    [autoscroll unscaledStartAutoscrollThreshold];
     v11 = v10;
     [v7 viewScale];
     v9 = v11 / v12;
@@ -60,10 +60,10 @@
     goto LABEL_45;
   }
 
-  if (![a3 autoscroll])
+  if (![autoscroll autoscroll])
   {
     v17 = objc_alloc_init(TSDAutoscroll);
-    [a3 setAutoscroll:v17];
+    [autoscroll setAutoscroll:v17];
   }
 
   v18 = [objc_msgSend(v7 "canvasView")];
@@ -82,18 +82,18 @@
   [v7 viewScale];
   v32 = TSDMultiplySizeScalar(v28, v30, 1.0 / v31);
   v34 = v33;
-  if (a3 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (autoscroll && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v35 = [a3 allowedAutoscrollDirections];
+    allowedAutoscrollDirections = [autoscroll allowedAutoscrollDirections];
   }
 
   else
   {
-    v35 = 15;
+    allowedAutoscrollDirections = 15;
   }
 
-  v36 = [v7 allowNegativeAutoscroll];
-  v37 = v36;
+  allowNegativeAutoscroll = [v7 allowNegativeAutoscroll];
+  v37 = allowNegativeAutoscroll;
   v38 = v53;
   if (v53 > 0.0)
   {
@@ -102,10 +102,10 @@
 
   else
   {
-    v39 = v36;
+    v39 = allowNegativeAutoscroll;
   }
 
-  if ((v35 & 1) != 0 && v39 && (v58.origin.x = v13, v58.origin.y = v14, v58.size.width = width, v58.size.height = height, MinX = CGRectGetMinX(v58), v38 = v53, x < MinX))
+  if ((allowedAutoscrollDirections & 1) != 0 && v39 && (v58.origin.x = v13, v58.origin.y = v14, v58.size.width = width, v58.size.height = height, MinX = CGRectGetMinX(v58), v38 = v53, x < MinX))
   {
     v41 = 0;
     v42 = 1;
@@ -125,7 +125,7 @@
     }
 
     v41 = 1;
-    if ((v35 & 2) != 0 && v43)
+    if ((allowedAutoscrollDirections & 2) != 0 && v43)
     {
       v44 = v38 < v50 - v32;
       v45 = v52;
@@ -163,7 +163,7 @@ LABEL_30:
     v46 = v37;
   }
 
-  if ((v35 & 4) != 0)
+  if ((allowedAutoscrollDirections & 4) != 0)
   {
     if (v46)
     {
@@ -189,7 +189,7 @@ LABEL_30:
     v47 = v37;
   }
 
-  if ((v35 & 8) != 0)
+  if ((allowedAutoscrollDirections & 8) != 0)
   {
     if (v47)
     {
@@ -211,33 +211,33 @@ LABEL_30:
   if ((v41 & 1) == 0)
   {
 LABEL_49:
-    [objc_msgSend(a3 "autoscroll")];
+    [objc_msgSend(autoscroll "autoscroll")];
     v49 = [objc_msgSend(v7 "layerHost")];
     [v7 convertUnscaledToBoundsPoint:{x, y}];
     [v49 convertPoint:0 toView:?];
 
-    [a3 setAutoscrollPoint:?];
+    [autoscroll setAutoscrollPoint:?];
     return;
   }
 
 LABEL_45:
-  v48 = [a3 autoscroll];
+  autoscroll = [autoscroll autoscroll];
 
-  [v48 invalidate];
+  [autoscroll invalidate];
 }
 
-- (BOOL)startAutoscroll:(id)a3 unscaledPoint:(CGPoint)a4 directions:(int)a5 repeatInterval:(double)a6
+- (BOOL)startAutoscroll:(id)autoscroll unscaledPoint:(CGPoint)point directions:(int)directions repeatInterval:(double)interval
 {
-  v7 = *&a5;
-  y = a4.y;
-  x = a4.x;
-  if (self->mTimer && [(TSDAutoscroll *)self target]== a3)
+  v7 = *&directions;
+  y = point.y;
+  x = point.x;
+  if (self->mTimer && [(TSDAutoscroll *)self target]== autoscroll)
   {
     [(TSDAutoscroll *)self point];
     if (v13 == x && v12 == y && [(TSDAutoscroll *)self directions]== v7)
     {
       [(TSDAutoscroll *)self repeatInterval];
-      if (v15 == a6)
+      if (v15 == interval)
       {
         return 1;
       }
@@ -245,7 +245,7 @@ LABEL_45:
   }
 
   v17 = objc_opt_respondsToSelector();
-  v18 = a6 == 0.0 || v7 == 0;
+  v18 = interval == 0.0 || v7 == 0;
   if (v18 || (v17 & 1) == 0)
   {
     [(TSDAutoscroll *)self invalidate];
@@ -265,7 +265,7 @@ LABEL_45:
     {
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
       self->mLastFired = v21;
-      self->mTimer = [objc_alloc(MEMORY[0x277CBEBB8]) initWithFireDate:v19 interval:self target:sel_timerFired_ selector:0 userInfo:1 repeats:a6];
+      self->mTimer = [objc_alloc(MEMORY[0x277CBEBB8]) initWithFireDate:v19 interval:self target:sel_timerFired_ selector:0 userInfo:1 repeats:interval];
       [objc_msgSend(MEMORY[0x277CBEB88] "currentRunLoop")];
     }
 
@@ -274,10 +274,10 @@ LABEL_45:
       [(TSDAutoscroll *)self setCount:0];
     }
 
-    [(TSDAutoscroll *)self setTarget:a3];
+    [(TSDAutoscroll *)self setTarget:autoscroll];
     [(TSDAutoscroll *)self setPoint:x, y];
     [(TSDAutoscroll *)self setDirections:v7];
-    [(TSDAutoscroll *)self setRepeatInterval:a6];
+    [(TSDAutoscroll *)self setRepeatInterval:interval];
     v16 = 1;
     [(TSDAutoscroll *)self setActive:1];
   }
@@ -319,11 +319,11 @@ LABEL_45:
   }
 }
 
-- (unint64_t)p_deltaForCount:(unint64_t)a3
+- (unint64_t)p_deltaForCount:(unint64_t)count
 {
   if (self->mTarget && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [(TSDAutoscrollDelegate *)self->mTarget maximumAutoscrollDeltaForCount:a3];
+    v5 = [(TSDAutoscrollDelegate *)self->mTarget maximumAutoscrollDeltaForCount:count];
   }
 
   else
@@ -335,15 +335,15 @@ LABEL_45:
   v7 = v6 - self->mLastFired;
   [(TSDAutoscroll *)self repeatInterval];
   result = (v5 * (v7 / v8));
-  if (a3 <= 0x18)
+  if (count <= 0x18)
   {
-    return ((1.0 / (26 - a3)) * result);
+    return ((1.0 / (26 - count)) * result);
   }
 
   return result;
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
   [(TSDAutoscroll *)self setCount:[(TSDAutoscroll *)self count]+ 1];
   if ([(TSDAutoscroll *)self targetIsAutoscrolling])
@@ -370,25 +370,25 @@ LABEL_45:
   v25 = v24;
   v26 = TSDMultiplyPointScalar(v13, v11, v16);
   v28 = v27;
-  v29 = [(TSDAutoscroll *)self directions];
+  directions = [(TSDAutoscroll *)self directions];
   if (self->mTarget)
   {
     if (objc_opt_respondsToSelector())
     {
-      v30 = [(TSDAutoscrollDelegate *)self->mTarget allowedAutoscrollDirections];
-      if ((v29 & ~v30) != 0)
+      allowedAutoscrollDirections = [(TSDAutoscrollDelegate *)self->mTarget allowedAutoscrollDirections];
+      if ((directions & ~allowedAutoscrollDirections) != 0)
       {
         self->mCount = 0;
-        [(TSDAutoscroll *)self setDirections:v30 & v29];
-        v29 = [(TSDAutoscroll *)self directions];
+        [(TSDAutoscroll *)self setDirections:allowedAutoscrollDirections & directions];
+        directions = [(TSDAutoscroll *)self directions];
       }
     }
   }
 
   v31 = [(TSDAutoscroll *)self p_deltaForCount:[(TSDAutoscroll *)self count]];
-  if ((v29 & 1) == 0)
+  if ((directions & 1) == 0)
   {
-    if ((v29 & 2) != 0)
+    if ((directions & 2) != 0)
     {
       v32 = v19 - v23 + v26;
       if (v7 < v32)
@@ -399,12 +399,12 @@ LABEL_45:
         goto LABEL_12;
       }
 
-      v29 = v29 & 0xFFFFFFFC;
+      directions = directions & 0xFFFFFFFC;
     }
 
 LABEL_18:
     v38 = v7;
-    if ((v29 & 4) != 0)
+    if ((directions & 4) != 0)
     {
       goto LABEL_13;
     }
@@ -414,7 +414,7 @@ LABEL_18:
 
   if (v7 <= v26)
   {
-    v29 = v29 & 0xFFFFFFFE;
+    directions = directions & 0xFFFFFFFE;
     goto LABEL_18;
   }
 
@@ -423,7 +423,7 @@ LABEL_18:
   v35 = fmaxf(v36, v37);
 LABEL_12:
   v38 = v35;
-  if ((v29 & 4) != 0)
+  if ((directions & 4) != 0)
   {
 LABEL_13:
     if (v9 > v28)
@@ -436,12 +436,12 @@ LABEL_22:
       goto LABEL_25;
     }
 
-    v29 = v29 & 0xFFFFFFFB;
+    directions = directions & 0xFFFFFFFB;
     goto LABEL_24;
   }
 
 LABEL_19:
-  if ((v29 & 8) != 0)
+  if ((directions & 8) != 0)
   {
     v42 = v49 - v25 + v28;
     if (v9 < v42)
@@ -452,12 +452,12 @@ LABEL_19:
       goto LABEL_22;
     }
 
-    v29 = v29 & 0xFFFFFFF3;
+    directions = directions & 0xFFFFFFF3;
   }
 
 LABEL_24:
   v45 = v9;
-  if (!v29)
+  if (!directions)
   {
 
     [(TSDAutoscroll *)self invalidate];
@@ -475,7 +475,7 @@ LABEL_25:
     v50[3] = &unk_279D47708;
     v50[4] = self;
     v50[5] = v4;
-    if (([(TSDAutoscrollDelegate *)[(TSDAutoscroll *)self target] autoscrollWithDirection:v29 proposedContentOffset:v50 completionBlock:v38, v45]& 1) != 0)
+    if (([(TSDAutoscrollDelegate *)[(TSDAutoscroll *)self target] autoscrollWithDirection:directions proposedContentOffset:v50 completionBlock:v38, v45]& 1) != 0)
     {
       return;
     }
@@ -484,10 +484,10 @@ LABEL_25:
   }
 
   [v4 setContentOffset:0 animated:{v38, v45}];
-  v46 = [v4 delegate];
+  delegate = [v4 delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v46 interactiveCanvasController:v4 didScrollForAutoscroll:self];
+    [delegate interactiveCanvasController:v4 didScrollForAutoscroll:self];
   }
 
   self->mLastAutoscrollDelta.x = TSDSubtractPoints(v38, v45, v7);

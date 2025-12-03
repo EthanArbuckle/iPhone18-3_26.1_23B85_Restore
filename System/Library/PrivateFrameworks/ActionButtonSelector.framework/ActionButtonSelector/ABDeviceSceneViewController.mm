@@ -1,17 +1,17 @@
 @interface ABDeviceSceneViewController
 - (CATransform3D)actionButtonPerspectiveTransform;
 - (double)actionButtonScreenScale;
-- (double)actionButtonTranslationWithPressProgress:(uint64_t)a1;
+- (double)actionButtonTranslationWithPressProgress:(uint64_t)progress;
 - (id)delegate;
 - (id)setDelegate:(id *)result;
 - (uint64_t)isScenePresented;
 - (void)_didPresentFrame;
-- (void)_renderWithTargetTimestamp:(double)a3 duration:(double)a4 renderInputs:(ABDeviceSceneRenderInputs *)a5;
+- (void)_renderWithTargetTimestamp:(double)timestamp duration:(double)duration renderInputs:(ABDeviceSceneRenderInputs *)inputs;
 - (void)_setupSceneIfNeeded;
 - (void)_subscribeToFramePresentationIfNeeded;
 - (void)devicePerspectiveTransform;
-- (void)renderWithTargetTimestamp:(double)a3 duration:(double)a4 renderInputs:;
-- (void)renderer:(id)a3 willRenderScene:(id)a4 atTime:(double)a5;
+- (void)renderWithTargetTimestamp:(double)timestamp duration:(double)duration renderInputs:;
+- (void)renderer:(id)renderer willRenderScene:(id)scene atTime:(double)time;
 - (void)viewDidLoad;
 @end
 
@@ -27,15 +27,15 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = +[ABDeviceSceneResourceLoader sharedLoader];
-    v5 = [(ABDeviceSceneResourceLoader *)v4 areResourcesLoaded];
+    areResourcesLoaded = [(ABDeviceSceneResourceLoader *)v4 areResourcesLoaded];
     v6 = @"no";
-    if (v5)
+    if (areResourcesLoaded)
     {
       v6 = @"yes";
     }
 
     *buf = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
     v12 = v6;
     _os_log_impl(&dword_23DE18000, v3, OS_LOG_TYPE_DEFAULT, "(%{public}@) loading the view; scene resources are ready: %{public}@", buf, 0x16u);
@@ -45,15 +45,15 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)renderWithTargetTimestamp:(double)a3 duration:(double)a4 renderInputs:
+- (void)renderWithTargetTimestamp:(double)timestamp duration:(double)duration renderInputs:
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v8 = +[ABDeviceSceneResourceLoader sharedLoader];
-    v9 = [(ABDeviceSceneResourceLoader *)v8 areResourcesLoaded];
+    areResourcesLoaded = [(ABDeviceSceneResourceLoader *)v8 areResourcesLoaded];
 
-    if (v9)
+    if (areResourcesLoaded)
     {
       v10 = *(a2 + 168);
       v24 = *(a2 + 160);
@@ -77,23 +77,23 @@
       v25 = v16;
       v26 = v17;
       v27 = *(a2 + 184);
-      [a1 _renderWithTargetTimestamp:v23 duration:a3 renderInputs:a4];
+      [self _renderWithTargetTimestamp:v23 duration:timestamp renderInputs:duration];
     }
 
-    else if (!a1[144])
+    else if (!self[144])
     {
       v18 = ABLogger();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v29 = a1;
+        selfCopy = self;
         _os_log_impl(&dword_23DE18000, v18, OS_LOG_TYPE_DEFAULT, "(%{public}@) view controller will initiate resource loading", buf, 0xCu);
       }
 
       v19 = +[ABDeviceSceneResourceLoader sharedLoader];
       v20 = [(ABDeviceSceneResourceLoader *)v19 loadResourcesWithCompletion:?];
-      v21 = a1[144];
-      a1[144] = v20;
+      v21 = self[144];
+      self[144] = v20;
     }
   }
 
@@ -117,15 +117,15 @@ void __79__ABDeviceSceneViewController_renderWithTargetTimestamp_duration_render
 
 - (void)devicePerspectiveTransform
 {
-  if (a1)
+  if (self)
   {
-    v4 = [a1[124] pointOfView];
+    pointOfView = [self[124] pointOfView];
     memset(&v19, 0, sizeof(v19));
-    v5 = [v4 camera];
-    v6 = v5;
-    if (v5)
+    camera = [pointOfView camera];
+    v6 = camera;
+    if (camera)
     {
-      [v5 projectionTransform];
+      [camera projectionTransform];
     }
 
     else
@@ -134,20 +134,20 @@ void __79__ABDeviceSceneViewController_renderWithTargetTimestamp_duration_render
     }
 
     memset(&v18, 0, sizeof(v18));
-    if (v4)
+    if (pointOfView)
     {
-      [v4 worldTransform];
+      [pointOfView worldTransform];
     }
 
     memset(&v17, 0, sizeof(v17));
     m = v18;
     SCNMatrix4Invert(&v17, &m);
     memset(&m, 0, sizeof(m));
-    v7 = [a1 view];
-    [v7 bounds];
+    view = [self view];
+    [view bounds];
     v9 = v8 * 0.5;
-    v10 = [a1 view];
-    [v10 bounds];
+    view2 = [self view];
+    [view2 bounds];
     memset(&b.m22, 0, 40);
     v12 = v11 * 0.5;
     *&b.m12 = 0u;
@@ -238,7 +238,7 @@ void __79__ABDeviceSceneViewController_renderWithTargetTimestamp_duration_render
   return result;
 }
 
-- (void)renderer:(id)a3 willRenderScene:(id)a4 atTime:(double)a5
+- (void)renderer:(id)renderer willRenderScene:(id)scene atTime:(double)time
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -259,9 +259,9 @@ void __63__ABDeviceSceneViewController_renderer_willRenderScene_atTime___block_i
   if (!self->_sceneView)
   {
     v3 = +[ABDeviceSceneResourceLoader sharedLoader];
-    v4 = [(ABDeviceSceneResourceLoader *)v3 areResourcesLoaded];
+    areResourcesLoaded = [(ABDeviceSceneResourceLoader *)v3 areResourcesLoaded];
 
-    if (v4)
+    if (areResourcesLoaded)
     {
       p_sceneModel = &self->_sceneModel;
       v6 = +[ABDeviceSceneResourceLoader sharedLoader];
@@ -269,15 +269,15 @@ void __63__ABDeviceSceneViewController_renderer_willRenderScene_atTime___block_i
       __move_assignment_8_8_s0_s8_s16_S_s24_s32_s40_s48_s56_s64_s72_t80w64(&self->_sceneModel, v18);
 
       v7 = +[ABDeviceSceneResourceLoader sharedLoader];
-      v8 = [(ABDeviceSceneResourceLoader *)v7 sceneView];
+      sceneView = [(ABDeviceSceneResourceLoader *)v7 sceneView];
       sceneView = self->_sceneView;
-      self->_sceneView = v8;
+      self->_sceneView = sceneView;
 
-      v10 = [(ABDeviceSceneViewController *)self view];
-      [v10 addSubview:self->_sceneView];
+      view = [(ABDeviceSceneViewController *)self view];
+      [view addSubview:self->_sceneView];
 
-      v11 = [(ABDeviceSceneViewController *)self view];
-      [v11 frame];
+      view2 = [(ABDeviceSceneViewController *)self view];
+      [view2 frame];
       [(SCNView *)self->_sceneView setBounds:?];
 
       [(SCNView *)self->_sceneView setAutoresizingMask:18];
@@ -287,35 +287,35 @@ void __63__ABDeviceSceneViewController_renderer_willRenderScene_atTime___block_i
       self->_displayView = v12;
 
       [(ABDeviceDisplayView *)self->_displayView sizeToFit];
-      v14 = [(ABDeviceDisplayView *)self->_displayView layer];
-      v15 = [(SCNNode *)p_sceneModel->displayNode geometry];
-      v16 = [v15 firstMaterial];
-      v17 = [v16 emission];
-      [v17 setContents:v14];
+      layer = [(ABDeviceDisplayView *)self->_displayView layer];
+      geometry = [(SCNNode *)p_sceneModel->displayNode geometry];
+      firstMaterial = [geometry firstMaterial];
+      emission = [firstMaterial emission];
+      [emission setContents:layer];
     }
   }
 }
 
-- (void)_renderWithTargetTimestamp:(double)a3 duration:(double)a4 renderInputs:(ABDeviceSceneRenderInputs *)a5
+- (void)_renderWithTargetTimestamp:(double)timestamp duration:(double)duration renderInputs:(ABDeviceSceneRenderInputs *)inputs
 {
-  [(ABDeviceSceneViewController *)self _setupSceneIfNeeded:a3];
-  v7 = [(SCNView *)self->_sceneView pointOfView];
-  v8 = [v7 camera];
+  [(ABDeviceSceneViewController *)self _setupSceneIfNeeded:timestamp];
+  pointOfView = [(SCNView *)self->_sceneView pointOfView];
+  camera = [pointOfView camera];
 
-  [v8 setFocusDistance:a5->cameraAndLight.focusDistance];
-  [v8 setFocalLength:a5->cameraAndLight.focalLength];
-  [v8 setFStop:a5->cameraAndLight.fStop];
-  [v8 setApertureBladeCount:a5->cameraAndLight.apertureBladeCount];
-  lightingIntensity = a5->cameraAndLight.lightingIntensity;
-  v10 = [(SCNScene *)self->_sceneModel.scene lightingEnvironment];
-  [v10 setIntensity:lightingIntensity];
+  [camera setFocusDistance:inputs->cameraAndLight.focusDistance];
+  [camera setFocalLength:inputs->cameraAndLight.focalLength];
+  [camera setFStop:inputs->cameraAndLight.fStop];
+  [camera setApertureBladeCount:inputs->cameraAndLight.apertureBladeCount];
+  lightingIntensity = inputs->cameraAndLight.lightingIntensity;
+  lightingEnvironment = [(SCNScene *)self->_sceneModel.scene lightingEnvironment];
+  [lightingEnvironment setIntensity:lightingIntensity];
 
-  buttonPressProgress = a5->buttonPressProgress;
+  buttonPressProgress = inputs->buttonPressProgress;
   v12 = ABButtonPressDepth();
-  LOBYTE(v10) = ABDeviceIsD23();
+  LOBYTE(lightingEnvironment) = ABDeviceIsD23();
   IsV5x = ABDeviceIsV5x();
   v14 = -(v12 * buttonPressProgress);
-  v15 = IsV5x | v10;
+  v15 = IsV5x | lightingEnvironment;
   capNode = self->_sceneModel.buttonModel.capNode;
   if (v15)
   {
@@ -390,16 +390,16 @@ void __63__ABDeviceSceneViewController_renderer_willRenderScene_atTime___block_i
   sidesNodeHighlight = self->_sceneModel.buttonModel.sidesNodeHighlight;
   a = v41;
   [(SCNNode *)sidesNodeHighlight setTransform:&a];
-  v27 = *&a5->modelTransform.m31;
-  v28 = *&a5->modelTransform.m41;
-  v29 = *&a5->modelTransform.m43;
-  v37 = *&a5->modelTransform.m33;
+  v27 = *&inputs->modelTransform.m31;
+  v28 = *&inputs->modelTransform.m41;
+  v29 = *&inputs->modelTransform.m43;
+  v37 = *&inputs->modelTransform.m33;
   v38 = v28;
   v39 = v29;
-  v30 = *&a5->modelTransform.m13;
-  *&a.m11 = *&a5->modelTransform.m11;
-  v31 = *&a5->modelTransform.m21;
-  v32 = *&a5->modelTransform.m23;
+  v30 = *&inputs->modelTransform.m13;
+  *&a.m11 = *&inputs->modelTransform.m11;
+  v31 = *&inputs->modelTransform.m21;
+  v32 = *&inputs->modelTransform.m23;
   *&a.m21 = v30;
   *&a.m31 = v31;
   *&a.m41 = v32;
@@ -412,7 +412,7 @@ void __63__ABDeviceSceneViewController_renderer_willRenderScene_atTime___block_i
   *&a.m41 = v40[3];
   [(SCNNode *)deviceNode setTransform:&a];
   __copy_constructor_8_8_s0_s8_s16_s24_s32_s40_s48_t56w64(v34, &self->_sceneModel.buttonModel);
-  ABDeviceSceneButtonModelSetColor(v34, a5->buttonHighlight.color, a5->buttonHighlight.opacity);
+  ABDeviceSceneButtonModelSetColor(v34, inputs->buttonHighlight.color, inputs->buttonHighlight.opacity);
   [(ABDeviceDisplayView *)&self->_displayView->super.super.super.isa setIslandMode:?];
   [(ABDeviceSceneViewController *)self _subscribeToFramePresentationIfNeeded];
 }
@@ -447,12 +447,12 @@ void __68__ABDeviceSceneViewController__subscribeToFramePresentationIfNeeded__bl
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_23DE18000, v3, OS_LOG_TYPE_DEFAULT, "(%{public}@) did present frame", buf, 0xCu);
   }
 
-  v4 = [(ABDeviceSceneViewController *)self scenePresentationBarrier];
-  [v4 doubleValue];
+  scenePresentationBarrier = [(ABDeviceSceneViewController *)self scenePresentationBarrier];
+  [scenePresentationBarrier doubleValue];
   v6 = v5;
 
   if (v6 <= 0.0 || ([MEMORY[0x277CBEAA8] now], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "timeIntervalSinceReferenceDate"), v9 = v8 - v6, v7, v9 <= 0.2))
@@ -471,7 +471,7 @@ void __68__ABDeviceSceneViewController__subscribeToFramePresentationIfNeeded__bl
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_23DE18000, v10, OS_LOG_TYPE_DEFAULT, "(%{public}@) delaying scene presentation", buf, 0xCu);
     }
 
@@ -481,9 +481,9 @@ void __68__ABDeviceSceneViewController__subscribeToFramePresentationIfNeeded__bl
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (double)actionButtonTranslationWithPressProgress:(uint64_t)a1
+- (double)actionButtonTranslationWithPressProgress:(uint64_t)progress
 {
-  if (a1)
+  if (progress)
   {
     return -(ABButtonPressDepth() * a2);
   }
@@ -496,7 +496,7 @@ void __68__ABDeviceSceneViewController__subscribeToFramePresentationIfNeeded__bl
 
 - (double)actionButtonScreenScale
 {
-  if (a1)
+  if (self)
   {
     return ABButtonScreenScale();
   }
@@ -530,9 +530,9 @@ void __68__ABDeviceSceneViewController__subscribeToFramePresentationIfNeeded__bl
 
 - (uint64_t)isScenePresented
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 1160);
+    v1 = *(self + 1160);
   }
 
   else

@@ -31,8 +31,8 @@
 
     [(MRBaseComponentHandler *)v3 setComponentId:3];
     [(MRBaseComponentHandler *)v3 setPopUpNotificationTitle:@"BLUETOOTH_FOLLOWUP_TITLE"];
-    v5 = [(MRBaseComponentHandler *)v3 deviceClass];
-    if (v5 == 3)
+    deviceClass = [(MRBaseComponentHandler *)v3 deviceClass];
+    if (deviceClass == 3)
     {
       v6 = @"BLUETOOTH_FOLLOWUP_INFO_IPAD";
     }
@@ -42,7 +42,7 @@
       v6 = @"BLUETOOTH_FOLLOWUP_INFO";
     }
 
-    if (v5 == 3)
+    if (deviceClass == 3)
     {
       v7 = @"BLUETOOTH_POPUP_INFO_IPAD";
     }
@@ -69,7 +69,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000021DC;
   block[3] = &unk_100018610;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10001EA98 != -1)
   {
     dispatch_once(&qword_10001EA98, block);

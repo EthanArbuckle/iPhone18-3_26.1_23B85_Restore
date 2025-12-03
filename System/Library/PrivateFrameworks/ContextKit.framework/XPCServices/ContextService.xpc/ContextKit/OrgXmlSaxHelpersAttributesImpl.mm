@@ -1,20 +1,20 @@
 @interface OrgXmlSaxHelpersAttributesImpl
 - (OrgXmlSaxHelpersAttributesImpl)init;
-- (id)getLocalNameWithInt:(int)a3;
-- (id)getQNameWithInt:(int)a3;
-- (id)getTypeWithInt:(int)a3;
-- (id)getTypeWithNSString:(id)a3;
-- (id)getTypeWithNSString:(id)a3 withNSString:(id)a4;
-- (id)getURIWithInt:(int)a3;
-- (id)getValueWithInt:(int)a3;
-- (id)getValueWithNSString:(id)a3;
-- (id)getValueWithNSString:(id)a3 withNSString:(id)a4;
-- (int)getIndexWithNSString:(id)a3;
-- (int)getIndexWithNSString:(id)a3 withNSString:(id)a4;
-- (void)addAttributeWithNSString:(id)a3 withNSString:(id)a4 withNSString:(id)a5 withNSString:(id)a6 withNSString:(id)a7;
+- (id)getLocalNameWithInt:(int)int;
+- (id)getQNameWithInt:(int)int;
+- (id)getTypeWithInt:(int)int;
+- (id)getTypeWithNSString:(id)string;
+- (id)getTypeWithNSString:(id)string withNSString:(id)sString;
+- (id)getURIWithInt:(int)int;
+- (id)getValueWithInt:(int)int;
+- (id)getValueWithNSString:(id)string;
+- (id)getValueWithNSString:(id)string withNSString:(id)sString;
+- (int)getIndexWithNSString:(id)string;
+- (int)getIndexWithNSString:(id)string withNSString:(id)sString;
+- (void)addAttributeWithNSString:(id)string withNSString:(id)sString withNSString:(id)nSString withNSString:(id)withNSString withNSString:(id)a7;
 - (void)clear;
 - (void)dealloc;
-- (void)setAttributesWithOrgXmlSaxAttributes:(id)a3;
+- (void)setAttributesWithOrgXmlSaxAttributes:(id)attributes;
 @end
 
 @implementation OrgXmlSaxHelpersAttributesImpl
@@ -26,9 +26,9 @@
   return self;
 }
 
-- (id)getURIWithInt:(int)a3
+- (id)getURIWithInt:(int)int
 {
-  if (a3 < 0 || self->length_ <= a3)
+  if (int < 0 || self->length_ <= int)
   {
     return 0;
   }
@@ -39,19 +39,19 @@
     JreThrowNullPointerException();
   }
 
-  v4 = 5 * a3;
+  v4 = 5 * int;
   size = data->super.size_;
-  if (5 * a3 < 0 || v4 >= size)
+  if (5 * int < 0 || v4 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v4);
   }
 
-  return (&data->elementType_)[5 * a3];
+  return (&data->elementType_)[5 * int];
 }
 
-- (id)getLocalNameWithInt:(int)a3
+- (id)getLocalNameWithInt:(int)int
 {
-  if (a3 < 0 || self->length_ <= a3)
+  if (int < 0 || self->length_ <= int)
   {
     return 0;
   }
@@ -63,7 +63,7 @@
   }
 
   size = data->super.size_;
-  v5 = 5 * a3 + 1;
+  v5 = 5 * int + 1;
   if (v5 < 0 || v5 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v5);
@@ -72,9 +72,9 @@
   return (&data->elementType_)[v5];
 }
 
-- (id)getQNameWithInt:(int)a3
+- (id)getQNameWithInt:(int)int
 {
-  if (a3 < 0 || self->length_ <= a3)
+  if (int < 0 || self->length_ <= int)
   {
     return 0;
   }
@@ -86,7 +86,7 @@
   }
 
   size = data->super.size_;
-  v5 = 5 * a3 + 2;
+  v5 = 5 * int + 2;
   if (v5 < 0 || v5 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v5);
@@ -95,9 +95,9 @@
   return (&data->elementType_)[v5];
 }
 
-- (id)getTypeWithInt:(int)a3
+- (id)getTypeWithInt:(int)int
 {
-  if (a3 < 0 || self->length_ <= a3)
+  if (int < 0 || self->length_ <= int)
   {
     return 0;
   }
@@ -109,7 +109,7 @@
   }
 
   size = data->super.size_;
-  v5 = 5 * a3 + 3;
+  v5 = 5 * int + 3;
   if (v5 < 0 || v5 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v5);
@@ -118,9 +118,9 @@
   return (&data->elementType_)[v5];
 }
 
-- (id)getValueWithInt:(int)a3
+- (id)getValueWithInt:(int)int
 {
-  if (a3 < 0 || self->length_ <= a3)
+  if (int < 0 || self->length_ <= int)
   {
     return 0;
   }
@@ -132,7 +132,7 @@
   }
 
   size = data->super.size_;
-  v5 = 5 * a3 + 4;
+  v5 = 5 * int + 4;
   if (v5 < 0 || v5 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v5);
@@ -141,7 +141,7 @@
   return (&data->elementType_)[v5];
 }
 
-- (int)getIndexWithNSString:(id)a3 withNSString:(id)a4
+- (int)getIndexWithNSString:(id)string withNSString:(id)sString
 {
   v4 = 5 * self->length_;
   if (v4 < 1)
@@ -171,7 +171,7 @@ LABEL_18:
       JreThrowNullPointerException();
     }
 
-    if ([(IOSClass *)v11 isEqual:a3])
+    if ([(IOSClass *)v11 isEqual:string])
     {
       v12 = self->data_;
       v13 = v8 + 1;
@@ -187,7 +187,7 @@ LABEL_18:
         goto LABEL_18;
       }
 
-      if ([v15 isEqual:a4])
+      if ([v15 isEqual:sString])
       {
         return v8 / 5;
       }
@@ -201,7 +201,7 @@ LABEL_18:
   }
 }
 
-- (int)getIndexWithNSString:(id)a3
+- (int)getIndexWithNSString:(id)string
 {
   v3 = 5 * self->length_;
   if (v3 < 1)
@@ -232,7 +232,7 @@ LABEL_13:
       JreThrowNullPointerException();
     }
 
-    if ([v10 isEqual:a3])
+    if ([v10 isEqual:string])
     {
       return v6 / 5;
     }
@@ -245,7 +245,7 @@ LABEL_13:
   }
 }
 
-- (id)getTypeWithNSString:(id)a3 withNSString:(id)a4
+- (id)getTypeWithNSString:(id)string withNSString:(id)sString
 {
   v4 = 5 * self->length_;
   if (v4 < 1)
@@ -276,7 +276,7 @@ LABEL_20:
       JreThrowNullPointerException();
     }
 
-    if ([(IOSClass *)v12 isEqual:a3])
+    if ([(IOSClass *)v12 isEqual:string])
     {
       v13 = self->data_;
       v14 = v8 - 2;
@@ -292,7 +292,7 @@ LABEL_20:
         goto LABEL_20;
       }
 
-      if ([v16 isEqual:a4])
+      if ([v16 isEqual:sString])
       {
         break;
       }
@@ -316,7 +316,7 @@ LABEL_20:
   return (&v19->elementType_)[v8];
 }
 
-- (id)getTypeWithNSString:(id)a3
+- (id)getTypeWithNSString:(id)string
 {
   v3 = 5 * self->length_;
   if (v3 < 1)
@@ -347,7 +347,7 @@ LABEL_15:
       JreThrowNullPointerException();
     }
 
-    if ([v10 isEqual:a3])
+    if ([v10 isEqual:string])
     {
       break;
     }
@@ -370,7 +370,7 @@ LABEL_15:
   return (&v13->elementType_)[v6];
 }
 
-- (id)getValueWithNSString:(id)a3 withNSString:(id)a4
+- (id)getValueWithNSString:(id)string withNSString:(id)sString
 {
   v4 = 5 * self->length_;
   if (v4 < 1)
@@ -401,7 +401,7 @@ LABEL_20:
       JreThrowNullPointerException();
     }
 
-    if ([(IOSClass *)v12 isEqual:a3])
+    if ([(IOSClass *)v12 isEqual:string])
     {
       v13 = self->data_;
       v14 = v8 - 3;
@@ -417,7 +417,7 @@ LABEL_20:
         goto LABEL_20;
       }
 
-      if ([v16 isEqual:a4])
+      if ([v16 isEqual:sString])
       {
         break;
       }
@@ -441,7 +441,7 @@ LABEL_20:
   return (&v19->elementType_)[v8];
 }
 
-- (id)getValueWithNSString:(id)a3
+- (id)getValueWithNSString:(id)string
 {
   v3 = 5 * self->length_;
   if (v3 < 1)
@@ -472,7 +472,7 @@ LABEL_15:
       JreThrowNullPointerException();
     }
 
-    if ([v10 isEqual:a3])
+    if ([v10 isEqual:string])
     {
       break;
     }
@@ -511,19 +511,19 @@ LABEL_15:
   self->length_ = 0;
 }
 
-- (void)setAttributesWithOrgXmlSaxAttributes:(id)a3
+- (void)setAttributesWithOrgXmlSaxAttributes:(id)attributes
 {
   [(OrgXmlSaxHelpersAttributesImpl *)self clear];
-  if (!a3)
+  if (!attributes)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [a3 getLength];
-  self->length_ = v5;
-  if (v5 >= 1)
+  getLength = [attributes getLength];
+  self->length_ = getLength;
+  if (getLength >= 1)
   {
-    v6 = [IOSObjectArray newArrayWithLength:5 * v5 type:NSString_class_()];
+    v6 = [IOSObjectArray newArrayWithLength:5 * getLength type:NSString_class_()];
     JreStrongAssignAndConsume(&self->data_, v6);
     if (self->length_ >= 1)
     {
@@ -531,11 +531,11 @@ LABEL_15:
       v8 = 4;
       do
       {
-        IOSObjectArray_Set(self->data_, v8 - 4, [a3 getURIWithInt:v7]);
-        IOSObjectArray_Set(self->data_, v8 - 3, [a3 getLocalNameWithInt:v7]);
-        IOSObjectArray_Set(self->data_, v8 - 2, [a3 getQNameWithInt:v7]);
-        IOSObjectArray_Set(self->data_, v8 - 1, [a3 getTypeWithInt:v7]);
-        IOSObjectArray_Set(self->data_, v8, [a3 getValueWithInt:v7++]);
+        IOSObjectArray_Set(self->data_, v8 - 4, [attributes getURIWithInt:v7]);
+        IOSObjectArray_Set(self->data_, v8 - 3, [attributes getLocalNameWithInt:v7]);
+        IOSObjectArray_Set(self->data_, v8 - 2, [attributes getQNameWithInt:v7]);
+        IOSObjectArray_Set(self->data_, v8 - 1, [attributes getTypeWithInt:v7]);
+        IOSObjectArray_Set(self->data_, v8, [attributes getValueWithInt:v7++]);
         v8 += 5;
       }
 
@@ -544,7 +544,7 @@ LABEL_15:
   }
 }
 
-- (void)addAttributeWithNSString:(id)a3 withNSString:(id)a4 withNSString:(id)a5 withNSString:(id)a6 withNSString:(id)a7
+- (void)addAttributeWithNSString:(id)string withNSString:(id)sString withNSString:(id)nSString withNSString:(id)withNSString withNSString:(id)a7
 {
   sub_100153F78(self, self->length_ + 1);
   data = self->data_;
@@ -553,10 +553,10 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  IOSObjectArray_Set(data, 5 * self->length_, a3);
-  IOSObjectArray_Set(self->data_, 5 * self->length_ + 1, a4);
-  IOSObjectArray_Set(self->data_, 5 * self->length_ + 2, a5);
-  IOSObjectArray_Set(self->data_, 5 * self->length_ + 3, a6);
+  IOSObjectArray_Set(data, 5 * self->length_, string);
+  IOSObjectArray_Set(self->data_, 5 * self->length_ + 1, sString);
+  IOSObjectArray_Set(self->data_, 5 * self->length_ + 2, nSString);
+  IOSObjectArray_Set(self->data_, 5 * self->length_ + 3, withNSString);
   IOSObjectArray_Set(self->data_, 5 * self->length_ + 4, a7);
   ++self->length_;
 }

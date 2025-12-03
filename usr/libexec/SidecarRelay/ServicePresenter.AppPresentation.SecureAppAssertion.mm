@@ -1,15 +1,15 @@
 @interface ServicePresenter.AppPresentation.SecureAppAssertion
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5;
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event;
 @end
 
 @implementation ServicePresenter.AppPresentation.SecureAppAssertion
 
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event
 {
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_10004EC2C(a3, a4, a5);
+  eventCopy = event;
+  selfCopy = self;
+  sub_10004EC2C(backlight, state, event);
   swift_unknownObjectRelease();
 }
 

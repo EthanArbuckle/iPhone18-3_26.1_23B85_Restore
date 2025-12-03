@@ -50,7 +50,7 @@
 - (id)safari_mobileSafariContainerDirectoryURL
 {
   v3 = 0;
-  [a1 _safari_getMobileSafariContainerDirectoryURL:&v3 isContainerized:0];
+  [self _safari_getMobileSafariContainerDirectoryURL:&v3 isContainerized:0];
   v1 = v3;
 
   return v1;
@@ -82,7 +82,7 @@
   block[1] = 3221225472;
   block[2] = __71__NSFileManager_SafariNSFileManagerExtras__safari_settingsDirectoryURL__block_invoke;
   block[3] = &unk_1E7CF0828;
-  block[4] = a1;
+  block[4] = self;
   if ([NSFileManager(SafariNSFileManagerExtras) safari_settingsDirectoryURL]::onceToken != -1)
   {
     dispatch_once(&[NSFileManager(SafariNSFileManagerExtras) safari_settingsDirectoryURL]::onceToken, block);
@@ -97,7 +97,7 @@
   block[1] = 3221225472;
   block[2] = __73__NSFileManager_SafariNSFileManagerExtras__safari_safariLibraryDirectory__block_invoke;
   block[3] = &unk_1E7CF0828;
-  block[4] = a1;
+  block[4] = self;
   if ([NSFileManager(SafariNSFileManagerExtras) safari_safariLibraryDirectory]::onceToken != -1)
   {
     dispatch_once(&[NSFileManager(SafariNSFileManagerExtras) safari_safariLibraryDirectory]::onceToken, block);
@@ -108,32 +108,32 @@
 
 - (id)safari_startPageBackgroundImageFileURLForDefaultProfile
 {
-  v1 = [a1 safari_startPageBackgroundImageFolderURL];
-  v2 = [v1 URLByAppendingPathComponent:@"defaultBackground" isDirectory:0];
+  safari_startPageBackgroundImageFolderURL = [self safari_startPageBackgroundImageFolderURL];
+  v2 = [safari_startPageBackgroundImageFolderURL URLByAppendingPathComponent:@"defaultBackground" isDirectory:0];
 
   return v2;
 }
 
 - (id)safari_startPageBackgroundImageFolderURL
 {
-  v1 = [a1 safari_mobileSafariContainerDirectoryURL];
-  v2 = [v1 URLByAppendingPathComponent:@"Library/StartPage" isDirectory:1];
+  safari_mobileSafariContainerDirectoryURL = [self safari_mobileSafariContainerDirectoryURL];
+  v2 = [safari_mobileSafariContainerDirectoryURL URLByAppendingPathComponent:@"Library/StartPage" isDirectory:1];
 
   return v2;
 }
 
 - (id)safari_startPageBackgroundImageThumbnailMobileAssetFolderURL
 {
-  v1 = [a1 safari_startPageBackgroundImageFolderURL];
-  v2 = [v1 URLByAppendingPathComponent:@"MobileAssetBackgroundImageThumbnails" isDirectory:1];
+  safari_startPageBackgroundImageFolderURL = [self safari_startPageBackgroundImageFolderURL];
+  v2 = [safari_startPageBackgroundImageFolderURL URLByAppendingPathComponent:@"MobileAssetBackgroundImageThumbnails" isDirectory:1];
 
   return v2;
 }
 
 - (id)safari_startPageBackgroundImageMobileAssetFolderURL
 {
-  v1 = [a1 safari_startPageBackgroundImageFolderURL];
-  v2 = [v1 URLByAppendingPathComponent:@"MobileAssetBackgroundImages" isDirectory:1];
+  safari_startPageBackgroundImageFolderURL = [self safari_startPageBackgroundImageFolderURL];
+  v2 = [safari_startPageBackgroundImageFolderURL URLByAppendingPathComponent:@"MobileAssetBackgroundImages" isDirectory:1];
 
   return v2;
 }
@@ -144,13 +144,13 @@
   block[1] = 3221225472;
   block[2] = __84__NSFileManager_SafariNSFileManagerExtras__safari_webExtensionsSettingsDirectoryURL__block_invoke;
   block[3] = &unk_1E7CF0828;
-  block[4] = a1;
+  block[4] = self;
   if ([NSFileManager(SafariNSFileManagerExtras) safari_webExtensionsSettingsDirectoryURL]::onceToken != -1)
   {
     dispatch_once(&[NSFileManager(SafariNSFileManagerExtras) safari_webExtensionsSettingsDirectoryURL]::onceToken, block);
   }
 
-  v2 = [a1 safari_ensureDirectoryExists:-[NSFileManager(SafariNSFileManagerExtras) safari_webExtensionsSettingsDirectoryURL]::settingsDirectory];
+  v2 = [self safari_ensureDirectoryExists:-[NSFileManager(SafariNSFileManagerExtras) safari_webExtensionsSettingsDirectoryURL]::settingsDirectory];
 
   return v2;
 }
@@ -158,7 +158,7 @@
 - (id)safari_passwordsAppContainerDirectoryURL
 {
   v3 = 0;
-  [a1 _safari_getPasswordsAppContainerDirectoryURL:&v3 isContainerized:0];
+  [self _safari_getPasswordsAppContainerDirectoryURL:&v3 isContainerized:0];
   v1 = v3;
 
   return v1;
@@ -167,8 +167,8 @@
 - (id)safari_startPageBackgroundImageFileURLForIdentifier:()SafariNSFileManagerExtras
 {
   v4 = a3;
-  v5 = [a1 safari_startPageBackgroundImageFolderURL];
-  v6 = [v5 URLByAppendingPathComponent:v4 isDirectory:0];
+  safari_startPageBackgroundImageFolderURL = [self safari_startPageBackgroundImageFolderURL];
+  v6 = [safari_startPageBackgroundImageFolderURL URLByAppendingPathComponent:v4 isDirectory:0];
 
   return v6;
 }
@@ -241,9 +241,9 @@ LABEL_4:
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [v4 path];
+  path = [v4 path];
   v15 = 0;
-  v6 = [a1 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v15];
+  v6 = [self createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v15];
   v7 = v15;
 
   if (v6)
@@ -256,15 +256,15 @@ LABEL_4:
     v9 = WBS_LOG_CHANNEL_PREFIXFileManager();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v7 safari_privacyPreservingDescription];
-      [(NSFileManager(SafariNSFileManagerExtras) *)v10 safari_ensureDirectoryExists:buf, v9];
+      safari_privacyPreservingDescription = [v7 safari_privacyPreservingDescription];
+      [(NSFileManager(SafariNSFileManagerExtras) *)safari_privacyPreservingDescription safari_ensureDirectoryExists:buf, v9];
     }
 
     v11 = WBS_LOG_CHANNEL_PREFIXFileManager();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [v4 path];
-      [(NSFileManager(SafariNSFileManagerExtras) *)v12 safari_ensureDirectoryExists:v16, v11];
+      path2 = [v4 path];
+      [(NSFileManager(SafariNSFileManagerExtras) *)path2 safari_ensureDirectoryExists:v16, v11];
     }
 
     v8 = v4;
@@ -285,7 +285,7 @@ LABEL_4:
   v10 = [v7 fileURLWithPath:v9 isDirectory:1];
 
   v11 = [v10 URLByAppendingPathComponent:v6 isDirectory:1];
-  v12 = [a1 safari_ensureDirectoryExists:v11];
+  v12 = [self safari_ensureDirectoryExists:v11];
 
   return v12;
 }
@@ -293,7 +293,7 @@ LABEL_4:
 - (uint64_t)safari_currentProcessIsContainerized
 {
   v2 = 0;
-  [a1 _safari_getMobileSafariContainerDirectoryURL:0 isContainerized:&v2];
+  [self _safari_getMobileSafariContainerDirectoryURL:0 isContainerized:&v2];
   return v2;
 }
 
@@ -313,8 +313,8 @@ LABEL_4:
 
 - (id)safari_settingsDirectoryForHomeDirectory:()SafariNSFileManagerExtras
 {
-  v2 = [a1 _safari_libraryDirectoryForHomeDirectory:?];
-  v3 = [a1 safari_settingsDirectoryForLibraryDirectory:v2];
+  v2 = [self _safari_libraryDirectoryForHomeDirectory:?];
+  v3 = [self safari_settingsDirectoryForLibraryDirectory:v2];
 
   return v3;
 }
@@ -325,7 +325,7 @@ LABEL_4:
   block[1] = 3221225472;
   block[2] = __71__NSFileManager_SafariNSFileManagerExtras__safari_profilesDirectoryURL__block_invoke;
   block[3] = &unk_1E7CF0828;
-  block[4] = a1;
+  block[4] = self;
   if ([NSFileManager(SafariNSFileManagerExtras) safari_profilesDirectoryURL]::onceToken != -1)
   {
     dispatch_once(&[NSFileManager(SafariNSFileManagerExtras) safari_profilesDirectoryURL]::onceToken, block);
@@ -337,20 +337,20 @@ LABEL_4:
 - (id)safari_profileDirectoryURLWithID:()SafariNSFileManagerExtras createIfNeeded:
 {
   v6 = a3;
-  v7 = [a1 safari_profilesDirectoryURL];
-  v8 = [v7 URLByAppendingPathComponent:v6];
+  safari_profilesDirectoryURL = [self safari_profilesDirectoryURL];
+  v8 = [safari_profilesDirectoryURL URLByAppendingPathComponent:v6];
 
   if (a4)
   {
-    v9 = [a1 safari_ensureDirectoryExists:v8];
+    v9 = [self safari_ensureDirectoryExists:v8];
 LABEL_4:
     v12 = v8;
     v8 = 0;
     goto LABEL_6;
   }
 
-  v10 = [v8 path];
-  v11 = [a1 fileExistsAtPath:v10];
+  path = [v8 path];
+  v11 = [self fileExistsAtPath:path];
 
   if (v11)
   {
@@ -381,7 +381,7 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = __84__NSFileManager_SafariNSFileManagerExtras__safari_productionSafariSettingsDirectory__block_invoke;
   block[3] = &unk_1E7CF0828;
-  block[4] = a1;
+  block[4] = self;
   if ([NSFileManager(SafariNSFileManagerExtras) safari_productionSafariSettingsDirectory]::settingsDirectoryInitialized != -1)
   {
     dispatch_once(&[NSFileManager(SafariNSFileManagerExtras) safari_productionSafariSettingsDirectory]::settingsDirectoryInitialized, block);
@@ -393,11 +393,11 @@ LABEL_6:
 - (id)safari_createTemporaryDirectoryWithTemplatePrefix:()SafariNSFileManagerExtras
 {
   v4 = [a3 stringByAppendingString:@"-XXXXXXXX"];
-  v5 = [a1 safari_createTemporaryDirectoryWithTemplate:v4];
-  v6 = [v5 absoluteURL];
-  v7 = [v6 path];
+  v5 = [self safari_createTemporaryDirectoryWithTemplate:v4];
+  absoluteURL = [v5 absoluteURL];
+  path = [absoluteURL path];
 
-  return v7;
+  return path;
 }
 
 - (id)safari_createTemporaryDirectoryWithTemplate:()SafariNSFileManagerExtras
@@ -406,7 +406,7 @@ LABEL_6:
   v5 = MEMORY[0x1E695DFF8];
   v6 = NSTemporaryDirectory();
   v7 = [v5 fileURLWithPath:v6];
-  v8 = [a1 safari_createDirectoryWithTemplate:v4 inDirectory:v7];
+  v8 = [self safari_createDirectoryWithTemplate:v4 inDirectory:v7];
 
   return v8;
 }
@@ -420,7 +420,7 @@ LABEL_6:
 
   if (mkdtemp(v9))
   {
-    v10 = [a1 stringWithFileSystemRepresentation:v9 length:strlen(v9)];
+    v10 = [self stringWithFileSystemRepresentation:v9 length:strlen(v9)];
     free(v9);
     v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:v10 isDirectory:1];
   }
@@ -449,7 +449,7 @@ LABEL_6:
     if (a5)
     {
       v10 = *v9;
-      v11 = [v7 safari_fileURL];
+      safari_fileURL = [v7 safari_fileURL];
       *a5 = _NSErrorWithFilePathAndErrno();
     }
   }
@@ -476,8 +476,8 @@ LABEL_6:
 
     else if (a6)
     {
-      v11 = [v10 safari_fileURL];
-      v12 = [v11 URLByAppendingPathComponent:v9];
+      safari_fileURL = [v10 safari_fileURL];
+      v12 = [safari_fileURL URLByAppendingPathComponent:v9];
 
       *a6 = _NSErrorWithFilePathAndErrno();
 
@@ -500,39 +500,39 @@ LABEL_6:
   v7 = a3;
   v8 = a4;
   v9 = [MEMORY[0x1E696AC00] safari_fileHandleWithURL:v8 options:0 createMode:0 error:a5];
-  v10 = [v9 safari_fileURL];
-  v11 = [v10 path];
+  safari_fileURL = [v9 safari_fileURL];
+  path = [safari_fileURL path];
 
-  if (!v11)
+  if (!path)
   {
     a5 = 0;
     goto LABEL_17;
   }
 
   v12 = [MEMORY[0x1E696AC00] safari_fileHandleWithURL:v7 options:0 createMode:0 error:a5];
-  v13 = [v12 safari_fileURL];
-  v14 = [v13 path];
+  safari_fileURL2 = [v12 safari_fileURL];
+  path2 = [safari_fileURL2 path];
 
-  if (!v14)
+  if (!path2)
   {
     goto LABEL_10;
   }
 
-  if ([v14 hasPrefix:v11])
+  if ([path2 hasPrefix:path])
   {
-    v15 = [v11 length];
-    if ([v11 hasSuffix:@"/"])
+    v15 = [path length];
+    if ([path hasSuffix:@"/"])
     {
-      v16 = [v14 substringFromIndex:v15];
+      v16 = [path2 substringFromIndex:v15];
 LABEL_15:
       a5 = v16;
       goto LABEL_16;
     }
 
-    v21 = [v14 rangeOfString:@"/" options:8 range:{v15, objc_msgSend(v14, "length") - v15}];
+    v21 = [path2 rangeOfString:@"/" options:8 range:{v15, objc_msgSend(path2, "length") - v15}];
     if (v21 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v16 = [v14 substringFromIndex:v21 + v22];
+      v16 = [path2 substringFromIndex:v21 + v22];
       goto LABEL_15;
     }
 
@@ -604,12 +604,12 @@ LABEL_15:
       }
 
       v13 = *(*(&v21 + 1) + 8 * i);
-      v14 = [v8 fileDescriptor];
+      fileDescriptor = [v8 fileDescriptor];
       v15 = v13;
-      if (!mkdirat(v14, [v13 fileSystemRepresentation], 0x1C0u))
+      if (!mkdirat(fileDescriptor, [v13 fileSystemRepresentation], 0x1C0u))
       {
-        v17 = [v8 safari_fileURL];
-        v16 = [v17 URLByAppendingPathComponent:v13];
+        safari_fileURL = [v8 safari_fileURL];
+        v16 = [safari_fileURL URLByAppendingPathComponent:v13];
 LABEL_14:
 
         goto LABEL_16;
@@ -622,8 +622,8 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v18 = [v8 safari_fileURL];
-        v17 = [v18 URLByAppendingPathComponent:v13];
+        safari_fileURL2 = [v8 safari_fileURL];
+        safari_fileURL = [safari_fileURL2 URLByAppendingPathComponent:v13];
 
         _NSErrorWithFilePathAndErrno();
         *a5 = v16 = 0;
@@ -650,7 +650,7 @@ LABEL_16:
 
 - (id)safari_moveFileAtSubpath:()SafariNSFileManagerExtras relativeToFileHandle:toUniqueSubpath:relativeToFileHandle:error:
 {
-  v7 = [a1 safari_moveFileAtSubpath:a3 relativeToFileHandle:a4 toUniqueSubpath:a5 relativeToFileHandle:a6 error:a7 usingExistingFileRecoveryBlock:&__block_literal_global_59];
+  v7 = [self safari_moveFileAtSubpath:a3 relativeToFileHandle:a4 toUniqueSubpath:a5 relativeToFileHandle:a6 error:a7 usingExistingFileRecoveryBlock:&__block_literal_global_59];
 
   return v7;
 }
@@ -664,7 +664,7 @@ LABEL_16:
   v14 = a6;
   v15 = a8;
   v59 = 0;
-  if ([a1 safari_getFileSystemSupportsExclusiveRename:&v59 atFileHandle:v14 error:a7])
+  if ([self safari_getFileSystemSupportsExclusiveRename:&v59 atFileHandle:v14 error:a7])
   {
     if (v59)
     {
@@ -708,7 +708,7 @@ LABEL_16:
             }
 
             v54 = 0;
-            if (([a1 safari_getFileExists:&v54 atSubpath:v21 relativeToFileHandle:v14 error:a7] & 1) == 0)
+            if (([self safari_getFileExists:&v54 atSubpath:v21 relativeToFileHandle:v14 error:a7] & 1) == 0)
             {
               goto LABEL_31;
             }
@@ -716,15 +716,15 @@ LABEL_16:
             if ((v54 & 1) == 0)
             {
 LABEL_38:
-              v22 = [v52 fileDescriptor];
+              fileDescriptor = [v52 fileDescriptor];
               v23 = v53;
-              v24 = [v53 fileSystemRepresentation];
-              v25 = [v14 fileDescriptor];
+              fileSystemRepresentation = [v53 fileSystemRepresentation];
+              fileDescriptor2 = [v14 fileDescriptor];
               v26 = v21;
-              if (!renameatx_np(v22, v24, v25, [v21 fileSystemRepresentation], v16))
+              if (!renameatx_np(fileDescriptor, fileSystemRepresentation, fileDescriptor2, [v21 fileSystemRepresentation], v16))
               {
-                v32 = [v14 safari_fileURL];
-                v31 = [v32 URLByAppendingPathComponent:v21];
+                safari_fileURL = [v14 safari_fileURL];
+                v31 = [safari_fileURL URLByAppendingPathComponent:v21];
 
                 goto LABEL_32;
               }
@@ -734,11 +734,11 @@ LABEL_38:
               {
                 if (a7)
                 {
-                  v33 = [v52 safari_fileURL];
-                  v34 = [v33 URLByAppendingPathComponent:v53];
+                  safari_fileURL2 = [v52 safari_fileURL];
+                  v34 = [safari_fileURL2 URLByAppendingPathComponent:v53];
 
-                  v35 = [v14 safari_fileURL];
-                  v36 = [v35 URLByAppendingPathComponent:v21];
+                  safari_fileURL3 = [v14 safari_fileURL];
+                  v36 = [safari_fileURL3 URLByAppendingPathComponent:v21];
 
                   if (v27 == 63)
                   {
@@ -767,12 +767,12 @@ LABEL_38:
                     v41 = 0;
                   }
 
-                  v42 = [MEMORY[0x1E695DF90] dictionary];
-                  v43 = [v34 path];
-                  [v42 setObject:v43 forKeyedSubscript:@"NSSourceFilePathErrorKey"];
+                  dictionary = [MEMORY[0x1E695DF90] dictionary];
+                  path = [v34 path];
+                  [dictionary setObject:path forKeyedSubscript:@"NSSourceFilePathErrorKey"];
 
-                  v44 = [v36 path];
-                  [v42 setObject:v44 forKeyedSubscript:@"NSDestinationFilePath"];
+                  path2 = [v36 path];
+                  [dictionary setObject:path2 forKeyedSubscript:@"NSDestinationFilePath"];
 
                   *a7 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo();
                 }
@@ -781,8 +781,8 @@ LABEL_38:
               }
             }
 
-            v28 = [v14 safari_fileURL];
-            v29 = [v28 URLByAppendingPathComponent:v21];
+            safari_fileURL4 = [v14 safari_fileURL];
+            v29 = [safari_fileURL4 URLByAppendingPathComponent:v21];
             v30 = v15[2](v15, v21, v29, ++v20);
           }
 
@@ -828,8 +828,8 @@ LABEL_32:
   v7 = a3;
   if ([v7 isFileURL])
   {
-    v8 = [v7 path];
-    if (unlink([v8 fileSystemRepresentation]) && ((a4 & 1) != 0 || *__error() != 2))
+    path = [v7 path];
+    if (unlink([path fileSystemRepresentation]) && ((a4 & 1) != 0 || *__error() != 2))
     {
       if (a5)
       {
@@ -869,42 +869,42 @@ LABEL_32:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 stringByDeletingLastPathComponent];
-    v6 = [v4 lastPathComponent];
-    v7 = [v6 safari_filenameByFixingIllegalCharacters];
-    v8 = [v5 stringByAppendingPathComponent:v7];
+    stringByDeletingLastPathComponent = [v3 stringByDeletingLastPathComponent];
+    lastPathComponent = [v4 lastPathComponent];
+    safari_filenameByFixingIllegalCharacters = [lastPathComponent safari_filenameByFixingIllegalCharacters];
+    v8 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:safari_filenameByFixingIllegalCharacters];
 
     v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8 isDirectory:0];
-    v10 = [v9 safari_URLWithUniqueFilename];
-    v11 = [v10 path];
+    safari_URLWithUniqueFilename = [v9 safari_URLWithUniqueFilename];
+    path = [safari_URLWithUniqueFilename path];
   }
 
   else
   {
-    v11 = 0;
+    path = 0;
   }
 
-  return v11;
+  return path;
 }
 
 - (id)safari_frameworksDirectoryURLs
 {
-  v0 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v1 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.Safari.Core"];
-  v2 = [v1 bundleURL];
-  v3 = [v2 URLByDeletingLastPathComponent];
-  [v0 addObject:v3];
+  bundleURL = [v1 bundleURL];
+  uRLByDeletingLastPathComponent = [bundleURL URLByDeletingLastPathComponent];
+  [array addObject:uRLByDeletingLastPathComponent];
 
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.SafariServices.framework"];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 bundleURL];
-    v7 = [v6 URLByDeletingLastPathComponent];
-    [v0 addObject:v7];
+    bundleURL2 = [v4 bundleURL];
+    uRLByDeletingLastPathComponent2 = [bundleURL2 URLByDeletingLastPathComponent];
+    [array addObject:uRLByDeletingLastPathComponent2];
   }
 
-  return v0;
+  return array;
 }
 
 - (void)safari_removeContentsOfDirectory:()SafariNSFileManagerExtras preservingContainerManagerMetadata:
@@ -913,13 +913,13 @@ LABEL_32:
   v26 = a3;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   context = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __112__NSFileManager_SafariNSFileManagerExtras__safari_removeContentsOfDirectory_preservingContainerManagerMetadata___block_invoke;
   v35[3] = &__block_descriptor_40_e27_B24__0__NSURL_8__NSError_16l;
   v35[4] = a2;
-  v7 = [v6 enumeratorAtURL:v26 includingPropertiesForKeys:0 options:17 errorHandler:v35];
+  v7 = [defaultManager enumeratorAtURL:v26 includingPropertiesForKeys:0 options:17 errorHandler:v35];
 
   v33 = 0u;
   v34 = 0u;
@@ -980,7 +980,7 @@ LABEL_32:
   block[2] = __112__NSFileManager_SafariNSFileManagerExtras__safari_removeContentsOfDirectory_preservingContainerManagerMetadata___block_invoke_82;
   block[3] = &unk_1E7CF2948;
   v28 = v5;
-  v29 = a1;
+  selfCopy = self;
   v30 = a2;
   v21 = v5;
   dispatch_apply(v20, v19, block);
@@ -993,8 +993,8 @@ LABEL_32:
   v26[3] = *MEMORY[0x1E69E9840];
   v8 = a3;
   v9 = a4;
-  v10 = [v8 path];
-  v11 = [v10 length];
+  path = [v8 path];
+  v11 = [path length];
 
   if (!v11)
   {
@@ -1007,8 +1007,8 @@ LABEL_32:
     goto LABEL_16;
   }
 
-  v12 = [v9 path];
-  v13 = [a1 isReadableFileAtPath:v12];
+  path2 = [v9 path];
+  v13 = [self isReadableFileAtPath:path2];
 
   if ((v13 & 1) == 0)
   {
@@ -1021,17 +1021,17 @@ LABEL_32:
     goto LABEL_16;
   }
 
-  [a1 removeItemAtURL:v8 error:a5];
-  v14 = [v8 path];
-  v15 = [a1 isReadableFileAtPath:v14];
+  [self removeItemAtURL:v8 error:a5];
+  path3 = [v8 path];
+  v15 = [self isReadableFileAtPath:path3];
 
   if (v15)
   {
     v16 = WBS_LOG_CHANNEL_PREFIXFileManager();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [*a5 safari_privacyPreservingDescription];
-      [NSFileManager(SafariNSFileManagerExtras) safari_replaceItemAtURL:v8 withItemFromURL:v17 error:v26];
+      safari_privacyPreservingDescription = [*a5 safari_privacyPreservingDescription];
+      [NSFileManager(SafariNSFileManagerExtras) safari_replaceItemAtURL:v8 withItemFromURL:safari_privacyPreservingDescription error:v26];
     }
 
 LABEL_15:
@@ -1041,16 +1041,16 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v20 = [v8 URLByDeletingLastPathComponent];
-  v21 = [a1 safari_ensureDirectoryExists:v20];
+  uRLByDeletingLastPathComponent = [v8 URLByDeletingLastPathComponent];
+  v21 = [self safari_ensureDirectoryExists:uRLByDeletingLastPathComponent];
 
-  if (([a1 copyItemAtURL:v9 toURL:v8 error:a5] & 1) == 0)
+  if (([self copyItemAtURL:v9 toURL:v8 error:a5] & 1) == 0)
   {
     v16 = WBS_LOG_CHANNEL_PREFIXFileManager();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v23 = [*a5 safari_privacyPreservingDescription];
-      [NSFileManager(SafariNSFileManagerExtras) safari_replaceItemAtURL:v8 withItemFromURL:v23 error:v26];
+      safari_privacyPreservingDescription2 = [*a5 safari_privacyPreservingDescription];
+      [NSFileManager(SafariNSFileManagerExtras) safari_replaceItemAtURL:v8 withItemFromURL:safari_privacyPreservingDescription2 error:v26];
     }
 
     goto LABEL_15;
@@ -1065,7 +1065,7 @@ LABEL_17:
 
 - (id)safari_createTemporaryDirectoryAppropriateForURL:()SafariNSFileManagerExtras error:
 {
-  v4 = [a1 URLForDirectory:99 inDomain:1 appropriateForURL:a3 create:1 error:a4];
+  v4 = [self URLForDirectory:99 inDomain:1 appropriateForURL:a3 create:1 error:a4];
 
   return v4;
 }
@@ -1074,7 +1074,7 @@ LABEL_17:
 {
   v37[1] = *MEMORY[0x1E69E9840];
   v19 = a3;
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v4 = *MEMORY[0x1E695DB78];
   v37[0] = *MEMORY[0x1E695DB78];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:1];
@@ -1083,9 +1083,9 @@ LABEL_17:
   v29[2] = __76__NSFileManager_SafariNSFileManagerExtras__safari_topLevelDirectoriesAtURL___block_invoke;
   v29[3] = &__block_descriptor_40_e27_B24__0__NSURL_8__NSError_16l;
   v29[4] = a2;
-  v18 = [v3 enumeratorAtURL:v19 includingPropertiesForKeys:v5 options:1 errorHandler:v29];
+  v18 = [defaultManager enumeratorAtURL:v19 includingPropertiesForKeys:v5 options:1 errorHandler:v29];
 
-  v21 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -1115,7 +1115,7 @@ LABEL_17:
         {
           if ([v11 BOOLValue])
           {
-            [v21 addObject:v9];
+            [array addObject:v9];
           }
         }
 
@@ -1125,13 +1125,13 @@ LABEL_17:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
           {
             v14 = NSStringFromSelector(a2);
-            v15 = [v12 safari_privacyPreservingDescription];
+            safari_privacyPreservingDescription = [v12 safari_privacyPreservingDescription];
             *buf = 138543875;
             v31 = v14;
             v32 = 2113;
             v33 = v9;
             v34 = 2114;
-            v35 = v15;
+            v35 = safari_privacyPreservingDescription;
             _os_log_error_impl(&dword_1B8447000, v13, OS_LOG_TYPE_ERROR, "%{public}@: error while getting NSURLIsDirectoryKey resource value for %{private}@: %{public}@", buf, 0x20u);
           }
         }
@@ -1148,7 +1148,7 @@ LABEL_17:
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v21;
+  return array;
 }
 
 - (BOOL)safari_zipContentsFromDirectory:()SafariNSFileManagerExtras toZipFileURL:shouldKeepParent:error:
@@ -1156,9 +1156,9 @@ LABEL_17:
   v28[4] = *MEMORY[0x1E69E9840];
   v9 = a3;
   v10 = a4;
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
-  v12 = [v10 path];
-  v13 = [v11 createFileAtPath:v12 contents:0 attributes:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v10 path];
+  v13 = [defaultManager createFileAtPath:path contents:0 attributes:0];
 
   if (v13)
   {
@@ -1177,9 +1177,9 @@ LABEL_17:
     _SL_BOMCopierNew();
     v18 = v17;
     v19 = v9;
-    v20 = [v9 fileSystemRepresentation];
+    fileSystemRepresentation = [v9 fileSystemRepresentation];
     v21 = v10;
-    _SL_BOMCopierCopyWithOptions(v18, v20, [v10 fileSystemRepresentation], v16);
+    _SL_BOMCopierCopyWithOptions(v18, fileSystemRepresentation, [v10 fileSystemRepresentation], v16);
     v23 = v22;
     _SL_BOMCopierFree(v18);
     v24 = v23 == 0;
@@ -1229,14 +1229,14 @@ LABEL_17:
   _SL_BOMCopierNew();
   v12 = v11;
   v13 = v7;
-  v14 = [v7 fileSystemRepresentation];
+  fileSystemRepresentation = [v7 fileSystemRepresentation];
   v15 = v8;
-  _SL_BOMCopierCopyWithOptions(v12, v14, [v8 fileSystemRepresentation], v10);
-  LODWORD(v14) = v16;
+  _SL_BOMCopierCopyWithOptions(v12, fileSystemRepresentation, [v8 fileSystemRepresentation], v10);
+  LODWORD(fileSystemRepresentation) = v16;
   _SL_BOMCopierFree(v12);
 
   v17 = *MEMORY[0x1E69E9840];
-  return v14 == 0;
+  return fileSystemRepresentation == 0;
 }
 
 - (uint64_t)safari_imageExistsAtFileURL:()SafariNSFileManagerExtras

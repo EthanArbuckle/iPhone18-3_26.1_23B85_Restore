@@ -1,55 +1,55 @@
 @interface GEOPDPlaceCache
 + (id)sharedCache;
-- (BOOL)_deleteAndResetDB:(id)a3;
-- (BOOL)_meetsManifestVersionPolicyForPlace:(id)a3;
+- (BOOL)_deleteAndResetDB:(id)b;
+- (BOOL)_meetsManifestVersionPolicyForPlace:(id)place;
 - (BOOL)_validateDBLocaleAndResetIfNecessary;
-- (GEOPDPlaceCache)initWithCacheFilePath:(id)a3 schedulingDelegate:(id)a4 manifestInfoProvider:(id)a5;
+- (GEOPDPlaceCache)initWithCacheFilePath:(id)path schedulingDelegate:(id)delegate manifestInfoProvider:(id)provider;
 - (NSArray)serviceVersions;
-- (id)_cacheKeyForHandle:(id)a3;
-- (id)_cacheKeysForPlace:(id)a3 request:(id)a4;
-- (id)lookupIdentifierByPhoneNumber:(id)a3;
+- (id)_cacheKeyForHandle:(id)handle;
+- (id)_cacheKeysForPlace:(id)place request:(id)request;
+- (id)lookupIdentifierByPhoneNumber:(id)number;
 - (unint64_t)_calculateFreeableSpace;
-- (unint64_t)_shrinkBySize:(unint64_t)a3;
+- (unint64_t)_shrinkBySize:(unint64_t)size;
 - (unint64_t)calculateFreeableSpaceSync;
-- (unint64_t)shrinkBySizeSync:(unint64_t)a3;
-- (void)_evictPlaceWithHash:(id)a3;
-- (void)_iterateAllKeysFilteringCacheKeyWithPredicate:(id)a3 entryBlock:(id)a4 finishedBlock:(id)a5;
-- (void)_iterateAllPlacesFilteringCacheKeyWithPredicate:(id)a3 entryBlock:(id)a4 finishedBlock:(id)a5;
-- (void)_localeChanged:(id)a3;
-- (void)_lookupPlaceByRequestKey:(id)a3 allowExpiredPlace:(BOOL)a4 resultBlock:(id)a5;
-- (void)_storePlace:(id)a3 withHash:(id)a4 forRequestKeys:(id)a5;
-- (void)_updateMapsURLExpiry:(int64_t)a3 expireTime:(unint64_t)a4;
-- (void)calculateFreeableSpaceWithHandler:(id)a3;
+- (unint64_t)shrinkBySizeSync:(unint64_t)sync;
+- (void)_evictPlaceWithHash:(id)hash;
+- (void)_iterateAllKeysFilteringCacheKeyWithPredicate:(id)predicate entryBlock:(id)block finishedBlock:(id)finishedBlock;
+- (void)_iterateAllPlacesFilteringCacheKeyWithPredicate:(id)predicate entryBlock:(id)block finishedBlock:(id)finishedBlock;
+- (void)_localeChanged:(id)changed;
+- (void)_lookupPlaceByRequestKey:(id)key allowExpiredPlace:(BOOL)place resultBlock:(id)block;
+- (void)_storePlace:(id)place withHash:(id)hash forRequestKeys:(id)keys;
+- (void)_updateMapsURLExpiry:(int64_t)expiry expireTime:(unint64_t)time;
+- (void)calculateFreeableSpaceWithHandler:(id)handler;
 - (void)cancelCleanupBlockSchedule;
 - (void)close;
 - (void)dealloc;
 - (void)deletePhoneNumberMapping;
-- (void)enqueueAccessTimeUpdateForCacheKey:(id)a3 accessTime:(int64_t)a4;
+- (void)enqueueAccessTimeUpdateForCacheKey:(id)key accessTime:(int64_t)time;
 - (void)evictAllEntries;
-- (void)iterateAllBasemapIdKeysWithBlock:(id)a3 finishedBlock:(id)a4;
-- (void)iterateAllHandleKeysWithBlock:(id)a3 finishedBlock:(id)a4;
-- (void)iterateAllMUIDKeysWithBlock:(id)a3 finishedBlock:(id)a4;
-- (void)iterateAllMapsURLsWithBlock:(id)a3 finishedBlock:(id)a4;
-- (void)iterateAllPhoneKeysWithBlock:(id)a3 finishedBlock:(id)a4;
-- (void)iterateBasemapIdPlacesWithBlock:(id)a3 finishedBlock:(id)a4;
-- (void)iterateHandlePlacesWithBlock:(id)a3 finishedBlock:(id)a4;
-- (void)iterateMUIDPlacesWithBlock:(id)a3 finishedBlock:(id)a4;
-- (void)iteratePhonePlacesWithBlock:(id)a3 finishedBlock:(id)a4;
-- (void)lookupLongMapsURLFor:(id)a3 completion:(id)a4;
-- (void)lookupPlaceByHandle:(id)a3 allowExpired:(BOOL)a4 resultBlock:(id)a5;
-- (void)lookupPlaceByIdentifier:(id)a3 allowExpired:(BOOL)a4 resultBlock:(id)a5;
-- (void)lookupPlaceByPhoneNumber:(id)a3 allowExpired:(BOOL)a4 resultBlock:(id)a5;
-- (void)lookupPlaceByRequest:(id)a3 allowExpired:(BOOL)a4 resultBlock:(id)a5;
-- (void)lookupShortMapsURLFor:(id)a3 completion:(id)a4;
+- (void)iterateAllBasemapIdKeysWithBlock:(id)block finishedBlock:(id)finishedBlock;
+- (void)iterateAllHandleKeysWithBlock:(id)block finishedBlock:(id)finishedBlock;
+- (void)iterateAllMUIDKeysWithBlock:(id)block finishedBlock:(id)finishedBlock;
+- (void)iterateAllMapsURLsWithBlock:(id)block finishedBlock:(id)finishedBlock;
+- (void)iterateAllPhoneKeysWithBlock:(id)block finishedBlock:(id)finishedBlock;
+- (void)iterateBasemapIdPlacesWithBlock:(id)block finishedBlock:(id)finishedBlock;
+- (void)iterateHandlePlacesWithBlock:(id)block finishedBlock:(id)finishedBlock;
+- (void)iterateMUIDPlacesWithBlock:(id)block finishedBlock:(id)finishedBlock;
+- (void)iteratePhonePlacesWithBlock:(id)block finishedBlock:(id)finishedBlock;
+- (void)lookupLongMapsURLFor:(id)for completion:(id)completion;
+- (void)lookupPlaceByHandle:(id)handle allowExpired:(BOOL)expired resultBlock:(id)block;
+- (void)lookupPlaceByIdentifier:(id)identifier allowExpired:(BOOL)expired resultBlock:(id)block;
+- (void)lookupPlaceByPhoneNumber:(id)number allowExpired:(BOOL)expired resultBlock:(id)block;
+- (void)lookupPlaceByRequest:(id)request allowExpired:(BOOL)expired resultBlock:(id)block;
+- (void)lookupShortMapsURLFor:(id)for completion:(id)completion;
 - (void)periodicCleanupAndAccessTimeUpdate;
-- (void)runCleanupBlock:(id)a3 inSecondsFromNow:(int64_t)a4;
+- (void)runCleanupBlock:(id)block inSecondsFromNow:(int64_t)now;
 - (void)scheduleCleanup;
-- (void)shrinkBySize:(unint64_t)a3 finished:(id)a4;
-- (void)storePlace:(id)a3 forRequest:(id)a4;
-- (void)storePlace:(id)a3 forRequest:(id)a4 completionQueue:(id)a5 completion:(id)a6;
-- (void)storeShortMapURL:(id)a3 longMapsURL:(id)a4;
-- (void)trackPlace:(id)a3;
-- (void)trackPlace:(id)a3 completionQueue:(id)a4 completion:(id)a5;
+- (void)shrinkBySize:(unint64_t)size finished:(id)finished;
+- (void)storePlace:(id)place forRequest:(id)request;
+- (void)storePlace:(id)place forRequest:(id)request completionQueue:(id)queue completion:(id)completion;
+- (void)storeShortMapURL:(id)l longMapsURL:(id)rL;
+- (void)trackPlace:(id)place;
+- (void)trackPlace:(id)place completionQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation GEOPDPlaceCache
@@ -90,10 +90,10 @@
 - (NSArray)serviceVersions
 {
   v2 = +[GEOResourceManifestManager modernManager];
-  v3 = [v2 activeTileGroup];
-  v4 = [v3 versionManifest];
-  v5 = [v4 serviceVersions];
-  v6 = [v5 copy];
+  activeTileGroup = [v2 activeTileGroup];
+  versionManifest = [activeTileGroup versionManifest];
+  serviceVersions = [versionManifest serviceVersions];
+  v6 = [serviceVersions copy];
 
   return v6;
 }
@@ -113,11 +113,11 @@
   self->_cleanupTimer = 0;
 }
 
-- (void)runCleanupBlock:(id)a3 inSecondsFromNow:(int64_t)a4
+- (void)runCleanupBlock:(id)block inSecondsFromNow:(int64_t)now
 {
-  v5 = a3;
-  v6 = [(GEOSQLiteDB *)self->_db isolationQueue];
-  dispatch_assert_queue_V2(v6);
+  blockCopy = block;
+  isolationQueue = [(GEOSQLiteDB *)self->_db isolationQueue];
+  dispatch_assert_queue_V2(isolationQueue);
 
   v7 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -135,9 +135,9 @@
     self->_cleanupTimer = 0;
   }
 
-  v10 = [(GEOSQLiteDB *)self->_db isolationQueue];
-  v14 = v5;
-  v11 = v5;
+  isolationQueue2 = [(GEOSQLiteDB *)self->_db isolationQueue];
+  v14 = blockCopy;
+  v11 = blockCopy;
   v12 = geo_dispatch_timer_create_on_queue();
   v13 = self->_cleanupTimer;
   self->_cleanupTimer = v12;
@@ -145,10 +145,10 @@
   dispatch_resume(self->_cleanupTimer);
 }
 
-- (void)iterateAllMapsURLsWithBlock:(id)a3 finishedBlock:(id)a4
+- (void)iterateAllMapsURLsWithBlock:(id)block finishedBlock:(id)finishedBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  finishedBlockCopy = finishedBlock;
   v8 = GeoServicesConfig_MapsURLCacheTTL[1];
   GEOConfigGetDouble();
   db = self->_db;
@@ -157,115 +157,115 @@
   v13[2] = sub_10000C6A0;
   v13[3] = &unk_100081B08;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = blockCopy;
+  v15 = finishedBlockCopy;
   v16 = v10;
-  v11 = v7;
-  v12 = v6;
+  v11 = finishedBlockCopy;
+  v12 = blockCopy;
   [(GEOSQLiteDB *)db executeAsync:v13];
 }
 
-- (void)iterateAllHandleKeysWithBlock:(id)a3 finishedBlock:(id)a4
+- (void)iterateAllHandleKeysWithBlock:(id)block finishedBlock:(id)finishedBlock
 {
-  v6 = a4;
-  v7 = a3;
+  finishedBlockCopy = finishedBlock;
+  blockCopy = block;
   v8 = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", @"hndl-"];
-  [(GEOPDPlaceCache *)self _iterateAllKeysFilteringCacheKeyWithPredicate:v8 entryBlock:v7 finishedBlock:v6];
+  [(GEOPDPlaceCache *)self _iterateAllKeysFilteringCacheKeyWithPredicate:v8 entryBlock:blockCopy finishedBlock:finishedBlockCopy];
 }
 
-- (void)iterateAllPhoneKeysWithBlock:(id)a3 finishedBlock:(id)a4
+- (void)iterateAllPhoneKeysWithBlock:(id)block finishedBlock:(id)finishedBlock
 {
-  v6 = a4;
-  v7 = a3;
+  finishedBlockCopy = finishedBlock;
+  blockCopy = block;
   v8 = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", @"phNo-"];
-  [(GEOPDPlaceCache *)self _iterateAllKeysFilteringCacheKeyWithPredicate:v8 entryBlock:v7 finishedBlock:v6];
+  [(GEOPDPlaceCache *)self _iterateAllKeysFilteringCacheKeyWithPredicate:v8 entryBlock:blockCopy finishedBlock:finishedBlockCopy];
 }
 
-- (void)iterateAllBasemapIdKeysWithBlock:(id)a3 finishedBlock:(id)a4
+- (void)iterateAllBasemapIdKeysWithBlock:(id)block finishedBlock:(id)finishedBlock
 {
-  v6 = a4;
-  v7 = a3;
+  finishedBlockCopy = finishedBlock;
+  blockCopy = block;
   v8 = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", @"bmid-"];
-  [(GEOPDPlaceCache *)self _iterateAllKeysFilteringCacheKeyWithPredicate:v8 entryBlock:v7 finishedBlock:v6];
+  [(GEOPDPlaceCache *)self _iterateAllKeysFilteringCacheKeyWithPredicate:v8 entryBlock:blockCopy finishedBlock:finishedBlockCopy];
 }
 
-- (void)iterateAllMUIDKeysWithBlock:(id)a3 finishedBlock:(id)a4
+- (void)iterateAllMUIDKeysWithBlock:(id)block finishedBlock:(id)finishedBlock
 {
-  v6 = a4;
-  v7 = a3;
+  finishedBlockCopy = finishedBlock;
+  blockCopy = block;
   v8 = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", @"muid-"];
-  [(GEOPDPlaceCache *)self _iterateAllKeysFilteringCacheKeyWithPredicate:v8 entryBlock:v7 finishedBlock:v6];
+  [(GEOPDPlaceCache *)self _iterateAllKeysFilteringCacheKeyWithPredicate:v8 entryBlock:blockCopy finishedBlock:finishedBlockCopy];
 }
 
-- (void)_iterateAllKeysFilteringCacheKeyWithPredicate:(id)a3 entryBlock:(id)a4 finishedBlock:(id)a5
+- (void)_iterateAllKeysFilteringCacheKeyWithPredicate:(id)predicate entryBlock:(id)block finishedBlock:(id)finishedBlock
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  predicateCopy = predicate;
+  blockCopy = block;
+  finishedBlockCopy = finishedBlock;
   db = self->_db;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000CE64;
   v15[3] = &unk_100081AB8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = predicateCopy;
+  v17 = blockCopy;
+  v18 = finishedBlockCopy;
+  v12 = finishedBlockCopy;
+  v13 = blockCopy;
+  v14 = predicateCopy;
   [(GEOSQLiteDB *)db executeAsync:v15];
 }
 
-- (void)iterateHandlePlacesWithBlock:(id)a3 finishedBlock:(id)a4
+- (void)iterateHandlePlacesWithBlock:(id)block finishedBlock:(id)finishedBlock
 {
-  v6 = a4;
-  v7 = a3;
+  finishedBlockCopy = finishedBlock;
+  blockCopy = block;
   v8 = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", @"hndl-"];
-  [(GEOPDPlaceCache *)self _iterateAllPlacesFilteringCacheKeyWithPredicate:v8 entryBlock:v7 finishedBlock:v6];
+  [(GEOPDPlaceCache *)self _iterateAllPlacesFilteringCacheKeyWithPredicate:v8 entryBlock:blockCopy finishedBlock:finishedBlockCopy];
 }
 
-- (void)iteratePhonePlacesWithBlock:(id)a3 finishedBlock:(id)a4
+- (void)iteratePhonePlacesWithBlock:(id)block finishedBlock:(id)finishedBlock
 {
-  v6 = a4;
-  v7 = a3;
+  finishedBlockCopy = finishedBlock;
+  blockCopy = block;
   v8 = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", @"phNo-"];
-  [(GEOPDPlaceCache *)self _iterateAllPlacesFilteringCacheKeyWithPredicate:v8 entryBlock:v7 finishedBlock:v6];
+  [(GEOPDPlaceCache *)self _iterateAllPlacesFilteringCacheKeyWithPredicate:v8 entryBlock:blockCopy finishedBlock:finishedBlockCopy];
 }
 
-- (void)iterateBasemapIdPlacesWithBlock:(id)a3 finishedBlock:(id)a4
+- (void)iterateBasemapIdPlacesWithBlock:(id)block finishedBlock:(id)finishedBlock
 {
-  v6 = a4;
-  v7 = a3;
+  finishedBlockCopy = finishedBlock;
+  blockCopy = block;
   v8 = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", @"bmid-"];
-  [(GEOPDPlaceCache *)self _iterateAllPlacesFilteringCacheKeyWithPredicate:v8 entryBlock:v7 finishedBlock:v6];
+  [(GEOPDPlaceCache *)self _iterateAllPlacesFilteringCacheKeyWithPredicate:v8 entryBlock:blockCopy finishedBlock:finishedBlockCopy];
 }
 
-- (void)iterateMUIDPlacesWithBlock:(id)a3 finishedBlock:(id)a4
+- (void)iterateMUIDPlacesWithBlock:(id)block finishedBlock:(id)finishedBlock
 {
-  v6 = a4;
-  v7 = a3;
+  finishedBlockCopy = finishedBlock;
+  blockCopy = block;
   v8 = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", @"muid-"];
-  [(GEOPDPlaceCache *)self _iterateAllPlacesFilteringCacheKeyWithPredicate:v8 entryBlock:v7 finishedBlock:v6];
+  [(GEOPDPlaceCache *)self _iterateAllPlacesFilteringCacheKeyWithPredicate:v8 entryBlock:blockCopy finishedBlock:finishedBlockCopy];
 }
 
-- (void)_iterateAllPlacesFilteringCacheKeyWithPredicate:(id)a3 entryBlock:(id)a4 finishedBlock:(id)a5
+- (void)_iterateAllPlacesFilteringCacheKeyWithPredicate:(id)predicate entryBlock:(id)block finishedBlock:(id)finishedBlock
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  predicateCopy = predicate;
+  blockCopy = block;
+  finishedBlockCopy = finishedBlock;
   db = self->_db;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000D390;
   v15[3] = &unk_100081AB8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = predicateCopy;
+  v17 = blockCopy;
+  v18 = finishedBlockCopy;
+  v12 = finishedBlockCopy;
+  v13 = blockCopy;
+  v14 = predicateCopy;
   [(GEOSQLiteDB *)db executeAsync:v15];
 }
 
@@ -280,9 +280,9 @@
   [(GEOSQLiteDB *)db executeSync:v3];
 }
 
-- (void)_evictPlaceWithHash:(id)a3
+- (void)_evictPlaceWithHash:(id)hash
 {
-  v4 = a3;
+  hashCopy = hash;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -291,8 +291,8 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v6 = [(GEOSQLiteDB *)self->_db isolationQueue];
-  dispatch_assert_queue_V2(v6);
+  isolationQueue = [(GEOSQLiteDB *)self->_db isolationQueue];
+  dispatch_assert_queue_V2(isolationQueue);
 
   db = self->_db;
   v9[0] = _NSConcreteStackBlock;
@@ -300,31 +300,31 @@
   v9[2] = sub_10000D76C;
   v9[3] = &unk_100081A68;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = hashCopy;
+  v8 = hashCopy;
   [(GEOSQLiteDB *)db executeInTransaction:v9];
 }
 
 - (void)periodicCleanupAndAccessTimeUpdate
 {
-  v3 = [(GEOSQLiteDB *)self->_db isolationQueue];
-  dispatch_assert_queue_V2(v3);
+  isolationQueue = [(GEOSQLiteDB *)self->_db isolationQueue];
+  dispatch_assert_queue_V2(isolationQueue);
 
   WeakRetained = objc_loadWeakRetained(&self->_schedulingDelegate);
-  v28 = [WeakRetained currentTime];
+  currentTime = [WeakRetained currentTime];
 
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    *&buf[4] = v28;
+    *&buf[4] = currentTime;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "running at %lld", buf, 0xCu);
   }
 
   if ([(GEOSQLiteDB *)self->_db prepareStatement:"DELETE FROM pdplaces WHERE expiretime < @expiretime;" forKey:@"removeExpired"])
   {
     v6 = [(GEOSQLiteDB *)self->_db statementForKey:@"removeExpired"];
-    if ([(GEOSQLiteDB *)self->_db bindInt64Parameter:"@expiretime" toValue:v28 inStatement:v6 error:0])
+    if ([(GEOSQLiteDB *)self->_db bindInt64Parameter:"@expiretime" toValue:currentTime inStatement:v6 error:0])
     {
       [(GEOSQLiteDB *)self->_db executeStatement:v6 error:0];
     }
@@ -376,9 +376,9 @@
 
         v14 = *(*(&v30 + 1) + 8 * i);
         v15 = [(NSMutableDictionary *)self->_accessTimesDict objectForKeyedSubscript:v14];
-        v16 = [v15 longLongValue];
+        longLongValue = [v15 longLongValue];
 
-        if ([(GEOSQLiteDB *)self->_db bindInt64Parameter:"@lastaccesstime" toValue:v16 inStatement:v10 error:0]&& [(GEOSQLiteDB *)self->_db bindTextParameter:"@requestkey" toValue:v14 inStatement:v10 error:0])
+        if ([(GEOSQLiteDB *)self->_db bindInt64Parameter:"@lastaccesstime" toValue:longLongValue inStatement:v10 error:0]&& [(GEOSQLiteDB *)self->_db bindTextParameter:"@requestkey" toValue:v14 inStatement:v10 error:0])
         {
           [(GEOSQLiteDB *)self->_db executeStatement:v10 error:0];
         }
@@ -430,7 +430,7 @@
   v42 = &unk_100081C10;
   v22 = v21;
   v44 = &v34;
-  v45 = v28;
+  v45 = currentTime;
   v43 = v22;
   v23 = [(GEOSQLiteDB *)v22 executeStatement:@"PruneMapsURLs" statementBlock:buf];
   v24 = v35[5];
@@ -453,9 +453,9 @@
   }
 }
 
-- (void)enqueueAccessTimeUpdateForCacheKey:(id)a3 accessTime:(int64_t)a4
+- (void)enqueueAccessTimeUpdateForCacheKey:(id)key accessTime:(int64_t)time
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -464,13 +464,13 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%s", &v13, 0xCu);
   }
 
-  v8 = [(GEOSQLiteDB *)self->_db isolationQueue];
-  dispatch_assert_queue_V2(v8);
+  isolationQueue = [(GEOSQLiteDB *)self->_db isolationQueue];
+  dispatch_assert_queue_V2(isolationQueue);
 
-  if (v6)
+  if (keyCopy)
   {
-    v9 = [NSNumber numberWithLongLong:a4];
-    [(NSMutableDictionary *)self->_accessTimesDict setObject:v9 forKeyedSubscript:v6];
+    v9 = [NSNumber numberWithLongLong:time];
+    [(NSMutableDictionary *)self->_accessTimesDict setObject:v9 forKeyedSubscript:keyCopy];
 
     v10 = GeoServicesConfig_PDPlaceCacheAccessCountBeforeUpdate[1];
     UInteger = GEOConfigGetUInteger();
@@ -527,7 +527,7 @@
   [(GEOSQLiteDB *)db executeSync:v5];
 }
 
-- (unint64_t)_shrinkBySize:(unint64_t)a3
+- (unint64_t)_shrinkBySize:(unint64_t)size
 {
   if (![(GEOSQLiteDB *)self->_db prepareStatement:"SELECT LENGTH(pdplace) FROM pdplaces ORDER BY expiretime ASC;" forKey:@"ascExpire"])
   {
@@ -548,7 +548,7 @@
     v7 += [(GEOSQLiteDB *)self->_db intForColumn:0 inStatment:v5];
   }
 
-  while (v7 < a3);
+  while (v7 < size);
   sqlite3_reset(v5);
   db = self->_db;
   v10[0] = _NSConcreteStackBlock;
@@ -568,7 +568,7 @@
   }
 }
 
-- (unint64_t)shrinkBySizeSync:(unint64_t)a3
+- (unint64_t)shrinkBySizeSync:(unint64_t)sync
 {
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -589,16 +589,16 @@
   v9[3] = &unk_100082EF8;
   v9[4] = self;
   v9[5] = &buf;
-  v9[6] = a3;
+  v9[6] = sync;
   [(GEOSQLiteDB *)db executeSync:v9];
   v7 = *(*(&buf + 1) + 24);
   _Block_object_dispose(&buf, 8);
   return v7;
 }
 
-- (void)shrinkBySize:(unint64_t)a3 finished:(id)a4
+- (void)shrinkBySize:(unint64_t)size finished:(id)finished
 {
-  v6 = a4;
+  finishedCopy = finished;
   v7 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -617,9 +617,9 @@
   v10[2] = sub_10000EA08;
   v10[3] = &unk_1000819F0;
   p_buf = &buf;
-  v13 = a3;
+  sizeCopy = size;
   v10[4] = self;
-  v9 = v6;
+  v9 = finishedCopy;
   v11 = v9;
   [(GEOSQLiteDB *)db executeAsync:v10];
 
@@ -674,9 +674,9 @@
   return v5;
 }
 
-- (void)calculateFreeableSpaceWithHandler:(id)a3
+- (void)calculateFreeableSpaceWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -685,7 +685,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  if (v4)
+  if (handlerCopy)
   {
     db = self->_db;
     v7[0] = _NSConcreteStackBlock;
@@ -693,22 +693,22 @@
     v7[2] = sub_10000EEF4;
     v7[3] = &unk_100083BC0;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     [(GEOSQLiteDB *)db executeAsync:v7];
   }
 }
 
-- (void)_updateMapsURLExpiry:(int64_t)a3 expireTime:(unint64_t)a4
+- (void)_updateMapsURLExpiry:(int64_t)expiry expireTime:(unint64_t)time
 {
   WeakRetained = objc_loadWeakRetained(&self->_schedulingDelegate);
-  v8 = [WeakRetained currentTime];
+  currentTime = [WeakRetained currentTime];
 
   v9 = GeoServicesConfig_MapsURLCacheTTL[1];
   GEOConfigGetDouble();
-  v11 = a4 - v10;
-  if (v8 >= v11 + 600)
+  v11 = time - v10;
+  if (currentTime >= v11 + 600)
   {
-    v13 = &v8[v10];
+    v13 = &currentTime[v10];
     v14 = self->_db;
     v19 = 0;
     v20 = &v19;
@@ -723,7 +723,7 @@
     v15 = v14;
     v28 = v15;
     v29 = &v19;
-    v30 = a3;
+    expiryCopy = expiry;
     v31 = v13;
     [(GEOSQLiteDB *)v15 executeStatement:@"UpdateMapsURLExpiry" statementBlock:&buf];
     v16 = v20[5];
@@ -756,7 +756,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       LODWORD(buf) = 67109376;
-      DWORD1(buf) = v8 - v11;
+      DWORD1(buf) = currentTime - v11;
       WORD4(buf) = 1024;
       *(&buf + 10) = 600;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Not updating access time for MapsURL cache, was last touched %d seconds ago (min is %d seconds)", &buf, 0xEu);
@@ -764,43 +764,43 @@
   }
 }
 
-- (void)lookupLongMapsURLFor:(id)a3 completion:(id)a4
+- (void)lookupLongMapsURLFor:(id)for completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  forCopy = for;
+  completionCopy = completion;
   db = self->_db;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000F3D4;
   v11[3] = &unk_100083738;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = forCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = forCopy;
   [(GEOSQLiteDB *)db executeAsync:v11];
 }
 
-- (void)lookupShortMapsURLFor:(id)a3 completion:(id)a4
+- (void)lookupShortMapsURLFor:(id)for completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  forCopy = for;
+  completionCopy = completion;
   db = self->_db;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000FA04;
   v11[3] = &unk_100083738;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = forCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = forCopy;
   [(GEOSQLiteDB *)db executeAsync:v11];
 }
 
-- (id)lookupIdentifierByPhoneNumber:(id)a3
+- (id)lookupIdentifierByPhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -823,7 +823,7 @@
   v17[2] = sub_1000102B4;
   v17[3] = &unk_100083990;
   v17[4] = self;
-  v7 = v4;
+  v7 = numberCopy;
   v18 = v7;
   p_buf = &buf;
   v20 = &v21;
@@ -874,11 +874,11 @@ LABEL_12:
   return v13;
 }
 
-- (void)lookupPlaceByHandle:(id)a3 allowExpired:(BOOL)a4 resultBlock:(id)a5
+- (void)lookupPlaceByHandle:(id)handle allowExpired:(BOOL)expired resultBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(GEOPDPlaceCache *)self _cacheKeyForHandle:v8];
+  handleCopy = handle;
+  blockCopy = block;
+  v10 = [(GEOPDPlaceCache *)self _cacheKeyForHandle:handleCopy];
   v11 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -908,7 +908,7 @@ LABEL_12:
   v16[3] = &unk_1000819A0;
   v16[4] = self;
   v13 = v10;
-  v21 = a4;
+  expiredCopy = expired;
   v17 = v13;
   p_buf = &buf;
   v19 = &v26;
@@ -932,16 +932,16 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "returning%@place for handle", v30, 0xCu);
   }
 
-  (*(v9 + 2))(v9, *(*(&buf + 1) + 40), *(v27 + 24), v23[3]);
+  (*(blockCopy + 2))(blockCopy, *(*(&buf + 1) + 40), *(v27 + 24), v23[3]);
   _Block_object_dispose(&v22, 8);
   _Block_object_dispose(&v26, 8);
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)lookupPlaceByIdentifier:(id)a3 allowExpired:(BOOL)a4 resultBlock:(id)a5
+- (void)lookupPlaceByIdentifier:(id)identifier allowExpired:(BOOL)expired resultBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  blockCopy = block;
   v10 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -950,15 +950,15 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s", &buf, 0xCu);
   }
 
-  v11 = [v8 mapsIdentifier];
-  v12 = [v11 shardedId];
-  v13 = [v12 hasMuid];
+  mapsIdentifier = [identifierCopy mapsIdentifier];
+  shardedId = [mapsIdentifier shardedId];
+  hasMuid = [shardedId hasMuid];
 
-  if (v13)
+  if (hasMuid)
   {
-    v14 = [v8 mapsIdentifier];
-    v15 = [v14 shardedId];
-    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%llu", @"muid-", [v15 muid]);
+    mapsIdentifier2 = [identifierCopy mapsIdentifier];
+    shardedId2 = [mapsIdentifier2 shardedId];
+    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%llu", @"muid-", [shardedId2 muid]);
 LABEL_7:
     v20 = v16;
 
@@ -991,7 +991,7 @@ LABEL_7:
     v27[3] = &unk_1000819A0;
     v27[4] = self;
     v23 = v20;
-    v32 = a4;
+    expiredCopy = expired;
     v28 = v23;
     p_buf = &buf;
     v30 = &v37;
@@ -1015,7 +1015,7 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "returning%@place for identifier", v41, 0xCu);
     }
 
-    (*(v9 + 2))(v9, *(*(&buf + 1) + 40), *(v38 + 24), v34[3]);
+    (*(blockCopy + 2))(blockCopy, *(*(&buf + 1) + 40), *(v38 + 24), v34[3]);
     _Block_object_dispose(&v33, 8);
     _Block_object_dispose(&v37, 8);
     _Block_object_dispose(&buf, 8);
@@ -1023,15 +1023,15 @@ LABEL_7:
     goto LABEL_18;
   }
 
-  v17 = [v8 mapsIdentifier];
-  v18 = [v17 shardedId];
-  v19 = [v18 hasBasemapId];
+  mapsIdentifier3 = [identifierCopy mapsIdentifier];
+  shardedId3 = [mapsIdentifier3 shardedId];
+  hasBasemapId = [shardedId3 hasBasemapId];
 
-  if (v19)
+  if (hasBasemapId)
   {
-    v14 = [v8 mapsIdentifier];
-    v15 = [v14 shardedId];
-    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%llu", @"bmid-", [v15 basemapId]);
+    mapsIdentifier2 = [identifierCopy mapsIdentifier];
+    shardedId2 = [mapsIdentifier2 shardedId];
+    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%llu", @"bmid-", [shardedId2 basemapId]);
     goto LABEL_7;
   }
 
@@ -1042,20 +1042,20 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "unable to create cacheKey for request", &buf, 2u);
   }
 
-  (*(v9 + 2))(v9, 0, 0, 0);
+  (*(blockCopy + 2))(blockCopy, 0, 0, 0);
 LABEL_18:
 }
 
-- (void)lookupPlaceByPhoneNumber:(id)a3 allowExpired:(BOOL)a4 resultBlock:(id)a5
+- (void)lookupPlaceByPhoneNumber:(id)number allowExpired:(BOOL)expired resultBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [NSString stringWithFormat:@"%@%@", @"phNo-", v8];
+  numberCopy = number;
+  blockCopy = block;
+  numberCopy = [NSString stringWithFormat:@"%@%@", @"phNo-", numberCopy];
   v11 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 138477827;
-    *(&buf + 4) = v10;
+    *(&buf + 4) = numberCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "using cacheKey '%{private}@' for request", &buf, 0xCu);
   }
 
@@ -1079,8 +1079,8 @@ LABEL_18:
   v16[2] = sub_10001110C;
   v16[3] = &unk_1000819A0;
   v16[4] = self;
-  v13 = v10;
-  v21 = a4;
+  v13 = numberCopy;
+  expiredCopy = expired;
   v17 = v13;
   p_buf = &buf;
   v19 = &v26;
@@ -1104,25 +1104,25 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "returning%@place for phone number", v30, 0xCu);
   }
 
-  (*(v9 + 2))(v9, *(*(&buf + 1) + 40), *(v27 + 24), v23[3]);
+  (*(blockCopy + 2))(blockCopy, *(*(&buf + 1) + 40), *(v27 + 24), v23[3]);
   _Block_object_dispose(&v22, 8);
   _Block_object_dispose(&v26, 8);
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)lookupPlaceByRequest:(id)a3 allowExpired:(BOOL)a4 resultBlock:(id)a5
+- (void)lookupPlaceByRequest:(id)request allowExpired:(BOOL)expired resultBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 cacheKey];
+  requestCopy = request;
+  blockCopy = block;
+  cacheKey = [requestCopy cacheKey];
   v11 = GEOFindOrCreateLog();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
-  if (v10)
+  if (cacheKey)
   {
     if (v12)
     {
       LODWORD(buf) = 138477827;
-      *(&buf + 4) = v10;
+      *(&buf + 4) = cacheKey;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "using cacheKey '%{private}@' for request", &buf, 0xCu);
     }
 
@@ -1146,8 +1146,8 @@ LABEL_18:
     v16[2] = sub_100011554;
     v16[3] = &unk_1000819A0;
     v16[4] = self;
-    v21 = a4;
-    v17 = v10;
+    expiredCopy = expired;
+    v17 = cacheKey;
     p_buf = &buf;
     v19 = &v26;
     v20 = &v22;
@@ -1170,7 +1170,7 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "returning%@place for request", v30, 0xCu);
     }
 
-    (*(v9 + 2))(v9, *(*(&buf + 1) + 40), *(v27 + 24), v23[3]);
+    (*(blockCopy + 2))(blockCopy, *(*(&buf + 1) + 40), *(v27 + 24), v23[3]);
     _Block_object_dispose(&v22, 8);
     _Block_object_dispose(&v26, 8);
     _Block_object_dispose(&buf, 8);
@@ -1184,23 +1184,23 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "request has no cacheKey", &buf, 2u);
     }
 
-    (*(v9 + 2))(v9, 0, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0, 0);
   }
 }
 
-- (void)_lookupPlaceByRequestKey:(id)a3 allowExpiredPlace:(BOOL)a4 resultBlock:(id)a5
+- (void)_lookupPlaceByRequestKey:(id)key allowExpiredPlace:(BOOL)place resultBlock:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(GEOSQLiteDB *)self->_db isolationQueue];
-  dispatch_assert_queue_V2(v10);
+  placeCopy = place;
+  keyCopy = key;
+  blockCopy = block;
+  isolationQueue = [(GEOSQLiteDB *)self->_db isolationQueue];
+  dispatch_assert_queue_V2(isolationQueue);
 
   WeakRetained = objc_loadWeakRetained(&self->_schedulingDelegate);
-  v12 = [WeakRetained currentTime];
+  currentTime = [WeakRetained currentTime];
 
   Integer = 0.0;
-  if (v6)
+  if (placeCopy)
   {
     v14 = GeoServicesConfig_PDPlaceCacheExpiredPlaceGracePeriodInSeconds[1];
     Integer = GEOConfigGetInteger();
@@ -1208,31 +1208,31 @@ LABEL_18:
 
   if (([(GEOSQLiteDB *)self->_db prepareStatement:"SELECT b.pdplace forKey:b.expiretime, b.pdplacehash FROM pdplacelookup a, pdplaces b WHERE a.requestkey = @requestkey AND       a.pdplacehash = b.pdplacehash AND       b.expiretime > @expiretime;", @"lookupByReqKey"]& 1) == 0)
   {
-    (*(v9 + 2))(v9, 0, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0, 0);
     goto LABEL_26;
   }
 
   v15 = [(GEOSQLiteDB *)self->_db statementForKey:@"lookupByReqKey"];
   db = self->_db;
   v41 = 0;
-  v17 = [(GEOSQLiteDB *)db bindTextParameter:"@requestkey" toValue:v8 inStatement:v15 error:&v41];
+  v17 = [(GEOSQLiteDB *)db bindTextParameter:"@requestkey" toValue:keyCopy inStatement:v15 error:&v41];
   v18 = v41;
   if ((v17 & 1) == 0)
   {
-    (*(v9 + 2))(v9, 0, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0, 0);
 
     goto LABEL_26;
   }
 
-  v19 = v12;
+  v19 = currentTime;
   v20 = self->_db;
   v40 = v18;
-  v21 = [(GEOSQLiteDB *)v20 bindInt64Parameter:"@expiretime" toValue:(v12 - Integer) inStatement:v15 error:&v40];
+  v21 = [(GEOSQLiteDB *)v20 bindInt64Parameter:"@expiretime" toValue:(currentTime - Integer) inStatement:v15 error:&v40];
   v22 = v40;
 
   if ((v21 & 1) == 0)
   {
-    (*(v9 + 2))(v9, 0, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0, 0);
     goto LABEL_25;
   }
 
@@ -1250,7 +1250,7 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEBUG, "no valid place in the cache", buf, 2u);
     }
 
-    (*(v9 + 2))(v9, 0, v27, v24);
+    (*(blockCopy + 2))(blockCopy, 0, v27, v24);
     goto LABEL_24;
   }
 
@@ -1263,8 +1263,8 @@ LABEL_21:
   if (v19 > v26)
   {
     recentlySeenPlaceHashes = self->_recentlySeenPlaceHashes;
-    v29 = [v25 cacheKey];
-    [(NSMutableOrderedSet *)recentlySeenPlaceHashes removeObject:v29];
+    cacheKey = [v25 cacheKey];
+    [(NSMutableOrderedSet *)recentlySeenPlaceHashes removeObject:cacheKey];
   }
 
   v30 = [(GEOSQLiteDB *)self->_db stringForColumn:2 inStatment:v15];
@@ -1314,8 +1314,8 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEBUG, "place meets service version requirement", buf, 2u);
   }
 
-  [(GEOPDPlaceCache *)self enqueueAccessTimeUpdateForCacheKey:v8 accessTime:v19];
-  (*(v9 + 2))(v9, v25, v19 > v26, v24);
+  [(GEOPDPlaceCache *)self enqueueAccessTimeUpdateForCacheKey:keyCopy accessTime:v19];
+  (*(blockCopy + 2))(blockCopy, v25, v19 > v26, v24);
 
   v22 = v36;
 LABEL_24:
@@ -1324,10 +1324,10 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)storeShortMapURL:(id)a3 longMapsURL:(id)a4
+- (void)storeShortMapURL:(id)l longMapsURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v8 = GeoServicesConfig_MapsURLCacheTTL[1];
   GEOConfigGetDouble();
   v10 = v9;
@@ -1340,20 +1340,20 @@ LABEL_26:
   v16[2] = sub_100011C24;
   v16[3] = &unk_100082F48;
   v16[4] = self;
-  v17 = v6;
-  v18 = v7;
+  v17 = lCopy;
+  v18 = rLCopy;
   v19 = v12;
-  v14 = v7;
-  v15 = v6;
+  v14 = rLCopy;
+  v15 = lCopy;
   [(GEOSQLiteDB *)db executeAsync:v16];
 }
 
-- (void)storePlace:(id)a3 forRequest:(id)a4 completionQueue:(id)a5 completion:(id)a6
+- (void)storePlace:(id)place forRequest:(id)request completionQueue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  placeCopy = place;
+  requestCopy = request;
+  queueCopy = queue;
+  completionCopy = completion;
   v14 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -1362,19 +1362,19 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  if ([v11 shouldConsiderCaching] && objc_msgSend(v10, "isCacheable"))
+  if ([requestCopy shouldConsiderCaching] && objc_msgSend(placeCopy, "isCacheable"))
   {
-    v15 = [v10 cacheKey];
-    v16 = [(GEOPDPlaceCache *)self _cacheKeysForPlace:v10 request:v11];
-    v17 = [v11 cacheKey];
-    if (v17)
+    cacheKey = [placeCopy cacheKey];
+    v16 = [(GEOPDPlaceCache *)self _cacheKeysForPlace:placeCopy request:requestCopy];
+    cacheKey2 = [requestCopy cacheKey];
+    if (cacheKey2)
     {
-      [v16 addObject:v17];
+      [v16 addObject:cacheKey2];
     }
 
-    if (([v10 nilPlace] & 1) == 0)
+    if (([placeCopy nilPlace] & 1) == 0)
     {
-      v18 = [[_GEOPlaceDataItem alloc] initWithPlaceData:v10];
+      v18 = [[_GEOPlaceDataItem alloc] initWithPlaceData:placeCopy];
       v19 = [GEOMapItemHandle handleDataForMapItem:v18];
 
       if (v19)
@@ -1395,19 +1395,19 @@ LABEL_26:
 
     if ([v16 count])
     {
-      v23 = [v10 pdPlaceCacheKeyForRequest:v11];
+      v23 = [placeCopy pdPlaceCacheKeyForRequest:requestCopy];
       db = self->_db;
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_100012338;
       v29[3] = &unk_100081978;
       v29[4] = self;
-      v30 = v10;
+      v30 = placeCopy;
       v31 = v23;
       v16 = v16;
       v32 = v16;
-      v34 = v13;
-      v33 = v12;
+      v34 = completionCopy;
+      v33 = queueCopy;
       v25 = v23;
       [(GEOSQLiteDB *)db executeAsync:v29];
 
@@ -1415,14 +1415,14 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    if (!v13)
+    if (!completionCopy)
     {
       goto LABEL_22;
     }
 
 LABEL_16:
-    global_queue = v12;
-    if (!v12)
+    global_queue = queueCopy;
+    if (!queueCopy)
     {
       global_queue = geo_get_global_queue();
     }
@@ -1431,18 +1431,18 @@ LABEL_16:
     block[1] = 3221225472;
     block[2] = sub_100012428;
     block[3] = &unk_1000833E0;
-    v28 = v13;
+    v28 = completionCopy;
     dispatch_async(global_queue, block);
-    if (!v12)
+    if (!queueCopy)
     {
     }
 
-    v17 = v28;
+    cacheKey2 = v28;
     goto LABEL_21;
   }
 
   v16 = 0;
-  if (v13)
+  if (completionCopy)
   {
     goto LABEL_16;
   }
@@ -1450,10 +1450,10 @@ LABEL_16:
 LABEL_22:
 }
 
-- (void)storePlace:(id)a3 forRequest:(id)a4
+- (void)storePlace:(id)place forRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
+  requestCopy = request;
+  placeCopy = place;
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1462,14 +1462,14 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s", &v9, 0xCu);
   }
 
-  [(GEOPDPlaceCache *)self storePlace:v7 forRequest:v6 completionQueue:0 completion:0];
+  [(GEOPDPlaceCache *)self storePlace:placeCopy forRequest:requestCopy completionQueue:0 completion:0];
 }
 
-- (void)trackPlace:(id)a3 completionQueue:(id)a4 completion:(id)a5
+- (void)trackPlace:(id)place completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  placeCopy = place;
+  queueCopy = queue;
+  completionCopy = completion;
   v11 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -1478,10 +1478,10 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  if ([v8 isCacheable])
+  if ([placeCopy isCacheable])
   {
-    v12 = [v8 cacheKey];
-    v13 = [(GEOPDPlaceCache *)self _cacheKeysForPlace:v8 request:0];
+    cacheKey = [placeCopy cacheKey];
+    v13 = [(GEOPDPlaceCache *)self _cacheKeysForPlace:placeCopy request:0];
     v14 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -1499,10 +1499,10 @@ LABEL_22:
       v21[2] = sub_100012828;
       v21[3] = &unk_100082190;
       v21[4] = self;
-      v22 = v8;
+      v22 = placeCopy;
       v23 = v13;
-      v25 = v10;
-      v24 = v9;
+      v25 = completionCopy;
+      v24 = queueCopy;
       v17 = v13;
       [(GEOSQLiteDB *)db executeAsync:v21];
 
@@ -1511,10 +1511,10 @@ LABEL_15:
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    global_queue = v9;
-    if (!v9)
+    global_queue = queueCopy;
+    if (!queueCopy)
     {
       global_queue = geo_get_global_queue();
     }
@@ -1523,9 +1523,9 @@ LABEL_15:
     v19[1] = 3221225472;
     v19[2] = sub_100012930;
     v19[3] = &unk_1000833E0;
-    v20 = v10;
+    v20 = completionCopy;
     dispatch_async(global_queue, v19);
-    if (!v9)
+    if (!queueCopy)
     {
     }
 
@@ -1536,9 +1536,9 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)trackPlace:(id)a3
+- (void)trackPlace:(id)place
 {
-  v4 = a3;
+  placeCopy = place;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1547,14 +1547,14 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s", &v6, 0xCu);
   }
 
-  [(GEOPDPlaceCache *)self trackPlace:v4 completionQueue:0 completion:0];
+  [(GEOPDPlaceCache *)self trackPlace:placeCopy completionQueue:0 completion:0];
 }
 
-- (id)_cacheKeyForHandle:(id)a3
+- (id)_cacheKeyForHandle:(id)handle
 {
-  v3 = a3;
-  [v3 bytes];
-  [v3 length];
+  handleCopy = handle;
+  [handleCopy bytes];
+  [handleCopy length];
 
   _GEOMurmurHash3_128_realign();
   v4 = [NSString stringWithFormat:@"%@%llx%llx", @"hndl-", 0, 0];
@@ -1562,67 +1562,67 @@ LABEL_16:
   return v4;
 }
 
-- (id)_cacheKeysForPlace:(id)a3 request:(id)a4
+- (id)_cacheKeysForPlace:(id)place request:(id)request
 {
-  v5 = a3;
-  v6 = a4;
+  placeCopy = place;
+  requestCopy = request;
   v7 = +[NSMutableArray array];
-  if ([v5 nilPlace])
+  if ([placeCopy nilPlace])
   {
     goto LABEL_15;
   }
 
-  if ([v5 hasMuid])
+  if ([placeCopy hasMuid])
   {
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%llu", @"muid-", [v5 muid]);
-    [v7 addObject:v8];
+    mapsId2 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%llu", @"muid-", [placeCopy muid]);
+    [v7 addObject:mapsId2];
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v9 = [v5 mapsId];
-  v10 = [v9 shardedId];
-  v11 = [v10 hasMuid];
+  mapsId = [placeCopy mapsId];
+  shardedId = [mapsId shardedId];
+  hasMuid = [shardedId hasMuid];
 
-  if (v11)
+  if (hasMuid)
   {
-    v8 = [v5 mapsId];
-    v12 = [v8 shardedId];
-    v13 = [v12 muid];
+    mapsId2 = [placeCopy mapsId];
+    shardedId2 = [mapsId2 shardedId];
+    muid = [shardedId2 muid];
     v14 = @"muid-";
 LABEL_6:
-    v15 = [NSString stringWithFormat:@"%@%llu", v14, v13];
+    v15 = [NSString stringWithFormat:@"%@%llu", v14, muid];
     [v7 addObject:v15];
 
     goto LABEL_11;
   }
 
-  v8 = [v5 mapsId];
-  v16 = [v8 shardedId];
-  if (![v16 hasBasemapId])
+  mapsId2 = [placeCopy mapsId];
+  shardedId3 = [mapsId2 shardedId];
+  if (![shardedId3 hasBasemapId])
   {
 
     goto LABEL_11;
   }
 
-  v17 = [v5 shouldCacheByBasemapIDForRequest:v6];
+  v17 = [placeCopy shouldCacheByBasemapIDForRequest:requestCopy];
 
   if (v17)
   {
-    v8 = [v5 mapsId];
-    v12 = [v8 shardedId];
-    v13 = [v12 basemapId];
+    mapsId2 = [placeCopy mapsId];
+    shardedId2 = [mapsId2 shardedId];
+    muid = [shardedId2 basemapId];
     v14 = @"bmid-";
     goto LABEL_6;
   }
 
 LABEL_12:
-  v18 = [v5 entityComponent];
-  if ([v18 hasTelephone])
+  entityComponent = [placeCopy entityComponent];
+  if ([entityComponent hasTelephone])
   {
-    v19 = [v18 telephone];
-    v20 = [NSString stringWithFormat:@"%@%@", @"phNo-", v19];
+    telephone = [entityComponent telephone];
+    v20 = [NSString stringWithFormat:@"%@%@", @"phNo-", telephone];
     [v7 addObject:v20];
   }
 
@@ -1631,11 +1631,11 @@ LABEL_15:
   return v7;
 }
 
-- (void)_storePlace:(id)a3 withHash:(id)a4 forRequestKeys:(id)a5
+- (void)_storePlace:(id)place withHash:(id)hash forRequestKeys:(id)keys
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  placeCopy = place;
+  hashCopy = hash;
+  keysCopy = keys;
   v11 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -1644,19 +1644,19 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v12 = [(GEOSQLiteDB *)self->_db isolationQueue];
-  dispatch_assert_queue_V2(v12);
+  isolationQueue = [(GEOSQLiteDB *)self->_db isolationQueue];
+  dispatch_assert_queue_V2(isolationQueue);
 
-  if ([(GEOPDPlaceCache *)self _meetsManifestVersionPolicyForPlace:v8])
+  if ([(GEOPDPlaceCache *)self _meetsManifestVersionPolicyForPlace:placeCopy])
   {
-    v13 = [v8 cacheKey];
-    if ([(NSMutableOrderedSet *)self->_recentlySeenPlaceHashes containsObject:v13])
+    cacheKey = [placeCopy cacheKey];
+    if ([(NSMutableOrderedSet *)self->_recentlySeenPlaceHashes containsObject:cacheKey])
     {
       v14 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138477827;
-        v43 = v13;
+        v43 = cacheKey;
         v15 = "place exists in recentlySeenPlaces set (%{private}@); will not store";
         v16 = v14;
         v17 = 12;
@@ -1667,28 +1667,28 @@ LABEL_14:
 
     else
     {
-      [(NSMutableOrderedSet *)self->_recentlySeenPlaceHashes addObject:v13];
+      [(NSMutableOrderedSet *)self->_recentlySeenPlaceHashes addObject:cacheKey];
       if ([(NSMutableOrderedSet *)self->_recentlySeenPlaceHashes count]>= 0x65)
       {
         [(NSMutableOrderedSet *)self->_recentlySeenPlaceHashes removeObjectAtIndex:0];
       }
 
-      v18 = [v8 minTTL];
+      minTTL = [placeCopy minTTL];
       v19 = GeoServicesConfig_PDPlaceCacheMinimumTTLToStore[1];
-      if (GEOConfigGetInteger() <= v18)
+      if (GEOConfigGetInteger() <= minTTL)
       {
-        v21 = v18;
-        v22 = [v8 copyWithoutETAComponents];
-        v23 = [v22 data];
+        v21 = minTTL;
+        copyWithoutETAComponents = [placeCopy copyWithoutETAComponents];
+        data = [copyWithoutETAComponents data];
 
-        [v8 firstSeenTimestamp];
+        [placeCopy firstSeenTimestamp];
         v25 = v24;
         WeakRetained = objc_loadWeakRetained(&self->_schedulingDelegate);
-        v27 = [WeakRetained currentTime];
+        currentTime = [WeakRetained currentTime];
 
         if (v25 == 0.0)
         {
-          v28 = v27;
+          v28 = currentTime;
         }
 
         else
@@ -1701,13 +1701,13 @@ LABEL_14:
         v33 = 3221225472;
         v34 = sub_100013178;
         v35 = &unk_100081950;
-        v36 = self;
+        selfCopy = self;
         v40 = v28 + v21;
-        v37 = v9;
-        v38 = v23;
-        v39 = v10;
-        v41 = v27;
-        v14 = v23;
+        v37 = hashCopy;
+        v38 = data;
+        v39 = keysCopy;
+        v41 = currentTime;
+        v14 = data;
         LOBYTE(db) = [(GEOSQLiteDB *)db executeInTransaction:&v32];
         v30 = GEOFindOrCreateLog();
         v31 = os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG);
@@ -1752,32 +1752,32 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v13 = GEOFindOrCreateLog();
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+  cacheKey = GEOFindOrCreateLog();
+  if (os_log_type_enabled(cacheKey, OS_LOG_TYPE_DEBUG))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "place does not meet manifest version policy", buf, 2u);
+    _os_log_impl(&_mh_execute_header, cacheKey, OS_LOG_TYPE_DEBUG, "place does not meet manifest version policy", buf, 2u);
   }
 
 LABEL_27:
 }
 
-- (BOOL)_meetsManifestVersionPolicyForPlace:(id)a3
+- (BOOL)_meetsManifestVersionPolicyForPlace:(id)place
 {
-  v4 = a3;
+  placeCopy = place;
   WeakRetained = objc_loadWeakRetained(&self->_manifestInfoProvider);
-  v6 = [WeakRetained serviceVersions];
+  serviceVersions = [WeakRetained serviceVersions];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v6;
+  v7 = serviceVersions;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
-    v19 = self;
+    selfCopy = self;
     v10 = *v22;
     while (2)
     {
@@ -1788,7 +1788,7 @@ LABEL_27:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [v4 meetsManifestVersioningForServiceVersion:*(*(&v21 + 1) + 8 * i)];
+        v12 = [placeCopy meetsManifestVersioningForServiceVersion:*(*(&v21 + 1) + 8 * i)];
         v13 = GEOFindOrCreateLog();
         v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG);
         if ((v12 & 1) == 0)
@@ -1799,9 +1799,9 @@ LABEL_27:
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "place does not meet service version requirement", buf, 2u);
           }
 
-          recentlySeenPlaceHashes = v19->_recentlySeenPlaceHashes;
-          v17 = [v4 cacheKey];
-          [(NSMutableOrderedSet *)recentlySeenPlaceHashes removeObject:v17];
+          recentlySeenPlaceHashes = selfCopy->_recentlySeenPlaceHashes;
+          cacheKey = [placeCopy cacheKey];
+          [(NSMutableOrderedSet *)recentlySeenPlaceHashes removeObject:cacheKey];
 
           v15 = 0;
           goto LABEL_15;
@@ -1830,12 +1830,12 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)_deleteAndResetDB:(id)a3
+- (BOOL)_deleteAndResetDB:(id)b
 {
-  v4 = a3;
-  if (!v4)
+  bCopy = b;
+  if (!bCopy)
   {
-    v4 = sub_100013B98();
+    bCopy = sub_100013B98();
   }
 
   [(NSMutableOrderedSet *)self->_recentlySeenPlaceHashes removeAllObjects];
@@ -1854,7 +1854,7 @@ LABEL_15:
   }
 
   v7 = self->_db;
-  v8 = v4;
+  v8 = bCopy;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
@@ -1956,9 +1956,9 @@ LABEL_8:
   return v11;
 }
 
-- (void)_localeChanged:(id)a3
+- (void)_localeChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v7[0] = 0;
   v7[1] = v7;
   v7[2] = 0x3032000000;
@@ -1986,11 +1986,11 @@ LABEL_8:
   [(GEOPDPlaceCache *)&v4 dealloc];
 }
 
-- (GEOPDPlaceCache)initWithCacheFilePath:(id)a3 schedulingDelegate:(id)a4 manifestInfoProvider:(id)a5
+- (GEOPDPlaceCache)initWithCacheFilePath:(id)path schedulingDelegate:(id)delegate manifestInfoProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  delegateCopy = delegate;
+  providerCopy = provider;
   v28.receiver = self;
   v28.super_class = GEOPDPlaceCache;
   v11 = [(GEOPDPlaceCache *)&v28 init];
@@ -2003,13 +2003,13 @@ LABEL_8:
     v26[3] = &unk_100081900;
     v13 = v11;
     v27 = v13;
-    v14 = [v12 initWithQueueName:"com.apple.geo.pdplacecache" logFacility:"GEOPDPlaceCache" dbFilePath:v8 sqliteFlags:3145728 pragmas:0 setupBlock:v26];
+    v14 = [v12 initWithQueueName:"com.apple.geo.pdplacecache" logFacility:"GEOPDPlaceCache" dbFilePath:pathCopy sqliteFlags:3145728 pragmas:0 setupBlock:v26];
     db = v13->_db;
     v13->_db = v14;
 
-    if (v9)
+    if (delegateCopy)
     {
-      v16 = v9;
+      v16 = delegateCopy;
     }
 
     else
@@ -2018,9 +2018,9 @@ LABEL_8:
     }
 
     objc_storeWeak(&v13->_schedulingDelegate, v16);
-    if (v10)
+    if (providerCopy)
     {
-      v17 = v10;
+      v17 = providerCopy;
     }
 
     else

@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (id)_init;
 - (void)_saveRentals;
-- (void)addRentalWithItemID:(unint64_t)a3 databaseID:(id)a4;
-- (void)removeAllRentalsForDatabaseID:(id)a3;
-- (void)removeRentalWithItemID:(unint64_t)a3;
+- (void)addRentalWithItemID:(unint64_t)d databaseID:(id)iD;
+- (void)removeAllRentalsForDatabaseID:(id)d;
+- (void)removeRentalWithItemID:(unint64_t)d;
 @end
 
 @implementation MPHomeSharingRentalTracker
@@ -26,15 +26,15 @@
   [(NSMutableDictionary *)rentals writeToFile:v6 atomically:1];
 }
 
-- (void)removeAllRentalsForDatabaseID:(id)a3
+- (void)removeAllRentalsForDatabaseID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   v4 = os_log_create("com.apple.amp.mediaplayer", "HomeSharing");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v3;
+    *(&buf + 4) = dCopy;
     _os_log_impl(&dword_1A238D000, v4, OS_LOG_TYPE_DEFAULT, "[MPHomeSharingRentalTracker] Removing all rentals for database ID: %{public}@", &buf, 0xCu);
   }
 
@@ -56,8 +56,8 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [*(*(&buf + 1) + 40) allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  allKeys = [*(*(&buf + 1) + 40) allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -67,13 +67,13 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [*(*(&buf + 1) + 40) objectForKey:v10];
         v12 = [v11 objectForKey:@"databaseID"];
-        v13 = [v12 isEqual:v3];
+        v13 = [v12 isEqual:dCopy];
 
         if (v13)
         {
@@ -81,7 +81,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v7);
@@ -98,16 +98,16 @@ void __60__MPHomeSharingRentalTracker_removeAllRentalsForDatabaseID___block_invo
   *(v3 + 40) = v2;
 }
 
-- (void)removeRentalWithItemID:(unint64_t)a3
+- (void)removeRentalWithItemID:(unint64_t)d
 {
   v48 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!d)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"MPHomeSharingRentalTracker.m" lineNumber:76 description:@"attempted to remove rental with no item ID"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPHomeSharingRentalTracker.m" lineNumber:76 description:@"attempted to remove rental with no item ID"];
   }
 
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", a3];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", d];
   v6 = os_log_create("com.apple.amp.mediaplayer", "HomeSharing");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -141,8 +141,8 @@ void __60__MPHomeSharingRentalTracker_removeAllRentalsForDatabaseID___block_invo
     v30 = 0u;
     v31 = 0u;
     v10 = +[MPMediaLibrary mediaLibraries];
-    v11 = [v10 countByEnumeratingWithState:&v30 objects:v42 count:16];
-    if (v11)
+    libraryDataProvider = [v10 countByEnumeratingWithState:&v30 objects:v42 count:16];
+    if (libraryDataProvider)
     {
       v12 = *v31;
 LABEL_8:
@@ -155,18 +155,18 @@ LABEL_8:
         }
 
         v14 = *(*(&v30 + 1) + 8 * v13);
-        v15 = [v14 uniqueIdentifier];
-        v16 = [v15 isEqual:v9];
+        uniqueIdentifier = [v14 uniqueIdentifier];
+        v16 = [uniqueIdentifier isEqual:v9];
 
         if (v16)
         {
           break;
         }
 
-        if (v11 == ++v13)
+        if (libraryDataProvider == ++v13)
         {
-          v11 = [v10 countByEnumeratingWithState:&v30 objects:v42 count:16];
-          if (v11)
+          libraryDataProvider = [v10 countByEnumeratingWithState:&v30 objects:v42 count:16];
+          if (libraryDataProvider)
           {
             goto LABEL_8;
           }
@@ -175,8 +175,8 @@ LABEL_8:
         }
       }
 
-      v17 = [v14 itemWithPersistentID:a3];
-      v11 = [v14 libraryDataProvider];
+      v17 = [v14 itemWithPersistentID:d];
+      libraryDataProvider = [v14 libraryDataProvider];
 
       if (!v17)
       {
@@ -210,9 +210,9 @@ LABEL_8:
         v25[1] = 3221225472;
         v25[2] = __53__MPHomeSharingRentalTracker_removeRentalWithItemID___block_invoke_2;
         v25[3] = &unk_1E767AD48;
-        v26 = v11;
+        v26 = libraryDataProvider;
         v27 = v17;
-        v28 = self;
+        selfCopy = self;
         v29 = v24;
         [v21 startWithCompletionBlock:v25];
       }
@@ -313,22 +313,22 @@ uint64_t __53__MPHomeSharingRentalTracker_removeRentalWithItemID___block_invoke_
   return [v2 _saveRentals];
 }
 
-- (void)addRentalWithItemID:(unint64_t)a3 databaseID:(id)a4
+- (void)addRentalWithItemID:(unint64_t)d databaseID:(id)iD
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
-  if (!a3 || !v7)
+  iDCopy = iD;
+  v8 = iDCopy;
+  if (!d || !iDCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"MPHomeSharingRentalTracker.m" lineNumber:63 description:{@"attempted to add rental with item ID: %llu, databaseID: %@", a3, v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPHomeSharingRentalTracker.m" lineNumber:63 description:{@"attempted to add rental with item ID: %llu, databaseID: %@", d, v8}];
   }
 
   v9 = os_log_create("com.apple.amp.mediaplayer", "HomeSharing");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v18 = a3;
+    dCopy = d;
     v19 = 2114;
     v20 = v8;
     _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_DEFAULT, "[MPHomeSharingRentalTracker] Adding rental with item ID: %llu, database ID: %{public}@", buf, 0x16u);
@@ -340,8 +340,8 @@ uint64_t __53__MPHomeSharingRentalTracker_removeRentalWithItemID___block_invoke_
   block[2] = __61__MPHomeSharingRentalTracker_addRentalWithItemID_databaseID___block_invoke;
   block[3] = &unk_1E767D490;
   v14 = v8;
-  v15 = self;
-  v16 = a3;
+  selfCopy = self;
+  dCopy2 = d;
   v11 = v8;
   dispatch_sync(rentalTrackerQueue, block);
 }

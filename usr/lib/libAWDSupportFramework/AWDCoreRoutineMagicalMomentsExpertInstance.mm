@@ -1,18 +1,18 @@
 @interface AWDCoreRoutineMagicalMomentsExpertInstance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAddons:(id)a3;
-- (void)addInstances:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addAddons:(id)addons;
+- (void)addInstances:(id)instances;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasExpertType:(BOOL)a3;
-- (void)setHasModelType:(BOOL)a3;
-- (void)setHasSampleCounts:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasExpertType:(BOOL)type;
+- (void)setHasModelType:(BOOL)type;
+- (void)setHasSampleCounts:(BOOL)counts;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineMagicalMomentsExpertInstance
@@ -26,9 +26,9 @@
   [(AWDCoreRoutineMagicalMomentsExpertInstance *)&v3 dealloc];
 }
 
-- (void)setHasModelType:(BOOL)a3
+- (void)setHasModelType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -41,9 +41,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasExpertType:(BOOL)a3
+- (void)setHasExpertType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -56,9 +56,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSampleCounts:(BOOL)a3
+- (void)setHasSampleCounts:(BOOL)counts
 {
-  if (a3)
+  if (counts)
   {
     v3 = 8;
   }
@@ -71,7 +71,7 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addInstances:(id)a3
+- (void)addInstances:(id)instances
 {
   instances = self->_instances;
   if (!instances)
@@ -80,10 +80,10 @@
     self->_instances = instances;
   }
 
-  [(NSMutableArray *)instances addObject:a3];
+  [(NSMutableArray *)instances addObject:instances];
 }
 
-- (void)addAddons:(id)a3
+- (void)addAddons:(id)addons
 {
   addons = self->_addons;
   if (!addons)
@@ -92,7 +92,7 @@
     self->_addons = addons;
   }
 
-  [(NSMutableArray *)addons addObject:a3];
+  [(NSMutableArray *)addons addObject:addons];
 }
 
 - (id)description
@@ -105,11 +105,11 @@
 - (id)dictionaryRepresentation
 {
   v29 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_modelType), @"modelType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_modelType), @"modelType"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -128,7 +128,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_expertType), @"expertType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_expertType), @"expertType"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -142,11 +142,11 @@ LABEL_4:
   }
 
 LABEL_27:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_confidence), @"confidence"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_confidence), @"confidence"}];
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_sampleCounts), @"sampleCounts"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_sampleCounts), @"sampleCounts"}];
   }
 
 LABEL_6:
@@ -181,7 +181,7 @@ LABEL_6:
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"instances"];
+    [dictionary setObject:v5 forKey:@"instances"];
   }
 
   if ([(NSMutableArray *)self->_addons count])
@@ -215,14 +215,14 @@ LABEL_6:
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"addons"];
+    [dictionary setObject:v11 forKey:@"addons"];
   }
 
   v17 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v32 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -334,13 +334,13 @@ LABEL_6:
   v18 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 8) = self->_modelType;
-    *(a3 + 40) |= 4u;
+    *(to + 8) = self->_modelType;
+    *(to + 40) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -351,8 +351,8 @@ LABEL_3:
       }
 
 LABEL_17:
-      *(a3 + 4) = self->_confidence;
-      *(a3 + 40) |= 1u;
+      *(to + 4) = self->_confidence;
+      *(to + 40) |= 1u;
       if ((*&self->_has & 8) == 0)
       {
         goto LABEL_6;
@@ -367,8 +367,8 @@ LABEL_17:
     goto LABEL_3;
   }
 
-  *(a3 + 5) = self->_expertType;
-  *(a3 + 40) |= 2u;
+  *(to + 5) = self->_expertType;
+  *(to + 40) |= 2u;
   has = self->_has;
   if (has)
   {
@@ -379,44 +379,44 @@ LABEL_4:
   if ((has & 8) != 0)
   {
 LABEL_5:
-    *(a3 + 9) = self->_sampleCounts;
-    *(a3 + 40) |= 8u;
+    *(to + 9) = self->_sampleCounts;
+    *(to + 40) |= 8u;
   }
 
 LABEL_6:
   if ([(AWDCoreRoutineMagicalMomentsExpertInstance *)self instancesCount])
   {
-    [a3 clearInstances];
-    v6 = [(AWDCoreRoutineMagicalMomentsExpertInstance *)self instancesCount];
-    if (v6)
+    [to clearInstances];
+    instancesCount = [(AWDCoreRoutineMagicalMomentsExpertInstance *)self instancesCount];
+    if (instancesCount)
     {
-      v7 = v6;
+      v7 = instancesCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addInstances:{-[AWDCoreRoutineMagicalMomentsExpertInstance instancesAtIndex:](self, "instancesAtIndex:", i)}];
+        [to addInstances:{-[AWDCoreRoutineMagicalMomentsExpertInstance instancesAtIndex:](self, "instancesAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDCoreRoutineMagicalMomentsExpertInstance *)self addonsCount])
   {
-    [a3 clearAddons];
-    v9 = [(AWDCoreRoutineMagicalMomentsExpertInstance *)self addonsCount];
-    if (v9)
+    [to clearAddons];
+    addonsCount = [(AWDCoreRoutineMagicalMomentsExpertInstance *)self addonsCount];
+    if (addonsCount)
     {
-      v10 = v9;
+      v10 = addonsCount;
       for (j = 0; j != v10; ++j)
       {
-        [a3 addAddons:{-[AWDCoreRoutineMagicalMomentsExpertInstance addonsAtIndex:](self, "addonsAtIndex:", j)}];
+        [to addAddons:{-[AWDCoreRoutineMagicalMomentsExpertInstance addonsAtIndex:](self, "addonsAtIndex:", j)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -485,7 +485,7 @@ LABEL_6:
           objc_enumerationMutation(instances);
         }
 
-        v13 = [*(*(&v26 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v26 + 1) + 8 * i) copyWithZone:zone];
         [v6 addInstances:v13];
       }
 
@@ -514,7 +514,7 @@ LABEL_6:
           objc_enumerationMutation(addons);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * j) copyWithZone:a3];
+        v19 = [*(*(&v22 + 1) + 8 * j) copyWithZone:zone];
         [v6 addAddons:v19];
       }
 
@@ -528,21 +528,21 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 40);
+    v6 = *(equal + 40);
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 40) & 4) == 0 || self->_modelType != *(a3 + 8))
+      if ((*(equal + 40) & 4) == 0 || self->_modelType != *(equal + 8))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 40) & 4) != 0)
+    else if ((*(equal + 40) & 4) != 0)
     {
 LABEL_26:
       LOBYTE(v5) = 0;
@@ -551,48 +551,48 @@ LABEL_26:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 40) & 2) == 0 || self->_expertType != *(a3 + 5))
+      if ((*(equal + 40) & 2) == 0 || self->_expertType != *(equal + 5))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 40) & 2) != 0)
+    else if ((*(equal + 40) & 2) != 0)
     {
       goto LABEL_26;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 40) & 1) == 0 || self->_confidence != *(a3 + 4))
+      if ((*(equal + 40) & 1) == 0 || self->_confidence != *(equal + 4))
       {
         goto LABEL_26;
       }
     }
 
-    else if (*(a3 + 40))
+    else if (*(equal + 40))
     {
       goto LABEL_26;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 40) & 8) == 0 || self->_sampleCounts != *(a3 + 9))
+      if ((*(equal + 40) & 8) == 0 || self->_sampleCounts != *(equal + 9))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 40) & 8) != 0)
+    else if ((*(equal + 40) & 8) != 0)
     {
       goto LABEL_26;
     }
 
     instances = self->_instances;
-    if (!(instances | *(a3 + 3)) || (v5 = [(NSMutableArray *)instances isEqual:?]) != 0)
+    if (!(instances | *(equal + 3)) || (v5 = [(NSMutableArray *)instances isEqual:?]) != 0)
     {
       addons = self->_addons;
-      if (addons | *(a3 + 1))
+      if (addons | *(equal + 1))
       {
 
         LOBYTE(v5) = [(NSMutableArray *)addons isEqual:?];
@@ -664,15 +664,15 @@ LABEL_10:
   return v7 ^ [(NSMutableArray *)self->_addons hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x29EDCA608];
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 4) != 0)
   {
-    self->_modelType = *(a3 + 8);
+    self->_modelType = *(from + 8);
     *&self->_has |= 4u;
-    v5 = *(a3 + 40);
+    v5 = *(from + 40);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -685,14 +685,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 40) & 2) == 0)
+  else if ((*(from + 40) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_expertType = *(a3 + 5);
+  self->_expertType = *(from + 5);
   *&self->_has |= 2u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 1) == 0)
   {
 LABEL_4:
@@ -705,12 +705,12 @@ LABEL_4:
   }
 
 LABEL_23:
-  self->_confidence = *(a3 + 4);
+  self->_confidence = *(from + 4);
   *&self->_has |= 1u;
-  if ((*(a3 + 40) & 8) != 0)
+  if ((*(from + 40) & 8) != 0)
   {
 LABEL_5:
-    self->_sampleCounts = *(a3 + 9);
+    self->_sampleCounts = *(from + 9);
     *&self->_has |= 8u;
   }
 
@@ -719,7 +719,7 @@ LABEL_6:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = *(a3 + 3);
+  v6 = *(from + 3);
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
@@ -747,7 +747,7 @@ LABEL_6:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = *(a3 + 1);
+  v11 = *(from + 1);
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v12)
   {

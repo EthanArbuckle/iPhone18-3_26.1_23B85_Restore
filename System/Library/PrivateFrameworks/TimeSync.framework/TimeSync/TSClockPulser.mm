@@ -2,12 +2,12 @@
 - (BOOL)startPulsing;
 - (BOOL)stopPulsing;
 - (TSClockPulser)init;
-- (TSClockPulser)initWithPulseClock:(id)a3;
+- (TSClockPulser)initWithPulseClock:(id)clock;
 - (void)dealloc;
-- (void)didBeginClockGrandmasterChangeForClock:(id)a3;
-- (void)didChangeClockMasterForClock:(id)a3;
-- (void)didChangeLockStateTo:(int)a3 forClock:(id)a4;
-- (void)didEndClockGrandmasterChangeForClock:(id)a3;
+- (void)didBeginClockGrandmasterChangeForClock:(id)clock;
+- (void)didChangeClockMasterForClock:(id)clock;
+- (void)didChangeLockStateTo:(int)to forClock:(id)clock;
+- (void)didEndClockGrandmasterChangeForClock:(id)clock;
 - (void)pulseThread;
 - (void)stopPulsing;
 @end
@@ -24,9 +24,9 @@
   return 0;
 }
 
-- (TSClockPulser)initWithPulseClock:(id)a3
+- (TSClockPulser)initWithPulseClock:(id)clock
 {
-  v5 = a3;
+  clockCopy = clock;
   v9.receiver = self;
   v9.super_class = TSClockPulser;
   v6 = [(TSClockPulser *)&v9 init];
@@ -42,7 +42,7 @@
     {
       if (!semaphore_create(*v7, &v6->_stopSemaphore, 0, 0))
       {
-        objc_storeStrong(&v6->_pulseClock, a3);
+        objc_storeStrong(&v6->_pulseClock, clock);
         v6->_pulsePeriod = 1000000000;
         goto LABEL_5;
       }
@@ -98,7 +98,7 @@ LABEL_5:
   return !self->_threadIsRunning;
 }
 
-- (void)didChangeClockMasterForClock:(id)a3
+- (void)didChangeClockMasterForClock:(id)clock
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -107,23 +107,23 @@ LABEL_5:
   }
 }
 
-- (void)didChangeLockStateTo:(int)a3 forClock:(id)a4
+- (void)didChangeLockStateTo:(int)to forClock:(id)clock
 {
   v9 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  clockCopy = clock;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = a3;
+    v8[1] = to;
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Change lock state to %u", v8, 8u);
   }
 
-  self->_holdoverMode = a3 != 2;
+  self->_holdoverMode = to != 2;
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didBeginClockGrandmasterChangeForClock:(id)a3
+- (void)didBeginClockGrandmasterChangeForClock:(id)clock
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -132,7 +132,7 @@ LABEL_5:
   }
 }
 
-- (void)didEndClockGrandmasterChangeForClock:(id)a3
+- (void)didEndClockGrandmasterChangeForClock:(id)clock
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -145,7 +145,7 @@ LABEL_5:
 {
   v3 = *MEMORY[0x277D85DE8];
   v2[0] = 67109120;
-  v2[1] = a1;
+  v2[1] = self;
   _os_log_error_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Failed to convert pulse thread to realtime. Error 0x%08x\n", v2, 8u);
   v1 = *MEMORY[0x277D85DE8];
 }

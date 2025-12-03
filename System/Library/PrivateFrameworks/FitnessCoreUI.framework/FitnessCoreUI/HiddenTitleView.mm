@@ -1,16 +1,16 @@
 @interface HiddenTitleView
-- (_TtC13FitnessCoreUI15HiddenTitleView)initWithCoder:(id)a3;
-- (_TtC13FitnessCoreUI15HiddenTitleView)initWithFrame:(CGRect)a3;
+- (_TtC13FitnessCoreUI15HiddenTitleView)initWithCoder:(id)coder;
+- (_TtC13FitnessCoreUI15HiddenTitleView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation HiddenTitleView
 
-- (_TtC13FitnessCoreUI15HiddenTitleView)initWithFrame:(CGRect)a3
+- (_TtC13FitnessCoreUI15HiddenTitleView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_20C3E8E3C();
   sub_20C3E8E2C();
   sub_20C3E8E1C();
@@ -21,13 +21,13 @@
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for HiddenTitleView();
-  v8 = [(_UINavigationBarTitleView *)&v10 initWithFrame:x, y, width, height];
-  [(_UINavigationBarTitleView *)v8 setHideStandardTitle:1];
+  height = [(_UINavigationBarTitleView *)&v10 initWithFrame:x, y, width, height];
+  [(_UINavigationBarTitleView *)height setHideStandardTitle:1];
 
-  return v8;
+  return height;
 }
 
-- (_TtC13FitnessCoreUI15HiddenTitleView)initWithCoder:(id)a3
+- (_TtC13FitnessCoreUI15HiddenTitleView)initWithCoder:(id)coder
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();

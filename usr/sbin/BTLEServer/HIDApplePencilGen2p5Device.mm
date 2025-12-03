@@ -1,22 +1,22 @@
 @interface HIDApplePencilGen2p5Device
-- (id)newUserDevices:(id)a3;
+- (id)newUserDevices:(id)devices;
 @end
 
 @implementation HIDApplePencilGen2p5Device
 
-- (id)newUserDevices:(id)a3
+- (id)newUserDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(HIDApplePencilGen2Device *)self newDeviceMgntDevice:v4 keyholeID:0];
-  v6 = [(HIDApplePencilGen2Device *)self newWakeDevice:v4 keyholeID:4];
-  v7 = [(HIDApplePencilGen2p5Device *)self newFwUpgradeDevice:v4 keyholeID:5];
-  v8 = [(HIDApplePencilGen2Device *)self newForceDevice:v4 keyholeID:8];
+  devicesCopy = devices;
+  v5 = [(HIDApplePencilGen2Device *)self newDeviceMgntDevice:devicesCopy keyholeID:0];
+  v6 = [(HIDApplePencilGen2Device *)self newWakeDevice:devicesCopy keyholeID:4];
+  v7 = [(HIDApplePencilGen2p5Device *)self newFwUpgradeDevice:devicesCopy keyholeID:5];
+  v8 = [(HIDApplePencilGen2Device *)self newForceDevice:devicesCopy keyholeID:8];
 
   if (!v5)
   {
     sub_1000725C0(&v14);
 LABEL_11:
-    v12 = v14;
+    allValues = v14;
     goto LABEL_6;
   }
 
@@ -49,14 +49,14 @@ LABEL_11:
   v9 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:4];
   [(HIDApplePencilGen2Device *)self setUserDevices:v9];
 
-  v10 = [(HIDApplePencilGen2Device *)self userDevices];
-  [v10 enumerateKeysAndObjectsUsingBlock:&stru_1000BDAB8];
+  userDevices = [(HIDApplePencilGen2Device *)self userDevices];
+  [userDevices enumerateKeysAndObjectsUsingBlock:&stru_1000BDAB8];
 
-  v11 = [(HIDApplePencilGen2Device *)self userDevices];
-  v12 = [v11 allValues];
+  userDevices2 = [(HIDApplePencilGen2Device *)self userDevices];
+  allValues = [userDevices2 allValues];
 
 LABEL_6:
-  return v12;
+  return allValues;
 }
 
 @end

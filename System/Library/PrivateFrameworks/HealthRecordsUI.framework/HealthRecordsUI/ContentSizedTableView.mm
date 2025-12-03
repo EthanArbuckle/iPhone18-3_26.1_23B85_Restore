@@ -1,9 +1,9 @@
 @interface ContentSizedTableView
 - (CGSize)contentSize;
 - (CGSize)intrinsicContentSize;
-- (_TtC15HealthRecordsUIP33_8F81952E28F1531DFFBDDCE2B833C80321ContentSizedTableView)initWithCoder:(id)a3;
-- (_TtC15HealthRecordsUIP33_8F81952E28F1531DFFBDDCE2B833C80321ContentSizedTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (void)setContentSize:(CGSize)a3;
+- (_TtC15HealthRecordsUIP33_8F81952E28F1531DFFBDDCE2B833C80321ContentSizedTableView)initWithCoder:(id)coder;
+- (_TtC15HealthRecordsUIP33_8F81952E28F1531DFFBDDCE2B833C80321ContentSizedTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation ContentSizedTableView
@@ -18,10 +18,10 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = type metadata accessor for ContentSizedTableView();
   v5 = v6.receiver;
@@ -31,10 +31,10 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  [(ContentSizedTableView *)v2 layoutIfNeeded];
+  selfCopy = self;
+  [(ContentSizedTableView *)selfCopy layoutIfNeeded];
   v3 = *MEMORY[0x1E69DE788];
-  [(ContentSizedTableView *)v2 contentSize];
+  [(ContentSizedTableView *)selfCopy contentSize];
   v5 = v4;
 
   v6 = v3;
@@ -44,23 +44,23 @@
   return result;
 }
 
-- (_TtC15HealthRecordsUIP33_8F81952E28F1531DFFBDDCE2B833C80321ContentSizedTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (_TtC15HealthRecordsUIP33_8F81952E28F1531DFFBDDCE2B833C80321ContentSizedTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for ContentSizedTableView();
-  return [(ContentSizedTableView *)&v10 initWithFrame:a4 style:x, y, width, height];
+  return [(ContentSizedTableView *)&v10 initWithFrame:style style:x, y, width, height];
 }
 
-- (_TtC15HealthRecordsUIP33_8F81952E28F1531DFFBDDCE2B833C80321ContentSizedTableView)initWithCoder:(id)a3
+- (_TtC15HealthRecordsUIP33_8F81952E28F1531DFFBDDCE2B833C80321ContentSizedTableView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ContentSizedTableView();
-  v4 = a3;
-  v5 = [(ContentSizedTableView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ContentSizedTableView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

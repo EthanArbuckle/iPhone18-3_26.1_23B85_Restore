@@ -1,28 +1,28 @@
 @interface PVImage
-+ (PVImage)imageWithCGImage:(CGImage *)a3 orientation:(unsigned int)a4 adjustmentVersion:(id)a5 creationDate:(id)a6;
-+ (PVImage)imageWithCIImage:(id)a3 assetWidth:(unint64_t)a4 assetHeight:(unint64_t)a5 orientation:(unsigned int)a6 adjustmentVersion:(id)a7 creationDate:(id)a8;
-+ (PVImage)imageWithData:(id)a3 imageCreationOptions:(id)a4 assetWidth:(unint64_t)a5 assetHeight:(unint64_t)a6 adjustmentVersion:(id)a7 creationDate:(id)a8;
-+ (PVImage)imageWithURL:(id)a3 assetWidth:(unint64_t)a4 assetHeight:(unint64_t)a5 imageCreationOptions:(id)a6 adjustmentVersion:(id)a7 creationDate:(id)a8;
-- (CGRect)imageRectForNormalizedRect:(CGRect)a3;
-- (PVImage)initWithCGImage:(CGImage *)a3 orientation:(unsigned int)a4 adjustmentVersion:(id)a5 creationDate:(id)a6;
-- (PVImage)initWithCIImage:(id)a3 assetWidth:(unint64_t)a4 assetHeight:(unint64_t)a5 orientation:(unsigned int)a6 adjustmentVersion:(id)a7 creationDate:(id)a8;
-- (PVImage)initWithData:(id)a3 imageCreationOptions:(id)a4 assetWidth:(unint64_t)a5 assetHeight:(unint64_t)a6 adjustmentVersion:(id)a7 creationDate:(id)a8;
-- (PVImage)initWithURL:(id)a3 assetWidth:(unint64_t)a4 assetHeight:(unint64_t)a5 imageCreationOptions:(id)a6 adjustmentVersion:(id)a7 creationDate:(id)a8;
++ (PVImage)imageWithCGImage:(CGImage *)image orientation:(unsigned int)orientation adjustmentVersion:(id)version creationDate:(id)date;
++ (PVImage)imageWithCIImage:(id)image assetWidth:(unint64_t)width assetHeight:(unint64_t)height orientation:(unsigned int)orientation adjustmentVersion:(id)version creationDate:(id)date;
++ (PVImage)imageWithData:(id)data imageCreationOptions:(id)options assetWidth:(unint64_t)width assetHeight:(unint64_t)height adjustmentVersion:(id)version creationDate:(id)date;
++ (PVImage)imageWithURL:(id)l assetWidth:(unint64_t)width assetHeight:(unint64_t)height imageCreationOptions:(id)options adjustmentVersion:(id)version creationDate:(id)date;
+- (CGRect)imageRectForNormalizedRect:(CGRect)rect;
+- (PVImage)initWithCGImage:(CGImage *)image orientation:(unsigned int)orientation adjustmentVersion:(id)version creationDate:(id)date;
+- (PVImage)initWithCIImage:(id)image assetWidth:(unint64_t)width assetHeight:(unint64_t)height orientation:(unsigned int)orientation adjustmentVersion:(id)version creationDate:(id)date;
+- (PVImage)initWithData:(id)data imageCreationOptions:(id)options assetWidth:(unint64_t)width assetHeight:(unint64_t)height adjustmentVersion:(id)version creationDate:(id)date;
+- (PVImage)initWithURL:(id)l assetWidth:(unint64_t)width assetHeight:(unint64_t)height imageCreationOptions:(id)options adjustmentVersion:(id)version creationDate:(id)date;
 - (void)dealloc;
 @end
 
 @implementation PVImage
 
-- (CGRect)imageRectForNormalizedRect:(CGRect)a3
+- (CGRect)imageRectForNormalizedRect:(CGRect)rect
 {
-  v3.f64[0] = a3.origin.x;
-  v3.f64[1] = a3.origin.y;
-  v4.f64[0] = a3.size.width;
-  v4.f64[1] = a3.size.height;
+  v3.f64[0] = rect.origin.x;
+  v3.f64[1] = rect.origin.y;
+  v4.f64[0] = rect.size.width;
+  v4.f64[1] = rect.size.height;
   __asm { FMOV            V6.2D, #1.0 }
 
-  LODWORD(_Q6.f64[0]) = vuzp1_s8(vmovn_s32(vuzp1q_s32(vcgtq_f64(v3, _Q6), vcgtq_f64(v4, _Q6))), *&a3.origin.x).u32[0];
-  HIDWORD(_Q6.f64[0]) = vuzp1_s8(*&a3, vmovn_s32(vuzp1q_s32(vcltzq_f64(v3), vcltzq_f64(v4)))).i32[1];
+  LODWORD(_Q6.f64[0]) = vuzp1_s8(vmovn_s32(vuzp1q_s32(vcgtq_f64(v3, _Q6), vcgtq_f64(v4, _Q6))), *&rect.origin.x).u32[0];
+  HIDWORD(_Q6.f64[0]) = vuzp1_s8(*&rect, vmovn_s32(vuzp1q_s32(vcltzq_f64(v3), vcltzq_f64(v4)))).i32[1];
   if (vmaxv_u8(vcltz_s8(vshl_n_s8(*&_Q6.f64[0], 7uLL))))
   {
     v10 = *MEMORY[0x277CBF398];
@@ -33,25 +33,25 @@
 
   else
   {
-    y = a3.origin.y;
-    height = a3.size.height;
-    x = a3.origin.x;
-    width = a3.size.width;
-    v15 = [(PVImage *)self orientedWidth];
-    v16 = [(PVImage *)self orientedHeight];
-    if (v15 >= v16)
+    y = rect.origin.y;
+    height = rect.size.height;
+    x = rect.origin.x;
+    width = rect.size.width;
+    orientedWidth = [(PVImage *)self orientedWidth];
+    orientedHeight = [(PVImage *)self orientedHeight];
+    if (orientedWidth >= orientedHeight)
     {
-      v17 = v15;
+      v17 = orientedWidth;
     }
 
     else
     {
-      v17 = v16;
+      v17 = orientedHeight;
     }
 
-    v10 = x * v15;
+    v10 = x * orientedWidth;
     v12 = width * v17;
-    v11 = y * v16;
+    v11 = y * orientedHeight;
     v13 = height * v17;
   }
 
@@ -70,25 +70,25 @@
   [(PVImage *)&v3 dealloc];
 }
 
-- (PVImage)initWithURL:(id)a3 assetWidth:(unint64_t)a4 assetHeight:(unint64_t)a5 imageCreationOptions:(id)a6 adjustmentVersion:(id)a7 creationDate:(id)a8
+- (PVImage)initWithURL:(id)l assetWidth:(unint64_t)width assetHeight:(unint64_t)height imageCreationOptions:(id)options adjustmentVersion:(id)version creationDate:(id)date
 {
   v43 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  if (v14)
+  lCopy = l;
+  optionsCopy = options;
+  versionCopy = version;
+  dateCopy = date;
+  if (lCopy)
   {
     v40.receiver = self;
     v40.super_class = PVImage;
     v18 = [(PVImage *)&v40 init];
     if (v18)
     {
-      v19 = CGImageSourceCreateWithURL(v14, v15);
+      v19 = CGImageSourceCreateWithURL(lCopy, optionsCopy);
       if (v19)
       {
         v20 = v19;
-        v39 = a5;
+        heightCopy = height;
         v21 = CGImageSourceCopyMetadataAtIndex(v19, 0, 0);
         if (v21)
         {
@@ -126,7 +126,7 @@
           IntValue = 1;
         }
 
-        ImageAtIndex = CGImageSourceCreateImageAtIndex(v20, 0, v15);
+        ImageAtIndex = CGImageSourceCreateImageAtIndex(v20, 0, optionsCopy);
         if (ImageAtIndex)
         {
           v28 = ImageAtIndex;
@@ -136,17 +136,17 @@
         }
 
         CFRelease(v20);
-        v29 = [(__CFURL *)v14 copy];
+        v29 = [(__CFURL *)lCopy copy];
         imageURL = v18->_imageURL;
         v18->_imageURL = v29;
 
-        v18->_assetWidth = a4;
-        v18->_assetHeight = v39;
-        v31 = [v16 copy];
+        v18->_assetWidth = width;
+        v18->_assetHeight = heightCopy;
+        v31 = [versionCopy copy];
         adjustmentVersion = v18->_adjustmentVersion;
         v18->_adjustmentVersion = v31;
 
-        v33 = GroupingIdentifierFromDate(v17);
+        v33 = GroupingIdentifierFromDate(dateCopy);
         groupingIdentifier = v18->_groupingIdentifier;
         v18->_groupingIdentifier = v33;
 
@@ -180,41 +180,41 @@
     }
 
     self = v18;
-    v26 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v26 = 0;
+    selfCopy = 0;
   }
 
-  return v26;
+  return selfCopy;
 }
 
-- (PVImage)initWithData:(id)a3 imageCreationOptions:(id)a4 assetWidth:(unint64_t)a5 assetHeight:(unint64_t)a6 adjustmentVersion:(id)a7 creationDate:(id)a8
+- (PVImage)initWithData:(id)data imageCreationOptions:(id)options assetWidth:(unint64_t)width assetHeight:(unint64_t)height adjustmentVersion:(id)version creationDate:(id)date
 {
   v43 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a8;
-  if (v15)
+  dataCopy = data;
+  optionsCopy = options;
+  versionCopy = version;
+  dateCopy = date;
+  if (dataCopy)
   {
     v40.receiver = self;
     v40.super_class = PVImage;
     v19 = [(PVImage *)&v40 init];
     if (v19)
     {
-      v20 = CGImageSourceCreateWithData(v15, v16);
+      v20 = CGImageSourceCreateWithData(dataCopy, optionsCopy);
       if (v20)
       {
         v21 = v20;
-        v39 = a5;
+        widthCopy = width;
         v22 = CGImageSourceCopyMetadataAtIndex(v20, 0, 0);
         if (v22)
         {
           v23 = v22;
-          v38 = a6;
+          heightCopy = height;
           v24 = CGImageMetadataCopyStringValueWithPath(v22, 0, @"tiff:Orientation");
           if (v24)
           {
@@ -241,7 +241,7 @@
           }
 
           CFRelease(v23);
-          a6 = v38;
+          height = heightCopy;
         }
 
         else
@@ -249,24 +249,24 @@
           IntValue = 1;
         }
 
-        ImageAtIndex = CGImageSourceCreateImageAtIndex(v21, 0, v16);
+        ImageAtIndex = CGImageSourceCreateImageAtIndex(v21, 0, optionsCopy);
         if (ImageAtIndex)
         {
           v29 = ImageAtIndex;
           v19->_CGImage = ImageAtIndex;
           v19->_width = CGImageGetWidth(ImageAtIndex);
           v19->_height = CGImageGetHeight(v29);
-          v19->_assetWidth = v39;
-          v19->_assetHeight = a6;
+          v19->_assetWidth = widthCopy;
+          v19->_assetHeight = height;
         }
 
         CFRelease(v21);
-        objc_storeStrong(&v19->_imageData, a3);
-        v30 = [v17 copy];
+        objc_storeStrong(&v19->_imageData, data);
+        v30 = [versionCopy copy];
         adjustmentVersion = v19->_adjustmentVersion;
         v19->_adjustmentVersion = v30;
 
-        v32 = GroupingIdentifierFromDate(v18);
+        v32 = GroupingIdentifierFromDate(dateCopy);
         groupingIdentifier = v19->_groupingIdentifier;
         v19->_groupingIdentifier = v32;
 
@@ -300,48 +300,48 @@
     }
 
     self = v19;
-    v27 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v27 = 0;
+    selfCopy = 0;
   }
 
-  return v27;
+  return selfCopy;
 }
 
-- (PVImage)initWithCIImage:(id)a3 assetWidth:(unint64_t)a4 assetHeight:(unint64_t)a5 orientation:(unsigned int)a6 adjustmentVersion:(id)a7 creationDate:(id)a8
+- (PVImage)initWithCIImage:(id)image assetWidth:(unint64_t)width assetHeight:(unint64_t)height orientation:(unsigned int)orientation adjustmentVersion:(id)version creationDate:(id)date
 {
-  v15 = a3;
-  v16 = a7;
-  v17 = a8;
-  if (v15)
+  imageCopy = image;
+  versionCopy = version;
+  dateCopy = date;
+  if (imageCopy)
   {
     v32.receiver = self;
     v32.super_class = PVImage;
     v18 = [(PVImage *)&v32 init];
     if (v18)
     {
-      [v15 extent];
+      [imageCopy extent];
       v20 = v19;
       v22 = v21;
-      objc_storeStrong(&v18->_CIImage, a3);
+      objc_storeStrong(&v18->_CIImage, image);
       v18->_width = v20;
       v18->_height = v22;
-      v18->_assetWidth = a4;
-      v18->_assetHeight = a5;
-      v23 = [v16 copy];
+      v18->_assetWidth = width;
+      v18->_assetHeight = height;
+      v23 = [versionCopy copy];
       adjustmentVersion = v18->_adjustmentVersion;
       v18->_adjustmentVersion = v23;
 
-      v25 = GroupingIdentifierFromDate(v17);
+      v25 = GroupingIdentifierFromDate(dateCopy);
       groupingIdentifier = v18->_groupingIdentifier;
       v18->_groupingIdentifier = v25;
 
-      v18->_orientation = a6;
+      v18->_orientation = orientation;
       v27 = 32;
-      if (a6 - 5 >= 4)
+      if (orientation - 5 >= 4)
       {
         v28 = 32;
       }
@@ -351,7 +351,7 @@
         v28 = 40;
       }
 
-      if (a6 - 5 >= 4)
+      if (orientation - 5 >= 4)
       {
         v27 = 40;
       }
@@ -362,35 +362,35 @@
     }
 
     self = v18;
-    v30 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v30 = 0;
+    selfCopy = 0;
   }
 
-  return v30;
+  return selfCopy;
 }
 
-- (PVImage)initWithCGImage:(CGImage *)a3 orientation:(unsigned int)a4 adjustmentVersion:(id)a5 creationDate:(id)a6
+- (PVImage)initWithCGImage:(CGImage *)image orientation:(unsigned int)orientation adjustmentVersion:(id)version creationDate:(id)date
 {
-  v10 = a5;
-  v11 = a6;
-  if (a3)
+  versionCopy = version;
+  dateCopy = date;
+  if (image)
   {
     v25.receiver = self;
     v25.super_class = PVImage;
     v12 = [(PVImage *)&v25 init];
     if (v12)
     {
-      CGImageRetain(a3);
-      v12->_CGImage = a3;
-      v12->_width = CGImageGetWidth(a3);
-      Height = CGImageGetHeight(a3);
+      CGImageRetain(image);
+      v12->_CGImage = image;
+      v12->_width = CGImageGetWidth(image);
+      Height = CGImageGetHeight(image);
       v12->_height = Height;
       width = v12->_width;
-      if (a4 - 5 >= 4)
+      if (orientation - 5 >= 4)
       {
         v15 = v12->_width;
       }
@@ -400,14 +400,14 @@
         v15 = Height;
       }
 
-      if (a4 - 5 >= 4)
+      if (orientation - 5 >= 4)
       {
         width = Height;
       }
 
       v12->_assetWidth = v15;
       v12->_assetHeight = width;
-      if (a4 - 5 >= 4)
+      if (orientation - 5 >= 4)
       {
         v16 = 32;
       }
@@ -417,7 +417,7 @@
         v16 = 40;
       }
 
-      if (a4 - 5 >= 4)
+      if (orientation - 5 >= 4)
       {
         v17 = 40;
       }
@@ -427,72 +427,72 @@
         v17 = 32;
       }
 
-      v12->_bytesPerRow = CGImageGetBytesPerRow(a3);
-      v18 = [v10 copy];
+      v12->_bytesPerRow = CGImageGetBytesPerRow(image);
+      v18 = [versionCopy copy];
       adjustmentVersion = v12->_adjustmentVersion;
       v12->_adjustmentVersion = v18;
 
-      v20 = GroupingIdentifierFromDate(v11);
+      v20 = GroupingIdentifierFromDate(dateCopy);
       groupingIdentifier = v12->_groupingIdentifier;
       v12->_groupingIdentifier = v20;
 
-      v12->_orientation = a4;
+      v12->_orientation = orientation;
       v22 = *(&v12->super.isa + v17);
       v12->_orientedWidth = *(&v12->super.isa + v16);
       v12->_orientedHeight = v22;
     }
 
     self = v12;
-    v23 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v23 = 0;
+    selfCopy = 0;
   }
 
-  return v23;
+  return selfCopy;
 }
 
-+ (PVImage)imageWithData:(id)a3 imageCreationOptions:(id)a4 assetWidth:(unint64_t)a5 assetHeight:(unint64_t)a6 adjustmentVersion:(id)a7 creationDate:(id)a8
++ (PVImage)imageWithData:(id)data imageCreationOptions:(id)options assetWidth:(unint64_t)width assetHeight:(unint64_t)height adjustmentVersion:(id)version creationDate:(id)date
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[PVImage alloc] initWithData:v16 imageCreationOptions:v15 assetWidth:a5 assetHeight:a6 adjustmentVersion:v14 creationDate:v13];
+  dateCopy = date;
+  versionCopy = version;
+  optionsCopy = options;
+  dataCopy = data;
+  v17 = [[PVImage alloc] initWithData:dataCopy imageCreationOptions:optionsCopy assetWidth:width assetHeight:height adjustmentVersion:versionCopy creationDate:dateCopy];
 
   return v17;
 }
 
-+ (PVImage)imageWithURL:(id)a3 assetWidth:(unint64_t)a4 assetHeight:(unint64_t)a5 imageCreationOptions:(id)a6 adjustmentVersion:(id)a7 creationDate:(id)a8
++ (PVImage)imageWithURL:(id)l assetWidth:(unint64_t)width assetHeight:(unint64_t)height imageCreationOptions:(id)options adjustmentVersion:(id)version creationDate:(id)date
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a3;
-  v17 = [[PVImage alloc] initWithURL:v16 assetWidth:a4 assetHeight:a5 imageCreationOptions:v15 adjustmentVersion:v14 creationDate:v13];
+  dateCopy = date;
+  versionCopy = version;
+  optionsCopy = options;
+  lCopy = l;
+  v17 = [[PVImage alloc] initWithURL:lCopy assetWidth:width assetHeight:height imageCreationOptions:optionsCopy adjustmentVersion:versionCopy creationDate:dateCopy];
 
   return v17;
 }
 
-+ (PVImage)imageWithCIImage:(id)a3 assetWidth:(unint64_t)a4 assetHeight:(unint64_t)a5 orientation:(unsigned int)a6 adjustmentVersion:(id)a7 creationDate:(id)a8
++ (PVImage)imageWithCIImage:(id)image assetWidth:(unint64_t)width assetHeight:(unint64_t)height orientation:(unsigned int)orientation adjustmentVersion:(id)version creationDate:(id)date
 {
-  v9 = *&a6;
-  v13 = a8;
-  v14 = a7;
-  v15 = a3;
-  v16 = [[PVImage alloc] initWithCIImage:v15 assetWidth:a4 assetHeight:a5 orientation:v9 adjustmentVersion:v14 creationDate:v13];
+  v9 = *&orientation;
+  dateCopy = date;
+  versionCopy = version;
+  imageCopy = image;
+  v16 = [[PVImage alloc] initWithCIImage:imageCopy assetWidth:width assetHeight:height orientation:v9 adjustmentVersion:versionCopy creationDate:dateCopy];
 
   return v16;
 }
 
-+ (PVImage)imageWithCGImage:(CGImage *)a3 orientation:(unsigned int)a4 adjustmentVersion:(id)a5 creationDate:(id)a6
++ (PVImage)imageWithCGImage:(CGImage *)image orientation:(unsigned int)orientation adjustmentVersion:(id)version creationDate:(id)date
 {
-  v7 = *&a4;
-  v9 = a6;
-  v10 = a5;
-  v11 = [[PVImage alloc] initWithCGImage:a3 orientation:v7 adjustmentVersion:v10 creationDate:v9];
+  v7 = *&orientation;
+  dateCopy = date;
+  versionCopy = version;
+  v11 = [[PVImage alloc] initWithCGImage:image orientation:v7 adjustmentVersion:versionCopy creationDate:dateCopy];
 
   return v11;
 }

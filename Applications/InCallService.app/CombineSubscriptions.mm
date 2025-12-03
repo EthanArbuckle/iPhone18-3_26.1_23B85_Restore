@@ -6,7 +6,7 @@
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001C4FEC();
 }
 

@@ -13,53 +13,53 @@
   {
     if (_os_feature_enabled_impl())
     {
-      [a1 setTranslucent:1];
-      [a1 setBarStyle:0];
-      v4 = [MEMORY[0x277D75348] labelColor];
-      [a1 setTintColor:v4];
+      [self setTranslucent:1];
+      [self setBarStyle:0];
+      labelColor = [MEMORY[0x277D75348] labelColor];
+      [self setTintColor:labelColor];
 
       v5 = objc_opt_new();
-      [a1 setBackgroundImage:v5 forToolbarPosition:0 barMetrics:0];
+      [self setBackgroundImage:v5 forToolbarPosition:0 barMetrics:0];
 
-      v6 = objc_opt_new();
+      shadowImage = objc_opt_new();
     }
 
     else
     {
-      [a1 setBarStyle:{objc_msgSend(v11, "barStyle")}];
-      [a1 setTranslucent:{objc_msgSend(v11, "isTranslucent")}];
-      v7 = [v11 barTintColor];
-      [a1 setBarTintColor:v7];
+      [self setBarStyle:{objc_msgSend(v11, "barStyle")}];
+      [self setTranslucent:{objc_msgSend(v11, "isTranslucent")}];
+      barTintColor = [v11 barTintColor];
+      [self setBarTintColor:barTintColor];
 
-      v8 = [v11 backgroundColor];
-      [a1 setBackgroundColor:v8];
+      backgroundColor = [v11 backgroundColor];
+      [self setBackgroundColor:backgroundColor];
 
-      v9 = [v11 backgroundImage];
-      [a1 setBackgroundImage:v9 forToolbarPosition:0 barMetrics:0];
+      backgroundImage = [v11 backgroundImage];
+      [self setBackgroundImage:backgroundImage forToolbarPosition:0 barMetrics:0];
 
-      v6 = [v11 shadowImage];
+      shadowImage = [v11 shadowImage];
     }
 
-    v10 = v6;
-    [a1 setShadowImage:v6 forToolbarPosition:0];
+    v10 = shadowImage;
+    [self setShadowImage:shadowImage forToolbarPosition:0];
   }
 }
 
 - (id)configuration
 {
   v2 = objc_opt_new();
-  [v2 setBarStyle:{objc_msgSend(a1, "barStyle")}];
-  [v2 setTranslucent:{objc_msgSend(a1, "isTranslucent")}];
-  v3 = [a1 shadowImageForToolbarPosition:0];
+  [v2 setBarStyle:{objc_msgSend(self, "barStyle")}];
+  [v2 setTranslucent:{objc_msgSend(self, "isTranslucent")}];
+  v3 = [self shadowImageForToolbarPosition:0];
   [v2 setShadowImage:v3];
 
-  v4 = [a1 barTintColor];
-  [v2 setBarTintColor:v4];
+  barTintColor = [self barTintColor];
+  [v2 setBarTintColor:barTintColor];
 
-  v5 = [a1 backgroundColor];
-  [v2 setBackgroundColor:v5];
+  backgroundColor = [self backgroundColor];
+  [v2 setBackgroundColor:backgroundColor];
 
-  v6 = [a1 backgroundImageForToolbarPosition:0 barMetrics:0];
+  v6 = [self backgroundImageForToolbarPosition:0 barMetrics:0];
   [v2 setBackgroundImage:v6];
 
   return v2;
@@ -73,16 +73,16 @@
   v2 = objc_opt_new();
   [v6 setShadowImage:v2];
 
-  v3 = [MEMORY[0x277D75348] clearColor];
-  [v6 setBarTintColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v6 setBarTintColor:clearColor];
 
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v6 setBackgroundColor:v4];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  [v6 setBackgroundColor:clearColor2];
 
   v5 = objc_opt_new();
   [v6 setBackgroundImage:v5];
 
-  [a1 configureWithConfiguration:v6];
+  [self configureWithConfiguration:v6];
 }
 
 @end

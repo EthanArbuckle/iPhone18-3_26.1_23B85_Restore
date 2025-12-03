@@ -1,14 +1,14 @@
 @interface TSWPDummyTapGesture
-- (CGPoint)boundsLocationForICC:(id)a3;
-- (CGPoint)naturalLocationForRep:(id)a3;
-- (CGPoint)unscaledLocationForICC:(id)a3;
-- (TSWPDummyTapGesture)initWithKind:(id)a3;
+- (CGPoint)boundsLocationForICC:(id)c;
+- (CGPoint)naturalLocationForRep:(id)rep;
+- (CGPoint)unscaledLocationForICC:(id)c;
+- (TSWPDummyTapGesture)initWithKind:(id)kind;
 - (void)dealloc;
 @end
 
 @implementation TSWPDummyTapGesture
 
-- (TSWPDummyTapGesture)initWithKind:(id)a3
+- (TSWPDummyTapGesture)initWithKind:(id)kind
 {
   v7.receiver = self;
   v7.super_class = TSWPDummyTapGesture;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    [(TSWPDummyTapGesture *)v4 setGestureKind:a3];
+    [(TSWPDummyTapGesture *)v4 setGestureKind:kind];
   }
 
   return v5;
@@ -30,7 +30,7 @@
   [(TSWPDummyTapGesture *)&v3 dealloc];
 }
 
-- (CGPoint)unscaledLocationForICC:(id)a3
+- (CGPoint)unscaledLocationForICC:(id)c
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -39,7 +39,7 @@
   return result;
 }
 
-- (CGPoint)boundsLocationForICC:(id)a3
+- (CGPoint)boundsLocationForICC:(id)c
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -48,7 +48,7 @@
   return result;
 }
 
-- (CGPoint)naturalLocationForRep:(id)a3
+- (CGPoint)naturalLocationForRep:(id)rep
 {
   v3 = 0.0;
   v4 = 0.0;

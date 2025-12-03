@@ -2,18 +2,18 @@
 + (id)sharedInstance;
 - (BOOL)shouldShowTransferredPane;
 - (TSTransferFlowModel)init;
-- (TSTransferFlowModel)initWithIsStandaloneProximityTransfer:(BOOL)a3 transferBackPlan:(id)a4;
-- (void)bootstrap:(id)a3 isUsingPreSharedKey:(BOOL)a4 completion:(id)a5;
+- (TSTransferFlowModel)initWithIsStandaloneProximityTransfer:(BOOL)transfer transferBackPlan:(id)plan;
+- (void)bootstrap:(id)bootstrap isUsingPreSharedKey:(BOOL)key completion:(id)completion;
 - (void)clearCarrierSetupItemsCache;
-- (void)establishReconnectionCredentials:(id)a3 completion:(id)a4;
-- (void)filterCarrierSetupItems:(id)a3;
-- (void)filterTransferPlans:(id)a3;
+- (void)establishReconnectionCredentials:(id)credentials completion:(id)completion;
+- (void)filterCarrierSetupItems:(id)items;
+- (void)filterTransferPlans:(id)plans;
 - (void)forceRecheckTransferableAndPendingInstallPlans;
-- (void)getWebsheetInfo:(id)a3 completion:(id)a4;
-- (void)requestCarrierSetups:(id)a3;
-- (void)requestPendingInstallPlans:(id)a3;
-- (void)requestTransferPlans:(id)a3;
-- (void)shouldShowTransferPlans:(id)a3 sourceOSVersion:(id)a4 isPostMigrationFlow:(BOOL)a5 transferItems:(id)a6 completion:(id)a7;
+- (void)getWebsheetInfo:(id)info completion:(id)completion;
+- (void)requestCarrierSetups:(id)setups;
+- (void)requestPendingInstallPlans:(id)plans;
+- (void)requestTransferPlans:(id)plans;
+- (void)shouldShowTransferPlans:(id)plans sourceOSVersion:(id)version isPostMigrationFlow:(BOOL)flow transferItems:(id)items completion:(id)completion;
 @end
 
 @implementation TSTransferFlowModel
@@ -44,39 +44,39 @@ uint64_t __37__TSTransferFlowModel_sharedInstance__block_invoke()
   v2 = [(TSTransferFlowModel *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     transferItems = v2->_transferItems;
-    v2->_transferItems = v3;
+    v2->_transferItems = array;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     transferPlans = v2->_transferPlans;
-    v2->_transferPlans = v5;
+    v2->_transferPlans = array2;
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     requireStoreVisitItems = v2->_requireStoreVisitItems;
-    v2->_requireStoreVisitItems = v7;
+    v2->_requireStoreVisitItems = array3;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storeVisitedMap = v2->_storeVisitedMap;
-    v2->_storeVisitedMap = v9;
+    v2->_storeVisitedMap = dictionary;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     simsetupD2dInfo = v2->_simsetupD2dInfo;
-    v2->_simsetupD2dInfo = v11;
+    v2->_simsetupD2dInfo = dictionary2;
   }
 
   return v2;
 }
 
-- (TSTransferFlowModel)initWithIsStandaloneProximityTransfer:(BOOL)a3 transferBackPlan:(id)a4
+- (TSTransferFlowModel)initWithIsStandaloneProximityTransfer:(BOOL)transfer transferBackPlan:(id)plan
 {
-  v7 = a4;
+  planCopy = plan;
   v8 = [(TSTransferFlowModel *)self init];
   v9 = v8;
   if (v8)
   {
-    v8->_isStandaloneProximityTransfer = a3;
-    objc_storeStrong(&v8->_transferBackPlan, a4);
+    v8->_isStandaloneProximityTransfer = transfer;
+    objc_storeStrong(&v8->_transferBackPlan, plan);
   }
 
   return v9;
@@ -175,12 +175,12 @@ LABEL_18:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)bootstrap:(id)a3 isUsingPreSharedKey:(BOOL)a4 completion:(id)a5
+- (void)bootstrap:(id)bootstrap isUsingPreSharedKey:(BOOL)key completion:(id)completion
 {
   if (!self->_isBootstrapTriggerred)
   {
     self->_isBootstrapTriggerred = 1;
-    if (a4)
+    if (key)
     {
       v7 = 6;
     }
@@ -195,27 +195,27 @@ LABEL_18:
       v7 = 2;
     }
 
-    v8 = a5;
-    v9 = a3;
+    completionCopy = completion;
+    bootstrapCopy = bootstrap;
     v10 = +[TSCoreTelephonyClientCache sharedInstance];
-    [v10 bootstrapPlanTransferUsingMessageSession:v9 flowType:v7 completion:v8];
+    [v10 bootstrapPlanTransferUsingMessageSession:bootstrapCopy flowType:v7 completion:completionCopy];
   }
 }
 
-- (void)filterTransferPlans:(id)a3
+- (void)filterTransferPlans:(id)plans
 {
   v78 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  plansCopy = plans;
   [(NSMutableArray *)self->_transferItems removeAllObjects];
   [(NSMutableArray *)self->_transferPlans removeAllObjects];
-  if (v4)
+  if (plansCopy)
   {
     v63 = 0u;
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v47 = v4;
-    obj = [v4 devices];
+    v47 = plansCopy;
+    obj = [plansCopy devices];
     v50 = [obj countByEnumeratingWithState:&v61 objects:v77 count:16];
     if (v50)
     {
@@ -237,8 +237,8 @@ LABEL_18:
           v59 = 0u;
           v60 = 0u;
           v52 = v6;
-          v7 = [v6 remoteDisplayPlans];
-          v8 = [v7 countByEnumeratingWithState:&v57 objects:v76 count:16];
+          remoteDisplayPlans = [v6 remoteDisplayPlans];
+          v8 = [remoteDisplayPlans countByEnumeratingWithState:&v57 objects:v76 count:16];
           if (v8)
           {
             v9 = v8;
@@ -249,7 +249,7 @@ LABEL_18:
               {
                 if (*v58 != v10)
                 {
-                  objc_enumerationMutation(v7);
+                  objc_enumerationMutation(remoteDisplayPlans);
                 }
 
                 v12 = *(*(&v57 + 1) + 8 * i);
@@ -258,9 +258,9 @@ LABEL_18:
                   [(TSTransferFlowModel *)self setIsActivationPolicyMismatch:1];
                 }
 
-                v13 = [v12 plan];
+                plan = [v12 plan];
 
-                if (!v13)
+                if (!plan)
                 {
                   v26 = _TSLogDomain();
                   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -271,7 +271,7 @@ LABEL_18:
                   goto LABEL_40;
                 }
 
-                v14 = [v12 plan];
+                plan2 = [v12 plan];
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
 
@@ -280,9 +280,9 @@ LABEL_18:
                   v26 = _TSLogDomain();
                   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
                   {
-                    v29 = [v12 plan];
+                    plan3 = [v12 plan];
                     *buf = 138412546;
-                    v67 = v29;
+                    v67 = plan3;
                     v68 = 2080;
                     v69 = "[TSTransferFlowModel filterTransferPlans:]";
                     _os_log_error_impl(&dword_262AA8000, v26, OS_LOG_TYPE_ERROR, "[E]%@ is not a CTRemotePlan @%s", buf, 0x16u);
@@ -294,9 +294,9 @@ LABEL_18:
                 transferBackPlan = self->_transferBackPlan;
                 if (transferBackPlan)
                 {
-                  v17 = [transferBackPlan phoneNumber];
-                  v18 = [v12 phoneNumber];
-                  v19 = [v17 isEqualToPhoneNumber:v18];
+                  phoneNumber = [transferBackPlan phoneNumber];
+                  phoneNumber2 = [v12 phoneNumber];
+                  v19 = [phoneNumber isEqualToPhoneNumber:phoneNumber2];
 
                   if (!v19)
                   {
@@ -306,9 +306,9 @@ LABEL_18:
                   v20 = _TSLogDomain();
                   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
                   {
-                    v21 = [self->_transferBackPlan phoneNumber];
+                    phoneNumber3 = [self->_transferBackPlan phoneNumber];
                     *buf = 138412546;
-                    v67 = v21;
+                    v67 = phoneNumber3;
                     v68 = 2080;
                     v69 = "[TSTransferFlowModel filterTransferPlans:]";
                     _os_log_impl(&dword_262AA8000, v20, OS_LOG_TYPE_DEFAULT, "find plan with same phone number : %@ @%s", buf, 0x16u);
@@ -321,9 +321,9 @@ LABEL_18:
                   transferIneligibleItems = self->_transferIneligibleItems;
                   if (!transferIneligibleItems)
                   {
-                    v23 = [MEMORY[0x277CBEB18] array];
+                    array = [MEMORY[0x277CBEB18] array];
                     v24 = self->_transferIneligibleItems;
-                    self->_transferIneligibleItems = v23;
+                    self->_transferIneligibleItems = array;
 
                     transferIneligibleItems = self->_transferIneligibleItems;
                   }
@@ -351,9 +351,9 @@ LABEL_18:
                     v27 = _TSLogDomain();
                     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
                     {
-                      v28 = [v12 identifier];
+                      identifier = [v12 identifier];
                       *buf = 138412546;
-                      v67 = v28;
+                      v67 = identifier;
                       v68 = 2080;
                       v69 = "[TSTransferFlowModel filterTransferPlans:]";
                       _os_log_impl(&dword_262AA8000, v27, OS_LOG_TYPE_DEFAULT, "user explicitly mentioned he/she has not visited store, plan (%@) is not able to transfer for now. @%s", buf, 0x16u);
@@ -376,7 +376,7 @@ LABEL_39:
 LABEL_40:
               }
 
-              v9 = [v7 countByEnumeratingWithState:&v57 objects:v76 count:16];
+              v9 = [remoteDisplayPlans countByEnumeratingWithState:&v57 objects:v76 count:16];
             }
 
             while (v9);
@@ -406,7 +406,7 @@ LABEL_40:
       _os_log_impl(&dword_262AA8000, v30, OS_LOG_TYPE_DEFAULT, "transfer plans [%lu] : %@ @%s", buf, 0x20u);
     }
 
-    v4 = v47;
+    plansCopy = v47;
     if ([(NSMutableArray *)self->_transferItems count]!= 1)
     {
       goto LABEL_53;
@@ -414,9 +414,9 @@ LABEL_40:
 
     v33 = [(NSMutableArray *)self->_transferItems objectAtIndex:0];
     v34 = [v33 objectForKeyedSubscript:@"planItem"];
-    v35 = [v34 transferCapability];
-    v36 = v35;
-    if (v35 <= 6 && ((1 << v35) & 0x68) != 0)
+    transferCapability = [v34 transferCapability];
+    v36 = transferCapability;
+    if (transferCapability <= 6 && ((1 << transferCapability) & 0x68) != 0)
     {
       self->_showTransferredPane = 1;
     }
@@ -445,8 +445,8 @@ LABEL_53:
             }
 
             v42 = [*(*(&v53 + 1) + 8 * v41) objectForKeyedSubscript:@"planItem"];
-            v43 = [v42 transferCapability];
-            if (v43 > 0x14 || ((1 << v43) & 0x1FF683) == 0 && (v43 != 8 || !+[TSUtilities inBuddy](TSUtilities, "inBuddy")) || self->_isStandaloneProximityTransfer && [v42 isTransferIneligiblePlan])
+            transferCapability2 = [v42 transferCapability];
+            if (transferCapability2 > 0x14 || ((1 << transferCapability2) & 0x1FF683) == 0 && (transferCapability2 != 8 || !+[TSUtilities inBuddy](TSUtilities, "inBuddy")) || self->_isStandaloneProximityTransfer && [v42 isTransferIneligiblePlan])
             {
 
               goto LABEL_74;
@@ -493,8 +493,8 @@ LABEL_74:
 {
   if (self->_showTransferredPane)
   {
-    v3 = [(CTDisplayPlanList *)self->_pendingInstallItems plans];
-    if ([v3 count])
+    plans = [(CTDisplayPlanList *)self->_pendingInstallItems plans];
+    if ([plans count])
     {
       LOBYTE(v4) = 0;
     }
@@ -513,22 +513,22 @@ LABEL_74:
   return v4;
 }
 
-- (void)establishReconnectionCredentials:(id)a3 completion:(id)a4
+- (void)establishReconnectionCredentials:(id)credentials completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  credentialsCopy = credentials;
   v8 = +[TSCoreTelephonyClientCache sharedInstance];
-  v7 = [v8 getCoreTelephonyClient];
-  [v7 establishReconnectionCredentialsUsingMessageSession:v6 completion:v5];
+  getCoreTelephonyClient = [v8 getCoreTelephonyClient];
+  [getCoreTelephonyClient establishReconnectionCredentialsUsingMessageSession:credentialsCopy completion:completionCopy];
 }
 
-- (void)requestTransferPlans:(id)a3
+- (void)requestTransferPlans:(id)plans
 {
-  v4 = a3;
-  v5 = v4;
+  plansCopy = plans;
+  v5 = plansCopy;
   if (self->_areTransferPlansReady)
   {
-    (*(v4 + 2))(v4);
+    (*(plansCopy + 2))(plansCopy);
   }
 
   else
@@ -653,11 +653,11 @@ LABEL_25:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestPendingInstallPlans:(id)a3
+- (void)requestPendingInstallPlans:(id)plans
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  plansCopy = plans;
+  v5 = plansCopy;
   if (self->_hasPendingInstallPlansQueried)
   {
     goto LABEL_4;
@@ -667,7 +667,7 @@ LABEL_25:
   {
     self->_hasPendingInstallPlansQueried = 1;
 LABEL_4:
-    (*(v4 + 2))(v4);
+    (*(plansCopy + 2))(plansCopy);
     goto LABEL_8;
   }
 
@@ -721,23 +721,23 @@ void __50__TSTransferFlowModel_requestPendingInstallPlans___block_invoke(uint64_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)filterCarrierSetupItems:(id)a3
+- (void)filterCarrierSetupItems:(id)items
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  itemsCopy = items;
+  v6 = itemsCopy;
+  if (itemsCopy)
   {
     if (self->_areTransferPlansReady)
     {
-      v7 = [v5 plans];
-      v8 = [v7 count];
+      plans = [itemsCopy plans];
+      v8 = [plans count];
 
       if (v8)
       {
         transferPlans = self->_transferPlans;
-        v10 = [v6 plans];
-        [(NSMutableArray *)transferPlans filteredPlansWithoutSODATether:v10];
+        plans2 = [v6 plans];
+        [(NSMutableArray *)transferPlans filteredPlansWithoutSODATether:plans2];
 
         v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
         if ([TSFlowHelper hasTransferablePlanWithSameCarrierName:v6 transferablePlans:self->_transferItems inBuddy:1 matchingSODACarrierWebsheetTransferPlanIndex:v11])
@@ -747,7 +747,7 @@ void __50__TSTransferFlowModel_requestPendingInstallPlans___block_invoke(uint64_
 
         else
         {
-          objc_storeStrong(&self->_carrierSetupItems, a3);
+          objc_storeStrong(&self->_carrierSetupItems, items);
           v21 = v11;
           v12 = [TSFlowHelper sortIndexesInDescending:v11];
           v22 = 0u;
@@ -768,11 +768,11 @@ void __50__TSTransferFlowModel_requestPendingInstallPlans___block_invoke(uint64_
                   objc_enumerationMutation(v12);
                 }
 
-                v17 = [*(*(&v22 + 1) + 8 * i) unsignedIntegerValue];
+                unsignedIntegerValue = [*(*(&v22 + 1) + 8 * i) unsignedIntegerValue];
                 v18 = _TSLogDomain();
                 if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
                 {
-                  v19 = [(NSMutableArray *)self->_transferItems objectAtIndex:v17];
+                  v19 = [(NSMutableArray *)self->_transferItems objectAtIndex:unsignedIntegerValue];
                   *buf = 138412546;
                   v27 = v19;
                   v28 = 2080;
@@ -780,7 +780,7 @@ void __50__TSTransferFlowModel_requestPendingInstallPlans___block_invoke(uint64_
                   _os_log_impl(&dword_262AA8000, v18, OS_LOG_TYPE_DEFAULT, "Transferrable plan %@ will be removed from the list @%s", buf, 0x16u);
                 }
 
-                [(NSMutableArray *)self->_transferItems removeObjectAtIndex:v17];
+                [(NSMutableArray *)self->_transferItems removeObjectAtIndex:unsignedIntegerValue];
               }
 
               v14 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -803,16 +803,16 @@ void __50__TSTransferFlowModel_requestPendingInstallPlans___block_invoke(uint64_
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getWebsheetInfo:(id)a3 completion:(id)a4
+- (void)getWebsheetInfo:(id)info completion:(id)completion
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  infoCopy = info;
+  completionCopy = completion;
+  if (infoCopy)
   {
     objc_initWeak(location, self);
-    v8 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
-    v9 = [v8 count] > 1;
+    plans = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
+    v9 = [plans count] > 1;
 
     if (v9)
     {
@@ -823,22 +823,22 @@ void __50__TSTransferFlowModel_requestPendingInstallPlans___block_invoke(uint64_
       }
     }
 
-    v18 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
-    v19 = [v18 count] == 0;
+    plans2 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
+    v19 = [plans2 count] == 0;
 
     if (!v19)
     {
       v20 = +[TSCoreTelephonyClientCache sharedInstance];
-      v21 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
-      v22 = [v21 objectAtIndexedSubscript:0];
-      v23 = [v22 plan];
+      plans3 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
+      v22 = [plans3 objectAtIndexedSubscript:0];
+      plan = [v22 plan];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __50__TSTransferFlowModel_getWebsheetInfo_completion___block_invoke;
       v26[3] = &unk_279B45310;
       objc_copyWeak(&v28, location);
-      v27 = v7;
-      [v20 getWebsheetInfoForPlan:v23 inBuddy:1 completion:v26];
+      v27 = completionCopy;
+      [v20 getWebsheetInfoForPlan:plan inBuddy:1 completion:v26];
 
       objc_destroyWeak(&v28);
     }
@@ -856,7 +856,7 @@ void __50__TSTransferFlowModel_requestPendingInstallPlans___block_invoke(uint64_
       _os_log_impl(&dword_262AA8000, v24, OS_LOG_TYPE_DEFAULT, "No carrier setup items @%s", location, 0xCu);
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -886,13 +886,13 @@ void __50__TSTransferFlowModel_getWebsheetInfo_completion___block_invoke(uint64_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)requestCarrierSetups:(id)a3
+- (void)requestCarrierSetups:(id)setups
 {
-  v4 = a3;
-  v5 = v4;
+  setupsCopy = setups;
+  v5 = setupsCopy;
   if (self->_hasCarrierSetupItemsQueried)
   {
-    (*(v4 + 2))(v4);
+    (*(setupsCopy + 2))(setupsCopy);
   }
 
   else
@@ -978,14 +978,14 @@ void __44__TSTransferFlowModel_requestCarrierSetups___block_invoke(uint64_t a1, 
   self->_hasCarrierSetupItemsQueried = 0;
 }
 
-- (void)shouldShowTransferPlans:(id)a3 sourceOSVersion:(id)a4 isPostMigrationFlow:(BOOL)a5 transferItems:(id)a6 completion:(id)a7
+- (void)shouldShowTransferPlans:(id)plans sourceOSVersion:(id)version isPostMigrationFlow:(BOOL)flow transferItems:(id)items completion:(id)completion
 {
-  v9 = a5;
+  flowCopy = flow;
   v44 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  plansCopy = plans;
+  versionCopy = version;
+  itemsCopy = items;
+  completionCopy = completion;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v24 = _TSLogDomain();
@@ -999,26 +999,26 @@ void __44__TSTransferFlowModel_requestCarrierSetups___block_invoke(uint64_t a1, 
     goto LABEL_14;
   }
 
-  v31 = self;
-  v32 = v14;
-  v33 = v13;
-  v16 = v12;
+  selfCopy = self;
+  v32 = itemsCopy;
+  v33 = versionCopy;
+  v16 = plansCopy;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v17 = v14;
+  v17 = itemsCopy;
   v18 = [v17 countByEnumeratingWithState:&v36 objects:buf count:16];
   if (!v18)
   {
 LABEL_10:
 
 LABEL_16:
-    v15[2](v15, 1);
-    v12 = v16;
+    completionCopy[2](completionCopy, 1);
+    plansCopy = v16;
 LABEL_17:
-    v14 = v32;
-    v13 = v33;
+    itemsCopy = v32;
+    versionCopy = v33;
     goto LABEL_18;
   }
 
@@ -1033,10 +1033,10 @@ LABEL_4:
       objc_enumerationMutation(v17);
     }
 
-    v22 = [*(*(&v36 + 1) + 8 * v21) objectForKeyedSubscript:{@"planItem", v31}];
-    v23 = [v22 isTransferablePlan];
+    v22 = [*(*(&v36 + 1) + 8 * v21) objectForKeyedSubscript:{@"planItem", selfCopy}];
+    isTransferablePlan = [v22 isTransferablePlan];
 
-    if (v23)
+    if (isTransferablePlan)
     {
       break;
     }
@@ -1053,30 +1053,30 @@ LABEL_4:
     }
   }
 
-  if (v31->_isStandaloneProximityTransfer)
+  if (selfCopy->_isStandaloneProximityTransfer)
   {
     goto LABEL_16;
   }
 
-  v12 = v16;
-  v14 = v32;
-  v13 = v33;
-  if (v9 || !v33 || [TSUtilities compareProductVersion:v33 toProductVersion:@"26.0"]== -1)
+  plansCopy = v16;
+  itemsCopy = v32;
+  versionCopy = v33;
+  if (flowCopy || !v33 || [TSUtilities compareProductVersion:v33 toProductVersion:@"26.0"]== -1)
   {
 LABEL_14:
-    v15[2](v15, 1);
+    completionCopy[2](completionCopy, 1);
     goto LABEL_18;
   }
 
   v26 = +[TSCoreTelephonyClientCache sharedInstance];
-  v27 = [v26 usingBootstrapDataService];
+  usingBootstrapDataService = [v26 usingBootstrapDataService];
 
   v28 = +[TSUtilities isWifiAvailable];
   v29 = _TSLogDomain();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109634;
-    *v41 = v27;
+    *v41 = usingBootstrapDataService;
     *&v41[4] = 1024;
     *&v41[6] = v28;
     v42 = 2080;
@@ -1084,15 +1084,15 @@ LABEL_14:
     _os_log_impl(&dword_262AA8000, v29, OS_LOG_TYPE_DEFAULT, "Using bootstrap: %d, on wifi:%d @%s", buf, 0x18u);
   }
 
-  if (!v28 && (v27 & 1) != 0)
+  if (!v28 && (usingBootstrapDataService & 1) != 0)
   {
-    v15[2](v15, 1);
+    completionCopy[2](completionCopy, 1);
     goto LABEL_17;
   }
 
   v30 = _TSLogDomain();
-  v14 = v32;
-  v13 = v33;
+  itemsCopy = v32;
+  versionCopy = v33;
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
@@ -1104,8 +1104,8 @@ LABEL_14:
   v34[1] = 3221225472;
   v34[2] = __108__TSTransferFlowModel_shouldShowTransferPlans_sourceOSVersion_isPostMigrationFlow_transferItems_completion___block_invoke;
   v34[3] = &unk_279B44DB8;
-  v35 = v15;
-  [(TSTransferFlowModel *)v31 establishReconnectionCredentials:v16 completion:v34];
+  v35 = completionCopy;
+  [(TSTransferFlowModel *)selfCopy establishReconnectionCredentials:v16 completion:v34];
 
 LABEL_18:
   v25 = *MEMORY[0x277D85DE8];

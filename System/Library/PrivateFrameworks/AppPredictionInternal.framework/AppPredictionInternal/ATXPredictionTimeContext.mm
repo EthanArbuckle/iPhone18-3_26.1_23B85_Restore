@@ -1,29 +1,29 @@
 @interface ATXPredictionTimeContext
-- (ATXPredictionTimeContext)initWithDate:(id)a3;
-- (ATXPredictionTimeContext)initWithProto:(id)a3;
-- (ATXPredictionTimeContext)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXPredictionTimeContext:(id)a3;
+- (ATXPredictionTimeContext)initWithDate:(id)date;
+- (ATXPredictionTimeContext)initWithProto:(id)proto;
+- (ATXPredictionTimeContext)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXPredictionTimeContext:(id)context;
 - (NSDate)date;
 - (id)description;
 - (id)encodeAsProto;
 - (id)jsonDict;
 - (id)proto;
-- (void)setDate:(id)a3;
+- (void)setDate:(id)date;
 @end
 
 @implementation ATXPredictionTimeContext
 
-- (ATXPredictionTimeContext)initWithDate:(id)a3
+- (ATXPredictionTimeContext)initWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v8.receiver = self;
   v8.super_class = ATXPredictionTimeContext;
   v5 = [(ATXPredictionTimeContext *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ATXPredictionTimeContext *)v5 setDate:v4];
+    [(ATXPredictionTimeContext *)v5 setDate:dateCopy];
   }
 
   return v6;
@@ -36,25 +36,25 @@
   return v2;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
   v4 = MEMORY[0x277CBEA80];
-  v5 = a3;
-  v9 = [v4 currentCalendar];
-  v6 = [v9 components:544 fromDate:v5];
-  [v5 timeIntervalSince1970];
+  dateCopy = date;
+  currentCalendar = [v4 currentCalendar];
+  v6 = [currentCalendar components:544 fromDate:dateCopy];
+  [dateCopy timeIntervalSince1970];
   self->_absoluteDate = v7;
   self->_dayOfWeek = [v6 weekday] - 1;
   self->_timeOfDay = [v6 hour];
-  v8 = [v9 isDateInWeekend:v5];
+  v8 = [currentCalendar isDateInWeekend:dateCopy];
 
   self->_dateInWeekend = v8;
 }
 
 - (id)description
 {
-  v2 = [(ATXPredictionTimeContext *)self jsonDict];
-  v3 = [v2 description];
+  jsonDict = [(ATXPredictionTimeContext *)self jsonDict];
+  v3 = [jsonDict description];
 
   return v3;
 }
@@ -64,8 +64,8 @@
   v13[4] = *MEMORY[0x277D85DE8];
   v12[0] = @"date";
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(ATXPredictionTimeContext *)self date];
-  [v4 timeIntervalSinceReferenceDate];
+  date = [(ATXPredictionTimeContext *)self date];
+  [date timeIntervalSinceReferenceDate];
   v5 = [v3 numberWithDouble:?];
   v13[0] = v5;
   v12[1] = @"dayOfWeek";
@@ -84,40 +84,40 @@
   return v9;
 }
 
-- (ATXPredictionTimeContext)initWithProtoData:(id)a3
+- (ATXPredictionTimeContext)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBPredictionTimeContext alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBPredictionTimeContext alloc] initWithData:dataCopy];
 
     self = [(ATXPredictionTimeContext *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXPredictionTimeContext *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXPredictionTimeContext *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXPredictionTimeContext)initWithProto:(id)a3
+- (ATXPredictionTimeContext)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -134,7 +134,7 @@ LABEL_7:
   }
 
   v5 = MEMORY[0x277CBEAA8];
-  v6 = v4;
+  v6 = protoCopy;
   v7 = [v5 alloc];
   [v6 date];
   v9 = v8;
@@ -142,10 +142,10 @@ LABEL_7:
   v10 = [v7 initWithTimeIntervalSince1970:v9];
   self = [(ATXPredictionTimeContext *)self initWithDate:v10];
 
-  v11 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)proto
@@ -156,33 +156,33 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPredictionTimeContext *)self isEqualToATXPredictionTimeContext:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPredictionTimeContext *)self isEqualToATXPredictionTimeContext:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXPredictionTimeContext:(id)a3
+- (BOOL)isEqualToATXPredictionTimeContext:(id)context
 {
-  v4 = a3;
-  v5 = self->_absoluteDate - v4[1];
+  contextCopy = context;
+  v5 = self->_absoluteDate - contextCopy[1];
   if (v5 < 0.0)
   {
     v5 = -v5;
   }
 
-  v6 = v5 <= 2.22044605e-16 && self->_dayOfWeek == *(v4 + 5) && self->_timeOfDay == *(v4 + 6) && self->_dateInWeekend == *(v4 + 16);
+  v6 = v5 <= 2.22044605e-16 && self->_dayOfWeek == *(contextCopy + 5) && self->_timeOfDay == *(contextCopy + 6) && self->_dateInWeekend == *(contextCopy + 16);
 
   return v6;
 }

@@ -1,5 +1,5 @@
 @interface GKHybridStrategist
-- (BOOL)validateGameModel:(id)a3;
+- (BOOL)validateGameModel:(id)model;
 - (BOOL)validateRandomSource;
 - (GKGameModel)gameModel;
 - (GKHybridStrategist)init;
@@ -9,11 +9,11 @@
 - (unint64_t)explorationParameter;
 - (unint64_t)maxLookAheadDepth;
 - (void)dealloc;
-- (void)setBudget:(unint64_t)a3;
-- (void)setExplorationParameter:(unint64_t)a3;
-- (void)setGameModel:(id)a3;
-- (void)setMaxLookAheadDepth:(unint64_t)a3;
-- (void)setRandomSource:(id)a3;
+- (void)setBudget:(unint64_t)budget;
+- (void)setExplorationParameter:(unint64_t)parameter;
+- (void)setGameModel:(id)model;
+- (void)setMaxLookAheadDepth:(unint64_t)depth;
+- (void)setRandomSource:(id)source;
 @end
 
 @implementation GKHybridStrategist
@@ -34,19 +34,19 @@
   return v4;
 }
 
-- (void)setGameModel:(id)a3
+- (void)setGameModel:(id)model
 {
-  v4 = a3;
-  v5 = v4;
+  modelCopy = model;
+  v5 = modelCopy;
   hybridStrategist = self->_hybridStrategist;
   if (hybridStrategist)
   {
-    v10 = v4;
-    if (v4)
+    v10 = modelCopy;
+    if (modelCopy)
     {
-      v4 = [(GKHybridStrategist *)self validateGameModel:v4];
+      modelCopy = [(GKHybridStrategist *)self validateGameModel:modelCopy];
       v5 = v10;
-      if ((v4 & 1) == 0)
+      if ((modelCopy & 1) == 0)
       {
         goto LABEL_7;
       }
@@ -68,7 +68,7 @@
 
 LABEL_7:
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](modelCopy, v5);
 }
 
 - (GKRandom)randomSource
@@ -87,15 +87,15 @@ LABEL_7:
   return v4;
 }
 
-- (void)setRandomSource:(id)a3
+- (void)setRandomSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   hybridStrategist = self->_hybridStrategist;
   if (hybridStrategist)
   {
-    v7 = v5;
-    objc_storeStrong(hybridStrategist + 8, a3);
-    v5 = v7;
+    v7 = sourceCopy;
+    objc_storeStrong(hybridStrategist + 8, source);
+    sourceCopy = v7;
   }
 }
 
@@ -113,12 +113,12 @@ LABEL_7:
   }
 }
 
-- (void)setBudget:(unint64_t)a3
+- (void)setBudget:(unint64_t)budget
 {
   hybridStrategist = self->_hybridStrategist;
   if (hybridStrategist)
   {
-    hybridStrategist[9] = a3;
+    hybridStrategist[9] = budget;
   }
 }
 
@@ -136,12 +136,12 @@ LABEL_7:
   }
 }
 
-- (void)setExplorationParameter:(unint64_t)a3
+- (void)setExplorationParameter:(unint64_t)parameter
 {
   hybridStrategist = self->_hybridStrategist;
   if (hybridStrategist)
   {
-    hybridStrategist[10] = a3;
+    hybridStrategist[10] = parameter;
   }
 }
 
@@ -159,12 +159,12 @@ LABEL_7:
   }
 }
 
-- (void)setMaxLookAheadDepth:(unint64_t)a3
+- (void)setMaxLookAheadDepth:(unint64_t)depth
 {
   hybridStrategist = self->_hybridStrategist;
   if (hybridStrategist)
   {
-    hybridStrategist[11] = a3;
+    hybridStrategist[11] = depth;
   }
 }
 
@@ -194,10 +194,10 @@ LABEL_7:
   [(GKHybridStrategist *)&v4 dealloc];
 }
 
-- (BOOL)validateGameModel:(id)a3
+- (BOOL)validateGameModel:(id)model
 {
-  v3 = a3;
-  if (!v3)
+  modelCopy = model;
+  if (!modelCopy)
   {
     v5 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"No game model set for GKMonteCarloStrategist game model must be set before attempting to find a move" userInfo:0];;
     objc_exception_throw(v5);
@@ -219,9 +219,9 @@ LABEL_7:
 
 - (BOOL)validateRandomSource
 {
-  v2 = [(GKHybridStrategist *)self randomSource];
+  randomSource = [(GKHybridStrategist *)self randomSource];
 
-  if (!v2)
+  if (!randomSource)
   {
     v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"No random source set for GKMonteCarloStrategist random source must be set before attempting to find a move" userInfo:0];;
     objc_exception_throw(v4);
@@ -234,12 +234,12 @@ LABEL_7:
 {
   if (self->_hybridStrategist)
   {
-    v3 = [(GKHybridStrategist *)self gameModel];
-    if ([(GKHybridStrategist *)self validateGameModel:v3])
+    gameModel = [(GKHybridStrategist *)self gameModel];
+    if ([(GKHybridStrategist *)self validateGameModel:gameModel])
     {
-      v4 = [(GKHybridStrategist *)self validateRandomSource];
+      validateRandomSource = [(GKHybridStrategist *)self validateRandomSource];
 
-      if (v4)
+      if (validateRandomSource)
       {
         GKCHybridStrategist::bestMoveForActivePlayer(self->_hybridStrategist);
       }

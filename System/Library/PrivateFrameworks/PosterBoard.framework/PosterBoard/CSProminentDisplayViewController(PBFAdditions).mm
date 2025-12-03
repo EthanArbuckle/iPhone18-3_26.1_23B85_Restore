@@ -16,35 +16,35 @@
 - (void)pbf_updateWithPreview:()PBFAdditions salientContentRectangle:
 {
   v12 = a7;
-  v13 = [v12 posterDescriptorLookupInfo];
-  v28 = [v13 posterDescriptorPath];
+  posterDescriptorLookupInfo = [v12 posterDescriptorLookupInfo];
+  posterDescriptorPath = [posterDescriptorLookupInfo posterDescriptorPath];
 
-  v14 = [v28 role];
-  v15 = [v12 titleStyleConfiguration];
-  v16 = [v12 posterDescriptorLookupInfo];
+  role = [posterDescriptorPath role];
+  titleStyleConfiguration = [v12 titleStyleConfiguration];
+  posterDescriptorLookupInfo2 = [v12 posterDescriptorLookupInfo];
 
-  v17 = [v16 posterDescriptorExtension];
-  v18 = [v17 posterExtensionBundle];
+  posterDescriptorExtension = [posterDescriptorLookupInfo2 posterDescriptorExtension];
+  posterExtensionBundle = [posterDescriptorExtension posterExtensionBundle];
 
-  v19 = [v18 bundleURL];
-  v20 = [v15 vibrancyConfigurationWithExtensionBundle:v18 forRole:v14];
+  bundleURL = [posterExtensionBundle bundleURL];
+  v20 = [titleStyleConfiguration vibrancyConfigurationWithExtensionBundle:posterExtensionBundle forRole:role];
   v21 = [v20 copyWithGroupName:@"PBFPosterAssetViewController"];
 
-  v22 = [v21 groupName];
-  [a1 setGroupName:v22];
+  groupName = [v21 groupName];
+  [self setGroupName:groupName];
 
-  v23 = [v15 timeNumberingSystem];
-  [a1 setNumberingSystem:v23];
-  v24 = [v15 titleContentStyle];
-  [a1 setTitleContentStyle:v24];
+  timeNumberingSystem = [titleStyleConfiguration timeNumberingSystem];
+  [self setNumberingSystem:timeNumberingSystem];
+  titleContentStyle = [titleStyleConfiguration titleContentStyle];
+  [self setTitleContentStyle:titleContentStyle];
 
-  v25 = [v21 alternativeVibrancyEffectLUT];
-  v26 = [v25 lutIdentifier];
-  v27 = [v25 bundleURL];
-  [a1 setAlternativeVibrancyEffectLUTIdentifier:v26 alternativeVibrancyEffectLUTBundleURL:v27 luminanceReduced:0];
+  alternativeVibrancyEffectLUT = [v21 alternativeVibrancyEffectLUT];
+  lutIdentifier = [alternativeVibrancyEffectLUT lutIdentifier];
+  bundleURL2 = [alternativeVibrancyEffectLUT bundleURL];
+  [self setAlternativeVibrancyEffectLUTIdentifier:lutIdentifier alternativeVibrancyEffectLUTBundleURL:bundleURL2 luminanceReduced:0];
 
-  [a1 pr_setAlternateDateEnabled:{objc_msgSend(v15, "isAlternateDateEnabled")}];
-  [a1 pr_setStylingFromTitleStyleConfiguration:v15 salientContentRectangle:v19 withExtensionBundleURL:v14 forRole:{a2, a3, a4, a5}];
+  [self pr_setAlternateDateEnabled:{objc_msgSend(titleStyleConfiguration, "isAlternateDateEnabled")}];
+  [self pr_setStylingFromTitleStyleConfiguration:titleStyleConfiguration salientContentRectangle:bundleURL withExtensionBundleURL:role forRole:{a2, a3, a4, a5}];
 }
 
 @end

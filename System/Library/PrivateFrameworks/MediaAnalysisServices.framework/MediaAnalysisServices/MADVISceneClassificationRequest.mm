@@ -1,8 +1,8 @@
 @interface MADVISceneClassificationRequest
 - (MADVISceneClassificationRequest)init;
-- (MADVISceneClassificationRequest)initWithCoder:(id)a3;
+- (MADVISceneClassificationRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVISceneClassificationRequest
@@ -26,62 +26,62 @@
   return result;
 }
 
-- (MADVISceneClassificationRequest)initWithCoder:(id)a3
+- (MADVISceneClassificationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MADVISceneClassificationRequest;
-  v5 = [(MADRequest *)&v7 initWithCoder:v4];
+  v5 = [(MADRequest *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_maximumLeafObservations = [v4 decodeIntegerForKey:@"MaximumLeafObservations"];
-    v5->_maximumHierarchicalObservations = [v4 decodeIntegerForKey:@"MaximumHierarchicalObservations"];
-    v5->_classificationRevision = [v4 decodeIntegerForKey:@"ClassificationRevision"];
-    v5->_nsfwRevision = [v4 decodeIntegerForKey:@"NSFWRevision"];
-    v5->_significantEventRevision = [v4 decodeIntegerForKey:@"SignificantEventRevision"];
-    v5->_recognizeObjectsRevision = [v4 decodeIntegerForKey:@"RecognizeObjectsRevision"];
-    v5->_saliencyRevision = [v4 decodeIntegerForKey:@"SaliencyRevision"];
+    v5->_maximumLeafObservations = [coderCopy decodeIntegerForKey:@"MaximumLeafObservations"];
+    v5->_maximumHierarchicalObservations = [coderCopy decodeIntegerForKey:@"MaximumHierarchicalObservations"];
+    v5->_classificationRevision = [coderCopy decodeIntegerForKey:@"ClassificationRevision"];
+    v5->_nsfwRevision = [coderCopy decodeIntegerForKey:@"NSFWRevision"];
+    v5->_significantEventRevision = [coderCopy decodeIntegerForKey:@"SignificantEventRevision"];
+    v5->_recognizeObjectsRevision = [coderCopy decodeIntegerForKey:@"RecognizeObjectsRevision"];
+    v5->_saliencyRevision = [coderCopy decodeIntegerForKey:@"SaliencyRevision"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MADVISceneClassificationRequest;
-  v4 = a3;
-  [(MADRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_maximumLeafObservations forKey:{@"MaximumLeafObservations", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_maximumHierarchicalObservations forKey:@"MaximumHierarchicalObservations"];
-  [v4 encodeInteger:self->_classificationRevision forKey:@"ClassificationRevision"];
-  [v4 encodeInteger:self->_nsfwRevision forKey:@"NSFWRevision"];
-  [v4 encodeInteger:self->_significantEventRevision forKey:@"SignificantEventRevision"];
-  [v4 encodeInteger:self->_recognizeObjectsRevision forKey:@"RecognizeObjectsRevision"];
-  [v4 encodeInteger:self->_saliencyRevision forKey:@"SaliencyRevision"];
+  coderCopy = coder;
+  [(MADRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_maximumLeafObservations forKey:{@"MaximumLeafObservations", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_maximumHierarchicalObservations forKey:@"MaximumHierarchicalObservations"];
+  [coderCopy encodeInteger:self->_classificationRevision forKey:@"ClassificationRevision"];
+  [coderCopy encodeInteger:self->_nsfwRevision forKey:@"NSFWRevision"];
+  [coderCopy encodeInteger:self->_significantEventRevision forKey:@"SignificantEventRevision"];
+  [coderCopy encodeInteger:self->_recognizeObjectsRevision forKey:@"RecognizeObjectsRevision"];
+  [coderCopy encodeInteger:self->_saliencyRevision forKey:@"SaliencyRevision"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"classificationRevision: %lu, ", self->_classificationRevision];
-  [v3 appendFormat:@"maximumLeafObservations: %lu, ", self->_maximumLeafObservations];
-  [v3 appendFormat:@"maximumHierarchicalObservations: %lu, ", self->_maximumHierarchicalObservations];
-  [v3 appendFormat:@"nsfwRevision: %lu, ", self->_nsfwRevision];
-  [v3 appendFormat:@"significantEventRevision: %lu, ", self->_significantEventRevision];
-  [v3 appendFormat:@"recognizeObjectsRevision: %lu, ", self->_recognizeObjectsRevision];
-  [v3 appendFormat:@"saliencyRevision: %lu, ", self->_saliencyRevision];
-  v6 = [(MADRequest *)self results];
-  [v3 appendFormat:@"results: %@, ", v6];
+  [string appendFormat:@"classificationRevision: %lu, ", self->_classificationRevision];
+  [string appendFormat:@"maximumLeafObservations: %lu, ", self->_maximumLeafObservations];
+  [string appendFormat:@"maximumHierarchicalObservations: %lu, ", self->_maximumHierarchicalObservations];
+  [string appendFormat:@"nsfwRevision: %lu, ", self->_nsfwRevision];
+  [string appendFormat:@"significantEventRevision: %lu, ", self->_significantEventRevision];
+  [string appendFormat:@"recognizeObjectsRevision: %lu, ", self->_recognizeObjectsRevision];
+  [string appendFormat:@"saliencyRevision: %lu, ", self->_saliencyRevision];
+  results = [(MADRequest *)self results];
+  [string appendFormat:@"results: %@, ", results];
 
-  v7 = [(MADRequest *)self error];
-  [v3 appendFormat:@"error: %@>", v7];
+  error = [(MADRequest *)self error];
+  [string appendFormat:@"error: %@>", error];
 
-  return v3;
+  return string;
 }
 
 @end

@@ -43,7 +43,7 @@
 + (uint64_t)ane_addWriteModeForPath:()ANE
 {
   v5 = a3;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   memset(&v20, 0, sizeof(v20));
   if (stat([v5 fileSystemRepresentation], &v20) == -1)
   {
@@ -58,31 +58,31 @@
 
   else
   {
-    v7 = [a1 ane_addWriteModeIfMissing:v5 originalMode:v20.st_mode];
+    v7 = [self ane_addWriteModeIfMissing:v5 originalMode:v20.st_mode];
   }
 
-  v19 = v6;
-  v9 = [v6 enumeratorAtPath:v5];
-  v10 = [v9 nextObject];
-  if (v10)
+  v19 = defaultManager;
+  v9 = [defaultManager enumeratorAtPath:v5];
+  nextObject = [v9 nextObject];
+  if (nextObject)
   {
-    v11 = v10;
+    v11 = nextObject;
     v12 = *MEMORY[0x1E696A370];
     do
     {
       v13 = objc_autoreleasePoolPush();
       v14 = [v5 stringByAppendingPathComponent:v11];
-      v15 = [v9 fileAttributes];
-      v16 = [v15 objectForKeyedSubscript:v12];
+      fileAttributes = [v9 fileAttributes];
+      v16 = [fileAttributes objectForKeyedSubscript:v12];
 
-      v7 = [a1 ane_addWriteModeIfMissing:v14 originalMode:{objc_msgSend(v16, "unsignedShortValue")}] & v7;
+      v7 = [self ane_addWriteModeIfMissing:v14 originalMode:{objc_msgSend(v16, "unsignedShortValue")}] & v7;
       objc_autoreleasePoolPop(v13);
-      v17 = [v9 nextObject];
+      nextObject2 = [v9 nextObject];
 
-      v11 = v17;
+      v11 = nextObject2;
     }
 
-    while (v17);
+    while (nextObject2);
   }
 
   return v7;

@@ -1,16 +1,16 @@
 @interface IntelligencePlatformComputeServiceXPC.ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtCC34IntelligencePlatformComputeService37IntelligencePlatformComputeServiceXPC15ServiceDelegate)init;
 @end
 
 @implementation IntelligencePlatformComputeServiceXPC.ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10000D32C(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_10000D32C(connectionCopy);
 
   return v9 & 1;
 }

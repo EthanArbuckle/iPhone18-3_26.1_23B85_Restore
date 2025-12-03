@@ -3,11 +3,11 @@
 - (CSLUICalendarIconSource)init;
 - (UIImage)calendarIcon;
 - (id)_calendarOverrideDate;
-- (id)_generateCalendarIconForShape:(unint64_t)a3;
+- (id)_generateCalendarIconForShape:(unint64_t)shape;
 - (id)preparedISIcon;
-- (void)_notifyObserversWithIcon:(id)a3 circularIcon:(id)a4;
-- (void)_timeOrLocaleChanged:(id)a3;
-- (void)_updateCalendarIcon:(BOOL)a3;
+- (void)_notifyObserversWithIcon:(id)icon circularIcon:(id)circularIcon;
+- (void)_timeOrLocaleChanged:(id)changed;
+- (void)_updateCalendarIcon:(BOOL)icon;
 - (void)dealloc;
 @end
 
@@ -63,7 +63,7 @@
   [(CSLUICalendarIconSource *)&v4 dealloc];
 }
 
-- (void)_timeOrLocaleChanged:(id)a3
+- (void)_timeOrLocaleChanged:(id)changed
 {
   v4 = dispatch_get_global_queue(17, 0);
   block[0] = _NSConcreteStackBlock;
@@ -74,20 +74,20 @@
   dispatch_async(v4, block);
 }
 
-- (void)_notifyObserversWithIcon:(id)a3 circularIcon:(id)a4
+- (void)_notifyObserversWithIcon:(id)icon circularIcon:(id)circularIcon
 {
-  v6 = a3;
-  v7 = a4;
+  iconCopy = icon;
+  circularIconCopy = circularIcon;
   observers = self->_observers;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_A478;
   v11[3] = &unk_38BB8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = iconCopy;
+  v13 = circularIconCopy;
+  v9 = circularIconCopy;
+  v10 = iconCopy;
   [(CSLPRFConcurrentObserverStore *)observers enumerateObserversWithBlock:v11];
 }
 
@@ -112,23 +112,23 @@
   return v3;
 }
 
-- (void)_updateCalendarIcon:(BOOL)a3
+- (void)_updateCalendarIcon:(BOOL)icon
 {
-  v3 = a3;
+  iconCopy = icon;
   obj = [(CSLUICalendarIconSource *)self _generateCalendarIconForShape:1];
   os_unfair_lock_lock(&self->_lock);
   objc_storeStrong(&self->_squareCalendarIcon, obj);
   os_unfair_lock_unlock(&self->_lock);
-  if (v3)
+  if (iconCopy)
   {
     [(CSLUICalendarIconSource *)self _notifyObserversWithIcon:obj circularIcon:0];
   }
 }
 
-- (id)_generateCalendarIconForShape:(unint64_t)a3
+- (id)_generateCalendarIconForShape:(unint64_t)shape
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [(CSLUICalendarIconSource *)self preparedISIcon];
+  preparedISIcon = [(CSLUICalendarIconSource *)self preparedISIcon];
   +[CSLUILayoutIconView defaultDiameter];
   v8 = v7;
   v9 = [ISImageDescriptor alloc];
@@ -136,11 +136,11 @@
   [v10 scale];
   v12 = [v9 initWithSize:v8 scale:{v8, v11}];
 
-  [v12 setShape:a3];
-  v13 = [v6 prepareImageForDescriptor:v12];
-  v14 = [v13 CGImage];
+  [v12 setShape:shape];
+  v13 = [preparedISIcon prepareImageForDescriptor:v12];
+  cGImage = [v13 CGImage];
   [v13 scale];
-  v15 = [UIImage imageWithCGImage:v14 scale:0 orientation:?];
+  v15 = [UIImage imageWithCGImage:cGImage scale:0 orientation:?];
 
   objc_autoreleasePoolPop(v5);
 
@@ -150,11 +150,11 @@
 - (id)preparedISIcon
 {
   v3 = +[NSCalendar currentCalendar];
-  v4 = [(CSLUICalendarIconSource *)self _calendarOverrideDate];
-  v5 = v4;
-  if (v4)
+  _calendarOverrideDate = [(CSLUICalendarIconSource *)self _calendarOverrideDate];
+  v5 = _calendarOverrideDate;
+  if (_calendarOverrideDate)
   {
-    v6 = v4;
+    v6 = _calendarOverrideDate;
   }
 
   else

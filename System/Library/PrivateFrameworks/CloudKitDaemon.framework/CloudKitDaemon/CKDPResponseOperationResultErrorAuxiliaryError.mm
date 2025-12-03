@@ -1,33 +1,33 @@
 @interface CKDPResponseOperationResultErrorAuxiliaryError
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addUserInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addUserInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPResponseOperationResultErrorAuxiliaryError
 
-- (void)addUserInfo:(id)a3
+- (void)addUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   userInfos = self->_userInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!userInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_userInfos;
     self->_userInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     userInfos = self->_userInfos;
   }
 
-  objc_msgSend_addObject_(userInfos, v4, v4);
+  objc_msgSend_addObject_(userInfos, infoCopy, infoCopy);
 }
 
 - (id)description
@@ -101,10 +101,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_domain)
   {
     PBDataWriterWriteStringField();
@@ -151,21 +151,21 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   domain = self->_domain;
-  v17 = v4;
+  v17 = toCopy;
   if (domain)
   {
-    objc_msgSend_setDomain_(v4, v5, domain);
-    v4 = v17;
+    objc_msgSend_setDomain_(toCopy, v5, domain);
+    toCopy = v17;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = self->_code;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 2) = self->_code;
+    *(toCopy + 32) |= 1u;
   }
 
   if (objc_msgSend_userInfosCount(self, v5, domain))
@@ -184,13 +184,13 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_domain, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_domain, v11, zone);
   v13 = *(v10 + 16);
   *(v10 + 16) = v12;
 
@@ -220,7 +220,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v21 = objc_msgSend_copyWithZone_(*(*(&v25 + 1) + 8 * v20), v17, a3, v25);
+        v21 = objc_msgSend_copyWithZone_(*(*(&v25 + 1) + 8 * v20), v17, zone, v25);
         objc_msgSend_addUserInfo_(v10, v22, v21);
 
         ++v20;
@@ -237,17 +237,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_11;
   }
 
   domain = self->_domain;
-  v9 = v4[2];
+  v9 = equalCopy[2];
   if (domain | v9)
   {
     if (!objc_msgSend_isEqual_(domain, v7, v9))
@@ -256,16 +256,16 @@
     }
   }
 
-  v10 = *(v4 + 32);
+  v10 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((v4[4] & 1) == 0 || self->_code != *(v4 + 2))
+    if ((equalCopy[4] & 1) == 0 || self->_code != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
   }
 
-  else if (v4[4])
+  else if (equalCopy[4])
   {
 LABEL_11:
     isEqual = 0;
@@ -273,7 +273,7 @@ LABEL_11:
   }
 
   userInfos = self->_userInfos;
-  v12 = v4[3];
+  v12 = equalCopy[3];
   if (userInfos | v12)
   {
     isEqual = objc_msgSend_isEqual_(userInfos, v7, v12);
@@ -305,19 +305,19 @@ LABEL_12:
   return v7 ^ v4 ^ objc_msgSend_hash(self->_userInfos, v5, v6);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = *(v5 + 2);
+  fromCopy = from;
+  v6 = *(fromCopy + 2);
   if (v6)
   {
     objc_msgSend_setDomain_(self, v4, v6);
   }
 
-  if (*(v5 + 32))
+  if (*(fromCopy + 32))
   {
-    self->_code = *(v5 + 2);
+    self->_code = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
@@ -325,7 +325,7 @@ LABEL_12:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = *(v5 + 3);
+  v7 = *(fromCopy + 3);
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v15, v19, 16);
   if (v9)
   {

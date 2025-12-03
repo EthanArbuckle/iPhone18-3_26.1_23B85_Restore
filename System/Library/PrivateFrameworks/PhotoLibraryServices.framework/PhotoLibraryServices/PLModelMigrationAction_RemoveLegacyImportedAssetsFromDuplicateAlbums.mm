@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_RemoveLegacyImportedAssetsFromDuplicateAlbums
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RemoveLegacyImportedAssetsFromDuplicateAlbums
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = +[PLManagedAsset fetchRequest];
   v8 = MEMORY[0x1E696AB28];
   v9 = [MEMORY[0x1E69BF328] predicateForIncludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForFinderSyncedAsset"), 0}];
@@ -23,7 +23,7 @@
   [v7 setRelationshipKeyPathsForPrefetching:v13];
 
   [v7 setFetchBatchSize:100];
-  v14 = [PLModelMigrationActionUtility removeFromDuplicatesWithAction:self managedObjectContext:v6 fetchRequest:v7 requiresLibraryReprocessing:0 error:a4];
+  v14 = [PLModelMigrationActionUtility removeFromDuplicatesWithAction:self managedObjectContext:contextCopy fetchRequest:v7 requiresLibraryReprocessing:0 error:error];
 
   [(PLModelMigrationActionCore *)self finalizeProgress];
   return v14;

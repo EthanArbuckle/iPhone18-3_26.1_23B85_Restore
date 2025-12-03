@@ -1,11 +1,11 @@
 @interface CTLazuliChatBotMenuL0Content
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliChatBotMenuL0Content:(id)a3;
-- (CTLazuliChatBotMenuL0Content)initWithCoder:(id)a3;
-- (CTLazuliChatBotMenuL0Content)initWithReflection:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliChatBotMenuL0Content:(id)content;
+- (CTLazuliChatBotMenuL0Content)initWithCoder:(id)coder;
+- (CTLazuliChatBotMenuL0Content)initWithReflection:(const void *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTLazuliChatBotMenuL0Content
@@ -13,9 +13,9 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(CTLazuliChatBotMenuL0Content *)self type];
-  v7 = [(CTLazuliChatBotMenuL0Content *)self type];
-  [v3 appendFormat:@", type = [%ld - %s]", v4, print_CTLazuliMenuL0ContentType(&v7)];
+  type = [(CTLazuliChatBotMenuL0Content *)self type];
+  type2 = [(CTLazuliChatBotMenuL0Content *)self type];
+  [v3 appendFormat:@", type = [%ld - %s]", type, print_CTLazuliMenuL0ContentType(&type2)];
   item = self->_item;
   [v3 appendFormat:@", item {%@} = %@", objc_opt_class(), item];
   [v3 appendString:@">"];
@@ -23,31 +23,31 @@
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliChatBotMenuL0Content:(id)a3
+- (BOOL)isEqualToCTLazuliChatBotMenuL0Content:(id)content
 {
-  v4 = a3;
-  v5 = [(CTLazuliChatBotMenuL0Content *)self type];
-  if (v5 == [v4 type])
+  contentCopy = content;
+  type = [(CTLazuliChatBotMenuL0Content *)self type];
+  if (type == [contentCopy type])
   {
-    v6 = [(CTLazuliChatBotMenuL0Content *)self type];
-    if (v6 == 1)
+    type2 = [(CTLazuliChatBotMenuL0Content *)self type];
+    if (type2 == 1)
     {
-      v7 = [v4 item];
-      v8 = [(CTLazuliChatBotMenuL0Content *)self item];
-      v9 = [v7 isEqualToCTLazuliChatBotMenuL1:v8];
+      item = [contentCopy item];
+      item2 = [(CTLazuliChatBotMenuL0Content *)self item];
+      v9 = [item isEqualToCTLazuliChatBotMenuL1:item2];
     }
 
     else
     {
-      if (v6)
+      if (type2)
       {
         v10 = 1;
         goto LABEL_9;
       }
 
-      v7 = [v4 item];
-      v8 = [(CTLazuliChatBotMenuL0Content *)self item];
-      v9 = [v7 isEqualToCTLazuliChatBotSuggestedChip:v8];
+      item = [contentCopy item];
+      item2 = [(CTLazuliChatBotMenuL0Content *)self item];
+      v9 = [item isEqualToCTLazuliChatBotSuggestedChip:item2];
     }
 
     v10 = v9;
@@ -63,58 +63,58 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotMenuL0Content *)self isEqualToCTLazuliChatBotMenuL0Content:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotMenuL0Content *)self isEqualToCTLazuliChatBotMenuL0Content:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CTLazuliChatBotMenuL0Content allocWithZone:?];
   [(CTLazuliChatBotMenuL0Content *)v5 setType:self->_type];
-  v6 = [self->_item copyWithZone:a3];
+  v6 = [self->_item copyWithZone:zone];
   [(CTLazuliChatBotMenuL0Content *)v5 setItem:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E696AD98] numberWithLong:self->_type];
-  [v5 encodeObject:v4 forKey:@"kTypeKey"];
+  [coderCopy encodeObject:v4 forKey:@"kTypeKey"];
 
-  [v5 encodeObject:self->_item forKey:@"kItemKey"];
+  [coderCopy encodeObject:self->_item forKey:@"kItemKey"];
 }
 
-- (CTLazuliChatBotMenuL0Content)initWithCoder:(id)a3
+- (CTLazuliChatBotMenuL0Content)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CTLazuliChatBotMenuL0Content;
   v5 = [(CTLazuliChatBotMenuL0Content *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kTypeKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kTypeKey"];
     v5->_type = [v6 longValue];
 
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"kItemKey"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"kItemKey"];
     item = v5->_item;
     v5->_item = v11;
   }
@@ -122,7 +122,7 @@ LABEL_9:
   return v5;
 }
 
-- (CTLazuliChatBotMenuL0Content)initWithReflection:(const void *)a3
+- (CTLazuliChatBotMenuL0Content)initWithReflection:(const void *)reflection
 {
   v29 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
@@ -130,26 +130,26 @@ LABEL_9:
   v4 = [(CTLazuliChatBotMenuL0Content *)&v13 init];
   if (v4)
   {
-    v4->_type = encode_CTLazuliGroupChatParticipantRoleType(a3);
-    v5 = *(a3 + 60);
+    v4->_type = encode_CTLazuliGroupChatParticipantRoleType(reflection);
+    v5 = *(reflection + 60);
     if (v5 == 1)
     {
       v16 = 0u;
       memset(v15, 0, sizeof(v15));
-      if (*(a3 + 31) < 0)
+      if (*(reflection + 31) < 0)
       {
-        std::string::__init_copy_ctor_external(v15, *(a3 + 1), *(a3 + 2));
+        std::string::__init_copy_ctor_external(v15, *(reflection + 1), *(reflection + 2));
       }
 
       else
       {
-        *v15 = *(a3 + 8);
-        *&v15[16] = *(a3 + 3);
+        *v15 = *(reflection + 8);
+        *&v15[16] = *(reflection + 3);
       }
 
       *&v15[24] = 0;
       v16 = 0uLL;
-      std::vector<Lazuli::ChatBotMenuL1Content>::__init_with_size[abi:nn200100]<Lazuli::ChatBotMenuL1Content*,Lazuli::ChatBotMenuL1Content*>(&v15[24], *(a3 + 4), *(a3 + 5), 0xEF7BDEF7BDEF7BDFLL * ((*(a3 + 5) - *(a3 + 4)) >> 3));
+      std::vector<Lazuli::ChatBotMenuL1Content>::__init_with_size[abi:nn200100]<Lazuli::ChatBotMenuL1Content*,Lazuli::ChatBotMenuL1Content*>(&v15[24], *(reflection + 4), *(reflection + 5), 0xEF7BDEF7BDEF7BDFLL * ((*(reflection + 5) - *(reflection + 4)) >> 3));
       v9 = [[CTLazuliChatBotMenuL1 alloc] initWithReflection:v15];
       item = v4->_item;
       v4->_item = v9;
@@ -177,10 +177,10 @@ LABEL_9:
       v17 = 0u;
       v18 = 0u;
       v16 = 0u;
-      v6 = *(a3 + 2);
+      v6 = *(reflection + 2);
       memset(v15, 0, sizeof(v15));
       *v15 = v6;
-      std::__variant_detail::__copy_constructor<std::__variant_detail::__traits<Lazuli::ChatBotSuggestedAction,Lazuli::ChatBotSuggestedReply>,(std::__variant_detail::_Trait)1>::__copy_constructor[abi:nn200100](&v15[8], a3 + 16);
+      std::__variant_detail::__copy_constructor<std::__variant_detail::__traits<Lazuli::ChatBotSuggestedAction,Lazuli::ChatBotSuggestedReply>,(std::__variant_detail::_Trait)1>::__copy_constructor[abi:nn200100](&v15[8], reflection + 16);
       v7 = [[CTLazuliChatBotSuggestedChip alloc] initWithReflection:v15];
       v8 = v4->_item;
       v4->_item = v7;

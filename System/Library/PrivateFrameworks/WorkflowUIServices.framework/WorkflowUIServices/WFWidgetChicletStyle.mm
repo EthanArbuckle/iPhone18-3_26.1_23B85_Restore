@@ -1,6 +1,6 @@
 @interface WFWidgetChicletStyle
-+ (id)fallbackWidgetStyleWithAction:(id)a3;
-+ (id)widgetStyleWithAction:(id)a3;
++ (id)fallbackWidgetStyleWithAction:(id)action;
++ (id)widgetStyleWithAction:(id)action;
 - (BOOL)needsSheenView;
 - (NSString)foregroundCompositingFilter;
 - (WFColor)foregroundColor;
@@ -11,17 +11,17 @@
 
 @implementation WFWidgetChicletStyle
 
-+ (id)widgetStyleWithAction:(id)a3
++ (id)widgetStyleWithAction:(id)action
 {
-  v3 = a3;
-  v4 = sub_1C83C81C4(v3);
+  actionCopy = action;
+  v4 = sub_1C83C81C4(actionCopy);
 
   return v4;
 }
 
 - (double)foregroundOpacity
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C83C83C8();
 
   return v3;
@@ -29,7 +29,7 @@
 
 - (double)foregroundSaturation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C83C84A8();
 
   return v3;
@@ -37,7 +37,7 @@
 
 - (WFColor)foregroundColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C83C8590();
 
   return v3;
@@ -45,7 +45,7 @@
 
 - (NSString)foregroundCompositingFilter
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C83C8678();
 
   return v3;
@@ -53,7 +53,7 @@
 
 - (WFGradient)baseGradient
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C83C88E4();
 
   return v3;
@@ -61,16 +61,16 @@
 
 - (BOOL)needsSheenView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C83C8974();
 
   return v3 & 1;
 }
 
-+ (id)fallbackWidgetStyleWithAction:(id)a3
++ (id)fallbackWidgetStyleWithAction:(id)action
 {
-  v3 = a3;
-  sub_1C83C89D4(v3);
+  actionCopy = action;
+  sub_1C83C89D4(actionCopy);
   v5 = v4;
 
   return v5;

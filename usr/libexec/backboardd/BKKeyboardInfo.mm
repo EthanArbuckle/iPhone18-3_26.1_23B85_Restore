@@ -1,19 +1,19 @@
 @interface BKKeyboardInfo
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)dealloc;
 @end
 
 @implementation BKKeyboardInfo
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100075BEC;
   v5[3] = &unk_1000FD128;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  formatterCopy = formatter;
+  selfCopy = self;
+  v4 = formatterCopy;
   [v4 appendProem:self block:v5];
 }
 

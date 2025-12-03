@@ -1,8 +1,8 @@
 @interface BKLibraryAccessibility
 + (id)bkaxdefaultManager;
 - (id)_bkaxUiChildContext;
-- (id)bkaxLibraryAssetOnMainQueueWithAssetID:(id)a3;
-- (unint64_t)bkaxCountOfSeriesLibraryAssetsWithSeriesID:(id)a3 total:(unint64_t *)a4;
+- (id)bkaxLibraryAssetOnMainQueueWithAssetID:(id)d;
+- (unint64_t)bkaxCountOfSeriesLibraryAssetsWithSeriesID:(id)d total:(unint64_t *)total;
 @end
 
 @implementation BKLibraryAccessibility
@@ -26,7 +26,7 @@
   return v2;
 }
 
-- (id)bkaxLibraryAssetOnMainQueueWithAssetID:(id)a3
+- (id)bkaxLibraryAssetOnMainQueueWithAssetID:(id)d
 {
   v6 = 0;
   v7 = &v6;
@@ -34,7 +34,7 @@
   v9 = sub_100027440;
   v10 = sub_100027658;
   v11 = 0;
-  v3 = a3;
+  dCopy = d;
   if (__IMAccessibilityPerformSafeBlock())
   {
     abort();
@@ -46,7 +46,7 @@
   return v4;
 }
 
-- (unint64_t)bkaxCountOfSeriesLibraryAssetsWithSeriesID:(id)a3 total:(unint64_t *)a4
+- (unint64_t)bkaxCountOfSeriesLibraryAssetsWithSeriesID:(id)d total:(unint64_t *)total
 {
   v12 = 0;
   v13 = &v12;
@@ -56,15 +56,15 @@
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = a3;
+  dCopy = d;
   if (__IMAccessibilityPerformSafeBlock())
   {
     abort();
   }
 
-  if (a4)
+  if (total)
   {
-    *a4 = v13[3];
+    *total = v13[3];
   }
 
   v6 = v9[3];

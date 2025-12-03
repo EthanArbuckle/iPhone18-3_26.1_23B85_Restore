@@ -1,23 +1,23 @@
 @interface IKTemplateTreeNode
-- (IKTemplateTreeNode)initWithNodeName:(id)a3 styleOverrides:(id)a4 parentNode:(id)a5;
+- (IKTemplateTreeNode)initWithNodeName:(id)name styleOverrides:(id)overrides parentNode:(id)node;
 - (IKTemplateTreeNode)parentNode;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setChildNodes:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setChildNodes:(id)nodes;
 @end
 
 @implementation IKTemplateTreeNode
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(IKTemplateTreeNode *)self nodeName];
-  v6 = [(IKTemplateTreeNode *)self styleOverrides];
-  v7 = [v4 initWithNodeName:v5 styleOverrides:v6 parentNode:0];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  nodeName = [(IKTemplateTreeNode *)self nodeName];
+  styleOverrides = [(IKTemplateTreeNode *)self styleOverrides];
+  v7 = [v4 initWithNodeName:nodeName styleOverrides:styleOverrides parentNode:0];
 
   v8 = MEMORY[0x277CBEB38];
-  v9 = [(IKTemplateTreeNode *)self childNodes];
-  v10 = [v8 dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
+  childNodes = [(IKTemplateTreeNode *)self childNodes];
+  v10 = [v8 dictionaryWithCapacity:{objc_msgSend(childNodes, "count")}];
 
   v24 = 0u;
   v25 = 0u;
@@ -40,8 +40,8 @@
         }
 
         v15 = *(*(&v22 + 1) + 8 * v14);
-        v16 = [(IKTemplateTreeNode *)self childNodes];
-        v17 = [v16 objectForKey:v15];
+        childNodes2 = [(IKTemplateTreeNode *)self childNodes];
+        v17 = [childNodes2 objectForKey:v15];
         v18 = [v17 copy];
 
         objc_storeWeak(v18 + 1, v7);
@@ -64,34 +64,34 @@
   return v7;
 }
 
-- (IKTemplateTreeNode)initWithNodeName:(id)a3 styleOverrides:(id)a4 parentNode:(id)a5
+- (IKTemplateTreeNode)initWithNodeName:(id)name styleOverrides:(id)overrides parentNode:(id)node
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  overridesCopy = overrides;
+  nodeCopy = node;
   v15.receiver = self;
   v15.super_class = IKTemplateTreeNode;
   v11 = [(IKTemplateTreeNode *)&v15 init];
   if (v11)
   {
-    v12 = [v8 ik_sharedInstance];
+    ik_sharedInstance = [nameCopy ik_sharedInstance];
     nodeName = v11->_nodeName;
-    v11->_nodeName = v12;
+    v11->_nodeName = ik_sharedInstance;
 
-    objc_storeStrong(&v11->_styleOverrides, a4);
-    objc_storeWeak(&v11->_parentNode, v10);
+    objc_storeStrong(&v11->_styleOverrides, overrides);
+    objc_storeWeak(&v11->_parentNode, nodeCopy);
   }
 
   return v11;
 }
 
-- (void)setChildNodes:(id)a3
+- (void)setChildNodes:(id)nodes
 {
-  v6 = a3;
-  v4 = [v6 count];
+  nodesCopy = nodes;
+  v4 = [nodesCopy count];
   if (v4)
   {
-    v4 = [v6 copy];
+    v4 = [nodesCopy copy];
   }
 
   childNodes = self->_childNodes;

@@ -1,17 +1,17 @@
 @interface CannedEncodedVideoCapture
-- (CannedEncodedVideoCapture)initWithPath:(id)a3 shouldScaleAndPad:(BOOL)a4;
-- (__CVBuffer)createPixelBufferForFrameIndex:(int)a3;
+- (CannedEncodedVideoCapture)initWithPath:(id)path shouldScaleAndPad:(BOOL)pad;
+- (__CVBuffer)createPixelBufferForFrameIndex:(int)index;
 - (int)finalizeVideoCapture;
 - (int)initialize;
 - (int)initializeAssetReader;
 - (int)loadCannedMediaAssets;
-- (int)loadMetadataTrackFromList:(id)a3 error:(id)a4;
-- (int)loadVideoTrackFromList:(id)a3 error:(id)a4;
-- (int)setWidth:(int)a3 height:(int)a4;
-- (void)attachMetadataToPixelBuffer:(__CVBuffer *)a3;
+- (int)loadMetadataTrackFromList:(id)list error:(id)error;
+- (int)loadVideoTrackFromList:(id)list error:(id)error;
+- (int)setWidth:(int)width height:(int)height;
+- (void)attachMetadataToPixelBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
 - (void)finalizeVideoCapture;
-- (void)getFrameRate:(double *)a3 frameCount:(int *)a4 transformFlags:(unsigned int *)a5;
+- (void)getFrameRate:(double *)rate frameCount:(int *)count transformFlags:(unsigned int *)flags;
 - (void)initialize;
 - (void)initializeAssetReader;
 - (void)loadCannedMediaAssets;
@@ -20,7 +20,7 @@
 
 @implementation CannedEncodedVideoCapture
 
-- (CannedEncodedVideoCapture)initWithPath:(id)a3 shouldScaleAndPad:(BOOL)a4
+- (CannedEncodedVideoCapture)initWithPath:(id)path shouldScaleAndPad:(BOOL)pad
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -32,9 +32,9 @@
     pthread_mutex_init(&v6->_inputMutex, 0);
     pthread_mutex_init(&v7->_attributeMutex, 0);
     v7->_frameCount = 0;
-    v7->_shouldScaleAndPad = a4;
+    v7->_shouldScaleAndPad = pad;
     v7->_transformFlags = 0;
-    v7->_movieURLString = a3;
+    v7->_movieURLString = path;
     v7->_videoScaler = objc_alloc_init(VideoScaler);
     if ([(CannedEncodedVideoCapture *)v7 initialize])
     {
@@ -92,21 +92,21 @@
   [(CannedEncodedVideoCapture *)&v8 dealloc];
 }
 
-- (int)loadVideoTrackFromList:(id)a3 error:(id)a4
+- (int)loadVideoTrackFromList:(id)list error:(id)error
 {
-  if (a4)
+  if (error)
   {
     [CannedEncodedVideoCapture loadVideoTrackFromList:error:];
     return v7;
   }
 
-  if (![a3 count])
+  if (![list count])
   {
     [CannedEncodedVideoCapture loadVideoTrackFromList:error:];
     return v7;
   }
 
-  -[CannedEncodedVideoCapture setVideoTrack:](self, "setVideoTrack:", [a3 firstObject]);
+  -[CannedEncodedVideoCapture setVideoTrack:](self, "setVideoTrack:", [list firstObject]);
   if (!self->_videoTrack)
   {
     [CannedEncodedVideoCapture loadVideoTrackFromList:error:];
@@ -121,10 +121,10 @@
   return 0;
 }
 
-- (int)loadMetadataTrackFromList:(id)a3 error:(id)a4
+- (int)loadMetadataTrackFromList:(id)list error:(id)error
 {
   v7 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  if (a4)
+  if (error)
   {
     [CannedEncodedVideoCapture loadMetadataTrackFromList:error:];
     v9 = v11;
@@ -132,9 +132,9 @@
 
   else
   {
-    if ([a3 count])
+    if ([list count])
     {
-      -[CannedEncodedVideoCapture setMetadataTrack:](self, "setMetadataTrack:", [a3 firstObject]);
+      -[CannedEncodedVideoCapture setMetadataTrack:](self, "setMetadataTrack:", [list firstObject]);
       metadataTrack = self->_metadataTrack;
       if (metadataTrack)
       {
@@ -154,10 +154,10 @@
 - (int)finalizeVideoCapture
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*"v024"];
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E6966130]];
-  -[CannedEncodedVideoCapture setReaderVideoTrackOutput:](self, "setReaderVideoTrackOutput:", [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:self->_videoTrack outputSettings:v4]);
+  [dictionary setObject:v5 forKeyedSubscript:*MEMORY[0x1E6966130]];
+  -[CannedEncodedVideoCapture setReaderVideoTrackOutput:](self, "setReaderVideoTrackOutput:", [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:self->_videoTrack outputSettings:dictionary]);
   if (!self->_readerVideoTrackOutput)
   {
     [CannedEncodedVideoCapture finalizeVideoCapture];
@@ -275,7 +275,7 @@ intptr_t __50__CannedEncodedVideoCapture_loadCannedMediaAssets__block_invoke_2(u
   {
     [CannedEncodedVideoCapture initializeAssetReader];
 LABEL_14:
-    v13 = *buf;
+    loadCannedMediaAssets = *buf;
     goto LABEL_9;
   }
 
@@ -322,17 +322,17 @@ LABEL_14:
   }
 
   [(AVAssetReader *)[(CannedEncodedVideoCapture *)self assetReader] setPreparesMediaDataForRealTimeConsumption:1];
-  v13 = [(CannedEncodedVideoCapture *)self loadCannedMediaAssets];
+  loadCannedMediaAssets = [(CannedEncodedVideoCapture *)self loadCannedMediaAssets];
 LABEL_9:
   [v3 drain];
-  return v13;
+  return loadCannedMediaAssets;
 }
 
 - (int)initialize
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(CannedEncodedVideoCapture *)self initializeAssetReader];
-  if (v3)
+  initializeAssetReader = [(CannedEncodedVideoCapture *)self initializeAssetReader];
+  if (initializeAssetReader)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -406,13 +406,13 @@ LABEL_9:
     [+[VCCannedAVSync sharedCannedAVSync](VCCannedAVSync "sharedCannedAVSync")];
   }
 
-  return v3;
+  return initializeAssetReader;
 }
 
-- (int)setWidth:(int)a3 height:(int)a4
+- (int)setWidth:(int)width height:(int)height
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&height;
+  v5 = *&width;
   v24 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_attributeMutex);
   self->_width = v5;
@@ -492,13 +492,13 @@ LABEL_9:
   return v12;
 }
 
-- (void)attachMetadataToPixelBuffer:(__CVBuffer *)a3
+- (void)attachMetadataToPixelBuffer:(__CVBuffer *)buffer
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(AVAssetReaderOutputMetadataAdaptor *)self->_metadataAdaptor nextTimedMetadataGroup];
+  nextTimedMetadataGroup = [(AVAssetReaderOutputMetadataAdaptor *)self->_metadataAdaptor nextTimedMetadataGroup];
   v5 = MEMORY[0x1E6987FE0];
-  v6 = [(AVTimedMetadataGroup *)v4 items];
-  v7 = [v5 metadataItemsFromArray:v6 filteredByIdentifier:*MEMORY[0x1E6960388]];
+  items = [(AVTimedMetadataGroup *)nextTimedMetadataGroup items];
+  v7 = [v5 metadataItemsFromArray:items filteredByIdentifier:*MEMORY[0x1E6960388]];
   v8 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
@@ -529,16 +529,16 @@ LABEL_9:
     while (v10);
   }
 
-  VCVideoUtil_AttachMetadata(v8, a3);
+  VCVideoUtil_AttachMetadata(v8, buffer);
 }
 
-- (__CVBuffer)createPixelBufferForFrameIndex:(int)a3
+- (__CVBuffer)createPixelBufferForFrameIndex:(int)index
 {
   v32 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E696AAC8]);
   v25 = 0;
   frameCount = self->_frameCount;
-  if (frameCount > a3)
+  if (frameCount > index)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -559,11 +559,11 @@ LABEL_9:
     self->_frameCount = 0;
   }
 
-  if (frameCount >= a3)
+  if (frameCount >= index)
   {
 LABEL_19:
-    v15 = [(AVAssetReaderTrackOutput *)self->_readerVideoTrackOutput copyNextSampleBuffer];
-    if (v15)
+    copyNextSampleBuffer = [(AVAssetReaderTrackOutput *)self->_readerVideoTrackOutput copyNextSampleBuffer];
+    if (copyNextSampleBuffer)
     {
       goto LABEL_24;
     }
@@ -587,7 +587,7 @@ LABEL_19:
     {
 LABEL_24:
       ++self->_frameCount;
-      ImageBuffer = CMSampleBufferGetImageBuffer(v15);
+      ImageBuffer = CMSampleBufferGetImageBuffer(copyNextSampleBuffer);
       if (ImageBuffer)
       {
         v17 = ImageBuffer;
@@ -623,9 +623,9 @@ LABEL_24:
         [CannedEncodedVideoCapture createPixelBufferForFrameIndex:];
       }
 
-      if (v15)
+      if (copyNextSampleBuffer)
       {
-        CFRelease(v15);
+        CFRelease(copyNextSampleBuffer);
       }
     }
   }
@@ -638,13 +638,13 @@ LABEL_24:
     v24 = v6;
     while (1)
     {
-      v10 = [(AVAssetReaderTrackOutput *)self->_readerVideoTrackOutput copyNextSampleBuffer];
-      if (!v10)
+      copyNextSampleBuffer2 = [(AVAssetReaderTrackOutput *)self->_readerVideoTrackOutput copyNextSampleBuffer];
+      if (!copyNextSampleBuffer2)
       {
         break;
       }
 
-      CFRelease(v10);
+      CFRelease(copyNextSampleBuffer2);
       ++self->_frameCount;
       metadataAdaptor = self->_metadataAdaptor;
       if (metadataAdaptor && ![(AVAssetReaderOutputMetadataAdaptor *)metadataAdaptor nextTimedMetadataGroup]&& VRTraceGetErrorLogLevelForModule() >= 8)
@@ -678,7 +678,7 @@ LABEL_24:
         }
       }
 
-      if (self->_frameCount >= a3)
+      if (self->_frameCount >= index)
       {
         goto LABEL_19;
       }
@@ -692,20 +692,20 @@ LABEL_33:
   return v25;
 }
 
-- (void)getFrameRate:(double *)a3 frameCount:(int *)a4 transformFlags:(unsigned int *)a5
+- (void)getFrameRate:(double *)rate frameCount:(int *)count transformFlags:(unsigned int *)flags
 {
   pthread_mutex_lock(&self->_inputMutex);
-  if (a3)
+  if (rate)
   {
-    *a3 = self->_allFrameRate;
+    *rate = self->_allFrameRate;
   }
 
-  if (a4)
+  if (count)
   {
-    *a4 = self->_allFrameCount;
+    *count = self->_allFrameCount;
   }
 
-  *a5 = self->_transformFlags;
+  *flags = self->_transformFlags;
 
   pthread_mutex_unlock(&self->_inputMutex);
 }

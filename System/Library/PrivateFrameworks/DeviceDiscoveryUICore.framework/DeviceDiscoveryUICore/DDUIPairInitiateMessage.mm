@@ -1,15 +1,15 @@
 @interface DDUIPairInitiateMessage
-- (DDUIPairInitiateMessage)initWithApplicationInfo:(id)a3;
-- (DDUIPairInitiateMessage)initWithDictionaryRepresentation:(id)a3;
+- (DDUIPairInitiateMessage)initWithApplicationInfo:(id)info;
+- (DDUIPairInitiateMessage)initWithDictionaryRepresentation:(id)representation;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation DDUIPairInitiateMessage
 
-- (DDUIPairInitiateMessage)initWithApplicationInfo:(id)a3
+- (DDUIPairInitiateMessage)initWithApplicationInfo:(id)info
 {
-  v5 = a3;
-  if (v5)
+  infoCopy = info;
+  if (infoCopy)
   {
     v10.receiver = self;
     v10.super_class = DDUIPairInitiateMessage;
@@ -17,46 +17,46 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_applicationInfo, a3);
+      objc_storeStrong(&v6->_applicationInfo, info);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (DDUIPairInitiateMessage)initWithDictionaryRepresentation:(id)a3
+- (DDUIPairInitiateMessage)initWithDictionaryRepresentation:(id)representation
 {
-  if (a3)
+  if (representation)
   {
-    v4 = a3;
-    v5 = [[DDUIApplicationInfo alloc] initWithDictionaryRepresentation:v4];
+    representationCopy = representation;
+    v5 = [[DDUIApplicationInfo alloc] initWithDictionaryRepresentation:representationCopy];
 
     self = [(DDUIPairInitiateMessage *)self initWithApplicationInfo:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
 {
-  v2 = [(DDUIPairInitiateMessage *)self applicationInfo];
-  v3 = [v2 dictionaryRepresentation];
+  applicationInfo = [(DDUIPairInitiateMessage *)self applicationInfo];
+  dictionaryRepresentation = [applicationInfo dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 @end

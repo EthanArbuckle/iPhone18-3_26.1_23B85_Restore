@@ -1,6 +1,6 @@
 @interface SessionsView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (void)backgroundTapAction:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (void)backgroundTapAction:(id)action;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 @end
@@ -21,29 +21,29 @@
   v4.receiver = self;
   v4.super_class = type metadata accessor for SessionsView();
   v2 = v4.receiver;
-  v3 = [(SessionsView *)&v4 layoutSubviews];
-  (*((*MEMORY[0x1E69E7D40] & **&v2[OBJC_IVAR____TtC13MediaControls12SessionsView_routePickerSessionsView]) + 0x1C8))(v3);
+  layoutSubviews = [(SessionsView *)&v4 layoutSubviews];
+  (*((*MEMORY[0x1E69E7D40] & **&v2[OBJC_IVAR____TtC13MediaControls12SessionsView_routePickerSessionsView]) + 0x1C8))(layoutSubviews);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1A22471B8(v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_1A22471B8(touchCopy);
 
   return v9 & 1;
 }
 
-- (void)backgroundTapAction:(id)a3
+- (void)backgroundTapAction:(id)action
 {
   v3 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0xF8);
-  v7 = self;
+  selfCopy = self;
   if (v3())
   {
     v5 = v4;
     ObjectType = swift_getObjectType();
-    (*(v5 + 8))(v7, ObjectType, v5);
+    (*(v5 + 8))(selfCopy, ObjectType, v5);
     swift_unknownObjectRelease();
   }
 }

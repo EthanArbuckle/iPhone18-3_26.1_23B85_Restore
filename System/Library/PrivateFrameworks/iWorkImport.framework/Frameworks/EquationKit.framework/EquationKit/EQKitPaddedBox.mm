@@ -1,31 +1,31 @@
 @interface EQKitPaddedBox
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4;
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant;
 - (CGRect)erasableBounds;
-- (EQKitPaddedBox)initWithBox:(id)a3 height:(double)a4 width:(double)a5 depth:(double)a6 lspace:(double)a7 voffset:(double)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (EQKitPaddedBox)initWithBox:(id)box height:(double)height width:(double)width depth:(double)depth lspace:(double)lspace voffset:(double)voffset;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4;
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitPaddedBox
 
-- (EQKitPaddedBox)initWithBox:(id)a3 height:(double)a4 width:(double)a5 depth:(double)a6 lspace:(double)a7 voffset:(double)a8
+- (EQKitPaddedBox)initWithBox:(id)box height:(double)height width:(double)width depth:(double)depth lspace:(double)lspace voffset:(double)voffset
 {
   v16.receiver = self;
   v16.super_class = EQKitPaddedBox;
   v14 = [(EQKitPaddedBox *)&v16 init];
   if (v14)
   {
-    v14->mBox = a3;
-    v14->mHeight = a4;
-    v14->mWidth = a5;
-    v14->mDepth = a6;
-    v14->mLspace = a7;
-    v14->mVoffset = a8;
+    v14->mBox = box;
+    v14->mHeight = height;
+    v14->mWidth = width;
+    v14->mDepth = depth;
+    v14->mLspace = lspace;
+    v14->mVoffset = voffset;
   }
 
   return v14;
@@ -47,52 +47,52 @@
   return CGRectOffset(*&v5, mLspace, v10);
 }
 
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v10.receiver = self;
   v10.super_class = EQKitPaddedBox;
   [EQKitBox renderIntoContext:sel_renderIntoContext_offset_ offset:?];
-  objc_msgSend_renderIntoContext_offset_(self->mBox, v8, a3, v9, x + self->mLspace, y - self->mVoffset);
+  objc_msgSend_renderIntoContext_offset_(self->mBox, v8, context, v9, x + self->mLspace, y - self->mVoffset);
 }
 
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset
 {
-  v5 = *(a3 + 6);
+  v5 = *(spec + 6);
   if (v5 <= 1)
   {
     if (v5)
     {
       if (v5 != 1)
       {
-        return objc_msgSend_appendOpticalAlignToSpec_offset_(self->mBox, a2, a3, v4, a4.x, a4.y);
+        return objc_msgSend_appendOpticalAlignToSpec_offset_(self->mBox, a2, spec, v4, offset.x, offset.y);
       }
 
       goto LABEL_8;
     }
 
-    return objc_msgSend_appendOpticalAlignToSpec_offset_(self->mBox, a2, a3, v4, a4.x, a4.y - self->mVoffset);
+    return objc_msgSend_appendOpticalAlignToSpec_offset_(self->mBox, a2, spec, v4, offset.x, offset.y - self->mVoffset);
   }
 
   if (v5 == 3)
   {
 LABEL_8:
-    a4.x = a4.x + self->mLspace;
-    return objc_msgSend_appendOpticalAlignToSpec_offset_(self->mBox, a2, a3, v4, a4.x, a4.y);
+    offset.x = offset.x + self->mLspace;
+    return objc_msgSend_appendOpticalAlignToSpec_offset_(self->mBox, a2, spec, v4, offset.x, offset.y);
   }
 
   if (v5 == 2)
   {
-    return objc_msgSend_appendOpticalAlignToSpec_offset_(self->mBox, a2, a3, v4, a4.x, a4.y - self->mVoffset);
+    return objc_msgSend_appendOpticalAlignToSpec_offset_(self->mBox, a2, spec, v4, offset.x, offset.y - self->mVoffset);
   }
 
-  return objc_msgSend_appendOpticalAlignToSpec_offset_(self->mBox, a2, a3, v4, a4.x, a4.y);
+  return objc_msgSend_appendOpticalAlignToSpec_offset_(self->mBox, a2, spec, v4, offset.x, offset.y);
 }
 
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant
 {
-  if (a4 == self)
+  if (descendant == self)
   {
     LOBYTE(Transform_fromDescendant) = 1;
   }
@@ -101,19 +101,19 @@ LABEL_8:
   {
     v15 = v4;
     v16 = v5;
-    Transform_fromDescendant = objc_msgSend_p_getTransform_fromDescendant_(self->mBox, a2, a3, a4);
+    Transform_fromDescendant = objc_msgSend_p_getTransform_fromDescendant_(self->mBox, a2, transform, descendant);
     if (Transform_fromDescendant)
     {
-      v9 = *&a3->c;
-      *&v13.a = *&a3->a;
+      v9 = *&transform->c;
+      *&v13.a = *&transform->a;
       *&v13.c = v9;
       mLspace = self->mLspace;
-      *&v13.tx = *&a3->tx;
+      *&v13.tx = *&transform->tx;
       CGAffineTransformTranslate(&v14, &v13, mLspace, -self->mVoffset);
       v11 = *&v14.c;
-      *&a3->a = *&v14.a;
-      *&a3->c = v11;
-      *&a3->tx = *&v14.tx;
+      *&transform->a = *&v14.a;
+      *&transform->c = v11;
+      *&transform->tx = *&v14.tx;
       LOBYTE(Transform_fromDescendant) = 1;
     }
   }
@@ -121,10 +121,10 @@ LABEL_8:
   return Transform_fromDescendant;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v8 = objc_msgSend_allocWithZone_(v5, v6, a3, v7);
+  v8 = objc_msgSend_allocWithZone_(v5, v6, zone, v7);
   v12 = objc_msgSend_box(self, v9, v10, v11);
   objc_msgSend_height(self, v13, v14, v15);
   v17 = v16;
@@ -139,26 +139,26 @@ LABEL_8:
   return objc_msgSend_initWithBox_height_width_depth_lspace_voffset_(v8, v36, v12, v37, v17, v22, v27, v32, v38);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = self;
-  v4 = self == a3;
-  LOBYTE(self) = self == a3;
-  if (a3)
+  selfCopy = self;
+  v4 = self == equal;
+  LOBYTE(self) = self == equal;
+  if (equal)
   {
     if (!v4)
     {
       v6 = objc_opt_class();
-      LODWORD(self) = objc_msgSend_isMemberOfClass_(a3, v7, v6, v8);
+      LODWORD(self) = objc_msgSend_isMemberOfClass_(equal, v7, v6, v8);
       if (self)
       {
-        objc_msgSend_height(v3, v9, v10, v11);
+        objc_msgSend_height(selfCopy, v9, v10, v11);
         v13 = v12;
-        objc_msgSend_height(a3, v14, v15, v16);
-        if (v13 == v20 && (objc_msgSend_width(v3, v17, v18, v19), v22 = v21, objc_msgSend_width(a3, v23, v24, v25), v22 == v29) && (objc_msgSend_depth(v3, v26, v27, v28), v31 = v30, objc_msgSend_depth(a3, v32, v33, v34), v31 == v38) && (objc_msgSend_lspace(v3, v35, v36, v37), v40 = v39, objc_msgSend_lspace(a3, v41, v42, v43), v40 == v47) && (objc_msgSend_voffset(v3, v44, v45, v46), v49 = v48, objc_msgSend_voffset(a3, v50, v51, v52), v49 == v56))
+        objc_msgSend_height(equal, v14, v15, v16);
+        if (v13 == v20 && (objc_msgSend_width(selfCopy, v17, v18, v19), v22 = v21, objc_msgSend_width(equal, v23, v24, v25), v22 == v29) && (objc_msgSend_depth(selfCopy, v26, v27, v28), v31 = v30, objc_msgSend_depth(equal, v32, v33, v34), v31 == v38) && (objc_msgSend_lspace(selfCopy, v35, v36, v37), v40 = v39, objc_msgSend_lspace(equal, v41, v42, v43), v40 == v47) && (objc_msgSend_voffset(selfCopy, v44, v45, v46), v49 = v48, objc_msgSend_voffset(equal, v50, v51, v52), v49 == v56))
         {
-          v57 = objc_msgSend_box(v3, v53, v54, v55);
-          self = objc_msgSend_box(a3, v58, v59, v60);
+          v57 = objc_msgSend_box(selfCopy, v53, v54, v55);
+          self = objc_msgSend_box(equal, v58, v59, v60);
           if (v57 == self)
           {
             LOBYTE(self) = 1;
@@ -166,12 +166,12 @@ LABEL_8:
 
           else
           {
-            v63 = self;
+            selfCopy2 = self;
             LOBYTE(self) = 0;
-            if (v57 && v63)
+            if (v57 && selfCopy2)
             {
 
-              LOBYTE(self) = objc_msgSend_isEqual_(v57, v61, v63, v62);
+              LOBYTE(self) = objc_msgSend_isEqual_(v57, v61, selfCopy2, v62);
             }
           }
         }

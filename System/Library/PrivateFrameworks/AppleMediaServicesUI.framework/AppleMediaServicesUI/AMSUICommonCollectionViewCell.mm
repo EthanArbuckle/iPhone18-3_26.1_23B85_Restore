@@ -1,6 +1,6 @@
 @interface AMSUICommonCollectionViewCell
 - (AMSUICommonCollectionViewCell)init;
-- (AMSUICommonCollectionViewCell)initWithFrame:(CGRect)a3;
+- (AMSUICommonCollectionViewCell)initWithFrame:(CGRect)frame;
 - (id)tintColor;
 - (void)_setup;
 - (void)layoutSubviews;
@@ -22,11 +22,11 @@
   return v3;
 }
 
-- (AMSUICommonCollectionViewCell)initWithFrame:(CGRect)a3
+- (AMSUICommonCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AMSUICommonCollectionViewCell;
-  v3 = [(AMSUICommonCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AMSUICommonCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -40,9 +40,9 @@
 {
   v4.receiver = self;
   v4.super_class = AMSUICommonCollectionViewCell;
-  v2 = [(AMSUICommonCollectionViewCell *)&v4 tintColor];
+  tintColor = [(AMSUICommonCollectionViewCell *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
 - (void)_setup
@@ -55,8 +55,8 @@
 
     v6.receiver = self;
     v6.super_class = AMSUICommonCollectionViewCell;
-    v5 = [(AMSUICommonCollectionViewCell *)&v6 contentView];
-    [v5 addSubview:self->_underlyingContentView];
+    contentView = [(AMSUICommonCollectionViewCell *)&v6 contentView];
+    [contentView addSubview:self->_underlyingContentView];
   }
 }
 
@@ -67,14 +67,14 @@
   [(AMSUICommonCollectionViewCell *)&v14 layoutSubviews];
   v13.receiver = self;
   v13.super_class = AMSUICommonCollectionViewCell;
-  v3 = [(AMSUICommonCollectionViewCell *)&v13 contentView];
-  [v3 frame];
+  contentView = [(AMSUICommonCollectionViewCell *)&v13 contentView];
+  [contentView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(AMSUICommonCollectionViewCell *)self underlyingContentView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  underlyingContentView = [(AMSUICommonCollectionViewCell *)self underlyingContentView];
+  [underlyingContentView setFrame:{v5, v7, v9, v11}];
 }
 
 @end

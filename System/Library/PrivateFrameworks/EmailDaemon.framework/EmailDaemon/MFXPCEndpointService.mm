@@ -1,11 +1,11 @@
 @interface MFXPCEndpointService
-+ (BOOL)handleMessage:(id)a3 connectionState:(id)a4 replyObject:(id *)a5 error:(id *)a6;
++ (BOOL)handleMessage:(id)message connectionState:(id)state replyObject:(id *)object error:(id *)error;
 + (id)sharedInstance;
 - (MFXPCEndpointService)init;
 - (NSString)description;
 - (id)activeListeners;
 - (id)copyDiagnosticInformation;
-- (id)listenerForProtocolNamed:(id)a3;
+- (id)listenerForProtocolNamed:(id)named;
 - (void)dealloc;
 @end
 
@@ -23,30 +23,30 @@
   return v3;
 }
 
-+ (BOOL)handleMessage:(id)a3 connectionState:(id)a4 replyObject:(id *)a5 error:(id *)a6
++ (BOOL)handleMessage:(id)message connectionState:(id)state replyObject:(id *)object error:(id *)error
 {
-  v8 = a3;
-  v9 = xpc_dictionary_get_value(v8, [_MSMailServiceArguments UTF8String]);
+  messageCopy = message;
+  v9 = xpc_dictionary_get_value(messageCopy, [_MSMailServiceArguments UTF8String]);
   v10 = v9;
   if (v9 && xpc_get_type(v9) == &_xpc_type_dictionary)
   {
     v12 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v10, "protocol")];
-    v13 = [a1 sharedInstance];
-    v14 = [v13 listenerForProtocolNamed:v12];
+    sharedInstance = [self sharedInstance];
+    v14 = [sharedInstance listenerForProtocolNamed:v12];
 
-    v15 = [v14 endpoint];
-    v16 = [v15 _endpoint];
+    endpoint = [v14 endpoint];
+    _endpoint = [endpoint _endpoint];
 
-    if (v16)
+    if (_endpoint)
     {
-      reply = xpc_dictionary_create_reply(v8);
+      reply = xpc_dictionary_create_reply(messageCopy);
       v18 = reply;
       v11 = reply != 0;
       if (reply)
       {
-        xpc_dictionary_set_value(reply, "endpoint", v16);
+        xpc_dictionary_set_value(reply, "endpoint", _endpoint);
         v19 = v18;
-        *a5 = v18;
+        *object = v18;
       }
     }
 
@@ -111,9 +111,9 @@
           }
 
           v17 = *(*(&v28 + 1) + 8 * i);
-          v18 = [v17 exportedInterface];
-          v19 = [v18 protocol];
-          v20 = NSStringFromProtocol(v19);
+          exportedInterface = [v17 exportedInterface];
+          protocol = [exportedInterface protocol];
+          v20 = NSStringFromProtocol(protocol);
           [v12 setObject:v17 forKeyedSubscript:v20];
         }
 
@@ -149,11 +149,11 @@
 - (NSString)description
 {
   v3 = [NSMutableString stringWithFormat:@"<%@: %p> ", objc_opt_class(), self];
-  v4 = [(MFXPCEndpointService *)self activeListeners];
-  v5 = [v4 count];
+  activeListeners = [(MFXPCEndpointService *)self activeListeners];
+  v5 = [activeListeners count];
   if (v5)
   {
-    v6 = [v4 arrayByApplyingSelector:"description"];
+    v6 = [activeListeners arrayByApplyingSelector:"description"];
     v7 = [v6 componentsJoinedByString:{@", \n\t"}];
     [v3 appendFormat:@"%ld active listeners: {\n\t%@\n}", v5, v7];
   }
@@ -174,8 +174,8 @@
   v4 = [(NSDictionary *)self->_endpointInfoByProtocol count];
   if (v4)
   {
-    v5 = [(NSDictionary *)self->_endpointInfoByProtocol allValues];
-    v6 = [v5 ef_compactMap:&stru_10015A430];
+    allValues = [(NSDictionary *)self->_endpointInfoByProtocol allValues];
+    v6 = [allValues ef_compactMap:&stru_10015A430];
     v7 = [v6 componentsJoinedByString:{@", \n\t"}];
     [v3 appendFormat:@"%ld exported {\n\t%@\n  }", v4, v7];
   }
@@ -190,19 +190,19 @@
 
 - (id)activeListeners
 {
-  v2 = [(NSDictionary *)self->_endpointInfoByProtocol allValues];
-  v3 = [v2 ef_compactMap:&stru_10015A450];
+  allValues = [(NSDictionary *)self->_endpointInfoByProtocol allValues];
+  v3 = [allValues ef_compactMap:&stru_10015A450];
 
   return v3;
 }
 
-- (id)listenerForProtocolNamed:(id)a3
+- (id)listenerForProtocolNamed:(id)named
 {
-  v3 = [(NSDictionary *)self->_endpointInfoByProtocol objectForKey:a3];
-  v4 = [v3 listener];
-  v5 = [v4 listener];
+  v3 = [(NSDictionary *)self->_endpointInfoByProtocol objectForKey:named];
+  listener = [v3 listener];
+  v4Listener = [listener listener];
 
-  return v5;
+  return v4Listener;
 }
 
 @end

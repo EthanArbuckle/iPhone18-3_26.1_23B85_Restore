@@ -2,26 +2,26 @@
 + (id)sharedManager;
 + (void)clearSharedManager;
 - (BOOL)anyMarketOpen;
-- (BOOL)setLocalStockListFromSyncableStockList:(id)a3;
+- (BOOL)setLocalStockListFromSyncableStockList:(id)list;
 - (StockManager)init;
 - (id)_defaultStockDictionaries;
-- (id)makeSyncableStockListFromList:(id)a3;
-- (id)stockForURL:(id)a3;
-- (id)stockWithSymbol:(id)a3;
+- (id)makeSyncableStockListFromList:(id)list;
+- (id)stockForURL:(id)l;
+- (id)stockWithSymbol:(id)symbol;
 - (id)stocksList;
-- (void)DeleteChartData:(id)a3;
-- (void)RemoveChartDataFromLRU:(id)a3;
-- (void)UpdateChartDataInLRU:(id)a3;
-- (void)_addStock:(id)a3 withRemoteNotification:(BOOL)a4;
+- (void)DeleteChartData:(id)data;
+- (void)RemoveChartDataFromLRU:(id)u;
+- (void)UpdateChartDataInLRU:(id)u;
+- (void)_addStock:(id)stock withRemoteNotification:(BOOL)notification;
 - (void)_checkForAddedStocks;
 - (void)_checkForDeletedStocks;
 - (void)_checkForMovedStocks;
-- (void)_removeStock:(id)a3 withRemoteNotification:(BOOL)a4;
-- (void)_saveDataChangesWithStockDictionaries:(id)a3;
+- (void)_removeStock:(id)stock withRemoteNotification:(BOOL)notification;
+- (void)_saveDataChangesWithStockDictionaries:(id)dictionaries;
 - (void)clearCachedChartData;
 - (void)dealloc;
-- (void)handleSyncedDataChanged:(id)a3;
-- (void)moveStockFromIndex:(int64_t)a3 toIndex:(int64_t)a4;
+- (void)handleSyncedDataChanged:(id)changed;
+- (void)moveStockFromIndex:(int64_t)index toIndex:(int64_t)toIndex;
 - (void)purgeTransientData;
 - (void)reloadStocksFromDefaults;
 - (void)saveDataChanges;
@@ -114,17 +114,17 @@
         }
       }
 
-      v17 = [MEMORY[0x277CCAD80] defaultStore];
+      defaultStore = [MEMORY[0x277CCAD80] defaultStore];
       syncedKVStore = v3->_syncedKVStore;
-      v3->_syncedKVStore = v17;
+      v3->_syncedKVStore = defaultStore;
 
-      v19 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v19 addObserver:v3 selector:sel_handleSyncedDataChanged_ name:*MEMORY[0x277CCA7C0] object:v3->_syncedKVStore];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v3 selector:sel_handleSyncedDataChanged_ name:*MEMORY[0x277CCA7C0] object:v3->_syncedKVStore];
 
       v20 = [(NSUbiquitousKeyValueStore *)v3->_syncedKVStore arrayForKey:@"stocks"];
-      v21 = [(StockManager *)v3 _defaultStockDictionaries];
+      _defaultStockDictionaries = [(StockManager *)v3 _defaultStockDictionaries];
       v58 = v20;
-      v59 = v21;
+      v59 = _defaultStockDictionaries;
       if (isKindOfClass)
       {
         v22 = 0;
@@ -153,7 +153,7 @@
 
         else
         {
-          v25 = v21;
+          v25 = _defaultStockDictionaries;
 
           v26 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v25, "count")}];
           v27 = v3->_stocksList;
@@ -198,7 +198,7 @@
             while (v29);
           }
 
-          v21 = v59;
+          _defaultStockDictionaries = v59;
           v22 = v57;
         }
       }
@@ -220,12 +220,12 @@
 
       else
       {
-        v40 = [MEMORY[0x277CBEAA8] date];
-        [v40 timeIntervalSince1970];
+        date = [MEMORY[0x277CBEAA8] date];
+        [date timeIntervalSince1970];
         v3->_lastModifiedTime = v41;
       }
 
-      v42 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v21, "count")}];
+      v42 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(_defaultStockDictionaries, "count")}];
       defaultListStockSymbols = v3->_defaultListStockSymbols;
       v3->_defaultListStockSymbols = v42;
 
@@ -270,8 +270,8 @@
         [(NSMutableArray *)v3->_stocksList addObjectsFromArray:DefaultStocksOverride];
       }
 
-      v51 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v51 addObserver:v3 selector:sel_clearCachedChartData name:*MEMORY[0x277D76670] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:v3 selector:sel_clearCachedChartData name:*MEMORY[0x277D76670] object:0];
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
       CFNotificationCenterAddObserver(DarwinNotifyCenter, v3, GizmoSettingsChanged, @"com.apple.stocks.PreferencesChangedNotification", 0, CFNotificationSuspensionBehaviorCoalesce);
       v53 = CFNotificationCenterGetDarwinNotifyCenter();
@@ -301,9 +301,9 @@
   [(StockManager *)&v7 dealloc];
 }
 
-- (id)stockForURL:(id)a3
+- (id)stockForURL:(id)l
 {
-  v4 = [Stock symbolForURL:a3];
+  v4 = [Stock symbolForURL:l];
   v5 = [(StockManager *)self stockWithSymbol:v4];
 
   return v5;
@@ -312,7 +312,7 @@
 - (id)_defaultStockDictionaries
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = +[SCWatchlistDefaults defaultsForCurrentCountry];
   v4 = +[SCWatchlistDefaults defaultsFromCarrierBundle];
   v14 = v3;
@@ -321,8 +321,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 defaultSymbols];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  defaultSymbols = [v5 defaultSymbols];
+  v7 = [defaultSymbols countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -333,23 +333,23 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(defaultSymbols);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         v19 = @"symbol";
         v20 = v11;
         v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-        [v2 addObject:v12];
+        [array addObject:v12];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v8 = [defaultSymbols countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v8);
   }
 
-  return v2;
+  return array;
 }
 
 - (void)reloadStocksFromDefaults
@@ -418,26 +418,26 @@
       while (v10);
     }
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 postNotificationName:@"StocksDidReloadFromDefaultsNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"StocksDidReloadFromDefaultsNotification" object:0];
 
     v7 = v17;
   }
 }
 
-- (void)handleSyncedDataChanged:(id)a3
+- (void)handleSyncedDataChanged:(id)changed
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277CCA7B0]];
-  v6 = [v5 unsignedIntValue];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277CCA7B0]];
+  unsignedIntValue = [v5 unsignedIntValue];
 
   v7 = [(NSUbiquitousKeyValueStore *)self->_syncedKVStore arrayForKey:@"stocks"];
   v8 = StocksLogForCategory(1);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v52 = v6;
+    v52 = unsignedIntValue;
     _os_log_impl(&dword_26BAAD000, v8, OS_LOG_TYPE_DEFAULT, "#StockManager #sync changeReason: %lu", buf, 0xCu);
   }
 
@@ -448,7 +448,7 @@
     goto LABEL_9;
   }
 
-  if (v6 != 3 || v7 != 0)
+  if (unsignedIntValue != 3 || v7 != 0)
   {
 LABEL_9:
     v35 = v7;
@@ -474,13 +474,13 @@ LABEL_50:
       while (1)
       {
         v14 = [(NSMutableArray *)self->_stocksList objectAtIndex:v13];
-        v15 = [v14 symbol];
+        symbol = [v14 symbol];
 
         v16 = [v11 objectAtIndex:v13];
         [v16 objectForKey:@"symbol"];
         v18 = v17 = self;
 
-        LOBYTE(v16) = [v15 isEqualToString:v18];
+        LOBYTE(v16) = [symbol isEqualToString:v18];
         self = v17;
 
         if ((v16 & 1) == 0)
@@ -498,15 +498,15 @@ LABEL_50:
     v19 = 0x277CCA000uLL;
     if (self->_shouldPostSyncNotifications)
     {
-      v20 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v20 postNotificationName:StocksWillSyncNotification object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:StocksWillSyncNotification object:0];
     }
 
-    if (v6 > 1)
+    if (unsignedIntValue > 1)
     {
-      if (v6 != 2)
+      if (unsignedIntValue != 2)
       {
-        if (v6 == 3)
+        if (unsignedIntValue == 3)
         {
           goto LABEL_25;
         }
@@ -514,13 +514,13 @@ LABEL_50:
 LABEL_47:
         if (self->_shouldPostSyncNotifications)
         {
-          v32 = [*(v19 + 2968) defaultCenter];
-          [v32 postNotificationName:StockListDidChangeNotification object:0];
+          defaultCenter2 = [*(v19 + 2968) defaultCenter];
+          [defaultCenter2 postNotificationName:StockListDidChangeNotification object:0];
         }
 
         [(StockManager *)self saveListChanges];
-        v33 = [*(v19 + 2968) defaultCenter];
-        [v33 postNotificationName:StockListDidSaveNotification object:0];
+        defaultCenter3 = [*(v19 + 2968) defaultCenter];
+        [defaultCenter3 postNotificationName:StockListDidSaveNotification object:0];
 
         goto LABEL_50;
       }
@@ -533,9 +533,9 @@ LABEL_47:
       }
     }
 
-    else if (v6)
+    else if (unsignedIntValue)
     {
-      if (v6 != 1)
+      if (unsignedIntValue != 1)
       {
         goto LABEL_47;
       }
@@ -546,7 +546,7 @@ LABEL_25:
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v34 = self;
+      selfCopy = self;
       obj = [(StockManager *)self makeSyncableStockListFromList:self->_stocksList];
       v40 = [obj countByEnumeratingWithState:&v45 objects:v50 count:16];
       if (v40)
@@ -615,8 +615,8 @@ LABEL_40:
         while (v40);
       }
 
-      self = v34;
-      [(StockManager *)v34 setLocalStockListFromSyncableStockList:v36];
+      self = selfCopy;
+      [(StockManager *)selfCopy setLocalStockListFromSyncableStockList:v36];
 
       v19 = 0x277CCA000;
       goto LABEL_47;
@@ -627,19 +627,19 @@ LABEL_40:
   }
 }
 
-- (id)makeSyncableStockListFromList:(id)a3
+- (id)makeSyncableStockListFromList:(id)list
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  listCopy = list;
   v29 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:SyncedPropertyNames count:4];
-  if ([v3 count] && (objc_msgSend(v3, "objectAtIndex:", 0), v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass & 1) != 0))
+  if ([listCopy count] && (objc_msgSend(listCopy, "objectAtIndex:", 0), v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass & 1) != 0))
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(listCopy, "count")}];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v7 = v3;
+    v7 = listCopy;
     v8 = [v7 countByEnumeratingWithState:&v38 objects:v44 count:16];
     if (v8)
     {
@@ -654,10 +654,10 @@ LABEL_40:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v38 + 1) + 8 * i) archiveDictionary];
-          if (v12)
+          archiveDictionary = [*(*(&v38 + 1) + 8 * i) archiveDictionary];
+          if (archiveDictionary)
           {
-            [v6 addObject:v12];
+            [v6 addObject:archiveDictionary];
           }
         }
 
@@ -670,7 +670,7 @@ LABEL_40:
 
   else
   {
-    v6 = v3;
+    v6 = listCopy;
   }
 
   v28 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
@@ -740,16 +740,16 @@ LABEL_40:
   return v28;
 }
 
-- (BOOL)setLocalStockListFromSyncableStockList:(id)a3
+- (BOOL)setLocalStockListFromSyncableStockList:(id)list
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listCopy = list;
   v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{-[NSMutableArray count](self->_stocksList, "count")}];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v35 = self;
+  selfCopy = self;
   v6 = self->_stocksList;
   v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v41 objects:v48 count:16];
   if (v7)
@@ -766,8 +766,8 @@ LABEL_40:
         }
 
         v11 = *(*(&v41 + 1) + 8 * i);
-        v12 = [v11 symbol];
-        [v5 setObject:v11 forKey:v12];
+        symbol = [v11 symbol];
+        [v5 setObject:v11 forKey:symbol];
       }
 
       v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v41 objects:v48 count:16];
@@ -776,15 +776,15 @@ LABEL_40:
     while (v8);
   }
 
-  v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  stocksList = v35->_stocksList;
-  v35->_stocksList = v13;
+  v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(listCopy, "count")}];
+  stocksList = selfCopy->_stocksList;
+  selfCopy->_stocksList = v13;
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v4;
+  obj = listCopy;
   v36 = [obj countByEnumeratingWithState:&v37 objects:v47 count:16];
   if (v36)
   {
@@ -806,8 +806,8 @@ LABEL_40:
         v18 = [v17 objectForKey:{@"symbol", v30}];
         v19 = [v5 objectForKey:v18];
 
-        v20 = [v19 archiveDictionary];
-        v21 = [v20 mutableCopy];
+        archiveDictionary = [v19 archiveDictionary];
+        v21 = [archiveDictionary mutableCopy];
 
         if (v21)
         {
@@ -852,7 +852,7 @@ LABEL_40:
           v19 = v27;
         }
 
-        [(NSMutableArray *)v35->_stocksList addObject:v19];
+        [(NSMutableArray *)selfCopy->_stocksList addObject:v19];
         v28 = StocksLogForCategory(1);
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
@@ -891,10 +891,10 @@ LABEL_40:
   }
 }
 
-- (id)stockWithSymbol:(id)a3
+- (id)stockWithSymbol:(id)symbol
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  symbolCopy = symbol;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -914,8 +914,8 @@ LABEL_40:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 symbol];
-        v11 = [v10 isEqualToString:v4];
+        symbol = [v9 symbol];
+        v11 = [symbol isEqualToString:symbolCopy];
 
         if (v11)
         {
@@ -939,44 +939,44 @@ LABEL_11:
   return v6;
 }
 
-- (void)_addStock:(id)a3 withRemoteNotification:(BOOL)a4
+- (void)_addStock:(id)stock withRemoteNotification:(BOOL)notification
 {
-  v4 = a4;
-  v12 = a3;
-  v6 = [(StockManager *)self stocksList];
-  [v6 addObject:v12];
+  notificationCopy = notification;
+  stockCopy = stock;
+  stocksList = [(StockManager *)self stocksList];
+  [stocksList addObject:stockCopy];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 postNotificationName:StockListDidChangeNotification object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:StockListDidChangeNotification object:0];
 
   v8 = +[ExchangeManager sharedManager];
-  v9 = [v12 exchange];
-  v10 = [v8 containsExchange:v9];
+  exchange = [stockCopy exchange];
+  v10 = [v8 containsExchange:exchange];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [v12 exchange];
-    [v8 addExchange:v11];
+    exchange2 = [stockCopy exchange];
+    [v8 addExchange:exchange2];
   }
 
-  if (v4)
+  if (notificationCopy)
   {
     self->_needRemoteAddNotification = 1;
   }
 }
 
-- (void)_removeStock:(id)a3 withRemoteNotification:(BOOL)a4
+- (void)_removeStock:(id)stock withRemoteNotification:(BOOL)notification
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 postNotificationName:StockWillBeRemovedNotification[0] object:v6];
+  notificationCopy = notification;
+  stockCopy = stock;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:StockWillBeRemovedNotification[0] object:stockCopy];
 
-  [(NSMutableArray *)self->_stocksList removeObjectIdenticalTo:v6];
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 postNotificationName:StockListDidChangeNotification object:0];
+  [(NSMutableArray *)self->_stocksList removeObjectIdenticalTo:stockCopy];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 postNotificationName:StockListDidChangeNotification object:0];
 
-  v9 = [v6 exchange];
+  exchange = [stockCopy exchange];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -986,7 +986,7 @@ LABEL_11:
   v14 = 3221225472;
   v15 = __52__StockManager__removeStock_withRemoteNotification___block_invoke;
   v16 = &unk_279D16868;
-  v11 = v9;
+  v11 = exchange;
   v17 = v11;
   v18 = &v19;
   [(NSMutableArray *)stocksList enumerateObjectsUsingBlock:&v13];
@@ -996,7 +996,7 @@ LABEL_11:
     [v12 removeExchange:v11];
   }
 
-  if (v4)
+  if (notificationCopy)
   {
     self->_needRemoteDeleteNotification = 1;
   }
@@ -1016,28 +1016,28 @@ void __52__StockManager__removeStock_withRemoteNotification___block_invoke(uint6
   }
 }
 
-- (void)moveStockFromIndex:(int64_t)a3 toIndex:(int64_t)a4
+- (void)moveStockFromIndex:(int64_t)index toIndex:(int64_t)toIndex
 {
   v8 = [(NSMutableArray *)self->_stocksList objectAtIndex:?];
-  [(NSMutableArray *)self->_stocksList removeObjectAtIndex:a3];
-  [(NSMutableArray *)self->_stocksList insertObject:v8 atIndex:a4];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 postNotificationName:StockListDidChangeNotification object:0];
+  [(NSMutableArray *)self->_stocksList removeObjectAtIndex:index];
+  [(NSMutableArray *)self->_stocksList insertObject:v8 atIndex:toIndex];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:StockListDidChangeNotification object:0];
 
   self->_needRemoteMoveNotification = 1;
 }
 
-- (void)RemoveChartDataFromLRU:(id)a3
+- (void)RemoveChartDataFromLRU:(id)u
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  uCopy = u;
+  v5 = uCopy;
+  if (uCopy)
   {
     chartDataLRUCache = self->_chartDataLRUCache;
     v9 = v5;
     if (chartDataLRUCache)
     {
-      v4 = [(NSMutableArray *)chartDataLRUCache removeObjectIdenticalTo:v5];
+      uCopy = [(NSMutableArray *)chartDataLRUCache removeObjectIdenticalTo:v5];
     }
 
     else
@@ -1050,54 +1050,54 @@ void __52__StockManager__removeStock_withRemoteNotification___block_invoke(uint6
     v5 = v9;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](uCopy, v5);
 }
 
-- (void)DeleteChartData:(id)a3
+- (void)DeleteChartData:(id)data
 {
-  v3 = a3;
-  v5 = [v3 stock];
-  v4 = [v3 chartInterval];
+  dataCopy = data;
+  stock = [dataCopy stock];
+  chartInterval = [dataCopy chartInterval];
 
-  [v5 setChartData:0 forInterval:v4];
+  [stock setChartData:0 forInterval:chartInterval];
 }
 
-- (void)UpdateChartDataInLRU:(id)a3
+- (void)UpdateChartDataInLRU:(id)u
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  uCopy = u;
+  v5 = uCopy;
+  if (uCopy)
   {
-    v7 = v4;
-    [(StockManager *)self RemoveChartDataFromLRU:v4];
+    v7 = uCopy;
+    [(StockManager *)self RemoveChartDataFromLRU:uCopy];
     if ([(NSMutableArray *)self->_chartDataLRUCache count]== 50)
     {
       v6 = [(NSMutableArray *)self->_chartDataLRUCache objectAtIndex:0];
       [(StockManager *)self DeleteChartData:v6];
     }
 
-    v4 = [(NSMutableArray *)self->_chartDataLRUCache addObject:v7];
+    uCopy = [(NSMutableArray *)self->_chartDataLRUCache addObject:v7];
     v5 = v7;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](uCopy, v5);
 }
 
 - (void)clearCachedChartData
 {
-  v3 = [(NSMutableArray *)self->_chartDataLRUCache lastObject];
-  if (v3)
+  lastObject = [(NSMutableArray *)self->_chartDataLRUCache lastObject];
+  if (lastObject)
   {
-    v4 = v3;
+    v4 = lastObject;
     do
     {
       [(StockManager *)self DeleteChartData:v4];
-      v5 = [(NSMutableArray *)self->_chartDataLRUCache lastObject];
+      lastObject2 = [(NSMutableArray *)self->_chartDataLRUCache lastObject];
 
-      v4 = v5;
+      v4 = lastObject2;
     }
 
-    while (v5);
+    while (lastObject2);
   }
 }
 
@@ -1144,19 +1144,19 @@ LABEL_11:
   return v3;
 }
 
-- (void)_saveDataChangesWithStockDictionaries:(id)a3
+- (void)_saveDataChangesWithStockDictionaries:(id)dictionaries
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
-  [v6 timeIntervalSince1970];
+  dictionariesCopy = dictionaries;
+  date = [v4 date];
+  [date timeIntervalSince1970];
   self->_lastModifiedTime = v7;
 
   v10 = +[StocksPreferences sharedPreferences];
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_lastModifiedTime];
   [v10 setObject:v8 forKey:@"lastModified"];
 
-  [v10 setObject:v5 forKey:@"stocks"];
+  [v10 setObject:dictionariesCopy forKey:@"stocks"];
   [v10 synchronize];
   v9 = +[ExchangeManager sharedManager];
   [v9 saveChanges];
@@ -1188,10 +1188,10 @@ LABEL_11:
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v27 + 1) + 8 * v8) archiveDictionary];
-          if (v9)
+          archiveDictionary = [*(*(&v27 + 1) + 8 * v8) archiveDictionary];
+          if (archiveDictionary)
           {
-            [v3 addObject:v9];
+            [v3 addObject:archiveDictionary];
           }
 
           ++v8;
@@ -1295,10 +1295,10 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) archiveDictionary];
-        if (v9)
+        archiveDictionary = [*(*(&v10 + 1) + 8 * v8) archiveDictionary];
+        if (archiveDictionary)
         {
-          [v3 addObject:v9];
+          [v3 addObject:archiveDictionary];
         }
 
         ++v8;
@@ -1317,7 +1317,7 @@ LABEL_11:
 - (void)purgeTransientData
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -1340,7 +1340,7 @@ LABEL_11:
         v9 = *(*(&v19 + 1) + 8 * i);
         if ([v9 isTransient])
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
@@ -1354,7 +1354,7 @@ LABEL_11:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = v3;
+  v10 = array;
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {
@@ -1404,8 +1404,8 @@ LABEL_11:
         v24 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v10 = v9;
-        v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        defaultCenter = v9;
+        v11 = [defaultCenter countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v11)
         {
           v12 = v11;
@@ -1418,7 +1418,7 @@ LABEL_11:
             {
               if (*v22 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(defaultCenter);
               }
 
               v15 = *(*(&v21 + 1) + 8 * i);
@@ -1447,7 +1447,7 @@ LABEL_11:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+            v12 = [defaultCenter countByEnumeratingWithState:&v21 objects:v25 count:16];
           }
 
           while (v12);
@@ -1458,8 +1458,8 @@ LABEL_11:
             goto LABEL_22;
           }
 
-          v10 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v10 postNotificationName:StockListDidChangeNotification object:0];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter postNotificationName:StockListDidChangeNotification object:0];
         }
       }
 
@@ -1487,8 +1487,8 @@ LABEL_22:
       v8 = +[StocksPreferences sharedPreferences];
       v9 = [v8 objectForKey:@"stocks"];
 
-      v10 = [MEMORY[0x277CBEB18] array];
-      v11 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       v45 = 0u;
       v46 = 0u;
       v47 = 0u;
@@ -1515,7 +1515,7 @@ LABEL_22:
               v18 = [v17 objectForKey:@"symbol"];
               if (v18)
               {
-                [v10 addObject:v18];
+                [array addObject:v18];
               }
             }
           }
@@ -1548,13 +1548,13 @@ LABEL_22:
             }
 
             v24 = *(*(&v41 + 1) + 8 * j);
-            v25 = [v24 symbol];
-            v26 = [v10 containsObject:v25];
+            symbol = [v24 symbol];
+            v26 = [array containsObject:symbol];
 
             if ((v26 & 1) == 0)
             {
-              v27 = [v24 symbol];
-              [v11 addObject:v27];
+              symbol2 = [v24 symbol];
+              [array2 addObject:symbol2];
             }
           }
 
@@ -1568,7 +1568,7 @@ LABEL_22:
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v28 = v11;
+      v28 = array2;
       v29 = [v28 countByEnumeratingWithState:&v37 objects:v49 count:16];
       if (v29)
       {
@@ -1595,8 +1595,8 @@ LABEL_22:
 
       if ([v28 count])
       {
-        v34 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v34 postNotificationName:StockListDidChangeNotification object:0];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter postNotificationName:StockListDidChangeNotification object:0];
       }
 
       v5 = v36;
@@ -1672,8 +1672,8 @@ LABEL_22:
         {
           [(NSMutableArray *)self->_stocksList removeAllObjects];
           [(NSMutableArray *)self->_stocksList addObjectsFromArray:v10];
-          v19 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v19 postNotificationName:StockListDidChangeNotification object:0];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter postNotificationName:StockListDidChangeNotification object:0];
         }
 
         v5 = v20;

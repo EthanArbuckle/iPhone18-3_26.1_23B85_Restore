@@ -1,60 +1,60 @@
 @interface SSSPathView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (UIBezierPath)path;
 - (UIColor)fillColor;
-- (void)setFillColor:(id)a3;
-- (void)setPath:(id)a3;
+- (void)setFillColor:(id)color;
+- (void)setPath:(id)path;
 @end
 
 @implementation SSSPathView
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v4 = a3;
-  v6 = [(SSSPathView *)self _shapeLayer];
-  v5 = [v4 CGPath];
+  pathCopy = path;
+  _shapeLayer = [(SSSPathView *)self _shapeLayer];
+  cGPath = [pathCopy CGPath];
 
-  [v6 setPath:v5];
+  [_shapeLayer setPath:cGPath];
 }
 
 - (UIBezierPath)path
 {
-  v2 = [(SSSPathView *)self _shapeLayer];
-  v3 = +[UIBezierPath bezierPathWithCGPath:](UIBezierPath, "bezierPathWithCGPath:", [v2 path]);
+  _shapeLayer = [(SSSPathView *)self _shapeLayer];
+  v3 = +[UIBezierPath bezierPathWithCGPath:](UIBezierPath, "bezierPathWithCGPath:", [_shapeLayer path]);
 
   return v3;
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v4 = a3;
-  v6 = [(SSSPathView *)self _shapeLayer];
-  v5 = [v4 CGColor];
+  colorCopy = color;
+  _shapeLayer = [(SSSPathView *)self _shapeLayer];
+  cGColor = [colorCopy CGColor];
 
-  [v6 setFillColor:v5];
+  [_shapeLayer setFillColor:cGColor];
 }
 
 - (UIColor)fillColor
 {
-  v2 = [(SSSPathView *)self _shapeLayer];
-  v3 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [v2 fillColor]);
+  _shapeLayer = [(SSSPathView *)self _shapeLayer];
+  v3 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [_shapeLayer fillColor]);
 
   return v3;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = SSSPathView;
-  if ([(SSSPathView *)&v7 _shouldAnimatePropertyWithKey:v4])
+  if ([(SSSPathView *)&v7 _shouldAnimatePropertyWithKey:keyCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"path"];
+    v5 = [keyCopy isEqualToString:@"path"];
   }
 
   return v5;

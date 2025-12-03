@@ -1,22 +1,22 @@
 @interface _NSQueryGenerationToken
-+ (uint64_t)identifierIsForNonGenerationalStore:(uint64_t)a1;
-- (BOOL)_moor:(uint64_t)a3 error:;
-- (BOOL)isEqual:(id)a3;
++ (uint64_t)identifierIsForNonGenerationalStore:(uint64_t)store;
+- (BOOL)_moor:(uint64_t)_moor error:;
+- (BOOL)isEqual:(id)equal;
 - (_NSQueryGenerationToken)autorelease;
-- (_NSQueryGenerationToken)initWithCoder:(id)a3;
+- (_NSQueryGenerationToken)initWithCoder:(id)coder;
 - (_NSQueryGenerationToken)retain;
-- (_WORD)_generationalComponentForStore:(uint64_t)a1;
-- (_WORD)_storesForRequestRoutingFrom:(uint64_t *)a3 error:;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_WORD)_generationalComponentForStore:(uint64_t)store;
+- (_WORD)_storesForRequestRoutingFrom:(uint64_t *)from error:;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)persistentStoreCoordinator;
 - (uint64_t)_expectedStores;
-- (void)_initWithValue:(int)a3 singleton:;
-- (void)_makeConcrete:(uint64_t)a1;
+- (void)_initWithValue:(int)value singleton:;
+- (void)_makeConcrete:(uint64_t)concrete;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)initForNonGenerationalStore:(void *)result;
-- (void)initWithValue:(void *)a3 store:(int)a4 freeValueOnDealloc:;
+- (void)initWithValue:(void *)value store:(int)store freeValueOnDealloc:;
 - (void)release;
 @end
 
@@ -123,10 +123,10 @@ LABEL_10:
     WeakRetained = 0;
   }
 
-  v7 = [WeakRetained _persistentStoreCoordinator];
+  _persistentStoreCoordinator = [WeakRetained _persistentStoreCoordinator];
 
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return _persistentStoreCoordinator;
 }
 
 - (void)dealloc
@@ -158,14 +158,14 @@ LABEL_10:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_initWithValue:(int)a3 singleton:
+- (void)_initWithValue:(int)value singleton:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = _NSQueryGenerationToken;
   v5 = objc_msgSendSuper2(&v9, sel_init);
   if (v5)
@@ -181,7 +181,7 @@ LABEL_10:
     }
 
     v5[3] = v6;
-    if (a3)
+    if (value)
     {
       v7 = 2;
     }
@@ -199,24 +199,24 @@ LABEL_10:
   return v5;
 }
 
-- (void)initWithValue:(void *)a3 store:(int)a4 freeValueOnDealloc:
+- (void)initWithValue:(void *)value store:(int)store freeValueOnDealloc:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v6 = [(_NSQueryGenerationToken *)a1 _initWithValue:a2 singleton:0];
+  v6 = [(_NSQueryGenerationToken *)self _initWithValue:a2 singleton:0];
   if (v6)
   {
-    if (a3)
+    if (value)
     {
-      v6[1] = [a3 identifier];
-      v6[2] = [[_PFWeakReference alloc] initWithObject:a3];
+      v6[1] = [value identifier];
+      v6[2] = [[_PFWeakReference alloc] initWithObject:value];
     }
 
     *(v6 + 16) &= ~1u;
-    if (a4)
+    if (store)
     {
       v7 = 4;
     }
@@ -232,7 +232,7 @@ LABEL_10:
   return v6;
 }
 
-+ (uint64_t)identifierIsForNonGenerationalStore:(uint64_t)a1
++ (uint64_t)identifierIsForNonGenerationalStore:(uint64_t)store
 {
   objc_opt_self();
 
@@ -249,11 +249,11 @@ LABEL_10:
   return result;
 }
 
-- (_NSQueryGenerationToken)initWithCoder:(id)a3
+- (_NSQueryGenerationToken)initWithCoder:(id)coder
 {
-  if ([a3 decodeBoolForKey:@"NSQueryTokenIsSingleton"])
+  if ([coder decodeBoolForKey:@"NSQueryTokenIsSingleton"])
   {
-    v5 = [a3 decodeIntForKey:@"NSQueryTokenWhichSingleton"];
+    v5 = [coder decodeIntForKey:@"NSQueryTokenWhichSingleton"];
     if (v5 == 2)
     {
       v6 = +[NSQueryGenerationToken currentQueryGenerationToken];
@@ -281,7 +281,7 @@ LABEL_10:
     if (v7)
     {
       *&v7->_flags &= ~2u;
-      v9 = [a3 decodeBoolForKey:@"NSQueryTokenIsCompound"];
+      v9 = [coder decodeBoolForKey:@"NSQueryTokenIsCompound"];
       *&v8->_flags = *&v8->_flags & 0xFFFE | v9;
       if (v9)
       {
@@ -292,14 +292,14 @@ LABEL_10:
 
       else
       {
-        v8->_storeIdentifier = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSQueryTokenStoreIdentifier"];
+        v8->_storeIdentifier = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSQueryTokenStoreIdentifier"];
         v13 = MEMORY[0x1E695DFD8];
         v14 = objc_opt_class();
         v15 = objc_opt_class();
         v12 = [v13 setWithObjects:{v14, v15, objc_opt_class(), 0}];
       }
 
-      v16 = [a3 decodeObjectOfClasses:v12 forKey:@"NSQueryTokenGenerationIdentifier"];
+      v16 = [coder decodeObjectOfClasses:v12 forKey:@"NSQueryTokenGenerationIdentifier"];
       if ([v16 isNSData])
       {
         v17 = [[_PFSQLiteSnapshotWrapper alloc] initWithData:v16];
@@ -318,9 +318,9 @@ LABEL_10:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeBool:(*&self->_flags >> 1) & 1 forKey:@"NSQueryTokenIsSingleton"];
+  [coder encodeBool:(*&self->_flags >> 1) & 1 forKey:@"NSQueryTokenIsSingleton"];
   flags = self->_flags;
   if ((flags & 2) != 0)
   {
@@ -334,15 +334,15 @@ LABEL_10:
       v7 = 2 * (+[NSQueryGenerationToken currentQueryGenerationToken]== self);
     }
 
-    [a3 encodeInt:v7 forKey:@"NSQueryTokenWhichSingleton"];
+    [coder encodeInt:v7 forKey:@"NSQueryTokenWhichSingleton"];
   }
 
   else
   {
-    [a3 encodeBool:flags & 1 forKey:@"NSQueryTokenIsCompound"];
+    [coder encodeBool:flags & 1 forKey:@"NSQueryTokenIsCompound"];
     if ((*&self->_flags & 1) == 0)
     {
-      [a3 encodeObject:self->_storeIdentifier forKey:@"NSQueryTokenStoreIdentifier"];
+      [coder encodeObject:self->_storeIdentifier forKey:@"NSQueryTokenStoreIdentifier"];
     }
 
     generationIdentifier = self->_generationIdentifier;
@@ -352,11 +352,11 @@ LABEL_10:
       generationIdentifier = [(_PFSQLiteSnapshotWrapper *)generationIdentifier data];
     }
 
-    [a3 encodeObject:generationIdentifier forKey:@"NSQueryTokenGenerationIdentifier"];
+    [coder encodeObject:generationIdentifier forKey:@"NSQueryTokenGenerationIdentifier"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x1E69E9840];
   if ((*&self->_flags & 2) != 0)
@@ -426,24 +426,24 @@ LABEL_10:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v5 = [a3 isMemberOfClass:objc_opt_class()];
+    v5 = [equal isMemberOfClass:objc_opt_class()];
     if (v5)
     {
-      if ((*&self->_flags & 1) == (*(a3 + 16) & 1))
+      if ((*&self->_flags & 1) == (*(equal + 16) & 1))
       {
-        if ((*&self->_flags & 1) != 0 || (v5 = [(NSString *)self->_storeIdentifier isEqual:*(a3 + 1)]) != 0)
+        if ((*&self->_flags & 1) != 0 || (v5 = [(NSString *)self->_storeIdentifier isEqual:*(equal + 1)]) != 0)
         {
           generationIdentifier = self->_generationIdentifier;
-          v7 = *(a3 + 3);
+          v7 = *(equal + 3);
 
           LOBYTE(v5) = [generationIdentifier isEqual:v7];
         }
@@ -514,20 +514,20 @@ LABEL_10:
   return result;
 }
 
-- (_WORD)_generationalComponentForStore:(uint64_t)a1
+- (_WORD)_generationalComponentForStore:(uint64_t)store
 {
-  v2 = a1;
+  storeCopy = store;
   v20 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (store)
   {
-    v4 = *(a1 + 32);
+    v4 = *(store + 32);
     if (v4)
     {
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v7 = *(a1 + 24);
+      v7 = *(store + 24);
       v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
@@ -545,10 +545,10 @@ LABEL_10:
             v12 = [(_NSQueryGenerationToken *)*(*(&v15 + 1) + 8 * i) _generationalComponentForStore:a2];
             if (v12)
             {
-              v2 = v12;
+              storeCopy = v12;
               if ((v12[16] & 2) == 0)
               {
-                v2 = v12;
+                storeCopy = v12;
               }
 
               goto LABEL_21;
@@ -556,7 +556,7 @@ LABEL_10:
           }
 
           v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
-          v2 = 0;
+          storeCopy = 0;
           if (v9)
           {
             continue;
@@ -568,13 +568,13 @@ LABEL_10:
 
       else
       {
-        v2 = 0;
+        storeCopy = 0;
       }
     }
 
     else if ((v4 & 2) == 0)
     {
-      v5 = *(a1 + 16);
+      v5 = *(store + 16);
       if (v5)
       {
         WeakRetained = objc_loadWeakRetained((v5 + 8));
@@ -587,43 +587,43 @@ LABEL_10:
 
       if (WeakRetained != a2)
       {
-        v2 = 0;
+        storeCopy = 0;
       }
     }
   }
 
 LABEL_21:
   v13 = *MEMORY[0x1E69E9840];
-  return v2;
+  return storeCopy;
 }
 
 - (uint64_t)_expectedStores
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
-    v9 = 0;
+    array = 0;
     goto LABEL_17;
   }
 
-  v2 = *(a1 + 32);
+  v2 = *(self + 32);
   if ((v2 & 2) == 0)
   {
     v3 = MEMORY[0x1E695DF70];
     if ((v2 & 1) == 0)
     {
-      v4 = *(a1 + 8);
+      v4 = *(self + 8);
       v5 = *MEMORY[0x1E69E9840];
 
       return [v3 arrayWithObject:v4];
     }
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = *(a1 + 24);
+    v10 = *(self + 24);
     v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
@@ -638,7 +638,7 @@ LABEL_21:
             objc_enumerationMutation(v10);
           }
 
-          [v9 addObjectsFromArray:-[_NSQueryGenerationToken _expectedStores](*(*(&v16 + 1) + 8 * i))];
+          [array addObjectsFromArray:-[_NSQueryGenerationToken _expectedStores](*(*(&v16 + 1) + 8 * i))];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -649,7 +649,7 @@ LABEL_21:
 
 LABEL_17:
     v15 = *MEMORY[0x1E69E9840];
-    return v9;
+    return array;
   }
 
   v7 = MEMORY[0x1E695DF70];
@@ -658,12 +658,12 @@ LABEL_17:
   return [v7 array];
 }
 
-- (void)_makeConcrete:(uint64_t)a1
+- (void)_makeConcrete:(uint64_t)concrete
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (concrete)
   {
-    v3 = *(a1 + 32);
+    v3 = *(concrete + 32);
     if ((v3 & 2) == 0)
     {
       if ((v3 & 1) == 0)
@@ -671,7 +671,7 @@ LABEL_17:
         if (!a2)
         {
 
-          *(a1 + 16) = 0;
+          *(concrete + 16) = 0;
           goto LABEL_17;
         }
 
@@ -683,7 +683,7 @@ LABEL_17:
       v15 = 0u;
       v12 = 0u;
       v13 = 0u;
-      v6 = *(a1 + 24);
+      v6 = *(concrete + 24);
       v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
@@ -709,9 +709,9 @@ LABEL_17:
 
       if (a2)
       {
-        v5 = *(a1 + 32) & 0xFFF7;
+        v5 = *(concrete + 32) & 0xFFF7;
 LABEL_15:
-        *(a1 + 32) = v5;
+        *(concrete + 32) = v5;
       }
     }
   }
@@ -720,16 +720,16 @@ LABEL_17:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_moor:(uint64_t)a3 error:
+- (BOOL)_moor:(uint64_t)_moor error:
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v12 = 0;
     goto LABEL_31;
   }
 
-  v4 = *(a1 + 32);
+  v4 = *(self + 32);
   if ((v4 & 2) == 0)
   {
     if (v4)
@@ -738,7 +738,7 @@ LABEL_17:
       v30 = 0uLL;
       v27 = 0uLL;
       v28 = 0uLL;
-      v13 = *(a1 + 24);
+      v13 = *(self + 24);
       v14 = [v13 countByEnumeratingWithState:&v27 objects:v32 count:16];
       if (v14)
       {
@@ -754,7 +754,7 @@ LABEL_17:
               objc_enumerationMutation(v13);
             }
 
-            v16 += [(_NSQueryGenerationToken *)*(*(&v27 + 1) + 8 * i) _moor:a2 error:a3];
+            v16 += [(_NSQueryGenerationToken *)*(*(&v27 + 1) + 8 * i) _moor:a2 error:_moor];
           }
 
           v15 = [v13 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -768,7 +768,7 @@ LABEL_17:
         v16 = 0;
       }
 
-      v12 = [*(a1 + 24) count] == v16;
+      v12 = [*(self + 24) count] == v16;
       goto LABEL_30;
     }
 
@@ -796,7 +796,7 @@ LABEL_6:
       }
 
       v11 = *(*(&v23 + 1) + 8 * v10);
-      if ([*(a1 + 8) isEqual:{objc_msgSend(v11, "identifier")}])
+      if ([*(self + 8) isEqual:{objc_msgSend(v11, "identifier")}])
       {
         break;
       }
@@ -814,36 +814,36 @@ LABEL_6:
       }
     }
 
-    v19 = [v11 reopenQueryGenerationWithIdentifier:*(a1 + 24) error:a3];
+    v19 = [v11 reopenQueryGenerationWithIdentifier:*(self + 24) error:_moor];
     if (!v19)
     {
       goto LABEL_27;
     }
 
     v20 = v19;
-    *(a1 + 16) = [[_PFWeakReference alloc] initWithObject:v11];
-    if (([*(v20 + 24) isEqual:*(a1 + 24)] & 1) == 0)
+    *(self + 16) = [[_PFWeakReference alloc] initWithObject:v11];
+    if (([*(v20 + 24) isEqual:*(self + 24)] & 1) == 0)
     {
 
-      *(a1 + 24) = *(v20 + 24);
+      *(self + 24) = *(v20 + 24);
     }
 
     if ((*(v20 + 32) & 4) != 0)
     {
-      *(a1 + 32) |= 4u;
+      *(self + 32) |= 4u;
       *(v20 + 32) &= ~4u;
     }
   }
 
   v12 = 1;
 LABEL_30:
-  [(_NSQueryGenerationToken *)a1 _makeConcrete:v12];
+  [(_NSQueryGenerationToken *)self _makeConcrete:v12];
 LABEL_31:
   v21 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-- (_WORD)_storesForRequestRoutingFrom:(uint64_t *)a3 error:
+- (_WORD)_storesForRequestRoutingFrom:(uint64_t *)from error:
 {
   v25[2] = *MEMORY[0x1E69E9840];
   if (result)
@@ -857,7 +857,7 @@ LABEL_31:
     v22 = 0;
     v6 = [(_NSQueryGenerationToken *)result _moor:a2 error:&v22];
     v7 = v6;
-    if (a3 && !v6)
+    if (from && !v6)
     {
       v8 = v22;
       if (!v22)
@@ -871,7 +871,7 @@ LABEL_31:
         v8 = [v9 errorWithDomain:v10 code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v25, v24, 2)}];
       }
 
-      *a3 = v8;
+      *from = v8;
     }
 
     if (!v7)

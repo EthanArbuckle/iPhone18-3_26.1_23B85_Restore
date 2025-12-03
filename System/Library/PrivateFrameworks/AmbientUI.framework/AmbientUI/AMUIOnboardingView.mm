@@ -1,7 +1,7 @@
 @interface AMUIOnboardingView
-- (AMUIOnboardingView)initWithFrame:(CGRect)a3;
+- (AMUIOnboardingView)initWithFrame:(CGRect)frame;
 - (AMUIOnboardingViewDelegate)delegate;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)_containerScrollView;
 - (id)_onboardingTitle;
 - (id)_onboardingViewPackageName;
@@ -15,33 +15,33 @@
 - (void)_layoutContinueButtonOcclusionMaterialViewIfNecessary;
 - (void)_layoutPackageViewIfNecessary;
 - (void)_layoutTitleLabelIfNecessary;
-- (void)_setContent:(id)a3;
-- (void)_setTitle:(id)a3;
-- (void)_toggleContinueButtonOcclusionMaterialViewVisibilityIsVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)_setContent:(id)content;
+- (void)_setTitle:(id)title;
+- (void)_toggleContinueButtonOcclusionMaterialViewVisibilityIsVisible:(BOOL)visible animated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation AMUIOnboardingView
 
-- (AMUIOnboardingView)initWithFrame:(CGRect)a3
+- (AMUIOnboardingView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = AMUIOnboardingView;
-  v3 = [(AMUIOnboardingView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AMUIOnboardingView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(AMUIOnboardingView *)v3 _setOverrideUserInterfaceStyle:2];
-    v5 = [(AMUIOnboardingView *)v4 _onboardingTitle];
-    [(AMUIOnboardingView *)v4 _setTitle:v5];
+    _onboardingTitle = [(AMUIOnboardingView *)v4 _onboardingTitle];
+    [(AMUIOnboardingView *)v4 _setTitle:_onboardingTitle];
 
     v6 = AMUIAmbientUIFrameworkBundle();
     v7 = [v6 localizedStringForKey:@"ONBOARDING_DESCRIPTION" value:&stru_28518E9B8 table:0];
     [(AMUIOnboardingView *)v4 _setContent:v7];
 
-    v8 = [(AMUIOnboardingView *)v4 layer];
-    [v8 setAllowsGroupOpacity:1];
+    layer = [(AMUIOnboardingView *)v4 layer];
+    [layer setAllowsGroupOpacity:1];
 
     [(AMUIOnboardingView *)v4 setMaximumContentSizeCategory:*MEMORY[0x277D76820]];
   }
@@ -66,10 +66,10 @@
   [(AMUIOnboardingView *)self _layoutContinueButtonOcclusionMaterialViewIfNecessary];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(AMUIOnboardingView *)self _contentAllowedWidthForSize:?];
   v7 = v6;
   [(UILabel *)self->_titleLabel sizeThatFits:?];
@@ -82,14 +82,14 @@
   return result;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  [v4 contentOffset];
+  scrollCopy = scroll;
+  [scrollCopy contentOffset];
   v6 = v5;
-  [v4 frame];
+  [scrollCopy frame];
   Height = CGRectGetHeight(v11);
-  [v4 contentSize];
+  [scrollCopy contentSize];
   v9 = v8;
 
   [(AMUIOnboardingView *)self _toggleContinueButtonOcclusionMaterialViewVisibilityIsVisible:v6 + Height < v9 animated:1, v6 + Height];
@@ -115,11 +115,11 @@
   return containerScrollView;
 }
 
-- (void)_setTitle:(id)a3
+- (void)_setTitle:(id)title
 {
-  v13 = a3;
-  v4 = [(UILabel *)self->_titleLabel text];
-  v5 = [v4 isEqualToString:v13];
+  titleCopy = title;
+  text = [(UILabel *)self->_titleLabel text];
+  v5 = [text isEqualToString:titleCopy];
 
   if ((v5 & 1) == 0)
   {
@@ -137,26 +137,26 @@
       v9 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76A08] weight:*MEMORY[0x277D743F8]];
       [(UILabel *)self->_titleLabel setFont:v9];
       v10 = self->_titleLabel;
-      v11 = [MEMORY[0x277D75348] labelColor];
-      [(UILabel *)v10 setTextColor:v11];
+      labelColor = [MEMORY[0x277D75348] labelColor];
+      [(UILabel *)v10 setTextColor:labelColor];
 
       [(UILabel *)self->_titleLabel setPreferredVibrancy:1];
-      v12 = [(AMUIOnboardingView *)self _containerScrollView];
-      [v12 addSubview:self->_titleLabel];
+      _containerScrollView = [(AMUIOnboardingView *)self _containerScrollView];
+      [_containerScrollView addSubview:self->_titleLabel];
 
       titleLabel = self->_titleLabel;
     }
 
-    [(UILabel *)titleLabel setText:v13];
+    [(UILabel *)titleLabel setText:titleCopy];
     [(AMUIOnboardingView *)self setNeedsLayout];
   }
 }
 
-- (void)_setContent:(id)a3
+- (void)_setContent:(id)content
 {
-  v13 = a3;
-  v4 = [(UILabel *)self->_contentLabel text];
-  v5 = [v4 isEqualToString:v13];
+  contentCopy = content;
+  text = [(UILabel *)self->_contentLabel text];
+  v5 = [text isEqualToString:contentCopy];
 
   if ((v5 & 1) == 0)
   {
@@ -173,17 +173,17 @@
       v9 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76918] weight:*MEMORY[0x277D74418]];
       [(UILabel *)self->_contentLabel setFont:v9];
       v10 = self->_contentLabel;
-      v11 = [MEMORY[0x277D75348] secondaryLabelColor];
-      [(UILabel *)v10 setTextColor:v11];
+      secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+      [(UILabel *)v10 setTextColor:secondaryLabelColor];
 
       [(UILabel *)self->_contentLabel setPreferredVibrancy:1];
-      v12 = [(AMUIOnboardingView *)self _containerScrollView];
-      [v12 addSubview:self->_contentLabel];
+      _containerScrollView = [(AMUIOnboardingView *)self _containerScrollView];
+      [_containerScrollView addSubview:self->_contentLabel];
 
       contentLabel = self->_contentLabel;
     }
 
-    [(UILabel *)contentLabel setText:v13];
+    [(UILabel *)contentLabel setText:contentCopy];
     [(AMUIOnboardingView *)self setNeedsLayout];
   }
 }
@@ -193,9 +193,9 @@
   v21[1] = *MEMORY[0x277D85DE8];
   if (!self->_continueButton)
   {
-    v3 = [MEMORY[0x277D75230] filledButtonConfiguration];
-    v4 = [MEMORY[0x277CF0D60] preferredFontProvider];
-    v5 = [v4 preferredFontForTextStyle:*MEMORY[0x277D76918] hiFontStyle:4];
+    filledButtonConfiguration = [MEMORY[0x277D75230] filledButtonConfiguration];
+    preferredFontProvider = [MEMORY[0x277CF0D60] preferredFontProvider];
+    v5 = [preferredFontProvider preferredFontForTextStyle:*MEMORY[0x277D76918] hiFontStyle:4];
 
     v6 = objc_alloc(MEMORY[0x277CCA898]);
     v7 = AMUIAmbientUIFrameworkBundle();
@@ -205,8 +205,8 @@
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
     v10 = [v6 initWithString:v8 attributes:v9];
 
-    [v3 setAttributedTitle:v10];
-    [v3 setCornerStyle:3];
+    [filledButtonConfiguration setAttributedTitle:v10];
+    [filledButtonConfiguration setCornerStyle:3];
     objc_initWeak(&location, self);
     v11 = MEMORY[0x277D75220];
     v12 = MEMORY[0x277D750C8];
@@ -216,7 +216,7 @@
     v17[3] = &unk_278C75D38;
     objc_copyWeak(&v18, &location);
     v13 = [v12 actionWithHandler:v17];
-    v14 = [v11 buttonWithConfiguration:v3 primaryAction:v13];
+    v14 = [v11 buttonWithConfiguration:filledButtonConfiguration primaryAction:v13];
     continueButton = self->_continueButton;
     self->_continueButton = v14;
 
@@ -288,14 +288,14 @@ void __57__AMUIOnboardingView__configureContinueButtonIfNecessary__block_invoke(
   if (!self->_packageView)
   {
     v3 = objc_alloc(MEMORY[0x277CF0D48]);
-    v4 = [(AMUIOnboardingView *)self _onboardingViewPackageName];
+    _onboardingViewPackageName = [(AMUIOnboardingView *)self _onboardingViewPackageName];
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v6 = [v3 initWithPackageName:v4 inBundle:v5];
+    v6 = [v3 initWithPackageName:_onboardingViewPackageName inBundle:v5];
     packageView = self->_packageView;
     self->_packageView = v6;
 
-    v8 = [(AMUIOnboardingView *)self _containerScrollView];
-    [v8 addSubview:self->_packageView];
+    _containerScrollView = [(AMUIOnboardingView *)self _containerScrollView];
+    [_containerScrollView addSubview:self->_packageView];
 
     self->_packageViewStateIndex = 0;
     v9 = dispatch_time(0, 250000000);
@@ -511,9 +511,9 @@ uint64_t __66__AMUIOnboardingView__performNextAnimationForPackageViewAnimated___
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_toggleContinueButtonOcclusionMaterialViewVisibilityIsVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)_toggleContinueButtonOcclusionMaterialViewVisibilityIsVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (a3)
+  if (visible)
   {
     v5 = 1.0;
   }
@@ -525,7 +525,7 @@ uint64_t __66__AMUIOnboardingView__performNextAnimationForPackageViewAnimated___
 
   v6 = self->_continueButtonOcclusionMaterialView;
   v7 = v6;
-  if (a4)
+  if (animated)
   {
     v8 = MEMORY[0x277D75D18];
     v9[0] = MEMORY[0x277D85DD0];

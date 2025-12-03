@@ -1,7 +1,7 @@
 @interface OKWidgetCameraPreviewView
 - (AVCaptureSession)session;
 - (void)dealloc;
-- (void)setSession:(id)a3;
+- (void)setSession:(id)session;
 @end
 
 @implementation OKWidgetCameraPreviewView
@@ -16,16 +16,16 @@
 
 - (AVCaptureSession)session
 {
-  v2 = [(OKWidgetCameraPreviewView *)self layer];
+  layer = [(OKWidgetCameraPreviewView *)self layer];
 
-  return [v2 session];
+  return [layer session];
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v4 = [(OKWidgetCameraPreviewView *)self layer];
+  layer = [(OKWidgetCameraPreviewView *)self layer];
 
-  [v4 setSession:a3];
+  [layer setSession:session];
 }
 
 @end

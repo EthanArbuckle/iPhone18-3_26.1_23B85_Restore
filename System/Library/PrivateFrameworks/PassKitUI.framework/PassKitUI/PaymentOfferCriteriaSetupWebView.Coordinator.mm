@@ -1,34 +1,34 @@
 @interface PaymentOfferCriteriaSetupWebView.Coordinator
 - (_TtCV9PassKitUI32PaymentOfferCriteriaSetupWebView11Coordinator)init;
-- (void)webView:(WKWebView *)a3 requestMediaCapturePermissionForOrigin:(WKSecurityOrigin *)a4 initiatedByFrame:(WKFrameInfo *)a5 type:(int64_t)a6 decisionHandler:(id)a7;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
+- (void)webView:(WKWebView *)view requestMediaCapturePermissionForOrigin:(WKSecurityOrigin *)origin initiatedByFrame:(WKFrameInfo *)frame type:(int64_t)type decisionHandler:(id)handler;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
 @end
 
 @implementation PaymentOfferCriteriaSetupWebView.Coordinator
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_1BD5272A8(v10, v11, v8);
+  viewCopy = view;
+  actionCopy = action;
+  selfCopy = self;
+  sub_1BD5272A8(actionCopy, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-- (void)webView:(WKWebView *)a3 requestMediaCapturePermissionForOrigin:(WKSecurityOrigin *)a4 initiatedByFrame:(WKFrameInfo *)a5 type:(int64_t)a6 decisionHandler:(id)a7
+- (void)webView:(WKWebView *)view requestMediaCapturePermissionForOrigin:(WKSecurityOrigin *)origin initiatedByFrame:(WKFrameInfo *)frame type:(int64_t)type decisionHandler:(id)handler
 {
   v13 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBD3E580);
   MEMORY[0x1EEE9AC00](v13 - 8, v14);
   v16 = &v26 - v15;
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(handler);
   v18 = swift_allocObject();
-  v18[2] = a3;
-  v18[3] = a4;
-  v18[4] = a5;
-  v18[5] = a6;
+  v18[2] = view;
+  v18[3] = origin;
+  v18[4] = frame;
+  v18[5] = type;
   v18[6] = v17;
   v18[7] = self;
   v19 = sub_1BE0528D4();
@@ -43,10 +43,10 @@
   v21[3] = 0;
   v21[4] = &unk_1BE107FA0;
   v21[5] = v20;
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = self;
+  viewCopy = view;
+  originCopy = origin;
+  frameCopy = frame;
+  selfCopy = self;
   sub_1BD992D04(0, 0, v16, &unk_1BE0C7F30, v21);
 }
 

@@ -1,5 +1,5 @@
 @interface NCNotificationAppsSummaryContentProvider
-- (id)_summaryStringForNotificationRequest:(id)a3;
+- (id)_summaryStringForNotificationRequest:(id)request;
 - (id)summaryTitle;
 @end
 
@@ -13,12 +13,12 @@
   return v3;
 }
 
-- (id)_summaryStringForNotificationRequest:(id)a3
+- (id)_summaryStringForNotificationRequest:(id)request
 {
-  v3 = [a3 content];
-  v4 = [v3 defaultHeader];
+  content = [request content];
+  defaultHeader = [content defaultHeader];
 
-  return v4;
+  return defaultHeader;
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface DDUIPhysicalUnitGroup
-- (DDUIPhysicalUnitGroup)initWithName:(id)a3 units:(id)a4 restricted:(BOOL)a5 symbol:(id)a6;
-- (id)symbolNameForValue:(double)a3 unit:(id)a4;
+- (DDUIPhysicalUnitGroup)initWithName:(id)name units:(id)units restricted:(BOOL)restricted symbol:(id)symbol;
+- (id)symbolNameForValue:(double)value unit:(id)unit;
 @end
 
 @implementation DDUIPhysicalUnitGroup
 
-- (DDUIPhysicalUnitGroup)initWithName:(id)a3 units:(id)a4 restricted:(BOOL)a5 symbol:(id)a6
+- (DDUIPhysicalUnitGroup)initWithName:(id)name units:(id)units restricted:(BOOL)restricted symbol:(id)symbol
 {
   v29 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  nameCopy = name;
+  unitsCopy = units;
+  symbolCopy = symbol;
   v27.receiver = self;
   v27.super_class = DDUIPhysicalUnitGroup;
   v14 = [(DDUIPhysicalUnitGroup *)&v27 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_name, a3);
-    objc_storeStrong(&v15->_units, a4);
-    v15->_restrictedLinkification = a5;
-    objc_storeStrong(&v15->_symbol, a6);
+    objc_storeStrong(&v14->_name, name);
+    objc_storeStrong(&v15->_units, units);
+    v15->_restrictedLinkification = restricted;
+    objc_storeStrong(&v15->_symbol, symbol);
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v16 = v12;
+    v16 = unitsCopy;
     v17 = [v16 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v17)
     {
@@ -56,12 +56,12 @@
   return v15;
 }
 
-- (id)symbolNameForValue:(double)a3 unit:(id)a4
+- (id)symbolNameForValue:(double)value unit:(id)unit
 {
-  v6 = a4;
+  unitCopy = unit;
   p_isa = self->_symbol;
-  v8 = [v6 group];
-  if (v8 != self)
+  group = [unitCopy group];
+  if (group != self)
   {
     goto LABEL_2;
   }
@@ -71,10 +71,10 @@
   if (v10)
   {
     v11 = [DDUIPhysicalUnit unitWithIdentifier:@"celsius"];
-    v8 = v11;
+    group = v11;
     if (v11)
     {
-      [(DDUIPhysicalUnitGroup *)v11 valueFrom:v6 unit:a3];
+      [(DDUIPhysicalUnitGroup *)v11 valueFrom:unitCopy unit:value];
       if (v12 <= 0.0)
       {
         v13 = @"thermometer.snowflake";

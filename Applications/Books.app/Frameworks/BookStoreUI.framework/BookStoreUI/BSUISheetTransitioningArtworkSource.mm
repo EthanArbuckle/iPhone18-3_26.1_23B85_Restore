@@ -1,41 +1,41 @@
 @interface BSUISheetTransitioningArtworkSource
-+ (BOOL)isValidSourceWithFeedViewController:(id)a3 query:(id)a4;
-- (BSUISheetTransitioningArtworkSource)initWithFeedViewController:(id)a3 query:(id)a4 isCover:(BOOL)a5;
++ (BOOL)isValidSourceWithFeedViewController:(id)controller query:(id)query;
+- (BSUISheetTransitioningArtworkSource)initWithFeedViewController:(id)controller query:(id)query isCover:(BOOL)cover;
 - (CGRect)frame;
 - (id)hide;
 - (void)dealloc;
-- (void)imageResourceDidChangeImage:(id)a3;
-- (void)replaceReferenceView:(id)a3;
+- (void)imageResourceDidChangeImage:(id)image;
+- (void)replaceReferenceView:(id)view;
 @end
 
 @implementation BSUISheetTransitioningArtworkSource
 
-+ (BOOL)isValidSourceWithFeedViewController:(id)a3 query:(id)a4
++ (BOOL)isValidSourceWithFeedViewController:(id)controller query:(id)query
 {
-  v4 = [a3 renderReferencesMatchingQuery:a4];
+  v4 = [controller renderReferencesMatchingQuery:query];
   v5 = [v4 count] != 0;
 
   return v5;
 }
 
-- (BSUISheetTransitioningArtworkSource)initWithFeedViewController:(id)a3 query:(id)a4 isCover:(BOOL)a5
+- (BSUISheetTransitioningArtworkSource)initWithFeedViewController:(id)controller query:(id)query isCover:(BOOL)cover
 {
-  v9 = a3;
-  v10 = a4;
+  controllerCopy = controller;
+  queryCopy = query;
   v38.receiver = self;
   v38.super_class = BSUISheetTransitioningArtworkSource;
   v11 = [(BSUISheetTransitioningArtworkSource *)&v38 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_feedViewController, a3);
-    objc_storeStrong(&v12->_query, a4);
-    v12->_isCover = a5;
-    v13 = [v9 renderReferencesMatchingQuery:v10];
-    v14 = [v13 allKeys];
-    v15 = [v14 firstObject];
+    objc_storeStrong(&v11->_feedViewController, controller);
+    objc_storeStrong(&v12->_query, query);
+    v12->_isCover = cover;
+    v13 = [controllerCopy renderReferencesMatchingQuery:queryCopy];
+    allKeys = [v13 allKeys];
+    firstObject = [allKeys firstObject];
 
-    if (v15 && ([v13 objectForKeyedSubscript:v15], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "firstObject"), v17 = objc_claimAutoreleasedReturnValue(), v16, v17))
+    if (firstObject && ([v13 objectForKeyedSubscript:firstObject], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "firstObject"), v17 = objc_claimAutoreleasedReturnValue(), v16, v17))
     {
       [v17 center];
       [v17 size];
@@ -53,19 +53,19 @@
       v12->_frame.size = size;
     }
 
-    v23 = [v9 view];
+    view = [controllerCopy view];
     referenceView = v12->_referenceView;
-    v12->_referenceView = v23;
+    v12->_referenceView = view;
 
-    objc_storeStrong(&v12->_identifier, v15);
-    v25 = [v9 imageResourcesMatchingQuery:v10];
+    objc_storeStrong(&v12->_identifier, firstObject);
+    v25 = [controllerCopy imageResourcesMatchingQuery:queryCopy];
     v26 = v25;
-    if (v15)
+    if (firstObject)
     {
-      v27 = [v25 objectForKeyedSubscript:v15];
-      v28 = [v27 anyObject];
+      v27 = [v25 objectForKeyedSubscript:firstObject];
+      anyObject = [v27 anyObject];
       imageResource = v12->_imageResource;
-      v12->_imageResource = v28;
+      v12->_imageResource = anyObject;
     }
 
     else
@@ -76,16 +76,16 @@
 
     [(TUIImageResource *)v12->_imageResource addObserver:v12];
     v30 = [(TUIImageResource *)v12->_imageResource imageContentWithOptions:1];
-    v31 = [v30 image];
-    v32 = [v31 newImage];
+    image = [v30 image];
+    newImage = [image newImage];
     [v30 insets];
-    v33 = [v32 imageWithAlignmentRectInsets:?];
+    v33 = [newImage imageWithAlignmentRectInsets:?];
     image = v12->_image;
     v12->_image = v33;
 
     if ([v13 count])
     {
-      v35 = [TUIRenderReferenceOverride overrideWithQuery:v10 alpha:0.0];
+      v35 = [TUIRenderReferenceOverride overrideWithQuery:queryCopy alpha:0.0];
       overrideForHiding = v12->_overrideForHiding;
       v12->_overrideForHiding = v35;
     }
@@ -104,20 +104,20 @@
 
 - (id)hide
 {
-  v3 = [(BSUISheetTransitioningArtworkSource *)self overrideForHiding];
-  v4 = [(BSUISheetTransitioningArtworkSource *)self feedViewController];
-  [v4 addRenderOverride:v3];
+  overrideForHiding = [(BSUISheetTransitioningArtworkSource *)self overrideForHiding];
+  feedViewController = [(BSUISheetTransitioningArtworkSource *)self feedViewController];
+  [feedViewController addRenderOverride:overrideForHiding];
 
-  v5 = [(BSUISheetTransitioningArtworkSource *)self feedViewController];
-  objc_initWeak(&location, v5);
+  feedViewController2 = [(BSUISheetTransitioningArtworkSource *)self feedViewController];
+  objc_initWeak(&location, feedViewController2);
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_FDA4;
   v9[3] = &unk_386F40;
   objc_copyWeak(&v11, &location);
-  v10 = v3;
-  v6 = v3;
+  v10 = overrideForHiding;
+  v6 = overrideForHiding;
   v7 = objc_retainBlock(v9);
 
   objc_destroyWeak(&v11);
@@ -126,9 +126,9 @@
   return v7;
 }
 
-- (void)replaceReferenceView:(id)a3
+- (void)replaceReferenceView:(id)view
 {
-  v13 = a3;
+  viewCopy = view;
   [(BSUISheetTransitioningArtworkSource *)self frame];
   if (!CGRectIsEmpty(v15))
   {
@@ -137,23 +137,23 @@
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(BSUISheetTransitioningArtworkSource *)self referenceView];
-    [v13 convertRect:v12 fromView:{v5, v7, v9, v11}];
+    referenceView = [(BSUISheetTransitioningArtworkSource *)self referenceView];
+    [viewCopy convertRect:referenceView fromView:{v5, v7, v9, v11}];
     [(BSUISheetTransitioningArtworkSource *)self setFrame:?];
 
-    [(BSUISheetTransitioningArtworkSource *)self setReferenceView:v13];
+    [(BSUISheetTransitioningArtworkSource *)self setReferenceView:viewCopy];
   }
 }
 
-- (void)imageResourceDidChangeImage:(id)a3
+- (void)imageResourceDidChangeImage:(id)image
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_FF50;
   v4[3] = &unk_386D98;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  imageCopy = image;
+  v3 = imageCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 

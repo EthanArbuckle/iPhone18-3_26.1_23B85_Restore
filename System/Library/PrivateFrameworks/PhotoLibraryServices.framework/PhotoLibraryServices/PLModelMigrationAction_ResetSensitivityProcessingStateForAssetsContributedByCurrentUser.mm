@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_ResetSensitivityProcessingStateForAssetsContributedByCurrentUser
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ResetSensitivityProcessingStateForAssetsContributedByCurrentUser
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v72[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = +[PLManagedAsset fetchRequest];
   [v7 setFetchBatchSize:100];
   v72[0] = @"collectionShareAssetContributor";
@@ -27,15 +27,15 @@
   v31[1] = 3221225472;
   v31[2] = __135__PLModelMigrationAction_ResetSensitivityProcessingStateForAssetsContributedByCurrentUser_performActionWithManagedObjectContext_error___block_invoke;
   v31[3] = &unk_1E756C8F0;
-  v10 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:v6 fetchRequest:v7 pendingParentUnitCount:0 error:&v32 processingBlock:v31];
+  v10 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:contextCopy fetchRequest:v7 pendingParentUnitCount:0 error:&v32 processingBlock:v31];
   v11 = v32;
   v12 = PLMigrationGetLog();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
 
   if (v13)
   {
-    v14 = [(PLModelMigrationActionCore *)self logger];
-    v15 = v14 == 0;
+    logger = [(PLModelMigrationActionCore *)self logger];
+    v15 = logger == 0;
 
     if (v15)
     {
@@ -111,10 +111,10 @@
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v26 = v11;
   v27 = v26;
-  if (v10 != 1 && a4)
+  if (v10 != 1 && error)
   {
     v28 = v26;
-    *a4 = v27;
+    *error = v27;
   }
 
   _Block_object_dispose(&v33, 8);

@@ -1,31 +1,31 @@
 @interface UNNotificationConnectionDetails
-- (BOOL)isEqual:(id)a3;
-- (UNNotificationConnectionDetails)initWithAuditToken:(id)a3 bundleIdentifier:(id)a4 internalTool:(BOOL)a5;
-- (UNNotificationConnectionDetails)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (UNNotificationConnectionDetails)initWithAuditToken:(id)token bundleIdentifier:(id)identifier internalTool:(BOOL)tool;
+- (UNNotificationConnectionDetails)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UNNotificationConnectionDetails
 
-- (UNNotificationConnectionDetails)initWithAuditToken:(id)a3 bundleIdentifier:(id)a4 internalTool:(BOOL)a5
+- (UNNotificationConnectionDetails)initWithAuditToken:(id)token bundleIdentifier:(id)identifier internalTool:(BOOL)tool
 {
-  v8 = a3;
-  v9 = a4;
+  tokenCopy = token;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = UNNotificationConnectionDetails;
   v10 = [(UNNotificationConnectionDetails *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [tokenCopy copy];
     auditToken = v10->_auditToken;
     v10->_auditToken = v11;
 
-    v13 = [v9 copy];
+    v13 = [identifierCopy copy];
     bundleIdentifier = v10->_bundleIdentifier;
     v10->_bundleIdentifier = v13;
 
-    v10->_internalTool = a5;
+    v10->_internalTool = tool;
   }
 
   return v10;
@@ -33,73 +33,73 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(UNNotificationConnectionDetails *)self auditToken];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  auditToken = [(UNNotificationConnectionDetails *)self auditToken];
+  v5 = [builder appendObject:auditToken];
 
-  v6 = [(UNNotificationConnectionDetails *)self bundleIdentifier];
-  v7 = [v3 appendString:v6];
+  bundleIdentifier = [(UNNotificationConnectionDetails *)self bundleIdentifier];
+  v7 = [builder appendString:bundleIdentifier];
 
-  v8 = [v3 appendBool:{-[UNNotificationConnectionDetails isInternalTool](self, "isInternalTool")}];
-  v9 = [v3 hash];
+  v8 = [builder appendBool:{-[UNNotificationConnectionDetails isInternalTool](self, "isInternalTool")}];
+  v9 = [builder hash];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = v4;
-  v7 = [(UNNotificationConnectionDetails *)self auditToken];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  v6 = equalCopy;
+  auditToken = [(UNNotificationConnectionDetails *)self auditToken];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __43__UNNotificationConnectionDetails_isEqual___block_invoke;
   v21[3] = &unk_1E7CFFAE0;
   v8 = v6;
   v22 = v8;
-  v9 = [v5 appendObject:v7 counterpart:v21];
+  v9 = [v5 appendObject:auditToken counterpart:v21];
 
-  v10 = [(UNNotificationConnectionDetails *)self bundleIdentifier];
+  bundleIdentifier = [(UNNotificationConnectionDetails *)self bundleIdentifier];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __43__UNNotificationConnectionDetails_isEqual___block_invoke_2;
   v19[3] = &unk_1E7CFFB08;
   v11 = v8;
   v20 = v11;
-  v12 = [v5 appendString:v10 counterpart:v19];
+  v12 = [v5 appendString:bundleIdentifier counterpart:v19];
 
-  v13 = [(UNNotificationConnectionDetails *)self isInternalTool];
+  isInternalTool = [(UNNotificationConnectionDetails *)self isInternalTool];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __43__UNNotificationConnectionDetails_isEqual___block_invoke_3;
   v17[3] = &unk_1E7CFFB30;
   v18 = v11;
   v14 = v11;
-  v15 = [v5 appendBool:v13 counterpart:v17];
-  LOBYTE(v13) = [v5 isEqual];
+  v15 = [v5 appendBool:isInternalTool counterpart:v17];
+  LOBYTE(isInternalTool) = [v5 isEqual];
 
-  return v13;
+  return isInternalTool;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(UNNotificationConnectionDetails *)self auditToken];
-  [v6 encodeObject:v4 forKey:@"auditToken"];
+  coderCopy = coder;
+  auditToken = [(UNNotificationConnectionDetails *)self auditToken];
+  [coderCopy encodeObject:auditToken forKey:@"auditToken"];
 
-  v5 = [(UNNotificationConnectionDetails *)self bundleIdentifier];
-  [v6 encodeObject:v5 forKey:@"bundleIdentifier"];
+  bundleIdentifier = [(UNNotificationConnectionDetails *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  [v6 encodeBool:-[UNNotificationConnectionDetails isInternalTool](self forKey:{"isInternalTool"), @"internalTool"}];
+  [coderCopy encodeBool:-[UNNotificationConnectionDetails isInternalTool](self forKey:{"isInternalTool"), @"internalTool"}];
 }
 
-- (UNNotificationConnectionDetails)initWithCoder:(id)a3
+- (UNNotificationConnectionDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"auditToken"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-  v7 = [v4 decodeBoolForKey:@"internalTool"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"auditToken"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v7 = [coderCopy decodeBoolForKey:@"internalTool"];
 
   v8 = [(UNNotificationConnectionDetails *)self initWithAuditToken:v5 bundleIdentifier:v6 internalTool:v7];
   return v8;

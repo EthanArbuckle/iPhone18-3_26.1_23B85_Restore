@@ -1,127 +1,127 @@
 @interface MXServerBoundFrame
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPayload:(id)a3;
+- (int)StringAsPayload:(id)payload;
 - (int)payload;
 - (unint64_t)hash;
 - (void)clearOneofValuesForPayload;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setAudioFrame:(id)a3;
-- (void)setBeginDictation:(id)a3;
-- (void)setBeginRequest:(id)a3;
-- (void)setCancelRequest:(id)a3;
-- (void)setSessionMetadata:(id)a3;
-- (void)setSpeechProfile:(id)a3;
-- (void)setSpeechProfileRequest:(id)a3;
-- (void)setStreamingSpeechProfileCommit:(id)a3;
-- (void)setStreamingSpeechProfileData:(id)a3;
-- (void)setStreamingSpeechProfileRequest:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setAudioFrame:(id)frame;
+- (void)setBeginDictation:(id)dictation;
+- (void)setBeginRequest:(id)request;
+- (void)setCancelRequest:(id)request;
+- (void)setSessionMetadata:(id)metadata;
+- (void)setSpeechProfile:(id)profile;
+- (void)setSpeechProfileRequest:(id)request;
+- (void)setStreamingSpeechProfileCommit:(id)commit;
+- (void)setStreamingSpeechProfileData:(id)data;
+- (void)setStreamingSpeechProfileRequest:(id)request;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MXServerBoundFrame
 
-- (void)setSessionMetadata:(id)a3
+- (void)setSessionMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   [(MXServerBoundFrame *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 1;
   sessionMetadata = self->_sessionMetadata;
-  self->_sessionMetadata = v4;
+  self->_sessionMetadata = metadataCopy;
 }
 
-- (void)setBeginRequest:(id)a3
+- (void)setBeginRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(MXServerBoundFrame *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 2;
   beginRequest = self->_beginRequest;
-  self->_beginRequest = v4;
+  self->_beginRequest = requestCopy;
 }
 
-- (void)setAudioFrame:(id)a3
+- (void)setAudioFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   [(MXServerBoundFrame *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 3;
   audioFrame = self->_audioFrame;
-  self->_audioFrame = v4;
+  self->_audioFrame = frameCopy;
 }
 
-- (void)setSpeechProfile:(id)a3
+- (void)setSpeechProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   [(MXServerBoundFrame *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 4;
   speechProfile = self->_speechProfile;
-  self->_speechProfile = v4;
+  self->_speechProfile = profileCopy;
 }
 
-- (void)setCancelRequest:(id)a3
+- (void)setCancelRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(MXServerBoundFrame *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 5;
   cancelRequest = self->_cancelRequest;
-  self->_cancelRequest = v4;
+  self->_cancelRequest = requestCopy;
 }
 
-- (void)setBeginDictation:(id)a3
+- (void)setBeginDictation:(id)dictation
 {
-  v4 = a3;
+  dictationCopy = dictation;
   [(MXServerBoundFrame *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 6;
   beginDictation = self->_beginDictation;
-  self->_beginDictation = v4;
+  self->_beginDictation = dictationCopy;
 }
 
-- (void)setSpeechProfileRequest:(id)a3
+- (void)setSpeechProfileRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(MXServerBoundFrame *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 7;
   speechProfileRequest = self->_speechProfileRequest;
-  self->_speechProfileRequest = v4;
+  self->_speechProfileRequest = requestCopy;
 }
 
-- (void)setStreamingSpeechProfileRequest:(id)a3
+- (void)setStreamingSpeechProfileRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(MXServerBoundFrame *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 8;
   streamingSpeechProfileRequest = self->_streamingSpeechProfileRequest;
-  self->_streamingSpeechProfileRequest = v4;
+  self->_streamingSpeechProfileRequest = requestCopy;
 }
 
-- (void)setStreamingSpeechProfileData:(id)a3
+- (void)setStreamingSpeechProfileData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   [(MXServerBoundFrame *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 9;
   streamingSpeechProfileData = self->_streamingSpeechProfileData;
-  self->_streamingSpeechProfileData = v4;
+  self->_streamingSpeechProfileData = dataCopy;
 }
 
-- (void)setStreamingSpeechProfileCommit:(id)a3
+- (void)setStreamingSpeechProfileCommit:(id)commit
 {
-  v4 = a3;
+  commitCopy = commit;
   [(MXServerBoundFrame *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 10;
   streamingSpeechProfileCommit = self->_streamingSpeechProfileCommit;
-  self->_streamingSpeechProfileCommit = v4;
+  self->_streamingSpeechProfileCommit = commitCopy;
 }
 
 - (int)payload
@@ -137,60 +137,60 @@
   }
 }
 
-- (int)StringAsPayload:(id)a3
+- (int)StringAsPayload:(id)payload
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  payloadCopy = payload;
+  if ([payloadCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"session_metadata"])
+  else if ([payloadCopy isEqualToString:@"session_metadata"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"begin_request"])
+  else if ([payloadCopy isEqualToString:@"begin_request"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"audio_frame"])
+  else if ([payloadCopy isEqualToString:@"audio_frame"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"speech_profile"])
+  else if ([payloadCopy isEqualToString:@"speech_profile"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"cancel_request"])
+  else if ([payloadCopy isEqualToString:@"cancel_request"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"begin_dictation"])
+  else if ([payloadCopy isEqualToString:@"begin_dictation"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"speech_profile_request"])
+  else if ([payloadCopy isEqualToString:@"speech_profile_request"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"streaming_speech_profile_request"])
+  else if ([payloadCopy isEqualToString:@"streaming_speech_profile_request"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"streaming_speech_profile_data"])
+  else if ([payloadCopy isEqualToString:@"streaming_speech_profile_data"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"streaming_speech_profile_commit"])
+  else if ([payloadCopy isEqualToString:@"streaming_speech_profile_commit"])
   {
     v4 = 10;
   }
@@ -244,83 +244,83 @@
   v8.receiver = self;
   v8.super_class = MXServerBoundFrame;
   v4 = [(MXServerBoundFrame *)&v8 description];
-  v5 = [(MXServerBoundFrame *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MXServerBoundFrame *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   sessionMetadata = self->_sessionMetadata;
   if (sessionMetadata)
   {
-    v5 = [(MXSessionMetadata *)sessionMetadata dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"session_metadata"];
+    dictionaryRepresentation = [(MXSessionMetadata *)sessionMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"session_metadata"];
   }
 
   beginRequest = self->_beginRequest;
   if (beginRequest)
   {
-    v7 = [(MXBeginRequest *)beginRequest dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"begin_request"];
+    dictionaryRepresentation2 = [(MXBeginRequest *)beginRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"begin_request"];
   }
 
   audioFrame = self->_audioFrame;
   if (audioFrame)
   {
-    v9 = [(MXAudioFrame *)audioFrame dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"audio_frame"];
+    dictionaryRepresentation3 = [(MXAudioFrame *)audioFrame dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"audio_frame"];
   }
 
   speechProfile = self->_speechProfile;
   if (speechProfile)
   {
-    v11 = [(MXSpeechProfile *)speechProfile dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"speech_profile"];
+    dictionaryRepresentation4 = [(MXSpeechProfile *)speechProfile dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"speech_profile"];
   }
 
   cancelRequest = self->_cancelRequest;
   if (cancelRequest)
   {
-    v13 = [(MXCancelRequest *)cancelRequest dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"cancel_request"];
+    dictionaryRepresentation5 = [(MXCancelRequest *)cancelRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"cancel_request"];
   }
 
   beginDictation = self->_beginDictation;
   if (beginDictation)
   {
-    v15 = [(MXBeginDictation *)beginDictation dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"begin_dictation"];
+    dictionaryRepresentation6 = [(MXBeginDictation *)beginDictation dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"begin_dictation"];
   }
 
   speechProfileRequest = self->_speechProfileRequest;
   if (speechProfileRequest)
   {
-    v17 = [(MXSpeechProfileBuildRequest *)speechProfileRequest dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"speech_profile_request"];
+    dictionaryRepresentation7 = [(MXSpeechProfileBuildRequest *)speechProfileRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation7 forKey:@"speech_profile_request"];
   }
 
   streamingSpeechProfileRequest = self->_streamingSpeechProfileRequest;
   if (streamingSpeechProfileRequest)
   {
-    v19 = [(MXStreamingSpeechProfileBegin *)streamingSpeechProfileRequest dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"streaming_speech_profile_request"];
+    dictionaryRepresentation8 = [(MXStreamingSpeechProfileBegin *)streamingSpeechProfileRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation8 forKey:@"streaming_speech_profile_request"];
   }
 
   streamingSpeechProfileData = self->_streamingSpeechProfileData;
   if (streamingSpeechProfileData)
   {
-    v21 = [(MXStreamingSpeechProfileAddData *)streamingSpeechProfileData dictionaryRepresentation];
-    [v3 setObject:v21 forKey:@"streaming_speech_profile_data"];
+    dictionaryRepresentation9 = [(MXStreamingSpeechProfileAddData *)streamingSpeechProfileData dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation9 forKey:@"streaming_speech_profile_data"];
   }
 
   streamingSpeechProfileCommit = self->_streamingSpeechProfileCommit;
   if (streamingSpeechProfileCommit)
   {
-    v23 = [(MXStreamingSpeechProfileCommit *)streamingSpeechProfileCommit dictionaryRepresentation];
-    [v3 setObject:v23 forKey:@"streaming_speech_profile_commit"];
+    dictionaryRepresentation10 = [(MXStreamingSpeechProfileCommit *)streamingSpeechProfileCommit dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation10 forKey:@"streaming_speech_profile_commit"];
   }
 
   if (*&self->_has)
@@ -336,151 +336,151 @@
       v25 = off_27991BDB8[payload];
     }
 
-    [v3 setObject:v25 forKey:@"payload"];
+    [dictionary setObject:v25 forKey:@"payload"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_sessionMetadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_beginRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_audioFrame)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_speechProfile)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_cancelRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_beginDictation)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_speechProfileRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_streamingSpeechProfileRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_streamingSpeechProfileData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_streamingSpeechProfileCommit)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[10] = self->_payload;
-    *(v4 + 96) |= 1u;
+    toCopy[10] = self->_payload;
+    *(toCopy + 96) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_sessionMetadata)
   {
-    [v4 setSessionMetadata:?];
-    v4 = v5;
+    [toCopy setSessionMetadata:?];
+    toCopy = v5;
   }
 
   if (self->_beginRequest)
   {
     [v5 setBeginRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_audioFrame)
   {
     [v5 setAudioFrame:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_speechProfile)
   {
     [v5 setSpeechProfile:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_cancelRequest)
   {
     [v5 setCancelRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_beginDictation)
   {
     [v5 setBeginDictation:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_speechProfileRequest)
   {
     [v5 setSpeechProfileRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_streamingSpeechProfileRequest)
   {
     [v5 setStreamingSpeechProfileRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_streamingSpeechProfileData)
   {
     [v5 setStreamingSpeechProfileData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_streamingSpeechProfileCommit)
   {
     [v5 setStreamingSpeechProfileCommit:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -488,67 +488,67 @@
     *(v5 + 96) |= 1u;
   }
 
-  v7 = [(MXSessionMetadata *)self->_sessionMetadata copyWithZone:a3];
+  v7 = [(MXSessionMetadata *)self->_sessionMetadata copyWithZone:zone];
   v8 = v6[6];
   v6[6] = v7;
 
-  v9 = [(MXBeginRequest *)self->_beginRequest copyWithZone:a3];
+  v9 = [(MXBeginRequest *)self->_beginRequest copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
-  v11 = [(MXAudioFrame *)self->_audioFrame copyWithZone:a3];
+  v11 = [(MXAudioFrame *)self->_audioFrame copyWithZone:zone];
   v12 = v6[1];
   v6[1] = v11;
 
-  v13 = [(MXSpeechProfile *)self->_speechProfile copyWithZone:a3];
+  v13 = [(MXSpeechProfile *)self->_speechProfile copyWithZone:zone];
   v14 = v6[7];
   v6[7] = v13;
 
-  v15 = [(MXCancelRequest *)self->_cancelRequest copyWithZone:a3];
+  v15 = [(MXCancelRequest *)self->_cancelRequest copyWithZone:zone];
   v16 = v6[4];
   v6[4] = v15;
 
-  v17 = [(MXBeginDictation *)self->_beginDictation copyWithZone:a3];
+  v17 = [(MXBeginDictation *)self->_beginDictation copyWithZone:zone];
   v18 = v6[2];
   v6[2] = v17;
 
-  v19 = [(MXSpeechProfileBuildRequest *)self->_speechProfileRequest copyWithZone:a3];
+  v19 = [(MXSpeechProfileBuildRequest *)self->_speechProfileRequest copyWithZone:zone];
   v20 = v6[8];
   v6[8] = v19;
 
-  v21 = [(MXStreamingSpeechProfileBegin *)self->_streamingSpeechProfileRequest copyWithZone:a3];
+  v21 = [(MXStreamingSpeechProfileBegin *)self->_streamingSpeechProfileRequest copyWithZone:zone];
   v22 = v6[11];
   v6[11] = v21;
 
-  v23 = [(MXStreamingSpeechProfileAddData *)self->_streamingSpeechProfileData copyWithZone:a3];
+  v23 = [(MXStreamingSpeechProfileAddData *)self->_streamingSpeechProfileData copyWithZone:zone];
   v24 = v6[10];
   v6[10] = v23;
 
-  v25 = [(MXStreamingSpeechProfileCommit *)self->_streamingSpeechProfileCommit copyWithZone:a3];
+  v25 = [(MXStreamingSpeechProfileCommit *)self->_streamingSpeechProfileCommit copyWithZone:zone];
   v26 = v6[9];
   v6[9] = v25;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = *(v4 + 96);
+  v5 = *(equalCopy + 96);
   if (*&self->_has)
   {
-    if ((*(v4 + 96) & 1) == 0 || self->_payload != *(v4 + 10))
+    if ((*(equalCopy + 96) & 1) == 0 || self->_payload != *(equalCopy + 10))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
 LABEL_27:
     v16 = 0;
@@ -556,13 +556,13 @@ LABEL_27:
   }
 
   sessionMetadata = self->_sessionMetadata;
-  if (sessionMetadata | *(v4 + 6) && ![(MXSessionMetadata *)sessionMetadata isEqual:?])
+  if (sessionMetadata | *(equalCopy + 6) && ![(MXSessionMetadata *)sessionMetadata isEqual:?])
   {
     goto LABEL_27;
   }
 
   beginRequest = self->_beginRequest;
-  if (beginRequest | *(v4 + 3))
+  if (beginRequest | *(equalCopy + 3))
   {
     if (![(MXBeginRequest *)beginRequest isEqual:?])
     {
@@ -571,7 +571,7 @@ LABEL_27:
   }
 
   audioFrame = self->_audioFrame;
-  if (audioFrame | *(v4 + 1))
+  if (audioFrame | *(equalCopy + 1))
   {
     if (![(MXAudioFrame *)audioFrame isEqual:?])
     {
@@ -580,7 +580,7 @@ LABEL_27:
   }
 
   speechProfile = self->_speechProfile;
-  if (speechProfile | *(v4 + 7))
+  if (speechProfile | *(equalCopy + 7))
   {
     if (![(MXSpeechProfile *)speechProfile isEqual:?])
     {
@@ -589,7 +589,7 @@ LABEL_27:
   }
 
   cancelRequest = self->_cancelRequest;
-  if (cancelRequest | *(v4 + 4))
+  if (cancelRequest | *(equalCopy + 4))
   {
     if (![(MXCancelRequest *)cancelRequest isEqual:?])
     {
@@ -598,7 +598,7 @@ LABEL_27:
   }
 
   beginDictation = self->_beginDictation;
-  if (beginDictation | *(v4 + 2))
+  if (beginDictation | *(equalCopy + 2))
   {
     if (![(MXBeginDictation *)beginDictation isEqual:?])
     {
@@ -607,7 +607,7 @@ LABEL_27:
   }
 
   speechProfileRequest = self->_speechProfileRequest;
-  if (speechProfileRequest | *(v4 + 8))
+  if (speechProfileRequest | *(equalCopy + 8))
   {
     if (![(MXSpeechProfileBuildRequest *)speechProfileRequest isEqual:?])
     {
@@ -616,7 +616,7 @@ LABEL_27:
   }
 
   streamingSpeechProfileRequest = self->_streamingSpeechProfileRequest;
-  if (streamingSpeechProfileRequest | *(v4 + 11))
+  if (streamingSpeechProfileRequest | *(equalCopy + 11))
   {
     if (![(MXStreamingSpeechProfileBegin *)streamingSpeechProfileRequest isEqual:?])
     {
@@ -625,7 +625,7 @@ LABEL_27:
   }
 
   streamingSpeechProfileData = self->_streamingSpeechProfileData;
-  if (streamingSpeechProfileData | *(v4 + 10))
+  if (streamingSpeechProfileData | *(equalCopy + 10))
   {
     if (![(MXStreamingSpeechProfileAddData *)streamingSpeechProfileData isEqual:?])
     {
@@ -634,7 +634,7 @@ LABEL_27:
   }
 
   streamingSpeechProfileCommit = self->_streamingSpeechProfileCommit;
-  if (streamingSpeechProfileCommit | *(v4 + 9))
+  if (streamingSpeechProfileCommit | *(equalCopy + 9))
   {
     v16 = [(MXStreamingSpeechProfileCommit *)streamingSpeechProfileCommit isEqual:?];
   }
@@ -673,13 +673,13 @@ LABEL_28:
   return v9 ^ v12 ^ [(MXStreamingSpeechProfileCommit *)self->_streamingSpeechProfileCommit hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 96))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 96))
   {
-    self->_payload = *(v4 + 10);
+    self->_payload = *(fromCopy + 10);
     *&self->_has |= 1u;
   }
 

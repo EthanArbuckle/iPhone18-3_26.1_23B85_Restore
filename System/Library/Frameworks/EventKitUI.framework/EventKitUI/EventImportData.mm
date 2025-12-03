@@ -1,15 +1,15 @@
 @interface EventImportData
-+ (BOOL)isSessionManaged:(id)a3;
-+ (BOOL)itemContainsCalendarICSData:(id)a3;
-+ (id)_extractEventDataFromEventICSData:(id)a3;
-+ (id)_extractEventDataFromMapKitItemData:(id)a3;
-+ (id)_extractEventDataFromReminderICSData:(id)a3;
-+ (id)_extractEventDataFromSpotlightIdentifier:(id)a3;
-+ (id)_extractEventDataFromURL:(id)a3;
-+ (id)_extractEventDataFromUTF8StringData:(id)a3;
++ (BOOL)isSessionManaged:(id)managed;
++ (BOOL)itemContainsCalendarICSData:(id)data;
++ (id)_extractEventDataFromEventICSData:(id)data;
++ (id)_extractEventDataFromMapKitItemData:(id)data;
++ (id)_extractEventDataFromReminderICSData:(id)data;
++ (id)_extractEventDataFromSpotlightIdentifier:(id)identifier;
++ (id)_extractEventDataFromURL:(id)l;
++ (id)_extractEventDataFromUTF8StringData:(id)data;
 + (id)acceptedTypeIdentifiers;
-+ (id)eventImportDataFromData:(id)a3 forType:(id)a4;
-+ (void)extractEventImportDataFromDropSession:(id)a3 completionBlock:(id)a4;
++ (id)eventImportDataFromData:(id)data forType:(id)type;
++ (void)extractEventImportDataFromDropSession:(id)session completionBlock:(id)block;
 - (EventImportData)init;
 @end
 
@@ -18,10 +18,10 @@
 + (id)acceptedTypeIdentifiers
 {
   v6[7] = *MEMORY[0x1E69E9840];
-  v2 = [*MEMORY[0x1E6983030] identifier];
-  v6[5] = v2;
-  v3 = [*MEMORY[0x1E6983060] identifier];
-  v6[6] = v3;
+  identifier = [*MEMORY[0x1E6983030] identifier];
+  v6[5] = identifier;
+  identifier2 = [*MEMORY[0x1E6983060] identifier];
+  v6[6] = identifier2;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:7];
 
   return v4;
@@ -40,43 +40,43 @@
   return result;
 }
 
-+ (void)extractEventImportDataFromDropSession:(id)a3 completionBlock:(id)a4
++ (void)extractEventImportDataFromDropSession:(id)session completionBlock:(id)block
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v32 = [a1 acceptedTypeIdentifiers];
-  v28 = a1;
-  v27 = [a1 isSessionManaged:v6];
+  sessionCopy = session;
+  blockCopy = block;
+  acceptedTypeIdentifiers = [self acceptedTypeIdentifiers];
+  selfCopy = self;
+  v27 = [self isSessionManaged:sessionCopy];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v8 = [v6 items];
-  v9 = [v8 countByEnumeratingWithState:&v42 objects:v47 count:16];
+  items = [sessionCopy items];
+  v9 = [items countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (!v9)
   {
 
 LABEL_26:
-    v7[2](v7, 0);
+    blockCopy[2](blockCopy, 0);
     goto LABEL_27;
   }
 
   v10 = v9;
-  v29 = v7;
-  v25 = v6;
+  v29 = blockCopy;
+  v25 = sessionCopy;
   v11 = 0;
   v12 = *v43;
   v26 = v34;
   v30 = *v43;
-  v31 = v8;
+  v31 = items;
   do
   {
     for (i = 0; i != v10; ++i)
     {
       if (*v43 != v12)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(items);
       }
 
       if (v11)
@@ -91,7 +91,7 @@ LABEL_26:
         v41 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v15 = v32;
+        v15 = acceptedTypeIdentifiers;
         v16 = [v15 countByEnumeratingWithState:&v38 objects:v46 count:16];
         if (v16)
         {
@@ -107,21 +107,21 @@ LABEL_26:
               }
 
               v20 = *(*(&v38 + 1) + 8 * j);
-              v21 = [v14 itemProvider];
-              v22 = [v21 hasItemConformingToTypeIdentifier:v20];
+              itemProvider = [v14 itemProvider];
+              v22 = [itemProvider hasItemConformingToTypeIdentifier:v20];
 
               if (v22)
               {
-                v23 = [v14 itemProvider];
+                itemProvider2 = [v14 itemProvider];
                 v33[0] = MEMORY[0x1E69E9820];
                 v33[1] = 3221225472;
                 v34[0] = __73__EventImportData_extractEventImportDataFromDropSession_completionBlock___block_invoke;
                 v34[1] = &unk_1E8442418;
-                v36 = v28;
+                v36 = selfCopy;
                 v34[2] = v20;
                 v37 = v27;
                 v35 = v29;
-                v24 = [v23 loadDataRepresentationForTypeIdentifier:v20 completionHandler:v33];
+                v24 = [itemProvider2 loadDataRepresentationForTypeIdentifier:v20 completionHandler:v33];
 
                 v11 = 1;
                 goto LABEL_18;
@@ -140,7 +140,7 @@ LABEL_26:
           v11 = 0;
 LABEL_18:
           v12 = v30;
-          v8 = v31;
+          items = v31;
         }
 
         else
@@ -150,13 +150,13 @@ LABEL_18:
       }
     }
 
-    v10 = [v8 countByEnumeratingWithState:&v42 objects:v47 count:16];
+    v10 = [items countByEnumeratingWithState:&v42 objects:v47 count:16];
   }
 
   while (v10);
 
-  v6 = v25;
-  v7 = v29;
+  sessionCopy = v25;
+  blockCopy = v29;
   if ((v11 & 1) == 0)
   {
     goto LABEL_26;
@@ -182,12 +182,12 @@ void __73__EventImportData_extractEventImportDataFromDropSession_completionBlock
   (*(*(a1 + 40) + 16))();
 }
 
-+ (BOOL)isSessionManaged:(id)a3
++ (BOOL)isSessionManaged:(id)managed
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&unk_1F4FD2C90])
+  managedCopy = managed;
+  if ([managedCopy conformsToProtocol:&unk_1F4FD2C90])
   {
-    v4 = v3;
+    v4 = managedCopy;
     v5 = [v4 _dataOwner] == 2 || objc_msgSend(v4, "_dataOwner") == 3;
   }
 
@@ -199,10 +199,10 @@ void __73__EventImportData_extractEventImportDataFromDropSession_completionBlock
   return v5;
 }
 
-+ (BOOL)itemContainsCalendarICSData:(id)a3
++ (BOOL)itemContainsCalendarICSData:(id)data
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   [MEMORY[0x1E695DEC8] arrayWithObjects:{@"com.apple.calendar.ics", @"com.apple.ical.ics", 0}];
   v11 = 0u;
   v12 = 0u;
@@ -222,8 +222,8 @@ void __73__EventImportData_extractEventImportDataFromDropSession_completionBlock
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v3 itemProvider];
-        LOBYTE(v8) = [v9 hasItemConformingToTypeIdentifier:v8];
+        itemProvider = [dataCopy itemProvider];
+        LOBYTE(v8) = [itemProvider hasItemConformingToTypeIdentifier:v8];
 
         if (v8)
         {
@@ -247,51 +247,51 @@ LABEL_11:
   return v5;
 }
 
-+ (id)eventImportDataFromData:(id)a3 forType:(id)a4
++ (id)eventImportDataFromData:(id)data forType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"com.apple.calendar.spotlight.identifier"])
+  dataCopy = data;
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"com.apple.calendar.spotlight.identifier"])
   {
-    v8 = [a1 _extractEventDataFromSpotlightIdentifier:v6];
+    v8 = [self _extractEventDataFromSpotlightIdentifier:dataCopy];
 LABEL_6:
     v9 = v8;
     goto LABEL_7;
   }
 
-  if (([v7 isEqualToString:@"com.apple.calendar.ics"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"com.apple.ical.ics"))
+  if (([typeCopy isEqualToString:@"com.apple.calendar.ics"] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"com.apple.ical.ics"))
   {
-    v8 = [a1 _extractEventDataFromEventICSData:v6];
+    v8 = [self _extractEventDataFromEventICSData:dataCopy];
     goto LABEL_6;
   }
 
-  if ([v7 isEqualToString:@"com.apple.reminders.ics"])
+  if ([typeCopy isEqualToString:@"com.apple.reminders.ics"])
   {
-    v8 = [a1 _extractEventDataFromReminderICSData:v6];
+    v8 = [self _extractEventDataFromReminderICSData:dataCopy];
     goto LABEL_6;
   }
 
-  v11 = [*MEMORY[0x1E6983030] identifier];
-  v12 = [v7 isEqualToString:v11];
+  identifier = [*MEMORY[0x1E6983030] identifier];
+  v12 = [typeCopy isEqualToString:identifier];
 
   if (v12)
   {
-    v8 = [a1 _extractEventDataFromURL:v6];
+    v8 = [self _extractEventDataFromURL:dataCopy];
     goto LABEL_6;
   }
 
-  v13 = [*MEMORY[0x1E6983060] identifier];
-  v14 = [v7 isEqualToString:v13];
+  identifier2 = [*MEMORY[0x1E6983060] identifier];
+  v14 = [typeCopy isEqualToString:identifier2];
 
   if (v14)
   {
-    v8 = [a1 _extractEventDataFromUTF8StringData:v6];
+    v8 = [self _extractEventDataFromUTF8StringData:dataCopy];
     goto LABEL_6;
   }
 
-  if ([v7 isEqualToString:@"com.apple.mapkit.map-item"])
+  if ([typeCopy isEqualToString:@"com.apple.mapkit.map-item"])
   {
-    v8 = [a1 _extractEventDataFromMapKitItemData:v6];
+    v8 = [self _extractEventDataFromMapKitItemData:dataCopy];
     goto LABEL_6;
   }
 
@@ -301,16 +301,16 @@ LABEL_7:
   return v9;
 }
 
-+ (id)_extractEventDataFromSpotlightIdentifier:(id)a3
++ (id)_extractEventDataFromSpotlightIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithData:v4 encoding:4];
+  identifierCopy = identifier;
+  v5 = [[v3 alloc] initWithData:identifierCopy encoding:4];
 
   v6 = [v5 componentsSeparatedByString:@"."];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
   v8 = objc_alloc_init(MEMORY[0x1E6966A18]);
-  v9 = [v8 calendarItemWithIdentifier:v7];
+  v9 = [v8 calendarItemWithIdentifier:firstObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -337,8 +337,8 @@ LABEL_7:
         if (v14 > 1.0)
         {
           v15 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:?];
-          v16 = [v11 uniqueId];
-          v17 = [v8 eventWithUniqueId:v16 occurrenceDate:v15];
+          uniqueId = [v11 uniqueId];
+          v17 = [v8 eventWithUniqueId:uniqueId occurrenceDate:v15];
 
           v12 = v9;
           if (v17)
@@ -350,11 +350,11 @@ LABEL_7:
     }
 
     v11 = objc_opt_new();
-    v18 = [v12 uniqueId];
-    [v11 setUniqueId:v18];
+    uniqueId2 = [v12 uniqueId];
+    [v11 setUniqueId:uniqueId2];
 
-    v19 = [v12 startDate];
-    [v11 setStartDate:v19];
+    startDate = [v12 startDate];
+    [v11 setStartDate:startDate];
 
     [v11 setRequestedAction:2];
   }
@@ -367,22 +367,22 @@ LABEL_7:
   return v11;
 }
 
-+ (id)_extractEventDataFromEventICSData:(id)a3
++ (id)_extractEventDataFromEventICSData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_new();
-  [v4 setIcsData:v3];
+  [v4 setIcsData:dataCopy];
 
   [v4 setRequestedAction:1];
 
   return v4;
 }
 
-+ (id)_extractEventDataFromUTF8StringData:(id)a3
++ (id)_extractEventDataFromUTF8StringData:(id)data
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithData:v4 encoding:4];
+  dataCopy = data;
+  v5 = [[v3 alloc] initWithData:dataCopy encoding:4];
 
   v6 = objc_opt_new();
   [v6 setTitle:v5];
@@ -391,13 +391,13 @@ LABEL_7:
   return v6;
 }
 
-+ (id)_extractEventDataFromReminderICSData:(id)a3
++ (id)_extractEventDataFromReminderICSData:(id)data
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   v4 = [objc_alloc(MEMORY[0x1E6966A18]) initWithEKOptions:48];
-  v5 = [v4 defaultCalendarForNewReminders];
-  v6 = [v4 importICSData:v3 intoCalendar:v5 options:0xFFFFFFFF80000000];
+  defaultCalendarForNewReminders = [v4 defaultCalendarForNewReminders];
+  v6 = [v4 importICSData:dataCopy intoCalendar:defaultCalendarForNewReminders options:0xFFFFFFFF80000000];
 
   v19 = 0u;
   v20 = 0u;
@@ -441,14 +441,14 @@ LABEL_3:
     if (v12)
     {
       v8 = objc_opt_new();
-      v13 = [v12 title];
-      [v8 setTitle:v13];
+      title = [v12 title];
+      [v8 setTitle:title];
 
-      v14 = [v12 notes];
-      [v8 setNotes:v14];
+      notes = [v12 notes];
+      [v8 setNotes:notes];
 
-      v15 = [v12 dueDate];
-      [v8 setStartDate:v15];
+      dueDate = [v12 dueDate];
+      [v8 setStartDate:dueDate];
 
       [v8 setRequestedAction:0];
       goto LABEL_12;
@@ -467,31 +467,31 @@ LABEL_12:
   return v8;
 }
 
-+ (id)_extractEventDataFromURL:(id)a3
++ (id)_extractEventDataFromURL:(id)l
 {
   v3 = MEMORY[0x1E695DFF8];
   v4 = *MEMORY[0x1E6983030];
-  v5 = a3;
-  v6 = [v4 identifier];
+  lCopy = l;
+  identifier = [v4 identifier];
   v12 = 0;
-  v7 = [v3 objectWithItemProviderData:v5 typeIdentifier:v6 error:&v12];
+  v7 = [v3 objectWithItemProviderData:lCopy typeIdentifier:identifier error:&v12];
 
   if (v7)
   {
     v8 = objc_opt_new();
-    v9 = [v7 _title];
-    if (!v9)
+    _title = [v7 _title];
+    if (!_title)
     {
-      v9 = [v7 resourceSpecifier];
-      if ([v9 hasPrefix:@"//"])
+      _title = [v7 resourceSpecifier];
+      if ([_title hasPrefix:@"//"])
       {
-        v10 = [v9 stringByReplacingCharactersInRange:0 withString:{2, &stru_1F4EF6790}];
+        v10 = [_title stringByReplacingCharactersInRange:0 withString:{2, &stru_1F4EF6790}];
 
-        v9 = v10;
+        _title = v10;
       }
     }
 
-    [v8 setTitle:v9];
+    [v8 setTitle:_title];
     [v8 setURL:v7];
     [v8 setRequestedAction:0];
   }
@@ -504,19 +504,19 @@ LABEL_12:
   return v8;
 }
 
-+ (id)_extractEventDataFromMapKitItemData:(id)a3
++ (id)_extractEventDataFromMapKitItemData:(id)data
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   v11 = 0;
-  v4 = [EKWeakLinkClass() objectWithItemProviderData:v3 typeIdentifier:@"com.apple.mapkit.map-item" error:&v11];
+  v4 = [EKWeakLinkClass() objectWithItemProviderData:dataCopy typeIdentifier:@"com.apple.mapkit.map-item" error:&v11];
 
   v5 = v11;
   if (v4)
   {
     v6 = objc_opt_new();
-    v7 = [v4 name];
-    [v6 setTitle:v7];
+    name = [v4 name];
+    [v6 setTitle:name];
 
     v8 = [MEMORY[0x1E6966B08] locationWithMapItem:v4];
     [v6 setStructuredLocation:v8];

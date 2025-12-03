@@ -1,26 +1,26 @@
 @interface IMURLProtocolHandler
-- (void)handleCompletionWithTask:(id)a3 metrics:(id)a4 decodedObject:(id)a5 completionHandler:(id)a6;
+- (void)handleCompletionWithTask:(id)task metrics:(id)metrics decodedObject:(id)object completionHandler:(id)handler;
 @end
 
 @implementation IMURLProtocolHandler
 
-- (void)handleCompletionWithTask:(id)a3 metrics:(id)a4 decodedObject:(id)a5 completionHandler:(id)a6
+- (void)handleCompletionWithTask:(id)task metrics:(id)metrics decodedObject:(id)object completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  taskCopy = task;
+  metricsCopy = metrics;
+  objectCopy = object;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __89__IMURLProtocolHandler_handleCompletionWithTask_metrics_decodedObject_completionHandler___block_invoke;
   v16[3] = &unk_1E856B2A0;
   objc_copyWeak(&v18, &location);
-  v14 = v13;
+  v14 = handlerCopy;
   v17 = v14;
   v15.receiver = self;
   v15.super_class = IMURLProtocolHandler;
-  [(AMSURLProtocolHandler *)&v15 handleCompletionWithTask:v10 metrics:v11 decodedObject:v12 completionHandler:v16];
+  [(AMSURLProtocolHandler *)&v15 handleCompletionWithTask:taskCopy metrics:metricsCopy decodedObject:objectCopy completionHandler:v16];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);

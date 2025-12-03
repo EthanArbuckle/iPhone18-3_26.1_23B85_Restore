@@ -1,87 +1,87 @@
 @interface SUCoreDDMDeclarationGlobalSettings
-- (BOOL)isValidDeclarationWithReason:(id *)a3;
-- (SUCoreDDMDeclarationGlobalSettings)initWithCoder:(id)a3;
-- (SUCoreDDMDeclarationGlobalSettings)initWithDeclarationKeys:(id)a3;
+- (BOOL)isValidDeclarationWithReason:(id *)reason;
+- (SUCoreDDMDeclarationGlobalSettings)initWithCoder:(id)coder;
+- (SUCoreDDMDeclarationGlobalSettings)initWithDeclarationKeys:(id)keys;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCoreDDMDeclarationGlobalSettings
 
-- (SUCoreDDMDeclarationGlobalSettings)initWithDeclarationKeys:(id)a3
+- (SUCoreDDMDeclarationGlobalSettings)initWithDeclarationKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v41.receiver = self;
   v41.super_class = SUCoreDDMDeclarationGlobalSettings;
   v5 = [(SUCoreDDMDeclarationGlobalSettings *)&v41 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"enableGlobalNotifications"];
+    v6 = [keysCopy objectForKeyedSubscript:@"enableGlobalNotifications"];
     enableGlobalNotifications = v5->_enableGlobalNotifications;
     v5->_enableGlobalNotifications = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"majorOSDeferralPeriod"];
+    v8 = [keysCopy objectForKeyedSubscript:@"majorOSDeferralPeriod"];
     majorOSDeferralPeriod = v5->_majorOSDeferralPeriod;
     v5->_majorOSDeferralPeriod = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"minorOSDeferralPeriod"];
+    v10 = [keysCopy objectForKeyedSubscript:@"minorOSDeferralPeriod"];
     minorOSDeferralPeriod = v5->_minorOSDeferralPeriod;
     v5->_minorOSDeferralPeriod = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"systemUpdatesDeferralPeriod"];
+    v12 = [keysCopy objectForKeyedSubscript:@"systemUpdatesDeferralPeriod"];
     systemUpdatesDeferralPeriod = v5->_systemUpdatesDeferralPeriod;
     v5->_systemUpdatesDeferralPeriod = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"combinedUpdatesDeferralPeriod"];
+    v14 = [keysCopy objectForKeyedSubscript:@"combinedUpdatesDeferralPeriod"];
     combinedUpdatesDeferralPeriod = v5->_combinedUpdatesDeferralPeriod;
     v5->_combinedUpdatesDeferralPeriod = v14;
 
-    v16 = [v4 objectForKeyedSubscript:@"recommendationCadence"];
+    v16 = [keysCopy objectForKeyedSubscript:@"recommendationCadence"];
     recommendationCadence = v5->_recommendationCadence;
     v5->_recommendationCadence = v16;
 
-    v18 = [v4 objectForKeyedSubscript:@"automaticallyInstallOSUpdates"];
+    v18 = [keysCopy objectForKeyedSubscript:@"automaticallyInstallOSUpdates"];
     automaticallyInstallOSUpdates = v5->_automaticallyInstallOSUpdates;
     v5->_automaticallyInstallOSUpdates = v18;
 
-    v20 = [v4 objectForKeyedSubscript:@"automaticallyInstallSystemAndSecurityUpdates"];
+    v20 = [keysCopy objectForKeyedSubscript:@"automaticallyInstallSystemAndSecurityUpdates"];
     automaticallyInstallSystemAndSecurityUpdates = v5->_automaticallyInstallSystemAndSecurityUpdates;
     v5->_automaticallyInstallSystemAndSecurityUpdates = v20;
 
-    v22 = [v4 objectForKeyedSubscript:@"automaticallyCheck"];
+    v22 = [keysCopy objectForKeyedSubscript:@"automaticallyCheck"];
     automaticallyCheck = v5->_automaticallyCheck;
     v5->_automaticallyCheck = v22;
 
-    v24 = [v4 objectForKeyedSubscript:@"automaticallyDownload"];
+    v24 = [keysCopy objectForKeyedSubscript:@"automaticallyDownload"];
     automaticallyDownload = v5->_automaticallyDownload;
     v5->_automaticallyDownload = v24;
 
-    v26 = [v4 objectForKeyedSubscript:@"adminInstallRequired"];
+    v26 = [keysCopy objectForKeyedSubscript:@"adminInstallRequired"];
     adminInstallRequired = v5->_adminInstallRequired;
     v5->_adminInstallRequired = v26;
 
-    v28 = [v4 objectForKeyedSubscript:@"enableRapidSecurityResponse"];
+    v28 = [keysCopy objectForKeyedSubscript:@"enableRapidSecurityResponse"];
     enableRapidSecurityResponse = v5->_enableRapidSecurityResponse;
     v5->_enableRapidSecurityResponse = v28;
 
-    v30 = [v4 objectForKeyedSubscript:@"enableRapidSecurityResponseRollback"];
+    v30 = [keysCopy objectForKeyedSubscript:@"enableRapidSecurityResponseRollback"];
     enableRapidSecurityResponseRollback = v5->_enableRapidSecurityResponseRollback;
     v5->_enableRapidSecurityResponseRollback = v30;
 
-    v32 = [v4 objectForKeyedSubscript:@"serializedKeys"];
+    v32 = [keysCopy objectForKeyedSubscript:@"serializedKeys"];
     serializedKeys = v5->_serializedKeys;
     v5->_serializedKeys = v32;
 
-    v34 = [v4 objectForKeyedSubscript:@"programEnrollment"];
+    v34 = [keysCopy objectForKeyedSubscript:@"programEnrollment"];
     programEnrollment = v5->_programEnrollment;
     v5->_programEnrollment = v34;
 
-    v36 = [v4 objectForKeyedSubscript:@"offerPrograms"];
+    v36 = [keysCopy objectForKeyedSubscript:@"offerPrograms"];
     offerPrograms = v5->_offerPrograms;
     v5->_offerPrograms = v36;
 
-    v38 = [v4 objectForKeyedSubscript:@"requireProgram"];
+    v38 = [keysCopy objectForKeyedSubscript:@"requireProgram"];
     requireProgram = v5->_requireProgram;
     v5->_requireProgram = v38;
   }
@@ -89,18 +89,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SUCoreDDMDeclarationGlobalSettings *)self dictionaryRepresentation];
-  [v4 encodeObject:v5 forKey:@"SUCoreDDMDeclarationGlobalSettings"];
+  coderCopy = coder;
+  dictionaryRepresentation = [(SUCoreDDMDeclarationGlobalSettings *)self dictionaryRepresentation];
+  [coderCopy encodeObject:dictionaryRepresentation forKey:@"SUCoreDDMDeclarationGlobalSettings"];
 }
 
-- (SUCoreDDMDeclarationGlobalSettings)initWithCoder:(id)a3
+- (SUCoreDDMDeclarationGlobalSettings)initWithCoder:(id)coder
 {
   v12[14] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v12[0] = objc_opt_class();
   v12[1] = objc_opt_class();
   v12[2] = objc_opt_class();
@@ -118,7 +118,7 @@
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:14];
   v7 = [v4 setWithArray:v6];
 
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"SUCoreDDMDeclarationGlobalSettings"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"SUCoreDDMDeclarationGlobalSettings"];
 
   v9 = [(SUCoreDDMDeclarationGlobalSettings *)self initWithDeclarationKeys:v8];
   v10 = *MEMORY[0x277D85DE8];
@@ -127,119 +127,119 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(SUCoreDDMDeclarationGlobalSettings *)self enableGlobalNotifications];
-  [v3 setSafeObject:v4 forKey:@"enableGlobalNotifications"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  enableGlobalNotifications = [(SUCoreDDMDeclarationGlobalSettings *)self enableGlobalNotifications];
+  [dictionary setSafeObject:enableGlobalNotifications forKey:@"enableGlobalNotifications"];
 
-  v5 = [(SUCoreDDMDeclarationGlobalSettings *)self majorOSDeferralPeriod];
-  [v3 setSafeObject:v5 forKey:@"majorOSDeferralPeriod"];
+  majorOSDeferralPeriod = [(SUCoreDDMDeclarationGlobalSettings *)self majorOSDeferralPeriod];
+  [dictionary setSafeObject:majorOSDeferralPeriod forKey:@"majorOSDeferralPeriod"];
 
-  v6 = [(SUCoreDDMDeclarationGlobalSettings *)self minorOSDeferralPeriod];
-  [v3 setSafeObject:v6 forKey:@"minorOSDeferralPeriod"];
+  minorOSDeferralPeriod = [(SUCoreDDMDeclarationGlobalSettings *)self minorOSDeferralPeriod];
+  [dictionary setSafeObject:minorOSDeferralPeriod forKey:@"minorOSDeferralPeriod"];
 
-  v7 = [(SUCoreDDMDeclarationGlobalSettings *)self systemUpdatesDeferralPeriod];
-  [v3 setSafeObject:v7 forKey:@"systemUpdatesDeferralPeriod"];
+  systemUpdatesDeferralPeriod = [(SUCoreDDMDeclarationGlobalSettings *)self systemUpdatesDeferralPeriod];
+  [dictionary setSafeObject:systemUpdatesDeferralPeriod forKey:@"systemUpdatesDeferralPeriod"];
 
-  v8 = [(SUCoreDDMDeclarationGlobalSettings *)self combinedUpdatesDeferralPeriod];
-  [v3 setSafeObject:v8 forKey:@"combinedUpdatesDeferralPeriod"];
+  combinedUpdatesDeferralPeriod = [(SUCoreDDMDeclarationGlobalSettings *)self combinedUpdatesDeferralPeriod];
+  [dictionary setSafeObject:combinedUpdatesDeferralPeriod forKey:@"combinedUpdatesDeferralPeriod"];
 
-  v9 = [(SUCoreDDMDeclarationGlobalSettings *)self recommendationCadence];
-  [v3 setSafeObject:v9 forKey:@"recommendationCadence"];
+  recommendationCadence = [(SUCoreDDMDeclarationGlobalSettings *)self recommendationCadence];
+  [dictionary setSafeObject:recommendationCadence forKey:@"recommendationCadence"];
 
-  v10 = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyInstallOSUpdates];
-  [v3 setSafeObject:v10 forKey:@"automaticallyInstallOSUpdates"];
+  automaticallyInstallOSUpdates = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyInstallOSUpdates];
+  [dictionary setSafeObject:automaticallyInstallOSUpdates forKey:@"automaticallyInstallOSUpdates"];
 
-  v11 = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyInstallSystemAndSecurityUpdates];
-  [v3 setSafeObject:v11 forKey:@"automaticallyInstallSystemAndSecurityUpdates"];
+  automaticallyInstallSystemAndSecurityUpdates = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyInstallSystemAndSecurityUpdates];
+  [dictionary setSafeObject:automaticallyInstallSystemAndSecurityUpdates forKey:@"automaticallyInstallSystemAndSecurityUpdates"];
 
-  v12 = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyCheck];
-  [v3 setSafeObject:v12 forKey:@"automaticallyCheck"];
+  automaticallyCheck = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyCheck];
+  [dictionary setSafeObject:automaticallyCheck forKey:@"automaticallyCheck"];
 
-  v13 = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyDownload];
-  [v3 setSafeObject:v13 forKey:@"automaticallyDownload"];
+  automaticallyDownload = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyDownload];
+  [dictionary setSafeObject:automaticallyDownload forKey:@"automaticallyDownload"];
 
-  v14 = [(SUCoreDDMDeclarationGlobalSettings *)self adminInstallRequired];
-  [v3 setSafeObject:v14 forKey:@"adminInstallRequired"];
+  adminInstallRequired = [(SUCoreDDMDeclarationGlobalSettings *)self adminInstallRequired];
+  [dictionary setSafeObject:adminInstallRequired forKey:@"adminInstallRequired"];
 
-  v15 = [(SUCoreDDMDeclarationGlobalSettings *)self enableRapidSecurityResponse];
-  [v3 setSafeObject:v15 forKey:@"enableRapidSecurityResponse"];
+  enableRapidSecurityResponse = [(SUCoreDDMDeclarationGlobalSettings *)self enableRapidSecurityResponse];
+  [dictionary setSafeObject:enableRapidSecurityResponse forKey:@"enableRapidSecurityResponse"];
 
-  v16 = [(SUCoreDDMDeclarationGlobalSettings *)self enableRapidSecurityResponseRollback];
-  [v3 setSafeObject:v16 forKey:@"enableRapidSecurityResponseRollback"];
+  enableRapidSecurityResponseRollback = [(SUCoreDDMDeclarationGlobalSettings *)self enableRapidSecurityResponseRollback];
+  [dictionary setSafeObject:enableRapidSecurityResponseRollback forKey:@"enableRapidSecurityResponseRollback"];
 
-  v17 = [(SUCoreDDMDeclarationGlobalSettings *)self serializedKeys];
-  [v3 setSafeObject:v17 forKey:@"serializedKeys"];
+  serializedKeys = [(SUCoreDDMDeclarationGlobalSettings *)self serializedKeys];
+  [dictionary setSafeObject:serializedKeys forKey:@"serializedKeys"];
 
-  v18 = [(SUCoreDDMDeclarationGlobalSettings *)self programEnrollment];
-  [v3 setSafeObject:v18 forKey:@"programEnrollment"];
+  programEnrollment = [(SUCoreDDMDeclarationGlobalSettings *)self programEnrollment];
+  [dictionary setSafeObject:programEnrollment forKey:@"programEnrollment"];
 
-  v19 = [(SUCoreDDMDeclarationGlobalSettings *)self offerPrograms];
-  [v3 setSafeObject:v19 forKey:@"offerPrograms"];
+  offerPrograms = [(SUCoreDDMDeclarationGlobalSettings *)self offerPrograms];
+  [dictionary setSafeObject:offerPrograms forKey:@"offerPrograms"];
 
-  v20 = [(SUCoreDDMDeclarationGlobalSettings *)self requireProgram];
-  [v3 setSafeObject:v20 forKey:@"requireProgram"];
+  requireProgram = [(SUCoreDDMDeclarationGlobalSettings *)self requireProgram];
+  [dictionary setSafeObject:requireProgram forKey:@"requireProgram"];
 
-  v21 = [v3 copy];
+  v21 = [dictionary copy];
 
   return v21;
 }
 
-- (BOOL)isValidDeclarationWithReason:(id *)a3
+- (BOOL)isValidDeclarationWithReason:(id *)reason
 {
-  v5 = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyDownload];
+  automaticallyDownload = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyDownload];
 
-  if (!v5)
+  if (!automaticallyDownload)
   {
-    v12 = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyInstallOSUpdates];
-    if (v12)
+    automaticallyInstallOSUpdates = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyInstallOSUpdates];
+    if (automaticallyInstallOSUpdates)
     {
-      v8 = v12;
-      v13 = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyInstallOSUpdates];
-      v14 = [v13 intValue];
+      automaticallyInstallOSUpdates3 = automaticallyInstallOSUpdates;
+      automaticallyInstallOSUpdates2 = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyInstallOSUpdates];
+      intValue = [automaticallyInstallOSUpdates2 intValue];
 
-      v10 = v14 == 1;
-      LODWORD(v8) = v14 != 1;
+      v10 = intValue == 1;
+      LODWORD(automaticallyInstallOSUpdates3) = intValue != 1;
       v11 = @"Invalid global settings declaration: attempt to set automatically install OS updates to 'AlwaysOn' while automatically download is 'Allowed'";
       goto LABEL_7;
     }
 
 LABEL_11:
     v11 = 0;
-    LODWORD(v8) = 1;
-    if (!a3)
+    LODWORD(automaticallyInstallOSUpdates3) = 1;
+    if (!reason)
     {
-      return v8;
+      return automaticallyInstallOSUpdates3;
     }
 
     goto LABEL_12;
   }
 
-  v6 = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyDownload];
-  v7 = [v6 intValue];
+  automaticallyDownload2 = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyDownload];
+  intValue2 = [automaticallyDownload2 intValue];
 
-  if (v7)
+  if (intValue2)
   {
     goto LABEL_11;
   }
 
-  v8 = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyInstallOSUpdates];
+  automaticallyInstallOSUpdates3 = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyInstallOSUpdates];
 
-  if (!v8)
+  if (!automaticallyInstallOSUpdates3)
   {
     v11 = @"Invalid global settings declaration: attempt to set automatically install OS updates to 'Allowed' while automatically download is 'AlwaysOff'";
-    if (!a3)
+    if (!reason)
     {
-      return v8;
+      return automaticallyInstallOSUpdates3;
     }
 
     goto LABEL_12;
   }
 
-  v8 = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyInstallOSUpdates];
-  v9 = [v8 intValue];
+  automaticallyInstallOSUpdates3 = [(SUCoreDDMDeclarationGlobalSettings *)self automaticallyInstallOSUpdates];
+  intValue3 = [automaticallyInstallOSUpdates3 intValue];
 
-  v10 = v9 == 1;
-  LODWORD(v8) = v9 != 1;
+  v10 = intValue3 == 1;
+  LODWORD(automaticallyInstallOSUpdates3) = intValue3 != 1;
   v11 = @"Invalid global settings declaration: attempt to set automatically install OS updates to 'AlwaysOn' while automatically download is 'AlwaysOff'";
 LABEL_7:
   if (!v10)
@@ -247,33 +247,33 @@ LABEL_7:
     v11 = 0;
   }
 
-  if (a3)
+  if (reason)
   {
 LABEL_12:
-    if (v8)
+    if (automaticallyInstallOSUpdates3)
     {
       v15 = [(SUCoreDDMDeclarationGlobalSettings *)self description];
       v16 = v15;
       if (v15)
       {
-        *a3 = [v15 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_28469CC48];
+        *reason = [v15 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_28469CC48];
       }
     }
 
     else
     {
-      *a3 = v11;
+      *reason = v11;
     }
   }
 
-  return v8;
+  return automaticallyInstallOSUpdates3;
 }
 
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SUCoreDDMDeclarationGlobalSettings *)self dictionaryRepresentation];
-  v4 = [v2 stringWithFormat:@"SUCoreDDMDeclarationGlobalSettings: %@", v3];
+  dictionaryRepresentation = [(SUCoreDDMDeclarationGlobalSettings *)self dictionaryRepresentation];
+  v4 = [v2 stringWithFormat:@"SUCoreDDMDeclarationGlobalSettings: %@", dictionaryRepresentation];
 
   return v4;
 }

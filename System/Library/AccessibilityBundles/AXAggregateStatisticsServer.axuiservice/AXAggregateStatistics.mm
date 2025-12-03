@@ -44,14 +44,14 @@
     v4 = dispatch_queue_create("ax-aggd-stats", v3);
     [(AXAggregateStatistics *)v2 setQueue:v4];
 
-    v5 = [(AXAggregateStatistics *)v2 queue];
+    queue = [(AXAggregateStatistics *)v2 queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1764;
     block[3] = &unk_1C678;
     v6 = v2;
     v10 = v6;
-    dispatch_async(v5, block);
+    dispatch_async(queue, block);
 
     v7 = v6;
   }
@@ -62,9 +62,9 @@
 - (void)_startLogging
 {
   v3 = +[AXSubsystemAXAggregateLogging sharedInstance];
-  v4 = [v3 ignoreLogging];
+  ignoreLogging = [v3 ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v5 = +[AXSubsystemAXAggregateLogging identifier];
     v6 = AXLoggerForFacility();
@@ -106,21 +106,21 @@
 
   v3 = v2;
   _Block_object_dispose(&v54, 8);
-  v4 = [v2 sharedPreferences];
-  v25 = [v4 alwaysShowOverlayType];
-  if ([v25 isEqualToString:@"NumberedElements"])
+  sharedPreferences = [v2 sharedPreferences];
+  alwaysShowOverlayType = [sharedPreferences alwaysShowOverlayType];
+  if ([alwaysShowOverlayType isEqualToString:@"NumberedElements"])
   {
     v5 = 1;
   }
 
-  else if ([v25 isEqualToString:@"NamedElements"])
+  else if ([alwaysShowOverlayType isEqualToString:@"NamedElements"])
   {
     v5 = 3;
   }
 
   else
   {
-    v6 = [v25 isEqualToString:@"NumberedGrid"];
+    v6 = [alwaysShowOverlayType isEqualToString:@"NumberedGrid"];
     v5 = 2;
     if (!v6)
     {
@@ -138,7 +138,7 @@
   v40 = 3221225472;
   v41 = sub_1F40;
   v42 = &unk_1C6C0;
-  v24 = v4;
+  v24 = sharedPreferences;
   v43 = v24;
   AnalyticsSendEventLazy();
   v54 = 0;
@@ -196,8 +196,8 @@
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v14 = [v13 commandsArray];
-        v15 = [v14 countByEnumeratingWithState:&v31 objects:v58 count:16];
+        commandsArray = [v13 commandsArray];
+        v15 = [commandsArray countByEnumeratingWithState:&v31 objects:v58 count:16];
         if (v15)
         {
           v16 = *v32;
@@ -207,7 +207,7 @@
             {
               if (*v32 != v16)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(commandsArray);
               }
 
               v18 = *(*(&v31 + 1) + 8 * i);
@@ -218,19 +218,19 @@
                 _AXAssert();
               }
 
-              v19 = [v18 isEnabled];
+              isEnabled = [v18 isEnabled];
               if ([v18 isCustom])
               {
-                v20 = [v18 customType];
-                v21 = [v20 isEqualToString:@"RunGesture"];
+                customType = [v18 customType];
+                v21 = [customType isEqualToString:@"RunGesture"];
 
                 v9 |= v21;
               }
 
-              v10 |= v19 ^ 1;
+              v10 |= isEnabled ^ 1;
             }
 
-            v15 = [v14 countByEnumeratingWithState:&v31 objects:v58 count:16];
+            v15 = [commandsArray countByEnumeratingWithState:&v31 objects:v58 count:16];
           }
 
           while (v15);
@@ -345,9 +345,9 @@
   v13 = 0u;
   v14 = 0u;
   v2 = +[AXSDSettings sharedInstance];
-  v3 = [v2 supportedSoundDetectionTypes];
+  supportedSoundDetectionTypes = [v2 supportedSoundDetectionTypes];
 
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [supportedSoundDetectionTypes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -358,7 +358,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(supportedSoundDetectionTypes);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -371,7 +371,7 @@
         AnalyticsSendEventLazy();
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [supportedSoundDetectionTypes countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -381,14 +381,14 @@
 - (void)_logCustomSoundDetection
 {
   v2 = +[AXSDSettings sharedInstance];
-  v3 = [v2 decodedKShotDetectors];
-  v4 = [v3 allValues];
+  decodedKShotDetectors = [v2 decodedKShotDetectors];
+  allValues = [decodedKShotDetectors allValues];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v4;
+  obj = allValues;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -404,23 +404,23 @@
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 category];
-        v11 = [v10 isEqualToString:AXSDDetectorCategoryAlarm];
+        category = [v9 category];
+        v11 = [category isEqualToString:AXSDDetectorCategoryAlarm];
 
         if ((v11 & 1) == 0)
         {
-          v12 = [v9 category];
-          v13 = [v12 isEqualToString:AXSDDetectorCategoryAnimal];
+          category2 = [v9 category];
+          v13 = [category2 isEqualToString:AXSDDetectorCategoryAnimal];
 
           if ((v13 & 1) == 0)
           {
-            v14 = [v9 category];
-            v15 = [v14 isEqualToString:AXSDDetectorCategoryHousehold];
+            category3 = [v9 category];
+            v15 = [category3 isEqualToString:AXSDDetectorCategoryHousehold];
 
             if ((v15 & 1) == 0)
             {
-              v16 = [v9 category];
-              [v16 isEqualToString:AXSDDetectorCategoryPeople];
+              category4 = [v9 category];
+              [category4 isEqualToString:AXSDDetectorCategoryPeople];
             }
           }
         }
@@ -438,15 +438,15 @@
 - (void)_logCustomSoundDetectionCustomTonesHaptics
 {
   v2 = +[AXSDSettings sharedInstance];
-  v3 = [v2 decodedKShotDetectors];
-  v4 = [v3 allValues];
+  decodedKShotDetectors = [v2 decodedKShotDetectors];
+  allValues = [decodedKShotDetectors allValues];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v14 = v4;
-  obj = [v4 axFilterObjectsUsingBlock:&stru_1C7F0];
+  v14 = allValues;
+  obj = [allValues axFilterObjectsUsingBlock:&stru_1C7F0];
   v5 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -462,14 +462,14 @@
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 category];
+        category = [v9 category];
         v11 = +[AXSDSettings sharedInstance];
         [v11 hasCustomToneForKshotDetector:v9];
 
         v12 = +[AXSDSettings sharedInstance];
         [v12 hasCustomHapticForKshotDetector:v9];
 
-        v13 = v10;
+        v13 = category;
         AnalyticsSendEventLazy();
       }
 
@@ -489,13 +489,13 @@
   v14 = sub_3358;
   v15 = 0;
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchSwitches];
+  assistiveTouchSwitches = [v2 assistiveTouchSwitches];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_3360;
   v9[3] = &unk_1C818;
   v9[4] = &v10;
-  [v3 enumerateObjectsUsingBlock:v9];
+  [assistiveTouchSwitches enumerateObjectsUsingBlock:v9];
 
   v4 = v11[5];
   v5 = objc_opt_new();
@@ -517,17 +517,17 @@
 - (void)_logBackTapStatistics
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 backTapEnabled];
+  backTapEnabled = [v2 backTapEnabled];
 
-  if (v3)
+  if (backTapEnabled)
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 backTapDoubleTapAction];
-    v6 = v5 != 0;
+    backTapDoubleTapAction = [v4 backTapDoubleTapAction];
+    v6 = backTapDoubleTapAction != 0;
 
     v7 = +[AXSettings sharedInstance];
-    v8 = [v7 backTapTripleTapAction];
-    v9 = v8 != 0;
+    backTapTripleTapAction = [v7 backTapTripleTapAction];
+    v9 = backTapTripleTapAction != 0;
 
     v10 = @"System";
   }
@@ -543,15 +543,15 @@
   if (v6)
   {
     v11 = +[AXSettings sharedInstance];
-    v12 = [v11 backTapDoubleTapAction];
-    [v40 addObject:v12];
+    backTapDoubleTapAction2 = [v11 backTapDoubleTapAction];
+    [v40 addObject:backTapDoubleTapAction2];
   }
 
   if (v9)
   {
     v13 = +[AXSettings sharedInstance];
-    v14 = [v13 backTapTripleTapAction];
-    [v40 addObject:v14];
+    backTapTripleTapAction2 = [v13 backTapTripleTapAction];
+    [v40 addObject:backTapTripleTapAction2];
   }
 
   if (_AXSAssistiveTouchScannerEnabled())
@@ -565,21 +565,21 @@
     v57 = 0x2020000000;
     v58 = 0;
     v15 = +[AXSettings sharedInstance];
-    v16 = [v15 assistiveTouchSwitches];
+    assistiveTouchSwitches = [v15 assistiveTouchSwitches];
     v54[0] = _NSConcreteStackBlock;
     v54[1] = 3221225472;
     v54[2] = sub_3B80;
     v54[3] = &unk_1C840;
     v54[4] = &buf;
     v54[5] = &v55;
-    [v16 enumerateObjectsUsingBlock:v54];
+    [assistiveTouchSwitches enumerateObjectsUsingBlock:v54];
 
     v17 = *(v56 + 24);
     if (*(*(&buf + 1) + 24) & 1) != 0 || (v17)
     {
       LOBYTE(v9) = v17 != 0;
       v10 = @"SwitchControl";
-      LOBYTE(v3) = 1;
+      LOBYTE(backTapEnabled) = 1;
       LOBYTE(v6) = *(*(&buf + 1) + 24);
     }
 
@@ -590,13 +590,13 @@
   if (_AXSVoiceOverTouchEnabled())
   {
     v18 = +[VOSCommandResolver resolverForCurrentHost];
-    v19 = [[VOSCommandManager alloc] initPreferringUserProfile];
+    initPreferringUserProfile = [[VOSCommandManager alloc] initPreferringUserProfile];
     v20 = +[VOSGesture BackTapDoubleTap];
-    v21 = [v19 commandForTouchGesture:v20 withResolver:v18];
+    v21 = [initPreferringUserProfile commandForTouchGesture:v20 withResolver:v18];
     v22 = v21 != 0;
 
     v23 = +[VOSGesture BackTapTripleTap];
-    v24 = [v19 commandForTouchGesture:v23 withResolver:v18];
+    v24 = [initPreferringUserProfile commandForTouchGesture:v23 withResolver:v18];
     v25 = v24 != 0;
 
     if (v22 || v25)
@@ -617,20 +617,20 @@
 
     v10 = v26;
 
-    LOBYTE(v3) = (v22 || v25) | v3;
+    LOBYTE(backTapEnabled) = (v22 || v25) | backTapEnabled;
   }
 
   v46 = _NSConcreteStackBlock;
   v47 = 3221225472;
   v48 = sub_3C34;
   v49 = &unk_1C868;
-  v51 = v3 & 1;
+  v51 = backTapEnabled & 1;
   v27 = v10;
   v50 = v27;
   v52 = v6;
   v53 = v9;
   AnalyticsSendEventLazy();
-  if (v3)
+  if (backTapEnabled)
   {
     v44 = 0u;
     v45 = 0u;
@@ -755,18 +755,18 @@
     if (!_AXSAssistiveTouchScannerEnabled())
     {
       v2 = +[AXMouseEventListener sharedInstance];
-      v3 = [v2 discoveredMouseDevices];
+      discoveredMouseDevices = [v2 discoveredMouseDevices];
 
-      if (v3)
+      if (discoveredMouseDevices)
       {
         v18 = 0u;
         v19 = 0u;
         v17 = 0u;
         v16 = 0u;
         v4 = +[AXSettings sharedInstance];
-        v5 = [v4 assistiveTouchMouseCustomizedClickActions];
+        assistiveTouchMouseCustomizedClickActions = [v4 assistiveTouchMouseCustomizedClickActions];
 
-        v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v6 = [assistiveTouchMouseCustomizedClickActions countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v6)
         {
           v7 = v6;
@@ -777,7 +777,7 @@
             {
               if (*v17 != v8)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(assistiveTouchMouseCustomizedClickActions);
               }
 
               v10 = *(*(&v16 + 1) + 8 * i);
@@ -788,7 +788,7 @@
               }
             }
 
-            v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+            v7 = [assistiveTouchMouseCustomizedClickActions countByEnumeratingWithState:&v16 objects:v20 count:16];
           }
 
           while (v7);
@@ -797,16 +797,16 @@
         AnalyticsSendEventLazy();
         AnalyticsSendEventLazy();
         v11 = +[AXSettings sharedInstance];
-        v12 = [v11 assistiveTouchMouseDwellControlEnabled];
+        assistiveTouchMouseDwellControlEnabled = [v11 assistiveTouchMouseDwellControlEnabled];
 
-        if (v12)
+        if (assistiveTouchMouseDwellControlEnabled)
         {
           v13 = +[AXSettings sharedInstance];
-          v14 = [v13 assistiveTouchMouseDwellControlCornerCustomization];
+          assistiveTouchMouseDwellControlCornerCustomization = [v13 assistiveTouchMouseDwellControlCornerCustomization];
 
-          if ([v14 count])
+          if ([assistiveTouchMouseDwellControlCornerCustomization count])
           {
-            v15 = v14;
+            v15 = assistiveTouchMouseDwellControlCornerCustomization;
             AnalyticsSendEventLazy();
           }
         }
@@ -818,27 +818,27 @@
 - (id)globalDevicePreferences
 {
   v2 = +[BKSMousePointerService sharedInstance];
-  v3 = [v2 globalDevicePreferences];
+  globalDevicePreferences = [v2 globalDevicePreferences];
 
-  if (!v3)
+  if (!globalDevicePreferences)
   {
-    v3 = [BKSMousePointerDevicePreferences defaultPreferencesForHardwareType:9];
+    globalDevicePreferences = [BKSMousePointerDevicePreferences defaultPreferencesForHardwareType:9];
   }
 
-  return v3;
+  return globalDevicePreferences;
 }
 
 - (void)_logLaserAXStatistics
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 laserEnabled];
+  laserEnabled = [v3 laserEnabled];
 
-  if (v4)
+  if (laserEnabled)
   {
     v5 = +[AXMouseEventListener sharedInstance];
-    v6 = [v5 discoveredMouseDevices];
+    discoveredMouseDevices = [v5 discoveredMouseDevices];
 
-    if (v6)
+    if (discoveredMouseDevices)
     {
       LODWORD(v9) = _AXSPointerStrokeColor();
       AnalyticsSendEventLazy();
@@ -848,9 +848,9 @@
       }
 
       v7 = [AXSettings sharedInstance:_NSConcreteStackBlock];
-      v8 = [v7 zoomEnabled];
+      zoomEnabled = [v7 zoomEnabled];
 
-      if (v8)
+      if (zoomEnabled)
       {
         AnalyticsSendEventLazy();
       }
@@ -877,13 +877,13 @@
 - (void)_logPerAppStatistics
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 perAppSettingsStats];
+  perAppSettingsStats = [v2 perAppSettingsStats];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = v3;
+  v4 = perAppSettingsStats;
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -921,16 +921,16 @@
     AnalyticsSendEventLazy();
     AnalyticsSendEventLazy();
     v2 = +[AXSettings sharedInstance];
-    v3 = [v2 imageCaptionGenderStrategy];
+    imageCaptionGenderStrategy = [v2 imageCaptionGenderStrategy];
 
-    if (v3 > 2)
+    if (imageCaptionGenderStrategy > 2)
     {
       v4 = @"unknown";
     }
 
     else
     {
-      v4 = *(&off_1D9D8 + v3);
+      v4 = *(&off_1D9D8 + imageCaptionGenderStrategy);
     }
 
     v84 = _NSConcreteStackBlock;
@@ -959,9 +959,9 @@
   v75 = 0u;
   v76 = 0u;
   v7 = +[AXSettings sharedInstance];
-  v8 = [v7 voiceOverBrailleDisplays];
+  voiceOverBrailleDisplays = [v7 voiceOverBrailleDisplays];
 
-  v9 = [v8 countByEnumeratingWithState:&v75 objects:v97 count:16];
+  v9 = [voiceOverBrailleDisplays countByEnumeratingWithState:&v75 objects:v97 count:16];
   if (v9)
   {
     v10 = *v76;
@@ -971,7 +971,7 @@
       {
         if (*v76 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(voiceOverBrailleDisplays);
         }
 
         v12 = *(*(&v75 + 1) + 8 * i);
@@ -1016,7 +1016,7 @@
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v75 objects:v97 count:16];
+      v9 = [voiceOverBrailleDisplays countByEnumeratingWithState:&v75 objects:v97 count:16];
       if (v9)
       {
         continue;
@@ -1073,16 +1073,16 @@ LABEL_34:
   if (_AXSHoverTextEnabled())
   {
     v18 = +[AXSettings sharedInstance];
-    v19 = [v18 hoverTextDisplayMode];
+    hoverTextDisplayMode = [v18 hoverTextDisplayMode];
 
-    if (v19 > 4)
+    if (hoverTextDisplayMode > 4)
     {
       v20 = @"unknown";
     }
 
     else
     {
-      v20 = *(&off_1D9F0 + v19);
+      v20 = *(&off_1D9F0 + hoverTextDisplayMode);
     }
 
     v65 = _NSConcreteStackBlock;
@@ -1126,13 +1126,13 @@ LABEL_34:
     AnalyticsSendEventLazy();
     AnalyticsSendEventLazy();
     v23 = +[AXSettings sharedInstance];
-    v24 = [v23 assistiveTouchSwitches];
+    assistiveTouchSwitches = [v23 assistiveTouchSwitches];
 
     v55 = _NSConcreteStackBlock;
     v56 = 3221225472;
     v57 = sub_94A4;
     v58 = &unk_1C6C0;
-    v59 = v24;
+    v59 = assistiveTouchSwitches;
     AnalyticsSendEventLazy();
     v53 = 0u;
     v54 = 0u;
@@ -1158,18 +1158,18 @@ LABEL_34:
           }
 
           v31 = *(*(&v51 + 1) + 8 * j);
-          v32 = [v31 source];
-          v33 = [v32 isEqualToString:v28];
+          source = [v31 source];
+          v33 = [source isEqualToString:v28];
 
           if ((v33 & 1) == 0)
           {
-            v34 = [v31 source];
-            v35 = [v34 isEqualToString:v29];
+            source2 = [v31 source];
+            v35 = [source2 isEqualToString:v29];
 
             if ((v35 & 1) == 0)
             {
-              v36 = [v31 source];
-              v37 = [v36 isEqualToString:v48];
+              source3 = [v31 source];
+              v37 = [source3 isEqualToString:v48];
 
               if (v37)
               {
@@ -1183,8 +1183,8 @@ LABEL_34:
 
               else
               {
-                v38 = [v31 source];
-                v39 = [v38 isEqualToString:v46];
+                source4 = [v31 source];
+                v39 = [source4 isEqualToString:v46];
 
                 if (v39)
                 {
@@ -1286,13 +1286,13 @@ LABEL_57:
     AnalyticsSendEventLazy();
     AnalyticsSendEventLazy();
     v2 = +[AXSettings sharedInstance];
-    v3 = [v2 customPronunciationSubstitutions];
+    customPronunciationSubstitutions = [v2 customPronunciationSubstitutions];
 
     v125 = 0u;
     v126 = 0u;
     v123 = 0u;
     v124 = 0u;
-    obj = v3;
+    obj = customPronunciationSubstitutions;
     v4 = 0;
     v5 = [obj countByEnumeratingWithState:&v123 objects:v143 count:16];
     if (v5)
@@ -1307,8 +1307,8 @@ LABEL_57:
             objc_enumerationMutation(obj);
           }
 
-          v8 = [*(*(&v123 + 1) + 8 * i) phonemes];
-          if (v8)
+          phonemes = [*(*(&v123 + 1) + 8 * i) phonemes];
+          if (phonemes)
           {
             ++v4;
           }
@@ -1329,14 +1329,14 @@ LABEL_57:
     AnalyticsSendEventLazy();
     AnalyticsSendEventLazy();
     v9 = +[AXSettings sharedInstance];
-    v10 = [v9 voiceOverBrailleTableIdentifier];
-    v11 = [v10 isEqualToString:@"com.apple.scrod.braille.table.duxbury.eng-xueb"];
+    voiceOverBrailleTableIdentifier = [v9 voiceOverBrailleTableIdentifier];
+    v11 = [voiceOverBrailleTableIdentifier isEqualToString:@"com.apple.scrod.braille.table.duxbury.eng-xueb"];
 
     v12 = +[AXSettings sharedInstance];
-    v13 = [v12 voiceOverBrailleTableIdentifier];
-    LODWORD(v10) = [v13 isEqualToString:@"com.apple.scrod.braille.table.duxbury.eng-xna"];
+    voiceOverBrailleTableIdentifier2 = [v12 voiceOverBrailleTableIdentifier];
+    LODWORD(voiceOverBrailleTableIdentifier) = [voiceOverBrailleTableIdentifier2 isEqualToString:@"com.apple.scrod.braille.table.duxbury.eng-xna"];
 
-    if ((v11 | v10))
+    if ((v11 | voiceOverBrailleTableIdentifier))
     {
       v113 = _NSConcreteStackBlock;
       v114 = 3221225472;
@@ -1349,13 +1349,13 @@ LABEL_57:
     AnalyticsSendEventLazy();
     AnalyticsSendEventLazy();
     v14 = +[AXSettings sharedInstance];
-    v15 = [v14 voiceOverKeyboardModifierChoice];
+    voiceOverKeyboardModifierChoice = [v14 voiceOverKeyboardModifierChoice];
 
     v108 = _NSConcreteStackBlock;
     v109 = 3221225472;
     v110 = sub_C5F4;
     v111 = &unk_1C698;
-    v112 = v15;
+    v112 = voiceOverKeyboardModifierChoice;
     AnalyticsSendEventLazy();
     v106 = 0u;
     v107 = 0u;
@@ -1405,9 +1405,9 @@ LABEL_57:
   v90 = 0u;
   v91 = 0u;
   v21 = +[AXSDSettings sharedInstance];
-  v22 = [v21 enabledSoundDetectionTypes];
+  enabledSoundDetectionTypes = [v21 enabledSoundDetectionTypes];
 
-  v23 = [v22 countByEnumeratingWithState:&v90 objects:v141 count:16];
+  v23 = [enabledSoundDetectionTypes countByEnumeratingWithState:&v90 objects:v141 count:16];
   if (v23)
   {
     v24 = *v91;
@@ -1417,7 +1417,7 @@ LABEL_57:
       {
         if (*v91 != v24)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(enabledSoundDetectionTypes);
         }
 
         v26 = *(*(&v90 + 1) + 8 * k);
@@ -1429,7 +1429,7 @@ LABEL_57:
         AnalyticsSendEventLazy();
       }
 
-      v23 = [v22 countByEnumeratingWithState:&v90 objects:v141 count:16];
+      v23 = [enabledSoundDetectionTypes countByEnumeratingWithState:&v90 objects:v141 count:16];
     }
 
     while (v23);
@@ -1439,13 +1439,13 @@ LABEL_57:
   if (_AXSHapticMusicEnabled())
   {
     v27 = +[AXSettings sharedInstance];
-    v28 = [v27 hapticMusicAlgorithmSelections];
+    hapticMusicAlgorithmSelections = [v27 hapticMusicAlgorithmSelections];
 
     v80 = _NSConcreteStackBlock;
     v81 = 3221225472;
     v82 = sub_CA3C;
     v83 = &unk_1C698;
-    v84 = [v28 containsObject:SHHapticPatternAlgorithmVocals];
+    v84 = [hapticMusicAlgorithmSelections containsObject:SHHapticPatternAlgorithmVocals];
     AnalyticsSendEventLazy();
     AnalyticsSendEventLazy();
     hapticMusicClient = self->_hapticMusicClient;
@@ -1638,7 +1638,7 @@ LABEL_57:
 
   v44 = v43;
   _Block_object_dispose(&v132, 8);
-  v45 = [v43 sharedInstance];
+  sharedInstance = [v43 sharedInstance];
   v132 = 0;
   v133 = &v132;
   v134 = 0x2020000000;
@@ -1665,7 +1665,7 @@ LABEL_57:
     __break(1u);
   }
 
-  [v45 getEnabledStateOfModuleWithIdentifier:*v46 completionHandler:&stru_1D840];
+  [sharedInstance getEnabledStateOfModuleWithIdentifier:*v46 completionHandler:&stru_1D840];
 
   [(AXAggregateStatistics *)self _logSoundDetectionCustomTonesHaptics];
   [(AXAggregateStatistics *)self _logCustomSoundDetection];

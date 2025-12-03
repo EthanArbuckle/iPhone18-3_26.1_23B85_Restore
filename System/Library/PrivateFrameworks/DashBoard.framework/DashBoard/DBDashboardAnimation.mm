@@ -6,9 +6,9 @@
 - (UIView)toTransitionContainerView;
 - (UIView)toView;
 - (_TtC9DashBoard20DBDashboardAnimation)init;
-- (_TtC9DashBoard20DBDashboardAnimation)initWithSettings:(id)a3;
+- (_TtC9DashBoard20DBDashboardAnimation)initWithSettings:(id)settings;
 - (double)dbCornerRadius;
-- (void)setDbCornerRadius:(double)a3;
+- (void)setDbCornerRadius:(double)radius;
 @end
 
 @implementation DBDashboardAnimation
@@ -34,11 +34,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDbCornerRadius:(double)a3
+- (void)setDbCornerRadius:(double)radius
 {
   v5 = OBJC_IVAR____TtC9DashBoard20DBDashboardAnimation_dbCornerRadius;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = radius;
 }
 
 - (UIView)toView
@@ -69,10 +69,10 @@
   return *(&self->super.isa + v3);
 }
 
-- (_TtC9DashBoard20DBDashboardAnimation)initWithSettings:(id)a3
+- (_TtC9DashBoard20DBDashboardAnimation)initWithSettings:(id)settings
 {
-  v3 = a3;
-  v4 = sub_248288540(v3);
+  settingsCopy = settings;
+  v4 = sub_248288540(settingsCopy);
 
   return v4;
 }

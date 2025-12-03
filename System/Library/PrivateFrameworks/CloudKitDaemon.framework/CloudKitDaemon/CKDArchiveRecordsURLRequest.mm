@@ -1,23 +1,23 @@
 @interface CKDArchiveRecordsURLRequest
-- (CKDArchiveRecordsURLRequest)initWithOperation:(id)a3 recordIDsToArchive:(id)a4;
+- (CKDArchiveRecordsURLRequest)initWithOperation:(id)operation recordIDsToArchive:(id)archive;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
 - (id)zoneIDsToLock;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDArchiveRecordsURLRequest
 
-- (CKDArchiveRecordsURLRequest)initWithOperation:(id)a3 recordIDsToArchive:(id)a4
+- (CKDArchiveRecordsURLRequest)initWithOperation:(id)operation recordIDsToArchive:(id)archive
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  archiveCopy = archive;
   v33.receiver = self;
   v33.super_class = CKDArchiveRecordsURLRequest;
-  v7 = [(CKDURLRequest *)&v33 initWithOperation:a3];
+  v7 = [(CKDURLRequest *)&v33 initWithOperation:operation];
   if (v7)
   {
     v8 = objc_opt_new();
@@ -28,8 +28,8 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v28 = v6;
-    v10 = v6;
+    v28 = archiveCopy;
+    v10 = archiveCopy;
     v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v29, v34, 16);
     if (v12)
     {
@@ -66,37 +66,37 @@
     recordZoneIDByRequestID = v7->_recordZoneIDByRequestID;
     v7->_recordZoneIDByRequestID = v24;
 
-    v6 = v28;
+    archiveCopy = v28;
   }
 
   v26 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v7 = objc_msgSend_zoneIDToRecordIDs(self, v5, v6);
   v10 = objc_msgSend_allValues(v7, v8, v9);
   v12 = objc_msgSend_CKFlatMap_(v10, v11, &unk_28385E4E0);
 
   v14.receiver = self;
   v14.super_class = CKDArchiveRecordsURLRequest;
-  [(CKDURLRequest *)&v14 fillOutEquivalencyPropertiesBuilder:v4];
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v13, v12, @"recordIDs");
+  [(CKDURLRequest *)&v14 fillOutEquivalencyPropertiesBuilder:builderCopy];
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v13, v12, @"recordIDs");
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_zoneIDToRecordIDs(self, v5, v6);
   v10 = objc_msgSend_allValues(v7, v8, v9);
   v12 = objc_msgSend_CKFlatMap_(v10, v11, &unk_28385E500);
 
-  objc_msgSend_setModifyRecordIDs_(v4, v13, v12);
+  objc_msgSend_setModifyRecordIDs_(propertiesCopy, v13, v12);
   v14.receiver = self;
   v14.super_class = CKDArchiveRecordsURLRequest;
-  [(CKDURLRequest *)&v14 fillOutRequestProperties:v4];
+  [(CKDURLRequest *)&v14 fillOutRequestProperties:propertiesCopy];
 }
 
 - (id)zoneIDsToLock
@@ -131,12 +131,12 @@
   return v9;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v7 = objc_msgSend_recordZoneIDByRequestID(self, v5, v6);
-  v10 = objc_msgSend_response(v4, v8, v9);
+  v10 = objc_msgSend_response(objectCopy, v8, v9);
   v13 = objc_msgSend_operationUUID(v10, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, v13);
 
@@ -168,7 +168,7 @@
 
           v31 = *(*(&v38 + 1) + 8 * v30);
           v32 = objc_msgSend_recordArchivedBlock(self, v26, v27);
-          v35 = objc_msgSend_result(v4, v33, v34);
+          v35 = objc_msgSend_result(objectCopy, v33, v34);
           (v32)[2](v32, v31, v35);
 
           ++v30;
@@ -186,12 +186,12 @@
   return 0;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  failureCopy = failure;
   v7 = objc_msgSend_recordZoneIDByRequestID(self, v5, v6);
-  v10 = objc_msgSend_response(v4, v8, v9);
+  v10 = objc_msgSend_response(failureCopy, v8, v9);
   v13 = objc_msgSend_operationUUID(v10, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, v13);
 
@@ -223,7 +223,7 @@
 
           v31 = *(*(&v37 + 1) + 8 * v30);
           v32 = objc_msgSend_recordArchivedBlock(self, v26, v27);
-          v35 = objc_msgSend_result(v4, v33, v34);
+          v35 = objc_msgSend_result(failureCopy, v33, v34);
           (v32)[2](v32, v31, v35);
 
           ++v30;

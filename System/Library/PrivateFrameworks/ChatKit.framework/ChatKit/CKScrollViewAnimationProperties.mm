@@ -1,17 +1,17 @@
 @interface CKScrollViewAnimationProperties
-+ (id)animatedWithDuration:(double)a3 animationCurve:(int64_t)a4;
++ (id)animatedWithDuration:(double)duration animationCurve:(int64_t)curve;
 + (id)inheritedAnimation;
-+ (id)springAnimationWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 duration:(double)a6;
++ (id)springAnimationWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping duration:(double)duration;
 + (id)systemDefaultScrollAnimation;
 + (id)unanimated;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAnimationProperties:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAnimationProperties:(id)properties;
 - (CABasicAnimation)caBasicAnimation;
-- (CKScrollViewAnimationProperties)initWithAnimationType:(int64_t)a3 duration:(double)a4 animationCurve:(int64_t)a5 springMass:(double)a6 springStiffness:(double)a7 springDamping:(double)a8;
+- (CKScrollViewAnimationProperties)initWithAnimationType:(int64_t)type duration:(double)duration animationCurve:(int64_t)curve springMass:(double)mass springStiffness:(double)stiffness springDamping:(double)damping;
 - (UIViewPropertyAnimator)propertyAnimator;
 - (id)description;
 - (unint64_t)hash;
-- (void)performAnimationBlock:(id)a3;
+- (void)performAnimationBlock:(id)block;
 @end
 
 @implementation CKScrollViewAnimationProperties
@@ -188,19 +188,19 @@ LABEL_9:
   return v2;
 }
 
-- (CKScrollViewAnimationProperties)initWithAnimationType:(int64_t)a3 duration:(double)a4 animationCurve:(int64_t)a5 springMass:(double)a6 springStiffness:(double)a7 springDamping:(double)a8
+- (CKScrollViewAnimationProperties)initWithAnimationType:(int64_t)type duration:(double)duration animationCurve:(int64_t)curve springMass:(double)mass springStiffness:(double)stiffness springDamping:(double)damping
 {
   v15.receiver = self;
   v15.super_class = CKScrollViewAnimationProperties;
   result = [(CKScrollViewAnimationProperties *)&v15 init];
   if (result)
   {
-    result->_animationType = a3;
-    result->_duration = a4;
-    result->_animationCurve = a5;
-    result->_springMass = a6;
-    result->_springStiffness = a7;
-    result->_springDamping = a8;
+    result->_animationType = type;
+    result->_duration = duration;
+    result->_animationCurve = curve;
+    result->_springMass = mass;
+    result->_springStiffness = stiffness;
+    result->_springDamping = damping;
   }
 
   return result;
@@ -213,16 +213,16 @@ LABEL_9:
   return v2;
 }
 
-+ (id)animatedWithDuration:(double)a3 animationCurve:(int64_t)a4
++ (id)animatedWithDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v4 = [[CKScrollViewAnimationProperties alloc] initWithAnimationType:1 duration:a4 animationCurve:a3 springMass:0.0 springStiffness:0.0 springDamping:0.0];
+  v4 = [[CKScrollViewAnimationProperties alloc] initWithAnimationType:1 duration:curve animationCurve:duration springMass:0.0 springStiffness:0.0 springDamping:0.0];
 
   return v4;
 }
 
-+ (id)springAnimationWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 duration:(double)a6
++ (id)springAnimationWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping duration:(double)duration
 {
-  v6 = [[CKScrollViewAnimationProperties alloc] initWithAnimationType:1 duration:3 animationCurve:a6 springMass:a3 springStiffness:a4 springDamping:a5];
+  v6 = [[CKScrollViewAnimationProperties alloc] initWithAnimationType:1 duration:3 animationCurve:duration springMass:mass springStiffness:stiffness springDamping:damping];
 
   return v6;
 }
@@ -234,40 +234,40 @@ LABEL_9:
   return v2;
 }
 
-- (BOOL)isEqualToAnimationProperties:(id)a3
+- (BOOL)isEqualToAnimationProperties:(id)properties
 {
-  v4 = a3;
-  v5 = self->_animationType == *(v4 + 1) && self->_duration == v4[2] && self->_animationCurve == *(v4 + 3) && self->_springMass == v4[4] && self->_springStiffness == v4[5] && self->_springDamping == v4[6];
+  propertiesCopy = properties;
+  v5 = self->_animationType == *(propertiesCopy + 1) && self->_duration == propertiesCopy[2] && self->_animationCurve == *(propertiesCopy + 3) && self->_springMass == propertiesCopy[4] && self->_springStiffness == propertiesCopy[5] && self->_springDamping == propertiesCopy[6];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CKScrollViewAnimationProperties *)self isEqualToAnimationProperties:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CKScrollViewAnimationProperties *)self isEqualToAnimationProperties:equalCopy];
 
   return v5;
 }
 
-- (void)performAnimationBlock:(id)a3
+- (void)performAnimationBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   animationType = self->_animationType;
   if (animationType == 2)
   {
-    v8 = v4;
-    (*(v4 + 2))(v4);
+    v8 = blockCopy;
+    (*(blockCopy + 2))(blockCopy);
   }
 
   else if (animationType == 1)
   {
-    v8 = v4;
-    v7 = [(CKScrollViewAnimationProperties *)self propertyAnimator];
-    [v7 addAnimations:v8];
-    [v7 startAnimation];
+    v8 = blockCopy;
+    propertyAnimator = [(CKScrollViewAnimationProperties *)self propertyAnimator];
+    [propertyAnimator addAnimations:v8];
+    [propertyAnimator startAnimation];
   }
 
   else
@@ -277,8 +277,8 @@ LABEL_9:
       goto LABEL_8;
     }
 
-    v8 = v4;
-    [MEMORY[0x1E69DD250] performWithoutAnimation:v4];
+    v8 = blockCopy;
+    [MEMORY[0x1E69DD250] performWithoutAnimation:blockCopy];
   }
 
   v5 = v8;

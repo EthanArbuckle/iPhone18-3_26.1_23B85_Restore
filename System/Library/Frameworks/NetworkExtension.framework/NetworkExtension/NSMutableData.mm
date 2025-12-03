@@ -1,11 +1,11 @@
 @interface NSMutableData
-+ (CFMutableDataRef)mutableSensitiveDataWithMaxCapacity:(uint64_t)a1;
-+ (__CFData)mutableSensitiveDataPrefilledWithMaxCapacity:(uint64_t)a1;
++ (CFMutableDataRef)mutableSensitiveDataWithMaxCapacity:(uint64_t)capacity;
++ (__CFData)mutableSensitiveDataPrefilledWithMaxCapacity:(uint64_t)capacity;
 @end
 
 @implementation NSMutableData
 
-+ (CFMutableDataRef)mutableSensitiveDataWithMaxCapacity:(uint64_t)a1
++ (CFMutableDataRef)mutableSensitiveDataWithMaxCapacity:(uint64_t)capacity
 {
   objc_opt_self();
   if (!a2)
@@ -18,7 +18,7 @@
   return CFDataCreateMutable(v3, a2);
 }
 
-+ (__CFData)mutableSensitiveDataPrefilledWithMaxCapacity:(uint64_t)a1
++ (__CFData)mutableSensitiveDataPrefilledWithMaxCapacity:(uint64_t)capacity
 {
   objc_opt_self();
   if (!a2)

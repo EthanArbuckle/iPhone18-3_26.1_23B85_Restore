@@ -1,31 +1,31 @@
 @interface CPLNetworkIndicator
-+ (void)_doProtected:(id)a3;
-+ (void)_reallyHideNetworkIndicatorForBundleWithIdentifierLocked:(id)a3;
-+ (void)_reallyShowNetworkIndicatorForBundleWithIdentifierLocked:(id)a3;
-+ (void)hideNetworkIndicatorForBundleWithIdentifier:(id)a3;
-+ (void)showNetworkIndicatorForBundleWithIdentifier:(id)a3;
++ (void)_doProtected:(id)protected;
++ (void)_reallyHideNetworkIndicatorForBundleWithIdentifierLocked:(id)locked;
++ (void)_reallyShowNetworkIndicatorForBundleWithIdentifierLocked:(id)locked;
++ (void)hideNetworkIndicatorForBundleWithIdentifier:(id)identifier;
++ (void)showNetworkIndicatorForBundleWithIdentifier:(id)identifier;
 @end
 
 @implementation CPLNetworkIndicator
 
-+ (void)hideNetworkIndicatorForBundleWithIdentifier:(id)a3
++ (void)hideNetworkIndicatorForBundleWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = @"com.apple.mobileslideshow";
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67__CPLNetworkIndicator_hideNetworkIndicatorForBundleWithIdentifier___block_invoke;
   v8[3] = &unk_1E861FEE8;
-  if (v5)
+  if (identifierCopy)
   {
-    v6 = v5;
+    v6 = identifierCopy;
   }
 
   v9 = v6;
   v10 = a2;
-  v11 = a1;
+  selfCopy = self;
   v7 = v6;
-  [a1 _doProtected:v8];
+  [self _doProtected:v8];
 }
 
 uint64_t __67__CPLNetworkIndicator_hideNetworkIndicatorForBundleWithIdentifier___block_invoke(uint64_t a1)
@@ -77,23 +77,23 @@ uint64_t __67__CPLNetworkIndicator_hideNetworkIndicatorForBundleWithIdentifier__
   return result;
 }
 
-+ (void)showNetworkIndicatorForBundleWithIdentifier:(id)a3
++ (void)showNetworkIndicatorForBundleWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = @"com.apple.mobileslideshow";
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__CPLNetworkIndicator_showNetworkIndicatorForBundleWithIdentifier___block_invoke;
   v7[3] = &unk_1E861B100;
-  if (v4)
+  if (identifierCopy)
   {
-    v5 = v4;
+    v5 = identifierCopy;
   }
 
   v8 = v5;
-  v9 = a1;
+  selfCopy = self;
   v6 = v5;
-  [a1 _doProtected:v7];
+  [self _doProtected:v7];
 }
 
 uint64_t __67__CPLNetworkIndicator_showNetworkIndicatorForBundleWithIdentifier___block_invoke(uint64_t a1)
@@ -109,16 +109,16 @@ uint64_t __67__CPLNetworkIndicator_showNetworkIndicatorForBundleWithIdentifier__
   return [v2 addObject:v3];
 }
 
-+ (void)_doProtected:(id)a3
++ (void)_doProtected:(id)protected
 {
-  v3 = a3;
+  protectedCopy = protected;
   if (_doProtected__onceToken_22950 != -1)
   {
     dispatch_once(&_doProtected__onceToken_22950, &__block_literal_global_22951);
   }
 
   v4 = _doProtected__queue_22952;
-  v5 = v3;
+  v5 = protectedCopy;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __cpl_dispatch_async_block_invoke_22953;
@@ -143,19 +143,19 @@ uint64_t __36__CPLNetworkIndicator__doProtected___block_invoke()
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-+ (void)_reallyHideNetworkIndicatorForBundleWithIdentifierLocked:(id)a3
++ (void)_reallyHideNetworkIndicatorForBundleWithIdentifierLocked:(id)locked
 {
   if (__SBSSetStatusBarShowsActivityForApplication)
   {
-    __SBSSetStatusBarShowsActivityForApplication(0, a3, 3600);
+    __SBSSetStatusBarShowsActivityForApplication(0, locked, 3600);
   }
 }
 
-+ (void)_reallyShowNetworkIndicatorForBundleWithIdentifierLocked:(id)a3
++ (void)_reallyShowNetworkIndicatorForBundleWithIdentifierLocked:(id)locked
 {
   if (__SBSSetStatusBarShowsActivityForApplication)
   {
-    __SBSSetStatusBarShowsActivityForApplication(1, a3, 3600);
+    __SBSSetStatusBarShowsActivityForApplication(1, locked, 3600);
   }
 }
 

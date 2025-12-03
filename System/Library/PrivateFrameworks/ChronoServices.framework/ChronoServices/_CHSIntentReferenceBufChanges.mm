@@ -1,58 +1,58 @@
 @interface _CHSIntentReferenceBufChanges
 - (uint64_t)replacementStableHash;
-- (void)replaceIntentData:(id)a3;
-- (void)replacePartialIntentData:(id)a3;
-- (void)replaceSchemaData:(id)a3;
+- (void)replaceIntentData:(id)data;
+- (void)replacePartialIntentData:(id)data;
+- (void)replaceSchemaData:(id)data;
 @end
 
 @implementation _CHSIntentReferenceBufChanges
 
-- (void)replaceIntentData:(id)a3
+- (void)replaceIntentData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   self->_changeTypeIntentData = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = dataCopy;
+  if (!dataCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:2561 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:2561 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    dataCopy = 0;
   }
 
-  self->_replacementIntentData = [v5 unsignedIntValue];
+  self->_replacementIntentData = [dataCopy unsignedIntValue];
 }
 
-- (void)replaceSchemaData:(id)a3
+- (void)replaceSchemaData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   self->_changeTypeSchemaData = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = dataCopy;
+  if (!dataCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:2584 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:2584 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    dataCopy = 0;
   }
 
-  self->_replacementSchemaData = [v5 unsignedIntValue];
+  self->_replacementSchemaData = [dataCopy unsignedIntValue];
 }
 
-- (void)replacePartialIntentData:(id)a3
+- (void)replacePartialIntentData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   self->_changeTypePartialIntentData = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = dataCopy;
+  if (!dataCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:2607 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:2607 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    dataCopy = 0;
   }
 
-  self->_replacementPartialIntentData = [v5 unsignedIntValue];
+  self->_replacementPartialIntentData = [dataCopy unsignedIntValue];
 }
 
 - (uint64_t)replacementStableHash

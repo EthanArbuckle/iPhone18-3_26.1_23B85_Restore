@@ -1,20 +1,20 @@
 @interface EditContactTransitionTest
-- (BOOL)prepareForTestWithOptions:(id)a3;
-- (void)measureEditingTransitionOnController:(id)a3;
+- (BOOL)prepareForTestWithOptions:(id)options;
+- (void)measureEditingTransitionOnController:(id)controller;
 - (void)showNextContact;
 @end
 
 @implementation EditContactTransitionTest
 
-- (BOOL)prepareForTestWithOptions:(id)a3
+- (BOOL)prepareForTestWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v8.receiver = self;
   v8.super_class = EditContactTransitionTest;
-  v5 = [(ContactsTest *)&v8 prepareForTestWithOptions:v4];
+  v5 = [(ContactsTest *)&v8 prepareForTestWithOptions:optionsCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"iterations"];
+    v6 = [optionsCopy objectForKey:@"iterations"];
     -[EditContactTransitionTest setMaxIterations:](self, "setMaxIterations:", [v6 intValue]);
 
     [(ContactsTest *)self willStartTest];
@@ -35,7 +35,7 @@
   [(ContactsTest *)self showContactListWithCompletionBlock:v3];
 }
 
-- (void)measureEditingTransitionOnController:(id)a3
+- (void)measureEditingTransitionOnController:(id)controller
 {
   v4 = UIApp;
   v11[0] = _NSConcreteStackBlock;
@@ -43,17 +43,17 @@
   v11[2] = sub_10000EB2C;
   v11[3] = &unk_1000204D0;
   v11[4] = self;
-  v5 = a3;
+  controllerCopy = controller;
   [v4 installCACommitCompletionBlock:v11];
   v6 = UIApp;
-  v7 = [(ContactsTest *)self testOptions];
-  v8 = [v7 objectForKeyedSubscript:@"testName"];
+  testOptions = [(ContactsTest *)self testOptions];
+  v8 = [testOptions objectForKeyedSubscript:@"testName"];
   v9 = [NSArray arrayWithObject:@"time"];
   [v6 startedSubTest:@"Edit Contact Transition" forTest:v8 withMetrics:v9];
 
-  v10 = [v5 contentViewController];
+  contentViewController = [controllerCopy contentViewController];
 
-  [v10 toggleEditing:self];
+  [contentViewController toggleEditing:self];
 }
 
 @end

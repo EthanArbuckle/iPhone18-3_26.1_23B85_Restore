@@ -3,7 +3,7 @@
 - (UIButton)liveButton;
 - (void)didMoveToSuperview;
 - (void)updateConstraints;
-- (void)updateDisplayForStreaming:(BOOL)a3;
+- (void)updateDisplayForStreaming:(BOOL)streaming;
 @end
 
 @implementation HUCameraLiveButtonView
@@ -13,22 +13,22 @@
   v9.receiver = self;
   v9.super_class = HUCameraLiveButtonView;
   [(HUCameraLiveButtonView *)&v9 didMoveToSuperview];
-  v3 = [(HUCameraLiveButtonView *)self avBackground];
-  v4 = [v3 superview];
+  avBackground = [(HUCameraLiveButtonView *)self avBackground];
+  superview = [avBackground superview];
 
-  if (v4 != self)
+  if (superview != self)
   {
-    v5 = [(HUCameraLiveButtonView *)self avBackground];
-    [(HUCameraLiveButtonView *)self addSubview:v5];
+    avBackground2 = [(HUCameraLiveButtonView *)self avBackground];
+    [(HUCameraLiveButtonView *)self addSubview:avBackground2];
   }
 
-  v6 = [(HUCameraLiveButtonView *)self liveButton];
-  v7 = [v6 superview];
+  liveButton = [(HUCameraLiveButtonView *)self liveButton];
+  superview2 = [liveButton superview];
 
-  if (v7 != self)
+  if (superview2 != self)
   {
-    v8 = [(HUCameraLiveButtonView *)self liveButton];
-    [(HUCameraLiveButtonView *)self addSubview:v8];
+    liveButton2 = [(HUCameraLiveButtonView *)self liveButton];
+    [(HUCameraLiveButtonView *)self addSubview:liveButton2];
   }
 }
 
@@ -37,15 +37,15 @@
   liveButton = self->_liveButton;
   if (!liveButton)
   {
-    v4 = [MEMORY[0x277D75220] hu_clipScrubberLiveButton];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(UIButton *)v4 setBackgroundColor:v5];
+    hu_clipScrubberLiveButton = [MEMORY[0x277D75220] hu_clipScrubberLiveButton];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIButton *)hu_clipScrubberLiveButton setBackgroundColor:clearColor];
 
-    [(UIButton *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIButton *)v4 _setContinuousCornerRadius:16.0];
-    [(UIButton *)v4 setContentEdgeInsets:0.0, 18.0, 0.0, 18.0];
+    [(UIButton *)hu_clipScrubberLiveButton setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIButton *)hu_clipScrubberLiveButton _setContinuousCornerRadius:16.0];
+    [(UIButton *)hu_clipScrubberLiveButton setContentEdgeInsets:0.0, 18.0, 0.0, 18.0];
     v6 = self->_liveButton;
-    self->_liveButton = v4;
+    self->_liveButton = hu_clipScrubberLiveButton;
 
     liveButton = self->_liveButton;
   }
@@ -70,28 +70,28 @@
   return avBackground;
 }
 
-- (void)updateDisplayForStreaming:(BOOL)a3
+- (void)updateDisplayForStreaming:(BOOL)streaming
 {
-  if (a3)
+  if (streaming)
   {
-    v4 = [MEMORY[0x277D75348] systemOrangeColor];
-    v5 = [(HUCameraLiveButtonView *)self liveButton];
-    [v5 setBackgroundColor:v4];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    liveButton = [(HUCameraLiveButtonView *)self liveButton];
+    [liveButton setBackgroundColor:systemOrangeColor];
 
     [MEMORY[0x277D75348] systemBlackColor];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] clearColor];
-    v7 = [(HUCameraLiveButtonView *)self liveButton];
-    [v7 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    liveButton2 = [(HUCameraLiveButtonView *)self liveButton];
+    [liveButton2 setBackgroundColor:clearColor];
 
     [MEMORY[0x277D75348] systemWhiteColor];
   }
   v9 = ;
-  v8 = [(HUCameraLiveButtonView *)self liveButton];
-  [v8 setTintColor:v9];
+  liveButton3 = [(HUCameraLiveButtonView *)self liveButton];
+  [liveButton3 setTintColor:v9];
 }
 
 - (void)updateConstraints
@@ -101,39 +101,39 @@
   v32.super_class = HUCameraLiveButtonView;
   [(HUCameraLiveButtonView *)&v32 updateConstraints];
   v19 = MEMORY[0x277CCAAD0];
-  v31 = [(HUCameraLiveButtonView *)self avBackground];
-  v30 = [v31 rightAnchor];
-  v29 = [(HUCameraLiveButtonView *)self rightAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  avBackground = [(HUCameraLiveButtonView *)self avBackground];
+  rightAnchor = [avBackground rightAnchor];
+  rightAnchor2 = [(HUCameraLiveButtonView *)self rightAnchor];
+  v28 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v33[0] = v28;
-  v27 = [(HUCameraLiveButtonView *)self avBackground];
-  v26 = [v27 heightAnchor];
-  v25 = [v26 constraintEqualToConstant:44.0];
+  avBackground2 = [(HUCameraLiveButtonView *)self avBackground];
+  heightAnchor = [avBackground2 heightAnchor];
+  v25 = [heightAnchor constraintEqualToConstant:44.0];
   v33[1] = v25;
-  v24 = [(HUCameraLiveButtonView *)self avBackground];
-  v22 = [v24 widthAnchor];
-  v23 = [(HUCameraLiveButtonView *)self liveButton];
-  v21 = [v23 widthAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  avBackground3 = [(HUCameraLiveButtonView *)self avBackground];
+  widthAnchor = [avBackground3 widthAnchor];
+  liveButton = [(HUCameraLiveButtonView *)self liveButton];
+  widthAnchor2 = [liveButton widthAnchor];
+  v20 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v33[2] = v20;
-  v18 = [(HUCameraLiveButtonView *)self avBackground];
-  v17 = [v18 centerYAnchor];
-  v16 = [(HUCameraLiveButtonView *)self centerYAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  avBackground4 = [(HUCameraLiveButtonView *)self avBackground];
+  centerYAnchor = [avBackground4 centerYAnchor];
+  centerYAnchor2 = [(HUCameraLiveButtonView *)self centerYAnchor];
+  v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v33[3] = v15;
-  v14 = [(HUCameraLiveButtonView *)self liveButton];
-  v13 = [v14 rightAnchor];
-  v3 = [(HUCameraLiveButtonView *)self rightAnchor];
-  v4 = [v13 constraintEqualToAnchor:v3];
+  liveButton2 = [(HUCameraLiveButtonView *)self liveButton];
+  rightAnchor3 = [liveButton2 rightAnchor];
+  rightAnchor4 = [(HUCameraLiveButtonView *)self rightAnchor];
+  v4 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   v33[4] = v4;
-  v5 = [(HUCameraLiveButtonView *)self liveButton];
-  v6 = [v5 centerYAnchor];
-  v7 = [(HUCameraLiveButtonView *)self centerYAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  liveButton3 = [(HUCameraLiveButtonView *)self liveButton];
+  centerYAnchor3 = [liveButton3 centerYAnchor];
+  centerYAnchor4 = [(HUCameraLiveButtonView *)self centerYAnchor];
+  v8 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v33[5] = v8;
-  v9 = [(HUCameraLiveButtonView *)self liveButton];
-  v10 = [v9 heightAnchor];
-  v11 = [v10 constraintEqualToConstant:44.0];
+  liveButton4 = [(HUCameraLiveButtonView *)self liveButton];
+  heightAnchor2 = [liveButton4 heightAnchor];
+  v11 = [heightAnchor2 constraintEqualToConstant:44.0];
   v33[6] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:7];
   [v19 activateConstraints:v12];

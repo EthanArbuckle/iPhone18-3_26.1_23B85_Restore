@@ -1,31 +1,31 @@
 @interface HistBasedToneMapping
-- (BOOL)sceneChanged:(float *)a3 Prev:(float *)a4 Threshold:(float)a5 CorrCoeff:(float *)a6;
-- (BOOL)testpatchDetection:(unsigned int)a3;
+- (BOOL)sceneChanged:(float *)changed Prev:(float *)prev Threshold:(float)threshold CorrCoeff:(float *)coeff;
+- (BOOL)testpatchDetection:(unsigned int)detection;
 - (HistBasedToneMapping)init;
-- (float)FIRFilterHistStat:(double)a3 statBuffer:(double *)a4 currIndex:(int)a5 numOfProcessedFrames:(int)a6;
-- (float)FIRFilterHistStat:(float)a3 statBuffer:(float *)a4 currIndex:(int)a5 prevIndex:(int)a6 numOfProcessedFrames:(int)a7;
-- (float)computeFrameAPLFromPQHistData:(float *)a3;
+- (float)FIRFilterHistStat:(double)stat statBuffer:(double *)buffer currIndex:(int)index numOfProcessedFrames:(int)frames;
+- (float)FIRFilterHistStat:(float)stat statBuffer:(float *)buffer currIndex:(int)index prevIndex:(int)prevIndex numOfProcessedFrames:(int)frames;
+- (float)computeFrameAPLFromPQHistData:(float *)data;
 - (int64_t)computeFramePrctFromHistData;
 - (int64_t)computeFrameStatFromHistData;
-- (int64_t)copyHistStatFromObject:(id)a3;
-- (int64_t)debugHistDataFromLayer:(__IOSurface *)a3;
-- (int64_t)getHistDataFromLayerV0:(__IOSurface *)a3;
-- (int64_t)getHistDataFromLayerV1:(__IOSurface *)a3;
+- (int64_t)copyHistStatFromObject:(id)object;
+- (int64_t)debugHistDataFromLayer:(__IOSurface *)layer;
+- (int64_t)getHistDataFromLayerV0:(__IOSurface *)v0;
+- (int64_t)getHistDataFromLayerV1:(__IOSurface *)v1;
 - (int64_t)sanityCheckAndGetDataFromHistV0;
 - (int64_t)sanityCheckAndGetDataFromHistV1;
-- (int64_t)temporalProcessHistStat:(int64_t)a3 iirAlpha:(float)a4;
+- (int64_t)temporalProcessHistStat:(int64_t)stat iirAlpha:(float)alpha;
 - (void)computeFrameAvgFromHistData;
 - (void)computeFrameMaxFromHistData;
 - (void)computeFrameMinFromHistData;
 - (void)computeFrameStdFromHistData;
 - (void)dealloc;
-- (void)findStatLinkedListNode:(int64_t)a3;
+- (void)findStatLinkedListNode:(int64_t)node;
 - (void)getSettingsFromDefaultsWrite;
 - (void)mapBinFromNarrowRangeToFullRange;
-- (void)normalizeHistDataAndMapToPQForHLGInput:(int)a3;
+- (void)normalizeHistDataAndMapToPQForHLGInput:(int)input;
 - (void)normalizeHistDataForDoViInput;
 - (void)normalizeHistDataForHDR10Input;
-- (void)setHistBasedToneMappingTemporalType:(unsigned int)a3 temporalMode:(int)a4;
+- (void)setHistBasedToneMappingTemporalType:(unsigned int)type temporalMode:(int)mode;
 - (void)setbufSize;
 @end
 
@@ -593,7 +593,7 @@ LABEL_99:
   [(HistBasedToneMapping *)&v16 dealloc];
 }
 
-- (int64_t)getHistDataFromLayerV0:(__IOSurface *)a3
+- (int64_t)getHistDataFromLayerV0:(__IOSurface *)v0
 {
   v10 = *MEMORY[0x277D85DE8];
   if (self->_hist)
@@ -627,7 +627,7 @@ LABEL_99:
     }
   }
 
-  self->_hist = IOSurfaceCopyValue(a3, @"kIOSurfacePixelMetadata");
+  self->_hist = IOSurfaceCopyValue(v0, @"kIOSurfacePixelMetadata");
   result = [(HistBasedToneMapping *)self sanityCheckAndGetDataFromHistV0];
   v7 = *MEMORY[0x277D85DE8];
   return result;
@@ -707,7 +707,7 @@ LABEL_99:
   }
 }
 
-- (int64_t)getHistDataFromLayerV1:(__IOSurface *)a3
+- (int64_t)getHistDataFromLayerV1:(__IOSurface *)v1
 {
   histBuff = self->_histBuff;
   histBuffSize = self->_histBuffSize;
@@ -824,7 +824,7 @@ LABEL_99:
   memcpy(self->_histBinCentroidInPQ, self->_binCenter, 0x200uLL);
 }
 
-- (void)normalizeHistDataAndMapToPQForHLGInput:(int)a3
+- (void)normalizeHistDataAndMapToPQForHLGInput:(int)input
 {
   v3 = 0;
   histDataPtr = self->_histDataPtr;
@@ -899,7 +899,7 @@ LABEL_99:
   v9 = self->_histBinCentroidInPQ;
   do
   {
-    if (a3)
+    if (input)
     {
       v10 = v3;
     }
@@ -1055,7 +1055,7 @@ LABEL_6:
   self->_stdVal = sqrtf(v4 - (self->_avgVal * self->_avgVal));
 }
 
-- (float)computeFrameAPLFromPQHistData:(float *)a3
+- (float)computeFrameAPLFromPQHistData:(float *)data
 {
   v4 = 0;
   v27 = vdupq_n_s32(0xB5C436E8);
@@ -1070,7 +1070,7 @@ LABEL_6:
   do
   {
     v31 = *&normHistHeight[v4];
-    v7 = *&a3[v4];
+    v7 = *&data[v4];
     v8 = vcgeq_f32(v7, v28);
     v35 = vbslq_s8(v8, v7, vnegq_f32(vaddq_f32(v7, v27)));
     v30 = vbslq_s8(v8, v25, v26);
@@ -1209,10 +1209,10 @@ LABEL_38:
   return -17000;
 }
 
-- (BOOL)testpatchDetection:(unsigned int)a3
+- (BOOL)testpatchDetection:(unsigned int)detection
 {
   v25 = *MEMORY[0x277D85DE8];
-  if (a3 != 2)
+  if (detection != 2)
   {
 LABEL_37:
     v19 = 0;
@@ -1333,7 +1333,7 @@ LABEL_38:
   return v19;
 }
 
-- (void)findStatLinkedListNode:(int64_t)a3
+- (void)findStatLinkedListNode:(int64_t)node
 {
   p_statLinkedListHead = &self->_statLinkedListHead;
   statLinkedListHead = self->_statLinkedListHead;
@@ -1344,18 +1344,18 @@ LABEL_38:
     while (1)
     {
       obj = v7;
-      if ([(HistStatLinkedListNode *)v7 streamId]== a3)
+      if ([(HistStatLinkedListNode *)v7 streamId]== node)
       {
         break;
       }
 
-      v9 = [(HistStatLinkedListNode *)obj next];
+      next = [(HistStatLinkedListNode *)obj next];
 
       ++v8;
-      v7 = v9;
-      if (!v9)
+      v7 = next;
+      if (!next)
       {
-        v10 = [[HistStatLinkedListNode alloc] initWithStreamId:a3 bufferSize:self->_bufSize];
+        v10 = [[HistStatLinkedListNode alloc] initWithStreamId:node bufferSize:self->_bufSize];
         [(HistStatLinkedListNode *)v10 setNext:*p_statLinkedListHead];
         [(HistStatLinkedListNode *)v10 setPrev:0];
         [(HistStatLinkedListNode *)*p_statLinkedListHead setPrev:v10];
@@ -1369,22 +1369,22 @@ LABEL_38:
     v11 = obj;
     if (obj != *p_statLinkedListHead)
     {
-      v15 = [(HistStatLinkedListNode *)obj next];
-      v16 = [(HistStatLinkedListNode *)obj prev];
-      [v16 setNext:v15];
+      next2 = [(HistStatLinkedListNode *)obj next];
+      prev = [(HistStatLinkedListNode *)obj prev];
+      [prev setNext:next2];
 
       if (obj == self->_statLinkedListTail)
       {
-        v19 = [(HistStatLinkedListNode *)obj prev];
+        prev2 = [(HistStatLinkedListNode *)obj prev];
         statLinkedListTail = self->_statLinkedListTail;
-        self->_statLinkedListTail = v19;
+        self->_statLinkedListTail = prev2;
       }
 
       else
       {
         statLinkedListTail = [(HistStatLinkedListNode *)obj prev];
-        v18 = [(HistStatLinkedListNode *)obj next];
-        [v18 setPrev:statLinkedListTail];
+        next3 = [(HistStatLinkedListNode *)obj next];
+        [next3 setPrev:statLinkedListTail];
       }
 
       [(HistStatLinkedListNode *)obj setNext:*p_statLinkedListHead];
@@ -1399,12 +1399,12 @@ LABEL_12:
     objc_storeStrong(&self->_statLinkedListCurr, v11);
     if (v8 >= 101)
     {
-      v20 = [(HistStatLinkedListNode *)self->_statLinkedListTail prev];
+      prev3 = [(HistStatLinkedListNode *)self->_statLinkedListTail prev];
       v21 = self->_statLinkedListTail;
-      self->_statLinkedListTail = v20;
+      self->_statLinkedListTail = prev3;
 
-      v22 = [(HistStatLinkedListNode *)self->_statLinkedListTail next];
-      [v22 setPrev:0];
+      next4 = [(HistStatLinkedListNode *)self->_statLinkedListTail next];
+      [next4 setPrev:0];
 
       [(HistStatLinkedListNode *)self->_statLinkedListTail setNext:0];
     }
@@ -1412,7 +1412,7 @@ LABEL_12:
 
   else
   {
-    v12 = [[HistStatLinkedListNode alloc] initWithStreamId:a3 bufferSize:self->_bufSize];
+    v12 = [[HistStatLinkedListNode alloc] initWithStreamId:node bufferSize:self->_bufSize];
     v13 = self->_statLinkedListHead;
     self->_statLinkedListHead = v12;
 
@@ -1423,46 +1423,46 @@ LABEL_12:
   }
 }
 
-- (float)FIRFilterHistStat:(float)a3 statBuffer:(float *)a4 currIndex:(int)a5 prevIndex:(int)a6 numOfProcessedFrames:(int)a7
+- (float)FIRFilterHistStat:(float)stat statBuffer:(float *)buffer currIndex:(int)index prevIndex:(int)prevIndex numOfProcessedFrames:(int)frames
 {
   bufSize = self->_bufSize;
-  v8 = a4[a6] + a3;
-  if (bufSize <= a7)
+  v8 = buffer[prevIndex] + stat;
+  if (bufSize <= frames)
   {
-    v10 = a5;
-    result = (v8 - a4[a5]) / bufSize;
+    indexCopy2 = index;
+    result = (v8 - buffer[index]) / bufSize;
   }
 
   else
   {
-    result = v8 / (a7 + 1);
-    v10 = a5;
+    result = v8 / (frames + 1);
+    indexCopy2 = index;
   }
 
-  a4[v10] = v8;
+  buffer[indexCopy2] = v8;
   return result;
 }
 
-- (float)FIRFilterHistStat:(double)a3 statBuffer:(double *)a4 currIndex:(int)a5 numOfProcessedFrames:(int)a6
+- (float)FIRFilterHistStat:(double)stat statBuffer:(double *)buffer currIndex:(int)index numOfProcessedFrames:(int)frames
 {
-  v6 = &a4[a5];
-  *v6 = a3;
+  v6 = &buffer[index];
+  *v6 = stat;
   v7 = 0.0;
-  if ((a5 & 0x80000000) == 0)
+  if ((index & 0x80000000) == 0)
   {
-    v8 = &a4[a5];
+    v8 = &buffer[index];
     do
     {
       v9 = *v8--;
       v7 = v7 + v9;
     }
 
-    while (v8 >= a4);
+    while (v8 >= buffer);
   }
 
   bufSize = self->_bufSize;
-  v11 = &a4[bufSize - 1];
-  if (bufSize <= a6 && v11 > v6)
+  v11 = &buffer[bufSize - 1];
+  if (bufSize <= frames && v11 > v6)
   {
     do
     {
@@ -1473,9 +1473,9 @@ LABEL_12:
     while (v11 > v6);
   }
 
-  if (bufSize > a6)
+  if (bufSize > frames)
   {
-    v14 = a6 + 1;
+    v14 = frames + 1;
   }
 
   else
@@ -1486,7 +1486,7 @@ LABEL_12:
   return v7 / v14;
 }
 
-- (int64_t)temporalProcessHistStat:(int64_t)a3 iirAlpha:(float)a4
+- (int64_t)temporalProcessHistStat:(int64_t)stat iirAlpha:(float)alpha
 {
   avgVal = self->_avgVal;
   v7 = self->_prctVal[self->_numPrct - 1];
@@ -1494,7 +1494,7 @@ LABEL_12:
   tempMode = self->_tempMode;
   if ((tempMode & 0xFFFFFFFE) == 2)
   {
-    [(HistBasedToneMapping *)self findStatLinkedListNode:a3];
+    [(HistBasedToneMapping *)self findStatLinkedListNode:stat];
     [(HistStatLinkedListNode *)self->_statLinkedListCurr prevAvgVal];
     v10 = v9;
     [(HistStatLinkedListNode *)self->_statLinkedListCurr prevMaxVal];
@@ -1531,15 +1531,15 @@ LABEL_12:
 
   if (tempMode == 3)
   {
-    v28 = [(HistStatLinkedListNode *)self->_statLinkedListCurr numOfProcessedFrames];
+    numOfProcessedFrames = [(HistStatLinkedListNode *)self->_statLinkedListCurr numOfProcessedFrames];
     bufSize = self->_bufSize;
     isSceneChanged = self->_isSceneChanged;
     minVal = self->_minVal;
-    v32 = [(HistStatLinkedListNode *)self->_statLinkedListCurr minValBuffer];
-    v33 = v32;
+    minValBuffer = [(HistStatLinkedListNode *)self->_statLinkedListCurr minValBuffer];
+    v33 = minValBuffer;
     if (isSceneChanged)
     {
-      *v32 = minVal;
+      *minValBuffer = minVal;
       maxVal = self->_maxVal;
       *[(HistStatLinkedListNode *)self->_statLinkedListCurr maxValBuffer]= maxVal;
       v35 = self->_avgVal;
@@ -1561,29 +1561,29 @@ LABEL_12:
       goto LABEL_18;
     }
 
-    v42 = (v28 % bufSize);
+    v42 = (numOfProcessedFrames % bufSize);
     v43 = ((bufSize + v42 - 1) % bufSize);
-    v44 = [(HistStatLinkedListNode *)self->_statLinkedListCurr numOfProcessedFrames];
+    numOfProcessedFrames2 = [(HistStatLinkedListNode *)self->_statLinkedListCurr numOfProcessedFrames];
     *&v45 = minVal;
-    [(HistBasedToneMapping *)self FIRFilterHistStat:v33 statBuffer:v42 currIndex:v43 prevIndex:v44 numOfProcessedFrames:v45];
+    [(HistBasedToneMapping *)self FIRFilterHistStat:v33 statBuffer:v42 currIndex:v43 prevIndex:numOfProcessedFrames2 numOfProcessedFrames:v45];
     self->_minVal = v46;
     v47 = self->_maxVal;
-    v48 = [(HistStatLinkedListNode *)self->_statLinkedListCurr maxValBuffer];
-    v49 = [(HistStatLinkedListNode *)self->_statLinkedListCurr numOfProcessedFrames];
+    maxValBuffer = [(HistStatLinkedListNode *)self->_statLinkedListCurr maxValBuffer];
+    numOfProcessedFrames3 = [(HistStatLinkedListNode *)self->_statLinkedListCurr numOfProcessedFrames];
     *&v50 = v47;
-    [(HistBasedToneMapping *)self FIRFilterHistStat:v48 statBuffer:v42 currIndex:v43 prevIndex:v49 numOfProcessedFrames:v50];
+    [(HistBasedToneMapping *)self FIRFilterHistStat:maxValBuffer statBuffer:v42 currIndex:v43 prevIndex:numOfProcessedFrames3 numOfProcessedFrames:v50];
     self->_maxVal = v51;
     v52 = self->_avgVal;
-    v53 = [(HistStatLinkedListNode *)self->_statLinkedListCurr avgValBuffer];
-    v54 = [(HistStatLinkedListNode *)self->_statLinkedListCurr numOfProcessedFrames];
+    avgValBuffer = [(HistStatLinkedListNode *)self->_statLinkedListCurr avgValBuffer];
+    numOfProcessedFrames4 = [(HistStatLinkedListNode *)self->_statLinkedListCurr numOfProcessedFrames];
     *&v55 = v52;
-    [(HistBasedToneMapping *)self FIRFilterHistStat:v53 statBuffer:v42 currIndex:v43 prevIndex:v54 numOfProcessedFrames:v55];
+    [(HistBasedToneMapping *)self FIRFilterHistStat:avgValBuffer statBuffer:v42 currIndex:v43 prevIndex:numOfProcessedFrames4 numOfProcessedFrames:v55];
     self->_avgVal = v56;
     v57 = self->_stdVal;
-    v58 = [(HistStatLinkedListNode *)self->_statLinkedListCurr stdValBuffer];
-    v59 = [(HistStatLinkedListNode *)self->_statLinkedListCurr numOfProcessedFrames];
+    stdValBuffer = [(HistStatLinkedListNode *)self->_statLinkedListCurr stdValBuffer];
+    numOfProcessedFrames5 = [(HistStatLinkedListNode *)self->_statLinkedListCurr numOfProcessedFrames];
     *&v60 = v57;
-    [(HistBasedToneMapping *)self FIRFilterHistStat:v58 statBuffer:v42 currIndex:v43 prevIndex:v59 numOfProcessedFrames:v60];
+    [(HistBasedToneMapping *)self FIRFilterHistStat:stdValBuffer statBuffer:v42 currIndex:v43 prevIndex:numOfProcessedFrames5 numOfProcessedFrames:v60];
     self->_stdVal = v61;
     if (self->_numPrct >= 1)
     {
@@ -1593,9 +1593,9 @@ LABEL_12:
       {
         v64 = prctVal[v62];
         v65 = [(HistStatLinkedListNode *)self->_statLinkedListCurr prctValBuffer][8 * v62];
-        v66 = [(HistStatLinkedListNode *)self->_statLinkedListCurr numOfProcessedFrames];
+        numOfProcessedFrames6 = [(HistStatLinkedListNode *)self->_statLinkedListCurr numOfProcessedFrames];
         *&v67 = v64;
-        [(HistBasedToneMapping *)self FIRFilterHistStat:v65 statBuffer:v42 currIndex:v43 prevIndex:v66 numOfProcessedFrames:v67];
+        [(HistBasedToneMapping *)self FIRFilterHistStat:v65 statBuffer:v42 currIndex:v43 prevIndex:numOfProcessedFrames6 numOfProcessedFrames:v67];
         prctVal = self->_prctVal;
         prctVal[v62++] = v68;
       }
@@ -1617,16 +1617,16 @@ LABEL_27:
 
   if (!self->_isSceneChanged)
   {
-    v69 = (self->_minVal * a4) + ((1.0 - a4) * *[(HistStatLinkedListNode *)self->_statLinkedListCurr minValBuffer]);
+    v69 = (self->_minVal * alpha) + ((1.0 - alpha) * *[(HistStatLinkedListNode *)self->_statLinkedListCurr minValBuffer]);
     *[(HistStatLinkedListNode *)self->_statLinkedListCurr minValBuffer]= v69;
     self->_minVal = v69;
-    v70 = (self->_maxVal * a4) + ((1.0 - a4) * *[(HistStatLinkedListNode *)self->_statLinkedListCurr maxValBuffer]);
+    v70 = (self->_maxVal * alpha) + ((1.0 - alpha) * *[(HistStatLinkedListNode *)self->_statLinkedListCurr maxValBuffer]);
     *[(HistStatLinkedListNode *)self->_statLinkedListCurr maxValBuffer]= v70;
     self->_maxVal = v70;
-    v71 = (self->_avgVal * a4) + ((1.0 - a4) * *[(HistStatLinkedListNode *)self->_statLinkedListCurr avgValBuffer]);
+    v71 = (self->_avgVal * alpha) + ((1.0 - alpha) * *[(HistStatLinkedListNode *)self->_statLinkedListCurr avgValBuffer]);
     *[(HistStatLinkedListNode *)self->_statLinkedListCurr avgValBuffer]= v71;
     self->_avgVal = v71;
-    v72 = (self->_stdVal * a4) + ((1.0 - a4) * *[(HistStatLinkedListNode *)self->_statLinkedListCurr stdValBuffer]);
+    v72 = (self->_stdVal * alpha) + ((1.0 - alpha) * *[(HistStatLinkedListNode *)self->_statLinkedListCurr stdValBuffer]);
     *[(HistStatLinkedListNode *)self->_statLinkedListCurr stdValBuffer]= v72;
     self->_stdVal = v72;
     if (self->_numPrct >= 1)
@@ -1634,7 +1634,7 @@ LABEL_27:
       v73 = 0;
       do
       {
-        v74 = (self->_prctVal[v73] * a4) + ((1.0 - a4) * *[(HistStatLinkedListNode *)self->_statLinkedListCurr prctValBuffer][8 * v73]);
+        v74 = (self->_prctVal[v73] * alpha) + ((1.0 - alpha) * *[(HistStatLinkedListNode *)self->_statLinkedListCurr prctValBuffer][8 * v73]);
         *[(HistStatLinkedListNode *)self->_statLinkedListCurr prctValBuffer][8 * v73] = v74;
         self->_prctVal[v73++] = v74;
       }
@@ -1673,16 +1673,16 @@ LABEL_28:
   return -17000;
 }
 
-- (void)setHistBasedToneMappingTemporalType:(unsigned int)a3 temporalMode:(int)a4
+- (void)setHistBasedToneMappingTemporalType:(unsigned int)type temporalMode:(int)mode
 {
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     self->_tempMode = 0;
   }
 
   else
   {
-    self->_tempMode = a4;
+    self->_tempMode = mode;
     [(HistBasedToneMapping *)self setbufSize];
   }
 }
@@ -1713,20 +1713,20 @@ LABEL_28:
   self->_bufSize = v4;
 }
 
-- (BOOL)sceneChanged:(float *)a3 Prev:(float *)a4 Threshold:(float)a5 CorrCoeff:(float *)a6
+- (BOOL)sceneChanged:(float *)changed Prev:(float *)prev Threshold:(float)threshold CorrCoeff:(float *)coeff
 {
-  v6 = *a3;
-  if (*a3 <= *a4)
+  v6 = *changed;
+  if (*changed <= *prev)
   {
-    v6 = *a4;
+    v6 = *prev;
   }
 
-  v7 = ((*a3 - *a4) * (*a3 - *a4)) / v6;
+  v7 = ((*changed - *prev) * (*changed - *prev)) / v6;
   v8 = 0.0;
   v9 = 128;
   do
   {
-    if ((*a3 + *a4) != 0.0)
+    if ((*changed + *prev) != 0.0)
     {
       v8 = v7 + v8;
     }
@@ -1735,8 +1735,8 @@ LABEL_28:
   }
 
   while (v9);
-  *a6 = v8 * 100.0;
-  return (v8 * 100.0) >= a5;
+  *coeff = v8 * 100.0;
+  return (v8 * 100.0) >= threshold;
 }
 
 - (void)getSettingsFromDefaultsWrite
@@ -1774,32 +1774,32 @@ LABEL_28:
   }
 }
 
-- (int64_t)debugHistDataFromLayer:(__IOSurface *)a3
+- (int64_t)debugHistDataFromLayer:(__IOSurface *)layer
 {
   [(HistBasedToneMapping *)self getSettingsFromDefaultsWrite];
   if (GetConfig() && (Config = GetConfig(), *HDRConfig::GetConfigEntryValue(Config, 0x3Du, 0) == 1))
   {
-    result = [(HistBasedToneMapping *)self getHistDataFromLayerV0:a3];
+    result = [(HistBasedToneMapping *)self getHistDataFromLayerV0:layer];
   }
 
   else
   {
-    result = [(HistBasedToneMapping *)self getHistDataFromLayerV1:a3];
+    result = [(HistBasedToneMapping *)self getHistDataFromLayerV1:layer];
   }
 
   self->_isDataValid = result == -17000;
   return result;
 }
 
-- (int64_t)copyHistStatFromObject:(id)a3
+- (int64_t)copyHistStatFromObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  objectCopy = object;
+  v5 = objectCopy;
+  if (objectCopy)
   {
-    v6 = [v4 isDataValid];
-    self->_isDataValid = v6;
-    if (v6)
+    isDataValid = [objectCopy isDataValid];
+    self->_isDataValid = isDataValid;
+    if (isDataValid)
     {
       [v5 minVal];
       self->_minVal = v7;

@@ -2,30 +2,30 @@
 + (AMSBagKeySet)bagKeySet;
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
-- (AMSNotificationSettingsTask)initWithIdentifier:(id)a3 account:(id)a4 bag:(id)a5;
-- (id)_generateParametersForItems:(id)a3;
-- (id)_stringForKey:(id)a3 fromBag:(id)a4;
+- (AMSNotificationSettingsTask)initWithIdentifier:(id)identifier account:(id)account bag:(id)bag;
+- (id)_generateParametersForItems:(id)items;
+- (id)_stringForKey:(id)key fromBag:(id)bag;
 - (id)_url;
 - (id)fetchAllSettings;
-- (id)updateSettings:(id)a3;
+- (id)updateSettings:(id)settings;
 @end
 
 @implementation AMSNotificationSettingsTask
 
-- (AMSNotificationSettingsTask)initWithIdentifier:(id)a3 account:(id)a4 bag:(id)a5
+- (AMSNotificationSettingsTask)initWithIdentifier:(id)identifier account:(id)account bag:(id)bag
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  accountCopy = account;
+  bagCopy = bag;
   v15.receiver = self;
   v15.super_class = AMSNotificationSettingsTask;
   v12 = [(AMSTask *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_account, a4);
-    objc_storeStrong(&v13->_bag, a5);
-    objc_storeStrong(&v13->_identifier, a3);
+    objc_storeStrong(&v12->_account, account);
+    objc_storeStrong(&v13->_bag, bag);
+    objc_storeStrong(&v13->_identifier, identifier);
   }
 
   return v13;
@@ -264,9 +264,9 @@ void __47__AMSNotificationSettingsTask_fetchAllSettings__block_invoke_23(uint64_
   [v4 finishWithPromise:v5];
 }
 
-- (id)updateSettings:(id)a3
+- (id)updateSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -274,7 +274,7 @@ void __47__AMSNotificationSettingsTask_fetchAllSettings__block_invoke_23(uint64_
   v8[3] = &unk_1E73BA488;
   objc_copyWeak(&v10, &location);
   v8[4] = self;
-  v5 = v4;
+  v5 = settingsCopy;
   v9 = v5;
   v6 = [(AMSTask *)self performBinaryTaskWithBlock:v8];
 
@@ -469,8 +469,8 @@ LABEL_25:
 - (id)_url
 {
   v3 = objc_opt_new();
-  v4 = [(AMSNotificationSettingsTask *)self identifier];
-  [v3 setObject:v4 forKeyedSubscript:@"service"];
+  identifier = [(AMSNotificationSettingsTask *)self identifier];
+  [v3 setObject:identifier forKeyedSubscript:@"service"];
 
   v5 = [(AMSNotificationSettingsTask *)self bag];
   v6 = [(AMSNotificationSettingsTask *)self _stringForKey:@"language-tag" fromBag:v5];
@@ -525,10 +525,10 @@ LABEL_25:
   return v21;
 }
 
-- (id)_stringForKey:(id)a3 fromBag:(id)a4
+- (id)_stringForKey:(id)key fromBag:(id)bag
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [a4 stringForKey:a3];
+  v4 = [bag stringForKey:key];
   v13 = 0;
   v5 = [v4 valueWithError:&v13];
   v6 = v13;
@@ -541,8 +541,8 @@ LABEL_25:
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
       v10 = AMSLogKey();
@@ -553,23 +553,23 @@ LABEL_25:
       v17 = v10;
       v18 = 2114;
       v19 = v11;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
     }
   }
 
   return v5;
 }
 
-- (id)_generateParametersForItems:(id)a3
+- (id)_generateParametersForItems:(id)items
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  itemsCopy = items;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -584,8 +584,8 @@ LABEL_25:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-        [v4 addObject:v10];
+        dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+        [v4 addObject:dictionaryRepresentation];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];

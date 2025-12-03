@@ -1,5 +1,5 @@
 @interface MBDeviceLockAssertion
-- (BOOL)holdWithError:(id *)a3;
+- (BOOL)holdWithError:(id *)error;
 - (void)_drop;
 - (void)dealloc;
 - (void)drop;
@@ -15,7 +15,7 @@
   [(MBDeviceLockAssertion *)&v3 dealloc];
 }
 
-- (BOOL)holdWithError:(id *)a3
+- (BOOL)holdWithError:(id *)error
 {
   v5 = MKBDeviceUnlockedSinceBoot();
   v6 = MKBGetDeviceLockState();
@@ -61,10 +61,10 @@
 
     v12 = [MBError errorWithCode:208 error:0 format:@"Failed to acquire the device lock assertion"];
 
-    if (a3)
+    if (error)
     {
       v13 = v12;
-      *a3 = v12;
+      *error = v12;
     }
   }
 

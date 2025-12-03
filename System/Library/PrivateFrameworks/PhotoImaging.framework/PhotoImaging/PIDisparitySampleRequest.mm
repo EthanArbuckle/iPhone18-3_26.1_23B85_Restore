@@ -1,12 +1,12 @@
 @interface PIDisparitySampleRequest
 - (CGRect)sampleRect;
-- (PIDisparitySampleRequest)initWithComposition:(id)a3;
-- (PIDisparitySampleRequest)initWithComposition:(id)a3 time:(id *)a4 sampleRect:(CGRect)a5;
-- (PIDisparitySampleRequest)initWithMedia:(id)a3;
-- (PIDisparitySampleRequest)initWithRequest:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PIDisparitySampleRequest)initWithComposition:(id)composition;
+- (PIDisparitySampleRequest)initWithComposition:(id)composition time:(id *)time sampleRect:(CGRect)rect;
+- (PIDisparitySampleRequest)initWithMedia:(id)media;
+- (PIDisparitySampleRequest)initWithRequest:(id)request;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
-- (void)setSampleTime:(id *)a3;
+- (void)setSampleTime:(id *)time;
 @end
 
 @implementation PIDisparitySampleRequest
@@ -24,10 +24,10 @@
   return result;
 }
 
-- (void)setSampleTime:(id *)a3
+- (void)setSampleTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_sampleTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_sampleTime.value = *&time->var0;
   self->_sampleTime.epoch = var3;
 }
 
@@ -43,11 +43,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = PIDisparitySampleRequest;
-  v4 = [(NURenderRequest *)&v10 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v10 copyWithZone:zone];
   [(PIDisparitySampleRequest *)self sampleTime];
   v6 = v8;
   v7 = v9;
@@ -57,10 +57,10 @@
   return v4;
 }
 
-- (PIDisparitySampleRequest)initWithMedia:(id)a3
+- (PIDisparitySampleRequest)initWithMedia:(id)media
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mediaCopy = media;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -99,8 +99,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -127,8 +127,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -146,10 +146,10 @@ LABEL_14:
   }
 }
 
-- (PIDisparitySampleRequest)initWithRequest:(id)a3
+- (PIDisparitySampleRequest)initWithRequest:(id)request
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -188,8 +188,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -216,8 +216,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -235,10 +235,10 @@ LABEL_14:
   }
 }
 
-- (PIDisparitySampleRequest)initWithComposition:(id)a3
+- (PIDisparitySampleRequest)initWithComposition:(id)composition
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  compositionCopy = composition;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -277,8 +277,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -305,8 +305,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -324,21 +324,21 @@ LABEL_14:
   }
 }
 
-- (PIDisparitySampleRequest)initWithComposition:(id)a3 time:(id *)a4 sampleRect:(CGRect)a5
+- (PIDisparitySampleRequest)initWithComposition:(id)composition time:(id *)time sampleRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v18[1] = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = PIDisparitySampleRequest;
-  v10 = [(NURenderRequest *)&v17 initWithComposition:a3];
+  v10 = [(NURenderRequest *)&v17 initWithComposition:composition];
   v11 = v10;
   if (v10)
   {
-    v15 = *&a4->var0;
-    var3 = a4->var3;
+    v15 = *&time->var0;
+    var3 = time->var3;
     [(PIDisparitySampleRequest *)v10 setSampleTime:&v15];
     [(PIDisparitySampleRequest *)v11 setSampleRect:x, y, width, height];
     v12 = +[PIPipelineFilters sourceFilterNoOrientation];

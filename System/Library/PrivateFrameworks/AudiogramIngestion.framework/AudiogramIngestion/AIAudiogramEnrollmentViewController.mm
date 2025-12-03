@@ -1,49 +1,49 @@
 @interface AIAudiogramEnrollmentViewController
 - (AIAudiogramConfirmResultsViewControllerDelegate)audiogramConfirmationDelegate;
 - (AIAudiogramEnrollmentViewController)init;
-- (AIAudiogramEnrollmentViewController)initWithDelegate:(id)a3;
-- (id)_imagesFromPDF:(id)a3;
-- (id)getNextFrequency:(id)a3;
-- (void)_addDebugToolbarItemToController:(id)a3;
-- (void)_addInitialSensitivityPointAtFrequency:(id)a3;
-- (void)_cameraAccessisAuthorizedForHealth:(id)a3;
-- (void)_cancelTapped:(id)a3;
+- (AIAudiogramEnrollmentViewController)initWithDelegate:(id)delegate;
+- (id)_imagesFromPDF:(id)f;
+- (id)getNextFrequency:(id)frequency;
+- (void)_addDebugToolbarItemToController:(id)controller;
+- (void)_addInitialSensitivityPointAtFrequency:(id)frequency;
+- (void)_cameraAccessisAuthorizedForHealth:(id)health;
+- (void)_cancelTapped:(id)tapped;
 - (void)_importAudiogramImage;
-- (void)_importTapped:(id)a3;
+- (void)_importTapped:(id)tapped;
 - (void)_manuallyImportAudiogram;
 - (void)_openCamera;
-- (void)_openCameraTapped:(id)a3;
-- (void)_openDocumentsTapped:(id)a3;
-- (void)_openPhotosTapped:(id)a3;
-- (void)_openTapToRadarWithAttachment:(BOOL)a3;
-- (void)_prepareToImportAudiogramImages:(id)a3;
+- (void)_openCameraTapped:(id)tapped;
+- (void)_openDocumentsTapped:(id)tapped;
+- (void)_openPhotosTapped:(id)tapped;
+- (void)_openTapToRadarWithAttachment:(BOOL)attachment;
+- (void)_prepareToImportAudiogramImages:(id)images;
 - (void)_showCameraAuthorizationInSetting;
-- (void)_showCameraTips:(id)a3;
-- (void)_showDebugViewForImage:(id)a3 debugInfo:(id)a4;
-- (void)_showNonCameraOptions:(id)a3;
-- (void)_showResultsForAudiogram:(id)a3;
+- (void)_showCameraTips:(id)tips;
+- (void)_showDebugViewForImage:(id)image debugInfo:(id)info;
+- (void)_showNonCameraOptions:(id)options;
+- (void)_showResultsForAudiogram:(id)audiogram;
 - (void)_showTapToRadarAlert;
 - (void)_showWelcome;
 - (void)_showWelcomeV2;
 - (void)_startManualEntryV2;
-- (void)_tryAgainTapped:(id)a3;
-- (void)didSelectNodeToAddWithSelectedFrequency:(id)a3;
-- (void)didSelectNodeToEditWithSelectedFrequency:(id)a3;
-- (void)dismissCurrentFrequencyInputViewControllerWithAudiogram:(id)a3;
-- (void)documentCameraViewController:(id)a3 didFailWithError:(id)a4;
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4;
-- (void)documentCameraViewControllerDidCancel:(id)a3;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
+- (void)_tryAgainTapped:(id)tapped;
+- (void)didSelectNodeToAddWithSelectedFrequency:(id)frequency;
+- (void)didSelectNodeToEditWithSelectedFrequency:(id)frequency;
+- (void)dismissCurrentFrequencyInputViewControllerWithAudiogram:(id)audiogram;
+- (void)documentCameraViewController:(id)controller didFailWithError:(id)error;
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan;
+- (void)documentCameraViewControllerDidCancel:(id)cancel;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
 - (void)refreshFinalConfirmationView;
-- (void)setHealthStore:(id)a3 unitPreferenceController:(id)a4 initialDate:(id)a5;
+- (void)setHealthStore:(id)store unitPreferenceController:(id)controller initialDate:(id)date;
 - (void)showIndividualFirstSensitivityPointInputViewController;
-- (void)showNextFrequencyInputViewControllerWithAudiogram:(id)a3 previousFrequency:(id)a4;
-- (void)updateAudiogramDate:(id)a3;
+- (void)showNextFrequencyInputViewControllerWithAudiogram:(id)audiogram previousFrequency:(id)frequency;
+- (void)updateAudiogramDate:(id)date;
 - (void)updateFrequencyViewControllers;
-- (void)updateSelectedFrequenciesWithSelectedFrequencies:(id)a3;
-- (void)updateSelectedSymbolsWithSelectedSymbols:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateSelectedFrequenciesWithSelectedFrequencies:(id)frequencies;
+- (void)updateSelectedSymbolsWithSelectedSymbols:(id)symbols;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -63,27 +63,27 @@
   return v3;
 }
 
-- (AIAudiogramEnrollmentViewController)initWithDelegate:(id)a3
+- (AIAudiogramEnrollmentViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(AIAudiogramEnrollmentViewController *)self init];
   v6 = v5;
   if (v5)
   {
-    [(AIAudiogramEnrollmentViewController *)v5 setAudiogramConfirmationDelegate:v4];
+    [(AIAudiogramEnrollmentViewController *)v5 setAudiogramConfirmationDelegate:delegateCopy];
   }
 
   return v6;
 }
 
-- (void)setHealthStore:(id)a3 unitPreferenceController:(id)a4 initialDate:(id)a5
+- (void)setHealthStore:(id)store unitPreferenceController:(id)controller initialDate:(id)date
 {
-  v9 = a5;
-  v8 = a4;
-  [(AIAudiogramEnrollmentViewController *)self setHealthStore:a3];
-  [(AIAudiogramEnrollmentViewController *)self setUnitPreferenceController:v8];
+  dateCopy = date;
+  controllerCopy = controller;
+  [(AIAudiogramEnrollmentViewController *)self setHealthStore:store];
+  [(AIAudiogramEnrollmentViewController *)self setUnitPreferenceController:controllerCopy];
 
-  [(AIAudiogramEnrollmentViewController *)self setInitialDate:v9];
+  [(AIAudiogramEnrollmentViewController *)self setInitialDate:dateCopy];
 }
 
 - (void)viewDidLoad
@@ -97,22 +97,22 @@
   self->_audiogramEngine = v3;
 
   self->_isCameraAvailable = [MEMORY[0x277D755C8] isSourceTypeAvailable:1];
-  v5 = [(AIAudiogramIngestionEngine *)self->_audiogramEngine isAvailable];
+  isAvailable = [(AIAudiogramIngestionEngine *)self->_audiogramEngine isAvailable];
   v6 = AXLogAudiogram();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v10 = v5;
+    v10 = isAvailable;
     _os_log_impl(&dword_24179B000, v6, OS_LOG_TYPE_INFO, "Starting audiogram ingestion. Is model is available? %d", buf, 8u);
   }
 
-  if (!v5)
+  if (!isAvailable)
   {
     [(AIAudiogramIngestionEngine *)self->_audiogramEngine startRetrievingLatestModelSilently];
   }
 
-  v7 = [(AIAudiogramEnrollmentViewController *)self presentationController];
-  [v7 setDelegate:self];
+  presentationController = [(AIAudiogramEnrollmentViewController *)self presentationController];
+  [presentationController setDelegate:self];
 
   if (_os_feature_enabled_impl())
   {
@@ -125,15 +125,15 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = AIAudiogramEnrollmentViewController;
-  [(AIAudiogramEnrollmentViewController *)&v7 viewDidAppear:a3];
-  v4 = [(AIAudiogramEnrollmentViewController *)self view];
-  if (v4)
+  [(AIAudiogramEnrollmentViewController *)&v7 viewDidAppear:appear];
+  view = [(AIAudiogramEnrollmentViewController *)self view];
+  if (view)
   {
-    v5 = v4;
+    v5 = view;
     while (1)
     {
       objc_opt_class();
@@ -142,10 +142,10 @@
         break;
       }
 
-      v6 = [v5 superview];
+      superview = [v5 superview];
 
-      v5 = v6;
-      if (!v6)
+      v5 = superview;
+      if (!superview)
       {
         return;
       }
@@ -155,12 +155,12 @@
   }
 }
 
-- (id)_imagesFromPDF:(id)a3
+- (id)_imagesFromPDF:(id)f
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  fCopy = f;
+  v4 = fCopy;
+  if (!fCopy)
   {
     v22 = AXLogAudiogram();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -171,7 +171,7 @@
     goto LABEL_24;
   }
 
-  v5 = CGPDFDocumentCreateWithURL(v3);
+  v5 = CGPDFDocumentCreateWithURL(fCopy);
   if (!v5)
   {
     v22 = AXLogAudiogram();
@@ -273,23 +273,23 @@ LABEL_25:
 - (void)_showWelcome
 {
   v3 = [MEMORY[0x277D755B8] _systemImageNamed:@"waveform.path"];
-  v4 = [MEMORY[0x277D75348] systemBlueColor];
-  v31 = [v3 imageWithTintColor:v4 renderingMode:1];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v31 = [v3 imageWithTintColor:systemBlueColor renderingMode:1];
 
   v5 = objc_alloc(MEMORY[0x277D37698]);
   v6 = aiLocString(@"AudiogramIngestionWelcomeTitle");
   v7 = aiLocString(@"AudiogramIngestionWelcomeDetailText");
   v8 = [v5 initWithTitle:v6 detailText:v7 icon:v31];
 
-  v9 = [v8 headerView];
+  headerView = [v8 headerView];
   LODWORD(v10) = 1036831949;
-  [v9 setTitleHyphenationFactor:v10];
+  [headerView setTitleHyphenationFactor:v10];
 
   if ([(AIAudiogramEnrollmentViewController *)self isCameraAvailable])
   {
     v11 = [MEMORY[0x277D755B8] _systemImageNamed:@"camera"];
-    v12 = [MEMORY[0x277D75348] systemBlueColor];
-    v13 = [v11 imageWithTintColor:v12 renderingMode:1];
+    systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
+    v13 = [v11 imageWithTintColor:systemBlueColor2 renderingMode:1];
 
     v14 = aiLocString(@"AudiogramIngestionOptionCameraTitle");
     v15 = aiLocString(@"AudiogramIngestionOptionCameraDescription");
@@ -297,32 +297,32 @@ LABEL_25:
   }
 
   v16 = [MEMORY[0x277D755B8] _systemImageNamed:@"photo.on.rectangle.angled"];
-  v17 = [MEMORY[0x277D75348] systemBlueColor];
-  v18 = [v16 imageWithTintColor:v17 renderingMode:1];
+  systemBlueColor3 = [MEMORY[0x277D75348] systemBlueColor];
+  v18 = [v16 imageWithTintColor:systemBlueColor3 renderingMode:1];
 
   v19 = aiLocString(@"AudiogramIngestionOptionPhotosTitle");
   v20 = aiLocString(@"AudiogramIngestionOptionPhotosDescription");
   [v8 addBulletedListItemWithTitle:v19 description:v20 image:v18];
 
   v21 = [MEMORY[0x277D755B8] _systemImageNamed:@"folder"];
-  v22 = [MEMORY[0x277D75348] systemBlueColor];
-  v23 = [v21 imageWithTintColor:v22 renderingMode:1];
+  systemBlueColor4 = [MEMORY[0x277D75348] systemBlueColor];
+  v23 = [v21 imageWithTintColor:systemBlueColor4 renderingMode:1];
 
   v24 = aiLocString(@"AudiogramIngestionOptionFilesTitle");
   v25 = aiLocString(@"AudiogramIngestionOptionFilesDescription");
   [v8 addBulletedListItemWithTitle:v24 description:v25 image:v23];
 
-  v26 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v27 = aiLocString(@"AudiogramIngestionImportButton");
-  [v26 setTitle:v27 forState:0];
+  [boldButton setTitle:v27 forState:0];
 
-  [v26 addTarget:self action:sel__importTapped_ forControlEvents:64];
-  v28 = [v8 buttonTray];
-  [v28 addButton:v26];
+  [boldButton addTarget:self action:sel__importTapped_ forControlEvents:64];
+  buttonTray = [v8 buttonTray];
+  [buttonTray addButton:boldButton];
 
   v29 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelTapped_];
-  v30 = [v8 navigationItem];
-  [v30 setRightBarButtonItem:v29];
+  navigationItem = [v8 navigationItem];
+  [navigationItem setRightBarButtonItem:v29];
 
   [(OBNavigationController *)self pushViewController:v8 animated:1];
 }
@@ -335,9 +335,9 @@ LABEL_25:
   v5 = aiLocString(@"AudiogramIngestionWelcomeDetailTextV2");
   v6 = [v3 initWithTitle:v4 detailText:v5 icon:v23];
 
-  v7 = [v6 headerView];
+  headerView = [v6 headerView];
   LODWORD(v8) = 1036831949;
-  [v7 setTitleHyphenationFactor:v8];
+  [headerView setTitleHyphenationFactor:v8];
 
   v9 = [MEMORY[0x277D755B8] _systemImageNamed:@"xmark.triangle.circle.square"];
   v10 = aiLocString(@"AudiogramIngestionOptionSymbolsTitle");
@@ -351,26 +351,26 @@ LABEL_25:
 
   if ([(AIAudiogramEnrollmentViewController *)self isCameraAvailable])
   {
-    v15 = [MEMORY[0x277D37618] boldButton];
+    boldButton = [MEMORY[0x277D37618] boldButton];
     v16 = aiLocString(@"AudiogramIngestionScanWithCameraButton");
-    [v15 setTitle:v16 forState:0];
+    [boldButton setTitle:v16 forState:0];
 
-    [v15 addTarget:self action:sel__showCameraTips_ forControlEvents:64];
-    v17 = [v6 buttonTray];
-    [v17 addButton:v15];
+    [boldButton addTarget:self action:sel__showCameraTips_ forControlEvents:64];
+    buttonTray = [v6 buttonTray];
+    [buttonTray addButton:boldButton];
   }
 
-  v18 = [MEMORY[0x277D37650] linkButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
   v19 = aiLocString(@"AudiogramIngestionEnterManuallyButton");
-  [v18 setTitle:v19 forState:0];
+  [linkButton setTitle:v19 forState:0];
 
-  [v18 addTarget:self action:sel__showNonCameraOptions_ forControlEvents:64];
-  v20 = [v6 buttonTray];
-  [v20 addButton:v18];
+  [linkButton addTarget:self action:sel__showNonCameraOptions_ forControlEvents:64];
+  buttonTray2 = [v6 buttonTray];
+  [buttonTray2 addButton:linkButton];
 
   v21 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelTapped_];
-  v22 = [v6 navigationItem];
-  [v22 setRightBarButtonItem:v21];
+  navigationItem = [v6 navigationItem];
+  [navigationItem setRightBarButtonItem:v21];
 
   [(OBNavigationController *)self pushViewController:v6 animated:1];
 }
@@ -380,8 +380,8 @@ LABEL_25:
   [(AIAudiogramEnrollmentViewController *)self setAnalyticsImportSource:0];
   [(AIAudiogramEnrollmentViewController *)self setAudiogram:0];
   [(AIAudiogramEnrollmentViewController *)self setSelectedFrequencies:0];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(AIAudiogramEnrollmentViewController *)self setPickedDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(AIAudiogramEnrollmentViewController *)self setPickedDate:date];
 
   [(AIAudiogramEnrollmentViewController *)self setSelectedSymbols:0];
 
@@ -604,10 +604,10 @@ void __62__AIAudiogramEnrollmentViewController__hideAnalyzingAudiogram__block_in
   }
 }
 
-- (void)_showResultsForAudiogram:(id)a3
+- (void)_showResultsForAudiogram:(id)audiogram
 {
-  v4 = a3;
-  v3 = v4;
+  audiogramCopy = audiogram;
+  v3 = audiogramCopy;
   AXPerformBlockOnMainThread();
 }
 
@@ -788,17 +788,17 @@ void __64__AIAudiogramEnrollmentViewController__showResultsForAudiogram___block_
   [v13 addObject:v17];
 }
 
-- (void)_addDebugToolbarItemToController:(id)a3
+- (void)_addDebugToolbarItemToController:(id)controller
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   if ([MEMORY[0x277D12B60] isInternalInstall])
   {
     if (_os_feature_enabled_impl())
     {
-      v5 = [v4 navigationItem];
-      v6 = [v5 rightBarButtonItems];
-      v7 = [v6 count];
+      navigationItem = [controllerCopy navigationItem];
+      rightBarButtonItems = [navigationItem rightBarButtonItems];
+      v7 = [rightBarButtonItems count];
 
       if (v7 <= 1)
       {
@@ -829,25 +829,25 @@ void __64__AIAudiogramEnrollmentViewController__showResultsForAudiogram___block_
         v18 = [MEMORY[0x277D755B8] _systemImageNamed:@"ant.fill"];
         v19 = [v17 initWithImage:v18 menu:v16];
 
-        v20 = [v4 navigationItem];
-        v21 = [v20 rightBarButtonItems];
-        v22 = [v21 mutableCopy];
+        navigationItem2 = [controllerCopy navigationItem];
+        rightBarButtonItems2 = [navigationItem2 rightBarButtonItems];
+        v22 = [rightBarButtonItems2 mutableCopy];
         v23 = v22;
         if (v22)
         {
-          v24 = v22;
+          array = v22;
         }
 
         else
         {
-          v24 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
         }
 
-        v25 = v24;
+        v25 = array;
 
         [v25 addObject:v19];
-        v26 = [v4 navigationItem];
-        [v26 setRightBarButtonItems:v25];
+        navigationItem3 = [controllerCopy navigationItem];
+        [navigationItem3 setRightBarButtonItems:v25];
 
         objc_destroyWeak(&v31);
         objc_destroyWeak(&v33);
@@ -893,12 +893,12 @@ void __72__AIAudiogramEnrollmentViewController__addDebugToolbarItemToController_
   [WeakRetained _showTapToRadarAlert];
 }
 
-- (void)_showDebugViewForImage:(id)a3 debugInfo:(id)a4
+- (void)_showDebugViewForImage:(id)image debugInfo:(id)info
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  imageCopy = image;
+  infoCopy = info;
+  v6 = infoCopy;
+  v7 = imageCopy;
   AXPerformBlockOnMainThread();
 }
 
@@ -930,9 +930,9 @@ void __72__AIAudiogramEnrollmentViewController__showDebugViewForImage_debugInfo_
   [(AIAudiogramEnrollmentViewController *)self presentViewController:v3 animated:1 completion:0];
 }
 
-- (void)_openTapToRadarWithAttachment:(BOOL)a3
+- (void)_openTapToRadarWithAttachment:(BOOL)attachment
 {
-  v3 = a3;
+  attachmentCopy = attachment;
   v40[11] = *MEMORY[0x277D85DE8];
   v24 = objc_opt_new();
   [v24 setDateFormat:@"yyyy.MM.dd_HH-mm-ss"];
@@ -941,14 +941,14 @@ void __72__AIAudiogramEnrollmentViewController__showDebugViewForImage_debugInfo_
   v36 = 0x3032000000;
   v37 = __Block_byref_object_copy__7;
   v38 = __Block_byref_object_dispose__7;
-  v39 = [MEMORY[0x277CBEB18] array];
-  if (v3)
+  array = [MEMORY[0x277CBEB18] array];
+  if (attachmentCopy)
   {
     v5 = MEMORY[0x277CBEBC0];
     v6 = NSTemporaryDirectory();
     v7 = [v5 fileURLWithPath:v6];
 
-    v8 = [(AIAudiogramEnrollmentViewController *)self audiogramImages];
+    audiogramImages = [(AIAudiogramEnrollmentViewController *)self audiogramImages];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __69__AIAudiogramEnrollmentViewController__openTapToRadarWithAttachment___block_invoke;
@@ -956,7 +956,7 @@ void __72__AIAudiogramEnrollmentViewController__showDebugViewForImage_debugInfo_
     v9 = v7;
     v32 = v9;
     v33 = &v34;
-    [v8 enumerateObjectsUsingBlock:v31];
+    [audiogramImages enumerateObjectsUsingBlock:v31];
   }
 
   v10 = objc_alloc_init(MEMORY[0x277CCACE0]);
@@ -993,8 +993,8 @@ void __72__AIAudiogramEnrollmentViewController__showDebugViewForImage_debugInfo_
   [v10 setQueryItems:v21];
 
   v22 = [v10 URL];
-  v23 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v23 openURL:v22 withOptions:0];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace openURL:v22 withOptions:0];
 
   _Block_object_dispose(&v34, 8);
 }
@@ -1031,10 +1031,10 @@ void __69__AIAudiogramEnrollmentViewController__openTapToRadarWithAttachment___b
   }
 }
 
-- (void)_cameraAccessisAuthorizedForHealth:(id)a3
+- (void)_cameraAccessisAuthorizedForHealth:(id)health
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  healthCopy = health;
   if ([MEMORY[0x277D12B60] currentProcessIsHealth])
   {
     v4 = *MEMORY[0x277CE5EA8];
@@ -1057,7 +1057,7 @@ void __69__AIAudiogramEnrollmentViewController__openTapToRadarWithAttachment___b
         v14[2] = __74__AIAudiogramEnrollmentViewController__cameraAccessisAuthorizedForHealth___block_invoke_2;
         v14[3] = &unk_278CECF60;
         v7 = &v16;
-        v16 = v3;
+        v16 = healthCopy;
         v15 = v4;
         [v10 requestAccessForMediaType:v15 completionHandler:v14];
 
@@ -1078,7 +1078,7 @@ LABEL_12:
       v12[2] = __74__AIAudiogramEnrollmentViewController__cameraAccessisAuthorizedForHealth___block_invoke_581;
       v12[3] = &unk_278CECF10;
       v7 = v13;
-      v13[0] = v3;
+      v13[0] = healthCopy;
       v13[1] = v5;
       v8 = MEMORY[0x277D85CD0];
       v9 = v12;
@@ -1091,7 +1091,7 @@ LABEL_12:
       v17[2] = __74__AIAudiogramEnrollmentViewController__cameraAccessisAuthorizedForHealth___block_invoke;
       v17[3] = &unk_278CECF10;
       v7 = v18;
-      v18[0] = v3;
+      v18[0] = healthCopy;
       v18[1] = v5;
       v8 = MEMORY[0x277D85CD0];
       v9 = v17;
@@ -1153,13 +1153,13 @@ void __83__AIAudiogramEnrollmentViewController__presentCameraAuthorizationStatus
 - (void)_showCameraAuthorizationInSetting
 {
   v3 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=HEALTH"];
-  v2 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v2 openSensitiveURL:v3 withOptions:0];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:v3 withOptions:0];
 }
 
-- (void)_importTapped:(id)a3
+- (void)_importTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = MEMORY[0x277D75110];
   v6 = aiLocString(@"AudiogramIngestionImportTitle");
   v7 = [v5 alertControllerWithTitle:v6 message:0 preferredStyle:0];
@@ -1205,17 +1205,17 @@ void __83__AIAudiogramEnrollmentViewController__presentCameraAuthorizationStatus
   [v7 addAction:v19];
   if (_os_feature_enabled_impl())
   {
-    v20 = [v7 popoverPresentationController];
-    if (v20)
+    popoverPresentationController = [v7 popoverPresentationController];
+    if (popoverPresentationController)
     {
-      v21 = v20;
+      v21 = popoverPresentationController;
       v22 = objc_opt_self();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v24 = [v7 popoverPresentationController];
-        [v24 setSourceView:v4];
+        popoverPresentationController2 = [v7 popoverPresentationController];
+        [popoverPresentationController2 setSourceView:tappedCopy];
       }
     }
   }
@@ -1223,7 +1223,7 @@ void __83__AIAudiogramEnrollmentViewController__presentCameraAuthorizationStatus
   [(AIAudiogramEnrollmentViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_openCameraTapped:(id)a3
+- (void)_openCameraTapped:(id)tapped
 {
   if ([MEMORY[0x277D12B60] currentProcessIsHealth])
   {
@@ -1264,9 +1264,9 @@ uint64_t __57__AIAudiogramEnrollmentViewController__openCameraTapped___block_inv
   [(AIAudiogramEnrollmentViewController *)self presentViewController:v3 animated:1 completion:0];
 }
 
-- (void)_openPhotosTapped:(id)a3
+- (void)_openPhotosTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2050000000;
@@ -1286,8 +1286,8 @@ uint64_t __57__AIAudiogramEnrollmentViewController__openCameraTapped___block_inv
   v6 = v5;
   _Block_object_dispose(&v22, 8);
   v7 = [v5 alloc];
-  v8 = [MEMORY[0x277CD9948] sharedPhotoLibrary];
-  v9 = [v7 initWithPhotoLibrary:v8];
+  mEMORY[0x277CD9948] = [MEMORY[0x277CD9948] sharedPhotoLibrary];
+  v9 = [v7 initWithPhotoLibrary:mEMORY[0x277CD9948]];
 
   [v9 setSelectionLimit:1];
   v22 = 0;
@@ -1308,8 +1308,8 @@ uint64_t __57__AIAudiogramEnrollmentViewController__openCameraTapped___block_inv
 
   v11 = v10;
   _Block_object_dispose(&v22, 8);
-  v12 = [v10 imagesFilter];
-  [v9 setFilter:v12];
+  imagesFilter = [v10 imagesFilter];
+  [v9 setFilter:imagesFilter];
 
   v22 = 0;
   v23 = &v22;
@@ -1331,13 +1331,13 @@ uint64_t __57__AIAudiogramEnrollmentViewController__openCameraTapped___block_inv
   _Block_object_dispose(&v22, 8);
   v15 = [[v13 alloc] initWithConfiguration:v9];
   [v15 setDelegate:self];
-  v16 = [v15 presentationController];
-  [v16 setDelegate:self];
+  presentationController = [v15 presentationController];
+  [presentationController setDelegate:self];
 
   [(AIAudiogramEnrollmentViewController *)self presentViewController:v15 animated:1 completion:0];
 }
 
-- (void)_openDocumentsTapped:(id)a3
+- (void)_openDocumentsTapped:(id)tapped
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277D75458]);
@@ -1349,13 +1349,13 @@ uint64_t __57__AIAudiogramEnrollmentViewController__openCameraTapped___block_inv
 
   [v7 setAllowsMultipleSelection:0];
   [v7 setDelegate:self];
-  v8 = [v7 presentationController];
-  [v8 setDelegate:self];
+  presentationController = [v7 presentationController];
+  [presentationController setDelegate:self];
 
   [(AIAudiogramEnrollmentViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_cancelTapped:(id)a3
+- (void)_cancelTapped:(id)tapped
 {
   if (self->_analyticsIngestionAttempted)
   {
@@ -1397,22 +1397,22 @@ void __53__AIAudiogramEnrollmentViewController__cancelTapped___block_invoke(uint
   AnalyticsSendEvent();
 }
 
-- (void)_prepareToImportAudiogramImages:(id)a3
+- (void)_prepareToImportAudiogramImages:(id)images
 {
   v9 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  imagesCopy = images;
   self->_analyticsIngestionAttempted = 1;
-  objc_storeStrong(&self->_audiogramImages, a3);
-  v6 = [(AIAudiogramIngestionEngine *)self->_audiogramEngine isAvailable];
+  objc_storeStrong(&self->_audiogramImages, images);
+  isAvailable = [(AIAudiogramIngestionEngine *)self->_audiogramEngine isAvailable];
   v7 = AXLogAudiogram();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8[0] = 67109120;
-    v8[1] = v6;
+    v8[1] = isAvailable;
     _os_log_impl(&dword_24179B000, v7, OS_LOG_TYPE_INFO, "Preparing to import audiogram image. Is model is available? %d", v8, 8u);
   }
 
-  if (v6)
+  if (isAvailable)
   {
     [(AIAudiogramEnrollmentViewController *)self _showAnalyzingAudiogram];
     [(AIAudiogramEnrollmentViewController *)self _importAudiogramImage];
@@ -1513,10 +1513,10 @@ void __83__AIAudiogramEnrollmentViewController_audiogramIngestionEngineModelDown
   [v4 showLoadingMessage:v5];
 }
 
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  scanCopy = scan;
   v8 = AXLogAudiogram();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1524,21 +1524,21 @@ void __83__AIAudiogramEnrollmentViewController_audiogramIngestionEngineModelDown
     _os_log_impl(&dword_24179B000, v8, OS_LOG_TYPE_INFO, "Audiogram imported via document camera", buf, 2u);
   }
 
-  v9 = v6;
+  v9 = controllerCopy;
   AXPerformBlockOnMainThread();
   v10 = objc_opt_new();
-  if ([v7 pageCount])
+  if ([scanCopy pageCount])
   {
     v11 = 0;
     do
     {
-      v12 = [v7 imageOfPageAtIndex:v11];
+      v12 = [scanCopy imageOfPageAtIndex:v11];
       if (v12)
       {
         [v10 addObject:v12];
       }
 
-      v13 = [v7 pageCount];
+      pageCount = [scanCopy pageCount];
       if (v11 > 1)
       {
         break;
@@ -1547,16 +1547,16 @@ void __83__AIAudiogramEnrollmentViewController_audiogramIngestionEngineModelDown
       ++v11;
     }
 
-    while (v13 > v11);
+    while (pageCount > v11);
   }
 
   [(AIAudiogramEnrollmentViewController *)self _prepareToImportAudiogramImages:v10];
   [(AIAudiogramEnrollmentViewController *)self setAnalyticsImportSource:3];
 }
 
-- (void)documentCameraViewControllerDidCancel:(id)a3
+- (void)documentCameraViewControllerDidCancel:(id)cancel
 {
-  v3 = a3;
+  cancelCopy = cancel;
   v4 = AXLogAudiogram();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -1564,30 +1564,30 @@ void __83__AIAudiogramEnrollmentViewController_audiogramIngestionEngineModelDown
     _os_log_impl(&dword_24179B000, v4, OS_LOG_TYPE_INFO, "Audiogram scan cancelled", buf, 2u);
   }
 
-  v6 = v3;
-  v5 = v3;
+  v6 = cancelCopy;
+  v5 = cancelCopy;
   AXPerformBlockOnMainThread();
 }
 
-- (void)documentCameraViewController:(id)a3 didFailWithError:(id)a4
+- (void)documentCameraViewController:(id)controller didFailWithError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   v7 = AXLogAudiogram();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     [AIAudiogramEnrollmentViewController documentCameraViewController:didFailWithError:];
   }
 
-  v9 = v5;
-  v8 = v5;
+  v9 = controllerCopy;
+  v8 = controllerCopy;
   AXPerformBlockOnMainThread();
 }
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
-  v6 = a3;
-  v7 = a4;
+  pickerCopy = picker;
+  pickingCopy = picking;
   v8 = AXLogAudiogram();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1599,12 +1599,12 @@ void __83__AIAudiogramEnrollmentViewController_audiogramIngestionEngineModelDown
   v14[6] = 3221225472;
   v14[7] = __63__AIAudiogramEnrollmentViewController_picker_didFinishPicking___block_invoke;
   v14[8] = &unk_278CEC280;
-  v15 = v6;
-  v9 = v6;
+  v15 = pickerCopy;
+  v9 = pickerCopy;
   AXPerformBlockOnMainThread();
-  v10 = [v7 firstObject];
+  firstObject = [pickingCopy firstObject];
 
-  v11 = [v10 itemProvider];
+  itemProvider = [firstObject itemProvider];
 
   v12 = objc_opt_class();
   v14[0] = MEMORY[0x277D85DD0];
@@ -1612,7 +1612,7 @@ void __83__AIAudiogramEnrollmentViewController_audiogramIngestionEngineModelDown
   v14[2] = __63__AIAudiogramEnrollmentViewController_picker_didFinishPicking___block_invoke_2;
   v14[3] = &unk_278CED000;
   v14[4] = self;
-  v13 = [v11 loadObjectOfClass:v12 completionHandler:v14];
+  v13 = [itemProvider loadObjectOfClass:v12 completionHandler:v14];
 }
 
 void __63__AIAudiogramEnrollmentViewController_picker_didFinishPicking___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -1653,26 +1653,26 @@ LABEL_8:
   [*(a1 + 32) setAnalyticsImportSource:1];
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
-  v6 = a3;
-  v7 = a4;
+  pickerCopy = picker;
+  lsCopy = ls;
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __77__AIAudiogramEnrollmentViewController_documentPicker_didPickDocumentsAtURLs___block_invoke;
   v17 = &unk_278CECBA0;
-  v18 = v6;
-  v19 = self;
-  v8 = v6;
+  v18 = pickerCopy;
+  selfCopy = self;
+  v8 = pickerCopy;
   AXPerformBlockOnMainThread();
   v9 = dispatch_get_global_queue(0, 0);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__AIAudiogramEnrollmentViewController_documentPicker_didPickDocumentsAtURLs___block_invoke_2;
   v11[3] = &unk_278CECBA0;
-  v12 = v7;
-  v13 = self;
-  v10 = v7;
+  v12 = lsCopy;
+  selfCopy2 = self;
+  v10 = lsCopy;
   dispatch_async(v9, v11);
 }
 
@@ -1783,90 +1783,90 @@ void __77__AIAudiogramEnrollmentViewController_documentPicker_didPickDocumentsAt
   }
 }
 
-- (void)_showCameraTips:(id)a3
+- (void)_showCameraTips:(id)tips
 {
   v45[4] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277D37698]);
   v5 = aiLocString(@"AudiogramIngestionCameraTipTitle");
   v6 = [v4 initWithTitle:v5 detailText:0 icon:0];
 
-  v7 = [v6 headerView];
+  headerView = [v6 headerView];
   LODWORD(v8) = 1036831949;
-  [v7 setTitleHyphenationFactor:v8];
+  [headerView setTitleHyphenationFactor:v8];
 
-  v9 = [v6 headerView];
-  v10 = [v9 customIconContainerView];
+  headerView2 = [v6 headerView];
+  customIconContainerView = [headerView2 customIconContainerView];
 
-  if (v10)
+  if (customIconContainerView)
   {
     v11 = objc_alloc(MEMORY[0x277D755E8]);
     audiogramIngestionImageNamed(@"camera_scan_illustration");
     v12 = v44 = self;
-    v13 = [MEMORY[0x277D75348] systemBlueColor];
-    v14 = [v12 imageWithTintColor:v13];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    v14 = [v12 imageWithTintColor:systemBlueColor];
     v15 = [v11 initWithImage:v14];
 
     [v15 setContentMode:1];
     [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v10 addSubview:v15];
-    [v10 setClipsToBounds:0];
+    [customIconContainerView addSubview:v15];
+    [customIconContainerView setClipsToBounds:0];
     v36 = MEMORY[0x277CCAAD0];
-    v42 = [v15 centerXAnchor];
-    v41 = [v10 centerXAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    centerXAnchor = [v15 centerXAnchor];
+    centerXAnchor2 = [customIconContainerView centerXAnchor];
+    v40 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v45[0] = v40;
-    v39 = [v15 centerYAnchor];
-    v38 = [v10 centerYAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    centerYAnchor = [v15 centerYAnchor];
+    centerYAnchor2 = [customIconContainerView centerYAnchor];
+    v37 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v45[1] = v37;
-    v35 = [v15 heightAnchor];
-    v16 = [v10 heightAnchor];
-    v17 = [v35 constraintEqualToAnchor:v16];
+    heightAnchor = [v15 heightAnchor];
+    heightAnchor2 = [customIconContainerView heightAnchor];
+    v17 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v45[2] = v17;
-    v18 = [v10 superview];
-    [v18 heightAnchor];
-    v19 = v43 = v10;
-    v20 = [v6 view];
-    v21 = [v20 heightAnchor];
-    v22 = [v19 constraintEqualToAnchor:v21 multiplier:0.3];
+    superview = [customIconContainerView superview];
+    [superview heightAnchor];
+    v19 = v43 = customIconContainerView;
+    view = [v6 view];
+    heightAnchor3 = [view heightAnchor];
+    v22 = [v19 constraintEqualToAnchor:heightAnchor3 multiplier:0.3];
     v45[3] = v22;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:4];
     [v36 activateConstraints:v23];
 
-    v10 = v43;
+    customIconContainerView = v43;
     self = v44;
   }
 
   v24 = aiLocString(@"AudiogramIngestionCameraTipChart");
-  v25 = [MEMORY[0x277D75348] systemBlueColor];
-  [v6 addBulletedListItemWithTitle:v24 description:&stru_28535F0B0 symbolName:@"chart.dots.scatter" tintColor:v25];
+  systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
+  [v6 addBulletedListItemWithTitle:v24 description:&stru_28535F0B0 symbolName:@"chart.dots.scatter" tintColor:systemBlueColor2];
 
   v26 = aiLocString(@"AudiogramIngestionCameraTipLight");
-  v27 = [MEMORY[0x277D75348] systemBlueColor];
-  [v6 addBulletedListItemWithTitle:v26 description:&stru_28535F0B0 symbolName:@"lightbulb.max" tintColor:v27];
+  systemBlueColor3 = [MEMORY[0x277D75348] systemBlueColor];
+  [v6 addBulletedListItemWithTitle:v26 description:&stru_28535F0B0 symbolName:@"lightbulb.max" tintColor:systemBlueColor3];
 
   v28 = aiLocString(@"AudiogramIngestionCameraTipSteady");
-  v29 = [MEMORY[0x277D75348] systemBlueColor];
-  [v6 addBulletedListItemWithTitle:v28 description:&stru_28535F0B0 symbolName:@"camera" tintColor:v29];
+  systemBlueColor4 = [MEMORY[0x277D75348] systemBlueColor];
+  [v6 addBulletedListItemWithTitle:v28 description:&stru_28535F0B0 symbolName:@"camera" tintColor:systemBlueColor4];
 
-  v30 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v31 = aiLocString(@"AudiogramIngestionCameraTipButtonTitle");
-  [v30 setTitle:v31 forState:0];
+  [boldButton setTitle:v31 forState:0];
 
-  [v30 addTarget:self action:sel__openCameraTapped_ forControlEvents:64];
-  v32 = [v6 buttonTray];
-  [v32 addButton:v30];
+  [boldButton addTarget:self action:sel__openCameraTapped_ forControlEvents:64];
+  buttonTray = [v6 buttonTray];
+  [buttonTray addButton:boldButton];
 
   v33 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelTapped_];
-  v34 = [v6 navigationItem];
-  [v34 setRightBarButtonItem:v33];
+  navigationItem = [v6 navigationItem];
+  [navigationItem setRightBarButtonItem:v33];
 
   [(OBNavigationController *)self pushViewController:v6 animated:1];
 }
 
-- (void)_showNonCameraOptions:(id)a3
+- (void)_showNonCameraOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = MEMORY[0x277D75110];
   v6 = aiLocString(@"AudiogramIngestionImportTitleV2");
   v7 = [v5 alertControllerWithTitle:v6 message:0 preferredStyle:0];
@@ -1906,73 +1906,73 @@ void __77__AIAudiogramEnrollmentViewController_documentPicker_didPickDocumentsAt
   [v7 addAction:v13];
   [v7 addAction:v16];
   [v7 addAction:v19];
-  v20 = [v7 popoverPresentationController];
-  if (v20)
+  popoverPresentationController = [v7 popoverPresentationController];
+  if (popoverPresentationController)
   {
-    v21 = v20;
+    v21 = popoverPresentationController;
     v22 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v24 = [v7 popoverPresentationController];
-      [v24 setSourceView:v4];
+      popoverPresentationController2 = [v7 popoverPresentationController];
+      [popoverPresentationController2 setSourceView:optionsCopy];
     }
   }
 
   [(AIAudiogramEnrollmentViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_tryAgainTapped:(id)a3
+- (void)_tryAgainTapped:(id)tapped
 {
-  v9 = a3;
-  v4 = [(AIAudiogramEnrollmentViewController *)self topViewController];
-  v5 = [(AIAudiogramEnrollmentViewController *)self validationFailedController];
+  tappedCopy = tapped;
+  topViewController = [(AIAudiogramEnrollmentViewController *)self topViewController];
+  validationFailedController = [(AIAudiogramEnrollmentViewController *)self validationFailedController];
 
-  if (v4 == v5)
+  if (topViewController == validationFailedController)
   {
     v6 = [(AIAudiogramEnrollmentViewController *)self popViewControllerAnimated:0];
   }
 
   if ([(AIAudiogramEnrollmentViewController *)self analyticsImportSource]== 3)
   {
-    v7 = [(AIAudiogramEnrollmentViewController *)self _openCameraTapped:v9];
+    analyticsImportSource = [(AIAudiogramEnrollmentViewController *)self _openCameraTapped:tappedCopy];
   }
 
   else if ([(AIAudiogramEnrollmentViewController *)self analyticsImportSource]== 1)
   {
-    v7 = [(AIAudiogramEnrollmentViewController *)self _openPhotosTapped:v9];
+    analyticsImportSource = [(AIAudiogramEnrollmentViewController *)self _openPhotosTapped:tappedCopy];
   }
 
   else
   {
-    v7 = [(AIAudiogramEnrollmentViewController *)self analyticsImportSource];
-    v8 = v9;
-    if (v7 != 2)
+    analyticsImportSource = [(AIAudiogramEnrollmentViewController *)self analyticsImportSource];
+    v8 = tappedCopy;
+    if (analyticsImportSource != 2)
     {
       goto LABEL_10;
     }
 
-    v7 = [(AIAudiogramEnrollmentViewController *)self _openDocumentsTapped:v9];
+    analyticsImportSource = [(AIAudiogramEnrollmentViewController *)self _openDocumentsTapped:tappedCopy];
   }
 
-  v8 = v9;
+  v8 = tappedCopy;
 LABEL_10:
 
-  MEMORY[0x2821F96F8](v7, v8);
+  MEMORY[0x2821F96F8](analyticsImportSource, v8);
 }
 
-- (void)updateSelectedSymbolsWithSelectedSymbols:(id)a3
+- (void)updateSelectedSymbolsWithSelectedSymbols:(id)symbols
 {
-  v7 = a3;
-  v4 = [v7 copy];
+  symbolsCopy = symbols;
+  v4 = [symbolsCopy copy];
   [(AIAudiogramEnrollmentViewController *)self setSelectedSymbols:v4];
 
-  if (([v7 containsObject:&unk_285365818] & 1) != 0 || objc_msgSend(v7, "containsObject:", &unk_285365830))
+  if (([symbolsCopy containsObject:&unk_285365818] & 1) != 0 || objc_msgSend(symbolsCopy, "containsObject:", &unk_285365830))
   {
     v5 = 1;
     [(AIAudiogramEnrollmentViewController *)self setHasLeftSymbols:1];
-    if (([v7 containsObject:&unk_285365830] & 1) == 0)
+    if (([symbolsCopy containsObject:&unk_285365830] & 1) == 0)
     {
       goto LABEL_7;
     }
@@ -1986,7 +1986,7 @@ LABEL_10:
 
   [(AIAudiogramEnrollmentViewController *)self setHasLeftMaskedSymbol:v5];
 LABEL_7:
-  if (([v7 containsObject:&unk_285365860] & 1) == 0 && !objc_msgSend(v7, "containsObject:", &unk_285365848))
+  if (([symbolsCopy containsObject:&unk_285365860] & 1) == 0 && !objc_msgSend(symbolsCopy, "containsObject:", &unk_285365848))
   {
     [(AIAudiogramEnrollmentViewController *)self setHasRightSymbols:0];
     v6 = 0;
@@ -1995,7 +1995,7 @@ LABEL_7:
 
   v6 = 1;
   [(AIAudiogramEnrollmentViewController *)self setHasRightSymbols:1];
-  if ([v7 containsObject:&unk_285365860])
+  if ([symbolsCopy containsObject:&unk_285365860])
   {
 LABEL_12:
     [(AIAudiogramEnrollmentViewController *)self setHasRightMaskedSymbol:v6];
@@ -2023,9 +2023,9 @@ void __75__AIAudiogramEnrollmentViewController_showFrequencySelectionViewControl
   [*(a1 + 32) pushViewController:v5 animated:1];
 }
 
-- (void)updateSelectedFrequenciesWithSelectedFrequencies:(id)a3
+- (void)updateSelectedFrequenciesWithSelectedFrequencies:(id)frequencies
 {
-  v4 = [a3 sortedArrayUsingComparator:&__block_literal_global_687];
+  v4 = [frequencies sortedArrayUsingComparator:&__block_literal_global_687];
   [(AIAudiogramEnrollmentViewController *)self setSelectedFrequencies:v4];
 
   [(AIAudiogramEnrollmentViewController *)self updateFrequencyViewControllers];
@@ -2035,30 +2035,30 @@ void __75__AIAudiogramEnrollmentViewController_showFrequencySelectionViewControl
 
 - (void)updateFrequencyViewControllers
 {
-  v3 = [(AIAudiogramEnrollmentViewController *)self audiogram];
+  audiogram = [(AIAudiogramEnrollmentViewController *)self audiogram];
 
-  if (v3)
+  if (audiogram)
   {
-    v4 = [(AIAudiogramEnrollmentViewController *)self audiogram];
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [(AIAudiogramEnrollmentViewController *)self audiogram];
-    v7 = [v6 sensitivityPoints];
+    audiogram2 = [(AIAudiogramEnrollmentViewController *)self audiogram];
+    array = [MEMORY[0x277CBEB18] array];
+    audiogram3 = [(AIAudiogramEnrollmentViewController *)self audiogram];
+    sensitivityPoints = [audiogram3 sensitivityPoints];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __69__AIAudiogramEnrollmentViewController_updateFrequencyViewControllers__block_invoke;
     v23[3] = &unk_278CED048;
     v23[4] = self;
-    v8 = v5;
+    v8 = array;
     v24 = v8;
-    [v7 enumerateObjectsUsingBlock:v23];
+    [sensitivityPoints enumerateObjectsUsingBlock:v23];
 
     if ([v8 count])
     {
       HKAudiogramSampleClass_0 = getHKAudiogramSampleClass_0();
-      v10 = [v4 startDate];
-      v11 = [v4 endDate];
+      startDate = [audiogram2 startDate];
+      endDate = [audiogram2 endDate];
       v12 = metadataForHKAudiogramSample();
-      v13 = [HKAudiogramSampleClass_0 audiogramSampleWithSensitivityPoints:v8 startDate:v10 endDate:v11 metadata:v12];
+      v13 = [HKAudiogramSampleClass_0 audiogramSampleWithSensitivityPoints:v8 startDate:startDate endDate:endDate metadata:v12];
     }
 
     else
@@ -2067,18 +2067,18 @@ void __75__AIAudiogramEnrollmentViewController_showFrequencySelectionViewControl
     }
 
     [(AIAudiogramEnrollmentViewController *)self setAudiogram:v13];
-    v14 = [MEMORY[0x277CBEB18] array];
-    v15 = [(AIAudiogramEnrollmentViewController *)self childViewControllers];
+    array2 = [MEMORY[0x277CBEB18] array];
+    childViewControllers = [(AIAudiogramEnrollmentViewController *)self childViewControllers];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __69__AIAudiogramEnrollmentViewController_updateFrequencyViewControllers__block_invoke_2;
     v20 = &unk_278CED070;
-    v21 = self;
-    v22 = v14;
-    v16 = v14;
-    [v15 enumerateObjectsUsingBlock:&v17];
+    selfCopy = self;
+    v22 = array2;
+    v16 = array2;
+    [childViewControllers enumerateObjectsUsingBlock:&v17];
 
-    [(OBNavigationController *)self setViewControllers:v16, v17, v18, v19, v20, v21];
+    [(OBNavigationController *)self setViewControllers:v16, v17, v18, v19, v20, selfCopy];
   }
 }
 
@@ -2128,77 +2128,77 @@ void __69__AIAudiogramEnrollmentViewController_updateFrequencyViewControllers__b
 
 - (void)refreshFinalConfirmationView
 {
-  v3 = [(AIAudiogramEnrollmentViewController *)self finalResultViewController];
+  finalResultViewController = [(AIAudiogramEnrollmentViewController *)self finalResultViewController];
 
-  if (v3)
+  if (finalResultViewController)
   {
-    v4 = [(AIAudiogramEnrollmentViewController *)self finalResultViewController];
-    v5 = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
-    [v4 updateFrequencies:v5];
+    finalResultViewController2 = [(AIAudiogramEnrollmentViewController *)self finalResultViewController];
+    selectedFrequencies = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
+    [finalResultViewController2 updateFrequencies:selectedFrequencies];
 
-    v7 = [(AIAudiogramEnrollmentViewController *)self finalResultViewController];
-    v6 = [(AIAudiogramEnrollmentViewController *)self audiogram];
-    [v7 reloadAudiogram:v6];
+    finalResultViewController3 = [(AIAudiogramEnrollmentViewController *)self finalResultViewController];
+    audiogram = [(AIAudiogramEnrollmentViewController *)self audiogram];
+    [finalResultViewController3 reloadAudiogram:audiogram];
   }
 }
 
 - (void)showIndividualFirstSensitivityPointInputViewController
 {
-  v3 = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
-  v4 = [v3 firstObject];
-  if (v4)
+  selectedFrequencies = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
+  firstObject = [selectedFrequencies firstObject];
+  if (firstObject)
   {
-    v5 = v4;
-    v6 = [(AIAudiogramEnrollmentViewController *)self frequenciesWithConfiguredInitialPoints];
-    v7 = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
-    v8 = [v7 firstObject];
-    v9 = [v6 containsObject:v8];
+    v5 = firstObject;
+    frequenciesWithConfiguredInitialPoints = [(AIAudiogramEnrollmentViewController *)self frequenciesWithConfiguredInitialPoints];
+    selectedFrequencies2 = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
+    firstObject2 = [selectedFrequencies2 firstObject];
+    v9 = [frequenciesWithConfiguredInitialPoints containsObject:firstObject2];
 
     if (v9)
     {
       goto LABEL_5;
     }
 
-    v3 = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
-    v10 = [v3 firstObject];
-    [(AIAudiogramEnrollmentViewController *)self _addInitialSensitivityPointAtFrequency:v10];
+    selectedFrequencies = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
+    firstObject3 = [selectedFrequencies firstObject];
+    [(AIAudiogramEnrollmentViewController *)self _addInitialSensitivityPointAtFrequency:firstObject3];
   }
 
 LABEL_5:
-  v11 = [(AIAudiogramEnrollmentViewController *)self audiogram];
+  audiogram = [(AIAudiogramEnrollmentViewController *)self audiogram];
 
-  if (v11)
+  if (audiogram)
   {
     v12 = [AIAudiogramIndividualFrequencyInputViewController alloc];
-    v13 = [(AIAudiogramEnrollmentViewController *)self audiogramConfirmationDelegate];
-    v14 = [(AIAudiogramEnrollmentViewController *)self audiogram];
-    v15 = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
-    v16 = [v15 firstObject];
-    v17 = [(AIAudiogramEnrollmentViewController *)self selectedSymbols];
-    v24 = [(AIAudiogramIndividualFrequencyInputViewController *)v12 initWithDelegate:self audiogramConfirmationDelegate:v13 audiogram:v14 currentFrequency:v16 isModalViewController:0 selectedSymbols:v17];
+    audiogramConfirmationDelegate = [(AIAudiogramEnrollmentViewController *)self audiogramConfirmationDelegate];
+    audiogram2 = [(AIAudiogramEnrollmentViewController *)self audiogram];
+    selectedFrequencies3 = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
+    firstObject4 = [selectedFrequencies3 firstObject];
+    selectedSymbols = [(AIAudiogramEnrollmentViewController *)self selectedSymbols];
+    v24 = [(AIAudiogramIndividualFrequencyInputViewController *)v12 initWithDelegate:self audiogramConfirmationDelegate:audiogramConfirmationDelegate audiogram:audiogram2 currentFrequency:firstObject4 isModalViewController:0 selectedSymbols:selectedSymbols];
 
     v18 = MEMORY[0x277CCACA8];
     v19 = aiLocString(@"AudiogramIngestionAddValuesTitle");
-    v20 = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
-    v21 = [v20 firstObject];
-    v22 = [v18 stringWithFormat:v19, v21];
-    v23 = [(AIAudiogramIndividualFrequencyInputViewController *)v24 frequencyTitleLabel];
-    [v23 setText:v22];
+    selectedFrequencies4 = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
+    firstObject5 = [selectedFrequencies4 firstObject];
+    v22 = [v18 stringWithFormat:v19, firstObject5];
+    frequencyTitleLabel = [(AIAudiogramIndividualFrequencyInputViewController *)v24 frequencyTitleLabel];
+    [frequencyTitleLabel setText:v22];
 
     [(OBNavigationController *)self pushViewController:v24 animated:1];
   }
 }
 
-- (void)showNextFrequencyInputViewControllerWithAudiogram:(id)a3 previousFrequency:(id)a4
+- (void)showNextFrequencyInputViewControllerWithAudiogram:(id)audiogram previousFrequency:(id)frequency
 {
-  v6 = a4;
-  [(AIAudiogramEnrollmentViewController *)self setAudiogram:a3];
-  v27 = [(AIAudiogramEnrollmentViewController *)self getNextFrequency:v6];
+  frequencyCopy = frequency;
+  [(AIAudiogramEnrollmentViewController *)self setAudiogram:audiogram];
+  v27 = [(AIAudiogramEnrollmentViewController *)self getNextFrequency:frequencyCopy];
 
   if (v27)
   {
-    v7 = [(AIAudiogramEnrollmentViewController *)self frequenciesWithConfiguredInitialPoints];
-    v8 = [v7 containsObject:v27];
+    frequenciesWithConfiguredInitialPoints = [(AIAudiogramEnrollmentViewController *)self frequenciesWithConfiguredInitialPoints];
+    v8 = [frequenciesWithConfiguredInitialPoints containsObject:v27];
 
     if ((v8 & 1) == 0)
     {
@@ -2206,67 +2206,67 @@ LABEL_5:
     }
 
     v9 = [AIAudiogramIndividualFrequencyInputViewController alloc];
-    v10 = [(AIAudiogramEnrollmentViewController *)self audiogramConfirmationDelegate];
-    v11 = [(AIAudiogramEnrollmentViewController *)self audiogram];
-    v12 = [(AIAudiogramEnrollmentViewController *)self selectedSymbols];
-    v13 = [(AIAudiogramIndividualFrequencyInputViewController *)v9 initWithDelegate:self audiogramConfirmationDelegate:v10 audiogram:v11 currentFrequency:v27 isModalViewController:0 selectedSymbols:v12];
+    audiogramConfirmationDelegate = [(AIAudiogramEnrollmentViewController *)self audiogramConfirmationDelegate];
+    audiogram = [(AIAudiogramEnrollmentViewController *)self audiogram];
+    selectedSymbols = [(AIAudiogramEnrollmentViewController *)self selectedSymbols];
+    finalResultViewController3 = [(AIAudiogramIndividualFrequencyInputViewController *)v9 initWithDelegate:self audiogramConfirmationDelegate:audiogramConfirmationDelegate audiogram:audiogram currentFrequency:v27 isModalViewController:0 selectedSymbols:selectedSymbols];
 
     v14 = MEMORY[0x277CCACA8];
     v15 = aiLocString(@"AudiogramIngestionAddValuesTitle");
     v16 = [v14 stringWithFormat:v15, v27];
-    v17 = [(AIAudiogramIndividualFrequencyInputViewController *)v13 frequencyTitleLabel];
-    [v17 setText:v16];
+    frequencyTitleLabel = [(AIAudiogramIndividualFrequencyInputViewController *)finalResultViewController3 frequencyTitleLabel];
+    [frequencyTitleLabel setText:v16];
   }
 
   else
   {
     v18 = [AIAudiogramFinalResultViewController alloc];
-    v19 = [(AIAudiogramEnrollmentViewController *)self audiogram];
-    v20 = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
-    v21 = [(AIAudiogramEnrollmentViewController *)self audiogramConfirmationDelegate];
-    v22 = [(AIAudiogramFinalResultViewController *)v18 initWithAudiogram:v19 selectedFrequencies:v20 audiogramConfirmationDelegate:v21 audiogramManualIngestionDelegate:self];
+    audiogram2 = [(AIAudiogramEnrollmentViewController *)self audiogram];
+    selectedFrequencies = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
+    audiogramConfirmationDelegate2 = [(AIAudiogramEnrollmentViewController *)self audiogramConfirmationDelegate];
+    v22 = [(AIAudiogramFinalResultViewController *)v18 initWithAudiogram:audiogram2 selectedFrequencies:selectedFrequencies audiogramConfirmationDelegate:audiogramConfirmationDelegate2 audiogramManualIngestionDelegate:self];
     [(AIAudiogramEnrollmentViewController *)self setFinalResultViewController:v22];
 
-    v23 = [(AIAudiogramEnrollmentViewController *)self analyticsImportSource];
-    v24 = [(AIAudiogramEnrollmentViewController *)self finalResultViewController];
-    [v24 setAnalyticsImportSource:v23];
+    analyticsImportSource = [(AIAudiogramEnrollmentViewController *)self analyticsImportSource];
+    finalResultViewController = [(AIAudiogramEnrollmentViewController *)self finalResultViewController];
+    [finalResultViewController setAnalyticsImportSource:analyticsImportSource];
 
-    v25 = [(AIAudiogramEnrollmentViewController *)self analyticsClient];
-    v26 = [(AIAudiogramEnrollmentViewController *)self finalResultViewController];
-    [v26 setAnalyticsClient:v25];
+    analyticsClient = [(AIAudiogramEnrollmentViewController *)self analyticsClient];
+    finalResultViewController2 = [(AIAudiogramEnrollmentViewController *)self finalResultViewController];
+    [finalResultViewController2 setAnalyticsClient:analyticsClient];
 
-    v13 = [(AIAudiogramEnrollmentViewController *)self finalResultViewController];
+    finalResultViewController3 = [(AIAudiogramEnrollmentViewController *)self finalResultViewController];
   }
 
-  [(OBNavigationController *)self pushViewController:v13 animated:1];
+  [(OBNavigationController *)self pushViewController:finalResultViewController3 animated:1];
 }
 
-- (void)_addInitialSensitivityPointAtFrequency:(id)a3
+- (void)_addInitialSensitivityPointAtFrequency:(id)frequency
 {
-  v4 = a3;
-  v5 = [(AIAudiogramEnrollmentViewController *)self frequenciesWithConfiguredInitialPoints];
+  frequencyCopy = frequency;
+  frequenciesWithConfiguredInitialPoints = [(AIAudiogramEnrollmentViewController *)self frequenciesWithConfiguredInitialPoints];
 
-  if (!v5)
+  if (!frequenciesWithConfiguredInitialPoints)
   {
     v6 = objc_opt_new();
     [(AIAudiogramEnrollmentViewController *)self setFrequenciesWithConfiguredInitialPoints:v6];
   }
 
-  v7 = [(AIAudiogramEnrollmentViewController *)self frequenciesWithConfiguredInitialPoints];
-  [v7 addObject:v4];
+  frequenciesWithConfiguredInitialPoints2 = [(AIAudiogramEnrollmentViewController *)self frequenciesWithConfiguredInitialPoints];
+  [frequenciesWithConfiguredInitialPoints2 addObject:frequencyCopy];
 
-  v8 = [getHKUnitClass_3() decibelHearingLevelUnit];
-  v9 = [getHKUnitClass_3() hertzUnit];
+  decibelHearingLevelUnit = [getHKUnitClass_3() decibelHearingLevelUnit];
+  hertzUnit = [getHKUnitClass_3() hertzUnit];
   HKQuantityClass_2 = getHKQuantityClass_2();
-  [v4 doubleValue];
-  v11 = [HKQuantityClass_2 quantityWithUnit:v9 doubleValue:?];
+  [frequencyCopy doubleValue];
+  v11 = [HKQuantityClass_2 quantityWithUnit:hertzUnit doubleValue:?];
   v12 = MEMORY[0x277CBEB18];
-  v13 = [(AIAudiogramEnrollmentViewController *)self audiogram];
-  v14 = [v13 sensitivityPoints];
-  v15 = v14;
-  if (v14)
+  audiogram = [(AIAudiogramEnrollmentViewController *)self audiogram];
+  sensitivityPoints = [audiogram sensitivityPoints];
+  v15 = sensitivityPoints;
+  if (sensitivityPoints)
   {
-    v16 = v14;
+    v16 = sensitivityPoints;
   }
 
   else
@@ -2280,30 +2280,30 @@ LABEL_5:
   v48[1] = 3221225472;
   v48[2] = __78__AIAudiogramEnrollmentViewController__addInitialSensitivityPointAtFrequency___block_invoke;
   v48[3] = &unk_278CED098;
-  v18 = v9;
+  v18 = hertzUnit;
   v49 = v18;
-  v19 = v4;
+  v19 = frequencyCopy;
   v50 = v19;
   if ([v17 indexOfObjectPassingTest:v48] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v20 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v42 = v11;
     if ([(AIAudiogramEnrollmentViewController *)self hasLeftSymbols])
     {
       v21 = objc_alloc(getHKAudiogramSensitivityTestClass_1());
-      v22 = v8;
-      v23 = [getHKQuantityClass_2() quantityWithUnit:v8 doubleValue:0.0];
-      v24 = [(AIAudiogramEnrollmentViewController *)self selectedSymbols];
+      v22 = decibelHearingLevelUnit;
+      v23 = [getHKQuantityClass_2() quantityWithUnit:decibelHearingLevelUnit doubleValue:0.0];
+      selectedSymbols = [(AIAudiogramEnrollmentViewController *)self selectedSymbols];
       v47 = 0;
-      v25 = [v21 initWithSensitivity:v23 type:0 masked:objc_msgSend(v24 side:"containsObject:" clampingRange:&unk_285365818) ^ 1 error:{0, 0, &v47}];
+      v25 = [v21 initWithSensitivity:v23 type:0 masked:objc_msgSend(selectedSymbols side:"containsObject:" clampingRange:&unk_285365818) ^ 1 error:{0, 0, &v47}];
       v26 = v47;
 
       if (v25 && !v26)
       {
-        [v20 addObject:v25];
+        [array addObject:v25];
       }
 
-      v8 = v22;
+      decibelHearingLevelUnit = v22;
       v11 = v42;
     }
 
@@ -2316,23 +2316,23 @@ LABEL_5:
     {
 
       v27 = objc_alloc(getHKAudiogramSensitivityTestClass_1());
-      v41 = v8;
-      v28 = [getHKQuantityClass_2() quantityWithUnit:v8 doubleValue:0.0];
-      v29 = [(AIAudiogramEnrollmentViewController *)self selectedSymbols];
+      v41 = decibelHearingLevelUnit;
+      v28 = [getHKQuantityClass_2() quantityWithUnit:decibelHearingLevelUnit doubleValue:0.0];
+      selectedSymbols2 = [(AIAudiogramEnrollmentViewController *)self selectedSymbols];
       v46 = 0;
-      v30 = [v27 initWithSensitivity:v28 type:0 masked:objc_msgSend(v29 side:"containsObject:" clampingRange:&unk_285365848) ^ 1 error:{1, 0, &v46}];
+      v30 = [v27 initWithSensitivity:v28 type:0 masked:objc_msgSend(selectedSymbols2 side:"containsObject:" clampingRange:&unk_285365848) ^ 1 error:{1, 0, &v46}];
       v26 = v46;
 
       if (v30 && !v26)
       {
-        [v20 addObject:v30];
+        [array addObject:v30];
       }
 
-      v8 = v41;
+      decibelHearingLevelUnit = v41;
       v11 = v42;
     }
 
-    if ([v20 count])
+    if ([array count])
     {
       v52 = 0;
       v53 = &v52;
@@ -2353,7 +2353,7 @@ LABEL_5:
       v32 = v31;
       _Block_object_dispose(&v52, 8);
       v45 = v26;
-      v33 = [v31 sensitivityPointWithFrequency:v11 tests:v20 error:&v45];
+      v33 = [v31 sensitivityPointWithFrequency:v11 tests:array error:&v45];
       v34 = v45;
 
       [v17 addObject:v33];
@@ -2370,10 +2370,10 @@ LABEL_5:
       v35 = [v17 sortedArrayUsingComparator:v43];
       v36 = [v35 mutableCopy];
 
-      v37 = [(AIAudiogramEnrollmentViewController *)self pickedDate];
+      pickedDate = [(AIAudiogramEnrollmentViewController *)self pickedDate];
       HKAudiogramSampleClass_0 = getHKAudiogramSampleClass_0();
       v39 = metadataForHKAudiogramSample();
-      v40 = [HKAudiogramSampleClass_0 audiogramSampleWithSensitivityPoints:v36 startDate:v37 endDate:v37 metadata:v39];
+      v40 = [HKAudiogramSampleClass_0 audiogramSampleWithSensitivityPoints:v36 startDate:pickedDate endDate:pickedDate metadata:v39];
       [(AIAudiogramEnrollmentViewController *)self setAudiogram:v40];
 
       v17 = v36;
@@ -2426,11 +2426,11 @@ uint64_t __78__AIAudiogramEnrollmentViewController__addInitialSensitivityPointAt
   }
 }
 
-- (id)getNextFrequency:(id)a3
+- (id)getNextFrequency:(id)frequency
 {
-  v4 = a3;
-  v5 = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
-  v6 = [v5 indexOfObject:v4];
+  frequencyCopy = frequency;
+  selectedFrequencies = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
+  v6 = [selectedFrequencies indexOfObject:frequencyCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL || (v7 = v6 + 1, -[AIAudiogramEnrollmentViewController selectedFrequencies](self, "selectedFrequencies"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 count], v8, v7 >= v9))
   {
@@ -2439,28 +2439,28 @@ uint64_t __78__AIAudiogramEnrollmentViewController__addInitialSensitivityPointAt
 
   else
   {
-    v10 = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
-    v11 = [v10 objectAtIndex:v7];
+    selectedFrequencies2 = [(AIAudiogramEnrollmentViewController *)self selectedFrequencies];
+    v11 = [selectedFrequencies2 objectAtIndex:v7];
   }
 
   return v11;
 }
 
-- (void)updateAudiogramDate:(id)a3
+- (void)updateAudiogramDate:(id)date
 {
-  v12 = a3;
+  dateCopy = date;
   [(AIAudiogramEnrollmentViewController *)self setPickedDate:?];
-  v4 = [(AIAudiogramEnrollmentViewController *)self audiogram];
-  v5 = [v4 sensitivityPoints];
-  v6 = [v5 count];
+  audiogram = [(AIAudiogramEnrollmentViewController *)self audiogram];
+  sensitivityPoints = [audiogram sensitivityPoints];
+  v6 = [sensitivityPoints count];
 
   if (v6)
   {
     HKAudiogramSampleClass_0 = getHKAudiogramSampleClass_0();
-    v8 = [(AIAudiogramEnrollmentViewController *)self audiogram];
-    v9 = [v8 sensitivityPoints];
+    audiogram2 = [(AIAudiogramEnrollmentViewController *)self audiogram];
+    sensitivityPoints2 = [audiogram2 sensitivityPoints];
     v10 = metadataForHKAudiogramSample();
-    v11 = [HKAudiogramSampleClass_0 audiogramSampleWithSensitivityPoints:v9 startDate:v12 endDate:v12 metadata:v10];
+    v11 = [HKAudiogramSampleClass_0 audiogramSampleWithSensitivityPoints:sensitivityPoints2 startDate:dateCopy endDate:dateCopy metadata:v10];
     [(AIAudiogramEnrollmentViewController *)self setAudiogram:v11];
 
     [(AIAudiogramEnrollmentViewController *)self updateFrequencyViewControllers];
@@ -2468,69 +2468,69 @@ uint64_t __78__AIAudiogramEnrollmentViewController__addInitialSensitivityPointAt
   }
 }
 
-- (void)didSelectNodeToEditWithSelectedFrequency:(id)a3
+- (void)didSelectNodeToEditWithSelectedFrequency:(id)frequency
 {
-  v16 = a3;
-  v4 = [(AIAudiogramEnrollmentViewController *)self frequenciesWithConfiguredInitialPoints];
-  v5 = [v4 containsObject:v16];
+  frequencyCopy = frequency;
+  frequenciesWithConfiguredInitialPoints = [(AIAudiogramEnrollmentViewController *)self frequenciesWithConfiguredInitialPoints];
+  v5 = [frequenciesWithConfiguredInitialPoints containsObject:frequencyCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(AIAudiogramEnrollmentViewController *)self _addInitialSensitivityPointAtFrequency:v16];
+    [(AIAudiogramEnrollmentViewController *)self _addInitialSensitivityPointAtFrequency:frequencyCopy];
   }
 
   v6 = [AIAudiogramIndividualFrequencyInputViewController alloc];
-  v7 = [(AIAudiogramEnrollmentViewController *)self audiogramConfirmationDelegate];
-  v8 = [(AIAudiogramEnrollmentViewController *)self audiogram];
-  v9 = [(AIAudiogramEnrollmentViewController *)self selectedSymbols];
-  v10 = [(AIAudiogramIndividualFrequencyInputViewController *)v6 initWithDelegate:self audiogramConfirmationDelegate:v7 audiogram:v8 currentFrequency:v16 isModalViewController:1 selectedSymbols:v9];
+  audiogramConfirmationDelegate = [(AIAudiogramEnrollmentViewController *)self audiogramConfirmationDelegate];
+  audiogram = [(AIAudiogramEnrollmentViewController *)self audiogram];
+  selectedSymbols = [(AIAudiogramEnrollmentViewController *)self selectedSymbols];
+  v10 = [(AIAudiogramIndividualFrequencyInputViewController *)v6 initWithDelegate:self audiogramConfirmationDelegate:audiogramConfirmationDelegate audiogram:audiogram currentFrequency:frequencyCopy isModalViewController:1 selectedSymbols:selectedSymbols];
 
   v11 = MEMORY[0x277CCACA8];
   v12 = aiLocString(@"AudiogramIngestionEditValuesTitle");
-  v13 = [v11 stringWithFormat:v12, v16];
-  v14 = [(AIAudiogramIndividualFrequencyInputViewController *)v10 frequencyTitleLabel];
-  [v14 setText:v13];
+  frequencyCopy = [v11 stringWithFormat:v12, frequencyCopy];
+  frequencyTitleLabel = [(AIAudiogramIndividualFrequencyInputViewController *)v10 frequencyTitleLabel];
+  [frequencyTitleLabel setText:frequencyCopy];
 
   v15 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v10];
   [(AIAudiogramEnrollmentViewController *)self presentViewController:v15 animated:1 completion:0];
 }
 
-- (void)didSelectNodeToAddWithSelectedFrequency:(id)a3
+- (void)didSelectNodeToAddWithSelectedFrequency:(id)frequency
 {
-  v16 = a3;
-  v4 = [(AIAudiogramEnrollmentViewController *)self frequenciesWithConfiguredInitialPoints];
-  v5 = [v4 containsObject:v16];
+  frequencyCopy = frequency;
+  frequenciesWithConfiguredInitialPoints = [(AIAudiogramEnrollmentViewController *)self frequenciesWithConfiguredInitialPoints];
+  v5 = [frequenciesWithConfiguredInitialPoints containsObject:frequencyCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(AIAudiogramEnrollmentViewController *)self _addInitialSensitivityPointAtFrequency:v16];
+    [(AIAudiogramEnrollmentViewController *)self _addInitialSensitivityPointAtFrequency:frequencyCopy];
   }
 
   v6 = [AIAudiogramIndividualFrequencyInputViewController alloc];
-  v7 = [(AIAudiogramEnrollmentViewController *)self audiogramConfirmationDelegate];
-  v8 = [(AIAudiogramEnrollmentViewController *)self audiogram];
-  v9 = [(AIAudiogramEnrollmentViewController *)self selectedSymbols];
-  v10 = [(AIAudiogramIndividualFrequencyInputViewController *)v6 initWithDelegate:self audiogramConfirmationDelegate:v7 audiogram:v8 currentFrequency:v16 isModalViewController:1 selectedSymbols:v9];
+  audiogramConfirmationDelegate = [(AIAudiogramEnrollmentViewController *)self audiogramConfirmationDelegate];
+  audiogram = [(AIAudiogramEnrollmentViewController *)self audiogram];
+  selectedSymbols = [(AIAudiogramEnrollmentViewController *)self selectedSymbols];
+  v10 = [(AIAudiogramIndividualFrequencyInputViewController *)v6 initWithDelegate:self audiogramConfirmationDelegate:audiogramConfirmationDelegate audiogram:audiogram currentFrequency:frequencyCopy isModalViewController:1 selectedSymbols:selectedSymbols];
 
   [(AIAudiogramIndividualFrequencyInputViewController *)v10 setUserAddedFrequencyAfterOptical:1];
   v11 = MEMORY[0x277CCACA8];
   v12 = aiLocString(@"AudiogramIngestionAddValuesTitle");
-  v13 = [v11 stringWithFormat:v12, v16];
-  v14 = [(AIAudiogramIndividualFrequencyInputViewController *)v10 frequencyTitleLabel];
-  [v14 setText:v13];
+  frequencyCopy = [v11 stringWithFormat:v12, frequencyCopy];
+  frequencyTitleLabel = [(AIAudiogramIndividualFrequencyInputViewController *)v10 frequencyTitleLabel];
+  [frequencyTitleLabel setText:frequencyCopy];
 
   v15 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v10];
   [(AIAudiogramEnrollmentViewController *)self dismissViewControllerAnimated:0 completion:0];
   [(AIAudiogramEnrollmentViewController *)self presentViewController:v15 animated:1 completion:0];
 }
 
-- (void)dismissCurrentFrequencyInputViewControllerWithAudiogram:(id)a3
+- (void)dismissCurrentFrequencyInputViewControllerWithAudiogram:(id)audiogram
 {
-  v4 = a3;
-  [(AIAudiogramEnrollmentViewController *)self setAudiogram:v4];
+  audiogramCopy = audiogram;
+  [(AIAudiogramEnrollmentViewController *)self setAudiogram:audiogramCopy];
   [(AIAudiogramEnrollmentViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v5 = [(AIAudiogramEnrollmentViewController *)self finalResultViewController];
-  [v5 reloadAudiogram:v4];
+  finalResultViewController = [(AIAudiogramEnrollmentViewController *)self finalResultViewController];
+  [finalResultViewController reloadAudiogram:audiogramCopy];
 }
 
 - (AIAudiogramConfirmResultsViewControllerDelegate)audiogramConfirmationDelegate

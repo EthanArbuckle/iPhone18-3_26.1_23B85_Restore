@@ -2,27 +2,27 @@
 - (NSString)identityName;
 - (NSString)localizedDescription;
 - (NSString)localizedLabel;
-- (SFIdentityAttributes)initWithCoder:(id)a3;
+- (SFIdentityAttributes)initWithCoder:(id)coder;
 - (_SFKeySpecifier)keySpecifier;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setIdentityName:(id)a3;
-- (void)setKeySpecifier:(id)a3;
-- (void)setLocalizedDescription:(id)a3;
-- (void)setLocalizedLabel:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setIdentityName:(id)name;
+- (void)setKeySpecifier:(id)specifier;
+- (void)setLocalizedDescription:(id)description;
+- (void)setLocalizedLabel:(id)label;
 @end
 
 @implementation SFIdentityAttributes
 
-- (SFIdentityAttributes)initWithCoder:(id)a3
+- (SFIdentityAttributes)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFIdentityAttributes;
   return [(SFIdentityAttributes *)&v4 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setLocalizedLabel:*(self->_identityAttributesInternal + 1)];
   [v4 setLocalizedDescription:*(self->_identityAttributesInternal + 2)];
   [v4 setKeySpecifier:*(self->_identityAttributesInternal + 3)];
@@ -37,9 +37,9 @@
   return v2;
 }
 
-- (void)setLocalizedLabel:(id)a3
+- (void)setLocalizedLabel:(id)label
 {
-  v4 = [a3 copy];
+  v4 = [label copy];
   identityAttributesInternal = self->_identityAttributesInternal;
   v6 = identityAttributesInternal[1];
   identityAttributesInternal[1] = v4;
@@ -54,9 +54,9 @@
   return v2;
 }
 
-- (void)setLocalizedDescription:(id)a3
+- (void)setLocalizedDescription:(id)description
 {
-  v4 = [a3 copy];
+  v4 = [description copy];
   identityAttributesInternal = self->_identityAttributesInternal;
   v6 = identityAttributesInternal[2];
   identityAttributesInternal[2] = v4;
@@ -71,9 +71,9 @@
   return v2;
 }
 
-- (void)setKeySpecifier:(id)a3
+- (void)setKeySpecifier:(id)specifier
 {
-  v4 = [a3 copy];
+  v4 = [specifier copy];
   identityAttributesInternal = self->_identityAttributesInternal;
   v6 = identityAttributesInternal[3];
   identityAttributesInternal[3] = v4;
@@ -88,9 +88,9 @@
   return v2;
 }
 
-- (void)setIdentityName:(id)a3
+- (void)setIdentityName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   identityAttributesInternal = self->_identityAttributesInternal;
   v6 = identityAttributesInternal[4];
   identityAttributesInternal[4] = v4;

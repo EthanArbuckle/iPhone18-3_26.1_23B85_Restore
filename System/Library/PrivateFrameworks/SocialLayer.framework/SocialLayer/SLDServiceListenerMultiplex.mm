@@ -1,15 +1,15 @@
 @interface SLDServiceListenerMultiplex
 + (id)emptyMultiplex;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSString)description;
 - (SLDServiceListenerMultiplex)init;
 - (SLDServiceMultiplexDelegate)delegate;
-- (id)_listenerForService:(id)a3;
-- (id)endpointForServiceClass:(Class)a3;
-- (void)_acceptConnection:(id)a3 forService:(id)a4;
+- (id)_listenerForService:(id)service;
+- (id)endpointForServiceClass:(Class)class;
+- (void)_acceptConnection:(id)connection forService:(id)service;
 - (void)_logFullDescription;
 - (void)_notifyDelegateIfEmpty;
-- (void)_service:(id)a3 lostConnection:(id)a4;
+- (void)_service:(id)_service lostConnection:(id)connection;
 @end
 
 @implementation SLDServiceListenerMultiplex
@@ -28,17 +28,17 @@
   v2 = [(SLDServiceListenerMultiplex *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     serviceToListenerTable = v2->_serviceToListenerTable;
-    v2->_serviceToListenerTable = v3;
+    v2->_serviceToListenerTable = strongToStrongObjectsMapTable;
 
-    v5 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     listenerToServiceTable = v2->_listenerToServiceTable;
-    v2->_listenerToServiceTable = v5;
+    v2->_listenerToServiceTable = strongToStrongObjectsMapTable2;
 
-    v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     serviceToConnectionsTable = v2->_serviceToConnectionsTable;
-    v2->_serviceToConnectionsTable = v7;
+    v2->_serviceToConnectionsTable = strongToStrongObjectsMapTable3;
   }
 
   return v2;
@@ -58,7 +58,7 @@
 - (void)_logFullDescription
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 description];
+  v1 = [self description];
   OUTLINED_FUNCTION_3();
   OUTLINED_FUNCTION_1_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -66,12 +66,12 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)endpointForServiceClass:(Class)a3
+- (id)endpointForServiceClass:(Class)class
 {
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v5 = [(objc_class *)a3 sharedService];
-    v6 = [(SLDServiceListenerMultiplex *)self _listenerForService:v5];
+    sharedService = [(objc_class *)class sharedService];
+    v6 = [(SLDServiceListenerMultiplex *)self _listenerForService:sharedService];
   }
 
   else
@@ -85,25 +85,25 @@
     v6 = 0;
   }
 
-  v8 = [v6 endpoint];
+  endpoint = [v6 endpoint];
 
-  return v8;
+  return endpoint;
 }
 
-- (id)_listenerForService:(id)a3
+- (id)_listenerForService:(id)service
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_serviceToListenerTable objectForKey:v4];
-  if (!v5)
+  serviceCopy = service;
+  anonymousListener = [(NSMapTable *)self->_serviceToListenerTable objectForKey:serviceCopy];
+  if (!anonymousListener)
   {
-    v5 = [MEMORY[0x277CCAE98] anonymousListener];
-    [(NSMapTable *)self->_serviceToListenerTable setObject:v5 forKey:v4];
-    [(NSMapTable *)self->_listenerToServiceTable setObject:v4 forKey:v5];
-    [v5 setDelegate:self];
+    anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
+    [(NSMapTable *)self->_serviceToListenerTable setObject:anonymousListener forKey:serviceCopy];
+    [(NSMapTable *)self->_listenerToServiceTable setObject:serviceCopy forKey:anonymousListener];
+    [anonymousListener setDelegate:self];
     v6 = SLDGlobalWorkloop();
-    [v5 _setQueue:v6];
+    [anonymousListener _setQueue:v6];
 
-    [v5 resume];
+    [anonymousListener resume];
   }
 
   v7 = SLDaemonLogHandle();
@@ -112,14 +112,14 @@
     [SLDServiceListenerMultiplex _listenerForService:];
   }
 
-  return v5;
+  return anonymousListener;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
-  v7 = [(NSMapTable *)self->_listenerToServiceTable objectForKey:a3];
-  if ((SLDConnectionIsEntitled(v6) & 1) == 0)
+  connectionCopy = connection;
+  v7 = [(NSMapTable *)self->_listenerToServiceTable objectForKey:listener];
+  if ((SLDConnectionIsEntitled(connectionCopy) & 1) == 0)
   {
     v10 = SLDaemonLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -141,7 +141,7 @@
     goto LABEL_14;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v7 allowsConnection:v6] & 1) == 0)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v7 allowsConnection:connectionCopy] & 1) == 0)
   {
     v10 = SLDaemonLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -161,7 +161,7 @@ LABEL_14:
     [SLDServiceListenerMultiplex listener:shouldAcceptNewConnection:];
   }
 
-  [(SLDServiceListenerMultiplex *)self _acceptConnection:v6 forService:v7];
+  [(SLDServiceListenerMultiplex *)self _acceptConnection:connectionCopy forService:v7];
   [(SLDServiceListenerMultiplex *)self _logFullDescription];
   v9 = 1;
 LABEL_15:
@@ -169,19 +169,19 @@ LABEL_15:
   return v9;
 }
 
-- (void)_acceptConnection:(id)a3 forService:(id)a4
+- (void)_acceptConnection:(id)connection forService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMapTable *)self->_serviceToConnectionsTable objectForKey:v7];
-  if (!v8)
+  connectionCopy = connection;
+  serviceCopy = service;
+  array = [(NSMapTable *)self->_serviceToConnectionsTable objectForKey:serviceCopy];
+  if (!array)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
-    [(NSMapTable *)self->_serviceToConnectionsTable setObject:v8 forKey:v7];
+    array = [MEMORY[0x277CBEB18] array];
+    [(NSMapTable *)self->_serviceToConnectionsTable setObject:array forKey:serviceCopy];
   }
 
-  [v8 addObject:v6];
-  objc_initWeak(&location, v6);
+  [array addObject:connectionCopy];
+  objc_initWeak(&location, connectionCopy);
   objc_initWeak(&from, self);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -189,17 +189,17 @@ LABEL_15:
   v14[3] = &unk_278927120;
   objc_copyWeak(&v16, &from);
   objc_copyWeak(&v17, &location);
-  v9 = v7;
+  v9 = serviceCopy;
   v15 = v9;
-  [v6 setInvalidationHandler:v14];
+  [connectionCopy setInvalidationHandler:v14];
   if (objc_opt_respondsToSelector())
   {
-    [v9 receivedConnection:v6];
+    [v9 receivedConnection:connectionCopy];
   }
 
   v10 = MEMORY[0x277CCAE90];
-  v11 = [objc_opt_class() remoteObjectProtocol];
-  v12 = [v10 interfaceWithProtocol:v11];
+  remoteObjectProtocol = [objc_opt_class() remoteObjectProtocol];
+  v12 = [v10 interfaceWithProtocol:remoteObjectProtocol];
 
   objc_opt_class();
   if (objc_opt_respondsToSelector())
@@ -207,12 +207,12 @@ LABEL_15:
     [objc_opt_class() setupInterface:v12];
   }
 
-  [v6 setExportedObject:v9];
-  [v6 setExportedInterface:v12];
+  [connectionCopy setExportedObject:v9];
+  [connectionCopy setExportedInterface:v12];
   v13 = SLDGlobalWorkloop();
-  [v6 _setQueue:v13];
+  [connectionCopy _setQueue:v13];
 
-  [v6 resume];
+  [connectionCopy resume];
   objc_destroyWeak(&v17);
   objc_destroyWeak(&v16);
   objc_destroyWeak(&from);
@@ -229,25 +229,25 @@ void __60__SLDServiceListenerMultiplex__acceptConnection_forService___block_invo
   }
 }
 
-- (void)_service:(id)a3 lostConnection:(id)a4
+- (void)_service:(id)_service lostConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  _serviceCopy = _service;
+  connectionCopy = connection;
   v8 = SLDaemonLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [SLDServiceListenerMultiplex _service:lostConnection:];
   }
 
-  v9 = [(NSMapTable *)self->_serviceToConnectionsTable objectForKey:v6];
-  [v9 removeObject:v7];
+  v9 = [(NSMapTable *)self->_serviceToConnectionsTable objectForKey:_serviceCopy];
+  [v9 removeObject:connectionCopy];
   if (![v9 count])
   {
-    [(NSMapTable *)self->_serviceToConnectionsTable removeObjectForKey:v6];
-    v10 = [(NSMapTable *)self->_serviceToListenerTable objectForKey:v6];
+    [(NSMapTable *)self->_serviceToConnectionsTable removeObjectForKey:_serviceCopy];
+    v10 = [(NSMapTable *)self->_serviceToListenerTable objectForKey:_serviceCopy];
     if (v10)
     {
-      [(NSMapTable *)self->_serviceToListenerTable removeObjectForKey:v6];
+      [(NSMapTable *)self->_serviceToListenerTable removeObjectForKey:_serviceCopy];
       [(NSMapTable *)self->_listenerToServiceTable removeObjectForKey:v10];
       [v10 invalidate];
     }
@@ -255,7 +255,7 @@ void __60__SLDServiceListenerMultiplex__acceptConnection_forService___block_invo
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 lostConnection:v7];
+    [_serviceCopy lostConnection:connectionCopy];
   }
 
   [(SLDServiceListenerMultiplex *)self _logFullDescription];
@@ -264,12 +264,12 @@ void __60__SLDServiceListenerMultiplex__acceptConnection_forService___block_invo
 
 - (void)_notifyDelegateIfEmpty
 {
-  v3 = [(SLDServiceListenerMultiplex *)self delegate];
+  delegate = [(SLDServiceListenerMultiplex *)self delegate];
 
-  if (v3 && [(SLDServiceListenerMultiplex *)self isEmpty])
+  if (delegate && [(SLDServiceListenerMultiplex *)self isEmpty])
   {
-    v4 = [(SLDServiceListenerMultiplex *)self delegate];
-    [v4 multiplexDidRemoveAllServices:self];
+    delegate2 = [(SLDServiceListenerMultiplex *)self delegate];
+    [delegate2 multiplexDidRemoveAllServices:self];
   }
 }
 

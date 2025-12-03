@@ -1,25 +1,25 @@
 @interface TUIElementSmartGridContent
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5;
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context;
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementSmartGridContent
 
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a3;
-  v9 = [a6 identifierWithNode:var0];
-  [v8 setIdentifier:v9];
+  var0 = node.var0;
+  objectCopy = object;
+  v9 = [context identifierWithNode:var0];
+  [objectCopy setIdentifier:v9];
 }
 
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  [v8 configureCell:v9];
-  [v8 finalizeModelsWithParent:v9 context:v7];
+  contextCopy = context;
+  builderCopy = builder;
+  objectCopy = object;
+  [builderCopy configureCell:objectCopy];
+  [builderCopy finalizeModelsWithParent:objectCopy context:contextCopy];
 }
 
 @end

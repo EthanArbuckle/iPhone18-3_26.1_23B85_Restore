@@ -1,8 +1,8 @@
 @interface HMDDeviceAssociationInfoProto
-- (BOOL)isEqual:(id)a3;
-- (HMDDeviceAssociationInfoProto)initWithAccessoryUUID:(id)a3 idsIdentifier:(id)a4 idsDestination:(id)a5;
-- (HMDDeviceAssociationInfoProto)initWithProtoData:(id)a3;
-- (HMDDeviceAssociationInfoProto)initWithProtoPayload:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMDDeviceAssociationInfoProto)initWithAccessoryUUID:(id)d idsIdentifier:(id)identifier idsDestination:(id)destination;
+- (HMDDeviceAssociationInfoProto)initWithProtoData:(id)data;
+- (HMDDeviceAssociationInfoProto)initWithProtoPayload:(id)payload;
 - (id)description;
 - (id)protoData;
 - (id)protoPayload;
@@ -13,47 +13,47 @@
 
 - (id)protoData
 {
-  v2 = [(HMDDeviceAssociationInfoProto *)self protoPayload];
-  v3 = [v2 data];
+  protoPayload = [(HMDDeviceAssociationInfoProto *)self protoPayload];
+  data = [protoPayload data];
 
-  return v3;
+  return data;
 }
 
 - (id)protoPayload
 {
   v3 = objc_alloc_init(HMDAppleMediaDeviceAssociationInfoDeviceAssociationInfo);
-  v4 = [(HMDDeviceAssociationInfoProto *)self accessoryUUID];
-  v5 = [v4 UUIDString];
-  [(HMDAppleMediaDeviceAssociationInfoDeviceAssociationInfo *)v3 setAccessoryUUID:v5];
+  accessoryUUID = [(HMDDeviceAssociationInfoProto *)self accessoryUUID];
+  uUIDString = [accessoryUUID UUIDString];
+  [(HMDAppleMediaDeviceAssociationInfoDeviceAssociationInfo *)v3 setAccessoryUUID:uUIDString];
 
-  v6 = [(HMDDeviceAssociationInfoProto *)self idsIdentifier];
-  v7 = [v6 UUIDString];
-  [(HMDAppleMediaDeviceAssociationInfoDeviceAssociationInfo *)v3 setIdsIdentifier:v7];
+  idsIdentifier = [(HMDDeviceAssociationInfoProto *)self idsIdentifier];
+  uUIDString2 = [idsIdentifier UUIDString];
+  [(HMDAppleMediaDeviceAssociationInfoDeviceAssociationInfo *)v3 setIdsIdentifier:uUIDString2];
 
-  v8 = [(HMDDeviceAssociationInfoProto *)self idsDestination];
-  [(HMDAppleMediaDeviceAssociationInfoDeviceAssociationInfo *)v3 setIdsDestination:v8];
+  idsDestination = [(HMDDeviceAssociationInfoProto *)self idsDestination];
+  [(HMDAppleMediaDeviceAssociationInfoDeviceAssociationInfo *)v3 setIdsDestination:idsDestination];
 
   return v3;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMDDeviceAssociationInfoProto *)self accessoryUUID];
-  v4 = [v3 hash];
+  accessoryUUID = [(HMDDeviceAssociationInfoProto *)self accessoryUUID];
+  v4 = [accessoryUUID hash];
 
-  v5 = [(HMDDeviceAssociationInfoProto *)self idsIdentifier];
-  v6 = [v5 hash] ^ v4;
+  idsIdentifier = [(HMDDeviceAssociationInfoProto *)self idsIdentifier];
+  v6 = [idsIdentifier hash] ^ v4;
 
-  v7 = [(HMDDeviceAssociationInfoProto *)self idsDestination];
-  v8 = [v7 hash];
+  idsDestination = [(HMDDeviceAssociationInfoProto *)self idsDestination];
+  v8 = [idsDestination hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -63,7 +63,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -74,16 +74,16 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDDeviceAssociationInfoProto *)self accessoryUUID];
-      v8 = [(HMDDeviceAssociationInfoProto *)v6 accessoryUUID];
+      accessoryUUID = [(HMDDeviceAssociationInfoProto *)self accessoryUUID];
+      accessoryUUID2 = [(HMDDeviceAssociationInfoProto *)v6 accessoryUUID];
       if (HMFEqualObjects())
       {
-        v9 = [(HMDDeviceAssociationInfoProto *)self idsIdentifier];
-        v10 = [(HMDDeviceAssociationInfoProto *)v6 idsIdentifier];
+        idsIdentifier = [(HMDDeviceAssociationInfoProto *)self idsIdentifier];
+        idsIdentifier2 = [(HMDDeviceAssociationInfoProto *)v6 idsIdentifier];
         if (HMFEqualObjects())
         {
-          v11 = [(HMDDeviceAssociationInfoProto *)self idsDestination];
-          v12 = [(HMDDeviceAssociationInfoProto *)v6 idsDestination];
+          idsDestination = [(HMDDeviceAssociationInfoProto *)self idsDestination];
+          idsDestination2 = [(HMDDeviceAssociationInfoProto *)v6 idsDestination];
           v13 = HMFEqualObjects();
         }
 
@@ -111,49 +111,49 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDDeviceAssociationInfoProto *)self accessoryUUID];
-  v5 = [(HMDDeviceAssociationInfoProto *)self idsIdentifier];
-  v6 = [(HMDDeviceAssociationInfoProto *)self idsDestination];
-  v7 = [v3 stringWithFormat:@"accessory uuid: %@ ids identifier: %@ ids destination: %@", v4, v5, v6];
+  accessoryUUID = [(HMDDeviceAssociationInfoProto *)self accessoryUUID];
+  idsIdentifier = [(HMDDeviceAssociationInfoProto *)self idsIdentifier];
+  idsDestination = [(HMDDeviceAssociationInfoProto *)self idsDestination];
+  v7 = [v3 stringWithFormat:@"accessory uuid: %@ ids identifier: %@ ids destination: %@", accessoryUUID, idsIdentifier, idsDestination];
 
   return v7;
 }
 
-- (HMDDeviceAssociationInfoProto)initWithProtoData:(id)a3
+- (HMDDeviceAssociationInfoProto)initWithProtoData:(id)data
 {
-  v4 = a3;
-  v5 = [[HMDAppleMediaDeviceAssociationInfoDeviceAssociationInfo alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[HMDAppleMediaDeviceAssociationInfoDeviceAssociationInfo alloc] initWithData:dataCopy];
 
   v6 = [(HMDDeviceAssociationInfoProto *)self initWithProtoPayload:v5];
   return v6;
 }
 
-- (HMDDeviceAssociationInfoProto)initWithProtoPayload:(id)a3
+- (HMDDeviceAssociationInfoProto)initWithProtoPayload:(id)payload
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 accessoryUUID];
-  if (v5)
+  payloadCopy = payload;
+  accessoryUUID = [payloadCopy accessoryUUID];
+  if (accessoryUUID)
   {
-    v6 = v5;
-    v7 = [v4 idsIdentifier];
-    if (v7)
+    v6 = accessoryUUID;
+    idsIdentifier = [payloadCopy idsIdentifier];
+    if (idsIdentifier)
     {
-      v8 = v7;
-      v9 = [v4 idsDestination];
+      v8 = idsIdentifier;
+      idsDestination = [payloadCopy idsDestination];
 
-      if (v9)
+      if (idsDestination)
       {
         v10 = objc_alloc(MEMORY[0x277CCAD78]);
-        v11 = [v4 accessoryUUID];
-        v12 = [v10 initWithUUIDString:v11];
+        accessoryUUID2 = [payloadCopy accessoryUUID];
+        v12 = [v10 initWithUUIDString:accessoryUUID2];
         v13 = objc_alloc(MEMORY[0x277CCAD78]);
-        v14 = [v4 idsIdentifier];
-        v15 = [v13 initWithUUIDString:v14];
-        v16 = [v4 idsDestination];
-        v17 = [(HMDDeviceAssociationInfoProto *)self initWithAccessoryUUID:v12 idsIdentifier:v15 idsDestination:v16];
+        idsIdentifier2 = [payloadCopy idsIdentifier];
+        v15 = [v13 initWithUUIDString:idsIdentifier2];
+        idsDestination2 = [payloadCopy idsDestination];
+        selfCopy = [(HMDDeviceAssociationInfoProto *)self initWithAccessoryUUID:v12 idsIdentifier:v15 idsDestination:idsDestination2];
 
-        v18 = v17;
+        v18 = selfCopy;
         goto LABEL_9;
       }
     }
@@ -164,22 +164,22 @@
   }
 
   v19 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
     v21 = HMFGetLogIdentifier();
-    v22 = [v4 accessoryUUID];
-    v23 = [v4 idsIdentifier];
-    v24 = [v4 idsDestination];
+    accessoryUUID3 = [payloadCopy accessoryUUID];
+    idsIdentifier3 = [payloadCopy idsIdentifier];
+    idsDestination3 = [payloadCopy idsDestination];
     v27 = 138544130;
     v28 = v21;
     v29 = 2112;
-    v30 = v22;
+    v30 = accessoryUUID3;
     v31 = 2112;
-    v32 = v23;
+    v32 = idsIdentifier3;
     v33 = 2112;
-    v34 = v24;
+    v34 = idsDestination3;
     _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@Proto payload is missing some fields, accessoryUUID: %@ idsIdentifier: %@ idsDestination: %@", &v27, 0x2Au);
   }
 
@@ -191,20 +191,20 @@ LABEL_9:
   return v18;
 }
 
-- (HMDDeviceAssociationInfoProto)initWithAccessoryUUID:(id)a3 idsIdentifier:(id)a4 idsDestination:(id)a5
+- (HMDDeviceAssociationInfoProto)initWithAccessoryUUID:(id)d idsIdentifier:(id)identifier idsDestination:(id)destination
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  identifierCopy = identifier;
+  destinationCopy = destination;
   v15.receiver = self;
   v15.super_class = HMDDeviceAssociationInfoProto;
   v12 = [(HMDDeviceAssociationInfoProto *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_accessoryUUID, a3);
-    objc_storeStrong(&v13->_idsIdentifier, a4);
-    objc_storeStrong(&v13->_idsDestination, a5);
+    objc_storeStrong(&v12->_accessoryUUID, d);
+    objc_storeStrong(&v13->_idsIdentifier, identifier);
+    objc_storeStrong(&v13->_idsDestination, destination);
   }
 
   return v13;

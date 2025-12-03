@@ -1,16 +1,16 @@
 @interface TVRCTimedMetadataManager
 - (NSXPCConnection)connection;
 - (TVRCTimedMetadataUpdating)proxy;
-- (void)updateTimedMetadata:(id)a3;
+- (void)updateTimedMetadata:(id)metadata;
 @end
 
 @implementation TVRCTimedMetadataManager
 
-- (void)updateTimedMetadata:(id)a3
+- (void)updateTimedMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(TVRCTimedMetadataManager *)self proxy];
-  [v5 updateTimedMetadata:v4];
+  metadataCopy = metadata;
+  proxy = [(TVRCTimedMetadataManager *)self proxy];
+  [proxy updateTimedMetadata:metadataCopy];
 }
 
 - (NSXPCConnection)connection
@@ -70,8 +70,8 @@ void __38__TVRCTimedMetadataManager_connection__block_invoke_46(uint64_t a1)
 
 - (TVRCTimedMetadataUpdating)proxy
 {
-  v2 = [(TVRCTimedMetadataManager *)self connection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_49];
+  connection = [(TVRCTimedMetadataManager *)self connection];
+  v3 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_49];
 
   return v3;
 }

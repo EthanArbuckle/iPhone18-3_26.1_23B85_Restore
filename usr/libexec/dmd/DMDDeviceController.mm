@@ -1,7 +1,7 @@
 @interface DMDDeviceController
 + (DMDDeviceController)shared;
 - (DMFDevice)currentDevice;
-- (id)deviceWithKeys:(id)a3;
+- (id)deviceWithKeys:(id)keys;
 @end
 
 @implementation DMDDeviceController
@@ -26,16 +26,16 @@
   return v4;
 }
 
-- (id)deviceWithKeys:(id)a3
+- (id)deviceWithKeys:(id)keys
 {
-  v4 = a3;
-  v16 = [[DMFDevice alloc] initPrivate];
+  keysCopy = keys;
+  initPrivate = [[DMFDevice alloc] initPrivate];
   v5 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = keysCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -51,7 +51,7 @@
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [DMFDevice propertyNameForKey:v11, v16];
+        v12 = [DMFDevice propertyNameForKey:v11, initPrivate];
         v17 = 0;
         v13 = [(DMDDeviceController *)self valueForKey:v12 error:&v17];
         v14 = v17;
@@ -62,7 +62,7 @@
 
         else
         {
-          [v16 setValue:v13 forKey:v12];
+          [initPrivate setValue:v13 forKey:v12];
         }
       }
 
@@ -72,9 +72,9 @@
     while (v8);
   }
 
-  [v16 setErrorsForKeys:v5];
+  [initPrivate setErrorsForKeys:v5];
 
-  return v16;
+  return initPrivate;
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface SKStoreExtension
 + (id)serviceInterface;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)openURL:(id)a3 sourceApplication:(id)a4 annotation:(id)a5;
-- (void)presentRequestedViewControllerWithIdentifier:(id)a3;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)openURL:(id)l sourceApplication:(id)application annotation:(id)annotation;
+- (void)presentRequestedViewControllerWithIdentifier:(id)identifier;
 @end
 
 @implementation SKStoreExtension
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(SKStoreExtension *)self _remoteViewControllerProxy];
+  animatedCopy = animated;
+  completionCopy = completion;
+  _remoteViewControllerProxy = [(SKStoreExtension *)self _remoteViewControllerProxy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__SKStoreExtension_dismissViewControllerAnimated_completion___block_invoke;
   v9[3] = &unk_1E7B27900;
-  v10 = v6;
-  v8 = v6;
-  [v7 dismissViewControllerAnimated:v4 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [_remoteViewControllerProxy dismissViewControllerAnimated:animatedCopy completion:v9];
 }
 
 uint64_t __61__SKStoreExtension_dismissViewControllerAnimated_completion___block_invoke(uint64_t a1)
@@ -32,28 +32,28 @@ uint64_t __61__SKStoreExtension_dismissViewControllerAnimated_completion___block
   return result;
 }
 
-- (void)openURL:(id)a3 sourceApplication:(id)a4 annotation:(id)a5
+- (void)openURL:(id)l sourceApplication:(id)application annotation:(id)annotation
 {
-  if ([(SKStoreExtension *)self shouldOpenURL:a3 sourceApplication:a4 annotation:a5])
+  if ([(SKStoreExtension *)self shouldOpenURL:l sourceApplication:application annotation:annotation])
   {
-    v6 = [(SKStoreExtension *)self _remoteViewControllerProxy];
-    if (v6)
+    _remoteViewControllerProxy = [(SKStoreExtension *)self _remoteViewControllerProxy];
+    if (_remoteViewControllerProxy)
     {
-      v7 = v6;
-      [v6 setNeedsTabSelection];
-      v6 = v7;
+      v7 = _remoteViewControllerProxy;
+      [_remoteViewControllerProxy setNeedsTabSelection];
+      _remoteViewControllerProxy = v7;
     }
   }
 }
 
-- (void)presentRequestedViewControllerWithIdentifier:(id)a3
+- (void)presentRequestedViewControllerWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v4 = [(SKStoreExtension *)self _remoteViewControllerProxy];
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  _remoteViewControllerProxy = [(SKStoreExtension *)self _remoteViewControllerProxy];
+  v5 = _remoteViewControllerProxy;
+  if (_remoteViewControllerProxy)
   {
-    [v4 presentRequestedViewControllerWithIdentifier:v6];
+    [_remoteViewControllerProxy presentRequestedViewControllerWithIdentifier:identifierCopy];
   }
 }
 

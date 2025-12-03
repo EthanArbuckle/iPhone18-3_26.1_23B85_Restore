@@ -1,13 +1,13 @@
 @interface AVMobileGlassContainerView
-- (AVMobileGlassContainerView)initWithFrame:(CGRect)a3;
+- (AVMobileGlassContainerView)initWithFrame:(CGRect)frame;
 - (AVMobileGlassContainerViewDelegate)delegate;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (double)_intrinsicContentSizeForItemView:(uint64_t)a1;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (double)_intrinsicContentSizeForItemView:(uint64_t)view;
 - (void)layoutSubviews;
-- (void)setHiddenItemViews:(id)a3;
-- (void)setItemViews:(id)a3;
-- (void)setSpacing:(double)a3;
+- (void)setHiddenItemViews:(id)views;
+- (void)setItemViews:(id)views;
+- (void)setSpacing:(double)spacing;
 @end
 
 @implementation AVMobileGlassContainerView
@@ -72,16 +72,16 @@
   return result;
 }
 
-- (double)_intrinsicContentSizeForItemView:(uint64_t)a1
+- (double)_intrinsicContentSizeForItemView:(uint64_t)view
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (view)
   {
     [v3 intrinsicContentSize];
     v6 = v5;
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && *(a1 + 528) > 0.0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && *(view + 528) > 0.0)
     {
       [v4 sizeThatFits:1.79769313e308];
       v6 = v7;
@@ -96,10 +96,10 @@
   return v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v39 = *MEMORY[0x1E69E9840];
   [(AVMobileGlassContainerView *)self layoutMargins];
   v7 = v6;
@@ -217,8 +217,8 @@ LABEL_20:
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v35 = [(AVMobileGlassContainerView *)self subviews];
-    v36 = [v35 countByEnumeratingWithState:&v49 objects:v54 count:16];
+    subviews = [(AVMobileGlassContainerView *)self subviews];
+    v36 = [subviews countByEnumeratingWithState:&v49 objects:v54 count:16];
     if (v36)
     {
       v37 = v36;
@@ -233,13 +233,13 @@ LABEL_20:
         {
           if (*v50 != v38)
           {
-            objc_enumerationMutation(v35);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v49 + 1) + 8 * i) setFrame:{v39, v40, v41, v42}];
         }
 
-        v37 = [v35 countByEnumeratingWithState:&v49 objects:v54 count:16];
+        v37 = [subviews countByEnumeratingWithState:&v49 objects:v54 count:16];
       }
 
       while (v37);
@@ -324,21 +324,21 @@ LABEL_19:
     v31 = [(NSArray *)self->_itemViews count];
     if (v31 - [v16 count] == 1)
     {
-      v32 = [(NSArray *)self->_itemViews firstObject];
-      v33 = [(AVMobileGlassContainerView *)self _intrinsicContentSizeForItemView:v32];
-      [v32 avkit_setFrame:-[AVMobileGlassContainerView effectiveUserInterfaceLayoutDirection](self inLayoutDirection:{"effectiveUserInterfaceLayoutDirection"), v45 + (rect - v33) * 0.5, v46 + (v8 - v34) * 0.5, v33, v34}];
+      firstObject = [(NSArray *)self->_itemViews firstObject];
+      v33 = [(AVMobileGlassContainerView *)self _intrinsicContentSizeForItemView:firstObject];
+      [firstObject avkit_setFrame:-[AVMobileGlassContainerView effectiveUserInterfaceLayoutDirection](self inLayoutDirection:{"effectiveUserInterfaceLayoutDirection"), v45 + (rect - v33) * 0.5, v46 + (v8 - v34) * 0.5, v33, v34}];
     }
   }
 
   [(AVMobileGlassContainerView *)self setHiddenItemViews:v16];
 }
 
-- (void)setItemViews:(id)a3
+- (void)setItemViews:(id)views
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewsCopy = views;
   itemViews = self->_itemViews;
-  if (itemViews != v5)
+  if (itemViews != viewsCopy)
   {
     v28 = 0u;
     v29 = 0u;
@@ -360,9 +360,9 @@ LABEL_19:
           }
 
           v12 = *(*(&v26 + 1) + 8 * i);
-          v13 = [v12 superview];
+          superview = [v12 superview];
 
-          if (v13 == self)
+          if (superview == self)
           {
             [v12 removeFromSuperview];
           }
@@ -374,7 +374,7 @@ LABEL_19:
       while (v9);
     }
 
-    objc_storeStrong(&self->_itemViews, a3);
+    objc_storeStrong(&self->_itemViews, views);
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -395,8 +395,8 @@ LABEL_19:
           }
 
           v19 = *(*(&v22 + 1) + 8 * j);
-          v20 = [v19 layer];
-          [v20 setCompositingFilter:0];
+          layer = [v19 layer];
+          [layer setCompositingFilter:0];
 
           [(AVMobileGlassContainerView *)self addSubview:v19];
         }
@@ -408,44 +408,44 @@ LABEL_19:
     }
 
     [(AVMobileGlassContainerView *)self invalidateIntrinsicContentSize];
-    v21 = [(AVMobileGlassContainerView *)self superview];
-    [v21 avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
+    superview2 = [(AVMobileGlassContainerView *)self superview];
+    [superview2 avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
   }
 }
 
-- (void)setHiddenItemViews:(id)a3
+- (void)setHiddenItemViews:(id)views
 {
-  v7 = a3;
-  if (![(NSArray *)self->_hiddenItemViews isEqualToArray:v7])
+  viewsCopy = views;
+  if (![(NSArray *)self->_hiddenItemViews isEqualToArray:viewsCopy])
   {
-    v4 = [v7 copy];
+    v4 = [viewsCopy copy];
     hiddenItemViews = self->_hiddenItemViews;
     self->_hiddenItemViews = v4;
 
-    v6 = [(AVMobileGlassContainerView *)self delegate];
+    delegate = [(AVMobileGlassContainerView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v6 containerView:self didUpdateHiddenViews:self->_hiddenItemViews];
+      [delegate containerView:self didUpdateHiddenViews:self->_hiddenItemViews];
     }
   }
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSpacing:(double)a3
+- (void)setSpacing:(double)spacing
 {
-  if (self->_spacing != a3)
+  if (self->_spacing != spacing)
   {
-    self->_spacing = a3;
+    self->_spacing = spacing;
     [(AVMobileGlassContainerView *)self setNeedsLayout];
   }
 }
 
-- (AVMobileGlassContainerView)initWithFrame:(CGRect)a3
+- (AVMobileGlassContainerView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = AVMobileGlassContainerView;
-  v3 = [(AVGlassBackedView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVGlassBackedView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

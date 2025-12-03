@@ -2,25 +2,25 @@
 + (BOOL)supportsDualiBoot;
 + (id)_updaterClasses;
 + (id)updater;
-+ (id)updaterWithTimeout:(double)a3;
-- (BOOL)generateFirmwareImagesWithCallback:(ramrod_update_callbacks *)a3 context:(firmware_update_context *)a4;
++ (id)updaterWithTimeout:(double)timeout;
+- (BOOL)generateFirmwareImagesWithCallback:(ramrod_update_callbacks *)callback context:(firmware_update_context *)context;
 - (MSUBootFirmwareUpdater)init;
-- (MSUBootFirmwareUpdater)initWithIOService:(unsigned int)a3;
-- (MSUBootFirmwareUpdater)initWithIOServiceMatching:(id)a3;
-- (id)_encodeFirmware:(id)a3 withRestoreInfo:(id)a4;
+- (MSUBootFirmwareUpdater)initWithIOService:(unsigned int)service;
+- (MSUBootFirmwareUpdater)initWithIOServiceMatching:(id)matching;
+- (id)_encodeFirmware:(id)firmware withRestoreInfo:(id)info;
 - (id)_restoreInfoDictionary;
-- (id)copyFirmwareWithRestoreInfo:(id)a3;
-- (int)_encodeAndWriteFirmware:(id)a3 toWriter:(id)a4 withError:(id *)a5;
+- (id)copyFirmwareWithRestoreInfo:(id)info;
+- (int)_encodeAndWriteFirmware:(id)firmware toWriter:(id)writer withError:(id *)error;
 - (void)dealloc;
-- (void)setApNonce:(id)a3;
-- (void)setApNonceSlotID:(unsigned int)a3;
+- (void)setApNonce:(id)nonce;
+- (void)setApNonceSlotID:(unsigned int)d;
 @end
 
 @implementation MSUBootFirmwareUpdater
 
 + (id)_updaterClasses
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v7 = objc_opt_class();
     v8 = objc_opt_class();
@@ -32,24 +32,24 @@
 
   else
   {
-    v6 = a1;
-    v3 = &v6;
+    selfCopy = self;
+    v3 = &selfCopy;
     v4 = 1;
   }
 
-  return [NSArray arrayWithObjects:v3 count:v4, v6, v7, v8, v9, v10];
+  return [NSArray arrayWithObjects:v3 count:v4, selfCopy, v7, v8, v9, v10];
 }
 
 + (id)updater
 {
-  if (objc_opt_class() != a1)
+  if (objc_opt_class() != self)
   {
-    v3 = objc_alloc_init(a1);
+    v3 = objc_alloc_init(self);
 
     return v3;
   }
 
-  if ([a1 supportsPCIeNANDBoot])
+  if ([self supportsPCIeNANDBoot])
   {
     v5 = PCIeNANDiBootUpdater;
 LABEL_9:
@@ -57,7 +57,7 @@ LABEL_9:
     return [(__objc2_class *)v5 updater];
   }
 
-  if ([a1 supportsDualiBoot])
+  if ([self supportsDualiBoot])
   {
     v5 = SPIiBootUpdater;
     goto LABEL_9;
@@ -67,8 +67,8 @@ LABEL_9:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v6 = [a1 _updaterClasses];
-  result = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  _updaterClasses = [self _updaterClasses];
+  result = [_updaterClasses countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (result)
   {
     v7 = result;
@@ -79,7 +79,7 @@ LABEL_14:
     {
       if (*v11 != v8)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(_updaterClasses);
       }
 
       result = [*(*(&v10 + 1) + 8 * v9) updater];
@@ -90,7 +90,7 @@ LABEL_14:
 
       if (v7 == ++v9)
       {
-        result = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        result = [_updaterClasses countByEnumeratingWithState:&v10 objects:v14 count:16];
         v7 = result;
         if (result)
         {
@@ -105,17 +105,17 @@ LABEL_14:
   return result;
 }
 
-+ (id)updaterWithTimeout:(double)a3
++ (id)updaterWithTimeout:(double)timeout
 {
   v5 = +[NSProcessInfo processInfo];
   [(NSProcessInfo *)v5 systemUptime];
-  v7 = v6 + a3;
-  NSStringFromClass(a1);
-  iBU_LOG_real(@"Waiting %ld seconds for %@\n", "+[MSUBootFirmwareUpdater updaterWithTimeout:]", v8, v9, v10, v11, v12, v13, llround(a3));
+  v7 = v6 + timeout;
+  NSStringFromClass(self);
+  iBU_LOG_real(@"Waiting %ld seconds for %@\n", "+[MSUBootFirmwareUpdater updaterWithTimeout:]", v8, v9, v10, v11, v12, v13, llround(timeout));
   while (1)
   {
-    v14 = [a1 updater];
-    if (v14)
+    updater = [self updater];
+    if (updater)
     {
       break;
     }
@@ -135,17 +135,17 @@ LABEL_14:
   v23 = @"Created an instance of %@ to update this device's firmware and boot images";
 LABEL_6:
   iBU_LOG_real(v23, "+[MSUBootFirmwareUpdater updaterWithTimeout:]", v17, v18, v19, v20, v21, v22, v26);
-  return v14;
+  return updater;
 }
 
 - (MSUBootFirmwareUpdater)init
 {
-  v3 = [objc_opt_class() IOMatchingPropertyTable];
+  iOMatchingPropertyTable = [objc_opt_class() IOMatchingPropertyTable];
 
-  return [(MSUBootFirmwareUpdater *)self initWithIOServiceMatching:v3];
+  return [(MSUBootFirmwareUpdater *)self initWithIOServiceMatching:iOMatchingPropertyTable];
 }
 
-- (MSUBootFirmwareUpdater)initWithIOService:(unsigned int)a3
+- (MSUBootFirmwareUpdater)initWithIOService:(unsigned int)service
 {
   v10.receiver = self;
   v10.super_class = MSUBootFirmwareUpdater;
@@ -153,12 +153,12 @@ LABEL_6:
   if (v4)
   {
     matches = 0;
-    v5 = [objc_opt_class() IOMatchingPropertyTable];
-    if (a3 && (v6 = v5, [(__CFDictionary *)v5 count]) && (!IOServiceMatchPropertyTable(a3, v6, &matches) ? (v7 = matches == 0) : (v7 = 1), !v7))
+    iOMatchingPropertyTable = [objc_opt_class() IOMatchingPropertyTable];
+    if (service && (v6 = iOMatchingPropertyTable, [(__CFDictionary *)iOMatchingPropertyTable count]) && (!IOServiceMatchPropertyTable(service, v6, &matches) ? (v7 = matches == 0) : (v7 = 1), !v7))
     {
-      IOServiceWaitQuiet(a3, 0);
-      IOObjectRetain(a3);
-      v4->_matchedService = a3;
+      IOServiceWaitQuiet(service, 0);
+      IOObjectRetain(service);
+      v4->_matchedService = service;
     }
 
     else
@@ -171,13 +171,13 @@ LABEL_6:
   return v4;
 }
 
-- (MSUBootFirmwareUpdater)initWithIOServiceMatching:(id)a3
+- (MSUBootFirmwareUpdater)initWithIOServiceMatching:(id)matching
 {
-  if ([a3 count])
+  if ([matching count])
   {
-    if (a3)
+    if (matching)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(matching);
     }
 
     else
@@ -202,19 +202,19 @@ LABEL_6:
   return v7;
 }
 
-- (void)setApNonce:(id)a3
+- (void)setApNonce:(id)nonce
 {
-  v4 = [a3 copy];
+  v4 = [nonce copy];
 
   self->_apNonce = v4;
   self->_apNonceSlotID = 0;
   self->_supportsSlotIDs = 0;
 }
 
-- (void)setApNonceSlotID:(unsigned int)a3
+- (void)setApNonceSlotID:(unsigned int)d
 {
   self->_apNonce = 0;
-  self->_apNonceSlotID = a3;
+  self->_apNonceSlotID = d;
   self->_supportsSlotIDs = 1;
 }
 
@@ -236,13 +236,13 @@ LABEL_6:
   is_nonzero = _ioreg_property_is_nonzero("IODeviceTree:/product", @"dual-iboot-support");
   if (is_nonzero)
   {
-    LOBYTE(is_nonzero) = [a1 supportsPCIeNANDBoot] ^ 1;
+    LOBYTE(is_nonzero) = [self supportsPCIeNANDBoot] ^ 1;
   }
 
   return is_nonzero;
 }
 
-- (BOOL)generateFirmwareImagesWithCallback:(ramrod_update_callbacks *)a3 context:(firmware_update_context *)a4
+- (BOOL)generateFirmwareImagesWithCallback:(ramrod_update_callbacks *)callback context:(firmware_update_context *)context
 {
   v7 = objc_opt_new();
   v77 = objc_opt_new();
@@ -256,9 +256,9 @@ LABEL_6:
   v84 = &v83;
   v85 = 0x2020000000;
   v86 = 1;
-  v8 = (a3->var2)(a4);
+  v8 = (callback->var2)(context);
   [v7 addObject:v8];
-  v9 = (a3->var3)(a4);
+  v9 = (callback->var3)(context);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -277,14 +277,14 @@ LABEL_6:
 
     v75 = [v10 objectForKey:@"Dali"];
     iBU_LOG_real(@"Ordered firmware image names: %@.", "[MSUBootFirmwareUpdater generateFirmwareImagesWithCallback:context:]", v27, v28, v29, v30, v31, v32, obj);
-    v74 = a3;
+    callbackCopy = callback;
     v81 = 0u;
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
     v33 = [(NSArray *)obj countByEnumeratingWithState:&v79 objects:v87 count:16];
     v71 = v17;
-    v72 = a4;
+    contextCopy = context;
     v73 = v9;
     v24 = 0;
     v25 = 0;
@@ -328,8 +328,8 @@ LABEL_6:
 
     v9 = v73;
     v26 = v71;
-    a4 = v72;
-    a3 = v74;
+    context = contextCopy;
+    callback = callbackCopy;
     [v77 addObjectsFromArray:{objc_msgSend(v10, "allValues")}];
   }
 
@@ -353,7 +353,7 @@ LABEL_29:
 
   if ([objc_opt_class() requiresSEPInFW])
   {
-    v49 = (a3->var6)(a4);
+    v49 = (callback->var6)(context);
     iBU_LOG_real(@"Appending SEP to firmwareImages", "[MSUBootFirmwareUpdater generateFirmwareImagesWithCallback:context:]", v50, v51, v52, v53, v54, v55, v70);
     if (!v49)
     {
@@ -376,7 +376,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  (a3->var1)(0, 0, a4);
+  (callback->var1)(0, 0, context);
   [(MSUBootFirmwareUpdater *)self setBootBlockImages:v7];
   [(MSUBootFirmwareUpdater *)self setFirmwareImages:v77];
   [(MSUBootFirmwareUpdater *)self setDaliData:v75];
@@ -404,11 +404,11 @@ uint64_t __69__MSUBootFirmwareUpdater_generateFirmwareImagesWithCallback_context
   return result;
 }
 
-- (id)copyFirmwareWithRestoreInfo:(id)a3
+- (id)copyFirmwareWithRestoreInfo:(id)info
 {
-  v5 = [(MSUBootFirmwareUpdater *)self _restoreInfoDictionary];
+  _restoreInfoDictionary = [(MSUBootFirmwareUpdater *)self _restoreInfoDictionary];
 
-  return [(MSUBootFirmwareUpdater *)self _encodeFirmware:a3 withRestoreInfo:v5];
+  return [(MSUBootFirmwareUpdater *)self _encodeFirmware:info withRestoreInfo:_restoreInfoDictionary];
 }
 
 - (id)_restoreInfoDictionary
@@ -423,18 +423,18 @@ uint64_t __69__MSUBootFirmwareUpdater_generateFirmwareImagesWithCallback_context
 
   else
   {
-    v5 = [(MSUBootFirmwareUpdater *)self apNonce];
-    if (!v5)
+    apNonce = [(MSUBootFirmwareUpdater *)self apNonce];
+    if (!apNonce)
     {
-      v5 = _ioreg_copy_property("IODeviceTree:/chosen", @"boot-nonce");
-      if (!v5)
+      apNonce = _ioreg_copy_property("IODeviceTree:/chosen", @"boot-nonce");
+      if (!apNonce)
       {
         return __NSDictionary0__;
       }
     }
 
     v7 = @"BNCN";
-    v8 = v5;
+    v8 = apNonce;
     v3 = &v8;
     v4 = &v7;
   }
@@ -442,12 +442,12 @@ uint64_t __69__MSUBootFirmwareUpdater_generateFirmwareImagesWithCallback_context
   return [NSDictionary dictionaryWithObjects:v3 forKeys:v4 count:1];
 }
 
-- (int)_encodeAndWriteFirmware:(id)a3 toWriter:(id)a4 withError:(id *)a5
+- (int)_encodeAndWriteFirmware:(id)firmware toWriter:(id)writer withError:(id *)error
 {
-  v9 = [(MSUBootFirmwareUpdater *)self _restoreInfoDictionary];
-  if (!a3)
+  _restoreInfoDictionary = [(MSUBootFirmwareUpdater *)self _restoreInfoDictionary];
+  if (!firmware)
   {
-    if (!a5)
+    if (!error)
     {
       return -536870212;
     }
@@ -456,14 +456,14 @@ uint64_t __69__MSUBootFirmwareUpdater_generateFirmwareImagesWithCallback_context
 LABEL_9:
     v20 = 7;
 LABEL_10:
-    *a5 = MSUBootFirmwareError(v20, 0, v19, v10, v11, v12, v13, v14, v21);
+    *error = MSUBootFirmwareError(v20, 0, v19, v10, v11, v12, v13, v14, v21);
     return -536870212;
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = _restoreInfoDictionary;
+  if (!_restoreInfoDictionary)
   {
-    if (!a5)
+    if (!error)
     {
       return -536870212;
     }
@@ -472,16 +472,16 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  v15 = [(MSUBootFirmwareUpdater *)self _encodeFirmware:a3 withRestoreInfo:v9];
+  v15 = [(MSUBootFirmwareUpdater *)self _encodeFirmware:firmware withRestoreInfo:_restoreInfoDictionary];
   if (v15)
   {
     v16 = v15;
-    v17 = [a4 writeData:v15 withError:a5];
+    v17 = [writer writeData:v15 withError:error];
 
     return v17;
   }
 
-  if (a5)
+  if (error)
   {
     v19 = @"_encodeAndWriteFirmware failed to encode Img4 data.";
     v20 = 9;
@@ -491,9 +491,9 @@ LABEL_10:
   return -536870212;
 }
 
-- (id)_encodeFirmware:(id)a3 withRestoreInfo:(id)a4
+- (id)_encodeFirmware:(id)firmware withRestoreInfo:(id)info
 {
-  result = [a3 length];
+  result = [firmware length];
   if (result)
   {
     v6 = AMAuthInstallApImg4EncodeRestoreInfo();
@@ -504,7 +504,7 @@ LABEL_10:
 
     else
     {
-      v13 = [a3 length];
+      v13 = [firmware length];
       [0 length];
       iBU_LOG_real(@"original data length: %lu. img4_restore_data length: %lu", "[MSUBootFirmwareUpdater _encodeFirmware:withRestoreInfo:]", v14, v15, v16, v17, v18, v19, v13);
     }

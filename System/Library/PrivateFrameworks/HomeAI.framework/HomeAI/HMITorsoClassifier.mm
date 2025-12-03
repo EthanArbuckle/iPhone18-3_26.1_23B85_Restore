@@ -1,6 +1,6 @@
 @interface HMITorsoClassifier
 - (HMITorsoClassifier)init;
-- (id)classifyTorsoEvent:(id)a3 regionOfInterest:(CGRect)a4 pixelBuffer:(__CVBuffer *)a5 homeUUID:(id)a6 error:(id *)a7;
+- (id)classifyTorsoEvent:(id)event regionOfInterest:(CGRect)interest pixelBuffer:(__CVBuffer *)buffer homeUUID:(id)d error:(id *)error;
 @end
 
 @implementation HMITorsoClassifier
@@ -25,20 +25,20 @@
   return v2;
 }
 
-- (id)classifyTorsoEvent:(id)a3 regionOfInterest:(CGRect)a4 pixelBuffer:(__CVBuffer *)a5 homeUUID:(id)a6 error:(id *)a7
+- (id)classifyTorsoEvent:(id)event regionOfInterest:(CGRect)interest pixelBuffer:(__CVBuffer *)buffer homeUUID:(id)d error:(id *)error
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  width = interest.size.width;
+  height = interest.size.height;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v112 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = [v12 roll];
-  if (v14)
+  eventCopy = event;
+  dCopy = d;
+  roll = [eventCopy roll];
+  if (roll)
   {
-    v15 = [v12 roll];
-    [v15 floatValue];
+    roll2 = [eventCopy roll];
+    [roll2 floatValue];
     v17 = v16;
   }
 
@@ -52,7 +52,7 @@
   if (v18 > 1.5708)
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
@@ -67,9 +67,9 @@
     objc_autoreleasePoolPop(v20);
   }
 
-  Size = HMICVPixelBufferGetSize(a5);
+  Size = HMICVPixelBufferGetSize(buffer);
   v26 = v25;
-  [v12 boundingBox];
+  [eventCopy boundingBox];
   HMICGRectPixelFromNormalized(v27, v28, v29, v30, Size, v26);
   v115 = CGRectIntegral(v114);
   v31 = v115.origin.x;
@@ -85,15 +85,15 @@
   if (v36 > 0.9)
   {
     v37 = objc_autoreleasePoolPush();
-    v38 = self;
+    selfCopy2 = self;
     v39 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
       v40 = HMFGetLogIdentifier();
       v41 = v36;
-      [v12 boundingBox];
+      [eventCopy boundingBox];
       v42 = CGRectGetWidth(v117);
-      [v12 boundingBox];
+      [eventCopy boundingBox];
       v43 = CGRectGetHeight(v118);
       *buf = 138544642;
       v101 = v40;
@@ -114,12 +114,12 @@
     v19 = 1;
   }
 
-  [v12 boundingBox];
+  [eventCopy boundingBox];
   v48 = HMICGRectMinElementwiseDistance(v44, v45, v46, v47, x, y, width, height);
   if (v48 < 0.01)
   {
     v49 = objc_autoreleasePoolPush();
-    v50 = self;
+    selfCopy3 = self;
     v51 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
     {
@@ -136,17 +136,17 @@
   }
 
   v99 = 0;
-  v53 = [HMITorsoprinter createTorsoPixelBufferForTorsoEvent:v12 pixelBuffer:a5 error:&v99];
+  v53 = [HMITorsoprinter createTorsoPixelBufferForTorsoEvent:eventCopy pixelBuffer:buffer error:&v99];
   v54 = v99;
   if (v53)
   {
-    v55 = [(HMITorsoClassifier *)self torsoprinter];
-    v56 = [v55 torsoprintForTorsoPixelBuffer:v53 unrecognizable:v19 error:a7];
+    torsoprinter = [(HMITorsoClassifier *)self torsoprinter];
+    v56 = [torsoprinter torsoprintForTorsoPixelBuffer:v53 unrecognizable:v19 error:error];
 
     CVPixelBufferRelease(v53);
     if (!v56)
     {
-      v61 = v12;
+      v61 = eventCopy;
 LABEL_36:
 
       goto LABEL_37;
@@ -161,13 +161,13 @@ LABEL_36:
     {
       v62 = +[HMIPersonsModelManager sharedInstance];
       v98 = v54;
-      v57 = [v62 predictPersonFromTorsoObservation:v56 homeUUID:v13 error:&v98];
+      v57 = [v62 predictPersonFromTorsoObservation:v56 homeUUID:dCopy error:&v98];
       v63 = v98;
 
       if (v63)
       {
         v64 = objc_autoreleasePoolPush();
-        v65 = self;
+        selfCopy4 = self;
         v66 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v66, OS_LOG_TYPE_INFO))
         {
@@ -178,13 +178,13 @@ LABEL_36:
         }
 
         objc_autoreleasePoolPop(v64);
-        if (a7)
+        if (error)
         {
           v68 = v63;
-          *a7 = v63;
+          *error = v63;
         }
 
-        HMIErrorLog(v65, v63);
+        HMIErrorLog(selfCopy4, v63);
         v61 = 0;
         v54 = v63;
         goto LABEL_35;
@@ -192,8 +192,8 @@ LABEL_36:
 
       if (v57)
       {
-        v69 = [v57 confidence];
-        [v69 doubleValue];
+        confidence = [v57 confidence];
+        [confidence doubleValue];
         v71 = v70;
         [(HMITorsoClassifier *)self classificationThresholdKnown];
         v73 = v72;
@@ -201,11 +201,11 @@ LABEL_36:
         if (v71 >= v73)
         {
           v91 = [HMITorsoClassification alloc];
-          v92 = [v57 personUUID];
-          v93 = [v57 sourceUUID];
-          v94 = [v57 confidence];
-          [v94 doubleValue];
-          v74 = [(HMITorsoClassification *)v91 initWithPersonUUID:v92 sourceUUID:v93 confidence:?];
+          personUUID = [v57 personUUID];
+          sourceUUID = [v57 sourceUUID];
+          confidence2 = [v57 confidence];
+          [confidence2 doubleValue];
+          v74 = [(HMITorsoClassification *)v91 initWithPersonUUID:personUUID sourceUUID:sourceUUID confidence:?];
 
           v54 = 0;
           goto LABEL_34;
@@ -219,18 +219,18 @@ LABEL_36:
 LABEL_34:
     v75 = [HMITorsoRecognition alloc];
     v76 = [MEMORY[0x277CBEB98] set];
-    v77 = [v56 UUID];
-    v78 = [(HMITorsoRecognition *)v75 initWithTorsoprint:v56 classification:v74 predictedLinkedEntityUUIDs:v76 sessionEntityAssignment:0 sessionEntityUUID:v77];
+    uUID = [v56 UUID];
+    v78 = [(HMITorsoRecognition *)v75 initWithTorsoprint:v56 classification:v74 predictedLinkedEntityUUIDs:v76 sessionEntityAssignment:0 sessionEntityUUID:uUID];
 
     v79 = [HMIVideoAnalyzerEventTorso alloc];
-    v80 = [v12 confidence];
-    [v12 boundingBox];
+    confidence3 = [eventCopy confidence];
+    [eventCopy boundingBox];
     v82 = v81;
     v84 = v83;
     v86 = v85;
     v88 = v87;
-    v89 = [v12 roll];
-    v61 = [(HMIVideoAnalyzerEventTorso *)v79 initWithConfidence:v80 boundingBox:v89 roll:v78 torsoRecognition:v82, v84, v86, v88];
+    roll3 = [eventCopy roll];
+    v61 = [(HMIVideoAnalyzerEventTorso *)v79 initWithConfidence:confidence3 boundingBox:roll3 roll:v78 torsoRecognition:v82, v84, v86, v88];
 
 LABEL_35:
     goto LABEL_36;
@@ -238,15 +238,15 @@ LABEL_35:
 
   v58 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1021 underlyingError:v54];
   v59 = v58;
-  if (a7)
+  if (error)
   {
     v60 = v58;
-    *a7 = v59;
+    *error = v59;
   }
 
   HMIErrorLog(self, v59);
 
-  v61 = v12;
+  v61 = eventCopy;
 LABEL_37:
 
   return v61;

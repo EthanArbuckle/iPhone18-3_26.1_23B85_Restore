@@ -1,19 +1,19 @@
 @interface _SLExtensionLazyMatcher
 - (NSExtension)extension;
-- (_SLExtensionLazyMatcher)initWithIdentifier:(id)a3;
+- (_SLExtensionLazyMatcher)initWithIdentifier:(id)identifier;
 @end
 
 @implementation _SLExtensionLazyMatcher
 
-- (_SLExtensionLazyMatcher)initWithIdentifier:(id)a3
+- (_SLExtensionLazyMatcher)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = _SLExtensionLazyMatcher;
   v5 = [(_SLExtensionLazyMatcher *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }

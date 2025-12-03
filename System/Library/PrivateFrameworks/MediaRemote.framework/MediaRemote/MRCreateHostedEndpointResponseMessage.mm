@@ -1,13 +1,13 @@
 @interface MRCreateHostedEndpointResponseMessage
-- (MRCreateHostedEndpointResponseMessage)initWithGroupUID:(id)a3;
+- (MRCreateHostedEndpointResponseMessage)initWithGroupUID:(id)d;
 - (NSString)groupUID;
 @end
 
 @implementation MRCreateHostedEndpointResponseMessage
 
-- (MRCreateHostedEndpointResponseMessage)initWithGroupUID:(id)a3
+- (MRCreateHostedEndpointResponseMessage)initWithGroupUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = MRCreateHostedEndpointResponseMessage;
   v5 = [(MRProtocolMessage *)&v10 init];
@@ -16,9 +16,9 @@
     v6 = objc_alloc_init(_MRCreateHostedEndpointResponseProtobuf);
     [(MRProtocolMessage *)v5 setUnderlyingCodableMessage:v6];
 
-    v7 = [v4 copy];
-    v8 = [(MRProtocolMessage *)v5 underlyingCodableMessage];
-    [v8 setGroupUID:v7];
+    v7 = [dCopy copy];
+    underlyingCodableMessage = [(MRProtocolMessage *)v5 underlyingCodableMessage];
+    [underlyingCodableMessage setGroupUID:v7];
   }
 
   return v5;
@@ -26,10 +26,10 @@
 
 - (NSString)groupUID
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 groupUID];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  groupUID = [underlyingCodableMessage groupUID];
 
-  return v3;
+  return groupUID;
 }
 
 @end

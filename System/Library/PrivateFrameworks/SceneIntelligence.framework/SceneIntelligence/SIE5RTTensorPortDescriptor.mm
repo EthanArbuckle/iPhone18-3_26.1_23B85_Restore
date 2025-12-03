@@ -3,37 +3,37 @@
 - (BOOL)isPackedFP32;
 - (BOOL)isS8_ANE;
 - (BOOL)isU8_ANE;
-- (SIE5RTTensorPortDescriptor)initWithE5RTPort:(e5rt_io_port *)a3 portType:(int64_t)a4 engineType:(int64_t)a5 surfaceAllocator:(id)a6;
+- (SIE5RTTensorPortDescriptor)initWithE5RTPort:(e5rt_io_port *)port portType:(int64_t)type engineType:(int64_t)engineType surfaceAllocator:(id)allocator;
 - (const)getShape;
 - (const)getStrides;
 - (e5rt_tensor_desc)createPackedFP32TensorDescriptor;
-- (id)constructUndimensionedSurfaceWithAllocator:(id)a3;
+- (id)constructUndimensionedSurfaceWithAllocator:(id)allocator;
 - (int)getComponentType;
-- (int64_t)bindSurface:(id)a3;
+- (int64_t)bindSurface:(id)surface;
 - (unint64_t)getComponentSize;
 - (unint64_t)getNumberOfElements;
 - (unint64_t)getRank;
 - (unint64_t)getSizeInBytes;
 - (unsigned)getNumComponents;
-- (void)bindRawPointer:(const void *)a3;
+- (void)bindRawPointer:(const void *)pointer;
 - (void)dealloc;
 - (void)getDataPtr;
 @end
 
 @implementation SIE5RTTensorPortDescriptor
 
-- (id)constructUndimensionedSurfaceWithAllocator:(id)a3
+- (id)constructUndimensionedSurfaceWithAllocator:(id)allocator
 {
-  v4 = a3;
-  v5 = [v4 allocateWithWidth:+[SIIOSurfaceAllocator alignAllocation:](SIIOSurfaceAllocator height:"alignAllocation:" pixelFormat:-[SIE5RTTensorPortDescriptor getSizeInBytes](self, "getSizeInBytes")), 1, 1278226488];
+  allocatorCopy = allocator;
+  1278226488 = [allocatorCopy allocateWithWidth:+[SIIOSurfaceAllocator alignAllocation:](SIIOSurfaceAllocator height:"alignAllocation:" pixelFormat:-[SIE5RTTensorPortDescriptor getSizeInBytes](self, "getSizeInBytes")), 1, 1278226488];
 
-  return v5;
+  return 1278226488;
 }
 
-- (SIE5RTTensorPortDescriptor)initWithE5RTPort:(e5rt_io_port *)a3 portType:(int64_t)a4 engineType:(int64_t)a5 surfaceAllocator:(id)a6
+- (SIE5RTTensorPortDescriptor)initWithE5RTPort:(e5rt_io_port *)port portType:(int64_t)type engineType:(int64_t)engineType surfaceAllocator:(id)allocator
 {
   v51 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  allocatorCopy = allocator;
   v44.receiver = self;
   v44.super_class = SIE5RTTensorPortDescriptor;
   v11 = [(SIE5RTTensorPortDescriptor *)&v44 init];
@@ -79,9 +79,9 @@
     goto LABEL_9;
   }
 
-  v11->_port = a3;
-  v11->_engineType = a5;
-  v11->_portType = a4;
+  v11->_port = port;
+  v11->_engineType = engineType;
+  v11->_portType = type;
   if ([(SIE5RTTensorPortDescriptor *)v11 getComponentType])
   {
     v20 = 0;
@@ -97,7 +97,7 @@
   v11->_isS8_ANE = [(SIE5RTTensorPortDescriptor *)v11 isS8_ANE];
   v11->_isU8_ANE = [(SIE5RTTensorPortDescriptor *)v11 isU8_ANE];
   v11->_client_desc = [(SIE5RTTensorPortDescriptor *)v11 createPackedFP32TensorDescriptor];
-  if (a4 != 1)
+  if (type != 1)
   {
 LABEL_55:
     if (v11->_desc)
@@ -135,10 +135,10 @@ LABEL_55:
     goto LABEL_9;
   }
 
-  v21 = [(SIE5RTTensorPortDescriptor *)v11 getWidth];
-  v22 = [(SIE5RTTensorPortDescriptor *)v11 getHeight];
-  v23 = [(SIE5RTTensorPortDescriptor *)v11 getChannels];
-  v43 = 0;
+  getWidth = [(SIE5RTTensorPortDescriptor *)v11 getWidth];
+  getHeight = [(SIE5RTTensorPortDescriptor *)v11 getHeight];
+  getChannels = [(SIE5RTTensorPortDescriptor *)v11 getChannels];
+  createE5RTBuffer = 0;
   if (v11->_engineType == 2)
   {
     v24 = v11->_desc;
@@ -203,7 +203,7 @@ LABEL_55:
     goto LABEL_54;
   }
 
-  if (v23 != 1)
+  if (getChannels != 1)
   {
     v29 = v11->_desc;
     if (e5rt_tensor_desc_alloc_buffer_object())
@@ -300,9 +300,9 @@ LABEL_66:
     }
   }
 
-  if (v10)
+  if (allocatorCopy)
   {
-    v38 = [v10 allocateWithWidth:v21 height:v22 pixelFormat:v28];
+    v38 = [allocatorCopy allocateWithWidth:getWidth height:getHeight pixelFormat:v28];
     v39 = v11->_memory_surface;
     v11->_memory_surface = v38;
 
@@ -312,8 +312,8 @@ LABEL_66:
       __assert_rtn("[SIE5RTTensorPortDescriptor initWithE5RTPort:portType:engineType:surfaceAllocator:]", "SIE5RTTensorPortDescriptor.mm", 126, "_memory_surface");
     }
 
-    v43 = [(SIIOSurface *)v40 createE5RTBuffer];
-    if (!v43)
+    createE5RTBuffer = [(SIIOSurface *)v40 createE5RTBuffer];
+    if (!createE5RTBuffer)
     {
       goto LABEL_10;
     }
@@ -348,7 +348,7 @@ LABEL_66:
     }
 
 LABEL_54:
-    v11->_buffer = v43;
+    v11->_buffer = createE5RTBuffer;
     goto LABEL_55;
   }
 
@@ -400,15 +400,15 @@ LABEL_11:
   [(SIE5RTTensorPortDescriptor *)&v3 dealloc];
 }
 
-- (int64_t)bindSurface:(id)a3
+- (int64_t)bindSurface:(id)surface
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  surfaceCopy = surface;
+  v6 = surfaceCopy;
   if (self->_engineType == 2)
   {
-    v7 = [v5 copyData];
-    v8 = [v7 bytes];
+    copyData = [surfaceCopy copyData];
+    bytes = [copyData bytes];
 
     desc = self->_desc;
     if (e5rt_tensor_desc_alloc_buffer_object())
@@ -474,22 +474,22 @@ LABEL_36:
       goto LABEL_35;
     }
 
-    v29 = [v6 copyData];
-    memcpy(0, v8, [v29 length]);
+    copyData2 = [v6 copyData];
+    memcpy(0, bytes, [copyData2 length]);
 
 LABEL_38:
     v26 = 7;
     goto LABEL_39;
   }
 
-  v33 = [v5 createE5RTBuffer];
-  if (!v33)
+  createE5RTBuffer = [surfaceCopy createE5RTBuffer];
+  if (!createE5RTBuffer)
   {
     goto LABEL_38;
   }
 
-  v14 = [v6 pixelFormat];
-  if (self->_isFP16_ANE && (v14 == 1717855600 || v14 == 1278226534))
+  pixelFormat = [v6 pixelFormat];
+  if (self->_isFP16_ANE && (pixelFormat == 1717855600 || pixelFormat == 1278226534))
   {
     v16 = self->_desc;
     client_desc = self->_client_desc;
@@ -573,10 +573,10 @@ LABEL_38:
       e5rt_buffer_object_release();
     }
 
-    self->_buffer = v33;
+    self->_buffer = createE5RTBuffer;
   }
 
-  objc_storeStrong(&self->_memory_surface, a3);
+  objc_storeStrong(&self->_memory_surface, surface);
   v26 = 0;
 LABEL_39:
 
@@ -584,7 +584,7 @@ LABEL_39:
   return v26;
 }
 
-- (void)bindRawPointer:(const void *)a3
+- (void)bindRawPointer:(const void *)pointer
 {
   client_desc = self->_client_desc;
   if (e5rt_tensor_desc_alloc_buffer_object())
@@ -793,11 +793,11 @@ LABEL_8:
 
 - (BOOL)isPacked
 {
-  v3 = [(SIE5RTTensorPortDescriptor *)self getStrides];
-  v4 = [(SIE5RTTensorPortDescriptor *)self getShape];
-  v5 = [(SIE5RTTensorPortDescriptor *)self getRank];
-  v6 = &v3[v5 - 1];
-  v7 = v5 - 1;
+  getStrides = [(SIE5RTTensorPortDescriptor *)self getStrides];
+  getShape = [(SIE5RTTensorPortDescriptor *)self getShape];
+  getRank = [(SIE5RTTensorPortDescriptor *)self getRank];
+  v6 = &getStrides[getRank - 1];
+  v7 = getRank - 1;
   do
   {
     v8 = v7;
@@ -806,7 +806,7 @@ LABEL_8:
       break;
     }
 
-    v9 = v4[v7] * *v6;
+    v9 = getShape[v7] * *v6;
     v10 = *--v6;
     --v7;
   }
@@ -832,8 +832,8 @@ LABEL_8:
     return 0;
   }
 
-  v3 = [(SIE5RTTensorPortDescriptor *)self getRank];
-  return (*([(SIE5RTTensorPortDescriptor *)self getStrides]+ 8 * v3 - 16) & 0x3F) == 0;
+  getRank = [(SIE5RTTensorPortDescriptor *)self getRank];
+  return (*([(SIE5RTTensorPortDescriptor *)self getStrides]+ 8 * getRank - 16) & 0x3F) == 0;
 }
 
 - (BOOL)isU8_ANE
@@ -843,8 +843,8 @@ LABEL_8:
     return 0;
   }
 
-  v3 = [(SIE5RTTensorPortDescriptor *)self getRank];
-  return (*([(SIE5RTTensorPortDescriptor *)self getStrides]+ 8 * v3 - 16) & 0x3F) == 0;
+  getRank = [(SIE5RTTensorPortDescriptor *)self getRank];
+  return (*([(SIE5RTTensorPortDescriptor *)self getStrides]+ 8 * getRank - 16) & 0x3F) == 0;
 }
 
 - (e5rt_tensor_desc)createPackedFP32TensorDescriptor

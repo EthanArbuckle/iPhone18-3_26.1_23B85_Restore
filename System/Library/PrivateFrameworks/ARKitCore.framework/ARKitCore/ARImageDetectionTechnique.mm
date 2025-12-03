@@ -1,29 +1,29 @@
 @interface ARImageDetectionTechnique
-+ (BOOL)_redetectionRequiredForContext:(id)a3;
-- (ARImageDetectionTechnique)initWithReferenceImages:(id)a3 maximumNumberOfTrackedImages:(int64_t)a4;
-- (ARImageDetectionTechnique)initWithReferenceImages:(id)a3 maximumNumberOfTrackedImages:(int64_t)a4 continuousDetection:(BOOL)a5 processingQueue:(id)a6;
++ (BOOL)_redetectionRequiredForContext:(id)context;
+- (ARImageDetectionTechnique)initWithReferenceImages:(id)images maximumNumberOfTrackedImages:(int64_t)trackedImages;
+- (ARImageDetectionTechnique)initWithReferenceImages:(id)images maximumNumberOfTrackedImages:(int64_t)trackedImages continuousDetection:(BOOL)detection processingQueue:(id)queue;
 - (BOOL)finishedLoadingImages;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (double)requiredTimeInterval;
 - (id).cxx_construct;
 - (id)_addReferenceImagesAppleCV3D;
-- (id)_trackImagesWithImageData:(id)a3 timeBudget:(double)a4;
-- (id)predictAtTimeStamp:(double)a3 timeBudget:(double)a4 predictedWorldTrackingPose:(id)a5;
-- (id)processData:(id)a3;
-- (id)processResultData:(id)a3 timestamp:(double)a4 context:(id)a5;
-- (void)_enqueueImageForTrackingNonBlocking:(id)a3;
-- (void)_enqueueImageForTrackingSynced:(id)a3;
+- (id)_trackImagesWithImageData:(id)data timeBudget:(double)budget;
+- (id)predictAtTimeStamp:(double)stamp timeBudget:(double)budget predictedWorldTrackingPose:(id)pose;
+- (id)processData:(id)data;
+- (id)processResultData:(id)data timestamp:(double)timestamp context:(id)context;
+- (void)_enqueueImageForTrackingNonBlocking:(id)blocking;
+- (void)_enqueueImageForTrackingSynced:(id)synced;
 - (void)_loadReferenceImages;
 - (void)_loadReferenceImagesInBackground;
-- (void)prepare:(BOOL)a3;
-- (void)setPowerUsage:(unint64_t)a3;
+- (void)prepare:(BOOL)prepare;
+- (void)setPowerUsage:(unint64_t)usage;
 @end
 
 @implementation ARImageDetectionTechnique
 
-- (ARImageDetectionTechnique)initWithReferenceImages:(id)a3 maximumNumberOfTrackedImages:(int64_t)a4
+- (ARImageDetectionTechnique)initWithReferenceImages:(id)images maximumNumberOfTrackedImages:(int64_t)trackedImages
 {
-  v6 = a3;
+  imagesCopy = images;
   if ([ARKitUserDefaults BOOLForKey:@"com.apple.arkit.imageDetection.fixedPriorityProcessingQueue"])
   {
     v7 = ARCreateFixedPriorityDispatchQueueWithQOS("com.apple.arkit.technique.imageDetection");
@@ -51,23 +51,23 @@ LABEL_6:
     }
   }
 
-  v11 = [(ARImageDetectionTechnique *)self initWithReferenceImages:v6 maximumNumberOfTrackedImages:a4 processingQueue:v7];
+  v11 = [(ARImageDetectionTechnique *)self initWithReferenceImages:imagesCopy maximumNumberOfTrackedImages:trackedImages processingQueue:v7];
   return v11;
 }
 
-- (ARImageDetectionTechnique)initWithReferenceImages:(id)a3 maximumNumberOfTrackedImages:(int64_t)a4 continuousDetection:(BOOL)a5 processingQueue:(id)a6
+- (ARImageDetectionTechnique)initWithReferenceImages:(id)images maximumNumberOfTrackedImages:(int64_t)trackedImages continuousDetection:(BOOL)detection processingQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a6;
+  imagesCopy = images;
+  queueCopy = queue;
   v23.receiver = self;
   v23.super_class = ARImageDetectionTechnique;
   v12 = [(ARImageBasedTechnique *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    v12->_maximumNumberOfTrackedImages = a4;
-    v12->_continuousDetection = a5;
-    v14 = [v10 copy];
+    v12->_maximumNumberOfTrackedImages = trackedImages;
+    v12->_continuousDetection = detection;
+    v14 = [imagesCopy copy];
     referenceImages = v13->_referenceImages;
     v13->_referenceImages = v14;
 
@@ -86,8 +86,8 @@ LABEL_6:
 
     v13->_finishedLoadingImages = 0;
     v13->_needsWorldTrackingPoseData = 1;
-    objc_storeStrong(&v13->_processDataQueue, a6);
-    v13->_tracking = a4 > 0;
+    objc_storeStrong(&v13->_processDataQueue, queue);
+    v13->_tracking = trackedImages > 0;
     std::allocate_shared[abi:ne200100]<arkit::KeyMapBuffer<void const*,std::vector<unsigned char>>,std::allocator<arkit::KeyMapBuffer<void const*,std::vector<unsigned char>>>,int,0>();
   }
 
@@ -96,9 +96,9 @@ LABEL_6:
 
 - (double)requiredTimeInterval
 {
-  v2 = [(ARImageDetectionTechnique *)self syncWithProcessedImage];
+  syncWithProcessedImage = [(ARImageDetectionTechnique *)self syncWithProcessedImage];
   result = 0.016;
-  if (!v2)
+  if (!syncWithProcessedImage)
   {
     return 0.0;
   }
@@ -114,16 +114,16 @@ LABEL_6:
   return finishedLoadingImages;
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8.receiver = self;
     v8.super_class = ARImageDetectionTechnique;
-    v5 = [(ARImageBasedTechnique *)&v8 processData:v4];
-    v6 = v4;
+    v5 = [(ARImageBasedTechnique *)&v8 processData:dataCopy];
+    v6 = dataCopy;
     if ([(ARImageDetectionTechnique *)self finishedLoadingImages])
     {
       if ([(ARImageDetectionTechnique *)self syncWithProcessedImage])
@@ -149,18 +149,18 @@ LABEL_6:
     }
   }
 
-  return v4;
+  return dataCopy;
 }
 
-- (id)processResultData:(id)a3 timestamp:(double)a4 context:(id)a5
+- (id)processResultData:(id)data timestamp:(double)timestamp context:(id)context
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v28 = a5;
+  dataCopy = data;
+  contextCopy = context;
   if (self->_needsWorldTrackingPoseData)
   {
-    v31 = v7;
-    v8 = [v7 indexOfObjectPassingTest:&__block_literal_global_7];
+    v31 = dataCopy;
+    v8 = [dataCopy indexOfObjectPassingTest:&__block_literal_global_7];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = 0;
@@ -168,16 +168,16 @@ LABEL_6:
 
     else
     {
-      v9 = [v7 objectAtIndexedSubscript:v8];
+      v9 = [dataCopy objectAtIndexedSubscript:v8];
     }
 
     [(ARImageDetectionTechnique *)self setCurrentWorldTrackingPose:v9, v9];
     if (v9)
     {
-      v10 = [v27 worldTrackingState];
-      v11 = [v10 vioTrackingState];
+      worldTrackingState = [v27 worldTrackingState];
+      vioTrackingState = [worldTrackingState vioTrackingState];
 
-      if (!v11)
+      if (!vioTrackingState)
       {
         [v27 cameraTransform];
         *__p = v12;
@@ -187,8 +187,8 @@ LABEL_6:
         v16 = [MEMORY[0x1E695DEF0] dataWithBytes:__p length:64];
         v17 = v16;
         arkit::wrapRawData([v16 bytes], objc_msgSend(v16, "length"), buf);
-        v18 = [v28 imageData];
-        ARImageContextFromImageData(v18);
+        imageData = [contextCopy imageData];
+        ARImageContextFromImageData(imageData);
         v20 = v19;
 
         v34 = v20;
@@ -209,8 +209,8 @@ LABEL_6:
           v23 = v32;
           memset(v33, 0, sizeof(v33));
           v29 = v23;
-          v24 = [v23 detectedImages];
-          if ([v24 countByEnumeratingWithState:v33 objects:v39 count:16])
+          detectedImages = [v23 detectedImages];
+          if ([detectedImages countByEnumeratingWithState:v33 objects:v39 count:16])
           {
             v25 = **(&v33[0] + 1);
             __p[0] = 0;
@@ -223,10 +223,10 @@ LABEL_6:
       }
     }
 
-    v7 = v31;
+    dataCopy = v31;
   }
 
-  return v7;
+  return dataCopy;
 }
 
 uint64_t __65__ARImageDetectionTechnique_processResultData_timestamp_context___block_invoke(uint64_t a1, void *a2)
@@ -238,17 +238,17 @@ uint64_t __65__ARImageDetectionTechnique_processResultData_timestamp_context___b
   return isKindOfClass & 1;
 }
 
-+ (BOOL)_redetectionRequiredForContext:(id)a3
++ (BOOL)_redetectionRequiredForContext:(id)context
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 resultDataOfClass:objc_opt_class()];
-  v6 = [v5 firstObject];
+  contextCopy = context;
+  v5 = [contextCopy resultDataOfClass:objc_opt_class()];
+  firstObject = [v5 firstObject];
 
-  v7 = [v6 worldTrackingState];
-  v8 = [v7 poseGraphUpdated];
+  worldTrackingState = [firstObject worldTrackingState];
+  poseGraphUpdated = [worldTrackingState poseGraphUpdated];
 
-  if (v8)
+  if (poseGraphUpdated)
   {
     v9 = _ARLogGeneral();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -258,17 +258,17 @@ uint64_t __65__ARImageDetectionTechnique_processResultData_timestamp_context___b
       v22 = 138543618;
       v23 = v11;
       v24 = 2048;
-      v25 = a1;
+      selfCopy3 = self;
       _os_log_impl(&dword_1C241C000, v9, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Redetection of image anchors is required. Reason: pose-graph update.", &v22, 0x16u);
     }
   }
 
   else
   {
-    v12 = [v6 worldTrackingState];
-    v13 = [v12 majorRelocalization];
+    worldTrackingState2 = [firstObject worldTrackingState];
+    majorRelocalization = [worldTrackingState2 majorRelocalization];
 
-    if (v13)
+    if (majorRelocalization)
     {
       v9 = _ARLogGeneral();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -278,17 +278,17 @@ uint64_t __65__ARImageDetectionTechnique_processResultData_timestamp_context___b
         v22 = 138543618;
         v23 = v15;
         v24 = 2048;
-        v25 = a1;
+        selfCopy3 = self;
         _os_log_impl(&dword_1C241C000, v9, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Redetection of image anchors is required. Reason: Relocalization.", &v22, 0x16u);
       }
     }
 
     else
     {
-      v16 = [v6 worldTrackingState];
-      v17 = [v16 vioTrackingState];
+      worldTrackingState3 = [firstObject worldTrackingState];
+      vioTrackingState = [worldTrackingState3 vioTrackingState];
 
-      if (!v17)
+      if (!vioTrackingState)
       {
         v20 = 0;
         goto LABEL_11;
@@ -302,7 +302,7 @@ uint64_t __65__ARImageDetectionTechnique_processResultData_timestamp_context___b
         v22 = 138543618;
         v23 = v19;
         v24 = 2048;
-        v25 = a1;
+        selfCopy3 = self;
         _os_log_impl(&dword_1C241C000, v9, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Redetection of image anchors is required. Reason: VIO Tracking state changed.", &v22, 0x16u);
       }
     }
@@ -322,30 +322,30 @@ LABEL_11:
   kdebug_trace();
   [(NSArray *)self->_referenceImages count];
   kdebug_trace();
-  v3 = [(ARImageDetectionTechnique *)self _addReferenceImagesAppleCV3D];
+  _addReferenceImagesAppleCV3D = [(ARImageDetectionTechnique *)self _addReferenceImagesAppleCV3D];
   [(NSArray *)self->_referenceImages count];
-  [v3 code];
+  [_addReferenceImagesAppleCV3D code];
   kdebug_trace();
-  if (v3)
+  if (_addReferenceImagesAppleCV3D)
   {
     [(NSArray *)self->_referenceImages count];
-    [v3 code];
+    [_addReferenceImagesAppleCV3D code];
     kdebug_trace();
-    v4 = [(ARTechnique *)self delegate];
-    [v4 technique:self didFailWithError:v3];
+    delegate = [(ARTechnique *)self delegate];
+    [delegate technique:self didFailWithError:_addReferenceImagesAppleCV3D];
   }
 
   else
   {
-    v5 = [(ARImageDetectionTechnique *)self odtTHandleManger];
-    v6 = [v5 waitForAllObjectsAddToFinish];
+    odtTHandleManger = [(ARImageDetectionTechnique *)self odtTHandleManger];
+    waitForAllObjectsAddToFinish = [odtTHandleManger waitForAllObjectsAddToFinish];
 
-    if (v6)
+    if (waitForAllObjectsAddToFinish)
     {
       v7 = MEMORY[0x1E696AEC0];
       v8 = ARKitCoreBundle();
       v9 = [v8 localizedStringForKey:@"Reference images could not be loaded due to an unknown error: %d" value:&stru_1F4208A80 table:@"Localizable"];
-      v10 = [v7 stringWithFormat:v9, v6];
+      v10 = [v7 stringWithFormat:v9, waitForAllObjectsAddToFinish];
 
       v15[0] = *MEMORY[0x1E696A598];
       v11 = +[ARODTHandleManager suggestionInternalError];
@@ -355,8 +355,8 @@ LABEL_11:
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
 
       v13 = ARErrorWithCodeAndUserInfo(151, v12);
-      v14 = [(ARTechnique *)self delegate];
-      [v14 technique:self didFailWithError:v13];
+      delegate2 = [(ARTechnique *)self delegate];
+      [delegate2 technique:self didFailWithError:v13];
     }
 
     [(NSArray *)self->_referenceImages count];
@@ -369,9 +369,9 @@ LABEL_11:
 
 - (void)_loadReferenceImages
 {
-  v3 = [(ARImageDetectionTechnique *)self referenceImageMap];
+  referenceImageMap = [(ARImageDetectionTechnique *)self referenceImageMap];
 
-  if (!v3)
+  if (!referenceImageMap)
   {
     v4 = self->_loadingSemaphore;
     if (!dispatch_semaphore_wait(v4, 0))
@@ -396,22 +396,22 @@ void __49__ARImageDetectionTechnique__loadReferenceImages__block_invoke(uint64_t
   [WeakRetained _loadReferenceImagesInBackground];
 }
 
-- (void)prepare:(BOOL)a3
+- (void)prepare:(BOOL)prepare
 {
-  v3 = a3;
+  prepareCopy = prepare;
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [(ARImageDetectionTechnique *)self odtTHandleManger];
+  odtTHandleManger = [(ARImageDetectionTechnique *)self odtTHandleManger];
 
-  if (!v5)
+  if (!odtTHandleManger)
   {
-    self->_deterministicMode = v3;
-    v6 = [[ARODTHandleManager alloc] initWithMaximumNumberOfTrackedImages:self->_maximumNumberOfTrackedImages continuousDetection:self->_continuousDetection deterministicMode:v3];
+    self->_deterministicMode = prepareCopy;
+    v6 = [[ARODTHandleManager alloc] initWithMaximumNumberOfTrackedImages:self->_maximumNumberOfTrackedImages continuousDetection:self->_continuousDetection deterministicMode:prepareCopy];
     odtTHandleManger = self->_odtTHandleManger;
     self->_odtTHandleManger = v6;
 
-    v8 = [(ARImageDetectionTechnique *)self odtTHandleManger];
+    odtTHandleManger2 = [(ARImageDetectionTechnique *)self odtTHandleManger];
 
-    if (!v8)
+    if (!odtTHandleManger2)
     {
       if (ARShouldUseLogTypeError(void)::onceToken != -1)
       {
@@ -430,7 +430,7 @@ void __49__ARImageDetectionTechnique__loadReferenceImages__block_invoke(uint64_t
           v16 = 138543618;
           v17 = v13;
           v18 = 2048;
-          v19 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_1C241C000, v11, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Could not create AppleCV3D handle for image detection.", &v16, 0x16u);
         }
       }
@@ -442,7 +442,7 @@ void __49__ARImageDetectionTechnique__loadReferenceImages__block_invoke(uint64_t
         v16 = 138543618;
         v17 = v15;
         v18 = 2048;
-        v19 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1C241C000, v11, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Could not create AppleCV3D handle for image detection.", &v16, 0x16u);
       }
     }
@@ -484,8 +484,8 @@ void __49__ARImageDetectionTechnique__loadReferenceImages__block_invoke(uint64_t
         }
 
         v10 = *(*(&v18 + 1) + 8 * v7);
-        v11 = [(ARImageDetectionTechnique *)self odtTHandleManger];
-        v12 = [v11 addReferenceImage:v10 tracking:1 pObjectID:&v22];
+        odtTHandleManger = [(ARImageDetectionTechnique *)self odtTHandleManger];
+        v12 = [odtTHandleManger addReferenceImage:v10 tracking:1 pObjectID:&v22];
 
         v16 = v8;
         v17 = v9;
@@ -512,10 +512,10 @@ void __49__ARImageDetectionTechnique__loadReferenceImages__block_invoke(uint64_t
   return v13;
 }
 
-- (void)_enqueueImageForTrackingSynced:(id)a3
+- (void)_enqueueImageForTrackingSynced:(id)synced
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF00] date];
+  syncedCopy = synced;
+  date = [MEMORY[0x1E695DF00] date];
   objc_initWeak(&location, self);
   processDataQueue = self->_processDataQueue;
   v9[0] = MEMORY[0x1E69E9820];
@@ -523,10 +523,10 @@ void __49__ARImageDetectionTechnique__loadReferenceImages__block_invoke(uint64_t
   v9[2] = __60__ARImageDetectionTechnique__enqueueImageForTrackingSynced___block_invoke;
   v9[3] = &unk_1E817C350;
   objc_copyWeak(&v12, &location);
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = date;
+  v11 = syncedCopy;
+  v7 = syncedCopy;
+  v8 = date;
   dispatch_async(processDataQueue, v9);
 
   objc_destroyWeak(&v12);
@@ -569,10 +569,10 @@ void __60__ARImageDetectionTechnique__enqueueImageForTrackingSynced___block_invo
   }
 }
 
-- (void)_enqueueImageForTrackingNonBlocking:(id)a3
+- (void)_enqueueImageForTrackingNonBlocking:(id)blocking
 {
-  v4 = a3;
-  [v4 timestamp];
+  blockingCopy = blocking;
+  [blockingCopy timestamp];
   [(ARImageBasedTechnique *)self pushResultData:MEMORY[0x1E695E0F0] forTimestamp:?];
   v5 = self->_detectionSemaphore;
   if (!dispatch_semaphore_wait(v5, 0))
@@ -585,7 +585,7 @@ void __60__ARImageDetectionTechnique__enqueueImageForTrackingSynced___block_invo
     v7[3] = &unk_1E817C350;
     objc_copyWeak(&v10, &location);
     v8 = v5;
-    v9 = v4;
+    v9 = blockingCopy;
     dispatch_async(processDataQueue, v7);
 
     objc_destroyWeak(&v10);
@@ -624,16 +624,16 @@ void __65__ARImageDetectionTechnique__enqueueImageForTrackingNonBlocking___block
   }
 }
 
-- (id)_trackImagesWithImageData:(id)a3 timeBudget:(double)a4
+- (id)_trackImagesWithImageData:(id)data timeBudget:(double)budget
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v46 = v6;
-  if (v6)
+  dataCopy = data;
+  v46 = dataCopy;
+  if (dataCopy)
   {
-    [v6 timestamp];
-    v7 = [(ARImageDetectionTechnique *)self odtTHandleManger];
-    [v7 maximumNumberOfTrackedImages];
+    [dataCopy timestamp];
+    odtTHandleManger = [(ARImageDetectionTechnique *)self odtTHandleManger];
+    [odtTHandleManger maximumNumberOfTrackedImages];
     kdebug_trace();
 
     v8 = _ARLogTechnique();
@@ -641,17 +641,17 @@ void __65__ARImageDetectionTechnique__enqueueImageForTrackingNonBlocking___block
     {
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
-      v11 = [(ARImageDetectionTechnique *)self enableAutomaticImageScaleEstimation];
+      enableAutomaticImageScaleEstimation = [(ARImageDetectionTechnique *)self enableAutomaticImageScaleEstimation];
       v12 = @"OFF";
       *buf = 138543874;
       v50 = v10;
-      if (v11)
+      if (enableAutomaticImageScaleEstimation)
       {
         v12 = @"ON";
       }
 
       v51 = 2048;
-      v52 = self;
+      selfCopy4 = self;
       v53 = 2112;
       v54 = v12;
       _os_log_impl(&dword_1C241C000, v8, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Attempting to track planar object. Automatic scale estimation = %@", buf, 0x20u);
@@ -659,20 +659,20 @@ void __65__ARImageDetectionTechnique__enqueueImageForTrackingNonBlocking___block
 
     if ([(ARImageDetectionTechnique *)self enableAutomaticImageScaleEstimation])
     {
-      v13 = [(ARImageDetectionTechnique *)self odtTHandleManger];
-      v14 = [(ARImageDetectionTechnique *)self currentWorldTrackingPose];
+      odtTHandleManger2 = [(ARImageDetectionTechnique *)self odtTHandleManger];
+      currentWorldTrackingPose = [(ARImageDetectionTechnique *)self currentWorldTrackingPose];
       ARImageContextFromImageData(v46);
       v48 = 0;
-      v16 = [v13 trackPlanarObjectAndEstimateScaleForImageData:v46 worldTrackingPose:v14 imageContext:v15 timeBudget:&v48 pResultArray:a4];
+      v16 = [odtTHandleManger2 trackPlanarObjectAndEstimateScaleForImageData:v46 worldTrackingPose:currentWorldTrackingPose imageContext:v15 timeBudget:&v48 pResultArray:budget];
       v17 = v48;
     }
 
     else
     {
-      v13 = [(ARImageDetectionTechnique *)self odtTHandleManger];
+      odtTHandleManger2 = [(ARImageDetectionTechnique *)self odtTHandleManger];
       ARImageContextFromImageData(v46);
       v47 = 0;
-      v16 = [v13 trackPlanarObjectForImageData:v46 imageContext:v19 timeBudget:&v47 pResultArray:a4];
+      v16 = [odtTHandleManger2 trackPlanarObjectForImageData:v46 imageContext:v19 timeBudget:&v47 pResultArray:budget];
       v17 = v47;
     }
 
@@ -695,7 +695,7 @@ void __65__ARImageDetectionTechnique__enqueueImageForTrackingNonBlocking___block
           *buf = 138543874;
           v50 = v24;
           v51 = 2048;
-          v52 = self;
+          selfCopy4 = self;
           v53 = 1024;
           LODWORD(v54) = v16;
           _os_log_impl(&dword_1C241C000, v22, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Tracking failed with error %d.", buf, 0x1Cu);
@@ -709,7 +709,7 @@ void __65__ARImageDetectionTechnique__enqueueImageForTrackingNonBlocking___block
         *buf = 138543874;
         v50 = v26;
         v51 = 2048;
-        v52 = self;
+        selfCopy4 = self;
         v53 = 1024;
         LODWORD(v54) = v16;
         _os_log_impl(&dword_1C241C000, v22, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Tracking failed with error %d.", buf, 0x1Cu);
@@ -728,7 +728,7 @@ void __65__ARImageDetectionTechnique__enqueueImageForTrackingNonBlocking___block
       *buf = 138543874;
       v50 = v29;
       v51 = 2048;
-      v52 = self;
+      selfCopy4 = self;
       v53 = 1024;
       LODWORD(v54) = v30;
       _os_log_impl(&dword_1C241C000, v27, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Tracking %d images", buf, 0x1Cu);
@@ -737,11 +737,11 @@ void __65__ARImageDetectionTechnique__enqueueImageForTrackingNonBlocking___block
     v31 = objc_opt_new();
     for (i = 0; [v17 count] > i; ++i)
     {
-      v33 = [(ARImageDetectionTechnique *)self referenceImageMap];
+      referenceImageMap = [(ARImageDetectionTechnique *)self referenceImageMap];
       v34 = MEMORY[0x1E696AD98];
       v35 = [v17 objectAtIndexedSubscript:i];
       v36 = [v34 numberWithInteger:{objc_msgSend(v35, "detectedObjectID")}];
-      v37 = [v33 objectForKeyedSubscript:v36];
+      v37 = [referenceImageMap objectForKeyedSubscript:v36];
 
       v38 = objc_opt_new();
       v39 = [v17 objectAtIndexedSubscript:i];
@@ -765,8 +765,8 @@ void __65__ARImageDetectionTechnique__enqueueImageForTrackingNonBlocking___block
     v18 = objc_opt_new();
     [v18 setDetectedImages:v31];
     [v18 setProvidesWorldTrackingCameraPose:self->_needsWorldTrackingPoseData];
-    v43 = [(ARImageDetectionTechnique *)self odtTHandleManger];
-    if ([v43 maximumNumberOfTrackedImages])
+    odtTHandleManger3 = [(ARImageDetectionTechnique *)self odtTHandleManger];
+    if ([odtTHandleManger3 maximumNumberOfTrackedImages])
     {
       needsWorldTrackingPoseData = 0;
     }
@@ -787,21 +787,21 @@ void __65__ARImageDetectionTechnique__enqueueImageForTrackingNonBlocking___block
   return v18;
 }
 
-- (void)setPowerUsage:(unint64_t)a3
+- (void)setPowerUsage:(unint64_t)usage
 {
   v6.receiver = self;
   v6.super_class = ARImageDetectionTechnique;
   [(ARTechnique *)&v6 setPowerUsage:?];
-  v5 = [(ARImageDetectionTechnique *)self odtTHandleManger];
-  [v5 updatePowerUsage:a3];
+  odtTHandleManger = [(ARImageDetectionTechnique *)self odtTHandleManger];
+  [odtTHandleManger updatePowerUsage:usage];
 }
 
-- (id)predictAtTimeStamp:(double)a3 timeBudget:(double)a4 predictedWorldTrackingPose:(id)a5
+- (id)predictAtTimeStamp:(double)stamp timeBudget:(double)budget predictedWorldTrackingPose:(id)pose
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [(ARImageDetectionTechnique *)self odtTHandleManger];
-  if ([v9 maximumNumberOfTrackedImages])
+  poseCopy = pose;
+  odtTHandleManger = [(ARImageDetectionTechnique *)self odtTHandleManger];
+  if ([odtTHandleManger maximumNumberOfTrackedImages])
   {
   }
 
@@ -824,13 +824,13 @@ void __65__ARImageDetectionTechnique__enqueueImageForTrackingNonBlocking___block
     *buf = 138543618;
     v49 = v14;
     v50 = 2048;
-    v51 = self;
+    selfCopy5 = self;
     _os_log_impl(&dword_1C241C000, v12, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Attempting to predict planar object", buf, 0x16u);
   }
 
-  v15 = [(ARImageDetectionTechnique *)self odtTHandleManger];
+  odtTHandleManger2 = [(ARImageDetectionTechnique *)self odtTHandleManger];
   v47 = 0;
-  v16 = [v15 predictPlanarObjectsAtTimestamp:0 worldTrackingPose:&v47 timeBudget:a3 pResultArray:a4];
+  v16 = [odtTHandleManger2 predictPlanarObjectsAtTimestamp:0 worldTrackingPose:&v47 timeBudget:stamp pResultArray:budget];
   v17 = v47;
 
   if (v16)
@@ -852,7 +852,7 @@ void __65__ARImageDetectionTechnique__enqueueImageForTrackingNonBlocking___block
         *buf = 138543874;
         v49 = v21;
         v50 = 2048;
-        v51 = self;
+        selfCopy5 = self;
         v52 = 1024;
         v53 = v16;
         _os_log_impl(&dword_1C241C000, log, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Prediction failed with error %d.", buf, 0x1Cu);
@@ -866,7 +866,7 @@ void __65__ARImageDetectionTechnique__enqueueImageForTrackingNonBlocking___block
       *buf = 138543874;
       v49 = v43;
       v50 = 2048;
-      v51 = self;
+      selfCopy5 = self;
       v52 = 1024;
       v53 = v16;
       _os_log_impl(&dword_1C241C000, log, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Prediction failed with error %d.", buf, 0x1Cu);
@@ -886,7 +886,7 @@ void __65__ARImageDetectionTechnique__enqueueImageForTrackingNonBlocking___block
       *buf = 138543874;
       v49 = v24;
       v50 = 2048;
-      v51 = self;
+      selfCopy5 = self;
       v52 = 1024;
       v53 = v25;
       _os_log_impl(&dword_1C241C000, v22, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Prediction %d images", buf, 0x1Cu);
@@ -898,11 +898,11 @@ void __65__ARImageDetectionTechnique__enqueueImageForTrackingNonBlocking___block
     v45 = v27;
     while ([v17 count] > v26)
     {
-      v28 = [(ARImageDetectionTechnique *)self referenceImageMap];
+      referenceImageMap = [(ARImageDetectionTechnique *)self referenceImageMap];
       v29 = MEMORY[0x1E696AD98];
       v30 = [v17 objectAtIndexedSubscript:v26];
       v31 = [v29 numberWithInteger:{objc_msgSend(v30, "detectedObjectID")}];
-      v32 = [v28 objectForKeyedSubscript:v31];
+      v32 = [referenceImageMap objectForKeyedSubscript:v31];
 
       if (v32)
       {
@@ -922,9 +922,9 @@ void __65__ARImageDetectionTechnique__enqueueImageForTrackingNonBlocking___block
         v37 = [v17 objectAtIndexedSubscript:v26];
         -[NSObject setOdtObjectIdentifer:](v33, "setOdtObjectIdentifer:", [v37 detectedObjectID]);
 
-        if (v8)
+        if (poseCopy)
         {
-          [v8 cameraTransform];
+          [poseCopy cameraTransform];
           [v33 setWorldTrackingCameraTransformAtDetection:?];
           [log addObject:v33];
         }
@@ -940,7 +940,7 @@ void __65__ARImageDetectionTechnique__enqueueImageForTrackingNonBlocking___block
           *buf = v45;
           v49 = v39;
           v50 = 2048;
-          v51 = self;
+          selfCopy5 = self;
           _os_log_impl(&dword_1C241C000, v33, OS_LOG_TYPE_INFO, "%{public}@ <%p>: No matching reference image found, throwing away prediction.", buf, 0x16u);
         }
       }
@@ -951,8 +951,8 @@ void __65__ARImageDetectionTechnique__enqueueImageForTrackingNonBlocking___block
     v11 = objc_opt_new();
     [v11 setDetectedImages:log];
     [v11 setProvidesWorldTrackingCameraPose:self->_needsWorldTrackingPoseData];
-    v40 = [(ARImageDetectionTechnique *)self odtTHandleManger];
-    if ([v40 maximumNumberOfTrackedImages])
+    odtTHandleManger3 = [(ARImageDetectionTechnique *)self odtTHandleManger];
+    if ([odtTHandleManger3 maximumNumberOfTrackedImages])
     {
       v41 = 0;
     }
@@ -972,14 +972,14 @@ LABEL_31:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = ARImageDetectionTechnique;
-  if ([(ARTechnique *)&v8 isEqual:v4])
+  if ([(ARTechnique *)&v8 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(NSArray *)self->_referenceImages isEqual:v5[11]]&& self->_needsWorldTrackingPoseData == *(v5 + 176) && self->_enableAutomaticImageScaleEstimation == *(v5 + 177) && self->_maximumNumberOfTrackedImages == v5[18] && self->_continuousDetection == *(v5 + 152);
   }
 

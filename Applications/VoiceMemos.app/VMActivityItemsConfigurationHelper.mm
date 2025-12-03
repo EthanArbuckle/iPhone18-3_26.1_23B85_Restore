@@ -1,19 +1,19 @@
 @interface VMActivityItemsConfigurationHelper
-+ (id)activityItemsConfigurationForCompositions:(id)a3;
++ (id)activityItemsConfigurationForCompositions:(id)compositions;
 @end
 
 @implementation VMActivityItemsConfigurationHelper
 
-+ (id)activityItemsConfigurationForCompositions:(id)a3
++ (id)activityItemsConfigurationForCompositions:(id)compositions
 {
-  v3 = a3;
+  compositionsCopy = compositions;
   v4 = +[NSMutableArray array];
   v5 = +[NSMutableDictionary dictionary];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v3;
+  obj = compositionsCopy;
   v6 = [obj countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v6)
   {
@@ -33,13 +33,13 @@
 
         v11 = [[RCShareableComposition alloc] initWithComposition:*(*(&v29 + 1) + 8 * v10)];
         v12 = objc_opt_new();
-        v13 = [(RCShareableComposition *)v11 title];
-        [v12 setSuggestedName:v13];
+        title = [(RCShareableComposition *)v11 title];
+        [v12 setSuggestedName:title];
 
         v28 = 0;
-        LOBYTE(v13) = [(RCShareableComposition *)v11 registerAudioFileRepresentationWithItemProvider:v12 error:&v28];
+        LOBYTE(title) = [(RCShareableComposition *)v11 registerAudioFileRepresentationWithItemProvider:v12 error:&v28];
         v14 = v28;
-        if ((v13 & 1) == 0)
+        if ((title & 1) == 0)
         {
           v15 = OSLogForCategory();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -52,16 +52,16 @@
           }
         }
 
-        v16 = [(RCShareableComposition *)v11 title];
-        [v12 registerObject:v16 visibility:0];
+        title2 = [(RCShareableComposition *)v11 title];
+        [v12 registerObject:title2 visibility:0];
 
         [v4 addObject:v12];
-        v17 = [v4 lastObject];
-        v18 = [v4 indexOfObject:v17];
+        lastObject = [v4 lastObject];
+        v18 = [v4 indexOfObject:lastObject];
 
-        v19 = [(RCShareableComposition *)v11 title];
+        title3 = [(RCShareableComposition *)v11 title];
         v20 = [NSNumber numberWithUnsignedInteger:v18];
-        [v5 setObject:v19 forKeyedSubscript:v20];
+        [v5 setObject:title3 forKeyedSubscript:v20];
 
         v10 = v10 + 1;
       }

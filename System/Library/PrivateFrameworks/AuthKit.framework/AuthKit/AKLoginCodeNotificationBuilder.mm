@@ -1,22 +1,22 @@
 @interface AKLoginCodeNotificationBuilder
-+ (__CFUserNotification)buildLoginCodeNotificationWithTitle:(id)a3 body:(id)a4 footer:(id)a5 loginCode:(id)a6;
-+ (id)buildLoginCodeNotificationOptionsWithTitle:(id)a3 body:(id)a4 footer:(id)a5 loginCode:(id)a6;
++ (__CFUserNotification)buildLoginCodeNotificationWithTitle:(id)title body:(id)body footer:(id)footer loginCode:(id)code;
++ (id)buildLoginCodeNotificationOptionsWithTitle:(id)title body:(id)body footer:(id)footer loginCode:(id)code;
 @end
 
 @implementation AKLoginCodeNotificationBuilder
 
-+ (__CFUserNotification)buildLoginCodeNotificationWithTitle:(id)a3 body:(id)a4 footer:(id)a5 loginCode:(id)a6
++ (__CFUserNotification)buildLoginCodeNotificationWithTitle:(id)title body:(id)body footer:(id)footer loginCode:(id)code
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, body);
   v18 = 0;
-  objc_storeStrong(&v18, a5);
+  objc_storeStrong(&v18, footer);
   v17 = 0;
-  objc_storeStrong(&v17, a6);
+  objc_storeStrong(&v17, code);
   if ([MEMORY[0x1E6985DD8] deviceIsAudioAccessory])
   {
     v16 = _AKLogSystem();
@@ -49,19 +49,19 @@
   return v21;
 }
 
-+ (id)buildLoginCodeNotificationOptionsWithTitle:(id)a3 body:(id)a4 footer:(id)a5 loginCode:(id)a6
++ (id)buildLoginCodeNotificationOptionsWithTitle:(id)title body:(id)body footer:(id)footer loginCode:(id)code
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, body);
   v32 = 0;
-  objc_storeStrong(&v32, a5);
+  objc_storeStrong(&v32, footer);
   v31 = 0;
-  objc_storeStrong(&v31, a6);
+  objc_storeStrong(&v31, code);
   v30 = objc_alloc_init(AKAppleIDAuthenticationContext);
   [(AKAppleIDAuthenticationContext *)v30 _setMessage:location[0]];
   [(AKAppleIDAuthenticationContext *)v30 setReason:v33];
@@ -76,22 +76,22 @@
   [v29 setObject:? forKeyedSubscript:?];
   MEMORY[0x1E69E5920](v16);
   MEMORY[0x1E69E5920](v17);
-  v18 = [(AKAppleIDAuthenticationContext *)v30 _message];
+  _message = [(AKAppleIDAuthenticationContext *)v30 _message];
   v7 = *MEMORY[0x1E69D4518];
   [v29 setObject:? forKeyedSubscript:?];
-  MEMORY[0x1E69E5920](v18);
-  v19 = [(AKAppleIDAuthenticationContext *)v30 _interpolatedReason];
+  MEMORY[0x1E69E5920](_message);
+  _interpolatedReason = [(AKAppleIDAuthenticationContext *)v30 _interpolatedReason];
   v8 = *MEMORY[0x1E69D4520];
   [v29 setObject:? forKeyedSubscript:?];
-  MEMORY[0x1E69E5920](v19);
+  MEMORY[0x1E69E5920](_interpolatedReason);
   v9 = *MEMORY[0x1E695EE68];
   v24 = MEMORY[0x1E695E118];
   [v29 setObject:? forKeyedSubscript:?];
   v21 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v20 = [v21 resourceURL];
+  resourceURL = [v21 resourceURL];
   v10 = *MEMORY[0x1E695EE90];
   [v29 setObject:? forKeyedSubscript:?];
-  MEMORY[0x1E69E5920](v20);
+  MEMORY[0x1E69E5920](resourceURL);
   MEMORY[0x1E69E5920](v21);
   v28 = [MEMORY[0x1E696ABE0] extensionItemWithAppleIDAuthenticationContext:v30];
   v22 = MEMORY[0x1E696ACC8];

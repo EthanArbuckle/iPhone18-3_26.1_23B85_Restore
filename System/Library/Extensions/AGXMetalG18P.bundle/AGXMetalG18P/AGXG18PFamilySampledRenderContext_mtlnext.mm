@@ -1,28 +1,28 @@
 @interface AGXG18PFamilySampledRenderContext_mtlnext
-- (AGXG18PFamilySampledRenderContext_mtlnext)initWithCommandBuffer:(id)a3 allocator:(id)a4 descriptor:(id)a5 options:(unint64_t)a6 programInfoBuffer:(id *)a7 capacity:(unint64_t)a8;
+- (AGXG18PFamilySampledRenderContext_mtlnext)initWithCommandBuffer:(id)buffer allocator:(id)allocator descriptor:(id)descriptor options:(unint64_t)options programInfoBuffer:(id *)infoBuffer capacity:(unint64_t)capacity;
 - (id)endEncodingAndRetrieveProgramAddressTable;
 - (void)dealloc;
 - (void)destroyImpl;
-- (void)dispatchThreadsPerTile:(id *)a3;
-- (void)dispatchThreadsPerTile:(id *)a3 inRegion:(id *)a4;
-- (void)dispatchThreadsPerTile:(id *)a3 inRegion:(id *)a4 withRenderTargetArrayIndex:(unsigned int)a5;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexType:(unint64_t)a4 indexBuffer:(unint64_t)a5 indexBufferLength:(unint64_t)a6 indirectBuffer:(unint64_t)a7;
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawMeshThreadgroupsWithIndirectBuffer:(unint64_t)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawPrimitives:(unint64_t)a3 indirectBuffer:(unint64_t)a4;
+- (void)dispatchThreadsPerTile:(id *)tile;
+- (void)dispatchThreadsPerTile:(id *)tile inRegion:(id *)region;
+- (void)dispatchThreadsPerTile:(id *)tile inRegion:(id *)region withRenderTargetArrayIndex:(unsigned int)index;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexType:(unint64_t)type indexBuffer:(unint64_t)buffer indexBufferLength:(unint64_t)length indirectBuffer:(unint64_t)indirectBuffer;
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawMeshThreadgroupsWithIndirectBuffer:(unint64_t)buffer threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawPrimitives:(unint64_t)primitives indirectBuffer:(unint64_t)buffer;
 - (void)endEncoding;
-- (void)filterCounterRangeWithFirstBatch:(unsigned int)a3 lastBatch:(unsigned int)a4 filterIndex:(unsigned int)a5;
-- (void)setRenderPipelineState:(id)a3;
+- (void)filterCounterRangeWithFirstBatch:(unsigned int)batch lastBatch:(unsigned int)lastBatch filterIndex:(unsigned int)index;
+- (void)setRenderPipelineState:(id)state;
 @end
 
 @implementation AGXG18PFamilySampledRenderContext_mtlnext
 
-- (void)filterCounterRangeWithFirstBatch:(unsigned int)a3 lastBatch:(unsigned int)a4 filterIndex:(unsigned int)a5
+- (void)filterCounterRangeWithFirstBatch:(unsigned int)batch lastBatch:(unsigned int)lastBatch filterIndex:(unsigned int)index
 {
   impl = self->super._impl;
-  impl[483] = a3;
-  impl[484] = a4;
+  impl[483] = batch;
+  impl[484] = lastBatch;
 }
 
 - (id)endEncodingAndRetrieveProgramAddressTable
@@ -66,9 +66,9 @@
           v4 = *(v3 + 6);
           if (*(v4 + 2120))
           {
-            v5 = self;
+            selfCopy = self;
             AGX::StateLoaderProgramsTracker<AGX::HAL300::Device>::appendProgramAddressTables(*(v4 + 2120), *v3, *(v3 + 2));
-            self = v5;
+            self = selfCopy;
             *(*(v4 + 2120) + 8) = 0;
           }
         }
@@ -81,15 +81,15 @@
   [(AGXG18PFamilyRenderContext_mtlnext *)&v6 destroyImpl];
 }
 
-- (void)drawMeshThreadgroupsWithIndirectBuffer:(unint64_t)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreadgroupsWithIndirectBuffer:(unint64_t)buffer threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   sampled_impl = self->_sampled_impl;
-  var0 = a4->var0;
-  var1 = a4->var1;
-  var2 = a4->var2;
-  v10 = a5->var0;
-  v11 = a5->var1;
-  v12 = a5->var2;
+  var0 = threadgroup->var0;
+  var1 = threadgroup->var1;
+  var2 = threadgroup->var2;
+  v10 = meshThreadgroup->var0;
+  v11 = meshThreadgroup->var1;
+  v12 = meshThreadgroup->var2;
   AGX::SampledRenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::duplicateShaderAddresses(sampled_impl);
   v13 = sampled_impl[6];
   v14 = *(v13 + 5296);
@@ -139,7 +139,7 @@ LABEL_11:
       {
         v21 = v14[131];
         *(v21 + 384) = 0;
-        *(v21 + 72) = a3;
+        *(v21 + 72) = buffer;
         v14[136] = 0;
         v28[0] = var0;
         v28[1] = var1;
@@ -147,7 +147,7 @@ LABEL_11:
         v27[0] = v10;
         v27[1] = v11;
         v27[2] = v12;
-        AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::drawMeshThreadgroupsWithIndirectBufferCommon(v14, a3, v28, v27);
+        AGX::HWGeometryPipelineContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::drawMeshThreadgroupsWithIndirectBufferCommon(v14, buffer, v28, v27);
       }
     }
   }
@@ -171,12 +171,12 @@ LABEL_11:
   }
 }
 
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   sampled_impl = self->_sampled_impl;
-  v18 = *a3;
-  v17 = *a4;
-  v16 = *a5;
+  v18 = *threads;
+  v17 = *threadgroup;
+  v16 = *meshThreadgroup;
   AGX::SampledRenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::duplicateShaderAddresses(sampled_impl);
   v6 = sampled_impl[6];
   v7 = *(v6 + 5296);
@@ -224,12 +224,12 @@ LABEL_11:
   }
 }
 
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   sampled_impl = self->_sampled_impl;
-  v18 = *a3;
-  v17 = *a4;
-  v16 = *a5;
+  v18 = *threadgroups;
+  v17 = *threadgroup;
+  v16 = *meshThreadgroup;
   AGX::SampledRenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::duplicateShaderAddresses(sampled_impl);
   v6 = sampled_impl[6];
   v7 = *(v6 + 5296);
@@ -277,9 +277,9 @@ LABEL_11:
   }
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexType:(unint64_t)a4 indexBuffer:(unint64_t)a5 indexBufferLength:(unint64_t)a6 indirectBuffer:(unint64_t)a7
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexType:(unint64_t)type indexBuffer:(unint64_t)buffer indexBufferLength:(unint64_t)length indirectBuffer:(unint64_t)indirectBuffer
 {
-  v8 = a6;
+  lengthCopy = length;
   sampled_impl = self->_sampled_impl;
   AGX::SampledRenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::duplicateShaderAddresses(sampled_impl);
   v13 = sampled_impl[6];
@@ -287,7 +287,7 @@ LABEL_11:
   {
     *(v13 + 10088) |= 0x700000000000uLL;
     *(v13 + 10472) |= 0x40uLL;
-    *(*(v13 + 8480) + 144) = vaddq_s64(vdupq_n_s64(a7), xmmword_29D2F2530);
+    *(*(v13 + 8480) + 144) = vaddq_s64(vdupq_n_s64(indirectBuffer), xmmword_29D2F2530);
     *(v13 + 8592) = 0u;
   }
 
@@ -297,12 +297,12 @@ LABEL_11:
     *(v13 + 10472) |= 1uLL;
   }
 
-  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeISPPrimitiveType(v13, a3);
+  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeISPPrimitiveType(v13, primitives);
   AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeAndEmitRenderState(v13, *(v13 + 7672), *(v13 + 7680), *(v13 + 8472), *(v13 + 9744), v13 + 10088, 0);
   if (*(*(v13 + 2392) + 4907) == 1)
   {
-    v14 = 0x114u >> a3;
-    if (a3 >= 9)
+    v14 = 0x114u >> primitives;
+    if (primitives >= 9)
     {
       LOBYTE(v14) = 0;
     }
@@ -324,7 +324,7 @@ LABEL_11:
     v16 = *(v13 + 7404);
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v15 = v15;
   }
@@ -337,7 +337,7 @@ LABEL_11:
   v17 = *(v13 + 72);
   *v17 = (v15 << 32) | 0x40000001;
   *(v13 + 11464) |= 0x80uLL;
-  v18 = (AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeIndexedDrawIndirect[a3] + (a4 << 17)) & 0xFFEEFF00;
+  v18 = (AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeIndexedDrawIndirect[primitives] + (type << 17)) & 0xFFEEFF00;
   if (v14)
   {
     v19 = 0x10000;
@@ -349,12 +349,12 @@ LABEL_11:
   }
 
   *(v13 + 72) = v17 + 32;
-  *(v17 + 8) = BYTE4(a5) | v18 | v19 | 0x100000;
-  *(v17 + 12) = a5;
-  *(v17 + 16) = WORD2(a7);
-  *(v17 + 20) = a7 & 0xFFFFFFFC;
-  *(v17 + 24) = v8 - 1;
-  *(v17 + 28) = BYTE5(a5);
+  *(v17 + 8) = BYTE4(buffer) | v18 | v19 | 0x100000;
+  *(v17 + 12) = buffer;
+  *(v17 + 16) = WORD2(indirectBuffer);
+  *(v17 + 20) = indirectBuffer & 0xFFFFFFFC;
+  *(v17 + 24) = lengthCopy - 1;
+  *(v17 + 28) = BYTE5(buffer);
   ++*(v13 + 1940);
   *(v13 + 1960) = 0;
   if (*(sampled_impl + 64) == 1)
@@ -376,7 +376,7 @@ LABEL_11:
   }
 }
 
-- (void)drawPrimitives:(unint64_t)a3 indirectBuffer:(unint64_t)a4
+- (void)drawPrimitives:(unint64_t)primitives indirectBuffer:(unint64_t)buffer
 {
   sampled_impl = self->_sampled_impl;
   AGX::SampledRenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::duplicateShaderAddresses(sampled_impl);
@@ -386,12 +386,12 @@ LABEL_11:
     *(v7 + 10088) |= 0x700000000000uLL;
     *(v7 + 10472) |= 0x40uLL;
     v8 = *(v7 + 8480);
-    *(v8 + 152) = a4 + 12;
+    *(v8 + 152) = buffer + 12;
     *(v7 + 8600) = 0;
     if (*(v7 + 7256) == 1)
     {
       v9 = 0;
-      *(v8 + 144) = a4 + 8;
+      *(v8 + 144) = buffer + 8;
 LABEL_7:
       *(v7 + 8592) = v9;
       goto LABEL_8;
@@ -432,14 +432,14 @@ LABEL_8:
     *(v7 + 10472) |= 1uLL;
   }
 
-  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeISPPrimitiveType(v7, a3);
+  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeISPPrimitiveType(v7, primitives);
   AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeAndEmitRenderState(v7, *(v7 + 7672), *(v7 + 7680), *(v7 + 8472), *(v7 + 9744), v7 + 10088, 0);
   *(v7 + 11464) |= 0x80uLL;
-  v13 = a4 & 0xFFFF00000000 | AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeNonIndexedDrawIndirect[a3];
+  v13 = buffer & 0xFFFF00000000 | AGX::VDMEncoderGen6<AGX::HAL300::ESLEncoder,AGX::HAL300::DeviceConstants,AGX::HAL300::VsStateConfig>::PrimitiveTypeToVDMCTRLTypeNonIndexedDrawIndirect[primitives];
   v14 = *(v7 + 72);
   *(v7 + 72) = v14 + 12;
   *v14 = v13;
-  *(v14 + 8) = a4 & 0xFFFFFFFC;
+  *(v14 + 8) = buffer & 0xFFFFFFFC;
   ++*(v7 + 1940);
   *(v7 + 1960) = 0;
   if (*(sampled_impl + 64) == 1)
@@ -461,34 +461,34 @@ LABEL_8:
   }
 }
 
-- (void)dispatchThreadsPerTile:(id *)a3 inRegion:(id *)a4 withRenderTargetArrayIndex:(unsigned int)a5
+- (void)dispatchThreadsPerTile:(id *)tile inRegion:(id *)region withRenderTargetArrayIndex:(unsigned int)index
 {
   sampled_impl = self->_sampled_impl;
-  v8 = *&a3->var0;
-  var2 = a3->var2;
-  v6 = *&a4->var0.var2;
-  v7[0] = *&a4->var0.var0;
+  v8 = *&tile->var0;
+  var2 = tile->var2;
+  v6 = *&region->var0.var2;
+  v7[0] = *&region->var0.var0;
   v7[1] = v6;
-  v7[2] = *&a4->var1.var1;
-  AGX::SampledRenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::dispatchThreads(sampled_impl, &v8, v7, a5 | 0x100000000);
+  v7[2] = *&region->var1.var1;
+  AGX::SampledRenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::dispatchThreads(sampled_impl, &v8, v7, index | 0x100000000);
 }
 
-- (void)dispatchThreadsPerTile:(id *)a3 inRegion:(id *)a4
+- (void)dispatchThreadsPerTile:(id *)tile inRegion:(id *)region
 {
   sampled_impl = self->_sampled_impl;
-  v7 = *&a3->var0;
-  var2 = a3->var2;
-  v5 = *&a4->var0.var2;
-  v6[0] = *&a4->var0.var0;
+  v7 = *&tile->var0;
+  var2 = tile->var2;
+  v5 = *&region->var0.var2;
+  v6[0] = *&region->var0.var0;
   v6[1] = v5;
-  v6[2] = *&a4->var1.var1;
+  v6[2] = *&region->var1.var1;
   AGX::SampledRenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::dispatchThreads(sampled_impl, &v7, v6, 0);
 }
 
-- (void)dispatchThreadsPerTile:(id *)a3
+- (void)dispatchThreadsPerTile:(id *)tile
 {
   sampled_impl = self->_sampled_impl;
-  v12 = *a3;
+  v12 = *tile;
   AGX::SampledRenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::duplicateShaderAddresses(sampled_impl);
   v4 = *(sampled_impl + 6);
   v5 = *(v4 + 2392);
@@ -516,17 +516,17 @@ LABEL_8:
   }
 }
 
-- (void)setRenderPipelineState:(id)a3
+- (void)setRenderPipelineState:(id)state
 {
   sampled_impl = self->_sampled_impl;
-  sampled_impl[7] = a3;
+  sampled_impl[7] = state;
   v5 = sampled_impl[6];
   if (*(v5 + 1896))
   {
     MTLResourceListAddResource();
   }
 
-  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::setRenderPipelineStateCommon(v5, a3 + 240);
+  AGX::RenderContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::setRenderPipelineStateCommon(v5, state + 240);
   *(v5 + 5403) = 1;
 }
 
@@ -545,12 +545,12 @@ LABEL_8:
   [(AGXG18PFamilyRenderContext_mtlnext *)&v4 dealloc];
 }
 
-- (AGXG18PFamilySampledRenderContext_mtlnext)initWithCommandBuffer:(id)a3 allocator:(id)a4 descriptor:(id)a5 options:(unint64_t)a6 programInfoBuffer:(id *)a7 capacity:(unint64_t)a8
+- (AGXG18PFamilySampledRenderContext_mtlnext)initWithCommandBuffer:(id)buffer allocator:(id)allocator descriptor:(id)descriptor options:(unint64_t)options programInfoBuffer:(id *)infoBuffer capacity:(unint64_t)capacity
 {
-  v8 = a8;
+  capacityCopy = capacity;
   v47.receiver = self;
   v47.super_class = AGXG18PFamilySampledRenderContext_mtlnext;
-  v10 = [(AGXG18PFamilyRenderContext_mtlnext *)&v47 initWithCommandBuffer:a3 allocator:a4 descriptor:a5 options:a6 enableStateLoaderProgramTracking:1];
+  v10 = [(AGXG18PFamilyRenderContext_mtlnext *)&v47 initWithCommandBuffer:buffer allocator:allocator descriptor:descriptor options:options enableStateLoaderProgramTracking:1];
   if (v10)
   {
     v11 = malloc_type_calloc(0x48uLL, 1uLL, 0x10A00406D0CADDEuLL);
@@ -567,10 +567,10 @@ LABEL_8:
     *v11 = 0;
     *(v11 + 1) = 0;
     *(v11 + 2) = 0;
-    *(v11 + 3) = a7;
+    *(v11 + 3) = infoBuffer;
     v11[9] = 0;
     v11[10] = 0;
-    v11[8] = v8;
+    v11[8] = capacityCopy;
     *(v11 + 6) = impl;
     *(v11 + 7) = 0;
     *(v11 + 32) = 1;

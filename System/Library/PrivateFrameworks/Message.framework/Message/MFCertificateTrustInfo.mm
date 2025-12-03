@@ -1,19 +1,19 @@
 @interface MFCertificateTrustInfo
 - (ECSecureMIMETrustEvaluation)trustEvaluation;
-- (MFCertificateTrustInfo)initWithCertificateType:(unint64_t)a3 trust:(__SecTrust *)a4 sender:(id)a5;
+- (MFCertificateTrustInfo)initWithCertificateType:(unint64_t)type trust:(__SecTrust *)trust sender:(id)sender;
 - (__SecTrust)trust;
 - (void)dealloc;
 @end
 
 @implementation MFCertificateTrustInfo
 
-- (MFCertificateTrustInfo)initWithCertificateType:(unint64_t)a3 trust:(__SecTrust *)a4 sender:(id)a5
+- (MFCertificateTrustInfo)initWithCertificateType:(unint64_t)type trust:(__SecTrust *)trust sender:(id)sender
 {
-  v9 = a5;
-  if (!a4)
+  senderCopy = sender;
+  if (!trust)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"MFCertificateTrustInfo.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"trust"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFCertificateTrustInfo.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"trust"}];
   }
 
   v23.receiver = self;
@@ -22,27 +22,27 @@
   v11 = v10;
   if (v10)
   {
-    v10->_certificateType = a3;
-    v10->_unevaluatedTrust = CFRetain(a4);
-    v12 = [v9 copy];
+    v10->_certificateType = type;
+    v10->_unevaluatedTrust = CFRetain(trust);
+    v12 = [senderCopy copy];
     sender = v11->_sender;
     v11->_sender = v12;
 
-    v14 = v9;
-    v15 = [v14 emailAddressValue];
-    v16 = [v15 simpleAddress];
-    v17 = v16;
-    if (v16)
+    v14 = senderCopy;
+    emailAddressValue = [v14 emailAddressValue];
+    simpleAddress = [emailAddressValue simpleAddress];
+    v17 = simpleAddress;
+    if (simpleAddress)
     {
-      v18 = v16;
+      stringValue = simpleAddress;
     }
 
     else
     {
-      v18 = [v14 stringValue];
+      stringValue = [v14 stringValue];
     }
 
-    v19 = v18;
+    v19 = stringValue;
 
     uncommentedSender = v11->_uncommentedSender;
     v11->_uncommentedSender = v19;
@@ -64,10 +64,10 @@
   trustEvaluation = self->_trustEvaluation;
   if (!trustEvaluation)
   {
-    v4 = [MEMORY[0x1E695E000] em_userDefaults];
-    v5 = [v4 mf_blockRemoteContent];
+    em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+    mf_blockRemoteContent = [em_userDefaults mf_blockRemoteContent];
 
-    if (v5)
+    if (mf_blockRemoteContent)
     {
       v6 = 0;
     }
@@ -91,10 +91,10 @@
 
 - (__SecTrust)trust
 {
-  v2 = [(MFCertificateTrustInfo *)self trustEvaluation];
-  v3 = [v2 trust];
+  trustEvaluation = [(MFCertificateTrustInfo *)self trustEvaluation];
+  trust = [trustEvaluation trust];
 
-  return v3;
+  return trust;
 }
 
 @end

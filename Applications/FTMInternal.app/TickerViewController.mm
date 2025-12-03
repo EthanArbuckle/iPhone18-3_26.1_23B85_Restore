@@ -1,10 +1,10 @@
 @interface TickerViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (_TtC11FTMInternal20TickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (_TtC11FTMInternal20TickerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -12,25 +12,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002060F0();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC11FTMInternal20TickerViewController_numberValue);
-  v4 = self;
+  selfCopy = self;
   sub_1002065E0(v3);
 }
 
-- (_TtC11FTMInternal20TickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11FTMInternal20TickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
@@ -38,9 +38,9 @@
   __chkstk_darwin(v8);
   v12 = &v22 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
   sub_10020730C();
   v17 = v16;
   v19 = v18;
@@ -53,12 +53,12 @@
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   v6 = *(&self->super.super.super.isa + OBJC_IVAR____TtC11FTMInternal20TickerViewController_stringValue);
   v7 = *&self->numericAlphabet[OBJC_IVAR____TtC11FTMInternal20TickerViewController_stringValue];
-  v8 = a3;
-  v9 = self;
+  viewCopy = view;
+  selfCopy = self;
 
   v10 = String.count.getter();
 
@@ -70,8 +70,8 @@
   else
   {
     v15 = (v10 - 4) * 32.0 + 68.0;
-    v16 = [v8 layer];
-    [v16 frame];
+    layer = [viewCopy layer];
+    [layer frame];
     v18 = v17;
 
     v12 = (v18 - v15) * 0.5;
@@ -87,18 +87,18 @@
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC11FTMInternal20TickerViewController_stringValue);
   v5 = *&self->numericAlphabet[OBJC_IVAR____TtC11FTMInternal20TickerViewController_stringValue];
-  v6 = self;
+  selfCopy = self;
 
   v7 = String.count.getter();
 
   return v7;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -106,9 +106,9 @@
   __chkstk_darwin(v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
-  v13 = sub_100206D50(v11);
+  viewCopy = view;
+  selfCopy = self;
+  v13 = sub_100206D50(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 

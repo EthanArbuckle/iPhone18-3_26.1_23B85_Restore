@@ -1,15 +1,15 @@
 @interface HKSleepDaySummary
-+ (id)_computeDurationsForPeriods:(id)a3 sleepDayInterval:(id)a4 strategies:(id)a5 periodDurations:(id *)a6;
-+ (id)_computePeriodDurationsForPeriods:(id)a3 sleepDayInterval:(id)a4 strategies:(id)a5;
-+ (id)_computeTotalDurationsFromPeriodDurations:(id)a3;
-+ (id)daySummaryWithMorningIndex:(int64_t)a3 dateInterval:(id)a4 calendar:(id)a5 periods:(id)a6 schedules:(id)a7 sleepDurationGoal:(id)a8 minimumRecommendedSleepDurationGoal:(id)a9 creationInterval:(id)a10;
-- (BOOL)getData:(id *)a3 error:(id *)a4;
++ (id)_computeDurationsForPeriods:(id)periods sleepDayInterval:(id)interval strategies:(id)strategies periodDurations:(id *)durations;
++ (id)_computePeriodDurationsForPeriods:(id)periods sleepDayInterval:(id)interval strategies:(id)strategies;
++ (id)_computeTotalDurationsFromPeriodDurations:(id)durations;
++ (id)daySummaryWithMorningIndex:(int64_t)index dateInterval:(id)interval calendar:(id)calendar periods:(id)periods schedules:(id)schedules sleepDurationGoal:(id)goal minimumRecommendedSleepDurationGoal:(id)durationGoal creationInterval:(id)self0;
+- (BOOL)getData:(id *)data error:(id *)error;
 - (BOOL)hasNonZeroSleepDurationGoal;
 - (BOOL)hasSleepStageData;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isWeeklyAggregatedSummary;
-- (HKSleepDaySummary)initWithCoder:(id)a3;
-- (HKSleepDaySummary)initWithMorningIndex:(int64_t)a3 dateInterval:(id)a4 calendar:(id)a5 periods:(id)a6 schedules:(id)a7 sleepDurationGoal:(id)a8 minimumRecommendedSleepDurationGoal:(id)a9 creationInterval:(id)a10;
+- (HKSleepDaySummary)initWithCoder:(id)coder;
+- (HKSleepDaySummary)initWithMorningIndex:(int64_t)index dateInterval:(id)interval calendar:(id)calendar periods:(id)periods schedules:(id)schedules sleepDurationGoal:(id)goal minimumRecommendedSleepDurationGoal:(id)durationGoal creationInterval:(id)self0;
 - (HKSleepPeriod)lastSleepPeriod;
 - (HKSleepSchedule)primarySchedule;
 - (NSString)description;
@@ -21,66 +21,66 @@
 - (double)remSleepDuration;
 - (double)sleepDuration;
 - (double)unspecifiedSleepDuration;
-- (id)_recomputeDurationsForStrategy:(id)a3;
-- (id)_updatingPeriods:(id)a3;
-- (id)durationsForStrategy:(id)a3;
-- (id)durationsForStrategyType:(int64_t)a3;
-- (id)primarySleepPeriodUsingSummaryDurationStrategyType:(int64_t)a3;
-- (id)summaryFilteredWithOptions:(unint64_t)a3 strategyType:(int64_t)a4;
+- (id)_recomputeDurationsForStrategy:(id)strategy;
+- (id)_updatingPeriods:(id)periods;
+- (id)durationsForStrategy:(id)strategy;
+- (id)durationsForStrategyType:(int64_t)type;
+- (id)primarySleepPeriodUsingSummaryDurationStrategyType:(int64_t)type;
+- (id)summaryFilteredWithOptions:(unint64_t)options strategyType:(int64_t)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSleepDaySummary
 
-- (HKSleepDaySummary)initWithMorningIndex:(int64_t)a3 dateInterval:(id)a4 calendar:(id)a5 periods:(id)a6 schedules:(id)a7 sleepDurationGoal:(id)a8 minimumRecommendedSleepDurationGoal:(id)a9 creationInterval:(id)a10
+- (HKSleepDaySummary)initWithMorningIndex:(int64_t)index dateInterval:(id)interval calendar:(id)calendar periods:(id)periods schedules:(id)schedules sleepDurationGoal:(id)goal minimumRecommendedSleepDurationGoal:(id)durationGoal creationInterval:(id)self0
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  intervalCopy = interval;
+  calendarCopy = calendar;
+  periodsCopy = periods;
+  schedulesCopy = schedules;
+  goalCopy = goal;
+  durationGoalCopy = durationGoal;
+  creationIntervalCopy = creationInterval;
   v50.receiver = self;
   v50.super_class = HKSleepDaySummary;
   v23 = [(HKSleepDaySummary *)&v50 init];
   v24 = v23;
   if (v23)
   {
-    v23->_morningIndex = a3;
-    v25 = [v16 copy];
+    v23->_morningIndex = index;
+    v25 = [intervalCopy copy];
     dateInterval = v24->_dateInterval;
     v24->_dateInterval = v25;
 
-    v27 = [v17 copy];
+    v27 = [calendarCopy copy];
     gregorianCalendar = v24->_gregorianCalendar;
     v24->_gregorianCalendar = v27;
 
-    v29 = [v18 copy];
+    v29 = [periodsCopy copy];
     periods = v24->_periods;
     v24->_periods = v29;
 
-    v31 = [v19 copy];
+    v31 = [schedulesCopy copy];
     schedules = v24->_schedules;
     v24->_schedules = v31;
 
-    v33 = [v20 copy];
+    v33 = [goalCopy copy];
     sleepDurationGoal = v24->_sleepDurationGoal;
     v24->_sleepDurationGoal = v33;
 
-    v35 = [v21 copy];
+    v35 = [durationGoalCopy copy];
     minimumRecommendedSleepDurationGoal = v24->_minimumRecommendedSleepDurationGoal;
     v24->_minimumRecommendedSleepDurationGoal = v35;
 
-    v37 = [HKSleepDaySummaryDurationStrategy standardStrategiesForSleepDayInterval:v16];
+    v37 = [HKSleepDaySummaryDurationStrategy standardStrategiesForSleepDayInterval:intervalCopy];
     strategies = v24->_strategies;
     v24->_strategies = v37;
 
     v39 = objc_opt_class();
     v40 = v24->_strategies;
     v49 = 0;
-    v41 = [v39 _computeDurationsForPeriods:v18 sleepDayInterval:v16 strategies:v40 periodDurations:&v49];
+    v41 = [v39 _computeDurationsForPeriods:periodsCopy sleepDayInterval:intervalCopy strategies:v40 periodDurations:&v49];
     v42 = v49;
     totalDurations = v24->_totalDurations;
     v24->_totalDurations = v41;
@@ -89,7 +89,7 @@
     periodDurations = v24->_periodDurations;
     v24->_periodDurations = v44;
 
-    v46 = [v22 copy];
+    v46 = [creationIntervalCopy copy];
     creationInterval = v24->_creationInterval;
     v24->_creationInterval = v46;
   }
@@ -97,16 +97,16 @@
   return v24;
 }
 
-+ (id)daySummaryWithMorningIndex:(int64_t)a3 dateInterval:(id)a4 calendar:(id)a5 periods:(id)a6 schedules:(id)a7 sleepDurationGoal:(id)a8 minimumRecommendedSleepDurationGoal:(id)a9 creationInterval:(id)a10
++ (id)daySummaryWithMorningIndex:(int64_t)index dateInterval:(id)interval calendar:(id)calendar periods:(id)periods schedules:(id)schedules sleepDurationGoal:(id)goal minimumRecommendedSleepDurationGoal:(id)durationGoal creationInterval:(id)self0
 {
-  v16 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = [[HKSleepDaySummary alloc] initWithMorningIndex:a3 dateInterval:v22 calendar:v21 periods:v20 schedules:v19 sleepDurationGoal:v18 minimumRecommendedSleepDurationGoal:v17 creationInterval:v16];
+  creationIntervalCopy = creationInterval;
+  durationGoalCopy = durationGoal;
+  goalCopy = goal;
+  schedulesCopy = schedules;
+  periodsCopy = periods;
+  calendarCopy = calendar;
+  intervalCopy = interval;
+  v23 = [[HKSleepDaySummary alloc] initWithMorningIndex:index dateInterval:intervalCopy calendar:calendarCopy periods:periodsCopy schedules:schedulesCopy sleepDurationGoal:goalCopy minimumRecommendedSleepDurationGoal:durationGoalCopy creationInterval:creationIntervalCopy];
 
   return v23;
 }
@@ -117,10 +117,10 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_morningIndex];
-  v7 = [(NSDateInterval *)self->_dateInterval startDate];
-  v8 = [(NSDateInterval *)self->_dateInterval endDate];
+  startDate = [(NSDateInterval *)self->_dateInterval startDate];
+  endDate = [(NSDateInterval *)self->_dateInterval endDate];
   periods = self->_periods;
-  v10 = [v3 stringWithFormat:@"<%@:%p %@ (%@ - %@), goal = %@/%@, schedules = %@, periods = %@, calendar = %@>", v5, self, v6, v7, v8, self->_sleepDurationGoal, self->_minimumRecommendedSleepDurationGoal, self->_schedules, periods, self->_gregorianCalendar];
+  v10 = [v3 stringWithFormat:@"<%@:%p %@ (%@ - %@), goal = %@/%@, schedules = %@, periods = %@, calendar = %@>", v5, self, v6, startDate, endDate, self->_sleepDurationGoal, self->_minimumRecommendedSleepDurationGoal, self->_schedules, periods, self->_gregorianCalendar];
 
   return v10;
 }
@@ -131,9 +131,9 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_morningIndex];
-  v7 = [(NSDateInterval *)self->_dateInterval startDate];
-  v8 = [(NSDateInterval *)self->_dateInterval endDate];
-  v9 = [v3 stringWithFormat:@"<%@:%p %@ (%@ - %@)>", v5, self, v6, v7, v8, 0];
+  startDate = [(NSDateInterval *)self->_dateInterval startDate];
+  endDate = [(NSDateInterval *)self->_dateInterval endDate];
+  v9 = [v3 stringWithFormat:@"<%@:%p %@ (%@ - %@)>", v5, self, v6, startDate, endDate, 0];
 
   return v9;
 }
@@ -214,32 +214,32 @@
   return v4;
 }
 
-+ (id)_computePeriodDurationsForPeriods:(id)a3 sleepDayInterval:(id)a4 strategies:(id)a5
++ (id)_computePeriodDurationsForPeriods:(id)periods sleepDayInterval:(id)interval strategies:(id)strategies
 {
-  v7 = a4;
-  v8 = a5;
+  intervalCopy = interval;
+  strategiesCopy = strategies;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __83__HKSleepDaySummary__computePeriodDurationsForPeriods_sleepDayInterval_strategies___block_invoke;
   v13[3] = &unk_1E737DCF0;
-  v14 = v7;
-  v15 = v8;
-  v9 = v8;
-  v10 = v7;
-  v11 = [a3 hk_map:v13];
+  v14 = intervalCopy;
+  v15 = strategiesCopy;
+  v9 = strategiesCopy;
+  v10 = intervalCopy;
+  v11 = [periods hk_map:v13];
 
   return v11;
 }
 
-+ (id)_computeTotalDurationsFromPeriodDurations:(id)a3
++ (id)_computeTotalDurationsFromPeriodDurations:(id)durations
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  durationsCopy = durations;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [durationsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -251,7 +251,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(durationsCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -268,7 +268,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [durationsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -284,46 +284,46 @@
   return v6;
 }
 
-+ (id)_computeDurationsForPeriods:(id)a3 sleepDayInterval:(id)a4 strategies:(id)a5 periodDurations:(id *)a6
++ (id)_computeDurationsForPeriods:(id)periods sleepDayInterval:(id)interval strategies:(id)strategies periodDurations:(id *)durations
 {
-  v8 = [a1 _computePeriodDurationsForPeriods:a3 sleepDayInterval:a4 strategies:a5];
+  v8 = [self _computePeriodDurationsForPeriods:periods sleepDayInterval:interval strategies:strategies];
   v9 = v8;
-  if (a6)
+  if (durations)
   {
     v10 = v8;
-    *a6 = v9;
+    *durations = v9;
   }
 
-  v11 = [a1 _computeTotalDurationsFromPeriodDurations:v9];
+  v11 = [self _computeTotalDurationsFromPeriodDurations:v9];
 
   return v11;
 }
 
-- (id)durationsForStrategy:(id)a3
+- (id)durationsForStrategy:(id)strategy
 {
-  v4 = a3;
-  if ([(HKSleepDaySummaryDurationStrategySet *)self->_strategies containsStrategy:v4])
+  strategyCopy = strategy;
+  if ([(HKSleepDaySummaryDurationStrategySet *)self->_strategies containsStrategy:strategyCopy])
   {
-    v5 = -[HKSleepDaySummary durationsForStrategyType:](self, "durationsForStrategyType:", [v4 strategyType]);
+    v5 = -[HKSleepDaySummary durationsForStrategyType:](self, "durationsForStrategyType:", [strategyCopy strategyType]);
   }
 
   else
   {
-    v6 = [(HKSleepDaySummary *)self _recomputeDurationsForStrategy:v4];
-    v5 = [v6 durationsForStrategyType:{objc_msgSend(v4, "strategyType")}];
+    v6 = [(HKSleepDaySummary *)self _recomputeDurationsForStrategy:strategyCopy];
+    v5 = [v6 durationsForStrategyType:{objc_msgSend(strategyCopy, "strategyType")}];
   }
 
   return v5;
 }
 
-- (id)_recomputeDurationsForStrategy:(id)a3
+- (id)_recomputeDurationsForStrategy:(id)strategy
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  strategyCopy = strategy;
   v5 = [HKSleepDaySummaryDurationStrategySet alloc];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "strategyType")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(strategyCopy, "strategyType")}];
   v12 = v6;
-  v13[0] = v4;
+  v13[0] = strategyCopy;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v8 = [(HKSleepDaySummaryDurationStrategySet *)v5 initWithStrategies:v7];
 
@@ -336,10 +336,10 @@
 
 - (HKSleepPeriod)lastSleepPeriod
 {
-  v2 = [(HKSleepDaySummary *)self periods];
-  v3 = [v2 lastObject];
+  periods = [(HKSleepDaySummary *)self periods];
+  lastObject = [periods lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (HKSleepSchedule)primarySchedule
@@ -386,80 +386,80 @@ double __36__HKSleepDaySummary_primarySchedule__block_invoke(uint64_t a1, void *
 - (BOOL)isWeeklyAggregatedSummary
 {
   v3 = MEMORY[0x1E696AB80];
-  v4 = [(HKSleepDaySummary *)self morningIndex];
-  v5 = [(HKSleepDaySummary *)self calendar];
-  v6 = [v3 hk_sleepWeekIntervalForMorningIndex:v4 calendar:v5];
+  morningIndex = [(HKSleepDaySummary *)self morningIndex];
+  calendar = [(HKSleepDaySummary *)self calendar];
+  v6 = [v3 hk_sleepWeekIntervalForMorningIndex:morningIndex calendar:calendar];
 
-  v7 = [(HKSleepDaySummary *)self dateInterval];
-  LOBYTE(v4) = [v6 isEqual:v7];
+  dateInterval = [(HKSleepDaySummary *)self dateInterval];
+  LOBYTE(morningIndex) = [v6 isEqual:dateInterval];
 
-  return v4;
+  return morningIndex;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   morningIndex = self->_morningIndex;
-  v5 = a3;
-  [v5 encodeInteger:morningIndex forKey:@"MorningIndex"];
-  [v5 encodeObject:self->_dateInterval forKey:@"DateInterval"];
-  [v5 encodeObject:self->_gregorianCalendar forKey:@"Calendar"];
-  [v5 encodeObject:self->_periods forKey:@"Periods"];
-  [v5 encodeObject:self->_schedules forKey:@"Schedules"];
-  [v5 encodeObject:self->_sleepDurationGoal forKey:@"SleepDurationGoal"];
-  [v5 encodeObject:self->_minimumRecommendedSleepDurationGoal forKey:@"MinimumRecommendedSleepDurationGoal"];
-  [v5 encodeObject:self->_creationInterval forKey:@"CreationInterval"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:morningIndex forKey:@"MorningIndex"];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"DateInterval"];
+  [coderCopy encodeObject:self->_gregorianCalendar forKey:@"Calendar"];
+  [coderCopy encodeObject:self->_periods forKey:@"Periods"];
+  [coderCopy encodeObject:self->_schedules forKey:@"Schedules"];
+  [coderCopy encodeObject:self->_sleepDurationGoal forKey:@"SleepDurationGoal"];
+  [coderCopy encodeObject:self->_minimumRecommendedSleepDurationGoal forKey:@"MinimumRecommendedSleepDurationGoal"];
+  [coderCopy encodeObject:self->_creationInterval forKey:@"CreationInterval"];
 }
 
-- (HKSleepDaySummary)initWithCoder:(id)a3
+- (HKSleepDaySummary)initWithCoder:(id)coder
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"MorningIndex"];
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DateInterval"];
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Calendar"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"MorningIndex"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DateInterval"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Calendar"];
   v6 = MEMORY[0x1E695DFD8];
   v23[0] = objc_opt_class();
   v23[1] = objc_opt_class();
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
   v18 = [v6 setWithArray:v20];
-  v7 = [v4 decodeObjectOfClasses:v18 forKey:@"Periods"];
+  v7 = [coderCopy decodeObjectOfClasses:v18 forKey:@"Periods"];
   v8 = MEMORY[0x1E695DFD8];
   v22[0] = objc_opt_class();
   v22[1] = objc_opt_class();
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
   v10 = [v8 setWithArray:v9];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"Schedules"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SleepDurationGoal"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MinimumRecommendedSleepDurationGoal"];
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CreationInterval"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"Schedules"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SleepDurationGoal"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MinimumRecommendedSleepDurationGoal"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CreationInterval"];
 
   v15 = [(HKSleepDaySummary *)self initWithMorningIndex:v5 dateInterval:v21 calendar:v19 periods:v7 schedules:v11 sleepDurationGoal:v12 minimumRecommendedSleepDurationGoal:v13 creationInterval:v14];
   v16 = *MEMORY[0x1E69E9840];
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(HKSleepDaySummary *)self schedules];
-  v6 = [v5 count];
-  v7 = [v4 schedules];
-  v8 = [v7 count];
+  equalCopy = equal;
+  schedules = [(HKSleepDaySummary *)self schedules];
+  v6 = [schedules count];
+  schedules2 = [equalCopy schedules];
+  v8 = [schedules2 count];
 
   if (v6 == v8)
   {
-    v9 = [(HKSleepDaySummary *)self schedules];
-    v10 = [v9 count];
+    schedules3 = [(HKSleepDaySummary *)self schedules];
+    v10 = [schedules3 count];
 
     if (v10)
     {
       v11 = 0;
       do
       {
-        v12 = [(HKSleepDaySummary *)self schedules];
-        v13 = [v12 objectAtIndexedSubscript:v11];
-        v14 = [v4 schedules];
-        v15 = [v14 objectAtIndexedSubscript:v11];
+        schedules4 = [(HKSleepDaySummary *)self schedules];
+        v13 = [schedules4 objectAtIndexedSubscript:v11];
+        schedules5 = [equalCopy schedules];
+        v15 = [schedules5 objectAtIndexedSubscript:v11];
         v16 = [v13 isEquivalent:v15];
 
         if ((v16 & 1) == 0)
@@ -468,31 +468,31 @@ double __36__HKSleepDaySummary_primarySchedule__block_invoke(uint64_t a1, void *
         }
 
         ++v11;
-        v17 = [(HKSleepDaySummary *)self schedules];
-        v7 = [v17 count];
+        schedules6 = [(HKSleepDaySummary *)self schedules];
+        schedules2 = [schedules6 count];
       }
 
-      while (v11 < v7);
+      while (v11 < schedules2);
     }
 
-    v18 = [(HKSleepDaySummary *)self morningIndex];
-    if (v18 == [v4 morningIndex])
+    morningIndex = [(HKSleepDaySummary *)self morningIndex];
+    if (morningIndex == [equalCopy morningIndex])
     {
-      v19 = [(HKSleepDaySummary *)self dateInterval];
-      v20 = [v4 dateInterval];
-      if (v19 != v20)
+      dateInterval = [(HKSleepDaySummary *)self dateInterval];
+      dateInterval2 = [equalCopy dateInterval];
+      if (dateInterval != dateInterval2)
       {
-        v21 = [v4 dateInterval];
-        if (!v21)
+        dateInterval3 = [equalCopy dateInterval];
+        if (!dateInterval3)
         {
           v24 = 0;
           goto LABEL_41;
         }
 
-        v7 = v21;
-        v22 = [(HKSleepDaySummary *)self dateInterval];
-        v23 = [v4 dateInterval];
-        if (![v22 isEqual:v23])
+        schedules2 = dateInterval3;
+        dateInterval4 = [(HKSleepDaySummary *)self dateInterval];
+        dateInterval5 = [equalCopy dateInterval];
+        if (![dateInterval4 isEqual:dateInterval5])
         {
           v24 = 0;
 LABEL_40:
@@ -500,84 +500,84 @@ LABEL_40:
           goto LABEL_41;
         }
 
-        v87 = v23;
-        v88 = v22;
+        v87 = dateInterval5;
+        v88 = dateInterval4;
       }
 
-      v26 = [(HKSleepDaySummary *)self calendar];
-      v27 = [v4 calendar];
-      if (v26 != v27)
+      calendar = [(HKSleepDaySummary *)self calendar];
+      calendar2 = [equalCopy calendar];
+      if (calendar != calendar2)
       {
-        v28 = [v4 calendar];
-        if (!v28)
+        calendar3 = [equalCopy calendar];
+        if (!calendar3)
         {
           goto LABEL_37;
         }
 
-        v29 = v28;
-        v30 = [(HKSleepDaySummary *)self calendar];
-        v31 = [v4 calendar];
-        if (([v30 isEqual:v31] & 1) == 0)
+        v29 = calendar3;
+        calendar4 = [(HKSleepDaySummary *)self calendar];
+        calendar5 = [equalCopy calendar];
+        if (([calendar4 isEqual:calendar5] & 1) == 0)
         {
 
           goto LABEL_37;
         }
 
-        v80 = v31;
-        v81 = v30;
+        v80 = calendar5;
+        v81 = calendar4;
         v82 = v29;
       }
 
-      v32 = [(HKSleepDaySummary *)self periods];
-      v33 = [v4 periods];
-      v34 = v33;
-      v86 = v32;
-      if (v32 == v33)
+      periods = [(HKSleepDaySummary *)self periods];
+      periods2 = [equalCopy periods];
+      v34 = periods2;
+      v86 = periods;
+      if (periods == periods2)
       {
-        v84 = v27;
-        v37 = v26;
-        v38 = v7;
-        v39 = v33;
+        v84 = calendar2;
+        v37 = calendar;
+        v38 = schedules2;
+        v39 = periods2;
         goto LABEL_24;
       }
 
-      v35 = [v4 periods];
-      if (v35)
+      periods3 = [equalCopy periods];
+      if (periods3)
       {
-        v79 = v35;
-        v32 = [(HKSleepDaySummary *)self periods];
-        v36 = [v4 periods];
-        if ([v32 isEqual:v36])
+        v79 = periods3;
+        periods = [(HKSleepDaySummary *)self periods];
+        periods4 = [equalCopy periods];
+        if ([periods isEqual:periods4])
         {
-          v84 = v27;
-          v37 = v26;
-          v38 = v7;
+          v84 = calendar2;
+          v37 = calendar;
+          v38 = schedules2;
           v39 = v34;
-          v76 = v36;
+          v76 = periods4;
 LABEL_24:
-          v40 = [(HKSleepDaySummary *)self sleepDurationGoal];
-          [v4 sleepDurationGoal];
-          v83 = v85 = v40;
-          if (v40 == v83)
+          sleepDurationGoal = [(HKSleepDaySummary *)self sleepDurationGoal];
+          [equalCopy sleepDurationGoal];
+          v83 = v85 = sleepDurationGoal;
+          if (sleepDurationGoal == v83)
           {
             v78 = v39;
-            v7 = v38;
+            schedules2 = v38;
 LABEL_30:
-            v45 = [(HKSleepDaySummary *)self minimumRecommendedSleepDurationGoal];
-            [v4 minimumRecommendedSleepDurationGoal];
+            minimumRecommendedSleepDurationGoal = [(HKSleepDaySummary *)self minimumRecommendedSleepDurationGoal];
+            [equalCopy minimumRecommendedSleepDurationGoal];
             v75 = v74 = v37;
-            v77 = v32;
-            if (v45 == v75)
+            v77 = periods;
+            if (minimumRecommendedSleepDurationGoal == v75)
             {
-              v72 = v7;
+              v72 = schedules2;
               v50 = v37;
               v49 = v84;
             }
 
             else
             {
-              v46 = [v4 minimumRecommendedSleepDurationGoal];
-              if (!v46)
+              minimumRecommendedSleepDurationGoal2 = [equalCopy minimumRecommendedSleepDurationGoal];
+              if (!minimumRecommendedSleepDurationGoal2)
               {
                 v24 = 0;
                 v63 = v76;
@@ -586,10 +586,10 @@ LABEL_30:
                 goto LABEL_63;
               }
 
-              v69 = v46;
-              v47 = [(HKSleepDaySummary *)self minimumRecommendedSleepDurationGoal];
-              v48 = [v4 minimumRecommendedSleepDurationGoal];
-              if (([v47 isEqual:v48] & 1) == 0)
+              v69 = minimumRecommendedSleepDurationGoal2;
+              minimumRecommendedSleepDurationGoal3 = [(HKSleepDaySummary *)self minimumRecommendedSleepDurationGoal];
+              minimumRecommendedSleepDurationGoal4 = [equalCopy minimumRecommendedSleepDurationGoal];
+              if (([minimumRecommendedSleepDurationGoal3 isEqual:minimumRecommendedSleepDurationGoal4] & 1) == 0)
               {
 
                 v24 = 0;
@@ -637,28 +637,28 @@ LABEL_71:
                 goto LABEL_51;
               }
 
-              v67 = v48;
-              v68 = v47;
-              v72 = v7;
+              v67 = minimumRecommendedSleepDurationGoal4;
+              v68 = minimumRecommendedSleepDurationGoal3;
+              v72 = schedules2;
               v49 = v84;
               v50 = v74;
             }
 
-            v53 = [(HKSleepDaySummary *)self creationInterval];
-            v54 = [v4 creationInterval];
-            v24 = v53 == v54;
-            if (v53 != v54)
+            creationInterval = [(HKSleepDaySummary *)self creationInterval];
+            creationInterval2 = [equalCopy creationInterval];
+            v24 = creationInterval == creationInterval2;
+            if (creationInterval != creationInterval2)
             {
-              v55 = [v4 creationInterval];
-              if (v55)
+              creationInterval3 = [equalCopy creationInterval];
+              if (creationInterval3)
               {
                 v84 = v49;
-                v66 = v55;
-                v56 = [(HKSleepDaySummary *)self creationInterval];
-                v57 = [v4 creationInterval];
-                v24 = [v56 isEqual:v57];
+                v66 = creationInterval3;
+                creationInterval4 = [(HKSleepDaySummary *)self creationInterval];
+                creationInterval5 = [equalCopy creationInterval];
+                v24 = [creationInterval4 isEqual:creationInterval5];
 
-                if (v45 != v75)
+                if (minimumRecommendedSleepDurationGoal != v75)
                 {
                 }
 
@@ -666,7 +666,7 @@ LABEL_71:
                 v52 = v86;
                 v59 = v83;
                 v60 = v71;
-                v7 = v72;
+                schedules2 = v72;
                 v61 = v76;
                 if (v85 != v83)
                 {
@@ -677,12 +677,12 @@ LABEL_71:
               }
             }
 
-            if (v45 == v75)
+            if (minimumRecommendedSleepDurationGoal == v75)
             {
 
               v64 = v86;
               v65 = v83;
-              v7 = v72;
+              schedules2 = v72;
               v63 = v76;
               if (v85 == v83)
               {
@@ -692,7 +692,7 @@ LABEL_71:
               goto LABEL_64;
             }
 
-            v7 = v72;
+            schedules2 = v72;
             v63 = v76;
             v64 = v86;
 LABEL_63:
@@ -711,9 +711,9 @@ LABEL_65:
               }
 
 LABEL_39:
-              v23 = v87;
-              v22 = v88;
-              if (v19 != v20)
+              dateInterval5 = v87;
+              dateInterval4 = v88;
+              if (dateInterval != dateInterval2)
               {
                 goto LABEL_40;
               }
@@ -729,28 +729,28 @@ LABEL_64:
             goto LABEL_65;
           }
 
-          v41 = [v4 sleepDurationGoal];
+          sleepDurationGoal2 = [equalCopy sleepDurationGoal];
           v42 = v39;
-          if (!v41)
+          if (!sleepDurationGoal2)
           {
-            v77 = v32;
+            v77 = periods;
             v24 = 0;
             v51 = v76;
             v52 = v86;
-            v7 = v38;
+            schedules2 = v38;
             v50 = v37;
             goto LABEL_50;
           }
 
           v78 = v39;
-          v73 = v41;
-          v43 = [(HKSleepDaySummary *)self sleepDurationGoal];
-          v44 = [v4 sleepDurationGoal];
-          v7 = v38;
-          if ([v43 isEqual:v44])
+          v73 = sleepDurationGoal2;
+          sleepDurationGoal3 = [(HKSleepDaySummary *)self sleepDurationGoal];
+          sleepDurationGoal4 = [equalCopy sleepDurationGoal];
+          schedules2 = v38;
+          if ([sleepDurationGoal3 isEqual:sleepDurationGoal4])
           {
-            v70 = v43;
-            v71 = v44;
+            v70 = sleepDurationGoal3;
+            v71 = sleepDurationGoal4;
             goto LABEL_30;
           }
 
@@ -768,7 +768,7 @@ LABEL_38:
         }
       }
 
-      if (v26 != v27)
+      if (calendar != calendar2)
       {
       }
 
@@ -787,38 +787,38 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v3 = [(HKSleepDaySummary *)self morningIndex];
-  v20 = [(HKSleepDaySummary *)self dateInterval];
-  v4 = [v20 hash] ^ v3;
-  v5 = [(HKSleepDaySummary *)self calendar];
-  v6 = [v5 hash];
-  v7 = [(HKSleepDaySummary *)self periods];
-  v8 = v4 ^ v6 ^ [v7 hash];
-  v9 = [(HKSleepDaySummary *)self schedules];
-  v10 = [v9 hash];
-  v11 = [(HKSleepDaySummary *)self sleepDurationGoal];
-  v12 = [v11 hk_secondsNumber];
-  v13 = v8 ^ v10 ^ [v12 hash];
-  v14 = [(HKSleepDaySummary *)self minimumRecommendedSleepDurationGoal];
-  v15 = [v14 hk_secondsNumber];
-  v16 = [v15 hash];
-  v17 = [(HKSleepDaySummary *)self creationInterval];
-  v18 = v16 ^ [v17 hash];
+  morningIndex = [(HKSleepDaySummary *)self morningIndex];
+  dateInterval = [(HKSleepDaySummary *)self dateInterval];
+  v4 = [dateInterval hash] ^ morningIndex;
+  calendar = [(HKSleepDaySummary *)self calendar];
+  v6 = [calendar hash];
+  periods = [(HKSleepDaySummary *)self periods];
+  v8 = v4 ^ v6 ^ [periods hash];
+  schedules = [(HKSleepDaySummary *)self schedules];
+  v10 = [schedules hash];
+  sleepDurationGoal = [(HKSleepDaySummary *)self sleepDurationGoal];
+  hk_secondsNumber = [sleepDurationGoal hk_secondsNumber];
+  v13 = v8 ^ v10 ^ [hk_secondsNumber hash];
+  minimumRecommendedSleepDurationGoal = [(HKSleepDaySummary *)self minimumRecommendedSleepDurationGoal];
+  hk_secondsNumber2 = [minimumRecommendedSleepDurationGoal hk_secondsNumber];
+  v16 = [hk_secondsNumber2 hash];
+  creationInterval = [(HKSleepDaySummary *)self creationInterval];
+  v18 = v16 ^ [creationInterval hash];
 
   return v13 ^ v18;
 }
 
-- (BOOL)getData:(id *)a3 error:(id *)a4
+- (BOOL)getData:(id *)data error:(id *)error
 {
   v15 = 0;
   v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:&v15];
   v8 = v15;
   if (v7)
   {
-    if (a3)
+    if (data)
     {
       v9 = v7;
-      *a3 = v7;
+      *data = v7;
     }
   }
 
@@ -835,10 +835,10 @@ LABEL_12:
     v12 = v11;
     if (v11)
     {
-      if (a4)
+      if (error)
       {
         v13 = v11;
-        *a4 = v12;
+        *error = v12;
       }
 
       else
@@ -851,15 +851,15 @@ LABEL_12:
   return v7 != 0;
 }
 
-- (id)summaryFilteredWithOptions:(unint64_t)a3 strategyType:(int64_t)a4
+- (id)summaryFilteredWithOptions:(unint64_t)options strategyType:(int64_t)type
 {
-  v5 = a3;
+  optionsCopy = options;
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = self;
-  v7 = v6;
-  if (v5)
+  selfCopy = self;
+  v7 = selfCopy;
+  if (optionsCopy)
   {
-    v12 = [(HKSleepDaySummary *)v6 primarySleepPeriodUsingSummaryDurationStrategyType:a4];
+    v12 = [(HKSleepDaySummary *)selfCopy primarySleepPeriodUsingSummaryDurationStrategyType:type];
     v9 = v12;
     if (v12)
     {
@@ -874,19 +874,19 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ((v5 & 2) == 0)
+  if ((optionsCopy & 2) == 0)
   {
     goto LABEL_12;
   }
 
-  v8 = [(HKSleepDaySummary *)v6 lastSleepPeriod];
-  v9 = v8;
-  if (!v8)
+  lastSleepPeriod = [(HKSleepDaySummary *)selfCopy lastSleepPeriod];
+  v9 = lastSleepPeriod;
+  if (!lastSleepPeriod)
   {
     goto LABEL_8;
   }
 
-  v20 = v8;
+  v20 = lastSleepPeriod;
   v10 = MEMORY[0x1E695DEC8];
   v11 = &v20;
 LABEL_7:
@@ -900,10 +900,10 @@ LABEL_9:
 
   v7 = v14;
 LABEL_12:
-  if ((v5 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
-    v15 = [v7 periods];
-    v16 = [v15 hk_map:&__block_literal_global_57];
+    periods = [v7 periods];
+    v16 = [periods hk_map:&__block_literal_global_57];
 
     v17 = [v7 _updatingPeriods:v16];
 
@@ -957,21 +957,21 @@ id __61__HKSleepDaySummary_summaryFilteredWithOptions_strategyType___block_invok
   return v18;
 }
 
-- (id)_updatingPeriods:(id)a3
+- (id)_updatingPeriods:(id)periods
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  periodsCopy = periods;
+  v5 = periodsCopy;
+  if (periodsCopy && [periodsCopy count])
   {
     v6 = [HKSleepDaySummary alloc];
-    v7 = [(HKSleepDaySummary *)self morningIndex];
-    v8 = [(HKSleepDaySummary *)self dateInterval];
-    v9 = [(HKSleepDaySummary *)self calendar];
-    v10 = [(HKSleepDaySummary *)self schedules];
-    v11 = [(HKSleepDaySummary *)self sleepDurationGoal];
-    v12 = [(HKSleepDaySummary *)self minimumRecommendedSleepDurationGoal];
-    v13 = [(HKSleepDaySummary *)self creationInterval];
-    v14 = [(HKSleepDaySummary *)v6 initWithMorningIndex:v7 dateInterval:v8 calendar:v9 periods:v5 schedules:v10 sleepDurationGoal:v11 minimumRecommendedSleepDurationGoal:v12 creationInterval:v13];
+    morningIndex = [(HKSleepDaySummary *)self morningIndex];
+    dateInterval = [(HKSleepDaySummary *)self dateInterval];
+    calendar = [(HKSleepDaySummary *)self calendar];
+    schedules = [(HKSleepDaySummary *)self schedules];
+    sleepDurationGoal = [(HKSleepDaySummary *)self sleepDurationGoal];
+    minimumRecommendedSleepDurationGoal = [(HKSleepDaySummary *)self minimumRecommendedSleepDurationGoal];
+    creationInterval = [(HKSleepDaySummary *)self creationInterval];
+    v14 = [(HKSleepDaySummary *)v6 initWithMorningIndex:morningIndex dateInterval:dateInterval calendar:calendar periods:v5 schedules:schedules sleepDurationGoal:sleepDurationGoal minimumRecommendedSleepDurationGoal:minimumRecommendedSleepDurationGoal creationInterval:creationInterval];
   }
 
   else
@@ -982,17 +982,17 @@ id __61__HKSleepDaySummary_summaryFilteredWithOptions_strategyType___block_invok
   return v14;
 }
 
-- (id)durationsForStrategyType:(int64_t)a3
+- (id)durationsForStrategyType:(int64_t)type
 {
   if (self)
   {
     self = self->_totalDurations;
   }
 
-  return [(HKSleepDaySummary *)self durationsForStrategyType:a3];
+  return [(HKSleepDaySummary *)self durationsForStrategyType:type];
 }
 
-- (id)primarySleepPeriodUsingSummaryDurationStrategyType:(int64_t)a3
+- (id)primarySleepPeriodUsingSummaryDurationStrategyType:(int64_t)type
 {
   v5 = 0;
   v6 = 0;
@@ -1016,14 +1016,14 @@ LABEL_2:
     }
 
     v10 = [(NSArray *)periodDurations objectAtIndexedSubscript:v5];
-    v11 = [v10 durationsForStrategyType:a3];
+    v11 = [v10 durationsForStrategyType:type];
     [v11 maxDuration];
     v13 = v12;
 
     if (v13 > v7)
     {
-      v14 = [(HKSleepDaySummary *)self periods];
-      v15 = [v14 objectAtIndexedSubscript:v5];
+      periods = [(HKSleepDaySummary *)self periods];
+      v15 = [periods objectAtIndexedSubscript:v5];
 
       v7 = v13;
       v6 = v15;

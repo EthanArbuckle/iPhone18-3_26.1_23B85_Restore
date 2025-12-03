@@ -1,68 +1,68 @@
 @interface PFSQLiteQueryFactory
-+ (BOOL)bindToStatement:(sqlite3_stmt *)a3 objectDescriptor:(id)a4 fromCoder:(id)a5 database:(sqlite3 *)a6 error:(id *)a7;
-+ (BOOL)decodeObjectForColumn:(id)a3 stmt:(sqlite3_stmt *)a4 idx:(int)a5 outValue:(id *)a6;
-+ (BOOL)decodeObjectForDescriptor:(id)a3 stmt:(sqlite3_stmt *)a4 intoCoder:(id)a5;
-+ (id)generateDeleteSQLForDescriptor:(id)a3 predicate:(id)a4 bindings:(id *)a5;
-+ (id)generateInsertStatementForDescriptor:(id)a3 coder:(id)a4 canUpsert:(BOOL)a5 bindings:(id *)a6;
-+ (id)generateSelectStatementForColumns:(id)a3 table:(id)a4 predicate:(id)a5 limitOffset:(id)a6 orderedBy:(id)a7 bindings:(id *)a8;
-+ (id)generateSelectStatementForDescriptor:(id)a3 predicate:(id)a4 limitOffset:(id)a5 orderedBy:(id)a6 bindings:(id *)a7;
++ (BOOL)bindToStatement:(sqlite3_stmt *)statement objectDescriptor:(id)descriptor fromCoder:(id)coder database:(sqlite3 *)database error:(id *)error;
++ (BOOL)decodeObjectForColumn:(id)column stmt:(sqlite3_stmt *)stmt idx:(int)idx outValue:(id *)value;
++ (BOOL)decodeObjectForDescriptor:(id)descriptor stmt:(sqlite3_stmt *)stmt intoCoder:(id)coder;
++ (id)generateDeleteSQLForDescriptor:(id)descriptor predicate:(id)predicate bindings:(id *)bindings;
++ (id)generateInsertStatementForDescriptor:(id)descriptor coder:(id)coder canUpsert:(BOOL)upsert bindings:(id *)bindings;
++ (id)generateSelectStatementForColumns:(id)columns table:(id)table predicate:(id)predicate limitOffset:(id)offset orderedBy:(id)by bindings:(id *)bindings;
++ (id)generateSelectStatementForDescriptor:(id)descriptor predicate:(id)predicate limitOffset:(id)offset orderedBy:(id)by bindings:(id *)bindings;
 @end
 
 @implementation PFSQLiteQueryFactory
 
-+ (id)generateSelectStatementForDescriptor:(id)a3 predicate:(id)a4 limitOffset:(id)a5 orderedBy:(id)a6 bindings:(id *)a7
++ (id)generateSelectStatementForDescriptor:(id)descriptor predicate:(id)predicate limitOffset:(id)offset orderedBy:(id)by bindings:(id *)bindings
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a3;
-  v15 = [v14 columnNames];
-  v16 = [v15 array];
-  v17 = [v16 componentsJoinedByString:{@", "}];
+  predicateCopy = predicate;
+  offsetCopy = offset;
+  byCopy = by;
+  descriptorCopy = descriptor;
+  columnNames = [descriptorCopy columnNames];
+  array = [columnNames array];
+  v17 = [array componentsJoinedByString:{@", "}];
 
   v18 = MEMORY[0x1E696AEC0];
-  v19 = [v14 tableName];
+  tableName = [descriptorCopy tableName];
 
-  v20 = [v18 stringWithFormat:@"SELECT %@ FROM %@", v17, v19];
+  v20 = [v18 stringWithFormat:@"SELECT %@ FROM %@", v17, tableName];
 
   *(&v34 + 1) = 0;
-  if (v11)
+  if (predicateCopy)
   {
-    v21 = [v11 pf_toSQLWithBindings:&v34 + 8];
+    v21 = [predicateCopy pf_toSQLWithBindings:&v34 + 8];
     v22 = [v20 stringByAppendingFormat:@" %@", v21];
 
     v20 = v22;
   }
 
-  if (v13)
+  if (byCopy)
   {
-    v23 = [v13 pf_toSQLWithBindings:0];
+    v23 = [byCopy pf_toSQLWithBindings:0];
     v24 = [v20 stringByAppendingFormat:@" %@", v23];
 
     v20 = v24;
   }
 
   *&v34 = 0;
-  if (v12)
+  if (offsetCopy)
   {
-    v25 = [v12 pf_toSQLWithBindings:&v34];
+    v25 = [offsetCopy pf_toSQLWithBindings:&v34];
     v26 = [v20 stringByAppendingFormat:@" %@", v25];
 
     v20 = v26;
   }
 
-  if (a7 && v34 != 0)
+  if (bindings && v34 != 0)
   {
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __102__PFSQLiteQueryFactory_generateSelectStatementForDescriptor_predicate_limitOffset_orderedBy_bindings___block_invoke;
     v28[3] = &unk_1E81897F8;
     v32 = *(&v34 + 1);
-    v29 = v11;
+    v29 = predicateCopy;
     v30 = v20;
     v33 = v34;
-    v31 = v12;
-    *a7 = MEMORY[0x1C691C400](v28);
+    v31 = offsetCopy;
+    *bindings = MEMORY[0x1C691C400](v28);
   }
 
   return v20;
@@ -113,58 +113,58 @@ LABEL_5:
   return result;
 }
 
-+ (id)generateSelectStatementForColumns:(id)a3 table:(id)a4 predicate:(id)a5 limitOffset:(id)a6 orderedBy:(id)a7 bindings:(id *)a8
++ (id)generateSelectStatementForColumns:(id)columns table:(id)table predicate:(id)predicate limitOffset:(id)offset orderedBy:(id)by bindings:(id *)bindings
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  predicateCopy = predicate;
+  offsetCopy = offset;
+  byCopy = by;
   v16 = MEMORY[0x1E696AEC0];
-  v17 = a4;
-  v18 = [a3 valueForKey:@"name"];
+  tableCopy = table;
+  v18 = [columns valueForKey:@"name"];
   v19 = [v18 componentsJoinedByString:{@", "}];
-  v20 = [v16 stringWithFormat:@"SELECT %@ FROM %@", v19, v17];
+  tableCopy = [v16 stringWithFormat:@"SELECT %@ FROM %@", v19, tableCopy];
 
   v35 = 0;
-  if (v13)
+  if (predicateCopy)
   {
-    v21 = [v13 pf_toSQLWithBindings:&v35];
-    v22 = [v20 stringByAppendingFormat:@" %@", v21];
+    v21 = [predicateCopy pf_toSQLWithBindings:&v35];
+    v22 = [tableCopy stringByAppendingFormat:@" %@", v21];
 
-    v20 = v22;
+    tableCopy = v22;
   }
 
-  if (v15)
+  if (byCopy)
   {
-    v23 = [v15 pf_toSQLWithBindings:0];
-    v24 = [v20 stringByAppendingFormat:@" %@", v23];
+    v23 = [byCopy pf_toSQLWithBindings:0];
+    v24 = [tableCopy stringByAppendingFormat:@" %@", v23];
 
-    v20 = v24;
+    tableCopy = v24;
   }
 
   v34 = 0;
-  if (v14)
+  if (offsetCopy)
   {
-    v25 = [v14 pf_toSQLWithBindings:&v34];
-    v26 = [v20 stringByAppendingFormat:@" %@", v25];
+    v25 = [offsetCopy pf_toSQLWithBindings:&v34];
+    v26 = [tableCopy stringByAppendingFormat:@" %@", v25];
 
-    v20 = v26;
+    tableCopy = v26;
   }
 
-  if (a8)
+  if (bindings)
   {
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __105__PFSQLiteQueryFactory_generateSelectStatementForColumns_table_predicate_limitOffset_orderedBy_bindings___block_invoke;
     v28[3] = &unk_1E81897F8;
     v32 = v35;
-    v29 = v13;
-    v30 = v20;
+    v29 = predicateCopy;
+    v30 = tableCopy;
     v33 = v34;
-    v31 = v14;
-    *a8 = MEMORY[0x1C691C400](v28);
+    v31 = offsetCopy;
+    *bindings = MEMORY[0x1C691C400](v28);
   }
 
-  return v20;
+  return tableCopy;
 }
 
 uint64_t __105__PFSQLiteQueryFactory_generateSelectStatementForColumns_table_predicate_limitOffset_orderedBy_bindings___block_invoke(uint64_t a1, sqlite3_stmt *a2, void *a3)
@@ -212,32 +212,32 @@ LABEL_11:
   return 0;
 }
 
-+ (id)generateDeleteSQLForDescriptor:(id)a3 predicate:(id)a4 bindings:(id *)a5
++ (id)generateDeleteSQLForDescriptor:(id)descriptor predicate:(id)predicate bindings:(id *)bindings
 {
-  v7 = a4;
+  predicateCopy = predicate;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [a3 tableName];
-  v10 = [v8 stringWithFormat:@"DELETE FROM %@", v9];
+  tableName = [descriptor tableName];
+  v10 = [v8 stringWithFormat:@"DELETE FROM %@", tableName];
 
   v18 = 0;
-  if (v7)
+  if (predicateCopy)
   {
-    v11 = [v7 pf_toSQLWithBindings:&v18];
+    v11 = [predicateCopy pf_toSQLWithBindings:&v18];
     v12 = [v10 stringByAppendingFormat:@" %@", v11];
 
     v10 = v12;
   }
 
-  if (a5)
+  if (bindings)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __74__PFSQLiteQueryFactory_generateDeleteSQLForDescriptor_predicate_bindings___block_invoke;
     v14[3] = &unk_1E8189820;
     v17 = v18;
-    v15 = v7;
+    v15 = predicateCopy;
     v16 = v10;
-    *a5 = MEMORY[0x1C691C400](v14);
+    *bindings = MEMORY[0x1C691C400](v14);
   }
 
   return v10;
@@ -273,16 +273,16 @@ uint64_t __74__PFSQLiteQueryFactory_generateDeleteSQLForDescriptor_predicate_bin
   return result;
 }
 
-+ (id)generateInsertStatementForDescriptor:(id)a3 coder:(id)a4 canUpsert:(BOOL)a5 bindings:(id *)a6
++ (id)generateInsertStatementForDescriptor:(id)descriptor coder:(id)coder canUpsert:(BOOL)upsert bindings:(id *)bindings
 {
-  v9 = a3;
-  v30 = a4;
+  descriptorCopy = descriptor;
+  coderCopy = coder;
   v10 = MEMORY[0x1E695DF70];
-  v11 = [v9 columns];
-  v12 = [v10 arrayWithCapacity:{objc_msgSend(v11, "count")}];
+  columns = [descriptorCopy columns];
+  v12 = [v10 arrayWithCapacity:{objc_msgSend(columns, "count")}];
 
-  v13 = [v9 columns];
-  v14 = [v13 count];
+  columns2 = [descriptorCopy columns];
+  v14 = [columns2 count];
 
   if (v14)
   {
@@ -291,18 +291,18 @@ uint64_t __74__PFSQLiteQueryFactory_generateDeleteSQLForDescriptor_predicate_bin
     {
       [v12 addObject:@"?"];
       ++v15;
-      v16 = [v9 columns];
-      v17 = [v16 count];
+      columns3 = [descriptorCopy columns];
+      v17 = [columns3 count];
     }
 
     while (v15 < v17);
   }
 
   v18 = &stru_1F425B6D8;
-  if (a5)
+  if (upsert)
   {
-    v19 = [v9 columns];
-    v20 = [v19 bs_firstObjectPassingTest:&__block_literal_global_7];
+    columns4 = [descriptorCopy columns];
+    v20 = [columns4 bs_firstObjectPassingTest:&__block_literal_global_7];
 
     if (v20)
     {
@@ -311,23 +311,23 @@ uint64_t __74__PFSQLiteQueryFactory_generateDeleteSQLForDescriptor_predicate_bin
   }
 
   v21 = MEMORY[0x1E696AEC0];
-  v22 = [v9 tableName];
-  v23 = [v9 columnNames];
-  v24 = [v23 array];
-  v25 = [v24 componentsJoinedByString:{@", "}];
+  tableName = [descriptorCopy tableName];
+  columnNames = [descriptorCopy columnNames];
+  array = [columnNames array];
+  v25 = [array componentsJoinedByString:{@", "}];
   v26 = [v12 componentsJoinedByString:{@", "}];
-  v27 = [v21 stringWithFormat:@"INSERT %@ INTO %@ (%@) VALUES(%@)", v18, v22, v25, v26];;
+  v27 = [v21 stringWithFormat:@"INSERT %@ INTO %@ (%@) VALUES(%@)", v18, tableName, v25, v26];;
 
-  if (a6)
+  if (bindings)
   {
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __86__PFSQLiteQueryFactory_generateInsertStatementForDescriptor_coder_canUpsert_bindings___block_invoke_2;
     v31[3] = &unk_1E8189820;
-    v34 = a1;
-    v32 = v9;
-    v33 = v30;
-    *a6 = MEMORY[0x1C691C400](v31);
+    selfCopy = self;
+    v32 = descriptorCopy;
+    v33 = coderCopy;
+    *bindings = MEMORY[0x1C691C400](v31);
   }
 
   return v27;
@@ -343,35 +343,35 @@ uint64_t __86__PFSQLiteQueryFactory_generateInsertStatementForDescriptor_coder_c
   return [v7 bindToStatement:a2 objectDescriptor:v9 fromCoder:v8 database:v6 error:a3];
 }
 
-+ (BOOL)bindToStatement:(sqlite3_stmt *)a3 objectDescriptor:(id)a4 fromCoder:(id)a5 database:(sqlite3 *)a6 error:(id *)a7
++ (BOOL)bindToStatement:(sqlite3_stmt *)statement objectDescriptor:(id)descriptor fromCoder:(id)coder database:(sqlite3 *)database error:(id *)error
 {
-  v13 = a4;
-  v14 = a5;
+  descriptorCopy = descriptor;
+  coderCopy = coder;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__1;
   v31 = __Block_byref_object_dispose__1;
   v32 = 0;
-  v15 = [v13 columns];
+  columns = [descriptorCopy columns];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __82__PFSQLiteQueryFactory_bindToStatement_objectDescriptor_fromCoder_database_error___block_invoke;
   v20[3] = &unk_1E8189848;
-  v16 = v14;
+  v16 = coderCopy;
   v23 = a2;
-  v24 = a1;
+  selfCopy = self;
   v21 = v16;
   v22 = &v27;
-  v25 = a3;
-  v26 = a6;
-  [v15 enumerateObjectsUsingBlock:v20];
+  statementCopy = statement;
+  databaseCopy = database;
+  [columns enumerateObjectsUsingBlock:v20];
 
   v17 = v28[5];
-  if (a7 && v17)
+  if (error && v17)
   {
     v17 = v17;
-    *a7 = v17;
+    *error = v17;
   }
 
   v18 = v17 == 0;
@@ -492,19 +492,19 @@ LABEL_13:
 LABEL_14:
 }
 
-+ (BOOL)decodeObjectForDescriptor:(id)a3 stmt:(sqlite3_stmt *)a4 intoCoder:(id)a5
++ (BOOL)decodeObjectForDescriptor:(id)descriptor stmt:(sqlite3_stmt *)stmt intoCoder:(id)coder
 {
-  v8 = a5;
-  v9 = [a3 columns];
+  coderCopy = coder;
+  columns = [descriptor columns];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__PFSQLiteQueryFactory_decodeObjectForDescriptor_stmt_intoCoder___block_invoke;
   v12[3] = &unk_1E8189870;
-  v14 = a1;
-  v15 = a4;
-  v13 = v8;
-  v10 = v8;
-  [v9 enumerateObjectsUsingBlock:v12];
+  selfCopy = self;
+  stmtCopy = stmt;
+  v13 = coderCopy;
+  v10 = coderCopy;
+  [columns enumerateObjectsUsingBlock:v12];
 
   return 1;
 }
@@ -525,58 +525,58 @@ void __65__PFSQLiteQueryFactory_decodeObjectForDescriptor_stmt_intoCoder___block
   }
 }
 
-+ (BOOL)decodeObjectForColumn:(id)a3 stmt:(sqlite3_stmt *)a4 idx:(int)a5 outValue:(id *)a6
++ (BOOL)decodeObjectForColumn:(id)column stmt:(sqlite3_stmt *)stmt idx:(int)idx outValue:(id *)value
 {
-  v9 = a3;
-  v10 = [v9 valueTransformer];
-  v11 = [v9 type];
+  columnCopy = column;
+  valueTransformer = [columnCopy valueTransformer];
+  type = [columnCopy type];
 
   v12 = 0;
-  if (v11 > 2)
+  if (type > 2)
   {
-    if (v11 == 3)
+    if (type == 3)
     {
-      v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:{sqlite3_column_text(a4, a5)}];
+      null = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:{sqlite3_column_text(stmt, idx)}];
       goto LABEL_13;
     }
 
-    if (v11 == 4)
+    if (type == 4)
     {
-      v14 = sqlite3_column_blob(a4, a5);
-      v13 = [MEMORY[0x1E695DEF0] dataWithBytes:v14 length:{sqlite3_column_bytes(a4, a5)}];
+      v14 = sqlite3_column_blob(stmt, idx);
+      null = [MEMORY[0x1E695DEF0] dataWithBytes:v14 length:{sqlite3_column_bytes(stmt, idx)}];
       goto LABEL_13;
     }
 
-    if (v11 != 5)
+    if (type != 5)
     {
       goto LABEL_16;
     }
 
 LABEL_9:
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     goto LABEL_13;
   }
 
-  switch(v11)
+  switch(type)
   {
     case 0:
       goto LABEL_9;
     case 1:
-      v13 = [MEMORY[0x1E696AD98] numberWithInt:{sqlite3_column_int(a4, a5)}];
+      null = [MEMORY[0x1E696AD98] numberWithInt:{sqlite3_column_int(stmt, idx)}];
       break;
     case 2:
-      v13 = [MEMORY[0x1E696AD98] numberWithDouble:{sqlite3_column_double(a4, a5)}];
+      null = [MEMORY[0x1E696AD98] numberWithDouble:{sqlite3_column_double(stmt, idx)}];
       break;
     default:
       goto LABEL_16;
   }
 
 LABEL_13:
-  v15 = v13;
-  if (v13)
+  v15 = null;
+  if (null)
   {
-    v16 = [v10 reverseTransformedValue:v13];
-    *a6 = v16;
+    v16 = [valueTransformer reverseTransformedValue:null];
+    *value = v16;
 
     v12 = 1;
   }

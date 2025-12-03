@@ -1,17 +1,17 @@
 @interface ATXPredictionUpdateCountPBPredictionUpdateCountTracker
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsClientType:(id)a3;
-- (int)StringAsTriggerType:(id)a3;
+- (int)StringAsClientType:(id)type;
+- (int)StringAsTriggerType:(id)type;
 - (int)clientType;
 - (int)triggerType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTriggerType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTriggerType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPredictionUpdateCountPBPredictionUpdateCountTracker
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)setHasTriggerType:(BOOL)a3
+- (void)setHasTriggerType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -44,45 +44,45 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsTriggerType:(id)a3
+- (int)StringAsTriggerType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"TRIGGER_TYPE_CTS"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"TRIGGER_TYPE_CTS"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"TRIGGER_TYPE_APPLAUNCH"])
+  else if ([typeCopy isEqualToString:@"TRIGGER_TYPE_APPLAUNCH"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TRIGGER_TYPE_APPFEEDBACK"])
+  else if ([typeCopy isEqualToString:@"TRIGGER_TYPE_APPFEEDBACK"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TRIGGER_TYPE_ACTIONFEEDBACK"])
+  else if ([typeCopy isEqualToString:@"TRIGGER_TYPE_ACTIONFEEDBACK"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"TRIGGER_TYPE_HEROAPP"])
+  else if ([typeCopy isEqualToString:@"TRIGGER_TYPE_HEROAPP"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"TRIGGER_TYPE_MAGICALMOMENTS"])
+  else if ([typeCopy isEqualToString:@"TRIGGER_TYPE_MAGICALMOMENTS"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"TRIGGER_TYPE_OTHER"])
+  else if ([typeCopy isEqualToString:@"TRIGGER_TYPE_OTHER"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"TRIGGER_TYPE_TOTAL"])
+  else if ([typeCopy isEqualToString:@"TRIGGER_TYPE_TOTAL"])
   {
     v4 = 7;
   }
@@ -108,17 +108,17 @@
   }
 }
 
-- (int)StringAsClientType:(id)a3
+- (int)StringAsClientType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CLIENT_APP_PREDICTIONS"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"CLIENT_APP_PREDICTIONS"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"CLIENT_ACTION_PREDICTIONS"];
+    v4 = [typeCopy isEqualToString:@"CLIENT_ACTION_PREDICTIONS"];
   }
 
   return v4;
@@ -130,15 +130,15 @@
   v8.receiver = self;
   v8.super_class = ATXPredictionUpdateCountPBPredictionUpdateCountTracker;
   v4 = [(ATXPredictionUpdateCountPBPredictionUpdateCountTracker *)&v8 description];
-  v5 = [(ATXPredictionUpdateCountPBPredictionUpdateCountTracker *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPredictionUpdateCountPBPredictionUpdateCountTracker *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -153,7 +153,7 @@
       v6 = off_2785A0678[triggerType];
     }
 
-    [v3 setObject:v6 forKey:@"triggerType"];
+    [dictionary setObject:v6 forKey:@"triggerType"];
 
     has = self->_has;
   }
@@ -179,28 +179,28 @@
       v8 = @"CLIENT_APP_PREDICTIONS";
     }
 
-    [v3 setObject:v8 forKey:@"clientType"];
+    [dictionary setObject:v8 forKey:@"clientType"];
   }
 
   abGroup = self->_abGroup;
   if (abGroup)
   {
-    [v3 setObject:abGroup forKey:@"abGroup"];
+    [dictionary setObject:abGroup forKey:@"abGroup"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     triggerType = self->_triggerType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -208,44 +208,44 @@
   {
     clientType = self->_clientType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_abGroup)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[5] = self->_triggerType;
-    *(v4 + 24) |= 2u;
+    toCopy[5] = self->_triggerType;
+    *(toCopy + 24) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[4] = self->_clientType;
-    *(v4 + 24) |= 1u;
+    toCopy[4] = self->_clientType;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_abGroup)
   {
-    v6 = v4;
-    [v4 setAbGroup:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setAbGroup:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -261,31 +261,31 @@
     *(v5 + 24) |= 1u;
   }
 
-  v8 = [(NSString *)self->_abGroup copyWithZone:a3];
+  v8 = [(NSString *)self->_abGroup copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_triggerType != *(v4 + 5))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_triggerType != *(equalCopy + 5))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
 LABEL_14:
     v7 = 0;
@@ -294,19 +294,19 @@ LABEL_14:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_clientType != *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_clientType != *(equalCopy + 4))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_14;
   }
 
   abGroup = self->_abGroup;
-  if (abGroup | *(v4 + 1))
+  if (abGroup | *(equalCopy + 1))
   {
     v7 = [(NSString *)abGroup isEqual:?];
   }
@@ -347,28 +347,28 @@ LABEL_3:
   return v7 ^ v6 ^ [(NSString *)self->_abGroup hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if ((v5 & 2) != 0)
   {
-    self->_triggerType = *(v4 + 5);
+    self->_triggerType = *(fromCopy + 5);
     *&self->_has |= 2u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
   }
 
   if (v5)
   {
-    self->_clientType = *(v4 + 4);
+    self->_clientType = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(ATXPredictionUpdateCountPBPredictionUpdateCountTracker *)self setAbGroup:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

@@ -1,47 +1,47 @@
 @interface SFTranscriberModelOptions
-- (SFTranscriberModelOptions)initWithSupplementalModelURL:(id)a3 farField:(BOOL)a4 geoLMRegionID:(id)a5 modelOverrideURL:(id)a6 speechProfileURLs:(id)a7 taskForMemoryLock:(id)a8 atypicalSpeech:(BOOL)a9 enableParallelLoading:(BOOL)a10 enableFullPayloadCorrection:(BOOL)a11 languageModelCustomizationConfig:(id)a12;
+- (SFTranscriberModelOptions)initWithSupplementalModelURL:(id)l farField:(BOOL)field geoLMRegionID:(id)d modelOverrideURL:(id)rL speechProfileURLs:(id)ls taskForMemoryLock:(id)lock atypicalSpeech:(BOOL)speech enableParallelLoading:(BOOL)self0 enableFullPayloadCorrection:(BOOL)self1 languageModelCustomizationConfig:(id)self2;
 @end
 
 @implementation SFTranscriberModelOptions
 
-- (SFTranscriberModelOptions)initWithSupplementalModelURL:(id)a3 farField:(BOOL)a4 geoLMRegionID:(id)a5 modelOverrideURL:(id)a6 speechProfileURLs:(id)a7 taskForMemoryLock:(id)a8 atypicalSpeech:(BOOL)a9 enableParallelLoading:(BOOL)a10 enableFullPayloadCorrection:(BOOL)a11 languageModelCustomizationConfig:(id)a12
+- (SFTranscriberModelOptions)initWithSupplementalModelURL:(id)l farField:(BOOL)field geoLMRegionID:(id)d modelOverrideURL:(id)rL speechProfileURLs:(id)ls taskForMemoryLock:(id)lock atypicalSpeech:(BOOL)speech enableParallelLoading:(BOOL)self0 enableFullPayloadCorrection:(BOOL)self1 languageModelCustomizationConfig:(id)self2
 {
-  v18 = a5;
-  v19 = a7;
-  v20 = a12;
+  dCopy = d;
+  lsCopy = ls;
+  configCopy = config;
   v37.receiver = self;
   v37.super_class = SFTranscriberModelOptions;
-  v21 = a8;
-  v22 = a6;
-  v23 = a3;
+  lockCopy = lock;
+  rLCopy = rL;
+  lCopy = l;
   v24 = [(SFTranscriberModelOptions *)&v37 init];
-  v25 = [v23 copy];
+  v25 = [lCopy copy];
 
   supplementalModelURL = v24->_supplementalModelURL;
   v24->_supplementalModelURL = v25;
 
-  v24->_farField = a4;
+  v24->_farField = field;
   geoLMRegionID = v24->_geoLMRegionID;
-  v24->_geoLMRegionID = v18;
-  v28 = v18;
+  v24->_geoLMRegionID = dCopy;
+  v28 = dCopy;
 
-  v29 = [v22 copy];
+  v29 = [rLCopy copy];
   modelOverrideURL = v24->_modelOverrideURL;
   v24->_modelOverrideURL = v29;
 
   speechProfileURLs = v24->_speechProfileURLs;
-  v24->_speechProfileURLs = v19;
-  v32 = v19;
+  v24->_speechProfileURLs = lsCopy;
+  v32 = lsCopy;
 
-  v33 = [v21 copy];
+  v33 = [lockCopy copy];
   taskForMemoryLock = v24->_taskForMemoryLock;
   v24->_taskForMemoryLock = v33;
 
-  v24->_atypicalSpeech = a9;
-  v24->_enableParallelLoading = a10;
-  v24->_enableFullPayloadCorrection = a11;
+  v24->_atypicalSpeech = speech;
+  v24->_enableParallelLoading = loading;
+  v24->_enableFullPayloadCorrection = correction;
   languageModelCustomizationConfig = v24->_languageModelCustomizationConfig;
-  v24->_languageModelCustomizationConfig = v20;
+  v24->_languageModelCustomizationConfig = configCopy;
 
   return v24;
 }

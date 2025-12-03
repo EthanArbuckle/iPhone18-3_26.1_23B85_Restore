@@ -1,50 +1,50 @@
 @interface DirectionsPlan
-+ (id)_maps_expiryDateForRoute:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)_maps_expiryDateForRoute:(id)route;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)displayMethodAsString:(int)a3;
-- (id)transitPrioritizationAsString:(int)a3;
-- (int)StringAsDisplayMethod:(id)a3;
-- (int)StringAsTransitPrioritization:(id)a3;
+- (id)displayMethodAsString:(int)string;
+- (id)transitPrioritizationAsString:(int)string;
+- (int)StringAsDisplayMethod:(id)method;
+- (int)StringAsTransitPrioritization:(id)prioritization;
 - (int)displayMethod;
 - (int)transitPrioritization;
 - (unint64_t)hash;
-- (void)addHandlesForSharingETA:(id)a3;
-- (void)addPlanningWaypoint:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAvoidHighways:(BOOL)a3;
-- (void)setHasAvoidTolls:(BOOL)a3;
-- (void)setHasCurrentRouteIndex:(BOOL)a3;
-- (void)setHasCurrentRouteStep:(BOOL)a3;
-- (void)setHasDepartureTime:(BOOL)a3;
-- (void)setHasDisplayMethod:(BOOL)a3;
-- (void)setHasEarlierPagesLoaded:(BOOL)a3;
-- (void)setHasExpiryTime:(BOOL)a3;
-- (void)setHasIsPlayingTrace:(BOOL)a3;
-- (void)setHasLaterPagesLoaded:(BOOL)a3;
-- (void)setHasRoutesPerEarlierPage:(BOOL)a3;
-- (void)setHasRoutesPerInitialPage:(BOOL)a3;
-- (void)setHasRoutesPerLaterPage:(BOOL)a3;
-- (void)setHasShouldRestoreLowGuidance:(BOOL)a3;
-- (void)setHasTransitPrioritization:(BOOL)a3;
-- (void)setHasTransitSurchargeOption:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addHandlesForSharingETA:(id)a;
+- (void)addPlanningWaypoint:(id)waypoint;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAvoidHighways:(BOOL)highways;
+- (void)setHasAvoidTolls:(BOOL)tolls;
+- (void)setHasCurrentRouteIndex:(BOOL)index;
+- (void)setHasCurrentRouteStep:(BOOL)step;
+- (void)setHasDepartureTime:(BOOL)time;
+- (void)setHasDisplayMethod:(BOOL)method;
+- (void)setHasEarlierPagesLoaded:(BOOL)loaded;
+- (void)setHasExpiryTime:(BOOL)time;
+- (void)setHasIsPlayingTrace:(BOOL)trace;
+- (void)setHasLaterPagesLoaded:(BOOL)loaded;
+- (void)setHasRoutesPerEarlierPage:(BOOL)page;
+- (void)setHasRoutesPerInitialPage:(BOOL)page;
+- (void)setHasRoutesPerLaterPage:(BOOL)page;
+- (void)setHasShouldRestoreLowGuidance:(BOOL)guidance;
+- (void)setHasTransitPrioritization:(BOOL)prioritization;
+- (void)setHasTransitSurchargeOption:(BOOL)option;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DirectionsPlan
 
-+ (id)_maps_expiryDateForRoute:(id)a3
++ (id)_maps_expiryDateForRoute:(id)route
 {
-  if (a3)
+  if (route)
   {
-    v3 = [a3 expectedTime];
-    v4 = v3 + 3600.0;
-    if (v3 <= 0xE10)
+    expectedTime = [route expectedTime];
+    v4 = expectedTime + 3600.0;
+    if (expectedTime <= 0xE10)
     {
-      v4 = (2 * v3);
+      v4 = (2 * expectedTime);
     }
   }
 
@@ -56,11 +56,11 @@
   return [NSDate dateWithTimeIntervalSinceNow:v4];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   routeRequestStorage = self->_routeRequestStorage;
-  v6 = *(v4 + 13);
+  v6 = *(fromCopy + 13);
   if (routeRequestStorage)
   {
     if (v6)
@@ -74,22 +74,22 @@
     [(DirectionsPlan *)self setRouteRequestStorage:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(DirectionsPlan *)self setOriginString:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(DirectionsPlan *)self setDestinationString:?];
   }
 
-  v7 = *(v4 + 37);
+  v7 = *(fromCopy + 37);
   if ((v7 & 8) != 0)
   {
-    self->_departureTime = *(v4 + 4);
+    self->_departureTime = *(fromCopy + 4);
     *&self->_has |= 8u;
-    v7 = *(v4 + 37);
+    v7 = *(fromCopy + 37);
     if ((v7 & 1) == 0)
     {
 LABEL_12:
@@ -107,9 +107,9 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  self->_arrivalTime = *(v4 + 1);
+  self->_arrivalTime = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v7 = *(v4 + 37);
+  v7 = *(fromCopy + 37);
   if ((v7 & 2) == 0)
   {
 LABEL_13:
@@ -122,9 +122,9 @@ LABEL_13:
   }
 
 LABEL_21:
-  self->_currentRouteIndex = *(v4 + 2);
+  self->_currentRouteIndex = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v7 = *(v4 + 37);
+  v7 = *(fromCopy + 37);
   if ((v7 & 4) == 0)
   {
 LABEL_14:
@@ -137,18 +137,18 @@ LABEL_14:
   }
 
 LABEL_22:
-  self->_currentRouteStep = *(v4 + 3);
+  self->_currentRouteStep = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if ((*(v4 + 37) & 0x20) != 0)
+  if ((*(fromCopy + 37) & 0x20) != 0)
   {
 LABEL_15:
-    self->_displayMethod = *(v4 + 16);
+    self->_displayMethod = *(fromCopy + 16);
     *&self->_has |= 0x20u;
   }
 
 LABEL_16:
   transitPreferences = self->_transitPreferences;
-  v9 = *(v4 + 16);
+  v9 = *(fromCopy + 16);
   if (transitPreferences)
   {
     if (v9)
@@ -162,12 +162,12 @@ LABEL_16:
     [(DirectionsPlan *)self setTransitPreferences:?];
   }
 
-  v10 = *(v4 + 37);
+  v10 = *(fromCopy + 37);
   if ((v10 & 0x200) != 0)
   {
-    self->_routesPerInitialPage = *(v4 + 29);
+    self->_routesPerInitialPage = *(fromCopy + 29);
     *&self->_has |= 0x200u;
-    v10 = *(v4 + 37);
+    v10 = *(fromCopy + 37);
     if ((v10 & 0x40) == 0)
     {
 LABEL_28:
@@ -185,9 +185,9 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  self->_earlierPagesLoaded = *(v4 + 17);
+  self->_earlierPagesLoaded = *(fromCopy + 17);
   *&self->_has |= 0x40u;
-  v10 = *(v4 + 37);
+  v10 = *(fromCopy + 37);
   if ((v10 & 0x80) == 0)
   {
 LABEL_29:
@@ -200,9 +200,9 @@ LABEL_29:
   }
 
 LABEL_59:
-  self->_laterPagesLoaded = *(v4 + 20);
+  self->_laterPagesLoaded = *(fromCopy + 20);
   *&self->_has |= 0x80u;
-  v10 = *(v4 + 37);
+  v10 = *(fromCopy + 37);
   if ((v10 & 0x100) == 0)
   {
 LABEL_30:
@@ -215,9 +215,9 @@ LABEL_30:
   }
 
 LABEL_60:
-  self->_routesPerEarlierPage = *(v4 + 28);
+  self->_routesPerEarlierPage = *(fromCopy + 28);
   *&self->_has |= 0x100u;
-  v10 = *(v4 + 37);
+  v10 = *(fromCopy + 37);
   if ((v10 & 0x400) == 0)
   {
 LABEL_31:
@@ -230,9 +230,9 @@ LABEL_31:
   }
 
 LABEL_61:
-  self->_routesPerLaterPage = *(v4 + 30);
+  self->_routesPerLaterPage = *(fromCopy + 30);
   *&self->_has |= 0x400u;
-  v10 = *(v4 + 37);
+  v10 = *(fromCopy + 37);
   if ((v10 & 0x800) == 0)
   {
 LABEL_32:
@@ -245,9 +245,9 @@ LABEL_32:
   }
 
 LABEL_62:
-  self->_transitPrioritization = *(v4 + 34);
+  self->_transitPrioritization = *(fromCopy + 34);
   *&self->_has |= 0x800u;
-  v10 = *(v4 + 37);
+  v10 = *(fromCopy + 37);
   if ((v10 & 0x1000) == 0)
   {
 LABEL_33:
@@ -260,9 +260,9 @@ LABEL_33:
   }
 
 LABEL_63:
-  self->_transitSurchargeOption = *(v4 + 35);
+  self->_transitSurchargeOption = *(fromCopy + 35);
   *&self->_has |= 0x1000u;
-  v10 = *(v4 + 37);
+  v10 = *(fromCopy + 37);
   if ((v10 & 0x10) == 0)
   {
 LABEL_34:
@@ -275,9 +275,9 @@ LABEL_34:
   }
 
 LABEL_64:
-  self->_expiryTime = *(v4 + 5);
+  self->_expiryTime = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v10 = *(v4 + 37);
+  v10 = *(fromCopy + 37);
   if ((v10 & 0x10000) == 0)
   {
 LABEL_35:
@@ -290,9 +290,9 @@ LABEL_35:
   }
 
 LABEL_65:
-  self->_shouldRestoreLowGuidance = *(v4 + 147);
+  self->_shouldRestoreLowGuidance = *(fromCopy + 147);
   *&self->_has |= 0x10000u;
-  v10 = *(v4 + 37);
+  v10 = *(fromCopy + 37);
   if ((v10 & 0x4000) == 0)
   {
 LABEL_36:
@@ -305,12 +305,12 @@ LABEL_36:
   }
 
 LABEL_66:
-  self->_avoidTolls = *(v4 + 145);
+  self->_avoidTolls = *(fromCopy + 145);
   *&self->_has |= 0x4000u;
-  if ((*(v4 + 37) & 0x2000) != 0)
+  if ((*(fromCopy + 37) & 0x2000) != 0)
   {
 LABEL_37:
-    self->_avoidHighways = *(v4 + 144);
+    self->_avoidHighways = *(fromCopy + 144);
     *&self->_has |= 0x2000u;
   }
 
@@ -319,7 +319,7 @@ LABEL_38:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = *(v4 + 12);
+  v11 = *(fromCopy + 12);
   v12 = [v11 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v12)
   {
@@ -347,7 +347,7 @@ LABEL_38:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v16 = *(v4 + 9);
+  v16 = *(fromCopy + 9);
   v17 = [v16 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v17)
   {
@@ -371,14 +371,14 @@ LABEL_38:
     while (v18);
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(DirectionsPlan *)self setCompanionRouteContextData:?];
   }
 
-  if ((*(v4 + 149) & 0x80) != 0)
+  if ((*(fromCopy + 149) & 0x80) != 0)
   {
-    self->_isPlayingTrace = *(v4 + 146);
+    self->_isPlayingTrace = *(fromCopy + 146);
     *&self->_has |= 0x8000u;
   }
 }
@@ -649,16 +649,16 @@ LABEL_46:
   return v39 ^ v40 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v13 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_113;
   }
 
   routeRequestStorage = self->_routeRequestStorage;
-  if (routeRequestStorage | *(v4 + 13))
+  if (routeRequestStorage | *(equalCopy + 13))
   {
     if (![(GEOStorageRouteRequestStorage *)routeRequestStorage isEqual:?])
     {
@@ -667,7 +667,7 @@ LABEL_46:
   }
 
   originString = self->_originString;
-  if (originString | *(v4 + 11))
+  if (originString | *(equalCopy + 11))
   {
     if (![(NSString *)originString isEqual:?])
     {
@@ -676,7 +676,7 @@ LABEL_46:
   }
 
   destinationString = self->_destinationString;
-  if (destinationString | *(v4 + 7))
+  if (destinationString | *(equalCopy + 7))
   {
     if (![(NSString *)destinationString isEqual:?])
     {
@@ -685,10 +685,10 @@ LABEL_46:
   }
 
   has = self->_has;
-  v9 = *(v4 + 37);
+  v9 = *(equalCopy + 37);
   if ((*&has & 8) != 0)
   {
-    if ((v9 & 8) == 0 || self->_departureTime != *(v4 + 4))
+    if ((v9 & 8) == 0 || self->_departureTime != *(equalCopy + 4))
     {
       goto LABEL_113;
     }
@@ -701,7 +701,7 @@ LABEL_46:
 
   if (*&has)
   {
-    if ((v9 & 1) == 0 || self->_arrivalTime != *(v4 + 1))
+    if ((v9 & 1) == 0 || self->_arrivalTime != *(equalCopy + 1))
     {
       goto LABEL_113;
     }
@@ -714,7 +714,7 @@ LABEL_46:
 
   if ((*&has & 2) != 0)
   {
-    if ((v9 & 2) == 0 || self->_currentRouteIndex != *(v4 + 2))
+    if ((v9 & 2) == 0 || self->_currentRouteIndex != *(equalCopy + 2))
     {
       goto LABEL_113;
     }
@@ -727,7 +727,7 @@ LABEL_46:
 
   if ((*&has & 4) != 0)
   {
-    if ((v9 & 4) == 0 || self->_currentRouteStep != *(v4 + 3))
+    if ((v9 & 4) == 0 || self->_currentRouteStep != *(equalCopy + 3))
     {
       goto LABEL_113;
     }
@@ -740,7 +740,7 @@ LABEL_46:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v9 & 0x20) == 0 || self->_displayMethod != *(v4 + 16))
+    if ((v9 & 0x20) == 0 || self->_displayMethod != *(equalCopy + 16))
     {
       goto LABEL_113;
     }
@@ -752,7 +752,7 @@ LABEL_46:
   }
 
   transitPreferences = self->_transitPreferences;
-  if (transitPreferences | *(v4 + 16))
+  if (transitPreferences | *(equalCopy + 16))
   {
     if (![(DirectionsPlanTransitPreferences *)transitPreferences isEqual:?])
     {
@@ -760,12 +760,12 @@ LABEL_46:
     }
 
     has = self->_has;
-    v9 = *(v4 + 37);
+    v9 = *(equalCopy + 37);
   }
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v9 & 0x200) == 0 || self->_routesPerInitialPage != *(v4 + 29))
+    if ((v9 & 0x200) == 0 || self->_routesPerInitialPage != *(equalCopy + 29))
     {
       goto LABEL_113;
     }
@@ -778,7 +778,7 @@ LABEL_46:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v9 & 0x40) == 0 || self->_earlierPagesLoaded != *(v4 + 17))
+    if ((v9 & 0x40) == 0 || self->_earlierPagesLoaded != *(equalCopy + 17))
     {
       goto LABEL_113;
     }
@@ -791,7 +791,7 @@ LABEL_46:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v9 & 0x80) == 0 || self->_laterPagesLoaded != *(v4 + 20))
+    if ((v9 & 0x80) == 0 || self->_laterPagesLoaded != *(equalCopy + 20))
     {
       goto LABEL_113;
     }
@@ -804,7 +804,7 @@ LABEL_46:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v9 & 0x100) == 0 || self->_routesPerEarlierPage != *(v4 + 28))
+    if ((v9 & 0x100) == 0 || self->_routesPerEarlierPage != *(equalCopy + 28))
     {
       goto LABEL_113;
     }
@@ -817,7 +817,7 @@ LABEL_46:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v9 & 0x400) == 0 || self->_routesPerLaterPage != *(v4 + 30))
+    if ((v9 & 0x400) == 0 || self->_routesPerLaterPage != *(equalCopy + 30))
     {
       goto LABEL_113;
     }
@@ -830,7 +830,7 @@ LABEL_46:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v9 & 0x800) == 0 || self->_transitPrioritization != *(v4 + 34))
+    if ((v9 & 0x800) == 0 || self->_transitPrioritization != *(equalCopy + 34))
     {
       goto LABEL_113;
     }
@@ -843,7 +843,7 @@ LABEL_46:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v9 & 0x1000) == 0 || self->_transitSurchargeOption != *(v4 + 35))
+    if ((v9 & 0x1000) == 0 || self->_transitSurchargeOption != *(equalCopy + 35))
     {
       goto LABEL_113;
     }
@@ -856,7 +856,7 @@ LABEL_46:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v9 & 0x10) == 0 || self->_expiryTime != *(v4 + 5))
+    if ((v9 & 0x10) == 0 || self->_expiryTime != *(equalCopy + 5))
     {
       goto LABEL_113;
     }
@@ -876,13 +876,13 @@ LABEL_46:
 
     if (self->_shouldRestoreLowGuidance)
     {
-      if ((*(v4 + 147) & 1) == 0)
+      if ((*(equalCopy + 147) & 1) == 0)
       {
         goto LABEL_113;
       }
     }
 
-    else if (*(v4 + 147))
+    else if (*(equalCopy + 147))
     {
       goto LABEL_113;
     }
@@ -902,13 +902,13 @@ LABEL_46:
 
     if (self->_avoidTolls)
     {
-      if ((*(v4 + 145) & 1) == 0)
+      if ((*(equalCopy + 145) & 1) == 0)
       {
         goto LABEL_113;
       }
     }
 
-    else if (*(v4 + 145))
+    else if (*(equalCopy + 145))
     {
       goto LABEL_113;
     }
@@ -928,13 +928,13 @@ LABEL_46:
 
     if (self->_avoidHighways)
     {
-      if ((*(v4 + 144) & 1) == 0)
+      if ((*(equalCopy + 144) & 1) == 0)
       {
         goto LABEL_113;
       }
     }
 
-    else if (*(v4 + 144))
+    else if (*(equalCopy + 144))
     {
       goto LABEL_113;
     }
@@ -946,13 +946,13 @@ LABEL_46:
   }
 
   planningWaypoints = self->_planningWaypoints;
-  if (planningWaypoints | *(v4 + 12) && ![(NSMutableArray *)planningWaypoints isEqual:?])
+  if (planningWaypoints | *(equalCopy + 12) && ![(NSMutableArray *)planningWaypoints isEqual:?])
   {
     goto LABEL_113;
   }
 
   handlesForSharingETAs = self->_handlesForSharingETAs;
-  if (handlesForSharingETAs | *(v4 + 9))
+  if (handlesForSharingETAs | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)handlesForSharingETAs isEqual:?])
     {
@@ -961,7 +961,7 @@ LABEL_46:
   }
 
   companionRouteContextData = self->_companionRouteContextData;
-  if (companionRouteContextData | *(v4 + 6))
+  if (companionRouteContextData | *(equalCopy + 6))
   {
     if (![(NSData *)companionRouteContextData isEqual:?])
     {
@@ -971,11 +971,11 @@ LABEL_46:
 
   if ((*(&self->_has + 1) & 0x80) != 0)
   {
-    if ((*(v4 + 37) & 0x8000) != 0)
+    if ((*(equalCopy + 37) & 0x8000) != 0)
     {
       if (self->_isPlayingTrace)
       {
-        if (*(v4 + 146))
+        if (*(equalCopy + 146))
         {
 LABEL_111:
           v14 = 1;
@@ -983,7 +983,7 @@ LABEL_111:
         }
       }
 
-      else if (!*(v4 + 146))
+      else if (!*(equalCopy + 146))
       {
         goto LABEL_111;
       }
@@ -994,24 +994,24 @@ LABEL_113:
     goto LABEL_114;
   }
 
-  v14 = (*(v4 + 37) & 0x8000) == 0;
+  v14 = (*(equalCopy + 37) & 0x8000) == 0;
 LABEL_114:
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(GEOStorageRouteRequestStorage *)self->_routeRequestStorage copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(GEOStorageRouteRequestStorage *)self->_routeRequestStorage copyWithZone:zone];
   v7 = v5[13];
   v5[13] = v6;
 
-  v8 = [(NSString *)self->_originString copyWithZone:a3];
+  v8 = [(NSString *)self->_originString copyWithZone:zone];
   v9 = v5[11];
   v5[11] = v8;
 
-  v10 = [(NSString *)self->_destinationString copyWithZone:a3];
+  v10 = [(NSString *)self->_destinationString copyWithZone:zone];
   v11 = v5[7];
   v5[7] = v10;
 
@@ -1078,7 +1078,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  v13 = [(DirectionsPlanTransitPreferences *)self->_transitPreferences copyWithZone:a3];
+  v13 = [(DirectionsPlanTransitPreferences *)self->_transitPreferences copyWithZone:zone];
   v14 = v5[16];
   v5[16] = v13;
 
@@ -1255,7 +1255,7 @@ LABEL_19:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v35 + 1) + 8 * v20) copyWithZone:a3];
+        v21 = [*(*(&v35 + 1) + 8 * v20) copyWithZone:zone];
         [v5 addPlanningWaypoint:v21];
 
         v20 = v20 + 1;
@@ -1288,7 +1288,7 @@ LABEL_19:
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v31 + 1) + 8 * v26) copyWithZone:{a3, v31}];
+        v27 = [*(*(&v31 + 1) + 8 * v26) copyWithZone:{zone, v31}];
         [v5 addHandlesForSharingETA:v27];
 
         v26 = v26 + 1;
@@ -1301,7 +1301,7 @@ LABEL_19:
     while (v24);
   }
 
-  v28 = [(NSData *)self->_companionRouteContextData copyWithZone:a3];
+  v28 = [(NSData *)self->_companionRouteContextData copyWithZone:zone];
   v29 = v5[6];
   v5[6] = v28;
 
@@ -1314,33 +1314,33 @@ LABEL_19:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v15 = v4;
+  toCopy = to;
+  v15 = toCopy;
   if (self->_routeRequestStorage)
   {
-    [v4 setRouteRequestStorage:?];
-    v4 = v15;
+    [toCopy setRouteRequestStorage:?];
+    toCopy = v15;
   }
 
   if (self->_originString)
   {
     [v15 setOriginString:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_destinationString)
   {
     [v15 setDestinationString:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   has = self->_has;
   if ((*&has & 8) != 0)
   {
-    *(v4 + 4) = *&self->_departureTime;
-    *(v4 + 37) |= 8u;
+    *(toCopy + 4) = *&self->_departureTime;
+    *(toCopy + 37) |= 8u;
     has = self->_has;
     if ((*&has & 1) == 0)
     {
@@ -1359,8 +1359,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 1) = *&self->_arrivalTime;
-  *(v4 + 37) |= 1u;
+  *(toCopy + 1) = *&self->_arrivalTime;
+  *(toCopy + 37) |= 1u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1374,8 +1374,8 @@ LABEL_10:
   }
 
 LABEL_44:
-  *(v4 + 2) = self->_currentRouteIndex;
-  *(v4 + 37) |= 2u;
+  *(toCopy + 2) = self->_currentRouteIndex;
+  *(toCopy + 37) |= 2u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1389,27 +1389,27 @@ LABEL_11:
   }
 
 LABEL_45:
-  *(v4 + 3) = self->_currentRouteStep;
-  *(v4 + 37) |= 4u;
+  *(toCopy + 3) = self->_currentRouteStep;
+  *(toCopy + 37) |= 4u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_12:
-    *(v4 + 16) = self->_displayMethod;
-    *(v4 + 37) |= 0x20u;
+    *(toCopy + 16) = self->_displayMethod;
+    *(toCopy + 37) |= 0x20u;
   }
 
 LABEL_13:
   if (self->_transitPreferences)
   {
     [v15 setTransitPreferences:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x200) != 0)
   {
-    *(v4 + 29) = self->_routesPerInitialPage;
-    *(v4 + 37) |= 0x200u;
+    *(toCopy + 29) = self->_routesPerInitialPage;
+    *(toCopy + 37) |= 0x200u;
     v6 = self->_has;
     if ((*&v6 & 0x40) == 0)
     {
@@ -1428,8 +1428,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  *(v4 + 17) = self->_earlierPagesLoaded;
-  *(v4 + 37) |= 0x40u;
+  *(toCopy + 17) = self->_earlierPagesLoaded;
+  *(toCopy + 37) |= 0x40u;
   v6 = self->_has;
   if ((*&v6 & 0x80) == 0)
   {
@@ -1443,8 +1443,8 @@ LABEL_18:
   }
 
 LABEL_49:
-  *(v4 + 20) = self->_laterPagesLoaded;
-  *(v4 + 37) |= 0x80u;
+  *(toCopy + 20) = self->_laterPagesLoaded;
+  *(toCopy + 37) |= 0x80u;
   v6 = self->_has;
   if ((*&v6 & 0x100) == 0)
   {
@@ -1458,8 +1458,8 @@ LABEL_19:
   }
 
 LABEL_50:
-  *(v4 + 28) = self->_routesPerEarlierPage;
-  *(v4 + 37) |= 0x100u;
+  *(toCopy + 28) = self->_routesPerEarlierPage;
+  *(toCopy + 37) |= 0x100u;
   v6 = self->_has;
   if ((*&v6 & 0x400) == 0)
   {
@@ -1473,8 +1473,8 @@ LABEL_20:
   }
 
 LABEL_51:
-  *(v4 + 30) = self->_routesPerLaterPage;
-  *(v4 + 37) |= 0x400u;
+  *(toCopy + 30) = self->_routesPerLaterPage;
+  *(toCopy + 37) |= 0x400u;
   v6 = self->_has;
   if ((*&v6 & 0x800) == 0)
   {
@@ -1488,8 +1488,8 @@ LABEL_21:
   }
 
 LABEL_52:
-  *(v4 + 34) = self->_transitPrioritization;
-  *(v4 + 37) |= 0x800u;
+  *(toCopy + 34) = self->_transitPrioritization;
+  *(toCopy + 37) |= 0x800u;
   v6 = self->_has;
   if ((*&v6 & 0x1000) == 0)
   {
@@ -1503,8 +1503,8 @@ LABEL_22:
   }
 
 LABEL_53:
-  *(v4 + 35) = self->_transitSurchargeOption;
-  *(v4 + 37) |= 0x1000u;
+  *(toCopy + 35) = self->_transitSurchargeOption;
+  *(toCopy + 37) |= 0x1000u;
   v6 = self->_has;
   if ((*&v6 & 0x10) == 0)
   {
@@ -1518,8 +1518,8 @@ LABEL_23:
   }
 
 LABEL_54:
-  *(v4 + 5) = *&self->_expiryTime;
-  *(v4 + 37) |= 0x10u;
+  *(toCopy + 5) = *&self->_expiryTime;
+  *(toCopy + 37) |= 0x10u;
   v6 = self->_has;
   if ((*&v6 & 0x10000) == 0)
   {
@@ -1530,8 +1530,8 @@ LABEL_24:
     }
 
 LABEL_56:
-    *(v4 + 145) = self->_avoidTolls;
-    *(v4 + 37) |= 0x4000u;
+    *(toCopy + 145) = self->_avoidTolls;
+    *(toCopy + 37) |= 0x4000u;
     if ((*&self->_has & 0x2000) == 0)
     {
       goto LABEL_27;
@@ -1541,8 +1541,8 @@ LABEL_56:
   }
 
 LABEL_55:
-  *(v4 + 147) = self->_shouldRestoreLowGuidance;
-  *(v4 + 37) |= 0x10000u;
+  *(toCopy + 147) = self->_shouldRestoreLowGuidance;
+  *(toCopy + 37) |= 0x10000u;
   v6 = self->_has;
   if ((*&v6 & 0x4000) != 0)
   {
@@ -1553,18 +1553,18 @@ LABEL_25:
   if ((*&v6 & 0x2000) != 0)
   {
 LABEL_26:
-    *(v4 + 144) = self->_avoidHighways;
-    *(v4 + 37) |= 0x2000u;
+    *(toCopy + 144) = self->_avoidHighways;
+    *(toCopy + 37) |= 0x2000u;
   }
 
 LABEL_27:
   if ([(DirectionsPlan *)self planningWaypointsCount])
   {
     [v15 clearPlanningWaypoints];
-    v7 = [(DirectionsPlan *)self planningWaypointsCount];
-    if (v7)
+    planningWaypointsCount = [(DirectionsPlan *)self planningWaypointsCount];
+    if (planningWaypointsCount)
     {
-      v8 = v7;
+      v8 = planningWaypointsCount;
       for (i = 0; i != v8; ++i)
       {
         v10 = [(DirectionsPlan *)self planningWaypointAtIndex:i];
@@ -1576,10 +1576,10 @@ LABEL_27:
   if ([(DirectionsPlan *)self handlesForSharingETAsCount])
   {
     [v15 clearHandlesForSharingETAs];
-    v11 = [(DirectionsPlan *)self handlesForSharingETAsCount];
-    if (v11)
+    handlesForSharingETAsCount = [(DirectionsPlan *)self handlesForSharingETAsCount];
+    if (handlesForSharingETAsCount)
     {
-      v12 = v11;
+      v12 = handlesForSharingETAsCount;
       for (j = 0; j != v12; ++j)
       {
         v14 = [(DirectionsPlan *)self handlesForSharingETAAtIndex:j];
@@ -1600,9 +1600,9 @@ LABEL_27:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_routeRequestStorage)
   {
     PBDataWriterWriteSubmessage();
@@ -1902,8 +1902,8 @@ LABEL_27:
   routeRequestStorage = self->_routeRequestStorage;
   if (routeRequestStorage)
   {
-    v5 = [(GEOStorageRouteRequestStorage *)routeRequestStorage dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"routeRequestStorage"];
+    dictionaryRepresentation = [(GEOStorageRouteRequestStorage *)routeRequestStorage dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"routeRequestStorage"];
   }
 
   originString = self->_originString;
@@ -2000,8 +2000,8 @@ LABEL_21:
   transitPreferences = self->_transitPreferences;
   if (transitPreferences)
   {
-    v16 = [(DirectionsPlanTransitPreferences *)transitPreferences dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"transitPreferences"];
+    dictionaryRepresentation2 = [(DirectionsPlanTransitPreferences *)transitPreferences dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"transitPreferences"];
   }
 
   v17 = self->_has;
@@ -2215,8 +2215,8 @@ LABEL_36:
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v41 + 1) + 8 * i) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation3 = [*(*(&v41 + 1) + 8 * i) dictionaryRepresentation];
+          [v19 addObject:dictionaryRepresentation3];
         }
 
         v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v41 objects:v45 count:16];
@@ -2248,51 +2248,51 @@ LABEL_36:
   v7.receiver = self;
   v7.super_class = DirectionsPlan;
   v3 = [(DirectionsPlan *)&v7 description];
-  v4 = [(DirectionsPlan *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(DirectionsPlan *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)addHandlesForSharingETA:(id)a3
+- (void)addHandlesForSharingETA:(id)a
 {
-  v4 = a3;
+  aCopy = a;
   handlesForSharingETAs = self->_handlesForSharingETAs;
-  v8 = v4;
+  v8 = aCopy;
   if (!handlesForSharingETAs)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_handlesForSharingETAs;
     self->_handlesForSharingETAs = v6;
 
-    v4 = v8;
+    aCopy = v8;
     handlesForSharingETAs = self->_handlesForSharingETAs;
   }
 
-  [(NSMutableArray *)handlesForSharingETAs addObject:v4];
+  [(NSMutableArray *)handlesForSharingETAs addObject:aCopy];
 }
 
-- (void)addPlanningWaypoint:(id)a3
+- (void)addPlanningWaypoint:(id)waypoint
 {
-  v4 = a3;
+  waypointCopy = waypoint;
   planningWaypoints = self->_planningWaypoints;
-  v8 = v4;
+  v8 = waypointCopy;
   if (!planningWaypoints)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_planningWaypoints;
     self->_planningWaypoints = v6;
 
-    v4 = v8;
+    waypointCopy = v8;
     planningWaypoints = self->_planningWaypoints;
   }
 
-  [(NSMutableArray *)planningWaypoints addObject:v4];
+  [(NSMutableArray *)planningWaypoints addObject:waypointCopy];
 }
 
-- (void)setHasAvoidHighways:(BOOL)a3
+- (void)setHasAvoidHighways:(BOOL)highways
 {
-  if (a3)
+  if (highways)
   {
     v3 = 0x2000;
   }
@@ -2305,9 +2305,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasAvoidTolls:(BOOL)a3
+- (void)setHasAvoidTolls:(BOOL)tolls
 {
-  if (a3)
+  if (tolls)
   {
     v3 = 0x4000;
   }
@@ -2320,9 +2320,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasShouldRestoreLowGuidance:(BOOL)a3
+- (void)setHasShouldRestoreLowGuidance:(BOOL)guidance
 {
-  if (a3)
+  if (guidance)
   {
     v3 = 0x10000;
   }
@@ -2335,9 +2335,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasIsPlayingTrace:(BOOL)a3
+- (void)setHasIsPlayingTrace:(BOOL)trace
 {
-  if (a3)
+  if (trace)
   {
     v3 = 0x8000;
   }
@@ -2350,9 +2350,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasExpiryTime:(BOOL)a3
+- (void)setHasExpiryTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 16;
   }
@@ -2365,9 +2365,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasTransitSurchargeOption:(BOOL)a3
+- (void)setHasTransitSurchargeOption:(BOOL)option
 {
-  if (a3)
+  if (option)
   {
     v3 = 4096;
   }
@@ -2380,25 +2380,25 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (int)StringAsTransitPrioritization:(id)a3
+- (int)StringAsTransitPrioritization:(id)prioritization
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"TRANSIT_PRIORITIZE_DEFAULT"])
+  prioritizationCopy = prioritization;
+  if ([prioritizationCopy isEqualToString:@"TRANSIT_PRIORITIZE_DEFAULT"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"TRANSIT_PRIORITIZE_BY_TRAVEL_TIME"])
+  else if ([prioritizationCopy isEqualToString:@"TRANSIT_PRIORITIZE_BY_TRAVEL_TIME"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TRANSIT_PRIORITIZE_BY_TRANSFER_COUNT"])
+  else if ([prioritizationCopy isEqualToString:@"TRANSIT_PRIORITIZE_BY_TRANSFER_COUNT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TRANSIT_PRIORITIZE_BY_WALKING_DISTANCE"])
+  else if ([prioritizationCopy isEqualToString:@"TRANSIT_PRIORITIZE_BY_WALKING_DISTANCE"])
   {
     v4 = 3;
   }
@@ -2411,24 +2411,24 @@ LABEL_36:
   return v4;
 }
 
-- (id)transitPrioritizationAsString:(int)a3
+- (id)transitPrioritizationAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_101632C20[a3];
+    v4 = off_101632C20[string];
   }
 
   return v4;
 }
 
-- (void)setHasTransitPrioritization:(BOOL)a3
+- (void)setHasTransitPrioritization:(BOOL)prioritization
 {
-  if (a3)
+  if (prioritization)
   {
     v3 = 2048;
   }
@@ -2454,9 +2454,9 @@ LABEL_36:
   }
 }
 
-- (void)setHasRoutesPerLaterPage:(BOOL)a3
+- (void)setHasRoutesPerLaterPage:(BOOL)page
 {
-  if (a3)
+  if (page)
   {
     v3 = 1024;
   }
@@ -2469,9 +2469,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasRoutesPerEarlierPage:(BOOL)a3
+- (void)setHasRoutesPerEarlierPage:(BOOL)page
 {
-  if (a3)
+  if (page)
   {
     v3 = 256;
   }
@@ -2484,9 +2484,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasLaterPagesLoaded:(BOOL)a3
+- (void)setHasLaterPagesLoaded:(BOOL)loaded
 {
-  if (a3)
+  if (loaded)
   {
     v3 = 128;
   }
@@ -2499,9 +2499,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasEarlierPagesLoaded:(BOOL)a3
+- (void)setHasEarlierPagesLoaded:(BOOL)loaded
 {
-  if (a3)
+  if (loaded)
   {
     v3 = 64;
   }
@@ -2514,9 +2514,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasRoutesPerInitialPage:(BOOL)a3
+- (void)setHasRoutesPerInitialPage:(BOOL)page
 {
-  if (a3)
+  if (page)
   {
     v3 = 512;
   }
@@ -2529,20 +2529,20 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (int)StringAsDisplayMethod:(id)a3
+- (int)StringAsDisplayMethod:(id)method
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DirectionsSearch"])
+  methodCopy = method;
+  if ([methodCopy isEqualToString:@"DirectionsSearch"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"RoutePicking"])
+  else if ([methodCopy isEqualToString:@"RoutePicking"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DirectionsStarted"])
+  else if ([methodCopy isEqualToString:@"DirectionsStarted"])
   {
     v4 = 2;
   }
@@ -2555,24 +2555,24 @@ LABEL_36:
   return v4;
 }
 
-- (id)displayMethodAsString:(int)a3
+- (id)displayMethodAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_101632C08[a3];
+    v4 = off_101632C08[string];
   }
 
   return v4;
 }
 
-- (void)setHasDisplayMethod:(BOOL)a3
+- (void)setHasDisplayMethod:(BOOL)method
 {
-  if (a3)
+  if (method)
   {
     v3 = 32;
   }
@@ -2598,9 +2598,9 @@ LABEL_36:
   }
 }
 
-- (void)setHasCurrentRouteStep:(BOOL)a3
+- (void)setHasCurrentRouteStep:(BOOL)step
 {
-  if (a3)
+  if (step)
   {
     v3 = 4;
   }
@@ -2613,9 +2613,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasCurrentRouteIndex:(BOOL)a3
+- (void)setHasCurrentRouteIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }
@@ -2628,9 +2628,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasDepartureTime:(BOOL)a3
+- (void)setHasDepartureTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 8;
   }

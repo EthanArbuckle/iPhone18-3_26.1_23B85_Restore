@@ -1,17 +1,17 @@
 @interface _AKAppleIDPasskeyRequestState
-+ (id)stateWithContext:(id)a3 completion:(id)a4;
++ (id)stateWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation _AKAppleIDPasskeyRequestState
 
-+ (id)stateWithContext:(id)a3 completion:(id)a4
++ (id)stateWithContext:(id)context completion:(id)completion
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, completion);
   v7 = objc_alloc_init(_AKAppleIDPasskeyRequestState);
   [(_AKAppleIDPasskeyRequestState *)v7 setContext:location[0]];
   [(_AKAppleIDPasskeyRequestState *)v7 setCompletion:v8];

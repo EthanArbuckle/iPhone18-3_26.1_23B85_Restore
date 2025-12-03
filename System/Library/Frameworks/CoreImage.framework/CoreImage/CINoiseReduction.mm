@@ -32,17 +32,17 @@
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(CIImage *)self->inputImage imageByClampingToExtent];
-  v21 = [(CINoiseReduction *)self _CINoiseReduction];
+  imageByClampingToExtent = [(CIImage *)self->inputImage imageByClampingToExtent];
+  _CINoiseReduction = [(CINoiseReduction *)self _CINoiseReduction];
   v22 = *MEMORY[0x1E695F040];
   v23 = *(MEMORY[0x1E695F040] + 8);
   v24 = *(MEMORY[0x1E695F040] + 16);
   v25 = *(MEMORY[0x1E695F040] + 24);
-  v27[0] = v20;
+  v27[0] = imageByClampingToExtent;
   v27[1] = v10;
   v27[2] = v11;
   v27[3] = v9;
-  return [objc_msgSend(v21 applyWithExtent:&__block_literal_global_64 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v27, 4), v22, v23, v24, v25), "imageByCroppingToRect:", v13, v15, v17, v19}];
+  return [objc_msgSend(_CINoiseReduction applyWithExtent:&__block_literal_global_64 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v27, 4), v22, v23, v24, v25), "imageByCroppingToRect:", v13, v15, v17, v19}];
 }
 
 + (id)customAttributes

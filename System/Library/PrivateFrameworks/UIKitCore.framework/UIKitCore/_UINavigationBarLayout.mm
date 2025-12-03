@@ -1,57 +1,57 @@
 @interface _UINavigationBarLayout
 - (BOOL)isVariableHeight;
-- (CGRect)_layoutFrameFor:(id)a3 withOrder:(int64_t)a4;
+- (CGRect)_layoutFrameFor:(id)for withOrder:(int64_t)order;
 - (CGRect)topWhitespaceLayoutFrame;
 - (NSString)description;
 - (_UINavigationBarLayout)init;
-- (_UINavigationBarLayout)initWithLayout:(id)a3;
+- (_UINavigationBarLayout)initWithLayout:(id)layout;
 - (double)backgroundViewLayoutFrame;
-- (double)layoutHeightRevealingPart:(id *)a1;
-- (double)layoutHeightStackingPart:(id *)a1;
+- (double)layoutHeightRevealingPart:(id *)part;
+- (double)layoutHeightStackingPart:(id *)part;
 - (double)layoutHeights;
 - (double)searchBarLayoutFrame;
 - (double)topPaletteLayoutFrame;
-- (id)_insertLayoutDataForNavigationBarPart:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)layoutForMeasuringWidth:(void *)a1;
+- (id)_insertLayoutDataForNavigationBarPart:(int64_t)part;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)layoutForMeasuringWidth:(void *)width;
 - (int64_t)_topPaletteOrder;
 - (uint64_t)contentViewLayoutFrame;
 - (uint64_t)removeAllViews;
 - (uint64_t)setHidesSearchBarWhenScrolling:(uint64_t)result;
-- (void)_addLayoutItem:(id)a3;
-- (void)_includeContentLayoutDataInLayout:(BOOL)a3;
-- (void)_removeLayoutItem:(id)a3;
-- (void)_reorderLayoutItem:(id)a3 toOrder:(int64_t)a4;
-- (void)_reprioritizeLayoutItem:(id)a3 toPriority:(int64_t)a4;
+- (void)_addLayoutItem:(id)item;
+- (void)_includeContentLayoutDataInLayout:(BOOL)layout;
+- (void)_removeLayoutItem:(id)item;
+- (void)_reorderLayoutItem:(id)item toOrder:(int64_t)order;
+- (void)_reprioritizeLayoutItem:(id)item toPriority:(int64_t)priority;
 - (void)_updateContentViewLayoutItem;
 - (void)_updateLargeTitleViewLayoutItem;
 - (void)_updateLayoutOutputs;
-- (void)_updateLayoutParametersForWidth:(double)a3;
+- (void)_updateLayoutParametersForWidth:(double)width;
 - (void)_updateRefreshControlLayoutData;
-- (void)finalizeStateFromTransition:(id)a3;
-- (void)installViewsInNavigationBar:(uint64_t)a1;
-- (void)interleaveViewsWithLayout:(void *)a3 inNavigationBar:;
-- (void)iterateLayoutViews:(uint64_t)a1;
+- (void)finalizeStateFromTransition:(id)transition;
+- (void)installViewsInNavigationBar:(uint64_t)bar;
+- (void)interleaveViewsWithLayout:(void *)layout inNavigationBar:;
+- (void)iterateLayoutViews:(uint64_t)views;
 - (void)layoutViews;
-- (void)prepareToRecordToState:(id)a3;
-- (void)recordFromStateForTransition:(id)a3;
-- (void)recordToStateForTransition:(id)a3;
-- (void)removeViewsNotInLayout:(uint64_t)a1;
+- (void)prepareToRecordToState:(id)state;
+- (void)recordFromStateForTransition:(id)transition;
+- (void)recordToStateForTransition:(id)transition;
+- (void)removeViewsNotInLayout:(uint64_t)layout;
 - (void)restingHeights;
-- (void)setBackgroundView:(uint64_t)a1;
-- (void)setBottomPalette:(uint64_t)a1;
-- (void)setContentView:(uint64_t)a1;
-- (void)setContentViewLayout:(id *)a1;
-- (void)setContentViewVisualProvider:(uint64_t)a1;
-- (void)setLargeTitleView:(uint64_t)a1;
-- (void)setLargeTitleViewLayout:(id *)a1;
-- (void)setLayoutSize:(double)a3;
-- (void)setPromptView:(uint64_t)a1;
-- (void)setRefreshControlHost:(id *)a1;
-- (void)setSearchBar:(uint64_t)a1;
-- (void)setStandardBackgroundViewLayout:(id *)a1;
-- (void)setTopPalette:(uint64_t)a1;
-- (void)setWeeTitleLabel:(uint64_t)a1;
+- (void)setBackgroundView:(uint64_t)view;
+- (void)setBottomPalette:(uint64_t)palette;
+- (void)setContentView:(uint64_t)view;
+- (void)setContentViewLayout:(id *)layout;
+- (void)setContentViewVisualProvider:(uint64_t)provider;
+- (void)setLargeTitleView:(uint64_t)view;
+- (void)setLargeTitleViewLayout:(id *)layout;
+- (void)setLayoutSize:(double)size;
+- (void)setPromptView:(uint64_t)view;
+- (void)setRefreshControlHost:(id *)host;
+- (void)setSearchBar:(uint64_t)bar;
+- (void)setStandardBackgroundViewLayout:(id *)layout;
+- (void)setTopPalette:(uint64_t)palette;
+- (void)setWeeTitleLabel:(uint64_t)label;
 - (void)updateLayout;
 @end
 
@@ -77,16 +77,16 @@
     v1 = result;
     [*(result + 120) removeFromSuperview];
     [*(v1 + 224) stopAnimations];
-    v2 = [*(v1 + 224) hostContainerView];
-    [v2 removeFromSuperview];
+    hostContainerView = [*(v1 + 224) hostContainerView];
+    [hostContainerView removeFromSuperview];
 
     [*(v1 + 128) removeFromSuperview];
     [*(v1 + 136) removeFromSuperview];
     [*(v1 + 144) removeFromSuperview];
     [*(v1 + 176) removeFromSuperview];
     [*(v1 + 232) removeFromSuperview];
-    v3 = [*(v1 + 240) _viewStackedInNavigationBar];
-    [v3 removeFromSuperview];
+    _viewStackedInNavigationBar = [*(v1 + 240) _viewStackedInNavigationBar];
+    [_viewStackedInNavigationBar removeFromSuperview];
 
     [*(v1 + 256) removeFromSuperview];
     v4 = *(v1 + 264);
@@ -99,24 +99,24 @@
 
 - (void)restingHeights
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[12];
+    selfCopy = self;
+    v3 = self[12];
     if (!v3)
     {
-      v4 = [_UIBarInsertLayoutData calculateRestingHeightsForLayouts:a1[11]];
-      v5 = v2[12];
-      v2[12] = v4;
+      v4 = [_UIBarInsertLayoutData calculateRestingHeightsForLayouts:self[11]];
+      v5 = selfCopy[12];
+      selfCopy[12] = v4;
 
-      v3 = v2[12];
+      v3 = selfCopy[12];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_updateLayoutOutputs
@@ -410,95 +410,95 @@ LABEL_45:
 
 - (void)updateLayout
 {
-  if (a1)
+  if (self)
   {
-    [a1 _updateLayoutParametersForWidth:*(a1 + 312)];
-    v2 = *(a1 + 32);
+    [self _updateLayoutParametersForWidth:*(self + 312)];
+    v2 = *(self + 32);
     if (!v2)
     {
-      v2 = *(a1 + 40);
+      v2 = *(self + 40);
     }
 
-    v3 = *(a1 + 80);
-    v4 = *(a1 + 320);
+    v3 = *(self + 80);
+    v4 = *(self + 320);
     v5 = v2;
     [_UIBarInsertLayoutData updateLayoutParameters:v3 overflowLayout:v5 forAvailableHeight:v4];
-    [_UIBarInsertLayoutData assignVerticalOriginsToItemsInLayouts:*(a1 + 88)];
-    *(a1 + 104) |= 1u;
-    [a1 _updateLayoutOutputs];
+    [_UIBarInsertLayoutData assignVerticalOriginsToItemsInLayouts:*(self + 88)];
+    *(self + 104) |= 1u;
+    [self _updateLayoutOutputs];
   }
 }
 
 - (double)layoutHeights
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [_UIBarInsertLayoutData calculateLayoutHeights:*(a1 + 88)];
+  [_UIBarInsertLayoutData calculateLayoutHeights:*(self + 88)];
   return result;
 }
 
-- (_UINavigationBarLayout)initWithLayout:(id)a3
+- (_UINavigationBarLayout)initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v31.receiver = self;
   v31.super_class = _UINavigationBarLayout;
   v5 = [(_UINavigationBarLayout *)&v31 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_promptView, *(v4 + 15));
-    objc_storeStrong(&v6->_contentView, *(v4 + 16));
-    objc_storeStrong(&v6->_contentViewVisualProvider, *(v4 + 19));
-    objc_storeStrong(&v6->_animationContentClippingView, *(v4 + 17));
-    objc_storeStrong(&v6->_contentViewLayout, *(v4 + 20));
-    objc_storeStrong(&v6->_largeTitleView, *(v4 + 18));
-    objc_storeStrong(&v6->_largeTitleViewLayout, *(v4 + 21));
-    objc_storeStrong(&v6->_backgroundView, *(v4 + 22));
-    objc_storeStrong(&v6->_standardBackgroundViewLayout, *(v4 + 24));
-    objc_storeStrong(&v6->_compactBackgroundViewLayout, *(v4 + 23));
-    objc_storeStrong(&v6->_weeTitleLabel, *(v4 + 29));
-    objc_storeStrong(&v6->_refreshControlHost, *(v4 + 28));
-    objc_storeStrong(&v6->_searchBar, *(v4 + 30));
-    objc_storeStrong(&v6->_topPalette, *(v4 + 32));
-    objc_storeStrong(&v6->_bottomPalette, *(v4 + 33));
-    v6->_largeTitleViewOverlaysContentView = v4[108];
-    v7 = *(v4 + 344);
-    *&v6->_largeTitleViewInsets.top = *(v4 + 328);
+    objc_storeStrong(&v5->_promptView, *(layoutCopy + 15));
+    objc_storeStrong(&v6->_contentView, *(layoutCopy + 16));
+    objc_storeStrong(&v6->_contentViewVisualProvider, *(layoutCopy + 19));
+    objc_storeStrong(&v6->_animationContentClippingView, *(layoutCopy + 17));
+    objc_storeStrong(&v6->_contentViewLayout, *(layoutCopy + 20));
+    objc_storeStrong(&v6->_largeTitleView, *(layoutCopy + 18));
+    objc_storeStrong(&v6->_largeTitleViewLayout, *(layoutCopy + 21));
+    objc_storeStrong(&v6->_backgroundView, *(layoutCopy + 22));
+    objc_storeStrong(&v6->_standardBackgroundViewLayout, *(layoutCopy + 24));
+    objc_storeStrong(&v6->_compactBackgroundViewLayout, *(layoutCopy + 23));
+    objc_storeStrong(&v6->_weeTitleLabel, *(layoutCopy + 29));
+    objc_storeStrong(&v6->_refreshControlHost, *(layoutCopy + 28));
+    objc_storeStrong(&v6->_searchBar, *(layoutCopy + 30));
+    objc_storeStrong(&v6->_topPalette, *(layoutCopy + 32));
+    objc_storeStrong(&v6->_bottomPalette, *(layoutCopy + 33));
+    v6->_largeTitleViewOverlaysContentView = layoutCopy[108];
+    v7 = *(layoutCopy + 344);
+    *&v6->_largeTitleViewInsets.top = *(layoutCopy + 328);
     *&v6->_largeTitleViewInsets.bottom = v7;
-    v6->_backgroundExtension = *(v4 + 25);
-    v6->_backgroundCoversContentOnly = v4[109];
-    v6->_hidesSearchBarWhenScrolling = v4[116];
-    v6->_adjustForTabBar = v4[117];
-    v6->_layoutSize = *(v4 + 312);
-    v6->_useManualScrollEdgeAppearance = v4[111];
-    v6->_manualScrollEdgeAppearanceProgress = *(v4 + 27);
-    v6->_representedSearchLayoutState = *(v4 + 31);
-    v6->_clientCanUpdateChromelessTransitionProgress = v4[113];
-    v6->_clientUsesManualScrollEdgeAppearanceProgressSPI = v4[112];
-    v6->_apiVersion = *(v4 + 38);
-    v6->_largeTitleExposure = *(v4 + 34);
-    v6->_largeTitleTransitionProgress = *(v4 + 35);
-    v6->_chromelessTransitionProgress = *(v4 + 36);
-    v6->_computedBackgroundViewAlpha = *(v4 + 37);
-    v8 = [MEMORY[0x1E695DF70] array];
+    v6->_backgroundExtension = *(layoutCopy + 25);
+    v6->_backgroundCoversContentOnly = layoutCopy[109];
+    v6->_hidesSearchBarWhenScrolling = layoutCopy[116];
+    v6->_adjustForTabBar = layoutCopy[117];
+    v6->_layoutSize = *(layoutCopy + 312);
+    v6->_useManualScrollEdgeAppearance = layoutCopy[111];
+    v6->_manualScrollEdgeAppearanceProgress = *(layoutCopy + 27);
+    v6->_representedSearchLayoutState = *(layoutCopy + 31);
+    v6->_clientCanUpdateChromelessTransitionProgress = layoutCopy[113];
+    v6->_clientUsesManualScrollEdgeAppearanceProgressSPI = layoutCopy[112];
+    v6->_apiVersion = *(layoutCopy + 38);
+    v6->_largeTitleExposure = *(layoutCopy + 34);
+    v6->_largeTitleTransitionProgress = *(layoutCopy + 35);
+    v6->_chromelessTransitionProgress = *(layoutCopy + 36);
+    v6->_computedBackgroundViewAlpha = *(layoutCopy + 37);
+    array = [MEMORY[0x1E695DF70] array];
     priorityOrderedLayout = v6->_priorityOrderedLayout;
-    v6->_priorityOrderedLayout = v8;
+    v6->_priorityOrderedLayout = array;
 
-    v10 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     stackingOrderedLayout = v6->_stackingOrderedLayout;
-    v6->_stackingOrderedLayout = v10;
+    v6->_stackingOrderedLayout = array2;
 
-    v12 = [*(v4 + 1) copy];
+    v12 = [*(layoutCopy + 1) copy];
     topWhitespaceLayoutData = v6->_topWhitespaceLayoutData;
     v6->_topWhitespaceLayoutData = v12;
 
     [(_UINavigationBarLayout *)v6 _addLayoutItem:v6->_topWhitespaceLayoutData];
     if (v6->_promptView)
     {
-      v14 = [*(v4 + 2) copy];
+      v14 = [*(layoutCopy + 2) copy];
       promptLayoutData = v6->_promptLayoutData;
       v6->_promptLayoutData = v14;
 
@@ -507,7 +507,7 @@ LABEL_45:
 
     if (v6->_contentView)
     {
-      v16 = [*(v4 + 3) copy];
+      v16 = [*(layoutCopy + 3) copy];
       contentLayoutData = v6->_contentLayoutData;
       v6->_contentLayoutData = v16;
 
@@ -516,14 +516,14 @@ LABEL_45:
 
     if (v6->_refreshControlHost)
     {
-      v18 = [*(v4 + 5) copy];
+      v18 = [*(layoutCopy + 5) copy];
       refreshControlLayoutData = v6->_refreshControlLayoutData;
       v6->_refreshControlLayoutData = v18;
     }
 
     if (v6->_largeTitleView)
     {
-      v20 = [*(v4 + 4) copy];
+      v20 = [*(layoutCopy + 4) copy];
       largeTitleLayoutData = v6->_largeTitleLayoutData;
       v6->_largeTitleLayoutData = v20;
 
@@ -532,11 +532,11 @@ LABEL_45:
 
     if (v6->_searchBar)
     {
-      v22 = [*(v4 + 6) copy];
+      v22 = [*(layoutCopy + 6) copy];
       searchBarLayoutData = v6->_searchBarLayoutData;
       v6->_searchBarLayoutData = v22;
 
-      v24 = [*(v4 + 7) copy];
+      v24 = [*(layoutCopy + 7) copy];
       scopeBarLayoutData = v6->_scopeBarLayoutData;
       v6->_scopeBarLayoutData = v24;
 
@@ -546,7 +546,7 @@ LABEL_45:
 
     if (v6->_topPalette)
     {
-      v26 = [*(v4 + 8) copy];
+      v26 = [*(layoutCopy + 8) copy];
       topPaletteLayoutData = v6->_topPaletteLayoutData;
       v6->_topPaletteLayoutData = v26;
 
@@ -555,7 +555,7 @@ LABEL_45:
 
     if (v6->_bottomPalette)
     {
-      v28 = [*(v4 + 9) copy];
+      v28 = [*(layoutCopy + 9) copy];
       bottomPaletteLayoutData = v6->_bottomPaletteLayoutData;
       v6->_bottomPaletteLayoutData = v28;
 
@@ -575,13 +575,13 @@ LABEL_45:
   v2 = [(_UINavigationBarLayout *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     priorityOrderedLayout = v2->_priorityOrderedLayout;
-    v2->_priorityOrderedLayout = v3;
+    v2->_priorityOrderedLayout = array;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     stackingOrderedLayout = v2->_stackingOrderedLayout;
-    v2->_stackingOrderedLayout = v5;
+    v2->_stackingOrderedLayout = array2;
 
     [(_UINavigationBarLayout *)v2 _updateWhitespaceLayoutItems];
   }
@@ -589,23 +589,23 @@ LABEL_45:
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithLayout:self];
 }
 
-- (void)_addLayoutItem:(id)a3
+- (void)_addLayoutItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy)
   {
-    v7 = v4;
-    v6 = [v4 active];
+    v7 = itemCopy;
+    active = [itemCopy active];
     v5 = v7;
-    if ((v6 & 1) == 0)
+    if ((active & 1) == 0)
     {
       [v7 setActive:1];
       [(NSMutableArray *)self->_priorityOrderedLayout insertObject:v7 atIndex:[(NSMutableArray *)self->_priorityOrderedLayout indexOfObject:v7 inSortedRange:0 options:[(NSMutableArray *)self->_priorityOrderedLayout count] usingComparator:1024, &__block_literal_global_497]];
@@ -616,16 +616,16 @@ LABEL_45:
   }
 }
 
-- (void)_removeLayoutItem:(id)a3
+- (void)_removeLayoutItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy)
   {
-    v7 = v4;
-    v6 = [v4 active];
+    v7 = itemCopy;
+    active = [itemCopy active];
     v5 = v7;
-    if (v6)
+    if (active)
     {
       [v7 setActive:0];
       [(NSMutableArray *)self->_priorityOrderedLayout removeObjectIdenticalTo:v7];
@@ -636,23 +636,23 @@ LABEL_45:
   }
 }
 
-- (void)_reprioritizeLayoutItem:(id)a3 toPriority:(int64_t)a4
+- (void)_reprioritizeLayoutItem:(id)item toPriority:(int64_t)priority
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  itemCopy = item;
+  v7 = itemCopy;
+  if (itemCopy)
   {
-    v10 = v6;
-    v8 = [v6 priority];
+    v10 = itemCopy;
+    priority = [itemCopy priority];
     v7 = v10;
-    if (v8 != a4)
+    if (priority != priority)
     {
-      v9 = [v10 active];
+      active = [v10 active];
       v7 = v10;
-      if (v9)
+      if (active)
       {
         [(NSMutableArray *)self->_priorityOrderedLayout removeObjectIdenticalTo:v10];
-        [v10 setPriority:a4];
+        [v10 setPriority:priority];
         [(NSMutableArray *)self->_priorityOrderedLayout insertObject:v10 atIndex:[(NSMutableArray *)self->_priorityOrderedLayout indexOfObject:v10 inSortedRange:0 options:[(NSMutableArray *)self->_priorityOrderedLayout count] usingComparator:1024, &__block_literal_global_4_11]];
         v7 = v10;
         *&self->_flags &= ~1u;
@@ -661,23 +661,23 @@ LABEL_45:
   }
 }
 
-- (void)_reorderLayoutItem:(id)a3 toOrder:(int64_t)a4
+- (void)_reorderLayoutItem:(id)item toOrder:(int64_t)order
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  itemCopy = item;
+  v7 = itemCopy;
+  if (itemCopy)
   {
-    v10 = v6;
-    v8 = [v6 order];
+    v10 = itemCopy;
+    order = [itemCopy order];
     v7 = v10;
-    if (v8 != a4)
+    if (order != order)
     {
-      v9 = [v10 active];
+      active = [v10 active];
       v7 = v10;
-      if (v9)
+      if (active)
       {
         [(NSMutableArray *)self->_stackingOrderedLayout removeObjectIdenticalTo:v10];
-        [v10 setOrder:a4];
+        [v10 setOrder:order];
         [(NSMutableArray *)self->_stackingOrderedLayout insertObject:v10 atIndex:[(NSMutableArray *)self->_stackingOrderedLayout indexOfObject:v10 inSortedRange:0 options:[(NSMutableArray *)self->_stackingOrderedLayout count] usingComparator:1024, &__block_literal_global_6_13]];
         v7 = v10;
         *&self->_flags &= ~1u;
@@ -686,44 +686,44 @@ LABEL_45:
   }
 }
 
-- (void)setPromptView:(uint64_t)a1
+- (void)setPromptView:(uint64_t)view
 {
   v4 = a2;
-  if (a1 && *(a1 + 120) != v4)
+  if (view && *(view + 120) != v4)
   {
     v9 = v4;
-    objc_storeStrong((a1 + 120), a2);
-    v5 = *(a1 + 16);
-    if (*(a1 + 120))
+    objc_storeStrong((view + 120), a2);
+    v5 = *(view + 16);
+    if (*(view + 120))
     {
       if (!v5)
       {
-        v6 = [a1 _promptOrder];
+        _promptOrder = [view _promptOrder];
         v7 = objc_alloc_init(_UIBarInsertLayoutData);
         [(_UIBarInsertLayoutData *)v7 setIdentifier:@"Prompt"];
         [(_UIBarInsertLayoutData *)v7 setPriority:900];
-        [(_UIBarInsertLayoutData *)v7 setOrder:v6];
-        v8 = *(a1 + 16);
-        *(a1 + 16) = v7;
+        [(_UIBarInsertLayoutData *)v7 setOrder:_promptOrder];
+        v8 = *(view + 16);
+        *(view + 16) = v7;
 
-        v5 = *(a1 + 16);
+        v5 = *(view + 16);
       }
 
-      [a1 _addLayoutItem:v5];
+      [view _addLayoutItem:v5];
     }
 
     else
     {
-      [a1 _removeLayoutItem:v5];
+      [view _removeLayoutItem:v5];
     }
 
     v4 = v9;
   }
 }
 
-- (void)_includeContentLayoutDataInLayout:(BOOL)a3
+- (void)_includeContentLayoutDataInLayout:(BOOL)layout
 {
-  if (a3 && !self->_largeTitleViewOverlaysContentView)
+  if (layout && !self->_largeTitleViewOverlaysContentView)
   {
     [(_UINavigationBarLayout *)self _addLayoutItem:self->_contentLayoutData];
   }
@@ -734,13 +734,13 @@ LABEL_45:
   }
 }
 
-- (void)setContentView:(uint64_t)a1
+- (void)setContentView:(uint64_t)view
 {
   v4 = a2;
   v5 = v4;
-  if (a1)
+  if (view)
   {
-    if (*(a1 + 136) && *(a1 + 128) != v4)
+    if (*(view + 136) && *(view + 128) != v4)
     {
       if (os_variant_has_internal_diagnostics())
       {
@@ -763,12 +763,12 @@ LABEL_45:
       }
     }
 
-    v6 = *(a1 + 128);
+    v6 = *(view + 128);
     if (v5)
     {
       if (v6 == v5)
       {
-        if (*(a1 + 160))
+        if (*(view + 160))
         {
           goto LABEL_10;
         }
@@ -776,54 +776,54 @@ LABEL_45:
 
       else
       {
-        objc_storeStrong((a1 + 128), a2);
-        v6 = *(a1 + 128);
+        objc_storeStrong((view + 128), a2);
+        v6 = *(view + 128);
       }
 
-      v7 = [v6 layout];
-      v8 = *(a1 + 160);
-      *(a1 + 160) = v7;
+      layout = [v6 layout];
+      v8 = *(view + 160);
+      *(view + 160) = layout;
     }
 
     else
     {
-      *(a1 + 128) = 0;
+      *(view + 128) = 0;
 
-      v9 = *(a1 + 160);
-      *(a1 + 160) = 0;
+      v9 = *(view + 160);
+      *(view + 160) = 0;
 
-      [*(a1 + 136) removeFromSuperview];
-      v8 = *(a1 + 136);
-      *(a1 + 136) = 0;
+      [*(view + 136) removeFromSuperview];
+      v8 = *(view + 136);
+      *(view + 136) = 0;
     }
 
 LABEL_10:
-    [a1 _updateContentViewLayoutItem];
+    [view _updateContentViewLayoutItem];
   }
 }
 
-- (void)setContentViewLayout:(id *)a1
+- (void)setContentViewLayout:(id *)layout
 {
   v4 = a2;
-  if (a1)
+  if (layout)
   {
-    objc_storeStrong(a1 + 20, a2);
-    [a1 _updateContentViewLayoutItem];
+    objc_storeStrong(layout + 20, a2);
+    [layout _updateContentViewLayoutItem];
   }
 }
 
-- (void)setLargeTitleView:(uint64_t)a1
+- (void)setLargeTitleView:(uint64_t)view
 {
   v4 = a2;
-  if (a1)
+  if (view)
   {
-    v5 = *(a1 + 144);
+    v5 = *(view + 144);
     v8 = v4;
     if (v4)
     {
       if (v5 == v4)
       {
-        if (*(a1 + 168))
+        if (*(view + 168))
         {
           goto LABEL_8;
         }
@@ -831,46 +831,46 @@ LABEL_10:
 
       else
       {
-        objc_storeStrong((a1 + 144), a2);
-        v5 = *(a1 + 144);
+        objc_storeStrong((view + 144), a2);
+        v5 = *(view + 144);
       }
 
-      v6 = [v5 layout];
-      v7 = *(a1 + 168);
-      *(a1 + 168) = v6;
+      layout = [v5 layout];
+      v7 = *(view + 168);
+      *(view + 168) = layout;
     }
 
     else
     {
-      *(a1 + 144) = 0;
+      *(view + 144) = 0;
 
-      v7 = *(a1 + 168);
-      *(a1 + 168) = 0;
+      v7 = *(view + 168);
+      *(view + 168) = 0;
     }
 
 LABEL_8:
-    [a1 _updateLargeTitleViewLayoutItem];
+    [view _updateLargeTitleViewLayoutItem];
     v4 = v8;
   }
 }
 
-- (void)setLargeTitleViewLayout:(id *)a1
+- (void)setLargeTitleViewLayout:(id *)layout
 {
   v4 = a2;
-  if (a1)
+  if (layout)
   {
-    objc_storeStrong(a1 + 21, a2);
-    [a1 _updateLargeTitleViewLayoutItem];
+    objc_storeStrong(layout + 21, a2);
+    [layout _updateLargeTitleViewLayoutItem];
   }
 }
 
-- (void)setBackgroundView:(uint64_t)a1
+- (void)setBackgroundView:(uint64_t)view
 {
   v4 = a2;
-  if (a1)
+  if (view)
   {
-    v6 = *(a1 + 176);
-    v5 = (a1 + 176);
+    v6 = *(view + 176);
+    v5 = (view + 176);
     if (v6 != v4)
     {
       v7 = v4;
@@ -880,34 +880,34 @@ LABEL_8:
   }
 }
 
-- (void)setStandardBackgroundViewLayout:(id *)a1
+- (void)setStandardBackgroundViewLayout:(id *)layout
 {
   v4 = a2;
-  if (a1 && a1[24] != v4)
+  if (layout && layout[24] != v4)
   {
     v5 = v4;
-    objc_storeStrong(a1 + 24, a2);
-    [a1 _updateLayoutOutputs];
+    objc_storeStrong(layout + 24, a2);
+    [layout _updateLayoutOutputs];
     v4 = v5;
   }
 }
 
-- (void)setRefreshControlHost:(id *)a1
+- (void)setRefreshControlHost:(id *)host
 {
   v4 = a2;
-  if (a1)
+  if (host)
   {
-    v5 = a1[28];
+    v5 = host[28];
     if (v5 != v4)
     {
       v7 = v4;
       [v5 setDelegate:0];
-      [a1[28] stopAnimations];
-      v6 = [a1[28] hostContainerView];
-      [v6 removeFromSuperview];
+      [host[28] stopAnimations];
+      hostContainerView = [host[28] hostContainerView];
+      [hostContainerView removeFromSuperview];
 
-      objc_storeStrong(a1 + 28, a2);
-      [a1 _updateRefreshControlLayoutData];
+      objc_storeStrong(host + 28, a2);
+      [host _updateRefreshControlLayoutData];
       v4 = v7;
     }
   }
@@ -947,13 +947,13 @@ LABEL_8:
   }
 }
 
-- (void)setWeeTitleLabel:(uint64_t)a1
+- (void)setWeeTitleLabel:(uint64_t)label
 {
   v4 = a2;
-  if (a1)
+  if (label)
   {
-    v6 = *(a1 + 232);
-    v5 = (a1 + 232);
+    v6 = *(label + 232);
+    v5 = (label + 232);
     if (v6 != v4)
     {
       v7 = v4;
@@ -963,19 +963,19 @@ LABEL_8:
   }
 }
 
-- (void)setSearchBar:(uint64_t)a1
+- (void)setSearchBar:(uint64_t)bar
 {
   v4 = a2;
-  if (a1 && *(a1 + 240) != v4)
+  if (bar && *(bar + 240) != v4)
   {
     v11 = v4;
-    objc_storeStrong((a1 + 240), a2);
-    v5 = *(a1 + 48);
-    if (*(a1 + 240))
+    objc_storeStrong((bar + 240), a2);
+    v5 = *(bar + 48);
+    if (*(bar + 240))
     {
       if (!v5)
       {
-        if (*(a1 + 116))
+        if (*(bar + 116))
         {
           v6 = 1700;
         }
@@ -989,29 +989,29 @@ LABEL_8:
         [(_UIBarInsertLayoutData *)v7 setIdentifier:@"SearchBar"];
         [(_UIBarInsertLayoutData *)v7 setPriority:v6];
         [(_UIBarInsertLayoutData *)v7 setOrder:50];
-        v8 = *(a1 + 48);
-        *(a1 + 48) = v7;
+        v8 = *(bar + 48);
+        *(bar + 48) = v7;
 
-        [*(a1 + 48) setCollapsible:*(a1 + 116)];
+        [*(bar + 48) setCollapsible:*(bar + 116)];
         v9 = objc_alloc_init(_UIBarInsertLayoutData);
         [(_UIBarInsertLayoutData *)v9 setIdentifier:@"ActiveSearchScopeBar"];
         [(_UIBarInsertLayoutData *)v9 setPriority:1500];
         [(_UIBarInsertLayoutData *)v9 setOrder:40];
-        v10 = *(a1 + 56);
-        *(a1 + 56) = v9;
+        v10 = *(bar + 56);
+        *(bar + 56) = v9;
 
-        [*(a1 + 56) setCollapsible:1];
-        v5 = *(a1 + 48);
+        [*(bar + 56) setCollapsible:1];
+        v5 = *(bar + 48);
       }
 
-      [a1 _addLayoutItem:v5];
-      [a1 _addLayoutItem:*(a1 + 56)];
+      [bar _addLayoutItem:v5];
+      [bar _addLayoutItem:*(bar + 56)];
     }
 
     else
     {
-      [a1 _removeLayoutItem:v5];
-      [a1 _removeLayoutItem:*(a1 + 56)];
+      [bar _removeLayoutItem:v5];
+      [bar _removeLayoutItem:*(bar + 56)];
     }
 
     v4 = v11;
@@ -1031,24 +1031,24 @@ LABEL_8:
   }
 }
 
-- (void)setTopPalette:(uint64_t)a1
+- (void)setTopPalette:(uint64_t)palette
 {
   v4 = a2;
-  if (a1 && *(a1 + 256) != v4)
+  if (palette && *(palette + 256) != v4)
   {
     v15 = v4;
-    objc_storeStrong((a1 + 256), a2);
-    v5 = *(a1 + 256);
+    objc_storeStrong((palette + 256), a2);
+    v5 = *(palette + 256);
     if (v5)
     {
-      v6 = [v5 _layoutPriority];
+      _layoutPriority = [v5 _layoutPriority];
       v7 = 900;
-      if (v6 == 2)
+      if (_layoutPriority == 2)
       {
         v7 = 1802;
       }
 
-      if (v6 == 1)
+      if (_layoutPriority == 1)
       {
         v8 = 1702;
       }
@@ -1058,61 +1058,61 @@ LABEL_8:
         v8 = v7;
       }
 
-      v9 = [a1 _topPaletteOrder];
-      v10 = *(a1 + 64);
+      _topPaletteOrder = [palette _topPaletteOrder];
+      v10 = *(palette + 64);
       if (!v10)
       {
         v11 = objc_alloc_init(_UIBarInsertLayoutData);
         [(_UIBarInsertLayoutData *)v11 setIdentifier:@"TopPalette"];
         [(_UIBarInsertLayoutData *)v11 setPriority:v8];
-        [(_UIBarInsertLayoutData *)v11 setOrder:v9];
-        v12 = *(a1 + 64);
-        *(a1 + 64) = v11;
+        [(_UIBarInsertLayoutData *)v11 setOrder:_topPaletteOrder];
+        v12 = *(palette + 64);
+        *(palette + 64) = v11;
 
-        v10 = *(a1 + 64);
+        v10 = *(palette + 64);
       }
 
-      v13 = [v10 active];
-      v14 = *(a1 + 64);
-      if (v13)
+      active = [v10 active];
+      v14 = *(palette + 64);
+      if (active)
       {
-        [a1 _reprioritizeLayoutItem:v14 toPriority:v8];
-        [a1 _reorderLayoutItem:*(a1 + 64) toOrder:v9];
+        [palette _reprioritizeLayoutItem:v14 toPriority:v8];
+        [palette _reorderLayoutItem:*(palette + 64) toOrder:_topPaletteOrder];
       }
 
       else
       {
-        [a1 _addLayoutItem:v14];
+        [palette _addLayoutItem:v14];
       }
     }
 
     else
     {
-      [a1 _removeLayoutItem:*(a1 + 64)];
+      [palette _removeLayoutItem:*(palette + 64)];
     }
 
     v4 = v15;
   }
 }
 
-- (void)setBottomPalette:(uint64_t)a1
+- (void)setBottomPalette:(uint64_t)palette
 {
   v4 = a2;
-  if (a1 && *(a1 + 264) != v4)
+  if (palette && *(palette + 264) != v4)
   {
     v14 = v4;
-    objc_storeStrong((a1 + 264), a2);
-    v5 = *(a1 + 264);
+    objc_storeStrong((palette + 264), a2);
+    v5 = *(palette + 264);
     if (v5)
     {
-      v6 = [v5 _layoutPriority];
+      _layoutPriority = [v5 _layoutPriority];
       v7 = 700;
-      if (v6 == 2)
+      if (_layoutPriority == 2)
       {
         v7 = 1801;
       }
 
-      if (v6 == 1)
+      if (_layoutPriority == 1)
       {
         v8 = 1701;
       }
@@ -1122,35 +1122,35 @@ LABEL_8:
         v8 = v7;
       }
 
-      v9 = *(a1 + 72);
+      v9 = *(palette + 72);
       if (!v9)
       {
         v10 = objc_alloc_init(_UIBarInsertLayoutData);
         [(_UIBarInsertLayoutData *)v10 setIdentifier:@"BottomPalette"];
         [(_UIBarInsertLayoutData *)v10 setPriority:v8];
         [(_UIBarInsertLayoutData *)v10 setOrder:30];
-        v11 = *(a1 + 72);
-        *(a1 + 72) = v10;
+        v11 = *(palette + 72);
+        *(palette + 72) = v10;
 
-        v9 = *(a1 + 72);
+        v9 = *(palette + 72);
       }
 
-      v12 = [v9 active];
-      v13 = *(a1 + 72);
-      if (v12)
+      active = [v9 active];
+      v13 = *(palette + 72);
+      if (active)
       {
-        [a1 _reprioritizeLayoutItem:v13 toPriority:v8];
+        [palette _reprioritizeLayoutItem:v13 toPriority:v8];
       }
 
       else
       {
-        [a1 _addLayoutItem:v13];
+        [palette _addLayoutItem:v13];
       }
     }
 
     else
     {
-      [a1 _removeLayoutItem:*(a1 + 72)];
+      [palette _removeLayoutItem:*(palette + 72)];
     }
 
     v4 = v14;
@@ -1187,13 +1187,13 @@ LABEL_8:
   return result;
 }
 
-- (void)_updateLayoutParametersForWidth:(double)a3
+- (void)_updateLayoutParametersForWidth:(double)width
 {
   promptView = self->_promptView;
   promptLayoutData = self->_promptLayoutData;
   if (promptView)
   {
-    [(_UINavigationBarModernPromptView *)promptView updateLayoutData:promptLayoutData layoutWidth:a3];
+    [(_UINavigationBarModernPromptView *)promptView updateLayoutData:promptLayoutData layoutWidth:width];
   }
 
   else if (promptLayoutData)
@@ -1206,9 +1206,9 @@ LABEL_8:
     contentViewLayout = self->_contentViewLayout;
     if (!contentViewLayout)
     {
-      v8 = [(_UINavigationBarContentView *)self->_contentView layout];
+      layout = [(_UINavigationBarContentView *)self->_contentView layout];
       v9 = self->_contentViewLayout;
-      self->_contentViewLayout = v8;
+      self->_contentViewLayout = layout;
 
       if (self->_contentViewLayout)
       {
@@ -1222,7 +1222,7 @@ LABEL_8:
       }
     }
 
-    [(_UINavigationBarContentViewLayout *)contentViewLayout updateLayoutData:self->_contentLayoutData layoutWidth:a3];
+    [(_UINavigationBarContentViewLayout *)contentViewLayout updateLayoutData:self->_contentLayoutData layoutWidth:width];
   }
 
   else
@@ -1266,9 +1266,9 @@ LABEL_8:
     largeTitleViewLayout = self->_largeTitleViewLayout;
     if (!largeTitleViewLayout)
     {
-      v15 = [(_UINavigationBarLargeTitleView *)self->_largeTitleView layout];
+      layout2 = [(_UINavigationBarLargeTitleView *)self->_largeTitleView layout];
       v16 = self->_largeTitleViewLayout;
-      self->_largeTitleViewLayout = v15;
+      self->_largeTitleViewLayout = layout2;
 
       if (self->_largeTitleViewLayout)
       {
@@ -1282,7 +1282,7 @@ LABEL_8:
       }
     }
 
-    [(_UINavigationBarLargeTitleViewLayout *)largeTitleViewLayout updateLayoutData:self->_largeTitleLayoutData layoutWidth:a3];
+    [(_UINavigationBarLargeTitleViewLayout *)largeTitleViewLayout updateLayoutData:self->_largeTitleLayoutData layoutWidth:width];
     if (self->_largeTitleViewOverlaysContentView && self->_contentViewLayout)
     {
       [(_UIBarInsertLayoutData *)self->_contentLayoutData minimumHeight];
@@ -1314,31 +1314,31 @@ LABEL_8:
   topPalette = self->_topPalette;
   if (topPalette)
   {
-    [(_UINavigationBarPalette *)topPalette updateLayoutData:self->_topPaletteLayoutData layoutWidth:a3];
+    [(_UINavigationBarPalette *)topPalette updateLayoutData:self->_topPaletteLayoutData layoutWidth:width];
   }
 
   bottomPalette = self->_bottomPalette;
   if (bottomPalette)
   {
-    [(_UINavigationBarPalette *)bottomPalette updateLayoutData:self->_bottomPaletteLayoutData layoutWidth:a3];
+    [(_UINavigationBarPalette *)bottomPalette updateLayoutData:self->_bottomPaletteLayoutData layoutWidth:width];
   }
 
   restingHeights = self->_restingHeights;
   self->_restingHeights = 0;
 }
 
-- (void)setLayoutSize:(double)a3
+- (void)setLayoutSize:(double)size
 {
-  if (a1)
+  if (self)
   {
-    UIFloorToScale(a3, 6.0);
-    v6 = *(a1 + 312) == a2 && *(a1 + 320) == v5;
-    if (!v6 || (*(a1 + 104) & 1) == 0)
+    UIFloorToScale(size, 6.0);
+    v6 = *(self + 312) == a2 && *(self + 320) == v5;
+    if (!v6 || (*(self + 104) & 1) == 0)
     {
-      *(a1 + 312) = a2;
-      *(a1 + 320) = v5;
+      *(self + 312) = a2;
+      *(self + 320) = v5;
 
-      [(_UINavigationBarLayout *)a1 updateLayout];
+      [(_UINavigationBarLayout *)self updateLayout];
     }
   }
 }
@@ -1353,12 +1353,12 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)_layoutFrameFor:(id)a3 withOrder:(int64_t)a4
+- (CGRect)_layoutFrameFor:(id)for withOrder:(int64_t)order
 {
-  v6 = a3;
-  if ([v6 active])
+  forCopy = for;
+  if ([forCopy active])
   {
-    [v6 layoutFrameInWidth:self->_layoutSize.width];
+    [forCopy layoutFrameInWidth:self->_layoutSize.width];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -1367,7 +1367,7 @@ LABEL_8:
 
   else
   {
-    v15 = [_UIBarInsertLayoutData layoutPriorToItemWithOrder:a4 inLayouts:self->_stackingOrderedLayout];
+    v15 = [_UIBarInsertLayoutData layoutPriorToItemWithOrder:order inLayouts:self->_stackingOrderedLayout];
     [v15 maxY];
     v10 = v16;
     v8 = 0.0;
@@ -1409,24 +1409,24 @@ LABEL_8:
 
 - (double)searchBarLayoutFrame
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [a1 _layoutFrameFor:*(a1 + 48) withOrder:50];
+  [self _layoutFrameFor:*(self + 48) withOrder:50];
   v3 = v2;
-  v4 = [*(a1 + 240) traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  traitCollection = [*(self + 240) traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v5 == 6)
+  if (userInterfaceIdiom == 6)
   {
-    v6 = [*(a1 + 240) superview];
-    [v6 safeAreaInsets];
+    superview = [*(self + 240) superview];
+    [superview safeAreaInsets];
     v8 = v7;
-    v9 = [*(a1 + 240) effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [*(self + 240) effectiveUserInterfaceLayoutDirection];
     v10 = 0.0;
-    if (!v9)
+    if (!effectiveUserInterfaceLayoutDirection)
     {
       v10 = v8;
     }
@@ -1434,9 +1434,9 @@ LABEL_8:
     v3 = v3 + v10;
   }
 
-  if ([*(a1 + 56) active])
+  if ([*(self + 56) active])
   {
-    [*(a1 + 56) collapsingHeight];
+    [*(self + 56) collapsingHeight];
   }
 
   return v3;
@@ -1444,31 +1444,31 @@ LABEL_8:
 
 - (double)topPaletteLayoutFrame
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = a1[8];
+  v2 = self[8];
   if (v2)
   {
-    v3 = [v2 order];
-    v4 = a1[8];
+    order = [v2 order];
+    v4 = self[8];
   }
 
   else
   {
     v4 = 0;
-    v3 = 90;
+    order = 90;
   }
 
-  [a1 _layoutFrameFor:v4 withOrder:v3];
+  [self _layoutFrameFor:v4 withOrder:order];
   return result;
 }
 
 - (double)backgroundViewLayoutFrame
 {
-  if (a1)
+  if (self)
   {
     return *MEMORY[0x1E695F058];
   }
@@ -1481,47 +1481,47 @@ LABEL_8:
 
 - (void)layoutViews
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 120))
+    if (*(self + 120))
     {
-      [a1 _layoutFrameFor:*(a1 + 16) withOrder:{objc_msgSend(a1, "_promptOrder")}];
-      [*(a1 + 120) setFrame:?];
+      [self _layoutFrameFor:*(self + 16) withOrder:{objc_msgSend(self, "_promptOrder")}];
+      [*(self + 120) setFrame:?];
     }
 
-    if (*(a1 + 256))
+    if (*(self + 256))
     {
-      v2 = *(a1 + 64);
+      v2 = *(self + 64);
       if (v2)
       {
-        v3 = [v2 order];
-        v4 = *(a1 + 64);
+        order = [v2 order];
+        v4 = *(self + 64);
       }
 
       else
       {
         v4 = 0;
-        v3 = 90;
+        order = 90;
       }
 
-      [a1 _layoutFrameFor:v4 withOrder:v3];
-      [*(a1 + 256) setFrame:?];
+      [self _layoutFrameFor:v4 withOrder:order];
+      [*(self + 256) setFrame:?];
     }
 
-    if (*(a1 + 128))
+    if (*(self + 128))
     {
-      [(_UINavigationBarLayout *)a1 contentViewLayoutFrame];
+      [(_UINavigationBarLayout *)self contentViewLayoutFrame];
       v9 = v5;
       v10 = v6;
       v11 = v7;
       v12 = v8;
-      v13 = *(a1 + 136);
+      v13 = *(self + 136);
       if (v13)
       {
         [v13 frame];
-        [*(a1 + 136) setFrame:?];
-        v14 = [*(a1 + 136) superview];
-        [v14 safeAreaInsets];
+        [*(self + 136) setFrame:?];
+        superview = [*(self + 136) superview];
+        [superview safeAreaInsets];
         v16 = v15;
         v18 = v17;
         v65.origin.x = v9;
@@ -1539,7 +1539,7 @@ LABEL_8:
         v66.size.width = v11;
         v66.size.height = v12;
         MaxX = CGRectGetMaxX(v66);
-        [v14 bounds];
+        [superview bounds];
         v21 = CGRectGetMaxX(v67) - v18;
         if (MaxX < v21)
         {
@@ -1547,159 +1547,159 @@ LABEL_8:
         }
 
         v22 = v21 - v16;
-        v23 = *(a1 + 136);
-        v24 = [v23 superview];
-        [v23 convertRect:v24 fromView:{v16, v10, v22, v12}];
-        [*(a1 + 128) setFrame:?];
+        v23 = *(self + 136);
+        superview2 = [v23 superview];
+        [v23 convertRect:superview2 fromView:{v16, v10, v22, v12}];
+        [*(self + 128) setFrame:?];
       }
 
       else
       {
-        [*(a1 + 128) setFrame:{v5, v6, v7, v8}];
+        [*(self + 128) setFrame:{v5, v6, v7, v8}];
       }
     }
 
-    if (*(a1 + 224))
+    if (*(self + 224))
     {
-      [a1 _layoutFrameFor:*(a1 + 40) withOrder:70];
+      [self _layoutFrameFor:*(self + 40) withOrder:70];
       v26 = v25;
       v28 = v27;
       v30 = v29;
-      [*(a1 + 224) fullHeightOfRefreshControl];
+      [*(self + 224) fullHeightOfRefreshControl];
       v32 = v31;
-      v33 = [*(a1 + 224) hostContainerView];
-      [v33 setFrame:{v26, v28, v30, v32}];
+      hostContainerView = [*(self + 224) hostContainerView];
+      [hostContainerView setFrame:{v26, v28, v30, v32}];
     }
 
-    if (*(a1 + 144))
+    if (*(self + 144))
     {
-      [a1 _layoutFrameFor:*(a1 + 32) withOrder:60];
-      [*(a1 + 144) setFrame:?];
+      [self _layoutFrameFor:*(self + 32) withOrder:60];
+      [*(self + 144) setFrame:?];
     }
 
-    if (*(a1 + 240) && !+[UIView _hasInProcessProgressAnimator])
+    if (*(self + 240) && !+[UIView _hasInProcessProgressAnimator])
     {
-      v34 = [(_UINavigationBarLayout *)a1 searchBarLayoutFrame];
+      searchBarLayoutFrame = [(_UINavigationBarLayout *)self searchBarLayoutFrame];
       v36 = v35;
       v38 = v37;
       v40 = v39;
-      v41 = [*(a1 + 240) _viewStackedInNavigationBar];
-      [v41 setFrame:{v34, v36, v38, v40}];
+      _viewStackedInNavigationBar = [*(self + 240) _viewStackedInNavigationBar];
+      [_viewStackedInNavigationBar setFrame:{searchBarLayoutFrame, v36, v38, v40}];
     }
 
-    if (*(a1 + 264))
+    if (*(self + 264))
     {
-      [a1 _layoutFrameFor:*(a1 + 72) withOrder:30];
-      [*(a1 + 264) setFrame:?];
+      [self _layoutFrameFor:*(self + 72) withOrder:30];
+      [*(self + 264) setFrame:?];
     }
 
-    if (*(a1 + 232))
+    if (*(self + 232))
     {
       v42 = *MEMORY[0x1E695F058];
       v43 = *(MEMORY[0x1E695F058] + 8);
       v44 = *(MEMORY[0x1E695F058] + 24);
-      [*(a1 + 144) frame];
+      [*(self + 144) frame];
       recta = v45;
       v47 = v46;
       v49 = v48;
       v51 = v50;
-      [*(a1 + 144) directionalLayoutMargins];
+      [*(self + 144) directionalLayoutMargins];
       v53 = v52;
-      v55 = *(a1 + 312) - v52 - v54;
-      [*(a1 + 232) sizeThatFits:{v55, v44}];
+      v55 = *(self + 312) - v52 - v54;
+      [*(self + 232) sizeThatFits:{v55, v44}];
       v57 = v56;
-      [*(a1 + 232) setBounds:{v42, v43, v55, v56}];
+      [*(self + 232) setBounds:{v42, v43, v55, v56}];
       v68.origin.x = recta;
       v68.origin.y = v47;
       v68.size.width = v49;
       v68.size.height = v51;
       MaxY = CGRectGetMaxY(v68);
-      [*(a1 + 144) restingHeightOfTitleView];
+      [*(self + 144) restingHeightOfTitleView];
       v60 = MaxY - v59;
-      [*(a1 + 232) _firstLineBaseline];
-      v62 = *(a1 + 232);
+      [*(self + 232) _firstLineBaseline];
+      v62 = *(self + 232);
 
       [v62 setCenter:{v53 + v55 * 0.5, v57 * 0.5 + v60 - v61}];
     }
   }
 }
 
-- (void)installViewsInNavigationBar:(uint64_t)a1
+- (void)installViewsInNavigationBar:(uint64_t)bar
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (bar)
   {
-    v3 = *(a1 + 240);
+    v3 = *(bar + 240);
     v4 = a2;
-    v5 = [v3 _viewStackedInNavigationBar];
-    v14[0] = *(a1 + 176);
-    v14[1] = [*(a1 + 224) hostContainerView];
-    v15 = *(a1 + 256);
-    v7 = *(a1 + 136);
-    v6 = *(a1 + 144);
-    v16 = v5;
+    _viewStackedInNavigationBar = [v3 _viewStackedInNavigationBar];
+    v14[0] = *(bar + 176);
+    v14[1] = [*(bar + 224) hostContainerView];
+    v15 = *(bar + 256);
+    v7 = *(bar + 136);
+    v6 = *(bar + 144);
+    v16 = _viewStackedInNavigationBar;
     v17 = v6;
-    v9 = *(a1 + 120);
-    v8 = *(a1 + 128);
+    v9 = *(bar + 120);
+    v8 = *(bar + 128);
     if (!v7)
     {
-      v7 = *(a1 + 128);
+      v7 = *(bar + 128);
     }
 
     v18 = v7;
     v19 = v9;
-    v20 = *(a1 + 232);
-    v10 = [v8 assistant];
-    v21 = [v10 previewContainer];
+    v20 = *(bar + 232);
+    assistant = [v8 assistant];
+    previewContainer = [assistant previewContainer];
 
-    v11 = [*(a1 + 128) layout];
-    [v11 setActive:1 contentView:*(a1 + 128)];
+    layout = [*(bar + 128) layout];
+    [layout setActive:1 contentView:*(bar + 128)];
 
     [v4 _ensureViewsAreInstalledInRelativeOrder:v14 viewCount:10 insertionStartIndex:0];
-    if (*(a1 + 136))
+    if (*(bar + 136))
     {
-      v12 = [*(a1 + 128) superview];
-      v13 = *(a1 + 136);
+      superview = [*(bar + 128) superview];
+      v13 = *(bar + 136);
 
-      if (v12 != v13)
+      if (superview != v13)
       {
-        [*(a1 + 136) addSubview:*(a1 + 128)];
+        [*(bar + 136) addSubview:*(bar + 128)];
       }
     }
 
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:1];
+    [_viewStackedInNavigationBar setTranslatesAutoresizingMaskIntoConstraints:1];
   }
 }
 
-- (void)interleaveViewsWithLayout:(void *)a3 inNavigationBar:
+- (void)interleaveViewsWithLayout:(void *)layout inNavigationBar:
 {
   v18[15] = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  layoutCopy = layout;
+  if (self)
   {
     if (!v5)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:sel_interleaveViewsWithLayout_inNavigationBar_ object:a1 file:@"_UINavigationBarLayout.m" lineNumber:1050 description:@"otherLayout==nil"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_interleaveViewsWithLayout_inNavigationBar_ object:self file:@"_UINavigationBarLayout.m" lineNumber:1050 description:@"otherLayout==nil"];
     }
 
-    v17[2] = [*(a1 + 224) hostContainerView];
+    v17[2] = [*(self + 224) hostContainerView];
     v17[3] = [*(v5 + 28) hostContainerView];
     v7 = v18;
-    v19.val[0] = *(a1 + 256);
+    v19.val[0] = *(self + 256);
     v19.val[1] = *(v5 + 16);
     vst2q_f64(v7, v19);
-    v18[4] = [*(a1 + 240) _viewStackedInNavigationBar];
-    v8 = [*(v5 + 30) _viewStackedInNavigationBar];
-    v9 = *(a1 + 136);
-    v10 = *(a1 + 144);
-    v18[5] = v8;
+    v18[4] = [*(self + 240) _viewStackedInNavigationBar];
+    _viewStackedInNavigationBar = [*(v5 + 30) _viewStackedInNavigationBar];
+    v9 = *(self + 136);
+    v10 = *(self + 144);
+    v18[5] = _viewStackedInNavigationBar;
     v18[6] = v10;
     v18[7] = *(v5 + 18);
     if (!v9)
     {
-      v9 = *(a1 + 128);
+      v9 = *(self + 128);
     }
 
     v18[8] = v9;
@@ -1709,44 +1709,44 @@ LABEL_8:
       v11 = *(v5 + 16);
     }
 
-    v13 = *(a1 + 120);
-    v12 = *(a1 + 128);
+    v13 = *(self + 120);
+    v12 = *(self + 128);
     v18[9] = v11;
     v18[10] = v13;
-    v14 = *(a1 + 232);
+    v14 = *(self + 232);
     v18[11] = *(v5 + 15);
     v18[12] = v14;
     v18[13] = *(v5 + 29);
-    v15 = [v12 assistant];
-    v18[14] = [v15 previewContainer];
+    assistant = [v12 assistant];
+    v18[14] = [assistant previewContainer];
 
-    [v6 _ensureViewsAreInstalledInRelativeOrder:v17 viewCount:19 insertionStartIndex:0];
+    [layoutCopy _ensureViewsAreInstalledInRelativeOrder:v17 viewCount:19 insertionStartIndex:0];
   }
 }
 
-- (void)removeViewsNotInLayout:(uint64_t)a1
+- (void)removeViewsNotInLayout:(uint64_t)layout
 {
   v3 = a2;
-  if (a1)
+  if (layout)
   {
     v18 = v3;
     if (!v3)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:sel_removeViewsNotInLayout_ object:a1 file:@"_UINavigationBarLayout.m" lineNumber:1088 description:@"otherLayout==nil"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_removeViewsNotInLayout_ object:layout file:@"_UINavigationBarLayout.m" lineNumber:1088 description:@"otherLayout==nil"];
     }
 
-    v4 = [*(a1 + 224) hostContainerView];
-    v5 = [v18[28] hostContainerView];
+    hostContainerView = [*(layout + 224) hostContainerView];
+    hostContainerView2 = [v18[28] hostContainerView];
 
-    if (v4 != v5)
+    if (hostContainerView != hostContainerView2)
     {
-      [*(a1 + 224) stopAnimations];
-      v6 = [*(a1 + 224) hostContainerView];
-      [v6 removeFromSuperview];
+      [*(layout + 224) stopAnimations];
+      hostContainerView3 = [*(layout + 224) hostContainerView];
+      [hostContainerView3 removeFromSuperview];
     }
 
-    v7 = *(a1 + 120);
+    v7 = *(layout + 120);
     v8 = v18;
     if (v7 != v18[15])
     {
@@ -1754,52 +1754,52 @@ LABEL_8:
       v8 = v18;
     }
 
-    v9 = *(a1 + 128);
+    v9 = *(layout + 128);
     if (v9 != v8[16])
     {
       [v9 removeFromSuperview];
-      [*(a1 + 136) removeFromSuperview];
+      [*(layout + 136) removeFromSuperview];
       v8 = v18;
     }
 
-    v10 = *(a1 + 144);
+    v10 = *(layout + 144);
     if (v10 != v8[18])
     {
       [v10 removeFromSuperview];
       v8 = v18;
     }
 
-    v11 = *(a1 + 176);
+    v11 = *(layout + 176);
     if (v11 != v8[22])
     {
       [v11 removeFromSuperview];
       v8 = v18;
     }
 
-    v12 = *(a1 + 232);
+    v12 = *(layout + 232);
     if (v12 != v8[29])
     {
       [v12 removeFromSuperview];
       v8 = v18;
     }
 
-    v13 = *(a1 + 240);
+    v13 = *(layout + 240);
     if (v13 != v8[30])
     {
-      v14 = [v13 _viewStackedInNavigationBar];
-      [v14 removeFromSuperview];
+      _viewStackedInNavigationBar = [v13 _viewStackedInNavigationBar];
+      [_viewStackedInNavigationBar removeFromSuperview];
 
       v8 = v18;
     }
 
-    v15 = *(a1 + 256);
+    v15 = *(layout + 256);
     if (v15 != v8[32])
     {
       [v15 removeFromSuperview];
       v8 = v18;
     }
 
-    v16 = *(a1 + 264);
+    v16 = *(layout + 264);
     if (v16 != v8[33])
     {
       [v16 removeFromSuperview];
@@ -1809,131 +1809,131 @@ LABEL_8:
   }
 }
 
-- (void)iterateLayoutViews:(uint64_t)a1
+- (void)iterateLayoutViews:(uint64_t)views
 {
   v3 = a2;
-  if (a1)
+  if (views)
   {
     v26 = v3;
     if (!v3)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v25 handleFailureInMethod:sel_iterateLayoutViews_ object:a1 file:@"_UINavigationBarLayout.m" lineNumber:1118 description:@"Block has to be non-nil or this method is pointless"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_iterateLayoutViews_ object:views file:@"_UINavigationBarLayout.m" lineNumber:1118 description:@"Block has to be non-nil or this method is pointless"];
     }
 
-    v4 = *(a1 + 120);
+    v4 = *(views + 120);
     if (v4)
     {
-      v5 = *(a1 + 16);
+      v5 = *(views + 16);
       v6 = v4;
-      [a1 _layoutFrameFor:v5 withOrder:{objc_msgSend(a1, "_promptOrder")}];
+      [views _layoutFrameFor:v5 withOrder:{objc_msgSend(views, "_promptOrder")}];
       v26[2](v26, v6);
     }
 
-    v7 = *(a1 + 256);
+    v7 = *(views + 256);
     if (v7)
     {
-      v8 = *(a1 + 64);
+      v8 = *(views + 64);
       if (v8)
       {
-        v9 = [v8 order];
-        v10 = *(a1 + 64);
+        order = [v8 order];
+        v10 = *(views + 64);
       }
 
       else
       {
         v10 = 0;
-        v9 = 90;
+        order = 90;
       }
 
-      [a1 _layoutFrameFor:v10 withOrder:v9];
+      [views _layoutFrameFor:v10 withOrder:order];
       v26[2](v26, v7);
     }
 
-    v11 = *(a1 + 128);
+    v11 = *(views + 128);
     if (v11)
     {
       v12 = v11;
-      [(_UINavigationBarLayout *)a1 contentViewLayoutFrame];
+      [(_UINavigationBarLayout *)views contentViewLayoutFrame];
       v26[2](v26, v12);
     }
 
-    v13 = [*(a1 + 224) hostContainerView];
-    if (v13)
+    hostContainerView = [*(views + 224) hostContainerView];
+    if (hostContainerView)
     {
-      [a1 _layoutFrameFor:*(a1 + 40) withOrder:70];
-      v26[2](v26, v13);
+      [views _layoutFrameFor:*(views + 40) withOrder:70];
+      v26[2](v26, hostContainerView);
     }
 
-    v14 = *(a1 + 144);
+    v14 = *(views + 144);
     if (v14)
     {
-      v15 = *(a1 + 32);
+      v15 = *(views + 32);
       v16 = v14;
-      [a1 _layoutFrameFor:v15 withOrder:60];
+      [views _layoutFrameFor:v15 withOrder:60];
       v26[2](v26, v16);
     }
 
-    v17 = [*(a1 + 240) _viewStackedInNavigationBar];
-    if (v17)
+    _viewStackedInNavigationBar = [*(views + 240) _viewStackedInNavigationBar];
+    if (_viewStackedInNavigationBar)
     {
-      v18 = [(_UINavigationBarLayout *)a1 searchBarLayoutFrame];
-      (v26[2])(v26, v17, v18);
+      searchBarLayoutFrame = [(_UINavigationBarLayout *)views searchBarLayoutFrame];
+      (v26[2])(v26, _viewStackedInNavigationBar, searchBarLayoutFrame);
     }
 
-    v19 = *(a1 + 264);
+    v19 = *(views + 264);
     if (v19)
     {
-      v20 = *(a1 + 72);
+      v20 = *(views + 72);
       v21 = v19;
-      [a1 _layoutFrameFor:v20 withOrder:30];
+      [views _layoutFrameFor:v20 withOrder:30];
       v26[2](v26, v21);
     }
 
-    v22 = *(a1 + 232);
+    v22 = *(views + 232);
     v3 = v26;
     if (v22)
     {
       v23 = v22;
-      v24 = [(_UINavigationBarLayout *)a1 searchBarLayoutFrame];
-      (v26[2])(v26, v23, v24);
+      searchBarLayoutFrame2 = [(_UINavigationBarLayout *)views searchBarLayoutFrame];
+      (v26[2])(v26, v23, searchBarLayoutFrame2);
 
       v3 = v26;
     }
   }
 }
 
-- (id)layoutForMeasuringWidth:(void *)a1
+- (id)layoutForMeasuringWidth:(void *)width
 {
-  v2 = a1;
-  if (a1)
+  widthCopy = width;
+  if (width)
   {
-    v3 = a1[21];
+    v3 = width[21];
     if (v3 && (v5 = [v3 twoLineMode], a2 != 0.0) && v5 == 1)
     {
-      v2 = [v2 copy];
-      [(_UINavigationBarLayout *)v2 setLayoutSize:a2, 0.0];
+      widthCopy = [widthCopy copy];
+      [(_UINavigationBarLayout *)widthCopy setLayoutSize:a2, 0.0];
     }
 
     else
     {
-      [(_UINavigationBarLayout *)v2 updateLayout];
-      v2 = v2;
+      [(_UINavigationBarLayout *)widthCopy updateLayout];
+      widthCopy = widthCopy;
     }
   }
 
-  return v2;
+  return widthCopy;
 }
 
-- (double)layoutHeightRevealingPart:(id *)a1
+- (double)layoutHeightRevealingPart:(id *)part
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!part)
   {
     return 0.0;
   }
 
-  v3 = [a1 _insertLayoutDataForNavigationBarPart:a2];
+  v3 = [part _insertLayoutDataForNavigationBarPart:a2];
   v4 = 0.0;
   if ([v3 active])
   {
@@ -1941,7 +1941,7 @@ LABEL_8:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = a1[10];
+    v5 = part[10];
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -1957,8 +1957,8 @@ LABEL_8:
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 priority];
-          if (v11 >= [v3 priority])
+          priority = [v10 priority];
+          if (priority >= [v3 priority])
           {
             [v10 preferredHeight];
           }
@@ -1981,15 +1981,15 @@ LABEL_8:
   return v4;
 }
 
-- (double)layoutHeightStackingPart:(id *)a1
+- (double)layoutHeightStackingPart:(id *)part
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!part)
   {
     return 0.0;
   }
 
-  v3 = [a1 _insertLayoutDataForNavigationBarPart:a2];
+  v3 = [part _insertLayoutDataForNavigationBarPart:a2];
   v4 = 0.0;
   if ([v3 active])
   {
@@ -1997,7 +1997,7 @@ LABEL_8:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = a1[11];
+    v5 = part[11];
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -2013,8 +2013,8 @@ LABEL_8:
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 order];
-          if (v11 >= [v3 order])
+          order = [v10 order];
+          if (order >= [v3 order])
           {
             [v10 preferredHeight];
             v4 = v4 + v12;
@@ -2031,21 +2031,21 @@ LABEL_8:
   return v4;
 }
 
-- (id)_insertLayoutDataForNavigationBarPart:(int64_t)a3
+- (id)_insertLayoutDataForNavigationBarPart:(int64_t)part
 {
   v4 = 0;
-  if (a3 > 4)
+  if (part > 4)
   {
-    if (a3 > 6)
+    if (part > 6)
     {
-      if (a3 == 7)
+      if (part == 7)
       {
         p_bottomPaletteLayoutData = &self->_bottomPaletteLayoutData;
       }
 
       else
       {
-        if (a3 != 8)
+        if (part != 8)
         {
           goto LABEL_21;
         }
@@ -2054,13 +2054,13 @@ LABEL_8:
       }
     }
 
-    else if (a3 == 5)
+    else if (part == 5)
     {
       scopeBarLayoutData = self->_scopeBarLayoutData;
       p_scopeBarLayoutData = &self->_scopeBarLayoutData;
-      v8 = [(_UIBarInsertLayoutData *)scopeBarLayoutData active];
+      active = [(_UIBarInsertLayoutData *)scopeBarLayoutData active];
       p_bottomPaletteLayoutData = p_scopeBarLayoutData - 1;
-      if (v8)
+      if (active)
       {
         p_bottomPaletteLayoutData = p_scopeBarLayoutData;
       }
@@ -2072,9 +2072,9 @@ LABEL_8:
     }
   }
 
-  else if (a3 > 2)
+  else if (part > 2)
   {
-    if (a3 == 3)
+    if (part == 3)
     {
       p_bottomPaletteLayoutData = &self->_promptLayoutData;
     }
@@ -2085,14 +2085,14 @@ LABEL_8:
     }
   }
 
-  else if (a3 == 1)
+  else if (part == 1)
   {
     p_bottomPaletteLayoutData = &self->_contentLayoutData;
   }
 
   else
   {
-    if (a3 != 2)
+    if (part != 2)
     {
       goto LABEL_21;
     }
@@ -2207,31 +2207,31 @@ LABEL_21:
   return v4;
 }
 
-- (void)recordFromStateForTransition:(id)a3
+- (void)recordFromStateForTransition:(id)transition
 {
   contentView = self->_contentView;
-  v5 = a3;
-  [(_UINavigationBarContentView *)contentView recordFromStateForTransition:v5];
-  [(_UINavigationBarLargeTitleView *)self->_largeTitleView recordFromStateForTransition:v5];
+  transitionCopy = transition;
+  [(_UINavigationBarContentView *)contentView recordFromStateForTransition:transitionCopy];
+  [(_UINavigationBarLargeTitleView *)self->_largeTitleView recordFromStateForTransition:transitionCopy];
 }
 
-- (void)prepareToRecordToState:(id)a3
+- (void)prepareToRecordToState:(id)state
 {
   contentView = self->_contentView;
-  v5 = a3;
-  [(_UINavigationBarContentView *)contentView prepareToRecordToState:v5];
-  [(_UINavigationBarLargeTitleView *)self->_largeTitleView prepareToRecordToState:v5];
+  stateCopy = state;
+  [(_UINavigationBarContentView *)contentView prepareToRecordToState:stateCopy];
+  [(_UINavigationBarLargeTitleView *)self->_largeTitleView prepareToRecordToState:stateCopy];
 }
 
-- (void)recordToStateForTransition:(id)a3
+- (void)recordToStateForTransition:(id)transition
 {
   contentView = self->_contentView;
-  v5 = a3;
-  [(_UINavigationBarContentView *)contentView recordToStateForTransition:v5];
-  [(_UINavigationBarLargeTitleView *)self->_largeTitleView recordToStateForTransition:v5];
+  transitionCopy = transition;
+  [(_UINavigationBarContentView *)contentView recordToStateForTransition:transitionCopy];
+  [(_UINavigationBarLargeTitleView *)self->_largeTitleView recordToStateForTransition:transitionCopy];
 }
 
-- (void)finalizeStateFromTransition:(id)a3
+- (void)finalizeStateFromTransition:(id)transition
 {
   [(_UINavigationBarContentView *)self->_contentView adoptLayout:self->_contentViewLayout];
   largeTitleView = self->_largeTitleView;
@@ -2240,11 +2240,11 @@ LABEL_21:
   [(_UINavigationBarLargeTitleView *)largeTitleView adoptLayout:largeTitleViewLayout];
 }
 
-- (void)setContentViewVisualProvider:(uint64_t)a1
+- (void)setContentViewVisualProvider:(uint64_t)provider
 {
-  if (a1)
+  if (provider)
   {
-    objc_storeStrong((a1 + 152), a2);
+    objc_storeStrong((provider + 152), a2);
   }
 }
 

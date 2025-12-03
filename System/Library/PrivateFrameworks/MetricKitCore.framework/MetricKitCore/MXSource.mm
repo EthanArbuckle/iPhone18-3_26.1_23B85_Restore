@@ -1,20 +1,20 @@
 @interface MXSource
 + (id)sharedSource;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MXSource)init;
 - (void)_initIvar;
 - (void)_initLogHandle;
 - (void)_initQueue;
 - (void)_invalidateConnection;
-- (void)_setupExportedInterfaceForConnection:(id)a3;
-- (void)_setupHandlersForConnection:(id)a3;
-- (void)_setupRemoteInterfaceForConnection:(id)a3;
+- (void)_setupExportedInterfaceForConnection:(id)connection;
+- (void)_setupHandlersForConnection:(id)connection;
+- (void)_setupRemoteInterfaceForConnection:(id)connection;
 - (void)_startListenClientXPC;
-- (void)cleanServiceDiagnosticsDirectoriesForClient:(id)a3;
-- (void)deliverSamplePayloadForClient:(id)a3;
+- (void)cleanServiceDiagnosticsDirectoriesForClient:(id)client;
+- (void)deliverSamplePayloadForClient:(id)client;
 - (void)metricPayloadDidCacheToSourceDirectory;
-- (void)writeDiagnosticDataWithPayload:(id)a3;
-- (void)writeMetricDataWithPayload:(id)a3;
+- (void)writeDiagnosticDataWithPayload:(id)payload;
+- (void)writeMetricDataWithPayload:(id)payload;
 @end
 
 @implementation MXSource
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __24__MXSource_sharedSource__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedSource_onceToken != -1)
   {
     dispatch_once(&sharedSource_onceToken, block);
@@ -97,14 +97,14 @@ uint64_t __24__MXSource_sharedSource__block_invoke(uint64_t a1)
 - (void)_initIvar
 {
   v3 = +[MXDependencyFactory shared];
-  v4 = [v3 payloadValidator];
+  payloadValidator = [v3 payloadValidator];
   payloadValidator = self->_payloadValidator;
-  self->_payloadValidator = v4;
+  self->_payloadValidator = payloadValidator;
 
   v6 = +[MXDependencyFactory shared];
-  v7 = [v6 bundleUtil];
+  bundleUtil = [v6 bundleUtil];
   bundleUtil = self->_bundleUtil;
-  self->_bundleUtil = v7;
+  self->_bundleUtil = bundleUtil;
 
   v11 = +[MXDependencyFactory shared];
   v9 = [v11 handlerForMXSourceWithDelegate:self];
@@ -155,17 +155,17 @@ void __33__MXSource__startListenClientXPC__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   requestQueue = self->_requestQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__MXSource_listener_shouldAcceptNewConnection___block_invoke;
   v9[3] = &unk_2798C6780;
   v9[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = connectionCopy;
+  v7 = connectionCopy;
   dispatch_async(requestQueue, v9);
 
   return 1;
@@ -191,12 +191,12 @@ uint64_t __47__MXSource_listener_shouldAcceptNewConnection___block_invoke(uint64
   return result;
 }
 
-- (void)_setupExportedInterfaceForConnection:(id)a3
+- (void)_setupExportedInterfaceForConnection:(id)connection
 {
   v3 = MEMORY[0x277CCAE90];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = [v3 interfaceWithProtocol:&unk_286A1EF08];
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
   v6 = MEMORY[0x277CBEB98];
   v7 = objc_opt_class();
@@ -205,8 +205,8 @@ uint64_t __47__MXSource_listener_shouldAcceptNewConnection___block_invoke(uint64
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v23 = [v6 setWithObjects:{v7, v8, v9, v10, v11, objc_opt_class(), 0}];
-  v12 = [v4 exportedInterface];
-  [v12 setClasses:v23 forSelector:sel_writeMetricDataWithPayload_ argumentIndex:0 ofReply:0];
+  exportedInterface = [connectionCopy exportedInterface];
+  [exportedInterface setClasses:v23 forSelector:sel_writeMetricDataWithPayload_ argumentIndex:0 ofReply:0];
 
   v13 = MEMORY[0x277CBEB98];
   v14 = objc_opt_class();
@@ -216,35 +216,35 @@ uint64_t __47__MXSource_listener_shouldAcceptNewConnection___block_invoke(uint64
   v18 = objc_opt_class();
   v19 = objc_opt_class();
   v20 = [v13 setWithObjects:{v14, v15, v16, v17, v18, v19, objc_opt_class(), 0}];
-  v21 = [v4 exportedInterface];
-  [v21 setClasses:v20 forSelector:sel_writeDiagnosticDataWithPayload_ argumentIndex:0 ofReply:0];
+  exportedInterface2 = [connectionCopy exportedInterface];
+  [exportedInterface2 setClasses:v20 forSelector:sel_writeDiagnosticDataWithPayload_ argumentIndex:0 ofReply:0];
 
-  [v4 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
 }
 
-- (void)_setupRemoteInterfaceForConnection:(id)a3
+- (void)_setupRemoteInterfaceForConnection:(id)connection
 {
   v3 = MEMORY[0x277CCAE90];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = [v3 interfaceWithProtocol:&unk_286A21F90];
-  [v4 setRemoteObjectInterface:v5];
+  [connectionCopy setRemoteObjectInterface:v5];
 }
 
-- (void)_setupHandlersForConnection:(id)a3
+- (void)_setupHandlersForConnection:(id)connection
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__MXSource__setupHandlersForConnection___block_invoke;
   v6[3] = &unk_2798C6758;
   v6[4] = self;
-  v4 = a3;
-  [v4 setInterruptionHandler:v6];
+  connectionCopy = connection;
+  [connectionCopy setInterruptionHandler:v6];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40__MXSource__setupHandlersForConnection___block_invoke_28;
   v5[3] = &unk_2798C6758;
   v5[4] = self;
-  [v4 setInvalidationHandler:v5];
+  [connectionCopy setInvalidationHandler:v5];
 }
 
 void __40__MXSource__setupHandlersForConnection___block_invoke(uint64_t a1)
@@ -277,15 +277,15 @@ void __40__MXSource__setupHandlersForConnection___block_invoke_28(uint64_t a1)
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeMetricDataWithPayload:(id)a3
+- (void)writeMetricDataWithPayload:(id)payload
 {
-  v4 = a3;
-  if ([(MXPayloadValidator *)self->_payloadValidator validatePayload:v4])
+  payloadCopy = payload;
+  if ([(MXPayloadValidator *)self->_payloadValidator validatePayload:payloadCopy])
   {
-    v5 = [(MXSource *)self MXSourceLogHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    mXSourceLogHandle = [(MXSource *)self MXSourceLogHandle];
+    if (os_log_type_enabled(mXSourceLogHandle, OS_LOG_TYPE_DEBUG))
     {
-      [MXSource writeMetricDataWithPayload:v4];
+      [MXSource writeMetricDataWithPayload:payloadCopy];
     }
 
     iVarQueue = self->_iVarQueue;
@@ -294,7 +294,7 @@ void __40__MXSource__setupHandlersForConnection___block_invoke_28(uint64_t a1)
     v7[2] = __39__MXSource_writeMetricDataWithPayload___block_invoke;
     v7[3] = &unk_2798C6780;
     v7[4] = self;
-    v8 = v4;
+    v8 = payloadCopy;
     dispatch_async(iVarQueue, v7);
   }
 }
@@ -305,15 +305,15 @@ void __39__MXSource_writeMetricDataWithPayload___block_invoke(uint64_t a1)
   [v2 handleMetricDataWithPayload:*(a1 + 40)];
 }
 
-- (void)writeDiagnosticDataWithPayload:(id)a3
+- (void)writeDiagnosticDataWithPayload:(id)payload
 {
-  v4 = a3;
-  if ([(MXPayloadValidator *)self->_payloadValidator validatePayload:v4])
+  payloadCopy = payload;
+  if ([(MXPayloadValidator *)self->_payloadValidator validatePayload:payloadCopy])
   {
-    v5 = [(MXSource *)self MXSourceLogHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    mXSourceLogHandle = [(MXSource *)self MXSourceLogHandle];
+    if (os_log_type_enabled(mXSourceLogHandle, OS_LOG_TYPE_DEBUG))
     {
-      [MXSource writeDiagnosticDataWithPayload:v4];
+      [MXSource writeDiagnosticDataWithPayload:payloadCopy];
     }
 
     iVarQueue = self->_iVarQueue;
@@ -322,7 +322,7 @@ void __39__MXSource_writeMetricDataWithPayload___block_invoke(uint64_t a1)
     v7[2] = __43__MXSource_writeDiagnosticDataWithPayload___block_invoke;
     v7[3] = &unk_2798C6780;
     v7[4] = self;
-    v8 = v4;
+    v8 = payloadCopy;
     dispatch_async(iVarQueue, v7);
   }
 }
@@ -333,17 +333,17 @@ void __43__MXSource_writeDiagnosticDataWithPayload___block_invoke(uint64_t a1)
   [v2 handleDiagnosticDataWithPayload:*(a1 + 40)];
 }
 
-- (void)cleanServiceDiagnosticsDirectoriesForClient:(id)a3
+- (void)cleanServiceDiagnosticsDirectoriesForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   iVarQueue = self->_iVarQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__MXSource_cleanServiceDiagnosticsDirectoriesForClient___block_invoke;
   v7[3] = &unk_2798C6780;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_async(iVarQueue, v7);
 }
 
@@ -362,29 +362,29 @@ void __56__MXSource_cleanServiceDiagnosticsDirectoriesForClient___block_invoke(u
 
 - (void)_invalidateConnection
 {
-  v2 = [MEMORY[0x277CCAE80] currentConnection];
-  if (v2)
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if (currentConnection)
   {
-    v3 = v2;
-    [v2 invalidate];
-    v2 = v3;
+    v3 = currentConnection;
+    [currentConnection invalidate];
+    currentConnection = v3;
   }
 }
 
-- (void)deliverSamplePayloadForClient:(id)a3
+- (void)deliverSamplePayloadForClient:(id)client
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAE80] currentConnection];
+  clientCopy = client;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   iVarQueue = self->_iVarQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__MXSource_deliverSamplePayloadForClient___block_invoke;
   block[3] = &unk_2798C67A8;
   block[4] = self;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = currentConnection;
+  v11 = clientCopy;
+  v7 = clientCopy;
+  v8 = currentConnection;
   dispatch_async(iVarQueue, block);
 }
 

@@ -1,38 +1,38 @@
 @interface CloudTabsLibraryItemController
 - (BOOL)isSelected;
 - (void)didSelectItem;
-- (void)updateListContentConfiguration:(id)a3;
+- (void)updateListContentConfiguration:(id)configuration;
 @end
 
 @implementation CloudTabsLibraryItemController
 
-- (void)updateListContentConfiguration:(id)a3
+- (void)updateListContentConfiguration:(id)configuration
 {
   v3 = MEMORY[0x277D755B8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [v3 systemImageNamed:@"icloud"];
-  [v4 setImage:v5];
+  [configurationCopy setImage:v5];
 
   v6 = startPageTitleForCollectionType(@"CloudTabsCollection");
-  [v4 setText:v6];
+  [configurationCopy setText:v6];
 }
 
 - (void)didSelectItem
 {
-  v2 = [(LibraryItemController *)self configuration];
-  v3 = [v2 libraryItemOpenHandler];
-  [v3 openLibrary:@"CloudTabsCollection"];
+  configuration = [(LibraryItemController *)self configuration];
+  libraryItemOpenHandler = [configuration libraryItemOpenHandler];
+  [libraryItemOpenHandler openLibrary:@"CloudTabsCollection"];
 
-  v4 = [MEMORY[0x277D499B8] sharedLogger];
-  [v4 didUseSidebarAction:9];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didUseSidebarAction:9];
 }
 
 - (BOOL)isSelected
 {
-  v2 = [(LibraryItemController *)self configuration];
-  v3 = [v2 libraryItemOpenHandler];
-  v4 = [v3 activeLibraryType];
-  v5 = [v4 isEqualToString:@"CloudTabsCollection"];
+  configuration = [(LibraryItemController *)self configuration];
+  libraryItemOpenHandler = [configuration libraryItemOpenHandler];
+  activeLibraryType = [libraryItemOpenHandler activeLibraryType];
+  v5 = [activeLibraryType isEqualToString:@"CloudTabsCollection"];
 
   return v5;
 }

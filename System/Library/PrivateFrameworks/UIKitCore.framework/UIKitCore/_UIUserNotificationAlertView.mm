@@ -1,14 +1,14 @@
 @interface _UIUserNotificationAlertView
 + (void)initialize;
-- (id)textFieldAtIndex:(int64_t)a3;
-- (int64_t)addButtonWithTitle:(id)a3;
+- (id)textFieldAtIndex:(int64_t)index;
+- (int64_t)addButtonWithTitle:(id)title;
 - (void)_cancelUserNotification;
 - (void)_removeObservervations;
 - (void)cancelAlertView;
 - (void)dealloc;
-- (void)dismissWithClickedButtonIndex:(int64_t)a3 animated:(BOOL)a4;
-- (void)setHostedWindow:(id)a3;
-- (void)setRemoteViewController:(id)a3;
+- (void)dismissWithClickedButtonIndex:(int64_t)index animated:(BOOL)animated;
+- (void)setHostedWindow:(id)window;
+- (void)setRemoteViewController:(id)controller;
 - (void)show;
 @end
 
@@ -16,11 +16,11 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v2 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     v3 = _MergedGlobals_1_31;
-    _MergedGlobals_1_31 = v2;
+    _MergedGlobals_1_31 = weakToWeakObjectsMapTable;
   }
 }
 
@@ -31,41 +31,41 @@
     return;
   }
 
-  v3 = [(UIAlertView *)self delegate];
+  delegate = [(UIAlertView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 willPresentAlertView:self];
+    [delegate willPresentAlertView:self];
   }
 
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [(UIAlertView *)self title];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  title = [(UIAlertView *)self title];
 
-  if (v5)
+  if (title)
   {
-    v6 = [(UIAlertView *)self title];
-    [v4 setObject:v6 forKey:*MEMORY[0x1E695EE58]];
+    title2 = [(UIAlertView *)self title];
+    [dictionary setObject:title2 forKey:*MEMORY[0x1E695EE58]];
   }
 
-  v7 = [(UIAlertView *)self message];
+  message = [(UIAlertView *)self message];
 
-  if (v7)
+  if (message)
   {
-    v8 = [(UIAlertView *)self message];
-    [v4 setObject:v8 forKey:*MEMORY[0x1E695EE60]];
+    message2 = [(UIAlertView *)self message];
+    [dictionary setObject:message2 forKey:*MEMORY[0x1E695EE60]];
   }
 
   v9 = [(UIAlertView *)self buttonTitleAtIndex:[(UIAlertView *)self numberOfButtons]- 1];
-  [v4 setObject:v9 forKey:*MEMORY[0x1E695EE78]];
+  [dictionary setObject:v9 forKey:*MEMORY[0x1E695EE78]];
 
   if ([(UIAlertView *)self numberOfButtons]>= 2)
   {
     v10 = [(UIAlertView *)self buttonTitleAtIndex:0];
-    [v4 setObject:v10 forKey:*MEMORY[0x1E695EE70]];
+    [dictionary setObject:v10 forKey:*MEMORY[0x1E695EE70]];
 
     if ([(UIAlertView *)self numberOfButtons]== 3)
     {
       v11 = [(UIAlertView *)self buttonTitleAtIndex:1];
-      [v4 setObject:v11 forKey:*MEMORY[0x1E695EE98]];
+      [dictionary setObject:v11 forKey:*MEMORY[0x1E695EE98]];
     }
   }
 
@@ -90,9 +90,9 @@
   _Block_object_dispose(&v52, 8);
   if (!v12)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v37 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSBUserNotificationAllowMenuButtonDismissal(void)"];
-    [v36 handleFailureInFunction:v37 file:@"UIAlertView_ViewServiceSupport.m" lineNumber:28 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v37 file:@"UIAlertView_ViewServiceSupport.m" lineNumber:28 description:{@"%s", dlerror()}];
 LABEL_35:
 
     __break(1u);
@@ -100,7 +100,7 @@ LABEL_35:
   }
 
   v14 = *MEMORY[0x1E695E4D0];
-  [v4 setObject:*MEMORY[0x1E695E4D0] forKey:*v12];
+  [dictionary setObject:*MEMORY[0x1E695E4D0] forKey:*v12];
   v52 = 0;
   v53 = &v52;
   v54 = 0x2020000000;
@@ -122,46 +122,46 @@ LABEL_35:
   _Block_object_dispose(&v52, 8);
   if (!v15)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v37 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSBUserNotificationDismissOnLock(void)"];
-    [v36 handleFailureInFunction:v37 file:@"UIAlertView_ViewServiceSupport.m" lineNumber:29 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v37 file:@"UIAlertView_ViewServiceSupport.m" lineNumber:29 description:{@"%s", dlerror()}];
     goto LABEL_35;
   }
 
-  obj = v3;
-  [v4 setObject:v14 forKey:*v15];
-  v17 = [MEMORY[0x1E695DF70] array];
-  v18 = [MEMORY[0x1E695DF70] array];
-  v19 = [MEMORY[0x1E695DF70] array];
-  v20 = [MEMORY[0x1E695DF70] array];
-  v21 = [MEMORY[0x1E695DF70] array];
+  obj = delegate;
+  [dictionary setObject:v14 forKey:*v15];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
+  array5 = [MEMORY[0x1E695DF70] array];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __36___UIUserNotificationAlertView_show__block_invoke;
   aBlock[3] = &unk_1E71288F0;
-  v22 = v17;
+  v22 = array;
   v41 = v22;
-  v23 = v18;
+  v23 = array2;
   v42 = v23;
-  v24 = v19;
+  v24 = array3;
   v43 = v24;
-  v25 = v20;
+  v25 = array4;
   v44 = v25;
-  v26 = v21;
+  v26 = array5;
   v45 = v26;
-  v27 = v4;
+  v27 = dictionary;
   v46 = v27;
   v28 = _Block_copy(aBlock);
-  v29 = [(UIAlertView *)self alertViewStyle];
+  alertViewStyle = [(UIAlertView *)self alertViewStyle];
   v30 = 3;
-  if (v29 <= UIAlertViewStyleSecureTextInput)
+  if (alertViewStyle <= UIAlertViewStyleSecureTextInput)
   {
-    if (v29 == UIAlertViewStyleDefault)
+    if (alertViewStyle == UIAlertViewStyleDefault)
     {
       goto LABEL_26;
     }
 
-    if (v29 == UIAlertViewStyleSecureTextInput)
+    if (alertViewStyle == UIAlertViewStyleSecureTextInput)
     {
       v30 = 65539;
 LABEL_24:
@@ -173,12 +173,12 @@ LABEL_24:
     goto LABEL_36;
   }
 
-  if (v29 == UIAlertViewStylePlainTextInput)
+  if (alertViewStyle == UIAlertViewStylePlainTextInput)
   {
     goto LABEL_24;
   }
 
-  if (v29 != UIAlertViewStyleLoginAndPasswordInput)
+  if (alertViewStyle != UIAlertViewStyleLoginAndPasswordInput)
   {
 LABEL_36:
     abort();
@@ -215,19 +215,19 @@ LABEL_26:
   }
 }
 
-- (id)textFieldAtIndex:(int64_t)a3
+- (id)textFieldAtIndex:(int64_t)index
 {
   v6.receiver = self;
   v6.super_class = _UIUserNotificationAlertView;
-  v3 = [(UIAlertView *)&v6 textFieldAtIndex:a3];
+  v3 = [(UIAlertView *)&v6 textFieldAtIndex:index];
   v4 = [_UIUserNotificationAlertViewRestrictedTextField restrictedProxyForTextField:v3];
 
   return v4;
 }
 
-- (int64_t)addButtonWithTitle:(id)a3
+- (int64_t)addButtonWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   if ([(UIAlertView *)self numberOfButtons]== 3)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"UIAlertViews displayed from view services may have at most three buttons"];
@@ -235,39 +235,39 @@ LABEL_26:
 
   v7.receiver = self;
   v7.super_class = _UIUserNotificationAlertView;
-  v5 = [(UIAlertView *)&v7 addButtonWithTitle:v4];
+  v5 = [(UIAlertView *)&v7 addButtonWithTitle:titleCopy];
 
   return v5;
 }
 
-- (void)setHostedWindow:(id)a3
+- (void)setHostedWindow:(id)window
 {
-  v5 = a3;
+  windowCopy = window;
   [(_UIUserNotificationAlertView *)self _removeObservervations];
-  if (v5)
+  if (windowCopy)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel_cancelAlertView name:0x1EFBB4790 object:v5];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_cancelAlertView name:0x1EFBB4790 object:windowCopy];
   }
 }
 
-- (void)setRemoteViewController:(id)a3
+- (void)setRemoteViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   [(_UIUserNotificationAlertView *)self _removeObservervations];
-  if (v5)
+  if (controllerCopy)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel_cancelAlertView name:@"_UIViewServiceRemoteViewControllerWillDisconnectNotification" object:v5];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_cancelAlertView name:@"_UIViewServiceRemoteViewControllerWillDisconnectNotification" object:controllerCopy];
   }
 }
 
 - (void)cancelAlertView
 {
-  v3 = [(UIAlertView *)self delegate];
+  delegate = [(UIAlertView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 alertViewCancel:self];
+    [delegate alertViewCancel:self];
     [(_UIUserNotificationAlertView *)self _cancelUserNotification];
   }
 
@@ -301,23 +301,23 @@ LABEL_26:
 
 - (void)_removeObservervations
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:0x1EFBB4790 object:0];
-  [v3 removeObserver:self name:@"_UIViewServiceRemoteViewControllerWillDisconnectNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:0x1EFBB4790 object:0];
+  [defaultCenter removeObserver:self name:@"_UIViewServiceRemoteViewControllerWillDisconnectNotification" object:0];
 }
 
-- (void)dismissWithClickedButtonIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)dismissWithClickedButtonIndex:(int64_t)index animated:(BOOL)animated
 {
-  v6 = [(UIAlertView *)self delegate:a3];
+  v6 = [(UIAlertView *)self delegate:index];
   if (objc_opt_respondsToSelector())
   {
-    [v6 alertView:self willDismissWithButtonIndex:a3];
+    [v6 alertView:self willDismissWithButtonIndex:index];
   }
 
   [(_UIUserNotificationAlertView *)self _cancelUserNotification];
   if (objc_opt_respondsToSelector())
   {
-    [v6 alertView:self didDismissWithButtonIndex:a3];
+    [v6 alertView:self didDismissWithButtonIndex:index];
   }
 }
 

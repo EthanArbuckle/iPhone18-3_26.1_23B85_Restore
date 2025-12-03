@@ -1,9 +1,9 @@
 @interface GDTerrainTypeValue
-- (GDTerrainTypeValue)initWithCoder:(id)a3;
-- (GDTerrainTypeValue)initWithType:(int64_t)a3 typeValue:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (GDTerrainTypeValue)initWithCoder:(id)coder;
+- (GDTerrainTypeValue)initWithType:(int64_t)type typeValue:(double)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GDTerrainTypeValue
@@ -26,55 +26,55 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [GDTerrainTypeValue allocWithZone:a3];
+  v4 = [GDTerrainTypeValue allocWithZone:zone];
   type = self->_type;
   typeValue = self->_typeValue;
 
   return MEMORY[0x1EEE66B58](v4, sel_initWithType_typeValue_);
 }
 
-- (GDTerrainTypeValue)initWithCoder:(id)a3
+- (GDTerrainTypeValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_type);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
   [v7 intValue];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_typeValue);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   [v10 doubleValue];
 
   return MEMORY[0x1EEE66B58](self, sel_initWithType_typeValue_);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   type = self->_type;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithInteger:type];
   v8 = NSStringFromSelector(sel_type);
-  [v6 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:v7 forKey:v8];
 
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:self->_typeValue];
   v9 = NSStringFromSelector(sel_typeValue);
-  [v6 encodeObject:v10 forKey:v9];
+  [coderCopy encodeObject:v10 forKey:v9];
 }
 
-- (GDTerrainTypeValue)initWithType:(int64_t)a3 typeValue:(double)a4
+- (GDTerrainTypeValue)initWithType:(int64_t)type typeValue:(double)value
 {
   v7.receiver = self;
   v7.super_class = GDTerrainTypeValue;
   result = [(GDTerrainTypeValue *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_typeValue = a4;
+    result->_type = type;
+    result->_typeValue = value;
   }
 
   return result;

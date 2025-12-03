@@ -8,13 +8,13 @@
 {
   v5.receiver = self;
   v5.super_class = WDElectrocardiogramDataListViewController;
-  v3 = [(WDDataListViewController *)&v5 isEditEnabled];
-  if (v3)
+  isEditEnabled = [(WDDataListViewController *)&v5 isEditEnabled];
+  if (isEditEnabled)
   {
-    LOBYTE(v3) = self->_mode == 0;
+    LOBYTE(isEditEnabled) = self->_mode == 0;
   }
 
-  return v3;
+  return isEditEnabled;
 }
 
 @end

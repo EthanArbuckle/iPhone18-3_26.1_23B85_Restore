@@ -1,15 +1,15 @@
 @interface CameraAdjustmentsSettingsController
-- (BOOL)_overlayControlsSectionIncludesRowAtIndexPath:(id)a3;
+- (BOOL)_overlayControlsSectionIncludesRowAtIndexPath:(id)path;
 - (_NSRange)_availableControlsSpecifiersRange;
 - (id)_availableOverlayControlSpecifiers;
 - (id)_createSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
 - (void)_initializeOverlayControlLocalizationDictionary;
 - (void)_saveCameraButtonControlSelection;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -30,9 +30,9 @@
   v4 = *&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(CameraAdjustmentsSettingsController *)self _createSpecifiers];
-    [CameraSettingsBaseController allowMultilineTitlesForSpecifiers:v5];
-    v6 = [v5 copy];
+    _createSpecifiers = [(CameraAdjustmentsSettingsController *)self _createSpecifiers];
+    [CameraSettingsBaseController allowMultilineTitlesForSpecifiers:_createSpecifiers];
+    v6 = [_createSpecifiers copy];
     v7 = *&self->super.PSListController_opaque[v3];
     *&self->super.PSListController_opaque[v3] = v6;
 
@@ -55,8 +55,8 @@
 
   [v3 addObject:v5];
   v7 = sub_23D0(@"CAMERA_ADJUSTMENTS_GESTURE_LIGHT_PRESS");
-  v25 = self;
-  v8 = self;
+  selfCopy = self;
+  selfCopy2 = self;
   v9 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
 
   v10 = PSDefaultsKey;
@@ -70,7 +70,7 @@
   [v9 setIdentifier:@"CAMERA_ADJUSTMENTS_GESTURE_LIGHT_PRESS"];
   [v3 addObject:v9];
   v13 = sub_23D0(@"CAMERA_ADJUSTMENTS_GESTURE_SWIPE");
-  v14 = [PSSpecifier preferenceSpecifierNamed:v13 target:v8 set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
+  v14 = [PSSpecifier preferenceSpecifierNamed:v13 target:selfCopy2 set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
 
   [v14 setObject:@"com.apple.camera" forKeyedSubscript:v10];
   [v14 setObject:@"systemOverlay.swipeToPresentEnabled" forKeyedSubscript:v11];
@@ -83,18 +83,18 @@
 
   [v3 addObject:v15];
   v17 = [v3 count];
-  v18 = [(CameraAdjustmentsSettingsController *)v25 _availableOverlayControlSpecifiers];
-  [v3 addObjectsFromArray:v18];
-  v19 = [v18 count];
-  *(&v25->__availableOverlayControlLocalizationStrings + 1) = v17;
-  *(&v25->__availableControlsSpecifiersRange.location + 1) = v19;
+  _availableOverlayControlSpecifiers = [(CameraAdjustmentsSettingsController *)selfCopy _availableOverlayControlSpecifiers];
+  [v3 addObjectsFromArray:_availableOverlayControlSpecifiers];
+  v19 = [_availableOverlayControlSpecifiers count];
+  *(&selfCopy->__availableOverlayControlLocalizationStrings + 1) = v17;
+  *(&selfCopy->__availableControlsSpecifiersRange.location + 1) = v19;
   v20 = [PSSpecifier groupSpecifierWithID:@"cleanPreviewGroup"];
   v21 = sub_23D0(@"CAPTURE_BUTTON_HIDE_CONTROLS_FOOTER");
   [v20 setProperty:v21 forKey:v28];
 
   [v3 addObject:v20];
   v22 = sub_23D0(@"HIDE_CAMERA_CONTROLS");
-  v23 = [PSSpecifier preferenceSpecifierNamed:v22 target:v25 set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
+  v23 = [PSSpecifier preferenceSpecifierNamed:v22 target:selfCopy set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
 
   [v23 setObject:@"com.apple.camera" forKeyedSubscript:v27];
   [v23 setObject:@"systemOverlay.hidesClientControls" forKeyedSubscript:v26];
@@ -127,22 +127,22 @@
   }
 }
 
-- (BOOL)_overlayControlsSectionIncludesRowAtIndexPath:(id)a3
+- (BOOL)_overlayControlsSectionIncludesRowAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [(CameraAdjustmentsSettingsController *)self specifierForID:@"CAMOverlayControlsGroupSpecifier"];
   if (v5)
   {
     v6 = [(CameraAdjustmentsSettingsController *)self indexPathForSpecifier:v5];
-    v7 = [v6 section];
+    section = [v6 section];
   }
 
   else
   {
-    v7 = 0x7FFFFFFFFFFFFFFFLL;
+    section = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v8 = [v4 section] == v7;
+  v8 = [pathCopy section] == section;
 
   return v8;
 }
@@ -269,16 +269,16 @@
     do
     {
       v6 = [*&self->super.PSListController_opaque[v5] objectAtIndexedSubscript:v4];
-      v7 = [v6 identifier];
-      [v3 addObject:v7];
+      identifier = [v6 identifier];
+      [v3 addObject:identifier];
 
       v8 = [v6 propertyForKey:@"CAMOverlayControlSelected"];
-      v9 = [v8 BOOLValue];
+      bOOLValue = [v8 BOOLValue];
 
-      if (v9)
+      if (bOOLValue)
       {
-        v10 = [v6 identifier];
-        [value addObject:v10];
+        identifier2 = [v6 identifier];
+        [value addObject:identifier2];
       }
 
       v4 = (v4 + 1);
@@ -293,21 +293,21 @@
   CFPreferencesAppSynchronize(@"com.apple.camera");
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = CameraAdjustmentsSettingsController;
-  [(CameraAdjustmentsSettingsController *)&v12 tableView:v6 didSelectRowAtIndexPath:v7];
-  if ([(CameraAdjustmentsSettingsController *)self _overlayControlsSectionIncludesRowAtIndexPath:v7])
+  [(CameraAdjustmentsSettingsController *)&v12 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  if ([(CameraAdjustmentsSettingsController *)self _overlayControlsSectionIncludesRowAtIndexPath:pathCopy])
   {
-    [v6 deselectRowAtIndexPath:v7 animated:0];
-    v8 = [(CameraAdjustmentsSettingsController *)self specifierAtIndexPath:v7];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
+    v8 = [(CameraAdjustmentsSettingsController *)self specifierAtIndexPath:pathCopy];
     v9 = [v8 propertyForKey:@"CAMOverlayControlSelected"];
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
 
-    v11 = [NSNumber numberWithBool:v10 ^ 1];
+    v11 = [NSNumber numberWithBool:bOOLValue ^ 1];
     [v8 setProperty:v11 forKey:@"CAMOverlayControlSelected"];
 
     [(CameraAdjustmentsSettingsController *)self reloadSpecifierID:@"CAMOverlayControlsGroupSpecifier"];
@@ -315,18 +315,18 @@
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v12 = a4;
-  v7 = a5;
-  if ([(CameraAdjustmentsSettingsController *)self _overlayControlsSectionIncludesRowAtIndexPath:v7])
+  cellCopy = cell;
+  pathCopy = path;
+  if ([(CameraAdjustmentsSettingsController *)self _overlayControlsSectionIncludesRowAtIndexPath:pathCopy])
   {
-    [v12 setShowsReorderControl:1];
-    v8 = [(CameraAdjustmentsSettingsController *)self specifierAtIndexPath:v7];
+    [cellCopy setShowsReorderControl:1];
+    v8 = [(CameraAdjustmentsSettingsController *)self specifierAtIndexPath:pathCopy];
     v9 = [v8 propertyForKey:@"CAMOverlayControlSelected"];
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
 
-    if (v10)
+    if (bOOLValue)
     {
       v11 = 3;
     }
@@ -336,35 +336,35 @@
       v11 = 0;
     }
 
-    [v12 setAccessoryType:v11];
+    [cellCopy setAccessoryType:v11];
   }
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 section];
-  if (v10 == [v9 section])
+  viewCopy = view;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  section = [pathCopy section];
+  if (section == [indexPathCopy section])
   {
-    v11 = v9;
+    v11 = indexPathCopy;
   }
 
   else
   {
-    v12 = [v8 section];
-    if (v12 >= [v9 section])
+    section2 = [pathCopy section];
+    if (section2 >= [indexPathCopy section])
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = [v7 numberOfRowsInSection:{objc_msgSend(v8, "section")}] - 1;
+      v13 = [viewCopy numberOfRowsInSection:{objc_msgSend(pathCopy, "section")}] - 1;
     }
 
-    v11 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", v13, [v8 section]);
+    v11 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", v13, [pathCopy section]);
   }
 
   v14 = v11;
@@ -372,17 +372,17 @@
   return v14;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v7 = a5;
-  v8 = a4;
-  v14 = [(CameraAdjustmentsSettingsController *)self specifierAtIndexPath:v8];
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  v14 = [(CameraAdjustmentsSettingsController *)self specifierAtIndexPath:pathCopy];
   v9 = OBJC_IVAR___PSListController__specifiers;
   v10 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers] mutableCopy];
-  v11 = [(CameraAdjustmentsSettingsController *)self indexForIndexPath:v8];
+  v11 = [(CameraAdjustmentsSettingsController *)self indexForIndexPath:pathCopy];
 
   [v10 removeObjectAtIndex:v11];
-  v12 = [(CameraAdjustmentsSettingsController *)self indexForIndexPath:v7];
+  v12 = [(CameraAdjustmentsSettingsController *)self indexForIndexPath:indexPathCopy];
 
   [v10 insertObject:v14 atIndex:v12];
   v13 = *&self->super.PSListController_opaque[v9];

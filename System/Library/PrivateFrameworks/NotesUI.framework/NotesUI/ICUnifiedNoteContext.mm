@@ -1,34 +1,34 @@
 @interface ICUnifiedNoteContext
 - (BOOL)resolvedPrefersViewContext;
 - (ICLegacyAccount)legacyAccountForLocalAccount;
-- (ICUnifiedNoteContext)initWithModernNoteContext:(id)a3 htmlNoteContext:(id)a4 options:(unint64_t)a5;
+- (ICUnifiedNoteContext)initWithModernNoteContext:(id)context htmlNoteContext:(id)noteContext options:(unint64_t)options;
 - (NSManagedObjectContext)modernManagedObjectContext;
 - (NSManagedObjectID)defaultAccountObjectID;
 - (NSPersistentStoreCoordinator)htmlStoreCoordinator;
 - (NSPersistentStoreCoordinator)modernStoreCoordinator;
-- (id)legacyAccountForEmailAddress:(id)a3;
-- (id)managedObjectContextForObject:(id)a3 error:(id *)a4;
-- (id)managedObjectContextForObjectID:(id)a3;
-- (id)managedObjectIDForURIRepresentation:(id)a3;
-- (id)managedObjectIDForURIString:(id)a3;
+- (id)legacyAccountForEmailAddress:(id)address;
+- (id)managedObjectContextForObject:(id)object error:(id *)error;
+- (id)managedObjectContextForObjectID:(id)d;
+- (id)managedObjectIDForURIRepresentation:(id)representation;
+- (id)managedObjectIDForURIString:(id)string;
 - (void)enableHTMLContextChangeLogging;
 @end
 
 @implementation ICUnifiedNoteContext
 
-- (ICUnifiedNoteContext)initWithModernNoteContext:(id)a3 htmlNoteContext:(id)a4 options:(unint64_t)a5
+- (ICUnifiedNoteContext)initWithModernNoteContext:(id)context htmlNoteContext:(id)noteContext options:(unint64_t)options
 {
-  v9 = a3;
-  v10 = a4;
+  contextCopy = context;
+  noteContextCopy = noteContext;
   v14.receiver = self;
   v14.super_class = ICUnifiedNoteContext;
   v11 = [(ICUnifiedNoteContext *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_modernNoteContext, a3);
-    objc_storeStrong(&v12->_htmlNoteContext, a4);
-    v12->_options = a5;
+    objc_storeStrong(&v11->_modernNoteContext, context);
+    objc_storeStrong(&v12->_htmlNoteContext, noteContext);
+    v12->_options = options;
   }
 
   return v12;
@@ -37,16 +37,16 @@
 - (void)enableHTMLContextChangeLogging
 {
   objc_opt_class();
-  v4 = [(ICUnifiedNoteContext *)self htmlNoteContext];
+  htmlNoteContext = [(ICUnifiedNoteContext *)self htmlNoteContext];
   v3 = ICCheckedDynamicCast();
   [v3 enableChangeLogging:1];
 }
 
-- (id)managedObjectIDForURIRepresentation:(id)a3
+- (id)managedObjectIDForURIRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [(ICUnifiedNoteContext *)self modernStoreCoordinator];
-  v6 = [v5 ic_managedObjectIDForURIRepresentation:v4];
+  representationCopy = representation;
+  modernStoreCoordinator = [(ICUnifiedNoteContext *)self modernStoreCoordinator];
+  v6 = [modernStoreCoordinator ic_managedObjectIDForURIRepresentation:representationCopy];
   v7 = v6;
   if (v6)
   {
@@ -55,18 +55,18 @@
 
   else
   {
-    v9 = [(ICUnifiedNoteContext *)self htmlStoreCoordinator];
-    v8 = [v9 ic_managedObjectIDForURIRepresentation:v4];
+    htmlStoreCoordinator = [(ICUnifiedNoteContext *)self htmlStoreCoordinator];
+    v8 = [htmlStoreCoordinator ic_managedObjectIDForURIRepresentation:representationCopy];
   }
 
   return v8;
 }
 
-- (id)managedObjectIDForURIString:(id)a3
+- (id)managedObjectIDForURIString:(id)string
 {
-  v4 = a3;
-  v5 = [(ICUnifiedNoteContext *)self modernStoreCoordinator];
-  v6 = [v5 ic_managedObjectIDForURIString:v4];
+  stringCopy = string;
+  modernStoreCoordinator = [(ICUnifiedNoteContext *)self modernStoreCoordinator];
+  v6 = [modernStoreCoordinator ic_managedObjectIDForURIString:stringCopy];
   v7 = v6;
   if (v6)
   {
@@ -75,8 +75,8 @@
 
   else
   {
-    v9 = [(ICUnifiedNoteContext *)self htmlStoreCoordinator];
-    v8 = [v9 ic_managedObjectIDForURIString:v4];
+    htmlStoreCoordinator = [(ICUnifiedNoteContext *)self htmlStoreCoordinator];
+    v8 = [htmlStoreCoordinator ic_managedObjectIDForURIString:stringCopy];
   }
 
   return v8;
@@ -84,68 +84,68 @@
 
 - (NSPersistentStoreCoordinator)modernStoreCoordinator
 {
-  v2 = [(ICUnifiedNoteContext *)self modernNoteContext];
-  v3 = [v2 persistentContainer];
-  v4 = [v3 persistentStoreCoordinator];
+  modernNoteContext = [(ICUnifiedNoteContext *)self modernNoteContext];
+  persistentContainer = [modernNoteContext persistentContainer];
+  persistentStoreCoordinator = [persistentContainer persistentStoreCoordinator];
 
-  return v4;
+  return persistentStoreCoordinator;
 }
 
 - (NSPersistentStoreCoordinator)htmlStoreCoordinator
 {
-  v2 = [(ICUnifiedNoteContext *)self htmlNoteContext];
-  v3 = [v2 persistentStoreCoordinator];
+  htmlNoteContext = [(ICUnifiedNoteContext *)self htmlNoteContext];
+  persistentStoreCoordinator = [htmlNoteContext persistentStoreCoordinator];
 
-  return v3;
+  return persistentStoreCoordinator;
 }
 
 - (NSManagedObjectContext)modernManagedObjectContext
 {
-  v2 = self;
-  v3 = [(ICUnifiedNoteContext *)v2 resolvedPrefersViewContext];
-  v4 = [(ICUnifiedNoteContext *)v2 modernNoteContext];
-  v5 = v4;
+  selfCopy = self;
+  resolvedPrefersViewContext = [(ICUnifiedNoteContext *)selfCopy resolvedPrefersViewContext];
+  modernNoteContext = [(ICUnifiedNoteContext *)selfCopy modernNoteContext];
+  v5 = modernNoteContext;
   v6 = &selRef_managedObjectContext;
-  if (!v3)
+  if (!resolvedPrefersViewContext)
   {
     v6 = &selRef_workerManagedObjectContext;
   }
 
-  v7 = [v4 *v6];
+  v7 = [modernNoteContext *v6];
 
   return v7;
 }
 
-- (id)managedObjectContextForObjectID:(id)a3
+- (id)managedObjectContextForObjectID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  v6 = ICUnifiedNoteContext.managedObjectContext(for:)(v4);
+  dCopy = d;
+  selfCopy = self;
+  v6 = ICUnifiedNoteContext.managedObjectContext(for:)(dCopy);
 
   return v6;
 }
 
-- (id)managedObjectContextForObject:(id)a3 error:(id *)a4
+- (id)managedObjectContextForObject:(id)object error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 managedObjectContext];
-  if (v6)
+  objectCopy = object;
+  managedObjectContext = [objectCopy managedObjectContext];
+  if (managedObjectContext)
   {
   }
 
   else
   {
     v7 = sub_1D4419C14();
-    v8 = [v5 objectID];
+    objectID = [objectCopy objectID];
     v9 = ICNotesErrorForNoManagedObjectContext();
 
     swift_willThrow();
-    if (a4)
+    if (error)
     {
       v10 = sub_1D44170F4();
 
       v11 = v10;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -153,13 +153,13 @@
     }
   }
 
-  return v6;
+  return managedObjectContext;
 }
 
 - (BOOL)resolvedPrefersViewContext
 {
-  v2 = self;
-  v3 = [(ICUnifiedNoteContext *)v2 options]& 3;
+  selfCopy = self;
+  v3 = [(ICUnifiedNoteContext *)selfCopy options]& 3;
   if (v3 == 2)
   {
 
@@ -188,40 +188,40 @@
 - (NSManagedObjectID)defaultAccountObjectID
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [(ICUnifiedNoteContext *)v4 htmlNoteContext];
-  v6 = [v3 defaultAccountWithHTMLNoteContext_];
+  selfCopy = self;
+  htmlNoteContext = [(ICUnifiedNoteContext *)selfCopy htmlNoteContext];
+  defaultAccountWithHTMLNoteContext_ = [v3 defaultAccountWithHTMLNoteContext_];
 
-  if (v6)
+  if (defaultAccountWithHTMLNoteContext_)
   {
-    v7 = [v6 objectID];
+    objectID = [defaultAccountWithHTMLNoteContext_ objectID];
   }
 
   else
   {
-    v7 = 0;
+    objectID = 0;
   }
 
-  return v7;
+  return objectID;
 }
 
 - (ICLegacyAccount)legacyAccountForLocalAccount
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [(ICUnifiedNoteContext *)v4 htmlNoteContext];
-  v6 = [v3 legacyAccountForLocalAccountWithContext_];
+  selfCopy = self;
+  htmlNoteContext = [(ICUnifiedNoteContext *)selfCopy htmlNoteContext];
+  legacyAccountForLocalAccountWithContext_ = [v3 legacyAccountForLocalAccountWithContext_];
 
-  return v6;
+  return legacyAccountForLocalAccountWithContext_;
 }
 
-- (id)legacyAccountForEmailAddress:(id)a3
+- (id)legacyAccountForEmailAddress:(id)address
 {
   v5 = objc_opt_self();
-  v6 = a3;
-  v7 = self;
-  v8 = [(ICUnifiedNoteContext *)v7 htmlNoteContext];
-  v9 = [v5 accountForEmailAddress:v6 context:v8];
+  addressCopy = address;
+  selfCopy = self;
+  htmlNoteContext = [(ICUnifiedNoteContext *)selfCopy htmlNoteContext];
+  v9 = [v5 accountForEmailAddress:addressCopy context:htmlNoteContext];
 
   return v9;
 }

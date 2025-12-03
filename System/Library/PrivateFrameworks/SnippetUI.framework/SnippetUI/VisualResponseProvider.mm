@@ -1,18 +1,18 @@
 @interface VisualResponseProvider
-+ (id)transformModel:(id)a3 mode:(int64_t)a4 currentIdiom:(int64_t)a5;
-+ (void)preWarm:(id)a3;
-+ (void)setPatternId:(id)a3 forViewId:(id)a4;
-- (id)viewControllerForModel:(id)a3 mode:(int64_t)a4;
-- (id)viewControllerForSnippetModel:(id)a3 bundleName:(id)a4 mode:(int64_t)a5;
-- (id)viewForModel:(id)a3 mode:(int64_t)a4 overload:(int64_t)a5;
-- (id)viewForSnippetModel:(id)a3 bundleName:(id)a4 mode:(int64_t)a5;
++ (id)transformModel:(id)model mode:(int64_t)mode currentIdiom:(int64_t)idiom;
++ (void)preWarm:(id)warm;
++ (void)setPatternId:(id)id forViewId:(id)viewId;
+- (id)viewControllerForModel:(id)model mode:(int64_t)mode;
+- (id)viewControllerForSnippetModel:(id)model bundleName:(id)name mode:(int64_t)mode;
+- (id)viewForModel:(id)model mode:(int64_t)mode overload:(int64_t)overload;
+- (id)viewForSnippetModel:(id)model bundleName:(id)name mode:(int64_t)mode;
 - (void)reset;
-- (void)viewControllerFor:(id)a3 mode:(int64_t)a4 completion:(id)a5;
+- (void)viewControllerFor:(id)for mode:(int64_t)mode completion:(id)completion;
 @end
 
 @implementation VisualResponseProvider
 
-+ (void)setPatternId:(id)a3 forViewId:(id)a4
++ (void)setPatternId:(id)id forViewId:(id)viewId
 {
   v4 = sub_26A8517B8();
   v6 = v5;
@@ -20,36 +20,36 @@
   static VisualResponseProvider.setPatternId(_:forViewId:)(v4, v6, v7, v8);
 }
 
-+ (void)preWarm:(id)a3
++ (void)preWarm:(id)warm
 {
-  v3 = a3;
+  warmCopy = warm;
   static VisualResponseProvider.preWarm(using:)();
 }
 
-- (id)viewControllerForModel:(id)a3 mode:(int64_t)a4
+- (id)viewControllerForModel:(id)model mode:(int64_t)mode
 {
-  v5 = a3;
-  v6 = self;
+  modelCopy = model;
+  selfCopy = self;
   sub_26A84ABF8();
 
   VisualResponseProvider.viewController(for:mode:)();
 }
 
-- (id)viewControllerForSnippetModel:(id)a3 bundleName:(id)a4 mode:(int64_t)a5
+- (id)viewControllerForSnippetModel:(id)model bundleName:(id)name mode:(int64_t)mode
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  modelCopy = model;
+  nameCopy = name;
+  selfCopy = self;
   sub_26A84ABF8();
 
   sub_26A8517B8();
   VisualResponseProvider.viewController(for:bundleName:mode:)();
 }
 
-- (id)viewForModel:(id)a3 mode:(int64_t)a4 overload:(int64_t)a5
+- (id)viewForModel:(id)model mode:(int64_t)mode overload:(int64_t)overload
 {
-  v6 = a3;
-  v7 = self;
+  modelCopy = model;
+  selfCopy = self;
   v8 = sub_26A84ABF8();
   v10 = v9;
 
@@ -60,11 +60,11 @@
   return v12;
 }
 
-- (id)viewForSnippetModel:(id)a3 bundleName:(id)a4 mode:(int64_t)a5
+- (id)viewForSnippetModel:(id)model bundleName:(id)name mode:(int64_t)mode
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  modelCopy = model;
+  nameCopy = name;
+  selfCopy = self;
   v10 = sub_26A84ABF8();
   v12 = v11;
 
@@ -77,11 +77,11 @@
   return v14;
 }
 
-- (void)viewControllerFor:(id)a3 mode:(int64_t)a4 completion:(id)a5
+- (void)viewControllerFor:(id)for mode:(int64_t)mode completion:(id)completion
 {
-  _Block_copy(a5);
-  v7 = a3;
-  v8 = self;
+  _Block_copy(completion);
+  forCopy = for;
+  selfCopy = self;
   sub_26A84ABF8();
 
   swift_allocObject();
@@ -90,18 +90,18 @@
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   VisualResponseProvider.reset()();
 }
 
-+ (id)transformModel:(id)a3 mode:(int64_t)a4 currentIdiom:(int64_t)a5
++ (id)transformModel:(id)model mode:(int64_t)mode currentIdiom:(int64_t)idiom
 {
-  v7 = a3;
+  modelCopy = model;
   v8 = sub_26A84ABF8();
   v10 = v9;
 
   swift_getObjCClassMetadata();
-  v11 = static VisualResponseProvider.transformModel(_:mode:currentIdiom:)(v8, v10, a4, a5);
+  v11 = static VisualResponseProvider.transformModel(_:mode:currentIdiom:)(v8, v10, mode, idiom);
   sub_26A513D40(v8, v10);
   if (v11)
   {

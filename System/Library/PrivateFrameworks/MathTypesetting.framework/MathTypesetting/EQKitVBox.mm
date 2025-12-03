@@ -1,58 +1,58 @@
 @interface EQKitVBox
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4;
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant;
 - (CGRect)p_cacheErasableBounds;
-- (EQKitVBox)initWithChildBoxes:(id)a3 pivotIndex:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (EQKitVBox)initWithChildBoxes:(id)boxes pivotIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)hitTest:(CGPoint)a3;
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5;
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4;
+- (id)hitTest:(CGPoint)test;
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width;
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitVBox
 
-- (EQKitVBox)initWithChildBoxes:(id)a3 pivotIndex:(unint64_t)a4
+- (EQKitVBox)initWithChildBoxes:(id)boxes pivotIndex:(unint64_t)index
 {
-  v6 = a3;
+  boxesCopy = boxes;
   v11.receiver = self;
   v11.super_class = EQKitVBox;
-  v7 = [(EQKitCompoundBox *)&v11 initWithChildBoxes:v6];
+  v7 = [(EQKitCompoundBox *)&v11 initWithChildBoxes:boxesCopy];
   if (v7)
   {
-    v8 = [v6 count];
-    v9 = 0x7FFFFFFFFFFFFFFFLL;
-    if (v8 > a4)
+    v8 = [boxesCopy count];
+    indexCopy = 0x7FFFFFFFFFFFFFFFLL;
+    if (v8 > index)
     {
-      v9 = a4;
+      indexCopy = index;
     }
 
-    v7->_pivotIndex = v9;
+    v7->_pivotIndex = indexCopy;
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(EQKitCompoundBox *)self childBoxes];
-  v6 = [v4 initWithChildBoxes:v5 pivotIndex:{-[EQKitVBox pivotIndex](self, "pivotIndex")}];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  childBoxes = [(EQKitCompoundBox *)self childBoxes];
+  v6 = [v4 initWithChildBoxes:childBoxes pivotIndex:{-[EQKitVBox pivotIndex](self, "pivotIndex")}];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = EQKitVBox;
-  if ([(EQKitCompoundBox *)&v9 isEqual:v4])
+  if ([(EQKitCompoundBox *)&v9 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(EQKitVBox *)self pivotIndex];
-    v7 = v6 == [v5 pivotIndex];
+    v5 = equalCopy;
+    pivotIndex = [(EQKitVBox *)self pivotIndex];
+    v7 = pivotIndex == [v5 pivotIndex];
   }
 
   else
@@ -63,16 +63,16 @@
   return v7;
 }
 
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  contextCopy = context;
   v23.receiver = self;
   v23.super_class = EQKitVBox;
-  [(EQKitBox *)&v23 renderIntoContext:v7 offset:x, y];
-  if (v7)
+  [(EQKitBox *)&v23 renderIntoContext:contextCopy offset:x, y];
+  if (contextCopy)
   {
     [(EQKitCompoundBox *)self height];
     v9 = v8;
@@ -80,8 +80,8 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [(EQKitCompoundBox *)self childBoxes];
-    v11 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    childBoxes = [(EQKitCompoundBox *)self childBoxes];
+    v11 = [childBoxes countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v11)
     {
       v12 = y - v9;
@@ -92,18 +92,18 @@
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(childBoxes);
           }
 
           v15 = *(*(&v19 + 1) + 8 * i);
           [v15 layoutHeight];
           v17 = v12 + v16;
-          [v15 renderIntoContext:v7 offset:{x, v17}];
+          [v15 renderIntoContext:contextCopy offset:{x, v17}];
           [v15 layoutDepth];
           v12 = v17 + v18;
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v11 = [childBoxes countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v11);
@@ -111,22 +111,22 @@
   }
 }
 
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v27 = *MEMORY[0x277D85DE8];
   [(EQKitCompoundBox *)self height];
-  if ((*(a3 + 6) | 2) == 2)
+  if ((*(spec + 6) | 2) == 2)
   {
     v9 = v8;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = [(EQKitCompoundBox *)self childBoxes];
+    childBoxes = [(EQKitCompoundBox *)self childBoxes];
     v11 = 0;
-    v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v12 = [childBoxes countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
       v13 = y - v9;
@@ -137,19 +137,19 @@
         {
           if (*v23 != v14)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(childBoxes);
           }
 
           v16 = *(*(&v22 + 1) + 8 * i);
           [v16 layoutHeight];
           v18 = v13 + v17;
-          v19 = [v16 appendOpticalAlignToSpec:a3 offset:{x, v18}];
+          v19 = [v16 appendOpticalAlignToSpec:spec offset:{x, v18}];
           [v16 layoutDepth];
           v11 |= v19;
           v13 = v18 + v20;
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v12 = [childBoxes countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v12);
@@ -164,10 +164,10 @@
   return v11 & 1;
 }
 
-- (id)hitTest:(CGPoint)a3
+- (id)hitTest:(CGPoint)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v24 = *MEMORY[0x277D85DE8];
   [(EQKitCompoundBox *)self height];
   v7 = v6;
@@ -175,8 +175,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(EQKitCompoundBox *)self childBoxes];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  childBoxes = [(EQKitCompoundBox *)self childBoxes];
+  v9 = [childBoxes countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v7 - y;
@@ -187,7 +187,7 @@
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(childBoxes);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
@@ -203,7 +203,7 @@
         v10 = v10 - v16;
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [childBoxes countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v9)
       {
         continue;
@@ -221,11 +221,11 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6 == self)
+  descendantCopy = descendant;
+  if (descendantCopy == self)
   {
     v18 = 1;
   }
@@ -238,8 +238,8 @@ LABEL_11:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v9 = [(EQKitCompoundBox *)self childBoxes];
-    v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    childBoxes = [(EQKitCompoundBox *)self childBoxes];
+    v10 = [childBoxes countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v10)
     {
       v11 = -v8;
@@ -250,23 +250,23 @@ LABEL_11:
         {
           if (*v25 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(childBoxes);
           }
 
           v14 = *(*(&v24 + 1) + 8 * i);
           [v14 layoutHeight];
           v16 = v11 + v15;
-          if ([v14 p_getTransform:a3 fromDescendant:v6])
+          if ([v14 p_getTransform:transform fromDescendant:descendantCopy])
           {
-            v19 = *&a3->c;
-            *&v22.a = *&a3->a;
+            v19 = *&transform->c;
+            *&v22.a = *&transform->a;
             *&v22.c = v19;
-            *&v22.tx = *&a3->tx;
+            *&v22.tx = *&transform->tx;
             CGAffineTransformTranslate(&v23, &v22, 0.0, v16);
             v20 = *&v23.c;
-            *&a3->a = *&v23.a;
-            *&a3->c = v20;
-            *&a3->tx = *&v23.tx;
+            *&transform->a = *&v23.a;
+            *&transform->c = v20;
+            *&transform->tx = *&v23.tx;
             v18 = 1;
             goto LABEL_12;
           }
@@ -275,7 +275,7 @@ LABEL_11:
           v11 = v16 + v17;
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v10 = [childBoxes countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v10)
         {
           continue;
@@ -302,39 +302,39 @@ LABEL_12:
   v8 = v7;
   [(EQKitCompoundBox *)self width];
   v10 = v9;
-  v11 = [(EQKitCompoundBox *)self childBoxes];
-  v12 = [v3 stringWithFormat:@"<%@ %p>: height=%f depth=%f width=%f childBoxes=%@ pivotIndex=%lu", v4, self, v6, v8, v10, v11, -[EQKitVBox pivotIndex](self, "pivotIndex")];
+  childBoxes = [(EQKitCompoundBox *)self childBoxes];
+  v12 = [v3 stringWithFormat:@"<%@ %p>: height=%f depth=%f width=%f childBoxes=%@ pivotIndex=%lu", v4, self, v6, v8, v10, childBoxes, -[EQKitVBox pivotIndex](self, "pivotIndex")];
 
   return v12;
 }
 
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width
 {
-  *a3 = 0.0;
-  *a4 = 0.0;
-  *a5 = 0.0;
+  *height = 0.0;
+  *depth = 0.0;
+  *width = 0.0;
   if ([(EQKitVBox *)self pivotIndex]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    v21 = [(EQKitCompoundBox *)self childBoxes];
-    v9 = [v21 count];
+    childBoxes = [(EQKitCompoundBox *)self childBoxes];
+    v9 = [childBoxes count];
     if (v9)
     {
-      v10 = [(EQKitVBox *)self pivotIndex];
-      v11 = v10;
+      pivotIndex = [(EQKitVBox *)self pivotIndex];
+      v11 = pivotIndex;
       v12 = 0;
-      if (v10 >= v9 - 1)
+      if (pivotIndex >= v9 - 1)
       {
         v13 = v9 - 1;
       }
 
       else
       {
-        v13 = v10;
+        v13 = pivotIndex;
       }
 
       do
       {
-        v14 = [v21 objectAtIndexedSubscript:v12];
+        v14 = [childBoxes objectAtIndexedSubscript:v12];
         v15 = v14;
         if (v12 >= v13)
         {
@@ -350,7 +350,7 @@ LABEL_12:
               [v14 height];
             }
 
-            *a3 = v18 + *a3;
+            *height = v18 + *height;
             if (v9 - 1 <= v11)
             {
               [v15 depth];
@@ -367,24 +367,24 @@ LABEL_12:
             [v14 layoutVSize];
           }
 
-          v17 = a4;
+          heightCopy = depth;
         }
 
         else
         {
           [v14 layoutVSize];
-          v17 = a3;
+          heightCopy = height;
         }
 
-        *v17 = v16 + *v17;
-        v19 = *a5;
+        *heightCopy = v16 + *heightCopy;
+        v19 = *width;
         [v15 width];
         if (v19 >= v20)
         {
           v20 = v19;
         }
 
-        *a5 = v20;
+        *width = v20;
 
         ++v12;
       }
@@ -407,8 +407,8 @@ LABEL_12:
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v6 = [(EQKitCompoundBox *)self childBoxes];
-  v7 = [v6 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  childBoxes = [(EQKitCompoundBox *)self childBoxes];
+  v7 = [childBoxes countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v7)
   {
     v8 = -v5;
@@ -419,7 +419,7 @@ LABEL_12:
       {
         if (*v33 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childBoxes);
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
@@ -465,7 +465,7 @@ LABEL_12:
         v8 = v24 + v23;
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v7 = [childBoxes countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v7);

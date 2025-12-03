@@ -1,19 +1,19 @@
 @interface SUTouchCaptureViewAccessibility
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation SUTouchCaptureViewAccessibility
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v31 = *MEMORY[0x29EDCA608];
-  v7 = a4;
+  eventCopy = event;
   v29.receiver = self;
   v29.super_class = SUTouchCaptureViewAccessibility;
-  v8 = [(SUTouchCaptureViewAccessibility *)&v29 _accessibilityHitTest:v7 withEvent:x, y];
-  v9 = v8;
+  v8 = [(SUTouchCaptureViewAccessibility *)&v29 _accessibilityHitTest:eventCopy withEvent:x, y];
+  selfCopy = v8;
   if (v8)
   {
     v10 = v8 == self;
@@ -30,8 +30,8 @@
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v11 = [(SUTouchCaptureViewAccessibility *)self safeValueForKey:@"passThroughViews", 0];
-    v12 = [v11 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    currentDevice = [(SUTouchCaptureViewAccessibility *)self safeValueForKey:@"passThroughViews", 0];
+    v12 = [currentDevice countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v12)
     {
       v13 = v12;
@@ -42,22 +42,22 @@
         {
           if (*v26 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(currentDevice);
           }
 
           v16 = *(*(&v25 + 1) + 8 * i);
           [v16 convertPoint:self fromView:{x, y}];
-          v17 = [v16 _accessibilityHitTest:v7 withEvent:?];
+          v17 = [v16 _accessibilityHitTest:eventCopy withEvent:?];
 
           if (v17)
           {
 
-            v9 = v17;
+            selfCopy = v17;
             goto LABEL_20;
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v13 = [currentDevice countByEnumeratingWithState:&v25 objects:v30 count:16];
         if (v13)
         {
           continue;
@@ -67,47 +67,47 @@
       }
     }
 
-    if (!v9)
+    if (!selfCopy)
     {
-      if (![(SUTouchCaptureViewAccessibility *)self pointInside:v7 withEvent:x, y])
+      if (![(SUTouchCaptureViewAccessibility *)self pointInside:eventCopy withEvent:x, y])
       {
 LABEL_28:
-        v9 = 0;
+        selfCopy = 0;
         goto LABEL_21;
       }
 
-      v11 = [MEMORY[0x29EDC7A58] currentDevice];
+      currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
       if (objc_opt_respondsToSelector())
       {
-        v18 = [MEMORY[0x29EDC7A58] currentDevice];
-        v19 = [v18 userInterfaceIdiom];
+        currentDevice2 = [MEMORY[0x29EDC7A58] currentDevice];
+        userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-        if (v19 == 1)
+        if (userInterfaceIdiom == 1)
         {
-          v9 = self;
+          selfCopy = self;
           goto LABEL_22;
         }
 
         goto LABEL_28;
       }
 
-      v9 = 0;
+      selfCopy = 0;
 LABEL_20:
     }
   }
 
 LABEL_21:
-  if (v9 != self)
+  if (selfCopy != self)
   {
 LABEL_23:
-    v9 = v9;
-    v22 = v9;
+    selfCopy = selfCopy;
+    v22 = selfCopy;
     goto LABEL_24;
   }
 
 LABEL_22:
-  v20 = [(SUTouchCaptureViewAccessibility *)self subviews];
-  v21 = [v20 count];
+  subviews = [(SUTouchCaptureViewAccessibility *)self subviews];
+  v21 = [subviews count];
 
   if (v21)
   {

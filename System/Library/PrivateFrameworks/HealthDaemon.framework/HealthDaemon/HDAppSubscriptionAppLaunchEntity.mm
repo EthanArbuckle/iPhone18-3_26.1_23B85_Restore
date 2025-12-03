@@ -1,33 +1,33 @@
 @interface HDAppSubscriptionAppLaunchEntity
-+ (BOOL)insertOrUpdateAppSDKVersionToken:(unint64_t)a3 forBundleID:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)removeBundleIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)setLaunchTime:(id)a3 forBundleID:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)launchTimeForBundleID:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (unint64_t)appSDKVersionTokenForBundleID:(id)a3 profile:(id)a4 error:(id *)a5;
++ (BOOL)insertOrUpdateAppSDKVersionToken:(unint64_t)token forBundleID:(id)d profile:(id)profile error:(id *)error;
++ (BOOL)removeBundleIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (BOOL)setLaunchTime:(id)time forBundleID:(id)d profile:(id)profile error:(id *)error;
++ (id)launchTimeForBundleID:(id)d profile:(id)profile error:(id *)error;
++ (unint64_t)appSDKVersionTokenForBundleID:(id)d profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDAppSubscriptionAppLaunchEntity
 
-+ (BOOL)setLaunchTime:(id)a3 forBundleID:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)setLaunchTime:(id)time forBundleID:(id)d profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 database];
+  timeCopy = time;
+  dCopy = d;
+  profileCopy = profile;
+  database = [profileCopy database];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __76__HDAppSubscriptionAppLaunchEntity_setLaunchTime_forBundleID_profile_error___block_invoke;
   v18[3] = &unk_278613550;
-  v19 = v11;
-  v20 = v12;
-  v21 = v10;
-  v22 = a1;
-  v14 = v10;
-  v15 = v12;
-  v16 = v11;
-  LOBYTE(a6) = [(HDHealthEntity *)HDAppSubscriptionAppLaunchEntity performWriteTransactionWithHealthDatabase:v13 error:a6 block:v18];
+  v19 = dCopy;
+  v20 = profileCopy;
+  v21 = timeCopy;
+  selfCopy = self;
+  v14 = timeCopy;
+  v15 = profileCopy;
+  v16 = dCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDAppSubscriptionAppLaunchEntity performWriteTransactionWithHealthDatabase:database error:error block:v18];
 
-  return a6;
+  return error;
 }
 
 uint64_t __76__HDAppSubscriptionAppLaunchEntity_setLaunchTime_forBundleID_profile_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -141,25 +141,25 @@ void __76__HDAppSubscriptionAppLaunchEntity_setLaunchTime_forBundleID_profile_er
   JUMPOUT(0x22AAC6BB0);
 }
 
-+ (id)launchTimeForBundleID:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)launchTimeForBundleID:(id)d profile:(id)profile error:(id *)error
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  dCopy = d;
+  profileCopy = profile;
+  if (!dCopy)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"HDAppSubscriptionEntity.m" lineNumber:313 description:{@"Invalid parameter not satisfying: %@", @"bundleID != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAppSubscriptionEntity.m" lineNumber:313 description:{@"Invalid parameter not satisfying: %@", @"bundleID != nil"}];
   }
 
-  v11 = [(HDAppSubscriptionEntity *)a1 _predicateForBundleIdentifier:v9];
-  v12 = v10;
+  v11 = [(HDAppSubscriptionEntity *)self _predicateForBundleIdentifier:dCopy];
+  v12 = profileCopy;
   v13 = v11;
   v14 = objc_opt_self();
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v27[0] = @"last_launch_time";
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
-  v17 = [v12 database];
+  database = [v12 database];
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -167,7 +167,7 @@ void __76__HDAppSubscriptionAppLaunchEntity_setLaunchTime_forBundleID_profile_er
   v25[3] = &unk_278615128;
   v18 = v15;
   v26 = v18;
-  v19 = [v14 enumerateProperties:v16 withPredicate:v13 healthDatabase:v17 error:a5 enumerationHandler:v25];
+  v19 = [v14 enumerateProperties:v16 withPredicate:v13 healthDatabase:database error:error enumerationHandler:v25];
 
   if (v19)
   {
@@ -179,21 +179,21 @@ void __76__HDAppSubscriptionAppLaunchEntity_setLaunchTime_forBundleID_profile_er
     v20 = 0;
   }
 
-  v21 = [v20 firstObject];
+  firstObject = [v20 firstObject];
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return firstObject;
 }
 
-+ (BOOL)removeBundleIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)removeBundleIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v8 = a4;
-  v9 = [(HDAppSubscriptionEntity *)a1 _predicateForBundleIdentifier:a3];
-  v10 = [v8 database];
+  profileCopy = profile;
+  v9 = [(HDAppSubscriptionEntity *)self _predicateForBundleIdentifier:identifier];
+  database = [profileCopy database];
 
-  LOBYTE(a5) = [a1 deleteEntitiesWithPredicate:v9 healthDatabase:v10 error:a5];
-  return a5;
+  LOBYTE(error) = [self deleteEntitiesWithPredicate:v9 healthDatabase:database error:error];
+  return error;
 }
 
 uint64_t __76__HDAppSubscriptionAppLaunchEntity__launchTimesWithPredicate_profile_error___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -205,24 +205,24 @@ uint64_t __76__HDAppSubscriptionAppLaunchEntity__launchTimesWithPredicate_profil
   return 1;
 }
 
-+ (BOOL)insertOrUpdateAppSDKVersionToken:(unint64_t)a3 forBundleID:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)insertOrUpdateAppSDKVersionToken:(unint64_t)token forBundleID:(id)d profile:(id)profile error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [v11 database];
+  dCopy = d;
+  profileCopy = profile;
+  database = [profileCopy database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __95__HDAppSubscriptionAppLaunchEntity_insertOrUpdateAppSDKVersionToken_forBundleID_profile_error___block_invoke;
   v16[3] = &unk_2786154B8;
-  v17 = v10;
-  v18 = v11;
-  v19 = a1;
-  v20 = a3;
-  v13 = v11;
-  v14 = v10;
-  LOBYTE(a6) = [(HDHealthEntity *)HDAppSubscriptionAppLaunchEntity performWriteTransactionWithHealthDatabase:v12 error:a6 block:v16];
+  v17 = dCopy;
+  v18 = profileCopy;
+  selfCopy = self;
+  tokenCopy = token;
+  v13 = profileCopy;
+  v14 = dCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDAppSubscriptionAppLaunchEntity performWriteTransactionWithHealthDatabase:database error:error block:v16];
 
-  return a6;
+  return error;
 }
 
 uint64_t __95__HDAppSubscriptionAppLaunchEntity_insertOrUpdateAppSDKVersionToken_forBundleID_profile_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -351,31 +351,31 @@ void __95__HDAppSubscriptionAppLaunchEntity_insertOrUpdateAppSDKVersionToken_for
   JUMPOUT(0x22AAC6B90);
 }
 
-+ (unint64_t)appSDKVersionTokenForBundleID:(id)a3 profile:(id)a4 error:(id *)a5
++ (unint64_t)appSDKVersionTokenForBundleID:(id)d profile:(id)profile error:(id *)error
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  dCopy = d;
+  profileCopy = profile;
+  if (!dCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"HDAppSubscriptionEntity.m" lineNumber:394 description:{@"Invalid parameter not satisfying: %@", @"bundleID != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAppSubscriptionEntity.m" lineNumber:394 description:{@"Invalid parameter not satisfying: %@", @"bundleID != nil"}];
   }
 
-  v11 = [(HDAppSubscriptionEntity *)a1 _predicateForBundleIdentifier:v9];
+  v11 = [(HDAppSubscriptionEntity *)self _predicateForBundleIdentifier:dCopy];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
   v24[0] = @"sdk_version";
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
-  v13 = [v10 database];
+  database = [profileCopy database];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __80__HDAppSubscriptionAppLaunchEntity_appSDKVersionTokenForBundleID_profile_error___block_invoke;
   v19[3] = &unk_27862C558;
   v19[4] = &v20;
-  v14 = [a1 enumerateProperties:v12 withPredicate:v11 healthDatabase:v13 error:a5 enumerationHandler:v19];
+  v14 = [self enumerateProperties:v12 withPredicate:v11 healthDatabase:database error:error enumerationHandler:v19];
 
   if (v14)
   {

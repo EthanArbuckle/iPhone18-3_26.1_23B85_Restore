@@ -1,20 +1,20 @@
 @interface CloudArtworkOperationQueue
-- (BOOL)_hasValidUserIdentity:(id)a3 forSourceType:(int64_t)a4;
-- (CloudArtworkOperationQueue)initWithSourceType:(int64_t)a3 configuration:(id)a4;
-- (void)addOperation:(id)a3;
-- (void)addOperations:(id)a3;
+- (BOOL)_hasValidUserIdentity:(id)identity forSourceType:(int64_t)type;
+- (CloudArtworkOperationQueue)initWithSourceType:(int64_t)type configuration:(id)configuration;
+- (void)addOperation:(id)operation;
+- (void)addOperations:(id)operations;
 @end
 
 @implementation CloudArtworkOperationQueue
 
-- (BOOL)_hasValidUserIdentity:(id)a3 forSourceType:(int64_t)a4
+- (BOOL)_hasValidUserIdentity:(id)identity forSourceType:(int64_t)type
 {
-  v6 = [(CloudArtworkOperationQueue *)self configuration];
-  v7 = [v6 userIdentityStore];
-  v8 = [(CloudArtworkOperationQueue *)self configuration];
-  v9 = [v8 userIdentity];
+  configuration = [(CloudArtworkOperationQueue *)self configuration];
+  userIdentityStore = [configuration userIdentityStore];
+  configuration2 = [(CloudArtworkOperationQueue *)self configuration];
+  userIdentity = [configuration2 userIdentity];
   v16 = 0;
-  v10 = [v7 getPropertiesForUserIdentity:v9 error:&v16];
+  v10 = [userIdentityStore getPropertiesForUserIdentity:userIdentity error:&v16];
   v11 = v16;
 
   if (v11)
@@ -22,31 +22,31 @@
     v12 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v11 msv_description];
+      msv_description = [v11 msv_description];
       *buf = 138543618;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
-      v20 = v13;
+      v20 = msv_description;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load identity properties error=%{public}@", buf, 0x16u);
     }
   }
 
-  if (a4 == 600 || a4 == 200)
+  if (type == 600 || type == 200)
   {
-    v14 = [v10 isActiveLocker];
+    isActiveLocker = [v10 isActiveLocker];
   }
 
   else
   {
-    v14 = v10 != 0;
+    isActiveLocker = v10 != 0;
   }
 
-  return v14;
+  return isActiveLocker;
 }
 
-- (void)addOperations:(id)a3
+- (void)addOperations:(id)operations
 {
-  v5 = a3;
+  operationsCopy = operations;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -72,12 +72,12 @@
   v16[6] = v23;
   v16[7] = &v25;
   v16[8] = a2;
-  [v5 enumerateObjectsUsingBlock:v16];
+  [operationsCopy enumerateObjectsUsingBlock:v16];
   if (v26[3])
   {
-    v6 = [(CloudArtworkOperationQueue *)self configuration];
-    v7 = [v6 userIdentity];
-    v8 = [(CloudArtworkOperationQueue *)self _hasValidUserIdentity:v7 forSourceType:[(CloudArtworkOperationQueue *)self sourceType]];
+    configuration = [(CloudArtworkOperationQueue *)self configuration];
+    userIdentity = [configuration userIdentity];
+    v8 = [(CloudArtworkOperationQueue *)self _hasValidUserIdentity:userIdentity forSourceType:[(CloudArtworkOperationQueue *)self sourceType]];
 
     if (v8)
     {
@@ -123,9 +123,9 @@
   _Block_object_dispose(&v25, 8);
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  v5 = a3;
+  operationCopy = operation;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -135,20 +135,20 @@
 
   v7.receiver = self;
   v7.super_class = CloudArtworkOperationQueue;
-  [(CloudArtworkOperationQueue *)&v7 addOperation:v5];
+  [(CloudArtworkOperationQueue *)&v7 addOperation:operationCopy];
 }
 
-- (CloudArtworkOperationQueue)initWithSourceType:(int64_t)a3 configuration:(id)a4
+- (CloudArtworkOperationQueue)initWithSourceType:(int64_t)type configuration:(id)configuration
 {
-  v7 = a4;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = CloudArtworkOperationQueue;
   v8 = [(CloudArtworkOperationQueue *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_sourceType = a3;
-    objc_storeStrong(&v8->_configuration, a4);
+    v8->_sourceType = type;
+    objc_storeStrong(&v8->_configuration, configuration);
   }
 
   return v9;

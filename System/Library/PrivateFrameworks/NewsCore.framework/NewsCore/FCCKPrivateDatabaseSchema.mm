@@ -1,35 +1,35 @@
 @interface FCCKPrivateDatabaseSchema
-+ (FCCKPrivateDatabaseSchema)databaseSchemaWithZones:(void *)a3 records:(void *)a4 recordTypeVersionMapping:(void *)a5 recordNameVersionMapping:;
++ (FCCKPrivateDatabaseSchema)databaseSchemaWithZones:(void *)zones records:(void *)records recordTypeVersionMapping:(void *)mapping recordNameVersionMapping:;
 - (FCCKPrivateDatabaseSchema)init;
-- (FCCKRecordTypeMapping)mappingFromRecordType:(void *)a3 inZoneName:(uint64_t)a4 toVersion:;
-- (FCCKRecordZoneIDMapping)mappingFromRecord:(uint64_t)a3 toVersion:;
-- (FCCKRecordZoneIDMapping)mappingFromRecordZoneName:(uint64_t)a3 toVersion:;
-- (id)mappingFromRecordID:(uint64_t)a3 toVersion:;
-- (id)mappingFromRecordType:(void *)a3 inZoneID:(uint64_t)a4 toVersion:;
-- (id)mappingFromRecordZoneID:(uint64_t)a3 toVersion:;
-- (id)recordNamesInDefaultZoneChangedFromVersion:(uint64_t)a3 toVersion:;
-- (id)schemaForZoneWithName:(id *)a1;
-- (id)zoneNamesWithChangesFromVersion:(uint64_t)a3 toVersion:;
-- (void)enumerateZoneSchemasForVersion:(void *)a3 withBlock:;
-- (void)enumerateZoneSchemasWithBlock:(uint64_t)a1;
-- (void)schemaForZoneContainingRecordID:(void *)a1;
+- (FCCKRecordTypeMapping)mappingFromRecordType:(void *)type inZoneName:(uint64_t)name toVersion:;
+- (FCCKRecordZoneIDMapping)mappingFromRecord:(uint64_t)record toVersion:;
+- (FCCKRecordZoneIDMapping)mappingFromRecordZoneName:(uint64_t)name toVersion:;
+- (id)mappingFromRecordID:(uint64_t)d toVersion:;
+- (id)mappingFromRecordType:(void *)type inZoneID:(uint64_t)d toVersion:;
+- (id)mappingFromRecordZoneID:(uint64_t)d toVersion:;
+- (id)recordNamesInDefaultZoneChangedFromVersion:(uint64_t)version toVersion:;
+- (id)schemaForZoneWithName:(id *)name;
+- (id)zoneNamesWithChangesFromVersion:(uint64_t)version toVersion:;
+- (void)enumerateZoneSchemasForVersion:(void *)version withBlock:;
+- (void)enumerateZoneSchemasWithBlock:(uint64_t)block;
+- (void)schemaForZoneContainingRecordID:(void *)d;
 @end
 
 @implementation FCCKPrivateDatabaseSchema
 
-+ (FCCKPrivateDatabaseSchema)databaseSchemaWithZones:(void *)a3 records:(void *)a4 recordTypeVersionMapping:(void *)a5 recordNameVersionMapping:
++ (FCCKPrivateDatabaseSchema)databaseSchemaWithZones:(void *)zones records:(void *)records recordTypeVersionMapping:(void *)mapping recordNameVersionMapping:
 {
   v176 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  mappingCopy = mapping;
+  recordsCopy = records;
+  zonesCopy = zones;
   v12 = a2;
   objc_opt_self();
   v13 = [FCCKPrivateDatabaseSchema alloc];
   v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  v17 = v9;
+  v15 = zonesCopy;
+  v16 = recordsCopy;
+  v17 = mappingCopy;
   if (v13)
   {
     v147.receiver = v13;
@@ -43,8 +43,8 @@
       v107 = v15;
       v113 = [MEMORY[0x1E695DFA8] set];
       v105 = [MEMORY[0x1E695DFA8] set];
-      v109 = [MEMORY[0x1E695DF90] dictionary];
-      v108 = [MEMORY[0x1E695DF70] array];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      array = [MEMORY[0x1E695DF70] array];
       [MEMORY[0x1E695DF90] dictionary];
       v104 = v103 = v14;
       v143 = 0u;
@@ -85,7 +85,7 @@
 
             if (v28)
             {
-              [v108 addObject:v25];
+              [array addObject:v25];
             }
 
             else
@@ -101,7 +101,7 @@
               }
 
               v30 = v29;
-              [v109 setObject:v25 forKeyedSubscript:v30];
+              [dictionary setObject:v25 forKeyedSubscript:v30];
             }
 
             if (v25)
@@ -182,10 +182,10 @@
       zoneNameVersionMapping = v119->_zoneNameVersionMapping;
       v119->_zoneNameVersionMapping = v43;
 
-      objc_storeStrong(&v119->_recordTypeVersionMapping, a4);
-      objc_storeStrong(&v119->_recordNameVersionMapping, a5);
-      objc_storeStrong(&v119->_zoneSchemasByName, v109);
-      objc_storeStrong(&v119->_defaultZoneSchemas, v108);
+      objc_storeStrong(&v119->_recordTypeVersionMapping, records);
+      objc_storeStrong(&v119->_recordNameVersionMapping, mapping);
+      objc_storeStrong(&v119->_zoneSchemasByName, dictionary);
+      objc_storeStrong(&v119->_defaultZoneSchemas, array);
       objc_storeStrong(&v119->_recordSchemasByType, v104);
       v46 = 0;
       v47 = *v20;
@@ -212,22 +212,22 @@
               }
 
               v53 = *(*(&v135 + 1) + 8 * i);
-              v54 = [v53 first];
-              if ([v54 isEqualToString:v47])
+              first = [v53 first];
+              if ([first isEqualToString:v47])
               {
               }
 
               else
               {
                 zoneSchemasByName = v119->_zoneSchemasByName;
-                v56 = [v53 first];
-                v57 = [(NSDictionary *)zoneSchemasByName objectForKey:v56];
+                first2 = [v53 first];
+                v57 = [(NSDictionary *)zoneSchemasByName objectForKey:first2];
 
                 if (!v57 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
                 {
                   v64 = objc_alloc(MEMORY[0x1E696AEC0]);
-                  v65 = [v53 first];
-                  v66 = [v64 initWithFormat:@"missing zone name in schema: %@", v65];
+                  first3 = [v53 first];
+                  v66 = [v64 initWithFormat:@"missing zone name in schema: %@", first3];
                   *buf = 136315906;
                   v166 = "[FCCKPrivateDatabaseSchema initWithZoneSchemas:recordSchemas:recordTypeVersionMapping:recordNameVersionMapping:]";
                   v167 = 2080;
@@ -241,14 +241,14 @@
               }
 
               recordSchemasByType = v119->_recordSchemasByType;
-              v59 = [v53 second];
-              v60 = [(NSDictionary *)recordSchemasByType objectForKey:v59];
+              second = [v53 second];
+              v60 = [(NSDictionary *)recordSchemasByType objectForKey:second];
 
               if (!v60 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
               {
                 v61 = objc_alloc(MEMORY[0x1E696AEC0]);
-                v62 = [v53 second];
-                v63 = [v61 initWithFormat:@"missing record type in schema: %@", v62];
+                second2 = [v53 second];
+                v63 = [v61 initWithFormat:@"missing record type in schema: %@", second2];
                 *buf = 136315906;
                 v166 = "[FCCKPrivateDatabaseSchema initWithZoneSchemas:recordSchemas:recordTypeVersionMapping:recordNameVersionMapping:]";
                 v167 = 2080;
@@ -590,65 +590,65 @@ uint64_t __113__FCCKPrivateDatabaseSchema_initWithZoneSchemas_recordSchemas_reco
   return v7;
 }
 
-- (FCCKRecordZoneIDMapping)mappingFromRecord:(uint64_t)a3 toVersion:
+- (FCCKRecordZoneIDMapping)mappingFromRecord:(uint64_t)record toVersion:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = a2;
-    v6 = [v5 recordID];
-    v7 = [(FCCKPrivateDatabaseSchema *)v3 mappingFromRecordID:v6 toVersion:a3];
+    recordID = [v5 recordID];
+    v7 = [(FCCKPrivateDatabaseSchema *)selfCopy mappingFromRecordID:recordID toVersion:record];
 
-    v8 = [v5 recordType];
-    v9 = [v5 recordID];
+    recordType = [v5 recordType];
+    recordID2 = [v5 recordID];
 
-    v10 = [v9 zoneID];
-    v11 = [(FCCKPrivateDatabaseSchema *)v3 mappingFromRecordType:v8 inZoneID:v10 toVersion:a3];
+    zoneID = [recordID2 zoneID];
+    v11 = [(FCCKPrivateDatabaseSchema *)selfCopy mappingFromRecordType:recordType inZoneID:zoneID toVersion:record];
 
     v12 = [FCCKRecordMapping alloc];
-    v13 = [v7 fromZoneSchema];
-    v14 = [v7 toZoneSchema];
-    v15 = [v11 fromRecordSchema];
-    v16 = [v11 toRecordSchema];
-    v3 = [(FCCKRecordMapping *)v12 initWithFromZoneSchema:v13 toZoneSchema:v14 fromRecordSchema:v15 toRecordSchema:v16 recordIDMapping:v7];
+    fromZoneSchema = [v7 fromZoneSchema];
+    toZoneSchema = [v7 toZoneSchema];
+    fromRecordSchema = [v11 fromRecordSchema];
+    toRecordSchema = [v11 toRecordSchema];
+    selfCopy = [(FCCKRecordMapping *)v12 initWithFromZoneSchema:fromZoneSchema toZoneSchema:toZoneSchema fromRecordSchema:fromRecordSchema toRecordSchema:toRecordSchema recordIDMapping:v7];
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)mappingFromRecordID:(uint64_t)a3 toVersion:
+- (id)mappingFromRecordID:(uint64_t)d toVersion:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
-    v7 = [v5 zoneID];
-    v8 = [v7 zoneName];
-    v9 = [v6 recordName];
-    v10 = [FCPair pairWithFirst:v8 second:v9];
+    zoneID = [v5 zoneID];
+    zoneName = [zoneID zoneName];
+    recordName = [v6 recordName];
+    v10 = [FCPair pairWithFirst:zoneName second:recordName];
 
-    v11 = [*(a1 + 24) mapValue:v10 toVersion:a3];
-    v12 = [v11 second];
-    v13 = v12;
-    if (v12)
+    v11 = [*(self + 24) mapValue:v10 toVersion:d];
+    second = [v11 second];
+    v13 = second;
+    if (second)
     {
-      v14 = v12;
+      recordName2 = second;
     }
 
     else
     {
-      v14 = [v6 recordName];
+      recordName2 = [v6 recordName];
     }
 
-    v15 = v14;
+    v15 = recordName2;
 
-    v16 = [v6 zoneID];
-    v17 = [v16 zoneName];
-    v18 = [v17 isEqualToString:*MEMORY[0x1E695B800]];
+    zoneID2 = [v6 zoneID];
+    zoneName2 = [zoneID2 zoneName];
+    v18 = [zoneName2 isEqualToString:*MEMORY[0x1E695B800]];
 
     if (v18)
     {
-      v19 = *(a1 + 40);
+      v19 = *(self + 40);
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __59__FCCKPrivateDatabaseSchema_mappingFromRecordID_toVersion___block_invoke;
@@ -656,7 +656,7 @@ uint64_t __113__FCCKPrivateDatabaseSchema_initWithZoneSchemas_recordSchemas_reco
       v20 = v6;
       v44 = v20;
       v21 = [v19 fc_firstObjectPassingTest:v43];
-      v22 = *(a1 + 40);
+      v22 = *(self + 40);
       v38 = MEMORY[0x1E69E9820];
       v39 = 3221225472;
       v40 = __59__FCCKPrivateDatabaseSchema_mappingFromRecordID_toVersion___block_invoke_2;
@@ -665,38 +665,38 @@ uint64_t __113__FCCKPrivateDatabaseSchema_initWithZoneSchemas_recordSchemas_reco
       v42 = v23;
       v24 = [v22 fc_firstObjectPassingTest:&v38];
       v25 = [FCCKRecordIDMapping alloc];
-      v26 = [v20 recordName];
-      a1 = [(FCCKRecordIDMapping *)v25 initWithFromZoneSchema:v21 toZoneSchema:v24 fromRecordName:v26 toRecordName:v23];
+      recordName3 = [v20 recordName];
+      self = [(FCCKRecordIDMapping *)v25 initWithFromZoneSchema:v21 toZoneSchema:v24 fromRecordName:recordName3 toRecordName:v23];
     }
 
     else
     {
-      v27 = [v6 zoneID];
-      v28 = [v27 zoneName];
-      v29 = [(FCCKPrivateDatabaseSchema *)a1 schemaForZoneWithName:v28];
+      zoneID3 = [v6 zoneID];
+      zoneName3 = [zoneID3 zoneName];
+      v29 = [(FCCKPrivateDatabaseSchema *)self schemaForZoneWithName:zoneName3];
 
-      v30 = *(a1 + 8);
-      v31 = [v6 zoneID];
-      v32 = [v31 zoneName];
-      v33 = [v30 mapValue:v32 toVersion:a3];
+      v30 = *(self + 8);
+      zoneID4 = [v6 zoneID];
+      zoneName4 = [zoneID4 zoneName];
+      v33 = [v30 mapValue:zoneName4 toVersion:d];
 
-      v34 = [(FCCKPrivateDatabaseSchema *)a1 schemaForZoneWithName:v33];
+      v34 = [(FCCKPrivateDatabaseSchema *)self schemaForZoneWithName:v33];
       v35 = [FCCKRecordIDMapping alloc];
-      v36 = [v6 recordName];
-      a1 = [(FCCKRecordIDMapping *)v35 initWithFromZoneSchema:v29 toZoneSchema:v34 fromRecordName:v36 toRecordName:v15];
+      recordName4 = [v6 recordName];
+      self = [(FCCKRecordIDMapping *)v35 initWithFromZoneSchema:v29 toZoneSchema:v34 fromRecordName:recordName4 toRecordName:v15];
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)mappingFromRecordType:(void *)a3 inZoneID:(uint64_t)a4 toVersion:
+- (id)mappingFromRecordType:(void *)type inZoneID:(uint64_t)d toVersion:
 {
-  if (a1)
+  if (self)
   {
     v7 = a2;
-    v8 = [a3 zoneName];
-    v9 = [(FCCKPrivateDatabaseSchema *)a1 mappingFromRecordType:v7 inZoneName:v8 toVersion:a4];
+    zoneName = [type zoneName];
+    v9 = [(FCCKPrivateDatabaseSchema *)self mappingFromRecordType:v7 inZoneName:zoneName toVersion:d];
   }
 
   else
@@ -738,12 +738,12 @@ uint64_t __59__FCCKPrivateDatabaseSchema_mappingFromRecordID_toVersion___block_i
   }
 }
 
-- (id)schemaForZoneWithName:(id *)a1
+- (id)schemaForZoneWithName:(id *)name
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (name)
   {
     if ([v3 isEqualToString:*MEMORY[0x1E695B800]] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -759,20 +759,20 @@ uint64_t __59__FCCKPrivateDatabaseSchema_mappingFromRecordID_toVersion___block_i
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v8, 0x26u);
     }
 
-    a1 = [a1[4] objectForKeyedSubscript:v4];
+    name = [name[4] objectForKeyedSubscript:v4];
   }
 
   v5 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return name;
 }
 
-- (id)mappingFromRecordZoneID:(uint64_t)a3 toVersion:
+- (id)mappingFromRecordZoneID:(uint64_t)d toVersion:
 {
-  if (a1)
+  if (self)
   {
-    v5 = [a2 zoneName];
-    v6 = [(FCCKPrivateDatabaseSchema *)a1 mappingFromRecordZoneName:v5 toVersion:a3];
+    zoneName = [a2 zoneName];
+    v6 = [(FCCKPrivateDatabaseSchema *)self mappingFromRecordZoneName:zoneName toVersion:d];
   }
 
   else
@@ -783,54 +783,54 @@ uint64_t __59__FCCKPrivateDatabaseSchema_mappingFromRecordID_toVersion___block_i
   return v6;
 }
 
-- (FCCKRecordZoneIDMapping)mappingFromRecordZoneName:(uint64_t)a3 toVersion:
+- (FCCKRecordZoneIDMapping)mappingFromRecordZoneName:(uint64_t)name toVersion:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = a2;
-    v6 = [(FCCKPrivateDatabaseSchema *)&v3->super.isa schemaForZoneWithName:v5];
-    v7 = [(FCCKZoneSchema *)v3->_fromZoneSchema mapValue:v5 toVersion:a3];
+    v6 = [(FCCKPrivateDatabaseSchema *)&selfCopy->super.isa schemaForZoneWithName:v5];
+    v7 = [(FCCKZoneSchema *)selfCopy->_fromZoneSchema mapValue:v5 toVersion:name];
 
-    v8 = [(FCCKPrivateDatabaseSchema *)&v3->super.isa schemaForZoneWithName:v7];
-    v3 = [[FCCKRecordZoneIDMapping alloc] initWithFromZoneSchema:v6 toZoneSchema:v8];
+    v8 = [(FCCKPrivateDatabaseSchema *)&selfCopy->super.isa schemaForZoneWithName:v7];
+    selfCopy = [[FCCKRecordZoneIDMapping alloc] initWithFromZoneSchema:v6 toZoneSchema:v8];
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (FCCKRecordTypeMapping)mappingFromRecordType:(void *)a3 inZoneName:(uint64_t)a4 toVersion:
+- (FCCKRecordTypeMapping)mappingFromRecordType:(void *)type inZoneName:(uint64_t)name toVersion:
 {
-  v7 = a3;
-  if (a1)
+  typeCopy = type;
+  if (self)
   {
-    isa = a1[2].super.isa;
+    isa = self[2].super.isa;
     v9 = a2;
     v10 = [(objc_class *)isa objectForKeyedSubscript:v9];
-    v11 = [FCPair pairWithFirst:v7 second:v9];
+    v11 = [FCPair pairWithFirst:typeCopy second:v9];
 
-    v12 = [(FCCKZoneSchema *)a1->_toZoneSchema mapValue:v11 toVersion:a4];
-    v13 = a1[2].super.isa;
-    v14 = [v12 second];
-    v15 = [(objc_class *)v13 objectForKeyedSubscript:v14];
+    v12 = [(FCCKZoneSchema *)self->_toZoneSchema mapValue:v11 toVersion:name];
+    v13 = self[2].super.isa;
+    second = [v12 second];
+    v15 = [(objc_class *)v13 objectForKeyedSubscript:second];
 
-    if ([v7 isEqualToString:*MEMORY[0x1E695B800]])
+    if ([typeCopy isEqualToString:*MEMORY[0x1E695B800]])
     {
       v16 = [FCCKRecordZoneIDMapping alloc];
-      v17 = [(FCCKZoneSchema *)a1[1]._toZoneSchema firstObject];
-      v18 = [(FCCKZoneSchema *)a1[1]._toZoneSchema firstObject];
-      v19 = [(FCCKRecordZoneIDMapping *)v16 initWithFromZoneSchema:v17 toZoneSchema:v18];
+      firstObject = [(FCCKZoneSchema *)self[1]._toZoneSchema firstObject];
+      firstObject2 = [(FCCKZoneSchema *)self[1]._toZoneSchema firstObject];
+      v19 = [(FCCKRecordZoneIDMapping *)v16 initWithFromZoneSchema:firstObject toZoneSchema:firstObject2];
     }
 
     else
     {
-      v19 = [(FCCKPrivateDatabaseSchema *)a1 mappingFromRecordZoneName:v7 toVersion:a4];
+      v19 = [(FCCKPrivateDatabaseSchema *)self mappingFromRecordZoneName:typeCopy toVersion:name];
     }
 
     v20 = [FCCKRecordTypeMapping alloc];
-    v21 = [(FCCKRecordZoneIDMapping *)v19 fromZoneSchema];
-    v22 = [(FCCKRecordZoneIDMapping *)v19 toZoneSchema];
-    v23 = [(FCCKRecordTypeMapping *)v20 initWithFromZoneSchema:v21 toZoneSchema:v22 fromRecordSchema:v10 toRecordSchema:v15];
+    fromZoneSchema = [(FCCKRecordZoneIDMapping *)v19 fromZoneSchema];
+    toZoneSchema = [(FCCKRecordZoneIDMapping *)v19 toZoneSchema];
+    v23 = [(FCCKRecordTypeMapping *)v20 initWithFromZoneSchema:fromZoneSchema toZoneSchema:toZoneSchema fromRecordSchema:v10 toRecordSchema:v15];
   }
 
   else
@@ -841,12 +841,12 @@ uint64_t __59__FCCKPrivateDatabaseSchema_mappingFromRecordID_toVersion___block_i
   return v23;
 }
 
-- (void)schemaForZoneContainingRecordID:(void *)a1
+- (void)schemaForZoneContainingRecordID:(void *)d
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (d)
   {
     if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -862,34 +862,34 @@ uint64_t __59__FCCKPrivateDatabaseSchema_mappingFromRecordID_toVersion___block_i
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v5 = [v4 zoneID];
-    v6 = [v5 zoneName];
-    v7 = [v6 isEqualToString:*MEMORY[0x1E695B800]];
+    zoneID = [v4 zoneID];
+    zoneName = [zoneID zoneName];
+    v7 = [zoneName isEqualToString:*MEMORY[0x1E695B800]];
 
     if (v7)
     {
-      v8 = a1[5];
+      v8 = d[5];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __61__FCCKPrivateDatabaseSchema_schemaForZoneContainingRecordID___block_invoke;
       v15[3] = &unk_1E7C44B48;
       v16 = v4;
-      a1 = [v8 fc_firstObjectPassingTest:v15];
-      v9 = v16;
+      d = [v8 fc_firstObjectPassingTest:v15];
+      zoneID2 = v16;
     }
 
     else
     {
-      v10 = a1[4];
-      v9 = [v4 zoneID];
-      v11 = [v9 zoneName];
-      a1 = [v10 objectForKeyedSubscript:v11];
+      v10 = d[4];
+      zoneID2 = [v4 zoneID];
+      zoneName2 = [zoneID2 zoneName];
+      d = [v10 objectForKeyedSubscript:zoneName2];
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return d;
 }
 
 uint64_t __61__FCCKPrivateDatabaseSchema_schemaForZoneContainingRecordID___block_invoke(uint64_t a1, void *a2)
@@ -910,14 +910,14 @@ uint64_t __61__FCCKPrivateDatabaseSchema_schemaForZoneContainingRecordID___block
   return v5;
 }
 
-- (void)enumerateZoneSchemasForVersion:(void *)a3 withBlock:
+- (void)enumerateZoneSchemasForVersion:(void *)version withBlock:
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (a1 && v5)
+  versionCopy = version;
+  v6 = versionCopy;
+  if (self && versionCopy)
   {
-    v7 = [a1[1] allValuesForVersion:a2];
+    v7 = [self[1] allValuesForVersion:a2];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -937,7 +937,7 @@ uint64_t __61__FCCKPrivateDatabaseSchema_schemaForZoneContainingRecordID___block
             objc_enumerationMutation(v7);
           }
 
-          v12 = [a1[4] objectForKeyedSubscript:*(*(&v23 + 1) + 8 * v11)];
+          v12 = [self[4] objectForKeyedSubscript:*(*(&v23 + 1) + 8 * v11)];
           if (v12)
           {
             (v6)[2](v6, v12);
@@ -957,7 +957,7 @@ uint64_t __61__FCCKPrivateDatabaseSchema_schemaForZoneContainingRecordID___block
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v13 = a1[5];
+    v13 = self[5];
     v14 = [v13 countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v14)
     {
@@ -987,19 +987,19 @@ uint64_t __61__FCCKPrivateDatabaseSchema_schemaForZoneContainingRecordID___block
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateZoneSchemasWithBlock:(uint64_t)a1
+- (void)enumerateZoneSchemasWithBlock:(uint64_t)block
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (block && v3)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = [*(a1 + 32) allValues];
-    v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    allValues = [*(block + 32) allValues];
+    v6 = [allValues countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1011,14 +1011,14 @@ uint64_t __61__FCCKPrivateDatabaseSchema_schemaForZoneContainingRecordID___block
         {
           if (*v21 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           v4[2](v4, *(*(&v20 + 1) + 8 * v9++));
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v7);
@@ -1028,7 +1028,7 @@ uint64_t __61__FCCKPrivateDatabaseSchema_schemaForZoneContainingRecordID___block
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = *(a1 + 40);
+    v10 = *(block + 40);
     v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
     if (v11)
     {
@@ -1058,22 +1058,22 @@ uint64_t __61__FCCKPrivateDatabaseSchema_schemaForZoneContainingRecordID___block
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)zoneNamesWithChangesFromVersion:(uint64_t)a3 toVersion:
+- (id)zoneNamesWithChangesFromVersion:(uint64_t)version toVersion:
 {
-  if (a1)
+  if (self)
   {
     var38[0] = MEMORY[0x1E69E9820];
     var38[1] = 3221225472;
     var38[2] = __71__FCCKPrivateDatabaseSchema_zoneNamesWithChangesFromVersion_toVersion___block_invoke;
     var38[3] = &unk_1E7C44B70;
-    var38[4] = a1;
+    var38[4] = self;
     var38[5] = a2;
-    var38[6] = a3;
-    a1 = [MEMORY[0x1E695DFD8] fc_set:var38];
+    var38[6] = version;
+    self = [MEMORY[0x1E695DFD8] fc_set:var38];
     v3 = var38[8];
   }
 
-  return a1;
+  return self;
 }
 
 void __71__FCCKPrivateDatabaseSchema_zoneNamesWithChangesFromVersion_toVersion___block_invoke(void *a1, void *a2)
@@ -1116,22 +1116,22 @@ void __71__FCCKPrivateDatabaseSchema_zoneNamesWithChangesFromVersion_toVersion__
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)recordNamesInDefaultZoneChangedFromVersion:(uint64_t)a3 toVersion:
+- (id)recordNamesInDefaultZoneChangedFromVersion:(uint64_t)version toVersion:
 {
-  if (a1)
+  if (self)
   {
     var38[0] = MEMORY[0x1E69E9820];
     var38[1] = 3221225472;
     var38[2] = __82__FCCKPrivateDatabaseSchema_recordNamesInDefaultZoneChangedFromVersion_toVersion___block_invoke;
     var38[3] = &unk_1E7C44B70;
-    var38[4] = a1;
+    var38[4] = self;
     var38[5] = a2;
-    var38[6] = a3;
-    a1 = [MEMORY[0x1E695DFD8] fc_set:var38];
+    var38[6] = version;
+    self = [MEMORY[0x1E695DFD8] fc_set:var38];
     v3 = var38[8];
   }
 
-  return a1;
+  return self;
 }
 
 void __82__FCCKPrivateDatabaseSchema_recordNamesInDefaultZoneChangedFromVersion_toVersion___block_invoke(void *a1, void *a2)

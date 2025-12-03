@@ -1,7 +1,7 @@
 @interface MDLColorSwatchTexture
 - (MDLColorSwatchTexture)initWithColorGradientFrom:(CGColorRef)color1 toColor:(CGColorRef)color2 name:(NSString *)name textureDimensions:(vector_int2)textureDimensions;
 - (MDLColorSwatchTexture)initWithColorTemperatureGradientFrom:(float)colorTemperature1 toColorTemperature:(float)colorTemperature2 name:(NSString *)name textureDimensions:(vector_int2)textureDimensions;
-- (id)generateDataAtLevel:(int64_t)a3 selector:(SEL)a4;
+- (id)generateDataAtLevel:(int64_t)level selector:(SEL)selector;
 @end
 
 @implementation MDLColorSwatchTexture
@@ -64,14 +64,14 @@
   return v11;
 }
 
-- (id)generateDataAtLevel:(int64_t)a3 selector:(SEL)a4
+- (id)generateDataAtLevel:(int64_t)level selector:(SEL)selector
 {
   if (self->super._channelEncoding != 1)
   {
     v7 = MEMORY[0x277CBEAD8];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = NSStringFromSelector(a4);
+    v10 = NSStringFromSelector(selector);
     objc_msgSend_raise_format_(v7, v11, @"ModelIOException", @"[%@ %@]: Only 8 bit textures supported", v9, v10);
   }
 
@@ -80,12 +80,12 @@
     v12 = MEMORY[0x277CBEAD8];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    v15 = NSStringFromSelector(a4);
+    v15 = NSStringFromSelector(selector);
     objc_msgSend_raise_format_(v12, v16, @"ModelIOException", @"[%@ %@]: Only 4 channel textures supported", v14, v15);
   }
 
   v62 = *self->super._anon_118;
-  v17 = objc_msgSend_allocateDataAtLevel_(self, a2, a3);
+  v17 = objc_msgSend_allocateDataAtLevel_(self, a2, level);
   v18 = v17;
   v21 = objc_msgSend_mutableBytes(v18, v19, v20);
   v24.i32[0] = 0;
@@ -94,15 +94,15 @@
   v26 = vbsl_s8(vdup_lane_s32(vcgt_s32(v24, v62), 0), v25, v62);
   v27 = v26.u32[0] | 0x100000000;
   v28 = vbsl_s8(vdup_lane_s32(vcgt_s32(v24, vdup_lane_s32(v26, 1)), 0), v27, v26);
-  v29 = v28.i32[0] >> a3;
-  if (v28.i32[1] >> a3 <= 1)
+  v29 = v28.i32[0] >> level;
+  if (v28.i32[1] >> level <= 1)
   {
     v30 = 1;
   }
 
   else
   {
-    v30 = (v28.i32[1] >> a3);
+    v30 = (v28.i32[1] >> level);
   }
 
   if (v29 <= 1)

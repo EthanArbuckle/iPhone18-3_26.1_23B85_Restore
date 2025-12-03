@@ -42,7 +42,7 @@
   if (inputImage)
   {
     v4 = inputImage;
-    v5 = [(PIHighKeyHDR *)self _highKeyHDR];
+    _highKeyHDR = [(PIHighKeyHDR *)self _highKeyHDR];
     [(CIImage *)self->inputImage extent];
     v7 = v6;
     v9 = v8;
@@ -53,7 +53,7 @@
     v18[1] = inputStrength;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
 
-    v16 = [v5 applyWithExtent:v15 arguments:{v7, v9, v11, v13}];
+    v16 = [_highKeyHDR applyWithExtent:v15 arguments:{v7, v9, v11, v13}];
   }
 
   else

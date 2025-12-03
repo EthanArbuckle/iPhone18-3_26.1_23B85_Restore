@@ -1,9 +1,9 @@
 @interface SRMemoryMapping
 + (void)initialize;
-- (BOOL)isValidWriteToDestinationAddress:(unint64_t)a3 withLength:(uint64_t)a4 bytes:;
-- (id)initWithSize:(int)a3 protection:(int)a4 advice:(uint64_t)a5 offset:;
+- (BOOL)isValidWriteToDestinationAddress:(unint64_t)address withLength:(uint64_t)length bytes:;
+- (id)initWithSize:(int)size protection:(int)protection advice:(uint64_t)advice offset:;
 - (uint64_t)mapWithFileHandle:(uint64_t)result;
-- (void)appendBytes:(unint64_t)a3 length:;
+- (void)appendBytes:(unint64_t)bytes length:;
 - (void)dealloc;
 - (void)sync;
 @end
@@ -12,13 +12,13 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogMemoryMapping = os_log_create("com.apple.SensorKit", "SRMemoryMapping");
   }
 }
 
-- (id)initWithSize:(int)a3 protection:(int)a4 advice:(uint64_t)a5 offset:
+- (id)initWithSize:(int)size protection:(int)protection advice:(uint64_t)advice offset:
 {
   if (result)
   {
@@ -28,9 +28,9 @@
     if (result)
     {
       *(result + 6) = a2;
-      *(result + 2) = a3;
-      *(result + 3) = a4;
-      *(result + 4) = a5;
+      *(result + 2) = size;
+      *(result + 3) = protection;
+      *(result + 4) = advice;
     }
   }
 
@@ -158,13 +158,13 @@
 - (void)sync
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 40);
+    v2 = *(self + 40);
     if (v2 + 1 >= 2)
     {
-      v6 = a1 + 16;
-      v4 = *(a1 + 16);
+      v6 = self + 16;
+      v4 = *(self + 16);
       v5 = *(v6 + 8);
       if (v5 != v4)
       {
@@ -186,14 +186,14 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isValidWriteToDestinationAddress:(unint64_t)a3 withLength:(uint64_t)a4 bytes:
+- (BOOL)isValidWriteToDestinationAddress:(unint64_t)address withLength:(uint64_t)length bytes:
 {
   v22 = *MEMORY[0x1E69E9840];
   if (result)
   {
     v4 = result;
     result = 0;
-    if (a4)
+    if (length)
     {
       if ((*(v4 + 8) & 2) != 0)
       {
@@ -206,7 +206,7 @@ LABEL_5:
         }
 
         v8 = *(v4 + 24);
-        if (__CFADD__(v8, a3))
+        if (__CFADD__(v8, address))
         {
           v9 = SRLogMemoryMapping;
           result = os_log_type_enabled(SRLogMemoryMapping, OS_LOG_TYPE_ERROR);
@@ -216,13 +216,13 @@ LABEL_5:
           }
 
           v16 = 134349056;
-          v17 = a3;
+          addressCopy = address;
           _os_log_error_impl(&dword_1C914D000, v9, OS_LOG_TYPE_ERROR, "%{public}zu is too large to write", &v16, 0xCu);
           goto LABEL_5;
         }
 
         v11 = v5 + *(v4 + 56);
-        if (a2 + a3 > v11)
+        if (a2 + address > v11)
         {
           v12 = SRLogMemoryMapping;
           result = os_log_type_enabled(SRLogMemoryMapping, OS_LOG_TYPE_FAULT);
@@ -232,9 +232,9 @@ LABEL_5:
           }
 
           v16 = 134349568;
-          v17 = a2;
+          addressCopy = a2;
           v18 = 2050;
-          v19 = a3;
+          addressCopy2 = address;
           v20 = 2050;
           v21 = v11;
           _os_log_fault_impl(&dword_1C914D000, v12, OS_LOG_TYPE_FAULT, "writing to %{public}p with length %{public}lu would go past end of file (%{public}p)", &v16, 0x20u);
@@ -264,28 +264,28 @@ LABEL_6:
   return result;
 }
 
-- (void)appendBytes:(unint64_t)a3 length:
+- (void)appendBytes:(unint64_t)bytes length:
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_6;
   }
 
-  v6 = a1[3];
-  if (![(SRMemoryMapping *)a1 isValidWriteToDestinationAddress:v6 withLength:a3 bytes:a2])
+  v6 = self[3];
+  if (![(SRMemoryMapping *)self isValidWriteToDestinationAddress:v6 withLength:bytes bytes:a2])
   {
     goto LABEL_6;
   }
 
-  v7 = a1[6] - a1[3] + a1[2];
-  if (v7 < a3)
+  v7 = self[6] - self[3] + self[2];
+  if (v7 < bytes)
   {
     v8 = SRLogMemoryMapping;
     if (os_log_type_enabled(SRLogMemoryMapping, OS_LOG_TYPE_INFO))
     {
       v11 = 134349312;
-      v12 = a3;
+      bytesCopy = bytes;
       v13 = 2050;
       v14 = v7;
       _os_log_impl(&dword_1C914D000, v8, OS_LOG_TYPE_INFO, "More bytes requested %{public}zu than the capacity %{public}zu. Client should call -freeSpace: to avoid this", &v11, 0x16u);
@@ -296,10 +296,10 @@ LABEL_6:
     return;
   }
 
-  a1[3] = &v6[a3];
+  self[3] = &v6[bytes];
   v10 = *MEMORY[0x1E69E9840];
 
-  memcpy(v6, a2, a3);
+  memcpy(v6, a2, bytes);
 }
 
 @end

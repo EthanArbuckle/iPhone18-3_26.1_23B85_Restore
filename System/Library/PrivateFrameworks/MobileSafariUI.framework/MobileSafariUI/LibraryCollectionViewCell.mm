@@ -1,32 +1,32 @@
 @interface LibraryCollectionViewCell
 - (BOOL)_isHovered;
-- (LibraryCollectionViewCell)initWithFrame:(CGRect)a3;
+- (LibraryCollectionViewCell)initWithFrame:(CGRect)frame;
 - (id)_imageView;
 - (id)_makeCloseButton;
-- (void)_applyTabIcon:(id)a3;
-- (void)_applyTabIcon:(id)a3 toConfiguration:(id)a4;
+- (void)_applyTabIcon:(id)icon;
+- (void)_applyTabIcon:(id)icon toConfiguration:(id)configuration;
 - (void)_didReceiveHoverGesture;
 - (void)_installCloseButton;
-- (void)_setShowsCloseButton:(BOOL)a3;
-- (void)_setSupportsHover:(BOOL)a3;
+- (void)_setShowsCloseButton:(BOOL)button;
+- (void)_setSupportsHover:(BOOL)hover;
 - (void)_setUpCloseButtonConstraintsIfNeeded;
-- (void)_updateAccessories:(id)a3;
+- (void)_updateAccessories:(id)accessories;
 - (void)prepareForReuse;
-- (void)setAccessories:(id)a3;
-- (void)setCloseHandler:(id)a3;
-- (void)setContentConfiguration:(id)a3;
-- (void)setTabIconRegistration:(id)a3;
-- (void)updateConfigurationForTabIconRegistration:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setAccessories:(id)accessories;
+- (void)setCloseHandler:(id)handler;
+- (void)setContentConfiguration:(id)configuration;
+- (void)setTabIconRegistration:(id)registration;
+- (void)updateConfigurationForTabIconRegistration:(id)registration;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation LibraryCollectionViewCell
 
-- (LibraryCollectionViewCell)initWithFrame:(CGRect)a3
+- (LibraryCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = LibraryCollectionViewCell;
-  v3 = [(LibraryCollectionViewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LibraryCollectionViewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -36,46 +36,46 @@
   return v4;
 }
 
-- (void)setAccessories:(id)a3
+- (void)setAccessories:(id)accessories
 {
-  v4 = a3;
-  [(LibraryCollectionViewCell *)self _updateAccessories:v4];
+  accessoriesCopy = accessories;
+  [(LibraryCollectionViewCell *)self _updateAccessories:accessoriesCopy];
   v5.receiver = self;
   v5.super_class = LibraryCollectionViewCell;
-  [(LibraryCollectionViewCell *)&v5 setAccessories:v4];
+  [(LibraryCollectionViewCell *)&v5 setAccessories:accessoriesCopy];
 }
 
-- (void)setContentConfiguration:(id)a3
+- (void)setContentConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if ([MEMORY[0x277D49A08] isSolariumEnabled])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 setAxesPreservingSuperviewLayoutMargins:0];
-      [v4 setImageToTextPadding:8.0];
+      [configurationCopy setAxesPreservingSuperviewLayoutMargins:0];
+      [configurationCopy setImageToTextPadding:8.0];
     }
   }
 
   v5.receiver = self;
   v5.super_class = LibraryCollectionViewCell;
-  [(LibraryCollectionViewCell *)&v5 setContentConfiguration:v4];
+  [(LibraryCollectionViewCell *)&v5 setContentConfiguration:configurationCopy];
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v7.receiver = self;
   v7.super_class = LibraryCollectionViewCell;
-  [(LibraryCollectionViewCell *)&v7 updateConfigurationUsingState:v4];
-  v5 = [(LibraryCollectionViewCell *)self accessories];
-  [(LibraryCollectionViewCell *)self _updateAccessories:v5];
+  [(LibraryCollectionViewCell *)&v7 updateConfigurationUsingState:stateCopy];
+  accessories = [(LibraryCollectionViewCell *)self accessories];
+  [(LibraryCollectionViewCell *)self _updateAccessories:accessories];
 
   [(LibraryCollectionViewCell *)self _setUpCloseButtonConstraintsIfNeeded];
-  if (self->_closeButton && ([v4 isEditing] & 1) == 0)
+  if (self->_closeButton && ([stateCopy isEditing] & 1) == 0)
   {
-    v6 = ([v4 isSelected] & 1) != 0 || -[LibraryCollectionViewCell _isHovered](self, "_isHovered");
+    v6 = ([stateCopy isSelected] & 1) != 0 || -[LibraryCollectionViewCell _isHovered](self, "_isHovered");
   }
 
   else
@@ -86,15 +86,15 @@
   [(LibraryCollectionViewCell *)self _setShowsCloseButton:v6];
 }
 
-- (void)_updateAccessories:(id)a3
+- (void)_updateAccessories:(id)accessories
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoriesCopy = accessories;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [accessoriesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -106,7 +106,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(accessoriesCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
@@ -114,25 +114,25 @@
         if (objc_opt_isKindOfClass())
         {
           v10 = v9;
-          v11 = [(LibraryCollectionViewCell *)self contentConfiguration];
-          v12 = [(LibraryCollectionViewCell *)self configurationState];
-          [v10 applyContentConfiguration:v11 forState:v12];
+          contentConfiguration = [(LibraryCollectionViewCell *)self contentConfiguration];
+          configurationState = [(LibraryCollectionViewCell *)self configurationState];
+          [v10 applyContentConfiguration:contentConfiguration forState:configurationState];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [accessoriesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setCloseHandler:(id)a3
+- (void)setCloseHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   closeHandler = self->_closeHandler;
   self->_closeHandler = v4;
 
@@ -145,9 +145,9 @@
       goto LABEL_7;
     }
 
-    v8 = [(LibraryCollectionViewCell *)self _makeCloseButton];
+    _makeCloseButton = [(LibraryCollectionViewCell *)self _makeCloseButton];
     v9 = self->_closeButton;
-    self->_closeButton = v8;
+    self->_closeButton = _makeCloseButton;
 
     [(LibraryCollectionViewCell *)self _installCloseButton];
   }
@@ -178,14 +178,14 @@ LABEL_7:
 {
   objc_initWeak(&location, self);
   v2 = MEMORY[0x277D75220];
-  v3 = [MEMORY[0x277D75230] plainButtonConfiguration];
+  plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
   v4 = [MEMORY[0x277D755B8] systemImageNamed:@"xmark.circle.fill"];
-  [v3 setImage:v4];
+  [plainButtonConfiguration setImage:v4];
 
   v5 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76988] scale:2];
-  [v3 setPreferredSymbolConfigurationForImage:v5];
+  [plainButtonConfiguration setPreferredSymbolConfigurationForImage:v5];
 
-  [v3 setContentInsets:{*MEMORY[0x277D75060], *(MEMORY[0x277D75060] + 8), *(MEMORY[0x277D75060] + 16), *(MEMORY[0x277D75060] + 24)}];
+  [plainButtonConfiguration setContentInsets:{*MEMORY[0x277D75060], *(MEMORY[0x277D75060] + 8), *(MEMORY[0x277D75060] + 16), *(MEMORY[0x277D75060] + 24)}];
   v6 = MEMORY[0x277D750C8];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
@@ -193,13 +193,13 @@ LABEL_7:
   v14 = &unk_2781D5B80;
   objc_copyWeak(&v15, &location);
   v7 = [v6 actionWithHandler:&v11];
-  v8 = [v2 buttonWithConfiguration:v3 primaryAction:{v7, v11, v12, v13, v14}];
+  v8 = [v2 buttonWithConfiguration:plainButtonConfiguration primaryAction:{v7, v11, v12, v13, v14}];
 
   [v8 setAlpha:0.0];
   [v8 setPointerInteractionEnabled:1];
   [v8 setPointerStyleProvider:&__block_literal_global_24];
-  v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v8 setTintColor:v9];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [v8 setTintColor:secondaryLabelColor];
 
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   objc_destroyWeak(&v15);
@@ -235,15 +235,15 @@ id __45__LibraryCollectionViewCell__makeCloseButton__block_invoke_2(uint64_t a1,
 
 - (void)_installCloseButton
 {
-  v5 = [(LibraryCollectionViewCell *)self contentView];
-  v3 = [(UIButton *)self->_closeButton superview];
+  contentView = [(LibraryCollectionViewCell *)self contentView];
+  superview = [(UIButton *)self->_closeButton superview];
 
-  if (v3 != v5)
+  if (superview != contentView)
   {
     closeButtonLayoutGuide = self->_closeButtonLayoutGuide;
     self->_closeButtonLayoutGuide = 0;
 
-    [v5 addSubview:self->_closeButton];
+    [contentView addSubview:self->_closeButton];
   }
 
   [(LibraryCollectionViewCell *)self _setUpCloseButtonConstraintsIfNeeded];
@@ -254,24 +254,24 @@ id __45__LibraryCollectionViewCell__makeCloseButton__block_invoke_2(uint64_t a1,
   v14[2] = *MEMORY[0x277D85DE8];
   if (self->_closeButton)
   {
-    v3 = [(LibraryCollectionViewCell *)self contentView];
+    contentView = [(LibraryCollectionViewCell *)self contentView];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 imageLayoutGuide];
-      v5 = v4;
-      if (v4)
+      imageLayoutGuide = [contentView imageLayoutGuide];
+      v5 = imageLayoutGuide;
+      if (imageLayoutGuide)
       {
-        if (self->_closeButtonLayoutGuide != v4)
+        if (self->_closeButtonLayoutGuide != imageLayoutGuide)
         {
           [MEMORY[0x277CCAAD0] deactivateConstraints:self->_closeButtonConstraints];
-          v13 = [(UILayoutGuide *)v5 centerXAnchor];
-          v6 = [(UIButton *)self->_closeButton centerXAnchor];
-          v7 = [v13 constraintEqualToAnchor:v6];
+          centerXAnchor = [(UILayoutGuide *)v5 centerXAnchor];
+          centerXAnchor2 = [(UIButton *)self->_closeButton centerXAnchor];
+          v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
           v14[0] = v7;
-          v8 = [(UILayoutGuide *)v5 centerYAnchor];
-          v9 = [(UIButton *)self->_closeButton centerYAnchor];
-          v10 = [v8 constraintEqualToAnchor:v9];
+          centerYAnchor = [(UILayoutGuide *)v5 centerYAnchor];
+          centerYAnchor2 = [(UIButton *)self->_closeButton centerYAnchor];
+          v10 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
           v14[1] = v10;
           v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
           closeButtonConstraints = self->_closeButtonConstraints;
@@ -287,9 +287,9 @@ id __45__LibraryCollectionViewCell__makeCloseButton__block_invoke_2(uint64_t a1,
 
 - (id)_imageView
 {
-  v2 = [(LibraryCollectionViewCell *)self contentView];
-  v3 = [v2 subviews];
-  v4 = [v3 safari_firstObjectPassingTest:&__block_literal_global_26];
+  contentView = [(LibraryCollectionViewCell *)self contentView];
+  subviews = [contentView subviews];
+  v4 = [subviews safari_firstObjectPassingTest:&__block_literal_global_26];
 
   return v4;
 }
@@ -303,15 +303,15 @@ uint64_t __39__LibraryCollectionViewCell__imageView__block_invoke(uint64_t a1, v
   return isKindOfClass & 1;
 }
 
-- (void)_setShowsCloseButton:(BOOL)a3
+- (void)_setShowsCloseButton:(BOOL)button
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __50__LibraryCollectionViewCell__setShowsCloseButton___block_invoke;
   v3[3] = &unk_2781D51B8;
   v3[4] = self;
-  v4 = a3;
-  [(UIView *)0.2 safari_animate:MEMORY[0x277D75D18] withDuration:!a3 delay:6 options:v3 animations:0 completion:?];
+  buttonCopy = button;
+  [(UIView *)0.2 safari_animate:MEMORY[0x277D75D18] withDuration:!button delay:6 options:v3 animations:0 completion:?];
 }
 
 uint64_t __50__LibraryCollectionViewCell__setShowsCloseButton___block_invoke(uint64_t a1)
@@ -329,8 +329,8 @@ uint64_t __50__LibraryCollectionViewCell__setShowsCloseButton___block_invoke(uin
 
 - (void)_didReceiveHoverGesture
 {
-  v3 = [(UIHoverGestureRecognizer *)self->_hoverGestureRecognizer state];
-  if (v3 <= 4 && ((1 << v3) & 0x1A) != 0)
+  state = [(UIHoverGestureRecognizer *)self->_hoverGestureRecognizer state];
+  if (state <= 4 && ((1 << state) & 0x1A) != 0)
   {
 
     [(LibraryCollectionViewCell *)self setNeedsUpdateConfiguration];
@@ -360,11 +360,11 @@ uint64_t __50__LibraryCollectionViewCell__setShowsCloseButton___block_invoke(uin
   return v13;
 }
 
-- (void)_setSupportsHover:(BOOL)a3
+- (void)_setSupportsHover:(BOOL)hover
 {
-  v3 = a3;
+  hoverCopy = hover;
   hoverGestureRecognizer = self->_hoverGestureRecognizer;
-  if (v3)
+  if (hoverCopy)
   {
     if (!hoverGestureRecognizer)
     {
@@ -386,32 +386,32 @@ uint64_t __50__LibraryCollectionViewCell__setShowsCloseButton___block_invoke(uin
   }
 }
 
-- (void)_applyTabIcon:(id)a3
+- (void)_applyTabIcon:(id)icon
 {
-  v5 = a3;
-  v4 = [(LibraryCollectionViewCell *)self contentConfiguration];
+  iconCopy = icon;
+  contentConfiguration = [(LibraryCollectionViewCell *)self contentConfiguration];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(LibraryCollectionViewCell *)self _applyTabIcon:v5 toConfiguration:v4];
-    [(LibraryCollectionViewCell *)self setContentConfiguration:v4];
+    [(LibraryCollectionViewCell *)self _applyTabIcon:iconCopy toConfiguration:contentConfiguration];
+    [(LibraryCollectionViewCell *)self setContentConfiguration:contentConfiguration];
   }
 }
 
-- (void)_applyTabIcon:(id)a3 toConfiguration:(id)a4
+- (void)_applyTabIcon:(id)icon toConfiguration:(id)configuration
 {
-  if (a3)
+  if (icon)
   {
-    v7 = a4;
-    [v7 setImage:a3];
+    configurationCopy = configuration;
+    [configurationCopy setImage:icon];
   }
 
   else
   {
     v5 = MEMORY[0x277D755B8];
-    v6 = a4;
-    v7 = [v5 systemImageNamed:@"globe"];
-    [v6 setImage:?];
+    configurationCopy2 = configuration;
+    configurationCopy = [v5 systemImageNamed:@"globe"];
+    [configurationCopy2 setImage:?];
   }
 }
 
@@ -427,13 +427,13 @@ uint64_t __50__LibraryCollectionViewCell__setShowsCloseButton___block_invoke(uin
   self->_closeButtonLayoutGuide = 0;
 }
 
-- (void)setTabIconRegistration:(id)a3
+- (void)setTabIconRegistration:(id)registration
 {
-  v5 = a3;
+  registrationCopy = registration;
   v6 = self->_tabIconRegistration;
-  if (v6 != v5)
+  if (v6 != registrationCopy)
   {
-    objc_storeStrong(&self->_tabIconRegistration, a3);
+    objc_storeStrong(&self->_tabIconRegistration, registration);
     [(SFTabIconRegistration *)v6 setContentObserver:&__block_literal_global_40];
     objc_initWeak(&location, self);
     v8 = MEMORY[0x277D85DD0];
@@ -441,10 +441,10 @@ uint64_t __50__LibraryCollectionViewCell__setShowsCloseButton___block_invoke(uin
     v10 = __52__LibraryCollectionViewCell_setTabIconRegistration___block_invoke_2;
     v11 = &unk_2781D8370;
     objc_copyWeak(&v12, &location);
-    [(SFTabIconRegistration *)v5 setContentObserver:&v8];
-    if (v5)
+    [(SFTabIconRegistration *)registrationCopy setContentObserver:&v8];
+    if (registrationCopy)
     {
-      v7 = [(SFTabIconRegistration *)v5 content:v8];
+      v7 = [(SFTabIconRegistration *)registrationCopy content:v8];
       [(LibraryCollectionViewCell *)self _applyTabIcon:v7];
     }
 
@@ -460,14 +460,14 @@ void __52__LibraryCollectionViewCell_setTabIconRegistration___block_invoke_2(uin
   [WeakRetained _applyTabIcon:v3];
 }
 
-- (void)updateConfigurationForTabIconRegistration:(id)a3
+- (void)updateConfigurationForTabIconRegistration:(id)registration
 {
   tabIconRegistration = self->_tabIconRegistration;
   if (tabIconRegistration)
   {
-    v5 = a3;
-    v6 = [(SFTabIconRegistration *)tabIconRegistration content];
-    [(LibraryCollectionViewCell *)self _applyTabIcon:v6 toConfiguration:v5];
+    registrationCopy = registration;
+    content = [(SFTabIconRegistration *)tabIconRegistration content];
+    [(LibraryCollectionViewCell *)self _applyTabIcon:content toConfiguration:registrationCopy];
   }
 }
 

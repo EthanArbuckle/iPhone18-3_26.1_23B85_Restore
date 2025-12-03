@@ -12,7 +12,7 @@
 
 + (MPSNNLossGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage labels:(MPSNNImageNode *)labels weights:(MPSNNImageNode *)weights gradientState:(MPSNNGradientStateNode *)gradientState lossDescriptor:(MPSCNNLossDescriptor *)descriptor isLabelsGradientFilter:(BOOL)isLabelsGradientFilter
 {
-  v15 = [a1 alloc];
+  v15 = [self alloc];
   v17 = objc_msgSend_initWithSourceGradient_sourceImage_labels_weights_gradientState_lossDescriptor_isLabelsGradientFilter_(v15, v16, sourceGradient, sourceImage, labels, weights, gradientState, descriptor, isLabelsGradientFilter);
 
   return v17;
@@ -20,7 +20,7 @@
 
 + (MPSNNLossGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage labels:(MPSNNImageNode *)labels gradientState:(MPSNNGradientStateNode *)gradientState lossDescriptor:(MPSCNNLossDescriptor *)descriptor isLabelsGradientFilter:(BOOL)isLabelsGradientFilter
 {
-  v14 = [a1 alloc];
+  v14 = [self alloc];
   v18 = isLabelsGradientFilter;
   v16 = objc_msgSend_initWithSourceGradient_sourceImage_labels_weights_gradientState_lossDescriptor_isLabelsGradientFilter_(v14, v15, sourceGradient, sourceImage, labels, 0, gradientState, descriptor, v18);
 
@@ -38,7 +38,7 @@
     v41 = objc_msgSend_objectAtIndexedSubscript_(sourceNodes, v35, 3, v36, v37, v38, v39, v40);
   }
 
-  v42 = [a1 alloc];
+  v42 = [self alloc];
   v46 = isLabelsGradientFilter;
   v44 = objc_msgSend_initWithSourceGradient_sourceImage_labels_weights_gradientState_lossDescriptor_isLabelsGradientFilter_(v42, v43, v13, v20, v27, v41, gradientState, descriptor, v46);
 

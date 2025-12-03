@@ -1,22 +1,22 @@
 @interface HMDRemoteHomeMessagingManager
 + (id)logCategory;
-- (BOOL)sendMessage:(id)a3 completionHandler:(id)a4;
+- (BOOL)sendMessage:(id)message completionHandler:(id)handler;
 - (HMDRemoteHomeMessagingManager)init;
-- (void)registerHandler:(id)a3;
+- (void)registerHandler:(id)handler;
 @end
 
 @implementation HMDRemoteHomeMessagingManager
 
-- (BOOL)sendMessage:(id)a3 completionHandler:(id)a4
+- (BOOL)sendMessage:(id)message completionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 destination];
+  messageCopy = message;
+  handlerCopy = handler;
+  destination = [messageCopy destination];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = destination;
   }
 
   else
@@ -28,14 +28,14 @@
 
   if (v10)
   {
-    v11 = [v10 homeUUID];
+    homeUUID = [v10 homeUUID];
     os_unfair_lock_lock_with_options();
-    v12 = [(HMDRemoteHomeMessagingManager *)self homeUUIDToHandlerMap];
-    v13 = [v12 objectForKey:v11];
+    homeUUIDToHandlerMap = [(HMDRemoteHomeMessagingManager *)self homeUUIDToHandlerMap];
+    v13 = [homeUUIDToHandlerMap objectForKey:homeUUID];
 
     os_unfair_lock_unlock(&self->_lock);
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     v17 = v16;
     if (v13)
@@ -46,12 +46,12 @@
         *buf = 138543618;
         v28 = v18;
         v29 = 2114;
-        v30 = v11;
+        v30 = homeUUID;
         _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_DEBUG, "%{public}@Dispatching to handler for home UUID: %{public}@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v14);
-      [v13 sendMessage:v6 completionHandler:v7];
+      [v13 sendMessage:messageCopy completionHandler:handlerCopy];
     }
 
     else
@@ -62,19 +62,19 @@
         *buf = 138543874;
         v28 = v19;
         v29 = 2114;
-        v30 = v11;
+        v30 = homeUUID;
         v31 = 2112;
-        v32 = v6;
+        v32 = messageCopy;
         _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_ERROR, "%{public}@Handler not found for home UUID: %{public}@, message: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v14);
       v20 = MEMORY[0x277CCA9B8];
-      v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Handler not found for home UUID %@", v11];
+      v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Handler not found for home UUID %@", homeUUID];
       v22 = [v20 hmErrorWithCode:2 description:@"Cannot send message to the specified home" reason:v21 suggestion:0];
 
-      [v6 respondWithError:v22];
-      v23 = _Block_copy(v7);
+      [messageCopy respondWithError:v22];
+      v23 = _Block_copy(handlerCopy);
       v24 = v23;
       if (v23)
       {
@@ -87,31 +87,31 @@
   return v10 != 0;
 }
 
-- (void)registerHandler:(id)a3
+- (void)registerHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 homeUUID];
+    homeUUID = [handlerCopy homeUUID];
     v13 = 138543618;
     v14 = v8;
     v15 = 2114;
-    v16 = v9;
+    v16 = homeUUID;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Registering handler for home UUID: %{public}@", &v13, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  v10 = [(HMDRemoteHomeMessagingManager *)v6 homeUUIDToHandlerMap];
-  v11 = [v4 homeUUID];
-  [v10 setObject:v4 forKey:v11];
+  homeUUIDToHandlerMap = [(HMDRemoteHomeMessagingManager *)selfCopy homeUUIDToHandlerMap];
+  homeUUID2 = [handlerCopy homeUUID];
+  [homeUUIDToHandlerMap setObject:handlerCopy forKey:homeUUID2];
 
-  os_unfair_lock_unlock(&v6->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v12 = *MEMORY[0x277D85DE8];
 }
 
@@ -124,9 +124,9 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     homeUUIDToHandlerMap = v3->_homeUUIDToHandlerMap;
-    v3->_homeUUIDToHandlerMap = v4;
+    v3->_homeUUIDToHandlerMap = strongToWeakObjectsMapTable;
   }
 
   return v3;

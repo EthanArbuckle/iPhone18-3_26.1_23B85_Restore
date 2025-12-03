@@ -1,38 +1,38 @@
 @interface TRASettingsZOrderLevel
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToZOrderLevelSettings:(id)a3;
-- (TRASettingsZOrderLevel)initWithZOrderLevel:(double)a3;
-- (TRASettingsZOrderLevel)initWithZOrderLevelSettings:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToZOrderLevelSettings:(id)settings;
+- (TRASettingsZOrderLevel)initWithZOrderLevel:(double)level;
+- (TRASettingsZOrderLevel)initWithZOrderLevelSettings:(id)settings;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TRASettingsZOrderLevel
 
-- (TRASettingsZOrderLevel)initWithZOrderLevel:(double)a3
+- (TRASettingsZOrderLevel)initWithZOrderLevel:(double)level
 {
   v5.receiver = self;
   v5.super_class = TRASettingsZOrderLevel;
   result = [(TRASettingsZOrderLevel *)&v5 init];
   if (result)
   {
-    result->_zOrderLevel = a3;
+    result->_zOrderLevel = level;
   }
 
   return result;
 }
 
-- (TRASettingsZOrderLevel)initWithZOrderLevelSettings:(id)a3
+- (TRASettingsZOrderLevel)initWithZOrderLevelSettings:(id)settings
 {
-  [a3 zOrderLevel];
+  [settings zOrderLevel];
 
   return [(TRASettingsZOrderLevel *)self initWithZOrderLevel:?];
 }
 
-- (BOOL)isEqualToZOrderLevelSettings:(id)a3
+- (BOOL)isEqualToZOrderLevelSettings:(id)settings
 {
-  v4 = a3;
-  if (v4)
+  settingsCopy = settings;
+  if (settingsCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -40,7 +40,7 @@
       [TRASettingsZOrderLevel isEqualToZOrderLevelSettings:];
     }
 
-    if (self == v4)
+    if (self == settingsCopy)
     {
       v6 = 1;
     }
@@ -48,7 +48,7 @@
     else
     {
       zOrderLevel = self->_zOrderLevel;
-      [(TRASettingsZOrderLevel *)v4 zOrderLevel];
+      [(TRASettingsZOrderLevel *)settingsCopy zOrderLevel];
       v6 = BSFloatEqualToFloat();
     }
   }
@@ -61,9 +61,9 @@
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TRAMutableSettingsZOrderLevel allocWithZone:a3];
+  v4 = [TRAMutableSettingsZOrderLevel allocWithZone:zone];
 
   return [(TRASettingsZOrderLevel *)v4 initWithZOrderLevelSettings:self];
 }
@@ -84,10 +84,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -95,7 +95,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRASettingsZOrderLevel *)self isEqualToZOrderLevelSettings:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRASettingsZOrderLevel *)self isEqualToZOrderLevelSettings:equalCopy];
   }
 
   return v5;

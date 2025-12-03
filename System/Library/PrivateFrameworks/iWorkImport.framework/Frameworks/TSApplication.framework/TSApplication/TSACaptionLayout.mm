@@ -5,11 +5,11 @@
 - (BOOL)participatesInLastRowHeight;
 - (BOOL)shouldValidate;
 - (CGAffineTransform)computeLayoutTransform;
-- (CGPoint)offsetForPlacement:(id)a3;
-- (CGPoint)p_pointInFrame:(CGRect)a3 forAnchorLocation:(int64_t)a4;
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
-- (CGSize)p_sizeForProposedSize:(CGSize)a3 zeroSize:(CGSize)a4;
-- (double)maxAutoGrowBlockHeightForTextLayout:(id)a3;
+- (CGPoint)offsetForPlacement:(id)placement;
+- (CGPoint)p_pointInFrame:(CGRect)frame forAnchorLocation:(int64_t)location;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
+- (CGSize)p_sizeForProposedSize:(CGSize)size zeroSize:(CGSize)zeroSize;
+- (double)maxAutoGrowBlockHeightForTextLayout:(id)layout;
 - (id)computeLayoutGeometry;
 - (id)dependentLayouts;
 - (id)layoutsForProvidingGuidesForChildLayouts;
@@ -21,23 +21,23 @@
 - (id)p_titleLayout;
 - (id)pathSource;
 - (id)reliedOnLayouts;
-- (id)reliedOnLayoutsForTextLayout:(id)a3;
-- (unint64_t)autosizeFlagsForTextLayout:(id)a3;
+- (id)reliedOnLayoutsForTextLayout:(id)layout;
+- (unint64_t)autosizeFlagsForTextLayout:(id)layout;
 - (void)invalidate;
 - (void)invalidatePath;
-- (void)processChangedProperty:(int)a3;
-- (void)setParent:(id)a3;
+- (void)processChangedProperty:(int)property;
+- (void)setParent:(id)parent;
 - (void)validate;
 @end
 
 @implementation TSACaptionLayout
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (v4 && (isKindOfClass & 1) == 0)
+  if (parentCopy && (isKindOfClass & 1) == 0)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSACaptionLayout setParent:]", v7);
@@ -49,24 +49,24 @@
 
   v17.receiver = self;
   v17.super_class = TSACaptionLayout;
-  [(TSACaptionLayout *)&v17 setParent:v4];
+  [(TSACaptionLayout *)&v17 setParent:parentCopy];
 }
 
-- (unint64_t)autosizeFlagsForTextLayout:(id)a3
+- (unint64_t)autosizeFlagsForTextLayout:(id)layout
 {
   v4.receiver = self;
   v4.super_class = TSACaptionLayout;
-  return [(TSACaptionLayout *)&v4 autosizeFlagsForTextLayout:a3]| 0x40;
+  return [(TSACaptionLayout *)&v4 autosizeFlagsForTextLayout:layout]| 0x40;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
-  height = a4.height;
-  v6 = a3;
+  height = size.height;
+  layoutCopy = layout;
   v10 = objc_msgSend_p_parentLayout(self, v7, v8, v9);
   objc_msgSend_frameForCaptionPositioning(v10, v11, v12, v13);
   Width = CGRectGetWidth(v97);
-  v18 = objc_msgSend_storage(v6, v15, v16, v17);
+  v18 = objc_msgSend_storage(layoutCopy, v15, v16, v17);
 
   v20 = objc_msgSend_paragraphStyleAtParIndex_effectiveRange_(v18, v19, 0, 0);
 
@@ -185,8 +185,8 @@
 {
   v15.receiver = self;
   v15.super_class = TSACaptionLayout;
-  v3 = [(TSACaptionLayout *)&v15 layoutsForProvidingGuidesForChildLayouts];
-  v7 = objc_msgSend_mutableCopy(v3, v4, v5, v6);
+  layoutsForProvidingGuidesForChildLayouts = [(TSACaptionLayout *)&v15 layoutsForProvidingGuidesForChildLayouts];
+  v7 = objc_msgSend_mutableCopy(layoutsForProvidingGuidesForChildLayouts, v4, v5, v6);
 
   v11 = objc_msgSend_parent(self, v8, v9, v10);
   objc_msgSend_removeObject_(v7, v12, v11, v13);
@@ -198,28 +198,28 @@
 {
   v12.receiver = self;
   v12.super_class = TSACaptionLayout;
-  v6 = [(TSACaptionLayout *)&v12 reliedOnLayouts];
-  if (!v6)
+  reliedOnLayouts = [(TSACaptionLayout *)&v12 reliedOnLayouts];
+  if (!reliedOnLayouts)
   {
-    v6 = objc_msgSend_set(MEMORY[0x277CBEB98], v3, v4, v5);
+    reliedOnLayouts = objc_msgSend_set(MEMORY[0x277CBEB98], v3, v4, v5);
   }
 
   v9 = objc_msgSend_p_parentLayout(self, v3, v4, v5);
   if (v9)
   {
-    v10 = objc_msgSend_setByAddingObject_(v6, v7, v9, v8);
+    v10 = objc_msgSend_setByAddingObject_(reliedOnLayouts, v7, v9, v8);
 
-    v6 = v10;
+    reliedOnLayouts = v10;
   }
 
-  return v6;
+  return reliedOnLayouts;
 }
 
 - (id)dependentLayouts
 {
   v20.receiver = self;
   v20.super_class = TSACaptionLayout;
-  v3 = [(TSACaptionLayout *)&v20 dependentLayouts];
+  dependentLayouts = [(TSACaptionLayout *)&v20 dependentLayouts];
   v7 = objc_msgSend_info(self, v4, v5, v6);
   v11 = objc_msgSend_childInfoKind(v7, v8, v9, v10);
 
@@ -228,18 +228,18 @@
     v17 = objc_msgSend_p_captionLayout(self, v12, v13, v14);
     if (v17)
     {
-      v18 = objc_msgSend_arrayByAddingObject_(v3, v15, v17, v16);
+      v18 = objc_msgSend_arrayByAddingObject_(dependentLayouts, v15, v17, v16);
 
-      v3 = v18;
+      dependentLayouts = v18;
     }
   }
 
-  return v3;
+  return dependentLayouts;
 }
 
-- (id)reliedOnLayoutsForTextLayout:(id)a3
+- (id)reliedOnLayoutsForTextLayout:(id)layout
 {
-  v5 = objc_msgSend_set(MEMORY[0x277CBEB98], a2, a3, v3);
+  v5 = objc_msgSend_set(MEMORY[0x277CBEB98], a2, layout, v3);
   v12 = objc_msgSend_p_parentLayout(self, v6, v7, v8);
   if (v12)
   {
@@ -265,14 +265,14 @@
   return v5;
 }
 
-- (double)maxAutoGrowBlockHeightForTextLayout:(id)a3
+- (double)maxAutoGrowBlockHeightForTextLayout:(id)layout
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
-  v6 = a3;
+  layoutCopy = layout;
   objc_msgSend_p_sizeForProposedSize_zeroSize_(self, v7, v8, v9, 1.79769313e308, 16000.0, v4, v5);
   v11 = v10;
-  objc_msgSend_adjustedInsetsForTarget_(self, v12, v6, v13);
+  objc_msgSend_adjustedInsetsForTarget_(self, v12, layoutCopy, v13);
   v15 = v14;
 
   result = v11 - v15;
@@ -296,8 +296,8 @@
   {
     v151.receiver = self;
     v151.super_class = TSACaptionLayout;
-    v10 = [(TSACaptionLayout *)&v151 computeLayoutGeometry];
-    objc_msgSend_size(v10, v11, v12, v13);
+    computeLayoutGeometry = [(TSACaptionLayout *)&v151 computeLayoutGeometry];
+    objc_msgSend_size(computeLayoutGeometry, v11, v12, v13);
     v8 = v14;
     v9 = v15;
   }
@@ -436,17 +436,17 @@
 {
   if (self->_layoutPathSource && !objc_msgSend_layoutState(self, a2, v2, v3))
   {
-    v5 = self->_layoutPathSource;
+    pathSource = self->_layoutPathSource;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = TSACaptionLayout;
-    v5 = [(TSACaptionLayout *)&v7 pathSource];
+    pathSource = [(TSACaptionLayout *)&v7 pathSource];
   }
 
-  return v5;
+  return pathSource;
 }
 
 - (CGAffineTransform)computeLayoutTransform
@@ -510,12 +510,12 @@
   return v11;
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
-  v4 = *&a3;
-  if (a3 == 548)
+  v4 = *&property;
+  if (property == 548)
   {
-    objc_msgSend_invalidateFrame(self, a2, *&a3, v3);
+    objc_msgSend_invalidateFrame(self, a2, *&property, v3);
     v9 = objc_msgSend_info(self, v6, v7, v8);
     v13 = objc_msgSend_childInfoKind(v9, v10, v11, v12);
 
@@ -549,40 +549,40 @@
   return v7;
 }
 
-- (CGPoint)p_pointInFrame:(CGRect)a3 forAnchorLocation:(int64_t)a4
+- (CGPoint)p_pointInFrame:(CGRect)frame forAnchorLocation:(int64_t)location
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9 = *MEMORY[0x277CBF348];
   v8 = *(MEMORY[0x277CBF348] + 8);
-  if (a4 > 3)
+  if (location > 3)
   {
-    if (a4 > 5)
+    if (location > 5)
     {
-      if (a4 == 6)
+      if (location == 6)
       {
         v19 = y;
-        MinX = CGRectGetMinX(a3);
+        MinX = CGRectGetMinX(frame);
         goto LABEL_22;
       }
 
-      if (a4 == 7)
+      if (location == 7)
       {
         v21 = y;
-        MinX = CGRectGetMidX(a3);
+        MinX = CGRectGetMidX(frame);
         goto LABEL_22;
       }
 
-      if (a4 != 8)
+      if (location != 8)
       {
         goto LABEL_24;
       }
 
 LABEL_14:
       v14 = y;
-      MinX = CGRectGetMaxX(a3);
+      MinX = CGRectGetMaxX(frame);
 LABEL_22:
       v9 = MinX;
       v26.origin.x = x;
@@ -593,22 +593,22 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    if (a4 != 4)
+    if (location != 4)
     {
       goto LABEL_14;
     }
 
     v20 = y;
-    MidX = CGRectGetMidX(a3);
+    MidX = CGRectGetMidX(frame);
     goto LABEL_20;
   }
 
-  if (a4 > 1)
+  if (location > 1)
   {
-    if (a4 != 2)
+    if (location != 2)
     {
       v12 = y;
-      MidX = CGRectGetMinX(a3);
+      MidX = CGRectGetMinX(frame);
 LABEL_20:
       v9 = MidX;
       v25.origin.x = x;
@@ -620,7 +620,7 @@ LABEL_20:
     }
 
     v17 = y;
-    MaxX = CGRectGetMaxX(a3);
+    MaxX = CGRectGetMaxX(frame);
 LABEL_17:
     v9 = MaxX;
     v24.origin.x = x;
@@ -633,17 +633,17 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (!a4)
+  if (!location)
   {
     v16 = y;
-    MaxX = CGRectGetMinX(a3);
+    MaxX = CGRectGetMinX(frame);
     goto LABEL_17;
   }
 
-  if (a4 == 1)
+  if (location == 1)
   {
     v10 = y;
-    MaxX = CGRectGetMidX(a3);
+    MaxX = CGRectGetMidX(frame);
     goto LABEL_17;
   }
 
@@ -654,9 +654,9 @@ LABEL_24:
   return result;
 }
 
-- (CGPoint)offsetForPlacement:(id)a3
+- (CGPoint)offsetForPlacement:(id)placement
 {
-  v4 = a3;
+  placementCopy = placement;
   v6 = *MEMORY[0x277CBF348];
   v5 = *(MEMORY[0x277CBF348] + 8);
   IsCompletelyOverflowed = objc_msgSend_p_textIsCompletelyOverflowed(self, v7, v8, v9);
@@ -667,7 +667,7 @@ LABEL_24:
   {
     if ((IsCompletelyOverflowed & 1) == 0)
     {
-      v22 = objc_msgSend_captionAnchorLocation(v4, v19, v20, v21);
+      v22 = objc_msgSend_captionAnchorLocation(placementCopy, v19, v20, v21);
       if (v22 < 9 && ((0x1C7u >> v22) & 1) != 0)
       {
         v5 = dbl_27611AB18[v22];
@@ -785,12 +785,12 @@ LABEL_24:
   return v11;
 }
 
-- (CGSize)p_sizeForProposedSize:(CGSize)a3 zeroSize:(CGSize)a4
+- (CGSize)p_sizeForProposedSize:(CGSize)size zeroSize:(CGSize)zeroSize
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3.height;
-  v9 = a3.width;
+  height = zeroSize.height;
+  width = zeroSize.width;
+  v8 = size.height;
+  v9 = size.width;
   v11 = objc_msgSend_p_parentLayout(self, a2, v4, v5);
   objc_opt_class();
   v15 = objc_msgSend_parent(v11, v12, v13, v14);

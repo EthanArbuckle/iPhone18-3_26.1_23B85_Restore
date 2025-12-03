@@ -1,32 +1,32 @@
 @interface _NUContainerPipeline
 - (_NUContainerPipeline)init;
-- (_NUContainerPipeline)initWithIdentifier:(id)a3;
-- (id)_addInputChannel:(id)a3;
-- (id)_addOutputChannel:(id)a3;
-- (id)_evaluateOutputPort:(id)a3 context:(id)a4 error:(id *)a5;
+- (_NUContainerPipeline)initWithIdentifier:(id)identifier;
+- (id)_addInputChannel:(id)channel;
+- (id)_addOutputChannel:(id)channel;
+- (id)_evaluateOutputPort:(id)port context:(id)context error:(id *)error;
 @end
 
 @implementation _NUContainerPipeline
 
-- (id)_evaluateOutputPort:(id)a3 context:(id)a4 error:(id *)a5
+- (id)_evaluateOutputPort:(id)port context:(id)context error:(id *)error
 {
   v86 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v64 = a4;
-  v51 = v6;
-  v7 = [v6 effectiveFormat];
-  v50 = v7;
-  if ([v7 channelType] == 1 || objc_msgSend(v7, "mediaType", v7) == 4)
+  portCopy = port;
+  contextCopy = context;
+  v51 = portCopy;
+  effectiveFormat = [portCopy effectiveFormat];
+  v50 = effectiveFormat;
+  if ([effectiveFormat channelType] == 1 || objc_msgSend(effectiveFormat, "mediaType", effectiveFormat) == 4)
   {
-    v52 = [v6 elementSubport];
-    v8 = v7;
+    elementSubport = [portCopy elementSubport];
+    v8 = effectiveFormat;
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v76 = 0u;
     v77 = 0u;
     v78 = 0u;
     v79 = 0u;
     obj = [v8 components];
-    v10 = v64;
+    v10 = contextCopy;
     v57 = [obj countByEnumeratingWithState:&v76 objects:v85 count:16];
     if (v57)
     {
@@ -44,8 +44,8 @@
           }
 
           v12 = *(*(&v76 + 1) + 8 * v11);
-          v13 = [v8 components];
-          v14 = [v13 objectForKeyedSubscript:v12];
+          components = [v8 components];
+          v14 = [components objectForKeyedSubscript:v12];
 
           v60 = v12;
           v67 = [NUChannelMatching name:v12];
@@ -53,8 +53,8 @@
           v73 = 0u;
           v74 = 0u;
           v75 = 0u;
-          v15 = [(_NUPipeline *)self inputChannels];
-          v16 = [v15 countByEnumeratingWithState:&v72 objects:v84 count:16];
+          inputChannels = [(_NUPipeline *)self inputChannels];
+          v16 = [inputChannels countByEnumeratingWithState:&v72 objects:v84 count:16];
           if (!v16)
           {
 
@@ -67,7 +67,7 @@ LABEL_37:
           v63 = v14;
           v58 = v11;
           v18 = *v73;
-          v61 = v15;
+          v61 = inputChannels;
           v65 = *v73;
           do
           {
@@ -77,49 +77,49 @@ LABEL_37:
             {
               if (*v73 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(inputChannels);
               }
 
               v20 = *(*(&v72 + 1) + 8 * v19);
-              v21 = [v20 name];
-              v22 = [v10 dataForChannel:v21];
+              name = [v20 name];
+              v22 = [v10 dataForChannel:name];
 
-              v23 = [v22 format];
-              if ([v23 channelType] != 1)
+              format = [v22 format];
+              if ([format channelType] != 1)
               {
 
                 goto LABEL_24;
               }
 
-              v24 = [v22 format];
-              v25 = [v24 mediaType];
+              format2 = [v22 format];
+              mediaType = [format2 mediaType];
 
-              if (v25 != 4)
+              if (mediaType != 4)
               {
                 goto LABEL_23;
               }
 
-              v26 = [v20 name];
-              v27 = [(_NUPipeline *)self _inputPortNamed:v26];
+              name2 = [v20 name];
+              v27 = [(_NUPipeline *)self _inputPortNamed:name2];
 
-              v28 = [v27 elementSubport];
-              v29 = [v22 media];
-              v30 = [v29 mediaMatching:v67];
+              elementSubport2 = [v27 elementSubport];
+              media = [v22 media];
+              v30 = [media mediaMatching:v67];
               if (v30)
               {
-                v68 = v28;
+                v68 = elementSubport2;
                 v31 = [NUChannelMediaData media:v30];
-                v32 = [v31 format];
-                v33 = [v32 isEqualToChannelFormat:v63];
+                format3 = [v31 format];
+                v33 = [format3 isEqualToChannelFormat:v63];
 
                 if (v33)
                 {
                   v34 = v68;
-                  v35 = [v68 fullName];
-                  [v10 setData:v31 forChannel:v35];
+                  fullName = [v68 fullName];
+                  [v10 setData:v31 forChannel:fullName];
 
                   v36 = 0;
-                  v15 = v61;
+                  inputChannels = v61;
                   ++v62;
                   v37 = 1;
                 }
@@ -129,16 +129,16 @@ LABEL_37:
                   v83[0] = v63;
                   v82[0] = @"expected";
                   v82[1] = @"actual";
-                  v39 = [v31 format];
+                  format4 = [v31 format];
                   v82[2] = @"component";
-                  v83[1] = v39;
+                  v83[1] = format4;
                   v83[2] = v60;
                   v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v83 forKeys:v82 count:3];
-                  *a5 = [NUError mismatchError:@"Component format mismatch" object:v40];
+                  *error = [NUError mismatchError:@"Component format mismatch" object:v40];
 
                   v37 = 0;
                   v36 = 1;
-                  v15 = v61;
+                  inputChannels = v61;
                   v34 = v68;
                 }
               }
@@ -146,10 +146,10 @@ LABEL_37:
               else
               {
                 v31 = +[NUChannelData null];
-                v38 = [v28 fullName];
-                [v10 setData:v31 forChannel:v38];
+                fullName2 = [elementSubport2 fullName];
+                [v10 setData:v31 forChannel:fullName2];
 
-                v34 = v28;
+                v34 = elementSubport2;
                 v37 = 0;
                 v36 = 5;
               }
@@ -157,7 +157,7 @@ LABEL_37:
               v18 = v65;
               if (v37)
               {
-                v10 = v64;
+                v10 = contextCopy;
 LABEL_23:
                 v17 = v69;
 LABEL_24:
@@ -165,7 +165,7 @@ LABEL_24:
                 goto LABEL_25;
               }
 
-              v10 = v64;
+              v10 = contextCopy;
               v17 = v69;
               if (v30)
               {
@@ -181,7 +181,7 @@ LABEL_25:
             }
 
             while (v17 != v19);
-            v41 = [v15 countByEnumeratingWithState:&v72 objects:v84 count:16];
+            v41 = [inputChannels countByEnumeratingWithState:&v72 objects:v84 count:16];
             v17 = v41;
           }
 
@@ -199,12 +199,12 @@ LABEL_25:
           v70.receiver = self;
           v70.super_class = _NUContainerPipeline;
           v71 = 0;
-          v42 = [(_NUPipeline *)&v70 _evaluateOutputPort:v52 context:v10 error:&v71];
-          v15 = v71;
+          v42 = [(_NUPipeline *)&v70 _evaluateOutputPort:elementSubport context:v10 error:&v71];
+          inputChannels = v71;
           if (v42)
           {
-            v43 = [v42 format];
-            v44 = [v43 isEqualToChannelFormat:v63];
+            format5 = [v42 format];
+            v44 = [format5 isEqualToChannelFormat:v63];
 
             if (v44)
             {
@@ -217,22 +217,22 @@ LABEL_25:
               v80[0] = @"expected";
               v80[1] = @"actual";
               v81[0] = v63;
-              v45 = [v42 format];
-              v81[1] = v45;
+              format6 = [v42 format];
+              v81[1] = format6;
               v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v81 forKeys:v80 count:2];
-              *a5 = [NUError mismatchError:@"Output component format mismatch" object:v46];
+              *error = [NUError mismatchError:@"Output component format mismatch" object:v46];
 
               v14 = v63;
               v36 = 1;
             }
 
-            v10 = v64;
+            v10 = contextCopy;
           }
 
           else
           {
             v36 = 1;
-            *a5 = [NUError errorWithCode:1 reason:@"Failed to evaluate output component" object:v60 underlyingError:v15];
+            *error = [NUError errorWithCode:1 reason:@"Failed to evaluate output component" object:v60 underlyingError:inputChannels];
           }
 
 LABEL_34:
@@ -255,39 +255,39 @@ LABEL_38:
       while (v47);
     }
 
-    v48 = [NUChannelData aggregateDataWithFormat:v8 components:v9 error:a5];
+    v48 = [NUChannelData aggregateDataWithFormat:v8 components:v9 error:error];
 LABEL_46:
   }
 
   else
   {
-    [NUError invalidError:@"Expected container media format" object:v6];
-    *a5 = v48 = 0;
-    v10 = v64;
+    [NUError invalidError:@"Expected container media format" object:portCopy];
+    *error = v48 = 0;
+    v10 = contextCopy;
   }
 
   return v48;
 }
 
-- (id)_addOutputChannel:(id)a3
+- (id)_addOutputChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v10.receiver = self;
   v10.super_class = _NUContainerPipeline;
-  v5 = [(_NUPipeline *)&v10 _addOutputChannel:v4];
-  v6 = [v4 format];
-  if ([v6 channelType] == 1)
+  v5 = [(_NUPipeline *)&v10 _addOutputChannel:channelCopy];
+  format = [channelCopy format];
+  if ([format channelType] == 1)
   {
-    v7 = [v4 format];
-    v8 = [v7 mediaType];
+    format2 = [channelCopy format];
+    mediaType = [format2 mediaType];
 
-    if (v8 != 4)
+    if (mediaType != 4)
     {
       goto LABEL_5;
     }
 
     [v5 elementSubport];
-    v5 = v6 = v5;
+    v5 = format = v5;
   }
 
 LABEL_5:
@@ -295,25 +295,25 @@ LABEL_5:
   return v5;
 }
 
-- (id)_addInputChannel:(id)a3
+- (id)_addInputChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v10.receiver = self;
   v10.super_class = _NUContainerPipeline;
-  v5 = [(_NUPipeline *)&v10 _addInputChannel:v4];
-  v6 = [v4 format];
-  if ([v6 channelType] == 1)
+  v5 = [(_NUPipeline *)&v10 _addInputChannel:channelCopy];
+  format = [channelCopy format];
+  if ([format channelType] == 1)
   {
-    v7 = [v4 format];
-    v8 = [v7 mediaType];
+    format2 = [channelCopy format];
+    mediaType = [format2 mediaType];
 
-    if (v8 != 4)
+    if (mediaType != 4)
     {
       goto LABEL_5;
     }
 
     [v5 elementSubport];
-    v5 = v6 = v5;
+    v5 = format = v5;
   }
 
 LABEL_5:
@@ -321,10 +321,10 @@ LABEL_5:
   return v5;
 }
 
-- (_NUContainerPipeline)initWithIdentifier:(id)a3
+- (_NUContainerPipeline)initWithIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1383);
@@ -368,8 +368,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -385,8 +385,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;

@@ -1,26 +1,26 @@
 @interface _GCAsyncFuture
-- (BOOL)_setState:(int64_t)a3 result:(id)a4 error:(id)a5;
+- (BOOL)_setState:(int64_t)state result:(id)result error:(id)error;
 - (id).cxx_construct;
-- (id)_initOnQueue:(char)a3 withOptions:(void *)a4 block:;
+- (id)_initOnQueue:(char)queue withOptions:(void *)options block:;
 - (id)debugDescription;
 @end
 
 @implementation _GCAsyncFuture
 
-- (id)_initOnQueue:(char)a3 withOptions:(void *)a4 block:
+- (id)_initOnQueue:(char)queue withOptions:(void *)options block:
 {
   v7 = a2;
-  v8 = a4;
-  v9 = v8;
-  if (a1)
+  optionsCopy = options;
+  v9 = optionsCopy;
+  if (self)
   {
-    if (!v8)
+    if (!optionsCopy)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:sel__initOnQueue_withOptions_block_ object:a1 file:@"GCFuture.mm" lineNumber:1237 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__initOnQueue_withOptions_block_ object:self file:@"GCFuture.mm" lineNumber:1237 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
     }
 
-    v25.receiver = a1;
+    v25.receiver = self;
     v25.super_class = GCFuture;
     v10 = objc_msgSendSuper2(&v25, sel_init);
     *(v10 + 2) = 0;
@@ -38,7 +38,7 @@
     *(v10 + 4) = v11;
 
     dispatch_group_enter(*(v10 + 4));
-    if ((a3 & 2) != 0)
+    if ((queue & 2) != 0)
     {
       v13 = 0;
     }
@@ -62,21 +62,21 @@
     v17 = _Block_copy(aBlock);
     if (!v7)
     {
-      dispatch_block_perform((a3 & 2), v17);
+      dispatch_block_perform((queue & 2), v17);
 LABEL_17:
-      a1 = v10;
+      self = v10;
 
       goto LABEL_18;
     }
 
-    if ((a3 & 2) != 0)
+    if ((queue & 2) != 0)
     {
       v18 = DISPATCH_BLOCK_DETACHED;
     }
 
     else
     {
-      if ((a3 & 4) == 0)
+      if ((queue & 4) == 0)
       {
 LABEL_16:
         dispatch_async(v7, v17);
@@ -94,16 +94,16 @@ LABEL_16:
 
 LABEL_18:
 
-  return a1;
+  return self;
 }
 
-- (BOOL)_setState:(int64_t)a3 result:(id)a4 error:(id)a5
+- (BOOL)_setState:(int64_t)state result:(id)result error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  resultCopy = result;
+  errorCopy = error;
   v13.receiver = self;
   v13.super_class = _GCAsyncFuture;
-  v10 = [(GCFuture *)&v13 _setState:a3 result:v8 error:v9];
+  v10 = [(GCFuture *)&v13 _setState:state result:resultCopy error:errorCopy];
   if (v10)
   {
     ContinuationList::drainContinuations_takesLock(&self->_creationVoucher, &self->super);

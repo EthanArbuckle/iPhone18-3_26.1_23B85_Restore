@@ -1,13 +1,13 @@
 @interface HKReferenceRangeView
 - (BOOL)_hasReferenceRange;
-- (CGRect)_assureLabelFrameWithinBounds:(CGRect)a3;
+- (CGRect)_assureLabelFrameWithinBounds:(CGRect)bounds;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (HKReferenceRangeView)initWithFrame:(CGRect)a3 configuration:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (HKReferenceRangeView)initWithFrame:(CGRect)frame configuration:(id)configuration;
 - (UIFont)dynamicTypeAnchorFont;
-- (id)_configuredPreferredFontForTextStyle:(id)a3 symbolicTraits:(unsigned int)a4;
-- (id)_generateAttributedValueStringWithOverrideColor:(id)a3;
-- (id)_generateMultilineAttributedValueStringForOriginalString:(id)a3;
+- (id)_configuredPreferredFontForTextStyle:(id)style symbolicTraits:(unsigned int)traits;
+- (id)_generateAttributedValueStringWithOverrideColor:(id)color;
+- (id)_generateMultilineAttributedValueStringForOriginalString:(id)string;
 - (id)unitLabelFont;
 - (id)valueLabelFont;
 - (void)_applyNormalizedValuesToView;
@@ -18,27 +18,27 @@
 - (void)_setupSubviews;
 - (void)_updateContainerBorderColors;
 - (void)layoutSubviews;
-- (void)setMultiValueSeparator:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateWithData:(id)a3;
+- (void)setMultiValueSeparator:(id)separator;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateWithData:(id)data;
 @end
 
 @implementation HKReferenceRangeView
 
-- (HKReferenceRangeView)initWithFrame:(CGRect)a3 configuration:(id)a4
+- (HKReferenceRangeView)initWithFrame:(CGRect)frame configuration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = HKReferenceRangeView;
-  v11 = [(HKReferenceRangeView *)&v15 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(HKReferenceRangeView *)&v15 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_configuration, a4);
+    objc_storeStrong(&height->_configuration, configuration);
     [(HKReferenceRangeView *)v12 _setupSubviews];
     multiValueSeparator = v12->_multiValueSeparator;
     v12->_multiValueSeparator = @" ";
@@ -49,9 +49,9 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(HKReferenceRangeView *)self _hasReferenceRange];
+  _hasReferenceRange = [(HKReferenceRangeView *)self _hasReferenceRange];
   v4 = 160.0;
-  if (!v3)
+  if (!_hasReferenceRange)
   {
     v4 = 1.79769313e308;
   }
@@ -62,10 +62,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if ([(HKReferenceRangeView *)self _hasReferenceRange])
   {
     intrinsicHeight = self->_intrinsicHeight;
@@ -80,24 +80,24 @@
 
   else
   {
-    v8 = [(HKReferenceRangeView *)self currentValueLabel];
-    v9 = [v8 attributedText];
+    currentValueLabel = [(HKReferenceRangeView *)self currentValueLabel];
+    attributedText = [currentValueLabel attributedText];
 
-    [v9 boundingRectWithSize:1 options:0 context:{width, height}];
+    [attributedText boundingRectWithSize:1 options:0 context:{width, height}];
     v11 = v10;
-    v12 = [(HKReferenceRangeView *)self valueLabelFont];
-    [v12 lineHeight];
+    valueLabelFont = [(HKReferenceRangeView *)self valueLabelFont];
+    [valueLabelFont lineHeight];
     v14 = v13 * 1.25;
 
     if (v14 < v11)
     {
-      v15 = [(HKReferenceRangeView *)self _generateMultilineAttributedValueStringForOriginalString:v9];
+      v15 = [(HKReferenceRangeView *)self _generateMultilineAttributedValueStringForOriginalString:attributedText];
 
-      v16 = [(HKReferenceRangeView *)self currentValueLabel];
-      [v16 setAttributedText:v15];
+      currentValueLabel2 = [(HKReferenceRangeView *)self currentValueLabel];
+      [currentValueLabel2 setAttributedText:v15];
 
       [v15 boundingRectWithSize:1 options:0 context:{width, height}];
-      v9 = v15;
+      attributedText = v15;
     }
 
     UICeilToViewScale();
@@ -117,9 +117,9 @@
 {
   if (!self->_dynamicTypeAnchorFont)
   {
-    v3 = [(HKReferenceRangeViewConfiguration *)self->_configuration dynamicTypeAnchorFont];
+    dynamicTypeAnchorFont = [(HKReferenceRangeViewConfiguration *)self->_configuration dynamicTypeAnchorFont];
 
-    if (v3)
+    if (dynamicTypeAnchorFont)
     {
       [(HKReferenceRangeViewConfiguration *)self->_configuration dynamicTypeAnchorFont];
     }
@@ -142,28 +142,28 @@
 {
   if (!self->_valueFont)
   {
-    v3 = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueValueFontWithRange];
-    if (v3 && (v4 = v3, v5 = [(HKReferenceRangeView *)self _hasReferenceRange], v4, v5))
+    currentValueValueFontWithRange = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueValueFontWithRange];
+    if (currentValueValueFontWithRange && (v4 = currentValueValueFontWithRange, v5 = [(HKReferenceRangeView *)self _hasReferenceRange], v4, v5))
     {
-      v6 = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueValueFontWithRange];
+      currentValueValueFontWithRange2 = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueValueFontWithRange];
     }
 
     else
     {
-      v7 = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueValueFontWithoutRange];
-      if (v7 && (v8 = v7, v9 = [(HKReferenceRangeView *)self _hasReferenceRange], v8, !v9))
+      currentValueValueFontWithoutRange = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueValueFontWithoutRange];
+      if (currentValueValueFontWithoutRange && (v8 = currentValueValueFontWithoutRange, v9 = [(HKReferenceRangeView *)self _hasReferenceRange], v8, !v9))
       {
-        v6 = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueValueFontWithoutRange];
+        currentValueValueFontWithRange2 = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueValueFontWithoutRange];
       }
 
       else
       {
-        v6 = [MEMORY[0x1E69DB878] hk_chrValueCellPrimaryFont];
+        currentValueValueFontWithRange2 = [MEMORY[0x1E69DB878] hk_chrValueCellPrimaryFont];
       }
     }
 
     valueFont = self->_valueFont;
-    self->_valueFont = v6;
+    self->_valueFont = currentValueValueFontWithRange2;
   }
 
   v11 = self->_valueFont;
@@ -175,9 +175,9 @@
 {
   if (!self->_unitFont)
   {
-    v3 = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueUnitFont];
+    currentValueUnitFont = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueUnitFont];
 
-    if (v3)
+    if (currentValueUnitFont)
     {
       [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueUnitFont];
     }
@@ -206,19 +206,19 @@
     [(HKReferenceRangeView *)self _layoutFullReferenceRange];
     if ([(HKReferenceRangeViewConfiguration *)self->_configuration hideReferenceRangeValues])
     {
-      v3 = [(HKReferenceRangeView *)self referenceRangeContainerView];
-      [v3 frame];
+      referenceRangeContainerView = [(HKReferenceRangeView *)self referenceRangeContainerView];
+      [referenceRangeContainerView frame];
       self->_intrinsicHeight = CGRectGetMaxY(v10);
     }
 
     else
     {
-      v4 = [(HKReferenceRangeView *)self lowValueLabel];
-      [v4 frame];
+      lowValueLabel = [(HKReferenceRangeView *)self lowValueLabel];
+      [lowValueLabel frame];
       MaxY = CGRectGetMaxY(v11);
 
-      v6 = [(HKReferenceRangeView *)self highValueLabel];
-      [v6 frame];
+      highValueLabel = [(HKReferenceRangeView *)self highValueLabel];
+      [highValueLabel frame];
       v7 = CGRectGetMaxY(v12);
 
       if (MaxY >= v7)
@@ -241,18 +241,18 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = HKReferenceRangeView;
-  v4 = a3;
-  [(HKReferenceRangeView *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  [(HKReferenceRangeView *)&v8 traitCollectionDidChange:changeCopy];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v6 = [(HKReferenceRangeView *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
+  traitCollection = [(HKReferenceRangeView *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
 
-  if (v5 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(HKReferenceRangeView *)self _applyNormalizedValuesToView];
   }
@@ -281,40 +281,40 @@
 
   [(HKReferenceRangeView *)self bounds];
   v5 = v4;
-  v6 = [(HKReferenceRangeView *)self lowValueLabel];
-  [v6 sizeToFit];
+  lowValueLabel = [(HKReferenceRangeView *)self lowValueLabel];
+  [lowValueLabel sizeToFit];
 
-  v7 = [(HKReferenceRangeView *)self highValueLabel];
-  [v7 sizeToFit];
+  highValueLabel = [(HKReferenceRangeView *)self highValueLabel];
+  [highValueLabel sizeToFit];
 
-  v8 = [(HKReferenceRangeView *)self currentValueLabel];
-  [v8 sizeToFit];
+  currentValueLabel = [(HKReferenceRangeView *)self currentValueLabel];
+  [currentValueLabel sizeToFit];
 
-  v9 = [(HKReferenceRangeView *)self outOfRangeLabel];
-  [v9 sizeToFit];
+  outOfRangeLabel = [(HKReferenceRangeView *)self outOfRangeLabel];
+  [outOfRangeLabel sizeToFit];
 
-  v10 = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceRangeViewBorderColor];
+  referenceRangeViewBorderColor = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceRangeViewBorderColor];
 
-  v11 = [(HKReferenceRangeView *)self dynamicTypeAnchorFont];
+  dynamicTypeAnchorFont = [(HKReferenceRangeView *)self dynamicTypeAnchorFont];
   [(HKReferenceRangeViewConfiguration *)self->_configuration referenceRangeViewHeight];
-  [v11 _scaledValueForValue:?];
+  [dynamicTypeAnchorFont _scaledValueForValue:?];
   UIRoundToViewScale();
 
   UIRoundToViewScale();
   v12 = 2.0;
-  if (!v10)
+  if (!referenceRangeViewBorderColor)
   {
     v12 = 1.5;
   }
 
   v128 = v12;
-  v13 = [(HKReferenceRangeView *)self currentValueLabel];
-  [v13 frame];
+  currentValueLabel2 = [(HKReferenceRangeView *)self currentValueLabel];
+  [currentValueLabel2 frame];
   CGRectGetHeight(v133);
   [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueToReferenceValuePadding];
 
-  v14 = [(HKReferenceRangeView *)self referenceRangeContainerView];
-  [v14 frame];
+  referenceRangeContainerView = [(HKReferenceRangeView *)self referenceRangeContainerView];
+  [referenceRangeContainerView frame];
 
   [(HKReferenceRangeViewConfiguration *)self->_configuration horizontalPadding];
   v127 = v5;
@@ -322,23 +322,23 @@
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [(HKReferenceRangeView *)self referenceRangeContainerView];
-  [v22 setFrame:{v15, v17, v19, v21}];
+  referenceRangeContainerView2 = [(HKReferenceRangeView *)self referenceRangeContainerView];
+  [referenceRangeContainerView2 setFrame:{v15, v17, v19, v21}];
 
-  v23 = [(HKReferenceRangeView *)self referenceRangeContainerView];
-  v24 = [v23 layer];
-  [v24 setCornerRadius:v21 * 0.5];
+  referenceRangeContainerView3 = [(HKReferenceRangeView *)self referenceRangeContainerView];
+  layer = [referenceRangeContainerView3 layer];
+  [layer setCornerRadius:v21 * 0.5];
 
-  v25 = [(HKReferenceRangeView *)self referenceRangeContainerView];
-  [v25 setHidden:0];
+  referenceRangeContainerView4 = [(HKReferenceRangeView *)self referenceRangeContainerView];
+  [referenceRangeContainerView4 setHidden:0];
 
   showOutOfRangeIndicator = self->_showOutOfRangeIndicator;
-  v27 = [(HKReferenceRangeView *)self outOfRangeLabel];
-  v28 = v27;
+  outOfRangeLabel2 = [(HKReferenceRangeView *)self outOfRangeLabel];
+  v28 = outOfRangeLabel2;
   v130 = v15;
   if (showOutOfRangeIndicator)
   {
-    [v27 frame];
+    [outOfRangeLabel2 frame];
     v30 = v29;
     v31 = v15;
     v33 = v32;
@@ -353,11 +353,11 @@
       v34 = v31 + 7.5;
     }
 
-    v35 = [(HKReferenceRangeView *)self outOfRangeLabel];
-    [v35 setFrame:{v34, v17 + (v21 - v33) * 0.5, v30, v33}];
+    outOfRangeLabel3 = [(HKReferenceRangeView *)self outOfRangeLabel];
+    [outOfRangeLabel3 setFrame:{v34, v17 + (v21 - v33) * 0.5, v30, v33}];
 
-    v27 = [(HKReferenceRangeView *)self outOfRangeLabel];
-    v28 = v27;
+    outOfRangeLabel2 = [(HKReferenceRangeView *)self outOfRangeLabel];
+    v28 = outOfRangeLabel2;
     v36 = 0;
   }
 
@@ -366,13 +366,13 @@
     v36 = 1;
   }
 
-  [v27 setHidden:v36];
+  [outOfRangeLabel2 setHidden:v36];
 
-  v37 = [(HKReferenceRangeView *)self currentValueView];
-  [v37 setHidden:showOutOfRangeIndicator];
+  currentValueView = [(HKReferenceRangeView *)self currentValueView];
+  [currentValueView setHidden:showOutOfRangeIndicator];
 
-  v38 = [(HKReferenceRangeView *)self referenceRangeView];
-  [v38 frame];
+  referenceRangeView = [(HKReferenceRangeView *)self referenceRangeView];
+  [referenceRangeView frame];
 
   v39 = self->_showOutOfRangeIndicator;
   if (v39)
@@ -405,12 +405,12 @@
   v44 = v43;
   v46 = v45;
   v48 = v47;
-  v49 = [(HKReferenceRangeView *)self referenceRangeView];
-  [v49 setFrame:{v42, v44, v46, v48}];
+  referenceRangeView2 = [(HKReferenceRangeView *)self referenceRangeView];
+  [referenceRangeView2 setFrame:{v42, v44, v46, v48}];
 
-  v50 = [(HKReferenceRangeView *)self referenceRangeView];
-  v51 = [v50 layer];
-  [v51 setCornerRadius:v48 * 0.5];
+  referenceRangeView3 = [(HKReferenceRangeView *)self referenceRangeView];
+  layer2 = [referenceRangeView3 layer];
+  [layer2 setCornerRadius:v48 * 0.5];
 
   v136.origin.x = v42;
   v136.origin.y = v44;
@@ -423,26 +423,26 @@
   v54 = v53;
   v56 = v55;
   v58 = v57;
-  v59 = [(HKReferenceRangeView *)self currentValueView];
-  [v59 setFrame:{v52, v54, v56, v58}];
+  currentValueView2 = [(HKReferenceRangeView *)self currentValueView];
+  [currentValueView2 setFrame:{v52, v54, v56, v58}];
 
-  v60 = [(HKReferenceRangeView *)self currentValueView];
-  v61 = [v60 layer];
-  [v61 setCornerRadius:v58 * 0.5];
+  currentValueView3 = [(HKReferenceRangeView *)self currentValueView];
+  layer3 = [currentValueView3 layer];
+  [layer3 setCornerRadius:v58 * 0.5];
 
   if (v3)
   {
-    v62 = [(HKReferenceRangeView *)self lowValueLabel];
-    [v62 frame];
+    lowValueLabel2 = [(HKReferenceRangeView *)self lowValueLabel];
+    [lowValueLabel2 frame];
     v64 = v63;
     v66 = v65;
 
-    v67 = [(HKReferenceRangeView *)self referenceRangeContainerView];
-    [v67 frame];
+    referenceRangeContainerView5 = [(HKReferenceRangeView *)self referenceRangeContainerView];
+    [referenceRangeContainerView5 frame];
     MaxY = CGRectGetMaxY(v137);
-    v69 = [(HKReferenceRangeView *)self dynamicTypeAnchorFont];
+    dynamicTypeAnchorFont2 = [(HKReferenceRangeView *)self dynamicTypeAnchorFont];
     [(HKReferenceRangeViewConfiguration *)self->_configuration referenceValueYOffset];
-    [v69 _scaledValueForValue:?];
+    [dynamicTypeAnchorFont2 _scaledValueForValue:?];
     v71 = MaxY + v70;
 
     [(HKReferenceRangeView *)self _assureLabelFrameWithinBounds:v130 + v42, v71, v64, v66];
@@ -450,14 +450,14 @@
     v75 = v74;
     v77 = v76;
     v79 = v78;
-    v80 = [(HKReferenceRangeView *)self lowValueLabel];
-    [v80 setFrame:{v73, v75, v77, v79}];
+    lowValueLabel3 = [(HKReferenceRangeView *)self lowValueLabel];
+    [lowValueLabel3 setFrame:{v73, v75, v77, v79}];
 
-    v81 = [(HKReferenceRangeView *)self lowValueLabel];
-    [v81 setHidden:0];
+    lowValueLabel4 = [(HKReferenceRangeView *)self lowValueLabel];
+    [lowValueLabel4 setHidden:0];
 
-    v82 = [(HKReferenceRangeView *)self highValueLabel];
-    [v82 frame];
+    highValueLabel2 = [(HKReferenceRangeView *)self highValueLabel];
+    [highValueLabel2 frame];
     v84 = v83;
     v86 = v85;
 
@@ -466,8 +466,8 @@
     v138.size.width = rect;
     v138.size.height = v48;
     v87 = v130 + CGRectGetMaxX(v138) - v84;
-    v88 = [(HKReferenceRangeView *)self lowValueLabel];
-    [v88 frame];
+    lowValueLabel5 = [(HKReferenceRangeView *)self lowValueLabel];
+    [lowValueLabel5 frame];
     v90 = v89;
 
     [(HKReferenceRangeView *)self _assureLabelFrameWithinBounds:v87, v90, v84, v86];
@@ -475,15 +475,15 @@
     v94 = v93;
     v96 = v95;
     v98 = v97;
-    v99 = [(HKReferenceRangeView *)self highValueLabel];
-    [v99 setFrame:{v92, v94, v96, v98}];
+    highValueLabel3 = [(HKReferenceRangeView *)self highValueLabel];
+    [highValueLabel3 setFrame:{v92, v94, v96, v98}];
 
-    v100 = [(HKReferenceRangeView *)self highValueLabel];
-    [v100 setHidden:0];
+    highValueLabel4 = [(HKReferenceRangeView *)self highValueLabel];
+    [highValueLabel4 setHidden:0];
   }
 
-  v101 = [(HKReferenceRangeView *)self currentValueLabel];
-  [v101 frame];
+  currentValueLabel3 = [(HKReferenceRangeView *)self currentValueLabel];
+  [currentValueLabel3 frame];
   v103 = v102;
   v105 = v104;
   v107 = v106;
@@ -524,19 +524,19 @@
   v120 = v119;
   v122 = v121;
   v124 = v123;
-  v125 = [(HKReferenceRangeView *)self currentValueLabel];
-  [v125 setFrame:{v118, v120, v122, v124}];
+  currentValueLabel4 = [(HKReferenceRangeView *)self currentValueLabel];
+  [currentValueLabel4 setFrame:{v118, v120, v122, v124}];
 
-  v131 = [(HKReferenceRangeView *)self currentValueLabel];
-  [v131 setHidden:0];
+  currentValueLabel5 = [(HKReferenceRangeView *)self currentValueLabel];
+  [currentValueLabel5 setHidden:0];
 }
 
-- (CGRect)_assureLabelFrameWithinBounds:(CGRect)a3
+- (CGRect)_assureLabelFrameWithinBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  v7 = fmax(a3.origin.x, 0.0);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  v7 = fmax(bounds.origin.x, 0.0);
   [(HKReferenceRangeView *)self bounds];
   CGRectGetWidth(v13);
   v14.origin.x = v7;
@@ -557,32 +557,32 @@
 
 - (void)_layoutCurrentValueOnly
 {
-  v3 = [(HKReferenceRangeView *)self currentValueView];
-  [v3 setHidden:1];
+  currentValueView = [(HKReferenceRangeView *)self currentValueView];
+  [currentValueView setHidden:1];
 
-  v4 = [(HKReferenceRangeView *)self referenceRangeContainerView];
-  [v4 setHidden:1];
+  referenceRangeContainerView = [(HKReferenceRangeView *)self referenceRangeContainerView];
+  [referenceRangeContainerView setHidden:1];
 
-  v5 = [(HKReferenceRangeView *)self lowValueLabel];
-  [v5 setHidden:1];
+  lowValueLabel = [(HKReferenceRangeView *)self lowValueLabel];
+  [lowValueLabel setHidden:1];
 
-  v6 = [(HKReferenceRangeView *)self highValueLabel];
-  [v6 setHidden:1];
+  highValueLabel = [(HKReferenceRangeView *)self highValueLabel];
+  [highValueLabel setHidden:1];
 
-  v7 = [(HKReferenceRangeView *)self outOfRangeLabel];
-  [v7 setHidden:1];
+  outOfRangeLabel = [(HKReferenceRangeView *)self outOfRangeLabel];
+  [outOfRangeLabel setHidden:1];
 
   [(HKReferenceRangeView *)self bounds];
   v9 = v8;
   [(HKReferenceRangeView *)self bounds];
   v11 = v10;
-  v12 = [(HKReferenceRangeView *)self currentValueLabel];
-  [v12 setFrame:{0.0, 0.0, v9, v11}];
+  currentValueLabel = [(HKReferenceRangeView *)self currentValueLabel];
+  [currentValueLabel setFrame:{0.0, 0.0, v9, v11}];
 }
 
-- (void)updateWithData:(id)a3
+- (void)updateWithData:(id)data
 {
-  [(HKReferenceRangeView *)self setData:a3];
+  [(HKReferenceRangeView *)self setData:data];
   [(HKReferenceRangeView *)self setValueFont:0];
   [(HKReferenceRangeView *)self setOverriddenValueFont:0];
 
@@ -591,26 +591,26 @@
 
 - (BOOL)_hasReferenceRange
 {
-  v3 = [(HKReferenceRangeViewData *)self->_data rangeLow];
-  if (v3)
+  rangeLow = [(HKReferenceRangeViewData *)self->_data rangeLow];
+  if (rangeLow)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(HKReferenceRangeViewData *)self->_data rangeHigh];
-    v4 = v5 != 0;
+    rangeHigh = [(HKReferenceRangeViewData *)self->_data rangeHigh];
+    v4 = rangeHigh != 0;
   }
 
   return v4;
 }
 
-- (void)setMultiValueSeparator:(id)a3
+- (void)setMultiValueSeparator:(id)separator
 {
-  if (self->_multiValueSeparator != a3)
+  if (self->_multiValueSeparator != separator)
   {
-    v4 = [a3 copy];
+    v4 = [separator copy];
     multiValueSeparator = self->_multiValueSeparator;
     self->_multiValueSeparator = v4;
 
@@ -620,16 +620,16 @@
 
 - (void)_updateContainerBorderColors
 {
-  v3 = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceRangeViewBorderColor];
+  referenceRangeViewBorderColor = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceRangeViewBorderColor];
 
-  if (v3)
+  if (referenceRangeViewBorderColor)
   {
-    v8 = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceRangeViewBorderColor];
-    v4 = v8;
-    v5 = [v8 CGColor];
-    v6 = [(HKReferenceRangeView *)self referenceRangeContainerView];
-    v7 = [v6 layer];
-    [v7 setBorderColor:v5];
+    referenceRangeViewBorderColor2 = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceRangeViewBorderColor];
+    v4 = referenceRangeViewBorderColor2;
+    cGColor = [referenceRangeViewBorderColor2 CGColor];
+    referenceRangeContainerView = [(HKReferenceRangeView *)self referenceRangeContainerView];
+    layer = [referenceRangeContainerView layer];
+    [layer setBorderColor:cGColor];
   }
 }
 
@@ -643,12 +643,12 @@
   v8 = [v3 initWithFrame:{*MEMORY[0x1E695F058], v5, v6, v7}];
   [(HKReferenceRangeView *)self setReferenceRangeContainerView:v8];
 
-  v9 = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceRangeViewColor];
-  v10 = [(HKReferenceRangeView *)self referenceRangeContainerView];
-  [v10 setBackgroundColor:v9];
+  referenceRangeViewColor = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceRangeViewColor];
+  referenceRangeContainerView = [(HKReferenceRangeView *)self referenceRangeContainerView];
+  [referenceRangeContainerView setBackgroundColor:referenceRangeViewColor];
 
-  v11 = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceRangeViewBorderColor];
-  if (v11)
+  referenceRangeViewBorderColor = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceRangeViewBorderColor];
+  if (referenceRangeViewBorderColor)
   {
     v12 = 1.0;
   }
@@ -658,17 +658,17 @@
     v12 = 0.0;
   }
 
-  v13 = [(HKReferenceRangeView *)self referenceRangeContainerView];
-  v14 = [v13 layer];
-  [v14 setBorderWidth:v12];
+  referenceRangeContainerView2 = [(HKReferenceRangeView *)self referenceRangeContainerView];
+  layer = [referenceRangeContainerView2 layer];
+  [layer setBorderWidth:v12];
 
   [(HKReferenceRangeView *)self _updateContainerBorderColors];
   v15 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v4, v5, v6, v7}];
   [(HKReferenceRangeView *)self setReferenceRangeView:v15];
 
-  v16 = [MEMORY[0x1E69DC888] opaqueSeparatorColor];
-  v17 = [(HKReferenceRangeView *)self referenceRangeView];
-  [v17 setBackgroundColor:v16];
+  opaqueSeparatorColor = [MEMORY[0x1E69DC888] opaqueSeparatorColor];
+  referenceRangeView = [(HKReferenceRangeView *)self referenceRangeView];
+  [referenceRangeView setBackgroundColor:opaqueSeparatorColor];
 
   v18 = [[HKReferenceRangeDotView alloc] initWithFrame:v4, v5, v6, v7];
   [(HKReferenceRangeView *)self setCurrentValueView:v18];
@@ -679,114 +679,114 @@
     [(HKReferenceRangeView *)self setLowValueLabel:v19];
 
     v20 = MEMORY[0x1E69DB878];
-    v21 = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceRangeTextStyle];
-    v22 = [v20 hk_preferredFontForTextStyle:v21 symbolicTraits:2];
-    v23 = [(HKReferenceRangeView *)self lowValueLabel];
-    [v23 setFont:v22];
+    referenceRangeTextStyle = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceRangeTextStyle];
+    v22 = [v20 hk_preferredFontForTextStyle:referenceRangeTextStyle symbolicTraits:2];
+    lowValueLabel = [(HKReferenceRangeView *)self lowValueLabel];
+    [lowValueLabel setFont:v22];
 
-    v24 = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceValueTextColor];
-    v25 = [(HKReferenceRangeView *)self lowValueLabel];
-    [v25 setTextColor:v24];
+    referenceValueTextColor = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceValueTextColor];
+    lowValueLabel2 = [(HKReferenceRangeView *)self lowValueLabel];
+    [lowValueLabel2 setTextColor:referenceValueTextColor];
 
     v26 = [objc_alloc(-[HKReferenceRangeViewConfiguration labelClass](self->_configuration "labelClass"))];
     [(HKReferenceRangeView *)self setHighValueLabel:v26];
 
     v27 = MEMORY[0x1E69DB878];
-    v28 = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceRangeTextStyle];
-    v29 = [v27 hk_preferredFontForTextStyle:v28 symbolicTraits:2];
-    v30 = [(HKReferenceRangeView *)self highValueLabel];
-    [v30 setFont:v29];
+    referenceRangeTextStyle2 = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceRangeTextStyle];
+    v29 = [v27 hk_preferredFontForTextStyle:referenceRangeTextStyle2 symbolicTraits:2];
+    highValueLabel = [(HKReferenceRangeView *)self highValueLabel];
+    [highValueLabel setFont:v29];
 
-    v31 = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceValueTextColor];
-    v32 = [(HKReferenceRangeView *)self highValueLabel];
-    [v32 setTextColor:v31];
+    referenceValueTextColor2 = [(HKReferenceRangeViewConfiguration *)self->_configuration referenceValueTextColor];
+    highValueLabel2 = [(HKReferenceRangeView *)self highValueLabel];
+    [highValueLabel2 setTextColor:referenceValueTextColor2];
   }
 
   v33 = [objc_alloc(-[HKReferenceRangeViewConfiguration labelClass](self->_configuration "labelClass"))];
   [(HKReferenceRangeView *)self setCurrentValueLabel:v33];
 
-  v34 = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueTextColor];
-  v35 = [(HKReferenceRangeView *)self currentValueLabel];
-  [v35 setTextColor:v34];
+  currentValueTextColor = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueTextColor];
+  currentValueLabel = [(HKReferenceRangeView *)self currentValueLabel];
+  [currentValueLabel setTextColor:currentValueTextColor];
 
   v36 = [objc_alloc(-[HKReferenceRangeViewConfiguration labelClass](self->_configuration "labelClass"))];
   [(HKReferenceRangeView *)self setOutOfRangeLabel:v36];
 
   v37 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v38 = [v37 localizedStringForKey:@"RECORDS_OUT_OF_RANGE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  v39 = [v38 localizedUppercaseString];
-  v40 = [(HKReferenceRangeView *)self outOfRangeLabel];
-  [v40 setText:v39];
+  localizedUppercaseString = [v38 localizedUppercaseString];
+  outOfRangeLabel = [(HKReferenceRangeView *)self outOfRangeLabel];
+  [outOfRangeLabel setText:localizedUppercaseString];
 
   v41 = [MEMORY[0x1E69DB878] hk_preferredFontIgnoringAccessibilitySizeForTextStyle:*MEMORY[0x1E69DDD08] symbolicTraits:2];
-  v42 = [(HKReferenceRangeView *)self outOfRangeLabel];
-  [v42 setFont:v41];
+  outOfRangeLabel2 = [(HKReferenceRangeView *)self outOfRangeLabel];
+  [outOfRangeLabel2 setFont:v41];
 
-  v43 = [(HKReferenceRangeView *)self _outOfRangeColor];
-  v44 = [(HKReferenceRangeView *)self outOfRangeLabel];
-  [v44 setTextColor:v43];
+  _outOfRangeColor = [(HKReferenceRangeView *)self _outOfRangeColor];
+  outOfRangeLabel3 = [(HKReferenceRangeView *)self outOfRangeLabel];
+  [outOfRangeLabel3 setTextColor:_outOfRangeColor];
 
-  v45 = [(HKReferenceRangeView *)self outOfRangeLabel];
-  [v45 setHidden:1];
+  outOfRangeLabel4 = [(HKReferenceRangeView *)self outOfRangeLabel];
+  [outOfRangeLabel4 setHidden:1];
 
-  v46 = [(HKReferenceRangeView *)self referenceRangeContainerView];
-  [(HKReferenceRangeView *)self addSubview:v46];
+  referenceRangeContainerView3 = [(HKReferenceRangeView *)self referenceRangeContainerView];
+  [(HKReferenceRangeView *)self addSubview:referenceRangeContainerView3];
 
-  v47 = [(HKReferenceRangeView *)self referenceRangeContainerView];
-  v48 = [(HKReferenceRangeView *)self referenceRangeView];
-  [v47 addSubview:v48];
+  referenceRangeContainerView4 = [(HKReferenceRangeView *)self referenceRangeContainerView];
+  referenceRangeView2 = [(HKReferenceRangeView *)self referenceRangeView];
+  [referenceRangeContainerView4 addSubview:referenceRangeView2];
 
-  v49 = [(HKReferenceRangeView *)self referenceRangeContainerView];
-  v50 = [(HKReferenceRangeView *)self currentValueView];
-  [v49 addSubview:v50];
+  referenceRangeContainerView5 = [(HKReferenceRangeView *)self referenceRangeContainerView];
+  currentValueView = [(HKReferenceRangeView *)self currentValueView];
+  [referenceRangeContainerView5 addSubview:currentValueView];
 
   if (self->_lowValueLabel && self->_highValueLabel)
   {
-    v51 = [(HKReferenceRangeView *)self lowValueLabel];
-    [(HKReferenceRangeView *)self addSubview:v51];
+    lowValueLabel3 = [(HKReferenceRangeView *)self lowValueLabel];
+    [(HKReferenceRangeView *)self addSubview:lowValueLabel3];
 
-    v52 = [(HKReferenceRangeView *)self highValueLabel];
-    [(HKReferenceRangeView *)self addSubview:v52];
+    highValueLabel3 = [(HKReferenceRangeView *)self highValueLabel];
+    [(HKReferenceRangeView *)self addSubview:highValueLabel3];
   }
 
-  v53 = [(HKReferenceRangeView *)self currentValueLabel];
-  [(HKReferenceRangeView *)self addSubview:v53];
+  currentValueLabel2 = [(HKReferenceRangeView *)self currentValueLabel];
+  [(HKReferenceRangeView *)self addSubview:currentValueLabel2];
 
-  v54 = [(HKReferenceRangeView *)self outOfRangeLabel];
-  [(HKReferenceRangeView *)self addSubview:v54];
+  outOfRangeLabel5 = [(HKReferenceRangeView *)self outOfRangeLabel];
+  [(HKReferenceRangeView *)self addSubview:outOfRangeLabel5];
 }
 
 - (void)_normalizeValuesIfNeeded
 {
   if ([(HKReferenceRangeView *)self _hasReferenceRange])
   {
-    v3 = [(HKReferenceRangeViewData *)self->_data rangeLow];
+    rangeLow = [(HKReferenceRangeViewData *)self->_data rangeLow];
 
-    v4 = [(HKReferenceRangeViewData *)self->_data rangeHigh];
+    rangeHigh = [(HKReferenceRangeViewData *)self->_data rangeHigh];
 
-    v5 = [(HKReferenceRangeViewData *)self->_data value];
-    [v5 doubleValue];
+    value = [(HKReferenceRangeViewData *)self->_data value];
+    [value doubleValue];
     v7 = v6;
     v8 = v6;
 
     v9 = v8;
-    if (v3)
+    if (rangeLow)
     {
-      v10 = [(HKReferenceRangeViewData *)self->_data rangeLow];
-      [v10 doubleValue];
+      rangeLow2 = [(HKReferenceRangeViewData *)self->_data rangeLow];
+      [rangeLow2 doubleValue];
       v9 = v11;
     }
 
-    if (v4)
+    if (rangeHigh)
     {
-      v12 = [(HKReferenceRangeViewData *)self->_data rangeHigh];
-      [v12 doubleValue];
+      rangeHigh2 = [(HKReferenceRangeViewData *)self->_data rangeHigh];
+      [rangeHigh2 doubleValue];
       v8 = v13;
     }
 
     self->_lowValueXPosition = 0.25;
     self->_highValueXPosition = 0.75;
-    if (!v3)
+    if (!rangeLow)
     {
       self->_lowValueXPosition = 0.0;
       v14 = vabdd_f64(v8, v7);
@@ -798,7 +798,7 @@
       }
     }
 
-    if (!v4)
+    if (!rangeHigh)
     {
       self->_highValueXPosition = 1.0;
       v15 = vabdd_f64(v9, v7);
@@ -846,7 +846,7 @@ LABEL_33:
       self->_valueDirection = 2;
       self->_showOutOfRangeIndicator = 1;
       v21 = 0.5;
-      if (v3)
+      if (rangeLow)
       {
         if ([(HKReferenceRangeViewConfiguration *)self->_configuration hideReferenceRangeValues])
         {
@@ -869,7 +869,7 @@ LABEL_33:
     {
       self->_valueDirection = 0;
       self->_showOutOfRangeIndicator = 1;
-      if (v4)
+      if (rangeHigh)
       {
         if ([(HKReferenceRangeViewConfiguration *)self->_configuration hideReferenceRangeValues])
         {
@@ -901,27 +901,27 @@ LABEL_33:
   if ([(HKReferenceRangeView *)self _hasReferenceRange])
   {
     [(HKReferenceRangeView *)self _normalizeValuesIfNeeded];
-    v3 = [(HKReferenceRangeViewData *)self->_data rangeLowString];
-    v4 = [(HKReferenceRangeView *)self lowValueLabel];
-    [v4 setText:v3];
+    rangeLowString = [(HKReferenceRangeViewData *)self->_data rangeLowString];
+    lowValueLabel = [(HKReferenceRangeView *)self lowValueLabel];
+    [lowValueLabel setText:rangeLowString];
 
-    v5 = [(HKReferenceRangeViewData *)self->_data rangeHighString];
-    v6 = [(HKReferenceRangeView *)self highValueLabel];
-    [v6 setText:v5];
+    rangeHighString = [(HKReferenceRangeViewData *)self->_data rangeHighString];
+    highValueLabel = [(HKReferenceRangeView *)self highValueLabel];
+    [highValueLabel setText:rangeHighString];
 
     if (self->_valueDirection == 1)
     {
-      v7 = [(HKReferenceRangeView *)self currentValueLabel];
-      [v7 setTextAlignment:4];
-      v23 = 0;
+      currentValueLabel = [(HKReferenceRangeView *)self currentValueLabel];
+      [currentValueLabel setTextAlignment:4];
+      _outOfRangeColor = 0;
     }
 
     else
     {
-      v23 = [(HKReferenceRangeView *)self _outOfRangeColor];
+      _outOfRangeColor = [(HKReferenceRangeView *)self _outOfRangeColor];
       valueDirection = self->_valueDirection;
-      v9 = [(HKReferenceRangeView *)self currentValueLabel];
-      v7 = v9;
+      currentValueLabel2 = [(HKReferenceRangeView *)self currentValueLabel];
+      currentValueLabel = currentValueLabel2;
       if (valueDirection)
       {
         v10 = 2;
@@ -932,121 +932,121 @@ LABEL_33:
         v10 = 0;
       }
 
-      [v9 setTextAlignment:v10];
+      [currentValueLabel2 setTextAlignment:v10];
     }
 
-    v17 = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueTextColor];
-    v18 = [(HKReferenceRangeView *)self currentValueView];
-    [v18 setDotColor:v17];
+    currentValueTextColor = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueTextColor];
+    currentValueView = [(HKReferenceRangeView *)self currentValueView];
+    [currentValueView setDotColor:currentValueTextColor];
 
-    v19 = [(HKReferenceRangeView *)self currentValueLabel];
-    [v19 setNumberOfLines:1];
+    currentValueLabel3 = [(HKReferenceRangeView *)self currentValueLabel];
+    [currentValueLabel3 setNumberOfLines:1];
 
-    v20 = [(HKReferenceRangeView *)self currentValueLabel];
-    [v20 setLineBreakMode:4];
+    currentValueLabel4 = [(HKReferenceRangeView *)self currentValueLabel];
+    [currentValueLabel4 setLineBreakMode:4];
 
-    v21 = [(HKReferenceRangeView *)self _generateAttributedValueStringWithOverrideColor:v23];
-    v22 = [(HKReferenceRangeView *)self currentValueLabel];
-    [v22 setAttributedText:v21];
+    v21 = [(HKReferenceRangeView *)self _generateAttributedValueStringWithOverrideColor:_outOfRangeColor];
+    currentValueLabel5 = [(HKReferenceRangeView *)self currentValueLabel];
+    [currentValueLabel5 setAttributedText:v21];
 
-    v15 = [(HKReferenceRangeView *)self currentValueLabel];
-    [v15 sizeToFit];
+    currentValueLabel6 = [(HKReferenceRangeView *)self currentValueLabel];
+    [currentValueLabel6 sizeToFit];
   }
 
   else
   {
     if ([(HKReferenceRangeViewData *)self->_data useOutOfRangeValueColor])
     {
-      v23 = [(HKReferenceRangeView *)self _outOfRangeColor];
+      _outOfRangeColor = [(HKReferenceRangeView *)self _outOfRangeColor];
     }
 
     else
     {
-      v23 = 0;
+      _outOfRangeColor = 0;
     }
 
-    v11 = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueNumLinesIfNoRange];
-    v12 = [(HKReferenceRangeView *)self currentValueLabel];
-    [v12 setNumberOfLines:v11];
+    currentValueNumLinesIfNoRange = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueNumLinesIfNoRange];
+    currentValueLabel7 = [(HKReferenceRangeView *)self currentValueLabel];
+    [currentValueLabel7 setNumberOfLines:currentValueNumLinesIfNoRange];
 
-    v13 = [(HKReferenceRangeView *)self currentValueLabel];
-    [v13 setTextAlignment:4];
+    currentValueLabel8 = [(HKReferenceRangeView *)self currentValueLabel];
+    [currentValueLabel8 setTextAlignment:4];
 
-    v14 = [(HKReferenceRangeView *)self currentValueLabel];
-    [v14 setLineBreakMode:0];
+    currentValueLabel9 = [(HKReferenceRangeView *)self currentValueLabel];
+    [currentValueLabel9 setLineBreakMode:0];
 
-    v15 = [(HKReferenceRangeView *)self _generateAttributedValueStringWithOverrideColor:v23];
-    v16 = [(HKReferenceRangeView *)self currentValueLabel];
-    [v16 setAttributedText:v15];
+    currentValueLabel6 = [(HKReferenceRangeView *)self _generateAttributedValueStringWithOverrideColor:_outOfRangeColor];
+    currentValueLabel10 = [(HKReferenceRangeView *)self currentValueLabel];
+    [currentValueLabel10 setAttributedText:currentValueLabel6];
   }
 
   [(HKReferenceRangeView *)self invalidateIntrinsicContentSize];
   [(HKReferenceRangeView *)self setNeedsLayout];
 }
 
-- (id)_generateAttributedValueStringWithOverrideColor:(id)a3
+- (id)_generateAttributedValueStringWithOverrideColor:(id)color
 {
   v36[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  colorCopy = color;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(HKReferenceRangeViewData *)self->_data valueString];
-  v7 = [v6 length];
+  valueString = [(HKReferenceRangeViewData *)self->_data valueString];
+  v7 = [valueString length];
   v8 = MEMORY[0x1E69DB648];
   v9 = MEMORY[0x1E69DB650];
   if (v7)
   {
-    if (v4)
+    if (colorCopy)
     {
-      v10 = v4;
+      currentValueTextColor = colorCopy;
     }
 
     else
     {
-      v10 = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueTextColor];
+      currentValueTextColor = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueTextColor];
     }
 
-    v11 = v10;
+    v11 = currentValueTextColor;
     v35[0] = *v8;
-    v12 = [(HKReferenceRangeView *)self valueLabelFont];
+    valueLabelFont = [(HKReferenceRangeView *)self valueLabelFont];
     v35[1] = *v9;
-    v36[0] = v12;
+    v36[0] = valueLabelFont;
     v36[1] = v11;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:2];
 
-    v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v6 attributes:v13];
+    v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:valueString attributes:v13];
     [v5 addObject:v14];
   }
 
-  v15 = [(HKReferenceRangeViewData *)self->_data unitString];
-  if ([v15 length])
+  unitString = [(HKReferenceRangeViewData *)self->_data unitString];
+  if ([unitString length])
   {
-    if (v4)
+    if (colorCopy)
     {
-      v16 = v4;
+      v16 = colorCopy;
     }
 
     else
     {
-      v17 = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueUnitTextColor];
-      v18 = v17;
-      if (v17)
+      currentValueUnitTextColor = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueUnitTextColor];
+      v18 = currentValueUnitTextColor;
+      if (currentValueUnitTextColor)
       {
-        v19 = v17;
+        currentValueTextColor2 = currentValueUnitTextColor;
       }
 
       else
       {
-        v19 = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueTextColor];
+        currentValueTextColor2 = [(HKReferenceRangeViewConfiguration *)self->_configuration currentValueTextColor];
       }
 
-      v16 = v19;
+      v16 = currentValueTextColor2;
     }
 
     v33[0] = *v8;
     v20 = v33[0];
-    v21 = [(HKReferenceRangeView *)self unitLabelFont];
+    unitLabelFont = [(HKReferenceRangeView *)self unitLabelFont];
     v22 = *v9;
-    v34[0] = v21;
+    v34[0] = unitLabelFont;
     v34[1] = v16;
     v23 = *MEMORY[0x1E69DB660];
     v33[1] = v22;
@@ -1057,13 +1057,13 @@ LABEL_33:
     v25 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" " attributes:v24];
     [v5 addObject:v25];
     v31[0] = v20;
-    v26 = [(HKReferenceRangeView *)self unitLabelFont];
+    unitLabelFont2 = [(HKReferenceRangeView *)self unitLabelFont];
     v31[1] = v22;
-    v32[0] = v26;
+    v32[0] = unitLabelFont2;
     v32[1] = v16;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:2];
 
-    v28 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v15 attributes:v27];
+    v28 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:unitString attributes:v27];
     [v5 addObject:v28];
   }
 
@@ -1080,14 +1080,14 @@ LABEL_33:
   return v29;
 }
 
-- (id)_generateMultilineAttributedValueStringForOriginalString:(id)a3
+- (id)_generateMultilineAttributedValueStringForOriginalString:(id)string
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  stringCopy = string;
+  v5 = stringCopy;
   if (self->_overriddenValueFont)
   {
-    v6 = v4;
+    v6 = stringCopy;
   }
 
   else
@@ -1104,12 +1104,12 @@ LABEL_33:
   return v6;
 }
 
-- (id)_configuredPreferredFontForTextStyle:(id)a3 symbolicTraits:(unsigned int)a4
+- (id)_configuredPreferredFontForTextStyle:(id)style symbolicTraits:(unsigned int)traits
 {
-  v4 = *&a4;
-  v5 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:a3];
-  v6 = [v5 fontDescriptor];
-  v7 = [v6 fontDescriptorWithSymbolicTraits:v4];
+  v4 = *&traits;
+  v5 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:style];
+  fontDescriptor = [v5 fontDescriptor];
+  v7 = [fontDescriptor fontDescriptorWithSymbolicTraits:v4];
 
   v8 = MEMORY[0x1E69DB878];
   [v5 pointSize];

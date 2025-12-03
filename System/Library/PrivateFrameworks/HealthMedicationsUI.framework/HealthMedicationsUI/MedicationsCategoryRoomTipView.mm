@@ -1,25 +1,25 @@
 @interface MedicationsCategoryRoomTipView
 - (UIButton)dismissButton;
-- (_TtC19HealthMedicationsUI30MedicationsCategoryRoomTipView)initWithFrame:(CGRect)a3;
+- (_TtC19HealthMedicationsUI30MedicationsCategoryRoomTipView)initWithFrame:(CGRect)frame;
 - (void)didTapDismiss;
-- (void)setDismissButton:(id)a3;
+- (void)setDismissButton:(id)button;
 @end
 
 @implementation MedicationsCategoryRoomTipView
 
 - (UIButton)dismissButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2281FBD64();
 
   return v3;
 }
 
-- (void)setDismissButton:(id)a3
+- (void)setDismissButton:(id)button
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI30MedicationsCategoryRoomTipView____lazy_storage___dismissButton);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI30MedicationsCategoryRoomTipView____lazy_storage___dismissButton) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI30MedicationsCategoryRoomTipView____lazy_storage___dismissButton) = button;
+  buttonCopy = button;
 }
 
 - (void)didTapDismiss
@@ -28,7 +28,7 @@
   if (v2)
   {
     v3 = *(&self->super.super._responderFlags + OBJC_IVAR____TtC19HealthMedicationsUI30MedicationsCategoryRoomTipView_onDismiss);
-    v4 = self;
+    selfCopy = self;
     v5 = sub_228176FA8(v2);
     v2(v5);
 
@@ -36,7 +36,7 @@
   }
 }
 
-- (_TtC19HealthMedicationsUI30MedicationsCategoryRoomTipView)initWithFrame:(CGRect)a3
+- (_TtC19HealthMedicationsUI30MedicationsCategoryRoomTipView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

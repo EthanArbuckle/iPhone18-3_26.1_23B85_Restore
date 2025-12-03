@@ -1,23 +1,23 @@
 @interface NTKMoreButtonListItem
-- (NTKMoreButtonListItem)initWithSectionIdentifier:(id)a3;
+- (NTKMoreButtonListItem)initWithSectionIdentifier:(id)identifier;
 @end
 
 @implementation NTKMoreButtonListItem
 
-- (NTKMoreButtonListItem)initWithSectionIdentifier:(id)a3
+- (NTKMoreButtonListItem)initWithSectionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = NTKMoreButtonListItem;
   v5 = [(NTKMoreButtonListItem *)&v12 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    v7 = [v6 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     ntk_identifier = v5->_ntk_identifier;
-    v5->_ntk_identifier = v7;
+    v5->_ntk_identifier = uUIDString;
 
-    v9 = [v4 copy];
+    v9 = [identifierCopy copy];
     ntk_sectionIdentifier = v5->_ntk_sectionIdentifier;
     v5->_ntk_sectionIdentifier = v9;
   }

@@ -1,13 +1,13 @@
 @interface NSConcreteValue
 + (void)initialize;
-- (BOOL)_matchType:(const char *)a3 size:(unint64_t)a4 strict:(BOOL)a5;
-- (BOOL)isEqualToValue:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)_matchType:(const char *)type size:(unint64_t)size strict:(BOOL)strict;
+- (BOOL)isEqualToValue:(id)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)getValue:(void *)a3;
-- (void)getValue:(void *)a3 size:(unint64_t)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)getValue:(void *)value;
+- (void)getValue:(void *)value size:(unint64_t)size;
 @end
 
 @implementation NSConcreteValue
@@ -76,7 +76,7 @@
 + (void)initialize
 {
   v2[1] = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2[0] = 0;
     NSGetSizeAndAlignment("{CGRect={CGPoint=dd}{CGSize=dd}}", v2, 0);
@@ -142,42 +142,42 @@ LABEL_31:
       return [(NSValue *)&v6 description];
     }
 
-    v5 = [(NSConcreteValue *)self objCType];
-    if (!strcmp(v5, "{CGRect={CGPoint=dd}{CGSize=dd}}"))
+    objCType = [(NSConcreteValue *)self objCType];
+    if (!strcmp(objCType, "{CGRect={CGPoint=dd}{CGSize=dd}}"))
     {
 LABEL_32:
       [(NSValue *)self rectValue];
       return [NSString stringWithFormat:@"NSRect: %@", NSStringFromRect(v14)];
     }
 
-    if (!strcmp(v5, "{CGPoint=dd}"))
+    if (!strcmp(objCType, "{CGPoint=dd}"))
     {
 LABEL_14:
       [(NSValue *)self pointValue];
       return [NSString stringWithFormat:@"NSPoint: %@", NSStringFromPoint(v12)];
     }
 
-    if (!strcmp(v5, "{CGSize=dd}"))
+    if (!strcmp(objCType, "{CGSize=dd}"))
     {
 LABEL_33:
       [(NSValue *)self sizeValue];
       return [NSString stringWithFormat:@"NSSize: %@", NSStringFromSize(v13)];
     }
 
-    if (!strcmp(v5, "{_NSRange=QQ}"))
+    if (!strcmp(objCType, "{_NSRange=QQ}"))
     {
       goto LABEL_6;
     }
 
-    if (strcmp(v5, "{CGAffineTransform=ffffff}") && strcmp(v5, "{CGAffineTransform=dddddd}"))
+    if (strcmp(objCType, "{CGAffineTransform=ffffff}") && strcmp(objCType, "{CGAffineTransform=dddddd}"))
     {
-      if (strcmp(v5, "{UIEdgeInsets=ffff}") && strcmp(v5, "{UIEdgeInsets=dddd}"))
+      if (strcmp(objCType, "{UIEdgeInsets=ffff}") && strcmp(objCType, "{UIEdgeInsets=dddd}"))
       {
-        if (strcmp(v5, "{NSEdgeInsets=ffff}") && strcmp(v5, "{NSEdgeInsets=dddd}"))
+        if (strcmp(objCType, "{NSEdgeInsets=ffff}") && strcmp(objCType, "{NSEdgeInsets=dddd}"))
         {
-          if (strcmp(v5, "{NSDirectionalEdgeInsets=ffff}") && strcmp(v5, "{NSDirectionalEdgeInsets=dddd}"))
+          if (strcmp(objCType, "{NSDirectionalEdgeInsets=ffff}") && strcmp(objCType, "{NSDirectionalEdgeInsets=dddd}"))
           {
-            if (strcmp(v5, "{UIOffset=ff}") && strcmp(v5, "{UIOffset=dd}"))
+            if (strcmp(objCType, "{UIOffset=ff}") && strcmp(objCType, "{UIOffset=dd}"))
             {
               goto LABEL_31;
             }
@@ -233,48 +233,48 @@ LABEL_36:
   return [NSString stringWithFormat:@"UIOffset: %@", [NSString stringWithFormat:@"{%.*g, %.*g}", 17, v7, 17, *(&v7 + 1)]];
 }
 
-- (void)getValue:(void *)a3
+- (void)getValue:(void *)value
 {
   IndexedIvars = object_getIndexedIvars(self);
   v6 = *self->typeInfo;
 
-  memmove(a3, IndexedIvars, v6);
+  memmove(value, IndexedIvars, v6);
 }
 
-- (void)getValue:(void *)a3 size:(unint64_t)a4
+- (void)getValue:(void *)value size:(unint64_t)size
 {
-  if (*self->typeInfo != a4)
+  if (*self->typeInfo != size)
   {
-    v7 = [NSString stringWithFormat:@"Cannot get value with size %zu. The type encoded as %s is expected to be %zu bytes", a4, [(NSConcreteValue *)self objCType], *self->typeInfo];
+    v7 = [NSString stringWithFormat:@"Cannot get value with size %zu. The type encoded as %s is expected to be %zu bytes", size, [(NSConcreteValue *)self objCType], *self->typeInfo];
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v7 userInfo:0]);
   }
 
   IndexedIvars = object_getIndexedIvars(self);
 
-  memmove(a3, IndexedIvars, a4);
+  memmove(value, IndexedIvars, size);
 }
 
-- (BOOL)_matchType:(const char *)a3 size:(unint64_t)a4 strict:(BOOL)a5
+- (BOOL)_matchType:(const char *)type size:(unint64_t)size strict:(BOOL)strict
 {
   typeInfo = self->typeInfo;
-  result = *typeInfo == a4 && !a5;
-  if (a5 && *typeInfo == a4)
+  result = *typeInfo == size && !strict;
+  if (strict && *typeInfo == size)
   {
-    return matchTypeEncoding(typeInfo[1], a3, a4);
+    return matchTypeEncoding(typeInfo[1], type, size);
   }
 
   return result;
 }
 
-- (BOOL)isEqualToValue:(id)a3
+- (BOOL)isEqualToValue:(id)value
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self == a3)
+  if (self == value)
   {
     return 1;
   }
 
-  if (strcmp(*(self->typeInfo + 1), [a3 objCType]))
+  if (strcmp(*(self->typeInfo + 1), [value objCType]))
   {
     return 0;
   }
@@ -284,7 +284,7 @@ LABEL_36:
   if (v7 == objc_opt_class() || (objc_opt_isKindOfClass() & 1) != 0)
   {
     IndexedIvars = object_getIndexedIvars(self);
-    v9 = memcmp(IndexedIvars, [a3 _value], v6);
+    v9 = memcmp(IndexedIvars, [value _value], v6);
   }
 
   else
@@ -299,7 +299,7 @@ LABEL_36:
       v10 = malloc_type_malloc(v6, 0x100004077774924uLL);
     }
 
-    [a3 getValue:v10];
+    [value getValue:v10];
     v11 = object_getIndexedIvars(self);
     v9 = memcmp(v11, v10, v6);
     if (v6 >= 0x401)
@@ -311,9 +311,9 @@ LABEL_36:
   return v9 == 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  if (NSShouldRetainWithZone(self, a3))
+  if (NSShouldRetainWithZone(self, zone))
   {
 
     return self;
@@ -324,22 +324,22 @@ LABEL_36:
     IndexedIvars = object_getIndexedIvars(self);
     v6 = *(self->typeInfo + 1);
 
-    return _NSNewValue(IndexedIvars, v6, a3);
+    return _NSNewValue(IndexedIvars, v6, zone);
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (!self->_specialFlags || ![a3 allowsKeyedCoding])
+  if (!self->_specialFlags || ![coder allowsKeyedCoding])
   {
     v12.receiver = self;
     v12.super_class = NSConcreteValue;
-    [(NSValue *)&v12 encodeWithCoder:a3];
+    [(NSValue *)&v12 encodeWithCoder:coder];
     return;
   }
 
-  [a3 encodeInteger:self->_specialFlags forKey:@"NS.special"];
+  [coder encodeInteger:self->_specialFlags forKey:@"NS.special"];
   specialFlags = self->_specialFlags;
   if (specialFlags > 10)
   {
@@ -348,9 +348,9 @@ LABEL_36:
       v13 = 0u;
       v14 = 0u;
       [(NSConcreteValue *)self getValue:&v13];
-      [a3 encodeDouble:@"NS.edgeval.top" forKey:*&v13];
-      [a3 encodeDouble:@"NS.edgeval.left" forKey:*(&v13 + 1)];
-      [a3 encodeDouble:@"NS.edgeval.bottom" forKey:*&v14];
+      [coder encodeDouble:@"NS.edgeval.top" forKey:*&v13];
+      [coder encodeDouble:@"NS.edgeval.left" forKey:*(&v13 + 1)];
+      [coder encodeDouble:@"NS.edgeval.bottom" forKey:*&v14];
       v6 = *(&v14 + 1);
       v7 = @"NS.edgeval.right";
       goto LABEL_21;
@@ -360,7 +360,7 @@ LABEL_36:
     {
       v13 = 0uLL;
       [(NSConcreteValue *)self getValue:&v13];
-      [a3 encodeDouble:@"NS.offset.h" forKey:*&v13];
+      [coder encodeDouble:@"NS.offset.h" forKey:*&v13];
       v6 = *(&v13 + 1);
       v7 = @"NS.offset.v";
       goto LABEL_21;
@@ -371,9 +371,9 @@ LABEL_36:
       v13 = 0u;
       v14 = 0u;
       [(NSConcreteValue *)self getValue:&v13];
-      [a3 encodeDouble:@"NS.dirEdgeVal.top" forKey:*&v13];
-      [a3 encodeDouble:@"NS.dirEdgeVal.leading" forKey:*(&v13 + 1)];
-      [a3 encodeDouble:@"NS.dirEdgeVal.bottom" forKey:*&v14];
+      [coder encodeDouble:@"NS.dirEdgeVal.top" forKey:*&v13];
+      [coder encodeDouble:@"NS.dirEdgeVal.leading" forKey:*(&v13 + 1)];
+      [coder encodeDouble:@"NS.dirEdgeVal.bottom" forKey:*&v14];
       v6 = *(&v14 + 1);
       v7 = @"NS.dirEdgeVal.trailing";
       goto LABEL_21;
@@ -390,7 +390,7 @@ LABEL_32:
     {
       [(NSValue *)self pointValue];
 
-      [a3 encodePoint:@"NS.pointval" forKey:?];
+      [coder encodePoint:@"NS.pointval" forKey:?];
     }
 
     else
@@ -402,7 +402,7 @@ LABEL_32:
 
       [(NSValue *)self sizeValue];
 
-      [a3 encodeSize:@"NS.sizeval" forKey:?];
+      [coder encodeSize:@"NS.sizeval" forKey:?];
     }
   }
 
@@ -413,29 +413,29 @@ LABEL_32:
       case 3:
         [(NSValue *)self rectValue];
 
-        [a3 encodeRect:@"NS.rectval" forKey:?];
+        [coder encodeRect:@"NS.rectval" forKey:?];
         break;
       case 4:
-        v8 = [(NSValue *)self rangeValue];
-        [a3 encodeObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", v9), @"NS.rangeval.length"}];
-        v10 = [NSNumber numberWithUnsignedInteger:v8];
+        rangeValue = [(NSValue *)self rangeValue];
+        [coder encodeObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", v9), @"NS.rangeval.length"}];
+        v10 = [NSNumber numberWithUnsignedInteger:rangeValue];
 
-        [a3 encodeObject:v10 forKey:@"NS.rangeval.location"];
+        [coder encodeObject:v10 forKey:@"NS.rangeval.location"];
         break;
       case 10:
         v14 = 0u;
         *v15 = 0u;
         v13 = 0u;
         [(NSConcreteValue *)self getValue:&v13];
-        [a3 encodeDouble:@"NS.atval.a" forKey:*&v13];
-        [a3 encodeDouble:@"NS.atval.b" forKey:*(&v13 + 1)];
-        [a3 encodeDouble:@"NS.atval.c" forKey:*&v14];
-        [a3 encodeDouble:@"NS.atval.d" forKey:*(&v14 + 1)];
-        [a3 encodeDouble:@"NS.atval.tx" forKey:v15[0]];
+        [coder encodeDouble:@"NS.atval.a" forKey:*&v13];
+        [coder encodeDouble:@"NS.atval.b" forKey:*(&v13 + 1)];
+        [coder encodeDouble:@"NS.atval.c" forKey:*&v14];
+        [coder encodeDouble:@"NS.atval.d" forKey:*(&v14 + 1)];
+        [coder encodeDouble:@"NS.atval.tx" forKey:v15[0]];
         v6 = v15[1];
         v7 = @"NS.atval.ty";
 LABEL_21:
-        [a3 encodeDouble:v7 forKey:v6];
+        [coder encodeDouble:v7 forKey:v6];
         return;
       default:
         goto LABEL_32;

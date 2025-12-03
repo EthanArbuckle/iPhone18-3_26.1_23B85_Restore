@@ -1,28 +1,28 @@
 @interface AWDPowerTouchMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTocuhTotalUserInteractionDuration:(BOOL)a3;
-- (void)setHasTouchStateActiveDuration:(BOOL)a3;
-- (void)setHasTouchStateAnticipateDuration:(BOOL)a3;
-- (void)setHasTouchStateOffDuration:(BOOL)a3;
-- (void)setHasTouchStateOnDuration:(BOOL)a3;
-- (void)setHasTouchStateOthersDuration:(BOOL)a3;
-- (void)setHasTouchStateReadyDuration:(BOOL)a3;
-- (void)setHasTouchTotalPowerMicroWatt:(BOOL)a3;
-- (void)setHasTouchTotalUserTouchCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTocuhTotalUserInteractionDuration:(BOOL)duration;
+- (void)setHasTouchStateActiveDuration:(BOOL)duration;
+- (void)setHasTouchStateAnticipateDuration:(BOOL)duration;
+- (void)setHasTouchStateOffDuration:(BOOL)duration;
+- (void)setHasTouchStateOnDuration:(BOOL)duration;
+- (void)setHasTouchStateOthersDuration:(BOOL)duration;
+- (void)setHasTouchStateReadyDuration:(BOOL)duration;
+- (void)setHasTouchTotalPowerMicroWatt:(BOOL)watt;
+- (void)setHasTouchTotalUserTouchCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDPowerTouchMetrics
 
-- (void)setHasTouchStateActiveDuration:(BOOL)a3
+- (void)setHasTouchStateActiveDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -35,9 +35,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasTouchStateReadyDuration:(BOOL)a3
+- (void)setHasTouchStateReadyDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 128;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasTouchStateAnticipateDuration:(BOOL)a3
+- (void)setHasTouchStateAnticipateDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasTouchStateOffDuration:(BOOL)a3
+- (void)setHasTouchStateOffDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 16;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasTouchStateOnDuration:(BOOL)a3
+- (void)setHasTouchStateOnDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 32;
   }
@@ -95,9 +95,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasTouchStateOthersDuration:(BOOL)a3
+- (void)setHasTouchStateOthersDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 64;
   }
@@ -110,9 +110,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasTouchTotalPowerMicroWatt:(BOOL)a3
+- (void)setHasTouchTotalPowerMicroWatt:(BOOL)watt
 {
-  if (a3)
+  if (watt)
   {
     v3 = 256;
   }
@@ -125,9 +125,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasTouchTotalUserTouchCount:(BOOL)a3
+- (void)setHasTouchTotalUserTouchCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 512;
   }
@@ -140,9 +140,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasTocuhTotalUserInteractionDuration:(BOOL)a3
+- (void)setHasTocuhTotalUserInteractionDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -164,11 +164,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -187,7 +187,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_touchStateActiveDuration), @"touchStateActiveDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_touchStateActiveDuration), @"touchStateActiveDuration"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -201,7 +201,7 @@ LABEL_4:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_touchStateReadyDuration), @"touchStateReadyDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_touchStateReadyDuration), @"touchStateReadyDuration"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -215,7 +215,7 @@ LABEL_5:
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_touchStateAnticipateDuration), @"touchStateAnticipateDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_touchStateAnticipateDuration), @"touchStateAnticipateDuration"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -229,7 +229,7 @@ LABEL_6:
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_touchStateOffDuration), @"touchStateOffDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_touchStateOffDuration), @"touchStateOffDuration"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -243,7 +243,7 @@ LABEL_7:
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_touchStateOnDuration), @"touchStateOnDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_touchStateOnDuration), @"touchStateOnDuration"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -257,7 +257,7 @@ LABEL_8:
   }
 
 LABEL_19:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_touchStateOthersDuration), @"touchStateOthersDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_touchStateOthersDuration), @"touchStateOthersDuration"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -268,17 +268,17 @@ LABEL_9:
     }
 
 LABEL_21:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_touchTotalUserTouchCount), @"touchTotalUserTouchCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_touchTotalUserTouchCount), @"touchTotalUserTouchCount"}];
     if ((*&self->_has & 2) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_11;
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_touchTotalPowerMicroWatt), @"touchTotalPowerMicroWatt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_touchTotalPowerMicroWatt), @"touchTotalPowerMicroWatt"}];
   has = self->_has;
   if ((has & 0x200) != 0)
   {
@@ -289,13 +289,13 @@ LABEL_10:
   if ((has & 2) != 0)
   {
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_tocuhTotalUserInteractionDuration), @"tocuhTotalUserInteractionDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_tocuhTotalUserInteractionDuration), @"tocuhTotalUserInteractionDuration"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -438,13 +438,13 @@ LABEL_21:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 26) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 26) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -463,8 +463,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 5) = self->_touchStateActiveDuration;
-  *(a3 + 26) |= 4u;
+  *(to + 5) = self->_touchStateActiveDuration;
+  *(to + 26) |= 4u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -478,8 +478,8 @@ LABEL_4:
   }
 
 LABEL_14:
-  *(a3 + 10) = self->_touchStateReadyDuration;
-  *(a3 + 26) |= 0x80u;
+  *(to + 10) = self->_touchStateReadyDuration;
+  *(to + 26) |= 0x80u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -493,8 +493,8 @@ LABEL_5:
   }
 
 LABEL_15:
-  *(a3 + 6) = self->_touchStateAnticipateDuration;
-  *(a3 + 26) |= 8u;
+  *(to + 6) = self->_touchStateAnticipateDuration;
+  *(to + 26) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -508,8 +508,8 @@ LABEL_6:
   }
 
 LABEL_16:
-  *(a3 + 7) = self->_touchStateOffDuration;
-  *(a3 + 26) |= 0x10u;
+  *(to + 7) = self->_touchStateOffDuration;
+  *(to + 26) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -523,8 +523,8 @@ LABEL_7:
   }
 
 LABEL_17:
-  *(a3 + 8) = self->_touchStateOnDuration;
-  *(a3 + 26) |= 0x20u;
+  *(to + 8) = self->_touchStateOnDuration;
+  *(to + 26) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -538,8 +538,8 @@ LABEL_8:
   }
 
 LABEL_18:
-  *(a3 + 9) = self->_touchStateOthersDuration;
-  *(a3 + 26) |= 0x40u;
+  *(to + 9) = self->_touchStateOthersDuration;
+  *(to + 26) |= 0x40u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -553,8 +553,8 @@ LABEL_9:
   }
 
 LABEL_19:
-  *(a3 + 11) = self->_touchTotalPowerMicroWatt;
-  *(a3 + 26) |= 0x100u;
+  *(to + 11) = self->_touchTotalPowerMicroWatt;
+  *(to + 26) |= 0x100u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -565,23 +565,23 @@ LABEL_10:
     }
 
 LABEL_21:
-    *(a3 + 4) = self->_tocuhTotalUserInteractionDuration;
-    *(a3 + 26) |= 2u;
+    *(to + 4) = self->_tocuhTotalUserInteractionDuration;
+    *(to + 26) |= 2u;
     return;
   }
 
 LABEL_20:
-  *(a3 + 12) = self->_touchTotalUserTouchCount;
-  *(a3 + 26) |= 0x200u;
+  *(to + 12) = self->_touchTotalUserTouchCount;
+  *(to + 26) |= 0x200u;
   if ((*&self->_has & 2) != 0)
   {
     goto LABEL_21;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -723,16 +723,16 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 26);
+    v7 = *(equal + 26);
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_51;
       }
@@ -747,7 +747,7 @@ LABEL_51:
 
     if ((has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_touchStateActiveDuration != *(a3 + 5))
+      if ((v7 & 4) == 0 || self->_touchStateActiveDuration != *(equal + 5))
       {
         goto LABEL_51;
       }
@@ -760,7 +760,7 @@ LABEL_51:
 
     if ((has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_touchStateReadyDuration != *(a3 + 10))
+      if ((v7 & 0x80) == 0 || self->_touchStateReadyDuration != *(equal + 10))
       {
         goto LABEL_51;
       }
@@ -773,7 +773,7 @@ LABEL_51:
 
     if ((has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_touchStateAnticipateDuration != *(a3 + 6))
+      if ((v7 & 8) == 0 || self->_touchStateAnticipateDuration != *(equal + 6))
       {
         goto LABEL_51;
       }
@@ -786,7 +786,7 @@ LABEL_51:
 
     if ((has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_touchStateOffDuration != *(a3 + 7))
+      if ((v7 & 0x10) == 0 || self->_touchStateOffDuration != *(equal + 7))
       {
         goto LABEL_51;
       }
@@ -799,7 +799,7 @@ LABEL_51:
 
     if ((has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_touchStateOnDuration != *(a3 + 8))
+      if ((v7 & 0x20) == 0 || self->_touchStateOnDuration != *(equal + 8))
       {
         goto LABEL_51;
       }
@@ -812,7 +812,7 @@ LABEL_51:
 
     if ((has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_touchStateOthersDuration != *(a3 + 9))
+      if ((v7 & 0x40) == 0 || self->_touchStateOthersDuration != *(equal + 9))
       {
         goto LABEL_51;
       }
@@ -825,26 +825,26 @@ LABEL_51:
 
     if ((*&self->_has & 0x100) != 0)
     {
-      if ((*(a3 + 26) & 0x100) == 0 || self->_touchTotalPowerMicroWatt != *(a3 + 11))
+      if ((*(equal + 26) & 0x100) == 0 || self->_touchTotalPowerMicroWatt != *(equal + 11))
       {
         goto LABEL_51;
       }
     }
 
-    else if ((*(a3 + 26) & 0x100) != 0)
+    else if ((*(equal + 26) & 0x100) != 0)
     {
       goto LABEL_51;
     }
 
     if ((*&self->_has & 0x200) != 0)
     {
-      if ((*(a3 + 26) & 0x200) == 0 || self->_touchTotalUserTouchCount != *(a3 + 12))
+      if ((*(equal + 26) & 0x200) == 0 || self->_touchTotalUserTouchCount != *(equal + 12))
       {
         goto LABEL_51;
       }
     }
 
-    else if ((*(a3 + 26) & 0x200) != 0)
+    else if ((*(equal + 26) & 0x200) != 0)
     {
       goto LABEL_51;
     }
@@ -852,7 +852,7 @@ LABEL_51:
     LOBYTE(v5) = (v7 & 2) == 0;
     if ((has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_tocuhTotalUserInteractionDuration != *(a3 + 4))
+      if ((v7 & 2) == 0 || self->_tocuhTotalUserInteractionDuration != *(equal + 4))
       {
         goto LABEL_51;
       }
@@ -1003,14 +1003,14 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 26);
+    v3 = *(from + 26);
     if ((v3 & 4) == 0)
     {
 LABEL_3:
@@ -1028,9 +1028,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_touchStateActiveDuration = *(a3 + 5);
+  self->_touchStateActiveDuration = *(from + 5);
   *&self->_has |= 4u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x80) == 0)
   {
 LABEL_4:
@@ -1043,9 +1043,9 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_touchStateReadyDuration = *(a3 + 10);
+  self->_touchStateReadyDuration = *(from + 10);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 8) == 0)
   {
 LABEL_5:
@@ -1058,9 +1058,9 @@ LABEL_5:
   }
 
 LABEL_15:
-  self->_touchStateAnticipateDuration = *(a3 + 6);
+  self->_touchStateAnticipateDuration = *(from + 6);
   *&self->_has |= 8u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x10) == 0)
   {
 LABEL_6:
@@ -1073,9 +1073,9 @@ LABEL_6:
   }
 
 LABEL_16:
-  self->_touchStateOffDuration = *(a3 + 7);
+  self->_touchStateOffDuration = *(from + 7);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x20) == 0)
   {
 LABEL_7:
@@ -1088,9 +1088,9 @@ LABEL_7:
   }
 
 LABEL_17:
-  self->_touchStateOnDuration = *(a3 + 8);
+  self->_touchStateOnDuration = *(from + 8);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x40) == 0)
   {
 LABEL_8:
@@ -1103,9 +1103,9 @@ LABEL_8:
   }
 
 LABEL_18:
-  self->_touchStateOthersDuration = *(a3 + 9);
+  self->_touchStateOthersDuration = *(from + 9);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x100) == 0)
   {
 LABEL_9:
@@ -1118,9 +1118,9 @@ LABEL_9:
   }
 
 LABEL_19:
-  self->_touchTotalPowerMicroWatt = *(a3 + 11);
+  self->_touchTotalPowerMicroWatt = *(from + 11);
   *&self->_has |= 0x100u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x200) == 0)
   {
 LABEL_10:
@@ -1130,15 +1130,15 @@ LABEL_10:
     }
 
 LABEL_21:
-    self->_tocuhTotalUserInteractionDuration = *(a3 + 4);
+    self->_tocuhTotalUserInteractionDuration = *(from + 4);
     *&self->_has |= 2u;
     return;
   }
 
 LABEL_20:
-  self->_touchTotalUserTouchCount = *(a3 + 12);
+  self->_touchTotalUserTouchCount = *(from + 12);
   *&self->_has |= 0x200u;
-  if ((*(a3 + 26) & 2) != 0)
+  if ((*(from + 26) & 2) != 0)
   {
     goto LABEL_21;
   }

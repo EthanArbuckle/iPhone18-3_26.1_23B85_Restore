@@ -6,9 +6,9 @@
 
 - (id)radio_decompressedBodyData
 {
-  v2 = [a1 URLResponse];
-  v3 = [a1 bodyData];
-  v4 = [v2 radio_decompressedDataWithBodyData:v3];
+  uRLResponse = [self URLResponse];
+  bodyData = [self bodyData];
+  v4 = [uRLResponse radio_decompressedDataWithBodyData:bodyData];
 
   return v4;
 }

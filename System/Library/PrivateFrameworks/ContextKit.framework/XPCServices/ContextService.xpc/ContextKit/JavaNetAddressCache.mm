@@ -1,10 +1,10 @@
 @interface JavaNetAddressCache
 - (JavaNetAddressCache)init;
-- (id)getWithNSString:(id)a3;
+- (id)getWithNSString:(id)string;
 - (void)clear;
 - (void)dealloc;
-- (void)putUnknownHostWithNSString:(id)a3 withNSString:(id)a4;
-- (void)putWithNSString:(id)a3 withJavaNetInetAddressArray:(id)a4;
+- (void)putUnknownHostWithNSString:(id)string withNSString:(id)sString;
+- (void)putWithNSString:(id)string withJavaNetInetAddressArray:(id)array;
 @end
 
 @implementation JavaNetAddressCache
@@ -20,7 +20,7 @@
   [(LibcoreUtilBasicLruCache *)cache evictAll];
 }
 
-- (id)getWithNSString:(id)a3
+- (id)getWithNSString:(id)string
 {
   cache = self->cache_;
   if (!cache)
@@ -28,7 +28,7 @@
     JreThrowNullPointerException();
   }
 
-  result = [(LibcoreUtilBasicLruCache *)cache getWithId:a3];
+  result = [(LibcoreUtilBasicLruCache *)cache getWithId:string];
   if (result)
   {
     v5 = result;
@@ -47,7 +47,7 @@
   return result;
 }
 
-- (void)putWithNSString:(id)a3 withJavaNetInetAddressArray:(id)a4
+- (void)putWithNSString:(id)string withJavaNetInetAddressArray:(id)array
 {
   cache = self->cache_;
   if (!cache)
@@ -56,14 +56,14 @@
   }
 
   v7 = [JavaNetAddressCache_AddressCacheEntry alloc];
-  JreStrongAssign(&v7->value_, a4);
+  JreStrongAssign(&v7->value_, array);
   v7->expiryNanos_ = JavaLangSystem_nanoTime() + 2000000000;
   v8 = v7;
 
-  [(LibcoreUtilBasicLruCache *)cache putWithId:a3 withId:v8];
+  [(LibcoreUtilBasicLruCache *)cache putWithId:string withId:v8];
 }
 
-- (void)putUnknownHostWithNSString:(id)a3 withNSString:(id)a4
+- (void)putUnknownHostWithNSString:(id)string withNSString:(id)sString
 {
   cache = self->cache_;
   if (!cache)
@@ -72,11 +72,11 @@
   }
 
   v7 = [JavaNetAddressCache_AddressCacheEntry alloc];
-  JreStrongAssign(&v7->value_, a4);
+  JreStrongAssign(&v7->value_, sString);
   v7->expiryNanos_ = JavaLangSystem_nanoTime() + 2000000000;
   v8 = v7;
 
-  [(LibcoreUtilBasicLruCache *)cache putWithId:a3 withId:v8];
+  [(LibcoreUtilBasicLruCache *)cache putWithId:string withId:v8];
 }
 
 - (JavaNetAddressCache)init

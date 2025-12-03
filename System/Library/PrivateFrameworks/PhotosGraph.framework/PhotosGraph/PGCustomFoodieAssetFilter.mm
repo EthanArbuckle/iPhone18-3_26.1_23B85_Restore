@@ -1,22 +1,22 @@
 @interface PGCustomFoodieAssetFilter
-- (BOOL)_passesWithAsset:(id)a3 curationContext:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_passesWithAsset:(id)asset curationContext:(id)context;
+- (BOOL)isEqual:(id)equal;
 - (PGCustomFoodieAssetFilter)init;
-- (id)filteredAssetsFromAssets:(id)a3 curationContext:(id)a4;
+- (id)filteredAssetsFromAssets:(id)assets curationContext:(id)context;
 @end
 
 @implementation PGCustomFoodieAssetFilter
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -24,33 +24,33 @@
   return isKindOfClass & 1;
 }
 
-- (BOOL)_passesWithAsset:(id)a3 curationContext:(id)a4
+- (BOOL)_passesWithAsset:(id)asset curationContext:(id)context
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 curationModel];
-  v9 = [v7 userFeedbackCalculator];
-  v10 = [v8 isUtilityForMemoriesWithAsset:v6 userFeedbackCalculator:v9 blockSocialMediaImportedAssets:PGMemoryGenerationBlockSocialMediaImportedAssets];
+  assetCopy = asset;
+  contextCopy = context;
+  curationModel = [assetCopy curationModel];
+  userFeedbackCalculator = [contextCopy userFeedbackCalculator];
+  v10 = [curationModel isUtilityForMemoriesWithAsset:assetCopy userFeedbackCalculator:userFeedbackCalculator blockSocialMediaImportedAssets:PGMemoryGenerationBlockSocialMediaImportedAssets];
 
-  if ((v10 & 1) != 0 || ([v6 clsFaceInformationSummary], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "numberOfFaces"), v11, v12) || !objc_msgSend(v8, "isShowcasingFoodWithAsset:", v6))
+  if ((v10 & 1) != 0 || ([assetCopy clsFaceInformationSummary], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "numberOfFaces"), v11, v12) || !objc_msgSend(curationModel, "isShowcasingFoodWithAsset:", assetCopy))
   {
     v38 = 0;
     goto LABEL_33;
   }
 
-  v47 = [(CLSSceneConfidenceThresholdHelper *)self->_foodScenesHelper confidenceThresholdBySceneIdentifierWithCurationModel:v8];
-  v46 = [(CLSSceneConfidenceThresholdHelper *)self->_drinkScenesHelper confidenceThresholdBySceneIdentifierWithCurationModel:v8];
-  v49 = [(CLSSceneConfidenceThresholdHelper *)self->_forbiddenScenesHelper confidenceThresholdBySceneIdentifierWithCurationModel:v8];
-  v13 = [v8 junkClassificationModel];
-  v45 = [v13 foodOrDrinkNode];
+  v47 = [(CLSSceneConfidenceThresholdHelper *)self->_foodScenesHelper confidenceThresholdBySceneIdentifierWithCurationModel:curationModel];
+  v46 = [(CLSSceneConfidenceThresholdHelper *)self->_drinkScenesHelper confidenceThresholdBySceneIdentifierWithCurationModel:curationModel];
+  v49 = [(CLSSceneConfidenceThresholdHelper *)self->_forbiddenScenesHelper confidenceThresholdBySceneIdentifierWithCurationModel:curationModel];
+  junkClassificationModel = [curationModel junkClassificationModel];
+  foodOrDrinkNode = [junkClassificationModel foodOrDrinkNode];
 
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v14 = [v6 clsSceneClassifications];
-  v48 = [v14 countByEnumeratingWithState:&v50 objects:v54 count:16];
+  clsSceneClassifications = [assetCopy clsSceneClassifications];
+  v48 = [clsSceneClassifications countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (!v48)
   {
 
@@ -58,10 +58,10 @@
     goto LABEL_41;
   }
 
-  v43 = v8;
-  obj = v14;
-  v41 = v6;
-  v42 = v7;
+  v43 = curationModel;
+  obj = clsSceneClassifications;
+  v41 = assetCopy;
+  v42 = contextCopy;
   v15 = 0;
   v16 = 0;
   v17 = 0;
@@ -77,7 +77,7 @@ LABEL_6:
     }
 
     v21 = *(*(&v50 + 1) + 8 * v20);
-    if ([v8 filterForFoodieWithClassification:v21])
+    if ([curationModel filterForFoodieWithClassification:v21])
     {
       goto LABEL_38;
     }
@@ -121,12 +121,12 @@ LABEL_6:
       }
 
       v18 = v32;
-      v8 = v43;
+      curationModel = v43;
       v19 = 0x277CCA000;
       if ((v17 & 1) == 0)
       {
 LABEL_14:
-        v17 = [v45 passesHighPrecisionWithSignal:v21];
+        v17 = [foodOrDrinkNode passesHighPrecisionWithSignal:v21];
         if (v15)
         {
           goto LABEL_26;
@@ -193,8 +193,8 @@ LABEL_38:
 LABEL_39:
   v38 = 0;
 LABEL_40:
-  v6 = v41;
-  v7 = v42;
+  assetCopy = v41;
+  contextCopy = v42;
 LABEL_41:
 
 LABEL_33:
@@ -202,17 +202,17 @@ LABEL_33:
   return v38;
 }
 
-- (id)filteredAssetsFromAssets:(id)a3 curationContext:(id)a4
+- (id)filteredAssetsFromAssets:(id)assets curationContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  assetsCopy = assets;
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v6;
+  v9 = assetsCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -228,9 +228,9 @@ LABEL_33:
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
-        if ([(PGCustomFoodieAssetFilter *)self _passesWithAsset:v14 curationContext:v7, v17])
+        if ([(PGCustomFoodieAssetFilter *)self _passesWithAsset:v14 curationContext:contextCopy, v17])
         {
-          [v8 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -242,7 +242,7 @@ LABEL_33:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return array;
 }
 
 - (PGCustomFoodieAssetFilter)init

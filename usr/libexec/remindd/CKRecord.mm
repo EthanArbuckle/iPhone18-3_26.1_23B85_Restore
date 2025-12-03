@@ -8,27 +8,27 @@
 
 - (id)ic_loggingDescription
 {
-  v3 = [(CKRecord *)self recordType];
-  v4 = [(CKRecord *)self recordID];
-  v5 = [v4 ic_loggingDescriptionIncludingBrackets:0];
-  v6 = [NSMutableString stringWithFormat:@"<%@ %@", v3, v5];
+  recordType = [(CKRecord *)self recordType];
+  recordID = [(CKRecord *)self recordID];
+  v5 = [recordID ic_loggingDescriptionIncludingBrackets:0];
+  v6 = [NSMutableString stringWithFormat:@"<%@ %@", recordType, v5];
 
-  v7 = [(CKRecord *)self recordChangeTag];
+  recordChangeTag = [(CKRecord *)self recordChangeTag];
 
-  if (v7)
+  if (recordChangeTag)
   {
-    v8 = [(CKRecord *)self recordChangeTag];
-    [v6 appendFormat:@" changeTag=%@", v8];
+    recordChangeTag2 = [(CKRecord *)self recordChangeTag];
+    [v6 appendFormat:@" changeTag=%@", recordChangeTag2];
   }
 
-  v9 = [(CKRecord *)self share];
+  share = [(CKRecord *)self share];
 
-  if (v9)
+  if (share)
   {
-    v10 = [(CKRecord *)self share];
-    v11 = [v10 recordID];
-    v12 = [v11 recordName];
-    [v6 appendFormat:@" share=%@", v12];
+    share2 = [(CKRecord *)self share];
+    recordID2 = [share2 recordID];
+    recordName = [recordID2 recordName];
+    [v6 appendFormat:@" share=%@", recordName];
   }
 
   [v6 appendString:@">"];
@@ -38,18 +38,18 @@
 
 - (int64_t)rd_ckDatabaseScope
 {
-  v2 = [(CKRecord *)self recordID];
-  v3 = [v2 rd_ckDatabaseScope];
+  recordID = [(CKRecord *)self recordID];
+  rd_ckDatabaseScope = [recordID rd_ckDatabaseScope];
 
-  return v3;
+  return rd_ckDatabaseScope;
 }
 
 - (BOOL)ic_isOwnedByCurrentUser
 {
-  v2 = [(CKRecord *)self recordID];
-  v3 = [v2 ic_isOwnedByCurrentUser];
+  recordID = [(CKRecord *)self recordID];
+  ic_isOwnedByCurrentUser = [recordID ic_isOwnedByCurrentUser];
 
-  return v3;
+  return ic_isOwnedByCurrentUser;
 }
 
 @end

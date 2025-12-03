@@ -1,29 +1,29 @@
 @interface ULRecordingEventStore
 + (unsigned)maxEntriesInTable;
-- (BOOL)batchTransferRecordingEventsForRecordingUUIDs:(const void *)a3 withEventTypes:(const void *)a4 batchSize:(unint64_t)a5 andLimit:(unsigned int)a6 intoTargetStore:(id)a7;
-- (BOOL)batchTransferRecordsUsingBatchSize:(unint64_t)a3 andLimit:(unint64_t)a4 intoTargetStore:(id)a5;
-- (BOOL)deleteRecordingEventsFromRecordingUUIDs:(const void *)a3;
-- (BOOL)insertDataObjects:(const void *)a3;
+- (BOOL)batchTransferRecordingEventsForRecordingUUIDs:(const void *)ds withEventTypes:(const void *)types batchSize:(unint64_t)size andLimit:(unsigned int)limit intoTargetStore:(id)store;
+- (BOOL)batchTransferRecordsUsingBatchSize:(unint64_t)size andLimit:(unint64_t)limit intoTargetStore:(id)store;
+- (BOOL)deleteRecordingEventsFromRecordingUUIDs:(const void *)ds;
+- (BOOL)insertDataObjects:(const void *)objects;
 - (double)getOldestRecordingTimestamp;
-- (id)getDistinctRecordingUUIDsWithLimit:(unsigned int)a3;
-- (id)getRecordingUUIDsForLocalizationActionsFromTime:(optional<const double>)a3 toTime:(optional<const double>)a4;
-- (id)getRecordingUUIDsForRecordingEventActionsAtLoiGroupId:(optional<const boost:(optional<const double>)a4 :(optional<const double>)a5 uuids:(unsigned int)a6 :uuid> *)a3 fromTime:toTime:withLimit:;
-- (id)getRecordingUUIDsOlderThan:(double)a3 orNewerThan:(double)a4;
-- (id)getTriggerUUIDsForLoiGroupId:(const uuid *)a3;
+- (id)getDistinctRecordingUUIDsWithLimit:(unsigned int)limit;
+- (id)getRecordingUUIDsForLocalizationActionsFromTime:(optional<const double>)time toTime:(optional<const double>)toTime;
+- (id)getRecordingUUIDsForRecordingEventActionsAtLoiGroupId:(optional<const boost:(optional<const double>)id :(optional<const double>)a5 uuids:(unsigned int)uuids :uuid> *)a3 fromTime:toTime:withLimit:;
+- (id)getRecordingUUIDsOlderThan:(double)than orNewerThan:(double)newerThan;
+- (id)getTriggerUUIDsForLoiGroupId:(const uuid *)id;
 - (id)insertDataObjects:;
 - (uint64_t)insertDataObjects:;
-- (unsigned)countRecordingEventsForLoiGroupId:(const uuid *)a3;
-- (unsigned)countRecordingEventsFromTime:(double)a3 toTime:(double)a4 atLoiGroupId:(const uuid *)a5;
-- (vector<ULRecordingEventDO,)_fetchRecordingEventTriggers:(ULRecordingEventStore *)self atLoiGroupId:(SEL)a3 fromTime:(const void *)a4 toTime:(const void *)a5 withLimit:(optional<const double>)a6;
+- (unsigned)countRecordingEventsForLoiGroupId:(const uuid *)id;
+- (unsigned)countRecordingEventsFromTime:(double)time toTime:(double)toTime atLoiGroupId:(const uuid *)id;
+- (vector<ULRecordingEventDO,)_fetchRecordingEventTriggers:(ULRecordingEventStore *)self atLoiGroupId:(SEL)id fromTime:(const void *)time toTime:(const void *)toTime withLimit:(optional<const double>)limit;
 - (vector<ULRecordingEventDO,)fetchRecordingEventTriggersForLearningMeasurements:(ULRecordingEventStore *)self;
-- (vector<ULRecordingEventDO,)fetchRecordingEventTriggersForLearningMeasurements:(ULRecordingEventStore *)self atLoiGroupId:(SEL)a3;
+- (vector<ULRecordingEventDO,)fetchRecordingEventTriggersForLearningMeasurements:(ULRecordingEventStore *)self atLoiGroupId:(SEL)id;
 - (vector<ULRecordingEventDO,)fetchRecordingEventsForRecordingUUIDs:(ULRecordingEventStore *)self;
 - (vector<ULRecordingEventDO,)fetchRecordingEventsFromTriggerUUIDs:(ULRecordingEventStore *)self;
-- (vector<ULRecordingEventDO,)fetchRecordingEventsWithScanMeasurements:(ULRecordingEventStore *)self fromTime:(SEL)a3 toTime:(const void *)a4 withLimit:(double)a5;
-- (vector<boost::uuids::uuid,)fetchDistinctRecordingEventsFromTime:(ULRecordingEventStore *)self toTime:(SEL)a3 atLoiGroupId:(double)a4 withLimit:(double)a5;
-- (vector<std::string,)selectAllRecordingLOITypesFromTime:(ULRecordingEventStore *)self andLimit:(SEL)a3;
-- (void)fetchMostRecentRecordingForLoiGroupId:(uint64_t)a3@<X8>;
-- (void)fetchRecordingEventTriggersForLearningMeasurements:(uint64_t)a3 atLoiGroupId:(char)a4;
+- (vector<ULRecordingEventDO,)fetchRecordingEventsWithScanMeasurements:(ULRecordingEventStore *)self fromTime:(SEL)time toTime:(const void *)toTime withLimit:(double)limit;
+- (vector<boost::uuids::uuid,)fetchDistinctRecordingEventsFromTime:(ULRecordingEventStore *)self toTime:(SEL)time atLoiGroupId:(double)id withLimit:(double)limit;
+- (vector<std::string,)selectAllRecordingLOITypesFromTime:(ULRecordingEventStore *)self andLimit:(SEL)limit;
+- (void)fetchMostRecentRecordingForLoiGroupId:(uint64_t)id@<X8>;
+- (void)fetchRecordingEventTriggersForLearningMeasurements:(uint64_t)measurements atLoiGroupId:(char)id;
 @end
 
 @implementation ULRecordingEventStore
@@ -31,41 +31,41 @@
 + (unsigned)maxEntriesInTable
 {
   v2 = +[ULDefaultsSingleton shared];
-  v3 = [v2 defaultsDictionary];
+  defaultsDictionary = [v2 defaultsDictionary];
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULRecordingEventsTableMaxRows"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaultsDictionary objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
   }
 
   else
   {
-    v6 = [&unk_286A718C8 unsignedIntValue];
+    unsignedIntValue = [&unk_286A718C8 unsignedIntValue];
   }
 
-  v7 = v6;
+  v7 = unsignedIntValue;
 
   return v7;
 }
 
-- (BOOL)insertDataObjects:(const void *)a3
+- (BOOL)insertDataObjects:(const void *)objects
 {
   v7[4] = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   v7[0] = &unk_286A55D48;
-  v7[1] = &v6;
+  v7[1] = &selfCopy;
   v7[3] = v7;
-  inserted = ULDBUtils::insertDataObjects<ULRecordingEventDO,ULRecordingEventMO_deprecated>(self, a3, v7);
+  inserted = ULDBUtils::insertDataObjects<ULRecordingEventDO,ULRecordingEventMO_deprecated>(self, objects, v7);
   std::__function::__value_func<ULRecordingEventMO_deprecated * ()(ULRecordingEventDO const&)>::~__value_func[abi:ne200100](v7);
   v4 = *MEMORY[0x277D85DE8];
   return inserted;
 }
 
-- (BOOL)deleteRecordingEventsFromRecordingUUIDs:(const void *)a3
+- (BOOL)deleteRecordingEventsFromRecordingUUIDs:(const void *)ds
 {
-  if (*a3 == *(a3 + 1))
+  if (*ds == *(ds + 1))
   {
     if (onceToken_MicroLocation_Default != -1)
     {
@@ -85,14 +85,14 @@
   else
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = ULDBUtils::NSStringArrayFromBoostUUIDs(a3);
-    v7 = [MEMORY[0x277CBEB18] array];
+    v6 = ULDBUtils::NSStringArrayFromBoostUUIDs(ds);
+    array = [MEMORY[0x277CBEB18] array];
     v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"recordingUUID", v6];
-    [v7 addObject:v8];
+    [array addObject:v8];
 
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [(ULStore *)self batchDeleteObjectsWithEntityName:v10 byAndPredicates:v7 sortDescriptors:0 andLimit:0];
+    v11 = [(ULStore *)self batchDeleteObjectsWithEntityName:v10 byAndPredicates:array sortDescriptors:0 andLimit:0];
 
     objc_autoreleasePoolPop(v5);
   }
@@ -180,12 +180,12 @@
   return result;
 }
 
-- (vector<ULRecordingEventDO,)_fetchRecordingEventTriggers:(ULRecordingEventStore *)self atLoiGroupId:(SEL)a3 fromTime:(const void *)a4 toTime:(const void *)a5 withLimit:(optional<const double>)a6
+- (vector<ULRecordingEventDO,)_fetchRecordingEventTriggers:(ULRecordingEventStore *)self atLoiGroupId:(SEL)id fromTime:(const void *)time toTime:(const void *)toTime withLimit:(optional<const double>)limit
 {
   v8 = *&a7.var1;
   var1 = a7.var0.var1;
-  v10 = *&a6.var1;
-  v11 = a6.var0.var1;
+  v10 = *&limit.var1;
+  v11 = limit.var0.var1;
   v51 = *MEMORY[0x277D85DE8];
   v41 = 0;
   v42 = &v41;
@@ -195,8 +195,8 @@
   v46 = &unk_25929B3B7;
   memset(v47, 0, 24);
   context = objc_autoreleasePoolPush();
-  v49 = *a5;
-  v50 = *(a5 + 16);
+  v49 = *toTime;
+  v50 = *(toTime + 16);
   v34 = [(ULRecordingEventStore *)self getRecordingUUIDsForRecordingEventActionsAtLoiGroupId:&v49 fromTime:*&v11 toTime:v10 withLimit:*&var1, v8, 0];
   v16 = objc_alloc_init(MEMORY[0x277CBE410]);
   [v16 setName:@"minRecTimestamp"];
@@ -208,16 +208,16 @@
   [v16 setExpression:v20];
 
   [v16 setExpressionResultType:500];
-  v21 = [MEMORY[0x277CBEB18] array];
-  v22 = ULDBUtils::eventTypesToNSArray(a4);
+  array = [MEMORY[0x277CBEB18] array];
+  v22 = ULDBUtils::eventTypesToNSArray(time);
   v23 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"eventType", v22];
-  [v21 addObject:v23];
+  [array addObject:v23];
 
   v24 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"recordingUUID", v34];
-  [v21 addObject:v24];
+  [array addObject:v24];
 
   v25 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"recordingTimestamp" ascending:0];
-  v26 = [(ULStore *)self managedObjectContext];
+  managedObjectContext = [(ULStore *)self managedObjectContext];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __93__ULRecordingEventStore__fetchRecordingEventTriggers_atLoiGroupId_fromTime_toTime_withLimit___block_invoke;
@@ -225,13 +225,13 @@
   v35[4] = self;
   v27 = v16;
   v36 = v27;
-  v28 = v21;
+  v28 = array;
   v37 = v28;
   v29 = v25;
   v40 = a8;
   v38 = v29;
   v39 = &v41;
-  [v26 performBlockAndWait:v35];
+  [managedObjectContext performBlockAndWait:v35];
 
   objc_autoreleasePoolPop(context);
   v30 = v42;
@@ -278,35 +278,35 @@ void __93__ULRecordingEventStore__fetchRecordingEventTriggers_atLoiGroupId_fromT
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (vector<ULRecordingEventDO,)fetchRecordingEventsWithScanMeasurements:(ULRecordingEventStore *)self fromTime:(SEL)a3 toTime:(const void *)a4 withLimit:(double)a5
+- (vector<ULRecordingEventDO,)fetchRecordingEventsWithScanMeasurements:(ULRecordingEventStore *)self fromTime:(SEL)time toTime:(const void *)toTime withLimit:(double)limit
 {
   v11 = *MEMORY[0x277D85DE8];
   HIBYTE(v9) = 0;
   v10 = 0;
   LODWORD(v9) = a7;
-  result = [(ULRecordingEventStore *)self _fetchRecordingEventTriggers:a4 atLoiGroupId:&v9 + 7 fromTime:*&a5 toTime:1 withLimit:*&a6, 1, v9];
+  result = [(ULRecordingEventStore *)self _fetchRecordingEventTriggers:toTime atLoiGroupId:&v9 + 7 fromTime:*&limit toTime:1 withLimit:*&a6, 1, v9];
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (vector<ULRecordingEventDO,)fetchRecordingEventTriggersForLearningMeasurements:(ULRecordingEventStore *)self atLoiGroupId:(SEL)a3
+- (vector<ULRecordingEventDO,)fetchRecordingEventTriggersForLearningMeasurements:(ULRecordingEventStore *)self atLoiGroupId:(SEL)id
 {
   v9 = +[ULDefaultsSingleton shared];
-  v10 = [v9 defaultsDictionary];
+  defaultsDictionary = [v9 defaultsDictionary];
 
   v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULLearningRecordingLimit"];
-  v12 = [v10 objectForKey:v11];
+  v12 = [defaultsDictionary objectForKey:v11];
   if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v13 = [v12 unsignedIntValue];
+    unsignedIntValue = [v12 unsignedIntValue];
   }
 
   else
   {
-    v13 = [&unk_286A71898 unsignedIntValue];
+    unsignedIntValue = [&unk_286A71898 unsignedIntValue];
   }
 
-  v14 = v13;
+  v14 = unsignedIntValue;
 
   LODWORD(v19) = v14;
   [(ULRecordingEventStore *)self _fetchRecordingEventTriggers:a4 atLoiGroupId:a5 fromTime:0 toTime:0 withLimit:0, 0, v19];
@@ -336,29 +336,29 @@ void __93__ULRecordingEventStore__fetchRecordingEventTriggers_atLoiGroupId_fromT
   return result;
 }
 
-- (id)getTriggerUUIDsForLoiGroupId:(const uuid *)a3
+- (id)getTriggerUUIDsForLoiGroupId:(const uuid *)id
 {
   v19[2] = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [(ULStore *)self dbStore];
-  v8 = (*(v7->var0 + 8))(v7);
-  v9 = [v8 getLoiIdsInLoiGroupId:a3];
+  array = [MEMORY[0x277CBEB18] array];
+  dbStore = [(ULStore *)self dbStore];
+  v8 = (*(dbStore->var0 + 8))(dbStore);
+  v9 = [v8 getLoiIdsInLoiGroupId:id];
 
   v19[0] = 0;
   v19[1] = 0;
   v10 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:v19];
-  v11 = [v10 UUIDString];
+  uUIDString = [v10 UUIDString];
 
-  v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != NIL && %K != %@", @"triggerUUID", @"triggerUUID", v11];
-  [v6 addObject:v12];
+  v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != NIL && %K != %@", @"triggerUUID", @"triggerUUID", uUIDString];
+  [array addObject:v12];
 
   v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"loiId", v9];
-  [v6 addObject:v13];
+  [array addObject:v13];
 
   v14 = objc_opt_class();
   v15 = NSStringFromClass(v14);
-  v16 = [(ULStore *)self fetchPropertyForEntityName:v15 propertyToFetch:@"triggerUUID" distinctResults:1 byAndPredicates:v6 sortDescriptors:0 andLimit:0];
+  v16 = [(ULStore *)self fetchPropertyForEntityName:v15 propertyToFetch:@"triggerUUID" distinctResults:1 byAndPredicates:array sortDescriptors:0 andLimit:0];
 
   objc_autoreleasePoolPop(v5);
   v17 = *MEMORY[0x277D85DE8];
@@ -366,65 +366,65 @@ void __93__ULRecordingEventStore__fetchRecordingEventTriggers_atLoiGroupId_fromT
   return v16;
 }
 
-- (unsigned)countRecordingEventsFromTime:(double)a3 toTime:(double)a4 atLoiGroupId:(const uuid *)a5
+- (unsigned)countRecordingEventsFromTime:(double)time toTime:(double)toTime atLoiGroupId:(const uuid *)id
 {
   v9 = objc_autoreleasePoolPush();
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = MEMORY[0x277CCAC30];
-  v12 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v13 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v12 = [MEMORY[0x277CCABB0] numberWithDouble:time];
+  v13 = [MEMORY[0x277CCABB0] numberWithDouble:toTime];
   v14 = [v11 predicateWithFormat:@"%K > %@ && %K <= %@", @"recordingTimestamp", v12, @"recordingTimestamp", v13];
-  [v10 addObject:v14];
+  [array addObject:v14];
 
-  v15 = [(ULStore *)self dbStore];
-  v16 = (*(v15->var0 + 8))(v15);
-  v17 = [v16 getLoiIdsInLoiGroupId:a5];
+  dbStore = [(ULStore *)self dbStore];
+  v16 = (*(dbStore->var0 + 8))(dbStore);
+  v17 = [v16 getLoiIdsInLoiGroupId:id];
 
   v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"loiId", v17];
-  [v10 addObject:v18];
+  [array addObject:v18];
 
   v19 = objc_opt_class();
   v20 = NSStringFromClass(v19);
-  v21 = [(ULStore *)self countManagedObjectsWithEntityName:v20 byAndPredicates:v10 sortDescriptors:0 andLimit:0];
+  v21 = [(ULStore *)self countManagedObjectsWithEntityName:v20 byAndPredicates:array sortDescriptors:0 andLimit:0];
 
   objc_autoreleasePoolPop(v9);
   if (v21)
   {
-    v22 = [v21 unsignedIntValue];
+    unsignedIntValue = [v21 unsignedIntValue];
   }
 
   else
   {
-    v22 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v22;
+  return unsignedIntValue;
 }
 
-- (vector<boost::uuids::uuid,)fetchDistinctRecordingEventsFromTime:(ULRecordingEventStore *)self toTime:(SEL)a3 atLoiGroupId:(double)a4 withLimit:(double)a5
+- (vector<boost::uuids::uuid,)fetchDistinctRecordingEventsFromTime:(ULRecordingEventStore *)self toTime:(SEL)time atLoiGroupId:(double)id withLimit:(double)limit
 {
   v30[1] = *MEMORY[0x277D85DE8];
   v13 = objc_autoreleasePoolPush();
-  v14 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = MEMORY[0x277CCAC30];
-  v16 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-  v17 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v16 = [MEMORY[0x277CCABB0] numberWithDouble:id];
+  v17 = [MEMORY[0x277CCABB0] numberWithDouble:limit];
   v18 = [v15 predicateWithFormat:@"%K > %@ && %K <= %@", @"recordingTimestamp", v16, @"recordingTimestamp", v17];
-  [v14 addObject:v18];
+  [array addObject:v18];
 
-  v19 = [(ULStore *)self dbStore];
-  v20 = (*(v19->var0 + 8))(v19);
+  dbStore = [(ULStore *)self dbStore];
+  v20 = (*(dbStore->var0 + 8))(dbStore);
   v21 = [v20 getLoiIdsInLoiGroupId:a6];
 
   v22 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"loiId", v21];
-  [v14 addObject:v22];
+  [array addObject:v22];
 
   v23 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"recordingTimestamp" ascending:0];
   v24 = objc_opt_class();
   v25 = NSStringFromClass(v24);
   v30[0] = v23;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
-  v27 = [(ULStore *)self fetchPropertyForEntityName:v25 propertyToFetch:@"recordingUUID" distinctResults:1 byAndPredicates:v14 sortDescriptors:v26 andLimit:a7];
+  v27 = [(ULStore *)self fetchPropertyForEntityName:v25 propertyToFetch:@"recordingUUID" distinctResults:1 byAndPredicates:array sortDescriptors:v26 andLimit:a7];
 
   objc_autoreleasePoolPop(v13);
   ULDBUtils::boostUUIDsFromNSStringArray(v27, retstr);
@@ -433,19 +433,19 @@ void __93__ULRecordingEventStore__fetchRecordingEventTriggers_atLoiGroupId_fromT
   return result;
 }
 
-- (id)getRecordingUUIDsForRecordingEventActionsAtLoiGroupId:(optional<const boost:(optional<const double>)a4 :(optional<const double>)a5 uuids:(unsigned int)a6 :uuid> *)a3 fromTime:toTime:withLimit:
+- (id)getRecordingUUIDsForRecordingEventActionsAtLoiGroupId:(optional<const boost:(optional<const double>)id :(optional<const double>)a5 uuids:(unsigned int)uuids :uuid> *)a3 fromTime:toTime:withLimit:
 {
   var1 = a5.var1;
   v8 = a5.var0.var1;
-  v9 = a4.var1;
-  v10 = a4.var0.var1;
+  v9 = id.var1;
+  v10 = id.var0.var1;
   context = objc_autoreleasePoolPush();
-  v13 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"eventType", &unk_286A71838];
-  [v13 addObject:v14];
+  [array addObject:v14];
 
   v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"eventSubType", &unk_286A71850];
-  [v13 addObject:v15];
+  [array addObject:v15];
 
   if (v9 && var1)
   {
@@ -454,13 +454,13 @@ void __93__ULRecordingEventStore__fetchRecordingEventTriggers_atLoiGroupId_fromT
     v18 = [MEMORY[0x277CCABB0] numberWithDouble:v16];
     v19 = [MEMORY[0x277CCABB0] numberWithDouble:v8];
     v20 = [v17 predicateWithFormat:@"%K > %@ && %K <= %@", @"recordingTimestamp", v18, @"recordingTimestamp", v19];
-    [v13 addObject:v20];
+    [array addObject:v20];
   }
 
   if (a3->var1)
   {
-    v21 = [(ULStore *)self dbStore];
-    v22 = (*(v21->var0 + 8))(v21);
+    dbStore = [(ULStore *)self dbStore];
+    v22 = (*(dbStore->var0 + 8))(dbStore);
     v23 = v22;
     if (!a3->var1)
     {
@@ -470,31 +470,31 @@ void __93__ULRecordingEventStore__fetchRecordingEventTriggers_atLoiGroupId_fromT
     v24 = [v22 getLoiIdsInLoiGroupId:a3];
 
     v25 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"loiId", v24];
-    [v13 addObject:v25];
+    [array addObject:v25];
   }
 
   v26 = objc_opt_class();
   v27 = NSStringFromClass(v26);
-  v28 = [(ULStore *)self fetchPropertyForEntityName:v27 propertyToFetch:@"recordingUUID" distinctResults:1 byAndPredicates:v13 sortDescriptors:0 andLimit:a6];
+  v28 = [(ULStore *)self fetchPropertyForEntityName:v27 propertyToFetch:@"recordingUUID" distinctResults:1 byAndPredicates:array sortDescriptors:0 andLimit:uuids];
 
   objc_autoreleasePoolPop(context);
 
   return v28;
 }
 
-- (id)getRecordingUUIDsForLocalizationActionsFromTime:(optional<const double>)a3 toTime:(optional<const double>)a4
+- (id)getRecordingUUIDsForLocalizationActionsFromTime:(optional<const double>)time toTime:(optional<const double>)toTime
 {
-  var1 = a4.var1;
-  v5 = a4.var0.var1;
-  v6 = a3.var1;
-  v7 = a3.var0.var1;
+  var1 = toTime.var1;
+  v5 = toTime.var0.var1;
+  v6 = time.var1;
+  v7 = time.var0.var1;
   v9 = objc_autoreleasePoolPush();
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"eventType", &unk_286A71838];
-  [v10 addObject:v11];
+  [array addObject:v11];
 
   v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"eventSubType", &unk_286A73C50];
-  [v10 addObject:v12];
+  [array addObject:v12];
 
   if (v6 && var1)
   {
@@ -503,38 +503,38 @@ void __93__ULRecordingEventStore__fetchRecordingEventTriggers_atLoiGroupId_fromT
     v15 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
     v16 = [MEMORY[0x277CCABB0] numberWithDouble:v5];
     v17 = [v14 predicateWithFormat:@"%K > %@ && %K <= %@", @"recordingTimestamp", v15, @"recordingTimestamp", v16];
-    [v10 addObject:v17];
+    [array addObject:v17];
   }
 
   v18 = objc_opt_class();
   v19 = NSStringFromClass(v18);
-  v20 = [(ULStore *)self fetchPropertyForEntityName:v19 propertyToFetch:@"recordingUUID" distinctResults:1 byAndPredicates:v10 sortDescriptors:0 andLimit:0];
+  v20 = [(ULStore *)self fetchPropertyForEntityName:v19 propertyToFetch:@"recordingUUID" distinctResults:1 byAndPredicates:array sortDescriptors:0 andLimit:0];
 
   objc_autoreleasePoolPop(v9);
 
   return v20;
 }
 
-- (id)getRecordingUUIDsOlderThan:(double)a3 orNewerThan:(double)a4
+- (id)getRecordingUUIDsOlderThan:(double)than orNewerThan:(double)newerThan
 {
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = MEMORY[0x277CCAC30];
-  v10 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v11 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v10 = [MEMORY[0x277CCABB0] numberWithDouble:than];
+  v11 = [MEMORY[0x277CCABB0] numberWithDouble:newerThan];
   v12 = [v9 predicateWithFormat:@"%K < %@ || %K > %@", @"recordingTimestamp", v10, @"recordingTimestamp", v11];
-  [v8 addObject:v12];
+  [array addObject:v12];
 
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  v15 = [(ULStore *)self fetchPropertyForEntityName:v14 propertyToFetch:@"recordingUUID" distinctResults:1 byAndPredicates:v8 sortDescriptors:0 andLimit:0];
+  v15 = [(ULStore *)self fetchPropertyForEntityName:v14 propertyToFetch:@"recordingUUID" distinctResults:1 byAndPredicates:array sortDescriptors:0 andLimit:0];
 
   objc_autoreleasePoolPop(v7);
 
   return v15;
 }
 
-- (id)getDistinctRecordingUUIDsWithLimit:(unsigned int)a3
+- (id)getDistinctRecordingUUIDsWithLimit:(unsigned int)limit
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"recordingTimestamp" ascending:0];
@@ -542,32 +542,32 @@ void __93__ULRecordingEventStore__fetchRecordingEventTriggers_atLoiGroupId_fromT
   v7 = NSStringFromClass(v6);
   v12[0] = v5;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  v9 = [(ULStore *)self fetchPropertyForEntityName:v7 propertyToFetch:@"recordingUUID" distinctResults:1 byAndPredicates:0 sortDescriptors:v8 andLimit:a3];
+  v9 = [(ULStore *)self fetchPropertyForEntityName:v7 propertyToFetch:@"recordingUUID" distinctResults:1 byAndPredicates:0 sortDescriptors:v8 andLimit:limit];
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (void)fetchMostRecentRecordingForLoiGroupId:(uint64_t)a3@<X8>
+- (void)fetchMostRecentRecordingForLoiGroupId:(uint64_t)id@<X8>
 {
   v26[1] = *MEMORY[0x277D85DE8];
   v23 = 0uLL;
   v24 = 0;
   std::vector<ULRecordingEventDO>::reserve(&v23, 1uLL);
   v6 = objc_autoreleasePoolPush();
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [a1 dbStore];
-  v9 = (*(*v8 + 64))(v8);
+  array = [MEMORY[0x277CBEB18] array];
+  dbStore = [self dbStore];
+  v9 = (*(*dbStore + 64))(dbStore);
   v10 = [v9 getLoiIdsInLoiGroupId:a2];
 
   v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"loiId", v10];
-  [v7 addObject:v11];
+  [array addObject:v11];
 
   v12 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"recordingTimestamp" ascending:0];
   v26[0] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-  [a1 _fetchRecordingEventsByAndPredicates:v7 sortDescriptors:v13 andLimit:1];
+  [self _fetchRecordingEventsByAndPredicates:array sortDescriptors:v13 andLimit:1];
   std::vector<ULRecordingEventDO>::__vdeallocate(&v23);
   v23 = v21;
   v24 = v22;
@@ -581,31 +581,31 @@ void __93__ULRecordingEventStore__fetchRecordingEventTriggers_atLoiGroupId_fromT
   if (v23 == *(&v23 + 1))
   {
     v19 = 0;
-    *a3 = 0;
+    *id = 0;
   }
 
   else
   {
     v15 = *v23;
-    *(a3 + 16) = *(v23 + 16);
-    *a3 = v15;
+    *(id + 16) = *(v23 + 16);
+    *id = v15;
     v16 = *(v14 + 24);
-    *(a3 + 40) = *(v14 + 40);
-    *(a3 + 24) = v16;
+    *(id + 40) = *(v14 + 40);
+    *(id + 24) = v16;
     *(v14 + 32) = 0;
     *(v14 + 40) = 0;
     *(v14 + 24) = 0;
     v17 = *(v14 + 48);
-    *(a3 + 60) = *(v14 + 60);
-    *(a3 + 48) = v17;
-    CLMicroLocationProto::RecordingEvent::RecordingEvent((a3 + 80), (v14 + 80));
+    *(id + 60) = *(v14 + 60);
+    *(id + 48) = v17;
+    CLMicroLocationProto::RecordingEvent::RecordingEvent((id + 80), (v14 + 80));
     v18 = *(v14 + 224);
-    *(a3 + 240) = *(v14 + 240);
-    *(a3 + 224) = v18;
+    *(id + 240) = *(v14 + 240);
+    *(id + 224) = v18;
     v19 = 1;
   }
 
-  *(a3 + 248) = v19;
+  *(id + 248) = v19;
   *&v21 = &v23;
   std::vector<ULRecordingEventDO>::__destroy_vector::operator()[abi:ne200100](&v21);
   v20 = *MEMORY[0x277D85DE8];
@@ -618,7 +618,7 @@ void __93__ULRecordingEventStore__fetchRecordingEventTriggers_atLoiGroupId_fromT
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"recordingTimestamp" ascending:1];
   v9[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  [a1 _fetchRecordingEventsByAndPredicates:0 sortDescriptors:v4 andLimit:1];
+  [self _fetchRecordingEventsByAndPredicates:0 sortDescriptors:v4 andLimit:1];
 
   if (v7[1] != v7[0])
   {
@@ -632,22 +632,22 @@ void __93__ULRecordingEventStore__fetchRecordingEventTriggers_atLoiGroupId_fromT
   return v2;
 }
 
-- (vector<std::string,)selectAllRecordingLOITypesFromTime:(ULRecordingEventStore *)self andLimit:(SEL)a3
+- (vector<std::string,)selectAllRecordingLOITypesFromTime:(ULRecordingEventStore *)self andLimit:(SEL)limit
 {
   v35 = *MEMORY[0x277D85DE8];
   retstr->var0 = 0;
   retstr->var1 = 0;
   retstr->var2 = 0;
   v9 = objc_autoreleasePoolPush();
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = MEMORY[0x277CCAC30];
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
   v13 = [v11 predicateWithFormat:@"%K > %@", @"recordingTimestamp", v12];
-  [v10 addObject:v13];
+  [array addObject:v13];
 
   v14 = objc_opt_class();
   v15 = NSStringFromClass(v14);
-  v16 = [(ULStore *)self fetchPropertyForEntityName:v15 propertyToFetch:@"loiType" distinctResults:1 byAndPredicates:v10 sortDescriptors:0 andLimit:a5];
+  v16 = [(ULStore *)self fetchPropertyForEntityName:v15 propertyToFetch:@"loiType" distinctResults:1 byAndPredicates:array sortDescriptors:0 andLimit:a5];
 
   v32 = 0u;
   v33 = 0u;
@@ -716,15 +716,15 @@ void __93__ULRecordingEventStore__fetchRecordingEventTriggers_atLoiGroupId_fromT
   return result;
 }
 
-- (BOOL)batchTransferRecordsUsingBatchSize:(unint64_t)a3 andLimit:(unint64_t)a4 intoTargetStore:(id)a5
+- (BOOL)batchTransferRecordsUsingBatchSize:(unint64_t)size andLimit:(unint64_t)limit intoTargetStore:(id)store
 {
-  v8 = a5;
+  storeCopy = store;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
   v9 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"recordingTimestamp" ascending:0];
-  v10 = [(ULStore *)self managedObjectContext];
+  managedObjectContext = [(ULStore *)self managedObjectContext];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __85__ULRecordingEventStore_batchTransferRecordsUsingBatchSize_andLimit_intoTargetStore___block_invoke;
@@ -733,16 +733,16 @@ void __93__ULRecordingEventStore__fetchRecordingEventTriggers_atLoiGroupId_fromT
   v14[4] = self;
   v11 = v9;
   v15 = v11;
-  v18 = a3;
-  v19 = a4;
-  v12 = v8;
+  sizeCopy = size;
+  limitCopy = limit;
+  v12 = storeCopy;
   v16 = v12;
-  [v10 performBlockAndWait:v14];
+  [managedObjectContext performBlockAndWait:v14];
 
-  LOBYTE(v8) = *(v21 + 24);
+  LOBYTE(storeCopy) = *(v21 + 24);
   _Block_object_dispose(&v20, 8);
 
-  return v8;
+  return storeCopy;
 }
 
 void __85__ULRecordingEventStore_batchTransferRecordsUsingBatchSize_andLimit_intoTargetStore___block_invoke(void *a1)
@@ -758,40 +758,40 @@ void __85__ULRecordingEventStore_batchTransferRecordsUsingBatchSize_andLimit_int
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)batchTransferRecordingEventsForRecordingUUIDs:(const void *)a3 withEventTypes:(const void *)a4 batchSize:(unint64_t)a5 andLimit:(unsigned int)a6 intoTargetStore:(id)a7
+- (BOOL)batchTransferRecordingEventsForRecordingUUIDs:(const void *)ds withEventTypes:(const void *)types batchSize:(unint64_t)size andLimit:(unsigned int)limit intoTargetStore:(id)store
 {
-  v24 = a7;
+  storeCopy = store;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = 0;
   v12 = objc_autoreleasePoolPush();
-  v13 = [MEMORY[0x277CBEB18] array];
-  v14 = ULDBUtils::NSStringArrayFromBoostUUIDs(a3);
+  array = [MEMORY[0x277CBEB18] array];
+  v14 = ULDBUtils::NSStringArrayFromBoostUUIDs(ds);
   v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"recordingUUID", v14];
-  [v13 addObject:v15];
+  [array addObject:v15];
 
-  v16 = ULDBUtils::eventTypesToNSArray(a4);
+  v16 = ULDBUtils::eventTypesToNSArray(types);
   v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"eventType", v16];
-  [v13 addObject:v17];
+  [array addObject:v17];
 
   v18 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"receivedTimestamp" ascending:0];
-  v19 = [(ULStore *)self managedObjectContext];
+  managedObjectContext = [(ULStore *)self managedObjectContext];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __121__ULRecordingEventStore_batchTransferRecordingEventsForRecordingUUIDs_withEventTypes_batchSize_andLimit_intoTargetStore___block_invoke;
   v25[3] = &unk_2798D47C8;
   v29 = &v32;
   v25[4] = self;
-  v20 = v13;
+  v20 = array;
   v26 = v20;
   v21 = v18;
   v27 = v21;
-  v30 = a5;
-  v31 = a6;
-  v22 = v24;
+  sizeCopy = size;
+  limitCopy = limit;
+  v22 = storeCopy;
   v28 = v22;
-  [v19 performBlockAndWait:v25];
+  [managedObjectContext performBlockAndWait:v25];
 
   objc_autoreleasePoolPop(v12);
   LOBYTE(v21) = *(v33 + 24);
@@ -814,69 +814,69 @@ void __121__ULRecordingEventStore_batchTransferRecordingEventsForRecordingUUIDs_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (unsigned)countRecordingEventsForLoiGroupId:(const uuid *)a3
+- (unsigned)countRecordingEventsForLoiGroupId:(const uuid *)id
 {
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(ULStore *)self dbStore];
-  v7 = (*(v6->var0 + 8))(v6);
-  v8 = [v7 getLoiIdsInLoiGroupId:a3];
+  array = [MEMORY[0x277CBEB18] array];
+  dbStore = [(ULStore *)self dbStore];
+  v7 = (*(dbStore->var0 + 8))(dbStore);
+  v8 = [v7 getLoiIdsInLoiGroupId:id];
 
   v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"loiId", v8];
-  [v5 addObject:v9];
+  [array addObject:v9];
 
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [(ULStore *)self countManagedObjectsWithEntityName:v11 byAndPredicates:v5 sortDescriptors:0 andLimit:0];
+  v12 = [(ULStore *)self countManagedObjectsWithEntityName:v11 byAndPredicates:array sortDescriptors:0 andLimit:0];
 
   if (v12)
   {
-    v13 = [v12 unsignedIntValue];
+    unsignedIntValue = [v12 unsignedIntValue];
   }
 
   else
   {
-    v13 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v13;
+  return unsignedIntValue;
 }
 
-- (void)fetchRecordingEventTriggersForLearningMeasurements:(uint64_t)a3 atLoiGroupId:(char)a4
+- (void)fetchRecordingEventTriggersForLearningMeasurements:(uint64_t)measurements atLoiGroupId:(char)id
 {
   v243 = *MEMORY[0x277D85DE8];
   while (2)
   {
     v7 = a2;
     v225 = a2 - 31;
-    v8 = a1;
+    selfCopy5 = self;
     while (1)
     {
       while (1)
       {
-        a1 = v8;
-        v9 = v7 - v8;
-        v10 = 0xEF7BDEF7BDEF7BDFLL * (v7 - v8);
+        self = selfCopy5;
+        v9 = v7 - selfCopy5;
+        v10 = 0xEF7BDEF7BDEF7BDFLL * (v7 - selfCopy5);
         v11 = v10 - 2;
         if (v10 > 2)
         {
           switch(v10)
           {
             case 3:
-              std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *,0>(a1, a1 + 31, v225);
+              std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *,0>(self, self + 31, v225);
               goto LABEL_313;
             case 4:
-              std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *,0>(a1, a1 + 31, a1 + 62);
+              std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *,0>(self, self + 31, self + 62);
               v95 = bswap64(*v225);
-              v96 = bswap64(a1[62]);
-              if (v95 != v96 || (v95 = bswap64(*(a2 - 30)), v96 = bswap64(a1[63]), v95 != v96))
+              v96 = bswap64(self[62]);
+              if (v95 != v96 || (v95 = bswap64(*(a2 - 30)), v96 = bswap64(self[63]), v95 != v96))
               {
                 v200 = v95 < v96 ? -1 : 1;
                 if (v200 < 0)
                 {
-                  std::swap[abi:ne200100]<ULRecordingEventDO>(a1 + 31, v225);
-                  v201 = bswap64(a1[62]);
-                  v202 = bswap64(a1[31]);
-                  if (v201 == v202 && (v201 = bswap64(a1[63]), v202 = bswap64(a1[32]), v201 == v202))
+                  std::swap[abi:ne200100]<ULRecordingEventDO>(self + 31, v225);
+                  v201 = bswap64(self[62]);
+                  v202 = bswap64(self[31]);
+                  if (v201 == v202 && (v201 = bswap64(self[63]), v202 = bswap64(self[32]), v201 == v202))
                   {
                     v203 = 0;
                   }
@@ -888,10 +888,10 @@ void __121__ULRecordingEventStore_batchTransferRecordingEventsForRecordingUUIDs_
 
                   if (v203 < 0)
                   {
-                    std::swap[abi:ne200100]<ULRecordingEventDO>((a1 + 31), a1 + 31);
-                    v221 = bswap64(a1[31]);
-                    v222 = bswap64(*a1);
-                    if (v221 == v222 && (v221 = bswap64(a1[32]), v222 = bswap64(a1[1]), v221 == v222))
+                    std::swap[abi:ne200100]<ULRecordingEventDO>((self + 31), self + 31);
+                    v221 = bswap64(self[31]);
+                    v222 = bswap64(*self);
+                    if (v221 == v222 && (v221 = bswap64(self[32]), v222 = bswap64(self[1]), v221 == v222))
                     {
                       v223 = 0;
                     }
@@ -903,7 +903,7 @@ void __121__ULRecordingEventStore_batchTransferRecordingEventsForRecordingUUIDs_
 
                     if (v223 < 0)
                     {
-                      std::swap[abi:ne200100]<ULRecordingEventDO>(a1, (a1 + 31));
+                      std::swap[abi:ne200100]<ULRecordingEventDO>(self, (self + 31));
                     }
                   }
                 }
@@ -911,7 +911,7 @@ void __121__ULRecordingEventStore_batchTransferRecordingEventsForRecordingUUIDs_
 
               goto LABEL_313;
             case 5:
-              std::__sort5[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *,0>(a1, a1 + 31, a1 + 62, a1 + 93, v225);
+              std::__sort5[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *,0>(self, self + 31, self + 62, self + 93, v225);
               goto LABEL_313;
           }
         }
@@ -927,8 +927,8 @@ void __121__ULRecordingEventStore_batchTransferRecordingEventsForRecordingUUIDs_
           if (v10 == 2)
           {
             v97 = bswap64(*(a2 - 31));
-            v98 = bswap64(*a1);
-            if (v97 != v98 || (v97 = bswap64(*(a2 - 30)), v98 = bswap64(a1[1]), v97 != v98))
+            v98 = bswap64(*self);
+            if (v97 != v98 || (v97 = bswap64(*(a2 - 30)), v98 = bswap64(self[1]), v97 != v98))
             {
               if (v97 < v98)
               {
@@ -942,7 +942,7 @@ void __121__ULRecordingEventStore_batchTransferRecordingEventsForRecordingUUIDs_
 
               if (v199 < 0)
               {
-                std::swap[abi:ne200100]<ULRecordingEventDO>(a1, (a2 - 31));
+                std::swap[abi:ne200100]<ULRecordingEventDO>(self, (a2 - 31));
               }
             }
 
@@ -952,21 +952,21 @@ void __121__ULRecordingEventStore_batchTransferRecordingEventsForRecordingUUIDs_
 
         if (v9 <= 5951)
         {
-          if (a4)
+          if (id)
           {
-            if (a1 != v7)
+            if (self != v7)
             {
-              v99 = a1 + 31;
-              if (a1 + 31 != a2)
+              v99 = self + 31;
+              if (self + 31 != a2)
               {
                 v100 = 0;
-                v101 = a1;
+                selfCopy2 = self;
                 do
                 {
                   v102 = v99;
-                  v103 = bswap64(v101[31]);
-                  v104 = bswap64(*v101);
-                  if (v103 != v104 || (v103 = bswap64(v102[1]), v104 = bswap64(v101[1]), v103 != v104))
+                  v103 = bswap64(selfCopy2[31]);
+                  v104 = bswap64(*selfCopy2);
+                  if (v103 != v104 || (v103 = bswap64(v102[1]), v104 = bswap64(selfCopy2[1]), v103 != v104))
                   {
                     v105 = v103 < v104 ? -1 : 1;
                     if (v105 < 0)
@@ -974,23 +974,23 @@ void __121__ULRecordingEventStore_batchTransferRecordingEventsForRecordingUUIDs_
                       v106 = *v102;
                       v236 = v102[2];
                       v235 = v106;
-                      __p = *(v101 + 17);
-                      v238 = v101[36];
-                      v101[34] = 0;
-                      v101[35] = 0;
-                      v101[36] = 0;
-                      v239[0] = *(v101 + 37);
-                      *(v239 + 12) = *(v101 + 308);
-                      CLMicroLocationProto::RecordingEvent::RecordingEvent(v240, (v101 + 41));
-                      v242 = *(v101 + 488);
-                      v241 = *(v101 + 59);
+                      __p = *(selfCopy2 + 17);
+                      v238 = selfCopy2[36];
+                      selfCopy2[34] = 0;
+                      selfCopy2[35] = 0;
+                      selfCopy2[36] = 0;
+                      v239[0] = *(selfCopy2 + 37);
+                      *(v239 + 12) = *(selfCopy2 + 308);
+                      CLMicroLocationProto::RecordingEvent::RecordingEvent(v240, (selfCopy2 + 41));
+                      v242 = *(selfCopy2 + 488);
+                      v241 = *(selfCopy2 + 59);
                       v107 = v100;
                       while (1)
                       {
-                        v108 = a1 + v107;
-                        *(v108 + 248) = *(a1 + v107);
-                        *(v108 + 33) = *(a1 + v107 + 16);
-                        if (*(a1 + v107 + 295) < 0)
+                        v108 = self + v107;
+                        *(v108 + 248) = *(self + v107);
+                        *(v108 + 33) = *(self + v107 + 16);
+                        if (*(self + v107 + 295) < 0)
                         {
                           operator delete(*(v108 + 34));
                         }
@@ -1002,9 +1002,9 @@ void __121__ULRecordingEventStore_batchTransferRecordingEventsForRecordingUUIDs_
                         *(v108 + 296) = *(v108 + 3);
                         *(v108 + 308) = *(v108 + 60);
                         CLMicroLocationProto::RecordingEvent::CopyFrom((v108 + 328), (v108 + 80));
-                        v109 = a1 + v107;
-                        *(a1 + v107 + 472) = *(a1 + v107 + 224);
-                        *(a1 + v107 + 488) = *(a1 + v107 + 240);
+                        v109 = self + v107;
+                        *(self + v107 + 472) = *(self + v107 + 224);
+                        *(self + v107 + 488) = *(self + v107 + 240);
                         if (!v107)
                         {
                           break;
@@ -1030,17 +1030,17 @@ void __121__ULRecordingEventStore_batchTransferRecordingEventsForRecordingUUIDs_
                         v107 -= 248;
                         if ((v112 & 0x80000000) == 0)
                         {
-                          v113 = a1 + v107 + 248;
+                          selfCopy3 = self + v107 + 248;
                           goto LABEL_165;
                         }
                       }
 
-                      v113 = a1;
+                      selfCopy3 = self;
 LABEL_165:
                       v114 = v235;
-                      *(v113 + 16) = v236;
-                      *v113 = v114;
-                      if (*(v113 + 47) < 0)
+                      *(selfCopy3 + 16) = v236;
+                      *selfCopy3 = v114;
+                      if (*(selfCopy3 + 47) < 0)
                       {
                         operator delete(*(v109 + 3));
                       }
@@ -1067,7 +1067,7 @@ LABEL_165:
 
                   v99 = v102 + 31;
                   v100 += 248;
-                  v101 = v102;
+                  selfCopy2 = v102;
                 }
 
                 while (v102 + 31 != a2);
@@ -1075,18 +1075,18 @@ LABEL_165:
             }
           }
 
-          else if (a1 != v7)
+          else if (self != v7)
           {
-            v204 = a1 + 31;
-            if (a1 + 31 != a2)
+            v204 = self + 31;
+            if (self + 31 != a2)
             {
-              v205 = a1 - 31;
+              v205 = self - 31;
               do
               {
                 v206 = v204;
-                v207 = bswap64(a1[31]);
-                v208 = bswap64(*a1);
-                if (v207 != v208 || (v207 = bswap64(v206[1]), v208 = bswap64(a1[1]), v207 != v208))
+                v207 = bswap64(self[31]);
+                v208 = bswap64(*self);
+                if (v207 != v208 || (v207 = bswap64(v206[1]), v208 = bswap64(self[1]), v207 != v208))
                 {
                   v209 = v207 < v208 ? -1 : 1;
                   if (v209 < 0)
@@ -1094,16 +1094,16 @@ LABEL_165:
                     v210 = *v206;
                     v236 = v206[2];
                     v235 = v210;
-                    __p = *(a1 + 17);
-                    v238 = a1[36];
-                    a1[34] = 0;
-                    a1[35] = 0;
-                    a1[36] = 0;
-                    v239[0] = *(a1 + 37);
-                    *(v239 + 12) = *(a1 + 308);
-                    CLMicroLocationProto::RecordingEvent::RecordingEvent(v240, (a1 + 41));
-                    v242 = *(a1 + 488);
-                    v241 = *(a1 + 59);
+                    __p = *(self + 17);
+                    v238 = self[36];
+                    self[34] = 0;
+                    self[35] = 0;
+                    self[36] = 0;
+                    v239[0] = *(self + 37);
+                    *(v239 + 12) = *(self + 308);
+                    CLMicroLocationProto::RecordingEvent::RecordingEvent(v240, (self + 41));
+                    v242 = *(self + 488);
+                    v241 = *(self + 59);
                     v211 = v205;
                     do
                     {
@@ -1176,7 +1176,7 @@ LABEL_165:
 
                 v204 = v206 + 31;
                 v205 += 31;
-                a1 = v206;
+                self = v206;
               }
 
               while (v206 + 31 != a2);
@@ -1186,9 +1186,9 @@ LABEL_165:
           goto LABEL_313;
         }
 
-        if (!a3)
+        if (!measurements)
         {
-          if (a1 != v7)
+          if (self != v7)
           {
             v118 = v11 >> 1;
             v119 = v11 >> 1;
@@ -1198,7 +1198,7 @@ LABEL_165:
               if (v118 >= v119)
               {
                 v121 = (2 * v119) | 1;
-                v122 = &a1[31 * v121];
+                v122 = &self[31 * v121];
                 if (2 * v119 + 2 < v10)
                 {
                   v123 = bswap64(*v122);
@@ -1220,7 +1220,7 @@ LABEL_165:
                   }
                 }
 
-                v126 = &a1[31 * v119];
+                v126 = &self[31 * v119];
                 v127 = bswap64(*v122);
                 v128 = bswap64(*v126);
                 if (v127 == v128 && (v127 = bswap64(v122[1]), v128 = bswap64(v126[1]), v127 == v128) || (v127 < v128 ? (v129 = -1) : (v129 = 1), (v129 & 0x80000000) == 0))
@@ -1269,7 +1269,7 @@ LABEL_165:
                       break;
                     }
 
-                    v122 = &a1[31 * ((2 * v121) | 1)];
+                    v122 = &self[31 * ((2 * v121) | 1)];
                     if (2 * v121 + 2 >= v10)
                     {
                       v121 = (2 * v121) | 1;
@@ -1352,24 +1352,24 @@ LABEL_165:
             v149 = 0xEF7BDEF7BDEF7BDFLL * (v9 >> 3);
             do
             {
-              v228 = a1[2];
-              v227 = *a1;
-              v229 = *(a1 + 3);
-              v230 = a1[5];
-              a1[4] = 0;
-              a1[5] = 0;
-              a1[3] = 0;
-              *v231 = *(a1 + 3);
-              *&v231[12] = *(a1 + 60);
-              CLMicroLocationProto::RecordingEvent::RecordingEvent(v232, (a1 + 10));
+              v228 = self[2];
+              v227 = *self;
+              v229 = *(self + 3);
+              v230 = self[5];
+              self[4] = 0;
+              self[5] = 0;
+              self[3] = 0;
+              *v231 = *(self + 3);
+              *&v231[12] = *(self + 60);
+              CLMicroLocationProto::RecordingEvent::RecordingEvent(v232, (self + 10));
               v150 = 0;
-              v151 = *(a1 + 14);
-              v234 = *(a1 + 240);
+              v151 = *(self + 14);
+              v234 = *(self + 240);
               v233 = v151;
-              v152 = a1;
+              selfCopy4 = self;
               do
               {
-                v153 = &v152[31 * v150];
+                v153 = &selfCopy4[31 * v150];
                 v154 = v153 + 31;
                 v155 = 2 * v150;
                 v150 = (2 * v150) | 1;
@@ -1398,26 +1398,26 @@ LABEL_165:
                 }
 
                 v162 = *v154;
-                v152[2] = v154[2];
-                *v152 = v162;
-                if (*(v152 + 47) < 0)
+                selfCopy4[2] = v154[2];
+                *selfCopy4 = v162;
+                if (*(selfCopy4 + 47) < 0)
                 {
-                  operator delete(v152[3]);
+                  operator delete(selfCopy4[3]);
                 }
 
                 v163 = *(v154 + 3);
-                v152[5] = v154[5];
-                *(v152 + 3) = v163;
+                selfCopy4[5] = v154[5];
+                *(selfCopy4 + 3) = v163;
                 *(v154 + 47) = 0;
                 *(v154 + 24) = 0;
                 v164 = *(v154 + 3);
-                *(v152 + 60) = *(v154 + 60);
-                *(v152 + 3) = v164;
-                CLMicroLocationProto::RecordingEvent::CopyFrom((v152 + 10), (v154 + 10));
+                *(selfCopy4 + 60) = *(v154 + 60);
+                *(selfCopy4 + 3) = v164;
+                CLMicroLocationProto::RecordingEvent::CopyFrom((selfCopy4 + 10), (v154 + 10));
                 v165 = *(v154 + 14);
-                *(v152 + 240) = *(v154 + 240);
-                *(v152 + 14) = v165;
-                v152 = v154;
+                *(selfCopy4 + 240) = *(v154 + 240);
+                *(selfCopy4 + 14) = v165;
+                selfCopy4 = v154;
               }
 
               while (v150 <= ((v149 - 2) >> 1));
@@ -1481,11 +1481,11 @@ LABEL_165:
                 v174 = v233;
                 *(v173 + 16) = v234;
                 *v173 = v174;
-                v175 = v154 - a1 + 248;
+                v175 = v154 - self + 248;
                 if (v175 >= 249)
                 {
                   v176 = (-2 - 0x1084210842108421 * (v175 >> 3)) >> 1;
-                  v177 = &a1[31 * v176];
+                  v177 = &self[31 * v176];
                   v178 = bswap64(*v177);
                   v179 = bswap64(*v154);
                   if (v178 != v179 || (v178 = bswap64(v177[1]), v179 = bswap64(v154[1]), v178 != v179))
@@ -1538,7 +1538,7 @@ LABEL_165:
                         }
 
                         v176 = (v176 - 1) >> 1;
-                        v177 = &a1[31 * v176];
+                        v177 = &self[31 * v176];
                         v191 = bswap64(*v177);
                         v192 = bswap64(v235);
                         if (v191 == v192 && (v191 = bswap64(v177[1]), v192 = bswap64(*(&v235 + 1)), v191 == v192))
@@ -1596,32 +1596,32 @@ LABEL_165:
         }
 
         v12 = v10 >> 1;
-        v13 = &a1[31 * (v10 >> 1)];
+        v13 = &self[31 * (v10 >> 1)];
         if (v9 < 0x7C01)
         {
-          std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *,0>(v13, a1, v225);
+          std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *,0>(v13, self, v225);
         }
 
         else
         {
-          std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *,0>(a1, v13, v225);
-          v14 = &a1[31 * v12 - 31];
-          std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *,0>(a1 + 31, v14, a2 - 62);
-          v15 = &a1[31 * v12];
-          std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *,0>(a1 + 62, v15 + 31, a2 - 93);
+          std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *,0>(self, v13, v225);
+          v14 = &self[31 * v12 - 31];
+          std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *,0>(self + 31, v14, a2 - 62);
+          v15 = &self[31 * v12];
+          std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *,0>(self + 62, v15 + 31, a2 - 93);
           std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *,0>(v14, v13, v15 + 31);
-          std::swap[abi:ne200100]<ULRecordingEventDO>(a1, v13);
+          std::swap[abi:ne200100]<ULRecordingEventDO>(self, v13);
         }
 
-        --a3;
-        if (a4)
+        --measurements;
+        if (id)
         {
           break;
         }
 
-        v16 = bswap64(*(a1 - 31));
-        v17 = bswap64(*a1);
-        if (v16 != v17 || (v16 = bswap64(*(a1 - 30)), v17 = bswap64(a1[1]), v16 != v17))
+        v16 = bswap64(*(self - 31));
+        v17 = bswap64(*self);
+        if (v16 != v17 || (v16 = bswap64(*(self - 30)), v17 = bswap64(self[1]), v16 != v17))
         {
           v25 = v16 < v17 ? -1 : 1;
           if (v25 < 0)
@@ -1630,21 +1630,21 @@ LABEL_165:
           }
         }
 
-        v18 = *a1;
-        v236 = a1[2];
+        v18 = *self;
+        v236 = self[2];
         v235 = v18;
-        v19 = a1[5];
-        __p = *(a1 + 3);
+        v19 = self[5];
+        __p = *(self + 3);
         v238 = v19;
-        a1[4] = 0;
-        a1[5] = 0;
-        a1[3] = 0;
-        v20 = *(a1 + 60);
-        v239[0] = *(a1 + 3);
+        self[4] = 0;
+        self[5] = 0;
+        self[3] = 0;
+        v20 = *(self + 60);
+        v239[0] = *(self + 3);
         *(v239 + 12) = v20;
-        CLMicroLocationProto::RecordingEvent::RecordingEvent(v240, (a1 + 10));
-        v21 = *(a1 + 14);
-        v242 = *(a1 + 240);
+        CLMicroLocationProto::RecordingEvent::RecordingEvent(v240, (self + 10));
+        v21 = *(self + 14);
+        v242 = *(self + 240);
         v241 = v21;
         v22 = bswap64(v235);
         v23 = bswap64(*v225);
@@ -1665,13 +1665,13 @@ LABEL_165:
 
         if (v24 < 0)
         {
-          v8 = a1;
+          selfCopy5 = self;
           do
           {
             do
             {
-              v68 = v8[31];
-              v8 += 31;
+              v68 = selfCopy5[31];
+              selfCopy5 += 31;
               v69 = bswap64(v235);
               v70 = bswap64(v68);
               if (v69 != v70)
@@ -1680,7 +1680,7 @@ LABEL_165:
               }
 
               v69 = bswap64(*(&v235 + 1));
-              v70 = bswap64(v8[1]);
+              v70 = bswap64(selfCopy5[1]);
             }
 
             while (v69 == v70);
@@ -1700,18 +1700,18 @@ LABEL_165:
 
         else
         {
-          v64 = a1 + 31;
+          v64 = self + 31;
           do
           {
-            v8 = v64;
+            selfCopy5 = v64;
             if (v64 >= v7)
             {
               break;
             }
 
             v65 = bswap64(v235);
-            v66 = bswap64(*v8);
-            if (v65 == v66 && (v65 = bswap64(*(&v235 + 1)), v66 = bswap64(v8[1]), v65 == v66))
+            v66 = bswap64(*selfCopy5);
+            if (v65 == v66 && (v65 = bswap64(*(&v235 + 1)), v66 = bswap64(selfCopy5[1]), v65 == v66))
             {
               v67 = 0;
             }
@@ -1721,14 +1721,14 @@ LABEL_165:
               v67 = v65 < v66 ? -1 : 1;
             }
 
-            v64 = v8 + 31;
+            v64 = selfCopy5 + 31;
           }
 
           while ((v67 & 0x80000000) == 0);
         }
 
         v72 = v7;
-        if (v8 < v7)
+        if (selfCopy5 < v7)
         {
           v72 = v7;
           do
@@ -1753,15 +1753,15 @@ LABEL_165:
           while (v76 < 0);
         }
 
-        while (v8 < v72)
+        while (selfCopy5 < v72)
         {
-          std::swap[abi:ne200100]<ULRecordingEventDO>(v8, v72);
+          std::swap[abi:ne200100]<ULRecordingEventDO>(selfCopy5, v72);
           do
           {
             do
             {
-              v77 = v8[31];
-              v8 += 31;
+              v77 = selfCopy5[31];
+              selfCopy5 += 31;
               v78 = bswap64(v235);
               v79 = bswap64(v77);
               if (v78 != v79)
@@ -1770,7 +1770,7 @@ LABEL_165:
               }
 
               v78 = bswap64(*(&v235 + 1));
-              v79 = bswap64(v8[1]);
+              v79 = bswap64(selfCopy5[1]);
             }
 
             while (v78 == v79);
@@ -1808,52 +1808,52 @@ LABEL_165:
           while (v84 < 0);
         }
 
-        v85 = v8 - 31;
-        if (v8 - 31 != a1)
+        v85 = selfCopy5 - 31;
+        if (selfCopy5 - 31 != self)
         {
           v86 = *v85;
-          a1[2] = *(v8 - 29);
-          *a1 = v86;
-          if (*(a1 + 47) < 0)
+          self[2] = *(selfCopy5 - 29);
+          *self = v86;
+          if (*(self + 47) < 0)
           {
-            operator delete(a1[3]);
+            operator delete(self[3]);
           }
 
-          v87 = *(v8 - 14);
-          a1[5] = *(v8 - 26);
-          *(a1 + 3) = v87;
-          *(v8 - 201) = 0;
-          *(v8 - 224) = 0;
-          v88 = *(v8 - 25);
-          *(a1 + 60) = *(v8 - 188);
-          *(a1 + 3) = v88;
-          CLMicroLocationProto::RecordingEvent::CopyFrom((a1 + 10), (v8 - 21));
-          v89 = *(v8 - 3);
-          *(a1 + 240) = *(v8 - 8);
-          *(a1 + 14) = v89;
+          v87 = *(selfCopy5 - 14);
+          self[5] = *(selfCopy5 - 26);
+          *(self + 3) = v87;
+          *(selfCopy5 - 201) = 0;
+          *(selfCopy5 - 224) = 0;
+          v88 = *(selfCopy5 - 25);
+          *(self + 60) = *(selfCopy5 - 188);
+          *(self + 3) = v88;
+          CLMicroLocationProto::RecordingEvent::CopyFrom((self + 10), (selfCopy5 - 21));
+          v89 = *(selfCopy5 - 3);
+          *(self + 240) = *(selfCopy5 - 8);
+          *(self + 14) = v89;
         }
 
         v90 = v235;
-        *(v8 - 29) = v236;
+        *(selfCopy5 - 29) = v236;
         *v85 = v90;
-        v91 = (v8 - 28);
-        if (*(v8 - 201) < 0)
+        v91 = (selfCopy5 - 28);
+        if (*(selfCopy5 - 201) < 0)
         {
           operator delete(*v91);
         }
 
         v92 = __p;
-        *(v8 - 26) = v238;
+        *(selfCopy5 - 26) = v238;
         *v91 = v92;
         HIBYTE(v238) = 0;
         LOBYTE(__p) = 0;
         v93 = v239[0];
-        *(v8 - 188) = *(v239 + 12);
-        *(v8 - 25) = v93;
-        CLMicroLocationProto::RecordingEvent::CopyFrom((v8 - 21), v240);
+        *(selfCopy5 - 188) = *(v239 + 12);
+        *(selfCopy5 - 25) = v93;
+        CLMicroLocationProto::RecordingEvent::CopyFrom((selfCopy5 - 21), v240);
         v94 = v241;
-        *(v8 - 8) = v242;
-        *(v8 - 3) = v94;
+        *(selfCopy5 - 8) = v242;
+        *(selfCopy5 - 3) = v94;
         CLMicroLocationProto::RecordingEvent::~RecordingEvent(v240);
         if (SHIBYTE(v238) < 0)
         {
@@ -1861,31 +1861,31 @@ LABEL_165:
         }
 
 LABEL_79:
-        a4 = 0;
+        id = 0;
       }
 
-      v26 = *a1;
-      v236 = a1[2];
+      v26 = *self;
+      v236 = self[2];
       v235 = v26;
-      v27 = a1[5];
-      __p = *(a1 + 3);
+      v27 = self[5];
+      __p = *(self + 3);
       v238 = v27;
-      a1[4] = 0;
-      a1[5] = 0;
-      a1[3] = 0;
-      v28 = *(a1 + 60);
-      v239[0] = *(a1 + 3);
+      self[4] = 0;
+      self[5] = 0;
+      self[3] = 0;
+      v28 = *(self + 60);
+      v239[0] = *(self + 3);
       *(v239 + 12) = v28;
-      CLMicroLocationProto::RecordingEvent::RecordingEvent(v240, (a1 + 10));
+      CLMicroLocationProto::RecordingEvent::RecordingEvent(v240, (self + 10));
       v29 = 0;
-      v30 = *(a1 + 14);
-      v242 = *(a1 + 240);
+      v30 = *(self + 14);
+      v242 = *(self + 240);
       v241 = v30;
       do
       {
-        v31 = bswap64(a1[v29 + 31]);
+        v31 = bswap64(self[v29 + 31]);
         v32 = bswap64(v235);
-        if (v31 == v32 && (v31 = bswap64(a1[v29 + 32]), v32 = bswap64(*(&v235 + 1)), v31 == v32))
+        if (v31 == v32 && (v31 = bswap64(self[v29 + 32]), v32 = bswap64(*(&v235 + 1)), v31 == v32))
         {
           v33 = 0;
         }
@@ -1904,7 +1904,7 @@ LABEL_79:
       }
 
       while (v33 < 0);
-      v34 = &a1[v29];
+      v34 = &self[v29];
       v35 = v7;
       if (v29 == 31)
       {
@@ -1967,22 +1967,22 @@ LABEL_79:
         while ((v39 & 0x80000000) == 0);
       }
 
-      v8 = v34;
+      selfCopy5 = v34;
       if (v34 < v35)
       {
         v44 = v35;
         do
         {
-          std::swap[abi:ne200100]<ULRecordingEventDO>(v8, v44);
+          std::swap[abi:ne200100]<ULRecordingEventDO>(selfCopy5, v44);
           do
           {
-            v45 = v8[31];
-            v8 += 31;
+            v45 = selfCopy5[31];
+            selfCopy5 += 31;
             v46 = bswap64(v45);
             v47 = bswap64(v235);
             if (v46 == v47)
             {
-              v46 = bswap64(v8[1]);
+              v46 = bswap64(selfCopy5[1]);
               v47 = bswap64(*(&v235 + 1));
               if (v46 == v47)
               {
@@ -2026,56 +2026,56 @@ LABEL_79:
           while ((v49 & 0x80000000) == 0);
         }
 
-        while (v8 < v44);
+        while (selfCopy5 < v44);
       }
 
-      v53 = v8 - 31;
-      if (v8 - 31 != a1)
+      v53 = selfCopy5 - 31;
+      if (selfCopy5 - 31 != self)
       {
         v54 = *v53;
-        a1[2] = *(v8 - 29);
-        *a1 = v54;
-        if (*(a1 + 47) < 0)
+        self[2] = *(selfCopy5 - 29);
+        *self = v54;
+        if (*(self + 47) < 0)
         {
-          operator delete(a1[3]);
+          operator delete(self[3]);
         }
 
-        v55 = *(v8 - 14);
-        a1[5] = *(v8 - 26);
-        *(a1 + 3) = v55;
-        *(v8 - 201) = 0;
-        *(v8 - 224) = 0;
-        v56 = *(v8 - 25);
-        *(a1 + 60) = *(v8 - 188);
-        *(a1 + 3) = v56;
-        CLMicroLocationProto::RecordingEvent::CopyFrom((a1 + 10), (v8 - 21));
-        v57 = *(v8 - 3);
-        *(a1 + 240) = *(v8 - 8);
-        *(a1 + 14) = v57;
+        v55 = *(selfCopy5 - 14);
+        self[5] = *(selfCopy5 - 26);
+        *(self + 3) = v55;
+        *(selfCopy5 - 201) = 0;
+        *(selfCopy5 - 224) = 0;
+        v56 = *(selfCopy5 - 25);
+        *(self + 60) = *(selfCopy5 - 188);
+        *(self + 3) = v56;
+        CLMicroLocationProto::RecordingEvent::CopyFrom((self + 10), (selfCopy5 - 21));
+        v57 = *(selfCopy5 - 3);
+        *(self + 240) = *(selfCopy5 - 8);
+        *(self + 14) = v57;
       }
 
       v58 = v235;
-      *(v8 - 29) = v236;
+      *(selfCopy5 - 29) = v236;
       *v53 = v58;
-      v59 = (v8 - 28);
-      if (*(v8 - 201) < 0)
+      v59 = (selfCopy5 - 28);
+      if (*(selfCopy5 - 201) < 0)
       {
         operator delete(*v59);
       }
 
       v60 = __p;
-      *(v8 - 26) = v238;
+      *(selfCopy5 - 26) = v238;
       *v59 = v60;
       HIBYTE(v238) = 0;
       LOBYTE(__p) = 0;
       v61 = v239[0];
-      *(v8 - 188) = *(v239 + 12);
-      *(v8 - 25) = v61;
-      CLMicroLocationProto::RecordingEvent::CopyFrom((v8 - 21), v240);
+      *(selfCopy5 - 188) = *(v239 + 12);
+      *(selfCopy5 - 25) = v61;
+      CLMicroLocationProto::RecordingEvent::CopyFrom((selfCopy5 - 21), v240);
       v7 = a2;
       v62 = v241;
-      *(v8 - 8) = v242;
-      *(v8 - 3) = v62;
+      *(selfCopy5 - 8) = v242;
+      *(selfCopy5 - 3) = v62;
       CLMicroLocationProto::RecordingEvent::~RecordingEvent(v240);
       if (SHIBYTE(v238) < 0)
       {
@@ -2085,12 +2085,12 @@ LABEL_79:
       if (v34 < v35)
       {
 LABEL_78:
-        std::__introsort<std::_ClassicAlgPolicy,[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *,false>(a1, v8 - 31, a3, a4 & 1);
+        std::__introsort<std::_ClassicAlgPolicy,[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *,false>(self, selfCopy5 - 31, measurements, id & 1);
         goto LABEL_79;
       }
 
-      v63 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *>(a1, v8 - 31);
-      if (std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *>(v8, a2))
+      v63 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *>(self, selfCopy5 - 31);
+      if (std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[ULRecordingEventStore fetchRecordingEventTriggersForLearningMeasurements:atLoiGroupId:]::$_1 &,ULRecordingEventDO *>(selfCopy5, a2))
       {
         break;
       }
@@ -2101,7 +2101,7 @@ LABEL_78:
       }
     }
 
-    a2 = v8 - 31;
+    a2 = selfCopy5 - 31;
     if (!v63)
     {
       continue;
@@ -2117,7 +2117,7 @@ LABEL_313:
 - (uint64_t)insertDataObjects:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -2128,8 +2128,8 @@ LABEL_313:
 
 - (id)insertDataObjects:
 {
-  v3 = [**(a1 + 8) managedObjectContext];
-  v4 = [ULRecordingEventMO_deprecated createFromDO:a2 inManagedObjectContext:v3];
+  managedObjectContext = [**(self + 8) managedObjectContext];
+  v4 = [ULRecordingEventMO_deprecated createFromDO:a2 inManagedObjectContext:managedObjectContext];
 
   return v4;
 }

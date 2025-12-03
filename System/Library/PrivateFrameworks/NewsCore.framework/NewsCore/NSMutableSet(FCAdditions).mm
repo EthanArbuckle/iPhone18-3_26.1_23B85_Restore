@@ -14,60 +14,60 @@
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)fc_safelyAddObjects:()FCAdditions
 {
   if (a3)
   {
-    return [a1 addObjectsFromArray:?];
+    return [self addObjectsFromArray:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)fc_safelyUnionSet:()FCAdditions
 {
   if (a3)
   {
-    return [a1 unionSet:?];
+    return [self unionSet:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)fc_safelyIntersectSet:()FCAdditions
 {
   if (a3)
   {
-    return [a1 intersectSet:?];
+    return [self intersectSet:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)fc_safelyMinusSet:()FCAdditions
 {
   if (a3)
   {
-    return [a1 minusSet:?];
+    return [self minusSet:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)fc_safelyRemoveObject:()FCAdditions
 {
   if (a3)
   {
-    return [a1 removeObject:?];
+    return [self removeObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)fc_removeObjectsFromArray:()FCAdditions
@@ -93,7 +93,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [a1 removeObject:*(*(&v10 + 1) + 8 * v8++)];
+        [self removeObject:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);

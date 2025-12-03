@@ -1,15 +1,15 @@
 @interface MFMessage
-+ (id)messageWithRFC822Data:(id)a3;
-+ (id)messageWithRFC822Data:(id)a3 forMailboxUID:(id)a4;
-+ (id)messageWithRFC822Data:(id)a3 withParentPart:(id)a4;
-+ (id)messageWithRFC822Data:(id)a3 withParentPart:(id)a4 generateMessageIDHash:(BOOL)a5;
-+ (void)setMessageClassForStore:(id)a3;
-- (BOOL)_doesDateAppearToBeSane:(id)a3;
++ (id)messageWithRFC822Data:(id)data;
++ (id)messageWithRFC822Data:(id)data forMailboxUID:(id)d;
++ (id)messageWithRFC822Data:(id)data withParentPart:(id)part;
++ (id)messageWithRFC822Data:(id)data withParentPart:(id)part generateMessageIDHash:(BOOL)hash;
++ (void)setMessageClassForStore:(id)store;
+- (BOOL)_doesDateAppearToBeSane:(id)sane;
 - (BOOL)canBeTriaged;
-- (BOOL)fetchDataForMimePart:(id)a3 inRange:(_NSRange)a4 withConsumer:(id)a5 isComplete:(BOOL *)a6 downloadIfNecessary:(BOOL)a7;
+- (BOOL)fetchDataForMimePart:(id)part inRange:(_NSRange)range withConsumer:(id)consumer isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary;
 - (BOOL)isMessageContentsLocallyAvailable;
-- (BOOL)messageData:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6;
-- (BOOL)messageDataHolder:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6;
+- (BOOL)messageData:(id *)data messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary;
+- (BOOL)messageDataHolder:(id *)holder messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary;
 - (BOOL)strongParentPart;
 - (BOOL)updateSubjectFromEncryptedContent;
 - (ECAngleBracketIDHash)listIDHash;
@@ -34,62 +34,62 @@
 - (NSUUID)documentID;
 - (double)dateReceivedAsTimeIntervalSince1970;
 - (double)dateSentAsTimeIntervalSince1970;
-- (id)_copyDateFromDateHeaderInHeaders:(id)a3;
-- (id)_copyDateFromReceivedHeadersInHeaders:(id)a3;
+- (id)_copyDateFromDateHeaderInHeaders:(id)headers;
+- (id)_copyDateFromReceivedHeadersInHeaders:(id)headers;
 - (id)_privacySafeDescription;
-- (id)bestAlternativeInPart:(id)a3;
+- (id)bestAlternativeInPart:(id)part;
 - (id)bodyData;
-- (id)bodyDataIsComplete:(BOOL *)a3 isPartial:(BOOL *)a4 downloadIfNecessary:(BOOL)a5;
+- (id)bodyDataIsComplete:(BOOL *)complete isPartial:(BOOL *)partial downloadIfNecessary:(BOOL)necessary;
 - (id)contentType;
-- (id)dataForMimePart:(id)a3;
-- (id)dataForMimePart:(id)a3 inRange:(_NSRange)a4 isComplete:(BOOL *)a5;
-- (id)dataForMimePart:(id)a3 inRange:(_NSRange)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6 didDownload:(BOOL *)a7;
-- (id)defaultAlternativeInPart:(id)a3;
+- (id)dataForMimePart:(id)part;
+- (id)dataForMimePart:(id)part inRange:(_NSRange)range isComplete:(BOOL *)complete;
+- (id)dataForMimePart:(id)part inRange:(_NSRange)range isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary didDownload:(BOOL *)download;
+- (id)defaultAlternativeInPart:(id)part;
 - (id)firstSender;
-- (id)headerDataDownloadIfNecessary:(BOOL)a3;
+- (id)headerDataDownloadIfNecessary:(BOOL)necessary;
 - (id)headers;
 - (id)messageBody;
 - (id)messageBodyIfAvailable;
-- (id)messageDataIsPartial:(BOOL *)a3;
+- (id)messageDataIsPartial:(BOOL *)partial;
 - (id)messageIDHeader;
 - (id)messageIDHeaderHash;
 - (id)messageIDHeaderInFortyBytesOrLess;
 - (id)messageURL;
 - (id)senderAddressComment;
 - (id)sendersIfCached;
-- (id)sendersWithError:(id *)a3;
-- (id)uniqueArray:(id)a3 withStore:(id)a4;
+- (id)sendersWithError:(id *)error;
+- (id)uniqueArray:(id)array withStore:(id)store;
 - (int64_t)_messageIDHeaderHashIvar;
 - (int64_t)conversationID;
-- (int64_t)generationCompare:(id)a3;
+- (int64_t)generationCompare:(id)compare;
 - (int64_t)messageIDHash;
 - (unint64_t)messageSize;
-- (void)_setDateReceivedFromHeaders:(id)a3;
-- (void)_setDateSentFromHeaders:(id)a3;
-- (void)calculateAttachmentInfoFromBody:(id)a3;
-- (void)loadCachedHeaderValuesFromHeaders:(id)a3;
-- (void)setBcc:(id)a3;
-- (void)setCc:(id)a3;
-- (void)setContentType:(id)a3;
-- (void)setConversationID:(int64_t)a3;
-- (void)setDateReceivedAsTimeIntervalSince1970:(double)a3;
-- (void)setDateSentAsTimeIntervalSince1970:(double)a3;
-- (void)setDocumentID:(id)a3;
-- (void)setExternalID:(id)a3;
-- (void)setListIDHash:(id)a3;
-- (void)setMessageIDHash:(int64_t)a3;
-- (void)setMessageIDHeader:(id)a3;
-- (void)setMessageInfo:(id)a3 to:(id)a4 cc:(id)a5 bcc:(id)a6 sender:(id)a7 dateReceivedTimeIntervalSince1970:(double)a8 dateSentTimeIntervalSince1970:(double)a9 messageIDHash:(int64_t)a10 conversationID:(int64_t)a11 summary:(id)a12;
-- (void)setMessagePropertiesFromMessage:(id)a3;
-- (void)setMessageStore:(id)a3;
-- (void)setMessageURL:(id)a3;
-- (void)setParentPart:(id)a3;
-- (void)setPreferredEncoding:(unsigned int)a3;
-- (void)setSender:(id)a3;
-- (void)setStrongParentPart:(BOOL)a3;
-- (void)setSubject:(id)a3;
-- (void)setSubject:(id)a3 to:(id)a4 cc:(id)a5 bcc:(id)a6 sender:(id)a7 dateReceived:(double)a8 dateSent:(double)a9 summary:(id)a10 withOptions:(unsigned int)a11;
-- (void)setTo:(id)a3;
+- (void)_setDateReceivedFromHeaders:(id)headers;
+- (void)_setDateSentFromHeaders:(id)headers;
+- (void)calculateAttachmentInfoFromBody:(id)body;
+- (void)loadCachedHeaderValuesFromHeaders:(id)headers;
+- (void)setBcc:(id)bcc;
+- (void)setCc:(id)cc;
+- (void)setContentType:(id)type;
+- (void)setConversationID:(int64_t)d;
+- (void)setDateReceivedAsTimeIntervalSince1970:(double)since1970;
+- (void)setDateSentAsTimeIntervalSince1970:(double)since1970;
+- (void)setDocumentID:(id)d;
+- (void)setExternalID:(id)d;
+- (void)setListIDHash:(id)hash;
+- (void)setMessageIDHash:(int64_t)hash;
+- (void)setMessageIDHeader:(id)header;
+- (void)setMessageInfo:(id)info to:(id)to cc:(id)cc bcc:(id)bcc sender:(id)sender dateReceivedTimeIntervalSince1970:(double)since1970 dateSentTimeIntervalSince1970:(double)intervalSince1970 messageIDHash:(int64_t)self0 conversationID:(int64_t)self1 summary:(id)self2;
+- (void)setMessagePropertiesFromMessage:(id)message;
+- (void)setMessageStore:(id)store;
+- (void)setMessageURL:(id)l;
+- (void)setParentPart:(id)part;
+- (void)setPreferredEncoding:(unsigned int)encoding;
+- (void)setSender:(id)sender;
+- (void)setStrongParentPart:(BOOL)part;
+- (void)setSubject:(id)subject;
+- (void)setSubject:(id)subject to:(id)to cc:(id)cc bcc:(id)bcc sender:(id)sender dateReceived:(double)received dateSent:(double)sent summary:(id)self0 withOptions:(unsigned int)self1;
+- (void)setTo:(id)to;
 - (void)updateSubjectFromEncryptedContent;
 @end
 
@@ -119,113 +119,113 @@
   return v3;
 }
 
-+ (id)messageWithRFC822Data:(id)a3
++ (id)messageWithRFC822Data:(id)data
 {
-  v3 = [a1 messageWithRFC822Data:a3 withParentPart:0];
+  v3 = [self messageWithRFC822Data:data withParentPart:0];
 
   return v3;
 }
 
-+ (id)messageWithRFC822Data:(id)a3 withParentPart:(id)a4
++ (id)messageWithRFC822Data:(id)data withParentPart:(id)part
 {
-  v4 = [a1 messageWithRFC822Data:a3 withParentPart:a4 generateMessageIDHash:0];
+  v4 = [self messageWithRFC822Data:data withParentPart:part generateMessageIDHash:0];
 
   return v4;
 }
 
-+ (id)messageWithRFC822Data:(id)a3 forMailboxUID:(id)a4
++ (id)messageWithRFC822Data:(id)data forMailboxUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(objc_msgSend(a1 "dataMessageStoreToUse"))];
-  [v8 setMailboxUid:v7];
-  [a1 setMessageClassForStore:v8];
-  v9 = [v8 message];
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [v10 UUIDString];
+  dataCopy = data;
+  dCopy = d;
+  v8 = [objc_alloc(objc_msgSend(self "dataMessageStoreToUse"))];
+  [v8 setMailboxUid:dCopy];
+  [self setMessageClassForStore:v8];
+  message = [v8 message];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v12 = MEMORY[0x1E695DFF8];
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@://%@", @"x-attach-RFC822", v11];
+  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@://%@", @"x-attach-RFC822", uUIDString];
   v14 = [v12 URLWithString:v13];
-  [v9 setMessageURL:v14];
+  [message setMessageURL:v14];
 
-  return v9;
+  return message;
 }
 
-+ (id)messageWithRFC822Data:(id)a3 withParentPart:(id)a4 generateMessageIDHash:(BOOL)a5
++ (id)messageWithRFC822Data:(id)data withParentPart:(id)part generateMessageIDHash:(BOOL)hash
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_alloc(objc_msgSend(a1 "dataMessageStoreToUse"))];
-  [a1 setMessageClassForStore:v10];
-  v11 = [v10 message];
-  [v11 setParentPart:v9];
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [v12 UUIDString];
+  hashCopy = hash;
+  dataCopy = data;
+  partCopy = part;
+  v10 = [objc_alloc(objc_msgSend(self "dataMessageStoreToUse"))];
+  [self setMessageClassForStore:v10];
+  message = [v10 message];
+  [message setParentPart:partCopy];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v14 = MEMORY[0x1E695DFF8];
-  v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@://%@", @"x-attach-RFC822", v13];
+  v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@://%@", @"x-attach-RFC822", uUIDString];
   v16 = [v14 URLWithString:v15];
-  [v11 setMessageURL:v16];
+  [message setMessageURL:v16];
 
-  if (v5 && ![v11 messageIDHash])
+  if (hashCopy && ![message messageIDHash])
   {
-    v17 = [v11 headers];
-    [v11 setMessageIDHash:{MFMessageIDHashFromHeaders(v17, 1)}];
+    headers = [message headers];
+    [message setMessageIDHash:{MFMessageIDHashFromHeaders(headers, 1)}];
   }
 
-  v18 = [v11 headers];
-  v19 = [v18 firstHeaderForKey:*MEMORY[0x1E699B1C0]];
+  headers2 = [message headers];
+  v19 = [headers2 firstHeaderForKey:*MEMORY[0x1E699B1C0]];
 
   if (v19)
   {
     v20 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v19];
-    [v11 setDocumentID:v20];
+    [message setDocumentID:v20];
   }
 
-  return v11;
+  return message;
 }
 
-+ (void)setMessageClassForStore:(id)a3
++ (void)setMessageClassForStore:(id)store
 {
-  v3 = a3;
-  [v3 setMessageClass:objc_opt_class()];
+  storeCopy = store;
+  [storeCopy setMessageClass:objc_opt_class()];
 }
 
 - (BOOL)strongParentPart
 {
-  v2 = [(MFMessage *)self strongParentPartReference];
-  v3 = v2 != 0;
+  strongParentPartReference = [(MFMessage *)self strongParentPartReference];
+  v3 = strongParentPartReference != 0;
 
   return v3;
 }
 
-- (void)setStrongParentPart:(BOOL)a3
+- (void)setStrongParentPart:(BOOL)part
 {
-  v3 = a3;
-  if (a3)
+  partCopy = part;
+  if (part)
   {
-    v5 = [(MFMessage *)self parentPart];
+    parentPart = [(MFMessage *)self parentPart];
   }
 
   else
   {
-    v5 = 0;
+    parentPart = 0;
   }
 
-  v6 = v5;
-  [(MFMessage *)self setStrongParentPartReference:v5];
-  if (v3)
+  v6 = parentPart;
+  [(MFMessage *)self setStrongParentPartReference:parentPart];
+  if (partCopy)
   {
   }
 }
 
-- (void)setParentPart:(id)a3
+- (void)setParentPart:(id)part
 {
-  objc_storeWeak(&self->_parentPart, a3);
+  objc_storeWeak(&self->_parentPart, part);
 
-  [(MFMessage *)self setStrongParentPart:a3 != 0];
+  [(MFMessage *)self setStrongParentPart:part != 0];
 }
 
 - (id)_privacySafeDescription
@@ -247,10 +247,10 @@
 
 - (NSString)ef_publicDescription
 {
-  v3 = [MEMORY[0x1E699B7B0] currentDevice];
-  v4 = [v3 isInternal];
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  isInternal = [currentDevice isInternal];
 
-  if (v4)
+  if (isInternal)
   {
     [(MFMessage *)self description];
   }
@@ -264,63 +264,63 @@
   return v5;
 }
 
-- (void)setMessageStore:(id)a3
+- (void)setMessageStore:(id)store
 {
-  v6 = a3;
+  storeCopy = store;
   _MFLockGlobalLock();
   v5 = self->_store;
-  objc_storeStrong(&self->_store, a3);
+  objc_storeStrong(&self->_store, store);
   _MFUnlockGlobalLock();
 }
 
 - (id)headers
 {
-  v3 = [(MFMessage *)self messageStore];
-  v4 = [v3 headersForMessage:self fetchIfNotAvailable:_ECIsNetworkActivityAllowed()];
+  messageStore = [(MFMessage *)self messageStore];
+  v4 = [messageStore headersForMessage:self fetchIfNotAvailable:_ECIsNetworkActivityAllowed()];
 
   return v4;
 }
 
 - (MFMessageHeaders)headersIfAvailable
 {
-  v3 = [(MFMessage *)self messageStore];
-  v4 = [v3 headersForMessage:self fetchIfNotAvailable:0];
+  messageStore = [(MFMessage *)self messageStore];
+  v4 = [messageStore headersForMessage:self fetchIfNotAvailable:0];
 
   return v4;
 }
 
 - (id)messageBody
 {
-  v3 = [(MFMessage *)self messageStore];
-  v4 = [v3 bodyForMessage:self fetchIfNotAvailable:_ECIsNetworkActivityAllowed() updateFlags:1];
+  messageStore = [(MFMessage *)self messageStore];
+  v4 = [messageStore bodyForMessage:self fetchIfNotAvailable:_ECIsNetworkActivityAllowed() updateFlags:1];
 
   return v4;
 }
 
 - (id)messageBodyIfAvailable
 {
-  v3 = [(MFMessage *)self messageStore];
-  v4 = [v3 bodyForMessage:self fetchIfNotAvailable:0 updateFlags:1];
+  messageStore = [(MFMessage *)self messageStore];
+  v4 = [messageStore bodyForMessage:self fetchIfNotAvailable:0 updateFlags:1];
 
   return v4;
 }
 
-- (BOOL)messageData:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6
+- (BOOL)messageData:(id *)data messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary
 {
-  v6 = a6;
-  if (a3)
+  necessaryCopy = necessary;
+  if (data)
   {
-    *a3 = 0;
+    *data = 0;
   }
 
-  if (a4)
+  if (size)
   {
-    *a4 = 0;
+    *size = 0;
   }
 
-  v11 = [(MFMessage *)self messageStore];
+  messageStore = [(MFMessage *)self messageStore];
   v24 = 0;
-  if (v6)
+  if (necessaryCopy)
   {
     v12 = _ECIsNetworkActivityAllowed();
   }
@@ -330,11 +330,11 @@
     v12 = 0;
   }
 
-  v13 = [v11 fullBodyDataForMessage:self andHeaderDataIfReadilyAvailable:&v24 isComplete:a5 downloadIfNecessary:v12 didDownload:0];
+  v13 = [messageStore fullBodyDataForMessage:self andHeaderDataIfReadilyAvailable:&v24 isComplete:complete downloadIfNecessary:v12 didDownload:0];
   v14 = v24;
   if (!v14)
   {
-    if (v6)
+    if (necessaryCopy)
     {
       v15 = _ECIsNetworkActivityAllowed();
     }
@@ -344,7 +344,7 @@
       v15 = 0;
     }
 
-    v14 = [v11 headerDataForMessage:self downloadIfNecessary:v15];
+    v14 = [messageStore headerDataForMessage:self downloadIfNecessary:v15];
   }
 
   v16 = v14;
@@ -363,34 +363,34 @@
   {
     v19 = [v14 length];
     v20 = [v13 length] + v19;
-    if (a4)
+    if (size)
     {
-      *a4 = v20;
+      *size = v20;
     }
 
-    if (a3)
+    if (data)
     {
       v21 = [MFMutableData dataWithCapacity:v20];
       [v21 appendData:v16];
       [v21 appendData:v13];
       [v21 mf_makeImmutable];
       v22 = v21;
-      *a3 = v21;
+      *data = v21;
     }
   }
 
   return v18;
 }
 
-- (id)messageDataIsPartial:(BOOL *)a3
+- (id)messageDataIsPartial:(BOOL *)partial
 {
-  v5 = [(MFMessage *)self messageStore];
-  v6 = [v5 bodyDataForMessage:self isComplete:0 isPartial:a3 downloadIfNecessary:0];
+  messageStore = [(MFMessage *)self messageStore];
+  v6 = [messageStore bodyDataForMessage:self isComplete:0 isPartial:partial downloadIfNecessary:0];
 
   if (v6)
   {
-    v7 = [(MFMessage *)self messageStore];
-    v8 = [v7 headerDataForMessage:self downloadIfNecessary:0];
+    messageStore2 = [(MFMessage *)self messageStore];
+    v8 = [messageStore2 headerDataForMessage:self downloadIfNecessary:0];
 
     if (v8)
     {
@@ -414,22 +414,22 @@
   return v9;
 }
 
-- (BOOL)messageDataHolder:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6
+- (BOOL)messageDataHolder:(id *)holder messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary
 {
-  v6 = a6;
-  if (a3)
+  necessaryCopy = necessary;
+  if (holder)
   {
-    *a3 = 0;
+    *holder = 0;
   }
 
-  if (a4)
+  if (size)
   {
-    *a4 = 0;
+    *size = 0;
   }
 
-  v11 = [(MFMessage *)self messageStore];
+  messageStore = [(MFMessage *)self messageStore];
   v24 = 0;
-  if (v6)
+  if (necessaryCopy)
   {
     v12 = _ECIsNetworkActivityAllowed();
   }
@@ -439,11 +439,11 @@
     v12 = 0;
   }
 
-  v13 = [v11 fullBodyDataForMessage:self andHeaderDataIfReadilyAvailable:&v24 isComplete:a5 downloadIfNecessary:v12 didDownload:0];
+  v13 = [messageStore fullBodyDataForMessage:self andHeaderDataIfReadilyAvailable:&v24 isComplete:complete downloadIfNecessary:v12 didDownload:0];
   v14 = v24;
   if (!v14)
   {
-    if (v6)
+    if (necessaryCopy)
     {
       v15 = _ECIsNetworkActivityAllowed();
     }
@@ -453,7 +453,7 @@
       v15 = 0;
     }
 
-    v14 = [v11 headerDataForMessage:self downloadIfNecessary:v15];
+    v14 = [messageStore headerDataForMessage:self downloadIfNecessary:v15];
   }
 
   v16 = v14;
@@ -472,17 +472,17 @@
   {
     v19 = [v14 length];
     v20 = [v13 length];
-    if (a4)
+    if (size)
     {
-      *a4 = v20 + v19;
+      *size = v20 + v19;
     }
 
-    if (a3)
+    if (holder)
     {
       v21 = [MFDataHolder dataHolderWithData:v16];
       [v21 addData:v13];
       v22 = v21;
-      *a3 = v21;
+      *holder = v21;
     }
   }
 
@@ -496,39 +496,39 @@
   return v3;
 }
 
-- (void)setMessageURL:(id)a3
+- (void)setMessageURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->_ivarLock);
   messageURL = self->_messageURL;
-  self->_messageURL = v4;
+  self->_messageURL = lCopy;
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
 - (id)messageURL
 {
-  v3 = [(MFMessage *)self parentPart];
-  v4 = [v3 attachmentURLs];
-  v5 = [v4 lastObject];
+  parentPart = [(MFMessage *)self parentPart];
+  attachmentURLs = [parentPart attachmentURLs];
+  lastObject = [attachmentURLs lastObject];
 
   os_unfair_lock_lock(&self->_ivarLock);
   messageURL = self->_messageURL;
   if (!messageURL)
   {
-    if (!v5)
+    if (!lastObject)
     {
       os_unfair_lock_unlock(&self->_ivarLock);
       v7 = MEMORY[0x1E695DFF8];
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [(MFMessage *)self messageID];
-      v10 = [v8 stringWithFormat:@"x-attach://%@", v9];
-      v5 = [v7 URLWithString:v10];
+      messageID = [(MFMessage *)self messageID];
+      v10 = [v8 stringWithFormat:@"x-attach://%@", messageID];
+      lastObject = [v7 URLWithString:v10];
 
       os_unfair_lock_lock(&self->_ivarLock);
     }
 
-    objc_storeStrong(&self->_messageURL, v5);
+    objc_storeStrong(&self->_messageURL, lastObject);
     messageURL = self->_messageURL;
   }
 
@@ -563,8 +563,8 @@
       return 0;
     }
 
-    v6 = [(MFMessage *)self headers];
-    [(MFMessage *)self loadCachedHeaderValuesFromHeaders:v6];
+    headers = [(MFMessage *)self headers];
+    [(MFMessage *)self loadCachedHeaderValuesFromHeaders:headers];
 
     _MFLockGlobalLock();
     if (self->_messageIDHeaderHash == 0x7FFFFFFFFFFFFFFFLL)
@@ -584,11 +584,11 @@
 
 - (id)messageIDHeaderHash
 {
-  v2 = [(MFMessage *)self messageIDHash];
+  messageIDHash = [(MFMessage *)self messageIDHash];
   v3 = 0;
-  if (v2 && v2 != 0x7FFFFFFFFFFFFFFFLL)
+  if (messageIDHash && messageIDHash != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [objc_alloc(MEMORY[0x1E699B200]) initWithHash:v2];
+    v3 = [objc_alloc(MEMORY[0x1E699B200]) initWithHash:messageIDHash];
   }
 
   return v3;
@@ -601,8 +601,8 @@
   _MFUnlockGlobalLock();
   if (!v3)
   {
-    v4 = [(MFMessage *)self headers];
-    v5 = [v4 firstHeaderForKey:*MEMORY[0x1E699B130]];
+    headers = [(MFMessage *)self headers];
+    v5 = [headers firstHeaderForKey:*MEMORY[0x1E699B130]];
     [(MFMessage *)self setMessageIDHeader:v5];
 
     _MFLockGlobalLock();
@@ -613,11 +613,11 @@
   return v3;
 }
 
-- (void)setMessageIDHeader:(id)a3
+- (void)setMessageIDHeader:(id)header
 {
-  v6 = a3;
+  headerCopy = header;
   _MFLockGlobalLock();
-  v4 = [v6 copy];
+  v4 = [headerCopy copy];
   cachedMessageIDHeader = self->_cachedMessageIDHeader;
   self->_cachedMessageIDHeader = v4;
 
@@ -626,20 +626,20 @@
 
 - (id)messageIDHeaderInFortyBytesOrLess
 {
-  v2 = [(MFMessage *)self messageIDHeader];
-  if ([v2 rangeOfString:@"@"] == 37)
+  messageIDHeader = [(MFMessage *)self messageIDHeader];
+  if ([messageIDHeader rangeOfString:@"@"] == 37)
   {
-    v3 = [v2 substringWithRange:{1, 36}];
+    v3 = [messageIDHeader substringWithRange:{1, 36}];
   }
 
-  else if ([v2 length] < 0x29)
+  else if ([messageIDHeader length] < 0x29)
   {
-    v3 = v2;
+    v3 = messageIDHeader;
   }
 
   else
   {
-    v3 = [v2 substringToIndex:40];
+    v3 = [messageIDHeader substringToIndex:40];
   }
 
   v4 = v3;
@@ -659,16 +659,16 @@
 - (NSURL)externalReference
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MFMessage *)self messageID];
-  v4 = [(MFMessage *)self externalID];
-  v5 = v4;
+  messageID = [(MFMessage *)self messageID];
+  externalID = [(MFMessage *)self externalID];
+  v5 = externalID;
   v6 = 0;
-  if (v3 && v4)
+  if (messageID && externalID)
   {
     v7 = objc_alloc_init(MEMORY[0x1E696AF20]);
     [v7 setScheme:*MEMORY[0x1E699A6C8]];
     [v7 setHost:@"message"];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/%@", v3];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/%@", messageID];
     [v7 setPath:v8];
 
     v9 = [MEMORY[0x1E696AF60] queryItemWithName:@"uuid" value:v5];
@@ -686,13 +686,13 @@
 
 - (BOOL)isMessageContentsLocallyAvailable
 {
-  v3 = [(MFMessage *)self path];
+  path = [(MFMessage *)self path];
 
-  if (v3)
+  if (path)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [(MFMessage *)self path];
-    LOBYTE(v6) = [v4 fileExistsAtPath:v5];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path2 = [(MFMessage *)self path];
+    LOBYTE(v6) = [defaultManager fileExistsAtPath:path2];
   }
 
   else
@@ -703,11 +703,11 @@
   return v6;
 }
 
-- (void)setPreferredEncoding:(unsigned int)a3
+- (void)setPreferredEncoding:(unsigned int)encoding
 {
-  if (self->_preferredEncoding != a3)
+  if (self->_preferredEncoding != encoding)
   {
-    self->_preferredEncoding = a3;
+    self->_preferredEncoding = encoding;
     _MFLockGlobalLock();
     subject = self->_subject;
     self->_subject = 0;
@@ -731,13 +731,13 @@
   }
 }
 
-- (BOOL)_doesDateAppearToBeSane:(id)a3
+- (BOOL)_doesDateAppearToBeSane:(id)sane
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  saneCopy = sane;
+  v4 = saneCopy;
+  if (saneCopy)
   {
-    [v3 timeIntervalSince1970];
+    [saneCopy timeIntervalSince1970];
     v6 = v5 > 160736400.0;
   }
 
@@ -749,10 +749,10 @@
   return v6;
 }
 
-- (id)_copyDateFromReceivedHeadersInHeaders:(id)a3
+- (id)_copyDateFromReceivedHeadersInHeaders:(id)headers
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [a3 copyHeadersForKey:*MEMORY[0x1E699B138]];
+  v4 = [headers copyHeadersForKey:*MEMORY[0x1E699B138]];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -813,9 +813,9 @@ LABEL_10:
   return v13;
 }
 
-- (id)_copyDateFromDateHeaderInHeaders:(id)a3
+- (id)_copyDateFromDateHeaderInHeaders:(id)headers
 {
-  v4 = [a3 copyFirstHeaderForKey:*MEMORY[0x1E699B0D8]];
+  v4 = [headers copyFirstHeaderForKey:*MEMORY[0x1E699B0D8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -843,57 +843,57 @@ LABEL_7:
   return v6;
 }
 
-- (void)_setDateReceivedFromHeaders:(id)a3
+- (void)_setDateReceivedFromHeaders:(id)headers
 {
-  v7 = a3;
+  headersCopy = headers;
   v4 = [(MFMessage *)self _copyDateFromReceivedHeadersInHeaders:?];
-  if (v4 || (v4 = [(MFMessage *)self _copyDateFromDateHeaderInHeaders:v7]) != 0)
+  if (v4 || (v4 = [(MFMessage *)self _copyDateFromDateHeaderInHeaders:headersCopy]) != 0)
   {
     v5 = 0;
-    v6 = v4;
+    date = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v4 = 0;
     v5 = 1;
   }
 
-  [v6 timeIntervalSince1970];
+  [date timeIntervalSince1970];
   [(MFMessage *)self setDateReceivedAsTimeIntervalSince1970:?];
   if (v5)
   {
   }
 }
 
-- (void)_setDateSentFromHeaders:(id)a3
+- (void)_setDateSentFromHeaders:(id)headers
 {
-  v7 = a3;
+  headersCopy = headers;
   v4 = [(MFMessage *)self _copyDateFromDateHeaderInHeaders:?];
-  if (v4 || (v4 = [(MFMessage *)self _copyDateFromReceivedHeadersInHeaders:v7]) != 0)
+  if (v4 || (v4 = [(MFMessage *)self _copyDateFromReceivedHeadersInHeaders:headersCopy]) != 0)
   {
     v5 = 0;
-    v6 = v4;
+    date = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v4 = 0;
     v5 = 1;
   }
 
-  [v6 timeIntervalSince1970];
+  [date timeIntervalSince1970];
   [(MFMessage *)self setDateSentAsTimeIntervalSince1970:?];
   if (v5)
   {
   }
 }
 
-- (void)loadCachedHeaderValuesFromHeaders:(id)a3
+- (void)loadCachedHeaderValuesFromHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   _MFLockGlobalLock();
   subject = self->_subject;
   sender = self->_sender;
@@ -916,7 +916,7 @@ LABEL_7:
 
   else
   {
-    v19 = [v4 copyFirstHeaderForKey:*MEMORY[0x1E699B178]];
+    v19 = [headersCopy copyFirstHeaderForKey:*MEMORY[0x1E699B178]];
     v20 = [objc_alloc(MEMORY[0x1E699B328]) initWithString:v19];
     [(MFMessage *)self setSubject:v20];
 
@@ -924,14 +924,14 @@ LABEL_7:
     if (sender)
     {
 LABEL_3:
-      v12 = v11;
+      copyAddressListForSender = v11;
       if (!to)
       {
         goto LABEL_4;
       }
 
 LABEL_19:
-      v13 = v12;
+      copyAddressListForTo = copyAddressListForSender;
       if (!cc)
       {
         goto LABEL_20;
@@ -941,16 +941,16 @@ LABEL_19:
     }
   }
 
-  v12 = [v4 copyAddressListForSender];
+  copyAddressListForSender = [headersCopy copyAddressListForSender];
 
-  v21 = v12;
-  if (!v12)
+  array = copyAddressListForSender;
+  if (!copyAddressListForSender)
   {
-    v21 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  [(MFMessage *)self setSender:v21];
-  if (v12)
+  [(MFMessage *)self setSender:array];
+  if (copyAddressListForSender)
   {
     if (to)
     {
@@ -968,16 +968,16 @@ LABEL_19:
   }
 
 LABEL_4:
-  v13 = [v4 copyAddressListForTo];
+  copyAddressListForTo = [headersCopy copyAddressListForTo];
 
-  v14 = v13;
-  if (!v13)
+  array2 = copyAddressListForTo;
+  if (!copyAddressListForTo)
   {
-    v14 = [MEMORY[0x1E695DEC8] array];
+    array2 = [MEMORY[0x1E695DEC8] array];
   }
 
-  [(MFMessage *)self setTo:v14];
-  if (!v13)
+  [(MFMessage *)self setTo:array2];
+  if (!copyAddressListForTo)
   {
 
     if (!cc)
@@ -986,14 +986,14 @@ LABEL_4:
     }
 
 LABEL_8:
-    v15 = v13;
+    copyAddressListForCc = copyAddressListForTo;
     if (!bcc)
     {
       goto LABEL_9;
     }
 
 LABEL_24:
-    v16 = v15;
+    copyAddressListForBcc = copyAddressListForCc;
     if (contentType)
     {
       goto LABEL_13;
@@ -1008,16 +1008,16 @@ LABEL_24:
   }
 
 LABEL_20:
-  v15 = [v4 copyAddressListForCc];
+  copyAddressListForCc = [headersCopy copyAddressListForCc];
 
-  v22 = v15;
-  if (!v15)
+  array3 = copyAddressListForCc;
+  if (!copyAddressListForCc)
   {
-    v22 = [MEMORY[0x1E695DEC8] array];
+    array3 = [MEMORY[0x1E695DEC8] array];
   }
 
-  [(MFMessage *)self setCc:v22];
-  if (v15)
+  [(MFMessage *)self setCc:array3];
+  if (copyAddressListForCc)
   {
     if (bcc)
     {
@@ -1035,21 +1035,21 @@ LABEL_20:
   }
 
 LABEL_9:
-  v16 = [v4 copyAddressListForBcc];
+  copyAddressListForBcc = [headersCopy copyAddressListForBcc];
 
-  v17 = v16;
-  if (!v16)
+  array4 = copyAddressListForBcc;
+  if (!copyAddressListForBcc)
   {
-    v17 = [MEMORY[0x1E695DEC8] array];
+    array4 = [MEMORY[0x1E695DEC8] array];
   }
 
-  [(MFMessage *)self setBcc:v17];
-  if (v16)
+  [(MFMessage *)self setBcc:array4];
+  if (copyAddressListForBcc)
   {
     if (contentType)
     {
 LABEL_13:
-      v18 = v16;
+      v18 = copyAddressListForBcc;
       goto LABEL_38;
     }
   }
@@ -1064,7 +1064,7 @@ LABEL_13:
   }
 
 LABEL_25:
-  v23 = [v4 copyFirstStringValueForKey:*MEMORY[0x1E699B0D0]];
+  v23 = [headersCopy copyFirstStringValueForKey:*MEMORY[0x1E699B0D0]];
 
   if (v23)
   {
@@ -1093,17 +1093,17 @@ LABEL_25:
 LABEL_38:
   if (!dateReceivedInterval)
   {
-    [(MFMessage *)self _setDateReceivedFromHeaders:v4];
+    [(MFMessage *)self _setDateReceivedFromHeaders:headersCopy];
   }
 
   if (!dateSentInterval)
   {
-    [(MFMessage *)self _setDateSentFromHeaders:v4];
+    [(MFMessage *)self _setDateSentFromHeaders:headersCopy];
   }
 
   if (!listIDHash)
   {
-    v25 = [v4 firstHeaderForKey:*MEMORY[0x1E699B110]];
+    v25 = [headersCopy firstHeaderForKey:*MEMORY[0x1E699B110]];
     v26 = [objc_alloc(MEMORY[0x1E699B200]) initWithAngleBracketID:v25];
     [(MFMessage *)self setListIDHash:v26];
   }
@@ -1116,8 +1116,8 @@ LABEL_38:
   _MFUnlockGlobalLock();
   if (!v3)
   {
-    v4 = [(MFMessage *)self headers];
-    [(MFMessage *)self loadCachedHeaderValuesFromHeaders:v4];
+    headers = [(MFMessage *)self headers];
+    [(MFMessage *)self loadCachedHeaderValuesFromHeaders:headers];
 
     _MFLockGlobalLock();
     v3 = self->_subject;
@@ -1136,11 +1136,11 @@ LABEL_38:
   return v3;
 }
 
-- (void)setSubject:(id)a3
+- (void)setSubject:(id)subject
 {
-  v5 = a3;
+  subjectCopy = subject;
   _MFLockGlobalLock();
-  objc_storeStrong(&self->_subject, a3);
+  objc_storeStrong(&self->_subject, subject);
   _MFUnlockGlobalLock();
 }
 
@@ -1151,8 +1151,8 @@ LABEL_38:
   if (!dateReceivedInterval)
   {
     _MFUnlockGlobalLock();
-    v4 = [(MFMessage *)self headers];
-    [(MFMessage *)self loadCachedHeaderValuesFromHeaders:v4];
+    headers = [(MFMessage *)self headers];
+    [(MFMessage *)self loadCachedHeaderValuesFromHeaders:headers];
 
     _MFLockGlobalLock();
     dateReceivedInterval = self->_dateReceivedInterval;
@@ -1171,8 +1171,8 @@ LABEL_38:
   _MFUnlockGlobalLock();
   if (!dateSentInterval)
   {
-    v4 = [(MFMessage *)self headers];
-    [(MFMessage *)self loadCachedHeaderValuesFromHeaders:v4];
+    headers = [(MFMessage *)self headers];
+    [(MFMessage *)self loadCachedHeaderValuesFromHeaders:headers];
 
     _MFLockGlobalLock();
     dateSentInterval = self->_dateSentInterval;
@@ -1184,10 +1184,10 @@ LABEL_38:
   return [v5 dateWithTimeIntervalSince1970:dateSentInterval];
 }
 
-- (void)setDateReceivedAsTimeIntervalSince1970:(double)a3
+- (void)setDateReceivedAsTimeIntervalSince1970:(double)since1970
 {
   _MFLockGlobalLock();
-  self->_dateReceivedInterval = a3;
+  self->_dateReceivedInterval = since1970;
 
   _MFUnlockGlobalLock();
 }
@@ -1197,8 +1197,8 @@ LABEL_38:
   dateReceivedInterval = self->_dateReceivedInterval;
   if (!dateReceivedInterval)
   {
-    v4 = [(MFMessage *)self headers];
-    [(MFMessage *)self loadCachedHeaderValuesFromHeaders:v4];
+    headers = [(MFMessage *)self headers];
+    [(MFMessage *)self loadCachedHeaderValuesFromHeaders:headers];
 
     return self->_dateReceivedInterval;
   }
@@ -1213,8 +1213,8 @@ LABEL_38:
   _MFUnlockGlobalLock();
   if (!dateSentInterval)
   {
-    v4 = [(MFMessage *)self headers];
-    [(MFMessage *)self loadCachedHeaderValuesFromHeaders:v4];
+    headers = [(MFMessage *)self headers];
+    [(MFMessage *)self loadCachedHeaderValuesFromHeaders:headers];
 
     _MFLockGlobalLock();
     dateSentInterval = self->_dateSentInterval;
@@ -1224,54 +1224,54 @@ LABEL_38:
   return dateSentInterval;
 }
 
-- (void)setDateSentAsTimeIntervalSince1970:(double)a3
+- (void)setDateSentAsTimeIntervalSince1970:(double)since1970
 {
   _MFLockGlobalLock();
-  self->_dateSentInterval = a3;
+  self->_dateSentInterval = since1970;
 
   _MFUnlockGlobalLock();
 }
 
 - (id)contentType
 {
-  v2 = self;
+  selfCopy = self;
   _MFLockGlobalLock();
-  v3 = v2->_contentType;
+  v3 = selfCopy->_contentType;
   _MFUnlockGlobalLock();
   if (!v3)
   {
-    v4 = [(MFMessage *)v2 headers];
-    [(MFMessage *)v2 loadCachedHeaderValuesFromHeaders:v4];
+    headers = [(MFMessage *)selfCopy headers];
+    [(MFMessage *)selfCopy loadCachedHeaderValuesFromHeaders:headers];
 
     _MFLockGlobalLock();
-    v3 = v2->_contentType;
+    v3 = selfCopy->_contentType;
     _MFUnlockGlobalLock();
   }
 
   return v3;
 }
 
-- (void)setContentType:(id)a3
+- (void)setContentType:(id)type
 {
-  v9 = a3;
-  v4 = [(MFMessage *)self messageStore];
-  v5 = v4;
-  if (v9 && v4)
+  typeCopy = type;
+  messageStore = [(MFMessage *)self messageStore];
+  v5 = messageStore;
+  if (typeCopy && messageStore)
   {
-    v6 = [v4 uniquedString:v9];
+    v6 = [messageStore uniquedString:typeCopy];
 
-    v9 = v6;
+    typeCopy = v6;
   }
 
   _MFLockGlobalLock();
-  v7 = [v9 copy];
+  v7 = [typeCopy copy];
   contentType = self->_contentType;
   self->_contentType = v7;
 
   _MFUnlockGlobalLock();
 }
 
-- (id)sendersWithError:(id *)a3
+- (id)sendersWithError:(id *)error
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -1297,10 +1297,10 @@ LABEL_38:
 
 - (id)firstSender
 {
-  v2 = [(MFMessage *)self senders];
-  if ([v2 count])
+  senders = [(MFMessage *)self senders];
+  if ([senders count])
   {
-    v3 = [v2 objectAtIndex:0];
+    v3 = [senders objectAtIndex:0];
   }
 
   else
@@ -1311,12 +1311,12 @@ LABEL_38:
   return v3;
 }
 
-- (void)setSender:(id)a3
+- (void)setSender:(id)sender
 {
   v21 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  senderCopy = sender;
   _MFLockGlobalLock();
-  if (([v15 isEqual:self->_sender] & 1) == 0)
+  if (([senderCopy isEqual:self->_sender] & 1) == 0)
   {
     _MFUnlockGlobalLock();
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1324,7 +1324,7 @@ LABEL_38:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v15;
+    v5 = senderCopy;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -1340,11 +1340,11 @@ LABEL_38:
           }
 
           v9 = *(*(&v16 + 1) + 8 * v8);
-          v10 = [(MFMessage *)self messageStore];
-          v11 = v10;
-          if (v10 && v9)
+          messageStore = [(MFMessage *)self messageStore];
+          v11 = messageStore;
+          if (messageStore && v9)
           {
-            v12 = [v10 uniquedString:v9];
+            v12 = [messageStore uniquedString:v9];
 
             v9 = v12;
           }
@@ -1378,29 +1378,29 @@ LABEL_38:
   _MFUnlockGlobalLock();
   if (!v4)
   {
-    v5 = [(MFMessage *)self firstSender];
-    v6 = [v5 emailAddressValue];
-    v7 = [v6 displayName];
-    v8 = v7;
-    if (v7)
+    firstSender = [(MFMessage *)self firstSender];
+    emailAddressValue = [firstSender emailAddressValue];
+    displayName = [emailAddressValue displayName];
+    v8 = displayName;
+    if (displayName)
     {
-      v9 = v7;
+      stringValue = displayName;
     }
 
     else
     {
-      v9 = [v5 stringValue];
+      stringValue = [firstSender stringValue];
     }
 
-    v10 = v9;
+    v10 = stringValue;
 
     if ([v10 length])
     {
-      v11 = [(MFMessage *)self messageStore];
-      v12 = v11;
-      if (v11 && v10)
+      messageStore = [(MFMessage *)self messageStore];
+      v12 = messageStore;
+      if (messageStore && v10)
       {
-        v13 = [v11 uniquedString:v10];
+        v13 = [messageStore uniquedString:v10];
       }
 
       else
@@ -1454,12 +1454,12 @@ LABEL_38:
   return v2;
 }
 
-- (void)setTo:(id)a3
+- (void)setTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  toCopy = to;
   _MFLockGlobalLock();
-  if (([v15 isEqual:self->_to] & 1) == 0)
+  if (([toCopy isEqual:self->_to] & 1) == 0)
   {
     _MFUnlockGlobalLock();
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1467,7 +1467,7 @@ LABEL_38:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v15;
+    v5 = toCopy;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -1483,11 +1483,11 @@ LABEL_38:
           }
 
           v9 = *(*(&v16 + 1) + 8 * v8);
-          v10 = [(MFMessage *)self messageStore];
-          v11 = v10;
-          if (v10 && v9)
+          messageStore = [(MFMessage *)self messageStore];
+          v11 = messageStore;
+          if (messageStore && v9)
           {
-            v12 = [v10 uniquedString:v9];
+            v12 = [messageStore uniquedString:v9];
 
             v9 = v12;
           }
@@ -1537,12 +1537,12 @@ LABEL_38:
   return v2;
 }
 
-- (void)setCc:(id)a3
+- (void)setCc:(id)cc
 {
   v21 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  ccCopy = cc;
   _MFLockGlobalLock();
-  if (([v15 isEqual:self->_cc] & 1) == 0)
+  if (([ccCopy isEqual:self->_cc] & 1) == 0)
   {
     _MFUnlockGlobalLock();
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1550,7 +1550,7 @@ LABEL_38:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v15;
+    v5 = ccCopy;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -1566,11 +1566,11 @@ LABEL_38:
           }
 
           v9 = *(*(&v16 + 1) + 8 * v8);
-          v10 = [(MFMessage *)self messageStore];
-          v11 = v10;
-          if (v10 && v9)
+          messageStore = [(MFMessage *)self messageStore];
+          v11 = messageStore;
+          if (messageStore && v9)
           {
-            v12 = [v10 uniquedString:v9];
+            v12 = [messageStore uniquedString:v9];
 
             v9 = v12;
           }
@@ -1620,12 +1620,12 @@ LABEL_38:
   return v2;
 }
 
-- (void)setBcc:(id)a3
+- (void)setBcc:(id)bcc
 {
   v21 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  bccCopy = bcc;
   _MFLockGlobalLock();
-  if (([v15 isEqual:self->_bcc] & 1) == 0)
+  if (([bccCopy isEqual:self->_bcc] & 1) == 0)
   {
     _MFUnlockGlobalLock();
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1633,7 +1633,7 @@ LABEL_38:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v15;
+    v5 = bccCopy;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -1649,11 +1649,11 @@ LABEL_38:
           }
 
           v9 = *(*(&v16 + 1) + 8 * v8);
-          v10 = [(MFMessage *)self messageStore];
-          v11 = v10;
-          if (v10 && v9)
+          messageStore = [(MFMessage *)self messageStore];
+          v11 = messageStore;
+          if (messageStore && v9)
           {
-            v12 = [v10 uniquedString:v9];
+            v12 = [messageStore uniquedString:v9];
 
             v9 = v12;
           }
@@ -1687,20 +1687,20 @@ LABEL_38:
   return conversationID;
 }
 
-- (void)setMessageIDHash:(int64_t)a3
+- (void)setMessageIDHash:(int64_t)hash
 {
   _MFLockGlobalLock();
-  self->_messageIDHeaderHash = a3;
+  self->_messageIDHeaderHash = hash;
 
   _MFUnlockGlobalLock();
 }
 
-- (void)setConversationID:(int64_t)a3
+- (void)setConversationID:(int64_t)d
 {
   _MFLockGlobalLock();
-  if (self->_conversationID != a3)
+  if (self->_conversationID != d)
   {
-    self->_conversationID = a3;
+    self->_conversationID = d;
   }
 
   _MFUnlockGlobalLock();
@@ -1713,8 +1713,8 @@ LABEL_38:
   _MFUnlockGlobalLock();
   if (!listIDHash)
   {
-    v4 = [(MFMessage *)self headersIfAvailable];
-    [(MFMessage *)self loadCachedHeaderValuesFromHeaders:v4];
+    headersIfAvailable = [(MFMessage *)self headersIfAvailable];
+    [(MFMessage *)self loadCachedHeaderValuesFromHeaders:headersIfAvailable];
 
     _MFLockGlobalLock();
     listIDHash = self->_listIDHash;
@@ -1741,11 +1741,11 @@ LABEL_38:
   return v6;
 }
 
-- (void)setListIDHash:(id)a3
+- (void)setListIDHash:(id)hash
 {
-  v5 = a3;
+  hashCopy = hash;
   _MFLockGlobalLock();
-  objc_storeStrong(&self->_listIDHash, a3);
+  objc_storeStrong(&self->_listIDHash, hash);
   _MFUnlockGlobalLock();
 }
 
@@ -1758,11 +1758,11 @@ LABEL_38:
   return v3;
 }
 
-- (void)setExternalID:(id)a3
+- (void)setExternalID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   _MFLockGlobalLock();
-  objc_storeStrong(&self->_externalID, a3);
+  objc_storeStrong(&self->_externalID, d);
   _MFUnlockGlobalLock();
 }
 
@@ -1775,11 +1775,11 @@ LABEL_38:
   return v3;
 }
 
-- (void)setDocumentID:(id)a3
+- (void)setDocumentID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   _MFLockGlobalLock();
-  objc_storeStrong(&self->_documentID, a3);
+  objc_storeStrong(&self->_documentID, d);
   _MFUnlockGlobalLock();
 }
 
@@ -1792,17 +1792,17 @@ LABEL_38:
   return v3;
 }
 
-- (id)uniqueArray:(id)a3 withStore:(id)a4
+- (id)uniqueArray:(id)array withStore:(id)store
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  arrayCopy = array;
+  storeCopy = store;
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = v5;
+  v8 = arrayCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -1816,8 +1816,8 @@ LABEL_38:
           objc_enumerationMutation(v8);
         }
 
-        v12 = [v6 uniquedString:{*(*(&v15 + 1) + 8 * i), v15}];
-        [v7 addObject:v12];
+        v12 = [storeCopy uniquedString:{*(*(&v15 + 1) + 8 * i), v15}];
+        [array addObject:v12];
       }
 
       v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -1828,106 +1828,106 @@ LABEL_38:
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return array;
 }
 
-- (void)setMessageInfo:(id)a3 to:(id)a4 cc:(id)a5 bcc:(id)a6 sender:(id)a7 dateReceivedTimeIntervalSince1970:(double)a8 dateSentTimeIntervalSince1970:(double)a9 messageIDHash:(int64_t)a10 conversationID:(int64_t)a11 summary:(id)a12
+- (void)setMessageInfo:(id)info to:(id)to cc:(id)cc bcc:(id)bcc sender:(id)sender dateReceivedTimeIntervalSince1970:(double)since1970 dateSentTimeIntervalSince1970:(double)intervalSince1970 messageIDHash:(int64_t)self0 conversationID:(int64_t)self1 summary:(id)self2
 {
-  v25 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a12;
-  [(MFMessage *)self setSubject:v25 to:v20 cc:v21 bcc:v22 sender:v23 dateReceived:v24 dateSent:a8 summary:a9];
-  [(MFMessage *)self setConversationID:a11];
-  [(MFMessage *)self setMessageIDHash:a10];
+  infoCopy = info;
+  toCopy = to;
+  ccCopy = cc;
+  bccCopy = bcc;
+  senderCopy = sender;
+  summaryCopy = summary;
+  [(MFMessage *)self setSubject:infoCopy to:toCopy cc:ccCopy bcc:bccCopy sender:senderCopy dateReceived:summaryCopy dateSent:since1970 summary:intervalSince1970];
+  [(MFMessage *)self setConversationID:d];
+  [(MFMessage *)self setMessageIDHash:hash];
 }
 
-- (void)setSubject:(id)a3 to:(id)a4 cc:(id)a5 bcc:(id)a6 sender:(id)a7 dateReceived:(double)a8 dateSent:(double)a9 summary:(id)a10 withOptions:(unsigned int)a11
+- (void)setSubject:(id)subject to:(id)to cc:(id)cc bcc:(id)bcc sender:(id)sender dateReceived:(double)received dateSent:(double)sent summary:(id)self0 withOptions:(unsigned int)self1
 {
-  v41 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a10;
-  v24 = [(MFMessage *)self messageStore];
-  if (v24)
+  subjectCopy = subject;
+  toCopy = to;
+  ccCopy = cc;
+  bccCopy = bcc;
+  senderCopy = sender;
+  summaryCopy = summary;
+  messageStore = [(MFMessage *)self messageStore];
+  if (messageStore)
   {
-    if (v19)
+    if (toCopy)
     {
-      v25 = [(MFMessage *)self uniqueArray:v19 withStore:v24];
+      v25 = [(MFMessage *)self uniqueArray:toCopy withStore:messageStore];
 
-      v19 = v25;
+      toCopy = v25;
     }
 
-    if (v20)
+    if (ccCopy)
     {
-      v26 = [(MFMessage *)self uniqueArray:v20 withStore:v24];
+      v26 = [(MFMessage *)self uniqueArray:ccCopy withStore:messageStore];
 
-      v20 = v26;
+      ccCopy = v26;
     }
 
-    if (v21)
+    if (bccCopy)
     {
-      v27 = [(MFMessage *)self uniqueArray:v21 withStore:v24];
+      v27 = [(MFMessage *)self uniqueArray:bccCopy withStore:messageStore];
 
-      v21 = v27;
+      bccCopy = v27;
     }
 
-    if (v22)
+    if (senderCopy)
     {
-      v28 = [(MFMessage *)self uniqueArray:v22 withStore:v24];
+      v28 = [(MFMessage *)self uniqueArray:senderCopy withStore:messageStore];
 
-      v22 = v28;
+      senderCopy = v28;
     }
   }
 
   _MFLockGlobalLock();
-  self->_dateSentInterval = a9;
-  self->_dateReceivedInterval = a8;
-  if (a11)
+  self->_dateSentInterval = sent;
+  self->_dateReceivedInterval = received;
+  if (options)
   {
-    v29 = [objc_alloc(MEMORY[0x1E699B328]) initWithString:v41];
+    v29 = [objc_alloc(MEMORY[0x1E699B328]) initWithString:subjectCopy];
     subject = self->_subject;
     self->_subject = v29;
   }
 
-  if ((a11 & 2) != 0)
+  if ((options & 2) != 0)
   {
-    if (([(NSArray *)self->_to isEqual:v19]& 1) == 0)
+    if (([(NSArray *)self->_to isEqual:toCopy]& 1) == 0)
     {
-      v31 = [v19 copy];
+      v31 = [toCopy copy];
       to = self->_to;
       self->_to = v31;
     }
 
-    if (([(NSArray *)self->_cc isEqual:v20]& 1) == 0)
+    if (([(NSArray *)self->_cc isEqual:ccCopy]& 1) == 0)
     {
-      v33 = [v20 copy];
+      v33 = [ccCopy copy];
       cc = self->_cc;
       self->_cc = v33;
     }
 
-    if (([(NSArray *)self->_bcc isEqual:v21]& 1) == 0)
+    if (([(NSArray *)self->_bcc isEqual:bccCopy]& 1) == 0)
     {
-      v35 = [v21 copy];
+      v35 = [bccCopy copy];
       bcc = self->_bcc;
       self->_bcc = v35;
     }
   }
 
-  if ((a11 & 4) != 0 && ([(NSArray *)self->_sender isEqual:v22]& 1) == 0)
+  if ((options & 4) != 0 && ([(NSArray *)self->_sender isEqual:senderCopy]& 1) == 0)
   {
-    v37 = [v22 copy];
+    v37 = [senderCopy copy];
     sender = self->_sender;
     self->_sender = v37;
   }
 
-  if ((a11 & 8) != 0 && self->_summary != v23)
+  if ((options & 8) != 0 && self->_summary != summaryCopy)
   {
-    v39 = [(NSString *)v23 copy];
+    v39 = [(NSString *)summaryCopy copy];
     summary = self->_summary;
     self->_summary = v39;
   }
@@ -1940,8 +1940,8 @@ LABEL_38:
   v24 = *MEMORY[0x1E69E9840];
   if (_os_feature_enabled_impl())
   {
-    v3 = [(MFMessage *)self headersIfAvailable];
-    v4 = [v3 firstHeaderForKey:*MEMORY[0x1E699B0D0]];
+    headersIfAvailable = [(MFMessage *)self headersIfAvailable];
+    v4 = [headersIfAvailable firstHeaderForKey:*MEMORY[0x1E699B0D0]];
 
     if (!v4)
     {
@@ -1973,9 +1973,9 @@ LABEL_26:
       goto LABEL_14;
     }
 
-    v9 = [v8 topLevelPart];
-    v10 = v9;
-    if (!v9)
+    topLevelPart = [v8 topLevelPart];
+    v10 = topLevelPart;
+    if (!topLevelPart)
     {
       v15 = 0;
 LABEL_25:
@@ -1983,20 +1983,20 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    [v9 decodeIfNecessary];
+    [topLevelPart decodeIfNecessary];
     v20 = 0;
     v11 = [v10 decryptedMessageBodyIsEncrypted:&v20 isSigned:0];
-    v12 = [v10 wrappedSubject];
-    if (v12)
+    wrappedSubject = [v10 wrappedSubject];
+    if (wrappedSubject)
     {
-      v13 = [(MFMessage *)self subject];
-      v14 = [v13 isEqual:v12];
+      subject = [(MFMessage *)self subject];
+      v14 = [subject isEqual:wrappedSubject];
 
       if ((v14 & 1) == 0)
       {
         if (v20)
         {
-          [(MFMessage *)self setSubject:v12];
+          [(MFMessage *)self setSubject:wrappedSubject];
           v15 = 1;
 LABEL_24:
 
@@ -2006,8 +2006,8 @@ LABEL_24:
         v18 = MFLogGeneral();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          v19 = [(MFMessage *)self messageIDHeader];
-          [(MFMessage *)v19 updateSubjectFromEncryptedContent];
+          messageIDHeader = [(MFMessage *)self messageIDHeader];
+          [(MFMessage *)messageIDHeader updateSubjectFromEncryptedContent];
         }
       }
     }
@@ -2022,41 +2022,41 @@ LABEL_17:
   return v15;
 }
 
-- (void)setMessagePropertiesFromMessage:(id)a3
+- (void)setMessagePropertiesFromMessage:(id)message
 {
-  v17 = a3;
-  v4 = [v17 senders];
-  v5 = [v17 to];
-  v6 = [v17 cc];
-  v7 = [v17 bcc];
-  v8 = [v17 subject];
-  v9 = [v8 subjectString];
+  messageCopy = message;
+  senders = [messageCopy senders];
+  v5 = [messageCopy to];
+  v6 = [messageCopy cc];
+  v7 = [messageCopy bcc];
+  subject = [messageCopy subject];
+  subjectString = [subject subjectString];
 
-  [v17 dateReceivedAsTimeIntervalSince1970];
+  [messageCopy dateReceivedAsTimeIntervalSince1970];
   v11 = v10;
-  [v17 dateSentAsTimeIntervalSince1970];
+  [messageCopy dateSentAsTimeIntervalSince1970];
   v13 = v12;
-  v14 = [v17 _messageIDHeaderHashIvar];
-  v15 = [v17 conversationID];
-  v16 = [v17 summary];
-  [(MFMessage *)self setSubject:v9 to:v5 cc:v6 bcc:v7 sender:v4 dateReceived:v16 dateSent:v11 summary:v13];
-  [(MFMessage *)self setConversationID:v15];
-  [(MFMessage *)self setMessageIDHash:v14];
+  _messageIDHeaderHashIvar = [messageCopy _messageIDHeaderHashIvar];
+  conversationID = [messageCopy conversationID];
+  summary = [messageCopy summary];
+  [(MFMessage *)self setSubject:subjectString to:v5 cc:v6 bcc:v7 sender:senders dateReceived:summary dateSent:v11 summary:v13];
+  [(MFMessage *)self setConversationID:conversationID];
+  [(MFMessage *)self setMessageIDHash:_messageIDHeaderHashIvar];
 }
 
 - (id)bodyData
 {
-  v3 = [(MFMessage *)self messageStore];
-  v4 = [v3 bodyDataForMessage:self isComplete:0 isPartial:0 downloadIfNecessary:_ECIsNetworkActivityAllowed()];
+  messageStore = [(MFMessage *)self messageStore];
+  v4 = [messageStore bodyDataForMessage:self isComplete:0 isPartial:0 downloadIfNecessary:_ECIsNetworkActivityAllowed()];
 
   return v4;
 }
 
-- (id)bodyDataIsComplete:(BOOL *)a3 isPartial:(BOOL *)a4 downloadIfNecessary:(BOOL)a5
+- (id)bodyDataIsComplete:(BOOL *)complete isPartial:(BOOL *)partial downloadIfNecessary:(BOOL)necessary
 {
-  v5 = a5;
-  v9 = [(MFMessage *)self messageStore];
-  if (v5)
+  necessaryCopy = necessary;
+  messageStore = [(MFMessage *)self messageStore];
+  if (necessaryCopy)
   {
     v10 = _ECIsNetworkActivityAllowed();
   }
@@ -2066,16 +2066,16 @@ LABEL_17:
     v10 = 0;
   }
 
-  v11 = [v9 bodyDataForMessage:self isComplete:a3 isPartial:a4 downloadIfNecessary:v10];
+  v11 = [messageStore bodyDataForMessage:self isComplete:complete isPartial:partial downloadIfNecessary:v10];
 
   return v11;
 }
 
-- (id)headerDataDownloadIfNecessary:(BOOL)a3
+- (id)headerDataDownloadIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
-  v5 = [(MFMessage *)self messageStore];
-  if (v3)
+  necessaryCopy = necessary;
+  messageStore = [(MFMessage *)self messageStore];
+  if (necessaryCopy)
   {
     v6 = _ECIsNetworkActivityAllowed();
   }
@@ -2085,21 +2085,21 @@ LABEL_17:
     v6 = 0;
   }
 
-  v7 = [v5 headerDataForMessage:self downloadIfNecessary:v6];
+  v7 = [messageStore headerDataForMessage:self downloadIfNecessary:v6];
 
   return v7;
 }
 
-- (id)dataForMimePart:(id)a3
+- (id)dataForMimePart:(id)part
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AF00] currentThread];
-  v6 = [v5 threadDictionary];
-  v7 = [v6 objectForKeyedSubscript:@"__MIME_PART_DECODE_DOWNLOAD"];
-  v8 = [v7 BOOLValue];
+  partCopy = part;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v7 = [threadDictionary objectForKeyedSubscript:@"__MIME_PART_DECODE_DOWNLOAD"];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [(MFMessage *)self messageStore];
-  if (v8)
+  messageStore = [(MFMessage *)self messageStore];
+  if (bOOLValue)
   {
     v10 = _ECIsNetworkActivityAllowed();
   }
@@ -2109,30 +2109,30 @@ LABEL_17:
     v10 = 0;
   }
 
-  v11 = [v9 dataForMimePart:v4 inRange:0 isComplete:0x7FFFFFFFFFFFFFFFLL downloadIfNecessary:0 didDownload:{v10, 0}];
+  v11 = [messageStore dataForMimePart:partCopy inRange:0 isComplete:0x7FFFFFFFFFFFFFFFLL downloadIfNecessary:0 didDownload:{v10, 0}];
 
   return v11;
 }
 
-- (id)dataForMimePart:(id)a3 inRange:(_NSRange)a4 isComplete:(BOOL *)a5
+- (id)dataForMimePart:(id)part inRange:(_NSRange)range isComplete:(BOOL *)complete
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = [(MFMessage *)self messageStore];
-  v11 = [v10 dataForMimePart:v9 inRange:location isComplete:length downloadIfNecessary:a5 didDownload:{_ECIsNetworkActivityAllowed(), 0}];
+  length = range.length;
+  location = range.location;
+  partCopy = part;
+  messageStore = [(MFMessage *)self messageStore];
+  v11 = [messageStore dataForMimePart:partCopy inRange:location isComplete:length downloadIfNecessary:complete didDownload:{_ECIsNetworkActivityAllowed(), 0}];
 
   return v11;
 }
 
-- (id)dataForMimePart:(id)a3 inRange:(_NSRange)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6 didDownload:(BOOL *)a7
+- (id)dataForMimePart:(id)part inRange:(_NSRange)range isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary didDownload:(BOOL *)download
 {
-  v8 = a6;
-  length = a4.length;
-  location = a4.location;
-  v13 = a3;
-  v14 = [(MFMessage *)self messageStore];
-  if (v8)
+  necessaryCopy = necessary;
+  length = range.length;
+  location = range.location;
+  partCopy = part;
+  messageStore = [(MFMessage *)self messageStore];
+  if (necessaryCopy)
   {
     v15 = _ECIsNetworkActivityAllowed();
   }
@@ -2142,27 +2142,27 @@ LABEL_17:
     v15 = 0;
   }
 
-  v16 = [v14 dataForMimePart:v13 inRange:location isComplete:length downloadIfNecessary:a5 didDownload:{v15, a7}];
+  v16 = [messageStore dataForMimePart:partCopy inRange:location isComplete:length downloadIfNecessary:complete didDownload:{v15, download}];
 
   return v16;
 }
 
-- (BOOL)fetchDataForMimePart:(id)a3 inRange:(_NSRange)a4 withConsumer:(id)a5 isComplete:(BOOL *)a6 downloadIfNecessary:(BOOL)a7
+- (BOOL)fetchDataForMimePart:(id)part inRange:(_NSRange)range withConsumer:(id)consumer isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary
 {
-  v7 = a7;
-  length = a4.length;
-  location = a4.location;
+  necessaryCopy = necessary;
+  length = range.length;
+  location = range.location;
   v24[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
+  partCopy = part;
+  consumerCopy = consumer;
   v23 = 0;
   v15 = [MFProgressFilterDataConsumer alloc];
-  v24[0] = v14;
+  v24[0] = consumerCopy;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
   v17 = [(MFBaseFilterDataConsumer *)v15 initWithConsumers:v16];
 
-  v18 = [(MFMessage *)self messageStore];
-  if (v7)
+  messageStore = [(MFMessage *)self messageStore];
+  if (necessaryCopy)
   {
     v19 = _ECIsNetworkActivityAllowed();
   }
@@ -2172,20 +2172,20 @@ LABEL_17:
     v19 = 0;
   }
 
-  [v18 dataForMimePart:v13 inRange:location isComplete:length withConsumer:a6 downloadIfNecessary:v17 didDownload:{v19, &v23}];
+  [messageStore dataForMimePart:partCopy inRange:location isComplete:length withConsumer:complete downloadIfNecessary:v17 didDownload:{v19, &v23}];
 
   v20 = v23;
   v21 = *MEMORY[0x1E69E9840];
   return v20 & 1;
 }
 
-- (void)calculateAttachmentInfoFromBody:(id)a3
+- (void)calculateAttachmentInfoFromBody:(id)body
 {
-  v4 = a3;
-  v5 = v4;
+  bodyCopy = body;
+  v5 = bodyCopy;
   if ((*(self + 160) & 1) == 0)
   {
-    if (v4 || ([(MFMessage *)self messageBodyUpdatingFlags:0], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (bodyCopy || ([(MFMessage *)self messageBodyUpdatingFlags:0], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v7 = 0;
       v6 = [v5 numberOfAttachmentsSigned:&v7 + 1 encrypted:&v7];
@@ -2195,49 +2195,49 @@ LABEL_17:
   }
 }
 
-- (int64_t)generationCompare:(id)a3
+- (int64_t)generationCompare:(id)compare
 {
-  v4 = a3;
-  v5 = [(MFMessage *)self generationNumber];
-  v6 = [v4 generationNumber];
-  if (v6 > v5)
+  compareCopy = compare;
+  generationNumber = [(MFMessage *)self generationNumber];
+  generationNumber2 = [compareCopy generationNumber];
+  if (generationNumber2 > generationNumber)
   {
     v7 = -1;
   }
 
   else
   {
-    v7 = v6 < v5;
+    v7 = generationNumber2 < generationNumber;
   }
 
   return v7;
 }
 
-- (id)defaultAlternativeInPart:(id)a3
+- (id)defaultAlternativeInPart:(id)part
 {
-  v4 = a3;
-  v5 = [(MFMessage *)self messageStore];
-  v6 = [v5 defaultAlternativeForPart:v4];
+  partCopy = part;
+  messageStore = [(MFMessage *)self messageStore];
+  v6 = [messageStore defaultAlternativeForPart:partCopy];
 
   return v6;
 }
 
-- (id)bestAlternativeInPart:(id)a3
+- (id)bestAlternativeInPart:(id)part
 {
-  v4 = a3;
-  v5 = [(MFMessage *)self messageStore];
-  v6 = [v5 bestAlternativeForPart:v4];
+  partCopy = part;
+  messageStore = [(MFMessage *)self messageStore];
+  v6 = [messageStore bestAlternativeForPart:partCopy];
 
   return v6;
 }
 
 - (BOOL)canBeTriaged
 {
-  v2 = self;
-  v3 = [(MFMessage *)self messageStore];
-  LOBYTE(v2) = [v3 messageCanBeTriaged:v2];
+  selfCopy = self;
+  messageStore = [(MFMessage *)self messageStore];
+  LOBYTE(selfCopy) = [messageStore messageCanBeTriaged:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (MFMimePart)parentPart
@@ -2250,7 +2250,7 @@ LABEL_17:
 - (void)updateSubjectFromEncryptedContent
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_1D36B2000, log, OS_LOG_TYPE_ERROR, "Signed message has protected header that does not match outer header: %{public}@", buf, 0xCu);
 }
 

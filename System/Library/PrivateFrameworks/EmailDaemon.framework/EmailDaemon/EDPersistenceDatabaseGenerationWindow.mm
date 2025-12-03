@@ -1,6 +1,6 @@
 @interface EDPersistenceDatabaseGenerationWindow
 - (EDPersistenceDatabaseGenerationWindow)init;
-- (void)insertGeneration:(int64_t)a3;
+- (void)insertGeneration:(int64_t)generation;
 @end
 
 @implementation EDPersistenceDatabaseGenerationWindow
@@ -18,16 +18,16 @@
   return result;
 }
 
-- (void)insertGeneration:(int64_t)a3
+- (void)insertGeneration:(int64_t)generation
 {
-  if (self->_earliestGeneration > a3)
+  if (self->_earliestGeneration > generation)
   {
-    self->_earliestGeneration = a3;
+    self->_earliestGeneration = generation;
   }
 
-  if (self->_latestGeneration < a3)
+  if (self->_latestGeneration < generation)
   {
-    self->_latestGeneration = a3;
+    self->_latestGeneration = generation;
   }
 }
 

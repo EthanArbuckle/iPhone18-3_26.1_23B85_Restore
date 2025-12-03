@@ -1,7 +1,7 @@
 @interface PLFollowUpSecondaryHeaderCell
-- (PLFollowUpSecondaryHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PLFollowUpSecondaryHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)subHeaderLabel;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateConstraints;
 @end
 
@@ -11,10 +11,10 @@
 {
   v2 = objc_alloc_init(UILabel);
   v3 = +[PSListController appearance];
-  v4 = [v3 textColor];
-  if (v4)
+  textColor = [v3 textColor];
+  if (textColor)
   {
-    [v2 setTextColor:v4];
+    [v2 setTextColor:textColor];
   }
 
   else
@@ -36,23 +36,23 @@
   return v2;
 }
 
-- (PLFollowUpSecondaryHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PLFollowUpSecondaryHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = PLFollowUpSecondaryHeaderCell;
-  v4 = [(PLFollowUpSecondaryHeaderCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PLFollowUpSecondaryHeaderCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(PLFollowUpSecondaryHeaderCell *)v4 contentView];
-    v7 = [(PLFollowUpSecondaryHeaderCell *)v5 subHeaderLabel];
+    contentView = [(PLFollowUpSecondaryHeaderCell *)v4 contentView];
+    subHeaderLabel = [(PLFollowUpSecondaryHeaderCell *)v5 subHeaderLabel];
     subHeader = v5->_subHeader;
-    v5->_subHeader = v7;
+    v5->_subHeader = subHeaderLabel;
 
-    [v6 addSubview:v5->_subHeader];
+    [contentView addSubview:v5->_subHeader];
     v13 = v5->_subHeader;
     v9 = [NSArray arrayWithObjects:&v13 count:1];
-    [v6 setAccessibilityElements:v9];
+    [contentView setAccessibilityElements:v9];
 
     v11.receiver = v5;
     v11.super_class = PLFollowUpSecondaryHeaderCell;
@@ -63,13 +63,13 @@
   return v5;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = PLFollowUpSecondaryHeaderCell;
-  v4 = a3;
-  [(PLFollowUpSecondaryHeaderCell *)&v6 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"PLFollowUpSecondaryHeaderCellTextKey", v6.receiver, v6.super_class}];
+  specifierCopy = specifier;
+  [(PLFollowUpSecondaryHeaderCell *)&v6 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"PLFollowUpSecondaryHeaderCellTextKey", v6.receiver, v6.super_class}];
 
   [(UILabel *)self->_subHeader setText:v5];
   [(PLFollowUpSecondaryHeaderCell *)self setNeedsLayout];

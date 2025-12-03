@@ -1,20 +1,20 @@
 @interface SAAppSizerMock
-- (void)startObservingWithUpdateHandler:(id)a3;
+- (void)startObservingWithUpdateHandler:(id)handler;
 @end
 
 @implementation SAAppSizerMock
 
-- (void)startObservingWithUpdateHandler:(id)a3
+- (void)startObservingWithUpdateHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   NSLog(&cfstr_SaappsizerStar.isa);
   v4 = dispatch_time(0, 3000000000);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__SAAppSizerMock_startObservingWithUpdateHandler___block_invoke;
   block[3] = &unk_279D22310;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_after(v4, MEMORY[0x277D85CD0], block);
 }
 

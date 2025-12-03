@@ -1,22 +1,22 @@
 @interface CNSharedProfileOnboardingStateControllerTestDouble
 + (id)userDefaults;
-- (BOOL)canShowOnboardingAllowingMultiplePhoneNumbers:(BOOL)a3;
-- (CNSharedProfileOnboardingStateControllerTestDouble)initWithIsPhotosReady:(BOOL)a3 multiplePhoneNumbersTiedToAppleID:(BOOL)a4 accountCanCreateSNaP:(BOOL)a5 hasCompletedOnboarding:(BOOL)a6 didSkipPoster:(BOOL)a7 lastShownVersionOnLaunch:(int64_t)a8 lastShownVersionInSettings:(int64_t)a9 deviceSupportsPosters:(BOOL)a10;
+- (BOOL)canShowOnboardingAllowingMultiplePhoneNumbers:(BOOL)numbers;
+- (CNSharedProfileOnboardingStateControllerTestDouble)initWithIsPhotosReady:(BOOL)ready multiplePhoneNumbersTiedToAppleID:(BOOL)d accountCanCreateSNaP:(BOOL)p hasCompletedOnboarding:(BOOL)onboarding didSkipPoster:(BOOL)poster lastShownVersionOnLaunch:(int64_t)launch lastShownVersionInSettings:(int64_t)settings deviceSupportsPosters:(BOOL)self0;
 @end
 
 @implementation CNSharedProfileOnboardingStateControllerTestDouble
 
-- (BOOL)canShowOnboardingAllowingMultiplePhoneNumbers:(BOOL)a3
+- (BOOL)canShowOnboardingAllowingMultiplePhoneNumbers:(BOOL)numbers
 {
-  v5 = [(CNSharedProfileOnboardingStateControllerTestDouble *)self accountCanCreateSNaP];
-  if (v5)
-    LOBYTE(v5) = a3 || ([MEMORY[0x1E69966E8] currentEnvironment], v6 = {;
+  accountCanCreateSNaP = [(CNSharedProfileOnboardingStateControllerTestDouble *)self accountCanCreateSNaP];
+  if (accountCanCreateSNaP)
+    LOBYTE(accountCanCreateSNaP) = numbers || ([MEMORY[0x1E69966E8] currentEnvironment], v6 = {;
   }
 
-  return v5;
+  return accountCanCreateSNaP;
 }
 
-- (CNSharedProfileOnboardingStateControllerTestDouble)initWithIsPhotosReady:(BOOL)a3 multiplePhoneNumbersTiedToAppleID:(BOOL)a4 accountCanCreateSNaP:(BOOL)a5 hasCompletedOnboarding:(BOOL)a6 didSkipPoster:(BOOL)a7 lastShownVersionOnLaunch:(int64_t)a8 lastShownVersionInSettings:(int64_t)a9 deviceSupportsPosters:(BOOL)a10
+- (CNSharedProfileOnboardingStateControllerTestDouble)initWithIsPhotosReady:(BOOL)ready multiplePhoneNumbersTiedToAppleID:(BOOL)d accountCanCreateSNaP:(BOOL)p hasCompletedOnboarding:(BOOL)onboarding didSkipPoster:(BOOL)poster lastShownVersionOnLaunch:(int64_t)launch lastShownVersionInSettings:(int64_t)settings deviceSupportsPosters:(BOOL)self0
 {
   v20.receiver = self;
   v20.super_class = CNSharedProfileOnboardingStateControllerTestDouble;
@@ -24,16 +24,16 @@
   v17 = v16;
   if (v16)
   {
-    v16->_isPhotosReadyForOnboarding = a3;
-    v16->_multiplePhoneNumbersTiedToAppleID = a4;
-    v16->_accountCanCreateSNaP = a5;
+    v16->_isPhotosReadyForOnboarding = ready;
+    v16->_multiplePhoneNumbersTiedToAppleID = d;
+    v16->_accountCanCreateSNaP = p;
     v16->_alwaysShowSNaPOnboarding = 0;
-    v16->_deviceSupportsPosters = a10;
+    v16->_deviceSupportsPosters = posters;
     v16->_iCloudSignedInToUseNicknames = 1;
-    v16->_lastShownOnboardingVersion = a8;
-    v16->_lastShowOnboardingVersionInSettings = a9;
-    v16->_didSkipPosterSetup = a7;
-    v16->_hasCompletedOnboarding = a6;
+    v16->_lastShownOnboardingVersion = launch;
+    v16->_lastShowOnboardingVersionInSettings = settings;
+    v16->_didSkipPosterSetup = poster;
+    v16->_hasCompletedOnboarding = onboarding;
     v18 = v16;
   }
 

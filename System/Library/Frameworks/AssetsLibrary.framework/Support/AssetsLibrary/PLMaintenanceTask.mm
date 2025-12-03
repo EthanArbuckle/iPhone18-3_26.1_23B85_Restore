@@ -1,28 +1,28 @@
 @interface PLMaintenanceTask
 - (PLLibraryServicesManager)libraryServicesManager;
-- (PLMaintenanceTask)initWithLibraryBundle:(id)a3;
+- (PLMaintenanceTask)initWithLibraryBundle:(id)bundle;
 @end
 
 @implementation PLMaintenanceTask
 
 - (PLLibraryServicesManager)libraryServicesManager
 {
-  v2 = [(PLMaintenanceTask *)self libraryBundle];
-  v3 = [v2 libraryServicesManager];
+  libraryBundle = [(PLMaintenanceTask *)self libraryBundle];
+  libraryServicesManager = [libraryBundle libraryServicesManager];
 
-  return v3;
+  return libraryServicesManager;
 }
 
-- (PLMaintenanceTask)initWithLibraryBundle:(id)a3
+- (PLMaintenanceTask)initWithLibraryBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v16.receiver = self;
   v16.super_class = PLMaintenanceTask;
   v6 = [(PLMaintenanceTask *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_libraryBundle, a3);
+    objc_storeStrong(&v6->_libraryBundle, bundle);
     v8 = objc_initWeak(&location, v7);
 
     v9 = [PLLazyObject alloc];

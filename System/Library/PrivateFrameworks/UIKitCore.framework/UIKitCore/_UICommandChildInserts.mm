@@ -1,19 +1,19 @@
 @interface _UICommandChildInserts
-- (void)_setBeforeElements:(id)a3 afterElements:(id)a4;
+- (void)_setBeforeElements:(id)elements afterElements:(id)afterElements;
 @end
 
 @implementation _UICommandChildInserts
 
-- (void)_setBeforeElements:(id)a3 afterElements:(id)a4
+- (void)_setBeforeElements:(id)elements afterElements:(id)afterElements
 {
-  v6 = a3;
-  v7 = a4;
+  elementsCopy = elements;
+  afterElementsCopy = afterElements;
   beforeElements = self->_beforeElements;
-  self->_beforeElements = v6;
-  v10 = v6;
+  self->_beforeElements = elementsCopy;
+  v10 = elementsCopy;
 
   afterElements = self->_afterElements;
-  self->_afterElements = v7;
+  self->_afterElements = afterElementsCopy;
 }
 
 @end

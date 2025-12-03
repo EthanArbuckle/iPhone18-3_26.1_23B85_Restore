@@ -1,16 +1,16 @@
 @interface PUPhotoCommentEntryView
-- (BOOL)textViewShouldBeginEditing:(id)a3;
-- (BOOL)textViewShouldEndEditing:(id)a3;
-- (PUPhotoCommentEntryView)initWithFrame:(CGRect)a3;
+- (BOOL)textViewShouldBeginEditing:(id)editing;
+- (BOOL)textViewShouldEndEditing:(id)editing;
+- (PUPhotoCommentEntryView)initWithFrame:(CGRect)frame;
 - (PUPhotoCommentEntryViewDelegate)delegate;
 - (double)preferredHeight;
 - (id)trimmedText;
 - (void)clearText;
 - (void)layoutSubviews;
-- (void)setText:(id)a3;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (void)setText:(id)text;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidEndEditing:(id)editing;
 @end
 
 @implementation PUPhotoCommentEntryView
@@ -22,14 +22,14 @@
   return WeakRetained;
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
   [(UIButton *)self->_postButton setHidden:1];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained photoCommentEntryViewDidEndEditing:self];
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
   [(UIButton *)self->_postButton setHidden:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -42,7 +42,7 @@
   }
 }
 
-- (BOOL)textViewShouldEndEditing:(id)a3
+- (BOOL)textViewShouldEndEditing:(id)editing
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -58,14 +58,14 @@
   return v7;
 }
 
-- (BOOL)textViewShouldBeginEditing:(id)a3
+- (BOOL)textViewShouldBeginEditing:(id)editing
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained photoCommentEntryViewWillBeginEditing:self];
 
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  v6 = [v5 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -83,13 +83,13 @@
   return 1;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v10 = [(PUPhotoCommentEntryView *)self trimmedText];
-  v4 = [v10 length] != 0;
-  v5 = [(UITextView *)self->_textView hasText];
+  trimmedText = [(PUPhotoCommentEntryView *)self trimmedText];
+  v4 = [trimmedText length] != 0;
+  hasText = [(UITextView *)self->_textView hasText];
   [(UIButton *)self->_postButton setEnabled:v4];
-  [(UILabel *)self->_placeholderLabel setHidden:v5];
+  [(UILabel *)self->_placeholderLabel setHidden:hasText];
   [(PUPhotoCommentEntryView *)self frame];
   v7 = v6;
   [(PUPhotoCommentEntryView *)self preferredHeight];
@@ -123,9 +123,9 @@
     v17 = v8 - v13 + -15.0;
   }
 
-  v40 = [(UIButton *)self->_postButton titleLabel];
-  [v40 _lastLineBaseline];
-  [(UIButton *)self->_postButton convertPoint:v40 fromView:0.0, v18];
+  titleLabel = [(UIButton *)self->_postButton titleLabel];
+  [titleLabel _lastLineBaseline];
+  [(UIButton *)self->_postButton convertPoint:titleLabel fromView:0.0, v18];
   [(UIButton *)self->_postButton setFrame:v17, v10 - v16 + -22.0 + v16 - v19, v14, v16];
   [(UIButton *)self->_postButton layoutIfNeeded];
   v20 = v8 + -10.0 - v14 + -5.0 + -15.0;
@@ -171,9 +171,9 @@
   }
 
   [(UILabel *)self->_placeholderLabel setFrame:v32, v39 + v30, v24, v26];
-  v33 = [MEMORY[0x1E69DC668] sharedApplication];
-  v34 = [v33 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v34);
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -187,19 +187,19 @@
 
 - (id)trimmedText
 {
-  v2 = [(UITextView *)self->_textView text];
-  v3 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  text = [(UITextView *)self->_textView text];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v4 = [text stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v4;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  if ([v4 length])
+  textCopy = text;
+  if ([textCopy length])
   {
-    [(UITextView *)self->_textView setText:v4];
+    [(UITextView *)self->_textView setText:textCopy];
     [(UILabel *)self->_placeholderLabel setHidden:1];
     [(UIButton *)self->_postButton setEnabled:1];
   }
@@ -216,11 +216,11 @@
 
 - (double)preferredHeight
 {
-  v3 = [(UITextView *)self->_textView textLayoutManager];
-  v4 = [v3 textContentManager];
-  v5 = [v4 documentRange];
+  textLayoutManager = [(UITextView *)self->_textView textLayoutManager];
+  textContentManager = [textLayoutManager textContentManager];
+  documentRange = [textContentManager documentRange];
 
-  [v3 ensureLayoutForRange:v5];
+  [textLayoutManager ensureLayoutForRange:documentRange];
   [(UITextView *)self->_textView layoutIfNeeded];
   [(UITextView *)self->_textView contentSize];
   if (v6 >= 0.0)
@@ -229,18 +229,18 @@
     v7 = 44.0;
     if (v8 >= 44.0)
     {
-      v9 = [MEMORY[0x1E69DC938] currentDevice];
-      v10 = [v9 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v10 == 1)
+      if (userInterfaceIdiom == 1)
       {
         v11 = 80.0;
       }
 
       else
       {
-        v12 = [MEMORY[0x1E69DC668] sharedApplication];
-        v13 = [v12 statusBarOrientation] - 1;
+        mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+        v13 = [mEMORY[0x1E69DC668] statusBarOrientation] - 1;
 
         if (v13 >= 2)
         {
@@ -275,11 +275,11 @@
   return v7;
 }
 
-- (PUPhotoCommentEntryView)initWithFrame:(CGRect)a3
+- (PUPhotoCommentEntryView)initWithFrame:(CGRect)frame
 {
   v37.receiver = self;
   v37.super_class = PUPhotoCommentEntryView;
-  v3 = [(PUPhotoCommentEntryView *)&v37 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPhotoCommentEntryView *)&v37 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DC738] buttonWithType:1];
@@ -290,10 +290,10 @@
     v7 = PLLocalizedFrameworkString();
     [(UIButton *)v6 setTitle:v7 forState:0];
 
-    v8 = [(UIButton *)v3->_postButton titleLabel];
-    v9 = [MEMORY[0x1E69BE1B8] sharedCache];
-    v10 = [v9 commentSendButtonFont];
-    [v8 setFont:v10];
+    titleLabel = [(UIButton *)v3->_postButton titleLabel];
+    mEMORY[0x1E69BE1B8] = [MEMORY[0x1E69BE1B8] sharedCache];
+    commentSendButtonFont = [mEMORY[0x1E69BE1B8] commentSendButtonFont];
+    [titleLabel setFont:commentSendButtonFont];
 
     [(UIButton *)v3->_postButton sizeToFit];
     [(UIButton *)v3->_postButton setHidden:1];
@@ -309,17 +309,17 @@
 
     [(UITextView *)v3->_textView setDelegate:v3];
     v18 = v3->_textView;
-    v19 = [MEMORY[0x1E69DC888] labelColor];
-    [(UITextView *)v18 setTextColor:v19];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UITextView *)v18 setTextColor:labelColor];
 
     v20 = v3->_textView;
-    v21 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITextView *)v20 setBackgroundColor:v21];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITextView *)v20 setBackgroundColor:clearColor];
 
     v22 = v3->_textView;
-    v23 = [MEMORY[0x1E69BE1B8] sharedCache];
-    v24 = [v23 commentEntryFont];
-    [(UITextView *)v22 setFont:v24];
+    mEMORY[0x1E69BE1B8]2 = [MEMORY[0x1E69BE1B8] sharedCache];
+    commentEntryFont = [mEMORY[0x1E69BE1B8]2 commentEntryFont];
+    [(UITextView *)v22 setFont:commentEntryFont];
 
     [(UITextView *)v3->_textView sizeToFit];
     v25 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v12, v13, v14, v15}];
@@ -327,17 +327,17 @@
     v3->_placeholderLabel = v25;
 
     v27 = v3->_placeholderLabel;
-    v28 = [MEMORY[0x1E69DC888] placeholderTextColor];
-    [(UILabel *)v27 setTextColor:v28];
+    placeholderTextColor = [MEMORY[0x1E69DC888] placeholderTextColor];
+    [(UILabel *)v27 setTextColor:placeholderTextColor];
 
     v29 = v3->_placeholderLabel;
-    v30 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v29 setBackgroundColor:v30];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v29 setBackgroundColor:clearColor2];
 
     v31 = v3->_placeholderLabel;
-    v32 = [MEMORY[0x1E69BE1B8] sharedCache];
-    v33 = [v32 commentEntryFont];
-    [(UILabel *)v31 setFont:v33];
+    mEMORY[0x1E69BE1B8]3 = [MEMORY[0x1E69BE1B8] sharedCache];
+    commentEntryFont2 = [mEMORY[0x1E69BE1B8]3 commentEntryFont];
+    [(UILabel *)v31 setFont:commentEntryFont2];
 
     v34 = v3->_placeholderLabel;
     v35 = PLLocalizedFrameworkString();

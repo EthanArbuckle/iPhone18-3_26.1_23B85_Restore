@@ -1,20 +1,20 @@
 @interface VCPCoreMLRequest
-- (VCPCoreMLRequest)initWithModelName:(id)a3;
+- (VCPCoreMLRequest)initWithModelName:(id)name;
 @end
 
 @implementation VCPCoreMLRequest
 
-- (VCPCoreMLRequest)initWithModelName:(id)a3
+- (VCPCoreMLRequest)initWithModelName:(id)name
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = VCPCoreMLRequest;
   v5 = [(VCPCoreMLRequest *)&v17 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-    v7 = [v6 URLForResource:v4 withExtension:@"mlmodelc"];
+    vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+    v7 = [vcp_mediaAnalysisBundle URLForResource:nameCopy withExtension:@"mlmodelc"];
 
     if (v7)
     {
@@ -45,7 +45,7 @@
     else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v19 = v4;
+      v19 = nameCopy;
       v20 = 2112;
       v21 = 0;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] VCPCoreMLRequest Failed to open model file at url %@", buf, 0x16u);

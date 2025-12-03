@@ -5,10 +5,10 @@
 - (GuidanceObserver)guidanceObserver;
 - (unint64_t)maneuverViewLayoutType;
 - (void)_setupGuidanceCard;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)navigationService:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)setContent:(id)a3;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)navigationService:(id)service didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)setContent:(id)content;
 @end
 
 @implementation CarSmallWidgetNavigationModeController
@@ -34,12 +34,12 @@
 
 - (CGSize)availableSize
 {
-  v3 = [(CarSmallWidgetNavigationModeController *)self view];
-  [v3 bounds];
+  view = [(CarSmallWidgetNavigationModeController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
-  v8 = [(CarSmallWidgetNavigationModeController *)self view];
-  [v8 safeAreaInsets];
+  view2 = [(CarSmallWidgetNavigationModeController *)self view];
+  [view2 safeAreaInsets];
   v11 = v5 - (v9 + v10);
   v14 = v7 - (v12 + v13);
 
@@ -50,87 +50,87 @@
   return result;
 }
 
-- (void)navigationService:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5
+- (void)navigationService:(id)service didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index
 {
-  v7 = [a3 route];
-  self->_hasArrived = [v7 isLegIndexOfLastLeg:a5];
+  route = [service route];
+  self->_hasArrived = [route isLegIndexOfLastLeg:index];
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v5 = [MNNavigationService sharedService:a3];
+  v5 = [MNNavigationService sharedService:controller];
   [v5 unregisterObserver:self];
 
-  v7 = [(CarSmallWidgetNavigationModeController *)self guidanceObserver];
-  v6 = [(CarSmallWidgetNavigationModeController *)self guidanceCard];
-  [v7 removeOutlet:v6];
+  guidanceObserver = [(CarSmallWidgetNavigationModeController *)self guidanceObserver];
+  guidanceCard = [(CarSmallWidgetNavigationModeController *)self guidanceCard];
+  [guidanceObserver removeOutlet:guidanceCard];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v5 = [MNNavigationService sharedService:a3];
+  v5 = [MNNavigationService sharedService:controller];
   [v5 registerObserver:self];
 
   [(CarSmallWidgetNavigationModeController *)self _setupGuidanceCard];
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v5 = a3;
+  contentCopy = content;
   p_content = &self->_content;
   content = self->_content;
-  if (content != v5)
+  if (content != contentCopy)
   {
     if (content)
     {
-      v8 = [(UIViewController *)content view];
-      [v8 removeFromSuperview];
+      view = [(UIViewController *)content view];
+      [view removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_content, a3);
+    objc_storeStrong(&self->_content, content);
     if (*p_content)
     {
-      v9 = [(UIViewController *)*p_content view];
-      [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+      view2 = [(UIViewController *)*p_content view];
+      [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v10 = [(CarSmallWidgetNavigationModeController *)self view];
-      v11 = [(UIViewController *)*p_content view];
-      [v10 addSubview:v11];
+      view3 = [(CarSmallWidgetNavigationModeController *)self view];
+      view4 = [(UIViewController *)*p_content view];
+      [view3 addSubview:view4];
 
-      v42 = [(UIViewController *)*p_content view];
-      v40 = [v42 leadingAnchor];
-      v41 = [(CarSmallWidgetNavigationModeController *)self view];
-      v39 = [v41 safeAreaLayoutGuide];
-      v38 = [v39 leadingAnchor];
-      v37 = [v40 constraintEqualToAnchor:v38];
+      view5 = [(UIViewController *)*p_content view];
+      leadingAnchor = [view5 leadingAnchor];
+      view6 = [(CarSmallWidgetNavigationModeController *)self view];
+      safeAreaLayoutGuide = [view6 safeAreaLayoutGuide];
+      leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+      v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v43[0] = v37;
-      v36 = [(UIViewController *)*p_content view];
-      v34 = [v36 trailingAnchor];
-      v35 = [(CarSmallWidgetNavigationModeController *)self view];
-      v33 = [v35 safeAreaLayoutGuide];
-      v32 = [v33 trailingAnchor];
-      v31 = [v34 constraintEqualToAnchor:v32];
+      view7 = [(UIViewController *)*p_content view];
+      trailingAnchor = [view7 trailingAnchor];
+      view8 = [(CarSmallWidgetNavigationModeController *)self view];
+      safeAreaLayoutGuide2 = [view8 safeAreaLayoutGuide];
+      trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+      v31 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v43[1] = v31;
-      v30 = [(UIViewController *)*p_content view];
-      v28 = [v30 topAnchor];
-      v29 = [(CarSmallWidgetNavigationModeController *)self view];
-      v27 = [v29 safeAreaLayoutGuide];
-      v26 = [v27 topAnchor];
-      v25 = [v28 constraintGreaterThanOrEqualToAnchor:v26];
+      view9 = [(UIViewController *)*p_content view];
+      topAnchor = [view9 topAnchor];
+      view10 = [(CarSmallWidgetNavigationModeController *)self view];
+      safeAreaLayoutGuide3 = [view10 safeAreaLayoutGuide];
+      topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+      v25 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
       v43[2] = v25;
-      v24 = [(UIViewController *)*p_content view];
-      v22 = [v24 bottomAnchor];
-      v23 = [(CarSmallWidgetNavigationModeController *)self view];
-      v21 = [v23 safeAreaLayoutGuide];
-      v12 = [v21 bottomAnchor];
-      v13 = [v22 constraintLessThanOrEqualToAnchor:v12];
+      view11 = [(UIViewController *)*p_content view];
+      bottomAnchor = [view11 bottomAnchor];
+      view12 = [(CarSmallWidgetNavigationModeController *)self view];
+      safeAreaLayoutGuide4 = [view12 safeAreaLayoutGuide];
+      bottomAnchor2 = [safeAreaLayoutGuide4 bottomAnchor];
+      v13 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
       v43[3] = v13;
-      v14 = [(UIViewController *)*p_content view];
-      v15 = [v14 centerYAnchor];
-      v16 = [(CarSmallWidgetNavigationModeController *)self view];
-      v17 = [v16 safeAreaLayoutGuide];
-      v18 = [v17 centerYAnchor];
-      v19 = [v15 constraintEqualToAnchor:v18];
+      view13 = [(UIViewController *)*p_content view];
+      centerYAnchor = [view13 centerYAnchor];
+      view14 = [(CarSmallWidgetNavigationModeController *)self view];
+      safeAreaLayoutGuide5 = [view14 safeAreaLayoutGuide];
+      centerYAnchor2 = [safeAreaLayoutGuide5 centerYAnchor];
+      v19 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v43[4] = v19;
       v20 = [NSArray arrayWithObjects:v43 count:5];
       [NSLayoutConstraint activateConstraints:v20];
@@ -141,9 +141,9 @@
 - (GuidanceObserver)guidanceObserver
 {
   v2 = +[CarDisplayController sharedInstance];
-  v3 = [v2 guidanceObserver];
+  guidanceObserver = [v2 guidanceObserver];
 
-  return v3;
+  return guidanceObserver;
 }
 
 - (CarGuidanceCardViewController)guidanceCard
@@ -163,16 +163,16 @@
 
 - (void)_setupGuidanceCard
 {
-  v3 = [(CarSmallWidgetNavigationModeController *)self guidanceCard];
-  [(CarSmallWidgetNavigationModeController *)self setContent:v3];
+  guidanceCard = [(CarSmallWidgetNavigationModeController *)self guidanceCard];
+  [(CarSmallWidgetNavigationModeController *)self setContent:guidanceCard];
 
-  v4 = [(CarSmallWidgetNavigationModeController *)self guidanceObserver];
-  v5 = [(CarSmallWidgetNavigationModeController *)self guidanceCard];
-  [v4 addOutlet:v5];
+  guidanceObserver = [(CarSmallWidgetNavigationModeController *)self guidanceObserver];
+  guidanceCard2 = [(CarSmallWidgetNavigationModeController *)self guidanceCard];
+  [guidanceObserver addOutlet:guidanceCard2];
 
-  v7 = [(CarSmallWidgetNavigationModeController *)self guidanceObserver];
-  v6 = [(CarSmallWidgetNavigationModeController *)self guidanceCard];
-  [v7 repeatAllUpdatesForOutlet:v6];
+  guidanceObserver2 = [(CarSmallWidgetNavigationModeController *)self guidanceObserver];
+  guidanceCard3 = [(CarSmallWidgetNavigationModeController *)self guidanceCard];
+  [guidanceObserver2 repeatAllUpdatesForOutlet:guidanceCard3];
 }
 
 @end

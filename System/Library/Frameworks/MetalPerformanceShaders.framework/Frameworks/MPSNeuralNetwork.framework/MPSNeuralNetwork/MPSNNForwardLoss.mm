@@ -3,14 +3,14 @@
 - (MPSNNForwardLoss)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSNNForwardLoss)initWithDevice:(id)device;
 - (MPSNNForwardLoss)initWithDevice:(id)device lossDescriptor:(MPSCNNLossDescriptor *)lossDescriptor;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4;
-- (id)resultStateForSourceImage:(id)a3 sourceStates:(id)a4 destinationImage:(id)a5;
-- (id)temporaryResultStateForCommandBuffer:(id)a3 sourceImage:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states;
+- (id)resultStateForSourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage;
+- (id)temporaryResultStateForCommandBuffer:(id)buffer sourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage;
 - (void)dealloc;
 - (void)encodeBatchToCommandBuffer:(id)commandBuffer sourceImages:(MPSImageBatch *)sourceImages labels:(MPSImageBatch *)labels weights:(MPSImageBatch *)weights destinationStates:(MPSStateBatch *)destinationStates destinationImages:(MPSImageBatch *)destinationImages;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNNForwardLoss
@@ -167,42 +167,42 @@ LABEL_9:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v78.receiver = self;
   v78.super_class = MPSNNForwardLoss;
   [(MPSCNNKernel *)&v78 encodeWithCoder:?];
-  objc_msgSend_encodeInt32_forKey_(a3, v5, self->_lossType, @"MPSCNNLossLossType", v6, v7, v8, v9);
-  objc_msgSend_encodeInt32_forKey_(a3, v10, self->_reductionType, @"MPSCNNLossReductionType", v11, v12, v13, v14);
-  objc_msgSend_encodeBool_forKey_(a3, v15, self->_reduceAcrossBatch, @"MPSCNNLossReduceAcrossBatches", v16, v17, v18, v19);
+  objc_msgSend_encodeInt32_forKey_(coder, v5, self->_lossType, @"MPSCNNLossLossType", v6, v7, v8, v9);
+  objc_msgSend_encodeInt32_forKey_(coder, v10, self->_reductionType, @"MPSCNNLossReductionType", v11, v12, v13, v14);
+  objc_msgSend_encodeBool_forKey_(coder, v15, self->_reduceAcrossBatch, @"MPSCNNLossReduceAcrossBatches", v16, v17, v18, v19);
   *&v20 = self->_weight;
-  objc_msgSend_encodeFloat_forKey_(a3, v21, @"MPSCNNLossWeight", v22, v23, v24, v25, v26, v20);
+  objc_msgSend_encodeFloat_forKey_(coder, v21, @"MPSCNNLossWeight", v22, v23, v24, v25, v26, v20);
   *&v27 = self->_labelSmoothing;
-  objc_msgSend_encodeFloat_forKey_(a3, v28, @"MPSCNNLossLabelSmoothing", v29, v30, v31, v32, v33, v27);
-  objc_msgSend_encodeInt64_forKey_(a3, v34, self->_numberOfClasses, @"MPSCNNLossNumberOfClasses", v35, v36, v37, v38);
+  objc_msgSend_encodeFloat_forKey_(coder, v28, @"MPSCNNLossLabelSmoothing", v29, v30, v31, v32, v33, v27);
+  objc_msgSend_encodeInt64_forKey_(coder, v34, self->_numberOfClasses, @"MPSCNNLossNumberOfClasses", v35, v36, v37, v38);
   *&v39 = self->_epsilon;
-  objc_msgSend_encodeFloat_forKey_(a3, v40, @"MPSCNNLossEpsilon", v41, v42, v43, v44, v45, v39);
+  objc_msgSend_encodeFloat_forKey_(coder, v40, @"MPSCNNLossEpsilon", v41, v42, v43, v44, v45, v39);
   *&v46 = self->_delta;
-  objc_msgSend_encodeFloat_forKey_(a3, v47, @"MPSCNNLossDelta", v48, v49, v50, v51, v52, v46);
+  objc_msgSend_encodeFloat_forKey_(coder, v47, @"MPSCNNLossDelta", v48, v49, v50, v51, v52, v46);
   if (self->_propertyCallback && (objc_msgSend_conformsToProtocol_(self->_propertyCallback, v53, &unk_284D09FA0, v54, v55, v56, v57, v58) & 1) != 0)
   {
     v59 = objc_opt_class();
     v67 = objc_msgSend_supportsSecureCoding(v59, v60, v61, v62, v63, v64, v65, v66);
-    objc_msgSend_encodeBool_forKey_(a3, v68, v67, @"MPSCNNGram_hasPropertyCallback", v69, v70, v71, v72);
+    objc_msgSend_encodeBool_forKey_(coder, v68, v67, @"MPSCNNGram_hasPropertyCallback", v69, v70, v71, v72);
     if (v67)
     {
-      objc_msgSend_encodeObject_forKey_(a3, v73, self->_propertyCallback, @"MPSCNNGram_propertyCallback", v74, v75, v76, v77);
+      objc_msgSend_encodeObject_forKey_(coder, v73, self->_propertyCallback, @"MPSCNNGram_propertyCallback", v74, v75, v76, v77);
     }
   }
 
   else
   {
-    objc_msgSend_encodeBool_forKey_(a3, v53, 0, @"MPSCNNGram_hasPropertyCallback", v55, v56, v57, v58);
+    objc_msgSend_encodeBool_forKey_(coder, v53, 0, @"MPSCNNGram_hasPropertyCallback", v55, v56, v57, v58);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v39.receiver = self;
   v39.super_class = MPSNNForwardLoss;
@@ -222,19 +222,19 @@ LABEL_9:
     self->_firstLossImage = 0;
     v14 = objc_msgSend_rowBytesForColumns_dataType_(MEMORY[0x277CD7258], v8, 16, 268435488, v9, v10, v11, v12);
     v18 = objc_msgSend_matrixDescriptorWithRows_columns_rowBytes_dataType_(MEMORY[0x277CD7258], v15, 2, 16, v14, 268435488, v16, v17);
-    if (!a4)
+    if (!device)
     {
-      a4 = (*(&self->super.super.super.isa + *MEMORY[0x277CD7350]))[2];
+      device = (*(&self->super.super.super.isa + *MEMORY[0x277CD7350]))[2];
     }
 
     v19 = objc_alloc(MEMORY[0x277CD7250]);
-    v13[43] = objc_msgSend_initWithDevice_descriptor_(v19, v20, a4, v18, v21, v22, v23, v24);
+    v13[43] = objc_msgSend_initWithDevice_descriptor_(v19, v20, device, v18, v21, v22, v23, v24);
     v13[44] = 0;
     v13[42] = 0;
     propertyCallback = self->_propertyCallback;
     if (propertyCallback && objc_msgSend_conformsToProtocol_(propertyCallback, v25, &unk_284D09E18, v26, v27, v28, v29, v30))
     {
-      v13[42] = objc_msgSend_copyWithZone_(self->_propertyCallback, v32, a3, v33, v34, v35, v36, v37);
+      v13[42] = objc_msgSend_copyWithZone_(self->_propertyCallback, v32, zone, v33, v34, v35, v36, v37);
     }
   }
 
@@ -263,11 +263,11 @@ LABEL_9:
   return objc_msgSend_stringWithFormat_(v3, v5, @"%@\n\tlossType: %d\treductionType: %d, across batch = %s\tweight: %f\tlabelSmoothing: %f\tnumberOfClasses: %lu\tepsilon: %f\tdelta: %f", v6, v7, v8, v9, v10, v4, self->_lossType, self->_reductionType, v11, self->_weight, self->_labelSmoothing, self->_numberOfClasses, self->_epsilon, self->_delta);
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states
 {
   v26.receiver = self;
   v26.super_class = MPSNNForwardLoss;
-  v5 = [(MPSCNNKernel *)&v26 destinationImageDescriptorForSourceImages:a3 sourceStates:a4];
+  v5 = [(MPSCNNKernel *)&v26 destinationImageDescriptorForSourceImages:images sourceStates:states];
   v12 = v5;
   if (self->_reductionType)
   {
@@ -358,7 +358,7 @@ LABEL_9:
     v225 = v120;
     v226 = v102;
     v231 = v24;
-    v232 = self;
+    selfCopy2 = self;
     v229 = sourceImages;
     v227 = v16;
     if (v9)
@@ -391,7 +391,7 @@ LABEL_21:
   v225 = 1;
   v226 = 1;
   v231 = v24;
-  v232 = self;
+  selfCopy2 = self;
   v229 = sourceImages;
   v227 = v16;
   if (!v9)
@@ -426,7 +426,7 @@ LABEL_24:
 
   while (v227 != v154);
   v196 = v229;
-  if (v232->_reduceAcrossBatch && v233 && v232->_reductionType == 3)
+  if (selfCopy2->_reduceAcrossBatch && v233 && selfCopy2->_reductionType == 3)
   {
     v242 = 0u;
     v243 = 0u;
@@ -457,7 +457,7 @@ LABEL_24:
 
     v196 = v229;
     MPSImageBatchIncrementReadCount(v229, 1);
-    objc_msgSend_encodeBatchToCommandBuffer_sourceImages_inStates_destinationImages_(v232, v205, v235, v229, v9, v231, v206, v207);
+    objc_msgSend_encodeBatchToCommandBuffer_sourceImages_inStates_destinationImages_(selfCopy2, v205, v235, v229, v9, v231, v206, v207);
     v238 = 0u;
     v239 = 0u;
     v236 = 0u;
@@ -486,7 +486,7 @@ LABEL_24:
     }
   }
 
-  objc_msgSend_encodeBatchToCommandBuffer_sourceImages_inStates_destinationImages_(v232, v192, v235, v196, v9, v231, v194, v195);
+  objc_msgSend_encodeBatchToCommandBuffer_sourceImages_inStates_destinationImages_(selfCopy2, v192, v235, v196, v9, v231, v194, v195);
   if (v233)
   {
     MPSDecrementReadCount();
@@ -610,7 +610,7 @@ LABEL_24:
 
 LABEL_25:
   v176 = v47;
-  v175 = self;
+  selfCopy = self;
   batcha = sourceImages;
   v181 = labels;
   if (!self->_reductionType)
@@ -656,8 +656,8 @@ LABEL_29:
   }
 
 LABEL_31:
-  v153 = v175;
-  if (v175->_reduceAcrossBatch && v80 && v175->_reductionType == 3)
+  v153 = selfCopy;
+  if (selfCopy->_reduceAcrossBatch && v80 && selfCopy->_reductionType == 3)
   {
     v189 = 0u;
     v190 = 0u;
@@ -687,8 +687,8 @@ LABEL_31:
     }
 
     MPSImageBatchIncrementReadCount(batcha, 1);
-    v153 = v175;
-    objc_msgSend_encodeBatchToCommandBuffer_sourceImages_inStates_destinationImages_(v175, v162, commandBuffer, batcha, v74, v176, v163, v164);
+    v153 = selfCopy;
+    objc_msgSend_encodeBatchToCommandBuffer_sourceImages_inStates_destinationImages_(selfCopy, v162, commandBuffer, batcha, v74, v176, v163, v164);
     v185 = 0u;
     v186 = 0u;
     v183 = 0u;
@@ -728,7 +728,7 @@ LABEL_31:
   return v75;
 }
 
-- (id)resultStateForSourceImage:(id)a3 sourceStates:(id)a4 destinationImage:(id)a5
+- (id)resultStateForSourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage
 {
   v9 = [MPSNNLossGradientState alloc];
   v16 = objc_msgSend_initWithResource_(v9, v10, 0, v11, v12, v13, v14, v15);
@@ -740,11 +740,11 @@ LABEL_31:
   propertyCallback = self->_propertyCallback;
   if (propertyCallback)
   {
-    objc_msgSend_scalarWeightForSourceImage_destinationImage_(propertyCallback, v24, a3, a5, v25, v26, v27, v28);
+    objc_msgSend_scalarWeightForSourceImage_destinationImage_(propertyCallback, v24, image, destinationImage, v25, v26, v27, v28);
     v16[73] = v31;
   }
 
-  objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v24, v16, a3, a4, a5, v27, v28);
+  objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v24, v16, image, states, destinationImage, v27, v28);
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 0x10) != 0)
   {
     v32 = MEMORY[0x277CCACA8];
@@ -757,11 +757,11 @@ LABEL_31:
   return v16;
 }
 
-- (id)temporaryResultStateForCommandBuffer:(id)a3 sourceImage:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6
+- (id)temporaryResultStateForCommandBuffer:(id)buffer sourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage
 {
-  if (a3)
+  if (buffer)
   {
-    v12 = objc_msgSend_temporaryStateWithCommandBuffer_(MPSNNLossGradientState, a2, a3, a4, a5, a6, v6, v7);
+    v12 = objc_msgSend_temporaryStateWithCommandBuffer_(MPSNNLossGradientState, a2, buffer, image, states, destinationImage, v6, v7);
   }
 
   else
@@ -779,11 +779,11 @@ LABEL_31:
   propertyCallback = self->_propertyCallback;
   if (propertyCallback)
   {
-    objc_msgSend_scalarWeightForSourceImage_destinationImage_(propertyCallback, v28, a4, a6, v29, v30, v31, v32);
+    objc_msgSend_scalarWeightForSourceImage_destinationImage_(propertyCallback, v28, image, destinationImage, v29, v30, v31, v32);
     *(v27 + 292) = v35;
   }
 
-  objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v28, v27, a4, a5, a6, v31, v32);
+  objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v28, v27, image, states, destinationImage, v31, v32);
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 0x10) != 0)
   {
     v36 = MEMORY[0x277CCACA8];

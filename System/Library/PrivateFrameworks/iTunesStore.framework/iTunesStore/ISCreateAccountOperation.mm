@@ -1,23 +1,23 @@
 @interface ISCreateAccountOperation
-- (ISCreateAccountOperation)initWithDSID:(id)a3 additionalQueryParams:(id)a4 targetIdentifier:(id)a5;
+- (ISCreateAccountOperation)initWithDSID:(id)d additionalQueryParams:(id)params targetIdentifier:(id)identifier;
 @end
 
 @implementation ISCreateAccountOperation
 
-- (ISCreateAccountOperation)initWithDSID:(id)a3 additionalQueryParams:(id)a4 targetIdentifier:(id)a5
+- (ISCreateAccountOperation)initWithDSID:(id)d additionalQueryParams:(id)params targetIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  paramsCopy = params;
   v10 = MEMORY[0x277CCAB68];
-  v11 = a5;
+  identifierCopy = identifier;
   v12 = [[v10 alloc] initWithString:@"http://?action=account"];
-  if ([v8 unsignedLongLongValue])
+  if ([dCopy unsignedLongLongValue])
   {
-    v13 = [v8 stringValue];
-    [v12 appendFormat:@"&dsid=%@", v13];
+    stringValue = [dCopy stringValue];
+    [v12 appendFormat:@"&dsid=%@", stringValue];
   }
 
-  v14 = [MEMORY[0x277CBEBC0] queryStringForDictionary:v9 escapedValues:1];
+  v14 = [MEMORY[0x277CBEBC0] queryStringForDictionary:paramsCopy escapedValues:1];
   if ([v14 length])
   {
     v15 = [MEMORY[0x277CBEBC0] escapedStringForString:v14];
@@ -38,7 +38,7 @@
   v18 = [(ISOpenURLRequest *)v16 initWithURL:v17];
 
   [(ISOpenURLRequest *)v18 setInterruptsKeybagRefresh:1];
-  [(ISOpenURLRequest *)v18 setTargetIdentifier:v11];
+  [(ISOpenURLRequest *)v18 setTargetIdentifier:identifierCopy];
 
   v21.receiver = self;
   v21.super_class = ISCreateAccountOperation;

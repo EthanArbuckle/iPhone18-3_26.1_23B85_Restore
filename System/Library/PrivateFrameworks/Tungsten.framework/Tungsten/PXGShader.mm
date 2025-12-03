@@ -1,12 +1,12 @@
 @interface PXGShader
 - ($938B03310D06493B2963E5A84CB75A7E)opcodes;
-- (BOOL)isEquivalentToShader:(id)a3;
+- (BOOL)isEquivalentToShader:(id)shader;
 - (BOOL)isOpaque;
 - (PXGShader)init;
-- (PXGShader)initWithOpcodes:(id)a3 source:(id)a4 uniforms:(id)a5 components:(id)a6;
+- (PXGShader)initWithOpcodes:(id)opcodes source:(id)source uniforms:(id)uniforms components:(id)components;
 - (id)description;
 - (id)parameterBindingDeclarations;
-- (void)encodeBindableArgumentsWithEncoder:(id)a3;
+- (void)encodeBindableArgumentsWithEncoder:(id)encoder;
 @end
 
 @implementation PXGShader
@@ -19,19 +19,19 @@
     return 0;
   }
 
-  v5 = [(PXGShader *)self source];
-  if (v5)
+  source = [(PXGShader *)self source];
+  if (source)
   {
-    v6 = [(PXGShader *)self source];
-    v4 = [v6 isOpaque];
+    source2 = [(PXGShader *)self source];
+    isOpaque = [source2 isOpaque];
   }
 
   else
   {
-    v4 = 1;
+    isOpaque = 1;
   }
 
-  return v4;
+  return isOpaque;
 }
 
 - ($938B03310D06493B2963E5A84CB75A7E)opcodes
@@ -44,19 +44,19 @@
   return result;
 }
 
-- (void)encodeBindableArgumentsWithEncoder:(id)a3
+- (void)encodeBindableArgumentsWithEncoder:(id)encoder
 {
   v71 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(PXGShader *)self source];
-  if (!v6)
+  encoderCopy = encoder;
+  source = [(PXGShader *)self source];
+  if (!source)
   {
     goto LABEL_7;
   }
 
-  v7 = v6;
-  v8 = [(PXGShader *)self opcodes];
-  if (v8 == PXGShaderOpcodesNull)
+  v7 = source;
+  opcodes = [(PXGShader *)self opcodes];
+  if (opcodes == PXGShaderOpcodesNull)
   {
     v10 = v9;
     v11 = dword_27CD3D148;
@@ -71,20 +71,20 @@
   {
   }
 
-  v12 = [MEMORY[0x277CCA890] currentHandler];
-  [v12 handleFailureInMethod:a2 object:self file:@"PXGShader.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"!self.source || PXGShaderOpcodesEqualToOpcodes(self.opcodes, PXGShaderOpcodesNull)"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGShader.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"!self.source || PXGShaderOpcodesEqualToOpcodes(self.opcodes, PXGShaderOpcodesNull)"}];
 
 LABEL_7:
-  v13 = [v5 device];
-  v14 = [PXGMetalRenderContext privateContextWithDevice:v13];
+  device = [encoderCopy device];
+  v14 = [PXGMetalRenderContext privateContextWithDevice:device];
 
-  v15 = [(PXGShader *)self opcodes];
-  if (v15 != PXGShaderOpcodesNull || dword_27CD3D148 != v16)
+  opcodes2 = [(PXGShader *)self opcodes];
+  if (opcodes2 != PXGShaderOpcodesNull || dword_27CD3D148 != v16)
   {
     valueUniformsData = self->_valueUniformsData;
     if (valueUniformsData)
     {
-      v19 = [(NSMutableData *)valueUniformsData bytes];
+      bytes = [(NSMutableData *)valueUniformsData bytes];
       v62 = 0u;
       v63 = 0u;
       v64 = 0u;
@@ -105,7 +105,7 @@ LABEL_7:
             }
 
             [*(*(&v62 + 1) + 8 * i) encodableValue];
-            *v19++ = v25;
+            *bytes++ = v25;
           }
 
           v22 = [(NSArray *)v20 countByEnumeratingWithState:&v62 objects:v70 count:16];
@@ -114,7 +114,7 @@ LABEL_7:
         while (v22);
       }
 
-      [v5 setFragmentBytes:-[NSMutableData bytes](self->_valueUniformsData length:"bytes") atIndex:{-[NSMutableData length](self->_valueUniformsData, "length"), 5}];
+      [encoderCopy setFragmentBytes:-[NSMutableData bytes](self->_valueUniformsData length:"bytes") atIndex:{-[NSMutableData length](self->_valueUniformsData, "length"), 5}];
     }
 
     v60 = 0u;
@@ -138,7 +138,7 @@ LABEL_7:
           }
 
           v32 = [*(*(&v58 + 1) + 8 * j) bindableTextureForContext:v14];
-          [v5 setFragmentTexture:v32 atIndex:v30++];
+          [encoderCopy setFragmentTexture:v32 atIndex:v30++];
         }
 
         v28 = [(NSArray *)v26 countByEnumeratingWithState:&v58 objects:v69 count:16];
@@ -151,8 +151,8 @@ LABEL_7:
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v33 = self->_texture3DUniforms;
-    v34 = [(NSArray *)v33 countByEnumeratingWithState:&v54 objects:v68 count:16];
+    uniforms = self->_texture3DUniforms;
+    v34 = [(NSArray *)uniforms countByEnumeratingWithState:&v54 objects:v68 count:16];
     if (v34)
     {
       v35 = v34;
@@ -164,14 +164,14 @@ LABEL_7:
         {
           if (*v55 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(uniforms);
           }
 
           v39 = [*(*(&v54 + 1) + 8 * k) bindableTextureForContext:v14];
-          [v5 setFragmentTexture:v39 atIndex:v37++];
+          [encoderCopy setFragmentTexture:v39 atIndex:v37++];
         }
 
-        v35 = [(NSArray *)v33 countByEnumeratingWithState:&v54 objects:v68 count:16];
+        v35 = [(NSArray *)uniforms countByEnumeratingWithState:&v54 objects:v68 count:16];
       }
 
       while (v35);
@@ -182,17 +182,17 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  v40 = [(PXGShader *)self source];
+  source2 = [(PXGShader *)self source];
 
-  if (v40)
+  if (source2)
   {
     v67 = xmmword_21AE2D310;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v33 = [(PXGShader *)self uniforms];
-    v41 = [(NSArray *)v33 countByEnumeratingWithState:&v50 objects:v66 count:16];
+    uniforms = [(PXGShader *)self uniforms];
+    v41 = [(NSArray *)uniforms countByEnumeratingWithState:&v50 objects:v66 count:16];
     if (v41)
     {
       v42 = v41;
@@ -203,27 +203,27 @@ LABEL_48:
         {
           if (*v51 != v43)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(uniforms);
           }
 
           v45 = *(*(&v50 + 1) + 8 * m);
-          v46 = [v45 bindType];
-          v47 = *&v68[8 * v46 - 16];
-          *&v68[8 * v46 - 16] = v47 + 1;
-          v48 = [v45 bindType];
-          if (v48 == 1)
+          bindType = [v45 bindType];
+          v47 = *&v68[8 * bindType - 16];
+          *&v68[8 * bindType - 16] = v47 + 1;
+          bindType2 = [v45 bindType];
+          if (bindType2 == 1)
           {
             v49 = [v45 bindableTextureForContext:v14];
-            [v5 setFragmentTexture:v49 atIndex:v47];
+            [encoderCopy setFragmentTexture:v49 atIndex:v47];
           }
 
-          else if (!v48 && [v45 bytesLength] >= 1)
+          else if (!bindType2 && [v45 bytesLength] >= 1)
           {
-            [v5 setFragmentBytes:objc_msgSend(v45 length:"bytes") atIndex:{objc_msgSend(v45, "bytesLength"), v47}];
+            [encoderCopy setFragmentBytes:objc_msgSend(v45 length:"bytes") atIndex:{objc_msgSend(v45, "bytesLength"), v47}];
           }
         }
 
-        v42 = [(NSArray *)v33 countByEnumeratingWithState:&v50 objects:v66 count:16];
+        v42 = [(NSArray *)uniforms countByEnumeratingWithState:&v50 objects:v66 count:16];
       }
 
       while (v42);
@@ -238,8 +238,8 @@ LABEL_49:
 - (id)parameterBindingDeclarations
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(PXGShader *)self uniforms];
-  v4 = [v3 count];
+  uniforms = [(PXGShader *)self uniforms];
+  v4 = [uniforms count];
 
   if (v4)
   {
@@ -250,8 +250,8 @@ LABEL_49:
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(PXGShader *)self uniforms];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    uniforms2 = [(PXGShader *)self uniforms];
+    v7 = [uniforms2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -262,17 +262,17 @@ LABEL_49:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(uniforms2);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 bindType];
-          ++*(&v21 + v12);
+          bindType = [v11 bindType];
+          ++*(&v21 + bindType);
           v13 = [v11 parameterDeclarationWithBindingIndex:?];
           [v5 addObject:v13];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [uniforms2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
@@ -289,30 +289,30 @@ LABEL_49:
   return v14;
 }
 
-- (BOOL)isEquivalentToShader:(id)a3
+- (BOOL)isEquivalentToShader:(id)shader
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  shaderCopy = shader;
+  v5 = shaderCopy;
+  if (shaderCopy)
   {
-    if (v4 != self)
+    if (shaderCopy != self)
     {
       v35 = 0;
       v36 = &v35;
       v37 = 0x2020000000;
-      v6 = [(PXGShader *)self source];
-      v7 = [v6 hash];
-      v8 = [(PXGShader *)v5 source];
-      LOBYTE(v7) = v7 == [v8 hash];
+      source = [(PXGShader *)self source];
+      v7 = [source hash];
+      source2 = [(PXGShader *)v5 source];
+      LOBYTE(v7) = v7 == [source2 hash];
 
       v38 = v7;
       v9 = v36;
       if (*(v36 + 24) == 1)
       {
-        v10 = [(PXGShader *)self source];
-        v11 = [(PXGShader *)v5 source];
-        v12 = v10;
-        v13 = v11;
+        source3 = [(PXGShader *)self source];
+        source4 = [(PXGShader *)v5 source];
+        v12 = source3;
+        v13 = source4;
         if (v12 == v13)
         {
           v14 = 1;
@@ -327,10 +327,10 @@ LABEL_49:
         v9 = v36;
         if (v36[3])
         {
-          v16 = [(PXGShader *)self components];
-          v17 = [(PXGShader *)v5 components];
-          v18 = v16;
-          v19 = v17;
+          components = [(PXGShader *)self components];
+          components2 = [(PXGShader *)v5 components];
+          v18 = components;
+          v19 = components2;
           if (v18 == v19)
           {
             v20 = 1;
@@ -345,31 +345,31 @@ LABEL_49:
           v9 = v36;
           if (v36[3])
           {
-            v22 = [(PXGShader *)self opcodes];
+            opcodes = [(PXGShader *)self opcodes];
             v24 = v23;
-            v25 = [(PXGShader *)v5 opcodes];
+            opcodes2 = [(PXGShader *)v5 opcodes];
             v9 = v36;
-            if (v22 == v25)
+            if (opcodes == opcodes2)
             {
               *(v36 + 24) = v24 == v26;
               if (v24 == v26)
               {
-                v27 = [(PXGShader *)self uniforms];
-                v28 = [v27 count];
-                v29 = [(PXGShader *)v5 uniforms];
-                v30 = v28 == [v29 count];
+                uniforms = [(PXGShader *)self uniforms];
+                v28 = [uniforms count];
+                uniforms2 = [(PXGShader *)v5 uniforms];
+                v30 = v28 == [uniforms2 count];
                 *(v36 + 24) = v30;
 
                 if (v36[3])
                 {
-                  v31 = [(PXGShader *)self uniforms];
+                  uniforms3 = [(PXGShader *)self uniforms];
                   v32[0] = MEMORY[0x277D85DD0];
                   v32[1] = 3221225472;
                   v32[2] = __34__PXGShader_isEquivalentToShader___block_invoke;
                   v32[3] = &unk_2782A7950;
                   v34 = &v35;
                   v33 = v5;
-                  [v31 enumerateObjectsUsingBlock:v32];
+                  [uniforms3 enumerateObjectsUsingBlock:v32];
 
                   v15 = *(v36 + 24);
                 }
@@ -447,60 +447,60 @@ void __34__PXGShader_isEquivalentToShader___block_invoke(uint64_t a1, void *a2, 
   v18 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v16 = NSStringFromClass(v3);
-  v4 = [(PXGShader *)self opcodes];
-  v6 = PXGShaderOpcodesDescription(v4, v5);
-  v19 = [(NSDictionary *)self->_sourceByShaderFunction allKeys];
-  v17 = [v19 valueForKeyPath:@"name"];
+  opcodes = [(PXGShader *)self opcodes];
+  v6 = PXGShaderOpcodesDescription(opcodes, v5);
+  allKeys = [(NSDictionary *)self->_sourceByShaderFunction allKeys];
+  v17 = [allKeys valueForKeyPath:@"name"];
   v7 = [v17 componentsJoinedByString:{@", "}];
-  v8 = [(PXGShader *)self uniforms];
-  v9 = [v8 valueForKeyPath:@"name"];
+  uniforms = [(PXGShader *)self uniforms];
+  v9 = [uniforms valueForKeyPath:@"name"];
   v10 = [v9 componentsJoinedByString:{@", "}];
-  v11 = [(PXGShader *)self components];
-  v12 = [v11 allKeys];
-  v13 = [v12 componentsJoinedByString:{@", "}];
+  components = [(PXGShader *)self components];
+  allKeys2 = [components allKeys];
+  v13 = [allKeys2 componentsJoinedByString:{@", "}];
   v14 = [v18 stringWithFormat:@"<%@:%p opcodes:%@ functions:[%@] uniforms:[%@] components:[%@]>", v16, self, v6, v7, v10, v13];;
 
   return v14;
 }
 
-- (PXGShader)initWithOpcodes:(id)a3 source:(id)a4 uniforms:(id)a5 components:(id)a6
+- (PXGShader)initWithOpcodes:(id)opcodes source:(id)source uniforms:(id)uniforms components:(id)components
 {
-  var2 = a3.var2;
-  v10 = *&a3.var0;
+  var2 = opcodes.var2;
+  v10 = *&opcodes.var0;
   v53 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  sourceCopy = source;
+  uniformsCopy = uniforms;
+  componentsCopy = components;
   v51.receiver = self;
   v51.super_class = PXGShader;
   v15 = [(PXGShader *)&v51 init];
   if (v15)
   {
-    if ([v14 count])
+    if ([componentsCopy count])
     {
-      v39 = [MEMORY[0x277CCA890] currentHandler];
-      [v39 handleFailureInMethod:a2 object:v15 file:@"PXGShader.m" lineNumber:33 description:{@"Doesn't support binding of components yet, see <rdar://problem/71347132>."}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v15 file:@"PXGShader.m" lineNumber:33 description:{@"Doesn't support binding of components yet, see <rdar://problem/71347132>."}];
     }
 
-    v46 = v12;
-    if (v12)
+    v46 = sourceCopy;
+    if (sourceCopy)
     {
-      v40 = [MEMORY[0x277CCA890] currentHandler];
-      [v40 handleFailureInMethod:a2 object:v15 file:@"PXGShader.m" lineNumber:34 description:{@"Dynamic shader source is not currently supported, see rdar://78532560"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v15 file:@"PXGShader.m" lineNumber:34 description:{@"Dynamic shader source is not currently supported, see rdar://78532560"}];
 
       if (v10 != PXGShaderOpcodesNull || dword_27CD3D148 != var2)
       {
-        v41 = [MEMORY[0x277CCA890] currentHandler];
-        [v41 handleFailureInMethod:a2 object:v15 file:@"PXGShader.m" lineNumber:35 description:{@"Mixing opcodes and source isn't currently supported: %@", v15}];
+        currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:v15 file:@"PXGShader.m" lineNumber:35 description:{@"Mixing opcodes and source isn't currently supported: %@", v15}];
       }
     }
 
     *&v15->_opcodes.fragmentTextureCoordinateOpcodes = v10;
     v15->_opcodes.fragmentAlphaOpcodes = var2;
-    objc_storeStrong(&v15->_source, a4);
-    if (v13)
+    objc_storeStrong(&v15->_source, source);
+    if (uniformsCopy)
     {
-      v16 = v13;
+      v16 = uniformsCopy;
     }
 
     else
@@ -509,9 +509,9 @@ void __34__PXGShader_isEquivalentToShader___block_invoke(uint64_t a1, void *a2, 
     }
 
     objc_storeStrong(&v15->_uniforms, v16);
-    if (v14)
+    if (componentsCopy)
     {
-      v17 = v14;
+      v17 = componentsCopy;
     }
 
     else
@@ -527,8 +527,8 @@ void __34__PXGShader_isEquivalentToShader___block_invoke(uint64_t a1, void *a2, 
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v45 = v13;
-    v21 = v13;
+    v45 = uniformsCopy;
+    v21 = uniformsCopy;
     v22 = [v21 countByEnumeratingWithState:&v47 objects:v52 count:16];
     if (v22)
     {
@@ -545,14 +545,14 @@ void __34__PXGShader_isEquivalentToShader___block_invoke(uint64_t a1, void *a2, 
           }
 
           v26 = *(*(&v47 + 1) + 8 * v25);
-          v27 = [v26 type];
+          type = [v26 type];
           v28 = v18;
-          if (v27 < 4)
+          if (type < 4)
           {
             goto LABEL_17;
           }
 
-          if (v27 == 5)
+          if (type == 5)
           {
             v28 = v20;
 LABEL_17:
@@ -561,7 +561,7 @@ LABEL_17:
           }
 
           v28 = v19;
-          if (v27 == 4)
+          if (type == 4)
           {
             goto LABEL_17;
           }
@@ -584,7 +584,7 @@ LABEL_18:
       v30 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:{16 * objc_msgSend(v18, "count")}];
     }
 
-    v12 = v46;
+    sourceCopy = v46;
     valueUniformsData = v15->_valueUniformsData;
     v15->_valueUniformsData = v30;
 
@@ -602,15 +602,15 @@ LABEL_18:
 
     if ([v19 count] >= 4)
     {
-      v42 = [MEMORY[0x277CCA890] currentHandler];
-      [v42 handleFailureInMethod:a2 object:v15 file:@"PXGShader.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"texture2DUniforms.count <= PXGSHADER_MAX_STATIC_2DTEXTURES"}];
+      currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:v15 file:@"PXGShader.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"texture2DUniforms.count <= PXGSHADER_MAX_STATIC_2DTEXTURES"}];
     }
 
-    v13 = v45;
+    uniformsCopy = v45;
     if ([v20 count] >= 4)
     {
-      v43 = [MEMORY[0x277CCA890] currentHandler];
-      [v43 handleFailureInMethod:a2 object:v15 file:@"PXGShader.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"texture3DUniforms.count <= PXGSHADER_MAX_STATIC_3DTEXTURES"}];
+      currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler5 handleFailureInMethod:a2 object:v15 file:@"PXGShader.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"texture3DUniforms.count <= PXGSHADER_MAX_STATIC_3DTEXTURES"}];
     }
 
     v15->_sampler = 1;
@@ -621,8 +621,8 @@ LABEL_18:
 
 - (PXGShader)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGShader.m" lineNumber:27 description:{@"%s is not available as initializer", "-[PXGShader init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGShader.m" lineNumber:27 description:{@"%s is not available as initializer", "-[PXGShader init]"}];
 
   abort();
 }

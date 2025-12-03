@@ -1,23 +1,23 @@
 @interface AVContentKeySpecifier
 + (AVContentKeySpecifier)contentKeySpecifierForKeySystem:(AVContentKeySystem)keySystem identifier:(id)contentKeyIdentifier options:(NSDictionary *)options;
 - (NSData)initializationData;
-- (id)initForKeySystem:(id)a3 identifier:(id)a4 initializationData:(id)a5 options:(id)a6;
+- (id)initForKeySystem:(id)system identifier:(id)identifier initializationData:(id)data options:(id)options;
 - (void)dealloc;
 @end
 
 @implementation AVContentKeySpecifier
 
-- (id)initForKeySystem:(id)a3 identifier:(id)a4 initializationData:(id)a5 options:(id)a6
+- (id)initForKeySystem:(id)system identifier:(id)identifier initializationData:(id)data options:(id)options
 {
   v12.receiver = self;
   v12.super_class = AVContentKeySpecifier;
   v10 = [(AVContentKeySpecifier *)&v12 init];
   if (v10)
   {
-    v10->_keySystem = [a3 copy];
-    v10->_identifier = [a4 copy];
-    v10->_options = [a6 copy];
-    v10->_initializationData = [a5 copy];
+    v10->_keySystem = [system copy];
+    v10->_identifier = [identifier copy];
+    v10->_options = [options copy];
+    v10->_initializationData = [data copy];
   }
 
   return v10;

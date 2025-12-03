@@ -1,26 +1,26 @@
 @interface SMMadridMessenger
-- (SMMadridMessenger)initWithQueue:(id)a3;
+- (SMMadridMessenger)initWithQueue:(id)queue;
 - (SMMessagingServiceMessengerDelegate)delegate;
-- (id)createMSMessage:(id)a3 summaryText:(id)a4;
-- (id)getIMPluginPayloadFromMSMessage:(id)a3;
-- (void)cancelMadridMessageSendForMessageGUID:(id)a3 toConversation:(id)a4 completion:(id)a5;
-- (void)cancelMadridMessageSendForMessageGUID:(id)a3 toConversation:(id)a4 retryCount:(int64_t)a5 completion:(id)a6;
-- (void)iMessageDeletedFor:(id)a3;
-- (void)iMessageReceived:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5;
-- (void)iMessageScheduledSendCancelFor:(id)a3 successful:(BOOL)a4 withError:(id)a5;
-- (void)iMessageScheduledSendScheduledFor:(id)a3 guid:(id)a4 successful:(BOOL)a5 withError:(id)a6;
-- (void)iMessageSendFor:(id)a3 guid:(id)a4 successful:(BOOL)a5 withError:(id)a6;
-- (void)processSessionStartMessageSendResultWithMessageUrl:(id)a3 guid:(id)a4 successful:(BOOL)a5 withError:(id)a6;
-- (void)scheduleMadridMessageSendForMessage:(id)a3 messageGUID:(id)a4 associatedGUID:(id)a5 sendDate:(id)a6 toConversation:(id)a7 summaryText:(id)a8 completion:(id)a9;
-- (void)sendMadridMessage:(id)a3 associatedGUID:(id)a4 toConversation:(id)a5 summaryText:(id)a6 completion:(id)a7;
+- (id)createMSMessage:(id)message summaryText:(id)text;
+- (id)getIMPluginPayloadFromMSMessage:(id)message;
+- (void)cancelMadridMessageSendForMessageGUID:(id)d toConversation:(id)conversation completion:(id)completion;
+- (void)cancelMadridMessageSendForMessageGUID:(id)d toConversation:(id)conversation retryCount:(int64_t)count completion:(id)completion;
+- (void)iMessageDeletedFor:(id)for;
+- (void)iMessageReceived:(id)received fromHandle:(id)handle fromMe:(BOOL)me;
+- (void)iMessageScheduledSendCancelFor:(id)for successful:(BOOL)successful withError:(id)error;
+- (void)iMessageScheduledSendScheduledFor:(id)for guid:(id)guid successful:(BOOL)successful withError:(id)error;
+- (void)iMessageSendFor:(id)for guid:(id)guid successful:(BOOL)successful withError:(id)error;
+- (void)processSessionStartMessageSendResultWithMessageUrl:(id)url guid:(id)guid successful:(BOOL)successful withError:(id)error;
+- (void)scheduleMadridMessageSendForMessage:(id)message messageGUID:(id)d associatedGUID:(id)iD sendDate:(id)date toConversation:(id)conversation summaryText:(id)text completion:(id)completion;
+- (void)sendMadridMessage:(id)message associatedGUID:(id)d toConversation:(id)conversation summaryText:(id)text completion:(id)completion;
 @end
 
 @implementation SMMadridMessenger
 
-- (SMMadridMessenger)initWithQueue:(id)a3
+- (SMMadridMessenger)initWithQueue:(id)queue
 {
-  v5 = a3;
-  if (v5)
+  queueCopy = queue;
+  if (queueCopy)
   {
     v15.receiver = self;
     v15.super_class = SMMadridMessenger;
@@ -28,18 +28,18 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_queue, a3);
-      v8 = [MEMORY[0x277CBEB18] array];
+      objc_storeStrong(&v6->_queue, queue);
+      array = [MEMORY[0x277CBEB18] array];
       madridMessagesWaitingForAck = v7->_madridMessagesWaitingForAck;
-      v7->_madridMessagesWaitingForAck = v8;
+      v7->_madridMessagesWaitingForAck = array;
 
-      v10 = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       resultsWaitingForProcessing = v7->_resultsWaitingForProcessing;
-      v7->_resultsWaitingForProcessing = v10;
+      v7->_resultsWaitingForProcessing = array2;
     }
 
     self = v7;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -51,25 +51,25 @@
       _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: queue", buf, 2u);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)sendMadridMessage:(id)a3 associatedGUID:(id)a4 toConversation:(id)a5 summaryText:(id)a6 completion:(id)a7
+- (void)sendMadridMessage:(id)message associatedGUID:(id)d toConversation:(id)conversation summaryText:(id)text completion:(id)completion
 {
   v76[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v41 = a4;
-  v14 = a5;
-  v42 = a6;
-  v15 = a7;
-  if (v15)
+  messageCopy = message;
+  dCopy = d;
+  conversationCopy = conversation;
+  textCopy = text;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v13)
+    if (messageCopy)
     {
-      if (v14 && ([v14 receiverHandles], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "count"), v16, v17))
+      if (conversationCopy && ([conversationCopy receiverHandles], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "count"), v16, v17))
       {
         *buf = 0;
         v58 = buf;
@@ -79,25 +79,25 @@
         v62 = 0;
         v18 = dispatch_group_create();
         dispatch_group_enter(v18);
-        v19 = [v14 identifier];
-        v20 = [(SMMadridMessenger *)self queue];
+        identifier = [conversationCopy identifier];
+        queue = [(SMMadridMessenger *)self queue];
         v51[0] = MEMORY[0x277D85DD0];
         v51[1] = 3221225472;
         v51[2] = __92__SMMadridMessenger_sendMadridMessage_associatedGUID_toConversation_summaryText_completion___block_invoke;
         v51[3] = &unk_2788C6008;
         v55 = buf;
-        v21 = v13;
+        v21 = messageCopy;
         v52 = v21;
-        v53 = self;
+        selfCopy = self;
         v56 = a2;
         group = v18;
         v54 = group;
-        [SMMessagingUtilities queryChatWithGroupID:v19 queue:v20 handler:v51];
+        [SMMessagingUtilities queryChatWithGroupID:identifier queue:queue handler:v51];
 
-        v22 = [(SMMadridMessenger *)self createMSMessage:v21 summaryText:v42];
+        v22 = [(SMMadridMessenger *)self createMSMessage:v21 summaryText:textCopy];
         if (v22)
         {
-          v23 = [(SMMadridMessenger *)self queue];
+          queue2 = [(SMMadridMessenger *)self queue];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __92__SMMadridMessenger_sendMadridMessage_associatedGUID_toConversation_summaryText_completion___block_invoke_127;
@@ -107,10 +107,10 @@
           v45 = v21;
           v49 = buf;
           v50 = a2;
-          v46 = v14;
-          v47 = v41;
-          v48 = v15;
-          dispatch_group_notify(group, v23, block);
+          v46 = conversationCopy;
+          v47 = dCopy;
+          v48 = completionCopy;
+          dispatch_group_notify(group, queue2, block);
         }
 
         else
@@ -118,19 +118,19 @@
           v31 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
           if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
           {
-            v35 = [v21 sessionID];
+            sessionID = [v21 sessionID];
             v36 = objc_opt_class();
             v37 = NSStringFromClass(v36);
             v38 = NSStringFromSelector(a2);
-            v39 = [v21 messageID];
+            messageID = [v21 messageID];
             *v65 = 138413058;
-            v66 = v35;
+            v66 = sessionID;
             v67 = 2112;
             v68 = v37;
             v69 = 2112;
             v70 = v38;
             v71 = 2112;
-            v72 = v39;
+            v72 = messageID;
             _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,failed to create MSMessage", v65, 0x2Au);
           }
 
@@ -139,7 +139,7 @@
           v64 = @"MSMessage creation failed";
           v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
           v34 = [v32 errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v33];
-          (*(v15 + 2))(v15, 0, 0, v34);
+          (*(completionCopy + 2))(completionCopy, 0, 0, v34);
         }
 
         _Block_object_dispose(buf, 8);
@@ -152,7 +152,7 @@
         v74 = @"nil conversation";
         v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
         v27 = [v25 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v26];
-        (*(v15 + 2))(v15, 0, 0, v27);
+        (*(completionCopy + 2))(completionCopy, 0, 0, v27);
       }
     }
 
@@ -163,7 +163,7 @@
       v76[0] = @"nil message";
       v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v76 forKeys:&v75 count:1];
       v30 = [v28 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v29];
-      (*(v15 + 2))(v15, 0, 0, v30);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v30);
     }
   }
 
@@ -420,18 +420,18 @@ LABEL_4:
 LABEL_6:
 }
 
-- (void)scheduleMadridMessageSendForMessage:(id)a3 messageGUID:(id)a4 associatedGUID:(id)a5 sendDate:(id)a6 toConversation:(id)a7 summaryText:(id)a8 completion:(id)a9
+- (void)scheduleMadridMessageSendForMessage:(id)message messageGUID:(id)d associatedGUID:(id)iD sendDate:(id)date toConversation:(id)conversation summaryText:(id)text completion:(id)completion
 {
   v63[1] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = v22;
-  if (!v16)
+  messageCopy = message;
+  dCopy = d;
+  iDCopy = iD;
+  dateCopy = date;
+  conversationCopy = conversation;
+  textCopy = text;
+  completionCopy = completion;
+  v23 = completionCopy;
+  if (!messageCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -446,7 +446,7 @@ LABEL_18:
     goto LABEL_22;
   }
 
-  if (!v17)
+  if (!dCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -459,7 +459,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!v19)
+  if (!dateCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -472,7 +472,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!v20)
+  if (!conversationCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -485,7 +485,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!v22)
+  if (!completionCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -498,7 +498,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v24 = [(SMMadridMessenger *)self createMSMessage:v16 summaryText:v21];
+  v24 = [(SMMadridMessenger *)self createMSMessage:messageCopy summaryText:textCopy];
   if (v24)
   {
     v36 = v24;
@@ -510,20 +510,20 @@ LABEL_18:
     *(&v61 + 1) = 0;
     v25 = dispatch_group_create();
     dispatch_group_enter(v25);
-    queue = [v20 identifier];
-    v38 = [(SMMadridMessenger *)self queue];
+    queue = [conversationCopy identifier];
+    queue = [(SMMadridMessenger *)self queue];
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
     v53[2] = __131__SMMadridMessenger_scheduleMadridMessageSendForMessage_messageGUID_associatedGUID_sendDate_toConversation_summaryText_completion___block_invoke;
     v53[3] = &unk_2788C6008;
     v57 = buf;
-    v35 = v16;
+    v35 = messageCopy;
     v54 = v35;
-    v55 = self;
+    selfCopy = self;
     v58 = a2;
     group = v25;
     v56 = group;
-    [SMMessagingUtilities queryChatWithGroupID:queue queue:v38 handler:v53];
+    [SMMessagingUtilities queryChatWithGroupID:queue queue:queue handler:v53];
 
     queuea = [(SMMadridMessenger *)self queue];
     block[0] = MEMORY[0x277D85DD0];
@@ -536,10 +536,10 @@ LABEL_18:
     v45 = v35;
     v51 = buf;
     v52 = a2;
-    v46 = v20;
-    v47 = v19;
-    v48 = v17;
-    v49 = v18;
+    v46 = conversationCopy;
+    v47 = dateCopy;
+    v48 = dCopy;
+    v49 = iDCopy;
     v50 = v23;
     dispatch_group_notify(group, queuea, block);
 
@@ -551,11 +551,11 @@ LABEL_18:
     v28 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      queueb = [v16 sessionID];
+      queueb = [messageCopy sessionID];
       v32 = objc_opt_class();
       v39 = NSStringFromClass(v32);
       v33 = NSStringFromSelector(a2);
-      v34 = [v16 messageID];
+      messageID = [messageCopy messageID];
       *buf = 138413058;
       *&buf[4] = queueb;
       *&buf[12] = 2112;
@@ -563,7 +563,7 @@ LABEL_18:
       *&buf[22] = 2112;
       v60 = v33;
       LOWORD(v61) = 2112;
-      *(&v61 + 2) = v34;
+      *(&v61 + 2) = messageID;
       _os_log_error_impl(&dword_2304B3000, v28, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,failed to create MSMessage", buf, 0x2Au);
     }
 
@@ -777,13 +777,13 @@ void __131__SMMadridMessenger_scheduleMadridMessageSendForMessage_messageGUID_as
   }
 }
 
-- (void)cancelMadridMessageSendForMessageGUID:(id)a3 toConversation:(id)a4 completion:(id)a5
+- (void)cancelMadridMessageSendForMessageGUID:(id)d toConversation:(id)conversation completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  dCopy = d;
+  conversationCopy = conversation;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (!dCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -799,7 +799,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v9)
+  if (!conversationCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -813,7 +813,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v10)
+  if (!completionCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -829,21 +829,21 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  [(SMMadridMessenger *)self cancelMadridMessageSendForMessageGUID:v8 toConversation:v9 retryCount:2 completion:v10];
+  [(SMMadridMessenger *)self cancelMadridMessageSendForMessageGUID:dCopy toConversation:conversationCopy retryCount:2 completion:completionCopy];
 LABEL_13:
 }
 
-- (void)cancelMadridMessageSendForMessageGUID:(id)a3 toConversation:(id)a4 retryCount:(int64_t)a5 completion:(id)a6
+- (void)cancelMadridMessageSendForMessageGUID:(id)d toConversation:(id)conversation retryCount:(int64_t)count completion:(id)completion
 {
   v58 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = v13;
-  if (!v11)
+  dCopy = d;
+  conversationCopy = conversation;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (!dCopy)
   {
-    v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    date = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_28;
     }
@@ -851,14 +851,14 @@ LABEL_13:
     *buf = 0;
     v33 = "Invalid parameter not satisfying: messageGUID";
 LABEL_21:
-    _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, v33, buf, 2u);
+    _os_log_error_impl(&dword_2304B3000, date, OS_LOG_TYPE_ERROR, v33, buf, 2u);
     goto LABEL_28;
   }
 
-  if (!v12)
+  if (!conversationCopy)
   {
-    v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    date = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_28;
     }
@@ -868,10 +868,10 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (!v13)
+  if (!completionCopy)
   {
-    v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    date = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_28;
     }
@@ -881,7 +881,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if ((a5 & 0x8000000000000000) == 0)
+  if ((count & 0x8000000000000000) == 0)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -894,16 +894,16 @@ LABEL_21:
       v52 = 2112;
       v53 = v18;
       v54 = 2112;
-      v55 = v11;
+      v55 = dCopy;
       v56 = 2112;
-      v57 = v12;
+      v57 = conversationCopy;
       _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_DEFAULT, "#SafetyCache,%@,%@,canceling scheduled send for %@ to conversation %@", buf, 0x2Au);
     }
 
-    v19 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v20 = MEMORY[0x277CBEB98];
-    v21 = [v12 receiverPrimaryHandles];
-    v22 = [v20 setWithArray:v21];
+    receiverPrimaryHandles = [conversationCopy receiverPrimaryHandles];
+    v22 = [v20 setWithArray:receiverPrimaryHandles];
 
     v23 = IMSPICancelScheduledMessageWithGUIDAndDestinations();
     v24 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -920,7 +920,7 @@ LABEL_21:
         v52 = 2112;
         v53 = v42;
         v54 = 2112;
-        v55 = v11;
+        v55 = dCopy;
         v56 = 2112;
         v57 = v22;
         _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,Messages rejected cancel request for %@ to handles %@", buf, 0x2Au);
@@ -934,11 +934,11 @@ LABEL_21:
       v31 = [v34 errorWithDomain:v35 code:0 userInfo:v36];
 
       (v14)[2](v14, 0, v31);
-      [v19 timeIntervalSinceNow];
+      [date timeIntervalSinceNow];
       v38 = -v37;
-      v39 = [v12 receiverHandles];
+      receiverHandles = [conversationCopy receiverHandles];
       LOBYTE(v46) = 0;
-      +[SMMessagingService submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:](SMMessagingService, "submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:", 3, 1, 1, 1, 1, v31, v38, v46, [v39 count]);
+      +[SMMessagingService submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:](SMMessagingService, "submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:", 3, 1, 1, 1, 1, v31, v38, v46, [receiverHandles count]);
 
       goto LABEL_27;
     }
@@ -954,7 +954,7 @@ LABEL_21:
       v52 = 2112;
       v53 = v28;
       v54 = 2112;
-      v55 = v11;
+      v55 = dCopy;
       v56 = 2112;
       v57 = v47;
       _os_log_impl(&dword_2304B3000, v25, OS_LOG_TYPE_DEFAULT, "#SafetyCache,%@,%@,Messages accepted cancel request for %@ to handles %@", buf, 0x2Au);
@@ -962,19 +962,19 @@ LABEL_21:
 
     v29 = [SMMadridMessageWaitingForAck alloc];
     v30 = _Block_copy(v14);
-    v31 = [(SMMadridMessageWaitingForAck *)v29 initWithIdentifier:v11 messageType:3 messageSentDate:v19 pendingRetryCount:a5 conversation:v12 callback:v30];
+    v31 = [(SMMadridMessageWaitingForAck *)v29 initWithIdentifier:dCopy messageType:3 messageSentDate:date pendingRetryCount:count conversation:conversationCopy callback:v30];
 
     if (v31)
     {
-      v32 = [(SMMadridMessenger *)self madridMessagesWaitingForAck];
-      [v32 addObject:v31];
+      madridMessagesWaitingForAck = [(SMMadridMessenger *)self madridMessagesWaitingForAck];
+      [madridMessagesWaitingForAck addObject:v31];
     }
 
     else
     {
-      v32 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+      madridMessagesWaitingForAck = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       v22 = v47;
-      if (!os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
+      if (!os_log_type_enabled(madridMessagesWaitingForAck, OS_LOG_TYPE_FAULT))
       {
         goto LABEL_26;
       }
@@ -986,7 +986,7 @@ LABEL_21:
       v51 = v44;
       v52 = 2112;
       v53 = v45;
-      _os_log_fault_impl(&dword_2304B3000, v32, OS_LOG_TYPE_FAULT, "#SafetyCache,%@,%@,failed to create SMMadridMessageWaitingForAck", buf, 0x16u);
+      _os_log_fault_impl(&dword_2304B3000, madridMessagesWaitingForAck, OS_LOG_TYPE_FAULT, "#SafetyCache,%@,%@,failed to create SMMadridMessageWaitingForAck", buf, 0x16u);
     }
 
     v22 = v47;
@@ -998,8 +998,8 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+  date = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+  if (os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
     v33 = "Invalid parameter not satisfying: retryCount >= 0";
@@ -1009,17 +1009,17 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)iMessageSendFor:(id)a3 guid:(id)a4 successful:(BOOL)a5 withError:(id)a6
+- (void)iMessageSendFor:(id)for guid:(id)guid successful:(BOOL)successful withError:(id)error
 {
-  v7 = a5;
+  successfulCopy = successful;
   v71 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v11)
+  forCopy = for;
+  guidCopy = guid;
+  errorCopy = error;
+  if (forCopy)
   {
     aSelector = a2;
-    if (!v12)
+    if (!guidCopy)
     {
       v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1032,9 +1032,9 @@ LABEL_28:
       }
     }
 
-    v15 = [MEMORY[0x277D4AB38] sessionIDFromURL:v11];
-    v16 = [MEMORY[0x277D4AB38] messageIDFromURL:v11];
-    v44 = [MEMORY[0x277D4AB38] messageTypeFromURL:v11];
+    v15 = [MEMORY[0x277D4AB38] sessionIDFromURL:forCopy];
+    v16 = [MEMORY[0x277D4AB38] messageIDFromURL:forCopy];
+    v44 = [MEMORY[0x277D4AB38] messageTypeFromURL:forCopy];
     v55 = 0;
     v56 = &v55;
     v57 = 0x2020000000;
@@ -1045,7 +1045,7 @@ LABEL_28:
     v52 = __Block_byref_object_copy__18;
     v53 = __Block_byref_object_dispose__18;
     v54 = 0;
-    v17 = [(SMMadridMessenger *)self madridMessagesWaitingForAck];
+    madridMessagesWaitingForAck = [(SMMadridMessenger *)self madridMessagesWaitingForAck];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __63__SMMadridMessenger_iMessageSendFor_guid_successful_withError___block_invoke;
@@ -1054,7 +1054,7 @@ LABEL_28:
     v46 = v43;
     v47 = &v55;
     v48 = &v49;
-    [v17 enumerateObjectsUsingBlock:v45];
+    [madridMessagesWaitingForAck enumerateObjectsUsingBlock:v45];
 
     if (v56[3] == -1 || ([v50[5] callback], (v18 = objc_claimAutoreleasedReturnValue()) == 0))
     {
@@ -1075,11 +1075,11 @@ LABEL_28:
           v65 = 2112;
           v66 = v43;
           v67 = 2112;
-          v68 = v12;
+          v68 = guidCopy;
           v69 = 1024;
-          *v70 = v7;
+          *v70 = successfulCopy;
           *&v70[4] = 2112;
-          *&v70[6] = v13;
+          *&v70[6] = errorCopy;
           _os_log_error_impl(&dword_2304B3000, v32, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,index not found or nil callback,GUID,%@,success,%d,error,%@", buf, 0x44u);
         }
 
@@ -1088,8 +1088,8 @@ LABEL_28:
           goto LABEL_27;
         }
 
-        v25 = [(SMMadridMessenger *)self madridMessagesWaitingForAck];
-        [v25 removeObjectAtIndex:v56[3]];
+        madridMessagesWaitingForAck2 = [(SMMadridMessenger *)self madridMessagesWaitingForAck];
+        [madridMessagesWaitingForAck2 removeObjectAtIndex:v56[3]];
         goto LABEL_26;
       }
     }
@@ -1100,15 +1100,15 @@ LABEL_28:
       if (v44 != 1)
       {
 LABEL_12:
-        v21 = [(SMMadridMessenger *)self madridMessagesWaitingForAck];
-        [v21 removeObjectAtIndex:v56[3]];
+        madridMessagesWaitingForAck3 = [(SMMadridMessenger *)self madridMessagesWaitingForAck];
+        [madridMessagesWaitingForAck3 removeObjectAtIndex:v56[3]];
 
-        v22 = [v50[5] messageSentDate];
-        [v22 timeIntervalSinceNow];
+        messageSentDate = [v50[5] messageSentDate];
+        [messageSentDate timeIntervalSinceNow];
         v24 = v23;
 
-        v25 = [v50[5] callback];
-        if (v7)
+        madridMessagesWaitingForAck2 = [v50[5] callback];
+        if (successfulCopy)
         {
           v26 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -1125,12 +1125,12 @@ LABEL_12:
             v65 = 2112;
             v66 = v43;
             v67 = 2112;
-            v68 = v12;
+            v68 = guidCopy;
             _os_log_impl(&dword_2304B3000, v26, OS_LOG_TYPE_DEFAULT, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,message send succeeded,GUID,%@", buf, 0x34u);
           }
 
           v30 = 0;
-          v31 = v12;
+          v31 = guidCopy;
         }
 
         else
@@ -1150,30 +1150,30 @@ LABEL_12:
             v65 = 2112;
             v66 = v43;
             v67 = 2112;
-            v68 = v13;
+            v68 = errorCopy;
             v69 = 2112;
-            *v70 = v12;
+            *v70 = guidCopy;
             _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,message send failed with error %@,GUID,%@", buf, 0x3Eu);
           }
 
           v31 = 0;
-          v30 = v13;
+          v30 = errorCopy;
         }
 
-        (v25)[2](v25, v31, v7, v30);
-        v33 = [v50[5] conversation];
-        v34 = [v33 receiverHandles];
-        LOBYTE(v41) = v7;
-        +[SMMessagingService submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:](SMMessagingService, "submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:", v44, 0, 0, 1, 1, v13, -v24, v41, [v34 count]);
+        (madridMessagesWaitingForAck2)[2](madridMessagesWaitingForAck2, v31, successfulCopy, v30);
+        conversation = [v50[5] conversation];
+        receiverHandles = [conversation receiverHandles];
+        LOBYTE(v41) = successfulCopy;
+        +[SMMessagingService submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:](SMMessagingService, "submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:", v44, 0, 0, 1, 1, errorCopy, -v24, v41, [receiverHandles count]);
 
 LABEL_26:
         goto LABEL_27;
       }
     }
 
-    [(SMMadridMessenger *)self processSessionStartMessageSendResultWithMessageUrl:v11 guid:v12 successful:v7 withError:v13];
-    v19 = [v50[5] callback];
-    v20 = v19 == 0;
+    [(SMMadridMessenger *)self processSessionStartMessageSendResultWithMessageUrl:forCopy guid:guidCopy successful:successfulCopy withError:errorCopy];
+    callback = [v50[5] callback];
+    v20 = callback == 0;
 
     if (v20)
     {
@@ -1213,14 +1213,14 @@ void __63__SMMadridMessenger_iMessageSendFor_guid_successful_withError___block_i
   }
 }
 
-- (void)iMessageScheduledSendScheduledFor:(id)a3 guid:(id)a4 successful:(BOOL)a5 withError:(id)a6
+- (void)iMessageScheduledSendScheduledFor:(id)for guid:(id)guid successful:(BOOL)successful withError:(id)error
 {
-  v7 = a5;
+  successfulCopy = successful;
   v71 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!v11)
+  forCopy = for;
+  guidCopy = guid;
+  errorCopy = error;
+  if (!forCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1235,7 +1235,7 @@ LABEL_13:
     goto LABEL_23;
   }
 
-  if (!v12)
+  if (!guidCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1248,9 +1248,9 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v41 = v7;
-  v14 = [MEMORY[0x277D4AB38] sessionIDFromURL:v11];
-  v15 = [MEMORY[0x277D4AB38] messageIDFromURL:v11];
+  v41 = successfulCopy;
+  v14 = [MEMORY[0x277D4AB38] sessionIDFromURL:forCopy];
+  v15 = [MEMORY[0x277D4AB38] messageIDFromURL:forCopy];
   v53 = 0;
   v54 = &v53;
   v55 = 0x2020000000;
@@ -1261,7 +1261,7 @@ LABEL_13:
   v50 = __Block_byref_object_copy__18;
   v51 = __Block_byref_object_dispose__18;
   v52 = 0;
-  v16 = [(SMMadridMessenger *)self madridMessagesWaitingForAck];
+  madridMessagesWaitingForAck = [(SMMadridMessenger *)self madridMessagesWaitingForAck];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __81__SMMadridMessenger_iMessageScheduledSendScheduledFor_guid_successful_withError___block_invoke;
@@ -1270,12 +1270,12 @@ LABEL_13:
   v44 = v42;
   v45 = &v53;
   v46 = &v47;
-  [v16 enumerateObjectsUsingBlock:v43];
+  [madridMessagesWaitingForAck enumerateObjectsUsingBlock:v43];
 
   if (v54[3] == -1)
   {
-    v19 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    callback2 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+    if (os_log_type_enabled(callback2, OS_LOG_TYPE_ERROR))
     {
       v25 = objc_opt_class();
       v26 = NSStringFromClass(v25);
@@ -1289,27 +1289,27 @@ LABEL_13:
       v63 = 2112;
       v64 = v42;
       v65 = 2112;
-      v66 = v12;
+      v66 = guidCopy;
       v67 = 1024;
       v68 = v41;
       v69 = 2112;
-      v70 = v13;
-      _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,index not found,GUID,%@,success,%d,error,%@", buf, 0x44u);
+      v70 = errorCopy;
+      _os_log_error_impl(&dword_2304B3000, callback2, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,index not found,GUID,%@,success,%d,error,%@", buf, 0x44u);
     }
   }
 
   else
   {
-    v17 = [(SMMadridMessenger *)self madridMessagesWaitingForAck];
-    [v17 removeObjectAtIndex:v54[3]];
+    madridMessagesWaitingForAck2 = [(SMMadridMessenger *)self madridMessagesWaitingForAck];
+    [madridMessagesWaitingForAck2 removeObjectAtIndex:v54[3]];
 
-    v18 = [v48[5] callback];
-    LODWORD(v17) = v18 == 0;
+    callback = [v48[5] callback];
+    LODWORD(madridMessagesWaitingForAck2) = callback == 0;
 
-    if (v17)
+    if (madridMessagesWaitingForAck2)
     {
-      v19 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+      callback2 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+      if (os_log_type_enabled(callback2, OS_LOG_TYPE_ERROR))
       {
         v28 = objc_opt_class();
         v29 = NSStringFromClass(v28);
@@ -1322,13 +1322,13 @@ LABEL_13:
         v62 = v30;
         v63 = 2112;
         v64 = v42;
-        _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,nil callback", buf, 0x2Au);
+        _os_log_error_impl(&dword_2304B3000, callback2, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,nil callback", buf, 0x2Au);
       }
     }
 
     else
     {
-      v19 = [v48[5] callback];
+      callback2 = [v48[5] callback];
       if (v41)
       {
         v20 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1348,7 +1348,7 @@ LABEL_13:
           _os_log_impl(&dword_2304B3000, v20, OS_LOG_TYPE_DEFAULT, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,scheduled successfully", buf, 0x2Au);
         }
 
-        (*(v19 + 16))(v19, v12, 1, 0);
+        (*(callback2 + 16))(callback2, guidCopy, 1, 0);
       }
 
       else
@@ -1368,20 +1368,20 @@ LABEL_13:
           v63 = 2112;
           v64 = v42;
           v65 = 2112;
-          v66 = v13;
+          v66 = errorCopy;
           _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,failed to schedule with error %@", buf, 0x34u);
         }
 
-        (*(v19 + 16))(v19, 0, 0, v13);
+        (*(callback2 + 16))(callback2, 0, 0, errorCopy);
       }
 
-      v32 = [v48[5] messageSentDate];
-      [v32 timeIntervalSinceNow];
+      messageSentDate = [v48[5] messageSentDate];
+      [messageSentDate timeIntervalSinceNow];
       v34 = v33;
-      v35 = [v48[5] conversation];
-      v36 = [v35 receiverHandles];
+      conversation = [v48[5] conversation];
+      receiverHandles = [conversation receiverHandles];
       LOBYTE(v40) = v41;
-      +[SMMessagingService submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:](SMMessagingService, "submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:", 3, 1, 0, 1, 1, v13, -v34, v40, [v36 count]);
+      +[SMMessagingService submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:](SMMessagingService, "submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:", 3, 1, 0, 1, 1, errorCopy, -v34, v40, [receiverHandles count]);
     }
   }
 
@@ -1406,13 +1406,13 @@ void __81__SMMadridMessenger_iMessageScheduledSendScheduledFor_guid_successful_w
   }
 }
 
-- (void)iMessageScheduledSendCancelFor:(id)a3 successful:(BOOL)a4 withError:(id)a5
+- (void)iMessageScheduledSendCancelFor:(id)for successful:(BOOL)successful withError:(id)error
 {
-  v6 = a4;
+  successfulCopy = successful;
   v74 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  if (v9)
+  forCopy = for;
+  errorCopy = error;
+  if (forCopy)
   {
     v60 = 0;
     v61 = &v60;
@@ -1424,21 +1424,21 @@ void __81__SMMadridMessenger_iMessageScheduledSendScheduledFor_guid_successful_w
     v57 = __Block_byref_object_copy__18;
     v58 = __Block_byref_object_dispose__18;
     v59 = 0;
-    v11 = [(SMMadridMessenger *)self madridMessagesWaitingForAck];
+    madridMessagesWaitingForAck = [(SMMadridMessenger *)self madridMessagesWaitingForAck];
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = __73__SMMadridMessenger_iMessageScheduledSendCancelFor_successful_withError___block_invoke;
     v50[3] = &unk_2788C60A8;
-    v12 = v9;
+    v12 = forCopy;
     v51 = v12;
     v52 = &v60;
     v53 = v54;
-    [v11 enumerateObjectsUsingBlock:v50];
+    [madridMessagesWaitingForAck enumerateObjectsUsingBlock:v50];
 
     if (v61[3] == -1)
     {
-      v15 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      callback2 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+      if (os_log_type_enabled(callback2, OS_LOG_TYPE_ERROR))
       {
         v28 = objc_opt_class();
         v29 = NSStringFromClass(v28);
@@ -1449,22 +1449,22 @@ void __81__SMMadridMessenger_iMessageScheduledSendScheduledFor_guid_successful_w
         v67 = v30;
         v68 = 2112;
         v69 = v12;
-        _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,message not found for messageGUID %@", buf, 0x20u);
+        _os_log_error_impl(&dword_2304B3000, callback2, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,message not found for messageGUID %@", buf, 0x20u);
       }
     }
 
     else
     {
-      v13 = [(SMMadridMessenger *)self madridMessagesWaitingForAck];
-      [v13 removeObjectAtIndex:v61[3]];
+      madridMessagesWaitingForAck2 = [(SMMadridMessenger *)self madridMessagesWaitingForAck];
+      [madridMessagesWaitingForAck2 removeObjectAtIndex:v61[3]];
 
-      v14 = [*(v55 + 5) callback];
-      LODWORD(v13) = v14 == 0;
+      callback = [*(v55 + 5) callback];
+      LODWORD(madridMessagesWaitingForAck2) = callback == 0;
 
-      if (v13)
+      if (madridMessagesWaitingForAck2)
       {
-        v15 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        callback2 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+        if (os_log_type_enabled(callback2, OS_LOG_TYPE_ERROR))
         {
           v31 = objc_opt_class();
           v32 = NSStringFromClass(v31);
@@ -1475,14 +1475,14 @@ void __81__SMMadridMessenger_iMessageScheduledSendScheduledFor_guid_successful_w
           v67 = v33;
           v68 = 2112;
           v69 = v12;
-          _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,nil callback for %@", buf, 0x20u);
+          _os_log_error_impl(&dword_2304B3000, callback2, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,nil callback for %@", buf, 0x20u);
         }
       }
 
       else
       {
-        v15 = [*(v55 + 5) callback];
-        if (v6)
+        callback2 = [*(v55 + 5) callback];
+        if (successfulCopy)
         {
           v16 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -1499,16 +1499,16 @@ void __81__SMMadridMessenger_iMessageScheduledSendScheduledFor_guid_successful_w
             _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_DEFAULT, "#SafetyCache,%@,%@,cancel suceeded for %@", buf, 0x20u);
           }
 
-          (*(v15 + 16))(v15, 1, 0);
-          v20 = [*(v55 + 5) pendingRetryCount];
-          v21 = [*(v55 + 5) pendingRetryCount];
-          v22 = [*(v55 + 5) messageSentDate];
-          [v22 timeIntervalSinceNow];
+          (*(callback2 + 16))(callback2, 1, 0);
+          pendingRetryCount = [*(v55 + 5) pendingRetryCount];
+          pendingRetryCount2 = [*(v55 + 5) pendingRetryCount];
+          messageSentDate = [*(v55 + 5) messageSentDate];
+          [messageSentDate timeIntervalSinceNow];
           v24 = v23;
-          v25 = [*(v55 + 5) conversation];
-          v26 = [v25 receiverHandles];
+          conversation = [*(v55 + 5) conversation];
+          receiverHandles = [conversation receiverHandles];
           LOBYTE(v49) = 1;
-          +[SMMessagingService submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:](SMMessagingService, "submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:", 3, 1, 1, 3 - v20, v21 == 0, 0, -v24, v49, [v26 count]);
+          +[SMMessagingService submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:](SMMessagingService, "submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:", 3, 1, 1, 3 - pendingRetryCount, pendingRetryCount2 == 0, 0, -v24, v49, [receiverHandles count]);
         }
 
         else if ([*(v55 + 5) pendingRetryCount])
@@ -1519,7 +1519,7 @@ void __81__SMMadridMessenger_iMessageScheduledSendScheduledFor_guid_successful_w
             v42 = objc_opt_class();
             v43 = NSStringFromClass(v42);
             v44 = NSStringFromSelector(a2);
-            v45 = [*(v55 + 5) pendingRetryCount];
+            pendingRetryCount3 = [*(v55 + 5) pendingRetryCount];
             *buf = 138413314;
             v65 = v43;
             v66 = 2112;
@@ -1527,23 +1527,23 @@ void __81__SMMadridMessenger_iMessageScheduledSendScheduledFor_guid_successful_w
             v68 = 2112;
             v69 = v12;
             v70 = 2112;
-            v71 = v10;
+            v71 = errorCopy;
             v72 = 1024;
-            v73 = v45;
+            v73 = pendingRetryCount3;
             _os_log_error_impl(&dword_2304B3000, v34, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,cancel failed for %@ with error %@ retries left %d", buf, 0x30u);
           }
 
-          v35 = [*(v55 + 5) conversation];
-          -[SMMadridMessenger cancelMadridMessageSendForMessageGUID:toConversation:retryCount:completion:](self, "cancelMadridMessageSendForMessageGUID:toConversation:retryCount:completion:", v12, v35, [*(v55 + 5) pendingRetryCount] - 1, v15);
+          conversation2 = [*(v55 + 5) conversation];
+          -[SMMadridMessenger cancelMadridMessageSendForMessageGUID:toConversation:retryCount:completion:](self, "cancelMadridMessageSendForMessageGUID:toConversation:retryCount:completion:", v12, conversation2, [*(v55 + 5) pendingRetryCount] - 1, callback2);
 
-          v36 = [*(v55 + 5) pendingRetryCount];
-          v22 = [*(v55 + 5) messageSentDate];
-          [v22 timeIntervalSinceNow];
+          pendingRetryCount4 = [*(v55 + 5) pendingRetryCount];
+          messageSentDate = [*(v55 + 5) messageSentDate];
+          [messageSentDate timeIntervalSinceNow];
           v38 = v37;
-          v25 = [*(v55 + 5) conversation];
-          v26 = [v25 receiverHandles];
+          conversation = [*(v55 + 5) conversation];
+          receiverHandles = [conversation receiverHandles];
           LOBYTE(v49) = 0;
-          +[SMMessagingService submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:](SMMessagingService, "submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:", 3, 1, 1, 3 - v36, 0, v10, -v38, v49, [v26 count]);
+          +[SMMessagingService submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:](SMMessagingService, "submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:", 3, 1, 1, 3 - pendingRetryCount4, 0, errorCopy, -v38, v49, [receiverHandles count]);
         }
 
         else
@@ -1561,18 +1561,18 @@ void __81__SMMadridMessenger_iMessageScheduledSendScheduledFor_guid_successful_w
             v68 = 2112;
             v69 = v12;
             v70 = 2112;
-            v71 = v10;
+            v71 = errorCopy;
             _os_log_error_impl(&dword_2304B3000, v39, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,cancel failed for %@ with error %@", buf, 0x2Au);
           }
 
-          (*(v15 + 16))(v15, 0, v10);
-          v22 = [*(v55 + 5) messageSentDate];
-          [v22 timeIntervalSinceNow];
+          (*(callback2 + 16))(callback2, 0, errorCopy);
+          messageSentDate = [*(v55 + 5) messageSentDate];
+          [messageSentDate timeIntervalSinceNow];
           v41 = v40;
-          v25 = [*(v55 + 5) conversation];
-          v26 = [v25 receiverHandles];
+          conversation = [*(v55 + 5) conversation];
+          receiverHandles = [conversation receiverHandles];
           LOBYTE(v49) = 0;
-          +[SMMessagingService submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:](SMMessagingService, "submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:", 3, 1, 1, 3, 1, v10, -v41, v49, [v26 count]);
+          +[SMMessagingService submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:](SMMessagingService, "submitCAMetricForMessageType:scheduledSend:cancelationAttempt:attemptNumber:wasFinalAttempt:timeToSendMessage:sendError:success:numReceivers:", 3, 1, 1, 3, 1, errorCopy, -v41, v49, [receiverHandles count]);
         }
       }
     }
@@ -1606,14 +1606,14 @@ void __73__SMMadridMessenger_iMessageScheduledSendCancelFor_successful_withError
   }
 }
 
-- (void)iMessageReceived:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5
+- (void)iMessageReceived:(id)received fromHandle:(id)handle fromMe:(BOOL)me
 {
-  v5 = a5;
+  meCopy = me;
   v42 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  receivedCopy = received;
+  handleCopy = handle;
+  v11 = handleCopy;
+  if (!receivedCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1628,7 +1628,7 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  if (!v10)
+  if (!handleCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1641,25 +1641,25 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v12 = [MEMORY[0x277D4AB38] messageTypeFromURL:v9];
+  v12 = [MEMORY[0x277D4AB38] messageTypeFromURL:receivedCopy];
   if ([MEMORY[0x277D4AB38] interfaceTypeFromMessageType:v12] == 1)
   {
     v13 = objc_alloc(MEMORY[0x277D4AAE8]);
     v14 = [v13 initWithPrimaryHandle:v11 secondaryHandles:MEMORY[0x277CBEBF8]];
-    v15 = [MEMORY[0x277D4AB38] createMessageFromURL:v9];
+    v15 = [MEMORY[0x277D4AB38] createMessageFromURL:receivedCopy];
     v16 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    v17 = v16;
+    delegate = v16;
     if (v15)
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v15 sessionID];
+        sessionID = [v15 sessionID];
         v19 = objc_opt_class();
         v29 = NSStringFromClass(v19);
         v20 = NSStringFromSelector(a2);
         [v15 messageID];
         *buf = 138413571;
-        v31 = v18;
+        v31 = sessionID;
         v32 = 2112;
         v33 = v29;
         v34 = 2112;
@@ -1670,11 +1670,11 @@ LABEL_12:
         v39 = v11;
         v40 = 2117;
         v41 = v15;
-        _os_log_impl(&dword_2304B3000, v17, OS_LOG_TYPE_DEFAULT, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,received message from %@,message,%{sensitive}@", buf, 0x3Eu);
+        _os_log_impl(&dword_2304B3000, delegate, OS_LOG_TYPE_DEFAULT, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,received message from %@,message,%{sensitive}@", buf, 0x3Eu);
       }
 
-      v17 = [(SMMadridMessenger *)self delegate];
-      [v17 receivedMessage:v15 fromHandle:v14 fromMe:v5];
+      delegate = [(SMMadridMessenger *)self delegate];
+      [delegate receivedMessage:v15 fromHandle:v14 fromMe:meCopy];
     }
 
     else if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1689,8 +1689,8 @@ LABEL_12:
       v34 = 2112;
       v35 = v11;
       v36 = 2112;
-      v37 = v9;
-      _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,received message from %@ could not be converted to SMMessage,messageUrl,%@", buf, 0x2Au);
+      v37 = receivedCopy;
+      _os_log_error_impl(&dword_2304B3000, delegate, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,received message from %@ could not be converted to SMMessage,messageUrl,%@", buf, 0x2Au);
     }
   }
 
@@ -1715,18 +1715,18 @@ LABEL_12:
 LABEL_18:
 }
 
-- (void)iMessageDeletedFor:(id)a3
+- (void)iMessageDeletedFor:(id)for
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  forCopy = for;
+  v5 = forCopy;
+  if (forCopy)
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v6 = [v4 countByEnumeratingWithState:&v31 objects:v45 count:16];
+    v6 = [forCopy countByEnumeratingWithState:&v31 objects:v45 count:16];
     if (v6)
     {
       v8 = v6;
@@ -1754,16 +1754,16 @@ LABEL_18:
               v14 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
               if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
               {
-                v15 = [v13 sessionID];
+                sessionID = [v13 sessionID];
                 v16 = objc_opt_class();
                 v17 = NSStringFromClass(v16);
                 v18 = NSStringFromSelector(a2);
                 [v13 messageID];
                 v19 = v9;
-                v20 = self;
+                selfCopy = self;
                 v22 = v21 = v5;
                 *buf = 138413314;
-                v36 = v15;
+                v36 = sessionID;
                 v37 = 2112;
                 v38 = v17;
                 v39 = 2112;
@@ -1775,7 +1775,7 @@ LABEL_18:
                 _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@,deleted message,%@", buf, 0x34u);
 
                 v5 = v21;
-                self = v20;
+                self = selfCopy;
                 v9 = v19;
                 v10 = 0x277D4A000;
 
@@ -1783,14 +1783,14 @@ LABEL_18:
               }
             }
 
-            v23 = [(SMMadridMessenger *)self delegate];
-            [v23 deletedMessage:v13];
+            delegate = [(SMMadridMessenger *)self delegate];
+            [delegate deletedMessage:v13];
           }
 
           else
           {
-            v23 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-            if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+            delegate = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+            if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
             {
               v24 = objc_opt_class();
               v25 = NSStringFromClass(v24);
@@ -1801,7 +1801,7 @@ LABEL_18:
               v38 = v26;
               v39 = 2112;
               v40 = v12;
-              _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@, deleted message could not be converted to SMMessage,messageUrl,%@", buf, 0x20u);
+              _os_log_error_impl(&dword_2304B3000, delegate, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@, deleted message could not be converted to SMMessage,messageUrl,%@", buf, 0x20u);
 
               v8 = v30;
             }
@@ -1829,27 +1829,27 @@ LABEL_18:
   }
 }
 
-- (id)createMSMessage:(id)a3 summaryText:(id)a4
+- (id)createMSMessage:(id)message summaryText:(id)text
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  messageCopy = message;
+  textCopy = text;
+  if (messageCopy)
   {
     v7 = objc_alloc_init(MEMORY[0x277CD6910]);
-    [v7 setCaption:v6];
+    [v7 setCaption:textCopy];
     v8 = [objc_alloc(MEMORY[0x277CD6900]) initWithAlternateLayout:v7];
     v9 = objc_alloc(MEMORY[0x277CD68F8]);
     v10 = objc_alloc(MEMORY[0x277CD6920]);
-    v11 = [v5 sessionID];
-    v12 = [v10 initWithIdentifier:v11];
+    sessionID = [messageCopy sessionID];
+    v12 = [v10 initWithIdentifier:sessionID];
     v13 = [v9 initWithSession:v12];
 
     [v13 setLayout:v8];
-    v14 = [v5 outputToURLComponents];
-    v15 = [v14 URL];
+    outputToURLComponents = [messageCopy outputToURLComponents];
+    v15 = [outputToURLComponents URL];
     [v13 setURL:v15];
 
-    [v13 setSummaryText:v6];
+    [v13 setSummaryText:textCopy];
     [v13 setRequiresValidation:1];
   }
 
@@ -1868,15 +1868,15 @@ LABEL_18:
   return v13;
 }
 
-- (id)getIMPluginPayloadFromMSMessage:(id)a3
+- (id)getIMPluginPayloadFromMSMessage:(id)message
 {
-  v3 = a3;
-  if (v3)
+  messageCopy = message;
+  if (messageCopy)
   {
     v4 = [MEMORY[0x277CCA8D8] bundleWithPath:@"/System/Library/Messages/iMessageApps/SafetyMonitorMessages.bundle"];
     v5 = [v4 pathForResource:@"CheckInMessagesAppIcon_32" ofType:@"png"];
     v6 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v5];
-    v7 = [v3 _pluginPayloadWithAppIconData:v6 appName:@"Check In" allowDataPayloads:1];
+    v7 = [messageCopy _pluginPayloadWithAppIconData:v6 appName:@"Check In" allowDataPayloads:1];
   }
 
   else
@@ -1894,14 +1894,14 @@ LABEL_18:
   return v7;
 }
 
-- (void)processSessionStartMessageSendResultWithMessageUrl:(id)a3 guid:(id)a4 successful:(BOOL)a5 withError:(id)a6
+- (void)processSessionStartMessageSendResultWithMessageUrl:(id)url guid:(id)guid successful:(BOOL)successful withError:(id)error
 {
-  v7 = a5;
+  successfulCopy = successful;
   v45 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!v11)
+  urlCopy = url;
+  guidCopy = guid;
+  errorCopy = error;
+  if (!urlCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1916,7 +1916,7 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  if (!v12)
+  if (!guidCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1929,24 +1929,24 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v14 = [objc_alloc(MEMORY[0x277D4ABE8]) initWithURL:v11];
+  v14 = [objc_alloc(MEMORY[0x277D4ABE8]) initWithURL:urlCopy];
   v15 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-  v16 = v15;
+  delegate = v15;
   if (v14)
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v14 sessionID];
+      sessionID = [v14 sessionID];
       v18 = objc_opt_class();
       v28 = NSStringFromClass(v18);
       v19 = NSStringFromSelector(a2);
-      v27 = [v14 messageID];
+      messageID = [v14 messageID];
       v20 = [MEMORY[0x277D4AAB0] convertLowPowerModeWarningStateToString:{-[NSObject lowPowerModeWarningState](v14, "lowPowerModeWarningState")}];
       v26 = v20;
       *buf = 138414082;
       v21 = @"failed";
-      v30 = v17;
-      if (v7)
+      v30 = sessionID;
+      if (successfulCopy)
       {
         v21 = @"succeeded";
       }
@@ -1956,20 +1956,20 @@ LABEL_13:
       v33 = 2112;
       v34 = v19;
       v35 = 2112;
-      v36 = v27;
+      v36 = messageID;
       v37 = 2112;
       v38 = v20;
       v39 = 2112;
       v40 = v21;
       v41 = 2112;
-      v42 = v12;
+      v42 = guidCopy;
       v43 = 2112;
-      v44 = v13;
-      _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_DEFAULT, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@, lowPowerModeWarningState, %@, start message send %@,GUID,%@,error,%@", buf, 0x52u);
+      v44 = errorCopy;
+      _os_log_impl(&dword_2304B3000, delegate, OS_LOG_TYPE_DEFAULT, "#SafetyCache,sessionID:%@,%@,%@,messageID:%@, lowPowerModeWarningState, %@, start message send %@,GUID,%@,error,%@", buf, 0x52u);
     }
 
-    v16 = [(SMMadridMessenger *)self delegate];
-    [v16 receivedSessionStartMessageSendResultWithMessage:v14 guid:v12 successful:v7 withError:v13];
+    delegate = [(SMMadridMessenger *)self delegate];
+    [delegate receivedSessionStartMessageSendResultWithMessage:v14 guid:guidCopy successful:successfulCopy withError:errorCopy];
   }
 
   else if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1982,8 +1982,8 @@ LABEL_13:
     v31 = 2112;
     v32 = v25;
     v33 = 2112;
-    v34 = v11;
-    _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,failed to create SMSessionStartMessage from URL %@", buf, 0x20u);
+    v34 = urlCopy;
+    _os_log_error_impl(&dword_2304B3000, delegate, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,failed to create SMSessionStartMessage from URL %@", buf, 0x20u);
   }
 
 LABEL_17:

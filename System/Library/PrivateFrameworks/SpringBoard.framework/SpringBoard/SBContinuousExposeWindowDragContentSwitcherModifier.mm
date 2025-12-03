@@ -1,45 +1,45 @@
 @interface SBContinuousExposeWindowDragContentSwitcherModifier
 - (BOOL)wantsSlideOverTongue;
-- (SBContinuousExposeWindowDragContentSwitcherModifier)initWithGestureID:(id)a3 initialAppLayout:(id)a4 selectedDisplayItem:(id)a5 wantsSlideOverTongue:(BOOL)a6 slideOverTongueState:(unint64_t)a7 slideOverTongueDirection:(unint64_t)a8;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
+- (SBContinuousExposeWindowDragContentSwitcherModifier)initWithGestureID:(id)d initialAppLayout:(id)layout selectedDisplayItem:(id)item wantsSlideOverTongue:(BOOL)tongue slideOverTongueState:(unint64_t)state slideOverTongueDirection:(unint64_t)direction;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
 - (unint64_t)slideOverTongueDirection;
 - (unint64_t)slideOverTongueState;
-- (void)_createFloorAndMultitaskingModifiersWithAppLayout:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)updateFloorModifiersWithAppLayout:(id)a3;
+- (void)_createFloorAndMultitaskingModifiersWithAppLayout:(id)layout;
+- (void)setDelegate:(id)delegate;
+- (void)updateFloorModifiersWithAppLayout:(id)layout;
 @end
 
 @implementation SBContinuousExposeWindowDragContentSwitcherModifier
 
-- (SBContinuousExposeWindowDragContentSwitcherModifier)initWithGestureID:(id)a3 initialAppLayout:(id)a4 selectedDisplayItem:(id)a5 wantsSlideOverTongue:(BOOL)a6 slideOverTongueState:(unint64_t)a7 slideOverTongueDirection:(unint64_t)a8
+- (SBContinuousExposeWindowDragContentSwitcherModifier)initWithGestureID:(id)d initialAppLayout:(id)layout selectedDisplayItem:(id)item wantsSlideOverTongue:(BOOL)tongue slideOverTongueState:(unint64_t)state slideOverTongueDirection:(unint64_t)direction
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  dCopy = d;
+  layoutCopy = layout;
+  itemCopy = item;
   v21.receiver = self;
   v21.super_class = SBContinuousExposeWindowDragContentSwitcherModifier;
   v18 = [(SBSwitcherModifier *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_selectedDisplayItem, a5);
-    objc_storeStrong(&v19->_initialAppLayout, a4);
-    objc_storeStrong(&v19->_gestureID, a3);
-    v19->_wantsSlideOverTongue = a6;
-    v19->_slideOverTongueState = a7;
-    v19->_slideOverTongueDirection = a8;
-    [(SBContinuousExposeWindowDragContentSwitcherModifier *)v19 _createFloorAndMultitaskingModifiersWithAppLayout:v16];
+    objc_storeStrong(&v18->_selectedDisplayItem, item);
+    objc_storeStrong(&v19->_initialAppLayout, layout);
+    objc_storeStrong(&v19->_gestureID, d);
+    v19->_wantsSlideOverTongue = tongue;
+    v19->_slideOverTongueState = state;
+    v19->_slideOverTongueDirection = direction;
+    [(SBContinuousExposeWindowDragContentSwitcherModifier *)v19 _createFloorAndMultitaskingModifiersWithAppLayout:layoutCopy];
   }
 
   return v19;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = SBContinuousExposeWindowDragContentSwitcherModifier;
   [(SBChainableModifier *)&v7 setDelegate:?];
-  if (a3)
+  if (delegate)
   {
     if (!self->_gestureModifier)
     {
@@ -52,9 +52,9 @@
   }
 }
 
-- (void)updateFloorModifiersWithAppLayout:(id)a3
+- (void)updateFloorModifiersWithAppLayout:(id)layout
 {
-  v6 = a3;
+  layoutCopy = layout;
   v4 = [(SBChainableModifier *)self childModifierByKey:@"SBContinuousExposeWindowDragContentSwitcherModifierFloorModifier"];
   if (v4)
   {
@@ -67,13 +67,13 @@
     [(SBChainableModifier *)self removeChildModifier:v5];
   }
 
-  [(SBContinuousExposeWindowDragContentSwitcherModifier *)self _createFloorAndMultitaskingModifiersWithAppLayout:v6];
+  [(SBContinuousExposeWindowDragContentSwitcherModifier *)self _createFloorAndMultitaskingModifiersWithAppLayout:layoutCopy];
 }
 
-- (void)_createFloorAndMultitaskingModifiersWithAppLayout:(id)a3
+- (void)_createFloorAndMultitaskingModifiersWithAppLayout:(id)layout
 {
-  v4 = a3;
-  v6 = [[SBFullScreenContinuousExposeSwitcherModifier alloc] initWithFullScreenAppLayout:v4];
+  layoutCopy = layout;
+  v6 = [[SBFullScreenContinuousExposeSwitcherModifier alloc] initWithFullScreenAppLayout:layoutCopy];
 
   [(SBFullScreenContinuousExposeSwitcherModifier *)v6 setHandlesTapAppLayoutEvents:0];
   [(SBFullScreenContinuousExposeSwitcherModifier *)v6 setHandlesTapAppLayoutHeaderEvents:0];
@@ -84,10 +84,10 @@
   [(SBChainableModifier *)self addChildModifier:v5 atLevel:2 key:@"SBContinuousExposeWindowDragContentSwitcherModifierMultitaskingModifier"];
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layoutsCopy = layouts;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v17 = 0u;
@@ -96,7 +96,7 @@
   v20 = 0u;
   v16.receiver = self;
   v16.super_class = SBContinuousExposeWindowDragContentSwitcherModifier;
-  v7 = [(SBContinuousExposeWindowDragContentSwitcherModifier *)&v16 adjustedAppLayoutsForAppLayouts:v4];
+  v7 = [(SBContinuousExposeWindowDragContentSwitcherModifier *)&v16 adjustedAppLayoutsForAppLayouts:layoutsCopy];
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {

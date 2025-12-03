@@ -1,9 +1,9 @@
 @interface PFImageIOOptionsBuilder
 - (NSDictionary)options;
 - (PFImageIOOptionsBuilder)init;
-- (PFImageIOOptionsBuilder)initWithOptions:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (PFImageIOOptionsBuilder)initWithOptions:(id)options;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation PFImageIOOptionsBuilder
@@ -11,15 +11,15 @@
 - (NSDictionary)options
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableDictionary *)self->_customOptions count])
   {
-    [(NSDictionary *)v3 addEntriesFromDictionary:self->_customOptions];
+    [(NSDictionary *)dictionary addEntriesFromDictionary:self->_customOptions];
   }
 
   if (self->_includeDerivativeDefaults)
   {
-    [(NSDictionary *)v3 setObject:&unk_1F2AABB40 forKeyedSubscript:*MEMORY[0x1E696D338]];
+    [(NSDictionary *)dictionary setObject:&unk_1F2AABB40 forKeyedSubscript:*MEMORY[0x1E696D338]];
   }
 
   if (self->_includeHDRGainMaps)
@@ -33,29 +33,29 @@
     v15[2] = *MEMORY[0x1E696D360];
     v16[2] = MEMORY[0x1E695E118];
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
-    [(NSDictionary *)v3 addEntriesFromDictionary:v6];
+    [(NSDictionary *)dictionary addEntriesFromDictionary:v6];
   }
 
   if (self->_applyTransform)
   {
-    [(NSDictionary *)v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696E000]];
+    [(NSDictionary *)dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696E000]];
   }
 
   if (self->_skipMetadata)
   {
-    [(NSDictionary *)v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696E0E8]];
+    [(NSDictionary *)dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696E0E8]];
   }
 
   if (self->_maximumLongSideLength)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-    [(NSDictionary *)v3 setObject:v7 forKeyedSubscript:*MEMORY[0x1E696D328]];
+    [(NSDictionary *)dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x1E696D328]];
   }
 
   if (self->_orientation - 1 <= 7)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
-    [(NSDictionary *)v3 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696DE78]];
+    [(NSDictionary *)dictionary setObject:v8 forKeyedSubscript:*MEMORY[0x1E696DE78]];
   }
 
   colorBehavior = self->_colorBehavior;
@@ -77,11 +77,11 @@
       goto LABEL_22;
   }
 
-  [(NSDictionary *)v3 setObject:v11 forKeyedSubscript:v10];
+  [(NSDictionary *)dictionary setObject:v11 forKeyedSubscript:v10];
 LABEL_22:
-  if ([(NSDictionary *)v3 count])
+  if ([(NSDictionary *)dictionary count])
   {
-    v12 = v3;
+    v12 = dictionary;
   }
 
   else
@@ -94,44 +94,44 @@ LABEL_22:
   return v12;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = [(PFImageIOOptionsBuilder *)self options];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  subscriptCopy = subscript;
+  options = [(PFImageIOOptionsBuilder *)self options];
+  v6 = [options objectForKeyedSubscript:subscriptCopy];
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v10 = a3;
-  v6 = a4;
+  objectCopy = object;
+  subscriptCopy = subscript;
   customOptions = self->_customOptions;
   if (!customOptions)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v9 = self->_customOptions;
-    self->_customOptions = v8;
+    self->_customOptions = dictionary;
 
     customOptions = self->_customOptions;
   }
 
-  [(NSMutableDictionary *)customOptions setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)customOptions setObject:objectCopy forKeyedSubscript:subscriptCopy];
 }
 
-- (PFImageIOOptionsBuilder)initWithOptions:(id)a3
+- (PFImageIOOptionsBuilder)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = [(PFImageIOOptionsBuilder *)self init];
   v6 = v5;
-  if (v4 && v5)
+  if (optionsCopy && v5)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     customOptions = v6->_customOptions;
-    v6->_customOptions = v7;
+    v6->_customOptions = dictionary;
 
-    [(NSMutableDictionary *)v6->_customOptions addEntriesFromDictionary:v4];
+    [(NSMutableDictionary *)v6->_customOptions addEntriesFromDictionary:optionsCopy];
   }
 
   return v6;

@@ -1,12 +1,12 @@
 @interface RemoteXPCShim
-+ (id)anonymousConnectedPairWithTargetQueue:(id)a3;
++ (id)anonymousConnectedPairWithTargetQueue:(id)queue;
 @end
 
 @implementation RemoteXPCShim
 
-+ (id)anonymousConnectedPairWithTargetQueue:(id)a3
++ (id)anonymousConnectedPairWithTargetQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   xpc_remote_connection_get_version_flags();
   xpc_remote_connection_create_connected_pair();
 

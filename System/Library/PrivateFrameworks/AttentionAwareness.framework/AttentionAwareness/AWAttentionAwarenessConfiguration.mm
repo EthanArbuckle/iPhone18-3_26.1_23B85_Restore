@@ -1,26 +1,26 @@
 @interface AWAttentionAwarenessConfiguration
-+ (AWNotification_s)notifySupportedEventsChangedWithQueue:(id)a3 block:(id)a4;
++ (AWNotification_s)notifySupportedEventsChangedWithQueue:(id)queue block:(id)block;
 + (id)supportedEventsString;
 + (unint64_t)supportedEvents;
-+ (void)cancelNotification:(AWNotification_s *)a3;
++ (void)cancelNotification:(AWNotification_s *)notification;
 - (AWAttentionAwarenessConfiguration)init;
-- (AWAttentionAwarenessConfiguration)initWithCoder:(id)a3;
-- (BOOL)validateWithError:(id *)a3;
+- (AWAttentionAwarenessConfiguration)initWithCoder:(id)coder;
+- (BOOL)validateWithError:(id *)error;
 - (NSDictionary)attentionLostTimeoutDictionary;
 - (NSSet)attentionLostTimeouts;
 - (id)allowedHIDEventsForRemoteEvent;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAllowedHIDEventsForRemoteEvent:(id)a3;
-- (void)setAttentionLostTimeout:(double)a3;
-- (void)setAttentionLostTimeoutDictionary:(id)a3;
-- (void)setAttentionLostTimeouts:(id)a3;
-- (void)setEventMask:(unint64_t)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setSamplingInterval:(double)a3;
-- (void)setTag:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAllowedHIDEventsForRemoteEvent:(id)event;
+- (void)setAttentionLostTimeout:(double)timeout;
+- (void)setAttentionLostTimeoutDictionary:(id)dictionary;
+- (void)setAttentionLostTimeouts:(id)timeouts;
+- (void)setEventMask:(unint64_t)mask;
+- (void)setIdentifier:(id)identifier;
+- (void)setSamplingInterval:(double)interval;
+- (void)setTag:(id)tag;
 @end
 
 @implementation AWAttentionAwarenessConfiguration
@@ -33,9 +33,9 @@
   if (v2)
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [MEMORY[0x1E696AE30] processInfo];
-    v5 = [v4 processName];
-    v6 = [v3 stringWithFormat:@"%@-%d", v5, atomic_fetch_add(init_configCount, 1u)];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
+    v6 = [v3 stringWithFormat:@"%@-%d", processName, atomic_fetch_add(init_configCount, 1u)];
     identifier = v2->_identifier;
     v2->_identifier = v6;
 
@@ -247,9 +247,9 @@
   return v2;
 }
 
-- (void)setAllowedHIDEventsForRemoteEvent:(id)a3
+- (void)setAllowedHIDEventsForRemoteEvent:(id)event
 {
-  v4 = [a3 copy];
+  v4 = [event copy];
   allowedHIDEventsForRemoteEvent = self->_allowedHIDEventsForRemoteEvent;
   self->_allowedHIDEventsForRemoteEvent = v4;
 
@@ -263,32 +263,32 @@
   return v2;
 }
 
-- (void)setAttentionLostTimeoutDictionary:(id)a3
+- (void)setAttentionLostTimeoutDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy copy];
   attentionLostTimeoutDictionary = self->_attentionLostTimeoutDictionary;
   self->_attentionLostTimeoutDictionary = v5;
 
   v7 = MEMORY[0x1E695DFD8];
-  v10 = [v4 allKeys];
+  allKeys = [dictionaryCopy allKeys];
 
-  v8 = [v7 setWithArray:v10];
+  v8 = [v7 setWithArray:allKeys];
   attentionLostTimeouts = self->_attentionLostTimeouts;
   self->_attentionLostTimeouts = v8;
 }
 
-- (void)setAttentionLostTimeout:(double)a3
+- (void)setAttentionLostTimeout:(double)timeout
 {
   v4 = MEMORY[0x1E695DFD8];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:timeout];
   v5 = [v4 setWithObject:v6];
   [(AWAttentionAwarenessConfiguration *)self setAttentionLostTimeouts:v5];
 }
 
-- (void)setAttentionLostTimeouts:(id)a3
+- (void)setAttentionLostTimeouts:(id)timeouts
 {
-  v4 = [a3 copy];
+  v4 = [timeouts copy];
   attentionLostTimeouts = self->_attentionLostTimeouts;
   self->_attentionLostTimeouts = v4;
 
@@ -296,28 +296,28 @@
   self->_attentionLostTimeoutDictionary = 0;
 }
 
-- (void)setSamplingInterval:(double)a3
+- (void)setSamplingInterval:(double)interval
 {
-  self->_samplingInterval = a3;
+  self->_samplingInterval = interval;
   if (!self->_samplingDelayExplicitlySet)
   {
-    self->_samplingDelay = a3;
+    self->_samplingDelay = interval;
   }
 }
 
-- (void)setEventMask:(unint64_t)a3
+- (void)setEventMask:(unint64_t)mask
 {
-  self->_eventMask = a3;
+  self->_eventMask = mask;
   if (!self->_attentionLostEventMaskExplicitlySet)
   {
-    self->_attentionLostEventMask = a3;
+    self->_attentionLostEventMask = mask;
   }
 }
 
-- (void)setTag:(id)a3
+- (void)setTag:(id)tag
 {
-  v10 = a3;
-  v4 = (v10 | self->_tag);
+  tagCopy = tag;
+  v4 = (tagCopy | self->_tag);
   if (v4)
   {
     v5 = +[AWAttentionAwarenessClientConfig sharedClientConfig];
@@ -327,9 +327,9 @@
       [v5 decrementTagIndexRefCount:self->_tagIndex];
     }
 
-    if (v10)
+    if (tagCopy)
     {
-      v7 = [v10 copyWithZone:MEMORY[0x1BFB0CAB0]()];
+      v7 = [tagCopy copyWithZone:MEMORY[0x1BFB0CAB0]()];
       tag = self->_tag;
       self->_tag = v7;
 
@@ -352,14 +352,14 @@ LABEL_9:
   self->_tagIndex = v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[AWAttentionAwarenessConfiguration allocWithZone:](AWAttentionAwarenessConfiguration init];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [(NSCopying *)self->_tag copyWithZone:a3];
+  v8 = [(NSCopying *)self->_tag copyWithZone:zone];
   tag = v5->_tag;
   v5->_tag = v8;
 
@@ -376,28 +376,28 @@ LABEL_9:
   v5->_activateAttentionDetection = self->_activateAttentionDetection;
   v5->_activateMotionDetect = self->_activateMotionDetect;
   v5->_unityStream = self->_unityStream;
-  v10 = [(NSSet *)self->_attentionLostTimeouts copyWithZone:a3];
+  v10 = [(NSSet *)self->_attentionLostTimeouts copyWithZone:zone];
   attentionLostTimeouts = v5->_attentionLostTimeouts;
   v5->_attentionLostTimeouts = v10;
 
-  v12 = [(NSDictionary *)self->_attentionLostTimeoutDictionary copyWithZone:a3];
+  v12 = [(NSDictionary *)self->_attentionLostTimeoutDictionary copyWithZone:zone];
   attentionLostTimeoutDictionary = v5->_attentionLostTimeoutDictionary;
   v5->_attentionLostTimeoutDictionary = v12;
 
   v5->_tagIndex = self->_tagIndex;
-  v14 = [(NSSet *)self->_allowedHIDEventsForRemoteEvent copyWithZone:a3];
+  v14 = [(NSSet *)self->_allowedHIDEventsForRemoteEvent copyWithZone:zone];
   allowedHIDEventsForRemoteEvent = v5->_allowedHIDEventsForRemoteEvent;
   v5->_allowedHIDEventsForRemoteEvent = v14;
 
-  v16 = [(NSSet *)self->_digitizerDisplayUUIDs copyWithZone:a3];
+  v16 = [(NSSet *)self->_digitizerDisplayUUIDs copyWithZone:zone];
   digitizerDisplayUUIDs = v5->_digitizerDisplayUUIDs;
   v5->_digitizerDisplayUUIDs = v16;
 
-  v18 = [(NSSet *)self->_keyboardDisplayUUIDs copyWithZone:a3];
+  v18 = [(NSSet *)self->_keyboardDisplayUUIDs copyWithZone:zone];
   keyboardDisplayUUIDs = v5->_keyboardDisplayUUIDs;
   v5->_keyboardDisplayUUIDs = v18;
 
-  v20 = [(NSSet *)self->_buttonDisplayUUIDs copyWithZone:a3];
+  v20 = [(NSSet *)self->_buttonDisplayUUIDs copyWithZone:zone];
   buttonDisplayUUIDs = v5->_buttonDisplayUUIDs;
   v5->_buttonDisplayUUIDs = v20;
 
@@ -409,10 +409,10 @@ LABEL_9:
   return v5;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695D940];
@@ -422,10 +422,10 @@ LABEL_9:
   }
 
   identifier = self->_identifier;
-  self->_identifier = v4;
+  self->_identifier = identifierCopy;
 }
 
-- (BOOL)validateWithError:(id *)a3
+- (BOOL)validateWithError:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
   if (self->_identifier && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -742,14 +742,14 @@ LABEL_69:
   }
 
 LABEL_12:
-  if (a3)
+  if (error)
   {
     v8 = MEMORY[0x1E696ABC0];
     v9 = *MEMORY[0x1E696A798];
     v41 = *MEMORY[0x1E696A578];
     v42 = @" Invalid config";
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
-    *a3 = [v8 errorWithDomain:v9 code:22 userInfo:v10];
+    *error = [v8 errorWithDomain:v9 code:22 userInfo:v10];
   }
 
   result = 0;
@@ -758,10 +758,10 @@ LABEL_15:
   return result;
 }
 
-- (AWAttentionAwarenessConfiguration)initWithCoder:(id)a3
+- (AWAttentionAwarenessConfiguration)initWithCoder:(id)coder
 {
   v97 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v77 = 0;
   v76.receiver = self;
   v76.super_class = AWAttentionAwarenessConfiguration;
@@ -771,25 +771,25 @@ LABEL_15:
     goto LABEL_53;
   }
 
-  v6 = decodeString(v4, &v77, @"identifier");
+  v6 = decodeString(coderCopy, &v77, @"identifier");
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v5->_tagIndex = decodeUInt64(v4, &v77, @"tagIndex");
-  v5->_notificationMask = decodeUInt64(v4, &v77, @"notificationMask");
-  v5->_eventMask = decodeUInt64(v4, &v77, @"eventMask");
-  v5->_attentionLostEventMask = decodeUInt64(v4, &v77, @"attentionLostEventMask");
-  v5->_samplingInterval = decodeDouble(v4, &v77, @"samplingInterval");
-  v5->_samplingDelay = decodeDouble(v4, &v77, @"samplingDelay");
-  v5->_sampleWhileAbsent = decodeUInt64(v4, &v77, @"sampleWhileAbsent") != 0;
-  v5->_retroactiveTimeoutMode = decodeUInt64(v4, &v77, @"retroactiveTimeoutMode") != 0;
-  v5->_pollingFilter = decodeUInt64(v4, &v77, @"pollingFilter") != 0;
-  v5->_continuousFaceDetectMode = decodeUInt64(v4, &v77, @"continuousFaceDetectMode") != 0;
-  v5->_activateEyeRelief = decodeUInt64(v4, &v77, @"activateEyeRelief") != 0;
-  v5->_activateAttentionDetection = decodeUInt64(v4, &v77, @"activateAttentionDetection") != 0;
-  v5->_activateMotionDetect = decodeUInt64(v4, &v77, @"activateMotionDetect") != 0;
-  v5->_unityStream = decodeUInt64(v4, &v77, @"unityStream") != 0;
-  v8 = v4;
+  v5->_tagIndex = decodeUInt64(coderCopy, &v77, @"tagIndex");
+  v5->_notificationMask = decodeUInt64(coderCopy, &v77, @"notificationMask");
+  v5->_eventMask = decodeUInt64(coderCopy, &v77, @"eventMask");
+  v5->_attentionLostEventMask = decodeUInt64(coderCopy, &v77, @"attentionLostEventMask");
+  v5->_samplingInterval = decodeDouble(coderCopy, &v77, @"samplingInterval");
+  v5->_samplingDelay = decodeDouble(coderCopy, &v77, @"samplingDelay");
+  v5->_sampleWhileAbsent = decodeUInt64(coderCopy, &v77, @"sampleWhileAbsent") != 0;
+  v5->_retroactiveTimeoutMode = decodeUInt64(coderCopy, &v77, @"retroactiveTimeoutMode") != 0;
+  v5->_pollingFilter = decodeUInt64(coderCopy, &v77, @"pollingFilter") != 0;
+  v5->_continuousFaceDetectMode = decodeUInt64(coderCopy, &v77, @"continuousFaceDetectMode") != 0;
+  v5->_activateEyeRelief = decodeUInt64(coderCopy, &v77, @"activateEyeRelief") != 0;
+  v5->_activateAttentionDetection = decodeUInt64(coderCopy, &v77, @"activateAttentionDetection") != 0;
+  v5->_activateMotionDetect = decodeUInt64(coderCopy, &v77, @"activateMotionDetect") != 0;
+  v5->_unityStream = decodeUInt64(coderCopy, &v77, @"unityStream") != 0;
+  v8 = coderCopy;
   v9 = @"attentionLostTimeouts";
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
@@ -1107,72 +1107,72 @@ LABEL_54:
   return v58;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v10 = a3;
-  [v10 encodeObject:identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_tagIndex];
-  [v10 encodeObject:v5 forKey:@"tagIndex"];
+  [coderCopy encodeObject:v5 forKey:@"tagIndex"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_notificationMask];
-  [v10 encodeObject:v6 forKey:@"notificationMask"];
+  [coderCopy encodeObject:v6 forKey:@"notificationMask"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_eventMask];
-  [v10 encodeObject:v7 forKey:@"eventMask"];
+  [coderCopy encodeObject:v7 forKey:@"eventMask"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_attentionLostEventMask];
-  [v10 encodeObject:v8 forKey:@"attentionLostEventMask"];
+  [coderCopy encodeObject:v8 forKey:@"attentionLostEventMask"];
 
-  [v10 encodeDouble:@"samplingInterval" forKey:self->_samplingInterval];
-  [v10 encodeDouble:@"samplingDelay" forKey:self->_samplingDelay];
-  [v10 encodeBool:self->_sampleWhileAbsent forKey:@"sampleWhileAbsent"];
-  [v10 encodeBool:self->_retroactiveTimeoutMode forKey:@"retroactiveTimeoutMode"];
-  [v10 encodeBool:self->_pollingFilter forKey:@"pollingFilter"];
-  [v10 encodeBool:self->_continuousFaceDetectMode forKey:@"continuousFaceDetectMode"];
-  [v10 encodeBool:self->_activateEyeRelief forKey:@"activateEyeRelief"];
-  [v10 encodeBool:self->_activateAttentionDetection forKey:@"activateAttentionDetection"];
-  [v10 encodeBool:self->_activateMotionDetect forKey:@"activateMotionDetect"];
-  [v10 encodeBool:self->_unityStream forKey:@"unityStream"];
-  [v10 encodeObject:self->_attentionLostTimeouts forKey:@"attentionLostTimeouts"];
-  [v10 encodeObject:self->_allowedHIDEventsForRemoteEvent forKey:@"allowedHIDEventsForRemoteEvent"];
-  [v10 encodeObject:self->_digitizerDisplayUUIDs forKey:@"digitizerDisplayUUIDs"];
-  [v10 encodeObject:self->_keyboardDisplayUUIDs forKey:@"keyboardDisplayUUIDs"];
-  [v10 encodeObject:self->_buttonDisplayUUIDs forKey:@"buttonDisplayUUIDs"];
-  [v10 encodeDouble:@"nonSampledAttentionLostTimeout" forKey:self->_nonSampledAttentionLostTimeout];
+  [coderCopy encodeDouble:@"samplingInterval" forKey:self->_samplingInterval];
+  [coderCopy encodeDouble:@"samplingDelay" forKey:self->_samplingDelay];
+  [coderCopy encodeBool:self->_sampleWhileAbsent forKey:@"sampleWhileAbsent"];
+  [coderCopy encodeBool:self->_retroactiveTimeoutMode forKey:@"retroactiveTimeoutMode"];
+  [coderCopy encodeBool:self->_pollingFilter forKey:@"pollingFilter"];
+  [coderCopy encodeBool:self->_continuousFaceDetectMode forKey:@"continuousFaceDetectMode"];
+  [coderCopy encodeBool:self->_activateEyeRelief forKey:@"activateEyeRelief"];
+  [coderCopy encodeBool:self->_activateAttentionDetection forKey:@"activateAttentionDetection"];
+  [coderCopy encodeBool:self->_activateMotionDetect forKey:@"activateMotionDetect"];
+  [coderCopy encodeBool:self->_unityStream forKey:@"unityStream"];
+  [coderCopy encodeObject:self->_attentionLostTimeouts forKey:@"attentionLostTimeouts"];
+  [coderCopy encodeObject:self->_allowedHIDEventsForRemoteEvent forKey:@"allowedHIDEventsForRemoteEvent"];
+  [coderCopy encodeObject:self->_digitizerDisplayUUIDs forKey:@"digitizerDisplayUUIDs"];
+  [coderCopy encodeObject:self->_keyboardDisplayUUIDs forKey:@"keyboardDisplayUUIDs"];
+  [coderCopy encodeObject:self->_buttonDisplayUUIDs forKey:@"buttonDisplayUUIDs"];
+  [coderCopy encodeDouble:@"nonSampledAttentionLostTimeout" forKey:self->_nonSampledAttentionLostTimeout];
   LOBYTE(v9) = self->_nonSampledAttentionLostTimeoutEnable;
-  [v10 encodeDouble:@"nonSampledAttentionLostTimeoutEnable" forKey:v9];
+  [coderCopy encodeDouble:@"nonSampledAttentionLostTimeoutEnable" forKey:v9];
 }
 
-+ (void)cancelNotification:(AWNotification_s *)a3
++ (void)cancelNotification:(AWNotification_s *)notification
 {
   v4 = +[AWAttentionAwarenessClientConfig sharedClientConfig];
-  [v4 cancelNotification:a3];
+  [v4 cancelNotification:notification];
 }
 
-+ (AWNotification_s)notifySupportedEventsChangedWithQueue:(id)a3 block:(id)a4
++ (AWNotification_s)notifySupportedEventsChangedWithQueue:(id)queue block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  queueCopy = queue;
   v7 = +[AWAttentionAwarenessClientConfig sharedClientConfig];
-  v8 = [v7 notifySupportedEventsChangedWithQueue:v6 block:v5];
+  v8 = [v7 notifySupportedEventsChangedWithQueue:queueCopy block:blockCopy];
 
   return v8;
 }
 
 + (id)supportedEventsString
 {
-  v2 = [a1 supportedEvents];
+  supportedEvents = [self supportedEvents];
 
-  return getEventMaskDescription(v2);
+  return getEventMaskDescription(supportedEvents);
 }
 
 + (unint64_t)supportedEvents
 {
   v2 = +[AWAttentionAwarenessClientConfig sharedClientConfig];
-  v3 = [v2 supportedEvents];
+  supportedEvents = [v2 supportedEvents];
 
-  return v3;
+  return supportedEvents;
 }
 
 @end

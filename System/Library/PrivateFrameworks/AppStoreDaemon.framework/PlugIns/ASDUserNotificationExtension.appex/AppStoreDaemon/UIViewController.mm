@@ -1,14 +1,14 @@
 @interface UIViewController
-- (void)didReceiveNotificationResponse:(id)a3 completionHandler:(id)a4;
+- (void)didReceiveNotificationResponse:(id)response completionHandler:(id)handler;
 @end
 
 @implementation UIViewController
 
-- (void)didReceiveNotificationResponse:(id)a3 completionHandler:(id)a4
+- (void)didReceiveNotificationResponse:(id)response completionHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   NSLog(@"[AppStoreDaemon] This should never be called.");
-  v4[2](v4, 1);
+  handlerCopy[2](handlerCopy, 1);
 }
 
 @end

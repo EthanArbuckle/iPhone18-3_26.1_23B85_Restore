@@ -1,39 +1,39 @@
 @interface MobileGestaltHelperListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)needsNewCachePostBoot;
 - (BOOL)setCacheSentinel;
-- (id)processNameForConnection:(id)a3;
+- (id)processNameForConnection:(id)connection;
 - (id)queryBootUUID;
-- (void)getAppleTVMode:(id)a3;
-- (void)getServerAnswerForQuestion:(id)a3 reply:(id)a4;
-- (void)getSpringboardRegionOverride:(id)a3 reply:(id)a4;
-- (void)rebuildCache:(id)a3;
-- (void)setCacheSentinel:(id)a3;
+- (void)getAppleTVMode:(id)mode;
+- (void)getServerAnswerForQuestion:(id)question reply:(id)reply;
+- (void)getSpringboardRegionOverride:(id)override reply:(id)reply;
+- (void)rebuildCache:(id)cache;
+- (void)setCacheSentinel:(id)sentinel;
 @end
 
 @implementation MobileGestaltHelperListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MobileGestaltHelper];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
-  [v5 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (id)processNameForConnection:(id)a3
+- (id)processNameForConnection:(id)connection
 {
-  v3 = a3;
-  v4 = v3;
+  connectionCopy = connection;
+  v4 = connectionCopy;
   buffer = 0u;
   memset(v35, 0, sizeof(v35));
-  if (v3)
+  if (connectionCopy)
   {
-    [v3 auditToken];
+    [connectionCopy auditToken];
     v5 = v31;
   }
 
@@ -108,10 +108,10 @@ LABEL_17:
   return v6;
 }
 
-- (void)getSpringboardRegionOverride:(id)a3 reply:(id)a4
+- (void)getSpringboardRegionOverride:(id)override reply:(id)reply
 {
-  v18 = a3;
-  v5 = a4;
+  overrideCopy = override;
+  replyCopy = reply;
   v6 = objc_autoreleasePoolPush();
   if (qword_1000085A8 != -1)
   {
@@ -128,7 +128,7 @@ LABEL_17:
   }
 
   v9 = [NSLocale localeWithLocaleIdentifier:v8];
-  v10 = [v9 regionCode];
+  regionCode = [v9 regionCode];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -136,12 +136,12 @@ LABEL_17:
 
 LABEL_8:
     v11 = +[NSLocale currentLocale];
-    v10 = [v11 regionCode];
+    regionCode = [v11 regionCode];
 
     goto LABEL_9;
   }
 
-  if (!v10)
+  if (!regionCode)
   {
     goto LABEL_8;
   }
@@ -149,7 +149,7 @@ LABEL_8:
 LABEL_9:
 
   v12 = 0;
-  if (v7 && v10)
+  if (v7 && regionCode)
   {
     v13 = +[NSFileManager defaultManager];
     v14 = [v13 stringWithFileSystemRepresentation:"/System/Library/CoreServices/RegionalOverrideSoftwareBehaviors.plist" length:68];
@@ -159,10 +159,10 @@ LABEL_9:
 
     if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v17 = [v16 objectForKey:v10];
+      v17 = [v16 objectForKey:regionCode];
       if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v12 = [v17 objectForKey:v18];
+        v12 = [v17 objectForKey:overrideCopy];
       }
 
       else
@@ -177,15 +177,15 @@ LABEL_9:
     }
   }
 
-  v5[2](v5, v12);
+  replyCopy[2](replyCopy, v12);
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)getServerAnswerForQuestion:(id)a3 reply:(id)a4
+- (void)getServerAnswerForQuestion:(id)question reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  questionCopy = question;
+  replyCopy = reply;
   v8 = objc_autoreleasePoolPush();
   if (qword_1000085A8 != -1)
   {
@@ -204,7 +204,7 @@ LABEL_9:
       *buf = 138412546;
       v18 = v13;
       v19 = 2112;
-      v20 = v6;
+      v20 = questionCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "platform fast path elided: caller = %@, question = %@", buf, 0x16u);
     }
   }
@@ -220,7 +220,7 @@ LABEL_9:
     *buf = 138412802;
     v18 = v14;
     v19 = 2112;
-    v20 = v6;
+    v20 = questionCopy;
     v21 = 2112;
     v22[0] = v10;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "asked question: p = %@, q = %@, a = %@", buf, 0x20u);
@@ -237,7 +237,7 @@ LABEL_9:
     *buf = 138413058;
     v18 = v14;
     v19 = 2112;
-    v20 = v6;
+    v20 = questionCopy;
     v21 = 1024;
     LODWORD(v22[0]) = 0;
     WORD2(v22[0]) = 2112;
@@ -260,14 +260,14 @@ LABEL_11:
     CFRelease(cf);
   }
 
-  v7[2](v7, v11);
+  replyCopy[2](replyCopy, v11);
 
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)getAppleTVMode:(id)a3
+- (void)getAppleTVMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = objc_autoreleasePoolPush();
   if (qword_1000085A8 != -1)
   {
@@ -279,31 +279,31 @@ LABEL_11:
   if (objc_opt_class())
   {
     v8 = +[CADisplay mainDisplay];
-    v9 = [v8 currentMode];
+    currentMode = [v8 currentMode];
 
-    if (v9)
+    if (currentMode)
     {
-      v10 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v9 width]);
+      v10 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [currentMode width]);
       [v7 setObject:v10 forKeyedSubscript:@"width"];
 
-      v11 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v9 height]);
+      v11 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [currentMode height]);
       [v7 setObject:v11 forKeyedSubscript:@"height"];
     }
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000020D8(self, v6, v9);
+      sub_1000020D8(self, v6, currentMode);
     }
   }
 
-  v4[2](v4, v7);
+  modeCopy[2](modeCopy, v7);
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)rebuildCache:(id)a3
+- (void)rebuildCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v5 = objc_autoreleasePoolPush();
   if (qword_1000085A8 != -1)
   {
@@ -320,14 +320,14 @@ LABEL_11:
   }
 
   v8 = _MGRebuildCache();
-  v4[2](v4, v8);
+  cacheCopy[2](cacheCopy, v8);
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)setCacheSentinel:(id)a3
+- (void)setCacheSentinel:(id)sentinel
 {
-  v4 = a3;
+  sentinelCopy = sentinel;
   v5 = objc_autoreleasePoolPush();
   if (qword_1000085A8 != -1)
   {
@@ -343,7 +343,7 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Requested a cache sentinel: p = %@", &v8, 0xCu);
   }
 
-  v4[2](v4, [(MobileGestaltHelperListener *)self setCacheSentinel]);
+  sentinelCopy[2](sentinelCopy, [(MobileGestaltHelperListener *)self setCacheSentinel]);
 
   objc_autoreleasePoolPop(v5);
 }
@@ -387,8 +387,8 @@ LABEL_11:
 
 - (BOOL)setCacheSentinel
 {
-  v3 = [(MobileGestaltHelperListener *)self getSentinelPath];
-  if (!v3)
+  getSentinelPath = [(MobileGestaltHelperListener *)self getSentinelPath];
+  if (!getSentinelPath)
   {
 LABEL_8:
     v8 = 0;
@@ -398,8 +398,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v4 = [(MobileGestaltHelperListener *)self queryBootUUID];
-  if (!v4)
+  queryBootUUID = [(MobileGestaltHelperListener *)self queryBootUUID];
+  if (!queryBootUUID)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -409,16 +409,16 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v5 = v4;
+  v5 = queryBootUUID;
   v10 = 0;
   v6 = 1;
-  v7 = [v4 writeToFile:v3 atomically:1 encoding:4 error:&v10];
+  v7 = [queryBootUUID writeToFile:getSentinelPath atomically:1 encoding:4 error:&v10];
   v8 = v10;
   if ((v7 & 1) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_100002184(v5, v3, v8);
+      sub_100002184(v5, getSentinelPath, v8);
     }
 
     goto LABEL_9;
@@ -431,18 +431,18 @@ LABEL_10:
 
 - (BOOL)needsNewCachePostBoot
 {
-  v3 = [(MobileGestaltHelperListener *)self getSentinelPath];
+  getSentinelPath = [(MobileGestaltHelperListener *)self getSentinelPath];
   v4 = +[NSFileManager defaultManager];
   v5 = v4;
-  if (v3 && [v4 fileExistsAtPath:v3])
+  if (getSentinelPath && [v4 fileExistsAtPath:getSentinelPath])
   {
     v16 = 0;
-    v6 = [NSString stringWithContentsOfFile:v3 encoding:4 error:&v16];
+    v6 = [NSString stringWithContentsOfFile:getSentinelPath encoding:4 error:&v16];
     v7 = v16;
     if (v6)
     {
-      v8 = [(MobileGestaltHelperListener *)self queryBootUUID];
-      v9 = [v6 isEqualToString:v8];
+      queryBootUUID = [(MobileGestaltHelperListener *)self queryBootUUID];
+      v9 = [v6 isEqualToString:queryBootUUID];
       v10 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
       if (v9)
       {
@@ -465,7 +465,7 @@ LABEL_10:
         }
 
         v15 = v7;
-        v13 = [v5 removeItemAtPath:v3 error:&v15];
+        v13 = [v5 removeItemAtPath:getSentinelPath error:&v15];
         v11 = v15;
 
         if ((v13 & 1) == 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))

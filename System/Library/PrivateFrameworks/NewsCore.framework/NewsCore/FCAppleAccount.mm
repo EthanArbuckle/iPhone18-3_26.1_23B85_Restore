@@ -42,15 +42,15 @@
 - (int64_t)supportedContentLanguage;
 - (void)_accountStoreDidChange;
 - (void)_reloadAccountsFromAccountStore;
-- (void)_setStoreFrontDependentPropertiesWithStoreFrontLockingEnabled:(void *)a1;
-- (void)addObserver:(id)a3;
-- (void)checkAllDevicesRunningMinimumiOSVersion:(id)a3 macOSVersion:(id)a4 orInactiveForTimeInterval:(double)a5 completionHandler:(id)a6;
-- (void)fetchMinimumDeviceVersionsActiveSinceInterval:(double)a3 completionHandler:(id)a4;
-- (void)getGSTokenWithCompletionHandler:(id)a3;
+- (void)_setStoreFrontDependentPropertiesWithStoreFrontLockingEnabled:(void *)enabled;
+- (void)addObserver:(id)observer;
+- (void)checkAllDevicesRunningMinimumiOSVersion:(id)version macOSVersion:(id)sVersion orInactiveForTimeInterval:(double)interval completionHandler:(id)handler;
+- (void)fetchMinimumDeviceVersionsActiveSinceInterval:(double)interval completionHandler:(id)handler;
+- (void)getGSTokenWithCompletionHandler:(id)handler;
 - (void)invalidateGSTokenCache;
-- (void)loadStoreFrontWithCompletionHandler:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)t_startOverridingContentStoreFrontID:(id)a3;
+- (void)loadStoreFrontWithCompletionHandler:(id)handler;
+- (void)removeObserver:(id)observer;
+- (void)t_startOverridingContentStoreFrontID:(id)d;
 - (void)t_stopOverridingContentStoreFrontID;
 @end
 
@@ -69,7 +69,7 @@ uint64_t __31__FCAppleAccount_sharedAccount__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __31__FCAppleAccount_sharedAccount__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_197 != -1)
   {
     dispatch_once(&_MergedGlobals_197, block);
@@ -87,18 +87,18 @@ uint64_t __31__FCAppleAccount_sharedAccount__block_invoke(uint64_t a1)
   v2 = [(FCAppleAccount *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E6959A48] defaultStore];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
     accountStore = v2->_accountStore;
-    v2->_accountStore = v3;
+    v2->_accountStore = defaultStore;
 
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakObjectsHashTable;
 
     [(FCAppleAccount *)v2 _reloadAccountsFromAccountStore];
     [(FCAppleAccount *)v2 _setStoreFrontDependentPropertiesWithStoreFrontLockingEnabled:?];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v2 selector:sel__accountStoreDidChange name:*MEMORY[0x1E69597D8] object:v2->_accountStore];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__accountStoreDidChange name:*MEMORY[0x1E69597D8] object:v2->_accountStore];
   }
 
   return v2;
@@ -132,7 +132,7 @@ uint64_t __31__FCAppleAccount_sharedAccount__block_invoke(uint64_t a1)
   v13 = [v12 fc_firstObjectPassingTest:&__block_literal_global_90];
   v14 = [v12 fc_firstObjectPassingTest:&__block_literal_global_92_1];
   v16 = [v12 fc_firstObjectPassingTest:&__block_literal_global_94];
-  v17 = v13;
+  aa_primaryAppleAccount = v13;
   if (!v13)
   {
     if (self)
@@ -146,12 +146,12 @@ uint64_t __31__FCAppleAccount_sharedAccount__block_invoke(uint64_t a1)
     }
 
     v2 = v18;
-    v17 = [(ACAccountStore *)v2 aa_primaryAppleAccount];
+    aa_primaryAppleAccount = [(ACAccountStore *)v2 aa_primaryAppleAccount];
   }
 
   if (self)
   {
-    objc_setProperty_atomic(self, v15, v17, 24);
+    objc_setProperty_atomic(self, v15, aa_primaryAppleAccount, 24);
   }
 
   if (v13)
@@ -169,7 +169,7 @@ uint64_t __31__FCAppleAccount_sharedAccount__block_invoke(uint64_t a1)
     {
 LABEL_11:
       v19 = 0;
-      v20 = v14;
+      ams_localiTunesAccount = v14;
       if (!self)
       {
         goto LABEL_17;
@@ -182,7 +182,7 @@ LABEL_11:
   if (v16)
   {
     v19 = 0;
-    v20 = v16;
+    ams_localiTunesAccount = v16;
     if (!self)
     {
       goto LABEL_17;
@@ -202,12 +202,12 @@ LABEL_11:
   }
 
   v2 = v37;
-  v20 = [(ACAccountStore *)v2 ams_localiTunesAccount];
+  ams_localiTunesAccount = [(ACAccountStore *)v2 ams_localiTunesAccount];
   v19 = 1;
   if (self)
   {
 LABEL_16:
-    objc_setProperty_atomic(self, v15, v20, 32);
+    objc_setProperty_atomic(self, v15, ams_localiTunesAccount, 32);
   }
 
 LABEL_17:
@@ -230,8 +230,8 @@ LABEL_17:
     else
     {
       v27 = [objc_getProperty(self v25];
-      v28 = [v21 identifier];
-      v29 = [v27 isEqualToString:v28] ^ 1;
+      identifier = [v21 identifier];
+      v29 = [v27 isEqualToString:identifier] ^ 1;
     }
 
     v30 = v16;
@@ -243,8 +243,8 @@ LABEL_17:
     else
     {
       v32 = [objc_getProperty(self v31];
-      v33 = [v23 identifier];
-      v34 = [v32 isEqualToString:v33] ^ 1;
+      identifier2 = [v23 identifier];
+      v34 = [v32 isEqualToString:identifier2] ^ 1;
     }
 
     v35 = v29 | v34;
@@ -328,10 +328,10 @@ uint64_t __49__FCAppleAccount__reloadAccountsFromAccountStore__block_invoke_3(ui
     self = objc_getProperty(self, a2, 32, 1);
   }
 
-  v2 = [(FCAppleAccount *)self ams_DSID];
-  v3 = [v2 stringValue];
+  ams_DSID = [(FCAppleAccount *)self ams_DSID];
+  stringValue = [ams_DSID stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (id)currentStoreFrontID
@@ -341,20 +341,20 @@ uint64_t __49__FCAppleAccount__reloadAccountsFromAccountStore__block_invoke_3(ui
     self = objc_getProperty(self, a2, 32, 1);
   }
 
-  v2 = [(FCAppleAccount *)self ams_storefront];
-  if (v2)
+  ams_storefront = [(FCAppleAccount *)self ams_storefront];
+  if (ams_storefront)
   {
     v3 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:{@" -, "}];
-    v4 = [v2 componentsSeparatedByCharactersInSet:v3];
-    v5 = [v4 firstObject];
+    v4 = [ams_storefront componentsSeparatedByCharactersInSet:v3];
+    firstObject = [v4 firstObject];
   }
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  return v5;
+  return firstObject;
 }
 
 - (id)iCloudAccountDSID
@@ -372,9 +372,9 @@ uint64_t __49__FCAppleAccount__reloadAccountsFromAccountStore__block_invoke_3(ui
 {
   if (self->_base64GSTokenPromise)
   {
-    v3 = [(FCAppleAccount *)self getNewGSTokenPromise];
+    getNewGSTokenPromise = [(FCAppleAccount *)self getNewGSTokenPromise];
     base64GSTokenPromise = self->_base64GSTokenPromise;
-    self->_base64GSTokenPromise = v3;
+    self->_base64GSTokenPromise = getNewGSTokenPromise;
 
     MEMORY[0x1EEE66BB8]();
   }
@@ -429,15 +429,15 @@ void __37__FCAppleAccount_primaryLanguageCode__block_invoke(uint64_t a1)
 - (id)dynamicPrimaryLanguageCodes
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E695DF58] preferredLanguages];
-    v3 = [v2 fc_arrayByTransformingWithBlock:&__block_literal_global_151];
+    preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+    v3 = [preferredLanguages fc_arrayByTransformingWithBlock:&__block_literal_global_151];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __45__FCAppleAccount_dynamicPrimaryLanguageCodes__block_invoke_2;
     v10[3] = &unk_1E7C38B40;
-    v10[4] = a1;
+    v10[4] = self;
     v4 = [v3 fc_arrayOfObjectsPassingTest:v10];
     v5 = v4;
     if (v4)
@@ -515,11 +515,11 @@ uint64_t __45__FCAppleAccount_dynamicPrimaryLanguageCodes__block_invoke_2(uint64
 
 - (BOOL)isContentStoreFrontSupported
 {
-  v2 = [(FCAppleAccount *)self contentStoreFrontID];
-  if (v2)
+  contentStoreFrontID = [(FCAppleAccount *)self contentStoreFrontID];
+  if (contentStoreFrontID)
   {
     v3 = FCSupportedStoreFrontIDs();
-    v4 = [v3 containsObject:v2];
+    v4 = [v3 containsObject:contentStoreFrontID];
   }
 
   else
@@ -532,15 +532,15 @@ uint64_t __45__FCAppleAccount_dynamicPrimaryLanguageCodes__block_invoke_2(uint64
 
 - (NSString)supportedContentStoreFrontID
 {
-  v2 = [(FCAppleAccount *)self contentStoreFrontID];
-  if (!v2 || (FCSupportedStoreFrontIDs(), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 containsObject:v2], v3, (v4 & 1) == 0))
+  contentStoreFrontID = [(FCAppleAccount *)self contentStoreFrontID];
+  if (!contentStoreFrontID || (FCSupportedStoreFrontIDs(), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 containsObject:contentStoreFrontID], v3, (v4 & 1) == 0))
   {
     v5 = @"143441";
 
-    v2 = v5;
+    contentStoreFrontID = v5;
   }
 
-  return v2;
+  return contentStoreFrontID;
 }
 
 - (BOOL)isPrivateDataSyncingEnabled
@@ -567,28 +567,28 @@ uint64_t __45__FCAppleAccount_dynamicPrimaryLanguageCodes__block_invoke_2(uint64
 
 - (BOOL)isUserSignedIntoiTunes
 {
-  v2 = [(FCAppleAccount *)self iTunesAccountDSID];
-  v3 = v2 != 0;
+  iTunesAccountDSID = [(FCAppleAccount *)self iTunesAccountDSID];
+  v3 = iTunesAccountDSID != 0;
 
   return v3;
 }
 
 - (id)iTunesAccountName
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 32, 1);
   }
 
-  v3 = [(FCAppleAccount *)self username];
-  v4 = [v3 length];
+  username = [(FCAppleAccount *)self username];
+  v4 = [username length];
 
   if (v4)
   {
-    if (v2)
+    if (selfCopy)
     {
-      Property = objc_getProperty(v2, v5, 32, 1);
+      Property = objc_getProperty(selfCopy, v5, 32, 1);
     }
 
     else
@@ -596,8 +596,8 @@ uint64_t __45__FCAppleAccount_dynamicPrimaryLanguageCodes__block_invoke_2(uint64
       Property = 0;
     }
 
-    v7 = [Property username];
-    v8 = [v7 copy];
+    username2 = [Property username];
+    v8 = [username2 copy];
   }
 
   else
@@ -666,18 +666,18 @@ void __48__FCAppleAccount_notifyObserversOfAccountChange__block_invoke(uint64_t 
 - (NSString)endpointConnectionClientID
 {
   v2 = NewsCoreSensitiveUserDefaults();
-  v3 = [v2 stringForKey:@"report_concern_user_id"];
+  uUIDString = [v2 stringForKey:@"report_concern_user_id"];
 
-  if (!v3)
+  if (!uUIDString)
   {
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    v3 = [v4 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
     v5 = NewsCoreSensitiveUserDefaults();
-    [v5 setValue:v3 forKey:@"report_concern_user_id"];
+    [v5 setValue:uUIDString forKey:@"report_concern_user_id"];
   }
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)getGSToken
@@ -685,9 +685,9 @@ void __48__FCAppleAccount_notifyObserversOfAccountChange__block_invoke(uint64_t 
   base64GSTokenPromise = self->_base64GSTokenPromise;
   if (!base64GSTokenPromise)
   {
-    v4 = [(FCAppleAccount *)self getNewGSTokenPromise];
+    getNewGSTokenPromise = [(FCAppleAccount *)self getNewGSTokenPromise];
     v5 = self->_base64GSTokenPromise;
-    self->_base64GSTokenPromise = v4;
+    self->_base64GSTokenPromise = getNewGSTokenPromise;
 
     base64GSTokenPromise = self->_base64GSTokenPromise;
   }
@@ -697,20 +697,20 @@ void __48__FCAppleAccount_notifyObserversOfAccountChange__block_invoke(uint64_t 
 
 - (id)getNewGSTokenPromise
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
+    selfCopy = self;
     v3 = objc_alloc(MEMORY[0x1E69B68F8]);
     var38[0] = MEMORY[0x1E69E9820];
     var38[1] = 3221225472;
     var38[2] = __38__FCAppleAccount_getNewGSTokenPromise__block_invoke;
     var38[3] = &unk_1E7C39ED0;
-    var38[4] = v2;
-    a1 = [v3 initWithResolver:var38];
+    var38[4] = selfCopy;
+    self = [v3 initWithResolver:var38];
     v1 = var38[8];
   }
 
-  return a1;
+  return self;
 }
 
 void __38__FCAppleAccount_getNewGSTokenPromise__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -834,16 +834,16 @@ void __38__FCAppleAccount_getNewGSTokenPromise__block_invoke_2(uint64_t a1)
   return self;
 }
 
-- (void)_setStoreFrontDependentPropertiesWithStoreFrontLockingEnabled:(void *)a1
+- (void)_setStoreFrontDependentPropertiesWithStoreFrontLockingEnabled:(void *)enabled
 {
   v18 = NewsCoreUserDefaults();
   v4 = [v18 stringForKey:@"FCAppleAccountContentStoreFrontiTunesDSIDKey"];
   v5 = [v18 stringForKey:@"FCAppleAccountContentStoreFrontIDKey"];
-  v6 = [a1 iTunesAccountDSID];
-  v7 = [a1 currentStoreFrontID];
+  iTunesAccountDSID = [enabled iTunesAccountDSID];
+  currentStoreFrontID = [enabled currentStoreFrontID];
   v19 = 0;
   v20 = 0;
-  FCAppleAccountDetermineContentStoreFrontID(v4, v6, v5, v7, &v20, &v19);
+  FCAppleAccountDetermineContentStoreFrontID(v4, iTunesAccountDSID, v5, currentStoreFrontID, &v20, &v19);
   v8 = v20;
   v9 = v19;
   if (a2)
@@ -873,23 +873,23 @@ LABEL_4:
 
 LABEL_7:
   v10 = [v9 copy];
-  v11 = a1[10];
-  a1[10] = v10;
+  v11 = enabled[10];
+  enabled[10] = v10;
 
-  v12 = [v7 copy];
-  v13 = a1[9];
-  a1[9] = v12;
+  v12 = [currentStoreFrontID copy];
+  v13 = enabled[9];
+  enabled[9] = v12;
 
-  v14 = [a1 iCloudAccountDSID];
-  v15 = v14;
-  if (!v14)
+  iCloudAccountDSID = [enabled iCloudAccountDSID];
+  v15 = iCloudAccountDSID;
+  if (!iCloudAccountDSID)
   {
-    v14 = v6;
+    iCloudAccountDSID = iTunesAccountDSID;
   }
 
-  v16 = [v14 copy];
-  v17 = a1[8];
-  a1[8] = v16;
+  v16 = [iCloudAccountDSID copy];
+  v17 = enabled[8];
+  enabled[8] = v16;
 }
 
 - (BOOL)isPrimaryAccountEmailAddress
@@ -899,19 +899,19 @@ LABEL_7:
     self = objc_getProperty(self, a2, 24, 1);
   }
 
-  v2 = [(FCAppleAccount *)self username];
-  v3 = [v2 ea_isLegalEmailAddress];
+  username = [(FCAppleAccount *)self username];
+  ea_isLegalEmailAddress = [username ea_isLegalEmailAddress];
 
-  return v3;
+  return ea_isLegalEmailAddress;
 }
 
 - (NSString)localizedContentStoreFrontID
 {
-  v3 = [(FCAppleAccount *)self contentStoreFrontID];
-  v4 = v3;
-  if ([(__CFString *)v3 isEqualToString:@"143455"])
+  contentStoreFrontID = [(FCAppleAccount *)self contentStoreFrontID];
+  v4 = contentStoreFrontID;
+  if ([(__CFString *)contentStoreFrontID isEqualToString:@"143455"])
   {
-    v4 = v3;
+    v4 = contentStoreFrontID;
     if ([(FCAppleAccount *)self supportedContentLanguage]== 1)
     {
       v4 = @"143455-fr-ca";
@@ -923,11 +923,11 @@ LABEL_7:
 
 - (BOOL)isSignedInStoreFrontSupported
 {
-  v2 = [(FCAppleAccount *)self currentStoreFrontID];
-  if (v2)
+  currentStoreFrontID = [(FCAppleAccount *)self currentStoreFrontID];
+  if (currentStoreFrontID)
   {
     v3 = FCSupportedStoreFrontIDs();
-    v4 = [v3 containsObject:v2];
+    v4 = [v3 containsObject:currentStoreFrontID];
   }
 
   else
@@ -940,18 +940,18 @@ LABEL_7:
 
 - (NSString)supportedLocalizedContentStoreFrontID
 {
-  v3 = [(FCAppleAccount *)self contentStoreFrontID];
-  if (v3 && (FCSupportedStoreFrontIDs(), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 containsObject:v3], v4, (v5 & 1) != 0))
+  contentStoreFrontID = [(FCAppleAccount *)self contentStoreFrontID];
+  if (contentStoreFrontID && (FCSupportedStoreFrontIDs(), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 containsObject:contentStoreFrontID], v4, (v5 & 1) != 0))
   {
-    v6 = [(FCAppleAccount *)self localizedContentStoreFrontID];
+    localizedContentStoreFrontID = [(FCAppleAccount *)self localizedContentStoreFrontID];
   }
 
   else
   {
-    v6 = @"143441";
+    localizedContentStoreFrontID = @"143441";
   }
 
-  v7 = v6;
+  v7 = localizedContentStoreFrontID;
 
   return v7;
 }
@@ -982,34 +982,34 @@ uint64_t __40__FCAppleAccount_preferredLanguageCodes__block_invoke(uint64_t a1)
 
 - (int64_t)supportedContentLanguage
 {
-  v2 = [(FCAppleAccount *)self primaryLanguageCode];
-  v3 = [v2 isEqualToString:@"fr"];
+  primaryLanguageCode = [(FCAppleAccount *)self primaryLanguageCode];
+  v3 = [primaryLanguageCode isEqualToString:@"fr"];
 
   return v3;
 }
 
 - (int64_t)dynamicSupportedContentLanguage
 {
-  v2 = [(FCAppleAccount *)self dynamicPrimaryLanguageCodes];
-  v3 = [v2 firstObject];
-  v4 = [v3 isEqualToString:@"fr"];
+  dynamicPrimaryLanguageCodes = [(FCAppleAccount *)self dynamicPrimaryLanguageCodes];
+  firstObject = [dynamicPrimaryLanguageCodes firstObject];
+  v4 = [firstObject isEqualToString:@"fr"];
 
   return v4;
 }
 
-- (void)loadStoreFrontWithCompletionHandler:(id)a3
+- (void)loadStoreFrontWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[FCAMSBag bag];
   v5 = [v4 URLForKey:@"metrics/metricsUrl"];
-  v6 = [v5 valuePromise];
+  valuePromise = [v5 valuePromise];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__FCAppleAccount_loadStoreFrontWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7C451E8;
-  v9 = v3;
-  v7 = v3;
-  [v6 addFinishBlock:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [valuePromise addFinishBlock:v8];
 }
 
 void __54__FCAppleAccount_loadStoreFrontWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1037,14 +1037,14 @@ void __54__FCAppleAccount_loadStoreFrontWithCompletionHandler___block_invoke(uin
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkAllDevicesRunningMinimumiOSVersion:(id)a3 macOSVersion:(id)a4 orInactiveForTimeInterval:(double)a5 completionHandler:(id)a6
+- (void)checkAllDevicesRunningMinimumiOSVersion:(id)version macOSVersion:(id)sVersion orInactiveForTimeInterval:(double)interval completionHandler:(id)handler
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v9 = a3.var1;
-  v10 = a3.var0;
+  var1 = sVersion.var1;
+  var0 = sVersion.var0;
+  v9 = version.var1;
+  v10 = version.var0;
   v28[1] = *MEMORY[0x1E69E9840];
-  v12 = a6;
+  handlerCopy = handler;
   v14 = objc_alloc_init(MEMORY[0x1E698DD68]);
   if (self)
   {
@@ -1056,8 +1056,8 @@ void __54__FCAppleAccount_loadStoreFrontWithCompletionHandler___block_invoke(uin
     Property = 0;
   }
 
-  v16 = [Property aa_altDSID];
-  [v14 setAltDSID:v16];
+  aa_altDSID = [Property aa_altDSID];
+  [v14 setAltDSID:aa_altDSID];
 
   [v14 setIncludeUntrustedDevices:1];
   v28[0] = *MEMORY[0x1E698DC58];
@@ -1070,13 +1070,13 @@ void __54__FCAppleAccount_loadStoreFrontWithCompletionHandler___block_invoke(uin
   v21[1] = 3221225472;
   v21[2] = __115__FCAppleAccount_checkAllDevicesRunningMinimumiOSVersion_macOSVersion_orInactiveForTimeInterval_completionHandler___block_invoke;
   v21[3] = &unk_1E7C45230;
-  v23 = a5;
+  intervalCopy = interval;
   v24 = v10;
   v25 = v9;
   v26 = var0;
   v27 = var1;
-  v22 = v12;
-  v19 = v12;
+  v22 = handlerCopy;
+  v19 = handlerCopy;
   [v18 fetchDeviceListWithContext:v14 completion:v21];
 
   v20 = *MEMORY[0x1E69E9840];
@@ -1270,10 +1270,10 @@ LABEL_21:
   return v14;
 }
 
-- (void)fetchMinimumDeviceVersionsActiveSinceInterval:(double)a3 completionHandler:(id)a4
+- (void)fetchMinimumDeviceVersionsActiveSinceInterval:(double)interval completionHandler:(id)handler
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x1E698DD68]);
   if (self)
   {
@@ -1285,8 +1285,8 @@ LABEL_21:
     Property = 0;
   }
 
-  v10 = [Property aa_altDSID];
-  [v8 setAltDSID:v10];
+  aa_altDSID = [Property aa_altDSID];
+  [v8 setAltDSID:aa_altDSID];
 
   [v8 setIncludeUntrustedDevices:1];
   v18[0] = *MEMORY[0x1E698DC58];
@@ -1299,9 +1299,9 @@ LABEL_21:
   v15[1] = 3221225472;
   v15[2] = __82__FCAppleAccount_fetchMinimumDeviceVersionsActiveSinceInterval_completionHandler___block_invoke;
   v15[3] = &unk_1E7C45280;
-  v16 = v6;
-  v17 = a3;
-  v13 = v6;
+  v16 = handlerCopy;
+  intervalCopy = interval;
+  v13 = handlerCopy;
   [v12 fetchDeviceListWithContext:v8 completion:v15];
 
   v14 = *MEMORY[0x1E69E9840];
@@ -1722,18 +1722,18 @@ uint64_t __82__FCAppleAccount_fetchMinimumDeviceVersionsActiveSinceInterval_comp
   return result;
 }
 
-- (void)getGSTokenWithCompletionHandler:(id)a3
+- (void)getGSTokenWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FCAppleAccount *)self getGSToken];
+  handlerCopy = handler;
+  getGSToken = [(FCAppleAccount *)self getGSToken];
   v6 = zalgo();
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __50__FCAppleAccount_getGSTokenWithCompletionHandler___block_invoke;
   v13[3] = &unk_1E7C452A8;
-  v7 = v4;
+  v7 = handlerCopy;
   v14 = v7;
-  v8 = [v5 thenOn:v6 then:v13];
+  v8 = [getGSToken thenOn:v6 then:v13];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -1741,7 +1741,7 @@ uint64_t __82__FCAppleAccount_fetchMinimumDeviceVersionsActiveSinceInterval_comp
   v11[3] = &unk_1E7C39F48;
   v12 = v7;
   v9 = v7;
-  v10 = [v5 error:v11];
+  v10 = [getGSToken error:v11];
 }
 
 void __38__FCAppleAccount_getNewGSTokenPromise__block_invoke_3(uint64_t a1, void *a2, void *a3)
@@ -1781,24 +1781,24 @@ void __38__FCAppleAccount_getNewGSTokenPromise__block_invoke_3(uint64_t a1, void
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   if (self)
   {
     self = self->_observers;
   }
 
-  [(FCAppleAccount *)self addObject:a3];
+  [(FCAppleAccount *)self addObject:observer];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   if (self)
   {
     self = self->_observers;
   }
 
-  [(FCAppleAccount *)self removeObject:a3];
+  [(FCAppleAccount *)self removeObject:observer];
 }
 
 - (NSString)primaryEmailAddress
@@ -1808,21 +1808,21 @@ void __38__FCAppleAccount_getNewGSTokenPromise__block_invoke_3(uint64_t a1, void
     self = objc_getProperty(self, a2, 24, 1);
   }
 
-  v2 = [(FCAppleAccount *)self aa_primaryEmail];
-  v3 = [v2 copy];
+  aa_primaryEmail = [(FCAppleAccount *)self aa_primaryEmail];
+  v3 = [aa_primaryEmail copy];
 
   return v3;
 }
 
 - (NSString)appStoreEmailAddress
 {
-  v3 = [(FCAppleAccount *)self iTunesAccountName];
-  v4 = [v3 ea_isLegalEmailAddress];
+  iTunesAccountName = [(FCAppleAccount *)self iTunesAccountName];
+  ea_isLegalEmailAddress = [iTunesAccountName ea_isLegalEmailAddress];
 
-  if (v4)
+  if (ea_isLegalEmailAddress)
   {
-    v5 = [(FCAppleAccount *)self iTunesAccountName];
-    v6 = [v5 copy];
+    iTunesAccountName2 = [(FCAppleAccount *)self iTunesAccountName];
+    v6 = [iTunesAccountName2 copy];
   }
 
   else
@@ -1836,28 +1836,28 @@ void __38__FCAppleAccount_getNewGSTokenPromise__block_invoke_3(uint64_t a1, void
 - (NSArray)allEmailAddresses
 {
   v3 = objc_opt_new();
-  v4 = [(FCAppleAccount *)self appStoreEmailAddress];
+  appStoreEmailAddress = [(FCAppleAccount *)self appStoreEmailAddress];
 
-  if (v4)
+  if (appStoreEmailAddress)
   {
-    v5 = [(FCAppleAccount *)self appStoreEmailAddress];
-    v6 = [v5 copy];
+    appStoreEmailAddress2 = [(FCAppleAccount *)self appStoreEmailAddress];
+    v6 = [appStoreEmailAddress2 copy];
     [v3 addObject:v6];
   }
 
-  v7 = [(FCAppleAccount *)self primaryEmailAddress];
+  primaryEmailAddress = [(FCAppleAccount *)self primaryEmailAddress];
 
-  if (v7)
+  if (primaryEmailAddress)
   {
-    v8 = [(FCAppleAccount *)self primaryEmailAddress];
-    v9 = [v8 copy];
+    primaryEmailAddress2 = [(FCAppleAccount *)self primaryEmailAddress];
+    v9 = [primaryEmailAddress2 copy];
     [v3 addObject:v9];
   }
 
   v10 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v3];
-  v11 = [v10 array];
+  array = [v10 array];
 
-  return v11;
+  return array;
 }
 
 - (NSString)username
@@ -1867,8 +1867,8 @@ void __38__FCAppleAccount_getNewGSTokenPromise__block_invoke_3(uint64_t a1, void
     self = objc_getProperty(self, a2, 24, 1);
   }
 
-  v2 = [(FCAppleAccount *)self username];
-  v3 = [v2 copy];
+  username = [(FCAppleAccount *)self username];
+  v3 = [username copy];
 
   return v3;
 }
@@ -1880,8 +1880,8 @@ void __38__FCAppleAccount_getNewGSTokenPromise__block_invoke_3(uint64_t a1, void
     self = objc_getProperty(self, a2, 24, 1);
   }
 
-  v2 = [(FCAppleAccount *)self aa_formattedUsername];
-  v3 = [v2 copy];
+  aa_formattedUsername = [(FCAppleAccount *)self aa_formattedUsername];
+  v3 = [aa_formattedUsername copy];
 
   return v3;
 }
@@ -1893,8 +1893,8 @@ void __38__FCAppleAccount_getNewGSTokenPromise__block_invoke_3(uint64_t a1, void
     self = objc_getProperty(self, a2, 24, 1);
   }
 
-  v2 = [(FCAppleAccount *)self aa_firstName];
-  v3 = [v2 copy];
+  aa_firstName = [(FCAppleAccount *)self aa_firstName];
+  v3 = [aa_firstName copy];
 
   return v3;
 }
@@ -1906,8 +1906,8 @@ void __38__FCAppleAccount_getNewGSTokenPromise__block_invoke_3(uint64_t a1, void
     self = objc_getProperty(self, a2, 24, 1);
   }
 
-  v2 = [(FCAppleAccount *)self aa_middleName];
-  v3 = [v2 copy];
+  aa_middleName = [(FCAppleAccount *)self aa_middleName];
+  v3 = [aa_middleName copy];
 
   return v3;
 }
@@ -1919,8 +1919,8 @@ void __38__FCAppleAccount_getNewGSTokenPromise__block_invoke_3(uint64_t a1, void
     self = objc_getProperty(self, a2, 24, 1);
   }
 
-  v2 = [(FCAppleAccount *)self aa_lastName];
-  v3 = [v2 copy];
+  aa_lastName = [(FCAppleAccount *)self aa_lastName];
+  v3 = [aa_lastName copy];
 
   return v3;
 }
@@ -1932,8 +1932,8 @@ void __38__FCAppleAccount_getNewGSTokenPromise__block_invoke_3(uint64_t a1, void
     self = objc_getProperty(self, a2, 24, 1);
   }
 
-  v2 = [(FCAppleAccount *)self aa_fullName];
-  v3 = [v2 copy];
+  aa_fullName = [(FCAppleAccount *)self aa_fullName];
+  v3 = [aa_fullName copy];
 
   return v3;
 }
@@ -1945,8 +1945,8 @@ void __38__FCAppleAccount_getNewGSTokenPromise__block_invoke_3(uint64_t a1, void
     self = objc_getProperty(self, a2, 24, 1);
   }
 
-  v2 = [(FCAppleAccount *)self aa_personID];
-  v3 = [v2 copy];
+  aa_personID = [(FCAppleAccount *)self aa_personID];
+  v3 = [aa_personID copy];
 
   return v3;
 }
@@ -1958,8 +1958,8 @@ void __38__FCAppleAccount_getNewGSTokenPromise__block_invoke_3(uint64_t a1, void
     self = objc_getProperty(self, a2, 24, 1);
   }
 
-  v2 = [(FCAppleAccount *)self aa_normalizedPersonID];
-  v3 = [v2 copy];
+  aa_normalizedPersonID = [(FCAppleAccount *)self aa_normalizedPersonID];
+  v3 = [aa_normalizedPersonID copy];
 
   return v3;
 }
@@ -1993,10 +1993,10 @@ void __38__FCAppleAccount_getNewGSTokenPromise__block_invoke_3(uint64_t a1, void
     self = objc_getProperty(self, a2, 24, 1);
   }
 
-  v2 = [(FCAppleAccount *)self aa_suspensionInfo];
-  v3 = [v2 isiCloudSuspended];
+  aa_suspensionInfo = [(FCAppleAccount *)self aa_suspensionInfo];
+  isiCloudSuspended = [aa_suspensionInfo isiCloudSuspended];
 
-  return v3;
+  return isiCloudSuspended;
 }
 
 - (BOOL)isFamilySuspended
@@ -2006,10 +2006,10 @@ void __38__FCAppleAccount_getNewGSTokenPromise__block_invoke_3(uint64_t a1, void
     self = objc_getProperty(self, a2, 24, 1);
   }
 
-  v2 = [(FCAppleAccount *)self aa_suspensionInfo];
-  v3 = [v2 isFamilySuspended];
+  aa_suspensionInfo = [(FCAppleAccount *)self aa_suspensionInfo];
+  isFamilySuspended = [aa_suspensionInfo isFamilySuspended];
 
-  return v3;
+  return isFamilySuspended;
 }
 
 - (BOOL)isFamilyEligible
@@ -2030,11 +2030,11 @@ void __38__FCAppleAccount_getNewGSTokenPromise__block_invoke_3(uint64_t a1, void
   [(FCAppleAccount *)self performSelector:sel__reloadAccountsFromAccountStore withObject:0 afterDelay:1.0];
 }
 
-- (void)t_startOverridingContentStoreFrontID:(id)a3
+- (void)t_startOverridingContentStoreFrontID:(id)d
 {
   if (self)
   {
-    objc_setProperty_nonatomic_copy(self, a2, a3, 40);
+    objc_setProperty_nonatomic_copy(self, a2, d, 40);
   }
 }
 

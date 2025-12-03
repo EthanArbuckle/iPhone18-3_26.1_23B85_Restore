@@ -1,22 +1,22 @@
 @interface ICASEndCollaborationCollaboratorData
-- (ICASEndCollaborationCollaboratorData)initWithEndInvitedCount:(id)a3 endAcceptedCount:(id)a4;
+- (ICASEndCollaborationCollaboratorData)initWithEndInvitedCount:(id)count endAcceptedCount:(id)acceptedCount;
 - (id)toDict;
 @end
 
 @implementation ICASEndCollaborationCollaboratorData
 
-- (ICASEndCollaborationCollaboratorData)initWithEndInvitedCount:(id)a3 endAcceptedCount:(id)a4
+- (ICASEndCollaborationCollaboratorData)initWithEndInvitedCount:(id)count endAcceptedCount:(id)acceptedCount
 {
-  v7 = a3;
-  v8 = a4;
+  countCopy = count;
+  acceptedCountCopy = acceptedCount;
   v12.receiver = self;
   v12.super_class = ICASEndCollaborationCollaboratorData;
   v9 = [(ICASEndCollaborationCollaboratorData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_endInvitedCount, a3);
-    objc_storeStrong(&v10->_endAcceptedCount, a4);
+    objc_storeStrong(&v9->_endInvitedCount, count);
+    objc_storeStrong(&v10->_endAcceptedCount, acceptedCount);
   }
 
   return v10;
@@ -26,33 +26,33 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"endInvitedCount";
-  v3 = [(ICASEndCollaborationCollaboratorData *)self endInvitedCount];
-  if (v3)
+  endInvitedCount = [(ICASEndCollaborationCollaboratorData *)self endInvitedCount];
+  if (endInvitedCount)
   {
-    v4 = [(ICASEndCollaborationCollaboratorData *)self endInvitedCount];
+    endInvitedCount2 = [(ICASEndCollaborationCollaboratorData *)self endInvitedCount];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    endInvitedCount2 = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = endInvitedCount2;
   v12[1] = @"endAcceptedCount";
-  v13[0] = v4;
-  v6 = [(ICASEndCollaborationCollaboratorData *)self endAcceptedCount];
-  if (v6)
+  v13[0] = endInvitedCount2;
+  endAcceptedCount = [(ICASEndCollaborationCollaboratorData *)self endAcceptedCount];
+  if (endAcceptedCount)
   {
-    v7 = [(ICASEndCollaborationCollaboratorData *)self endAcceptedCount];
+    endAcceptedCount2 = [(ICASEndCollaborationCollaboratorData *)self endAcceptedCount];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    endAcceptedCount2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = endAcceptedCount2;
+  v13[1] = endAcceptedCount2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

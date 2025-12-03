@@ -1,12 +1,12 @@
 @interface OntologyShardStateObserver
-- (void)ontologyStoreDidReconnect:(id)a3;
+- (void)ontologyStoreDidReconnect:(id)reconnect;
 @end
 
 @implementation OntologyShardStateObserver
 
-- (void)ontologyStoreDidReconnect:(id)a3
+- (void)ontologyStoreDidReconnect:(id)reconnect
 {
-  v3 = a3;
+  reconnectCopy = reconnect;
 
   _s19HealthMedicationsUI26OntologyShardStateObserverC13ontologyStore12didReconnectySo010HKOntologyI0C_tF_0();
 }

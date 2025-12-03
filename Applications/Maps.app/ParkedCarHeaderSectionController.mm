@@ -1,18 +1,18 @@
 @interface ParkedCarHeaderSectionController
-- (ParkedCarHeaderSectionController)initWithParkedCar:(id)a3;
+- (ParkedCarHeaderSectionController)initWithParkedCar:(id)car;
 - (id)_headerSubtitle;
 - (void)_commonInit;
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 - (void)updateFromParkedCar;
 @end
 
 @implementation ParkedCarHeaderSectionController
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
   v4.receiver = self;
   v4.super_class = ParkedCarHeaderSectionController;
-  [(ParkedCarHeaderSectionController *)&v4 setActive:a3];
+  [(ParkedCarHeaderSectionController *)&v4 setActive:active];
   if ([(ParkedCarHeaderSectionController *)self isActive])
   {
     [(ParkedCarHeaderSectionController *)self updateFromParkedCar];
@@ -21,18 +21,18 @@
 
 - (id)_headerSubtitle
 {
-  v3 = [(ParkedCarSectionController *)self parkedCar];
-  v4 = [v3 locationName];
+  parkedCar = [(ParkedCarSectionController *)self parkedCar];
+  locationName = [parkedCar locationName];
 
   v5 = +[MKLocationManager sharedLocationManager];
-  v6 = [v5 lastLocation];
+  lastLocation = [v5 lastLocation];
 
-  if (!v6)
+  if (!lastLocation)
   {
     goto LABEL_9;
   }
 
-  [v6 coordinate];
+  [lastLocation coordinate];
   v8 = 0;
   if (fabs(v9) > 180.0 || v7 < -90.0 || v7 > 90.0)
   {
@@ -40,18 +40,18 @@
   }
 
   v10 = +[MKLocationManager sharedLocationManager];
-  v11 = [v10 isAuthorizedForPreciseLocation];
+  isAuthorizedForPreciseLocation = [v10 isAuthorizedForPreciseLocation];
 
-  if (!v11)
+  if (!isAuthorizedForPreciseLocation)
   {
 LABEL_9:
     v8 = 0;
     goto LABEL_10;
   }
 
-  [v6 coordinate];
-  v12 = [(ParkedCarSectionController *)self parkedCar];
-  [v12 coordinate];
+  [lastLocation coordinate];
+  parkedCar2 = [(ParkedCarSectionController *)self parkedCar];
+  [parkedCar2 coordinate];
   GEOCalculateDistance();
   v14 = v13;
 
@@ -68,11 +68,11 @@ LABEL_9:
 
   v8 = [(MKDistanceFormatter *)distanceFormatter stringFromDistance:v14];
 LABEL_10:
-  if ([v4 length])
+  if ([locationName length])
   {
     v18 = +[NSBundle mainBundle];
     v19 = [v18 localizedStringForKey:@"Near %@ [ParkedCar Place Card]" value:@"localized string not found" table:0];
-    v20 = [NSString stringWithFormat:v19, v4];
+    v20 = [NSString stringWithFormat:v19, locationName];
 
     if (!v8)
     {
@@ -108,29 +108,29 @@ LABEL_17:
 - (void)updateFromParkedCar
 {
   v3 = [ParkedCarHeaderViewModel alloc];
-  v6 = [(ParkedCarSectionController *)self parkedCar];
-  v4 = [(ParkedCarHeaderSectionController *)self _headerSubtitle];
-  v5 = [(ParkedCarHeaderViewModel *)v3 initWithParkedCar:v6 subtitleText:v4];
+  parkedCar = [(ParkedCarSectionController *)self parkedCar];
+  _headerSubtitle = [(ParkedCarHeaderSectionController *)self _headerSubtitle];
+  v5 = [(ParkedCarHeaderViewModel *)v3 initWithParkedCar:parkedCar subtitleText:_headerSubtitle];
   [(MUPlaceHeaderView *)self->_headerView setViewModel:v5];
 }
 
 - (void)_commonInit
 {
   v3 = [ParkedCarHeaderViewModel alloc];
-  v4 = [(ParkedCarSectionController *)self parkedCar];
-  v5 = [(ParkedCarHeaderSectionController *)self _headerSubtitle];
-  v8 = [(ParkedCarHeaderViewModel *)v3 initWithParkedCar:v4 subtitleText:v5];
+  parkedCar = [(ParkedCarSectionController *)self parkedCar];
+  _headerSubtitle = [(ParkedCarHeaderSectionController *)self _headerSubtitle];
+  v8 = [(ParkedCarHeaderViewModel *)v3 initWithParkedCar:parkedCar subtitleText:_headerSubtitle];
 
   v6 = [[MUPlaceHeaderView alloc] initWithViewModel:v8 trailingConstraintProvider:&stru_101631620 paddingConstraintProvider:&stru_101631640];
   headerView = self->_headerView;
   self->_headerView = v6;
 }
 
-- (ParkedCarHeaderSectionController)initWithParkedCar:(id)a3
+- (ParkedCarHeaderSectionController)initWithParkedCar:(id)car
 {
   v6.receiver = self;
   v6.super_class = ParkedCarHeaderSectionController;
-  v3 = [(ParkedCarSectionController *)&v6 initWithParkedCar:a3];
+  v3 = [(ParkedCarSectionController *)&v6 initWithParkedCar:car];
   v4 = v3;
   if (v3)
   {

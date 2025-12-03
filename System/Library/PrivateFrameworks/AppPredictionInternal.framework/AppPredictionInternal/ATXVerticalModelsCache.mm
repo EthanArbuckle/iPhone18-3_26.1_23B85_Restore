@@ -1,10 +1,10 @@
 @interface ATXVerticalModelsCache
 - (ATXVerticalModelsCache)init;
-- (BOOL)_writeCache:(id)a3 path:(id)a4 withError:(id *)a5;
-- (BOOL)writeWebsiteSuggestionsCache:(id)a3;
-- (BOOL)writeWebsiteTitlesAndSubtitlesCache:(id)a3;
-- (id)_fetchWebsiteCacheWithPath:(id)a3 error:(id *)a4;
-- (id)_fetchWebsiteTitlesAndSubtitlesCacheWithPath:(id)a3 error:(id *)a4;
+- (BOOL)_writeCache:(id)cache path:(id)path withError:(id *)error;
+- (BOOL)writeWebsiteSuggestionsCache:(id)cache;
+- (BOOL)writeWebsiteTitlesAndSubtitlesCache:(id)cache;
+- (id)_fetchWebsiteCacheWithPath:(id)path error:(id *)error;
+- (id)_fetchWebsiteTitlesAndSubtitlesCacheWithPath:(id)path error:(id *)error;
 - (id)fetchWebsiteSuggestionsCache;
 - (id)fetchWebsiteTitlesAndSubtitlesCache;
 @end
@@ -31,9 +31,9 @@
   return v2;
 }
 
-- (BOOL)writeWebsiteSuggestionsCache:(id)a3
+- (BOOL)writeWebsiteSuggestionsCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -44,7 +44,7 @@
   v8[2] = __55__ATXVerticalModelsCache_writeWebsiteSuggestionsCache___block_invoke;
   v8[3] = &unk_2785A1DF0;
   v8[4] = self;
-  v6 = v4;
+  v6 = cacheCopy;
   v9 = v6;
   v10 = &v11;
   [(_PASQueueLock *)lock runWithLockAcquired:v8];
@@ -90,9 +90,9 @@ void __55__ATXVerticalModelsCache_writeWebsiteSuggestionsCache___block_invoke(vo
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)writeWebsiteTitlesAndSubtitlesCache:(id)a3
+- (BOOL)writeWebsiteTitlesAndSubtitlesCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -103,7 +103,7 @@ void __55__ATXVerticalModelsCache_writeWebsiteSuggestionsCache___block_invoke(vo
   v8[2] = __62__ATXVerticalModelsCache_writeWebsiteTitlesAndSubtitlesCache___block_invoke;
   v8[3] = &unk_2785A1DF0;
   v8[4] = self;
-  v6 = v4;
+  v6 = cacheCopy;
   v9 = v6;
   v10 = &v11;
   [(_PASQueueLock *)lock runWithLockAcquired:v8];
@@ -291,25 +291,25 @@ void __61__ATXVerticalModelsCache_fetchWebsiteTitlesAndSubtitlesCache__block_inv
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_writeCache:(id)a3 path:(id)a4 withError:(id *)a5
+- (BOOL)_writeCache:(id)cache path:(id)path withError:(id *)error
 {
   v7 = MEMORY[0x277CEBC68];
-  v8 = a4;
-  v9 = a3;
+  pathCopy = path;
+  cacheCopy = cache;
   v10 = [v7 alloc];
   v11 = __atxlog_handle_action_prediction();
-  v12 = [v10 initWithCacheFilePath:v8 loggingHandle:v11 debugName:@"webSuggestions"];
+  v12 = [v10 initWithCacheFilePath:pathCopy loggingHandle:v11 debugName:@"webSuggestions"];
 
-  LOBYTE(a5) = [v12 storeSecureCodedObject:v9 error:a5];
-  return a5;
+  LOBYTE(error) = [v12 storeSecureCodedObject:cacheCopy error:error];
+  return error;
 }
 
-- (id)_fetchWebsiteCacheWithPath:(id)a3 error:(id *)a4
+- (id)_fetchWebsiteCacheWithPath:(id)path error:(id *)error
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = objc_alloc(MEMORY[0x277CEBC68]);
   v7 = __atxlog_handle_action_prediction();
-  v8 = [v6 initWithCacheFilePath:v5 loggingHandle:v7 debugName:@"webSuggestions"];
+  v8 = [v6 initWithCacheFilePath:pathCopy loggingHandle:v7 debugName:@"webSuggestions"];
 
   v9 = objc_autoreleasePoolPush();
   v10 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -318,7 +318,7 @@ void __61__ATXVerticalModelsCache_fetchWebsiteTitlesAndSubtitlesCache__block_inv
   v13 = objc_opt_class();
   v14 = [v10 initWithObjects:{v11, v12, v13, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v9);
-  v15 = [v8 readSecureCodedObjectWithMaxValidAge:v14 allowableClasses:a4 error:-1.0];
+  v15 = [v8 readSecureCodedObjectWithMaxValidAge:v14 allowableClasses:error error:-1.0];
   v16 = v15;
   if (v15)
   {
@@ -335,12 +335,12 @@ void __61__ATXVerticalModelsCache_fetchWebsiteTitlesAndSubtitlesCache__block_inv
   return v17;
 }
 
-- (id)_fetchWebsiteTitlesAndSubtitlesCacheWithPath:(id)a3 error:(id *)a4
+- (id)_fetchWebsiteTitlesAndSubtitlesCacheWithPath:(id)path error:(id *)error
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = objc_alloc(MEMORY[0x277CEBC68]);
   v7 = __atxlog_handle_action_prediction();
-  v8 = [v6 initWithCacheFilePath:v5 loggingHandle:v7 debugName:@"webSuggestions"];
+  v8 = [v6 initWithCacheFilePath:pathCopy loggingHandle:v7 debugName:@"webSuggestions"];
 
   v9 = objc_autoreleasePoolPush();
   v10 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -349,7 +349,7 @@ void __61__ATXVerticalModelsCache_fetchWebsiteTitlesAndSubtitlesCache__block_inv
   v13 = objc_opt_class();
   v14 = [v10 initWithObjects:{v11, v12, v13, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v9);
-  v15 = [v8 readSecureCodedObjectWithMaxValidAge:v14 allowableClasses:a4 error:-1.0];
+  v15 = [v8 readSecureCodedObjectWithMaxValidAge:v14 allowableClasses:error error:-1.0];
   v16 = v15;
   if (v15)
   {

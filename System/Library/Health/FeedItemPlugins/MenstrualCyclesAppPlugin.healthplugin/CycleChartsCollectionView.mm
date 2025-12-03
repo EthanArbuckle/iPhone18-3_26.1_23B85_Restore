@@ -1,7 +1,7 @@
 @interface CycleChartsCollectionView
-- (_TtC24MenstrualCyclesAppPlugin25CycleChartsCollectionView)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin25CycleChartsCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
-- (id)ax_cycleChartDayForIndexPath:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin25CycleChartsCollectionView)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin25CycleChartsCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
+- (id)ax_cycleChartDayForIndexPath:(id)path;
 - (id)ax_cycles;
 - (id)ax_predominantCycle;
 @end
@@ -10,7 +10,7 @@
 
 - (id)ax_cycles
 {
-  v2 = self;
+  selfCopy = self;
   CycleChartsCollectionView.ax_cycles()();
 
   sub_29E187194(0, &qword_2A181E078, MEMORY[0x29EDCA178] + 8, MEMORY[0x29EDC98E0]);
@@ -26,7 +26,7 @@
   v5 = &v10 - v4;
   swift_getKeyPath();
   swift_getKeyPath();
-  v6 = self;
+  selfCopy = self;
   sub_29E2C1214();
 
   v7 = type metadata accessor for CycleChartCycle(0);
@@ -47,14 +47,14 @@
   return v8;
 }
 
-- (id)ax_cycleChartDayForIndexPath:(id)a3
+- (id)ax_cycleChartDayForIndexPath:(id)path
 {
   v4 = sub_29E2BCFB4();
   v5 = *(v4 - 8);
   MEMORY[0x2A1C7C4A8](v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v8 = self;
+  selfCopy = self;
   CycleChartsCollectionView.ax_cycleChartDay(forIndexPath:)();
 
   (*(v5 + 8))(v7, v4);
@@ -63,7 +63,7 @@
   return v9;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin25CycleChartsCollectionView)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin25CycleChartsCollectionView)initWithCoder:(id)coder
 {
   if (MEMORY[0x29EDCA190] >> 62 && sub_29E2C4484())
   {
@@ -81,7 +81,7 @@
   return result;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin25CycleChartsCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC24MenstrualCyclesAppPlugin25CycleChartsCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

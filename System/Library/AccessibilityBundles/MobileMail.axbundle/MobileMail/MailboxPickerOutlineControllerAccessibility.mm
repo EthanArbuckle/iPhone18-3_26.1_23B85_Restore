@@ -1,16 +1,16 @@
 @interface MailboxPickerOutlineControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)shelfButtonItem;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation MailboxPickerOutlineControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MailboxPickerOutlineController" hasInstanceMethod:@"shelfButtonItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailboxPickerOutlineController" hasInstanceMethod:@"_updateToolbarItems:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MailboxPickerOutlineController" hasInstanceMethod:@"shelfButtonItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailboxPickerOutlineController" hasInstanceMethod:@"_updateToolbarItems:" withFullSignature:{"v", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -25,11 +25,11 @@
 {
   v5.receiver = self;
   v5.super_class = MailboxPickerOutlineControllerAccessibility;
-  v2 = [(MailboxPickerOutlineControllerAccessibility *)&v5 shelfButtonItem];
+  shelfButtonItem = [(MailboxPickerOutlineControllerAccessibility *)&v5 shelfButtonItem];
   v3 = accessibilityLocalizedString(@"app.shelf.button");
-  [v2 setAccessibilityLabel:v3];
+  [shelfButtonItem setAccessibilityLabel:v3];
 
-  return v2;
+  return shelfButtonItem;
 }
 
 @end

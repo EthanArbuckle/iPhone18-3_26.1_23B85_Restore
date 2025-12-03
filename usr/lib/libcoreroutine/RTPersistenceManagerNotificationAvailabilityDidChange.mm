@@ -1,18 +1,18 @@
 @interface RTPersistenceManagerNotificationAvailabilityDidChange
-- (RTPersistenceManagerNotificationAvailabilityDidChange)initWithAvailability:(unint64_t)a3;
+- (RTPersistenceManagerNotificationAvailabilityDidChange)initWithAvailability:(unint64_t)availability;
 - (id)description;
 @end
 
 @implementation RTPersistenceManagerNotificationAvailabilityDidChange
 
-- (RTPersistenceManagerNotificationAvailabilityDidChange)initWithAvailability:(unint64_t)a3
+- (RTPersistenceManagerNotificationAvailabilityDidChange)initWithAvailability:(unint64_t)availability
 {
   v5.receiver = self;
   v5.super_class = RTPersistenceManagerNotificationAvailabilityDidChange;
   result = [(RTNotification *)&v5 init];
   if (result)
   {
-    result->_availability = a3;
+    result->_availability = availability;
   }
 
   return result;
@@ -21,14 +21,14 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(RTPersistenceManagerNotificationAvailabilityDidChange *)self availability];
+  availability = [(RTPersistenceManagerNotificationAvailabilityDidChange *)self availability];
   v4 = @"Unknown";
-  if (v3 == 1)
+  if (availability == 1)
   {
     v4 = @"Unavailable";
   }
 
-  if (v3 == 2)
+  if (availability == 2)
   {
     v4 = @"Available";
   }

@@ -1,8 +1,8 @@
 @interface ICNoteTimelineSectionIdentifier
-+ (id)sortDescriptorsWithDirection:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToICNoteTimelineSectionIdentifier:(id)a3;
-- (ICNoteTimelineSectionIdentifier)initWithTimelineSectionType:(int64_t)a3 referenceDate:(id)a4 title:(id)a5 sortOrder:(unint64_t)a6;
++ (id)sortDescriptorsWithDirection:(int64_t)direction;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToICNoteTimelineSectionIdentifier:(id)identifier;
+- (ICNoteTimelineSectionIdentifier)initWithTimelineSectionType:(int64_t)type referenceDate:(id)date title:(id)title sortOrder:(unint64_t)order;
 - (id)description;
 - (id)typeString;
 - (unint64_t)hash;
@@ -15,38 +15,38 @@
   v15.receiver = self;
   v15.super_class = ICNoteTimelineSectionIdentifier;
   v3 = [(ICNoteSectionIdentifier *)&v15 hash];
-  v4 = [(ICNoteTimelineSectionIdentifier *)self timelineSectionType];
-  v5 = [(ICNoteTimelineSectionIdentifier *)self sectionTitle];
-  [v5 hash];
+  timelineSectionType = [(ICNoteTimelineSectionIdentifier *)self timelineSectionType];
+  sectionTitle = [(ICNoteTimelineSectionIdentifier *)self sectionTitle];
+  [sectionTitle hash];
   [(ICNoteTimelineSectionIdentifier *)self sortOrder];
-  v13 = ICHashWithHashKeys(v3, v6, v7, v8, v9, v10, v11, v12, v4);
+  v13 = ICHashWithHashKeys(v3, v6, v7, v8, v9, v10, v11, v12, timelineSectionType);
 
   return v13;
 }
 
-- (ICNoteTimelineSectionIdentifier)initWithTimelineSectionType:(int64_t)a3 referenceDate:(id)a4 title:(id)a5 sortOrder:(unint64_t)a6
+- (ICNoteTimelineSectionIdentifier)initWithTimelineSectionType:(int64_t)type referenceDate:(id)date title:(id)title sortOrder:(unint64_t)order
 {
-  v11 = a4;
-  v12 = a5;
+  dateCopy = date;
+  titleCopy = title;
   v16.receiver = self;
   v16.super_class = ICNoteTimelineSectionIdentifier;
   v13 = [(ICNoteSectionIdentifier *)&v16 initWithNoteSectionType:5];
   v14 = v13;
   if (v13)
   {
-    v13->_timelineSectionType = a3;
-    objc_storeStrong(&v13->_referenceDate, a4);
-    objc_storeStrong(&v14->_sectionTitle, a5);
-    v14->_sortOrder = a6;
+    v13->_timelineSectionType = type;
+    objc_storeStrong(&v13->_referenceDate, date);
+    objc_storeStrong(&v14->_sectionTitle, title);
+    v14->_sortOrder = order;
   }
 
   return v14;
 }
 
-+ (id)sortDescriptorsWithDirection:(int64_t)a3
++ (id)sortDescriptorsWithDirection:(int64_t)direction
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v3 = a3 == 0;
+  v3 = direction == 0;
   v4 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"timelineSectionType" ascending:v3];
   v8[0] = v4;
   v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"sortOrder" ascending:v3];
@@ -56,12 +56,12 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = ICNoteTimelineSectionIdentifier;
-  if ([(ICNoteSectionIdentifier *)&v8 isEqual:v4])
+  if ([(ICNoteSectionIdentifier *)&v8 isEqual:equalCopy])
   {
     objc_opt_class();
     v5 = ICDynamicCast();
@@ -79,25 +79,25 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ICNoteTimelineSectionIdentifier *)self typeString];
-  v5 = [(ICNoteTimelineSectionIdentifier *)self sectionTitle];
-  v6 = [v3 stringWithFormat:@"type: %@, title: %@, sortOrder: %lu", v4, v5, -[ICNoteTimelineSectionIdentifier sortOrder](self, "sortOrder")];
+  typeString = [(ICNoteTimelineSectionIdentifier *)self typeString];
+  sectionTitle = [(ICNoteTimelineSectionIdentifier *)self sectionTitle];
+  v6 = [v3 stringWithFormat:@"type: %@, title: %@, sortOrder: %lu", typeString, sectionTitle, -[ICNoteTimelineSectionIdentifier sortOrder](self, "sortOrder")];
 
   return v6;
 }
 
-- (BOOL)isEqualToICNoteTimelineSectionIdentifier:(id)a3
+- (BOOL)isEqualToICNoteTimelineSectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ICNoteTimelineSectionIdentifier *)self timelineSectionType];
-  if (v5 == [v4 timelineSectionType])
+  identifierCopy = identifier;
+  timelineSectionType = [(ICNoteTimelineSectionIdentifier *)self timelineSectionType];
+  if (timelineSectionType == [identifierCopy timelineSectionType])
   {
-    v6 = [(ICNoteTimelineSectionIdentifier *)self sectionTitle];
-    v7 = [v4 sectionTitle];
-    if ([v6 isEqualToString:v7])
+    sectionTitle = [(ICNoteTimelineSectionIdentifier *)self sectionTitle];
+    sectionTitle2 = [identifierCopy sectionTitle];
+    if ([sectionTitle isEqualToString:sectionTitle2])
     {
-      v8 = [(ICNoteTimelineSectionIdentifier *)self sortOrder];
-      v9 = v8 == [v4 sortOrder];
+      sortOrder = [(ICNoteTimelineSectionIdentifier *)self sortOrder];
+      v9 = sortOrder == [identifierCopy sortOrder];
     }
 
     else
@@ -116,15 +116,15 @@
 
 - (id)typeString
 {
-  v2 = [(ICNoteTimelineSectionIdentifier *)self timelineSectionType];
-  if ((v2 - 1) > 8)
+  timelineSectionType = [(ICNoteTimelineSectionIdentifier *)self timelineSectionType];
+  if ((timelineSectionType - 1) > 8)
   {
     return @"Invitations";
   }
 
   else
   {
-    return off_1E8469888[v2 - 1];
+    return off_1E8469888[timelineSectionType - 1];
   }
 }
 

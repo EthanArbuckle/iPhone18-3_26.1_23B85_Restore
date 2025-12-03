@@ -1,23 +1,23 @@
 @interface _UIFloatingTabBarCustomizationProxy
-- (BOOL)canInsertFavoriteTab:(id)a3;
-- (void)insertFavoriteTab:(id)a3;
-- (void)removeFavoriteTab:(id)a3;
+- (BOOL)canInsertFavoriteTab:(id)tab;
+- (void)insertFavoriteTab:(id)tab;
+- (void)removeFavoriteTab:(id)tab;
 @end
 
 @implementation _UIFloatingTabBarCustomizationProxy
 
-- (BOOL)canInsertFavoriteTab:(id)a3
+- (BOOL)canInsertFavoriteTab:(id)tab
 {
-  v4 = a3;
+  tabCopy = tab;
   WeakRetained = objc_loadWeakRetained(&self->_floatingTabBar);
   if ([WeakRetained isEditing])
   {
-    v6 = [v4 _tabModel];
-    v7 = [WeakRetained tabModel];
-    if (v6 == v7 && [WeakRetained _canDragTab:v4])
+    _tabModel = [tabCopy _tabModel];
+    tabModel = [WeakRetained tabModel];
+    if (_tabModel == tabModel && [WeakRetained _canDragTab:tabCopy])
     {
-      v8 = [WeakRetained tabModel];
-      v9 = [v8 isTabHidden:v4] ^ 1;
+      tabModel2 = [WeakRetained tabModel];
+      v9 = [tabModel2 isTabHidden:tabCopy] ^ 1;
     }
 
     else
@@ -34,26 +34,26 @@
   return v9;
 }
 
-- (void)insertFavoriteTab:(id)a3
+- (void)insertFavoriteTab:(id)tab
 {
-  v7 = a3;
+  tabCopy = tab;
   if ([(_UIFloatingTabBarCustomizationProxy *)self canInsertFavoriteTab:?])
   {
     WeakRetained = objc_loadWeakRetained(&self->_floatingTabBar);
-    v5 = [WeakRetained dragController];
-    v6 = [v7 identifier];
-    [v5 insertTabForIdentifier:v6];
+    dragController = [WeakRetained dragController];
+    identifier = [tabCopy identifier];
+    [dragController insertTabForIdentifier:identifier];
   }
 }
 
-- (void)removeFavoriteTab:(id)a3
+- (void)removeFavoriteTab:(id)tab
 {
-  v4 = a3;
+  tabCopy = tab;
   WeakRetained = objc_loadWeakRetained(&self->_floatingTabBar);
-  v5 = [WeakRetained dragController];
-  v6 = [v4 identifier];
+  dragController = [WeakRetained dragController];
+  identifier = [tabCopy identifier];
 
-  [v5 removeTabForIdentifier:v6];
+  [dragController removeTabForIdentifier:identifier];
 }
 
 @end

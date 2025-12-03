@@ -1,6 +1,6 @@
 @interface CMSExtensionIntentEndpointConfiguration
 - (CMSExtensionIntentEndpointConfiguration)init;
-- (CMSExtensionIntentEndpointConfiguration)initWithDictionary:(id)a3 endpoint:(id)a4 baseURL:(id)a5 groupHeaders:(id)a6;
+- (CMSExtensionIntentEndpointConfiguration)initWithDictionary:(id)dictionary endpoint:(id)endpoint baseURL:(id)l groupHeaders:(id)headers;
 - (id)description;
 @end
 
@@ -9,10 +9,10 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CMSExtensionEndpointConfiguration *)self endpointURL];
-  v5 = [(CMSExtensionEndpointConfiguration *)self groupHeaders];
-  v6 = [(CMSExtensionEndpointConfiguration *)self headers];
-  v7 = [v3 stringWithFormat:@"<CMSExtensionIntentEndpointConfiguration: endpointURL:%@ groupHeaders:%@ headers:%@ optionalMethods:%@>", v4, v5, v6, self->_optionalMethods];
+  endpointURL = [(CMSExtensionEndpointConfiguration *)self endpointURL];
+  groupHeaders = [(CMSExtensionEndpointConfiguration *)self groupHeaders];
+  headers = [(CMSExtensionEndpointConfiguration *)self headers];
+  v7 = [v3 stringWithFormat:@"<CMSExtensionIntentEndpointConfiguration: endpointURL:%@ groupHeaders:%@ headers:%@ optionalMethods:%@>", endpointURL, groupHeaders, headers, self->_optionalMethods];
 
   return v7;
 }
@@ -25,22 +25,22 @@
   return v4;
 }
 
-- (CMSExtensionIntentEndpointConfiguration)initWithDictionary:(id)a3 endpoint:(id)a4 baseURL:(id)a5 groupHeaders:(id)a6
+- (CMSExtensionIntentEndpointConfiguration)initWithDictionary:(id)dictionary endpoint:(id)endpoint baseURL:(id)l groupHeaders:(id)headers
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  dictionaryCopy = dictionary;
+  endpointCopy = endpoint;
   v37.receiver = self;
   v37.super_class = CMSExtensionIntentEndpointConfiguration;
-  v12 = [(CMSExtensionEndpointConfiguration *)&v37 initWithDictionary:v10 endpoint:v11 baseURL:a5 groupHeaders:a6];
+  v12 = [(CMSExtensionEndpointConfiguration *)&v37 initWithDictionary:dictionaryCopy endpoint:endpointCopy baseURL:l groupHeaders:headers];
   if (v12)
   {
-    v13 = [v10 cmsOptionalArrayOfClass:objc_opt_class() forKey:@"opt"];
+    v13 = [dictionaryCopy cmsOptionalArrayOfClass:objc_opt_class() forKey:@"opt"];
     v32 = [MEMORY[0x277CBEB58] set];
     if (v13)
     {
       v30 = v12;
-      v31 = v10;
+      v31 = dictionaryCopy;
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
@@ -64,11 +64,11 @@
 
             v19 = *(*(&v33 + 1) + 8 * v18);
             v20 = MEMORY[0x277CCACA8];
-            v21 = CMSProtocolNameForExtensionEndpoint(v11);
+            v21 = CMSProtocolNameForExtensionEndpoint(endpointCopy);
             v22 = [v20 stringWithFormat:@"%@.%@", v21, v19];
 
             v23 = CMSExtensionEndpointForProtocolMethodName(v22);
-            LODWORD(v21) = [v23 isEqual:v11];
+            LODWORD(v21) = [v23 isEqual:endpointCopy];
 
             if (v21)
             {
@@ -83,7 +83,7 @@
                 *buf = 138543618;
                 v39 = v19;
                 v40 = 2114;
-                v41 = v11;
+                v41 = endpointCopy;
               }
             }
 
@@ -98,7 +98,7 @@
       }
 
       v12 = v30;
-      v10 = v31;
+      dictionaryCopy = v31;
       v13 = v29;
     }
 

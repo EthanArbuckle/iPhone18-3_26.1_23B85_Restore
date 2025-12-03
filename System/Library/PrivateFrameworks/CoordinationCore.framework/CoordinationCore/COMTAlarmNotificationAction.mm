@@ -1,26 +1,26 @@
 @interface COMTAlarmNotificationAction
-- (BOOL)isEqual:(id)a3;
-- (COMTAlarmNotificationAction)initWithCoder:(id)a3;
-- (COMTAlarmNotificationAction)initWithReason:(id)a3 alarms:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (COMTAlarmNotificationAction)initWithCoder:(id)coder;
+- (COMTAlarmNotificationAction)initWithReason:(id)reason alarms:(id)alarms;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COMTAlarmNotificationAction
 
-- (COMTAlarmNotificationAction)initWithReason:(id)a3 alarms:(id)a4
+- (COMTAlarmNotificationAction)initWithReason:(id)reason alarms:(id)alarms
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  alarmsCopy = alarms;
   v14.receiver = self;
   v14.super_class = COMTAlarmNotificationAction;
   v8 = [(COMTAction *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [reasonCopy copy];
     reason = v8->_reason;
     v8->_reason = v9;
 
-    v11 = [v7 copy];
+    v11 = [alarmsCopy copy];
     alarms = v8->_alarms;
     v8->_alarms = v11;
   }
@@ -28,16 +28,16 @@
   return v8;
 }
 
-- (COMTAlarmNotificationAction)initWithCoder:(id)a3
+- (COMTAlarmNotificationAction)initWithCoder:(id)coder
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = COMTAlarmNotificationAction;
-  v5 = [(COMTAction *)&v26 initWithCoder:v4];
+  v5 = [(COMTAction *)&v26 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
     reason = v5->_reason;
     v5->_reason = v6;
 
@@ -51,7 +51,7 @@ LABEL_14:
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"alarms"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"alarms"];
 
     v24 = 0u;
     v25 = 0u;
@@ -106,25 +106,25 @@ LABEL_15:
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = COMTAlarmNotificationAction;
-  v4 = a3;
-  [(COMTAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(COMTAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(COMTAlarmNotificationAction *)self reason:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"reason"];
+  [coderCopy encodeObject:v5 forKey:@"reason"];
 
-  v6 = [(COMTAlarmNotificationAction *)self alarms];
-  [v4 encodeObject:v6 forKey:@"alarms"];
+  alarms = [(COMTAlarmNotificationAction *)self alarms];
+  [coderCopy encodeObject:alarms forKey:@"alarms"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = COMTAlarmNotificationAction;
-  if ([(COMTAction *)&v11 isEqual:v4])
+  if ([(COMTAction *)&v11 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -134,13 +134,13 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(COMTAlarmNotificationAction *)self reason];
-      v7 = [v4 reason];
-      if ([v6 isEqual:v7])
+      reason = [(COMTAlarmNotificationAction *)self reason];
+      reason2 = [equalCopy reason];
+      if ([reason isEqual:reason2])
       {
-        v8 = [(COMTAlarmNotificationAction *)self alarms];
-        v9 = [v4 alarms];
-        v5 = [v8 isEqual:v9];
+        alarms = [(COMTAlarmNotificationAction *)self alarms];
+        alarms2 = [equalCopy alarms];
+        v5 = [alarms isEqual:alarms2];
       }
 
       else

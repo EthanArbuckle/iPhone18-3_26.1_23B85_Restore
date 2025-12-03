@@ -1,22 +1,22 @@
 @interface AWDVisualVoicemailTranscriptionStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConfidencelevel:(BOOL)a3;
-- (void)setHasResult:(BOOL)a3;
-- (void)setHasSubsid:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasConfidencelevel:(BOOL)confidencelevel;
+- (void)setHasResult:(BOOL)result;
+- (void)setHasSubsid:(BOOL)subsid;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDVisualVoicemailTranscriptionStats
 
-- (void)setHasResult:(BOOL)a3
+- (void)setHasResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 8;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSubsid:(BOOL)a3
+- (void)setHasSubsid:(BOOL)subsid
 {
-  if (a3)
+  if (subsid)
   {
     v3 = 4;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasConfidencelevel:(BOOL)a3
+- (void)setHasConfidencelevel:(BOOL)confidencelevel
 {
-  if (a3)
+  if (confidencelevel)
   {
     v3 = 2;
   }
@@ -64,8 +64,8 @@
   v7.receiver = self;
   v7.super_class = AWDVisualVoicemailTranscriptionStats;
   v3 = [(AWDVisualVoicemailTranscriptionStats *)&v7 description];
-  v4 = [(AWDVisualVoicemailTranscriptionStats *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AWDVisualVoicemailTranscriptionStats *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -135,16 +135,16 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v10 = v4;
+  v10 = toCopy;
   if (has)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -165,50 +165,50 @@ LABEL_3:
 
   result = self->_result;
   PBDataWriterWriteBOOLField();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     subsid = self->_subsid;
     PBDataWriterWriteUint32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_5:
   if (self->_mcc)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_mnc)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     confidencelevel = self->_confidencelevel;
     PBDataWriterWriteUint32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_language)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 56) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 56) |= 1u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -227,45 +227,45 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 52) = self->_result;
-  *(v4 + 56) |= 8u;
+  *(toCopy + 52) = self->_result;
+  *(toCopy + 56) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    *(v4 + 12) = self->_subsid;
-    *(v4 + 56) |= 4u;
+    *(toCopy + 12) = self->_subsid;
+    *(toCopy + 56) |= 4u;
   }
 
 LABEL_5:
-  v6 = v4;
+  v6 = toCopy;
   if (self->_mcc)
   {
-    [v4 setMcc:?];
-    v4 = v6;
+    [toCopy setMcc:?];
+    toCopy = v6;
   }
 
   if (self->_mnc)
   {
     [v6 setMnc:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 4) = self->_confidencelevel;
-    *(v4 + 56) |= 2u;
+    *(toCopy + 4) = self->_confidencelevel;
+    *(toCopy + 56) |= 2u;
   }
 
   if (self->_language)
   {
     [v6 setLanguage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -300,11 +300,11 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_mcc copyWithZone:a3];
+  v8 = [(NSString *)self->_mcc copyWithZone:zone];
   v9 = v6[4];
   v6[4] = v8;
 
-  v10 = [(NSString *)self->_mnc copyWithZone:a3];
+  v10 = [(NSString *)self->_mnc copyWithZone:zone];
   v11 = v6[5];
   v6[5] = v10;
 
@@ -314,38 +314,38 @@ LABEL_5:
     *(v6 + 56) |= 2u;
   }
 
-  v12 = [(NSString *)self->_language copyWithZone:a3];
+  v12 = [(NSString *)self->_language copyWithZone:zone];
   v13 = v6[3];
   v6[3] = v12;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(equalCopy + 56);
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 8) == 0)
   {
-    if ((*(v4 + 56) & 8) == 0)
+    if ((*(equalCopy + 56) & 8) == 0)
     {
       goto LABEL_9;
     }
@@ -355,21 +355,21 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if ((*(v4 + 56) & 8) == 0)
+  if ((*(equalCopy + 56) & 8) == 0)
   {
     goto LABEL_31;
   }
 
-  v6 = *(v4 + 52);
+  v6 = *(equalCopy + 52);
   if (self->_result)
   {
-    if ((*(v4 + 52) & 1) == 0)
+    if ((*(equalCopy + 52) & 1) == 0)
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_31;
   }
@@ -377,25 +377,25 @@ LABEL_31:
 LABEL_9:
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_subsid != *(v4 + 12))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_subsid != *(equalCopy + 12))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
     goto LABEL_31;
   }
 
   mcc = self->_mcc;
-  if (mcc | *(v4 + 4) && ![(NSString *)mcc isEqual:?])
+  if (mcc | *(equalCopy + 4) && ![(NSString *)mcc isEqual:?])
   {
     goto LABEL_31;
   }
 
   mnc = self->_mnc;
-  if (mnc | *(v4 + 5))
+  if (mnc | *(equalCopy + 5))
   {
     if (![(NSString *)mnc isEqual:?])
     {
@@ -403,22 +403,22 @@ LABEL_9:
     }
   }
 
-  v9 = *(v4 + 56);
+  v9 = *(equalCopy + 56);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_confidencelevel != *(v4 + 4))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_confidencelevel != *(equalCopy + 4))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
     goto LABEL_31;
   }
 
   language = self->_language;
-  if (language | *(v4 + 3))
+  if (language | *(equalCopy + 3))
   {
     v11 = [(NSString *)language isEqual:?];
   }
@@ -486,15 +486,15 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ [(NSString *)self->_language hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 56);
+  fromCopy = from;
+  v5 = *(fromCopy + 56);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -507,44 +507,44 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 56) & 8) == 0)
+  else if ((*(fromCopy + 56) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_result = *(v4 + 52);
+  self->_result = *(fromCopy + 52);
   *&self->_has |= 8u;
-  if ((*(v4 + 56) & 4) != 0)
+  if ((*(fromCopy + 56) & 4) != 0)
   {
 LABEL_4:
-    self->_subsid = *(v4 + 12);
+    self->_subsid = *(fromCopy + 12);
     *&self->_has |= 4u;
   }
 
 LABEL_5:
-  v6 = v4;
-  if (*(v4 + 4))
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(AWDVisualVoicemailTranscriptionStats *)self setMcc:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(AWDVisualVoicemailTranscriptionStats *)self setMnc:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 56) & 2) != 0)
+  if ((*(fromCopy + 56) & 2) != 0)
   {
-    self->_confidencelevel = *(v4 + 4);
+    self->_confidencelevel = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(AWDVisualVoicemailTranscriptionStats *)self setLanguage:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

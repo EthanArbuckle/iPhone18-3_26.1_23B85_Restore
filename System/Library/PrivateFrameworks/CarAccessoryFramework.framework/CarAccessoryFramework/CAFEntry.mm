@@ -1,22 +1,22 @@
 @interface CAFEntry
-- (CAFEntry)initWithDictionary:(id)a3;
-- (CAFEntry)initWithSymbolName:(id)a3 userVisibleLabel:(id)a4;
+- (CAFEntry)initWithDictionary:(id)dictionary;
+- (CAFEntry)initWithSymbolName:(id)name userVisibleLabel:(id)label;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation CAFEntry
 
-- (CAFEntry)initWithDictionary:(id)a3
+- (CAFEntry)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = CAFEntry;
   v5 = [(CAFEntry *)&v13 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKey:@"symbolName"];
+    v6 = [dictionaryCopy objectForKey:@"symbolName"];
     if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v7 = v6;
@@ -31,7 +31,7 @@
     v5->_symbolName = v7;
 
     objc_opt_class();
-    v9 = [v4 objectForKey:@"userVisibleLabel"];
+    v9 = [dictionaryCopy objectForKey:@"userVisibleLabel"];
     if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v10 = v9;
@@ -49,18 +49,18 @@
   return v5;
 }
 
-- (CAFEntry)initWithSymbolName:(id)a3 userVisibleLabel:(id)a4
+- (CAFEntry)initWithSymbolName:(id)name userVisibleLabel:(id)label
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  labelCopy = label;
   v12.receiver = self;
   v12.super_class = CAFEntry;
   v9 = [(CAFEntry *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_symbolName, a3);
-    objc_storeStrong(&v10->_userVisibleLabel, a4);
+    objc_storeStrong(&v9->_symbolName, name);
+    objc_storeStrong(&v10->_userVisibleLabel, label);
   }
 
   return v10;
@@ -70,29 +70,29 @@
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v10[0] = @"symbolName";
-  v3 = [(CAFEntry *)self symbolName];
-  v4 = v3;
-  if (!v3)
+  symbolName = [(CAFEntry *)self symbolName];
+  null = symbolName;
+  if (!symbolName)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
   v10[1] = @"userVisibleLabel";
-  v11[0] = v4;
-  v5 = [(CAFEntry *)self userVisibleLabel];
-  v6 = v5;
-  if (!v5)
+  v11[0] = null;
+  userVisibleLabel = [(CAFEntry *)self userVisibleLabel];
+  null2 = userVisibleLabel;
+  if (!userVisibleLabel)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!userVisibleLabel)
   {
   }
 
-  if (!v3)
+  if (!symbolName)
   {
   }
 
@@ -105,9 +105,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CAFEntry *)self symbolName];
-  v6 = [(CAFEntry *)self userVisibleLabel];
-  v7 = [v3 stringWithFormat:@"<%@: %p { %@: %@, %@: %@ }>", v4, self, @"symbolName", v5, @"userVisibleLabel", v6];
+  symbolName = [(CAFEntry *)self symbolName];
+  userVisibleLabel = [(CAFEntry *)self userVisibleLabel];
+  v7 = [v3 stringWithFormat:@"<%@: %p { %@: %@, %@: %@ }>", v4, self, @"symbolName", symbolName, @"userVisibleLabel", userVisibleLabel];
 
   return v7;
 }

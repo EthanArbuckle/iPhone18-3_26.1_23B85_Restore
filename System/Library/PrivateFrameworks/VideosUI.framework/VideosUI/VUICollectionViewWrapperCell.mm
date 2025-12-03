@@ -1,38 +1,38 @@
 @interface VUICollectionViewWrapperCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setChildView:(id)a3;
+- (void)setChildView:(id)view;
 @end
 
 @implementation VUICollectionViewWrapperCell
 
-- (void)setChildView:(id)a3
+- (void)setChildView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   childView = self->_childView;
-  if (childView != v5)
+  if (childView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)childView removeFromSuperview];
-    objc_storeStrong(&self->_childView, a3);
+    objc_storeStrong(&self->_childView, view);
     if (self->_childView)
     {
-      v7 = [(VUICollectionViewWrapperCell *)self contentView];
-      [v7 addSubview:self->_childView];
+      contentView = [(VUICollectionViewWrapperCell *)self contentView];
+      [contentView addSubview:self->_childView];
     }
 
     [(VUICollectionViewWrapperCell *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   childView = self->_childView;
   if (childView)
   {
-    [(UIView *)childView sizeThatFits:a3.width, a3.height];
+    [(UIView *)childView sizeThatFits:fits.width, fits.height];
   }
 
   else
@@ -52,8 +52,8 @@
   v5.super_class = VUICollectionViewWrapperCell;
   [(VUICollectionViewWrapperCell *)&v5 layoutSubviews];
   childView = self->_childView;
-  v4 = [(VUICollectionViewWrapperCell *)self contentView];
-  [v4 bounds];
+  contentView = [(VUICollectionViewWrapperCell *)self contentView];
+  [contentView bounds];
   [(UIView *)childView setFrame:?];
 }
 
@@ -62,9 +62,9 @@
   v6.receiver = self;
   v6.super_class = VUICollectionViewWrapperCell;
   [(VUICollectionViewWrapperCell *)&v6 prepareForReuse];
-  v3 = [(VUICollectionViewWrapperCell *)self contentView];
-  v4 = [v3 subviews];
-  [v4 makeObjectsPerformSelector:sel_removeFromSuperview];
+  contentView = [(VUICollectionViewWrapperCell *)self contentView];
+  subviews = [contentView subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 
   childView = self->_childView;
   self->_childView = 0;

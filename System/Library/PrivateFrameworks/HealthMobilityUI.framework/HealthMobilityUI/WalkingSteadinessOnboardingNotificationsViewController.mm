@@ -1,6 +1,6 @@
 @interface WalkingSteadinessOnboardingNotificationsViewController
-- (_TtC16HealthMobilityUI54WalkingSteadinessOnboardingNotificationsViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC16HealthMobilityUI54WalkingSteadinessOnboardingNotificationsViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC16HealthMobilityUI54WalkingSteadinessOnboardingNotificationsViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC16HealthMobilityUI54WalkingSteadinessOnboardingNotificationsViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)cancelButtonTapped;
 - (void)primaryFooterButtonTapped;
 - (void)secondaryFooterButtonTapped;
@@ -11,7 +11,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2519A966C();
 }
 
@@ -24,7 +24,7 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(v4 + 8);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
@@ -39,7 +39,7 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(v4 + 16);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
@@ -54,20 +54,20 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(v4 + 24);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtC16HealthMobilityUI54WalkingSteadinessOnboardingNotificationsViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC16HealthMobilityUI54WalkingSteadinessOnboardingNotificationsViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC16HealthMobilityUI54WalkingSteadinessOnboardingNotificationsViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC16HealthMobilityUI54WalkingSteadinessOnboardingNotificationsViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

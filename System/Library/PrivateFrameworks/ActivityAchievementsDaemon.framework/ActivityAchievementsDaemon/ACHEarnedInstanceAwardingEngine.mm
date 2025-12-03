@@ -1,68 +1,68 @@
 @interface ACHEarnedInstanceAwardingEngine
-- (ACHEarnedInstanceAwardingEngine)initWithClient:(id)a3 assertionClient:(id)a4 dataStore:(id)a5 earnedInstanceStore:(id)a6 historicalEvaluationPolicy:(id *)a7;
+- (ACHEarnedInstanceAwardingEngine)initWithClient:(id)client assertionClient:(id)assertionClient dataStore:(id)store earnedInstanceStore:(id)instanceStore historicalEvaluationPolicy:(id *)policy;
 - (id)currentDate;
-- (id)sourceRecordForSource:(id)a3;
+- (id)sourceRecordForSource:(id)source;
 - (unint64_t)sourceCount;
-- (void)_queue_evaluateHistoryForSource:(id)a3 completion:(id)a4;
+- (void)_queue_evaluateHistoryForSource:(id)source completion:(id)completion;
 - (void)_queue_performQueuedEvaluations;
 - (void)_queue_protectedDataBecameAvailable;
-- (void)_requestHistoricalEvaluationForAllSourcesWithCompletion:(id)a3;
+- (void)_requestHistoricalEvaluationForAllSourcesWithCompletion:(id)completion;
 - (void)activate;
 - (void)dealloc;
-- (void)deregisterSource:(id)a3;
-- (void)registerSource:(id)a3;
-- (void)requestHistoricalEvaluationForAllSourcesWithCompletion:(id)a3;
-- (void)requestIncrementalEvaluationForSource:(id)a3 evaluationBlock:(id)a4;
+- (void)deregisterSource:(id)source;
+- (void)registerSource:(id)source;
+- (void)requestHistoricalEvaluationForAllSourcesWithCompletion:(id)completion;
+- (void)requestIncrementalEvaluationForSource:(id)source evaluationBlock:(id)block;
 @end
 
 @implementation ACHEarnedInstanceAwardingEngine
 
-- (ACHEarnedInstanceAwardingEngine)initWithClient:(id)a3 assertionClient:(id)a4 dataStore:(id)a5 earnedInstanceStore:(id)a6 historicalEvaluationPolicy:(id *)a7
+- (ACHEarnedInstanceAwardingEngine)initWithClient:(id)client assertionClient:(id)assertionClient dataStore:(id)store earnedInstanceStore:(id)instanceStore historicalEvaluationPolicy:(id *)policy
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  clientCopy = client;
+  assertionClientCopy = assertionClient;
+  storeCopy = store;
+  instanceStoreCopy = instanceStore;
   v34.receiver = self;
   v34.super_class = ACHEarnedInstanceAwardingEngine;
   v16 = [(ACHEarnedInstanceAwardingEngine *)&v34 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_client, v12);
-    objc_storeWeak(&v17->_assertionClient, v13);
-    objc_storeWeak(&v17->_dataStore, v14);
-    objc_storeWeak(&v17->_earnedInstanceStore, v15);
-    v18 = *&a7->var2;
-    *&v17->_historicalEvaluationPolicy.startDate = *&a7->var0;
+    objc_storeWeak(&v16->_client, clientCopy);
+    objc_storeWeak(&v17->_assertionClient, assertionClientCopy);
+    objc_storeWeak(&v17->_dataStore, storeCopy);
+    objc_storeWeak(&v17->_earnedInstanceStore, instanceStoreCopy);
+    v18 = *&policy->var2;
+    *&v17->_historicalEvaluationPolicy.startDate = *&policy->var0;
     *&v17->_historicalEvaluationPolicy.clearDataStoreBeforeHistoricalRun = v18;
     v17->_isActivated = 0;
     v19 = HKCreateSerialDispatchQueue();
     internalQueue = v17->_internalQueue;
     v17->_internalQueue = v19;
 
-    v21 = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
+    autoupdatingCurrentCalendar = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
     calendar = v17->_calendar;
-    v17->_calendar = v21;
+    v17->_calendar = autoupdatingCurrentCalendar;
 
     v23 = objc_alloc_init(MEMORY[0x277CBEB38]);
     sourceRegistry = v17->_sourceRegistry;
     v17->_sourceRegistry = v23;
 
-    v25 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     queuedIncrementalEvaluations = v17->_queuedIncrementalEvaluations;
-    v17->_queuedIncrementalEvaluations = v25;
+    v17->_queuedIncrementalEvaluations = dictionary;
 
     objc_initWeak(&location, v17);
-    v27 = [*MEMORY[0x277CE8C10] UTF8String];
+    uTF8String = [*MEMORY[0x277CE8C10] UTF8String];
     v28 = v17->_internalQueue;
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __123__ACHEarnedInstanceAwardingEngine_initWithClient_assertionClient_dataStore_earnedInstanceStore_historicalEvaluationPolicy___block_invoke;
     handler[3] = &unk_278492B90;
-    v31 = v12;
+    v31 = clientCopy;
     objc_copyWeak(&v32, &location);
-    notify_register_dispatch(v27, &v17->_protectedDataToken, v28, handler);
+    notify_register_dispatch(uTF8String, &v17->_protectedDataToken, v28, handler);
     objc_destroyWeak(&v32);
 
     objc_destroyWeak(&location);
@@ -154,9 +154,9 @@ uint64_t __46__ACHEarnedInstanceAwardingEngine_sourceCount__block_invoke(uint64_
   return result;
 }
 
-- (id)sourceRecordForSource:(id)a3
+- (id)sourceRecordForSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -168,10 +168,10 @@ uint64_t __46__ACHEarnedInstanceAwardingEngine_sourceCount__block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __57__ACHEarnedInstanceAwardingEngine_sourceRecordForSource___block_invoke;
   block[3] = &unk_278491010;
-  v10 = v4;
+  v10 = sourceCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = sourceCopy;
   dispatch_sync(internalQueue, block);
   v7 = v13[5];
 
@@ -190,10 +190,10 @@ uint64_t __57__ACHEarnedInstanceAwardingEngine_sourceRecordForSource___block_inv
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)registerSource:(id)a3
+- (void)registerSource:(id)source
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_283556FF8])
+  sourceCopy = source;
+  if ([sourceCopy conformsToProtocol:&unk_283556FF8])
   {
     internalQueue = self->_internalQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -201,7 +201,7 @@ uint64_t __57__ACHEarnedInstanceAwardingEngine_sourceRecordForSource___block_inv
     v7[2] = __50__ACHEarnedInstanceAwardingEngine_registerSource___block_invoke;
     v7[3] = &unk_278490898;
     v7[4] = self;
-    v8 = v4;
+    v8 = sourceCopy;
     dispatch_async(internalQueue, v7);
   }
 
@@ -259,10 +259,10 @@ void __50__ACHEarnedInstanceAwardingEngine_registerSource___block_invoke(uint64_
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deregisterSource:(id)a3
+- (void)deregisterSource:(id)source
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_283556FF8])
+  sourceCopy = source;
+  if ([sourceCopy conformsToProtocol:&unk_283556FF8])
   {
     internalQueue = self->_internalQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -270,7 +270,7 @@ void __50__ACHEarnedInstanceAwardingEngine_registerSource___block_invoke(uint64_
     v7[2] = __52__ACHEarnedInstanceAwardingEngine_deregisterSource___block_invoke;
     v7[3] = &unk_278490898;
     v7[4] = self;
-    v8 = v4;
+    v8 = sourceCopy;
     dispatch_async(internalQueue, v7);
   }
 
@@ -321,16 +321,16 @@ void __52__ACHEarnedInstanceAwardingEngine_deregisterSource___block_invoke(uint6
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestIncrementalEvaluationForSource:(id)a3 evaluationBlock:(id)a4
+- (void)requestIncrementalEvaluationForSource:(id)source evaluationBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  blockCopy = block;
   v8 = ACHLogAwardEngine();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = sourceCopy;
     _os_log_impl(&dword_221DDC000, v8, OS_LOG_TYPE_DEFAULT, "Incremental evaluation requested for source with name: %{public}@", buf, 0xCu);
   }
 
@@ -340,10 +340,10 @@ void __52__ACHEarnedInstanceAwardingEngine_deregisterSource___block_invoke(uint6
   block[2] = __89__ACHEarnedInstanceAwardingEngine_requestIncrementalEvaluationForSource_evaluationBlock___block_invoke;
   block[3] = &unk_278491428;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = sourceCopy;
+  v15 = blockCopy;
+  v10 = blockCopy;
+  v11 = sourceCopy;
   dispatch_async(internalQueue, block);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -528,10 +528,10 @@ void __89__ACHEarnedInstanceAwardingEngine_requestIncrementalEvaluationForSource
   }
 }
 
-- (void)requestHistoricalEvaluationForAllSourcesWithCompletion:(id)a3
+- (void)requestHistoricalEvaluationForAllSourcesWithCompletion:(id)completion
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -561,16 +561,16 @@ void __89__ACHEarnedInstanceAwardingEngine_requestIncrementalEvaluationForSource
     if (v8)
     {
       objc_initWeak(buf, self);
-      v10 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __90__ACHEarnedInstanceAwardingEngine_requestHistoricalEvaluationForAllSourcesWithCompletion___block_invoke_374;
       v24[3] = &unk_278492C08;
-      v11 = v10;
+      v11 = date;
       v25 = v11;
       objc_copyWeak(&v28, buf);
       v26 = v8;
-      v27 = v4;
+      v27 = completionCopy;
       [(ACHEarnedInstanceAwardingEngine *)self _requestHistoricalEvaluationForAllSourcesWithCompletion:v24];
 
       objc_destroyWeak(&v28);
@@ -585,7 +585,7 @@ void __89__ACHEarnedInstanceAwardingEngine_requestIncrementalEvaluationForSource
         [ACHEarnedInstanceAwardingEngine requestHistoricalEvaluationForAllSourcesWithCompletion:];
       }
 
-      (*(v4 + 2))(v4, 0, v9);
+      (*(completionCopy + 2))(completionCopy, 0, v9);
     }
   }
 
@@ -603,7 +603,7 @@ void __89__ACHEarnedInstanceAwardingEngine_requestIncrementalEvaluationForSource
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:&v36 count:1];
     v9 = [v20 errorWithDomain:@"com.apple.ActivityAchievements" code:11 userInfo:v21];
 
-    (*(v4 + 2))(v4, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 
   _Block_object_dispose(&v32, 8);
@@ -668,9 +668,9 @@ void __90__ACHEarnedInstanceAwardingEngine_requestHistoricalEvaluationForAllSour
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestHistoricalEvaluationForAllSourcesWithCompletion:(id)a3
+- (void)_requestHistoricalEvaluationForAllSourcesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = ACHLogAwardEngine();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -685,8 +685,8 @@ void __90__ACHEarnedInstanceAwardingEngine_requestHistoricalEvaluationForAllSour
   v8[2] = __91__ACHEarnedInstanceAwardingEngine__requestHistoricalEvaluationForAllSourcesWithCompletion___block_invoke;
   v8[3] = &unk_278491948;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_sync(internalQueue, v8);
 }
 
@@ -1042,29 +1042,29 @@ void __66__ACHEarnedInstanceAwardingEngine__queue_performQueuedEvaluations__bloc
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_evaluateHistoryForSource:(id)a3 completion:(id)a4
+- (void)_queue_evaluateHistoryForSource:(id)source completion:(id)completion
 {
   v66 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v43 = a4;
+  sourceCopy = source;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_internalQueue);
-  v7 = [v6 source];
-  v42 = [v7 uniqueName];
+  source = [sourceCopy source];
+  uniqueName = [source uniqueName];
 
   v8 = ACHLogAwardEngine();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v42;
+    *(&buf + 4) = uniqueName;
     _os_log_impl(&dword_221DDC000, v8, OS_LOG_TYPE_DEFAULT, "Getting ready to evaluate history for source: %{public}@", &buf, 0xCu);
   }
 
   p_historicalEvaluationPolicy = &self->_historicalEvaluationPolicy;
   v40 = self->_historicalEvaluationPolicy.startDate == 2;
-  if (self->_historicalEvaluationPolicy.startDate != 2 || ([v6 source], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "conformsToProtocol:", &unk_2835607F0), v10, !v11))
+  if (self->_historicalEvaluationPolicy.startDate != 2 || ([sourceCopy source], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "conformsToProtocol:", &unk_2835607F0), v10, !v11))
   {
     v14 = 0;
-    v41 = 0;
+    source2 = 0;
     v39 = 0;
     goto LABEL_14;
   }
@@ -1073,14 +1073,14 @@ void __66__ACHEarnedInstanceAwardingEngine__queue_performQueuedEvaluations__bloc
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v42;
+    *(&buf + 4) = uniqueName;
     _os_log_impl(&dword_221DDC000, v12, OS_LOG_TYPE_DEFAULT, "Looking up snapshot for source: %@", &buf, 0xCu);
   }
 
-  v41 = [v6 source];
+  source2 = [sourceCopy source];
   WeakRetained = objc_loadWeakRetained(&self->_dataStore);
   v63 = 0;
-  v14 = [WeakRetained snapshotForProvider:v41 withError:&v63];
+  v14 = [WeakRetained snapshotForProvider:source2 withError:&v63];
   v15 = v63;
 
   if (v14 || !v15)
@@ -1088,19 +1088,19 @@ void __66__ACHEarnedInstanceAwardingEngine__queue_performQueuedEvaluations__bloc
 
     v39 = 1;
 LABEL_14:
-    v19 = [v6 lastCompletedEvaluationInterval];
-    v20 = [v19 endDate];
+    lastCompletedEvaluationInterval = [sourceCopy lastCompletedEvaluationInterval];
+    endDate = [lastCompletedEvaluationInterval endDate];
     buf = *&p_historicalEvaluationPolicy->startDate;
     v65 = *&self->_historicalEvaluationPolicy.clearDataStoreBeforeHistoricalRun;
-    v18 = ACHHistoricalEvaluationStartDateForPolicy(&buf, v20, v14);
+    v18 = ACHHistoricalEvaluationStartDateForPolicy(&buf, endDate, v14);
 
     if (v18)
     {
       calendar = self->_calendar;
-      v22 = [(ACHEarnedInstanceAwardingEngine *)self currentDate];
+      currentDate = [(ACHEarnedInstanceAwardingEngine *)self currentDate];
       buf = *&p_historicalEvaluationPolicy->startDate;
       v65 = *&self->_historicalEvaluationPolicy.clearDataStoreBeforeHistoricalRun;
-      v23 = ACHHistoricalEvaluationEndDateForPolicy(&buf, calendar, v22);
+      v23 = ACHHistoricalEvaluationEndDateForPolicy(&buf, calendar, currentDate);
 
       [v23 timeIntervalSinceReferenceDate];
       v25 = v24;
@@ -1113,13 +1113,13 @@ LABEL_14:
           [ACHEarnedInstanceAwardingEngine _queue_evaluateHistoryForSource:completion:];
         }
 
-        if (!v43)
+        if (!completionCopy)
         {
           goto LABEL_28;
         }
 
         v34 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.Achievements.AwardingEngine" code:101 userInfo:0];
-        v43[2](v43, 0, v34);
+        completionCopy[2](completionCopy, 0, v34);
       }
 
       else
@@ -1133,8 +1133,8 @@ LABEL_14:
           _os_log_impl(&dword_221DDC000, v28, OS_LOG_TYPE_DEFAULT, "Historical evaluation interval is %{public}@", &buf, 0xCu);
         }
 
-        [v6 cancelAllEvaluationOperations];
-        v29 = [v6 source];
+        [sourceCopy cancelAllEvaluationOperations];
+        source3 = [sourceCopy source];
         objc_initWeak(&buf, self);
         v52[0] = MEMORY[0x277D85DD0];
         v52[1] = 3221225472;
@@ -1143,11 +1143,11 @@ LABEL_14:
         v58 = v40;
         v30 = v14;
         v53 = v30;
-        v31 = v42;
+        v31 = uniqueName;
         v54 = v31;
-        v32 = v41;
+        v32 = source2;
         v55 = v32;
-        v33 = v29;
+        v33 = source3;
         v56 = v33;
         v34 = v27;
         v57 = v34;
@@ -1161,8 +1161,8 @@ LABEL_14:
         v51 = v39;
         v46 = v31;
         v47 = v32;
-        v48 = v43;
-        [v6 addEvaluationOperationWithDateInterval:v34 evaluationBlock:v52 completion:v44];
+        v48 = completionCopy;
+        [sourceCopy addEvaluationOperationWithDateInterval:v34 evaluationBlock:v52 completion:v44];
 
         objc_destroyWeak(&v49);
         objc_destroyWeak(&buf);
@@ -1178,7 +1178,7 @@ LABEL_14:
         _os_log_impl(&dword_221DDC000, v35, OS_LOG_TYPE_DEFAULT, "No valid start date, not evaluating history", &buf, 2u);
       }
 
-      if (!v43)
+      if (!completionCopy)
       {
         goto LABEL_29;
       }
@@ -1188,7 +1188,7 @@ LABEL_14:
       v59[1] = 3221225472;
       v59[2] = __78__ACHEarnedInstanceAwardingEngine__queue_evaluateHistoryForSource_completion___block_invoke_405;
       v59[3] = &unk_278492CF8;
-      v60 = v43;
+      v60 = completionCopy;
       dispatch_async(v36, v59);
 
       v23 = v60;
@@ -1207,14 +1207,14 @@ LABEL_29:
     [ACHEarnedInstanceAwardingEngine _queue_evaluateHistoryForSource:completion:];
   }
 
-  if (v43)
+  if (completionCopy)
   {
     v17 = dispatch_get_global_queue(21, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __78__ACHEarnedInstanceAwardingEngine__queue_evaluateHistoryForSource_completion___block_invoke;
     block[3] = &unk_278492CF8;
-    v62 = v43;
+    v62 = completionCopy;
     dispatch_async(v17, block);
 
     v18 = v62;
@@ -1312,15 +1312,15 @@ void __78__ACHEarnedInstanceAwardingEngine__queue_evaluateHistoryForSource_compl
   currentDateOverride = self->_currentDateOverride;
   if (currentDateOverride)
   {
-    v3 = currentDateOverride;
+    date = currentDateOverride;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  return v3;
+  return date;
 }
 
 - (void)registerSource:.cold.1()

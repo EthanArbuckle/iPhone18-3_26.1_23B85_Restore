@@ -1,30 +1,30 @@
 @interface PASetSiriAuthorizationForApp
-- (BOOL)_accessForAppID:(id)a3;
-- (BOOL)_setAccess:(BOOL)a3 appID:(id)a4;
-- (id)_tccAccessInfoForBundle:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (BOOL)_accessForAppID:(id)d;
+- (BOOL)_setAccess:(BOOL)access appID:(id)d;
+- (id)_tccAccessInfoForBundle:(id)bundle;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PASetSiriAuthorizationForApp
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PASetSiriAuthorizationForApp *)self bundleId];
-  v6 = [(PASetSiriAuthorizationForApp *)self _accessForAppID:v5];
+  completionCopy = completion;
+  bundleId = [(PASetSiriAuthorizationForApp *)self bundleId];
+  v6 = [(PASetSiriAuthorizationForApp *)self _accessForAppID:bundleId];
 
   if ([(PASetSiriAuthorizationForApp *)self toggle])
   {
-    v7 = (v6 ^ 1);
+    value = (v6 ^ 1);
   }
 
   else
   {
-    v7 = [(PASetSiriAuthorizationForApp *)self value];
+    value = [(PASetSiriAuthorizationForApp *)self value];
   }
 
-  v8 = [(PASetSiriAuthorizationForApp *)self dryRun];
-  if (v6 == v7)
+  dryRun = [(PASetSiriAuthorizationForApp *)self dryRun];
+  if (v6 == value)
   {
     v9 = objc_alloc_init(SACommandFailed);
     [v9 setErrorCode:SASettingValueUnchangedErrorCode];
@@ -43,13 +43,13 @@
 
   else
   {
-    v10 = v8;
+    v10 = dryRun;
   }
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(PASetSiriAuthorizationForApp *)self bundleId];
-    v12 = [(PASetSiriAuthorizationForApp *)self _setAccess:v7 appID:v11];
+    bundleId2 = [(PASetSiriAuthorizationForApp *)self bundleId];
+    v12 = [(PASetSiriAuthorizationForApp *)self _setAccess:value appID:bundleId2];
 
     if (v12)
     {
@@ -67,16 +67,16 @@
   v13 = PALogForCategory(0);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(PASetSiriAuthorizationForApp *)self bundleId];
-    v15 = v14;
+    bundleId3 = [(PASetSiriAuthorizationForApp *)self bundleId];
+    v15 = bundleId3;
     v16 = @"Set";
-    if (v8)
+    if (dryRun)
     {
       v16 = @"Dry Run";
     }
 
     *v24 = 138413314;
-    *&v24[4] = v14;
+    *&v24[4] = bundleId3;
     *&v24[12] = 2112;
     *&v24[14] = v16;
     if (v6)
@@ -92,7 +92,7 @@
     *&v24[22] = 2112;
     v25 = v17;
     *v26 = 2112;
-    if (v7)
+    if (value)
     {
       v18 = @"ON";
     }
@@ -113,7 +113,7 @@
   if (!v19)
   {
     v21 = objc_alloc_init(SASettingBooleanEntity);
-    [v21 setValue:v7];
+    [v21 setValue:value];
     v22 = [NSNumber numberWithBool:v6];
     [v21 setPreviousValue:v22];
 
@@ -121,13 +121,13 @@
     [v20 setSetting:v21];
   }
 
-  v23 = [v20 dictionary];
-  v4[2](v4, v23);
+  dictionary = [v20 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
-- (BOOL)_setAccess:(BOOL)a3 appID:(id)a4
+- (BOOL)_setAccess:(BOOL)access appID:(id)d
 {
-  v4 = [LSBundleProxy bundleProxyForIdentifier:a4];
+  v4 = [LSBundleProxy bundleProxyForIdentifier:d];
   v5 = CFBundleCreate(0, [v4 bundleURL]);
   if (v5)
   {
@@ -144,53 +144,53 @@
   return v7;
 }
 
-- (BOOL)_accessForAppID:(id)a3
+- (BOOL)_accessForAppID:(id)d
 {
-  v4 = [LSBundleProxy bundleProxyForIdentifier:a3];
-  v5 = [v4 bundleType];
-  if ([v5 isEqualToString:LSSystemApplicationType])
+  v4 = [LSBundleProxy bundleProxyForIdentifier:d];
+  bundleType = [v4 bundleType];
+  if ([bundleType isEqualToString:LSSystemApplicationType])
   {
-    v6 = 1;
+    bOOLValue = 1;
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v7 = [v4 bundleType];
-  v8 = [v7 isEqualToString:LSInternalApplicationType];
+  bundleType2 = [v4 bundleType];
+  v8 = [bundleType2 isEqualToString:LSInternalApplicationType];
 
   if ((v8 & 1) == 0)
   {
-    v5 = [(PASetSiriAuthorizationForApp *)self _tccAccessInfoForBundle:v4];
-    v9 = [v5 objectForKeyedSubscript:kTCCServiceSiri];
+    bundleType = [(PASetSiriAuthorizationForApp *)self _tccAccessInfoForBundle:v4];
+    v9 = [bundleType objectForKeyedSubscript:kTCCServiceSiri];
     v10 = v9;
     if (v9)
     {
-      v6 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
     }
 
     else
     {
-      v6 = 0;
+      bOOLValue = 0;
     }
 
     goto LABEL_9;
   }
 
-  v6 = 1;
+  bOOLValue = 1;
 LABEL_10:
 
-  return v6;
+  return bOOLValue;
 }
 
-- (id)_tccAccessInfoForBundle:(id)a3
+- (id)_tccAccessInfoForBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = [v3 bundleURL];
-  if (v4 && (v5 = CFBundleCreate(0, [v3 bundleURL])) != 0)
+  bundleCopy = bundle;
+  bundleURL = [bundleCopy bundleURL];
+  if (bundleURL && (v5 = CFBundleCreate(0, [bundleCopy bundleURL])) != 0)
   {
     cf = v5;
-    v18 = v4;
+    v18 = bundleURL;
     v6 = TCCAccessCopyInformationForBundle();
     v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
     v19 = 0u;
@@ -225,7 +225,7 @@ LABEL_10:
     }
 
     CFRelease(cf);
-    v4 = v18;
+    bundleURL = v18;
   }
 
   else

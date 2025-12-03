@@ -1,15 +1,15 @@
 @interface HKCalendarScrollViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation HKCalendarScrollViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HKCalendarScrollViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"HKCalendarScrollViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HKCalendarScrollViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"HKCalendarScrollViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -3,21 +3,21 @@
 - (id)_specifiersForAppsGroup;
 - (id)dataClassSpecifierProvider;
 - (id)specifiers;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (void)accountDidChangeFromAccount:(id)a3 toAccount:(id)a4;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (void)accountDidChangeFromAccount:(id)account toAccount:(id)toAccount;
 - (void)cleanupDataclassSpecifiers;
 - (void)dealloc;
-- (void)setAccountManager:(id)a3;
+- (void)setAccountManager:(id)manager;
 - (void)viewDidLoad;
 @end
 
 @implementation ICSiCloudAppListViewController
 
-- (void)setAccountManager:(id)a3
+- (void)setAccountManager:(id)manager
 {
   v3.receiver = self;
   v3.super_class = ICSiCloudAppListViewController;
-  [(ICSDataclassViewController *)&v3 setAccountManager:a3];
+  [(ICSDataclassViewController *)&v3 setAccountManager:manager];
 }
 
 - (void)dealloc
@@ -27,7 +27,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_275819000, v3, OS_LOG_TYPE_DEFAULT, "ICSiCloudAppListViewController dealloc %@", buf, 0xCu);
   }
 
@@ -65,15 +65,15 @@ void __45__ICSiCloudAppListViewController_viewDidLoad__block_invoke()
     goto LABEL_4;
   }
 
-  v4 = [(ICSiCloudAppListViewController *)self homeViewModel];
+  homeViewModel = [(ICSiCloudAppListViewController *)self homeViewModel];
 
-  if (v4)
+  if (homeViewModel)
   {
     v5 = [ICSDataclassSpecifierProvider alloc];
-    v6 = [(ICSDataclassViewController *)self accountManager];
-    v7 = [(ICSiCloudAppListViewController *)self homeViewModel];
-    v8 = [(ICSiCloudAppListViewController *)self manageStorageAppsListViewModel];
-    v9 = [(ICSDataclassSpecifierProvider *)v5 initWithAccountManager:v6 presenter:self homeViewModel:v7 manageStorageAppsListViewModel:v8];
+    accountManager = [(ICSDataclassViewController *)self accountManager];
+    homeViewModel2 = [(ICSiCloudAppListViewController *)self homeViewModel];
+    manageStorageAppsListViewModel = [(ICSiCloudAppListViewController *)self manageStorageAppsListViewModel];
+    v9 = [(ICSDataclassSpecifierProvider *)v5 initWithAccountManager:accountManager presenter:self homeViewModel:homeViewModel2 manageStorageAppsListViewModel:manageStorageAppsListViewModel];
     v10 = self->_dataClassSpecifierProvider;
     self->_dataClassSpecifierProvider = v9;
 
@@ -104,8 +104,8 @@ LABEL_5:
     }
 
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [(ICSiCloudAppListViewController *)self _specifiersForAppsGroup];
-    [v5 addObjectsFromArray:v6];
+    _specifiersForAppsGroup = [(ICSiCloudAppListViewController *)self _specifiersForAppsGroup];
+    [v5 addObjectsFromArray:_specifiersForAppsGroup];
 
     v7 = [v5 copy];
     v8 = *(&self->super.super.super.super.super.super.super.super.isa + v3);
@@ -182,9 +182,9 @@ LABEL_5:
   if (!appSpecifiers)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v5 = [(ICSiCloudAppListViewController *)self dataClassSpecifierProvider];
-    v6 = [v5 specifiers];
-    [v4 addObjectsFromArray:v6];
+    dataClassSpecifierProvider = [(ICSiCloudAppListViewController *)self dataClassSpecifierProvider];
+    specifiers = [dataClassSpecifierProvider specifiers];
+    [v4 addObjectsFromArray:specifiers];
 
     v7 = [v4 copy];
     v8 = self->_appSpecifiers;
@@ -198,72 +198,72 @@ LABEL_5:
 
 - (BOOL)_shouldDisableiCloudUI
 {
-  v3 = [(ICSDataclassViewController *)self account];
-  if ([v3 aa_needsToVerifyTerms])
+  account = [(ICSDataclassViewController *)self account];
+  if ([account aa_needsToVerifyTerms])
   {
-    v4 = 1;
+    isiCloudSuspended = 1;
   }
 
   else
   {
-    v5 = [(ICSDataclassViewController *)self account];
-    if ([v5 aa_isPrimaryEmailVerified])
+    account2 = [(ICSDataclassViewController *)self account];
+    if ([account2 aa_isPrimaryEmailVerified])
     {
-      v6 = [(ICSDataclassViewController *)self account];
-      v7 = [v6 aa_suspensionInfo];
-      v4 = [v7 isiCloudSuspended];
+      account3 = [(ICSDataclassViewController *)self account];
+      aa_suspensionInfo = [account3 aa_suspensionInfo];
+      isiCloudSuspended = [aa_suspensionInfo isiCloudSuspended];
     }
 
     else
     {
-      v4 = 1;
+      isiCloudSuspended = 1;
     }
   }
 
-  return v4;
+  return isiCloudSuspended;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ICSDataclassViewController *)self activeSpecifier];
+  pathCopy = path;
+  activeSpecifier = [(ICSDataclassViewController *)self activeSpecifier];
 
-  if (v6)
+  if (activeSpecifier)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v5;
+    v7 = pathCopy;
   }
 
   return v7;
 }
 
-- (void)accountDidChangeFromAccount:(id)a3 toAccount:(id)a4
+- (void)accountDidChangeFromAccount:(id)account toAccount:(id)toAccount
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  toAccountCopy = toAccount;
   v27.receiver = self;
   v27.super_class = ICSiCloudAppListViewController;
-  [(ICSDataclassViewController *)&v27 accountDidChangeFromAccount:v6 toAccount:v7];
-  v8 = [v6 provisionedDataclasses];
-  v9 = [v7 provisionedDataclasses];
-  v10 = [v8 isEqual:v9];
+  [(ICSDataclassViewController *)&v27 accountDidChangeFromAccount:accountCopy toAccount:toAccountCopy];
+  provisionedDataclasses = [accountCopy provisionedDataclasses];
+  provisionedDataclasses2 = [toAccountCopy provisionedDataclasses];
+  v10 = [provisionedDataclasses isEqual:provisionedDataclasses2];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(ICSiCloudAppListViewController *)self dataClassSpecifierProvider];
-    [v11 resetAccount];
+    dataClassSpecifierProvider = [(ICSiCloudAppListViewController *)self dataClassSpecifierProvider];
+    [dataClassSpecifierProvider resetAccount];
 
     [(ICSiCloudAppListViewController *)self cleanupDataclassSpecifiers];
     [(ICSiCloudAppListViewController *)self reloadSpecifiers];
   }
 
-  v12 = [v6 enabledDataclasses];
-  v13 = [v7 enabledDataclasses];
-  v14 = [v12 isEqual:v13];
+  enabledDataclasses = [accountCopy enabledDataclasses];
+  enabledDataclasses2 = [toAccountCopy enabledDataclasses];
+  v14 = [enabledDataclasses isEqual:enabledDataclasses2];
 
   if ((v14 & 1) == 0)
   {
@@ -274,26 +274,26 @@ LABEL_5:
       _os_log_impl(&dword_275819000, v15, OS_LOG_TYPE_DEFAULT, "Account enabled dataclasses changed. Will reload specifiers.", v26, 2u);
     }
 
-    if (v7)
+    if (toAccountCopy)
     {
       v16 = *MEMORY[0x277CB89C8];
-      v17 = [v6 isEnabledForDataclass:*MEMORY[0x277CB89C8]];
-      if (v17 != [v7 isEnabledForDataclass:v16])
+      v17 = [accountCopy isEnabledForDataclass:*MEMORY[0x277CB89C8]];
+      if (v17 != [toAccountCopy isEnabledForDataclass:v16])
       {
-        v18 = [(ICSiCloudAppListViewController *)self dataClassSpecifierProvider];
-        v19 = [v18 ubiquitySpecifierProvider];
-        v20 = [v19 ubiquityAccessManager];
-        [v20 setAppAccessGranted:objc_msgSend(v7 forBundleID:{"isEnabledForDataclass:", v16), @"com.apple.mobilemail"}];
+        dataClassSpecifierProvider2 = [(ICSiCloudAppListViewController *)self dataClassSpecifierProvider];
+        ubiquitySpecifierProvider = [dataClassSpecifierProvider2 ubiquitySpecifierProvider];
+        ubiquityAccessManager = [ubiquitySpecifierProvider ubiquityAccessManager];
+        [ubiquityAccessManager setAppAccessGranted:objc_msgSend(toAccountCopy forBundleID:{"isEnabledForDataclass:", v16), @"com.apple.mobilemail"}];
       }
 
       v21 = *MEMORY[0x277CB8928];
-      v22 = [v6 isEnabledForDataclass:*MEMORY[0x277CB8928]];
-      if (v22 != [v7 isEnabledForDataclass:v21])
+      v22 = [accountCopy isEnabledForDataclass:*MEMORY[0x277CB8928]];
+      if (v22 != [toAccountCopy isEnabledForDataclass:v21])
       {
-        v23 = [(ICSiCloudAppListViewController *)self dataClassSpecifierProvider];
-        v24 = [v23 ubiquitySpecifierProvider];
-        v25 = [v24 ubiquityAccessManager];
-        [v25 setAppAccessGranted:objc_msgSend(v7 forBundleID:{"isEnabledForDataclass:", v21), @"com.apple.mobilesafari"}];
+        dataClassSpecifierProvider3 = [(ICSiCloudAppListViewController *)self dataClassSpecifierProvider];
+        ubiquitySpecifierProvider2 = [dataClassSpecifierProvider3 ubiquitySpecifierProvider];
+        ubiquityAccessManager2 = [ubiquitySpecifierProvider2 ubiquityAccessManager];
+        [ubiquityAccessManager2 setAppAccessGranted:objc_msgSend(toAccountCopy forBundleID:{"isEnabledForDataclass:", v21), @"com.apple.mobilesafari"}];
       }
     }
   }

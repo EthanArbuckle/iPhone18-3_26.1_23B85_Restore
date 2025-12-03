@@ -1,20 +1,20 @@
 @interface PreviewProviderViewController
-- (_TtC21WritingToolsUIService29PreviewProviderViewController)initWithCoder:(id)a3;
-- (_TtC21WritingToolsUIService29PreviewProviderViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC21WritingToolsUIService29PreviewProviderViewController)initWithPreviewItems:(id)a3;
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
+- (_TtC21WritingToolsUIService29PreviewProviderViewController)initWithCoder:(id)coder;
+- (_TtC21WritingToolsUIService29PreviewProviderViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC21WritingToolsUIService29PreviewProviderViewController)initWithPreviewItems:(id)items;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
 @end
 
 @implementation PreviewProviderViewController
 
-- (_TtC21WritingToolsUIService29PreviewProviderViewController)initWithCoder:(id)a3
+- (_TtC21WritingToolsUIService29PreviewProviderViewController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
   v5 = type metadata accessor for URL();
   v6 = *(v5 - 8);
@@ -29,14 +29,14 @@
   return v12;
 }
 
-- (_TtC21WritingToolsUIService29PreviewProviderViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21WritingToolsUIService29PreviewProviderViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC21WritingToolsUIService29PreviewProviderViewController)initWithPreviewItems:(id)a3
+- (_TtC21WritingToolsUIService29PreviewProviderViewController)initWithPreviewItems:(id)items
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

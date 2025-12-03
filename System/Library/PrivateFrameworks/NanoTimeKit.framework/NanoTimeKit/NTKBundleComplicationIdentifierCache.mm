@@ -2,12 +2,12 @@
 - (NTKBundleComplicationIdentifierCache)init;
 - (id)_cacheURL;
 - (id)_expectedCacheIdentifier;
-- (void)_enumerateBundles:(id)a3;
+- (void)_enumerateBundles:(id)bundles;
 - (void)_load;
 - (void)_loadCachedModel;
-- (void)_queue_fetchIdentifiersForComplication:(id)a3 completion:(id)a4;
-- (void)_updateCacheModel:(id)a3;
-- (void)fetchIdentifiersForComplication:(id)a3 completion:(id)a4;
+- (void)_queue_fetchIdentifiersForComplication:(id)complication completion:(id)completion;
+- (void)_updateCacheModel:(id)model;
+- (void)fetchIdentifiersForComplication:(id)complication completion:(id)completion;
 @end
 
 @implementation NTKBundleComplicationIdentifierCache
@@ -27,27 +27,27 @@
   return v2;
 }
 
-- (void)fetchIdentifiersForComplication:(id)a3 completion:(id)a4
+- (void)fetchIdentifiersForComplication:(id)complication completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  complicationCopy = complication;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__NTKBundleComplicationIdentifierCache_fetchIdentifiersForComplication_completion___block_invoke;
   block[3] = &unk_27877DC88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = complicationCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = complicationCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_queue_fetchIdentifiersForComplication:(id)a3 completion:(id)a4
+- (void)_queue_fetchIdentifiersForComplication:(id)complication completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  complicationCopy = complication;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_model)
   {
@@ -57,41 +57,41 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 complication];
-    v9 = [v8 bundleIdentifier];
+    complication = [complicationCopy complication];
+    bundleIdentifier = [complication bundleIdentifier];
   }
 
   else
   {
-    v10 = [v6 complicationType];
-    v8 = [(NTKBundleComplicationIdentifierCacheModel *)self->_model legacyComplicationTypeToDataSourceIdentifier];
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
-    v9 = [v8 objectForKeyedSubscript:v11];
+    complicationType = [complicationCopy complicationType];
+    complication = [(NTKBundleComplicationIdentifierCacheModel *)self->_model legacyComplicationTypeToDataSourceIdentifier];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:complicationType];
+    bundleIdentifier = [complication objectForKeyedSubscript:v11];
   }
 
-  v12 = [(NTKBundleComplicationIdentifierCacheModel *)self->_model dataSourceToBundleIdentifier];
-  v13 = [v12 objectForKeyedSubscript:v9];
+  dataSourceToBundleIdentifier = [(NTKBundleComplicationIdentifierCacheModel *)self->_model dataSourceToBundleIdentifier];
+  v13 = [dataSourceToBundleIdentifier objectForKeyedSubscript:bundleIdentifier];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90__NTKBundleComplicationIdentifierCache__queue_fetchIdentifiersForComplication_completion___block_invoke;
   block[3] = &unk_27877FF88;
   v19 = v13;
-  v20 = v7;
-  v18 = v9;
+  v20 = completionCopy;
+  v18 = bundleIdentifier;
   v14 = v13;
-  v15 = v9;
-  v16 = v7;
+  v15 = bundleIdentifier;
+  v16 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
 - (id)_cacheURL
 {
-  v3 = [(NTKBundleComplicationIdentifierCache *)self overrideUrl];
+  overrideUrl = [(NTKBundleComplicationIdentifierCache *)self overrideUrl];
 
-  if (v3)
+  if (overrideUrl)
   {
-    v4 = [(NTKBundleComplicationIdentifierCache *)self overrideUrl];
+    overrideUrl2 = [(NTKBundleComplicationIdentifierCache *)self overrideUrl];
   }
 
   else
@@ -100,10 +100,10 @@
     v6 = NTKCacheDirectory();
     v7 = [v5 initFileURLWithPath:v6];
 
-    v4 = [v7 URLByAppendingPathComponent:@"bundle-complication-identifier-cache.plist"];
+    overrideUrl2 = [v7 URLByAppendingPathComponent:@"bundle-complication-identifier-cache.plist"];
   }
 
-  return v4;
+  return overrideUrl2;
 }
 
 - (id)_expectedCacheIdentifier
@@ -128,8 +128,8 @@
   if (!self->_model)
   {
     v3 = [NTKBundleComplicationIdentifierCacheModel alloc];
-    v4 = [(NTKBundleComplicationIdentifierCache *)self _expectedCacheIdentifier];
-    v5 = [(NTKBundleComplicationIdentifierCacheModel *)v3 initWithBuildVersion:v4];
+    _expectedCacheIdentifier = [(NTKBundleComplicationIdentifierCache *)self _expectedCacheIdentifier];
+    v5 = [(NTKBundleComplicationIdentifierCacheModel *)v3 initWithBuildVersion:_expectedCacheIdentifier];
     model = self->_model;
     self->_model = v5;
 
@@ -142,9 +142,9 @@
     if (v8)
     {
 
-      v11 = [(NTKBundleComplicationIdentifierCache *)self _cacheURL];
+      _cacheURL = [(NTKBundleComplicationIdentifierCache *)self _cacheURL];
       v26 = 0;
-      v12 = [v8 writeToURL:v11 options:1 error:&v26];
+      v12 = [v8 writeToURL:_cacheURL options:1 error:&v26];
       v10 = v26;
 
       if (v12)
@@ -176,17 +176,17 @@ LABEL_9:
 
 - (void)_loadCachedModel
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(NTKBundleComplicationIdentifierCache *)self _cacheURL];
-  v5 = [v4 path];
-  v6 = [v3 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _cacheURL = [(NTKBundleComplicationIdentifierCache *)self _cacheURL];
+  path = [_cacheURL path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   if (v6)
   {
     v7 = MEMORY[0x277CBEA90];
-    v8 = [(NTKBundleComplicationIdentifierCache *)self _cacheURL];
+    _cacheURL2 = [(NTKBundleComplicationIdentifierCache *)self _cacheURL];
     v25 = 0;
-    v9 = [v7 dataWithContentsOfURL:v8 options:0 error:&v25];
+    v9 = [v7 dataWithContentsOfURL:_cacheURL2 options:0 error:&v25];
     v10 = v25;
 
     if (v9)
@@ -197,9 +197,9 @@ LABEL_9:
       v10 = v24;
       if (v11)
       {
-        v12 = [v11 buildVersion];
-        v13 = [(NTKBundleComplicationIdentifierCache *)self _expectedCacheIdentifier];
-        v14 = [v12 isEqualToString:v13];
+        buildVersion = [v11 buildVersion];
+        _expectedCacheIdentifier = [(NTKBundleComplicationIdentifierCache *)self _expectedCacheIdentifier];
+        v14 = [buildVersion isEqualToString:_expectedCacheIdentifier];
 
         if (v14)
         {
@@ -231,9 +231,9 @@ LABEL_9:
   }
 }
 
-- (void)_updateCacheModel:(id)a3
+- (void)_updateCacheModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v9 = MEMORY[0x277D85DD0];
@@ -245,8 +245,8 @@ LABEL_9:
   v7 = v6;
   v8 = v5;
   [(NTKBundleComplicationIdentifierCache *)self _enumerateBundles:&v9];
-  [v4 setDataSourceToBundleIdentifier:{v8, v9, v10, v11, v12}];
-  [v4 setLegacyComplicationTypeToDataSourceIdentifier:v7];
+  [modelCopy setDataSourceToBundleIdentifier:{v8, v9, v10, v11, v12}];
+  [modelCopy setLegacyComplicationTypeToDataSourceIdentifier:v7];
 }
 
 void __58__NTKBundleComplicationIdentifierCache__updateCacheModel___block_invoke(uint64_t a1, void *a2)
@@ -309,10 +309,10 @@ void __58__NTKBundleComplicationIdentifierCache__updateCacheModel___block_invoke
   }
 }
 
-- (void)_enumerateBundles:(id)a3
+- (void)_enumerateBundles:(id)bundles
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  bundlesCopy = bundles;
   if (_enumerateBundles__onceToken_0 != -1)
   {
     [NTKBundleComplicationIdentifierCache _enumerateBundles:];
@@ -343,7 +343,7 @@ void __58__NTKBundleComplicationIdentifierCache__updateCacheModel___block_invoke
         v11[1] = 3221225472;
         v11[2] = __58__NTKBundleComplicationIdentifierCache__enumerateBundles___block_invoke_2;
         v11[3] = &unk_278782058;
-        v12 = v3;
+        v12 = bundlesCopy;
         [v9 enumerateBundlesFromDirectoryURL:v8 enumerator:v11];
       }
 

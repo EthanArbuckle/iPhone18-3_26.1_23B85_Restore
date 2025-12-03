@@ -1,12 +1,12 @@
 @interface CNAvatarCacheChangeListener
 - (CNAvatarCacheChangeListener)init;
-- (CNAvatarCacheChangeListener)initWithContactStore:(id)a3 delegate:(id)a4;
+- (CNAvatarCacheChangeListener)initWithContactStore:(id)store delegate:(id)delegate;
 - (CNAvatarCacheChangeListenerDelegate)delegate;
 - (id)description;
 - (id)makeAnalysisTask;
 - (id)makeDatabaseChangedTask;
-- (id)makeReportingTaskWithIdentifiers:(id)a3;
-- (void)databaseChanged:(id)a3;
+- (id)makeReportingTaskWithIdentifiers:(id)identifiers;
+- (void)databaseChanged:(id)changed;
 - (void)loadCurrentHistoryToken;
 - (void)start;
 - (void)stop;
@@ -16,19 +16,19 @@
 
 - (void)loadCurrentHistoryToken
 {
-  v3 = [(CNAvatarCacheChangeListener *)self rawPreprocessor];
+  rawPreprocessor = [(CNAvatarCacheChangeListener *)self rawPreprocessor];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __54__CNAvatarCacheChangeListener_loadCurrentHistoryToken__block_invoke;
   v4[3] = &unk_1E76E7D10;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [rawPreprocessor performBlock:v4];
 }
 
 - (void)start
 {
-  v3 = [(CNAvatarCacheChangeListener *)self notificationCenter];
-  [v3 addObserver:self selector:sel_databaseChanged_ name:*MEMORY[0x1E695C3D8] object:0];
+  notificationCenter = [(CNAvatarCacheChangeListener *)self notificationCenter];
+  [notificationCenter addObserver:self selector:sel_databaseChanged_ name:*MEMORY[0x1E695C3D8] object:0];
 }
 
 void __54__CNAvatarCacheChangeListener_loadCurrentHistoryToken__block_invoke(uint64_t a1)
@@ -40,29 +40,29 @@ void __54__CNAvatarCacheChangeListener_loadCurrentHistoryToken__block_invoke(uin
 
 - (CNAvatarCacheChangeListener)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNAvatarCacheChangeListener)initWithContactStore:(id)a3 delegate:(id)a4
+- (CNAvatarCacheChangeListener)initWithContactStore:(id)store delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = CNAvatarCacheChangeListener;
   v9 = [(CNAvatarCacheChangeListener *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_store, a3);
-    objc_storeWeak(&v10->_delegate, v8);
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
+    objc_storeStrong(&v9->_store, store);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     notificationCenter = v10->_notificationCenter;
-    v10->_notificationCenter = v11;
+    v10->_notificationCenter = defaultCenter;
 
-    v13 = [MEMORY[0x1E6996820] defaultProvider];
-    v14 = [v13 newSerialSchedulerWithName:@"com.apple.contacts.ui.avatar-cache.notification-preprocessor"];
+    defaultProvider = [MEMORY[0x1E6996820] defaultProvider];
+    v14 = [defaultProvider newSerialSchedulerWithName:@"com.apple.contacts.ui.avatar-cache.notification-preprocessor"];
     rawPreprocessor = v10->_rawPreprocessor;
     v10->_rawPreprocessor = v14;
 
@@ -83,36 +83,36 @@ void __54__CNAvatarCacheChangeListener_loadCurrentHistoryToken__block_invoke(uin
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [v3 appendName:@"delegate" object:WeakRetained];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (void)stop
 {
-  v3 = [(CNAvatarCacheChangeListener *)self notificationCenter];
-  [v3 removeObserver:self name:0 object:0];
+  notificationCenter = [(CNAvatarCacheChangeListener *)self notificationCenter];
+  [notificationCenter removeObserver:self name:0 object:0];
 }
 
-- (void)databaseChanged:(id)a3
+- (void)databaseChanged:(id)changed
 {
-  v4 = [(CNAvatarCacheChangeListener *)self makeDatabaseChangedTask];
-  v5 = [(CNAvatarCacheChangeListener *)self preprocessor];
+  makeDatabaseChangedTask = [(CNAvatarCacheChangeListener *)self makeDatabaseChangedTask];
+  preprocessor = [(CNAvatarCacheChangeListener *)self preprocessor];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__CNAvatarCacheChangeListener_databaseChanged___block_invoke;
   v7[3] = &unk_1E76E7D10;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = makeDatabaseChangedTask;
+  v6 = makeDatabaseChangedTask;
+  [preprocessor performBlock:v7];
 }
 
 - (id)makeDatabaseChangedTask
 {
   v3 = [CNAvatarCacheChangeHistoryAnalysisTask alloc];
-  v4 = [(CNAvatarCacheChangeListener *)self store];
-  v5 = [(CNAvatarCacheChangeListener *)self currentHistoryToken];
-  v6 = [(CNAvatarCacheChangeHistoryAnalysisTask *)v3 initWithContactStore:v4 startingToken:v5];
+  store = [(CNAvatarCacheChangeListener *)self store];
+  currentHistoryToken = [(CNAvatarCacheChangeListener *)self currentHistoryToken];
+  v6 = [(CNAvatarCacheChangeHistoryAnalysisTask *)v3 initWithContactStore:store startingToken:currentHistoryToken];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -140,18 +140,18 @@ id __54__CNAvatarCacheChangeListener_makeDatabaseChangedTask__block_invoke(uint6
 
 - (id)makeAnalysisTask
 {
-  v3 = [(CNAvatarCacheChangeListener *)self store];
-  v4 = [(CNAvatarCacheChangeListener *)self currentHistoryToken];
-  v5 = [[CNAvatarCacheChangeHistoryAnalysisTask alloc] initWithContactStore:v3 startingToken:v4];
+  store = [(CNAvatarCacheChangeListener *)self store];
+  currentHistoryToken = [(CNAvatarCacheChangeListener *)self currentHistoryToken];
+  v5 = [[CNAvatarCacheChangeHistoryAnalysisTask alloc] initWithContactStore:store startingToken:currentHistoryToken];
 
   return v5;
 }
 
-- (id)makeReportingTaskWithIdentifiers:(id)a3
+- (id)makeReportingTaskWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(CNAvatarCacheChangeListener *)self delegate];
-  v6 = [[CNAvatarChangeHistoryReportingTask alloc] initWithIdentifiers:v4 delegate:v5];
+  identifiersCopy = identifiers;
+  delegate = [(CNAvatarCacheChangeListener *)self delegate];
+  v6 = [[CNAvatarChangeHistoryReportingTask alloc] initWithIdentifiers:identifiersCopy delegate:delegate];
 
   return v6;
 }

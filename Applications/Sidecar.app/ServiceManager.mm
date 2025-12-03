@@ -1,16 +1,16 @@
 @interface ServiceManager
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
 @end
 
 @implementation ServiceManager
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = self;
-  v14 = sub_10000D890(v13, a4);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  toViewControllerCopy = toViewController;
+  selfCopy = self;
+  v14 = sub_10000D890(selfCopy, operation);
 
   return v14;
 }

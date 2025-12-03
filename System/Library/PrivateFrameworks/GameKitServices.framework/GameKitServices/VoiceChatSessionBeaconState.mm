@@ -1,7 +1,7 @@
 @interface VoiceChatSessionBeaconState
 - (VoiceChatSessionBeaconState)init;
 - (void)dealloc;
-- (void)setLastReceivedBeacon:(tagVoiceChatBeacon *)a3;
+- (void)setLastReceivedBeacon:(tagVoiceChatBeacon *)beacon;
 @end
 
 @implementation VoiceChatSessionBeaconState
@@ -36,11 +36,11 @@
   [(VoiceChatSessionBeaconState *)&v4 dealloc];
 }
 
-- (void)setLastReceivedBeacon:(tagVoiceChatBeacon *)a3
+- (void)setLastReceivedBeacon:(tagVoiceChatBeacon *)beacon
 {
   lastReceivedBeacon = self->lastReceivedBeacon;
-  v4 = *&a3->var0;
-  lastReceivedBeacon->var4 = a3->var4;
+  v4 = *&beacon->var0;
+  lastReceivedBeacon->var4 = beacon->var4;
   *&lastReceivedBeacon->var0 = v4;
 }
 

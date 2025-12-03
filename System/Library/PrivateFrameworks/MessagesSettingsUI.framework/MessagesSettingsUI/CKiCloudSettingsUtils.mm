@@ -1,19 +1,19 @@
 @interface CKiCloudSettingsUtils
 + (id)iCloudSettingsSyncText;
-+ (id)lastSyncedDateStringForDate:(id)a3 inContext:(int64_t)a4;
-+ (id)localizedStringWithKey:(id)a3 inPlistNamed:(id)a4;
++ (id)lastSyncedDateStringForDate:(id)date inContext:(int64_t)context;
++ (id)localizedStringWithKey:(id)key inPlistNamed:(id)named;
 + (id)sharedNumberFormatter;
-+ (id)specifierWithTitle:(id)a3 target:(id)a4 selector:(SEL)a5;
++ (id)specifierWithTitle:(id)title target:(id)target selector:(SEL)selector;
 @end
 
 @implementation CKiCloudSettingsUtils
 
-+ (id)specifierWithTitle:(id)a3 target:(id)a4 selector:(SEL)a5
++ (id)specifierWithTitle:(id)title target:(id)target selector:(SEL)selector
 {
   v7 = MEMORY[0x277D3FAD8];
-  v8 = a3;
-  v9 = [v7 preferenceSpecifierNamed:v8 target:a4 set:0 get:a5 detail:0 cell:-1 edit:0];
-  [v9 setIdentifier:v8];
+  titleCopy = title;
+  v9 = [v7 preferenceSpecifierNamed:titleCopy target:target set:0 get:selector detail:0 cell:-1 edit:0];
+  [v9 setIdentifier:titleCopy];
 
   [v9 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FF38]];
   [v9 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
@@ -29,29 +29,29 @@
   return v3;
 }
 
-+ (id)localizedStringWithKey:(id)a3 inPlistNamed:(id)a4
++ (id)localizedStringWithKey:(id)key inPlistNamed:(id)named
 {
   v5 = MEMORY[0x277CCA8D8];
-  v6 = a4;
-  v7 = a3;
+  namedCopy = named;
+  keyCopy = key;
   v8 = [v5 bundleForClass:objc_opt_class()];
-  v9 = [v8 localizedStringForKey:v7 value:&stru_286A13F00 table:v6];
+  v9 = [v8 localizedStringForKey:keyCopy value:&stru_286A13F00 table:namedCopy];
 
   return v9;
 }
 
-+ (id)lastSyncedDateStringForDate:(id)a3 inContext:(int64_t)a4
++ (id)lastSyncedDateStringForDate:(id)date inContext:(int64_t)context
 {
-  v5 = a3;
-  v6 = v5;
+  dateCopy = date;
+  v6 = dateCopy;
   if (lastSyncedDateStringForDate_inContext__onceToken == -1)
   {
-    if (v5)
+    if (dateCopy)
     {
 LABEL_3:
-      v7 = [MEMORY[0x277CBEAF8] currentLocale];
-      [lastSyncedDateStringForDate_inContext__dateFormatter setLocale:v7];
-      [lastSyncedDateStringForDate_inContext__timeFormatter setLocale:v7];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      [lastSyncedDateStringForDate_inContext__dateFormatter setLocale:currentLocale];
+      [lastSyncedDateStringForDate_inContext__timeFormatter setLocale:currentLocale];
       v8 = [MEMORY[0x277CBEAA8] now];
       [v8 timeIntervalSinceDate:v6];
       v10 = v9;
@@ -59,11 +59,11 @@ LABEL_3:
       if (v10 >= 60.0)
       {
         v12 = [lastSyncedDateStringForDate_inContext__dateFormatter stringFromDate:v6];
-        v11 = [v12 lowercaseStringWithLocale:v7];
+        v11 = [v12 lowercaseStringWithLocale:currentLocale];
 
         v13 = [lastSyncedDateStringForDate_inContext__timeFormatter stringFromDate:v6];
         v14 = @"SYNC_COMPLETE_ON_DAY_AT_TIME";
-        if (!a4)
+        if (!context)
         {
           v14 = @"SYNC_DETAILS_FOOTER_TEXT";
         }
@@ -74,13 +74,13 @@ LABEL_3:
         v18 = [v16 bundleForClass:objc_opt_class()];
         v19 = [v18 localizedStringForKey:v17 value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
 
-        a4 = [v15 stringWithFormat:v19, v11, v13];
+        context = [v15 stringWithFormat:v19, v11, v13];
       }
 
       else
       {
         v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        a4 = [v11 localizedStringForKey:@"SYNC_COMPLETE_JUST_NOW" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
+        context = [v11 localizedStringForKey:@"SYNC_COMPLETE_JUST_NOW" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
       }
 
       goto LABEL_12;
@@ -96,18 +96,18 @@ LABEL_3:
     }
   }
 
-  if (!a4)
+  if (!context)
   {
     goto LABEL_13;
   }
 
-  v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  a4 = [v7 localizedStringForKey:@"NOT_SYNCED" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
+  currentLocale = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+  context = [currentLocale localizedStringForKey:@"NOT_SYNCED" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
 LABEL_12:
 
 LABEL_13:
 
-  return a4;
+  return context;
 }
 
 uint64_t __63__CKiCloudSettingsUtils_lastSyncedDateStringForDate_inContext___block_invoke()

@@ -1,42 +1,42 @@
 @interface NTKFaceConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NTKFaceConfiguration)init;
-- (NTKFaceConfiguration)initWithCoder:(id)a3;
-- (NTKFaceConfiguration)initWithJSONDictionary:(id)a3 editModeMapping:(id)a4 forDevice:(id)a5;
+- (NTKFaceConfiguration)initWithCoder:(id)coder;
+- (NTKFaceConfiguration)initWithJSONDictionary:(id)dictionary editModeMapping:(id)mapping forDevice:(id)device;
 - (id)_dateMetricsKeys;
-- (id)colorEditModeConfigurationWithJsonRepresentation:(id)a3 editMode:(int64_t)a4 editModeMapping:(id)a5 forDevice:(id)a6;
-- (id)complicationForSlot:(id)a3;
+- (id)colorEditModeConfigurationWithJsonRepresentation:(id)representation editMode:(int64_t)mode editModeMapping:(id)mapping forDevice:(id)device;
+- (id)complicationForSlot:(id)slot;
 - (id)complications;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)customData;
-- (id)customDataForKey:(id)a3;
+- (id)customDataForKey:(id)key;
 - (id)description;
 - (id)editModeConfigurations;
-- (id)metricForKey:(id)a3;
+- (id)metricForKey:(id)key;
 - (id)metrics;
-- (id)optionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)optionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)validationString;
 - (unint64_t)hash;
-- (void)_applyComplicationsDescription:(id)a3;
-- (void)_applyCustomData:(id)a3;
-- (void)_applyCustomizationDescription:(id)a3 editModeMapping:(id)a4 forDevice:(id)a5;
-- (void)_applyMetrics:(id)a3;
-- (void)_enumerateComplicationsWithBlock:(id)a3;
-- (void)_enumerateCustomDataWithBlock:(id)a3;
-- (void)_enumerateEditModeConfigurationsWithBlock:(id)a3;
+- (void)_applyComplicationsDescription:(id)description;
+- (void)_applyCustomData:(id)data;
+- (void)_applyCustomizationDescription:(id)description editModeMapping:(id)mapping forDevice:(id)device;
+- (void)_applyMetrics:(id)metrics;
+- (void)_enumerateComplicationsWithBlock:(id)block;
+- (void)_enumerateCustomDataWithBlock:(id)block;
+- (void)_enumerateEditModeConfigurationsWithBlock:(id)block;
 - (void)_invalidateDescription;
-- (void)addConfigurationKeysToJSONDictionary:(id)a3 face:(id)a4;
-- (void)appendCustomDataToDailySnapshotKey:(id)a3;
-- (void)appendEditModesToDailySnapshotKey:(id)a3;
+- (void)addConfigurationKeysToJSONDictionary:(id)dictionary face:(id)face;
+- (void)appendCustomDataToDailySnapshotKey:(id)key;
+- (void)appendEditModesToDailySnapshotKey:(id)key;
 - (void)clearMetrics;
-- (void)encodeWithCoder:(id)a3;
-- (void)incrementMetricForKey:(id)a3;
-- (void)setComplication:(id)a3 forSlot:(id)a4;
-- (void)setCustomData:(id)a3 forKey:(id)a4;
-- (void)setCustomDataFromConfiguration:(id)a3;
-- (void)setMetric:(id)a3 forKey:(id)a4;
-- (void)setMetricsFromConfiguration:(id)a3;
-- (void)setOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)incrementMetricForKey:(id)key;
+- (void)setComplication:(id)complication forSlot:(id)slot;
+- (void)setCustomData:(id)data forKey:(id)key;
+- (void)setCustomDataFromConfiguration:(id)configuration;
+- (void)setMetric:(id)metric forKey:(id)key;
+- (void)setMetricsFromConfiguration:(id)configuration;
+- (void)setOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKFaceConfiguration
@@ -72,68 +72,68 @@
   return v2;
 }
 
-- (id)optionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)optionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
+  slotCopy = slot;
   os_unfair_lock_lock(&self->_editModeConfigurationsLock);
   editModeConfigurations = self->_editModeConfigurations;
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
   v9 = [(NSMutableDictionary *)editModeConfigurations objectForKey:v8];
 
-  v10 = [v9 editOptionForSlot:v6];
+  v10 = [v9 editOptionForSlot:slotCopy];
 
   os_unfair_lock_unlock(&self->_editModeConfigurationsLock);
 
   return v10;
 }
 
-- (void)setOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)setOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v14 = a3;
-  v8 = a5;
+  optionCopy = option;
+  slotCopy = slot;
   os_unfair_lock_lock(&self->_editModeConfigurationsLock);
   editModeConfigurations = self->_editModeConfigurations;
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
   v11 = [(NSMutableDictionary *)editModeConfigurations objectForKey:v10];
 
   if (!v11)
   {
     v11 = objc_alloc_init(NTKEditModeConfiguration);
     v12 = self->_editModeConfigurations;
-    v13 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v13 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
     [(NSMutableDictionary *)v12 setObject:v11 forKey:v13];
   }
 
-  [(NTKEditModeConfiguration *)v11 setEditOption:v14 forSlot:v8];
+  [(NTKEditModeConfiguration *)v11 setEditOption:optionCopy forSlot:slotCopy];
   [(NTKFaceConfiguration *)self _invalidateDescription];
   os_unfair_lock_unlock(&self->_editModeConfigurationsLock);
 }
 
-- (id)complicationForSlot:(id)a3
+- (id)complicationForSlot:(id)slot
 {
-  v4 = a3;
+  slotCopy = slot;
   os_unfair_lock_lock(&self->_complicationsLock);
-  v5 = [(NSMutableDictionary *)self->_complications objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_complications objectForKey:slotCopy];
 
   os_unfair_lock_unlock(&self->_complicationsLock);
 
   return v5;
 }
 
-- (void)setComplication:(id)a3 forSlot:(id)a4
+- (void)setComplication:(id)complication forSlot:(id)slot
 {
-  v8 = a3;
-  v6 = a4;
+  complicationCopy = complication;
+  slotCopy = slot;
   os_unfair_lock_lock(&self->_complicationsLock);
   complications = self->_complications;
-  if (v8)
+  if (complicationCopy)
   {
-    [(NSMutableDictionary *)complications setObject:v8 forKey:v6];
+    [(NSMutableDictionary *)complications setObject:complicationCopy forKey:slotCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)complications removeObjectForKey:v6];
+    [(NSMutableDictionary *)complications removeObjectForKey:slotCopy];
   }
 
   [(NTKFaceConfiguration *)self _invalidateDescription];
@@ -144,19 +144,19 @@
 {
   os_unfair_lock_lock(&self->_descriptionLock);
   os_unfair_lock_lock(&self->_cachedDescriptionLock);
-  v3 = self->_cachedDescription;
+  validationString = self->_cachedDescription;
   os_unfair_lock_unlock(&self->_cachedDescriptionLock);
-  if (!v3)
+  if (!validationString)
   {
-    v3 = [(NTKFaceConfiguration *)self validationString];
+    validationString = [(NTKFaceConfiguration *)self validationString];
     os_unfair_lock_lock(&self->_cachedDescriptionLock);
-    objc_storeStrong(&self->_cachedDescription, v3);
+    objc_storeStrong(&self->_cachedDescription, validationString);
     os_unfair_lock_unlock(&self->_cachedDescriptionLock);
   }
 
   os_unfair_lock_unlock(&self->_descriptionLock);
 
-  return v3;
+  return validationString;
 }
 
 - (void)_invalidateDescription
@@ -170,11 +170,11 @@
 
 - (id)validationString
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = v3;
+  string = [MEMORY[0x277CCAB68] string];
+  v4 = string;
   if (self->_resourceDirectoryExists)
   {
-    [v3 appendString:@"resource-directory "];
+    [string appendString:@"resource-directory "];
   }
 
   v28 = 0;
@@ -301,15 +301,15 @@ void __40__NTKFaceConfiguration_validationString__block_invoke_3(uint64_t a1, vo
   [*(a1 + 32) appendFormat:@"%@:%@", v8, v7];
 }
 
-- (void)appendEditModesToDailySnapshotKey:(id)a3
+- (void)appendEditModesToDailySnapshotKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__NTKFaceConfiguration_appendEditModesToDailySnapshotKey___block_invoke;
   v6[3] = &unk_278786D28;
-  v7 = v4;
-  v5 = v4;
+  v7 = keyCopy;
+  v5 = keyCopy;
   [(NTKFaceConfiguration *)self _enumerateEditModeConfigurationsWithBlock:v6];
 }
 
@@ -328,13 +328,13 @@ void __58__NTKFaceConfiguration_appendEditModesToDailySnapshotKey___block_invoke
   [*(a1 + 32) appendFormat:@"(%@)", v7];
 }
 
-- (void)appendCustomDataToDailySnapshotKey:(id)a3
+- (void)appendCustomDataToDailySnapshotKey:(id)key
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NTKFaceConfiguration *)self customData];
-  v6 = [v5 allKeys];
-  v7 = [v6 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+  keyCopy = key;
+  customData = [(NTKFaceConfiguration *)self customData];
+  allKeys = [customData allKeys];
+  v7 = [allKeys sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
   v17 = 0u;
   v18 = 0u;
@@ -356,11 +356,11 @@ void __58__NTKFaceConfiguration_appendEditModesToDailySnapshotKey___block_invoke
           objc_enumerationMutation(v8);
         }
 
-        v13 = [v5 objectForKey:*(*(&v15 + 1) + 8 * v12)];
+        v13 = [customData objectForKey:*(*(&v15 + 1) + 8 * v12)];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v4 appendFormat:@"(%@)", v13];
+          [keyCopy appendFormat:@"(%@)", v13];
         }
 
         else
@@ -368,8 +368,8 @@ void __58__NTKFaceConfiguration_appendEditModesToDailySnapshotKey___block_invoke
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = [v13 stringValue];
-            [v4 appendFormat:@"(%@)", v14];
+            stringValue = [v13 stringValue];
+            [keyCopy appendFormat:@"(%@)", stringValue];
           }
         }
 
@@ -384,57 +384,57 @@ void __58__NTKFaceConfiguration_appendEditModesToDailySnapshotKey___block_invoke
   }
 }
 
-- (id)metricForKey:(id)a3
+- (id)metricForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_metricsLock);
-  v5 = [(NSMutableDictionary *)self->_metrics objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_metrics objectForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_metricsLock);
 
   return v5;
 }
 
-- (void)setMetric:(id)a3 forKey:(id)a4
+- (void)setMetric:(id)metric forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  metricCopy = metric;
   os_unfair_lock_lock(&self->_metricsLock);
-  [(NSMutableDictionary *)self->_metrics setObject:v7 forKey:v6];
+  [(NSMutableDictionary *)self->_metrics setObject:metricCopy forKey:keyCopy];
 
   [(NTKFaceConfiguration *)self _invalidateDescription];
 
   os_unfair_lock_unlock(&self->_metricsLock);
 }
 
-- (void)incrementMetricForKey:(id)a3
+- (void)incrementMetricForKey:(id)key
 {
-  v6 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_metricsLock);
-  v4 = [(NSMutableDictionary *)self->_metrics objectForKey:v6];
+  v4 = [(NSMutableDictionary *)self->_metrics objectForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "integerValue") + 1}];
-    [(NSMutableDictionary *)self->_metrics setObject:v5 forKey:v6];
+    [(NSMutableDictionary *)self->_metrics setObject:v5 forKey:keyCopy];
   }
 
   else if (!v4)
   {
-    [(NSMutableDictionary *)self->_metrics setObject:&unk_2841859F8 forKey:v6];
+    [(NSMutableDictionary *)self->_metrics setObject:&unk_2841859F8 forKey:keyCopy];
   }
 
   [(NTKFaceConfiguration *)self _invalidateDescription];
   os_unfair_lock_unlock(&self->_metricsLock);
 }
 
-- (void)setMetricsFromConfiguration:(id)a3
+- (void)setMetricsFromConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   os_unfair_lock_lock(&self->_metricsLock);
-  if (a3)
+  if (configuration)
   {
-    v6 = v5[3];
+    v6 = configurationCopy[3];
   }
 
   else
@@ -459,13 +459,13 @@ void __58__NTKFaceConfiguration_appendEditModesToDailySnapshotKey___block_invoke
   os_unfair_lock_unlock(&self->_metricsLock);
 }
 
-- (void)_enumerateEditModeConfigurationsWithBlock:(id)a3
+- (void)_enumerateEditModeConfigurationsWithBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NTKFaceConfiguration *)self editModeConfigurations];
-  v6 = [v5 allKeys];
-  v7 = [v6 sortedArrayUsingSelector:sel_compare_];
+  blockCopy = block;
+  editModeConfigurations = [(NTKFaceConfiguration *)self editModeConfigurations];
+  allKeys = [editModeConfigurations allKeys];
+  v7 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v20 = 0;
   v16 = 0u;
@@ -488,9 +488,9 @@ LABEL_3:
       }
 
       v13 = *(*(&v16 + 1) + 8 * v12);
-      v14 = [v13 integerValue];
-      v15 = [v5 objectForKey:v13];
-      v4[2](v4, v14, v15, &v20);
+      integerValue = [v13 integerValue];
+      v15 = [editModeConfigurations objectForKey:v13];
+      blockCopy[2](blockCopy, integerValue, v15, &v20);
 
       if (v20)
       {
@@ -511,15 +511,15 @@ LABEL_3:
   }
 }
 
-- (void)_enumerateCustomDataWithBlock:(id)a3
+- (void)_enumerateCustomDataWithBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_customDataLock);
   v5 = [(NSMutableDictionary *)self->_customData copy];
   os_unfair_lock_unlock(&self->_customDataLock);
-  v6 = [v5 allKeys];
-  v7 = [v6 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [v5 allKeys];
+  v7 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v19 = 0;
   v15 = 0u;
@@ -543,7 +543,7 @@ LABEL_3:
 
       v13 = *(*(&v15 + 1) + 8 * v12);
       v14 = [v5 objectForKeyedSubscript:{v13, v15}];
-      v4[2](v4, v13, v14, &v19);
+      blockCopy[2](blockCopy, v13, v14, &v19);
 
       if (v19)
       {
@@ -564,13 +564,13 @@ LABEL_3:
   }
 }
 
-- (void)_enumerateComplicationsWithBlock:(id)a3
+- (void)_enumerateComplicationsWithBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NTKFaceConfiguration *)self complications];
-  v6 = [v5 allKeys];
-  v7 = [v6 sortedArrayUsingSelector:sel_compare_];
+  blockCopy = block;
+  complications = [(NTKFaceConfiguration *)self complications];
+  allKeys = [complications allKeys];
+  v7 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v19 = 0;
   v15 = 0u;
@@ -593,8 +593,8 @@ LABEL_3:
       }
 
       v13 = *(*(&v15 + 1) + 8 * v12);
-      v14 = [v5 objectForKey:{v13, v15}];
-      v4[2](v4, v13, v14, &v19);
+      v14 = [complications objectForKey:{v13, v15}];
+      blockCopy[2](blockCopy, v13, v14, &v19);
 
       if (v19)
       {
@@ -615,7 +615,7 @@ LABEL_3:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setName:self->_name];
@@ -712,26 +712,26 @@ void __37__NTKFaceConfiguration_copyWithZone___block_invoke_3(void *a1, void *a2
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && NTKEqualObjects(self->_name, v4[10]) && self->_resourceDirectoryExists == *(v4 + 72))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && NTKEqualObjects(self->_name, equalCopy[10]) && self->_resourceDirectoryExists == *(equalCopy + 72))
   {
-    v5 = [(NTKFaceConfiguration *)self metrics];
-    v6 = [v4 metrics];
-    if (NTKEqualObjects(v5, v6))
+    metrics = [(NTKFaceConfiguration *)self metrics];
+    metrics2 = [equalCopy metrics];
+    if (NTKEqualObjects(metrics, metrics2))
     {
-      v7 = [(NTKFaceConfiguration *)self customData];
-      v8 = [v4 customData];
-      if (NTKEqualObjects(v7, v8))
+      customData = [(NTKFaceConfiguration *)self customData];
+      customData2 = [equalCopy customData];
+      if (NTKEqualObjects(customData, customData2))
       {
-        v9 = [(NTKFaceConfiguration *)self complications];
-        v10 = [v4 complications];
-        if (NTKEqualObjects(v9, v10))
+        complications = [(NTKFaceConfiguration *)self complications];
+        complications2 = [equalCopy complications];
+        if (NTKEqualObjects(complications, complications2))
         {
-          v11 = [(NTKFaceConfiguration *)self editModeConfigurations];
-          v12 = [v4 editModeConfigurations];
-          v13 = NTKEqualObjects(v11, v12);
+          editModeConfigurations = [(NTKFaceConfiguration *)self editModeConfigurations];
+          editModeConfigurations2 = [equalCopy editModeConfigurations];
+          v13 = NTKEqualObjects(editModeConfigurations, editModeConfigurations2);
         }
 
         else
@@ -763,60 +763,60 @@ void __37__NTKFaceConfiguration_copyWithZone___block_invoke_3(void *a1, void *a2
 - (unint64_t)hash
 {
   v3 = [(NSString *)self->_name hash];
-  v4 = [(NTKFaceConfiguration *)self complications];
-  v5 = [v4 hash];
-  v6 = [(NTKFaceConfiguration *)self editModeConfigurations];
-  v7 = v5 + [v6 hash] + self->_resourceDirectoryExists + v3;
-  v8 = [(NTKFaceConfiguration *)self metrics];
-  v9 = [v8 hash];
-  v10 = [(NTKFaceConfiguration *)self customData];
-  v11 = v9 + [v10 hash];
+  complications = [(NTKFaceConfiguration *)self complications];
+  v5 = [complications hash];
+  editModeConfigurations = [(NTKFaceConfiguration *)self editModeConfigurations];
+  v7 = v5 + [editModeConfigurations hash] + self->_resourceDirectoryExists + v3;
+  metrics = [(NTKFaceConfiguration *)self metrics];
+  v9 = [metrics hash];
+  customData = [(NTKFaceConfiguration *)self customData];
+  v11 = v9 + [customData hash];
 
   return v7 + v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"Name"];
-  [v5 encodeBool:self->_resourceDirectoryExists forKey:@"ResourceDirectoryExists"];
-  v6 = [(NTKFaceConfiguration *)self metrics];
-  v7 = [v6 mutableCopy];
-  [v5 encodeObject:v7 forKey:@"Metrics"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"Name"];
+  [coderCopy encodeBool:self->_resourceDirectoryExists forKey:@"ResourceDirectoryExists"];
+  metrics = [(NTKFaceConfiguration *)self metrics];
+  v7 = [metrics mutableCopy];
+  [coderCopy encodeObject:v7 forKey:@"Metrics"];
 
-  v8 = [(NTKFaceConfiguration *)self customData];
-  v9 = [v8 mutableCopy];
-  [v5 encodeObject:v9 forKey:@"CustomData"];
+  customData = [(NTKFaceConfiguration *)self customData];
+  v9 = [customData mutableCopy];
+  [coderCopy encodeObject:v9 forKey:@"CustomData"];
 
-  v10 = [(NTKFaceConfiguration *)self editModeConfigurations];
-  v11 = [v10 mutableCopy];
-  [v5 encodeObject:v11 forKey:@"EditModeConfigurations"];
+  editModeConfigurations = [(NTKFaceConfiguration *)self editModeConfigurations];
+  v11 = [editModeConfigurations mutableCopy];
+  [coderCopy encodeObject:v11 forKey:@"EditModeConfigurations"];
 
-  v13 = [(NTKFaceConfiguration *)self complications];
-  v12 = [v13 mutableCopy];
-  [v5 encodeObject:v12 forKey:@"Complications"];
+  complications = [(NTKFaceConfiguration *)self complications];
+  v12 = [complications mutableCopy];
+  [coderCopy encodeObject:v12 forKey:@"Complications"];
 }
 
-- (NTKFaceConfiguration)initWithCoder:(id)a3
+- (NTKFaceConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v43.receiver = self;
   v43.super_class = NTKFaceConfiguration;
   v5 = [(NTKFaceConfiguration *)&v43 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v5->_resourceDirectoryExists = [v4 decodeBoolForKey:@"ResourceDirectoryExists"];
+    v5->_resourceDirectoryExists = [coderCopy decodeBoolForKey:@"ResourceDirectoryExists"];
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v8 setWithObjects:{v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"Metrics"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"Metrics"];
     metrics = v5->_metrics;
     v5->_metrics = v13;
 
@@ -825,7 +825,7 @@ void __37__NTKFaceConfiguration_copyWithZone___block_invoke_3(void *a1, void *a2
     v17 = objc_opt_class();
     v18 = [v15 setWithObjects:{v16, v17, objc_opt_class(), 0}];
 
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"CustomData"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"CustomData"];
     customData = v5->_customData;
     v5->_customData = v19;
 
@@ -834,7 +834,7 @@ void __37__NTKFaceConfiguration_copyWithZone___block_invoke_3(void *a1, void *a2
     v23 = objc_opt_class();
     v24 = [v21 setWithObjects:{v22, v23, objc_opt_class(), 0}];
 
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"EditModeConfigurations"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"EditModeConfigurations"];
     editModeConfigurations = v5->_editModeConfigurations;
     v5->_editModeConfigurations = v25;
 
@@ -850,7 +850,7 @@ void __37__NTKFaceConfiguration_copyWithZone___block_invoke_3(void *a1, void *a2
     v35 = objc_opt_class();
     v36 = [v30 setWithObjects:{v31, v32, v33, v34, v35, objc_opt_class(), 0}];
 
-    v37 = [v4 decodeObjectOfClasses:v36 forKey:@"Complications"];
+    v37 = [coderCopy decodeObjectOfClasses:v36 forKey:@"Complications"];
     complications = v5->_complications;
     v5->_complications = v37;
 
@@ -863,15 +863,15 @@ void __37__NTKFaceConfiguration_copyWithZone___block_invoke_3(void *a1, void *a2
   return v5;
 }
 
-- (void)addConfigurationKeysToJSONDictionary:(id)a3 face:(id)a4
+- (void)addConfigurationKeysToJSONDictionary:(id)dictionary face:(id)face
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 setObject:self->_name forKeyedSubscript:@"face name"];
+  dictionaryCopy = dictionary;
+  faceCopy = face;
+  [dictionaryCopy setObject:self->_name forKeyedSubscript:@"face name"];
   if (self->_resourceDirectoryExists)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithBool:1];
-    [v6 setObject:v8 forKeyedSubscript:@"resource directory"];
+    [dictionaryCopy setObject:v8 forKeyedSubscript:@"resource directory"];
   }
 
   v9 = objc_opt_new();
@@ -882,7 +882,7 @@ void __37__NTKFaceConfiguration_copyWithZone___block_invoke_3(void *a1, void *a2
   v10 = v9;
   v37 = v10;
   v11 = _Block_copy(aBlock);
-  v12 = [(NTKFaceConfiguration *)self metrics];
+  metrics = [(NTKFaceConfiguration *)self metrics];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __66__NTKFaceConfiguration_addConfigurationKeysToJSONDictionary_face___block_invoke_2;
@@ -892,11 +892,11 @@ void __37__NTKFaceConfiguration_copyWithZone___block_invoke_3(void *a1, void *a2
   v35 = v13;
   v14 = v10;
   v34 = v14;
-  [v12 enumerateKeysAndObjectsUsingBlock:v33];
+  [metrics enumerateKeysAndObjectsUsingBlock:v33];
 
   if ([v14 count])
   {
-    [v6 setObject:v14 forKeyedSubscript:@"metrics"];
+    [dictionaryCopy setObject:v14 forKeyedSubscript:@"metrics"];
   }
 
   v15 = objc_opt_new();
@@ -906,12 +906,12 @@ void __37__NTKFaceConfiguration_copyWithZone___block_invoke_3(void *a1, void *a2
   v30[3] = &unk_278786DA0;
   v16 = v15;
   v31 = v16;
-  v17 = v7;
+  v17 = faceCopy;
   v32 = v17;
   [(NTKFaceConfiguration *)self _enumerateEditModeConfigurationsWithBlock:v30];
   if ([v16 count])
   {
-    [v6 setObject:v16 forKeyedSubscript:@"customization"];
+    [dictionaryCopy setObject:v16 forKeyedSubscript:@"customization"];
   }
 
   v18 = objc_opt_new();
@@ -924,22 +924,22 @@ void __37__NTKFaceConfiguration_copyWithZone___block_invoke_3(void *a1, void *a2
   [(NTKFaceConfiguration *)self _enumerateComplicationsWithBlock:v28];
   if ([v19 count])
   {
-    [v6 setObject:v19 forKeyedSubscript:@"complications"];
+    [dictionaryCopy setObject:v19 forKeyedSubscript:@"complications"];
   }
 
   v20 = objc_opt_new();
-  v21 = [(NTKFaceConfiguration *)self customData];
+  customData = [(NTKFaceConfiguration *)self customData];
   v23 = MEMORY[0x277D85DD0];
   v24 = 3221225472;
   v25 = __66__NTKFaceConfiguration_addConfigurationKeysToJSONDictionary_face___block_invoke_5;
   v26 = &unk_278786DC8;
   v22 = v20;
   v27 = v22;
-  [v21 enumerateKeysAndObjectsUsingBlock:&v23];
+  [customData enumerateKeysAndObjectsUsingBlock:&v23];
 
   if ([v22 count])
   {
-    [v6 setObject:v22 forKeyedSubscript:@"customData"];
+    [dictionaryCopy setObject:v22 forKeyedSubscript:@"customData"];
   }
 }
 
@@ -995,17 +995,17 @@ void __66__NTKFaceConfiguration_addConfigurationKeysToJSONDictionary_face___bloc
   [v6 setObject:v8 forKeyedSubscript:v7];
 }
 
-- (NTKFaceConfiguration)initWithJSONDictionary:(id)a3 editModeMapping:(id)a4 forDevice:(id)a5
+- (NTKFaceConfiguration)initWithJSONDictionary:(id)dictionary editModeMapping:(id)mapping forDevice:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  mappingCopy = mapping;
+  deviceCopy = device;
   v11 = [(NTKFaceConfiguration *)self init];
   if (v11)
   {
-    v25 = v10;
-    v26 = v9;
-    v12 = [v8 objectForKeyedSubscript:@"face name"];
+    v25 = deviceCopy;
+    v26 = mappingCopy;
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"face name"];
     if (v12)
     {
       objc_opt_class();
@@ -1022,7 +1022,7 @@ void __66__NTKFaceConfiguration_addConfigurationKeysToJSONDictionary_face___bloc
     }
 
     objc_storeStrong(&v11->_name, v12);
-    v14 = [v8 objectForKeyedSubscript:@"resource directory"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"resource directory"];
     if (v14)
     {
       objc_opt_class();
@@ -1037,7 +1037,7 @@ void __66__NTKFaceConfiguration_addConfigurationKeysToJSONDictionary_face___bloc
     }
 
     v11->_resourceDirectoryExists = [v14 BOOLValue];
-    v16 = [v8 objectForKeyedSubscript:@"metrics"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"metrics"];
     if (v16)
     {
       objc_opt_class();
@@ -1054,7 +1054,7 @@ void __66__NTKFaceConfiguration_addConfigurationKeysToJSONDictionary_face___bloc
     }
 
     [(NTKFaceConfiguration *)v11 _applyMetrics:v16];
-    v18 = [v8 objectForKeyedSubscript:@"customData"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"customData"];
     if (v18)
     {
       objc_opt_class();
@@ -1071,7 +1071,7 @@ void __66__NTKFaceConfiguration_addConfigurationKeysToJSONDictionary_face___bloc
     }
 
     [(NTKFaceConfiguration *)v11 _applyCustomData:v18];
-    v20 = [v8 objectForKeyedSubscript:@"customization"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"customization"];
     if (v20)
     {
       objc_opt_class();
@@ -1088,7 +1088,7 @@ void __66__NTKFaceConfiguration_addConfigurationKeysToJSONDictionary_face___bloc
     }
 
     [(NTKFaceConfiguration *)v11 _applyCustomizationDescription:v20 editModeMapping:v26 forDevice:v25];
-    v22 = [v8 objectForKeyedSubscript:@"complications"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"complications"];
     if (v22)
     {
       objc_opt_class();
@@ -1106,25 +1106,25 @@ void __66__NTKFaceConfiguration_addConfigurationKeysToJSONDictionary_face___bloc
 
     [(NTKFaceConfiguration *)v11 _applyComplicationsDescription:v22];
 
-    v10 = v25;
-    v9 = v26;
+    deviceCopy = v25;
+    mappingCopy = v26;
   }
 
   return v11;
 }
 
-- (void)_applyCustomizationDescription:(id)a3 editModeMapping:(id)a4 forDevice:(id)a5
+- (void)_applyCustomizationDescription:(id)description editModeMapping:(id)mapping forDevice:(id)device
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v26 = a4;
-  v25 = a5;
+  descriptionCopy = description;
+  mappingCopy = mapping;
+  deviceCopy = device;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v9 = [(__CFString *)v8 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  allKeys = [(__CFString *)descriptionCopy allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v10)
   {
     v12 = *v29;
@@ -1137,7 +1137,7 @@ void __66__NTKFaceConfiguration_addConfigurationKeysToJSONDictionary_face___bloc
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v28 + 1) + 8 * v13);
@@ -1147,18 +1147,18 @@ void __66__NTKFaceConfiguration_addConfigurationKeysToJSONDictionary_face___bloc
           v27 = 0;
           if (NTKFaceBundleGetCustomEditModeFromString(v14, &v27))
           {
-            v15 = [(__CFString *)v8 objectForKey:v14, v24];
+            v15 = [(__CFString *)descriptionCopy objectForKey:v14, v24];
             if (v27 == 10)
             {
               v16 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
               if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138543362;
-                v33 = v8;
+                v33 = descriptionCopy;
                 _os_log_debug_impl(&dword_22D9C5000, v16, OS_LOG_TYPE_DEBUG, "applying color option %{public}@", buf, 0xCu);
               }
 
-              v17 = [(NTKFaceConfiguration *)self colorEditModeConfigurationWithJsonRepresentation:v15 editMode:v27 editModeMapping:v26 forDevice:v25];
+              v17 = [(NTKFaceConfiguration *)self colorEditModeConfigurationWithJsonRepresentation:v15 editMode:v27 editModeMapping:mappingCopy forDevice:deviceCopy];
 LABEL_19:
               p_super = &v17->super;
               os_unfair_lock_lock(&self->_editModeConfigurationsLock);
@@ -1172,10 +1172,10 @@ LABEL_19:
 
             else
             {
-              v19 = [v26 editOptionClassFromEditMode:v27 resourceDirectoryExists:self->_resourceDirectoryExists];
+              v19 = [mappingCopy editOptionClassFromEditMode:v27 resourceDirectoryExists:self->_resourceDirectoryExists];
               if (v19)
               {
-                v17 = [[NTKEditModeConfiguration alloc] initWithJSONObjectRepresentation:v15 editOptionClass:v19 forDevice:v25];
+                v17 = [[NTKEditModeConfiguration alloc] initWithJSONObjectRepresentation:v15 editOptionClass:v19 forDevice:deviceCopy];
                 goto LABEL_19;
               }
 
@@ -1222,7 +1222,7 @@ LABEL_22:
       }
 
       while (v10 != v13);
-      v23 = [v9 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v23 = [allKeys countByEnumeratingWithState:&v28 objects:v36 count:16];
       v10 = v23;
     }
 
@@ -1230,21 +1230,21 @@ LABEL_22:
   }
 }
 
-- (id)colorEditModeConfigurationWithJsonRepresentation:(id)a3 editMode:(int64_t)a4 editModeMapping:(id)a5 forDevice:(id)a6
+- (id)colorEditModeConfigurationWithJsonRepresentation:(id)representation editMode:(int64_t)mode editModeMapping:(id)mapping forDevice:(id)device
 {
-  v10 = a5;
+  mappingCopy = mapping;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __108__NTKFaceConfiguration_colorEditModeConfigurationWithJsonRepresentation_editMode_editModeMapping_forDevice___block_invoke;
   aBlock[3] = &unk_278786DF0;
-  v19 = self;
-  v20 = a4;
-  v18 = v10;
-  v11 = v10;
-  v12 = a6;
-  v13 = a3;
+  selfCopy = self;
+  modeCopy = mode;
+  v18 = mappingCopy;
+  v11 = mappingCopy;
+  deviceCopy = device;
+  representationCopy = representation;
   v14 = _Block_copy(aBlock);
-  v15 = [[NTKEditModeConfiguration alloc] initWithJSONObjectRepresentation:v13 device:v12 editOptionFactory:v14];
+  v15 = [[NTKEditModeConfiguration alloc] initWithJSONObjectRepresentation:representationCopy device:deviceCopy editOptionFactory:v14];
 
   return v15;
 }
@@ -1285,16 +1285,16 @@ id __108__NTKFaceConfiguration_colorEditModeConfigurationWithJsonRepresentation_
   return v11;
 }
 
-- (void)_applyComplicationsDescription:(id)a3
+- (void)_applyComplicationsDescription:(id)description
 {
   v25 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v14 = a3;
-  v3 = [v14 allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  descriptionCopy = description;
+  allKeys = [descriptionCopy allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v4)
   {
     v5 = *v17;
@@ -1305,7 +1305,7 @@ id __108__NTKFaceConfiguration_colorEditModeConfigurationWithJsonRepresentation_
       {
         if (*v17 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v7 = *(*(&v16 + 1) + 8 * v6);
@@ -1317,7 +1317,7 @@ id __108__NTKFaceConfiguration_colorEditModeConfigurationWithJsonRepresentation_
           v9 = v15;
           if (ComplicationSlotFromString)
           {
-            v10 = [v14 objectForKey:v7];
+            v10 = [descriptionCopy objectForKey:v7];
             v11 = [NTKComplication complicationWithJSONObjectRepresentation:v10];
             [(NSMutableDictionary *)self->_complications setObject:v11 forKeyedSubscript:v9];
           }
@@ -1353,18 +1353,18 @@ id __108__NTKFaceConfiguration_colorEditModeConfigurationWithJsonRepresentation_
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v4 = [allKeys countByEnumeratingWithState:&v16 objects:v24 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)_applyMetrics:(id)a3
+- (void)_applyMetrics:(id)metrics
 {
-  if (a3)
+  if (metrics)
   {
-    v4 = a3;
+    metricsCopy = metrics;
     v5 = objc_opt_new();
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -1377,12 +1377,12 @@ id __108__NTKFaceConfiguration_colorEditModeConfigurationWithJsonRepresentation_
     v13 = 3221225472;
     v14 = __38__NTKFaceConfiguration__applyMetrics___block_invoke_2;
     v15 = &unk_278786D78;
-    v16 = self;
+    selfCopy = self;
     v18 = v7;
     v8 = v6;
     v17 = v8;
     v9 = v7;
-    [v4 enumerateKeysAndObjectsUsingBlock:&v12];
+    [metricsCopy enumerateKeysAndObjectsUsingBlock:&v12];
 
     os_unfair_lock_lock(&self->_metricsLock);
     metrics = self->_metrics;
@@ -1441,11 +1441,11 @@ void __38__NTKFaceConfiguration__applyMetrics___block_invoke_2(uint64_t a1, void
   }
 }
 
-- (void)_applyCustomData:(id)a3
+- (void)_applyCustomData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_customDataLock);
-  v5 = [v4 mutableCopy];
+  v5 = [dataCopy mutableCopy];
 
   customData = self->_customData;
   self->_customData = v5;
@@ -1465,41 +1465,41 @@ void __38__NTKFaceConfiguration__applyMetrics___block_invoke_2(uint64_t a1, void
   return v2;
 }
 
-- (id)customDataForKey:(id)a3
+- (id)customDataForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NTKFaceConfiguration *)self customData];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  customData = [(NTKFaceConfiguration *)self customData];
+  v6 = [customData objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setCustomData:(id)a3 forKey:(id)a4
+- (void)setCustomData:(id)data forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  dataCopy = data;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_customDataLock);
   customData = self->_customData;
-  if (v8)
+  if (dataCopy)
   {
-    [(NSMutableDictionary *)customData setObject:v8 forKey:v6];
+    [(NSMutableDictionary *)customData setObject:dataCopy forKey:keyCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)customData removeObjectForKey:v6];
+    [(NSMutableDictionary *)customData removeObjectForKey:keyCopy];
   }
 
   [(NTKFaceConfiguration *)self _invalidateDescription];
   os_unfair_lock_unlock(&self->_customDataLock);
 }
 
-- (void)setCustomDataFromConfiguration:(id)a3
+- (void)setCustomDataFromConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   os_unfair_lock_lock(&self->_customDataLock);
   [(NSMutableDictionary *)self->_customData removeAllObjects];
-  v5 = v4[4];
+  v5 = configurationCopy[4];
 
   if (v5)
   {

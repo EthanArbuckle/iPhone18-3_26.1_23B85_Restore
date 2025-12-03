@@ -1,19 +1,19 @@
 @interface SLComposeViewControllerDelegate
-- (SLComposeViewControllerDelegate)initWithCallback:(id)a3;
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
+- (SLComposeViewControllerDelegate)initWithCallback:(id)callback;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
 @end
 
 @implementation SLComposeViewControllerDelegate
 
-- (SLComposeViewControllerDelegate)initWithCallback:(id)a3
+- (SLComposeViewControllerDelegate)initWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v9.receiver = self;
   v9.super_class = SLComposeViewControllerDelegate;
   v5 = [(SLComposeViewControllerDelegate *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(callbackCopy);
     callback = v5->_callback;
     v5->_callback = v6;
   }
@@ -21,14 +21,14 @@
   return v5;
 }
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
-  v6 = [(SLComposeViewControllerDelegate *)self callback];
+  callback = [(SLComposeViewControllerDelegate *)self callback];
 
-  if (v6)
+  if (callback)
   {
-    v7 = [(SLComposeViewControllerDelegate *)self callback];
-    v7[2](v7, a4);
+    callback2 = [(SLComposeViewControllerDelegate *)self callback];
+    callback2[2](callback2, result);
   }
 }
 

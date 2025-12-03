@@ -1,9 +1,9 @@
 @interface LocalPresenceBulletinNotificationCoordinator
 - (NSUUID)messageTargetUUID;
 - (_TtC13HomeKitDaemon44LocalPresenceBulletinNotificationCoordinator)init;
-- (void)handlePresenceStateChanged:(id)a3;
-- (void)handlePresenceStateChangedMessage:(id)a3;
-- (void)setMessageTargetUUID:(id)a3;
+- (void)handlePresenceStateChanged:(id)changed;
+- (void)handlePresenceStateChangedMessage:(id)message;
+- (void)setMessageTargetUUID:(id)d;
 @end
 
 @implementation LocalPresenceBulletinNotificationCoordinator
@@ -24,7 +24,7 @@
   return v9;
 }
 
-- (void)setMessageTargetUUID:(id)a3
+- (void)setMessageTargetUUID:(id)d
 {
   v4 = sub_22A4DB7DC();
   v5 = *(v4 - 8);
@@ -35,12 +35,12 @@
   v9 = OBJC_IVAR____TtC13HomeKitDaemon44LocalPresenceBulletinNotificationCoordinator_messageTargetUUID;
   swift_beginAccess();
   v10 = *(v5 + 40);
-  v11 = self;
+  selfCopy = self;
   v10(self + v9, v8, v4);
   swift_endAccess();
 }
 
-- (void)handlePresenceStateChanged:(id)a3
+- (void)handlePresenceStateChanged:(id)changed
 {
   v4 = sub_22A4DB21C();
   v5 = *(v4 - 8);
@@ -48,17 +48,17 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_22A4DB1DC();
-  v9 = self;
+  selfCopy = self;
   sub_22983A908();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)handlePresenceStateChangedMessage:(id)a3
+- (void)handlePresenceStateChangedMessage:(id)message
 {
-  v4 = a3;
-  v5 = self;
-  sub_22983B668(v4);
+  messageCopy = message;
+  selfCopy = self;
+  sub_22983B668(messageCopy);
 }
 
 - (_TtC13HomeKitDaemon44LocalPresenceBulletinNotificationCoordinator)init

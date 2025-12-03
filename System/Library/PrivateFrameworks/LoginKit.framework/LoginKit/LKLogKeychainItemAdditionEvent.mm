@@ -1,44 +1,44 @@
 @interface LKLogKeychainItemAdditionEvent
-+ (id)eventFromLKLogEvent:(id)a3;
++ (id)eventFromLKLogEvent:(id)event;
 - (id)dictionary;
-- (void)setKeychainItemAdded:(id)a3;
+- (void)setKeychainItemAdded:(id)added;
 @end
 
 @implementation LKLogKeychainItemAdditionEvent
 
-+ (id)eventFromLKLogEvent:(id)a3
++ (id)eventFromLKLogEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = objc_opt_new();
-  v5 = [v3 process];
-  v6 = [v5 copy];
+  process = [eventCopy process];
+  v6 = [process copy];
   [v4 setProcess:v6];
 
-  v7 = [v3 date];
-  v8 = [v7 copy];
+  date = [eventCopy date];
+  v8 = [date copy];
   [v4 setDate:v8];
 
-  v9 = [v3 senderImagePath];
-  v10 = [v9 copy];
+  senderImagePath = [eventCopy senderImagePath];
+  v10 = [senderImagePath copy];
   [v4 setSenderImagePath:v10];
 
-  [v4 setActivityIdentifier:{objc_msgSend(v3, "activityIdentifier")}];
-  v11 = [v3 composedMessage];
+  [v4 setActivityIdentifier:{objc_msgSend(eventCopy, "activityIdentifier")}];
+  composedMessage = [eventCopy composedMessage];
 
-  v12 = [v11 copy];
+  v12 = [composedMessage copy];
   [v4 setComposedMessage:v12];
 
   return v4;
 }
 
-- (void)setKeychainItemAdded:(id)a3
+- (void)setKeychainItemAdded:(id)added
 {
-  v5 = a3;
-  if (self->_keychainItemAdded != v5)
+  addedCopy = added;
+  if (self->_keychainItemAdded != addedCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_keychainItemAdded, a3);
-    v5 = v6;
+    v6 = addedCopy;
+    objc_storeStrong(&self->_keychainItemAdded, added);
+    addedCopy = v6;
   }
 }
 
@@ -46,13 +46,13 @@
 {
   v9.receiver = self;
   v9.super_class = LKLogKeychainItemAdditionEvent;
-  v3 = [(LKLogEvent *)&v9 dictionary];
-  v4 = [v3 mutableCopy];
+  dictionary = [(LKLogEvent *)&v9 dictionary];
+  v4 = [dictionary mutableCopy];
 
-  v5 = [(LKLogKeychainItemAdditionEvent *)self keychainItemAdded];
-  if (v5)
+  keychainItemAdded = [(LKLogKeychainItemAdditionEvent *)self keychainItemAdded];
+  if (keychainItemAdded)
   {
-    [v4 setObject:v5 forKeyedSubscript:@"keychainItemAdded"];
+    [v4 setObject:keychainItemAdded forKeyedSubscript:@"keychainItemAdded"];
   }
 
   else

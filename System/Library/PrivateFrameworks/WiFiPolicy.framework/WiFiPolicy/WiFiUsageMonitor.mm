@@ -1,118 +1,118 @@
 @interface WiFiUsageMonitor
-+ (id)LQMAnalysisReasonForFault:(unint64_t)a3;
-+ (id)getTDConfirmedEventStringForDisplay:(id *)a3;
-+ (id)getTDEvalCompleteEventStringForDisplay:(int)a3;
++ (id)LQMAnalysisReasonForFault:(unint64_t)fault;
++ (id)getTDConfirmedEventStringForDisplay:(id *)display;
++ (id)getTDEvalCompleteEventStringForDisplay:(int)display;
 + (id)sharedInstance;
-+ (void)appendTDStateToDict:(id)a3 from:(id)a4;
-- (BOOL)submitAnalytics:(id)a3;
-- (BOOL)submitBeaconInfoToCAForInterface:(id)a3;
++ (void)appendTDStateToDict:(id)dict from:(id)from;
+- (BOOL)submitAnalytics:(id)analytics;
+- (BOOL)submitBeaconInfoToCAForInterface:(id)interface;
 - (WiFiUsageMonitor)init;
-- (id)canStartLQMAnalysisforTrigger:(id)a3 andReason:(id)a4 onWindow:(id)a5;
-- (id)faultReasonCount:(unint64_t)a3 forInterface:(id)a4;
-- (id)getProperty:(id)a3 forAllSessionsOfInterface:(id)a4;
-- (id)lastBssSessionInfoForInterface:(id)a3;
+- (id)canStartLQMAnalysisforTrigger:(id)trigger andReason:(id)reason onWindow:(id)window;
+- (id)faultReasonCount:(unint64_t)count forInterface:(id)interface;
+- (id)getProperty:(id)property forAllSessionsOfInterface:(id)interface;
+- (id)lastBssSessionInfoForInterface:(id)interface;
 - (id)lastRangingSessionMetric;
-- (id)summaryForInterface:(id)a3;
-- (void)addFaultEvent:(unint64_t)a3 forInterface:(id)a4;
-- (void)addFaultEvent:(unint64_t)a3 forInterface:(id)a4 at:(id)a5 event:(id)a6;
-- (void)addFaultEvent:(unint64_t)a3 forInterface:(id)a4 event:(id)a5;
-- (void)addRangingRttSampleWithRssi:(int64_t)a3 rtt:(int64_t)a4 snr:(unint64_t)a5 flags:(unint64_t)a6 channel:(unint64_t)a7 coreId:(unint64_t)a8 bitErrorRate:(unint64_t)a9 phyError:(unint64_t)a10 andPeerSnr:(unint64_t)a11 andPeerCoreId:(unint64_t)a12 andPeerBitErrorRate:(unint64_t)a13 andPeerPhyError:(unint64_t)a14;
-- (void)addSoftApClientEvent:(BOOL)a3 identifier:(id)a4 isAppleClient:(BOOL)a5 isInstantHotspot:(BOOL)a6 isAutoHotspot:(BOOL)a7 isHidden:(BOOL)a8;
-- (void)addSoftApCoexEvent:(unint64_t)a3 deniedUnii1ChannelMap:(unint64_t)a4 deniedUnii2aChannelMap:(unint64_t)a5 deniedUnii2cChannelMap:(unint64_t)a6 deniedUnii3ChannelMap:(unint64_t)a7;
-- (void)addTriggerDisconnectEvent:(id)a3 isAlerted:(BOOL)a4 isConfirmed:(BOOL)a5 isExecuted:(BOOL)a6;
-- (void)appendBTStatsToDict:(id)a3;
-- (void)appendSARStatsToDict:(id)a3;
-- (void)appendUsbStatsToDict:(id)a3;
-- (void)brokenLinkDetected:(id)a3;
-- (void)enableSubmitAnalyticsNoSampling:(BOOL)a3;
+- (id)summaryForInterface:(id)interface;
+- (void)addFaultEvent:(unint64_t)event forInterface:(id)interface;
+- (void)addFaultEvent:(unint64_t)event forInterface:(id)interface at:(id)at event:(id)a6;
+- (void)addFaultEvent:(unint64_t)event forInterface:(id)interface event:(id)a5;
+- (void)addRangingRttSampleWithRssi:(int64_t)rssi rtt:(int64_t)rtt snr:(unint64_t)snr flags:(unint64_t)flags channel:(unint64_t)channel coreId:(unint64_t)id bitErrorRate:(unint64_t)rate phyError:(unint64_t)self0 andPeerSnr:(unint64_t)self1 andPeerCoreId:(unint64_t)self2 andPeerBitErrorRate:(unint64_t)self3 andPeerPhyError:(unint64_t)self4;
+- (void)addSoftApClientEvent:(BOOL)event identifier:(id)identifier isAppleClient:(BOOL)client isInstantHotspot:(BOOL)hotspot isAutoHotspot:(BOOL)autoHotspot isHidden:(BOOL)hidden;
+- (void)addSoftApCoexEvent:(unint64_t)event deniedUnii1ChannelMap:(unint64_t)map deniedUnii2aChannelMap:(unint64_t)channelMap deniedUnii2cChannelMap:(unint64_t)unii2cChannelMap deniedUnii3ChannelMap:(unint64_t)unii3ChannelMap;
+- (void)addTriggerDisconnectEvent:(id)event isAlerted:(BOOL)alerted isConfirmed:(BOOL)confirmed isExecuted:(BOOL)executed;
+- (void)appendBTStatsToDict:(id)dict;
+- (void)appendSARStatsToDict:(id)dict;
+- (void)appendUsbStatsToDict:(id)dict;
+- (void)brokenLinkDetected:(id)detected;
+- (void)enableSubmitAnalyticsNoSampling:(BOOL)sampling;
 - (void)enableXCTestNotifications;
-- (void)faultEventDetected:(id)a3;
+- (void)faultEventDetected:(id)detected;
 - (void)getMobileAssets;
-- (void)linkTestEvent:(id)a3 withReason:(id)a4 forInterface:(id)a5;
-- (void)notifyDHCPChanges:(id)a3;
-- (void)notifyDriverAvailability:(id)a3 available:(BOOL)a4 version:(unint64_t)a5 flags:(unint64_t)a6 eventID:(unint64_t)a7 reason:(int64_t)a8 subReason:(int64_t)a9 minorReason:(int64_t)a10 reasonString:(id)a11;
-- (void)notifyIPv4Changes:(id)a3;
-- (void)notifyIPv6Changes:(id)a3;
-- (void)notifyInterfaceRankingState:(BOOL)a3 forInterface:(id)a4;
-- (void)notifyIpConfigurationStateWithMethod:(BOOL)a3 dhcpLeaseDuration:(double)a4 hasRoutableIpV4:(BOOL)a5 hasRoutableIpV6:(BOOL)a6;
-- (void)notifyNetworkQualityResults:(id)a3 forInterface:(id)a4;
-- (void)pushRNFEventToHUD:(BOOL)a3;
-- (void)pushTDEventToHUD:(id)a3;
-- (void)rangingCompletedWithValidCount:(unint64_t)a3 resultStatus:(int64_t)a4 resultFlags:(unint64_t)a5;
-- (void)rangingSessionRequestedWithSelfPreferredChannel:(unint64_t)a3 selfMainChannel:(unint64_t)a4 selfChannelFlags:(unint64_t)a5 peerPreferredChannel:(unint64_t)a6 peerMainChannel:(unint64_t)a7 peerChannelFlags:(unint64_t)a8 requester:(id)a9;
-- (void)rangingStartedWithNumMeasurements:(unint64_t)a3;
-- (void)receiveKernelLQMRollingWindow:(id)a3 ForInterface:(id)a4;
-- (void)receivedBssTransitionRequest:(id)a3 candidateListIncluded:(BOOL)a4 isAbridged:(BOOL)a5 disassociationImminent:(BOOL)a6 bssTerminationIncluded:(BOOL)a7 essDisassociationImminent:(BOOL)a8;
-- (void)resetDeviceSessionforInterface:(id)a3;
-- (void)sentBssTransitionResponse:(id)a3 status:(int64_t)a4 terminationDelayRequested:(BOOL)a5;
-- (void)setAwdlSequence:(id)a3;
-- (void)setAwdlState:(BOOL)a3 inMode:(int64_t)a4;
-- (void)setBluetoothState:(BOOL)a3 connectedDeviceCount:(unint64_t)a4 inA2dp:(BOOL)a5 inSco:(BOOL)a6 inUniAoS:(BOOL)a7 inBiAoS:(BOOL)a8 btAudioBand:(BOOL)a9;
-- (void)setCallState:(BOOL)a3;
-- (void)setCellularDataStatus:(id)a3 inAirplaneMode:(BOOL)a4;
-- (void)setCellularFallbackState:(BOOL)a3 forInterface:(id)a4;
-- (void)setCellularOutrankingState:(BOOL)a3 forInterface:(id)a4;
-- (void)setCompanionConnectionState:(BOOL)a3;
-- (void)setCompatibilityModeEnabled:(BOOL)a3;
-- (void)setCompletionHandler:(id)a3 withContext:(void *)a4 onQueue:(id)a5;
-- (void)setControlCenterState:(BOOL)a3 withKnownLocation:(BOOL)a4 forInterface:(id)a5;
-- (void)setCurrentApplicationName:(id)a3 withAttributes:(id)a4;
-- (void)setDeviceChargingState:(BOOL)a3;
-- (void)setDeviceInitializationFailureReason:(id)a3 timeSinceBoot:(double)a4;
-- (void)setDeviceLockState:(BOOL)a3;
-- (void)setDisplayState:(BOOL)a3;
-- (void)setFaultEventHandler:(id)a3;
-- (void)setForgetNetworkEvent:(id)a3 forInterface:(id)a4;
-- (void)setJoinEvent:(BOOL)a3 withReason:(unint64_t)a4 lastDisconnectReason:(unint64_t)a5 lastJoinFailure:(int64_t)a6 andNetworkDetails:(id)a7 forInterface:(id)a8;
-- (void)setLinkEvent:(BOOL)a3 isInvoluntary:(BOOL)a4 linkChangeReason:(int64_t)a5 linkChangeSubreason:(int64_t)a6 withNetworkDetails:(id)a7 forInterface:(id)a8;
-- (void)setMediaState:(BOOL)a3;
-- (void)setMotionState:(id)a3;
-- (void)setPowerBudget:(int64_t)a3 andThermalIndex:(int64_t)a4 forInterface:(id)a5;
-- (void)setPowerState:(BOOL)a3 forInterface:(id)a4;
-- (void)setPrivacyRestrictionDisabled:(BOOL)a3;
-- (void)setRoamingARCriteria:(id *)a3 forInterface:(id)a4;
-- (void)setRoamingConfiguration:(int64_t)a3 withChannelList:(id)a4 forInterface:(id)a5;
-- (void)setRoamingState:(BOOL)a3 withReason:(unint64_t)a4 asString:(id)a5 andStatus:(unint64_t)a6 asString:(id)a7 andLatency:(unint64_t)a8 andRoamData:(id)a9 andPingPongSequence:(id)a10 forInterface:(id)a11;
-- (void)setSARState:(BOOL)a3 builtInReceiverOn:(BOOL)a4;
-- (void)setScanningState:(BOOL)a3 client:(unint64_t)a4 neighborBSS:(id)a5 otherBSS:(id)a6 withChannelInfoList:(id)a7 withRequest:(id)a8 forInterface:(id)a9;
-- (void)setSecondaryInterfaceName:(id)a3;
-- (void)setSmartCoverState:(id)a3;
-- (void)setSoftApState:(BOOL)a3 requester:(id)a4 status:(id)a5 changeReason:(id)a6 channelNumber:(unint64_t)a7 countryCode:(unint64_t)a8 isHidden:(BOOL)a9 isInfraConnected:(BOOL)a10 isAwdlUp:(BOOL)a11 lowPowerModeDuration:(double)a12 compatibilityMode:(BOOL)a13 requestToUpLatency:(double)a14 idleTimeBeforeTeardownSec:(double)a15 idleTimeAfterLastClientDisconnectedSec:(double)a16;
-- (void)setSteeringRequest:(unint64_t)a3 preferredChannel:(unint64_t)a4 preferredBand:(int)a5 preferredSSID:(id)a6 targetSSIDDiffersFromCurrent:(BOOL)a7 preferredBSS:(id)a8 ssidIsSplit:(BOOL)a9 transitionCandidates:(BOOL)a10;
-- (void)setSystemWakeState:(BOOL)a3 wokenByWiFi:(BOOL)a4;
-- (void)setTdLogic_alertedBy:(int)a3 forInterface:(id)a4;
-- (void)setTdLogic_badRssiThreshold:(int64_t)a3 goodRssiThreshold:(int64_t)a4;
-- (void)setTdLogic_decisionState:(id *)a3 forInterface:(id)a4;
-- (void)setTdLogic_deferJoin:(unint64_t)a3 perBSSID:(unint64_t)a4;
-- (void)setTdLogic_end:(int)a3 evalTime:(double)a4 rssi:(int64_t)a5 roamTime:(double)a6 forInterface:(id)a7;
-- (void)setTdLogic_fastTdState:(id *)a3 forInterface:(id)a4;
-- (void)setTdLogic_waitForRoamTime:(double)a3 forInterface:(id)a4;
-- (void)setUsbStatus:(BOOL)a3 currentDevices:(id)a4 currentNoiseDelta:(int64_t)a5;
-- (void)startLQMAnalysis:(id)a3;
-- (void)startMonitoringWiFiInterface:(id)a3 withLinkSessionOnly:(BOOL)a4;
+- (void)linkTestEvent:(id)event withReason:(id)reason forInterface:(id)interface;
+- (void)notifyDHCPChanges:(id)changes;
+- (void)notifyDriverAvailability:(id)availability available:(BOOL)available version:(unint64_t)version flags:(unint64_t)flags eventID:(unint64_t)d reason:(int64_t)reason subReason:(int64_t)subReason minorReason:(int64_t)self0 reasonString:(id)self1;
+- (void)notifyIPv4Changes:(id)changes;
+- (void)notifyIPv6Changes:(id)changes;
+- (void)notifyInterfaceRankingState:(BOOL)state forInterface:(id)interface;
+- (void)notifyIpConfigurationStateWithMethod:(BOOL)method dhcpLeaseDuration:(double)duration hasRoutableIpV4:(BOOL)v4 hasRoutableIpV6:(BOOL)v6;
+- (void)notifyNetworkQualityResults:(id)results forInterface:(id)interface;
+- (void)pushRNFEventToHUD:(BOOL)d;
+- (void)pushTDEventToHUD:(id)d;
+- (void)rangingCompletedWithValidCount:(unint64_t)count resultStatus:(int64_t)status resultFlags:(unint64_t)flags;
+- (void)rangingSessionRequestedWithSelfPreferredChannel:(unint64_t)channel selfMainChannel:(unint64_t)mainChannel selfChannelFlags:(unint64_t)flags peerPreferredChannel:(unint64_t)preferredChannel peerMainChannel:(unint64_t)peerMainChannel peerChannelFlags:(unint64_t)channelFlags requester:(id)requester;
+- (void)rangingStartedWithNumMeasurements:(unint64_t)measurements;
+- (void)receiveKernelLQMRollingWindow:(id)window ForInterface:(id)interface;
+- (void)receivedBssTransitionRequest:(id)request candidateListIncluded:(BOOL)included isAbridged:(BOOL)abridged disassociationImminent:(BOOL)imminent bssTerminationIncluded:(BOOL)terminationIncluded essDisassociationImminent:(BOOL)disassociationImminent;
+- (void)resetDeviceSessionforInterface:(id)interface;
+- (void)sentBssTransitionResponse:(id)response status:(int64_t)status terminationDelayRequested:(BOOL)requested;
+- (void)setAwdlSequence:(id)sequence;
+- (void)setAwdlState:(BOOL)state inMode:(int64_t)mode;
+- (void)setBluetoothState:(BOOL)state connectedDeviceCount:(unint64_t)count inA2dp:(BOOL)a2dp inSco:(BOOL)sco inUniAoS:(BOOL)s inBiAoS:(BOOL)aoS btAudioBand:(BOOL)band;
+- (void)setCallState:(BOOL)state;
+- (void)setCellularDataStatus:(id)status inAirplaneMode:(BOOL)mode;
+- (void)setCellularFallbackState:(BOOL)state forInterface:(id)interface;
+- (void)setCellularOutrankingState:(BOOL)state forInterface:(id)interface;
+- (void)setCompanionConnectionState:(BOOL)state;
+- (void)setCompatibilityModeEnabled:(BOOL)enabled;
+- (void)setCompletionHandler:(id)handler withContext:(void *)context onQueue:(id)queue;
+- (void)setControlCenterState:(BOOL)state withKnownLocation:(BOOL)location forInterface:(id)interface;
+- (void)setCurrentApplicationName:(id)name withAttributes:(id)attributes;
+- (void)setDeviceChargingState:(BOOL)state;
+- (void)setDeviceInitializationFailureReason:(id)reason timeSinceBoot:(double)boot;
+- (void)setDeviceLockState:(BOOL)state;
+- (void)setDisplayState:(BOOL)state;
+- (void)setFaultEventHandler:(id)handler;
+- (void)setForgetNetworkEvent:(id)event forInterface:(id)interface;
+- (void)setJoinEvent:(BOOL)event withReason:(unint64_t)reason lastDisconnectReason:(unint64_t)disconnectReason lastJoinFailure:(int64_t)failure andNetworkDetails:(id)details forInterface:(id)interface;
+- (void)setLinkEvent:(BOOL)event isInvoluntary:(BOOL)involuntary linkChangeReason:(int64_t)reason linkChangeSubreason:(int64_t)subreason withNetworkDetails:(id)details forInterface:(id)interface;
+- (void)setMediaState:(BOOL)state;
+- (void)setMotionState:(id)state;
+- (void)setPowerBudget:(int64_t)budget andThermalIndex:(int64_t)index forInterface:(id)interface;
+- (void)setPowerState:(BOOL)state forInterface:(id)interface;
+- (void)setPrivacyRestrictionDisabled:(BOOL)disabled;
+- (void)setRoamingARCriteria:(id *)criteria forInterface:(id)interface;
+- (void)setRoamingConfiguration:(int64_t)configuration withChannelList:(id)list forInterface:(id)interface;
+- (void)setRoamingState:(BOOL)state withReason:(unint64_t)reason asString:(id)string andStatus:(unint64_t)status asString:(id)asString andLatency:(unint64_t)latency andRoamData:(id)data andPingPongSequence:(id)self0 forInterface:(id)self1;
+- (void)setSARState:(BOOL)state builtInReceiverOn:(BOOL)on;
+- (void)setScanningState:(BOOL)state client:(unint64_t)client neighborBSS:(id)s otherBSS:(id)sS withChannelInfoList:(id)list withRequest:(id)request forInterface:(id)interface;
+- (void)setSecondaryInterfaceName:(id)name;
+- (void)setSmartCoverState:(id)state;
+- (void)setSoftApState:(BOOL)state requester:(id)requester status:(id)status changeReason:(id)reason channelNumber:(unint64_t)number countryCode:(unint64_t)code isHidden:(BOOL)hidden isInfraConnected:(BOOL)self0 isAwdlUp:(BOOL)self1 lowPowerModeDuration:(double)self2 compatibilityMode:(BOOL)self3 requestToUpLatency:(double)self4 idleTimeBeforeTeardownSec:(double)self5 idleTimeAfterLastClientDisconnectedSec:(double)self6;
+- (void)setSteeringRequest:(unint64_t)request preferredChannel:(unint64_t)channel preferredBand:(int)band preferredSSID:(id)d targetSSIDDiffersFromCurrent:(BOOL)current preferredBSS:(id)s ssidIsSplit:(BOOL)split transitionCandidates:(BOOL)self0;
+- (void)setSystemWakeState:(BOOL)state wokenByWiFi:(BOOL)fi;
+- (void)setTdLogic_alertedBy:(int)by forInterface:(id)interface;
+- (void)setTdLogic_badRssiThreshold:(int64_t)threshold goodRssiThreshold:(int64_t)rssiThreshold;
+- (void)setTdLogic_decisionState:(id *)state forInterface:(id)interface;
+- (void)setTdLogic_deferJoin:(unint64_t)join perBSSID:(unint64_t)d;
+- (void)setTdLogic_end:(int)logic_end evalTime:(double)time rssi:(int64_t)rssi roamTime:(double)roamTime forInterface:(id)interface;
+- (void)setTdLogic_fastTdState:(id *)state forInterface:(id)interface;
+- (void)setTdLogic_waitForRoamTime:(double)time forInterface:(id)interface;
+- (void)setUsbStatus:(BOOL)status currentDevices:(id)devices currentNoiseDelta:(int64_t)delta;
+- (void)startLQMAnalysis:(id)analysis;
+- (void)startMonitoringWiFiInterface:(id)interface withLinkSessionOnly:(BOOL)only;
 - (void)submitBootLatenciesToCA;
-- (void)submitLqmToCA:(id)a3 forInterface:(id)a4;
-- (void)submitScanResultWithNeighborBSS:(id)a3 withOtherBSS:(id)a4 withChannelInfoList:(id)a5;
-- (void)updateBeaconCache:(id)a3 afterRoamAttempt:(id)a4 whileCurrentBSSID:(id)a5 forInterface:(id)a6;
-- (void)updateBeaconInfo:(id)a3 andParsedIE:(id)a4 forInterface:(id)a5;
-- (void)updateBssPerChannelWith:(id)a3 into:(id)a4 and:(id)a5 withChannelInfoList:(id)a6;
-- (void)updateCurrentNetworkDetails:(id)a3;
-- (void)updateIsBSPActive:(BOOL)a3;
-- (void)updateKnownNetworksSupportingSeamless:(id)a3 forBSS:(id)a4 andSSID:(id)a5 beaconCache:(id)a6;
+- (void)submitLqmToCA:(id)a forInterface:(id)interface;
+- (void)submitScanResultWithNeighborBSS:(id)s withOtherBSS:(id)sS withChannelInfoList:(id)list;
+- (void)updateBeaconCache:(id)cache afterRoamAttempt:(id)attempt whileCurrentBSSID:(id)d forInterface:(id)interface;
+- (void)updateBeaconInfo:(id)info andParsedIE:(id)e forInterface:(id)interface;
+- (void)updateBssPerChannelWith:(id)with into:(id)into and:(id)and withChannelInfoList:(id)list;
+- (void)updateCurrentNetworkDetails:(id)details;
+- (void)updateIsBSPActive:(BOOL)active;
+- (void)updateKnownNetworksSupportingSeamless:(id)seamless forBSS:(id)s andSSID:(id)d beaconCache:(id)cache;
 - (void)updateLQMWindowCriteria;
-- (void)updateLinkQuality:(id)a3 forInterface:(id)a4 supportsLinkRecommendations:(BOOL)a5;
-- (void)updateLinkRecoveryDisabled:(BOOL)a3;
-- (void)updateLinkTestInterval:(unint64_t)a3;
-- (void)updateRealTimeCoex:(BOOL)a3 type:(unint64_t)a4 reasons:(id)a5;
-- (void)updateRoamCache:(id)a3 forInterface:(id)a4;
-- (void)updateScanForwardStats:(id)a3;
-- (void)updateSleepPowerStats:(double)a3 unassociatedDuration:(double)a4 associatedDuration:(double)a5 roamingDuration:(double)a6;
-- (void)updateWPSInfo:(id)a3;
-- (void)updateWithChQualScore:(unint64_t)a3 txLatencyScore:(unint64_t)a4 rxLatencyScore:(unint64_t)a5 txLossScore:(unint64_t)a6 rxLossScore:(unint64_t)a7 txLatencyP95:(unint64_t)a8 linkRecommendationFlags:(unint64_t)a9 rtTrafficStatus:(unint64_t)a10 forInterface:(id)a11;
-- (void)updateWithCompatibilityMode:(unsigned __int8)a3;
-- (void)updateWithMLORuntimeConfig:(id *)a3 forInterface:(id)a4;
-- (void)updateWithRoamingSuppression:(unsigned __int8)a3;
-- (void)updateWowState:(BOOL)a3 lpasState:(BOOL)a4 lowPowerState:(BOOL)a5 batterySaverState:(BOOL)a6;
+- (void)updateLinkQuality:(id)quality forInterface:(id)interface supportsLinkRecommendations:(BOOL)recommendations;
+- (void)updateLinkRecoveryDisabled:(BOOL)disabled;
+- (void)updateLinkTestInterval:(unint64_t)interval;
+- (void)updateRealTimeCoex:(BOOL)coex type:(unint64_t)type reasons:(id)reasons;
+- (void)updateRoamCache:(id)cache forInterface:(id)interface;
+- (void)updateScanForwardStats:(id)stats;
+- (void)updateSleepPowerStats:(double)stats unassociatedDuration:(double)duration associatedDuration:(double)associatedDuration roamingDuration:(double)roamingDuration;
+- (void)updateWPSInfo:(id)info;
+- (void)updateWithChQualScore:(unint64_t)score txLatencyScore:(unint64_t)latencyScore rxLatencyScore:(unint64_t)rxLatencyScore txLossScore:(unint64_t)lossScore rxLossScore:(unint64_t)rxLossScore txLatencyP95:(unint64_t)p95 linkRecommendationFlags:(unint64_t)flags rtTrafficStatus:(unint64_t)self0 forInterface:(id)self1;
+- (void)updateWithCompatibilityMode:(unsigned __int8)mode;
+- (void)updateWithMLORuntimeConfig:(id *)config forInterface:(id)interface;
+- (void)updateWithRoamingSuppression:(unsigned __int8)suppression;
+- (void)updateWowState:(BOOL)state lpasState:(BOOL)lpasState lowPowerState:(BOOL)powerState batterySaverState:(BOOL)saverState;
 @end
 
 @implementation WiFiUsageMonitor
@@ -143,24 +143,24 @@ uint64_t __34__WiFiUsageMonitor_sharedInstance__block_invoke()
   v34.receiver = self;
   v34.super_class = WiFiUsageMonitor;
   v2 = [(WiFiUsageMonitor *)&v34 init];
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v4 = *(v2 + 5);
-  *(v2 + 5) = v3;
+  *(v2 + 5) = date;
 
   *(v2 + 42) = getpid();
   *(v2 + 43) = 0;
   *(v2 + 36) = 0;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6 = *(v2 + 13);
-  *(v2 + 13) = v5;
+  *(v2 + 13) = dictionary;
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v8 = *(v2 + 14);
-  *(v2 + 14) = v7;
+  *(v2 + 14) = dictionary2;
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
   v10 = *(v2 + 15);
-  *(v2 + 15) = v9;
+  *(v2 + 15) = dictionary3;
 
   v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v12 = dispatch_queue_create("com.apple.wifi.usage-monitor", v11);
@@ -174,9 +174,9 @@ uint64_t __34__WiFiUsageMonitor_sharedInstance__block_invoke()
   v15 = *(v2 + 27);
   *(v2 + 27) = 0;
 
-  v16 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = *(v2 + 28);
-  *(v2 + 28) = v16;
+  *(v2 + 28) = array;
 
   *(v2 + 37) = 0x7FFFFFFFFFFFFFFFLL;
   v18 = [[WiFiSoftError alloc] initWithName:@"Trigger Disconnect"];
@@ -201,11 +201,11 @@ uint64_t __34__WiFiUsageMonitor_sharedInstance__block_invoke()
   *(v2 + 29) = v23;
 
   dispatch_async(*(v2 + 18), &__block_literal_global_272);
-  v25 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v25 addObserver:v2 selector:sel_faultEventDetected_ name:@"SessionNotificationFaultEventDetected" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v2 selector:sel_faultEventDetected_ name:@"SessionNotificationFaultEventDetected" object:0];
 
-  v26 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v26 addObserver:v2 selector:sel_brokenLinkDetected_ name:@"SessionNotificationBrokenLinkDetected" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:v2 selector:sel_brokenLinkDetected_ name:@"SessionNotificationBrokenLinkDetected" object:0];
 
   [v2 getMobileAssets];
   objc_destroyWeak(&v32);
@@ -331,16 +331,16 @@ void __24__WiFiUsageMonitor_init__block_invoke_270()
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)faultEventDetected:(id)a3
+- (void)faultEventDetected:(id)detected
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"SessionNotificationFaultType"];
+  detectedCopy = detected;
+  userInfo = [detectedCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"SessionNotificationFaultType"];
 
-  v7 = [v4 userInfo];
+  userInfo2 = [detectedCopy userInfo];
 
-  v8 = [v7 objectForKeyedSubscript:@"SessionNotificationInterfaceName"];
+  v8 = [userInfo2 objectForKeyedSubscript:@"SessionNotificationInterfaceName"];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -358,25 +358,25 @@ void __24__WiFiUsageMonitor_init__block_invoke_270()
 
   if (v6 && v8)
   {
-    v10 = [v6 intValue];
+    intValue = [v6 intValue];
     v11 = [MEMORY[0x277CBEAA8] now];
-    [(WiFiUsageMonitor *)self addFaultEvent:v10 forInterface:v8 at:v11];
+    [(WiFiUsageMonitor *)self addFaultEvent:intValue forInterface:v8 at:v11];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)brokenLinkDetected:(id)a3
+- (void)brokenLinkDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__WiFiUsageMonitor_brokenLinkDetected___block_invoke;
   v7[3] = &unk_2789C6608;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = detectedCopy;
+  selfCopy = self;
+  v6 = detectedCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -412,21 +412,21 @@ void __39__WiFiUsageMonitor_brokenLinkDetected___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCompletionHandler:(id)a3 withContext:(void *)a4 onQueue:(id)a5
+- (void)setCompletionHandler:(id)handler withContext:(void *)context onQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a5;
+  handlerCopy = handler;
+  queueCopy = queue;
   internalQueue = self->_internalQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __61__WiFiUsageMonitor_setCompletionHandler_withContext_onQueue___block_invoke;
   v13[3] = &unk_2789C6B80;
-  v15 = v8;
-  v16 = a4;
+  v15 = handlerCopy;
+  contextCopy = context;
   v13[4] = self;
-  v14 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = queueCopy;
+  v11 = queueCopy;
+  v12 = handlerCopy;
   dispatch_async(internalQueue, v13);
 }
 
@@ -444,17 +444,17 @@ void __61__WiFiUsageMonitor_setCompletionHandler_withContext_onQueue___block_inv
   objc_storeStrong(v6, v5);
 }
 
-- (void)setFaultEventHandler:(id)a3
+- (void)setFaultEventHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__WiFiUsageMonitor_setFaultEventHandler___block_invoke;
   v7[3] = &unk_2789C6BA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -468,18 +468,18 @@ uint64_t __41__WiFiUsageMonitor_setFaultEventHandler___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)startMonitoringWiFiInterface:(id)a3 withLinkSessionOnly:(BOOL)a4
+- (void)startMonitoringWiFiInterface:(id)interface withLinkSessionOnly:(BOOL)only
 {
-  v6 = a3;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__WiFiUsageMonitor_startMonitoringWiFiInterface_withLinkSessionOnly___block_invoke;
   block[3] = &unk_2789C6C20;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = interfaceCopy;
+  selfCopy = self;
+  onlyCopy = only;
+  v8 = interfaceCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -735,9 +735,9 @@ void __69__WiFiUsageMonitor_startMonitoringWiFiInterface_withLinkSessionOnly___b
   *(*(*(a1 + 48) + 8) + 24) = (*(v3 + 16))(v3, v4, v5, v6);
 }
 
-- (void)setPrivacyRestrictionDisabled:(BOOL)a3
+- (void)setPrivacyRestrictionDisabled:(BOOL)disabled
 {
-  self->_privacyRestrictionDisabled = a3;
+  self->_privacyRestrictionDisabled = disabled;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -821,7 +821,7 @@ void __50__WiFiUsageMonitor_setPrivacyRestrictionDisabled___block_invoke(uint64_
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSystemWakeState:(BOOL)a3 wokenByWiFi:(BOOL)a4
+- (void)setSystemWakeState:(BOOL)state wokenByWiFi:(BOOL)fi
 {
   internalQueue = self->_internalQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -829,8 +829,8 @@ void __50__WiFiUsageMonitor_setPrivacyRestrictionDisabled___block_invoke(uint64_
   v5[2] = __51__WiFiUsageMonitor_setSystemWakeState_wokenByWiFi___block_invoke;
   v5[3] = &unk_2789C6C48;
   v5[4] = self;
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  fiCopy = fi;
   dispatch_async(internalQueue, v5);
 }
 
@@ -916,7 +916,7 @@ void __51__WiFiUsageMonitor_setSystemWakeState_wokenByWiFi___block_invoke(uint64
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDeviceLockState:(BOOL)a3
+- (void)setDeviceLockState:(BOOL)state
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -924,7 +924,7 @@ void __51__WiFiUsageMonitor_setSystemWakeState_wokenByWiFi___block_invoke(uint64
   v4[2] = __39__WiFiUsageMonitor_setDeviceLockState___block_invoke;
   v4[3] = &unk_2789C6688;
   v4[4] = self;
-  v5 = a3;
+  stateCopy = state;
   dispatch_async(internalQueue, v4);
 }
 
@@ -1019,7 +1019,7 @@ void __39__WiFiUsageMonitor_setDeviceLockState___block_invoke(uint64_t a1)
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDisplayState:(BOOL)a3
+- (void)setDisplayState:(BOOL)state
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1027,7 +1027,7 @@ void __39__WiFiUsageMonitor_setDeviceLockState___block_invoke(uint64_t a1)
   v4[2] = __36__WiFiUsageMonitor_setDisplayState___block_invoke;
   v4[3] = &unk_2789C6688;
   v4[4] = self;
-  v5 = a3;
+  stateCopy = state;
   dispatch_async(internalQueue, v4);
 }
 
@@ -1113,17 +1113,17 @@ void __36__WiFiUsageMonitor_setDisplayState___block_invoke(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMotionState:(id)a3
+- (void)setMotionState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__WiFiUsageMonitor_setMotionState___block_invoke;
   v7[3] = &unk_2789C6608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -1205,17 +1205,17 @@ void __35__WiFiUsageMonitor_setMotionState___block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSmartCoverState:(id)a3
+- (void)setSmartCoverState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__WiFiUsageMonitor_setSmartCoverState___block_invoke;
   v7[3] = &unk_2789C6608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -1293,7 +1293,7 @@ void __39__WiFiUsageMonitor_setSmartCoverState___block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCallState:(BOOL)a3
+- (void)setCallState:(BOOL)state
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1301,7 +1301,7 @@ void __39__WiFiUsageMonitor_setSmartCoverState___block_invoke(uint64_t a1)
   v4[2] = __33__WiFiUsageMonitor_setCallState___block_invoke;
   v4[3] = &unk_2789C6688;
   v4[4] = self;
-  v5 = a3;
+  stateCopy = state;
   dispatch_async(internalQueue, v4);
 }
 
@@ -1455,7 +1455,7 @@ void __33__WiFiUsageMonitor_setCallState___block_invoke(uint64_t a1)
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMediaState:(BOOL)a3
+- (void)setMediaState:(BOOL)state
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1463,7 +1463,7 @@ void __33__WiFiUsageMonitor_setCallState___block_invoke(uint64_t a1)
   v4[2] = __34__WiFiUsageMonitor_setMediaState___block_invoke;
   v4[3] = &unk_2789C6688;
   v4[4] = self;
-  v5 = a3;
+  stateCopy = state;
   dispatch_async(internalQueue, v4);
 }
 
@@ -1549,7 +1549,7 @@ void __34__WiFiUsageMonitor_setMediaState___block_invoke(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDeviceChargingState:(BOOL)a3
+- (void)setDeviceChargingState:(BOOL)state
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1557,7 +1557,7 @@ void __34__WiFiUsageMonitor_setMediaState___block_invoke(uint64_t a1)
   v4[2] = __43__WiFiUsageMonitor_setDeviceChargingState___block_invoke;
   v4[3] = &unk_2789C6688;
   v4[4] = self;
-  v5 = a3;
+  stateCopy = state;
   dispatch_async(internalQueue, v4);
 }
 
@@ -1643,7 +1643,7 @@ void __43__WiFiUsageMonitor_setDeviceChargingState___block_invoke(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCompanionConnectionState:(BOOL)a3
+- (void)setCompanionConnectionState:(BOOL)state
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1651,7 +1651,7 @@ void __43__WiFiUsageMonitor_setDeviceChargingState___block_invoke(uint64_t a1)
   v4[2] = __48__WiFiUsageMonitor_setCompanionConnectionState___block_invoke;
   v4[3] = &unk_2789C6688;
   v4[4] = self;
-  v5 = a3;
+  stateCopy = state;
   dispatch_async(internalQueue, v4);
 }
 
@@ -1728,7 +1728,7 @@ void __48__WiFiUsageMonitor_setCompanionConnectionState___block_invoke(uint64_t 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCompatibilityModeEnabled:(BOOL)a3
+- (void)setCompatibilityModeEnabled:(BOOL)enabled
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1736,7 +1736,7 @@ void __48__WiFiUsageMonitor_setCompanionConnectionState___block_invoke(uint64_t 
   v4[2] = __48__WiFiUsageMonitor_setCompatibilityModeEnabled___block_invoke;
   v4[3] = &unk_2789C6688;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(internalQueue, v4);
 }
 
@@ -1813,17 +1813,17 @@ void __48__WiFiUsageMonitor_setCompatibilityModeEnabled___block_invoke(uint64_t 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSecondaryInterfaceName:(id)a3
+- (void)setSecondaryInterfaceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__WiFiUsageMonitor_setSecondaryInterfaceName___block_invoke;
   v7[3] = &unk_2789C6608;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = nameCopy;
+  selfCopy = self;
+  v6 = nameCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -1924,20 +1924,20 @@ LABEL_22:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentApplicationName:(id)a3 withAttributes:(id)a4
+- (void)setCurrentApplicationName:(id)name withAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  attributesCopy = attributes;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__WiFiUsageMonitor_setCurrentApplicationName_withAttributes___block_invoke;
   block[3] = &unk_2789C6C70;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = nameCopy;
+  v13 = attributesCopy;
+  v9 = attributesCopy;
+  v10 = nameCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -2095,24 +2095,24 @@ void __43__WiFiUsageMonitor_updateLQMWindowCriteria__block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setJoinEvent:(BOOL)a3 withReason:(unint64_t)a4 lastDisconnectReason:(unint64_t)a5 lastJoinFailure:(int64_t)a6 andNetworkDetails:(id)a7 forInterface:(id)a8
+- (void)setJoinEvent:(BOOL)event withReason:(unint64_t)reason lastDisconnectReason:(unint64_t)disconnectReason lastJoinFailure:(int64_t)failure andNetworkDetails:(id)details forInterface:(id)interface
 {
-  v14 = a7;
-  v15 = a8;
+  detailsCopy = details;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __112__WiFiUsageMonitor_setJoinEvent_withReason_lastDisconnectReason_lastJoinFailure_andNetworkDetails_forInterface___block_invoke;
   block[3] = &unk_2789C6C98;
   block[4] = self;
-  v20 = v15;
-  v25 = a3;
-  v21 = v14;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
-  v17 = v14;
-  v18 = v15;
+  v20 = interfaceCopy;
+  eventCopy = event;
+  v21 = detailsCopy;
+  reasonCopy = reason;
+  disconnectReasonCopy = disconnectReason;
+  failureCopy = failure;
+  v17 = detailsCopy;
+  v18 = interfaceCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -2235,11 +2235,11 @@ void __112__WiFiUsageMonitor_setJoinEvent_withReason_lastDisconnectReason_lastJo
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setForgetNetworkEvent:(id)a3 forInterface:(id)a4
+- (void)setForgetNetworkEvent:(id)event forInterface:(id)interface
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  interfaceCopy = interface;
   if (_os_feature_enabled_impl())
   {
     internalQueue = self->_internalQueue;
@@ -2247,9 +2247,9 @@ void __112__WiFiUsageMonitor_setJoinEvent_withReason_lastDisconnectReason_lastJo
     block[1] = 3221225472;
     block[2] = __55__WiFiUsageMonitor_setForgetNetworkEvent_forInterface___block_invoke;
     block[3] = &unk_2789C6C70;
-    v11 = v6;
-    v12 = self;
-    v13 = v7;
+    v11 = eventCopy;
+    selfCopy = self;
+    v13 = interfaceCopy;
     dispatch_async(internalQueue, block);
   }
 
@@ -2258,7 +2258,7 @@ void __112__WiFiUsageMonitor_setJoinEvent_withReason_lastDisconnectReason_lastJo
     *buf = 136315394;
     v15 = "[WiFiUsageMonitor setForgetNetworkEvent:forInterface:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = eventCopy;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s Do Nothing as WiFiDirectDonation Feature Flag Disabled! details:%@", buf, 0x16u);
   }
 
@@ -2313,24 +2313,24 @@ void __55__WiFiUsageMonitor_setForgetNetworkEvent_forInterface___block_invoke(vo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLinkEvent:(BOOL)a3 isInvoluntary:(BOOL)a4 linkChangeReason:(int64_t)a5 linkChangeSubreason:(int64_t)a6 withNetworkDetails:(id)a7 forInterface:(id)a8
+- (void)setLinkEvent:(BOOL)event isInvoluntary:(BOOL)involuntary linkChangeReason:(int64_t)reason linkChangeSubreason:(int64_t)subreason withNetworkDetails:(id)details forInterface:(id)interface
 {
-  v14 = a7;
-  v15 = a8;
+  detailsCopy = details;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __116__WiFiUsageMonitor_setLinkEvent_isInvoluntary_linkChangeReason_linkChangeSubreason_withNetworkDetails_forInterface___block_invoke;
   v19[3] = &unk_2789C6CC0;
   v19[4] = self;
-  v20 = v15;
-  v24 = a3;
-  v25 = a4;
-  v21 = v14;
-  v22 = a5;
-  v23 = a6;
-  v17 = v14;
-  v18 = v15;
+  v20 = interfaceCopy;
+  eventCopy = event;
+  involuntaryCopy = involuntary;
+  v21 = detailsCopy;
+  reasonCopy = reason;
+  subreasonCopy = subreason;
+  v17 = detailsCopy;
+  v18 = interfaceCopy;
   dispatch_async(internalQueue, v19);
 }
 
@@ -2564,86 +2564,86 @@ LABEL_53:
   v48 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)appendTDStateToDict:(id)a3 from:(id)a4
++ (void)appendTDStateToDict:(id)dict from:(id)from
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  dictCopy = dict;
+  fromCopy = from;
+  v7 = fromCopy;
   v8 = MEMORY[0x277CCABB0];
-  if (!v6)
+  if (!fromCopy)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithBool:0];
     v11 = @"TD_inTDEval";
 LABEL_18:
-    [v5 setObject:v10 forKeyedSubscript:v11];
+    [dictCopy setObject:v10 forKeyedSubscript:v11];
 
     goto LABEL_19;
   }
 
-  if ([v6 isSessionActive])
+  if ([fromCopy isSessionActive])
   {
-    v9 = [v7 isInTDEval];
+    isInTDEval = [v7 isInTDEval];
   }
 
   else
   {
-    v9 = 0;
+    isInTDEval = 0;
   }
 
-  v12 = [v8 numberWithBool:v9];
-  [v5 setObject:v12 forKeyedSubscript:@"TD_inTDEval"];
+  v12 = [v8 numberWithBool:isInTDEval];
+  [dictCopy setObject:v12 forKeyedSubscript:@"TD_inTDEval"];
 
   if ([v7 isSessionActive])
   {
     v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "tdConfirmed")}];
-    [v5 setObject:v13 forKeyedSubscript:@"TD_Triggered"];
+    [dictCopy setObject:v13 forKeyedSubscript:@"TD_Triggered"];
 
     if ([v7 isLastDecisionStateValid])
     {
       v14 = MEMORY[0x277CCABB0];
       [v7 last_DecisionState];
       v15 = [v14 numberWithBool:v118];
-      [v5 setObject:v15 forKeyedSubscript:@"TD_Decision_TxPER"];
+      [dictCopy setObject:v15 forKeyedSubscript:@"TD_Decision_TxPER"];
 
       v16 = MEMORY[0x277CCABB0];
       [v7 last_DecisionState];
       v17 = [v16 numberWithBool:v117];
-      [v5 setObject:v17 forKeyedSubscript:@"TD_Decision_FWTxPER"];
+      [dictCopy setObject:v17 forKeyedSubscript:@"TD_Decision_FWTxPER"];
 
       v18 = MEMORY[0x277CCABB0];
       [v7 last_DecisionState];
       v19 = [v18 numberWithBool:v116];
-      [v5 setObject:v19 forKeyedSubscript:@"TD_Decision_BeaconPER"];
+      [dictCopy setObject:v19 forKeyedSubscript:@"TD_Decision_BeaconPER"];
 
       v20 = MEMORY[0x277CCABB0];
       [v7 last_DecisionState];
       v21 = [v20 numberWithBool:v115];
-      [v5 setObject:v21 forKeyedSubscript:@"TD_Decision_GatewayARPFailure"];
+      [dictCopy setObject:v21 forKeyedSubscript:@"TD_Decision_GatewayARPFailure"];
 
       v22 = MEMORY[0x277CCABB0];
       [v7 last_DecisionState];
       v23 = [v22 numberWithBool:v114];
-      [v5 setObject:v23 forKeyedSubscript:@"TD_Decision_SymptomsDNSError"];
+      [dictCopy setObject:v23 forKeyedSubscript:@"TD_Decision_SymptomsDNSError"];
 
       v24 = MEMORY[0x277CCABB0];
       [v7 last_DecisionState];
       v25 = [v24 numberWithBool:v113];
-      [v5 setObject:v25 forKeyedSubscript:@"TD_Decision_AutoLeave"];
+      [dictCopy setObject:v25 forKeyedSubscript:@"TD_Decision_AutoLeave"];
 
       v26 = MEMORY[0x277CCABB0];
       [v7 last_DecisionState];
       v27 = [v26 numberWithBool:v112];
-      [v5 setObject:v27 forKeyedSubscript:@"TD_Decision_ActiveProbe"];
+      [dictCopy setObject:v27 forKeyedSubscript:@"TD_Decision_ActiveProbe"];
 
       v28 = MEMORY[0x277CCABB0];
       [v7 last_DecisionState];
       v29 = [v28 numberWithBool:v111];
-      [v5 setObject:v29 forKeyedSubscript:@"TD_Decision_FastTD"];
+      [dictCopy setObject:v29 forKeyedSubscript:@"TD_Decision_FastTD"];
 
       v30 = MEMORY[0x277CCABB0];
       [v7 last_DecisionState];
       v31 = [v30 numberWithInteger:v110];
-      [v5 setObject:v31 forKeyedSubscript:@"TD_AutoLeaveRSSIthreshold"];
+      [dictCopy setObject:v31 forKeyedSubscript:@"TD_AutoLeaveRSSIthreshold"];
     }
 
     if ([v7 isLastFastTdVotesValid])
@@ -2651,106 +2651,106 @@ LABEL_18:
       v32 = MEMORY[0x277CCABB0];
       [v7 last_FastTdVotes];
       v33 = [v32 numberWithBool:v109];
-      [v5 setObject:v33 forKeyedSubscript:@"TD_VoteFastTD_LinkRecommendation"];
+      [dictCopy setObject:v33 forKeyedSubscript:@"TD_VoteFastTD_LinkRecommendation"];
 
       v34 = MEMORY[0x277CCABB0];
       [v7 last_FastTdVotes];
       v35 = [v34 numberWithBool:v108];
-      [v5 setObject:v35 forKeyedSubscript:@"TD_VoteFastTD_TXPER"];
+      [dictCopy setObject:v35 forKeyedSubscript:@"TD_VoteFastTD_TXPER"];
 
       v36 = MEMORY[0x277CCABB0];
       [v7 last_FastTdVotes];
       v37 = [v36 numberWithBool:v107];
-      [v5 setObject:v37 forKeyedSubscript:@"TD_VoteFastTD_FWTXPER"];
+      [dictCopy setObject:v37 forKeyedSubscript:@"TD_VoteFastTD_FWTXPER"];
 
       v38 = MEMORY[0x277CCABB0];
       [v7 last_FastTdVotes];
       v39 = [v38 numberWithBool:v106];
-      [v5 setObject:v39 forKeyedSubscript:@"TD_VoteFastTD_BeaconPER"];
+      [dictCopy setObject:v39 forKeyedSubscript:@"TD_VoteFastTD_BeaconPER"];
 
       v40 = MEMORY[0x277CCABB0];
       [v7 last_FastTdVotes];
       v41 = [v40 numberWithBool:v105];
-      [v5 setObject:v41 forKeyedSubscript:@"TD_VoteFastTD_2GPoorLink"];
+      [dictCopy setObject:v41 forKeyedSubscript:@"TD_VoteFastTD_2GPoorLink"];
 
       v42 = MEMORY[0x277CCABB0];
       [v7 last_FastTdVotes];
       v43 = [v42 numberWithBool:v104];
-      [v5 setObject:v43 forKeyedSubscript:@"TD_VoteFastTD_2GDataStall"];
+      [dictCopy setObject:v43 forKeyedSubscript:@"TD_VoteFastTD_2GDataStall"];
 
       v44 = MEMORY[0x277CCABB0];
       [v7 last_FastTdVotes];
       v45 = [v44 numberWithBool:v103];
-      [v5 setObject:v45 forKeyedSubscript:@"TD_VoteFastTD_HighLatency"];
+      [dictCopy setObject:v45 forKeyedSubscript:@"TD_VoteFastTD_HighLatency"];
 
       v46 = MEMORY[0x277CCABB0];
       [v7 last_FastTdVotes];
       v47 = [v46 numberWithBool:v102];
-      [v5 setObject:v47 forKeyedSubscript:@"TD_VoteFastTD_InsufficientRxFrames"];
+      [dictCopy setObject:v47 forKeyedSubscript:@"TD_VoteFastTD_InsufficientRxFrames"];
 
       v48 = MEMORY[0x277CCABB0];
       [v7 last_FastTdVotes];
       v49 = [v48 numberWithInteger:v101];
-      [v5 setObject:v49 forKeyedSubscript:@"TD_VoteFastTD_VoteCount"];
+      [dictCopy setObject:v49 forKeyedSubscript:@"TD_VoteFastTD_VoteCount"];
 
       v50 = MEMORY[0x277CCABB0];
       [v7 last_FastTdVotes];
       v51 = [v50 numberWithBool:v100];
-      [v5 setObject:v51 forKeyedSubscript:@"TD_StateFastTD_RTApp"];
+      [dictCopy setObject:v51 forKeyedSubscript:@"TD_StateFastTD_RTApp"];
 
       v52 = MEMORY[0x277CCABB0];
       [v7 last_FastTdVotes];
       v53 = [v52 numberWithBool:v99];
-      [v5 setObject:v53 forKeyedSubscript:@"TD_StateFastTD_Cheap5G"];
+      [dictCopy setObject:v53 forKeyedSubscript:@"TD_StateFastTD_Cheap5G"];
     }
 
-    v54 = [v7 lastTDEval_ConfirmedAt];
-    if (v54)
+    lastTDEval_ConfirmedAt = [v7 lastTDEval_ConfirmedAt];
+    if (lastTDEval_ConfirmedAt)
     {
-      v55 = v54;
-      v56 = [v7 isLastSuppressStateValid];
+      v55 = lastTDEval_ConfirmedAt;
+      isLastSuppressStateValid = [v7 isLastSuppressStateValid];
 
-      if (v56)
+      if (isLastSuppressStateValid)
       {
         v57 = [MEMORY[0x277CCABB0] numberWithBool:{(objc_msgSend(v7, "last_SuppressState") >> 24) & 1}];
-        [v5 setObject:v57 forKeyedSubscript:@"TD_Suppress_SymptomsNODataStall"];
+        [dictCopy setObject:v57 forKeyedSubscript:@"TD_Suppress_SymptomsNODataStall"];
 
         v58 = [MEMORY[0x277CCABB0] numberWithBool:{(objc_msgSend(v7, "last_SuppressState") >> 32) & 1}];
-        [v5 setObject:v58 forKeyedSubscript:@"TD_Suppress_SymptomsAppPolicy"];
+        [dictCopy setObject:v58 forKeyedSubscript:@"TD_Suppress_SymptomsAppPolicy"];
 
         v59 = [MEMORY[0x277CCABB0] numberWithBool:{(objc_msgSend(v7, "last_SuppressState") >> 40) & 1}];
-        [v5 setObject:v59 forKeyedSubscript:@"TD_Suppress_FastCheapCellular"];
+        [dictCopy setObject:v59 forKeyedSubscript:@"TD_Suppress_FastCheapCellular"];
 
         v60 = [MEMORY[0x277CCABB0] numberWithBool:{(objc_msgSend(v7, "last_SuppressState") >> 48) & 1}];
-        [v5 setObject:v60 forKeyedSubscript:@"TD_Suppress_2dBGuard"];
+        [dictCopy setObject:v60 forKeyedSubscript:@"TD_Suppress_2dBGuard"];
 
         v61 = [MEMORY[0x277CCABB0] numberWithBool:{(objc_msgSend(v7, "last_SuppressState") >> 56) & 1}];
-        [v5 setObject:v61 forKeyedSubscript:@"TD_Suppress_NoFGnetwApp"];
+        [dictCopy setObject:v61 forKeyedSubscript:@"TD_Suppress_NoFGnetwApp"];
 
         v62 = MEMORY[0x277CCABB0];
         [v7 last_SuppressState];
         v64 = [v62 numberWithBool:v63 & 1];
-        [v5 setObject:v64 forKeyedSubscript:@"TD_Suppress_TTR"];
+        [dictCopy setObject:v64 forKeyedSubscript:@"TD_Suppress_TTR"];
 
         v65 = MEMORY[0x277CCABB0];
         [v7 last_SuppressState];
         v67 = [v65 numberWithBool:(v66 >> 8) & 1];
-        [v5 setObject:v67 forKeyedSubscript:@"TD_Suppress_UserInput"];
+        [dictCopy setObject:v67 forKeyedSubscript:@"TD_Suppress_UserInput"];
 
         v68 = MEMORY[0x277CCABB0];
         [v7 last_SuppressState];
         v70 = [v68 numberWithBool:(v69 >> 16) & 1];
-        [v5 setObject:v70 forKeyedSubscript:@"TD_Suppress_GoodAfterRoam"];
+        [dictCopy setObject:v70 forKeyedSubscript:@"TD_Suppress_GoodAfterRoam"];
 
         v71 = MEMORY[0x277CCABB0];
         [v7 last_SuppressState];
         v73 = [v71 numberWithBool:(v72 >> 24) & 1];
-        [v5 setObject:v73 forKeyedSubscript:@"TD_Suppress_ActiveProbing"];
+        [dictCopy setObject:v73 forKeyedSubscript:@"TD_Suppress_ActiveProbing"];
 
         v74 = MEMORY[0x277CCABB0];
         [v7 last_SuppressState];
         v76 = [v74 numberWithBool:HIDWORD(v75) & 1];
-        [v5 setObject:v76 forKeyedSubscript:@"TD_Suppress_Roam"];
+        [dictCopy setObject:v76 forKeyedSubscript:@"TD_Suppress_Roam"];
       }
     }
 
@@ -2758,46 +2758,46 @@ LABEL_18:
     {
       [v7 last_DecisionState];
       v77 = [WiFiUsagePrivacyFilter getLabelForTDMode:v98];
-      [v5 setObject:v77 forKeyedSubscript:@"TD_Mode"];
+      [dictCopy setObject:v77 forKeyedSubscript:@"TD_Mode"];
 
       v78 = MEMORY[0x277CCABB0];
       [v7 last_DecisionState];
       v79 = [v78 numberWithBool:v97];
-      [v5 setObject:v79 forKeyedSubscript:@"TD_EdgeBSS"];
+      [dictCopy setObject:v79 forKeyedSubscript:@"TD_EdgeBSS"];
 
       v80 = MEMORY[0x277CCABB0];
       [v7 last_DecisionState];
       v81 = [v80 numberWithBool:v96];
-      [v5 setObject:v81 forKeyedSubscript:@"TD_MotionDetected"];
+      [dictCopy setObject:v81 forKeyedSubscript:@"TD_MotionDetected"];
 
       v82 = MEMORY[0x277CCABB0];
       [v7 last_DecisionState];
       v83 = [v82 numberWithBool:v95];
-      [v5 setObject:v83 forKeyedSubscript:@"TD_WalkoutDetected"];
+      [dictCopy setObject:v83 forKeyedSubscript:@"TD_WalkoutDetected"];
 
       v84 = MEMORY[0x277CCABB0];
       [v7 last_DecisionState];
       v85 = [v84 numberWithBool:v94];
-      [v5 setObject:v85 forKeyedSubscript:@"TD_WaitForRoam"];
+      [dictCopy setObject:v85 forKeyedSubscript:@"TD_WaitForRoam"];
 
       v86 = MEMORY[0x277CCABB0];
       [v7 last_DecisionState];
       v87 = [v86 numberWithBool:v93];
-      [v5 setObject:v87 forKeyedSubscript:@"TD_AppsUsingWiFi"];
+      [dictCopy setObject:v87 forKeyedSubscript:@"TD_AppsUsingWiFi"];
 
       v88 = MEMORY[0x277CCABB0];
       [v7 last_DecisionState];
       v89 = [v88 numberWithBool:v92];
-      [v5 setObject:v89 forKeyedSubscript:@"TD_monitorOnly"];
+      [dictCopy setObject:v89 forKeyedSubscript:@"TD_monitorOnly"];
     }
 
     if ([v7 isLastSuppressStateValid])
     {
       v90 = [MEMORY[0x277CCABB0] numberWithBool:{(objc_msgSend(v7, "last_SuppressState") >> 16) & 1}];
-      [v5 setObject:v90 forKeyedSubscript:@"TD_FastTDEvaluation"];
+      [dictCopy setObject:v90 forKeyedSubscript:@"TD_FastTDEvaluation"];
 
       v91 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "last_SuppressState") & 1}];
-      [v5 setObject:v91 forKeyedSubscript:@"TD_AggressiveTD"];
+      [dictCopy setObject:v91 forKeyedSubscript:@"TD_AggressiveTD"];
 
       v10 = [MEMORY[0x277CCABB0] numberWithBool:{(objc_msgSend(v7, "last_SuppressState") >> 8) & 1}];
       v11 = @"TD_RNF_allowed";
@@ -2808,35 +2808,35 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)appendUsbStatsToDict:(id)a3
+- (void)appendUsbStatsToDict:(id)dict
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictCopy = dict;
   v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_isAnyUsbInserted];
-  [v4 setObject:v5 forKeyedSubscript:@"isUsbInserted"];
+  [dictCopy setObject:v5 forKeyedSubscript:@"isUsbInserted"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NSArray count](self->_usbDevices, "count")}];
-  [v4 setObject:v6 forKeyedSubscript:@"usbDevicesCount"];
+  [dictCopy setObject:v6 forKeyedSubscript:@"usbDevicesCount"];
 
   if ([(NSArray *)self->_usbDevices count])
   {
-    v7 = [(NSArray *)self->_usbDevices firstObject];
-    v8 = +[WiFiUsagePrivacyFilter getLabelForUsbVendor:](WiFiUsagePrivacyFilter, "getLabelForUsbVendor:", [v7 vid]);
-    [v4 setObject:v8 forKeyedSubscript:@"usbVendor"];
+    firstObject = [(NSArray *)self->_usbDevices firstObject];
+    v8 = +[WiFiUsagePrivacyFilter getLabelForUsbVendor:](WiFiUsagePrivacyFilter, "getLabelForUsbVendor:", [firstObject vid]);
+    [dictCopy setObject:v8 forKeyedSubscript:@"usbVendor"];
 
-    v9 = [v4 objectForKeyedSubscript:@"usbVendor"];
-    LOBYTE(v7) = [v9 isEqualToString:@"Other"];
+    v9 = [dictCopy objectForKeyedSubscript:@"usbVendor"];
+    LOBYTE(firstObject) = [v9 isEqualToString:@"Other"];
 
-    if ((v7 & 1) == 0)
+    if ((firstObject & 1) == 0)
     {
       v10 = MEMORY[0x277CCABB0];
-      v11 = [(NSArray *)self->_usbDevices firstObject];
-      v12 = [v10 numberWithInteger:{objc_msgSend(v11, "vid")}];
-      [v4 setObject:v12 forKeyedSubscript:@"usbVendorID"];
+      firstObject2 = [(NSArray *)self->_usbDevices firstObject];
+      v12 = [v10 numberWithInteger:{objc_msgSend(firstObject2, "vid")}];
+      [dictCopy setObject:v12 forKeyedSubscript:@"usbVendorID"];
     }
   }
 
-  v26 = v4;
+  v26 = dictCopy;
   v13 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
@@ -2847,7 +2847,7 @@ LABEL_19:
   if (v15)
   {
     v16 = v15;
-    v17 = 0;
+    vidIsApple = 0;
     v18 = *v28;
     do
     {
@@ -2861,7 +2861,7 @@ LABEL_19:
         v20 = *(*(&v27 + 1) + 8 * i);
         if ([v20 vidIsApple])
         {
-          v17 = [v20 vidIsApple];
+          vidIsApple = [v20 vidIsApple];
         }
 
         v21 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v20, "controllerID")}];
@@ -2876,16 +2876,16 @@ LABEL_19:
 
   else
   {
-    v17 = 0;
+    vidIsApple = 0;
   }
 
-  v22 = [MEMORY[0x277CCABB0] numberWithBool:v17 & 1];
+  v22 = [MEMORY[0x277CCABB0] numberWithBool:vidIsApple & 1];
   [v26 setObject:v22 forKeyedSubscript:@"isAnyUSBDeviceVendorApple"];
 
   if ([v13 count] == 1)
   {
-    v23 = [v13 anyObject];
-    [v26 setObject:v23 forKeyedSubscript:@"usbController"];
+    anyObject = [v13 anyObject];
+    [v26 setObject:anyObject forKeyedSubscript:@"usbController"];
   }
 
   if ([(NSArray *)self->_usbDevices count]&& self->_noiseDeltaUponUSBInsertion != 0x7FFFFFFFFFFFFFFFLL)
@@ -2897,19 +2897,19 @@ LABEL_19:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appendBTStatsToDict:(id)a3
+- (void)appendBTStatsToDict:(id)dict
 {
   v4 = MEMORY[0x277CCABB0];
   inActiveSco = self->_inActiveSco;
-  v6 = a3;
+  dictCopy = dict;
   v7 = [v4 numberWithBool:inActiveSco];
-  [v6 setObject:v7 forKeyedSubscript:@"isSCOActive"];
+  [dictCopy setObject:v7 forKeyedSubscript:@"isSCOActive"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_inActiveA2dp];
-  [v6 setObject:v8 forKeyedSubscript:@"isA2dpActive"];
+  [dictCopy setObject:v8 forKeyedSubscript:@"isA2dpActive"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_inActiveCall];
-  [v6 setObject:v9 forKeyedSubscript:@"inCall"];
+  [dictCopy setObject:v9 forKeyedSubscript:@"inCall"];
 
   if (self->_curBTAudioBand)
   {
@@ -2921,38 +2921,38 @@ LABEL_19:
     v10 = @"2.4";
   }
 
-  [v6 setObject:v10 forKeyedSubscript:@"BTBand"];
+  [dictCopy setObject:v10 forKeyedSubscript:@"BTBand"];
   v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_inActiveUniAoS];
-  [v6 setObject:v11 forKeyedSubscript:@"isUniAoSActive"];
+  [dictCopy setObject:v11 forKeyedSubscript:@"isUniAoSActive"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_inActiveBiAoS];
-  [v6 setObject:v12 forKeyedSubscript:@"isBiAoSActive"];
+  [dictCopy setObject:v12 forKeyedSubscript:@"isBiAoSActive"];
 }
 
-- (void)appendSARStatsToDict:(id)a3
+- (void)appendSARStatsToDict:(id)dict
 {
   v3 = MEMORY[0x277CCABB0];
   lastWiFiSARState = self->_lastWiFiSARState;
-  v5 = a3;
+  dictCopy = dict;
   v6 = [v3 numberWithUnsignedInteger:lastWiFiSARState];
-  [v5 setObject:v6 forKeyedSubscript:@"wifiSARState"];
+  [dictCopy setObject:v6 forKeyedSubscript:@"wifiSARState"];
 }
 
-- (void)updateLinkQuality:(id)a3 forInterface:(id)a4 supportsLinkRecommendations:(BOOL)a5
+- (void)updateLinkQuality:(id)quality forInterface:(id)interface supportsLinkRecommendations:(BOOL)recommendations
 {
-  v8 = a3;
-  v9 = a4;
+  qualityCopy = quality;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __79__WiFiUsageMonitor_updateLinkQuality_forInterface_supportsLinkRecommendations___block_invoke;
   v13[3] = &unk_2789C6CE8;
-  v14 = v9;
-  v15 = self;
-  v16 = v8;
-  v17 = a5;
-  v11 = v8;
-  v12 = v9;
+  v14 = interfaceCopy;
+  selfCopy = self;
+  v16 = qualityCopy;
+  recommendationsCopy = recommendations;
+  v11 = qualityCopy;
+  v12 = interfaceCopy;
   dispatch_async(internalQueue, v13);
 }
 
@@ -3220,23 +3220,23 @@ LABEL_63:
   v72 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateBeaconInfo:(id)a3 andParsedIE:(id)a4 forInterface:(id)a5
+- (void)updateBeaconInfo:(id)info andParsedIE:(id)e forInterface:(id)interface
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  infoCopy = info;
+  eCopy = e;
+  interfaceCopy = interface;
+  if (interfaceCopy)
   {
-    v11 = [v8 copy];
-    v12 = [v9 copy];
+    v11 = [infoCopy copy];
+    v12 = [eCopy copy];
     internalQueue = self->_internalQueue;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __62__WiFiUsageMonitor_updateBeaconInfo_andParsedIE_forInterface___block_invoke;
     v17[3] = &unk_2789C6D10;
-    v18 = v8;
-    v19 = self;
+    v18 = infoCopy;
+    selfCopy = self;
     v20 = v11;
     v21 = v12;
     v14 = v12;
@@ -3265,37 +3265,37 @@ void __62__WiFiUsageMonitor_updateBeaconInfo_andParsedIE_forInterface___block_in
   }
 }
 
-- (void)updateWPSInfo:(id)a3
+- (void)updateWPSInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__WiFiUsageMonitor_updateWPSInfo___block_invoke;
   block[3] = &unk_2789C6630;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (BOOL)submitBeaconInfoToCAForInterface:(id)a3
+- (BOOL)submitBeaconInfoToCAForInterface:(id)interface
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  interfaceCopy = interface;
+  if (interfaceCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(NSMutableDictionary *)self->_usageSessions valueForKey:v4, 0];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-    if (v6)
+    v5 = [(NSMutableDictionary *)self->_usageSessions valueForKey:interfaceCopy, 0];
+    networkDetails = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    if (networkDetails)
     {
       v7 = *v15;
       while (2)
       {
-        for (i = 0; i != v6; i = i + 1)
+        for (i = 0; i != networkDetails; i = i + 1)
         {
           if (*v15 != v7)
           {
@@ -3305,18 +3305,18 @@ void __62__WiFiUsageMonitor_updateBeaconInfo_andParsedIE_forInterface___block_in
           v9 = *(*(&v14 + 1) + 8 * i);
           if ([v9 isSessionActive] && objc_msgSend(v9, "type") == 4)
           {
-            v6 = [v9 networkDetails];
-            v10 = [v6 connectedBss];
-            v11 = [v10 bssid];
+            networkDetails = [v9 networkDetails];
+            connectedBss = [networkDetails connectedBss];
+            bssid = [connectedBss bssid];
 
-            [WiFiUsageAccessPointProfile submitToCAForBSSID:v11];
-            LOBYTE(v6) = 1;
+            [WiFiUsageAccessPointProfile submitToCAForBSSID:bssid];
+            LOBYTE(networkDetails) = 1;
             goto LABEL_16;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-        if (v6)
+        networkDetails = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        if (networkDetails)
         {
           continue;
         }
@@ -3335,26 +3335,26 @@ LABEL_16:
       [WiFiUsageMonitor submitBeaconInfoToCAForInterface:];
     }
 
-    LOBYTE(v6) = 0;
+    LOBYTE(networkDetails) = 0;
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v6;
+  return networkDetails;
 }
 
-- (void)setPowerBudget:(int64_t)a3 andThermalIndex:(int64_t)a4 forInterface:(id)a5
+- (void)setPowerBudget:(int64_t)budget andThermalIndex:(int64_t)index forInterface:(id)interface
 {
-  v8 = a5;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__WiFiUsageMonitor_setPowerBudget_andThermalIndex_forInterface___block_invoke;
   v11[3] = &unk_2789C6D38;
-  v12 = v8;
-  v13 = self;
-  v14 = a3;
-  v15 = a4;
-  v10 = v8;
+  v12 = interfaceCopy;
+  selfCopy = self;
+  budgetCopy = budget;
+  indexCopy = index;
+  v10 = interfaceCopy;
   dispatch_async(internalQueue, v11);
 }
 
@@ -3414,21 +3414,21 @@ void __64__WiFiUsageMonitor_setPowerBudget_andThermalIndex_forInterface___block_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setBluetoothState:(BOOL)a3 connectedDeviceCount:(unint64_t)a4 inA2dp:(BOOL)a5 inSco:(BOOL)a6 inUniAoS:(BOOL)a7 inBiAoS:(BOOL)a8 btAudioBand:(BOOL)a9
+- (void)setBluetoothState:(BOOL)state connectedDeviceCount:(unint64_t)count inA2dp:(BOOL)a2dp inSco:(BOOL)sco inUniAoS:(BOOL)s inBiAoS:(BOOL)aoS btAudioBand:(BOOL)band
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __101__WiFiUsageMonitor_setBluetoothState_connectedDeviceCount_inA2dp_inSco_inUniAoS_inBiAoS_btAudioBand___block_invoke;
   block[3] = &unk_2789C6D60;
-  v11 = a5;
-  v12 = a6;
+  a2dpCopy = a2dp;
+  scoCopy = sco;
   block[4] = self;
-  block[5] = a4;
-  v13 = a7;
-  v14 = a8;
-  v15 = a9;
-  v16 = a3;
+  block[5] = count;
+  sCopy = s;
+  aoSCopy = aoS;
+  bandCopy = band;
+  stateCopy = state;
   dispatch_async(internalQueue, block);
 }
 
@@ -3521,15 +3521,15 @@ void __101__WiFiUsageMonitor_setBluetoothState_connectedDeviceCount_inA2dp_inSco
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSARState:(BOOL)a3 builtInReceiverOn:(BOOL)a4
+- (void)setSARState:(BOOL)state builtInReceiverOn:(BOOL)on
 {
   internalQueue = self->_internalQueue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __50__WiFiUsageMonitor_setSARState_builtInReceiverOn___block_invoke;
   v5[3] = &unk_2789C6C48;
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  onCopy = on;
   v5[4] = self;
   dispatch_async(internalQueue, v5);
 }
@@ -3562,16 +3562,16 @@ uint64_t __50__WiFiUsageMonitor_setSARState_builtInReceiverOn___block_invoke(uin
   return result;
 }
 
-- (void)setAwdlState:(BOOL)a3 inMode:(int64_t)a4
+- (void)setAwdlState:(BOOL)state inMode:(int64_t)mode
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__WiFiUsageMonitor_setAwdlState_inMode___block_invoke;
   block[3] = &unk_2789C6D88;
-  v6 = a3;
+  stateCopy = state;
   block[4] = self;
-  block[5] = a4;
+  block[5] = mode;
   dispatch_async(internalQueue, block);
 }
 
@@ -3664,34 +3664,34 @@ void __40__WiFiUsageMonitor_setAwdlState_inMode___block_invoke(uint64_t a1)
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSoftApState:(BOOL)a3 requester:(id)a4 status:(id)a5 changeReason:(id)a6 channelNumber:(unint64_t)a7 countryCode:(unint64_t)a8 isHidden:(BOOL)a9 isInfraConnected:(BOOL)a10 isAwdlUp:(BOOL)a11 lowPowerModeDuration:(double)a12 compatibilityMode:(BOOL)a13 requestToUpLatency:(double)a14 idleTimeBeforeTeardownSec:(double)a15 idleTimeAfterLastClientDisconnectedSec:(double)a16
+- (void)setSoftApState:(BOOL)state requester:(id)requester status:(id)status changeReason:(id)reason channelNumber:(unint64_t)number countryCode:(unint64_t)code isHidden:(BOOL)hidden isInfraConnected:(BOOL)self0 isAwdlUp:(BOOL)self1 lowPowerModeDuration:(double)self2 compatibilityMode:(BOOL)self3 requestToUpLatency:(double)self4 idleTimeBeforeTeardownSec:(double)self5 idleTimeAfterLastClientDisconnectedSec:(double)self6
 {
-  v25 = a4;
-  v26 = a5;
-  v27 = a6;
+  requesterCopy = requester;
+  statusCopy = status;
+  reasonCopy = reason;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __249__WiFiUsageMonitor_setSoftApState_requester_status_changeReason_channelNumber_countryCode_isHidden_isInfraConnected_isAwdlUp_lowPowerModeDuration_compatibilityMode_requestToUpLatency_idleTimeBeforeTeardownSec_idleTimeAfterLastClientDisconnectedSec___block_invoke;
   block[3] = &unk_2789C6DB0;
-  v43 = a3;
+  stateCopy = state;
   block[4] = self;
-  v34 = v25;
-  v35 = v26;
-  v36 = v27;
-  v37 = a7;
-  v38 = a8;
-  v44 = a9;
-  v45 = a10;
-  v46 = a11;
-  v47 = a13;
-  v39 = a12;
-  v40 = a14;
-  v41 = a15;
-  v42 = a16;
-  v29 = v27;
-  v30 = v26;
-  v31 = v25;
+  v34 = requesterCopy;
+  v35 = statusCopy;
+  v36 = reasonCopy;
+  numberCopy = number;
+  codeCopy = code;
+  hiddenCopy = hidden;
+  connectedCopy = connected;
+  upCopy = up;
+  modeCopy = mode;
+  durationCopy = duration;
+  latencyCopy = latency;
+  secCopy = sec;
+  disconnectedSecCopy = disconnectedSec;
+  v29 = reasonCopy;
+  v30 = statusCopy;
+  v31 = requesterCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -3763,22 +3763,22 @@ void __249__WiFiUsageMonitor_setSoftApState_requester_status_changeReason_channe
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSoftApClientEvent:(BOOL)a3 identifier:(id)a4 isAppleClient:(BOOL)a5 isInstantHotspot:(BOOL)a6 isAutoHotspot:(BOOL)a7 isHidden:(BOOL)a8
+- (void)addSoftApClientEvent:(BOOL)event identifier:(id)identifier isAppleClient:(BOOL)client isInstantHotspot:(BOOL)hotspot isAutoHotspot:(BOOL)autoHotspot isHidden:(BOOL)hidden
 {
-  v14 = a4;
+  identifierCopy = identifier;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __106__WiFiUsageMonitor_addSoftApClientEvent_identifier_isAppleClient_isInstantHotspot_isAutoHotspot_isHidden___block_invoke;
   block[3] = &unk_2789C6DD8;
-  v19 = a3;
+  eventCopy = event;
   block[4] = self;
-  v18 = v14;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v16 = v14;
+  v18 = identifierCopy;
+  clientCopy = client;
+  hotspotCopy = hotspot;
+  autoHotspotCopy = autoHotspot;
+  hiddenCopy = hidden;
+  v16 = identifierCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -3847,7 +3847,7 @@ void __106__WiFiUsageMonitor_addSoftApClientEvent_identifier_isAppleClient_isIns
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSoftApCoexEvent:(unint64_t)a3 deniedUnii1ChannelMap:(unint64_t)a4 deniedUnii2aChannelMap:(unint64_t)a5 deniedUnii2cChannelMap:(unint64_t)a6 deniedUnii3ChannelMap:(unint64_t)a7
+- (void)addSoftApCoexEvent:(unint64_t)event deniedUnii1ChannelMap:(unint64_t)map deniedUnii2aChannelMap:(unint64_t)channelMap deniedUnii2cChannelMap:(unint64_t)unii2cChannelMap deniedUnii3ChannelMap:(unint64_t)unii3ChannelMap
 {
   internalQueue = self->_internalQueue;
   v8[0] = MEMORY[0x277D85DD0];
@@ -3855,11 +3855,11 @@ void __106__WiFiUsageMonitor_addSoftApClientEvent_identifier_isAppleClient_isIns
   v8[2] = __129__WiFiUsageMonitor_addSoftApCoexEvent_deniedUnii1ChannelMap_deniedUnii2aChannelMap_deniedUnii2cChannelMap_deniedUnii3ChannelMap___block_invoke;
   v8[3] = &unk_2789C6E00;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
-  v8[7] = a5;
-  v8[8] = a6;
-  v8[9] = a7;
+  v8[5] = event;
+  v8[6] = map;
+  v8[7] = channelMap;
+  v8[8] = unii2cChannelMap;
+  v8[9] = unii3ChannelMap;
   dispatch_async(internalQueue, v8);
 }
 
@@ -3928,33 +3928,33 @@ void __129__WiFiUsageMonitor_addSoftApCoexEvent_deniedUnii1ChannelMap_deniedUnii
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRoamingState:(BOOL)a3 withReason:(unint64_t)a4 asString:(id)a5 andStatus:(unint64_t)a6 asString:(id)a7 andLatency:(unint64_t)a8 andRoamData:(id)a9 andPingPongSequence:(id)a10 forInterface:(id)a11
+- (void)setRoamingState:(BOOL)state withReason:(unint64_t)reason asString:(id)string andStatus:(unint64_t)status asString:(id)asString andLatency:(unint64_t)latency andRoamData:(id)data andPingPongSequence:(id)self0 forInterface:(id)self1
 {
-  v16 = a5;
-  v17 = a7;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
+  stringCopy = string;
+  asStringCopy = asString;
+  dataCopy = data;
+  sequenceCopy = sequence;
+  interfaceCopy = interface;
   queue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __131__WiFiUsageMonitor_setRoamingState_withReason_asString_andStatus_asString_andLatency_andRoamData_andPingPongSequence_forInterface___block_invoke;
   block[3] = &unk_2789C6E28;
-  v29 = v19;
-  v30 = self;
-  v38 = a3;
-  v35 = a4;
-  v36 = a6;
-  v37 = a8;
-  v31 = v20;
-  v32 = v18;
-  v33 = v16;
-  v34 = v17;
-  v21 = v17;
-  v22 = v16;
-  v23 = v18;
-  v24 = v20;
-  v25 = v19;
+  v29 = sequenceCopy;
+  selfCopy = self;
+  stateCopy = state;
+  reasonCopy = reason;
+  statusCopy = status;
+  latencyCopy = latency;
+  v31 = interfaceCopy;
+  v32 = dataCopy;
+  v33 = stringCopy;
+  v34 = asStringCopy;
+  v21 = asStringCopy;
+  v22 = stringCopy;
+  v23 = dataCopy;
+  v24 = interfaceCopy;
+  v25 = sequenceCopy;
   dispatch_async(queue, block);
 }
 
@@ -4047,20 +4047,20 @@ LABEL_21:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRoamingARCriteria:(id *)a3 forInterface:(id)a4
+- (void)setRoamingARCriteria:(id *)criteria forInterface:(id)interface
 {
-  v6 = a4;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __54__WiFiUsageMonitor_setRoamingARCriteria_forInterface___block_invoke;
   v10[3] = &unk_2789C6E50;
-  v11 = v6;
-  v12 = self;
-  v8 = *&a3->var5;
-  v13 = *&a3->var0;
+  v11 = interfaceCopy;
+  selfCopy = self;
+  v8 = *&criteria->var5;
+  v13 = *&criteria->var0;
   v14 = v8;
-  v9 = v6;
+  v9 = interfaceCopy;
   dispatch_async(internalQueue, v10);
 }
 
@@ -4118,21 +4118,21 @@ void __54__WiFiUsageMonitor_setRoamingARCriteria_forInterface___block_invoke(uin
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRoamingConfiguration:(int64_t)a3 withChannelList:(id)a4 forInterface:(id)a5
+- (void)setRoamingConfiguration:(int64_t)configuration withChannelList:(id)list forInterface:(id)interface
 {
-  v8 = a4;
-  v9 = a5;
+  listCopy = list;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __73__WiFiUsageMonitor_setRoamingConfiguration_withChannelList_forInterface___block_invoke;
   v13[3] = &unk_2789C6A88;
-  v14 = v9;
-  v15 = self;
-  v16 = v8;
-  v17 = a3;
-  v11 = v8;
-  v12 = v9;
+  v14 = interfaceCopy;
+  selfCopy = self;
+  v16 = listCopy;
+  configurationCopy = configuration;
+  v11 = listCopy;
+  v12 = interfaceCopy;
   dispatch_async(internalQueue, v13);
 }
 
@@ -4185,16 +4185,16 @@ void __73__WiFiUsageMonitor_setRoamingConfiguration_withChannelList_forInterface
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateRoamCache:(id)a3 forInterface:(id)a4
+- (void)updateRoamCache:(id)cache forInterface:(id)interface
 {
-  v5 = a4;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__WiFiUsageMonitor_updateRoamCache_forInterface___block_invoke;
   block[3] = &unk_2789C6630;
-  v9 = v5;
-  v7 = v5;
+  v9 = interfaceCopy;
+  v7 = interfaceCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -4214,26 +4214,26 @@ void __49__WiFiUsageMonitor_updateRoamCache_forInterface___block_invoke(uint64_t
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateBeaconCache:(id)a3 afterRoamAttempt:(id)a4 whileCurrentBSSID:(id)a5 forInterface:(id)a6
+- (void)updateBeaconCache:(id)cache afterRoamAttempt:(id)attempt whileCurrentBSSID:(id)d forInterface:(id)interface
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  cacheCopy = cache;
+  attemptCopy = attempt;
+  dCopy = d;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__WiFiUsageMonitor_updateBeaconCache_afterRoamAttempt_whileCurrentBSSID_forInterface___block_invoke;
   block[3] = &unk_2789C6E78;
-  v20 = v13;
-  v21 = v11;
-  v22 = v12;
-  v23 = v10;
-  v24 = self;
-  v15 = v10;
-  v16 = v12;
-  v17 = v11;
-  v18 = v13;
+  v20 = interfaceCopy;
+  v21 = attemptCopy;
+  v22 = dCopy;
+  v23 = cacheCopy;
+  selfCopy = self;
+  v15 = cacheCopy;
+  v16 = dCopy;
+  v17 = attemptCopy;
+  v18 = interfaceCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -4618,14 +4618,14 @@ LABEL_80:
   v60 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateBssPerChannelWith:(id)a3 into:(id)a4 and:(id)a5 withChannelInfoList:(id)a6
+- (void)updateBssPerChannelWith:(id)with into:(id)into and:(id)and withChannelInfoList:(id)list
 {
   v46 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v35 = a5;
-  v12 = a6;
-  v13 = [v12 copy];
+  withCopy = with;
+  intoCopy = into;
+  andCopy = and;
+  listCopy = list;
+  v13 = [listCopy copy];
   lastChannelInfoList = self->_lastChannelInfoList;
   self->_lastChannelInfoList = v13;
 
@@ -4633,7 +4633,7 @@ LABEL_80:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v15 = v12;
+  v15 = listCopy;
   v16 = [v15 countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v16)
   {
@@ -4649,12 +4649,12 @@ LABEL_80:
         }
 
         v20 = [WiFiUsageChannel channelWithChannelInfo:*(*(&v40 + 1) + 8 * i)];
-        v21 = [v11 objectForKeyedSubscript:v20];
+        v21 = [intoCopy objectForKeyedSubscript:v20];
 
         if (!v21)
         {
           v22 = objc_opt_new();
-          [v11 setObject:v22 forKeyedSubscript:v20];
+          [intoCopy setObject:v22 forKeyedSubscript:v20];
         }
       }
 
@@ -4670,7 +4670,7 @@ LABEL_80:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v23 = v10;
+  v23 = withCopy;
   v24 = [v23 countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v24)
   {
@@ -4687,12 +4687,12 @@ LABEL_80:
 
         v28 = *(*(&v36 + 1) + 8 * j);
         v29 = [WiFiUsageChannel channelWithBssDetails:v28, v34];
-        v30 = [v11 objectForKeyedSubscript:v29];
-        v31 = [v28 bssid];
-        [v30 addObject:v31];
+        v30 = [intoCopy objectForKeyedSubscript:v29];
+        bssid = [v28 bssid];
+        [v30 addObject:bssid];
 
-        v32 = [v28 bssid];
-        [v35 addObject:v32];
+        bssid2 = [v28 bssid];
+        [andCopy addObject:bssid2];
       }
 
       v25 = [v23 countByEnumeratingWithState:&v36 objects:v44 count:16];
@@ -4704,29 +4704,29 @@ LABEL_80:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitScanResultWithNeighborBSS:(id)a3 withOtherBSS:(id)a4 withChannelInfoList:(id)a5
+- (void)submitScanResultWithNeighborBSS:(id)s withOtherBSS:(id)sS withChannelInfoList:(id)list
 {
   v70 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (+[WiFiUsagePrivacyFilter canPerformActionWithSampleRate:](WiFiUsagePrivacyFilter, "canPerformActionWithSampleRate:", 1) && (v7 && [v7 count] || v8 && objc_msgSend(v8, "count")))
+  sCopy = s;
+  sSCopy = sS;
+  listCopy = list;
+  if (+[WiFiUsagePrivacyFilter canPerformActionWithSampleRate:](WiFiUsagePrivacyFilter, "canPerformActionWithSampleRate:", 1) && (sCopy && [sCopy count] || sSCopy && objc_msgSend(sSCopy, "count")))
   {
     v10 = objc_opt_new();
     v11 = objc_opt_new();
-    v51 = v7;
-    [(WiFiUsageMonitor *)self updateBssPerChannelWith:v7 into:v10 and:v11 withChannelInfoList:v9];
-    v50 = v8;
+    v51 = sCopy;
+    [(WiFiUsageMonitor *)self updateBssPerChannelWith:sCopy into:v10 and:v11 withChannelInfoList:listCopy];
+    v50 = sSCopy;
     v53 = v10;
     v48 = v11;
-    [(WiFiUsageMonitor *)self updateBssPerChannelWith:v8 into:v10 and:v11 withChannelInfoList:v9];
+    [(WiFiUsageMonitor *)self updateBssPerChannelWith:sSCopy into:v10 and:v11 withChannelInfoList:listCopy];
     v12 = objc_opt_new();
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v49 = v9;
-    v13 = v9;
+    v49 = listCopy;
+    v13 = listCopy;
     v14 = [v13 countByEnumeratingWithState:&v63 objects:v69 count:16];
     if (v14)
     {
@@ -4846,9 +4846,9 @@ LABEL_80:
     v46 = obj;
     AnalyticsSendEventLazy();
 
-    v8 = v50;
-    v7 = v51;
-    v9 = v49;
+    sSCopy = v50;
+    sCopy = v51;
+    listCopy = v49;
   }
 
   v47 = *MEMORY[0x277D85DE8];
@@ -4872,31 +4872,31 @@ id __85__WiFiUsageMonitor_submitScanResultWithNeighborBSS_withOtherBSS_withChann
   return v4;
 }
 
-- (void)setScanningState:(BOOL)a3 client:(unint64_t)a4 neighborBSS:(id)a5 otherBSS:(id)a6 withChannelInfoList:(id)a7 withRequest:(id)a8 forInterface:(id)a9
+- (void)setScanningState:(BOOL)state client:(unint64_t)client neighborBSS:(id)s otherBSS:(id)sS withChannelInfoList:(id)list withRequest:(id)request forInterface:(id)interface
 {
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  sCopy = s;
+  sSCopy = sS;
+  listCopy = list;
+  requestCopy = request;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __110__WiFiUsageMonitor_setScanningState_client_neighborBSS_otherBSS_withChannelInfoList_withRequest_forInterface___block_invoke;
   v26[3] = &unk_2789C6EC8;
-  v27 = v19;
-  v28 = self;
-  v34 = a3;
-  v29 = v15;
-  v30 = v16;
-  v32 = v17;
-  v33 = a4;
-  v31 = v18;
-  v21 = v17;
-  v22 = v18;
-  v23 = v16;
-  v24 = v15;
-  v25 = v19;
+  v27 = interfaceCopy;
+  selfCopy = self;
+  stateCopy = state;
+  v29 = sCopy;
+  v30 = sSCopy;
+  v32 = listCopy;
+  clientCopy = client;
+  v31 = requestCopy;
+  v21 = listCopy;
+  v22 = requestCopy;
+  v23 = sSCopy;
+  v24 = sCopy;
+  v25 = interfaceCopy;
   dispatch_async(internalQueue, v26);
 }
 
@@ -4975,18 +4975,18 @@ void __110__WiFiUsageMonitor_setScanningState_client_neighborBSS_otherBSS_withCh
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPowerState:(BOOL)a3 forInterface:(id)a4
+- (void)setPowerState:(BOOL)state forInterface:(id)interface
 {
-  v6 = a4;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__WiFiUsageMonitor_setPowerState_forInterface___block_invoke;
   block[3] = &unk_2789C6C20;
-  v10 = v6;
-  v11 = self;
-  v12 = a3;
-  v8 = v6;
+  v10 = interfaceCopy;
+  selfCopy = self;
+  stateCopy = state;
+  v8 = interfaceCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -5054,19 +5054,19 @@ void __47__WiFiUsageMonitor_setPowerState_forInterface___block_invoke(uint64_t a
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setControlCenterState:(BOOL)a3 withKnownLocation:(BOOL)a4 forInterface:(id)a5
+- (void)setControlCenterState:(BOOL)state withKnownLocation:(BOOL)location forInterface:(id)interface
 {
-  v8 = a5;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__WiFiUsageMonitor_setControlCenterState_withKnownLocation_forInterface___block_invoke;
   block[3] = &unk_2789C6EF0;
-  v12 = v8;
-  v13 = self;
-  v14 = a3;
-  v15 = a4;
-  v10 = v8;
+  v12 = interfaceCopy;
+  selfCopy = self;
+  stateCopy = state;
+  locationCopy = location;
+  v10 = interfaceCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -5134,18 +5134,18 @@ void __73__WiFiUsageMonitor_setControlCenterState_withKnownLocation_forInterface
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCellularDataStatus:(id)a3 inAirplaneMode:(BOOL)a4
+- (void)setCellularDataStatus:(id)status inAirplaneMode:(BOOL)mode
 {
-  v6 = a3;
+  statusCopy = status;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__WiFiUsageMonitor_setCellularDataStatus_inAirplaneMode___block_invoke;
   block[3] = &unk_2789C6C20;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = statusCopy;
+  selfCopy = self;
+  modeCopy = mode;
+  v8 = statusCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -5225,18 +5225,18 @@ uint64_t __57__WiFiUsageMonitor_setCellularDataStatus_inAirplaneMode___block_inv
   return result;
 }
 
-- (void)setCellularFallbackState:(BOOL)a3 forInterface:(id)a4
+- (void)setCellularFallbackState:(BOOL)state forInterface:(id)interface
 {
-  v6 = a4;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__WiFiUsageMonitor_setCellularFallbackState_forInterface___block_invoke;
   block[3] = &unk_2789C6C20;
-  v10 = v6;
-  v11 = self;
-  v12 = a3;
-  v8 = v6;
+  v10 = interfaceCopy;
+  selfCopy = self;
+  stateCopy = state;
+  v8 = interfaceCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -5309,18 +5309,18 @@ void __58__WiFiUsageMonitor_setCellularFallbackState_forInterface___block_invoke
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCellularOutrankingState:(BOOL)a3 forInterface:(id)a4
+- (void)setCellularOutrankingState:(BOOL)state forInterface:(id)interface
 {
-  v6 = a4;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__WiFiUsageMonitor_setCellularOutrankingState_forInterface___block_invoke;
   block[3] = &unk_2789C6C20;
-  v10 = v6;
-  v11 = self;
-  v12 = a3;
-  v8 = v6;
+  v10 = interfaceCopy;
+  selfCopy = self;
+  stateCopy = state;
+  v8 = interfaceCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -5388,20 +5388,20 @@ void __60__WiFiUsageMonitor_setCellularOutrankingState_forInterface___block_invo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyNetworkQualityResults:(id)a3 forInterface:(id)a4
+- (void)notifyNetworkQualityResults:(id)results forInterface:(id)interface
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__WiFiUsageMonitor_notifyNetworkQualityResults_forInterface___block_invoke;
   block[3] = &unk_2789C6C70;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = interfaceCopy;
+  selfCopy = self;
+  v14 = resultsCopy;
+  v9 = resultsCopy;
+  v10 = interfaceCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -5473,10 +5473,10 @@ void __61__WiFiUsageMonitor_notifyNetworkQualityResults_forInterface___block_inv
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)LQMAnalysisReasonForFault:(unint64_t)a3
++ (id)LQMAnalysisReasonForFault:(unint64_t)fault
 {
-  v4 = a3 - 1;
-  if (a3 - 1 <= 0x1A && ((0x707023Fu >> v4) & 1) != 0)
+  v4 = fault - 1;
+  if (fault - 1 <= 0x1A && ((0x707023Fu >> v4) & 1) != 0)
   {
     v5 = *off_2789C7270[v4];
   }
@@ -5489,27 +5489,27 @@ void __61__WiFiUsageMonitor_notifyNetworkQualityResults_forInterface___block_inv
   return v5;
 }
 
-- (void)addFaultEvent:(unint64_t)a3 forInterface:(id)a4
+- (void)addFaultEvent:(unint64_t)event forInterface:(id)interface
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a4;
-  v8 = [v6 date];
-  [(WiFiUsageMonitor *)self addFaultEvent:a3 forInterface:v7 at:v8];
+  interfaceCopy = interface;
+  date = [v6 date];
+  [(WiFiUsageMonitor *)self addFaultEvent:event forInterface:interfaceCopy at:date];
 }
 
-- (void)addFaultEvent:(unint64_t)a3 forInterface:(id)a4 event:(id)a5
+- (void)addFaultEvent:(unint64_t)event forInterface:(id)interface event:(id)a5
 {
   v8 = MEMORY[0x277CBEAA8];
   v9 = a5;
-  v10 = a4;
-  v11 = [v8 date];
-  [(WiFiUsageMonitor *)self addFaultEvent:a3 forInterface:v10 at:v11 event:v9];
+  interfaceCopy = interface;
+  date = [v8 date];
+  [(WiFiUsageMonitor *)self addFaultEvent:event forInterface:interfaceCopy at:date event:v9];
 }
 
-- (void)addFaultEvent:(unint64_t)a3 forInterface:(id)a4 at:(id)a5 event:(id)a6
+- (void)addFaultEvent:(unint64_t)event forInterface:(id)interface at:(id)at event:(id)a6
 {
-  v10 = a4;
-  v11 = a5;
+  interfaceCopy = interface;
+  atCopy = at;
   v12 = a6;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -5517,13 +5517,13 @@ void __61__WiFiUsageMonitor_notifyNetworkQualityResults_forInterface___block_inv
   block[2] = __56__WiFiUsageMonitor_addFaultEvent_forInterface_at_event___block_invoke;
   block[3] = &unk_2789C6F18;
   v21 = v12;
-  v22 = a3;
-  v18 = v10;
-  v19 = self;
-  v20 = v11;
+  eventCopy = event;
+  v18 = interfaceCopy;
+  selfCopy = self;
+  v20 = atCopy;
   v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v15 = atCopy;
+  v16 = interfaceCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -5658,23 +5658,23 @@ void __56__WiFiUsageMonitor_addFaultEvent_forInterface_at_event___block_invoke(u
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)linkTestEvent:(id)a3 withReason:(id)a4 forInterface:(id)a5
+- (void)linkTestEvent:(id)event withReason:(id)reason forInterface:(id)interface
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  reasonCopy = reason;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __58__WiFiUsageMonitor_linkTestEvent_withReason_forInterface___block_invoke;
   v15[3] = &unk_2789C6D10;
   v15[4] = self;
-  v16 = v10;
-  v17 = v9;
-  v18 = v8;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = interfaceCopy;
+  v17 = reasonCopy;
+  v18 = eventCopy;
+  v12 = eventCopy;
+  v13 = reasonCopy;
+  v14 = interfaceCopy;
   dispatch_async(internalQueue, v15);
 }
 
@@ -5699,20 +5699,20 @@ uint64_t __58__WiFiUsageMonitor_linkTestEvent_withReason_forInterface___block_in
   return MEMORY[0x2821F96F8](v2, v3);
 }
 
-- (void)addTriggerDisconnectEvent:(id)a3 isAlerted:(BOOL)a4 isConfirmed:(BOOL)a5 isExecuted:(BOOL)a6
+- (void)addTriggerDisconnectEvent:(id)event isAlerted:(BOOL)alerted isConfirmed:(BOOL)confirmed isExecuted:(BOOL)executed
 {
-  v10 = a3;
+  eventCopy = event;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__WiFiUsageMonitor_addTriggerDisconnectEvent_isAlerted_isConfirmed_isExecuted___block_invoke;
   block[3] = &unk_2789C6F40;
-  v14 = v10;
-  v15 = self;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v12 = v10;
+  v14 = eventCopy;
+  selfCopy = self;
+  alertedCopy = alerted;
+  confirmedCopy = confirmed;
+  executedCopy = executed;
+  v12 = eventCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -5786,7 +5786,7 @@ void __79__WiFiUsageMonitor_addTriggerDisconnectEvent_isAlerted_isConfirmed_isEx
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTdLogic_badRssiThreshold:(int64_t)a3 goodRssiThreshold:(int64_t)a4
+- (void)setTdLogic_badRssiThreshold:(int64_t)threshold goodRssiThreshold:(int64_t)rssiThreshold
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -5794,8 +5794,8 @@ void __79__WiFiUsageMonitor_addTriggerDisconnectEvent_isAlerted_isConfirmed_isEx
   block[2] = __66__WiFiUsageMonitor_setTdLogic_badRssiThreshold_goodRssiThreshold___block_invoke;
   block[3] = &unk_2789C6F68;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = threshold;
+  block[6] = rssiThreshold;
   dispatch_async(internalQueue, block);
 }
 
@@ -5873,7 +5873,7 @@ void __66__WiFiUsageMonitor_setTdLogic_badRssiThreshold_goodRssiThreshold___bloc
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTdLogic_deferJoin:(unint64_t)a3 perBSSID:(unint64_t)a4
+- (void)setTdLogic_deferJoin:(unint64_t)join perBSSID:(unint64_t)d
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -5881,8 +5881,8 @@ void __66__WiFiUsageMonitor_setTdLogic_badRssiThreshold_goodRssiThreshold___bloc
   block[2] = __50__WiFiUsageMonitor_setTdLogic_deferJoin_perBSSID___block_invoke;
   block[3] = &unk_2789C6F68;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = join;
+  block[6] = d;
   dispatch_async(internalQueue, block);
 }
 
@@ -5953,18 +5953,18 @@ void __50__WiFiUsageMonitor_setTdLogic_deferJoin_perBSSID___block_invoke(void *a
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTdLogic_alertedBy:(int)a3 forInterface:(id)a4
+- (void)setTdLogic_alertedBy:(int)by forInterface:(id)interface
 {
-  v6 = a4;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__WiFiUsageMonitor_setTdLogic_alertedBy_forInterface___block_invoke;
   block[3] = &unk_2789C66B0;
-  v10 = v6;
-  v11 = self;
-  v12 = a3;
-  v8 = v6;
+  v10 = interfaceCopy;
+  selfCopy = self;
+  byCopy = by;
+  v8 = interfaceCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -6031,20 +6031,20 @@ void __54__WiFiUsageMonitor_setTdLogic_alertedBy_forInterface___block_invoke(uin
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTdLogic_decisionState:(id *)a3 forInterface:(id)a4
+- (void)setTdLogic_decisionState:(id *)state forInterface:(id)interface
 {
-  v6 = a4;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__WiFiUsageMonitor_setTdLogic_decisionState_forInterface___block_invoke;
   v10[3] = &unk_2789C6E50;
-  v11 = v6;
-  v12 = self;
-  v8 = *&a3->var13;
-  v13 = *&a3->var0;
+  v11 = interfaceCopy;
+  selfCopy = self;
+  v8 = *&state->var13;
+  v13 = *&state->var0;
   v14 = v8;
-  v9 = v6;
+  v9 = interfaceCopy;
   dispatch_async(internalQueue, v10);
 }
 
@@ -6115,18 +6115,18 @@ void __58__WiFiUsageMonitor_setTdLogic_decisionState_forInterface___block_invoke
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTdLogic_fastTdState:(id *)a3 forInterface:(id)a4
+- (void)setTdLogic_fastTdState:(id *)state forInterface:(id)interface
 {
-  v6 = a4;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__WiFiUsageMonitor_setTdLogic_fastTdState_forInterface___block_invoke;
   block[3] = &unk_2789C6F90;
-  v10 = v6;
-  v11 = self;
-  v12 = *a3;
-  v8 = v6;
+  v10 = interfaceCopy;
+  selfCopy = self;
+  v12 = *state;
+  v8 = interfaceCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -6233,21 +6233,21 @@ void __54__WiFiUsageMonitor_setTdLogic_execState_forInterface___block_invoke(uin
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTdLogic_end:(int)a3 evalTime:(double)a4 rssi:(int64_t)a5 roamTime:(double)a6 forInterface:(id)a7
+- (void)setTdLogic_end:(int)logic_end evalTime:(double)time rssi:(int64_t)rssi roamTime:(double)roamTime forInterface:(id)interface
 {
-  v12 = a7;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __71__WiFiUsageMonitor_setTdLogic_end_evalTime_rssi_roamTime_forInterface___block_invoke;
   v15[3] = &unk_2789C6FE0;
-  v16 = v12;
-  v17 = self;
-  v21 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v14 = v12;
+  v16 = interfaceCopy;
+  selfCopy = self;
+  logic_endCopy = logic_end;
+  timeCopy = time;
+  rssiCopy = rssi;
+  roamTimeCopy = roamTime;
+  v14 = interfaceCopy;
   dispatch_async(internalQueue, v15);
 }
 
@@ -6311,18 +6311,18 @@ void __71__WiFiUsageMonitor_setTdLogic_end_evalTime_rssi_roamTime_forInterface__
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTdLogic_waitForRoamTime:(double)a3 forInterface:(id)a4
+- (void)setTdLogic_waitForRoamTime:(double)time forInterface:(id)interface
 {
-  v6 = a4;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__WiFiUsageMonitor_setTdLogic_waitForRoamTime_forInterface___block_invoke;
   block[3] = &unk_2789C7008;
-  v10 = v6;
-  v11 = self;
-  v12 = a3;
-  v8 = v6;
+  v10 = interfaceCopy;
+  selfCopy = self;
+  timeCopy = time;
+  v8 = interfaceCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -6375,13 +6375,13 @@ void __60__WiFiUsageMonitor_setTdLogic_waitForRoamTime_forInterface___block_invo
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithMLORuntimeConfig:(id *)a3 forInterface:(id)a4
+- (void)updateWithMLORuntimeConfig:(id *)config forInterface:(id)interface
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
-  v5 = *&a3->var1[2];
-  v7 = *&a3->var0;
+  v5 = *&config->var1[2];
+  v7 = *&config->var0;
   v8 = v5;
   block[2] = __60__WiFiUsageMonitor_updateWithMLORuntimeConfig_forInterface___block_invoke;
   block[3] = &unk_2789C7030;
@@ -6416,12 +6416,12 @@ void __60__WiFiUsageMonitor_updateWithMLORuntimeConfig_forInterface___block_invo
   [v9 updateMLORuntimeConfig:v11];
 }
 
-- (BOOL)submitAnalytics:(id)a3
+- (BOOL)submitAnalytics:(id)analytics
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (self->_xctest_disableSampling || ([v4 sessionDuration], v6 >= 10.0))
+  analyticsCopy = analytics;
+  v5 = analyticsCopy;
+  if (self->_xctest_disableSampling || ([analyticsCopy sessionDuration], v6 >= 10.0))
   {
     v7 = 1;
   }
@@ -6433,39 +6433,39 @@ void __60__WiFiUsageMonitor_updateWithMLORuntimeConfig_forInterface___block_invo
 
   if (self->_xctest_disableSampling)
   {
-    v8 = 1;
+    canSubmitToCA = 1;
   }
 
   else
   {
-    v8 = [v5 canSubmitToCA];
+    canSubmitToCA = [v5 canSubmitToCA];
   }
 
-  v9 = v8 & v7;
+  v9 = canSubmitToCA & v7;
   v10 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
   if (v9)
   {
     v24 = v9;
     if (v10)
     {
-      v11 = [v5 sessionName];
+      sessionName = [v5 sessionName];
       xctest_disableSampling = self->_xctest_disableSampling;
       if (xctest_disableSampling)
       {
-        v13 = @"xctest_disableSampling";
+        describeCAConfig = @"xctest_disableSampling";
       }
 
       else
       {
-        v13 = [v5 describeCAConfig];
+        describeCAConfig = [v5 describeCAConfig];
       }
 
       *buf = 136315650;
       v27 = "[WiFiUsageMonitor submitAnalytics:]";
       v28 = 2112;
-      v29 = v11;
+      v29 = sessionName;
       v30 = 2112;
-      v31 = v13;
+      v31 = describeCAConfig;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: submitting analytics for session type %@ (%@)", buf, 0x20u);
       if (!xctest_disableSampling)
       {
@@ -6473,15 +6473,15 @@ void __60__WiFiUsageMonitor_updateWithMLORuntimeConfig_forInterface___block_invo
     }
 
     [v5 recordCAsubmission];
-    v16 = [v5 metricName];
+    metricName = [v5 metricName];
     v17 = v5;
     AnalyticsSendEventLazy();
 
     for (i = 0; i != 3; ++i)
     {
       v19 = MEMORY[0x277CCACA8];
-      v20 = [v17 metricName];
-      v21 = [v19 stringWithFormat:@"%@.durationByBand", v20];
+      metricName2 = [v17 metricName];
+      v21 = [v19 stringWithFormat:@"%@.durationByBand", metricName2];
       v25 = v17;
       AnalyticsSendEventLazy();
     }
@@ -6491,14 +6491,14 @@ void __60__WiFiUsageMonitor_updateWithMLORuntimeConfig_forInterface___block_invo
 
   else if (v10)
   {
-    v14 = [v5 sessionName];
-    v15 = [v5 describeCAConfig];
+    sessionName2 = [v5 sessionName];
+    describeCAConfig2 = [v5 describeCAConfig];
     *buf = 136315650;
     v27 = "[WiFiUsageMonitor submitAnalytics:]";
     v28 = 2112;
-    v29 = v14;
+    v29 = sessionName2;
     v30 = 2112;
-    v31 = v15;
+    v31 = describeCAConfig2;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: NOT submitting analytics for session type %@ (%@)", buf, 0x20u);
   }
 
@@ -6525,28 +6525,28 @@ id __36__WiFiUsageMonitor_submitAnalytics___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)summaryForInterface:(id)a3
+- (id)summaryForInterface:(id)interface
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  interfaceCopy = interface;
+  if (interfaceCopy)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     internalQueue = self->_internalQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __40__WiFiUsageMonitor_summaryForInterface___block_invoke;
     block[3] = &unk_2789C6C70;
     block[4] = self;
-    v15 = v4;
-    v7 = v5;
+    v15 = interfaceCopy;
+    v7 = dictionary;
     v16 = v7;
     dispatch_sync(internalQueue, block);
     if (self->_xctest)
     {
-      v8 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v9 = [MEMORY[0x277CCAB88] notificationWithName:@"summaryForInterface" object:0];
-      [v8 postNotification:v9];
+      [defaultCenter postNotification:v9];
     }
 
     v10 = v16;
@@ -6619,46 +6619,46 @@ void __40__WiFiUsageMonitor_summaryForInterface___block_invoke(void *a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)rangingSessionRequestedWithSelfPreferredChannel:(unint64_t)a3 selfMainChannel:(unint64_t)a4 selfChannelFlags:(unint64_t)a5 peerPreferredChannel:(unint64_t)a6 peerMainChannel:(unint64_t)a7 peerChannelFlags:(unint64_t)a8 requester:(id)a9
+- (void)rangingSessionRequestedWithSelfPreferredChannel:(unint64_t)channel selfMainChannel:(unint64_t)mainChannel selfChannelFlags:(unint64_t)flags peerPreferredChannel:(unint64_t)preferredChannel peerMainChannel:(unint64_t)peerMainChannel peerChannelFlags:(unint64_t)channelFlags requester:(id)requester
 {
-  v16 = a9;
+  requesterCopy = requester;
   v17 = objc_alloc_init(WiFiUsageRangingSession);
-  [(WiFiUsageRangingSession *)v17 rangingSessionRequestedWithSelfPreferredChannel:a3 selfMainChannel:a4 selfChannelFlags:a5 peerPreferredChannel:a6 peerMainChannel:a7 peerChannelFlags:a8 requester:v16];
+  [(WiFiUsageRangingSession *)v17 rangingSessionRequestedWithSelfPreferredChannel:channel selfMainChannel:mainChannel selfChannelFlags:flags peerPreferredChannel:preferredChannel peerMainChannel:peerMainChannel peerChannelFlags:channelFlags requester:requesterCopy];
 
   [(WiFiUsageMonitor *)self setRangingSession:v17];
 }
 
-- (void)rangingStartedWithNumMeasurements:(unint64_t)a3
+- (void)rangingStartedWithNumMeasurements:(unint64_t)measurements
 {
-  v5 = [(WiFiUsageMonitor *)self rangingSession];
+  rangingSession = [(WiFiUsageMonitor *)self rangingSession];
 
-  if (!v5)
+  if (!rangingSession)
   {
     v6 = objc_alloc_init(WiFiUsageRangingSession);
     [(WiFiUsageMonitor *)self setRangingSession:v6];
   }
 
-  v7 = [(WiFiUsageMonitor *)self rangingSession];
-  [v7 rangingStartedWithNumMeasurements:a3];
+  rangingSession2 = [(WiFiUsageMonitor *)self rangingSession];
+  [rangingSession2 rangingStartedWithNumMeasurements:measurements];
 }
 
-- (void)rangingCompletedWithValidCount:(unint64_t)a3 resultStatus:(int64_t)a4 resultFlags:(unint64_t)a5
+- (void)rangingCompletedWithValidCount:(unint64_t)count resultStatus:(int64_t)status resultFlags:(unint64_t)flags
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = [(WiFiUsageMonitor *)self rangingSession];
+  rangingSession = [(WiFiUsageMonitor *)self rangingSession];
 
-  if (v9)
+  if (rangingSession)
   {
-    v10 = [(WiFiUsageMonitor *)self rangingSession];
-    [v10 rangingCompletedWithValidCount:a3 resultStatus:a4 resultFlags:a5];
+    rangingSession2 = [(WiFiUsageMonitor *)self rangingSession];
+    [rangingSession2 rangingCompletedWithValidCount:count resultStatus:status resultFlags:flags];
 
-    v11 = [(WiFiUsageMonitor *)self rangingSession];
-    v12 = [v11 sessionSummary:1];
+    rangingSession3 = [(WiFiUsageMonitor *)self rangingSession];
+    v12 = [rangingSession3 sessionSummary:1];
     v13 = [v12 copy];
 
-    v14 = [(WiFiUsageMonitor *)self rangingSession];
-    v15 = [v14 metricName];
-    v16 = [v15 copy];
+    rangingSession4 = [(WiFiUsageMonitor *)self rangingSession];
+    metricName = [rangingSession4 metricName];
+    v16 = [metricName copy];
 
     if (v13 && v16)
     {
@@ -6756,36 +6756,36 @@ void __76__WiFiUsageMonitor_rangingCompletedWithValidCount_resultStatus_resultFl
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addRangingRttSampleWithRssi:(int64_t)a3 rtt:(int64_t)a4 snr:(unint64_t)a5 flags:(unint64_t)a6 channel:(unint64_t)a7 coreId:(unint64_t)a8 bitErrorRate:(unint64_t)a9 phyError:(unint64_t)a10 andPeerSnr:(unint64_t)a11 andPeerCoreId:(unint64_t)a12 andPeerBitErrorRate:(unint64_t)a13 andPeerPhyError:(unint64_t)a14
+- (void)addRangingRttSampleWithRssi:(int64_t)rssi rtt:(int64_t)rtt snr:(unint64_t)snr flags:(unint64_t)flags channel:(unint64_t)channel coreId:(unint64_t)id bitErrorRate:(unint64_t)rate phyError:(unint64_t)self0 andPeerSnr:(unint64_t)self1 andPeerCoreId:(unint64_t)self2 andPeerBitErrorRate:(unint64_t)self3 andPeerPhyError:(unint64_t)self4
 {
-  v17 = [(WiFiUsageMonitor *)self rangingSession];
+  rangingSession = [(WiFiUsageMonitor *)self rangingSession];
 
-  if (v17)
+  if (rangingSession)
   {
-    v18 = [(WiFiUsageMonitor *)self rangingSession];
-    [v18 addRangingRttSampleWithRssi:a3 rtt:a4 snr:a5 flags:a6 channel:a7 coreId:a8 bitErrorRate:a9 phyError:a10 andPeerSnr:a11 andPeerCoreId:a12 andPeerBitErrorRate:a13 andPeerPhyError:a14];
+    rangingSession2 = [(WiFiUsageMonitor *)self rangingSession];
+    [rangingSession2 addRangingRttSampleWithRssi:rssi rtt:rtt snr:snr flags:flags channel:channel coreId:id bitErrorRate:rate phyError:error andPeerSnr:peerSnr andPeerCoreId:coreId andPeerBitErrorRate:errorRate andPeerPhyError:phyError];
   }
 }
 
 - (id)lastRangingSessionMetric
 {
-  v2 = [(WiFiUsageMonitor *)self rangingSession];
-  v3 = [v2 sessionSummary:1];
+  rangingSession = [(WiFiUsageMonitor *)self rangingSession];
+  v3 = [rangingSession sessionSummary:1];
 
   return v3;
 }
 
-- (id)lastBssSessionInfoForInterface:(id)a3
+- (id)lastBssSessionInfoForInterface:(id)interface
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  interfaceCopy = interface;
+  if (interfaceCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(NSMutableDictionary *)self->_usageSessions valueForKey:v4, 0];
+    v5 = [(NSMutableDictionary *)self->_usageSessions valueForKey:interfaceCopy, 0];
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -6803,7 +6803,7 @@ void __76__WiFiUsageMonitor_rangingCompletedWithValidCount_resultStatus_resultFl
           v10 = *(*(&v14 + 1) + 8 * i);
           if ([v10 type] == 4)
           {
-            v11 = [v10 lastBssSessionInfo];
+            lastBssSessionInfo = [v10 lastBssSessionInfo];
 
             goto LABEL_15;
           }
@@ -6829,12 +6829,12 @@ void __76__WiFiUsageMonitor_rangingCompletedWithValidCount_resultStatus_resultFl
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s - Invalid interfaceName: %@", buf, 0x16u);
   }
 
-  v11 = 0;
+  lastBssSessionInfo = 0;
 LABEL_15:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return lastBssSessionInfo;
 }
 
 - (void)enableXCTestNotifications
@@ -6920,10 +6920,10 @@ void __45__WiFiUsageMonitor_enableXCTestNotifications__block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableSubmitAnalyticsNoSampling:(BOOL)a3
+- (void)enableSubmitAnalyticsNoSampling:(BOOL)sampling
 {
   v10 = *MEMORY[0x277D85DE8];
-  self->_xctest_disableSampling = a3;
+  self->_xctest_disableSampling = sampling;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v4 = @"NO";
@@ -6942,15 +6942,15 @@ void __45__WiFiUsageMonitor_enableXCTestNotifications__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)canStartLQMAnalysisforTrigger:(id)a3 andReason:(id)a4 onWindow:(id)a5
+- (id)canStartLQMAnalysisforTrigger:(id)trigger andReason:(id)reason onWindow:(id)window
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  triggerCopy = trigger;
+  reasonCopy = reason;
+  windowCopy = window;
   v11 = [MEMORY[0x277CBEAA8] now];
-  v12 = [[WiFiUsageLQMRelatedTrigger alloc] initWithTrigger:v8 andReason:v9 andTimestamp:v11];
-  [v10 addTrigger:v12];
+  v12 = [[WiFiUsageLQMRelatedTrigger alloc] initWithTrigger:triggerCopy andReason:reasonCopy andTimestamp:v11];
+  [windowCopy addTrigger:v12];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
@@ -6989,9 +6989,9 @@ void __45__WiFiUsageMonitor_enableXCTestNotifications__block_invoke(uint64_t a1)
       *buf = 136316162;
       v29 = "[WiFiUsageMonitor canStartLQMAnalysisforTrigger:andReason:onWindow:]";
       v30 = 2112;
-      v31 = v8;
+      v31 = triggerCopy;
       v32 = 2112;
-      v33 = v9;
+      v33 = reasonCopy;
       v34 = 2048;
       v35 = v20;
       v36 = 1024;
@@ -7012,34 +7012,34 @@ void __45__WiFiUsageMonitor_enableXCTestNotifications__block_invoke(uint64_t a1)
   return v19;
 }
 
-- (void)startLQMAnalysis:(id)a3
+- (void)startLQMAnalysis:(id)analysis
 {
-  v8 = a3;
-  [v8 setCompletionHandler:self->_lqmAnalysisCompletionHandler];
-  if (v8)
+  analysisCopy = analysis;
+  [analysisCopy setCompletionHandler:self->_lqmAnalysisCompletionHandler];
+  if (analysisCopy)
   {
-    if (([v8 isDone] & 1) == 0)
+    if (([analysisCopy isDone] & 1) == 0)
     {
-      [(NSMutableArray *)self->_pendingLqmAnalysis addObject:v8];
-      v4 = [v8 reason];
-      v5 = [v4 isEqualToString:@"InCall"];
+      [(NSMutableArray *)self->_pendingLqmAnalysis addObject:analysisCopy];
+      reason = [analysisCopy reason];
+      v5 = [reason isEqualToString:@"InCall"];
 
       if (v5)
       {
-        v6 = [v8 timestamp];
+        timestamp = [analysisCopy timestamp];
         lastInCallAnalysis = self->_lastInCallAnalysis;
-        self->_lastInCallAnalysis = v6;
+        self->_lastInCallAnalysis = timestamp;
       }
     }
   }
 }
 
-- (void)receiveKernelLQMRollingWindow:(id)a3 ForInterface:(id)a4
+- (void)receiveKernelLQMRollingWindow:(id)window ForInterface:(id)interface
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  windowCopy = window;
+  interfaceCopy = interface;
+  if (!interfaceCopy)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -7079,7 +7079,7 @@ LABEL_8:
   v13[2] = __63__WiFiUsageMonitor_receiveKernelLQMRollingWindow_ForInterface___block_invoke;
   v13[3] = &unk_2789C6608;
   v13[4] = self;
-  v14 = v6;
+  v14 = windowCopy;
   dispatch_async(internalQueue, v13);
 
 LABEL_9:
@@ -7125,22 +7125,22 @@ void __63__WiFiUsageMonitor_receiveKernelLQMRollingWindow_ForInterface___block_i
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedBssTransitionRequest:(id)a3 candidateListIncluded:(BOOL)a4 isAbridged:(BOOL)a5 disassociationImminent:(BOOL)a6 bssTerminationIncluded:(BOOL)a7 essDisassociationImminent:(BOOL)a8
+- (void)receivedBssTransitionRequest:(id)request candidateListIncluded:(BOOL)included isAbridged:(BOOL)abridged disassociationImminent:(BOOL)imminent bssTerminationIncluded:(BOOL)terminationIncluded essDisassociationImminent:(BOOL)disassociationImminent
 {
-  v14 = a3;
+  requestCopy = request;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __154__WiFiUsageMonitor_receivedBssTransitionRequest_candidateListIncluded_isAbridged_disassociationImminent_bssTerminationIncluded_essDisassociationImminent___block_invoke;
   block[3] = &unk_2789C6DD8;
-  v18 = v14;
-  v19 = self;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a8;
-  v16 = v14;
+  v18 = requestCopy;
+  selfCopy = self;
+  includedCopy = included;
+  abridgedCopy = abridged;
+  imminentCopy = imminent;
+  terminationIncludedCopy = terminationIncluded;
+  disassociationImminentCopy = disassociationImminent;
+  v16 = requestCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -7193,19 +7193,19 @@ void __154__WiFiUsageMonitor_receivedBssTransitionRequest_candidateListIncluded_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sentBssTransitionResponse:(id)a3 status:(int64_t)a4 terminationDelayRequested:(BOOL)a5
+- (void)sentBssTransitionResponse:(id)response status:(int64_t)status terminationDelayRequested:(BOOL)requested
 {
-  v8 = a3;
+  responseCopy = response;
   internalQueue = self->_internalQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __79__WiFiUsageMonitor_sentBssTransitionResponse_status_terminationDelayRequested___block_invoke;
   v11[3] = &unk_2789C7080;
-  v12 = v8;
-  v13 = self;
-  v14 = a4;
-  v15 = a5;
-  v10 = v8;
+  v12 = responseCopy;
+  selfCopy = self;
+  statusCopy = status;
+  requestedCopy = requested;
+  v10 = responseCopy;
   dispatch_async(internalQueue, v11);
 }
 
@@ -7258,29 +7258,29 @@ void __79__WiFiUsageMonitor_sentBssTransitionResponse_status_terminationDelayReq
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDeviceInitializationFailureReason:(id)a3 timeSinceBoot:(double)a4
+- (void)setDeviceInitializationFailureReason:(id)reason timeSinceBoot:(double)boot
 {
-  v6 = @"Success";
-  if (a3)
+  reasonCopy = @"Success";
+  if (reason)
   {
-    v6 = a3;
+    reasonCopy = reason;
   }
 
   v7 = MEMORY[0x277CBEB38];
-  v8 = v6;
-  v9 = a3;
-  v10 = [v7 dictionary];
-  [v10 setObject:v8 forKeyedSubscript:@"WiFiDeviceInitializationFailureReason"];
+  v8 = reasonCopy;
+  reasonCopy2 = reason;
+  dictionary = [v7 dictionary];
+  [dictionary setObject:v8 forKeyedSubscript:@"WiFiDeviceInitializationFailureReason"];
 
-  v11 = [WiFiUsagePrivacyFilter numberWithDuration:a4];
-  [v10 setObject:v11 forKeyedSubscript:@"WiFiTimeSinceBoot"];
+  v11 = [WiFiUsagePrivacyFilter numberWithDuration:boot];
+  [dictionary setObject:v11 forKeyedSubscript:@"WiFiTimeSinceBoot"];
 
-  v13 = v10;
-  v12 = v10;
+  v13 = dictionary;
+  v12 = dictionary;
   AnalyticsSendEventLazy();
 }
 
-- (void)updateWowState:(BOOL)a3 lpasState:(BOOL)a4 lowPowerState:(BOOL)a5 batterySaverState:(BOOL)a6
+- (void)updateWowState:(BOOL)state lpasState:(BOOL)lpasState lowPowerState:(BOOL)powerState batterySaverState:(BOOL)saverState
 {
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -7288,10 +7288,10 @@ void __79__WiFiUsageMonitor_sentBssTransitionResponse_status_terminationDelayReq
   v7[2] = __77__WiFiUsageMonitor_updateWowState_lpasState_lowPowerState_batterySaverState___block_invoke;
   v7[3] = &unk_2789C70A8;
   v7[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  stateCopy = state;
+  lpasStateCopy = lpasState;
+  powerStateCopy = powerState;
+  saverStateCopy = saverState;
   dispatch_async(internalQueue, v7);
 }
 
@@ -7362,7 +7362,7 @@ void __77__WiFiUsageMonitor_updateWowState_lpasState_lowPowerState_batterySaverS
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSleepPowerStats:(double)a3 unassociatedDuration:(double)a4 associatedDuration:(double)a5 roamingDuration:(double)a6
+- (void)updateSleepPowerStats:(double)stats unassociatedDuration:(double)duration associatedDuration:(double)associatedDuration roamingDuration:(double)roamingDuration
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -7370,10 +7370,10 @@ void __77__WiFiUsageMonitor_updateWowState_lpasState_lowPowerState_batterySaverS
   block[2] = __98__WiFiUsageMonitor_updateSleepPowerStats_unassociatedDuration_associatedDuration_roamingDuration___block_invoke;
   block[3] = &unk_2789C7030;
   block[4] = self;
-  *&block[5] = a3;
-  *&block[6] = a4;
-  *&block[7] = a5;
-  *&block[8] = a6;
+  *&block[5] = stats;
+  *&block[6] = duration;
+  *&block[7] = associatedDuration;
+  *&block[8] = roamingDuration;
   dispatch_async(internalQueue, block);
 }
 
@@ -7444,11 +7444,11 @@ void __98__WiFiUsageMonitor_updateSleepPowerStats_unassociatedDuration_associate
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitLqmToCA:(id)a3 forInterface:(id)a4
+- (void)submitLqmToCA:(id)a forInterface:(id)interface
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v67 = a4;
+  aCopy = a;
+  interfaceCopy = interface;
   if (!self->_xctest_disableSampling)
   {
     lqmDistributionSampling_store = self->_lqmDistributionSampling_store;
@@ -7467,56 +7467,56 @@ void __98__WiFiUsageMonitor_updateSleepPowerStats_unassociatedDuration_associate
   }
 
   v63 = MEMORY[0x277D7B948];
-  v65 = [v6 networkDetails];
-  v64 = [v65 connectedBss];
-  v61 = [v64 channel];
-  v62 = [v6 networkDetails];
-  v60 = [v62 connectedBss];
-  v59 = +[WiFiUsagePrivacyFilter waBandFromBand:](WiFiUsagePrivacyFilter, "waBandFromBand:", [v60 band]);
-  v58 = [v6 rssi];
-  v57 = [v6 noise];
-  v56 = [v6 snr];
-  v55 = [v6 totalReportedCca];
-  v54 = [v6 selfCca];
-  v53 = [v6 otherCca];
-  v52 = [v6 interference];
-  v51 = [v6 beaconPer];
-  v50 = [v6 rxFrames];
-  v8 = [v6 rxRetriesOverRxFrames];
-  v49 = [v6 rxFrames] * v8;
-  v48 = [v6 txFrames];
-  v9 = [v6 txRetriesOverTxFrames];
-  v47 = [v6 txFrames] * v9;
-  v10 = [v6 txFailsOverTxFrames];
-  v11 = [v6 rxFrames] * v10;
-  v12 = [v6 txRate];
-  v13 = [v6 rxRate];
-  v14 = [v6 isAnyAppInFG];
-  v15 = [v6 isFTactive];
-  v16 = [v6 isTimeSensitiveAppRunning];
-  v17 = [v6 duration];
+  networkDetails = [aCopy networkDetails];
+  connectedBss = [networkDetails connectedBss];
+  channel = [connectedBss channel];
+  networkDetails2 = [aCopy networkDetails];
+  connectedBss2 = [networkDetails2 connectedBss];
+  v59 = +[WiFiUsagePrivacyFilter waBandFromBand:](WiFiUsagePrivacyFilter, "waBandFromBand:", [connectedBss2 band]);
+  rssi = [aCopy rssi];
+  noise = [aCopy noise];
+  v56 = [aCopy snr];
+  totalReportedCca = [aCopy totalReportedCca];
+  selfCca = [aCopy selfCca];
+  otherCca = [aCopy otherCca];
+  interference = [aCopy interference];
+  beaconPer = [aCopy beaconPer];
+  rxFrames = [aCopy rxFrames];
+  rxRetriesOverRxFrames = [aCopy rxRetriesOverRxFrames];
+  v49 = [aCopy rxFrames] * rxRetriesOverRxFrames;
+  txFrames = [aCopy txFrames];
+  txRetriesOverTxFrames = [aCopy txRetriesOverTxFrames];
+  v47 = [aCopy txFrames] * txRetriesOverTxFrames;
+  txFailsOverTxFrames = [aCopy txFailsOverTxFrames];
+  v11 = [aCopy rxFrames] * txFailsOverTxFrames;
+  txRate = [aCopy txRate];
+  rxRate = [aCopy rxRate];
+  isAnyAppInFG = [aCopy isAnyAppInFG];
+  isFTactive = [aCopy isFTactive];
+  isTimeSensitiveAppRunning = [aCopy isTimeSensitiveAppRunning];
+  duration = [aCopy duration];
   v18 = self->_lqmDistributionSampling_store;
   if (v18)
   {
-    v19 = [(NSNumber *)v18 longValue];
+    longValue = [(NSNumber *)v18 longValue];
   }
 
   else
   {
-    v19 = 1;
+    longValue = 1;
   }
 
-  BYTE2(v46) = v16;
-  BYTE1(v46) = v15;
-  LOBYTE(v46) = v14;
-  v20 = [v63 waLQMonChannel:v61 band:v59 rssi:v58 noise:v57 snr:v56 totalCCA:v55 selfCca:v54 otherCca:v53 interference:v52 beaconPer:v51 rxFrames:v50 rxRetryFrames:v49 txFrames:v48 txRetries:v47 txFail:v11 txRate:v12 rxRate:v13 isAnyAppInFG:v46 isFTactive:+[WiFiUsagePrivacyFilter scalingFactorForRawSampleRate:](WiFiUsagePrivacyFilter isTimeSensitiveAppRunning:"scalingFactorForRawSampleRate:" duration:v19) * v17];
+  BYTE2(v46) = isTimeSensitiveAppRunning;
+  BYTE1(v46) = isFTactive;
+  LOBYTE(v46) = isAnyAppInFG;
+  v20 = [v63 waLQMonChannel:channel band:v59 rssi:rssi noise:noise snr:v56 totalCCA:totalReportedCca selfCca:selfCca otherCca:otherCca interference:interference beaconPer:beaconPer rxFrames:rxFrames rxRetryFrames:v49 txFrames:txFrames txRetries:v47 txFail:v11 txRate:txRate rxRate:rxRate isAnyAppInFG:v46 isFTactive:+[WiFiUsagePrivacyFilter scalingFactorForRawSampleRate:](WiFiUsagePrivacyFilter isTimeSensitiveAppRunning:"scalingFactorForRawSampleRate:" duration:longValue) * duration];
 
-  v21 = [MEMORY[0x277D7B940] sharedDeviceAnalyticsClient];
-  v22 = [v6 networkDetails];
-  v23 = [v22 connectedBss];
-  v24 = [v23 bssid];
-  v25 = [v6 timestamp];
-  [v21 lqmEvent:v20 on:v24 at:v25];
+  mEMORY[0x277D7B940] = [MEMORY[0x277D7B940] sharedDeviceAnalyticsClient];
+  networkDetails3 = [aCopy networkDetails];
+  connectedBss3 = [networkDetails3 connectedBss];
+  bssid = [connectedBss3 bssid];
+  timestamp = [aCopy timestamp];
+  [mEMORY[0x277D7B940] lqmEvent:v20 on:bssid at:timestamp];
 
 LABEL_10:
   if (!self->_xctest_disableSampling)
@@ -7540,7 +7540,7 @@ LABEL_10:
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v27 = [(NSMutableDictionary *)self->_usageSessions valueForKey:v67];
+  v27 = [(NSMutableDictionary *)self->_usageSessions valueForKey:interfaceCopy];
   v28 = [v27 countByEnumeratingWithState:&v74 objects:v79 count:16];
   if (v28)
   {
@@ -7585,9 +7585,9 @@ LABEL_10:
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v66 = v6;
-  v36 = [v6 mloSamples];
-  v37 = [v36 countByEnumeratingWithState:&v70 objects:v78 count:16];
+  v66 = aCopy;
+  mloSamples = [aCopy mloSamples];
+  v37 = [mloSamples countByEnumeratingWithState:&v70 objects:v78 count:16];
   if (v37)
   {
     v38 = v37;
@@ -7598,7 +7598,7 @@ LABEL_10:
       {
         if (*v71 != v39)
         {
-          objc_enumerationMutation(v36);
+          objc_enumerationMutation(mloSamples);
         }
 
         v41 = *(*(&v70 + 1) + 8 * j);
@@ -7607,13 +7607,13 @@ LABEL_10:
         AnalyticsSendEvent();
       }
 
-      v38 = [v36 countByEnumeratingWithState:&v70 objects:v78 count:16];
+      v38 = [mloSamples countByEnumeratingWithState:&v70 objects:v78 count:16];
     }
 
     while (v38);
   }
 
-  v6 = v66;
+  aCopy = v66;
   v68 = v66;
   v69 = v35;
   v44 = v35;
@@ -7648,7 +7648,7 @@ LABEL_34:
         *buf = 136315394;
         v119 = "[WiFiUsageMonitor submitBootLatenciesToCA]";
         v120 = 2080;
-        v121 = [v7 UTF8String];
+        uTF8String = [v7 UTF8String];
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: dict_bootToLastJoin: %s\n", buf, 0x16u);
       }
 
@@ -7673,11 +7673,11 @@ LABEL_34:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v13 = [v12 description];
-        v14 = [v13 UTF8String];
+        uTF8String2 = [v13 UTF8String];
         *buf = 136315394;
         v119 = "[WiFiUsageMonitor submitBootLatenciesToCA]";
         v120 = 2080;
-        v121 = v14;
+        uTF8String = uTF8String2;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: dict_firstUnlockToLastJoin: %s\n", buf, 0x16u);
       }
 
@@ -7702,11 +7702,11 @@ LABEL_34:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v20 = [v19 description];
-        v21 = [v20 UTF8String];
+        uTF8String3 = [v20 UTF8String];
         *buf = 136315394;
         v119 = "[WiFiUsageMonitor submitBootLatenciesToCA]";
         v120 = 2080;
-        v121 = v21;
+        uTF8String = uTF8String3;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: dict_bootToLastLinkUp: %s\n", buf, 0x16u);
       }
 
@@ -7731,11 +7731,11 @@ LABEL_34:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v27 = [v26 description];
-        v28 = [v27 UTF8String];
+        uTF8String4 = [v27 UTF8String];
         *buf = 136315394;
         v119 = "[WiFiUsageMonitor submitBootLatenciesToCA]";
         v120 = 2080;
-        v121 = v28;
+        uTF8String = uTF8String4;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: dict_firstUnlockToLastLinkUp: %s\n", buf, 0x16u);
       }
 
@@ -7760,11 +7760,11 @@ LABEL_34:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v34 = [v33 description];
-        v35 = [v34 UTF8String];
+        uTF8String5 = [v34 UTF8String];
         *buf = 136315394;
         v119 = "[WiFiUsageMonitor submitBootLatenciesToCA]";
         v120 = 2080;
-        v121 = v35;
+        uTF8String = uTF8String5;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: dict_lastJoinToLastLinkUp: %s\n", buf, 0x16u);
       }
 
@@ -7789,11 +7789,11 @@ LABEL_34:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v41 = [v40 description];
-        v42 = [v41 UTF8String];
+        uTF8String6 = [v41 UTF8String];
         *buf = 136315394;
         v119 = "[WiFiUsageMonitor submitBootLatenciesToCA]";
         v120 = 2080;
-        v121 = v42;
+        uTF8String = uTF8String6;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: dict_bootToIPv4: %s\n", buf, 0x16u);
       }
 
@@ -7818,11 +7818,11 @@ LABEL_34:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v48 = [v47 description];
-        v49 = [v48 UTF8String];
+        uTF8String7 = [v48 UTF8String];
         *buf = 136315394;
         v119 = "[WiFiUsageMonitor submitBootLatenciesToCA]";
         v120 = 2080;
-        v121 = v49;
+        uTF8String = uTF8String7;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: dict_firstUnlockToIPv4: %s\n", buf, 0x16u);
       }
 
@@ -7847,11 +7847,11 @@ LABEL_34:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v55 = [v54 description];
-        v56 = [v55 UTF8String];
+        uTF8String8 = [v55 UTF8String];
         *buf = 136315394;
         v119 = "[WiFiUsageMonitor submitBootLatenciesToCA]";
         v120 = 2080;
-        v121 = v56;
+        uTF8String = uTF8String8;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: dict_lastJoinToIPv4: %s\n", buf, 0x16u);
       }
 
@@ -7876,11 +7876,11 @@ LABEL_34:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v62 = [v61 description];
-        v63 = [v62 UTF8String];
+        uTF8String9 = [v62 UTF8String];
         *buf = 136315394;
         v119 = "[WiFiUsageMonitor submitBootLatenciesToCA]";
         v120 = 2080;
-        v121 = v63;
+        uTF8String = uTF8String9;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: dict_lastLinkUpToIPv4: %s\n", buf, 0x16u);
       }
 
@@ -7905,11 +7905,11 @@ LABEL_34:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v69 = [v68 description];
-        v70 = [v69 UTF8String];
+        uTF8String10 = [v69 UTF8String];
         *buf = 136315394;
         v119 = "[WiFiUsageMonitor submitBootLatenciesToCA]";
         v120 = 2080;
-        v121 = v70;
+        uTF8String = uTF8String10;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: dict_bootToIPv6: %s\n", buf, 0x16u);
       }
 
@@ -7934,11 +7934,11 @@ LABEL_34:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v76 = [v75 description];
-        v77 = [v76 UTF8String];
+        uTF8String11 = [v76 UTF8String];
         *buf = 136315394;
         v119 = "[WiFiUsageMonitor submitBootLatenciesToCA]";
         v120 = 2080;
-        v121 = v77;
+        uTF8String = uTF8String11;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: dict_firstUnlockToIPv6: %s\n", buf, 0x16u);
       }
 
@@ -7963,11 +7963,11 @@ LABEL_34:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v83 = [v82 description];
-        v84 = [v83 UTF8String];
+        uTF8String12 = [v83 UTF8String];
         *buf = 136315394;
         v119 = "[WiFiUsageMonitor submitBootLatenciesToCA]";
         v120 = 2080;
-        v121 = v84;
+        uTF8String = uTF8String12;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: dict_lastJoinToIPv6: %s\n", buf, 0x16u);
       }
 
@@ -7991,11 +7991,11 @@ LABEL_34:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v90 = [v89 description];
-        v91 = [v90 UTF8String];
+        uTF8String13 = [v90 UTF8String];
         *buf = 136315394;
         v119 = "[WiFiUsageMonitor submitBootLatenciesToCA]";
         v120 = 2080;
-        v121 = v91;
+        uTF8String = uTF8String13;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: dict_lastLinkUpToIPv6: %s\n", buf, 0x16u);
       }
 
@@ -8007,24 +8007,24 @@ LABEL_34:
   v93 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithChQualScore:(unint64_t)a3 txLatencyScore:(unint64_t)a4 rxLatencyScore:(unint64_t)a5 txLossScore:(unint64_t)a6 rxLossScore:(unint64_t)a7 txLatencyP95:(unint64_t)a8 linkRecommendationFlags:(unint64_t)a9 rtTrafficStatus:(unint64_t)a10 forInterface:(id)a11
+- (void)updateWithChQualScore:(unint64_t)score txLatencyScore:(unint64_t)latencyScore rxLatencyScore:(unint64_t)rxLatencyScore txLossScore:(unint64_t)lossScore rxLossScore:(unint64_t)rxLossScore txLatencyP95:(unint64_t)p95 linkRecommendationFlags:(unint64_t)flags rtTrafficStatus:(unint64_t)self0 forInterface:(id)self1
 {
-  v17 = a11;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __162__WiFiUsageMonitor_updateWithChQualScore_txLatencyScore_rxLatencyScore_txLossScore_rxLossScore_txLatencyP95_linkRecommendationFlags_rtTrafficStatus_forInterface___block_invoke;
   block[3] = &unk_2789C70D0;
   block[4] = self;
-  v21 = v17;
-  v22 = a3;
-  v23 = a4;
-  v24 = a6;
-  v25 = a7;
-  v26 = a8;
-  v27 = a9;
-  v28 = a10;
-  v19 = v17;
+  v21 = interfaceCopy;
+  scoreCopy = score;
+  latencyScoreCopy = latencyScore;
+  lossScoreCopy = lossScore;
+  rxLossScoreCopy = rxLossScore;
+  p95Copy = p95;
+  flagsCopy = flags;
+  statusCopy = status;
+  v19 = interfaceCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -8077,7 +8077,7 @@ void __162__WiFiUsageMonitor_updateWithChQualScore_txLatencyScore_rxLatencyScore
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateIsBSPActive:(BOOL)a3
+- (void)updateIsBSPActive:(BOOL)active
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -8085,7 +8085,7 @@ void __162__WiFiUsageMonitor_updateWithChQualScore_txLatencyScore_rxLatencyScore
   v4[2] = __38__WiFiUsageMonitor_updateIsBSPActive___block_invoke;
   v4[3] = &unk_2789C6688;
   v4[4] = self;
-  v5 = a3;
+  activeCopy = active;
   dispatch_async(internalQueue, v4);
 }
 
@@ -8106,17 +8106,17 @@ void __329__WiFiUsageMonitor_updateWithBspOverflowed_IsBSPActive_BspTimeToTST_Bs
   }
 }
 
-- (void)notifyIPv4Changes:(id)a3
+- (void)notifyIPv4Changes:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__WiFiUsageMonitor_notifyIPv4Changes___block_invoke;
   v7[3] = &unk_2789C6608;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changesCopy;
+  selfCopy = self;
+  v6 = changesCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -8255,17 +8255,17 @@ void __38__WiFiUsageMonitor_notifyIPv4Changes___block_invoke(uint64_t a1)
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyIPv6Changes:(id)a3
+- (void)notifyIPv6Changes:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__WiFiUsageMonitor_notifyIPv6Changes___block_invoke;
   v7[3] = &unk_2789C6608;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changesCopy;
+  selfCopy = self;
+  v6 = changesCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -8404,17 +8404,17 @@ void __38__WiFiUsageMonitor_notifyIPv6Changes___block_invoke(uint64_t a1)
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyDHCPChanges:(id)a3
+- (void)notifyDHCPChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__WiFiUsageMonitor_notifyDHCPChanges___block_invoke;
   v7[3] = &unk_2789C6608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changesCopy;
+  v6 = changesCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -8500,7 +8500,7 @@ void __38__WiFiUsageMonitor_notifyDHCPChanges___block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyIpConfigurationStateWithMethod:(BOOL)a3 dhcpLeaseDuration:(double)a4 hasRoutableIpV4:(BOOL)a5 hasRoutableIpV6:(BOOL)a6
+- (void)notifyIpConfigurationStateWithMethod:(BOOL)method dhcpLeaseDuration:(double)duration hasRoutableIpV4:(BOOL)v4 hasRoutableIpV6:(BOOL)v6
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -8508,10 +8508,10 @@ void __38__WiFiUsageMonitor_notifyDHCPChanges___block_invoke(uint64_t a1)
   block[2] = __107__WiFiUsageMonitor_notifyIpConfigurationStateWithMethod_dhcpLeaseDuration_hasRoutableIpV4_hasRoutableIpV6___block_invoke;
   block[3] = &unk_2789C7120;
   block[4] = self;
-  v8 = a3;
-  *&block[5] = a4;
-  v9 = a5;
-  v10 = a6;
+  methodCopy = method;
+  *&block[5] = duration;
+  v4Copy = v4;
+  v6Copy = v6;
   dispatch_async(internalQueue, block);
 }
 
@@ -8582,18 +8582,18 @@ void __107__WiFiUsageMonitor_notifyIpConfigurationStateWithMethod_dhcpLeaseDurat
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyInterfaceRankingState:(BOOL)a3 forInterface:(id)a4
+- (void)notifyInterfaceRankingState:(BOOL)state forInterface:(id)interface
 {
-  v6 = a4;
+  interfaceCopy = interface;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__WiFiUsageMonitor_notifyInterfaceRankingState_forInterface___block_invoke;
   block[3] = &unk_2789C6C20;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = interfaceCopy;
+  stateCopy = state;
+  v8 = interfaceCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -8633,27 +8633,27 @@ void __61__WiFiUsageMonitor_notifyInterfaceRankingState_forInterface___block_inv
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyDriverAvailability:(id)a3 available:(BOOL)a4 version:(unint64_t)a5 flags:(unint64_t)a6 eventID:(unint64_t)a7 reason:(int64_t)a8 subReason:(int64_t)a9 minorReason:(int64_t)a10 reasonString:(id)a11
+- (void)notifyDriverAvailability:(id)availability available:(BOOL)available version:(unint64_t)version flags:(unint64_t)flags eventID:(unint64_t)d reason:(int64_t)reason subReason:(int64_t)subReason minorReason:(int64_t)self0 reasonString:(id)self1
 {
-  v17 = a3;
-  v18 = a11;
+  availabilityCopy = availability;
+  stringCopy = string;
   internalQueue = self->_internalQueue;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __119__WiFiUsageMonitor_notifyDriverAvailability_available_version_flags_eventID_reason_subReason_minorReason_reasonString___block_invoke;
   v22[3] = &unk_2789C7148;
   v22[4] = self;
-  v23 = v17;
-  v31 = a4;
-  v26 = a6;
-  v27 = a7;
-  v28 = a8;
-  v29 = a9;
-  v30 = a10;
-  v24 = v18;
-  v25 = a5;
-  v20 = v18;
-  v21 = v17;
+  v23 = availabilityCopy;
+  availableCopy = available;
+  flagsCopy = flags;
+  dCopy = d;
+  reasonCopy = reason;
+  subReasonCopy = subReason;
+  minorReasonCopy = minorReason;
+  v24 = stringCopy;
+  versionCopy = version;
+  v20 = stringCopy;
+  v21 = availabilityCopy;
   dispatch_async(internalQueue, v22);
 }
 
@@ -8693,7 +8693,7 @@ void __119__WiFiUsageMonitor_notifyDriverAvailability_available_version_flags_ev
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithRoamingSuppression:(unsigned __int8)a3
+- (void)updateWithRoamingSuppression:(unsigned __int8)suppression
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -8701,7 +8701,7 @@ void __119__WiFiUsageMonitor_notifyDriverAvailability_available_version_flags_ev
   v4[2] = __49__WiFiUsageMonitor_updateWithRoamingSuppression___block_invoke;
   v4[3] = &unk_2789C6688;
   v4[4] = self;
-  v5 = a3;
+  suppressionCopy = suppression;
   dispatch_async(internalQueue, v4);
 }
 
@@ -8772,7 +8772,7 @@ void __49__WiFiUsageMonitor_updateWithRoamingSuppression___block_invoke(uint64_t
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithCompatibilityMode:(unsigned __int8)a3
+- (void)updateWithCompatibilityMode:(unsigned __int8)mode
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -8780,21 +8780,21 @@ void __49__WiFiUsageMonitor_updateWithRoamingSuppression___block_invoke(uint64_t
   v4[2] = __48__WiFiUsageMonitor_updateWithCompatibilityMode___block_invoke;
   v4[3] = &unk_2789C6688;
   v4[4] = self;
-  v5 = a3;
+  modeCopy = mode;
   dispatch_async(internalQueue, v4);
 }
 
-- (void)updateCurrentNetworkDetails:(id)a3
+- (void)updateCurrentNetworkDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__WiFiUsageMonitor_updateCurrentNetworkDetails___block_invoke;
   v7[3] = &unk_2789C6608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = detailsCopy;
+  v6 = detailsCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -8866,19 +8866,19 @@ void __48__WiFiUsageMonitor_updateCurrentNetworkDetails___block_invoke(uint64_t 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateRealTimeCoex:(BOOL)a3 type:(unint64_t)a4 reasons:(id)a5
+- (void)updateRealTimeCoex:(BOOL)coex type:(unint64_t)type reasons:(id)reasons
 {
-  v8 = a5;
+  reasonsCopy = reasons;
   internalQueue = self->_internalQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __52__WiFiUsageMonitor_updateRealTimeCoex_type_reasons___block_invoke;
   v11[3] = &unk_2789C7080;
-  v14 = a3;
-  v12 = v8;
-  v13 = a4;
+  coexCopy = coex;
+  v12 = reasonsCopy;
+  typeCopy = type;
   v11[4] = self;
-  v10 = v8;
+  v10 = reasonsCopy;
   dispatch_async(internalQueue, v11);
 }
 
@@ -8949,17 +8949,17 @@ void __52__WiFiUsageMonitor_updateRealTimeCoex_type_reasons___block_invoke(uint6
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAwdlSequence:(id)a3
+- (void)setAwdlSequence:(id)sequence
 {
-  v4 = a3;
+  sequenceCopy = sequence;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__WiFiUsageMonitor_setAwdlSequence___block_invoke;
   v7[3] = &unk_2789C6608;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = sequenceCopy;
+  selfCopy = self;
+  v6 = sequenceCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -9074,7 +9074,7 @@ void __36__WiFiUsageMonitor_setAwdlSequence___block_invoke(uint64_t a1)
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateLinkRecoveryDisabled:(BOOL)a3
+- (void)updateLinkRecoveryDisabled:(BOOL)disabled
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -9082,7 +9082,7 @@ void __36__WiFiUsageMonitor_setAwdlSequence___block_invoke(uint64_t a1)
   v4[2] = __47__WiFiUsageMonitor_updateLinkRecoveryDisabled___block_invoke;
   v4[3] = &unk_2789C6688;
   v4[4] = self;
-  v5 = a3;
+  disabledCopy = disabled;
   dispatch_async(internalQueue, v4);
 }
 
@@ -9122,7 +9122,7 @@ void __47__WiFiUsageMonitor_updateLinkRecoveryDisabled___block_invoke(uint64_t a
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateLinkTestInterval:(unint64_t)a3
+- (void)updateLinkTestInterval:(unint64_t)interval
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -9130,7 +9130,7 @@ void __47__WiFiUsageMonitor_updateLinkRecoveryDisabled___block_invoke(uint64_t a
   v4[2] = __43__WiFiUsageMonitor_updateLinkTestInterval___block_invoke;
   v4[3] = &unk_2789C7170;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = interval;
   dispatch_async(internalQueue, v4);
 }
 
@@ -9170,26 +9170,26 @@ void __43__WiFiUsageMonitor_updateLinkTestInterval___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSteeringRequest:(unint64_t)a3 preferredChannel:(unint64_t)a4 preferredBand:(int)a5 preferredSSID:(id)a6 targetSSIDDiffersFromCurrent:(BOOL)a7 preferredBSS:(id)a8 ssidIsSplit:(BOOL)a9 transitionCandidates:(BOOL)a10
+- (void)setSteeringRequest:(unint64_t)request preferredChannel:(unint64_t)channel preferredBand:(int)band preferredSSID:(id)d targetSSIDDiffersFromCurrent:(BOOL)current preferredBSS:(id)s ssidIsSplit:(BOOL)split transitionCandidates:(BOOL)self0
 {
-  v16 = a6;
-  v17 = a8;
+  dCopy = d;
+  sCopy = s;
   internalQueue = self->_internalQueue;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __159__WiFiUsageMonitor_setSteeringRequest_preferredChannel_preferredBand_preferredSSID_targetSSIDDiffersFromCurrent_preferredBSS_ssidIsSplit_transitionCandidates___block_invoke;
   v21[3] = &unk_2789C7198;
-  v24 = a3;
-  v25 = a4;
-  v26 = a5;
+  requestCopy = request;
+  channelCopy = channel;
+  bandCopy = band;
   v21[4] = self;
-  v22 = v16;
-  v27 = a7;
-  v23 = v17;
-  v28 = a9;
-  v29 = a10;
-  v19 = v17;
-  v20 = v16;
+  v22 = dCopy;
+  currentCopy = current;
+  v23 = sCopy;
+  splitCopy = split;
+  candidatesCopy = candidates;
+  v19 = sCopy;
+  v20 = dCopy;
   dispatch_async(internalQueue, v21);
 }
 
@@ -9261,26 +9261,26 @@ void __159__WiFiUsageMonitor_setSteeringRequest_preferredChannel_preferredBand_p
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateKnownNetworksSupportingSeamless:(id)a3 forBSS:(id)a4 andSSID:(id)a5 beaconCache:(id)a6
+- (void)updateKnownNetworksSupportingSeamless:(id)seamless forBSS:(id)s andSSID:(id)d beaconCache:(id)cache
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  seamlessCopy = seamless;
+  sCopy = s;
+  dCopy = d;
+  cacheCopy = cache;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__WiFiUsageMonitor_updateKnownNetworksSupportingSeamless_forBSS_andSSID_beaconCache___block_invoke;
   block[3] = &unk_2789C6E78;
-  v20 = v11;
-  v21 = v13;
-  v22 = v12;
-  v23 = v10;
-  v24 = self;
-  v15 = v10;
-  v16 = v12;
-  v17 = v13;
-  v18 = v11;
+  v20 = sCopy;
+  v21 = cacheCopy;
+  v22 = dCopy;
+  v23 = seamlessCopy;
+  selfCopy = self;
+  v15 = seamlessCopy;
+  v16 = dCopy;
+  v17 = cacheCopy;
+  v18 = sCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -9763,17 +9763,17 @@ BOOL __85__WiFiUsageMonitor_updateKnownNetworksSupportingSeamless_forBSS_andSSID
   return v5;
 }
 
-- (void)updateScanForwardStats:(id)a3
+- (void)updateScanForwardStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__WiFiUsageMonitor_updateScanForwardStats___block_invoke;
   v7[3] = &unk_2789C6608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = statsCopy;
+  v6 = statsCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -9844,19 +9844,19 @@ void __43__WiFiUsageMonitor_updateScanForwardStats___block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUsbStatus:(BOOL)a3 currentDevices:(id)a4 currentNoiseDelta:(int64_t)a5
+- (void)setUsbStatus:(BOOL)status currentDevices:(id)devices currentNoiseDelta:(int64_t)delta
 {
-  v8 = a4;
+  devicesCopy = devices;
   internalQueue = self->_internalQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__WiFiUsageMonitor_setUsbStatus_currentDevices_currentNoiseDelta___block_invoke;
   v11[3] = &unk_2789C7080;
   v11[4] = self;
-  v12 = v8;
-  v14 = a3;
-  v13 = a5;
-  v10 = v8;
+  v12 = devicesCopy;
+  statusCopy = status;
+  deltaCopy = delta;
+  v10 = devicesCopy;
   dispatch_async(internalQueue, v11);
 }
 
@@ -9930,9 +9930,9 @@ void __66__WiFiUsageMonitor_setUsbStatus_currentDevices_currentNoiseDelta___bloc
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pushTDEventToHUD:(id)a3
+- (void)pushTDEventToHUD:(id)d
 {
-  if (a3)
+  if (d)
   {
     tdSoftError = self->_tdSoftError;
     if (tdSoftError)
@@ -9942,11 +9942,11 @@ void __66__WiFiUsageMonitor_setUsbStatus_currentDevices_currentNoiseDelta___bloc
   }
 }
 
-- (void)pushRNFEventToHUD:(BOOL)a3
+- (void)pushRNFEventToHUD:(BOOL)d
 {
   if (self->_rnfSoftError)
   {
-    if (a3)
+    if (d)
     {
       v4 = @"Wi-Fi Assist: cellular fallback is active";
     }
@@ -9961,10 +9961,10 @@ void __66__WiFiUsageMonitor_setUsbStatus_currentDevices_currentNoiseDelta___bloc
   }
 }
 
-+ (id)getTDConfirmedEventStringForDisplay:(id *)a3
++ (id)getTDConfirmedEventStringForDisplay:(id *)display
 {
   v3 = &stru_28487EF20;
-  if (a3->var0)
+  if (display->var0)
   {
     v4 = @"Tx PER";
   }
@@ -9975,12 +9975,12 @@ void __66__WiFiUsageMonitor_setUsbStatus_currentDevices_currentNoiseDelta___bloc
   }
 
   v5 = @"Beacon PER";
-  if (!a3->var1)
+  if (!display->var1)
   {
     v5 = &stru_28487EF20;
   }
 
-  if (a3->var2)
+  if (display->var2)
   {
     v6 = @"FW Tx PER";
   }
@@ -9990,7 +9990,7 @@ void __66__WiFiUsageMonitor_setUsbStatus_currentDevices_currentNoiseDelta___bloc
     v6 = &stru_28487EF20;
   }
 
-  if (a3->var3)
+  if (display->var3)
   {
     v7 = @"Gateway ARP Failures";
   }
@@ -10000,7 +10000,7 @@ void __66__WiFiUsageMonitor_setUsbStatus_currentDevices_currentNoiseDelta___bloc
     v7 = &stru_28487EF20;
   }
 
-  if (a3->var4)
+  if (display->var4)
   {
     v3 = @"Symptoms DNS Errors";
   }
@@ -10019,21 +10019,21 @@ void __66__WiFiUsageMonitor_setUsbStatus_currentDevices_currentNoiseDelta___bloc
   return v9;
 }
 
-+ (id)getTDEvalCompleteEventStringForDisplay:(int)a3
++ (id)getTDEvalCompleteEventStringForDisplay:(int)display
 {
   v3 = @"Roamed";
   v4 = @"Unknown";
-  if (a3 == 13)
+  if (display == 13)
   {
     v4 = @"Link down";
   }
 
-  if (a3 != 14)
+  if (display != 14)
   {
     v3 = v4;
   }
 
-  if (a3)
+  if (display)
   {
     v5 = v3;
   }
@@ -10052,11 +10052,11 @@ void __66__WiFiUsageMonitor_setUsbStatus_currentDevices_currentNoiseDelta___bloc
   return v6;
 }
 
-- (void)resetDeviceSessionforInterface:(id)a3
+- (void)resetDeviceSessionforInterface:(id)interface
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  interfaceCopy = interface;
+  v5 = interfaceCopy;
+  if (interfaceCopy)
   {
     internalQueue = self->_internalQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -10064,7 +10064,7 @@ void __66__WiFiUsageMonitor_setUsbStatus_currentDevices_currentNoiseDelta___bloc
     v7[2] = __51__WiFiUsageMonitor_resetDeviceSessionforInterface___block_invoke;
     v7[3] = &unk_2789C6608;
     v7[4] = self;
-    v8 = v4;
+    v8 = interfaceCopy;
     dispatch_async(internalQueue, v7);
   }
 }
@@ -10114,11 +10114,11 @@ LABEL_11:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)faultReasonCount:(unint64_t)a3 forInterface:(id)a4
+- (id)faultReasonCount:(unint64_t)count forInterface:(id)interface
 {
-  v6 = a4;
+  interfaceCopy = interface;
   v7 = 0;
-  if (v6 && a3 - 38 >= 0xFFFFFFFFFFFFFFDBLL)
+  if (interfaceCopy && count - 38 >= 0xFFFFFFFFFFFFFFDBLL)
   {
     v14 = 0;
     v15 = &v14;
@@ -10132,9 +10132,9 @@ LABEL_11:
     v10[2] = __50__WiFiUsageMonitor_faultReasonCount_forInterface___block_invoke;
     v10[3] = &unk_2789C7200;
     v10[4] = self;
-    v11 = v6;
+    v11 = interfaceCopy;
     v12 = &v14;
-    v13 = a3;
+    countCopy = count;
     dispatch_sync(internalQueue, v10);
     v7 = v15[5];
 
@@ -10182,11 +10182,11 @@ void __50__WiFiUsageMonitor_faultReasonCount_forInterface___block_invoke(void *a
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getProperty:(id)a3 forAllSessionsOfInterface:(id)a4
+- (id)getProperty:(id)property forAllSessionsOfInterface:(id)interface
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  propertyCopy = property;
+  interfaceCopy = interface;
+  if (interfaceCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -10200,9 +10200,9 @@ void __50__WiFiUsageMonitor_faultReasonCount_forInterface___block_invoke(void *a
     v11[2] = __58__WiFiUsageMonitor_getProperty_forAllSessionsOfInterface___block_invoke;
     v11[3] = &unk_2789C7228;
     v11[4] = self;
-    v12 = v7;
+    v12 = interfaceCopy;
     v14 = &v15;
-    v13 = v6;
+    v13 = propertyCopy;
     dispatch_sync(internalQueue, v11);
     v9 = v16[5];
 

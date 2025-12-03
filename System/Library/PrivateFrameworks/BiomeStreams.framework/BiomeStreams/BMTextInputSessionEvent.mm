@@ -1,10 +1,10 @@
 @interface BMTextInputSessionEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMTextInputSessionEvent)initWithDateInterval:(id)a3 bundleID:(id)a4 sessionID:(id)a5 sessionType:(unint64_t)a6;
-- (BMTextInputSessionEvent)initWithDateInterval:(id)a3 bundleID:(id)a4 sessionType:(unint64_t)a5;
-- (BMTextInputSessionEvent)initWithProto:(id)a3;
-- (BMTextInputSessionEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMTextInputSessionEvent)initWithDateInterval:(id)interval bundleID:(id)d sessionID:(id)iD sessionType:(unint64_t)type;
+- (BMTextInputSessionEvent)initWithDateInterval:(id)interval bundleID:(id)d sessionType:(unint64_t)type;
+- (BMTextInputSessionEvent)initWithProto:(id)proto;
+- (BMTextInputSessionEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -12,54 +12,54 @@
 
 @implementation BMTextInputSessionEvent
 
-- (BMTextInputSessionEvent)initWithDateInterval:(id)a3 bundleID:(id)a4 sessionType:(unint64_t)a5
+- (BMTextInputSessionEvent)initWithDateInterval:(id)interval bundleID:(id)d sessionType:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  intervalCopy = interval;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = BMTextInputSessionEvent;
   v11 = [(BMEventBase *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_dateInterval, a3);
-    v13 = [v9 startDate];
+    objc_storeStrong(&v11->_dateInterval, interval);
+    startDate = [intervalCopy startDate];
     startDate = v12->_startDate;
-    v12->_startDate = v13;
+    v12->_startDate = startDate;
 
-    [v9 duration];
+    [intervalCopy duration];
     v12->_duration = v15;
-    objc_storeStrong(&v12->_bundleID, a4);
+    objc_storeStrong(&v12->_bundleID, d);
     sessionID = v12->_sessionID;
     v12->_sessionID = 0;
 
-    v12->_sessionType = a5;
+    v12->_sessionType = type;
   }
 
   return v12;
 }
 
-- (BMTextInputSessionEvent)initWithDateInterval:(id)a3 bundleID:(id)a4 sessionID:(id)a5 sessionType:(unint64_t)a6
+- (BMTextInputSessionEvent)initWithDateInterval:(id)interval bundleID:(id)d sessionID:(id)iD sessionType:(unint64_t)type
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  intervalCopy = interval;
+  dCopy = d;
+  iDCopy = iD;
   v20.receiver = self;
   v20.super_class = BMTextInputSessionEvent;
   v14 = [(BMEventBase *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_dateInterval, a3);
-    v16 = [v11 startDate];
+    objc_storeStrong(&v14->_dateInterval, interval);
+    startDate = [intervalCopy startDate];
     startDate = v15->_startDate;
-    v15->_startDate = v16;
+    v15->_startDate = startDate;
 
-    [v11 duration];
+    [intervalCopy duration];
     v15->_duration = v18;
-    objc_storeStrong(&v15->_bundleID, a4);
-    objc_storeStrong(&v15->_sessionID, a5);
-    v15->_sessionType = a6;
+    objc_storeStrong(&v15->_bundleID, d);
+    objc_storeStrong(&v15->_sessionID, iD);
+    v15->_sessionType = type;
   }
 
   return v15;
@@ -77,52 +77,52 @@
   return v8;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v4 = BMTextInputSessionEvent_v1;
+    selfCopy = BMTextInputSessionEvent_v1;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = a3;
-  v6 = [[v4 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[selfCopy alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMTextInputSessionEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMTextInputSessionEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMTextInputSessionEvent)initWithProto:(id)a3
+- (BMTextInputSessionEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       v6 = objc_alloc(MEMORY[0x1E696AB80]);
       v7 = MEMORY[0x1E695DF00];
       [v5 timestamp];
       v8 = [v7 dateWithTimeIntervalSinceReferenceDate:?];
       [v5 duration];
       v9 = [v6 initWithStartDate:v8 duration:?];
-      v10 = [v5 bundleID];
-      v11 = [v5 sessionID];
-      v12 = [v5 sessionType];
-      v13 = v12;
-      if (v12 >= 4)
+      bundleID = [v5 bundleID];
+      sessionID = [v5 sessionID];
+      sessionType = [v5 sessionType];
+      v13 = sessionType;
+      if (sessionType >= 4)
       {
         v16 = __biome_log_for_category();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -135,12 +135,12 @@
 
       else
       {
-        v14 = v12;
+        v14 = sessionType;
       }
 
-      self = [(BMTextInputSessionEvent *)self initWithDateInterval:v9 bundleID:v10 sessionID:v11 sessionType:v14];
+      self = [(BMTextInputSessionEvent *)self initWithDateInterval:v9 bundleID:bundleID sessionID:sessionID sessionType:v14];
 
-      v15 = self;
+      selfCopy = self;
     }
 
     else
@@ -151,35 +151,35 @@
         [BMTextInputSessionEvent initWithProto:];
       }
 
-      v15 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (BMTextInputSessionEvent)initWithProtoData:(id)a3
+- (BMTextInputSessionEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBTextInputSessionEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBTextInputSessionEvent alloc] initWithData:dataCopy];
 
     self = [(BMTextInputSessionEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -187,23 +187,23 @@
   v3 = objc_opt_new();
   [(BMTextInputSessionEvent *)self duration];
   [v3 setDuration:?];
-  v4 = [(BMTextInputSessionEvent *)self bundleID];
-  [v3 setBundleID:v4];
+  bundleID = [(BMTextInputSessionEvent *)self bundleID];
+  [v3 setBundleID:bundleID];
 
-  v5 = [(BMTextInputSessionEvent *)self sessionID];
-  [v3 setSessionID:v5];
+  sessionID = [(BMTextInputSessionEvent *)self sessionID];
+  [v3 setSessionID:sessionID];
 
-  v6 = [(BMTextInputSessionEvent *)self startDate];
+  startDate = [(BMTextInputSessionEvent *)self startDate];
   MEMORY[0x1865F69C0]();
   [v3 setTimestamp:?];
 
-  v7 = [(BMTextInputSessionEvent *)self sessionType];
-  if (v7 >= 4)
+  sessionType = [(BMTextInputSessionEvent *)self sessionType];
+  if (sessionType >= 4)
   {
     v9 = __biome_log_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(BMTextInputSessionEvent *)v7 proto];
+      [(BMTextInputSessionEvent *)sessionType proto];
     }
 
     v8 = 0;
@@ -211,31 +211,31 @@
 
   else
   {
-    [v3 setSessionType:v7];
+    [v3 setSessionType:sessionType];
     v8 = v3;
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     dateInterval = self->_dateInterval;
-    v7 = [v5 dateInterval];
-    if ([(NSDateInterval *)dateInterval isEqualToDateInterval:v7])
+    dateInterval = [v5 dateInterval];
+    if ([(NSDateInterval *)dateInterval isEqualToDateInterval:dateInterval])
     {
       bundleID = self->_bundleID;
-      v9 = [v5 bundleID];
-      if ([(NSString *)bundleID isEqualToString:v9])
+      bundleID = [v5 bundleID];
+      if ([(NSString *)bundleID isEqualToString:bundleID])
       {
         sessionID = self->_sessionID;
-        v11 = [v5 sessionID];
-        if ([(NSString *)sessionID isEqualToString:v11])
+        sessionID = [v5 sessionID];
+        if ([(NSString *)sessionID isEqualToString:sessionID])
         {
           sessionType = self->_sessionType;
           v13 = sessionType == [v5 sessionType];

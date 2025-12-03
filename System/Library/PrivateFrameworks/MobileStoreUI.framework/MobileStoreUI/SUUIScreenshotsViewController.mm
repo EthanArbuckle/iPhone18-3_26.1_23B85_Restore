@@ -1,38 +1,38 @@
 @interface SUUIScreenshotsViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (SUUIScreenshotsDelegate)delegate;
-- (SUUIScreenshotsViewController)initWithTrailers:(id)a3 screenshots:(id)a4 clientContext:(id)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)slideshowViewController:(id)a3 dataConsumerAtIndex:(int64_t)a4;
-- (id)slideshowViewController:(id)a3 imageURLAtIndex:(int64_t)a4;
-- (id)slideshowViewController:(id)a3 placeholderImageAtIndex:(int64_t)a4;
-- (id)slideshowViewController:(id)a3 poppedImageViewAtIndex:(int64_t)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_setImage:(id)a3 forIndex:(int64_t)a4;
-- (void)_setTrailerImage:(id)a3 forIndex:(int64_t)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (SUUIScreenshotsViewController)initWithTrailers:(id)trailers screenshots:(id)screenshots clientContext:(id)context;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)slideshowViewController:(id)controller dataConsumerAtIndex:(int64_t)index;
+- (id)slideshowViewController:(id)controller imageURLAtIndex:(int64_t)index;
+- (id)slideshowViewController:(id)controller placeholderImageAtIndex:(int64_t)index;
+- (id)slideshowViewController:(id)controller poppedImageViewAtIndex:(int64_t)index;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_setImage:(id)image forIndex:(int64_t)index;
+- (void)_setTrailerImage:(id)image forIndex:(int64_t)index;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)loadView;
 - (void)reloadData;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)slideshowViewController:(id)a3 scrollToImageAtIndex:(int64_t)a4;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)slideshowViewController:(id)controller scrollToImageAtIndex:(int64_t)index;
 @end
 
 @implementation SUUIScreenshotsViewController
 
-- (SUUIScreenshotsViewController)initWithTrailers:(id)a3 screenshots:(id)a4 clientContext:(id)a5
+- (SUUIScreenshotsViewController)initWithTrailers:(id)trailers screenshots:(id)screenshots clientContext:(id)context
 {
   v57 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  trailersCopy = trailers;
+  screenshotsCopy = screenshots;
+  contextCopy = context;
   v55.receiver = self;
   v55.super_class = SUUIScreenshotsViewController;
   v11 = [(SUUIScreenshotsViewController *)&v55 init];
   v12 = v11;
   if (v11)
   {
-    v50 = v10;
-    objc_storeStrong(&v11->_clientContext, a5);
+    v50 = contextCopy;
+    objc_storeStrong(&v11->_clientContext, context);
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     screenshotRawImages = v12->_screenshotRawImages;
     v12->_screenshotRawImages = v13;
@@ -45,25 +45,25 @@
     trailerImages = v12->_trailerImages;
     v12->_trailerImages = v17;
 
-    v19 = v9;
-    if (!v9)
+    array = screenshotsCopy;
+    if (!screenshotsCopy)
     {
-      v19 = [MEMORY[0x277CBEA60] array];
+      array = [MEMORY[0x277CBEA60] array];
     }
 
-    objc_storeStrong(&v12->_screenshots, v19);
-    if (!v9)
+    objc_storeStrong(&v12->_screenshots, array);
+    if (!screenshotsCopy)
     {
     }
 
-    v20 = v8;
-    if (!v8)
+    array2 = trailersCopy;
+    if (!trailersCopy)
     {
-      v20 = [MEMORY[0x277CBEA60] array];
+      array2 = [MEMORY[0x277CBEA60] array];
     }
 
-    objc_storeStrong(&v12->_trailers, v20);
-    if (!v8)
+    objc_storeStrong(&v12->_trailers, array2);
+    if (!trailersCopy)
     {
     }
 
@@ -162,8 +162,8 @@
         v36 = 1.0 / v25;
       }
 
-      v37 = [MEMORY[0x277D759A0] mainScreen];
-      [v37 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       v39 = dbl_259FCB360[v38 > 480.0];
       v12->_screenshotMaxSize.width = 196.0;
       v12->_screenshotMaxSize.height = v39;
@@ -181,7 +181,7 @@
     v12->_dataConsumer = v42;
 
     [(SUUIScreenshotDataConsumer *)v12->_dataConsumer setForcesPortrait:v33 == 0];
-    v10 = v50;
+    contextCopy = v50;
     if ([(NSArray *)v12->_trailers count])
     {
       if (v33)
@@ -269,8 +269,8 @@
 
       [(NSMutableArray *)self->_screenshotImages addObject:v20];
       v21 = self->_screenshotRawImages;
-      v22 = [MEMORY[0x277CBEB68] null];
-      [(NSMutableArray *)v21 addObject:v22];
+      null = [MEMORY[0x277CBEB68] null];
+      [(NSMutableArray *)v21 addObject:null];
 
       ++v9;
     }
@@ -283,8 +283,8 @@
     for (i = 0; i < [(NSArray *)self->_trailers count]; ++i)
     {
       v24 = [(NSArray *)self->_trailers objectAtIndex:i];
-      v25 = [v24 artworks];
-      v26 = [v25 bestArtworkForScaledSize:{self->_screenshotMaxSize.width, self->_screenshotMaxSize.height}];
+      artworks = [v24 artworks];
+      v26 = [artworks bestArtworkForScaledSize:{self->_screenshotMaxSize.width, self->_screenshotMaxSize.height}];
 
       v27 = [v26 URL];
 
@@ -412,8 +412,8 @@ void __43__SUUIScreenshotsViewController_reloadData__block_invoke_4(uint64_t a1)
   self->_collectionView = v5;
 
   v7 = self->_collectionView;
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [(UICollectionView *)v7 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UICollectionView *)v7 setBackgroundColor:clearColor];
 
   [(UICollectionView *)self->_collectionView setAutoresizingMask:0];
   [(UICollectionView *)self->_collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"a"];
@@ -430,26 +430,26 @@ void __43__SUUIScreenshotsViewController_reloadData__block_invoke_4(uint64_t a1)
   [(SUUIScreenshotsView *)v11 setPrimaryView:self->_collectionView];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v12 = a4;
-  if ([v12 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    if ([v12 section] != 1)
+    if ([pathCopy section] != 1)
     {
       goto LABEL_11;
     }
 
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v7 = objc_alloc_init(SUUISlideshowViewController);
       [(SUUISlideshowViewController *)v7 setClientContext:self->_clientContext];
       [(SUUISlideshowViewController *)v7 setDataSource:self];
       [(SUUISlideshowViewController *)v7 setDelegate:self];
-      -[SUUISlideshowViewController setCurrentIndex:](v7, "setCurrentIndex:", [v12 item]);
+      -[SUUISlideshowViewController setCurrentIndex:](v7, "setCurrentIndex:", [pathCopy item]);
       v8 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v7];
       [(SUUIPlayableAsset *)v8 setTransitioningDelegate:v7];
       v9 = v8;
@@ -460,7 +460,7 @@ void __43__SUUIScreenshotsViewController_reloadData__block_invoke_4(uint64_t a1)
       v7 = objc_alloc_init(SUUIIPhoneSlideshowViewController);
       [(SUUISlideshowViewController *)v7 setClientContext:self->_clientContext];
       [(SUUISlideshowViewController *)v7 setDataSource:self];
-      -[SUUISlideshowViewController setCurrentIndex:](v7, "setCurrentIndex:", [v12 item]);
+      -[SUUISlideshowViewController setCurrentIndex:](v7, "setCurrentIndex:", [pathCopy item]);
       v9 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v7];
       v8 = v9;
     }
@@ -470,12 +470,12 @@ void __43__SUUIScreenshotsViewController_reloadData__block_invoke_4(uint64_t a1)
     goto LABEL_9;
   }
 
-  v7 = -[NSArray objectAtIndex:](self->_trailers, "objectAtIndex:", [v12 item]);
+  v7 = -[NSArray objectAtIndex:](self->_trailers, "objectAtIndex:", [pathCopy item]);
   if (v7)
   {
     v8 = [[SUUIPlayableAsset alloc] initWithVideo:v7];
-    v10 = [(SUUIScreenshotsViewController *)self clientContext];
-    v11 = SUUIVideoPreviewPlayPlayableAsset(v8, v10);
+    clientContext = [(SUUIScreenshotsViewController *)self clientContext];
+    v11 = SUUIVideoPreviewPlayPlayableAsset(v8, clientContext);
 
     [(SUUIScreenshotsViewController *)self presentViewController:v11 animated:1 completion:0];
 LABEL_9:
@@ -484,12 +484,12 @@ LABEL_9:
 LABEL_11:
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  if ([v6 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    if ([v6 section] != 1)
+    if ([pathCopy section] != 1)
     {
       v10 = *MEMORY[0x277CBF3A8];
       goto LABEL_7;
@@ -503,7 +503,7 @@ LABEL_11:
     v7 = &OBJC_IVAR___SUUIScreenshotsViewController__trailerImages;
   }
 
-  v8 = [*(&self->super.super.super.isa + *v7) objectAtIndex:{objc_msgSend(v6, "item")}];
+  v8 = [*(&self->super.super.super.isa + *v7) objectAtIndex:{objc_msgSend(pathCopy, "item")}];
   [v8 size];
   v10 = v9 + 15.0;
 
@@ -517,12 +517,12 @@ LABEL_7:
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
-    if (a4 != 1)
+    if (section != 1)
     {
       v8 = 0;
       goto LABEL_7;
@@ -542,15 +542,15 @@ LABEL_7:
   return v8;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    if ([v5 section] == 1)
+    if ([pathCopy section] == 1)
     {
-      v6 = [(UICollectionView *)self->_collectionView dequeueReusableCellWithReuseIdentifier:@"a" forIndexPath:v5];
-      v7 = -[NSMutableArray objectAtIndex:](self->_screenshotImages, "objectAtIndex:", [v5 row]);
+      v6 = [(UICollectionView *)self->_collectionView dequeueReusableCellWithReuseIdentifier:@"a" forIndexPath:pathCopy];
+      v7 = -[NSMutableArray objectAtIndex:](self->_screenshotImages, "objectAtIndex:", [pathCopy row]);
       [v6 setImage:v7];
     }
 
@@ -562,8 +562,8 @@ LABEL_7:
 
   else
   {
-    v6 = [(UICollectionView *)self->_collectionView dequeueReusableCellWithReuseIdentifier:@"a" forIndexPath:v5];
-    v8 = -[NSMutableArray objectAtIndex:](self->_trailerImages, "objectAtIndex:", [v5 row]);
+    v6 = [(UICollectionView *)self->_collectionView dequeueReusableCellWithReuseIdentifier:@"a" forIndexPath:pathCopy];
+    v8 = -[NSMutableArray objectAtIndex:](self->_trailerImages, "objectAtIndex:", [pathCopy row]);
     [v6 setImage:v8];
 
     [v6 setVideo:1];
@@ -572,45 +572,45 @@ LABEL_7:
   return v6;
 }
 
-- (id)slideshowViewController:(id)a3 placeholderImageAtIndex:(int64_t)a4
+- (id)slideshowViewController:(id)controller placeholderImageAtIndex:(int64_t)index
 {
   v6 = [(NSMutableArray *)self->_screenshotRawImages count];
   v7 = 0;
-  if ((a4 & 0x8000000000000000) == 0 && v6 > a4)
+  if ((index & 0x8000000000000000) == 0 && v6 > index)
   {
-    v8 = [(NSMutableArray *)self->_screenshotRawImages objectAtIndex:a4];
-    v9 = [MEMORY[0x277CBEB68] null];
-    if (v8 == v9)
+    v8 = [(NSMutableArray *)self->_screenshotRawImages objectAtIndex:index];
+    null = [MEMORY[0x277CBEB68] null];
+    if (v8 == null)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = [(NSMutableArray *)self->_screenshotRawImages objectAtIndex:a4];
+      v7 = [(NSMutableArray *)self->_screenshotRawImages objectAtIndex:index];
     }
   }
 
   return v7;
 }
 
-- (id)slideshowViewController:(id)a3 imageURLAtIndex:(int64_t)a4
+- (id)slideshowViewController:(id)controller imageURLAtIndex:(int64_t)index
 {
-  v4 = [(NSArray *)self->_screenshots objectAtIndex:a4];
+  v4 = [(NSArray *)self->_screenshots objectAtIndex:index];
   v5 = [v4 URLForVariant:@"high-dpi"];
 
   return v5;
 }
 
-- (id)slideshowViewController:(id)a3 dataConsumerAtIndex:(int64_t)a4
+- (id)slideshowViewController:(id)controller dataConsumerAtIndex:(int64_t)index
 {
-  v4 = [(NSArray *)self->_screenshots objectAtIndex:a4];
+  v4 = [(NSArray *)self->_screenshots objectAtIndex:index];
   [v4 sizeForVariant:@"high-dpi"];
   v5 = [SUUIScreenshotDataConsumer consumerWithScreenshotSize:?];
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     [v5 setForcesPortrait:1];
   }
@@ -618,11 +618,11 @@ LABEL_7:
   return v5;
 }
 
-- (void)slideshowViewController:(id)a3 scrollToImageAtIndex:(int64_t)a4
+- (void)slideshowViewController:(id)controller scrollToImageAtIndex:(int64_t)index
 {
-  v7 = [MEMORY[0x277CCAA70] indexPathForItem:a4 inSection:1];
-  v5 = [(UICollectionView *)self->_collectionView indexPathsForVisibleItems];
-  v6 = [v5 containsObject:v7];
+  v7 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:1];
+  indexPathsForVisibleItems = [(UICollectionView *)self->_collectionView indexPathsForVisibleItems];
+  v6 = [indexPathsForVisibleItems containsObject:v7];
 
   if ((v6 & 1) == 0)
   {
@@ -630,11 +630,11 @@ LABEL_7:
   }
 }
 
-- (id)slideshowViewController:(id)a3 poppedImageViewAtIndex:(int64_t)a4
+- (id)slideshowViewController:(id)controller poppedImageViewAtIndex:(int64_t)index
 {
-  v5 = [MEMORY[0x277CCAA70] indexPathForItem:a4 inSection:1];
-  v6 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  v7 = [v6 layoutAttributesForItemAtIndexPath:v5];
+  v5 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:1];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  v7 = [collectionViewLayout layoutAttributesForItemAtIndexPath:v5];
 
   if (v7)
   {
@@ -646,9 +646,9 @@ LABEL_7:
 
     [(SUUIIPhoneSlideshowCell *)v8 layoutSubviews];
     [(UICollectionView *)self->_collectionView addSubview:v8];
-    v10 = [(SUUIScreenshotsViewController *)self view];
+    view = [(SUUIScreenshotsViewController *)self view];
     [(SUUIIPhoneSlideshowCell *)v8 imageFrame];
-    [v10 convertRect:v8 fromView:?];
+    [view convertRect:v8 fromView:?];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -656,9 +656,9 @@ LABEL_7:
 
     [(SUUIIPhoneSlideshowCell *)v8 removeFromSuperview];
     v19 = -[NSMutableArray objectAtIndex:](self->_screenshotImages, "objectAtIndex:", [v5 item]);
-    v20 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
 
-    if (v19 == v20)
+    if (v19 == null)
     {
       v21 = objc_alloc_init(MEMORY[0x277D755E8]);
     }
@@ -669,13 +669,13 @@ LABEL_7:
     }
 
     v22 = v21;
-    v23 = [MEMORY[0x277D75348] clearColor];
-    [v22 setBackgroundColor:v23];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v22 setBackgroundColor:clearColor];
 
     [v22 setFrame:{v12, v14, v16, v18}];
     [v22 setContentMode:1];
-    v24 = [(SUUIScreenshotsViewController *)self view];
-    [v24 addSubview:v22];
+    view2 = [(SUUIScreenshotsViewController *)self view];
+    [view2 addSubview:v22];
   }
 
   else
@@ -686,7 +686,7 @@ LABEL_7:
   return v22;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -703,36 +703,36 @@ LABEL_7:
   }
 }
 
-- (void)_setImage:(id)a3 forIndex:(int64_t)a4
+- (void)_setImage:(id)image forIndex:(int64_t)index
 {
-  if (a3)
+  if (image)
   {
     dataConsumer = self->_dataConsumer;
-    v7 = a3;
-    v11 = [(SUUIScreenshotDataConsumer *)dataConsumer imageForImage:v7];
-    [(NSMutableArray *)self->_screenshotRawImages replaceObjectAtIndex:a4 withObject:v7];
+    imageCopy = image;
+    v11 = [(SUUIScreenshotDataConsumer *)dataConsumer imageForImage:imageCopy];
+    [(NSMutableArray *)self->_screenshotRawImages replaceObjectAtIndex:index withObject:imageCopy];
 
-    [(NSMutableArray *)self->_screenshotImages replaceObjectAtIndex:a4 withObject:v11];
+    [(NSMutableArray *)self->_screenshotImages replaceObjectAtIndex:index withObject:v11];
     collectionView = self->_collectionView;
-    v9 = [MEMORY[0x277CCAA70] indexPathForItem:a4 inSection:1];
+    v9 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:1];
     v10 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v9];
 
     [v10 setImage:v11];
   }
 }
 
-- (void)_setTrailerImage:(id)a3 forIndex:(int64_t)a4
+- (void)_setTrailerImage:(id)image forIndex:(int64_t)index
 {
-  if (a3)
+  if (image)
   {
     trailerImages = self->_trailerImages;
-    v7 = a3;
-    [(NSMutableArray *)trailerImages replaceObjectAtIndex:a4 withObject:v7];
+    imageCopy = image;
+    [(NSMutableArray *)trailerImages replaceObjectAtIndex:index withObject:imageCopy];
     collectionView = self->_collectionView;
-    v9 = [MEMORY[0x277CCAA70] indexPathForItem:a4 inSection:0];
+    v9 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:0];
     v10 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v9];
 
-    [v10 setImage:v7];
+    [v10 setImage:imageCopy];
   }
 }
 

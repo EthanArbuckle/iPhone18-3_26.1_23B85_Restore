@@ -6,10 +6,10 @@
 
 - (NSString)localizedLabel
 {
-  v2 = [(CNLabeledValue *)self label];
-  if (v2)
+  label = [(CNLabeledValue *)self label];
+  if (label)
   {
-    v3 = [objc_opt_class() localizedStringForLabel:v2];
+    v3 = [objc_opt_class() localizedStringForLabel:label];
   }
 
   else

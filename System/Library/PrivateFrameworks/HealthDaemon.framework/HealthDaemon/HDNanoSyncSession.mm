@@ -1,37 +1,37 @@
 @interface HDNanoSyncSession
 - (BOOL)shouldOverrideCycleTrackingSymptomsForBackwardsCompatibilty;
-- (HDNanoSyncSession)initWithSyncStore:(id)a3 options:(unint64_t)a4 reason:(id)a5 delegate:(id)a6 completion:(id)a7;
-- (id)_intervalForSecondsSinceDaysAgo:(void *)a1;
-- (int64_t)maxEncodedBytesPerCodableChangeForSyncEntityClass:(Class)a3;
+- (HDNanoSyncSession)initWithSyncStore:(id)store options:(unint64_t)options reason:(id)reason delegate:(id)delegate completion:(id)completion;
+- (id)_intervalForSecondsSinceDaysAgo:(void *)ago;
+- (int64_t)maxEncodedBytesPerCodableChangeForSyncEntityClass:(Class)class;
 @end
 
 @implementation HDNanoSyncSession
 
-- (HDNanoSyncSession)initWithSyncStore:(id)a3 options:(unint64_t)a4 reason:(id)a5 delegate:(id)a6 completion:(id)a7
+- (HDNanoSyncSession)initWithSyncStore:(id)store options:(unint64_t)options reason:(id)reason delegate:(id)delegate completion:(id)completion
 {
   v129[53] = *MEMORY[0x277D85DE8];
-  v12 = a7;
+  completionCopy = completion;
   v125.receiver = self;
   v125.super_class = HDNanoSyncSession;
-  v13 = [(HDSyncSession *)&v125 initWithSyncStore:a3 reason:a5 delegate:a6];
+  v13 = [(HDSyncSession *)&v125 initWithSyncStore:store reason:reason delegate:delegate];
   v14 = v13;
   if (v13)
   {
-    v13->_options = a4;
-    v15 = [v12 copy];
+    v13->_options = options;
+    v15 = [completionCopy copy];
     completion = v14->_completion;
     v14->_completion = v15;
 
-    v17 = [(HDNanoSyncSession *)v14 nanoSyncStore];
-    v18 = [v17 isMaster];
+    nanoSyncStore = [(HDNanoSyncSession *)v14 nanoSyncStore];
+    isMaster = [nanoSyncStore isMaster];
 
     v19 = [HDSyncPredicate alloc];
     v20 = MEMORY[0x277CBEB98];
     v21 = MEMORY[0x277CCABB0];
-    v22 = [(HDSyncSession *)v14 syncStore];
-    v23 = [v21 numberWithLongLong:{objc_msgSend(v22, "syncProvenance")}];
+    syncStore = [(HDSyncSession *)v14 syncStore];
+    v23 = [v21 numberWithLongLong:{objc_msgSend(syncStore, "syncProvenance")}];
     v24 = [v20 setWithObject:v23];
-    if (v18)
+    if (isMaster)
     {
       v124 = [(HDNanoSyncSession *)v14 _intervalForSecondsSinceDaysAgo:?];
       v123 = [(HDNanoSyncSession *)v14 _intervalForSecondsSinceDaysAgo:?];
@@ -43,17 +43,17 @@
       v124 = 0;
     }
 
-    v25 = [(HDNanoSyncSession *)v14 nanoSyncStore];
-    v26 = [v25 isMaster];
+    nanoSyncStore2 = [(HDNanoSyncSession *)v14 nanoSyncStore];
+    isMaster2 = [nanoSyncStore2 isMaster];
 
-    if (v26)
+    if (isMaster2)
     {
       v112 = v19;
       v113 = v24;
       v114 = v23;
-      v115 = v18;
-      v116 = v22;
-      v117 = v12;
+      v115 = isMaster;
+      v116 = syncStore;
+      v117 = completionCopy;
       v27 = [(HDNanoSyncSession *)v14 _intervalForSecondsSinceDaysAgo:?];
       v28 = [(HDNanoSyncSession *)v14 _intervalForSecondsSinceDaysAgo:?];
       v29 = [(HDNanoSyncSession *)v14 _intervalForSecondsSinceDaysAgo:?];
@@ -64,8 +64,8 @@
       v119 = [(HDNanoSyncSession *)v14 _intervalForSecondsSinceDaysAgo:?];
       v118 = [(HDNanoSyncSession *)v14 _intervalForSecondsSinceDaysAgo:?];
       v31 = MEMORY[0x277CCABB0];
-      v32 = [MEMORY[0x277CBEAA8] distantPast];
-      [v32 timeIntervalSinceReferenceDate];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
+      [distantPast timeIntervalSinceReferenceDate];
       v34 = [v31 numberWithDouble:-v33];
 
       v107 = [MEMORY[0x277CCD8D8] dataTypeWithCode:76];
@@ -233,12 +233,12 @@
       v129[52] = v118;
       v75 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v129 forKeys:v128 count:53];
 
-      v43 = [(HDSyncSession *)v14 syncStore];
-      v44 = [v43 profile];
-      v45 = [v44 daemon];
-      v46 = [v45 behavior];
-      v47 = [v46 features];
-      LODWORD(v39) = [v47 extendedLocalWatchData];
+      syncStore2 = [(HDSyncSession *)v14 syncStore];
+      profile = [syncStore2 profile];
+      daemon = [profile daemon];
+      behavior = [daemon behavior];
+      features = [behavior features];
+      LODWORD(v39) = [features extendedLocalWatchData];
 
       if (v39)
       {
@@ -255,8 +255,8 @@
         v52 = [v75 hk_dictionaryByAddingEntriesFromDictionary:v51];
 
         v53 = v52;
-        v22 = v116;
-        v18 = v115;
+        syncStore = v116;
+        isMaster = v115;
         v24 = v113;
         v23 = v114;
         v55 = v123;
@@ -265,8 +265,8 @@
 
       else
       {
-        v22 = v116;
-        v18 = v115;
+        syncStore = v116;
+        isMaster = v115;
         v24 = v113;
         v23 = v114;
         v55 = v123;
@@ -274,7 +274,7 @@
         v53 = v75;
       }
 
-      v12 = v117;
+      completionCopy = v117;
       v19 = v112;
     }
 
@@ -289,7 +289,7 @@
     v57 = v53;
     v58 = v56;
 
-    if (v18)
+    if (isMaster)
     {
     }
 
@@ -301,24 +301,24 @@
   return v14;
 }
 
-- (int64_t)maxEncodedBytesPerCodableChangeForSyncEntityClass:(Class)a3
+- (int64_t)maxEncodedBytesPerCodableChangeForSyncEntityClass:(Class)class
 {
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
     return 0x20000;
   }
 
-  return [(HDNanoSyncSession *)self maxEncodedBytesPerChangeSetForSyncEntityClass:a3];
+  return [(HDNanoSyncSession *)self maxEncodedBytesPerChangeSetForSyncEntityClass:class];
 }
 
-- (id)_intervalForSecondsSinceDaysAgo:(void *)a1
+- (id)_intervalForSecondsSinceDaysAgo:(void *)ago
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = [a1 calendar];
-  v6 = [a1 startDate];
-  v7 = [v5 hk_dateBySubtractingDays:a2 fromDate:v6];
-  v8 = [a1 startDate];
-  [v7 timeIntervalSinceDate:v8];
+  calendar = [ago calendar];
+  startDate = [ago startDate];
+  v7 = [calendar hk_dateBySubtractingDays:a2 fromDate:startDate];
+  startDate2 = [ago startDate];
+  [v7 timeIntervalSinceDate:startDate2];
   v10 = [v4 numberWithDouble:-v9];
 
   return v10;
@@ -326,8 +326,8 @@
 
 - (BOOL)shouldOverrideCycleTrackingSymptomsForBackwardsCompatibilty
 {
-  v2 = [(HDSyncSession *)self syncStore];
-  v3 = [v2 protocolVersion] < 12;
+  syncStore = [(HDSyncSession *)self syncStore];
+  v3 = [syncStore protocolVersion] < 12;
 
   return v3;
 }

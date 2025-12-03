@@ -1,5 +1,5 @@
 @interface ICDocCamFilterButton
-+ (id)filterButtonWithType:(signed __int16)a3;
++ (id)filterButtonWithType:(signed __int16)type;
 - (CGRect)accessibilityFrame;
 - (NSLayoutConstraint)iconSizeConstraint;
 - (NSLayoutConstraint)labelVerticalSpacingConstraint;
@@ -9,24 +9,24 @@
 - (UIView)backgroundView;
 - (double)iconSize;
 - (id)accessibilityLabel;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)imageForFilterType:(signed __int16)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)imageForFilterType:(signed __int16)type;
 - (unint64_t)accessibilityTraits;
 - (void)awakeFromNib;
 - (void)dealloc;
-- (void)setFilterType:(signed __int16)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIconSize:(double)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)updateForAccessibilityDarkerSystemColors:(id)a3;
+- (void)setFilterType:(signed __int16)type;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIconSize:(double)size;
+- (void)setSelected:(BOOL)selected;
+- (void)updateForAccessibilityDarkerSystemColors:(id)colors;
 @end
 
 @implementation ICDocCamFilterButton
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICDocCamFilterButton;
@@ -38,55 +38,55 @@
   v9.receiver = self;
   v9.super_class = ICDocCamFilterButton;
   [(ICDocCamFilterButton *)&v9 awakeFromNib];
-  v3 = [(ICDocCamFilterButton *)self inactiveBackgroundViewColor];
-  v4 = [(ICDocCamFilterButton *)self backgroundView];
-  [v4 setBackgroundColor:v3];
+  inactiveBackgroundViewColor = [(ICDocCamFilterButton *)self inactiveBackgroundViewColor];
+  backgroundView = [(ICDocCamFilterButton *)self backgroundView];
+  [backgroundView setBackgroundColor:inactiveBackgroundViewColor];
 
-  v5 = [(ICDocCamFilterButton *)self inactiveTextColor];
-  v6 = [(ICDocCamFilterButton *)self filterNameLabel];
-  [v6 setTextColor:v5];
+  inactiveTextColor = [(ICDocCamFilterButton *)self inactiveTextColor];
+  filterNameLabel = [(ICDocCamFilterButton *)self filterNameLabel];
+  [filterNameLabel setTextColor:inactiveTextColor];
 
-  v7 = [(ICDocCamFilterButton *)self filterIconView];
-  [v7 setAccessibilityIgnoresInvertColors:1];
+  filterIconView = [(ICDocCamFilterButton *)self filterIconView];
+  [filterIconView setAccessibilityIgnoresInvertColors:1];
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 addObserver:self selector:sel_updateForAccessibilityDarkerSystemColors_ name:*MEMORY[0x277D76460] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_updateForAccessibilityDarkerSystemColors_ name:*MEMORY[0x277D76460] object:0];
 }
 
-- (void)setFilterType:(signed __int16)a3
+- (void)setFilterType:(signed __int16)type
 {
-  v3 = a3;
-  self->_filterType = a3;
+  typeCopy = type;
+  self->_filterType = type;
   v5 = [(ICDocCamFilterButton *)self imageForFilterType:?];
-  v6 = [(ICDocCamFilterButton *)self filterIconView];
-  [v6 setImage:v5];
+  filterIconView = [(ICDocCamFilterButton *)self filterIconView];
+  [filterIconView setImage:v5];
 
-  v8 = [ICDocCamImageFilters localizedImageFilterNameForType:v3];
-  v7 = [(ICDocCamFilterButton *)self filterNameLabel];
-  [v7 setText:v8];
+  v8 = [ICDocCamImageFilters localizedImageFilterNameForType:typeCopy];
+  filterNameLabel = [(ICDocCamFilterButton *)self filterNameLabel];
+  [filterNameLabel setText:v8];
 }
 
-- (void)setIconSize:(double)a3
+- (void)setIconSize:(double)size
 {
-  v4 = [(ICDocCamFilterButton *)self iconSizeConstraint];
-  [v4 setConstant:a3];
+  iconSizeConstraint = [(ICDocCamFilterButton *)self iconSizeConstraint];
+  [iconSizeConstraint setConstant:size];
 }
 
 - (double)iconSize
 {
-  v2 = [(ICDocCamFilterButton *)self iconSizeConstraint];
-  [v2 constant];
+  iconSizeConstraint = [(ICDocCamFilterButton *)self iconSizeConstraint];
+  [iconSizeConstraint constant];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(ICDocCamFilterButton *)self isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(ICDocCamFilterButton *)self isSelected]!= selected)
   {
-    if (v3)
+    if (selectedCopy)
     {
       [(ICDocCamFilterButton *)self activeBackgroundViewColor];
     }
@@ -96,10 +96,10 @@
       [(ICDocCamFilterButton *)self inactiveBackgroundViewColor];
     }
     v5 = ;
-    v6 = [(ICDocCamFilterButton *)self backgroundView];
-    [v6 setBackgroundColor:v5];
+    backgroundView = [(ICDocCamFilterButton *)self backgroundView];
+    [backgroundView setBackgroundColor:v5];
 
-    if (v3)
+    if (selectedCopy)
     {
       [(ICDocCamFilterButton *)self activeBackgroundViewColor];
     }
@@ -109,40 +109,40 @@
       [(ICDocCamFilterButton *)self inactiveTextColor];
     }
     v7 = ;
-    v8 = [(ICDocCamFilterButton *)self filterNameLabel];
-    [v8 setTextColor:v7];
+    filterNameLabel = [(ICDocCamFilterButton *)self filterNameLabel];
+    [filterNameLabel setTextColor:v7];
   }
 
   v9.receiver = self;
   v9.super_class = ICDocCamFilterButton;
-  [(ICDocCamFilterButton *)&v9 setSelected:v3];
+  [(ICDocCamFilterButton *)&v9 setSelected:selectedCopy];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = ICDocCamFilterButton;
-  v5 = [(ICDocCamFilterButton *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(ICDocCamFilterButton *)&v9 hitTest:event withEvent:test.x, test.y];
   if (v5)
   {
     v6 = v5;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(ICDocCamFilterButton *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(ICDocCamFilterButton *)self isHighlighted]!= highlighted)
   {
-    if (v3)
+    if (highlightedCopy)
     {
       v5 = 0.5;
     }
@@ -152,38 +152,38 @@
       v5 = 1.0;
     }
 
-    v6 = [(ICDocCamFilterButton *)self filterIconView];
-    [v6 setAlpha:v5];
+    filterIconView = [(ICDocCamFilterButton *)self filterIconView];
+    [filterIconView setAlpha:v5];
   }
 
   v7.receiver = self;
   v7.super_class = ICDocCamFilterButton;
-  [(ICDocCamFilterButton *)&v7 setHighlighted:v3];
+  [(ICDocCamFilterButton *)&v7 setHighlighted:highlightedCopy];
 }
 
 - (UIColor)activeBackgroundViewColor
 {
-  v2 = [(ICDocCamFilterButton *)self tintColor];
+  tintColor = [(ICDocCamFilterButton *)self tintColor];
   if (UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v3 = [MEMORY[0x277D75348] dc_darkerAccessibilityColorForColor:v2];
+    v3 = [MEMORY[0x277D75348] dc_darkerAccessibilityColorForColor:tintColor];
 
-    v2 = v3;
+    tintColor = v3;
   }
 
-  return v2;
+  return tintColor;
 }
 
-- (id)imageForFilterType:(signed __int16)a3
+- (id)imageForFilterType:(signed __int16)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_278F93878[a3];
+    v3 = off_278F93878[type];
   }
 
   v4 = MEMORY[0x277D755B8];
@@ -202,13 +202,13 @@
   return v6;
 }
 
-+ (id)filterButtonWithType:(signed __int16)a3
++ (id)filterButtonWithType:(signed __int16)type
 {
-  v3 = a3;
+  typeCopy = type;
   v22 = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v6 = NSStringFromClass(a1);
-  v7 = [v5 loadNibNamed:v6 owner:a1 options:0];
+  v6 = NSStringFromClass(self);
+  v7 = [v5 loadNibNamed:v6 owner:self options:0];
 
   v19 = 0u;
   v20 = 0u;
@@ -269,7 +269,7 @@ LABEL_9:
 
   v14 = 0;
 LABEL_14:
-  [v14 setFilterType:{v3, v17}];
+  [v14 setFilterType:{typeCopy, v17}];
   [v14 setTranslatesAutoresizingMaskIntoConstraints:1];
   [v14 setNeedsLayout];
   [v14 layoutIfNeeded];
@@ -279,16 +279,16 @@ LABEL_14:
 
 - (id)accessibilityLabel
 {
-  v2 = [(ICDocCamFilterButton *)self filterNameLabel];
-  v3 = [v2 text];
+  filterNameLabel = [(ICDocCamFilterButton *)self filterNameLabel];
+  text = [filterNameLabel text];
 
-  return v3;
+  return text;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(ICDocCamFilterButton *)self filterIconView];
-  [v2 accessibilityFrame];
+  filterIconView = [(ICDocCamFilterButton *)self filterIconView];
+  [filterIconView accessibilityFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -309,24 +309,24 @@ LABEL_14:
 {
   v7.receiver = self;
   v7.super_class = ICDocCamFilterButton;
-  v3 = [(ICDocCamFilterButton *)&v7 accessibilityTraits];
-  v4 = [(ICDocCamFilterButton *)self isSelected];
+  accessibilityTraits = [(ICDocCamFilterButton *)&v7 accessibilityTraits];
+  isSelected = [(ICDocCamFilterButton *)self isSelected];
   v5 = *MEMORY[0x277D76598];
-  if (!v4)
+  if (!isSelected)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
-- (void)updateForAccessibilityDarkerSystemColors:(id)a3
+- (void)updateForAccessibilityDarkerSystemColors:(id)colors
 {
   if ([(ICDocCamFilterButton *)self isSelected])
   {
-    v5 = [(ICDocCamFilterButton *)self activeBackgroundViewColor];
-    v4 = [(ICDocCamFilterButton *)self backgroundView];
-    [v4 setBackgroundColor:v5];
+    activeBackgroundViewColor = [(ICDocCamFilterButton *)self activeBackgroundViewColor];
+    backgroundView = [(ICDocCamFilterButton *)self backgroundView];
+    [backgroundView setBackgroundColor:activeBackgroundViewColor];
   }
 }
 

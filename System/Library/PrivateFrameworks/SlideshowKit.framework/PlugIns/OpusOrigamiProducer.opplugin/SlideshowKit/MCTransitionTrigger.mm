@@ -1,32 +1,32 @@
 @interface MCTransitionTrigger
-+ (id)transitionForTargetPlugObjectID:(id)a3 withTransitionID:(id)a4;
-- (MCTransitionTrigger)initWithImprint:(id)a3;
++ (id)transitionForTargetPlugObjectID:(id)d withTransitionID:(id)iD;
+- (MCTransitionTrigger)initWithImprint:(id)imprint;
 - (id)description;
 - (id)imprint;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 - (void)demolish;
 @end
 
 @implementation MCTransitionTrigger
 
-+ (id)transitionForTargetPlugObjectID:(id)a3 withTransitionID:(id)a4
++ (id)transitionForTargetPlugObjectID:(id)d withTransitionID:(id)iD
 {
   v6 = objc_alloc_init(MCTransitionTrigger);
-  [(MCAction *)v6 setTargetObjectID:a3];
-  [(MCTransitionTrigger *)v6 setTransitionID:a4];
+  [(MCAction *)v6 setTargetObjectID:d];
+  [(MCTransitionTrigger *)v6 setTransitionID:iD];
 
   return v6;
 }
 
-- (MCTransitionTrigger)initWithImprint:(id)a3
+- (MCTransitionTrigger)initWithImprint:(id)imprint
 {
   v8.receiver = self;
   v8.super_class = MCTransitionTrigger;
   v4 = [(MCAction *)&v8 initWithImprint:?];
   if (v4)
   {
-    v4->_transitionID = [a3 objectForKey:@"transitionID"];
-    v5 = [a3 objectForKey:@"transitionDuration"];
+    v4->_transitionID = [imprint objectForKey:@"transitionID"];
+    v5 = [imprint objectForKey:@"transitionDuration"];
     if (v5)
     {
       [v5 doubleValue];
@@ -38,8 +38,8 @@
     }
 
     v4->_transitionDuration = v6;
-    v4->_transitionAttributes = [[NSMutableDictionary alloc] initWithDictionary:{objc_msgSend(a3, "objectForKey:", @"transitionAttributes"}];
-    v4->_transitionDestinationPlugID = [a3 objectForKey:@"transitionDestinationPlugID"];
+    v4->_transitionAttributes = [[NSMutableDictionary alloc] initWithDictionary:{objc_msgSend(imprint, "objectForKey:", @"transitionAttributes"}];
+    v4->_transitionDestinationPlugID = [imprint objectForKey:@"transitionDestinationPlugID"];
   }
 
   return v4;
@@ -60,12 +60,12 @@
 {
   v9.receiver = self;
   v9.super_class = MCTransitionTrigger;
-  v3 = [(MCAction *)&v9 imprint];
-  v4 = v3;
+  imprint = [(MCAction *)&v9 imprint];
+  v4 = imprint;
   transitionID = self->_transitionID;
   if (transitionID)
   {
-    [v3 setObject:transitionID forKey:@"transitionID"];
+    [imprint setObject:transitionID forKey:@"transitionID"];
   }
 
   if (self->_transitionDuration != 0.0)
@@ -88,29 +88,29 @@
   return v4;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   objc_sync_enter(self);
   v8.receiver = self;
   v8.super_class = MCTransitionTrigger;
-  [(MCAction *)&v8 _copySelfToSnapshot:a3];
+  [(MCAction *)&v8 _copySelfToSnapshot:snapshot];
   transitionID = self->_transitionID;
   if (transitionID)
   {
-    *(a3 + 4) = [(NSString *)transitionID copy];
+    *(snapshot + 4) = [(NSString *)transitionID copy];
   }
 
-  *(a3 + 5) = *&self->_transitionDuration;
+  *(snapshot + 5) = *&self->_transitionDuration;
   transitionAttributes = self->_transitionAttributes;
   if (transitionAttributes)
   {
-    *(a3 + 3) = [(NSMutableDictionary *)transitionAttributes copy];
+    *(snapshot + 3) = [(NSMutableDictionary *)transitionAttributes copy];
   }
 
   transitionDestinationPlugID = self->_transitionDestinationPlugID;
   if (transitionDestinationPlugID)
   {
-    *(a3 + 6) = [(NSString *)transitionDestinationPlugID copy];
+    *(snapshot + 6) = [(NSString *)transitionDestinationPlugID copy];
   }
 
   objc_sync_exit(self);

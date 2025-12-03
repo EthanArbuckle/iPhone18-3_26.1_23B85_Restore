@@ -1,27 +1,27 @@
 @interface _UIInterfaceActionCustomViewRepresentationView
-- (BOOL)hasLayoutHeightConstraintsIdenticalToRepresentationView:(id)a3;
-- (_UIInterfaceActionCustomViewRepresentationView)initWithAction:(id)a3;
+- (BOOL)hasLayoutHeightConstraintsIdenticalToRepresentationView:(id)view;
+- (_UIInterfaceActionCustomViewRepresentationView)initWithAction:(id)action;
 - (id)description;
 - (int64_t)focusItemDeferralMode;
 - (void)_insertLoadedContentsIntoHierarchy;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)updateContentsInsertedIntoHierarchy;
 @end
 
 @implementation _UIInterfaceActionCustomViewRepresentationView
 
-- (_UIInterfaceActionCustomViewRepresentationView)initWithAction:(id)a3
+- (_UIInterfaceActionCustomViewRepresentationView)initWithAction:(id)action
 {
   v9.receiver = self;
   v9.super_class = _UIInterfaceActionCustomViewRepresentationView;
-  v3 = [(UIInterfaceActionRepresentationView *)&v9 initWithAction:a3];
+  v3 = [(UIInterfaceActionRepresentationView *)&v9 initWithAction:action];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIInterfaceActionRepresentationView *)v3 action];
-    v6 = [v5 customContentView];
+    action = [(UIInterfaceActionRepresentationView *)v3 action];
+    customContentView = [action customContentView];
     actionContentView = v4->_actionContentView;
-    v4->_actionContentView = v6;
+    v4->_actionContentView = customContentView;
   }
 
   return v4;
@@ -33,8 +33,8 @@
   v8.receiver = self;
   v8.super_class = _UIInterfaceActionCustomViewRepresentationView;
   v4 = [(UIInterfaceActionRepresentationView *)&v8 description];
-  v5 = [(UIInterfaceActionRepresentationView *)self action];
-  v6 = [v3 stringWithFormat:@"%@ action = %@", v4, v5];
+  action = [(UIInterfaceActionRepresentationView *)self action];
+  v6 = [v3 stringWithFormat:@"%@ action = %@", v4, action];
 
   return v6;
 }
@@ -58,32 +58,32 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(UIInterfaceActionRepresentationView *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(UIInterfaceActionRepresentationView *)self isHighlighted]!= highlighted)
   {
     v5.receiver = self;
     v5.super_class = _UIInterfaceActionCustomViewRepresentationView;
-    [(UIInterfaceActionRepresentationView *)&v5 setHighlighted:v3];
+    [(UIInterfaceActionRepresentationView *)&v5 setHighlighted:highlightedCopy];
     if (objc_opt_respondsToSelector())
     {
-      [(UIView *)self->_actionContentView setHighlighted:v3];
+      [(UIView *)self->_actionContentView setHighlighted:highlightedCopy];
     }
   }
 }
 
-- (BOOL)hasLayoutHeightConstraintsIdenticalToRepresentationView:(id)a3
+- (BOOL)hasLayoutHeightConstraintsIdenticalToRepresentationView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [(_UIInterfaceActionCustomViewRepresentationView *)self _actionContentView];
-    v8 = [(_UIInterfaceActionCustomViewRepresentationView *)self _actionContentView];
+    _actionContentView = [(_UIInterfaceActionCustomViewRepresentationView *)self _actionContentView];
+    _actionContentView2 = [(_UIInterfaceActionCustomViewRepresentationView *)self _actionContentView];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v7 hasLayoutHeightConstraintsIdenticalToInterfaceActionCustomView:v8];
+      v6 = [_actionContentView hasLayoutHeightConstraintsIdenticalToInterfaceActionCustomView:_actionContentView2];
     }
 
     else
@@ -117,9 +117,9 @@
 
 - (void)_insertLoadedContentsIntoHierarchy
 {
-  v3 = [(UIView *)self->_actionContentView superview];
+  superview = [(UIView *)self->_actionContentView superview];
 
-  if (v3 != self)
+  if (superview != self)
   {
     [(UIView *)self addSubview:self->_actionContentView];
 

@@ -1,7 +1,7 @@
 @interface UIMenuDisplayPreferences
 - (UIMenuDisplayPreferences)init;
-- (UIMenuDisplayPreferences)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UIMenuDisplayPreferences)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UIMenuDisplayPreferences
@@ -19,22 +19,22 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[UIMenuDisplayPreferences allocWithZone:?]];
   [(UIMenuDisplayPreferences *)v4 setMaximumNumberOfTitleLines:[(UIMenuDisplayPreferences *)self maximumNumberOfTitleLines]];
   return v4;
 }
 
-- (UIMenuDisplayPreferences)initWithCoder:(id)a3
+- (UIMenuDisplayPreferences)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = UIMenuDisplayPreferences;
   v5 = [(UIMenuDisplayPreferences *)&v7 init];
   if (v5)
   {
-    v5->_maximumNumberOfTitleLines = [v4 decodeIntegerForKey:@"maximumNumberOfTitleLines"];
+    v5->_maximumNumberOfTitleLines = [coderCopy decodeIntegerForKey:@"maximumNumberOfTitleLines"];
   }
 
   return v5;

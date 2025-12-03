@@ -1,20 +1,20 @@
 @interface CRLiOSStencilLibraryViewController
 - (NSSet)boardItemsToSave;
-- (_TtC8Freeform34CRLiOSStencilLibraryViewController)initWithEditingCoordinator:(id)a3 interactiveCanvasController:(id)a4 boardItemsToSave:(id)a5;
-- (_TtC8Freeform34CRLiOSStencilLibraryViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)stencilGridViewWantsToSaveStencilToLibraryWithTitle:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC8Freeform34CRLiOSStencilLibraryViewController)initWithEditingCoordinator:(id)coordinator interactiveCanvasController:(id)controller boardItemsToSave:(id)save;
+- (_TtC8Freeform34CRLiOSStencilLibraryViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)stencilGridViewWantsToSaveStencilToLibraryWithTitle:(id)title;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation CRLiOSStencilLibraryViewController
 
-- (_TtC8Freeform34CRLiOSStencilLibraryViewController)initWithEditingCoordinator:(id)a3 interactiveCanvasController:(id)a4 boardItemsToSave:(id)a5
+- (_TtC8Freeform34CRLiOSStencilLibraryViewController)initWithEditingCoordinator:(id)coordinator interactiveCanvasController:(id)controller boardItemsToSave:(id)save
 {
   type metadata accessor for CRLBoardItem(0);
   sub_100C90F74(&qword_1019FCB80, type metadata accessor for CRLBoardItem);
   v7 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  sub_100C8E408(a3, a4, v7);
+  sub_100C8E408(coordinator, controller, v7);
   return result;
 }
 
@@ -24,10 +24,10 @@
   v5.super_class = type metadata accessor for CRLiOSStencilLibraryViewController();
   v2 = v5.receiver;
   [(CRLiOSStencilLibraryViewController *)&v5 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
+    v4 = view;
     if (qword_1019F1FB0 != -1)
     {
       swift_once();
@@ -44,10 +44,10 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100C8EDDC(a3);
+  selfCopy = self;
+  sub_100C8EDDC(appear);
 }
 
 - (NSSet)boardItemsToSave
@@ -68,15 +68,15 @@
   return v2.super.isa;
 }
 
-- (void)stencilGridViewWantsToSaveStencilToLibraryWithTitle:(id)a3
+- (void)stencilGridViewWantsToSaveStencilToLibraryWithTitle:(id)title
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_100C8F498(v4, v6);
 }
 
-- (_TtC8Freeform34CRLiOSStencilLibraryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8Freeform34CRLiOSStencilLibraryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

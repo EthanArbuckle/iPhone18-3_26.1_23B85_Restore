@@ -1,16 +1,16 @@
 @interface NTKRichComplicationCornerMeteredGaugeImageView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-- (NTKRichComplicationCornerMeteredGaugeImageView)initWithFontFallback:(int64_t)a3;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
++ (BOOL)handlesComplicationTemplate:(id)template;
+- (NTKRichComplicationCornerMeteredGaugeImageView)initWithFontFallback:(int64_t)fallback;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 @end
 
 @implementation NTKRichComplicationCornerMeteredGaugeImageView
 
-- (NTKRichComplicationCornerMeteredGaugeImageView)initWithFontFallback:(int64_t)a3
+- (NTKRichComplicationCornerMeteredGaugeImageView)initWithFontFallback:(int64_t)fallback
 {
   v6.receiver = self;
   v6.super_class = NTKRichComplicationCornerMeteredGaugeImageView;
-  v3 = [(CDRichComplicationCornerGaugeCustomView *)&v6 initWithFontFallback:a3];
+  v3 = [(CDRichComplicationCornerGaugeCustomView *)&v6 initWithFontFallback:fallback];
   v4 = v3;
   if (v3)
   {
@@ -20,27 +20,27 @@
   return v4;
 }
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v6 = a3;
-  v11 = [v6 imageProvider];
-  v7 = [(NTKRichComplicationCornerGaugeImageView *)self imageView];
-  [v7 setImageProvider:v11 reason:a4];
+  templateCopy = template;
+  imageProvider = [templateCopy imageProvider];
+  imageView = [(NTKRichComplicationCornerGaugeImageView *)self imageView];
+  [imageView setImageProvider:imageProvider reason:reason];
 
-  v8 = [v6 gaugeProvider];
-  v9 = [v6 leadingTextProvider];
-  v10 = [v6 trailingTextProvider];
+  gaugeProvider = [templateCopy gaugeProvider];
+  leadingTextProvider = [templateCopy leadingTextProvider];
+  trailingTextProvider = [templateCopy trailingTextProvider];
 
-  [(CDRichComplicationCornerBaseGaugeView *)self handleGaugeProvider:v8 leftTextProvider:v9 rightTextProvider:v10];
+  [(CDRichComplicationCornerBaseGaugeView *)self handleGaugeProvider:gaugeProvider leftTextProvider:leadingTextProvider rightTextProvider:trailingTextProvider];
 }
 
 @end

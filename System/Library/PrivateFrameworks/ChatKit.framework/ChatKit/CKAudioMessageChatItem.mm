@@ -11,106 +11,106 @@
 - (Class)cellClass
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 audioBalloonCellClass];
+  audioBalloonCellClass = [v2 audioBalloonCellClass];
 
-  return v3;
+  return audioBalloonCellClass;
 }
 
 - (BOOL)canForward
 {
   v2 = MEMORY[0x1E69A5CA0];
-  v3 = [(CKMessagePartChatItem *)self serviceName];
-  v4 = [v2 serviceWithInternalName:v3];
-  v5 = [v4 supportsForwardingAudioMessages];
+  serviceName = [(CKMessagePartChatItem *)self serviceName];
+  v4 = [v2 serviceWithInternalName:serviceName];
+  supportsForwardingAudioMessages = [v4 supportsForwardingAudioMessages];
 
-  return v5;
+  return supportsForwardingAudioMessages;
 }
 
 - (NSString)audioTranscriptionText
 {
-  v3 = [(CKMessagePartChatItem *)self message];
-  v4 = v3;
-  if (v3)
+  message = [(CKMessagePartChatItem *)self message];
+  v4 = message;
+  if (message)
   {
-    v5 = [v3 _imMessageItem];
-    v6 = [v5 body];
-    v7 = v6;
-    if (v6 && [v6 length])
+    _imMessageItem = [message _imMessageItem];
+    body = [_imMessageItem body];
+    v7 = body;
+    if (body && [body length])
     {
       v8 = [v7 attribute:*MEMORY[0x1E69A68D0] atIndex:0 effectiveRange:0];
       v9 = v8;
       if (v8)
       {
-        v10 = v8;
+        _audioTranscriptionTextFromTransfer = v8;
       }
 
       else
       {
-        v10 = [(CKAudioMessageChatItem *)self _audioTranscriptionTextFromTransfer];
+        _audioTranscriptionTextFromTransfer = [(CKAudioMessageChatItem *)self _audioTranscriptionTextFromTransfer];
       }
 
-      v11 = v10;
+      _audioTranscriptionTextFromTransfer2 = _audioTranscriptionTextFromTransfer;
     }
 
     else
     {
-      v11 = [(CKAudioMessageChatItem *)self _audioTranscriptionTextFromTransfer];
+      _audioTranscriptionTextFromTransfer2 = [(CKAudioMessageChatItem *)self _audioTranscriptionTextFromTransfer];
     }
   }
 
   else
   {
-    v11 = [(CKAudioMessageChatItem *)self _audioTranscriptionTextFromTransfer];
+    _audioTranscriptionTextFromTransfer2 = [(CKAudioMessageChatItem *)self _audioTranscriptionTextFromTransfer];
   }
 
-  return v11;
+  return _audioTranscriptionTextFromTransfer2;
 }
 
 - (id)_audioTranscriptionTextFromTransfer
 {
-  v2 = [(CKAttachmentMessagePartChatItem *)self mediaObject];
-  v3 = v2;
-  if (v2)
+  mediaObject = [(CKAttachmentMessagePartChatItem *)self mediaObject];
+  v3 = mediaObject;
+  if (mediaObject)
   {
-    v4 = [v2 transfer];
-    v5 = v4;
-    if (v4)
+    transfer = [mediaObject transfer];
+    v5 = transfer;
+    if (transfer)
     {
-      v6 = [v4 audioTranscriptionText];
+      audioTranscriptionText = [transfer audioTranscriptionText];
     }
 
     else
     {
-      v6 = 0;
+      audioTranscriptionText = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    audioTranscriptionText = 0;
   }
 
-  return v6;
+  return audioTranscriptionText;
 }
 
 - (Class)balloonViewClass
 {
-  v2 = [(CKAttachmentMessagePartChatItem *)self mediaObject];
-  v3 = [v2 transfer];
-  v4 = [v3 isFileDataReady];
+  mediaObject = [(CKAttachmentMessagePartChatItem *)self mediaObject];
+  transfer = [mediaObject transfer];
+  isFileDataReady = [transfer isFileDataReady];
 
-  if (v4)
+  if (isFileDataReady)
   {
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 audioBalloonViewClass];
+    audioBalloonViewClass = [v5 audioBalloonViewClass];
   }
 
   else
   {
-    v6 = objc_opt_class();
+    audioBalloonViewClass = objc_opt_class();
   }
 
-  return v6;
+  return audioBalloonViewClass;
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface BPSFilterProducer
-- (BPSFilterProducer)initWithDownstream:(id)a3;
-- (id)receiveNewValue:(id)a3;
+- (BPSFilterProducer)initWithDownstream:(id)downstream;
+- (id)receiveNewValue:(id)value;
 - (id)upstreamSubscriptions;
-- (int64_t)receiveInput:(id)a3;
+- (int64_t)receiveInput:(id)input;
 - (void)cancel;
-- (void)receiveCompletion:(id)a3;
-- (void)receiveSubscription:(id)a3;
-- (void)requestDemand:(int64_t)a3;
+- (void)receiveCompletion:(id)completion;
+- (void)receiveSubscription:(id)subscription;
+- (void)requestDemand:(int64_t)demand;
 @end
 
 @implementation BPSFilterProducer
 
-- (BPSFilterProducer)initWithDownstream:(id)a3
+- (BPSFilterProducer)initWithDownstream:(id)downstream
 {
-  v5 = a3;
+  downstreamCopy = downstream;
   v9.receiver = self;
   v9.super_class = BPSFilterProducer;
   v6 = [(BPSFilterProducer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_downstream, a3);
+    objc_storeStrong(&v6->_downstream, downstream);
     v7->_state = 0;
     v7->_lock._os_unfair_lock_opaque = 0;
   }
@@ -28,9 +28,9 @@
   return v7;
 }
 
-- (id)receiveNewValue:(id)a3
+- (id)receiveNewValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = MEMORY[0x1E696AEC0];
   v6 = NSStringFromSelector(a2);
   v7 = [v5 stringWithFormat:@"Override %@ in a subclass", v6];
@@ -39,11 +39,11 @@
   objc_exception_throw(v8);
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
+  completionCopy = completion;
+  selfCopy = self;
   v6 = __biome_log_for_category();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -52,25 +52,25 @@
     _os_log_impl(&dword_1C871B000, v6, OS_LOG_TYPE_INFO, "%@ - completion", &v11, 0xCu);
   }
 
-  os_unfair_lock_lock(&v5->_lock);
-  v7 = [(BPSFilterProducer *)v5 state];
-  switch(v7)
+  os_unfair_lock_lock(&selfCopy->_lock);
+  state = [(BPSFilterProducer *)selfCopy state];
+  switch(state)
   {
     case 2:
       goto LABEL_8;
     case 1:
-      [(BPSFilterProducer *)v5 setState:2];
-      os_unfair_lock_unlock(&v5->_lock);
-      v9 = [(BPSFilterProducer *)v5 downstream];
-      [v9 receiveCompletion:v4];
+      [(BPSFilterProducer *)selfCopy setState:2];
+      os_unfair_lock_unlock(&selfCopy->_lock);
+      downstream = [(BPSFilterProducer *)selfCopy downstream];
+      [downstream receiveCompletion:completionCopy];
 
-      os_unfair_lock_lock(&v5->_lock);
-      [(BPSFilterProducer *)v5 setSubscription:0];
+      os_unfair_lock_lock(&selfCopy->_lock);
+      [(BPSFilterProducer *)selfCopy setSubscription:0];
 LABEL_8:
-      os_unfair_lock_unlock(&v5->_lock);
+      os_unfair_lock_unlock(&selfCopy->_lock);
       break;
     case 0:
-      os_unfair_lock_unlock(&v5->_lock);
+      os_unfair_lock_unlock(&selfCopy->_lock);
       v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Invalid State: Received completion before receiving subscription" userInfo:0];
       break;
   }
@@ -78,53 +78,53 @@ LABEL_8:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
-  v5 = a3;
-  v6 = self;
-  os_unfair_lock_lock(&v6->_lock);
-  v7 = [(BPSFilterProducer *)v6 state];
-  switch(v7)
+  inputCopy = input;
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  state = [(BPSFilterProducer *)selfCopy state];
+  switch(state)
   {
     case 2:
-      os_unfair_lock_unlock(&v6->_lock);
+      os_unfair_lock_unlock(&selfCopy->_lock);
       break;
     case 1:
-      os_unfair_lock_unlock(&v6->_lock);
-      v10 = [(BPSFilterProducer *)v6 receiveNewValue:v5];
-      v11 = [v10 state];
-      if (v11)
+      os_unfair_lock_unlock(&selfCopy->_lock);
+      v10 = [(BPSFilterProducer *)selfCopy receiveNewValue:inputCopy];
+      state2 = [v10 state];
+      if (state2)
       {
-        if (v11 == 2)
+        if (state2 == 2)
         {
-          os_unfair_lock_lock(&v6->_lock);
-          [(BPSFilterProducer *)v6 setState:2];
-          os_unfair_lock_unlock(&v6->_lock);
-          v16 = [(BPSFilterProducer *)v6 subscription];
-          [v16 cancel];
+          os_unfair_lock_lock(&selfCopy->_lock);
+          [(BPSFilterProducer *)selfCopy setState:2];
+          os_unfair_lock_unlock(&selfCopy->_lock);
+          subscription = [(BPSFilterProducer *)selfCopy subscription];
+          [subscription cancel];
 
-          v17 = [v10 error];
-          v18 = [(BPSFilterProducer *)v6 downstream];
-          v19 = [BPSCompletion failureWithError:v17];
-          [v18 receiveCompletion:v19];
+          error = [v10 error];
+          downstream = [(BPSFilterProducer *)selfCopy downstream];
+          v19 = [BPSCompletion failureWithError:error];
+          [downstream receiveCompletion:v19];
 
           goto LABEL_12;
         }
 
-        if (v11 != 1)
+        if (state2 != 1)
         {
 LABEL_12:
 
           break;
         }
 
-        v12 = [v10 value];
+        value = [v10 value];
 
-        if (v12)
+        if (value)
         {
-          v13 = [(BPSFilterProducer *)v6 downstream];
-          v14 = [v10 value];
-          v15 = [v13 receiveInput:v14];
+          downstream2 = [(BPSFilterProducer *)selfCopy downstream];
+          value2 = [v10 value];
+          v15 = [downstream2 receiveInput:value2];
         }
 
         else
@@ -135,22 +135,22 @@ LABEL_12:
 
       else
       {
-        os_unfair_lock_lock(&v6->_lock);
-        [(BPSFilterProducer *)v6 setState:2];
-        os_unfair_lock_unlock(&v6->_lock);
-        v21 = [(BPSFilterProducer *)v6 subscription];
-        [v21 cancel];
+        os_unfair_lock_lock(&selfCopy->_lock);
+        [(BPSFilterProducer *)selfCopy setState:2];
+        os_unfair_lock_unlock(&selfCopy->_lock);
+        subscription2 = [(BPSFilterProducer *)selfCopy subscription];
+        [subscription2 cancel];
 
-        v22 = [(BPSFilterProducer *)v6 downstream];
+        downstream3 = [(BPSFilterProducer *)selfCopy downstream];
         v23 = +[BPSCompletion success];
-        [v22 receiveCompletion:v23];
+        [downstream3 receiveCompletion:v23];
 
         v15 = 0;
       }
 
       goto LABEL_14;
     case 0:
-      os_unfair_lock_unlock(&v6->_lock);
+      os_unfair_lock_unlock(&selfCopy->_lock);
       v8 = MEMORY[0x1E695DF30];
       v9 = *MEMORY[0x1E695D930];
       v10 = NSStringFromSelector(a2);
@@ -164,30 +164,30 @@ LABEL_14:
   return v15;
 }
 
-- (void)receiveSubscription:(id)a3
+- (void)receiveSubscription:(id)subscription
 {
-  v6 = a3;
+  subscriptionCopy = subscription;
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(BPSFilterProducer *)self state];
-  if ((v4 - 1) >= 2)
+  state = [(BPSFilterProducer *)self state];
+  if ((state - 1) >= 2)
   {
-    if (v4)
+    if (state)
     {
       goto LABEL_6;
     }
 
     [(BPSFilterProducer *)self setState:1];
-    [(BPSFilterProducer *)self setSubscription:v6];
+    [(BPSFilterProducer *)self setSubscription:subscriptionCopy];
     os_unfair_lock_unlock(&self->_lock);
-    v5 = [(BPSFilterProducer *)self downstream];
-    [v5 receiveSubscription:self];
+    downstream = [(BPSFilterProducer *)self downstream];
+    [downstream receiveSubscription:self];
   }
 
   else
   {
     os_unfair_lock_unlock(&self->_lock);
-    v5 = [(BPSFilterProducer *)self subscription];
-    [v5 cancel];
+    downstream = [(BPSFilterProducer *)self subscription];
+    [downstream cancel];
   }
 
 LABEL_6:
@@ -195,52 +195,52 @@ LABEL_6:
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = __biome_log_for_category();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    [(_BPSHandleEventsInner *)v2 cancel];
+    [(_BPSHandleEventsInner *)selfCopy cancel];
   }
 
-  os_unfair_lock_lock(&v2->_lock);
-  v4 = [(BPSFilterProducer *)v2 state];
-  [(BPSFilterProducer *)v2 setState:2];
-  if (v4 == 1)
+  os_unfair_lock_lock(&selfCopy->_lock);
+  state = [(BPSFilterProducer *)selfCopy state];
+  [(BPSFilterProducer *)selfCopy setState:2];
+  if (state == 1)
   {
-    v5 = [(BPSFilterProducer *)v2 subscription];
-    [(BPSFilterProducer *)v2 setSubscription:0];
-    os_unfair_lock_unlock(&v2->_lock);
-    [v5 cancel];
+    subscription = [(BPSFilterProducer *)selfCopy subscription];
+    [(BPSFilterProducer *)selfCopy setSubscription:0];
+    os_unfair_lock_unlock(&selfCopy->_lock);
+    [subscription cancel];
   }
 
   else
   {
-    [(BPSFilterProducer *)v2 setSubscription:0];
-    os_unfair_lock_unlock(&v2->_lock);
+    [(BPSFilterProducer *)selfCopy setSubscription:0];
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 }
 
-- (void)requestDemand:(int64_t)a3
+- (void)requestDemand:(int64_t)demand
 {
-  v5 = self;
-  v8 = v5;
-  if (a3 <= 0)
+  selfCopy = self;
+  v8 = selfCopy;
+  if (demand <= 0)
   {
-    [(BPSFilterProducer *)a2 requestDemand:v5];
-    v5 = v8;
+    [(BPSFilterProducer *)a2 requestDemand:selfCopy];
+    selfCopy = v8;
   }
 
-  os_unfair_lock_lock(&v5->_lock);
-  v6 = [(os_unfair_lock_s *)v8 state];
-  switch(v6)
+  os_unfair_lock_lock(&selfCopy->_lock);
+  state = [(os_unfair_lock_s *)v8 state];
+  switch(state)
   {
     case 2:
       os_unfair_lock_unlock(v8 + 2);
       break;
     case 1:
       os_unfair_lock_unlock(v8 + 2);
-      v7 = [(os_unfair_lock_s *)v8 subscription];
-      [v7 requestDemand:a3];
+      subscription = [(os_unfair_lock_s *)v8 subscription];
+      [subscription requestDemand:demand];
 
       break;
     case 0:
@@ -255,19 +255,19 @@ LABEL_6:
 - (id)upstreamSubscriptions
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(BPSFilterProducer *)self subscription];
+  subscription = [(BPSFilterProducer *)self subscription];
 
-  if (v3)
+  if (subscription)
   {
-    v4 = [(BPSFilterProducer *)self subscription];
-    v8[0] = v4;
+    subscription2 = [(BPSFilterProducer *)self subscription];
+    v8[0] = subscription2;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   }
 
   else
   {
-    v4 = __biome_log_for_category();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    subscription2 = __biome_log_for_category();
+    if (os_log_type_enabled(subscription2, OS_LOG_TYPE_ERROR))
     {
       [(_BPSHandleEventsInner *)self upstreamSubscriptions];
     }

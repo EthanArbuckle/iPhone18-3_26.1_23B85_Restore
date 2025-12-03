@@ -1,10 +1,10 @@
 @interface PosterSectionHeaderView
 - (NSString)title;
-- (_TtC11PosterBoard23PosterSectionHeaderView)initWithCoder:(id)a3;
+- (_TtC11PosterBoard23PosterSectionHeaderView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)posterPairDidUpdateLocalizedTitle:(id)a3;
+- (void)posterPairDidUpdateLocalizedTitle:(id)title;
 - (void)prepareForReuse;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PosterSectionHeaderView
@@ -25,9 +25,9 @@
   return v2;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_21B6C8DA4();
     v6 = v5;
@@ -39,7 +39,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_21B65C800(v4, v6);
 }
 
@@ -52,7 +52,7 @@
   sub_21B65C800(0, 0);
 }
 
-- (_TtC11PosterBoard23PosterSectionHeaderView)initWithCoder:(id)a3
+- (_TtC11PosterBoard23PosterSectionHeaderView)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR____TtC11PosterBoard23PosterSectionHeaderView_delegate + 8) = 0;
   swift_unknownObjectWeakInit();
@@ -69,25 +69,25 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21B65CD64();
 }
 
-- (void)posterPairDidUpdateLocalizedTitle:(id)a3
+- (void)posterPairDidUpdateLocalizedTitle:(id)title
 {
-  if (*(a3 + OBJC_IVAR___PBFPosterPair_localizedTitle + 8))
+  if (*(title + OBJC_IVAR___PBFPosterPair_localizedTitle + 8))
   {
     sub_21B656750();
-    v5 = a3;
-    v6 = self;
+    titleCopy = title;
+    selfCopy = self;
     v7 = sub_21B6C93D4();
   }
 
   else
   {
-    v9 = *(a3 + OBJC_IVAR___PBFPosterPair_localizedTitle);
-    v10 = a3;
-    v11 = self;
+    v9 = *(title + OBJC_IVAR___PBFPosterPair_localizedTitle);
+    titleCopy2 = title;
+    selfCopy2 = self;
     v7 = v9;
     v8 = 0;
   }

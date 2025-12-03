@@ -1,7 +1,7 @@
 @interface TSKThreadDispatcher
 + (id)sharedInstance;
-- (void)dispatch:(id)a3;
-- (void)dispatchSelector:(SEL)a3 target:(id)a4 argument:(id)a5;
+- (void)dispatch:(id)dispatch;
+- (void)dispatchSelector:(SEL)selector target:(id)target argument:(id)argument;
 @end
 
 @implementation TSKThreadDispatcher
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __37__TSKThreadDispatcher_sharedInstance__block_invoke;
   block[3] = &unk_279D46770;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once != -1)
   {
     dispatch_once(&sharedInstance_once, block);
@@ -28,24 +28,24 @@ id __37__TSKThreadDispatcher_sharedInstance__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)dispatch:(id)a3
+- (void)dispatch:(id)dispatch
 {
-  v4 = [(TSKThreadDispatcher *)self p_dispatchQueue];
+  p_dispatchQueue = [(TSKThreadDispatcher *)self p_dispatchQueue];
 
-  dispatch_async(v4, a3);
+  dispatch_async(p_dispatchQueue, dispatch);
 }
 
-- (void)dispatchSelector:(SEL)a3 target:(id)a4 argument:(id)a5
+- (void)dispatchSelector:(SEL)selector target:(id)target argument:(id)argument
 {
-  v8 = [(TSKThreadDispatcher *)self p_dispatchQueue];
+  p_dispatchQueue = [(TSKThreadDispatcher *)self p_dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__TSKThreadDispatcher_dispatchSelector_target_argument___block_invoke;
   block[3] = &unk_279D47668;
-  block[5] = a5;
-  block[6] = a3;
-  block[4] = a4;
-  dispatch_async(v8, block);
+  block[5] = argument;
+  block[6] = selector;
+  block[4] = target;
+  dispatch_async(p_dispatchQueue, block);
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface DDSAssetObserver
 - (DDSAssetObserver)init;
 - (DDSAssetObservingDelegate)delegate;
-- (void)beginObservingType:(id)a3;
+- (void)beginObservingType:(id)type;
 - (void)dealloc;
-- (void)endObservingTypes:(id)a3;
-- (void)notifyObserversAssetsUpdatedForType:(id)a3;
-- (void)observeAssetType:(id)a3;
+- (void)endObservingTypes:(id)types;
+- (void)notifyObserversAssetsUpdatedForType:(id)type;
+- (void)observeAssetType:(id)type;
 @end
 
 @implementation DDSAssetObserver
@@ -35,13 +35,13 @@
   return v2;
 }
 
-- (void)observeAssetType:(id)a3
+- (void)observeAssetType:(id)type
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(DDSAssetObserver *)self typesToObserve];
-  v6 = [v5 containsObject:v4];
+  typesToObserve = [(DDSAssetObserver *)self typesToObserve];
+  v6 = [typesToObserve containsObject:typeCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -49,14 +49,14 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
-      v11 = v4;
+      v11 = typeCopy;
       _os_log_impl(&dword_1DF7C6000, v7, OS_LOG_TYPE_DEFAULT, "Adding observer for DDS asset update notification for asset type: (%{public}@)", &v10, 0xCu);
     }
 
-    v8 = [(DDSAssetObserver *)self typesToObserve];
-    [v8 addObject:v4];
+    typesToObserve2 = [(DDSAssetObserver *)self typesToObserve];
+    [typesToObserve2 addObject:typeCopy];
 
-    [(DDSAssetObserver *)self beginObservingType:v4];
+    [(DDSAssetObserver *)self beginObservingType:typeCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -64,16 +64,16 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)beginObservingType:(id)a3
+- (void)beginObservingType:(id)type
 {
-  v9 = a3;
-  v4 = [v9 stringByAppendingString:@".dds.assets-updated"];
-  v5 = [(DDSAssetObserver *)self autoAssetTypes];
-  v6 = [v5 containsObject:v9];
+  typeCopy = type;
+  v4 = [typeCopy stringByAppendingString:@".dds.assets-updated"];
+  autoAssetTypes = [(DDSAssetObserver *)self autoAssetTypes];
+  v6 = [autoAssetTypes containsObject:typeCopy];
 
   if (v6)
   {
-    v7 = [MEMORY[0x1E69B1900] notifyRegistrationName:@"ASSET_VERSION_DOWNLOADED" forAssetType:v9];
+    v7 = [MEMORY[0x1E69B1900] notifyRegistrationName:@"ASSET_VERSION_DOWNLOADED" forAssetType:typeCopy];
 
     v4 = v7;
   }
@@ -82,15 +82,15 @@
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, assetUpdatedNotificationCallback, v4, 0, CFNotificationSuspensionBehaviorCoalesce);
 }
 
-- (void)endObservingTypes:(id)a3
+- (void)endObservingTypes:(id)types
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typesCopy = types;
   v5 = DefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v4;
+    v24 = typesCopy;
     _os_log_impl(&dword_1DF7C6000, v5, OS_LOG_TYPE_DEFAULT, "End observing types: %@", buf, 0xCu);
   }
 
@@ -98,7 +98,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = typesCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -115,8 +115,8 @@
 
         v11 = *(*(&v18 + 1) + 8 * i);
         v12 = [v11 stringByAppendingString:{@".dds.assets-updated", v18}];
-        v13 = [(DDSAssetObserver *)self autoAssetTypes];
-        v14 = [v13 containsObject:v11];
+        autoAssetTypes = [(DDSAssetObserver *)self autoAssetTypes];
+        v14 = [autoAssetTypes containsObject:v11];
 
         if (v14)
         {
@@ -138,9 +138,9 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyObserversAssetsUpdatedForType:(id)a3
+- (void)notifyObserversAssetsUpdatedForType:(id)type
 {
-  name = [a3 stringByAppendingString:@".dds.assets-updated"];
+  name = [type stringByAppendingString:@".dds.assets-updated"];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, name, 0, 0, 1u);
 }
@@ -155,8 +155,8 @@
   }
 
   [(DDSAssetObserver *)self setDelegate:0];
-  v4 = [(DDSAssetObserver *)self typesToObserve];
-  [(DDSAssetObserver *)self endObservingTypes:v4];
+  typesToObserve = [(DDSAssetObserver *)self typesToObserve];
+  [(DDSAssetObserver *)self endObservingTypes:typesToObserve];
 
   v5.receiver = self;
   v5.super_class = DDSAssetObserver;

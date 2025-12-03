@@ -24,42 +24,42 @@
 + (void)load;
 - (BOOL)shouldRateLimitTechStatus;
 - (PLLocationAgent)init;
-- (id)getOpenEntryForClientSettings:(id)a3 withTimeStarted:(id)a4 withClient:(id)a5 withType:(id)a6 withEntryKey:(id)a7;
-- (id)humanReadableNameForTechnology:(id)a3;
-- (id)lastEntryWithClient:(id)a3 withType:(id)a4 withBundleID:(id)a5 withEntryKey:(id)a6;
-- (unint64_t)convertCheckInEvent:(id)a3;
-- (unint64_t)convertClientEvent:(id)a3;
-- (unint64_t)convertOdometryEvent:(id)a3;
-- (unint64_t)convertViewObstructedEvent:(id)a3;
-- (void)closeOpenEntryForClient:(id)a3 withOpenEntry:(id)a4 withTimeStopped:(id)a5;
+- (id)getOpenEntryForClientSettings:(id)settings withTimeStarted:(id)started withClient:(id)client withType:(id)type withEntryKey:(id)key;
+- (id)humanReadableNameForTechnology:(id)technology;
+- (id)lastEntryWithClient:(id)client withType:(id)type withBundleID:(id)d withEntryKey:(id)key;
+- (unint64_t)convertCheckInEvent:(id)event;
+- (unint64_t)convertClientEvent:(id)event;
+- (unint64_t)convertOdometryEvent:(id)event;
+- (unint64_t)convertViewObstructedEvent:(id)event;
+- (void)closeOpenEntryForClient:(id)client withOpenEntry:(id)entry withTimeStopped:(id)stopped;
 - (void)initOperatorDependancies;
-- (void)logEventForwardCheckInSession:(id)a3;
-- (void)logEventForwardClientStatuswithPayload:(id)a3;
-- (void)logEventForwardGnssSession:(id)a3;
-- (void)logEventForwardOdometry:(id)a3;
-- (void)logEventForwardSuppressionManagerClient:(id)a3;
+- (void)logEventForwardCheckInSession:(id)session;
+- (void)logEventForwardClientStatuswithPayload:(id)payload;
+- (void)logEventForwardGnssSession:(id)session;
+- (void)logEventForwardOdometry:(id)odometry;
+- (void)logEventForwardSuppressionManagerClient:(id)client;
 - (void)logEventForwardTechStatus;
 - (void)logEventForwardTechStatus_withLimiter;
-- (void)logEventForwardViewObstructed:(id)a3;
-- (void)logEventFowardGPSSubscription:(id)a3;
-- (void)logEventIntervalMapsBusynessState:(id)a3;
-- (void)logEventIntervalPDR:(id)a3;
-- (void)logEventIntervalSeparationAlert:(id)a3;
+- (void)logEventForwardViewObstructed:(id)obstructed;
+- (void)logEventFowardGPSSubscription:(id)subscription;
+- (void)logEventIntervalMapsBusynessState:(id)state;
+- (void)logEventIntervalPDR:(id)r;
+- (void)logEventIntervalSeparationAlert:(id)alert;
 - (void)logEventNoneClientStatus;
-- (void)logEventNoneClientStatusDebugWithClients:(id)a3;
+- (void)logEventNoneClientStatusDebugWithClients:(id)clients;
 - (void)logEventPointClientStatus;
-- (void)logEventPointGeofenceTrigger:(id)a3;
-- (void)logEventPointMiLoScans:(id)a3;
-- (void)logEventPointMotionPacket:(id)a3;
-- (void)logEventPointWifiLocationScanRequesters:(id)a3;
-- (void)logPredictedContextInferenceEvent:(id)a3;
-- (void)logPredictedContextTrainingEvent:(id)a3;
-- (void)modelGpsSegmentPower:(id)a3 withGpsPower:(double)a4 withTotalDuration:(double)a5;
-- (void)processesOfInterest:(id)a3;
+- (void)logEventPointGeofenceTrigger:(id)trigger;
+- (void)logEventPointMiLoScans:(id)scans;
+- (void)logEventPointMotionPacket:(id)packet;
+- (void)logEventPointWifiLocationScanRequesters:(id)requesters;
+- (void)logPredictedContextInferenceEvent:(id)event;
+- (void)logPredictedContextTrainingEvent:(id)event;
+- (void)modelGpsSegmentPower:(id)power withGpsPower:(double)gpsPower withTotalDuration:(double)duration;
+- (void)processesOfInterest:(id)interest;
 - (void)resyncActiveClients;
-- (void)updateClientsLocationInfo:(id)a3;
-- (void)updateGnssPowerMetric:(id)a3;
-- (void)updateLocalCacheWithClient:(id)a3 withType:(id)a4 withBundleID:(id)a5 withEntry:(id)a6;
+- (void)updateClientsLocationInfo:(id)info;
+- (void)updateGnssPowerMetric:(id)metric;
+- (void)updateLocalCacheWithClient:(id)client withType:(id)type withBundleID:(id)d withEntry:(id)entry;
 - (void)updateLocationDistributionEvents;
 - (void)updateLocationQualificationEvents;
 - (void)writeModeledPower;
@@ -69,7 +69,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLLocationAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -78,20 +78,20 @@
 {
   v12[5] = *MEMORY[0x277D85DE8];
   v11[0] = @"ClientStatus";
-  v3 = [a1 entryEventPointDefinitionClientStatus];
-  v12[0] = v3;
+  entryEventPointDefinitionClientStatus = [self entryEventPointDefinitionClientStatus];
+  v12[0] = entryEventPointDefinitionClientStatus;
   v11[1] = @"GeoFenceHandoff";
-  v4 = [a1 entryEventPointDefinitionGeoFenceHandoff];
-  v12[1] = v4;
+  entryEventPointDefinitionGeoFenceHandoff = [self entryEventPointDefinitionGeoFenceHandoff];
+  v12[1] = entryEventPointDefinitionGeoFenceHandoff;
   v11[2] = @"WifiLocationScanRequesters";
-  v5 = [a1 entryEventPointDefinitionWifiLocationScanRequesters];
-  v12[2] = v5;
+  entryEventPointDefinitionWifiLocationScanRequesters = [self entryEventPointDefinitionWifiLocationScanRequesters];
+  v12[2] = entryEventPointDefinitionWifiLocationScanRequesters;
   v11[3] = @"MiLoScanEvent";
-  v6 = [a1 entryEventPointDefinitionMiLo];
-  v12[3] = v6;
+  entryEventPointDefinitionMiLo = [self entryEventPointDefinitionMiLo];
+  v12[3] = entryEventPointDefinitionMiLo;
   v11[4] = @"MotionPacket";
-  v7 = [a1 entryEventPointDefinitionMotionPacket];
-  v12[4] = v7;
+  entryEventPointDefinitionMotionPacket = [self entryEventPointDefinitionMotionPacket];
+  v12[4] = entryEventPointDefinitionMotionPacket;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:5];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -117,37 +117,37 @@
   v30[0] = v24;
   v29[1] = *MEMORY[0x277D3F540];
   v25[0] = @"timestampEnd";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_DateFormat];
-  v26[0] = v22;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v26[0] = commonTypeDict_DateFormat;
   v25[1] = @"Type";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_StringFormat];
-  v26[1] = v20;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v26[1] = commonTypeDict_StringFormat;
   v25[2] = @"Client";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_StringFormat_withBundleID];
-  v26[2] = v18;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat_withBundleID];
+  v26[2] = commonTypeDict_StringFormat_withBundleID;
   v25[3] = @"BundleId";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_StringFormat_withBundleID];
-  v26[3] = v16;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID2 = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat_withBundleID];
+  v26[3] = commonTypeDict_StringFormat_withBundleID2;
   v25[4] = @"Executable";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat_withProcessName];
-  v26[4] = v5;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withProcessName = [mEMORY[0x277D3F198]5 commonTypeDict_StringFormat_withProcessName];
+  v26[4] = commonTypeDict_StringFormat_withProcessName;
   v25[5] = @"Authorized";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_BoolFormat];
-  v26[5] = v7;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]6 commonTypeDict_BoolFormat];
+  v26[5] = commonTypeDict_BoolFormat;
   v25[6] = @"LocationDesiredAccuracy";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_RealFormat];
-  v26[6] = v9;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]7 commonTypeDict_RealFormat];
+  v26[6] = commonTypeDict_RealFormat;
   v25[7] = @"LocationDistanceFilter";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_RealFormat];
-  v26[7] = v11;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]8 commonTypeDict_RealFormat];
+  v26[7] = commonTypeDict_RealFormat2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:8];
   v30[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
@@ -170,13 +170,13 @@
   v17[0] = v3;
   v16[1] = *MEMORY[0x277D3F540];
   v12[0] = @"scanRequester";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat_withBundleID];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198] commonTypeDict_StringFormat_withBundleID];
   v12[1] = @"numRequests";
-  v13[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v13[1] = v7;
+  v13[0] = commonTypeDict_StringFormat_withBundleID;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v13[1] = commonTypeDict_IntegerFormat;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -196,29 +196,29 @@
   v24[0] = v18;
   v23[1] = *MEMORY[0x277D3F540];
   v19[0] = @"BTScanDuration";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_RealFormat];
-  v20[0] = v16;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
+  v20[0] = commonTypeDict_RealFormat;
   v19[1] = @"BleActiveScanRate";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_IntegerFormat];
-  v20[1] = v14;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v20[1] = commonTypeDict_IntegerFormat;
   v19[2] = @"NumLocalizations";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v20[2] = v3;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v20[2] = commonTypeDict_IntegerFormat2;
   v19[3] = @"NumRecordings";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v20[3] = v5;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v20[3] = commonTypeDict_IntegerFormat3;
   v19[4] = @"TriggerType";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v20[4] = v7;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v20[4] = commonTypeDict_IntegerFormat4;
   v19[5] = @"WiFiScanDuration";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_RealFormat];
-  v20[5] = v9;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]6 commonTypeDict_RealFormat];
+  v20[5] = commonTypeDict_RealFormat2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:6];
   v24[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
@@ -238,17 +238,17 @@
   v18[0] = v2;
   v17[1] = *MEMORY[0x277D3F540];
   v13[0] = @"action";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v14[0] = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v14[0] = commonTypeDict_IntegerFormat;
   v13[1] = @"nonWaking";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_BoolFormat];
-  v14[1] = v6;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]2 commonTypeDict_BoolFormat];
+  v14[1] = commonTypeDict_BoolFormat;
   v13[2] = @"type";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v14[2] = v8;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v14[2] = commonTypeDict_IntegerFormat2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
   v18[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -264,60 +264,60 @@
   if ([MEMORY[0x277D3F208] internalBuild])
   {
     v17[0] = @"TechStatus";
-    v3 = [a1 entryEventForwardDefinitionTechStatus];
-    v18[0] = v3;
+    entryEventForwardDefinitionTechStatus = [self entryEventForwardDefinitionTechStatus];
+    v18[0] = entryEventForwardDefinitionTechStatus;
     v17[1] = @"ClientStatus";
-    v4 = [a1 entryEventForwardDefinitionClientStatus];
-    v18[1] = v4;
+    entryEventForwardDefinitionClientStatus = [self entryEventForwardDefinitionClientStatus];
+    v18[1] = entryEventForwardDefinitionClientStatus;
     v17[2] = @"LogLevel";
-    v5 = [a1 entryEventForwardDefinitionLogLevel];
-    v18[2] = v5;
+    entryEventForwardDefinitionLogLevel = [self entryEventForwardDefinitionLogLevel];
+    v18[2] = entryEventForwardDefinitionLogLevel;
     v17[3] = @"StatusBar";
-    v6 = [a1 entryEventForwardDefinitionStatusBar];
-    v18[3] = v6;
+    entryEventForwardDefinitionStatusBar = [self entryEventForwardDefinitionStatusBar];
+    v18[3] = entryEventForwardDefinitionStatusBar;
     v17[4] = @"GnssSession";
-    v7 = [a1 entryEventForwardDefinitionGnssSession];
-    v18[4] = v7;
+    entryEventForwardDefinitionGnssSession = [self entryEventForwardDefinitionGnssSession];
+    v18[4] = entryEventForwardDefinitionGnssSession;
     v17[5] = @"GPSActivation";
-    v8 = [a1 entryEventForwardDefinitionGPSSubscription];
-    v18[5] = v8;
+    entryEventForwardDefinitionGPSSubscription = [self entryEventForwardDefinitionGPSSubscription];
+    v18[5] = entryEventForwardDefinitionGPSSubscription;
     v17[6] = @"Odometry";
-    v9 = [a1 entryEventForwardDefinitionOdometry];
-    v18[6] = v9;
+    entryEventForwardDefinitionOdometry = [self entryEventForwardDefinitionOdometry];
+    v18[6] = entryEventForwardDefinitionOdometry;
     v17[7] = @"ViewObstructed";
-    v10 = [a1 entryEventForwardDefinitionViewObstructed];
-    v18[7] = v10;
+    entryEventForwardDefinitionViewObstructed = [self entryEventForwardDefinitionViewObstructed];
+    v18[7] = entryEventForwardDefinitionViewObstructed;
     v17[8] = @"SuppressionManagerClient";
-    v11 = [a1 entryEventForwardDefinitionSuppressionManagerClient];
-    v18[8] = v11;
+    entryEventForwardDefinitionSuppressionManagerClient = [self entryEventForwardDefinitionSuppressionManagerClient];
+    v18[8] = entryEventForwardDefinitionSuppressionManagerClient;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:9];
   }
 
   else
   {
-    v3 = [a1 entryEventForwardDefinitionTechStatus];
-    v16[0] = v3;
+    entryEventForwardDefinitionTechStatus = [self entryEventForwardDefinitionTechStatus];
+    v16[0] = entryEventForwardDefinitionTechStatus;
     v15[1] = @"ClientStatus";
-    v4 = [a1 entryEventForwardDefinitionClientStatus];
-    v16[1] = v4;
+    entryEventForwardDefinitionClientStatus = [self entryEventForwardDefinitionClientStatus];
+    v16[1] = entryEventForwardDefinitionClientStatus;
     v15[2] = @"StatusBar";
-    v5 = [a1 entryEventForwardDefinitionStatusBar];
-    v16[2] = v5;
+    entryEventForwardDefinitionLogLevel = [self entryEventForwardDefinitionStatusBar];
+    v16[2] = entryEventForwardDefinitionLogLevel;
     v15[3] = @"GnssSession";
-    v6 = [a1 entryEventForwardDefinitionGnssSession];
-    v16[3] = v6;
+    entryEventForwardDefinitionStatusBar = [self entryEventForwardDefinitionGnssSession];
+    v16[3] = entryEventForwardDefinitionStatusBar;
     v15[4] = @"GPSActivation";
-    v7 = [a1 entryEventForwardDefinitionGPSSubscription];
-    v16[4] = v7;
+    entryEventForwardDefinitionGnssSession = [self entryEventForwardDefinitionGPSSubscription];
+    v16[4] = entryEventForwardDefinitionGnssSession;
     v15[5] = @"Odometry";
-    v8 = [a1 entryEventForwardDefinitionOdometry];
-    v16[5] = v8;
+    entryEventForwardDefinitionGPSSubscription = [self entryEventForwardDefinitionOdometry];
+    v16[5] = entryEventForwardDefinitionGPSSubscription;
     v15[6] = @"ViewObstructed";
-    v9 = [a1 entryEventForwardDefinitionViewObstructed];
-    v16[6] = v9;
+    entryEventForwardDefinitionOdometry = [self entryEventForwardDefinitionViewObstructed];
+    v16[6] = entryEventForwardDefinitionOdometry;
     v15[7] = @"SuppressionManagerClient";
-    v10 = [a1 entryEventForwardDefinitionSuppressionManagerClient];
-    v16[7] = v10;
+    entryEventForwardDefinitionViewObstructed = [self entryEventForwardDefinitionSuppressionManagerClient];
+    v16[7] = entryEventForwardDefinitionViewObstructed;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:8];
   }
 
@@ -339,49 +339,49 @@
   v35[0] = v29;
   v34[1] = *MEMORY[0x277D3F540];
   v30[0] = @"gps";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_BoolFormat];
-  v31[0] = v27;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v31[0] = commonTypeDict_BoolFormat;
   v30[1] = @"nmea";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_BoolFormat];
-  v31[1] = v25;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_BoolFormat];
+  v31[1] = commonTypeDict_BoolFormat2;
   v30[2] = @"accessory";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_BoolFormat];
-  v31[2] = v23;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v31[2] = commonTypeDict_BoolFormat3;
   v30[3] = @"wifi";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_BoolFormat];
-  v31[3] = v21;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_BoolFormat];
+  v31[3] = commonTypeDict_BoolFormat4;
   v30[4] = @"skyhook";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_BoolFormat];
-  v31[4] = v19;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_BoolFormat];
+  v31[4] = commonTypeDict_BoolFormat5;
   v30[5] = @"cell";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_BoolFormat];
-  v31[5] = v17;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_BoolFormat];
+  v31[5] = commonTypeDict_BoolFormat6;
   v30[6] = @"lac";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_BoolFormat];
-  v31[6] = v15;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_BoolFormat];
+  v31[6] = commonTypeDict_BoolFormat7;
   v30[7] = @"mcc";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_BoolFormat];
-  v31[7] = v4;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_BoolFormat];
+  v31[7] = commonTypeDict_BoolFormat8;
   v30[8] = @"gps_coarse";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_BoolFormat];
-  v31[8] = v6;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat9 = [mEMORY[0x277D3F198]9 commonTypeDict_BoolFormat];
+  v31[8] = commonTypeDict_BoolFormat9;
   v30[9] = @"pipeline";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_BoolFormat];
-  v31[9] = v8;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat10 = [mEMORY[0x277D3F198]10 commonTypeDict_BoolFormat];
+  v31[9] = commonTypeDict_BoolFormat10;
   v30[10] = @"wifi2";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_BoolFormat];
-  v31[10] = v10;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat11 = [mEMORY[0x277D3F198]11 commonTypeDict_BoolFormat];
+  v31[10] = commonTypeDict_BoolFormat11;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:11];
   v35[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
@@ -414,37 +414,37 @@
   v31[0] = v25;
   v30[1] = *MEMORY[0x277D3F540];
   v26[0] = @"timestampEnd";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_DateFormat];
-  v27[0] = v23;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v27[0] = commonTypeDict_DateFormat;
   v26[1] = @"Type";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_StringFormat];
-  v27[1] = v21;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v27[1] = commonTypeDict_StringFormat;
   v26[2] = @"Client";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_StringFormat_withBundleID];
-  v27[2] = v19;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat_withBundleID];
+  v27[2] = commonTypeDict_StringFormat_withBundleID;
   v26[3] = @"BundleId";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_StringFormat_withBundleID];
-  v27[3] = v17;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID2 = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat_withBundleID];
+  v27[3] = commonTypeDict_StringFormat_withBundleID2;
   v26[4] = @"Executable";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat_withProcessName];
-  v27[4] = v6;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withProcessName = [mEMORY[0x277D3F198]5 commonTypeDict_StringFormat_withProcessName];
+  v27[4] = commonTypeDict_StringFormat_withProcessName;
   v26[5] = @"LocationDesiredAccuracy";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_RealFormat];
-  v27[5] = v8;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]6 commonTypeDict_RealFormat];
+  v27[5] = commonTypeDict_RealFormat;
   v26[6] = @"LocationDistanceFilter";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_RealFormat];
-  v27[6] = v10;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_RealFormat];
+  v27[6] = commonTypeDict_RealFormat2;
   v26[7] = @"InUseLevel";
-  v11 = [MEMORY[0x277D3F198] sharedInstance];
-  v12 = [v11 commonTypeDict_IntegerFormat];
-  v27[7] = v12;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v27[7] = commonTypeDict_IntegerFormat;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:8];
   v31[1] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
@@ -464,13 +464,13 @@
   v16[0] = v2;
   v15[1] = *MEMORY[0x277D3F540];
   v11[0] = @"Level";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v11[1] = @"RotationEnabled";
-  v12[0] = v4;
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_BoolFormat];
-  v12[1] = v6;
+  v12[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]2 commonTypeDict_BoolFormat];
+  v12[1] = commonTypeDict_BoolFormat;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v16[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -493,13 +493,13 @@
   v17[0] = v3;
   v16[1] = *MEMORY[0x277D3F540];
   v12[0] = @"Status";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v12[1] = @"BundleID";
-  v13[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat_withBundleID];
-  v13[1] = v7;
+  v13[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withBundleID];
+  v13[1] = commonTypeDict_StringFormat_withBundleID;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -519,13 +519,13 @@
   v16[0] = v2;
   v15[1] = *MEMORY[0x277D3F540];
   v11[0] = @"eventType";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v11[1] = @"eventStatus";
-  v12[0] = v4;
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v12[1] = v6;
+  v12[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v12[1] = commonTypeDict_IntegerFormat2;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v16[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -548,13 +548,13 @@
   v17[0] = v3;
   v16[1] = *MEMORY[0x277D3F540];
   v12[0] = @"ServiceName";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
   v12[1] = @"Register";
-  v13[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_BoolFormat];
-  v13[1] = v7;
+  v13[0] = commonTypeDict_StringFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]2 commonTypeDict_BoolFormat];
+  v13[1] = commonTypeDict_BoolFormat;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -577,17 +577,17 @@
   v19[0] = v3;
   v18[1] = *MEMORY[0x277D3F540];
   v14[0] = @"odometryEvent";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v15[0] = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v15[0] = commonTypeDict_IntegerFormat;
   v14[1] = @"updateInterval";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_RealFormat];
-  v15[1] = v7;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat];
+  v15[1] = commonTypeDict_RealFormat;
   v14[2] = @"identifier";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v15[2] = v9;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v15[2] = commonTypeDict_StringFormat;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
   v19[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
@@ -607,17 +607,17 @@
   v18[0] = v2;
   v17[1] = *MEMORY[0x277D3F540];
   v13[0] = @"clientEvent";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v14[0] = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v14[0] = commonTypeDict_IntegerFormat;
   v13[1] = @"clientType";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v14[1] = v6;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v14[1] = commonTypeDict_IntegerFormat2;
   v13[2] = @"clientNumbers";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v14[2] = v8;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v14[2] = commonTypeDict_IntegerFormat3;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
   v18[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -637,9 +637,9 @@
   v14[0] = v2;
   v13[1] = *MEMORY[0x277D3F540];
   v9 = @"VOEvent";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v10 = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v10 = commonTypeDict_IntegerFormat;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v14[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -665,25 +665,25 @@
     v24[0] = v18;
     v23[1] = *MEMORY[0x277D3F540];
     v19[0] = @"startTime";
-    v17 = [MEMORY[0x277D3F198] sharedInstance];
-    v16 = [v17 commonTypeDict_IntegerFormat];
-    v20[0] = v16;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v20[0] = commonTypeDict_IntegerFormat;
     v19[1] = @"measuredInterval";
-    v15 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v15 commonTypeDict_IntegerFormat];
-    v20[1] = v3;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v20[1] = commonTypeDict_IntegerFormat2;
     v19[2] = @"activeInterval";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_IntegerFormat];
-    v20[2] = v5;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v20[2] = commonTypeDict_IntegerFormat3;
     v19[3] = @"averagePower";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_IntegerFormat];
-    v20[3] = v7;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v20[3] = commonTypeDict_IntegerFormat4;
     v19[4] = @"activeL5IntervalSec";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_IntegerFormat];
-    v20[4] = v9;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v20[4] = commonTypeDict_IntegerFormat5;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:5];
     v24[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
@@ -705,14 +705,14 @@
 {
   v10[3] = *MEMORY[0x277D85DE8];
   v9[0] = @"MapsBusyness";
-  v3 = [a1 entryEventIntervalDefinitionMapsBusyness];
-  v10[0] = v3;
+  entryEventIntervalDefinitionMapsBusyness = [self entryEventIntervalDefinitionMapsBusyness];
+  v10[0] = entryEventIntervalDefinitionMapsBusyness;
   v9[1] = @"SeparationAlert";
-  v4 = [a1 entryEventIntervalDefinitionSeparationAlert];
-  v10[1] = v4;
+  entryEventIntervalDefinitionSeparationAlert = [self entryEventIntervalDefinitionSeparationAlert];
+  v10[1] = entryEventIntervalDefinitionSeparationAlert;
   v9[2] = @"PDR";
-  v5 = [a1 entryEventIntervalDefinitionPDR];
-  v10[2] = v5;
+  entryEventIntervalDefinitionPDR = [self entryEventIntervalDefinitionPDR];
+  v10[2] = entryEventIntervalDefinitionPDR;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:3];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -730,41 +730,41 @@
   v30[0] = v24;
   v29[1] = *MEMORY[0x277D3F540];
   v25[0] = @"timestampEnd";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_DateFormat];
-  v26[0] = v22;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v26[0] = commonTypeDict_DateFormat;
   v25[1] = @"Launched";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_IntegerFormat];
-  v26[1] = v20;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v26[1] = commonTypeDict_IntegerFormat;
   v25[2] = @"HarvestedRealTimeOnPower";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_IntegerFormat];
-  v26[2] = v18;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v26[2] = commonTypeDict_IntegerFormat2;
   v25[3] = @"HarvestedRealTimeOnBattery";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v26[3] = v16;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v26[3] = commonTypeDict_IntegerFormat3;
   v25[4] = @"HarvestedDifferential";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_IntegerFormat];
-  v26[4] = v14;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v26[4] = commonTypeDict_IntegerFormat4;
   v25[5] = @"RateLimit";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v26[5] = v3;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v26[5] = commonTypeDict_IntegerFormat5;
   v25[6] = @"LocationNotUsable";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v26[6] = v5;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v26[6] = commonTypeDict_IntegerFormat6;
   v25[7] = @"LocationNoAuth";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v26[7] = v7;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v26[7] = commonTypeDict_IntegerFormat7;
   v25[8] = @"LocationUnavailable";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v26[8] = v9;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v26[8] = commonTypeDict_IntegerFormat8;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:9];
   v30[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
@@ -784,41 +784,41 @@
   v30[0] = v24;
   v29[1] = *MEMORY[0x277D3F540];
   v25[0] = @"timestampEnd";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_DateFormat];
-  v26[0] = v22;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v26[0] = commonTypeDict_DateFormat;
   v25[1] = @"DurationOfVisits";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_RealFormat];
-  v26[1] = v20;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat];
+  v26[1] = commonTypeDict_RealFormat;
   v25[2] = @"NumberOfVisits";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_IntegerFormat];
-  v26[2] = v18;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v26[2] = commonTypeDict_IntegerFormat;
   v25[3] = @"TotalGeoFence";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v26[3] = v16;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v26[3] = commonTypeDict_IntegerFormat2;
   v25[4] = @"GPSAttribution";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_IntegerFormat];
-  v26[4] = v14;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v26[4] = commonTypeDict_IntegerFormat3;
   v25[5] = @"BTScanCount";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v26[5] = v3;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v26[5] = commonTypeDict_IntegerFormat4;
   v25[6] = @"WifiScanCount";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v26[6] = v5;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v26[6] = commonTypeDict_IntegerFormat5;
   v25[7] = @"Notifications";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v26[7] = v7;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v26[7] = commonTypeDict_IntegerFormat6;
   v25[8] = @"DevicesMonitored";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v26[8] = v9;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v26[8] = commonTypeDict_IntegerFormat7;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:9];
   v30[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
@@ -838,21 +838,21 @@
   v20[0] = v14;
   v19[1] = *MEMORY[0x277D3F540];
   v15[0] = @"sessionEndTime";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_RealFormat];
-  v16[0] = v3;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
+  v16[0] = commonTypeDict_RealFormat;
   v15[1] = @"numFences";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v16[1] = v5;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v16[1] = commonTypeDict_IntegerFormat;
   v15[2] = @"identifier";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v16[2] = v7;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v16[2] = commonTypeDict_StringFormat;
   v15[3] = @"sessionStartTime";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_RealFormat];
-  v16[3] = v9;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat];
+  v16[3] = commonTypeDict_RealFormat2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:4];
   v20[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
@@ -865,11 +865,11 @@
 + (id)entryEventNoneDefinitions
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  if ([a1 isDebugEnabled])
+  if ([self isDebugEnabled])
   {
     v7 = @"ClientStatusDebug";
-    v3 = [a1 entryEventNoneDefinitionClientStatusDebug];
-    v8[0] = v3;
+    entryEventNoneDefinitionClientStatusDebug = [self entryEventNoneDefinitionClientStatusDebug];
+    v8[0] = entryEventNoneDefinitionClientStatusDebug;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   }
 
@@ -896,77 +896,77 @@
   v49[0] = v43;
   v48[1] = *MEMORY[0x277D3F540];
   v44[0] = @"Client";
-  v42 = [MEMORY[0x277D3F198] sharedInstance];
-  v41 = [v42 commonTypeDict_StringFormat];
-  v45[0] = v41;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v45[0] = commonTypeDict_StringFormat;
   v44[1] = @"BundleId";
-  v40 = [MEMORY[0x277D3F198] sharedInstance];
-  v39 = [v40 commonTypeDict_StringFormat_withBundleID];
-  v45[1] = v39;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withBundleID];
+  v45[1] = commonTypeDict_StringFormat_withBundleID;
   v44[2] = @"Executable";
-  v38 = [MEMORY[0x277D3F198] sharedInstance];
-  v37 = [v38 commonTypeDict_StringFormat];
-  v45[2] = v37;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v45[2] = commonTypeDict_StringFormat2;
   v44[3] = @"Authorized";
-  v36 = [MEMORY[0x277D3F198] sharedInstance];
-  v35 = [v36 commonTypeDict_BoolFormat];
-  v45[3] = v35;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]4 commonTypeDict_BoolFormat];
+  v45[3] = commonTypeDict_BoolFormat;
   v44[4] = @"LocationDesiredAccuracy";
-  v34 = [MEMORY[0x277D3F198] sharedInstance];
-  v33 = [v34 commonTypeDict_RealFormat];
-  v45[4] = v33;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]5 commonTypeDict_RealFormat];
+  v45[4] = commonTypeDict_RealFormat;
   v44[5] = @"LocationDistanceFilter";
-  v32 = [MEMORY[0x277D3F198] sharedInstance];
-  v31 = [v32 commonTypeDict_RealFormat];
-  v45[5] = v31;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]6 commonTypeDict_RealFormat];
+  v45[5] = commonTypeDict_RealFormat2;
   v44[6] = @"LocationTimeStarted";
-  v30 = [MEMORY[0x277D3F198] sharedInstance];
-  v29 = [v30 commonTypeDict_DateFormat_isCFAbsoluteTime];
-  v45[6] = v29;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat_isCFAbsoluteTime = [mEMORY[0x277D3F198]7 commonTypeDict_DateFormat_isCFAbsoluteTime];
+  v45[6] = commonTypeDict_DateFormat_isCFAbsoluteTime;
   v44[7] = @"LocationTimeStopped";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_DateFormat_isCFAbsoluteTime];
-  v45[7] = v27;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat_isCFAbsoluteTime2 = [mEMORY[0x277D3F198]8 commonTypeDict_DateFormat_isCFAbsoluteTime];
+  v45[7] = commonTypeDict_DateFormat_isCFAbsoluteTime2;
   v44[8] = @"FenceTimeStarted";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_DateFormat_isCFAbsoluteTime];
-  v45[8] = v25;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat_isCFAbsoluteTime3 = [mEMORY[0x277D3F198]9 commonTypeDict_DateFormat_isCFAbsoluteTime];
+  v45[8] = commonTypeDict_DateFormat_isCFAbsoluteTime3;
   v44[9] = @"FenceTimeStopped";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_DateFormat_isCFAbsoluteTime];
-  v45[9] = v23;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat_isCFAbsoluteTime4 = [mEMORY[0x277D3F198]10 commonTypeDict_DateFormat_isCFAbsoluteTime];
+  v45[9] = commonTypeDict_DateFormat_isCFAbsoluteTime4;
   v44[10] = @"SignificantTimeStarted";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_DateFormat_isCFAbsoluteTime];
-  v45[10] = v21;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat_isCFAbsoluteTime5 = [mEMORY[0x277D3F198]11 commonTypeDict_DateFormat_isCFAbsoluteTime];
+  v45[10] = commonTypeDict_DateFormat_isCFAbsoluteTime5;
   v44[11] = @"SignificantTimeStopped";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_DateFormat_isCFAbsoluteTime];
-  v45[11] = v19;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat_isCFAbsoluteTime6 = [mEMORY[0x277D3F198]12 commonTypeDict_DateFormat_isCFAbsoluteTime];
+  v45[11] = commonTypeDict_DateFormat_isCFAbsoluteTime6;
   v44[12] = @"BeaconRegionTimeStarted";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_DateFormat_isCFAbsoluteTime];
-  v45[12] = v17;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat_isCFAbsoluteTime7 = [mEMORY[0x277D3F198]13 commonTypeDict_DateFormat_isCFAbsoluteTime];
+  v45[12] = commonTypeDict_DateFormat_isCFAbsoluteTime7;
   v44[13] = @"BeaconRegionTimeStopped";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_DateFormat_isCFAbsoluteTime];
-  v45[13] = v15;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat_isCFAbsoluteTime8 = [mEMORY[0x277D3F198]14 commonTypeDict_DateFormat_isCFAbsoluteTime];
+  v45[13] = commonTypeDict_DateFormat_isCFAbsoluteTime8;
   v44[14] = @"RangeTimeStarted";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_DateFormat_isCFAbsoluteTime];
-  v45[14] = v4;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat_isCFAbsoluteTime9 = [mEMORY[0x277D3F198]15 commonTypeDict_DateFormat_isCFAbsoluteTime];
+  v45[14] = commonTypeDict_DateFormat_isCFAbsoluteTime9;
   v44[15] = @"RangeTimeStopped";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_DateFormat_isCFAbsoluteTime];
-  v45[15] = v6;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat_isCFAbsoluteTime10 = [mEMORY[0x277D3F198]16 commonTypeDict_DateFormat_isCFAbsoluteTime];
+  v45[15] = commonTypeDict_DateFormat_isCFAbsoluteTime10;
   v44[16] = @"VisitTimeStarted";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_DateFormat_isCFAbsoluteTime];
-  v45[16] = v8;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat_isCFAbsoluteTime11 = [mEMORY[0x277D3F198]17 commonTypeDict_DateFormat_isCFAbsoluteTime];
+  v45[16] = commonTypeDict_DateFormat_isCFAbsoluteTime11;
   v44[17] = @"VisitTimeStopped";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_DateFormat_isCFAbsoluteTime];
-  v45[17] = v10;
+  mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat_isCFAbsoluteTime12 = [mEMORY[0x277D3F198]18 commonTypeDict_DateFormat_isCFAbsoluteTime];
+  v45[17] = commonTypeDict_DateFormat_isCFAbsoluteTime12;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:18];
   v49[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:2];
@@ -984,9 +984,9 @@
   v2 = [(PLAgent *)&v41 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     clientStatusTypeStrings = v2->_clientStatusTypeStrings;
-    v2->_clientStatusTypeStrings = v3;
+    v2->_clientStatusTypeStrings = dictionary;
 
     v39 = 0u;
     v40 = 0u;
@@ -1008,8 +1008,8 @@
 
           v30 = v5;
           v6 = *(*(&v37 + 1) + 8 * v5);
-          v7 = [MEMORY[0x277CBEB38] dictionary];
-          [(NSMutableDictionary *)v2->_clientStatusTypeStrings setObject:v7 forKeyedSubscript:v6];
+          dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+          [(NSMutableDictionary *)v2->_clientStatusTypeStrings setObject:dictionary2 forKeyedSubscript:v6];
 
           v35 = 0u;
           v36 = 0u;
@@ -1051,9 +1051,9 @@
       while (v29);
     }
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     localCache = v2->_localCache;
-    v2->_localCache = v15;
+    v2->_localCache = dictionary3;
 
     techStatusLimiterIsActive = v2->_techStatusLimiterIsActive;
     v2->_techStatusLimiterIsActive = MEMORY[0x277CBEC28];
@@ -1074,8 +1074,8 @@
     processes = v20->_processes;
     v20->_processes = v23;
 
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v25 addObserver:v20 selector:sel_processesOfInterest_ name:@"PLLocationAgent.addProcessesOfInterest" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v20 selector:sel_processesOfInterest_ name:@"PLLocationAgent.addProcessesOfInterest" object:0];
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -1093,21 +1093,21 @@ uint64_t __23__PLLocationAgent_init__block_invoke(uint64_t a1)
   return [*(a1 + 32) logEventForwardTechStatus_withLimiter];
 }
 
-- (void)processesOfInterest:(id)a3
+- (void)processesOfInterest:(id)interest
 {
-  v4 = [a3 userInfo];
-  if (v4)
+  userInfo = [interest userInfo];
+  if (userInfo)
   {
-    v8 = v4;
-    v5 = [v4 objectForKeyedSubscript:@"entry"];
+    v8 = userInfo;
+    v5 = [userInfo objectForKeyedSubscript:@"entry"];
     if (v5)
     {
-      v6 = [(PLLocationAgent *)self processes];
+      processes = [(PLLocationAgent *)self processes];
       v7 = [v8 objectForKeyedSubscript:@"entry"];
-      [v6 unionSet:v7];
+      [processes unionSet:v7];
     }
 
-    v4 = v8;
+    userInfo = v8;
   }
 }
 
@@ -1623,9 +1623,9 @@ void __43__PLLocationAgent_initOperatorDependancies__block_invoke_534(uint64_t a
   [*(a1 + 32) logEventPointGeofenceTrigger:v6];
 }
 
-- (id)humanReadableNameForTechnology:(id)a3
+- (id)humanReadableNameForTechnology:(id)technology
 {
-  v3 = [a3 intValue] - 1;
+  v3 = [technology intValue] - 1;
   if (v3 > 0xA)
   {
     return @"unknown";
@@ -1741,27 +1741,27 @@ LABEL_20:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventPointGeofenceTrigger:(id)a3
+- (void)logEventPointGeofenceTrigger:(id)trigger
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"timestampValue"];
+  triggerCopy = trigger;
+  v5 = [triggerCopy objectForKeyedSubscript:@"timestampValue"];
 
   if (v5)
   {
     v6 = MEMORY[0x277CBEAA8];
-    v7 = [v4 objectForKeyedSubscript:@"timestampValue"];
+    v7 = [triggerCopy objectForKeyedSubscript:@"timestampValue"];
     [v7 doubleValue];
     v8 = [v6 dateWithTimeIntervalSinceReferenceDate:?];
 
-    v9 = [v8 convertFromSystemToMonotonic];
+    convertFromSystemToMonotonic = [v8 convertFromSystemToMonotonic];
 
     v10 = PLLogLocation();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [PLLocationAgent logEventPointGeofenceTrigger:v4];
+      [PLLocationAgent logEventPointGeofenceTrigger:triggerCopy];
     }
 
-    [(PLOperator *)self logForSubsystem:@"CoreLocation" category:@"GeofenceTrigger" data:v4 date:v9];
+    [(PLOperator *)self logForSubsystem:@"CoreLocation" category:@"GeofenceTrigger" data:triggerCopy date:convertFromSystemToMonotonic];
   }
 
   else
@@ -1772,36 +1772,36 @@ LABEL_20:
       [PLLocationAgent logEventPointGeofenceTrigger:];
     }
 
-    [(PLOperator *)self logForSubsystem:@"CoreLocation" category:@"GeofenceTrigger" data:v4];
+    [(PLOperator *)self logForSubsystem:@"CoreLocation" category:@"GeofenceTrigger" data:triggerCopy];
   }
 }
 
-- (void)logEventPointWifiLocationScanRequesters:(id)a3
+- (void)logEventPointWifiLocationScanRequesters:(id)requesters
 {
   v4 = *MEMORY[0x277D3F5E8];
-  v5 = a3;
+  requestersCopy = requesters;
   v7 = [(PLOperator *)PLLocationAgent entryKeyForType:v4 andName:@"WifiLocationScanRequesters"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:requestersCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventPointMiLoScans:(id)a3
+- (void)logEventPointMiLoScans:(id)scans
 {
   v4 = *MEMORY[0x277D3F5E8];
-  v5 = a3;
+  scansCopy = scans;
   v7 = [(PLOperator *)PLLocationAgent entryKeyForType:v4 andName:@"MiLoScanEvent"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:scansCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventPointMotionPacket:(id)a3
+- (void)logEventPointMotionPacket:(id)packet
 {
   v4 = *MEMORY[0x277D3F5E8];
-  v5 = a3;
+  packetCopy = packet;
   v7 = [(PLOperator *)PLLocationAgent entryKeyForType:v4 andName:@"MotionPacket"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:packetCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
@@ -1813,19 +1813,19 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(PLLocationAgent *)self lastTechStatusNotificationDate];
+  lastTechStatusNotificationDate = [(PLLocationAgent *)self lastTechStatusNotificationDate];
 
-  if (v3)
+  if (lastTechStatusNotificationDate)
   {
-    v4 = [(PLLocationAgent *)self lastTechStatusNotificationDate];
-    [v4 timeIntervalSinceNow];
+    lastTechStatusNotificationDate2 = [(PLLocationAgent *)self lastTechStatusNotificationDate];
+    [lastTechStatusNotificationDate2 timeIntervalSinceNow];
     v6 = v5 >= -2.0;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [(PLLocationAgent *)self setLastTechStatusNotificationDate:v4];
+    lastTechStatusNotificationDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
+    [(PLLocationAgent *)self setLastTechStatusNotificationDate:lastTechStatusNotificationDate2];
     v6 = 0;
   }
 
@@ -1862,8 +1862,8 @@ void __56__PLLocationAgent_logEventForwardTechStatus_withLimiter__block_invoke(u
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [v4 definedKeys];
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v35 count:16];
+  definedKeys = [v4 definedKeys];
+  v6 = [definedKeys countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1875,13 +1875,13 @@ void __56__PLLocationAgent_logEventForwardTechStatus_withLimiter__block_invoke(u
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(definedKeys);
         }
 
         [v4 setObject:v9 forKeyedSubscript:*(*(&v28 + 1) + 8 * i)];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v28 objects:v35 count:16];
+      v7 = [definedKeys countByEnumeratingWithState:&v28 objects:v35 count:16];
     }
 
     while (v7);
@@ -1937,66 +1937,66 @@ void __56__PLLocationAgent_logEventForwardTechStatus_withLimiter__block_invoke(u
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateLocalCacheWithClient:(id)a3 withType:(id)a4 withBundleID:(id)a5 withEntry:(id)a6
+- (void)updateLocalCacheWithClient:(id)client withType:(id)type withBundleID:(id)d withEntry:(id)entry
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  clientCopy = client;
+  typeCopy = type;
+  dCopy = d;
+  entryCopy = entry;
   v14 = PLLogLocation();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     v30 = 138412802;
-    v31 = v10;
+    v31 = clientCopy;
     v32 = 2112;
-    v33 = v11;
+    v33 = typeCopy;
     v34 = 2112;
-    v35 = v13;
+    v35 = entryCopy;
     _os_log_debug_impl(&dword_25EE51000, v14, OS_LOG_TYPE_DEBUG, "client=%@, type=%@, entry=%@", &v30, 0x20u);
   }
 
-  if (v10 && v11)
+  if (clientCopy && typeCopy)
   {
-    if (!v12)
+    if (!dCopy)
     {
-      v12 = &stru_287103958;
+      dCopy = &stru_287103958;
     }
 
-    v15 = [(PLLocationAgent *)self localCache];
-    v16 = [v15 objectForKeyedSubscript:v10];
+    localCache = [(PLLocationAgent *)self localCache];
+    v16 = [localCache objectForKeyedSubscript:clientCopy];
 
     if (!v16)
     {
-      v17 = [MEMORY[0x277CBEB38] dictionary];
-      v18 = [(PLLocationAgent *)self localCache];
-      [v18 setObject:v17 forKeyedSubscript:v10];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      localCache2 = [(PLLocationAgent *)self localCache];
+      [localCache2 setObject:dictionary forKeyedSubscript:clientCopy];
     }
 
-    v19 = [(PLLocationAgent *)self localCache];
-    v20 = [v19 objectForKeyedSubscript:v10];
-    v21 = [v20 objectForKeyedSubscript:v11];
+    localCache3 = [(PLLocationAgent *)self localCache];
+    v20 = [localCache3 objectForKeyedSubscript:clientCopy];
+    v21 = [v20 objectForKeyedSubscript:typeCopy];
 
     if (!v21)
     {
-      v22 = [MEMORY[0x277CBEB38] dictionary];
-      v23 = [(PLLocationAgent *)self localCache];
-      v24 = [v23 objectForKeyedSubscript:v10];
-      [v24 setObject:v22 forKeyedSubscript:v11];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      localCache4 = [(PLLocationAgent *)self localCache];
+      v24 = [localCache4 objectForKeyedSubscript:clientCopy];
+      [v24 setObject:dictionary2 forKeyedSubscript:typeCopy];
     }
 
-    v25 = v13;
-    if (!v13)
+    null = entryCopy;
+    if (!entryCopy)
     {
-      v25 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v26 = [(PLLocationAgent *)self localCache];
-    v27 = [v26 objectForKeyedSubscript:v10];
-    v28 = [v27 objectForKeyedSubscript:v11];
-    [v28 setObject:v25 forKeyedSubscript:v12];
+    localCache5 = [(PLLocationAgent *)self localCache];
+    v27 = [localCache5 objectForKeyedSubscript:clientCopy];
+    v28 = [v27 objectForKeyedSubscript:typeCopy];
+    [v28 setObject:null forKeyedSubscript:dCopy];
 
-    if (!v13)
+    if (!entryCopy)
     {
     }
   }
@@ -2004,43 +2004,43 @@ void __56__PLLocationAgent_logEventForwardTechStatus_withLimiter__block_invoke(u
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)lastEntryWithClient:(id)a3 withType:(id)a4 withBundleID:(id)a5 withEntryKey:(id)a6
+- (id)lastEntryWithClient:(id)client withType:(id)type withBundleID:(id)d withEntryKey:(id)key
 {
   v28[3] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  clientCopy = client;
+  typeCopy = type;
+  dCopy = d;
+  keyCopy = key;
   v14 = 0;
-  if (v10 && v11)
+  if (clientCopy && typeCopy)
   {
-    if (!v12)
+    if (!dCopy)
     {
-      v12 = &stru_287103958;
+      dCopy = &stru_287103958;
     }
 
-    v15 = [(PLLocationAgent *)self localCache];
-    v16 = [v15 objectForKeyedSubscript:v10];
-    v17 = [v16 objectForKeyedSubscript:v11];
-    v18 = [v17 objectForKeyedSubscript:v12];
+    localCache = [(PLLocationAgent *)self localCache];
+    v16 = [localCache objectForKeyedSubscript:clientCopy];
+    v17 = [v16 objectForKeyedSubscript:typeCopy];
+    v18 = [v17 objectForKeyedSubscript:dCopy];
 
     if (!v18)
     {
-      v27 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"Client" withValue:v10 withComparisonOperation:0];
-      v19 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"Type" withValue:v11 withComparisonOperation:0];
-      v20 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"BundleId" withValue:v12 withComparisonOperation:0];
-      v21 = [(PLOperator *)self storage];
+      v27 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"Client" withValue:clientCopy withComparisonOperation:0];
+      v19 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"Type" withValue:typeCopy withComparisonOperation:0];
+      v20 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"BundleId" withValue:dCopy withComparisonOperation:0];
+      storage = [(PLOperator *)self storage];
       v28[0] = v27;
       v28[1] = v19;
       v28[2] = v20;
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:3];
-      v18 = [v21 lastEntryForKey:v13 withComparisons:v22 isSingleton:0];
+      v18 = [storage lastEntryForKey:keyCopy withComparisons:v22 isSingleton:0];
 
-      [(PLLocationAgent *)self updateLocalCacheWithClient:v10 withType:v11 withBundleID:v12 withEntry:v18];
+      [(PLLocationAgent *)self updateLocalCacheWithClient:clientCopy withType:typeCopy withBundleID:dCopy withEntry:v18];
     }
 
-    v23 = [MEMORY[0x277CBEB68] null];
-    if (v18 == v23)
+    null = [MEMORY[0x277CBEB68] null];
+    if (v18 == null)
     {
       v24 = 0;
     }
@@ -2061,7 +2061,7 @@ void __56__PLLocationAgent_logEventForwardTechStatus_withLimiter__block_invoke(u
 - (void)resyncActiveClients
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 lastResyncActiveClientsDate];
+  lastResyncActiveClientsDate = [self lastResyncActiveClientsDate];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_5();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -2069,26 +2069,26 @@ void __56__PLLocationAgent_logEventForwardTechStatus_withLimiter__block_invoke(u
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventForwardClientStatuswithPayload:(id)a3
+- (void)logEventForwardClientStatuswithPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v5 = os_transaction_create();
-  v6 = [(PLLocationAgent *)self lastResyncActiveClientsDate];
+  lastResyncActiveClientsDate = [(PLLocationAgent *)self lastResyncActiveClientsDate];
 
   v7 = PLLogLocation();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (lastResyncActiveClientsDate)
   {
     if (v8)
     {
       [PLLocationAgent logEventForwardClientStatuswithPayload:];
     }
 
-    if (v4)
+    if (payloadCopy)
     {
-      v9 = [MEMORY[0x277CBEAA8] monotonicDate];
-      v10 = [(PLLocationAgent *)self lastResyncActiveClientsDate];
-      [v9 timeIntervalSinceDate:v10];
+      monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+      lastResyncActiveClientsDate2 = [(PLLocationAgent *)self lastResyncActiveClientsDate];
+      [monotonicDate timeIntervalSinceDate:lastResyncActiveClientsDate2];
       v12 = v11;
 
       if (v12 >= 3600.0)
@@ -2104,7 +2104,7 @@ void __56__PLLocationAgent_logEventForwardTechStatus_withLimiter__block_invoke(u
 
       else
       {
-        [(PLLocationAgent *)self updateClientsLocationInfo:v4];
+        [(PLLocationAgent *)self updateClientsLocationInfo:payloadCopy];
       }
     }
 
@@ -2129,63 +2129,63 @@ void __56__PLLocationAgent_logEventForwardTechStatus_withLimiter__block_invoke(u
   }
 }
 
-- (id)getOpenEntryForClientSettings:(id)a3 withTimeStarted:(id)a4 withClient:(id)a5 withType:(id)a6 withEntryKey:(id)a7
+- (id)getOpenEntryForClientSettings:(id)settings withTimeStarted:(id)started withClient:(id)client withType:(id)type withEntryKey:(id)key
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = [a3 mutableCopy];
+  keyCopy = key;
+  typeCopy = type;
+  clientCopy = client;
+  startedCopy = started;
+  v16 = [settings mutableCopy];
   v17 = MEMORY[0x277CBEAA8];
-  [v15 doubleValue];
+  [startedCopy doubleValue];
   v19 = v18;
 
   v20 = [v17 dateWithTimeIntervalSinceReferenceDate:v19];
-  v21 = [v20 convertFromSystemToMonotonic];
-  [v16 setObject:v21 forKeyedSubscript:@"entryDate"];
+  convertFromSystemToMonotonic = [v20 convertFromSystemToMonotonic];
+  [v16 setObject:convertFromSystemToMonotonic forKeyedSubscript:@"entryDate"];
 
   v22 = v16;
-  v23 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v12 withRawData:v22];
+  v23 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:keyCopy withRawData:v22];
 
-  [v23 setObject:v14 forKeyedSubscript:@"Client"];
-  [v23 setObject:v13 forKeyedSubscript:@"Type"];
+  [v23 setObject:clientCopy forKeyedSubscript:@"Client"];
+  [v23 setObject:typeCopy forKeyedSubscript:@"Type"];
   v24 = [v23 objectForKeyedSubscript:@"BundleId"];
-  [(PLLocationAgent *)self updateLocalCacheWithClient:v14 withType:v13 withBundleID:v24 withEntry:v23];
+  [(PLLocationAgent *)self updateLocalCacheWithClient:clientCopy withType:typeCopy withBundleID:v24 withEntry:v23];
 
   return v23;
 }
 
-- (void)closeOpenEntryForClient:(id)a3 withOpenEntry:(id)a4 withTimeStopped:(id)a5
+- (void)closeOpenEntryForClient:(id)client withOpenEntry:(id)entry withTimeStopped:(id)stopped
 {
-  v8 = a3;
-  v9 = a4;
+  clientCopy = client;
+  entryCopy = entry;
   v10 = MEMORY[0x277CBEAA8];
-  [a5 doubleValue];
+  [stopped doubleValue];
   v11 = [v10 dateWithTimeIntervalSinceReferenceDate:?];
-  v12 = [v11 convertFromSystemToMonotonic];
+  convertFromSystemToMonotonic = [v11 convertFromSystemToMonotonic];
 
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __73__PLLocationAgent_closeOpenEntryForClient_withOpenEntry_withTimeStopped___block_invoke;
   v24 = &unk_279A5C3F8;
-  v25 = v9;
-  v26 = v12;
-  v13 = v12;
-  v14 = v9;
+  v25 = entryCopy;
+  v26 = convertFromSystemToMonotonic;
+  v13 = convertFromSystemToMonotonic;
+  v14 = entryCopy;
   [(PLOperator *)self updateEntry:v14 withBlock:&v21];
   v15 = [(PLLocationAgent *)self activeClients:v21];
-  v16 = [v15 objectForKey:v8];
+  v16 = [v15 objectForKey:clientCopy];
 
   if (v16)
   {
     v17 = [v16 objectForKeyedSubscript:@"BundleId"];
-    v18 = [(PLLocationAgent *)self activeClients];
-    [v18 removeObjectForKey:v8];
+    activeClients = [(PLLocationAgent *)self activeClients];
+    [activeClients removeObjectForKey:clientCopy];
 
     if (v17)
     {
-      v19 = [(PLLocationAgent *)self activeBackgroundLocationClients];
-      [v19 removeObject:v17];
+      activeBackgroundLocationClients = [(PLLocationAgent *)self activeBackgroundLocationClients];
+      [activeBackgroundLocationClients removeObject:v17];
     }
 
     v20 = PLLogLocation();
@@ -2207,21 +2207,21 @@ void __73__PLLocationAgent_closeOpenEntryForClient_withOpenEntry_withTimeStopped
   }
 }
 
-- (void)updateClientsLocationInfo:(id)a3
+- (void)updateClientsLocationInfo:(id)info
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_autoreleasePoolPush();
   v6 = [(PLOperator *)PLLocationAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"ClientStatus"];
   if ([(PLOperator *)self isDebugEnabled])
   {
-    [(PLLocationAgent *)self logEventNoneClientStatusDebugWithClients:v4];
+    [(PLLocationAgent *)self logEventNoneClientStatusDebugWithClients:infoCopy];
   }
 
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [(PLLocationAgent *)self activeBackgroundLocationClients];
-  v10 = [v9 copy];
+  array = [MEMORY[0x277CBEB18] array];
+  date = [MEMORY[0x277CBEAA8] date];
+  activeBackgroundLocationClients = [(PLLocationAgent *)self activeBackgroundLocationClients];
+  v10 = [activeBackgroundLocationClients copy];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -2230,11 +2230,11 @@ void __73__PLLocationAgent_closeOpenEntryForClient_withOpenEntry_withTimeStopped
   v20[4] = self;
   v11 = v6;
   v21 = v11;
-  v12 = v7;
+  v12 = array;
   v22 = v12;
-  v13 = v8;
+  v13 = date;
   v23 = v13;
-  [v4 enumerateKeysAndObjectsUsingBlock:v20];
+  [infoCopy enumerateKeysAndObjectsUsingBlock:v20];
   if ([v12 count])
   {
     v14 = PLLogLocation();
@@ -2257,8 +2257,8 @@ void __73__PLLocationAgent_closeOpenEntryForClient_withOpenEntry_withTimeStopped
   }
 
   [(PLLocationAgent *)self updateLocationDistributionEvents];
-  v16 = [(PLLocationAgent *)self activeBackgroundLocationClients];
-  v17 = [v10 isEqualToSet:v16];
+  activeBackgroundLocationClients2 = [(PLLocationAgent *)self activeBackgroundLocationClients];
+  v17 = [v10 isEqualToSet:activeBackgroundLocationClients2];
 
   if ((v17 & 1) == 0)
   {
@@ -2527,15 +2527,15 @@ LABEL_60:
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)convertClientEvent:(id)a3
+- (unint64_t)convertClientEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"enabled"])
+  eventCopy = event;
+  if ([eventCopy isEqualToString:@"enabled"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"disabled"])
+  else if ([eventCopy isEqualToString:@"disabled"])
   {
     v4 = 0;
   }
@@ -2548,15 +2548,15 @@ LABEL_60:
   return v4;
 }
 
-- (unint64_t)convertViewObstructedEvent:(id)a3
+- (unint64_t)convertViewObstructedEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"suppress"])
+  eventCopy = event;
+  if ([eventCopy isEqualToString:@"suppress"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"unsuppress"])
+  else if ([eventCopy isEqualToString:@"unsuppress"])
   {
     v4 = 0;
   }
@@ -2569,13 +2569,13 @@ LABEL_60:
   return v4;
 }
 
-- (void)logEventForwardSuppressionManagerClient:(id)a3
+- (void)logEventForwardSuppressionManagerClient:(id)client
 {
   v4 = *MEMORY[0x277D3F5D0];
-  v5 = a3;
+  clientCopy = client;
   v10 = [(PLOperator *)PLLocationAgent entryKeyForType:v4 andName:@"SuppressionManagerClient"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v10 withRawData:v5];
-  v7 = [v5 objectForKeyedSubscript:@"clientEvent"];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v10 withRawData:clientCopy];
+  v7 = [clientCopy objectForKeyedSubscript:@"clientEvent"];
 
   v8 = [(PLLocationAgent *)self convertClientEvent:v7];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
@@ -2584,13 +2584,13 @@ LABEL_60:
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventForwardViewObstructed:(id)a3
+- (void)logEventForwardViewObstructed:(id)obstructed
 {
   v4 = *MEMORY[0x277D3F5D0];
-  v5 = a3;
+  obstructedCopy = obstructed;
   v10 = [(PLOperator *)PLLocationAgent entryKeyForType:v4 andName:@"ViewObstructed"];
   v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v10];
-  v7 = [v5 objectForKeyedSubscript:@"VOEvent"];
+  v7 = [obstructedCopy objectForKeyedSubscript:@"VOEvent"];
 
   v8 = [(PLLocationAgent *)self convertViewObstructedEvent:v7];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
@@ -2599,12 +2599,12 @@ LABEL_60:
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventFowardGPSSubscription:(id)a3
+- (void)logEventFowardGPSSubscription:(id)subscription
 {
-  v15 = a3;
+  subscriptionCopy = subscription;
   v4 = [(PLOperator *)PLLocationAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"GPSActivation"];
   v5 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v4];
-  v6 = [v15 objectForKeyedSubscript:@"ServiceName"];
+  v6 = [subscriptionCopy objectForKeyedSubscript:@"ServiceName"];
   v7 = [v6 rangeOfString:@"peer silo:"];
   v9 = v8;
   v10 = [v6 rangeOfString:@">"];
@@ -2616,39 +2616,39 @@ LABEL_60:
 
   [v5 setObject:v11 forKeyedSubscript:@"ServiceName"];
   v12 = MEMORY[0x277CCABB0];
-  v13 = [v15 objectForKeyedSubscript:@"Register"];
+  v13 = [subscriptionCopy objectForKeyedSubscript:@"Register"];
   v14 = [v12 numberWithBool:{objc_msgSend(v13, "BOOLValue")}];
   [v5 setObject:v14 forKeyedSubscript:@"Register"];
 
   [(PLOperator *)self logEntry:v5];
 }
 
-- (void)logEventForwardGnssSession:(id)a3
+- (void)logEventForwardGnssSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = [(PLOperator *)PLLocationAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"GnssSession"];
-  v6 = [v4 objectForKeyedSubscript:@"eventCfTimeSec"];
+  v6 = [sessionCopy objectForKeyedSubscript:@"eventCfTimeSec"];
 
   if (v6)
   {
     v7 = MEMORY[0x277CBEAA8];
-    v8 = [v4 objectForKeyedSubscript:@"eventCfTimeSec"];
+    v8 = [sessionCopy objectForKeyedSubscript:@"eventCfTimeSec"];
     [v8 doubleValue];
     v9 = [v7 dateWithTimeIntervalSinceReferenceDate:?];
 
-    v10 = [v9 convertFromSystemToMonotonic];
+    convertFromSystemToMonotonic = [v9 convertFromSystemToMonotonic];
 
     v11 = PLLogLocation();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [PLLocationAgent logEventForwardGnssSession:v4];
+      [PLLocationAgent logEventForwardGnssSession:sessionCopy];
     }
 
-    v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withDate:v10];
-    v13 = [v4 objectForKeyedSubscript:@"eventType"];
+    v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withDate:convertFromSystemToMonotonic];
+    v13 = [sessionCopy objectForKeyedSubscript:@"eventType"];
     [v12 setObject:v13 forKeyedSubscript:@"eventType"];
 
-    v14 = [v4 objectForKeyedSubscript:@"eventStatus"];
+    v14 = [sessionCopy objectForKeyedSubscript:@"eventStatus"];
     [v12 setObject:v14 forKeyedSubscript:@"eventStatus"];
 
     [(PLOperator *)self logEntry:v12];
@@ -2656,20 +2656,20 @@ LABEL_60:
 
   else
   {
-    v10 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withRawData:v4];
-    [(PLOperator *)self logEntry:v10];
+    convertFromSystemToMonotonic = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withRawData:sessionCopy];
+    [(PLOperator *)self logEntry:convertFromSystemToMonotonic];
   }
 }
 
-- (unint64_t)convertOdometryEvent:(id)a3
+- (unint64_t)convertOdometryEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"start"])
+  eventCopy = event;
+  if ([eventCopy isEqualToString:@"start"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"stop"])
+  else if ([eventCopy isEqualToString:@"stop"])
   {
     v4 = 0;
   }
@@ -2688,15 +2688,15 @@ LABEL_60:
   return v4;
 }
 
-- (unint64_t)convertCheckInEvent:(id)a3
+- (unint64_t)convertCheckInEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"start"])
+  eventCopy = event;
+  if ([eventCopy isEqualToString:@"start"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"stop"])
+  else if ([eventCopy isEqualToString:@"stop"])
   {
     v4 = 0;
   }
@@ -2709,32 +2709,32 @@ LABEL_60:
   return v4;
 }
 
-- (void)logEventForwardOdometry:(id)a3
+- (void)logEventForwardOdometry:(id)odometry
 {
   v4 = *MEMORY[0x277D3F5D0];
-  v5 = a3;
+  odometryCopy = odometry;
   v12 = [(PLOperator *)PLLocationAgent entryKeyForType:v4 andName:@"Odometry"];
   v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v12];
-  v7 = [v5 objectForKeyedSubscript:@"odometryEvent"];
+  v7 = [odometryCopy objectForKeyedSubscript:@"odometryEvent"];
   v8 = [(PLLocationAgent *)self convertOdometryEvent:v7];
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
   [v6 setObject:v9 forKeyedSubscript:@"odometryEvent"];
 
-  v10 = [v5 objectForKeyedSubscript:@"updateInterval"];
+  v10 = [odometryCopy objectForKeyedSubscript:@"updateInterval"];
   [v6 setObject:v10 forKeyedSubscript:@"updateInterval"];
 
-  v11 = [v5 objectForKeyedSubscript:@"identifier"];
+  v11 = [odometryCopy objectForKeyedSubscript:@"identifier"];
 
   [v6 setObject:v11 forKeyedSubscript:@"identifier"];
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventForwardCheckInSession:(id)a3
+- (void)logEventForwardCheckInSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
-  v6 = [v4 objectForKeyedSubscript:@"event"];
+  sessionCopy = session;
+  v5 = [sessionCopy mutableCopy];
+  v6 = [sessionCopy objectForKeyedSubscript:@"event"];
 
   v7 = [(PLLocationAgent *)self convertCheckInEvent:v6];
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
@@ -2749,15 +2749,15 @@ LABEL_60:
   [(PLOperator *)self logForSubsystem:@"CoreRoutine" category:@"CheckInSession" data:v5];
 }
 
-- (void)logPredictedContextInferenceEvent:(id)a3
+- (void)logPredictedContextInferenceEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
-  v6 = [v4 objectForKeyedSubscript:@"inferenceLatency"];
+  eventCopy = event;
+  v5 = [eventCopy mutableCopy];
+  v6 = [eventCopy objectForKeyedSubscript:@"inferenceLatency"];
 
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:@"inferenceLatency"];
+    v7 = [eventCopy objectForKeyedSubscript:@"inferenceLatency"];
     [v7 doubleValue];
     v9 = v8;
 
@@ -2776,15 +2776,15 @@ LABEL_60:
   [(PLOperator *)self logForSubsystem:@"CoreRoutine" category:@"PredictedContextInferenceEvent" data:v5];
 }
 
-- (void)logPredictedContextTrainingEvent:(id)a3
+- (void)logPredictedContextTrainingEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
-  v6 = [v4 objectForKeyedSubscript:@"trainingDuration"];
+  eventCopy = event;
+  v5 = [eventCopy mutableCopy];
+  v6 = [eventCopy objectForKeyedSubscript:@"trainingDuration"];
 
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:@"trainingDuration"];
+    v7 = [eventCopy objectForKeyedSubscript:@"trainingDuration"];
     [v7 doubleValue];
     v9 = v8;
 
@@ -2803,77 +2803,77 @@ LABEL_60:
   [(PLOperator *)self logForSubsystem:@"CoreRoutine" category:@"PredictedContextTrainingEvent" data:v5];
 }
 
-- (void)logEventIntervalSeparationAlert:(id)a3
+- (void)logEventIntervalSeparationAlert:(id)alert
 {
   v4 = *MEMORY[0x277D3F5D8];
-  v5 = a3;
+  alertCopy = alert;
   v13 = [(PLOperator *)PLLocationAgent entryKeyForType:v4 andName:@"SeparationAlert"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v13 withRawData:v5];
-  v7 = [v5 objectForKeyedSubscript:@"timestamp"];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v13 withRawData:alertCopy];
+  v7 = [alertCopy objectForKeyedSubscript:@"timestamp"];
 
   [v7 doubleValue];
   v9 = v8;
 
   v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v9];
-  v11 = [v10 convertFromSystemToMonotonic];
-  [v6 setEntryDate:v11];
+  convertFromSystemToMonotonic = [v10 convertFromSystemToMonotonic];
+  [v6 setEntryDate:convertFromSystemToMonotonic];
 
-  v12 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [v6 setObject:v12 forKeyedSubscript:@"timestampEnd"];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [v6 setObject:monotonicDate forKeyedSubscript:@"timestampEnd"];
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventIntervalMapsBusynessState:(id)a3
+- (void)logEventIntervalMapsBusynessState:(id)state
 {
   v4 = *MEMORY[0x277D3F5D8];
-  v5 = a3;
+  stateCopy = state;
   v21 = [(PLOperator *)PLLocationAgent entryKeyForType:v4 andName:@"MapsBusyness"];
   v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v21];
-  v7 = [v5 objectForKeyedSubscript:&unk_287145D18];
+  v7 = [stateCopy objectForKeyedSubscript:&unk_287145D18];
   [v7 doubleValue];
   v9 = v8;
 
   v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v9];
-  v11 = [v10 convertFromSystemToMonotonic];
-  [v6 setEntryDate:v11];
+  convertFromSystemToMonotonic = [v10 convertFromSystemToMonotonic];
+  [v6 setEntryDate:convertFromSystemToMonotonic];
 
-  v12 = [v5 objectForKeyedSubscript:&unk_287145D30];
+  v12 = [stateCopy objectForKeyedSubscript:&unk_287145D30];
   [v6 setObject:v12 forKeyedSubscript:@"Launched"];
 
-  v13 = [v5 objectForKeyedSubscript:&unk_287145D48];
+  v13 = [stateCopy objectForKeyedSubscript:&unk_287145D48];
   [v6 setObject:v13 forKeyedSubscript:@"HarvestedRealTimeOnPower"];
 
-  v14 = [v5 objectForKeyedSubscript:&unk_287145D60];
+  v14 = [stateCopy objectForKeyedSubscript:&unk_287145D60];
   [v6 setObject:v14 forKeyedSubscript:@"HarvestedRealTimeOnBattery"];
 
-  v15 = [v5 objectForKeyedSubscript:&unk_287145D78];
+  v15 = [stateCopy objectForKeyedSubscript:&unk_287145D78];
   [v6 setObject:v15 forKeyedSubscript:@"HarvestedDifferential"];
 
-  v16 = [v5 objectForKeyedSubscript:&unk_287145D90];
+  v16 = [stateCopy objectForKeyedSubscript:&unk_287145D90];
   [v6 setObject:v16 forKeyedSubscript:@"RateLimit"];
 
-  v17 = [v5 objectForKeyedSubscript:&unk_287145DA8];
+  v17 = [stateCopy objectForKeyedSubscript:&unk_287145DA8];
   [v6 setObject:v17 forKeyedSubscript:@"LocationNotUsable"];
 
-  v18 = [v5 objectForKeyedSubscript:&unk_287145DC0];
+  v18 = [stateCopy objectForKeyedSubscript:&unk_287145DC0];
   [v6 setObject:v18 forKeyedSubscript:@"LocationNoAuth"];
 
-  v19 = [v5 objectForKeyedSubscript:&unk_287145DD8];
+  v19 = [stateCopy objectForKeyedSubscript:&unk_287145DD8];
 
   [v6 setObject:v19 forKeyedSubscript:@"LocationUnavailable"];
-  v20 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [v6 setObject:v20 forKeyedSubscript:@"timestampEnd"];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [v6 setObject:monotonicDate forKeyedSubscript:@"timestampEnd"];
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventIntervalPDR:(id)a3
+- (void)logEventIntervalPDR:(id)r
 {
   v4 = *MEMORY[0x277D3F5D8];
-  v5 = a3;
+  rCopy = r;
   v7 = [(PLOperator *)PLLocationAgent entryKeyForType:v4 andName:@"PDR"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:rCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
@@ -2884,11 +2884,11 @@ LABEL_60:
   [(PLLocationAgent *)self logEventNoneClientStatusDebugWithClients:v3];
 }
 
-- (void)logEventNoneClientStatusDebugWithClients:(id)a3
+- (void)logEventNoneClientStatusDebugWithClients:(id)clients
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D3F5E0];
-  v5 = a3;
+  clientsCopy = clients;
   v6 = [(PLOperator *)PLLocationAgent entryKeyForType:v4 andName:@"ClientStatusDebug"];
   v7 = objc_opt_new();
   v12[0] = MEMORY[0x277D85DD0];
@@ -2899,7 +2899,7 @@ LABEL_60:
   v14 = v7;
   v8 = v7;
   v9 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v12];
+  [clientsCopy enumerateKeysAndObjectsUsingBlock:v12];
 
   v15 = v9;
   v16[0] = v8;
@@ -2945,57 +2945,57 @@ void __60__PLLocationAgent_logEventNoneClientStatusDebugWithClients___block_invo
 {
   if (([MEMORY[0x277D3F208] isHomePod] & 1) == 0)
   {
-    v6 = [MEMORY[0x277D3F0C0] sharedInstance];
-    v3 = [(PLLocationAgent *)self activeBackgroundLocationClients];
-    v4 = [v3 allObjects];
-    v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [v6 createQualificationEventForwardWithQualificationID:15 withChildNodeNames:v4 withStartDate:v5];
+    mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+    activeBackgroundLocationClients = [(PLLocationAgent *)self activeBackgroundLocationClients];
+    allObjects = [activeBackgroundLocationClients allObjects];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [mEMORY[0x277D3F0C0] createQualificationEventForwardWithQualificationID:15 withChildNodeNames:allObjects withStartDate:monotonicDate];
   }
 }
 
-- (void)updateGnssPowerMetric:(id)a3
+- (void)updateGnssPowerMetric:(id)metric
 {
-  v20 = a3;
+  metricCopy = metric;
   v4 = [(PLOperator *)PLLocationAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"GPSPower"];
   v5 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v4];
-  v6 = [v20 objectForKey:@"intervalStartTime"];
+  v6 = [metricCopy objectForKey:@"intervalStartTime"];
   [v5 setObject:v6 forKeyedSubscript:@"startTime"];
 
-  v7 = [v20 objectForKey:@"measuredInterval"];
+  v7 = [metricCopy objectForKey:@"measuredInterval"];
   [v5 setObject:v7 forKeyedSubscript:@"measuredInterval"];
 
-  v8 = [v20 objectForKey:@"activeInterval"];
+  v8 = [metricCopy objectForKey:@"activeInterval"];
   [v5 setObject:v8 forKeyedSubscript:@"activeInterval"];
 
   v9 = MEMORY[0x277CCABB0];
-  v10 = [v20 objectForKey:@"averagePower"];
+  v10 = [metricCopy objectForKey:@"averagePower"];
   [v10 doubleValue];
   v12 = [v9 numberWithInt:(100 * v11)];
   [v5 setObject:v12 forKeyedSubscript:@"averagePower"];
 
-  v13 = [v20 objectForKey:@"activeL5IntervalSec"];
+  v13 = [metricCopy objectForKey:@"activeL5IntervalSec"];
   [v5 setObject:v13 forKeyedSubscript:@"activeL5IntervalSec"];
 
   [(PLOperator *)self logEntry:v5];
   if (([MEMORY[0x277D3F208] isHomePod] & 1) == 0)
   {
-    v14 = [v5 entryDate];
-    v15 = [v20 objectForKey:@"averagePower"];
+    entryDate = [v5 entryDate];
+    v15 = [metricCopy objectForKey:@"averagePower"];
     [v15 doubleValue];
     v17 = v16;
-    v18 = [v20 objectForKey:@"measuredInterval"];
+    v18 = [metricCopy objectForKey:@"measuredInterval"];
     [v18 doubleValue];
-    [(PLLocationAgent *)self modelGpsSegmentPower:v14 withGpsPower:v17 withTotalDuration:v19];
+    [(PLLocationAgent *)self modelGpsSegmentPower:entryDate withGpsPower:v17 withTotalDuration:v19];
   }
 }
 
-- (void)modelGpsSegmentPower:(id)a3 withGpsPower:(double)a4 withTotalDuration:(double)a5
+- (void)modelGpsSegmentPower:(id)power withGpsPower:(double)gpsPower withTotalDuration:(double)duration
 {
-  v16 = a3;
-  v9 = [MEMORY[0x277D3F208] isHomePod];
-  if ((v9 & 1) == 0)
+  powerCopy = power;
+  isHomePod = [MEMORY[0x277D3F208] isHomePod];
+  if ((isHomePod & 1) == 0)
   {
-    v9 = [v16 timeIntervalSince1970];
+    isHomePod = [powerCopy timeIntervalSince1970];
     v11 = v10;
     if (self->_gps_segment_lastWrittenDate)
     {
@@ -3010,23 +3010,23 @@ void __60__PLLocationAgent_logEventNoneClientStatusDebugWithClients___block_invo
       v15 = v11 - gps_segment_lastWrittenTimestamp;
       if (v15 > 0.0)
       {
-        self->_gps_segment_power = (v14 + a4 * a5) / v15;
-        objc_storeStrong(&self->_gps_segment_date, a3);
+        self->_gps_segment_power = (v14 + gpsPower * duration) / v15;
+        objc_storeStrong(&self->_gps_segment_date, power);
         self->_gps_segment_timestamp = v11;
       }
     }
 
     else
     {
-      objc_storeStrong(&self->_gps_segment_lastWrittenDate, a3);
+      objc_storeStrong(&self->_gps_segment_lastWrittenDate, power);
       self->_gps_segment_lastWrittenTimestamp = v11;
-      objc_storeStrong(&self->_gps_segment_date, a3);
+      objc_storeStrong(&self->_gps_segment_date, power);
       self->_gps_segment_timestamp = self->_gps_segment_lastWrittenTimestamp;
-      self->_gps_segment_power = a4;
+      self->_gps_segment_power = gpsPower;
     }
   }
 
-  MEMORY[0x2821F96F8](v9);
+  MEMORY[0x2821F96F8](isHomePod);
 }
 
 - (void)writeModeledPower
@@ -3038,8 +3038,8 @@ void __60__PLLocationAgent_logEventNoneClientStatusDebugWithClients___block_invo
       self->_gps_segment_power = 1000.0;
     }
 
-    v3 = [MEMORY[0x277D3F0C0] sharedInstance];
-    [v3 createPowerEventBackwardWithRootNodeID:48 withPower:self->_gps_segment_date withEndDate:self->_gps_segment_power];
+    mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+    [mEMORY[0x277D3F0C0] createPowerEventBackwardWithRootNodeID:48 withPower:self->_gps_segment_date withEndDate:self->_gps_segment_power];
 
     objc_storeStrong(&self->_gps_segment_lastWrittenDate, self->_gps_segment_date);
     self->_gps_segment_lastWrittenTimestamp = self->_gps_segment_timestamp;

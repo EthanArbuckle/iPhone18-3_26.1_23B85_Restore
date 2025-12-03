@@ -1,21 +1,21 @@
 @interface WBSTabDialogCancellationExemption
 + (id)committedNavigationExemption;
 + (id)provisionalNavigationExemption;
-+ (id)sameOriginNavigationExemption:(id)a3;
-- (WBSTabDialogCancellationExemption)initWithCancellationHandler:(id)a3;
++ (id)sameOriginNavigationExemption:(id)exemption;
+- (WBSTabDialogCancellationExemption)initWithCancellationHandler:(id)handler;
 @end
 
 @implementation WBSTabDialogCancellationExemption
 
-- (WBSTabDialogCancellationExemption)initWithCancellationHandler:(id)a3
+- (WBSTabDialogCancellationExemption)initWithCancellationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10.receiver = self;
   v10.super_class = WBSTabDialogCancellationExemption;
   v5 = [(WBSTabDialogCancellationExemption *)&v10 init];
   if (v5)
   {
-    v6 = MEMORY[0x1BFB13CE0](v4);
+    v6 = MEMORY[0x1BFB13CE0](handlerCopy);
     cancellationExemptionHandler = v5->_cancellationExemptionHandler;
     v5->_cancellationExemptionHandler = v6;
 
@@ -27,7 +27,7 @@
 
 + (id)provisionalNavigationExemption
 {
-  v2 = [[a1 alloc] initWithCancellationHandler:&__block_literal_global_107];
+  v2 = [[self alloc] initWithCancellationHandler:&__block_literal_global_107];
 
   return v2;
 }
@@ -42,7 +42,7 @@ uint64_t __67__WBSTabDialogCancellationExemption_provisionalNavigationExemption_
 
 + (id)committedNavigationExemption
 {
-  v2 = [[a1 alloc] initWithCancellationHandler:&__block_literal_global_2_0];
+  v2 = [[self alloc] initWithCancellationHandler:&__block_literal_global_2_0];
 
   return v2;
 }
@@ -55,16 +55,16 @@ uint64_t __65__WBSTabDialogCancellationExemption_committedNavigationExemption__b
   return v3;
 }
 
-+ (id)sameOriginNavigationExemption:(id)a3
++ (id)sameOriginNavigationExemption:(id)exemption
 {
-  v4 = a3;
-  v5 = [a1 alloc];
+  exemptionCopy = exemption;
+  v5 = [self alloc];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __67__WBSTabDialogCancellationExemption_sameOriginNavigationExemption___block_invoke;
   v9[3] = &unk_1E7FCAD80;
-  v10 = v4;
-  v6 = v4;
+  v10 = exemptionCopy;
+  v6 = exemptionCopy;
   v7 = [v5 initWithCancellationHandler:v9];
 
   return v7;

@@ -1,127 +1,127 @@
 @interface MTRPluginPBMVariableValueResponseMessage
-+ (id)variableValueFromResponsePayloadData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)variableValueFromResponsePayloadData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (MTRPluginPBMVariableValueResponseMessage)initWithError:(id)a3;
-- (MTRPluginPBMVariableValueResponseMessage)initWithObjectValue:(id)a3;
+- (MTRPluginPBMVariableValueResponseMessage)initWithError:(id)error;
+- (MTRPluginPBMVariableValueResponseMessage)initWithObjectValue:(id)value;
 - (NSError)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)object;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setError:(id)a3;
-- (void)setObject:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setError:(id)error;
+- (void)setObject:(id)object;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTRPluginPBMVariableValueResponseMessage
 
-- (MTRPluginPBMVariableValueResponseMessage)initWithError:(id)a3
+- (MTRPluginPBMVariableValueResponseMessage)initWithError:(id)error
 {
-  v4 = a3;
-  if (v4 && (self = [(MTRPluginPBMVariableValueResponseMessage *)self init]) != 0)
+  errorCopy = error;
+  if (errorCopy && (self = [(MTRPluginPBMVariableValueResponseMessage *)self init]) != 0)
   {
-    v5 = [[MTRPluginPBMError alloc] initWithError:v4];
+    v5 = [[MTRPluginPBMError alloc] initWithError:errorCopy];
     [(MTRPluginPBMVariableValueResponseMessage *)self setErrorValue:v5];
 
     self = self;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (MTRPluginPBMVariableValueResponseMessage)initWithObjectValue:(id)a3
+- (MTRPluginPBMVariableValueResponseMessage)initWithObjectValue:(id)value
 {
-  v4 = a3;
-  if (v4 && (self = [(MTRPluginPBMVariableValueResponseMessage *)self init]) != 0)
+  valueCopy = value;
+  if (valueCopy && (self = [(MTRPluginPBMVariableValueResponseMessage *)self init]) != 0)
   {
-    v5 = [[MTRPluginPBMVariableValue alloc] initWithObjectValue:v4];
+    v5 = [[MTRPluginPBMVariableValue alloc] initWithObjectValue:valueCopy];
     [(MTRPluginPBMVariableValueResponseMessage *)self setValue:v5];
 
     self = self;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
-  v5 = [[MTRPluginPBMError alloc] initWithError:v4];
+  errorCopy = error;
+  v5 = [[MTRPluginPBMError alloc] initWithError:errorCopy];
 
   [(MTRPluginPBMVariableValueResponseMessage *)self setErrorValue:v5];
 }
 
 - (NSError)error
 {
-  v2 = [(MTRPluginPBMVariableValueResponseMessage *)self errorValue];
-  v3 = [v2 error];
+  errorValue = [(MTRPluginPBMVariableValueResponseMessage *)self errorValue];
+  error = [errorValue error];
 
-  return v3;
+  return error;
 }
 
-- (void)setObject:(id)a3
+- (void)setObject:(id)object
 {
-  v4 = a3;
-  v5 = [[MTRPluginPBMVariableValue alloc] initWithObjectValue:v4];
+  objectCopy = object;
+  v5 = [[MTRPluginPBMVariableValue alloc] initWithObjectValue:objectCopy];
 
   [(MTRPluginPBMVariableValueResponseMessage *)self setValue:v5];
 }
 
 - (id)object
 {
-  v2 = [(MTRPluginPBMVariableValueResponseMessage *)self value];
-  v3 = [v2 object];
+  value = [(MTRPluginPBMVariableValueResponseMessage *)self value];
+  object = [value object];
 
-  return v3;
+  return object;
 }
 
-+ (id)variableValueFromResponsePayloadData:(id)a3
++ (id)variableValueFromResponsePayloadData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
-  if (v3 && (isKindOfClass & 1) != 0)
+  value = 0;
+  if (dataCopy && (isKindOfClass & 1) != 0)
   {
-    v6 = v3;
+    v6 = dataCopy;
     v7 = [[MTRPluginPBMVariableValueResponseMessage alloc] initWithData:v6];
 
     if (v7)
     {
-      v5 = [(MTRPluginPBMVariableValueResponseMessage *)v7 value];
+      value = [(MTRPluginPBMVariableValueResponseMessage *)v7 value];
     }
 
     else
     {
-      v5 = 0;
+      value = 0;
     }
   }
 
-  return v5;
+  return value;
 }
 
 - (BOOL)isValid
 {
-  v2 = [(MTRPluginPBMVariableValueResponseMessage *)self header];
-  v3 = [v2 isValid];
+  header = [(MTRPluginPBMVariableValueResponseMessage *)self header];
+  isValid = [header isValid];
 
-  return v3;
+  return isValid;
 }
 
 - (id)description
@@ -130,116 +130,116 @@
   v8.receiver = self;
   v8.super_class = MTRPluginPBMVariableValueResponseMessage;
   v4 = [(MTRPluginPBMVariableValueResponseMessage *)&v8 description];
-  v5 = [(MTRPluginPBMVariableValueResponseMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MTRPluginPBMVariableValueResponseMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   header = self->_header;
   if (header)
   {
-    v5 = [(MTRPluginPBMHeader *)header dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"header"];
+    dictionaryRepresentation = [(MTRPluginPBMHeader *)header dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   errorValue = self->_errorValue;
   if (errorValue)
   {
-    v7 = [(MTRPluginPBMError *)errorValue dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"errorValue"];
+    dictionaryRepresentation2 = [(MTRPluginPBMError *)errorValue dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"errorValue"];
   }
 
   value = self->_value;
   if (value)
   {
-    v9 = [(MTRPluginPBMVariableValue *)value dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"value"];
+    dictionaryRepresentation3 = [(MTRPluginPBMVariableValue *)value dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"value"];
   }
 
   if (*&self->_has)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_checkinRequested];
-    [v3 setObject:v10 forKey:@"checkinRequested"];
+    [dictionary setObject:v10 forKey:@"checkinRequested"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_header)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_errorValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_value)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     checkinRequested = self->_checkinRequested;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_header)
   {
-    [v4 setHeader:?];
-    v4 = v5;
+    [toCopy setHeader:?];
+    toCopy = v5;
   }
 
   if (self->_errorValue)
   {
     [v5 setErrorValue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_value)
   {
     [v5 setValue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[32] = self->_checkinRequested;
-    v4[36] |= 1u;
+    toCopy[32] = self->_checkinRequested;
+    toCopy[36] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MTRPluginPBMHeader *)self->_header copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(MTRPluginPBMHeader *)self->_header copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(MTRPluginPBMError *)self->_errorValue copyWithZone:a3];
+  v8 = [(MTRPluginPBMError *)self->_errorValue copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
-  v10 = [(MTRPluginPBMVariableValue *)self->_value copyWithZone:a3];
+  v10 = [(MTRPluginPBMVariableValue *)self->_value copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
@@ -252,16 +252,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   header = self->_header;
-  if (header | *(v4 + 2))
+  if (header | *(equalCopy + 2))
   {
     if (![(MTRPluginPBMHeader *)header isEqual:?])
     {
@@ -270,7 +270,7 @@
   }
 
   errorValue = self->_errorValue;
-  if (errorValue | *(v4 + 1))
+  if (errorValue | *(equalCopy + 1))
   {
     if (![(MTRPluginPBMError *)errorValue isEqual:?])
     {
@@ -279,7 +279,7 @@
   }
 
   value = self->_value;
-  if (value | *(v4 + 3))
+  if (value | *(equalCopy + 3))
   {
     if (![(MTRPluginPBMVariableValue *)value isEqual:?])
     {
@@ -287,10 +287,10 @@
     }
   }
 
-  v8 = (*(v4 + 36) & 1) == 0;
+  v8 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(equalCopy + 36) & 1) == 0)
     {
 LABEL_10:
       v8 = 0;
@@ -299,13 +299,13 @@ LABEL_10:
 
     if (self->_checkinRequested)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_10;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_10;
     }
@@ -336,12 +336,12 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   header = self->_header;
-  v6 = *(v4 + 2);
-  v11 = v4;
+  v6 = *(fromCopy + 2);
+  v11 = fromCopy;
   if (header)
   {
     if (!v6)
@@ -362,10 +362,10 @@ LABEL_11:
     [(MTRPluginPBMVariableValueResponseMessage *)self setHeader:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_7:
   errorValue = self->_errorValue;
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (errorValue)
   {
     if (!v8)
@@ -386,10 +386,10 @@ LABEL_7:
     [(MTRPluginPBMVariableValueResponseMessage *)self setErrorValue:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_13:
   value = self->_value;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   if (value)
   {
     if (!v10)
@@ -410,11 +410,11 @@ LABEL_13:
     [(MTRPluginPBMVariableValueResponseMessage *)self setValue:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_19:
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
-    self->_checkinRequested = *(v4 + 32);
+    self->_checkinRequested = *(fromCopy + 32);
     *&self->_has |= 1u;
   }
 

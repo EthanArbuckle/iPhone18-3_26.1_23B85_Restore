@@ -1,5 +1,5 @@
 @interface MFPrintTriageInteraction
-+ (id)interactionWithContentRequest:(id)a3 scene:(id)a4 delegate:(id)a5;
++ (id)interactionWithContentRequest:(id)request scene:(id)scene delegate:(id)delegate;
 - (MFMessagePrinterDelegate)printerDelegate;
 - (id)title;
 - (void)_performInteraction_Internal;
@@ -7,26 +7,26 @@
 
 @implementation MFPrintTriageInteraction
 
-+ (id)interactionWithContentRequest:(id)a3 scene:(id)a4 delegate:(id)a5
++ (id)interactionWithContentRequest:(id)request scene:(id)scene delegate:(id)delegate
 {
-  v8 = a5;
-  v11.receiver = a1;
+  delegateCopy = delegate;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___MFPrintTriageInteraction;
-  v9 = objc_msgSendSuper2(&v11, "interactionWithContentRequest:scene:", a3, a4);
-  [v9 setPrinterDelegate:v8];
+  v9 = objc_msgSendSuper2(&v11, "interactionWithContentRequest:scene:", request, scene);
+  [v9 setPrinterDelegate:delegateCopy];
 
   return v9;
 }
 
 - (void)_performInteraction_Internal
 {
-  v3 = [(MFMessageCompositionTriageInteraction *)self contentRequest];
+  contentRequest = [(MFMessageCompositionTriageInteraction *)self contentRequest];
 
-  if (v3)
+  if (contentRequest)
   {
     v4 = [MFMessagePrinter alloc];
-    v5 = [(MFMessageCompositionTriageInteraction *)self contentRequest];
-    v10 = [(MFMessagePrinter *)v4 initWithContentRequest:v5];
+    contentRequest2 = [(MFMessageCompositionTriageInteraction *)self contentRequest];
+    v10 = [(MFMessagePrinter *)v4 initWithContentRequest:contentRequest2];
   }
 
   else
@@ -34,17 +34,17 @@
     v10 = 0;
   }
 
-  v6 = [(MFPrintTriageInteraction *)self printerDelegate];
-  [(MFMessagePrinter *)v10 setDelegate:v6];
+  printerDelegate = [(MFPrintTriageInteraction *)self printerDelegate];
+  [(MFMessagePrinter *)v10 setDelegate:printerDelegate];
 
-  v7 = [(MFTriageInteraction *)self presentationSource];
+  presentationSource = [(MFTriageInteraction *)self presentationSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [(MFTriageInteraction *)self presentationSource];
-    [(MFMessagePrinter *)v10 presentPrintPopoverFromBarButtonItem:v9];
+    presentationSource2 = [(MFTriageInteraction *)self presentationSource];
+    [(MFMessagePrinter *)v10 presentPrintPopoverFromBarButtonItem:presentationSource2];
   }
 
   else

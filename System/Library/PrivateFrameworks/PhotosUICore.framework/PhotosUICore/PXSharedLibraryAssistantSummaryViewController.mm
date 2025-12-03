@@ -1,14 +1,14 @@
 @interface PXSharedLibraryAssistantSummaryViewController
 - (PXAssistantViewControllerDelegate)assistantViewControllerDelegate;
-- (PXSharedLibraryAssistantSummaryViewController)initWithViewModel:(id)a3 sharedLibraryStatusProvider:(id)a4 libraryFilterState:(id)a5;
+- (PXSharedLibraryAssistantSummaryViewController)initWithViewModel:(id)model sharedLibraryStatusProvider:(id)provider libraryFilterState:(id)state;
 - (void)_createPreviewAndCompleteAssistant;
 - (void)_previewInvitationAndCompleteAssistant;
-- (void)_setIsProcessing:(BOOL)a3;
+- (void)_setIsProcessing:(BOOL)processing;
 - (void)cancelShareIfInProgress;
 - (void)createPreviewAndCompleteAssistant;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)prepareUIForProcessing:(BOOL)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)prepareUIForProcessing:(BOOL)processing;
 - (void)skipAndContinue;
 - (void)updateProgress;
 - (void)viewDidLayoutSubviews;
@@ -17,16 +17,16 @@
 
 @implementation PXSharedLibraryAssistantSummaryViewController
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (PXProgressFractionCompletedObservationContext_116390 == a6)
+  if (PXProgressFractionCompletedObservationContext_116390 == context)
   {
     v7 = PLSharedLibraryGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(PXSharedLibraryAssistantSummaryViewController *)self previewProgress];
-      [v8 fractionCompleted];
+      previewProgress = [(PXSharedLibraryAssistantSummaryViewController *)self previewProgress];
+      [previewProgress fractionCompleted];
       *buf = 134217984;
       v17 = v9;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "Preview progress fraction completed observation: %.3f", buf, 0xCu);
@@ -36,35 +36,35 @@
     v12 = 3221225472;
     v13 = __106__PXSharedLibraryAssistantSummaryViewController_Internal__observeValueForKeyPath_ofObject_change_context___block_invoke;
     v14 = &unk_1E774C648;
-    v15 = self;
+    selfCopy = self;
     px_dispatch_on_main_queue();
   }
 
   v10.receiver = self;
   v10.super_class = PXSharedLibraryAssistantSummaryViewController;
-  [(PXSharedLibraryAssistantSummaryViewController *)&v10 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+  [(PXSharedLibraryAssistantSummaryViewController *)&v10 observeValueForKeyPath:path ofObject:object change:change context:?];
 }
 
 - (void)_previewInvitationAndCompleteAssistant
 {
-  v4 = [(PXSharedLibraryAssistantSummaryViewController *)self viewModel];
-  v5 = [v4 sharedLibrary];
-  v6 = [v4 sharedLibraryRule];
-  v7 = [v4 autoSharePolicy];
-  v8 = [(PXSharedLibraryAssistantSummaryViewController *)self _presentationEnvironment];
+  viewModel = [(PXSharedLibraryAssistantSummaryViewController *)self viewModel];
+  sharedLibrary = [viewModel sharedLibrary];
+  sharedLibraryRule = [viewModel sharedLibraryRule];
+  autoSharePolicy = [viewModel autoSharePolicy];
+  _presentationEnvironment = [(PXSharedLibraryAssistantSummaryViewController *)self _presentationEnvironment];
   [(PXSharedLibraryAssistantSummaryViewController *)self _setIsProcessing:1];
-  v9 = [(PXSharedLibraryAssistantSummaryViewController *)self statusProvider];
-  v10 = [v4 previewIsOutdated];
-  v11 = [(PXSharedLibraryAssistantSummaryViewController *)self previewProgress];
+  statusProvider = [(PXSharedLibraryAssistantSummaryViewController *)self statusProvider];
+  previewIsOutdated = [viewModel previewIsOutdated];
+  previewProgress = [(PXSharedLibraryAssistantSummaryViewController *)self previewProgress];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __97__PXSharedLibraryAssistantSummaryViewController_Internal___previewInvitationAndCompleteAssistant__block_invoke;
   v13[3] = &unk_1E77411F0;
-  v14 = v4;
+  v14 = viewModel;
   v15 = a2;
   v13[4] = self;
-  v12 = v4;
-  PXSharedLibraryPreviewInvitation(v9, v5, v6, v7, v10, v11, v8, v13);
+  v12 = viewModel;
+  PXSharedLibraryPreviewInvitation(statusProvider, sharedLibrary, sharedLibraryRule, autoSharePolicy, previewIsOutdated, previewProgress, _presentationEnvironment, v13);
 }
 
 void __97__PXSharedLibraryAssistantSummaryViewController_Internal___previewInvitationAndCompleteAssistant__block_invoke(uint64_t a1, int a2)
@@ -89,17 +89,17 @@ void __97__PXSharedLibraryAssistantSummaryViewController_Internal___previewInvit
 
 - (void)_createPreviewAndCompleteAssistant
 {
-  v4 = [(PXSharedLibraryAssistantSummaryViewController *)self _presentationEnvironment];
+  _presentationEnvironment = [(PXSharedLibraryAssistantSummaryViewController *)self _presentationEnvironment];
   [(PXSharedLibraryAssistantSummaryViewController *)self _setIsProcessing:1];
-  v5 = [(PXSharedLibraryAssistantSummaryViewController *)self viewModel];
-  v6 = [(PXSharedLibraryAssistantSummaryViewController *)self previewProgress];
+  viewModel = [(PXSharedLibraryAssistantSummaryViewController *)self viewModel];
+  previewProgress = [(PXSharedLibraryAssistantSummaryViewController *)self previewProgress];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __93__PXSharedLibraryAssistantSummaryViewController_Internal___createPreviewAndCompleteAssistant__block_invoke;
   v7[3] = &unk_1E7741CE0;
   v7[4] = self;
   v7[5] = a2;
-  PXSharedLibraryCreatePreview(v5, v6, v4, v7);
+  PXSharedLibraryCreatePreview(viewModel, previewProgress, _presentationEnvironment, v7);
 }
 
 void __93__PXSharedLibraryAssistantSummaryViewController_Internal___createPreviewAndCompleteAssistant__block_invoke(uint64_t a1, int a2)
@@ -123,11 +123,11 @@ void __93__PXSharedLibraryAssistantSummaryViewController_Internal___createPrevie
   }
 }
 
-- (void)_setIsProcessing:(BOOL)a3
+- (void)_setIsProcessing:(BOOL)processing
 {
-  v3 = a3;
+  processingCopy = processing;
   [(PXSharedLibraryAssistantSummaryViewController *)self prepareUIForProcessing:?];
-  if (v3)
+  if (processingCopy)
   {
     v6 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
     [v6 addObserver:self forKeyPath:@"fractionCompleted" options:1 context:PXProgressFractionCompletedObservationContext_116390];
@@ -136,8 +136,8 @@ void __93__PXSharedLibraryAssistantSummaryViewController_Internal___createPrevie
 
   else
   {
-    v5 = [(PXSharedLibraryAssistantSummaryViewController *)self previewProgress];
-    [v5 removeObserver:self forKeyPath:@"fractionCompleted" context:PXProgressFractionCompletedObservationContext_116390];
+    previewProgress = [(PXSharedLibraryAssistantSummaryViewController *)self previewProgress];
+    [previewProgress removeObserver:self forKeyPath:@"fractionCompleted" context:PXProgressFractionCompletedObservationContext_116390];
 
     [(PXSharedLibraryAssistantSummaryViewController *)self setPreviewProgress:0];
   }
@@ -145,12 +145,12 @@ void __93__PXSharedLibraryAssistantSummaryViewController_Internal___createPrevie
 
 - (void)cancelShareIfInProgress
 {
-  v6 = [(PXSharedLibraryAssistantSummaryViewController *)self viewModel];
-  if ([v6 isCancelingAssistant])
+  viewModel = [(PXSharedLibraryAssistantSummaryViewController *)self viewModel];
+  if ([viewModel isCancelingAssistant])
   {
-    v3 = [(PXSharedLibraryAssistantSummaryViewController *)self previewProgress];
+    previewProgress = [(PXSharedLibraryAssistantSummaryViewController *)self previewProgress];
 
-    if (v3)
+    if (previewProgress)
     {
       v4 = PLSharedLibraryGetLog();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -159,8 +159,8 @@ void __93__PXSharedLibraryAssistantSummaryViewController_Internal___createPrevie
         _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEFAULT, "Canceled by the user: Create Shared Library Preview", buf, 2u);
       }
 
-      v5 = [(PXSharedLibraryAssistantSummaryViewController *)self previewProgress];
-      [v5 cancel];
+      previewProgress2 = [(PXSharedLibraryAssistantSummaryViewController *)self previewProgress];
+      [previewProgress2 cancel];
     }
   }
 
@@ -171,14 +171,14 @@ void __93__PXSharedLibraryAssistantSummaryViewController_Internal___createPrevie
 
 - (void)skipAndContinue
 {
-  v4 = [(PXSharedLibraryAssistantSummaryViewController *)self viewModel];
-  v5 = [v4 mode];
-  if ((v5 - 1) >= 2)
+  viewModel = [(PXSharedLibraryAssistantSummaryViewController *)self viewModel];
+  mode = [viewModel mode];
+  if ((mode - 1) >= 2)
   {
-    if (!v5)
+    if (!mode)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantSummaryViewController+Internal.m" lineNumber:60 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantSummaryViewController+Internal.m" lineNumber:60 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -186,23 +186,23 @@ void __93__PXSharedLibraryAssistantSummaryViewController_Internal___createPrevie
 
   else
   {
-    v6 = [(PXSharedLibraryAssistantSummaryViewController *)self assistantViewControllerDelegate];
-    if (!v6)
+    assistantViewControllerDelegate = [(PXSharedLibraryAssistantSummaryViewController *)self assistantViewControllerDelegate];
+    if (!assistantViewControllerDelegate)
     {
       PXAssertGetLog();
     }
 
-    [v6 stepForwardInAssistantForAssistantViewController:self];
-    v7 = [v4 infosWithBothPeopleAndParticipants];
-    PXSharedLibraryLinkContactsToPeopleForInfos(v7);
+    [assistantViewControllerDelegate stepForwardInAssistantForAssistantViewController:self];
+    infosWithBothPeopleAndParticipants = [viewModel infosWithBothPeopleAndParticipants];
+    PXSharedLibraryLinkContactsToPeopleForInfos(infosWithBothPeopleAndParticipants);
   }
 }
 
 - (void)createPreviewAndCompleteAssistant
 {
-  v6 = [(PXSharedLibraryAssistantSummaryViewController *)self viewModel];
-  v4 = [v6 mode];
-  switch(v4)
+  viewModel = [(PXSharedLibraryAssistantSummaryViewController *)self viewModel];
+  mode = [viewModel mode];
+  switch(mode)
   {
     case 1:
       [(PXSharedLibraryAssistantSummaryViewController *)self _createPreviewAndCompleteAssistant];
@@ -211,8 +211,8 @@ void __93__PXSharedLibraryAssistantSummaryViewController_Internal___createPrevie
       [(PXSharedLibraryAssistantSummaryViewController *)self _previewInvitationAndCompleteAssistant];
       break;
     case 0:
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantSummaryViewController+Internal.m" lineNumber:43 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantSummaryViewController+Internal.m" lineNumber:43 description:@"Code which should be unreachable has been reached"];
 
       abort();
   }
@@ -225,23 +225,23 @@ void __93__PXSharedLibraryAssistantSummaryViewController_Internal___createPrevie
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXSharedLibraryAssistantViewModelObservationContext_202221 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXSharedLibraryAssistantViewModelObservationContext_202221 != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantSummaryViewController+iOS.m" lineNumber:193 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantSummaryViewController+iOS.m" lineNumber:193 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 0x1000) != 0)
+  if ((changeCopy & 0x1000) != 0)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(PXSharedLibraryAssistantSummaryViewController *)self cancelShareIfInProgress];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
@@ -261,23 +261,23 @@ void __93__PXSharedLibraryAssistantSummaryViewController_Internal___createPrevie
   v79.super_class = PXSharedLibraryAssistantSummaryViewController;
   [(OBBaseWelcomeController *)&v79 viewDidLoad];
   v3 = [PXSharedLibraryAssistantSummaryContentView alloc];
-  v4 = [(PXSharedLibraryAssistantSummaryViewController *)self viewModel];
-  v5 = [(PXSharedLibraryAssistantSummaryContentView *)v3 initWithViewModel:v4];
+  viewModel = [(PXSharedLibraryAssistantSummaryViewController *)self viewModel];
+  v5 = [(PXSharedLibraryAssistantSummaryContentView *)v3 initWithViewModel:viewModel];
   summaryInfoView = self->_summaryInfoView;
   self->_summaryInfoView = v5;
 
   [(UIView *)self->_summaryInfoView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(PXSharedLibraryAssistantSummaryViewController *)self contentView];
-  [v7 addSubview:self->_summaryInfoView];
+  contentView = [(PXSharedLibraryAssistantSummaryViewController *)self contentView];
+  [contentView addSubview:self->_summaryInfoView];
   v8 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_Summary_Title");
-  v9 = [(PXSharedLibraryAssistantSummaryViewController *)self headerView];
-  [v9 setTitle:v8];
+  headerView = [(PXSharedLibraryAssistantSummaryViewController *)self headerView];
+  [headerView setTitle:v8];
 
-  v10 = [(PXSharedLibraryAssistantSummaryViewController *)self viewModel];
-  v11 = [v10 mode];
-  v13 = PXSharedLibraryAssistantSummaryDetail(v11, v12);
-  v14 = [(PXSharedLibraryAssistantSummaryViewController *)self headerView];
-  [v14 setDetailText:v13];
+  viewModel2 = [(PXSharedLibraryAssistantSummaryViewController *)self viewModel];
+  mode = [viewModel2 mode];
+  v13 = PXSharedLibraryAssistantSummaryDetail(mode, v12);
+  headerView2 = [(PXSharedLibraryAssistantSummaryViewController *)self headerView];
+  [headerView2 setDetailText:v13];
 
   v15 = [off_1E7721870 alloc];
   v16 = [v15 initWithFrame:4 style:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -297,114 +297,114 @@ void __93__PXSharedLibraryAssistantSummaryViewController_Internal___createPrevie
 
   [(UILabel *)self->_progressLabel setNumberOfLines:0];
   [(UILabel *)self->_progressLabel setTextAlignment:1];
-  v21 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)self->_progressLabel setTextColor:v21];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)self->_progressLabel setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_progressLabel setAdjustsFontForContentSizeCategory:1];
   v22 = PXLocalizedSharedLibraryString(@"PXSharedLibraryCreatingPreviewProgressTitle");
   [(UILabel *)self->_progressLabel setText:v22];
 
-  v23 = [(PXSharedLibraryAssistantSummaryViewController *)self secondaryContentView];
-  [v23 addSubview:self->_progressView];
-  v24 = v23;
-  [v23 addSubview:self->_progressLabel];
-  v25 = [v7 heightAnchor];
+  secondaryContentView = [(PXSharedLibraryAssistantSummaryViewController *)self secondaryContentView];
+  [secondaryContentView addSubview:self->_progressView];
+  v24 = secondaryContentView;
+  [secondaryContentView addSubview:self->_progressLabel];
+  heightAnchor = [contentView heightAnchor];
   [(PXSharedLibraryAssistantSummaryViewController *)self _contentViewHeight];
-  v26 = [v25 constraintEqualToConstant:?];
+  v26 = [heightAnchor constraintEqualToConstant:?];
   contentViewHeightConstraint = self->_contentViewHeightConstraint;
   self->_contentViewHeightConstraint = v26;
 
-  v28 = [(PXRoundProgressView *)self->_progressView heightAnchor];
-  v29 = [v28 constraintEqualToConstant:0.0];
+  heightAnchor2 = [(PXRoundProgressView *)self->_progressView heightAnchor];
+  v29 = [heightAnchor2 constraintEqualToConstant:0.0];
   progressHeightConstraint = self->_progressHeightConstraint;
   self->_progressHeightConstraint = v29;
 
   v65 = MEMORY[0x1E696ACD8];
   [(UIView *)self->_summaryInfoView centerXAnchor];
-  v77 = v76 = v7;
-  v75 = [v7 centerXAnchor];
-  v74 = [v77 constraintEqualToAnchor:v75];
+  v77 = v76 = contentView;
+  centerXAnchor = [contentView centerXAnchor];
+  v74 = [v77 constraintEqualToAnchor:centerXAnchor];
   v80[0] = v74;
-  v73 = [(UIView *)self->_summaryInfoView centerYAnchor];
-  v72 = [v7 centerYAnchor];
-  v71 = [v73 constraintEqualToAnchor:v72];
+  centerYAnchor = [(UIView *)self->_summaryInfoView centerYAnchor];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v71 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v31 = self->_contentViewHeightConstraint;
   v80[1] = v71;
   v80[2] = v31;
-  v70 = [(PXRoundProgressView *)self->_progressView topAnchor];
+  topAnchor = [(PXRoundProgressView *)self->_progressView topAnchor];
   v32 = v24;
-  v69 = [v24 topAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69 constant:40.0];
+  topAnchor2 = [v24 topAnchor];
+  v68 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:40.0];
   v80[3] = v68;
-  v67 = [(PXRoundProgressView *)self->_progressView leadingAnchor];
-  v66 = [v24 leadingAnchor];
-  v64 = [v67 constraintEqualToAnchor:v66];
+  leadingAnchor = [(PXRoundProgressView *)self->_progressView leadingAnchor];
+  leadingAnchor2 = [v24 leadingAnchor];
+  v64 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v80[4] = v64;
-  v63 = [(PXRoundProgressView *)self->_progressView trailingAnchor];
-  v62 = [v24 trailingAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62];
+  trailingAnchor = [(PXRoundProgressView *)self->_progressView trailingAnchor];
+  trailingAnchor2 = [v24 trailingAnchor];
+  v61 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v80[5] = v61;
-  v60 = [(PXRoundProgressView *)self->_progressView widthAnchor];
-  v59 = [v60 constraintEqualToConstant:30.0];
+  widthAnchor = [(PXRoundProgressView *)self->_progressView widthAnchor];
+  v59 = [widthAnchor constraintEqualToConstant:30.0];
   v33 = self->_progressHeightConstraint;
   v80[6] = v59;
   v80[7] = v33;
-  v58 = [(PXRoundProgressView *)self->_progressView bottomAnchor];
-  v57 = [(UILabel *)self->_progressLabel topAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57 constant:-10.0];
+  bottomAnchor = [(PXRoundProgressView *)self->_progressView bottomAnchor];
+  topAnchor3 = [(UILabel *)self->_progressLabel topAnchor];
+  v56 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:-10.0];
   v80[8] = v56;
-  v55 = [(UILabel *)self->_progressLabel leadingAnchor];
-  v34 = [v24 leadingAnchor];
-  v35 = [v55 constraintEqualToAnchor:v34];
+  leadingAnchor3 = [(UILabel *)self->_progressLabel leadingAnchor];
+  leadingAnchor4 = [v24 leadingAnchor];
+  v35 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v80[9] = v35;
-  v36 = [(UILabel *)self->_progressLabel trailingAnchor];
+  trailingAnchor3 = [(UILabel *)self->_progressLabel trailingAnchor];
   v78 = v32;
-  v37 = [v32 trailingAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
+  trailingAnchor4 = [v32 trailingAnchor];
+  v38 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v80[10] = v38;
-  v39 = [(UILabel *)self->_progressLabel bottomAnchor];
-  v40 = [v32 bottomAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
+  bottomAnchor2 = [(UILabel *)self->_progressLabel bottomAnchor];
+  bottomAnchor3 = [v32 bottomAnchor];
+  v41 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v80[11] = v41;
   v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v80 count:12];
   [v65 activateConstraints:v42];
 
-  v43 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v76 setBackgroundColor:v43];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v76 setBackgroundColor:systemBackgroundColor];
 
-  v44 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   previewButton = self->_previewButton;
-  self->_previewButton = v44;
+  self->_previewButton = boldButton;
 
   v46 = self->_previewButton;
   v47 = PXSharedLibraryAssistantSummaryStartButtonTitleForMode([(PXSharedLibraryAssistantViewModel *)self->_viewModel mode]);
   [(OBBoldTrayButton *)v46 setTitle:v47 forState:0];
 
   [(OBBoldTrayButton *)self->_previewButton addTarget:self action:sel_primaryButtonTapped_ forControlEvents:0x2000];
-  v48 = [(PXSharedLibraryAssistantSummaryViewController *)self buttonTray];
-  [v48 addButton:self->_previewButton];
+  buttonTray = [(PXSharedLibraryAssistantSummaryViewController *)self buttonTray];
+  [buttonTray addButton:self->_previewButton];
 
   v49 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"\r" modifierFlags:0 action:sel_primaryButtonTapped_];
   [(PXSharedLibraryAssistantSummaryViewController *)self addKeyCommand:v49];
 
-  v50 = [MEMORY[0x1E69B7D38] linkButton];
+  linkButton = [MEMORY[0x1E69B7D38] linkButton];
   skipPreviewButton = self->_skipPreviewButton;
-  self->_skipPreviewButton = v50;
+  self->_skipPreviewButton = linkButton;
 
   v52 = self->_skipPreviewButton;
   v53 = PXSharedLibraryAssistantSummaryDeclineButtonTitleForMode([(PXSharedLibraryAssistantViewModel *)self->_viewModel mode]);
   [(OBTrayButton *)v52 setTitle:v53 forState:0];
 
   [(OBTrayButton *)self->_skipPreviewButton addTarget:self action:sel_secondaryButtonTapped_ forControlEvents:0x2000];
-  v54 = [(PXSharedLibraryAssistantSummaryViewController *)self buttonTray];
-  [v54 addButton:self->_skipPreviewButton];
+  buttonTray2 = [(PXSharedLibraryAssistantSummaryViewController *)self buttonTray];
+  [buttonTray2 addButton:self->_skipPreviewButton];
 }
 
 - (void)updateProgress
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(PXSharedLibraryAssistantSummaryViewController *)self previewProgress];
-  [v3 fractionCompleted];
+  previewProgress = [(PXSharedLibraryAssistantSummaryViewController *)self previewProgress];
+  [previewProgress fractionCompleted];
   v5 = v4;
 
   v6 = PLSharedLibraryGetLog();
@@ -419,10 +419,10 @@ void __93__PXSharedLibraryAssistantSummaryViewController_Internal___createPrevie
   [(PXRoundProgressView *)self->_progressView setProgress:v7];
 }
 
-- (void)prepareUIForProcessing:(BOOL)a3
+- (void)prepareUIForProcessing:(BOOL)processing
 {
   progressView = self->_progressView;
-  if (a3)
+  if (processing)
   {
     [(PXRoundProgressView *)progressView setHidden:0];
     [(NSLayoutConstraint *)self->_progressHeightConstraint setConstant:25.0];
@@ -431,13 +431,13 @@ void __93__PXSharedLibraryAssistantSummaryViewController_Internal___createPrevie
     [(OBTrayButton *)self->_skipPreviewButton setEnabled:0];
     [(OBBoldTrayButton *)self->_previewButton setHidden:1];
     [(OBTrayButton *)self->_skipPreviewButton setHidden:1];
-    v5 = [(OBBaseWelcomeController *)self navigationItem];
-    [v5 setHidesBackButton:1];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setHidesBackButton:1];
 
-    v7 = [(PXSharedLibraryAssistantSummaryViewController *)self scrollView];
-    v6 = [(PXSharedLibraryAssistantSummaryViewController *)self secondaryContentView];
-    [v6 frame];
-    [v7 scrollRectToVisible:1 animated:?];
+    scrollView = [(PXSharedLibraryAssistantSummaryViewController *)self scrollView];
+    secondaryContentView = [(PXSharedLibraryAssistantSummaryViewController *)self secondaryContentView];
+    [secondaryContentView frame];
+    [scrollView scrollRectToVisible:1 animated:?];
   }
 
   else
@@ -450,28 +450,28 @@ void __93__PXSharedLibraryAssistantSummaryViewController_Internal___createPrevie
     [(OBTrayButton *)self->_skipPreviewButton setEnabled:1];
     [(OBBoldTrayButton *)self->_previewButton setHidden:0];
     [(OBTrayButton *)self->_skipPreviewButton setHidden:0];
-    v7 = [(OBBaseWelcomeController *)self navigationItem];
-    [v7 setHidesBackButton:0];
+    scrollView = [(OBBaseWelcomeController *)self navigationItem];
+    [scrollView setHidesBackButton:0];
   }
 }
 
-- (PXSharedLibraryAssistantSummaryViewController)initWithViewModel:(id)a3 sharedLibraryStatusProvider:(id)a4 libraryFilterState:(id)a5
+- (PXSharedLibraryAssistantSummaryViewController)initWithViewModel:(id)model sharedLibraryStatusProvider:(id)provider libraryFilterState:(id)state
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  modelCopy = model;
+  providerCopy = provider;
+  stateCopy = state;
+  if (modelCopy)
   {
-    if (v11)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantSummaryViewController+iOS.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"sharedLibraryStatusProvider"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantSummaryViewController+iOS.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"sharedLibraryStatusProvider"}];
 
-    if (v12)
+    if (stateCopy)
     {
       goto LABEL_4;
     }
@@ -479,23 +479,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantSummaryViewController+iOS.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantSummaryViewController+iOS.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
 
-  if (!v11)
+  if (!providerCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (stateCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantSummaryViewController+iOS.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"libraryFilterState"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantSummaryViewController+iOS.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"libraryFilterState"}];
 
 LABEL_4:
   v19.receiver = self;
@@ -504,9 +504,9 @@ LABEL_4:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_viewModel, a3);
-    objc_storeStrong(&v14->_statusProvider, a4);
-    objc_storeStrong(&v14->_libraryFilterState, a5);
+    objc_storeStrong(&v13->_viewModel, model);
+    objc_storeStrong(&v14->_statusProvider, provider);
+    objc_storeStrong(&v14->_libraryFilterState, state);
     [(PXSharedLibraryAssistantViewModel *)v14->_viewModel registerChangeObserver:v14 context:PXSharedLibraryAssistantViewModelObservationContext_202221];
   }
 

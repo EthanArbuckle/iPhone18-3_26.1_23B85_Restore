@@ -2,7 +2,7 @@
 - (NSURL)presentedItemURL;
 - (_TtC9Coherence19CRFileSyncPresenter)init;
 - (void)presentedItemDidChange;
-- (void)presentedItemDidGainVersion:(id)a3;
+- (void)presentedItemDidGainVersion:(id)version;
 @end
 
 @implementation CRFileSyncPresenter
@@ -23,15 +23,15 @@
 
 - (void)presentedItemDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AE2183A0();
 }
 
-- (void)presentedItemDidGainVersion:(id)a3
+- (void)presentedItemDidGainVersion:(id)version
 {
-  v4 = a3;
-  v5 = self;
-  sub_1AE218580(v4);
+  versionCopy = version;
+  selfCopy = self;
+  sub_1AE218580(versionCopy);
 }
 
 - (_TtC9Coherence19CRFileSyncPresenter)init

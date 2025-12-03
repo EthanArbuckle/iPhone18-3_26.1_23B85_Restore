@@ -1,5 +1,5 @@
 @interface PLGreenController
-- (BOOL)greenValuesSimilarToGreenValues:(id)a3;
+- (BOOL)greenValuesSimilarToGreenValues:(id)values;
 - (BOOL)isGreenStateValid;
 - (PLGreenController)init;
 - (void)readValuesFromDisk;
@@ -7,27 +7,27 @@
 
 @implementation PLGreenController
 
-- (BOOL)greenValuesSimilarToGreenValues:(id)a3
+- (BOOL)greenValuesSimilarToGreenValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   if ([(PLGreenController *)self isGreenStateValid])
   {
-    v5 = [v4 objectForKeyedSubscript:@"key1"];
-    v6 = [(PLGreenController *)self currentGreenValues];
-    v7 = [v6 objectForKeyedSubscript:@"key1"];
+    v5 = [valuesCopy objectForKeyedSubscript:@"key1"];
+    currentGreenValues = [(PLGreenController *)self currentGreenValues];
+    v7 = [currentGreenValues objectForKeyedSubscript:@"key1"];
     v8 = [v5 isEqual:v7];
 
-    v9 = [v4 objectForKeyedSubscript:@"key2"];
-    v10 = [(PLGreenController *)self currentGreenValues];
-    v11 = [v10 objectForKeyedSubscript:@"key2"];
+    v9 = [valuesCopy objectForKeyedSubscript:@"key2"];
+    currentGreenValues2 = [(PLGreenController *)self currentGreenValues];
+    v11 = [currentGreenValues2 objectForKeyedSubscript:@"key2"];
     v12 = [v9 isEqual:v11];
 
-    v13 = [v4 objectForKeyedSubscript:@"key3"];
-    v14 = [(PLGreenController *)self currentGreenValues];
-    v15 = [v14 objectForKeyedSubscript:@"key3"];
-    LOBYTE(v10) = [v13 isEqual:v15];
+    v13 = [valuesCopy objectForKeyedSubscript:@"key3"];
+    currentGreenValues3 = [(PLGreenController *)self currentGreenValues];
+    v15 = [currentGreenValues3 objectForKeyedSubscript:@"key3"];
+    LOBYTE(currentGreenValues2) = [v13 isEqual:v15];
 
-    v16 = v8 & v12 & v10;
+    v16 = v8 & v12 & currentGreenValues2;
   }
 
   else
@@ -41,26 +41,26 @@
 - (BOOL)isGreenStateValid
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = [(PLGreenController *)self currentGreenValues];
-  v3 = [v2 objectForKeyedSubscript:@"state"];
-  v4 = [v3 integerValue];
+  currentGreenValues = [(PLGreenController *)self currentGreenValues];
+  v3 = [currentGreenValues objectForKeyedSubscript:@"state"];
+  integerValue = [v3 integerValue];
 
-  if (v4 <= 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
+  if (integerValue <= 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     v6 = 134218240;
-    v7 = v4;
+    v7 = integerValue;
     v8 = 2048;
     v9 = 1;
     _os_log_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Green state version is %ld, below the required threshold %ld. Cannot compare green values", &v6, 0x16u);
   }
 
-  return v4 > 0;
+  return integerValue > 0;
 }
 
 - (void)readValuesFromDisk
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 fileExistsAtPath:@"/var/mobile/Library/Application Support/com.apple.palette.green.plist"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:@"/var/mobile/Library/Application Support/com.apple.palette.green.plist"];
 
   if (v4)
   {

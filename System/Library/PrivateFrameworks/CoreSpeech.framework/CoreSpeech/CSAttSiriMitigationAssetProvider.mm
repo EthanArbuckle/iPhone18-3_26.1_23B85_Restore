@@ -1,11 +1,11 @@
 @interface CSAttSiriMitigationAssetProvider
 + (id)sharedHandler;
-- (CSAttSiriMitigationAssetProvider)initWithAssetHanlder:(id)a3;
-- (void)getAllowPhrasesListOverrideFileWithCompletion:(id)a3;
-- (void)getNeuralCombinerConfigFileAndBnnsIrPathWithCompletion:(id)a3;
-- (void)getNeuralCombinerConfigFileWithCompletion:(id)a3;
-- (void)getUESConfigFileWithCompletion:(id)a3;
-- (void)shouldRunCAROverrideWithCompletion:(id)a3;
+- (CSAttSiriMitigationAssetProvider)initWithAssetHanlder:(id)hanlder;
+- (void)getAllowPhrasesListOverrideFileWithCompletion:(id)completion;
+- (void)getNeuralCombinerConfigFileAndBnnsIrPathWithCompletion:(id)completion;
+- (void)getNeuralCombinerConfigFileWithCompletion:(id)completion;
+- (void)getUESConfigFileWithCompletion:(id)completion;
+- (void)shouldRunCAROverrideWithCompletion:(id)completion;
 @end
 
 @implementation CSAttSiriMitigationAssetProvider
@@ -22,9 +22,9 @@
   return v3;
 }
 
-- (void)shouldRunCAROverrideWithCompletion:(id)a3
+- (void)shouldRunCAROverrideWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
@@ -35,7 +35,7 @@
   v7[2] = __71__CSAttSiriMitigationAssetProvider_shouldRunCAROverrideWithCompletion___block_invoke;
   v7[3] = &unk_2784C55B0;
   v9 = v10;
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(CSAttSiriMitigationAssetHandler *)assetHandler getMitigationAssetWithEndpointId:0 completion:v7];
 
@@ -58,16 +58,16 @@ void __71__CSAttSiriMitigationAssetProvider_shouldRunCAROverrideWithCompletion__
   }
 }
 
-- (void)getUESConfigFileWithCompletion:(id)a3
+- (void)getUESConfigFileWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   assetHandler = self->_assetHandler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__CSAttSiriMitigationAssetProvider_getUESConfigFileWithCompletion___block_invoke;
   v7[3] = &unk_2784C6B00;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CSAttSiriMitigationAssetHandler *)assetHandler getMitigationAssetWithEndpointId:0 completion:v7];
 }
 
@@ -88,16 +88,16 @@ void __67__CSAttSiriMitigationAssetProvider_getUESConfigFileWithCompletion___blo
   }
 }
 
-- (void)getAllowPhrasesListOverrideFileWithCompletion:(id)a3
+- (void)getAllowPhrasesListOverrideFileWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   assetHandler = self->_assetHandler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __82__CSAttSiriMitigationAssetProvider_getAllowPhrasesListOverrideFileWithCompletion___block_invoke;
   v7[3] = &unk_2784C6B00;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CSAttSiriMitigationAssetHandler *)assetHandler getMitigationAssetWithEndpointId:0 completion:v7];
 }
 
@@ -118,16 +118,16 @@ void __82__CSAttSiriMitigationAssetProvider_getAllowPhrasesListOverrideFileWithC
   }
 }
 
-- (void)getNeuralCombinerConfigFileAndBnnsIrPathWithCompletion:(id)a3
+- (void)getNeuralCombinerConfigFileAndBnnsIrPathWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   assetHandler = self->_assetHandler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __91__CSAttSiriMitigationAssetProvider_getNeuralCombinerConfigFileAndBnnsIrPathWithCompletion___block_invoke;
   v7[3] = &unk_2784C6B00;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CSAttSiriMitigationAssetHandler *)assetHandler getMitigationAssetWithEndpointId:0 completion:v7];
 }
 
@@ -256,16 +256,16 @@ LABEL_24:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getNeuralCombinerConfigFileWithCompletion:(id)a3
+- (void)getNeuralCombinerConfigFileWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   assetHandler = self->_assetHandler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__CSAttSiriMitigationAssetProvider_getNeuralCombinerConfigFileWithCompletion___block_invoke;
   v7[3] = &unk_2784C6B00;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CSAttSiriMitigationAssetHandler *)assetHandler getMitigationAssetWithEndpointId:0 completion:v7];
 }
 
@@ -286,16 +286,16 @@ void __78__CSAttSiriMitigationAssetProvider_getNeuralCombinerConfigFileWithCompl
   }
 }
 
-- (CSAttSiriMitigationAssetProvider)initWithAssetHanlder:(id)a3
+- (CSAttSiriMitigationAssetProvider)initWithAssetHanlder:(id)hanlder
 {
-  v5 = a3;
+  hanlderCopy = hanlder;
   v11.receiver = self;
   v11.super_class = CSAttSiriMitigationAssetProvider;
   v6 = [(CSAttSiriMitigationAssetProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetHandler, a3);
+    objc_storeStrong(&v6->_assetHandler, hanlder);
     if (!v7->_assetHandler)
     {
       v8 = +[CSAttSiriMitigationAssetHandler sharedHandlerDisabledOnDeviceCompilation];

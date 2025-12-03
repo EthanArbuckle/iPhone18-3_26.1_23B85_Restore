@@ -2,50 +2,50 @@
 - (BOOL)_sendConnectionUpdateIndComplete;
 - (BOOL)_sendFeatureRspComplete;
 - (BOOL)_sendLengthRspComplete;
-- (BOOL)_sendPacketComplete:(id)a3 error:(id)a4;
+- (BOOL)_sendPacketComplete:(id)complete error:(id)error;
 - (BOOL)_sendPhyUpdateComplete;
 - (BOOL)_sendStartEncryptionReqComplete;
 - (BOOL)_sendStartEncryptionRspComplete;
 - (BOOL)_sendTerminateIndComplete;
 - (BOOL)_sendVersionIndComplete;
 - (BTVCLinkLayerControl)init;
-- (BTVCLinkLayerControl)initWithDevice:(id)a3 role:(unsigned __int8)a4;
+- (BTVCLinkLayerControl)initWithDevice:(id)device role:(unsigned __int8)role;
 - (BluetoothKey)getSk;
 - (unsigned)_getOpcodeFromCurrentPacket;
 - (void)_activate;
-- (void)_generateRandom:(char *)a3 size:(unsigned int)a4;
-- (void)_handleConnectionParamReq:(id)a3;
-- (void)_handleConnectionParamRsp:(id)a3;
-- (void)_handleConnectionUpdateInd:(id)a3;
-- (void)_handleEncryptionReq:(id)a3;
-- (void)_handleEncryptionRsp:(id)a3;
-- (void)_handleFeatureReq:(id)a3;
-- (void)_handleFeatureRsp:(id)a3;
-- (void)_handleLengthReq:(id)a3;
-- (void)_handleLengthRsp:(id)a3;
-- (void)_handlePhyReq:(id)a3;
-- (void)_handlePhyRsp:(id)a3;
-- (void)_handlePhyUpdateInd:(id)a3;
-- (void)_handleRejectExtendedInd:(id)a3;
-- (void)_handleStartEncryptionReq:(id)a3;
-- (void)_handleStartEncryptionRsp:(id)a3;
-- (void)_handleTerminateInd:(id)a3;
-- (void)_handleVersionInd:(id)a3;
+- (void)_generateRandom:(char *)random size:(unsigned int)size;
+- (void)_handleConnectionParamReq:(id)req;
+- (void)_handleConnectionParamRsp:(id)rsp;
+- (void)_handleConnectionUpdateInd:(id)ind;
+- (void)_handleEncryptionReq:(id)req;
+- (void)_handleEncryptionRsp:(id)rsp;
+- (void)_handleFeatureReq:(id)req;
+- (void)_handleFeatureRsp:(id)rsp;
+- (void)_handleLengthReq:(id)req;
+- (void)_handleLengthRsp:(id)rsp;
+- (void)_handlePhyReq:(id)req;
+- (void)_handlePhyRsp:(id)rsp;
+- (void)_handlePhyUpdateInd:(id)ind;
+- (void)_handleRejectExtendedInd:(id)ind;
+- (void)_handleStartEncryptionReq:(id)req;
+- (void)_handleStartEncryptionRsp:(id)rsp;
+- (void)_handleTerminateInd:(id)ind;
+- (void)_handleVersionInd:(id)ind;
 - (void)_invalidate;
 - (void)_linkLayerControlInit;
-- (void)_sendPacketDirect:(id)a3;
-- (void)_sendTerminateInd:(unsigned __int8)a3;
+- (void)_sendPacketDirect:(id)direct;
+- (void)_sendTerminateInd:(unsigned __int8)ind;
 - (void)activate;
 - (void)activateDirect;
-- (void)controlPduReceived:(id)a3;
+- (void)controlPduReceived:(id)received;
 - (void)dealloc;
 - (void)invalidate;
 - (void)linkLayerControlInit;
-- (void)sendConnectionParamReq:(unsigned __int16)a3 intervalMax:(unsigned __int16)a4 latency:(unsigned __int16)a5 timeout:(unsigned __int16)a6;
-- (void)sendConnectionParamRsp:(unsigned __int16)a3 intervalMax:(unsigned __int16)a4 maxLatency:(unsigned __int16)a5 timeout:(unsigned __int16)a6;
+- (void)sendConnectionParamReq:(unsigned __int16)req intervalMax:(unsigned __int16)max latency:(unsigned __int16)latency timeout:(unsigned __int16)timeout;
+- (void)sendConnectionParamRsp:(unsigned __int16)rsp intervalMax:(unsigned __int16)max maxLatency:(unsigned __int16)latency timeout:(unsigned __int16)timeout;
 - (void)sendConnectionUpdateInd;
-- (void)sendEncryptionReq:(char *)a3 encryptedDiversifier:(unsigned __int16)a4 longTermKey:(BluetoothKey *)a5;
-- (void)sendEncryptionRsp:(BluetoothKey *)a3;
+- (void)sendEncryptionReq:(char *)req encryptedDiversifier:(unsigned __int16)diversifier longTermKey:(BluetoothKey *)key;
+- (void)sendEncryptionRsp:(BluetoothKey *)rsp;
 - (void)sendFeatureReq;
 - (void)sendFeatureRsp;
 - (void)sendLengthReq;
@@ -53,26 +53,26 @@
 - (void)sendPhyReq;
 - (void)sendPhyRsp;
 - (void)sendPhyUpdateInd;
-- (void)sendRejectExtendedInd:(unsigned __int8)a3 errorCode:(unsigned __int8)a4;
+- (void)sendRejectExtendedInd:(unsigned __int8)ind errorCode:(unsigned __int8)code;
 - (void)sendStartEncryptionReq;
 - (void)sendStartEncryptionRsp;
-- (void)sendTerminateInd:(unsigned __int8)a3;
+- (void)sendTerminateInd:(unsigned __int8)ind;
 - (void)sendVersionInd;
-- (void)sendingPacket:(id)a3;
-- (void)setDispatchQueue:(id)a3;
+- (void)sendingPacket:(id)packet;
+- (void)setDispatchQueue:(id)queue;
 @end
 
 @implementation BTVCLinkLayerControl
 
-- (BTVCLinkLayerControl)initWithDevice:(id)a3 role:(unsigned __int8)a4
+- (BTVCLinkLayerControl)initWithDevice:(id)device role:(unsigned __int8)role
 {
-  v4 = a4;
-  v6 = a3;
+  roleCopy = role;
+  deviceCopy = device;
   v7 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v8 = "Yes";
-    if (!v4)
+    if (!roleCopy)
     {
       v8 = "No";
     }
@@ -87,7 +87,7 @@
   v11.receiver = self;
   v11.super_class = BTVCLinkLayerControl;
   v9 = [(BTVCLinkLayerControl *)&v11 init];
-  sub_100822C14(v9, v6, v4);
+  sub_100822C14(v9, deviceCopy, roleCopy);
   return v9;
 }
 
@@ -98,9 +98,9 @@
   [(BTVCLinkLayerControl *)&v2 dealloc];
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   obj = self;
   objc_sync_enter(obj);
   if (obj->_activateCalled)
@@ -112,7 +112,7 @@
   else
   {
     dispatchQueue = obj->_dispatchQueue;
-    obj->_dispatchQueue = v4;
+    obj->_dispatchQueue = queueCopy;
 
     objc_sync_exit(obj);
   }
@@ -120,28 +120,28 @@
 
 - (void)activate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_activateCalled = 1;
-  dispatchQueue = v2->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10039D95C;
   block[3] = &unk_100ADF820;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)activateDirect
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v3 = self;
-  objc_sync_enter(v3);
-  v3->_activateCalled = 1;
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  objc_sync_exit(selfCopy);
 
-  [(BTVCLinkLayerControl *)v3 _activate];
+  [(BTVCLinkLayerControl *)selfCopy _activate];
 }
 
 - (void)_activate
@@ -251,18 +251,18 @@
   }
 }
 
-- (void)_generateRandom:(char *)a3 size:(unsigned int)a4
+- (void)_generateRandom:(char *)random size:(unsigned int)size
 {
-  if (a4)
+  if (size)
   {
-    v5 = a4;
+    sizeCopy = size;
     do
     {
-      *a3++ = arc4random_uniform(0xFFu);
-      --v5;
+      *random++ = arc4random_uniform(0xFFu);
+      --sizeCopy;
     }
 
-    while (v5);
+    while (sizeCopy);
   }
 }
 
@@ -369,16 +369,16 @@
   }
 }
 
-- (void)_sendPacketDirect:(id)a3
+- (void)_sendPacketDirect:(id)direct
 {
-  v4 = a3;
+  directCopy = direct;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v13 = "[BTVCLinkLayerControl _sendPacketDirect:]";
     v14 = 2112;
-    v15 = v4;
+    v15 = directCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %@\n", buf, 0x16u);
   }
 
@@ -388,9 +388,9 @@
     v6 = qword_100BCEA70;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(BTVCPacketControl *)self->_packetControl getCurrentPacket];
+      getCurrentPacket = [(BTVCPacketControl *)self->_packetControl getCurrentPacket];
       v8 = "No";
-      if (!v7)
+      if (!getCurrentPacket)
       {
         v8 = "Yes";
       }
@@ -409,7 +409,7 @@
     v10[2] = sub_10039E424;
     v10[3] = &unk_100AEF4C0;
     objc_copyWeak(&v11, buf);
-    [(BTVCPacketControl *)packetControl sendPacket:v4 completion:v10];
+    [(BTVCPacketControl *)packetControl sendPacket:directCopy completion:v10];
     objc_destroyWeak(&v11);
     objc_destroyWeak(buf);
   }
@@ -450,24 +450,24 @@
   return 1;
 }
 
-- (void)_handleConnectionUpdateInd:(id)a3
+- (void)_handleConnectionUpdateInd:(id)ind
 {
-  v4 = a3;
+  indCopy = ind;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[BTVCLinkLayerControl _handleConnectionUpdateInd:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = indCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s received LL_CONNECTION_UPDATE_IND %@", &v9, 0x16u);
   }
 
-  v6 = v4;
-  v7 = [v4 bytes];
-  self->_interval = v7[2];
-  self->_latency = v7[3];
-  self->_timeout = v7[4];
+  v6 = indCopy;
+  bytes = [indCopy bytes];
+  self->_interval = bytes[2];
+  self->_latency = bytes[3];
+  self->_timeout = bytes[4];
   sendLLEvent = self->_sendLLEvent;
   if (sendLLEvent)
   {
@@ -475,7 +475,7 @@
   }
 }
 
-- (void)sendTerminateInd:(unsigned __int8)a3
+- (void)sendTerminateInd:(unsigned __int8)ind
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -483,11 +483,11 @@
   v4[2] = sub_10039E880;
   v4[3] = &unk_100AE1750;
   v4[4] = self;
-  v5 = a3;
+  indCopy = ind;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)_sendTerminateInd:(unsigned __int8)a3
+- (void)_sendTerminateInd:(unsigned __int8)ind
 {
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -501,15 +501,15 @@
   LOWORD(v7) = 2;
   self->_interval = self->_connParamIntervalMin;
   *&self->_latency = *&self->_connParamLatency;
-  BYTE1(v7) = a3;
+  BYTE1(v7) = ind;
   v6 = [[NSData alloc] initWithBytes:&v7 length:2];
   [(BTVCLinkLayerControl *)self _sendPacketDirect:v6];
 }
 
 - (BOOL)_sendTerminateIndComplete
 {
-  v3 = [(BTVCPacketControl *)self->_packetControl getCurrentPacket];
-  self->_errorCode = *([v3 bytes] + 1);
+  getCurrentPacket = [(BTVCPacketControl *)self->_packetControl getCurrentPacket];
+  self->_errorCode = *([getCurrentPacket bytes] + 1);
   sendLLEvent = self->_sendLLEvent;
   if (sendLLEvent)
   {
@@ -519,21 +519,21 @@
   return 1;
 }
 
-- (void)_handleTerminateInd:(id)a3
+- (void)_handleTerminateInd:(id)ind
 {
-  v4 = a3;
+  indCopy = ind;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[BTVCLinkLayerControl _handleTerminateInd:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = indCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s received LL_TERMINATE_IND %@", &v8, 0x16u);
   }
 
-  v6 = v4;
-  self->_errorCode = *([v4 bytes] + 1);
+  v6 = indCopy;
+  self->_errorCode = *([indCopy bytes] + 1);
   sendLLEvent = self->_sendLLEvent;
   if (sendLLEvent)
   {
@@ -541,7 +541,7 @@
   }
 }
 
-- (void)sendEncryptionReq:(char *)a3 encryptedDiversifier:(unsigned __int16)a4 longTermKey:(BluetoothKey *)a5
+- (void)sendEncryptionReq:(char *)req encryptedDiversifier:(unsigned __int16)diversifier longTermKey:(BluetoothKey *)key
 {
   v9 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -551,13 +551,13 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s send LL_ENC_REQ", v13, 0xCu);
   }
 
-  v10 = *a3;
-  *self->_randomNumber = *a3;
-  self->_encryptedDiversifier = a4;
-  self->_longTermKey = *a5;
+  v10 = *req;
+  *self->_randomNumber = *req;
+  self->_encryptedDiversifier = diversifier;
+  self->_longTermKey = *key;
   v13[0] = 3;
   *&v13[1] = v10;
-  *&v13[9] = a4;
+  *&v13[9] = diversifier;
   isPeripheral = self->_isPeripheral;
   *&v13[11] = *&self->_skd.data[isPeripheral][0];
   v14 = *&self->_iv.data[isPeripheral][0];
@@ -566,26 +566,26 @@
   self->_encryptionState = 1;
 }
 
-- (void)_handleEncryptionReq:(id)a3
+- (void)_handleEncryptionReq:(id)req
 {
-  v4 = a3;
+  reqCopy = req;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315394;
     v13 = "[BTVCLinkLayerControl _handleEncryptionReq:]";
     v14 = 2112;
-    *v15 = v4;
+    *v15 = reqCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s received LL_ENC_REQ %@", &v12, 0x16u);
   }
 
-  v6 = v4;
-  v7 = [v4 bytes];
-  *self->_randomNumber = *(v7 + 1);
-  self->_encryptedDiversifier = *(v7 + 9);
+  v6 = reqCopy;
+  bytes = [reqCopy bytes];
+  *self->_randomNumber = *(bytes + 1);
+  self->_encryptedDiversifier = *(bytes + 9);
   v8 = !self->_isPeripheral;
-  *&self->_skd.data[v8][0] = *(v7 + 11);
-  *&self->_iv.data[v8][0] = *(v7 + 19);
+  *&self->_skd.data[v8][0] = *(bytes + 11);
+  *&self->_iv.data[v8][0] = *(bytes + 19);
   v9 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -626,7 +626,7 @@
   }
 }
 
-- (void)sendEncryptionRsp:(BluetoothKey *)a3
+- (void)sendEncryptionRsp:(BluetoothKey *)rsp
 {
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -636,7 +636,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s send LL_ENC_RSP", v8, 0xCu);
   }
 
-  self->_longTermKey = *a3;
+  self->_longTermKey = *rsp;
   v8[0] = 4;
   isPeripheral = self->_isPeripheral;
   *&v8[1] = *&self->_skd.data[isPeripheral][0];
@@ -645,24 +645,24 @@
   [(BTVCLinkLayerControl *)self _sendPacketDirect:v7];
 }
 
-- (void)_handleEncryptionRsp:(id)a3
+- (void)_handleEncryptionRsp:(id)rsp
 {
-  v4 = a3;
+  rspCopy = rsp;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "[BTVCLinkLayerControl _handleEncryptionRsp:]";
     v13 = 2112;
-    *v14 = v4;
+    *v14 = rspCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s received LL_ENC_RSP %@", &v11, 0x16u);
   }
 
-  v6 = v4;
-  v7 = [v4 bytes];
+  v6 = rspCopy;
+  bytes = [rspCopy bytes];
   v8 = !self->_isPeripheral;
-  *&self->_skd.data[v8][0] = *(v7 + 1);
-  *&self->_iv.data[v8][0] = *(v7 + 9);
+  *&self->_skd.data[v8][0] = *(bytes + 1);
+  *&self->_iv.data[v8][0] = *(bytes + 9);
   v9 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -695,7 +695,7 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s IV_C %.4P IV_P %.4P", &v11, 0x2Cu);
   }
 
-  [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:v4];
+  [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:rspCopy];
 }
 
 - (void)sendStartEncryptionReq
@@ -725,20 +725,20 @@
   return 0;
 }
 
-- (void)_handleStartEncryptionReq:(id)a3
+- (void)_handleStartEncryptionReq:(id)req
 {
-  v4 = a3;
+  reqCopy = req;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[BTVCLinkLayerControl _handleStartEncryptionReq:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = reqCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s received LL_START_ENC_REQ %@", &v7, 0x16u);
   }
 
-  [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:v4];
+  [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:reqCopy];
   self->_encryptionState = 3;
   sendLLEvent = self->_sendLLEvent;
   if (sendLLEvent)
@@ -782,23 +782,23 @@
   return 1;
 }
 
-- (void)_handleStartEncryptionRsp:(id)a3
+- (void)_handleStartEncryptionRsp:(id)rsp
 {
-  v4 = a3;
+  rspCopy = rsp;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[BTVCLinkLayerControl _handleStartEncryptionRsp:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = rspCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s received LL_START_ENC_RSP %@", &v7, 0x16u);
   }
 
-  [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:v4];
+  [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:rspCopy];
   if (self->_isPeripheral)
   {
-    [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:v4];
+    [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:rspCopy];
     [(BTVCLinkLayerControl *)self sendStartEncryptionRsp];
   }
 
@@ -831,21 +831,21 @@
   [(BTVCLinkLayerControl *)self _sendPacketDirect:v4];
 }
 
-- (void)_handleFeatureReq:(id)a3
+- (void)_handleFeatureReq:(id)req
 {
-  v4 = a3;
+  reqCopy = req;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[BTVCLinkLayerControl _handleFeatureReq:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = reqCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s received LL_FEATURE_REQ %@", &v7, 0x16u);
   }
 
-  v6 = v4;
-  -[BTVCDevice setLeFeature:](self->_peerDevice, "setLeFeature:", [v4 bytes] + 1);
+  v6 = reqCopy;
+  -[BTVCDevice setLeFeature:](self->_peerDevice, "setLeFeature:", [reqCopy bytes] + 1);
   [(BTVCLinkLayerControl *)self sendFeatureRsp];
 }
 
@@ -877,21 +877,21 @@
   return 1;
 }
 
-- (void)_handleFeatureRsp:(id)a3
+- (void)_handleFeatureRsp:(id)rsp
 {
-  v4 = a3;
+  rspCopy = rsp;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "[BTVCLinkLayerControl _handleFeatureRsp:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = rspCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s received LL_FEATURE_RSP %@", &v11, 0x16u);
   }
 
-  v6 = v4;
-  v7 = [v4 bytes];
+  v6 = rspCopy;
+  bytes = [rspCopy bytes];
   if ([(BTVCLinkLayerControl *)self _getOpcodeFromCurrentPacket]== 8)
   {
     v8 = qword_100BCEA70;
@@ -902,8 +902,8 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s set self->_peerDevice.leFeatures.data", &v11, 0xCu);
     }
 
-    [(BTVCDevice *)self->_peerDevice setLeFeature:v7 + 1];
-    [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:v4];
+    [(BTVCDevice *)self->_peerDevice setLeFeature:bytes + 1];
+    [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:rspCopy];
     self->_linkReadyState = 2;
     sendLLEvent = self->_sendLLEvent;
     if (sendLLEvent)
@@ -968,44 +968,44 @@
   return v6 == 3;
 }
 
-- (void)_handleVersionInd:(id)a3
+- (void)_handleVersionInd:(id)ind
 {
-  v4 = a3;
+  indCopy = ind;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 136315394;
     v15 = "[BTVCLinkLayerControl _handleVersionInd:]";
     v16 = 2112;
-    *v17 = v4;
+    *v17 = indCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s received LL_VERSION_ID %@", &v14, 0x16u);
   }
 
-  v6 = v4;
-  v7 = [v4 bytes];
-  [(BTVCDevice *)self->_peerDevice setLmpVersion:v7[1]];
-  [(BTVCDevice *)self->_peerDevice setCompanyIdentifier:*(v7 + 1)];
-  [(BTVCDevice *)self->_peerDevice setLmpSubversion:*(v7 + 2)];
+  v6 = indCopy;
+  bytes = [indCopy bytes];
+  [(BTVCDevice *)self->_peerDevice setLmpVersion:bytes[1]];
+  [(BTVCDevice *)self->_peerDevice setCompanyIdentifier:*(bytes + 1)];
+  [(BTVCDevice *)self->_peerDevice setLmpSubversion:*(bytes + 2)];
   v8 = qword_100BCEA70;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(BTVCDevice *)self->_peerDevice lmpVersion];
-    v10 = [(BTVCDevice *)self->_peerDevice companyIdentifier];
-    v11 = [(BTVCDevice *)self->_peerDevice lmpSubversion];
+    lmpVersion = [(BTVCDevice *)self->_peerDevice lmpVersion];
+    companyIdentifier = [(BTVCDevice *)self->_peerDevice companyIdentifier];
+    lmpSubversion = [(BTVCDevice *)self->_peerDevice lmpSubversion];
     v14 = 136315906;
     v15 = "[BTVCLinkLayerControl _handleVersionInd:]";
     v16 = 1024;
-    *v17 = v9;
+    *v17 = lmpVersion;
     *&v17[4] = 1024;
-    *&v17[6] = v10;
+    *&v17[6] = companyIdentifier;
     v18 = 1024;
-    v19 = v11;
+    v19 = lmpSubversion;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s received LL_VERSION_ID version 0x%02x, companyID 0x%04X subVersion 0x%04X ", &v14, 0x1Eu);
   }
 
   if (self->_versionExchange == 1 && [(BTVCLinkLayerControl *)self _getOpcodeFromCurrentPacket]== 12)
   {
-    [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:v4];
+    [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:indCopy];
   }
 
   v12 = self->_versionExchange | 2;
@@ -1014,7 +1014,7 @@
   {
     if ([(BTVCLinkLayerControl *)self _getOpcodeFromCurrentPacket]== 12)
     {
-      [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:v4];
+      [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:indCopy];
     }
 
     self->_linkReadyState = 1;
@@ -1033,7 +1033,7 @@
   }
 }
 
-- (void)sendConnectionParamReq:(unsigned __int16)a3 intervalMax:(unsigned __int16)a4 latency:(unsigned __int16)a5 timeout:(unsigned __int16)a6
+- (void)sendConnectionParamReq:(unsigned __int16)req intervalMax:(unsigned __int16)max latency:(unsigned __int16)latency timeout:(unsigned __int16)timeout
 {
   v11 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -1044,10 +1044,10 @@
   }
 
   v13[0] = 15;
-  *&v13[1] = a3;
-  *&v13[3] = a4;
-  *&v13[5] = a5;
-  *&v13[7] = a6;
+  *&v13[1] = req;
+  *&v13[3] = max;
+  *&v13[5] = latency;
+  *&v13[7] = timeout;
   v13[9] = 0;
   *&v13[10] = 197838;
   v14 = -1;
@@ -1056,25 +1056,25 @@
   [(BTVCLinkLayerControl *)self _sendPacketDirect:v12];
 }
 
-- (void)_handleConnectionParamReq:(id)a3
+- (void)_handleConnectionParamReq:(id)req
 {
-  v4 = a3;
+  reqCopy = req;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[BTVCLinkLayerControl _handleConnectionParamReq:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = reqCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s received LL_CONNECTION_PARAM_REQ %@", &v9, 0x16u);
   }
 
-  v6 = v4;
-  v7 = [v4 bytes];
-  self->_connParamIntervalMin = *(v7 + 1);
-  self->_connParamIntervalMax = *(v7 + 3);
-  self->_connParamLatency = *(v7 + 5);
-  self->_connParamTimeout = *(v7 + 7);
+  v6 = reqCopy;
+  bytes = [reqCopy bytes];
+  self->_connParamIntervalMin = *(bytes + 1);
+  self->_connParamIntervalMax = *(bytes + 3);
+  self->_connParamLatency = *(bytes + 5);
+  self->_connParamTimeout = *(bytes + 7);
   sendLLEvent = self->_sendLLEvent;
   if (sendLLEvent)
   {
@@ -1082,7 +1082,7 @@
   }
 }
 
-- (void)sendConnectionParamRsp:(unsigned __int16)a3 intervalMax:(unsigned __int16)a4 maxLatency:(unsigned __int16)a5 timeout:(unsigned __int16)a6
+- (void)sendConnectionParamRsp:(unsigned __int16)rsp intervalMax:(unsigned __int16)max maxLatency:(unsigned __int16)latency timeout:(unsigned __int16)timeout
 {
   v11 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -1093,10 +1093,10 @@
   }
 
   v13[0] = 16;
-  *&v13[1] = a3;
-  *&v13[3] = a4;
-  *&v13[5] = a5;
-  *&v13[7] = a6;
+  *&v13[1] = rsp;
+  *&v13[3] = max;
+  *&v13[5] = latency;
+  *&v13[7] = timeout;
   v13[9] = 0;
   *&v13[10] = 197838;
   v14 = -1;
@@ -1105,30 +1105,30 @@
   [(BTVCLinkLayerControl *)self _sendPacketDirect:v12];
 }
 
-- (void)_handleConnectionParamRsp:(id)a3
+- (void)_handleConnectionParamRsp:(id)rsp
 {
-  v4 = a3;
+  rspCopy = rsp;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[BTVCLinkLayerControl _handleConnectionParamRsp:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = rspCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s received LL_CONNECTION_PARAM_RSP %@", &v8, 0x16u);
   }
 
-  v6 = v4;
-  v7 = [v4 bytes];
-  self->_connParamIntervalMin = *(v7 + 1);
-  self->_connParamIntervalMax = *(v7 + 3);
-  self->_connParamLatency = *(v7 + 5);
-  self->_connParamTimeout = *(v7 + 7);
-  [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:v4];
+  v6 = rspCopy;
+  bytes = [rspCopy bytes];
+  self->_connParamIntervalMin = *(bytes + 1);
+  self->_connParamIntervalMax = *(bytes + 3);
+  self->_connParamLatency = *(bytes + 5);
+  self->_connParamTimeout = *(bytes + 7);
+  [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:rspCopy];
   [(BTVCLinkLayerControl *)self sendConnectionUpdateInd];
 }
 
-- (void)sendRejectExtendedInd:(unsigned __int8)a3 errorCode:(unsigned __int8)a4
+- (void)sendRejectExtendedInd:(unsigned __int8)ind errorCode:(unsigned __int8)code
 {
   v7 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -1139,31 +1139,31 @@
   }
 
   LOBYTE(v9) = 17;
-  BYTE1(v9) = a3;
-  BYTE2(v9) = a4;
+  BYTE1(v9) = ind;
+  BYTE2(v9) = code;
   v8 = [[NSData alloc] initWithBytes:&v9 length:3];
   [(BTVCLinkLayerControl *)self _sendPacketDirect:v8];
 }
 
-- (void)_handleRejectExtendedInd:(id)a3
+- (void)_handleRejectExtendedInd:(id)ind
 {
-  v4 = a3;
+  indCopy = ind;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[BTVCLinkLayerControl _handleRejectExtendedInd:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = indCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s received LL_REJECT_EXT_IND %@", &v9, 0x16u);
   }
 
-  v6 = v4;
-  v7 = [v4 bytes];
-  self->_errorCode = v7[2];
-  if (v7[1] == 3)
+  v6 = indCopy;
+  bytes = [indCopy bytes];
+  self->_errorCode = bytes[2];
+  if (bytes[1] == 3)
   {
-    [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:v4];
+    [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:indCopy];
     self->_encryptionState = 6;
     sendLLEvent = self->_sendLLEvent;
     if (sendLLEvent)
@@ -1201,27 +1201,27 @@
   [(BTVCLinkLayerControl *)self _sendPacketDirect:v4];
 }
 
-- (void)_handleLengthReq:(id)a3
+- (void)_handleLengthReq:(id)req
 {
-  v4 = a3;
+  reqCopy = req;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 136315394;
     v16 = "[BTVCLinkLayerControl _handleLengthReq:]";
     v17 = 2112;
-    v18 = v4;
+    v18 = reqCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s received LL_LENGTH_REQ %@", &v15, 0x16u);
   }
 
-  v6 = v4;
-  v7 = [v4 bytes];
-  v8 = *(v7 + 1);
-  v9 = *(v7 + 3);
-  v10 = *(v7 + 7);
-  if (self->_maxRxOctets >= *(v7 + 5))
+  v6 = reqCopy;
+  bytes = [reqCopy bytes];
+  v8 = *(bytes + 1);
+  v9 = *(bytes + 3);
+  v10 = *(bytes + 7);
+  if (self->_maxRxOctets >= *(bytes + 5))
   {
-    maxRxOctets = *(v7 + 5);
+    maxRxOctets = *(bytes + 5);
   }
 
   else
@@ -1296,27 +1296,27 @@
   return 1;
 }
 
-- (void)_handleLengthRsp:(id)a3
+- (void)_handleLengthRsp:(id)rsp
 {
-  v4 = a3;
+  rspCopy = rsp;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v21 = "[BTVCLinkLayerControl _handleLengthRsp:]";
     v22 = 2112;
-    v23 = v4;
+    v23 = rspCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s received LL_LENGTH_RSP %@", buf, 0x16u);
   }
 
-  v6 = v4;
-  v7 = [v4 bytes];
+  v6 = rspCopy;
+  bytes = [rspCopy bytes];
   if ([(BTVCLinkLayerControl *)self _getOpcodeFromCurrentPacket]== 20)
   {
-    v8 = *(v7 + 1);
-    v9 = *(v7 + 3);
-    v10 = *(v7 + 5);
-    v11 = *(v7 + 7);
+    v8 = *(bytes + 1);
+    v9 = *(bytes + 3);
+    v10 = *(bytes + 5);
+    v11 = *(bytes + 7);
     if (self->_maxRxOctets >= v10)
     {
       maxRxOctets = v10;
@@ -1361,7 +1361,7 @@
     }
 
     [(BTVCDevice *)self->_peerDevice setMaxTxTime:maxTxTime];
-    [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:v4];
+    [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:rspCopy];
     v19 = 0;
     [(BTVCDevice *)self->_peerDevice getLeFeature:&v19];
     v16 = qword_100BCEA70;
@@ -1417,21 +1417,21 @@
   [(BTVCLinkLayerControl *)self _sendPacketDirect:v4];
 }
 
-- (void)_handlePhyReq:(id)a3
+- (void)_handlePhyReq:(id)req
 {
-  v4 = a3;
+  reqCopy = req;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[BTVCLinkLayerControl _handlePhyReq:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = reqCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s received LL_PHY_REQ %@", &v9, 0x16u);
   }
 
-  v6 = v4;
-  v7 = [v4 bytes];
+  v6 = reqCopy;
+  bytes = [reqCopy bytes];
   if (self->_isPeripheral)
   {
     [(BTVCLinkLayerControl *)self sendPhyRsp];
@@ -1439,8 +1439,8 @@
 
   else
   {
-    v8 = v7;
-    [(BTVCDevice *)self->_peerDevice setTxPhys:(v7[2] & self->_txPhys)];
+    v8 = bytes;
+    [(BTVCDevice *)self->_peerDevice setTxPhys:(bytes[2] & self->_txPhys)];
     [(BTVCDevice *)self->_peerDevice setRxPhys:(v8[1] & self->_rxPhys)];
     [(BTVCLinkLayerControl *)self sendPhyUpdateInd];
   }
@@ -1462,26 +1462,26 @@
   [(BTVCLinkLayerControl *)self _sendPacketDirect:v4];
 }
 
-- (void)_handlePhyRsp:(id)a3
+- (void)_handlePhyRsp:(id)rsp
 {
-  v4 = a3;
+  rspCopy = rsp;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[BTVCLinkLayerControl _handlePhyRsp:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = rspCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s received LL_PHY_RSP %@", &v8, 0x16u);
   }
 
-  v6 = v4;
-  v7 = [v4 bytes];
+  v6 = rspCopy;
+  bytes = [rspCopy bytes];
   if ([(BTVCLinkLayerControl *)self _getOpcodeFromCurrentPacket]== 22)
   {
-    [(BTVCDevice *)self->_peerDevice setTxPhys:(v7[2] & self->_txPhys)];
-    [(BTVCDevice *)self->_peerDevice setRxPhys:(v7[1] & self->_rxPhys)];
-    [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:v4];
+    [(BTVCDevice *)self->_peerDevice setTxPhys:(bytes[2] & self->_txPhys)];
+    [(BTVCDevice *)self->_peerDevice setRxPhys:(bytes[1] & self->_rxPhys)];
+    [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:rspCopy];
     if (!self->_isPeripheral)
     {
       [(BTVCLinkLayerControl *)self sendPhyUpdateInd];
@@ -1519,24 +1519,24 @@
   return 1;
 }
 
-- (void)_handlePhyUpdateInd:(id)a3
+- (void)_handlePhyUpdateInd:(id)ind
 {
-  v4 = a3;
+  indCopy = ind;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[BTVCLinkLayerControl _handlePhyUpdateInd:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = indCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s received LL_PHY_UPDATE_IND %@", &v9, 0x16u);
   }
 
-  v6 = v4;
-  v7 = [v4 bytes];
-  [(BTVCDevice *)self->_peerDevice setTxPhys:v7[2]];
-  [(BTVCDevice *)self->_peerDevice setRxPhys:v7[1]];
-  [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:v4];
+  v6 = indCopy;
+  bytes = [indCopy bytes];
+  [(BTVCDevice *)self->_peerDevice setTxPhys:bytes[2]];
+  [(BTVCDevice *)self->_peerDevice setRxPhys:bytes[1]];
+  [(BTVCPacketControl *)self->_packetControl completeCurrentPacket:indCopy];
   self->_linkReadyState = 5;
   sendLLEvent = self->_sendLLEvent;
   if (sendLLEvent)
@@ -1545,40 +1545,40 @@
   }
 }
 
-- (BOOL)_sendPacketComplete:(id)a3 error:(id)a4
+- (BOOL)_sendPacketComplete:(id)complete error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BTVCPacketControl *)self->_packetControl getCurrentPacket];
-  if (!v8)
+  completeCopy = complete;
+  errorCopy = error;
+  getCurrentPacket = [(BTVCPacketControl *)self->_packetControl getCurrentPacket];
+  if (!getCurrentPacket)
   {
 LABEL_16:
     v13 = 1;
     goto LABEL_17;
   }
 
-  v9 = [(BTVCLinkLayerControl *)self _getOpcodeFromCurrentPacket];
+  _getOpcodeFromCurrentPacket = [(BTVCLinkLayerControl *)self _getOpcodeFromCurrentPacket];
   v10 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
-    if ((v9 + 1) > 0x2Au)
+    if ((_getOpcodeFromCurrentPacket + 1) > 0x2Au)
     {
       v11 = "?";
     }
 
     else
     {
-      v11 = off_100AEF820[(v9 + 1)];
+      v11 = off_100AEF820[(_getOpcodeFromCurrentPacket + 1)];
     }
 
     v16 = 136315394;
     v17 = v11;
     v18 = 2112;
-    v19 = v6;
+    v19 = completeCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "BTVC:LLPDU sent: %s, payload: %@", &v16, 0x16u);
   }
 
-  if ([v7 code] == -6722)
+  if ([errorCopy code] == -6722)
   {
     v12 = qword_100BCEA70;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -1586,7 +1586,7 @@ LABEL_16:
       v16 = 136315394;
       v17 = "[BTVCLinkLayerControl _sendPacketComplete:error:]";
       v18 = 1024;
-      LODWORD(v19) = v9;
+      LODWORD(v19) = _getOpcodeFromCurrentPacket;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s opCode %02X response timeout", &v16, 0x12u);
     }
 
@@ -1596,7 +1596,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (v9 >= 0x19 || ((0x1F3937Du >> v9) & 1) == 0)
+  if (_getOpcodeFromCurrentPacket >= 0x19 || ((0x1F3937Du >> _getOpcodeFromCurrentPacket) & 1) == 0)
   {
     v14 = qword_100BCEA70;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -1604,23 +1604,23 @@ LABEL_16:
       v16 = 136315394;
       v17 = "[BTVCLinkLayerControl _sendPacketComplete:error:]";
       v18 = 1024;
-      LODWORD(v19) = v9;
+      LODWORD(v19) = _getOpcodeFromCurrentPacket;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s sent opCode %02X is not supported", &v16, 0x12u);
     }
 
     goto LABEL_16;
   }
 
-  v13 = [self *off_100AEF758[v9]];
+  v13 = [self *off_100AEF758[_getOpcodeFromCurrentPacket]];
 LABEL_17:
 
   return v13;
 }
 
-- (void)controlPduReceived:(id)a3
+- (void)controlPduReceived:(id)received
 {
-  v4 = a3;
-  v5 = [(BTVCLinkLayerControl *)self _getOpcodeFromPayloadData:v4];
+  receivedCopy = received;
+  v5 = [(BTVCLinkLayerControl *)self _getOpcodeFromPayloadData:receivedCopy];
   v6 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -1637,7 +1637,7 @@ LABEL_17:
     v15 = 136315394;
     v16 = v7;
     v17 = 2112;
-    v18 = v4;
+    v18 = receivedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "BTVC:LLPDU received: %s, payload: %@", &v15, 0x16u);
   }
 
@@ -1659,10 +1659,10 @@ LABEL_17:
 
 - (unsigned)_getOpcodeFromCurrentPacket
 {
-  v3 = [(BTVCPacketControl *)self->_packetControl getCurrentPacket];
-  if (v3)
+  getCurrentPacket = [(BTVCPacketControl *)self->_packetControl getCurrentPacket];
+  if (getCurrentPacket)
   {
-    v4 = [(BTVCLinkLayerControl *)self _getOpcodeFromPayloadData:v3];
+    v4 = [(BTVCLinkLayerControl *)self _getOpcodeFromPayloadData:getCurrentPacket];
   }
 
   else
@@ -1673,23 +1673,23 @@ LABEL_17:
   return v4;
 }
 
-- (void)sendingPacket:(id)a3
+- (void)sendingPacket:(id)packet
 {
-  v4 = a3;
+  packetCopy = packet;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[BTVCLinkLayerControl sendingPacket:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = packetCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s packet %@", &v8, 0x16u);
   }
 
   sendLLControlPacket = self->_sendLLControlPacket;
   if (sendLLControlPacket)
   {
-    sendLLControlPacket[2](sendLLControlPacket, v4);
+    sendLLControlPacket[2](sendLLControlPacket, packetCopy);
   }
 
   else

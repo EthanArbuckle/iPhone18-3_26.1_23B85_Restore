@@ -1,18 +1,18 @@
 @interface ACUIPluginLoader
-+ (id)pluginBundleWithName:(id)a3;
++ (id)pluginBundleWithName:(id)name;
 @end
 
 @implementation ACUIPluginLoader
 
-+ (id)pluginBundleWithName:(id)a3
++ (id)pluginBundleWithName:(id)name
 {
   v45 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v37 = [MEMORY[0x277CCAA00] defaultManager];
-  v36 = [v37 URLsForDirectory:5 inDomains:8];
+  objc_storeStrong(location, name);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v36 = [defaultManager URLsForDirectory:5 inDomains:8];
   if (v36 && [v36 count])
   {
     v32 = 0;
@@ -45,8 +45,8 @@
         objc_storeStrong(&v26, v24);
         if (v11)
         {
-          v21 = [v27 BOOLValue];
-          if (v21)
+          bOOLValue = [v27 BOOLValue];
+          if (bOOLValue)
           {
             v4 = [MEMORY[0x277CCA8D8] bundleWithURL:v28];
             v5 = v32;
@@ -152,7 +152,7 @@ LABEL_25:
   }
 
   objc_storeStrong(&v36, 0);
-  objc_storeStrong(&v37, 0);
+  objc_storeStrong(&defaultManager, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
   v6 = v39;

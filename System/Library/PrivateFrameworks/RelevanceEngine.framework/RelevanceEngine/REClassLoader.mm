@@ -1,12 +1,12 @@
 @interface REClassLoader
-+ (REClassLoader)loaderWithBlock:(id)a3 configuration:(id)a4;
-+ (REClassLoader)loaderWithDirectories:(id)a3 dataSourceKey:(id)a4 configuration:(id)a5;
-+ (REClassLoader)loaderWithObjects:(id)a3 configuration:(id)a4;
-+ (id)groupLoaderWithLoaders:(id)a3;
++ (REClassLoader)loaderWithBlock:(id)block configuration:(id)configuration;
++ (REClassLoader)loaderWithDirectories:(id)directories dataSourceKey:(id)key configuration:(id)configuration;
++ (REClassLoader)loaderWithObjects:(id)objects configuration:(id)configuration;
++ (id)groupLoaderWithLoaders:(id)loaders;
 - (REClassLoader)init;
-- (REClassLoader)initWithConfiguration:(id)a3;
-- (void)enumerateBundleConfigurations:(id)a3;
-- (void)enumerateClassesWithBlock:(id)a3;
+- (REClassLoader)initWithConfiguration:(id)configuration;
+- (void)enumerateBundleConfigurations:(id)configurations;
+- (void)enumerateClassesWithBlock:(id)block;
 - (void)prewarm;
 @end
 
@@ -25,51 +25,51 @@
   return result;
 }
 
-- (REClassLoader)initWithConfiguration:(id)a3
+- (REClassLoader)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = [(REClassLoader *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v7;
 }
 
-+ (REClassLoader)loaderWithObjects:(id)a3 configuration:(id)a4
++ (REClassLoader)loaderWithObjects:(id)objects configuration:(id)configuration
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[REObjectClassLoader alloc] initWithObjects:v6 configuration:v5];
+  configurationCopy = configuration;
+  objectsCopy = objects;
+  v7 = [[REObjectClassLoader alloc] initWithObjects:objectsCopy configuration:configurationCopy];
 
   return v7;
 }
 
-+ (REClassLoader)loaderWithBlock:(id)a3 configuration:(id)a4
++ (REClassLoader)loaderWithBlock:(id)block configuration:(id)configuration
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[REBlockClassLoader alloc] initWithBlock:v6 configuration:v5];
+  configurationCopy = configuration;
+  blockCopy = block;
+  v7 = [[REBlockClassLoader alloc] initWithBlock:blockCopy configuration:configurationCopy];
 
   return v7;
 }
 
-+ (REClassLoader)loaderWithDirectories:(id)a3 dataSourceKey:(id)a4 configuration:(id)a5
++ (REClassLoader)loaderWithDirectories:(id)directories dataSourceKey:(id)key configuration:(id)configuration
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[REDirectoryClassLoader alloc] initWithDirectories:v9 dataSourceKey:v8 configuration:v7];
+  configurationCopy = configuration;
+  keyCopy = key;
+  directoriesCopy = directories;
+  v10 = [[REDirectoryClassLoader alloc] initWithDirectories:directoriesCopy dataSourceKey:keyCopy configuration:configurationCopy];
 
   return v10;
 }
 
-+ (id)groupLoaderWithLoaders:(id)a3
++ (id)groupLoaderWithLoaders:(id)loaders
 {
-  v3 = a3;
-  v4 = [[REGroupClassLoader alloc] initWithLoaders:v3];
+  loadersCopy = loaders;
+  v4 = [[REGroupClassLoader alloc] initWithLoaders:loadersCopy];
 
   return v4;
 }
@@ -82,23 +82,23 @@
   [(REClassLoader *)self enumerateClassesWithBlock:&__block_literal_global_9];
 }
 
-- (void)enumerateClassesWithBlock:(id)a3
+- (void)enumerateClassesWithBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     os_unfair_lock_lock(&self->_loadingLock);
     if (!self->_cachedDataSources)
     {
       v5 = [MEMORY[0x277CBEB58] set];
-      v6 = [(REClassLoaderConfiguration *)self->_configuration desiredClassForLoader];
+      desiredClassForLoader = [(REClassLoaderConfiguration *)self->_configuration desiredClassForLoader];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __43__REClassLoader_enumerateClassesWithBlock___block_invoke;
       v20[3] = &unk_2785FA888;
       v21 = v5;
-      v22 = v6;
+      v22 = desiredClassForLoader;
       v7 = v5;
       [(REClassLoader *)self _enumerateClassesWithBlock:v20];
       v8 = [v7 copy];
@@ -127,7 +127,7 @@
             objc_enumerationMutation(v10);
           }
 
-          v4[2](v4, *(*(&v16 + 1) + 8 * v14++));
+          blockCopy[2](blockCopy, *(*(&v16 + 1) + 8 * v14++));
         }
 
         while (v12 != v14);
@@ -177,22 +177,22 @@ LABEL_10:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateBundleConfigurations:(id)a3
+- (void)enumerateBundleConfigurations:(id)configurations
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  configurationsCopy = configurations;
+  if (configurationsCopy)
   {
     os_unfair_lock_lock(&self->_loadingLock);
     if (!self->_cachedBundleConfigurations)
     {
-      v5 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __47__REClassLoader_enumerateBundleConfigurations___block_invoke;
       v19[3] = &unk_2785FA8B0;
-      v20 = v5;
-      v6 = v5;
+      v20 = array;
+      v6 = array;
       [(REClassLoader *)self _enumerateBundleConfigurations:v19];
       v7 = [v6 copy];
       cachedBundleConfigurations = self->_cachedBundleConfigurations;
@@ -220,7 +220,7 @@ LABEL_10:
             objc_enumerationMutation(v9);
           }
 
-          v4[2](v4, *(*(&v15 + 1) + 8 * v13++));
+          configurationsCopy[2](configurationsCopy, *(*(&v15 + 1) + 8 * v13++));
         }
 
         while (v11 != v13);

@@ -1,14 +1,14 @@
 @interface _JindoAccessoryView
 - (CGRect)frame;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC14WidgetRenderer19_JindoAccessoryView)initWithCoder:(id)a3;
-- (_TtC14WidgetRenderer19_JindoAccessoryView)initWithFrame:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC14WidgetRenderer19_JindoAccessoryView)initWithCoder:(id)coder;
+- (_TtC14WidgetRenderer19_JindoAccessoryView)initWithFrame:(CGRect)frame;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation _JindoAccessoryView
 
-- (_TtC14WidgetRenderer19_JindoAccessoryView)initWithCoder:(id)a3
+- (_TtC14WidgetRenderer19_JindoAccessoryView)initWithCoder:(id)coder
 {
   result = sub_1DAED273C();
   __break(1u);
@@ -27,20 +27,20 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for _JindoAccessoryView();
   v7 = v10.receiver;
   [(_JindoAccessoryView *)&v10 setFrame:x, y, width, height];
-  v8 = [*&v7[OBJC_IVAR____TtC14WidgetRenderer19_JindoAccessoryView__hostController] view];
-  if (v8)
+  view = [*&v7[OBJC_IVAR____TtC14WidgetRenderer19_JindoAccessoryView__hostController] view];
+  if (view)
   {
-    v9 = v8;
+    v9 = view;
     [v7 bounds];
     [v9 setFrame_];
   }
@@ -51,9 +51,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1DAE5CEC8();
   v6 = v5;
 
@@ -64,7 +64,7 @@
   return result;
 }
 
-- (_TtC14WidgetRenderer19_JindoAccessoryView)initWithFrame:(CGRect)a3
+- (_TtC14WidgetRenderer19_JindoAccessoryView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

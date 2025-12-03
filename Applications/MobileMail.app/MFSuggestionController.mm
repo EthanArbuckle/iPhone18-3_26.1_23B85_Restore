@@ -1,14 +1,14 @@
 @interface MFSuggestionController
 + (void)initialize;
 - (MFMessageHeaderView)headerView;
-- (MFSuggestionController)initWithDelegate:(id)a3 headerView:(id)a4;
+- (MFSuggestionController)initWithDelegate:(id)delegate headerView:(id)view;
 - (MFSuggestionHandlingDelegate)delegate;
 - (id)createAnalysisOperation;
-- (id)suggestionCategoryComparatorForManager:(id)a3;
-- (id)viewControllerForPresentingFromBannerByPresenter:(id)a3;
-- (void)clearSuggestionsBannerAnimated:(BOOL)a3;
-- (void)presentViewController:(id)a3;
-- (void)suggestionPresenterWantsToShowBanner:(id)a3;
+- (id)suggestionCategoryComparatorForManager:(id)manager;
+- (id)viewControllerForPresentingFromBannerByPresenter:(id)presenter;
+- (void)clearSuggestionsBannerAnimated:(BOOL)animated;
+- (void)presentViewController:(id)controller;
+- (void)suggestionPresenterWantsToShowBanner:(id)banner;
 @end
 
 @implementation MFSuggestionController
@@ -21,18 +21,18 @@
   }
 }
 
-- (MFSuggestionController)initWithDelegate:(id)a3 headerView:(id)a4
+- (MFSuggestionController)initWithDelegate:(id)delegate headerView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = MFSuggestionController;
   v8 = [(MFSuggestionController *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeWeak(&v9->_headerView, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeWeak(&v9->_headerView, viewCopy);
     v10 = objc_alloc_init(SGFoundInSuggestionPresenter);
     suggestionPresenter = v9->_suggestionPresenter;
     v9->_suggestionPresenter = v10;
@@ -49,81 +49,81 @@
 - (id)createAnalysisOperation
 {
   v3 = [MFSuggestionAnalysisOperation alloc];
-  v4 = [(MFSuggestionController *)self suggestionPresenter];
-  v5 = [(MFSuggestionController *)self scheduler];
-  v6 = [(MFSuggestionAnalysisOperation *)v3 initWithDelegate:self presenter:v4 scheduler:v5];
+  suggestionPresenter = [(MFSuggestionController *)self suggestionPresenter];
+  scheduler = [(MFSuggestionController *)self scheduler];
+  v6 = [(MFSuggestionAnalysisOperation *)v3 initWithDelegate:self presenter:suggestionPresenter scheduler:scheduler];
 
   return v6;
 }
 
-- (void)clearSuggestionsBannerAnimated:(BOOL)a3
+- (void)clearSuggestionsBannerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_headerView);
-  v6 = [(MFSuggestionController *)self suggestionBanner];
-  [WeakRetained removeHeaderBlock:v6 animated:v3];
+  suggestionBanner = [(MFSuggestionController *)self suggestionBanner];
+  [WeakRetained removeHeaderBlock:suggestionBanner animated:animatedCopy];
 
   [(MFSuggestionController *)self setSuggestionBanner:0];
 }
 
-- (void)presentViewController:(id)a3
+- (void)presentViewController:(id)controller
 {
-  v5 = a3;
-  v4 = [(MFSuggestionController *)self delegate];
-  [v4 presentSuggestionViewController:v5];
+  controllerCopy = controller;
+  delegate = [(MFSuggestionController *)self delegate];
+  [delegate presentSuggestionViewController:controllerCopy];
 }
 
-- (void)suggestionPresenterWantsToShowBanner:(id)a3
+- (void)suggestionPresenterWantsToShowBanner:(id)banner
 {
-  v14 = a3;
-  v4 = [(MFSuggestionController *)self delegate];
-  v5 = [v4 showsBanners];
+  bannerCopy = banner;
+  delegate = [(MFSuggestionController *)self delegate];
+  showsBanners = [delegate showsBanners];
 
-  if (v5)
+  if (showsBanners)
   {
-    v6 = [v14 banner];
-    v7 = [(MFSuggestionController *)self suggestionBanner];
+    banner = [bannerCopy banner];
+    suggestionBanner = [(MFSuggestionController *)self suggestionBanner];
 
-    if (v7)
+    if (suggestionBanner)
     {
-      v8 = [(MFSuggestionController *)self suggestionBanner];
-      [v8 setBanner:v6];
+      suggestionBanner2 = [(MFSuggestionController *)self suggestionBanner];
+      [suggestionBanner2 setBanner:banner];
     }
 
     else
     {
-      v8 = [[MFSuggestionBannerView alloc] initWithFrame:v6 banner:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-      [(MFSuggestionController *)self setSuggestionBanner:v8];
+      suggestionBanner2 = [[MFSuggestionBannerView alloc] initWithFrame:banner banner:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+      [(MFSuggestionController *)self setSuggestionBanner:suggestionBanner2];
     }
 
-    v9 = [v14 suggestions];
-    if ([v9 count] == 1)
+    suggestions = [bannerCopy suggestions];
+    if ([suggestions count] == 1)
     {
-      v10 = [v9 firstObject];
+      firstObject = [suggestions firstObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        [v6 setImages:0];
+        [banner setImages:0];
       }
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_headerView);
-    v13 = [(MFSuggestionController *)self suggestionBanner];
-    [WeakRetained insertHeaderBlock:v13 atIndex:0 animated:1];
+    suggestionBanner3 = [(MFSuggestionController *)self suggestionBanner];
+    [WeakRetained insertHeaderBlock:suggestionBanner3 atIndex:0 animated:1];
   }
 }
 
-- (id)viewControllerForPresentingFromBannerByPresenter:(id)a3
+- (id)viewControllerForPresentingFromBannerByPresenter:(id)presenter
 {
-  v3 = [(MFSuggestionController *)self delegate];
-  v4 = [v3 viewControllerForPresentingSuggestions];
+  delegate = [(MFSuggestionController *)self delegate];
+  viewControllerForPresentingSuggestions = [delegate viewControllerForPresentingSuggestions];
 
-  return v4;
+  return viewControllerForPresentingSuggestions;
 }
 
-- (id)suggestionCategoryComparatorForManager:(id)a3
+- (id)suggestionCategoryComparatorForManager:(id)manager
 {
   v3 = +[EMListUnsubscribeSuggestion unsubscribeSuggestionComparator];
 

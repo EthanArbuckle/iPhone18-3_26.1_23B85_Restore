@@ -1,21 +1,21 @@
 @interface FBSDisplayLayoutMonitor
 + (BSServiceInterface)interface;
-+ (id)_endpointForDisplayType:(int64_t)a3;
-+ (id)monitorWithConfiguration:(id)a3;
-+ (id)sharedMonitorForDisplayType:(int64_t)a3;
++ (id)_endpointForDisplayType:(int64_t)type;
++ (id)monitorWithConfiguration:(id)configuration;
++ (id)sharedMonitorForDisplayType:(int64_t)type;
 - (FBSDisplayLayout)currentLayout;
 - (FBSDisplayLayoutMonitor)init;
-- (FBSDisplayLayoutMonitor)initWithDisplayType:(int64_t)a3 qualityOfService:(unint64_t)a4 handler:(id)a5;
-- (id)_initWithConfiguration:(id)a3 singleton:(BOOL)a4 needsDefaultPriority:(BOOL)a5 mutable:(BOOL)a6 displayType:(int64_t)a7 mutableHandler:(id)a8;
+- (FBSDisplayLayoutMonitor)initWithDisplayType:(int64_t)type qualityOfService:(unint64_t)service handler:(id)handler;
+- (id)_initWithConfiguration:(id)configuration singleton:(BOOL)singleton needsDefaultPriority:(BOOL)priority mutable:(BOOL)mutable displayType:(int64_t)type mutableHandler:(id)handler;
 - (id)handler;
 - (unint64_t)qualityOfService;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)handler;
 - (void)invalidate;
 - (void)qualityOfService;
-- (void)removeObserver:(id)a3;
-- (void)setHandler:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)setHandler:(id)handler;
 @end
 
 @implementation FBSDisplayLayoutMonitor
@@ -27,27 +27,27 @@
   lock_handlerAssertion = self->_lock_handlerAssertion;
   if (lock_handlerAssertion)
   {
-    v4 = [(_FBSDisplayLayoutServiceAssertion *)lock_handlerAssertion currentLayout];
+    currentLayout = [(_FBSDisplayLayoutServiceAssertion *)lock_handlerAssertion currentLayout];
   }
 
   else
   {
     memset(v7, 0, sizeof(v7));
-    v5 = [(NSMapTable *)self->_lock_deprecated_observerAssertions objectEnumerator];
-    if ([v5 countByEnumeratingWithState:v7 objects:v8 count:16])
+    objectEnumerator = [(NSMapTable *)self->_lock_deprecated_observerAssertions objectEnumerator];
+    if ([objectEnumerator countByEnumeratingWithState:v7 objects:v8 count:16])
     {
-      v4 = [**(&v7[0] + 1) currentLayout];
+      currentLayout = [**(&v7[0] + 1) currentLayout];
     }
 
     else
     {
-      v4 = 0;
+      currentLayout = 0;
     }
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return currentLayout;
 }
 
 + (BSServiceInterface)interface
@@ -96,8 +96,8 @@ void __36__FBSDisplayLayoutMonitor_interface__block_invoke()
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v5 = [(NSMapTable *)self->_lock_deprecated_observerAssertions objectEnumerator];
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      objectEnumerator = [(NSMapTable *)self->_lock_deprecated_observerAssertions objectEnumerator];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         v7 = v6;
@@ -109,14 +109,14 @@ void __36__FBSDisplayLayoutMonitor_interface__block_invoke()
           {
             if (*v12 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(objectEnumerator);
             }
 
             [*(*(&v11 + 1) + 8 * v9++) invalidate];
           }
 
           while (v7 != v9);
-          v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
         }
 
         while (v7);
@@ -135,7 +135,7 @@ void __36__FBSDisplayLayoutMonitor_interface__block_invoke()
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"the shared monitor should never dealloc"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -160,7 +160,7 @@ void __36__FBSDisplayLayoutMonitor_interface__block_invoke()
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSDisplayLayoutMonitor.m";
     v16 = 1024;
@@ -174,25 +174,25 @@ void __36__FBSDisplayLayoutMonitor_interface__block_invoke()
   _bs_set_crash_log_message();
 }
 
-- (id)_initWithConfiguration:(id)a3 singleton:(BOOL)a4 needsDefaultPriority:(BOOL)a5 mutable:(BOOL)a6 displayType:(int64_t)a7 mutableHandler:(id)a8
+- (id)_initWithConfiguration:(id)configuration singleton:(BOOL)singleton needsDefaultPriority:(BOOL)priority mutable:(BOOL)mutable displayType:(int64_t)type mutableHandler:(id)handler
 {
-  v10 = a6;
-  LODWORD(v11) = a5;
-  v15 = a3;
-  v16 = a8;
-  if (!v15)
+  mutableCopy = mutable;
+  LODWORD(v11) = priority;
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  if (!configurationCopy)
   {
     [FBSDisplayLayoutMonitor _initWithConfiguration:a2 singleton:? needsDefaultPriority:? mutable:? displayType:? mutableHandler:?];
   }
 
-  v17 = v16;
+  v17 = handlerCopy;
   v33.receiver = self;
   v33.super_class = FBSDisplayLayoutMonitor;
   v18 = [(FBSDisplayLayoutMonitor *)&v33 init];
   if (v18)
   {
-    v19 = [v15 endpoint];
-    if ([v15 needsUserInteractivePriority])
+    endpoint = [configurationCopy endpoint];
+    if ([configurationCopy needsUserInteractivePriority])
     {
       v11 = 2;
     }
@@ -202,23 +202,23 @@ void __36__FBSDisplayLayoutMonitor_interface__block_invoke()
       v11 = v11;
     }
 
-    v18->_deprecated_singleton = a4;
-    if (v10)
+    v18->_deprecated_singleton = singleton;
+    if (mutableCopy)
     {
       v18->_deprecated_mutable = 1;
-      objc_storeStrong(&v18->_deprecated_endpoint, v19);
+      objc_storeStrong(&v18->_deprecated_endpoint, endpoint);
       v18->_deprecated_qos = v11;
     }
 
-    v18->_deprecated_displayType = a7;
+    v18->_deprecated_displayType = type;
     v20 = MEMORY[0x1A58E80F0](v17);
     lock_deprecated_handler = v18->_lock_deprecated_handler;
     v18->_lock_deprecated_handler = v20;
 
-    if (v19)
+    if (endpoint)
     {
-      v22 = [v15 transitionHandler];
-      if (v22)
+      transitionHandler = [configurationCopy transitionHandler];
+      if (transitionHandler)
       {
         objc_initWeak(&location, v18);
         v23 = [_FBSDisplayLayoutServiceAssertion alloc];
@@ -227,8 +227,8 @@ void __36__FBSDisplayLayoutMonitor_interface__block_invoke()
         v29[2] = __116__FBSDisplayLayoutMonitor__initWithConfiguration_singleton_needsDefaultPriority_mutable_displayType_mutableHandler___block_invoke;
         v29[3] = &unk_1E76BE5C0;
         objc_copyWeak(&v31, &location);
-        v30 = v22;
-        v24 = [(_FBSDisplayLayoutServiceAssertion *)v23 initWithEndpoint:v19 qos:v11 observer:v29];
+        v30 = transitionHandler;
+        v24 = [(_FBSDisplayLayoutServiceAssertion *)v23 initWithEndpoint:endpoint qos:v11 observer:v29];
         lock_handlerAssertion = v18->_lock_handlerAssertion;
         v18->_lock_handlerAssertion = v24;
 
@@ -238,7 +238,7 @@ void __36__FBSDisplayLayoutMonitor_interface__block_invoke()
 
       else if (!v18->_deprecated_mutable)
       {
-        v26 = [[_FBSDisplayLayoutServiceAssertion alloc] initWithEndpoint:v19 qos:v11 observer:0];
+        v26 = [[_FBSDisplayLayoutServiceAssertion alloc] initWithEndpoint:endpoint qos:v11 observer:0];
         v27 = v18->_lock_handlerAssertion;
         v18->_lock_handlerAssertion = v26;
       }
@@ -259,36 +259,36 @@ void __116__FBSDisplayLayoutMonitor__initWithConfiguration_singleton_needsDefaul
   }
 }
 
-+ (id)monitorWithConfiguration:(id)a3
++ (id)monitorWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     [FBSDisplayLayoutMonitor monitorWithConfiguration:a2];
   }
 
-  v5 = v4;
-  v6 = [[FBSDisplayLayoutMonitor alloc] _initWithConfiguration:v4 singleton:0 needsDefaultPriority:0 mutable:0 displayType:-1 mutableHandler:0];
+  v5 = configurationCopy;
+  v6 = [[FBSDisplayLayoutMonitor alloc] _initWithConfiguration:configurationCopy singleton:0 needsDefaultPriority:0 mutable:0 displayType:-1 mutableHandler:0];
 
   return v6;
 }
 
-+ (id)_endpointForDisplayType:(int64_t)a3
++ (id)_endpointForDisplayType:(int64_t)type
 {
   v4 = +[FBSDisplayLayoutMonitor serviceIdentifier];
-  if (a3)
+  if (type)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       v5 = off_1E76BCA30;
       v6 = @"com.apple.CarPlayApp.non-launching-service";
-      v7 = @"com.apple.CarPlayApp.Dashboard";
+      type = @"com.apple.CarPlayApp.Dashboard";
       goto LABEL_8;
     }
 
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown(%li)", a3];
+    type = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown(%li)", type];
     v5 = off_1E76BCA30;
-    if (a3 == 6)
+    if (type == 6)
     {
       v6 = @"com.apple.CarPlayApp.non-launching-service";
       goto LABEL_8;
@@ -297,16 +297,16 @@ void __116__FBSDisplayLayoutMonitor__initWithConfiguration_singleton_needsDefaul
 
   else
   {
-    v7 = +[FBSDisplayLayoutMonitor mainDisplayInstanceIdentifier];
+    type = +[FBSDisplayLayoutMonitor mainDisplayInstanceIdentifier];
     v5 = off_1E76BCA30;
   }
 
-  v8 = [off_1E76BC9E0 environmentAliases];
-  v9 = [off_1E76BCA30 defaultShellMachName];
-  v6 = [v8 resolveMachService:v9];
+  environmentAliases = [off_1E76BC9E0 environmentAliases];
+  defaultShellMachName = [off_1E76BCA30 defaultShellMachName];
+  v6 = [environmentAliases resolveMachService:defaultShellMachName];
 
 LABEL_8:
-  v10 = [v5 endpointForMachName:v6 service:v4 instance:v7];
+  v10 = [v5 endpointForMachName:v6 service:v4 instance:type];
   v11 = v10;
   if (v10)
   {
@@ -315,7 +315,7 @@ LABEL_8:
 
   else
   {
-    v12 = [off_1E76BCA30 nullEndpointForService:v4 instance:v7];
+    v12 = [off_1E76BCA30 nullEndpointForService:v4 instance:type];
   }
 
   v13 = v12;
@@ -323,7 +323,7 @@ LABEL_8:
   return v13;
 }
 
-+ (id)sharedMonitorForDisplayType:(int64_t)a3
++ (id)sharedMonitorForDisplayType:(int64_t)type
 {
   os_unfair_lock_lock(&sharedMonitorForDisplayType____lock);
   v4 = sharedMonitorForDisplayType____monitors;
@@ -336,17 +336,17 @@ LABEL_8:
     v4 = sharedMonitorForDisplayType____monitors;
   }
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v8 = [v4 objectForKey:v7];
 
   if (!v8)
   {
-    v9 = [FBSDisplayLayoutMonitor _endpointForDisplayType:a3];
+    v9 = [FBSDisplayLayoutMonitor _endpointForDisplayType:type];
     v10 = [FBSDisplayLayoutMonitorConfiguration configurationWithEndpoint:v9];
 
-    v8 = [[FBSDisplayLayoutMonitor alloc] _initWithConfiguration:v10 singleton:1 needsDefaultPriority:1 mutable:1 displayType:a3 mutableHandler:0];
+    v8 = [[FBSDisplayLayoutMonitor alloc] _initWithConfiguration:v10 singleton:1 needsDefaultPriority:1 mutable:1 displayType:type mutableHandler:0];
     v11 = sharedMonitorForDisplayType____monitors;
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     [v11 setObject:v8 forKey:v12];
   }
 
@@ -355,31 +355,31 @@ LABEL_8:
   return v8;
 }
 
-- (FBSDisplayLayoutMonitor)initWithDisplayType:(int64_t)a3 qualityOfService:(unint64_t)a4 handler:(id)a5
+- (FBSDisplayLayoutMonitor)initWithDisplayType:(int64_t)type qualityOfService:(unint64_t)service handler:(id)handler
 {
-  v9 = a5;
-  if ((FBSDisplayTypeIsValid(a3) & 1) == 0)
+  handlerCopy = handler;
+  if ((FBSDisplayTypeIsValid(type) & 1) == 0)
   {
     [FBSDisplayLayoutMonitor initWithDisplayType:a2 qualityOfService:? handler:?];
   }
 
-  v10 = [FBSDisplayLayoutMonitor _endpointForDisplayType:a3];
+  v10 = [FBSDisplayLayoutMonitor _endpointForDisplayType:type];
   v11 = [FBSDisplayLayoutMonitorConfiguration configurationWithEndpoint:v10];
 
-  if (v9)
+  if (handlerCopy)
   {
-    v12 = [v9 copy];
+    v12 = [handlerCopy copy];
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __72__FBSDisplayLayoutMonitor_initWithDisplayType_qualityOfService_handler___block_invoke;
     v15[3] = &unk_1E76BE5E8;
-    v9 = v12;
-    v16 = v9;
+    handlerCopy = v12;
+    v16 = handlerCopy;
     [v11 setTransitionHandler:v15];
   }
 
-  v13 = [(FBSDisplayLayoutMonitor *)self _initWithConfiguration:v11 singleton:0 needsDefaultPriority:a4 == 21 mutable:1 displayType:a3 mutableHandler:v9];
+  v13 = [(FBSDisplayLayoutMonitor *)self _initWithConfiguration:v11 singleton:0 needsDefaultPriority:service == 21 mutable:1 displayType:type mutableHandler:handlerCopy];
 
   return v13;
 }
@@ -399,16 +399,16 @@ LABEL_8:
   return v4;
 }
 
-- (void)setHandler:(id)a3
+- (void)setHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (!self->_deprecated_mutable)
   {
     [FBSDisplayLayoutMonitor setHandler:a2];
   }
 
-  v6 = v5;
-  v7 = [v5 copy];
+  v6 = handlerCopy;
+  v7 = [handlerCopy copy];
 
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_deprecated_handler != v7 && !self->_lock_invalidated)
@@ -442,15 +442,15 @@ LABEL_8:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   if (!self->_deprecated_mutable)
   {
     [FBSDisplayLayoutMonitor addObserver:a2];
   }
 
-  v6 = v5;
+  v6 = observerCopy;
   os_unfair_lock_lock(&self->_lock);
   if (v6)
   {
@@ -463,9 +463,9 @@ LABEL_8:
     {
       if (!self->_lock_deprecated_observerAssertions)
       {
-        v8 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+        weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
         lock_deprecated_observerAssertions = self->_lock_deprecated_observerAssertions;
-        self->_lock_deprecated_observerAssertions = v8;
+        self->_lock_deprecated_observerAssertions = weakToStrongObjectsMapTable;
       }
 
       objc_initWeak(&location, self);
@@ -513,15 +513,15 @@ void __39__FBSDisplayLayoutMonitor_addObserver___block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   if (!self->_deprecated_mutable)
   {
     [FBSDisplayLayoutMonitor removeObserver:a2];
   }
 
-  v8 = v5;
+  v8 = observerCopy;
   os_unfair_lock_lock(&self->_lock);
   if (v8)
   {
@@ -615,7 +615,7 @@ void __39__FBSDisplayLayoutMonitor_addObserver___block_invoke(uint64_t a1, void 
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is deprecated and only works with monitors created using the deprecated interfaces"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -684,7 +684,7 @@ void __39__FBSDisplayLayoutMonitor_addObserver___block_invoke(uint64_t a1, void 
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is deprecated and only works with monitors created using the deprecated interfaces"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);

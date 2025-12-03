@@ -1,15 +1,15 @@
 @interface _UILinearForceLevelClassifier
 - (_UILinearForceLevelClassifier)init;
-- (double)_calculateProgressOfTouchForceValue:(double)a3 toForceLevel:(int64_t)a4 minimumRequiredForceLevel:(int64_t)a5;
-- (double)_instantaneousImpulseForTouchForceValue:(double)a3 atTimestamp:(double)a4;
-- (double)_thresholdForForceLevel:(int64_t)a3;
-- (id)transformerFromTouchForceMessageToProgressToForceLevel:(int64_t)a3 minimumRequiredForceLevel:(int64_t)a4;
-- (int64_t)_forceLevelForTouchForceValue:(double)a3;
-- (void)_updateForceWithTouchForceValue:(double)a3 atTimestamp:(double)a4;
-- (void)_updateImpulseWithTouchForceValue:(double)a3 atTimestamp:(double)a4;
+- (double)_calculateProgressOfTouchForceValue:(double)value toForceLevel:(int64_t)level minimumRequiredForceLevel:(int64_t)forceLevel;
+- (double)_instantaneousImpulseForTouchForceValue:(double)value atTimestamp:(double)timestamp;
+- (double)_thresholdForForceLevel:(int64_t)level;
+- (id)transformerFromTouchForceMessageToProgressToForceLevel:(int64_t)level minimumRequiredForceLevel:(int64_t)forceLevel;
+- (int64_t)_forceLevelForTouchForceValue:(double)value;
+- (void)_updateForceWithTouchForceValue:(double)value atTimestamp:(double)timestamp;
+- (void)_updateImpulseWithTouchForceValue:(double)value atTimestamp:(double)timestamp;
 - (void)dealloc;
-- (void)debuggingPropertyForKey:(id)a3 changedToValue:(id)a4;
-- (void)observeTouchWithForceValue:(double)a3 atTimestamp:(double)a4 withCentroidAtLocation:(CGPoint)a5;
+- (void)debuggingPropertyForKey:(id)key changedToValue:(id)value;
+- (void)observeTouchWithForceValue:(double)value atTimestamp:(double)timestamp withCentroidAtLocation:(CGPoint)location;
 - (void)reset;
 - (void)touchForceMultiplierDidChange;
 @end
@@ -40,23 +40,23 @@
   self->_strongThreshold = v3 * 320.0 / 60.0;
 }
 
-- (void)debuggingPropertyForKey:(id)a3 changedToValue:(id)a4
+- (void)debuggingPropertyForKey:(id)key changedToValue:(id)value
 {
-  [a4 floatValue];
+  [value floatValue];
   v7 = v6;
-  if ([a3 isEqualToString:@"Hint"])
+  if ([key isEqualToString:@"Hint"])
   {
     v8 = &OBJC_IVAR____UILinearForceLevelClassifier__revealThreshold;
   }
 
-  else if ([a3 isEqualToString:@"Standard"])
+  else if ([key isEqualToString:@"Standard"])
   {
     v8 = &OBJC_IVAR____UILinearForceLevelClassifier__standardThreshold;
   }
 
   else
   {
-    if (![a3 isEqualToString:@"Strong"])
+    if (![key isEqualToString:@"Strong"])
     {
       return;
     }
@@ -74,22 +74,22 @@
   [(_UIForceLevelClassifier *)&v2 dealloc];
 }
 
-- (double)_calculateProgressOfTouchForceValue:(double)a3 toForceLevel:(int64_t)a4 minimumRequiredForceLevel:(int64_t)a5
+- (double)_calculateProgressOfTouchForceValue:(double)value toForceLevel:(int64_t)level minimumRequiredForceLevel:(int64_t)forceLevel
 {
-  if (!a4)
+  if (!level)
   {
     return 0.0;
   }
 
   [(_UILinearForceLevelClassifier *)self _thresholdForForceLevel:?];
   v10 = v9;
-  [(_UILinearForceLevelClassifier *)self _thresholdForForceLevel:a5];
+  [(_UILinearForceLevelClassifier *)self _thresholdForForceLevel:forceLevel];
   v12 = v10 - v11;
-  [(_UILinearForceLevelClassifier *)self _thresholdForForceLevel:a4];
-  return 1.0 - (v13 - a3) / v12;
+  [(_UILinearForceLevelClassifier *)self _thresholdForForceLevel:level];
+  return 1.0 - (v13 - value) / v12;
 }
 
-- (double)_instantaneousImpulseForTouchForceValue:(double)a3 atTimestamp:(double)a4
+- (double)_instantaneousImpulseForTouchForceValue:(double)value atTimestamp:(double)timestamp
 {
   if (self->_impulseObservationState < 1)
   {
@@ -98,16 +98,16 @@
 
   else
   {
-    return (a3 - self->_lastForceForImpulse) / (a4 - self->_lastTimestampForImpulse);
+    return (value - self->_lastForceForImpulse) / (timestamp - self->_lastTimestampForImpulse);
   }
 }
 
-- (void)_updateImpulseWithTouchForceValue:(double)a3 atTimestamp:(double)a4
+- (void)_updateImpulseWithTouchForceValue:(double)value atTimestamp:(double)timestamp
 {
   impulseObservationState = self->_impulseObservationState;
   if (impulseObservationState == 1)
   {
-    [(_UILinearForceLevelClassifier *)self _instantaneousImpulseForTouchForceValue:a3 atTimestamp:a4];
+    [(_UILinearForceLevelClassifier *)self _instantaneousImpulseForTouchForceValue:value atTimestamp:timestamp];
 LABEL_6:
     self->_smoothedImpulse = v8;
     goto LABEL_7;
@@ -115,22 +115,22 @@ LABEL_6:
 
   if (impulseObservationState)
   {
-    [(_UILinearForceLevelClassifier *)self _instantaneousImpulseForTouchForceValue:a3 atTimestamp:a4];
+    [(_UILinearForceLevelClassifier *)self _instantaneousImpulseForTouchForceValue:value atTimestamp:timestamp];
     v8 = v9 * self->_impulseSmoothingFactor + (1.0 - self->_impulseSmoothingFactor) * self->_smoothedImpulse;
     goto LABEL_6;
   }
 
   self->_impulseObservationState = 1;
 LABEL_7:
-  self->_lastForceForImpulse = a3;
-  self->_lastTimestampForImpulse = a4;
+  self->_lastForceForImpulse = value;
+  self->_lastTimestampForImpulse = timestamp;
 }
 
-- (void)_updateForceWithTouchForceValue:(double)a3 atTimestamp:(double)a4
+- (void)_updateForceWithTouchForceValue:(double)value atTimestamp:(double)timestamp
 {
   if (self->_anyForceObservations)
   {
-    a3 = self->_smoothingFactor * a3 + (1.0 - self->_smoothingFactor) * self->_smoothedForce;
+    value = self->_smoothingFactor * value + (1.0 - self->_smoothingFactor) * self->_smoothedForce;
   }
 
   else
@@ -138,16 +138,16 @@ LABEL_7:
     self->_anyForceObservations = 1;
   }
 
-  self->_smoothedForce = a3;
+  self->_smoothedForce = value;
 }
 
-- (void)observeTouchWithForceValue:(double)a3 atTimestamp:(double)a4 withCentroidAtLocation:(CGPoint)a5
+- (void)observeTouchWithForceValue:(double)value atTimestamp:(double)timestamp withCentroidAtLocation:(CGPoint)location
 {
   v8.receiver = self;
   v8.super_class = _UILinearForceLevelClassifier;
-  [(_UIForceLevelClassifier *)&v8 observeTouchWithForceValue:a3 atTimestamp:a4 withCentroidAtLocation:a5.x, a5.y];
-  [(_UILinearForceLevelClassifier *)self _updateForceWithTouchForceValue:a3 atTimestamp:a4];
-  [(_UILinearForceLevelClassifier *)self _updateImpulseWithTouchForceValue:a3 atTimestamp:a4];
+  [(_UIForceLevelClassifier *)&v8 observeTouchWithForceValue:value atTimestamp:timestamp withCentroidAtLocation:location.x, location.y];
+  [(_UILinearForceLevelClassifier *)self _updateForceWithTouchForceValue:value atTimestamp:timestamp];
+  [(_UILinearForceLevelClassifier *)self _updateImpulseWithTouchForceValue:value atTimestamp:timestamp];
   [(_UIForceLevelClassifier *)self setCurrentForceLevel:[(_UILinearForceLevelClassifier *)self _forceLevelForTouchForceValue:self->_smoothedForce]];
 }
 
@@ -164,7 +164,7 @@ LABEL_7:
   [(_UIForceLevelClassifier *)&v2 reset];
 }
 
-- (id)transformerFromTouchForceMessageToProgressToForceLevel:(int64_t)a3 minimumRequiredForceLevel:(int64_t)a4
+- (id)transformerFromTouchForceMessageToProgressToForceLevel:(int64_t)level minimumRequiredForceLevel:(int64_t)forceLevel
 {
   objc_initWeak(&location, self);
   v6 = MEMORY[0x1E696ADB8];
@@ -173,8 +173,8 @@ LABEL_7:
   v9[2] = __114___UILinearForceLevelClassifier_transformerFromTouchForceMessageToProgressToForceLevel_minimumRequiredForceLevel___block_invoke;
   v9[3] = &unk_1E710BA08;
   objc_copyWeak(v10, &location);
-  v10[1] = a3;
-  v10[2] = a4;
+  v10[1] = level;
+  v10[2] = forceLevel;
   v7 = [v6 mapValuesWithBlock:v9];
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
@@ -182,27 +182,27 @@ LABEL_7:
   return v7;
 }
 
-- (int64_t)_forceLevelForTouchForceValue:(double)a3
+- (int64_t)_forceLevelForTouchForceValue:(double)value
 {
-  if (self->_strongThreshold <= a3)
+  if (self->_strongThreshold <= value)
   {
     return 3;
   }
 
-  if (self->_standardThreshold <= a3)
+  if (self->_standardThreshold <= value)
   {
     return 2;
   }
 
-  return self->_revealThreshold <= a3;
+  return self->_revealThreshold <= value;
 }
 
-- (double)_thresholdForForceLevel:(int64_t)a3
+- (double)_thresholdForForceLevel:(int64_t)level
 {
   result = 0.0;
-  if ((a3 - 1) <= 2)
+  if ((level - 1) <= 2)
   {
-    return *(&self->super.super.isa + *off_1E710BA28[a3 - 1]);
+    return *(&self->super.super.isa + *off_1E710BA28[level - 1]);
   }
 
   return result;

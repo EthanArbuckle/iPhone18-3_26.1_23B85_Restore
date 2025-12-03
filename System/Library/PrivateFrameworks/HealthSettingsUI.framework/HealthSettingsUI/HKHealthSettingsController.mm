@@ -1,30 +1,30 @@
 @interface HKHealthSettingsController
 - (HKHealthSettingsController)init;
-- (HKHealthSettingsController)initWithPrimaryProfile:(BOOL)a3 healthSettingsProfile:(id)a4;
-- (id)_getLastDataSourceInSpecifiers:(id)a3;
-- (id)createSharedHealthDataSpecifiersWithProfileIdentifiers:(id)a3;
+- (HKHealthSettingsController)initWithPrimaryProfile:(BOOL)profile healthSettingsProfile:(id)settingsProfile;
+- (id)_getLastDataSourceInSpecifiers:(id)specifiers;
+- (id)createSharedHealthDataSpecifiersWithProfileIdentifiers:(id)identifiers;
 - (id)makePopToHealthControllerHandler;
-- (id)sourcesViewControllerForPrimaryProfile:(BOOL)a3 restorationSourceBundleIdentifier:(id)a4;
+- (id)sourcesViewControllerForPrimaryProfile:(BOOL)profile restorationSourceBundleIdentifier:(id)identifier;
 - (id)specifiers;
 - (void)_submitScribeAnalyticEvent;
-- (void)addSharedDataSpecifiersWithIdentifiers:(id)a3;
-- (void)configureHealthChecklistItemInSpecifiers:(id)a3;
-- (void)configureHealthRecordsItemInSpecifiers:(id)a3;
-- (void)configureMedicalIDItemInSpecifiers:(id)a3;
-- (void)configureOrganDonationItemInSpecifiers:(id)a3;
-- (void)configureProfileCharacteristicsItemInSpecifiers:(id)a3;
-- (void)configureSourcesItemInSpecifiers:(id)a3;
-- (void)donateWithDeepLink:(id)a3 andTitle:(id)a4;
-- (void)fetchHealthRecordsDataWithCompletion:(id)a3;
+- (void)addSharedDataSpecifiersWithIdentifiers:(id)identifiers;
+- (void)configureHealthChecklistItemInSpecifiers:(id)specifiers;
+- (void)configureHealthRecordsItemInSpecifiers:(id)specifiers;
+- (void)configureMedicalIDItemInSpecifiers:(id)specifiers;
+- (void)configureOrganDonationItemInSpecifiers:(id)specifiers;
+- (void)configureProfileCharacteristicsItemInSpecifiers:(id)specifiers;
+- (void)configureSourcesItemInSpecifiers:(id)specifiers;
+- (void)donateWithDeepLink:(id)link andTitle:(id)title;
+- (void)fetchHealthRecordsDataWithCompletion:(id)completion;
 - (void)fetchSharedHealthData;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)openHealthChecklist:(id)a3;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)openHealthChecklist:(id)checklist;
 - (void)showHealthRecords;
-- (void)showMedicalID:(id)a3;
-- (void)showOrganDonation:(id)a3;
-- (void)showProfileCharacteristics:(id)a3;
-- (void)showSharedProfileHealthSettings:(id)a3;
-- (void)showSources:(id)a3;
+- (void)showMedicalID:(id)d;
+- (void)showOrganDonation:(id)donation;
+- (void)showProfileCharacteristics:(id)characteristics;
+- (void)showSharedProfileHealthSettings:(id)settings;
+- (void)showSources:(id)sources;
 @end
 
 @implementation HKHealthSettingsController
@@ -37,17 +37,17 @@
   return v4;
 }
 
-- (HKHealthSettingsController)initWithPrimaryProfile:(BOOL)a3 healthSettingsProfile:(id)a4
+- (HKHealthSettingsController)initWithPrimaryProfile:(BOOL)profile healthSettingsProfile:(id)settingsProfile
 {
-  v7 = a4;
+  settingsProfileCopy = settingsProfile;
   v14.receiver = self;
   v14.super_class = HKHealthSettingsController;
   v8 = [(HKHealthSettingsController *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    v8->_primaryProfile = a3;
-    objc_storeStrong(&v8->_healthSettingsProfile, a4);
+    v8->_primaryProfile = profile;
+    objc_storeStrong(&v8->_healthSettingsProfile, settingsProfile);
     sharedHealthDataIdentifiers = v9->_sharedHealthDataIdentifiers;
     v9->_sharedHealthDataIdentifiers = MEMORY[0x277CBEBF8];
 
@@ -74,20 +74,20 @@
   if (!v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [(HKHealthSettingsController *)self appPolicy];
+    appPolicy = [(HKHealthSettingsController *)self appPolicy];
 
-    if (!v6)
+    if (!appPolicy)
     {
       v7 = objc_alloc(MEMORY[0x277D3FB30]);
       v8 = [v7 initWithBundleIdentifier:*MEMORY[0x277CCE3A8]];
       [(HKHealthSettingsController *)self setAppPolicy:v8];
 
-      v9 = [(HKHealthSettingsController *)self appPolicy];
-      [v9 setDelegate:self];
+      appPolicy2 = [(HKHealthSettingsController *)self appPolicy];
+      [appPolicy2 setDelegate:self];
     }
 
-    v10 = [(HKHealthSettingsController *)self appPolicy];
-    v11 = [v10 specifiersForPolicyOptions:8462337 force:0];
+    appPolicy3 = [(HKHealthSettingsController *)self appPolicy];
+    v11 = [appPolicy3 specifiersForPolicyOptions:8462337 force:0];
     v12 = [v11 mutableCopy];
 
     [v5 addObjectsFromArray:v12];
@@ -100,8 +100,8 @@
     v14 = [(HKHealthSettingsController *)self loadSpecifiersFromPlistName:@"HealthSettingsSpecifiers" target:self bundle:v13];
     [v5 addObjectsFromArray:v14];
 
-    v15 = [MEMORY[0x277CCDD30] sharedBehavior];
-    if ([v15 healthAppHiddenOrNotInstalled])
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    if ([mEMORY[0x277CCDD30] healthAppHiddenOrNotInstalled])
     {
       v16 = @"HEALTH_DATA_SETTINGS_TITLE";
     }
@@ -116,9 +116,9 @@
 
     if (![(HKHealthSettingsController *)self isPrimaryProfile])
     {
-      v18 = [(HKHealthSettingsController *)self healthSettingsProfile];
-      v19 = [v18 localizedName];
-      [(HKHealthSettingsController *)self setTitle:v19];
+      healthSettingsProfile = [(HKHealthSettingsController *)self healthSettingsProfile];
+      localizedName = [healthSettingsProfile localizedName];
+      [(HKHealthSettingsController *)self setTitle:localizedName];
     }
 
     [(HKHealthSettingsController *)self configureProfileCharacteristicsItemInSpecifiers:v5];
@@ -130,8 +130,8 @@
     {
       v20 = [(HKHealthSettingsController *)self createSharedHealthDataSpecifiersWithProfileIdentifiers:self->_sharedHealthDataIdentifiers];
       v21 = [(HKHealthSettingsController *)self _getLastDataSourceInSpecifiers:v5];
-      v22 = [v21 identifier];
-      v23 = [v5 indexOfSpecifierWithID:v22];
+      identifier = [v21 identifier];
+      v23 = [v5 indexOfSpecifierWithID:identifier];
 
       v24 = [v5 objectAtIndexedSubscript:v23];
       [v5 ps_insertObjectsFromArray:v20 afterObject:v24];
@@ -147,29 +147,29 @@
   return v4;
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectForKeyedSubscript:@"path"];
+  lCopy = l;
+  completionCopy = completion;
+  v9 = [lCopy objectForKeyedSubscript:@"path"];
   v10 = [v9 componentsSeparatedByString:@"/"];
-  v11 = [v10 firstObject];
-  v12 = [MEMORY[0x277D0FD48] healthSettingsSourcesItemSpecifier];
-  v13 = [v11 isEqualToString:v12];
+  firstObject = [v10 firstObject];
+  healthSettingsSourcesItemSpecifier = [MEMORY[0x277D0FD48] healthSettingsSourcesItemSpecifier];
+  v13 = [firstObject isEqualToString:healthSettingsSourcesItemSpecifier];
 
   if (v13)
   {
-    v14 = [(HKHealthSettingsController *)self view];
-    v15 = [v14 window];
+    view = [(HKHealthSettingsController *)self view];
+    window = [view window];
 
-    if (v15)
+    if (window)
     {
-      v16 = [v10 lastObject];
-      if (([MEMORY[0x277D0FD58] canOpenLinkWithSourceIdentifier:0 destinationIdentifier:v16] & 1) != 0 || (objc_msgSend(MEMORY[0x277D0FD48], "healthSettingsSourcesItemSpecifier"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v9, "isEqualToString:", v17), v17, v18))
+      lastObject = [v10 lastObject];
+      if (([MEMORY[0x277D0FD58] canOpenLinkWithSourceIdentifier:0 destinationIdentifier:lastObject] & 1) != 0 || (objc_msgSend(MEMORY[0x277D0FD48], "healthSettingsSourcesItemSpecifier"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v9, "isEqualToString:", v17), v17, v18))
       {
-        [(HKHealthSettingsController *)self showSourcesForPrimaryProfile:[(HKHealthSettingsController *)self isPrimaryProfile] animated:1 restorationSourceBundleIdentifier:v16 completion:v8];
-        v19 = [MEMORY[0x277D0FD48] externalSourceAssistantService];
-        v20 = [v16 isEqualToString:v19];
+        [(HKHealthSettingsController *)self showSourcesForPrimaryProfile:[(HKHealthSettingsController *)self isPrimaryProfile] animated:1 restorationSourceBundleIdentifier:lastObject completion:completionCopy];
+        externalSourceAssistantService = [MEMORY[0x277D0FD48] externalSourceAssistantService];
+        v20 = [lastObject isEqualToString:externalSourceAssistantService];
 
         if (v20)
         {
@@ -179,14 +179,14 @@
 
       else
       {
-        v8[2](v8);
+        completionCopy[2](completionCopy);
       }
     }
 
     else
     {
-      objc_storeStrong(&self->_pendingURLDictionary, a3);
-      v8[2](v8);
+      objc_storeStrong(&self->_pendingURLDictionary, l);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -196,9 +196,9 @@
     v22[1] = 3221225472;
     v22[2] = __55__HKHealthSettingsController_handleURL_withCompletion___block_invoke;
     v22[3] = &unk_2796E5278;
-    v23 = v7;
-    v24 = self;
-    v25 = v8;
+    v23 = lCopy;
+    selfCopy = self;
+    v25 = completionCopy;
     [(HKHealthSettingsController *)self fetchHealthRecordsDataWithCompletion:v22];
   }
 
@@ -206,7 +206,7 @@
   {
     v21.receiver = self;
     v21.super_class = HKHealthSettingsController;
-    [(HKHealthSettingsController *)&v21 handleURL:v7 withCompletion:v8];
+    [(HKHealthSettingsController *)&v21 handleURL:lCopy withCompletion:completionCopy];
   }
 }
 
@@ -225,17 +225,17 @@ id __55__HKHealthSettingsController_handleURL_withCompletion___block_invoke(uint
   [v2 submitHealthEventWithDescription:@"Authorization Management: Settings" requestInterval:0];
 }
 
-- (void)configureProfileCharacteristicsItemInSpecifiers:(id)a3
+- (void)configureProfileCharacteristicsItemInSpecifiers:(id)specifiers
 {
-  v3 = [a3 specifierForID:@"HEALTH_DETAILS_ITEM"];
+  v3 = [specifiers specifierForID:@"HEALTH_DETAILS_ITEM"];
   [v3 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
   [v3 setControllerLoadAction:sel_showProfileCharacteristics_];
 }
 
-- (void)configureMedicalIDItemInSpecifiers:(id)a3
+- (void)configureMedicalIDItemInSpecifiers:(id)specifiers
 {
-  v6 = a3;
-  v3 = [v6 specifierForID:@"MEDICAL_ID_ITEM"];
+  specifiersCopy = specifiers;
+  v3 = [specifiersCopy specifierForID:@"MEDICAL_ID_ITEM"];
   [v3 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
   if (v3 && ([MEMORY[0x277CCD4A8] shared], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isMedicalIDAvailable"), v4, (v5 & 1) != 0))
   {
@@ -244,26 +244,26 @@ id __55__HKHealthSettingsController_handleURL_withCompletion___block_invoke(uint
 
   else
   {
-    [v6 removeObject:v3];
+    [specifiersCopy removeObject:v3];
   }
 }
 
-- (void)configureOrganDonationItemInSpecifiers:(id)a3
+- (void)configureOrganDonationItemInSpecifiers:(id)specifiers
 {
-  v5 = a3;
-  v4 = [v5 specifierForID:@"ORGAN_DONATION_ITEM"];
+  specifiersCopy = specifiers;
+  v4 = [specifiersCopy specifierForID:@"ORGAN_DONATION_ITEM"];
   [v4 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
   [v4 setControllerLoadAction:sel_showOrganDonation_];
   if (!v4 || ![MEMORY[0x277D129B8] isOrganDonationRegistrationAvailable] || !objc_msgSend(MEMORY[0x277D129B8], "hasStoredRegistrant") || !-[HKHealthSettingsController isPrimaryProfile](self, "isPrimaryProfile"))
   {
-    [v5 removeObject:v4];
+    [specifiersCopy removeObject:v4];
   }
 }
 
-- (void)configureHealthRecordsItemInSpecifiers:(id)a3
+- (void)configureHealthRecordsItemInSpecifiers:(id)specifiers
 {
-  v8 = a3;
-  v4 = [v8 specifierForID:@"HEALTH_RECORDS_ITEM"];
+  specifiersCopy = specifiers;
+  v4 = [specifiersCopy specifierForID:@"HEALTH_RECORDS_ITEM"];
   healthRecordsSpecifier = self->_healthRecordsSpecifier;
   self->_healthRecordsSpecifier = v4;
 
@@ -273,49 +273,49 @@ id __55__HKHealthSettingsController_handleURL_withCompletion___block_invoke(uint
   {
     if ([(HKHealthSettingsController *)self isPrimaryProfile]&& [(NSNumber *)self->_hasHealthRecordsData BOOLValue])
     {
-      v6 = [(PSSpecifier *)self->_healthRecordsSpecifier identifier];
-      v7 = [v8 specifierForID:v6];
+      identifier = [(PSSpecifier *)self->_healthRecordsSpecifier identifier];
+      v7 = [specifiersCopy specifierForID:identifier];
 
       if (!v7)
       {
-        [v8 insertObject:self->_healthRecordsSpecifier atIndex:{objc_msgSend(v8, "indexOfSpecifierWithID:", @"SOURCES_ITEM"}];
+        [specifiersCopy insertObject:self->_healthRecordsSpecifier atIndex:{objc_msgSend(specifiersCopy, "indexOfSpecifierWithID:", @"SOURCES_ITEM"}];
       }
     }
 
     else
     {
-      [v8 removeObject:self->_healthRecordsSpecifier];
+      [specifiersCopy removeObject:self->_healthRecordsSpecifier];
     }
   }
 }
 
-- (void)configureSourcesItemInSpecifiers:(id)a3
+- (void)configureSourcesItemInSpecifiers:(id)specifiers
 {
-  v3 = [a3 specifierForID:@"SOURCES_ITEM"];
+  v3 = [specifiers specifierForID:@"SOURCES_ITEM"];
   [v3 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
   [v3 setControllerLoadAction:sel_showSources_];
 }
 
-- (void)configureHealthChecklistItemInSpecifiers:(id)a3
+- (void)configureHealthChecklistItemInSpecifiers:(id)specifiers
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 specifierForID:@"HEALTH_CHECKLIST_GROUP"];
-  v6 = [v4 specifierForID:@"HEALTH_CHECKLIST_ITEM"];
+  specifiersCopy = specifiers;
+  v5 = [specifiersCopy specifierForID:@"HEALTH_CHECKLIST_GROUP"];
+  v6 = [specifiersCopy specifierForID:@"HEALTH_CHECKLIST_ITEM"];
   if ([(HKHealthSettingsController *)self isPrimaryProfile])
   {
-    v7 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v8 = [v7 healthAppHiddenOrNotInstalled];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    healthAppHiddenOrNotInstalled = [mEMORY[0x277CCDD30] healthAppHiddenOrNotInstalled];
 
-    v9 = [MEMORY[0x277CCD4A8] shared];
-    v10 = [v9 isHealthChecklistAvailable];
+    mEMORY[0x277CCD4A8] = [MEMORY[0x277CCD4A8] shared];
+    isHealthChecklistAvailable = [mEMORY[0x277CCD4A8] isHealthChecklistAvailable];
 
-    if ((v8 & 1) != 0 || !v10)
+    if ((healthAppHiddenOrNotInstalled & 1) != 0 || !isHealthChecklistAvailable)
     {
       v15[0] = v5;
       v15[1] = v6;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
-      [v4 removeObjectsInArray:v13];
+      [specifiersCopy removeObjectsInArray:v13];
     }
 
     else
@@ -340,18 +340,18 @@ id __55__HKHealthSettingsController_handleURL_withCompletion___block_invoke(uint
 
   else
   {
-    [v4 removeObject:v6];
+    [specifiersCopy removeObject:v6];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createSharedHealthDataSpecifiersWithProfileIdentifiers:(id)a3
+- (id)createSharedHealthDataSpecifiersWithProfileIdentifiers:(id)identifiers
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v4 && [v4 count])
+  if (identifiersCopy && [identifiersCopy count])
   {
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"SHARED_DATA_GROUP_TITLE" value:&stru_28641BB60 table:@"Localizable-tinker"];
@@ -362,8 +362,8 @@ id __55__HKHealthSettingsController_handleURL_withCompletion___block_invoke(uint
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v21 = v4;
-    obj = v4;
+    v21 = identifiersCopy;
+    obj = identifiersCopy;
     v8 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v8)
     {
@@ -381,8 +381,8 @@ id __55__HKHealthSettingsController_handleURL_withCompletion___block_invoke(uint
 
           v13 = [[HKHealthSettingsProfile alloc] initWithProfileIdentifier:*(*(&v23 + 1) + 8 * i)];
           v14 = MEMORY[0x277D3FAD8];
-          v15 = [(HKHealthSettingsProfile *)v13 localizedName];
-          v16 = [v14 preferenceSpecifierNamed:v15 target:self set:0 get:0 detail:0 cell:1 edit:0];
+          localizedName = [(HKHealthSettingsProfile *)v13 localizedName];
+          v16 = [v14 preferenceSpecifierNamed:localizedName target:self set:0 get:0 detail:0 cell:1 edit:0];
 
           [v16 setProperty:v13 forKey:@"HealthSettingsProfileProperty"];
           [v16 setProperty:MEMORY[0x277CBEC38] forKey:v11];
@@ -399,7 +399,7 @@ id __55__HKHealthSettingsController_handleURL_withCompletion___block_invoke(uint
     [v5 sortUsingComparator:&__block_literal_global];
     [v5 insertObject:v19 atIndex:0];
 
-    v4 = v21;
+    identifiersCopy = v21;
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -420,13 +420,13 @@ uint64_t __85__HKHealthSettingsController_createSharedHealthDataSpecifiersWithPr
 - (void)fetchSharedHealthData
 {
   objc_initWeak(&location, self);
-  v3 = [(HKHealthSettingsController *)self healthSettingsProfile];
+  healthSettingsProfile = [(HKHealthSettingsController *)self healthSettingsProfile];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51__HKHealthSettingsController_fetchSharedHealthData__block_invoke;
   v4[3] = &unk_2796E52E8;
   objc_copyWeak(&v5, &location);
-  [v3 getProfilesOfType:3 completion:v4];
+  [healthSettingsProfile getProfilesOfType:3 completion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -470,21 +470,21 @@ void __51__HKHealthSettingsController_fetchSharedHealthData__block_invoke_2(uint
   }
 }
 
-- (void)fetchHealthRecordsDataWithCompletion:(id)a3
+- (void)fetchHealthRecordsDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277D123E8]);
-  v6 = [(HKHealthSettingsController *)self healthSettingsProfile];
-  v7 = [v6 healthStore];
-  v8 = [v5 initWithHealthStore:v7];
+  healthSettingsProfile = [(HKHealthSettingsController *)self healthSettingsProfile];
+  healthStore = [healthSettingsProfile healthStore];
+  v8 = [v5 initWithHealthStore:healthStore];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __67__HKHealthSettingsController_fetchHealthRecordsDataWithCompletion___block_invoke;
   v10[3] = &unk_2796E5338;
   objc_copyWeak(&v12, &location);
-  v9 = v4;
+  v9 = completionCopy;
   v11 = v9;
   [v8 hasAnyHealthRecordsAccountWithCompletion:v10];
 
@@ -541,15 +541,15 @@ uint64_t __67__HKHealthSettingsController_fetchHealthRecordsDataWithCompletion__
   return result;
 }
 
-- (void)addSharedDataSpecifiersWithIdentifiers:(id)a3
+- (void)addSharedDataSpecifiersWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  identifiersCopy = identifiers;
+  v5 = identifiersCopy;
+  if (identifiersCopy && [identifiersCopy count])
   {
     v6 = [(HKHealthSettingsController *)self createSharedHealthDataSpecifiersWithProfileIdentifiers:v5];
-    v7 = [(HKHealthSettingsController *)self specifiers];
-    v8 = [(HKHealthSettingsController *)self _getLastDataSourceInSpecifiers:v7];
+    specifiers = [(HKHealthSettingsController *)self specifiers];
+    v8 = [(HKHealthSettingsController *)self _getLastDataSourceInSpecifiers:specifiers];
 
     if (v8)
     {
@@ -568,15 +568,15 @@ uint64_t __67__HKHealthSettingsController_fetchHealthRecordsDataWithCompletion__
   }
 }
 
-- (id)_getLastDataSourceInSpecifiers:(id)a3
+- (id)_getLastDataSourceInSpecifiers:(id)specifiers
 {
-  v3 = a3;
-  v4 = [v3 specifierForID:@"SOURCES_ITEM"];
+  specifiersCopy = specifiers;
+  v4 = [specifiersCopy specifierForID:@"SOURCES_ITEM"];
   v5 = v4;
   if (v4)
   {
     v6 = v4;
-    v7 = [v3 specifierForID:@"HEALTH_RECORDS_ITEM"];
+    v7 = [specifiersCopy specifierForID:@"HEALTH_RECORDS_ITEM"];
     v8 = v7;
     if (v7)
     {
@@ -596,33 +596,33 @@ uint64_t __67__HKHealthSettingsController_fetchHealthRecordsDataWithCompletion__
   return v10;
 }
 
-- (void)showProfileCharacteristics:(id)a3
+- (void)showProfileCharacteristics:(id)characteristics
 {
   v4 = MEMORY[0x277D11230];
-  v5 = [(HKHealthSettingsController *)self healthSettingsProfile];
-  v6 = [v5 healthStore];
-  v7 = [v4 makeWithSharedDiskHealthExperienceStoreWithHealthStore:v6];
+  healthSettingsProfile = [(HKHealthSettingsController *)self healthSettingsProfile];
+  healthStore = [healthSettingsProfile healthStore];
+  v7 = [v4 makeWithSharedDiskHealthExperienceStoreWithHealthStore:healthStore];
 
   [v7 setAccessType:5];
   [v7 setSettingsNavigationDonatingDelegate:self];
   [(UIViewController *)self hk_authenticateWithCompletionViewController:v7];
 }
 
-- (void)showMedicalID:(id)a3
+- (void)showMedicalID:(id)d
 {
   v4 = [HKHealthSettingsMedicalIDViewController alloc];
-  v5 = [(HKHealthSettingsController *)self healthSettingsProfile];
-  v6 = [(HKHealthSettingsMedicalIDViewController *)v4 initWithHealthSettingsProfile:v5];
+  healthSettingsProfile = [(HKHealthSettingsController *)self healthSettingsProfile];
+  v6 = [(HKHealthSettingsMedicalIDViewController *)v4 initWithHealthSettingsProfile:healthSettingsProfile];
 
   [(HKHealthSettingsMedicalIDViewController *)v6 setSettingsNavigationDonatingDelegate:self];
   [(UIViewController *)self hk_authenticateWithCompletionViewController:v6];
 }
 
-- (void)showOrganDonation:(id)a3
+- (void)showOrganDonation:(id)donation
 {
   v5 = objc_alloc_init(HKHealthSettingsOrganDonationViewController);
-  v4 = [(HKHealthSettingsController *)self makePopToHealthControllerHandler];
-  [(HKOrganDonationRegisterViewController *)v5 setRegistrationCompletionHandler:v4];
+  makePopToHealthControllerHandler = [(HKHealthSettingsController *)self makePopToHealthControllerHandler];
+  [(HKOrganDonationRegisterViewController *)v5 setRegistrationCompletionHandler:makePopToHealthControllerHandler];
 
   [(UIViewController *)self hk_authenticateWithCompletionViewController:v5];
 }
@@ -666,10 +666,10 @@ void __62__HKHealthSettingsController_makePopToHealthControllerHandler__block_in
 
   if (v6)
   {
-    v7 = [v6 principalClass];
-    if (v7)
+    principalClass = [v6 principalClass];
+    if (principalClass)
     {
-      v8 = objc_alloc_init(v7);
+      v8 = objc_alloc_init(principalClass);
       if ([v8 conformsToProtocol:&unk_28642A050])
       {
         [v8 setSettingsNavigationDonatingDelegate:self];
@@ -713,11 +713,11 @@ void __62__HKHealthSettingsController_makePopToHealthControllerHandler__block_in
   }
 }
 
-- (void)showSources:(id)a3
+- (void)showSources:(id)sources
 {
-  v4 = [(HKHealthSettingsController *)self isPrimaryProfile];
+  isPrimaryProfile = [(HKHealthSettingsController *)self isPrimaryProfile];
 
-  [(HKHealthSettingsController *)self showSourcesForPrimaryProfile:v4 animated:1 restorationSourceBundleIdentifier:0 completion:0];
+  [(HKHealthSettingsController *)self showSourcesForPrimaryProfile:isPrimaryProfile animated:1 restorationSourceBundleIdentifier:0 completion:0];
 }
 
 void __113__HKHealthSettingsController_showSourcesForPrimaryProfile_animated_restorationSourceBundleIdentifier_completion___block_invoke(uint64_t a1, int a2, void *a3)
@@ -749,72 +749,72 @@ void __113__HKHealthSettingsController_showSourcesForPrimaryProfile_animated_res
   [v2 hk_showViewController:*(a1 + 40) animated:*(a1 + 48)];
 }
 
-- (id)sourcesViewControllerForPrimaryProfile:(BOOL)a3 restorationSourceBundleIdentifier:(id)a4
+- (id)sourcesViewControllerForPrimaryProfile:(BOOL)profile restorationSourceBundleIdentifier:(id)identifier
 {
   v5 = &off_2796E5050;
-  if (!a3)
+  if (!profile)
   {
     v5 = off_2796E5048;
   }
 
   v6 = *v5;
-  v7 = a4;
+  identifierCopy = identifier;
   v8 = [v6 alloc];
-  v9 = [(HKHealthSettingsController *)self healthSettingsProfile];
-  v10 = [v8 initWithProfile:v9 usingInsetStyling:1];
+  healthSettingsProfile = [(HKHealthSettingsController *)self healthSettingsProfile];
+  v10 = [v8 initWithProfile:healthSettingsProfile usingInsetStyling:1];
 
-  [v10 setRestorationSourceBundleIdentifier:v7];
+  [v10 setRestorationSourceBundleIdentifier:identifierCopy];
 
   return v10;
 }
 
-- (void)openHealthChecklist:(id)a3
+- (void)openHealthChecklist:(id)checklist
 {
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"x-apple-health://HealthChecklist?urlSource=HealthSettings"];
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 openSensitiveURL:v4 withOptions:MEMORY[0x277CBEC10]];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:v4 withOptions:MEMORY[0x277CBEC10]];
 }
 
-- (void)showSharedProfileHealthSettings:(id)a3
+- (void)showSharedProfileHealthSettings:(id)settings
 {
-  v5 = [a3 propertyForKey:@"HealthSettingsProfileProperty"];
+  v5 = [settings propertyForKey:@"HealthSettingsProfileProperty"];
   v4 = [[HKHealthSettingsController alloc] initWithHealthSettingsProfile:v5];
   [(UIViewController *)self hk_authenticateWithCompletionViewController:v4];
 }
 
-- (void)donateWithDeepLink:(id)a3 andTitle:(id)a4
+- (void)donateWithDeepLink:(id)link andTitle:(id)title
 {
-  v25 = a4;
+  titleCopy = title;
   v6 = MEMORY[0x277CCAEB8];
-  v7 = a3;
+  linkCopy = link;
   v8 = [v6 alloc];
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v11 = [v10 bundleURL];
+  bundleURL = [v10 bundleURL];
   v12 = @"Health";
-  v13 = [v8 initWithKey:@"Health" table:0 locale:v9 bundleURL:v11];
+  v13 = [v8 initWithKey:@"Health" table:0 locale:currentLocale bundleURL:bundleURL];
 
-  v14 = [MEMORY[0x277CBEB18] array];
-  [v14 addObject:v13];
-  if (v25)
+  array = [MEMORY[0x277CBEB18] array];
+  [array addObject:v13];
+  if (titleCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v16 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v18 = [v17 bundleURL];
-    v19 = [v15 initWithKey:v25 table:0 locale:v16 bundleURL:v18];
+    bundleURL2 = [v17 bundleURL];
+    v19 = [v15 initWithKey:titleCopy table:0 locale:currentLocale2 bundleURL:bundleURL2];
 
-    [v14 addObject:v19];
-    v12 = v25;
+    [array addObject:v19];
+    v12 = titleCopy;
   }
 
   v20 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v21 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale3 = [MEMORY[0x277CBEAF8] currentLocale];
   v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v23 = [v22 bundleURL];
-  v24 = [v20 initWithKey:v12 table:0 locale:v21 bundleURL:v23];
+  bundleURL3 = [v22 bundleURL];
+  v24 = [v20 initWithKey:v12 table:0 locale:currentLocale3 bundleURL:bundleURL3];
 
-  [(HKHealthSettingsController *)self pe_emitNavigationEventForApplicationSettingsWithApplicationBundleIdentifier:@"com.apple.Health" title:v24 localizedNavigationComponents:v14 deepLink:v7];
+  [(HKHealthSettingsController *)self pe_emitNavigationEventForApplicationSettingsWithApplicationBundleIdentifier:@"com.apple.Health" title:v24 localizedNavigationComponents:array deepLink:linkCopy];
 }
 
 - (void)addSharedDataSpecifiersWithIdentifiers:(void *)a1 .cold.1(void *a1, void *a2)

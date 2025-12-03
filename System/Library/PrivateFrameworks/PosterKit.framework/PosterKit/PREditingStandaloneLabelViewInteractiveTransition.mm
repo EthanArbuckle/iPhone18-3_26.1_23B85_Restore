@@ -1,32 +1,32 @@
 @interface PREditingStandaloneLabelViewInteractiveTransition
 - (NSString)description;
 - (PREditingStandaloneLabelView)label;
-- (PREditingStandaloneLabelViewInteractiveTransition)initWithLabel:(id)a3 currentText:(id)a4 transitionText:(id)a5;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (PREditingStandaloneLabelViewInteractiveTransition)initWithLabel:(id)label currentText:(id)text transitionText:(id)transitionText;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)cancelInteractiveTransition;
 - (void)finishInteractiveTransition;
-- (void)updateInteractiveTransition:(double)a3;
+- (void)updateInteractiveTransition:(double)transition;
 @end
 
 @implementation PREditingStandaloneLabelViewInteractiveTransition
 
-- (PREditingStandaloneLabelViewInteractiveTransition)initWithLabel:(id)a3 currentText:(id)a4 transitionText:(id)a5
+- (PREditingStandaloneLabelViewInteractiveTransition)initWithLabel:(id)label currentText:(id)text transitionText:(id)transitionText
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  labelCopy = label;
+  textCopy = text;
+  transitionTextCopy = transitionText;
   v18.receiver = self;
   v18.super_class = PREditingStandaloneLabelViewInteractiveTransition;
   v11 = [(PREditingStandaloneLabelViewInteractiveTransition *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_label, v8);
-    v13 = [v9 copy];
+    objc_storeWeak(&v11->_label, labelCopy);
+    v13 = [textCopy copy];
     currentText = v12->_currentText;
     v12->_currentText = v13;
 
-    v15 = [v10 copy];
+    v15 = [transitionTextCopy copy];
     transitionText = v12->_transitionText;
     v12->_transitionText = v15;
   }
@@ -34,22 +34,22 @@
   return v12;
 }
 
-- (void)updateInteractiveTransition:(double)a3
+- (void)updateInteractiveTransition:(double)transition
 {
-  v5 = [(PREditingStandaloneLabelViewInteractiveTransition *)self label];
-  [v5 interactiveTransition:self didUpdate:a3];
+  label = [(PREditingStandaloneLabelViewInteractiveTransition *)self label];
+  [label interactiveTransition:self didUpdate:transition];
 }
 
 - (void)finishInteractiveTransition
 {
-  v3 = [(PREditingStandaloneLabelViewInteractiveTransition *)self label];
-  [v3 interactiveTransition:self didFinishSuccessfully:1];
+  label = [(PREditingStandaloneLabelViewInteractiveTransition *)self label];
+  [label interactiveTransition:self didFinishSuccessfully:1];
 }
 
 - (void)cancelInteractiveTransition
 {
-  v3 = [(PREditingStandaloneLabelViewInteractiveTransition *)self label];
-  [v3 interactiveTransition:self didFinishSuccessfully:0];
+  label = [(PREditingStandaloneLabelViewInteractiveTransition *)self label];
+  [label interactiveTransition:self didFinishSuccessfully:0];
 }
 
 - (NSString)description
@@ -59,7 +59,7 @@
   v8 = 3221225472;
   v9 = __64__PREditingStandaloneLabelViewInteractiveTransition_description__block_invoke;
   v10 = &unk_1E7843070;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -68,14 +68,14 @@
   return v5;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v8 = a3;
-  v4 = [(PREditingStandaloneLabelViewInteractiveTransition *)self currentText];
-  v5 = [v8 appendObject:v4 withName:@"currentText"];
+  formatterCopy = formatter;
+  currentText = [(PREditingStandaloneLabelViewInteractiveTransition *)self currentText];
+  v5 = [formatterCopy appendObject:currentText withName:@"currentText"];
 
-  v6 = [(PREditingStandaloneLabelViewInteractiveTransition *)self transitionText];
-  v7 = [v8 appendObject:v6 withName:@"transitionText"];
+  transitionText = [(PREditingStandaloneLabelViewInteractiveTransition *)self transitionText];
+  v7 = [formatterCopy appendObject:transitionText withName:@"transitionText"];
 }
 
 - (PREditingStandaloneLabelView)label

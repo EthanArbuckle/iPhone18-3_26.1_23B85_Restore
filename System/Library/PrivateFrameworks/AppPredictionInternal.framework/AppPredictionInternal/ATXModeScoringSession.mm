@@ -1,58 +1,58 @@
 @interface ATXModeScoringSession
-+ (id)coalesceSessions:(id)a3 modeEntityStore:(id)a4;
-- (BOOL)hasModeWithinRank:(unint64_t)a3 rank:(unint64_t)a4;
++ (id)coalesceSessions:(id)sessions modeEntityStore:(id)store;
+- (BOOL)hasModeWithinRank:(unint64_t)rank rank:(unint64_t)a4;
 - (BOOL)isLabeled;
 - (BOOL)isStronglyCorrelatedWithTopMode;
 - (double)numScoredAppLaunches;
-- (double)secondsUntilOtherSession:(id)a3;
-- (id)_initFromStartTime:(double)a3 endTime:(double)a4 modeEntityStore:(id)a5 appLaunches:(id)a6 sessionAffinityVector:(id)a7;
-- (id)_weightForLaunch:(id)a3;
-- (id)initFromStartTime:(double)a3 endTime:(double)a4 modeEntityStore:(id)a5;
+- (double)secondsUntilOtherSession:(id)session;
+- (id)_initFromStartTime:(double)time endTime:(double)endTime modeEntityStore:(id)store appLaunches:(id)launches sessionAffinityVector:(id)vector;
+- (id)_weightForLaunch:(id)launch;
+- (id)initFromStartTime:(double)time endTime:(double)endTime modeEntityStore:(id)store;
 - (unint64_t)topMode;
 - (void)_populateAffinity;
-- (void)debug_prettyPrintSession:(BOOL)a3;
-- (void)populateAppLaunches:(id)a3;
+- (void)debug_prettyPrintSession:(BOOL)session;
+- (void)populateAppLaunches:(id)launches;
 @end
 
 @implementation ATXModeScoringSession
 
-- (id)initFromStartTime:(double)a3 endTime:(double)a4 modeEntityStore:(id)a5
+- (id)initFromStartTime:(double)time endTime:(double)endTime modeEntityStore:(id)store
 {
-  v9 = a5;
+  storeCopy = store;
   v15.receiver = self;
   v15.super_class = ATXModeScoringSession;
   v10 = [(ATXModeScoringSession *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    v10->_startTimestamp = a3;
-    v10->_endTimestamp = a4;
+    v10->_startTimestamp = time;
+    v10->_endTimestamp = endTime;
     v12 = objc_opt_new();
     appLaunches = v11->_appLaunches;
     v11->_appLaunches = v12;
 
-    objc_storeStrong(&v11->_modeEntityStore, a5);
+    objc_storeStrong(&v11->_modeEntityStore, store);
   }
 
   return v11;
 }
 
-- (id)_initFromStartTime:(double)a3 endTime:(double)a4 modeEntityStore:(id)a5 appLaunches:(id)a6 sessionAffinityVector:(id)a7
+- (id)_initFromStartTime:(double)time endTime:(double)endTime modeEntityStore:(id)store appLaunches:(id)launches sessionAffinityVector:(id)vector
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  storeCopy = store;
+  launchesCopy = launches;
+  vectorCopy = vector;
   v19.receiver = self;
   v19.super_class = ATXModeScoringSession;
   v16 = [(ATXModeScoringSession *)&v19 init];
   p_isa = &v16->super.isa;
   if (v16)
   {
-    v16->_startTimestamp = a3;
-    v16->_endTimestamp = a4;
-    objc_storeStrong(&v16->_appLaunches, a6);
-    objc_storeStrong(p_isa + 5, a5);
-    objc_storeStrong(p_isa + 4, a7);
+    v16->_startTimestamp = time;
+    v16->_endTimestamp = endTime;
+    objc_storeStrong(&v16->_appLaunches, launches);
+    objc_storeStrong(p_isa + 5, store);
+    objc_storeStrong(p_isa + 4, vector);
   }
 
   return p_isa;
@@ -60,9 +60,9 @@
 
 - (BOOL)isStronglyCorrelatedWithTopMode
 {
-  v2 = [(ATXModeEntityAffinityVector *)self->_sessionAffinityVector sortedAffinities];
-  v3 = v2;
-  if (v2 && [v2 count])
+  sortedAffinities = [(ATXModeEntityAffinityVector *)self->_sessionAffinityVector sortedAffinities];
+  v3 = sortedAffinities;
+  if (sortedAffinities && [sortedAffinities count])
   {
     if ([v3 count] == 1)
     {
@@ -72,12 +72,12 @@
     else
     {
       v5 = [v3 objectAtIndexedSubscript:0];
-      v6 = [v5 first];
-      [v6 doubleValue];
+      first = [v5 first];
+      [first doubleValue];
       v8 = v7;
       v9 = [v3 objectAtIndexedSubscript:1];
-      v10 = [v9 first];
-      [v10 doubleValue];
+      first2 = [v9 first];
+      [first2 doubleValue];
       v4 = v8 > v11 + v11;
     }
   }
@@ -90,10 +90,10 @@
   return v4;
 }
 
-- (BOOL)hasModeWithinRank:(unint64_t)a3 rank:(unint64_t)a4
+- (BOOL)hasModeWithinRank:(unint64_t)rank rank:(unint64_t)a4
 {
-  v5 = [(ATXModeEntityAffinityVector *)self->_sessionAffinityVector sortedAffinities];
-  v6 = [v5 _pas_mappedArrayWithTransform:&__block_literal_global_10];
+  sortedAffinities = [(ATXModeEntityAffinityVector *)self->_sessionAffinityVector sortedAffinities];
+  v6 = [sortedAffinities _pas_mappedArrayWithTransform:&__block_literal_global_10];
 
   v7 = [v6 count];
   if (v7 >= a4)
@@ -137,11 +137,11 @@
         }
 
         modeEntityStore = self->_modeEntityStore;
-        v10 = [*(*(&v15 + 1) + 8 * i) bundleID];
-        v11 = [(ATXModeEntityStore *)modeEntityStore appEntityForBundleId:v10];
-        v12 = [v11 affinityVector];
+        bundleID = [*(*(&v15 + 1) + 8 * i) bundleID];
+        v11 = [(ATXModeEntityStore *)modeEntityStore appEntityForBundleId:bundleID];
+        affinityVector = [v11 affinityVector];
 
-        if (v12)
+        if (affinityVector)
         {
           v7 = v7 + 1.0;
         }
@@ -162,26 +162,26 @@
   return v7;
 }
 
-- (double)secondsUntilOtherSession:(id)a3
+- (double)secondsUntilOtherSession:(id)session
 {
-  v4 = a3;
-  [v4 startTimestamp];
+  sessionCopy = session;
+  [sessionCopy startTimestamp];
   p_endTimestamp = &self->_endTimestamp;
   if (v6 > self->_endTimestamp)
   {
-    [v4 startTimestamp];
+    [sessionCopy startTimestamp];
 LABEL_5:
     v10 = v7 - *p_endTimestamp;
     goto LABEL_6;
   }
 
-  [v4 endTimestamp];
+  [sessionCopy endTimestamp];
   startTimestamp = self->_startTimestamp;
   p_startTimestamp = &self->_startTimestamp;
   v10 = 0.0;
   if (v11 < startTimestamp)
   {
-    [v4 endTimestamp];
+    [sessionCopy endTimestamp];
     p_endTimestamp = p_startTimestamp;
     goto LABEL_5;
   }
@@ -204,11 +204,11 @@ LABEL_6:
 
 - (unint64_t)topMode
 {
-  v2 = [(ATXModeEntityAffinityVector *)self->_sessionAffinityVector sortedAffinities];
-  if ([v2 count])
+  sortedAffinities = [(ATXModeEntityAffinityVector *)self->_sessionAffinityVector sortedAffinities];
+  if ([sortedAffinities count])
   {
-    v3 = [v2 objectAtIndexedSubscript:0];
-    v4 = [v3 second];
+    v3 = [sortedAffinities objectAtIndexedSubscript:0];
+    second = [v3 second];
     v5 = ATXStringToMode();
   }
 
@@ -220,24 +220,24 @@ LABEL_6:
   return v5;
 }
 
-+ (id)coalesceSessions:(id)a3 modeEntityStore:(id)a4
++ (id)coalesceSessions:(id)sessions modeEntityStore:(id)store
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEAA8] distantFuture];
-  [v7 timeIntervalSinceReferenceDate];
+  sessionsCopy = sessions;
+  storeCopy = store;
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  [distantFuture timeIntervalSinceReferenceDate];
   v9 = v8;
 
-  v10 = [MEMORY[0x277CBEAA8] distantPast];
-  [v10 timeIntervalSinceReferenceDate];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  [distantPast timeIntervalSinceReferenceDate];
   v12 = v11;
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v13 = v5;
+  v13 = sessionsCopy;
   v14 = [v13 countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v14)
   {
@@ -294,8 +294,8 @@ LABEL_6:
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v33 + 1) + 8 * j) appLaunches];
-        [v23 addObjectsFromArray:v29];
+        appLaunches = [*(*(&v33 + 1) + 8 * j) appLaunches];
+        [v23 addObjectsFromArray:appLaunches];
       }
 
       v26 = [v24 countByEnumeratingWithState:&v33 objects:v41 count:16];
@@ -304,7 +304,7 @@ LABEL_6:
     while (v26);
   }
 
-  v30 = [[ATXModeScoringSession alloc] _initFromStartTime:v6 endTime:v23 modeEntityStore:v22 appLaunches:v9 sessionAffinityVector:v12];
+  v30 = [[ATXModeScoringSession alloc] _initFromStartTime:storeCopy endTime:v23 modeEntityStore:v22 appLaunches:v9 sessionAffinityVector:v12];
   v31 = *MEMORY[0x277D85DE8];
 
   return v30;
@@ -325,9 +325,9 @@ id __58__ATXModeScoringSession_coalesceSessions_modeEntityStore___block_invoke(u
   return v9;
 }
 
-- (void)populateAppLaunches:(id)a3
+- (void)populateAppLaunches:(id)launches
 {
-  v4 = [a3 copy];
+  v4 = [launches copy];
   appLaunches = self->_appLaunches;
   self->_appLaunches = v4;
 
@@ -381,16 +381,16 @@ id __42__ATXModeScoringSession__populateAffinity__block_invoke(uint64_t a1, void
   return v10;
 }
 
-- (id)_weightForLaunch:(id)a3
+- (id)_weightForLaunch:(id)launch
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  launchCopy = launch;
   v4 = +[_ATXAppLaunchHistogramManager sharedInstance];
   v5 = [v4 histogramForLaunchType:0];
 
-  v6 = [v3 bundleID];
+  bundleID = [launchCopy bundleID];
 
-  v13[0] = v6;
+  v13[0] = bundleID;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   [v5 totalLaunchesForBundleIds:v7];
   v9 = v8;
@@ -402,14 +402,14 @@ id __42__ATXModeScoringSession__populateAffinity__block_invoke(uint64_t a1, void
   return v10;
 }
 
-- (void)debug_prettyPrintSession:(BOOL)a3
+- (void)debug_prettyPrintSession:(BOOL)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v48 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CCA968]);
   v6 = MEMORY[0x277CCA968];
-  v7 = [MEMORY[0x277CBEAF8] currentLocale];
-  v8 = [v6 dateFormatFromTemplate:@"EMMMd HH:mm ss ZZZZ" options:0 locale:v7];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v8 = [v6 dateFormatFromTemplate:@"EMMMd HH:mm ss ZZZZ" options:0 locale:currentLocale];
 
   [v5 setDateFormat:v8];
   v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:self->_startTimestamp];
@@ -421,17 +421,17 @@ id __42__ATXModeScoringSession__populateAffinity__block_invoke(uint64_t a1, void
   v13 = __atxlog_handle_modes();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(ATXModeEntityAffinityVector *)self->_sessionAffinityVector prettyDescription];
+    prettyDescription = [(ATXModeEntityAffinityVector *)self->_sessionAffinityVector prettyDescription];
     *buf = 138412802;
     v43 = v10;
     v44 = 2112;
     v45 = v12;
     v46 = 2112;
-    v47 = v14;
+    v47 = prettyDescription;
     _os_log_impl(&dword_2263AA000, v13, OS_LOG_TYPE_DEFAULT, "Session: %@, %@: %@", buf, 0x20u);
   }
 
-  if (v3)
+  if (sessionCopy)
   {
     v33 = v12;
     v34 = v10;
@@ -458,28 +458,28 @@ id __42__ATXModeScoringSession__populateAffinity__block_invoke(uint64_t a1, void
 
           v20 = *(*(&v37 + 1) + 8 * i);
           modeEntityStore = self->_modeEntityStore;
-          v22 = [v20 bundleID];
-          v23 = [(ATXModeEntityStore *)modeEntityStore appEntityForBundleId:v22];
+          bundleID = [v20 bundleID];
+          v23 = [(ATXModeEntityStore *)modeEntityStore appEntityForBundleId:bundleID];
 
-          v24 = [v23 affinityVector];
-          if (v24)
+          affinityVector = [v23 affinityVector];
+          if (affinityVector)
           {
-            v25 = v24;
-            v26 = [v23 affinityVector];
-            v27 = [v26 isZeroVector];
+            v25 = affinityVector;
+            affinityVector2 = [v23 affinityVector];
+            isZeroVector = [affinityVector2 isZeroVector];
 
-            if ((v27 & 1) == 0)
+            if ((isZeroVector & 1) == 0)
             {
               v28 = __atxlog_handle_modes();
               if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
               {
-                v29 = [v20 bundleID];
-                v30 = [v23 affinityVector];
-                v31 = [v30 prettyDescription];
+                bundleID2 = [v20 bundleID];
+                affinityVector3 = [v23 affinityVector];
+                prettyDescription2 = [affinityVector3 prettyDescription];
                 *buf = 138412546;
-                v43 = v29;
+                v43 = bundleID2;
                 v44 = 2112;
-                v45 = v31;
+                v45 = prettyDescription2;
                 _os_log_impl(&dword_2263AA000, v28, OS_LOG_TYPE_DEFAULT, "    App Launch: %@, %@", buf, 0x16u);
               }
             }

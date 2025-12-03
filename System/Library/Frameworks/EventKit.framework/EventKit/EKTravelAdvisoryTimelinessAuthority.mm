@@ -1,37 +1,37 @@
 @interface EKTravelAdvisoryTimelinessAuthority
-+ (id)stringForPeriod:(unint64_t)a3;
++ (id)stringForPeriod:(unint64_t)period;
 - (BOOL)active;
 - (EKTravelAdvisoryTimelinessAuthority)init;
-- (EKTravelAdvisoryTimelinessAuthority)initWithDateProvider:(id)a3;
+- (EKTravelAdvisoryTimelinessAuthority)initWithDateProvider:(id)provider;
 - (NSDate)startOfLeaveNowPeriod;
 - (NSDate)startOfRunningLatePeriod;
 - (id)periodChangedCallback;
 - (unint64_t)period;
 - (void)_refresh;
-- (void)_refreshOnDate:(id)a3;
+- (void)_refreshOnDate:(id)date;
 - (void)_refreshPeriod;
 - (void)_refreshTimer;
 - (void)_uninstallTimer;
 - (void)activate;
 - (void)deactivate;
 - (void)dealloc;
-- (void)setPeriodChangedCallback:(id)a3;
-- (void)updateWithHypothesis:(id)a3;
+- (void)setPeriodChangedCallback:(id)callback;
+- (void)updateWithHypothesis:(id)hypothesis;
 @end
 
 @implementation EKTravelAdvisoryTimelinessAuthority
 
 - (EKTravelAdvisoryTimelinessAuthority)init
 {
-  v3 = [MEMORY[0x1E6993008] sharedInstance];
-  v4 = [(EKTravelAdvisoryTimelinessAuthority *)self initWithDateProvider:v3];
+  mEMORY[0x1E6993008] = [MEMORY[0x1E6993008] sharedInstance];
+  v4 = [(EKTravelAdvisoryTimelinessAuthority *)self initWithDateProvider:mEMORY[0x1E6993008]];
 
   return v4;
 }
 
-- (EKTravelAdvisoryTimelinessAuthority)initWithDateProvider:(id)a3
+- (EKTravelAdvisoryTimelinessAuthority)initWithDateProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = EKTravelAdvisoryTimelinessAuthority;
   v6 = [(EKTravelAdvisoryTimelinessAuthority *)&v14 init];
@@ -39,19 +39,19 @@
   {
     objc_opt_class();
     v7 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v8 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
 
-    v9 = dispatch_queue_create(v8, 0);
+    v9 = dispatch_queue_create(uTF8String, 0);
     [(EKTravelAdvisoryTimelinessAuthority *)v6 setWorkQueue:v9];
 
     objc_opt_class();
     v10 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v11 = [v10 UTF8String];
+    uTF8String2 = [v10 UTF8String];
 
-    v12 = dispatch_queue_create(v11, 0);
+    v12 = dispatch_queue_create(uTF8String2, 0);
     [(EKTravelAdvisoryTimelinessAuthority *)v6 setCallbackQueue:v12];
 
-    objc_storeStrong(&v6->_dateProvider, a3);
+    objc_storeStrong(&v6->_dateProvider, provider);
   }
 
   return v6;
@@ -67,23 +67,23 @@
 
 - (BOOL)active
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
+  workQueue = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __45__EKTravelAdvisoryTimelinessAuthority_active__block_invoke;
   v5[3] = &unk_1E77FD530;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(workQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __45__EKTravelAdvisoryTimelinessAuthority_active__block_invoke(uint64_t a1)
@@ -95,13 +95,13 @@ uint64_t __45__EKTravelAdvisoryTimelinessAuthority_active__block_invoke(uint64_t
 
 - (void)activate
 {
-  v3 = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
+  workQueue = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__EKTravelAdvisoryTimelinessAuthority_activate__block_invoke;
   block[3] = &unk_1E77FD418;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __47__EKTravelAdvisoryTimelinessAuthority_activate__block_invoke(uint64_t a1)
@@ -127,13 +127,13 @@ void __47__EKTravelAdvisoryTimelinessAuthority_activate__block_invoke(uint64_t a
 
 - (void)deactivate
 {
-  v3 = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
+  workQueue = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__EKTravelAdvisoryTimelinessAuthority_deactivate__block_invoke;
   block[3] = &unk_1E77FD418;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(workQueue, block);
 }
 
 void __49__EKTravelAdvisoryTimelinessAuthority_deactivate__block_invoke(uint64_t a1)
@@ -165,14 +165,14 @@ void __49__EKTravelAdvisoryTimelinessAuthority_deactivate__block_invoke(uint64_t
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
+  workQueue = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__EKTravelAdvisoryTimelinessAuthority_startOfLeaveNowPeriod__block_invoke;
   v6[3] = &unk_1E77FD530;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -198,14 +198,14 @@ uint64_t __60__EKTravelAdvisoryTimelinessAuthority_startOfLeaveNowPeriod__block_
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
+  workQueue = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__EKTravelAdvisoryTimelinessAuthority_startOfRunningLatePeriod__block_invoke;
   v6[3] = &unk_1E77FD530;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -223,20 +223,20 @@ uint64_t __63__EKTravelAdvisoryTimelinessAuthority_startOfRunningLatePeriod__blo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)updateWithHypothesis:(id)a3
+- (void)updateWithHypothesis:(id)hypothesis
 {
-  v4 = a3;
+  hypothesisCopy = hypothesis;
   objc_initWeak(&location, self);
-  v5 = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
+  workQueue = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__EKTravelAdvisoryTimelinessAuthority_updateWithHypothesis___block_invoke;
   v7[3] = &unk_1E77FEB10;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = hypothesisCopy;
+  selfCopy = self;
+  v6 = hypothesisCopy;
   objc_copyWeak(&v10, &location);
-  dispatch_async(v5, v7);
+  dispatch_async(workQueue, v7);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -275,18 +275,18 @@ void __60__EKTravelAdvisoryTimelinessAuthority_updateWithHypothesis___block_invo
   [v10 _refresh];
 }
 
-- (void)setPeriodChangedCallback:(id)a3
+- (void)setPeriodChangedCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
+  callbackCopy = callback;
+  workQueue = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__EKTravelAdvisoryTimelinessAuthority_setPeriodChangedCallback___block_invoke;
   v7[3] = &unk_1E77FD1A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = callbackCopy;
+  v6 = callbackCopy;
+  dispatch_async(workQueue, v7);
 }
 
 - (id)periodChangedCallback
@@ -297,14 +297,14 @@ void __60__EKTravelAdvisoryTimelinessAuthority_updateWithHypothesis___block_invo
   v10 = __Block_byref_object_copy__14;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
+  workQueue = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__EKTravelAdvisoryTimelinessAuthority_periodChangedCallback__block_invoke;
   v6[3] = &unk_1E77FD530;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = _Block_copy(v8[5]);
   _Block_object_dispose(&v7, 8);
@@ -328,14 +328,14 @@ uint64_t __60__EKTravelAdvisoryTimelinessAuthority_periodChangedCallback__block_
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
+  workQueue = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__EKTravelAdvisoryTimelinessAuthority_period__block_invoke;
   v6[3] = &unk_1E77FD530;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -349,16 +349,16 @@ uint64_t __45__EKTravelAdvisoryTimelinessAuthority_period__block_invoke(uint64_t
   return result;
 }
 
-+ (id)stringForPeriod:(unint64_t)a3
++ (id)stringForPeriod:(unint64_t)period
 {
-  if (a3 > 2)
+  if (period > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E77FEB58[a3];
+    return off_1E77FEB58[period];
   }
 }
 
@@ -373,7 +373,7 @@ uint64_t __45__EKTravelAdvisoryTimelinessAuthority_period__block_invoke(uint64_t
 - (void)_refreshPeriod
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a1;
+  selfCopy = self;
   v6 = +[EKTravelAdvisoryTimelinessAuthority stringForPeriod:](EKTravelAdvisoryTimelinessAuthority, "stringForPeriod:", [a2 internalPeriod]);
   v7 = [EKTravelAdvisoryTimelinessAuthority stringForPeriod:a3];
   OUTLINED_FUNCTION_3_2();
@@ -392,13 +392,13 @@ uint64_t __45__EKTravelAdvisoryTimelinessAuthority_period__block_invoke(uint64_t
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_refreshOnDate:(id)a3
+- (void)_refreshOnDate:(id)date
 {
-  v4 = a3;
-  if (v4)
+  dateCopy = date;
+  if (dateCopy)
   {
-    v5 = [MEMORY[0x1E695DF00] date];
-    v6 = [v4 CalIsBeforeDate:v5];
+    date = [MEMORY[0x1E695DF00] date];
+    v6 = [dateCopy CalIsBeforeDate:date];
 
     if (v6)
     {
@@ -410,31 +410,31 @@ uint64_t __45__EKTravelAdvisoryTimelinessAuthority_period__block_invoke(uint64_t
 
     else
     {
-      v7 = [(EKTravelAdvisoryTimelinessAuthority *)self timer];
-      if (!v7)
+      timer = [(EKTravelAdvisoryTimelinessAuthority *)self timer];
+      if (!timer)
       {
         if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
         {
           [EKTimedEventStorePurger _resetIdleTimer];
         }
 
-        v8 = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
-        v7 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v8);
+        workQueue = [(EKTravelAdvisoryTimelinessAuthority *)self workQueue];
+        timer = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, workQueue);
 
-        [(EKTravelAdvisoryTimelinessAuthority *)self setTimer:v7];
+        [(EKTravelAdvisoryTimelinessAuthority *)self setTimer:timer];
         objc_initWeak(&location, self);
         v13 = MEMORY[0x1E69E9820];
         v14 = 3221225472;
         v15 = __54__EKTravelAdvisoryTimelinessAuthority__refreshOnDate___block_invoke;
         v16 = &unk_1E77FD3F0;
         objc_copyWeak(&v17, &location);
-        dispatch_source_set_event_handler(v7, &v13);
-        dispatch_activate(v7);
+        dispatch_source_set_event_handler(timer, &v13);
+        dispatch_activate(timer);
         objc_destroyWeak(&v17);
         objc_destroyWeak(&location);
       }
 
-      [v4 timeIntervalSinceNow];
+      [dateCopy timeIntervalSinceNow];
       v10 = v9;
       v11 = dispatch_time(0, (v9 * 1000000000.0));
       v12 = EKLogHandle;
@@ -443,7 +443,7 @@ uint64_t __45__EKTravelAdvisoryTimelinessAuthority_period__block_invoke(uint64_t
         [(EKTravelAdvisoryTimelinessAuthority *)v12 _refreshOnDate:v10];
       }
 
-      dispatch_source_set_timer(v7, v11, 0xFFFFFFFFFFFFFFFFLL, 0);
+      dispatch_source_set_timer(timer, v11, 0xFFFFFFFFFFFFFFFFLL, 0);
     }
   }
 
@@ -469,15 +469,15 @@ void __54__EKTravelAdvisoryTimelinessAuthority__refreshOnDate___block_invoke(uin
 
 - (void)_uninstallTimer
 {
-  v3 = [(EKTravelAdvisoryTimelinessAuthority *)self timer];
-  if (v3)
+  timer = [(EKTravelAdvisoryTimelinessAuthority *)self timer];
+  if (timer)
   {
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
     {
       [EKTimedEventStorePurger _uninstallTimer];
     }
 
-    dispatch_source_cancel(v3);
+    dispatch_source_cancel(timer);
     [(EKTravelAdvisoryTimelinessAuthority *)self setTimer:0];
   }
 }

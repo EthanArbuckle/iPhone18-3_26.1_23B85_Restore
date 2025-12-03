@@ -1,20 +1,20 @@
 @interface MSSharedTripBlockedItem
 + (Class)managedClass;
-- (MSSharedTripBlockedItem)initWithExpiryTime:(int64_t)a3 sharedTripIdentifier:(id)a4;
-- (MSSharedTripBlockedItem)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6;
-- (MSSharedTripBlockedItem)initWithStore:(id)a3 expiryTime:(int64_t)a4 sharedTripIdentifier:(id)a5;
+- (MSSharedTripBlockedItem)initWithExpiryTime:(int64_t)time sharedTripIdentifier:(id)identifier;
+- (MSSharedTripBlockedItem)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (MSSharedTripBlockedItem)initWithStore:(id)store expiryTime:(int64_t)time sharedTripIdentifier:(id)identifier;
 - (NSString)sharedTripIdentifier;
 - (int64_t)expiryTime;
-- (void)setExpiryTime:(int64_t)a3;
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5;
-- (void)setSharedTripIdentifier:(id)a3;
+- (void)setExpiryTime:(int64_t)time;
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (void)setSharedTripIdentifier:(id)identifier;
 @end
 
 @implementation MSSharedTripBlockedItem
 
-- (MSSharedTripBlockedItem)initWithExpiryTime:(int64_t)a3 sharedTripIdentifier:(id)a4
+- (MSSharedTripBlockedItem)initWithExpiryTime:(int64_t)time sharedTripIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_1B63BEBD4();
     v7 = v6;
@@ -41,14 +41,14 @@
     v9 = 0;
   }
 
-  v10 = [(MSSharedTripBlockedItem *)self initWithStore:v8 expiryTime:a3 sharedTripIdentifier:v9];
+  v10 = [(MSSharedTripBlockedItem *)self initWithStore:v8 expiryTime:time sharedTripIdentifier:v9];
 
   return v10;
 }
 
-- (MSSharedTripBlockedItem)initWithStore:(id)a3 expiryTime:(int64_t)a4 sharedTripIdentifier:(id)a5
+- (MSSharedTripBlockedItem)initWithStore:(id)store expiryTime:(int64_t)time sharedTripIdentifier:(id)identifier
 {
-  if (a5)
+  if (identifier)
   {
     v7 = sub_1B63BEBD4();
     v9 = v8;
@@ -60,7 +60,7 @@
     v9 = 0;
   }
 
-  return SharedTripBlockedItem.init(store:expiryTime:sharedTripIdentifier:)(a3, a4, v7, v9);
+  return SharedTripBlockedItem.init(store:expiryTime:sharedTripIdentifier:)(store, time, v7, v9);
 }
 
 + (Class)managedClass
@@ -70,34 +70,34 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v7 = a3;
-  v8 = self;
-  sub_1B631F4F4(v7, a4);
+  objectCopy = object;
+  selfCopy = self;
+  sub_1B631F4F4(objectCopy, load);
 }
 
 - (int64_t)expiryTime
 {
   v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v5 = self;
+  selfCopy = self;
   [v4 lock];
-  v6 = *(&v5->super.super.isa + OBJC_IVAR___MSSharedTripBlockedItem__expiryTime);
+  v6 = *(&selfCopy->super.super.isa + OBJC_IVAR___MSSharedTripBlockedItem__expiryTime);
   [*(&self->super.super.isa + v3) unlock];
 
   return v6;
 }
 
-- (void)setExpiryTime:(int64_t)a3
+- (void)setExpiryTime:(int64_t)time
 {
-  v4 = self;
-  sub_1B631E138(a3);
+  selfCopy = self;
+  sub_1B631E138(time);
 }
 
 - (NSString)sharedTripIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B631E458();
   v4 = v3;
 
@@ -114,9 +114,9 @@
   return v5;
 }
 
-- (void)setSharedTripIdentifier:(id)a3
+- (void)setSharedTripIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_1B63BEBD4();
     v6 = v5;
@@ -128,16 +128,16 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1B631E864(v4, v6);
 }
 
-- (MSSharedTripBlockedItem)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6
+- (MSSharedTripBlockedItem)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  return sub_1B631ED10(a3, a4, v7, v6);
+  parentCopy = parent;
+  loadCopy = load;
+  objectCopy = object;
+  return sub_1B631ED10(object, store, loadCopy, parentCopy);
 }
 
 @end

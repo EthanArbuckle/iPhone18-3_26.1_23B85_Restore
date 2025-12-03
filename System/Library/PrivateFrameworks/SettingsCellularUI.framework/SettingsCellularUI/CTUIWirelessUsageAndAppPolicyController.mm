@@ -1,12 +1,12 @@
 @interface CTUIWirelessUsageAndAppPolicyController
 - (CTUIWirelessUsageAndAppPolicyController)init;
 - (id)specifiers;
-- (void)_handleCellularPlanChangedNotification:(id)a3;
-- (void)_handleWirelessDataUsageChangedNotification:(id)a3;
+- (void)_handleCellularPlanChangedNotification:(id)notification;
+- (void)_handleWirelessDataUsageChangedNotification:(id)notification;
 - (void)dealloc;
 - (void)managedConfigurationProfileListDidChange;
 - (void)managedConfigurationSettingsDidChange;
-- (void)simStatusDidChange:(id)a3 status:(id)a4;
+- (void)simStatusDidChange:(id)change status:(id)status;
 @end
 
 @implementation CTUIWirelessUsageAndAppPolicyController
@@ -19,11 +19,11 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CTUIWirelessUsageAndAppPolicyController *)v2 getLogger];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(CTUIWirelessUsageAndAppPolicyController *)v2 getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       *v20 = 0;
-      _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "CTUIWirelessUsageAndAppPolicyController starting (init)", v20, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "CTUIWirelessUsageAndAppPolicyController starting (init)", v20, 2u);
     }
 
     v5 = objc_alloc(MEMORY[0x277CC37B0]);
@@ -41,20 +41,20 @@
     v3->_groupSpecifier = v12;
 
     v3->_shouldCalculateUsage = 1;
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v3 selector:sel__handleNewCarrierNotification_ name:@"PSNewCarrierNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__handleNewCarrierNotification_ name:@"PSNewCarrierNotification" object:0];
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v3 selector:sel__handleCellularPlanChangedNotification_ name:@"PSUICellularPlanChanged" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v3 selector:sel__handleCellularPlanChangedNotification_ name:@"PSUICellularPlanChanged" object:0];
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v3 selector:sel__handleWirelessDataUsageChangedNotification_ name:*MEMORY[0x277D4D8A8] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v3 selector:sel__handleWirelessDataUsageChangedNotification_ name:*MEMORY[0x277D4D8A8] object:0];
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v3 selector:sel_managedConfigurationSettingsDidChange name:*MEMORY[0x277D25CA0] object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v3 selector:sel_managedConfigurationSettingsDidChange name:*MEMORY[0x277D25CA0] object:0];
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v3 selector:sel_managedConfigurationProfileListDidChange name:*MEMORY[0x277D26148] object:0];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 addObserver:v3 selector:sel_managedConfigurationProfileListDidChange name:*MEMORY[0x277D26148] object:0];
   }
 
   return v3;
@@ -62,8 +62,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CTUIWirelessUsageAndAppPolicyController;
@@ -92,9 +92,9 @@
 
     v17[0] = self->_groupSpecifier;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-    v8 = [(CTUIWirelessUsageAndAppPolicyController *)self appDataUsageGroup];
-    v9 = [v8 specifiers];
-    v10 = [v7 arrayByAddingObjectsFromArray:v9];
+    appDataUsageGroup = [(CTUIWirelessUsageAndAppPolicyController *)self appDataUsageGroup];
+    specifiers = [appDataUsageGroup specifiers];
+    v10 = [v7 arrayByAddingObjectsFromArray:specifiers];
     v11 = *(&self->super.super.super.super.super.isa + v3);
     *(&self->super.super.super.super.super.isa + v3) = v10;
 
@@ -111,18 +111,18 @@
   return v14;
 }
 
-- (void)simStatusDidChange:(id)a3 status:(id)a4
+- (void)simStatusDidChange:(id)change status:(id)status
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = [*MEMORY[0x277CC3F00] isEqualToString:a4];
-  v6 = [(CTUIWirelessUsageAndAppPolicyController *)self getLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  v5 = [*MEMORY[0x277CC3F00] isEqualToString:status];
+  getLogger = [(CTUIWirelessUsageAndAppPolicyController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[CTUIWirelessUsageAndAppPolicyController simStatusDidChange:status:]";
     v10 = 1024;
     v11 = v5;
-    _os_log_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEFAULT, "%s with simReady %d", &v8, 0x12u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s with simReady %d", &v8, 0x12u);
   }
 
   if (v5)
@@ -134,7 +134,7 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCellularPlanChangedNotification:(id)a3
+- (void)_handleCellularPlanChangedNotification:(id)notification
 {
   self->_shouldCalculateUsage = 1;
   block[0] = MEMORY[0x277D85DD0];
@@ -145,13 +145,13 @@
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_handleWirelessDataUsageChangedNotification:(id)a3
+- (void)_handleWirelessDataUsageChangedNotification:(id)notification
 {
-  v4 = [(CTUIWirelessUsageAndAppPolicyController *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(CTUIWirelessUsageAndAppPolicyController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "CTUIWirelessUsageAndAppPolicyController received wirelessDataUsageChanged notification", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "CTUIWirelessUsageAndAppPolicyController received wirelessDataUsageChanged notification", buf, 2u);
   }
 
   self->_shouldCalculateUsage = 1;
@@ -165,11 +165,11 @@
 
 - (void)managedConfigurationSettingsDidChange
 {
-  v3 = [(CTUIWirelessUsageAndAppPolicyController *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(CTUIWirelessUsageAndAppPolicyController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "CTUIWirelessUsageAndAppPolicyController received managedConfigurationSettingsDidChange notification", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "CTUIWirelessUsageAndAppPolicyController received managedConfigurationSettingsDidChange notification", buf, 2u);
   }
 
   self->_shouldCalculateUsage = 1;
@@ -183,11 +183,11 @@
 
 - (void)managedConfigurationProfileListDidChange
 {
-  v3 = [(CTUIWirelessUsageAndAppPolicyController *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(CTUIWirelessUsageAndAppPolicyController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "CTUIWirelessUsageAndAppPolicyController received managedConfigurationProfileListDidChange notification", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "CTUIWirelessUsageAndAppPolicyController received managedConfigurationProfileListDidChange notification", buf, 2u);
   }
 
   self->_shouldCalculateUsage = 1;

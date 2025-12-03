@@ -1,26 +1,26 @@
 @interface CCContactURLAddress
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCContactURLAddress)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCContactURLAddress)initWithLabel:(id)a3 url:(id)a4 error:(id *)a5;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCContactURLAddress)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCContactURLAddress)initWithLabel:(id)label url:(id)url error:(id *)error;
 - (NSString)label;
 - (NSString)url;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCContactURLAddress
 
-- (CCContactURLAddress)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCContactURLAddress)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"label"];
-    v10 = [v6 objectForKeyedSubscript:@"url"];
-    v11 = [[CCContactURLAddress alloc] initWithLabel:v9 url:v10 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"label"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"url"];
+    v11 = [[CCContactURLAddress alloc] initWithLabel:v9 url:v10 error:error];
   }
 
   else
@@ -37,8 +37,8 @@
   v3 = objc_opt_new();
   if (self->_label)
   {
-    v4 = [(CCContactURLAddress *)self label];
-    [v3 setObject:v4 forKeyedSubscript:@"label"];
+    label = [(CCContactURLAddress *)self label];
+    [v3 setObject:label forKeyedSubscript:@"label"];
   }
 
   if (self->_url)
@@ -52,19 +52,19 @@
   return v6;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v7 = a3;
+  blockCopy = block;
   if (self->_label)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19767 stringValue:self->_label];
-    v7[2](v7, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_url)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19777 stringValue:self->_url];
-    v7[2](v7, v6);
+    blockCopy[2](blockCopy, v6);
   }
 }
 
@@ -82,10 +82,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -234,15 +234,15 @@ LABEL_38:
   return v30;
 }
 
-- (CCContactURLAddress)initWithLabel:(id)a3 url:(id)a4 error:(id *)a5
+- (CCContactURLAddress)initWithLabel:(id)label url:(id)url error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  labelCopy = label;
+  urlCopy = url;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!labelCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!urlCopy)
     {
       goto LABEL_8;
     }
@@ -256,7 +256,7 @@ LABEL_6:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v16 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_11;
     }
@@ -272,24 +272,24 @@ LABEL_6:
   if (!v11)
   {
     CCSetError();
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
   CCPBDataWriterWriteStringField();
-  if (v9)
+  if (urlCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  v15 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v15 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v16 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

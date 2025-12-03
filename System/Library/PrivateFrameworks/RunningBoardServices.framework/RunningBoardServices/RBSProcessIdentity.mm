@@ -1,34 +1,34 @@
 @interface RBSProcessIdentity
-+ (id)decodeFromJob:(id)a3 uuid:(id)a4;
-+ (id)extensionIdentityForBundleIdentifier:(id)a3 persona:(id)a4 instanceUUID:(id)a5 hostIdentifier:(id)a6 validationToken:(id)a7;
-+ (id)extensionIdentityForPlugInKitIdentifier:(id)a3 hostIdentifier:(id)a4 UUID:(id)a5;
-+ (id)externalExtensionIdentityForExtensionKitIdentifier:(id)a3 hostIdentifier:(id)a4 UUID:(id)a5;
-+ (id)identityForAngelJobLabel:(id)a3;
-+ (id)identityForApplicationJobLabel:(id)a3 bundleID:(id)a4 platform:(int)a5;
-+ (id)identityForDaemonJobLabel:(id)a3;
-+ (id)identityForDextWithServerName:(id)a3 tagString:(id)a4 containingAppBundleID:(id)a5;
-+ (id)identityForEmbeddedApplicationIdentifier:(id)a3 jobLabel:(id)a4 auid:(unsigned int)a5 platform:(int)a6;
-+ (id)identityForExtensionIdentity:(id)a3;
-+ (id)identityForExtensionIdentity:(id)a3 hostIdentifier:(id)a4;
-+ (id)identityForLSApplicationIdentity:(id)a3 LSApplicationRecord:(id)a4;
-+ (id)identityForLSApplicationIdentity:(id)a3 LSApplicationRecord:(id)a4 uuid:(id)a5;
-+ (id)identityForLaunchdJobLabel:(id)a3 isMultiInstance:(BOOL)a4 pid:(int)a5 auid:(unsigned int)a6;
-+ (id)identityForUnbundledMacApplicationJobLabel:(id)a3;
-+ (id)identityForUnknownServiceWithJobLabel:(id)a3;
-+ (id)identityForWrappedInfoProvider:(id)a3 uuid:(id)a4;
-+ (id)identityForXPCServiceIdentifier:(id)a3 hostInstance:(id)a4 UUID:(id)a5 persona:(id)a6 validationToken:(id)a7 variant:(int64_t)a8;
++ (id)decodeFromJob:(id)job uuid:(id)uuid;
++ (id)extensionIdentityForBundleIdentifier:(id)identifier persona:(id)persona instanceUUID:(id)d hostIdentifier:(id)hostIdentifier validationToken:(id)token;
++ (id)extensionIdentityForPlugInKitIdentifier:(id)identifier hostIdentifier:(id)hostIdentifier UUID:(id)d;
++ (id)externalExtensionIdentityForExtensionKitIdentifier:(id)identifier hostIdentifier:(id)hostIdentifier UUID:(id)d;
++ (id)identityForAngelJobLabel:(id)label;
++ (id)identityForApplicationJobLabel:(id)label bundleID:(id)d platform:(int)platform;
++ (id)identityForDaemonJobLabel:(id)label;
++ (id)identityForDextWithServerName:(id)name tagString:(id)string containingAppBundleID:(id)d;
++ (id)identityForEmbeddedApplicationIdentifier:(id)identifier jobLabel:(id)label auid:(unsigned int)auid platform:(int)platform;
++ (id)identityForExtensionIdentity:(id)identity;
++ (id)identityForExtensionIdentity:(id)identity hostIdentifier:(id)identifier;
++ (id)identityForLSApplicationIdentity:(id)identity LSApplicationRecord:(id)record;
++ (id)identityForLSApplicationIdentity:(id)identity LSApplicationRecord:(id)record uuid:(id)uuid;
++ (id)identityForLaunchdJobLabel:(id)label isMultiInstance:(BOOL)instance pid:(int)pid auid:(unsigned int)auid;
++ (id)identityForUnbundledMacApplicationJobLabel:(id)label;
++ (id)identityForUnknownServiceWithJobLabel:(id)label;
++ (id)identityForWrappedInfoProvider:(id)provider uuid:(id)uuid;
++ (id)identityForXPCServiceIdentifier:(id)identifier hostInstance:(id)instance UUID:(id)d persona:(id)persona validationToken:(id)token variant:(int64_t)variant;
 + (id)identityOfCurrentProcess;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToIdentity:(id)a3;
-- (BOOL)matchesProcess:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToIdentity:(id)identity;
+- (BOOL)matchesProcess:(id)process;
 - (NSString)debugDescription;
 - (RBSProcessIdentity)init;
-- (RBSProcessIdentity)initWithDecodeFromJob:(id)a3 uuid:(id)a4;
-- (RBSProcessIdentity)initWithRBSXPCCoder:(id)a3;
+- (RBSProcessIdentity)initWithDecodeFromJob:(id)job uuid:(id)uuid;
+- (RBSProcessIdentity)initWithRBSXPCCoder:(id)coder;
 - (id)_init;
-- (id)copyWithAuid:(unsigned int)a3;
+- (id)copyWithAuid:(unsigned int)auid;
 - (id)encodeForJob;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSProcessIdentity
@@ -43,49 +43,49 @@
 + (id)identityOfCurrentProcess
 {
   v2 = +[RBSConnection sharedInstance];
-  v3 = [(RBSConnection *)v2 identity];
+  identity = [(RBSConnection *)v2 identity];
 
-  return v3;
+  return identity;
 }
 
-+ (id)identityForApplicationJobLabel:(id)a3 bundleID:(id)a4 platform:(int)a5
++ (id)identityForApplicationJobLabel:(id)label bundleID:(id)d platform:(int)platform
 {
-  v5 = a4;
-  v6 = [[RBSEmbeddedAppProcessIdentity alloc] _initEmbeddedAppWithBundleID:v5];
+  dCopy = d;
+  v6 = [[RBSEmbeddedAppProcessIdentity alloc] _initEmbeddedAppWithBundleID:dCopy];
 
   return v6;
 }
 
-+ (id)identityForUnbundledMacApplicationJobLabel:(id)a3
++ (id)identityForUnbundledMacApplicationJobLabel:(id)label
 {
-  v3 = a3;
-  v4 = [[RBSOSServiceProcessIdentity alloc] _initUnknownOSServiceWithJobLabel:v3];
+  labelCopy = label;
+  v4 = [[RBSOSServiceProcessIdentity alloc] _initUnknownOSServiceWithJobLabel:labelCopy];
 
   return v4;
 }
 
-+ (id)identityForEmbeddedApplicationIdentifier:(id)a3 jobLabel:(id)a4 auid:(unsigned int)a5 platform:(int)a6
++ (id)identityForEmbeddedApplicationIdentifier:(id)identifier jobLabel:(id)label auid:(unsigned int)auid platform:(int)platform
 {
-  v6 = a3;
-  v7 = [[RBSEmbeddedAppProcessIdentity alloc] _initEmbeddedAppWithBundleID:v6];
+  identifierCopy = identifier;
+  v7 = [[RBSEmbeddedAppProcessIdentity alloc] _initEmbeddedAppWithBundleID:identifierCopy];
 
   return v7;
 }
 
-+ (id)identityForWrappedInfoProvider:(id)a3 uuid:(id)a4
++ (id)identityForWrappedInfoProvider:(id)provider uuid:(id)uuid
 {
   v16 = *MEMORY[0x1E69E9840];
   v13 = 0;
-  v4 = [a3 fetchWrappedInfoWithError:{&v13, a4}];
+  v4 = [provider fetchWrappedInfoWithError:{&v13, uuid}];
   v5 = v13;
   if (v4)
   {
-    v6 = [v4 persistentJobLabel];
+    persistentJobLabel = [v4 persistentJobLabel];
 
-    if (v6)
+    if (persistentJobLabel)
     {
-      v7 = [v4 persistentJobLabel];
-      v8 = [RBSProcessIdentity identityForUnknownServiceWithJobLabel:v7];
+      persistentJobLabel2 = [v4 persistentJobLabel];
+      v8 = [RBSProcessIdentity identityForUnknownServiceWithJobLabel:persistentJobLabel2];
     }
 
     else
@@ -113,66 +113,66 @@
   return v8;
 }
 
-+ (id)identityForLSApplicationIdentity:(id)a3 LSApplicationRecord:(id)a4
++ (id)identityForLSApplicationIdentity:(id)identity LSApplicationRecord:(id)record
 {
-  v4 = [RBSIdentityAndRecordInfoProvider _providerWithIdentity:a3 record:a4];
+  v4 = [RBSIdentityAndRecordInfoProvider _providerWithIdentity:identity record:record];
   v5 = [RBSProcessIdentity identityForWrappedInfoProvider:v4];
 
   return v5;
 }
 
-+ (id)identityForLSApplicationIdentity:(id)a3 LSApplicationRecord:(id)a4 uuid:(id)a5
++ (id)identityForLSApplicationIdentity:(id)identity LSApplicationRecord:(id)record uuid:(id)uuid
 {
-  v7 = a5;
-  v8 = [RBSIdentityAndRecordInfoProvider _providerWithIdentity:a3 record:a4];
-  v9 = [RBSProcessIdentity identityForWrappedInfoProvider:v8 uuid:v7];
+  uuidCopy = uuid;
+  v8 = [RBSIdentityAndRecordInfoProvider _providerWithIdentity:identity record:record];
+  v9 = [RBSProcessIdentity identityForWrappedInfoProvider:v8 uuid:uuidCopy];
 
   return v9;
 }
 
-+ (id)identityForUnknownServiceWithJobLabel:(id)a3
++ (id)identityForUnknownServiceWithJobLabel:(id)label
 {
-  v3 = a3;
-  v4 = [[RBSOSServiceProcessIdentity alloc] _initUnknownOSServiceWithJobLabel:v3];
+  labelCopy = label;
+  v4 = [[RBSOSServiceProcessIdentity alloc] _initUnknownOSServiceWithJobLabel:labelCopy];
 
   return v4;
 }
 
-+ (id)identityForDaemonJobLabel:(id)a3
++ (id)identityForDaemonJobLabel:(id)label
 {
-  v3 = a3;
-  v4 = [[RBSOSServiceProcessIdentity alloc] _initDaemonWithJobLabel:v3 pid:0 auid:0];
+  labelCopy = label;
+  v4 = [[RBSOSServiceProcessIdentity alloc] _initDaemonWithJobLabel:labelCopy pid:0 auid:0];
 
   return v4;
 }
 
-+ (id)identityForAngelJobLabel:(id)a3
++ (id)identityForAngelJobLabel:(id)label
 {
-  v3 = a3;
-  v4 = [[RBSOSServiceProcessIdentity alloc] _initAngelWithJobLabel:v3];
+  labelCopy = label;
+  v4 = [[RBSOSServiceProcessIdentity alloc] _initAngelWithJobLabel:labelCopy];
 
   return v4;
 }
 
-+ (id)identityForDextWithServerName:(id)a3 tagString:(id)a4 containingAppBundleID:(id)a5
++ (id)identityForDextWithServerName:(id)name tagString:(id)string containingAppBundleID:(id)d
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[RBSDextProcessIdentity alloc] _initDextWithServerName:v9 tagString:v8 containingAppBundleID:v7];
+  dCopy = d;
+  stringCopy = string;
+  nameCopy = name;
+  v10 = [[RBSDextProcessIdentity alloc] _initDextWithServerName:nameCopy tagString:stringCopy containingAppBundleID:dCopy];
 
   return v10;
 }
 
 - (RBSProcessIdentity)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"RBSProcessIdentity.m" lineNumber:251 description:@"-init is not allowed on RBSProcessIdentity"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RBSProcessIdentity.m" lineNumber:251 description:@"-init is not allowed on RBSProcessIdentity"];
 
   return 0;
 }
 
-- (id)copyWithAuid:(unsigned int)a3
+- (id)copyWithAuid:(unsigned int)auid
 {
   os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR);
   v3 = objc_opt_class();
@@ -183,27 +183,27 @@
   return result;
 }
 
-+ (id)identityForLaunchdJobLabel:(id)a3 isMultiInstance:(BOOL)a4 pid:(int)a5 auid:(unsigned int)a6
++ (id)identityForLaunchdJobLabel:(id)label isMultiInstance:(BOOL)instance pid:(int)pid auid:(unsigned int)auid
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = v8;
-  if (a5 || !v7)
+  instanceCopy = instance;
+  labelCopy = label;
+  v9 = labelCopy;
+  if (pid || !instanceCopy)
   {
-    if (v8)
+    if (labelCopy)
     {
       v11 = [RBSOSServiceProcessIdentity alloc];
-      if (v7)
+      if (instanceCopy)
       {
-        v12 = a5;
+        pidCopy = pid;
       }
 
       else
       {
-        v12 = 0;
+        pidCopy = 0;
       }
 
-      v13 = [(RBSOSServiceProcessIdentity *)v11 _initDaemonWithJobLabel:v9 pid:v12 auid:0];
+      v13 = [(RBSOSServiceProcessIdentity *)v11 _initDaemonWithJobLabel:v9 pid:pidCopy auid:0];
       goto LABEL_13;
     }
 
@@ -229,15 +229,15 @@ LABEL_13:
   return v13;
 }
 
-+ (id)identityForXPCServiceIdentifier:(id)a3 hostInstance:(id)a4 UUID:(id)a5 persona:(id)a6 validationToken:(id)a7 variant:(int64_t)a8
++ (id)identityForXPCServiceIdentifier:(id)identifier hostInstance:(id)instance UUID:(id)d persona:(id)persona validationToken:(id)token variant:(int64_t)variant
 {
-  v13 = a3;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
+  identifierCopy = identifier;
+  tokenCopy = token;
+  personaCopy = persona;
+  dCopy = d;
+  instanceCopy = instance;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v13)
+  if (!identifierCopy)
   {
     +[RBSProcessIdentity identityForXPCServiceIdentifier:hostInstance:UUID:persona:validationToken:variant:];
   }
@@ -248,12 +248,12 @@ LABEL_13:
   }
 
   v18 = 3;
-  if (v17)
+  if (instanceCopy)
   {
     v18 = 1;
   }
 
-  if (a8 <= 1)
+  if (variant <= 1)
   {
     v19 = 0;
   }
@@ -263,36 +263,36 @@ LABEL_13:
     v19 = v18;
   }
 
-  v20 = [RBSXPCServiceDefinition definitionWithIdentifier:v13 variant:a8 scope:v19];
-  v21 = [RBSXPCServiceIdentity identityWithDefinition:v20 sessionID:0 host:v17 UUID:v16 persona:v15 validationToken:v14];
+  v20 = [RBSXPCServiceDefinition definitionWithIdentifier:identifierCopy variant:variant scope:v19];
+  v21 = [RBSXPCServiceIdentity identityWithDefinition:v20 sessionID:0 host:instanceCopy UUID:dCopy persona:personaCopy validationToken:tokenCopy];
 
   v22 = [[RBSXPCServiceProcessIdentity alloc] _initWithXPCServiceID:v21 pid:0 auid:0];
 
   return v22;
 }
 
-+ (id)extensionIdentityForPlugInKitIdentifier:(id)a3 hostIdentifier:(id)a4 UUID:(id)a5
++ (id)extensionIdentityForPlugInKitIdentifier:(id)identifier hostIdentifier:(id)hostIdentifier UUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  identifierCopy = identifier;
+  hostIdentifierCopy = hostIdentifier;
+  dCopy = d;
+  if (!hostIdentifierCopy)
   {
     v11 = 0;
     goto LABEL_5;
   }
 
   v17 = 0;
-  v10 = [RBSProcessHandle handleForIdentifier:v8 error:&v17];
+  v10 = [RBSProcessHandle handleForIdentifier:hostIdentifierCopy error:&v17];
   v11 = v17;
   if (v10)
   {
-    v12 = [v10 identity];
-    v13 = [RBSProcessInstance instanceWithIdentifier:v8 identity:v12];
+    identity = [v10 identity];
+    v13 = [RBSProcessInstance instanceWithIdentifier:hostIdentifierCopy identity:identity];
 
     v11 = v13;
 LABEL_5:
-    v14 = [RBSProcessIdentity identityForXPCServiceIdentifier:v7 hostInstance:v11 UUID:v9 variant:2];
+    v14 = [RBSProcessIdentity identityForXPCServiceIdentifier:identifierCopy hostInstance:v11 UUID:dCopy variant:2];
     goto LABEL_9;
   }
 
@@ -308,28 +308,28 @@ LABEL_9:
   return v14;
 }
 
-+ (id)externalExtensionIdentityForExtensionKitIdentifier:(id)a3 hostIdentifier:(id)a4 UUID:(id)a5
++ (id)externalExtensionIdentityForExtensionKitIdentifier:(id)identifier hostIdentifier:(id)hostIdentifier UUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  identifierCopy = identifier;
+  hostIdentifierCopy = hostIdentifier;
+  dCopy = d;
+  if (!hostIdentifierCopy)
   {
     v11 = 0;
     goto LABEL_5;
   }
 
   v17 = 0;
-  v10 = [RBSProcessHandle handleForIdentifier:v8 error:&v17];
+  v10 = [RBSProcessHandle handleForIdentifier:hostIdentifierCopy error:&v17];
   v11 = v17;
   if (v10)
   {
-    v12 = [v10 identity];
-    v13 = [RBSProcessInstance instanceWithIdentifier:v8 identity:v12];
+    identity = [v10 identity];
+    v13 = [RBSProcessInstance instanceWithIdentifier:hostIdentifierCopy identity:identity];
 
     v11 = v13;
 LABEL_5:
-    v14 = [RBSProcessIdentity identityForXPCServiceIdentifier:v7 hostInstance:v11 UUID:v9 variant:3];
+    v14 = [RBSProcessIdentity identityForXPCServiceIdentifier:identifierCopy hostInstance:v11 UUID:dCopy variant:3];
     goto LABEL_9;
   }
 
@@ -345,30 +345,30 @@ LABEL_9:
   return v14;
 }
 
-+ (id)extensionIdentityForBundleIdentifier:(id)a3 persona:(id)a4 instanceUUID:(id)a5 hostIdentifier:(id)a6 validationToken:(id)a7
++ (id)extensionIdentityForBundleIdentifier:(id)identifier persona:(id)persona instanceUUID:(id)d hostIdentifier:(id)hostIdentifier validationToken:(id)token
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (!v14)
+  identifierCopy = identifier;
+  personaCopy = persona;
+  dCopy = d;
+  hostIdentifierCopy = hostIdentifier;
+  tokenCopy = token;
+  if (!hostIdentifierCopy)
   {
     v17 = 0;
     goto LABEL_5;
   }
 
   v23 = 0;
-  v16 = [RBSProcessHandle handleForIdentifier:v14 error:&v23];
+  v16 = [RBSProcessHandle handleForIdentifier:hostIdentifierCopy error:&v23];
   v17 = v23;
   if (v16)
   {
-    v18 = [v16 identity];
-    v19 = [RBSProcessInstance instanceWithIdentifier:v14 identity:v18];
+    identity = [v16 identity];
+    v19 = [RBSProcessInstance instanceWithIdentifier:hostIdentifierCopy identity:identity];
 
     v17 = v19;
 LABEL_5:
-    v20 = [RBSProcessIdentity identityForXPCServiceIdentifier:v11 hostInstance:v17 UUID:v13 persona:v12 validationToken:v15 variant:2];
+    v20 = [RBSProcessIdentity identityForXPCServiceIdentifier:identifierCopy hostInstance:v17 UUID:dCopy persona:personaCopy validationToken:tokenCopy variant:2];
     goto LABEL_9;
   }
 
@@ -395,10 +395,10 @@ LABEL_9:
   return result;
 }
 
-- (RBSProcessIdentity)initWithDecodeFromJob:(id)a3 uuid:(id)a4
+- (RBSProcessIdentity)initWithDecodeFromJob:(id)job uuid:(id)uuid
 {
-  v5 = a3;
-  v6 = a4;
+  jobCopy = job;
+  uuidCopy = uuid;
   os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR);
   v7 = objc_opt_class();
   _os_log_send_and_compose_impl();
@@ -408,14 +408,14 @@ LABEL_9:
   return result;
 }
 
-+ (id)decodeFromJob:(id)a3 uuid:(id)a4
++ (id)decodeFromJob:(id)job uuid:(id)uuid
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = xpc_dictionary_get_int64(v5, "TYPE") - 1;
+  jobCopy = job;
+  uuidCopy = uuid;
+  v7 = xpc_dictionary_get_int64(jobCopy, "TYPE") - 1;
   if (v7 <= 6 && ((0x7Bu >> v7) & 1) != 0 && (isa = off_1E7276250[v7]->isa, objc_opt_class(), (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v10 = [[v9 alloc] initWithDecodeFromJob:v5 uuid:v6];
+    v10 = [[v9 alloc] initWithDecodeFromJob:jobCopy uuid:uuidCopy];
   }
 
   else
@@ -426,18 +426,18 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
-  v4 = [a3 identity];
-  LOBYTE(self) = [(RBSProcessIdentity *)self _matchesIdentity:v4];
+  identity = [process identity];
+  LOBYTE(self) = [(RBSProcessIdentity *)self _matchesIdentity:identity];
 
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -445,24 +445,24 @@ LABEL_9:
   else
   {
     v5 = objc_opt_class();
-    v6 = v5 == objc_opt_class() && [(RBSProcessIdentity *)self isEqualToIdentity:v4];
+    v6 = v5 == objc_opt_class() && [(RBSProcessIdentity *)self isEqualToIdentity:equalCopy];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToIdentity:(id)a3
+- (BOOL)isEqualToIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  identityCopy = identity;
+  v5 = identityCopy;
+  if (identityCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = self->_hash == v4->_hash && self->_pid == v4->_pid && [(RBSProcessIdentity *)self _matchesIdentity:v4];
+    v6 = self->_hash == identityCopy->_hash && self->_pid == identityCopy->_pid && [(RBSProcessIdentity *)self _matchesIdentity:identityCopy];
   }
 
   return v6;
@@ -470,8 +470,8 @@ LABEL_9:
 
 - (NSString)debugDescription
 {
-  v3 = [(RBSProcessIdentity *)self auid];
-  v4 = v3;
+  auid = [(RBSProcessIdentity *)self auid];
+  v4 = auid;
   v5 = MEMORY[0x1E696AEC0];
   description = self->_description;
   pid = self->_pid;
@@ -488,7 +488,7 @@ LABEL_9:
   if (pid < 1)
   {
     v9 = &stru_1F01CD8F0;
-    if (v3)
+    if (auid)
     {
       goto LABEL_6;
     }
@@ -516,9 +516,9 @@ LABEL_9:
   return v11;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR);
   v4 = objc_opt_class();
   _os_log_send_and_compose_impl();
@@ -527,9 +527,9 @@ LABEL_9:
   __break(1u);
 }
 
-- (RBSProcessIdentity)initWithRBSXPCCoder:(id)a3
+- (RBSProcessIdentity)initWithRBSXPCCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR);
   v4 = objc_opt_class();
   _os_log_send_and_compose_impl();
@@ -539,29 +539,29 @@ LABEL_9:
   return result;
 }
 
-+ (id)identityForExtensionIdentity:(id)a3 hostIdentifier:(id)a4
++ (id)identityForExtensionIdentity:(id)identity hostIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a3;
+  identifierCopy = identifier;
+  identityCopy = identity;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    [RBSProcessIdentity(Extension) identityForExtensionIdentity:a2 hostIdentifier:a1];
+    [RBSProcessIdentity(Extension) identityForExtensionIdentity:a2 hostIdentifier:self];
   }
 
-  v9 = [[RBSExtensionProcessIdentity alloc] _initWithExtensionIdentity:v8 hostIdentity:0 hostIdentifier:v7];
+  v9 = [[RBSExtensionProcessIdentity alloc] _initWithExtensionIdentity:identityCopy hostIdentity:0 hostIdentifier:identifierCopy];
 
   return v9;
 }
 
-+ (id)identityForExtensionIdentity:(id)a3
++ (id)identityForExtensionIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    [(RBSProcessIdentity(Extension) *)a2 identityForExtensionIdentity:a1];
+    [(RBSProcessIdentity(Extension) *)a2 identityForExtensionIdentity:self];
   }
 
-  v6 = [[RBSExtensionProcessIdentity alloc] _initWithExtensionIdentity:v5 hostIdentity:0 hostIdentifier:0];
+  v6 = [[RBSExtensionProcessIdentity alloc] _initWithExtensionIdentity:identityCopy hostIdentity:0 hostIdentifier:0];
 
   return v6;
 }

@@ -1,12 +1,12 @@
 @interface VISRotationCorrectionEstimator
-- (VISRotationCorrectionEstimator)initWithTimeScale:(float)a3;
-- (__n128)updateWithRotation:(double)a3 atTime:;
+- (VISRotationCorrectionEstimator)initWithTimeScale:(float)scale;
+- (__n128)updateWithRotation:(double)rotation atTime:;
 - (void)reset;
 @end
 
 @implementation VISRotationCorrectionEstimator
 
-- (VISRotationCorrectionEstimator)initWithTimeScale:(float)a3
+- (VISRotationCorrectionEstimator)initWithTimeScale:(float)scale
 {
   v11.receiver = self;
   v11.super_class = VISRotationCorrectionEstimator;
@@ -14,7 +14,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_timeScale = a3 * 0.70711;
+    v4->_timeScale = scale * 0.70711;
     v6 = objc_alloc_init(HighPassIIR2FilterFloat3);
     highPassFilter1 = v5->highPassFilter1;
     v5->highPassFilter1 = v6;
@@ -42,26 +42,26 @@
   [(HighPassIIR2FilterFloat3 *)highPassFilter2 reset];
 }
 
-- (__n128)updateWithRotation:(double)a3 atTime:
+- (__n128)updateWithRotation:(double)rotation atTime:
 {
-  v4 = *(a1 + 16);
-  if (v4 <= a3)
+  v4 = *(self + 16);
+  if (v4 <= rotation)
   {
-    if (*(a1 + 12) == 1)
+    if (*(self + 12) == 1)
     {
-      v7 = *(a1 + 32);
+      v7 = *(self + 32);
     }
 
     else
     {
-      v4 = a3 + -0.03333;
-      *(a1 + 16) = a3 + -0.03333;
-      *(a1 + 32) = a2;
-      *(a1 + 12) = 1;
+      v4 = rotation + -0.03333;
+      *(self + 16) = rotation + -0.03333;
+      *(self + 32) = a2;
+      *(self + 12) = 1;
       v7 = a2;
     }
 
-    *&v8 = a3 - v4;
+    *&v8 = rotation - v4;
     *v8.i32 = *v8.i32;
     v36 = v8;
     v9 = vmulq_f32(v7, xmmword_1AD046FD0);
@@ -97,27 +97,27 @@
     v25 = atan2f(sqrtf(v22.f32[0]), v21.f32[3]);
     v26 = vmulq_n_f32(v32, v33);
     *&v27 = vdivq_f32(vmulq_n_f32(v26, v25 + v25), vdupq_lane_s32(v36, 0)).u64[0];
-    v26.f32[0] = *(a1 + 8) / (*(a1 + 8) + *v36.i32);
-    [*(a1 + 64) updateValue:v27 withPole:*v26.i64];
-    v28 = *(a1 + 72);
-    [*(a1 + 64) filteredValue];
+    v26.f32[0] = *(self + 8) / (*(self + 8) + *v36.i32);
+    [*(self + 64) updateValue:v27 withPole:*v26.i64];
+    v28 = *(self + 72);
+    [*(self + 64) filteredValue];
     [v28 updateValue:? withPole:?];
-    v34 = *(a1 + 8) / (*(a1 + 8) + ((*v36.i32 / 400.0) * 0.70711));
-    [*(a1 + 72) filteredValue];
+    v34 = *(self + 8) / (*(self + 8) + ((*v36.i32 / 400.0) * 0.70711));
+    [*(self + 72) filteredValue];
     v30.i64[0] = 0xBF000000BF000000;
     v30.i64[1] = 0xBF000000BF000000;
-    v31 = vmlaq_n_f32(vmulq_f32(vmulq_n_f32(vmulq_n_f32(v29, *v36.i32), v34 + 1.0), v30), *(a1 + 48), v34);
-    *(a1 + 80) = v31;
-    *(a1 + 16) = a3;
-    *(a1 + 48) = v31;
+    v31 = vmlaq_n_f32(vmulq_f32(vmulq_n_f32(vmulq_n_f32(v29, *v36.i32), v34 + 1.0), v30), *(self + 48), v34);
+    *(self + 80) = v31;
+    *(self + 16) = rotation;
+    *(self + 48) = v31;
     result = a2;
-    *(a1 + 32) = a2;
+    *(self + 32) = a2;
   }
 
   else
   {
 
-    [a1 reset];
+    [self reset];
   }
 
   return result;

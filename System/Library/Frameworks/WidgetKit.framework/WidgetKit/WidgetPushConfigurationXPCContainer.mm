@@ -1,15 +1,15 @@
 @interface WidgetPushConfigurationXPCContainer
 - (_TtC9WidgetKit35WidgetPushConfigurationXPCContainer)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WidgetPushConfigurationXPCContainer
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_19218C534(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_19218C534(coderCopy);
 }
 
 - (_TtC9WidgetKit35WidgetPushConfigurationXPCContainer)init

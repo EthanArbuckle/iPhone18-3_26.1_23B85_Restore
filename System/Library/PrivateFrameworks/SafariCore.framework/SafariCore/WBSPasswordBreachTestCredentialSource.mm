@@ -1,18 +1,18 @@
 @interface WBSPasswordBreachTestCredentialSource
-- (WBSPasswordBreachTestCredentialSource)initWithPasswords:(id)a3;
+- (WBSPasswordBreachTestCredentialSource)initWithPasswords:(id)passwords;
 @end
 
 @implementation WBSPasswordBreachTestCredentialSource
 
-- (WBSPasswordBreachTestCredentialSource)initWithPasswords:(id)a3
+- (WBSPasswordBreachTestCredentialSource)initWithPasswords:(id)passwords
 {
-  v4 = a3;
+  passwordsCopy = passwords;
   v10.receiver = self;
   v10.super_class = WBSPasswordBreachTestCredentialSource;
   v5 = [(WBSPasswordBreachTestCredentialSource *)&v10 init];
   if (v5)
   {
-    v6 = [v4 safari_mapObjectsUsingBlock:&__block_literal_global_45];
+    v6 = [passwordsCopy safari_mapObjectsUsingBlock:&__block_literal_global_45];
     credentials = v5->_credentials;
     v5->_credentials = v6;
 

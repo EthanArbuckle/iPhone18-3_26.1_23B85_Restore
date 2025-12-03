@@ -1,25 +1,25 @@
 @interface CAMTransientPairedVideo
-- (CAMTransientPairedVideo)initWithURL:(id)a3 stillDisplayTime:(id *)a4 filterType:(int64_t)a5;
+- (CAMTransientPairedVideo)initWithURL:(id)l stillDisplayTime:(id *)time filterType:(int64_t)type;
 @end
 
 @implementation CAMTransientPairedVideo
 
-- (CAMTransientPairedVideo)initWithURL:(id)a3 stillDisplayTime:(id *)a4 filterType:(int64_t)a5
+- (CAMTransientPairedVideo)initWithURL:(id)l stillDisplayTime:(id *)time filterType:(int64_t)type
 {
-  v8 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = CAMTransientPairedVideo;
   v9 = [(CAMTransientPairedVideo *)&v15 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [lCopy copy];
     v11 = *(v9 + 1);
     *(v9 + 1) = v10;
 
-    v12 = *&a4->var0;
-    *(v9 + 5) = a4->var3;
+    v12 = *&time->var0;
+    *(v9 + 5) = time->var3;
     *(v9 + 24) = v12;
-    *(v9 + 2) = a5;
+    *(v9 + 2) = type;
     v13 = v9;
   }
 

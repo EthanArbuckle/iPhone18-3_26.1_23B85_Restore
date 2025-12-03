@@ -1,95 +1,95 @@
 @interface FocusableTextView
-+ (FocusableTextView)textViewWithAttributedString:(id)a3 textLayout:(id)a4 existingTextView:(id)a5;
++ (FocusableTextView)textViewWithAttributedString:(id)string textLayout:(id)layout existingTextView:(id)view;
 - (BOOL)shouldShowMoreLabel;
-- (CGRect)_getStartAndEndIndexOfLastVisibleLine:(id)a3 startIndex:(unint64_t *)a4 endIndex:(unint64_t *)a5;
+- (CGRect)_getStartAndEndIndexOfLastVisibleLine:(id)line startIndex:(unint64_t *)index endIndex:(unint64_t *)endIndex;
 - (CGRect)_makeLastLineBreakByClipping;
 - (CGRect)_moreLabelExclusionPathFrame;
 - (CGRect)_moreLabelFrame;
-- (CGSize)computeSizeThatFits:(CGSize)a3;
+- (CGSize)computeSizeThatFits:(CGSize)fits;
 - (CGSize)intrinsicContentSize;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (FocusableTextView)initWithTextLayout:(id)a3;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (FocusableTextView)initWithTextLayout:(id)layout;
 - (double)_bottomBaselineOffset;
-- (double)topMarginToLabel:(id)a3 withBaselineMargin:(double)a4;
+- (double)topMarginToLabel:(id)label withBaselineMargin:(double)margin;
 - (id)_createMoreButtonMaskFade;
 - (id)makeTextView;
 - (unint64_t)maximumNumberOfLines;
-- (void)_configureAlignmentWithTextAlignment:(int64_t)a3 allowsTextAlignmentOverride:(BOOL)a4;
+- (void)_configureAlignmentWithTextAlignment:(int64_t)alignment allowsTextAlignmentOverride:(BOOL)override;
 - (void)_recomputeTextSizeIfNeeded;
-- (void)_selectButtonAction:(id)a3;
+- (void)_selectButtonAction:(id)action;
 - (void)_updateTextColor;
 - (void)_updateTextColorsIfNeeded;
-- (void)configureMoreButtonMaskWithMaskFrame:(CGRect)a3 moreLabelFrame:(CGRect)a4;
+- (void)configureMoreButtonMaskWithMaskFrame:(CGRect)frame moreLabelFrame:(CGRect)labelFrame;
 - (void)layoutSubviews_iOSAndMacOS;
-- (void)setDescriptionText:(id)a3;
-- (void)setDescriptionTextAlignment:(int64_t)a3;
-- (void)setDescriptionTextColor:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setMaximumNumberOfLines:(unint64_t)a3;
-- (void)setMoreLabelTextColor:(id)a3;
-- (void)setSelectable:(BOOL)a3;
+- (void)setDescriptionText:(id)text;
+- (void)setDescriptionTextAlignment:(int64_t)alignment;
+- (void)setDescriptionTextColor:(id)color;
+- (void)setFrame:(CGRect)frame;
+- (void)setMaximumNumberOfLines:(unint64_t)lines;
+- (void)setMoreLabelTextColor:(id)color;
+- (void)setSelectable:(BOOL)selectable;
 - (void)setupViews_iOSAndMacOS;
 - (void)tintColorDidChange;
 @end
 
 @implementation FocusableTextView
 
-+ (FocusableTextView)textViewWithAttributedString:(id)a3 textLayout:(id)a4 existingTextView:(id)a5
++ (FocusableTextView)textViewWithAttributedString:(id)string textLayout:(id)layout existingTextView:(id)view
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  layoutCopy = layout;
+  viewCopy = view;
+  stringCopy = string;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v8;
+    v10 = viewCopy;
   }
 
   else
   {
-    v10 = [[FocusableTextView alloc] initWithTextLayout:v7];
+    v10 = [[FocusableTextView alloc] initWithTextLayout:layoutCopy];
   }
 
   v11 = v10;
-  v12 = [(FocusableTextView *)v10 computationLabel];
-  v13 = [VUILabel labelWithString:@"Lorem" textLayout:v7 existingLabel:v12];
+  computationLabel = [(FocusableTextView *)v10 computationLabel];
+  v13 = [VUILabel labelWithString:@"Lorem" textLayout:layoutCopy existingLabel:computationLabel];
 
   [(FocusableTextView *)v11 setComputationLabel:v13];
-  v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v15 = [v14 vuiTraitCollection];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  vuiTraitCollection = [mainScreen vuiTraitCollection];
 
-  -[FocusableTextView setMaximumNumberOfLines:](v11, "setMaximumNumberOfLines:", [v7 numberOfLinesForTraitCollection:v15]);
+  -[FocusableTextView setMaximumNumberOfLines:](v11, "setMaximumNumberOfLines:", [layoutCopy numberOfLinesForTraitCollection:vuiTraitCollection]);
   [(FocusableTextView *)v11 _updateTextColor];
-  [(FocusableTextView *)v11 setDescriptionText:v9];
+  [(FocusableTextView *)v11 setDescriptionText:stringCopy];
 
-  -[FocusableTextView _configureAlignmentWithTextAlignment:allowsTextAlignmentOverride:](v11, "_configureAlignmentWithTextAlignment:allowsTextAlignmentOverride:", [v7 alignment], objc_msgSend(v7, "allowsTextAlignmentOverride"));
+  -[FocusableTextView _configureAlignmentWithTextAlignment:allowsTextAlignmentOverride:](v11, "_configureAlignmentWithTextAlignment:allowsTextAlignmentOverride:", [layoutCopy alignment], objc_msgSend(layoutCopy, "allowsTextAlignmentOverride"));
 
   return v11;
 }
 
-- (FocusableTextView)initWithTextLayout:(id)a3
+- (FocusableTextView)initWithTextLayout:(id)layout
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  layoutCopy = layout;
   v23.receiver = self;
   v23.super_class = FocusableTextView;
   v5 = [(FocusableTextView *)&v23 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v6 = v5;
   if (v5)
   {
-    [(FocusableTextView *)v5 setTextLayout:v4];
+    [(FocusableTextView *)v5 setTextLayout:layoutCopy];
     v6->_showMoreForTruncation = 1;
     v7 = _os_feature_enabled_impl();
     if (v7)
     {
-      LOBYTE(v7) = [v4 seeMoreHasPlatter];
+      LOBYTE(v7) = [layoutCopy seeMoreHasPlatter];
     }
 
     v6->_hasPlatterBehindMoreLabel = v7;
-    v8 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
     v22.receiver = v6;
     v22.super_class = FocusableTextView;
-    [(FocusableTextView *)&v22 setVuiBackgroundColor:v8];
+    [(FocusableTextView *)&v22 setVuiBackgroundColor:clearColor];
 
     [(FocusableTextView *)v6 setupViews_iOSAndMacOS];
     objc_initWeak(&location, v6);
@@ -111,11 +111,11 @@
     objc_copyWeak(&v18, &location);
     [(FocusableTextView *)v6 vui_registerForTraitChanges:v10 withHandler:&v14];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v6 selector:sel__contrastSettingsDidChange name:*MEMORY[0x1E69DD8B8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__contrastSettingsDidChange name:*MEMORY[0x1E69DD8B8] object:0];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v6 selector:sel__transparencySettingsDidChange name:*MEMORY[0x1E69DD920] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__transparencySettingsDidChange name:*MEMORY[0x1E69DD920] object:0];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&v20);
@@ -142,37 +142,37 @@ void __40__FocusableTextView_initWithTextLayout___block_invoke_2(uint64_t a1)
   [WeakRetained vui_setNeedsLayout];
 }
 
-- (void)setDescriptionTextColor:(id)a3
+- (void)setDescriptionTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_descriptionTextColor != v5)
+  colorCopy = color;
+  if (self->_descriptionTextColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_descriptionTextColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_descriptionTextColor, color);
     [(FocusableTextView *)self vui_setNeedsLayout];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setDescriptionTextAlignment:(int64_t)a3
+- (void)setDescriptionTextAlignment:(int64_t)alignment
 {
-  if (self->_descriptionTextAlignment != a3)
+  if (self->_descriptionTextAlignment != alignment)
   {
-    self->_descriptionTextAlignment = a3;
+    self->_descriptionTextAlignment = alignment;
     [(FocusableTextView *)self vui_setNeedsLayout];
   }
 }
 
-- (void)setMoreLabelTextColor:(id)a3
+- (void)setMoreLabelTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_moreLabelTextColor != v5)
+  colorCopy = color;
+  if (self->_moreLabelTextColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_moreLabelTextColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_moreLabelTextColor, color);
     [(VUITextLayout *)self->_textLayout setSeeMoreTextColor:v6];
     [(FocusableTextView *)self vui_setNeedsLayout];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
@@ -197,12 +197,12 @@ void __40__FocusableTextView_initWithTextLayout___block_invoke_2(uint64_t a1)
   v3 = [VUITextView alloc];
   v4 = [(VUITextView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(VUITextView *)v4 setVuiBackgroundColor:0];
-  v5 = [(VUITextView *)v4 textContainer];
-  [v5 lineFragmentPadding];
+  textContainer = [(VUITextView *)v4 textContainer];
+  [textContainer lineFragmentPadding];
   self->_defaultLineFragmentPadding = v6;
 
-  v7 = [(VUITextView *)v4 textContainer];
-  [v7 setLineFragmentPadding:0.0];
+  textContainer2 = [(VUITextView *)v4 textContainer];
+  [textContainer2 setLineFragmentPadding:0.0];
 
   [(VUITextView *)v4 setVuiTextContainerInset:0.0, 0.0, 0.0, 0.0];
   [(VUITextView *)v4 setEditable:0];
@@ -210,34 +210,34 @@ void __40__FocusableTextView_initWithTextLayout___block_invoke_2(uint64_t a1)
   [(VUITextView *)v4 setUserInteractionEnabled:0];
   [(VUITextView *)v4 setAdjustsFontForContentSizeCategory:1];
   [(VUITextView *)v4 setSelectable:0];
-  v8 = [(VUITextView *)v4 vuiLayer];
-  [v8 setCornerRadius:0.0];
+  vuiLayer = [(VUITextView *)v4 vuiLayer];
+  [vuiLayer setCornerRadius:0.0];
 
-  v9 = [(VUITextView *)v4 textContainer];
-  [v9 setMaximumNumberOfLines:0];
+  textContainer3 = [(VUITextView *)v4 textContainer];
+  [textContainer3 setMaximumNumberOfLines:0];
 
-  v10 = [(VUITextView *)v4 textContainer];
-  [v10 setLineBreakMode:2];
+  textContainer4 = [(VUITextView *)v4 textContainer];
+  [textContainer4 setLineBreakMode:2];
 
   return v4;
 }
 
 - (void)setupViews_iOSAndMacOS
 {
-  v3 = [(FocusableTextView *)self makeTextView];
+  makeTextView = [(FocusableTextView *)self makeTextView];
   auxilliaryTextView = self->_auxilliaryTextView;
-  self->_auxilliaryTextView = v3;
+  self->_auxilliaryTextView = makeTextView;
 
   [(FocusableTextView *)self addSubview:self->_auxilliaryTextView];
   [(VUITextView *)self->_auxilliaryTextView setAlpha:0.0];
   self->_descriptionTextAlignment = 4;
-  v5 = [(FocusableTextView *)self makeTextView];
+  makeTextView2 = [(FocusableTextView *)self makeTextView];
   descriptionTextView = self->_descriptionTextView;
-  self->_descriptionTextView = v5;
+  self->_descriptionTextView = makeTextView2;
 
   [(FocusableTextView *)self addSubview:self->_descriptionTextView];
-  v7 = [(FocusableTextView *)self textLayout];
-  v20 = [v7 copy];
+  textLayout = [(FocusableTextView *)self textLayout];
+  v20 = [textLayout copy];
 
   [v20 setFontWeight:10];
   if ([(FocusableTextView *)self hasPlatterBehindMoreLabel])
@@ -251,9 +251,9 @@ void __40__FocusableTextView_initWithTextLayout___block_invoke_2(uint64_t a1)
   v8 = +[VUILocalizationManager sharedInstance];
   v9 = [v8 localizedStringForKey:@"MORE"];
 
-  v10 = [v9 localizedUppercaseString];
+  localizedUppercaseString = [v9 localizedUppercaseString];
 
-  v11 = [VUILabel labelWithString:v10 textLayout:v20 existingLabel:self->_moreLabel];
+  v11 = [VUILabel labelWithString:localizedUppercaseString textLayout:v20 existingLabel:self->_moreLabel];
   moreLabel = self->_moreLabel;
   self->_moreLabel = v11;
 
@@ -262,8 +262,8 @@ void __40__FocusableTextView_initWithTextLayout___block_invoke_2(uint64_t a1)
   if ([(FocusableTextView *)self hasPlatterBehindMoreLabel])
   {
     v13 = self->_moreLabel;
-    v14 = [MEMORY[0x1E69DC888] vui_secondaryFillColor];
-    [(VUILabel *)v13 setVuiBackgroundColor:v14];
+    vui_secondaryFillColor = [MEMORY[0x1E69DC888] vui_secondaryFillColor];
+    [(VUILabel *)v13 setVuiBackgroundColor:vui_secondaryFillColor];
   }
 
   v15 = self->_moreLabel;
@@ -315,17 +315,17 @@ void __40__FocusableTextView_initWithTextLayout___block_invoke_2(uint64_t a1)
     [(VUILabel *)v17 setFrame:?];
     if ([(FocusableTextView *)self hasPlatterBehindMoreLabel])
     {
-      v18 = [(VUILabel *)self->_moreLabel vuiLayer];
-      [v18 setMasksToBounds:1];
+      vuiLayer = [(VUILabel *)self->_moreLabel vuiLayer];
+      [vuiLayer setMasksToBounds:1];
 
       [(VUILabel *)self->_moreLabel frame];
       [(VUILabel *)self->_moreLabel _setContinuousCornerRadius:v19 * 0.5];
     }
 
     [(FocusableTextView *)self _recomputeTextSizeIfNeeded];
-    v20 = [(FocusableTextView *)self shouldShowMoreLabel];
+    shouldShowMoreLabel = [(FocusableTextView *)self shouldShowMoreLabel];
     v21 = self->_moreLabel;
-    if (v20)
+    if (shouldShowMoreLabel)
     {
       [(VUILabel *)v21 setHidden:0];
       [(FocusableTextView *)self _moreLabelExclusionPathFrame];
@@ -335,8 +335,8 @@ void __40__FocusableTextView_initWithTextLayout___block_invoke_2(uint64_t a1)
     else
     {
       [(VUILabel *)v21 setHidden:1];
-      v27 = [(VUITextView *)self->_descriptionTextView textContainer];
-      [v27 setExclusionPaths:MEMORY[0x1E695E0F0]];
+      textContainer = [(VUITextView *)self->_descriptionTextView textContainer];
+      [textContainer setExclusionPaths:MEMORY[0x1E695E0F0]];
     }
 
     v28 = *MEMORY[0x1E695EFF8];
@@ -348,13 +348,13 @@ void __40__FocusableTextView_initWithTextLayout___block_invoke_2(uint64_t a1)
   }
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = subviews.height;
+  width = subviews.width;
+  if (only)
   {
-    [(FocusableTextView *)self computeSizeThatFits:a3.width, a3.height];
+    [(FocusableTextView *)self computeSizeThatFits:subviews.width, subviews.height];
     width = v6;
     height = v7;
   }
@@ -371,13 +371,13 @@ void __40__FocusableTextView_initWithTextLayout___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (CGSize)computeSizeThatFits:(CGSize)a3
+- (CGSize)computeSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(FocusableTextView *)self maximumNumberOfLines];
-  v7 = [(VUITextView *)self->_auxilliaryTextView textContainer];
-  [v7 setMaximumNumberOfLines:v6];
+  height = fits.height;
+  width = fits.width;
+  maximumNumberOfLines = [(FocusableTextView *)self maximumNumberOfLines];
+  textContainer = [(VUITextView *)self->_auxilliaryTextView textContainer];
+  [textContainer setMaximumNumberOfLines:maximumNumberOfLines];
 
   [(VUITextView *)self->_auxilliaryTextView vui_sizeThatFits:width, height];
   v9 = v8;
@@ -386,14 +386,14 @@ void __40__FocusableTextView_initWithTextLayout___block_invoke_2(uint64_t a1)
   v13 = v12;
   [(VUITextView *)self->_descriptionTextView vuiTextContainerInset];
   v15 = v11 - (v13 + v14);
-  v16 = [(FocusableTextView *)self vuiTraitCollection];
-  LODWORD(v7) = [v16 isAXEnabled];
+  vuiTraitCollection = [(FocusableTextView *)self vuiTraitCollection];
+  LODWORD(textContainer) = [vuiTraitCollection isAXEnabled];
 
-  if (v7)
+  if (textContainer)
   {
     v17 = MEMORY[0x1E69DF6D0];
-    v18 = [(FocusableTextView *)self vuiTraitCollection];
-    [v17 scaleContentSizeValue:v18 forTraitCollection:5.0];
+    vuiTraitCollection2 = [(FocusableTextView *)self vuiTraitCollection];
+    [v17 scaleContentSizeValue:vuiTraitCollection2 forTraitCollection:5.0];
     v15 = v15 + v19;
   }
 
@@ -424,12 +424,12 @@ void __40__FocusableTextView_initWithTextLayout___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(FocusableTextView *)self frame];
   v10.origin.x = x;
   v10.origin.y = y;
@@ -445,24 +445,24 @@ void __40__FocusableTextView_initWithTextLayout___block_invoke_2(uint64_t a1)
   [(FocusableTextView *)&v8 setFrame:x, y, width, height];
 }
 
-- (void)setSelectable:(BOOL)a3
+- (void)setSelectable:(BOOL)selectable
 {
-  v3 = a3;
-  self->_selectable = a3;
+  selectableCopy = selectable;
+  self->_selectable = selectable;
   [(VUIBaseView *)self setVuiUserInteractionEnabled:?];
-  [(VUITextView *)self->_descriptionTextView setVuiUserInteractionEnabled:v3];
+  [(VUITextView *)self->_descriptionTextView setVuiUserInteractionEnabled:selectableCopy];
   descriptionTextView = self->_descriptionTextView;
 
-  [(VUITextView *)descriptionTextView setSelectable:v3];
+  [(VUITextView *)descriptionTextView setSelectable:selectableCopy];
 }
 
-- (void)setDescriptionText:(id)a3
+- (void)setDescriptionText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (textCopy)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [textCopy mutableCopy];
     v7 = *MEMORY[0x1E69DB688];
     v8 = [v5 length];
     v23[0] = MEMORY[0x1E69E9820];
@@ -552,12 +552,12 @@ void __40__FocusableTextView_setDescriptionText___block_invoke_2(uint64_t a1, vo
   }
 }
 
-- (void)setMaximumNumberOfLines:(unint64_t)a3
+- (void)setMaximumNumberOfLines:(unint64_t)lines
 {
-  if ([(FocusableTextView *)self maximumNumberOfLines]!= a3)
+  if ([(FocusableTextView *)self maximumNumberOfLines]!= lines)
   {
-    v5 = [(VUITextView *)self->_descriptionTextView textContainer];
-    [v5 setMaximumNumberOfLines:a3];
+    textContainer = [(VUITextView *)self->_descriptionTextView textContainer];
+    [textContainer setMaximumNumberOfLines:lines];
 
     [(FocusableTextView *)self _setNeedsTextSizeComputation];
 
@@ -567,22 +567,22 @@ void __40__FocusableTextView_setDescriptionText___block_invoke_2(uint64_t a1, vo
 
 - (unint64_t)maximumNumberOfLines
 {
-  v2 = [(VUITextView *)self->_descriptionTextView textContainer];
-  v3 = [v2 maximumNumberOfLines];
+  textContainer = [(VUITextView *)self->_descriptionTextView textContainer];
+  maximumNumberOfLines = [textContainer maximumNumberOfLines];
 
-  return v3;
+  return maximumNumberOfLines;
 }
 
-- (double)topMarginToLabel:(id)a3 withBaselineMargin:(double)a4
+- (double)topMarginToLabel:(id)label withBaselineMargin:(double)margin
 {
-  if (a3)
+  if (label)
   {
-    [(VUILabel *)self->_computationLabel topMarginToLabel:a4 withBaselineMargin:?];
+    [(VUILabel *)self->_computationLabel topMarginToLabel:margin withBaselineMargin:?];
   }
 
   else
   {
-    [(FocusableTextView *)self topMarginWithBaselineMargin:a4];
+    [(FocusableTextView *)self topMarginWithBaselineMargin:margin];
   }
 
   return result;
@@ -596,15 +596,15 @@ void __40__FocusableTextView_setDescriptionText___block_invoke_2(uint64_t a1, vo
   v11[3] = 0;
   [(VUITextView *)self->_descriptionTextView vuiTextContainerInset];
   v4 = v3;
-  v5 = [(VUITextView *)self->_descriptionTextView textLayoutManager];
-  v6 = [v5 documentRange];
+  textLayoutManager = [(VUITextView *)self->_descriptionTextView textLayoutManager];
+  documentRange = [textLayoutManager documentRange];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__FocusableTextView__bottomBaselineOffset__block_invoke;
   v10[3] = &unk_1E8736F98;
   v10[4] = v11;
   v10[5] = v4;
-  [v5 enumerateTextSegmentsInRange:v6 type:0 options:0 usingBlock:v10];
+  [textLayoutManager enumerateTextSegmentsInRange:documentRange type:0 options:0 usingBlock:v10];
   [(VUITextView *)self->_descriptionTextView bounds];
   VUIRoundValue();
   v8 = v7;
@@ -637,13 +637,13 @@ uint64_t __42__FocusableTextView__bottomBaselineOffset__block_invoke(uint64_t a1
     v6 = v5;
     if ([(FocusableTextView *)self maximumNumberOfLines])
     {
-      v7 = [(VUITextView *)self->_auxilliaryTextView textContainer];
-      [v7 setMaximumNumberOfLines:{-[FocusableTextView maximumNumberOfLines](self, "maximumNumberOfLines")}];
+      textContainer = [(VUITextView *)self->_auxilliaryTextView textContainer];
+      [textContainer setMaximumNumberOfLines:{-[FocusableTextView maximumNumberOfLines](self, "maximumNumberOfLines")}];
 
       [(VUITextView *)self->_auxilliaryTextView vui_sizeThatFits:v4, 0.0];
       v9 = v8;
-      v10 = [(VUITextView *)self->_auxilliaryTextView textContainer];
-      [v10 setMaximumNumberOfLines:{-[FocusableTextView maximumNumberOfLines](self, "maximumNumberOfLines") + 1}];
+      textContainer2 = [(VUITextView *)self->_auxilliaryTextView textContainer];
+      [textContainer2 setMaximumNumberOfLines:{-[FocusableTextView maximumNumberOfLines](self, "maximumNumberOfLines") + 1}];
 
       [(VUITextView *)self->_auxilliaryTextView vui_sizeThatFits:v4, 0.0];
       v12 = v11 > v9;
@@ -673,8 +673,8 @@ uint64_t __42__FocusableTextView__bottomBaselineOffset__block_invoke(uint64_t a1
   v12 = v11 - v4;
   v14 = v13 + 0.0;
   defaultLineFragmentPadding = self->_defaultLineFragmentPadding;
-  v16 = [(VUITextView *)self->_descriptionTextView textContainer];
-  [v16 lineFragmentPadding];
+  textContainer = [(VUITextView *)self->_descriptionTextView textContainer];
+  [textContainer lineFragmentPadding];
   v18 = defaultLineFragmentPadding - v17;
 
   v19 = v10 - v18;
@@ -691,18 +691,18 @@ uint64_t __42__FocusableTextView__bottomBaselineOffset__block_invoke(uint64_t a1
 - (id)_createMoreButtonMaskFade
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6979380] layer];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  v12[0] = [v4 CGColor];
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v12[1] = [v5 CGColor];
+  layer = [MEMORY[0x1E6979380] layer];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  v12[0] = [clearColor CGColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v12[1] = [whiteColor CGColor];
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
-  [v3 setColors:v6];
+  [layer setColors:v6];
 
-  v7 = [(VUITextView *)self->_descriptionTextView vuiText];
-  v8 = [v7 _isNaturallyRTL];
+  vuiText = [(VUITextView *)self->_descriptionTextView vuiText];
+  _isNaturallyRTL = [vuiText _isNaturallyRTL];
 
-  if (v8)
+  if (_isNaturallyRTL)
   {
     v9 = 1.0;
   }
@@ -712,7 +712,7 @@ uint64_t __42__FocusableTextView__bottomBaselineOffset__block_invoke(uint64_t a1
     v9 = 0.0;
   }
 
-  if (v8)
+  if (_isNaturallyRTL)
   {
     v10 = 0.0;
   }
@@ -722,23 +722,23 @@ uint64_t __42__FocusableTextView__bottomBaselineOffset__block_invoke(uint64_t a1
     v10 = 1.0;
   }
 
-  [v3 setStartPoint:{v9, 0.5}];
-  [v3 setEndPoint:{v10, 0.5}];
-  [v3 setLocations:&unk_1F5E5EBB0];
-  [v3 setCompositingFilter:*MEMORY[0x1E69798E8]];
-  [v3 setMasksToBounds:1];
+  [layer setStartPoint:{v9, 0.5}];
+  [layer setEndPoint:{v10, 0.5}];
+  [layer setLocations:&unk_1F5E5EBB0];
+  [layer setCompositingFilter:*MEMORY[0x1E69798E8]];
+  [layer setMasksToBounds:1];
 
-  return v3;
+  return layer;
 }
 
-- (void)configureMoreButtonMaskWithMaskFrame:(CGRect)a3 moreLabelFrame:(CGRect)a4
+- (void)configureMoreButtonMaskWithMaskFrame:(CGRect)frame moreLabelFrame:(CGRect)labelFrame
 {
-  width = a4.size.width;
-  height = a3.size.height;
-  v6 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(VUILabel *)self->_moreLabel isHidden:a3.origin.x];
+  width = labelFrame.size.width;
+  height = frame.size.height;
+  v6 = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v10 = [(VUILabel *)self->_moreLabel isHidden:frame.origin.x];
   moreButtonMask = self->_moreButtonMask;
   if (v10)
   {
@@ -756,13 +756,13 @@ uint64_t __42__FocusableTextView__bottomBaselineOffset__block_invoke(uint64_t a1
       v14 = self->_moreButtonMask;
       self->_moreButtonMask = v13;
 
-      v15 = [MEMORY[0x1E69DC888] whiteColor];
-      -[CALayer setBackgroundColor:](self->_moreButtonMask, "setBackgroundColor:", [v15 CGColor]);
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      -[CALayer setBackgroundColor:](self->_moreButtonMask, "setBackgroundColor:", [whiteColor CGColor]);
 
       [(CALayer *)self->_moreButtonMask setMasksToBounds:1];
-      v16 = [(FocusableTextView *)self _createMoreButtonMaskFade];
+      _createMoreButtonMaskFade = [(FocusableTextView *)self _createMoreButtonMaskFade];
       v17 = self->_moreButtonMaskFade;
-      self->_moreButtonMaskFade = v16;
+      self->_moreButtonMaskFade = _createMoreButtonMaskFade;
 
       [(CALayer *)self->_moreButtonMask addSublayer:self->_moreButtonMaskFade];
       moreButtonMask = self->_moreButtonMask;
@@ -774,11 +774,11 @@ uint64_t __42__FocusableTextView__bottomBaselineOffset__block_invoke(uint64_t a1
     [(VUITextView *)self->_descriptionTextView vuiTextContainerInset];
     v21 = v19 + v20;
     v22 = width * 1.5;
-    v23 = [(VUITextView *)self->_descriptionTextView vuiText];
-    v24 = [v23 _isNaturallyRTL];
+    vuiText = [(VUITextView *)self->_descriptionTextView vuiText];
+    _isNaturallyRTL = [vuiText _isNaturallyRTL];
 
     v25 = v6 - v22;
-    if (v24)
+    if (_isNaturallyRTL)
     {
       v25 = 0.0;
     }
@@ -786,13 +786,13 @@ uint64_t __42__FocusableTextView__bottomBaselineOffset__block_invoke(uint64_t a1
     [(CAGradientLayer *)self->_moreButtonMaskFade setFrame:v25, v21, v22, height - v21];
   }
 
-  v26 = [(VUITextView *)self->_descriptionTextView layer];
-  [v26 setMask:self->_moreButtonMask];
+  layer = [(VUITextView *)self->_descriptionTextView layer];
+  [layer setMask:self->_moreButtonMask];
 }
 
-- (CGRect)_getStartAndEndIndexOfLastVisibleLine:(id)a3 startIndex:(unint64_t *)a4 endIndex:(unint64_t *)a5
+- (CGRect)_getStartAndEndIndexOfLastVisibleLine:(id)line startIndex:(unint64_t *)index endIndex:(unint64_t *)endIndex
 {
-  v7 = a3;
+  lineCopy = line;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -808,7 +808,7 @@ uint64_t __42__FocusableTextView__bottomBaselineOffset__block_invoke(uint64_t a1
   v8 = *(MEMORY[0x1E695F058] + 16);
   v23 = *MEMORY[0x1E695F058];
   v24 = v8;
-  v9 = [v7 documentRange];
+  documentRange = [lineCopy documentRange];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __79__FocusableTextView__getStartAndEndIndexOfLastVisibleLine_startIndex_endIndex___block_invoke;
@@ -816,9 +816,9 @@ uint64_t __42__FocusableTextView__bottomBaselineOffset__block_invoke(uint64_t a1
   v18[4] = &v19;
   v18[5] = &v25;
   v18[6] = &v29;
-  [v7 enumerateTextSegmentsInRange:v9 type:0 options:0 usingBlock:v18];
-  *a4 = v26[3];
-  *a5 = v30[3];
+  [lineCopy enumerateTextSegmentsInRange:documentRange type:0 options:0 usingBlock:v18];
+  *index = v26[3];
+  *endIndex = v30[3];
   v10 = v20[4];
   v11 = v20[5];
   v12 = v20[6];
@@ -856,10 +856,10 @@ uint64_t __79__FocusableTextView__getStartAndEndIndexOfLastVisibleLine_startInde
 {
   v30 = 0;
   v31 = 0;
-  v3 = [(VUITextView *)self->_descriptionTextView vuiAttributedText];
-  v4 = [v3 mutableCopy];
-  v5 = [(VUITextView *)self->_descriptionTextView textLayoutManager];
-  [(FocusableTextView *)self _getStartAndEndIndexOfLastVisibleLine:v5 startIndex:&v31 endIndex:&v30];
+  vuiAttributedText = [(VUITextView *)self->_descriptionTextView vuiAttributedText];
+  v4 = [vuiAttributedText mutableCopy];
+  textLayoutManager = [(VUITextView *)self->_descriptionTextView textLayoutManager];
+  [(FocusableTextView *)self _getStartAndEndIndexOfLastVisibleLine:textLayoutManager startIndex:&v31 endIndex:&v30];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -867,7 +867,7 @@ uint64_t __79__FocusableTextView__getStartAndEndIndexOfLastVisibleLine_startInde
 
   v14 = v30;
   v15 = v31;
-  if (v14 <= [v3 length])
+  if (v14 <= [vuiAttributedText length])
   {
     v16 = v14 - v15;
     v17 = *MEMORY[0x1E69DB688];
@@ -878,7 +878,7 @@ uint64_t __79__FocusableTextView__getStartAndEndIndexOfLastVisibleLine_startInde
     v28[3] = &unk_1E8736F48;
     v19 = v4;
     v29 = v19;
-    [v3 enumerateAttribute:v17 inRange:v18 options:v16 usingBlock:{0, v28}];
+    [vuiAttributedText enumerateAttribute:v17 inRange:v18 options:v16 usingBlock:{0, v28}];
     descriptionTextView = self->_descriptionTextView;
     v21 = [v19 copy];
     [(VUITextView *)descriptionTextView setVuiAttributedText:v21];
@@ -935,8 +935,8 @@ void __49__FocusableTextView__makeLastLineBreakByClipping__block_invoke(uint64_t
 
 - (CGRect)_moreLabelFrame
 {
-  v3 = [(VUITextView *)self->_descriptionTextView vuiText];
-  v4 = [v3 _isNaturallyRTL];
+  vuiText = [(VUITextView *)self->_descriptionTextView vuiText];
+  _isNaturallyRTL = [vuiText _isNaturallyRTL];
 
   [(VUITextView *)self->_descriptionTextView frame];
   v6 = v5;
@@ -947,7 +947,7 @@ void __49__FocusableTextView__makeLastLineBreakByClipping__block_invoke(uint64_t
   v14 = v13;
   v16 = v15;
   v17 = 3.0;
-  if ((v4 & 1) == 0)
+  if ((_isNaturallyRTL & 1) == 0)
   {
     v32.origin.x = v6;
     v32.origin.y = v8;
@@ -971,7 +971,7 @@ void __49__FocusableTextView__makeLastLineBreakByClipping__block_invoke(uint64_t
     v14 = v14 + 3.0;
   }
 
-  if (v4)
+  if (_isNaturallyRTL)
   {
     v35.origin.y = 0.0;
     v35.origin.x = v17;
@@ -980,7 +980,7 @@ void __49__FocusableTextView__makeLastLineBreakByClipping__block_invoke(uint64_t
     v17 = v17 + Width - CGRectGetWidth(v35);
   }
 
-  v20 = [(VUITextView *)self->_descriptionTextView vuiAttributedText];
+  vuiAttributedText = [(VUITextView *)self->_descriptionTextView vuiAttributedText];
   v36.origin.x = v6;
   v36.origin.y = v8;
   v36.size.width = v10;
@@ -991,7 +991,7 @@ void __49__FocusableTextView__makeLastLineBreakByClipping__block_invoke(uint64_t
   v37.size.width = v14;
   v37.size.height = v16;
   v22 = floor(MaxY - CGRectGetHeight(v37));
-  if ([v20 length])
+  if ([vuiAttributedText length])
   {
     [(FocusableTextView *)self _bottomBaselineOffset];
     v24 = v23;
@@ -1001,8 +1001,8 @@ void __49__FocusableTextView__makeLastLineBreakByClipping__block_invoke(uint64_t
 
   if ([(FocusableTextView *)self hasPlatterBehindMoreLabel])
   {
-    v26 = [(FocusableTextView *)self moreLabel];
-    [v26 padding];
+    moreLabel = [(FocusableTextView *)self moreLabel];
+    [moreLabel padding];
     v22 = v22 + v27;
   }
 
@@ -1037,76 +1037,76 @@ void __49__FocusableTextView__makeLastLineBreakByClipping__block_invoke(uint64_t
 
 - (void)_updateTextColor
 {
-  v12 = [(VUITextLayout *)self->_textLayout color];
-  v3 = [(VUITextLayout *)self->_textLayout seeMoreTextColor];
-  if (!v3)
+  color = [(VUITextLayout *)self->_textLayout color];
+  seeMoreTextColor = [(VUITextLayout *)self->_textLayout seeMoreTextColor];
+  if (!seeMoreTextColor)
   {
-    v3 = v12;
+    seeMoreTextColor = color;
   }
 
   if (UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v4 = [(VUITextLayout *)self->_textLayout highContrastTintColor];
-    v5 = v4;
-    if (v4)
+    highContrastTintColor = [(VUITextLayout *)self->_textLayout highContrastTintColor];
+    v5 = highContrastTintColor;
+    if (highContrastTintColor)
     {
-      v6 = v4;
-      v7 = v12;
+      v6 = highContrastTintColor;
+      v7 = color;
     }
 
     else
     {
-      v8 = [(FocusableTextView *)self _accessibilityHigherContrastTintColorForColor:v12];
-      v7 = v12;
+      v8 = [(FocusableTextView *)self _accessibilityHigherContrastTintColorForColor:color];
+      v7 = color;
       v6 = v8;
     }
 
-    v12 = v6;
+    color = v6;
   }
 
   if (UIAccessibilityIsReduceTransparencyEnabled())
   {
-    v9 = [v12 colorByRemovingTransparency];
+    colorByRemovingTransparency = [color colorByRemovingTransparency];
 
-    v10 = [v3 colorByRemovingTransparency];
+    colorByRemovingTransparency2 = [seeMoreTextColor colorByRemovingTransparency];
 
-    v3 = v10;
-    v11 = v9;
+    seeMoreTextColor = colorByRemovingTransparency2;
+    v11 = colorByRemovingTransparency;
   }
 
   else
   {
-    v11 = v12;
+    v11 = color;
   }
 
   v13 = v11;
   [(FocusableTextView *)self setDescriptionTextColor:v11];
-  [(FocusableTextView *)self setMoreLabelTextColor:v3];
+  [(FocusableTextView *)self setMoreLabelTextColor:seeMoreTextColor];
 }
 
-- (void)_configureAlignmentWithTextAlignment:(int64_t)a3 allowsTextAlignmentOverride:(BOOL)a4
+- (void)_configureAlignmentWithTextAlignment:(int64_t)alignment allowsTextAlignmentOverride:(BOOL)override
 {
-  v4 = a3;
-  if (a4 && ((a3 == 4) & [(FocusableTextView *)self vuiIsRTL]) != 0)
+  alignmentCopy = alignment;
+  if (override && ((alignment == 4) & [(FocusableTextView *)self vuiIsRTL]) != 0)
   {
-    v4 = 2;
+    alignmentCopy = 2;
   }
 
-  [(FocusableTextView *)self setDescriptionTextAlignment:v4];
+  [(FocusableTextView *)self setDescriptionTextAlignment:alignmentCopy];
 }
 
-- (void)_selectButtonAction:(id)a3
+- (void)_selectButtonAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if (self->_selectionHandler)
   {
-    v6 = v4;
-    v5 = [(FocusableTextView *)self shouldShowMoreLabel];
-    v4 = v6;
-    if (v5)
+    v6 = actionCopy;
+    shouldShowMoreLabel = [(FocusableTextView *)self shouldShowMoreLabel];
+    actionCopy = v6;
+    if (shouldShowMoreLabel)
     {
       (*(self->_selectionHandler + 2))();
-      v4 = v6;
+      actionCopy = v6;
     }
   }
 }

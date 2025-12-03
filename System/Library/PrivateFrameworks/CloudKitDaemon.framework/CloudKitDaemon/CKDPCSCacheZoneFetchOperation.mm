@@ -12,11 +12,11 @@
 - (void)_decryptZonePCSInSharedDatabase;
 - (void)_decryptZonePCSUsingServiceIdentities;
 - (void)_fetchDepedentPCSInSharedDatabase;
-- (void)_handleDecryptedZonePCSData:(id)a3 withError:(id)a4;
-- (void)_handlePCSDataFetched:(id)a3 withError:(id)a4;
-- (void)_saveNewPCSOnZone:(id)a3 completion:(id)a4;
-- (void)_saveZoneToServer:(id)a3 completion:(id)a4;
-- (void)_saveZoneToServer:(id)a3 withPCS:(_OpaquePCSShareProtection *)a4 zoneishPCS:(_OpaquePCSShareProtection *)a5 previousEtag:(id)a6 completion:(id)a7;
+- (void)_handleDecryptedZonePCSData:(id)data withError:(id)error;
+- (void)_handlePCSDataFetched:(id)fetched withError:(id)error;
+- (void)_saveNewPCSOnZone:(id)zone completion:(id)completion;
+- (void)_saveZoneToServer:(id)server completion:(id)completion;
+- (void)_saveZoneToServer:(id)server withPCS:(_OpaquePCSShareProtection *)s zoneishPCS:(_OpaquePCSShareProtection *)cS previousEtag:(id)etag completion:(id)completion;
 - (void)_willRetryFetch;
 @end
 
@@ -784,13 +784,13 @@ LABEL_106:
   [(CKDPCSCacheFetchOperation *)&v2 _willRetryFetch];
 }
 
-- (void)_handlePCSDataFetched:(id)a3 withError:(id)a4
+- (void)_handlePCSDataFetched:(id)fetched withError:(id)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  fetchedCopy = fetched;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = MEMORY[0x277CBC880];
   if (*MEMORY[0x277CBC880] != -1)
   {
@@ -801,18 +801,18 @@ LABEL_106:
   v11 = *MEMORY[0x277CBC830];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v22 = objc_msgSend_operationID(v8, v12, v13);
-    v25 = objc_msgSend_pcsKeyID(v6, v23, v24);
-    v28 = objc_msgSend_zoneishPublicKeyID(v6, v26, v27);
+    v22 = objc_msgSend_operationID(selfCopy, v12, v13);
+    v25 = objc_msgSend_pcsKeyID(fetchedCopy, v23, v24);
+    v28 = objc_msgSend_zoneishPublicKeyID(fetchedCopy, v26, v27);
     v29 = v28;
     v30 = @" and error ";
     *v42 = 138544386;
     v31 = &stru_28385ED00;
     *&v42[4] = v22;
     *&v42[12] = 2114;
-    if (v7)
+    if (errorCopy)
     {
-      v31 = v7;
+      v31 = errorCopy;
     }
 
     else
@@ -830,7 +830,7 @@ LABEL_106:
     _os_log_debug_impl(&dword_22506F000, v11, OS_LOG_TYPE_DEBUG, "Zone PCS fetch operation %{public}@ received PCS data (%{public}@/%{public}@)%{public}@%@", v42, 0x34u);
   }
 
-  if (objc_msgSend_didFetchData(v8, v14, v15))
+  if (objc_msgSend_didFetchData(selfCopy, v14, v15))
   {
     if (*v9 != -1)
     {
@@ -840,10 +840,10 @@ LABEL_106:
     v17 = *v10;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v32 = objc_msgSend_operationID(v8, v18, v19);
-      v35 = objc_msgSend_zonePCSData(v8, v33, v34);
+      v32 = objc_msgSend_operationID(selfCopy, v18, v19);
+      v35 = objc_msgSend_zonePCSData(selfCopy, v33, v34);
       v38 = objc_msgSend_pcsKeyID(v35, v36, v37);
-      v41 = objc_msgSend_pcsKeyID(v6, v39, v40);
+      v41 = objc_msgSend_pcsKeyID(fetchedCopy, v39, v40);
       *v42 = 138544130;
       *&v42[4] = v32;
       *&v42[12] = 2112;
@@ -851,23 +851,23 @@ LABEL_106:
       v43 = 2112;
       v44 = v41;
       v45 = 2112;
-      v46 = v7;
+      v46 = errorCopy;
       _os_log_debug_impl(&dword_22506F000, v17, OS_LOG_TYPE_DEBUG, "Zone PCS fetch operation %{public}@ already has PCS data %@. Ignoring the fetch callback with %@/%@", v42, 0x2Au);
     }
   }
 
   else
   {
-    if (v6)
+    if (fetchedCopy)
     {
-      objc_msgSend_setZonePCSData_(v8, v16, v6);
-      objc_msgSend_setDidFetchData_(v8, v20, 1);
+      objc_msgSend_setZonePCSData_(selfCopy, v16, fetchedCopy);
+      objc_msgSend_setDidFetchData_(selfCopy, v20, 1);
     }
 
-    objc_msgSend_setFetchError_(v8, v16, v7, *v42);
+    objc_msgSend_setFetchError_(selfCopy, v16, errorCopy, *v42);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -948,11 +948,11 @@ LABEL_14:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_saveZoneToServer:(id)a3 completion:(id)a4
+- (void)_saveZoneToServer:(id)server completion:(id)completion
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  completionCopy = completion;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
@@ -960,7 +960,7 @@ LABEL_14:
   v24[4] = sub_22507361C;
   v25 = 0;
   v8 = objc_opt_new();
-  v26[0] = v6;
+  v26[0] = serverCopy;
   v10 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v9, v26, 1);
   objc_msgSend_setRecordZonesToSave_(v8, v11, v10);
 
@@ -973,9 +973,9 @@ LABEL_14:
   v20[2] = sub_22527FD38;
   v20[3] = &unk_27854BA70;
   v23 = v24;
-  v16 = v6;
+  v16 = serverCopy;
   v21 = v16;
-  v17 = v7;
+  v17 = completionCopy;
   v22 = v17;
   objc_msgSend_spawnAndRunOperationOfClass_operationInfo_operationConfigurationBlock_(self, v18, v15, v8, v20);
 
@@ -983,27 +983,27 @@ LABEL_14:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_saveZoneToServer:(id)a3 withPCS:(_OpaquePCSShareProtection *)a4 zoneishPCS:(_OpaquePCSShareProtection *)a5 previousEtag:(id)a6 completion:(id)a7
+- (void)_saveZoneToServer:(id)server withPCS:(_OpaquePCSShareProtection *)s zoneishPCS:(_OpaquePCSShareProtection *)cS previousEtag:(id)etag completion:(id)completion
 {
   v50 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  serverCopy = server;
+  etagCopy = etag;
+  completionCopy = completion;
   v17 = objc_msgSend_container(self, v15, v16);
   v20 = objc_msgSend_pcsManager(v17, v18, v19);
   v47 = 0;
-  v22 = objc_msgSend_dataFromZonePCS_error_(v20, v21, a4, &v47);
+  v22 = objc_msgSend_dataFromZonePCS_error_(v20, v21, s, &v47);
   v23 = v47;
 
   if (!v23 && v22)
   {
-    v45 = v13;
-    if (a5)
+    v45 = etagCopy;
+    if (cS)
     {
       v26 = objc_msgSend_container(self, v24, v25);
       v29 = objc_msgSend_pcsManager(v26, v27, v28);
       v46 = 0;
-      v31 = objc_msgSend_dataFromRecordPCS_error_(v29, v30, a5, &v46);
+      v31 = objc_msgSend_dataFromRecordPCS_error_(v29, v30, cS, &v46);
       v23 = v46;
 
       if (v23 || !v31)
@@ -1013,7 +1013,7 @@ LABEL_14:
           dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
         }
 
-        v13 = v45;
+        etagCopy = v45;
         v32 = *MEMORY[0x277CBC858];
         if (os_log_type_enabled(*MEMORY[0x277CBC858], OS_LOG_TYPE_ERROR))
         {
@@ -1029,7 +1029,7 @@ LABEL_14:
         else if (v23)
         {
 LABEL_11:
-          v14[2](v14, v23);
+          completionCopy[2](completionCopy, v23);
 LABEL_20:
 
           goto LABEL_21;
@@ -1045,16 +1045,16 @@ LABEL_20:
       v31 = 0;
     }
 
-    objc_msgSend_setProtectionData_(v12, v24, v22);
+    objc_msgSend_setProtectionData_(serverCopy, v24, v22);
     v37 = objc_msgSend_etagFromPCSData_(CKDPCSManager, v36, v22);
-    objc_msgSend_setProtectionEtag_(v12, v38, v37);
+    objc_msgSend_setProtectionEtag_(serverCopy, v38, v37);
 
-    objc_msgSend_setZoneishProtectionData_(v12, v39, v31);
-    v13 = v45;
-    objc_msgSend_setPreviousProtectionEtag_(v12, v40, v45);
-    objc_msgSend_setZonePCS_(v12, v41, a4);
-    objc_msgSend_setZoneishPCS_(v12, v42, a5);
-    objc_msgSend__saveZoneToServer_completion_(self, v43, v12, v14);
+    objc_msgSend_setZoneishProtectionData_(serverCopy, v39, v31);
+    etagCopy = v45;
+    objc_msgSend_setPreviousProtectionEtag_(serverCopy, v40, v45);
+    objc_msgSend_setZonePCS_(serverCopy, v41, s);
+    objc_msgSend_setZoneishPCS_(serverCopy, v42, cS);
+    objc_msgSend__saveZoneToServer_completion_(self, v43, serverCopy, completionCopy);
     v23 = 0;
     goto LABEL_20;
   }
@@ -1085,21 +1085,21 @@ LABEL_16:
   }
 
 LABEL_17:
-  v14[2](v14, v23);
+  completionCopy[2](completionCopy, v23);
 LABEL_21:
 
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_saveNewPCSOnZone:(id)a3 completion:(id)a4
+- (void)_saveNewPCSOnZone:(id)zone completion:(id)completion
 {
   v50 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v11 = objc_msgSend_zoneID(v7, v9, v10);
+  zoneCopy = zone;
+  completionCopy = completion;
+  v11 = objc_msgSend_zoneID(zoneCopy, v9, v10);
   if ((objc_msgSend_isDefaultRecordZoneID(v11, v12, v13) & 1) == 0)
   {
-    v16 = objc_msgSend_zoneID(v7, v14, v15);
+    v16 = objc_msgSend_zoneID(zoneCopy, v14, v15);
     isSystemRecordZoneID = objc_msgSend_isSystemRecordZoneID(v16, v17, v18);
 
     if (isSystemRecordZoneID)
@@ -1108,7 +1108,7 @@ LABEL_21:
     }
 
     v11 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v20, v21);
-    v24 = objc_msgSend_zoneID(v7, v22, v23);
+    v24 = objc_msgSend_zoneID(zoneCopy, v22, v23);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v11, v25, a2, self, @"CKDPCSCacheZoneFetchOperation.m", 231, @"We shouldn't be trying to save a new PCS on anything other than the default zone or system zone: %@", v24);
   }
 
@@ -1122,7 +1122,7 @@ LABEL_5:
   if (os_log_type_enabled(*MEMORY[0x277CBC858], OS_LOG_TYPE_INFO))
   {
     v27 = v26;
-    v30 = objc_msgSend_zoneID(v7, v28, v29);
+    v30 = objc_msgSend_zoneID(zoneCopy, v28, v29);
     *buf = 138412290;
     v49 = v30;
     _os_log_impl(&dword_22506F000, v27, OS_LOG_TYPE_INFO, "Saving new PCS on zone %@", buf, 0xCu);
@@ -1137,9 +1137,9 @@ LABEL_5:
   v44[2] = sub_225280960;
   v44[3] = &unk_27854BAC0;
   objc_copyWeak(&v47, buf);
-  v40 = v8;
+  v40 = completionCopy;
   v46 = v40;
-  v41 = v7;
+  v41 = zoneCopy;
   v45 = v41;
   objc_msgSend_createZonePCSWithRequestorOperationID_createV2PCS_completionHandler_(v36, v42, v39, 1, v44);
 
@@ -1254,12 +1254,12 @@ LABEL_17:
   v60 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDecryptedZonePCSData:(id)a3 withError:(id)a4
+- (void)_handleDecryptedZonePCSData:(id)data withError:(id)error
 {
   v123 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v9 = objc_msgSend_pcs(a3, v7, v8);
-  v12 = v6;
+  errorCopy = error;
+  v9 = objc_msgSend_pcs(data, v7, v8);
+  v12 = errorCopy;
   v13 = MEMORY[0x277CBC858];
   v14 = MEMORY[0x277CBC880];
   if (v12)

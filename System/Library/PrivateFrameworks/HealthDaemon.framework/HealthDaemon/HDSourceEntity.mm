@@ -1,29 +1,29 @@
 @interface HDSourceEntity
-+ (BOOL)enumerateBundleIdentifiersForSourcesForUUIDData:(id)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6;
-+ (BOOL)enumerateBundleIdentifiersForSourcesWithPredicate:(id)a3 database:(id)a4 error:(id *)a5 enumerationHandler:(id)a6;
-+ (id)_firstSourceWithPredicate:(void *)a3 database:(uint64_t)a4 error:;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
-+ (id)firstSourceWithPredicate:(id)a3 profile:(id)a4 error:(id *)a5;
++ (BOOL)enumerateBundleIdentifiersForSourcesForUUIDData:(id)data transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)enumerateBundleIdentifiersForSourcesWithPredicate:(id)predicate database:(id)database error:(id *)error enumerationHandler:(id)handler;
++ (id)_firstSourceWithPredicate:(void *)predicate database:(uint64_t)database error:;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
++ (id)firstSourceWithPredicate:(id)predicate profile:(id)profile error:(id *)error;
 + (id)foreignKeys;
 + (id)indices;
-+ (id)insertSourceWithUUID:(id)a3 logicalSourceID:(int64_t)a4 name:(id)a5 options:(unint64_t)a6 isCurrentDevice:(BOOL)a7 productType:(id)a8 deleted:(BOOL)a9 modificationDate:(id)a10 provenance:(int64_t)a11 syncIdentity:(int64_t)a12 transaction:(id)a13 error:(id *)a14;
-+ (id)joinClausesForProperty:(id)a3;
-+ (id)sourceForLocalDeviceWithDatabase:(id)a3 error:(id *)a4;
-+ (id)sourceForLogicalSourceID:(id)a3 localDeviceBundleIdentifier:(BOOL)a4 localOnly:(BOOL)a5 transaction:(id)a6 error:(id *)a7;
-+ (id)sourcesWithPredicate:(id)a3 includeDeleted:(BOOL)a4 profile:(id)a5 error:(id *)a6;
-+ (id)sourcesWithPredicate:(id)a3 orderingTerms:(id)a4 includeDeleted:(BOOL)a5 database:(id)a6 error:(id *)a7;
-- (BOOL)adoptAsLocalSourceWithLogicalSourceID:(id)a3 UUID:(id)a4 name:(id)a5 productType:(id)a6 profile:(id)a7 error:(id *)a8;
-- (BOOL)deleteSourceWithTombstoneLogicalSourceID:(int64_t)a3 syncIdentity:(int64_t)a4 database:(id)a5 transaction:(id)a6 error:(id *)a7;
-- (BOOL)setName:(id)a3 profile:(id)a4 error:(id *)a5;
-- (BOOL)setOptions:(unint64_t)a3 profile:(id)a4 didUpdate:(BOOL *)a5 error:(id *)a6;
-- (id)codableSourceWithEncoder:(id)a3 transaction:(id)a4 profile:(id)a5 error:(id *)a6;
-- (id)codableSourceWithProfile:(id)a3 error:(id *)a4;
-- (id)sourceBundleIdentifierInDatabase:(id)a3 error:(id *)a4;
-- (id)sourceUUIDWithHealthDatabase:(id)a3 error:(id *)a4;
-- (id)sourceUUIDWithProfile:(id)a3 error:(id *)a4;
-- (id)sourceWithProfile:(id)a3 error:(id *)a4;
-- (id)unitTest_logicalSourceEntityWithHealthDatabase:(id)a3 error:(id *)a4;
-- (uint64_t)_updateValues:(void *)a3 forProperties:(void *)a4 profile:(uint64_t)a5 didUpdate:(uint64_t)a6 error:;
++ (id)insertSourceWithUUID:(id)d logicalSourceID:(int64_t)iD name:(id)name options:(unint64_t)options isCurrentDevice:(BOOL)device productType:(id)type deleted:(BOOL)deleted modificationDate:(id)self0 provenance:(int64_t)self1 syncIdentity:(int64_t)self2 transaction:(id)self3 error:(id *)self4;
++ (id)joinClausesForProperty:(id)property;
++ (id)sourceForLocalDeviceWithDatabase:(id)database error:(id *)error;
++ (id)sourceForLogicalSourceID:(id)d localDeviceBundleIdentifier:(BOOL)identifier localOnly:(BOOL)only transaction:(id)transaction error:(id *)error;
++ (id)sourcesWithPredicate:(id)predicate includeDeleted:(BOOL)deleted profile:(id)profile error:(id *)error;
++ (id)sourcesWithPredicate:(id)predicate orderingTerms:(id)terms includeDeleted:(BOOL)deleted database:(id)database error:(id *)error;
+- (BOOL)adoptAsLocalSourceWithLogicalSourceID:(id)d UUID:(id)iD name:(id)name productType:(id)type profile:(id)profile error:(id *)error;
+- (BOOL)deleteSourceWithTombstoneLogicalSourceID:(int64_t)d syncIdentity:(int64_t)identity database:(id)database transaction:(id)transaction error:(id *)error;
+- (BOOL)setName:(id)name profile:(id)profile error:(id *)error;
+- (BOOL)setOptions:(unint64_t)options profile:(id)profile didUpdate:(BOOL *)update error:(id *)error;
+- (id)codableSourceWithEncoder:(id)encoder transaction:(id)transaction profile:(id)profile error:(id *)error;
+- (id)codableSourceWithProfile:(id)profile error:(id *)error;
+- (id)sourceBundleIdentifierInDatabase:(id)database error:(id *)error;
+- (id)sourceUUIDWithHealthDatabase:(id)database error:(id *)error;
+- (id)sourceUUIDWithProfile:(id)profile error:(id *)error;
+- (id)sourceWithProfile:(id)profile error:(id *)error;
+- (id)unitTest_logicalSourceEntityWithHealthDatabase:(id)database error:(id *)error;
+- (uint64_t)_updateValues:(void *)values forProperties:(void *)properties profile:(uint64_t)profile didUpdate:(uint64_t)update error:;
 @end
 
 @implementation HDSourceEntity
@@ -70,50 +70,50 @@
   return v15;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
-  v4 = a3;
-  if (([v4 isEqualToString:@"logical_sources.bundle_id"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"logical_sources.owner_bundle_id"))
+  propertyCopy = property;
+  if (([propertyCopy isEqualToString:@"logical_sources.bundle_id"] & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToString:", @"logical_sources.owner_bundle_id"))
   {
     v5 = MEMORY[0x277D10B50];
-    v6 = [a1 disambiguatedDatabaseTable];
-    v7 = [v5 innerJoinClauseFromTable:v6 toTargetEntity:objc_opt_class() as:0 localReference:@"logical_source_id" targetKey:*MEMORY[0x277D10A40]];
+    disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+    v7 = [v5 innerJoinClauseFromTable:disambiguatedDatabaseTable toTargetEntity:objc_opt_class() as:0 localReference:@"logical_source_id" targetKey:*MEMORY[0x277D10A40]];
 
     v8 = [MEMORY[0x277CBEB98] setWithObjects:{v7, 0}];
   }
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___HDSourceEntity;
-    v8 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, v4);
+    v8 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, propertyCopy);
   }
 
   return v8;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDSourceEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDSourceEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
 
-+ (id)insertSourceWithUUID:(id)a3 logicalSourceID:(int64_t)a4 name:(id)a5 options:(unint64_t)a6 isCurrentDevice:(BOOL)a7 productType:(id)a8 deleted:(BOOL)a9 modificationDate:(id)a10 provenance:(int64_t)a11 syncIdentity:(int64_t)a12 transaction:(id)a13 error:(id *)a14
++ (id)insertSourceWithUUID:(id)d logicalSourceID:(int64_t)iD name:(id)name options:(unint64_t)options isCurrentDevice:(BOOL)device productType:(id)type deleted:(BOOL)deleted modificationDate:(id)self0 provenance:(int64_t)self1 syncIdentity:(int64_t)self2 transaction:(id)self3 error:(id *)self4
 {
-  v17 = a3;
-  v18 = a5;
-  v19 = a8;
-  v32 = a10;
-  v20 = a13;
+  dCopy = d;
+  nameCopy = name;
+  typeCopy = type;
+  dateCopy = date;
+  transactionCopy = transaction;
   v21 = objc_opt_self();
-  if (v17)
+  if (dCopy)
   {
-    if (!a9)
+    if (!deleted)
     {
       goto LABEL_4;
     }
@@ -121,20 +121,20 @@
     goto LABEL_3;
   }
 
-  v31 = [MEMORY[0x277CCA890] currentHandler];
-  [v31 handleFailureInMethod:sel__insertSourceWithUUID_logicalSourceID_name_options_isCurrentDevice_productType_deleted_modificationDate_provenance_syncIdentity_transaction_error_ object:v21 file:@"HDSourceEntity.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"UUID != nil", v32}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:sel__insertSourceWithUUID_logicalSourceID_name_options_isCurrentDevice_productType_deleted_modificationDate_provenance_syncIdentity_transaction_error_ object:v21 file:@"HDSourceEntity.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"UUID != nil", dateCopy}];
 
-  if (a9)
+  if (deleted)
   {
 LABEL_3:
 
-    a6 = 0;
-    v19 = &stru_283BF39C8;
-    v18 = &stru_283BF39C8;
+    options = 0;
+    typeCopy = &stru_283BF39C8;
+    nameCopy = &stru_283BF39C8;
   }
 
 LABEL_4:
-  v22 = [v20 databaseForEntityClass:v21];
+  v22 = [transactionCopy databaseForEntityClass:v21];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __164__HDSourceEntity__insertSourceWithUUID_logicalSourceID_name_options_isCurrentDevice_productType_deleted_modificationDate_provenance_syncIdentity_transaction_error___block_invoke;
@@ -144,27 +144,27 @@ LABEL_4:
   v35[1] = 3221225472;
   v35[2] = __164__HDSourceEntity__insertSourceWithUUID_logicalSourceID_name_options_isCurrentDevice_productType_deleted_modificationDate_provenance_syncIdentity_transaction_error___block_invoke_2;
   v35[3] = &unk_278619890;
-  v23 = v17;
+  v23 = dCopy;
   v36 = v23;
-  v40 = a4;
-  v24 = v18;
+  iDCopy = iD;
+  v24 = nameCopy;
   v37 = v24;
-  v41 = a6;
-  v44 = a7;
-  v25 = v19;
+  optionsCopy = options;
+  deviceCopy = device;
+  v25 = typeCopy;
   v38 = v25;
-  v45 = a9;
-  v26 = v32;
+  deletedCopy = deleted;
+  v26 = dateCopy;
   v39 = v26;
-  v42 = a11;
-  v43 = a12;
+  provenanceCopy = provenance;
+  identityCopy = identity;
   v27 = 0;
-  if ([v22 executeCachedStatementForKey:&_insertSourceWithUUID_logicalSourceID_name_options_isCurrentDevice_productType_deleted_modificationDate_provenance_syncIdentity_transaction_error__insertKey error:a14 SQLGenerator:v46 bindingHandler:v35 enumerationHandler:0])
+  if ([v22 executeCachedStatementForKey:&_insertSourceWithUUID_logicalSourceID_name_options_isCurrentDevice_productType_deleted_modificationDate_provenance_syncIdentity_transaction_error__insertKey error:error SQLGenerator:v46 bindingHandler:v35 enumerationHandler:0])
   {
     notify_post(*MEMORY[0x277CCE570]);
     v28 = [HDSourceEntity alloc];
-    v29 = [v22 lastInsertRowID];
-    v27 = -[HDSQLiteEntity initWithPersistentID:](v28, "initWithPersistentID:", [v29 longLongValue]);
+    lastInsertRowID = [v22 lastInsertRowID];
+    v27 = -[HDSQLiteEntity initWithPersistentID:](v28, "initWithPersistentID:", [lastInsertRowID longLongValue]);
   }
 
   return v27;
@@ -217,18 +217,18 @@ uint64_t __164__HDSourceEntity__insertSourceWithUUID_logicalSourceID_name_option
   return sqlite3_bind_int64(a2, 10, v8);
 }
 
-+ (id)sourceForLocalDeviceWithDatabase:(id)a3 error:(id *)a4
++ (id)sourceForLocalDeviceWithDatabase:(id)database error:(id *)error
 {
-  v6 = a3;
+  databaseCopy = database;
   v7 = HDSourceEntityPredicateForLocalDeviceSource();
-  v8 = [(HDSourceEntity *)a1 _firstSourceWithPredicate:v7 database:v6 error:a4];
+  v8 = [(HDSourceEntity *)self _firstSourceWithPredicate:v7 database:databaseCopy error:error];
 
   return v8;
 }
 
-+ (id)_firstSourceWithPredicate:(void *)a3 database:(uint64_t)a4 error:
++ (id)_firstSourceWithPredicate:(void *)predicate database:(uint64_t)database error:
 {
-  v6 = a3;
+  predicateCopy = predicate;
   v7 = a2;
   v8 = objc_opt_self();
   block[0] = MEMORY[0x277D85DD0];
@@ -241,41 +241,41 @@ uint64_t __164__HDSourceEntity__insertSourceWithUUID_logicalSourceID_name_option
     dispatch_once(&qword_280D67B30, block);
   }
 
-  v9 = [v8 firstInDatabase:v6 predicate:v7 orderingTerms:_MergedGlobals_197 error:a4];
+  v9 = [v8 firstInDatabase:predicateCopy predicate:v7 orderingTerms:_MergedGlobals_197 error:database];
 
   return v9;
 }
 
-+ (id)sourceForLogicalSourceID:(id)a3 localDeviceBundleIdentifier:(BOOL)a4 localOnly:(BOOL)a5 transaction:(id)a6 error:(id *)a7
++ (id)sourceForLogicalSourceID:(id)d localDeviceBundleIdentifier:(BOOL)identifier localOnly:(BOOL)only transaction:(id)transaction error:(id *)error
 {
-  v12 = a3;
-  v13 = a6;
+  dCopy = d;
+  transactionCopy = transaction;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy__42;
   v29 = __Block_byref_object_dispose__42;
   v30 = 0;
-  v14 = [v13 databaseForEntityClass:a1];
+  v14 = [transactionCopy databaseForEntityClass:self];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __99__HDSourceEntity_sourceForLogicalSourceID_localDeviceBundleIdentifier_localOnly_transaction_error___block_invoke;
   v24[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v24[4] = a1;
+  v24[4] = self;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __99__HDSourceEntity_sourceForLogicalSourceID_localDeviceBundleIdentifier_localOnly_transaction_error___block_invoke_2;
   v20[3] = &unk_2786198B8;
-  v22 = a5;
-  v23 = a4;
-  v15 = v12;
+  onlyCopy = only;
+  identifierCopy = identifier;
+  v15 = dCopy;
   v21 = v15;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __99__HDSourceEntity_sourceForLogicalSourceID_localDeviceBundleIdentifier_localOnly_transaction_error___block_invoke_3;
   v19[3] = &unk_278614620;
   v19[4] = &v25;
-  if ([v14 executeCachedStatementForKey:&sourceForLogicalSourceID_localDeviceBundleIdentifier_localOnly_transaction_error__lookupKey error:a7 SQLGenerator:v24 bindingHandler:v20 enumerationHandler:v19])
+  if ([v14 executeCachedStatementForKey:&sourceForLogicalSourceID_localDeviceBundleIdentifier_localOnly_transaction_error__lookupKey error:error SQLGenerator:v24 bindingHandler:v20 enumerationHandler:v19])
   {
     v16 = v26[5];
   }
@@ -323,10 +323,10 @@ uint64_t __99__HDSourceEntity_sourceForLogicalSourceID_localDeviceBundleIdentifi
   return 0;
 }
 
-+ (id)firstSourceWithPredicate:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)firstSourceWithPredicate:(id)predicate profile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  predicateCopy = predicate;
+  profileCopy = profile;
   v9 = objc_opt_self();
   v19 = 0;
   v20 = &v19;
@@ -334,18 +334,18 @@ uint64_t __99__HDSourceEntity_sourceForLogicalSourceID_localDeviceBundleIdentifi
   v22 = __Block_byref_object_copy__42;
   v23 = __Block_byref_object_dispose__42;
   v24 = 0;
-  v10 = [v8 database];
+  database = [profileCopy database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __58__HDSourceEntity__firstSourceWithPredicate_profile_error___block_invoke;
   v15[3] = &unk_2786169D8;
   v17 = &v19;
   v18 = v9;
-  v11 = v7;
+  v11 = predicateCopy;
   v16 = v11;
-  LODWORD(a5) = [v9 performReadTransactionWithHealthDatabase:v10 error:a5 block:v15];
+  LODWORD(error) = [v9 performReadTransactionWithHealthDatabase:database error:error block:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v20[5];
   }
@@ -362,10 +362,10 @@ uint64_t __99__HDSourceEntity_sourceForLogicalSourceID_localDeviceBundleIdentifi
   return v13;
 }
 
-+ (id)sourcesWithPredicate:(id)a3 includeDeleted:(BOOL)a4 profile:(id)a5 error:(id *)a6
++ (id)sourcesWithPredicate:(id)predicate includeDeleted:(BOOL)deleted profile:(id)profile error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
+  predicateCopy = predicate;
+  profileCopy = profile;
   v11 = objc_opt_self();
   v22 = 0;
   v23 = &v22;
@@ -373,19 +373,19 @@ uint64_t __99__HDSourceEntity_sourceForLogicalSourceID_localDeviceBundleIdentifi
   v25 = __Block_byref_object_copy__42;
   v26 = __Block_byref_object_dispose__42;
   v27 = 0;
-  v12 = [v10 database];
+  database = [profileCopy database];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __69__HDSourceEntity__sourcesWithPredicate_includeDeleted_profile_error___block_invoke;
   v17[3] = &unk_278619930;
   v19 = &v22;
   v20 = v11;
-  v13 = v9;
+  v13 = predicateCopy;
   v18 = v13;
-  v21 = a4;
-  LODWORD(a6) = [v11 performReadTransactionWithHealthDatabase:v12 error:a6 block:v17];
+  deletedCopy = deleted;
+  LODWORD(error) = [v11 performReadTransactionWithHealthDatabase:database error:error block:v17];
 
-  if (a6)
+  if (error)
   {
     v14 = v23[5];
   }
@@ -402,21 +402,21 @@ uint64_t __99__HDSourceEntity_sourceForLogicalSourceID_localDeviceBundleIdentifi
   return v15;
 }
 
-+ (id)sourcesWithPredicate:(id)a3 orderingTerms:(id)a4 includeDeleted:(BOOL)a5 database:(id)a6 error:(id *)a7
++ (id)sourcesWithPredicate:(id)predicate orderingTerms:(id)terms includeDeleted:(BOOL)deleted database:(id)database error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  if (!a5)
+  predicateCopy = predicate;
+  termsCopy = terms;
+  databaseCopy = database;
+  if (!deleted)
   {
-    v15 = _HDSourceEntityPredicateForNotDeletedWithPredicate(v12);
+    v15 = _HDSourceEntityPredicateForNotDeletedWithPredicate(predicateCopy);
 
-    v12 = v15;
+    predicateCopy = v15;
   }
 
   v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v17 = [a1 queryWithDatabase:v14 predicate:v12 limit:0 orderingTerms:v13 groupBy:0];
+  v17 = [self queryWithDatabase:databaseCopy predicate:predicateCopy limit:0 orderingTerms:termsCopy groupBy:0];
   v28[0] = @"logical_sources.bundle_id";
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
   v25[0] = MEMORY[0x277D85DD0];
@@ -424,9 +424,9 @@ uint64_t __99__HDSourceEntity_sourceForLogicalSourceID_localDeviceBundleIdentifi
   v25[2] = __83__HDSourceEntity_sourcesWithPredicate_orderingTerms_includeDeleted_database_error___block_invoke;
   v25[3] = &unk_2786169B0;
   v26 = v16;
-  v27 = a1;
+  selfCopy = self;
   v19 = v16;
-  v20 = [v17 enumeratePersistentIDsAndProperties:v18 error:a7 enumerationHandler:v25];
+  v20 = [v17 enumeratePersistentIDsAndProperties:v18 error:error enumerationHandler:v25];
 
   if (v20)
   {
@@ -452,17 +452,17 @@ uint64_t __83__HDSourceEntity_sourcesWithPredicate_orderingTerms_includeDeleted_
   return 1;
 }
 
-+ (BOOL)enumerateBundleIdentifiersForSourcesWithPredicate:(id)a3 database:(id)a4 error:(id *)a5 enumerationHandler:(id)a6
++ (BOOL)enumerateBundleIdentifiersForSourcesWithPredicate:(id)predicate database:(id)database error:(id *)error enumerationHandler:(id)handler
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v11 = a4;
-  v12 = _HDSourceEntityPredicateForNotDeletedWithPredicate(a3);
+  handlerCopy = handler;
+  databaseCopy = database;
+  v12 = _HDSourceEntityPredicateForNotDeletedWithPredicate(predicate);
   v13 = objc_alloc_init(MEMORY[0x277D10B80]);
-  [v13 setEntityClass:a1];
+  [v13 setEntityClass:self];
   [v13 setPredicate:v12];
   [v13 setReturnsDistinctEntities:1];
-  v14 = [objc_alloc(MEMORY[0x277D10B78]) initWithDatabase:v11 descriptor:v13];
+  v14 = [objc_alloc(MEMORY[0x277D10B78]) initWithDatabase:databaseCopy descriptor:v13];
 
   v21[0] = @"logical_sources.bundle_id";
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
@@ -470,12 +470,12 @@ uint64_t __83__HDSourceEntity_sourcesWithPredicate_orderingTerms_includeDeleted_
   v19[1] = 3221225472;
   v19[2] = __102__HDSourceEntity_enumerateBundleIdentifiersForSourcesWithPredicate_database_error_enumerationHandler___block_invoke;
   v19[3] = &unk_2786145A8;
-  v20 = v10;
-  v16 = v10;
-  LOBYTE(a5) = [v14 enumerateProperties:v15 error:a5 enumerationHandler:v19];
+  v20 = handlerCopy;
+  v16 = handlerCopy;
+  LOBYTE(error) = [v14 enumerateProperties:v15 error:error enumerationHandler:v19];
 
   v17 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
 uint64_t __102__HDSourceEntity_enumerateBundleIdentifiersForSourcesWithPredicate_database_error_enumerationHandler___block_invoke(uint64_t a1)
@@ -502,11 +502,11 @@ uint64_t __102__HDSourceEntity_enumerateBundleIdentifiersForSourcesWithPredicate
   return v3;
 }
 
-+ (BOOL)enumerateBundleIdentifiersForSourcesForUUIDData:(id)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6
++ (BOOL)enumerateBundleIdentifiersForSourcesForUUIDData:(id)data transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dataCopy = data;
+  transactionCopy = transaction;
+  handlerCopy = handler;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -517,7 +517,7 @@ uint64_t __102__HDSourceEntity_enumerateBundleIdentifiersForSourcesWithPredicate
   v32 = __Block_byref_object_copy__42;
   v33 = __Block_byref_object_dispose__42;
   v34 = 0;
-  v13 = [v11 databaseForEntityClass:a1];
+  v13 = [transactionCopy databaseForEntityClass:self];
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x2020000000;
@@ -528,13 +528,13 @@ uint64_t __102__HDSourceEntity_enumerateBundleIdentifiersForSourcesWithPredicate
   v21[3] = &unk_278619908;
   v24 = &v35;
   v14 = v13;
-  v27 = a1;
+  selfCopy = self;
   v22 = v14;
   v25 = &v29;
-  v15 = v12;
+  v15 = handlerCopy;
   v23 = v15;
   v26 = v28;
-  [v10 hk_enumerateUUIDBytesUsingBlock:v21];
+  [dataCopy hk_enumerateUUIDBytesUsingBlock:v21];
   v16 = *(v36 + 24);
   if ((v16 & 1) == 0)
   {
@@ -542,10 +542,10 @@ uint64_t __102__HDSourceEntity_enumerateBundleIdentifiersForSourcesWithPredicate
     v18 = v17;
     if (v17)
     {
-      if (a5)
+      if (error)
       {
         v19 = v17;
-        *a5 = v18;
+        *error = v18;
       }
 
       else
@@ -723,9 +723,9 @@ void __59__HDSourceEntity__firstSourceWithPredicate_database_error___block_invok
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sourceWithProfile:(id)a3 error:(id *)a4
+- (id)sourceWithProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
+  profileCopy = profile;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -733,18 +733,18 @@ void __59__HDSourceEntity__firstSourceWithPredicate_database_error___block_invok
   v21 = __Block_byref_object_dispose__42;
   v22 = 0;
   v7 = objc_opt_class();
-  v8 = [v6 database];
+  database = [profileCopy database];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __42__HDSourceEntity_sourceWithProfile_error___block_invoke;
   v13[3] = &unk_278615F88;
-  v9 = v6;
+  v9 = profileCopy;
   v14 = v9;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
-  LODWORD(a4) = [v7 performReadTransactionWithHealthDatabase:v8 error:a4 block:v13];
+  LODWORD(error) = [v7 performReadTransactionWithHealthDatabase:database error:error block:v13];
 
-  if (a4)
+  if (error)
   {
     v10 = v18[5];
   }
@@ -815,25 +815,25 @@ void __42__HDSourceEntity_sourceWithProfile_error___block_invoke_2(uint64_t a1, 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)codableSourceWithProfile:(id)a3 error:(id *)a4
+- (id)codableSourceWithProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
+  profileCopy = profile;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__42;
   v19 = __Block_byref_object_dispose__42;
   v20 = 0;
-  v7 = [v6 database];
+  database = [profileCopy database];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __49__HDSourceEntity_codableSourceWithProfile_error___block_invoke;
   v11[3] = &unk_278619980;
-  v8 = v6;
-  v13 = self;
+  v8 = profileCopy;
+  selfCopy = self;
   v14 = &v15;
   v12 = v8;
-  [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:v7 error:a4 block:v11];
+  [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:database error:error block:v11];
 
   v9 = v16[5];
   _Block_object_dispose(&v15, 8);
@@ -855,15 +855,15 @@ uint64_t __49__HDSourceEntity_codableSourceWithProfile_error___block_invoke(uint
   return 1;
 }
 
-- (id)codableSourceWithEncoder:(id)a3 transaction:(id)a4 profile:(id)a5 error:(id *)a6
+- (id)codableSourceWithEncoder:(id)encoder transaction:(id)transaction profile:(id)profile error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if ([v11 purpose])
+  encoderCopy = encoder;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  if ([encoderCopy purpose])
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"HDSourceEntity.m" lineNumber:550 description:{@"Invalid parameter not satisfying: %@", @"[entityEncoder purpose] == HDEntityEncodingPurposeCodableObjectCreation"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSourceEntity.m" lineNumber:550 description:{@"Invalid parameter not satisfying: %@", @"[entityEncoder purpose] == HDEntityEncodingPurposeCodableObjectCreation"}];
   }
 
   v37 = 0;
@@ -876,29 +876,29 @@ uint64_t __49__HDSourceEntity_codableSourceWithProfile_error___block_invoke(uint
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  v14 = [v11 orderedProperties];
-  v15 = [v11 profile];
-  v16 = [v15 database];
+  orderedProperties = [encoderCopy orderedProperties];
+  profile = [encoderCopy profile];
+  database = [profile database];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __69__HDSourceEntity_codableSourceWithEncoder_transaction_profile_error___block_invoke;
   v28[3] = &unk_2786199A8;
   v31 = &v33;
   v32 = &v37;
-  v17 = v11;
+  v17 = encoderCopy;
   v29 = v17;
-  v30 = self;
-  v18 = [(HDHealthEntity *)self getValuesForProperties:v14 healthDatabase:v16 error:a6 handler:v28];
+  selfCopy = self;
+  v18 = [(HDHealthEntity *)self getValuesForProperties:orderedProperties healthDatabase:database error:error handler:v28];
 
-  v19 = [v13 syncIdentityManager];
-  v20 = [v19 identityForEntityID:v34[3] transaction:v12 error:a6];
+  syncIdentityManager = [profileCopy syncIdentityManager];
+  v20 = [syncIdentityManager identityForEntityID:v34[3] transaction:transactionCopy error:error];
 
   if (v20)
   {
     v21 = v38[5];
-    v22 = [v20 identity];
-    v23 = [v22 codableSyncIdentity];
-    [v21 setSyncIdentity:v23];
+    identity = [v20 identity];
+    codableSyncIdentity = [identity codableSyncIdentity];
+    [v21 setSyncIdentity:codableSyncIdentity];
 
     if (v18)
     {
@@ -935,73 +935,73 @@ uint64_t __69__HDSourceEntity_codableSourceWithEncoder_transaction_profile_error
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)sourceUUIDWithHealthDatabase:(id)a3 error:(id *)a4
+- (id)sourceUUIDWithHealthDatabase:(id)database error:(id *)error
 {
-  v4 = [(HDHealthEntity *)self valueForProperty:@"uuid" healthDatabase:a3 error:a4];
+  v4 = [(HDHealthEntity *)self valueForProperty:@"uuid" healthDatabase:database error:error];
   v5 = _HDUUIDForSQLiteValue();
 
   return v5;
 }
 
-- (id)sourceUUIDWithProfile:(id)a3 error:(id *)a4
+- (id)sourceUUIDWithProfile:(id)profile error:(id *)error
 {
-  v6 = [a3 database];
-  v7 = [(HDHealthEntity *)self valueForProperty:@"uuid" healthDatabase:v6 error:a4];
+  database = [profile database];
+  v7 = [(HDHealthEntity *)self valueForProperty:@"uuid" healthDatabase:database error:error];
   v8 = _HDUUIDForSQLiteValue();
 
   return v8;
 }
 
-- (BOOL)setName:(id)a3 profile:(id)a4 error:(id *)a5
+- (BOOL)setName:(id)name profile:(id)profile error:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v16[0] = a3;
+  v16[0] = name;
   v8 = MEMORY[0x277CBEA60];
-  v9 = a4;
-  v10 = a3;
+  profileCopy = profile;
+  nameCopy = name;
   v11 = [v8 arrayWithObjects:v16 count:1];
   v15 = @"name";
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v15 count:1];
 
-  LOBYTE(a5) = [(HDSourceEntity *)self _updateValues:v11 forProperties:v12 profile:v9 didUpdate:0 error:a5];
+  LOBYTE(error) = [(HDSourceEntity *)self _updateValues:v11 forProperties:v12 profile:profileCopy didUpdate:0 error:error];
   v13 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-- (uint64_t)_updateValues:(void *)a3 forProperties:(void *)a4 profile:(uint64_t)a5 didUpdate:(uint64_t)a6 error:
+- (uint64_t)_updateValues:(void *)values forProperties:(void *)properties profile:(uint64_t)profile didUpdate:(uint64_t)update error:
 {
   v57 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  if (a1)
+  valuesCopy = values;
+  propertiesCopy = properties;
+  if (self)
   {
     v14 = [v11 count];
-    if (v14 != [v12 count])
+    if (v14 != [valuesCopy count])
     {
-      v38 = [MEMORY[0x277CCA890] currentHandler];
-      [v38 handleFailureInMethod:sel__updateValues_forProperties_profile_didUpdate_error_ object:a1 file:@"HDSourceEntity.m" lineNumber:633 description:{@"Invalid parameter not satisfying: %@", @"values.count == properties.count"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__updateValues_forProperties_profile_didUpdate_error_ object:self file:@"HDSourceEntity.m" lineNumber:633 description:{@"Invalid parameter not satisfying: %@", @"values.count == properties.count"}];
     }
 
-    if ([v12 count])
+    if ([valuesCopy count])
     {
-      v40 = a5;
-      v41 = a6;
-      v15 = [v13 syncIdentityManager];
-      v16 = [v15 currentSyncIdentity];
-      v17 = [v16 entity];
-      v39 = [v17 persistentID];
+      profileCopy = profile;
+      updateCopy = update;
+      syncIdentityManager = [propertiesCopy syncIdentityManager];
+      currentSyncIdentity = [syncIdentityManager currentSyncIdentity];
+      entity = [currentSyncIdentity entity];
+      persistentID = [entity persistentID];
 
       v18 = MEMORY[0x277CCAB68];
-      v19 = [objc_opt_class() disambiguatedDatabaseTable];
-      v20 = [objc_opt_class() disambiguatedDatabaseTable];
-      v21 = [v18 stringWithFormat:@"UPDATE %@ SET %@ = COALESCE((SELECT MAX(%@) + 1 FROM %@), 1), %@ = ?, %@ = ?", v19, @"sync_anchor", @"sync_anchor", v20, @"mod_date", @"sync_identity", 0];
+      disambiguatedDatabaseTable = [objc_opt_class() disambiguatedDatabaseTable];
+      disambiguatedDatabaseTable2 = [objc_opt_class() disambiguatedDatabaseTable];
+      v21 = [v18 stringWithFormat:@"UPDATE %@ SET %@ = COALESCE((SELECT MAX(%@) + 1 FROM %@), 1), %@ = ?, %@ = ?", disambiguatedDatabaseTable, @"sync_anchor", @"sync_anchor", disambiguatedDatabaseTable2, @"mod_date", @"sync_identity", 0];
 
       v53 = 0u;
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v22 = v12;
+      v22 = valuesCopy;
       v23 = [v22 countByEnumeratingWithState:&v51 objects:v56 count:16];
       if (v23)
       {
@@ -1060,18 +1060,18 @@ uint64_t __69__HDSourceEntity_codableSourceWithEncoder_transaction_profile_error
 
       [v21 appendString:@""]);
       v32 = objc_opt_class();
-      v33 = [v13 database];
+      database = [propertiesCopy database];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __70__HDSourceEntity__updateValues_forProperties_profile_didUpdate_error___block_invoke;
       v42[3] = &unk_2786145F8;
-      v42[4] = a1;
+      v42[4] = self;
       v43 = v21;
-      v45 = v39;
+      v45 = persistentID;
       v44 = v11;
-      v46 = v40;
+      v46 = profileCopy;
       v34 = v21;
-      v35 = [v32 performWriteTransactionWithHealthDatabase:v33 error:v41 block:v42];
+      v35 = [v32 performWriteTransactionWithHealthDatabase:database error:updateCopy block:v42];
     }
 
     else
@@ -1089,49 +1089,49 @@ uint64_t __69__HDSourceEntity_codableSourceWithEncoder_transaction_profile_error
   return v35;
 }
 
-- (BOOL)setOptions:(unint64_t)a3 profile:(id)a4 didUpdate:(BOOL *)a5 error:(id *)a6
+- (BOOL)setOptions:(unint64_t)options profile:(id)profile didUpdate:(BOOL *)update error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v10 = MEMORY[0x277CCABB0];
-  v11 = a4;
-  v12 = [v10 numberWithUnsignedLongLong:a3];
+  profileCopy = profile;
+  v12 = [v10 numberWithUnsignedLongLong:options];
   v18[0] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
   v17 = @"source_options";
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
-  LOBYTE(a6) = [(HDSourceEntity *)self _updateValues:v13 forProperties:v14 profile:v11 didUpdate:a5 error:a6];
+  LOBYTE(error) = [(HDSourceEntity *)self _updateValues:v13 forProperties:v14 profile:profileCopy didUpdate:update error:error];
 
   v15 = *MEMORY[0x277D85DE8];
-  return a6;
+  return error;
 }
 
-- (BOOL)adoptAsLocalSourceWithLogicalSourceID:(id)a3 UUID:(id)a4 name:(id)a5 productType:(id)a6 profile:(id)a7 error:(id *)a8
+- (BOOL)adoptAsLocalSourceWithLogicalSourceID:(id)d UUID:(id)iD name:(id)name productType:(id)type profile:(id)profile error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  nameCopy = name;
+  typeCopy = type;
+  profileCopy = profile;
   v19 = objc_opt_class();
-  v20 = [v18 database];
+  database = [profileCopy database];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __92__HDSourceEntity_adoptAsLocalSourceWithLogicalSourceID_UUID_name_productType_profile_error___block_invoke;
   v27[3] = &unk_2786199D0;
   v27[4] = self;
-  v28 = v14;
-  v29 = v15;
-  v30 = v16;
-  v31 = v17;
-  v32 = v18;
-  v21 = v18;
-  v22 = v17;
-  v23 = v16;
-  v24 = v15;
-  v25 = v14;
-  LOBYTE(a8) = [v19 performWriteTransactionWithHealthDatabase:v20 error:a8 block:v27];
+  v28 = dCopy;
+  v29 = iDCopy;
+  v30 = nameCopy;
+  v31 = typeCopy;
+  v32 = profileCopy;
+  v21 = profileCopy;
+  v22 = typeCopy;
+  v23 = nameCopy;
+  v24 = iDCopy;
+  v25 = dCopy;
+  LOBYTE(error) = [v19 performWriteTransactionWithHealthDatabase:database error:error block:v27];
 
-  return a8;
+  return error;
 }
 
 uint64_t __92__HDSourceEntity_adoptAsLocalSourceWithLogicalSourceID_UUID_name_productType_profile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1213,9 +1213,9 @@ uint64_t __70__HDSourceEntity__updateValues_forProperties_profile_didUpdate_erro
   return HDSQLiteBindFoundationValuesToStatement();
 }
 
-- (id)sourceBundleIdentifierInDatabase:(id)a3 error:(id *)a4
+- (id)sourceBundleIdentifierInDatabase:(id)database error:(id *)error
 {
-  v6 = a3;
+  databaseCopy = database;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -1237,7 +1237,7 @@ uint64_t __70__HDSourceEntity__updateValues_forProperties_profile_didUpdate_erro
   v10[1] = 3221225472;
   v10[2] = __57__HDSourceEntity_sourceBundleIdentifierInDatabase_error___block_invoke_3;
   v10[3] = &unk_278614620;
-  if ([v6 executeCachedStatementForKey:&sourceBundleIdentifierInDatabase_error__lookupKey error:a4 SQLGenerator:v12 bindingHandler:v11 enumerationHandler:v10])
+  if ([databaseCopy executeCachedStatementForKey:&sourceBundleIdentifierInDatabase_error__lookupKey error:error SQLGenerator:v12 bindingHandler:v11 enumerationHandler:v10])
   {
     v7 = v14[5];
   }
@@ -1287,7 +1287,7 @@ uint64_t __57__HDSourceEntity_sourceBundleIdentifierInDatabase_error___block_inv
   return 0;
 }
 
-- (BOOL)deleteSourceWithTombstoneLogicalSourceID:(int64_t)a3 syncIdentity:(int64_t)a4 database:(id)a5 transaction:(id)a6 error:(id *)a7
+- (BOOL)deleteSourceWithTombstoneLogicalSourceID:(int64_t)d syncIdentity:(int64_t)identity database:(id)database transaction:(id)transaction error:(id *)error
 {
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -1298,10 +1298,10 @@ uint64_t __57__HDSourceEntity_sourceBundleIdentifierInDatabase_error___block_inv
   v9[1] = 3221225472;
   v9[2] = __99__HDSourceEntity_deleteSourceWithTombstoneLogicalSourceID_syncIdentity_database_transaction_error___block_invoke_2;
   v9[3] = &unk_278619A20;
-  v9[5] = a3;
-  v9[6] = a4;
+  v9[5] = d;
+  v9[6] = identity;
   v9[4] = self;
-  v7 = [a5 executeCachedStatementForKey:&deleteSourceWithTombstoneLogicalSourceID_syncIdentity_database_transaction_error__updateKey error:a7 SQLGenerator:v10 bindingHandler:v9 enumerationHandler:&__block_literal_global_47];
+  v7 = [database executeCachedStatementForKey:&deleteSourceWithTombstoneLogicalSourceID_syncIdentity_database_transaction_error__updateKey error:error SQLGenerator:v10 bindingHandler:v9 enumerationHandler:&__block_literal_global_47];
   if (v7)
   {
     notify_post(*MEMORY[0x277CCE570]);
@@ -1334,9 +1334,9 @@ uint64_t __99__HDSourceEntity_deleteSourceWithTombstoneLogicalSourceID_syncIdent
   return sqlite3_bind_int64(a2, 5, v5);
 }
 
-- (id)unitTest_logicalSourceEntityWithHealthDatabase:(id)a3 error:(id *)a4
+- (id)unitTest_logicalSourceEntityWithHealthDatabase:(id)database error:(id *)error
 {
-  v6 = a3;
+  databaseCopy = database;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1349,7 +1349,7 @@ uint64_t __99__HDSourceEntity_deleteSourceWithTombstoneLogicalSourceID_syncIdent
   v10[3] = &unk_278619398;
   v10[4] = self;
   v10[5] = &v11;
-  if ([(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:v6 error:a4 block:v10])
+  if ([(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:databaseCopy error:error block:v10])
   {
     v7 = v12[5];
   }

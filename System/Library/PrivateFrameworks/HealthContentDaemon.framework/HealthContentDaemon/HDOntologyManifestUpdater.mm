@@ -1,19 +1,19 @@
 @interface HDOntologyManifestUpdater
-+ (BOOL)_handleTaskError:(void *)a3 response:(void *)a4 request:(void *)a5 error:;
-+ (BOOL)_importStagedManifestFileWithEntry:(void *)a3 updateCoordinator:(uint64_t)a4 error:;
-+ (id)_getManifestEntryWithUpdateCoordinator:(void *)a3 URL:(uint64_t)a4 error:;
-+ (id)_stageShardFileWithURL:(void *)a3 entry:(void *)a4 updateCoordinator:(uint64_t)a5 error:;
-+ (id)_updateIfStagedEntry:(void *)a3 updateCoordinator:;
-+ (id)_versionFromJSONData:(uint64_t)a3 error:;
-+ (id)manifestVersionURLForManifestURL:(id)a3;
-+ (void)_downloadManifestWithEntry:(void *)a3 session:(void *)a4 updateCoordinator:(void *)a5 completion:;
-+ (void)_importStagedManifestFileWithEntry:(void *)a3 updateCoordinator:(void *)a4 completion:;
-+ (void)_insertAndLogFailureForEntry:(void *)a3 registry:;
-+ (void)_updateManifestWithEntry:(void *)a3 session:(void *)a4 updateCoordinator:(void *)a5 completion:;
++ (BOOL)_handleTaskError:(void *)error response:(void *)response request:(void *)request error:;
++ (BOOL)_importStagedManifestFileWithEntry:(void *)entry updateCoordinator:(uint64_t)coordinator error:;
++ (id)_getManifestEntryWithUpdateCoordinator:(void *)coordinator URL:(uint64_t)l error:;
++ (id)_stageShardFileWithURL:(void *)l entry:(void *)entry updateCoordinator:(uint64_t)coordinator error:;
++ (id)_updateIfStagedEntry:(void *)entry updateCoordinator:;
++ (id)_versionFromJSONData:(uint64_t)data error:;
++ (id)manifestVersionURLForManifestURL:(id)l;
++ (void)_downloadManifestWithEntry:(void *)entry session:(void *)session updateCoordinator:(void *)coordinator completion:;
++ (void)_importStagedManifestFileWithEntry:(void *)entry updateCoordinator:(void *)coordinator completion:;
++ (void)_insertAndLogFailureForEntry:(void *)entry registry:;
++ (void)_updateManifestWithEntry:(void *)entry session:(void *)session updateCoordinator:(void *)coordinator completion:;
 - (HDOntologyManifestUpdater)init;
-- (HDOntologyManifestUpdater)initWithOntologyUpdateCoordinator:(id)a3;
+- (HDOntologyManifestUpdater)initWithOntologyUpdateCoordinator:(id)coordinator;
 - (HDOntologyUpdateCoordinator)updateCoordinator;
-- (void)updateManifestWithURL:(id)a3 session:(id)a4 completion:(id)a5;
+- (void)updateManifestWithURL:(id)l session:(id)session completion:(id)completion;
 @end
 
 @implementation HDOntologyManifestUpdater
@@ -28,60 +28,60 @@
   return 0;
 }
 
-- (HDOntologyManifestUpdater)initWithOntologyUpdateCoordinator:(id)a3
+- (HDOntologyManifestUpdater)initWithOntologyUpdateCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v8.receiver = self;
   v8.super_class = HDOntologyManifestUpdater;
   v5 = [(HDOntologyManifestUpdater *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_updateCoordinator, v4);
+    objc_storeWeak(&v5->_updateCoordinator, coordinatorCopy);
   }
 
   return v6;
 }
 
-- (void)updateManifestWithURL:(id)a3 session:(id)a4 completion:(id)a5
+- (void)updateManifestWithURL:(id)l session:(id)session completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  sessionCopy = session;
+  completionCopy = completion;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_updateCoordinator);
   v15 = 0;
-  v12 = [HDOntologyManifestUpdater _getManifestEntryWithUpdateCoordinator:v10 URL:&v15 error:?];
+  v12 = [HDOntologyManifestUpdater _getManifestEntryWithUpdateCoordinator:lCopy URL:&v15 error:?];
 
   v13 = v15;
   if (v12)
   {
     v14 = objc_loadWeakRetained(&self->_updateCoordinator);
-    [HDOntologyManifestUpdater _updateManifestWithEntry:v12 session:v8 updateCoordinator:v14 completion:v9];
+    [HDOntologyManifestUpdater _updateManifestWithEntry:v12 session:sessionCopy updateCoordinator:v14 completion:completionCopy];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
   }
 }
 
-+ (id)_getManifestEntryWithUpdateCoordinator:(void *)a3 URL:(uint64_t)a4 error:
++ (id)_getManifestEntryWithUpdateCoordinator:(void *)coordinator URL:(uint64_t)l error:
 {
   v6 = a2;
-  v7 = a3;
+  coordinatorCopy = coordinator;
   v8 = objc_opt_self();
-  v9 = [v6 shardRegistry];
+  shardRegistry = [v6 shardRegistry];
   v10 = *MEMORY[0x277CCC5E8];
   v11 = *MEMORY[0x277CCC620];
   v16 = 0;
-  v12 = [v9 entryWithIdentifier:v10 schemaType:v11 schemaVersion:1 entryOut:&v16 transaction:0 error:a4];
+  v12 = [shardRegistry entryWithIdentifier:v10 schemaType:v11 schemaVersion:1 entryOut:&v16 transaction:0 error:l];
   v13 = v16;
 
   if (v12)
   {
     if (!v13)
     {
-      v13 = [objc_alloc(MEMORY[0x277CCD760]) initWithIdentifier:v10 schemaType:v11 schemaVersion:1 availableURL:v7];
+      v13 = [objc_alloc(MEMORY[0x277CCD760]) initWithIdentifier:v10 schemaType:v11 schemaVersion:1 availableURL:coordinatorCopy];
     }
 
     v14 = [(HDOntologyManifestUpdater *)v8 _updateIfStagedEntry:v13 updateCoordinator:v6];
@@ -95,57 +95,57 @@
   return v14;
 }
 
-+ (void)_updateManifestWithEntry:(void *)a3 session:(void *)a4 updateCoordinator:(void *)a5 completion:
++ (void)_updateManifestWithEntry:(void *)entry session:(void *)session updateCoordinator:(void *)coordinator completion:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  entryCopy = entry;
+  sessionCopy = session;
+  coordinatorCopy = coordinator;
   v12 = objc_opt_self();
-  v13 = [v8 availableURL];
-  v14 = [v12 manifestVersionURLForManifestURL:v13];
+  availableURL = [v8 availableURL];
+  v14 = [v12 manifestVersionURLForManifestURL:availableURL];
 
   v15 = [MEMORY[0x277CCAD20] requestWithURL:v14];
   v22 = MEMORY[0x277D85DD0];
   v23 = 3221225472;
   v24 = __91__HDOntologyManifestUpdater__updateManifestWithEntry_session_updateCoordinator_completion___block_invoke;
   v25 = &unk_2796B8D50;
-  v30 = v11;
+  v30 = coordinatorCopy;
   v31 = v12;
   v26 = v15;
   v27 = v8;
-  v28 = v10;
-  v29 = v9;
-  v16 = v9;
-  v17 = v10;
+  v28 = sessionCopy;
+  v29 = entryCopy;
+  v16 = entryCopy;
+  v17 = sessionCopy;
   v18 = v8;
-  v19 = v11;
+  v19 = coordinatorCopy;
   v20 = v15;
   v21 = [v16 dataTaskWithRequest:v20 completionHandler:&v22];
   [v21 resume];
 }
 
-+ (id)manifestVersionURLForManifestURL:(id)a3
++ (id)manifestVersionURLForManifestURL:(id)l
 {
   v3 = MEMORY[0x277CBEBC0];
-  v4 = [a3 absoluteString];
-  v5 = [v4 stringByDeletingPathExtension];
-  v6 = [v5 stringByAppendingString:@"-version.json"];
+  absoluteString = [l absoluteString];
+  stringByDeletingPathExtension = [absoluteString stringByDeletingPathExtension];
+  v6 = [stringByDeletingPathExtension stringByAppendingString:@"-version.json"];
   v7 = [v3 URLWithString:v6];
 
   return v7;
 }
 
-+ (id)_updateIfStagedEntry:(void *)a3 updateCoordinator:
++ (id)_updateIfStagedEntry:(void *)entry updateCoordinator:
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  v5 = a3;
+  entryCopy = entry;
   v6 = objc_opt_self();
-  v7 = [v5 shardRegistry];
+  shardRegistry = [entryCopy shardRegistry];
   v19 = 0;
   v20 = 0;
-  v8 = [v7 stagedShardFileEntryForEntry:v4 entryOut:&v20 error:&v19];
+  v8 = [shardRegistry stagedShardFileEntryForEntry:v4 entryOut:&v20 error:&v19];
   v9 = v20;
   v10 = v19;
 
@@ -165,15 +165,15 @@
 
   if (v9)
   {
-    v12 = [v9 availableVersion];
-    if (v12 > [v4 availableVersion])
+    availableVersion = [v9 availableVersion];
+    if (availableVersion > [v4 availableVersion])
     {
       v13 = [v4 copyWithAvailableVersion:objc_msgSend(v9 availableState:{"availableVersion"), objc_msgSend(v9, "availableState")}];
 LABEL_10:
       v14 = v13;
 
-      v15 = [v5 shardRegistry];
-      [(HDOntologyManifestUpdater *)v6 _insertAndLogFailureForEntry:v14 registry:v15];
+      shardRegistry2 = [entryCopy shardRegistry];
+      [(HDOntologyManifestUpdater *)v6 _insertAndLogFailureForEntry:v14 registry:shardRegistry2];
 
       v4 = v14;
     }
@@ -191,14 +191,14 @@ LABEL_10:
   return v4;
 }
 
-+ (void)_insertAndLogFailureForEntry:(void *)a3 registry:
++ (void)_insertAndLogFailureForEntry:(void *)entry registry:
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  v5 = a3;
+  entryCopy = entry;
   v6 = objc_opt_self();
   v11 = 0;
-  v7 = [v5 insertEntry:v4 error:&v11];
+  v7 = [entryCopy insertEntry:v4 error:&v11];
 
   v8 = v11;
   if ((v7 & 1) == 0)
@@ -270,19 +270,19 @@ LABEL_12:
 LABEL_13:
 }
 
-+ (BOOL)_handleTaskError:(void *)a3 response:(void *)a4 request:(void *)a5 error:
++ (BOOL)_handleTaskError:(void *)error response:(void *)response request:(void *)request error:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
+  errorCopy = error;
+  responseCopy = response;
   objc_opt_self();
   if (v8)
   {
-    if (a5)
+    if (request)
     {
       v11 = v8;
       v12 = 0;
-      *a5 = v8;
+      *request = v8;
     }
 
     else
@@ -294,18 +294,18 @@ LABEL_13:
 
   else
   {
-    v13 = v9;
-    v14 = [v13 statusCode];
-    v12 = (v14 - 200) < 0x64;
-    if ((v14 - 200) >= 0x64)
+    v13 = errorCopy;
+    statusCode = [v13 statusCode];
+    v12 = (statusCode - 200) < 0x64;
+    if ((statusCode - 200) >= 0x64)
     {
-      v15 = [MEMORY[0x277CCA9B8] hk_HTTPErrorRepresentingResponse:v13 request:v10];
+      v15 = [MEMORY[0x277CCA9B8] hk_HTTPErrorRepresentingResponse:v13 request:responseCopy];
       if (v15)
       {
-        if (a5)
+        if (request)
         {
           v16 = v15;
-          *a5 = v15;
+          *request = v15;
         }
 
         else
@@ -319,11 +319,11 @@ LABEL_13:
   return v12;
 }
 
-+ (id)_versionFromJSONData:(uint64_t)a3 error:
++ (id)_versionFromJSONData:(uint64_t)data error:
 {
   v4 = a2;
   objc_opt_self();
-  v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:0 error:a3];
+  v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:0 error:data];
 
   if (!v5)
   {
@@ -334,7 +334,7 @@ LABEL_13:
   v6 = [v5 objectForKeyedSubscript:@"version"];
   if (!v6)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 description:@"No value for expected key 'version'"];
+    [MEMORY[0x277CCA9B8] hk_assignError:data code:3 description:@"No value for expected key 'version'"];
 LABEL_8:
     v7 = 0;
     goto LABEL_9;
@@ -343,7 +343,7 @@ LABEL_8:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 format:{@"Value for key 'version' is of class '%@', but expected kind of NSNumber", objc_opt_class()}];
+    [MEMORY[0x277CCA9B8] hk_assignError:data code:3 format:{@"Value for key 'version' is of class '%@', but expected kind of NSNumber", objc_opt_class()}];
     goto LABEL_8;
   }
 
@@ -355,44 +355,44 @@ LABEL_10:
   return v7;
 }
 
-+ (void)_importStagedManifestFileWithEntry:(void *)a3 updateCoordinator:(void *)a4 completion:
++ (void)_importStagedManifestFileWithEntry:(void *)entry updateCoordinator:(void *)coordinator completion:
 {
-  v6 = a4;
-  v7 = a3;
+  coordinatorCopy = coordinator;
+  entryCopy = entry;
   v8 = a2;
   v9 = objc_opt_self();
   v12 = 0;
-  v10 = [(HDOntologyManifestUpdater *)v9 _importStagedManifestFileWithEntry:v8 updateCoordinator:v7 error:&v12];
+  v10 = [(HDOntologyManifestUpdater *)v9 _importStagedManifestFileWithEntry:v8 updateCoordinator:entryCopy error:&v12];
 
   v11 = v12;
-  v6[2](v6, v10, v11);
+  coordinatorCopy[2](coordinatorCopy, v10, v11);
 }
 
-+ (void)_downloadManifestWithEntry:(void *)a3 session:(void *)a4 updateCoordinator:(void *)a5 completion:
++ (void)_downloadManifestWithEntry:(void *)entry session:(void *)session updateCoordinator:(void *)coordinator completion:
 {
   v8 = a2;
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  sessionCopy = session;
+  coordinatorCopy = coordinator;
+  entryCopy = entry;
   v12 = objc_opt_self();
   v13 = MEMORY[0x277CCAD20];
-  v14 = [v8 availableURL];
-  v15 = [v13 requestWithURL:v14];
+  availableURL = [v8 availableURL];
+  v15 = [v13 requestWithURL:availableURL];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __93__HDOntologyManifestUpdater__downloadManifestWithEntry_session_updateCoordinator_completion___block_invoke;
   v21[3] = &unk_2796B8D78;
-  v25 = v10;
+  v25 = coordinatorCopy;
   v26 = v12;
   v22 = v15;
   v23 = v8;
-  v24 = v9;
-  v16 = v9;
+  v24 = sessionCopy;
+  v16 = sessionCopy;
   v17 = v8;
-  v18 = v10;
+  v18 = coordinatorCopy;
   v19 = v15;
-  v20 = [v11 downloadTaskWithRequest:v19 completionHandler:v21];
+  v20 = [entryCopy downloadTaskWithRequest:v19 completionHandler:v21];
 
   [v20 resume];
 }
@@ -429,20 +429,20 @@ void __93__HDOntologyManifestUpdater__downloadManifestWithEntry_session_updateCo
   }
 }
 
-+ (id)_stageShardFileWithURL:(void *)a3 entry:(void *)a4 updateCoordinator:(uint64_t)a5 error:
++ (id)_stageShardFileWithURL:(void *)l entry:(void *)entry updateCoordinator:(uint64_t)coordinator error:
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  entryCopy = entry;
   v10 = a2;
   objc_opt_self();
-  v11 = [v9 shardRegistry];
-  v12 = [v11 stageShardFileWithLocalURL:v10 entry:v8 error:a5];
+  shardRegistry = [entryCopy shardRegistry];
+  v12 = [shardRegistry stageShardFileWithLocalURL:v10 entry:lCopy error:coordinator];
 
   if (v12)
   {
-    v13 = [v8 copyWithAvailableState:2];
-    v14 = [v9 shardRegistry];
-    v15 = [v14 insertEntry:v13 error:a5];
+    v13 = [lCopy copyWithAvailableState:2];
+    shardRegistry2 = [entryCopy shardRegistry];
+    v15 = [shardRegistry2 insertEntry:v13 error:coordinator];
 
     if (v15)
     {
@@ -463,12 +463,12 @@ void __93__HDOntologyManifestUpdater__downloadManifestWithEntry_session_updateCo
   return v16;
 }
 
-+ (BOOL)_importStagedManifestFileWithEntry:(void *)a3 updateCoordinator:(uint64_t)a4 error:
++ (BOOL)_importStagedManifestFileWithEntry:(void *)entry updateCoordinator:(uint64_t)coordinator error:
 {
-  v6 = a3;
+  entryCopy = entry;
   v7 = a2;
   objc_opt_self();
-  v8 = [HDOntologyManifestImporter importManifestWithEntry:v7 updateCoordinator:v6 error:a4];
+  v8 = [HDOntologyManifestImporter importManifestWithEntry:v7 updateCoordinator:entryCopy error:coordinator];
 
   return v8;
 }

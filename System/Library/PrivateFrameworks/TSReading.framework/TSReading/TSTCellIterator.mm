@@ -1,37 +1,37 @@
 @interface TSTCellIterator
-- (BOOL)getNext:(id *)a3;
-- (BOOL)p_getData:(id *)a3 forCellID:(id)a4;
-- (TSTCellIterator)initWithTableModel:(id)a3;
-- (TSTCellIterator)initWithTableModel:(id)a3 flags:(unint64_t)a4;
-- (TSTCellIterator)initWithTableModel:(id)a3 range:(id)a4;
-- (TSTCellIterator)initWithTableModel:(id)a3 range:(id)a4 flags:(unint64_t)a5;
-- (TSTCellIterator)initWithTableModel:(id)a3 region:(id)a4 flags:(unint64_t)a5;
+- (BOOL)getNext:(id *)next;
+- (BOOL)p_getData:(id *)data forCellID:(id)d;
+- (TSTCellIterator)initWithTableModel:(id)model;
+- (TSTCellIterator)initWithTableModel:(id)model flags:(unint64_t)flags;
+- (TSTCellIterator)initWithTableModel:(id)model range:(id)range;
+- (TSTCellIterator)initWithTableModel:(id)model range:(id)range flags:(unint64_t)flags;
+- (TSTCellIterator)initWithTableModel:(id)model region:(id)region flags:(unint64_t)flags;
 - (void)dealloc;
-- (void)p_resetIterData:(id *)a3;
+- (void)p_resetIterData:(id *)data;
 @end
 
 @implementation TSTCellIterator
 
-- (TSTCellIterator)initWithTableModel:(id)a3 region:(id)a4 flags:(unint64_t)a5
+- (TSTCellIterator)initWithTableModel:(id)model region:(id)region flags:(unint64_t)flags
 {
-  v5 = a5;
+  flagsCopy = flags;
   v9 = +[TSTConfiguration sharedTableConfiguration];
-  if ((v5 & 8) == 0)
+  if ((flagsCopy & 8) == 0)
   {
-    v10 = [a4 boundingCellRange];
-    if ([v9 maxNumberOfRows] <= (v10 + HIWORD(v10) - 1))
+    boundingCellRange = [region boundingCellRange];
+    if ([v9 maxNumberOfRows] <= (boundingCellRange + HIWORD(boundingCellRange) - 1))
     {
-      v11 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTCellIterator initWithTableModel:region:flags:]"];
-      [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCellIterator.mm"), 33, @"Tried to create iterator with range larger than is possible."}];
+      [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCellIterator.mm"), 33, @"Tried to create iterator with range larger than is possible."}];
     }
 
-    v13 = [a4 boundingCellRange];
-    if ([v9 maxNumberOfColumns] <= (BYTE4(v13) + BYTE2(v13) - 1))
+    boundingCellRange2 = [region boundingCellRange];
+    if ([v9 maxNumberOfColumns] <= (BYTE4(boundingCellRange2) + BYTE2(boundingCellRange2) - 1))
     {
-      v14 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTCellIterator initWithTableModel:region:flags:]"];
-      [v14 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCellIterator.mm"), 34, @"Tried to create iterator with range larger than is possible."}];
+      [currentHandler2 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCellIterator.mm"), 34, @"Tried to create iterator with range larger than is possible."}];
     }
   }
 
@@ -41,17 +41,17 @@
   v17 = v16;
   if (v16)
   {
-    v16->mDontCheckSize = (v5 & 8) >> 3;
-    if ((v5 & 8) != 0 || (v18 = [a4 boundingCellRange], objc_msgSend(v9, "maxNumberOfRows") > (v18 + HIWORD(v18) - 1)) && (v19 = objc_msgSend(a4, "boundingCellRange"), objc_msgSend(v9, "maxNumberOfColumns") > (BYTE4(v19) + BYTE2(v19) - 1)))
+    v16->mDontCheckSize = (flagsCopy & 8) >> 3;
+    if ((flagsCopy & 8) != 0 || (v18 = [region boundingCellRange], objc_msgSend(v9, "maxNumberOfRows") > (v18 + HIWORD(v18) - 1)) && (v19 = objc_msgSend(region, "boundingCellRange"), objc_msgSend(v9, "maxNumberOfColumns") > (BYTE4(v19) + BYTE2(v19) - 1)))
     {
-      v20 = (v5 >> 2) & 1;
-      v17->mSkipStyleOnlyCells = v5 & 1;
-      v17->mSkipCommentStorageOnlyCells = BYTE1(v5) & 1;
-      v17->mDontExpandCellRefs = (v5 & 2) != 0;
+      v20 = (flagsCopy >> 2) & 1;
+      v17->mSkipStyleOnlyCells = flagsCopy & 1;
+      v17->mSkipCommentStorageOnlyCells = BYTE1(flagsCopy) & 1;
+      v17->mDontExpandCellRefs = (flagsCopy & 2) != 0;
       v17->mRowWalkDirection = v20;
-      if ((v5 & 0x10) != 0)
+      if ((flagsCopy & 0x10) != 0)
       {
-        v22 = TSTTableRangeOfTableWithMerges(a3);
+        v22 = TSTTableRangeOfTableWithMerges(model);
         v21 = 0;
         if (v22 != 0xFFFF && (v22 & 0xFF0000) != 0xFF0000)
         {
@@ -65,31 +65,31 @@
       }
 
       v17->mDontReturnMergeRegions = v21;
-      v17->mReturnHiddenCells = (v5 & 0x20) != 0;
-      v17->mDontInflateFormulas = (v5 & 0x40) != 0;
-      v17->mReturnEmptyCells = (v5 & 0x80) != 0;
-      v17->mTableModel = a3;
-      v17->mTableDataStore = *(a3 + 6);
-      v24 = [a4 copy];
+      v17->mReturnHiddenCells = (flagsCopy & 0x20) != 0;
+      v17->mDontInflateFormulas = (flagsCopy & 0x40) != 0;
+      v17->mReturnEmptyCells = (flagsCopy & 0x80) != 0;
+      v17->mTableModel = model;
+      v17->mTableDataStore = *(model + 6);
+      v24 = [region copy];
       v17->mModelRegion = v24;
       if (v20)
       {
-        v25 = [(TSTCellRegion *)v24 rightToLeftIterator];
+        rightToLeftIterator = [(TSTCellRegion *)v24 rightToLeftIterator];
       }
 
       else
       {
-        v25 = [(TSTCellRegion *)v24 iterator];
+        rightToLeftIterator = [(TSTCellRegion *)v24 iterator];
       }
 
-      v17->mModelRegionIterator = v25;
+      v17->mModelRegionIterator = rightToLeftIterator;
       v17->mPreviousCellID = 0xFFFFFF;
       v17->mCurRow = 0;
       v17->mCurTile = 0;
       v17->mCurTileRange = NSRangeEmpty;
       v17->mCurRowID = -1;
       v17->mCell = objc_alloc_init(TSTCell);
-      [a4 boundingCellRange];
+      [region boundingCellRange];
     }
 
     else
@@ -102,32 +102,32 @@
   return v17;
 }
 
-- (TSTCellIterator)initWithTableModel:(id)a3 range:(id)a4
+- (TSTCellIterator)initWithTableModel:(id)model range:(id)range
 {
-  v6 = [TSTCellRegion regionFromRange:a4];
+  v6 = [TSTCellRegion regionFromRange:range];
 
-  return [(TSTCellIterator *)self initWithTableModel:a3 region:v6 flags:0];
+  return [(TSTCellIterator *)self initWithTableModel:model region:v6 flags:0];
 }
 
-- (TSTCellIterator)initWithTableModel:(id)a3 range:(id)a4 flags:(unint64_t)a5
+- (TSTCellIterator)initWithTableModel:(id)model range:(id)range flags:(unint64_t)flags
 {
-  v8 = [TSTCellRegion regionFromRange:a4];
+  v8 = [TSTCellRegion regionFromRange:range];
 
-  return [(TSTCellIterator *)self initWithTableModel:a3 region:v8 flags:a5];
+  return [(TSTCellIterator *)self initWithTableModel:model region:v8 flags:flags];
 }
 
-- (TSTCellIterator)initWithTableModel:(id)a3
+- (TSTCellIterator)initWithTableModel:(id)model
 {
-  v5 = [a3 range];
+  range = [model range];
 
-  return [(TSTCellIterator *)self initWithTableModel:a3 range:v5];
+  return [(TSTCellIterator *)self initWithTableModel:model range:range];
 }
 
-- (TSTCellIterator)initWithTableModel:(id)a3 flags:(unint64_t)a4
+- (TSTCellIterator)initWithTableModel:(id)model flags:(unint64_t)flags
 {
-  v7 = +[TSTCellRegion regionFromRange:](TSTCellRegion, "regionFromRange:", [a3 range]);
+  v7 = +[TSTCellRegion regionFromRange:](TSTCellRegion, "regionFromRange:", [model range]);
 
-  return [(TSTCellIterator *)self initWithTableModel:a3 region:v7 flags:a4];
+  return [(TSTCellIterator *)self initWithTableModel:model region:v7 flags:flags];
 }
 
 - (void)dealloc
@@ -137,36 +137,36 @@
   [(TSTCellIterator *)&v3 dealloc];
 }
 
-- (void)p_resetIterData:(id *)a3
+- (void)p_resetIterData:(id *)data
 {
-  *&a3->var2 = 0u;
-  a3->var4 = 0xFFFFFFLL;
-  *&a3->var0.var0 = 0xFFFFFF00FFFFFFLL;
-  *&a3->var5 = 0;
-  a3->var7 = 0;
+  *&data->var2 = 0u;
+  data->var4 = 0xFFFFFFLL;
+  *&data->var0.var0 = 0xFFFFFF00FFFFFFLL;
+  *&data->var5 = 0;
+  data->var7 = 0;
 }
 
-- (BOOL)p_getData:(id *)a3 forCellID:(id)a4
+- (BOOL)p_getData:(id *)data forCellID:(id)d
 {
-  v7 = *&a4.var0 >> 16;
+  v7 = *&d.var0 >> 16;
   v34 = 0;
-  var0 = a4.var0;
+  var0 = d.var0;
   location = self->mCurTileRange.location;
-  v11 = a4.var0 >= location;
-  v10 = a4.var0 - location;
+  v11 = d.var0 >= location;
+  v10 = d.var0 - location;
   v11 = !v11 || v10 >= self->mCurTileRange.length;
   if (v11)
   {
     self->mCurTile = 0;
     self->mCurTileRange = NSRangeEmpty;
-    TileForRow = TSTDataStoreGetTileForRow(self->mTableDataStore, a4.var0, &v34);
+    TileForRow = TSTDataStoreGetTileForRow(self->mTableDataStore, d.var0, &v34);
     self->mCurTile = TileForRow;
     if (TileForRow || (v13 = [MEMORY[0x277D6C290] currentHandler], v14 = objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "-[TSTCellIterator p_getData:forCellID:]"), objc_msgSend(v13, "handleFailureInFunction:file:lineNumber:description:", v14, objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCellIterator.mm"), 149, @"Failed to get a tile while iterating!"), (TileForRow = self->mCurTile) != 0))
     {
       v15 = v34;
-      if ([(TSTTableTile *)TileForRow maxRow]+ v15 < a4.var0)
+      if ([(TSTTableTile *)TileForRow maxRow]+ v15 < d.var0)
       {
-        self->mCurTile = TSTDataStoreGetTileAtOrAfterRow(self->mTableDataStore, a4.var0, &v34);
+        self->mCurTile = TSTDataStoreGetTileAtOrAfterRow(self->mTableDataStore, d.var0, &v34);
       }
     }
 
@@ -182,55 +182,55 @@
     if (mCurTile)
     {
       v18 = v34;
-      v19 = [(TSTTableTile *)mCurTile maxRow];
+      maxRow = [(TSTTableTile *)mCurTile maxRow];
       self->mCurTileRange.location = v18;
-      self->mCurTileRange.length = v19 + 1;
+      self->mCurTileRange.length = maxRow + 1;
     }
   }
 
-  if (self->mCurRowID != a4.var0)
+  if (self->mCurRowID != d.var0)
   {
     self->mCurRow = 0;
     self->mCurRowID = -1;
     v20 = self->mCurTileRange.location;
     if (var0 >= v20 && var0 - v20 < self->mCurTileRange.length)
     {
-      v22 = TSTTableTileRowInfoForTileRowIndex(self->mCurTile, (a4.var0 - v20), 0);
+      v22 = TSTTableTileRowInfoForTileRowIndex(self->mCurTile, (d.var0 - v20), 0);
       self->mCurRow = v22;
       if (v22)
       {
-        self->mCurRowID = a4.var0;
+        self->mCurRowID = d.var0;
       }
     }
   }
 
-  a3->var8 = TSTHidingActionForRow(self->mTableModel, a4.var0) != 0;
+  data->var8 = TSTHidingActionForRow(self->mTableModel, d.var0) != 0;
   v23 = TSTHidingActionForColumn(self->mTableModel, v7) != 0;
-  a3->var9 = v23;
-  v24 = a3->var8 || v23;
-  a3->var7 = v24;
+  data->var9 = v23;
+  v24 = data->var8 || v23;
+  data->var7 = v24;
   if (v24 && !self->mReturnHiddenCells)
   {
     return 0;
   }
 
-  if (self->mCurRowID == -1 || (v25 = TSTTableTileRowInfoCellStorageRefAtTileColumnIndex(self->mCurRow, v7), (a3->var3 = v25) == 0))
+  if (self->mCurRowID == -1 || (v25 = TSTTableTileRowInfoCellStorageRefAtTileColumnIndex(self->mCurRow, v7), (data->var3 = v25) == 0))
   {
     LOBYTE(v27) = 0;
     LOBYTE(v28) = 0;
     v29 = 0;
 LABEL_45:
-    if (self->mReturnEmptyCells && !v28 && (v27 & 1) == 0 && !a3->var2)
+    if (self->mReturnEmptyCells && !v28 && (v27 & 1) == 0 && !data->var2)
     {
       TSTCellClear(self->mCell);
       mCell = self->mCell;
       TSTCellClearValue(mCell);
       *&mCell->mPrivate &= 0xFFFF00FF;
-      a3->var2 = self->mCell;
-      a3->var0 = self->mPreviousCellID;
-      a3->var1.var0 = a4.var0;
-      a3->var1.var1 = v7;
-      a3->var1.var2 = a4.var2;
+      data->var2 = self->mCell;
+      data->var0 = self->mPreviousCellID;
+      data->var1.var0 = d.var0;
+      data->var1.var1 = v7;
+      data->var1.var2 = d.var2;
       v29 = 1;
     }
 
@@ -239,13 +239,13 @@ LABEL_45:
 
   if (*(v25 + 1) > 0xFFu)
   {
-    a3->var5 = 0;
+    data->var5 = 0;
   }
 
   else
   {
-    a3->var5 = (TSTCellStorageHeaderFlagsForStorage(v25) & 2) != 0;
-    if ((TSTCellStorageHeaderFlagsForStorage(a3->var3) & 0x1000) != 0)
+    data->var5 = (TSTCellStorageHeaderFlagsForStorage(v25) & 2) != 0;
+    if ((TSTCellStorageHeaderFlagsForStorage(data->var3) & 0x1000) != 0)
     {
       v26 = 1;
       v27 = 1;
@@ -256,8 +256,8 @@ LABEL_45:
   v26 = 0;
   v27 = 0;
 LABEL_35:
-  a3->var6 = v26;
-  v28 = self->mSkipStyleOnlyCells && a3->var5;
+  data->var6 = v26;
+  v28 = self->mSkipStyleOnlyCells && data->var5;
   if (!self->mSkipCommentStorageOnlyCells)
   {
     LOBYTE(v27) = 0;
@@ -269,14 +269,14 @@ LABEL_35:
 LABEL_42:
     if (!self->mDontExpandCellRefs)
     {
-      [(TSTCell *)self->mCell inflateFromStorageRef:a3->var3 dataStore:self->mTableDataStore suppressingFormulaInflation:self->mDontInflateFormulas];
-      a3->var2 = self->mCell;
+      [(TSTCell *)self->mCell inflateFromStorageRef:data->var3 dataStore:self->mTableDataStore suppressingFormulaInflation:self->mDontInflateFormulas];
+      data->var2 = self->mCell;
     }
 
-    a3->var1.var0 = a4.var0;
-    a3->var1.var1 = v7;
-    a3->var1.var2 = a4.var2;
-    a3->var0 = self->mPreviousCellID;
+    data->var1.var0 = d.var0;
+    data->var1.var1 = v7;
+    data->var1.var2 = d.var2;
+    data->var0 = self->mPreviousCellID;
     v29 = 1;
     goto LABEL_45;
   }
@@ -285,11 +285,11 @@ LABEL_42:
 LABEL_50:
   if (!self->mDontReturnMergeRegions)
   {
-    a3->var1.var0 = a4.var0;
-    a3->var1.var1 = v7;
-    a3->var1.var2 = a4.var2;
-    v31 = TSTTableMergeRangeAtCellID(self->mTableModel, *&a4);
-    a3->var4 = v31;
+    data->var1.var0 = d.var0;
+    data->var1.var1 = v7;
+    data->var1.var2 = d.var2;
+    v31 = TSTTableMergeRangeAtCellID(self->mTableModel, *&d);
+    data->var4 = v31;
     if (v29)
     {
       return 1;
@@ -308,18 +308,18 @@ LABEL_50:
   return v29;
 }
 
-- (BOOL)getNext:(id *)a3
+- (BOOL)getNext:(id *)next
 {
   [(TSTCellIterator *)self p_resetIterData:?];
-  v5 = [(TSTCellRegionIterating *)self->mModelRegionIterator getNext];
-  v6 = v5;
+  getNext = [(TSTCellRegionIterating *)self->mModelRegionIterator getNext];
+  v6 = getNext;
   v7 = 0;
-  if (v5.row != 0xFFFF)
+  if (getNext.row != 0xFFFF)
   {
-    v8 = v5;
-    if ((*&v5 & 0xFF0000) != 0xFF0000)
+    v8 = getNext;
+    if ((*&getNext & 0xFF0000) != 0xFF0000)
     {
-      v9 = [(TSTCellIterator *)self p_getData:a3 forCellID:*&v5];
+      v9 = [(TSTCellIterator *)self p_getData:next forCellID:*&getNext];
       if (v9)
       {
         v7 = 1;
@@ -330,17 +330,17 @@ LABEL_50:
         v10 = v9;
         do
         {
-          v11 = [(TSTCellRegionIterating *)self->mModelRegionIterator getNext];
-          v6 = v11;
-          v12 = (~*&v11 & 0xFF0000) == 0 || v11.row == 0xFFFF;
+          getNext2 = [(TSTCellRegionIterating *)self->mModelRegionIterator getNext];
+          v6 = getNext2;
+          v12 = (~*&getNext2 & 0xFF0000) == 0 || getNext2.row == 0xFFFF;
           v13 = v10 || v12;
           if (v10 || v12)
           {
             break;
           }
 
-          v8 = v8 & 0xFFFFFFFF00000000 | *&v11;
-          v10 = [(TSTCellIterator *)self p_getData:a3 forCellID:v8];
+          v8 = v8 & 0xFFFFFFFF00000000 | *&getNext2;
+          v10 = [(TSTCellIterator *)self p_getData:next forCellID:v8];
         }
 
         while (!v10);

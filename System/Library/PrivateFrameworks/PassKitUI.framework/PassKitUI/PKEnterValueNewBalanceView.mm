@@ -1,38 +1,38 @@
 @interface PKEnterValueNewBalanceView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKEnterValueNewBalanceView)initWithCurrencyCode:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKEnterValueNewBalanceView)initWithCurrencyCode:(id)code;
 - (PKEnterValueNewBalanceViewDelegate)delegate;
-- (id)_minimalFormattedStringForAmount:(id)a3;
-- (id)_textForPrompt:(id)a3 amount:(id)a4;
+- (id)_minimalFormattedStringForAmount:(id)amount;
+- (id)_textForPrompt:(id)prompt amount:(id)amount;
 - (void)_addSubviews;
 - (void)_createAmountFormatter;
-- (void)_updateAdditionalAmount:(id)a3 subtractAdditionalAmountFromCurrentAmount:(BOOL)a4;
+- (void)_updateAdditionalAmount:(id)amount subtractAdditionalAmountFromCurrentAmount:(BOOL)currentAmount;
 - (void)_updateBalanceText;
 - (void)currentBalanceTapRecognized;
 - (void)layoutSubviews;
-- (void)setCardBalance:(id)a3;
-- (void)setCurrencyCode:(id)a3;
-- (void)setMaxBalance:(id)a3;
-- (void)setMaxLoadAmount:(id)a3;
-- (void)setMaxLoadAmountText:(id)a3;
-- (void)setMinBalance:(id)a3;
-- (void)setMinLoadAmount:(id)a3;
-- (void)setPromptText:(id)a3;
-- (void)setUpdatedBalancePromptText:(id)a3;
-- (void)showSpinner:(BOOL)a3;
+- (void)setCardBalance:(id)balance;
+- (void)setCurrencyCode:(id)code;
+- (void)setMaxBalance:(id)balance;
+- (void)setMaxLoadAmount:(id)amount;
+- (void)setMaxLoadAmountText:(id)text;
+- (void)setMinBalance:(id)balance;
+- (void)setMinLoadAmount:(id)amount;
+- (void)setPromptText:(id)text;
+- (void)setUpdatedBalancePromptText:(id)text;
+- (void)showSpinner:(BOOL)spinner;
 @end
 
 @implementation PKEnterValueNewBalanceView
 
-- (PKEnterValueNewBalanceView)initWithCurrencyCode:(id)a3
+- (PKEnterValueNewBalanceView)initWithCurrencyCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v16.receiver = self;
   v16.super_class = PKEnterValueNewBalanceView;
   v5 = [(PKEnterValueNewBalanceView *)&v16 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [codeCopy copy];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v6;
 
@@ -46,13 +46,13 @@
     [(PKEnterValueNewBalanceView *)v5 setMaxLoadAmountText:v10];
 
     [(PKEnterValueNewBalanceView *)v5 _createAmountFormatter];
-    v11 = [MEMORY[0x1E696AB90] zero];
+    zero = [MEMORY[0x1E696AB90] zero];
     cardBalance = v5->_cardBalance;
-    v5->_cardBalance = v11;
+    v5->_cardBalance = zero;
 
-    v13 = [MEMORY[0x1E696AB90] zero];
+    zero2 = [MEMORY[0x1E696AB90] zero];
     additionalAmount = v5->_additionalAmount;
-    v5->_additionalAmount = v13;
+    v5->_additionalAmount = zero2;
 
     [(PKEnterValueNewBalanceView *)v5 _addSubviews];
   }
@@ -71,19 +71,19 @@
   [(UILabel *)label setFrame:v6.origin.x, v6.origin.y, v6.size.width, v6.size.height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (self->_showSpinner)
   {
-    [(UIActivityIndicatorView *)self->_spinner frame:a3.width];
+    [(UIActivityIndicatorView *)self->_spinner frame:fits.width];
     v4 = v3;
     v6 = v5;
   }
 
   else
   {
-    width = a3.width;
-    [(UILabel *)self->_label sizeThatFits:a3.width + -26.0, a3.height];
+    width = fits.width;
+    [(UILabel *)self->_label sizeThatFits:fits.width + -26.0, fits.height];
     v4 = fmin(v8 + 26.0, width);
   }
 
@@ -92,17 +92,17 @@
   return result;
 }
 
-- (void)showSpinner:(BOOL)a3
+- (void)showSpinner:(BOOL)spinner
 {
-  if (self->_showSpinner != a3)
+  if (self->_showSpinner != spinner)
   {
     v14 = v6;
     v15 = v5;
     v16 = v4;
     v17 = v3;
-    self->_showSpinner = a3;
+    self->_showSpinner = spinner;
     spinner = self->_spinner;
-    if (a3)
+    if (spinner)
     {
       if (!spinner)
       {
@@ -121,9 +121,9 @@
     else
     {
       [(UIActivityIndicatorView *)spinner removeFromSuperview];
-      v13 = [(UILabel *)self->_label superview];
+      superview = [(UILabel *)self->_label superview];
 
-      if (!v13)
+      if (!superview)
       {
         [(PKEnterValueNewBalanceView *)self addSubview:self->_label];
       }
@@ -135,40 +135,40 @@
   }
 }
 
-- (void)_updateAdditionalAmount:(id)a3 subtractAdditionalAmountFromCurrentAmount:(BOOL)a4
+- (void)_updateAdditionalAmount:(id)amount subtractAdditionalAmountFromCurrentAmount:(BOOL)currentAmount
 {
-  v7 = a3;
-  if (self->_additionalAmount != v7)
+  amountCopy = amount;
+  if (self->_additionalAmount != amountCopy)
   {
-    v12 = v7;
-    objc_storeStrong(&self->_additionalAmount, a3);
-    self->_subtractAdditionalAmountFromCurrentAmount = a4;
+    v12 = amountCopy;
+    objc_storeStrong(&self->_additionalAmount, amount);
+    self->_subtractAdditionalAmountFromCurrentAmount = currentAmount;
     if (!self->_additionalAmount || ([MEMORY[0x1E696AB90] notANumber], v8 = objc_claimAutoreleasedReturnValue(), v9 = -[NSDecimalNumber isEqual:](v12, "isEqual:", v8), v8, v9))
     {
-      v10 = [MEMORY[0x1E696AB90] zero];
+      zero = [MEMORY[0x1E696AB90] zero];
       additionalAmount = self->_additionalAmount;
-      self->_additionalAmount = v10;
+      self->_additionalAmount = zero;
     }
 
     [(PKEnterValueNewBalanceView *)self _updateBalanceText];
     [(PKEnterValueNewBalanceView *)self sizeToFit];
     [(PKEnterValueNewBalanceView *)self setNeedsLayout];
-    v7 = v12;
+    amountCopy = v12;
   }
 }
 
-- (void)setMaxBalance:(id)a3
+- (void)setMaxBalance:(id)balance
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_maxBalance != v5)
+  balanceCopy = balance;
+  v6 = balanceCopy;
+  if (self->_maxBalance != balanceCopy)
   {
-    v8 = v5;
-    v7 = [(NSDecimalNumber *)v5 isEqualToNumber:?];
+    v8 = balanceCopy;
+    v7 = [(NSDecimalNumber *)balanceCopy isEqualToNumber:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_maxBalance, a3);
+      objc_storeStrong(&self->_maxBalance, balance);
       [(PKEnterValueNewBalanceView *)self _updateBalanceText];
       [(PKEnterValueNewBalanceView *)self sizeToFit];
       [(PKEnterValueNewBalanceView *)self setNeedsLayout];
@@ -177,18 +177,18 @@
   }
 }
 
-- (void)setMinBalance:(id)a3
+- (void)setMinBalance:(id)balance
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_minBalance != v5)
+  balanceCopy = balance;
+  v6 = balanceCopy;
+  if (self->_minBalance != balanceCopy)
   {
-    v8 = v5;
-    v7 = [(NSDecimalNumber *)v5 isEqualToNumber:?];
+    v8 = balanceCopy;
+    v7 = [(NSDecimalNumber *)balanceCopy isEqualToNumber:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_minBalance, a3);
+      objc_storeStrong(&self->_minBalance, balance);
       [(PKEnterValueNewBalanceView *)self _updateBalanceText];
       [(PKEnterValueNewBalanceView *)self sizeToFit];
       [(PKEnterValueNewBalanceView *)self setNeedsLayout];
@@ -197,18 +197,18 @@
   }
 }
 
-- (void)setMaxLoadAmount:(id)a3
+- (void)setMaxLoadAmount:(id)amount
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_maxLoadAmount != v5)
+  amountCopy = amount;
+  v6 = amountCopy;
+  if (self->_maxLoadAmount != amountCopy)
   {
-    v8 = v5;
-    v7 = [(NSDecimalNumber *)v5 isEqualToNumber:?];
+    v8 = amountCopy;
+    v7 = [(NSDecimalNumber *)amountCopy isEqualToNumber:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_maxLoadAmount, a3);
+      objc_storeStrong(&self->_maxLoadAmount, amount);
       [(PKEnterValueNewBalanceView *)self _updateBalanceText];
       [(PKEnterValueNewBalanceView *)self sizeToFit];
       [(PKEnterValueNewBalanceView *)self setNeedsLayout];
@@ -217,18 +217,18 @@
   }
 }
 
-- (void)setMinLoadAmount:(id)a3
+- (void)setMinLoadAmount:(id)amount
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_minLoadAmount != v5)
+  amountCopy = amount;
+  v6 = amountCopy;
+  if (self->_minLoadAmount != amountCopy)
   {
-    v8 = v5;
-    v7 = [(NSDecimalNumber *)v5 isEqualToNumber:?];
+    v8 = amountCopy;
+    v7 = [(NSDecimalNumber *)amountCopy isEqualToNumber:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_minLoadAmount, a3);
+      objc_storeStrong(&self->_minLoadAmount, amount);
       [(PKEnterValueNewBalanceView *)self _updateBalanceText];
       [(PKEnterValueNewBalanceView *)self sizeToFit];
       [(PKEnterValueNewBalanceView *)self setNeedsLayout];
@@ -237,23 +237,23 @@
   }
 }
 
-- (void)setCardBalance:(id)a3
+- (void)setCardBalance:(id)balance
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_cardBalance != v5)
+  balanceCopy = balance;
+  v6 = balanceCopy;
+  if (self->_cardBalance != balanceCopy)
   {
-    v12 = v5;
-    v7 = [(NSDecimalNumber *)v5 isEqualToNumber:?];
+    v12 = balanceCopy;
+    v7 = [(NSDecimalNumber *)balanceCopy isEqualToNumber:?];
     v6 = v12;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_cardBalance, a3);
+      objc_storeStrong(&self->_cardBalance, balance);
       if (!self->_cardBalance || ([MEMORY[0x1E696AB90] notANumber], v8 = objc_claimAutoreleasedReturnValue(), v9 = -[NSDecimalNumber isEqual:](v12, "isEqual:", v8), v8, v9))
       {
-        v10 = [MEMORY[0x1E696AB90] zero];
+        zero = [MEMORY[0x1E696AB90] zero];
         cardBalance = self->_cardBalance;
-        self->_cardBalance = v10;
+        self->_cardBalance = zero;
       }
 
       [(PKEnterValueNewBalanceView *)self _updateBalanceText];
@@ -264,13 +264,13 @@
   }
 }
 
-- (void)setCurrencyCode:(id)a3
+- (void)setCurrencyCode:(id)code
 {
-  v5 = a3;
-  if (self->_currencyCode != v5)
+  codeCopy = code;
+  if (self->_currencyCode != codeCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_currencyCode, a3);
+    v6 = codeCopy;
+    objc_storeStrong(&self->_currencyCode, code);
     if (self->_currencyCode)
     {
       [(PKEnterValueNewBalanceView *)self addSubview:self->_label];
@@ -285,15 +285,15 @@
     [(PKEnterValueNewBalanceView *)self _updateBalanceText];
     [(PKEnterValueNewBalanceView *)self sizeToFit];
     [(PKEnterValueNewBalanceView *)self setNeedsLayout];
-    v5 = v6;
+    codeCopy = v6;
   }
 }
 
-- (void)setPromptText:(id)a3
+- (void)setPromptText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   promptText = self->_promptText;
-  v12 = v5;
+  v12 = textCopy;
   v7 = promptText;
   if (v7 == v12)
   {
@@ -315,7 +315,7 @@ LABEL_11:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_promptText, a3);
+    objc_storeStrong(&self->_promptText, text);
     if (!self->_promptText)
     {
       v10 = PKLocalizedPaymentString(&cfstr_PerformActionE_0.isa);
@@ -330,11 +330,11 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)setUpdatedBalancePromptText:(id)a3
+- (void)setUpdatedBalancePromptText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   updatedBalancePromptText = self->_updatedBalancePromptText;
-  v12 = v5;
+  v12 = textCopy;
   v7 = updatedBalancePromptText;
   if (v7 == v12)
   {
@@ -356,7 +356,7 @@ LABEL_11:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_updatedBalancePromptText, a3);
+    objc_storeStrong(&self->_updatedBalancePromptText, text);
     if (!self->_updatedBalancePromptText)
     {
       v10 = PKLocalizedPaymentString(&cfstr_PerformActionE_1.isa);
@@ -371,11 +371,11 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)setMaxLoadAmountText:(id)a3
+- (void)setMaxLoadAmountText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   maxLoadAmountText = self->_maxLoadAmountText;
-  v12 = v5;
+  v12 = textCopy;
   v7 = maxLoadAmountText;
   if (v7 == v12)
   {
@@ -397,7 +397,7 @@ LABEL_11:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_maxLoadAmountText, a3);
+    objc_storeStrong(&self->_maxLoadAmountText, text);
     if (!self->_maxLoadAmountText)
     {
       v10 = PKLocalizedPaymentString(&cfstr_PerformActionE_2.isa);
@@ -412,28 +412,28 @@ LABEL_8:
 LABEL_12:
 }
 
-- (id)_minimalFormattedStringForAmount:(id)a3
+- (id)_minimalFormattedStringForAmount:(id)amount
 {
-  v4 = a3;
-  if (v4 && self->_currencyCode)
+  amountCopy = amount;
+  if (amountCopy && self->_currencyCode)
   {
-    v5 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:v4 currency:self->_currencyCode exponent:0];
-    v6 = [v5 minimalFormattedStringValue];
+    v5 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:amountCopy currency:self->_currencyCode exponent:0];
+    minimalFormattedStringValue = [v5 minimalFormattedStringValue];
   }
 
   else
   {
-    v6 = 0;
+    minimalFormattedStringValue = 0;
   }
 
-  return v6;
+  return minimalFormattedStringValue;
 }
 
-- (id)_textForPrompt:(id)a3 amount:(id)a4
+- (id)_textForPrompt:(id)prompt amount:(id)amount
 {
-  v6 = a3;
-  v7 = [(PKEnterValueNewBalanceView *)self _minimalFormattedStringForAmount:a4];
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v6, v7];
+  promptCopy = prompt;
+  v7 = [(PKEnterValueNewBalanceView *)self _minimalFormattedStringForAmount:amount];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", promptCopy, v7];
 
   return v8;
 }
@@ -489,13 +489,13 @@ LABEL_12:
   v14 = 0;
 LABEL_14:
   v15 = self->_additionalAmount;
-  v16 = [MEMORY[0x1E696AB90] zero];
-  v17 = [(NSDecimalNumber *)v15 compare:v16];
+  zero = [MEMORY[0x1E696AB90] zero];
+  v17 = [(NSDecimalNumber *)v15 compare:zero];
 
   if (!v17)
   {
     label = self->_label;
-    v23 = [(PKEnterValueNewBalanceView *)self promptText];
+    promptText = [(PKEnterValueNewBalanceView *)self promptText];
     goto LABEL_22;
   }
 
@@ -504,14 +504,14 @@ LABEL_14:
     if (v12)
     {
       v18 = self->_label;
-      v19 = [(PKEnterValueNewBalanceView *)self maxLoadAmountText];
+      maxLoadAmountText = [(PKEnterValueNewBalanceView *)self maxLoadAmountText];
       v20 = v35;
       if (!self->_amountIsWithdrawal || [*p_maxLoadAmount compare:*v35] != 1)
       {
         v20 = &self->_maxLoadAmount;
       }
 
-      v21 = [(PKEnterValueNewBalanceView *)self _textForPrompt:v19 amount:*v20];
+      v21 = [(PKEnterValueNewBalanceView *)self _textForPrompt:maxLoadAmountText amount:*v20];
       [(UILabel *)v18 setText:v21];
 
       goto LABEL_25;
@@ -536,13 +536,13 @@ LABEL_14:
     }
 
     label = self->_label;
-    v23 = [(PKEnterValueNewBalanceView *)self updatedBalancePromptText];
+    promptText = [(PKEnterValueNewBalanceView *)self updatedBalancePromptText];
 LABEL_22:
-    v24 = v23;
-    v25 = [(PKEnterValueNewBalanceView *)self _textForPrompt:v23 amount:v36];
+    v24 = promptText;
+    v25 = [(PKEnterValueNewBalanceView *)self _textForPrompt:promptText amount:v36];
     [(UILabel *)label setText:v25];
 
-    v26 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     goto LABEL_26;
   }
 
@@ -554,10 +554,10 @@ LABEL_24:
   [(UILabel *)v27 setText:v30];
 
 LABEL_25:
-  v26 = [MEMORY[0x1E69DC888] labelColor];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] labelColor];
 LABEL_26:
-  v31 = v26;
-  [(UILabel *)self->_label setTextColor:v26];
+  v31 = secondaryLabelColor;
+  [(UILabel *)self->_label setTextColor:secondaryLabelColor];
   [(UILabel *)self->_label sizeToFit];
   [(PKEnterValueNewBalanceView *)self setNeedsLayout];
 }
@@ -598,8 +598,8 @@ LABEL_26:
   self->_label = v3;
 
   v5 = self->_label;
-  v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)v5 setTextColor:v6];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)v5 setTextColor:secondaryLabelColor];
 
   v7 = self->_label;
   v8 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC38]);

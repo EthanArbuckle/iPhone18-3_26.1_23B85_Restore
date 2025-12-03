@@ -1,21 +1,21 @@
 @interface _BSSqliteFrozenResultRow
-- (double)doubleAtIndex:(unint64_t)a3;
-- (int64_t)integerAtIndex:(unint64_t)a3;
+- (double)doubleAtIndex:(unint64_t)index;
+- (int64_t)integerAtIndex:(unint64_t)index;
 @end
 
 @implementation _BSSqliteFrozenResultRow
 
-- (int64_t)integerAtIndex:(unint64_t)a3
+- (int64_t)integerAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_frozenIntegers objectAtIndexedSubscript:a3];
-  v4 = [v3 longLongValue];
+  v3 = [(NSArray *)self->_frozenIntegers objectAtIndexedSubscript:index];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
-- (double)doubleAtIndex:(unint64_t)a3
+- (double)doubleAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_frozenDoubles objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_frozenDoubles objectAtIndexedSubscript:index];
   [v3 doubleValue];
   v5 = v4;
 

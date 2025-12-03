@@ -1,7 +1,7 @@
 @interface BookmarksViewController
 - (BookmarksNavigationControllerDelegate)bookmarksNavigationControllerDelegate;
-- (BookmarksViewController)initWithBookmarkCollection:(id)a3 focusedCollectionType:(id)a4;
-- (BookmarksViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BookmarksViewController)initWithBookmarkCollection:(id)collection focusedCollectionType:(id)type;
+- (BookmarksViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (LinkPreviewProvider)linkPreviewProvider;
 - (NSDictionary)savedState;
 - (NSString)currentCollection;
@@ -13,81 +13,81 @@
 - (_TtC12MobileSafari35SFBookmarksCollectionViewController)rootCollectionViewController;
 - (_TtC12MobileSafari35SFBookmarksCollectionViewController)topmostCollectionViewController;
 - (id)importHandler;
-- (id)makeBookmarksLeadingBarButtonItemsFor:(id)a3 in:(id)a4 isEditing:(BOOL)a5 selectedBookmarks:(id)a6;
-- (id)makeClearHistoryActionIn:(id)a3;
-- (id)makeDeleteMultipleHistoryItemsButtonFor:(id)a3 in:(id)a4;
+- (id)makeBookmarksLeadingBarButtonItemsFor:(id)for in:(id)in isEditing:(BOOL)editing selectedBookmarks:(id)bookmarks;
+- (id)makeClearHistoryActionIn:(id)in;
+- (id)makeDeleteMultipleHistoryItemsButtonFor:(id)for in:(id)in;
 - (id)makeDetailViewMoreButtonItem;
-- (id)makeHistoryMoreButtonItemFor:(id)a3 isEditing:(BOOL)a4;
-- (id)makeMoreMenuBarButtonIn:(id)a3 isEditing:(BOOL)a4;
-- (id)makeMoreMenuForHistoryIn:(id)a3;
-- (id)makeReadingListLeadingBarButtonItemsIn:(id)a3 isEditing:(BOOL)a4 selectedBookmarks:(id)a5;
-- (id)makeReadingListMoreButtonItemIn:(id)a3 isEditing:(BOOL)a4;
+- (id)makeHistoryMoreButtonItemFor:(id)for isEditing:(BOOL)editing;
+- (id)makeMoreMenuBarButtonIn:(id)in isEditing:(BOOL)editing;
+- (id)makeMoreMenuForHistoryIn:(id)in;
+- (id)makeReadingListLeadingBarButtonItemsIn:(id)in isEditing:(BOOL)editing selectedBookmarks:(id)bookmarks;
+- (id)makeReadingListMoreButtonItemIn:(id)in isEditing:(BOOL)editing;
 - (id)makeTopLevelCollectionViewController;
-- (id)makeTrailingBarButtonItemFor:(id)a3 in:(id)a4 isEditing:(BOOL)a5;
-- (id)makeTrailingBarButtonItemsIn:(id)a3 isEditing:(BOOL)a4;
-- (void)deleteHistoryItems:(id)a3 completionHandler:(id)a4;
-- (void)historyViewDataSource:(id)a3 didComputeSessions:(id)a4;
-- (void)loadIconForHistoryItem:(id)a3 completionHandler:(id)a4;
+- (id)makeTrailingBarButtonItemFor:(id)for in:(id)in isEditing:(BOOL)editing;
+- (id)makeTrailingBarButtonItemsIn:(id)in isEditing:(BOOL)editing;
+- (void)deleteHistoryItems:(id)items completionHandler:(id)handler;
+- (void)historyViewDataSource:(id)source didComputeSessions:(id)sessions;
+- (void)loadIconForHistoryItem:(id)item completionHandler:(id)handler;
 - (void)loadSavedState;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)performWithoutReload:(id)a3;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)performWithoutReload:(id)reload;
 - (void)restoreState;
 - (void)saveState;
-- (void)setClearHistoryController:(id)a3;
-- (void)setDismissButton:(id)a3;
-- (void)setHistoryDataSource:(id)a3;
-- (void)setHistorySessions:(id)a3;
-- (void)setImportHandler:(id)a3;
-- (void)setIsClearHistoryAllowed:(BOOL)a3;
-- (void)setSavedState:(id)a3;
-- (void)setSelectedCollectionType:(id)a3;
-- (void)setTabGroupProvider:(id)a3;
-- (void)showClearHistoryDenialAlertFor:(id)a3;
+- (void)setClearHistoryController:(id)controller;
+- (void)setDismissButton:(id)button;
+- (void)setHistoryDataSource:(id)source;
+- (void)setHistorySessions:(id)sessions;
+- (void)setImportHandler:(id)handler;
+- (void)setIsClearHistoryAllowed:(BOOL)allowed;
+- (void)setSavedState:(id)state;
+- (void)setSelectedCollectionType:(id)type;
+- (void)setTabGroupProvider:(id)provider;
+- (void)showClearHistoryDenialAlertFor:(id)for;
 - (void)updateClearHistoryAllowed;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation BookmarksViewController
 
-- (BookmarksViewController)initWithBookmarkCollection:(id)a3 focusedCollectionType:(id)a4
+- (BookmarksViewController)initWithBookmarkCollection:(id)collection focusedCollectionType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_215A53C90(v5, a4);
+  collectionCopy = collection;
+  typeCopy = type;
+  v7 = sub_215A53C90(collectionCopy, type);
 
   return v7;
 }
 
 - (SafariClearBrowsingDataController)clearHistoryController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_215A44FAC();
 
   return v3;
 }
 
-- (void)setClearHistoryController:(id)a3
+- (void)setClearHistoryController:(id)controller
 {
   v4 = *(self + OBJC_IVAR___BookmarksViewController____lazy_storage___clearHistoryController);
-  *(self + OBJC_IVAR___BookmarksViewController____lazy_storage___clearHistoryController) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___BookmarksViewController____lazy_storage___clearHistoryController) = controller;
+  controllerCopy = controller;
 }
 
 - (UIBarButtonItem)dismissButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_215A450E8();
 
   return v3;
 }
 
-- (void)setDismissButton:(id)a3
+- (void)setDismissButton:(id)button
 {
   v4 = *(self + OBJC_IVAR___BookmarksViewController____lazy_storage___dismissButton);
-  *(self + OBJC_IVAR___BookmarksViewController____lazy_storage___dismissButton) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___BookmarksViewController____lazy_storage___dismissButton) = button;
+  buttonCopy = button;
 }
 
 - (NSDictionary)savedState
@@ -98,47 +98,47 @@
   return v2;
 }
 
-- (void)setSavedState:(id)a3
+- (void)setSavedState:(id)state
 {
   *(self + OBJC_IVAR___BookmarksViewController_savedState) = sub_215A704B0();
 }
 
 - (SFHistoryViewDataSource)historyDataSource
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_215A45514();
 
   return v3;
 }
 
-- (void)setHistoryDataSource:(id)a3
+- (void)setHistoryDataSource:(id)source
 {
   v4 = *(self + OBJC_IVAR___BookmarksViewController____lazy_storage___historyDataSource);
-  *(self + OBJC_IVAR___BookmarksViewController____lazy_storage___historyDataSource) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR___BookmarksViewController____lazy_storage___historyDataSource) = source;
+  sourceCopy = source;
+  selfCopy = self;
   sub_215A54E9C(v4);
 }
 
-- (void)setHistorySessions:(id)a3
+- (void)setHistorySessions:(id)sessions
 {
   v4 = *(self + OBJC_IVAR___BookmarksViewController_historySessions);
-  *(self + OBJC_IVAR___BookmarksViewController_historySessions) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR___BookmarksViewController_historySessions) = sessions;
+  sessionsCopy = sessions;
+  selfCopy = self;
 
-  [(BookmarksViewController *)v6 updateClearHistoryAllowed];
+  [(BookmarksViewController *)selfCopy updateClearHistoryAllowed];
 }
 
-- (void)setIsClearHistoryAllowed:(BOOL)a3
+- (void)setIsClearHistoryAllowed:(BOOL)allowed
 {
-  v4 = self;
-  sub_215A45958(a3);
+  selfCopy = self;
+  sub_215A45958(allowed);
 }
 
 - (_TtC12MobileSafari35SFBookmarksCollectionViewController)rootCollectionViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_215A45B60();
 
   return v3;
@@ -146,7 +146,7 @@
 
 - (_TtC12MobileSafari35SFBookmarksCollectionViewController)topmostCollectionViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_215A45CB4();
 
   return v3;
@@ -181,46 +181,46 @@
   return Strong;
 }
 
-- (void)setTabGroupProvider:(id)a3
+- (void)setTabGroupProvider:(id)provider
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   BookmarksViewController.tabGroupProvider.setter();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   BookmarksViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  BookmarksViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  BookmarksViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  BookmarksViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  BookmarksViewController.viewWillDisappear(_:)(disappear);
 }
 
 - (void)loadSavedState
 {
-  v2 = self;
+  selfCopy = self;
   sub_215A46A64();
 }
 
 - (void)saveState
 {
-  v2 = self;
+  selfCopy = self;
   sub_215A471C0();
 }
 
 - (void)restoreState
 {
-  v2 = self;
+  selfCopy = self;
   sub_215A47E74();
 }
 
@@ -232,30 +232,30 @@
   v6 = sub_215A706E0();
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
   sub_215A706C0();
-  v7 = self;
+  selfCopy = self;
   v8 = sub_215A706B0();
   v9 = swift_allocObject();
   v10 = MEMORY[0x277D85700];
   v9[2] = v8;
   v9[3] = v10;
-  v9[4] = v7;
+  v9[4] = selfCopy;
   sub_215A20960(0, 0, v5, &unk_215A97360, v9);
 }
 
-- (void)setSelectedCollectionType:(id)a3
+- (void)setSelectedCollectionType:(id)type
 {
   v4 = *(self + OBJC_IVAR___BookmarksViewController_selectedCollectionType);
-  *(self + OBJC_IVAR___BookmarksViewController_selectedCollectionType) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR___BookmarksViewController_selectedCollectionType) = type;
+  typeCopy = type;
+  selfCopy = self;
   sub_215A48F60();
 }
 
 - (NSString)currentCollection
 {
-  v2 = [(BookmarksViewController *)self selectedCollectionType];
+  selectedCollectionType = [(BookmarksViewController *)self selectedCollectionType];
 
-  return v2;
+  return selectedCollectionType;
 }
 
 - (id)importHandler
@@ -280,9 +280,9 @@
   return v3;
 }
 
-- (void)setImportHandler:(id)a3
+- (void)setImportHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -300,31 +300,31 @@
   v8 = *(self + OBJC_IVAR___BookmarksViewController_importHandler);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_21584BA0C(v8);
 }
 
 - (id)makeTopLevelCollectionViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_215A493AC();
 
   return v3;
 }
 
-- (void)loadIconForHistoryItem:(id)a3 completionHandler:(id)a4
+- (void)loadIconForHistoryItem:(id)item completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_215A4DE04(v8, sub_215A26210, v7);
+  itemCopy = item;
+  selfCopy = self;
+  sub_215A4DE04(itemCopy, sub_215A26210, v7);
 }
 
-- (void)deleteHistoryItems:(id)a3 completionHandler:(id)a4
+- (void)deleteHistoryItems:(id)items completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   sub_2159F7DA8(0, &qword_27CA7E098);
   v6 = sub_215A705E0();
   if (v5)
@@ -340,16 +340,16 @@
     v7 = 0;
   }
 
-  v9 = self;
+  selfCopy = self;
   sub_215A4FBD0(v6, v8, v7);
   sub_21584BA0C(v8);
 }
 
-- (id)makeTrailingBarButtonItemsIn:(id)a3 isEditing:(BOOL)a4
+- (id)makeTrailingBarButtonItemsIn:(id)in isEditing:(BOOL)editing
 {
-  v6 = a3;
-  v7 = self;
-  sub_215A4FE20(v6, a4);
+  inCopy = in;
+  selfCopy = self;
+  sub_215A4FE20(inCopy, editing);
 
   sub_2159F7DA8(0, &qword_2811A22B8);
   v8 = sub_215A705D0();
@@ -357,28 +357,28 @@
   return v8;
 }
 
-- (id)makeMoreMenuBarButtonIn:(id)a3 isEditing:(BOOL)a4
+- (id)makeMoreMenuBarButtonIn:(id)in isEditing:(BOOL)editing
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_215A500D8(v6, a4);
+  inCopy = in;
+  selfCopy = self;
+  v8 = sub_215A500D8(inCopy, editing);
 
   return v8;
 }
 
-- (id)makeTrailingBarButtonItemFor:(id)a3 in:(id)a4 isEditing:(BOOL)a5
+- (id)makeTrailingBarButtonItemFor:(id)for in:(id)in isEditing:(BOOL)editing
 {
-  if (a5)
+  if (editing)
   {
     v6 = 0;
   }
 
   else
   {
-    v10 = a3;
-    v11 = a4;
-    v12 = self;
-    v13 = sub_215A29A1C(v10, v11);
+    forCopy = for;
+    inCopy = in;
+    selfCopy = self;
+    v13 = sub_215A29A1C(forCopy, inCopy);
 
     v6 = v13;
   }
@@ -386,39 +386,39 @@
   return v6;
 }
 
-- (id)makeReadingListMoreButtonItemIn:(id)a3 isEditing:(BOOL)a4
+- (id)makeReadingListMoreButtonItemIn:(id)in isEditing:(BOOL)editing
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_215A50850(v6, a4);
+  inCopy = in;
+  selfCopy = self;
+  v8 = sub_215A50850(inCopy, editing);
 
   return v8;
 }
 
-- (id)makeHistoryMoreButtonItemFor:(id)a3 isEditing:(BOOL)a4
+- (id)makeHistoryMoreButtonItemFor:(id)for isEditing:(BOOL)editing
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_215A50AD8(v6, a4);
+  forCopy = for;
+  selfCopy = self;
+  v8 = sub_215A50AD8(forCopy, editing);
 
   return v8;
 }
 
 - (id)makeDetailViewMoreButtonItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_215A50D60();
 
   return v3;
 }
 
-- (id)makeReadingListLeadingBarButtonItemsIn:(id)a3 isEditing:(BOOL)a4 selectedBookmarks:(id)a5
+- (id)makeReadingListLeadingBarButtonItemsIn:(id)in isEditing:(BOOL)editing selectedBookmarks:(id)bookmarks
 {
   sub_2159F7DA8(0, &unk_2811A28A0);
   v8 = sub_215A705E0();
-  v9 = a3;
-  v10 = self;
-  sub_215A51180(v9, a4, v8);
+  inCopy = in;
+  selfCopy = self;
+  sub_215A51180(inCopy, editing, v8);
 
   sub_2159F7DA8(0, &qword_2811A22B8);
   v11 = sub_215A705D0();
@@ -426,14 +426,14 @@
   return v11;
 }
 
-- (id)makeBookmarksLeadingBarButtonItemsFor:(id)a3 in:(id)a4 isEditing:(BOOL)a5 selectedBookmarks:(id)a6
+- (id)makeBookmarksLeadingBarButtonItemsFor:(id)for in:(id)in isEditing:(BOOL)editing selectedBookmarks:(id)bookmarks
 {
   sub_2159F7DA8(0, &unk_2811A28A0);
   v10 = sub_215A705E0();
-  v11 = a3;
-  v12 = a4;
-  v13 = self;
-  sub_215A54364(v11, a5, v10);
+  forCopy = for;
+  inCopy = in;
+  selfCopy = self;
+  sub_215A54364(forCopy, editing, v10);
 
   sub_2159F7DA8(0, &qword_2811A22B8);
   v14 = sub_215A705D0();
@@ -441,89 +441,89 @@
   return v14;
 }
 
-- (id)makeDeleteMultipleHistoryItemsButtonFor:(id)a3 in:(id)a4
+- (id)makeDeleteMultipleHistoryItemsButtonFor:(id)for in:(id)in
 {
   sub_2159F7DA8(0, &qword_27CA7E098);
   v6 = sub_215A705E0();
-  v7 = a4;
-  v8 = self;
+  inCopy = in;
+  selfCopy = self;
   v9 = sub_215A54564(v6);
 
   return v9;
 }
 
-- (void)showClearHistoryDenialAlertFor:(id)a3
+- (void)showClearHistoryDenialAlertFor:(id)for
 {
   v4 = objc_allocWithZone(MEMORY[0x277D4A740]);
-  v6 = self;
-  v5 = [v4 initWithPresenter_];
-  [v5 displayHistoryClearingDenialAlert];
+  selfCopy = self;
+  initWithPresenter_ = [v4 initWithPresenter_];
+  [initWithPresenter_ displayHistoryClearingDenialAlert];
 }
 
-- (id)makeClearHistoryActionIn:(id)a3
+- (id)makeClearHistoryActionIn:(id)in
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_215A51688(v4);
+  inCopy = in;
+  selfCopy = self;
+  v6 = sub_215A51688(inCopy);
 
   return v6;
 }
 
-- (id)makeMoreMenuForHistoryIn:(id)a3
+- (id)makeMoreMenuForHistoryIn:(id)in
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_215A51AB4(v4);
+  inCopy = in;
+  selfCopy = self;
+  v6 = sub_215A51AB4(inCopy);
 
   return v6;
 }
 
-- (void)performWithoutReload:(id)a3
+- (void)performWithoutReload:(id)reload
 {
-  v4 = _Block_copy(a3);
-  v7 = self;
-  v5 = [(BookmarksViewController *)v7 suppressingReloads];
-  if (__OFADD__(v5, 1))
+  v4 = _Block_copy(reload);
+  selfCopy = self;
+  suppressingReloads = [(BookmarksViewController *)selfCopy suppressingReloads];
+  if (__OFADD__(suppressingReloads, 1))
   {
     __break(1u);
     goto LABEL_7;
   }
 
-  [(BookmarksViewController *)v7 setSuppressingReloads:v5 + 1];
+  [(BookmarksViewController *)selfCopy setSuppressingReloads:suppressingReloads + 1];
   v4[2](v4);
   _Block_release(v4);
-  v6 = [(BookmarksViewController *)v7 suppressingReloads];
-  if (__OFSUB__(v6, 1))
+  suppressingReloads2 = [(BookmarksViewController *)selfCopy suppressingReloads];
+  if (__OFSUB__(suppressingReloads2, 1))
   {
 LABEL_7:
     __break(1u);
     return;
   }
 
-  [(BookmarksViewController *)v7 setSuppressingReloads:v6 - 1];
+  [(BookmarksViewController *)selfCopy setSuppressingReloads:suppressingReloads2 - 1];
 }
 
-- (BookmarksViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BookmarksViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_215A54784(v8);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  sub_215A54784(viewControllerCopy);
 }
 
-- (void)historyViewDataSource:(id)a3 didComputeSessions:(id)a4
+- (void)historyViewDataSource:(id)source didComputeSessions:(id)sessions
 {
-  v5 = a4;
-  v13 = self;
-  [(BookmarksViewController *)v13 setHistorySessions:v5];
-  v6 = [(BookmarksViewController *)v13 selectedCollectionType];
+  sessionsCopy = sessions;
+  selfCopy = self;
+  [(BookmarksViewController *)selfCopy setHistorySessions:sessionsCopy];
+  selectedCollectionType = [(BookmarksViewController *)selfCopy selectedCollectionType];
   v7 = sub_215A70540();
   v9 = v8;
   if (v7 == sub_215A70540() && v9 == v10)

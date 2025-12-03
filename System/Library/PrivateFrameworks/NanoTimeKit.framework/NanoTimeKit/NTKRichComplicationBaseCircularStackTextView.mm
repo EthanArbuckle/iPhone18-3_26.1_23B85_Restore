@@ -1,33 +1,33 @@
 @interface NTKRichComplicationBaseCircularStackTextView
-- (NTKRichComplicationBaseCircularStackTextView)initWithFamily:(int64_t)a3;
+- (NTKRichComplicationBaseCircularStackTextView)initWithFamily:(int64_t)family;
 - (id)_createAndAddLabel;
-- (id)_desiredFontForLabel:(id)a3;
+- (id)_desiredFontForLabel:(id)label;
 - (int64_t)_line1FilterStyle;
 - (int64_t)_line2FilterStyle;
 - (void)_editingDidEnd;
-- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)a3;
+- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)configuration;
 - (void)layoutSubviews;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation NTKRichComplicationBaseCircularStackTextView
 
-- (NTKRichComplicationBaseCircularStackTextView)initWithFamily:(int64_t)a3
+- (NTKRichComplicationBaseCircularStackTextView)initWithFamily:(int64_t)family
 {
   v10.receiver = self;
   v10.super_class = NTKRichComplicationBaseCircularStackTextView;
-  v3 = [(NTKRichComplicationCircularBaseView *)&v10 initWithFamily:a3];
+  v3 = [(NTKRichComplicationCircularBaseView *)&v10 initWithFamily:family];
   v4 = v3;
   if (v3)
   {
-    v5 = [(NTKRichComplicationBaseCircularStackTextView *)v3 _createAndAddLabel];
+    _createAndAddLabel = [(NTKRichComplicationBaseCircularStackTextView *)v3 _createAndAddLabel];
     line1Label = v4->_line1Label;
-    v4->_line1Label = v5;
+    v4->_line1Label = _createAndAddLabel;
 
-    v7 = [(NTKRichComplicationBaseCircularStackTextView *)v4 _createAndAddLabel];
+    _createAndAddLabel2 = [(NTKRichComplicationBaseCircularStackTextView *)v4 _createAndAddLabel];
     line2Label = v4->_line2Label;
-    v4->_line2Label = v7;
+    v4->_line2Label = _createAndAddLabel2;
   }
 
   return v4;
@@ -45,22 +45,22 @@
   v6 = *(&v11 + 1);
   [v5 setFont:*(&v11 + 1)];
   [v5 setTextAlignment:1];
-  v7 = [MEMORY[0x277D75348] whiteColor];
-  [v5 setTextColor:v7];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v5 setTextColor:whiteColor];
 
   [v5 setUsesTextProviderTintColoring:1];
   [v5 setMaxWidth:*&v11];
-  v8 = [(NTKRichComplicationCircularBaseView *)self contentView];
-  [v8 addSubview:v5];
+  contentView = [(NTKRichComplicationCircularBaseView *)self contentView];
+  [contentView addSubview:v5];
 
   [v5 setFilterProvider:self];
 
   return v5;
 }
 
-- (id)_desiredFontForLabel:(id)a3
+- (id)_desiredFontForLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v24 = 0.0;
   v23 = 0u;
   v5 = [(CDRichComplicationView *)self device:0];
@@ -70,15 +70,15 @@
   v7 = *(&v23 + 1);
   [v7 pointSize];
   v9 = v8;
-  [v4 widthForMaxWidth:v7 withFont:v6];
+  [labelCopy widthForMaxWidth:v7 withFont:v6];
   v11 = v10;
-  v12 = [v4 textProvider];
-  v13 = [v12 shrinkTextPreference];
+  textProvider = [labelCopy textProvider];
+  shrinkTextPreference = [textProvider shrinkTextPreference];
 
   i = v7;
-  if (v13)
+  if (shrinkTextPreference)
   {
-    if (v13 == 1)
+    if (shrinkTextPreference == 1)
     {
       v15 = v24;
     }
@@ -95,7 +95,7 @@
       v9 = v9 + -1.0;
       v19 = [MEMORY[0x277CBBB08] systemFontOfSize:*v17 weight:v9 design:v16];
 
-      [v4 widthForMaxWidth:v19 withFont:v6];
+      [labelCopy widthForMaxWidth:v19 withFont:v6];
       v11 = v20;
     }
   }
@@ -108,23 +108,23 @@
   v32.receiver = self;
   v32.super_class = NTKRichComplicationBaseCircularStackTextView;
   [(NTKRichComplicationCircularBaseView *)&v32 layoutSubviews];
-  v3 = [(NTKRichComplicationCircularBaseView *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKRichComplicationCircularBaseView *)self contentView];
+  [contentView bounds];
   v27 = v4;
   v28 = v5;
 
   v31 = 0;
   v29 = 0u;
   v30 = 0u;
-  v6 = [(CDRichComplicationView *)self device];
-  _LayoutConstants_8(v6, [(CDRichComplicationView *)self family], &v29);
+  device = [(CDRichComplicationView *)self device];
+  _LayoutConstants_8(device, [(CDRichComplicationView *)self family], &v29);
 
   v7 = [(NTKRichComplicationBaseCircularStackTextView *)self _desiredFontForLabel:self->_line1Label];
   [(CLKUIColoringLabel *)self->_line1Label setFont:v7];
   [(CLKUIColoringLabel *)self->_line1Label sizeToFit];
   [(CLKUIColoringLabel *)self->_line1Label frame];
   [(CLKUIColoringLabel *)self->_line1Label _lastLineBaseline];
-  v8 = [(CDRichComplicationView *)self device];
+  device2 = [(CDRichComplicationView *)self device];
   CLKRectCenteredXInRectForDevice();
   v10 = v9;
   v12 = v11;
@@ -137,7 +137,7 @@
   [(CLKUIColoringLabel *)self->_line2Label sizeToFit];
   [(CLKUIColoringLabel *)self->_line2Label frame];
   [(CLKUIColoringLabel *)self->_line2Label _lastLineBaseline:v27];
-  v18 = [(CDRichComplicationView *)self device];
+  device3 = [(CDRichComplicationView *)self device];
   CLKRectCenteredXInRectForDevice();
   v20 = v19;
   v22 = v21;
@@ -147,20 +147,20 @@
   [(CLKUIColoringLabel *)self->_line2Label setFrame:v20, v22, v24, v26];
 }
 
-- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)a3
+- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)configuration
 {
-  v10[0] = a3->var0;
-  v5 = a3->var1;
-  var2 = a3->var2;
+  v10[0] = configuration->var0;
+  v5 = configuration->var1;
+  var2 = configuration->var2;
   v11 = v5;
   v12 = var2;
   v9.receiver = self;
   v9.super_class = NTKRichComplicationBaseCircularStackTextView;
   [(CDRichComplicationView *)&v9 _setFontConfiguration:v10];
-  v7 = a3->var1;
+  v7 = configuration->var1;
   if (v7)
   {
-    v8 = a3->var2;
+    v8 = configuration->var2;
     [(CDRichComplicationView *)self _updateColoringLabel:self->_line1Label withFontDescriptor:v7 andSizeFactor:v8];
     [(CDRichComplicationView *)self _updateColoringLabel:self->_line2Label withFontDescriptor:v7 andSizeFactor:v8];
   }
@@ -174,13 +174,13 @@
   [(CLKUIColoringLabel *)line2Label editingDidEnd];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationBaseCircularStackTextView;
   [(NTKRichComplicationCircularBaseView *)&v5 transitionToMonochromeWithFraction:?];
-  [(CLKUIColoringLabel *)self->_line1Label transitionToMonochromeWithFraction:[(NTKRichComplicationBaseCircularStackTextView *)self _line1FilterStyle] style:a3];
-  [(CLKUIColoringLabel *)self->_line2Label transitionToMonochromeWithFraction:[(NTKRichComplicationBaseCircularStackTextView *)self _line2FilterStyle] style:a3];
+  [(CLKUIColoringLabel *)self->_line1Label transitionToMonochromeWithFraction:[(NTKRichComplicationBaseCircularStackTextView *)self _line1FilterStyle] style:fraction];
+  [(CLKUIColoringLabel *)self->_line2Label transitionToMonochromeWithFraction:[(NTKRichComplicationBaseCircularStackTextView *)self _line2FilterStyle] style:fraction];
 }
 
 - (void)updateMonochromeColor
@@ -194,8 +194,8 @@
 
 - (int64_t)_line1FilterStyle
 {
-  v3 = [(CDRichComplicationView *)self device];
-  v4 = NTKShowGossamerUI(v3);
+  device = [(CDRichComplicationView *)self device];
+  v4 = NTKShowGossamerUI(device);
 
   if (v4)
   {
@@ -210,8 +210,8 @@
 
 - (int64_t)_line2FilterStyle
 {
-  v3 = [(CDRichComplicationView *)self device];
-  v4 = NTKShowGossamerUI(v3);
+  device = [(CDRichComplicationView *)self device];
+  v4 = NTKShowGossamerUI(device);
 
   if (v4)
   {

@@ -1,12 +1,12 @@
 @interface AppPromotionOfferCollectionViewCell
-- (_TtC22SubscribePageExtension35AppPromotionOfferCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension35AppPromotionOfferCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation AppPromotionOfferCollectionViewCell
 
-- (_TtC22SubscribePageExtension35AppPromotionOfferCollectionViewCell)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension35AppPromotionOfferCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtension35AppPromotionOfferCollectionViewCell_itemLayoutContext;
   v5 = sub_1007469A4();
@@ -42,7 +42,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004E138C();
 }
 

@@ -1,34 +1,34 @@
 @interface SKADatabaseTransientSubscriptionHistory
-- (SKADatabaseTransientSubscriptionHistory)initWithChannelIdentifier:(id)a3 lastSubscriptionDate:(id)a4;
-- (SKADatabaseTransientSubscriptionHistory)initWithCoreDataTransientSubscriptionHistory:(id)a3;
+- (SKADatabaseTransientSubscriptionHistory)initWithChannelIdentifier:(id)identifier lastSubscriptionDate:(id)date;
+- (SKADatabaseTransientSubscriptionHistory)initWithCoreDataTransientSubscriptionHistory:(id)history;
 @end
 
 @implementation SKADatabaseTransientSubscriptionHistory
 
-- (SKADatabaseTransientSubscriptionHistory)initWithCoreDataTransientSubscriptionHistory:(id)a3
+- (SKADatabaseTransientSubscriptionHistory)initWithCoreDataTransientSubscriptionHistory:(id)history
 {
-  v4 = a3;
-  v5 = [v4 channelIdentifier];
-  v6 = [v4 lastSubscriptionDate];
+  historyCopy = history;
+  channelIdentifier = [historyCopy channelIdentifier];
+  lastSubscriptionDate = [historyCopy lastSubscriptionDate];
 
-  v7 = [(SKADatabaseTransientSubscriptionHistory *)self initWithChannelIdentifier:v5 lastSubscriptionDate:v6];
+  v7 = [(SKADatabaseTransientSubscriptionHistory *)self initWithChannelIdentifier:channelIdentifier lastSubscriptionDate:lastSubscriptionDate];
   return v7;
 }
 
-- (SKADatabaseTransientSubscriptionHistory)initWithChannelIdentifier:(id)a3 lastSubscriptionDate:(id)a4
+- (SKADatabaseTransientSubscriptionHistory)initWithChannelIdentifier:(id)identifier lastSubscriptionDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = SKADatabaseTransientSubscriptionHistory;
   v8 = [(SKADatabaseTransientSubscriptionHistory *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     channelIdentifier = v8->_channelIdentifier;
     v8->_channelIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [dateCopy copy];
     lastSubscriptionDate = v8->_lastSubscriptionDate;
     v8->_lastSubscriptionDate = v11;
   }

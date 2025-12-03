@@ -1,24 +1,24 @@
 @interface LADomainState
-- (LADomainState)initWithResult:(id)a3;
+- (LADomainState)initWithResult:(id)result;
 - (id)description;
 - (void)_resolveCombinedStateHash;
 @end
 
 @implementation LADomainState
 
-- (LADomainState)initWithResult:(id)a3
+- (LADomainState)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v11.receiver = self;
   v11.super_class = LADomainState;
   v5 = [(LADomainState *)&v11 init];
   if (v5)
   {
-    v6 = [[LADomainStateBiometry alloc] initWithResult:v4];
+    v6 = [[LADomainStateBiometry alloc] initWithResult:resultCopy];
     biometry = v5->_biometry;
     v5->_biometry = v6;
 
-    v8 = [[LADomainStateCompanion alloc] initWithResult:v4];
+    v8 = [[LADomainStateCompanion alloc] initWithResult:resultCopy];
     companion = v5->_companion;
     v5->_companion = v8;
 
@@ -30,51 +30,51 @@
 
 - (void)_resolveCombinedStateHash
 {
-  v3 = [(LADomainStateCompanion *)self->_companion stateHash];
-  if (v3 && (v4 = v3, [(LADomainStateBiometry *)self->_biometry stateHash], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  stateHash = [(LADomainStateCompanion *)self->_companion stateHash];
+  if (stateHash && (v4 = stateHash, [(LADomainStateBiometry *)self->_biometry stateHash], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v13 = objc_opt_new();
-    v6 = [(LADomainStateBiometry *)self->_biometry stateHash];
+    stateHash2 = [(LADomainStateBiometry *)self->_biometry stateHash];
 
-    if (v6)
+    if (stateHash2)
     {
-      v7 = [(LADomainStateBiometry *)self->_biometry stateHash];
-      [v13 appendData:v7];
+      stateHash3 = [(LADomainStateBiometry *)self->_biometry stateHash];
+      [v13 appendData:stateHash3];
     }
 
-    v8 = [(LADomainStateCompanion *)self->_companion stateHash];
+    stateHash4 = [(LADomainStateCompanion *)self->_companion stateHash];
 
-    if (v8)
+    if (stateHash4)
     {
-      v9 = [(LADomainStateCompanion *)self->_companion stateHash];
-      [v13 appendData:v9];
+      stateHash5 = [(LADomainStateCompanion *)self->_companion stateHash];
+      [v13 appendData:stateHash5];
     }
 
-    v10 = [v13 length];
-    if (v10)
+    stateHash7 = [v13 length];
+    if (stateHash7)
     {
-      v10 = [MEMORY[0x1E69AD258] createHashForDomainState:v13];
+      stateHash7 = [MEMORY[0x1E69AD258] createHashForDomainState:v13];
     }
   }
 
   else
   {
-    v11 = [(LADomainStateBiometry *)self->_biometry stateHash];
-    if (v11)
+    stateHash6 = [(LADomainStateBiometry *)self->_biometry stateHash];
+    if (stateHash6)
     {
-      v10 = v11;
+      stateHash7 = stateHash6;
       stateHash = self->_stateHash;
-      v13 = v10;
+      v13 = stateHash7;
       goto LABEL_13;
     }
 
     v13 = 0;
-    v10 = [(LADomainStateCompanion *)self->_companion stateHash];
+    stateHash7 = [(LADomainStateCompanion *)self->_companion stateHash];
   }
 
   stateHash = self->_stateHash;
 LABEL_13:
-  self->_stateHash = v10;
+  self->_stateHash = stateHash7;
 }
 
 - (id)description
@@ -83,16 +83,16 @@ LABEL_13:
   v18 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(LADomainState *)self biometry];
-  v6 = [v4 stringWithFormat:@"biometry: %@", v5];
+  biometry = [(LADomainState *)self biometry];
+  v6 = [v4 stringWithFormat:@"biometry: %@", biometry];
   v19[0] = v6;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(LADomainState *)self companion];
-  v9 = [v7 stringWithFormat:@"companion: %@", v8];
+  companion = [(LADomainState *)self companion];
+  v9 = [v7 stringWithFormat:@"companion: %@", companion];
   v19[1] = v9;
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(LADomainState *)self stateHash];
-  v12 = [v10 stringWithFormat:@"stateHash: %@", v11];
+  stateHash = [(LADomainState *)self stateHash];
+  v12 = [v10 stringWithFormat:@"stateHash: %@", stateHash];
   v19[2] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:3];
   v14 = [v13 componentsJoinedByString:@" "];;

@@ -1,77 +1,77 @@
 @interface AKFidoHook
-- (AKFidoHook)initWithAccount:(id)a3;
-- (BOOL)_isUserCancelError:(id)a3;
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (AKFidoHook)initWithAccount:(id)account;
+- (BOOL)_isUserCancelError:(id)error;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_startFidoRegistrationWithAttributes:(id)a3 completion:(id)a4;
-- (void)_startFidoVerificationWithAttributes:(id)a3 completion:(id)a4;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_startFidoRegistrationWithAttributes:(id)attributes completion:(id)completion;
+- (void)_startFidoVerificationWithAttributes:(id)attributes completion:(id)completion;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AKFidoHook
 
-- (AKFidoHook)initWithAccount:(id)a3
+- (AKFidoHook)initWithAccount:(id)account
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, account);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = AKFidoHook;
   v6 = [(AKFidoHook *)&v7 init];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeStrong(&v9->_account, location[0]);
+    objc_storeStrong(&selfCopy->_account, location[0]);
   }
 
-  v5 = MEMORY[0x277D82BE0](v9);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [location[0] name];
+  objc_storeStrong(location, element);
+  name = [location[0] name];
   v6 = 0;
   v5 = 1;
-  if (([v4 isEqualToString:@"fido:register"] & 1) == 0)
+  if (([name isEqualToString:@"fido:register"] & 1) == 0)
   {
-    v7 = [location[0] name];
+    name2 = [location[0] name];
     v6 = 1;
-    v5 = [v7 isEqualToString:@"fido:verify"];
+    v5 = [name2 isEqualToString:@"fido:verify"];
   }
 
   v9 = v5 & 1;
   if (v6)
   {
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](name2);
   }
 
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](name);
   objc_storeStrong(location, 0);
   return v9 & 1;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [location[0] clientInfo];
-  v6 = [v4 objectForKey:@"action"];
-  MEMORY[0x277D82BD8](v4);
+  objc_storeStrong(location, model);
+  clientInfo = [location[0] clientInfo];
+  v6 = [clientInfo objectForKey:@"action"];
+  MEMORY[0x277D82BD8](clientInfo);
   v5 = 1;
   if (([v6 isEqualToString:@"fido:register"] & 1) == 0)
   {
@@ -83,34 +83,34 @@
   return v5 & 1;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, element);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, attributes);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
+  objc_storeStrong(&v14, model);
   v13 = 0;
-  objc_storeStrong(&v13, a6);
-  v11 = [location[0] name];
-  v12 = [v11 isEqualToString:@"fido:register"];
-  MEMORY[0x277D82BD8](v11);
+  objc_storeStrong(&v13, completion);
+  name = [location[0] name];
+  v12 = [name isEqualToString:@"fido:register"];
+  MEMORY[0x277D82BD8](name);
   if (v12)
   {
-    [(AKFidoHook *)v17 _startFidoRegistrationWithAttributes:v15 completion:v13];
+    [(AKFidoHook *)selfCopy _startFidoRegistrationWithAttributes:v15 completion:v13];
   }
 
   else
   {
-    v6 = [location[0] name];
-    v7 = [v6 isEqualToString:@"fido:verify"];
-    MEMORY[0x277D82BD8](v6);
+    name2 = [location[0] name];
+    v7 = [name2 isEqualToString:@"fido:verify"];
+    MEMORY[0x277D82BD8](name2);
     if (v7)
     {
-      [(AKFidoHook *)v17 _startFidoVerificationWithAttributes:v15 completion:v13];
+      [(AKFidoHook *)selfCopy _startFidoVerificationWithAttributes:v15 completion:v13];
     }
   }
 
@@ -120,31 +120,31 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v9 = [location[0] clientInfo];
-  v10 = [v9 objectForKey:@"action"];
-  MEMORY[0x277D82BD8](v9);
+  objc_storeStrong(&v11, completion);
+  clientInfo = [location[0] clientInfo];
+  v10 = [clientInfo objectForKey:@"action"];
+  MEMORY[0x277D82BD8](clientInfo);
   if ([v10 isEqualToString:@"fido:register"])
   {
-    v6 = v13;
-    v7 = [location[0] clientInfo];
+    v6 = selfCopy;
+    clientInfo2 = [location[0] clientInfo];
     [AKFidoHook _startFidoRegistrationWithAttributes:v6 completion:"_startFidoRegistrationWithAttributes:completion:"];
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](clientInfo2);
   }
 
   else if ([v10 isEqualToString:@"fido:verify"])
   {
-    v4 = v13;
-    v5 = [location[0] clientInfo];
+    v4 = selfCopy;
+    clientInfo3 = [location[0] clientInfo];
     [AKFidoHook _startFidoVerificationWithAttributes:v4 completion:"_startFidoVerificationWithAttributes:completion:"];
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](clientInfo3);
   }
 
   objc_storeStrong(&v10, 0);
@@ -152,15 +152,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_startFidoRegistrationWithAttributes:(id)a3 completion:(id)a4
+- (void)_startFidoRegistrationWithAttributes:(id)attributes completion:(id)completion
 {
   v47 = *MEMORY[0x277D85DE8];
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, attributes);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
+  objc_storeStrong(&v42, completion);
   v41 = _AKLogFido();
   v40 = 2;
   if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
@@ -213,15 +213,15 @@
   v27 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v29 incorrectKeyPresentedMessage];
-    __os_log_helper_16_2_1_8_64(v45, v6);
+    incorrectKeyPresentedMessage = [v29 incorrectKeyPresentedMessage];
+    __os_log_helper_16_2_1_8_64(v45, incorrectKeyPresentedMessage);
     _os_log_debug_impl(&dword_222379000, v28, v27, "Setting fidoContext.incorrectKeyPresentedMessage = %@", v45, 0xCu);
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](incorrectKeyPresentedMessage);
   }
 
   objc_storeStrong(&v28, 0);
   v26 = objc_alloc_init(AKFidoUIController);
-  objc_initWeak(&from, v44);
+  objc_initWeak(&from, selfCopy);
   v4 = v26;
   v5 = v29;
   v18 = MEMORY[0x277D85DD0];
@@ -390,15 +390,15 @@ void __62__AKFidoHook__startFidoRegistrationWithAttributes_completion___block_in
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_startFidoVerificationWithAttributes:(id)a3 completion:(id)a4
+- (void)_startFidoVerificationWithAttributes:(id)attributes completion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, attributes);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, completion);
   v37 = _AKLogFido();
   v36 = 2;
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
@@ -446,15 +446,15 @@ void __62__AKFidoHook__startFidoRegistrationWithAttributes_completion___block_in
   v26 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v28 incorrectKeyPresentedMessage];
-    __os_log_helper_16_2_1_8_64(v41, v6);
+    incorrectKeyPresentedMessage = [v28 incorrectKeyPresentedMessage];
+    __os_log_helper_16_2_1_8_64(v41, incorrectKeyPresentedMessage);
     _os_log_debug_impl(&dword_222379000, v27, v26, "Setting fidoContext.incorrectKeyPresentedMessage = %@", v41, 0xCu);
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](incorrectKeyPresentedMessage);
   }
 
   objc_storeStrong(&v27, 0);
   v25 = objc_alloc_init(AKFidoUIController);
-  objc_initWeak(&from, v40);
+  objc_initWeak(&from, selfCopy);
   v4 = v25;
   v5 = v28;
   v17 = MEMORY[0x277D85DD0];
@@ -595,12 +595,12 @@ void __62__AKFidoHook__startFidoVerificationWithAttributes_completion___block_in
   *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isUserCancelError:(id)a3
+- (BOOL)_isUserCancelError:(id)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v4 = 1;
   if (([location[0] ak_isUserCancelError] & 1) == 0)
   {

@@ -2,7 +2,7 @@
 - ($4479F518DFD59EF68F6FA14DAF968345)path;
 - ($9433BFB5400FDC760880D1BFD6845728)frame;
 - (id)description;
-- (void)setPath:(id *)a3;
+- (void)setPath:(id *)path;
 @end
 
 @implementation MKTileOverlayTile
@@ -20,10 +20,10 @@
   return result;
 }
 
-- (void)setPath:(id *)a3
+- (void)setPath:(id *)path
 {
-  v3 = *&a3->var0;
-  *&self->_path.z = *&a3->var2;
+  v3 = *&path->var0;
+  *&self->_path.z = *&path->var2;
   *&self->_path.x = v3;
 }
 

@@ -1,21 +1,21 @@
 @interface DBSmartWidgetHomeSource
 + (id)predictionClasses;
 + (void)load;
-- (DBSmartWidgetHomeSource)initWithDelegate:(id)a3 resourceProvider:(id)a4;
+- (DBSmartWidgetHomeSource)initWithDelegate:(id)delegate resourceProvider:(id)provider;
 - (id)freshPredictions;
 - (void)dealloc;
-- (void)home:(id)a3 didUpdateLastUsedServiceOfType:(id)a4;
-- (void)homeDidChangeInRange:(id)a3;
-- (void)homeDidUpdateAccess:(id)a3;
-- (void)homeManager:(id)a3 didUpdateHomes:(id)a4;
-- (void)homeManager:(id)a3 willRemoveHomes:(id)a4;
+- (void)home:(id)home didUpdateLastUsedServiceOfType:(id)type;
+- (void)homeDidChangeInRange:(id)range;
+- (void)homeDidUpdateAccess:(id)access;
+- (void)homeManager:(id)manager didUpdateHomes:(id)homes;
+- (void)homeManager:(id)manager willRemoveHomes:(id)homes;
 @end
 
 @implementation DBSmartWidgetHomeSource
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___DBSmartWidgetHomeSource;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -29,23 +29,23 @@
   return v2;
 }
 
-- (DBSmartWidgetHomeSource)initWithDelegate:(id)a3 resourceProvider:(id)a4
+- (DBSmartWidgetHomeSource)initWithDelegate:(id)delegate resourceProvider:(id)provider
 {
-  v6 = a4;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = DBSmartWidgetHomeSource;
-  v7 = [(DBSmartWidgetSource *)&v14 initWithDelegate:a3 resourceProvider:v6];
+  v7 = [(DBSmartWidgetSource *)&v14 initWithDelegate:delegate resourceProvider:providerCopy];
   if (v7)
   {
-    v8 = [v6 homeManager];
+    homeManager = [providerCopy homeManager];
     homeManager = v7->_homeManager;
-    v7->_homeManager = v8;
+    v7->_homeManager = homeManager;
 
     [(DBHomeManager *)v7->_homeManager addObserver:v7];
-    v10 = [(DBSmartWidgetHomeSource *)v7 homeManager];
-    v11 = [(DBSmartWidgetHomeSource *)v7 homeManager];
-    v12 = [v11 homes];
-    [(DBSmartWidgetHomeSource *)v7 homeManager:v10 didUpdateHomes:v12];
+    homeManager2 = [(DBSmartWidgetHomeSource *)v7 homeManager];
+    homeManager3 = [(DBSmartWidgetHomeSource *)v7 homeManager];
+    homes = [homeManager3 homes];
+    [(DBSmartWidgetHomeSource *)v7 homeManager:homeManager2 didUpdateHomes:homes];
   }
 
   return v7;
@@ -53,8 +53,8 @@
 
 - (void)dealloc
 {
-  v3 = [(DBSmartWidgetHomeSource *)self homeManager];
-  [v3 removeObserver:self];
+  homeManager = [(DBSmartWidgetHomeSource *)self homeManager];
+  [homeManager removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = DBSmartWidgetHomeSource;
@@ -64,9 +64,9 @@
 - (id)freshPredictions
 {
   v3 = +[DBApplicationController sharedInstance];
-  v4 = [v3 homeApplication];
+  homeApplication = [v3 homeApplication];
 
-  if (!v4)
+  if (!homeApplication)
   {
     v5 = DBLogForCategory(9uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -77,7 +77,7 @@
     goto LABEL_7;
   }
 
-  if ([v4 isLockedOrHidden])
+  if ([homeApplication isLockedOrHidden])
   {
     v5 = DBLogForCategory(9uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -91,8 +91,8 @@ LABEL_7:
   }
 
   v21 = objc_opt_new();
-  v22 = [(DBSmartWidgetHomeSource *)self homeManager];
-  v23 = [v22 homes];
+  homeManager = [(DBSmartWidgetHomeSource *)self homeManager];
+  homes = [homeManager homes];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __43__DBSmartWidgetHomeSource_freshPredictions__block_invoke;
@@ -100,7 +100,7 @@ LABEL_7:
   v27[4] = self;
   v24 = v21;
   v28 = v24;
-  [v23 enumerateKeysAndObjectsUsingBlock:v27];
+  [homes enumerateKeysAndObjectsUsingBlock:v27];
 
   v25 = v28;
   v5 = v24;
@@ -153,59 +153,59 @@ void __43__DBSmartWidgetHomeSource_freshPredictions__block_invoke(uint64_t a1, u
   }
 }
 
-- (void)homeManager:(id)a3 willRemoveHomes:(id)a4
+- (void)homeManager:(id)manager willRemoveHomes:(id)homes
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __55__DBSmartWidgetHomeSource_homeManager_willRemoveHomes___block_invoke;
   v4[3] = &unk_278F01CC8;
   v4[4] = self;
-  [a4 enumerateKeysAndObjectsUsingBlock:v4];
+  [homes enumerateKeysAndObjectsUsingBlock:v4];
 }
 
-- (void)homeManager:(id)a3 didUpdateHomes:(id)a4
+- (void)homeManager:(id)manager didUpdateHomes:(id)homes
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __54__DBSmartWidgetHomeSource_homeManager_didUpdateHomes___block_invoke;
   v5[3] = &unk_278F01CC8;
   v5[4] = self;
-  [a4 enumerateKeysAndObjectsUsingBlock:v5];
+  [homes enumerateKeysAndObjectsUsingBlock:v5];
   [(DBSmartWidgetSource *)self refreshPredictions];
 }
 
-- (void)home:(id)a3 didUpdateLastUsedServiceOfType:(id)a4
+- (void)home:(id)home didUpdateLastUsedServiceOfType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  typeCopy = type;
   v8 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(DBSmartWidgetHomeSource *)v6 home:v7 didUpdateLastUsedServiceOfType:v8];
+    [(DBSmartWidgetHomeSource *)homeCopy home:typeCopy didUpdateLastUsedServiceOfType:v8];
   }
 
   [(DBSmartWidgetSource *)self refreshPredictions];
 }
 
-- (void)homeDidChangeInRange:(id)a3
+- (void)homeDidChangeInRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   v5 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(DBSmartWidgetHomeSource *)v4 homeDidChangeInRange:v5, v6, v7, v8, v9, v10, v11];
+    [(DBSmartWidgetHomeSource *)rangeCopy homeDidChangeInRange:v5, v6, v7, v8, v9, v10, v11];
   }
 
   [(DBSmartWidgetSource *)self refreshPredictions];
 }
 
-- (void)homeDidUpdateAccess:(id)a3
+- (void)homeDidUpdateAccess:(id)access
 {
-  v4 = a3;
+  accessCopy = access;
   v5 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(DBSmartWidgetHomeSource *)v4 homeDidUpdateAccess:v5, v6, v7, v8, v9, v10, v11];
+    [(DBSmartWidgetHomeSource *)accessCopy homeDidUpdateAccess:v5, v6, v7, v8, v9, v10, v11];
   }
 
   [(DBSmartWidgetSource *)self refreshPredictions];

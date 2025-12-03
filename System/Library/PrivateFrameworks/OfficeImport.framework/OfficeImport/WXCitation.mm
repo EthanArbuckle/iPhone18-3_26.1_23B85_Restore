@@ -1,89 +1,89 @@
 @interface WXCitation
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 @end
 
 @implementation WXCitation
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v38 = a4;
-  v7 = a5;
-  v8 = [v7 WXOOBibliographyNamespace];
-  v9 = CXChildDefaultStringContent(a3, v8, "SourceType", 0);
+  toCopy = to;
+  stateCopy = state;
+  wXOOBibliographyNamespace = [stateCopy WXOOBibliographyNamespace];
+  v9 = CXChildDefaultStringContent(from, wXOOBibliographyNamespace, "SourceType", 0);
 
   v36 = v9;
   if (v9)
   {
-    [v38 setSourceType:v9];
+    [toCopy setSourceType:v9];
   }
 
-  v10 = [v7 WXOOBibliographyNamespace];
-  v11 = CXChildDefaultStringContent(a3, v10, "Year", 0);
+  wXOOBibliographyNamespace2 = [stateCopy WXOOBibliographyNamespace];
+  v11 = CXChildDefaultStringContent(from, wXOOBibliographyNamespace2, "Year", 0);
 
   v35 = v11;
   if (v11)
   {
-    [v38 setYear:v11];
+    [toCopy setYear:v11];
   }
 
-  v12 = [v7 WXOOBibliographyNamespace];
-  v13 = CXChildDefaultStringContent(a3, v12, "Pages", 0);
+  wXOOBibliographyNamespace3 = [stateCopy WXOOBibliographyNamespace];
+  v13 = CXChildDefaultStringContent(from, wXOOBibliographyNamespace3, "Pages", 0);
 
   v34 = v13;
   if (v13)
   {
-    [v38 setPages:v13];
+    [toCopy setPages:v13];
   }
 
-  v14 = [v7 WXOOBibliographyNamespace];
-  v15 = CXChildDefaultStringContent(a3, v14, "Title", 0);
+  wXOOBibliographyNamespace4 = [stateCopy WXOOBibliographyNamespace];
+  v15 = CXChildDefaultStringContent(from, wXOOBibliographyNamespace4, "Title", 0);
 
   v37 = v15;
   if (v15)
   {
     v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
     [v16 addObject:v15];
-    [v38 setTitles:v16];
+    [toCopy setTitles:v16];
   }
 
-  v17 = [v7 WXOOBibliographyNamespace];
-  v18 = CXChildDefaultStringContent(a3, v17, "Volume", 0);
+  wXOOBibliographyNamespace5 = [stateCopy WXOOBibliographyNamespace];
+  v18 = CXChildDefaultStringContent(from, wXOOBibliographyNamespace5, "Volume", 0);
 
   v33 = v18;
   if (v18)
   {
-    [v38 setVolume:v18];
+    [toCopy setVolume:v18];
   }
 
-  v19 = [v7 WXOOBibliographyNamespace];
-  v20 = OCXFindChild(a3, v19, "Author");
+  wXOOBibliographyNamespace6 = [stateCopy WXOOBibliographyNamespace];
+  v20 = OCXFindChild(from, wXOOBibliographyNamespace6, "Author");
 
-  v21 = [v7 WXOOBibliographyNamespace];
-  Child = OCXFindChild(v20, v21, "Author");
+  wXOOBibliographyNamespace7 = [stateCopy WXOOBibliographyNamespace];
+  Child = OCXFindChild(v20, wXOOBibliographyNamespace7, "Author");
 
-  v39 = [v38 authors];
+  authors = [toCopy authors];
   while (Child)
   {
-    v23 = [v7 WXOOBibliographyNamespace];
-    v24 = OCXFindChild(Child, v23, "NameList");
+    wXOOBibliographyNamespace8 = [stateCopy WXOOBibliographyNamespace];
+    v24 = OCXFindChild(Child, wXOOBibliographyNamespace8, "NameList");
 
-    v25 = [v7 WXOOBibliographyNamespace];
-    v26 = OCXFindChild(v24, v25, "Person");
+    wXOOBibliographyNamespace9 = [stateCopy WXOOBibliographyNamespace];
+    v26 = OCXFindChild(v24, wXOOBibliographyNamespace9, "Person");
 
-    v27 = [v7 WXOOBibliographyNamespace];
-    v28 = CXChildDefaultStringContent(v26, v27, "Last", 0);
+    wXOOBibliographyNamespace10 = [stateCopy WXOOBibliographyNamespace];
+    v28 = CXChildDefaultStringContent(v26, wXOOBibliographyNamespace10, "Last", 0);
 
-    v29 = [v7 WXOOBibliographyNamespace];
-    v30 = CXChildDefaultStringContent(v26, v29, "First", 0);
+    wXOOBibliographyNamespace11 = [stateCopy WXOOBibliographyNamespace];
+    v30 = CXChildDefaultStringContent(v26, wXOOBibliographyNamespace11, "First", 0);
 
     if (v28 | v30)
     {
       v31 = [[WDCitationAuthor alloc] initWithFirst:v30 last:v28];
-      [v39 addObject:v31];
+      [authors addObject:v31];
     }
 
-    v32 = [v7 WXOOBibliographyNamespace];
-    Child = OCXFindNextChild(Child, v32, "Author");
+    wXOOBibliographyNamespace12 = [stateCopy WXOOBibliographyNamespace];
+    Child = OCXFindNextChild(Child, wXOOBibliographyNamespace12, "Author");
   }
 }
 

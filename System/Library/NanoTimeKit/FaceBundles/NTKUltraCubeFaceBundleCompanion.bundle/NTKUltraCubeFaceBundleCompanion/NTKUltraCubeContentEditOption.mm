@@ -1,15 +1,15 @@
 @interface NTKUltraCubeContentEditOption
-+ (id)_localizedNameForActionForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameForActionForValue:(unint64_t)value forDevice:(id)device;
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 @end
 
 @implementation NTKUltraCubeContentEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3)
+  if (value)
   {
     return 0;
   }
@@ -20,9 +20,9 @@
   }
 }
 
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3)
+  if (value)
   {
     v6 = &stru_49630;
   }
@@ -35,9 +35,9 @@
   return v6;
 }
 
-+ (id)_localizedNameForActionForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_localizedNameForActionForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3)
+  if (value)
   {
     v6 = 0;
   }

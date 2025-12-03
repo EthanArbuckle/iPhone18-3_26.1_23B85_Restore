@@ -1,14 +1,14 @@
 @interface DUTopicResultObjC
 - (DUGlobalTopicSetIdentifierObjC)topicSet;
 - (DUTopicResultObjC)init;
-- (void)setTopicSet:(id)a3;
+- (void)setTopicSet:(id)set;
 @end
 
 @implementation DUTopicResultObjC
 
-- (void)setTopicSet:(id)a3
+- (void)setTopicSet:(id)set
 {
-  v9 = objc_msgSend_globalTopicSetIdentifierForObjCGlobalTopicSetIdentifier_(DUObjCCompatibilityUtils, a2, a3, v3, v4);
+  v9 = objc_msgSend_globalTopicSetIdentifierForObjCGlobalTopicSetIdentifier_(DUObjCCompatibilityUtils, a2, set, v3, v4);
   objc_msgSend_setTopicSet_(self->_underlying, v6, v9, v7, v8);
 }
 

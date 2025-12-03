@@ -1,21 +1,21 @@
 @interface HUBannerItem
 - (HUBannerItem)init;
-- (HUBannerItem)initWithHome:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HUBannerItem)initWithHome:(id)home;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUBannerItem
 
-- (HUBannerItem)initWithHome:(id)a3
+- (HUBannerItem)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v9.receiver = self;
   v9.super_class = HUBannerItem;
   v6 = [(HUBannerItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
   }
 
   return v7;
@@ -23,18 +23,18 @@
 
 - (HUBannerItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUBannerItem.m" lineNumber:26 description:{@"%s is unavailable; use %@ instead", "-[HUBannerItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUBannerItem.m" lineNumber:26 description:{@"%s is unavailable; use %@ instead", "-[HUBannerItem init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HUBannerItem *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HUBannerItem *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }

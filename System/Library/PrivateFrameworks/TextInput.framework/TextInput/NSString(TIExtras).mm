@@ -101,18 +101,18 @@
     dispatch_once(&__TIEmojiCharacterSet___onceToken, &__block_literal_global_393);
   }
 
-  return __TIEmojiCharacterSet___emojiCharacterSet && [a1 rangeOfCharacterFromSet:?] != 0x7FFFFFFFFFFFFFFFLL;
+  return __TIEmojiCharacterSet___emojiCharacterSet && [self rangeOfCharacterFromSet:?] != 0x7FFFFFFFFFFFFFFFLL;
 }
 
 - (BOOL)_isNaturallyRTL
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = [(__CFString *)a1 length];
+  v2 = [(__CFString *)self length];
   if (!v2)
   {
     return 0;
@@ -121,11 +121,11 @@
   v3 = v2;
   if (_os_feature_enabled_impl())
   {
-    v4 = [(__CFString *)a1 _trimmedOfLeadingNeutralCharacters];
-    v5 = [v4 length];
+    _trimmedOfLeadingNeutralCharacters = [(__CFString *)self _trimmedOfLeadingNeutralCharacters];
+    v5 = [_trimmedOfLeadingNeutralCharacters length];
     if (v5)
     {
-      v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v4];
+      v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:_trimmedOfLeadingNeutralCharacters];
       v7 = malloc_type_calloc(v5, 1uLL, 0x100004077774924uLL);
       memset(v7, 255, v5);
       v8 = malloc_type_calloc(v5, 1uLL, 0x100004077774924uLL);
@@ -139,7 +139,7 @@
 
   else
   {
-    if (CFStringGetCharactersPtr(a1))
+    if (CFStringGetCharactersPtr(self))
     {
       BaseDirection = ubidi_getBaseDirection();
     }
@@ -156,7 +156,7 @@
         v10 = malloc_type_malloc(2 * v3, 0x1000040BDFB0063uLL);
       }
 
-      [(__CFString *)a1 getCharacters:v10];
+      [(__CFString *)self getCharacters:v10];
       BaseDirection = ubidi_getBaseDirection();
       if (v3 >= 0x81)
       {
@@ -172,7 +172,7 @@
 
 - (uint64_t)_isIdeographicGlyphs
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (!v2)
   {
     return 1;
@@ -184,11 +184,11 @@
   v6 = v2 - 1;
   while (1)
   {
-    v7 = [a1 characterAtIndex:v4];
+    v7 = [self characterAtIndex:v4];
     v8 = v7;
     if (v6 > v4 && (v7 & 0xFC00) == 0xD800)
     {
-      v8 = [a1 characterAtIndex:++v5] + (v7 << 10) - 56613888;
+      v8 = [self characterAtIndex:++v5] + (v7 << 10) - 56613888;
     }
 
     if (!u_hasBinaryProperty(v8, UCHAR_IDEOGRAPHIC) && u_getIntPropertyValue(v8, UCHAR_EAST_ASIAN_WIDTH) != 3 && !uscript_hasScript())
@@ -212,7 +212,7 @@
 
 - (BOOL)_containsEmojiOnly
 {
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
@@ -221,23 +221,23 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [a1 length];
+  v2 = [self length];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__NSString_TIExtras___containsEmojiOnly__block_invoke;
   v6[3] = &unk_1E6F4B9A0;
   v6[4] = &v7;
-  [a1 _enumerateEmojiTokensInRange:0 block:{v2, v6}];
+  [self _enumerateEmojiTokensInRange:0 block:{v2, v6}];
   v3 = v8[3];
-  v4 = v3 == [a1 length];
+  v4 = v3 == [self length];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
 - (uint64_t)_isLowercaseStringWithLocale:()TIExtras
 {
-  v2 = [a1 lowercaseStringWithLocale:?];
-  v3 = [a1 isEqualToString:v2];
+  v2 = [self lowercaseStringWithLocale:?];
+  v3 = [self isEqualToString:v2];
 
   return v3;
 }
@@ -245,9 +245,9 @@
 - (BOOL)_beginsWithPrimaryScriptForLanguage:()TIExtras
 {
   v4 = a3;
-  if ([a1 length])
+  if ([self length])
   {
-    [a1 _firstChar];
+    [self _firstChar];
     Script = uscript_getScript();
     [v4 cStringUsingEncoding:4];
     Code = uscript_getCode();
@@ -269,24 +269,24 @@
 - (uint64_t)_indexByTrimmingWordsAfterIndex:()TIExtras
 {
   v3 = a3;
-  if ([a1 length] > a3)
+  if ([self length] > a3)
   {
     v9 = 0;
     v10 = &v9;
     v11 = 0x2020000000;
-    v12 = [a1 length];
-    v5 = [a1 length];
+    v12 = [self length];
+    v5 = [self length];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __54__NSString_TIExtras___indexByTrimmingWordsAfterIndex___block_invoke;
     v8[3] = &unk_1E6F4BA18;
     v8[4] = &v9;
     v8[5] = v3;
-    [a1 enumerateSubstringsInRange:0 options:v5 usingBlock:{3, v8}];
+    [self enumerateSubstringsInRange:0 options:v5 usingBlock:{3, v8}];
     v6 = v10[3];
-    if (v6 >= [a1 length])
+    if (v6 >= [self length])
     {
-      v3 = [a1 rangeOfComposedCharacterSequenceAtIndex:v3];
+      v3 = [self rangeOfComposedCharacterSequenceAtIndex:v3];
     }
 
     else
@@ -311,18 +311,18 @@
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [a1 length];
+  v5 = [self length];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__NSString_TIExtras___indexByTrimmingWordsBeforeIndex___block_invoke;
   v10[3] = &unk_1E6F4BA18;
   v10[4] = &v11;
   v10[5] = a3;
-  [a1 enumerateSubstringsInRange:0 options:v5 usingBlock:{259, v10}];
+  [self enumerateSubstringsInRange:0 options:v5 usingBlock:{259, v10}];
   v6 = v12[3];
   if (!v6)
   {
-    v7 = [a1 rangeOfComposedCharacterSequenceAtIndex:a3 - 1];
+    v7 = [self rangeOfComposedCharacterSequenceAtIndex:a3 - 1];
     v6 = v7 + v8;
   }
 
@@ -334,7 +334,7 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 normalizeSmartQuotedStringForLocale:v6];
+  v8 = [self normalizeSmartQuotedStringForLocale:v6];
   v9 = [v7 normalizeSmartQuotedStringForLocale:v6];
 
   v10 = [v8 isEqualToString:v9];
@@ -343,14 +343,14 @@
 
 - (id)normalizeSmartQuotedStringOnlySingleQuote
 {
-  v2 = [a1 mutableCopy];
+  v2 = [self mutableCopy];
   if ([&unk_1EF7CB1D0 count])
   {
     v3 = 0;
     do
     {
       v4 = [&unk_1EF7CB1D0 objectAtIndex:v3];
-      [v2 replaceOccurrencesOfString:v4 withString:@"'" options:2 range:{0, objc_msgSend(a1, "length")}];
+      [v2 replaceOccurrencesOfString:v4 withString:@"'" options:2 range:{0, objc_msgSend(self, "length")}];
 
       ++v3;
     }
@@ -365,20 +365,20 @@
 {
   v19[5] = *MEMORY[0x1E69E9840];
   v2 = [TISmartPunctuationOptions smartPunctuationOptionsForLocale:?];
-  v3 = [v2 leftSingleQuote];
-  v18[0] = v3;
+  leftSingleQuote = [v2 leftSingleQuote];
+  v18[0] = leftSingleQuote;
   v19[0] = @"'";
-  v4 = [v2 rightSingleQuote];
-  v18[1] = v4;
+  rightSingleQuote = [v2 rightSingleQuote];
+  v18[1] = rightSingleQuote;
   v19[1] = @"'";
-  v5 = [v2 apostrophe];
-  v18[2] = v5;
+  apostrophe = [v2 apostrophe];
+  v18[2] = apostrophe;
   v19[2] = @"'";
-  v6 = [v2 leftDoubleQuote];
-  v18[3] = v6;
+  leftDoubleQuote = [v2 leftDoubleQuote];
+  v18[3] = leftDoubleQuote;
   v19[3] = @"";
-  v7 = [v2 rightDoubleQuote];
-  v18[4] = v7;
+  rightDoubleQuote = [v2 rightDoubleQuote];
+  v18[4] = rightDoubleQuote;
   v19[4] = @"";
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:5];
 
@@ -387,7 +387,7 @@
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
-  v17 = a1;
+  selfCopy = self;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58__NSString_TIExtras__normalizeSmartQuotedStringForLocale___block_invoke;
@@ -402,7 +402,7 @@
 
 - (uint64_t)_indexFromStartingIndex:()TIExtras byIncrementingComposedCharacterSequenceCount:
 {
-  if ([a1 length] && objc_msgSend(a1, "length") > a3)
+  if ([self length] && objc_msgSend(self, "length") > a3)
   {
     if (a4)
     {
@@ -413,8 +413,8 @@
       v10 = 0;
       v11 = &v10;
       v12 = 0x2020000000;
-      v13 = [a1 length];
-      v7 = [a1 length];
+      v13 = [self length];
+      v7 = [self length];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __91__NSString_TIExtras___indexFromStartingIndex_byIncrementingComposedCharacterSequenceCount___block_invoke;
@@ -422,7 +422,7 @@
       v9[5] = &v10;
       v9[6] = a4;
       v9[4] = v14;
-      [a1 enumerateSubstringsInRange:a3 options:v7 - a3 usingBlock:{514, v9}];
+      [self enumerateSubstringsInRange:a3 options:v7 - a3 usingBlock:{514, v9}];
       a3 = v11[3];
       _Block_object_dispose(&v10, 8);
       _Block_object_dispose(v14, 8);
@@ -434,19 +434,19 @@
   else
   {
 
-    return [a1 length];
+    return [self length];
   }
 }
 
 - (id)_stringByComposingDiacriticsLogicalOrder:()TIExtras allowedCharacters:
 {
   v6 = a4;
-  v7 = [MEMORY[0x1E696AD60] stringWithCapacity:{objc_msgSend(a1, "length")}];
+  v7 = [MEMORY[0x1E696AD60] stringWithCapacity:{objc_msgSend(self, "length")}];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
   v20 = 0;
-  v8 = [a1 length];
+  v8 = [self length];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __81__NSString_TIExtras___stringByComposingDiacriticsLogicalOrder_allowedCharacters___block_invoke;
@@ -457,7 +457,7 @@
   v9 = v7;
   v15 = v9;
   v10 = v6;
-  [a1 _enumerateLongCharactersInRange:0 usingBlock:{v8, v14}];
+  [self _enumerateLongCharactersInRange:0 usingBlock:{v8, v14}];
   v11 = v15;
   v12 = v9;
 
@@ -469,7 +469,7 @@
 - (uint64_t)_editDistanceFrom:()TIExtras
 {
   v4 = a3;
-  v5 = [a1 length];
+  v5 = [self length];
   v6 = v5;
   v7 = 65534;
   if (v5 >= 0xFFFE)
@@ -494,7 +494,7 @@
     {
       v10 = malloc_type_malloc(2 * v8, 0x1000040BDFB0063uLL);
       v11 = malloc_type_malloc(2 * v7, 0x1000040BDFB0063uLL);
-      [a1 getCharacters:v10 range:{0, v8}];
+      [self getCharacters:v10 range:{0, v8}];
       [v4 getCharacters:v11 range:{0, v7}];
       v12 = malloc_type_malloc((2 * v8 + 2) & 0xFFFE, 0x723CDF9uLL);
       v13 = malloc_type_malloc((2 * v8 + 2) & 0xFFFE, 0x6B8C47AEuLL);
@@ -645,8 +645,8 @@
     v3 = @"Han-Latin; Latin-Bopomofo";
   }
 
-  v4 = [a1 _stringByApplyingTransform:v3];
-  v5 = [MEMORY[0x1E695DF70] array];
+  v4 = [self _stringByApplyingTransform:v3];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -679,7 +679,7 @@
             v11 = v14;
           }
 
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -689,21 +689,21 @@
     while (v8);
   }
 
-  v15 = [v5 componentsJoinedByString:&stru_1EF56D550];
+  v15 = [array componentsJoinedByString:&stru_1EF56D550];
 
   return v15;
 }
 
 - (id)_stringByTransliteratingToPinyin:()TIExtras
 {
-  v5 = [a1 _isOnlyIdeographs];
+  _isOnlyIdeographs = [self _isOnlyIdeographs];
   v6 = @"Han-Latin; [:Space_Separator:] Remove; Any-Title; NFD";
   if (a3)
   {
     v6 = @"Han-Latin/Names; [:Space_Separator:] Remove; Any-Title; NFD";
   }
 
-  if (v5)
+  if (_isOnlyIdeographs)
   {
     v7 = v6;
   }
@@ -713,39 +713,39 @@
     v7 = @"Any-Latin; [:Space_Separator:] Remove; Any-Title; NFD";
   }
 
-  v8 = [a1 _stringByApplyingTransform:v7];
+  v8 = [self _stringByApplyingTransform:v7];
 
   return v8;
 }
 
 - (id)_stringByApplyingTransform:()TIExtras
 {
-  v4 = a1;
+  selfCopy = self;
   if (a3)
   {
     v5 = MEMORY[0x1E696AD60];
     v6 = a3;
-    v7 = [v5 stringWithString:v4];
+    v7 = [v5 stringWithString:selfCopy];
     LODWORD(v5) = CFStringTransform(v7, 0, v6, 0);
 
     if (v5)
     {
       v8 = [MEMORY[0x1E696AEC0] stringWithString:v7];
 
-      v4 = v8;
+      selfCopy = v8;
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)_stringByTranscribingUsingTokenizer:()TIExtras
 {
   if (a3)
   {
-    v10.length = [(__CFString *)a1 length];
+    v10.length = [(__CFString *)self length];
     v10.location = 0;
-    CFStringTokenizerSetString(a3, a1, v10);
+    CFStringTokenizerSetString(a3, self, v10);
     v5 = 0;
     while (CFStringTokenizerAdvanceToNextToken(a3))
     {
@@ -786,7 +786,7 @@
     v11.location = 0;
     v11.length = 0;
     v7 = CFStringTokenizerCreate(*MEMORY[0x1E695E480], 0, v11, 4uLL, v6);
-    v8 = [a1 _stringByTranscribingUsingTokenizer:v7];
+    v8 = [self _stringByTranscribingUsingTokenizer:v7];
     CFRelease(v7);
   }
 
@@ -800,44 +800,44 @@
 
 - (__CFString)_stringByConvertingFromFullWidthToHalfWidth
 {
-  v1 = a1;
-  v2 = [MEMORY[0x1E696AD60] stringWithString:a1];
+  selfCopy = self;
+  v2 = [MEMORY[0x1E696AD60] stringWithString:self];
   if (CFStringTransform(v2, 0, *MEMORY[0x1E695E980], 0))
   {
-    v1 = v2;
+    selfCopy = v2;
   }
 
-  v3 = v1;
+  v3 = selfCopy;
 
-  return v1;
+  return selfCopy;
 }
 
 - (__CFString)_stringByConvertingFromHalfWidthToFullWidth
 {
-  v1 = a1;
-  v2 = [MEMORY[0x1E696AD60] stringWithString:a1];
+  selfCopy = self;
+  v2 = [MEMORY[0x1E696AD60] stringWithString:self];
   if (CFStringTransform(v2, 0, *MEMORY[0x1E695E980], 1u))
   {
-    v1 = v2;
+    selfCopy = v2;
   }
 
-  v3 = v1;
+  v3 = selfCopy;
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)_containsFullwidthLettersAndSymbolsOnly
 {
-  v2 = [objc_opt_class() _fullwidthLettersAndSymbolsSet];
+  _fullwidthLettersAndSymbolsSet = [objc_opt_class() _fullwidthLettersAndSymbolsSet];
 
-  return [a1 _contentsExclusivelyInCharacterSet:v2];
+  return [self _contentsExclusivelyInCharacterSet:_fullwidthLettersAndSymbolsSet];
 }
 
 - (uint64_t)_containsFullwidthLettersAndNumbersOnly
 {
-  v2 = [objc_opt_class() _fullwidthLettersAndNumbersSet];
+  _fullwidthLettersAndNumbersSet = [objc_opt_class() _fullwidthLettersAndNumbersSet];
 
-  return [a1 _contentsExclusivelyInCharacterSet:v2];
+  return [self _contentsExclusivelyInCharacterSet:_fullwidthLettersAndNumbersSet];
 }
 
 - (uint64_t)_containsSymbolsAndPunctuationOnly
@@ -846,13 +846,13 @@
   block[1] = 3221225472;
   block[2] = __56__NSString_TIExtras___containsSymbolsAndPunctuationOnly__block_invoke;
   block[3] = &unk_1E6F4D860;
-  block[4] = a1;
+  block[4] = self;
   if (_containsSymbolsAndPunctuationOnly___onceToken != -1)
   {
     dispatch_once(&_containsSymbolsAndPunctuationOnly___onceToken, block);
   }
 
-  return [a1 _contentsExclusivelyInCharacterSet:_containsSymbolsAndPunctuationOnly___SymbolsSet];
+  return [self _contentsExclusivelyInCharacterSet:_containsSymbolsAndPunctuationOnly___SymbolsSet];
 }
 
 - (uint64_t)_containsCJKSymbolsAndPunctuation
@@ -861,13 +861,13 @@
   block[1] = 3221225472;
   block[2] = __55__NSString_TIExtras___containsCJKSymbolsAndPunctuation__block_invoke;
   block[3] = &unk_1E6F4D860;
-  block[4] = a1;
+  block[4] = self;
   if (_containsCJKSymbolsAndPunctuation___onceToken != -1)
   {
     dispatch_once(&_containsCJKSymbolsAndPunctuation___onceToken, block);
   }
 
-  return [a1 _contentsExclusivelyInCharacterSet:_containsCJKSymbolsAndPunctuation___nonCJKSymbolsSet] ^ 1;
+  return [self _contentsExclusivelyInCharacterSet:_containsCJKSymbolsAndPunctuation___nonCJKSymbolsSet] ^ 1;
 }
 
 - (uint64_t)_containsCJKScriptsOnly
@@ -876,13 +876,13 @@
   block[1] = 3221225472;
   block[2] = __45__NSString_TIExtras___containsCJKScriptsOnly__block_invoke;
   block[3] = &unk_1E6F4D860;
-  block[4] = a1;
+  block[4] = self;
   if (_containsCJKScriptsOnly___onceToken != -1)
   {
     dispatch_once(&_containsCJKScriptsOnly___onceToken, block);
   }
 
-  return [a1 _contentsExclusivelyInCharacterSet:_containsCJKScriptsOnly___CJKSet];
+  return [self _contentsExclusivelyInCharacterSet:_containsCJKScriptsOnly___CJKSet];
 }
 
 - (uint64_t)_containsCJScriptsOnly
@@ -891,13 +891,13 @@
   block[1] = 3221225472;
   block[2] = __44__NSString_TIExtras___containsCJScriptsOnly__block_invoke;
   block[3] = &unk_1E6F4D860;
-  block[4] = a1;
+  block[4] = self;
   if (_containsCJScriptsOnly___onceToken != -1)
   {
     dispatch_once(&_containsCJScriptsOnly___onceToken, block);
   }
 
-  return [a1 _contentsExclusivelyInCharacterSet:_containsCJScriptsOnly___CJSet];
+  return [self _contentsExclusivelyInCharacterSet:_containsCJScriptsOnly___CJSet];
 }
 
 - (uint64_t)_containsIdeographsOrBopomofoOnly
@@ -906,40 +906,40 @@
   block[1] = 3221225472;
   block[2] = __55__NSString_TIExtras___containsIdeographsOrBopomofoOnly__block_invoke;
   block[3] = &unk_1E6F4D860;
-  block[4] = a1;
+  block[4] = self;
   if (_containsIdeographsOrBopomofoOnly___onceToken != -1)
   {
     dispatch_once(&_containsIdeographsOrBopomofoOnly___onceToken, block);
   }
 
-  return [a1 _contentsExclusivelyInCharacterSet:_containsIdeographsOrBopomofoOnly___KanijChineseBopomofoSet];
+  return [self _contentsExclusivelyInCharacterSet:_containsIdeographsOrBopomofoOnly___KanijChineseBopomofoSet];
 }
 
 - (uint64_t)_containsBopomofoWithoutToneOnly
 {
-  v2 = [objc_opt_class() _bopomofoWithoutToneSet];
+  _bopomofoWithoutToneSet = [objc_opt_class() _bopomofoWithoutToneSet];
 
-  return [a1 _contentsExclusivelyInCharacterSet:v2];
+  return [self _contentsExclusivelyInCharacterSet:_bopomofoWithoutToneSet];
 }
 
 - (uint64_t)_containsBopomofoToneOnly
 {
-  v2 = [objc_opt_class() _bopomofoToneSet];
+  _bopomofoToneSet = [objc_opt_class() _bopomofoToneSet];
 
-  return [a1 _contentsExclusivelyInCharacterSet:v2];
+  return [self _contentsExclusivelyInCharacterSet:_bopomofoToneSet];
 }
 
 - (uint64_t)_containsBopomofoOnly
 {
-  v2 = [objc_opt_class() _bopomofoSet];
+  _bopomofoSet = [objc_opt_class() _bopomofoSet];
 
-  return [a1 _contentsExclusivelyInCharacterSet:v2];
+  return [self _contentsExclusivelyInCharacterSet:_bopomofoSet];
 }
 
 - (id)_ti_keyEquivalentMirroring
 {
   v2 = __TIKeyEquivalentMirroringCandidatesMap();
-  v3 = [v2 objectForKeyedSubscript:a1];
+  v3 = [v2 objectForKeyedSubscript:self];
 
   return v3;
 }
@@ -947,7 +947,7 @@
 - (BOOL)_ti_isKeyEquivalentMirroringCandidate
 {
   v2 = __TIKeyEquivalentMirroringCandidatesMap();
-  v3 = [v2 objectForKeyedSubscript:a1];
+  v3 = [v2 objectForKeyedSubscript:self];
   v4 = v3 != 0;
 
   return v4;
@@ -955,16 +955,16 @@
 
 - (uint64_t)_containsHiraganaOnly
 {
-  v2 = [objc_opt_class() _hiraganaSet];
+  _hiraganaSet = [objc_opt_class() _hiraganaSet];
 
-  return [a1 _contentsExclusivelyInCharacterSet:v2];
+  return [self _contentsExclusivelyInCharacterSet:_hiraganaSet];
 }
 
 - (uint64_t)_containsJapaneseOnly
 {
-  v2 = [objc_opt_class() _japaneseLetterSet];
+  _japaneseLetterSet = [objc_opt_class() _japaneseLetterSet];
 
-  return [a1 _contentsExclusivelyInCharacterSet:v2];
+  return [self _contentsExclusivelyInCharacterSet:_japaneseLetterSet];
 }
 
 - (uint64_t)_graphemeCount
@@ -973,13 +973,13 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [a1 length];
+  v2 = [self length];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __36__NSString_TIExtras___graphemeCount__block_invoke;
   v5[3] = &unk_1E6F4BBD8;
   v5[4] = &v6;
-  [a1 enumerateSubstringsInRange:0 options:v2 usingBlock:{514, v5}];
+  [self enumerateSubstringsInRange:0 options:v2 usingBlock:{514, v5}];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -997,7 +997,7 @@
   v12 = __Block_byref_object_copy_;
   v13 = __Block_byref_object_dispose_;
   v14 = 0;
-  v5 = [a1 length];
+  v5 = [self length];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __39__NSString_TIExtras___graphemeAtIndex___block_invoke;
@@ -1005,7 +1005,7 @@
   v8[5] = &v9;
   v8[6] = a3;
   v8[4] = v15;
-  [a1 enumerateSubstringsInRange:0 options:v5 usingBlock:{2, v8}];
+  [self enumerateSubstringsInRange:0 options:v5 usingBlock:{2, v8}];
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
 
@@ -1016,26 +1016,26 @@
 
 - (id)_lastGrapheme
 {
-  if ([a1 length] > 1)
+  if ([self length] > 1)
   {
-    v3 = [a1 rangeOfComposedCharacterSequenceAtIndex:{objc_msgSend(a1, "length") - 1}];
-    v2 = [a1 substringWithRange:{v3, v4}];
+    v3 = [self rangeOfComposedCharacterSequenceAtIndex:{objc_msgSend(self, "length") - 1}];
+    selfCopy = [self substringWithRange:{v3, v4}];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)_firstGrapheme
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2 == 1)
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
   else
@@ -1061,24 +1061,24 @@
     v6[2] = __36__NSString_TIExtras___firstGrapheme__block_invoke;
     v6[3] = &unk_1E6F4BBD8;
     v6[4] = &v7;
-    [a1 enumerateSubstringsInRange:0 options:v4 usingBlock:{2, v6}];
-    v3 = v8[5];
+    [self enumerateSubstringsInRange:0 options:v4 usingBlock:{2, v6}];
+    selfCopy = v8[5];
     _Block_object_dispose(&v7, 8);
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (uint64_t)_isOnlyIdeographs
 {
-  v2 = [objc_opt_class() _ideographSet];
+  _ideographSet = [objc_opt_class() _ideographSet];
 
-  return [a1 _contentsExclusivelyInCharacterSet:v2];
+  return [self _contentsExclusivelyInCharacterSet:_ideographSet];
 }
 
 - (BOOL)_containsCJScripts
 {
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
@@ -1086,7 +1086,7 @@
   v2 = 0;
   do
   {
-    [a1 characterAtIndex:v2];
+    [self characterAtIndex:v2];
     IsCJScript = TICharIsCJScript();
     if (IsCJScript)
     {
@@ -1096,15 +1096,15 @@
     ++v2;
   }
 
-  while ([a1 length] > v2);
+  while ([self length] > v2);
   return IsCJScript;
 }
 
 - (__CFString)_trimmedOfLeadingNeutralCharacters
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(__CFString *)a1 length];
-  CharactersPtr = CFStringGetCharactersPtr(a1);
+  v2 = [(__CFString *)self length];
+  CharactersPtr = CFStringGetCharactersPtr(self);
   if (CharactersPtr)
   {
     v4 = CharactersPtr;
@@ -1124,7 +1124,7 @@
       v4 = malloc_type_malloc(2 * v2, 0x1000040BDFB0063uLL);
     }
 
-    [(__CFString *)a1 getCharacters:v4];
+    [(__CFString *)self getCharacters:v4];
   }
 
   v6 = v2 + 1;
@@ -1155,14 +1155,14 @@
   while (BaseDirection == 3);
   if (v6 != v2)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithCharacters:v8 length:v6];
+    selfCopy = [MEMORY[0x1E696AEC0] stringWithCharacters:v8 length:v6];
     goto LABEL_16;
   }
 
 LABEL_15:
-  v10 = a1;
+  selfCopy = self;
 LABEL_16:
-  v11 = v10;
+  v11 = selfCopy;
   if (!v5)
   {
     goto LABEL_18;
@@ -1177,15 +1177,15 @@ LABEL_18:
 
 - (BOOL)_looksLikeURL
 {
-  v2 = [a1 lowercaseString];
-  v3 = [v2 hasPrefix:@"www"];
+  lowercaseString = [self lowercaseString];
+  v3 = [lowercaseString hasPrefix:@"www"];
 
   if (v3)
   {
     return 1;
   }
 
-  v5 = [a1 rangeOfString:@"://" options:2];
+  v5 = [self rangeOfString:@"://" options:2];
   return v5 != 0x7FFFFFFFFFFFFFFFLL && v5 != 0;
 }
 
@@ -1196,15 +1196,15 @@ LABEL_18:
     dispatch_once(&_looksLikeNumberInput_onceToken, &__block_literal_global_75);
   }
 
-  return [a1 rangeOfCharacterFromSet:_looksLikeNumberInput___nonNumberInputSet] == 0x7FFFFFFFFFFFFFFFLL;
+  return [self rangeOfCharacterFromSet:_looksLikeNumberInput___nonNumberInputSet] == 0x7FFFFFFFFFFFFFFFLL;
 }
 
 - (uint64_t)_isBasicLatin
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
-    return ublock_getCode([a1 _firstLongCharacter]) == UBLOCK_BASIC_LATIN;
+    return ublock_getCode([self _firstLongCharacter]) == UBLOCK_BASIC_LATIN;
   }
 
   return result;
@@ -1212,68 +1212,68 @@ LABEL_18:
 
 - (BOOL)_isNewlineOrReturn
 {
-  if ([a1 length] != 1)
+  if ([self length] != 1)
   {
     return 0;
   }
 
-  v2 = [a1 characterAtIndex:0];
+  v2 = [self characterAtIndex:0];
   return v2 == 13 || v2 == 10;
 }
 
 - (BOOL)_isDelete
 {
-  if ([a1 length] != 1)
+  if ([self length] != 1)
   {
     return 0;
   }
 
-  v2 = [a1 characterAtIndex:0];
+  v2 = [self characterAtIndex:0];
   return v2 == 127 || v2 == 8;
 }
 
 - (BOOL)_isSpace
 {
-  if ([a1 length] != 1)
+  if ([self length] != 1)
   {
     return 0;
   }
 
-  v2 = [a1 characterAtIndex:0];
+  v2 = [self characterAtIndex:0];
   Predefined = CFCharacterSetGetPredefined(kCFCharacterSetWhitespace);
   return CFCharacterSetIsLongCharacterMember(Predefined, v2) != 0;
 }
 
 - (BOOL)_isSpaceOrReturn
 {
-  if ([a1 length] != 1)
+  if ([self length] != 1)
   {
     return 0;
   }
 
-  v2 = [a1 characterAtIndex:0];
+  v2 = [self characterAtIndex:0];
   Predefined = CFCharacterSetGetPredefined(kCFCharacterSetWhitespaceAndNewline);
   return CFCharacterSetIsLongCharacterMember(Predefined, v2) != 0;
 }
 
 - (uint64_t)_isTripledPunctuation
 {
-  if ([a1 hasPrefix:@"!!!"] & 1) != 0 || (objc_msgSend(a1, "hasPrefix:", @"..."))
+  if ([self hasPrefix:@"!!!"] & 1) != 0 || (objc_msgSend(self, "hasPrefix:", @"..."))
   {
     return 1;
   }
 
-  return [a1 hasPrefix:@"???"];
+  return [self hasPrefix:@"???"];
 }
 
 - (uint64_t)_isLeftAssociative
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2 < 3)
   {
     if (v2 == 1)
     {
-      v4 = [a1 characterAtIndex:0];
+      v4 = [self characterAtIndex:0];
       v5 = 0x8000400200000000 >> v4;
       if (v4 > 0x3F)
       {
@@ -1292,16 +1292,16 @@ LABEL_18:
   else
   {
 
-    return [a1 _isTripledPunctuation];
+    return [self _isTripledPunctuation];
   }
 }
 
 - (uint64_t)_isModifierSymbol
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
-    return u_charType([a1 _firstLongCharacter]) == 26;
+    return u_charType([self _firstLongCharacter]) == 26;
   }
 
   return result;
@@ -1309,12 +1309,12 @@ LABEL_18:
 
 - (uint64_t)_endsSentence
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2 < 3)
   {
     if (v2 == 1)
     {
-      v4 = [a1 characterAtIndex:0];
+      v4 = [self characterAtIndex:0];
       v5 = 0x8800400200000400 >> v4;
       if (v4 > 0x3F)
       {
@@ -1333,7 +1333,7 @@ LABEL_18:
   else
   {
 
-    return [a1 _isTripledPunctuation];
+    return [self _isTripledPunctuation];
   }
 }
 
@@ -1362,7 +1362,7 @@ LABEL_18:
   }
 
   v11 = 0;
-  [a1 getBytes:v9 maxLength:v7 usedLength:&v11 encoding:4 options:0 range:a3 remainingRange:{a4, 0}];
+  [self getBytes:v9 maxLength:v7 usedLength:&v11 encoding:4 options:0 range:a3 remainingRange:{a4, 0}];
   free(v8);
   return v11;
 }
@@ -1372,7 +1372,7 @@ LABEL_18:
   v6 = a3;
   if ([v6 length])
   {
-    a4 = [a1 rangeOfString:v6 options:2 range:{a4, objc_msgSend(a1, "length") - a4}];
+    a4 = [self rangeOfString:v6 options:2 range:{a4, objc_msgSend(self, "length") - a4}];
   }
 
   return a4;
@@ -1388,7 +1388,7 @@ LABEL_18:
   v5 = a4;
   if (a4 > 0)
   {
-    v7 = [a1 length];
+    v7 = [self length];
     v8 = 0;
     do
     {
@@ -1397,7 +1397,7 @@ LABEL_18:
         break;
       }
 
-      [a1 rangeOfComposedCharacterSequenceAtIndex:?];
+      [self rangeOfComposedCharacterSequenceAtIndex:?];
       v8 += v9;
       --v5;
     }
@@ -1416,7 +1416,7 @@ LABEL_18:
   v10 = a3;
   do
   {
-    [a1 rangeOfComposedCharacterSequenceAtIndex:~v12 + a3];
+    [self rangeOfComposedCharacterSequenceAtIndex:~v12 + a3];
     v10 -= v14;
     v12 += v14;
     if (v13 <= v5)
@@ -1433,33 +1433,33 @@ LABEL_18:
 
 - (__CFString)_stringWithLongestWhitespaceDelimitedSuffixOfMaxLength:()TIExtras
 {
-  if ([a1 length] <= a3)
+  if ([self length] <= a3)
   {
-    v12 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [a1 rangeOfComposedCharacterSequenceAtIndex:{objc_msgSend(a1, "length") + ~a3}];
-    if (v5 == 0x7FFFFFFFFFFFFFFFLL || (v6 = v5, v7 = [a1 length] - v5, objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(a1, "rangeOfCharacterFromSet:options:range:", v8, 0, v6, v7), v11 = v10, v8, v9 == 0x7FFFFFFFFFFFFFFFLL))
+    v5 = [self rangeOfComposedCharacterSequenceAtIndex:{objc_msgSend(self, "length") + ~a3}];
+    if (v5 == 0x7FFFFFFFFFFFFFFFLL || (v6 = v5, v7 = [self length] - v5, objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(self, "rangeOfCharacterFromSet:options:range:", v8, 0, v6, v7), v11 = v10, v8, v9 == 0x7FFFFFFFFFFFFFFFLL))
     {
-      v12 = &stru_1EF56D550;
+      selfCopy = &stru_1EF56D550;
     }
 
     else
     {
-      v12 = [a1 substringWithRange:{v9 + v11, objc_msgSend(a1, "length") - (v9 + v11)}];
+      selfCopy = [self substringWithRange:{v9 + v11, objc_msgSend(self, "length") - (v9 + v11)}];
     }
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (id)_stringByReplacingCharacter:()TIExtras withCharacter:
 {
   v6 = [MEMORY[0x1E696AEC0] _stringWithUnichar:?];
   v7 = [MEMORY[0x1E696AEC0] _stringWithUnichar:a4];
-  v8 = [a1 stringByReplacingOccurrencesOfString:v6 withString:v7 options:2 range:{0, objc_msgSend(a1, "length")}];
+  v8 = [self stringByReplacingOccurrencesOfString:v6 withString:v7 options:2 range:{0, objc_msgSend(self, "length")}];
 
   return v8;
 }
@@ -1467,7 +1467,7 @@ LABEL_18:
 - (id)_stringByReplacingCharactersInSet:()TIExtras withCharacter:
 {
   v6 = [MEMORY[0x1E696AEC0] _stringWithUnichar:a4];
-  v7 = [a1 _stringByReplacingCharactersInSet:a3 withString:v6];
+  v7 = [self _stringByReplacingCharactersInSet:a3 withString:v6];
 
   return v7;
 }
@@ -1478,8 +1478,8 @@ LABEL_18:
   if (a3)
   {
     v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    v8 = [a1 length];
-    v9 = [a1 rangeOfCharacterFromSet:a3 options:0 range:{0, v8}];
+    v8 = [self length];
+    v9 = [self rangeOfCharacterFromSet:a3 options:0 range:{0, v8}];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v11 = 0;
@@ -1492,51 +1492,51 @@ LABEL_18:
       v11 = 0;
       do
       {
-        v15 = [a1 substringWithRange:{v11, v13 - v11}];
+        v15 = [self substringWithRange:{v11, v13 - v11}];
         [v7 appendString:v15];
 
         [v7 appendString:v6];
         v11 = v13 + v14;
-        v8 = [a1 length] - (v13 + v14);
-        v13 = [a1 rangeOfCharacterFromSet:a3 options:0 range:{v13 + v14, v8}];
+        v8 = [self length] - (v13 + v14);
+        v13 = [self rangeOfCharacterFromSet:a3 options:0 range:{v13 + v14, v8}];
         v14 = v16;
       }
 
       while (v13 != 0x7FFFFFFFFFFFFFFFLL);
     }
 
-    v17 = [a1 substringWithRange:{v11, v8}];
+    v17 = [self substringWithRange:{v11, v8}];
     [v7 appendString:v17];
 
-    v12 = [MEMORY[0x1E696AEC0] stringWithString:v7];
+    selfCopy = [MEMORY[0x1E696AEC0] stringWithString:v7];
   }
 
   else
   {
-    v12 = a1;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (id)_stringByTrimmingLastCharacter
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = v2 - 2;
   if (v2 >= 2)
   {
     v4 = v2 - 1;
-    if (([a1 characterAtIndex:v2 - 1] & 0xFC00) == 0xDC00 && (objc_msgSend(a1, "characterAtIndex:", v3) & 0xFC00) == 0xD800)
+    if (([self characterAtIndex:v2 - 1] & 0xFC00) == 0xDC00 && (objc_msgSend(self, "characterAtIndex:", v3) & 0xFC00) == 0xD800)
     {
-      v5 = a1;
+      selfCopy2 = self;
       v6 = v3;
 LABEL_8:
-      v7 = [v5 substringToIndex:v6];
+      selfCopy3 = [selfCopy2 substringToIndex:v6];
       goto LABEL_9;
     }
 
 LABEL_7:
-    v5 = a1;
+    selfCopy2 = self;
     v6 = v4;
     goto LABEL_8;
   }
@@ -1547,25 +1547,25 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v7 = a1;
+  selfCopy3 = self;
 LABEL_9:
 
-  return v7;
+  return selfCopy3;
 }
 
 - (id)_stringByTrimmingCharactersInCFCharacterSet:()TIExtras
 {
   if (a3)
   {
-    v3 = [a1 stringByTrimmingCharactersInSet:?];
+    selfCopy = [self stringByTrimmingCharactersInSet:?];
   }
 
   else
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (uint64_t)_contentsExclusivelyInScript:()TIExtras
@@ -1574,14 +1574,14 @@ LABEL_9:
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 1;
-  v5 = [a1 length];
+  v5 = [self length];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__NSString_TIExtras___contentsExclusivelyInScript___block_invoke;
   v8[3] = &unk_1E6F4B950;
   v9 = a3;
   v8[4] = &v10;
-  [a1 _enumerateLongCharactersInRange:0 usingBlock:{v5, v8}];
+  [self _enumerateLongCharactersInRange:0 usingBlock:{v5, v8}];
   v6 = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
   return v6;
@@ -1590,8 +1590,8 @@ LABEL_9:
 - (BOOL)_contentsExclusivelyInCharacterSet:()TIExtras
 {
   v11[125] = *MEMORY[0x1E69E9840];
-  v2 = [a1 length];
-  if ([a1 _fastCharacterContents])
+  v2 = [self length];
+  if ([self _fastCharacterContents])
   {
     return uset_containsAllCodePoints() != 0;
   }
@@ -1613,7 +1613,7 @@ LABEL_9:
         v8 = v5;
       }
 
-      [a1 getCharacters:v11 range:{v6 - 500, v8}];
+      [self getCharacters:v11 range:{v6 - 500, v8}];
       v9 = uset_containsAllCodePoints();
       result = v9 != 0;
       if (!v9)
@@ -1632,7 +1632,7 @@ LABEL_9:
   else
   {
     MEMORY[0x1EEE9AC00]();
-    [a1 getCharacters:v11 - ((v4 + 15) & 0xFFFFFFFFFFFFFFF0) range:{0, v2}];
+    [self getCharacters:v11 - ((v4 + 15) & 0xFFFFFFFFFFFFFFF0) range:{0, v2}];
     return uset_containsAllCodePoints() != 0;
   }
 
@@ -1649,7 +1649,7 @@ LABEL_9:
     v10 = a3 + a4 - 2;
     while (1)
     {
-      v11 = [a1 characterAtIndex:v10 + 1];
+      v11 = [self characterAtIndex:v10 + 1];
       v12 = v11;
       if ((v11 & 0xF800) != 0xD800)
       {
@@ -1700,7 +1700,7 @@ LABEL_12:
     v10 = 0;
     while (1)
     {
-      v11 = [a1 characterAtIndex:a3];
+      v11 = [self characterAtIndex:a3];
       v12 = v11;
       if ((v11 & 0xF800) != 0xD800)
       {
@@ -1744,7 +1744,7 @@ LABEL_11:
 
 - (uint64_t)_rangeOfLongCharacterAtIndex:()TIExtras
 {
-  v5 = [a1 characterAtIndex:?];
+  v5 = [self characterAtIndex:?];
   if ((v5 & 0xF800) == 0xD800)
   {
     if ((v5 & 0xDC00) == 0xDC00)
@@ -1762,7 +1762,7 @@ LABEL_11:
 
     else if ((v5 & 0xDC00) == 0xD800)
     {
-      [a1 length];
+      [self length];
     }
   }
 
@@ -1771,17 +1771,17 @@ LABEL_11:
 
 - (uint64_t)_lastLongCharacter
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (!v2)
   {
     return 0;
   }
 
   v3 = v2;
-  v4 = [a1 characterAtIndex:v2 - 1];
-  if ((v4 & 0xFC00) == 0xDC00 && [a1 length] >= 2)
+  v4 = [self characterAtIndex:v2 - 1];
+  if ((v4 & 0xFC00) == 0xDC00 && [self length] >= 2)
   {
-    v5 = [a1 characterAtIndex:v3 - 2];
+    v5 = [self characterAtIndex:v3 - 2];
     if ((v5 & 0xFC00) == 0xD800)
     {
       return (v4 + (v5 << 10) - 56613888);
@@ -1793,15 +1793,15 @@ LABEL_11:
 
 - (uint64_t)_firstLongCharacter
 {
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
 
-  v2 = [a1 characterAtIndex:0];
-  if ((v2 & 0xFC00) == 0xD800 && [a1 length] >= 2)
+  v2 = [self characterAtIndex:0];
+  if ((v2 & 0xFC00) == 0xD800 && [self length] >= 2)
   {
-    v3 = [a1 characterAtIndex:1];
+    v3 = [self characterAtIndex:1];
     if ((v3 & 0xFC00) == 0xDC00)
     {
       return (v3 + (v2 << 10) - 56613888);
@@ -1814,7 +1814,7 @@ LABEL_11:
 - (uint64_t)_ti_supplementalPrefixOfLastToken:()TIExtras
 {
   v4 = a3;
-  v5 = [a1 length];
+  v5 = [self length];
   if (v5)
   {
     v6 = v5 - 1;
@@ -1823,10 +1823,10 @@ LABEL_11:
       while (v6)
       {
         v7 = v6 - 1;
-        v8 = [a1 characterAtIndex:?];
+        v8 = [self characterAtIndex:?];
         if ([v4 characterIsMember:v8])
         {
-          v11 = [a1 characterAtIndex:v7];
+          v11 = [self characterAtIndex:v7];
           if (([v4 characterIsMember:v11] & 1) == 0)
           {
             if (u_hasBinaryProperty(v11, UCHAR_IDEOGRAPHIC))
@@ -1864,7 +1864,7 @@ LABEL_11:
       }
     }
 
-    v8 = [a1 characterAtIndex:v6];
+    v8 = [self characterAtIndex:v6];
     if ([v4 characterIsMember:v8])
     {
       v8 = v8;
@@ -1889,11 +1889,11 @@ LABEL_13:
 
 - (uint64_t)_firstChar
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
 
-    return [a1 characterAtIndex:0];
+    return [self characterAtIndex:0];
   }
 
   return result;
@@ -1952,7 +1952,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __52__NSString_TIExtras___fullwidthLettersAndSymbolsSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_fullwidthLettersAndSymbolsSet___onceToken != -1)
   {
     dispatch_once(&_fullwidthLettersAndSymbolsSet___onceToken, block);
@@ -1967,7 +1967,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __55__NSString_TIExtras___nonFullwidthLettersAndNumbersSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_nonFullwidthLettersAndNumbersSet___oneceToken != -1)
   {
     dispatch_once(&_nonFullwidthLettersAndNumbersSet___oneceToken, block);
@@ -1982,7 +1982,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __52__NSString_TIExtras___fullwidthLettersAndNumbersSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_fullwidthLettersAndNumbersSet___onceToken != -1)
   {
     dispatch_once(&_fullwidthLettersAndNumbersSet___onceToken, block);
@@ -1997,7 +1997,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __45__NSString_TIExtras___bopomofoWithoutToneSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_bopomofoWithoutToneSet___onceToken != -1)
   {
     dispatch_once(&_bopomofoWithoutToneSet___onceToken, block);
@@ -2012,7 +2012,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __38__NSString_TIExtras___bopomofoToneSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_bopomofoToneSet___onceToken != -1)
   {
     dispatch_once(&_bopomofoToneSet___onceToken, block);
@@ -2027,7 +2027,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __34__NSString_TIExtras___bopomofoSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_bopomofoSet___onceToken != -1)
   {
     dispatch_once(&_bopomofoSet___onceToken, block);
@@ -2042,7 +2042,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __35__NSString_TIExtras___ideographSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_ideographSet___onceToken != -1)
   {
     dispatch_once(&_ideographSet___onceToken, block);
@@ -2057,7 +2057,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __43__NSString_TIExtras___nonJapaneseLetterSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_nonJapaneseLetterSet___onceToken != -1)
   {
     dispatch_once(&_nonJapaneseLetterSet___onceToken, block);
@@ -2072,7 +2072,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __40__NSString_TIExtras___japaneseLetterSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_japaneseLetterSet___onceToken != -1)
   {
     dispatch_once(&_japaneseLetterSet___onceToken, block);
@@ -2087,7 +2087,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __34__NSString_TIExtras___hiraganaSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_hiraganaSet___onceToken != -1)
   {
     dispatch_once(&_hiraganaSet___onceToken, block);
@@ -2102,7 +2102,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __55__NSString_TIExtras___nonHiraganaKatakanaOrBopomofoSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_nonHiraganaKatakanaOrBopomofoSet___onceToken != -1)
   {
     dispatch_once(&_nonHiraganaKatakanaOrBopomofoSet___onceToken, block);
@@ -2117,7 +2117,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __44__NSString_TIExtras___nonKatakanaOrKanjiSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_nonKatakanaOrKanjiSet___onceToken != -1)
   {
     dispatch_once(&_nonKatakanaOrKanjiSet___onceToken, block);
@@ -2132,7 +2132,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __47__NSString_TIExtras___nonHiraganaOrKatakanaSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_nonHiraganaOrKatakanaSet___onceToken != -1)
   {
     dispatch_once(&_nonHiraganaOrKatakanaSet___onceToken, block);
@@ -2147,7 +2147,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __44__NSString_TIExtras___nonKoreanCharacterSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_nonKoreanCharacterSet___onceToken != -1)
   {
     dispatch_once(&_nonKoreanCharacterSet___onceToken, block);
@@ -2162,7 +2162,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __49__NSString_TIExtras___nonIdeographicCharacterSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_nonIdeographicCharacterSet___onceToken != -1)
   {
     dispatch_once(&_nonIdeographicCharacterSet___onceToken, block);
@@ -2175,7 +2175,7 @@ LABEL_13:
 {
   if (a3)
   {
-    v4 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     ItemCount = uset_getItemCount();
     if (ItemCount >= 1)
     {
@@ -2187,8 +2187,8 @@ LABEL_13:
           v8 = 0;
           do
           {
-            v9 = [a1 _stringWithUnichar:v8];
-            [v4 appendString:v9];
+            v9 = [self _stringWithUnichar:v8];
+            [string appendString:v9];
 
             v10 = v8 < 0;
             v8 = (v8 + 1);
@@ -2199,7 +2199,7 @@ LABEL_13:
       }
     }
 
-    v11 = [v4 copy];
+    v11 = [string copy];
   }
 
   else

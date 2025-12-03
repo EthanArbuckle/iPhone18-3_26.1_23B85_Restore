@@ -70,7 +70,7 @@
 
     v31 = [CIVector vectorWithX:(v30 * v24) Y:(v30 * v28)];
     v32 = [CIVector vectorWithX:-(v30 * v28) Y:(v30 * v24)];
-    v33 = [(CIGlassLozenge *)self _CILozengeRefraction];
+    _CILozengeRefraction = [(CIGlassLozenge *)self _CILozengeRefraction];
     [(CIImage *)self->inputImage extent];
     v54.origin.x = v43;
     v54.origin.y = v20;
@@ -98,7 +98,7 @@
     v50[5] = v32;
     v50[6] = [MEMORY[0x1E696AD98] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(HIDWORD(v44), LODWORD(v7)))}];
     v50[7] = [MEMORY[0x1E696AD98] numberWithDouble:v16 + v16];
-    return [v33 applyWithExtent:v48 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v50, 8), x, y, width, height}];
+    return [_CILozengeRefraction applyWithExtent:v48 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v50, 8), x, y, width, height}];
   }
 
   else

@@ -1,9 +1,9 @@
 @interface UpdatesLockupCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIColor)backgroundColor;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation UpdatesLockupCollectionViewCell
@@ -12,38 +12,38 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for UpdatesLockupCollectionViewCell();
-  v2 = [(UpdatesLockupCollectionViewCell *)&v4 backgroundColor];
+  backgroundColor = [(UpdatesLockupCollectionViewCell *)&v4 backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for UpdatesLockupCollectionViewCell();
-  v4 = a3;
+  colorCopy = color;
   v5 = v6.receiver;
-  [(UpdatesLockupCollectionViewCell *)&v6 setBackgroundColor:v4];
+  [(UpdatesLockupCollectionViewCell *)&v6 setBackgroundColor:colorCopy];
   sub_35DC10();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_35DD50();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_35E420();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_35EE1C(width, height);
   v8 = v7;
 

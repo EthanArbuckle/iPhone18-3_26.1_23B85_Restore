@@ -1,35 +1,35 @@
 @interface LevelBaseRichCircularComplicationView
 - (double)_maxBubbleDeflection;
-- (id)_curvedLabelViewForLocStringKey:(id)a3 font:(id)a4 textColor:(id)a5 centerAngle:(double)a6;
+- (id)_curvedLabelViewForLocStringKey:(id)key font:(id)font textColor:(id)color centerAngle:(double)angle;
 - (id)_fixedBubbleImageName;
 - (id)_floatingBubbleImageName;
 - (id)_newFixedBubbleView;
 - (id)_newFixedOverlayView;
 - (id)_newFloatingBubbleView;
 - (id)_overlayImageName;
-- (id)initFullColorImageViewWithDevice:(id)a3;
+- (id)initFullColorImageViewWithDevice:(id)device;
 - (id)monochromeAccentViews;
 - (id)monochromeOtherViews;
 - (id)ticksView;
 - (int64_t)_supportedFamily;
 - (void)_createDialLabels;
-- (void)_hideDialLabels:(BOOL)a3;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (void)_hideDialLabels:(BOOL)labels;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 - (void)layoutSubviews;
 @end
 
 @implementation LevelBaseRichCircularComplicationView
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v36.receiver = self;
   v36.super_class = LevelBaseRichCircularComplicationView;
-  v6 = [(LevelRichComplicationView *)&v36 initFullColorImageViewWithDevice:v5];
+  v6 = [(LevelRichComplicationView *)&v36 initFullColorImageViewWithDevice:deviceCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6 + 59, a3);
+    objc_storeStrong(v6 + 59, device);
     v11 = objc_msgSend_ticksView(v7, v8, v9, v10);
     objc_msgSend_addSubview_(v7, v12, v11, v13);
 
@@ -49,23 +49,23 @@
   return v7;
 }
 
-- (id)_curvedLabelViewForLocStringKey:(id)a3 font:(id)a4 textColor:(id)a5 centerAngle:(double)a6
+- (id)_curvedLabelViewForLocStringKey:(id)key font:(id)font textColor:(id)color centerAngle:(double)angle
 {
   v45[1] = *MEMORY[0x277D85DE8];
   device = self->_device;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  colorCopy = color;
+  fontCopy = font;
+  keyCopy = key;
   v17 = objc_msgSend__supportedFamily(self, v14, v15, v16);
   v18 = sub_23BD47AEC(device, v17);
   v19 = objc_alloc_init(MEMORY[0x277CFA770]);
-  objc_msgSend_setTextColor_(v19, v20, v11, v21);
+  objc_msgSend_setTextColor_(v19, v20, colorCopy, v21);
 
   v22 = objc_alloc(MEMORY[0x277CCA898]);
-  v23 = NanoCompassLocalizedString(v13);
+  v23 = NanoCompassLocalizedString(keyCopy);
 
   v44 = *MEMORY[0x277D740A8];
-  v45[0] = v12;
+  v45[0] = fontCopy;
   v25 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v24, v45, &v44, 1);
 
   v27 = objc_msgSend_initWithString_attributes_(v22, v26, v23, v25);
@@ -74,17 +74,17 @@
   objc_msgSend_setAttributedTextProvidesColor_(v19, v30, 1, v31);
   objc_msgSend_setCircleRadius_(v19, v32, v33, v34, v18);
   objc_msgSend_setInterior_(v19, v35, 0, v36);
-  objc_msgSend_setCenterAngle_(v19, v37, v38, v39, a6);
+  objc_msgSend_setCenterAngle_(v19, v37, v38, v39, angle);
   objc_msgSend_sizeToFit(v19, v40, v41, v42);
 
   return v19;
 }
 
-- (void)_hideDialLabels:(BOOL)a3
+- (void)_hideDialLabels:(BOOL)labels
 {
   v31 = *MEMORY[0x277D85DE8];
   curvedLabelViews = self->_curvedLabelViews;
-  if (a3)
+  if (labels)
   {
     if (!curvedLabelViews)
     {
@@ -124,7 +124,7 @@
   {
     if (!curvedLabelViews)
     {
-      objc_msgSend__createDialLabels(self, a2, a3, v3);
+      objc_msgSend__createDialLabels(self, a2, labels, v3);
       curvedLabelViews = self->_curvedLabelViews;
     }
 
@@ -346,13 +346,13 @@ LABEL_9:
   return v3;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v6 = a3;
+  providerCopy = provider;
   v67.receiver = self;
   v67.super_class = LevelBaseRichCircularComplicationView;
-  [(LevelRichComplicationView *)&v67 configureWithImageProvider:v6 reason:a4];
-  v10 = objc_msgSend_metadata(v6, v7, v8, v9);
+  [(LevelRichComplicationView *)&v67 configureWithImageProvider:providerCopy reason:reason];
+  v10 = objc_msgSend_metadata(providerCopy, v7, v8, v9);
   v13 = objc_msgSend_objectForKeyedSubscript_(v10, v11, @"heading", v12);
 
   v17 = objc_msgSend_null(MEMORY[0x277CBEB68], v14, v15, v16);
@@ -364,14 +364,14 @@ LABEL_9:
     v13 = 0;
   }
 
-  v24 = objc_msgSend_metadata(v6, v21, v22, v23);
+  v24 = objc_msgSend_metadata(providerCopy, v21, v22, v23);
   v27 = objc_msgSend_objectForKeyedSubscript_(v24, v25, @"nodata", v26);
   v31 = objc_msgSend_BOOLValue(v27, v28, v29, v30);
 
   if (v13)
   {
     isAccurate = objc_msgSend_isAccurate(v13, v32, v33, v34);
-    v39 = objc_msgSend_metadata(v6, v36, v37, v38);
+    v39 = objc_msgSend_metadata(providerCopy, v36, v37, v38);
     v42 = objc_msgSend_objectForKeyedSubscript_(v39, v40, @"alwayson", v41);
     v46 = objc_msgSend_BOOLValue(v42, v43, v44, v45);
 
@@ -391,7 +391,7 @@ LABEL_9:
 
   else
   {
-    v58 = objc_msgSend_metadata(v6, v32, v33, v34);
+    v58 = objc_msgSend_metadata(providerCopy, v32, v33, v34);
     v61 = objc_msgSend_objectForKeyedSubscript_(v58, v59, @"alwayson", v60);
     objc_msgSend_BOOLValue(v61, v62, v63, v64);
 

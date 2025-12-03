@@ -1,113 +1,113 @@
 @interface TUIInputAnalytics
-+ (void)didHandleSmartReplyAnalyticsEventOfType:(int64_t)a3 withBundleId:(id)a4 withInputContextHistoryRequestId:(id)a5 withMsgOrMailThreadId:(id)a6 withSmartReplyResponse:(id)a7 withConversationType:(int64_t)a8;
-+ (void)sendGenmojiCreationSignal:(id)a3 payload:(id)a4;
-+ (void)sendSmartRepliesPollActionShownSignalWithInputContextHistory:(id)a3;
++ (void)didHandleSmartReplyAnalyticsEventOfType:(int64_t)type withBundleId:(id)id withInputContextHistoryRequestId:(id)requestId withMsgOrMailThreadId:(id)threadId withSmartReplyResponse:(id)response withConversationType:(int64_t)conversationType;
++ (void)sendGenmojiCreationSignal:(id)signal payload:(id)payload;
++ (void)sendSmartRepliesPollActionShownSignalWithInputContextHistory:(id)history;
 @end
 
 @implementation TUIInputAnalytics
 
-+ (void)sendGenmojiCreationSignal:(id)a3 payload:(id)a4
++ (void)sendGenmojiCreationSignal:(id)signal payload:(id)payload
 {
   v5 = MEMORY[0x1E69A8CD8];
-  v6 = a4;
-  v7 = a3;
+  payloadCopy = payload;
+  signalCopy = signal;
   v8 = +[TUIInputAnalytics getIAChannelGenmojiCreation];
-  [v5 sendSignal:v7 toChannel:v8 withNullableUniqueStringID:0 withPayload:v6];
+  [v5 sendSignal:signalCopy toChannel:v8 withNullableUniqueStringID:0 withPayload:payloadCopy];
 }
 
-+ (void)sendSmartRepliesPollActionShownSignalWithInputContextHistory:(id)a3
++ (void)sendSmartRepliesPollActionShownSignalWithInputContextHistory:(id)history
 {
-  v10 = a3;
-  v3 = [v10 recipientIdentifiers];
-  if (v3)
+  historyCopy = history;
+  recipientIdentifiers = [historyCopy recipientIdentifiers];
+  if (recipientIdentifiers)
   {
-    v4 = v3;
-    v5 = [v10 recipientIdentifiers];
-    v6 = [v5 count];
+    v4 = recipientIdentifiers;
+    recipientIdentifiers2 = [historyCopy recipientIdentifiers];
+    v6 = [recipientIdentifiers2 count];
 
     if (v6 >= 2)
     {
       v7 = MEMORY[0x1E69A8CD8];
       v8 = *MEMORY[0x1E69A8C40];
-      v9 = [v10 threadIdentifier];
-      [v7 sendSignal:@"PollActionShown" toChannel:v8 withNullableUniqueStringID:v9 withPayload:0];
+      threadIdentifier = [historyCopy threadIdentifier];
+      [v7 sendSignal:@"PollActionShown" toChannel:v8 withNullableUniqueStringID:threadIdentifier withPayload:0];
     }
   }
 }
 
-+ (void)didHandleSmartReplyAnalyticsEventOfType:(int64_t)a3 withBundleId:(id)a4 withInputContextHistoryRequestId:(id)a5 withMsgOrMailThreadId:(id)a6 withSmartReplyResponse:(id)a7 withConversationType:(int64_t)a8
++ (void)didHandleSmartReplyAnalyticsEventOfType:(int64_t)type withBundleId:(id)id withInputContextHistoryRequestId:(id)requestId withMsgOrMailThreadId:(id)threadId withSmartReplyResponse:(id)response withConversationType:(int64_t)conversationType
 {
   v49 = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  idCopy = id;
+  requestIdCopy = requestId;
+  threadIdCopy = threadId;
+  responseCopy = response;
   v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v18 = v17;
-  if (v13)
+  if (idCopy)
   {
-    [v17 setObject:v13 forKeyedSubscript:@"BundleID"];
+    [v17 setObject:idCopy forKeyedSubscript:@"BundleID"];
   }
 
-  if (v16)
+  if (responseCopy)
   {
-    v44 = v15;
-    v45 = v14;
-    v46 = v13;
-    [v16 srResponse];
-    v20 = v19 = v16;
-    v21 = [v20 options];
-    v22 = [v21 objectForKey:*MEMORY[0x1E69D9488]];
+    v44 = threadIdCopy;
+    v45 = requestIdCopy;
+    v46 = idCopy;
+    [responseCopy srResponse];
+    v20 = v19 = responseCopy;
+    options = [v20 options];
+    v22 = [options objectForKey:*MEMORY[0x1E69D9488]];
 
-    v23 = [v19 modelInfoString];
-    v24 = [v19 userFeedbackInputString];
-    v25 = [v20 responseTexts];
-    v26 = [v19 modelPromptTokenCount];
+    modelInfoString = [v19 modelInfoString];
+    userFeedbackInputString = [v19 userFeedbackInputString];
+    responseTexts = [v20 responseTexts];
+    modelPromptTokenCount = [v19 modelPromptTokenCount];
     v43 = v19;
-    v27 = [v19 modelOutputTokenCount];
+    modelOutputTokenCount = [v19 modelOutputTokenCount];
     if (v22)
     {
       [v18 setObject:v22 forKeyedSubscript:@"InputLanguage"];
     }
 
-    if (v23)
+    if (modelInfoString)
     {
-      [v18 setObject:v23 forKeyedSubscript:*MEMORY[0x1E69A8C58]];
+      [v18 setObject:modelInfoString forKeyedSubscript:*MEMORY[0x1E69A8C58]];
     }
 
-    if (v24)
+    if (userFeedbackInputString)
     {
-      [v18 setObject:v24 forKeyedSubscript:*MEMORY[0x1E69A8C48]];
+      [v18 setObject:userFeedbackInputString forKeyedSubscript:*MEMORY[0x1E69A8C48]];
     }
 
-    if (v25)
+    if (responseTexts)
     {
-      [v18 setObject:v25 forKeyedSubscript:*MEMORY[0x1E69A8C70]];
+      [v18 setObject:responseTexts forKeyedSubscript:*MEMORY[0x1E69A8C70]];
     }
 
-    if (v26)
+    if (modelPromptTokenCount)
     {
-      [v18 setObject:v26 forKeyedSubscript:@"InputTokenCount"];
+      [v18 setObject:modelPromptTokenCount forKeyedSubscript:@"InputTokenCount"];
     }
 
-    if (v27)
+    if (modelOutputTokenCount)
     {
-      [v18 setObject:v27 forKeyedSubscript:@"OutputTokenCount"];
+      [v18 setObject:modelOutputTokenCount forKeyedSubscript:@"OutputTokenCount"];
     }
 
-    v14 = v45;
-    v13 = v46;
-    v16 = v43;
-    v15 = v44;
+    requestIdCopy = v45;
+    idCopy = v46;
+    responseCopy = v43;
+    threadIdCopy = v44;
   }
 
   v28 = @"Unspecified";
-  if (a8 == 1)
+  if (conversationType == 1)
   {
     v28 = @"Mail";
   }
 
-  if (a8)
+  if (conversationType)
   {
     v29 = v28;
   }
@@ -118,12 +118,12 @@
   }
 
   [v18 setObject:v29 forKeyedSubscript:@"ConversationType"];
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (!a3)
+    if (!type)
     {
       v41 = mach_continuous_time();
-      SetSmartReplyStartTimeForRequest(v14, v41);
+      SetSmartReplyStartTimeForRequest(requestIdCopy, v41);
       v42 = TUIInputAnalyticsLog();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
       {
@@ -136,13 +136,13 @@
       goto LABEL_50;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v32 = TUIInputAnalyticsLog();
       if (os_signpost_enabled(v32))
       {
         *buf = 134349056;
-        SmartReplyStartTimeForRequest = GetSmartReplyStartTimeForRequest(v14);
+        SmartReplyStartTimeForRequest = GetSmartReplyStartTimeForRequest(requestIdCopy);
         _os_signpost_emit_with_name_impl(&dword_18FFDC000, v32, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SmartReplyGenerate", "%{public, signpost.description:begin_time}llu", buf, 0xCu);
       }
 
@@ -153,13 +153,13 @@
         _os_log_debug_impl(&dword_18FFDC000, v33, OS_LOG_TYPE_DEBUG, "End - SmartReplyGenerate - SmartReply Generated successfully", buf, 2u);
       }
 
-      if (v16)
+      if (responseCopy)
       {
-        v34 = [v16 responseFromCache];
-        v35 = v34;
-        if (v34)
+        responseFromCache = [responseCopy responseFromCache];
+        v35 = responseFromCache;
+        if (responseFromCache)
         {
-          v36 = v34;
+          v36 = responseFromCache;
         }
 
         else
@@ -178,14 +178,14 @@
     goto LABEL_51;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 2:
       v37 = TUIInputAnalyticsLog();
       if (os_signpost_enabled(v37))
       {
         *buf = 134349056;
-        SmartReplyStartTimeForRequest = GetSmartReplyStartTimeForRequest(v14);
+        SmartReplyStartTimeForRequest = GetSmartReplyStartTimeForRequest(requestIdCopy);
         _os_signpost_emit_with_name_impl(&dword_18FFDC000, v37, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SmartReplyGenerateFailure", "%{public, signpost.description:begin_time}llu", buf, 0xCu);
       }
 
@@ -203,7 +203,7 @@
       if (os_signpost_enabled(v40))
       {
         *buf = 134349056;
-        SmartReplyStartTimeForRequest = GetSmartReplyStartTimeForRequest(v14);
+        SmartReplyStartTimeForRequest = GetSmartReplyStartTimeForRequest(requestIdCopy);
         _os_signpost_emit_with_name_impl(&dword_18FFDC000, v40, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SmartReplyGenerateTimeout", "%{public, signpost.description:begin_time}llu", buf, 0xCu);
       }
 
@@ -226,7 +226,7 @@ LABEL_46:
       v30 = MEMORY[0x1E69A8CD8];
       v31 = MEMORY[0x1E69A8CD0];
 LABEL_50:
-      [v30 sendSignal:*v31 toChannel:*MEMORY[0x1E69A8C40] withNullableUniqueStringID:v15 withPayload:v18];
+      [v30 sendSignal:*v31 toChannel:*MEMORY[0x1E69A8C40] withNullableUniqueStringID:threadIdCopy withPayload:v18];
       break;
   }
 

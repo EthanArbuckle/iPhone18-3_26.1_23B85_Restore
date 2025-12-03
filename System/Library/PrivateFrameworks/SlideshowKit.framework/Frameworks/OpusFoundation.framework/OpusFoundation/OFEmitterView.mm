@@ -9,20 +9,20 @@
 - (double)emitterZPosition;
 - (unsigned)seed;
 - (void)dealloc;
-- (void)setBirthRate:(double)a3;
-- (void)setEmitterCells:(id)a3;
-- (void)setEmitterDepth:(double)a3;
-- (void)setEmitterMode:(id)a3;
-- (void)setEmitterPosition:(CGPoint)a3;
-- (void)setEmitterShape:(id)a3;
-- (void)setEmitterSize:(CGSize)a3;
-- (void)setEmitterZPosition:(double)a3;
-- (void)setLifetime:(double)a3;
-- (void)setRenderMode:(id)a3;
-- (void)setScale:(double)a3;
-- (void)setSeed:(unsigned int)a3;
-- (void)setSpin:(double)a3;
-- (void)setVelocity:(double)a3;
+- (void)setBirthRate:(double)rate;
+- (void)setEmitterCells:(id)cells;
+- (void)setEmitterDepth:(double)depth;
+- (void)setEmitterMode:(id)mode;
+- (void)setEmitterPosition:(CGPoint)position;
+- (void)setEmitterShape:(id)shape;
+- (void)setEmitterSize:(CGSize)size;
+- (void)setEmitterZPosition:(double)position;
+- (void)setLifetime:(double)lifetime;
+- (void)setRenderMode:(id)mode;
+- (void)setScale:(double)scale;
+- (void)setSeed:(unsigned int)seed;
+- (void)setSpin:(double)spin;
+- (void)setVelocity:(double)velocity;
 @end
 
 @implementation OFEmitterView
@@ -34,188 +34,188 @@
   [(OFUIView *)&v2 dealloc];
 }
 
-- (void)setBirthRate:(double)a3
+- (void)setBirthRate:(double)rate
 {
-  v3 = a3;
-  v4 = [(OFEmitterView *)self emitterLayer];
-  *&v5 = v3;
+  rateCopy = rate;
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
+  *&v5 = rateCopy;
 
-  [v4 setBirthRate:v5];
+  [emitterLayer setBirthRate:v5];
 }
 
-- (void)setEmitterCells:(id)a3
+- (void)setEmitterCells:(id)cells
 {
-  v4 = [(OFEmitterView *)self emitterLayer];
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  [v4 setEmitterCells:a3];
+  [emitterLayer setEmitterCells:cells];
 }
 
 - (NSArray)emitterCells
 {
-  v2 = [(OFEmitterView *)self emitterLayer];
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  return [v2 emitterCells];
+  return [emitterLayer emitterCells];
 }
 
-- (void)setEmitterDepth:(double)a3
+- (void)setEmitterDepth:(double)depth
 {
-  v4 = [(OFEmitterView *)self emitterLayer];
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  [v4 setEmitterDepth:a3];
+  [emitterLayer setEmitterDepth:depth];
 }
 
 - (double)emitterDepth
 {
-  v2 = [(OFEmitterView *)self emitterLayer];
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  [v2 emitterDepth];
+  [emitterLayer emitterDepth];
   return result;
 }
 
-- (void)setEmitterMode:(id)a3
+- (void)setEmitterMode:(id)mode
 {
-  v4 = [(OFEmitterView *)self emitterLayer];
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  [v4 setEmitterMode:a3];
+  [emitterLayer setEmitterMode:mode];
 }
 
 - (NSString)emitterMode
 {
-  v2 = [(OFEmitterView *)self emitterLayer];
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  return [v2 emitterMode];
+  return [emitterLayer emitterMode];
 }
 
-- (void)setEmitterPosition:(CGPoint)a3
+- (void)setEmitterPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(OFEmitterView *)self emitterLayer];
+  y = position.y;
+  x = position.x;
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  [v5 setEmitterPosition:{x, y}];
+  [emitterLayer setEmitterPosition:{x, y}];
 }
 
 - (CGPoint)emitterPosition
 {
-  v2 = [(OFEmitterView *)self emitterLayer];
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  [v2 emitterPosition];
+  [emitterLayer emitterPosition];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (void)setEmitterShape:(id)a3
+- (void)setEmitterShape:(id)shape
 {
-  v4 = [(OFEmitterView *)self emitterLayer];
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  [v4 setEmitterShape:a3];
+  [emitterLayer setEmitterShape:shape];
 }
 
 - (NSString)emitterShape
 {
-  v2 = [(OFEmitterView *)self emitterLayer];
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  return [v2 emitterShape];
+  return [emitterLayer emitterShape];
 }
 
-- (void)setEmitterSize:(CGSize)a3
+- (void)setEmitterSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(OFEmitterView *)self emitterLayer];
+  height = size.height;
+  width = size.width;
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  [v5 setEmitterSize:{width, height}];
+  [emitterLayer setEmitterSize:{width, height}];
 }
 
 - (CGSize)emitterSize
 {
-  v2 = [(OFEmitterView *)self emitterLayer];
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  [v2 emitterSize];
+  [emitterLayer emitterSize];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setEmitterZPosition:(double)a3
+- (void)setEmitterZPosition:(double)position
 {
-  v4 = [(OFEmitterView *)self emitterLayer];
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  [v4 setEmitterZPosition:a3];
+  [emitterLayer setEmitterZPosition:position];
 }
 
 - (double)emitterZPosition
 {
-  v2 = [(OFEmitterView *)self emitterLayer];
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  [v2 emitterZPosition];
+  [emitterLayer emitterZPosition];
   return result;
 }
 
-- (void)setLifetime:(double)a3
+- (void)setLifetime:(double)lifetime
 {
-  v3 = a3;
-  v4 = [(OFEmitterView *)self emitterLayer];
-  *&v5 = v3;
+  lifetimeCopy = lifetime;
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
+  *&v5 = lifetimeCopy;
 
-  [v4 setLifetime:v5];
+  [emitterLayer setLifetime:v5];
 }
 
-- (void)setRenderMode:(id)a3
+- (void)setRenderMode:(id)mode
 {
-  v4 = [(OFEmitterView *)self emitterLayer];
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  [v4 setRenderMode:a3];
+  [emitterLayer setRenderMode:mode];
 }
 
 - (NSString)renderMode
 {
-  v2 = [(OFEmitterView *)self emitterLayer];
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  return [v2 renderMode];
+  return [emitterLayer renderMode];
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  v3 = a3;
-  v4 = [(OFEmitterView *)self emitterLayer];
-  *&v5 = v3;
+  scaleCopy = scale;
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
+  *&v5 = scaleCopy;
 
-  [v4 setScale:v5];
+  [emitterLayer setScale:v5];
 }
 
-- (void)setSeed:(unsigned int)a3
+- (void)setSeed:(unsigned int)seed
 {
-  v3 = *&a3;
-  v4 = [(OFEmitterView *)self emitterLayer];
+  v3 = *&seed;
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  [v4 setSeed:v3];
+  [emitterLayer setSeed:v3];
 }
 
 - (unsigned)seed
 {
-  v2 = [(OFEmitterView *)self emitterLayer];
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
 
-  return [v2 seed];
+  return [emitterLayer seed];
 }
 
-- (void)setSpin:(double)a3
+- (void)setSpin:(double)spin
 {
-  v3 = a3;
-  v4 = [(OFEmitterView *)self emitterLayer];
-  *&v5 = v3;
+  spinCopy = spin;
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
+  *&v5 = spinCopy;
 
-  [v4 setSpin:v5];
+  [emitterLayer setSpin:v5];
 }
 
-- (void)setVelocity:(double)a3
+- (void)setVelocity:(double)velocity
 {
-  v3 = a3;
-  v4 = [(OFEmitterView *)self emitterLayer];
-  *&v5 = v3;
+  velocityCopy = velocity;
+  emitterLayer = [(OFEmitterView *)self emitterLayer];
+  *&v5 = velocityCopy;
 
-  [v4 setVelocity:v5];
+  [emitterLayer setVelocity:v5];
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface WFSmartPromptState
-+ (id)localizedDeniedPermissionsErrorWithContentDestination:(id)a3;
++ (id)localizedDeniedPermissionsErrorWithContentDestination:(id)destination;
 + (id)localizedUnlockedDeviceRequiredError;
 + (id)localizedUnsupportedEnvironmentError;
-+ (id)objectWithWFSerializedRepresentation:(id)a3;
-+ (id)stateFromDatabaseData:(id)a3;
-- (BOOL)matches:(id)a3 ignoringAccountData:(BOOL)a4;
++ (id)objectWithWFSerializedRepresentation:(id)representation;
++ (id)stateFromDatabaseData:(id)data;
+- (BOOL)matches:(id)matches ignoringAccountData:(BOOL)data;
 - (NSString)description;
-- (WFSmartPromptState)initWithCoder:(id)a3;
-- (WFSmartPromptState)initWithMode:(id)a3 sourceContentAttribution:(id)a4 actionUUID:(id)a5 contentDestination:(id)a6 status:(id)a7;
-- (WFSmartPromptState)stateWithStatus:(id)a3;
-- (WFSmartPromptState)stateWithStatus:(id)a3 actionUUID:(id)a4;
-- (id)databaseDataWithError:(id *)a3;
+- (WFSmartPromptState)initWithCoder:(id)coder;
+- (WFSmartPromptState)initWithMode:(id)mode sourceContentAttribution:(id)attribution actionUUID:(id)d contentDestination:(id)destination status:(id)status;
+- (WFSmartPromptState)stateWithStatus:(id)status;
+- (WFSmartPromptState)stateWithStatus:(id)status actionUUID:(id)d;
+- (id)databaseDataWithError:(id *)error;
 - (id)localizedDeniedPermissionsError;
 - (id)localizedExfiltrationRestrictedError;
 - (id)siriActionToolDescription;
 - (id)stateByReplacingAccountWithAppOrigin;
 - (id)wfSerializedRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFSmartPromptState
@@ -51,69 +51,69 @@
   return v9;
 }
 
-- (WFSmartPromptState)initWithCoder:(id)a3
+- (WFSmartPromptState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mode"];
-  v6 = [MEMORY[0x1E6996D78] allContentLocationClasses];
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"contentDestination"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mode"];
+  allContentLocationClasses = [MEMORY[0x1E6996D78] allContentLocationClasses];
+  v7 = [coderCopy decodeObjectOfClasses:allContentLocationClasses forKey:@"contentDestination"];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceContentAttribution"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionUUID"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"status"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceContentAttribution"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionUUID"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"status"];
 
   v11 = [(WFSmartPromptState *)self initWithMode:v5 sourceContentAttribution:v8 actionUUID:v9 contentDestination:v7 status:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFSmartPromptState *)self mode];
-  [v4 encodeObject:v5 forKey:@"mode"];
+  coderCopy = coder;
+  mode = [(WFSmartPromptState *)self mode];
+  [coderCopy encodeObject:mode forKey:@"mode"];
 
-  v6 = [(WFSmartPromptState *)self sourceContentAttribution];
-  [v4 encodeObject:v6 forKey:@"sourceContentAttribution"];
+  sourceContentAttribution = [(WFSmartPromptState *)self sourceContentAttribution];
+  [coderCopy encodeObject:sourceContentAttribution forKey:@"sourceContentAttribution"];
 
-  v7 = [(WFSmartPromptState *)self actionUUID];
-  [v4 encodeObject:v7 forKey:@"actionUUID"];
+  actionUUID = [(WFSmartPromptState *)self actionUUID];
+  [coderCopy encodeObject:actionUUID forKey:@"actionUUID"];
 
-  v8 = [(WFSmartPromptState *)self contentDestination];
-  [v4 encodeObject:v8 forKey:@"contentDestination"];
+  contentDestination = [(WFSmartPromptState *)self contentDestination];
+  [coderCopy encodeObject:contentDestination forKey:@"contentDestination"];
 
-  v9 = [(WFSmartPromptState *)self status];
-  [v4 encodeObject:v9 forKey:@"status"];
+  status = [(WFSmartPromptState *)self status];
+  [coderCopy encodeObject:status forKey:@"status"];
 }
 
 - (id)stateByReplacingAccountWithAppOrigin
 {
   v3 = [WFSmartPromptState alloc];
-  v4 = [(WFSmartPromptState *)self mode];
-  v5 = [(WFSmartPromptState *)self sourceContentAttribution];
-  v6 = [v5 attributionByReplacingAccountWithAppOrigin];
-  v7 = [(WFSmartPromptState *)self actionUUID];
-  v8 = [(WFSmartPromptState *)self contentDestination];
-  v9 = [(WFSmartPromptState *)self status];
-  v10 = [(WFSmartPromptState *)v3 initWithMode:v4 sourceContentAttribution:v6 actionUUID:v7 contentDestination:v8 status:v9];
+  mode = [(WFSmartPromptState *)self mode];
+  sourceContentAttribution = [(WFSmartPromptState *)self sourceContentAttribution];
+  attributionByReplacingAccountWithAppOrigin = [sourceContentAttribution attributionByReplacingAccountWithAppOrigin];
+  actionUUID = [(WFSmartPromptState *)self actionUUID];
+  contentDestination = [(WFSmartPromptState *)self contentDestination];
+  status = [(WFSmartPromptState *)self status];
+  v10 = [(WFSmartPromptState *)v3 initWithMode:mode sourceContentAttribution:attributionByReplacingAccountWithAppOrigin actionUUID:actionUUID contentDestination:contentDestination status:status];
 
   return v10;
 }
 
-- (BOOL)matches:(id)a3 ignoringAccountData:(BOOL)a4
+- (BOOL)matches:(id)matches ignoringAccountData:(BOOL)data
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(WFSmartPromptState *)self actionUUID];
-  v8 = [v6 actionUUID];
-  if ([v7 isEqualToString:v8])
+  dataCopy = data;
+  matchesCopy = matches;
+  actionUUID = [(WFSmartPromptState *)self actionUUID];
+  actionUUID2 = [matchesCopy actionUUID];
+  if ([actionUUID isEqualToString:actionUUID2])
   {
-    v9 = [(WFSmartPromptState *)self mode];
-    v10 = [v6 mode];
-    if ([v9 isEqualToString:v10])
+    mode = [(WFSmartPromptState *)self mode];
+    mode2 = [matchesCopy mode];
+    if ([mode isEqualToString:mode2])
     {
-      v11 = [(WFSmartPromptState *)self contentDestination];
-      v12 = [v6 contentDestination];
-      v13 = [v11 matches:v12];
+      contentDestination = [(WFSmartPromptState *)self contentDestination];
+      contentDestination2 = [matchesCopy contentDestination];
+      v13 = [contentDestination matches:contentDestination2];
 
       if (!v13)
       {
@@ -121,31 +121,31 @@
         goto LABEL_12;
       }
 
-      v14 = [(WFSmartPromptState *)self sourceContentAttribution];
-      if (!v14 || (v15 = v14, [v6 sourceContentAttribution], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, !v16))
+      sourceContentAttribution = [(WFSmartPromptState *)self sourceContentAttribution];
+      if (!sourceContentAttribution || (v15 = sourceContentAttribution, [matchesCopy sourceContentAttribution], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, !v16))
       {
         LOBYTE(v20) = 1;
         goto LABEL_12;
       }
 
-      v17 = [(WFSmartPromptState *)self sourceContentAttribution];
-      v7 = v17;
-      if (v4)
+      sourceContentAttribution2 = [(WFSmartPromptState *)self sourceContentAttribution];
+      actionUUID = sourceContentAttribution2;
+      if (dataCopy)
       {
-        v8 = [v17 attributionByReplacingAccountWithAppOrigin];
-        v9 = [v8 origin];
-        v10 = [v6 sourceContentAttribution];
-        v18 = [v10 attributionByReplacingAccountWithAppOrigin];
-        v19 = [v18 origin];
-        LOBYTE(v20) = [v9 isEqual:v19];
+        actionUUID2 = [sourceContentAttribution2 attributionByReplacingAccountWithAppOrigin];
+        mode = [actionUUID2 origin];
+        mode2 = [matchesCopy sourceContentAttribution];
+        attributionByReplacingAccountWithAppOrigin = [mode2 attributionByReplacingAccountWithAppOrigin];
+        origin = [attributionByReplacingAccountWithAppOrigin origin];
+        LOBYTE(v20) = [mode isEqual:origin];
       }
 
       else
       {
-        v8 = [v17 origin];
-        v9 = [v6 sourceContentAttribution];
-        v10 = [v9 origin];
-        v20 = [v8 isEqual:v10];
+        actionUUID2 = [sourceContentAttribution2 origin];
+        mode = [matchesCopy sourceContentAttribution];
+        mode2 = [mode origin];
+        v20 = [actionUUID2 isEqual:mode2];
       }
     }
 
@@ -167,51 +167,51 @@ LABEL_12:
 - (id)wfSerializedRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(WFSmartPromptState *)self contentDestination];
-  v4 = [v3 wfSerializedRepresentation];
+  contentDestination = [(WFSmartPromptState *)self contentDestination];
+  wfSerializedRepresentation = [contentDestination wfSerializedRepresentation];
 
-  if (v4)
+  if (wfSerializedRepresentation)
   {
     v5 = MEMORY[0x1E695DF90];
-    v18[0] = v4;
+    v18[0] = wfSerializedRepresentation;
     v6 = [(WFSmartPromptState *)self status:@"ContentDestination"];
     v18[1] = v6;
     v17[2] = @"Mode";
-    v7 = [(WFSmartPromptState *)self mode];
+    mode = [(WFSmartPromptState *)self mode];
     v17[3] = @"DataType";
-    v18[2] = v7;
+    v18[2] = mode;
     v18[3] = @"SmartPrompt";
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:4];
     v9 = [v5 dictionaryWithDictionary:v8];
 
-    v10 = [(WFSmartPromptState *)self sourceContentAttribution];
-    v11 = [v10 wfSerializedRepresentation];
+    sourceContentAttribution = [(WFSmartPromptState *)self sourceContentAttribution];
+    wfSerializedRepresentation2 = [sourceContentAttribution wfSerializedRepresentation];
 
-    if (v11)
+    if (wfSerializedRepresentation2)
     {
-      [v9 setValue:v11 forKey:@"SourceContentAttribution"];
+      [v9 setValue:wfSerializedRepresentation2 forKey:@"SourceContentAttribution"];
     }
 
-    v12 = [(WFSmartPromptState *)self actionUUID];
+    actionUUID = [(WFSmartPromptState *)self actionUUID];
 
-    if (v12)
+    if (actionUUID)
     {
-      v13 = [(WFSmartPromptState *)self actionUUID];
-      [v9 setValue:v13 forKey:@"ActionUUID"];
+      actionUUID2 = [(WFSmartPromptState *)self actionUUID];
+      [v9 setValue:actionUUID2 forKey:@"ActionUUID"];
     }
   }
 
   else
   {
-    v11 = getWFSecurityLogObject();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    wfSerializedRepresentation2 = getWFSecurityLogObject();
+    if (os_log_type_enabled(wfSerializedRepresentation2, OS_LOG_TYPE_FAULT))
     {
       v14 = [(WFSmartPromptState *)self description];
       *buf = 136315394;
       v20 = "[WFSmartPromptState wfSerializedRepresentation]";
       v21 = 2114;
       v22 = v14;
-      _os_log_impl(&dword_1CA256000, v11, OS_LOG_TYPE_FAULT, "%s Couldn't serialize WFSmartPromptState because contentDestination was nil, self: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_1CA256000, wfSerializedRepresentation2, OS_LOG_TYPE_FAULT, "%s Couldn't serialize WFSmartPromptState because contentDestination was nil, self: %{public}@", buf, 0x16u);
     }
 
     v9 = 0;
@@ -227,12 +227,12 @@ LABEL_12:
   v20[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEC0];
   v4 = WFLocalizedPluralString(@"This action is trying to share %lu %@ items, which is not allowed.");
-  v5 = [(WFSmartPromptState *)self sourceContentAttribution];
-  v6 = [v5 count];
-  v7 = [(WFSmartPromptState *)self sourceContentAttribution];
-  v8 = [v7 origin];
-  v9 = [v8 localizedTitle];
-  v10 = [v3 stringWithFormat:v4, v6, v9];
+  sourceContentAttribution = [(WFSmartPromptState *)self sourceContentAttribution];
+  v6 = [sourceContentAttribution count];
+  sourceContentAttribution2 = [(WFSmartPromptState *)self sourceContentAttribution];
+  origin = [sourceContentAttribution2 origin];
+  localizedTitle = [origin localizedTitle];
+  v10 = [v3 stringWithFormat:v4, v6, localizedTitle];
 
   v11 = MEMORY[0x1E696ABC0];
   v12 = *MEMORY[0x1E696A588];
@@ -253,72 +253,72 @@ LABEL_12:
 - (id)localizedDeniedPermissionsError
 {
   v3 = objc_opt_class();
-  v4 = [(WFSmartPromptState *)self contentDestination];
-  v5 = [v3 localizedDeniedPermissionsErrorWithContentDestination:v4];
+  contentDestination = [(WFSmartPromptState *)self contentDestination];
+  v5 = [v3 localizedDeniedPermissionsErrorWithContentDestination:contentDestination];
 
   return v5;
 }
 
-- (id)databaseDataWithError:(id *)a3
+- (id)databaseDataWithError:(id *)error
 {
   v4 = MEMORY[0x1E696AE40];
-  v5 = [(WFSmartPromptState *)self wfSerializedRepresentation];
-  v6 = [v4 dataWithPropertyList:v5 format:200 options:0 error:a3];
+  wfSerializedRepresentation = [(WFSmartPromptState *)self wfSerializedRepresentation];
+  v6 = [v4 dataWithPropertyList:wfSerializedRepresentation format:200 options:0 error:error];
 
   return v6;
 }
 
-- (WFSmartPromptState)stateWithStatus:(id)a3 actionUUID:(id)a4
+- (WFSmartPromptState)stateWithStatus:(id)status actionUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  statusCopy = status;
   v8 = [WFSmartPromptState alloc];
-  v9 = [(WFSmartPromptState *)self mode];
-  v10 = [(WFSmartPromptState *)self sourceContentAttribution];
-  v11 = [(WFSmartPromptState *)self contentDestination];
-  v12 = [(WFSmartPromptState *)v8 initWithMode:v9 sourceContentAttribution:v10 actionUUID:v6 contentDestination:v11 status:v7];
+  mode = [(WFSmartPromptState *)self mode];
+  sourceContentAttribution = [(WFSmartPromptState *)self sourceContentAttribution];
+  contentDestination = [(WFSmartPromptState *)self contentDestination];
+  v12 = [(WFSmartPromptState *)v8 initWithMode:mode sourceContentAttribution:sourceContentAttribution actionUUID:dCopy contentDestination:contentDestination status:statusCopy];
 
   return v12;
 }
 
-- (WFSmartPromptState)stateWithStatus:(id)a3
+- (WFSmartPromptState)stateWithStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(WFSmartPromptState *)self actionUUID];
-  v6 = [(WFSmartPromptState *)self stateWithStatus:v4 actionUUID:v5];
+  statusCopy = status;
+  actionUUID = [(WFSmartPromptState *)self actionUUID];
+  v6 = [(WFSmartPromptState *)self stateWithStatus:statusCopy actionUUID:actionUUID];
 
   return v6;
 }
 
-- (WFSmartPromptState)initWithMode:(id)a3 sourceContentAttribution:(id)a4 actionUUID:(id)a5 contentDestination:(id)a6 status:(id)a7
+- (WFSmartPromptState)initWithMode:(id)mode sourceContentAttribution:(id)attribution actionUUID:(id)d contentDestination:(id)destination status:(id)status
 {
-  v21 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  modeCopy = mode;
+  attributionCopy = attribution;
+  dCopy = d;
+  destinationCopy = destination;
+  statusCopy = status;
   v22.receiver = self;
   v22.super_class = WFSmartPromptState;
   v17 = [(WFSmartPromptState *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_mode, a3);
-    objc_storeStrong(&v18->_sourceContentAttribution, a4);
-    objc_storeStrong(&v18->_actionUUID, a5);
-    objc_storeStrong(&v18->_contentDestination, a6);
-    objc_storeStrong(&v18->_status, a7);
+    objc_storeStrong(&v17->_mode, mode);
+    objc_storeStrong(&v18->_sourceContentAttribution, attribution);
+    objc_storeStrong(&v18->_actionUUID, d);
+    objc_storeStrong(&v18->_contentDestination, destination);
+    objc_storeStrong(&v18->_status, status);
     v19 = v18;
   }
 
   return v18;
 }
 
-+ (id)objectWithWFSerializedRepresentation:(id)a3
++ (id)objectWithWFSerializedRepresentation:(id)representation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"DataType"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKey:@"DataType"];
   v6 = v5;
   if (v5 && ![v5 isEqualToString:@"SmartPrompt"])
   {
@@ -326,7 +326,7 @@ LABEL_12:
     goto LABEL_23;
   }
 
-  v7 = [v4 objectForKey:@"ActionUUID"];
+  v7 = [representationCopy objectForKey:@"ActionUUID"];
   if (!v7)
   {
     v10 = getWFWorkflowExecutionLogObject();
@@ -342,25 +342,25 @@ LABEL_12:
   }
 
   v8 = MEMORY[0x1E6996D78];
-  v9 = [v4 valueForKey:@"ContentDestination"];
+  v9 = [representationCopy valueForKey:@"ContentDestination"];
   v10 = [v8 objectWithWFSerializedRepresentation:v9];
 
   if (v10)
   {
-    v11 = [v4 objectForKey:@"Status"];
+    v11 = [representationCopy objectForKey:@"Status"];
     if (v11)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [v4 objectForKey:@"Mode"];
+        v12 = [representationCopy objectForKey:@"Mode"];
         if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v13 = [v4 objectForKey:@"SourceContentAttribution"];
+          v13 = [representationCopy objectForKey:@"SourceContentAttribution"];
           if (v13)
           {
             v14 = MEMORY[0x1E6996D30];
-            v15 = [v4 objectForKey:@"SourceContentAttribution"];
+            v15 = [representationCopy objectForKey:@"SourceContentAttribution"];
             v16 = [v14 objectWithWFSerializedRepresentation:v15];
           }
 
@@ -369,7 +369,7 @@ LABEL_12:
             v16 = 0;
           }
 
-          v17 = [[a1 alloc] initWithMode:v12 sourceContentAttribution:v16 actionUUID:v7 contentDestination:v10 status:v11];
+          v17 = [[self alloc] initWithMode:v12 sourceContentAttribution:v16 actionUUID:v7 contentDestination:v10 status:v11];
         }
 
         else
@@ -458,14 +458,14 @@ LABEL_23:
   return v5;
 }
 
-+ (id)localizedDeniedPermissionsErrorWithContentDestination:(id)a3
++ (id)localizedDeniedPermissionsErrorWithContentDestination:(id)destination
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 localizedTitle];
+  destinationCopy = destination;
+  localizedTitle = [destinationCopy localizedTitle];
 
   v5 = MEMORY[0x1E696AEC0];
-  if (v4)
+  if (localizedTitle)
   {
     v6 = @"This shortcut can't access “%@”. You can change this in the shortcut’s privacy settings.";
   }
@@ -476,9 +476,9 @@ LABEL_23:
   }
 
   v7 = WFLocalizedString(v6);
-  v8 = [v3 localizedTitle];
+  localizedTitle2 = [destinationCopy localizedTitle];
 
-  v9 = [v5 localizedStringWithFormat:v7, v8];
+  v9 = [v5 localizedStringWithFormat:v7, localizedTitle2];
 
   v10 = MEMORY[0x1E696ABC0];
   v15 = *MEMORY[0x1E696A578];
@@ -491,11 +491,11 @@ LABEL_23:
   return v12;
 }
 
-+ (id)stateFromDatabaseData:(id)a3
++ (id)stateFromDatabaseData:(id)data
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0;
-  v4 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:0 error:&v13];
+  v4 = [MEMORY[0x1E696AE40] propertyListWithData:data options:0 format:0 error:&v13];
   v5 = v13;
   if (v5)
   {
@@ -513,7 +513,7 @@ LABEL_23:
 
   else
   {
-    v8 = [a1 objectWithWFSerializedRepresentation:v4];
+    v8 = [self objectWithWFSerializedRepresentation:v4];
     if (v8)
     {
       v6 = v8;

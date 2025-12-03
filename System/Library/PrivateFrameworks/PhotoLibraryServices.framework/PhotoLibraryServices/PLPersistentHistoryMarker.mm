@@ -1,47 +1,47 @@
 @interface PLPersistentHistoryMarker
-+ (id)markerWithDate:(id)a3;
-+ (id)markerWithToken:(id)a3;
-+ (id)markerWithTransaction:(id)a3;
++ (id)markerWithDate:(id)date;
++ (id)markerWithToken:(id)token;
++ (id)markerWithTransaction:(id)transaction;
 - (id)overrride_changeRequestForFetching;
 - (id)overrride_shortDescription;
 @end
 
 @implementation PLPersistentHistoryMarker
 
-+ (id)markerWithTransaction:(id)a3
++ (id)markerWithTransaction:(id)transaction
 {
-  v3 = a3;
-  v4 = [[PLPersistentHistoryMarkerTransaction alloc] initWithTransaction:v3];
+  transactionCopy = transaction;
+  v4 = [[PLPersistentHistoryMarkerTransaction alloc] initWithTransaction:transactionCopy];
 
   return v4;
 }
 
-+ (id)markerWithDate:(id)a3
++ (id)markerWithDate:(id)date
 {
-  v3 = a3;
-  v4 = [[PLPersistentHistoryMarkerDate alloc] initWithDate:v3];
+  dateCopy = date;
+  v4 = [[PLPersistentHistoryMarkerDate alloc] initWithDate:dateCopy];
 
   return v4;
 }
 
-+ (id)markerWithToken:(id)a3
++ (id)markerWithToken:(id)token
 {
-  v3 = a3;
-  v4 = [[PLPersistentHistoryMarkerToken alloc] initWithToken:v3];
+  tokenCopy = token;
+  v4 = [[PLPersistentHistoryMarkerToken alloc] initWithToken:tokenCopy];
 
   return v4;
 }
 
 - (id)overrride_shortDescription
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 - (id)overrride_changeRequestForFetching
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }

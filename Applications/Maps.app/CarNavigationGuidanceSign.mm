@@ -1,120 +1,120 @@
 @interface CarNavigationGuidanceSign
 - (BOOL)_shouldForceSecondaryManeuverViewHidden;
-- (BOOL)isPointInJunctionView:(CGPoint)a3;
+- (BOOL)isPointInJunctionView:(CGPoint)view;
 - (CarGuidanceCardSizeProviding)sizeProvider;
 - (CarManeuverView)primaryManeuverView;
 - (CarManeuverView)secondaryManeuverView;
-- (CarNavigationGuidanceSign)initWithDestination:(unint64_t)a3;
+- (CarNavigationGuidanceSign)initWithDestination:(unint64_t)destination;
 - (NSString)description;
 - (UIView)junctionView;
-- (double)_heightForCompressionStage:(unint64_t)a3 isMaximumCompression:(BOOL *)a4;
+- (double)_heightForCompressionStage:(unint64_t)stage isMaximumCompression:(BOOL *)compression;
 - (double)availableWidth;
-- (double)complementarySignHeightForManeuverView:(id)a3;
+- (double)complementarySignHeightForManeuverView:(id)view;
 - (double)dynamicPointScaleValue;
-- (double)maxAvailableHeightForJunctionView:(double)a3;
+- (double)maxAvailableHeightForJunctionView:(double)view;
 - (unint64_t)_desiredCompressionStage;
 - (void)_handleCarScreenSizeChange;
-- (void)_hideMiniSignAnimated:(BOOL)a3;
-- (void)_prepareManeuverView:(id)a3;
-- (void)_replacePrimaryViewManeuver:(id)a3 initialConstraints:(id)a4 finalConstraints:(id)a5 slide:(BOOL)a6;
-- (void)_replaceSecondaryViewManeuver:(id)a3 initialConstraints:(id)a4 finalConstraints:(id)a5;
+- (void)_hideMiniSignAnimated:(BOOL)animated;
+- (void)_prepareManeuverView:(id)view;
+- (void)_replacePrimaryViewManeuver:(id)maneuver initialConstraints:(id)constraints finalConstraints:(id)finalConstraints slide:(BOOL)slide;
+- (void)_replaceSecondaryViewManeuver:(id)maneuver initialConstraints:(id)constraints finalConstraints:(id)finalConstraints;
 - (void)_resetPrecalculatedCompressionSizes;
 - (void)_showMiniSign;
 - (void)_updateCompressionStage;
 - (void)_updateMiniSignVisibility;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)hideJunctionViewAnimated:(BOOL)a3;
+- (void)hideJunctionViewAnimated:(BOOL)animated;
 - (void)layoutSubviews;
 - (void)refreshJunctionView;
-- (void)setBlurMode:(int64_t)a3;
-- (void)setCompressionStage:(unint64_t)a3;
-- (void)setJunctionViewHidden:(BOOL)a3;
-- (void)setJunctionViewInfo:(id)a3;
-- (void)setJunctionViewTemporarilyHidden:(BOOL)a3;
-- (void)setLayoutType:(unint64_t)a3;
-- (void)setNextPrimaryManeuver:(id)a3;
-- (void)setPrimaryGuidance:(id)a3;
-- (void)setPrimaryGuidanceSignID:(id)a3;
-- (void)setPrimaryManeuver:(id)a3;
-- (void)setSecondaryGuidance:(id)a3;
-- (void)setSecondaryGuidanceSignID:(id)a3;
-- (void)setSecondaryViewHidden:(BOOL)a3;
-- (void)setSignStyle:(int64_t)a3;
-- (void)showJunctionViewAnimated:(BOOL)a3;
-- (void)updateWithGroupAnimation:(id)a3;
+- (void)setBlurMode:(int64_t)mode;
+- (void)setCompressionStage:(unint64_t)stage;
+- (void)setJunctionViewHidden:(BOOL)hidden;
+- (void)setJunctionViewInfo:(id)info;
+- (void)setJunctionViewTemporarilyHidden:(BOOL)hidden;
+- (void)setLayoutType:(unint64_t)type;
+- (void)setNextPrimaryManeuver:(id)maneuver;
+- (void)setPrimaryGuidance:(id)guidance;
+- (void)setPrimaryGuidanceSignID:(id)d;
+- (void)setPrimaryManeuver:(id)maneuver;
+- (void)setSecondaryGuidance:(id)guidance;
+- (void)setSecondaryGuidanceSignID:(id)d;
+- (void)setSecondaryViewHidden:(BOOL)hidden;
+- (void)setSignStyle:(int64_t)style;
+- (void)showJunctionViewAnimated:(BOOL)animated;
+- (void)updateWithGroupAnimation:(id)animation;
 @end
 
 @implementation CarNavigationGuidanceSign
 
 - (UIView)junctionView
 {
-  v2 = [(CarNavigationGuidanceSign *)self junctionViewController];
-  v3 = [v2 view];
+  junctionViewController = [(CarNavigationGuidanceSign *)self junctionViewController];
+  view = [junctionViewController view];
 
-  return v3;
+  return view;
 }
 
 - (CarManeuverView)secondaryManeuverView
 {
-  v3 = [(CarNavigationGuidanceSign *)self secondaryGuidanceSignID];
+  secondaryGuidanceSignID = [(CarNavigationGuidanceSign *)self secondaryGuidanceSignID];
 
-  if (!v3)
+  if (!secondaryGuidanceSignID)
   {
     goto LABEL_6;
   }
 
-  v4 = [(CarNavigationGuidanceSign *)self nextSecondaryManeuver];
+  nextSecondaryManeuver = [(CarNavigationGuidanceSign *)self nextSecondaryManeuver];
 
-  if (v4)
+  if (nextSecondaryManeuver)
   {
-    v5 = [(CarNavigationGuidanceSign *)self nextSecondaryManeuver];
+    nextSecondaryManeuver2 = [(CarNavigationGuidanceSign *)self nextSecondaryManeuver];
     goto LABEL_7;
   }
 
-  v6 = [(CarNavigationGuidanceSign *)self secondaryManeuver];
+  secondaryManeuver = [(CarNavigationGuidanceSign *)self secondaryManeuver];
 
-  if (v6)
+  if (secondaryManeuver)
   {
-    v5 = [(CarNavigationGuidanceSign *)self secondaryManeuver];
+    nextSecondaryManeuver2 = [(CarNavigationGuidanceSign *)self secondaryManeuver];
   }
 
   else
   {
 LABEL_6:
-    v5 = 0;
+    nextSecondaryManeuver2 = 0;
   }
 
 LABEL_7:
 
-  return v5;
+  return nextSecondaryManeuver2;
 }
 
 - (CarManeuverView)primaryManeuverView
 {
-  v3 = [(CarNavigationGuidanceSign *)self nextPrimaryManeuver];
+  nextPrimaryManeuver = [(CarNavigationGuidanceSign *)self nextPrimaryManeuver];
 
-  if (v3)
+  if (nextPrimaryManeuver)
   {
-    v4 = [(CarNavigationGuidanceSign *)self nextPrimaryManeuver];
+    nextPrimaryManeuver2 = [(CarNavigationGuidanceSign *)self nextPrimaryManeuver];
   }
 
   else
   {
-    v5 = [(CarNavigationGuidanceSign *)self primaryManeuver];
+    primaryManeuver = [(CarNavigationGuidanceSign *)self primaryManeuver];
 
-    if (v5)
+    if (primaryManeuver)
     {
-      v4 = [(CarNavigationGuidanceSign *)self primaryManeuver];
+      nextPrimaryManeuver2 = [(CarNavigationGuidanceSign *)self primaryManeuver];
     }
 
     else
     {
-      v4 = 0;
+      nextPrimaryManeuver2 = 0;
     }
   }
 
-  return v4;
+  return nextPrimaryManeuver2;
 }
 
 - (unint64_t)_desiredCompressionStage
@@ -124,22 +124,22 @@ LABEL_7:
     v3 = sub_10007E168();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
-      v4 = [(CarNavigationGuidanceSign *)self destination];
-      if (v4 > 4)
+      destination = [(CarNavigationGuidanceSign *)self destination];
+      if (destination > 4)
       {
         v5 = @".Unknown";
       }
 
       else
       {
-        v5 = *(&off_101623A48 + v4);
+        v5 = *(&off_101623A48 + destination);
       }
 
       v20 = v5;
       *buf = 138412546;
       v28 = v20;
       v29 = 2048;
-      v30 = self;
+      selfCopy3 = self;
       v21 = "%@ navSign: %p, _desiredCompressionStage isLowGuidance, because signStyle is .Mini.";
 LABEL_19:
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, v21, buf, 0x16u);
@@ -150,8 +150,8 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v6 = [(CarNavigationGuidanceSign *)self sizeProvider];
-  [v6 availableSize];
+  sizeProvider = [(CarNavigationGuidanceSign *)self sizeProvider];
+  [sizeProvider availableSize];
   v8 = v7;
   v10 = v9;
 
@@ -160,22 +160,22 @@ LABEL_19:
     v3 = sub_10007E168();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [(CarNavigationGuidanceSign *)self destination];
-      if (v11 > 4)
+      destination2 = [(CarNavigationGuidanceSign *)self destination];
+      if (destination2 > 4)
       {
         v12 = @".Unknown";
       }
 
       else
       {
-        v12 = *(&off_101623A48 + v11);
+        v12 = *(&off_101623A48 + destination2);
       }
 
       v20 = v12;
       *buf = 138412546;
       v28 = v20;
       v29 = 2048;
-      v30 = self;
+      selfCopy3 = self;
       v21 = "%@ navSign: %p, _desiredCompressionStage isLowGuidance, because availableWidth is < MinWidthSupportingFullGuidanceView";
       goto LABEL_19;
     }
@@ -204,28 +204,28 @@ LABEL_20:
   v17 = sub_10007E168();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(CarNavigationGuidanceSign *)self destination];
-    if (v18 > 4)
+    destination3 = [(CarNavigationGuidanceSign *)self destination];
+    if (destination3 > 4)
     {
       v19 = @".Unknown";
     }
 
     else
     {
-      v19 = *(&off_101623A48 + v18);
+      v19 = *(&off_101623A48 + destination3);
     }
 
     v22 = v19;
-    v23 = [(CarNavigationGuidanceSign *)self compressionStage];
+    compressionStage = [(CarNavigationGuidanceSign *)self compressionStage];
     v39.width = v8;
     v39.height = v10;
     v24 = NSStringFromCGSize(v39);
     *buf = 138413570;
     v28 = v22;
     v29 = 2048;
-    v30 = self;
+    selfCopy3 = self;
     v31 = 2048;
-    v32 = v23;
+    v32 = compressionStage;
     v33 = 2048;
     v34 = v15;
     v35 = 2112;
@@ -240,10 +240,10 @@ LABEL_20:
 
 - (BOOL)_shouldForceSecondaryManeuverViewHidden
 {
-  v3 = [(CarNavigationGuidanceSign *)self destination];
-  if (v3 - 3 >= 2)
+  destination = [(CarNavigationGuidanceSign *)self destination];
+  if (destination - 3 >= 2)
   {
-    return v3 > 1 || [(CarNavigationGuidanceSign *)self signStyle]== 1;
+    return destination > 1 || [(CarNavigationGuidanceSign *)self signStyle]== 1;
   }
 
   return GEOConfigGetBOOL();
@@ -254,36 +254,36 @@ LABEL_20:
   v15.receiver = self;
   v15.super_class = CarNavigationGuidanceSign;
   [(CarNavigationGuidanceSign *)&v15 layoutSubviews];
-  v3 = [(CarNavigationGuidanceSign *)self primaryManeuverView];
+  primaryManeuverView = [(CarNavigationGuidanceSign *)self primaryManeuverView];
 
-  if (v3)
+  if (primaryManeuverView)
   {
-    v4 = [(CarNavigationGuidanceSign *)self layoutType];
-    v5 = [(CarNavigationGuidanceSign *)self sizeProvider];
-    -[CarNavigationGuidanceSign setLayoutType:](self, "setLayoutType:", [v5 maneuverViewLayoutType]);
+    layoutType = [(CarNavigationGuidanceSign *)self layoutType];
+    sizeProvider = [(CarNavigationGuidanceSign *)self sizeProvider];
+    -[CarNavigationGuidanceSign setLayoutType:](self, "setLayoutType:", [sizeProvider maneuverViewLayoutType]);
 
     [(CarNavigationGuidanceSign *)self _updateCompressionStage];
-    v6 = [(CarNavigationGuidanceSign *)self junctionViewInfo];
-    if (v6)
+    junctionViewInfo = [(CarNavigationGuidanceSign *)self junctionViewInfo];
+    if (junctionViewInfo)
     {
-      v7 = v6;
-      v8 = [(CarNavigationGuidanceSign *)self junctionView];
-      v9 = [v8 isHidden];
+      v7 = junctionViewInfo;
+      junctionView = [(CarNavigationGuidanceSign *)self junctionView];
+      isHidden = [junctionView isHidden];
 
-      if ((v9 & 1) == 0)
+      if ((isHidden & 1) == 0)
       {
         [(CarNavigationGuidanceSign *)self maxAvailableHeightForJunctionView:0.0];
         v11 = v10;
-        v12 = [(CarNavigationGuidanceSign *)self junctionViewController];
-        [v12 setAvailableHeight:v11];
+        junctionViewController = [(CarNavigationGuidanceSign *)self junctionViewController];
+        [junctionViewController setAvailableHeight:v11];
       }
     }
 
-    if ([(CarNavigationGuidanceSign *)self layoutType]== v4)
+    if ([(CarNavigationGuidanceSign *)self layoutType]== layoutType)
     {
-      v13 = [(CarNavigationGuidanceSign *)self secondaryManeuverView];
-      v14 = [(CarNavigationGuidanceSign *)self primaryManeuverView];
-      [v13 alignSecondarySignSubviewsToPrimaryManeuverView:v14];
+      secondaryManeuverView = [(CarNavigationGuidanceSign *)self secondaryManeuverView];
+      primaryManeuverView2 = [(CarNavigationGuidanceSign *)self primaryManeuverView];
+      [secondaryManeuverView alignSecondarySignSubviewsToPrimaryManeuverView:primaryManeuverView2];
     }
   }
 }
@@ -303,27 +303,27 @@ LABEL_20:
     v4 = sub_10007E168();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v5 = [(CarNavigationGuidanceSign *)self destination];
-      if (v5 > 4)
+      destination = [(CarNavigationGuidanceSign *)self destination];
+      if (destination > 4)
       {
         v6 = @".Unknown";
       }
 
       else
       {
-        v6 = *(&off_101623A48 + v5);
+        v6 = *(&off_101623A48 + destination);
       }
 
       v11 = v6;
       v23 = 138412546;
       v24 = v11;
       v25 = 2048;
-      v26 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "%@ navSign: %p, layoutSubviews, but availableWidth was 0. setting compressionStage to None.", &v23, 0x16u);
     }
 
-    v12 = self;
-    v13 = 0;
+    selfCopy5 = self;
+    _desiredCompressionStage = 0;
   }
 
   else
@@ -334,15 +334,15 @@ LABEL_20:
       v8 = sub_10007E168();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        v9 = [(CarNavigationGuidanceSign *)self destination];
-        if (v9 > 4)
+        destination2 = [(CarNavigationGuidanceSign *)self destination];
+        if (destination2 > 4)
         {
           v10 = @".Unknown";
         }
 
         else
         {
-          v10 = *(&off_101623A48 + v9);
+          v10 = *(&off_101623A48 + destination2);
         }
 
         v14 = v10;
@@ -350,7 +350,7 @@ LABEL_20:
         v23 = 138413058;
         v24 = v14;
         v25 = 2048;
-        v26 = self;
+        selfCopy4 = self;
         v27 = 2048;
         v28 = widthAtLastCompressionUpdate;
         v29 = 2048;
@@ -362,45 +362,45 @@ LABEL_20:
       self->_widthAtLastCompressionUpdate = v7;
       [(CarNavigationGuidanceSign *)self _heightForCompressionStage:-1 isMaximumCompression:0];
       v17 = v16;
-      v18 = [(CarNavigationGuidanceSign *)self minimumCompressedContentLayoutGuideHeightConstraint];
-      [v18 setConstant:v17];
+      minimumCompressedContentLayoutGuideHeightConstraint = [(CarNavigationGuidanceSign *)self minimumCompressedContentLayoutGuideHeightConstraint];
+      [minimumCompressedContentLayoutGuideHeightConstraint setConstant:v17];
     }
 
     v19 = sub_10007E168();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [(CarNavigationGuidanceSign *)self destination];
-      if (v20 > 4)
+      destination3 = [(CarNavigationGuidanceSign *)self destination];
+      if (destination3 > 4)
       {
         v21 = @".Unknown";
       }
 
       else
       {
-        v21 = *(&off_101623A48 + v20);
+        v21 = *(&off_101623A48 + destination3);
       }
 
       v22 = v21;
       v23 = 138412802;
       v24 = v22;
       v25 = 2048;
-      v26 = self;
+      selfCopy4 = self;
       v27 = 2048;
       v28 = v7;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "%@ navSign: %p, layoutSubviews, availableWidth width is %1.f.", &v23, 0x20u);
     }
 
-    v13 = [(CarNavigationGuidanceSign *)self _desiredCompressionStage];
-    v12 = self;
+    _desiredCompressionStage = [(CarNavigationGuidanceSign *)self _desiredCompressionStage];
+    selfCopy5 = self;
   }
 
-  [(CarNavigationGuidanceSign *)v12 setCompressionStage:v13];
+  [(CarNavigationGuidanceSign *)selfCopy5 setCompressionStage:_desiredCompressionStage];
 }
 
 - (double)availableWidth
 {
-  v2 = [(CarNavigationGuidanceSign *)self sizeProvider];
-  [v2 availableSize];
+  sizeProvider = [(CarNavigationGuidanceSign *)self sizeProvider];
+  [sizeProvider availableSize];
   v4 = v3;
 
   return v4;
@@ -422,9 +422,9 @@ LABEL_20:
   v7.receiver = self;
   v7.super_class = CarNavigationGuidanceSign;
   [(CarNavigationGuidanceSign *)&v7 didMoveToWindow];
-  v3 = [(CarNavigationGuidanceSign *)self window];
+  window = [(CarNavigationGuidanceSign *)self window];
 
-  if (v3)
+  if (window)
   {
     objc_initWeak(&location, self);
     v4[0] = _NSConcreteStackBlock;
@@ -443,15 +443,15 @@ LABEL_20:
   v9.receiver = self;
   v9.super_class = CarNavigationGuidanceSign;
   v3 = [(CarNavigationGuidanceSign *)&v9 description];
-  v4 = [(CarNavigationGuidanceSign *)self destination];
-  if (v4 > 4)
+  destination = [(CarNavigationGuidanceSign *)self destination];
+  if (destination > 4)
   {
     v5 = @".Unknown";
   }
 
   else
   {
-    v5 = *(&off_101623A48 + v4);
+    v5 = *(&off_101623A48 + destination);
   }
 
   v6 = v5;
@@ -465,48 +465,48 @@ LABEL_20:
   v3 = sub_10007E168();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(CarNavigationGuidanceSign *)self destination];
-    if (v4 > 4)
+    destination = [(CarNavigationGuidanceSign *)self destination];
+    if (destination > 4)
     {
       v5 = @".Unknown";
     }
 
     else
     {
-      v5 = *(&off_101623A48 + v4);
+      v5 = *(&off_101623A48 + destination);
     }
 
     v6 = v5;
     v8 = 138412546;
     v9 = v6;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "%@ navSign: %p, _handleCarScreenSizeChange", &v8, 0x16u);
   }
 
-  v7 = [(CarNavigationGuidanceSign *)self sizeProvider];
-  -[CarNavigationGuidanceSign setLayoutType:](self, "setLayoutType:", [v7 maneuverViewLayoutType]);
+  sizeProvider = [(CarNavigationGuidanceSign *)self sizeProvider];
+  -[CarNavigationGuidanceSign setLayoutType:](self, "setLayoutType:", [sizeProvider maneuverViewLayoutType]);
 }
 
-- (void)updateWithGroupAnimation:(id)a3
+- (void)updateWithGroupAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v7 = objc_opt_new();
   v8 = sub_10007E168();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(CarNavigationGuidanceSign *)self primaryManeuver];
-    v10 = [(CarNavigationGuidanceSign *)self primaryManeuver];
-    v11 = [v10 guidance];
-    v12 = [v11 signID];
+    primaryManeuver = [(CarNavigationGuidanceSign *)self primaryManeuver];
+    primaryManeuver2 = [(CarNavigationGuidanceSign *)self primaryManeuver];
+    guidance = [primaryManeuver2 guidance];
+    signID = [guidance signID];
     *buf = 134218498;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
-    v28 = v9;
+    v28 = primaryManeuver;
     v29 = 2112;
-    v30 = v12;
+    v30 = signID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%p: updateWithGroupAnimation in primary sign %@ (%@)", buf, 0x20u);
   }
 
@@ -534,38 +534,38 @@ LABEL_20:
   v13 = v22;
   v14 = v24;
   v15 = v23;
-  [v4 addPreparation:v21 animations:v17 completion:v16];
+  [animationCopy addPreparation:v21 animations:v17 completion:v16];
 }
 
-- (void)setLayoutType:(unint64_t)a3
+- (void)setLayoutType:(unint64_t)type
 {
-  if ([(CarNavigationGuidanceSign *)self layoutType]!= a3)
+  if ([(CarNavigationGuidanceSign *)self layoutType]!= type)
   {
-    self->_layoutType = a3;
+    self->_layoutType = type;
     v5 = sub_10007E168();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(CarNavigationGuidanceSign *)self destination];
-      if (v6 > 4)
+      destination = [(CarNavigationGuidanceSign *)self destination];
+      if (destination > 4)
       {
         v7 = @".Unknown";
       }
 
       else
       {
-        v7 = *(&off_101623A48 + v6);
+        v7 = *(&off_101623A48 + destination);
       }
 
       v8 = v7;
-      v9 = [(CarNavigationGuidanceSign *)self layoutType];
-      if (v9 > 2)
+      layoutType = [(CarNavigationGuidanceSign *)self layoutType];
+      if (layoutType > 2)
       {
         v10 = @".Unknown";
       }
 
       else
       {
-        v10 = *(&off_101656260 + v9);
+        v10 = *(&off_101656260 + layoutType);
       }
 
       v11 = v10;
@@ -576,39 +576,39 @@ LABEL_20:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@ navSign layoutType changed to %@. Updating carManeuver views.", &v18, 0x16u);
     }
 
-    v12 = [(CarNavigationGuidanceSign *)self primaryManeuver];
-    [v12 setLayoutType:{-[CarNavigationGuidanceSign layoutType](self, "layoutType")}];
+    primaryManeuver = [(CarNavigationGuidanceSign *)self primaryManeuver];
+    [primaryManeuver setLayoutType:{-[CarNavigationGuidanceSign layoutType](self, "layoutType")}];
 
-    v13 = [(CarNavigationGuidanceSign *)self nextPrimaryManeuver];
-    [v13 setLayoutType:{-[CarNavigationGuidanceSign layoutType](self, "layoutType")}];
+    nextPrimaryManeuver = [(CarNavigationGuidanceSign *)self nextPrimaryManeuver];
+    [nextPrimaryManeuver setLayoutType:{-[CarNavigationGuidanceSign layoutType](self, "layoutType")}];
 
-    v14 = [(CarNavigationGuidanceSign *)self secondaryManeuver];
-    [v14 setLayoutType:{-[CarNavigationGuidanceSign layoutType](self, "layoutType")}];
+    secondaryManeuver = [(CarNavigationGuidanceSign *)self secondaryManeuver];
+    [secondaryManeuver setLayoutType:{-[CarNavigationGuidanceSign layoutType](self, "layoutType")}];
 
-    v15 = [(CarNavigationGuidanceSign *)self nextSecondaryManeuver];
-    [v15 setLayoutType:{-[CarNavigationGuidanceSign layoutType](self, "layoutType")}];
+    nextSecondaryManeuver = [(CarNavigationGuidanceSign *)self nextSecondaryManeuver];
+    [nextSecondaryManeuver setLayoutType:{-[CarNavigationGuidanceSign layoutType](self, "layoutType")}];
 
-    v16 = [(CarNavigationGuidanceSign *)self secondaryManeuverView];
-    v17 = [(CarNavigationGuidanceSign *)self primaryManeuverView];
-    [v16 alignSecondarySignSubviewsToPrimaryManeuverView:v17];
+    secondaryManeuverView = [(CarNavigationGuidanceSign *)self secondaryManeuverView];
+    primaryManeuverView = [(CarNavigationGuidanceSign *)self primaryManeuverView];
+    [secondaryManeuverView alignSecondarySignSubviewsToPrimaryManeuverView:primaryManeuverView];
   }
 }
 
-- (void)_replaceSecondaryViewManeuver:(id)a3 initialConstraints:(id)a4 finalConstraints:(id)a5
+- (void)_replaceSecondaryViewManeuver:(id)maneuver initialConstraints:(id)constraints finalConstraints:(id)finalConstraints
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  maneuverCopy = maneuver;
+  finalConstraintsCopy = finalConstraints;
+  constraintsCopy = constraints;
   v11 = sub_10007E168();
   if (!os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     goto LABEL_11;
   }
 
-  v12 = self;
-  if (!v12)
+  selfCopy = self;
+  if (!selfCopy)
   {
-    v17 = @"<nil>";
+    selfCopy = @"<nil>";
     goto LABEL_10;
   }
 
@@ -616,63 +616,63 @@ LABEL_20:
   v14 = NSStringFromClass(v13);
   if (objc_opt_respondsToSelector())
   {
-    v15 = [(CarNavigationGuidanceSign *)v12 performSelector:"accessibilityIdentifier"];
+    v15 = [(CarNavigationGuidanceSign *)selfCopy performSelector:"accessibilityIdentifier"];
     v16 = v15;
     if (v15 && ![v15 isEqualToString:v14])
     {
-      v17 = [NSString stringWithFormat:@"%@<%p, %@>", v14, v12, v16];
+      selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v14, selfCopy, v16];
 
       goto LABEL_8;
     }
   }
 
-  v17 = [NSString stringWithFormat:@"%@<%p>", v14, v12];
+  selfCopy = [NSString stringWithFormat:@"%@<%p>", v14, selfCopy];
 LABEL_8:
 
 LABEL_10:
   *buf = 138543362;
-  v36 = v17;
+  v36 = selfCopy;
   _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}@] _replaceSecondaryViewManeuver.", buf, 0xCu);
 
 LABEL_11:
   v18 = objc_opt_new();
-  if (v8)
+  if (maneuverCopy)
   {
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(CarNavigationGuidanceSign *)self _prepareManeuverView:v8];
-    v19 = [(CarNavigationGuidanceSign *)self secondaryView];
-    [v19 setHidden:0];
+    [maneuverCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(CarNavigationGuidanceSign *)self _prepareManeuverView:maneuverCopy];
+    secondaryView = [(CarNavigationGuidanceSign *)self secondaryView];
+    [secondaryView setHidden:0];
 
-    v20 = [(CarNavigationGuidanceSign *)self secondaryViewHidden];
-    v21 = [(CarNavigationGuidanceSign *)self hairlineView];
-    [v21 setHidden:v20];
+    secondaryViewHidden = [(CarNavigationGuidanceSign *)self secondaryViewHidden];
+    hairlineView = [(CarNavigationGuidanceSign *)self hairlineView];
+    [hairlineView setHidden:secondaryViewHidden];
 
-    [v8 setHidden:{-[CarNavigationGuidanceSign secondaryViewHidden](self, "secondaryViewHidden")}];
-    v22 = [(CarNavigationGuidanceSign *)self secondaryView];
-    [v22 addSubview:v8];
+    [maneuverCopy setHidden:{-[CarNavigationGuidanceSign secondaryViewHidden](self, "secondaryViewHidden")}];
+    secondaryView2 = [(CarNavigationGuidanceSign *)self secondaryView];
+    [secondaryView2 addSubview:maneuverCopy];
 
-    v23 = [(CarNavigationGuidanceSign *)self secondaryView];
+    secondaryView3 = [(CarNavigationGuidanceSign *)self secondaryView];
     LODWORD(v24) = 1148846080;
     LODWORD(v25) = 1148846080;
     LODWORD(v26) = 1148846080;
     LODWORD(v27) = 1148846080;
-    v28 = [v8 _maps_constraintsForCenteringInView:v23 edgeInsets:UIEdgeInsetsZero.top priorities:{UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, v24, v25, v26, v27}];
+    v28 = [maneuverCopy _maps_constraintsForCenteringInView:secondaryView3 edgeInsets:UIEdgeInsetsZero.top priorities:{UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, v24, v25, v26, v27}];
     [v18 addObjectsFromArray:v28];
 
-    v29 = [(CarNavigationGuidanceSign *)self secondaryViewConstraints];
-    [NSLayoutConstraint activateConstraints:v29];
+    secondaryViewConstraints = [(CarNavigationGuidanceSign *)self secondaryViewConstraints];
+    [NSLayoutConstraint activateConstraints:secondaryViewConstraints];
   }
 
   else
   {
-    v30 = [(CarNavigationGuidanceSign *)self secondaryView];
-    [v30 setHidden:1];
+    secondaryView4 = [(CarNavigationGuidanceSign *)self secondaryView];
+    [secondaryView4 setHidden:1];
 
-    v31 = [(CarNavigationGuidanceSign *)self hairlineView];
-    [v31 setHidden:1];
+    hairlineView2 = [(CarNavigationGuidanceSign *)self hairlineView];
+    [hairlineView2 setHidden:1];
 
-    v29 = [(CarNavigationGuidanceSign *)self secondaryViewConstraints];
-    [NSLayoutConstraint deactivateConstraints:v29];
+    secondaryViewConstraints = [(CarNavigationGuidanceSign *)self secondaryViewConstraints];
+    [NSLayoutConstraint deactivateConstraints:secondaryViewConstraints];
   }
 
   if ([(CarNavigationGuidanceSign *)self secondaryViewHidden])
@@ -685,38 +685,38 @@ LABEL_11:
     v32 = 200.0;
   }
 
-  v33 = [(CarNavigationGuidanceSign *)self secondaryViewHeightConstraint];
-  [v33 setConstant:v32];
+  secondaryViewHeightConstraint = [(CarNavigationGuidanceSign *)self secondaryViewHeightConstraint];
+  [secondaryViewHeightConstraint setConstant:v32];
 
-  [v10 addObjectsFromArray:v18];
-  [v9 addObjectsFromArray:v18];
+  [constraintsCopy addObjectsFromArray:v18];
+  [finalConstraintsCopy addObjectsFromArray:v18];
 
-  v34 = [(CarNavigationGuidanceSign *)self secondaryManeuver];
-  [v34 setStopUpdatingCompressionStage:1];
+  secondaryManeuver = [(CarNavigationGuidanceSign *)self secondaryManeuver];
+  [secondaryManeuver setStopUpdatingCompressionStage:1];
 }
 
-- (void)_replacePrimaryViewManeuver:(id)a3 initialConstraints:(id)a4 finalConstraints:(id)a5 slide:(BOOL)a6
+- (void)_replacePrimaryViewManeuver:(id)maneuver initialConstraints:(id)constraints finalConstraints:(id)finalConstraints slide:(BOOL)slide
 {
-  v106 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
-  v13 = [(CarNavigationGuidanceSign *)self primaryManeuver];
-  v113 = self;
-  v14 = [(CarNavigationGuidanceSign *)self primaryView];
+  slideCopy = slide;
+  maneuverCopy = maneuver;
+  constraintsCopy = constraints;
+  finalConstraintsCopy = finalConstraints;
+  v12 = maneuverCopy;
+  primaryManeuver = [(CarNavigationGuidanceSign *)self primaryManeuver];
+  selfCopy = self;
+  primaryView = [(CarNavigationGuidanceSign *)self primaryView];
   v15 = sub_10007E168();
-  v112 = v13;
-  v109 = v10;
+  v112 = primaryManeuver;
+  v109 = constraintsCopy;
   if (!os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     goto LABEL_13;
   }
 
-  v16 = self;
-  if (!v16)
+  selfCopy2 = self;
+  if (!selfCopy2)
   {
-    v21 = @"<nil>";
+    selfCopy2 = @"<nil>";
     goto LABEL_10;
   }
 
@@ -724,29 +724,29 @@ LABEL_11:
   v18 = NSStringFromClass(v17);
   if (objc_opt_respondsToSelector())
   {
-    v19 = [(CarNavigationGuidanceSign *)v16 performSelector:"accessibilityIdentifier"];
+    v19 = [(CarNavigationGuidanceSign *)selfCopy2 performSelector:"accessibilityIdentifier"];
     v20 = v19;
     if (v19 && ![v19 isEqualToString:v18])
     {
-      v21 = [NSString stringWithFormat:@"%@<%p, %@>", v18, v16, v20];
+      selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v18, selfCopy2, v20];
 
       goto LABEL_8;
     }
   }
 
-  v21 = [NSString stringWithFormat:@"%@<%p>", v18, v16];
+  selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v18, selfCopy2];
 LABEL_8:
 
 LABEL_10:
-  v22 = [v12 guidance];
-  v23 = [v22 signID];
-  v24 = [v13 guidance];
-  v25 = [v24 signID];
-  v26 = v25;
+  guidance = [v12 guidance];
+  signID = [guidance signID];
+  guidance2 = [primaryManeuver guidance];
+  signID2 = [guidance2 signID];
+  v26 = signID2;
   *buf = 138544642;
   v27 = @"NO";
-  *&buf[4] = v21;
-  if (v106)
+  *&buf[4] = selfCopy2;
+  if (slideCopy)
   {
     v27 = @"YES";
   }
@@ -754,28 +754,28 @@ LABEL_10:
   *&buf[12] = 2112;
   *&buf[14] = v12;
   *&buf[22] = 2112;
-  v120 = v23;
+  v120 = signID;
   v121 = 2112;
-  v122 = v13;
+  v122 = primaryManeuver;
   v123 = 2112;
-  v124 = v25;
+  v124 = signID2;
   v125 = 2112;
   v126 = v27;
   v28 = v27;
   _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%{public}@] _replacePrimaryViewManeuver incoming: %@ (%@) outgoing: %@ (%@) shouldSlide: %@", buf, 0x3Eu);
 
-  v13 = v112;
-  v10 = v109;
+  primaryManeuver = v112;
+  constraintsCopy = v109;
 LABEL_13:
 
   if (v12)
   {
-    v29 = [v14 subviews];
-    v30 = sub_1000282CC(v29, &stru_1016325B0);
+    subviews = [primaryView subviews];
+    v30 = sub_1000282CC(subviews, &stru_1016325B0);
 
     v104 = v30;
-    v103 = v11;
-    v105 = v14;
+    v103 = finalConstraintsCopy;
+    v105 = primaryView;
     if ([v30 count] >= 2)
     {
       v31 = sub_10006D178();
@@ -805,25 +805,25 @@ LABEL_13:
       v34 = sub_10007E168();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
       {
-        v35 = [(CarNavigationGuidanceSign *)v113 destination];
-        if (v35 > 4)
+        destination = [(CarNavigationGuidanceSign *)selfCopy destination];
+        if (destination > 4)
         {
           v36 = @".Unknown";
         }
 
         else
         {
-          v36 = *(&off_101623A48 + v35);
+          v36 = *(&off_101623A48 + destination);
         }
 
         v40 = v36;
-        v41 = [(CarNavigationGuidanceSign *)v113 recursiveDescription];
+        recursiveDescription = [(CarNavigationGuidanceSign *)selfCopy recursiveDescription];
         *buf = 138412802;
         *&buf[4] = v40;
         *&buf[12] = 2048;
-        *&buf[14] = v113;
+        *&buf[14] = selfCopy;
         *&buf[22] = 2112;
-        v120 = v41;
+        v120 = recursiveDescription;
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_FAULT, "%@ navSign: %p, _replacePrimaryViewManeuver found lingering views in primaryView -> will forcefully remove them. view hierarchy: %@", buf, 0x20u);
       }
 
@@ -847,28 +847,28 @@ LABEL_13:
             }
 
             v47 = *(*(&v114 + 1) + 8 * i);
-            if (v47 != v13)
+            if (v47 != primaryManeuver)
             {
               v48 = sub_10007E168();
               if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
               {
-                v49 = [(CarNavigationGuidanceSign *)v113 destination];
+                destination2 = [(CarNavigationGuidanceSign *)selfCopy destination];
                 v50 = @".Unknown";
-                if (v49 <= 4)
+                if (destination2 <= 4)
                 {
-                  v50 = *(&off_101623A48 + v49);
+                  v50 = *(&off_101623A48 + destination2);
                 }
 
                 v51 = v50;
                 *buf = 138412802;
                 *&buf[4] = v51;
                 *&buf[12] = 2048;
-                *&buf[14] = v113;
+                *&buf[14] = selfCopy;
                 *&buf[22] = 2112;
                 v120 = v47;
                 _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "%@ navSign: %p, will remove lingering view: %@", buf, 0x20u);
 
-                v13 = v112;
+                primaryManeuver = v112;
               }
 
               [v47 removeFromSuperview];
@@ -881,33 +881,33 @@ LABEL_13:
         while (v44);
       }
 
-      v10 = v109;
-      v11 = v103;
-      v14 = v105;
+      constraintsCopy = v109;
+      finalConstraintsCopy = v103;
+      primaryView = v105;
     }
 
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(CarNavigationGuidanceSign *)v113 _prepareManeuverView:v12];
-    v52 = [(CarNavigationGuidanceSign *)v113 primaryView];
-    [v52 addSubview:v12];
+    [(CarNavigationGuidanceSign *)selfCopy _prepareManeuverView:v12];
+    primaryView2 = [(CarNavigationGuidanceSign *)selfCopy primaryView];
+    [primaryView2 addSubview:v12];
 
-    if (v106)
+    if (slideCopy)
     {
-      v57 = v14;
+      v57 = primaryView;
       v58 = v12;
-      v110 = [v58 topAnchor];
-      v107 = [v57 topAnchor];
-      v102 = [v110 constraintEqualToAnchor:v107];
+      topAnchor = [v58 topAnchor];
+      topAnchor2 = [v57 topAnchor];
+      v102 = [topAnchor constraintEqualToAnchor:topAnchor2];
       *buf = v102;
-      v59 = [v58 leadingAnchor];
-      v60 = [v57 trailingAnchor];
-      v61 = [v59 constraintEqualToAnchor:v60];
+      leadingAnchor = [v58 leadingAnchor];
+      trailingAnchor = [v57 trailingAnchor];
+      v61 = [leadingAnchor constraintEqualToAnchor:trailingAnchor];
       *&buf[8] = v61;
-      v62 = [v58 heightAnchor];
+      heightAnchor = [v58 heightAnchor];
       [v58 bounds];
-      v63 = [v62 constraintEqualToConstant:CGRectGetHeight(v127)];
+      v63 = [heightAnchor constraintEqualToConstant:CGRectGetHeight(v127)];
       *&buf[16] = v63;
-      v64 = [v58 widthAnchor];
+      widthAnchor = [v58 widthAnchor];
 
       [v57 bounds];
       v66 = v65;
@@ -919,50 +919,50 @@ LABEL_13:
       v128.origin.y = v68;
       v128.size.width = v70;
       v128.size.height = v72;
-      v73 = [v64 constraintEqualToConstant:CGRectGetWidth(v128)];
+      v73 = [widthAnchor constraintEqualToConstant:CGRectGetWidth(v128)];
       v120 = v73;
       v74 = [NSArray arrayWithObjects:buf count:4];
 
-      v10 = v109;
-      v11 = v103;
+      constraintsCopy = v109;
+      finalConstraintsCopy = v103;
 
       [v109 addObjectsFromArray:v74];
       if (!v112)
       {
 LABEL_52:
         LODWORD(v75) = 1148846080;
-        v14 = v105;
+        primaryView = v105;
         LODWORD(v76) = 1148846080;
         LODWORD(v77) = 1148846080;
         LODWORD(v78) = 1148846080;
         v99 = [v12 _maps_constraintsForCenteringInView:v105 edgeInsets:UIEdgeInsetsZero.top priorities:{UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, v75, v76, v77, v78}];
-        [(CarNavigationGuidanceSign *)v113 setPrimaryManeuverConstraints:v99];
+        [(CarNavigationGuidanceSign *)selfCopy setPrimaryManeuverConstraints:v99];
 
-        v100 = [(CarNavigationGuidanceSign *)v113 primaryManeuverConstraints];
-        [v11 addObjectsFromArray:v100];
+        primaryManeuverConstraints = [(CarNavigationGuidanceSign *)selfCopy primaryManeuverConstraints];
+        [finalConstraintsCopy addObjectsFromArray:primaryManeuverConstraints];
 
-        v101 = [(CarNavigationGuidanceSign *)v113 primaryManeuver];
-        [v101 setStopUpdatingCompressionStage:1];
+        primaryManeuver2 = [(CarNavigationGuidanceSign *)selfCopy primaryManeuver];
+        [primaryManeuver2 setStopUpdatingCompressionStage:1];
 
-        v13 = v112;
+        primaryManeuver = v112;
         goto LABEL_53;
       }
 
       v79 = v57;
       v80 = v112;
-      v81 = [v80 topAnchor];
-      v111 = [v79 topAnchor];
-      v108 = [v81 constraintEqualToAnchor:v111];
+      topAnchor3 = [v80 topAnchor];
+      topAnchor4 = [v79 topAnchor];
+      v108 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       *buf = v108;
-      v82 = [v80 trailingAnchor];
-      v83 = [v79 leadingAnchor];
-      v84 = [v82 constraintEqualToAnchor:v83];
+      trailingAnchor2 = [v80 trailingAnchor];
+      leadingAnchor2 = [v79 leadingAnchor];
+      v84 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor2];
       *&buf[8] = v84;
-      v85 = [v80 heightAnchor];
+      heightAnchor2 = [v80 heightAnchor];
       [v80 bounds];
-      v86 = [v85 constraintEqualToConstant:CGRectGetHeight(v129)];
+      v86 = [heightAnchor2 constraintEqualToConstant:CGRectGetHeight(v129)];
       *&buf[16] = v86;
-      v87 = [v80 widthAnchor];
+      widthAnchor2 = [v80 widthAnchor];
 
       [v79 bounds];
       v89 = v88;
@@ -974,12 +974,12 @@ LABEL_52:
       v130.origin.y = v91;
       v130.size.width = v93;
       v130.size.height = v95;
-      v96 = [v87 constraintEqualToConstant:CGRectGetWidth(v130)];
+      v96 = [widthAnchor2 constraintEqualToConstant:CGRectGetWidth(v130)];
       v120 = v96;
       v97 = [NSArray arrayWithObjects:buf count:4];
 
-      v10 = v109;
-      v11 = v103;
+      constraintsCopy = v109;
+      finalConstraintsCopy = v103;
 
       v98 = v103;
     }
@@ -990,8 +990,8 @@ LABEL_52:
       LODWORD(v54) = 1148846080;
       LODWORD(v55) = 1148846080;
       LODWORD(v56) = 1148846080;
-      v97 = [v12 _maps_constraintsForCenteringInView:v14 edgeInsets:UIEdgeInsetsZero.top priorities:{UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, v53, v54, v55, v56}];
-      v98 = v10;
+      v97 = [v12 _maps_constraintsForCenteringInView:primaryView edgeInsets:UIEdgeInsetsZero.top priorities:{UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, v53, v54, v55, v56}];
+      v98 = constraintsCopy;
     }
 
     [v98 addObjectsFromArray:v97];
@@ -1023,25 +1023,25 @@ LABEL_52:
     }
   }
 
-  [v13 setStopUpdatingCompressionStage:1];
-  [v13 removeFromSuperview];
+  [primaryManeuver setStopUpdatingCompressionStage:1];
+  [primaryManeuver removeFromSuperview];
 LABEL_53:
 }
 
-- (double)complementarySignHeightForManeuverView:(id)a3
+- (double)complementarySignHeightForManeuverView:(id)view
 {
-  v4 = a3;
-  v5 = [(CarNavigationGuidanceSign *)self secondaryManeuverView];
+  viewCopy = view;
+  secondaryManeuverView = [(CarNavigationGuidanceSign *)self secondaryManeuverView];
   Height = 0.0;
-  if (!v5)
+  if (!secondaryManeuverView)
   {
-    v7 = [(CarNavigationGuidanceSign *)self hairlineView];
-    [v7 frame];
+    hairlineView = [(CarNavigationGuidanceSign *)self hairlineView];
+    [hairlineView frame];
     Height = CGRectGetHeight(v12);
   }
 
-  v8 = [v4 variant];
-  if (v8 == 2)
+  variant = [viewCopy variant];
+  if (variant == 2)
   {
     [(CarNavigationGuidanceSign *)self primaryManeuverView];
   }
@@ -1057,39 +1057,39 @@ LABEL_53:
   return v10 + Height;
 }
 
-- (void)_prepareManeuverView:(id)a3
+- (void)_prepareManeuverView:(id)view
 {
-  v4 = a3;
-  v5 = [(CarNavigationGuidanceSign *)self sizeProvider];
-  [v5 availableSize];
+  viewCopy = view;
+  sizeProvider = [(CarNavigationGuidanceSign *)self sizeProvider];
+  [sizeProvider availableSize];
   v7 = v6;
   v9 = v8;
 
   v10 = [[UIView alloc] initWithFrame:{0.0, 0.0, v7, 1.79769313e308}];
-  [v10 addSubview:v4];
-  v28 = [v4 topAnchor];
-  v27 = [v10 topAnchor];
-  v11 = [v28 constraintEqualToAnchor:v27];
+  [v10 addSubview:viewCopy];
+  topAnchor = [viewCopy topAnchor];
+  topAnchor2 = [v10 topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v38[0] = v11;
-  v12 = [v4 leadingAnchor];
-  v13 = [v10 leadingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  leadingAnchor = [viewCopy leadingAnchor];
+  leadingAnchor2 = [v10 leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v38[1] = v14;
-  v15 = [v4 trailingAnchor];
-  v16 = [v10 trailingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  trailingAnchor = [viewCopy trailingAnchor];
+  trailingAnchor2 = [v10 trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v38[2] = v17;
   v18 = [NSArray arrayWithObjects:v38 count:3];
 
   [NSLayoutConstraint activateConstraints:v18];
   [v10 setNeedsLayout];
   [v10 layoutIfNeeded];
-  [(CarNavigationGuidanceSign *)self complementarySignHeightForManeuverView:v4];
+  [(CarNavigationGuidanceSign *)self complementarySignHeightForManeuverView:viewCopy];
   v20 = v9 - v19;
-  [v4 frame];
+  [viewCopy frame];
   if (v21 > v20)
   {
-    [v4 setCompressionStage:{objc_msgSend(v4, "compressionStageForSize:", v7, v9)}];
+    [viewCopy setCompressionStage:{objc_msgSend(viewCopy, "compressionStageForSize:", v7, v9)}];
     [v10 setNeedsLayout];
     [v10 layoutIfNeeded];
   }
@@ -1098,15 +1098,15 @@ LABEL_53:
   v22 = sub_10007E168();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
-    v23 = [(CarNavigationGuidanceSign *)self destination];
-    if (v23 > 4)
+    destination = [(CarNavigationGuidanceSign *)self destination];
+    if (destination > 4)
     {
       v24 = @".Unknown";
     }
 
     else
     {
-      v24 = *(&off_101623A48 + v23);
+      v24 = *(&off_101623A48 + destination);
     }
 
     v25 = v24;
@@ -1116,34 +1116,34 @@ LABEL_53:
     *buf = 138413058;
     v31 = v25;
     v32 = 2048;
-    v33 = self;
+    selfCopy = self;
     v34 = 2112;
     v35 = v26;
     v36 = 2048;
-    v37 = [(CarNavigationGuidanceSign *)self compressionStage];
+    compressionStage = [(CarNavigationGuidanceSign *)self compressionStage];
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "%@ navSign: %p, _prepareManeuverView. for availableSize: %@, with compressionStage: %lu", buf, 0x2Au);
   }
 }
 
-- (double)maxAvailableHeightForJunctionView:(double)a3
+- (double)maxAvailableHeightForJunctionView:(double)view
 {
   v4 = 0.0;
   if ([(CarNavigationGuidanceSign *)self destination]!= 2 && [(CarNavigationGuidanceSign *)self destination]- 3 >= 2 && ![(CarNavigationGuidanceSign *)self junctionViewHidden]&& ![(CarNavigationGuidanceSign *)self junctionViewTemporarilyHidden])
   {
-    v5 = [(CarNavigationGuidanceSign *)self sizeProvider];
-    [v5 availableSize];
+    sizeProvider = [(CarNavigationGuidanceSign *)self sizeProvider];
+    [sizeProvider availableSize];
     v7 = v6;
 
-    v8 = [(CarNavigationGuidanceSign *)self primaryManeuverView];
-    [v8 frame];
+    primaryManeuverView = [(CarNavigationGuidanceSign *)self primaryManeuverView];
+    [primaryManeuverView frame];
     Height = CGRectGetHeight(v17);
-    v10 = [(CarNavigationGuidanceSign *)self hairlineView];
-    [v10 frame];
+    hairlineView = [(CarNavigationGuidanceSign *)self hairlineView];
+    [hairlineView frame];
     v11 = v7 - (Height + CGRectGetHeight(v18));
 
     v12 = +[CarDisplayController sharedInstance];
-    v13 = [v12 screenTraitCollection];
-    [v13 displayScale];
+    screenTraitCollection = [v12 screenTraitCollection];
+    [screenTraitCollection displayScale];
     v15 = v14;
 
     return floor(v15 * v11) / v15;
@@ -1152,26 +1152,26 @@ LABEL_53:
   return v4;
 }
 
-- (void)hideJunctionViewAnimated:(BOOL)a3
+- (void)hideJunctionViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = sub_10007E168();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(CarNavigationGuidanceSign *)self destination];
-    if (v6 > 4)
+    destination = [(CarNavigationGuidanceSign *)self destination];
+    if (destination > 4)
     {
       v7 = @".Unknown";
     }
 
     else
     {
-      v7 = *(&off_101623A48 + v6);
+      v7 = *(&off_101623A48 + destination);
     }
 
     v8 = v7;
     v9 = @"NO";
-    if (v3)
+    if (animatedCopy)
     {
       v9 = @"YES";
     }
@@ -1180,14 +1180,14 @@ LABEL_53:
     *buf = 138412802;
     v14 = v8;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v10;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@ navSign: %p, hideJunctionViewAnimated: %@", buf, 0x20u);
   }
 
   [(CarNavigationGuidanceSign *)self setJunctionViewTemporarilyHidden:1];
-  if (v3)
+  if (animatedCopy)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
@@ -1199,33 +1199,33 @@ LABEL_53:
 
   else
   {
-    v11 = [(CarNavigationGuidanceSign *)self junctionView];
-    [v11 layoutIfNeeded];
+    junctionView = [(CarNavigationGuidanceSign *)self junctionView];
+    [junctionView layoutIfNeeded];
 
     [(CarNavigationGuidanceSign *)self layoutIfNeeded];
   }
 }
 
-- (void)showJunctionViewAnimated:(BOOL)a3
+- (void)showJunctionViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = sub_10007E168();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(CarNavigationGuidanceSign *)self destination];
-    if (v6 > 4)
+    destination = [(CarNavigationGuidanceSign *)self destination];
+    if (destination > 4)
     {
       v7 = @".Unknown";
     }
 
     else
     {
-      v7 = *(&off_101623A48 + v6);
+      v7 = *(&off_101623A48 + destination);
     }
 
     v8 = v7;
     v9 = @"NO";
-    if (v3)
+    if (animatedCopy)
     {
       v9 = @"YES";
     }
@@ -1234,14 +1234,14 @@ LABEL_53:
     *buf = 138412802;
     v13 = v8;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
     v17 = v10;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@ navSign: %p, showJunctionViewAnimated: %@", buf, 0x20u);
   }
 
   [(CarNavigationGuidanceSign *)self setJunctionViewTemporarilyHidden:0];
-  if (v3)
+  if (animatedCopy)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
@@ -1257,50 +1257,50 @@ LABEL_53:
   }
 }
 
-- (void)setJunctionViewInfo:(id)a3
+- (void)setJunctionViewInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   if (self->_junctionViewController)
   {
-    v9 = v5;
-    v6 = [(CarNavigationGuidanceSign *)self sizeProvider];
-    -[CarNavigationGuidanceSign setLayoutType:](self, "setLayoutType:", [v6 maneuverViewLayoutType]);
+    v9 = infoCopy;
+    sizeProvider = [(CarNavigationGuidanceSign *)self sizeProvider];
+    -[CarNavigationGuidanceSign setLayoutType:](self, "setLayoutType:", [sizeProvider maneuverViewLayoutType]);
 
-    v5 = v9;
+    infoCopy = v9;
     if (self->_junctionViewInfo != v9)
     {
-      objc_storeStrong(&self->_junctionViewInfo, a3);
+      objc_storeStrong(&self->_junctionViewInfo, info);
       junctionViewInfo = self->_junctionViewInfo;
-      v8 = [(CarNavigationGuidanceSign *)self junctionViewController];
-      [v8 setJunctionViewInfo:junctionViewInfo];
+      junctionViewController = [(CarNavigationGuidanceSign *)self junctionViewController];
+      [junctionViewController setJunctionViewInfo:junctionViewInfo];
 
-      v5 = v9;
+      infoCopy = v9;
     }
   }
 }
 
 - (void)refreshJunctionView
 {
-  v2 = [(CarNavigationGuidanceSign *)self junctionView];
-  [v2 setNeedsLayout];
+  junctionView = [(CarNavigationGuidanceSign *)self junctionView];
+  [junctionView setNeedsLayout];
 }
 
-- (void)setCompressionStage:(unint64_t)a3
+- (void)setCompressionStage:(unint64_t)stage
 {
-  v5 = [(CarNavigationGuidanceSign *)self primaryManeuver];
-  v6 = [v5 compressionStage];
+  primaryManeuver = [(CarNavigationGuidanceSign *)self primaryManeuver];
+  compressionStage = [primaryManeuver compressionStage];
 
-  v7 = [(CarNavigationGuidanceSign *)self secondaryManeuver];
-  v8 = [v7 compressionStage];
+  secondaryManeuver = [(CarNavigationGuidanceSign *)self secondaryManeuver];
+  compressionStage2 = [secondaryManeuver compressionStage];
 
-  self->_compressionStage = a3;
-  v9 = [(CarNavigationGuidanceSign *)self secondaryGuidanceSignID];
+  self->_compressionStage = stage;
+  secondaryGuidanceSignID = [(CarNavigationGuidanceSign *)self secondaryGuidanceSignID];
 
-  v10 = [(CarNavigationGuidanceSign *)self junctionView];
-  if (v10)
+  junctionView = [(CarNavigationGuidanceSign *)self junctionView];
+  if (junctionView)
   {
-    v11 = [(CarNavigationGuidanceSign *)self junctionViewInfo];
-    v12 = v11 != 0;
+    junctionViewInfo = [(CarNavigationGuidanceSign *)self junctionViewInfo];
+    v12 = junctionViewInfo != 0;
   }
 
   else
@@ -1308,25 +1308,25 @@ LABEL_53:
     v12 = 0;
   }
 
-  [CarNavigationGuidanceSignCompression compressionForStage:a3 hasSecondary:v9 != 0 hasJunctionView:v12 forDestination:[(CarNavigationGuidanceSign *)self destination]];
-  v13 = [(CarNavigationGuidanceSign *)self primaryManeuver];
-  [v13 setCompressionStage:0];
+  [CarNavigationGuidanceSignCompression compressionForStage:stage hasSecondary:secondaryGuidanceSignID != 0 hasJunctionView:v12 forDestination:[(CarNavigationGuidanceSign *)self destination]];
+  primaryManeuver2 = [(CarNavigationGuidanceSign *)self primaryManeuver];
+  [primaryManeuver2 setCompressionStage:0];
 
-  v14 = [(CarNavigationGuidanceSign *)self nextPrimaryManeuver];
-  [v14 setCompressionStage:0];
+  nextPrimaryManeuver = [(CarNavigationGuidanceSign *)self nextPrimaryManeuver];
+  [nextPrimaryManeuver setCompressionStage:0];
 
   v15 = sub_10007E168();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [(CarNavigationGuidanceSign *)self destination];
-    if (v16 > 4)
+    destination = [(CarNavigationGuidanceSign *)self destination];
+    if (destination > 4)
     {
       v17 = @".Unknown";
     }
 
     else
     {
-      v17 = *(&off_101623A48 + v16);
+      v17 = *(&off_101623A48 + destination);
     }
 
     v18 = v17;
@@ -1334,11 +1334,11 @@ LABEL_53:
     *buf = 138413570;
     v26 = v18;
     v27 = 2048;
-    v28 = self;
+    selfCopy = self;
     v29 = 2048;
     v30 = compressionStage;
     v31 = 2048;
-    v32 = a3;
+    stageCopy = stage;
     v33 = 2048;
     v34 = 0;
     v35 = 2048;
@@ -1346,25 +1346,25 @@ LABEL_53:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%@ navSign: %p, setCompressionStage: before: %lu, after: %lu. primaryCompression: %lu, secondaryCompression: %lu", buf, 0x3Eu);
   }
 
-  v20 = [(CarNavigationGuidanceSign *)self secondaryManeuver];
-  [v20 setCompressionStage:0];
+  secondaryManeuver2 = [(CarNavigationGuidanceSign *)self secondaryManeuver];
+  [secondaryManeuver2 setCompressionStage:0];
 
-  v21 = [(CarNavigationGuidanceSign *)self nextSecondaryManeuver];
-  [v21 setCompressionStage:0];
+  nextSecondaryManeuver = [(CarNavigationGuidanceSign *)self nextSecondaryManeuver];
+  [nextSecondaryManeuver setCompressionStage:0];
 
   [(CarNavigationGuidanceSign *)self setSecondaryViewHidden:0];
   [(CarNavigationGuidanceSign *)self setJunctionViewHidden:0];
-  v22 = [(CarNavigationGuidanceSign *)self primaryManeuver];
-  if (v6 != [v22 compressionStage])
+  primaryManeuver3 = [(CarNavigationGuidanceSign *)self primaryManeuver];
+  if (compressionStage != [primaryManeuver3 compressionStage])
   {
 
     goto LABEL_13;
   }
 
-  v23 = [(CarNavigationGuidanceSign *)self secondaryManeuver];
-  v24 = [v23 compressionStage];
+  secondaryManeuver3 = [(CarNavigationGuidanceSign *)self secondaryManeuver];
+  compressionStage3 = [secondaryManeuver3 compressionStage];
 
-  if (v8 != v24)
+  if (compressionStage2 != compressionStage3)
   {
 LABEL_13:
     [(CarNavigationGuidanceSign *)self setNeedsLayout];
@@ -1374,38 +1374,38 @@ LABEL_13:
 
 - (void)_resetPrecalculatedCompressionSizes
 {
-  v3 = [(CarNavigationGuidanceSign *)self primaryManeuver];
-  [v3 resetCompressionSizes];
+  primaryManeuver = [(CarNavigationGuidanceSign *)self primaryManeuver];
+  [primaryManeuver resetCompressionSizes];
 
-  v4 = [(CarNavigationGuidanceSign *)self nextPrimaryManeuver];
-  [v4 resetCompressionSizes];
+  nextPrimaryManeuver = [(CarNavigationGuidanceSign *)self nextPrimaryManeuver];
+  [nextPrimaryManeuver resetCompressionSizes];
 
-  v5 = [(CarNavigationGuidanceSign *)self secondaryManeuver];
-  [v5 resetCompressionSizes];
+  secondaryManeuver = [(CarNavigationGuidanceSign *)self secondaryManeuver];
+  [secondaryManeuver resetCompressionSizes];
 
-  v6 = [(CarNavigationGuidanceSign *)self nextSecondaryManeuver];
-  [v6 resetCompressionSizes];
+  nextSecondaryManeuver = [(CarNavigationGuidanceSign *)self nextSecondaryManeuver];
+  [nextSecondaryManeuver resetCompressionSizes];
 }
 
-- (void)setBlurMode:(int64_t)a3
+- (void)setBlurMode:(int64_t)mode
 {
-  v5 = [(CarNavigationGuidanceSign *)self primaryManeuver];
-  [v5 setBlurMode:a3];
+  primaryManeuver = [(CarNavigationGuidanceSign *)self primaryManeuver];
+  [primaryManeuver setBlurMode:mode];
 
-  v6 = [(CarNavigationGuidanceSign *)self nextPrimaryManeuver];
-  [v6 setBlurMode:a3];
+  nextPrimaryManeuver = [(CarNavigationGuidanceSign *)self nextPrimaryManeuver];
+  [nextPrimaryManeuver setBlurMode:mode];
 
-  v7 = [(CarNavigationGuidanceSign *)self secondaryManeuver];
-  [v7 setBlurMode:a3];
+  secondaryManeuver = [(CarNavigationGuidanceSign *)self secondaryManeuver];
+  [secondaryManeuver setBlurMode:mode];
 
-  v8 = [(CarNavigationGuidanceSign *)self nextSecondaryManeuver];
-  [v8 setBlurMode:a3];
+  nextSecondaryManeuver = [(CarNavigationGuidanceSign *)self nextSecondaryManeuver];
+  [nextSecondaryManeuver setBlurMode:mode];
 }
 
-- (void)setNextPrimaryManeuver:(id)a3
+- (void)setNextPrimaryManeuver:(id)maneuver
 {
-  v5 = a3;
-  if (self->_nextPrimaryManeuver != v5)
+  maneuverCopy = maneuver;
+  if (self->_nextPrimaryManeuver != maneuverCopy)
   {
     v6 = sub_10007E168();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1414,18 +1414,18 @@ LABEL_13:
       v8 = 138412546;
       v9 = nextPrimaryManeuver;
       v10 = 2112;
-      v11 = v5;
+      v11 = maneuverCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Changing nextPrimaryManeuver from %@ to %@", &v8, 0x16u);
     }
 
-    objc_storeStrong(&self->_nextPrimaryManeuver, a3);
+    objc_storeStrong(&self->_nextPrimaryManeuver, maneuver);
   }
 }
 
-- (void)setPrimaryManeuver:(id)a3
+- (void)setPrimaryManeuver:(id)maneuver
 {
-  v5 = a3;
-  if (self->_primaryManeuver != v5)
+  maneuverCopy = maneuver;
+  if (self->_primaryManeuver != maneuverCopy)
   {
     v6 = sub_10007E168();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1434,53 +1434,53 @@ LABEL_13:
       v8 = 138412546;
       v9 = primaryManeuver;
       v10 = 2112;
-      v11 = v5;
+      v11 = maneuverCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Changing primaryManeuver from %@ to %@", &v8, 0x16u);
     }
 
-    objc_storeStrong(&self->_primaryManeuver, a3);
+    objc_storeStrong(&self->_primaryManeuver, maneuver);
   }
 }
 
-- (void)setSecondaryGuidanceSignID:(id)a3
+- (void)setSecondaryGuidanceSignID:(id)d
 {
-  v5 = a3;
-  if (self->_secondaryGuidanceSignID != v5)
+  dCopy = d;
+  if (self->_secondaryGuidanceSignID != dCopy)
   {
     v6 = sub_10007E168();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
 LABEL_9:
 
-      objc_storeStrong(&self->_secondaryGuidanceSignID, a3);
+      objc_storeStrong(&self->_secondaryGuidanceSignID, d);
       goto LABEL_10;
     }
 
-    v7 = self;
+    selfCopy = self;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(CarNavigationGuidanceSign *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(CarNavigationGuidanceSign *)selfCopy performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy, v11];
 
         goto LABEL_8;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy];
 LABEL_8:
 
     secondaryGuidanceSignID = self->_secondaryGuidanceSignID;
     *buf = 138543874;
-    v15 = v12;
+    v15 = selfCopy;
     v16 = 2112;
     v17 = secondaryGuidanceSignID;
     v18 = 2112;
-    v19 = v5;
+    v19 = dCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] Changing secondary sign ID from %@ to %@", buf, 0x20u);
 
     goto LABEL_9;
@@ -1489,45 +1489,45 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)setPrimaryGuidanceSignID:(id)a3
+- (void)setPrimaryGuidanceSignID:(id)d
 {
-  v5 = a3;
-  if (self->_primaryGuidanceSignID != v5)
+  dCopy = d;
+  if (self->_primaryGuidanceSignID != dCopy)
   {
     v6 = sub_10007E168();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
 LABEL_9:
 
-      objc_storeStrong(&self->_primaryGuidanceSignID, a3);
+      objc_storeStrong(&self->_primaryGuidanceSignID, d);
       goto LABEL_10;
     }
 
-    v7 = self;
+    selfCopy = self;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(CarNavigationGuidanceSign *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(CarNavigationGuidanceSign *)selfCopy performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy, v11];
 
         goto LABEL_8;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy];
 LABEL_8:
 
     primaryGuidanceSignID = self->_primaryGuidanceSignID;
     *buf = 138543874;
-    v15 = v12;
+    v15 = selfCopy;
     v16 = 2112;
     v17 = primaryGuidanceSignID;
     v18 = 2112;
-    v19 = v5;
+    v19 = dCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] Changing primary sign ID from %@ to %@", buf, 0x20u);
 
     goto LABEL_9;
@@ -1536,10 +1536,10 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)setSecondaryGuidance:(id)a3
+- (void)setSecondaryGuidance:(id)guidance
 {
-  v5 = a3;
-  if (self->_secondaryGuidance != v5)
+  guidanceCopy = guidance;
+  if (self->_secondaryGuidance != guidanceCopy)
   {
     v6 = sub_10007E168();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1548,53 +1548,53 @@ LABEL_10:
       v8 = 138412546;
       v9 = secondaryGuidance;
       v10 = 2112;
-      v11 = v5;
+      v11 = guidanceCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Changing secondaryGuidance from %@ to %@", &v8, 0x16u);
     }
 
-    objc_storeStrong(&self->_secondaryGuidance, a3);
+    objc_storeStrong(&self->_secondaryGuidance, guidance);
   }
 }
 
-- (void)setPrimaryGuidance:(id)a3
+- (void)setPrimaryGuidance:(id)guidance
 {
-  v5 = a3;
-  if (self->_primaryGuidance != v5)
+  guidanceCopy = guidance;
+  if (self->_primaryGuidance != guidanceCopy)
   {
     v6 = sub_10007E168();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
 LABEL_9:
 
-      objc_storeStrong(&self->_primaryGuidance, a3);
+      objc_storeStrong(&self->_primaryGuidance, guidance);
       goto LABEL_10;
     }
 
-    v7 = self;
+    selfCopy = self;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(CarNavigationGuidanceSign *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(CarNavigationGuidanceSign *)selfCopy performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy, v11];
 
         goto LABEL_8;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy];
 LABEL_8:
 
     primaryGuidance = self->_primaryGuidance;
     *buf = 138543874;
-    v15 = v12;
+    v15 = selfCopy;
     v16 = 2112;
     v17 = primaryGuidance;
     v18 = 2112;
-    v19 = v5;
+    v19 = guidanceCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] Changing primaryGuidance from %@ to %@", buf, 0x20u);
 
     goto LABEL_9;
@@ -1603,78 +1603,78 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)setJunctionViewTemporarilyHidden:(BOOL)a3
+- (void)setJunctionViewTemporarilyHidden:(BOOL)hidden
 {
-  if (self->_junctionViewTemporarilyHidden != a3)
+  if (self->_junctionViewTemporarilyHidden != hidden)
   {
-    self->_junctionViewTemporarilyHidden = a3;
+    self->_junctionViewTemporarilyHidden = hidden;
     [(CarNavigationGuidanceSign *)self maxAvailableHeightForJunctionView:0.0];
     v6 = v5;
-    v7 = [(CarNavigationGuidanceSign *)self junctionViewController];
-    [v7 setAvailableHeight:v6];
+    junctionViewController = [(CarNavigationGuidanceSign *)self junctionViewController];
+    [junctionViewController setAvailableHeight:v6];
   }
 }
 
-- (void)setJunctionViewHidden:(BOOL)a3
+- (void)setJunctionViewHidden:(BOOL)hidden
 {
-  if (self->_junctionViewHidden != a3)
+  if (self->_junctionViewHidden != hidden)
   {
-    self->_junctionViewHidden = a3;
+    self->_junctionViewHidden = hidden;
     [(CarNavigationGuidanceSign *)self maxAvailableHeightForJunctionView:0.0];
     v6 = v5;
-    v7 = [(CarNavigationGuidanceSign *)self junctionViewController];
-    [v7 setAvailableHeight:v6];
+    junctionViewController = [(CarNavigationGuidanceSign *)self junctionViewController];
+    [junctionViewController setAvailableHeight:v6];
   }
 }
 
-- (void)setSecondaryViewHidden:(BOOL)a3
+- (void)setSecondaryViewHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   if ([(CarNavigationGuidanceSign *)self _shouldForceSecondaryManeuverViewHidden])
   {
     v5 = sub_10007E168();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(CarNavigationGuidanceSign *)self destination];
-      if (v6 > 4)
+      destination = [(CarNavigationGuidanceSign *)self destination];
+      if (destination > 4)
       {
         v7 = @".Unknown";
       }
 
       else
       {
-        v7 = *(&off_101623A48 + v6);
+        v7 = *(&off_101623A48 + destination);
       }
 
       v8 = v7;
       v26 = 138412546;
       v27 = v8;
       v28 = 2048;
-      v29 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@ navSign: %p, forcing secondaryViewHidden for nav signs displayed in widgets.", &v26, 0x16u);
     }
 
-    v3 = 1;
+    hiddenCopy = 1;
   }
 
-  if (self->_secondaryViewHidden != v3)
+  if (self->_secondaryViewHidden != hiddenCopy)
   {
     v9 = sub_10007E168();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [(CarNavigationGuidanceSign *)self destination];
-      if (v10 > 4)
+      destination2 = [(CarNavigationGuidanceSign *)self destination];
+      if (destination2 > 4)
       {
         v11 = @".Unknown";
       }
 
       else
       {
-        v11 = *(&off_101623A48 + v10);
+        v11 = *(&off_101623A48 + destination2);
       }
 
       v12 = v11;
-      v13 = [(CarNavigationGuidanceSign *)self compressionStage];
+      compressionStage = [(CarNavigationGuidanceSign *)self compressionStage];
       if (self->_secondaryViewHidden)
       {
         v14 = @"YES";
@@ -1686,7 +1686,7 @@ LABEL_10:
       }
 
       v15 = v14;
-      if (v3)
+      if (hiddenCopy)
       {
         v16 = @"YES";
       }
@@ -1700,9 +1700,9 @@ LABEL_10:
       v26 = 138413314;
       v27 = v12;
       v28 = 2048;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2048;
-      v31 = v13;
+      v31 = compressionStage;
       v32 = 2112;
       v33 = v15;
       v34 = 2112;
@@ -1710,46 +1710,46 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%@ navSign: %p, compression: %lu. setSecondaryViewHidden: before: %@, after: %@", &v26, 0x34u);
     }
 
-    self->_secondaryViewHidden = v3;
-    v18 = [(CarNavigationGuidanceSign *)self secondaryManeuver];
-    [v18 setHidden:v3];
+    self->_secondaryViewHidden = hiddenCopy;
+    secondaryManeuver = [(CarNavigationGuidanceSign *)self secondaryManeuver];
+    [secondaryManeuver setHidden:hiddenCopy];
 
     secondaryViewHidden = self->_secondaryViewHidden;
-    v20 = [(CarNavigationGuidanceSign *)self nextSecondaryManeuver];
-    [v20 setHidden:secondaryViewHidden];
+    nextSecondaryManeuver = [(CarNavigationGuidanceSign *)self nextSecondaryManeuver];
+    [nextSecondaryManeuver setHidden:secondaryViewHidden];
 
     v21 = self->_secondaryViewHidden;
-    v22 = [(CarNavigationGuidanceSign *)self hairlineView];
-    [v22 setHidden:v21];
+    hairlineView = [(CarNavigationGuidanceSign *)self hairlineView];
+    [hairlineView setHidden:v21];
 
     LODWORD(v21) = self->_secondaryViewHidden;
-    v23 = [(CarNavigationGuidanceSign *)self secondaryViewHeightConstraint];
-    v24 = v23;
+    secondaryViewHeightConstraint = [(CarNavigationGuidanceSign *)self secondaryViewHeightConstraint];
+    v24 = secondaryViewHeightConstraint;
     v25 = 200.0;
     if (v21)
     {
       v25 = 0.0;
     }
 
-    [v23 setConstant:v25];
+    [secondaryViewHeightConstraint setConstant:v25];
   }
 }
 
-- (BOOL)isPointInJunctionView:(CGPoint)a3
+- (BOOL)isPointInJunctionView:(CGPoint)view
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CarNavigationGuidanceSign *)self junctionViewInfo];
-  if (v6)
+  y = view.y;
+  x = view.x;
+  junctionViewInfo = [(CarNavigationGuidanceSign *)self junctionViewInfo];
+  if (junctionViewInfo)
   {
-    v7 = [(CarNavigationGuidanceSign *)self junctionView];
-    [v7 bounds];
+    junctionView = [(CarNavigationGuidanceSign *)self junctionView];
+    [junctionView bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(CarNavigationGuidanceSign *)self junctionView];
-    [(CarNavigationGuidanceSign *)self convertRect:v16 fromView:v9, v11, v13, v15];
+    junctionView2 = [(CarNavigationGuidanceSign *)self junctionView];
+    [(CarNavigationGuidanceSign *)self convertRect:junctionView2 fromView:v9, v11, v13, v15];
     v19.x = x;
     v19.y = y;
     v17 = CGRectContainsPoint(v20, v19);
@@ -1763,15 +1763,15 @@ LABEL_10:
   return v17;
 }
 
-- (double)_heightForCompressionStage:(unint64_t)a3 isMaximumCompression:(BOOL *)a4
+- (double)_heightForCompressionStage:(unint64_t)stage isMaximumCompression:(BOOL *)compression
 {
-  v7 = [(CarNavigationGuidanceSign *)self secondaryGuidanceSignID];
+  secondaryGuidanceSignID = [(CarNavigationGuidanceSign *)self secondaryGuidanceSignID];
 
-  v8 = [(CarNavigationGuidanceSign *)self junctionView];
-  if (v8)
+  junctionView = [(CarNavigationGuidanceSign *)self junctionView];
+  if (junctionView)
   {
-    v9 = [(CarNavigationGuidanceSign *)self junctionViewInfo];
-    v10 = v9 != 0;
+    junctionViewInfo = [(CarNavigationGuidanceSign *)self junctionViewInfo];
+    v10 = junctionViewInfo != 0;
   }
 
   else
@@ -1779,9 +1779,9 @@ LABEL_10:
     v10 = 0;
   }
 
-  [CarNavigationGuidanceSignCompression compressionForStage:a3 hasSecondary:v7 != 0 hasJunctionView:v10 forDestination:[(CarNavigationGuidanceSign *)self destination]];
-  v11 = [(CarNavigationGuidanceSign *)self primaryManeuverView];
-  [v11 sizeForCompressionStage:0];
+  [CarNavigationGuidanceSignCompression compressionForStage:stage hasSecondary:secondaryGuidanceSignID != 0 hasJunctionView:v10 forDestination:[(CarNavigationGuidanceSign *)self destination]];
+  primaryManeuverView = [(CarNavigationGuidanceSign *)self primaryManeuverView];
+  [primaryManeuverView sizeForCompressionStage:0];
   v13 = v12;
 
   v14 = 0.0;
@@ -1789,20 +1789,20 @@ LABEL_10:
   v16 = v13;
   if (![(CarNavigationGuidanceSign *)self _shouldForceSecondaryManeuverViewHidden])
   {
-    v17 = [(CarNavigationGuidanceSign *)self secondaryManeuverView];
+    secondaryManeuverView = [(CarNavigationGuidanceSign *)self secondaryManeuverView];
     v16 = v13;
-    if (v17)
+    if (secondaryManeuverView)
     {
 
-      v18 = [(CarNavigationGuidanceSign *)self secondaryManeuverView];
-      [v18 sizeForCompressionStage:0];
+      secondaryManeuverView2 = [(CarNavigationGuidanceSign *)self secondaryManeuverView];
+      [secondaryManeuverView2 sizeForCompressionStage:0];
       v15 = v19;
 
       v16 = v15 + v13;
       if (v15 > 0.0)
       {
-        v20 = [(CarNavigationGuidanceSign *)self hairlineView];
-        [v20 frame];
+        hairlineView = [(CarNavigationGuidanceSign *)self hairlineView];
+        [hairlineView frame];
         v16 = CGRectGetHeight(v43) + v16;
       }
     }
@@ -1810,39 +1810,39 @@ LABEL_10:
 
   if (v10)
   {
-    v21 = [(CarNavigationGuidanceSign *)self junctionView];
-    [v21 bounds];
+    junctionView2 = [(CarNavigationGuidanceSign *)self junctionView];
+    [junctionView2 bounds];
     v14 = CGRectGetWidth(v44) * 0.352657005;
 
     v16 = v16 - v15 + v14;
   }
 
-  if (a4)
+  if (compression)
   {
-    *a4 = 0;
+    *compression = 0;
   }
 
   v22 = sub_10007E168();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
-    v23 = [(CarNavigationGuidanceSign *)self destination];
-    if (v23 > 4)
+    destination = [(CarNavigationGuidanceSign *)self destination];
+    if (destination > 4)
     {
       v24 = @".Unknown";
     }
 
     else
     {
-      v24 = *(&off_101623A48 + v23);
+      v24 = *(&off_101623A48 + destination);
     }
 
     v25 = v24;
     *buf = 138414082;
     v28 = v25;
     v29 = 2048;
-    v30 = self;
+    selfCopy = self;
     v31 = 2048;
-    v32 = a3;
+    stageCopy = stage;
     v33 = 2080;
     v34 = "";
     v35 = 2048;
@@ -1859,13 +1859,13 @@ LABEL_10:
   return v16;
 }
 
-- (void)_hideMiniSignAnimated:(BOOL)a3
+- (void)_hideMiniSignAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(CarNavigationGuidanceSign *)self layoutIfNeeded];
   [(NSLayoutConstraint *)self->_primaryViewTopAnchorMiniSignConstraint setActive:0];
   [(NSLayoutConstraint *)self->_primaryViewTopAnchorRegularConstraint setActive:1];
-  if (v3)
+  if (animatedCopy)
   {
     GEOConfigGetDouble();
     v6[0] = _NSConcreteStackBlock;
@@ -1901,12 +1901,12 @@ LABEL_10:
 {
   if (self->_signStyle == 1)
   {
-    v3 = [(CarNavigationGuidanceSign *)self window];
-    if (v3 && (GEOConfigGetBOOL() & 1) != 0)
+    window = [(CarNavigationGuidanceSign *)self window];
+    if (window && (GEOConfigGetBOOL() & 1) != 0)
     {
-      v4 = [(CarNavigationGuidanceSign *)self miniSignAutoHideTimer];
+      miniSignAutoHideTimer = [(CarNavigationGuidanceSign *)self miniSignAutoHideTimer];
 
-      if (!v4)
+      if (!miniSignAutoHideTimer)
       {
         [(CarNavigationGuidanceSign *)self _showMiniSign];
         objc_initWeak(&location, self);
@@ -1935,11 +1935,11 @@ LABEL_10:
   [(CarNavigationGuidanceSign *)self _hideMiniSignAnimated:0];
 }
 
-- (void)setSignStyle:(int64_t)a3
+- (void)setSignStyle:(int64_t)style
 {
-  if (self->_signStyle != a3)
+  if (self->_signStyle != style)
   {
-    self->_signStyle = a3;
+    self->_signStyle = style;
     [(CarNavigationGuidanceSign *)self _updateMiniSignVisibility];
   }
 }
@@ -1954,22 +1954,22 @@ LABEL_10:
   [(CarNavigationGuidanceSign *)&v4 dealloc];
 }
 
-- (CarNavigationGuidanceSign)initWithDestination:(unint64_t)a3
+- (CarNavigationGuidanceSign)initWithDestination:(unint64_t)destination
 {
   v146.receiver = self;
   v146.super_class = CarNavigationGuidanceSign;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = [(CarNavigationGuidanceSign *)&v146 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v8 = v7;
-  if (v7)
+  height = [(CarNavigationGuidanceSign *)&v146 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v8 = height;
+  if (height)
   {
-    [(CarNavigationGuidanceSign *)v7 setAccessibilityIdentifier:@"CarNavigationGuidanceSign"];
-    v138 = a3;
-    v8->_destination = a3;
-    v9 = [(CarNavigationGuidanceSign *)v8 destination];
-    v10 = v9 - 1 < 2 || v9 == 4;
+    [(CarNavigationGuidanceSign *)height setAccessibilityIdentifier:@"CarNavigationGuidanceSign"];
+    destinationCopy = destination;
+    v8->_destination = destination;
+    destination = [(CarNavigationGuidanceSign *)v8 destination];
+    v10 = destination - 1 < 2 || destination == 4;
     v11 = +[NSNotificationCenter defaultCenter];
     [v11 addObserver:v8 selector:"_handleCarScreenSizeChange" name:@"CarDisplayDidChangeConnectedNotification" object:0];
 
@@ -1988,11 +1988,11 @@ LABEL_10:
     LODWORD(v16) = 1148846080;
     [(UILabel *)v8->_miniSignHintLabel setContentHuggingPriority:0 forAxis:v16];
     v17 = +[CarDisplayController sharedInstance];
-    v18 = [v17 supportsTouchInteractionModel];
+    supportsTouchInteractionModel = [v17 supportsTouchInteractionModel];
 
     v19 = +[NSBundle mainBundle];
     v20 = v19;
-    if (v18)
+    if (supportsTouchInteractionModel)
     {
       v21 = @"[CarPlay Mini Sign] Tap for Full Guidance";
     }
@@ -2023,15 +2023,15 @@ LABEL_10:
     LODWORD(v27) = 1148846080;
     [(UIView *)v8->_primaryView setContentHuggingPriority:1 forAxis:v27];
     [(CarNavigationGuidanceSign *)v8 addSubview:v8->_primaryView];
-    v28 = [(UIView *)v8->_primaryView topAnchor];
-    v29 = [(UILabel *)v8->_miniSignHintLabel bottomAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    topAnchor = [(UIView *)v8->_primaryView topAnchor];
+    bottomAnchor = [(UILabel *)v8->_miniSignHintLabel bottomAnchor];
+    v30 = [topAnchor constraintEqualToAnchor:bottomAnchor];
     primaryViewTopAnchorMiniSignConstraint = v8->_primaryViewTopAnchorMiniSignConstraint;
     v8->_primaryViewTopAnchorMiniSignConstraint = v30;
 
-    v32 = [(UIView *)v8->_primaryView topAnchor];
-    v33 = [(CarNavigationGuidanceSign *)v8 topAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    topAnchor2 = [(UIView *)v8->_primaryView topAnchor];
+    topAnchor3 = [(CarNavigationGuidanceSign *)v8 topAnchor];
+    v34 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     primaryViewTopAnchorRegularConstraint = v8->_primaryViewTopAnchorRegularConstraint;
     v8->_primaryViewTopAnchorRegularConstraint = v34;
 
@@ -2056,7 +2056,7 @@ LABEL_10:
     [(UIView *)v8->_secondaryView setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v43) = 1148846080;
     [(UIView *)v8->_secondaryView setContentHuggingPriority:1 forAxis:v43];
-    if (v9 <= 4 && ((1 << v9) & 0x16) != 0)
+    if (destination <= 4 && ((1 << destination) & 0x16) != 0)
     {
       v44 = +[UIColor tertiarySystemFillColor];
     }
@@ -2071,35 +2071,35 @@ LABEL_10:
 
     [(UIView *)v8->_secondaryView setHidden:1];
     [(CarNavigationGuidanceSign *)v8 insertSubview:v8->_secondaryView belowSubview:v8->_primaryView];
-    v135 = [(UILabel *)v8->_miniSignHintLabel topAnchor];
-    v132 = [(CarNavigationGuidanceSign *)v8 topAnchor];
-    v129 = [v135 constraintEqualToAnchor:v132 constant:9.0];
+    topAnchor4 = [(UILabel *)v8->_miniSignHintLabel topAnchor];
+    topAnchor5 = [(CarNavigationGuidanceSign *)v8 topAnchor];
+    v129 = [topAnchor4 constraintEqualToAnchor:topAnchor5 constant:9.0];
     v153[0] = v129;
-    v127 = [(UILabel *)v8->_miniSignHintLabel leadingAnchor];
-    v125 = [(CarNavigationGuidanceSign *)v8 leadingAnchor];
-    v123 = [v127 constraintGreaterThanOrEqualToAnchor:v125 constant:9.0];
+    leadingAnchor = [(UILabel *)v8->_miniSignHintLabel leadingAnchor];
+    leadingAnchor2 = [(CarNavigationGuidanceSign *)v8 leadingAnchor];
+    v123 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:9.0];
     v153[1] = v123;
-    v121 = [(UILabel *)v8->_miniSignHintLabel trailingAnchor];
-    v119 = [(CarNavigationGuidanceSign *)v8 trailingAnchor];
-    v117 = [v121 constraintLessThanOrEqualToAnchor:v119 constant:-9.0];
+    trailingAnchor = [(UILabel *)v8->_miniSignHintLabel trailingAnchor];
+    trailingAnchor2 = [(CarNavigationGuidanceSign *)v8 trailingAnchor];
+    v117 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-9.0];
     v153[2] = v117;
-    v115 = [(UILabel *)v8->_miniSignHintLabel centerXAnchor];
-    v46 = [(CarNavigationGuidanceSign *)v8 centerXAnchor];
-    v47 = [v115 constraintEqualToAnchor:v46];
+    centerXAnchor = [(UILabel *)v8->_miniSignHintLabel centerXAnchor];
+    centerXAnchor2 = [(CarNavigationGuidanceSign *)v8 centerXAnchor];
+    v47 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v153[3] = v47;
     v153[4] = v8->_primaryViewTopAnchorMiniSignConstraint;
-    v48 = [(UIView *)v8->_primaryView leadingAnchor];
-    v49 = [(CarNavigationGuidanceSign *)v8 leadingAnchor];
-    v50 = [v48 constraintEqualToAnchor:v49];
+    leadingAnchor3 = [(UIView *)v8->_primaryView leadingAnchor];
+    leadingAnchor4 = [(CarNavigationGuidanceSign *)v8 leadingAnchor];
+    v50 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v153[5] = v50;
-    v51 = [(UIView *)v8->_primaryView trailingAnchor];
-    v52 = [(CarNavigationGuidanceSign *)v8 trailingAnchor];
-    v53 = [v51 constraintEqualToAnchor:v52];
+    trailingAnchor3 = [(UIView *)v8->_primaryView trailingAnchor];
+    trailingAnchor4 = [(CarNavigationGuidanceSign *)v8 trailingAnchor];
+    v53 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v153[6] = v53;
     v54 = [NSArray arrayWithObjects:v153 count:7];
     v145 = [v54 mutableCopy];
 
-    if (v138 <= 1)
+    if (destinationCopy <= 1)
     {
       v55 = objc_alloc_init(NavJunctionViewController);
       junctionViewController = v8->_junctionViewController;
@@ -2107,101 +2107,101 @@ LABEL_10:
 
       [(NavJunctionViewController *)v8->_junctionViewController setDelegate:v8];
       [(NavJunctionViewController *)v8->_junctionViewController setLightModeSource:0];
-      v57 = [(CarNavigationGuidanceSign *)v8 junctionView];
-      [v57 setTranslatesAutoresizingMaskIntoConstraints:0];
+      junctionView = [(CarNavigationGuidanceSign *)v8 junctionView];
+      [junctionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v58 = [(CarNavigationGuidanceSign *)v8 junctionView];
+      junctionView2 = [(CarNavigationGuidanceSign *)v8 junctionView];
       LODWORD(v59) = 1132068864;
-      [v58 setContentCompressionResistancePriority:1 forAxis:v59];
+      [junctionView2 setContentCompressionResistancePriority:1 forAxis:v59];
 
-      v60 = [(CarNavigationGuidanceSign *)v8 junctionView];
+      junctionView3 = [(CarNavigationGuidanceSign *)v8 junctionView];
       LODWORD(v61) = 1132068864;
-      [v60 setContentCompressionResistancePriority:0 forAxis:v61];
+      [junctionView3 setContentCompressionResistancePriority:0 forAxis:v61];
 
-      v62 = [(CarNavigationGuidanceSign *)v8 junctionView];
-      [v62 setHidden:1];
+      junctionView4 = [(CarNavigationGuidanceSign *)v8 junctionView];
+      [junctionView4 setHidden:1];
 
-      v63 = [(CarNavigationGuidanceSign *)v8 junctionView];
-      [(CarNavigationGuidanceSign *)v8 insertSubview:v63 aboveSubview:v8->_secondaryView];
+      junctionView5 = [(CarNavigationGuidanceSign *)v8 junctionView];
+      [(CarNavigationGuidanceSign *)v8 insertSubview:junctionView5 aboveSubview:v8->_secondaryView];
 
-      v139 = [(CarNavigationGuidanceSign *)v8 junctionView];
-      v136 = [v139 leadingAnchor];
-      v133 = [(CarNavigationGuidanceSign *)v8 leadingAnchor];
-      v130 = [v136 constraintEqualToAnchor:v133];
+      junctionView6 = [(CarNavigationGuidanceSign *)v8 junctionView];
+      leadingAnchor5 = [junctionView6 leadingAnchor];
+      leadingAnchor6 = [(CarNavigationGuidanceSign *)v8 leadingAnchor];
+      v130 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
       v152[0] = v130;
-      v64 = [(CarNavigationGuidanceSign *)v8 junctionView];
-      v65 = [v64 trailingAnchor];
-      v66 = [(CarNavigationGuidanceSign *)v8 trailingAnchor];
-      v67 = [v65 constraintEqualToAnchor:v66];
+      junctionView7 = [(CarNavigationGuidanceSign *)v8 junctionView];
+      trailingAnchor5 = [junctionView7 trailingAnchor];
+      trailingAnchor6 = [(CarNavigationGuidanceSign *)v8 trailingAnchor];
+      v67 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
       v152[1] = v67;
-      v68 = [(CarNavigationGuidanceSign *)v8 junctionView];
-      v69 = [v68 topAnchor];
-      v70 = [(UIView *)v8->_primaryView bottomAnchor];
-      v71 = [v69 constraintEqualToAnchor:v70];
+      junctionView8 = [(CarNavigationGuidanceSign *)v8 junctionView];
+      topAnchor6 = [junctionView8 topAnchor];
+      bottomAnchor2 = [(UIView *)v8->_primaryView bottomAnchor];
+      v71 = [topAnchor6 constraintEqualToAnchor:bottomAnchor2];
       v152[2] = v71;
       v72 = [NSArray arrayWithObjects:v152 count:3];
       [v145 addObjectsFromArray:v72];
 
-      v73 = [(CarNavigationGuidanceSign *)v8 junctionView];
-      v74 = [v73 bottomAnchor];
-      v75 = [(CarNavigationGuidanceSign *)v8 bottomAnchor];
-      v76 = [v74 constraintEqualToAnchor:v75];
+      junctionView9 = [(CarNavigationGuidanceSign *)v8 junctionView];
+      bottomAnchor3 = [junctionView9 bottomAnchor];
+      bottomAnchor4 = [(CarNavigationGuidanceSign *)v8 bottomAnchor];
+      v76 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       v151 = v76;
       v77 = [NSArray arrayWithObjects:&v151 count:1];
       [(CarNavigationGuidanceSign *)v8 setJunctionViewConstraints:v77];
     }
 
     [NSLayoutConstraint activateConstraints:v145];
-    v78 = [(UIView *)v8->_primaryView bottomAnchor];
-    v79 = [(CarNavigationGuidanceSign *)v8 bottomAnchor];
+    bottomAnchor5 = [(UIView *)v8->_primaryView bottomAnchor];
+    bottomAnchor6 = [(CarNavigationGuidanceSign *)v8 bottomAnchor];
     LODWORD(v80) = 1148846080;
-    v81 = [v78 constraintEqualToAnchor:v79 constant:0.0 priority:v80];
+    v81 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:0.0 priority:v80];
     v150 = v81;
     v82 = [NSArray arrayWithObjects:&v150 count:1];
     [(CarNavigationGuidanceSign *)v8 setPrimaryViewOnlyConstraints:v82];
 
-    v83 = [(UIView *)v8->_secondaryView heightAnchor];
-    v84 = [v83 constraintLessThanOrEqualToConstant:200.0];
+    heightAnchor = [(UIView *)v8->_secondaryView heightAnchor];
+    v84 = [heightAnchor constraintLessThanOrEqualToConstant:200.0];
     secondaryViewHeightConstraint = v8->_secondaryViewHeightConstraint;
     v8->_secondaryViewHeightConstraint = v84;
 
-    v86 = [(CarNavigationGuidanceSign *)v8 primaryViewOnlyConstraints];
-    [NSLayoutConstraint activateConstraints:v86];
+    primaryViewOnlyConstraints = [(CarNavigationGuidanceSign *)v8 primaryViewOnlyConstraints];
+    [NSLayoutConstraint activateConstraints:primaryViewOnlyConstraints];
 
     v149 = v8->_secondaryViewHeightConstraint;
     v87 = [NSArray arrayWithObjects:&v149 count:1];
     [NSLayoutConstraint activateConstraints:v87];
 
-    v142 = [(UIView *)v8->_primaryView bottomAnchor];
-    v140 = [(CarHairlineView *)v8->_hairlineView topAnchor];
+    bottomAnchor7 = [(UIView *)v8->_primaryView bottomAnchor];
+    topAnchor7 = [(CarHairlineView *)v8->_hairlineView topAnchor];
     LODWORD(v88) = 1148846080;
-    v137 = [v142 constraintEqualToAnchor:v140 constant:0.0 priority:v88];
+    v137 = [bottomAnchor7 constraintEqualToAnchor:topAnchor7 constant:0.0 priority:v88];
     v148[0] = v137;
-    v134 = [(CarHairlineView *)v8->_hairlineView leftAnchor];
-    v131 = [(CarNavigationGuidanceSign *)v8 leftAnchor];
-    v128 = [v134 constraintEqualToAnchor:v131];
+    leftAnchor = [(CarHairlineView *)v8->_hairlineView leftAnchor];
+    leftAnchor2 = [(CarNavigationGuidanceSign *)v8 leftAnchor];
+    v128 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v148[1] = v128;
-    v126 = [(CarHairlineView *)v8->_hairlineView rightAnchor];
-    v124 = [(CarNavigationGuidanceSign *)v8 rightAnchor];
-    v122 = [v126 constraintEqualToAnchor:v124];
+    rightAnchor = [(CarHairlineView *)v8->_hairlineView rightAnchor];
+    rightAnchor2 = [(CarNavigationGuidanceSign *)v8 rightAnchor];
+    v122 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v148[2] = v122;
-    v141 = [(CarHairlineView *)v8->_hairlineView bottomAnchor];
-    v120 = [(UIView *)v8->_secondaryView topAnchor];
+    bottomAnchor8 = [(CarHairlineView *)v8->_hairlineView bottomAnchor];
+    topAnchor8 = [(UIView *)v8->_secondaryView topAnchor];
     LODWORD(v89) = 1148846080;
-    v118 = [v141 constraintEqualToAnchor:v120 constant:0.0 priority:v89];
+    v118 = [bottomAnchor8 constraintEqualToAnchor:topAnchor8 constant:0.0 priority:v89];
     v148[3] = v118;
-    v116 = [(UIView *)v8->_secondaryView leadingAnchor];
-    v90 = [(CarNavigationGuidanceSign *)v8 leadingAnchor];
-    v91 = [v116 constraintEqualToAnchor:v90];
+    leadingAnchor7 = [(UIView *)v8->_secondaryView leadingAnchor];
+    leadingAnchor8 = [(CarNavigationGuidanceSign *)v8 leadingAnchor];
+    v91 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v148[4] = v91;
-    v92 = [(UIView *)v8->_secondaryView trailingAnchor];
-    v93 = [(CarNavigationGuidanceSign *)v8 trailingAnchor];
-    v94 = [v92 constraintEqualToAnchor:v93];
+    trailingAnchor7 = [(UIView *)v8->_secondaryView trailingAnchor];
+    trailingAnchor8 = [(CarNavigationGuidanceSign *)v8 trailingAnchor];
+    v94 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     v148[5] = v94;
-    v95 = [(UIView *)v8->_secondaryView bottomAnchor];
-    v96 = [(CarNavigationGuidanceSign *)v8 bottomAnchor];
+    bottomAnchor9 = [(UIView *)v8->_secondaryView bottomAnchor];
+    bottomAnchor10 = [(CarNavigationGuidanceSign *)v8 bottomAnchor];
     LODWORD(v97) = 1148846080;
-    v98 = [v95 constraintEqualToAnchor:v96 constant:0.0 priority:v97];
+    v98 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10 constant:0.0 priority:v97];
     v148[6] = v98;
     v99 = [NSArray arrayWithObjects:v148 count:7];
     [(CarNavigationGuidanceSign *)v8 setSecondaryViewConstraints:v99];
@@ -2211,29 +2211,29 @@ LABEL_10:
     v8->_minimumCompressedContentLayoutGuide = v100;
 
     [(CarNavigationGuidanceSign *)v8 addLayoutGuide:v8->_minimumCompressedContentLayoutGuide];
-    v102 = [(UILayoutGuide *)v8->_minimumCompressedContentLayoutGuide heightAnchor];
-    v103 = [v102 constraintEqualToConstant:0.0];
+    heightAnchor2 = [(UILayoutGuide *)v8->_minimumCompressedContentLayoutGuide heightAnchor];
+    v103 = [heightAnchor2 constraintEqualToConstant:0.0];
     [(CarNavigationGuidanceSign *)v8 setMinimumCompressedContentLayoutGuideHeightConstraint:v103];
 
-    v144 = [(UILayoutGuide *)v8->_minimumCompressedContentLayoutGuide leadingAnchor];
-    v143 = [(CarNavigationGuidanceSign *)v8 leadingAnchor];
-    v104 = [v144 constraintEqualToAnchor:v143];
+    leadingAnchor9 = [(UILayoutGuide *)v8->_minimumCompressedContentLayoutGuide leadingAnchor];
+    leadingAnchor10 = [(CarNavigationGuidanceSign *)v8 leadingAnchor];
+    v104 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
     v147[0] = v104;
-    v105 = [(CarNavigationGuidanceSign *)v8 trailingAnchor];
-    v106 = [(UILayoutGuide *)v8->_minimumCompressedContentLayoutGuide trailingAnchor];
-    v107 = [v105 constraintEqualToAnchor:v106];
+    trailingAnchor9 = [(CarNavigationGuidanceSign *)v8 trailingAnchor];
+    trailingAnchor10 = [(UILayoutGuide *)v8->_minimumCompressedContentLayoutGuide trailingAnchor];
+    v107 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
     v147[1] = v107;
-    v108 = [(UILayoutGuide *)v8->_minimumCompressedContentLayoutGuide topAnchor];
-    v109 = [(CarNavigationGuidanceSign *)v8 topAnchor];
-    v110 = [v108 constraintEqualToAnchor:v109];
+    topAnchor9 = [(UILayoutGuide *)v8->_minimumCompressedContentLayoutGuide topAnchor];
+    topAnchor10 = [(CarNavigationGuidanceSign *)v8 topAnchor];
+    v110 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
     v147[2] = v110;
-    v111 = [(CarNavigationGuidanceSign *)v8 minimumCompressedContentLayoutGuideHeightConstraint];
-    v147[3] = v111;
+    minimumCompressedContentLayoutGuideHeightConstraint = [(CarNavigationGuidanceSign *)v8 minimumCompressedContentLayoutGuideHeightConstraint];
+    v147[3] = minimumCompressedContentLayoutGuideHeightConstraint;
     v112 = [NSArray arrayWithObjects:v147 count:4];
     [NSLayoutConstraint activateConstraints:v112];
 
-    v113 = [(CarNavigationGuidanceSign *)v8 sizeProvider];
-    v8->_layoutType = [v113 maneuverViewLayoutType];
+    sizeProvider = [(CarNavigationGuidanceSign *)v8 sizeProvider];
+    v8->_layoutType = [sizeProvider maneuverViewLayoutType];
   }
 
   return v8;

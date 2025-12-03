@@ -1,26 +1,26 @@
 @interface PXDisplayAssetImageAnalysisOverlayView
-+ (BOOL)isImageAnalysisOverlayNeededForViewModel:(id)a3;
-- (PXDisplayAssetImageAnalysisOverlayView)initWithViewModel:(id)a3;
++ (BOOL)isImageAnalysisOverlayNeededForViewModel:(id)model;
+- (PXDisplayAssetImageAnalysisOverlayView)initWithViewModel:(id)model;
 @end
 
 @implementation PXDisplayAssetImageAnalysisOverlayView
 
-- (PXDisplayAssetImageAnalysisOverlayView)initWithViewModel:(id)a3
+- (PXDisplayAssetImageAnalysisOverlayView)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = PXDisplayAssetImageAnalysisOverlayView;
   v6 = [(PXDisplayAssetImageAnalysisOverlayView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
   }
 
   return v7;
 }
 
-+ (BOOL)isImageAnalysisOverlayNeededForViewModel:(id)a3
++ (BOOL)isImageAnalysisOverlayNeededForViewModel:(id)model
 {
   if (isImageAnalysisOverlayNeededForViewModel__onceToken != -1)
   {

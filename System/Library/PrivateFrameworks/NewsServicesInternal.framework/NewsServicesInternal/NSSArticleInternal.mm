@@ -1,37 +1,37 @@
 @interface NSSArticleInternal
-+ (id)imageWithURL:(id)a3;
-+ (void)_articleFromCoreSpotlightIdentifier:(id)a3 domain:(id)a4 completion:(id)a5;
-+ (void)articleFromCoreSpotlightIdentifier:(id)a3 completion:(id)a4;
-+ (void)articleFromNotification:(id)a3 completion:(id)a4;
-+ (void)articleFromNotificationUserInfo:(id)a3 thumbnailFileURL:(id)a4 publisherLogoFileURL:(id)a5 publisherLogoMaskFileURL:(id)a6 completion:(id)a7;
-- (NSSArticleInternal)initWithCoder:(id)a3;
-- (NSSArticleInternal)initWithThumbnailImage:(id)a3 title:(id)a4 shortExcerpt:(id)a5 publishDate:(id)a6 publisherName:(id)a7 publisherLogoImage:(id)a8 publisherLogoMaskImage:(id)a9;
-- (void)encodeWithCoder:(id)a3;
++ (id)imageWithURL:(id)l;
++ (void)_articleFromCoreSpotlightIdentifier:(id)identifier domain:(id)domain completion:(id)completion;
++ (void)articleFromCoreSpotlightIdentifier:(id)identifier completion:(id)completion;
++ (void)articleFromNotification:(id)notification completion:(id)completion;
++ (void)articleFromNotificationUserInfo:(id)info thumbnailFileURL:(id)l publisherLogoFileURL:(id)rL publisherLogoMaskFileURL:(id)uRL completion:(id)completion;
+- (NSSArticleInternal)initWithCoder:(id)coder;
+- (NSSArticleInternal)initWithThumbnailImage:(id)image title:(id)title shortExcerpt:(id)excerpt publishDate:(id)date publisherName:(id)name publisherLogoImage:(id)logoImage publisherLogoMaskImage:(id)maskImage;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSSArticleInternal
 
-+ (void)articleFromNotification:(id)a3 completion:(id)a4
++ (void)articleFromNotification:(id)notification completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v33 = a4;
-  v6 = [v5 request];
-  v7 = [v6 content];
-  v8 = [v7 userInfo];
+  notificationCopy = notification;
+  completionCopy = completion;
+  request = [notificationCopy request];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v31 = v8;
-  v30 = [v8 objectForKeyedSubscript:@"news"];
-  v34 = v5;
-  v9 = [v5 request];
-  v10 = [v9 content];
-  v11 = [v10 attachments];
+  v31 = userInfo;
+  v30 = [userInfo objectForKeyedSubscript:@"news"];
+  v34 = notificationCopy;
+  request2 = [notificationCopy request];
+  content2 = [request2 content];
+  attachments = [content2 attachments];
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v12 = v11;
+  v12 = attachments;
   v13 = [v12 countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v13)
   {
@@ -50,8 +50,8 @@
         }
 
         v18 = *(*(&v37 + 1) + 8 * i);
-        v19 = [v18 identifier];
-        v20 = [v19 isEqualToString:@"thumbnail-attachment"];
+        identifier = [v18 identifier];
+        v20 = [identifier isEqualToString:@"thumbnail-attachment"];
 
         if (v20)
         {
@@ -62,8 +62,8 @@
 
         else
         {
-          v23 = [v18 identifier];
-          v24 = [v23 isEqualToString:@"publisherLogo-attachment"];
+          identifier2 = [v18 identifier];
+          v24 = [identifier2 isEqualToString:@"publisherLogo-attachment"];
 
           if (v24)
           {
@@ -74,8 +74,8 @@
 
           else
           {
-            v26 = [v18 identifier];
-            v27 = [v26 isEqualToString:@"publisherLogoMask-attachment"];
+            identifier3 = [v18 identifier];
+            v27 = [identifier3 isEqualToString:@"publisherLogoMask-attachment"];
 
             if (!v27)
             {
@@ -102,20 +102,20 @@
   v15 = 0;
 LABEL_17:
 
-  [a1 articleFromNotificationUserInfo:v30 thumbnailFileURL:v15 publisherLogoFileURL:v36 publisherLogoMaskFileURL:v35 completion:v33];
+  [self articleFromNotificationUserInfo:v30 thumbnailFileURL:v15 publisherLogoFileURL:v36 publisherLogoMaskFileURL:v35 completion:completionCopy];
   v29 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)articleFromNotificationUserInfo:(id)a3 thumbnailFileURL:(id)a4 publisherLogoFileURL:(id)a5 publisherLogoMaskFileURL:(id)a6 completion:(id)a7
++ (void)articleFromNotificationUserInfo:(id)info thumbnailFileURL:(id)l publisherLogoFileURL:(id)rL publisherLogoMaskFileURL:(id)uRL completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 objectForKeyedSubscript:@"ti"];
-  v18 = [v12 objectForKeyedSubscript:@"ex"];
-  v19 = [v12 objectForKeyedSubscript:@"pd"];
+  infoCopy = info;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
+  completionCopy = completion;
+  v17 = [infoCopy objectForKeyedSubscript:@"ti"];
+  v18 = [infoCopy objectForKeyedSubscript:@"ex"];
+  v19 = [infoCopy objectForKeyedSubscript:@"pd"];
   [v19 doubleValue];
   v21 = v20;
 
@@ -129,9 +129,9 @@ LABEL_17:
     v31 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v21];
   }
 
-  v35 = [v12 objectForKeyedSubscript:@"pn"];
-  v22 = [v12 objectForKeyedSubscript:@"td"];
-  v33 = v13;
+  v35 = [infoCopy objectForKeyedSubscript:@"pn"];
+  v22 = [infoCopy objectForKeyedSubscript:@"td"];
+  v33 = lCopy;
   if (v22)
   {
     v23 = [MEMORY[0x277D755B8] imageWithData:v22];
@@ -139,10 +139,10 @@ LABEL_17:
 
   else
   {
-    if (!v13)
+    if (!lCopy)
     {
       v34 = 0;
-      if (v14)
+      if (rLCopy)
       {
         goto LABEL_9;
       }
@@ -150,42 +150,42 @@ LABEL_17:
       goto LABEL_11;
     }
 
-    v23 = [objc_opt_class() imageWithURL:v13];
+    v23 = [objc_opt_class() imageWithURL:lCopy];
   }
 
   v34 = v23;
-  if (v14)
+  if (rLCopy)
   {
 LABEL_9:
-    v24 = [objc_opt_class() imageWithURL:v14];
+    v24 = [objc_opt_class() imageWithURL:rLCopy];
     goto LABEL_12;
   }
 
 LABEL_11:
   v24 = 0;
 LABEL_12:
-  v32 = v15;
-  if (v15)
+  v32 = uRLCopy;
+  if (uRLCopy)
   {
-    [objc_opt_class() imageWithURL:v15];
+    [objc_opt_class() imageWithURL:uRLCopy];
     v25 = v18;
     v26 = v17;
-    v27 = v16;
-    v29 = v28 = v14;
-    v15 = [v29 imageWithRenderingMode:2];
+    v27 = completionCopy;
+    v29 = v28 = rLCopy;
+    uRLCopy = [v29 imageWithRenderingMode:2];
 
-    v14 = v28;
-    v16 = v27;
+    rLCopy = v28;
+    completionCopy = v27;
     v17 = v26;
     v18 = v25;
   }
 
-  v30 = [[a1 alloc] initWithThumbnailImage:v34 title:v17 shortExcerpt:v18 publishDate:v31 publisherName:v35 publisherLogoImage:v24 publisherLogoMaskImage:v15];
+  v30 = [[self alloc] initWithThumbnailImage:v34 title:v17 shortExcerpt:v18 publishDate:v31 publisherName:v35 publisherLogoImage:v24 publisherLogoMaskImage:uRLCopy];
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    if (v16)
+    if (completionCopy)
     {
-      v16[2](v16, v30);
+      completionCopy[2](completionCopy, v30);
     }
   }
 
@@ -195,7 +195,7 @@ LABEL_12:
     block[1] = 3221225472;
     block[2] = __128__NSSArticleInternal_articleFromNotificationUserInfo_thumbnailFileURL_publisherLogoFileURL_publisherLogoMaskFileURL_completion___block_invoke;
     block[3] = &unk_2799809C8;
-    v38 = v16;
+    v38 = completionCopy;
     v37 = v30;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
@@ -212,15 +212,15 @@ uint64_t __128__NSSArticleInternal_articleFromNotificationUserInfo_thumbnailFile
   return result;
 }
 
-+ (id)imageWithURL:(id)a3
++ (id)imageWithURL:(id)l
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 startAccessingSecurityScopedResource])
+  lCopy = l;
+  v4 = lCopy;
+  if (lCopy && [lCopy startAccessingSecurityScopedResource])
   {
     v5 = MEMORY[0x277CBEA90];
-    v6 = [v4 path];
-    v7 = [v5 dataWithContentsOfFile:v6];
+    path = [v4 path];
+    v7 = [v5 dataWithContentsOfFile:path];
 
     v8 = [MEMORY[0x277D755B8] imageWithData:v7];
     [v4 stopAccessingSecurityScopedResource];
@@ -234,13 +234,13 @@ uint64_t __128__NSSArticleInternal_articleFromNotificationUserInfo_thumbnailFile
   return v8;
 }
 
-+ (void)_articleFromCoreSpotlightIdentifier:(id)a3 domain:(id)a4 completion:(id)a5
++ (void)_articleFromCoreSpotlightIdentifier:(id)identifier domain:(id)domain completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9)
+  identifierCopy = identifier;
+  domainCopy = domain;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (identifierCopy && domainCopy)
   {
     v12 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
@@ -248,9 +248,9 @@ uint64_t __128__NSSArticleInternal_articleFromNotificationUserInfo_thumbnailFile
     block[2] = __76__NSSArticleInternal__articleFromCoreSpotlightIdentifier_domain_completion___block_invoke_2;
     block[3] = &unk_279980A90;
     v13 = &v15;
-    v15 = v9;
-    v16 = v8;
-    v18 = a1;
+    v15 = domainCopy;
+    v16 = identifierCopy;
+    selfCopy = self;
     v17 = v11;
     dispatch_async(v12, block);
 
@@ -258,14 +258,14 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __76__NSSArticleInternal__articleFromCoreSpotlightIdentifier_domain_completion___block_invoke;
     v19[3] = &unk_2799809F0;
     v13 = &v20;
-    v20 = v10;
+    v20 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], v19);
     goto LABEL_6;
   }
@@ -457,20 +457,20 @@ uint64_t __76__NSSArticleInternal__articleFromCoreSpotlightIdentifier_domain_com
   return result;
 }
 
-+ (void)articleFromCoreSpotlightIdentifier:(id)a3 completion:(id)a4
++ (void)articleFromCoreSpotlightIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__NSSArticleInternal_articleFromCoreSpotlightIdentifier_completion___block_invoke;
   v10[3] = &unk_279980AB8;
-  v12 = v7;
-  v13 = a1;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
-  [a1 _articleFromCoreSpotlightIdentifier:v9 domain:@"com.apple.news.article.history" completion:v10];
+  v12 = completionCopy;
+  selfCopy = self;
+  v11 = identifierCopy;
+  v8 = completionCopy;
+  v9 = identifierCopy;
+  [self _articleFromCoreSpotlightIdentifier:v9 domain:@"com.apple.news.article.history" completion:v10];
 }
 
 uint64_t __68__NSSArticleInternal_articleFromCoreSpotlightIdentifier_completion___block_invoke(uint64_t a1, void *a2)
@@ -492,118 +492,118 @@ uint64_t __68__NSSArticleInternal_articleFromCoreSpotlightIdentifier_completion_
   return MEMORY[0x2821F96F8]();
 }
 
-- (NSSArticleInternal)initWithThumbnailImage:(id)a3 title:(id)a4 shortExcerpt:(id)a5 publishDate:(id)a6 publisherName:(id)a7 publisherLogoImage:(id)a8 publisherLogoMaskImage:(id)a9
+- (NSSArticleInternal)initWithThumbnailImage:(id)image title:(id)title shortExcerpt:(id)excerpt publishDate:(id)date publisherName:(id)name publisherLogoImage:(id)logoImage publisherLogoMaskImage:(id)maskImage
 {
-  v33 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  imageCopy = image;
+  titleCopy = title;
+  excerptCopy = excerpt;
+  dateCopy = date;
+  nameCopy = name;
+  logoImageCopy = logoImage;
+  maskImageCopy = maskImage;
   v34.receiver = self;
   v34.super_class = NSSArticleInternal;
   v22 = [(NSSArticleInternal *)&v34 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_thumbnailImage, a3);
-    v24 = [v16 copy];
+    objc_storeStrong(&v22->_thumbnailImage, image);
+    v24 = [titleCopy copy];
     title = v23->_title;
     v23->_title = v24;
 
-    v26 = [v17 copy];
+    v26 = [excerptCopy copy];
     shortExcerpt = v23->_shortExcerpt;
     v23->_shortExcerpt = v26;
 
-    v28 = [v18 copy];
+    v28 = [dateCopy copy];
     publishDate = v23->_publishDate;
     v23->_publishDate = v28;
 
-    v30 = [v19 copy];
+    v30 = [nameCopy copy];
     publisherName = v23->_publisherName;
     v23->_publisherName = v30;
 
-    objc_storeStrong(&v23->_publisherLogoImage, a8);
-    objc_storeStrong(&v23->_publisherLogoMaskImage, a9);
+    objc_storeStrong(&v23->_publisherLogoImage, logoImage);
+    objc_storeStrong(&v23->_publisherLogoMaskImage, maskImage);
   }
 
   return v23;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v19 = a3;
-  v4 = [(NSSArticleInternal *)self thumbnailImage];
+  coderCopy = coder;
+  thumbnailImage = [(NSSArticleInternal *)self thumbnailImage];
 
-  if (v4)
+  if (thumbnailImage)
   {
-    v5 = [(NSSArticleInternal *)self thumbnailImage];
-    [v19 encodeObject:v5 forKey:@"thumbnailImage"];
+    thumbnailImage2 = [(NSSArticleInternal *)self thumbnailImage];
+    [coderCopy encodeObject:thumbnailImage2 forKey:@"thumbnailImage"];
   }
 
-  v6 = [(NSSArticleInternal *)self title];
+  title = [(NSSArticleInternal *)self title];
 
-  if (v6)
+  if (title)
   {
-    v7 = [(NSSArticleInternal *)self title];
-    [v19 encodeObject:v7 forKey:@"title"];
+    title2 = [(NSSArticleInternal *)self title];
+    [coderCopy encodeObject:title2 forKey:@"title"];
   }
 
-  v8 = [(NSSArticleInternal *)self shortExcerpt];
+  shortExcerpt = [(NSSArticleInternal *)self shortExcerpt];
 
-  if (v8)
+  if (shortExcerpt)
   {
-    v9 = [(NSSArticleInternal *)self shortExcerpt];
-    [v19 encodeObject:v9 forKey:@"shortExcerpt"];
+    shortExcerpt2 = [(NSSArticleInternal *)self shortExcerpt];
+    [coderCopy encodeObject:shortExcerpt2 forKey:@"shortExcerpt"];
   }
 
-  v10 = [(NSSArticleInternal *)self publishDate];
+  publishDate = [(NSSArticleInternal *)self publishDate];
 
-  if (v10)
+  if (publishDate)
   {
-    v11 = [(NSSArticleInternal *)self publishDate];
-    [v19 encodeObject:v11 forKey:@"publishDate"];
+    publishDate2 = [(NSSArticleInternal *)self publishDate];
+    [coderCopy encodeObject:publishDate2 forKey:@"publishDate"];
   }
 
-  v12 = [(NSSArticleInternal *)self publisherName];
+  publisherName = [(NSSArticleInternal *)self publisherName];
 
-  if (v12)
+  if (publisherName)
   {
-    v13 = [(NSSArticleInternal *)self publisherName];
-    [v19 encodeObject:v13 forKey:@"publisherName"];
+    publisherName2 = [(NSSArticleInternal *)self publisherName];
+    [coderCopy encodeObject:publisherName2 forKey:@"publisherName"];
   }
 
-  v14 = [(NSSArticleInternal *)self publisherLogoImage];
+  publisherLogoImage = [(NSSArticleInternal *)self publisherLogoImage];
 
-  if (v14)
+  if (publisherLogoImage)
   {
-    v15 = [(NSSArticleInternal *)self publisherLogoImage];
-    [v19 encodeObject:v15 forKey:@"publisherLogoImage"];
+    publisherLogoImage2 = [(NSSArticleInternal *)self publisherLogoImage];
+    [coderCopy encodeObject:publisherLogoImage2 forKey:@"publisherLogoImage"];
   }
 
-  v16 = [(NSSArticleInternal *)self publisherLogoMaskImage];
+  publisherLogoMaskImage = [(NSSArticleInternal *)self publisherLogoMaskImage];
 
-  v17 = v19;
-  if (v16)
+  v17 = coderCopy;
+  if (publisherLogoMaskImage)
   {
-    v18 = [(NSSArticleInternal *)self publisherLogoMaskImage];
-    [v19 encodeObject:v18 forKey:@"publisherLogoMaskImage"];
+    publisherLogoMaskImage2 = [(NSSArticleInternal *)self publisherLogoMaskImage];
+    [coderCopy encodeObject:publisherLogoMaskImage2 forKey:@"publisherLogoMaskImage"];
 
-    v17 = v19;
+    v17 = coderCopy;
   }
 }
 
-- (NSSArticleInternal)initWithCoder:(id)a3
+- (NSSArticleInternal)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"thumbnailImage"];
-  v6 = [v4 decodeObjectForKey:@"title"];
-  v7 = [v4 decodeObjectForKey:@"shortExcerpt"];
-  v8 = [v4 decodeObjectForKey:@"publishDate"];
-  v9 = [v4 decodeObjectForKey:@"publisherName"];
-  v10 = [v4 decodeObjectForKey:@"publisherLogoImage"];
-  v11 = [v4 decodeObjectForKey:@"publisherLogoMaskImage"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"thumbnailImage"];
+  v6 = [coderCopy decodeObjectForKey:@"title"];
+  v7 = [coderCopy decodeObjectForKey:@"shortExcerpt"];
+  v8 = [coderCopy decodeObjectForKey:@"publishDate"];
+  v9 = [coderCopy decodeObjectForKey:@"publisherName"];
+  v10 = [coderCopy decodeObjectForKey:@"publisherLogoImage"];
+  v11 = [coderCopy decodeObjectForKey:@"publisherLogoMaskImage"];
 
   v12 = [(NSSArticleInternal *)self initWithThumbnailImage:v5 title:v6 shortExcerpt:v7 publishDate:v8 publisherName:v9 publisherLogoImage:v10 publisherLogoMaskImage:v11];
   return v12;

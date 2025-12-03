@@ -1,43 +1,43 @@
 @interface MLViewerNodePropertyStringSPI
-- (MLViewerNodePropertyStringSPI)initWithCoder:(id)a3;
-- (MLViewerNodePropertyStringSPI)initWithJSONDictionary:(id)a3;
-- (MLViewerNodePropertyStringSPI)initWithName:(id)a3 value:(id)a4;
+- (MLViewerNodePropertyStringSPI)initWithCoder:(id)coder;
+- (MLViewerNodePropertyStringSPI)initWithJSONDictionary:(id)dictionary;
+- (MLViewerNodePropertyStringSPI)initWithName:(id)name value:(id)value;
 - (id)jsonDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MLViewerNodePropertyStringSPI
 
-- (MLViewerNodePropertyStringSPI)initWithName:(id)a3 value:(id)a4
+- (MLViewerNodePropertyStringSPI)initWithName:(id)name value:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = MLViewerNodePropertyStringSPI;
   v9 = [(MLViewerNodePropertyStringSPI *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_stringValue, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_stringValue, value);
   }
 
   return v10;
 }
 
-- (MLViewerNodePropertyStringSPI)initWithJSONDictionary:(id)a3
+- (MLViewerNodePropertyStringSPI)initWithJSONDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = MLViewerNodePropertyStringSPI;
   v5 = [(MLViewerNodePropertyStringSPI *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"name"];
+    v6 = [dictionaryCopy objectForKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 objectForKey:@"value"];
+    v8 = [dictionaryCopy objectForKey:@"value"];
     stringValue = v5->_stringValue;
     v5->_stringValue = v8;
   }
@@ -47,39 +47,39 @@
 
 - (id)jsonDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = +[MLViewerNodePropertyStringSPI type];
-  [v3 setObject:v4 forKey:@"type"];
+  [dictionary setObject:v4 forKey:@"type"];
 
-  v5 = [(MLViewerNodePropertyStringSPI *)self name];
-  [v3 setObject:v5 forKey:@"name"];
+  name = [(MLViewerNodePropertyStringSPI *)self name];
+  [dictionary setObject:name forKey:@"name"];
 
-  v6 = [(MLViewerNodePropertyStringSPI *)self stringValue];
+  stringValue = [(MLViewerNodePropertyStringSPI *)self stringValue];
 
-  if (v6)
+  if (stringValue)
   {
-    v7 = [(MLViewerNodePropertyStringSPI *)self stringValue];
-    [v3 setObject:v7 forKey:@"value"];
+    stringValue2 = [(MLViewerNodePropertyStringSPI *)self stringValue];
+    [dictionary setObject:stringValue2 forKey:@"value"];
   }
 
-  v8 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v3];
+  v8 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
 
   return v8;
 }
 
-- (MLViewerNodePropertyStringSPI)initWithCoder:(id)a3
+- (MLViewerNodePropertyStringSPI)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = MLViewerNodePropertyStringSPI;
   v5 = [(MLViewerNodePropertyStringSPI *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     stringValue = v5->_stringValue;
     v5->_stringValue = v8;
 
@@ -89,14 +89,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(MLViewerNodePropertyStringSPI *)self name];
-  [v6 encodeObject:v4 forKey:@"name"];
+  coderCopy = coder;
+  name = [(MLViewerNodePropertyStringSPI *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v5 = [(MLViewerNodePropertyStringSPI *)self stringValue];
-  [v6 encodeObject:v5 forKey:@"value"];
+  stringValue = [(MLViewerNodePropertyStringSPI *)self stringValue];
+  [coderCopy encodeObject:stringValue forKey:@"value"];
 }
 
 @end

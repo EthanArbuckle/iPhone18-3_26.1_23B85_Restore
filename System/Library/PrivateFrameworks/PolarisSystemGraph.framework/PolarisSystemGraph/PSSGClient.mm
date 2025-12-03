@@ -1,81 +1,81 @@
 @interface PSSGClient
-- (BOOL)requestResourcesWithStrides:(id)a3;
+- (BOOL)requestResourcesWithStrides:(id)strides;
 - (PSSGDelegate)delegate;
-- (id)fetchContextsForSessionNames:(id)a3;
-- (id)fetchContextsForSessionsProvidingKeys:(id)a3;
+- (id)fetchContextsForSessionNames:(id)names;
+- (id)fetchContextsForSessionsProvidingKeys:(id)keys;
 - (id)fetchCurrentGraphsForAllSessions;
-- (id)requestAllGraphs:(id)a3;
+- (id)requestAllGraphs:(id)graphs;
 - (id)requestProcessMonitorEventLog;
 - (id)requestProcessMonitorStats;
 - (id)requestSystemActionStatsStats;
 - (void)deregisterClient;
-- (void)didReceiveContextForSession:(id)a3;
+- (void)didReceiveContextForSession:(id)session;
 - (void)enteringSleep;
 - (void)exitingSleep;
-- (void)failedToProcessPauseRequests:(id)a3;
-- (void)failedToProcessSetupRequests:(id)a3;
-- (void)handleCompletedCurrentGraphsRequestMessage:(id)a3;
+- (void)failedToProcessPauseRequests:(id)requests;
+- (void)failedToProcessSetupRequests:(id)requests;
+- (void)handleCompletedCurrentGraphsRequestMessage:(id)message;
 - (void)handleDeRegisterClientAck;
-- (void)handlePauseResourcesMessage:(id)a3;
-- (void)handlePublishAllGraphs:(id)a3;
-- (void)handlePublishCurrentGraphsMessage:(id)a3;
-- (void)handlePublishResourceKeysAndStridesMessage:(id)a3;
-- (void)handlePublishResourceStreamsMessage:(id)a3;
+- (void)handlePauseResourcesMessage:(id)message;
+- (void)handlePublishAllGraphs:(id)graphs;
+- (void)handlePublishCurrentGraphsMessage:(id)message;
+- (void)handlePublishResourceKeysAndStridesMessage:(id)message;
+- (void)handlePublishResourceStreamsMessage:(id)message;
 - (void)handleRegisterClientAck;
-- (void)handleReportProcessMonitorEventLog:(id)a3;
-- (void)handleReportProcessMonitorStats:(id)a3;
-- (void)handleReportSystemActionStats:(id)a3;
-- (void)handleRequestCurrentGraphsMessage:(id)a3;
-- (void)handleRequestGraphResubmission:(id)a3;
-- (void)handleRequestReplayResources:(id)a3;
-- (void)handleResourceAvailabilityUpdates:(id)a3;
-- (void)handleResourceRequestWithStridesCompletedMessage:(id)a3;
-- (void)handleResourceRequestWithStridesMessage:(id)a3;
-- (void)handleResourceRequestsFailedMessage:(id)a3;
-- (void)handleSetupResourcesMessage:(id)a3;
-- (void)handleSystemReplayEnding:(id)a3;
-- (void)handleSystemReplayStarting:(id)a3;
+- (void)handleReportProcessMonitorEventLog:(id)log;
+- (void)handleReportProcessMonitorStats:(id)stats;
+- (void)handleReportSystemActionStats:(id)stats;
+- (void)handleRequestCurrentGraphsMessage:(id)message;
+- (void)handleRequestGraphResubmission:(id)resubmission;
+- (void)handleRequestReplayResources:(id)resources;
+- (void)handleResourceAvailabilityUpdates:(id)updates;
+- (void)handleResourceRequestWithStridesCompletedMessage:(id)message;
+- (void)handleResourceRequestWithStridesMessage:(id)message;
+- (void)handleResourceRequestsFailedMessage:(id)message;
+- (void)handleSetupResourcesMessage:(id)message;
+- (void)handleSystemReplayEnding:(id)ending;
+- (void)handleSystemReplayStarting:(id)starting;
 - (void)notifySystemReplayStarting;
 - (void)notifySystemReplayStopping;
-- (void)pauseRequestsAreComplete:(id)a3;
-- (void)publishContext:(id)a3;
-- (void)publishCurrentGraphs:(id)a3;
+- (void)pauseRequestsAreComplete:(id)complete;
+- (void)publishContext:(id)context;
+- (void)publishCurrentGraphs:(id)graphs;
 - (void)registerClient;
-- (void)requestDPTailspinWithReason:(id)a3;
-- (void)requestResourceAvailabilityUpdates:(id)a3;
+- (void)requestDPTailspinWithReason:(id)reason;
+- (void)requestResourceAvailabilityUpdates:(id)updates;
 - (void)resetInternalState;
-- (void)resourceAvailabilityHasChangedTo:(id)a3;
-- (void)resourceRequestCompletedWithStrides:(id)a3;
-- (void)resourceRequestsFailed:(id)a3;
-- (void)resourcesAreStopped:(id)a3;
-- (void)resourcesNoLongerWantedFailed:(id)a3;
-- (void)resourcesNoLongerWantedProcessed:(id)a3;
-- (void)setPublished:(BOOL)a3;
-- (void)setRegistered:(BOOL)a3;
-- (void)setReplaying:(BOOL)a3;
-- (void)setupRequestsAreComplete:(id)a3;
-- (void)stopResourceAvailabilityUpdates:(id)a3;
-- (void)updateGraphs:(id)a3;
-- (void)updateSystemHealth:(id)a3;
+- (void)resourceAvailabilityHasChangedTo:(id)to;
+- (void)resourceRequestCompletedWithStrides:(id)strides;
+- (void)resourceRequestsFailed:(id)failed;
+- (void)resourcesAreStopped:(id)stopped;
+- (void)resourcesNoLongerWantedFailed:(id)failed;
+- (void)resourcesNoLongerWantedProcessed:(id)processed;
+- (void)setPublished:(BOOL)published;
+- (void)setRegistered:(BOOL)registered;
+- (void)setReplaying:(BOOL)replaying;
+- (void)setupRequestsAreComplete:(id)complete;
+- (void)stopResourceAvailabilityUpdates:(id)updates;
+- (void)updateGraphs:(id)graphs;
+- (void)updateSystemHealth:(id)health;
 @end
 
 @implementation PSSGClient
 
-- (void)publishContext:(id)a3
+- (void)publishContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PSSGClient *)self comms];
-  v6 = [v4 keysWithOptions];
-  v7 = [(PSSGClient *)self sessionName];
-  v8 = [PSSGMessagePublishResourceKeysAndStrides messageWithKeysAndStrides:v6 sender:v7];
-  [v5 sendMessage:v8];
+  contextCopy = context;
+  comms = [(PSSGClient *)self comms];
+  keysWithOptions = [contextCopy keysWithOptions];
+  sessionName = [(PSSGClient *)self sessionName];
+  v8 = [PSSGMessagePublishResourceKeysAndStrides messageWithKeysAndStrides:keysWithOptions sender:sessionName];
+  [comms sendMessage:v8];
 
-  v9 = [(PSSGClient *)self comms];
-  v10 = [v4 encodedStreams];
+  comms2 = [(PSSGClient *)self comms];
+  encodedStreams = [contextCopy encodedStreams];
 
-  v11 = [(PSSGClient *)self sessionName];
-  v12 = [PSSGMessagePublishResourceStreams messageWithStreams:v10 sender:v11];
-  [v9 sendMessage:v12];
+  sessionName2 = [(PSSGClient *)self sessionName];
+  v12 = [PSSGMessagePublishResourceStreams messageWithStreams:encodedStreams sender:sessionName2];
+  [comms2 sendMessage:v12];
 
   [(PSSGClient *)self setPublished:1];
 }
@@ -83,35 +83,35 @@
 - (void)registerClient
 {
   [(PSSGClient *)self resetInternalState];
-  v3 = [(PSSGClient *)self comms];
-  [v3 registerForClient:self];
+  comms = [(PSSGClient *)self comms];
+  [comms registerForClient:self];
 
-  v4 = [(PSSGClient *)self completionSemaphore];
-  dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
+  completionSemaphore = [(PSSGClient *)self completionSemaphore];
+  dispatch_semaphore_wait(completionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 }
 
 - (void)deregisterClient
 {
   [(PSSGClient *)self resetInternalState];
-  v3 = [(PSSGClient *)self comms];
-  [v3 deregisterForClient:self];
+  comms = [(PSSGClient *)self comms];
+  [comms deregisterForClient:self];
 
-  v4 = [(PSSGClient *)self completionSemaphore];
-  dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
+  completionSemaphore = [(PSSGClient *)self completionSemaphore];
+  dispatch_semaphore_wait(completionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 }
 
 - (void)handleRegisterClientAck
 {
   [(PSSGClient *)self setRegistered:1];
-  v3 = [(PSSGClient *)self completionSemaphore];
-  dispatch_semaphore_signal(v3);
+  completionSemaphore = [(PSSGClient *)self completionSemaphore];
+  dispatch_semaphore_signal(completionSemaphore);
 }
 
 - (void)handleDeRegisterClientAck
 {
   [(PSSGClient *)self setStatus:0];
-  v3 = [(PSSGClient *)self completionSemaphore];
-  dispatch_semaphore_signal(v3);
+  completionSemaphore = [(PSSGClient *)self completionSemaphore];
+  dispatch_semaphore_signal(completionSemaphore);
 }
 
 - (void)resetInternalState
@@ -125,77 +125,77 @@
   v5 = [MEMORY[0x277CBEB58] set];
   [(PSSGClient *)self setResourceKeysPendingProduction:v5];
 
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  [(PSSGClient *)self setContextMap:v6];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(PSSGClient *)self setContextMap:dictionary];
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  [(PSSGClient *)self setGraphsBySession:v7];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  [(PSSGClient *)self setGraphsBySession:dictionary2];
 
   v8 = dispatch_semaphore_create(0);
   [(PSSGClient *)self setCompletionSemaphore:v8];
 }
 
-- (id)fetchContextsForSessionNames:(id)a3
+- (id)fetchContextsForSessionNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   [(PSSGClient *)self resetInternalState];
-  v5 = [(PSSGClient *)self sessionsPendingContexts];
-  [v5 unionSet:v4];
+  sessionsPendingContexts = [(PSSGClient *)self sessionsPendingContexts];
+  [sessionsPendingContexts unionSet:namesCopy];
 
-  v6 = [(PSSGClient *)self comms];
-  v7 = [(PSSGClient *)self sessionName];
-  v8 = [PSSGMessageRequestContextForSessions messageWithSessionNames:v4 sender:v7];
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v8 = [PSSGMessageRequestContextForSessions messageWithSessionNames:namesCopy sender:sessionName];
 
-  [v6 sendMessage:v8];
-  v9 = [(PSSGClient *)self completionSemaphore];
-  dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
+  [comms sendMessage:v8];
+  completionSemaphore = [(PSSGClient *)self completionSemaphore];
+  dispatch_semaphore_wait(completionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
   return [(PSSGClient *)self contextMap];
 }
 
-- (id)fetchContextsForSessionsProvidingKeys:(id)a3
+- (id)fetchContextsForSessionsProvidingKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   [(PSSGClient *)self resetInternalState];
-  v5 = [(PSSGClient *)self resourceKeysPendingContexts];
-  [v5 unionSet:v4];
+  resourceKeysPendingContexts = [(PSSGClient *)self resourceKeysPendingContexts];
+  [resourceKeysPendingContexts unionSet:keysCopy];
 
-  v6 = [(PSSGClient *)self comms];
-  v7 = [(PSSGClient *)self sessionName];
-  v8 = [PSSGMessageRequestContextForResourceKeys messageWithResourceKeys:v4 sender:v7];
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v8 = [PSSGMessageRequestContextForResourceKeys messageWithResourceKeys:keysCopy sender:sessionName];
 
-  [v6 sendMessage:v8];
-  v9 = [(PSSGClient *)self completionSemaphore];
-  dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
+  [comms sendMessage:v8];
+  completionSemaphore = [(PSSGClient *)self completionSemaphore];
+  dispatch_semaphore_wait(completionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
   return [(PSSGClient *)self contextMap];
 }
 
-- (BOOL)requestResourcesWithStrides:(id)a3
+- (BOOL)requestResourcesWithStrides:(id)strides
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stridesCopy = strides;
   [(PSSGClient *)self resetInternalState];
-  v5 = [(PSSGClient *)self resourceKeysPendingProduction];
-  v6 = [v4 resourcesWanted];
-  [v5 unionSet:v6];
+  resourceKeysPendingProduction = [(PSSGClient *)self resourceKeysPendingProduction];
+  resourcesWanted = [stridesCopy resourcesWanted];
+  [resourceKeysPendingProduction unionSet:resourcesWanted];
 
-  v7 = [(PSSGClient *)self comms];
-  v8 = [(PSSGClient *)self sessionName];
-  v9 = [PSSGMessageRequestResourcesWithStrides messageWithResourceRequest:v4 sender:v8];
-  [v7 sendMessage:v9];
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v9 = [PSSGMessageRequestResourcesWithStrides messageWithResourceRequest:stridesCopy sender:sessionName];
+  [comms sendMessage:v9];
 
-  v10 = [(PSSGClient *)self resourceKeysPendingProduction];
-  v11 = [v10 count];
+  resourceKeysPendingProduction2 = [(PSSGClient *)self resourceKeysPendingProduction];
+  v11 = [resourceKeysPendingProduction2 count];
 
   if (v11)
   {
-    v12 = [(PSSGClient *)self completionSemaphore];
-    dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
+    completionSemaphore = [(PSSGClient *)self completionSemaphore];
+    dispatch_semaphore_wait(completionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   }
 
-  v13 = [(PSSGClient *)self resourceKeysPendingProduction];
-  v14 = [v13 count];
+  resourceKeysPendingProduction3 = [(PSSGClient *)self resourceKeysPendingProduction];
+  v14 = [resourceKeysPendingProduction3 count];
 
   if (v14)
   {
@@ -207,9 +207,9 @@
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v35 = v4;
-    v16 = [v4 resourcesWantedWithStrides];
-    v17 = [v16 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    v35 = stridesCopy;
+    resourcesWantedWithStrides = [stridesCopy resourcesWantedWithStrides];
+    v17 = [resourcesWantedWithStrides countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v17)
     {
       v18 = v17;
@@ -221,29 +221,29 @@
         {
           if (*v38 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(resourcesWantedWithStrides);
           }
 
           v21 = *(*(&v37 + 1) + 8 * v20);
-          v22 = self;
-          v23 = [(PSSGClient *)self resourceKeysPendingProduction];
-          v24 = [v21 resourceKey];
-          v25 = [v23 containsObject:v24];
+          selfCopy = self;
+          resourceKeysPendingProduction4 = [(PSSGClient *)self resourceKeysPendingProduction];
+          resourceKey = [v21 resourceKey];
+          v25 = [resourceKeysPendingProduction4 containsObject:resourceKey];
 
           if ((v25 & 1) == 0)
           {
-            v26 = [v21 resourceKey];
-            [v36 addObject:v26];
+            resourceKey2 = [v21 resourceKey];
+            [v36 addObject:resourceKey2];
 
             [v15 addObject:v21];
           }
 
           ++v20;
-          self = v22;
+          self = selfCopy;
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        v18 = [resourcesWantedWithStrides countByEnumeratingWithState:&v37 objects:v41 count:16];
       }
 
       while (v18);
@@ -251,149 +251,149 @@
 
     [(PSSGResourceRequest *)v33 setResourcesNoLongerWanted:v36];
     [(PSSGResourceRequest *)v33 setResourcesNoLongerWantedWithStrides:v15];
-    v27 = [(PSSGClient *)self comms];
-    v28 = [(PSSGClient *)self sessionName];
-    v29 = [PSSGMessageRequestResourcesWithStrides messageWithResourceRequest:v33 sender:v28];
-    [v27 sendMessage:v29];
+    comms2 = [(PSSGClient *)self comms];
+    sessionName2 = [(PSSGClient *)self sessionName];
+    v29 = [PSSGMessageRequestResourcesWithStrides messageWithResourceRequest:v33 sender:sessionName2];
+    [comms2 sendMessage:v29];
 
-    v30 = [(PSSGClient *)self resourceKeysPendingProduction];
-    [v30 removeAllObjects];
+    resourceKeysPendingProduction5 = [(PSSGClient *)self resourceKeysPendingProduction];
+    [resourceKeysPendingProduction5 removeAllObjects];
 
     v14 = v34;
-    v4 = v35;
+    stridesCopy = v35;
   }
 
   v31 = *MEMORY[0x277D85DE8];
   return v14 == 0;
 }
 
-- (void)resourceRequestCompletedWithStrides:(id)a3
+- (void)resourceRequestCompletedWithStrides:(id)strides
 {
-  v4 = a3;
-  v7 = [(PSSGClient *)self comms];
-  v5 = [(PSSGClient *)self sessionName];
-  v6 = [PSSGMessageCompletedResourceRequestWithStrides messageWithResourceRequest:v4 sender:v5];
+  stridesCopy = strides;
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v6 = [PSSGMessageCompletedResourceRequestWithStrides messageWithResourceRequest:stridesCopy sender:sessionName];
 
-  [v7 sendMessage:v6];
+  [comms sendMessage:v6];
 }
 
 - (void)enteringSleep
 {
-  v5 = [(PSSGClient *)self comms];
-  v3 = [(PSSGClient *)self sessionName];
-  v4 = [PSSGMessageEnteringSleep messageWithSessionName:v3];
-  [v5 sendMessage:v4];
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v4 = [PSSGMessageEnteringSleep messageWithSessionName:sessionName];
+  [comms sendMessage:v4];
 }
 
 - (void)exitingSleep
 {
-  v5 = [(PSSGClient *)self comms];
-  v3 = [(PSSGClient *)self sessionName];
-  v4 = [PSSGMessageExitingSleep messageWithSessionName:v3];
-  [v5 sendMessage:v4];
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v4 = [PSSGMessageExitingSleep messageWithSessionName:sessionName];
+  [comms sendMessage:v4];
 }
 
-- (void)resourcesAreStopped:(id)a3
+- (void)resourcesAreStopped:(id)stopped
 {
-  v4 = a3;
-  v7 = [(PSSGClient *)self comms];
-  v5 = [(PSSGClient *)self sessionName];
-  v6 = [PSSGMessageStoppedResources messageWithResourceKeys:v4 sender:v5];
+  stoppedCopy = stopped;
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v6 = [PSSGMessageStoppedResources messageWithResourceKeys:stoppedCopy sender:sessionName];
 
-  [v7 sendMessage:v6];
+  [comms sendMessage:v6];
 }
 
-- (void)resourceRequestsFailed:(id)a3
+- (void)resourceRequestsFailed:(id)failed
 {
-  v4 = a3;
-  v7 = [(PSSGClient *)self comms];
-  v5 = [(PSSGClient *)self sessionName];
-  v6 = [PSSGMessageResourceRequestsFailed messageWithResourceRequest:v4 sender:v5];
+  failedCopy = failed;
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v6 = [PSSGMessageResourceRequestsFailed messageWithResourceRequest:failedCopy sender:sessionName];
 
-  [v7 sendMessage:v6];
+  [comms sendMessage:v6];
 }
 
-- (void)resourcesNoLongerWantedProcessed:(id)a3
+- (void)resourcesNoLongerWantedProcessed:(id)processed
 {
-  v4 = a3;
-  v7 = [(PSSGClient *)self comms];
-  v5 = [(PSSGClient *)self sessionName];
-  v6 = [PSSGMessageResourcesNoLongerWantedProcessed messageWithResourceKeys:v4 sender:v5];
+  processedCopy = processed;
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v6 = [PSSGMessageResourcesNoLongerWantedProcessed messageWithResourceKeys:processedCopy sender:sessionName];
 
-  [v7 sendMessage:v6];
+  [comms sendMessage:v6];
 }
 
-- (void)resourcesNoLongerWantedFailed:(id)a3
+- (void)resourcesNoLongerWantedFailed:(id)failed
 {
-  v4 = a3;
-  v7 = [(PSSGClient *)self comms];
-  v5 = [(PSSGClient *)self sessionName];
-  v6 = [PSSGMessageResourcesNoLongerWantedFailed messageWithResourceKeys:v4 sender:v5];
+  failedCopy = failed;
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v6 = [PSSGMessageResourcesNoLongerWantedFailed messageWithResourceKeys:failedCopy sender:sessionName];
 
-  [v7 sendMessage:v6];
+  [comms sendMessage:v6];
 }
 
-- (void)setupRequestsAreComplete:(id)a3
+- (void)setupRequestsAreComplete:(id)complete
 {
-  v4 = a3;
-  v7 = [(PSSGClient *)self comms];
-  v5 = [(PSSGClient *)self sessionName];
-  v6 = [PSSGMessageSetupResourcesCompleted messageWithResourceRequest:v4 sender:v5];
+  completeCopy = complete;
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v6 = [PSSGMessageSetupResourcesCompleted messageWithResourceRequest:completeCopy sender:sessionName];
 
-  [v7 sendMessage:v6];
+  [comms sendMessage:v6];
 }
 
-- (void)failedToProcessSetupRequests:(id)a3
+- (void)failedToProcessSetupRequests:(id)requests
 {
-  v4 = a3;
-  v7 = [(PSSGClient *)self comms];
-  v5 = [(PSSGClient *)self sessionName];
-  v6 = [PSSGMessageSetupResourcesFailed messageWithResourceKeys:v4 sender:v5];
+  requestsCopy = requests;
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v6 = [PSSGMessageSetupResourcesFailed messageWithResourceKeys:requestsCopy sender:sessionName];
 
-  [v7 sendMessage:v6];
+  [comms sendMessage:v6];
 }
 
-- (void)pauseRequestsAreComplete:(id)a3
+- (void)pauseRequestsAreComplete:(id)complete
 {
-  v4 = a3;
-  v7 = [(PSSGClient *)self comms];
-  v5 = [(PSSGClient *)self sessionName];
-  v6 = [PSSGMessagePauseResourcesCompleted messageWithResourceKeys:v4 sender:v5];
+  completeCopy = complete;
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v6 = [PSSGMessagePauseResourcesCompleted messageWithResourceKeys:completeCopy sender:sessionName];
 
-  [v7 sendMessage:v6];
+  [comms sendMessage:v6];
 }
 
-- (void)failedToProcessPauseRequests:(id)a3
+- (void)failedToProcessPauseRequests:(id)requests
 {
-  v4 = a3;
-  v7 = [(PSSGClient *)self comms];
-  v5 = [(PSSGClient *)self sessionName];
-  v6 = [PSSGMessagePauseResourcesFailed messageWithResourceKeys:v4 sender:v5];
+  requestsCopy = requests;
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v6 = [PSSGMessagePauseResourcesFailed messageWithResourceKeys:requestsCopy sender:sessionName];
 
-  [v7 sendMessage:v6];
+  [comms sendMessage:v6];
 }
 
-- (void)updateGraphs:(id)a3
+- (void)updateGraphs:(id)graphs
 {
-  v4 = a3;
-  v7 = [(PSSGClient *)self comms];
-  v5 = [(PSSGClient *)self sessionName];
-  v6 = [PSSGMessageSHUpdateGraphs messageWithGraphData:v4 sender:v5];
+  graphsCopy = graphs;
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v6 = [PSSGMessageSHUpdateGraphs messageWithGraphData:graphsCopy sender:sessionName];
 
-  [v7 sendMessage:v6];
+  [comms sendMessage:v6];
 }
 
-- (id)requestAllGraphs:(id)a3
+- (id)requestAllGraphs:(id)graphs
 {
-  v4 = a3;
+  graphsCopy = graphs;
   [(PSSGClient *)self resetInternalState];
-  v5 = [(PSSGClient *)self comms];
-  v6 = [(PSSGClient *)self sessionName];
-  v7 = [PSSGMessageSHRequestAllGraphs messageWithFilter:v4 sender:v6];
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v7 = [PSSGMessageSHRequestAllGraphs messageWithFilter:graphsCopy sender:sessionName];
 
-  [v5 sendMessage:v7];
-  v8 = [(PSSGClient *)self completionSemaphore];
-  dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
+  [comms sendMessage:v7];
+  completionSemaphore = [(PSSGClient *)self completionSemaphore];
+  dispatch_semaphore_wait(completionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
   return [(PSSGClient *)self allGraphs];
 }
@@ -401,13 +401,13 @@
 - (id)requestProcessMonitorStats
 {
   [(PSSGClient *)self resetInternalState];
-  v3 = [(PSSGClient *)self comms];
-  v4 = [(PSSGClient *)self sessionName];
-  v5 = [PSSGMessageSHRequestProcessMonitorStats messageWithSessionName:v4];
-  [v3 sendMessage:v5];
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v5 = [PSSGMessageSHRequestProcessMonitorStats messageWithSessionName:sessionName];
+  [comms sendMessage:v5];
 
-  v6 = [(PSSGClient *)self completionSemaphore];
-  dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
+  completionSemaphore = [(PSSGClient *)self completionSemaphore];
+  dispatch_semaphore_wait(completionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
   return [(PSSGClient *)self processMonitorStats];
 }
@@ -415,13 +415,13 @@
 - (id)requestSystemActionStatsStats
 {
   [(PSSGClient *)self resetInternalState];
-  v3 = [(PSSGClient *)self comms];
-  v4 = [(PSSGClient *)self sessionName];
-  v5 = [PSSGMessageSHRequestSystemActionStats messageWithSessionName:v4];
-  [v3 sendMessage:v5];
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v5 = [PSSGMessageSHRequestSystemActionStats messageWithSessionName:sessionName];
+  [comms sendMessage:v5];
 
-  v6 = [(PSSGClient *)self completionSemaphore];
-  dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
+  completionSemaphore = [(PSSGClient *)self completionSemaphore];
+  dispatch_semaphore_wait(completionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
   return [(PSSGClient *)self systemActionStats];
 }
@@ -429,158 +429,158 @@
 - (id)requestProcessMonitorEventLog
 {
   [(PSSGClient *)self resetInternalState];
-  v3 = [(PSSGClient *)self comms];
-  v4 = [(PSSGClient *)self sessionName];
-  v5 = [PSSGMessageSHRequestProcessMonitorEventLog messageWithSessionName:v4];
-  [v3 sendMessage:v5];
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v5 = [PSSGMessageSHRequestProcessMonitorEventLog messageWithSessionName:sessionName];
+  [comms sendMessage:v5];
 
-  v6 = [(PSSGClient *)self completionSemaphore];
-  dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
+  completionSemaphore = [(PSSGClient *)self completionSemaphore];
+  dispatch_semaphore_wait(completionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
   return [(PSSGClient *)self processMonitorEventLog];
 }
 
 - (void)notifySystemReplayStarting
 {
-  v5 = [(PSSGClient *)self comms];
-  v3 = [(PSSGClient *)self sessionName];
-  v4 = [PSSGMessageSystemReplayStarting messageWithSessionName:v3];
-  [v5 sendMessage:v4];
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v4 = [PSSGMessageSystemReplayStarting messageWithSessionName:sessionName];
+  [comms sendMessage:v4];
 }
 
 - (void)notifySystemReplayStopping
 {
-  v5 = [(PSSGClient *)self comms];
-  v3 = [(PSSGClient *)self sessionName];
-  v4 = [PSSGMessageSystemReplayEnding messageWithSessionName:v3];
-  [v5 sendMessage:v4];
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v4 = [PSSGMessageSystemReplayEnding messageWithSessionName:sessionName];
+  [comms sendMessage:v4];
 }
 
-- (void)updateSystemHealth:(id)a3
+- (void)updateSystemHealth:(id)health
 {
-  v4 = a3;
+  healthCopy = health;
   [(PSSGClient *)self resetInternalState];
-  v7 = [(PSSGClient *)self comms];
-  v5 = [(PSSGClient *)self sessionName];
-  v6 = [PSSGMessageSHTriggerHealthUpdate messageWithHealthData:v4 sender:v5];
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v6 = [PSSGMessageSHTriggerHealthUpdate messageWithHealthData:healthCopy sender:sessionName];
 
-  [v7 sendMessage:v6];
+  [comms sendMessage:v6];
 }
 
-- (void)handlePublishResourceKeysAndStridesMessage:(id)a3
+- (void)handlePublishResourceKeysAndStridesMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v12 = objc_alloc_init(PSSGContext);
-  v5 = [v4 resourceOptions];
-  [(PSSGContext *)v12 setKeysWithOptions:v5];
+  resourceOptions = [messageCopy resourceOptions];
+  [(PSSGContext *)v12 setKeysWithOptions:resourceOptions];
 
   v6 = MEMORY[0x277CBEB98];
-  v7 = [v4 resourceOptions];
-  v8 = [v7 allKeys];
-  v9 = [v6 setWithArray:v8];
+  resourceOptions2 = [messageCopy resourceOptions];
+  allKeys = [resourceOptions2 allKeys];
+  v9 = [v6 setWithArray:allKeys];
   [(PSSGContext *)v12 setKeys:v9];
 
-  v10 = [(PSSGClient *)self contextMap];
-  v11 = [v4 sender];
+  contextMap = [(PSSGClient *)self contextMap];
+  sender = [messageCopy sender];
 
-  [v10 setObject:v12 forKeyedSubscript:v11];
+  [contextMap setObject:v12 forKeyedSubscript:sender];
 }
 
-- (void)handlePublishResourceStreamsMessage:(id)a3
+- (void)handlePublishResourceStreamsMessage:(id)message
 {
-  v9 = a3;
-  v4 = [(PSSGClient *)self contextMap];
-  v5 = [v9 sender];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  messageCopy = message;
+  contextMap = [(PSSGClient *)self contextMap];
+  sender = [messageCopy sender];
+  v6 = [contextMap objectForKeyedSubscript:sender];
 
   if (!v6)
   {
-    [(PSSGClient *)&v10 handlePublishResourceStreamsMessage:v9];
+    [(PSSGClient *)&v10 handlePublishResourceStreamsMessage:messageCopy];
   }
 
-  v7 = [v9 encodedStreams];
-  [v6 setEncodedStreams:v7];
+  encodedStreams = [messageCopy encodedStreams];
+  [v6 setEncodedStreams:encodedStreams];
 
-  v8 = [v9 sender];
-  [(PSSGClient *)self didReceiveContextForSession:v8];
+  sender2 = [messageCopy sender];
+  [(PSSGClient *)self didReceiveContextForSession:sender2];
 }
 
-- (void)didReceiveContextForSession:(id)a3
+- (void)didReceiveContextForSession:(id)session
 {
-  v17 = a3;
-  v4 = [(PSSGClient *)self contextMap];
-  v5 = [v4 objectForKeyedSubscript:v17];
+  sessionCopy = session;
+  contextMap = [(PSSGClient *)self contextMap];
+  v5 = [contextMap objectForKeyedSubscript:sessionCopy];
 
-  v6 = [(PSSGClient *)self resourceKeysPendingContexts];
-  v7 = [v6 count];
+  resourceKeysPendingContexts = [(PSSGClient *)self resourceKeysPendingContexts];
+  v7 = [resourceKeysPendingContexts count];
 
   if (v7)
   {
-    v8 = [v5 keys];
-    v9 = [v8 mutableCopy];
+    keys = [v5 keys];
+    delegate2 = [keys mutableCopy];
 
-    v10 = [(PSSGClient *)self resourceKeysPendingContexts];
-    [v9 intersectSet:v10];
+    resourceKeysPendingContexts2 = [(PSSGClient *)self resourceKeysPendingContexts];
+    [delegate2 intersectSet:resourceKeysPendingContexts2];
 
-    v11 = [(PSSGClient *)self resourceKeysPendingContexts];
-    [v11 minusSet:v9];
+    resourceKeysPendingContexts3 = [(PSSGClient *)self resourceKeysPendingContexts];
+    [resourceKeysPendingContexts3 minusSet:delegate2];
 
-    v12 = [(PSSGClient *)self delegate];
-    [v12 didReceiveContextForSessionProvidingKeys:v9];
+    delegate = [(PSSGClient *)self delegate];
+    [delegate didReceiveContextForSessionProvidingKeys:delegate2];
   }
 
   else
   {
-    v9 = [(PSSGClient *)self delegate];
-    [v9 didReceiveContextForSessionName:v17];
+    delegate2 = [(PSSGClient *)self delegate];
+    [delegate2 didReceiveContextForSessionName:sessionCopy];
   }
 
-  v13 = [(PSSGClient *)self sessionsPendingContexts];
-  [v13 removeObject:v17];
+  sessionsPendingContexts = [(PSSGClient *)self sessionsPendingContexts];
+  [sessionsPendingContexts removeObject:sessionCopy];
 
-  v14 = [(PSSGClient *)self sessionsPendingContexts];
-  if ([v14 count])
+  sessionsPendingContexts2 = [(PSSGClient *)self sessionsPendingContexts];
+  if ([sessionsPendingContexts2 count])
   {
     goto LABEL_5;
   }
 
-  v15 = [(PSSGClient *)self resourceKeysPendingContexts];
-  v16 = [v15 count];
+  resourceKeysPendingContexts4 = [(PSSGClient *)self resourceKeysPendingContexts];
+  v16 = [resourceKeysPendingContexts4 count];
 
   if (!v16)
   {
-    v14 = [(PSSGClient *)self completionSemaphore];
-    dispatch_semaphore_signal(v14);
+    sessionsPendingContexts2 = [(PSSGClient *)self completionSemaphore];
+    dispatch_semaphore_signal(sessionsPendingContexts2);
 LABEL_5:
   }
 }
 
-- (void)handleResourceAvailabilityUpdates:(id)a3
+- (void)handleResourceAvailabilityUpdates:(id)updates
 {
-  v4 = a3;
-  v6 = [(PSSGClient *)self delegate];
-  v5 = [v4 getResourceAvailabilityMap];
+  updatesCopy = updates;
+  delegate = [(PSSGClient *)self delegate];
+  getResourceAvailabilityMap = [updatesCopy getResourceAvailabilityMap];
 
-  [v6 didReceiveResourceAvailabilityUpdates:v5];
+  [delegate didReceiveResourceAvailabilityUpdates:getResourceAvailabilityMap];
 }
 
-- (void)handleResourceRequestWithStridesCompletedMessage:(id)a3
+- (void)handleResourceRequestWithStridesCompletedMessage:(id)message
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSSGClient *)self delegate];
-  v6 = [v4 request];
-  [v5 didReceiveResponseForResourceRequest:v6];
+  messageCopy = message;
+  delegate = [(PSSGClient *)self delegate];
+  request = [messageCopy request];
+  [delegate didReceiveResponseForResourceRequest:request];
 
   v7 = [MEMORY[0x277CBEB58] set];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [v4 request];
-  v9 = [v8 resourcesWantedWithStrides];
+  request2 = [messageCopy request];
+  resourcesWantedWithStrides = [request2 resourcesWantedWithStrides];
 
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v10 = [resourcesWantedWithStrides countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -592,211 +592,211 @@ LABEL_5:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(resourcesWantedWithStrides);
         }
 
-        v14 = [*(*(&v20 + 1) + 8 * v13) resourceKey];
-        [v7 addObject:v14];
+        resourceKey = [*(*(&v20 + 1) + 8 * v13) resourceKey];
+        [v7 addObject:resourceKey];
 
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [resourcesWantedWithStrides countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v11);
   }
 
-  v15 = [(PSSGClient *)self resourceKeysPendingProduction];
-  [v15 minusSet:v7];
+  resourceKeysPendingProduction = [(PSSGClient *)self resourceKeysPendingProduction];
+  [resourceKeysPendingProduction minusSet:v7];
 
-  v16 = [(PSSGClient *)self resourceKeysPendingProduction];
-  v17 = [v16 count];
+  resourceKeysPendingProduction2 = [(PSSGClient *)self resourceKeysPendingProduction];
+  v17 = [resourceKeysPendingProduction2 count];
 
   if (!v17)
   {
-    v18 = [(PSSGClient *)self completionSemaphore];
-    dispatch_semaphore_signal(v18);
+    completionSemaphore = [(PSSGClient *)self completionSemaphore];
+    dispatch_semaphore_signal(completionSemaphore);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleResourceRequestsFailedMessage:(id)a3
+- (void)handleResourceRequestsFailedMessage:(id)message
 {
-  v3 = [(PSSGClient *)self completionSemaphore];
-  dispatch_semaphore_signal(v3);
+  completionSemaphore = [(PSSGClient *)self completionSemaphore];
+  dispatch_semaphore_signal(completionSemaphore);
 }
 
-- (void)handleResourceRequestWithStridesMessage:(id)a3
+- (void)handleResourceRequestWithStridesMessage:(id)message
 {
-  v4 = a3;
-  v6 = [(PSSGClient *)self delegate];
-  v5 = [v4 request];
+  messageCopy = message;
+  delegate = [(PSSGClient *)self delegate];
+  request = [messageCopy request];
 
-  [v6 serverRequestedResourcesWithStrides:v5];
+  [delegate serverRequestedResourcesWithStrides:request];
 }
 
-- (void)handlePublishAllGraphs:(id)a3
+- (void)handlePublishAllGraphs:(id)graphs
 {
   v4 = MEMORY[0x277CBEA90];
-  v5 = [a3 allGraphs];
-  v6 = [v4 dataWithData:v5];
+  allGraphs = [graphs allGraphs];
+  v6 = [v4 dataWithData:allGraphs];
   [(PSSGClient *)self setAllGraphs:v6];
 
-  v7 = [(PSSGClient *)self completionSemaphore];
-  dispatch_semaphore_signal(v7);
+  completionSemaphore = [(PSSGClient *)self completionSemaphore];
+  dispatch_semaphore_signal(completionSemaphore);
 }
 
-- (void)handleReportProcessMonitorStats:(id)a3
+- (void)handleReportProcessMonitorStats:(id)stats
 {
   v4 = MEMORY[0x277CBEA90];
-  v5 = [a3 stats];
-  v6 = [v4 dataWithData:v5];
+  stats = [stats stats];
+  v6 = [v4 dataWithData:stats];
   [(PSSGClient *)self setProcessMonitorStats:v6];
 
-  v7 = [(PSSGClient *)self completionSemaphore];
-  dispatch_semaphore_signal(v7);
+  completionSemaphore = [(PSSGClient *)self completionSemaphore];
+  dispatch_semaphore_signal(completionSemaphore);
 }
 
-- (void)handleReportSystemActionStats:(id)a3
+- (void)handleReportSystemActionStats:(id)stats
 {
   v4 = MEMORY[0x277CBEA90];
-  v5 = [a3 stats];
-  v6 = [v4 dataWithData:v5];
+  stats = [stats stats];
+  v6 = [v4 dataWithData:stats];
   [(PSSGClient *)self setSystemActionStats:v6];
 
-  v7 = [(PSSGClient *)self completionSemaphore];
-  dispatch_semaphore_signal(v7);
+  completionSemaphore = [(PSSGClient *)self completionSemaphore];
+  dispatch_semaphore_signal(completionSemaphore);
 }
 
-- (void)handleReportProcessMonitorEventLog:(id)a3
+- (void)handleReportProcessMonitorEventLog:(id)log
 {
   v4 = MEMORY[0x277CBEA90];
-  v5 = [a3 log];
+  v5 = [log log];
   v6 = [v4 dataWithData:v5];
   [(PSSGClient *)self setProcessMonitorEventLog:v6];
 
-  v7 = [(PSSGClient *)self completionSemaphore];
-  dispatch_semaphore_signal(v7);
+  completionSemaphore = [(PSSGClient *)self completionSemaphore];
+  dispatch_semaphore_signal(completionSemaphore);
 }
 
-- (void)publishCurrentGraphs:(id)a3
+- (void)publishCurrentGraphs:(id)graphs
 {
-  v4 = a3;
-  v7 = [(PSSGClient *)self comms];
-  v5 = [(PSSGClient *)self sessionName];
-  v6 = [PSSGMessagePublishCurrentGraphs messageWithGraphs:v4 sender:v5];
+  graphsCopy = graphs;
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v6 = [PSSGMessagePublishCurrentGraphs messageWithGraphs:graphsCopy sender:sessionName];
 
-  [v7 sendMessage:v6];
+  [comms sendMessage:v6];
 }
 
 - (id)fetchCurrentGraphsForAllSessions
 {
   [(PSSGClient *)self resetInternalState];
-  v3 = [(PSSGClient *)self comms];
-  v4 = [(PSSGClient *)self sessionName];
-  v5 = [PSSGMessageRequestCurrentGraphsForAllSessions messageWithSessionName:v4];
-  [v3 sendMessage:v5];
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v5 = [PSSGMessageRequestCurrentGraphsForAllSessions messageWithSessionName:sessionName];
+  [comms sendMessage:v5];
 
-  v6 = [(PSSGClient *)self completionSemaphore];
+  completionSemaphore = [(PSSGClient *)self completionSemaphore];
   v7 = dispatch_time(0, 1000000000);
-  v8 = dispatch_semaphore_wait(v6, v7);
+  v8 = dispatch_semaphore_wait(completionSemaphore, v7);
 
   if (v8)
   {
-    v9 = [(PSSGClient *)self comms];
-    v10 = [(PSSGClient *)self sessionName];
-    v11 = [PSSGMessageFlushCurrentGraphsForAllSessions messageWithSessionName:v10];
-    [v9 sendMessage:v11];
+    comms2 = [(PSSGClient *)self comms];
+    sessionName2 = [(PSSGClient *)self sessionName];
+    v11 = [PSSGMessageFlushCurrentGraphsForAllSessions messageWithSessionName:sessionName2];
+    [comms2 sendMessage:v11];
 
-    v12 = [(PSSGClient *)self completionSemaphore];
-    dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
+    completionSemaphore2 = [(PSSGClient *)self completionSemaphore];
+    dispatch_semaphore_wait(completionSemaphore2, 0xFFFFFFFFFFFFFFFFLL);
   }
 
   return [(PSSGClient *)self graphsBySession];
 }
 
-- (void)handlePublishCurrentGraphsMessage:(id)a3
+- (void)handlePublishCurrentGraphsMessage:(id)message
 {
-  v4 = a3;
-  v7 = [v4 encodedGraphs];
-  v5 = [(PSSGClient *)self graphsBySession];
-  v6 = [v4 sender];
+  messageCopy = message;
+  encodedGraphs = [messageCopy encodedGraphs];
+  graphsBySession = [(PSSGClient *)self graphsBySession];
+  sender = [messageCopy sender];
 
-  [v5 setObject:v7 forKeyedSubscript:v6];
+  [graphsBySession setObject:encodedGraphs forKeyedSubscript:sender];
 }
 
-- (void)handleRequestCurrentGraphsMessage:(id)a3
+- (void)handleRequestCurrentGraphsMessage:(id)message
 {
-  v3 = [(PSSGClient *)self delegate];
-  [v3 serverRequestedCurrentGraphs];
+  delegate = [(PSSGClient *)self delegate];
+  [delegate serverRequestedCurrentGraphs];
 }
 
-- (void)handleCompletedCurrentGraphsRequestMessage:(id)a3
+- (void)handleCompletedCurrentGraphsRequestMessage:(id)message
 {
-  v3 = [(PSSGClient *)self completionSemaphore];
-  dispatch_semaphore_signal(v3);
+  completionSemaphore = [(PSSGClient *)self completionSemaphore];
+  dispatch_semaphore_signal(completionSemaphore);
 }
 
-- (void)handleSystemReplayStarting:(id)a3
+- (void)handleSystemReplayStarting:(id)starting
 {
   [(PSSGClient *)self setReplaying:1];
-  v4 = [(PSSGClient *)self delegate];
-  [v4 systemReplayStarting];
+  delegate = [(PSSGClient *)self delegate];
+  [delegate systemReplayStarting];
 }
 
-- (void)handleSystemReplayEnding:(id)a3
+- (void)handleSystemReplayEnding:(id)ending
 {
   [(PSSGClient *)self setReplaying:0];
-  v4 = [(PSSGClient *)self delegate];
-  [v4 systemReplayEnding];
+  delegate = [(PSSGClient *)self delegate];
+  [delegate systemReplayEnding];
 }
 
-- (void)handleRequestGraphResubmission:(id)a3
+- (void)handleRequestGraphResubmission:(id)resubmission
 {
-  v3 = [(PSSGClient *)self delegate];
-  [v3 serverRequestedGraphResubmission];
+  delegate = [(PSSGClient *)self delegate];
+  [delegate serverRequestedGraphResubmission];
 }
 
-- (void)handleRequestReplayResources:(id)a3
+- (void)handleRequestReplayResources:(id)resources
 {
-  v3 = [(PSSGClient *)self delegate];
-  [v3 serverRequestedReplayResources];
+  delegate = [(PSSGClient *)self delegate];
+  [delegate serverRequestedReplayResources];
 }
 
-- (void)handleSetupResourcesMessage:(id)a3
+- (void)handleSetupResourcesMessage:(id)message
 {
-  v4 = a3;
-  v6 = [(PSSGClient *)self delegate];
-  v5 = [v4 request];
+  messageCopy = message;
+  delegate = [(PSSGClient *)self delegate];
+  request = [messageCopy request];
 
-  [v6 serverRequestToSetupResources:v5];
+  [delegate serverRequestToSetupResources:request];
 }
 
-- (void)handlePauseResourcesMessage:(id)a3
+- (void)handlePauseResourcesMessage:(id)message
 {
-  v4 = a3;
-  v6 = [(PSSGClient *)self delegate];
-  v5 = [v4 getKeys];
+  messageCopy = message;
+  delegate = [(PSSGClient *)self delegate];
+  getKeys = [messageCopy getKeys];
 
-  [v6 serverRequestToPauseResources:v5];
+  [delegate serverRequestToPauseResources:getKeys];
 }
 
-- (void)setRegistered:(BOOL)a3
+- (void)setRegistered:(BOOL)registered
 {
-  v4 = [(PSSGClient *)self status]& 0xFFFFFFFFFFFFFFFELL | a3;
+  v4 = [(PSSGClient *)self status]& 0xFFFFFFFFFFFFFFFELL | registered;
 
   [(PSSGClient *)self setStatus:v4];
 }
 
-- (void)setPublished:(BOOL)a3
+- (void)setPublished:(BOOL)published
 {
-  v3 = a3;
+  publishedCopy = published;
   v5 = [(PSSGClient *)self status]& 0xFFFFFFFFFFFFFFFDLL;
   v6 = 2;
-  if (!v3)
+  if (!publishedCopy)
   {
     v6 = 0;
   }
@@ -804,12 +804,12 @@ LABEL_5:
   [(PSSGClient *)self setStatus:v5 | v6];
 }
 
-- (void)setReplaying:(BOOL)a3
+- (void)setReplaying:(BOOL)replaying
 {
-  v3 = a3;
+  replayingCopy = replaying;
   v5 = [(PSSGClient *)self status]& 0xFFFFFFFFFFFFFFFBLL;
   v6 = 4;
-  if (!v3)
+  if (!replayingCopy)
   {
     v6 = 0;
   }
@@ -817,44 +817,44 @@ LABEL_5:
   [(PSSGClient *)self setStatus:v5 | v6];
 }
 
-- (void)requestDPTailspinWithReason:(id)a3
+- (void)requestDPTailspinWithReason:(id)reason
 {
-  v4 = a3;
-  v7 = [(PSSGClient *)self comms];
-  v5 = [(PSSGClient *)self sessionName];
-  v6 = [PSSGMessageRequestDPTailspin messageWithSessionName:v5 reason:v4];
+  reasonCopy = reason;
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v6 = [PSSGMessageRequestDPTailspin messageWithSessionName:sessionName reason:reasonCopy];
 
-  [v7 sendMessage:v6];
+  [comms sendMessage:v6];
 }
 
-- (void)resourceAvailabilityHasChangedTo:(id)a3
+- (void)resourceAvailabilityHasChangedTo:(id)to
 {
-  v4 = a3;
-  v7 = [(PSSGClient *)self comms];
-  v5 = [(PSSGClient *)self sessionName];
-  v6 = [PSSGMessageSetResourceAvailability messageWithKeysAndResourceAvailability:v4 sender:v5];
+  toCopy = to;
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v6 = [PSSGMessageSetResourceAvailability messageWithKeysAndResourceAvailability:toCopy sender:sessionName];
 
-  [v7 sendMessage:v6];
+  [comms sendMessage:v6];
 }
 
-- (void)requestResourceAvailabilityUpdates:(id)a3
+- (void)requestResourceAvailabilityUpdates:(id)updates
 {
-  v4 = a3;
-  v7 = [(PSSGClient *)self comms];
-  v5 = [(PSSGClient *)self sessionName];
-  v6 = [PSSGMessageRequestResourceAvailabilityUpdates messageWithResourceKeys:v4 sender:v5];
+  updatesCopy = updates;
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v6 = [PSSGMessageRequestResourceAvailabilityUpdates messageWithResourceKeys:updatesCopy sender:sessionName];
 
-  [v7 sendMessage:v6];
+  [comms sendMessage:v6];
 }
 
-- (void)stopResourceAvailabilityUpdates:(id)a3
+- (void)stopResourceAvailabilityUpdates:(id)updates
 {
-  v4 = a3;
-  v7 = [(PSSGClient *)self comms];
-  v5 = [(PSSGClient *)self sessionName];
-  v6 = [PSSGMessageStopResourceAvailabilityUpdates messageWithResourceKeys:v4 sender:v5];
+  updatesCopy = updates;
+  comms = [(PSSGClient *)self comms];
+  sessionName = [(PSSGClient *)self sessionName];
+  v6 = [PSSGMessageStopResourceAvailabilityUpdates messageWithResourceKeys:updatesCopy sender:sessionName];
 
-  [v7 sendMessage:v6];
+  [comms sendMessage:v6];
 }
 
 - (PSSGDelegate)delegate

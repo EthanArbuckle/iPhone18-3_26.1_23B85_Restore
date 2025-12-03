@@ -1,9 +1,9 @@
 @interface CloudArtworkImportOperation
-- (CloudArtworkImportOperation)initWithURLSession:(id)a3 configuration:(id)a4 cloudID:(unint64_t)a5 artworkToken:(id)a6 artworkType:(int64_t)a7 sourceType:(int64_t)a8 variantType:(int64_t)a9 clientIdentity:(id)a10;
-- (id)_artworkURLForInfoDictionary:(id)a3;
-- (id)_resizedImageDataFromLocation:(id)a3;
+- (CloudArtworkImportOperation)initWithURLSession:(id)session configuration:(id)configuration cloudID:(unint64_t)d artworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType variantType:(int64_t)variantType clientIdentity:(id)self0;
+- (id)_artworkURLForInfoDictionary:(id)dictionary;
+- (id)_resizedImageDataFromLocation:(id)location;
 - (void)_populateAvailableVariantsIfNeeded;
-- (void)addCompletionHandler:(id)a3;
+- (void)addCompletionHandler:(id)handler;
 - (void)callCompletionHandlers;
 - (void)cancel;
 - (void)finish;
@@ -37,7 +37,7 @@
       v15[1] = v15;
       v15[2] = 0x2020000000;
       v15[3] = 0;
-      v6 = [(CloudLibraryOperation *)self musicLibrary];
+      musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_1000D519C;
@@ -47,7 +47,7 @@
       v14[6] = v16;
       v14[7] = v15;
       v14[8] = &v17;
-      [v6 databaseConnectionAllowingWrites:0 withBlock:v14];
+      [musicLibrary databaseConnectionAllowingWrites:0 withBlock:v14];
 
       if (*(*(&v25 + 1) + 24))
       {
@@ -58,13 +58,13 @@
           {
             v8 = *(&self->_cloudID + 2);
             *buf = 138543618;
-            v22 = self;
+            selfCopy2 = self;
             v23 = 2114;
             v24 = v8;
             _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Adding 3x4 variant entry for artwork token '%{public}@", buf, 0x16u);
           }
 
-          v9 = [(CloudLibraryOperation *)self musicLibrary];
+          musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
           v13[0] = _NSConcreteStackBlock;
           v13[1] = 3221225472;
           v13[2] = sub_1000D5314;
@@ -72,7 +72,7 @@
           v13[4] = self;
           v13[5] = v16;
           v13[6] = v15;
-          [v9 databaseConnectionAllowingWrites:1 withBlock:v13];
+          [musicLibrary2 databaseConnectionAllowingWrites:1 withBlock:v13];
         }
       }
 
@@ -83,7 +83,7 @@
         {
           v12 = *(&self->_cloudID + 2);
           *buf = 138543618;
-          v22 = self;
+          selfCopy2 = self;
           v23 = 2114;
           v24 = v12;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%{public}@ No existing entries for token '%{public}@' - not adding variants", buf, 0x16u);
@@ -109,9 +109,9 @@
   }
 }
 
-- (id)_artworkURLForInfoDictionary:(id)a3
+- (id)_artworkURLForInfoDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:ICArtworkInfoKeyArtworkDictionary];
+  v4 = [dictionary objectForKeyedSubscript:ICArtworkInfoKeyArtworkDictionary];
   height = CGSizeZero.height;
   if (!_os_feature_enabled_impl())
   {
@@ -244,8 +244,8 @@ LABEL_27:
   MSVGetMaximumScreenSize();
   v26 = v25;
   v28 = v27;
-  v29 = [v12 sizeInfo];
-  [v29 maxSupportedSize];
+  sizeInfo = [v12 sizeInfo];
+  [sizeInfo maxSupportedSize];
   v31 = v30;
   v33 = v32;
 
@@ -279,9 +279,9 @@ LABEL_27:
   return v38;
 }
 
-- (id)_resizedImageDataFromLocation:(id)a3
+- (id)_resizedImageDataFromLocation:(id)location
 {
-  v3 = a3;
+  locationCopy = location;
   v4 = +[ICDeviceInfo currentDeviceInfo];
   if (![v4 isWatch])
   {
@@ -290,9 +290,9 @@ LABEL_27:
   }
 
   v5 = +[NSFileManager defaultManager];
-  v6 = [v3 path];
-  v7 = [v5 attributesOfItemAtPath:v6 error:0];
-  v8 = [v7 fileSize];
+  path = [locationCopy path];
+  v7 = [v5 attributesOfItemAtPath:path error:0];
+  fileSize = [v7 fileSize];
 
   ImageSource = MSVImageUtilitiesCreateImageSource();
   if (!ImageSource)
@@ -301,7 +301,7 @@ LABEL_27:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138543362;
-      v20 = v3;
+      v20 = locationCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "failed to create image source for resizing image at '%{public}@'", &v19, 0xCu);
     }
 
@@ -318,7 +318,7 @@ LABEL_27:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138543362;
-      v20 = v3;
+      v20 = locationCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "failed to create image destination for resizing image at '%{public}@'", &v19, 0xCu);
     }
 
@@ -334,7 +334,7 @@ LABEL_27:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138543362;
-      v20 = v3;
+      v20 = locationCopy;
       v17 = "failed to resize image at '%{public}@'";
 LABEL_19:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, v17, &v19, 0xCu);
@@ -351,7 +351,7 @@ LABEL_20:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138543362;
-      v20 = v3;
+      v20 = locationCopy;
       v17 = "failed to finalize resized image at '%{public}@'";
       goto LABEL_19;
     }
@@ -359,7 +359,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if ([v11 length]>= v8)
+  if ([v11 length]>= fileSize)
   {
 LABEL_21:
     v14 = 0;
@@ -384,7 +384,7 @@ LABEL_25:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Finished artwork import", buf, 0xCu);
   }
 
@@ -410,15 +410,15 @@ LABEL_25:
   v73.receiver = self;
   v73.super_class = CloudArtworkImportOperation;
   [(CloudLibraryConcurrentOperation *)&v73 start];
-  v3 = [(CloudArtworkImportOperation *)self isCancelled];
+  isCancelled = [(CloudArtworkImportOperation *)self isCancelled];
   v4 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (isCancelled)
   {
     if (v5)
     {
       *buf = 138543362;
-      v78 = self;
+      selfCopy10 = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Not running CloudArtworkImportOperation as it's is cancelled", buf, 0xCu);
     }
 
@@ -429,37 +429,37 @@ LABEL_25:
   {
     if (v5)
     {
-      v6 = [(CloudArtworkImportOperation *)self artworkToken];
+      artworkToken = [(CloudArtworkImportOperation *)self artworkToken];
       *buf = 138543618;
-      v78 = self;
+      selfCopy10 = self;
       v79 = 2114;
-      *v80 = v6;
+      *v80 = artworkToken;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting artwork import using token '%{public}@'", buf, 0x16u);
     }
 
     v7 = +[NSMutableDictionary dictionary];
     v8 = +[NSDate date];
     v9 = +[ICStorageManager sharedManager];
-    v10 = [v9 cachingEnabled];
-    v11 = [v9 storageSpaceAvailable];
-    v12 = v11;
-    if (v10 && v11 >> 12 > 0x18)
+    cachingEnabled = [v9 cachingEnabled];
+    storageSpaceAvailable = [v9 storageSpaceAvailable];
+    v12 = storageSpaceAvailable;
+    if (cachingEnabled && storageSpaceAvailable >> 12 > 0x18)
     {
-      v13 = [(CloudArtworkImportOperation *)self artworkToken];
-      v14 = [v13 length];
+      artworkToken2 = [(CloudArtworkImportOperation *)self artworkToken];
+      v14 = [artworkToken2 length];
 
       if (v14)
       {
-        v15 = [(CloudArtworkImportOperation *)self assetURL];
-        if (v15 || ([(CloudArtworkImportOperation *)self _artworkURLForInfoDictionary:*(&self->_assetURL + 2)], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
+        assetURL = [(CloudArtworkImportOperation *)self assetURL];
+        if (assetURL || ([(CloudArtworkImportOperation *)self _artworkURLForInfoDictionary:*(&self->_assetURL + 2)], (assetURL = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v16 = v15;
+          v16 = assetURL;
           [(CloudArtworkImportOperation *)self _populateAvailableVariantsIfNeeded];
-          v17 = [(CloudArtworkImportOperation *)self artworkToken];
-          v18 = [ML3MusicLibrary artworkRelativePathFromToken:v17 variantType:*(&self->_sourceType + 2)];
+          artworkToken3 = [(CloudArtworkImportOperation *)self artworkToken];
+          v18 = [ML3MusicLibrary artworkRelativePathFromToken:artworkToken3 variantType:*(&self->_sourceType + 2)];
 
-          v19 = [(CloudLibraryOperation *)self musicLibrary];
-          v20 = [v19 hasOriginalArtworkForRelativePath:v18];
+          musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+          v20 = [musicLibrary hasOriginalArtworkForRelativePath:v18];
 
           if (v20)
           {
@@ -467,13 +467,13 @@ LABEL_25:
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v78 = self;
+              selfCopy10 = self;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ Already have original on disk, attempting to import into database...", buf, 0xCu);
             }
 
-            v22 = [(CloudLibraryOperation *)self musicLibrary];
-            v23 = [(CloudArtworkImportOperation *)self artworkToken];
-            v24 = [v22 importExistingOriginalArtworkWithArtworkToken:v23 artworkType:-[CloudArtworkImportOperation artworkType](self sourceType:"artworkType") mediaType:-[CloudArtworkImportOperation sourceType](self variantType:{"sourceType"), -[CloudArtworkImportOperation mediaType](self, "mediaType"), *(&self->_sourceType + 2)}];
+            musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
+            artworkToken4 = [(CloudArtworkImportOperation *)self artworkToken];
+            v24 = [musicLibrary2 importExistingOriginalArtworkWithArtworkToken:artworkToken4 artworkType:-[CloudArtworkImportOperation artworkType](self sourceType:"artworkType") mediaType:-[CloudArtworkImportOperation sourceType](self variantType:{"sourceType"), -[CloudArtworkImportOperation mediaType](self, "mediaType"), *(&self->_sourceType + 2)}];
 
             if ((v24 & 1) == 0)
             {
@@ -489,15 +489,15 @@ LABEL_25:
 
           else
           {
-            v29 = [(CloudArtworkImportOperation *)self isCancelled];
+            isCancelled2 = [(CloudArtworkImportOperation *)self isCancelled];
             v30 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
             v31 = os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT);
-            if (v29)
+            if (isCancelled2)
             {
               if (v31)
               {
                 *buf = 134217984;
-                v78 = self;
+                selfCopy10 = self;
                 _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Not running CloudArtworkImportOperation (%p) as it's is cancelled", buf, 0xCu);
               }
 
@@ -510,7 +510,7 @@ LABEL_25:
               if (v31)
               {
                 *buf = 138543618;
-                v78 = self;
+                selfCopy10 = self;
                 v79 = 2114;
                 *v80 = v16;
                 _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ Downloading artwork from '%{public}@'", buf, 0x16u);
@@ -555,7 +555,7 @@ LABEL_25:
           if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543362;
-            v78 = self;
+            selfCopy10 = self;
             _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "%{public}@ Cannot import artwork without an asset URL.", buf, 0xCu);
           }
 
@@ -565,7 +565,7 @@ LABEL_25:
           v52 = sub_1000D6878;
           v53 = &unk_1001DD3F8;
           v54 = v7;
-          v55 = self;
+          selfCopy7 = self;
           v56 = v8;
           AnalyticsSendEventLazy();
 
@@ -579,7 +579,7 @@ LABEL_25:
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v78 = self;
+          selfCopy10 = self;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%{public}@ Cannot import artwork without artwork token.", buf, 0xCu);
         }
 
@@ -589,7 +589,7 @@ LABEL_25:
         v59 = sub_1000D67AC;
         v60 = &unk_1001DD3F8;
         v61 = v7;
-        v62 = self;
+        selfCopy9 = self;
         v63 = v8;
         AnalyticsSendEventLazy();
 
@@ -603,9 +603,9 @@ LABEL_25:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v78 = self;
+        selfCopy10 = self;
         v79 = 1024;
-        *v80 = v10;
+        *v80 = cachingEnabled;
         *&v80[4] = 2048;
         *&v80[6] = v12;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "%{public}@ Not enough free space to download artwork. cachingEnabled=%d, storageSpaceAvailable=%lld", buf, 0x1Cu);
@@ -617,8 +617,8 @@ LABEL_25:
       v66 = sub_1000D6698;
       v67 = &unk_1001DD3D0;
       v68 = v7;
-      v69 = self;
-      v72 = v10;
+      selfCopy11 = self;
+      v72 = cachingEnabled;
       v70 = v8;
       v71 = v12;
       AnalyticsSendEventLazy();
@@ -651,8 +651,8 @@ LABEL_25:
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(CloudLibraryOperation *)self error];
-        (*(v8 + 16))(v8, v9);
+        error = [(CloudLibraryOperation *)self error];
+        (*(v8 + 16))(v8, error);
 
         v7 = v7 + 1;
       }
@@ -668,13 +668,13 @@ LABEL_25:
   *(&self->super._finished + 1) = 0;
 }
 
-- (void)addCompletionHandler:(id)a3
+- (void)addCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = *(&self->super._finished + 1);
-    v9 = v4;
+    v9 = handlerCopy;
     if (!v5)
     {
       v6 = +[NSMutableArray array];
@@ -687,26 +687,26 @@ LABEL_25:
     v8 = [v9 copy];
     [v5 addObject:v8];
 
-    v4 = v9;
+    handlerCopy = v9;
   }
 }
 
-- (CloudArtworkImportOperation)initWithURLSession:(id)a3 configuration:(id)a4 cloudID:(unint64_t)a5 artworkToken:(id)a6 artworkType:(int64_t)a7 sourceType:(int64_t)a8 variantType:(int64_t)a9 clientIdentity:(id)a10
+- (CloudArtworkImportOperation)initWithURLSession:(id)session configuration:(id)configuration cloudID:(unint64_t)d artworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType variantType:(int64_t)variantType clientIdentity:(id)self0
 {
-  v17 = a3;
-  v18 = a6;
+  sessionCopy = session;
+  tokenCopy = token;
   v23.receiver = self;
   v23.super_class = CloudArtworkImportOperation;
-  v19 = [(CloudLibraryOperation *)&v23 initWithConfiguration:a4 clientIdentity:a10];
+  v19 = [(CloudLibraryOperation *)&v23 initWithConfiguration:configuration clientIdentity:identity];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong((v19 + 114), a3);
-    *(v20 + 122) = a5;
-    objc_storeStrong((v20 + 130), a6);
-    *(v20 + 138) = a7;
-    *(v20 + 146) = a8;
-    *(v20 + 154) = a9;
+    objc_storeStrong((v19 + 114), session);
+    *(v20 + 122) = d;
+    objc_storeStrong((v20 + 130), token);
+    *(v20 + 138) = type;
+    *(v20 + 146) = sourceType;
+    *(v20 + 154) = variantType;
     v20[106] = 1;
     v21 = +[CloudArtworkImportSetupOperation sharedSetupOperation];
     [v20 addDependency:v21];

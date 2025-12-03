@@ -1,37 +1,37 @@
 @interface GDLifeEventContext
-- (GDLifeEventContext)initWithGDSwiftContext:(id)a3;
-- (id)initAndReturnError:(id *)a3;
+- (GDLifeEventContext)initWithGDSwiftContext:(id)context;
+- (id)initAndReturnError:(id *)error;
 @end
 
 @implementation GDLifeEventContext
 
-- (id)initAndReturnError:(id *)a3
+- (id)initAndReturnError:(id *)error
 {
-  v4 = [[_TtC20IntelligencePlatform24_GDSwiftLifeEventContext alloc] initAndReturnError:a3];
+  v4 = [[_TtC20IntelligencePlatform24_GDSwiftLifeEventContext alloc] initAndReturnError:error];
   if (v4)
   {
     self = [(GDLifeEventContext *)self initWithGDSwiftContext:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (GDLifeEventContext)initWithGDSwiftContext:(id)a3
+- (GDLifeEventContext)initWithGDSwiftContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = GDLifeEventContext;
   v6 = [(GDLifeEventContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->gdSwiftContext, a3);
+    objc_storeStrong(&v6->gdSwiftContext, context);
   }
 
   return v7;

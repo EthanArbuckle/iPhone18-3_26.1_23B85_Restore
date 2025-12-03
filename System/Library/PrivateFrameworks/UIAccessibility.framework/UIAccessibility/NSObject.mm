@@ -1,8 +1,8 @@
 @interface NSObject
-- (id)_accessibilityFindAXDescendantsPassingTest:(void *)a3 byYieldingElements:;
-- (id)_accessibilityFindFirstAXDescendantPassingTest:(void *)a3 byYieldingElements:;
-- (uint64_t)_accessibilityCompareGeometry:(void *)a1;
-- (void)_accessibilityEnumerateAXDescendants:(void *)a3 passingTest:(void *)a4 byYieldingElements:;
+- (id)_accessibilityFindAXDescendantsPassingTest:(void *)test byYieldingElements:;
+- (id)_accessibilityFindFirstAXDescendantPassingTest:(void *)test byYieldingElements:;
+- (uint64_t)_accessibilityCompareGeometry:(void *)geometry;
+- (void)_accessibilityEnumerateAXDescendants:(void *)descendants passingTest:(void *)test byYieldingElements:;
 @end
 
 @implementation NSObject
@@ -2134,12 +2134,12 @@ uint64_t __60__NSObject_AXPrivCategory__accessibilityViewWithIdentifier___block_
   return v4;
 }
 
-- (void)_accessibilityEnumerateAXDescendants:(void *)a3 passingTest:(void *)a4 byYieldingElements:
+- (void)_accessibilityEnumerateAXDescendants:(void *)descendants passingTest:(void *)test byYieldingElements:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  descendantsCopy = descendants;
+  testCopy = test;
+  if (self)
   {
     v22[0] = 0;
     v22[1] = v22;
@@ -2153,13 +2153,13 @@ uint64_t __60__NSObject_AXPrivCategory__accessibilityViewWithIdentifier___block_
     v10[1] = 3221225472;
     v11 = __96__NSObject_AXPrivCategory___accessibilityEnumerateAXDescendants_passingTest_byYieldingElements___block_invoke;
     v12 = &unk_1E78AB110;
-    v13 = v8;
+    v13 = descendantsCopy;
     v16 = v22;
     v14 = v7;
-    v15 = v9;
+    v15 = testCopy;
     v17 = &v18;
     v19[3] = v10;
-    v11(v10, a1);
+    v11(v10, self);
     _Block_object_dispose(&v18, 8);
 
     _Block_object_dispose(v22, 8);
@@ -2188,11 +2188,11 @@ uint64_t __96__NSObject_AXPrivCategory___accessibilityEnumerateAXDescendants_pas
   return v4 & 1;
 }
 
-- (id)_accessibilityFindFirstAXDescendantPassingTest:(void *)a3 byYieldingElements:
+- (id)_accessibilityFindFirstAXDescendantPassingTest:(void *)test byYieldingElements:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  testCopy = test;
+  if (self)
   {
     v11 = 0;
     v12 = &v11;
@@ -2210,13 +2210,13 @@ uint64_t __96__NSObject_AXPrivCategory___accessibilityEnumerateAXDescendants_pas
     v8[2] = __94__NSObject_AXPrivCategory___accessibilityFindFirstAXDescendantPassingTest_byYieldingElements___block_invoke_2;
     v8[3] = &unk_1E78AB188;
     v9 = v5;
-    [a1 _accessibilityEnumerateAXDescendants:v10 passingTest:v8 byYieldingElements:v6];
-    a1 = v12[5];
+    [self _accessibilityEnumerateAXDescendants:v10 passingTest:v8 byYieldingElements:testCopy];
+    self = v12[5];
 
     _Block_object_dispose(&v11, 8);
   }
 
-  return a1;
+  return self;
 }
 
 uint64_t __94__NSObject_AXPrivCategory___accessibilityFindFirstAXDescendantPassingTest_byYieldingElements___block_invoke_2(uint64_t a1, uint64_t a2, _BYTE *a3)
@@ -4083,12 +4083,12 @@ uint64_t __84__NSObject_UIAccessibilityTextAttributeRotor___accessibilityTextSty
   return result;
 }
 
-- (id)_accessibilityFindAXDescendantsPassingTest:(void *)a3 byYieldingElements:
+- (id)_accessibilityFindAXDescendantsPassingTest:(void *)test byYieldingElements:
 {
-  if (a1)
+  if (self)
   {
     v5 = MEMORY[0x1E695DF70];
-    v6 = a3;
+    testCopy = test;
     v7 = a2;
     v8 = objc_alloc_init(v5);
     v11[0] = MEMORY[0x1E69E9820];
@@ -4097,7 +4097,7 @@ uint64_t __84__NSObject_UIAccessibilityTextAttributeRotor___accessibilityTextSty
     v11[3] = &unk_1E78AB138;
     v9 = v8;
     v12 = v9;
-    [a1 _accessibilityEnumerateAXDescendants:v11 passingTest:v7 byYieldingElements:v6];
+    [self _accessibilityEnumerateAXDescendants:v11 passingTest:v7 byYieldingElements:testCopy];
   }
 
   else
@@ -4108,29 +4108,29 @@ uint64_t __84__NSObject_UIAccessibilityTextAttributeRotor___accessibilityTextSty
   return v9;
 }
 
-- (uint64_t)_accessibilityCompareGeometry:(void *)a1
+- (uint64_t)_accessibilityCompareGeometry:(void *)geometry
 {
   v281 = *MEMORY[0x1E69E9840];
   i = a2;
-  if (!a1)
+  if (!geometry)
   {
     v48 = 0;
     goto LABEL_214;
   }
 
-  [a1 _accessibilityFrameForSorting];
+  [geometry _accessibilityFrameForSorting];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   [i _accessibilityFrameForSorting];
   OUTLINED_FUNCTION_17();
-  v16 = [a1 _accessibilityWindow];
-  v17 = [i _accessibilityWindow];
-  v18 = v17;
-  if (v16)
+  _accessibilityWindow = [geometry _accessibilityWindow];
+  _accessibilityWindow2 = [i _accessibilityWindow];
+  v18 = _accessibilityWindow2;
+  if (_accessibilityWindow)
   {
-    v19 = v17 == 0;
+    v19 = _accessibilityWindow2 == 0;
   }
 
   else
@@ -4141,19 +4141,19 @@ uint64_t __84__NSObject_UIAccessibilityTextAttributeRotor___accessibilityTextSty
   v20 = !v19;
   if (!v19)
   {
-    v21 = [v16 windowScene];
-    v22 = [v18 windowScene];
+    windowScene = [_accessibilityWindow windowScene];
+    windowScene2 = [v18 windowScene];
 
-    if (v21 != v22)
+    if (windowScene != windowScene2)
     {
-      [v16 frame];
+      [_accessibilityWindow frame];
       rect = v3;
       v24 = v23;
       rect2 = v9;
       v26 = v25;
-      v27 = [v16 screen];
-      v28 = [v27 coordinateSpace];
-      [v16 convertPoint:v28 toCoordinateSpace:{v24, v26}];
+      screen = [_accessibilityWindow screen];
+      coordinateSpace = [screen coordinateSpace];
+      [_accessibilityWindow convertPoint:coordinateSpace toCoordinateSpace:{v24, v26}];
       v30 = v29;
       v32 = v31;
 
@@ -4166,9 +4166,9 @@ uint64_t __84__NSObject_UIAccessibilityTextAttributeRotor___accessibilityTextSty
       v37 = v15;
       v38 = v5;
       v40 = v39;
-      v41 = [v18 screen];
-      v42 = [v41 coordinateSpace];
-      [v18 convertPoint:v42 toCoordinateSpace:{v36, v40}];
+      screen2 = [v18 screen];
+      coordinateSpace2 = [screen2 coordinateSpace];
+      [v18 convertPoint:coordinateSpace2 toCoordinateSpace:{v36, v40}];
       v44 = v43;
       v46 = v45;
 
@@ -4194,40 +4194,40 @@ uint64_t __84__NSObject_UIAccessibilityTextAttributeRotor___accessibilityTextSty
   v260 = i;
   if ([MEMORY[0x1E69E58C0] _accessibilityHasUnitTestingOrientation])
   {
-    v50 = [MEMORY[0x1E69E58C0] _accessibilityUnitTestingOrientation];
+    _accessibilityUnitTestingOrientation = [MEMORY[0x1E69E58C0] _accessibilityUnitTestingOrientation];
   }
 
   else
   {
-    v51 = [MEMORY[0x1E69DD2E8] _transformLayerRotationsAreEnabled];
+    _transformLayerRotationsAreEnabled = [MEMORY[0x1E69DD2E8] _transformLayerRotationsAreEnabled];
     v52 = MEMORY[0x1E69DDA98];
-    if (v51)
+    if (_transformLayerRotationsAreEnabled)
     {
-      if (v16)
+      if (_accessibilityWindow)
       {
-        v53 = [v16 _accessibilityInterfaceOrientationForScreenCoordinates];
+        _accessibilityInterfaceOrientationForScreenCoordinates = [_accessibilityWindow _accessibilityInterfaceOrientationForScreenCoordinates];
       }
 
       else
       {
-        v53 = 0;
+        _accessibilityInterfaceOrientationForScreenCoordinates = 0;
       }
 
       HIDWORD(v257) = HIDWORD(v11);
       rect = v3;
       if (v18)
       {
-        v55 = [v18 _accessibilityInterfaceOrientationForScreenCoordinates];
+        _accessibilityInterfaceOrientationForScreenCoordinates2 = [v18 _accessibilityInterfaceOrientationForScreenCoordinates];
       }
 
       else
       {
-        v55 = 0;
+        _accessibilityInterfaceOrientationForScreenCoordinates2 = 0;
       }
 
-      v54 = [a1 _accessibilityOrientationForCompareGeometryForApplication:*v52];
-      [v16 bounds];
-      [v16 _windowInterfaceOrientation];
+      v54 = [geometry _accessibilityOrientationForCompareGeometryForApplication:*v52];
+      [_accessibilityWindow bounds];
+      [_accessibilityWindow _windowInterfaceOrientation];
       _UIConvertRectFromOrientationToOrientation();
       rect2d = v56;
       v11 = v57;
@@ -4242,21 +4242,21 @@ uint64_t __84__NSObject_UIAccessibilityTextAttributeRotor___accessibilityTextSty
       goto LABEL_33;
     }
 
-    v50 = [a1 _accessibilityOrientationForCompareGeometryForApplication:*MEMORY[0x1E69DDA98]];
+    _accessibilityUnitTestingOrientation = [geometry _accessibilityOrientationForCompareGeometryForApplication:*MEMORY[0x1E69DDA98]];
   }
 
-  v54 = v50;
-  v55 = 1;
-  v53 = 1;
+  v54 = _accessibilityUnitTestingOrientation;
+  _accessibilityInterfaceOrientationForScreenCoordinates2 = 1;
+  _accessibilityInterfaceOrientationForScreenCoordinates = 1;
 LABEL_33:
-  [a1 _handleRotatingFrame:v53 fromOrientation:v54 toOrientation:{v9, v11, v13, v15}];
-  [OUTLINED_FUNCTION_15() _handleRotatingFrame:v55 fromOrientation:v54 toOrientation:{v3, v5, v2, v4}];
+  [geometry _handleRotatingFrame:_accessibilityInterfaceOrientationForScreenCoordinates fromOrientation:v54 toOrientation:{v9, v11, v13, v15}];
+  [OUTLINED_FUNCTION_15() _handleRotatingFrame:_accessibilityInterfaceOrientationForScreenCoordinates2 fromOrientation:v54 toOrientation:{v3, v5, v2, v4}];
   v62 = v61;
   v64 = v63;
   v66 = v65;
   v68 = v67;
   i = v260;
-  v48 = _checkSortPriority(a1, v260);
+  v48 = _checkSortPriority(geometry, v260);
   if (v48)
   {
     goto LABEL_213;
@@ -4266,16 +4266,16 @@ LABEL_33:
   v70 = v13;
   v249 = v11;
   v240 = v18;
-  v241 = v53;
+  v241 = _accessibilityInterfaceOrientationForScreenCoordinates;
   LODWORD(v235) = v20;
-  v71 = _scrollParentForComparingGeometryOfView(a1);
+  v71 = _scrollParentForComparingGeometryOfView(geometry);
   v72 = _scrollParentForComparingGeometryOfView(v260);
   HIDWORD(v235) = [v72 _accessibilityIsDescendantOfElement:v71];
   HIDWORD(v239) = [v71 _accessibilityIsDescendantOfElement:v72];
   if (v71 == v72)
   {
     v96 = v66;
-    v237 = v16;
+    v237 = _accessibilityWindow;
     v73 = v69;
     goto LABEL_55;
   }
@@ -4284,7 +4284,7 @@ LABEL_33:
   if (!v71 || !v72)
   {
     v96 = v66;
-    v237 = v16;
+    v237 = _accessibilityWindow;
     goto LABEL_55;
   }
 
@@ -4300,8 +4300,8 @@ LABEL_33:
     v77 = *(MEMORY[0x1E69DDCE0] + 24);
     [v71 _accessibilityContentFrame];
     OUTLINED_FUNCTION_21();
-    v78 = [v71 accessibilityContainer];
-    v79 = _scrollParentForComparingGeometryOfView(v78);
+    accessibilityContainer = [v71 accessibilityContainer];
+    v79 = _scrollParentForComparingGeometryOfView(accessibilityContainer);
 
     for (; ([v79 isEqual:v72] & 1) == 0; v71 = v80)
     {
@@ -4321,8 +4321,8 @@ LABEL_33:
 
       [v79 _accessibilityContentFrame];
       OUTLINED_FUNCTION_21();
-      v85 = [v79 accessibilityContainer];
-      v79 = _scrollParentForComparingGeometryOfView(v85);
+      accessibilityContainer2 = [v79 accessibilityContainer];
+      v79 = _scrollParentForComparingGeometryOfView(accessibilityContainer2);
     }
 
     v101 = v11 + v75;
@@ -4331,7 +4331,7 @@ LABEL_33:
     v64 = v245;
     v100 = v246;
     v68 = *&v244;
-    [a1 _handleRotatingFrame:v241 fromOrientation:v54 toOrientation:{v101, v73 + v74, rect, v102, v235}];
+    [geometry _handleRotatingFrame:v241 fromOrientation:v54 toOrientation:{v101, v73 + v74, rect, v102, v235}];
   }
 
   else
@@ -4346,8 +4346,8 @@ LABEL_33:
       v87 = *(MEMORY[0x1E69DDCE0] + 24);
       [v72 _accessibilityContentFrame];
       OUTLINED_FUNCTION_16();
-      v88 = [v72 accessibilityContainer];
-      v89 = _scrollParentForComparingGeometryOfView(v88);
+      accessibilityContainer3 = [v72 accessibilityContainer];
+      v89 = _scrollParentForComparingGeometryOfView(accessibilityContainer3);
 
       if (([v89 isEqual:v71] & 1) == 0)
       {
@@ -4369,8 +4369,8 @@ LABEL_33:
 
           [v89 _accessibilityContentFrame];
           OUTLINED_FUNCTION_16();
-          v95 = [v89 accessibilityContainer];
-          v89 = _scrollParentForComparingGeometryOfView(v95);
+          accessibilityContainer4 = [v89 accessibilityContainer];
+          v89 = _scrollParentForComparingGeometryOfView(accessibilityContainer4);
 
           v72 = v90;
         }
@@ -4396,10 +4396,10 @@ LABEL_33:
       v100 = v69;
     }
 
-    [a1 _handleRotatingFrame:v241 fromOrientation:v54 toOrientation:{v98, v97, rect, v99, v235}];
+    [geometry _handleRotatingFrame:v241 fromOrientation:v54 toOrientation:{v98, v97, rect, v99, v235}];
   }
 
-  [OUTLINED_FUNCTION_15() _handleRotatingFrame:v55 fromOrientation:v54 toOrientation:{v100, v64, v66, v68}];
+  [OUTLINED_FUNCTION_15() _handleRotatingFrame:_accessibilityInterfaceOrientationForScreenCoordinates2 fromOrientation:v54 toOrientation:{v100, v64, v66, v68}];
   v105 = v104;
   v64 = v106;
   v108 = v107;
@@ -4413,7 +4413,7 @@ LABEL_33:
   v70 = v73;
   v249 = v11;
   v96 = v108;
-  v237 = v16;
+  v237 = _accessibilityWindow;
   v73 = v105;
   v68 = v110;
   while (1)
@@ -4425,7 +4425,7 @@ LABEL_55:
       v71 = 0;
       v72 = 0;
       v145 = 1;
-      v16 = v237;
+      _accessibilityWindow = v237;
       v112 = v96;
       goto LABEL_105;
     }
@@ -4436,21 +4436,21 @@ LABEL_55:
       break;
     }
 
-    v113 = [v71 accessibilityContainer];
-    v114 = [v113 _accessibilityContainingParentForOrdering];
+    accessibilityContainer5 = [v71 accessibilityContainer];
+    _accessibilityContainingParentForOrdering = [accessibilityContainer5 _accessibilityContainingParentForOrdering];
 
-    v115 = [v72 accessibilityContainer];
-    v116 = [v115 _accessibilityContainingParentForOrdering];
+    accessibilityContainer6 = [v72 accessibilityContainer];
+    _accessibilityContainingParentForOrdering2 = [accessibilityContainer6 _accessibilityContainingParentForOrdering];
 
-    if ([v114 _accessibilityIsDescendantOfElement:v116] & 1) != 0 || (objc_msgSend(v116, "_accessibilityIsDescendantOfElement:", v114))
+    if ([_accessibilityContainingParentForOrdering _accessibilityIsDescendantOfElement:_accessibilityContainingParentForOrdering2] & 1) != 0 || (objc_msgSend(_accessibilityContainingParentForOrdering2, "_accessibilityIsDescendantOfElement:", _accessibilityContainingParentForOrdering))
     {
       v117 = 1;
     }
 
-    else if (!v114 || ([v114 isEqual:v116] & 1) != 0 || (objc_msgSend(v114, "_accessibilityIsDescendantOfElement:", v72) & 1) != 0 || (objc_msgSend(v114, "_accessibilityIsDescendantOfElement:", v116) & 1) != 0)
+    else if (!_accessibilityContainingParentForOrdering || ([_accessibilityContainingParentForOrdering isEqual:_accessibilityContainingParentForOrdering2] & 1) != 0 || (objc_msgSend(_accessibilityContainingParentForOrdering, "_accessibilityIsDescendantOfElement:", v72) & 1) != 0 || (objc_msgSend(_accessibilityContainingParentForOrdering, "_accessibilityIsDescendantOfElement:", _accessibilityContainingParentForOrdering2) & 1) != 0)
     {
       v117 = 1;
-      if (v116)
+      if (_accessibilityContainingParentForOrdering2)
       {
         goto LABEL_87;
       }
@@ -4458,16 +4458,16 @@ LABEL_55:
 
     else
     {
-      v144 = v114;
+      v144 = _accessibilityContainingParentForOrdering;
 
       v117 = 0;
       v71 = v144;
-      if (v116)
+      if (_accessibilityContainingParentForOrdering2)
       {
 LABEL_87:
-        if (([v116 isEqual:{v114, v235}] & 1) == 0 && (objc_msgSend(v116, "_accessibilityIsDescendantOfElement:", v71) & 1) == 0 && (objc_msgSend(v116, "_accessibilityIsDescendantOfElement:", v114) & 1) == 0)
+        if (([_accessibilityContainingParentForOrdering2 isEqual:{_accessibilityContainingParentForOrdering, v235}] & 1) == 0 && (objc_msgSend(_accessibilityContainingParentForOrdering2, "_accessibilityIsDescendantOfElement:", v71) & 1) == 0 && (objc_msgSend(_accessibilityContainingParentForOrdering2, "_accessibilityIsDescendantOfElement:", _accessibilityContainingParentForOrdering) & 1) == 0)
         {
-          v142 = v116;
+          v142 = _accessibilityContainingParentForOrdering2;
 
           v117 = 0;
           v72 = v142;
@@ -4475,17 +4475,17 @@ LABEL_87:
       }
     }
 
-    if (v114)
+    if (_accessibilityContainingParentForOrdering)
     {
-      while (([v72 _accessibilityIsDescendantOfElement:{v114, v235}] & 1) == 0)
+      while (([v72 _accessibilityIsDescendantOfElement:{_accessibilityContainingParentForOrdering, v235}] & 1) == 0)
       {
-        v118 = v114;
+        v118 = _accessibilityContainingParentForOrdering;
 
-        v119 = [v118 accessibilityContainer];
-        v114 = _scrollParentForComparingGeometryOfView(v119);
+        accessibilityContainer7 = [v118 accessibilityContainer];
+        _accessibilityContainingParentForOrdering = _scrollParentForComparingGeometryOfView(accessibilityContainer7);
 
         v71 = v118;
-        if (!v114)
+        if (!_accessibilityContainingParentForOrdering)
         {
           v71 = v118;
           break;
@@ -4493,17 +4493,17 @@ LABEL_87:
       }
     }
 
-    if (v116)
+    if (_accessibilityContainingParentForOrdering2)
     {
-      while (([v71 _accessibilityIsDescendantOfElement:{v116, v235}] & 1) == 0)
+      while (([v71 _accessibilityIsDescendantOfElement:{_accessibilityContainingParentForOrdering2, v235}] & 1) == 0)
       {
-        v120 = v116;
+        v120 = _accessibilityContainingParentForOrdering2;
 
-        v121 = [v120 accessibilityContainer];
-        v116 = _scrollParentForComparingGeometryOfView(v121);
+        accessibilityContainer8 = [v120 accessibilityContainer];
+        _accessibilityContainingParentForOrdering2 = _scrollParentForComparingGeometryOfView(accessibilityContainer8);
 
         v72 = v120;
-        if (!v116)
+        if (!_accessibilityContainingParentForOrdering2)
         {
           v72 = v120;
           break;
@@ -4523,17 +4523,17 @@ LABEL_87:
       isKindOfClass = 0;
     }
 
-    if ([a1 _accessibilityIsOrnamentWindow])
+    if ([geometry _accessibilityIsOrnamentWindow])
     {
-      v123 = 1;
+      _accessibilityIsOrnamentWindow = 1;
     }
 
     else
     {
-      v123 = [v260 _accessibilityIsOrnamentWindow];
+      _accessibilityIsOrnamentWindow = [v260 _accessibilityIsOrnamentWindow];
     }
 
-    if (isKindOfClass & v123)
+    if (isKindOfClass & _accessibilityIsOrnamentWindow)
     {
       v124 = v64;
       v125 = v68;
@@ -4544,7 +4544,7 @@ LABEL_87:
     {
       v127 = v64;
       v128 = v112;
-      [a1 _accessibilityCompareFrameForScrollParent:v71 frame:v241 fromOrientation:v54 toOrientation:{v249, v15, rect, v70}];
+      [geometry _accessibilityCompareFrameForScrollParent:v71 frame:v241 fromOrientation:v54 toOrientation:{v249, v15, rect, v70}];
       v129 = v127;
       v242 = v130;
       v132 = v131;
@@ -4554,7 +4554,7 @@ LABEL_87:
       v246 = v73;
       v247 = *&v128;
       *&v244 = v68;
-      [a1 _accessibilityCompareFrameForScrollParent:v72 frame:v55 fromOrientation:v54 toOrientation:?];
+      [geometry _accessibilityCompareFrameForScrollParent:v72 frame:_accessibilityInterfaceOrientationForScreenCoordinates2 fromOrientation:v54 toOrientation:?];
       v250 = v137;
       v251 = v138;
       rect2b = v139;
@@ -4627,11 +4627,11 @@ LABEL_97:
     v145 = 1;
     v73 = v126;
     v64 = v124;
-    v16 = v237;
+    _accessibilityWindow = v237;
     goto LABEL_105;
   }
 
-  v16 = v237;
+  _accessibilityWindow = v237;
   if (v72)
   {
     if (v71)
@@ -4688,64 +4688,64 @@ LABEL_105:
   if (!v71 || (v145 & 1) == 0 && ([v71 _accessibilityIsDescendantOfElement:v72] & 1) == 0 && !objc_msgSend(v72, "_accessibilityIsDescendantOfElement:", v71))
   {
     v151 = _accessibilityCommonAncestor(v71, v72);
-    v152 = [v151 _accessibilityContainingParentForOrdering];
+    _accessibilityContainingParentForOrdering3 = [v151 _accessibilityContainingParentForOrdering];
 
-    v48 = [v152 _accessibilityCompareElement:v71 toElement:v72];
+    v48 = [_accessibilityContainingParentForOrdering3 _accessibilityCompareElement:v71 toElement:v72];
     if (v48)
     {
       goto LABEL_212;
     }
 
     v248 = v112;
-    v153 = v16;
+    v153 = _accessibilityWindow;
     v154 = 0.0;
     goto LABEL_184;
   }
 
   objc_opt_class();
-  LODWORD(v149) = objc_opt_isKindOfClass();
+  LODWORD(_accessibilitySupplementaryHeaderViews) = objc_opt_isKindOfClass();
   i = v260;
   objc_opt_class();
   v150 = objc_opt_isKindOfClass();
   if (v145)
   {
-    v111 = [v71 _accessibilityCompareElement:a1 toElement:v260];
+    v111 = [v71 _accessibilityCompareElement:geometry toElement:v260];
     if (v111)
     {
       goto LABEL_115;
     }
   }
 
-  if (((v149 | v150) & 1) == 0)
+  if (((_accessibilitySupplementaryHeaderViews | v150) & 1) == 0)
   {
     goto LABEL_180;
   }
 
-  v238 = v16;
+  v238 = _accessibilityWindow;
   LODWORD(v251) = v145;
-  LODWORD(v257) = v149;
-  if (v149)
+  LODWORD(v257) = _accessibilitySupplementaryHeaderViews;
+  if (_accessibilitySupplementaryHeaderViews)
   {
     v275 = 0u;
     v276 = 0u;
     v273 = 0u;
     v274 = 0u;
-    v149 = [v71 _accessibilitySupplementaryHeaderViews];
-    v155 = [v149 countByEnumeratingWithState:&v273 objects:v280 count:16];
+    _accessibilitySupplementaryHeaderViews = [v71 _accessibilitySupplementaryHeaderViews];
+    v155 = [_accessibilitySupplementaryHeaderViews countByEnumeratingWithState:&v273 objects:v280 count:16];
     if (v155)
     {
       v156 = v155;
       LODWORD(v250) = v150;
       v157 = 0;
       v158 = 0;
-      v16 = *v274;
+      _accessibilityWindow = *v274;
       do
       {
         for (i = 0; i != v156; ++i)
         {
-          if (*v274 != v16)
+          if (*v274 != _accessibilityWindow)
           {
-            objc_enumerationMutation(v149);
+            objc_enumerationMutation(_accessibilitySupplementaryHeaderViews);
           }
 
           v159 = OUTLINED_FUNCTION_13(*(&v273 + 1));
@@ -4753,7 +4753,7 @@ LABEL_105:
           v158 |= OUTLINED_FUNCTION_26(v159, v160, v161, v162, v163, v164, v165, v166, v235, v238, v239, v240, v241, *&v242, *&v243, v244, *&v245, *&v246, v247, *&v249, *&v250, *&v251, rect2c, v257, *&rect, v260);
         }
 
-        v156 = [v149 countByEnumeratingWithState:&v273 objects:v280 count:16];
+        v156 = [_accessibilitySupplementaryHeaderViews countByEnumeratingWithState:&v273 objects:v280 count:16];
       }
 
       while (v156);
@@ -4769,7 +4769,7 @@ LABEL_105:
     }
 
     v148 = &off_1A9BF3000;
-    LOBYTE(v149) = v257;
+    LOBYTE(_accessibilitySupplementaryHeaderViews) = v257;
   }
 
   else
@@ -4783,8 +4783,8 @@ LABEL_105:
     v272 = 0u;
     v269 = 0u;
     v270 = 0u;
-    v149 = [v72 _accessibilitySupplementaryHeaderViews];
-    v168 = [v149 countByEnumeratingWithState:&v269 objects:v279 count:16];
+    _accessibilitySupplementaryHeaderViews = [v72 _accessibilitySupplementaryHeaderViews];
+    v168 = [_accessibilitySupplementaryHeaderViews countByEnumeratingWithState:&v269 objects:v279 count:16];
     if (v168)
     {
       v169 = v168;
@@ -4792,14 +4792,14 @@ LABEL_105:
       LODWORD(v250) = v150;
       v170 = 0;
       v171 = 0;
-      v16 = *v270;
+      _accessibilityWindow = *v270;
       do
       {
         for (i = 0; i != v169; ++i)
         {
-          if (*v270 != v16)
+          if (*v270 != _accessibilityWindow)
           {
-            objc_enumerationMutation(v149);
+            objc_enumerationMutation(_accessibilitySupplementaryHeaderViews);
           }
 
           v172 = OUTLINED_FUNCTION_13(*(&v269 + 1));
@@ -4807,7 +4807,7 @@ LABEL_105:
           v171 |= OUTLINED_FUNCTION_26(v172, v173, v174, v175, v176, v177, v178, v179, v235, v238, v239, v240, v241, *&v242, *&v243, v244, *&v245, *&v246, v247, *&v249, *&v250, *&v251, rect2c, v257, *&rect, v260);
         }
 
-        v169 = [v149 countByEnumeratingWithState:&v269 objects:v279 count:16];
+        v169 = [_accessibilitySupplementaryHeaderViews countByEnumeratingWithState:&v269 objects:v279 count:16];
       }
 
       while (v169);
@@ -4829,7 +4829,7 @@ LABEL_105:
         v148 = &off_1A9BF3000;
         v145 = LODWORD(v251);
         v150 = LODWORD(v250);
-        LOBYTE(v149) = v257;
+        LOBYTE(_accessibilitySupplementaryHeaderViews) = v257;
         if (v181)
         {
           goto LABEL_212;
@@ -4843,7 +4843,7 @@ LABEL_177:
       goto LABEL_212;
     }
 
-    LOBYTE(v149) = v257;
+    LOBYTE(_accessibilitySupplementaryHeaderViews) = v257;
   }
 
   if ((v167 & 1) == 0)
@@ -4854,14 +4854,14 @@ LABEL_159:
   }
 
 LABEL_150:
-  if (v149)
+  if (_accessibilitySupplementaryHeaderViews)
   {
     v267 = 0u;
     v268 = 0u;
     v265 = 0u;
     v266 = 0u;
-    v182 = [v71 _accessibilitySupplementaryFooterViews];
-    v183 = [v182 countByEnumeratingWithState:&v265 objects:v278 count:16];
+    _accessibilitySupplementaryFooterViews = [v71 _accessibilitySupplementaryFooterViews];
+    v183 = [_accessibilitySupplementaryFooterViews countByEnumeratingWithState:&v265 objects:v278 count:16];
     if (v183)
     {
       v184 = v183;
@@ -4875,7 +4875,7 @@ LABEL_150:
         {
           if (*v266 != v187)
           {
-            objc_enumerationMutation(v182);
+            objc_enumerationMutation(_accessibilitySupplementaryFooterViews);
           }
 
           v189 = OUTLINED_FUNCTION_13(*(&v265 + 1));
@@ -4883,7 +4883,7 @@ LABEL_150:
           v186 |= OUTLINED_FUNCTION_26(v189, v190, v191, v192, v193, v194, v195, v196, v235, v238, v239, v240, v241, *&v242, *&v243, v244, *&v245, *&v246, v247, *&v249, *&v250, *&v251, rect2c, v257, *&rect, v260);
         }
 
-        v184 = [v182 countByEnumeratingWithState:&v265 objects:v278 count:16];
+        v184 = [_accessibilitySupplementaryFooterViews countByEnumeratingWithState:&v265 objects:v278 count:16];
       }
 
       while (v184);
@@ -4899,7 +4899,7 @@ LABEL_150:
       v197 = 1;
     }
 
-    v16 = v238;
+    _accessibilityWindow = v238;
   }
 
   else
@@ -4922,28 +4922,28 @@ LABEL_179:
   v264 = 0u;
   v261 = 0u;
   v262 = 0u;
-  v198 = [v72 _accessibilitySupplementaryFooterViews];
-  v199 = [v198 countByEnumeratingWithState:&v261 objects:v277 count:16];
+  _accessibilitySupplementaryFooterViews2 = [v72 _accessibilitySupplementaryFooterViews];
+  v199 = [_accessibilitySupplementaryFooterViews2 countByEnumeratingWithState:&v261 objects:v277 count:16];
   if (!v199)
   {
 
-    v16 = v238;
+    _accessibilityWindow = v238;
     v145 = LODWORD(v251);
     goto LABEL_179;
   }
 
-  v16 = v199;
+  _accessibilityWindow = v199;
   LODWORD(v257) = v197;
   v200 = 0;
   v201 = 0;
   v202 = *v262;
   do
   {
-    for (i = 0; i != v16; ++i)
+    for (i = 0; i != _accessibilityWindow; ++i)
     {
       if (*v262 != v202)
       {
-        objc_enumerationMutation(v198);
+        objc_enumerationMutation(_accessibilitySupplementaryFooterViews2);
       }
 
       v203 = OUTLINED_FUNCTION_13(*(&v261 + 1));
@@ -4951,10 +4951,10 @@ LABEL_179:
       v201 |= OUTLINED_FUNCTION_26(v203, v204, v205, v206, v207, v208, v209, v210, v235, v238, v239, v240, v241, *&v242, *&v243, v244, *&v245, *&v246, v247, *&v249, *&v250, *&v251, rect2c, v257, *&rect, v260);
     }
 
-    v16 = [v198 countByEnumeratingWithState:&v261 objects:v277 count:16];
+    _accessibilityWindow = [_accessibilitySupplementaryFooterViews2 countByEnumeratingWithState:&v261 objects:v277 count:16];
   }
 
-  while (v16);
+  while (_accessibilityWindow);
 
   v211 = v200 & ~v201 & 1;
   if (v200 & ~v201)
@@ -4982,7 +4982,7 @@ LABEL_179:
 
 LABEL_180:
   v248 = v112;
-  v153 = v16;
+  v153 = _accessibilityWindow;
   [v71 _accessibilityAllowedGeometryOverlap];
   v214 = v213;
   if ((v145 & [v71 _accessibilityOnlyComparesByXAxis]) != 0)
@@ -4998,10 +4998,10 @@ LABEL_180:
   [v71 _accessibilityAllowedGeometryOverlapX];
   v154 = v215;
 LABEL_184:
-  v216 = [v71 _accessibilityScrollParentForComparingByXAxis];
-  v217 = [v72 _accessibilityScrollParentForComparingByXAxis];
-  v218 = v217;
-  if (v216 && v216 == v217 && ([v216 _accessibilityOnlyComparesByXAxis] & 1) != 0 || v218 && v218 == v71 && (objc_msgSend(v218, "_accessibilityOnlyComparesByXAxis") & 1) != 0 || v216 && v216 == v72 && objc_msgSend(v216, "_accessibilityOnlyComparesByXAxis"))
+  _accessibilityScrollParentForComparingByXAxis = [v71 _accessibilityScrollParentForComparingByXAxis];
+  _accessibilityScrollParentForComparingByXAxis2 = [v72 _accessibilityScrollParentForComparingByXAxis];
+  v218 = _accessibilityScrollParentForComparingByXAxis2;
+  if (_accessibilityScrollParentForComparingByXAxis && _accessibilityScrollParentForComparingByXAxis == _accessibilityScrollParentForComparingByXAxis2 && ([_accessibilityScrollParentForComparingByXAxis _accessibilityOnlyComparesByXAxis] & 1) != 0 || v218 && v218 == v71 && (objc_msgSend(v218, "_accessibilityOnlyComparesByXAxis") & 1) != 0 || _accessibilityScrollParentForComparingByXAxis && _accessibilityScrollParentForComparingByXAxis == v72 && objc_msgSend(_accessibilityScrollParentForComparingByXAxis, "_accessibilityOnlyComparesByXAxis"))
   {
     v146 = v148[151];
   }
@@ -5089,7 +5089,7 @@ LABEL_220:
     v221 = *&rect2c;
     if (v73 - v147 > v154)
     {
-      v219 = [a1 _accessibilityIsRTL] == 0;
+      v219 = [geometry _accessibilityIsRTL] == 0;
       v220 = 1;
       goto LABEL_203;
     }
@@ -5097,7 +5097,7 @@ LABEL_220:
     goto LABEL_206;
   }
 
-  v219 = [a1 _accessibilityIsRTL] == 0;
+  v219 = [geometry _accessibilityIsRTL] == 0;
   v220 = -1;
 LABEL_203:
   if (v219)
@@ -5112,7 +5112,7 @@ LABEL_203:
 
 LABEL_211:
 
-  v16 = v153;
+  _accessibilityWindow = v153;
 LABEL_212:
 
   v18 = v240;

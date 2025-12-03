@@ -1,22 +1,22 @@
 @interface CRLSearch
-- (CRLSearch)initWithString:(id)a3 options:(unint64_t)a4 hitBlock:(id)a5;
+- (CRLSearch)initWithString:(id)string options:(unint64_t)options hitBlock:(id)block;
 @end
 
 @implementation CRLSearch
 
-- (CRLSearch)initWithString:(id)a3 options:(unint64_t)a4 hitBlock:(id)a5
+- (CRLSearch)initWithString:(id)string options:(unint64_t)options hitBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  stringCopy = string;
+  blockCopy = block;
   v13.receiver = self;
   v13.super_class = CRLSearch;
   v10 = [(CRLSearch *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(CRLSearch *)v10 setString:v8];
-    [(CRLSearch *)v11 setOptions:a4];
-    [(CRLSearch *)v11 setHitBlock:v9];
+    [(CRLSearch *)v10 setString:stringCopy];
+    [(CRLSearch *)v11 setOptions:options];
+    [(CRLSearch *)v11 setHitBlock:blockCopy];
     [(CRLSearch *)v11 setIsComplete:0];
   }
 

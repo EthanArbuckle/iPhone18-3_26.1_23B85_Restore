@@ -1,9 +1,9 @@
 @interface MTRDoorLockClusterGetYearDayScheduleResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRDoorLockClusterGetYearDayScheduleResponseParams)init;
-- (MTRDoorLockClusterGetYearDayScheduleResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRDoorLockClusterGetYearDayScheduleResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRDoorLockClusterGetYearDayScheduleResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -39,26 +39,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterGetYearDayScheduleResponseParams);
-  v5 = [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)self yearDayIndex];
-  [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)v4 setYearDayIndex:v5];
+  yearDayIndex = [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)self yearDayIndex];
+  [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)v4 setYearDayIndex:yearDayIndex];
 
-  v6 = [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)self userIndex];
-  [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)v4 setUserIndex:v6];
+  userIndex = [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)self userIndex];
+  [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)v4 setUserIndex:userIndex];
 
-  v7 = [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)self status];
-  [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)v4 setStatus:v7];
+  status = [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)self status];
+  [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)v4 setStatus:status];
 
-  v8 = [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)self localStartTime];
-  [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)v4 setLocalStartTime:v8];
+  localStartTime = [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)self localStartTime];
+  [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)v4 setLocalStartTime:localStartTime];
 
-  v9 = [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)self localEndTime];
-  [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)v4 setLocalEndTime:v9];
+  localEndTime = [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)self localEndTime];
+  [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)v4 setLocalEndTime:localEndTime];
 
-  v10 = [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)v4 setTimedInvokeTimeoutMs:v10];
+  timedInvokeTimeoutMs = [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -121,7 +121,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRDoorLockClusterGetYearDayScheduleResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRDoorLockClusterGetYearDayScheduleResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRDoorLockClusterGetYearDayScheduleResponseParams;
@@ -129,7 +129,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -145,20 +145,20 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)self setYearDayIndex:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(a3 + 1)];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(struct + 1)];
   [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)self setUserIndex:v6];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 4)];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 4)];
   [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)self setStatus:v7];
 
-  if (*(a3 + 8) == 1)
+  if (*(struct + 8) == 1)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*sub_238DE3698(a3 + 8)];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*sub_238DE3698(struct + 8)];
     [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)self setLocalStartTime:v8];
   }
 
@@ -167,8 +167,8 @@ LABEL_6:
     [(MTRDoorLockClusterGetYearDayScheduleResponseParams *)self setLocalStartTime:0];
   }
 
-  v10 = *(a3 + 16);
-  v9 = a3 + 16;
+  v10 = *(struct + 16);
+  v9 = struct + 16;
   if (v10 == 1)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*sub_238DE3698(v9)];

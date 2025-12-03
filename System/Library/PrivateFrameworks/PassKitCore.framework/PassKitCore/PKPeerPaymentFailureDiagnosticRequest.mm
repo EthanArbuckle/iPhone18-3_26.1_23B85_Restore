@@ -1,32 +1,32 @@
 @interface PKPeerPaymentFailureDiagnosticRequest
-- (PKPeerPaymentFailureDiagnosticRequest)initWithFailureDiagnostic:(id)a3;
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4;
+- (PKPeerPaymentFailureDiagnosticRequest)initWithFailureDiagnostic:(id)diagnostic;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information;
 @end
 
 @implementation PKPeerPaymentFailureDiagnosticRequest
 
-- (PKPeerPaymentFailureDiagnosticRequest)initWithFailureDiagnostic:(id)a3
+- (PKPeerPaymentFailureDiagnosticRequest)initWithFailureDiagnostic:(id)diagnostic
 {
-  v5 = a3;
+  diagnosticCopy = diagnostic;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentFailureDiagnosticRequest;
   v6 = [(PKOverlayableWebServiceRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_failureDiagnostic, a3);
+    objc_storeStrong(&v6->_failureDiagnostic, diagnostic);
   }
 
   return v7;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  lCopy = l;
+  informationCopy = information;
+  v8 = informationCopy;
+  if (!lCopy)
   {
     v26 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -46,7 +46,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (!v7)
+  if (!informationCopy)
   {
     v26 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -83,7 +83,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v9 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:&unk_1F23B4880 queryParameters:0 appleAccountInformation:v7];
+  v9 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:&unk_1F23B4880 queryParameters:0 appleAccountInformation:informationCopy];
   [v9 setHTTPMethod:@"POST"];
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if ([(PKPeerPaymentFailureDiagnostic *)self->_failureDiagnostic flowType])
@@ -97,14 +97,14 @@ LABEL_24:
   }
 
   [v10 setObject:v11 forKeyedSubscript:@"flowType"];
-  v12 = [(PKPeerPaymentFailureDiagnostic *)self->_failureDiagnostic role];
+  role = [(PKPeerPaymentFailureDiagnostic *)self->_failureDiagnostic role];
   v13 = @"receiver";
-  if (v12 != 1)
+  if (role != 1)
   {
     v13 = @"unknown";
   }
 
-  if (v12)
+  if (role)
   {
     v14 = v13;
   }
@@ -118,24 +118,24 @@ LABEL_24:
   v15 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PKPeerPaymentFailureDiagnostic reasonCode](self->_failureDiagnostic, "reasonCode")}];
   [v10 setObject:v15 forKeyedSubscript:@"reasonCode"];
 
-  v16 = [(PKPeerPaymentFailureDiagnostic *)self->_failureDiagnostic transactionIdentifier];
-  v17 = [v16 length];
+  transactionIdentifier = [(PKPeerPaymentFailureDiagnostic *)self->_failureDiagnostic transactionIdentifier];
+  v17 = [transactionIdentifier length];
 
   if (v17)
   {
-    v18 = [(PKPeerPaymentFailureDiagnostic *)self->_failureDiagnostic transactionIdentifier];
-    [v10 setObject:v18 forKeyedSubscript:@"transactionIdentifier"];
+    transactionIdentifier2 = [(PKPeerPaymentFailureDiagnostic *)self->_failureDiagnostic transactionIdentifier];
+    [v10 setObject:transactionIdentifier2 forKeyedSubscript:@"transactionIdentifier"];
   }
 
-  v19 = [(PKPeerPaymentFailureDiagnostic *)self->_failureDiagnostic error];
-  v20 = v19;
-  if (v19)
+  error = [(PKPeerPaymentFailureDiagnostic *)self->_failureDiagnostic error];
+  v20 = error;
+  if (error)
   {
-    v21 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v19, "code")}];
+    v21 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(error, "code")}];
     [v10 setObject:v21 forKeyedSubscript:@"errorCode"];
 
-    v22 = [v20 domain];
-    [v10 setObject:v22 forKeyedSubscript:@"errorDomain"];
+    domain = [v20 domain];
+    [v10 setObject:domain forKeyedSubscript:@"errorDomain"];
 
     v23 = [v20 description];
     [v10 setObject:v23 forKeyedSubscript:@"errorDescription"];

@@ -1,14 +1,14 @@
 @interface SSVMediaSocialPostDescription
-- (SSVMediaSocialPostDescription)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSVMediaSocialPostDescription)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 @end
 
 @implementation SSVMediaSocialPostDescription
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setAccountIdentifier:self->_accountIdentifier];
   [v4 setAttachments:self->_attachments];
   [v4 setAttributed:self->_attributed];
@@ -21,11 +21,11 @@
   return v4;
 }
 
-- (SSVMediaSocialPostDescription)initWithXPCEncoding:(id)a3
+- (SSVMediaSocialPostDescription)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v6 = [(SSVMediaSocialPostDescription *)self init];
     if (!v6)

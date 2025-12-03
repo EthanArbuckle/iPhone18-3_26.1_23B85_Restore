@@ -1,25 +1,25 @@
 @interface CSVoiceTriggerFirstPassHearstAP
 - (CSVoiceTriggerDelegate)delegate;
-- (CSVoiceTriggerFirstPassHearstAP)initWithSpeechManager:(id)a3 voiceTriggerEnabledMonitor:(id)a4 siriClientBehaviorMonitor:(id)a5 opportuneSpeakEventMonitor:(id)a6 phoneCallStateMonitor:(id)a7 otherAppRecordingStateMonitor:(id)a8 voiceTriggerHearstAPEnabledPolicy:(id)a9;
+- (CSVoiceTriggerFirstPassHearstAP)initWithSpeechManager:(id)manager voiceTriggerEnabledMonitor:(id)monitor siriClientBehaviorMonitor:(id)behaviorMonitor opportuneSpeakEventMonitor:(id)eventMonitor phoneCallStateMonitor:(id)stateMonitor otherAppRecordingStateMonitor:(id)recordingStateMonitor voiceTriggerHearstAPEnabledPolicy:(id)policy;
 - (id)_fetchDeviceId;
-- (void)_addAudioStreamHold:(id)a3;
+- (void)_addAudioStreamHold:(id)hold;
 - (void)_cancelLastAudioStreamHold;
 - (void)_createSecondPass;
-- (void)_handleSecondPassResult:(id)a3 deviceId:(id)a4 error:(id)a5;
-- (void)_keywordAnalyzerNDAPI:(id)a3 hasResultAvailable:(id)a4 forChannel:(unint64_t)a5;
-- (void)_setAsset:(id)a3;
-- (void)_startListenWithAudioProviderUUID:(id)a3 completion:(id)a4;
+- (void)_handleSecondPassResult:(id)result deviceId:(id)id error:(id)error;
+- (void)_keywordAnalyzerNDAPI:(id)i hasResultAvailable:(id)available forChannel:(unint64_t)channel;
+- (void)_setAsset:(id)asset;
+- (void)_startListenWithAudioProviderUUID:(id)d completion:(id)completion;
 - (void)_stopListening;
 - (void)_teardownSecondPass;
-- (void)_transitHearstAPEnable:(BOOL)a3;
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4;
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4;
+- (void)_transitHearstAPEnable:(BOOL)enable;
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available;
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly;
 - (void)dealloc;
-- (void)setAsset:(id)a3;
-- (void)shouldProcessAudio:(id)a3;
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7;
-- (void)siriClientBehaviorMonitor:(id)a3 didStopStream:(id)a4 withEventUUID:(id)a5;
-- (void)siriClientBehaviorMonitor:(id)a3 willStopStream:(id)a4 reason:(unint64_t)a5;
+- (void)setAsset:(id)asset;
+- (void)shouldProcessAudio:(id)audio;
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d;
+- (void)siriClientBehaviorMonitor:(id)monitor didStopStream:(id)stream withEventUUID:(id)d;
+- (void)siriClientBehaviorMonitor:(id)monitor willStopStream:(id)stream reason:(unint64_t)reason;
 - (void)start;
 @end
 
@@ -32,7 +32,7 @@
   return WeakRetained;
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 willStopStream:(id)a4 reason:(unint64_t)a5
+- (void)siriClientBehaviorMonitor:(id)monitor willStopStream:(id)stream reason:(unint64_t)reason
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -43,7 +43,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStopStream:(id)a4 withEventUUID:(id)a5
+- (void)siriClientBehaviorMonitor:(id)monitor didStopStream:(id)stream withEventUUID:(id)d
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -54,13 +54,13 @@
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  successfullyCopy = successfully;
+  monitorCopy = monitor;
+  contextCopy = context;
+  optionCopy = option;
+  dCopy = d;
   v16 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
@@ -69,7 +69,7 @@
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  if (v9)
+  if (successfullyCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -81,7 +81,7 @@
   }
 }
 
-- (void)_transitHearstAPEnable:(BOOL)a3
+- (void)_transitHearstAPEnable:(BOOL)enable
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -89,7 +89,7 @@
   v4[2] = sub_1000663FC;
   v4[3] = &unk_100253BF8;
   v4[4] = self;
-  v5 = a3;
+  enableCopy = enable;
   dispatch_async(queue, v4);
 }
 
@@ -118,8 +118,8 @@
 
     [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setSecondPassClient:2];
     [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setAsset:self->_currentAsset];
-    v8 = [(CSVoiceTriggerFirstPassHearstAP *)self delegate];
-    [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setDelegate:v8];
+    delegate = [(CSVoiceTriggerFirstPassHearstAP *)self delegate];
+    [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setDelegate:delegate];
 
     v9 = self->_voiceTriggerSecondPass;
 
@@ -131,48 +131,48 @@
 {
   if ([(NSMutableArray *)self->_audioStreamHoldings count])
   {
-    v4 = [(NSMutableArray *)self->_audioStreamHoldings lastObject];
-    v3 = [(CSVoiceTriggerFirstPassHearstAP *)self audioProvider];
-    [v3 cancelAudioStreamHold:v4];
+    lastObject = [(NSMutableArray *)self->_audioStreamHoldings lastObject];
+    audioProvider = [(CSVoiceTriggerFirstPassHearstAP *)self audioProvider];
+    [audioProvider cancelAudioStreamHold:lastObject];
 
     [(NSMutableArray *)self->_audioStreamHoldings removeLastObject];
   }
 }
 
-- (void)_addAudioStreamHold:(id)a3
+- (void)_addAudioStreamHold:(id)hold
 {
   v5 = [[CSAudioStreamHoldRequestOption alloc] initWithTimeout:2 clientIdentity:0 requireRecordModeLock:0 requireListeningMicIndicatorLock:5.0];
   v4 = [(CSAudioProvider *)self->_audioProvider holdAudioStreamWithDescription:@"CSHearstSecondPassRequest" option:v5];
   [(NSMutableArray *)self->_audioStreamHoldings addObject:v4];
 }
 
-- (void)_handleSecondPassResult:(id)a3 deviceId:(id)a4 error:(id)a5
+- (void)_handleSecondPassResult:(id)result deviceId:(id)id error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 result];
-  v12 = [v8 voiceTriggerEventInfo];
+  resultCopy = result;
+  idCopy = id;
+  errorCopy = error;
+  result = [resultCopy result];
+  voiceTriggerEventInfo = [resultCopy voiceTriggerEventInfo];
   v13 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [v10 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     v29 = 136315906;
     v30 = "[CSVoiceTriggerFirstPassHearstAP _handleSecondPassResult:deviceId:error:]";
     v31 = 1024;
-    *v32 = v11;
+    *v32 = result;
     *&v32[4] = 2114;
-    *&v32[6] = v12;
+    *&v32[6] = voiceTriggerEventInfo;
     v33 = 2114;
-    v34 = v15;
+    v34 = localizedDescription;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s Second Pass Result, %d, %{public}@, %{public}@", &v29, 0x26u);
   }
 
   self->_isSecondPassRunning = 0;
-  if (v11 <= 2)
+  if (result <= 2)
   {
-    if (v11 == 1)
+    if (result == 1)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v24 = objc_opt_respondsToSelector();
@@ -183,11 +183,11 @@
       }
 
       v18 = objc_loadWeakRetained(&self->_delegate);
-      [v18 voiceTriggerDidDetectKeyword:v12 deviceId:v9];
+      [v18 voiceTriggerDidDetectKeyword:voiceTriggerEventInfo deviceId:idCopy];
       goto LABEL_18;
     }
 
-    if (v11 == 2)
+    if (result == 2)
     {
       v16 = objc_loadWeakRetained(&self->_delegate);
       v17 = objc_opt_respondsToSelector();
@@ -198,7 +198,7 @@
       }
 
       v18 = objc_loadWeakRetained(&self->_delegate);
-      [v18 voiceTriggerDidRejected:v12 deviceId:v9];
+      [v18 voiceTriggerDidRejected:voiceTriggerEventInfo deviceId:idCopy];
       goto LABEL_18;
     }
 
@@ -210,19 +210,19 @@ LABEL_12:
     }
 
     v18 = v21;
-    v22 = [v10 localizedDescription];
+    localizedDescription2 = [errorCopy localizedDescription];
     v29 = 136315394;
     v30 = "[CSVoiceTriggerFirstPassHearstAP _handleSecondPassResult:deviceId:error:]";
     v31 = 2114;
-    *v32 = v22;
+    *v32 = localizedDescription2;
     _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s VoiceTrigger Second Pass has failed : %{public}@", &v29, 0x16u);
 
     goto LABEL_18;
   }
 
-  if (v11 != 3)
+  if (result != 3)
   {
-    if (v11 == 9)
+    if (result == 9)
     {
       v19 = objc_loadWeakRetained(&self->_delegate);
       v20 = objc_opt_respondsToSelector();
@@ -233,7 +233,7 @@ LABEL_12:
       }
 
       v18 = objc_loadWeakRetained(&self->_delegate);
-      [v18 voiceTriggerDidDetectSpeakerReject:v12];
+      [v18 voiceTriggerDidDetectSpeakerReject:voiceTriggerEventInfo];
       goto LABEL_18;
     }
 
@@ -249,11 +249,11 @@ LABEL_12:
   }
 
   v18 = objc_loadWeakRetained(&self->_delegate);
-  [v18 voiceTriggerDidDetectNearMiss:v12 deviceId:v9];
+  [v18 voiceTriggerDidDetectNearMiss:voiceTriggerEventInfo deviceId:idCopy];
 LABEL_18:
 
 LABEL_19:
-  if ([v8 isSecondChanceCandidate])
+  if ([resultCopy isSecondChanceCandidate])
   {
     v27 = [[CSVoiceTriggerSecondChanceContext alloc] initWithWindowStartTime:mach_absolute_time()];
   }
@@ -266,7 +266,7 @@ LABEL_19:
   secondChanceContext = self->_secondChanceContext;
   self->_secondChanceContext = v27;
 
-  if (v11 != 1)
+  if (result != 1)
   {
     [(CSVoiceTriggerFirstPassHearstAP *)self _cancelLastAudioStreamHold];
   }
@@ -274,14 +274,14 @@ LABEL_19:
   [(CSVoiceTriggerFirstPassHearstAP *)self _reset];
 }
 
-- (void)_keywordAnalyzerNDAPI:(id)a3 hasResultAvailable:(id)a4 forChannel:(unint64_t)a5
+- (void)_keywordAnalyzerNDAPI:(id)i hasResultAvailable:(id)available forChannel:(unint64_t)channel
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (*&v8 != 0.0)
+  iCopy = i;
+  availableCopy = available;
+  v9 = availableCopy;
+  if (*&availableCopy != 0.0)
   {
-    [v8 bestScore];
+    [availableCopy bestScore];
     v11 = *&v10;
     v12 = qword_10029E130;
     if (!(qword_10029E130 % self->_heartbeatFactor))
@@ -347,7 +347,7 @@ LABEL_19:
         +[CSMyriadNotifier notifyInEarMyriadTrigger];
       }
 
-      [v7 reset];
+      [iCopy reset];
       [(CSVoiceTriggerFirstPassHearstAP *)self _createSecondPass];
       self->_isSecondPassRunning = 1;
       [(CSVoiceTriggerFirstPassHearstAP *)self _addAudioStreamHold:@"Hearst AP first pass triggered"];
@@ -360,22 +360,22 @@ LABEL_19:
       v22 = [[CSVoiceTriggerRTModelRequestOptions alloc] initWithMutableBuilder:v33];
       v23 = [CSVoiceTriggerSecondPassRequestOption alloc];
       deviceId = self->_deviceId;
-      v25 = [(CSAudioProvider *)self->_audioProvider UUID];
+      uUID = [(CSAudioProvider *)self->_audioProvider UUID];
       v26 = +[NSUUID UUID];
-      v27 = [(CSVoiceTriggerSecondPassRequestOption *)v23 initWithFirstPassSource:6 deviceId:deviceId audioProviderUUID:v25 firstPassInfo:v18 rejectionMHUUID:v26 isSecondChanceRun:[(CSVoiceTriggerSecondChanceContext *)self->_secondChanceContext shouldRunAsSecondChance] firstpassMetrics:0 rtModelRequestOptions:v22];
+      v27 = [(CSVoiceTriggerSecondPassRequestOption *)v23 initWithFirstPassSource:6 deviceId:deviceId audioProviderUUID:uUID firstPassInfo:v18 rejectionMHUUID:v26 isSecondChanceRun:[(CSVoiceTriggerSecondChanceContext *)self->_secondChanceContext shouldRunAsSecondChance] firstpassMetrics:0 rtModelRequestOptions:v22];
 
       if ([(CSVoiceTriggerRTModelRequestOptions *)v22 allowMph])
       {
-        v28 = [(CSVoiceTriggerRTModelRequestOptions *)v22 accessoryInfo];
-        v29 = [v28 supportsJustSiri];
+        accessoryInfo = [(CSVoiceTriggerRTModelRequestOptions *)v22 accessoryInfo];
+        supportsJustSiri = [accessoryInfo supportsJustSiri];
       }
 
       else
       {
-        v29 = 0;
+        supportsJustSiri = 0;
       }
 
-      [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setSupportsMultiPhraseDetection:v29];
+      [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setSupportsMultiPhraseDetection:supportsJustSiri];
       voiceTriggerSecondPass = self->_voiceTriggerSecondPass;
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
@@ -390,35 +390,35 @@ LABEL_19:
   }
 }
 
-- (void)shouldProcessAudio:(id)a3
+- (void)shouldProcessAudio:(id)audio
 {
-  v4 = a3;
+  audioCopy = audio;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000672B0;
   v7[3] = &unk_100253718;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = audioCopy;
+  v6 = audioCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available
 {
-  v5 = a4;
+  availableCopy = available;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000673C4;
   v8[3] = &unk_100253C48;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = availableCopy;
+  v7 = availableCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -439,9 +439,9 @@ LABEL_19:
   self->_remoteVADSignalExtractor = 0;
 
   objc_autoreleasePoolPop(v3);
-  v6 = [(CSVoiceTriggerFirstPassHearstAP *)self audioStream];
+  audioStream = [(CSVoiceTriggerFirstPassHearstAP *)self audioStream];
 
-  if (v6)
+  if (audioStream)
   {
     v7 = CSLogCategoryVT;
     if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
@@ -465,18 +465,18 @@ LABEL_19:
 - (id)_fetchDeviceId
 {
   v3 = +[CSAudioStreamActivityMonitor sharedInstance];
-  v4 = [v3 hasNonVoiceTriggerStreamsOrStreamHoldersActive];
+  hasNonVoiceTriggerStreamsOrStreamHoldersActive = [v3 hasNonVoiceTriggerStreamsOrStreamHoldersActive];
 
-  if (v4)
+  if (hasNonVoiceTriggerStreamsOrStreamHoldersActive)
   {
     v5 = +[CSSiriClientBehaviorMonitor sharedInstance];
-    v6 = [v5 recordRoute];
-    v7 = [CSUtils isDoAPAudioRouteWithRecordRoute:v6];
+    recordRoute = [v5 recordRoute];
+    v7 = [CSUtils isDoAPAudioRouteWithRecordRoute:recordRoute];
 
     if (v7)
     {
-      v8 = +[CSSiriClientBehaviorMonitor sharedInstance];
-      v9 = [v8 deviceId];
+      audioRecordContext = +[CSSiriClientBehaviorMonitor sharedInstance];
+      deviceId = [audioRecordContext deviceId];
 LABEL_6:
 
       goto LABEL_10;
@@ -487,9 +487,9 @@ LABEL_6:
   {
     if ([(CSOpportuneSpeakEventMonitor *)self->_opportuneSpeakEventMonitor isStreaming])
     {
-      v8 = [(CSOpportuneSpeakEventMonitor *)self->_opportuneSpeakEventMonitor audioRecordContext];
-      v10 = [v8 deviceId];
-      v9 = [v10 copy];
+      audioRecordContext = [(CSOpportuneSpeakEventMonitor *)self->_opportuneSpeakEventMonitor audioRecordContext];
+      deviceId2 = [audioRecordContext deviceId];
+      deviceId = [deviceId2 copy];
 
       goto LABEL_6;
     }
@@ -503,16 +503,16 @@ LABEL_6:
     }
   }
 
-  v9 = 0;
+  deviceId = 0;
 LABEL_10:
 
-  return v9;
+  return deviceId;
 }
 
-- (void)_startListenWithAudioProviderUUID:(id)a3 completion:(id)a4
+- (void)_startListenWithAudioProviderUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
@@ -526,21 +526,21 @@ LABEL_10:
   v49[2] = sub_100068098;
   v49[3] = &unk_100253270;
   v49[4] = self;
-  v9 = v7;
+  v9 = completionCopy;
   v50 = v9;
   v10 = objc_retainBlock(v49);
   v11 = [CSVoiceTriggerSecondPassConfigDecoder decodeConfigFrom:self->_currentAsset forFirstPassSource:6];
-  v12 = [v11 configPathNDAPI];
-  v44 = [(CSAsset *)self->_currentAsset resourcePath];
-  v13 = [[CSKeywordAnalyzerNDAPI alloc] initWithConfigPath:v12 resourcePath:v44];
+  configPathNDAPI = [v11 configPathNDAPI];
+  resourcePath = [(CSAsset *)self->_currentAsset resourcePath];
+  v13 = [[CSKeywordAnalyzerNDAPI alloc] initWithConfigPath:configPathNDAPI resourcePath:resourcePath];
   keywordAnalyzerNDAPI = self->_keywordAnalyzerNDAPI;
   self->_keywordAnalyzerNDAPI = v13;
 
   [(CSKeywordAnalyzerNDAPI *)self->_keywordAnalyzerNDAPI getThreshold];
   self->_keywordThreshold = v15;
   [(CSKeywordAnalyzerNDAPI *)self->_keywordAnalyzerNDAPI setActiveChannel:0];
-  v16 = [v11 wearerDetectionConfig];
-  [v16 threshold];
+  wearerDetectionConfig = [v11 wearerDetectionConfig];
+  [wearerDetectionConfig threshold];
   v18 = v17;
 
   v19 = 0;
@@ -564,9 +564,9 @@ LABEL_10:
   }
 
   v23 = v22;
-  v24 = [(CSVoiceTriggerFirstPassHearstAP *)self _fetchDeviceId];
+  _fetchDeviceId = [(CSVoiceTriggerFirstPassHearstAP *)self _fetchDeviceId];
   deviceId = self->_deviceId;
-  self->_deviceId = v24;
+  self->_deviceId = _fetchDeviceId;
 
   if (!self->_deviceId)
   {
@@ -575,7 +575,7 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  v26 = [(CSSpeechManager *)v23 audioProviderWithUUID:v6];
+  v26 = [(CSSpeechManager *)v23 audioProviderWithUUID:dCopy];
   if (!v26)
   {
     v30 = [CSAudioRecordContext contextForHearstVoiceTriggerWithDeviceId:self->_deviceId];
@@ -599,7 +599,7 @@ LABEL_12:
   v27 = v26;
   [(CSVoiceTriggerFirstPassHearstAP *)self setAudioProvider:v26];
 LABEL_14:
-  v31 = [(CSOpportuneSpeakEventMonitor *)self->_opportuneSpeakEventMonitor audioRecordContext:v12];
+  v31 = [(CSOpportuneSpeakEventMonitor *)self->_opportuneSpeakEventMonitor audioRecordContext:configPathNDAPI];
   v32 = [CSAudioStreamRequest defaultRequestWithContext:v31];
 
   [v32 setClientIdentity:2];
@@ -614,9 +614,9 @@ LABEL_14:
     [v35 setIsWeakStream:1];
     [(CSVoiceTriggerFirstPassHearstAP *)self setAudioStream:v35];
     [v35 setDelegate:self];
-    v37 = [(CSVoiceTriggerFirstPassHearstAP *)self audioStream];
+    audioStream = [(CSVoiceTriggerFirstPassHearstAP *)self audioStream];
 
-    if (v37)
+    if (audioStream)
     {
       v38 = CSLogCategoryVT;
       if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
@@ -630,14 +630,14 @@ LABEL_14:
       v39 = +[CSAudioStartStreamOption noAlertOption];
       [v39 setDisableBoostForDoAP:1];
       [v39 setStartRecordingHostTime:mach_absolute_time()];
-      v40 = [(CSVoiceTriggerFirstPassHearstAP *)self audioStream];
+      audioStream2 = [(CSVoiceTriggerFirstPassHearstAP *)self audioStream];
       v45[0] = _NSConcreteStackBlock;
       v45[1] = 3221225472;
       v45[2] = sub_100068130;
       v45[3] = &unk_100253270;
       v45[4] = self;
       v46 = v10;
-      [v40 startAudioStreamWithOption:v39 completion:v45];
+      [audioStream2 startAudioStreamWithOption:v39 completion:v45];
     }
   }
 
@@ -647,19 +647,19 @@ LABEL_14:
   }
 
   v9 = v42;
-  v6 = v43;
-  v12 = v41;
+  dCopy = v43;
+  configPathNDAPI = v41;
 LABEL_21:
 }
 
-- (void)_setAsset:(id)a3
+- (void)_setAsset:(id)asset
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  assetCopy = asset;
+  v6 = assetCopy;
+  if (assetCopy)
   {
-    [v5 logAssetVersionForInsight];
-    objc_storeStrong(&self->_currentAsset, a3);
+    [assetCopy logAssetVersionForInsight];
+    objc_storeStrong(&self->_currentAsset, asset);
   }
 
   else
@@ -674,17 +674,17 @@ LABEL_21:
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000684CC;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(queue, v7);
 }
 
@@ -715,24 +715,24 @@ LABEL_21:
   dispatch_async(queue, block);
 }
 
-- (CSVoiceTriggerFirstPassHearstAP)initWithSpeechManager:(id)a3 voiceTriggerEnabledMonitor:(id)a4 siriClientBehaviorMonitor:(id)a5 opportuneSpeakEventMonitor:(id)a6 phoneCallStateMonitor:(id)a7 otherAppRecordingStateMonitor:(id)a8 voiceTriggerHearstAPEnabledPolicy:(id)a9
+- (CSVoiceTriggerFirstPassHearstAP)initWithSpeechManager:(id)manager voiceTriggerEnabledMonitor:(id)monitor siriClientBehaviorMonitor:(id)behaviorMonitor opportuneSpeakEventMonitor:(id)eventMonitor phoneCallStateMonitor:(id)stateMonitor otherAppRecordingStateMonitor:(id)recordingStateMonitor voiceTriggerHearstAPEnabledPolicy:(id)policy
 {
-  v28 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
-  v17 = a9;
+  managerCopy = manager;
+  behaviorMonitorCopy = behaviorMonitor;
+  eventMonitorCopy = eventMonitor;
+  recordingStateMonitorCopy = recordingStateMonitor;
+  policyCopy = policy;
   v29.receiver = self;
   v29.super_class = CSVoiceTriggerFirstPassHearstAP;
   v18 = [(CSVoiceTriggerFirstPassHearstAP *)&v29 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_speechManager, a3);
-    objc_storeStrong(&v19->_siriClientBehaviorMonitor, a5);
-    objc_storeStrong(&v19->_opportuneSpeakEventMonitor, a6);
-    objc_storeStrong(&v19->_otherAppRecordingStateMonitor, a8);
-    objc_storeStrong(&v19->_voiceTriggerHearstAPEnabledPolicy, a9);
+    objc_storeStrong(&v18->_speechManager, manager);
+    objc_storeStrong(&v19->_siriClientBehaviorMonitor, behaviorMonitor);
+    objc_storeStrong(&v19->_opportuneSpeakEventMonitor, eventMonitor);
+    objc_storeStrong(&v19->_otherAppRecordingStateMonitor, recordingStateMonitor);
+    objc_storeStrong(&v19->_voiceTriggerHearstAPEnabledPolicy, policy);
     v20 = dispatch_queue_create("CSVoiceTriggerFirstPassHearstAP", 0);
     queue = v19->_queue;
     v19->_queue = v20;

@@ -7,8 +7,8 @@
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(StoreBackstopAccessibilityElement *)self accessibilityContainer];
-  [v2 accessibilityFrame];
+  accessibilityContainer = [(StoreBackstopAccessibilityElement *)self accessibilityContainer];
+  [accessibilityContainer accessibilityFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -28,12 +28,12 @@
 - (BOOL)accessibilityActivate
 {
   v2 = MEMORY[0x29EDC7DA8];
-  v3 = [(StoreBackstopAccessibilityElement *)self accessibilityContainer];
-  v4 = [v2 viewControllerForView:v3];
+  accessibilityContainer = [(StoreBackstopAccessibilityElement *)self accessibilityContainer];
+  v4 = [v2 viewControllerForView:accessibilityContainer];
   v5 = __UIAccessibilitySafeClass();
 
-  LOBYTE(v3) = [v5 accessibilityPerformEscape];
-  return v3;
+  LOBYTE(accessibilityContainer) = [v5 accessibilityPerformEscape];
+  return accessibilityContainer;
 }
 
 @end

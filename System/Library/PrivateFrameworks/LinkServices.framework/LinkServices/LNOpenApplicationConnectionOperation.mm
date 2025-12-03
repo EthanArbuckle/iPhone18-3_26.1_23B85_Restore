@@ -1,69 +1,69 @@
 @interface LNOpenApplicationConnectionOperation
-- (LNOpenApplicationConnectionOperation)initWithPriority:(int64_t)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)finishWithActionResponse:(id)a3 error:(id)a4;
-- (void)finishWithError:(id)a3;
+- (LNOpenApplicationConnectionOperation)initWithPriority:(int64_t)priority queue:(id)queue completionHandler:(id)handler;
+- (void)finishWithActionResponse:(id)response error:(id)error;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation LNOpenApplicationConnectionOperation
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(LNOpenApplicationConnectionOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(LNOpenApplicationConnectionOperation *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(LNConnectionOperation *)self validatingResult:0 error:v4];
+    v6 = [(LNConnectionOperation *)self validatingResult:0 error:errorCopy];
 
-    v7 = [(LNOpenApplicationConnectionOperation *)self completionHandler];
-    v7[2](v7, 0, v6);
+    completionHandler2 = [(LNOpenApplicationConnectionOperation *)self completionHandler];
+    completionHandler2[2](completionHandler2, 0, v6);
 
     [(LNOpenApplicationConnectionOperation *)self setCompletionHandler:0];
-    v4 = v6;
+    errorCopy = v6;
   }
 
   v8.receiver = self;
   v8.super_class = LNOpenApplicationConnectionOperation;
-  [(LNConnectionOperation *)&v8 finishWithError:v4];
+  [(LNConnectionOperation *)&v8 finishWithError:errorCopy];
 }
 
-- (void)finishWithActionResponse:(id)a3 error:(id)a4
+- (void)finishWithActionResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(LNOpenApplicationConnectionOperation *)self completionHandler];
+  responseCopy = response;
+  errorCopy = error;
+  completionHandler = [(LNOpenApplicationConnectionOperation *)self completionHandler];
 
-  if (v8)
+  if (completionHandler)
   {
-    v9 = [(LNOpenApplicationConnectionOperation *)self completionHandler];
-    (v9)[2](v9, v6, v7);
+    completionHandler2 = [(LNOpenApplicationConnectionOperation *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, responseCopy, errorCopy);
 
     [(LNOpenApplicationConnectionOperation *)self setCompletionHandler:0];
   }
 
   v10.receiver = self;
   v10.super_class = LNOpenApplicationConnectionOperation;
-  [(LNConnectionOperation *)&v10 finishWithError:v7];
+  [(LNConnectionOperation *)&v10 finishWithError:errorCopy];
 }
 
-- (LNOpenApplicationConnectionOperation)initWithPriority:(int64_t)a3 queue:(id)a4 completionHandler:(id)a5
+- (LNOpenApplicationConnectionOperation)initWithPriority:(int64_t)priority queue:(id)queue completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"LNOpenApplicationConnectionOperation.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNOpenApplicationConnectionOperation.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v11 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v18.receiver = self;
   v18.super_class = LNOpenApplicationConnectionOperation;
-  v12 = [(LNConnectionOperation *)&v18 initWithIdentifier:v11 priority:a3 queue:v9 activity:&__block_literal_global_1131];
+  v12 = [(LNConnectionOperation *)&v18 initWithIdentifier:uUID priority:priority queue:queueCopy activity:&__block_literal_global_1131];
 
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [handlerCopy copy];
     completionHandler = v12->_completionHandler;
     v12->_completionHandler = v13;
 

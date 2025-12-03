@@ -1,14 +1,14 @@
 @interface HKEmergencyCardHeightTableItem
 - (BOOL)hasPresentableData;
-- (BOOL)shouldHighlightRowAtIndex:(int64_t)a3;
-- (double)tableView:(id)a3 heightForRowAtIndex:(int64_t)a4;
+- (BOOL)shouldHighlightRowAtIndex:(int64_t)index;
+- (double)tableView:(id)view heightForRowAtIndex:(int64_t)index;
 - (id)_createEditableCell;
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index;
 - (id)title;
-- (int64_t)commitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4;
-- (int64_t)editingStyleForRowAtIndex:(int64_t)a3;
-- (void)didCommitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4;
-- (void)medicalIDEditorCellDidChangeValue:(id)a3;
+- (int64_t)commitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index;
+- (int64_t)editingStyleForRowAtIndex:(int64_t)index;
+- (void)didCommitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index;
+- (void)medicalIDEditorCellDidChangeValue:(id)value;
 @end
 
 @implementation HKEmergencyCardHeightTableItem
@@ -23,9 +23,9 @@
 
 - (BOOL)hasPresentableData
 {
-  v2 = [(HKEmergencyCardTableItem *)self data];
-  v3 = [v2 height];
-  v4 = v3 != 0;
+  data = [(HKEmergencyCardTableItem *)self data];
+  height = [data height];
+  v4 = height != 0;
 
   return v4;
 }
@@ -33,8 +33,8 @@
 - (id)_createEditableCell
 {
   v3 = [[HKMedicalIDEditorHeightCell alloc] initWithStyle:0 reuseIdentifier:@"kHeightTableItemCellIdentifier"];
-  v4 = [(HKEmergencyCardHeightTableItem *)self title];
-  [(HKMedicalIDEditorCell *)v3 setLabel:v4];
+  title = [(HKEmergencyCardHeightTableItem *)self title];
+  [(HKMedicalIDEditorCell *)v3 setLabel:title];
 
   [(HKMedicalIDEditorCell *)v3 setMinimumLabelWidth:47.0];
   [(HKMedicalIDEditorCell *)v3 setEditDelegate:self];
@@ -42,32 +42,32 @@
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index
 {
-  v5 = a3;
+  viewCopy = view;
   if ([(HKEmergencyCardTableItem *)self isInEditMode])
   {
-    v6 = [(HKEmergencyCardTableItem *)self data];
-    v7 = [v6 height];
+    data = [(HKEmergencyCardTableItem *)self data];
+    height = [data height];
 
-    if (v7)
+    if (height)
     {
-      v8 = [v5 dequeueReusableCellWithIdentifier:@"kHeightTableItemCellIdentifier"];
-      if (!v8)
+      _createEditableCell = [viewCopy dequeueReusableCellWithIdentifier:@"kHeightTableItemCellIdentifier"];
+      if (!_createEditableCell)
       {
-        v8 = [(HKEmergencyCardHeightTableItem *)self _createEditableCell];
+        _createEditableCell = [(HKEmergencyCardHeightTableItem *)self _createEditableCell];
       }
 
-      v9 = [(HKEmergencyCardTableItem *)self data];
-      v10 = [v9 height];
+      data2 = [(HKEmergencyCardTableItem *)self data];
+      height2 = [data2 height];
       v11 = [MEMORY[0x1E696C510] meterUnitWithMetricPrefix:5];
-      [v10 doubleValueForUnit:v11];
+      [height2 doubleValueForUnit:v11];
       v13 = v12;
 
       v14 = [MEMORY[0x1E696AD98] numberWithDouble:v13];
-      [v8 setCentimeterValue:v14];
+      [_createEditableCell setCentimeterValue:v14];
 
-      v15 = v8;
+      v15 = _createEditableCell;
       editableCell = self->_editableCell;
       self->_editableCell = v15;
     }
@@ -76,43 +76,43 @@
     {
       editableCell = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v28 = [editableCell localizedStringForKey:@"add_height" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-      v15 = [(HKEmergencyCardTableItem *)self _dequeueNoValueCellInTableView:v5 withTitle:v28];
+      v15 = [(HKEmergencyCardTableItem *)self _dequeueNoValueCellInTableView:viewCopy withTitle:v28];
     }
   }
 
   else
   {
     v17 = +[_HKMedicalIDMultilineStringCell defaultReuseIdentifier];
-    v15 = [v5 dequeueReusableCellWithIdentifier:v17];
+    v15 = [viewCopy dequeueReusableCellWithIdentifier:v17];
 
-    v18 = [(HKEmergencyCardHeightTableItem *)self title];
-    v19 = [(HKMedicalIDEditorHeightCell *)v15 titleLabel];
-    [v19 setText:v18];
+    title = [(HKEmergencyCardHeightTableItem *)self title];
+    titleLabel = [(HKMedicalIDEditorHeightCell *)v15 titleLabel];
+    [titleLabel setText:title];
 
     editableCell = [MEMORY[0x1E696C510] meterUnitWithMetricPrefix:5];
-    v20 = [(HKEmergencyCardTableItem *)self data];
-    v21 = [v20 height];
-    [v21 doubleValueForUnit:editableCell];
+    data3 = [(HKEmergencyCardTableItem *)self data];
+    height3 = [data3 height];
+    [height3 doubleValueForUnit:editableCell];
     v23 = v22;
 
     v24 = +[HKPersonHeightFormatter sharedFormatter];
     v25 = [MEMORY[0x1E696AD98] numberWithDouble:v23];
     v26 = [v24 localizedStringFromHeightInCentimeters:v25];
-    v27 = [(HKMedicalIDEditorHeightCell *)v15 detailLabel];
-    [v27 setText:v26];
+    detailLabel = [(HKMedicalIDEditorHeightCell *)v15 detailLabel];
+    [detailLabel setText:v26];
   }
 
   return v15;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndex:(int64_t)a4
+- (double)tableView:(id)view heightForRowAtIndex:(int64_t)index
 {
-  v6 = a3;
+  viewCopy = view;
   if ([(HKEmergencyCardTableItem *)self isInEditMode])
   {
     v10.receiver = self;
     v10.super_class = HKEmergencyCardHeightTableItem;
-    [(HKEmergencyCardTableItem *)&v10 tableView:v6 heightForRowAtIndex:a4];
+    [(HKEmergencyCardTableItem *)&v10 tableView:viewCopy heightForRowAtIndex:index];
     v8 = v7;
   }
 
@@ -124,7 +124,7 @@
   return v8;
 }
 
-- (BOOL)shouldHighlightRowAtIndex:(int64_t)a3
+- (BOOL)shouldHighlightRowAtIndex:(int64_t)index
 {
   if ([(HKEmergencyCardTableItem *)self isInEditMode])
   {
@@ -134,32 +134,32 @@
   return 0;
 }
 
-- (void)medicalIDEditorCellDidChangeValue:(id)a3
+- (void)medicalIDEditorCellDidChangeValue:(id)value
 {
-  v8 = [(HKMedicalIDEditorHeightCell *)self->_editableCell centimeterValue];
-  if (v8)
+  centimeterValue = [(HKMedicalIDEditorHeightCell *)self->_editableCell centimeterValue];
+  if (centimeterValue)
   {
-    v4 = [MEMORY[0x1E696C510] meterUnitWithMetricPrefix:5];
+    data2 = [MEMORY[0x1E696C510] meterUnitWithMetricPrefix:5];
     v5 = MEMORY[0x1E696C348];
-    [v8 doubleValue];
-    v6 = [v5 quantityWithUnit:v4 doubleValue:?];
-    v7 = [(HKEmergencyCardTableItem *)self data];
-    [v7 setHeight:v6];
+    [centimeterValue doubleValue];
+    v6 = [v5 quantityWithUnit:data2 doubleValue:?];
+    data = [(HKEmergencyCardTableItem *)self data];
+    [data setHeight:v6];
   }
 
   else
   {
-    v4 = [(HKEmergencyCardTableItem *)self data];
-    [v4 setHeight:0];
+    data2 = [(HKEmergencyCardTableItem *)self data];
+    [data2 setHeight:0];
   }
 }
 
-- (int64_t)editingStyleForRowAtIndex:(int64_t)a3
+- (int64_t)editingStyleForRowAtIndex:(int64_t)index
 {
-  v3 = [(HKEmergencyCardTableItem *)self data];
-  v4 = [v3 height];
+  data = [(HKEmergencyCardTableItem *)self data];
+  height = [data height];
 
-  if (v4)
+  if (height)
   {
     return 1;
   }
@@ -170,9 +170,9 @@
   }
 }
 
-- (int64_t)commitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4
+- (int64_t)commitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     v5 = [(HKEmergencyCardTableItem *)self data:1];
     [v5 setHeight:0];
@@ -180,20 +180,20 @@
 
   else
   {
-    v5 = [MEMORY[0x1E696C510] meterUnitWithMetricPrefix:{5, a4}];
+    v5 = [MEMORY[0x1E696C510] meterUnitWithMetricPrefix:{5, index}];
     v6 = MEMORY[0x1E696C348];
     +[HKMedicalIDHeightPickerDataProvider defaultCentimeterValue];
     v7 = [v6 quantityWithUnit:v5 doubleValue:?];
-    v8 = [(HKEmergencyCardTableItem *)self data];
-    [v8 setHeight:v7];
+    data = [(HKEmergencyCardTableItem *)self data];
+    [data setHeight:v7];
   }
 
   return 2;
 }
 
-- (void)didCommitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4
+- (void)didCommitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index
 {
-  if (a3 == 2)
+  if (style == 2)
   {
     [(HKMedicalIDEditorHeightCell *)self->_editableCell beginEditing:2];
   }

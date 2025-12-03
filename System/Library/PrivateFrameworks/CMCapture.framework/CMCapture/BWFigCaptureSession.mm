@@ -1,53 +1,53 @@
 @interface BWFigCaptureSession
-- (float)trueVideoCaptureAdditionalZoomFactorForPreviewStitcher:(id)a3;
-- (void)_continuityDisplay:(uint64_t)a1 didUpdateLayout:(void *)a2;
+- (float)trueVideoCaptureAdditionalZoomFactorForPreviewStitcher:(id)stitcher;
+- (void)_continuityDisplay:(uint64_t)display didUpdateLayout:(void *)layout;
 - (void)_doFlashMitigation;
-- (void)_mainDisplay:(void *)a3 didUpdateLayout:;
+- (void)_mainDisplay:(void *)display didUpdateLayout:;
 - (void)_postFlashMitigationUserNotification;
-- (void)_sendRecordingStartedNotificationForFileSinkPipeline:(uint64_t)a1 withSettings:(void *)a2 startPTS:(void *)a3;
+- (void)_sendRecordingStartedNotificationForFileSinkPipeline:(uint64_t)pipeline withSettings:(void *)settings startPTS:(void *)s;
 - (void)dealloc;
-- (void)fileCoordinator:(id)a3 sentMarkerBufferForFileWriterAction:(id)a4 withPTS:(id *)a5 settings:(id)a6 errorCode:(int)a7;
-- (void)fileCoordinator:(id)a3 stoppedBeforeStartedRecordingForSettings:(id)a4 pendingIrisMovieInfos:(id)a5 errorCode:(int)a6;
-- (void)fileWriter:(id)a3 frameDroppedForSettingsID:(unint64_t)a4 withError:(int)a5;
-- (void)fileWriter:(id)a3 pausedRecordingForSettingsID:(unint64_t)a4;
-- (void)fileWriter:(id)a3 resumedRecordingForSettingsID:(unint64_t)a4;
-- (void)fileWriter:(id)a3 startedRecordingForSettings:(id)a4 writerPipelineIndex:(unint64_t)a5 startPTS:(id *)a6;
-- (void)fileWriter:(id)a3 writerPipelineIndex:(unint64_t)a4 stoppedRecordingForSettings:(id)a5 withError:(int)a6 thumbnailSurface:(__IOSurface *)a7 irisMovieInfo:(id)a8 debugMetadataSidecarFileURL:(id)a9 recordingSucceeded:(BOOL)a10;
-- (void)fileWriter:(id)a3 writerPipelineIndex:(unint64_t)a4 stoppedRecordingSampleDataForSettingsID:(int64_t)a5;
-- (void)graph:(id)a3 didFinishStartingWithError:(int)a4;
-- (void)graph:(id)a3 didStartSourceNode:(id)a4 error:(int)a5;
-- (void)graphDidPrepareNodes:(id)a3;
-- (void)graphDidResolveRetainedBufferCounts:(id)a3;
-- (void)imageQueueSinkNode:(id)a3 didAttemptToEnqueuePreviewSampleBuffer:(opaqueCMSampleBuffer *)a4 withSuccess:(BOOL)a5;
-- (void)imageQueueSinkNodeDidDisplayFirstFrame:(id)a3 atHostTime:(int64_t)a4;
-- (void)imageQueueSinkNodeDidDisplayFirstFrame:(id)a3 timedOut:(BOOL)a4;
+- (void)fileCoordinator:(id)coordinator sentMarkerBufferForFileWriterAction:(id)action withPTS:(id *)s settings:(id)settings errorCode:(int)code;
+- (void)fileCoordinator:(id)coordinator stoppedBeforeStartedRecordingForSettings:(id)settings pendingIrisMovieInfos:(id)infos errorCode:(int)code;
+- (void)fileWriter:(id)writer frameDroppedForSettingsID:(unint64_t)d withError:(int)error;
+- (void)fileWriter:(id)writer pausedRecordingForSettingsID:(unint64_t)d;
+- (void)fileWriter:(id)writer resumedRecordingForSettingsID:(unint64_t)d;
+- (void)fileWriter:(id)writer startedRecordingForSettings:(id)settings writerPipelineIndex:(unint64_t)index startPTS:(id *)s;
+- (void)fileWriter:(id)writer writerPipelineIndex:(unint64_t)index stoppedRecordingForSettings:(id)settings withError:(int)error thumbnailSurface:(__IOSurface *)surface irisMovieInfo:(id)info debugMetadataSidecarFileURL:(id)l recordingSucceeded:(BOOL)self0;
+- (void)fileWriter:(id)writer writerPipelineIndex:(unint64_t)index stoppedRecordingSampleDataForSettingsID:(int64_t)d;
+- (void)graph:(id)graph didFinishStartingWithError:(int)error;
+- (void)graph:(id)graph didStartSourceNode:(id)node error:(int)error;
+- (void)graphDidPrepareNodes:(id)nodes;
+- (void)graphDidResolveRetainedBufferCounts:(id)counts;
+- (void)imageQueueSinkNode:(id)node didAttemptToEnqueuePreviewSampleBuffer:(opaqueCMSampleBuffer *)buffer withSuccess:(BOOL)success;
+- (void)imageQueueSinkNodeDidDisplayFirstFrame:(id)frame atHostTime:(int64_t)time;
+- (void)imageQueueSinkNodeDidDisplayFirstFrame:(id)frame timedOut:(BOOL)out;
 - (void)initWithFigCaptureSession:(void *)result;
-- (void)interruptionResolved:(id)a3;
-- (void)interruptionTriggered:(id)a3;
-- (void)layoutMonitor:(id)a3 didUpdateLayout:(id)a4;
-- (void)node:(id)a3 format:(id)a4 didBecomeLiveForOutput:(id)a5;
-- (void)previewStitcher:(id)a3 didApplyWiderCameraShift:(CGPoint)a4 widerCameraScaleFactor:(float)a5 forWiderCameraPortType:(id)a6 narrowerCameraShift:(CGPoint)a7 narrowerCameraScaleFactor:(float)a8 forNarrowerCameraPortType:(id)a9 inSuperWideMacroMode:(BOOL)a10 widerCameraShiftAtBaseZoom:(CGPoint)a11;
-- (void)previewStitcher:(id)a3 overCaptureStatusDidChange:(int)a4;
-- (void)previewStitcherReadyForPrimaryCaptureRectUpdates:(id)a3;
-- (void)previewStitcherSmartFramingFieldOfViewTransitionAppliedZoomFactor:(id)a3 zoomFactor:(double)a4;
-- (void)previewStitcherTrueVideoExitTransitionDidComplete:(id)a3;
-- (void)remoteQueueSinkNode:(id)a3 localQueueBecameReady:(localQueueOpaque *)a4;
-- (void)remoteQueueSinkNode:(id)a3 queueBecameReady:(remoteQueueSenderOpaque *)a4;
-- (void)stagingNode:(id)a3 readyToReceiveRequestsWithEarliestAllowedStillImageCaptureHostPTS:(id *)a4;
-- (void)stagingNode:(id)a3 valveClosedWithPendingIrisRequests:(id)a4;
-- (void)stagingNode:(id)a3 waitingToEmitFrameWithPTS:(id *)a4;
-- (void)stagingNode:(id)a3 willEmitIrisRequest:(id)a4;
-- (void)stillImageCoordinator:(id)a3 didCancelMomentCaptureForSettingsID:(int64_t)a4 streamingDisruptionEndPTS:(id *)a5;
-- (void)stillImageCoordinator:(id)a3 didCapturePhotoForSettings:(id)a4;
-- (void)stillImageCoordinator:(id)a3 didResolveStillImagePTS:(id *)a4 forSettings:(id)a5 isPreBracketedEV0:(BOOL)a6;
-- (void)stillImageCoordinator:(id)a3 didSelectNewReferenceFrameWithPTS:(id *)a4 transform:(id)a5 forSettings:(id)a6;
-- (void)stillImageCoordinator:(id)a3 readyToRespondToRequestAfterRequestWithSettings:(id)a4;
-- (void)stillImageCoordinator:(id)a3 updateSettingsAfterLiveReconfiguration:(id)a4;
-- (void)stillImageCoordinator:(id)a3 willBeginCaptureBeforeResolvingSettingsForID:(int64_t)a4;
-- (void)stillImageCoordinator:(id)a3 willBeginCaptureForSettings:(id)a4;
-- (void)stillImageCoordinator:(id)a3 willCapturePhotoForSettings:(id)a4 error:(int)a5;
-- (void)stillImageCoordinator:(id)a3 willPrepareStillImageCaptureWithSettings:(id)a4 clientInitiated:(BOOL)a5;
-- (void)videoPIPOverlayNode:(id)a3 overlayRectDidChange:(CGRect)a4;
+- (void)interruptionResolved:(id)resolved;
+- (void)interruptionTriggered:(id)triggered;
+- (void)layoutMonitor:(id)monitor didUpdateLayout:(id)layout;
+- (void)node:(id)node format:(id)format didBecomeLiveForOutput:(id)output;
+- (void)previewStitcher:(id)stitcher didApplyWiderCameraShift:(CGPoint)shift widerCameraScaleFactor:(float)factor forWiderCameraPortType:(id)type narrowerCameraShift:(CGPoint)cameraShift narrowerCameraScaleFactor:(float)scaleFactor forNarrowerCameraPortType:(id)portType inSuperWideMacroMode:(BOOL)self0 widerCameraShiftAtBaseZoom:(CGPoint)self1;
+- (void)previewStitcher:(id)stitcher overCaptureStatusDidChange:(int)change;
+- (void)previewStitcherReadyForPrimaryCaptureRectUpdates:(id)updates;
+- (void)previewStitcherSmartFramingFieldOfViewTransitionAppliedZoomFactor:(id)factor zoomFactor:(double)zoomFactor;
+- (void)previewStitcherTrueVideoExitTransitionDidComplete:(id)complete;
+- (void)remoteQueueSinkNode:(id)node localQueueBecameReady:(localQueueOpaque *)ready;
+- (void)remoteQueueSinkNode:(id)node queueBecameReady:(remoteQueueSenderOpaque *)ready;
+- (void)stagingNode:(id)node readyToReceiveRequestsWithEarliestAllowedStillImageCaptureHostPTS:(id *)s;
+- (void)stagingNode:(id)node valveClosedWithPendingIrisRequests:(id)requests;
+- (void)stagingNode:(id)node waitingToEmitFrameWithPTS:(id *)s;
+- (void)stagingNode:(id)node willEmitIrisRequest:(id)request;
+- (void)stillImageCoordinator:(id)coordinator didCancelMomentCaptureForSettingsID:(int64_t)d streamingDisruptionEndPTS:(id *)s;
+- (void)stillImageCoordinator:(id)coordinator didCapturePhotoForSettings:(id)settings;
+- (void)stillImageCoordinator:(id)coordinator didResolveStillImagePTS:(id *)s forSettings:(id)settings isPreBracketedEV0:(BOOL)v0;
+- (void)stillImageCoordinator:(id)coordinator didSelectNewReferenceFrameWithPTS:(id *)s transform:(id)transform forSettings:(id)settings;
+- (void)stillImageCoordinator:(id)coordinator readyToRespondToRequestAfterRequestWithSettings:(id)settings;
+- (void)stillImageCoordinator:(id)coordinator updateSettingsAfterLiveReconfiguration:(id)reconfiguration;
+- (void)stillImageCoordinator:(id)coordinator willBeginCaptureBeforeResolvingSettingsForID:(int64_t)d;
+- (void)stillImageCoordinator:(id)coordinator willBeginCaptureForSettings:(id)settings;
+- (void)stillImageCoordinator:(id)coordinator willCapturePhotoForSettings:(id)settings error:(int)error;
+- (void)stillImageCoordinator:(id)coordinator willPrepareStillImageCaptureWithSettings:(id)settings clientInitiated:(BOOL)initiated;
+- (void)videoPIPOverlayNode:(id)node overlayRectDidChange:(CGRect)change;
 @end
 
 @implementation BWFigCaptureSession
@@ -59,9 +59,9 @@
   [(BWFigCaptureSession *)&v3 dealloc];
 }
 
-- (void)fileCoordinator:(id)a3 sentMarkerBufferForFileWriterAction:(id)a4 withPTS:(id *)a5 settings:(id)a6 errorCode:(int)a7
+- (void)fileCoordinator:(id)coordinator sentMarkerBufferForFileWriterAction:(id)action withPTS:(id *)s settings:(id)settings errorCode:(int)code
 {
-  v9 = self;
+  selfCopy = self;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3052000000;
@@ -72,7 +72,7 @@
     self = self->_pipelines;
   }
 
-  v20 = [(BWFigCaptureSession *)self movieFileSinkPipelineWithFileCoordinatorNode:a3, a4, a5, a6, *&a7];
+  v20 = [(BWFigCaptureSession *)self movieFileSinkPipelineWithFileCoordinatorNode:coordinator, action, s, settings, *&code];
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x3052000000;
@@ -80,28 +80,28 @@
   v14[4] = __Block_byref_object_dispose__27;
   v14[5] = [(FigCaptureMovieFileSinkPipeline *)v16[5] irisStagingNode];
   v10 = [objc_msgSend(-[FigCaptureMovieFileSinkPipeline primaryMovieFileVideoCaptureConnectionConfiguration](v16[5]) "movieFileSinkConfiguration")];
-  if (([a4 isEqualToString:0x1F21A9C50] & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", 0x1F21A9CD0) & 1) != 0 || objc_msgSend(a4, "isEqualToString:", 0x1F21A9CB0))
+  if (([action isEqualToString:0x1F21A9C50] & 1) != 0 || (objc_msgSend(action, "isEqualToString:", 0x1F21A9CD0) & 1) != 0 || objc_msgSend(action, "isEqualToString:", 0x1F21A9CB0))
   {
     if (v10)
     {
-      captureSession_suspendTrueVideoVISProcessing(v9->_captureSession);
+      captureSession_suspendTrueVideoVISProcessing(selfCopy->_captureSession);
     }
 
-    captureSession = v9->_captureSession;
+    captureSession = selfCopy->_captureSession;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __102__BWFigCaptureSession_fileCoordinator_sentMarkerBufferForFileWriterAction_withPTS_settings_errorCode___block_invoke;
     v13[3] = &unk_1E7998B48;
-    v13[4] = v9;
+    v13[4] = selfCopy;
     v13[5] = v14;
     v13[6] = &v15;
     DerivedStorage = CMBaseObjectGetDerivedStorage();
     captureSession_dispatchGraphCalloutWithGraphIDToWorkerQueueAfter(captureSession, *(DerivedStorage + 760), v13, 0.0);
   }
 
-  else if (([a4 isEqualToString:0x1F21A9C30] & v10) == 1)
+  else if (([action isEqualToString:0x1F21A9C30] & v10) == 1)
   {
-    [BWFigCaptureSession _sendRecordingStartedNotificationForFileSinkPipeline:v9 withSettings:v16[5] startPTS:a6];
+    [BWFigCaptureSession _sendRecordingStartedNotificationForFileSinkPipeline:selfCopy withSettings:v16[5] startPTS:settings];
   }
 
   _Block_object_dispose(v14, 8);
@@ -134,10 +134,10 @@ unint64_t __102__BWFigCaptureSession_fileCoordinator_sentMarkerBufferForFileWrit
   return result;
 }
 
-- (void)fileCoordinator:(id)a3 stoppedBeforeStartedRecordingForSettings:(id)a4 pendingIrisMovieInfos:(id)a5 errorCode:(int)a6
+- (void)fileCoordinator:(id)coordinator stoppedBeforeStartedRecordingForSettings:(id)settings pendingIrisMovieInfos:(id)infos errorCode:(int)code
 {
-  v6 = *&a6;
-  v9 = self;
+  v6 = *&code;
+  selfCopy = self;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3052000000;
@@ -148,8 +148,8 @@ unint64_t __102__BWFigCaptureSession_fileCoordinator_sentMarkerBufferForFileWrit
     self = self->_pipelines;
   }
 
-  v28 = [(BWFigCaptureSession *)self movieFileSinkPipelineWithFileCoordinatorNode:a3];
-  captureSession = v9->_captureSession;
+  v28 = [(BWFigCaptureSession *)self movieFileSinkPipelineWithFileCoordinatorNode:coordinator];
+  captureSession = selfCopy->_captureSession;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __112__BWFigCaptureSession_fileCoordinator_stoppedBeforeStartedRecordingForSettings_pendingIrisMovieInfos_errorCode___block_invoke;
@@ -157,21 +157,21 @@ unint64_t __102__BWFigCaptureSession_fileCoordinator_sentMarkerBufferForFileWrit
   v22[4] = &v23;
   DerivedStorage = CMBaseObjectGetDerivedStorage();
   captureSession_dispatchGraphCalloutWithGraphIDToWorkerQueueAfter(captureSession, *(DerivedStorage + 760), v22, 0.0);
-  if (a4)
+  if (settings)
   {
     cs_resetImageControlModeAndStreamSelection(v24[5], 0);
-    v12 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus([v24[5] sinkID], objc_msgSend(a4, "settingsID"), v6);
-    captureSession_postNotificationWithPayload(v9->_captureSession, @"DidStopRecording", v12);
+    v12 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus([v24[5] sinkID], objc_msgSend(settings, "settingsID"), v6);
+    captureSession_postNotificationWithPayload(selfCopy->_captureSession, @"DidStopRecording", v12);
   }
 
-  else if (a5)
+  else if (infos)
   {
     mach_absolute_time();
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v13 = [a5 countByEnumeratingWithState:&v18 objects:v17 count:16];
+    v13 = [infos countByEnumeratingWithState:&v18 objects:v17 count:16];
     if (v13)
     {
       v14 = *v19;
@@ -181,16 +181,16 @@ unint64_t __102__BWFigCaptureSession_fileCoordinator_sentMarkerBufferForFileWrit
         {
           if (*v19 != v14)
           {
-            objc_enumerationMutation(a5);
+            objc_enumerationMutation(infos);
           }
 
           v16 = *(*(&v18 + 1) + 8 * i);
           [v16 enqueuedHostTime];
           [v16 setProcessingTimeInMilliseconds:FigHostTimeToNanoseconds() / 1000000.0];
-          captureSession_postNotificationsForIrisRequestCompletedWithError(v9->_captureSession, [v24[5] sinkID], v16, v6);
+          captureSession_postNotificationsForIrisRequestCompletedWithError(selfCopy->_captureSession, [v24[5] sinkID], v16, v6);
         }
 
-        v13 = [a5 countByEnumeratingWithState:&v18 objects:v17 count:16];
+        v13 = [infos countByEnumeratingWithState:&v18 objects:v17 count:16];
       }
 
       while (v13);
@@ -210,12 +210,12 @@ uint64_t __112__BWFigCaptureSession_fileCoordinator_stoppedBeforeStartedRecordin
   return result;
 }
 
-- (void)fileWriter:(id)a3 startedRecordingForSettings:(id)a4 writerPipelineIndex:(unint64_t)a5 startPTS:(id *)a6
+- (void)fileWriter:(id)writer startedRecordingForSettings:(id)settings writerPipelineIndex:(unint64_t)index startPTS:(id *)s
 {
   CMBaseObjectGetDerivedStorage();
-  if ([a3 nodeSubType] == 0x1F21A7090)
+  if ([writer nodeSubType] == 0x1F21A7090)
   {
-    v9 = [(FigCaptureSessionPipelines *)self->_pipelines movieFileSinkPipelineWithFileSinkNode:a3];
+    v9 = [(FigCaptureSessionPipelines *)self->_pipelines movieFileSinkPipelineWithFileSinkNode:writer];
     if ([objc_msgSend(-[FigCaptureMovieFileSinkPipeline primaryMovieFileVideoCaptureConnectionConfiguration](v9) "movieFileSinkConfiguration")])
     {
       return;
@@ -224,13 +224,13 @@ uint64_t __112__BWFigCaptureSession_fileCoordinator_stoppedBeforeStartedRecordin
     goto LABEL_5;
   }
 
-  if ([a3 nodeSubType] == 0x1F2192E10)
+  if ([writer nodeSubType] == 0x1F2192E10)
   {
-    v9 = [(FigCaptureSessionPipelines *)self->_pipelines audioFileSinkPipelineWithFileSinkNode:a3];
+    v9 = [(FigCaptureSessionPipelines *)self->_pipelines audioFileSinkPipelineWithFileSinkNode:writer];
 LABEL_5:
     if (v9)
     {
-      [BWFigCaptureSession _sendRecordingStartedNotificationForFileSinkPipeline:v9 withSettings:a4 startPTS:?];
+      [BWFigCaptureSession _sendRecordingStartedNotificationForFileSinkPipeline:v9 withSettings:settings startPTS:?];
       return;
     }
   }
@@ -240,27 +240,27 @@ LABEL_5:
   fig_log_call_emit_and_clean_up_after_send_and_compose();
 }
 
-- (void)fileWriter:(id)a3 writerPipelineIndex:(unint64_t)a4 stoppedRecordingSampleDataForSettingsID:(int64_t)a5
+- (void)fileWriter:(id)writer writerPipelineIndex:(unint64_t)index stoppedRecordingSampleDataForSettingsID:(int64_t)d
 {
   DerivedStorage = CMBaseObjectGetDerivedStorage();
-  v10 = [(FigCaptureSessionPipelines *)self->_pipelines movieFileSinkPipelineWithFileSinkNode:a3];
+  v10 = [(FigCaptureSessionPipelines *)self->_pipelines movieFileSinkPipelineWithFileSinkNode:writer];
   if (v10)
   {
     v11 = v10;
     os_unfair_lock_lock(DerivedStorage + 96);
-    [(FigCaptureMovieFileSinkPipeline *)v11 setRecording:a4 forTailPipelineIndex:?];
-    v12 = [(FigCaptureMovieFileSinkPipeline *)v11 atLeastOneTailIsRecording];
+    [(FigCaptureMovieFileSinkPipeline *)v11 setRecording:index forTailPipelineIndex:?];
+    atLeastOneTailIsRecording = [(FigCaptureMovieFileSinkPipeline *)v11 atLeastOneTailIsRecording];
     os_unfair_lock_unlock(DerivedStorage + 96);
-    if ((v12 & 1) == 0)
+    if ((atLeastOneTailIsRecording & 1) == 0)
     {
-      v13 = [(FigCaptureSessionPipelines *)self->_pipelines audioFileSinkPipelineWithFileSinkNode:a3];
-      v14 = [(FigCaptureMovieFileSinkPipeline *)v11 fileCoordinatorNode];
-      if (!v14)
+      v13 = [(FigCaptureSessionPipelines *)self->_pipelines audioFileSinkPipelineWithFileSinkNode:writer];
+      fileCoordinatorNode = [(FigCaptureMovieFileSinkPipeline *)v11 fileCoordinatorNode];
+      if (!fileCoordinatorNode)
       {
-        v14 = [(FigCaptureAudioFileSinkPipeline *)v13 fileCoordinatorNode];
+        fileCoordinatorNode = [(FigCaptureAudioFileSinkPipeline *)v13 fileCoordinatorNode];
       }
 
-      v15 = [FigWeakReference weakReferenceToObject:v14];
+      v15 = [FigWeakReference weakReferenceToObject:fileCoordinatorNode];
       v16 = [FigWeakReference weakReferenceToObject:v11];
       captureSession = self->_captureSession;
       v19[0] = MEMORY[0x1E69E9820];
@@ -269,7 +269,7 @@ LABEL_5:
       v19[3] = &unk_1E7998B98;
       v19[4] = v15;
       v19[5] = v16;
-      v19[6] = a5;
+      v19[6] = d;
       v18 = CMBaseObjectGetDerivedStorage();
       captureSession_dispatchGraphCalloutWithGraphIDToWorkerQueueAfter(captureSession, *(v18 + 760), v19, 0.0);
     }
@@ -291,12 +291,12 @@ uint64_t __94__BWFigCaptureSession_fileWriter_writerPipelineIndex_stoppedRecordi
   return result;
 }
 
-- (void)fileWriter:(id)a3 writerPipelineIndex:(unint64_t)a4 stoppedRecordingForSettings:(id)a5 withError:(int)a6 thumbnailSurface:(__IOSurface *)a7 irisMovieInfo:(id)a8 debugMetadataSidecarFileURL:(id)a9 recordingSucceeded:(BOOL)a10
+- (void)fileWriter:(id)writer writerPipelineIndex:(unint64_t)index stoppedRecordingForSettings:(id)settings withError:(int)error thumbnailSurface:(__IOSurface *)surface irisMovieInfo:(id)info debugMetadataSidecarFileURL:(id)l recordingSucceeded:(BOOL)self0
 {
-  v11 = *&a6;
+  v11 = *&error;
   DerivedStorage = CMBaseObjectGetDerivedStorage();
-  v17 = [(FigCaptureSessionPipelines *)self->_pipelines movieFileSinkPipelineWithFileSinkNode:a3];
-  v34 = [a9 path];
+  v17 = [(FigCaptureSessionPipelines *)self->_pipelines movieFileSinkPipelineWithFileSinkNode:writer];
+  path = [l path];
   os_unfair_lock_lock((DerivedStorage + 384));
   if (v11 == -16414)
   {
@@ -314,16 +314,16 @@ uint64_t __94__BWFigCaptureSession_fileWriter_writerPipelineIndex_stoppedRecordi
   os_unfair_lock_unlock((DerivedStorage + 384));
   if (!v17)
   {
-    v19 = 0;
+    isIrisMovieRecording = 0;
 LABEL_11:
-    v18 = 0;
+    isIrisRecording = 0;
     goto LABEL_12;
   }
 
-  v18 = [a5 isIrisRecording];
-  v19 = [a5 isIrisMovieRecording];
-  v20 = [a5 videoSettings];
-  if ((v18 & 1) == 0 && v20)
+  isIrisRecording = [settings isIrisRecording];
+  isIrisMovieRecording = [settings isIrisMovieRecording];
+  videoSettings = [settings videoSettings];
+  if ((isIrisRecording & 1) == 0 && videoSettings)
   {
     cs_resetImageControlModeAndStreamSelection(v17, 0);
     if ([v17 recordedWhileMultitasking])
@@ -336,87 +336,87 @@ LABEL_11:
   }
 
 LABEL_12:
-  v21 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus([a3 sinkID], objc_msgSend(a5, "settingsID"), v11);
-  if (v18)
+  v21 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus([writer sinkID], objc_msgSend(settings, "settingsID"), v11);
+  if (isIrisRecording)
   {
-    if (!a8)
+    if (!info)
     {
       return;
     }
 
-    v22 = [a8 spatialOverCaptureExpected];
-    if (a4)
+    spatialOverCaptureExpected = [info spatialOverCaptureExpected];
+    if (index)
     {
-      if (!v22)
+      if (!spatialOverCaptureExpected)
       {
         return;
       }
     }
 
     v21 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v21];
-    [a8 movieTrimEndTime];
-    [a8 movieTrimStartTime];
+    [info movieTrimEndTime];
+    [info movieTrimStartTime];
     CMTimeSubtract(&time, &lhs, &rhs);
     v23 = *MEMORY[0x1E695E480];
     v24 = CMTimeCopyAsDictionary(&time, *MEMORY[0x1E695E480]);
     [v21 setObject:CFAutorelease(v24) forKeyedSubscript:@"MovieDuration"];
-    if ([objc_msgSend(a8 "outputMovieURL")])
+    if ([objc_msgSend(info "outputMovieURL")])
     {
       [v21 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"IsSpatialOverCaptureMovie"];
     }
 
     memset(&time, 0, sizeof(time));
-    [a8 stillImageCaptureTime];
-    [a8 movieTrimStartTime];
+    [info stillImageCaptureTime];
+    [info movieTrimStartTime];
     CMTimeSubtract(&time, &lhs, &rhs);
     lhs = time;
     v25 = CMTimeCopyAsDictionary(&lhs, v23);
     [v21 setObject:CFAutorelease(v25) forKeyedSubscript:@"StillImageDisplayTime"];
     if ([objc_msgSend(-[FigCaptureMovieFileSinkPipeline movieFileSinkNodes](v17) objectAtIndexedSubscript:{0), "irisSampleReferenceMoviesEnabled"}])
     {
-      [v21 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", objc_msgSend(a8, "isFinalReferenceMovie")), @"IsFinalReferenceMovie"}];
-      if ([a8 masterMovieURL])
+      [v21 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", objc_msgSend(info, "isFinalReferenceMovie")), @"IsFinalReferenceMovie"}];
+      if ([info masterMovieURL])
       {
-        [v21 setObject:objc_msgSend(objc_msgSend(a8 forKeyedSubscript:{"masterMovieURL"), "path"), @"MasterMoviePath"}];
+        [v21 setObject:objc_msgSend(objc_msgSend(info forKeyedSubscript:{"masterMovieURL"), "path"), @"MasterMoviePath"}];
       }
     }
 
-    [v21 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", objc_msgSend(a8, "isOriginalPhotoRecording")), @"IsOriginalPhotoMovie"}];
-    if ([objc_msgSend(a8 "settings")] && objc_msgSend(a8, "isVitalityScoreValid"))
+    [v21 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", objc_msgSend(info, "isOriginalPhotoRecording")), @"IsOriginalPhotoMovie"}];
+    if ([objc_msgSend(info "settings")] && objc_msgSend(info, "isVitalityScoreValid"))
     {
       v35[0] = *MEMORY[0x1E6973590];
       v26 = MEMORY[0x1E696AD98];
-      [a8 vitalityScore];
+      [info vitalityScore];
       v36[0] = [v26 numberWithFloat:?];
       v35[1] = *MEMORY[0x1E6973598];
-      v36[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a8, "vitalityScoringVersion")}];
+      v36[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(info, "vitalityScoringVersion")}];
       [v21 setObject:objc_msgSend(MEMORY[0x1E695DF20] forKeyedSubscript:{"dictionaryWithObjects:forKeys:count:", v36, v35, 2), @"MetadataIdentifiers"}];
     }
   }
 
-  if (a7 || v34 || v11)
+  if (surface || path || v11)
   {
     v27 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v21];
     v21 = v27;
-    if (a7)
+    if (surface)
     {
-      [v27 setObject:a7 forKeyedSubscript:@"PreviewSurface"];
-      [v21 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLong:", IOSurfaceGetAllocSize(a7)), @"PreviewSurfaceSize"}];
+      [v27 setObject:surface forKeyedSubscript:@"PreviewSurface"];
+      [v21 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLong:", IOSurfaceGetAllocSize(surface)), @"PreviewSurfaceSize"}];
     }
 
-    if (v34)
+    if (path)
     {
-      [v21 setObject:v34 forKeyedSubscript:@"DebugMetadataSidecarFilePath"];
+      [v21 setObject:path forKeyedSubscript:@"DebugMetadataSidecarFilePath"];
     }
 
     if (v11)
     {
-      [v21 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", a10), @"RecordingSucceeded"}];
+      [v21 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", succeeded), @"RecordingSucceeded"}];
     }
 
-    if (a4 == 1)
+    if (index == 1)
     {
-      v28 = v18;
+      v28 = isIrisRecording;
     }
 
     else
@@ -432,9 +432,9 @@ LABEL_12:
     if (v17)
     {
       memset(&time, 0, sizeof(time));
-      if (a3)
+      if (writer)
       {
-        [a3 lastFileDuration];
+        [writer lastFileDuration];
       }
 
       v29 = *MEMORY[0x1E695E480];
@@ -448,16 +448,16 @@ LABEL_12:
     }
   }
 
-  if (v18)
+  if (isIrisRecording)
   {
     v31 = kFigCaptureSessionIrisStillImageSinkNotification_DidFinishRecordingMomentCaptureMovie;
-    if (!v19)
+    if (!isIrisMovieRecording)
     {
       v31 = kFigCaptureSessionIrisStillImageSinkNotification_DidFinishRecordingIrisMovie;
     }
 
     v32 = *v31;
-    cs_reportLivePhotoMovieCoreAnalyticsData(self->_captureSession, a8, v11, a10);
+    cs_reportLivePhotoMovieCoreAnalyticsData(self->_captureSession, info, v11, succeeded);
   }
 
   else
@@ -468,37 +468,37 @@ LABEL_12:
   captureSession_postNotificationWithPayload(self->_captureSession, v32, v21);
 }
 
-- (void)fileWriter:(id)a3 pausedRecordingForSettingsID:(unint64_t)a4
+- (void)fileWriter:(id)writer pausedRecordingForSettingsID:(unint64_t)d
 {
-  v5 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus([a3 sinkID], a4, 0);
+  v5 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus([writer sinkID], d, 0);
   captureSession = self->_captureSession;
 
   captureSession_postNotificationWithPayload(captureSession, @"DidPauseRecording", v5);
 }
 
-- (void)fileWriter:(id)a3 resumedRecordingForSettingsID:(unint64_t)a4
+- (void)fileWriter:(id)writer resumedRecordingForSettingsID:(unint64_t)d
 {
-  v5 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus([a3 sinkID], a4, 0);
+  v5 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus([writer sinkID], d, 0);
   captureSession = self->_captureSession;
 
   captureSession_postNotificationWithPayload(captureSession, @"DidResumeRecording", v5);
 }
 
-- (void)fileWriter:(id)a3 frameDroppedForSettingsID:(unint64_t)a4 withError:(int)a5
+- (void)fileWriter:(id)writer frameDroppedForSettingsID:(unint64_t)d withError:(int)error
 {
-  v6 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus([a3 sinkID], a4, *&a5);
+  v6 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus([writer sinkID], d, *&error);
   captureSession = self->_captureSession;
 
   captureSession_postNotificationWithPayload(captureSession, @"DidDropFrameWhileRecording", v6);
 }
 
-- (void)stillImageCoordinator:(id)a3 didSelectNewReferenceFrameWithPTS:(id *)a4 transform:(id)a5 forSettings:(id)a6
+- (void)stillImageCoordinator:(id)coordinator didSelectNewReferenceFrameWithPTS:(id *)s transform:(id)transform forSettings:(id)settings
 {
   CMBaseObjectGetDerivedStorage();
-  v10 = [(FigCaptureSessionPipelines *)self->_pipelines stillImageSinkPipelineSessionStorageWithStillImageCoordinator:a3];
+  v10 = [(FigCaptureSessionPipelines *)self->_pipelines stillImageSinkPipelineSessionStorageWithStillImageCoordinator:coordinator];
   v11 = -[FigCaptureSessionPipelines movieFileSinkPipelineWithSinkID:](self->_pipelines, "movieFileSinkPipelineWithSinkID:", [objc_msgSend(v10 "primaryStillImageSinkPipeline")]);
   v12 = [objc_msgSend(v10 "primaryStillImageSinkPipeline")];
-  if (a5 && v12 == a3)
+  if (transform && v12 == coordinator)
   {
     if (dword_1ED844050)
     {
@@ -512,7 +512,7 @@ LABEL_12:
     v14 = [objc_msgSend(-[FigCaptureMovieFileSinkPipeline movieFileSinkNodes](v11) "firstObject")];
     if (v14)
     {
-      [v14 cacheStillImageVideoToPhotoTransform:a5 forSettingsID:{+[BWIrisMovieInfo livePhotoMetadataStillImageKeyFrameSettingsIDForSettingsID:isOriginalPhotoRecording:](BWIrisMovieInfo, "livePhotoMetadataStillImageKeyFrameSettingsIDForSettingsID:isOriginalPhotoRecording:", objc_msgSend(objc_msgSend(a6, "requestedSettings"), "settingsID"), 0)}];
+      [v14 cacheStillImageVideoToPhotoTransform:transform forSettingsID:{+[BWIrisMovieInfo livePhotoMetadataStillImageKeyFrameSettingsIDForSettingsID:isOriginalPhotoRecording:](BWIrisMovieInfo, "livePhotoMetadataStillImageKeyFrameSettingsIDForSettingsID:isOriginalPhotoRecording:", objc_msgSend(objc_msgSend(settings, "requestedSettings"), "settingsID"), 0)}];
     }
   }
 }
@@ -524,7 +524,7 @@ void __59__BWFigCaptureSession__postFlashMitigationUserNotification__block_invok
   CFRelease(*(a1 + 32));
 }
 
-- (void)stillImageCoordinator:(id)a3 didCancelMomentCaptureForSettingsID:(int64_t)a4 streamingDisruptionEndPTS:(id *)a5
+- (void)stillImageCoordinator:(id)coordinator didCancelMomentCaptureForSettingsID:(int64_t)d streamingDisruptionEndPTS:(id *)s
 {
   DerivedStorage = CMBaseObjectGetDerivedStorage();
   v44 = 0;
@@ -532,7 +532,7 @@ void __59__BWFigCaptureSession__postFlashMitigationUserNotification__block_invok
   v46 = 0x3052000000;
   v47 = __Block_byref_object_copy__27;
   v48 = __Block_byref_object_dispose__27;
-  v49 = [(FigCaptureSessionPipelines *)self->_pipelines stillImageSinkPipelineSessionStorageWithStillImageCoordinator:a3];
+  v49 = [(FigCaptureSessionPipelines *)self->_pipelines stillImageSinkPipelineSessionStorageWithStillImageCoordinator:coordinator];
   if (dword_1ED844050)
   {
     LODWORD(v36.var0) = 0;
@@ -543,25 +543,25 @@ void __59__BWFigCaptureSession__postFlashMitigationUserNotification__block_invok
   }
 
   os_unfair_lock_lock((DerivedStorage + 384));
-  if ([*(DerivedStorage + 696) settingsID] == a4 && objc_msgSend(*(DerivedStorage + 696), "movieMode") == 2)
+  if ([*(DerivedStorage + 696) settingsID] == d && objc_msgSend(*(DerivedStorage + 696), "movieMode") == 2)
   {
     v11 = *(DerivedStorage + 696);
     os_unfair_lock_unlock((DerivedStorage + 384));
     if (v11)
     {
-      v12 = [v45[5] primaryCameraSourcePipeline];
+      primaryCameraSourcePipeline = [v45[5] primaryCameraSourcePipeline];
       *v41 = 0;
       *&v41[8] = v41;
       *&v41[16] = 0x3052000000;
       *&v42 = __Block_byref_object_copy__27;
       *(&v42 + 1) = __Block_byref_object_dispose__27;
-      v43 = [(FigCaptureCameraSourcePipeline *)v12 captureDevice];
-      v13 = [v11 flashMode];
-      if (v13)
+      captureDevice = [(FigCaptureCameraSourcePipeline *)primaryCameraSourcePipeline captureDevice];
+      flashMode = [v11 flashMode];
+      if (flashMode)
       {
-        if (v13 != 1)
+        if (flashMode != 1)
         {
-          if (v13 == 2)
+          if (flashMode == 2)
           {
             [*(*&v41[8] + 40) setAutomaticallyAdjustsTorch:1];
           }
@@ -601,7 +601,7 @@ LABEL_23:
         if (v25)
         {
           v26 = *(DerivedStorage + 104);
-          v36 = *a5;
+          v36 = *s;
           Seconds = CMTimeGetSeconds(&v36);
           LODWORD(time.value) = 136315650;
           *(&time.value + 4) = "[BWFigCaptureSession stillImageCoordinator:didCancelMomentCaptureForSettingsID:streamingDisruptionEndPTS:]";
@@ -622,12 +622,12 @@ LABEL_23:
       v33[3] = &unk_1E7998C10;
       v33[4] = self;
       v33[5] = v11;
-      v34 = *&a5->var0;
-      var3 = a5->var3;
+      v34 = *&s->var0;
+      var3 = s->var3;
       v33[6] = &v44;
       v33[7] = v41;
       v33[8] = DerivedStorage;
-      v33[9] = a4;
+      v33[9] = d;
       v29 = CMBaseObjectGetDerivedStorage();
       captureSession_dispatchGraphCalloutWithGraphIDToWorkerQueueAfter(captureSession, *(v29 + 760), v33, 0.0);
 
@@ -641,7 +641,7 @@ LABEL_23:
     os_unfair_lock_unlock((DerivedStorage + 384));
   }
 
-  v14 = [objc_msgSend(v45[5] primaryStillImageSinkPipeline];
+  primaryStillImageSinkPipeline = [objc_msgSend(v45[5] primaryStillImageSinkPipeline];
   if (dword_1ED844050)
   {
     LODWORD(time.value) = 0;
@@ -668,14 +668,14 @@ LABEL_23:
       *&v41[22] = 1024;
       LODWORD(v42) = -16418;
       WORD2(v42) = 2048;
-      *(&v42 + 6) = a4;
+      *(&v42 + 6) = d;
       _os_log_send_and_compose_impl();
     }
 
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  v19 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus(v14, a4, 4294950878);
+  v19 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus(primaryStillImageSinkPipeline, d, 4294950878);
   captureSession_postNotificationWithPayload(self->_captureSession, @"DidBeginRecordingMomentCaptureMovie", v19);
   v20 = self->_captureSession;
   v32[0] = MEMORY[0x1E69E9820];
@@ -683,8 +683,8 @@ LABEL_23:
   v32[2] = __107__BWFigCaptureSession_stillImageCoordinator_didCancelMomentCaptureForSettingsID_streamingDisruptionEndPTS___block_invoke_120;
   v32[3] = &unk_1E798FE50;
   v32[4] = self;
-  v32[5] = v14;
-  v32[6] = a4;
+  v32[5] = primaryStillImageSinkPipeline;
+  v32[6] = d;
   captureSession_performBlockOnWorkerQueue(v20, v32);
 LABEL_19:
   _Block_object_dispose(&v44, 8);
@@ -972,37 +972,37 @@ void __107__BWFigCaptureSession_stillImageCoordinator_didCancelMomentCaptureForS
   }
 }
 
-- (void)stillImageCoordinator:(id)a3 willPrepareStillImageCaptureWithSettings:(id)a4 clientInitiated:(BOOL)a5
+- (void)stillImageCoordinator:(id)coordinator willPrepareStillImageCaptureWithSettings:(id)settings clientInitiated:(BOOL)initiated
 {
-  v5 = a5;
+  initiatedCopy = initiated;
   DerivedStorage = CMBaseObjectGetDerivedStorage();
-  v48 = self;
-  v10 = [(FigCaptureSessionPipelines *)self->_pipelines stillImageSinkPipelineSessionStorageWithStillImageCoordinator:a3];
-  v11 = [v10 stillImageSinkPipelines];
+  selfCopy = self;
+  v10 = [(FigCaptureSessionPipelines *)self->_pipelines stillImageSinkPipelineSessionStorageWithStillImageCoordinator:coordinator];
+  stillImageSinkPipelines = [v10 stillImageSinkPipelines];
   v57 = MEMORY[0x1E69E9820];
   v58 = 3221225472;
   v59 = __102__BWFigCaptureSession_stillImageCoordinator_willPrepareStillImageCaptureWithSettings_clientInitiated___block_invoke;
   v60 = &unk_1E7998C38;
-  v50 = a3;
-  v61 = a3;
-  v12 = [v10 cameraSourcePipelineForStillImageSinkPipeline:{objc_msgSend(objc_msgSend(v11, "filteredArrayUsingPredicate:", objc_msgSend(MEMORY[0x1E696AE18], "predicateWithBlock:", &v57)), "firstObject")}];
-  v13 = [a4 requestedSettings];
-  v14 = [v13 outputWidth];
-  v15 = [v13 outputHeight];
+  coordinatorCopy = coordinator;
+  coordinatorCopy2 = coordinator;
+  v12 = [v10 cameraSourcePipelineForStillImageSinkPipeline:{objc_msgSend(objc_msgSend(stillImageSinkPipelines, "filteredArrayUsingPredicate:", objc_msgSend(MEMORY[0x1E696AE18], "predicateWithBlock:", &v57)), "firstObject")}];
+  requestedSettings = [settings requestedSettings];
+  outputWidth = [requestedSettings outputWidth];
+  outputHeight = [requestedSettings outputHeight];
   v16 = [objc_msgSend(v10 "primaryStillImageSinkPipeline")];
-  HIDWORD(v52) = v5;
-  HIDWORD(v45) = v14;
-  if ([v13 settingsProvider])
+  HIDWORD(v52) = initiatedCopy;
+  HIDWORD(v45) = outputWidth;
+  if ([requestedSettings settingsProvider])
   {
-    if (v5)
+    if (initiatedCopy)
     {
-      v17 = [v13 figCaptureIrisPreparedSettingsRepresentation];
+      figCaptureIrisPreparedSettingsRepresentation = [requestedSettings figCaptureIrisPreparedSettingsRepresentation];
       os_unfair_lock_lock((DerivedStorage + 384));
       v18 = [*(DerivedStorage + 544) objectForKeyedSubscript:v16];
-      [*(DerivedStorage + 544) setObject:v17 forKeyedSubscript:v16];
+      [*(DerivedStorage + 544) setObject:figCaptureIrisPreparedSettingsRepresentation forKeyedSubscript:v16];
       os_unfair_lock_unlock((DerivedStorage + 384));
 
-      if (!v17)
+      if (!figCaptureIrisPreparedSettingsRepresentation)
       {
         goto LABEL_22;
       }
@@ -1011,60 +1011,60 @@ void __107__BWFigCaptureSession_stillImageCoordinator_didCancelMomentCaptureForS
     else
     {
       os_unfair_lock_lock((DerivedStorage + 384));
-      v19 = [*(DerivedStorage + 544) objectForKeyedSubscript:{v16, v15}];
-      [v19 setSettingsID:{objc_msgSend(v13, "settingsID")}];
-      v20 = [v13 bracketImageCount];
-      if (v20 > [v19 bracketedImageCount])
+      v19 = [*(DerivedStorage + 544) objectForKeyedSubscript:{v16, outputHeight}];
+      [v19 setSettingsID:{objc_msgSend(requestedSettings, "settingsID")}];
+      bracketImageCount = [requestedSettings bracketImageCount];
+      if (bracketImageCount > [v19 bracketedImageCount])
       {
-        [v19 setBracketedImageCount:{objc_msgSend(v13, "bracketImageCount")}];
+        [v19 setBracketedImageCount:{objc_msgSend(requestedSettings, "bracketImageCount")}];
       }
 
-      if ([v13 rawOutputFormat])
+      if ([requestedSettings rawOutputFormat])
       {
-        [v19 setRawOutputFormat:objc_msgSend(v13, "rawOutputFormat")];
+        [v19 setRawOutputFormat:objc_msgSend(requestedSettings, "rawOutputFormat")];
       }
 
-      if ([v13 outputFormat])
+      if ([requestedSettings outputFormat])
       {
-        [v19 setProcessedOutputFormat:objc_msgSend(v13, "outputFormat")];
+        [v19 setProcessedOutputFormat:objc_msgSend(requestedSettings, "outputFormat")];
       }
 
-      v21 = [v13 HDRMode];
-      if (v21 > [v19 HDRMode])
+      hDRMode = [requestedSettings HDRMode];
+      if (hDRMode > [v19 HDRMode])
       {
-        [v19 setHDRMode:{objc_msgSend(v13, "HDRMode")}];
+        [v19 setHDRMode:{objc_msgSend(requestedSettings, "HDRMode")}];
       }
 
-      v22 = [v13 qualityPrioritization];
-      if (v22 > [v19 qualityPrioritization])
+      qualityPrioritization = [requestedSettings qualityPrioritization];
+      if (qualityPrioritization > [v19 qualityPrioritization])
       {
-        [v19 setQualityPrioritization:{objc_msgSend(v13, "qualityPrioritization")}];
+        [v19 setQualityPrioritization:{objc_msgSend(requestedSettings, "qualityPrioritization")}];
       }
 
-      v23 = [v13 digitalFlashMode];
-      if (v23 > [v19 digitalFlashMode])
+      digitalFlashMode = [requestedSettings digitalFlashMode];
+      if (digitalFlashMode > [v19 digitalFlashMode])
       {
-        [v19 setDigitalFlashMode:{objc_msgSend(v13, "digitalFlashMode")}];
+        [v19 setDigitalFlashMode:{objc_msgSend(requestedSettings, "digitalFlashMode")}];
       }
 
-      v24 = [objc_msgSend(v13 "bravoConstituentImageDeliveryDeviceTypes")];
+      v24 = [objc_msgSend(requestedSettings "bravoConstituentImageDeliveryDeviceTypes")];
       if (v24 > [objc_msgSend(v19 "bravoConstituentImageDeliveryDeviceTypes")])
       {
-        [v19 setBravoConstituentImageDeliveryDeviceTypes:{objc_msgSend(v13, "bravoConstituentImageDeliveryDeviceTypes")}];
+        [v19 setBravoConstituentImageDeliveryDeviceTypes:{objc_msgSend(requestedSettings, "bravoConstituentImageDeliveryDeviceTypes")}];
       }
 
-      [v19 setOutputWidth:{objc_msgSend(v13, "outputWidth")}];
-      [v19 setOutputHeight:{objc_msgSend(v13, "outputHeight")}];
-      v17 = [v19 copy];
+      [v19 setOutputWidth:{objc_msgSend(requestedSettings, "outputWidth")}];
+      [v19 setOutputHeight:{objc_msgSend(requestedSettings, "outputHeight")}];
+      figCaptureIrisPreparedSettingsRepresentation = [v19 copy];
       os_unfair_lock_unlock((DerivedStorage + 384));
-      v25 = v17;
-      if (!v17)
+      v25 = figCaptureIrisPreparedSettingsRepresentation;
+      if (!figCaptureIrisPreparedSettingsRepresentation)
       {
         goto LABEL_22;
       }
     }
 
-    v26 = [v17 bracketedImageCount];
+    bracketedImageCount = [figCaptureIrisPreparedSettingsRepresentation bracketedImageCount];
     v27 = 0;
     goto LABEL_23;
   }
@@ -1073,15 +1073,15 @@ void __107__BWFigCaptureSession_stillImageCoordinator_didCancelMomentCaptureForS
   [objc_msgSend(v10 "preparedBracket")];
   [objc_msgSend(v10 "preparedBracket")];
 LABEL_22:
-  v26 = [v13 bracketImageCount];
-  v17 = 0;
+  bracketedImageCount = [requestedSettings bracketImageCount];
+  figCaptureIrisPreparedSettingsRepresentation = 0;
   v27 = 1;
 LABEL_23:
-  v28 = [(FigCaptureCameraSourcePipeline *)v12 captureDevice];
-  IsBayerRaw = FigCapturePixelFormatIsBayerRaw([v17 rawOutputFormat]);
+  captureDevice = [(FigCaptureCameraSourcePipeline *)v12 captureDevice];
+  IsBayerRaw = FigCapturePixelFormatIsBayerRaw([figCaptureIrisPreparedSettingsRepresentation rawOutputFormat]);
   LODWORD(v56) = 0;
-  +[BWStillImageCoordinatorNode worstCaseMaxBracketedCaptureBufferCountForPreparedSettings:stillImageCaptureSettings:captureDevice:](BWStillImageCoordinatorNode, "worstCaseMaxBracketedCaptureBufferCountForPreparedSettings:stillImageCaptureSettings:captureDevice:", v17, [a4 captureSettings], v28);
-  [(FigCaptureCameraSourcePipeline *)v12 prepareForStillImageCaptureWithStillImageOutputRetainedBufferCountOverride:0 infraRedStillImageOutputRetainedBufferCountOverride:v26 clientBracketCount:IsBayerRaw enableSushiRawAttachmentOption:v30, v31, v32, v43, v45, v16, v48, v50, v52, 0, 0, v56, v57, v58, v59, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69];
+  +[BWStillImageCoordinatorNode worstCaseMaxBracketedCaptureBufferCountForPreparedSettings:stillImageCaptureSettings:captureDevice:](BWStillImageCoordinatorNode, "worstCaseMaxBracketedCaptureBufferCountForPreparedSettings:stillImageCaptureSettings:captureDevice:", figCaptureIrisPreparedSettingsRepresentation, [settings captureSettings], captureDevice);
+  [(FigCaptureCameraSourcePipeline *)v12 prepareForStillImageCaptureWithStillImageOutputRetainedBufferCountOverride:0 infraRedStillImageOutputRetainedBufferCountOverride:bracketedImageCount clientBracketCount:IsBayerRaw enableSushiRawAttachmentOption:v30, v31, v32, v43, v45, v16, selfCopy, coordinatorCopy, v52, 0, 0, v56, v57, v58, v59, v60, coordinatorCopy2, v62, v63, v64, v65, v66, v67, v68, v69];
   if (v33)
   {
     v34 = v33;
@@ -1090,31 +1090,31 @@ LABEL_23:
 
   else
   {
-    v34 = [v28 updateStillImageSensorRawBufferPoolsWithRetainedBufferCount:v54 zoomBasedRetainedBufferCount:v55 ultraHighResolutionRetainedBufferCount:HIDWORD(v55)];
-    if ([v10 pixelConverter] && objc_msgSend(v13, "outputFormat") && objc_msgSend(v13, "outputFormat") != 1785750887 && objc_msgSend(v13, "outputFormat") != 1752589105 && objc_msgSend(v13, "outputFormat") != 1635148593)
+    v34 = [captureDevice updateStillImageSensorRawBufferPoolsWithRetainedBufferCount:v54 zoomBasedRetainedBufferCount:v55 ultraHighResolutionRetainedBufferCount:HIDWORD(v55)];
+    if ([v10 pixelConverter] && objc_msgSend(requestedSettings, "outputFormat") && objc_msgSend(requestedSettings, "outputFormat") != 1785750887 && objc_msgSend(requestedSettings, "outputFormat") != 1752589105 && objc_msgSend(requestedSettings, "outputFormat") != 1635148593)
     {
       v35 = cs_figCaptureColorSpaceFromSourcePipeline(v12);
-      v36 = [(FigCaptureCameraSourcePipeline *)v12 captureSourceVideoFormat];
-      v37 = +[BWVideoFormat colorSpacePropertiesForSourceThatSupportsWideColor:sourceColorSpace:sourcePixelFormat:sourceDimensions:requestedPixelFormat:](BWVideoFormat, "colorSpacePropertiesForSourceThatSupportsWideColor:sourceColorSpace:sourcePixelFormat:sourceDimensions:requestedPixelFormat:", [v28 supportsWideColor], v35, objc_msgSend(v36, "format"), objc_msgSend(v36, "dimensions"), objc_msgSend(v13, "outputFormat"));
-      if (![v13 settingsProvider])
+      captureSourceVideoFormat = [(FigCaptureCameraSourcePipeline *)v12 captureSourceVideoFormat];
+      v37 = +[BWVideoFormat colorSpacePropertiesForSourceThatSupportsWideColor:sourceColorSpace:sourcePixelFormat:sourceDimensions:requestedPixelFormat:](BWVideoFormat, "colorSpacePropertiesForSourceThatSupportsWideColor:sourceColorSpace:sourcePixelFormat:sourceDimensions:requestedPixelFormat:", [captureDevice supportsWideColor], v35, objc_msgSend(captureSourceVideoFormat, "format"), objc_msgSend(captureSourceVideoFormat, "dimensions"), objc_msgSend(requestedSettings, "outputFormat"));
+      if (![requestedSettings settingsProvider])
       {
         [objc_msgSend(v10 "preparedBracket")];
       }
 
       if (v27)
       {
-        v38 = v13;
+        v38 = requestedSettings;
       }
 
       else
       {
-        v38 = v17;
+        v38 = figCaptureIrisPreparedSettingsRepresentation;
       }
 
-      v39 = [v38 bravoConstituentImageDeliveryDeviceTypes];
-      if ([v39 count])
+      bravoConstituentImageDeliveryDeviceTypes = [v38 bravoConstituentImageDeliveryDeviceTypes];
+      if ([bravoConstituentImageDeliveryDeviceTypes count])
       {
-        v26 = v26 * [v39 count];
+        bracketedImageCount = bracketedImageCount * [bravoConstituentImageDeliveryDeviceTypes count];
       }
 
       v34 = [objc_msgSend(v10 "pixelConverter")];
@@ -1123,10 +1123,10 @@ LABEL_23:
 
   if (v53 && [objc_msgSend(v10 "primaryStillImageSinkPipeline")] == v51)
   {
-    v40 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus(v47, [v13 settingsID], v34);
-    v41 = [v13 settingsProvider];
+    v40 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus(v47, [requestedSettings settingsID], v34);
+    settingsProvider = [requestedSettings settingsProvider];
     v42 = kFigCaptureSessionIrisStillImageSinkNotification_PreparationComplete;
-    if (v41 != 1)
+    if (settingsProvider != 1)
     {
       v42 = kFigCaptureSessionStillImageSinkNotification_BracketPreparationComplete;
     }
@@ -1135,53 +1135,53 @@ LABEL_23:
   }
 }
 
-- (void)stagingNode:(id)a3 readyToReceiveRequestsWithEarliestAllowedStillImageCaptureHostPTS:(id *)a4
+- (void)stagingNode:(id)node readyToReceiveRequestsWithEarliestAllowedStillImageCaptureHostPTS:(id *)s
 {
-  v5 = self;
+  selfCopy = self;
   if (self)
   {
-    v6 = [(FigCaptureSessionPipelines *)self->_pipelines movieFileSinkPipelineWithIrisStagingNode:a3];
-    v5 = v5->_pipelines;
+    v6 = [(FigCaptureSessionPipelines *)self->_pipelines movieFileSinkPipelineWithIrisStagingNode:node];
+    selfCopy = selfCopy->_pipelines;
   }
 
   else
   {
-    v6 = [0 movieFileSinkPipelineWithIrisStagingNode:a3];
+    v6 = [0 movieFileSinkPipelineWithIrisStagingNode:node];
   }
 
-  v7 = [-[BWFigCaptureSession stillImageSinkPipelineSessionStorageWithSinkID:](v5 stillImageSinkPipelineSessionStorageWithSinkID:{objc_msgSend(v6, "sinkID")), "primaryCameraSourcePipeline"}];
-  v11 = *&a4->var0;
-  var3 = a4->var3;
+  v7 = [-[BWFigCaptureSession stillImageSinkPipelineSessionStorageWithSinkID:](selfCopy stillImageSinkPipelineSessionStorageWithSinkID:{objc_msgSend(v6, "sinkID")), "primaryCameraSourcePipeline"}];
+  v11 = *&s->var0;
+  var3 = s->var3;
   [-[FigCaptureCameraSourcePipeline captureDevice](v7) setZeroShutterLagEarliestAllowedPTS:&v11];
-  v8 = [-[FigCaptureCameraSourcePipeline captureDevice](v7) previewTimeMachineProcessor];
-  if (v8)
+  previewTimeMachineProcessor = [-[FigCaptureCameraSourcePipeline captureDevice](v7) previewTimeMachineProcessor];
+  if (previewTimeMachineProcessor)
   {
-    v9 = v8;
+    v9 = previewTimeMachineProcessor;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v9 earliestAllowedPTS];
       if (v10)
       {
-        v11 = *&a4->var0;
-        var3 = a4->var3;
+        v11 = *&s->var0;
+        var3 = s->var3;
         [v9 setEarliestAllowedPTS:&v11];
       }
     }
   }
 }
 
-- (void)stagingNode:(id)a3 valveClosedWithPendingIrisRequests:(id)a4
+- (void)stagingNode:(id)node valveClosedWithPendingIrisRequests:(id)requests
 {
   DerivedStorage = CMBaseObjectGetDerivedStorage();
-  v21 = self;
-  v20 = [(FigCaptureSessionPipelines *)self->_pipelines movieFileSinkPipelineWithIrisStagingNode:a3];
+  selfCopy = self;
+  v20 = [(FigCaptureSessionPipelines *)self->_pipelines movieFileSinkPipelineWithIrisStagingNode:node];
   mach_absolute_time();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v7 = [a4 countByEnumeratingWithState:&v33 objects:v32 count:16];
+  v7 = [requests countByEnumeratingWithState:&v33 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1192,7 +1192,7 @@ LABEL_23:
       {
         if (*v34 != v9)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(requests);
         }
 
         v11 = *(*(&v33 + 1) + 8 * i);
@@ -1230,25 +1230,25 @@ LABEL_23:
         }
 
         fig_log_call_emit_and_clean_up_after_send_and_compose();
-        captureSession_postNotificationsForIrisRequestCompletedWithError(v21->_captureSession, [v20 sinkID], v11, 4294951754);
+        captureSession_postNotificationsForIrisRequestCompletedWithError(selfCopy->_captureSession, [v20 sinkID], v11, 4294951754);
       }
 
-      v8 = [a4 countByEnumeratingWithState:&v33 objects:v32 count:16];
+      v8 = [requests countByEnumeratingWithState:&v33 objects:v32 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)remoteQueueSinkNode:(id)a3 queueBecameReady:(remoteQueueSenderOpaque *)a4
+- (void)remoteQueueSinkNode:(id)node queueBecameReady:(remoteQueueSenderOpaque *)ready
 {
   DerivedStorage = CMBaseObjectGetDerivedStorage();
   xdict = 0;
-  v8 = [a3 sinkID];
-  if (v8)
+  sinkID = [node sinkID];
+  if (sinkID)
   {
-    v9 = v8;
-    if (FigRemoteQueueSenderCreateXPCObject(a4, &xdict))
+    v9 = sinkID;
+    if (FigRemoteQueueSenderCreateXPCObject(ready, &xdict))
     {
       [BWFigCaptureSession remoteQueueSinkNode:queueBecameReady:];
     }
@@ -1282,15 +1282,15 @@ LABEL_23:
   FigXPCRelease();
 }
 
-- (void)remoteQueueSinkNode:(id)a3 localQueueBecameReady:(localQueueOpaque *)a4
+- (void)remoteQueueSinkNode:(id)node localQueueBecameReady:(localQueueOpaque *)ready
 {
-  v6 = [a3 sinkID];
-  if (a4 && v6)
+  sinkID = [node sinkID];
+  if (ready && sinkID)
   {
     v8[0] = @"SectionID";
     v8[1] = @"LocalQueue";
-    v9[0] = v6;
-    v9[1] = a4;
+    v9[0] = sinkID;
+    v9[1] = ready;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
     if (v7)
     {
@@ -1299,15 +1299,15 @@ LABEL_23:
   }
 }
 
-- (void)node:(id)a3 format:(id)a4 didBecomeLiveForOutput:(id)a5
+- (void)node:(id)node format:(id)format didBecomeLiveForOutput:(id)output
 {
   DerivedStorage = CMBaseObjectGetDerivedStorage();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = [(FigCaptureSessionPipelines *)self->_pipelines cameraSourcePipelines];
-  v11 = [(NSArray *)v10 countByEnumeratingWithState:&v21 objects:v20 count:16];
+  cameraSourcePipelines = [(FigCaptureSessionPipelines *)self->_pipelines cameraSourcePipelines];
+  v11 = [(NSArray *)cameraSourcePipelines countByEnumeratingWithState:&v21 objects:v20 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1318,18 +1318,18 @@ LABEL_3:
     {
       if (*v22 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(cameraSourcePipelines);
       }
 
       v15 = *(*(&v21 + 1) + 8 * v14);
-      if ([(FigCaptureCameraSourcePipeline *)v15 sourceFormatReferenceOutput]== a5)
+      if ([(FigCaptureCameraSourcePipeline *)v15 sourceFormatReferenceOutput]== output)
       {
         break;
       }
 
       if (v12 == ++v14)
       {
-        v12 = [(NSArray *)v10 countByEnumeratingWithState:&v21 objects:v20 count:16];
+        v12 = [(NSArray *)cameraSourcePipelines countByEnumeratingWithState:&v21 objects:v20 count:16];
         if (v12)
         {
           goto LABEL_3;
@@ -1339,12 +1339,12 @@ LABEL_3:
       }
     }
 
-    v16 = [v15 sourceID];
-    v17 = v16;
-    if (a4)
+    sourceID = [v15 sourceID];
+    sourceID2 = sourceID;
+    if (format)
     {
-      v18 = [-[FigCaptureCameraSourcePipeline captureSourceVideoFormat](v15) formatDescription];
-      if (v17)
+      formatDescription = [-[FigCaptureCameraSourcePipeline captureSourceVideoFormat](v15) formatDescription];
+      if (sourceID2)
       {
         goto LABEL_18;
       }
@@ -1352,8 +1352,8 @@ LABEL_3:
 
     else
     {
-      v18 = 0;
-      if (v16)
+      formatDescription = 0;
+      if (sourceID)
       {
         goto LABEL_18;
       }
@@ -1361,21 +1361,21 @@ LABEL_3:
   }
 
 LABEL_14:
-  if ([(FigCaptureMicSourcePipeline *)[(FigCaptureSessionPipelines *)self->_pipelines micSourcePipeline] sourceNode]== a3)
+  if ([(FigCaptureMicSourcePipeline *)[(FigCaptureSessionPipelines *)self->_pipelines micSourcePipeline] sourceNode]== node)
   {
-    v17 = [(FigCaptureSourcePipeline *)[(FigCaptureSessionPipelines *)self->_pipelines micSourcePipeline] sourceID];
-    v18 = [a4 formatDescription];
-    if (a4)
+    sourceID2 = [(FigCaptureSourcePipeline *)[(FigCaptureSessionPipelines *)self->_pipelines micSourcePipeline] sourceID];
+    formatDescription = [format formatDescription];
+    if (format)
     {
       os_unfair_lock_lock((DerivedStorage + 384));
       *(DerivedStorage + 337) = [-[FigCaptureMicSourcePipeline sourceNode](-[FigCaptureSessionPipelines micSourcePipeline](self->_pipelines "micSourcePipeline"))];
       os_unfair_lock_unlock((DerivedStorage + 384));
     }
 
-    if (v17)
+    if (sourceID2)
     {
 LABEL_18:
-      v19 = cs_notificationPayloadForSectionFormatChanged(v17, v18);
+      v19 = cs_notificationPayloadForSectionFormatChanged(sourceID2, formatDescription);
       captureSession_postNotificationWithPayload(self->_captureSession, @"SourceFormatDidChange", v19);
     }
   }
@@ -1405,16 +1405,16 @@ uint64_t __44__BWFigCaptureSession_graphDidPrepareNodes___block_invoke_3(uint64_
   return [v1 registerSurfacesFromSourcePool:v2];
 }
 
-- (void)graph:(id)a3 didStartSourceNode:(id)a4 error:(int)a5
+- (void)graph:(id)graph didStartSourceNode:(id)node error:(int)error
 {
   DerivedStorage = CMBaseObjectGetDerivedStorage();
-  v8 = [(FigCaptureSessionPipelines *)self->_pipelines firstColorCameraSourcePipeline];
+  firstColorCameraSourcePipeline = [(FigCaptureSessionPipelines *)self->_pipelines firstColorCameraSourcePipeline];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [(FigCaptureCameraSourcePipeline *)v8 sourceNodes];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v17 count:16];
+  sourceNodes = [(FigCaptureCameraSourcePipeline *)firstColorCameraSourcePipeline sourceNodes];
+  v10 = [sourceNodes countByEnumeratingWithState:&v18 objects:v17 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1425,18 +1425,18 @@ LABEL_3:
     {
       if (*v19 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(sourceNodes);
       }
 
       v14 = *(*(&v18 + 1) + 8 * v13);
-      if (v14 == a4)
+      if (v14 == node)
       {
         break;
       }
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v17 count:16];
+        v11 = [sourceNodes countByEnumeratingWithState:&v18 objects:v17 count:16];
         if (v11)
         {
           goto LABEL_3;
@@ -1453,8 +1453,8 @@ LABEL_9:
     v14 = 0;
   }
 
-  v15 = [(FigCaptureCameraSourcePipeline *)v8 trueVideoCaptureEnabled];
-  if (*(DerivedStorage + 872) && (v15 & 1) == 0 && [objc_msgSend(v14 "portType")])
+  trueVideoCaptureEnabled = [(FigCaptureCameraSourcePipeline *)firstColorCameraSourcePipeline trueVideoCaptureEnabled];
+  if (*(DerivedStorage + 872) && (trueVideoCaptureEnabled & 1) == 0 && [objc_msgSend(v14 "portType")])
   {
     if (dword_1ED844050)
     {
@@ -1467,9 +1467,9 @@ LABEL_9:
   }
 }
 
-- (void)graph:(id)a3 didFinishStartingWithError:(int)a4
+- (void)graph:(id)graph didFinishStartingWithError:(int)error
 {
-  v4 = *&a4;
+  v4 = *&error;
   DerivedStorage = CMBaseObjectGetDerivedStorage();
   if (dword_1ED844050)
   {
@@ -1500,11 +1500,11 @@ LABEL_9:
   }
 }
 
-- (void)interruptionTriggered:(id)a3
+- (void)interruptionTriggered:(id)triggered
 {
   DerivedStorage = CMBaseObjectGetDerivedStorage();
   os_unfair_lock_lock((DerivedStorage + 384));
-  if ([*(DerivedStorage + 424) containsObject:a3])
+  if ([*(DerivedStorage + 424) containsObject:triggered])
   {
     FrameworkRadarComponent = FigCaptureGetFrameworkRadarComponent();
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -1515,19 +1515,19 @@ LABEL_9:
     free(v9);
   }
 
-  else if (([a3 resolved] & 1) == 0)
+  else if (([triggered resolved] & 1) == 0)
   {
     v8 = *(DerivedStorage + 424);
     if (v8)
     {
-      [v8 addObject:a3];
+      [v8 addObject:triggered];
     }
 
     else
     {
       v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
       *(DerivedStorage + 424) = v10;
-      [v10 addObject:a3];
+      [v10 addObject:triggered];
       captureSession_updateRunningCondition(self->_captureSession, 0, 0);
     }
   }
@@ -1535,11 +1535,11 @@ LABEL_9:
   os_unfair_lock_unlock((DerivedStorage + 384));
 }
 
-- (void)interruptionResolved:(id)a3
+- (void)interruptionResolved:(id)resolved
 {
   DerivedStorage = CMBaseObjectGetDerivedStorage();
   os_unfair_lock_lock((DerivedStorage + 384));
-  if (([a3 resolved] & 1) == 0)
+  if (([resolved resolved] & 1) == 0)
   {
     FrameworkRadarComponent = FigCaptureGetFrameworkRadarComponent();
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -1550,9 +1550,9 @@ LABEL_9:
     free(v8);
   }
 
-  if ([*(DerivedStorage + 424) containsObject:a3])
+  if ([*(DerivedStorage + 424) containsObject:resolved])
   {
-    [*(DerivedStorage + 424) removeObject:a3];
+    [*(DerivedStorage + 424) removeObject:resolved];
     if (![*(DerivedStorage + 424) count])
     {
 
@@ -1564,15 +1564,15 @@ LABEL_9:
   os_unfair_lock_unlock((DerivedStorage + 384));
 }
 
-- (void)previewStitcher:(id)a3 didApplyWiderCameraShift:(CGPoint)a4 widerCameraScaleFactor:(float)a5 forWiderCameraPortType:(id)a6 narrowerCameraShift:(CGPoint)a7 narrowerCameraScaleFactor:(float)a8 forNarrowerCameraPortType:(id)a9 inSuperWideMacroMode:(BOOL)a10 widerCameraShiftAtBaseZoom:(CGPoint)a11
+- (void)previewStitcher:(id)stitcher didApplyWiderCameraShift:(CGPoint)shift widerCameraScaleFactor:(float)factor forWiderCameraPortType:(id)type narrowerCameraShift:(CGPoint)cameraShift narrowerCameraScaleFactor:(float)scaleFactor forNarrowerCameraPortType:(id)portType inSuperWideMacroMode:(BOOL)self0 widerCameraShiftAtBaseZoom:(CGPoint)self1
 {
-  y = a11.y;
-  x = a11.x;
-  v13 = a10;
-  v16 = a7.y;
-  v17 = a7.x;
-  v20 = a4.y;
-  v21 = a4.x;
+  y = zoom.y;
+  x = zoom.x;
+  modeCopy = mode;
+  v16 = cameraShift.y;
+  v17 = cameraShift.x;
+  v20 = shift.y;
+  v21 = shift.x;
   if (self)
   {
     pipelines = [(FigCaptureSessionPipelines *)self->_pipelines firstColorCameraSourcePipeline];
@@ -1594,17 +1594,17 @@ LABEL_4:
 
 LABEL_5:
   v24 = pipelines;
-  [(FigCaptureCameraSourcePipeline *)pipelines setPreviewShift:a6 previewScaleFactor:v21 forPortType:v20 previewShiftAtBaseZoom:a5, x, y];
-  [(FigCaptureCameraSourcePipeline *)v24 setPreviewShift:a9 previewScaleFactor:v17 forPortType:v16 previewShiftAtBaseZoom:a8, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
-  v25 = [(FigCaptureCameraSourcePipeline *)v24 captureDevice];
+  [(FigCaptureCameraSourcePipeline *)pipelines setPreviewShift:type previewScaleFactor:v21 forPortType:v20 previewShiftAtBaseZoom:factor, x, y];
+  [(FigCaptureCameraSourcePipeline *)v24 setPreviewShift:portType previewScaleFactor:v17 forPortType:v16 previewShiftAtBaseZoom:scaleFactor, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
+  captureDevice = [(FigCaptureCameraSourcePipeline *)v24 captureDevice];
 
-  [v25 setOverCaptureSuperWideMacroActive:v13];
+  [captureDevice setOverCaptureSuperWideMacroActive:modeCopy];
 }
 
-- (void)previewStitcherReadyForPrimaryCaptureRectUpdates:(id)a3
+- (void)previewStitcherReadyForPrimaryCaptureRectUpdates:(id)updates
 {
   DerivedStorage = CMBaseObjectGetDerivedStorage();
-  v6 = [(NSArray *)[(FigCaptureSessionPipelines *)self->_pipelines previewSinkPipelines] firstObject];
+  firstObject = [(NSArray *)[(FigCaptureSessionPipelines *)self->_pipelines previewSinkPipelines] firstObject];
   os_unfair_lock_lock((DerivedStorage + 384));
   v7 = *(DerivedStorage + 584);
   if (!v7)
@@ -1613,8 +1613,8 @@ LABEL_5:
     *(DerivedStorage + 584) = v7;
   }
 
-  v8 = [v7 objectForKeyedSubscript:{objc_msgSend(v6, "sinkID")}];
-  [*(DerivedStorage + 584) setObject:v6 forKeyedSubscript:{objc_msgSend(v6, "sinkID")}];
+  v8 = [v7 objectForKeyedSubscript:{objc_msgSend(firstObject, "sinkID")}];
+  [*(DerivedStorage + 584) setObject:firstObject forKeyedSubscript:{objc_msgSend(firstObject, "sinkID")}];
   if (dword_1ED844050)
   {
     v31 = 0;
@@ -1632,13 +1632,13 @@ LABEL_5:
     v13 = v12;
     v15 = v14;
     [objc_msgSend(v8 "previewStitcherNode")];
-    [objc_msgSend(v6 "previewStitcherNode")];
+    [objc_msgSend(firstObject "previewStitcherNode")];
   }
 
   os_unfair_lock_unlock((DerivedStorage + 384));
-  if ([a3 waitsForFencedUpdateBeforeFirstEmit])
+  if ([updates waitsForFencedUpdateBeforeFirstEmit])
   {
-    captureSession_makeCommittedConfigurationLive(self->_captureSession, [a3 liveConfigurationID]);
+    captureSession_makeCommittedConfigurationLive(self->_captureSession, [updates liveConfigurationID]);
   }
 
   if (v8)
@@ -1675,29 +1675,29 @@ LABEL_5:
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    v22 = [v8 imageQueueSinkNode];
+    imageQueueSinkNode = [v8 imageQueueSinkNode];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __72__BWFigCaptureSession_previewStitcherReadyForPrimaryCaptureRectUpdates___block_invoke;
     v25[3] = &unk_1E798FE50;
     v25[5] = self;
     v25[6] = DerivedStorage;
-    v25[4] = v6;
-    [v22 notifyWhenIdle:v25];
+    v25[4] = firstObject;
+    [imageQueueSinkNode notifyWhenIdle:v25];
   }
 
   else
   {
-    [objc_msgSend(objc_msgSend(objc_msgSend(v6 "imageQueueSinkNode")];
+    [objc_msgSend(objc_msgSend(objc_msgSend(firstObject "imageQueueSinkNode")];
     v21 = [-[FigCaptureCameraSourcePipeline captureDevice](-[FigCaptureSessionPipelines firstColorCameraSourcePipeline](self->_pipelines "firstColorCameraSourcePipeline"))];
-    if (([objc_msgSend(v6 "previewStitcherNode")] & 1) == 0 && v21 <= 1)
+    if (([objc_msgSend(firstObject "previewStitcherNode")] & 1) == 0 && v21 <= 1)
     {
       captureSession_resumeTrueVideoVISProcessingForSemaphore(self->_captureSession, 0);
     }
   }
 }
 
-- (float)trueVideoCaptureAdditionalZoomFactorForPreviewStitcher:(id)a3
+- (float)trueVideoCaptureAdditionalZoomFactorForPreviewStitcher:(id)stitcher
 {
   if (!self)
   {
@@ -1723,24 +1723,24 @@ LABEL_5:
   v7 = -1.0;
   if ([-[FigCaptureCameraSourcePipeline captureDevice](pipelines) position] == 2 && objc_msgSend(-[FigCaptureCameraSourcePipeline captureDevice](v6), "deviceType") == 7)
   {
-    if ([a3 trueVideoCaptureEnabled])
+    if ([stitcher trueVideoCaptureEnabled])
     {
-      v8 = 1.0;
+      trueVideoTransitionPreviousPhotoGraphZoomFactor = 1.0;
       if ([(FigCaptureCameraSourcePipeline *)v6 trueVideoTransitionPreviousPhotoGraphZoomFactor]> 0.0)
       {
-        v8 = [(FigCaptureCameraSourcePipeline *)v6 trueVideoTransitionPreviousPhotoGraphZoomFactor];
+        trueVideoTransitionPreviousPhotoGraphZoomFactor = [(FigCaptureCameraSourcePipeline *)v6 trueVideoTransitionPreviousPhotoGraphZoomFactor];
       }
 
-      return [(FigCaptureCameraSourcePipeline *)v6 trueVideoCaptureAdditionalZoomFactorForPhotoGraphVideoZoomFactor:v8]/ v8;
+      return [(FigCaptureCameraSourcePipeline *)v6 trueVideoCaptureAdditionalZoomFactorForPhotoGraphVideoZoomFactor:trueVideoTransitionPreviousPhotoGraphZoomFactor]/ trueVideoTransitionPreviousPhotoGraphZoomFactor;
     }
 
     else
     {
-      v10 = [-[FigCaptureCameraSourcePipeline captureDevice](v6) zoomCommandHandler];
-      [v10 rampTargetZoomFactor];
+      zoomCommandHandler = [-[FigCaptureCameraSourcePipeline captureDevice](v6) zoomCommandHandler];
+      [zoomCommandHandler rampTargetZoomFactor];
       if (v11 == 0.0)
       {
-        [v10 appliedZoomFactor];
+        [zoomCommandHandler appliedZoomFactor];
       }
 
       return [(FigCaptureCameraSourcePipeline *)v6 trueVideoCaptureAdditionalZoomFactorForPhotoGraphVideoZoomFactor:v11];
@@ -1750,7 +1750,7 @@ LABEL_5:
   return v7;
 }
 
-- (void)previewStitcherTrueVideoExitTransitionDidComplete:(id)a3
+- (void)previewStitcherTrueVideoExitTransitionDidComplete:(id)complete
 {
   DerivedStorage = CMBaseObjectGetDerivedStorage();
   captureSession = self->_captureSession;
@@ -1775,7 +1775,7 @@ void __73__BWFigCaptureSession_previewStitcherTrueVideoExitTransitionDidComplete
   }
 }
 
-- (void)previewStitcherSmartFramingFieldOfViewTransitionAppliedZoomFactor:(id)a3 zoomFactor:(double)a4
+- (void)previewStitcherSmartFramingFieldOfViewTransitionAppliedZoomFactor:(id)factor zoomFactor:(double)zoomFactor
 {
   if (self)
   {
@@ -1797,27 +1797,27 @@ LABEL_4:
   }
 
 LABEL_5:
-  v7 = [(FigCaptureCameraSourcePipeline *)pipelines captureDevice];
+  captureDevice = [(FigCaptureCameraSourcePipeline *)pipelines captureDevice];
 
-  *&v8 = a4;
-  [v7 setZoomFactor:v8];
+  *&v8 = zoomFactor;
+  [captureDevice setZoomFactor:v8];
 }
 
-- (void)imageQueueSinkNode:(id)a3 didAttemptToEnqueuePreviewSampleBuffer:(opaqueCMSampleBuffer *)a4 withSuccess:(BOOL)a5
+- (void)imageQueueSinkNode:(id)node didAttemptToEnqueuePreviewSampleBuffer:(opaqueCMSampleBuffer *)buffer withSuccess:(BOOL)success
 {
-  v5 = a5;
+  successCopy = success;
   DerivedStorage = CMBaseObjectGetDerivedStorage();
-  v10 = -[FigCaptureSessionPipelines previewSinkPipelineWithSinkID:](self->_pipelines, "previewSinkPipelineWithSinkID:", [a3 sinkID]);
+  v10 = -[FigCaptureSessionPipelines previewSinkPipelineWithSinkID:](self->_pipelines, "previewSinkPipelineWithSinkID:", [node sinkID]);
   if (v10)
   {
     v11 = v10;
     os_unfair_lock_lock((DerivedStorage + 384));
-    v12 = [objc_msgSend(a3 "input")];
-    v13 = [*(DerivedStorage + 512) configurationID];
-    v14 = [v11 previewStitcherNode];
-    if ([v14 rebuildingGraphForTrueVideoTransition] && (v15 = objc_msgSend(v14, "waitsForFencedUpdateBeforeFirstEmit"), v12 != v13) && (v15 & 1) != 0 || !objc_msgSend(*(DerivedStorage + 528), "containsObject:", v11))
+    v12 = [objc_msgSend(node "input")];
+    configurationID = [*(DerivedStorage + 512) configurationID];
+    previewStitcherNode = [v11 previewStitcherNode];
+    if ([previewStitcherNode rebuildingGraphForTrueVideoTransition] && (v15 = objc_msgSend(previewStitcherNode, "waitsForFencedUpdateBeforeFirstEmit"), v12 != configurationID) && (v15 & 1) != 0 || !objc_msgSend(*(DerivedStorage + 528), "containsObject:", v11))
     {
-      if ([*(DerivedStorage + 752) deferredNodePrepareSupported] && (objc_msgSend(objc_msgSend(*(DerivedStorage + 752), "deferredPreparePrioritySinks"), "containsObject:", a3) & 1) == 0)
+      if ([*(DerivedStorage + 752) deferredNodePrepareSupported] && (objc_msgSend(objc_msgSend(*(DerivedStorage + 752), "deferredPreparePrioritySinks"), "containsObject:", node) & 1) == 0)
       {
         captureSession_setPreviewRunning(self->_captureSession, 1, v11);
       }
@@ -1833,8 +1833,8 @@ LABEL_5:
         *(DerivedStorage + 528) = 0;
         *(DerivedStorage + 600) = 1;
         os_unfair_lock_unlock((DerivedStorage + 384));
-        captureSession_makeCommittedConfigurationLive(self->_captureSession, [a3 liveConfigurationID]);
-        if (!v5)
+        captureSession_makeCommittedConfigurationLive(self->_captureSession, [node liveConfigurationID]);
+        if (!successCopy)
         {
           return;
         }
@@ -1844,7 +1844,7 @@ LABEL_5:
     }
 
     os_unfair_lock_unlock((DerivedStorage + 384));
-    if (!v5)
+    if (!successCopy)
     {
       return;
     }
@@ -1858,7 +1858,7 @@ LABEL_13:
       v17[2] = __93__BWFigCaptureSession_imageQueueSinkNode_didAttemptToEnqueuePreviewSampleBuffer_withSuccess___block_invoke;
       v17[3] = &__block_descriptor_48_e5_v8__0l;
       v17[4] = DerivedStorage;
-      v17[5] = a4;
+      v17[5] = buffer;
       dispatch_sync(v16, v17);
     }
   }
@@ -1896,18 +1896,18 @@ void __93__BWFigCaptureSession_imageQueueSinkNode_didAttemptToEnqueuePreviewSamp
   }
 }
 
-- (void)imageQueueSinkNodeDidDisplayFirstFrame:(id)a3 timedOut:(BOOL)a4
+- (void)imageQueueSinkNodeDidDisplayFirstFrame:(id)frame timedOut:(BOOL)out
 {
-  v4 = a4;
+  outCopy = out;
   DerivedStorage = CMBaseObjectGetDerivedStorage();
-  if (v4)
+  if (outCopy)
   {
-    v8 = [*(DerivedStorage + 784) previewSinkPipelines];
+    previewSinkPipelines = [*(DerivedStorage + 784) previewSinkPipelines];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v13 count:16];
+    v9 = [previewSinkPipelines countByEnumeratingWithState:&v14 objects:v13 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1918,7 +1918,7 @@ LABEL_4:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(previewSinkPipelines);
         }
 
         if ([objc_msgSend(*(*(&v14 + 1) + 8 * v12) "previewStitcherNode")])
@@ -1928,7 +1928,7 @@ LABEL_4:
 
         if (v10 == ++v12)
         {
-          v10 = [v8 countByEnumeratingWithState:&v14 objects:v13 count:16];
+          v10 = [previewSinkPipelines countByEnumeratingWithState:&v14 objects:v13 count:16];
           if (v10)
           {
             goto LABEL_4;
@@ -1946,7 +1946,7 @@ LABEL_10:
     }
   }
 
-  captureSession_updateRemainingSinkNodesToWaitForBeforeStartingDeferredPrepare(self->_captureSession, a3);
+  captureSession_updateRemainingSinkNodesToWaitForBeforeStartingDeferredPrepare(self->_captureSession, frame);
 }
 
 void __73__BWFigCaptureSession_imageQueueSinkNodeDidDisplayFirstFrame_atHostTime___block_invoke(uint64_t a1, int a2)
@@ -2151,22 +2151,22 @@ LABEL_36:
   }
 }
 
-- (void)layoutMonitor:(id)a3 didUpdateLayout:(id)a4
+- (void)layoutMonitor:(id)monitor didUpdateLayout:(id)layout
 {
   CMBaseObjectGetDerivedStorage();
-  if ([a3 displayType])
+  if ([monitor displayType])
   {
-    if ([a3 displayType] == 2)
+    if ([monitor displayType] == 2)
     {
 
-      [BWFigCaptureSession _continuityDisplay:a3 didUpdateLayout:?];
+      [BWFigCaptureSession _continuityDisplay:monitor didUpdateLayout:?];
     }
   }
 
   else
   {
 
-    [(BWFigCaptureSession *)self _mainDisplay:v7 didUpdateLayout:a4];
+    [(BWFigCaptureSession *)self _mainDisplay:v7 didUpdateLayout:layout];
   }
 }
 
@@ -2207,12 +2207,12 @@ uint64_t __58__BWFigCaptureSession__continuityDisplay_didUpdateLayout___block_in
   return result;
 }
 
-- (void)_sendRecordingStartedNotificationForFileSinkPipeline:(uint64_t)a1 withSettings:(void *)a2 startPTS:(void *)a3
+- (void)_sendRecordingStartedNotificationForFileSinkPipeline:(uint64_t)pipeline withSettings:(void *)settings startPTS:(void *)s
 {
-  if (a1)
+  if (pipeline)
   {
-    [a2 sinkID];
-    [a3 settingsID];
+    [settings sinkID];
+    [s settingsID];
     v6 = OUTLINED_FUNCTION_44_11();
     v8 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus(v6, v7, 0);
     v9 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v8];
@@ -2221,14 +2221,14 @@ uint64_t __58__BWFigCaptureSession__continuityDisplay_didUpdateLayout___block_in
     v10 = kFigCaptureSessionFileSinkNotification_DidStartRecording;
     if (objc_opt_isKindOfClass())
     {
-      v11 = [(FigCaptureMovieFileSinkPipeline *)a2 primaryCaptureDevice];
-      v12 = [a3 videoSettings];
-      [v9 setObject:objc_msgSend(v12 forKeyedSubscript:{"objectForKeyedSubscript:", @"AVVideoWidthKey", @"MovieWidth"}];
-      [v9 setObject:objc_msgSend(v12 forKeyedSubscript:{"objectForKeyedSubscript:", @"AVVideoHeightKey", @"MovieHeight"}];
+      primaryCaptureDevice = [(FigCaptureMovieFileSinkPipeline *)settings primaryCaptureDevice];
+      videoSettings = [s videoSettings];
+      [v9 setObject:objc_msgSend(videoSettings forKeyedSubscript:{"objectForKeyedSubscript:", @"AVVideoWidthKey", @"MovieWidth"}];
+      [v9 setObject:objc_msgSend(videoSettings forKeyedSubscript:{"objectForKeyedSubscript:", @"AVVideoHeightKey", @"MovieHeight"}];
       v13 = MEMORY[0x1E696AD98];
-      [v11 torchLevel];
+      [primaryCaptureDevice torchLevel];
       [v9 setObject:objc_msgSend(v13 forKeyedSubscript:{"numberWithInt:", v14 != 0.0), @"TorchEnabled"}];
-      if ([a3 isIrisRecording])
+      if ([s isIrisRecording])
       {
         v10 = kFigCaptureSessionIrisStillImageSinkNotification_DidStartRecordingIrisMovie;
       }
@@ -2240,46 +2240,46 @@ uint64_t __58__BWFigCaptureSession__continuityDisplay_didUpdateLayout___block_in
     v16 = CMTimeCopyAsDictionary(&v17, v15);
     [v9 setObject:v16 forKeyedSubscript:@"StartPTS"];
 
-    captureSession_postNotificationWithPayload(*(a1 + 8), *v10, v8);
+    captureSession_postNotificationWithPayload(*(pipeline + 8), *v10, v8);
   }
 }
 
-- (void)stillImageCoordinator:(id)a3 willBeginCaptureBeforeResolvingSettingsForID:(int64_t)a4
+- (void)stillImageCoordinator:(id)coordinator willBeginCaptureBeforeResolvingSettingsForID:(int64_t)d
 {
   if (self)
   {
     self = self->_pipelines;
   }
 
-  v6 = [-[BWFigCaptureSession stillImageSinkPipelineSessionStorageWithStillImageCoordinator:](self stillImageSinkPipelineSessionStorageWithStillImageCoordinator:{a3), "primaryStillImageSinkPipeline"}];
-  if ([v6 stillImageCoordinatorNode] == a3)
+  v6 = [-[BWFigCaptureSession stillImageSinkPipelineSessionStorageWithStillImageCoordinator:](self stillImageSinkPipelineSessionStorageWithStillImageCoordinator:{coordinator), "primaryStillImageSinkPipeline"}];
+  if ([v6 stillImageCoordinatorNode] == coordinator)
   {
-    cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus([v6 sinkID], a4, 0);
+    cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus([v6 sinkID], d, 0);
     v7 = OUTLINED_FUNCTION_80_4();
 
     captureSession_postNotificationWithPayload(v7, @"IrisWillBeginCaptureBeforeResolvingSettings", v8);
   }
 }
 
-- (void)stillImageCoordinator:(id)a3 willBeginCaptureForSettings:(id)a4
+- (void)stillImageCoordinator:(id)coordinator willBeginCaptureForSettings:(id)settings
 {
-  v6 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_pipelines;
   }
 
-  v7 = [(BWFigCaptureSession *)self stillImageSinkPipelineSessionStorageWithStillImageCoordinator:a3];
-  v8 = [v7 primaryStillImageSinkPipeline];
-  v9 = [v7 primaryCameraSourcePipeline];
-  if ([v8 stillImageCoordinatorNode] != a3)
+  v7 = [(BWFigCaptureSession *)self stillImageSinkPipelineSessionStorageWithStillImageCoordinator:coordinator];
+  primaryStillImageSinkPipeline = [v7 primaryStillImageSinkPipeline];
+  primaryCameraSourcePipeline = [v7 primaryCameraSourcePipeline];
+  if ([primaryStillImageSinkPipeline stillImageCoordinatorNode] != coordinator)
   {
     return;
   }
 
-  if (v6)
+  if (selfCopy)
   {
-    pipelines = v6->_pipelines;
+    pipelines = selfCopy->_pipelines;
   }
 
   else
@@ -2299,7 +2299,7 @@ uint64_t __58__BWFigCaptureSession__continuityDisplay_didUpdateLayout___block_in
   }
 
   os_unfair_lock_unlock((DerivedStorage + 384));
-  v13 = [a4 requestedSettings];
+  requestedSettings = [settings requestedSettings];
   objc_opt_class();
   OUTLINED_FUNCTION_44_11();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2307,29 +2307,29 @@ uint64_t __58__BWFigCaptureSession__continuityDisplay_didUpdateLayout___block_in
     return;
   }
 
-  v143 = v9;
-  [v8 sinkID];
-  [v13 settingsID];
+  v143 = primaryCameraSourcePipeline;
+  [primaryStillImageSinkPipeline sinkID];
+  [requestedSettings settingsID];
   v14 = OUTLINED_FUNCTION_10_29();
   v16 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus(v14, v15, 0)}];
-  v17 = [objc_msgSend(a4 "captureSettings")];
-  v18 = [objc_msgSend(a4 "captureSettings")];
+  v17 = [objc_msgSend(settings "captureSettings")];
+  v18 = [objc_msgSend(settings "captureSettings")];
   v19 = 0;
   if ((v18 & 0x10000) != 0)
   {
-    v19 = [v13 outputFormat] != 0;
+    v19 = [requestedSettings outputFormat] != 0;
   }
 
   v145 = v16;
   v139 = v17;
-  v138 = [objc_msgSend(a4 "processingSettings")];
+  v138 = [objc_msgSend(settings "processingSettings")];
   v132 = v19;
   if (v17 <= 0xD && ((1 << v17) & 0x3400) != 0)
   {
     v20 = 0x100000;
 LABEL_15:
     v135 = (v18 & v20) != 0;
-    v21 = [v13 qualityPrioritization] > 1;
+    v21 = [requestedSettings qualityPrioritization] > 1;
     goto LABEL_16;
   }
 
@@ -2343,37 +2343,37 @@ LABEL_15:
   v135 = v17 == 3;
 LABEL_16:
   v136 = v21;
-  v137 = [v13 squareCropEnabled];
-  v134 = [v13 movieMode];
-  [v13 outputFormat];
-  v133 = [v13 rawOutputFormat];
-  IsDemosaicedRaw = FigCapturePixelFormatIsDemosaicedRaw([v13 rawOutputFormat]);
-  IsBayerRaw = FigCapturePixelFormatIsBayerRaw([v13 rawOutputFormat]);
-  v24 = [objc_msgSend(a4 "captureSettings")];
-  IsCameraOrDerivative = captureSession_clientIsCameraOrDerivative(v6->_captureSession);
-  v26 = [(FigCaptureCameraSourcePipeline *)v143 captureSource];
-  v27 = cs_cameraSensorOrientationCompensationDegreesCW(v26, [objc_msgSend(v7 "primaryStillImageConnectionConfiguration")]);
-  v28 = BWCameraSensorOrientationCompensationDegreesCWForRequestedSettings(v13, v27, IsCameraOrDerivative);
-  if ([v13 outputFileType] != 1785096550 && objc_msgSend(v13, "outputFileType") != 1751476579)
+  squareCropEnabled = [requestedSettings squareCropEnabled];
+  movieMode = [requestedSettings movieMode];
+  [requestedSettings outputFormat];
+  rawOutputFormat = [requestedSettings rawOutputFormat];
+  IsDemosaicedRaw = FigCapturePixelFormatIsDemosaicedRaw([requestedSettings rawOutputFormat]);
+  IsBayerRaw = FigCapturePixelFormatIsBayerRaw([requestedSettings rawOutputFormat]);
+  v24 = [objc_msgSend(settings "captureSettings")];
+  IsCameraOrDerivative = captureSession_clientIsCameraOrDerivative(selfCopy->_captureSession);
+  captureSource = [(FigCaptureCameraSourcePipeline *)v143 captureSource];
+  v27 = cs_cameraSensorOrientationCompensationDegreesCW(captureSource, [objc_msgSend(v7 "primaryStillImageConnectionConfiguration")]);
+  v28 = BWCameraSensorOrientationCompensationDegreesCWForRequestedSettings(requestedSettings, v27, IsCameraOrDerivative);
+  if ([requestedSettings outputFileType] != 1785096550 && objc_msgSend(requestedSettings, "outputFileType") != 1751476579)
   {
-    [v13 outputFileType];
+    [requestedSettings outputFileType];
   }
 
   v140 = v24;
   v141 = v28 % 180;
   if (v24)
   {
-    v29 = [v13 deferredPhotoFinalDimensions];
+    deferredPhotoFinalDimensions = [requestedSettings deferredPhotoFinalDimensions];
     v30 = !IsDemosaicedRaw;
   }
 
   else
   {
-    v29 = [v13 outputDimensions];
+    deferredPhotoFinalDimensions = [requestedSettings outputDimensions];
     v30 = 1;
   }
 
-  v31 = __ROR8__(v29, 32);
+  v31 = __ROR8__(deferredPhotoFinalDimensions, 32);
   if (v141 == 90)
   {
     v32 = v31;
@@ -2381,21 +2381,21 @@ LABEL_16:
 
   else
   {
-    v32 = v29;
+    v32 = deferredPhotoFinalDimensions;
   }
 
-  [v13 outputDimensions];
+  [requestedSettings outputDimensions];
   if (v30)
   {
     if (IsBayerRaw)
     {
-      v33 = [-[FigCaptureCameraSourcePipeline captureSourceVideoFormat](v143) sushiRawDimensions];
-      if (v33 >= 1 && SHIDWORD(v33) >= 1)
+      sushiRawDimensions = [-[FigCaptureCameraSourcePipeline captureSourceVideoFormat](v143) sushiRawDimensions];
+      if (sushiRawDimensions >= 1 && SHIDWORD(sushiRawDimensions) >= 1)
       {
-        v35 = [-[FigCaptureCameraSourcePipeline captureSourceVideoFormat](v143) sushiRawDimensions];
-        if ([v13 aspectRatio])
+        sushiRawDimensions2 = [-[FigCaptureCameraSourcePipeline captureSourceVideoFormat](v143) sushiRawDimensions];
+        if ([requestedSettings aspectRatio])
         {
-          FigCaptureConvertDimensionsForAspectRatio(v35, [v13 aspectRatio]);
+          FigCaptureConvertDimensionsForAspectRatio(sushiRawDimensions2, [requestedSettings aspectRatio]);
         }
       }
     }
@@ -2403,12 +2403,12 @@ LABEL_16:
 
   else
   {
-    [v13 deferredPhotoFinalDimensions];
+    [requestedSettings deferredPhotoFinalDimensions];
   }
 
   [v145 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v32), @"StillWidth"}];
   [v145 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", HIDWORD(v32)), @"StillHeight"}];
-  v36 = [objc_msgSend(objc_msgSend(a4 "processingSettings")];
+  v36 = [objc_msgSend(objc_msgSend(settings "processingSettings")];
   [v36 count];
   v37 = [OUTLINED_FUNCTION_4() arrayWithCapacity:?];
   v151 = 0u;
@@ -2442,86 +2442,86 @@ LABEL_16:
   }
 
   [v145 setObject:v37 forKeyedSubscript:@"PhotoManifest"];
-  if (v133)
+  if (rawOutputFormat)
   {
     [v145 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"RawStillWidth"}];
     [v145 setObject:OUTLINED_FUNCTION_77_5() forKeyedSubscript:@"RawStillHeight"];
   }
 
-  if ([v13 previewEnabled])
+  if ([requestedSettings previewEnabled])
   {
-    [v13 previewDimensions];
+    [requestedSettings previewDimensions];
     [v145 setObject:OUTLINED_FUNCTION_75_4() forKeyedSubscript:@"PreviewWidth"];
     [v145 setObject:OUTLINED_FUNCTION_77_5() forKeyedSubscript:@"PreviewHeight"];
   }
 
-  if ([v13 thumbnailEnabled])
+  if ([requestedSettings thumbnailEnabled])
   {
-    [v13 thumbnailDimensions];
+    [requestedSettings thumbnailDimensions];
     [v145 setObject:OUTLINED_FUNCTION_75_4() forKeyedSubscript:@"ThumbnailWidth"];
     [v145 setObject:OUTLINED_FUNCTION_77_5() forKeyedSubscript:@"ThumbnailHeight"];
   }
 
-  if ([v13 rawThumbnailEnabled])
+  if ([requestedSettings rawThumbnailEnabled])
   {
-    [v13 rawThumbnailWidth];
+    [requestedSettings rawThumbnailWidth];
     [v145 setObject:objc_msgSend(OUTLINED_FUNCTION_4() forKeyedSubscript:{"numberWithUnsignedInt:"), @"RawThumbnailWidth"}];
-    [v13 rawThumbnailHeight];
+    [requestedSettings rawThumbnailHeight];
     [v145 setObject:objc_msgSend(OUTLINED_FUNCTION_4() forKeyedSubscript:{"numberWithUnsignedInt:"), @"RawThumbnailHeight"}];
   }
 
-  if (v134)
+  if (movieMode)
   {
-    v50 = [objc_msgSend(v13 "movieRecordingSettings")];
+    v50 = [objc_msgSend(requestedSettings "movieRecordingSettings")];
     [v145 setObject:objc_msgSend(v50 forKeyedSubscript:{"objectForKeyedSubscript:", @"AVVideoWidthKey", @"IrisMovieWidth"}];
     [v145 setObject:objc_msgSend(v50 forKeyedSubscript:{"objectForKeyedSubscript:", @"AVVideoHeightKey", @"IrisMovieHeight"}];
   }
 
-  if ([v13 portraitEffectsMatteDeliveryEnabled])
+  if ([requestedSettings portraitEffectsMatteDeliveryEnabled])
   {
-    v51 = [(FigCaptureCameraSourcePipeline *)v143 captureSource];
-    [FigCaptureSourceGetAttribute(v51 @"PortraitEffectsMatteMainImageDownscalingFactor"];
-    v52 = OUTLINED_FUNCTION_92([v13 outputWidth]);
-    __ROR8__(v52 | (OUTLINED_FUNCTION_92([v13 outputHeight]) << 32), 32);
+    captureSource2 = [(FigCaptureCameraSourcePipeline *)v143 captureSource];
+    [FigCaptureSourceGetAttribute(captureSource2 @"PortraitEffectsMatteMainImageDownscalingFactor"];
+    v52 = OUTLINED_FUNCTION_92([requestedSettings outputWidth]);
+    __ROR8__(v52 | (OUTLINED_FUNCTION_92([requestedSettings outputHeight]) << 32), 32);
     [v145 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"PortraitEffectsMatteWidth"}];
     [v145 setObject:OUTLINED_FUNCTION_77_5() forKeyedSubscript:@"PortraitEffectsMatteHeight"];
   }
 
-  if ([objc_msgSend(v13 "enabledSemanticSegmentationMatteURNs")])
+  if ([objc_msgSend(requestedSettings "enabledSemanticSegmentationMatteURNs")])
   {
-    v53 = [(FigCaptureCameraSourcePipeline *)v143 captureSource];
-    [FigCaptureSourceGetAttribute(v53 @"PortraitEffectsMatteMainImageDownscalingFactor"];
+    captureSource3 = [(FigCaptureCameraSourcePipeline *)v143 captureSource];
+    [FigCaptureSourceGetAttribute(captureSource3 @"PortraitEffectsMatteMainImageDownscalingFactor"];
     if (v54 != 0.0)
     {
-      v55 = OUTLINED_FUNCTION_92([v13 outputWidth]);
+      v55 = OUTLINED_FUNCTION_92([requestedSettings outputWidth]);
       FigCaptureRoundFloatToMultipleOf(2, v55);
-      v56 = OUTLINED_FUNCTION_92([v13 outputHeight]);
+      v56 = OUTLINED_FUNCTION_92([requestedSettings outputHeight]);
       FigCaptureRoundFloatToMultipleOf(2, v56);
     }
 
-    v57 = [v13 enabledSemanticSegmentationMatteURNs];
-    if ([v57 containsObject:*MEMORY[0x1E69917E0]])
+    enabledSemanticSegmentationMatteURNs = [requestedSettings enabledSemanticSegmentationMatteURNs];
+    if ([enabledSemanticSegmentationMatteURNs containsObject:*MEMORY[0x1E69917E0]])
     {
       [v145 setObject:OUTLINED_FUNCTION_77_5() forKeyedSubscript:@"HairSegmentationMatteWidth"];
       [v145 setObject:OUTLINED_FUNCTION_117_3() forKeyedSubscript:@"HairSegmentationMatteHeight"];
     }
 
-    v58 = [v13 enabledSemanticSegmentationMatteURNs];
-    if ([v58 containsObject:*MEMORY[0x1E69917E8]])
+    enabledSemanticSegmentationMatteURNs2 = [requestedSettings enabledSemanticSegmentationMatteURNs];
+    if ([enabledSemanticSegmentationMatteURNs2 containsObject:*MEMORY[0x1E69917E8]])
     {
       [v145 setObject:OUTLINED_FUNCTION_77_5() forKeyedSubscript:@"SkinSegmentationMatteWidth"];
       [v145 setObject:OUTLINED_FUNCTION_117_3() forKeyedSubscript:@"SkinSegmentationMatteHeight"];
     }
 
-    v59 = [v13 enabledSemanticSegmentationMatteURNs];
-    if ([v59 containsObject:*MEMORY[0x1E69917F8]])
+    enabledSemanticSegmentationMatteURNs3 = [requestedSettings enabledSemanticSegmentationMatteURNs];
+    if ([enabledSemanticSegmentationMatteURNs3 containsObject:*MEMORY[0x1E69917F8]])
     {
       [v145 setObject:OUTLINED_FUNCTION_77_5() forKeyedSubscript:@"TeethSegmentationMatteWidth"];
       [v145 setObject:OUTLINED_FUNCTION_117_3() forKeyedSubscript:@"TeethSegmentationMatteHeight"];
     }
 
-    v60 = [v13 enabledSemanticSegmentationMatteURNs];
-    if ([v60 containsObject:*MEMORY[0x1E69917D8]])
+    enabledSemanticSegmentationMatteURNs4 = [requestedSettings enabledSemanticSegmentationMatteURNs];
+    if ([enabledSemanticSegmentationMatteURNs4 containsObject:*MEMORY[0x1E69917D8]])
     {
       [v145 setObject:OUTLINED_FUNCTION_77_5() forKeyedSubscript:@"GlassesSegmentationMatteWidth"];
       [v145 setObject:OUTLINED_FUNCTION_117_3() forKeyedSubscript:@"GlassesSegmentationMatteHeight"];
@@ -2537,7 +2537,7 @@ LABEL_16:
   if (v135)
   {
     [v145 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"HDRActive"];
-    [objc_msgSend(a4 "captureSettings")];
+    [objc_msgSend(settings "captureSettings")];
     [v145 setObject:objc_msgSend(OUTLINED_FUNCTION_4() forKeyedSubscript:{"numberWithBool:"), @"OriginalPhotoDeliveryEnabled"}];
   }
 
@@ -2551,7 +2551,7 @@ LABEL_16:
     [v145 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"BravoImageFusionActive"];
   }
 
-  if (v137)
+  if (squareCropEnabled)
   {
     [v145 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"SquareCropEnabled"];
   }
@@ -2568,13 +2568,13 @@ LABEL_16:
 
   if (v139 == 11)
   {
-    v61 = [objc_msgSend(a4 "captureSettings")];
+    v61 = [objc_msgSend(settings "captureSettings")];
     if (([v61 isEqualToString:*off_1E798A0E0] & 1) != 0 || objc_msgSend(v61, "isEqualToString:", *off_1E798A0F8))
     {
-      v62 = [objc_msgSend(objc_msgSend(a4 "captureSettings")];
+      v62 = [objc_msgSend(objc_msgSend(settings "captureSettings")];
       [v62 previewSNR];
       v64 = v63 < 0.0;
-      if ([v13 digitalFlashMode] == 2)
+      if ([requestedSettings digitalFlashMode] == 2)
       {
         if ([v62 stationary])
         {
@@ -2586,12 +2586,12 @@ LABEL_16:
         }
       }
 
-      if (([objc_msgSend(a4 "captureSettings")] >> 34) & 2 | v64)
+      if (([objc_msgSend(settings "captureSettings")] >> 34) & 2 | v64)
       {
         [v145 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"DigitalFlashUserInterfaceHints"}];
       }
 
-      [v145 setObject:objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(a4 forKeyedSubscript:{"captureSettings"), "frameStatisticsByPortType"), "objectForKeyedSubscript:", v61), "displayStrobeRGBEstimate"), @"DigitalFlashUserInterfaceRGBEstimate"}];
+      [v145 setObject:objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(settings forKeyedSubscript:{"captureSettings"), "frameStatisticsByPortType"), "objectForKeyedSubscript:", v61), "displayStrobeRGBEstimate"), @"DigitalFlashUserInterfaceRGBEstimate"}];
     }
   }
 
@@ -2635,39 +2635,39 @@ LABEL_16:
 LABEL_100:
   if (v140)
   {
-    [v13 deferredPhotoProxyDimensions];
+    [requestedSettings deferredPhotoProxyDimensions];
     [v145 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"DeferredPhotoProxyWidth"}];
     [v145 setObject:OUTLINED_FUNCTION_77_5() forKeyedSubscript:@"DeferredPhotoProxyHeight"];
   }
 
   memset(&v146.start.epoch, 0, 32);
   *&v146.start.value = 0u;
-  v78 = [a4 captureSettings];
-  [objc_msgSend(a4 "processingSettings")];
+  captureSettings = [settings captureSettings];
+  [objc_msgSend(settings "processingSettings")];
   v79 = *(MEMORY[0x1E6960C98] + 16);
   *&v146.start.value = *MEMORY[0x1E6960C98];
   *&v146.start.epoch = v79;
   *&v146.duration.timescale = *(MEMORY[0x1E6960C98] + 32);
-  v80 = [v78 captureType];
-  v81 = [v78 sceneFlags];
-  v82 = [v78 captureFlags];
+  captureType = [captureSettings captureType];
+  sceneFlags = [captureSettings sceneFlags];
+  captureFlags = [captureSettings captureFlags];
   v83 = [objc_msgSend(+[FigCaptureSourceBackingsProvider sharedCaptureSourceBackingsProvider](FigCaptureSourceBackingsProvider "sharedCaptureSourceBackingsProvider")];
-  v84 = [v78 masterPortType];
-  v85 = [v78 captureStreamSettingsForPortType:v84];
-  v86 = [objc_msgSend(v78 "frameStatisticsByPortType")];
+  masterPortType = [captureSettings masterPortType];
+  v85 = [captureSettings captureStreamSettingsForPortType:masterPortType];
+  v86 = [objc_msgSend(captureSettings "frameStatisticsByPortType")];
   v144 = v83;
   if (v83)
   {
     v87 = 0;
     v88 = 0.5;
-    v142 = v80;
-    v89 = v80 - 1;
+    v142 = captureType;
+    v89 = captureType - 1;
     v90 = v86;
     v91 = 0;
     switch(v89)
     {
       case 0u:
-        if (([v78 captureFlags] & 0x80) == 0)
+        if (([captureSettings captureFlags] & 0x80) == 0)
         {
           goto LABEL_128;
         }
@@ -2691,7 +2691,7 @@ LABEL_100:
         [v86 integrationTime];
         if (v94 > 0.0588235294)
         {
-          [v84 isEqualToString:*off_1E798A0D8];
+          [masterPortType isEqualToString:*off_1E798A0D8];
         }
 
         goto LABEL_152;
@@ -2723,27 +2723,27 @@ LABEL_129:
 
         goto LABEL_135;
       case 6u:
-        if ([v13 bracketType] == 1)
+        if ([requestedSettings bracketType] == 1)
         {
           *&start[0].start.value = *MEMORY[0x1E6960CC0];
           start[0].start.epoch = *(MEMORY[0x1E6960CC0] + 16);
-          if ([v13 bracketImageCount])
+          if ([requestedSettings bracketImageCount])
           {
             v95 = 0;
             v96 = 0;
             do
             {
-              v97 = [v13 exposureDurations];
+              exposureDurations = [requestedSettings exposureDurations];
               lhs = start[0].start;
-              v98 = *(v97 + v95);
-              rhs.epoch = *(v97 + v95 + 16);
+              v98 = *(exposureDurations + v95);
+              rhs.epoch = *(exposureDurations + v95 + 16);
               *&rhs.value = v98;
               CMTimeAdd(&start[0].start, &lhs, &rhs);
               ++v96;
               v95 += 24;
             }
 
-            while (v96 < [v13 bracketImageCount]);
+            while (v96 < [requestedSettings bracketImageCount]);
           }
 
           lhs = start[0].start;
@@ -2756,18 +2756,18 @@ LABEL_135:
         else
         {
           v88 = 0.25;
-          if ([v13 bracketType] == 2)
+          if ([requestedSettings bracketType] == 2)
           {
             [v90 integrationTime];
             v105 = v104;
-            if ([v13 bracketImageCount])
+            if ([requestedSettings bracketImageCount])
             {
               v106 = 0;
               v87 = 0;
               v107 = 1.79769313e308;
               do
               {
-                v108 = *([v13 exposureTargetBiases] + 4 * v106);
+                v108 = *([requestedSettings exposureTargetBiases] + 4 * v106);
                 v109 = v108 < 0.0;
                 v110 = v108 + v108;
                 if (v108 <= 0.0)
@@ -2793,7 +2793,7 @@ LABEL_135:
                 ++v106;
               }
 
-              while (v106 < [v13 bracketImageCount]);
+              while (v106 < [requestedSettings bracketImageCount]);
             }
 
             else
@@ -2802,7 +2802,7 @@ LABEL_135:
               v107 = 1.79769313e308;
             }
 
-            v91 = (v105 * v107 * 1000.0 * [v13 bracketImageCount]);
+            v91 = (v105 * v107 * 1000.0 * [requestedSettings bracketImageCount]);
           }
 
           else
@@ -2813,10 +2813,10 @@ LABEL_135:
         }
 
 LABEL_153:
-        if ([objc_msgSend(v13 "bravoConstituentImageDeliveryDeviceTypes")])
+        if ([objc_msgSend(requestedSettings "bravoConstituentImageDeliveryDeviceTypes")])
         {
           v112 = 1.0;
-          if ([objc_msgSend(v13 "bravoConstituentImageDeliveryDeviceTypes")] >= 2)
+          if ([objc_msgSend(requestedSettings "bravoConstituentImageDeliveryDeviceTypes")] >= 2)
           {
             v113 = 1;
             do
@@ -2825,7 +2825,7 @@ LABEL_153:
               ++v113;
             }
 
-            while (v113 < [objc_msgSend(v13 "bravoConstituentImageDeliveryDeviceTypes")]);
+            while (v113 < [objc_msgSend(requestedSettings "bravoConstituentImageDeliveryDeviceTypes")]);
           }
 
           v87 = (v112 * v87);
@@ -2900,9 +2900,9 @@ LABEL_153:
           v92 = @"DeepFusion-";
         }
 
-        if ((v82 & 0x100000) != 0)
+        if ((captureFlags & 0x100000) != 0)
         {
-          if ((v81 & 8) != 0)
+          if ((sceneFlags & 8) != 0)
           {
             v93 = @"LowLightHDR";
           }
@@ -2913,10 +2913,10 @@ LABEL_153:
           }
         }
 
-        else if ((v81 & 8) != 0)
+        else if ((sceneFlags & 8) != 0)
         {
           v93 = @"LowLightHDR";
-          if (([v84 isEqualToString:*off_1E798A0D8] & 1) == 0 && !objc_msgSend(v84, "isEqualToString:", *off_1E798A0D0))
+          if (([masterPortType isEqualToString:*off_1E798A0D8] & 1) == 0 && !objc_msgSend(masterPortType, "isEqualToString:", *off_1E798A0D0))
           {
             v93 = @"LowLight";
           }
@@ -2993,22 +2993,22 @@ LABEL_160:
     CFRelease(v116);
   }
 
-  captureSession_postNotificationWithPayload(v6->_captureSession, @"IrisWillBeginCapture", v100);
+  captureSession_postNotificationWithPayload(selfCopy->_captureSession, @"IrisWillBeginCapture", v100);
 }
 
-- (void)stillImageCoordinator:(id)a3 willCapturePhotoForSettings:(id)a4 error:(int)a5
+- (void)stillImageCoordinator:(id)coordinator willCapturePhotoForSettings:(id)settings error:(int)error
 {
-  v5 = *&a5;
-  v8 = self;
+  v5 = *&error;
+  selfCopy = self;
   if (self)
   {
     self = self->_pipelines;
   }
 
-  v9 = [(BWFigCaptureSession *)self stillImageSinkPipelineSessionStorageWithStillImageCoordinator:a3];
-  if ([objc_msgSend(v9 "primaryStillImageSinkPipeline")] == a3)
+  v9 = [(BWFigCaptureSession *)self stillImageSinkPipelineSessionStorageWithStillImageCoordinator:coordinator];
+  if ([objc_msgSend(v9 "primaryStillImageSinkPipeline")] == coordinator)
   {
-    [a4 requestedSettings];
+    [settings requestedSettings];
     objc_opt_class();
     OUTLINED_FUNCTION_26_13();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -3019,9 +3019,9 @@ LABEL_160:
     }
 
     v12 = *v11;
-    v13 = [objc_msgSend(a4 "captureSettings")] != 4 && objc_msgSend(objc_msgSend(a4, "captureSettings"), "captureType") != 5;
+    v13 = [objc_msgSend(settings "captureSettings")] != 4 && objc_msgSend(objc_msgSend(settings, "captureSettings"), "captureType") != 5;
     [objc_msgSend(v9 "primaryStillImageSinkPipeline")];
-    [objc_msgSend(a4 "requestedSettings")];
+    [objc_msgSend(settings "requestedSettings")];
     v14 = OUTLINED_FUNCTION_88_3();
     v16 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus(v14, v15, v5);
     if (((isKindOfClass | v13) & 1) == 0)
@@ -3030,51 +3030,51 @@ LABEL_160:
       [v16 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"StillImageStabilizationActive"];
     }
 
-    captureSession = v8->_captureSession;
+    captureSession = selfCopy->_captureSession;
 
     captureSession_postNotificationWithPayload(captureSession, v12, v16);
   }
 }
 
-- (void)stillImageCoordinator:(id)a3 didResolveStillImagePTS:(id *)a4 forSettings:(id)a5 isPreBracketedEV0:(BOOL)a6
+- (void)stillImageCoordinator:(id)coordinator didResolveStillImagePTS:(id *)s forSettings:(id)settings isPreBracketedEV0:(BOOL)v0
 {
-  v6 = a6;
-  v9 = self;
+  v0Copy = v0;
+  selfCopy = self;
   if (self)
   {
     self = self->_pipelines;
   }
 
-  v10 = [(BWFigCaptureSession *)self stillImageSinkPipelineSessionStorageWithStillImageCoordinator:a3, a4];
-  if ([objc_msgSend(v10 "primaryStillImageSinkPipeline")] == a3)
+  v10 = [(BWFigCaptureSession *)self stillImageSinkPipelineSessionStorageWithStillImageCoordinator:coordinator, s];
+  if ([objc_msgSend(v10 "primaryStillImageSinkPipeline")] == coordinator)
   {
-    [a5 requestedSettings];
+    [settings requestedSettings];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (!v6 || [objc_msgSend(a5 "captureSettings")]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (!v0Copy || [objc_msgSend(settings "captureSettings")]))
     {
-      captureSession = v9->_captureSession;
-      pipelines = v9->_pipelines;
-      v13 = [a5 requestedSettings];
-      [a5 captureSettings];
+      captureSession = selfCopy->_captureSession;
+      pipelines = selfCopy->_pipelines;
+      requestedSettings = [settings requestedSettings];
+      [settings captureSettings];
       OUTLINED_FUNCTION_2_10();
-      captureSession_didCaptureIrisStill(captureSession, pipelines, v10, v13, v14, &v15, v6, 0);
+      captureSession_didCaptureIrisStill(captureSession, pipelines, v10, requestedSettings, v14, &v15, v0Copy, 0);
     }
   }
 }
 
-- (void)stillImageCoordinator:(id)a3 didCapturePhotoForSettings:(id)a4
+- (void)stillImageCoordinator:(id)coordinator didCapturePhotoForSettings:(id)settings
 {
   DerivedStorage = CMBaseObjectGetDerivedStorage();
-  v8 = [(FigCaptureSessionPipelines *)self->_pipelines stillImageSinkPipelineSessionStorageWithStillImageCoordinator:a3];
-  if ([objc_msgSend(v8 "primaryStillImageSinkPipeline")] == a3)
+  v8 = [(FigCaptureSessionPipelines *)self->_pipelines stillImageSinkPipelineSessionStorageWithStillImageCoordinator:coordinator];
+  if ([objc_msgSend(v8 "primaryStillImageSinkPipeline")] == coordinator)
   {
-    if ([objc_msgSend(a4 "captureSettings")] == 2 && BWCaptureDevicePositionFromPortType(objc_msgSend(objc_msgSend(a4, "captureSettings"), "masterPortType")) == 1 && (objc_msgSend(*(DerivedStorage + 88), "isEqualToString:", 0x1F216ED50) & 1) == 0 && (objc_msgSend(*(DerivedStorage + 88), "isEqualToString:", 0x1F2185210) & 1) == 0 && (objc_msgSend(*(DerivedStorage + 88), "isEqualToString:", 0x1F2185310) & 1) == 0 && objc_msgSend(objc_msgSend(+[FigCaptureSourceBackingsProvider sharedCaptureSourceBackingsProvider](FigCaptureSourceBackingsProvider, "sharedCaptureSourceBackingsProvider"), "commonSettings"), "flashMitigationRequired"))
+    if ([objc_msgSend(settings "captureSettings")] == 2 && BWCaptureDevicePositionFromPortType(objc_msgSend(objc_msgSend(settings, "captureSettings"), "masterPortType")) == 1 && (objc_msgSend(*(DerivedStorage + 88), "isEqualToString:", 0x1F216ED50) & 1) == 0 && (objc_msgSend(*(DerivedStorage + 88), "isEqualToString:", 0x1F2185210) & 1) == 0 && (objc_msgSend(*(DerivedStorage + 88), "isEqualToString:", 0x1F2185310) & 1) == 0 && objc_msgSend(objc_msgSend(+[FigCaptureSourceBackingsProvider sharedCaptureSourceBackingsProvider](FigCaptureSourceBackingsProvider, "sharedCaptureSourceBackingsProvider"), "commonSettings"), "flashMitigationRequired"))
     {
       [BWFigCaptureSession _doFlashMitigation];
     }
 
     cs_setSceneClassifierSuspended(self->_pipelines, v8, 0);
-    [a4 requestedSettings];
+    [settings requestedSettings];
     objc_opt_class();
     OUTLINED_FUNCTION_88_3();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -3085,17 +3085,17 @@ LABEL_160:
     }
 
     v11 = *v10;
-    v12 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus([objc_msgSend(v8 "primaryStillImageSinkPipeline")], objc_msgSend(objc_msgSend(a4, "requestedSettings"), "settingsID"), 0);
+    v12 = cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus([objc_msgSend(v8 "primaryStillImageSinkPipeline")], objc_msgSend(objc_msgSend(settings, "requestedSettings"), "settingsID"), 0);
     captureSession_postNotificationWithPayload(self->_captureSession, v11, v12);
-    v13 = [a4 requestedSettings];
+    requestedSettings = [settings requestedSettings];
     if ([objc_msgSend(objc_msgSend(v8 "primaryStillImageSinkPipeline")])
     {
-      [v13 resolutionFlavor];
+      [requestedSettings resolutionFlavor];
     }
 
     if (isKindOfClass)
     {
-      if ([objc_msgSend(a4 "requestedSettings")])
+      if ([objc_msgSend(settings "requestedSettings")])
       {
         OUTLINED_FUNCTION_33_0();
         v15[1] = 3221225472;
@@ -3103,7 +3103,7 @@ LABEL_160:
         v15[3] = &unk_1E7998980;
         v15[4] = self;
         v15[5] = v8;
-        v15[6] = a4;
+        v15[6] = settings;
         v15[7] = DerivedStorage;
         captureSession_performBlockOnWorkerQueue(v14, v15);
       }
@@ -3305,23 +3305,23 @@ unint64_t __72__BWFigCaptureSession_stillImageCoordinator_didCapturePhotoForSett
   return cs_removeEmptyPendingIrisRecording(v37, v36, v38);
 }
 
-- (void)stillImageCoordinator:(id)a3 readyToRespondToRequestAfterRequestWithSettings:(id)a4
+- (void)stillImageCoordinator:(id)coordinator readyToRespondToRequestAfterRequestWithSettings:(id)settings
 {
   if (self)
   {
     self = self->_pipelines;
   }
 
-  v6 = [(BWFigCaptureSession *)self stillImageSinkPipelineSessionStorageWithStillImageCoordinator:a3];
-  if ([objc_msgSend(v6 "primaryStillImageSinkPipeline")] == a3)
+  v6 = [(BWFigCaptureSession *)self stillImageSinkPipelineSessionStorageWithStillImageCoordinator:coordinator];
+  if ([objc_msgSend(v6 "primaryStillImageSinkPipeline")] == coordinator)
   {
-    v7 = [a4 requestedSettings];
+    requestedSettings = [settings requestedSettings];
     if ([objc_msgSend(objc_msgSend(v6 "primaryStillImageSinkPipeline")])
     {
-      if ([v7 resolutionFlavor] != 2)
+      if ([requestedSettings resolutionFlavor] != 2)
       {
         [objc_msgSend(v6 "primaryStillImageSinkPipeline")];
-        [a4 settingsID];
+        [settings settingsID];
         v8 = OUTLINED_FUNCTION_44_11();
         cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus(v8, v9, 0);
         v10 = OUTLINED_FUNCTION_80_4();
@@ -3332,15 +3332,15 @@ unint64_t __72__BWFigCaptureSession_stillImageCoordinator_didCapturePhotoForSett
   }
 }
 
-- (void)stillImageCoordinator:(id)a3 updateSettingsAfterLiveReconfiguration:(id)a4
+- (void)stillImageCoordinator:(id)coordinator updateSettingsAfterLiveReconfiguration:(id)reconfiguration
 {
   if (self)
   {
     self = self->_pipelines;
   }
 
-  v6 = [(BWFigCaptureSession *)self stillImageSinkPipelineSessionStorageWithStillImageCoordinator:a3];
-  v7 = [v6 stillImageSinkPipelineWithStillImageCoordinator:a3];
+  v6 = [(BWFigCaptureSession *)self stillImageSinkPipelineSessionStorageWithStillImageCoordinator:coordinator];
+  v7 = [v6 stillImageSinkPipelineWithStillImageCoordinator:coordinator];
   if (v7)
   {
     v8 = v7;
@@ -3350,16 +3350,16 @@ unint64_t __72__BWFigCaptureSession_stillImageCoordinator_didCapturePhotoForSett
       v10 = v9;
       [-[FigCaptureCameraSourcePipeline captureDevice](v9) zoomFactor];
       v13 = v11;
-      v12 = stillImageSinkPipelineSessionStorage_stillImageOutputDimensionsForSettings(v6, v8, a4, &v13);
-      captureSession_updateOutputDimensionsAndResolutionFlavor(v12, v10, a4);
-      BWUpdateThumbnailAndPreviewDimensionsForRequestedSettings(a4, v13);
+      v12 = stillImageSinkPipelineSessionStorage_stillImageOutputDimensionsForSettings(v6, v8, reconfiguration, &v13);
+      captureSession_updateOutputDimensionsAndResolutionFlavor(v12, v10, reconfiguration);
+      BWUpdateThumbnailAndPreviewDimensionsForRequestedSettings(reconfiguration, v13);
     }
   }
 }
 
 - (void)_postFlashMitigationUserNotification
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AVFCapture"];
     v2 = [v1 localizedStringForKey:@"OK" value:&stru_1F216A3D0 table:@"FlashMitigationNotification-A149"];
@@ -3385,15 +3385,15 @@ unint64_t __72__BWFigCaptureSession_stillImageCoordinator_didCapturePhotoForSett
   }
 }
 
-- (void)stagingNode:(id)a3 willEmitIrisRequest:(id)a4
+- (void)stagingNode:(id)node willEmitIrisRequest:(id)request
 {
-  v6 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_pipelines;
   }
 
-  [-[BWFigCaptureSession movieFileSinkPipelineWithIrisStagingNode:](self movieFileSinkPipelineWithIrisStagingNode:{a3), "sinkID"}];
+  [-[BWFigCaptureSession movieFileSinkPipelineWithIrisStagingNode:](self movieFileSinkPipelineWithIrisStagingNode:{node), "sinkID"}];
   [objc_msgSend(OUTLINED_FUNCTION_87_2() "settings")];
   v7 = OUTLINED_FUNCTION_44_11();
   cs_notificationPayloadWithSectionIDAndSettingsIDAndErrorStatus(v7, v8, 0);
@@ -3402,27 +3402,27 @@ unint64_t __72__BWFigCaptureSession_stillImageCoordinator_didCapturePhotoForSett
     v9 = 0;
     do
     {
-      captureSession_postNotificationWithPayload(v6->_captureSession, @"IrisDidRecordIrisMovie", v4);
+      captureSession_postNotificationWithPayload(selfCopy->_captureSession, @"IrisDidRecordIrisMovie", v4);
       ++v9;
     }
 
-    while (v9 < [a4 numberOfRequestedVariants]);
+    while (v9 < [request numberOfRequestedVariants]);
   }
 }
 
-- (void)stagingNode:(id)a3 waitingToEmitFrameWithPTS:(id *)a4
+- (void)stagingNode:(id)node waitingToEmitFrameWithPTS:(id *)s
 {
   if (self)
   {
     self = self->_pipelines;
   }
 
-  v4 = [(FigCaptureMovieFileSinkPipeline *)[(BWFigCaptureSession *)self movieFileSinkPipelineWithIrisStagingNode:a3 fileCoordinatorNode];
+  fileCoordinatorNode = [(FigCaptureMovieFileSinkPipeline *)[(BWFigCaptureSession *)self movieFileSinkPipelineWithIrisStagingNode:node fileCoordinatorNode];
 
-  [v4 tryToEmitFramesWaitingForMotion];
+  [fileCoordinatorNode tryToEmitFramesWaitingForMotion];
 }
 
-- (void)graphDidPrepareNodes:(id)a3
+- (void)graphDidPrepareNodes:(id)nodes
 {
   OUTLINED_FUNCTION_60();
   v4 = v3;
@@ -3435,8 +3435,8 @@ unint64_t __72__BWFigCaptureSession_stillImageCoordinator_didCapturePhotoForSett
     v3 = v3[2];
   }
 
-  v5 = [v3 videoDataSinkPipelines];
-  v6 = [v5 countByEnumeratingWithState:&v49 objects:v48 count:16];
+  videoDataSinkPipelines = [v3 videoDataSinkPipelines];
+  v6 = [videoDataSinkPipelines countByEnumeratingWithState:&v49 objects:v48 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3447,18 +3447,18 @@ unint64_t __72__BWFigCaptureSession_stillImageCoordinator_didCapturePhotoForSett
       {
         if (*v50 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(videoDataSinkPipelines);
         }
 
         v10 = *(*(&v49 + 1) + 8 * i);
         OwnerOfUpstreamPoolFeedingInput = cs_findOwnerOfUpstreamPoolFeedingInput([objc_msgSend(v10 "sinkNode")]);
         [(FigCaptureVideoDataSinkPipeline *)v10 prepareForRendering];
-        v12 = [v10 sinkNode];
+        sinkNode = [v10 sinkNode];
         v47[0] = MEMORY[0x1E69E9820];
         v47[1] = 3221225472;
         v47[2] = __44__BWFigCaptureSession_graphDidPrepareNodes___block_invoke;
         v47[3] = &unk_1E798F898;
-        v47[4] = v12;
+        v47[4] = sinkNode;
         v47[5] = OwnerOfUpstreamPoolFeedingInput;
         v13 = [OwnerOfUpstreamPoolFeedingInput addPoolPreallocationCompletionHandler:v47];
       }
@@ -3483,8 +3483,8 @@ unint64_t __72__BWFigCaptureSession_stillImageCoordinator_didCapturePhotoForSett
     v15 = 0;
   }
 
-  v16 = [v15 previewSinkPipelines];
-  v17 = [v16 countByEnumeratingWithState:&v43 objects:v42 count:16];
+  previewSinkPipelines = [v15 previewSinkPipelines];
+  v17 = [previewSinkPipelines countByEnumeratingWithState:&v43 objects:v42 count:16];
   if (v17)
   {
     v18 = v17;
@@ -3495,18 +3495,18 @@ unint64_t __72__BWFigCaptureSession_stillImageCoordinator_didCapturePhotoForSett
       {
         if (*v44 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(previewSinkPipelines);
         }
 
         v21 = *(*(&v43 + 1) + 8 * j);
         [v21 prepareForRenderingWithPreparedPixelBufferPool];
         v22 = cs_findOwnerOfUpstreamPoolFeedingInput([objc_msgSend(v21 "imageQueueSinkNode")]);
-        v23 = [v21 imageQueueSinkNode];
+        imageQueueSinkNode = [v21 imageQueueSinkNode];
         v41[0] = MEMORY[0x1E69E9820];
         v41[1] = 3221225472;
         v41[2] = __44__BWFigCaptureSession_graphDidPrepareNodes___block_invoke_2;
         v41[3] = &unk_1E798F898;
-        v41[4] = v23;
+        v41[4] = imageQueueSinkNode;
         v41[5] = v22;
         v24 = [v22 addPoolPreallocationCompletionHandler:v41];
       }
@@ -3528,8 +3528,8 @@ unint64_t __72__BWFigCaptureSession_stillImageCoordinator_didCapturePhotoForSett
     v26 = 0;
   }
 
-  v27 = [v26 videoThumbnailSinkPipelines];
-  v28 = [v27 countByEnumeratingWithState:v40 objects:v39 count:16];
+  videoThumbnailSinkPipelines = [v26 videoThumbnailSinkPipelines];
+  v28 = [videoThumbnailSinkPipelines countByEnumeratingWithState:v40 objects:v39 count:16];
   if (v28)
   {
     v29 = v28;
@@ -3540,18 +3540,18 @@ unint64_t __72__BWFigCaptureSession_stillImageCoordinator_didCapturePhotoForSett
         OUTLINED_FUNCTION_21_20();
         if (!v31)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(videoThumbnailSinkPipelines);
         }
 
         v32 = *(*(&v40[0] + 1) + 8 * k);
-        v33 = [-[FigCaptureVideoThumbnailSinkPipeline imageQueueSinkNode](v32) input];
-        v34 = cs_findOwnerOfUpstreamPoolFeedingInput(v33);
-        v35 = [(FigCaptureVideoThumbnailSinkPipeline *)v32 imageQueueSinkNode];
+        input = [-[FigCaptureVideoThumbnailSinkPipeline imageQueueSinkNode](v32) input];
+        v34 = cs_findOwnerOfUpstreamPoolFeedingInput(input);
+        imageQueueSinkNode2 = [(FigCaptureVideoThumbnailSinkPipeline *)v32 imageQueueSinkNode];
         v38[0] = MEMORY[0x1E69E9820];
         v38[1] = 3221225472;
         v38[2] = __44__BWFigCaptureSession_graphDidPrepareNodes___block_invoke_3;
         v38[3] = &unk_1E798F898;
-        v38[4] = v35;
+        v38[4] = imageQueueSinkNode2;
         v38[5] = v34;
         v36 = [v34 addPoolPreallocationCompletionHandler:v38];
       }
@@ -3565,7 +3565,7 @@ unint64_t __72__BWFigCaptureSession_stillImageCoordinator_didCapturePhotoForSett
   OUTLINED_FUNCTION_128_0();
 }
 
-- (void)graphDidResolveRetainedBufferCounts:(id)a3
+- (void)graphDidResolveRetainedBufferCounts:(id)counts
 {
   memset(v18, 0, sizeof(v18));
   if (self)
@@ -3573,8 +3573,8 @@ unint64_t __72__BWFigCaptureSession_stillImageCoordinator_didCapturePhotoForSett
     self = self->_pipelines;
   }
 
-  v3 = [(BWFigCaptureSession *)self movieFileSinkPipelines];
-  v4 = [v3 countByEnumeratingWithState:v18 objects:v17 count:16];
+  movieFileSinkPipelines = [(BWFigCaptureSession *)self movieFileSinkPipelines];
+  v4 = [movieFileSinkPipelines countByEnumeratingWithState:v18 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3585,7 +3585,7 @@ unint64_t __72__BWFigCaptureSession_stillImageCoordinator_didCapturePhotoForSett
         OUTLINED_FUNCTION_6_30();
         if (!v14)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(movieFileSinkPipelines);
         }
 
         v15 = [(FigCaptureMovieFileSinkPipeline *)*(*(&v18[0] + 1) + 8 * i) setUpBackPressureForResolvedRetainedBufferCounts:v7];
@@ -3598,19 +3598,19 @@ unint64_t __72__BWFigCaptureSession_stillImageCoordinator_didCapturePhotoForSett
   }
 }
 
-- (void)previewStitcher:(id)a3 overCaptureStatusDidChange:(int)a4
+- (void)previewStitcher:(id)stitcher overCaptureStatusDidChange:(int)change
 {
-  v4 = *&a4;
+  v4 = *&change;
   if (self)
   {
     self = self->_pipelines;
   }
 
-  v5 = [-[BWFigCaptureSession previewSinkPipelines](self previewSinkPipelines];
-  if (v5)
+  previewSinkPipelines = [-[BWFigCaptureSession previewSinkPipelines](self previewSinkPipelines];
+  if (previewSinkPipelines)
   {
     v8[0] = @"SectionID";
-    v9[0] = [v5 sinkID];
+    v9[0] = [previewSinkPipelines sinkID];
     v8[1] = @"Status";
     v9[1] = [MEMORY[0x1E696AD98] numberWithInt:v4];
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
@@ -3662,11 +3662,11 @@ void __72__BWFigCaptureSession_previewStitcherReadyForPrimaryCaptureRectUpdates_
   }
 }
 
-- (void)imageQueueSinkNodeDidDisplayFirstFrame:(id)a3 atHostTime:(int64_t)a4
+- (void)imageQueueSinkNodeDidDisplayFirstFrame:(id)frame atHostTime:(int64_t)time
 {
   captureSession = self->_captureSession;
   DerivedStorage = CMBaseObjectGetDerivedStorage();
-  v9 = -[FigCaptureSessionPipelines previewSinkPipelineWithSinkID:](self->_pipelines, "previewSinkPipelineWithSinkID:", [a3 sinkID]);
+  v9 = -[FigCaptureSessionPipelines previewSinkPipelineWithSinkID:](self->_pipelines, "previewSinkPipelineWithSinkID:", [frame sinkID]);
   if (v9)
   {
     *&v29 = @"SectionID";
@@ -3681,8 +3681,8 @@ void __72__BWFigCaptureSession_previewStitcherReadyForPrimaryCaptureRectUpdates_
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v11 = [(FigCaptureSessionPipelines *)pipelines previewSinkPipelines];
-    v12 = [(NSArray *)v11 countByEnumeratingWithState:&v29 objects:v28 count:16];
+    previewSinkPipelines = [(FigCaptureSessionPipelines *)pipelines previewSinkPipelines];
+    v12 = [(NSArray *)previewSinkPipelines countByEnumeratingWithState:&v29 objects:v28 count:16];
     if (v12)
     {
       v13 = v12;
@@ -3693,26 +3693,26 @@ void __72__BWFigCaptureSession_previewStitcherReadyForPrimaryCaptureRectUpdates_
         {
           if (*v30 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(previewSinkPipelines);
           }
 
           v16 = *(*(&v29 + 1) + 8 * i);
-          if ([v16 imageQueueSinkNode] == a3)
+          if ([v16 imageQueueSinkNode] == frame)
           {
             [v16 sourceID];
             v17 = [OUTLINED_FUNCTION_28() cameraSourcePipelineWithSourceID:?];
-            v18 = [(FigCaptureCameraSourcePipeline *)v17 captureSource];
-            if (v18)
+            captureSource = [(FigCaptureCameraSourcePipeline *)v17 captureSource];
+            if (captureSource)
             {
-              v19 = v18;
-              CFRetain(v18);
+              v19 = captureSource;
+              CFRetain(captureSource);
               OUTLINED_FUNCTION_7_1();
               v22 = 3221225472;
               v23 = __73__BWFigCaptureSession_imageQueueSinkNodeDidDisplayFirstFrame_atHostTime___block_invoke;
               v24 = &__block_descriptor_56_e8_v12__0B8l;
               v25 = DerivedStorage;
               v26 = v19;
-              v27 = a4;
+              timeCopy = time;
               v20 = CMBaseObjectGetDerivedStorage();
               captureSession_dispatchGraphCalloutWithGraphIDToWorkerQueueAfter(captureSession, *(v20 + 760), v21, 0.0);
             }
@@ -3721,7 +3721,7 @@ void __72__BWFigCaptureSession_previewStitcherReadyForPrimaryCaptureRectUpdates_
           }
         }
 
-        v13 = [(NSArray *)v11 countByEnumeratingWithState:&v29 objects:v28 count:16];
+        v13 = [(NSArray *)previewSinkPipelines countByEnumeratingWithState:&v29 objects:v28 count:16];
         if (v13)
         {
           continue;
@@ -3733,21 +3733,21 @@ void __72__BWFigCaptureSession_previewStitcherReadyForPrimaryCaptureRectUpdates_
   }
 }
 
-- (void)videoPIPOverlayNode:(id)a3 overlayRectDidChange:(CGRect)a4
+- (void)videoPIPOverlayNode:(id)node overlayRectDidChange:(CGRect)change
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   if (self)
   {
     self = self->_pipelines;
   }
 
-  v8 = [-[BWFigCaptureSession previewSinkPipelines](self previewSinkPipelines];
-  if (v8)
+  previewSinkPipelines = [-[BWFigCaptureSession previewSinkPipelines](self previewSinkPipelines];
+  if (previewSinkPipelines)
   {
-    v9 = v8;
+    v9 = previewSinkPipelines;
     v15.origin.x = x;
     v15.origin.y = y;
     v15.size.width = width;
@@ -3769,9 +3769,9 @@ void __72__BWFigCaptureSession_previewStitcherReadyForPrimaryCaptureRectUpdates_
   }
 }
 
-- (void)_mainDisplay:(void *)a3 didUpdateLayout:
+- (void)_mainDisplay:(void *)display didUpdateLayout:
 {
-  if (a1)
+  if (self)
   {
     DerivedStorage = CMBaseObjectGetDerivedStorage();
     if (!*DerivedStorage)
@@ -3779,9 +3779,9 @@ void __72__BWFigCaptureSession_previewStitcherReadyForPrimaryCaptureRectUpdates_
       v6 = DerivedStorage;
       if (*(DerivedStorage + 112) == 1)
       {
-        if ([objc_msgSend(a3 "foregroundApps")])
+        if ([objc_msgSend(display "foregroundApps")])
         {
-          v7 = [objc_msgSend(a3 "transitioningApps")] ^ 1;
+          v7 = [objc_msgSend(display "transitioningApps")] ^ 1;
         }
 
         else
@@ -3796,12 +3796,12 @@ void __72__BWFigCaptureSession_previewStitcherReadyForPrimaryCaptureRectUpdates_
         {
           os_unfair_lock_lock(&sLockScreenCameraLaunchTelemetry);
           v9 = byte_1EB58EC18;
-          v10 = [objc_msgSend(a3 "foregroundApps")];
+          v10 = [objc_msgSend(display "foregroundApps")];
           if (v9 == 1)
           {
             if (v10)
             {
-              v11 = [objc_msgSend(a3 "transitioningApps")] ^ 1;
+              v11 = [objc_msgSend(display "transitioningApps")] ^ 1;
             }
 
             else
@@ -3809,14 +3809,14 @@ void __72__BWFigCaptureSession_previewStitcherReadyForPrimaryCaptureRectUpdates_
               v11 = 0;
             }
 
-            if ([objc_msgSend(a3 "foregroundApps")])
+            if ([objc_msgSend(display "foregroundApps")])
             {
               v12 = 0;
             }
 
             else
             {
-              v12 = [objc_msgSend(a3 "transitioningApps")] ^ 1;
+              v12 = [objc_msgSend(display "transitioningApps")] ^ 1;
             }
 
             if ((v11 | v12))
@@ -3834,7 +3834,7 @@ void __72__BWFigCaptureSession_previewStitcherReadyForPrimaryCaptureRectUpdates_
             }
           }
 
-          else if (v10 && [objc_msgSend(a3 "transitioningApps")])
+          else if (v10 && [objc_msgSend(display "transitioningApps")])
           {
             byte_1EB58EC18 = 1;
           }
@@ -3852,7 +3852,7 @@ void __72__BWFigCaptureSession_previewStitcherReadyForPrimaryCaptureRectUpdates_
           objc_autoreleasePoolPop(v13);
         }
 
-        v17 = *(a1 + 8);
+        v17 = *(self + 8);
 
         captureSession_updateDeferredGraphSetupStartCondition(v17, (v6 + 602), v7);
       }
@@ -3860,17 +3860,17 @@ void __72__BWFigCaptureSession_previewStitcherReadyForPrimaryCaptureRectUpdates_
   }
 }
 
-- (void)_continuityDisplay:(uint64_t)a1 didUpdateLayout:(void *)a2
+- (void)_continuityDisplay:(uint64_t)display didUpdateLayout:(void *)layout
 {
-  if (a1)
+  if (display)
   {
-    [a2 isDisplayConnected];
-    v3 = *(a1 + 8);
+    [layout isDisplayConnected];
+    v3 = *(display + 8);
     OUTLINED_FUNCTION_33_0();
     v6[1] = 3221225472;
     v6[2] = __58__BWFigCaptureSession__continuityDisplay_didUpdateLayout___block_invoke;
     v6[3] = &unk_1E7998CA8;
-    v6[4] = a1;
+    v6[4] = display;
     v7 = v4;
     DerivedStorage = CMBaseObjectGetDerivedStorage();
     captureSession_dispatchGraphCalloutWithGraphIDToWorkerQueueAfter(v3, *(DerivedStorage + 760), v6, 0.0);

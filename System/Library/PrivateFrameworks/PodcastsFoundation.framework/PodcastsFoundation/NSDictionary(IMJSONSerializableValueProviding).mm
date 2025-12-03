@@ -6,22 +6,22 @@
 
 - (id)im_jsonSerializableValue
 {
-  v1 = a1;
+  selfCopy = self;
   v36 = *MEMORY[0x1E69E9840];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:a1])
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:self])
   {
-    v2 = v1;
+    v2 = selfCopy;
   }
 
   else
   {
-    v3 = [v1 allKeys];
-    v24 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    allKeys = [selfCopy allKeys];
+    v24 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(allKeys, "count")}];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v4 = v3;
+    v4 = allKeys;
     v5 = [v4 countByEnumeratingWithState:&v25 objects:v35 count:16];
     if (v5)
     {
@@ -43,7 +43,7 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [v1 objectForKey:v10];
+            v12 = [selfCopy objectForKey:v10];
             v13 = jsonSerializableValueForValue(v12);
             if (v13)
             {
@@ -54,7 +54,7 @@
             {
               v15 = v8;
               v16 = v4;
-              v17 = v1;
+              v17 = selfCopy;
               v18 = objc_opt_class();
               v19 = NSStringFromClass(v18);
               v20 = _IMStoreLogCategoryDefault();
@@ -69,7 +69,7 @@
                 _os_log_impl(&dword_1D8CEC000, v20, OS_LOG_TYPE_ERROR, "Object %@ of class %@ for key %@ isn't JSON serializable", buf, 0x20u);
               }
 
-              v1 = v17;
+              selfCopy = v17;
               v4 = v16;
               v8 = v15;
               v7 = v23;

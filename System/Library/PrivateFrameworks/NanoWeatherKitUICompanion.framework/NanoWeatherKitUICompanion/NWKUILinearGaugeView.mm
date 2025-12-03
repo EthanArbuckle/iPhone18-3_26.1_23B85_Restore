@@ -1,32 +1,32 @@
 @interface NWKUILinearGaugeView
 - ($1AB5FA073B851C12C2339EC22442E995)layoutConstants;
-- (CGPoint)_centerOfValueIndicator:(id)a3;
+- (CGPoint)_centerOfValueIndicator:(id)indicator;
 - (CGRect)valueIndicatorCutoutFrame;
 - (CGSize)intrinsicContentSize;
-- (NWKUILinearGaugeView)initWithLayoutConstants:(id)a3;
-- (id)_cgColorsFromColorIndices:(id)a3;
+- (NWKUILinearGaugeView)initWithLayoutConstants:(id)constants;
+- (id)_cgColorsFromColorIndices:(id)indices;
 - (id)_createGradientLayer;
-- (void)_applyCGColors:(id)a3 toGradientLayer:(id)a4;
-- (void)_gradientLocationInformationForGaugeWithHeight:(double)a3 colorIndices:(id)a4 handler:(id)a5;
+- (void)_applyCGColors:(id)colors toGradientLayer:(id)layer;
+- (void)_gradientLocationInformationForGaugeWithHeight:(double)height colorIndices:(id)indices handler:(id)handler;
 - (void)_setNeedsUpdateGauge;
-- (void)applyBackgroundGaugeFilters:(id)a3 fraction:(double)a4;
-- (void)applyForegroundGaugeFilters:(id)a3;
-- (void)applyIndicatorFillColor:(id)a3;
-- (void)interpolateIndicatorWithColor:(id)a3 fraction:(double)a4;
+- (void)applyBackgroundGaugeFilters:(id)filters fraction:(double)fraction;
+- (void)applyForegroundGaugeFilters:(id)filters;
+- (void)applyIndicatorFillColor:(id)color;
+- (void)interpolateIndicatorWithColor:(id)color fraction:(double)fraction;
 - (void)layoutSubviews;
-- (void)setBackgroundColorIndices:(id)a3;
-- (void)setColorIndices:(id)a3;
-- (void)setHighValue:(double)a3;
-- (void)setValue:(double)a3;
+- (void)setBackgroundColorIndices:(id)indices;
+- (void)setColorIndices:(id)indices;
+- (void)setHighValue:(double)value;
+- (void)setValue:(double)value;
 @end
 
 @implementation NWKUILinearGaugeView
 
-- (NWKUILinearGaugeView)initWithLayoutConstants:(id)a3
+- (NWKUILinearGaugeView)initWithLayoutConstants:(id)constants
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var2 = constants.var2;
+  var1 = constants.var1;
+  var0 = constants.var0;
   v24.receiver = self;
   v24.super_class = NWKUILinearGaugeView;
   v6 = [(NWKUILinearGaugeView *)&v24 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -40,29 +40,29 @@
     [(NWKUILinearGaugeView *)v7 setGaugeWrapperLayer:v8];
 
     CATransform3DMakeScale(&v23, 1.0, -1.0, 1.0);
-    v9 = [(NWKUILinearGaugeView *)v7 gaugeWrapperLayer];
+    gaugeWrapperLayer = [(NWKUILinearGaugeView *)v7 gaugeWrapperLayer];
     v22 = v23;
-    [v9 setTransform:&v22];
+    [gaugeWrapperLayer setTransform:&v22];
 
-    v10 = [(NWKUILinearGaugeView *)v7 _createGradientLayer];
+    _createGradientLayer = [(NWKUILinearGaugeView *)v7 _createGradientLayer];
     LODWORD(v11) = 1050253722;
-    [v10 setOpacity:v11];
-    [(NWKUILinearGaugeView *)v7 setBackgroundGaugeLayer:v10];
+    [_createGradientLayer setOpacity:v11];
+    [(NWKUILinearGaugeView *)v7 setBackgroundGaugeLayer:_createGradientLayer];
 
-    v12 = [(NWKUILinearGaugeView *)v7 gaugeWrapperLayer];
-    v13 = [(NWKUILinearGaugeView *)v7 backgroundGaugeLayer];
-    [v12 addSublayer:v13];
+    gaugeWrapperLayer2 = [(NWKUILinearGaugeView *)v7 gaugeWrapperLayer];
+    backgroundGaugeLayer = [(NWKUILinearGaugeView *)v7 backgroundGaugeLayer];
+    [gaugeWrapperLayer2 addSublayer:backgroundGaugeLayer];
 
-    v14 = [(NWKUILinearGaugeView *)v7 _createGradientLayer];
-    [(NWKUILinearGaugeView *)v7 setGaugeLayer:v14];
+    _createGradientLayer2 = [(NWKUILinearGaugeView *)v7 _createGradientLayer];
+    [(NWKUILinearGaugeView *)v7 setGaugeLayer:_createGradientLayer2];
 
-    v15 = [(NWKUILinearGaugeView *)v7 gaugeWrapperLayer];
-    v16 = [(NWKUILinearGaugeView *)v7 gaugeLayer];
-    [v15 addSublayer:v16];
+    gaugeWrapperLayer3 = [(NWKUILinearGaugeView *)v7 gaugeWrapperLayer];
+    gaugeLayer = [(NWKUILinearGaugeView *)v7 gaugeLayer];
+    [gaugeWrapperLayer3 addSublayer:gaugeLayer];
 
-    v17 = [(NWKUILinearGaugeView *)v7 layer];
-    v18 = [(NWKUILinearGaugeView *)v7 gaugeWrapperLayer];
-    [v17 addSublayer:v18];
+    layer = [(NWKUILinearGaugeView *)v7 layer];
+    gaugeWrapperLayer4 = [(NWKUILinearGaugeView *)v7 gaugeWrapperLayer];
+    [layer addSublayer:gaugeWrapperLayer4];
 
     v19 = [[NWKUILinearGaugeValueIndicatorView alloc] initWithDiameter:var1];
     valueIndicator = v7->_valueIndicator;
@@ -119,14 +119,14 @@
     v12 = *(MEMORY[0x277CBF348] + 8);
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
-    v13 = [(NWKUILinearGaugeView *)self gaugeWrapperLayer];
-    [v13 setFrame:{v7, 0.0, v6, Height}];
+    gaugeWrapperLayer = [(NWKUILinearGaugeView *)self gaugeWrapperLayer];
+    [gaugeWrapperLayer setFrame:{v7, 0.0, v6, Height}];
 
-    v14 = [(NWKUILinearGaugeView *)self backgroundGaugeLayer];
-    [v14 setBounds:{v11, v12, v6, Height}];
+    backgroundGaugeLayer = [(NWKUILinearGaugeView *)self backgroundGaugeLayer];
+    [backgroundGaugeLayer setBounds:{v11, v12, v6, Height}];
 
-    v15 = [(NWKUILinearGaugeView *)self gaugeLayer];
-    [v15 setBounds:{v11, v12, v6, v9}];
+    gaugeLayer = [(NWKUILinearGaugeView *)self gaugeLayer];
+    [gaugeLayer setBounds:{v11, v12, v6, v9}];
 
     [MEMORY[0x277CD9FF0] commit];
     v56 = 0;
@@ -141,8 +141,8 @@
     v55[3] = &unk_2799633C0;
     v55[4] = &v56;
     v16 = MEMORY[0x25F86D760](v55);
-    v17 = [(NWKUILinearGaugeView *)self backgroundColorIndices];
-    [(NWKUILinearGaugeView *)self _gradientLocationInformationForGaugeWithHeight:v17 colorIndices:v16 handler:Height];
+    backgroundColorIndices = [(NWKUILinearGaugeView *)self backgroundColorIndices];
+    [(NWKUILinearGaugeView *)self _gradientLocationInformationForGaugeWithHeight:backgroundColorIndices colorIndices:v16 handler:Height];
 
     if (![v57[5] count])
     {
@@ -153,8 +153,8 @@
     v19 = v57[5];
 
     _Block_object_dispose(&v56, 8);
-    v20 = [(NWKUILinearGaugeView *)self backgroundGaugeLayer];
-    [v20 setLocations:v19];
+    backgroundGaugeLayer2 = [(NWKUILinearGaugeView *)self backgroundGaugeLayer];
+    [backgroundGaugeLayer2 setLocations:v19];
 
     v56 = 0;
     v57 = &v56;
@@ -175,8 +175,8 @@
     v48[4] = &v56;
     v48[5] = &v49;
     v21 = MEMORY[0x25F86D760](v48);
-    v22 = [(NWKUILinearGaugeView *)self colorIndices];
-    [(NWKUILinearGaugeView *)self _gradientLocationInformationForGaugeWithHeight:v22 colorIndices:v21 handler:v9];
+    colorIndices = [(NWKUILinearGaugeView *)self colorIndices];
+    [(NWKUILinearGaugeView *)self _gradientLocationInformationForGaugeWithHeight:colorIndices colorIndices:v21 handler:v9];
 
     if (![v57[5] count])
     {
@@ -185,17 +185,17 @@
     }
 
     v24 = v57[5];
-    v25 = [(NWKUILinearGaugeView *)self gaugeLayer];
-    [v25 setLocations:v24];
+    gaugeLayer2 = [(NWKUILinearGaugeView *)self gaugeLayer];
+    [gaugeLayer2 setLocations:v24];
 
     [(NWKUILinearGaugeView *)self value];
     if (v26 == 2.22507386e-308)
     {
-      v27 = [(NWKUILinearGaugeView *)self gaugeWrapperLayer];
-      [v27 setMask:0];
+      gaugeWrapperLayer2 = [(NWKUILinearGaugeView *)self gaugeWrapperLayer];
+      [gaugeWrapperLayer2 setMask:0];
 
-      v28 = [(NWKUILinearGaugeView *)self valueIndicator];
-      [v28 setHidden:1];
+      valueIndicator = [(NWKUILinearGaugeView *)self valueIndicator];
+      [valueIndicator setHidden:1];
     }
 
     else
@@ -203,9 +203,9 @@
       v29 = v50[5];
       if (!v29)
       {
-        v30 = [v57[5] lastObject];
+        lastObject = [v57[5] lastObject];
         v31 = v50[5];
-        v50[5] = v30;
+        v50[5] = lastObject;
 
         v29 = v50[5];
       }
@@ -234,10 +234,10 @@
       v69.size.width = width;
       v69.size.height = v37;
       v41 = CGRectGetHeight(v69);
-      v28 = objc_alloc_init(MEMORY[0x277CD9F90]);
+      valueIndicator = objc_alloc_init(MEMORY[0x277CD9F90]);
       [(NWKUILinearGaugeView *)self bounds];
-      [v28 setFrame:?];
-      [v28 setFillRule:*MEMORY[0x277CDA248]];
+      [valueIndicator setFrame:?];
+      [valueIndicator setFillRule:*MEMORY[0x277CDA248]];
       Mutable = CGPathCreateMutable();
       [(NWKUILinearGaugeView *)self bounds];
       CGPathAddRect(Mutable, 0, v70);
@@ -246,15 +246,15 @@
       v71.size.width = v40;
       v71.size.height = v41;
       CGPathAddEllipseInRect(Mutable, 0, v71);
-      [v28 setPath:Mutable];
-      v43 = [(NWKUILinearGaugeView *)self gaugeWrapperLayer];
-      [v43 setMask:v28];
+      [valueIndicator setPath:Mutable];
+      gaugeWrapperLayer3 = [(NWKUILinearGaugeView *)self gaugeWrapperLayer];
+      [gaugeWrapperLayer3 setMask:valueIndicator];
 
-      v44 = [(NWKUILinearGaugeView *)self valueIndicator];
-      [v44 setCenter:{v47, Height - v46}];
+      valueIndicator2 = [(NWKUILinearGaugeView *)self valueIndicator];
+      [valueIndicator2 setCenter:{v47, Height - v46}];
 
-      v45 = [(NWKUILinearGaugeView *)self valueIndicator];
-      [v45 setHidden:0];
+      valueIndicator3 = [(NWKUILinearGaugeView *)self valueIndicator];
+      [valueIndicator3 setHidden:0];
     }
 
     _Block_object_dispose(&v49, 8);
@@ -276,117 +276,117 @@ void __38__NWKUILinearGaugeView_layoutSubviews__block_invoke_10(uint64_t a1, voi
   *(v9 + 40) = v6;
 }
 
-- (void)applyForegroundGaugeFilters:(id)a3
+- (void)applyForegroundGaugeFilters:(id)filters
 {
-  v4 = a3;
-  v5 = [(NWKUILinearGaugeView *)self gaugeLayer];
-  [v5 setFilters:v4];
+  filtersCopy = filters;
+  gaugeLayer = [(NWKUILinearGaugeView *)self gaugeLayer];
+  [gaugeLayer setFilters:filtersCopy];
 }
 
-- (void)applyBackgroundGaugeFilters:(id)a3 fraction:(double)a4
+- (void)applyBackgroundGaugeFilters:(id)filters fraction:(double)fraction
 {
-  v6 = a3;
-  v7 = [(NWKUILinearGaugeView *)self backgroundGaugeLayer];
-  [v7 setFilters:v6];
+  filtersCopy = filters;
+  backgroundGaugeLayer = [(NWKUILinearGaugeView *)self backgroundGaugeLayer];
+  [backgroundGaugeLayer setFilters:filtersCopy];
 
-  *&a4 = a4 * -0.1 + 0.3;
-  v9 = [(NWKUILinearGaugeView *)self backgroundGaugeLayer];
-  LODWORD(v8) = LODWORD(a4);
-  [v9 setOpacity:v8];
+  *&fraction = fraction * -0.1 + 0.3;
+  backgroundGaugeLayer2 = [(NWKUILinearGaugeView *)self backgroundGaugeLayer];
+  LODWORD(v8) = LODWORD(fraction);
+  [backgroundGaugeLayer2 setOpacity:v8];
 }
 
-- (void)applyIndicatorFillColor:(id)a3
+- (void)applyIndicatorFillColor:(id)color
 {
-  v4 = a3;
-  [(NWKUILinearGaugeView *)self setIndicatorFillColor:v4];
-  v5 = [(NWKUILinearGaugeView *)self valueIndicator];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  [(NWKUILinearGaugeView *)self setIndicatorFillColor:colorCopy];
+  valueIndicator = [(NWKUILinearGaugeView *)self valueIndicator];
+  [valueIndicator setBackgroundColor:colorCopy];
 }
 
-- (void)interpolateIndicatorWithColor:(id)a3 fraction:(double)a4
+- (void)interpolateIndicatorWithColor:(id)color fraction:(double)fraction
 {
-  v6 = a3;
-  v9 = [(NWKUILinearGaugeView *)self indicatorFillColor];
-  v7 = NWMInterpolateBetweenColors(v9, v6, a4);
+  colorCopy = color;
+  indicatorFillColor = [(NWKUILinearGaugeView *)self indicatorFillColor];
+  v7 = NWMInterpolateBetweenColors(indicatorFillColor, colorCopy, fraction);
 
-  v8 = [(NWKUILinearGaugeView *)self valueIndicator];
-  [v8 setBackgroundColor:v7];
+  valueIndicator = [(NWKUILinearGaugeView *)self valueIndicator];
+  [valueIndicator setBackgroundColor:v7];
 }
 
-- (void)setBackgroundColorIndices:(id)a3
+- (void)setBackgroundColorIndices:(id)indices
 {
-  v7 = a3;
+  indicesCopy = indices;
   if (![(NSArray *)self->_backgroundColorIndices isEqualToArray:?])
   {
-    objc_storeStrong(&self->_backgroundColorIndices, a3);
-    v5 = [(NWKUILinearGaugeView *)self _cgColorsFromColorIndices:v7];
-    v6 = [(NWKUILinearGaugeView *)self backgroundGaugeLayer];
-    [(NWKUILinearGaugeView *)self _applyCGColors:v5 toGradientLayer:v6];
+    objc_storeStrong(&self->_backgroundColorIndices, indices);
+    v5 = [(NWKUILinearGaugeView *)self _cgColorsFromColorIndices:indicesCopy];
+    backgroundGaugeLayer = [(NWKUILinearGaugeView *)self backgroundGaugeLayer];
+    [(NWKUILinearGaugeView *)self _applyCGColors:v5 toGradientLayer:backgroundGaugeLayer];
   }
 }
 
-- (void)setColorIndices:(id)a3
+- (void)setColorIndices:(id)indices
 {
-  v7 = a3;
+  indicesCopy = indices;
   if (![(NSArray *)self->_colorIndices isEqualToArray:?])
   {
-    objc_storeStrong(&self->_colorIndices, a3);
-    v5 = [(NWKUILinearGaugeView *)self _cgColorsFromColorIndices:v7];
-    v6 = [(NWKUILinearGaugeView *)self gaugeLayer];
-    [(NWKUILinearGaugeView *)self _applyCGColors:v5 toGradientLayer:v6];
+    objc_storeStrong(&self->_colorIndices, indices);
+    v5 = [(NWKUILinearGaugeView *)self _cgColorsFromColorIndices:indicesCopy];
+    gaugeLayer = [(NWKUILinearGaugeView *)self gaugeLayer];
+    [(NWKUILinearGaugeView *)self _applyCGColors:v5 toGradientLayer:gaugeLayer];
   }
 }
 
-- (void)setHighValue:(double)a3
+- (void)setHighValue:(double)value
 {
-  if (self->_highValue != a3)
+  if (self->_highValue != value)
   {
-    self->_highValue = a3;
+    self->_highValue = value;
     [(NWKUILinearGaugeView *)self _setNeedsUpdateGauge];
   }
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
-    self->_value = a3;
+    self->_value = value;
     [(NWKUILinearGaugeView *)self _setNeedsUpdateGauge];
   }
 }
 
-- (void)_applyCGColors:(id)a3 toGradientLayer:(id)a4
+- (void)_applyCGColors:(id)colors toGradientLayer:(id)layer
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v7 count])
+  colorsCopy = colors;
+  layerCopy = layer;
+  if ([colorsCopy count])
   {
-    [v6 setHidden:0];
-    [v6 setColors:v7];
+    [layerCopy setHidden:0];
+    [layerCopy setColors:colorsCopy];
   }
 
   else
   {
-    [v6 setHidden:1];
+    [layerCopy setHidden:1];
   }
 
   [(NWKUILinearGaugeView *)self _setNeedsUpdateGauge];
 }
 
-- (id)_cgColorsFromColorIndices:(id)a3
+- (id)_cgColorsFromColorIndices:(id)indices
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  if ([v3 count] == 1)
+  indicesCopy = indices;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([indicesCopy count] == 1)
   {
-    v5 = [v3 firstObject];
-    v6 = [v5 color];
-    [v4 addObject:{objc_msgSend(v6, "CGColor")}];
+    firstObject = [indicesCopy firstObject];
+    color = [firstObject color];
+    [array addObject:{objc_msgSend(color, "CGColor")}];
 
-    v7 = [v3 firstObject];
-    v8 = [v7 color];
-    [v4 addObject:{objc_msgSend(v8, "CGColor")}];
+    firstObject2 = [indicesCopy firstObject];
+    color2 = [firstObject2 color];
+    [array addObject:{objc_msgSend(color2, "CGColor")}];
   }
 
   else
@@ -395,8 +395,8 @@ void __38__NWKUILinearGaugeView_layoutSubviews__block_invoke_10(uint64_t a1, voi
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v3;
-    v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    firstObject2 = indicesCopy;
+    v9 = [firstObject2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -407,29 +407,29 @@ void __38__NWKUILinearGaugeView_layoutSubviews__block_invoke_10(uint64_t a1, voi
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(firstObject2);
           }
 
-          v13 = [*(*(&v17 + 1) + 8 * i) color];
-          [v4 addObject:{objc_msgSend(v13, "CGColor")}];
+          color3 = [*(*(&v17 + 1) + 8 * i) color];
+          [array addObject:{objc_msgSend(color3, "CGColor")}];
         }
 
-        v10 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [firstObject2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
     }
   }
 
-  v14 = [v4 copy];
+  v14 = [array copy];
   v15 = *MEMORY[0x277D85DE8];
 
   return v14;
 }
 
-- (CGPoint)_centerOfValueIndicator:(id)a3
+- (CGPoint)_centerOfValueIndicator:(id)indicator
 {
-  v4 = a3;
+  indicatorCopy = indicator;
   [(NWKUILinearGaugeView *)self bounds];
   Height = CGRectGetHeight(v16);
   if ([(NWKUILinearGaugeView *)self shouldRenderValueAsPercentage])
@@ -455,7 +455,7 @@ void __38__NWKUILinearGaugeView_layoutSubviews__block_invoke_10(uint64_t a1, voi
 
   else
   {
-    [v4 doubleValue];
+    [indicatorCopy doubleValue];
   }
 
   v9 = Height * v8;
@@ -483,27 +483,27 @@ LABEL_9:
   return v4;
 }
 
-- (void)_gradientLocationInformationForGaugeWithHeight:(double)a3 colorIndices:(id)a4 handler:(id)a5
+- (void)_gradientLocationInformationForGaugeWithHeight:(double)height colorIndices:(id)indices handler:(id)handler
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 firstObject];
-  [v10 value];
+  indicesCopy = indices;
+  handlerCopy = handler;
+  firstObject = [indicesCopy firstObject];
+  [firstObject value];
   v12 = v11;
 
-  v13 = [v8 lastObject];
-  [v13 value];
+  lastObject = [indicesCopy lastObject];
+  [lastObject value];
   v15 = v14;
 
   [(NWKUILinearGaugeView *)self layoutConstants];
   v17 = v16;
-  v18 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v19 = v8;
+  v19 = indicesCopy;
   v20 = [v19 countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v20)
   {
@@ -511,8 +511,8 @@ LABEL_9:
     v22 = 0;
     v23 = v15 - v12;
     v24 = v17 * 0.5 + 0.5;
-    v25 = (a3 + v24 * -2.0) / a3;
-    v26 = v24 / a3;
+    v25 = (height + v24 * -2.0) / height;
+    v26 = v24 / height;
     v27 = *v38;
     v28 = 1.79769313e308;
     do
@@ -535,7 +535,7 @@ LABEL_9:
 
         v33 = v26 + v25 * ((v28 - v32 - v12) / v23);
         v34 = [MEMORY[0x277CCABB0] numberWithDouble:v33];
-        [v18 addObject:v34];
+        [array addObject:v34];
 
         if (!v22)
         {
@@ -563,7 +563,7 @@ LABEL_9:
     v22 = 0;
   }
 
-  v9[2](v9, v18, v22);
+  handlerCopy[2](handlerCopy, array, v22);
   v36 = *MEMORY[0x277D85DE8];
 }
 

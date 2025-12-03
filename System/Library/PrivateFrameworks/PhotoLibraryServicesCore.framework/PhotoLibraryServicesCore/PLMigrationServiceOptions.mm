@@ -1,10 +1,10 @@
 @interface PLMigrationServiceOptions
 - (PLMigrationServiceOptions)init;
-- (PLMigrationServiceOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PLMigrationServiceOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)nameForOption:(unsigned __int16)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)nameForOption:(unsigned __int16)option;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLMigrationServiceOptions
@@ -15,9 +15,9 @@
   v12.receiver = self;
   v12.super_class = PLMigrationServiceOptions;
   v4 = [(PLMigrationServiceOptions *)&v12 description];
-  v5 = [(PLMigrationServiceOptions *)self clientBundleId];
-  v6 = [(PLMigrationServiceOptions *)self suggestedDestinationName];
-  [v3 appendFormat:@"%@ clientBundleId=%@ suggestedDestinationName=%@ options[%d]={", v4, v5, v6, -[PLMigrationServiceOptions option](self, "option")];
+  clientBundleId = [(PLMigrationServiceOptions *)self clientBundleId];
+  suggestedDestinationName = [(PLMigrationServiceOptions *)self suggestedDestinationName];
+  [v3 appendFormat:@"%@ clientBundleId=%@ suggestedDestinationName=%@ options[%d]={", v4, clientBundleId, suggestedDestinationName, -[PLMigrationServiceOptions option](self, "option")];
 
   if ([(PLMigrationServiceOptions *)self option])
   {
@@ -50,18 +50,18 @@
   return v3;
 }
 
-- (id)nameForOption:(unsigned __int16)a3
+- (id)nameForOption:(unsigned __int16)option
 {
-  if (a3 > 15)
+  if (option > 15)
   {
-    if (a3 <= 63)
+    if (option <= 63)
     {
-      if (a3 == 16)
+      if (option == 16)
       {
         return @"NotifyTask";
       }
 
-      if (a3 == 32)
+      if (option == 32)
       {
         return @"CopyResources";
       }
@@ -69,7 +69,7 @@
 
     else
     {
-      switch(a3)
+      switch(option)
       {
         case 0x40u:
           return @"PreserveProxies";
@@ -81,14 +81,14 @@
     }
   }
 
-  else if (a3 <= 1)
+  else if (option <= 1)
   {
-    if (!a3)
+    if (!option)
     {
       return @"None";
     }
 
-    if (a3 == 1)
+    if (option == 1)
     {
       return @"EnableMT";
     }
@@ -96,7 +96,7 @@
 
   else
   {
-    switch(a3)
+    switch(option)
     {
       case 2u:
         return @"Rebuild";
@@ -110,46 +110,46 @@
   return &stru_1F1F75560;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(PLMigrationServiceOptions *)self clientBundleId];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  clientBundleId = [(PLMigrationServiceOptions *)self clientBundleId];
   v6 = v4[2];
-  v4[2] = v5;
+  v4[2] = clientBundleId;
 
-  v7 = [(PLMigrationServiceOptions *)self suggestedDestinationName];
-  [v4 setSuggestedDestinationName:v7];
+  suggestedDestinationName = [(PLMigrationServiceOptions *)self suggestedDestinationName];
+  [v4 setSuggestedDestinationName:suggestedDestinationName];
 
   [v4 setOption:{-[PLMigrationServiceOptions option](self, "option")}];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(PLMigrationServiceOptions *)self clientBundleId];
-  [v6 encodeObject:v4 forKey:@"clientBundleId"];
+  coderCopy = coder;
+  clientBundleId = [(PLMigrationServiceOptions *)self clientBundleId];
+  [coderCopy encodeObject:clientBundleId forKey:@"clientBundleId"];
 
-  v5 = [(PLMigrationServiceOptions *)self suggestedDestinationName];
-  [v6 encodeObject:v5 forKey:@"suggestedDestinationName"];
+  suggestedDestinationName = [(PLMigrationServiceOptions *)self suggestedDestinationName];
+  [coderCopy encodeObject:suggestedDestinationName forKey:@"suggestedDestinationName"];
 
-  [v6 encodeInt32:-[PLMigrationServiceOptions option](self forKey:{"option"), @"option"}];
+  [coderCopy encodeInt32:-[PLMigrationServiceOptions option](self forKey:{"option"), @"option"}];
 }
 
-- (PLMigrationServiceOptions)initWithCoder:(id)a3
+- (PLMigrationServiceOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PLMigrationServiceOptions *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"clientBundleId"];
+    v6 = [coderCopy decodeObjectForKey:@"clientBundleId"];
     clientBundleId = v5->_clientBundleId;
     v5->_clientBundleId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suggestedDestinationName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suggestedDestinationName"];
     [(PLMigrationServiceOptions *)v5 setSuggestedDestinationName:v8];
 
-    -[PLMigrationServiceOptions setOption:](v5, "setOption:", [v4 decodeInt32ForKey:@"option"]);
+    -[PLMigrationServiceOptions setOption:](v5, "setOption:", [coderCopy decodeInt32ForKey:@"option"]);
   }
 
   return v5;
@@ -162,17 +162,17 @@
   v2 = [(PLMigrationServiceOptions *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AAE8] mainBundle];
-    v4 = [v3 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     clientBundleId = v2->_clientBundleId;
-    v2->_clientBundleId = v4;
+    v2->_clientBundleId = bundleIdentifier;
 
     if (!v2->_clientBundleId)
     {
-      v6 = [MEMORY[0x1E696AE30] processInfo];
-      v7 = [v6 processName];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
       v8 = v2->_clientBundleId;
-      v2->_clientBundleId = v7;
+      v2->_clientBundleId = processName;
     }
   }
 

@@ -1,8 +1,8 @@
 @interface ASRAlternativesBehaviour
-- (BOOL)handleTapWithRecognizer:(id)a3;
-- (void)asrAlternativeSelectedWithIndex:(int64_t)a3;
+- (BOOL)handleTapWithRecognizer:(id)recognizer;
+- (void)asrAlternativeSelectedWithIndex:(int64_t)index;
 - (void)dealloc;
-- (void)menuDidHideWithSender:(id)a3;
+- (void)menuDidHideWithSender:(id)sender;
 @end
 
 @implementation ASRAlternativesBehaviour
@@ -10,34 +10,34 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for ASRAlternativesBehaviour();
   [(ASRAlternativesBehaviour *)&v6 dealloc];
 }
 
-- (BOOL)handleTapWithRecognizer:(id)a3
+- (BOOL)handleTapWithRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_100012674(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  LOBYTE(self) = sub_100012674(recognizerCopy);
 
   return self & 1;
 }
 
-- (void)asrAlternativeSelectedWithIndex:(int64_t)a3
+- (void)asrAlternativeSelectedWithIndex:(int64_t)index
 {
-  v4 = self;
-  sub_1000127BC(a3);
+  selfCopy = self;
+  sub_1000127BC(index);
 }
 
-- (void)menuDidHideWithSender:(id)a3
+- (void)menuDidHideWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_10001297C();

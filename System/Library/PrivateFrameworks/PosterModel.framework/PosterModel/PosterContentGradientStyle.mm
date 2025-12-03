@@ -1,15 +1,15 @@
 @interface PosterContentGradientStyle
 - (_TtC11PosterModel26PosterContentGradientStyle)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PosterContentGradientStyle
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_25EDB857C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_25EDB857C(coderCopy);
 }
 
 - (_TtC11PosterModel26PosterContentGradientStyle)init

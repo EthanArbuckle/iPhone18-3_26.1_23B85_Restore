@@ -34,27 +34,27 @@
 {
   v11 = a3;
   v7 = a5;
-  v8 = [a1 URL];
-  v9 = [v8 _gkIsSecure];
+  v8 = [self URL];
+  _gkIsSecure = [v8 _gkIsSecure];
 
-  if (v9 && v11 && v7)
+  if (_gkIsSecure && v11 && v7)
   {
-    [a1 setValue:v11 forHTTPHeaderField:@"x-gk-player-id"];
+    [self setValue:v11 forHTTPHeaderField:@"x-gk-player-id"];
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(objc_opt_class(), "hashForPlayerID:", v11)];
-    [a1 setValue:v10 forHTTPHeaderField:@"x-gk-player-id-hash"];
+    [self setValue:v10 forHTTPHeaderField:@"x-gk-player-id-hash"];
 
-    [a1 setValue:v7 forHTTPHeaderField:@"x-gk-auth-token"];
+    [self setValue:v7 forHTTPHeaderField:@"x-gk-auth-token"];
   }
 }
 
 - (void)setGameDescriptor:()GKAdditions
 {
   v19 = a3;
-  v4 = [a1 URL];
-  v5 = [v4 _gkIsSecure];
+  v4 = [self URL];
+  _gkIsSecure = [v4 _gkIsSecure];
 
   v6 = v19;
-  if (!v19 || !v5)
+  if (!v19 || !_gkIsSecure)
   {
     goto LABEL_28;
   }
@@ -63,28 +63,28 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [v7 stringValue];
+    stringValue = [v7 stringValue];
 
-    v7 = v8;
+    v7 = stringValue;
   }
 
   if (v7)
   {
-    [a1 setValue:v7 forHTTPHeaderField:@"x-gk-adam-id"];
+    [self setValue:v7 forHTTPHeaderField:@"x-gk-adam-id"];
   }
 
   v9 = [v19 objectForKey:@"external-version"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [v9 stringValue];
+    stringValue2 = [v9 stringValue];
 
-    v9 = v10;
+    v9 = stringValue2;
   }
 
   if (v9)
   {
-    [a1 setValue:v9 forHTTPHeaderField:@"x-gk-external-version"];
+    [self setValue:v9 forHTTPHeaderField:@"x-gk-external-version"];
   }
 
   v11 = [v19 objectForKey:@"parent-bundle-id"];
@@ -92,7 +92,7 @@
   {
     v12 = v11;
 LABEL_14:
-    [a1 setValue:v12 forHTTPHeaderField:@"x-gk-bundle-id"];
+    [self setValue:v12 forHTTPHeaderField:@"x-gk-bundle-id"];
     goto LABEL_15;
   }
 
@@ -106,19 +106,19 @@ LABEL_15:
   v13 = [v19 objectForKey:@"bundle-version"];
   if (v13)
   {
-    [a1 setValue:v13 forHTTPHeaderField:@"x-gk-bundle-version"];
+    [self setValue:v13 forHTTPHeaderField:@"x-gk-bundle-version"];
   }
 
   v14 = [v19 objectForKey:@"platform"];
   if (v14)
   {
-    [a1 setValue:v14 forHTTPHeaderField:@"x-gk-platform"];
+    [self setValue:v14 forHTTPHeaderField:@"x-gk-platform"];
   }
 
   v15 = [v19 objectForKey:@"short-bundle-version"];
   if (v15)
   {
-    [a1 setValue:v15 forHTTPHeaderField:@"x-gk-short-bundle-version"];
+    [self setValue:v15 forHTTPHeaderField:@"x-gk-short-bundle-version"];
   }
 
   else
@@ -127,10 +127,10 @@ LABEL_15:
     v17 = [v16 applicationProxyForBundleID:v12];
     if ([v17 isInstalled] && (objc_msgSend(v17, "isRestricted") & 1) == 0)
     {
-      v18 = [v17 bundleShortVersion];
-      if (v18)
+      bundleShortVersion = [v17 bundleShortVersion];
+      if (bundleShortVersion)
       {
-        [a1 setValue:v18 forHTTPHeaderField:@"x-gk-short-bundle-version"];
+        [self setValue:bundleShortVersion forHTTPHeaderField:@"x-gk-short-bundle-version"];
       }
     }
   }
@@ -142,10 +142,10 @@ LABEL_28:
 - (void)setStoreMode:()GKAdditions
 {
   v8 = a3;
-  v4 = [a1 URL];
-  v5 = [v4 _gkIsSecure];
+  v4 = [self URL];
+  _gkIsSecure = [v4 _gkIsSecure];
 
-  if (v5)
+  if (_gkIsSecure)
   {
     if (v8)
     {
@@ -158,12 +158,12 @@ LABEL_28:
     }
 
     v6 = +[GKPreferences shared];
-    v7 = [v6 isStoreDemoModeEnabled];
+    isStoreDemoModeEnabled = [v6 isStoreDemoModeEnabled];
 
-    if (v7)
+    if (isStoreDemoModeEnabled)
     {
 LABEL_4:
-      [a1 setValue:@"true" forHTTPHeaderField:@"x-gk-store-mode"];
+      [self setValue:@"true" forHTTPHeaderField:@"x-gk-store-mode"];
     }
   }
 
@@ -173,39 +173,39 @@ LABEL_5:
 - (void)setRestrictions:()GKAdditions
 {
   v10 = a3;
-  v4 = [a1 URL];
-  v5 = [v4 _gkIsSecure];
+  v4 = [self URL];
+  _gkIsSecure = [v4 _gkIsSecure];
 
-  if (v5)
+  if (_gkIsSecure)
   {
     if (v10)
     {
       if ([v10 isMultiplayerGamingRestricted])
       {
-        [a1 setValue:@"true" forHTTPHeaderField:@"x-gk-restrict-multiplayer"];
+        [self setValue:@"true" forHTTPHeaderField:@"x-gk-restrict-multiplayer"];
       }
 
       if ([v10 isAddingFriendsRestricted])
       {
 LABEL_6:
-        [a1 setValue:@"true" forHTTPHeaderField:@"x-gk-restrict-friend-add"];
+        [self setValue:@"true" forHTTPHeaderField:@"x-gk-restrict-friend-add"];
       }
     }
 
     else
     {
       v6 = +[GKPreferences shared];
-      v7 = [v6 isMultiplayerGamingRestricted];
+      isMultiplayerGamingRestricted = [v6 isMultiplayerGamingRestricted];
 
-      if (v7)
+      if (isMultiplayerGamingRestricted)
       {
-        [a1 setValue:@"true" forHTTPHeaderField:@"x-gk-restrict-multiplayer"];
+        [self setValue:@"true" forHTTPHeaderField:@"x-gk-restrict-multiplayer"];
       }
 
       v8 = +[GKPreferences shared];
-      v9 = [v8 isAddingFriendsRestricted];
+      isAddingFriendsRestricted = [v8 isAddingFriendsRestricted];
 
-      if (v9)
+      if (isAddingFriendsRestricted)
       {
         goto LABEL_6;
       }
@@ -215,28 +215,28 @@ LABEL_6:
 
 - (void)setDeviceUniqueID
 {
-  v2 = [a1 URL];
-  v3 = [v2 _gkIsSecure];
+  v2 = [self URL];
+  _gkIsSecure = [v2 _gkIsSecure];
 
-  if (v3)
+  if (_gkIsSecure)
   {
     v5 = +[GKDevice currentDevice];
-    v4 = [v5 udid];
-    [a1 setValue:v4 forHTTPHeaderField:@"x-gk-udid"];
+    udid = [v5 udid];
+    [self setValue:udid forHTTPHeaderField:@"x-gk-udid"];
   }
 }
 
 - (void)setPushToken:()GKAdditions
 {
   v8 = a3;
-  v4 = [a1 URL];
-  v5 = [v4 _gkIsSecure];
+  v4 = [self URL];
+  _gkIsSecure = [v4 _gkIsSecure];
 
   v6 = v8;
-  if (v8 && v5)
+  if (v8 && _gkIsSecure)
   {
-    v7 = [v8 _gkAsHexString];
-    [a1 setValue:v7 forHTTPHeaderField:@"x-gk-push-token"];
+    _gkAsHexString = [v8 _gkAsHexString];
+    [self setValue:_gkAsHexString forHTTPHeaderField:@"x-gk-push-token"];
 
     v6 = v8;
   }
@@ -244,14 +244,14 @@ LABEL_6:
 
 - (void)setInternal:()GKAdditions
 {
-  v5 = [a1 URL];
-  v6 = [v5 _gkIsSecure];
+  v5 = [self URL];
+  _gkIsSecure = [v5 _gkIsSecure];
 
-  if (v6 && a3)
+  if (_gkIsSecure && a3)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithBool:1];
-    v7 = [v8 stringValue];
-    [a1 setValue:v7 forHTTPHeaderField:@"x-gk-internal"];
+    stringValue = [v8 stringValue];
+    [self setValue:stringValue forHTTPHeaderField:@"x-gk-internal"];
   }
 }
 
@@ -259,34 +259,34 @@ LABEL_6:
 {
   if (a3 && (a4 & 1) != 0)
   {
-    v6 = [a3 localeIdentifier];
+    localeIdentifier = [a3 localeIdentifier];
   }
 
   else
   {
     v7 = MEMORY[0x277CCA8D8];
     v8 = a3;
-    v6 = [v7 _gkPreferredUserLanguage];
+    localeIdentifier = [v7 _gkPreferredUserLanguage];
   }
 
-  v10 = v6;
-  [a1 setValue:v6 forHTTPHeaderField:@"accept-language"];
-  v9 = [a3 localeIdentifier];
+  v10 = localeIdentifier;
+  [self setValue:localeIdentifier forHTTPHeaderField:@"accept-language"];
+  localeIdentifier2 = [a3 localeIdentifier];
 
-  [a1 setValue:v9 forHTTPHeaderField:@"x-gk-region-format"];
+  [self setValue:localeIdentifier2 forHTTPHeaderField:@"x-gk-region-format"];
 }
 
 - (void)setSAPSignature:()GKAdditions
 {
   v8 = a3;
-  v4 = [a1 URL];
-  v5 = [v4 _gkIsSecure];
+  v4 = [self URL];
+  _gkIsSecure = [v4 _gkIsSecure];
 
   v6 = v8;
-  if (v8 && v5)
+  if (v8 && _gkIsSecure)
   {
     v7 = [v8 base64EncodedStringWithOptions:0];
-    [a1 setValue:v7 forHTTPHeaderField:@"x-gk-sap-signature"];
+    [self setValue:v7 forHTTPHeaderField:@"x-gk-sap-signature"];
 
     v6 = v8;
   }
@@ -295,13 +295,13 @@ LABEL_6:
 - (void)setSAPversion:()GKAdditions
 {
   v7 = a3;
-  v4 = [a1 URL];
-  v5 = [v4 _gkIsSecure];
+  v4 = [self URL];
+  _gkIsSecure = [v4 _gkIsSecure];
 
   v6 = v7;
-  if (v7 && v5)
+  if (v7 && _gkIsSecure)
   {
-    [a1 setValue:v7 forHTTPHeaderField:@"x-gk-sap-version"];
+    [self setValue:v7 forHTTPHeaderField:@"x-gk-sap-version"];
     v6 = v7;
   }
 }

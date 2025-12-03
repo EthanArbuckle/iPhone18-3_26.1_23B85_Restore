@@ -1,12 +1,12 @@
 @interface SKProductDiscount
 - (SKProductDiscount)init;
-- (SKProductDiscount)initWithDictionary:(id)a3;
-- (SKProductDiscount)initWithXPCEncoding:(id)a3;
+- (SKProductDiscount)initWithDictionary:(id)dictionary;
+- (SKProductDiscount)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
-- (void)_setIdentifier:(id)a3;
-- (void)_setPrice:(id)a3;
-- (void)_setPriceLocale:(id)a3;
-- (void)_setSubscriptionPeriod:(id)a3;
+- (void)_setIdentifier:(id)identifier;
+- (void)_setPrice:(id)price;
+- (void)_setPriceLocale:(id)locale;
+- (void)_setSubscriptionPeriod:(id)period;
 @end
 
 @implementation SKProductDiscount
@@ -26,27 +26,27 @@
   return v2;
 }
 
-- (void)_setPrice:(id)a3
+- (void)_setPrice:(id)price
 {
-  objc_storeStrong(self->_internal + 1, a3);
-  v4 = a3;
+  objc_storeStrong(self->_internal + 1, price);
+  priceCopy = price;
 }
 
-- (void)_setPriceLocale:(id)a3
+- (void)_setPriceLocale:(id)locale
 {
-  objc_storeStrong(self->_internal + 2, a3);
-  v4 = a3;
+  objc_storeStrong(self->_internal + 2, locale);
+  localeCopy = locale;
 }
 
-- (void)_setSubscriptionPeriod:(id)a3
+- (void)_setSubscriptionPeriod:(id)period
 {
-  objc_storeStrong(self->_internal + 4, a3);
-  v4 = a3;
+  objc_storeStrong(self->_internal + 4, period);
+  periodCopy = period;
 }
 
-- (void)_setIdentifier:(id)a3
+- (void)_setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   internal = self->_internal;
   v6 = internal[7];
   internal[7] = v4;
@@ -54,13 +54,13 @@
   _objc_release_x1(v4, v6);
 }
 
-- (SKProductDiscount)initWithDictionary:(id)a3
+- (SKProductDiscount)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(SKProductDiscount *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"pri"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"pri"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,8 +81,8 @@
       }
 
       v8 = [NSDecimalNumber alloc];
-      v9 = [v6 stringValue];
-      v7 = [v8 initWithString:v9];
+      stringValue = [v6 stringValue];
+      v7 = [v8 initWithString:stringValue];
 
       if (!v7)
       {
@@ -106,7 +106,7 @@
     objc_storeStrong(v5->_internal + 1, v13);
 
 LABEL_12:
-    v14 = [v4 objectForKeyedSubscript:@"per"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"per"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -117,7 +117,7 @@ LABEL_12:
       internal[4] = v15;
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"per-count"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"per-count"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -125,7 +125,7 @@ LABEL_12:
       *(v5->_internal + 5) = [v18 unsignedIntegerValue];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"mod"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"mod"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -185,11 +185,11 @@ LABEL_32:
   return v5;
 }
 
-- (SKProductDiscount)initWithXPCEncoding:(id)a3
+- (SKProductDiscount)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && xpc_get_type(v4) == &_xpc_type_dictionary)
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && xpc_get_type(encodingCopy) == &_xpc_type_dictionary)
   {
     v6 = [(SKProductDiscount *)self init];
     if (!v6)
@@ -229,15 +229,15 @@ LABEL_12:
       v21 = v20;
       if (v20)
       {
-        v22 = v20;
+        selfCopy = v20;
       }
 
       else
       {
-        v22 = self;
+        selfCopy = self;
       }
 
-      objc_storeStrong(v6->_internal + 1, v22);
+      objc_storeStrong(v6->_internal + 1, selfCopy);
 
       goto LABEL_17;
     }
@@ -246,8 +246,8 @@ LABEL_12:
     if (objc_opt_isKindOfClass())
     {
       v17 = [NSDecimalNumber alloc];
-      v18 = [(__CFDictionary *)v16 stringValue];
-      self = [v17 initWithString:v18];
+      stringValue = [(__CFDictionary *)v16 stringValue];
+      self = [v17 initWithString:stringValue];
 
       if (self)
       {
@@ -278,8 +278,8 @@ LABEL_5:
   xpc_dictionary_set_uint64(v3, "0", *(self->_internal + 5));
   xpc_dictionary_set_uint64(v3, "1", *(self->_internal + 3));
   sub_10018E448(v3, "2", *(self->_internal + 1));
-  v4 = [*(self->_internal + 4) copyXPCEncoding];
-  xpc_dictionary_set_value(v3, "4", v4);
+  copyXPCEncoding = [*(self->_internal + 4) copyXPCEncoding];
+  xpc_dictionary_set_value(v3, "4", copyXPCEncoding);
 
   sub_10018E448(v3, "5", *(self->_internal + 7));
   xpc_dictionary_set_uint64(v3, "6", *(self->_internal + 6));

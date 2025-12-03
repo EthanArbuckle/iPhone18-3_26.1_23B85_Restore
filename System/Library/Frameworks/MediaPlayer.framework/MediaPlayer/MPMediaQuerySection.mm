@@ -1,11 +1,11 @@
 @interface MPMediaQuerySection
 - (MPMediaQuerySection)init;
-- (MPMediaQuerySection)initWithCoder:(id)a3;
+- (MPMediaQuerySection)initWithCoder:(id)coder;
 - (NSRange)range;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPMediaQuerySection
@@ -19,39 +19,39 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_alloc(objc_opt_class()) _init];
-  [v4 setTitle:self->_title];
-  [v4 setRange:{self->_range.location, self->_range.length}];
-  [v4 setSectionIndexTitleIndex:self->_sectionIndexTitleIndex];
-  return v4;
+  _init = [objc_alloc(objc_opt_class()) _init];
+  [_init setTitle:self->_title];
+  [_init setRange:{self->_range.location, self->_range.length}];
+  [_init setSectionIndexTitleIndex:self->_sectionIndexTitleIndex];
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"MPTitle"];
-  [v5 encodeInteger:self->_range.location forKey:@"MPRangeLocation"];
-  [v5 encodeInteger:self->_range.length forKey:@"MPRangeLength"];
-  [v5 encodeInteger:self->_sectionIndexTitleIndex forKey:@"MPSectionIndex"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"MPTitle"];
+  [coderCopy encodeInteger:self->_range.location forKey:@"MPRangeLocation"];
+  [coderCopy encodeInteger:self->_range.length forKey:@"MPRangeLength"];
+  [coderCopy encodeInteger:self->_sectionIndexTitleIndex forKey:@"MPSectionIndex"];
 }
 
-- (MPMediaQuerySection)initWithCoder:(id)a3
+- (MPMediaQuerySection)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MPMediaQuerySection *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(MPMediaQuerySection *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPTitle"];
-    [(MPMediaQuerySection *)v5 setTitle:v6];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPTitle"];
+    [(MPMediaQuerySection *)_init setTitle:v6];
 
-    -[MPMediaQuerySection setRange:](v5, "setRange:", [v4 decodeIntegerForKey:@"MPRangeLocation"], objc_msgSend(v4, "decodeIntegerForKey:", @"MPRangeLength"));
-    -[MPMediaQuerySection setSectionIndexTitleIndex:](v5, "setSectionIndexTitleIndex:", [v4 decodeIntegerForKey:@"MPSectionIndex"]);
+    -[MPMediaQuerySection setRange:](_init, "setRange:", [coderCopy decodeIntegerForKey:@"MPRangeLocation"], objc_msgSend(coderCopy, "decodeIntegerForKey:", @"MPRangeLength"));
+    -[MPMediaQuerySection setSectionIndexTitleIndex:](_init, "setSectionIndexTitleIndex:", [coderCopy decodeIntegerForKey:@"MPSectionIndex"]);
   }
 
-  return v5;
+  return _init;
 }
 
 - (id)description

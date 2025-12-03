@@ -15,15 +15,15 @@
 
 - (id)uiModel
 {
-  v2 = [a1 attachmentType];
-  if (v2 > 5)
+  attachmentType = [self attachmentType];
+  if (attachmentType > 5)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = [objc_alloc(*off_1E846BE38[v2]) initWithAttachment:a1];
+    v3 = [objc_alloc(*off_1E846BE38[attachmentType]) initWithAttachment:self];
   }
 
   return v3;
@@ -34,11 +34,11 @@
   v10 = a3;
   v11 = a5;
   v12 = a6;
-  if ([a1 canInsertInlineAttachmentType:1 intoNote:v11 parentAttachment:v12])
+  if ([self canInsertInlineAttachmentType:1 intoNote:v11 parentAttachment:v12])
   {
-    v13 = [MEMORY[0x1E696AFB0] UUID];
-    v14 = [v13 UUIDString];
-    v15 = [a1 newHashtagAttachmentWithIdentifier:v14 hashtagText:v10 creatingHashtagIfNecessary:a4 note:v11 parentAttachment:v12];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v15 = [self newHashtagAttachmentWithIdentifier:uUIDString hashtagText:v10 creatingHashtagIfNecessary:a4 note:v11 parentAttachment:v12];
   }
 
   else
@@ -54,11 +54,11 @@
   v9 = a4;
   v10 = a5;
   v11 = a6;
-  if ([a1 canInsertInlineAttachmentType:1 intoNote:v10 parentAttachment:v11])
+  if ([self canInsertInlineAttachmentType:1 intoNote:v10 parentAttachment:v11])
   {
-    v12 = [MEMORY[0x1E696AFB0] UUID];
-    v13 = [v12 UUIDString];
-    v14 = [a1 newHashtagAttachmentWithIdentifier:v13 forHashtag:v9 note:v10 parentAttachment:v11];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v14 = [self newHashtagAttachmentWithIdentifier:uUIDString forHashtag:v9 note:v10 parentAttachment:v11];
   }
 
   else
@@ -75,11 +75,11 @@
   v11 = a4;
   v12 = a5;
   v13 = a6;
-  if ([a1 canInsertInlineAttachmentType:2 intoNote:v12 parentAttachment:v13])
+  if ([self canInsertInlineAttachmentType:2 intoNote:v12 parentAttachment:v13])
   {
-    v14 = [MEMORY[0x1E696AFB0] UUID];
-    v15 = [v14 UUIDString];
-    v16 = [a1 newMentionAttachmentWithIdentifier:v15 mentionText:v10 userRecordName:v11 note:v12 parentAttachment:v13];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v16 = [self newMentionAttachmentWithIdentifier:uUIDString mentionText:v10 userRecordName:v11 note:v12 parentAttachment:v13];
   }
 
   else
@@ -95,11 +95,11 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  if ([a1 canInsertInlineAttachmentType:3 intoNote:v9 parentAttachment:v10])
+  if ([self canInsertInlineAttachmentType:3 intoNote:v9 parentAttachment:v10])
   {
-    v11 = [MEMORY[0x1E696AFB0] UUID];
-    v12 = [v11 UUIDString];
-    v13 = [a1 newLinkAttachmentWithIdentifier:v12 toNote:v8 fromNote:v9 parentAttachment:v10];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v13 = [self newLinkAttachmentWithIdentifier:uUIDString toNote:v8 fromNote:v9 parentAttachment:v10];
   }
 
   else
@@ -117,11 +117,11 @@
   v14 = a5;
   v15 = a6;
   v16 = a7;
-  if ([a1 canInsertInlineAttachmentType:0 intoNote:v15 parentAttachment:v16])
+  if ([self canInsertInlineAttachmentType:0 intoNote:v15 parentAttachment:v16])
   {
-    v17 = [MEMORY[0x1E696AFB0] UUID];
-    v18 = [v17 UUIDString];
-    v19 = [a1 newAttachmentWithIdentifier:v18 typeUTI:v12 altText:v13 tokenContentIdentifier:v14 note:v15 parentAttachment:v16];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v19 = [self newAttachmentWithIdentifier:uUIDString typeUTI:v12 altText:v13 tokenContentIdentifier:v14 note:v15 parentAttachment:v16];
   }
 
   else
@@ -164,11 +164,11 @@
     v12 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v7 shortLoggingDescription];
+      shortLoggingDescription = [v7 shortLoggingDescription];
       v18 = 138412546;
       v19 = v9;
       v20 = 2112;
-      v21 = v13;
+      v21 = shortLoggingDescription;
       _os_log_impl(&dword_1D4171000, v12, OS_LOG_TYPE_INFO, "Rejected an attempt to insert %@ into a placeholder note: %@", &v18, 0x16u);
     }
 
@@ -180,14 +180,14 @@
     v14 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [v8 shortLoggingDescription];
-      v16 = [v7 shortLoggingDescription];
+      shortLoggingDescription2 = [v8 shortLoggingDescription];
+      shortLoggingDescription3 = [v7 shortLoggingDescription];
       v18 = 138412802;
       v19 = v9;
       v20 = 2112;
-      v21 = v15;
+      v21 = shortLoggingDescription2;
       v22 = 2112;
-      v23 = v16;
+      v23 = shortLoggingDescription3;
       _os_log_impl(&dword_1D4171000, v14, OS_LOG_TYPE_INFO, "Rejected an attempt to insert %@ into a placeholder attachment %@ in note: %@", &v18, 0x20u);
     }
 
@@ -199,18 +199,18 @@
 
 - (void)accessibilityAnnounceCreationWithVoiceOver
 {
-  if (![a1 _checkIsVoiceOverRunning])
+  if (![self _checkIsVoiceOverRunning])
   {
     return;
   }
 
-  if ([a1 isHashtagAttachment])
+  if ([self isHashtagAttachment])
   {
     v2 = @"Inserted %@";
     goto LABEL_7;
   }
 
-  if ([a1 isMentionAttachment])
+  if ([self isMentionAttachment])
   {
     v2 = @"Inserted mention %@";
 LABEL_7:
@@ -218,15 +218,15 @@ LABEL_7:
     if (v3)
     {
       v8 = v3;
-      v4 = [a1 displayText];
+      displayText = [self displayText];
 
-      if (v4)
+      if (displayText)
       {
         v5 = MEMORY[0x1E696AEC0];
-        v6 = [a1 displayText];
-        v7 = [v5 localizedStringWithFormat:v8, v6];
+        displayText2 = [self displayText];
+        v7 = [v5 localizedStringWithFormat:v8, displayText2];
 
-        [a1 _announceAttachmentChangeWithString:v7];
+        [self _announceAttachmentChangeWithString:v7];
       }
 
       v3 = v8;
@@ -241,18 +241,18 @@ LABEL_12:
 
 - (void)accessibilityAnnounceDeletionWithVoiceOver
 {
-  if (![a1 _checkIsVoiceOverRunning])
+  if (![self _checkIsVoiceOverRunning])
   {
     return;
   }
 
-  if ([a1 isHashtagAttachment])
+  if ([self isHashtagAttachment])
   {
     v2 = @"Deleted %@";
     goto LABEL_7;
   }
 
-  if ([a1 isMentionAttachment])
+  if ([self isMentionAttachment])
   {
     v2 = @"Deleted mention %@";
 LABEL_7:
@@ -260,15 +260,15 @@ LABEL_7:
     if (v3)
     {
       v8 = v3;
-      v4 = [a1 displayText];
+      displayText = [self displayText];
 
-      if (v4)
+      if (displayText)
       {
         v5 = MEMORY[0x1E696AEC0];
-        v6 = [a1 displayText];
-        v7 = [v5 localizedStringWithFormat:v8, v6];
+        displayText2 = [self displayText];
+        v7 = [v5 localizedStringWithFormat:v8, displayText2];
 
-        [a1 _announceAttachmentChangeWithString:v7];
+        [self _announceAttachmentChangeWithString:v7];
       }
 
       v3 = v8;

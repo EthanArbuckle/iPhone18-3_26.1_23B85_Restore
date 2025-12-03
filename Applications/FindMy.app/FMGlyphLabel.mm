@@ -1,13 +1,13 @@
 @interface FMGlyphLabel
 - (NSString)accessibilityLabel;
-- (_TtC6FindMy12FMGlyphLabel)initWithCoder:(id)a3;
-- (_TtC6FindMy12FMGlyphLabel)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy12FMGlyphLabel)initWithCoder:(id)coder;
+- (_TtC6FindMy12FMGlyphLabel)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation FMGlyphLabel
 
-- (_TtC6FindMy12FMGlyphLabel)initWithCoder:(id)a3
+- (_TtC6FindMy12FMGlyphLabel)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC6FindMy12FMGlyphLabel_titleLabel;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(UILabel) init];
@@ -21,11 +21,11 @@
 - (NSString)accessibilityLabel
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy12FMGlyphLabel_titleLabel);
-  v3 = self;
-  v4 = [v2 text];
-  if (v4)
+  selfCopy = self;
+  text = [v2 text];
+  if (text)
   {
-    v5 = v4;
+    v5 = text;
     static String._unconditionallyBridgeFromObjectiveC(_:)();
 
     v6 = String._bridgeToObjectiveC()();
@@ -51,7 +51,7 @@
   [v3 setPreferredMaxLayoutWidth:v4 * 0.8];
 }
 
-- (_TtC6FindMy12FMGlyphLabel)initWithFrame:(CGRect)a3
+- (_TtC6FindMy12FMGlyphLabel)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,22 +1,22 @@
 @interface WBSTestResultsReport
-+ (id)reportForActualResults:(id)a3 expectedResults:(id)a4 expectedResultsName:(id)a5 descriptiveResultsName:(id)a6 uniformTypeIdentifier:(id)a7 forStage:(id)a8 forTest:(id)a9 inBundle:(id)a10;
-+ (id)reportForError:(id)a3 descriptiveResultsName:(id)a4 forStage:(id)a5 forTest:(id)a6 inBundle:(id)a7;
-+ (id)reportForPerformance:(id)a3 forStage:(id)a4 forTest:(id)a5 inBundle:(id)a6;
-- (WBSTestResultsReport)initWithDictionaryRepresentation:(id)a3;
++ (id)reportForActualResults:(id)results expectedResults:(id)expectedResults expectedResultsName:(id)name descriptiveResultsName:(id)resultsName uniformTypeIdentifier:(id)identifier forStage:(id)stage forTest:(id)test inBundle:(id)self0;
++ (id)reportForError:(id)error descriptiveResultsName:(id)name forStage:(id)stage forTest:(id)test inBundle:(id)bundle;
++ (id)reportForPerformance:(id)performance forStage:(id)stage forTest:(id)test inBundle:(id)bundle;
+- (WBSTestResultsReport)initWithDictionaryRepresentation:(id)representation;
 - (unint64_t)reportType;
 @end
 
 @implementation WBSTestResultsReport
 
-- (WBSTestResultsReport)initWithDictionaryRepresentation:(id)a3
+- (WBSTestResultsReport)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v10.receiver = self;
   v10.super_class = WBSTestResultsReport;
   v5 = [(WBSTestResultsReport *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [representationCopy copy];
     dictionaryRepresentation = v5->_dictionaryRepresentation;
     v5->_dictionaryRepresentation = v6;
 
@@ -52,142 +52,142 @@
   return v3;
 }
 
-+ (id)reportForActualResults:(id)a3 expectedResults:(id)a4 expectedResultsName:(id)a5 descriptiveResultsName:(id)a6 uniformTypeIdentifier:(id)a7 forStage:(id)a8 forTest:(id)a9 inBundle:(id)a10
++ (id)reportForActualResults:(id)results expectedResults:(id)expectedResults expectedResultsName:(id)name descriptiveResultsName:(id)resultsName uniformTypeIdentifier:(id)identifier forStage:(id)stage forTest:(id)test inBundle:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  resultsCopy = results;
+  expectedResultsCopy = expectedResults;
+  nameCopy = name;
+  resultsNameCopy = resultsName;
+  identifierCopy = identifier;
+  stageCopy = stage;
+  testCopy = test;
+  bundleCopy = bundle;
   v23 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v23 setObject:@"results" forKeyedSubscript:@"type"];
-  if (v22)
+  if (bundleCopy)
   {
-    v24 = [v22 identifier];
-    [v23 setObject:v24 forKeyedSubscript:@"testBundle"];
+    identifier = [bundleCopy identifier];
+    [v23 setObject:identifier forKeyedSubscript:@"testBundle"];
   }
 
-  if (v21)
+  if (testCopy)
   {
-    v25 = [v21 identifier];
-    [v23 setObject:v25 forKeyedSubscript:@"testIdentifier"];
+    identifier2 = [testCopy identifier];
+    [v23 setObject:identifier2 forKeyedSubscript:@"testIdentifier"];
   }
 
-  if (v20)
+  if (stageCopy)
   {
-    [v23 setObject:v20 forKeyedSubscript:@"stage"];
+    [v23 setObject:stageCopy forKeyedSubscript:@"stage"];
   }
 
-  if (v15)
+  if (resultsCopy)
   {
-    [v23 setObject:v15 forKeyedSubscript:@"actualResults"];
+    [v23 setObject:resultsCopy forKeyedSubscript:@"actualResults"];
   }
 
-  if (v16)
+  if (expectedResultsCopy)
   {
-    [v23 setObject:v16 forKeyedSubscript:@"expectedResults"];
+    [v23 setObject:expectedResultsCopy forKeyedSubscript:@"expectedResults"];
   }
 
-  if (v17)
+  if (nameCopy)
   {
-    [v23 setObject:v17 forKeyedSubscript:@"expectedResultsName"];
+    [v23 setObject:nameCopy forKeyedSubscript:@"expectedResultsName"];
   }
 
-  if (v18)
+  if (resultsNameCopy)
   {
-    [v23 setObject:v18 forKeyedSubscript:@"resultsDescriptiveName"];
+    [v23 setObject:resultsNameCopy forKeyedSubscript:@"resultsDescriptiveName"];
   }
 
-  if (v19)
+  if (identifierCopy)
   {
-    [v23 setObject:v19 forKeyedSubscript:@"uti"];
+    [v23 setObject:identifierCopy forKeyedSubscript:@"uti"];
   }
 
-  v26 = [[a1 alloc] initWithDictionaryRepresentation:v23];
+  v26 = [[self alloc] initWithDictionaryRepresentation:v23];
 
   return v26;
 }
 
-+ (id)reportForPerformance:(id)a3 forStage:(id)a4 forTest:(id)a5 inBundle:(id)a6
++ (id)reportForPerformance:(id)performance forStage:(id)stage forTest:(id)test inBundle:(id)bundle
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  performanceCopy = performance;
+  stageCopy = stage;
+  testCopy = test;
+  bundleCopy = bundle;
   v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v14 setObject:@"performance" forKeyedSubscript:@"type"];
-  if (v13)
+  if (bundleCopy)
   {
-    v15 = [v13 identifier];
-    [v14 setObject:v15 forKeyedSubscript:@"testBundle"];
+    identifier = [bundleCopy identifier];
+    [v14 setObject:identifier forKeyedSubscript:@"testBundle"];
   }
 
-  if (v12)
+  if (testCopy)
   {
-    v16 = [v12 identifier];
-    [v14 setObject:v16 forKeyedSubscript:@"testIdentifier"];
+    identifier2 = [testCopy identifier];
+    [v14 setObject:identifier2 forKeyedSubscript:@"testIdentifier"];
   }
 
-  if (v11)
+  if (stageCopy)
   {
-    [v14 setObject:v11 forKeyedSubscript:@"stage"];
+    [v14 setObject:stageCopy forKeyedSubscript:@"stage"];
   }
 
-  if (v10)
+  if (performanceCopy)
   {
-    [v14 setObject:v10 forKeyedSubscript:@"values"];
+    [v14 setObject:performanceCopy forKeyedSubscript:@"values"];
   }
 
-  v17 = [[a1 alloc] initWithDictionaryRepresentation:v14];
+  v17 = [[self alloc] initWithDictionaryRepresentation:v14];
 
   return v17;
 }
 
-+ (id)reportForError:(id)a3 descriptiveResultsName:(id)a4 forStage:(id)a5 forTest:(id)a6 inBundle:(id)a7
++ (id)reportForError:(id)error descriptiveResultsName:(id)name forStage:(id)stage forTest:(id)test inBundle:(id)bundle
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  nameCopy = name;
+  stageCopy = stage;
+  testCopy = test;
+  bundleCopy = bundle;
   v16 = MEMORY[0x1E695DF90];
-  v17 = a3;
+  errorCopy = error;
   v18 = objc_alloc_init(v16);
   [v18 setObject:@"error" forKeyedSubscript:@"type"];
-  if (v15)
+  if (bundleCopy)
   {
-    v19 = [v15 identifier];
-    [v18 setObject:v19 forKeyedSubscript:@"testBundle"];
+    identifier = [bundleCopy identifier];
+    [v18 setObject:identifier forKeyedSubscript:@"testBundle"];
   }
 
-  if (v14)
+  if (testCopy)
   {
-    v20 = [v14 identifier];
-    [v18 setObject:v20 forKeyedSubscript:@"testIdentifier"];
+    identifier2 = [testCopy identifier];
+    [v18 setObject:identifier2 forKeyedSubscript:@"testIdentifier"];
   }
 
-  if (v13)
+  if (stageCopy)
   {
-    [v18 setObject:v13 forKeyedSubscript:@"stage"];
+    [v18 setObject:stageCopy forKeyedSubscript:@"stage"];
   }
 
-  if (v12)
+  if (nameCopy)
   {
-    [v18 setObject:v12 forKeyedSubscript:@"resultsDescriptiveName"];
+    [v18 setObject:nameCopy forKeyedSubscript:@"resultsDescriptiveName"];
   }
 
-  v21 = [v17 domain];
-  [v18 setObject:v21 forKeyedSubscript:@"domain"];
+  domain = [errorCopy domain];
+  [v18 setObject:domain forKeyedSubscript:@"domain"];
 
-  v22 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v17, "code")}];
+  v22 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
   [v18 setObject:v22 forKeyedSubscript:@"code"];
 
-  v23 = [v17 localizedDescription];
+  localizedDescription = [errorCopy localizedDescription];
 
-  [v18 setObject:v23 forKeyedSubscript:@"message"];
-  v24 = [[a1 alloc] initWithDictionaryRepresentation:v18];
+  [v18 setObject:localizedDescription forKeyedSubscript:@"message"];
+  v24 = [[self alloc] initWithDictionaryRepresentation:v18];
 
   return v24;
 }

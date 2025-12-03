@@ -1,7 +1,7 @@
 @interface PGGraphPublicEventLocalizedCategoryNode
-- (BOOL)hasProperties:(id)a3;
-- (PGGraphPublicEventLocalizedCategoryNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (PGGraphPublicEventLocalizedCategoryNode)initWithLabel:(id)a3 level:(unint64_t)a4;
+- (BOOL)hasProperties:(id)properties;
+- (PGGraphPublicEventLocalizedCategoryNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (PGGraphPublicEventLocalizedCategoryNode)initWithLabel:(id)label level:(unint64_t)level;
 - (id)description;
 - (id)propertyDictionary;
 @end
@@ -32,11 +32,11 @@
   return v3;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"lvl"];
     v7 = v6;
@@ -51,30 +51,30 @@
   return v8;
 }
 
-- (PGGraphPublicEventLocalizedCategoryNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphPublicEventLocalizedCategoryNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v7 = a3;
-  v8 = [a5 objectForKeyedSubscript:@"lvl"];
-  v9 = [v8 unsignedIntegerValue];
+  labelCopy = label;
+  v8 = [properties objectForKeyedSubscript:@"lvl"];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  v10 = [(PGGraphPublicEventLocalizedCategoryNode *)self initWithLabel:v7 level:v9];
+  v10 = [(PGGraphPublicEventLocalizedCategoryNode *)self initWithLabel:labelCopy level:unsignedIntegerValue];
   return v10;
 }
 
-- (PGGraphPublicEventLocalizedCategoryNode)initWithLabel:(id)a3 level:(unint64_t)a4
+- (PGGraphPublicEventLocalizedCategoryNode)initWithLabel:(id)label level:(unint64_t)level
 {
-  v4 = a4;
-  v6 = a3;
+  levelCopy = level;
+  labelCopy = label;
   v11.receiver = self;
   v11.super_class = PGGraphPublicEventLocalizedCategoryNode;
   v7 = [(PGGraphNode *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [labelCopy copy];
     label = v7->_label;
     v7->_label = v8;
 
-    *(v7 + 32) = v4;
+    *(v7 + 32) = levelCopy;
   }
 
   return v7;

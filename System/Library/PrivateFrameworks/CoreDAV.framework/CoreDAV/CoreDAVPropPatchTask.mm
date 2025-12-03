@@ -1,21 +1,21 @@
 @interface CoreDAVPropPatchTask
-- (CoreDAVPropPatchTask)initWithPropertiesToSet:(id)a3 andRemove:(id)a4 atURL:(id)a5;
+- (CoreDAVPropPatchTask)initWithPropertiesToSet:(id)set andRemove:(id)remove atURL:(id)l;
 - (id)additionalHeaderValues;
-- (id)copyDefaultParserForContentType:(id)a3;
+- (id)copyDefaultParserForContentType:(id)type;
 - (id)description;
 - (id)requestBody;
-- (void)finishCoreDAVTaskWithError:(id)a3;
-- (void)setPriorOrderedURL:(id)a3;
+- (void)finishCoreDAVTaskWithError:(id)error;
+- (void)setPriorOrderedURL:(id)l;
 @end
 
 @implementation CoreDAVPropPatchTask
 
-- (CoreDAVPropPatchTask)initWithPropertiesToSet:(id)a3 andRemove:(id)a4 atURL:(id)a5
+- (CoreDAVPropPatchTask)initWithPropertiesToSet:(id)set andRemove:(id)remove atURL:(id)l
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!(v9 | v10) || ((v12 = v11, !v9) || ![v9 count]) && (!v10 || !objc_msgSend(v10, "count")))
+  setCopy = set;
+  removeCopy = remove;
+  lCopy = l;
+  if (!(setCopy | removeCopy) || ((v12 = lCopy, !setCopy) || ![setCopy count]) && (!removeCopy || !objc_msgSend(removeCopy, "count")))
   {
     v16 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"The 'setElements' set or the 'removeElements' set should be non-nil and non-empty" userInfo:0];
     objc_exception_throw(v16);
@@ -27,8 +27,8 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_propPatchSetElements, a3);
-    objc_storeStrong(&v14->_propPatchRemoveElements, a4);
+    objc_storeStrong(&v13->_propPatchSetElements, set);
+    objc_storeStrong(&v14->_propPatchRemoveElements, remove);
   }
 
   return v14;
@@ -42,11 +42,11 @@
   v4 = [(CoreDAVActionBackedTask *)&v15 description];
   [v3 appendFormat:@"[%@ ", v4];
 
-  v5 = [(CoreDAVPropPatchTask *)self propPatchSetElements];
-  if (v5)
+  propPatchSetElements = [(CoreDAVPropPatchTask *)self propPatchSetElements];
+  if (propPatchSetElements)
   {
-    v6 = [(CoreDAVPropPatchTask *)self propPatchSetElements];
-    [v3 appendFormat:@"| Number of properties to set: [%lu]", objc_msgSend(v6, "count")];
+    propPatchSetElements2 = [(CoreDAVPropPatchTask *)self propPatchSetElements];
+    [v3 appendFormat:@"| Number of properties to set: [%lu]", objc_msgSend(propPatchSetElements2, "count")];
   }
 
   else
@@ -54,11 +54,11 @@
     [v3 appendFormat:@"| Number of properties to set: [%lu]", 0];
   }
 
-  v7 = [(CoreDAVPropPatchTask *)self propPatchRemoveElements];
-  if (v7)
+  propPatchRemoveElements = [(CoreDAVPropPatchTask *)self propPatchRemoveElements];
+  if (propPatchRemoveElements)
   {
-    v8 = [(CoreDAVPropPatchTask *)self propPatchRemoveElements];
-    [v3 appendFormat:@"| Number of properties to remove: [%lu]", objc_msgSend(v8, "count")];
+    propPatchRemoveElements2 = [(CoreDAVPropPatchTask *)self propPatchRemoveElements];
+    [v3 appendFormat:@"| Number of properties to remove: [%lu]", objc_msgSend(propPatchRemoveElements2, "count")];
   }
 
   else
@@ -71,9 +71,9 @@
 
   if (v10)
   {
-    v11 = [(CoreDAVPropPatchTask *)self requestBody];
-    v12 = [v11 bytes];
-    v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v12 length:objc_msgSend(v11 encoding:{"length"), 4}];
+    requestBody = [(CoreDAVPropPatchTask *)self requestBody];
+    bytes = [requestBody bytes];
+    v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:bytes length:objc_msgSend(requestBody encoding:{"length"), 4}];
     [v3 appendFormat:@"\n  Request body: [%@]", v13];
   }
 
@@ -87,25 +87,25 @@
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v11.receiver = self;
   v11.super_class = CoreDAVPropPatchTask;
-  v4 = [(CoreDAVTask *)&v11 additionalHeaderValues];
-  [v3 addEntriesFromDictionary:v4];
+  additionalHeaderValues = [(CoreDAVTask *)&v11 additionalHeaderValues];
+  [v3 addEntriesFromDictionary:additionalHeaderValues];
 
   if (self->_sendOrder)
   {
-    v5 = [(NSURL *)self->_priorOrderedURL CDVRawLastPathComponent];
-    if ([v5 length])
+    cDVRawLastPathComponent = [(NSURL *)self->_priorOrderedURL CDVRawLastPathComponent];
+    if ([cDVRawLastPathComponent length])
     {
       v6 = MEMORY[0x277CCACA8];
       v7 = CDVRelativeOrderHeaderString();
-      v8 = [v6 stringWithFormat:@"%@%@", v7, v5];
+      stringValue = [v6 stringWithFormat:@"%@%@", v7, cDVRawLastPathComponent];
     }
 
     else
     {
       v9 = [MEMORY[0x277CCABB0] numberWithInt:self->_absoluteOrder];
-      v8 = [v9 stringValue];
+      stringValue = [v9 stringValue];
 
-      if (!v8)
+      if (!stringValue)
       {
 LABEL_6:
 
@@ -113,7 +113,7 @@ LABEL_6:
       }
     }
 
-    [v3 setObject:v8 forKey:@"Position"];
+    [v3 setObject:stringValue forKey:@"Position"];
     goto LABEL_6;
   }
 
@@ -128,12 +128,12 @@ LABEL_7:
   v3 = objc_alloc_init(CoreDAVXMLData);
   [(CoreDAVXMLData *)v3 setShouldAddFormattingSpaces:0];
   [(CoreDAVXMLData *)v3 startElement:@"propertyupdate" inNamespace:@"DAV:" withAttributeNamesAndValues:0];
-  v4 = [(CoreDAVPropPatchTask *)self propPatchSetElements];
-  if (v4)
+  propPatchSetElements = [(CoreDAVPropPatchTask *)self propPatchSetElements];
+  if (propPatchSetElements)
   {
-    v5 = v4;
-    v6 = [(CoreDAVPropPatchTask *)self propPatchSetElements];
-    v7 = [v6 count];
+    v5 = propPatchSetElements;
+    propPatchSetElements2 = [(CoreDAVPropPatchTask *)self propPatchSetElements];
+    v7 = [propPatchSetElements2 count];
 
     if (v7)
     {
@@ -143,8 +143,8 @@ LABEL_7:
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v8 = [(CoreDAVPropPatchTask *)self propPatchSetElements];
-      v9 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      propPatchSetElements3 = [(CoreDAVPropPatchTask *)self propPatchSetElements];
+      v9 = [propPatchSetElements3 countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v9)
       {
         v10 = v9;
@@ -155,13 +155,13 @@ LABEL_7:
           {
             if (*v30 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(propPatchSetElements3);
             }
 
             [*(*(&v29 + 1) + 8 * i) write:v3];
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
+          v10 = [propPatchSetElements3 countByEnumeratingWithState:&v29 objects:v34 count:16];
         }
 
         while (v10);
@@ -172,12 +172,12 @@ LABEL_7:
     }
   }
 
-  v13 = [(CoreDAVPropPatchTask *)self propPatchRemoveElements];
-  if (v13)
+  propPatchRemoveElements = [(CoreDAVPropPatchTask *)self propPatchRemoveElements];
+  if (propPatchRemoveElements)
   {
-    v14 = v13;
-    v15 = [(CoreDAVPropPatchTask *)self propPatchRemoveElements];
-    v16 = [v15 count];
+    v14 = propPatchRemoveElements;
+    propPatchRemoveElements2 = [(CoreDAVPropPatchTask *)self propPatchRemoveElements];
+    v16 = [propPatchRemoveElements2 count];
 
     if (v16)
     {
@@ -187,8 +187,8 @@ LABEL_7:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v17 = [(CoreDAVPropPatchTask *)self propPatchRemoveElements];
-      v18 = [v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      propPatchRemoveElements3 = [(CoreDAVPropPatchTask *)self propPatchRemoveElements];
+      v18 = [propPatchRemoveElements3 countByEnumeratingWithState:&v25 objects:v33 count:16];
       if (v18)
       {
         v19 = v18;
@@ -199,13 +199,13 @@ LABEL_7:
           {
             if (*v26 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(propPatchRemoveElements3);
             }
 
             [*(*(&v25 + 1) + 8 * j) write:v3];
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
+          v19 = [propPatchRemoveElements3 countByEnumeratingWithState:&v25 objects:v33 count:16];
         }
 
         while (v19);
@@ -217,18 +217,18 @@ LABEL_7:
   }
 
   [(CoreDAVXMLData *)v3 endElement:@"propertyupdate" inNamespace:@"DAV:"];
-  v22 = [(CoreDAVXMLData *)v3 data];
+  data = [(CoreDAVXMLData *)v3 data];
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v22;
+  return data;
 }
 
-- (id)copyDefaultParserForContentType:(id)a3
+- (id)copyDefaultParserForContentType:(id)type
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([CoreDAVXMLParser canHandleContentType:v4])
+  typeCopy = type;
+  if ([CoreDAVXMLParser canHandleContentType:typeCopy])
   {
     v5 = [CoreDAVXMLParser alloc];
     v6 = objc_opt_class();
@@ -247,32 +247,32 @@ LABEL_7:
     if (v11 && os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v16 = v4;
+      v16 = typeCopy;
       _os_log_impl(&dword_2452FB000, v11, OS_LOG_TYPE_ERROR, "Refusing to parse response to PROPPATCH because of content-type: [%@].", buf, 0xCu);
     }
 
     v14.receiver = self;
     v14.super_class = CoreDAVPropPatchTask;
-    v8 = [(CoreDAVTask *)&v14 copyDefaultParserForContentType:v4];
+    v8 = [(CoreDAVTask *)&v14 copyDefaultParserForContentType:typeCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (void)finishCoreDAVTaskWithError:(id)a3
+- (void)finishCoreDAVTaskWithError:(id)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [v4 code];
+    code = [errorCopy code];
     v7 = +[CoreDAVLogging sharedLogging];
     WeakRetained = objc_loadWeakRetained(&self->super.super._accountInfoProvider);
     v9 = [v7 logHandleForAccountInfoProvider:WeakRetained];
 
-    if (v6 == 1)
+    if (code == 1)
     {
       if (v9)
       {
@@ -322,7 +322,7 @@ LABEL_14:
     goto LABEL_27;
   }
 
-  v16 = [(CoreDAVTask *)self responseBodyParser];
+  responseBodyParser = [(CoreDAVTask *)self responseBodyParser];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -330,9 +330,9 @@ LABEL_14:
 
   else
   {
-    v20 = [(CoreDAVTask *)self simulated];
+    simulated = [(CoreDAVTask *)self simulated];
 
-    if (!v20)
+    if (!simulated)
     {
       v42 = +[CoreDAVLogging sharedLogging];
       v43 = objc_loadWeakRetained(&self->super.super._accountInfoProvider);
@@ -343,9 +343,9 @@ LABEL_14:
         v45 = v44;
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
-          v46 = [(CoreDAVTask *)self responseBodyParser];
+          responseBodyParser2 = [(CoreDAVTask *)self responseBodyParser];
           *buf = 138412290;
-          v49 = v46;
+          v49 = responseBodyParser2;
           _os_log_impl(&dword_2452FB000, v45, OS_LOG_TYPE_ERROR, "Unexpected parse response object for PROPPATCH: [%@].", buf, 0xCu);
         }
       }
@@ -357,23 +357,23 @@ LABEL_14:
 
   if ([(CoreDAVTask *)self simulated])
   {
-    v21 = [(CoreDAVTask *)self simulatedRootElement];
+    simulatedRootElement = [(CoreDAVTask *)self simulatedRootElement];
   }
 
   else
   {
-    v22 = [(CoreDAVTask *)self responseBodyParser];
-    v21 = [v22 rootElement];
+    responseBodyParser3 = [(CoreDAVTask *)self responseBodyParser];
+    simulatedRootElement = [responseBodyParser3 rootElement];
   }
 
-  v23 = [v21 responses];
-  v24 = [v23 anyObject];
-  [(CoreDAVPropPatchTask *)self setResponseItem:v24];
+  responses = [simulatedRootElement responses];
+  anyObject = [responses anyObject];
+  [(CoreDAVPropPatchTask *)self setResponseItem:anyObject];
 
-  v25 = [(CoreDAVPropPatchTask *)self responseItem];
-  LODWORD(v24) = [v25 hasPropertyError];
+  responseItem = [(CoreDAVPropPatchTask *)self responseItem];
+  LODWORD(anyObject) = [responseItem hasPropertyError];
 
-  if (!v24)
+  if (!anyObject)
   {
     goto LABEL_25;
   }
@@ -387,16 +387,16 @@ LABEL_14:
     v29 = v28;
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [(CoreDAVPropPatchTask *)self responseItem];
+      responseItem2 = [(CoreDAVPropPatchTask *)self responseItem];
       *buf = 138412290;
-      v49 = v30;
+      v49 = responseItem2;
       _os_log_impl(&dword_2452FB000, v29, OS_LOG_TYPE_DEFAULT, "There were some failures changing properties, according to the following response: [%@].", buf, 0xCu);
     }
   }
 
-  v31 = [(CoreDAVPropPatchTask *)self responseItem];
-  v32 = [v31 successfulPropertiesToValues];
-  v33 = [v32 count];
+  responseItem3 = [(CoreDAVPropPatchTask *)self responseItem];
+  successfulPropertiesToValues = [responseItem3 successfulPropertiesToValues];
+  v33 = [successfulPropertiesToValues count];
 
   if (!v33)
   {
@@ -418,22 +418,22 @@ LABEL_27:
     v5 = v34;
   }
 
-  v35 = [(CoreDAVTask *)self delegate];
+  delegate = [(CoreDAVTask *)self delegate];
   v36 = objc_opt_respondsToSelector();
 
   if (v36)
   {
-    v37 = [(CoreDAVPropPatchTask *)self responseItem];
+    responseItem4 = [(CoreDAVPropPatchTask *)self responseItem];
 
-    if (v37)
+    if (responseItem4)
     {
       v38 = MEMORY[0x277CBEA60];
-      v39 = [(CoreDAVPropPatchTask *)self responseItem];
-      v37 = [v38 arrayWithObject:v39];
+      responseItem5 = [(CoreDAVPropPatchTask *)self responseItem];
+      responseItem4 = [v38 arrayWithObject:responseItem5];
     }
 
-    v40 = [(CoreDAVTask *)self delegate];
-    [v40 propPatchTask:self parsedResponses:v37 error:v19];
+    delegate2 = [(CoreDAVTask *)self delegate];
+    [delegate2 propPatchTask:self parsedResponses:responseItem4 error:v19];
 
     [(CoreDAVTask *)self setDelegate:0];
   }
@@ -445,14 +445,14 @@ LABEL_27:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPriorOrderedURL:(id)a3
+- (void)setPriorOrderedURL:(id)l
 {
-  v5 = a3;
-  if (self->_priorOrderedURL != v5)
+  lCopy = l;
+  if (self->_priorOrderedURL != lCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_priorOrderedURL, a3);
-    v5 = v6;
+    v6 = lCopy;
+    objc_storeStrong(&self->_priorOrderedURL, l);
+    lCopy = v6;
     if (self->_priorOrderedURL)
     {
       self->_sendOrder = 1;

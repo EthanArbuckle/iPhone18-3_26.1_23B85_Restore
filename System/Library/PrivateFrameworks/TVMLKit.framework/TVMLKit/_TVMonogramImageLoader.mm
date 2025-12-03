@@ -1,10 +1,10 @@
 @interface _TVMonogramImageLoader
 + (id)sharedInstance;
 - (_TVMonogramImageLoader)init;
-- (id)URLForObject:(id)a3;
-- (id)imageKeyForObject:(id)a3;
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 requestLoader:(id)a7 completionHandler:(id)a8;
-- (void)cancelLoad:(id)a3;
+- (id)URLForObject:(id)object;
+- (id)imageKeyForObject:(id)object;
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction requestLoader:(id)loader completionHandler:(id)handler;
+- (void)cancelLoad:(id)load;
 @end
 
 @implementation _TVMonogramImageLoader
@@ -53,15 +53,15 @@
   return v2;
 }
 
-- (id)imageKeyForObject:(id)a3
+- (id)imageKeyForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     generatorByType = self->_generatorByType;
     v6 = MEMORY[0x277CCABB0];
-    v7 = v4;
+    v7 = objectCopy;
     v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(v7, "preferedMonogramType")}];
     v9 = [(NSDictionary *)generatorByType objectForKey:v8];
 
@@ -76,21 +76,21 @@
   return v10;
 }
 
-- (id)URLForObject:(id)a3
+- (id)URLForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 imageURL];
-    if ([_TVMonogramAppleAccountImageGenerator isAppleAccountsURL:v4])
+    imageURL = [objectCopy imageURL];
+    if ([_TVMonogramAppleAccountImageGenerator isAppleAccountsURL:imageURL])
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = v4;
+      v5 = imageURL;
     }
 
     v6 = v5;
@@ -104,45 +104,45 @@
   return v6;
 }
 
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 requestLoader:(id)a7 completionHandler:(id)a8
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction requestLoader:(id)loader completionHandler:(id)handler
 {
-  v11 = a5;
-  height = a4.height;
-  width = a4.width;
-  v15 = a3;
-  v16 = a7;
-  v17 = a8;
+  fitCopy = fit;
+  height = size.height;
+  width = size.width;
+  objectCopy = object;
+  loaderCopy = loader;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = v15;
+    v18 = objectCopy;
     v19 = v18;
-    if (v16)
+    if (loaderCopy)
     {
-      v20 = v16;
+      requestLoader = loaderCopy;
     }
 
     else
     {
-      v20 = [v18 requestLoader];
+      requestLoader = [v18 requestLoader];
     }
 
-    v22 = [v19 preferedMonogramType];
+    preferedMonogramType = [v19 preferedMonogramType];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __114___TVMonogramImageLoader_loadImageForObject_scaleToSize_cropToFit_imageDirection_requestLoader_completionHandler___block_invoke;
     v31[3] = &unk_279D6F138;
-    v32 = v17;
+    v32 = handlerCopy;
     v23 = MEMORY[0x26D6AFBB0](v31);
     generatorByType = self->_generatorByType;
-    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v22];
+    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:preferedMonogramType];
     v26 = [(NSDictionary *)generatorByType objectForKey:v25];
 
     if (v26)
     {
       v27 = v30;
-      v21 = [v26 loadImageForObject:v19 scaleToSize:v11 cropToFit:a6 imageDirection:v30 requestLoader:v23 completionHandler:{width, height}];
-      [v21 tv_setGeneratorType:v22];
+      v21 = [v26 loadImageForObject:v19 scaleToSize:fitCopy cropToFit:direction imageDirection:v30 requestLoader:v23 completionHandler:{width, height}];
+      [v21 tv_setGeneratorType:preferedMonogramType];
     }
 
     else
@@ -163,15 +163,15 @@
   return v21;
 }
 
-- (void)cancelLoad:(id)a3
+- (void)cancelLoad:(id)load
 {
-  v4 = a3;
-  v5 = [v4 tv_generatorType];
+  loadCopy = load;
+  tv_generatorType = [loadCopy tv_generatorType];
   generatorByType = self->_generatorByType;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:tv_generatorType];
   v8 = [(NSDictionary *)generatorByType objectForKey:v7];
 
-  [v8 cancelLoad:v4];
+  [v8 cancelLoad:loadCopy];
 }
 
 @end

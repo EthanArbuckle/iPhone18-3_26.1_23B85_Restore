@@ -1,14 +1,14 @@
 @interface NTKRichComplicationBaseCircularOpenMeteredGaugeImageView
-- ($8502DCEA08BBBE1AB2005217B3838BBD)_layoutConstraintsWithDevice:(SEL)a3 family:(id)a4;
-- (NTKRichComplicationBaseCircularOpenMeteredGaugeImageView)initWithFamily:(int64_t)a3;
+- ($8502DCEA08BBBE1AB2005217B3838BBD)_layoutConstraintsWithDevice:(SEL)device family:(id)family;
+- (NTKRichComplicationBaseCircularOpenMeteredGaugeImageView)initWithFamily:(int64_t)family;
 - (int64_t)_innerFilterStyle;
 - (int64_t)_outerFilterStyle;
 - (int64_t)tritiumUpdateMode;
 - (void)_editingDidEnd;
-- (void)_enumerateLabelsWithBlock:(id)a3;
+- (void)_enumerateLabelsWithBlock:(id)block;
 - (void)layoutSubviews;
-- (void)setPaused:(BOOL)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setPaused:(BOOL)paused;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
@@ -16,8 +16,8 @@
 
 - (int64_t)_outerFilterStyle
 {
-  v2 = [(CDRichComplicationView *)self device];
-  v3 = NTKShowGossamerUI(v2);
+  device = [(CDRichComplicationView *)self device];
+  v3 = NTKShowGossamerUI(device);
 
   if (v3)
   {
@@ -32,8 +32,8 @@
 
 - (int64_t)_innerFilterStyle
 {
-  v2 = [(CDRichComplicationView *)self device];
-  v3 = NTKShowGossamerUI(v2);
+  device = [(CDRichComplicationView *)self device];
+  v3 = NTKShowGossamerUI(device);
 
   if (v3)
   {
@@ -46,7 +46,7 @@
   }
 }
 
-- (NTKRichComplicationBaseCircularOpenMeteredGaugeImageView)initWithFamily:(int64_t)a3
+- (NTKRichComplicationBaseCircularOpenMeteredGaugeImageView)initWithFamily:(int64_t)family
 {
   v20.receiver = self;
   v20.super_class = NTKRichComplicationBaseCircularOpenMeteredGaugeImageView;
@@ -55,32 +55,32 @@
   if (v4)
   {
     v6 = [(CDRichComplicationView *)v4 device:0];
-    [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)v5 _layoutConstraintsWithDevice:v6 family:a3];
+    [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)v5 _layoutConstraintsWithDevice:v6 family:family];
 
     v7 = [off_27877BEA8 alloc];
-    v8 = [(CDRichComplicationView *)v5 device];
-    v9 = [v7 initWithFamily:a3 curveWidth:v8 padding:-[NTKRichComplicationBaseCircularOpenMeteredGaugeImageView _outerFilterStyle](v5 beginAngle:"_outerFilterStyle") endAngle:objc_msgSend(objc_opt_class() forDevice:"progressFillStyle") withFilterStyle:0.0 progressFillStyle:{0.0, 0.0, 6.28318531 - 0.0}];
+    device = [(CDRichComplicationView *)v5 device];
+    v9 = [v7 initWithFamily:family curveWidth:device padding:-[NTKRichComplicationBaseCircularOpenMeteredGaugeImageView _outerFilterStyle](v5 beginAngle:"_outerFilterStyle") endAngle:objc_msgSend(objc_opt_class() forDevice:"progressFillStyle") withFilterStyle:0.0 progressFillStyle:{0.0, 0.0, 6.28318531 - 0.0}];
     progressView = v5->_progressView;
     v5->_progressView = v9;
 
     [(CDRichComplicationCurvedProgressView *)v5->_progressView setFilterProvider:v5];
-    v11 = [(NTKRichComplicationCircularBaseView *)v5 contentView];
-    [v11 addSubview:v5->_progressView];
+    contentView = [(NTKRichComplicationCircularBaseView *)v5 contentView];
+    [contentView addSubview:v5->_progressView];
 
     v12 = [off_27877BEB0 alloc];
-    v13 = [(CDRichComplicationView *)v5 device];
-    v14 = [v12 initWithDevice:v13 useAccentColor:1];
+    device2 = [(CDRichComplicationView *)v5 device];
+    v14 = [v12 initWithDevice:device2 useAccentColor:1];
     centerImageView = v5->_centerImageView;
     v5->_centerImageView = v14;
 
     [(CDRichComplicationImageView *)v5->_centerImageView setPaused:[(CDRichComplicationView *)v5 paused]];
     [(CDRichComplicationImageView *)v5->_centerImageView setFilterProvider:v5];
-    v16 = [(NTKRichComplicationCircularBaseView *)v5 contentView];
-    [v16 addSubview:v5->_centerImageView];
+    contentView2 = [(NTKRichComplicationCircularBaseView *)v5 contentView];
+    [contentView2 addSubview:v5->_centerImageView];
 
-    v17 = [(NTKRichComplicationCircularBaseView *)v5 _createAndAddColoringLabel];
+    _createAndAddColoringLabel = [(NTKRichComplicationCircularBaseView *)v5 _createAndAddColoringLabel];
     smallLabel = v5->_smallLabel;
-    v5->_smallLabel = v17;
+    v5->_smallLabel = _createAndAddColoringLabel;
 
     [(CLKUIColoringLabel *)v5->_smallLabel setUppercase:0];
   }
@@ -94,29 +94,29 @@
   v46.receiver = self;
   v46.super_class = NTKRichComplicationBaseCircularOpenMeteredGaugeImageView;
   [(NTKRichComplicationCircularBaseView *)&v46 layoutSubviews];
-  v3 = [(CDRichComplicationView *)self device];
-  [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self _layoutConstraintsWithDevice:v3 family:[(CDRichComplicationView *)self family]];
+  device = [(CDRichComplicationView *)self device];
+  [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self _layoutConstraintsWithDevice:device family:[(CDRichComplicationView *)self family]];
 
-  v4 = [(NTKRichComplicationCircularBaseView *)self contentView];
-  [v4 bounds];
+  contentView = [(NTKRichComplicationCircularBaseView *)self contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self progressView];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  progressView = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self progressView];
+  [progressView setFrame:{v6, v8, v10, v12}];
 
-  v14 = [(CDRichComplicationView *)self device];
+  device2 = [(CDRichComplicationView *)self device];
   CLKPixelAlignRectForDevice();
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self centerImageView];
-  [v23 setFrame:{v16, v18, v20, v22}];
+  centerImageView = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self centerImageView];
+  [centerImageView setFrame:{v16, v18, v20, v22}];
 
-  v24 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self smallLabel];
+  smallLabel = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self smallLabel];
   [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self _smallLabelFontWeight];
   v26 = v25;
   v27 = [MEMORY[0x277CCABB0] numberWithDouble:0.0];
@@ -129,51 +129,51 @@
   v31 = [MEMORY[0x277CCABB0] numberWithDouble:0.0];
   v47[1] = v31;
   v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:2];
-  [(NTKRichComplicationCircularBaseView *)self _adjustFontSizeForLabel:v24 fontWeight:v29 possibleMaxWidths:v32 possibleFontSizes:v26];
+  [(NTKRichComplicationCircularBaseView *)self _adjustFontSizeForLabel:smallLabel fontWeight:v29 possibleMaxWidths:v32 possibleFontSizes:v26];
 
-  v33 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self smallLabel];
-  [v33 frame];
+  smallLabel2 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self smallLabel];
+  [smallLabel2 frame];
 
-  v34 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self smallLabel];
-  v35 = [v34 font];
-  [v35 ascender];
+  smallLabel3 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self smallLabel];
+  font = [smallLabel3 font];
+  [font ascender];
 
-  v36 = [(CDRichComplicationView *)self device];
+  device3 = [(CDRichComplicationView *)self device];
   CLKPixelAlignRectForDevice();
   v38 = v37;
   v40 = v39;
   v42 = v41;
   v44 = v43;
-  v45 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self smallLabel];
-  [v45 setFrame:{v38, v40, v42, v44}];
+  smallLabel4 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self smallLabel];
+  [smallLabel4 setFrame:{v38, v40, v42, v44}];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v6.receiver = self;
   v6.super_class = NTKRichComplicationBaseCircularOpenMeteredGaugeImageView;
   [(CDRichComplicationView *)&v6 setPaused:?];
-  v5 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self centerImageView];
-  [v5 setPaused:v3];
+  centerImageView = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self centerImageView];
+  [centerImageView setPaused:pausedCopy];
 }
 
 - (int64_t)tritiumUpdateMode
 {
-  v3 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self centerImageView];
-  v4 = [v3 tritiumUpdateMode];
+  centerImageView = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self centerImageView];
+  tritiumUpdateMode = [centerImageView tritiumUpdateMode];
 
-  if (v4)
+  if (tritiumUpdateMode)
   {
-    v5 = [v4 integerValue];
-    if (v5 >= 2)
+    integerValue = [tritiumUpdateMode integerValue];
+    if (integerValue >= 2)
     {
-      v6 = 2;
+      tritiumUpdateMode2 = 2;
     }
 
     else
     {
-      v6 = v5;
+      tritiumUpdateMode2 = integerValue;
     }
   }
 
@@ -181,18 +181,18 @@
   {
     v8.receiver = self;
     v8.super_class = NTKRichComplicationBaseCircularOpenMeteredGaugeImageView;
-    v6 = [(CDRichComplicationTemplateView *)&v8 tritiumUpdateMode];
+    tritiumUpdateMode2 = [(CDRichComplicationTemplateView *)&v8 tritiumUpdateMode];
   }
 
-  return v6;
+  return tritiumUpdateMode2;
 }
 
-- ($8502DCEA08BBBE1AB2005217B3838BBD)_layoutConstraintsWithDevice:(SEL)a3 family:(id)a4
+- ($8502DCEA08BBBE1AB2005217B3838BBD)_layoutConstraintsWithDevice:(SEL)device family:(id)family
 {
   memset(v13, 0, sizeof(v13));
   memset(v12, 0, sizeof(v12));
   v7 = v12;
-  ___LayoutConstants_block_invoke_39(a4, v12);
+  ___LayoutConstants_block_invoke_39(family, v12);
   if (a5 != 10)
   {
     if (a5 == 12)
@@ -221,44 +221,44 @@
   return result;
 }
 
-- (void)_enumerateLabelsWithBlock:(id)a3
+- (void)_enumerateLabelsWithBlock:(id)block
 {
   v6.receiver = self;
   v6.super_class = NTKRichComplicationBaseCircularOpenMeteredGaugeImageView;
-  v4 = a3;
-  [(CDRichComplicationView *)&v6 _enumerateLabelsWithBlock:v4];
+  blockCopy = block;
+  [(CDRichComplicationView *)&v6 _enumerateLabelsWithBlock:blockCopy];
   v5 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self smallLabel:v6.receiver];
-  v4[2](v4, v5);
+  blockCopy[2](blockCopy, v5);
 }
 
 - (void)_editingDidEnd
 {
-  v2 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self smallLabel];
-  [v2 editingDidEnd];
+  smallLabel = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self smallLabel];
+  [smallLabel editingDidEnd];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  v5 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self centerImageView];
-  [v5 transitionToMonochromeWithFraction:a3];
+  centerImageView = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self centerImageView];
+  [centerImageView transitionToMonochromeWithFraction:fraction];
 
-  v6 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self smallLabel];
-  [v6 transitionToMonochromeWithFraction:-[NTKRichComplicationBaseCircularOpenMeteredGaugeImageView _innerFilterStyle](self style:{"_innerFilterStyle"), a3}];
+  smallLabel = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self smallLabel];
+  [smallLabel transitionToMonochromeWithFraction:-[NTKRichComplicationBaseCircularOpenMeteredGaugeImageView _innerFilterStyle](self style:{"_innerFilterStyle"), fraction}];
 
-  v7 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self progressView];
-  [v7 transitionToMonochromeWithFraction:a3];
+  progressView = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self progressView];
+  [progressView transitionToMonochromeWithFraction:fraction];
 }
 
 - (void)updateMonochromeColor
 {
-  v3 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self centerImageView];
-  [v3 updateMonochromeColor];
+  centerImageView = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self centerImageView];
+  [centerImageView updateMonochromeColor];
 
-  v4 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self smallLabel];
-  [v4 updateMonochromeColorWithStyle:{-[NTKRichComplicationBaseCircularOpenMeteredGaugeImageView _innerFilterStyle](self, "_innerFilterStyle")}];
+  smallLabel = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self smallLabel];
+  [smallLabel updateMonochromeColorWithStyle:{-[NTKRichComplicationBaseCircularOpenMeteredGaugeImageView _innerFilterStyle](self, "_innerFilterStyle")}];
 
-  v5 = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self progressView];
-  [v5 updateMonochromeColor];
+  progressView = [(NTKRichComplicationBaseCircularOpenMeteredGaugeImageView *)self progressView];
+  [progressView updateMonochromeColor];
 }
 
 - (void)_layoutConstraintsWithDevice:(uint64_t)a1 family:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

@@ -1,39 +1,39 @@
 @interface CARSettingsOptionsPicker
-+ (CARSettingsOptionsPicker)pickerWithLabel:(id)a3 options:(id)a4 selectedValue:(id)a5 selectionHandler:(id)a6;
++ (CARSettingsOptionsPicker)pickerWithLabel:(id)label options:(id)options selectedValue:(id)value selectionHandler:(id)handler;
 - (CARSettingsCellSpecifierSection)specifierSection;
 - (CARSettingsOption)selectedOption;
-- (CARSettingsOptionsPicker)initWithLabel:(id)a3 options:(id)a4 selectedValue:(id)a5 selectionHandler:(id)a6;
+- (CARSettingsOptionsPicker)initWithLabel:(id)label options:(id)options selectedValue:(id)value selectionHandler:(id)handler;
 - (void)_handleUpdatedSelection;
 @end
 
 @implementation CARSettingsOptionsPicker
 
-+ (CARSettingsOptionsPicker)pickerWithLabel:(id)a3 options:(id)a4 selectedValue:(id)a5 selectionHandler:(id)a6
++ (CARSettingsOptionsPicker)pickerWithLabel:(id)label options:(id)options selectedValue:(id)value selectionHandler:(id)handler
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [objc_alloc(objc_opt_class()) initWithLabel:v12 options:v11 selectedValue:v10 selectionHandler:v9];
+  handlerCopy = handler;
+  valueCopy = value;
+  optionsCopy = options;
+  labelCopy = label;
+  v13 = [objc_alloc(objc_opt_class()) initWithLabel:labelCopy options:optionsCopy selectedValue:valueCopy selectionHandler:handlerCopy];
 
   return v13;
 }
 
-- (CARSettingsOptionsPicker)initWithLabel:(id)a3 options:(id)a4 selectedValue:(id)a5 selectionHandler:(id)a6
+- (CARSettingsOptionsPicker)initWithLabel:(id)label options:(id)options selectedValue:(id)value selectionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  labelCopy = label;
+  optionsCopy = options;
+  valueCopy = value;
+  handlerCopy = handler;
   v40.receiver = self;
   v40.super_class = CARSettingsOptionsPicker;
   v15 = [(CARSettingsOptionsPicker *)&v40 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_label, a3);
-    objc_storeStrong(&v16->_options, a4);
-    v17 = [v14 copy];
+    objc_storeStrong(&v15->_label, label);
+    objc_storeStrong(&v16->_options, options);
+    v17 = [handlerCopy copy];
     selectionHandler = v16->_selectionHandler;
     v16->_selectionHandler = v17;
 
@@ -45,13 +45,13 @@
     v31[1] = 3221225472;
     v31[2] = sub_10002B0DC;
     v31[3] = &unk_1000DB7A0;
-    v19 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v12, "count")}];
+    v19 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(optionsCopy, "count")}];
     v32 = v19;
-    v33 = v13;
+    v33 = valueCopy;
     v20 = v16;
     v34 = v20;
     v35 = &v36;
-    [v12 enumerateObjectsUsingBlock:v31];
+    [optionsCopy enumerateObjectsUsingBlock:v31];
     objc_initWeak(&location, v20);
     v21 = [CARSettingsGroupCellSpecifier alloc];
     v25 = _NSConcreteStackBlock;
@@ -76,34 +76,34 @@
 - (CARSettingsCellSpecifierSection)specifierSection
 {
   v3 = [CARSettingsCellSpecifierSection alloc];
-  v4 = [(CARSettingsOptionsPicker *)self label];
-  v5 = [(CARSettingsOptionsPicker *)self groupSpecifier];
-  v6 = [v5 groupSpecifiers];
-  v7 = [(CARSettingsCellSpecifierSection *)v3 initWithTitle:v4 specifiers:v6];
+  label = [(CARSettingsOptionsPicker *)self label];
+  groupSpecifier = [(CARSettingsOptionsPicker *)self groupSpecifier];
+  groupSpecifiers = [groupSpecifier groupSpecifiers];
+  v7 = [(CARSettingsCellSpecifierSection *)v3 initWithTitle:label specifiers:groupSpecifiers];
 
   return v7;
 }
 
 - (void)_handleUpdatedSelection
 {
-  v10 = [(CARSettingsOptionsPicker *)self options];
-  v3 = [(CARSettingsOptionsPicker *)self groupSpecifier];
-  v4 = [v3 selectedIndex];
+  options = [(CARSettingsOptionsPicker *)self options];
+  groupSpecifier = [(CARSettingsOptionsPicker *)self groupSpecifier];
+  selectedIndex = [groupSpecifier selectedIndex];
 
-  v5 = v4 >= [v10 count];
-  v6 = v10;
+  v5 = selectedIndex >= [options count];
+  v6 = options;
   if (!v5)
   {
-    v7 = [v10 objectAtIndex:v4];
+    v7 = [options objectAtIndex:selectedIndex];
     [(CARSettingsOptionsPicker *)self setSelectedOption:v7];
-    v8 = [(CARSettingsOptionsPicker *)self selectionHandler];
-    v9 = v8;
-    if (v8)
+    selectionHandler = [(CARSettingsOptionsPicker *)self selectionHandler];
+    v9 = selectionHandler;
+    if (selectionHandler)
     {
-      (*(v8 + 16))(v8, v7);
+      (*(selectionHandler + 16))(selectionHandler, v7);
     }
 
-    v6 = v10;
+    v6 = options;
   }
 }
 

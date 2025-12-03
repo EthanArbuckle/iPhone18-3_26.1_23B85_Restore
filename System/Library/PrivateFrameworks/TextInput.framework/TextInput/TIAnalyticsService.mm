@@ -1,20 +1,20 @@
 @interface TIAnalyticsService
 + (id)sharedInstance;
-+ (void)setMockInstance:(id)a3;
-- (BOOL)dispatchEventWithName:(id)a3 error:(id *)a4;
-- (BOOL)dispatchEventWithName:(id)a3 inputMode:(id)a4 error:(id *)a5;
-- (BOOL)dispatchEventWithName:(id)a3 payload:(id)a4 testingParameters:(id)a5 allowSparsePayload:(BOOL)a6 error:(id *)a7;
-- (BOOL)dispatchEventWithName:(id)a3 values:(id)a4 error:(id *)a5;
-- (BOOL)dispatchEventWithName:(id)a3 values:(id)a4 inputMode:(id)a5 error:(id *)a6;
++ (void)setMockInstance:(id)instance;
+- (BOOL)dispatchEventWithName:(id)name error:(id *)error;
+- (BOOL)dispatchEventWithName:(id)name inputMode:(id)mode error:(id *)error;
+- (BOOL)dispatchEventWithName:(id)name payload:(id)payload testingParameters:(id)parameters allowSparsePayload:(BOOL)sparsePayload error:(id *)error;
+- (BOOL)dispatchEventWithName:(id)name values:(id)values error:(id *)error;
+- (BOOL)dispatchEventWithName:(id)name values:(id)values inputMode:(id)mode error:(id *)error;
 - (TIAnalyticsService)init;
-- (TIAnalyticsService)initWithProvider:(id)a3;
-- (id)settingsFromInputMode:(id)a3 eventSpec:(id)a4 errors:(id)a5;
-- (id)settingsFromPayload:(id)a3 andValues:(id)a4 eventSpec:(id)a5 allowSparsePayload:(BOOL)a6 errors:(id)a7;
-- (void)_dispatchEventToDomain:(id)a3 withName:(id)a4 payload:(id)a5 values:(id)a6 inputMode:(id)a7 testingParameters:(id)a8 allowSparsePayload:(BOOL)a9 withCompletionHandler:(id)a10;
-- (void)_registerEventSpec:(id)a3 withCompletionHandler:(id)a4;
-- (void)addSettings:(id)a3 toPayload:(id)a4 errors:(id)a5;
-- (void)appendToErrors:(id)a3 code:(int64_t)a4 message:(id)a5;
-- (void)sendCoreAnalyticsEventToDomain:(id)a3 withName:(id)a4 payload:(id)a5;
+- (TIAnalyticsService)initWithProvider:(id)provider;
+- (id)settingsFromInputMode:(id)mode eventSpec:(id)spec errors:(id)errors;
+- (id)settingsFromPayload:(id)payload andValues:(id)values eventSpec:(id)spec allowSparsePayload:(BOOL)sparsePayload errors:(id)errors;
+- (void)_dispatchEventToDomain:(id)domain withName:(id)name payload:(id)payload values:(id)values inputMode:(id)mode testingParameters:(id)parameters allowSparsePayload:(BOOL)sparsePayload withCompletionHandler:(id)self0;
+- (void)_registerEventSpec:(id)spec withCompletionHandler:(id)handler;
+- (void)addSettings:(id)settings toPayload:(id)payload errors:(id)errors;
+- (void)appendToErrors:(id)errors code:(int64_t)code message:(id)message;
+- (void)sendCoreAnalyticsEventToDomain:(id)domain withName:(id)name payload:(id)payload;
 @end
 
 @implementation TIAnalyticsService
@@ -52,55 +52,55 @@ uint64_t __36__TIAnalyticsService_sharedInstance__block_invoke()
   return v4;
 }
 
-- (void)sendCoreAnalyticsEventToDomain:(id)a3 withName:(id)a4 payload:(id)a5
+- (void)sendCoreAnalyticsEventToDomain:(id)domain withName:(id)name payload:(id)payload
 {
-  v8 = a5;
-  v10 = [a3 stringByAppendingFormat:@".%@", a4];
-  v9 = [(TIAnalyticsService *)self provider];
-  [v9 dispatchEventWithName:v10 payload:v8];
+  payloadCopy = payload;
+  name = [domain stringByAppendingFormat:@".%@", name];
+  provider = [(TIAnalyticsService *)self provider];
+  [provider dispatchEventWithName:name payload:payloadCopy];
 }
 
-- (void)appendToErrors:(id)a3 code:(int64_t)a4 message:(id)a5
+- (void)appendToErrors:(id)errors code:(int64_t)code message:(id)message
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696AEC0];
-  v8 = a5;
-  v9 = a3;
-  v10 = [[v7 alloc] initWithFormat:v8 arguments:&v16];
+  messageCopy = message;
+  errorsCopy = errors;
+  v10 = [[v7 alloc] initWithFormat:messageCopy arguments:&v16];
 
   v11 = MEMORY[0x1E696ABC0];
   v14 = @"message";
   v15[0] = v10;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-  v13 = [v11 errorWithDomain:@"TIAnalyticsErrorDomain" code:a4 userInfo:v12];
-  [v9 addObject:v13];
+  v13 = [v11 errorWithDomain:@"TIAnalyticsErrorDomain" code:code userInfo:v12];
+  [errorsCopy addObject:v13];
 }
 
-- (id)settingsFromPayload:(id)a3 andValues:(id)a4 eventSpec:(id)a5 allowSparsePayload:(BOOL)a6 errors:(id)a7
+- (id)settingsFromPayload:(id)payload andValues:(id)values eventSpec:(id)spec allowSparsePayload:(BOOL)sparsePayload errors:(id)errors
 {
   v65 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
-  v14 = v13;
-  if (v10 && v11)
+  payloadCopy = payload;
+  valuesCopy = values;
+  specCopy = spec;
+  errorsCopy = errors;
+  v14 = errorsCopy;
+  if (payloadCopy && valuesCopy)
   {
     v15 = @"Either the 'payload' or the 'values' argument must be nil.";
-    v16 = self;
+    selfCopy2 = self;
     v17 = v14;
     v18 = 6;
 LABEL_11:
-    [(TIAnalyticsService *)v16 appendToErrors:v17 code:v18 message:v15];
+    [(TIAnalyticsService *)selfCopy2 appendToErrors:v17 code:v18 message:v15];
     v24 = 0;
     goto LABEL_37;
   }
 
-  if (!v11)
+  if (!valuesCopy)
   {
-    if (!v10)
+    if (!payloadCopy)
     {
-      v49 = v13;
+      v49 = errorsCopy;
       v46 = 0;
       v47 = 0;
       v25 = objc_opt_new();
@@ -109,45 +109,45 @@ LABEL_11:
 
 LABEL_9:
     v49 = v14;
-    v46 = v11;
-    v47 = v10;
-    v25 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v10];
+    v46 = valuesCopy;
+    v47 = payloadCopy;
+    v25 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:payloadCopy];
 LABEL_13:
     v24 = v25;
     goto LABEL_14;
   }
 
-  v19 = [v11 count];
-  v20 = [v12 fieldSpecs];
-  v21 = [v20 count];
+  v19 = [valuesCopy count];
+  fieldSpecs = [specCopy fieldSpecs];
+  v21 = [fieldSpecs count];
 
   if (v19 != v21)
   {
     v15 = @"The value count must match the field count.";
-    v16 = self;
+    selfCopy2 = self;
     v17 = v14;
     v18 = 7;
     goto LABEL_11;
   }
 
-  if (v10)
+  if (payloadCopy)
   {
     goto LABEL_9;
   }
 
   v49 = v14;
   v47 = 0;
-  v22 = [MEMORY[0x1E695DF90] dictionary];
-  v23 = [v12 fieldSpecs];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  fieldSpecs2 = [specCopy fieldSpecs];
   v60[0] = MEMORY[0x1E69E9820];
   v60[1] = 3221225472;
   v60[2] = __88__TIAnalyticsService_settingsFromPayload_andValues_eventSpec_allowSparsePayload_errors___block_invoke;
   v60[3] = &unk_1E6F4CCF0;
-  v24 = v22;
+  v24 = dictionary;
   v61 = v24;
-  v46 = v11;
-  v62 = v11;
-  [v23 enumerateObjectsUsingBlock:v60];
+  v46 = valuesCopy;
+  v62 = valuesCopy;
+  [fieldSpecs2 enumerateObjectsUsingBlock:v60];
 
 LABEL_14:
   v26 = objc_opt_new();
@@ -155,9 +155,9 @@ LABEL_14:
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v45 = v12;
-  v27 = [v12 fieldSpecs];
-  v28 = [v27 countByEnumeratingWithState:&v56 objects:v64 count:16];
+  v45 = specCopy;
+  fieldSpecs3 = [specCopy fieldSpecs];
+  v28 = [fieldSpecs3 countByEnumeratingWithState:&v56 objects:v64 count:16];
   if (!v28)
   {
     goto LABEL_27;
@@ -171,41 +171,41 @@ LABEL_14:
     {
       if (*v57 != v30)
       {
-        objc_enumerationMutation(v27);
+        objc_enumerationMutation(fieldSpecs3);
       }
 
       v32 = *(*(&v56 + 1) + 8 * i);
-      v33 = [v32 name];
-      v34 = [v24 objectForKey:v33];
+      name = [v32 name];
+      v34 = [v24 objectForKey:name];
 
       if (v34)
       {
         v55 = 0;
         v35 = [v32 validate:v34 error:&v55];
-        v36 = v55;
+        name2 = v55;
         if ((v35 & 1) == 0)
         {
-          [v49 addObject:v36];
+          [v49 addObject:name2];
         }
       }
 
       else
       {
-        if (a6)
+        if (sparsePayload)
         {
           goto LABEL_25;
         }
 
-        v36 = [v32 name];
-        [(TIAnalyticsService *)self appendToErrors:v49 code:8 message:@"The value for field '%@' is missing.", v36];
+        name2 = [v32 name];
+        [(TIAnalyticsService *)self appendToErrors:v49 code:8 message:@"The value for field '%@' is missing.", name2];
       }
 
 LABEL_25:
-      v37 = [v32 name];
-      [v26 addObject:v37];
+      name3 = [v32 name];
+      [v26 addObject:name3];
     }
 
-    v29 = [v27 countByEnumeratingWithState:&v56 objects:v64 count:16];
+    v29 = [fieldSpecs3 countByEnumeratingWithState:&v56 objects:v64 count:16];
   }
 
   while (v29);
@@ -215,9 +215,9 @@ LABEL_27:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v38 = [v24 allKeys];
-  v39 = [v38 countByEnumeratingWithState:&v51 objects:v63 count:16];
-  v12 = v45;
+  allKeys = [v24 allKeys];
+  v39 = [allKeys countByEnumeratingWithState:&v51 objects:v63 count:16];
+  specCopy = v45;
   v14 = v49;
   if (v39)
   {
@@ -229,7 +229,7 @@ LABEL_27:
       {
         if (*v52 != v41)
         {
-          objc_enumerationMutation(v38);
+          objc_enumerationMutation(allKeys);
         }
 
         v43 = *(*(&v51 + 1) + 8 * j);
@@ -239,14 +239,14 @@ LABEL_27:
         }
       }
 
-      v40 = [v38 countByEnumeratingWithState:&v51 objects:v63 count:16];
+      v40 = [allKeys countByEnumeratingWithState:&v51 objects:v63 count:16];
     }
 
     while (v40);
   }
 
-  v11 = v46;
-  v10 = v47;
+  valuesCopy = v46;
+  payloadCopy = v47;
 LABEL_37:
 
   return v24;
@@ -263,40 +263,40 @@ void __88__TIAnalyticsService_settingsFromPayload_andValues_eventSpec_allowSpars
   [v4 setObject:v8 forKey:v7];
 }
 
-- (id)settingsFromInputMode:(id)a3 eventSpec:(id)a4 errors:(id)a5
+- (id)settingsFromInputMode:(id)mode eventSpec:(id)spec errors:(id)errors
 {
-  v8 = a3;
-  v9 = a5;
-  if ([a4 isInputModeRequired])
+  modeCopy = mode;
+  errorsCopy = errors;
+  if ([spec isInputModeRequired])
   {
-    if (v8 && [v8 length])
+    if (modeCopy && [modeCopy length])
     {
       v10 = +[TIInputModeParser sharedInstance];
-      v11 = [v10 parseInputMode:v8];
+      v11 = [v10 parseInputMode:modeCopy];
 
       goto LABEL_11;
     }
 
     v12 = @"The input mode is required.";
-    v13 = self;
-    v14 = v9;
+    selfCopy2 = self;
+    v14 = errorsCopy;
     v15 = 4;
   }
 
   else
   {
-    if (!v8 || ![v8 length])
+    if (!modeCopy || ![modeCopy length])
     {
       goto LABEL_10;
     }
 
     v12 = @"The input mode is not required and should not be provided.";
-    v13 = self;
-    v14 = v9;
+    selfCopy2 = self;
+    v14 = errorsCopy;
     v15 = 5;
   }
 
-  [(TIAnalyticsService *)v13 appendToErrors:v14 code:v15 message:v12];
+  [(TIAnalyticsService *)selfCopy2 appendToErrors:v14 code:v15 message:v12];
 LABEL_10:
   v11 = 0;
 LABEL_11:
@@ -304,21 +304,21 @@ LABEL_11:
   return v11;
 }
 
-- (void)addSettings:(id)a3 toPayload:(id)a4 errors:(id)a5
+- (void)addSettings:(id)settings toPayload:(id)payload errors:(id)errors
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  settingsCopy = settings;
+  payloadCopy = payload;
+  errorsCopy = errors;
+  if (settingsCopy)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = v8;
-    v11 = [v8 allKeys];
-    v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v18 = settingsCopy;
+    allKeys = [settingsCopy allKeys];
+    v12 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
     {
       v13 = v12;
@@ -329,44 +329,44 @@ LABEL_11:
         {
           if (*v20 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allKeys);
           }
 
           v16 = *(*(&v19 + 1) + 8 * i);
-          v17 = [v9 objectForKeyedSubscript:v16];
+          v17 = [payloadCopy objectForKeyedSubscript:v16];
 
           if (v17)
           {
-            [(TIAnalyticsService *)self appendToErrors:v10 code:3 message:@"The event payload already includes the '%@' key.", v16];
+            [(TIAnalyticsService *)self appendToErrors:errorsCopy code:3 message:@"The event payload already includes the '%@' key.", v16];
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v13 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v13);
     }
 
-    v8 = v18;
-    [v9 addEntriesFromDictionary:v18];
+    settingsCopy = v18;
+    [payloadCopy addEntriesFromDictionary:v18];
   }
 }
 
-- (void)_dispatchEventToDomain:(id)a3 withName:(id)a4 payload:(id)a5 values:(id)a6 inputMode:(id)a7 testingParameters:(id)a8 allowSparsePayload:(BOOL)a9 withCompletionHandler:(id)a10
+- (void)_dispatchEventToDomain:(id)domain withName:(id)name payload:(id)payload values:(id)values inputMode:(id)mode testingParameters:(id)parameters allowSparsePayload:(BOOL)sparsePayload withCompletionHandler:(id)self0
 {
-  v16 = a3;
-  v17 = a10;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = [a4 copy];
-  v23 = [v21 copy];
+  domainCopy = domain;
+  handlerCopy = handler;
+  parametersCopy = parameters;
+  modeCopy = mode;
+  valuesCopy = values;
+  payloadCopy = payload;
+  v22 = [name copy];
+  v23 = [payloadCopy copy];
 
-  v24 = [v20 copy];
-  v25 = [v19 copy];
+  v24 = [valuesCopy copy];
+  v25 = [modeCopy copy];
 
-  v26 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v18 copyItems:1];
+  v26 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:parametersCopy copyItems:1];
   queue = self->_queue;
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
@@ -376,13 +376,13 @@ LABEL_11:
   v36 = v22;
   v37 = v25;
   v38 = v23;
-  v43 = a9;
+  sparsePayloadCopy = sparsePayload;
   v39 = v24;
   v40 = v26;
-  v41 = v16;
-  v42 = v17;
-  v28 = v17;
-  v29 = v16;
+  v41 = domainCopy;
+  v42 = handlerCopy;
+  v28 = handlerCopy;
+  v29 = domainCopy;
   v30 = v26;
   v31 = v24;
   v32 = v23;
@@ -474,55 +474,55 @@ void __138__TIAnalyticsService__dispatchEventToDomain_withName_payload_values_in
   }
 }
 
-- (BOOL)dispatchEventWithName:(id)a3 payload:(id)a4 testingParameters:(id)a5 allowSparsePayload:(BOOL)a6 error:(id *)a7
+- (BOOL)dispatchEventWithName:(id)name payload:(id)payload testingParameters:(id)parameters allowSparsePayload:(BOOL)sparsePayload error:(id *)error
 {
-  LOBYTE(v8) = a6;
-  [(TIAnalyticsService *)self _dispatchEventToDomain:@"com.apple.keyboard" withName:a3 payload:a4 values:0 inputMode:0 testingParameters:a5 allowSparsePayload:v8 withCompletionHandler:0];
+  LOBYTE(v8) = sparsePayload;
+  [(TIAnalyticsService *)self _dispatchEventToDomain:@"com.apple.keyboard" withName:name payload:payload values:0 inputMode:0 testingParameters:parameters allowSparsePayload:v8 withCompletionHandler:0];
   return 1;
 }
 
-- (BOOL)dispatchEventWithName:(id)a3 values:(id)a4 inputMode:(id)a5 error:(id *)a6
+- (BOOL)dispatchEventWithName:(id)name values:(id)values inputMode:(id)mode error:(id *)error
 {
   LOBYTE(v7) = 0;
-  [(TIAnalyticsService *)self _dispatchEventToDomain:@"com.apple.keyboard" withName:a3 payload:0 values:a4 inputMode:a5 testingParameters:0 allowSparsePayload:v7 withCompletionHandler:0];
+  [(TIAnalyticsService *)self _dispatchEventToDomain:@"com.apple.keyboard" withName:name payload:0 values:values inputMode:mode testingParameters:0 allowSparsePayload:v7 withCompletionHandler:0];
   return 1;
 }
 
-- (BOOL)dispatchEventWithName:(id)a3 values:(id)a4 error:(id *)a5
+- (BOOL)dispatchEventWithName:(id)name values:(id)values error:(id *)error
 {
   LOBYTE(v6) = 0;
-  [(TIAnalyticsService *)self _dispatchEventToDomain:@"com.apple.keyboard" withName:a3 payload:0 values:a4 inputMode:0 testingParameters:0 allowSparsePayload:v6 withCompletionHandler:0];
+  [(TIAnalyticsService *)self _dispatchEventToDomain:@"com.apple.keyboard" withName:name payload:0 values:values inputMode:0 testingParameters:0 allowSparsePayload:v6 withCompletionHandler:0];
   return 1;
 }
 
-- (BOOL)dispatchEventWithName:(id)a3 inputMode:(id)a4 error:(id *)a5
+- (BOOL)dispatchEventWithName:(id)name inputMode:(id)mode error:(id *)error
 {
   LOBYTE(v6) = 0;
-  [(TIAnalyticsService *)self _dispatchEventToDomain:@"com.apple.keyboard" withName:a3 payload:0 values:0 inputMode:a4 testingParameters:0 allowSparsePayload:v6 withCompletionHandler:0];
+  [(TIAnalyticsService *)self _dispatchEventToDomain:@"com.apple.keyboard" withName:name payload:0 values:0 inputMode:mode testingParameters:0 allowSparsePayload:v6 withCompletionHandler:0];
   return 1;
 }
 
-- (BOOL)dispatchEventWithName:(id)a3 error:(id *)a4
+- (BOOL)dispatchEventWithName:(id)name error:(id *)error
 {
   LOBYTE(v5) = 0;
-  [(TIAnalyticsService *)self _dispatchEventToDomain:@"com.apple.keyboard" withName:a3 payload:0 values:0 inputMode:0 testingParameters:0 allowSparsePayload:v5 withCompletionHandler:0];
+  [(TIAnalyticsService *)self _dispatchEventToDomain:@"com.apple.keyboard" withName:name payload:0 values:0 inputMode:0 testingParameters:0 allowSparsePayload:v5 withCompletionHandler:0];
   return 1;
 }
 
-- (void)_registerEventSpec:(id)a3 withCompletionHandler:(id)a4
+- (void)_registerEventSpec:(id)spec withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  specCopy = spec;
+  handlerCopy = handler;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __63__TIAnalyticsService__registerEventSpec_withCompletionHandler___block_invoke;
   v11[3] = &unk_1E6F4CC80;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = specCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = specCopy;
   TIDispatchAsync(queue, v11);
 }
 
@@ -572,9 +572,9 @@ void __63__TIAnalyticsService__registerEventSpec_withCompletionHandler___block_i
   }
 }
 
-- (TIAnalyticsService)initWithProvider:(id)a3
+- (TIAnalyticsService)initWithProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = TIAnalyticsService;
   v6 = [(TIAnalyticsService *)&v13 init];
@@ -585,7 +585,7 @@ void __63__TIAnalyticsService__registerEventSpec_withCompletionHandler___block_i
     queue = v6->_queue;
     v6->_queue = v8;
 
-    objc_storeStrong(&v6->_provider, a3);
+    objc_storeStrong(&v6->_provider, provider);
     v10 = objc_opt_new();
     eventSpecs = v6->_eventSpecs;
     v6->_eventSpecs = v10;
@@ -594,14 +594,14 @@ void __63__TIAnalyticsService__registerEventSpec_withCompletionHandler___block_i
   return v6;
 }
 
-+ (void)setMockInstance:(id)a3
++ (void)setMockInstance:(id)instance
 {
-  v4 = a3;
-  if (__mockInstance != v4)
+  instanceCopy = instance;
+  if (__mockInstance != instanceCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&__mockInstance, a3);
-    v4 = v5;
+    v5 = instanceCopy;
+    objc_storeStrong(&__mockInstance, instance);
+    instanceCopy = v5;
   }
 }
 

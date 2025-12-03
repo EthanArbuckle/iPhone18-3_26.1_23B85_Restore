@@ -1,5 +1,5 @@
 @interface REUIDonatedElementProperties
-+ (void)createWithDonatedAction:(id)a3 completion:(id)a4;
++ (void)createWithDonatedAction:(id)action completion:(id)completion;
 - (BOOL)_isMusicDonation;
 - (BOOL)_isPodcastsDonation;
 - (BOOL)isBeginWorkoutDonation;
@@ -11,77 +11,77 @@
 - (BOOL)supportsBackgroundExecution;
 - (BOOL)supportsLocalIntentExecution;
 - (NSString)bodyImageCompositingFilter;
-- (REUIDonatedElementProperties)initWithCoder:(id)a3;
+- (REUIDonatedElementProperties)initWithCoder:(id)coder;
 - (UIImage)bodyImage;
-- (id)_placeholderImageNameForBundleID:(id)a3;
-- (id)_scaleImageForDisplay:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_loadAppContentPropertiesWithCompletion:(id)a3;
-- (void)_loadContentForIntent:(id)a3 completion:(id)a4;
-- (void)_loadContentForRelevantShortcut:(id)a3 completion:(id)a4;
-- (void)_loadContentForUserActivity:(id)a3 completion:(id)a4;
-- (void)_loadContentForUserActivityOnShortcut:(id)a3 completion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadForAction:(id)a3 completion:(id)a4;
+- (id)_placeholderImageNameForBundleID:(id)d;
+- (id)_scaleImageForDisplay:(id)display;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_loadAppContentPropertiesWithCompletion:(id)completion;
+- (void)_loadContentForIntent:(id)intent completion:(id)completion;
+- (void)_loadContentForRelevantShortcut:(id)shortcut completion:(id)completion;
+- (void)_loadContentForUserActivity:(id)activity completion:(id)completion;
+- (void)_loadContentForUserActivityOnShortcut:(id)shortcut completion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadForAction:(id)action completion:(id)completion;
 @end
 
 @implementation REUIDonatedElementProperties
 
-+ (void)createWithDonatedAction:(id)a3 completion:(id)a4
++ (void)createWithDonatedAction:(id)action completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  actionCopy = action;
   v7 = objc_opt_new();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __67__REUIDonatedElementProperties_createWithDonatedAction_completion___block_invoke;
   v10[3] = &unk_279AF6248;
   v11 = v7;
-  v12 = v5;
+  v12 = completionCopy;
   v8 = v7;
-  v9 = v5;
-  [v8 loadForAction:v6 completion:v10];
+  v9 = completionCopy;
+  [v8 loadForAction:actionCopy completion:v10];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[REUIDonatedElementProperties allocWithZone:](REUIDonatedElementProperties init];
-  v6 = [(REUIDonatedElementProperties *)self bundleIdentifier];
+  bundleIdentifier = [(REUIDonatedElementProperties *)self bundleIdentifier];
   bundleIdentifier = v5->_bundleIdentifier;
-  v5->_bundleIdentifier = v6;
+  v5->_bundleIdentifier = bundleIdentifier;
 
-  v8 = [(REUIDonatedElementProperties *)self remoteBundleIdentifier];
+  remoteBundleIdentifier = [(REUIDonatedElementProperties *)self remoteBundleIdentifier];
   remoteBundleIdentifier = v5->_remoteBundleIdentifier;
-  v5->_remoteBundleIdentifier = v8;
+  v5->_remoteBundleIdentifier = remoteBundleIdentifier;
 
-  v10 = [(REUIDonatedElementProperties *)self localBundleIdentifier];
+  localBundleIdentifier = [(REUIDonatedElementProperties *)self localBundleIdentifier];
   localBundleIdentifier = v5->_localBundleIdentifier;
-  v5->_localBundleIdentifier = v10;
+  v5->_localBundleIdentifier = localBundleIdentifier;
 
   v5->_donationType = [(REUIDonatedElementProperties *)self donationType];
   v5->_localDonation = [(REUIDonatedElementProperties *)self isLocalDonation];
   v5->_actionIdentifier = [(REUIDonatedElementProperties *)self actionIdentifier];
-  v12 = [(NSString *)self->_appName copyWithZone:a3];
+  v12 = [(NSString *)self->_appName copyWithZone:zone];
   appName = v5->_appName;
   v5->_appName = v12;
 
   objc_storeStrong(&v5->_appIcon, self->_appIcon);
   objc_storeStrong(&v5->_fullsizeAppIcon, self->_fullsizeAppIcon);
-  v14 = [(NSString *)self->_title copyWithZone:a3];
+  v14 = [(NSString *)self->_title copyWithZone:zone];
   title = v5->_title;
   v5->_title = v14;
 
-  v16 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v16 = [(NSString *)self->_subtitle copyWithZone:zone];
   subtitle = v5->_subtitle;
   v5->_subtitle = v16;
 
   objc_storeStrong(&v5->_bodyImage, self->_bodyImage);
   objc_storeStrong(&v5->_userActivity, self->_userActivity);
-  v18 = [(INIntent *)self->_intent copyWithZone:a3];
+  v18 = [(INIntent *)self->_intent copyWithZone:zone];
   intent = v5->_intent;
   v5->_intent = v18;
 
-  v20 = [(INRelevantShortcut *)self->_relevantShortcut copyWithZone:a3];
+  v20 = [(INRelevantShortcut *)self->_relevantShortcut copyWithZone:zone];
   relevantShortcut = v5->_relevantShortcut;
   v5->_relevantShortcut = v20;
 
@@ -89,9 +89,9 @@
   return v5;
 }
 
-- (REUIDonatedElementProperties)initWithCoder:(id)a3
+- (REUIDonatedElementProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v40.receiver = self;
   v40.super_class = REUIDonatedElementProperties;
   v5 = [(REUIDonatedElementProperties *)&v40 init];
@@ -99,137 +99,137 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_bundleIdentifier);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_remoteBundleIdentifier);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     remoteBundleIdentifier = v5->_remoteBundleIdentifier;
     v5->_remoteBundleIdentifier = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromSelector(sel_localBundleIdentifier);
-    v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
     localBundleIdentifier = v5->_localBundleIdentifier;
     v5->_localBundleIdentifier = v16;
 
     v18 = NSStringFromSelector(sel_donationType);
-    v5->_donationType = [v4 decodeIntegerForKey:v18];
+    v5->_donationType = [coderCopy decodeIntegerForKey:v18];
 
     v19 = NSStringFromSelector(sel_isLocalDonation);
-    v5->_localDonation = [v4 decodeBoolForKey:v19];
+    v5->_localDonation = [coderCopy decodeBoolForKey:v19];
 
     v20 = NSStringFromSelector(sel_actionIdentifier);
-    v5->_actionIdentifier = [v4 decodeInt64ForKey:v20];
+    v5->_actionIdentifier = [coderCopy decodeInt64ForKey:v20];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appName"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appName"];
     appName = v5->_appName;
     v5->_appName = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appIcon"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appIcon"];
     appIcon = v5->_appIcon;
     v5->_appIcon = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fullsizeAppIcon"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fullsizeAppIcon"];
     fullsizeAppIcon = v5->_fullsizeAppIcon;
     v5->_fullsizeAppIcon = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bodyImage"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bodyImage"];
     bodyImage = v5->_bodyImage;
     v5->_bodyImage = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userActivity"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userActivity"];
     userActivity = v5->_userActivity;
     v5->_userActivity = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
     intent = v5->_intent;
     v5->_intent = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relevantShortcut"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relevantShortcut"];
     relevantShortcut = v5->_relevantShortcut;
     v5->_relevantShortcut = v37;
 
-    v5->_displayAppName = [v4 decodeBoolForKey:@"displayAppName"];
+    v5->_displayAppName = [coderCopy decodeBoolForKey:@"displayAppName"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v25 = a3;
-  v4 = [(REUIDonatedElementProperties *)self bundleIdentifier];
+  coderCopy = coder;
+  bundleIdentifier = [(REUIDonatedElementProperties *)self bundleIdentifier];
   v5 = NSStringFromSelector(sel_bundleIdentifier);
-  [v25 encodeObject:v4 forKey:v5];
+  [coderCopy encodeObject:bundleIdentifier forKey:v5];
 
-  v6 = [(REUIDonatedElementProperties *)self remoteBundleIdentifier];
+  remoteBundleIdentifier = [(REUIDonatedElementProperties *)self remoteBundleIdentifier];
   v7 = NSStringFromSelector(sel_remoteBundleIdentifier);
-  [v25 encodeObject:v6 forKey:v7];
+  [coderCopy encodeObject:remoteBundleIdentifier forKey:v7];
 
-  v8 = [(REUIDonatedElementProperties *)self localBundleIdentifier];
+  localBundleIdentifier = [(REUIDonatedElementProperties *)self localBundleIdentifier];
   v9 = NSStringFromSelector(sel_localBundleIdentifier);
-  [v25 encodeObject:v8 forKey:v9];
+  [coderCopy encodeObject:localBundleIdentifier forKey:v9];
 
-  v10 = [(REUIDonatedElementProperties *)self donationType];
+  donationType = [(REUIDonatedElementProperties *)self donationType];
   v11 = NSStringFromSelector(sel_donationType);
-  [v25 encodeInteger:v10 forKey:v11];
+  [coderCopy encodeInteger:donationType forKey:v11];
 
-  v12 = [(REUIDonatedElementProperties *)self isLocalDonation];
+  isLocalDonation = [(REUIDonatedElementProperties *)self isLocalDonation];
   v13 = NSStringFromSelector(sel_isLocalDonation);
-  [v25 encodeBool:v12 forKey:v13];
+  [coderCopy encodeBool:isLocalDonation forKey:v13];
 
-  v14 = [(REUIDonatedElementProperties *)self actionIdentifier];
+  actionIdentifier = [(REUIDonatedElementProperties *)self actionIdentifier];
   v15 = NSStringFromSelector(sel_actionIdentifier);
-  [v25 encodeInt64:v14 forKey:v15];
+  [coderCopy encodeInt64:actionIdentifier forKey:v15];
 
-  v16 = [(REUIDonatedElementProperties *)self appName];
-  [v25 encodeObject:v16 forKey:@"appName"];
+  appName = [(REUIDonatedElementProperties *)self appName];
+  [coderCopy encodeObject:appName forKey:@"appName"];
 
-  v17 = [(REUIDonatedElementProperties *)self appIcon];
-  [v25 encodeObject:v17 forKey:@"appIcon"];
+  appIcon = [(REUIDonatedElementProperties *)self appIcon];
+  [coderCopy encodeObject:appIcon forKey:@"appIcon"];
 
-  v18 = [(REUIDonatedElementProperties *)self fullsizeAppIcon];
-  [v25 encodeObject:v18 forKey:@"fullsizeAppIcon"];
+  fullsizeAppIcon = [(REUIDonatedElementProperties *)self fullsizeAppIcon];
+  [coderCopy encodeObject:fullsizeAppIcon forKey:@"fullsizeAppIcon"];
 
-  v19 = [(REUIDonatedElementProperties *)self title];
-  [v25 encodeObject:v19 forKey:@"title"];
+  title = [(REUIDonatedElementProperties *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v20 = [(REUIDonatedElementProperties *)self subtitle];
-  [v25 encodeObject:v20 forKey:@"subtitle"];
+  subtitle = [(REUIDonatedElementProperties *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"subtitle"];
 
-  v21 = [(REUIDonatedElementProperties *)self bodyImage];
-  [v25 encodeObject:v21 forKey:@"bodyImage"];
+  bodyImage = [(REUIDonatedElementProperties *)self bodyImage];
+  [coderCopy encodeObject:bodyImage forKey:@"bodyImage"];
 
-  v22 = [(REUIDonatedElementProperties *)self userActivity];
-  [v25 encodeObject:v22 forKey:@"userActivity"];
+  userActivity = [(REUIDonatedElementProperties *)self userActivity];
+  [coderCopy encodeObject:userActivity forKey:@"userActivity"];
 
-  v23 = [(REUIDonatedElementProperties *)self intent];
-  [v25 encodeObject:v23 forKey:@"intent"];
+  intent = [(REUIDonatedElementProperties *)self intent];
+  [coderCopy encodeObject:intent forKey:@"intent"];
 
-  v24 = [(REUIDonatedElementProperties *)self relevantShortcut];
-  [v25 encodeObject:v24 forKey:@"relevantShortcut"];
+  relevantShortcut = [(REUIDonatedElementProperties *)self relevantShortcut];
+  [coderCopy encodeObject:relevantShortcut forKey:@"relevantShortcut"];
 
-  [v25 encodeBool:-[REUIDonatedElementProperties displayAppName](self forKey:{"displayAppName"), @"displayAppName"}];
+  [coderCopy encodeBool:-[REUIDonatedElementProperties displayAppName](self forKey:{"displayAppName"), @"displayAppName"}];
 }
 
-- (void)loadForAction:(id)a3 completion:(id)a4
+- (void)loadForAction:(id)action completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  actionCopy = action;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = v7;
+    v8 = completionCopy;
   }
 
   else
@@ -237,22 +237,22 @@
     v8 = &__block_literal_global_73;
   }
 
-  v9 = [v6 bundleIdentifier];
+  bundleIdentifier = [actionCopy bundleIdentifier];
   bundleIdentifier = self->_bundleIdentifier;
-  self->_bundleIdentifier = v9;
+  self->_bundleIdentifier = bundleIdentifier;
 
-  v11 = [v6 remoteBundleIdentifier];
+  remoteBundleIdentifier = [actionCopy remoteBundleIdentifier];
   remoteBundleIdentifier = self->_remoteBundleIdentifier;
-  self->_remoteBundleIdentifier = v11;
+  self->_remoteBundleIdentifier = remoteBundleIdentifier;
 
-  v13 = [v6 localBundleIdentifier];
+  localBundleIdentifier = [actionCopy localBundleIdentifier];
   localBundleIdentifier = self->_localBundleIdentifier;
-  self->_localBundleIdentifier = v13;
+  self->_localBundleIdentifier = localBundleIdentifier;
 
-  self->_donationType = [v6 type];
-  self->_localDonation = [v6 isLocalDonation];
-  v15 = [v6 actionTypeIdentifier];
-  self->_actionIdentifier = [v15 re_actionIdentifierHashValue];
+  self->_donationType = [actionCopy type];
+  self->_localDonation = [actionCopy isLocalDonation];
+  actionTypeIdentifier = [actionCopy actionTypeIdentifier];
+  self->_actionIdentifier = [actionTypeIdentifier re_actionIdentifierHashValue];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -262,10 +262,10 @@
   v16 = v8;
   v27 = v16;
   v17 = MEMORY[0x2667182D0](v26);
-  v18 = [v6 type];
-  if (v18 > 1)
+  type = [actionCopy type];
+  if (type > 1)
   {
-    if (v18 == 2)
+    if (type == 2)
     {
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
@@ -273,12 +273,12 @@
       v20[3] = &unk_279AF62E8;
       v20[4] = self;
       v21 = v17;
-      [v6 loadRelevantShortcut:v20];
+      [actionCopy loadRelevantShortcut:v20];
       v19 = v21;
       goto LABEL_13;
     }
 
-    if (v18 == 3)
+    if (type == 3)
     {
       v16[2](v16);
     }
@@ -286,7 +286,7 @@
 
   else
   {
-    if (!v18)
+    if (!type)
     {
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
@@ -294,12 +294,12 @@
       v22[3] = &unk_279AF62C0;
       v22[4] = self;
       v23 = v17;
-      [v6 loadUserActivity:v22];
+      [actionCopy loadUserActivity:v22];
       v19 = v23;
       goto LABEL_13;
     }
 
-    if (v18 == 1)
+    if (type == 1)
     {
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
@@ -307,7 +307,7 @@
       v24[3] = &unk_279AF6298;
       v24[4] = self;
       v25 = v17;
-      [v6 loadIntent:v24];
+      [actionCopy loadIntent:v24];
       v19 = v25;
 LABEL_13:
     }
@@ -376,10 +376,10 @@ void __57__REUIDonatedElementProperties_loadForAction_completion___block_invoke_
 
 - (BOOL)isMediaDonation
 {
-  v3 = [(REUIDonatedElementProperties *)self intent];
-  if (v3)
+  intent = [(REUIDonatedElementProperties *)self intent];
+  if (intent)
   {
-    v4 = [(REUIDonatedElementProperties *)self intent];
+    intent2 = [(REUIDonatedElementProperties *)self intent];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -394,8 +394,8 @@ void __57__REUIDonatedElementProperties_loadForAction_completion___block_invoke_
 
 - (BOOL)isWorkoutDonation
 {
-  v2 = [(REUIDonatedElementProperties *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.SessionTrackerApp"];
+  bundleIdentifier = [(REUIDonatedElementProperties *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.SessionTrackerApp"];
 
   return v3;
 }
@@ -409,10 +409,10 @@ void __57__REUIDonatedElementProperties_loadForAction_completion___block_invoke_
 
   else
   {
-    v4 = [(REUIDonatedElementProperties *)self intent];
-    if (v4)
+    intent = [(REUIDonatedElementProperties *)self intent];
+    if (intent)
     {
-      v5 = [(REUIDonatedElementProperties *)self intent];
+      intent2 = [(REUIDonatedElementProperties *)self intent];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -421,7 +421,7 @@ void __57__REUIDonatedElementProperties_loadForAction_completion___block_invoke_
 
       else
       {
-        v6 = [(REUIDonatedElementProperties *)self intent];
+        intent3 = [(REUIDonatedElementProperties *)self intent];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
       }
@@ -438,10 +438,10 @@ void __57__REUIDonatedElementProperties_loadForAction_completion___block_invoke_
 
 - (BOOL)isEndWorkoutDonation
 {
-  v3 = [(REUIDonatedElementProperties *)self intent];
-  if (v3)
+  intent = [(REUIDonatedElementProperties *)self intent];
+  if (intent)
   {
-    v4 = [(REUIDonatedElementProperties *)self intent];
+    intent2 = [(REUIDonatedElementProperties *)self intent];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -450,7 +450,7 @@ void __57__REUIDonatedElementProperties_loadForAction_completion___block_invoke_
 
     else
     {
-      v6 = [(REUIDonatedElementProperties *)self intent];
+      intent3 = [(REUIDonatedElementProperties *)self intent];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -459,7 +459,7 @@ void __57__REUIDonatedElementProperties_loadForAction_completion___block_invoke_
 
       else
       {
-        v7 = [(REUIDonatedElementProperties *)self intent];
+        intent4 = [(REUIDonatedElementProperties *)self intent];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
       }
@@ -476,10 +476,10 @@ void __57__REUIDonatedElementProperties_loadForAction_completion___block_invoke_
 
 - (BOOL)isRunWorkflowDonation
 {
-  v3 = [(REUIDonatedElementProperties *)self intent];
-  if (v3)
+  intent = [(REUIDonatedElementProperties *)self intent];
+  if (intent)
   {
-    v4 = [(REUIDonatedElementProperties *)self intent];
+    intent2 = [(REUIDonatedElementProperties *)self intent];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -494,41 +494,41 @@ void __57__REUIDonatedElementProperties_loadForAction_completion___block_invoke_
 
 - (BOOL)_isMusicDonation
 {
-  v3 = [(REUIDonatedElementProperties *)self isMediaDonation];
-  if (v3)
+  isMediaDonation = [(REUIDonatedElementProperties *)self isMediaDonation];
+  if (isMediaDonation)
   {
-    v4 = [(REUIDonatedElementProperties *)self bundleIdentifier];
-    v5 = [v4 isEqualToString:@"com.apple.Music"];
+    bundleIdentifier = [(REUIDonatedElementProperties *)self bundleIdentifier];
+    v5 = [bundleIdentifier isEqualToString:@"com.apple.Music"];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isMediaDonation) = v5;
   }
 
-  return v3;
+  return isMediaDonation;
 }
 
 - (BOOL)_isPodcastsDonation
 {
-  v3 = [(REUIDonatedElementProperties *)self isMediaDonation];
-  if (v3)
+  isMediaDonation = [(REUIDonatedElementProperties *)self isMediaDonation];
+  if (isMediaDonation)
   {
-    v4 = [(REUIDonatedElementProperties *)self bundleIdentifier];
-    v5 = [v4 isEqualToString:@"com.apple.podcasts"];
+    bundleIdentifier = [(REUIDonatedElementProperties *)self bundleIdentifier];
+    v5 = [bundleIdentifier isEqualToString:@"com.apple.podcasts"];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isMediaDonation) = v5;
   }
 
-  return v3;
+  return isMediaDonation;
 }
 
 - (BOOL)requiresRemoteExecution
 {
-  v3 = [(REUIDonatedElementProperties *)self isMediaDonation];
-  if (v3)
+  isMediaDonation = [(REUIDonatedElementProperties *)self isMediaDonation];
+  if (isMediaDonation)
   {
-    LOBYTE(v3) = ![(REUIDonatedElementProperties *)self isLocalDonation];
+    LOBYTE(isMediaDonation) = ![(REUIDonatedElementProperties *)self isLocalDonation];
   }
 
-  return v3;
+  return isMediaDonation;
 }
 
 - (BOOL)supportsLocalIntentExecution
@@ -562,16 +562,16 @@ void __57__REUIDonatedElementProperties_loadForAction_completion___block_invoke_
   }
 }
 
-- (id)_placeholderImageNameForBundleID:(id)a3
+- (id)_placeholderImageNameForBundleID:(id)d
 {
   v3 = _placeholderImageNameForBundleID__onceToken;
-  v4 = a3;
+  dCopy = d;
   if (v3 != -1)
   {
     [REUIDonatedElementProperties _placeholderImageNameForBundleID:];
   }
 
-  v5 = [_placeholderImageNameForBundleID__bundleIDToImageName objectForKeyedSubscript:v4];
+  v5 = [_placeholderImageNameForBundleID__bundleIDToImageName objectForKeyedSubscript:dCopy];
 
   if (v5)
   {
@@ -608,18 +608,18 @@ void __65__REUIDonatedElementProperties__placeholderImageNameForBundleID___block
 {
   if (!self->_bodyImage && [(REUIDonatedElementProperties *)self isMediaDonation])
   {
-    v3 = [(REUIDonatedElementProperties *)self bundleIdentifier];
-    v4 = [(REUIDonatedElementProperties *)self intent];
-    v5 = [v4 mediaContainer];
-    v6 = [v5 type];
+    bundleIdentifier = [(REUIDonatedElementProperties *)self bundleIdentifier];
+    intent = [(REUIDonatedElementProperties *)self intent];
+    mediaContainer = [intent mediaContainer];
+    type = [mediaContainer type];
 
-    if (v6 == 9)
+    if (type == 9)
     {
 
-      v3 = @"com.apple.NanoRadio";
+      bundleIdentifier = @"com.apple.NanoRadio";
     }
 
-    v7 = [(REUIDonatedElementProperties *)self _placeholderImageNameForBundleID:v3];
+    v7 = [(REUIDonatedElementProperties *)self _placeholderImageNameForBundleID:bundleIdentifier];
     v8 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.RelevanceEngineSiriActions"];
     v9 = REImageNamedFromBundle(v8, v7);
     bodyImage = self->_bodyImage;
@@ -648,111 +648,111 @@ void __65__REUIDonatedElementProperties__placeholderImageNameForBundleID___block
   return v4;
 }
 
-- (void)_loadContentForIntent:(id)a3 completion:(id)a4
+- (void)_loadContentForIntent:(id)intent completion:(id)completion
 {
-  objc_storeStrong(&self->_intent, a3);
-  v7 = a3;
-  v17 = a4;
-  v8 = [v7 _title];
+  objc_storeStrong(&self->_intent, intent);
+  intentCopy = intent;
+  completionCopy = completion;
+  _title = [intentCopy _title];
   title = self->_title;
-  self->_title = v8;
+  self->_title = _title;
 
-  v10 = [v7 _subtitle];
+  _subtitle = [intentCopy _subtitle];
   subtitle = self->_subtitle;
-  self->_subtitle = v10;
+  self->_subtitle = _subtitle;
 
   v12 = MEMORY[0x277D755B8];
-  v13 = [v7 keyImage];
-  v14 = [v13 _imageData];
-  v15 = [v12 imageWithData:v14];
+  keyImage = [intentCopy keyImage];
+  _imageData = [keyImage _imageData];
+  v15 = [v12 imageWithData:_imageData];
   bodyImage = self->_bodyImage;
   self->_bodyImage = v15;
 
-  v17[2]();
+  completionCopy[2]();
 }
 
-- (void)_loadContentForUserActivity:(id)a3 completion:(id)a4
+- (void)_loadContentForUserActivity:(id)activity completion:(id)completion
 {
-  objc_storeStrong(&self->_userActivity, a3);
-  v7 = a3;
-  v15 = a4;
-  v8 = [v7 title];
+  objc_storeStrong(&self->_userActivity, activity);
+  activityCopy = activity;
+  completionCopy = completion;
+  title = [activityCopy title];
   title = self->_title;
-  self->_title = v8;
+  self->_title = title;
 
   v10 = MEMORY[0x277D755B8];
-  v11 = [v7 contentAttributeSet];
-  v12 = [v11 thumbnailData];
-  v13 = [v10 imageWithData:v12];
+  contentAttributeSet = [activityCopy contentAttributeSet];
+  thumbnailData = [contentAttributeSet thumbnailData];
+  v13 = [v10 imageWithData:thumbnailData];
   bodyImage = self->_bodyImage;
   self->_bodyImage = v13;
 
-  v15[2]();
+  completionCopy[2]();
 }
 
-- (void)_loadContentForUserActivityOnShortcut:(id)a3 completion:(id)a4
+- (void)_loadContentForUserActivityOnShortcut:(id)shortcut completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 activitySubtitle];
+  completionCopy = completion;
+  shortcutCopy = shortcut;
+  activitySubtitle = [shortcutCopy activitySubtitle];
   subtitle = self->_subtitle;
-  self->_subtitle = v8;
+  self->_subtitle = activitySubtitle;
 
-  v10 = [v7 userActivity];
+  userActivity = [shortcutCopy userActivity];
 
-  [(REUIDonatedElementProperties *)self _loadContentForUserActivity:v10 completion:v6];
+  [(REUIDonatedElementProperties *)self _loadContentForUserActivity:userActivity completion:completionCopy];
 }
 
-- (void)_loadContentForRelevantShortcut:(id)a3 completion:(id)a4
+- (void)_loadContentForRelevantShortcut:(id)shortcut completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_relevantShortcut, a3);
-  v9 = [v7 shortcut];
-  v10 = [v9 intent];
+  shortcutCopy = shortcut;
+  completionCopy = completion;
+  objc_storeStrong(&self->_relevantShortcut, shortcut);
+  shortcut = [shortcutCopy shortcut];
+  intent = [shortcut intent];
   intent = self->_intent;
-  self->_intent = v10;
+  self->_intent = intent;
 
-  v12 = [v7 shortcut];
-  v13 = [v12 userActivity];
+  shortcut2 = [shortcutCopy shortcut];
+  userActivity = [shortcut2 userActivity];
   userActivity = self->_userActivity;
-  self->_userActivity = v13;
+  self->_userActivity = userActivity;
 
-  v15 = [v7 watchTemplate];
+  watchTemplate = [shortcutCopy watchTemplate];
 
-  if (v15)
+  if (watchTemplate)
   {
-    v16 = [v7 watchTemplate];
-    v17 = [v16 title];
+    watchTemplate2 = [shortcutCopy watchTemplate];
+    title = [watchTemplate2 title];
     title = self->_title;
-    self->_title = v17;
+    self->_title = title;
 
-    v19 = [v7 watchTemplate];
-    v20 = [v19 subtitle];
+    watchTemplate3 = [shortcutCopy watchTemplate];
+    subtitle = [watchTemplate3 subtitle];
     subtitle = self->_subtitle;
-    self->_subtitle = v20;
+    self->_subtitle = subtitle;
 
     v22 = MEMORY[0x277D755B8];
-    v23 = [v7 watchTemplate];
-    v24 = [v23 image];
-    v25 = [v24 _imageData];
-    v26 = [v22 imageWithData:v25];
+    watchTemplate4 = [shortcutCopy watchTemplate];
+    image = [watchTemplate4 image];
+    _imageData = [image _imageData];
+    v26 = [v22 imageWithData:_imageData];
     bodyImage = self->_bodyImage;
     self->_bodyImage = v26;
 
-    v28 = [v7 watchTemplate];
-    LOBYTE(v23) = objc_opt_respondsToSelector();
+    watchTemplate5 = [shortcutCopy watchTemplate];
+    LOBYTE(watchTemplate4) = objc_opt_respondsToSelector();
 
-    if (v23)
+    if (watchTemplate4)
     {
-      v29 = [v7 watchTemplate];
-      v30 = [v29 monochromeImage];
+      watchTemplate6 = [shortcutCopy watchTemplate];
+      monochromeImage = [watchTemplate6 monochromeImage];
 
-      if (v30)
+      if (monochromeImage)
       {
         v31 = MEMORY[0x277D755B8];
-        v32 = [v30 _imageData];
-        v33 = [v31 imageWithData:v32];
+        _imageData2 = [monochromeImage _imageData];
+        v33 = [v31 imageWithData:_imageData2];
         monochromeBodyImage = self->_monochromeBodyImage;
         self->_monochromeBodyImage = v33;
       }
@@ -764,14 +764,14 @@ void __65__REUIDonatedElementProperties__placeholderImageNameForBundleID___block
     v35 = self->_intent;
     if (v35)
     {
-      [(REUIDonatedElementProperties *)self _loadContentForIntent:v35 completion:v8];
+      [(REUIDonatedElementProperties *)self _loadContentForIntent:v35 completion:completionCopy];
       goto LABEL_11;
     }
 
     if (self->_userActivity)
     {
-      v36 = [v7 shortcut];
-      [(REUIDonatedElementProperties *)self _loadContentForUserActivityOnShortcut:v36 completion:v8];
+      shortcut3 = [shortcutCopy shortcut];
+      [(REUIDonatedElementProperties *)self _loadContentForUserActivityOnShortcut:shortcut3 completion:completionCopy];
 
       goto LABEL_11;
     }
@@ -783,27 +783,27 @@ void __65__REUIDonatedElementProperties__placeholderImageNameForBundleID___block
     }
   }
 
-  v8[2](v8);
+  completionCopy[2](completionCopy);
 LABEL_11:
 }
 
-- (id)_scaleImageForDisplay:(id)a3
+- (id)_scaleImageForDisplay:(id)display
 {
-  v3 = a3;
+  displayCopy = display;
   v4 = RESuggestedBodyImageSizeForStyle();
   v6 = v5;
   v7 = 0;
   v8 = *(MEMORY[0x277CBF3A8] + 8);
   if (*MEMORY[0x277CBF3A8] != v4 || v8 != v6)
   {
-    v10 = [MEMORY[0x277D75568] preferredFormat];
-    [v10 setOpaque:0];
-    v11 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:v10 format:{v4, v6}];
+    preferredFormat = [MEMORY[0x277D75568] preferredFormat];
+    [preferredFormat setOpaque:0];
+    v11 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:preferredFormat format:{v4, v6}];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __54__REUIDonatedElementProperties__scaleImageForDisplay___block_invoke;
     v13[3] = &unk_279AF6310;
-    v14 = v3;
+    v14 = displayCopy;
     v15 = v4;
     v16 = v6;
     v7 = [v11 imageWithActions:v13];
@@ -870,9 +870,9 @@ void __54__REUIDonatedElementProperties__scaleImageForDisplay___block_invoke(uin
   [*(a1 + 32) drawInRect:{(v22 - v21 * v25) * 0.5, (v26 - v24 * v25) * 0.5}];
 }
 
-- (void)_loadAppContentPropertiesWithCompletion:(id)a3
+- (void)_loadAppContentPropertiesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_bodyImage)
   {
     v5 = [(REUIDonatedElementProperties *)self _scaleImageForDisplay:?];
@@ -886,44 +886,44 @@ void __54__REUIDonatedElementProperties__scaleImageForDisplay___block_invoke(uin
     title = self->_title;
     self->_title = 0;
 
-    v9 = [(INIntent *)v7 mediaContainer];
-    v10 = [v9 title];
+    mediaContainer = [(INIntent *)v7 mediaContainer];
+    title = [mediaContainer title];
     subtitle = self->_subtitle;
-    self->_subtitle = v10;
+    self->_subtitle = title;
 
-    v12 = [(INIntent *)v7 mediaItems];
-    v13 = [v12 count];
+    mediaItems = [(INIntent *)v7 mediaItems];
+    v13 = [mediaItems count];
 
     if (!v13)
     {
       goto LABEL_9;
     }
 
-    v14 = [(INIntent *)v7 mediaItems];
-    v15 = [v14 firstObject];
-    v16 = [v15 title];
+    mediaItems2 = [(INIntent *)v7 mediaItems];
+    firstObject = [mediaItems2 firstObject];
+    title2 = [firstObject title];
     v17 = self->_title;
-    self->_title = v16;
+    self->_title = title2;
   }
 
   else
   {
     v18 = self->_title;
-    v19 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v7 = [(NSString *)v18 stringByTrimmingCharactersInSet:v19];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v7 = [(NSString *)v18 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-    v20 = [MEMORY[0x277CCA900] newlineCharacterSet];
-    v21 = [(INIntent *)v7 componentsSeparatedByCharactersInSet:v20];
+    newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+    v21 = [(INIntent *)v7 componentsSeparatedByCharactersInSet:newlineCharacterSet];
     v22 = [v21 componentsJoinedByString:@" "];
     v23 = self->_title;
     self->_title = v22;
 
     v24 = self->_subtitle;
-    v25 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v14 = [(NSString *)v24 stringByTrimmingCharactersInSet:v25];
+    whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    mediaItems2 = [(NSString *)v24 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
 
-    v15 = [MEMORY[0x277CCA900] newlineCharacterSet];
-    v17 = [v14 componentsSeparatedByCharactersInSet:v15];
+    firstObject = [MEMORY[0x277CCA900] newlineCharacterSet];
+    v17 = [mediaItems2 componentsSeparatedByCharactersInSet:firstObject];
     v26 = [v17 componentsJoinedByString:@" "];
     v27 = self->_subtitle;
     self->_subtitle = v26;
@@ -937,16 +937,16 @@ LABEL_9:
     self->_subtitle = 0;
   }
 
-  v29 = [(REUIDonatedElementProperties *)self isMediaDonation]|| [(REUIDonatedElementProperties *)self isRunWorkflowDonation]|| [(REUIDonatedElementProperties *)self isWorkoutDonation];
-  v30 = [(REUIDonatedElementProperties *)self bundleIdentifier];
+  isWorkoutDonation = [(REUIDonatedElementProperties *)self isMediaDonation]|| [(REUIDonatedElementProperties *)self isRunWorkflowDonation]|| [(REUIDonatedElementProperties *)self isWorkoutDonation];
+  bundleIdentifier = [(REUIDonatedElementProperties *)self bundleIdentifier];
   Type = REApplicationGetType();
 
   if (Type != 1 || !self->_bodyImage && (![(NSString *)self->_title length]|| ![(NSString *)self->_subtitle length]))
   {
-    v29 = 1;
+    isWorkoutDonation = 1;
   }
 
-  self->_displayAppName = v29;
+  self->_displayAppName = isWorkoutDonation;
   if ([(REUIDonatedElementProperties *)self supportsLocalIntentExecution])
   {
     v32 = 1;
@@ -954,8 +954,8 @@ LABEL_9:
 
   else
   {
-    v33 = [(REUIDonatedElementProperties *)self userActivity];
-    v32 = v33 != 0;
+    userActivity = [(REUIDonatedElementProperties *)self userActivity];
+    v32 = userActivity != 0;
   }
 
   v52[0] = MEMORY[0x277D85DD0];
@@ -964,13 +964,13 @@ LABEL_9:
   v52[3] = &unk_279AF6360;
   v52[4] = self;
   v54 = v32;
-  v34 = v4;
+  v34 = completionCopy;
   v53 = v34;
   v35 = MEMORY[0x2667182D0](v52);
   v36 = v35;
   if (v32)
   {
-    v37 = [(REUIDonatedElementProperties *)self localBundleIdentifier];
+    localBundleIdentifier = [(REUIDonatedElementProperties *)self localBundleIdentifier];
     if (RelevanceEngineLibraryCore())
     {
       v60 = 0;
@@ -999,8 +999,8 @@ LABEL_9:
       v38 = 0;
     }
 
-    v41 = [v38 sharedInstance];
-    v42 = [v41 localizedNameForApplicationWithIdentifier:v37];
+    sharedInstance = [v38 sharedInstance];
+    v42 = [sharedInstance localizedNameForApplicationWithIdentifier:localBundleIdentifier];
 
     if ([(REUIDonatedElementProperties *)self isWorkoutDonation]&& (v43 = self->_bodyImage) != 0)
     {
@@ -1040,14 +1040,14 @@ LABEL_9:
         v45 = 0;
       }
 
-      v48 = [v45 sharedInstance];
+      sharedInstance2 = [v45 sharedInstance];
       v49[0] = MEMORY[0x277D85DD0];
       v49[1] = 3221225472;
       v49[2] = __72__REUIDonatedElementProperties__loadAppContentPropertiesWithCompletion___block_invoke_5;
       v49[3] = &unk_279AF6388;
       v51 = v36;
       v50 = v42;
-      [v48 iconForApplicationWithIdentifier:v37 completion:v49];
+      [sharedInstance2 iconForApplicationWithIdentifier:localBundleIdentifier completion:v49];
 
       v44 = v51;
     }

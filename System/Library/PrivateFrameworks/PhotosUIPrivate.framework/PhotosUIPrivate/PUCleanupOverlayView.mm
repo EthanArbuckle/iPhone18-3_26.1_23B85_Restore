@@ -1,7 +1,7 @@
 @interface PUCleanupOverlayView
 - (NUMediaView)mediaView;
-- (PUCleanupOverlayView)initWithMediaView:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (PUCleanupOverlayView)initWithMediaView:(id)view;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation PUCleanupOverlayView
@@ -13,24 +13,24 @@
   return WeakRetained;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PUCleanupOverlayView *)self mediaView];
-  v9 = [v8 hitTest:v7 withEvent:{x, y}];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  mediaView = [(PUCleanupOverlayView *)self mediaView];
+  v9 = [mediaView hitTest:eventCopy withEvent:{x, y}];
 
   return v9;
 }
 
-- (PUCleanupOverlayView)initWithMediaView:(id)a3
+- (PUCleanupOverlayView)initWithMediaView:(id)view
 {
-  v5 = a3;
-  if (!v5)
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUCleanupOverlayView.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"mediaView != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCleanupOverlayView.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"mediaView != nil"}];
   }
 
   v10.receiver = self;
@@ -39,7 +39,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_mediaView, v5);
+    objc_storeWeak(&v6->_mediaView, viewCopy);
     [(PUCleanupOverlayView *)v7 setBackgroundColor:0];
   }
 

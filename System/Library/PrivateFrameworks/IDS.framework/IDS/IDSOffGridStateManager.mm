@@ -1,5 +1,5 @@
 @interface IDSOffGridStateManager
-- (IDSOffGridStateManager)initWithQueue:(id)a3 error:(id *)a4;
+- (IDSOffGridStateManager)initWithQueue:(id)queue error:(id *)error;
 - (IDSOffGridStateManagerDelegate)delegate;
 - (NSMutableSet)invitedHandles;
 - (int64_t)offGridMode;
@@ -7,18 +7,18 @@
 - (void)_daemonControllerSetup;
 - (void)_setupInterruptionHandler;
 - (void)_setupXPC;
-- (void)connectStewieWithCompletion:(id)a3;
-- (void)contactInfoUpdated:(id)a3;
-- (void)disconnectStewieWithCompletion:(id)a3;
-- (void)fetchContactsOfType:(int64_t)a3 completion:(id)a4;
-- (void)fetchStewieAvailabilityWithCompletion:(id)a3;
-- (void)inviteHandles:(id)a3 fromSenderHandle:(id)a4 withDictionaryPayload:(id)a5 completion:(id)a6;
-- (void)invitedHandlesWithCompletion:(id)a3;
-- (void)offGridModeUpdated:(int64_t)a3 publishStatus:(int64_t)a4 error:(id)a5;
-- (void)removeAllInvitedHandlesWithCompletion:(id)a3;
-- (void)removeInvitedHandles:(id)a3 completion:(id)a4;
-- (void)setOffGridMode:(int64_t)a3 options:(id)a4 completion:(id)a5;
-- (void)setOffGridStatus:(int64_t)a3 options:(id)a4 completion:(id)a5;
+- (void)connectStewieWithCompletion:(id)completion;
+- (void)contactInfoUpdated:(id)updated;
+- (void)disconnectStewieWithCompletion:(id)completion;
+- (void)fetchContactsOfType:(int64_t)type completion:(id)completion;
+- (void)fetchStewieAvailabilityWithCompletion:(id)completion;
+- (void)inviteHandles:(id)handles fromSenderHandle:(id)handle withDictionaryPayload:(id)payload completion:(id)completion;
+- (void)invitedHandlesWithCompletion:(id)completion;
+- (void)offGridModeUpdated:(int64_t)updated publishStatus:(int64_t)status error:(id)error;
+- (void)removeAllInvitedHandlesWithCompletion:(id)completion;
+- (void)removeInvitedHandles:(id)handles completion:(id)completion;
+- (void)setOffGridMode:(int64_t)mode options:(id)options completion:(id)completion;
+- (void)setOffGridStatus:(int64_t)status options:(id)options completion:(id)completion;
 @end
 
 @implementation IDSOffGridStateManager
@@ -30,10 +30,10 @@
   return WeakRetained;
 }
 
-- (IDSOffGridStateManager)initWithQueue:(id)a3 error:(id *)a4
+- (IDSOffGridStateManager)initWithQueue:(id)queue error:(id *)error
 {
-  v7 = a3;
-  if (v7)
+  queueCopy = queue;
+  if (queueCopy)
   {
     v18.receiver = self;
     v18.super_class = IDSOffGridStateManager;
@@ -41,10 +41,10 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_queue, a3);
-      v10 = [MEMORY[0x1E696AEC0] stringGUID];
+      objc_storeStrong(&v8->_queue, queue);
+      stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
       uuid = v9->_uuid;
-      v9->_uuid = v10;
+      v9->_uuid = stringGUID;
 
       v12 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       invitedHandles = v9->_invitedHandles;
@@ -54,19 +54,19 @@
     }
 
     self = v9;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
     v15 = objc_alloc(MEMORY[0x1E695DF20]);
     v16 = [v15 initWithObjectsAndKeys:{@"The queue specified is nil.", *MEMORY[0x1E696A578], 0}];
-    *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"IDSOffGridStatusErrorDomain" code:3 userInfo:v16];
+    *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"IDSOffGridStatusErrorDomain" code:3 userInfo:v16];
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (void)_daemonControllerSetup
@@ -101,13 +101,13 @@
 - (void)_setupXPC
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69A5270] IDSOffGridStateManager];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  iDSOffGridStateManager = [MEMORY[0x1E69A5270] IDSOffGridStateManager];
+  if (os_log_type_enabled(iDSOffGridStateManager, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(IDSOffGridStateManager *)self uuid];
+    uuid = [(IDSOffGridStateManager *)self uuid];
     *buf = 138412290;
-    v10 = v4;
-    _os_log_impl(&dword_1959FF000, v3, OS_LOG_TYPE_DEFAULT, "Setting up xpc for client %@", buf, 0xCu);
+    v10 = uuid;
+    _os_log_impl(&dword_1959FF000, iDSOffGridStateManager, OS_LOG_TYPE_DEFAULT, "Setting up xpc for client %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
@@ -130,8 +130,8 @@
   {
     v4 = [IDSXPCDaemonController alloc];
     v5 = +[IDSInternalQueueController sharedInstance];
-    v6 = [v5 queue];
-    v7 = [(IDSXPCDaemonController *)v4 initSyncControllerWithQueue:v6];
+    queue = [v5 queue];
+    v7 = [(IDSXPCDaemonController *)v4 initSyncControllerWithQueue:queue];
     v8 = self->_daemonController_sync;
     self->_daemonController_sync = v7;
 
@@ -179,8 +179,8 @@
   {
     v4 = [IDSXPCDaemonController alloc];
     v5 = +[IDSInternalQueueController sharedInstance];
-    v6 = [v5 queue];
-    v7 = [(IDSXPCDaemonController *)v4 initSyncControllerWithQueue:v6];
+    queue = [v5 queue];
+    v7 = [(IDSXPCDaemonController *)v4 initSyncControllerWithQueue:queue];
     v8 = self->_daemonController_sync;
     self->_daemonController_sync = v7;
 
@@ -221,10 +221,10 @@
   return v11;
 }
 
-- (void)setOffGridStatus:(int64_t)a3 options:(id)a4 completion:(id)a5
+- (void)setOffGridStatus:(int64_t)status options:(id)options completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  completionCopy = completion;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
@@ -236,17 +236,17 @@
   v10[2] = sub_195A58AEC;
   v10[3] = &unk_1E74403C8;
   v10[4] = v11;
-  [(IDSOffGridStateManager *)self setOffGridMode:a3 options:v8 completion:v10];
+  [(IDSOffGridStateManager *)self setOffGridMode:status options:optionsCopy completion:v10];
   _Block_object_dispose(v11, 8);
 }
 
-- (void)setOffGridMode:(int64_t)a3 options:(id)a4 completion:(id)a5
+- (void)setOffGridMode:(int64_t)mode options:(id)options completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  optionsCopy = options;
+  completionCopy = completion;
+  if (!optionsCopy)
   {
-    v8 = objc_alloc_init(IDSOffGridModeOptions);
+    optionsCopy = objc_alloc_init(IDSOffGridModeOptions);
   }
 
   objc_initWeak(&location, self);
@@ -255,7 +255,7 @@
   v16[2] = 0x3032000000;
   v16[3] = sub_195A58AB8;
   v16[4] = sub_195A58AE4;
-  v17 = MEMORY[0x19A8BBEF0](v9);
+  v17 = MEMORY[0x19A8BBEF0](completionCopy);
   v10 = +[IDSInternalQueueController sharedInstance];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -264,8 +264,8 @@
   objc_copyWeak(v15, &location);
   v14 = v16;
   v12[4] = self;
-  v15[1] = a3;
-  v11 = v8;
+  v15[1] = mode;
+  v11 = optionsCopy;
   v13 = v11;
   [v10 performBlock:v12];
 
@@ -281,8 +281,8 @@
   {
     v3 = [IDSXPCDaemonController alloc];
     v4 = +[IDSInternalQueueController sharedInstance];
-    v5 = [v4 queue];
-    v6 = [(IDSXPCDaemonController *)v3 initSyncControllerWithQueue:v5];
+    queue = [v4 queue];
+    v6 = [(IDSXPCDaemonController *)v3 initSyncControllerWithQueue:queue];
     daemonController_sync = self->_daemonController_sync;
     self->_daemonController_sync = v6;
   }
@@ -325,9 +325,9 @@
   return v11;
 }
 
-- (void)invitedHandlesWithCompletion:(id)a3
+- (void)invitedHandlesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = 0;
   v10[1] = v10;
@@ -340,7 +340,7 @@
   v8[2] = 0x3032000000;
   v8[3] = sub_195A58AB8;
   v8[4] = sub_195A58AE4;
-  v9 = MEMORY[0x19A8BBEF0](v4);
+  v9 = MEMORY[0x19A8BBEF0](completionCopy);
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -359,19 +359,19 @@
   objc_destroyWeak(&location);
 }
 
-- (void)inviteHandles:(id)a3 fromSenderHandle:(id)a4 withDictionaryPayload:(id)a5 completion:(id)a6
+- (void)inviteHandles:(id)handles fromSenderHandle:(id)handle withDictionaryPayload:(id)payload completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  handlesCopy = handles;
+  handleCopy = handle;
+  payloadCopy = payload;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
   v24[3] = sub_195A58AB8;
   v24[4] = sub_195A58AE4;
-  v25 = MEMORY[0x19A8BBEF0](v13);
+  v25 = MEMORY[0x19A8BBEF0](completionCopy);
   v14 = +[IDSInternalQueueController sharedInstance];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -380,11 +380,11 @@
   objc_copyWeak(&v23, &location);
   v22 = v24;
   v18[4] = self;
-  v15 = v11;
+  v15 = handleCopy;
   v19 = v15;
-  v16 = v12;
+  v16 = payloadCopy;
   v20 = v16;
-  v17 = v10;
+  v17 = handlesCopy;
   v21 = v17;
   [v14 performBlock:v18];
 
@@ -394,17 +394,17 @@
   objc_destroyWeak(&location);
 }
 
-- (void)removeInvitedHandles:(id)a3 completion:(id)a4
+- (void)removeInvitedHandles:(id)handles completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  handlesCopy = handles;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x3032000000;
   v14[3] = sub_195A58AB8;
   v14[4] = sub_195A58AE4;
-  v15 = MEMORY[0x19A8BBEF0](v7);
+  v15 = MEMORY[0x19A8BBEF0](completionCopy);
   v8 = +[IDSInternalQueueController sharedInstance];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -413,7 +413,7 @@
   objc_copyWeak(&v13, &location);
   v12 = v14;
   v10[4] = self;
-  v9 = v6;
+  v9 = handlesCopy;
   v11 = v9;
   [v8 performBlock:v10];
 
@@ -423,16 +423,16 @@
   objc_destroyWeak(&location);
 }
 
-- (void)removeAllInvitedHandlesWithCompletion:(id)a3
+- (void)removeAllInvitedHandlesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x3032000000;
   v8[3] = sub_195A58AB8;
   v8[4] = sub_195A58AE4;
-  v9 = MEMORY[0x19A8BBEF0](v4);
+  v9 = MEMORY[0x19A8BBEF0](completionCopy);
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -449,16 +449,16 @@
   objc_destroyWeak(&location);
 }
 
-- (void)fetchContactsOfType:(int64_t)a3 completion:(id)a4
+- (void)fetchContactsOfType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
   v10[3] = sub_195A58AB8;
   v10[4] = sub_195A58AE4;
-  v11 = MEMORY[0x19A8BBEF0](v6);
+  v11 = MEMORY[0x19A8BBEF0](completionCopy);
   v7 = +[IDSInternalQueueController sharedInstance];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -467,7 +467,7 @@
   objc_copyWeak(v9, &location);
   v8[4] = self;
   v8[5] = v10;
-  v9[1] = a3;
+  v9[1] = type;
   [v7 performBlock:v8];
 
   objc_destroyWeak(v9);
@@ -476,16 +476,16 @@
   objc_destroyWeak(&location);
 }
 
-- (void)fetchStewieAvailabilityWithCompletion:(id)a3
+- (void)fetchStewieAvailabilityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x3032000000;
   v8[3] = sub_195A58AB8;
   v8[4] = sub_195A58AE4;
-  v9 = MEMORY[0x19A8BBEF0](v4);
+  v9 = MEMORY[0x19A8BBEF0](completionCopy);
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -502,16 +502,16 @@
   objc_destroyWeak(&location);
 }
 
-- (void)connectStewieWithCompletion:(id)a3
+- (void)connectStewieWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x3032000000;
   v8[3] = sub_195A58AB8;
   v8[4] = sub_195A58AE4;
-  v9 = MEMORY[0x19A8BBEF0](v4);
+  v9 = MEMORY[0x19A8BBEF0](completionCopy);
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -528,16 +528,16 @@
   objc_destroyWeak(&location);
 }
 
-- (void)disconnectStewieWithCompletion:(id)a3
+- (void)disconnectStewieWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x3032000000;
   v8[3] = sub_195A58AB8;
   v8[4] = sub_195A58AE4;
-  v9 = MEMORY[0x19A8BBEF0](v4);
+  v9 = MEMORY[0x19A8BBEF0](completionCopy);
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -554,23 +554,23 @@
   objc_destroyWeak(&location);
 }
 
-- (void)offGridModeUpdated:(int64_t)a3 publishStatus:(int64_t)a4 error:(id)a5
+- (void)offGridModeUpdated:(int64_t)updated publishStatus:(int64_t)status error:(id)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  errorCopy = error;
   v9 = objc_alloc_init(IDSOffGridModeContext);
-  [(IDSOffGridModeContext *)v9 setError:v8];
+  [(IDSOffGridModeContext *)v9 setError:errorCopy];
 
-  v10 = [MEMORY[0x1E69A5270] IDSOffGridStateManager];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  iDSOffGridStateManager = [MEMORY[0x1E69A5270] IDSOffGridStateManager];
+  if (os_log_type_enabled(iDSOffGridStateManager, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v31 = a3;
+    updatedCopy = updated;
     v32 = 2048;
-    v33 = a4;
+    statusCopy = status;
     v34 = 2112;
     v35 = v9;
-    _os_log_impl(&dword_1959FF000, v10, OS_LOG_TYPE_DEFAULT, "offGridModeStatusUpdated to: %ld PublishStatus: %ld context: %@", buf, 0x20u);
+    _os_log_impl(&dword_1959FF000, iDSOffGridStateManager, OS_LOG_TYPE_DEFAULT, "offGridModeStatusUpdated to: %ld PublishStatus: %ld context: %@", buf, 0x20u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -588,8 +588,8 @@
       block[2] = sub_195A5C8CC;
       block[3] = &unk_1E7440800;
       block[4] = self;
-      v28 = a3;
-      v29 = a4;
+      updatedCopy2 = updated;
+      statusCopy2 = status;
       v27 = v9;
       dispatch_async(queue, block);
     }
@@ -610,8 +610,8 @@
       v22[2] = sub_195A5C924;
       v22[3] = &unk_1E7440800;
       v22[4] = self;
-      v24 = a3;
-      v25 = a4;
+      updatedCopy3 = updated;
+      statusCopy3 = status;
       v23 = v9;
       dispatch_async(v20, v22);
     }
@@ -620,9 +620,9 @@
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)contactInfoUpdated:(id)a3
+- (void)contactInfoUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -637,8 +637,8 @@
       v10[1] = 3221225472;
       v10[2] = sub_195A5CA5C;
       v10[3] = &unk_1E743EA30;
-      v11 = v4;
-      v12 = self;
+      v11 = updatedCopy;
+      selfCopy = self;
       dispatch_async(queue, v10);
     }
   }

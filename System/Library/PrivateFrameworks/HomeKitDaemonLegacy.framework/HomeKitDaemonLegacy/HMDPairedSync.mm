@@ -1,13 +1,13 @@
 @interface HMDPairedSync
-- (HMDPairedSync)initWithDelegate:(id)a3 queue:(id)a4;
+- (HMDPairedSync)initWithDelegate:(id)delegate queue:(id)queue;
 - (HMDPairedSyncDelegate)delegate;
-- (id)restrictionAsString:(unint64_t)a3;
+- (id)restrictionAsString:(unint64_t)string;
 - (void)_callStartSync;
 - (void)needToSync;
 - (void)syncComplete;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4;
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session;
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction;
 - (void)syncPartiallyComplete;
 @end
 
@@ -20,16 +20,16 @@
   return WeakRetained;
 }
 
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  restrictionCopy = restriction;
   v5 = objc_autoreleasePoolPush();
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = HMFGetLogIdentifier();
-    v8 = -[HMDPairedSync restrictionAsString:](self, "restrictionAsString:", [v4 syncRestriction]);
+    v8 = -[HMDPairedSync restrictionAsString:](self, "restrictionAsString:", [restrictionCopy syncRestriction]);
     v10 = 138543618;
     v11 = v7;
     v12 = 2112;
@@ -38,7 +38,7 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  if (![v4 syncRestriction])
+  if (![restrictionCopy syncRestriction])
   {
     [(HMDPairedSync *)self _callStartSync];
   }
@@ -46,11 +46,11 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  coordinatorCopy = coordinator;
+  sessionCopy = session;
   v7 = objc_autoreleasePoolPush();
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -65,11 +65,11 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  sessionCopy = session;
   v8 = objc_autoreleasePoolPush();
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -88,13 +88,13 @@
 
 - (void)syncPartiallyComplete
 {
-  v3 = [(HMDPairedSync *)self workQueue];
+  workQueue = [(HMDPairedSync *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__HMDPairedSync_syncPartiallyComplete__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __38__HMDPairedSync_syncPartiallyComplete__block_invoke(uint64_t a1)
@@ -124,13 +124,13 @@ void __38__HMDPairedSync_syncPartiallyComplete__block_invoke(uint64_t a1)
 
 - (void)syncComplete
 {
-  v3 = [(HMDPairedSync *)self workQueue];
+  workQueue = [(HMDPairedSync *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__HMDPairedSync_syncComplete__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __29__HMDPairedSync_syncComplete__block_invoke(uint64_t a1)
@@ -194,8 +194,8 @@ void __29__HMDPairedSync_syncComplete__block_invoke(uint64_t a1)
 - (void)_callStartSync
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPairedSync *)self delegate];
-  if (v3)
+  delegate = [(HMDPairedSync *)self delegate];
+  if (delegate)
   {
     v4 = objc_autoreleasePoolPush();
     v5 = HMFGetOSLogHandle();
@@ -210,7 +210,7 @@ void __29__HMDPairedSync_syncComplete__block_invoke(uint64_t a1)
     objc_autoreleasePoolPop(v4);
     if (objc_opt_respondsToSelector())
     {
-      [v3 pairedSyncDidStart:self];
+      [delegate pairedSyncDidStart:self];
     }
   }
 
@@ -219,13 +219,13 @@ void __29__HMDPairedSync_syncComplete__block_invoke(uint64_t a1)
 
 - (void)needToSync
 {
-  v3 = [(HMDPairedSync *)self workQueue];
+  workQueue = [(HMDPairedSync *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __27__HMDPairedSync_needToSync__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __27__HMDPairedSync_needToSync__block_invoke(uint64_t a1)
@@ -275,43 +275,43 @@ void __27__HMDPairedSync_needToSync__block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)restrictionAsString:(unint64_t)a3
+- (id)restrictionAsString:(unint64_t)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
-      v4 = @"PSYSyncRestrictionLimitPush";
+      string = @"PSYSyncRestrictionLimitPush";
     }
 
     else
     {
-      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown restriction state: %tu", a3];
+      string = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown restriction state: %tu", string];
     }
   }
 
   else
   {
-    v4 = @"PSYSyncRestrictionNone";
+    string = @"PSYSyncRestrictionNone";
   }
 
-  return v4;
+  return string;
 }
 
-- (HMDPairedSync)initWithDelegate:(id)a3 queue:(id)a4
+- (HMDPairedSync)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = HMDPairedSync;
   v6 = [(HMDPairedSync *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_delegate, v5);
+    objc_storeWeak(&v6->_delegate, delegateCopy);
     v8 = HMDispatchQueueNameString();
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_create(v9, v10);
+    v11 = dispatch_queue_create(uTF8String, v10);
     workQueue = v7->_workQueue;
     v7->_workQueue = v11;
 

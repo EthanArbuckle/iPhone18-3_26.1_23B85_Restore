@@ -1,30 +1,30 @@
 @interface RFHighlightedSubstring
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFHighlightedSubstring)initWithCoder:(id)a3;
-- (RFHighlightedSubstring)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFHighlightedSubstring)initWithCoder:(id)coder;
+- (RFHighlightedSubstring)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFHighlightedSubstring
 
-- (RFHighlightedSubstring)initWithProtobuf:(id)a3
+- (RFHighlightedSubstring)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = RFHighlightedSubstring;
   v5 = [(RFHighlightedSubstring *)&v10 init];
   if (v5)
   {
-    v6 = [v4 substring];
+    substring = [protobufCopy substring];
 
-    if (v6)
+    if (substring)
     {
-      v7 = [v4 substring];
-      [(RFHighlightedSubstring *)v5 setSubstring:v7];
+      substring2 = [protobufCopy substring];
+      [(RFHighlightedSubstring *)v5 setSubstring:substring2];
     }
 
     v8 = v5;
@@ -35,38 +35,38 @@
 
 - (unint64_t)hash
 {
-  v2 = [(RFHighlightedSubstring *)self substring];
-  v3 = [v2 hash];
+  substring = [(RFHighlightedSubstring *)self substring];
+  v3 = [substring hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(RFHighlightedSubstring *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(RFHighlightedSubstring *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(RFHighlightedSubstring *)self substring];
-    v7 = [(RFHighlightedSubstring *)v5 substring];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    substring = [(RFHighlightedSubstring *)self substring];
+    substring2 = [(RFHighlightedSubstring *)v5 substring];
+    if ((substring != 0) == (substring2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(RFHighlightedSubstring *)self substring];
-      if (v8)
+      substring3 = [(RFHighlightedSubstring *)self substring];
+      if (substring3)
       {
-        v9 = [(RFHighlightedSubstring *)self substring];
-        v10 = [(RFHighlightedSubstring *)v5 substring];
-        v11 = [v9 isEqual:v10];
+        substring4 = [(RFHighlightedSubstring *)self substring];
+        substring5 = [(RFHighlightedSubstring *)v5 substring];
+        v11 = [substring4 isEqual:substring5];
       }
 
       else
@@ -84,11 +84,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(RFHighlightedSubstring *)self substring];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  substring = [(RFHighlightedSubstring *)self substring];
+  v6 = [substring copy];
   [v4 setSubstring:v6];
 
   return v4;
@@ -97,31 +97,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFHighlightedSubstring alloc] initWithFacade:self];
-  v3 = [(_SFPBRFHighlightedSubstring *)v2 jsonData];
+  jsonData = [(_SFPBRFHighlightedSubstring *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFHighlightedSubstring alloc] initWithFacade:self];
-  v3 = [(_SFPBRFHighlightedSubstring *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFHighlightedSubstring *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFHighlightedSubstring alloc] initWithFacade:self];
-  v5 = [(_SFPBRFHighlightedSubstring *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFHighlightedSubstring *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFHighlightedSubstring)initWithCoder:(id)a3
+- (RFHighlightedSubstring)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFHighlightedSubstring alloc] initWithData:v5];
   v7 = [(RFHighlightedSubstring *)self initWithProtobuf:v6];

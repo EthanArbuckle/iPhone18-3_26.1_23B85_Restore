@@ -1,5 +1,5 @@
 @interface VUILibraryProductInfoViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityGetInfoSections;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -9,13 +9,13 @@
 
 @implementation VUILibraryProductInfoViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUILibraryProductInfoView" hasInstanceMethod:@"infos" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUILibraryProductInfoSection" hasInstanceMethod:@"headerContentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUILibraryProductInfoSection" hasInstanceMethod:@"dataViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUILibraryProductInfoView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUILibraryProductInfoView" hasInstanceMethod:@"infos" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUILibraryProductInfoSection" hasInstanceMethod:@"headerContentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUILibraryProductInfoSection" hasInstanceMethod:@"dataViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUILibraryProductInfoView" isKindOfClass:@"UIView"];
 }
 
 - (id)_accessibilityGetInfoSections
@@ -40,13 +40,13 @@ BOOL __71__VUILibraryProductInfoViewAccessibility__accessibilityGetInfoSections_
 - (id)accessibilityElements
 {
   v19 = *MEMORY[0x29EDCA608];
-  v2 = [(VUILibraryProductInfoViewAccessibility *)self _accessibilityGetInfoSections];
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  _accessibilityGetInfoSections = [(VUILibraryProductInfoViewAccessibility *)self _accessibilityGetInfoSections];
+  array = [MEMORY[0x29EDB8DE8] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = _accessibilityGetInfoSections;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -63,10 +63,10 @@ BOOL __71__VUILibraryProductInfoViewAccessibility__accessibilityGetInfoSections_
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [v9 safeValueForKey:{@"headerContentView", v14}];
-        [v3 axSafelyAddObject:v10];
+        [array axSafelyAddObject:v10];
 
         v11 = [v9 safeValueForKey:@"dataViews"];
-        [v3 axSafelyAddObjectsFromArray:v11];
+        [array axSafelyAddObjectsFromArray:v11];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -77,7 +77,7 @@ BOOL __71__VUILibraryProductInfoViewAccessibility__accessibilityGetInfoSections_
 
   v12 = *MEMORY[0x29EDCA608];
 
-  return v3;
+  return array;
 }
 
 - (void)_accessibilityMarkHeaders
@@ -87,8 +87,8 @@ BOOL __71__VUILibraryProductInfoViewAccessibility__accessibilityGetInfoSections_
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(VUILibraryProductInfoViewAccessibility *)self _accessibilityGetInfoSections];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _accessibilityGetInfoSections = [(VUILibraryProductInfoViewAccessibility *)self _accessibilityGetInfoSections];
+  v3 = [_accessibilityGetInfoSections countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -100,7 +100,7 @@ BOOL __71__VUILibraryProductInfoViewAccessibility__accessibilityGetInfoSections_
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_accessibilityGetInfoSections);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -111,7 +111,7 @@ BOOL __71__VUILibraryProductInfoViewAccessibility__accessibilityGetInfoSections_
         [v10 setAccessibilityTraits:{v6 | objc_msgSend(v10, "accessibilityTraits")}];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [_accessibilityGetInfoSections countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);

@@ -1,68 +1,68 @@
 @interface ASCCollectionRequest
-+ (id)_requestWithID:(id)a3 kind:(id)a4 context:(id)a5 limit:(int64_t)a6 clientID:(id)a7;
-- (ASCCollectionRequest)initWithCoder:(id)a3;
-- (ASCCollectionRequest)initWithID:(id)a3 kind:(id)a4 context:(id)a5 limit:(int64_t)a6;
-- (BOOL)isEqual:(id)a3;
-- (id)_collectionRequestWithClientID:(id)a3;
-- (id)_initWithID:(id)a3 kind:(id)a4 context:(id)a5 limit:(int64_t)a6 clientID:(id)a7;
++ (id)_requestWithID:(id)d kind:(id)kind context:(id)context limit:(int64_t)limit clientID:(id)iD;
+- (ASCCollectionRequest)initWithCoder:(id)coder;
+- (ASCCollectionRequest)initWithID:(id)d kind:(id)kind context:(id)context limit:(int64_t)limit;
+- (BOOL)isEqual:(id)equal;
+- (id)_collectionRequestWithClientID:(id)d;
+- (id)_initWithID:(id)d kind:(id)kind context:(id)context limit:(int64_t)limit clientID:(id)iD;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCCollectionRequest
 
-- (ASCCollectionRequest)initWithID:(id)a3 kind:(id)a4 context:(id)a5 limit:(int64_t)a6
+- (ASCCollectionRequest)initWithID:(id)d kind:(id)kind context:(id)context limit:(int64_t)limit
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dCopy = d;
+  kindCopy = kind;
+  contextCopy = context;
   +[ASCEligibility assertCurrentProcessEligibility];
   v21.receiver = self;
   v21.super_class = ASCCollectionRequest;
   v13 = [(ASCCollectionRequest *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [dCopy copy];
     id = v13->_id;
     v13->_id = v14;
 
-    v16 = [v11 copy];
+    v16 = [kindCopy copy];
     kind = v13->_kind;
     v13->_kind = v16;
 
-    v18 = [v12 copy];
+    v18 = [contextCopy copy];
     context = v13->_context;
     v13->_context = v18;
 
-    v13->_limit = a6;
+    v13->_limit = limit;
   }
 
   return v13;
 }
 
-- (ASCCollectionRequest)initWithCoder:(id)a3
+- (ASCCollectionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
       if (v7)
       {
-        v8 = -[ASCCollectionRequest initWithID:kind:context:limit:](self, "initWithID:kind:context:limit:", v5, v6, v7, [v4 decodeIntegerForKey:@"limit"]);
+        v8 = -[ASCCollectionRequest initWithID:kind:context:limit:](self, "initWithID:kind:context:limit:", v5, v6, v7, [coderCopy decodeIntegerForKey:@"limit"]);
         if (v8)
         {
-          v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientID"];
+          v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientID"];
           clientID = v8->_clientID;
           v8->_clientID = v9;
         }
 
         self = v8;
-        v11 = self;
+        selfCopy = self;
       }
 
       else
@@ -73,7 +73,7 @@
           [(ASCCollectionRequest *)v28 initWithCoder:v29, v30, v31, v32, v33, v34, v35];
         }
 
-        v11 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -85,7 +85,7 @@
         [(ASCCollectionRequest *)v20 initWithCoder:v21, v22, v23, v24, v25, v26, v27];
       }
 
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -97,27 +97,27 @@
       [(ASCCollectionRequest *)v12 initWithCoder:v13, v14, v15, v16, v17, v18, v19];
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASCCollectionRequest *)self id];
-  [v4 encodeObject:v5 forKey:@"id"];
+  [coderCopy encodeObject:v5 forKey:@"id"];
 
-  v6 = [(ASCCollectionRequest *)self kind];
-  [v4 encodeObject:v6 forKey:@"kind"];
+  kind = [(ASCCollectionRequest *)self kind];
+  [coderCopy encodeObject:kind forKey:@"kind"];
 
-  v7 = [(ASCCollectionRequest *)self context];
-  [v4 encodeObject:v7 forKey:@"context"];
+  context = [(ASCCollectionRequest *)self context];
+  [coderCopy encodeObject:context forKey:@"context"];
 
-  [v4 encodeInteger:-[ASCCollectionRequest limit](self forKey:{"limit"), @"limit"}];
-  v8 = [(ASCCollectionRequest *)self clientID];
-  [v4 encodeObject:v8 forKey:@"clientID"];
+  [coderCopy encodeInteger:-[ASCCollectionRequest limit](self forKey:{"limit"), @"limit"}];
+  clientID = [(ASCCollectionRequest *)self clientID];
+  [coderCopy encodeObject:clientID forKey:@"clientID"];
 }
 
 - (unint64_t)hash
@@ -126,27 +126,27 @@
   v4 = [(ASCCollectionRequest *)self id];
   [(ASCHasher *)v3 combineObject:v4];
 
-  v5 = [(ASCCollectionRequest *)self kind];
-  [(ASCHasher *)v3 combineObject:v5];
+  kind = [(ASCCollectionRequest *)self kind];
+  [(ASCHasher *)v3 combineObject:kind];
 
-  v6 = [(ASCCollectionRequest *)self context];
-  [(ASCHasher *)v3 combineObject:v6];
+  context = [(ASCCollectionRequest *)self context];
+  [(ASCHasher *)v3 combineObject:context];
 
   [(ASCHasher *)v3 combineInteger:[(ASCCollectionRequest *)self limit]];
-  v7 = [(ASCCollectionRequest *)self clientID];
-  [(ASCHasher *)v3 combineObject:v7];
+  clientID = [(ASCCollectionRequest *)self clientID];
+  [(ASCHasher *)v3 combineObject:clientID];
 
-  v8 = [(ASCHasher *)v3 finalizeHash];
-  return v8;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -183,45 +183,45 @@ LABEL_35:
       if ([v9 isEqual:v10])
       {
 LABEL_12:
-        v12 = [(ASCCollectionRequest *)self kind];
-        v13 = [(ASCCollectionRequest *)v8 kind];
-        v14 = v13;
-        if (v12 && v13)
+        kind = [(ASCCollectionRequest *)self kind];
+        kind2 = [(ASCCollectionRequest *)v8 kind];
+        v14 = kind2;
+        if (kind && kind2)
         {
-          if ([v12 isEqual:v13])
+          if ([kind isEqual:kind2])
           {
 LABEL_15:
-            v15 = [(ASCCollectionRequest *)self context];
-            v16 = [(ASCCollectionRequest *)v8 context];
-            v17 = v16;
-            if (v15 && v16)
+            context = [(ASCCollectionRequest *)self context];
+            context2 = [(ASCCollectionRequest *)v8 context];
+            v17 = context2;
+            if (context && context2)
             {
-              if (![v15 isEqual:v16])
+              if (![context isEqual:context2])
               {
                 goto LABEL_29;
               }
             }
 
-            else if (v15 != v16)
+            else if (context != context2)
             {
               goto LABEL_29;
             }
 
-            v18 = [(ASCCollectionRequest *)self limit];
-            if (v18 == [(ASCCollectionRequest *)v8 limit])
+            limit = [(ASCCollectionRequest *)self limit];
+            if (limit == [(ASCCollectionRequest *)v8 limit])
             {
-              v19 = [(ASCCollectionRequest *)self clientID];
-              v20 = [(ASCCollectionRequest *)v8 clientID];
-              v21 = v20;
-              v23 = v19;
-              if (v19 && v20)
+              clientID = [(ASCCollectionRequest *)self clientID];
+              clientID2 = [(ASCCollectionRequest *)v8 clientID];
+              v21 = clientID2;
+              v23 = clientID;
+              if (clientID && clientID2)
               {
-                v7 = [v19 isEqual:v20];
+                v7 = [clientID isEqual:clientID2];
               }
 
               else
               {
-                v7 = v19 == v20;
+                v7 = clientID == clientID2;
               }
 
               goto LABEL_32;
@@ -235,7 +235,7 @@ LABEL_32:
           }
         }
 
-        else if (v12 == v13)
+        else if (kind == kind2)
         {
           goto LABEL_15;
         }
@@ -270,52 +270,52 @@ LABEL_36:
   v4 = [(ASCCollectionRequest *)self id];
   [(ASCDescriber *)v3 addObject:v4 withName:@"id"];
 
-  v5 = [(ASCCollectionRequest *)self kind];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"kind"];
+  kind = [(ASCCollectionRequest *)self kind];
+  [(ASCDescriber *)v3 addObject:kind withName:@"kind"];
 
-  v6 = [(ASCCollectionRequest *)self context];
-  [(ASCDescriber *)v3 addObject:v6 withName:@"context"];
+  context = [(ASCCollectionRequest *)self context];
+  [(ASCDescriber *)v3 addObject:context withName:@"context"];
 
   [(ASCDescriber *)v3 addInteger:[(ASCCollectionRequest *)self limit] withName:@"limit"];
-  v7 = [(ASCCollectionRequest *)self clientID];
-  [(ASCDescriber *)v3 addObject:v7 withName:@"clientID"];
+  clientID = [(ASCCollectionRequest *)self clientID];
+  [(ASCDescriber *)v3 addObject:clientID withName:@"clientID"];
 
-  v8 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v8;
+  return finalizeDescription;
 }
 
-- (id)_collectionRequestWithClientID:(id)a3
+- (id)_collectionRequestWithClientID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc(objc_opt_class());
   v6 = [(ASCCollectionRequest *)self id];
-  v7 = [(ASCCollectionRequest *)self kind];
-  v8 = [(ASCCollectionRequest *)self context];
-  v9 = [v5 initWithID:v6 kind:v7 context:v8 limit:{-[ASCCollectionRequest limit](self, "limit")}];
+  kind = [(ASCCollectionRequest *)self kind];
+  context = [(ASCCollectionRequest *)self context];
+  v9 = [v5 initWithID:v6 kind:kind context:context limit:{-[ASCCollectionRequest limit](self, "limit")}];
 
   v10 = v9[5];
-  v9[5] = v4;
+  v9[5] = dCopy;
 
   return v9;
 }
 
-- (id)_initWithID:(id)a3 kind:(id)a4 context:(id)a5 limit:(int64_t)a6 clientID:(id)a7
+- (id)_initWithID:(id)d kind:(id)kind context:(id)context limit:(int64_t)limit clientID:(id)iD
 {
-  v12 = a7;
-  v13 = [(ASCCollectionRequest *)self initWithID:a3 kind:a4 context:a5 limit:a6];
-  v14 = [(ASCCollectionRequest *)v13 collectionRequestWithClientID:v12];
+  iDCopy = iD;
+  v13 = [(ASCCollectionRequest *)self initWithID:d kind:kind context:context limit:limit];
+  v14 = [(ASCCollectionRequest *)v13 collectionRequestWithClientID:iDCopy];
 
   return v14;
 }
 
-+ (id)_requestWithID:(id)a3 kind:(id)a4 context:(id)a5 limit:(int64_t)a6 clientID:(id)a7
++ (id)_requestWithID:(id)d kind:(id)kind context:(id)context limit:(int64_t)limit clientID:(id)iD
 {
-  v11 = a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[ASCCollectionRequest alloc] _initWithID:v14 kind:v13 context:v12 limit:a6 clientID:v11];
+  iDCopy = iD;
+  contextCopy = context;
+  kindCopy = kind;
+  dCopy = d;
+  v15 = [[ASCCollectionRequest alloc] _initWithID:dCopy kind:kindCopy context:contextCopy limit:limit clientID:iDCopy];
 
   return v15;
 }

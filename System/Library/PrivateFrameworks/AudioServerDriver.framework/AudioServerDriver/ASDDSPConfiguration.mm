@@ -1,26 +1,26 @@
 @interface ASDDSPConfiguration
-- (ASDDSPConfiguration)initWithArray:(id)a3 resourcePath:(id)a4;
+- (ASDDSPConfiguration)initWithArray:(id)array resourcePath:(id)path;
 @end
 
 @implementation ASDDSPConfiguration
 
-- (ASDDSPConfiguration)initWithArray:(id)a3 resourcePath:(id)a4
+- (ASDDSPConfiguration)initWithArray:(id)array resourcePath:(id)path
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  pathCopy = path;
   v33.receiver = self;
   v33.super_class = ASDDSPConfiguration;
   v8 = [(ASDDSPConfiguration *)&v33 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v28 = v6;
-    v10 = v6;
+    v28 = arrayCopy;
+    v10 = arrayCopy;
     v11 = [v10 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v11)
     {
@@ -40,7 +40,7 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v16 = [[ASDDSPItemInfo alloc] initWithDictionary:v15 resourcePath:v7];
+            v16 = [[ASDDSPItemInfo alloc] initWithDictionary:v15 resourcePath:pathCopy];
             if (!v16)
             {
 
@@ -55,7 +55,7 @@
             }
 
             v17 = v16;
-            [v9 addObject:v16];
+            [array addObject:v16];
           }
 
           ++v14;
@@ -72,9 +72,9 @@
       }
     }
 
-    objc_storeStrong(&v8->_dspItems, v9);
+    objc_storeStrong(&v8->_dspItems, array);
 LABEL_16:
-    v6 = v28;
+    arrayCopy = v28;
   }
 
   v26 = *MEMORY[0x277D85DE8];

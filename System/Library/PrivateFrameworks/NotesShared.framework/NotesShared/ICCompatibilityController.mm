@@ -2,14 +2,14 @@
 + (ICCompatibilityController)sharedController;
 - (BOOL)fakesIncompatibleDevicesForDebugging;
 - (ICCompatibilityController)init;
-- (id)cachedDevicesDateForAccount:(id)a3;
-- (id)cachedDevicesForAccount:(id)a3;
-- (id)fetchDevicesForAccount:(id)a3;
-- (void)cacheDevices:(id)a3 forAccount:(id)a4;
-- (void)clearCachedDevicesForAccount:(id)a3;
-- (void)devicesForAccount:(id)a3 completionHandler:(id)a4;
-- (void)messageForAccount:(id)a3 minimumNotesVersion:(int64_t)a4 completionHandler:(id)a5;
-- (void)setFakesIncompatibleDevicesForDebugging:(BOOL)a3;
+- (id)cachedDevicesDateForAccount:(id)account;
+- (id)cachedDevicesForAccount:(id)account;
+- (id)fetchDevicesForAccount:(id)account;
+- (void)cacheDevices:(id)devices forAccount:(id)account;
+- (void)clearCachedDevicesForAccount:(id)account;
+- (void)devicesForAccount:(id)account completionHandler:(id)handler;
+- (void)messageForAccount:(id)account minimumNotesVersion:(int64_t)version completionHandler:(id)handler;
+- (void)setFakesIncompatibleDevicesForDebugging:(BOOL)debugging;
 @end
 
 @implementation ICCompatibilityController
@@ -50,17 +50,17 @@ void __45__ICCompatibilityController_sharedController__block_invoke()
   sharedController_sharedController_0 = v0;
 }
 
-- (void)devicesForAccount:(id)a3 completionHandler:(id)a4
+- (void)devicesForAccount:(id)account completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  handlerCopy = handler;
   v8 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 shortLoggingDescription];
+    shortLoggingDescription = [accountCopy shortLoggingDescription];
     *buf = 138412802;
-    v23 = v9;
+    v23 = shortLoggingDescription;
     v24 = 2080;
     v25 = "[ICCompatibilityController devicesForAccount:completionHandler:]";
     v26 = 1024;
@@ -68,23 +68,23 @@ void __45__ICCompatibilityController_sharedController__block_invoke()
     _os_log_impl(&dword_214D51000, v8, OS_LOG_TYPE_DEFAULT, "Retrieving compatibility devices for account… {account: %@}%s:%d", buf, 0x1Cu);
   }
 
-  v10 = [v6 objectID];
+  objectID = [accountCopy objectID];
   v11 = +[ICNoteContext sharedContext];
-  v12 = [v11 workerManagedObjectContext];
+  workerManagedObjectContext = [v11 workerManagedObjectContext];
 
-  v13 = [(ICCompatibilityController *)self queue];
+  queue = [(ICCompatibilityController *)self queue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __65__ICCompatibilityController_devicesForAccount_completionHandler___block_invoke;
   v17[3] = &unk_278198890;
-  v18 = v12;
-  v19 = self;
-  v20 = v10;
-  v21 = v7;
-  v14 = v10;
-  v15 = v7;
-  v16 = v12;
-  dispatch_async(v13, v17);
+  v18 = workerManagedObjectContext;
+  selfCopy = self;
+  v20 = objectID;
+  v21 = handlerCopy;
+  v14 = objectID;
+  v15 = handlerCopy;
+  v16 = workerManagedObjectContext;
+  dispatch_async(queue, v17);
 }
 
 void __65__ICCompatibilityController_devicesForAccount_completionHandler___block_invoke(uint64_t a1)
@@ -209,15 +209,15 @@ LABEL_31:
   }
 }
 
-- (id)fetchDevicesForAccount:(id)a3
+- (id)fetchDevicesForAccount:(id)account
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  accountCopy = account;
   v4 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412802;
-    v11 = v3;
+    v11 = accountCopy;
     v12 = 2080;
     v13 = "[ICCompatibilityController fetchDevicesForAccount:]";
     v14 = 1024;
@@ -225,11 +225,11 @@ LABEL_31:
     _os_log_impl(&dword_214D51000, v4, OS_LOG_TYPE_DEFAULT, "Fetching compatibility devices for account… {account: %@}%s:%d", &v10, 0x1Cu);
   }
 
-  v5 = [[ICDeviceListRequest alloc] initWithAccount:v3];
+  v5 = [[ICDeviceListRequest alloc] initWithAccount:accountCopy];
   [(ICDeviceListRequest *)v5 fetchWithCompletionBlock:&__block_literal_global_12];
   [(ICDeviceListRequest *)v5 waitForFetchWithTimeout:20.0];
-  v6 = [(ICDeviceListRequest *)v5 devices];
-  v7 = [v6 ic_compactMap:&__block_literal_global_16];
+  devices = [(ICDeviceListRequest *)v5 devices];
+  v7 = [devices ic_compactMap:&__block_literal_global_16];
 
   v8 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -261,30 +261,30 @@ ICCompatibilityControllerDevice *__52__ICCompatibilityController_fetchDevicesFor
   return v3;
 }
 
-- (id)cachedDevicesDateForAccount:(id)a3
+- (id)cachedDevicesDateForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   objc_opt_class();
-  v4 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  v5 = [v3 identifier];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  identifier = [accountCopy identifier];
 
-  v6 = [@"AccountDevicesCacheDate-" stringByAppendingString:v5];
-  v7 = [v4 objectForKey:v6];
+  v6 = [@"AccountDevicesCacheDate-" stringByAppendingString:identifier];
+  v7 = [mEMORY[0x277D36180] objectForKey:v6];
   v8 = ICCheckedDynamicCast();
 
   return v8;
 }
 
-- (id)cachedDevicesForAccount:(id)a3
+- (id)cachedDevicesForAccount:(id)account
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  accountCopy = account;
   v4 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 shortLoggingDescription];
+    shortLoggingDescription = [accountCopy shortLoggingDescription];
     *buf = 138412802;
-    v16 = v5;
+    v16 = shortLoggingDescription;
     v17 = 2080;
     v18 = "[ICCompatibilityController cachedDevicesForAccount:]";
     v19 = 1024;
@@ -292,10 +292,10 @@ ICCompatibilityControllerDevice *__52__ICCompatibilityController_fetchDevicesFor
     _os_log_impl(&dword_214D51000, v4, OS_LOG_TYPE_DEFAULT, "Retrieving cached compatibility devices for account… {account: %@}%s:%d", buf, 0x1Cu);
   }
 
-  v6 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  v7 = [v3 identifier];
-  v8 = [@"AccountDevicesCache-" stringByAppendingString:v7];
-  v9 = [v6 dataForKey:v8];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  identifier = [accountCopy identifier];
+  v8 = [@"AccountDevicesCache-" stringByAppendingString:identifier];
+  v9 = [mEMORY[0x277D36180] dataForKey:v8];
 
   if (v9)
   {
@@ -320,17 +320,17 @@ ICCompatibilityControllerDevice *__52__ICCompatibilityController_fetchDevicesFor
   return v10;
 }
 
-- (void)cacheDevices:(id)a3 forAccount:(id)a4
+- (void)cacheDevices:(id)devices forAccount:(id)account
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
+  accountCopy = account;
+  devicesCopy = devices;
   v7 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 shortLoggingDescription];
+    shortLoggingDescription = [accountCopy shortLoggingDescription];
     *buf = 138412802;
-    v20 = v8;
+    v20 = shortLoggingDescription;
     v21 = 2080;
     v22 = "[ICCompatibilityController cacheDevices:forAccount:]";
     v23 = 1024;
@@ -339,13 +339,13 @@ ICCompatibilityControllerDevice *__52__ICCompatibilityController_fetchDevicesFor
   }
 
   v18 = 0;
-  v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v18];
+  v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:devicesCopy requiringSecureCoding:1 error:&v18];
 
   v10 = v18;
   if (v10)
   {
-    v11 = os_log_create("com.apple.notes", "UI");
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    mEMORY[0x277D36180]2 = os_log_create("com.apple.notes", "UI");
+    if (os_log_type_enabled(mEMORY[0x277D36180]2, OS_LOG_TYPE_ERROR))
     {
       [ICCompatibilityController cacheDevices:forAccount:];
     }
@@ -353,47 +353,47 @@ ICCompatibilityControllerDevice *__52__ICCompatibilityController_fetchDevicesFor
 
   else
   {
-    v12 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-    v13 = [v5 identifier];
-    v14 = [@"AccountDevicesCache-" stringByAppendingString:v13];
-    [v12 setObject:v9 forKey:v14];
+    mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+    identifier = [accountCopy identifier];
+    v14 = [@"AccountDevicesCache-" stringByAppendingString:identifier];
+    [mEMORY[0x277D36180] setObject:v9 forKey:v14];
 
-    v11 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+    mEMORY[0x277D36180]2 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
     v15 = [MEMORY[0x277CBEAA8] now];
-    v16 = [v5 identifier];
-    v17 = [@"AccountDevicesCacheDate-" stringByAppendingString:v16];
-    [v11 setObject:v15 forKey:v17];
+    identifier2 = [accountCopy identifier];
+    v17 = [@"AccountDevicesCacheDate-" stringByAppendingString:identifier2];
+    [mEMORY[0x277D36180]2 setObject:v15 forKey:v17];
   }
 }
 
-- (void)clearCachedDevicesForAccount:(id)a3
+- (void)clearCachedDevicesForAccount:(id)account
 {
   v3 = MEMORY[0x277D36180];
-  v4 = a3;
-  v5 = [v3 sharedAppGroupDefaults];
-  v6 = [v4 identifier];
-  v7 = [@"AccountDevicesCache-" stringByAppendingString:v6];
-  [v5 setObject:0 forKey:v7];
+  accountCopy = account;
+  sharedAppGroupDefaults = [v3 sharedAppGroupDefaults];
+  identifier = [accountCopy identifier];
+  v7 = [@"AccountDevicesCache-" stringByAppendingString:identifier];
+  [sharedAppGroupDefaults setObject:0 forKey:v7];
 
-  v10 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  v8 = [v4 identifier];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  identifier2 = [accountCopy identifier];
 
-  v9 = [@"AccountDevicesCacheDate-" stringByAppendingString:v8];
-  [v10 setObject:0 forKey:v9];
+  v9 = [@"AccountDevicesCacheDate-" stringByAppendingString:identifier2];
+  [mEMORY[0x277D36180] setObject:0 forKey:v9];
 }
 
-- (void)messageForAccount:(id)a3 minimumNotesVersion:(int64_t)a4 completionHandler:(id)a5
+- (void)messageForAccount:(id)account minimumNotesVersion:(int64_t)version completionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  accountCopy = account;
+  handlerCopy = handler;
   v10 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 shortLoggingDescription];
-    v12 = [MEMORY[0x277CCABB0] numberWithLongLong:a4];
+    shortLoggingDescription = [accountCopy shortLoggingDescription];
+    v12 = [MEMORY[0x277CCABB0] numberWithLongLong:version];
     *buf = 138413058;
-    v18 = v11;
+    v18 = shortLoggingDescription;
     v19 = 2112;
     v21 = 2080;
     v20 = v12;
@@ -407,10 +407,10 @@ ICCompatibilityControllerDevice *__52__ICCompatibilityController_fetchDevicesFor
   v14[1] = 3221225472;
   v14[2] = __85__ICCompatibilityController_messageForAccount_minimumNotesVersion_completionHandler___block_invoke;
   v14[3] = &unk_278199670;
-  v15 = v9;
-  v16 = a4;
-  v13 = v9;
-  [(ICCompatibilityController *)self devicesForAccount:v8 completionHandler:v14];
+  v15 = handlerCopy;
+  versionCopy = version;
+  v13 = handlerCopy;
+  [(ICCompatibilityController *)self devicesForAccount:accountCopy completionHandler:v14];
 }
 
 void __85__ICCompatibilityController_messageForAccount_minimumNotesVersion_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -517,19 +517,19 @@ id __85__ICCompatibilityController_messageForAccount_minimumNotesVersion_complet
 
 - (BOOL)fakesIncompatibleDevicesForDebugging
 {
-  v2 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
   v3 = NSStringFromSelector(sel_fakesIncompatibleDevicesForDebugging);
-  v4 = [v2 BOOLForKey:v3];
+  v4 = [mEMORY[0x277D36180] BOOLForKey:v3];
 
   return v4;
 }
 
-- (void)setFakesIncompatibleDevicesForDebugging:(BOOL)a3
+- (void)setFakesIncompatibleDevicesForDebugging:(BOOL)debugging
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  debuggingCopy = debugging;
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
   v4 = NSStringFromSelector(sel_fakesIncompatibleDevicesForDebugging);
-  [v5 setBool:v3 forKey:v4];
+  [mEMORY[0x277D36180] setBool:debuggingCopy forKey:v4];
 }
 
 void __65__ICCompatibilityController_devicesForAccount_completionHandler___block_invoke_2_cold_2(void *a1)

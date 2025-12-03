@@ -1,8 +1,8 @@
 @interface _ACComponentVector
-- (_ACComponentVector)initWithCoder:(id)a3;
-- (_ACComponentVector)initWithVector:(const void *)a3;
+- (_ACComponentVector)initWithCoder:(id)coder;
+- (_ACComponentVector)initWithVector:(const void *)vector;
 - (id).cxx_construct;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _ACComponentVector
@@ -16,9 +16,9 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   v4 = objc_opt_new();
   begin = self->mVector.__begin_;
   for (i = self->mVector.__end_; begin != i; begin += 16)
@@ -27,19 +27,19 @@
     [v4 addObject:v7];
   }
 
-  [v8 encodeObject:v4 forKey:@"components"];
+  [coderCopy encodeObject:v4 forKey:@"components"];
 }
 
-- (_ACComponentVector)initWithCoder:(id)a3
+- (_ACComponentVector)initWithCoder:(id)coder
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v21[0] = objc_opt_class();
   v21[1] = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   v7 = [v5 setWithArray:v6];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"components"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"components"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -86,15 +86,15 @@
   return self;
 }
 
-- (_ACComponentVector)initWithVector:(const void *)a3
+- (_ACComponentVector)initWithVector:(const void *)vector
 {
   p_mVector = &self->mVector;
-  if (p_mVector != a3)
+  if (p_mVector != vector)
   {
-    std::vector<std::shared_ptr<APComponent>>::__assign_with_size[abi:ne200100]<std::shared_ptr<APComponent>*,std::shared_ptr<APComponent>*>(p_mVector, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 4);
+    std::vector<std::shared_ptr<APComponent>>::__assign_with_size[abi:ne200100]<std::shared_ptr<APComponent>*,std::shared_ptr<APComponent>*>(p_mVector, *vector, *(vector + 1), (*(vector + 1) - *vector) >> 4);
   }
 
-  self->mVector.mSorted = *(a3 + 24);
+  self->mVector.mSorted = *(vector + 24);
   return self;
 }
 

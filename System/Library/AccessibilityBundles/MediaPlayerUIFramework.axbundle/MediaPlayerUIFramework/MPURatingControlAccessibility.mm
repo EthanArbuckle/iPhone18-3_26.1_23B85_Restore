@@ -1,29 +1,29 @@
 @interface MPURatingControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilityChangeValue:(BOOL)a3;
+- (void)_accessibilityChangeValue:(BOOL)value;
 @end
 
 @implementation MPURatingControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MPURatingControl" hasInstanceMethod:@"rating" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"MPURatingControl" hasInstanceMethod:@"setRating:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"MPURatingControl" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MPURatingControl" hasInstanceMethod:@"rating" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"MPURatingControl" hasInstanceMethod:@"setRating:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"MPURatingControl" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
 }
 
-- (void)_accessibilityChangeValue:(BOOL)a3
+- (void)_accessibilityChangeValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = [(MPURatingControlAccessibility *)self safeValueForKey:@"rating"];
   [v4 doubleValue];
   v6 = v5;
 
   v7 = -0.2;
-  if (v3)
+  if (valueCopy)
   {
     v7 = 0.2;
   }

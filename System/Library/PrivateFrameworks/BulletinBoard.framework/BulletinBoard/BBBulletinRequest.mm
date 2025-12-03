@@ -1,24 +1,24 @@
 @interface BBBulletinRequest
-- (BOOL)hasAdditionalAttachmentsModificationsRelativeTo:(id)a3;
-- (BOOL)hasContentModificationsRelativeTo:(id)a3;
-- (void)_updateSupplementaryAction:(id)a3;
-- (void)addAlertSuppressionAppID:(id)a3;
-- (void)addAttachmentOfType:(int64_t)a3;
-- (void)addButton:(id)a3;
+- (BOOL)hasAdditionalAttachmentsModificationsRelativeTo:(id)to;
+- (BOOL)hasContentModificationsRelativeTo:(id)to;
+- (void)_updateSupplementaryAction:(id)action;
+- (void)addAlertSuppressionAppID:(id)d;
+- (void)addAttachmentOfType:(int64_t)type;
+- (void)addButton:(id)button;
 - (void)generateNewBulletinID;
-- (void)setContextValue:(id)a3 forKey:(id)a4;
-- (void)setPrimaryAttachmentType:(int64_t)a3;
-- (void)setSupplementaryActions:(id)a3 forLayout:(int64_t)a4;
+- (void)setContextValue:(id)value forKey:(id)key;
+- (void)setPrimaryAttachmentType:(int64_t)type;
+- (void)setSupplementaryActions:(id)actions forLayout:(int64_t)layout;
 @end
 
 @implementation BBBulletinRequest
 
-- (void)setContextValue:(id)a3 forKey:(id)a4
+- (void)setContextValue:(id)value forKey:(id)key
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v23 = a3;
-  v6 = a4;
-  if (v23 && v6)
+  valueCopy = value;
+  keyCopy = key;
+  if (valueCopy && keyCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -27,8 +27,8 @@
       v11 = *MEMORY[0x277CBE660];
       v26[0] = @"value";
       v26[1] = @"key";
-      v27[0] = v23;
-      v27[1] = v6;
+      v27[0] = valueCopy;
+      v27[1] = keyCopy;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
       v13 = [v10 exceptionWithName:v11 reason:@"key must be of type NSString" userInfo:v12];
       v14 = v13;
@@ -36,7 +36,7 @@
       objc_exception_throw(v13);
     }
 
-    if ((BBIsValueAllowed(v23) & 1) == 0)
+    if ((BBIsValueAllowed(valueCopy) & 1) == 0)
     {
       v15 = MEMORY[0x277CBEAD8];
       v16 = *MEMORY[0x277CBE660];
@@ -45,8 +45,8 @@
       v19 = [v17 stringWithFormat:@"value must be one of and contain only the following types: %@", v18];
       v24[0] = @"value";
       v24[1] = @"key";
-      v25[0] = v23;
-      v25[1] = v6;
+      v25[0] = valueCopy;
+      v25[1] = keyCopy;
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
       v21 = [v15 exceptionWithName:v16 reason:v19 userInfo:v20];
       v22 = v21;
@@ -54,20 +54,20 @@
       objc_exception_throw(v21);
     }
 
-    v7 = [(BBBulletin *)self context];
-    v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v7, "count") + 1}];
-    [v8 addEntriesFromDictionary:v7];
-    [v8 setValue:v23 forKey:v6];
+    context = [(BBBulletin *)self context];
+    v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(context, "count") + 1}];
+    [v8 addEntriesFromDictionary:context];
+    [v8 setValue:valueCopy forKey:keyCopy];
     [(BBBulletin *)self setContext:v8];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPrimaryAttachmentType:(int64_t)a3
+- (void)setPrimaryAttachmentType:(int64_t)type
 {
-  v5 = [(BBBulletin *)self primaryAttachment];
-  v6 = [v5 mutableCopy];
+  primaryAttachment = [(BBBulletin *)self primaryAttachment];
+  v6 = [primaryAttachment mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -81,66 +81,66 @@
 
   v9 = v8;
 
-  [(BBMutableAttachmentMetadata *)v9 setType:a3];
+  [(BBMutableAttachmentMetadata *)v9 setType:type];
   [(BBBulletin *)self setPrimaryAttachment:v9];
 }
 
-- (void)addAttachmentOfType:(int64_t)a3
+- (void)addAttachmentOfType:(int64_t)type
 {
   v10 = objc_alloc_init(BBMutableAttachmentMetadata);
-  [(BBMutableAttachmentMetadata *)v10 setType:a3];
-  v5 = [(BBBulletin *)self additionalAttachments];
-  v6 = v5;
-  if (v5)
+  [(BBMutableAttachmentMetadata *)v10 setType:type];
+  additionalAttachments = [(BBBulletin *)self additionalAttachments];
+  v6 = additionalAttachments;
+  if (additionalAttachments)
   {
-    v7 = v5;
+    array = additionalAttachments;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v8 = v7;
+  v8 = array;
 
   v9 = [v8 arrayByAddingObject:v10];
 
   [(BBBulletin *)self setAdditionalAttachments:v9];
 }
 
-- (void)addButton:(id)a3
+- (void)addButton:(id)button
 {
-  v7 = a3;
-  if (!v7)
+  buttonCopy = button;
+  if (!buttonCopy)
   {
     [(BBBulletinRequest *)self addButton:a2];
   }
 
-  v5 = [(BBBulletin *)self buttons];
-  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
-  [v6 addObjectsFromArray:v5];
-  [v6 addObject:v7];
+  buttons = [(BBBulletin *)self buttons];
+  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(buttons, "count")}];
+  [v6 addObjectsFromArray:buttons];
+  [v6 addObject:buttonCopy];
   [(BBBulletin *)self setButtons:v6];
 }
 
-- (void)setSupplementaryActions:(id)a3 forLayout:(int64_t)a4
+- (void)setSupplementaryActions:(id)actions forLayout:(int64_t)layout
 {
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke;
   v9[3] = &unk_278D2A5C8;
   v9[4] = self;
-  v6 = [a3 bs_mapNoNulls:v9];
-  v7 = [(BBBulletin *)self supplementaryActionsByLayout];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v6 = [actions bs_mapNoNulls:v9];
+  supplementaryActionsByLayout = [(BBBulletin *)self supplementaryActionsByLayout];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:layout];
   if (v6)
   {
-    [v7 setObject:v6 forKey:v8];
+    [supplementaryActionsByLayout setObject:v6 forKey:v8];
   }
 
   else
   {
-    [v7 removeObjectForKey:v8];
+    [supplementaryActionsByLayout removeObjectForKey:v8];
   }
 }
 
@@ -158,11 +158,11 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
   return v4;
 }
 
-- (void)_updateSupplementaryAction:(id)a3
+- (void)_updateSupplementaryAction:(id)action
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 setActionType:7];
+  actionCopy = action;
+  [actionCopy setActionType:7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -170,8 +170,8 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [v4 actions];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    actions = [actionCopy actions];
+    v6 = [actions countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -183,14 +183,14 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(actions);
           }
 
           [(BBBulletinRequest *)self _updateSupplementaryAction:*(*(&v11 + 1) + 8 * v9++)];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [actions countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -200,38 +200,38 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addAlertSuppressionAppID:(id)a3
+- (void)addAlertSuppressionAppID:(id)d
 {
-  v9 = a3;
-  if (v9)
+  dCopy = d;
+  if (dCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [(BBBulletinRequest *)self addAlertSuppressionAppID:a2, v9];
+      [(BBBulletinRequest *)self addAlertSuppressionAppID:a2, dCopy];
     }
 
     v5 = objc_alloc(MEMORY[0x277CBEB58]);
-    v6 = [(BBBulletin *)self alertSuppressionAppIDs_deprecated];
-    v7 = [v5 initWithSet:v6];
+    alertSuppressionAppIDs_deprecated = [(BBBulletin *)self alertSuppressionAppIDs_deprecated];
+    v7 = [v5 initWithSet:alertSuppressionAppIDs_deprecated];
 
-    v8 = [v9 copy];
+    v8 = [dCopy copy];
     [v7 addObject:v8];
     [(BBBulletin *)self setAlertSuppressionAppIDs_deprecated:v7];
   }
 }
 
-- (BOOL)hasContentModificationsRelativeTo:(id)a3
+- (BOOL)hasContentModificationsRelativeTo:(id)to
 {
-  v6 = a3;
-  v155 = [(BBBulletin *)self content];
-  if (v155 || ([v6 content], (v118 = objc_claimAutoreleasedReturnValue()) != 0))
+  toCopy = to;
+  content = [(BBBulletin *)self content];
+  if (content || ([toCopy content], (v118 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(BBBulletin *)self content];
-    [v6 content];
-    v122 = v123 = v7;
+    content2 = [(BBBulletin *)self content];
+    [toCopy content];
+    v122 = v123 = content2;
     v8 = 1;
-    if (![v7 isEqualToContent:?])
+    if (![content2 isEqualToContent:?])
     {
       v154 = 1;
       v156 = 0;
@@ -281,15 +281,15 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
     v8 = 0;
   }
 
-  v121 = [(BBBulletin *)self modalAlertContent];
-  HIDWORD(v153) = v121 == 0;
+  modalAlertContent = [(BBBulletin *)self modalAlertContent];
+  HIDWORD(v153) = modalAlertContent == 0;
   v154 = v8;
-  if (v121 || ([v6 modalAlertContent], (v116 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (modalAlertContent || ([toCopy modalAlertContent], (v116 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(BBBulletin *)self modalAlertContent];
-    [v6 modalAlertContent];
-    v119 = v120 = v7;
-    if (![v7 isEqualToContent:?])
+    content2 = [(BBBulletin *)self modalAlertContent];
+    [toCopy modalAlertContent];
+    v119 = v120 = content2;
+    if (![content2 isEqualToContent:?])
     {
       v156 = 1;
       memset(v135, 0, sizeof(v135));
@@ -332,24 +332,24 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
       goto LABEL_121;
     }
 
-    v4 = 1;
+    filterCriteria = 1;
   }
 
   else
   {
     v116 = 0;
-    v4 = 0;
+    filterCriteria = 0;
   }
 
-  v117 = [(BBBulletin *)self starkBannerContent];
-  DWORD2(v153) = v117 == 0;
-  LODWORD(v153) = v4;
-  if (v117 || ([v6 starkBannerContent], (v112 = objc_claimAutoreleasedReturnValue()) != 0))
+  starkBannerContent = [(BBBulletin *)self starkBannerContent];
+  DWORD2(v153) = starkBannerContent == 0;
+  LODWORD(v153) = filterCriteria;
+  if (starkBannerContent || ([toCopy starkBannerContent], (v112 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(BBBulletin *)self starkBannerContent];
-    [v6 starkBannerContent];
-    v114 = v115 = v7;
-    if (![v7 isEqualToContent:?])
+    content2 = [(BBBulletin *)self starkBannerContent];
+    [toCopy starkBannerContent];
+    v114 = v115 = content2;
+    if (![content2 isEqualToContent:?])
     {
       v156 = 1;
       *v135 = 0x100000000;
@@ -401,17 +401,17 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
     v15 = 0;
   }
 
-  v16 = [(BBBulletin *)self icon];
-  v3 = v16 == 0;
-  v113 = v16;
-  DWORD1(v153) = v16 == 0;
+  icon = [(BBBulletin *)self icon];
+  communicationContext2 = icon == 0;
+  v113 = icon;
+  DWORD1(v153) = icon == 0;
   LODWORD(v152) = v15;
-  if (v16 || ([v6 icon], (v109 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (icon || ([toCopy icon], (v109 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(BBBulletin *)self icon];
-    v110 = [v6 icon];
-    v111 = v7;
-    if (![v7 isEqual:?])
+    content2 = [(BBBulletin *)self icon];
+    icon2 = [toCopy icon];
+    v111 = content2;
+    if (![content2 isEqual:?])
     {
       v156 = 1;
       v133 = 0;
@@ -462,8 +462,8 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
     LODWORD(v151) = 0;
   }
 
-  v7 = [(BBBulletin *)self hasEventDate];
-  if (v7 != [v6 hasEventDate])
+  content2 = [(BBBulletin *)self hasEventDate];
+  if (content2 != [toCopy hasEventDate])
   {
     v133 = 0;
     HIDWORD(v152) = 0;
@@ -505,15 +505,15 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
     goto LABEL_121;
   }
 
-  v17 = [(BBBulletin *)self date];
-  HIDWORD(v152) = v17 == 0;
-  v108 = v17;
-  if (v17 || ([v6 date], (v104 = objc_claimAutoreleasedReturnValue()) != 0))
+  date = [(BBBulletin *)self date];
+  HIDWORD(v152) = date == 0;
+  v108 = date;
+  if (date || ([toCopy date], (v104 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(BBBulletin *)self date];
-    v106 = [v6 date];
-    v107 = v7;
-    if (![v7 isEqualToDate:?])
+    content2 = [(BBBulletin *)self date];
+    date2 = [toCopy date];
+    v107 = content2;
+    if (![content2 isEqualToDate:?])
     {
       v156 = 1;
       v133 = 0x100000000;
@@ -563,15 +563,15 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
     v149 = 0;
   }
 
-  v18 = [(BBBulletin *)self endDate];
-  HIDWORD(v151) = v18 == 0;
-  v105 = v18;
-  if (v18 || ([v6 endDate], (v100 = objc_claimAutoreleasedReturnValue()) != 0))
+  endDate = [(BBBulletin *)self endDate];
+  HIDWORD(v151) = endDate == 0;
+  v105 = endDate;
+  if (endDate || ([toCopy endDate], (v100 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(BBBulletin *)self endDate];
-    v102 = [v6 endDate];
-    v103 = v7;
-    if (![v7 isEqualToDate:?])
+    content2 = [(BBBulletin *)self endDate];
+    endDate2 = [toCopy endDate];
+    v103 = content2;
+    if (![content2 isEqualToDate:?])
     {
       v156 = 1;
       v129 = 0;
@@ -619,15 +619,15 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
     v147 = 0;
   }
 
-  v19 = [(BBBulletin *)self recencyDate];
-  v150 = v19 == 0;
-  v101 = v19;
-  if (v19 || ([v6 recencyDate], (v96 = objc_claimAutoreleasedReturnValue()) != 0))
+  recencyDate = [(BBBulletin *)self recencyDate];
+  v150 = recencyDate == 0;
+  v101 = recencyDate;
+  if (recencyDate || ([toCopy recencyDate], (v96 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(BBBulletin *)self recencyDate];
-    v98 = [v6 recencyDate];
-    v99 = v7;
-    if (![v7 isEqualToDate:?])
+    content2 = [(BBBulletin *)self recencyDate];
+    recencyDate2 = [toCopy recencyDate];
+    v99 = content2;
+    if (![content2 isEqualToDate:?])
     {
       v156 = 1;
       v128 = 0;
@@ -673,15 +673,15 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
     v146 = 0;
   }
 
-  v20 = [(BBBulletin *)self timeZone];
-  v148 = v20 == 0;
-  v97 = v20;
-  if (v20 || ([v6 timeZone], (v92 = objc_claimAutoreleasedReturnValue()) != 0))
+  timeZone = [(BBBulletin *)self timeZone];
+  v148 = timeZone == 0;
+  v97 = timeZone;
+  if (timeZone || ([toCopy timeZone], (v92 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(BBBulletin *)self timeZone];
-    v94 = [v6 timeZone];
-    v95 = v7;
-    if (![v7 isEqualToTimeZone:?])
+    content2 = [(BBBulletin *)self timeZone];
+    timeZone2 = [toCopy timeZone];
+    v95 = content2;
+    if (![content2 isEqualToTimeZone:?])
     {
       v156 = 1;
       v127 = 0;
@@ -725,15 +725,15 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
     v144 = 0;
   }
 
-  v21 = [(BBBulletin *)self context];
-  v145 = v21 == 0;
-  v93 = v21;
-  if (v21 || ([v6 context], (v88 = objc_claimAutoreleasedReturnValue()) != 0))
+  context = [(BBBulletin *)self context];
+  v145 = context == 0;
+  v93 = context;
+  if (context || ([toCopy context], (v88 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(BBBulletin *)self context];
-    v90 = [v6 context];
-    v91 = v7;
-    if (![v7 isEqualToDictionary:?])
+    content2 = [(BBBulletin *)self context];
+    context2 = [toCopy context];
+    v91 = content2;
+    if (![content2 isEqualToDictionary:?])
     {
       v156 = 1;
       v125 = 0;
@@ -775,15 +775,15 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
     v142 = 0;
   }
 
-  v22 = [(BBBulletin *)self primaryAttachment];
-  v143 = v22 == 0;
-  v89 = v22;
-  if (v22 || ([v6 primaryAttachment], (v85 = objc_claimAutoreleasedReturnValue()) != 0))
+  primaryAttachment = [(BBBulletin *)self primaryAttachment];
+  v143 = primaryAttachment == 0;
+  v89 = primaryAttachment;
+  if (primaryAttachment || ([toCopy primaryAttachment], (v85 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(BBBulletin *)self primaryAttachment];
-    v86 = [v6 primaryAttachment];
-    v87 = v7;
-    if ([v7 hasContentModificationsRelativeTo:?])
+    content2 = [(BBBulletin *)self primaryAttachment];
+    primaryAttachment2 = [toCopy primaryAttachment];
+    v87 = content2;
+    if ([content2 hasContentModificationsRelativeTo:?])
     {
       v156 = 1;
       v124 = 0;
@@ -823,7 +823,7 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
     v140 = 0;
   }
 
-  if ([(BBBulletinRequest *)self hasAdditionalAttachmentsModificationsRelativeTo:v6])
+  if ([(BBBulletinRequest *)self hasAdditionalAttachmentsModificationsRelativeTo:toCopy])
   {
     v124 = 0;
     v141 = 0;
@@ -853,15 +853,15 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
     goto LABEL_121;
   }
 
-  v23 = [(BBBulletin *)self alertSuppressionContexts];
-  v141 = v23 == 0;
-  v84 = v23;
-  if (v23 || ([v6 alertSuppressionContexts], (v80 = objc_claimAutoreleasedReturnValue()) != 0))
+  alertSuppressionContexts = [(BBBulletin *)self alertSuppressionContexts];
+  v141 = alertSuppressionContexts == 0;
+  v84 = alertSuppressionContexts;
+  if (alertSuppressionContexts || ([toCopy alertSuppressionContexts], (v80 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(BBBulletin *)self alertSuppressionContexts];
-    v82 = [v6 alertSuppressionContexts];
-    v83 = v7;
-    if (![v7 isEqualToSet:?])
+    content2 = [(BBBulletin *)self alertSuppressionContexts];
+    alertSuppressionContexts2 = [toCopy alertSuppressionContexts];
+    v83 = content2;
+    if (![content2 isEqualToSet:?])
     {
       v156 = 1;
       v9 = 0;
@@ -899,15 +899,15 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
     LODWORD(v139) = 0;
   }
 
-  v24 = [(BBBulletin *)self accessoryIconMask];
-  HIDWORD(v139) = v24 == 0;
-  v81 = v24;
-  if (v24 || ([v6 accessoryIconMask], (v76 = objc_claimAutoreleasedReturnValue()) != 0))
+  accessoryIconMask = [(BBBulletin *)self accessoryIconMask];
+  HIDWORD(v139) = accessoryIconMask == 0;
+  v81 = accessoryIconMask;
+  if (accessoryIconMask || ([toCopy accessoryIconMask], (v76 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(BBBulletin *)self accessoryIconMask];
-    v78 = [v6 accessoryIconMask];
-    v79 = v7;
-    if (![v7 isEqual:?])
+    content2 = [(BBBulletin *)self accessoryIconMask];
+    accessoryIconMask2 = [toCopy accessoryIconMask];
+    v79 = content2;
+    if (![content2 isEqual:?])
     {
       v156 = 1;
       v10 = 0;
@@ -944,15 +944,15 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
     LODWORD(v138) = 0;
   }
 
-  v25 = [(BBBulletin *)self accessoryImage];
-  HIDWORD(v138) = v25 == 0;
-  v77 = v25;
-  if (v25 || ([v6 accessoryImage], (v72 = objc_claimAutoreleasedReturnValue()) != 0))
+  accessoryImage = [(BBBulletin *)self accessoryImage];
+  HIDWORD(v138) = accessoryImage == 0;
+  v77 = accessoryImage;
+  if (accessoryImage || ([toCopy accessoryImage], (v72 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(BBBulletin *)self accessoryImage];
-    v74 = [v6 accessoryImage];
-    v75 = v7;
-    if (![v7 isEqual:?])
+    content2 = [(BBBulletin *)self accessoryImage];
+    accessoryImage2 = [toCopy accessoryImage];
+    v75 = content2;
+    if (![content2 isEqual:?])
     {
       v156 = 1;
       v11 = 0;
@@ -988,16 +988,16 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
     LODWORD(v137) = 0;
   }
 
-  v26 = [(BBBulletin *)self supplementaryActionsByLayout];
-  HIDWORD(v137) = v26 == 0;
-  v73 = v26;
-  if (v26 || ([v6 supplementaryActionsByLayout], (v69 = objc_claimAutoreleasedReturnValue()) != 0))
+  supplementaryActionsByLayout = [(BBBulletin *)self supplementaryActionsByLayout];
+  HIDWORD(v137) = supplementaryActionsByLayout == 0;
+  v73 = supplementaryActionsByLayout;
+  if (supplementaryActionsByLayout || ([toCopy supplementaryActionsByLayout], (v69 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v27 = [(BBBulletin *)self supplementaryActionsByLayout];
-    v70 = [v6 supplementaryActionsByLayout];
-    v71 = v27;
+    supplementaryActionsByLayout2 = [(BBBulletin *)self supplementaryActionsByLayout];
+    supplementaryActionsByLayout3 = [toCopy supplementaryActionsByLayout];
+    v71 = supplementaryActionsByLayout2;
     v156 = 1;
-    if (![v27 isEqualToDictionary:?])
+    if (![supplementaryActionsByLayout2 isEqualToDictionary:?])
     {
       v126 = 0;
       v130 = 0;
@@ -1031,102 +1031,102 @@ id __55__BBBulletinRequest_setSupplementaryActions_forLayout___block_invoke(uint
     v136 = 0;
   }
 
-  v7 = [(BBBulletin *)self wantsFullscreenPresentation];
-  if (v7 != [v6 wantsFullscreenPresentation])
+  content2 = [(BBBulletin *)self wantsFullscreenPresentation];
+  if (content2 != [toCopy wantsFullscreenPresentation])
   {
     goto LABEL_120;
   }
 
-  v7 = [(BBBulletin *)self ignoresQuietMode];
-  if (v7 != [v6 ignoresQuietMode])
+  content2 = [(BBBulletin *)self ignoresQuietMode];
+  if (content2 != [toCopy ignoresQuietMode])
   {
     goto LABEL_120;
   }
 
-  v7 = [(BBBulletin *)self ignoresDowntime];
-  if (v7 != [v6 ignoresDowntime])
+  content2 = [(BBBulletin *)self ignoresDowntime];
+  if (content2 != [toCopy ignoresDowntime])
   {
     goto LABEL_120;
   }
 
-  v7 = [(BBBulletin *)self preemptsPresentedAlert];
-  if (v7 != [v6 preemptsPresentedAlert])
+  content2 = [(BBBulletin *)self preemptsPresentedAlert];
+  if (content2 != [toCopy preemptsPresentedAlert])
   {
     goto LABEL_120;
   }
 
-  v7 = [(BBBulletin *)self displaysActionsInline];
-  if (v7 != [v6 displaysActionsInline])
+  content2 = [(BBBulletin *)self displaysActionsInline];
+  if (content2 != [toCopy displaysActionsInline])
   {
     goto LABEL_120;
   }
 
-  v7 = [(BBBulletin *)self dateIsAllDay];
-  if (v7 != [v6 dateIsAllDay])
+  content2 = [(BBBulletin *)self dateIsAllDay];
+  if (content2 != [toCopy dateIsAllDay])
   {
     goto LABEL_120;
   }
 
-  v7 = [(BBBulletin *)self dateFormatStyle];
-  if (v7 == [v6 dateFormatStyle] && (v7 = -[BBBulletin clearable](self, "clearable"), v7 == objc_msgSend(v6, "clearable")) && (v7 = -[BBBulletin turnsOnDisplay](self, "turnsOnDisplay"), v7 == objc_msgSend(v6, "turnsOnDisplay")) && (v7 = -[BBBulletin sectionSubtype](self, "sectionSubtype"), v7 == objc_msgSend(v6, "sectionSubtype")) && (v7 = -[BBBulletin contentPreviewSetting](self, "contentPreviewSetting"), v7 == objc_msgSend(v6, "contentPreviewSetting")) && (v7 = -[BBBulletin preventAutomaticRemovalFromLockScreen](self, "preventAutomaticRemovalFromLockScreen"), v7 == objc_msgSend(v6, "preventAutomaticRemovalFromLockScreen")) && (v7 = -[BBBulletin lockScreenPriority](self, "lockScreenPriority"), v7 == objc_msgSend(v6, "lockScreenPriority")))
+  content2 = [(BBBulletin *)self dateFormatStyle];
+  if (content2 == [toCopy dateFormatStyle] && (content2 = -[BBBulletin clearable](self, "clearable"), content2 == objc_msgSend(toCopy, "clearable")) && (content2 = -[BBBulletin turnsOnDisplay](self, "turnsOnDisplay"), content2 == objc_msgSend(toCopy, "turnsOnDisplay")) && (content2 = -[BBBulletin sectionSubtype](self, "sectionSubtype"), content2 == objc_msgSend(toCopy, "sectionSubtype")) && (content2 = -[BBBulletin contentPreviewSetting](self, "contentPreviewSetting"), content2 == objc_msgSend(toCopy, "contentPreviewSetting")) && (content2 = -[BBBulletin preventAutomaticRemovalFromLockScreen](self, "preventAutomaticRemovalFromLockScreen"), content2 == objc_msgSend(toCopy, "preventAutomaticRemovalFromLockScreen")) && (content2 = -[BBBulletin lockScreenPriority](self, "lockScreenPriority"), content2 == objc_msgSend(toCopy, "lockScreenPriority")))
   {
-    v28 = [(BBBulletin *)self summaryArgument];
-    v67 = [v6 summaryArgument];
-    v68 = v28;
-    if (BSEqualStrings() && (v7 = -[BBBulletin hasCriticalIcon](self, "hasCriticalIcon"), v7 == [v6 hasCriticalIcon]) && (v7 = -[BBBulletin hasSubordinateIcon](self, "hasSubordinateIcon"), v7 == objc_msgSend(v6, "hasSubordinateIcon")) && (v7 = -[BBBulletin summaryArgumentCount](self, "summaryArgumentCount"), v7 == objc_msgSend(v6, "summaryArgumentCount")) && (v7 = -[BBBulletin backgroundStyle](self, "backgroundStyle"), v7 == objc_msgSend(v6, "backgroundStyle")))
+    summaryArgument = [(BBBulletin *)self summaryArgument];
+    summaryArgument2 = [toCopy summaryArgument];
+    v68 = summaryArgument;
+    if (BSEqualStrings() && (content2 = -[BBBulletin hasCriticalIcon](self, "hasCriticalIcon"), content2 == [toCopy hasCriticalIcon]) && (content2 = -[BBBulletin hasSubordinateIcon](self, "hasSubordinateIcon"), content2 == objc_msgSend(toCopy, "hasSubordinateIcon")) && (content2 = -[BBBulletin summaryArgumentCount](self, "summaryArgumentCount"), content2 == objc_msgSend(toCopy, "summaryArgumentCount")) && (content2 = -[BBBulletin backgroundStyle](self, "backgroundStyle"), content2 == objc_msgSend(toCopy, "backgroundStyle")))
     {
-      v29 = [(BBBulletin *)self header];
-      v65 = [v6 header];
-      v66 = v29;
+      header = [(BBBulletin *)self header];
+      header2 = [toCopy header];
+      v66 = header;
       if (BSEqualStrings())
       {
-        v30 = [(BBBulletin *)self footer];
-        v63 = [v6 footer];
-        v64 = v30;
+        footer = [(BBBulletin *)self footer];
+        footer2 = [toCopy footer];
+        v64 = footer;
         if (BSEqualStrings())
         {
-          v31 = [(BBBulletin *)self threadSummary];
-          v61 = [v6 threadSummary];
-          v62 = v31;
+          threadSummary = [(BBBulletin *)self threadSummary];
+          threadSummary2 = [toCopy threadSummary];
+          v62 = threadSummary;
           if (BSEqualObjects())
           {
-            v32 = [(BBBulletin *)self summary];
-            v59 = [v6 summary];
-            v60 = v32;
+            summary = [(BBBulletin *)self summary];
+            summary2 = [toCopy summary];
+            v60 = summary;
             if (BSEqualObjects())
             {
-              v33 = [(BBBulletin *)self attributedMessage];
-              v57 = [v6 attributedMessage];
-              v58 = v33;
+              attributedMessage = [(BBBulletin *)self attributedMessage];
+              attributedMessage2 = [toCopy attributedMessage];
+              v58 = attributedMessage;
               if (BSEqualObjects())
               {
-                v34 = [(BBBulletin *)self eventBehavior];
-                v55 = [v6 eventBehavior];
-                v56 = v34;
-                if (BSEqualObjects() && (v7 = -[BBBulletin isHighlight](self, "isHighlight"), v7 == [v6 isHighlight]) && (v7 = -[BBBulletin priorityNotificationStatus](self, "priorityNotificationStatus"), v7 == objc_msgSend(v6, "priorityNotificationStatus")) && (v7 = -[BBBulletin notificationSummaryStatus](self, "notificationSummaryStatus"), v7 == objc_msgSend(v6, "notificationSummaryStatus")))
+                eventBehavior = [(BBBulletin *)self eventBehavior];
+                eventBehavior2 = [toCopy eventBehavior];
+                v56 = eventBehavior;
+                if (BSEqualObjects() && (content2 = -[BBBulletin isHighlight](self, "isHighlight"), content2 == [toCopy isHighlight]) && (content2 = -[BBBulletin priorityNotificationStatus](self, "priorityNotificationStatus"), content2 == objc_msgSend(toCopy, "priorityNotificationStatus")) && (content2 = -[BBBulletin notificationSummaryStatus](self, "notificationSummaryStatus"), content2 == objc_msgSend(toCopy, "notificationSummaryStatus")))
                 {
-                  v35 = [(BBBulletin *)self spotlightIdentifier];
-                  v53 = [v6 spotlightIdentifier];
-                  v54 = v35;
+                  spotlightIdentifier = [(BBBulletin *)self spotlightIdentifier];
+                  spotlightIdentifier2 = [toCopy spotlightIdentifier];
+                  v54 = spotlightIdentifier;
                   if (BSEqualObjects())
                   {
-                    v36 = [(BBBulletin *)self categoryID];
-                    v51 = [v6 categoryID];
-                    v52 = v36;
+                    categoryID = [(BBBulletin *)self categoryID];
+                    categoryID2 = [toCopy categoryID];
+                    v52 = categoryID;
                     if (BSEqualStrings())
                     {
-                      v37 = [(BBBulletin *)self contentType];
-                      v49 = [v6 contentType];
-                      v50 = v37;
-                      if (BSEqualStrings() && (v7 = -[BBBulletin screenCaptureProhibited](self, "screenCaptureProhibited"), v7 == [v6 screenCaptureProhibited]))
+                      contentType = [(BBBulletin *)self contentType];
+                      contentType2 = [toCopy contentType];
+                      v50 = contentType;
+                      if (BSEqualStrings() && (content2 = -[BBBulletin screenCaptureProhibited](self, "screenCaptureProhibited"), content2 == [toCopy screenCaptureProhibited]))
                       {
-                        v43 = [(BBBulletin *)self communicationContext];
-                        v3 = [v6 communicationContext];
-                        v48 = v43;
-                        if (BSEqualObjects() && (v7 = -[BBBulletin interruptionLevel](self, "interruptionLevel", v43, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61, v62, v63, v64, v65, v66, v67, v68), v7 == [v6 interruptionLevel]) && (-[BBBulletin relevanceScore](self, "relevanceScore"), v45 = v44, objc_msgSend(v6, "relevanceScore"), v45 == v46))
+                        communicationContext = [(BBBulletin *)self communicationContext];
+                        communicationContext2 = [toCopy communicationContext];
+                        v48 = communicationContext;
+                        if (BSEqualObjects() && (content2 = -[BBBulletin interruptionLevel](self, "interruptionLevel", communicationContext, contentType2, v50, categoryID2, v52, spotlightIdentifier2, v54, eventBehavior2, v56, attributedMessage2, v58, summary2, v60, threadSummary2, v62, footer2, v64, header2, v66, summaryArgument2, v68), content2 == [toCopy interruptionLevel]) && (-[BBBulletin relevanceScore](self, "relevanceScore"), v45 = v44, objc_msgSend(toCopy, "relevanceScore"), v45 == v46))
                         {
-                          v4 = [(BBBulletin *)self filterCriteria];
-                          v7 = [v6 filterCriteria];
+                          filterCriteria = [(BBBulletin *)self filterCriteria];
+                          content2 = [toCopy filterCriteria];
                           v47 = BSEqualStrings();
                           v14 = 1;
                           v156 = 1;
@@ -1691,7 +1691,7 @@ LABEL_217:
 
 LABEL_229:
 
-    if (v155)
+    if (content)
     {
       goto LABEL_220;
     }
@@ -1705,7 +1705,7 @@ LABEL_229:
   }
 
 LABEL_219:
-  if (v155)
+  if (content)
   {
     goto LABEL_220;
   }
@@ -1715,8 +1715,8 @@ LABEL_230:
 LABEL_220:
   if (*&v135[8])
   {
-    v39 = [(BBBulletin *)self speechLanguage];
-    v40 = [v6 speechLanguage];
+    speechLanguage = [(BBBulletin *)self speechLanguage];
+    speechLanguage2 = [toCopy speechLanguage];
     v41 = BSEqualStrings() ^ 1;
   }
 
@@ -1728,21 +1728,21 @@ LABEL_220:
   return v41;
 }
 
-- (BOOL)hasAdditionalAttachmentsModificationsRelativeTo:(id)a3
+- (BOOL)hasAdditionalAttachmentsModificationsRelativeTo:(id)to
 {
-  v4 = a3;
-  v5 = [(BBBulletin *)self additionalAttachments];
-  v6 = [v4 additionalAttachments];
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  toCopy = to;
+  additionalAttachments = [(BBBulletin *)self additionalAttachments];
+  additionalAttachments2 = [toCopy additionalAttachments];
+  v7 = [additionalAttachments count];
+  if (v7 == [additionalAttachments2 count])
   {
-    if ([v5 count])
+    if ([additionalAttachments count])
     {
       v8 = 0;
       do
       {
-        v9 = [v5 objectAtIndexedSubscript:v8];
-        v10 = [v6 objectAtIndexedSubscript:v8];
+        v9 = [additionalAttachments objectAtIndexedSubscript:v8];
+        v10 = [additionalAttachments2 objectAtIndexedSubscript:v8];
         v11 = [v9 hasContentModificationsRelativeTo:v10];
 
         if (v11)
@@ -1753,7 +1753,7 @@ LABEL_220:
         ++v8;
       }
 
-      while (v8 < [v5 count]);
+      while (v8 < [additionalAttachments count]);
     }
 
     else
@@ -1772,9 +1772,9 @@ LABEL_220:
 
 - (void)generateNewBulletinID
 {
-  v4 = [MEMORY[0x277CCAD78] UUID];
-  v3 = [v4 UUIDString];
-  [(BBBulletin *)self setBulletinID:v3];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [(BBBulletin *)self setBulletinID:uUIDString];
 }
 
 - (void)addButton:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

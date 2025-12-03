@@ -2,9 +2,9 @@
 - (MPSImageThresholdTruncate)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSImageThresholdTruncate)initWithDevice:(id)device;
 - (MPSImageThresholdTruncate)initWithDevice:(id)device thresholdValue:(float)thresholdValue linearGrayColorTransform:(const float *)transform;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSImageThresholdTruncate
@@ -78,24 +78,24 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v30.receiver = self;
   v30.super_class = MPSImageThresholdTruncate;
   [(MPSUnaryImageKernel *)&v30 encodeWithCoder:?];
-  v4 = (v4 + 208);
-  LODWORD(v5) = v4->super.super.super.isa;
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"MPSImageThreshold.threshold", v7, v8, v9, v5);
-  LODWORD(v10) = HIDWORD(v4->super.super.super.isa);
-  objc_msgSend_encodeFloat_forKey_(a3, v11, @"MPSImageThreshold.max", v12, v13, v14, v10);
-  LODWORD(v15) = v4->super.super._options;
-  objc_msgSend_encodeFloat_forKey_(a3, v16, @"MPSImageThreshold.matrixR", v17, v18, v19, v15);
-  LODWORD(v20) = HIDWORD(v4->super.super._options);
-  objc_msgSend_encodeFloat_forKey_(a3, v21, @"MPSImageThreshold.matrixG", v22, v23, v24, v20);
-  LODWORD(v25) = v4->super.super._verbosityLevel;
-  objc_msgSend_encodeFloat_forKey_(a3, v26, @"MPSImageThreshold.matrixB", v27, v28, v29, v25);
+  selfCopy = (selfCopy + 208);
+  LODWORD(v5) = selfCopy->super.super.super.isa;
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"MPSImageThreshold.threshold", v7, v8, v9, v5);
+  LODWORD(v10) = HIDWORD(selfCopy->super.super.super.isa);
+  objc_msgSend_encodeFloat_forKey_(coder, v11, @"MPSImageThreshold.max", v12, v13, v14, v10);
+  LODWORD(v15) = selfCopy->super.super._options;
+  objc_msgSend_encodeFloat_forKey_(coder, v16, @"MPSImageThreshold.matrixR", v17, v18, v19, v15);
+  LODWORD(v20) = HIDWORD(selfCopy->super.super._options);
+  objc_msgSend_encodeFloat_forKey_(coder, v21, @"MPSImageThreshold.matrixG", v22, v23, v24, v20);
+  LODWORD(v25) = selfCopy->super.super._verbosityLevel;
+  objc_msgSend_encodeFloat_forKey_(coder, v26, @"MPSImageThreshold.matrixB", v27, v28, v29, v25);
 }
 
 - (MPSImageThresholdTruncate)initWithDevice:(id)device
@@ -108,11 +108,11 @@
   return MEMORY[0x2821F9670](self, sel_initWithDevice_thresholdValue_linearGrayColorTransform_, device, 0, v5, v6);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v7.receiver = self;
   v7.super_class = MPSImageThresholdTruncate;
-  result = [(MPSUnaryImageKernel *)&v7 copyWithZone:a3 device:a4];
+  result = [(MPSUnaryImageKernel *)&v7 copyWithZone:zone device:device];
   if (result)
   {
     v6 = self->filterInfo.matrix[2];

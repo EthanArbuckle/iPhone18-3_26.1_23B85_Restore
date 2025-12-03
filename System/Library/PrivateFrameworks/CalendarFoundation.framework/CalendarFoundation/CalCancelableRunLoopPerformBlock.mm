@@ -1,19 +1,19 @@
 @interface CalCancelableRunLoopPerformBlock
-- (CalCancelableRunLoopPerformBlock)initWithBlock:(id)a3 inRunLoop:(id)a4;
+- (CalCancelableRunLoopPerformBlock)initWithBlock:(id)block inRunLoop:(id)loop;
 - (void)cancel;
-- (void)performAfterDelay:(double)a3;
+- (void)performAfterDelay:(double)delay;
 @end
 
 @implementation CalCancelableRunLoopPerformBlock
 
-- (CalCancelableRunLoopPerformBlock)initWithBlock:(id)a3 inRunLoop:(id)a4
+- (CalCancelableRunLoopPerformBlock)initWithBlock:(id)block inRunLoop:(id)loop
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  blockCopy = block;
+  loopCopy = loop;
+  v9 = loopCopy;
+  if (blockCopy)
   {
-    if (v8)
+    if (loopCopy)
     {
       goto LABEL_3;
     }
@@ -36,28 +36,28 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_runLoop, a4);
-    [(CalCancelableRunLoopPerformBlock *)v11 setBlock:v7];
+    objc_storeStrong(&v10->_runLoop, loop);
+    [(CalCancelableRunLoopPerformBlock *)v11 setBlock:blockCopy];
   }
 
   return v11;
 }
 
-- (void)performAfterDelay:(double)a3
+- (void)performAfterDelay:(double)delay
 {
-  v5 = [(CalCancelableRunLoopPerformBlock *)self runLoop];
-  v6 = [v5 getCFRunLoop];
+  runLoop = [(CalCancelableRunLoopPerformBlock *)self runLoop];
+  getCFRunLoop = [runLoop getCFRunLoop];
   v7 = *MEMORY[0x1E695D918];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__CalCancelableRunLoopPerformBlock_performAfterDelay___block_invoke;
   v9[3] = &unk_1E7EC6970;
   v9[4] = self;
-  *&v9[5] = a3;
-  CFRunLoopPerformBlock(v6, v7, v9);
+  *&v9[5] = delay;
+  CFRunLoopPerformBlock(getCFRunLoop, v7, v9);
 
-  v8 = [(CalCancelableRunLoopPerformBlock *)self runLoop];
-  CFRunLoopWakeUp([v8 getCFRunLoop]);
+  runLoop2 = [(CalCancelableRunLoopPerformBlock *)self runLoop];
+  CFRunLoopWakeUp([runLoop2 getCFRunLoop]);
 }
 
 void __54__CalCancelableRunLoopPerformBlock_performAfterDelay___block_invoke(uint64_t a1)
@@ -75,21 +75,21 @@ void __54__CalCancelableRunLoopPerformBlock_performAfterDelay___block_invoke(uin
 
 - (void)cancel
 {
-  v3 = [(CalCancelableRunLoopPerformBlock *)self runLoop];
-  v4 = [MEMORY[0x1E695DFD0] currentRunLoop];
+  runLoop = [(CalCancelableRunLoopPerformBlock *)self runLoop];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
 
-  if (v3 != v4)
+  if (runLoop != currentRunLoop)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"%@", @"CancelableRunLoopPerformBlock canceled in a different runloop than it started in."}];
   }
 
-  v5 = [(CalCancelableRunLoopPerformBlock *)self block];
+  block = [(CalCancelableRunLoopPerformBlock *)self block];
 
-  if (v5)
+  if (block)
   {
     v6 = MEMORY[0x1E69E58C0];
-    v7 = [(CalCancelableRunLoopPerformBlock *)self block];
-    v8 = _Block_copy(v7);
+    block2 = [(CalCancelableRunLoopPerformBlock *)self block];
+    v8 = _Block_copy(block2);
     [v6 cancelPreviousPerformRequestsWithTarget:self selector:sel__performBlock_ object:v8];
 
     [(CalCancelableRunLoopPerformBlock *)self setBlock:0];

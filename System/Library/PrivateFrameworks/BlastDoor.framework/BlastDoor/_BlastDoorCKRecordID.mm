@@ -1,15 +1,15 @@
 @interface _BlastDoorCKRecordID
 - (_TtC9BlastDoor20_BlastDoorCKRecordID)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorCKRecordID
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_214634A10(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_214634A10(coderCopy);
 }
 
 - (_TtC9BlastDoor20_BlastDoorCKRecordID)init

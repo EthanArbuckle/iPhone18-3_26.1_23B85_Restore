@@ -1,18 +1,18 @@
 @interface _UISheetInteraction
-- (BOOL)_descendentScrollView:(id)a3 shouldPreserveStartOffset:(CGPoint)a4;
-- (BOOL)_descendentScrollViewShouldMaintainRelativeDistanceFromSafeArea:(id)a3;
-- (BOOL)_descendentScrollViewShouldScrollVertically:(id)a3;
-- (BOOL)_panGestureRecognizer:(id)a3 shouldTryToBeginHorizontallyWithEvent:(id)a4;
-- (BOOL)_panGestureRecognizer:(id)a3 shouldTryToBeginVerticallyWithEvent:(id)a4;
-- (BOOL)_shouldBeFoundByDescendentScrollView:(id)a3;
-- (BOOL)_shouldInteractWithDescendentScrollView:(id)a3 startOffset:(CGPoint)a4 maxTopOffset:(double)a5;
+- (BOOL)_descendentScrollView:(id)view shouldPreserveStartOffset:(CGPoint)offset;
+- (BOOL)_descendentScrollViewShouldMaintainRelativeDistanceFromSafeArea:(id)area;
+- (BOOL)_descendentScrollViewShouldScrollVertically:(id)vertically;
+- (BOOL)_panGestureRecognizer:(id)recognizer shouldTryToBeginHorizontallyWithEvent:(id)event;
+- (BOOL)_panGestureRecognizer:(id)recognizer shouldTryToBeginVerticallyWithEvent:(id)event;
+- (BOOL)_shouldBeFoundByDescendentScrollView:(id)view;
+- (BOOL)_shouldInteractWithDescendentScrollView:(id)view startOffset:(CGPoint)offset maxTopOffset:(double)topOffset;
 - (BOOL)delegateAllowsInteractWithQuicklyScrollingDescendentScrollView;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)isDragging;
-- (BOOL)isUnconstrainedOffsetBeyondSideOrTopExtentInverted:(BOOL)a3;
-- (CGPoint)_scrollView:(id)a3 adjustedUnconstrainedOffsetForUnconstrainedOffset:(CGPoint)a4 startOffset:(CGPoint)a5 horizontalVelocity:(double *)a6 verticalVelocity:(double *)a7 animator:(id *)a8;
+- (BOOL)isUnconstrainedOffsetBeyondSideOrTopExtentInverted:(BOOL)inverted;
+- (CGPoint)_scrollView:(id)view adjustedUnconstrainedOffsetForUnconstrainedOffset:(CGPoint)offset startOffset:(CGPoint)startOffset horizontalVelocity:(double *)velocity verticalVelocity:(double *)verticalVelocity animator:(id *)animator;
 - (CGPoint)attachmentPoint;
 - (CGPoint)currentOffset;
 - (CGPoint)currentVelocity;
@@ -20,35 +20,35 @@
 - (_UISheetInteraction)init;
 - (_UISheetInteractionDelegate)delegate;
 - (id)_currentDragPanGesture;
-- (void)_animateWithParameters:(id)a3 animations:(id)a4;
-- (void)_hyperOutOfProcessViewAnimator:(id)a3 getPresentationPointForInterruptedAnimation:(double *)a4;
+- (void)_animateWithParameters:(id)parameters animations:(id)animations;
+- (void)_hyperOutOfProcessViewAnimator:(id)animator getPresentationPointForInterruptedAnimation:(double *)animation;
 - (void)cancelDraggingIfNeeded;
-- (void)didMoveToView:(id)a3;
-- (void)draggingBeganFromSource:(id)a3 withRubberBandCoefficient:(double)a4;
-- (void)draggingChangedInSource:(id)a3 withTranslation:(CGPoint)a4 velocity:(CGPoint)a5 animateChange:(BOOL)a6;
-- (void)draggingEndedInSource:(id)a3;
-- (void)handlePan:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)draggingBeganFromSource:(id)source withRubberBandCoefficient:(double)coefficient;
+- (void)draggingChangedInSource:(id)source withTranslation:(CGPoint)translation velocity:(CGPoint)velocity animateChange:(BOOL)change;
+- (void)draggingEndedInSource:(id)source;
+- (void)handlePan:(id)pan;
 - (void)invalidateDetents;
 - (void)invalidateIndexOfCurrentDetent;
 - (void)invalidateRubberBandExtentBeyondMaximumOffset;
 - (void)invalidateRubberBandExtentBeyondMinimumOffset;
-- (void)registerPanGestureRecognizer:(id)a3;
+- (void)registerPanGestureRecognizer:(id)recognizer;
 - (void)sendCurrentOffsetDidChange;
-- (void)setCurrentOffsetWasInvalidated:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDragSource:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)unregisterPanGestureRecognizer:(id)a3;
-- (void)updateRegisteredPanGestureRecognizerEnabled:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)setCurrentOffsetWasInvalidated:(id)invalidated;
+- (void)setDelegate:(id)delegate;
+- (void)setDragSource:(id)source;
+- (void)setEnabled:(BOOL)enabled;
+- (void)unregisterPanGestureRecognizer:(id)recognizer;
+- (void)updateRegisteredPanGestureRecognizerEnabled:(id)enabled;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UISheetInteraction
 
 - (void)invalidateIndexOfCurrentDetent
 {
-  v2 = [(_UISheetInteraction *)self interactor];
-  [v2 _invalidateUnconstrainedPoint];
+  interactor = [(_UISheetInteraction *)self interactor];
+  [interactor _invalidateUnconstrainedPoint];
 }
 
 - (_UISheetInteraction)init
@@ -153,26 +153,26 @@
 {
   if ([(_UISheetInteraction *)self isDragging])
   {
-    v3 = [(_UISheetInteraction *)self dragSource];
-    [(_UISheetInteraction *)self draggingCancelledInSource:v3];
+    dragSource = [(_UISheetInteraction *)self dragSource];
+    [(_UISheetInteraction *)self draggingCancelledInSource:dragSource];
   }
 }
 
 - (BOOL)isDragging
 {
-  v2 = [(_UISheetInteraction *)self dragSource];
-  v3 = v2 != 0;
+  dragSource = [(_UISheetInteraction *)self dragSource];
+  v3 = dragSource != 0;
 
   return v3;
 }
 
 - (CGPoint)currentOffset
 {
-  v2 = [(_UISheetInteraction *)self interactor];
-  v3 = [v2 _presentationPoint];
+  interactor = [(_UISheetInteraction *)self interactor];
+  _presentationPoint = [interactor _presentationPoint];
 
-  v4 = *v3;
-  v5 = v3[1];
+  v4 = *_presentationPoint;
+  v5 = _presentationPoint[1];
   result.y = v5;
   result.x = v4;
   return result;
@@ -180,43 +180,43 @@
 
 - (void)invalidateDetents
 {
-  v3 = [(_UISheetInteraction *)self interactor];
-  [v3 _invalidateRegion];
+  interactor = [(_UISheetInteraction *)self interactor];
+  [interactor _invalidateRegion];
 
-  v4 = [(_UISheetInteraction *)self interactor];
-  [v4 _invalidateUnconstrainedPoint];
+  interactor2 = [(_UISheetInteraction *)self interactor];
+  [interactor2 _invalidateUnconstrainedPoint];
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = a3;
-  v7 = [(_UISheetInteraction *)self view];
+  viewCopy = view;
+  view = [(_UISheetInteraction *)self view];
 
-  v5 = v7;
-  if (v7 && v7 != v4)
+  v5 = view;
+  if (view && view != viewCopy)
   {
     [(_UISheetInteraction *)self cancelDraggingIfNeeded];
-    v6 = [(_UISheetInteraction *)self backgroundGestureRecognizer];
-    [v7 removeGestureRecognizer:v6];
+    backgroundGestureRecognizer = [(_UISheetInteraction *)self backgroundGestureRecognizer];
+    [view removeGestureRecognizer:backgroundGestureRecognizer];
 
-    v5 = v7;
+    v5 = view;
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = a3;
-  [(_UISheetInteraction *)self setView:v5];
-  if (v5)
+  viewCopy = view;
+  [(_UISheetInteraction *)self setView:viewCopy];
+  if (viewCopy)
   {
-    v4 = [(_UISheetInteraction *)self backgroundGestureRecognizer];
-    [v5 addGestureRecognizer:v4];
+    backgroundGestureRecognizer = [(_UISheetInteraction *)self backgroundGestureRecognizer];
+    [viewCopy addGestureRecognizer:backgroundGestureRecognizer];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -226,13 +226,13 @@
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
-    if (!a3)
+    self->_enabled = enabled;
+    if (!enabled)
     {
       [(_UISheetInteraction *)self cancelDraggingIfNeeded];
     }
@@ -241,8 +241,8 @@
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [(_UISheetInteraction *)self registeredPanGestureRecognizers];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    registeredPanGestureRecognizers = [(_UISheetInteraction *)self registeredPanGestureRecognizers];
+    v5 = [registeredPanGestureRecognizers countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -254,14 +254,14 @@
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(registeredPanGestureRecognizers);
           }
 
           [(_UISheetInteraction *)self updateRegisteredPanGestureRecognizerEnabled:*(*(&v9 + 1) + 8 * v8++)];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [registeredPanGestureRecognizers countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -269,41 +269,41 @@
   }
 }
 
-- (void)setDragSource:(id)a3
+- (void)setDragSource:(id)source
 {
-  v5 = a3;
-  if (self->_dragSource != v5)
+  sourceCopy = source;
+  if (self->_dragSource != sourceCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_dragSource, a3);
-    v6 = [(_UISheetInteraction *)self interactor];
-    [v6 _invalidateRegion];
+    v7 = sourceCopy;
+    objc_storeStrong(&self->_dragSource, source);
+    interactor = [(_UISheetInteraction *)self interactor];
+    [interactor _invalidateRegion];
 
-    v5 = v7;
+    sourceCopy = v7;
   }
 }
 
-- (void)setCurrentOffsetWasInvalidated:(id)a3
+- (void)setCurrentOffsetWasInvalidated:(id)invalidated
 {
-  if (self->_currentOffsetWasInvalidated != a3)
+  if (self->_currentOffsetWasInvalidated != invalidated)
   {
-    v5 = a3;
-    v6 = _Block_copy(v5);
+    invalidatedCopy = invalidated;
+    v6 = _Block_copy(invalidatedCopy);
     currentOffsetWasInvalidated = self->_currentOffsetWasInvalidated;
     self->_currentOffsetWasInvalidated = v6;
 
-    v8 = [(_UISheetInteraction *)self interactor];
-    [v8 _setPresentationPointWasInvalidated:v5];
+    interactor = [(_UISheetInteraction *)self interactor];
+    [interactor _setPresentationPointWasInvalidated:invalidatedCopy];
   }
 }
 
 - (CGPoint)currentVelocity
 {
-  v2 = [(_UISheetInteraction *)self interactor];
-  v3 = [v2 _velocity];
+  interactor = [(_UISheetInteraction *)self interactor];
+  _velocity = [interactor _velocity];
 
-  v4 = *v3;
-  v5 = v3[1];
+  v4 = *_velocity;
+  v5 = _velocity[1];
   result.y = v5;
   result.x = v4;
   return result;
@@ -311,51 +311,51 @@
 
 - (void)sendCurrentOffsetDidChange
 {
-  v3 = [(_UISheetInteraction *)self delegate];
+  delegate = [(_UISheetInteraction *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(_UISheetInteraction *)self delegate];
+    delegate2 = [(_UISheetInteraction *)self delegate];
     [(_UISheetInteraction *)self currentOffset];
-    [v5 sheetInteraction:self didChangeOffset:?];
+    [delegate2 sheetInteraction:self didChangeOffset:?];
   }
 }
 
 - (void)invalidateRubberBandExtentBeyondMinimumOffset
 {
-  v2 = [(_UISheetInteraction *)self interactor];
-  [v2 _invalidateExtender];
+  interactor = [(_UISheetInteraction *)self interactor];
+  [interactor _invalidateExtender];
 }
 
 - (void)invalidateRubberBandExtentBeyondMaximumOffset
 {
-  v2 = [(_UISheetInteraction *)self interactor];
-  [v2 _invalidateExtender];
+  interactor = [(_UISheetInteraction *)self interactor];
+  [interactor _invalidateExtender];
 }
 
-- (BOOL)isUnconstrainedOffsetBeyondSideOrTopExtentInverted:(BOOL)a3
+- (BOOL)isUnconstrainedOffsetBeyondSideOrTopExtentInverted:(BOOL)inverted
 {
-  v3 = a3;
-  v5 = [(_UISheetInteraction *)self interactor];
-  [v5 _unconstrainedExtent];
+  invertedCopy = inverted;
+  interactor = [(_UISheetInteraction *)self interactor];
+  [interactor _unconstrainedExtent];
   v7 = v6;
-  v8 = [(_UISheetInteraction *)self interactor];
-  [v8 _extent];
+  interactor2 = [(_UISheetInteraction *)self interactor];
+  [interactor2 _extent];
   v10 = v9;
 
-  v11 = [(_UISheetInteraction *)self interactor];
-  v12 = [v11 _extentVector];
+  interactor3 = [(_UISheetInteraction *)self interactor];
+  _extentVector = [interactor3 _extentVector];
 
-  v13 = atan2(-*(v12 + 8), *v12);
+  v13 = atan2(-*(_extentVector + 8), *_extentVector);
   v14 = -2.61799388;
-  if (v3)
+  if (invertedCopy)
   {
     v14 = 0.523598776;
   }
 
   v15 = -0.523598776;
-  if (v3)
+  if (invertedCopy)
   {
     v15 = 2.61799388;
   }
@@ -371,11 +371,11 @@
 
 - (CGPoint)attachmentPoint
 {
-  v3 = [(_UISheetInteraction *)self _currentDragPanGesture];
-  if (v3)
+  _currentDragPanGesture = [(_UISheetInteraction *)self _currentDragPanGesture];
+  if (_currentDragPanGesture)
   {
-    v4 = [(_UISheetInteraction *)self view];
-    [v3 locationInView:v4];
+    view = [(_UISheetInteraction *)self view];
+    [_currentDragPanGesture locationInView:view];
     v6 = v5;
     v8 = v7;
   }
@@ -393,48 +393,48 @@
   return result;
 }
 
-- (void)registerPanGestureRecognizer:(id)a3
+- (void)registerPanGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  v4 = [(_UISheetInteraction *)self registeredPanGestureRecognizers];
-  [v4 addObject:v5];
+  recognizerCopy = recognizer;
+  registeredPanGestureRecognizers = [(_UISheetInteraction *)self registeredPanGestureRecognizers];
+  [registeredPanGestureRecognizers addObject:recognizerCopy];
 
-  [v5 addTarget:self action:sel_handlePan_];
-  [(_UISheetInteraction *)self updateRegisteredPanGestureRecognizerEnabled:v5];
-  [(_UISheetInteraction *)self handlePan:v5];
+  [recognizerCopy addTarget:self action:sel_handlePan_];
+  [(_UISheetInteraction *)self updateRegisteredPanGestureRecognizerEnabled:recognizerCopy];
+  [(_UISheetInteraction *)self handlePan:recognizerCopy];
 }
 
-- (void)unregisterPanGestureRecognizer:(id)a3
+- (void)unregisterPanGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  v4 = [(_UISheetInteraction *)self registeredPanGestureRecognizers];
-  [v4 removeObject:v5];
+  recognizerCopy = recognizer;
+  registeredPanGestureRecognizers = [(_UISheetInteraction *)self registeredPanGestureRecognizers];
+  [registeredPanGestureRecognizers removeObject:recognizerCopy];
 
-  [v5 removeTarget:self action:sel_handlePan_];
+  [recognizerCopy removeTarget:self action:sel_handlePan_];
 }
 
-- (void)updateRegisteredPanGestureRecognizerEnabled:(id)a3
+- (void)updateRegisteredPanGestureRecognizerEnabled:(id)enabled
 {
-  v4 = a3;
-  [v4 setEnabled:{-[_UISheetInteraction isEnabled](self, "isEnabled")}];
+  enabledCopy = enabled;
+  [enabledCopy setEnabled:{-[_UISheetInteraction isEnabled](self, "isEnabled")}];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UISheetInteraction *)self backgroundGestureRecognizer];
+  touchCopy = touch;
+  recognizerCopy = recognizer;
+  backgroundGestureRecognizer = [(_UISheetInteraction *)self backgroundGestureRecognizer];
 
-  if (v8 == v7)
+  if (backgroundGestureRecognizer == recognizerCopy)
   {
     +[UIPanGestureRecognizer _defaultHysteresis];
     v10 = v9;
-    if ([v6 _isPointerTouch])
+    if ([touchCopy _isPointerTouch])
     {
-      v11 = [(_UISheetInteraction *)self view];
-      v12 = [(_UISheetInteraction *)self view];
-      [v6 locationInView:v12];
-      v13 = [v11 hitTest:0 withEvent:?];
+      view = [(_UISheetInteraction *)self view];
+      view2 = [(_UISheetInteraction *)self view];
+      [touchCopy locationInView:view2];
+      v13 = [view hitTest:0 withEvent:?];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -443,24 +443,24 @@
       }
     }
 
-    v14 = [(_UISheetInteraction *)self backgroundGestureRecognizer];
-    [v14 _setHysteresis:v10];
+    backgroundGestureRecognizer2 = [(_UISheetInteraction *)self backgroundGestureRecognizer];
+    [backgroundGestureRecognizer2 _setHysteresis:v10];
   }
 
   return 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = [a4 name];
-  v5 = [v4 isEqualToString:@"com.apple.UIKit.UIWindowDraggingPan"];
+  name = [gestureRecognizer name];
+  v5 = [name isEqualToString:@"com.apple.UIKit.UIWindowDraggingPan"];
 
   return v5;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = a4;
+  gestureRecognizerCopy = gestureRecognizer;
   NSClassFromString(&cfstr_Pkdrawinggestu.isa);
   if ((objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v5 = 1, (_UIInternalPreferenceUsesDefault(&_UIInternalPreference_ForceCardDismissGestureDoesNotRequireFailure, @"ForceCardDismissGestureDoesNotRequireFailure", _UIInternalPreferenceUpdateBool) & 1) == 0) && byte_1EA95E114)
   {
@@ -470,16 +470,16 @@
   return v5;
 }
 
-- (BOOL)_panGestureRecognizer:(id)a3 shouldTryToBeginHorizontallyWithEvent:(id)a4
+- (BOOL)_panGestureRecognizer:(id)recognizer shouldTryToBeginHorizontallyWithEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(_UISheetInteraction *)self delegate];
+  recognizerCopy = recognizer;
+  delegate = [(_UISheetInteraction *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(_UISheetInteraction *)self delegate];
-    v9 = [v8 sheetInteraction:self shouldBeginHorizontalRubberBandingWithGestureRecognizer:v5];
+    delegate2 = [(_UISheetInteraction *)self delegate];
+    v9 = [delegate2 sheetInteraction:self shouldBeginHorizontalRubberBandingWithGestureRecognizer:recognizerCopy];
   }
 
   else
@@ -490,16 +490,16 @@
   return v9;
 }
 
-- (BOOL)_panGestureRecognizer:(id)a3 shouldTryToBeginVerticallyWithEvent:(id)a4
+- (BOOL)_panGestureRecognizer:(id)recognizer shouldTryToBeginVerticallyWithEvent:(id)event
 {
-  v5 = a4;
-  v6 = [(_UISheetInteraction *)self delegate];
+  eventCopy = event;
+  delegate = [(_UISheetInteraction *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(_UISheetInteraction *)self delegate];
-    v9 = [v8 sheetInteraction:self shouldAllowVerticalRubberBandingWithEvent:v5];
+    delegate2 = [(_UISheetInteraction *)self delegate];
+    v9 = [delegate2 sheetInteraction:self shouldAllowVerticalRubberBandingWithEvent:eventCopy];
   }
 
   else
@@ -510,103 +510,103 @@
   return v9;
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
-  v14 = a3;
-  v4 = [v14 state];
-  if (v4 <= 2)
+  panCopy = pan;
+  state = [panCopy state];
+  if (state <= 2)
   {
-    if (v4 == 1)
+    if (state == 1)
     {
-      v13 = [(UIPanGestureRecognizer *)v14 _scrollDeviceCategory];
-      [(_UISheetInteraction *)self draggingBeganFromSource:v14 withRubberBandCoefficient:_UIScrollViewRubberBandCoefficient(v13)];
+      _scrollDeviceCategory = [(UIPanGestureRecognizer *)panCopy _scrollDeviceCategory];
+      [(_UISheetInteraction *)self draggingBeganFromSource:panCopy withRubberBandCoefficient:_UIScrollViewRubberBandCoefficient(_scrollDeviceCategory)];
     }
 
     else
     {
-      v5 = v4 == 2;
-      v6 = v14;
+      v5 = state == 2;
+      v6 = panCopy;
       if (!v5)
       {
         goto LABEL_13;
       }
 
-      [v14 translationInView:0];
+      [panCopy translationInView:0];
       v8 = v7;
       v10 = v9;
-      [v14 velocityInView:0];
-      [(_UISheetInteraction *)self draggingChangedInSource:v14 withTranslation:0 velocity:v8 animateChange:v10, v11, v12];
+      [panCopy velocityInView:0];
+      [(_UISheetInteraction *)self draggingChangedInSource:panCopy withTranslation:0 velocity:v8 animateChange:v10, v11, v12];
     }
 
 LABEL_12:
-    v6 = v14;
+    v6 = panCopy;
     goto LABEL_13;
   }
 
-  if (v4 == 3)
+  if (state == 3)
   {
-    [(_UISheetInteraction *)self draggingEndedInSource:v14];
+    [(_UISheetInteraction *)self draggingEndedInSource:panCopy];
     goto LABEL_12;
   }
 
-  v5 = v4 == 4;
-  v6 = v14;
+  v5 = state == 4;
+  v6 = panCopy;
   if (v5)
   {
-    [(_UISheetInteraction *)self draggingCancelledInSource:v14];
+    [(_UISheetInteraction *)self draggingCancelledInSource:panCopy];
     goto LABEL_12;
   }
 
 LABEL_13:
 }
 
-- (BOOL)_descendentScrollViewShouldScrollVertically:(id)a3
+- (BOOL)_descendentScrollViewShouldScrollVertically:(id)vertically
 {
-  v4 = a3;
-  [v4 _maxTopOffset];
-  [v4 contentOffset];
-  LOBYTE(self) = [_UISheetInteraction _shouldInteractWithDescendentScrollView:"_shouldInteractWithDescendentScrollView:startOffset:maxTopOffset:" startOffset:v4 maxTopOffset:?];
+  verticallyCopy = vertically;
+  [verticallyCopy _maxTopOffset];
+  [verticallyCopy contentOffset];
+  LOBYTE(self) = [_UISheetInteraction _shouldInteractWithDescendentScrollView:"_shouldInteractWithDescendentScrollView:startOffset:maxTopOffset:" startOffset:verticallyCopy maxTopOffset:?];
 
   return self;
 }
 
-- (CGPoint)_scrollView:(id)a3 adjustedUnconstrainedOffsetForUnconstrainedOffset:(CGPoint)a4 startOffset:(CGPoint)a5 horizontalVelocity:(double *)a6 verticalVelocity:(double *)a7 animator:(id *)a8
+- (CGPoint)_scrollView:(id)view adjustedUnconstrainedOffsetForUnconstrainedOffset:(CGPoint)offset startOffset:(CGPoint)startOffset horizontalVelocity:(double *)velocity verticalVelocity:(double *)verticalVelocity animator:(id *)animator
 {
-  y = a5.y;
-  x = a5.x;
-  v12 = a4.y;
-  v13 = a4.x;
-  v15 = a3;
-  [v15 _maxTopOffset];
+  y = startOffset.y;
+  x = startOffset.x;
+  v12 = offset.y;
+  v13 = offset.x;
+  viewCopy = view;
+  [viewCopy _maxTopOffset];
   v17 = v16;
   self->_previousMaxTopOffset = v16;
-  if (![(_UISheetInteraction *)self _shouldInteractWithDescendentScrollView:v15 startOffset:x maxTopOffset:y, v16])
+  if (![(_UISheetInteraction *)self _shouldInteractWithDescendentScrollView:viewCopy startOffset:x maxTopOffset:y, v16])
   {
     goto LABEL_21;
   }
 
-  v18 = [v15 _canScrollIgnoringAncestorPermissionY];
+  _canScrollIgnoringAncestorPermissionY = [viewCopy _canScrollIgnoringAncestorPermissionY];
   v19 = v12 > y && [(_UISheetInteraction *)self scrollingExpandsToLargerDetentWhenScrolledToEdge];
-  v20 = *a7;
-  v21 = [(_UISheetInteraction *)self detentPoints];
-  v22 = [v21 objectAtIndexedSubscript:0];
+  v20 = *verticalVelocity;
+  detentPoints = [(_UISheetInteraction *)self detentPoints];
+  v22 = [detentPoints objectAtIndexedSubscript:0];
   v23 = *([v22 _value] + 8);
 
-  if (v18)
+  if (_canScrollIgnoringAncestorPermissionY)
   {
     if (v12 >= v17)
     {
       if (v19)
       {
-        v40 = [(_UISheetInteraction *)self interactor];
-        v41 = *([v40 _unconstrainedPoint] + 8);
-        v42 = [(_UISheetInteraction *)self interactor];
-        v43 = v41 + *([v42 _initialTranslation] + 8);
+        interactor = [(_UISheetInteraction *)self interactor];
+        v41 = *([interactor _unconstrainedPoint] + 8);
+        interactor2 = [(_UISheetInteraction *)self interactor];
+        v43 = v41 + *([interactor2 _initialTranslation] + 8);
 
         v24 = v23 - v43;
         if (y - v12 >= v24)
         {
-          *a7 = 0.0;
+          *verticalVelocity = 0.0;
           v24 = y - v12;
         }
 
@@ -619,12 +619,12 @@ LABEL_13:
       else
       {
         v24 = 0.0;
-        if (v12 == v17 && v17 == y && *a7 > 0.0)
+        if (v12 == v17 && v17 == y && *verticalVelocity > 0.0)
         {
           [(_UISheetInteraction *)self currentOffset];
           if (v44 > v23)
           {
-            *a7 = 0.0;
+            *verticalVelocity = 0.0;
           }
         }
 
@@ -635,7 +635,7 @@ LABEL_13:
     else
     {
       v24 = v17 - v12;
-      *a7 = 0.0;
+      *verticalVelocity = 0.0;
       y = v17;
     }
   }
@@ -643,14 +643,14 @@ LABEL_13:
   else
   {
     v24 = y - v12;
-    *a7 = 0.0;
+    *verticalVelocity = 0.0;
   }
 
-  [v15 _verticalVelocity];
+  [viewCopy _verticalVelocity];
   if (v25 == 0.0)
   {
-    v26 = [v15 panGestureRecognizer];
-    [v26 velocityInView:0];
+    panGestureRecognizer = [viewCopy panGestureRecognizer];
+    [panGestureRecognizer velocityInView:0];
     v28 = v27;
   }
 
@@ -661,7 +661,7 @@ LABEL_13:
 
   flags = self->_flags;
   *&self->_flags = flags | 1;
-  if ([(_UISheetInteraction *)self isDragging]|| v12 >= v17 && (v18 & 1) != 0 && !v19)
+  if ([(_UISheetInteraction *)self isDragging]|| v12 >= v17 && (_canScrollIgnoringAncestorPermissionY & 1) != 0 && !v19)
   {
     if (![(_UISheetInteraction *)self isDragging])
     {
@@ -674,12 +674,12 @@ LABEL_20:
     goto LABEL_18;
   }
 
-  v30 = [v15 panGestureRecognizer];
-  v31 = [(UIPanGestureRecognizer *)v30 _scrollDeviceCategory];
-  v32 = _UIScrollViewRubberBandCoefficient(v31);
+  panGestureRecognizer2 = [viewCopy panGestureRecognizer];
+  _scrollDeviceCategory = [(UIPanGestureRecognizer *)panGestureRecognizer2 _scrollDeviceCategory];
+  v32 = _UIScrollViewRubberBandCoefficient(_scrollDeviceCategory);
 
-  [(_UISheetInteraction *)self draggingBeganFromSource:v15 withRubberBandCoefficient:v32];
-  [v15 contentOffset];
+  [(_UISheetInteraction *)self draggingBeganFromSource:viewCopy withRubberBandCoefficient:v32];
+  [viewCopy contentOffset];
   if (v33 >= v17)
   {
 LABEL_18:
@@ -692,11 +692,11 @@ LABEL_18:
     v34 = [UIViewPropertyAnimator alloc];
     v35 = _UISheetTransitionDuration();
     v36 = _UISheetTransitionTimingCurve();
-    *a8 = [(UIViewPropertyAnimator *)v34 initWithDuration:v36 timingParameters:v35];
+    *animator = [(UIViewPropertyAnimator *)v34 initWithDuration:v36 timingParameters:v35];
 
     v37 = 1;
 LABEL_19:
-    [(_UISheetInteraction *)self draggingChangedInSource:v15 withTranslation:v37 velocity:0.0 animateChange:v24, 0.0, v28];
+    [(_UISheetInteraction *)self draggingChangedInSource:viewCopy withTranslation:v37 velocity:0.0 animateChange:v24, 0.0, v28];
     goto LABEL_20;
   }
 
@@ -709,60 +709,60 @@ LABEL_21:
   return result;
 }
 
-- (BOOL)_descendentScrollView:(id)a3 shouldPreserveStartOffset:(CGPoint)a4
+- (BOOL)_descendentScrollView:(id)view shouldPreserveStartOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = offset.y;
+  x = offset.x;
+  viewCopy = view;
   previousMaxTopOffset = self->_previousMaxTopOffset;
-  [v7 contentOffset];
-  v10 = v9 < previousMaxTopOffset && [(_UISheetInteraction *)self _shouldInteractWithDescendentScrollView:v7 startOffset:x maxTopOffset:y, previousMaxTopOffset];
+  [viewCopy contentOffset];
+  v10 = v9 < previousMaxTopOffset && [(_UISheetInteraction *)self _shouldInteractWithDescendentScrollView:viewCopy startOffset:x maxTopOffset:y, previousMaxTopOffset];
 
   return v10;
 }
 
-- (BOOL)_descendentScrollViewShouldMaintainRelativeDistanceFromSafeArea:(id)a3
+- (BOOL)_descendentScrollViewShouldMaintainRelativeDistanceFromSafeArea:(id)area
 {
   if (*&self->_flags)
   {
     return 1;
   }
 
-  v3 = [(_UISheetInteraction *)self animator];
-  v4 = [v3 _isAnimating];
+  animator = [(_UISheetInteraction *)self animator];
+  _isAnimating = [animator _isAnimating];
 
-  return v4;
+  return _isAnimating;
 }
 
-- (BOOL)_shouldBeFoundByDescendentScrollView:(id)a3
+- (BOOL)_shouldBeFoundByDescendentScrollView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 _parentScrollView];
-  v5 = !v4 || ![v3 _canScrollY] || (objc_msgSend(v4, "_canScrollY") & 1) == 0;
+  viewCopy = view;
+  _parentScrollView = [viewCopy _parentScrollView];
+  v5 = !_parentScrollView || ![viewCopy _canScrollY] || (objc_msgSend(_parentScrollView, "_canScrollY") & 1) == 0;
 
   return v5;
 }
 
-- (BOOL)_shouldInteractWithDescendentScrollView:(id)a3 startOffset:(CGPoint)a4 maxTopOffset:(double)a5
+- (BOOL)_shouldInteractWithDescendentScrollView:(id)view startOffset:(CGPoint)offset maxTopOffset:(double)topOffset
 {
-  v8 = a3;
-  UIRoundToViewScale(v8);
+  viewCopy = view;
+  UIRoundToViewScale(viewCopy);
   v10 = v9;
-  UIRoundToViewScale(v8);
-  if (v10 >= v11 && ([v8 _isScrubbing] & 1) == 0)
+  UIRoundToViewScale(viewCopy);
+  if (v10 >= v11 && ([viewCopy _isScrubbing] & 1) == 0)
   {
-    v13 = [v8 refreshControl];
-    if (v13 || ([v8 _canScrollX] & 1) != 0 || objc_msgSend(v8, "_isAncestorOfFirstResponder") && objc_msgSend(v8, "keyboardDismissMode") == 2 || !-[_UISheetInteraction isEnabled](self, "isEnabled") || !-[_UISheetInteraction isScrollInteractionEnabled](self, "isScrollInteractionEnabled"))
+    refreshControl = [viewCopy refreshControl];
+    if (refreshControl || ([viewCopy _canScrollX] & 1) != 0 || objc_msgSend(viewCopy, "_isAncestorOfFirstResponder") && objc_msgSend(viewCopy, "keyboardDismissMode") == 2 || !-[_UISheetInteraction isEnabled](self, "isEnabled") || !-[_UISheetInteraction isScrollInteractionEnabled](self, "isScrollInteractionEnabled"))
     {
       v15 = 1;
       goto LABEL_14;
     }
 
-    v14 = [(_UISheetInteraction *)self isDragging];
-    if (v14)
+    isDragging = [(_UISheetInteraction *)self isDragging];
+    if (isDragging)
     {
-      v5 = [(_UISheetInteraction *)self dragSource];
-      if (v5 != v8)
+      dragSource = [(_UISheetInteraction *)self dragSource];
+      if (dragSource != viewCopy)
       {
         v15 = 1;
 LABEL_27:
@@ -771,9 +771,9 @@ LABEL_27:
       }
     }
 
-    [v8 _intervalBetweenPanGestures];
+    [viewCopy _intervalBetweenPanGestures];
     v18 = v17;
-    v19 = &_UIInternalPreference_MinimumSheetSwipeInterval;
+    animator = &_UIInternalPreference_MinimumSheetSwipeInterval;
     v20 = _UIInternalPreferenceUsesDefault(&_UIInternalPreference_MinimumSheetSwipeInterval, @"MinimumSheetSwipeInterval", _UIInternalPreferenceUpdateDouble);
     v21 = *&qword_1EA95E120;
     if (v20)
@@ -788,12 +788,12 @@ LABEL_27:
 
     else
     {
-      v19 = [(_UISheetInteraction *)self animator];
-      if (([v19 _isAnimating] & 1) == 0 && !-[_UISheetInteraction delegateAllowsInteractWithQuicklyScrollingDescendentScrollView](self, "delegateAllowsInteractWithQuicklyScrollingDescendentScrollView"))
+      animator = [(_UISheetInteraction *)self animator];
+      if (([animator _isAnimating] & 1) == 0 && !-[_UISheetInteraction delegateAllowsInteractWithQuicklyScrollingDescendentScrollView](self, "delegateAllowsInteractWithQuicklyScrollingDescendentScrollView"))
       {
 
         v15 = 1;
-        if (!v14)
+        if (!isDragging)
         {
           goto LABEL_14;
         }
@@ -804,14 +804,14 @@ LABEL_27:
       v22 = 1;
     }
 
-    [v8 contentOffset];
-    if (v23 >= a5)
+    [viewCopy contentOffset];
+    if (v23 >= topOffset)
     {
       v15 = 0;
       if ((v22 & 1) == 0)
       {
 LABEL_23:
-        if (v14)
+        if (isDragging)
         {
           goto LABEL_27;
         }
@@ -822,8 +822,8 @@ LABEL_23:
 
     else
     {
-      v24 = [v8 panGestureRecognizer];
-      [v24 velocityInView:0];
+      panGestureRecognizer = [viewCopy panGestureRecognizer];
+      [panGestureRecognizer velocityInView:0];
       v15 = v25 < 0.0;
 
       if (!v22)
@@ -832,7 +832,7 @@ LABEL_23:
       }
     }
 
-    if (v14)
+    if (isDragging)
     {
       goto LABEL_27;
     }
@@ -856,92 +856,92 @@ LABEL_15:
     return 0;
   }
 
-  v3 = self;
-  v4 = [(_UISheetInteraction *)self delegate];
-  LOBYTE(v3) = [v4 sheetInteractionShouldInteractWithQuicklyScrollingDescendentScrollView:v3];
+  selfCopy = self;
+  delegate = [(_UISheetInteraction *)self delegate];
+  LOBYTE(selfCopy) = [delegate sheetInteractionShouldInteractWithQuicklyScrollingDescendentScrollView:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)draggingBeganFromSource:(id)a3 withRubberBandCoefficient:(double)a4
+- (void)draggingBeganFromSource:(id)source withRubberBandCoefficient:(double)coefficient
 {
-  v9 = a3;
+  sourceCopy = source;
   if (![(_UISheetInteraction *)self isDragging])
   {
     kdebug_trace();
     _UIUpdateRequestRegistryAddRecord(&mainRegistry, updateRequest, 0x100024u);
     _UIQOSManagedCommitsBegin(self, @"Dragging");
-    [(_UISheetInteraction *)self setDragSource:v9];
-    v6 = [(_UISheetInteraction *)self interactor];
-    [v6 _setRubberBandCoefficient:a4];
+    [(_UISheetInteraction *)self setDragSource:sourceCopy];
+    interactor = [(_UISheetInteraction *)self interactor];
+    [interactor _setRubberBandCoefficient:coefficient];
 
-    v7 = [(_UISheetInteraction *)self interactor];
-    [v7 _interactionBegan];
+    interactor2 = [(_UISheetInteraction *)self interactor];
+    [interactor2 _interactionBegan];
 
-    v8 = [(_UISheetInteraction *)self delegate];
+    delegate = [(_UISheetInteraction *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v8 _sheetInteractionDraggingBegan:self withRubberBandCoefficient:a4];
+      [delegate _sheetInteractionDraggingBegan:self withRubberBandCoefficient:coefficient];
     }
   }
 }
 
-- (void)draggingChangedInSource:(id)a3 withTranslation:(CGPoint)a4 velocity:(CGPoint)a5 animateChange:(BOOL)a6
+- (void)draggingChangedInSource:(id)source withTranslation:(CGPoint)translation velocity:(CGPoint)velocity animateChange:(BOOL)change
 {
-  v6 = a6;
-  v15 = a4;
-  v14 = a5;
-  v8 = a3;
+  changeCopy = change;
+  translationCopy = translation;
+  velocityCopy = velocity;
+  sourceCopy = source;
   if ([(_UISheetInteraction *)self isDragging])
   {
-    v9 = [(_UISheetInteraction *)self dragSource];
+    dragSource = [(_UISheetInteraction *)self dragSource];
 
-    if (v9 == v8)
+    if (dragSource == sourceCopy)
     {
-      v10 = [(_UISheetInteraction *)self interactor];
+      interactor = [(_UISheetInteraction *)self interactor];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __86___UISheetInteraction_draggingChangedInSource_withTranslation_velocity_animateChange___block_invoke;
       v12[3] = &unk_1E70F35E0;
-      v13 = v6;
+      v13 = changeCopy;
       v12[4] = self;
-      [v10 _interactionChangedCopyingTranslation:&v15 velocity:&v14 mutatingState:v12];
+      [interactor _interactionChangedCopyingTranslation:&translationCopy velocity:&velocityCopy mutatingState:v12];
 
-      v11 = [(_UISheetInteraction *)self delegate];
+      delegate = [(_UISheetInteraction *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v11 _sheetInteractionDraggingChanged:self withTranslation:v6 velocity:v15.x animateChange:{v15.y, v14.x, v14.y}];
+        [delegate _sheetInteractionDraggingChanged:self withTranslation:changeCopy velocity:translationCopy.x animateChange:{translationCopy.y, velocityCopy.x, velocityCopy.y}];
       }
     }
   }
 }
 
-- (void)draggingEndedInSource:(id)a3
+- (void)draggingEndedInSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   if ([(_UISheetInteraction *)self isDragging])
   {
-    v5 = [(_UISheetInteraction *)self dragSource];
+    dragSource = [(_UISheetInteraction *)self dragSource];
 
-    if (v5 == v4)
+    if (dragSource == sourceCopy)
     {
       kdebug_trace();
       _UIUpdateRequestRegistryRemoveRecord(&mainRegistry, updateRequest, 0x100024u);
       _UIQOSManagedCommitsEnd(self, @"Dragging");
       [(_UISheetInteraction *)self setGeneratingAnimations:1];
-      v6 = [(_UISheetInteraction *)self interactor];
+      interactor = [(_UISheetInteraction *)self interactor];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __45___UISheetInteraction_draggingEndedInSource___block_invoke;
       v8[3] = &unk_1E70F3590;
       v8[4] = self;
-      [v6 _interactionEndedMutatingState:v8];
+      [interactor _interactionEndedMutatingState:v8];
 
       [(_UISheetInteraction *)self setGeneratingAnimations:0];
-      v7 = [(_UISheetInteraction *)self delegate];
+      delegate = [(_UISheetInteraction *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v7 _sheetInteractionDraggingEnded:self];
+        [delegate _sheetInteractionDraggingEnded:self];
       }
 
       [(_UISheetInteraction *)self setIndexOfCurrentDetent:0];
@@ -951,19 +951,19 @@ LABEL_15:
 
 - (id)_currentDragPanGesture
 {
-  v2 = [(_UISheetInteraction *)self dragSource];
-  if ([v2 _isGestureType:8])
+  dragSource = [(_UISheetInteraction *)self dragSource];
+  if ([dragSource _isGestureType:8])
   {
-    v3 = v2;
+    panGestureRecognizer = dragSource;
 LABEL_5:
-    v4 = v3;
+    v4 = panGestureRecognizer;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 panGestureRecognizer];
+    panGestureRecognizer = [dragSource panGestureRecognizer];
     goto LABEL_5;
   }
 
@@ -973,29 +973,29 @@ LABEL_7:
   return v4;
 }
 
-- (void)_hyperOutOfProcessViewAnimator:(id)a3 getPresentationPointForInterruptedAnimation:(double *)a4
+- (void)_hyperOutOfProcessViewAnimator:(id)animator getPresentationPointForInterruptedAnimation:(double *)animation
 {
-  v6 = [(_UISheetInteraction *)self delegate];
+  delegate = [(_UISheetInteraction *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(_UISheetInteraction *)self delegate];
-    [v8 offsetForInterruptedAnimationInSheetInteraction:self];
+    delegate2 = [(_UISheetInteraction *)self delegate];
+    [delegate2 offsetForInterruptedAnimationInSheetInteraction:self];
     v10 = v9;
     v12 = v11;
 
-    *a4 = v10;
-    *(a4 + 1) = v12;
+    *animation = v10;
+    *(animation + 1) = v12;
   }
 }
 
-- (void)_animateWithParameters:(id)a3 animations:(id)a4
+- (void)_animateWithParameters:(id)parameters animations:(id)animations
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UISheetInteraction *)self animator];
-  [v8 _animateWithParameters:v7 animations:v6];
+  animationsCopy = animations;
+  parametersCopy = parameters;
+  animator = [(_UISheetInteraction *)self animator];
+  [animator _animateWithParameters:parametersCopy animations:animationsCopy];
 }
 
 - (_UISheetInteractionDelegate)delegate

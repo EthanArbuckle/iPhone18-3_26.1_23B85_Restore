@@ -6,7 +6,7 @@
 
 - (void)sendAnalytics
 {
-  v2 = [(NSPProxyAnalytics *)self eventName];
+  eventName = [(NSPProxyAnalytics *)self eventName];
   AnalyticsSendEventLazy();
 }
 

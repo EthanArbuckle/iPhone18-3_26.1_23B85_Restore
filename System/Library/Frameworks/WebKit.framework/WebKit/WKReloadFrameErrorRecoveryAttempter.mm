@@ -1,13 +1,13 @@
 @interface WKReloadFrameErrorRecoveryAttempter
 - (BOOL)attemptRecovery;
-- (WKReloadFrameErrorRecoveryAttempter)initWithCoder:(id)a3;
-- (WKReloadFrameErrorRecoveryAttempter)initWithWebView:(id)a3 frameHandle:(id)a4 urlString:(const void *)a5;
+- (WKReloadFrameErrorRecoveryAttempter)initWithCoder:(id)coder;
+- (WKReloadFrameErrorRecoveryAttempter)initWithWebView:(id)view frameHandle:(id)handle urlString:(const void *)string;
 - (id).cxx_construct;
 @end
 
 @implementation WKReloadFrameErrorRecoveryAttempter
 
-- (WKReloadFrameErrorRecoveryAttempter)initWithWebView:(id)a3 frameHandle:(id)a4 urlString:(const void *)a5
+- (WKReloadFrameErrorRecoveryAttempter)initWithWebView:(id)view frameHandle:(id)handle urlString:(const void *)string
 {
   v13.receiver = self;
   v13.super_class = WKReloadFrameErrorRecoveryAttempter;
@@ -15,19 +15,19 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_webView.m_weakReference, a3);
-    if (a4)
+    objc_storeWeak(&v8->_webView.m_weakReference, view);
+    if (handle)
     {
-      v10 = a4;
+      handleCopy = handle;
     }
 
     m_ptr = v9->_frameHandle.m_ptr;
-    v9->_frameHandle.m_ptr = a4;
+    v9->_frameHandle.m_ptr = handle;
     if (m_ptr)
     {
     }
 
-    WTF::String::operator=(&v9->_urlString, a5);
+    WTF::String::operator=(&v9->_urlString, string);
   }
 
   return v9;
@@ -71,7 +71,7 @@
   return v6;
 }
 
-- (WKReloadFrameErrorRecoveryAttempter)initWithCoder:(id)a3
+- (WKReloadFrameErrorRecoveryAttempter)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = WKReloadFrameErrorRecoveryAttempter;

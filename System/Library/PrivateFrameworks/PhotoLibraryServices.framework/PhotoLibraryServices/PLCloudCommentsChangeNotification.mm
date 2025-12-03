@@ -1,16 +1,16 @@
 @interface PLCloudCommentsChangeNotification
-+ (id)notificationWithAsset:(id)a3 snapshot:(id)a4;
++ (id)notificationWithAsset:(id)asset snapshot:(id)snapshot;
 - (id)description;
 - (id)userInfo;
 @end
 
 @implementation PLCloudCommentsChangeNotification
 
-+ (id)notificationWithAsset:(id)a3 snapshot:(id)a4
++ (id)notificationWithAsset:(id)asset snapshot:(id)snapshot
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithObject:v7 snapshot:v6 changedObjects:0];
+  snapshotCopy = snapshot;
+  assetCopy = asset;
+  v8 = [[self alloc] _initWithObject:assetCopy snapshot:snapshotCopy changedObjects:0];
 
   return v8;
 }
@@ -20,12 +20,12 @@
   v3 = objc_autoreleasePoolPush();
   v4 = MEMORY[0x1E696AD60];
   v5 = objc_opt_class();
-  v6 = [(PLCloudCommentsChangeNotification *)self asset];
-  v7 = [(PLContainerChangeNotification *)self snapshot];
-  v8 = [v4 stringWithFormat:@"<%@: %p> asset: %p, snapshot: %p", v5, self, v6, v7];
+  asset = [(PLCloudCommentsChangeNotification *)self asset];
+  snapshot = [(PLContainerChangeNotification *)self snapshot];
+  v8 = [v4 stringWithFormat:@"<%@: %p> asset: %p, snapshot: %p", v5, self, asset, snapshot];
 
-  v9 = [(PLContainerChangeNotification *)self _diffDescription];
-  [v8 appendString:v9];
+  _diffDescription = [(PLContainerChangeNotification *)self _diffDescription];
+  [v8 appendString:_diffDescription];
 
   objc_autoreleasePoolPop(v3);
 
@@ -37,36 +37,36 @@
   userInfo = self->_userInfo;
   if (!userInfo)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
-    v5 = [(PLContainerChangeNotification *)self deletedIndexes];
-    v6 = [v5 count];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    deletedIndexes = [(PLContainerChangeNotification *)self deletedIndexes];
+    v6 = [deletedIndexes count];
 
     if (v6)
     {
-      v7 = [(PLContainerChangeNotification *)self deletedIndexes];
-      [(NSDictionary *)v4 setObject:v7 forKey:@"DeletedItemsIndexesKey"];
+      deletedIndexes2 = [(PLContainerChangeNotification *)self deletedIndexes];
+      [(NSDictionary *)dictionary setObject:deletedIndexes2 forKey:@"DeletedItemsIndexesKey"];
     }
 
-    v8 = [(PLContainerChangeNotification *)self insertedIndexes];
-    v9 = [v8 count];
+    insertedIndexes = [(PLContainerChangeNotification *)self insertedIndexes];
+    v9 = [insertedIndexes count];
 
     if (v9)
     {
-      v10 = [(PLContainerChangeNotification *)self insertedIndexes];
-      [(NSDictionary *)v4 setObject:v10 forKey:@"AddedItemsIndexesKey"];
+      insertedIndexes2 = [(PLContainerChangeNotification *)self insertedIndexes];
+      [(NSDictionary *)dictionary setObject:insertedIndexes2 forKey:@"AddedItemsIndexesKey"];
     }
 
-    v11 = [(PLContainerChangeNotification *)self changedIndexes];
-    v12 = [v11 count];
+    changedIndexes = [(PLContainerChangeNotification *)self changedIndexes];
+    v12 = [changedIndexes count];
 
     if (v12)
     {
-      v13 = [(PLContainerChangeNotification *)self changedIndexes];
-      [(NSDictionary *)v4 setObject:v13 forKey:@"ChangedItemsIndexesKey"];
+      changedIndexes2 = [(PLContainerChangeNotification *)self changedIndexes];
+      [(NSDictionary *)dictionary setObject:changedIndexes2 forKey:@"ChangedItemsIndexesKey"];
     }
 
     v14 = self->_userInfo;
-    self->_userInfo = v4;
+    self->_userInfo = dictionary;
 
     userInfo = self->_userInfo;
   }

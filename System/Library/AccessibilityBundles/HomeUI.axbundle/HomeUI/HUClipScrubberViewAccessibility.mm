@@ -1,19 +1,19 @@
 @interface HUClipScrubberViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (HUClipScrubberViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (HUClipScrubberViewAccessibility)initWithFrame:(CGRect)frame;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation HUClipScrubberViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUClipScrubberView" hasInstanceMethod:@"isPlayingMedia" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"HUClipScrubberView" hasInstanceMethod:@"playPauseButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUClipScrubberView" hasInstanceMethod:@"rightActionButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUClipScrubberView" hasInstanceMethod:@"clipCollectionView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUClipScrubberView" hasInstanceMethod:@"isPlayingMedia" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"HUClipScrubberView" hasInstanceMethod:@"playPauseButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUClipScrubberView" hasInstanceMethod:@"rightActionButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUClipScrubberView" hasInstanceMethod:@"clipCollectionView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityElements
@@ -33,13 +33,13 @@
   v7.super_class = HUClipScrubberViewAccessibility;
   [(HUClipScrubberViewAccessibility *)&v7 _accessibilityLoadAccessibilityInformation];
   objc_initWeak(&location, self);
-  v3 = [(HUClipScrubberViewAccessibility *)self _axPlayPauseButton];
+  _axPlayPauseButton = [(HUClipScrubberViewAccessibility *)self _axPlayPauseButton];
   v4[0] = MEMORY[0x29EDCA5F8];
   v4[1] = 3221225472;
   v4[2] = __77__HUClipScrubberViewAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
   v4[3] = &unk_29F2C6B48;
   objc_copyWeak(&v5, &location);
-  [v3 _setAccessibilityLabelBlock:v4];
+  [_axPlayPauseButton _setAccessibilityLabelBlock:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -63,11 +63,11 @@ id __77__HUClipScrubberViewAccessibility__accessibilityLoadAccessibilityInformat
   return v3;
 }
 
-- (HUClipScrubberViewAccessibility)initWithFrame:(CGRect)a3
+- (HUClipScrubberViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = HUClipScrubberViewAccessibility;
-  v3 = [(HUClipScrubberViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUClipScrubberViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(HUClipScrubberViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
   return v3;
 }

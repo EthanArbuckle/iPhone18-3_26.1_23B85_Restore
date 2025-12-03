@@ -1,7 +1,7 @@
 @interface CRLiOSPrintPageRenderer
 - (_TtC8Freeform23CRLiOSPrintPageRenderer)init;
 - (int64_t)numberOfPages;
-- (void)drawPageAtIndex:(int64_t)a3 inRect:(CGRect)a4;
+- (void)drawPageAtIndex:(int64_t)index inRect:(CGRect)rect;
 @end
 
 @implementation CRLiOSPrintPageRenderer
@@ -24,14 +24,14 @@
   return *((v3 & 0xFFFFFFFFFFFFFF8) + 0x10);
 }
 
-- (void)drawPageAtIndex:(int64_t)a3 inRect:(CGRect)a4
+- (void)drawPageAtIndex:(int64_t)index inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = self;
-  sub_100B7F264(a3, x, y, width, height);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
+  sub_100B7F264(index, x, y, width, height);
 }
 
 - (_TtC8Freeform23CRLiOSPrintPageRenderer)init

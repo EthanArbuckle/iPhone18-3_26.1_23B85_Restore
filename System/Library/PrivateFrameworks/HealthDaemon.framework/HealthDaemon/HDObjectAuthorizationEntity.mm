@@ -1,14 +1,14 @@
 @interface HDObjectAuthorizationEntity
-+ (BOOL)resetAllObjectAuthorizationRecordsForProfile:(id)a3 error:(id *)a4;
-+ (BOOL)resetAuthorizationForObjects:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)resetObjectAuthorizationRecordsForSource:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)setObjectAuthorizationRecords:(id)a3 syncProvenance:(int64_t)a4 syncIdentity:(int64_t)a5 profile:(id)a6 error:(id *)a7;
-+ (id)_selectSQLIncludeSession:(uint64_t)a1;
-+ (id)authorizationRecordsBySourceForSampleWithUUID:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)authorizationRecordsForSamples:(id)a3 sourceEntity:(id)a4 sessionIdentifier:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (id)authorizationStatusForSamplesOfType:(id)a3 sourceEntity:(id)a4 profile:(id)a5 error:(id *)a6;
++ (BOOL)resetAllObjectAuthorizationRecordsForProfile:(id)profile error:(id *)error;
++ (BOOL)resetAuthorizationForObjects:(id)objects profile:(id)profile error:(id *)error;
++ (BOOL)resetObjectAuthorizationRecordsForSource:(id)source profile:(id)profile error:(id *)error;
++ (BOOL)setObjectAuthorizationRecords:(id)records syncProvenance:(int64_t)provenance syncIdentity:(int64_t)identity profile:(id)profile error:(id *)error;
++ (id)_selectSQLIncludeSession:(uint64_t)session;
++ (id)authorizationRecordsBySourceForSampleWithUUID:(id)d profile:(id)profile error:(id *)error;
++ (id)authorizationRecordsForSamples:(id)samples sourceEntity:(id)entity sessionIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)authorizationStatusForSamplesOfType:(id)type sourceEntity:(id)entity profile:(id)profile error:(id *)error;
 + (id)foreignKeys;
-+ (id)pruneWithProfile:(id)a3 nowDate:(id)a4 limit:(unint64_t)a5 error:(id *)a6;
++ (id)pruneWithProfile:(id)profile nowDate:(id)date limit:(unint64_t)limit error:(id *)error;
 + (id)uniquedColumns;
 @end
 
@@ -40,34 +40,34 @@
   return v2;
 }
 
-+ (BOOL)setObjectAuthorizationRecords:(id)a3 syncProvenance:(int64_t)a4 syncIdentity:(int64_t)a5 profile:(id)a6 error:(id *)a7
++ (BOOL)setObjectAuthorizationRecords:(id)records syncProvenance:(int64_t)provenance syncIdentity:(int64_t)identity profile:(id)profile error:(id *)error
 {
-  v11 = a3;
-  v12 = a6;
+  recordsCopy = records;
+  profileCopy = profile;
   v13 = objc_opt_self();
-  v14 = [v12 database];
+  database = [profileCopy database];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __115__HDObjectAuthorizationEntity__setObjectAuthorizationRecords_syncProvenance_syncIdentity_skipErrors_profile_error___block_invoke;
   v23[3] = &unk_278625F28;
-  v24 = v11;
+  v24 = recordsCopy;
   v25 = v13;
-  v26 = a4;
-  v27 = a5;
+  provenanceCopy = provenance;
+  identityCopy = identity;
   v28 = 0;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __115__HDObjectAuthorizationEntity__setObjectAuthorizationRecords_syncProvenance_syncIdentity_skipErrors_profile_error___block_invoke_339;
   v18[3] = &unk_278625F50;
-  v21 = a5;
-  v22 = a4;
+  identityCopy2 = identity;
+  provenanceCopy2 = provenance;
   v19 = v24;
-  v20 = v12;
-  v15 = v12;
+  v20 = profileCopy;
+  v15 = profileCopy;
   v16 = v24;
-  LOBYTE(a7) = [v13 performWriteTransactionWithHealthDatabase:v14 error:a7 block:v23 inaccessibilityHandler:v18];
+  LOBYTE(error) = [v13 performWriteTransactionWithHealthDatabase:database error:error block:v23 inaccessibilityHandler:v18];
 
-  return a7;
+  return error;
 }
 
 uint64_t __115__HDObjectAuthorizationEntity__setObjectAuthorizationRecords_syncProvenance_syncIdentity_skipErrors_profile_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -211,23 +211,23 @@ uint64_t __115__HDObjectAuthorizationEntity__setObjectAuthorizationRecords_syncP
   return v7;
 }
 
-+ (BOOL)resetObjectAuthorizationRecordsForSource:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)resetObjectAuthorizationRecordsForSource:(id)source profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 database];
+  sourceCopy = source;
+  profileCopy = profile;
+  database = [profileCopy database];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __86__HDObjectAuthorizationEntity_resetObjectAuthorizationRecordsForSource_profile_error___block_invoke;
   v14[3] = &unk_278614698;
-  v15 = v8;
-  v16 = v9;
-  v17 = a1;
-  v11 = v9;
-  v12 = v8;
-  LOBYTE(a5) = [a1 performWriteTransactionWithHealthDatabase:v10 error:a5 block:v14];
+  v15 = sourceCopy;
+  v16 = profileCopy;
+  selfCopy = self;
+  v11 = profileCopy;
+  v12 = sourceCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v14];
 
-  return a5;
+  return error;
 }
 
 uint64_t __86__HDObjectAuthorizationEntity_resetObjectAuthorizationRecordsForSource_profile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -257,17 +257,17 @@ uint64_t __86__HDObjectAuthorizationEntity_resetObjectAuthorizationRecordsForSou
   return v11;
 }
 
-+ (BOOL)resetAllObjectAuthorizationRecordsForProfile:(id)a3 error:(id *)a4
++ (BOOL)resetAllObjectAuthorizationRecordsForProfile:(id)profile error:(id *)error
 {
-  v6 = [a3 database];
+  database = [profile database];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __82__HDObjectAuthorizationEntity_resetAllObjectAuthorizationRecordsForProfile_error___block_invoke;
   v8[3] = &__block_descriptor_40_e35_B24__0__HDDatabaseTransaction_8__16l;
-  v8[4] = a1;
-  LOBYTE(a4) = [a1 performWriteTransactionWithHealthDatabase:v6 error:a4 block:v8];
+  v8[4] = self;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v8];
 
-  return a4;
+  return error;
 }
 
 uint64_t __82__HDObjectAuthorizationEntity_resetAllObjectAuthorizationRecordsForProfile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -284,20 +284,20 @@ uint64_t __82__HDObjectAuthorizationEntity_resetAllObjectAuthorizationRecordsFor
   return v10;
 }
 
-+ (BOOL)resetAuthorizationForObjects:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)resetAuthorizationForObjects:(id)objects profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 database];
+  objectsCopy = objects;
+  database = [profile database];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __74__HDObjectAuthorizationEntity_resetAuthorizationForObjects_profile_error___block_invoke;
   v12[3] = &unk_278619348;
-  v13 = v8;
-  v14 = a1;
-  v10 = v8;
-  LOBYTE(a5) = [a1 performWriteTransactionWithHealthDatabase:v9 error:a5 block:v12];
+  v13 = objectsCopy;
+  selfCopy = self;
+  v10 = objectsCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v12];
 
-  return a5;
+  return error;
 }
 
 uint64_t __74__HDObjectAuthorizationEntity_resetAuthorizationForObjects_profile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -351,36 +351,36 @@ BOOL __90__HDObjectAuthorizationEntity__insertCodableObjectAuthorizations_syncSt
   return result;
 }
 
-+ (id)authorizationStatusForSamplesOfType:(id)a3 sourceEntity:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)authorizationStatusForSamplesOfType:(id)type sourceEntity:(id)entity profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  typeCopy = type;
+  entityCopy = entity;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __94__HDObjectAuthorizationEntity_authorizationStatusForSamplesOfType_sourceEntity_profile_error___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v12 = authorizationStatusForSamplesOfType_sourceEntity_profile_error__onceToken;
-  v13 = a5;
+  profileCopy = profile;
   if (v12 != -1)
   {
     dispatch_once(&authorizationStatusForSamplesOfType_sourceEntity_profile_error__onceToken, block);
   }
 
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v15 = [v13 database];
+  database = [profileCopy database];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __94__HDObjectAuthorizationEntity_authorizationStatusForSamplesOfType_sourceEntity_profile_error___block_invoke_2;
   v23[3] = &unk_278615D40;
-  v24 = v11;
-  v25 = v10;
+  v24 = entityCopy;
+  v25 = typeCopy;
   v26 = v14;
   v16 = v14;
-  v17 = v10;
-  v18 = v11;
-  v19 = [a1 performReadTransactionWithHealthDatabase:v15 error:a6 block:v23];
+  v17 = typeCopy;
+  v18 = entityCopy;
+  v19 = [self performReadTransactionWithHealthDatabase:database error:error block:v23];
 
   if (v19)
   {
@@ -461,50 +461,50 @@ uint64_t __94__HDObjectAuthorizationEntity_authorizationStatusForSamplesOfType_s
   return 1;
 }
 
-+ (id)authorizationRecordsForSamples:(id)a3 sourceEntity:(id)a4 sessionIdentifier:(id)a5 profile:(id)a6 error:(id *)a7
++ (id)authorizationRecordsForSamples:(id)samples sourceEntity:(id)entity sessionIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  samplesCopy = samples;
+  entityCopy = entity;
+  identifierCopy = identifier;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __107__HDObjectAuthorizationEntity_authorizationRecordsForSamples_sourceEntity_sessionIdentifier_profile_error___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v15 = qword_280D67D80;
-  v16 = a6;
+  profileCopy = profile;
   if (v15 != -1)
   {
     dispatch_once(&qword_280D67D80, block);
   }
 
   v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v18 = [v13 persistentID];
+  persistentID = [entityCopy persistentID];
   v19 = &_MergedGlobals_1;
-  if (v14)
+  if (identifierCopy)
   {
     v19 = &qword_280D67D78;
   }
 
   v20 = *v19;
-  v21 = [v16 database];
+  database = [profileCopy database];
 
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __107__HDObjectAuthorizationEntity_authorizationRecordsForSamples_sourceEntity_sessionIdentifier_profile_error___block_invoke_2;
   v31[3] = &unk_278625F78;
-  v32 = v13;
-  v33 = v12;
-  v34 = v14;
+  v32 = entityCopy;
+  v33 = samplesCopy;
+  v34 = identifierCopy;
   v35 = v20;
   v36 = v17;
-  v37 = v18;
+  v37 = persistentID;
   v22 = v17;
   v23 = v20;
-  v24 = v14;
-  v25 = v12;
-  v26 = v13;
-  v27 = [a1 performReadTransactionWithHealthDatabase:v21 error:a7 block:v31];
+  v24 = identifierCopy;
+  v25 = samplesCopy;
+  v26 = entityCopy;
+  v27 = [self performReadTransactionWithHealthDatabase:database error:error block:v31];
 
   if (v27)
   {
@@ -534,7 +534,7 @@ uint64_t __107__HDObjectAuthorizationEntity_authorizationRecordsForSamples_sourc
   return MEMORY[0x2821F96F8](v4, v5);
 }
 
-+ (id)_selectSQLIncludeSession:(uint64_t)a1
++ (id)_selectSQLIncludeSession:(uint64_t)session
 {
   v3 = objc_opt_self();
   v4 = @"IS";
@@ -548,8 +548,8 @@ uint64_t __107__HDObjectAuthorizationEntity_authorizationRecordsForSamples_sourc
   v7 = +[(HDSQLiteSchemaEntity *)HDDataEntity];
   v8 = +[(HDSQLiteSchemaEntity *)HDDataProvenanceEntity];
   v9 = *MEMORY[0x277D10A40];
-  v10 = [v3 disambiguatedDatabaseTable];
-  v11 = [v5 stringWithFormat:@"SELECT %@, %@, dp.%@                                            FROM %@ AS o                                            INNER JOIN %@ dp ON o.%@ = dp.%@                                            LEFT JOIN %@ oa ON o.%@ = oa.%@ AND oa.%@ = ? AND oa.%@ %@ ?                                            WHERE o.%@ = ?", @"status", @"modification_date", @"source_id", v7, v8, @"provenance", v9, v10, @"uuid", @"object", @"source", @"session", v6, @"uuid"];
+  disambiguatedDatabaseTable = [v3 disambiguatedDatabaseTable];
+  v11 = [v5 stringWithFormat:@"SELECT %@, %@, dp.%@                                            FROM %@ AS o                                            INNER JOIN %@ dp ON o.%@ = dp.%@                                            LEFT JOIN %@ oa ON o.%@ = oa.%@ AND oa.%@ = ? AND oa.%@ %@ ?                                            WHERE o.%@ = ?", @"status", @"modification_date", @"source_id", v7, v8, @"provenance", v9, disambiguatedDatabaseTable, @"uuid", @"object", @"source", @"session", v6, @"uuid"];
 
   return v11;
 }
@@ -669,26 +669,26 @@ LABEL_5:
   return 1;
 }
 
-+ (id)authorizationRecordsBySourceForSampleWithUUID:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)authorizationRecordsBySourceForSampleWithUUID:(id)d profile:(id)profile error:(id *)error
 {
-  v8 = a3;
+  dCopy = d;
   v9 = MEMORY[0x277CBEB38];
-  v10 = a4;
+  profileCopy = profile;
   v11 = objc_alloc_init(v9);
-  v12 = [v10 database];
+  database = [profileCopy database];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __91__HDObjectAuthorizationEntity_authorizationRecordsBySourceForSampleWithUUID_profile_error___block_invoke;
   v18[3] = &unk_278614698;
   v20 = v11;
-  v21 = a1;
-  v19 = v8;
+  selfCopy = self;
+  v19 = dCopy;
   v13 = v11;
-  v14 = v8;
-  LODWORD(a5) = [a1 performReadTransactionWithHealthDatabase:v12 error:a5 block:v18];
+  v14 = dCopy;
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v18];
 
-  if (a5)
+  if (error)
   {
     v15 = v13;
   }
@@ -746,12 +746,12 @@ uint64_t __91__HDObjectAuthorizationEntity_authorizationRecordsBySourceForSample
   return 1;
 }
 
-+ (id)pruneWithProfile:(id)a3 nowDate:(id)a4 limit:(unint64_t)a5 error:(id *)a6
++ (id)pruneWithProfile:(id)profile nowDate:(id)date limit:(unint64_t)limit error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v12 = [v11 hk_dateBySubtractingDays:*MEMORY[0x277CCBC20] fromDate:v10];
+  profileCopy = profile;
+  dateCopy = date;
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  v12 = [hk_gregorianCalendar hk_dateBySubtractingDays:*MEMORY[0x277CCBC20] fromDate:dateCopy];
 
   [v12 timeIntervalSinceReferenceDate];
   v13 = MEMORY[0x277D10B18];
@@ -765,18 +765,18 @@ uint64_t __91__HDObjectAuthorizationEntity_authorizationRecordsBySourceForSample
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
-  v18 = [v9 database];
+  database = [profileCopy database];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __68__HDObjectAuthorizationEntity_pruneWithProfile_nowDate_limit_error___block_invoke;
   v22[3] = &unk_278616AA0;
   v19 = v17;
   v24 = &v26;
-  v25 = a5;
+  limitCopy = limit;
   v23 = v19;
-  LODWORD(a6) = [(HDHealthEntity *)HDObjectAuthorizationEntity performWriteTransactionWithHealthDatabase:v18 error:a6 block:v22];
+  LODWORD(error) = [(HDHealthEntity *)HDObjectAuthorizationEntity performWriteTransactionWithHealthDatabase:database error:error block:v22];
 
-  if (a6)
+  if (error)
   {
     v20 = [MEMORY[0x277CCABB0] numberWithInt:*(v27 + 6)];
   }

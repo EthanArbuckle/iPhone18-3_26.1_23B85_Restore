@@ -1,31 +1,31 @@
 @interface CCUIStatusUpdate
-+ (id)statusUpdateWithMessage:(id)a3 type:(unint64_t)a4;
-- (id)_initWithMessage:(id)a3 type:(unint64_t)a4;
++ (id)statusUpdateWithMessage:(id)message type:(unint64_t)type;
+- (id)_initWithMessage:(id)message type:(unint64_t)type;
 @end
 
 @implementation CCUIStatusUpdate
 
-+ (id)statusUpdateWithMessage:(id)a3 type:(unint64_t)a4
++ (id)statusUpdateWithMessage:(id)message type:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [[a1 alloc] _initWithMessage:v6 type:a4];
+  messageCopy = message;
+  v7 = [[self alloc] _initWithMessage:messageCopy type:type];
 
   return v7;
 }
 
-- (id)_initWithMessage:(id)a3 type:(unint64_t)a4
+- (id)_initWithMessage:(id)message type:(unint64_t)type
 {
-  v6 = a3;
+  messageCopy = message;
   v11.receiver = self;
   v11.super_class = CCUIStatusUpdate;
   v7 = [(CCUIStatusUpdate *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [messageCopy copy];
     message = v7->_message;
     v7->_message = v8;
 
-    v7->_type = a4;
+    v7->_type = type;
   }
 
   return v7;

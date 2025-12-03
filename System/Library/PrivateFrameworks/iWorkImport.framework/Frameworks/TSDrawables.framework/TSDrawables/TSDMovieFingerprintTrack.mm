@@ -1,74 +1,74 @@
 @interface TSDMovieFingerprintTrack
 - ($0C747A0EC5E1CE89BE29BCC520292607)timeRange;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)preferredTransform;
 - (CGSize)naturalSize;
 - (NSString)extendedLanguageTag;
 - (NSString)languageCode;
-- (TSDMovieFingerprintTrack)initWithMediaType:(id)a3 enabled:(BOOL)a4 totalSampleDataLength:(int64_t)a5 sampleDataDigest:(id)a6 timeRange:(id *)a7 languageCode:(id)a8 extendedLanguageTag:(id)a9 naturalSize:(CGSize)a10 preferredTransform:(CGAffineTransform *)a11 preferredVolume:(float)a12;
+- (TSDMovieFingerprintTrack)initWithMediaType:(id)type enabled:(BOOL)enabled totalSampleDataLength:(int64_t)length sampleDataDigest:(id)digest timeRange:(id *)range languageCode:(id)code extendedLanguageTag:(id)tag naturalSize:(CGSize)self0 preferredTransform:(CGAffineTransform *)self1 preferredVolume:(float)self2;
 - (TSPDigest)sampleDataDigest;
 - (id)description;
-- (id)initFromMessage:(const void *)a3 unarchiver:(id)a4;
+- (id)initFromMessage:(const void *)message unarchiver:(id)unarchiver;
 - (unint64_t)hash;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
 @end
 
 @implementation TSDMovieFingerprintTrack
 
-- (TSDMovieFingerprintTrack)initWithMediaType:(id)a3 enabled:(BOOL)a4 totalSampleDataLength:(int64_t)a5 sampleDataDigest:(id)a6 timeRange:(id *)a7 languageCode:(id)a8 extendedLanguageTag:(id)a9 naturalSize:(CGSize)a10 preferredTransform:(CGAffineTransform *)a11 preferredVolume:(float)a12
+- (TSDMovieFingerprintTrack)initWithMediaType:(id)type enabled:(BOOL)enabled totalSampleDataLength:(int64_t)length sampleDataDigest:(id)digest timeRange:(id *)range languageCode:(id)code extendedLanguageTag:(id)tag naturalSize:(CGSize)self0 preferredTransform:(CGAffineTransform *)self1 preferredVolume:(float)self2
 {
-  height = a10.height;
-  width = a10.width;
-  v21 = a3;
-  v22 = a6;
-  v23 = a8;
-  v24 = a9;
+  height = size.height;
+  width = size.width;
+  typeCopy = type;
+  digestCopy = digest;
+  codeCopy = code;
+  tagCopy = tag;
   v44.receiver = self;
   v44.super_class = TSDMovieFingerprintTrack;
   v27 = [(TSDMovieFingerprintTrack *)&v44 init];
   if (v27)
   {
-    v28 = objc_msgSend_copy(v21, v25, v26);
+    v28 = objc_msgSend_copy(typeCopy, v25, v26);
     v29 = *(v27 + 1);
     *(v27 + 1) = v28;
 
-    v27[16] = a4;
-    *(v27 + 3) = a5;
-    v32 = objc_msgSend_digestString(v22, v30, v31);
+    v27[16] = enabled;
+    *(v27 + 3) = length;
+    v32 = objc_msgSend_digestString(digestCopy, v30, v31);
     v35 = objc_msgSend_copy(v32, v33, v34);
     v36 = *(v27 + 4);
     *(v27 + 4) = v35;
 
-    if ((a7->var0.var2 & 0x1D) == 1)
+    if ((range->var0.var2 & 0x1D) == 1)
     {
-      *(v27 + 5) = a7->var0.var0;
-      *(v27 + 12) = a7->var0.var1;
+      *(v27 + 5) = range->var0.var0;
+      *(v27 + 12) = range->var0.var1;
       v27[52] = 1;
     }
 
-    if ((a7->var1.var2 & 0x1D) == 1)
+    if ((range->var1.var2 & 0x1D) == 1)
     {
-      *(v27 + 7) = a7->var1.var0;
-      *(v27 + 16) = a7->var1.var1;
+      *(v27 + 7) = range->var1.var0;
+      *(v27 + 16) = range->var1.var1;
       v27[68] = 1;
     }
 
     *(v27 + 9) = width;
     *(v27 + 10) = height;
-    *(v27 + 88) = *a11;
-    *(v27 + 17) = a12;
-    if (v23)
+    *(v27 + 88) = *transform;
+    *(v27 + 17) = volume;
+    if (codeCopy)
     {
-      v39 = objc_msgSend_copy(v23, v37, v38);
+      v39 = objc_msgSend_copy(codeCopy, v37, v38);
       v40 = *(v27 + 18);
       *(v27 + 18) = v39;
 
       v27[160] = 1;
     }
 
-    if (v24)
+    if (tagCopy)
     {
-      v41 = objc_msgSend_copy(v24, v37, v38);
+      v41 = objc_msgSend_copy(tagCopy, v37, v38);
       v42 = *(v27 + 19);
       *(v27 + 19) = v41;
 
@@ -79,10 +79,10 @@
   return v27;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
     v7 = TSUDynamicCast();
@@ -267,7 +267,7 @@ LABEL_19:
 
 - ($0C747A0EC5E1CE89BE29BCC520292607)timeRange
 {
-  v3 = self;
+  selfCopy = self;
   v5 = MEMORY[0x277CC08C8];
   v6 = *(MEMORY[0x277CC08C8] + 16);
   *&retstr->var0.var0 = *MEMORY[0x277CC08C8];
@@ -278,9 +278,9 @@ LABEL_19:
     self = CMTimeMake(retstr, self->var1.var3, self[1].var0.var0);
   }
 
-  if (BYTE4(v3[1].var0.var3) == 1)
+  if (BYTE4(selfCopy[1].var0.var3) == 1)
   {
-    self = CMTimeMake(&v7, *&v3[1].var0.var1, v3[1].var0.var3);
+    self = CMTimeMake(&v7, *&selfCopy[1].var0.var1, selfCopy[1].var0.var3);
     retstr->var1 = v7;
   }
 
@@ -327,9 +327,9 @@ LABEL_19:
   return self;
 }
 
-- (id)initFromMessage:(const void *)a3 unarchiver:(id)a4
+- (id)initFromMessage:(const void *)message unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v91.receiver = self;
   v91.super_class = TSDMovieFingerprintTrack;
   v8 = [(TSDMovieFingerprintTrack *)&v91 init];
@@ -338,11 +338,11 @@ LABEL_19:
     goto LABEL_29;
   }
 
-  v9 = *(a3 + 4);
+  v9 = *(message + 4);
   if (v9)
   {
     v10 = objc_alloc(MEMORY[0x277CCACA8]);
-    v12 = objc_msgSend_tsp_initWithProtobufString_(v10, v11, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+    v12 = objc_msgSend_tsp_initWithProtobufString_(v10, v11, *(message + 3) & 0xFFFFFFFFFFFFFFFELL);
     mediaType = v8->_mediaType;
     v8->_mediaType = v12;
   }
@@ -356,7 +356,7 @@ LABEL_19:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21);
   }
 
-  v22 = *(a3 + 4);
+  v22 = *(message + 4);
   if ((v22 & 0x100) == 0)
   {
     v23 = MEMORY[0x277D81150];
@@ -365,7 +365,7 @@ LABEL_19:
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29);
     v30 = 0;
-    v22 = *(a3 + 4);
+    v22 = *(message + 4);
     if ((v22 & 0x20) != 0)
     {
       goto LABEL_7;
@@ -378,7 +378,7 @@ LABEL_10:
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v44, v45);
     v30 = 0;
-    if ((*(a3 + 4) & 2) == 0)
+    if ((*(message + 4) & 2) == 0)
     {
       goto LABEL_8;
     }
@@ -387,14 +387,14 @@ LABEL_10:
   }
 
   v30 = v9 & 1;
-  v8->_enabled = *(a3 + 84);
+  v8->_enabled = *(message + 84);
   if ((v22 & 0x20) == 0)
   {
     goto LABEL_10;
   }
 
 LABEL_7:
-  v8->_totalSampleDataLength = *(a3 + 8);
+  v8->_totalSampleDataLength = *(message + 8);
   if ((v22 & 2) == 0)
   {
 LABEL_8:
@@ -409,12 +409,12 @@ LABEL_8:
 
 LABEL_11:
   v46 = objc_alloc(MEMORY[0x277CCACA8]);
-  v48 = objc_msgSend_tsp_initWithProtobufString_(v46, v47, *(a3 + 4) & 0xFFFFFFFFFFFFFFFELL);
+  v48 = objc_msgSend_tsp_initWithProtobufString_(v46, v47, *(message + 4) & 0xFFFFFFFFFFFFFFFELL);
   sampleDataDigestString = v8->_sampleDataDigestString;
   v8->_sampleDataDigestString = v48;
 
 LABEL_12:
-  if ((~*(a3 + 4) & 0x80EC0) != 0)
+  if ((~*(message + 4) & 0x80EC0) != 0)
   {
     v50 = MEMORY[0x277D81150];
     v51 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v38, "[TSDMovieFingerprintTrack initFromMessage:unarchiver:]");
@@ -426,17 +426,17 @@ LABEL_12:
 
   else
   {
-    v8->_timeRangeStartValue = *(a3 + 9);
-    v8->_timeRangeStartTimescale = *(a3 + 20);
-    v8->_timeRangeStartIsValid = *(a3 + 85);
-    v8->_timeRangeDurationValue = *(a3 + 11);
-    v8->_timeRangeDurationTimescale = *(a3 + 38);
-    v8->_timeRangeDurationIsValid = *(a3 + 86);
+    v8->_timeRangeStartValue = *(message + 9);
+    v8->_timeRangeStartTimescale = *(message + 20);
+    v8->_timeRangeStartIsValid = *(message + 85);
+    v8->_timeRangeDurationValue = *(message + 11);
+    v8->_timeRangeDurationTimescale = *(message + 38);
+    v8->_timeRangeDurationIsValid = *(message + 86);
   }
 
-  if ((*(a3 + 16) & 0x10) != 0)
+  if ((*(message + 16) & 0x10) != 0)
   {
-    TSPCGSizeCreateFromMessage(*(a3 + 7));
+    TSPCGSizeCreateFromMessage(*(message + 7));
     v8->_naturalSize.width = v65;
     v8->_naturalSize.height = v66;
   }
@@ -451,7 +451,7 @@ LABEL_12:
     v30 = 0;
   }
 
-  v67 = *(a3 + 4);
+  v67 = *(message + 4);
   if ((~v67 & 0x3F000) != 0)
   {
     v83 = MEMORY[0x277D81150];
@@ -460,7 +460,7 @@ LABEL_12:
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v88, v89);
     v30 = 0;
-    v67 = *(a3 + 4);
+    v67 = *(message + 4);
     if ((v67 & 0x40000) == 0)
     {
 LABEL_20:
@@ -470,7 +470,7 @@ LABEL_20:
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v73, v74);
       v30 = 0;
-      v67 = *(a3 + 4);
+      v67 = *(message + 4);
       if ((v67 & 4) != 0)
       {
         goto LABEL_21;
@@ -481,7 +481,7 @@ LABEL_26:
       {
 LABEL_22:
         v79 = objc_alloc(MEMORY[0x277CCACA8]);
-        v81 = objc_msgSend_tsp_initWithProtobufString_(v79, v80, *(a3 + 6) & 0xFFFFFFFFFFFFFFFELL);
+        v81 = objc_msgSend_tsp_initWithProtobufString_(v79, v80, *(message + 6) & 0xFFFFFFFFFFFFFFFELL);
         extendedLanguageTag = v8->_extendedLanguageTag;
         v8->_extendedLanguageTag = v81;
 
@@ -500,19 +500,19 @@ LABEL_22:
 
   else
   {
-    v8->_preferredTransformA = *(a3 + 12);
-    v8->_preferredTransformB = *(a3 + 13);
-    v8->_preferredTransformC = *(a3 + 14);
-    v8->_preferredTransformD = *(a3 + 15);
-    v8->_preferredTransformTx = *(a3 + 16);
-    v8->_preferredTransformTy = *(a3 + 17);
+    v8->_preferredTransformA = *(message + 12);
+    v8->_preferredTransformB = *(message + 13);
+    v8->_preferredTransformC = *(message + 14);
+    v8->_preferredTransformD = *(message + 15);
+    v8->_preferredTransformTx = *(message + 16);
+    v8->_preferredTransformTy = *(message + 17);
     if ((v67 & 0x40000) == 0)
     {
       goto LABEL_20;
     }
   }
 
-  v8->_preferredVolume = *(a3 + 18);
+  v8->_preferredVolume = *(message + 18);
   if ((v67 & 4) == 0)
   {
     goto LABEL_26;
@@ -520,12 +520,12 @@ LABEL_22:
 
 LABEL_21:
   v75 = objc_alloc(MEMORY[0x277CCACA8]);
-  v77 = objc_msgSend_tsp_initWithProtobufString_(v75, v76, *(a3 + 5) & 0xFFFFFFFFFFFFFFFELL);
+  v77 = objc_msgSend_tsp_initWithProtobufString_(v75, v76, *(message + 5) & 0xFFFFFFFFFFFFFFFELL);
   languageCode = v8->_languageCode;
   v8->_languageCode = v77;
 
   v8->_definedLanguageCode = 1;
-  if ((*(a3 + 4) & 8) != 0)
+  if ((*(message + 4) & 8) != 0)
   {
     goto LABEL_22;
   }
@@ -543,11 +543,11 @@ LABEL_29:
   return v8;
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v9 = objc_msgSend_tsp_protobufString(self->_mediaType, v7, v8);
-  *(a3 + 4) |= 1u;
+  *(message + 4) |= 1u;
   sub_276658080(__p, v9);
   google::protobuf::internal::ArenaStringPtr::Set();
   if (v31 < 0)
@@ -555,13 +555,13 @@ LABEL_29:
     operator delete(__p[0]);
   }
 
-  v12 = *(a3 + 4);
-  *(a3 + 84) = self->_enabled;
+  v12 = *(message + 4);
+  *(message + 84) = self->_enabled;
   totalSampleDataLength = self->_totalSampleDataLength;
-  *(a3 + 4) = v12 | 0x120;
-  *(a3 + 8) = totalSampleDataLength;
+  *(message + 4) = v12 | 0x120;
+  *(message + 8) = totalSampleDataLength;
   v14 = objc_msgSend_tsp_protobufString(self->_sampleDataDigestString, v10, v11);
-  *(a3 + 4) |= 2u;
+  *(message + 4) |= 2u;
   sub_276658080(__p, v14);
   google::protobuf::internal::ArenaStringPtr::Set();
   if (v31 < 0)
@@ -570,52 +570,52 @@ LABEL_29:
   }
 
   timeRangeStartValue = self->_timeRangeStartValue;
-  v16 = *(a3 + 4);
-  *(a3 + 4) = v16 | 0x40;
-  *(a3 + 9) = timeRangeStartValue;
-  *(a3 + 20) = self->_timeRangeStartTimescale;
-  *(a3 + 85) = self->_timeRangeStartIsValid;
+  v16 = *(message + 4);
+  *(message + 4) = v16 | 0x40;
+  *(message + 9) = timeRangeStartValue;
+  *(message + 20) = self->_timeRangeStartTimescale;
+  *(message + 85) = self->_timeRangeStartIsValid;
   timeRangeDurationValue = self->_timeRangeDurationValue;
-  *(a3 + 4) = v16 | 0xAC0;
-  *(a3 + 11) = timeRangeDurationValue;
-  *(a3 + 38) = self->_timeRangeDurationTimescale;
-  *(a3 + 86) = self->_timeRangeDurationIsValid;
+  *(message + 4) = v16 | 0xAC0;
+  *(message + 11) = timeRangeDurationValue;
+  *(message + 38) = self->_timeRangeDurationTimescale;
+  *(message + 86) = self->_timeRangeDurationIsValid;
   width = self->_naturalSize.width;
   height = self->_naturalSize.height;
-  *(a3 + 4) = v16 | 0x80ED0;
-  v20 = *(a3 + 7);
+  *(message + 4) = v16 | 0x80ED0;
+  v20 = *(message + 7);
   if (!v20)
   {
-    v21 = *(a3 + 1);
+    v21 = *(message + 1);
     if (v21)
     {
       v21 = *(v21 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v20 = MEMORY[0x277C9BAD0](v21);
-    *(a3 + 7) = v20;
+    *(message + 7) = v20;
   }
 
   v32.width = width;
   v32.height = height;
   TSPCGSizeCopyToMessage(v32, v20);
-  *(a3 + 12) = *&self->_preferredTransformA;
-  *(a3 + 13) = *&self->_preferredTransformB;
-  *(a3 + 14) = *&self->_preferredTransformC;
-  v24 = *(a3 + 4);
-  *(a3 + 15) = *&self->_preferredTransformD;
-  *(a3 + 16) = *&self->_preferredTransformTx;
-  *(a3 + 17) = *&self->_preferredTransformTy;
+  *(message + 12) = *&self->_preferredTransformA;
+  *(message + 13) = *&self->_preferredTransformB;
+  *(message + 14) = *&self->_preferredTransformC;
+  v24 = *(message + 4);
+  *(message + 15) = *&self->_preferredTransformD;
+  *(message + 16) = *&self->_preferredTransformTx;
+  *(message + 17) = *&self->_preferredTransformTy;
   preferredVolume = self->_preferredVolume;
-  *(a3 + 4) = v24 | 0x7F000;
-  *(a3 + 18) = preferredVolume;
+  *(message + 4) = v24 | 0x7F000;
+  *(message + 18) = preferredVolume;
   if (self->_definedLanguageCode)
   {
     languageCode = self->_languageCode;
     if (languageCode)
     {
       v27 = objc_msgSend_tsp_protobufString(languageCode, v22, v23);
-      *(a3 + 4) |= 4u;
+      *(message + 4) |= 4u;
       sub_276658080(__p, v27);
       google::protobuf::internal::ArenaStringPtr::Set();
       if (v31 < 0)
@@ -631,7 +631,7 @@ LABEL_29:
     if (extendedLanguageTag)
     {
       v29 = objc_msgSend_tsp_protobufString(extendedLanguageTag, v22, v23);
-      *(a3 + 4) |= 8u;
+      *(message + 4) |= 8u;
       sub_276658080(__p, v29);
       google::protobuf::internal::ArenaStringPtr::Set();
       if (v31 < 0)

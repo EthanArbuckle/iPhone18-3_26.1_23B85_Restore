@@ -1,9 +1,9 @@
 @interface PLDelayedActionTimer
 - (BOOL)isRunning;
-- (PLDelayedActionTimer)initWithTargetQueue:(id)a3;
+- (PLDelayedActionTimer)initWithTargetQueue:(id)queue;
 - (double)timeRemaining;
 - (id)description;
-- (void)afterDelay:(double)a3 performBlock:(id)a4;
+- (void)afterDelay:(double)delay performBlock:(id)block;
 - (void)cancel;
 - (void)dealloc;
 @end
@@ -82,17 +82,17 @@ void __30__PLDelayedActionTimer_cancel__block_invoke(uint64_t a1)
   }
 }
 
-- (void)afterDelay:(double)a3 performBlock:(id)a4
+- (void)afterDelay:(double)delay performBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__PLDelayedActionTimer_afterDelay_performBlock___block_invoke;
   v8[3] = &unk_1E7930160;
-  v10 = a3;
+  delayCopy = delay;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = blockCopy;
+  v7 = blockCopy;
   PLRunWithUnfairLock(&self->_lock, v8);
 }
 
@@ -247,13 +247,13 @@ id __35__PLDelayedActionTimer_description__block_invoke(uint64_t a1)
   [(PLDelayedActionTimer *)&v4 dealloc];
 }
 
-- (PLDelayedActionTimer)initWithTargetQueue:(id)a3
+- (PLDelayedActionTimer)initWithTargetQueue:(id)queue
 {
-  v6 = a3;
-  if (!v6)
+  queueCopy = queue;
+  if (!queueCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLDelayedActionTimer.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDelayedActionTimer.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
   }
 
   v11.receiver = self;
@@ -262,7 +262,7 @@ id __35__PLDelayedActionTimer_description__block_invoke(uint64_t a1)
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_timerQueue, a3);
+    objc_storeStrong(&v7->_timerQueue, queue);
     v8->_lock._os_unfair_lock_opaque = 0;
   }
 

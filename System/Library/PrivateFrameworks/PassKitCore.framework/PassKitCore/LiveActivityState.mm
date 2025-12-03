@@ -1,39 +1,39 @@
 @interface LiveActivityState
-+ (id)_predicateForSectionState:(id)a3;
-+ (id)_predicateForSectionStatePersistentID:(int64_t)a3;
++ (id)_predicateForSectionState:(id)state;
++ (id)_predicateForSectionStatePersistentID:(int64_t)d;
 + (id)_propertySettersForActivityState;
-+ (id)insertActivityStates:(id)a3 forSectionState:(id)a4 inDatabase:(id)a5;
-+ (id)liveActivityStatesInDatabase:(id)a3 forSectionStatePersistentID:(unint64_t)a4;
-+ (void)deleteEntitiesForSectionState:(id)a3 inDatabase:(id)a4;
++ (id)insertActivityStates:(id)states forSectionState:(id)state inDatabase:(id)database;
++ (id)liveActivityStatesInDatabase:(id)database forSectionStatePersistentID:(unint64_t)d;
++ (void)deleteEntitiesForSectionState:(id)state inDatabase:(id)database;
 - (BOOL)deleteFromDatabase;
-- (LiveActivityState)initWithActivityState:(id)a3 forSectionState:(id)a4 inDatabase:(id)a5;
+- (LiveActivityState)initWithActivityState:(id)state forSectionState:(id)sectionState inDatabase:(id)database;
 - (id)liveActivityState;
 @end
 
 @implementation LiveActivityState
 
-+ (id)liveActivityStatesInDatabase:(id)a3 forSectionStatePersistentID:(unint64_t)a4
++ (id)liveActivityStatesInDatabase:(id)database forSectionStatePersistentID:(unint64_t)d
 {
-  v6 = a3;
+  databaseCopy = database;
   v7 = objc_autoreleasePoolPush();
   v8 = objc_alloc_init(NSMutableSet);
   v9 = +[LiveActivityState _propertySettersForActivityState];
-  v10 = [a1 _predicateForSectionStatePersistentID:a4];
-  v11 = [(SQLiteEntity *)LiveActivityState queryWithDatabase:v6 predicate:v10];
+  v10 = [self _predicateForSectionStatePersistentID:d];
+  v11 = [(SQLiteEntity *)LiveActivityState queryWithDatabase:databaseCopy predicate:v10];
 
-  v12 = [v9 allKeys];
+  allKeys = [v9 allKeys];
   v18 = _NSConcreteStackBlock;
   v19 = 3221225472;
   v20 = sub_10001CFB0;
   v21 = &unk_10083BF08;
-  v25 = a1;
+  selfCopy = self;
   v22 = v9;
-  v13 = v6;
+  v13 = databaseCopy;
   v23 = v13;
   v24 = v8;
   v14 = v8;
   v15 = v9;
-  [v11 enumeratePersistentIDsAndProperties:v12 usingBlock:&v18];
+  [v11 enumeratePersistentIDsAndProperties:allKeys usingBlock:&v18];
 
   v16 = [v14 copy];
   objc_autoreleasePoolPop(v7);
@@ -41,14 +41,14 @@
   return v16;
 }
 
-+ (id)insertActivityStates:(id)a3 forSectionState:(id)a4 inDatabase:(id)a5
++ (id)insertActivityStates:(id)states forSectionState:(id)state inDatabase:(id)database
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  statesCopy = states;
+  stateCopy = state;
+  databaseCopy = database;
+  if ([statesCopy count])
   {
-    if (v8)
+    if (stateCopy)
     {
       v21 = 0;
       v22 = &v21;
@@ -61,9 +61,9 @@
       v15 = sub_10001D224;
       v16 = &unk_10083C198;
       v20 = &v21;
-      v17 = v7;
-      v18 = v8;
-      v19 = v9;
+      v17 = statesCopy;
+      v18 = stateCopy;
+      v19 = databaseCopy;
       sub_1005D4424(v19, &v13);
       if ([v22[5] count])
       {
@@ -94,13 +94,13 @@
   return v11;
 }
 
-+ (void)deleteEntitiesForSectionState:(id)a3 inDatabase:(id)a4
++ (void)deleteEntitiesForSectionState:(id)state inDatabase:(id)database
 {
-  if (a3)
+  if (state)
   {
-    v6 = a4;
-    v8 = [a1 _predicateForSectionState:a3];
-    v7 = [a1 queryWithDatabase:v6 predicate:v8];
+    databaseCopy = database;
+    v8 = [self _predicateForSectionState:state];
+    v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
     [v7 deleteAllEntities];
   }
@@ -114,16 +114,16 @@
   return [(SQLiteEntity *)&v4 deleteFromDatabase];
 }
 
-+ (id)_predicateForSectionState:(id)a3
++ (id)_predicateForSectionState:(id)state
 {
-  v4 = [a3 persistentID];
+  persistentID = [state persistentID];
 
-  return [a1 _predicateForSectionStatePersistentID:v4];
+  return [self _predicateForSectionStatePersistentID:persistentID];
 }
 
-+ (id)_predicateForSectionStatePersistentID:(int64_t)a3
++ (id)_predicateForSectionStatePersistentID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"live_activity_section_state_pid" equalToValue:v3];
 
   return v4;
@@ -142,25 +142,25 @@
   return v2;
 }
 
-- (LiveActivityState)initWithActivityState:(id)a3 forSectionState:(id)a4 inDatabase:(id)a5
+- (LiveActivityState)initWithActivityState:(id)state forSectionState:(id)sectionState inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  databaseCopy = database;
+  sectionStateCopy = sectionState;
+  stateCopy = state;
   v11 = objc_alloc_init(NSMutableDictionary);
-  [v11 setEntityPIDOrNull:v9 forKey:@"live_activity_section_state_pid"];
+  [v11 setEntityPIDOrNull:sectionStateCopy forKey:@"live_activity_section_state_pid"];
 
-  v12 = [v10 identifier];
-  [v11 setObjectOrNull:v12 forKey:@"identifier"];
+  identifier = [stateCopy identifier];
+  [v11 setObjectOrNull:identifier forKey:@"identifier"];
 
-  v13 = [v10 activityID];
-  [v11 setObjectOrNull:v13 forKey:@"activity_id"];
+  activityID = [stateCopy activityID];
+  [v11 setObjectOrNull:activityID forKey:@"activity_id"];
 
-  [v10 state];
+  [stateCopy state];
   v14 = PKPassRelevancySystemPresentmentStateToString();
   [v11 setObject:v14 forKey:@"state"];
 
-  v15 = [(SQLiteEntity *)self initWithPropertyValues:v11 inDatabase:v8];
+  v15 = [(SQLiteEntity *)self initWithPropertyValues:v11 inDatabase:databaseCopy];
   return v15;
 }
 
@@ -168,7 +168,7 @@
 {
   v3 = objc_alloc_init(PDLiveActivityState);
   v4 = +[LiveActivityState _propertySettersForActivityState];
-  v5 = [v4 allKeys];
+  allKeys = [v4 allKeys];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_10001D8A4;
@@ -177,11 +177,11 @@
   v6 = v3;
   v18 = v6;
   v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:&v13];
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:&v13];
 
   v8 = [LiveActivityStatePass passesInDatabase:self->super._database forActivityStatePersistentID:self->super._persistentID, v13, v14, v15, v16];
-  v9 = [v8 allObjects];
-  [(PDLiveActivityState *)v6 setPasses:v9];
+  allObjects = [v8 allObjects];
+  [(PDLiveActivityState *)v6 setPasses:allObjects];
 
   v10 = v18;
   v11 = v6;

@@ -1,13 +1,13 @@
 @interface FlexSongMetaDataReader_V2
-+ (BOOL)isSongAtPath:(id)a3;
-+ (id)songAtPath:(id)a3;
++ (BOOL)isSongAtPath:(id)path;
++ (id)songAtPath:(id)path;
 @end
 
 @implementation FlexSongMetaDataReader_V2
 
-+ (BOOL)isSongAtPath:(id)a3
++ (BOOL)isSongAtPath:(id)path
 {
-  v5 = objc_msgSend__pathToMetadata_(a1, a2, a3, v3, v4);
+  v5 = objc_msgSend__pathToMetadata_(self, a2, path, v3, v4);
   v16 = 0;
   v10 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v6, v7, v8, v9);
   isDirectory = objc_msgSend_fileExistsAtPath_isDirectory_(v10, v11, v5, &v16, v12);
@@ -16,15 +16,15 @@
   return isDirectory & (v14 ^ 1);
 }
 
-+ (id)songAtPath:(id)a3
++ (id)songAtPath:(id)path
 {
   v60[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pathCopy = path;
   v4 = objc_opt_class();
-  if (objc_msgSend_isSongAtPath_(v4, v5, v3, v6, v7))
+  if (objc_msgSend_isSongAtPath_(v4, v5, pathCopy, v6, v7))
   {
     v8 = objc_opt_class();
-    v12 = objc_msgSend__pathToMetadata_(v8, v9, v3, v10, v11);
+    v12 = objc_msgSend__pathToMetadata_(v8, v9, pathCopy, v10, v11);
     v17 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x277CBEA90], v13, v12, v14, v15);
     if (v17)
     {
@@ -60,7 +60,7 @@
         }
 
         v44 = [FMSongAsset alloc];
-        v48 = objc_msgSend_fileURLWithPath_(MEMORY[0x277CBEBC0], v45, v3, v46, v47);
+        v48 = objc_msgSend_fileURLWithPath_(MEMORY[0x277CBEBC0], v45, pathCopy, v46, v47);
         v50 = objc_msgSend_initWithAssetID_assetStatus_localURL_contentVersion_compatibilityVersion_(v44, v49, @"FMSongBundleAssetID", 0, v48, v32, v43);
 
         v51 = [FlexSong alloc];

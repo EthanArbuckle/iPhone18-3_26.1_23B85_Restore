@@ -1,72 +1,72 @@
 @interface PBFPosterSnapshotManager
-- (BOOL)_lock_cancelRequestedSnapshotsForRequests:(id)a3 reason:(id)a4;
+- (BOOL)_lock_cancelRequestedSnapshotsForRequests:(id)requests reason:(id)reason;
 - (BOOL)_lock_teardownAssertionsAndSnapshottersIfNecessary;
-- (BOOL)cancelRequestedSnapshotsForExtensionBundleIdentifier:(id)a3;
-- (BOOL)cancelRequestedSnapshotsForIdentity:(id)a3;
-- (BOOL)cancelRequestedSnapshotsForRequests:(id)a3 reason:(id)a4;
-- (BOOL)hasRequestsInFlightForIdentity:(id)a3;
-- (BOOL)ingestSnapshotCollection:(id)a3 forConfiguration:(id)a4 error:(id *)a5;
-- (PBFPosterSnapshotManager)initWithRuntimeAssertionProvider:(id)a3 modelCoordinatorProvider:(id)a4 applicationStateMonitor:(id)a5;
-- (id)enqueueRequest:(id)a3 completion:(id)a4;
-- (id)posterSnapshotForRequest:(id)a3 definition:(id)a4 error:(id *)a5;
-- (id)providerForExtensionIdentifier:(id)a3;
-- (id)providerForPath:(id)a3;
-- (id)snapshotBundleForRequest:(id)a3;
-- (id)snapshotCoordinatorForPath:(id)a3;
-- (void)_enqueueSnapshotForRequestIfNeeded:(id)a3 completion:(id)a4;
-- (void)_lock_addCompletion:(id)a3 forRequest:(id)a4;
+- (BOOL)cancelRequestedSnapshotsForExtensionBundleIdentifier:(id)identifier;
+- (BOOL)cancelRequestedSnapshotsForIdentity:(id)identity;
+- (BOOL)cancelRequestedSnapshotsForRequests:(id)requests reason:(id)reason;
+- (BOOL)hasRequestsInFlightForIdentity:(id)identity;
+- (BOOL)ingestSnapshotCollection:(id)collection forConfiguration:(id)configuration error:(id *)error;
+- (PBFPosterSnapshotManager)initWithRuntimeAssertionProvider:(id)provider modelCoordinatorProvider:(id)coordinatorProvider applicationStateMonitor:(id)monitor;
+- (id)enqueueRequest:(id)request completion:(id)completion;
+- (id)posterSnapshotForRequest:(id)request definition:(id)definition error:(id *)error;
+- (id)providerForExtensionIdentifier:(id)identifier;
+- (id)providerForPath:(id)path;
+- (id)snapshotBundleForRequest:(id)request;
+- (id)snapshotCoordinatorForPath:(id)path;
+- (void)_enqueueSnapshotForRequestIfNeeded:(id)needed completion:(id)completion;
+- (void)_lock_addCompletion:(id)completion forRequest:(id)request;
 - (void)_lock_cancelAllRequests;
-- (void)_lock_cleanupAfterCompletionForRequest:(id)a3 shouldTerminateProcess:(BOOL)a4;
-- (void)_lock_cleanupAfterSceneInvalidationForRequest:(id)a3 snapshotter:(id)a4 shouldTerminateProcess:(BOOL)a5;
-- (void)_lock_enumerateObservers:(id)a3;
-- (void)_lock_fireCompletionsForRequest:(id)a3 snapshotImagesByReservation:(id)a4 error:(id)a5;
-- (void)_lock_fireDidUpdateSnapshotForPath:(id)a3 snapshotImagesByReservation:(id)a4;
+- (void)_lock_cleanupAfterCompletionForRequest:(id)request shouldTerminateProcess:(BOOL)process;
+- (void)_lock_cleanupAfterSceneInvalidationForRequest:(id)request snapshotter:(id)snapshotter shouldTerminateProcess:(BOOL)process;
+- (void)_lock_enumerateObservers:(id)observers;
+- (void)_lock_fireCompletionsForRequest:(id)request snapshotImagesByReservation:(id)reservation error:(id)error;
+- (void)_lock_fireDidUpdateSnapshotForPath:(id)path snapshotImagesByReservation:(id)reservation;
 - (void)_lock_invalidateAllCompletionHandlers;
 - (void)_lock_kickoffNextOperation;
-- (void)_submitSnapshotRequest:(id)a3 completion:(id)a4;
-- (void)addObserver:(id)a3;
+- (void)_submitSnapshotRequest:(id)request completion:(id)completion;
+- (void)addObserver:(id)observer;
 - (void)cancelAllRequests;
-- (void)cancelRequests:(id)a3 reason:(id)a4;
+- (void)cancelRequests:(id)requests reason:(id)reason;
 - (void)dealloc;
-- (void)duplicateSnapshotsFromPath:(id)a3 to:(id)a4;
-- (void)fetchPosterSnapshotForRequest:(id)a3 definition:(id)a4 completion:(id)a5;
+- (void)duplicateSnapshotsFromPath:(id)path to:(id)to;
+- (void)fetchPosterSnapshotForRequest:(id)request definition:(id)definition completion:(id)completion;
 - (void)invalidate;
-- (void)prewarmSnapshotsForRequests:(id)a3 completion:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)snapshotterDidInvalidateScene:(id)a3 didWaitForSceneInvalidation:(BOOL)a4 forRequest:(id)a5;
+- (void)prewarmSnapshotsForRequests:(id)requests completion:(id)completion;
+- (void)removeObserver:(id)observer;
+- (void)snapshotterDidInvalidateScene:(id)scene didWaitForSceneInvalidation:(BOOL)invalidation forRequest:(id)request;
 @end
 
 @implementation PBFPosterSnapshotManager
 
-- (PBFPosterSnapshotManager)initWithRuntimeAssertionProvider:(id)a3 modelCoordinatorProvider:(id)a4 applicationStateMonitor:(id)a5
+- (PBFPosterSnapshotManager)initWithRuntimeAssertionProvider:(id)provider modelCoordinatorProvider:(id)coordinatorProvider applicationStateMonitor:(id)monitor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  coordinatorProviderCopy = coordinatorProvider;
+  monitorCopy = monitor;
   v33.receiver = self;
   v33.super_class = PBFPosterSnapshotManager;
   v12 = [(PBFPosterSnapshotManager *)&v33 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_modelCoordinatorProvider, v10);
-    objc_storeStrong(&v13->_runtimeAssertionProvider, a3);
-    objc_storeStrong(&v13->_applicationStateMonitor, a5);
+    objc_storeWeak(&v12->_modelCoordinatorProvider, coordinatorProviderCopy);
+    objc_storeStrong(&v13->_runtimeAssertionProvider, provider);
+    objc_storeStrong(&v13->_applicationStateMonitor, monitor);
     v14 = objc_opt_new();
     extensionProvider = v13->_extensionProvider;
     v13->_extensionProvider = v14;
 
-    v16 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     lock_snapshotRequestToSnapshotter = v13->_lock_snapshotRequestToSnapshotter;
-    v13->_lock_snapshotRequestToSnapshotter = v16;
+    v13->_lock_snapshotRequestToSnapshotter = strongToStrongObjectsMapTable;
 
-    v18 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     lock_requestToCompletion = v13->_lock_requestToCompletion;
-    v13->_lock_requestToCompletion = v18;
+    v13->_lock_requestToCompletion = strongToStrongObjectsMapTable2;
 
-    v20 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     lock_snapshotterToSnapshotInvalidationWrapper = v13->_lock_snapshotterToSnapshotInvalidationWrapper;
-    v13->_lock_snapshotterToSnapshotInvalidationWrapper = v20;
+    v13->_lock_snapshotterToSnapshotInvalidationWrapper = strongToStrongObjectsMapTable3;
 
     v22 = objc_opt_new();
     lock_enqueuedRequestToSnapshotRequests = v13->_lock_enqueuedRequestToSnapshotRequests;
@@ -102,37 +102,37 @@
   [(PBFPosterSnapshotManager *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v8 = v4;
+    v8 = observerCopy;
     [(PFOSUnfairLock *)self->_lock lock];
     lock_observers = self->_lock_observers;
     if (!lock_observers)
     {
-      v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v7 = self->_lock_observers;
-      self->_lock_observers = v6;
+      self->_lock_observers = weakObjectsHashTable;
 
       lock_observers = self->_lock_observers;
     }
 
     [(NSHashTable *)lock_observers addObject:v8];
     [(PFOSUnfairLock *)self->_lock unlock];
-    v4 = v8;
+    observerCopy = v8;
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     lock = self->_lock;
-    v5 = a3;
+    observerCopy = observer;
     [(PFOSUnfairLock *)lock lock];
-    [(NSHashTable *)self->_lock_observers removeObject:v5];
+    [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
 
     if (![(NSHashTable *)self->_lock_observers count])
     {
@@ -146,22 +146,22 @@
   }
 }
 
-- (id)snapshotBundleForRequest:(id)a3
+- (id)snapshotBundleForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 definitions];
-  v6 = [v5 count];
+  requestCopy = request;
+  definitions = [requestCopy definitions];
+  v6 = [definitions count];
 
   if (v6 == 1)
   {
-    v7 = [v4 displayContext];
-    v8 = [v4 definitions];
-    v9 = [v8 firstObject];
-    v10 = [PBFPosterSnapshotContext snapshotContextForDisplayContext:v7 definition:v9];
+    displayContext = [requestCopy displayContext];
+    definitions2 = [requestCopy definitions];
+    firstObject = [definitions2 firstObject];
+    v10 = [PBFPosterSnapshotContext snapshotContextForDisplayContext:displayContext definition:firstObject];
 
     v11 = objc_opt_new();
-    v12 = [v4 path];
-    v13 = [(PBFPosterSnapshotManager *)self snapshotCoordinatorForPath:v12];
+    path = [requestCopy path];
+    v13 = [(PBFPosterSnapshotManager *)self snapshotCoordinatorForPath:path];
 
     v14 = [v13 snapshotBundleForContext:v10];
     v21[0] = MEMORY[0x277D85DD0];
@@ -169,7 +169,7 @@
     v21[2] = __53__PBFPosterSnapshotManager_snapshotBundleForRequest___block_invoke;
     v21[3] = &unk_2782C80B8;
     v21[4] = self;
-    v22 = v4;
+    v22 = requestCopy;
     v23 = v11;
     v24 = v13;
     v25 = v10;
@@ -251,24 +251,24 @@ void __53__PBFPosterSnapshotManager_snapshotBundleForRequest___block_invoke_3(ui
   }
 }
 
-- (void)_enqueueSnapshotForRequestIfNeeded:(id)a3 completion:(id)a4
+- (void)_enqueueSnapshotForRequestIfNeeded:(id)needed completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  neededCopy = needed;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PBFPosterSnapshotManager _enqueueSnapshotForRequestIfNeeded:a2 completion:?];
   }
 
-  if (!v7)
+  if (!neededCopy)
   {
     [PBFPosterSnapshotManager _enqueueSnapshotForRequestIfNeeded:a2 completion:?];
   }
 
-  v9 = v8;
+  v9 = completionCopy;
   [(PFOSUnfairLock *)self->_lock assertNotOwner];
   v38[0] = 0;
-  v10 = [v7 isValidWithError:v38];
+  v10 = [neededCopy isValidWithError:v38];
   v11 = v38[0];
   if ((v10 & 1) == 0)
   {
@@ -284,11 +284,11 @@ void __53__PBFPosterSnapshotManager_snapshotBundleForRequest___block_invoke_3(ui
 
   else
   {
-    v12 = [(NSMapTable *)self->_lock_requestToCompletion objectForKey:v7];
+    v12 = [(NSMapTable *)self->_lock_requestToCompletion objectForKey:neededCopy];
 
     if (v12)
     {
-      [(PBFPosterSnapshotManager *)self _lock_addCompletion:v9 forRequest:v7];
+      [(PBFPosterSnapshotManager *)self _lock_addCompletion:v9 forRequest:neededCopy];
       v12 = 0;
       v13 = 0;
       goto LABEL_10;
@@ -308,10 +308,10 @@ LABEL_10:
 
   else
   {
-    v24 = [v7 _buildPUIPosterSnapshotRequests];
-    v14 = [v24 mutableCopy];
-    v15 = [v7 path];
-    v16 = [(PBFPosterSnapshotManager *)self snapshotCoordinatorForPath:v15];
+    _buildPUIPosterSnapshotRequests = [neededCopy _buildPUIPosterSnapshotRequests];
+    v14 = [_buildPUIPosterSnapshotRequests mutableCopy];
+    path = [neededCopy path];
+    v16 = [(PBFPosterSnapshotManager *)self snapshotCoordinatorForPath:path];
 
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -321,7 +321,7 @@ LABEL_10:
     objc_copyWeak(&v36, &location);
     v17 = v9;
     v35 = v17;
-    v18 = v7;
+    v18 = neededCopy;
     v34 = v18;
     v19 = _Block_copy(aBlock);
     v23 = v16;
@@ -332,7 +332,7 @@ LABEL_10:
     v27[3] = &unk_2782C8130;
     v21 = v14;
     v28 = v21;
-    v29 = self;
+    selfCopy = self;
     v30 = v18;
     v31 = v17;
     v32 = v19;
@@ -408,27 +408,27 @@ void __74__PBFPosterSnapshotManager__enqueueSnapshotForRequestIfNeeded_completio
   }
 }
 
-- (void)_submitSnapshotRequest:(id)a3 completion:(id)a4
+- (void)_submitSnapshotRequest:(id)request completion:(id)completion
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 _buildPUIPosterSnapshotRequests];
+  requestCopy = request;
+  completionCopy = completion;
+  _buildPUIPosterSnapshotRequests = [requestCopy _buildPUIPosterSnapshotRequests];
   [(PFOSUnfairLock *)self->_lock lock];
-  if ([v8 count])
+  if ([_buildPUIPosterSnapshotRequests count])
   {
-    v9 = [(NSMapTable *)self->_lock_requestToCompletion objectForKey:v6];
+    v9 = [(NSMapTable *)self->_lock_requestToCompletion objectForKey:requestCopy];
 
     if (v9)
     {
-      [(PBFPosterSnapshotManager *)self _lock_addCompletion:v7 forRequest:v6];
+      [(PBFPosterSnapshotManager *)self _lock_addCompletion:completionCopy forRequest:requestCopy];
       v9 = 0;
     }
 
     else
     {
-      [(BSMutableOrderedDictionary *)self->_lock_enqueuedRequestToSnapshotRequests setObject:v8 forKey:v6];
-      [(PBFPosterSnapshotManager *)self _lock_addCompletion:v7 forRequest:v6];
+      [(BSMutableOrderedDictionary *)self->_lock_enqueuedRequestToSnapshotRequests setObject:_buildPUIPosterSnapshotRequests forKey:requestCopy];
+      [(PBFPosterSnapshotManager *)self _lock_addCompletion:completionCopy forRequest:requestCopy];
     }
   }
 
@@ -443,26 +443,26 @@ void __74__PBFPosterSnapshotManager__enqueueSnapshotForRequestIfNeeded_completio
 
   [(PBFPosterSnapshotManager *)self _lock_kickoffNextOperation];
   [(PFOSUnfairLock *)self->_lock unlock];
-  if (v7 && v9)
+  if (completionCopy && v9)
   {
-    v7[2](v7, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
   }
 }
 
-- (void)duplicateSnapshotsFromPath:(id)a3 to:(id)a4
+- (void)duplicateSnapshotsFromPath:(id)path to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  toCopy = to;
   lock = self->_lock;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__PBFPosterSnapshotManager_duplicateSnapshotsFromPath_to___block_invoke;
   v11[3] = &unk_2782C6428;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = pathCopy;
+  v13 = toCopy;
+  v9 = toCopy;
+  v10 = pathCopy;
   [(PFOSUnfairLock *)lock performBlock:v11];
 }
 
@@ -473,17 +473,17 @@ void __58__PBFPosterSnapshotManager_duplicateSnapshotsFromPath_to___block_invoke
   [v2 ingestSnapshotsFromCoordinator:v3];
 }
 
-- (void)_lock_addCompletion:(id)a3 forRequest:(id)a4
+- (void)_lock_addCompletion:(id)completion forRequest:(id)request
 {
-  v6 = a4;
-  if (a3 && v6)
+  requestCopy = request;
+  if (completion && requestCopy)
   {
     lock = self->_lock;
-    v11 = v6;
-    v8 = a3;
+    v11 = requestCopy;
+    completionCopy = completion;
     [(PFOSUnfairLock *)lock assertOwner];
     v9 = [(NSMapTable *)self->_lock_requestToCompletion objectForKey:v11];
-    v10 = [[PBFPosterSnapshotFetchCompletionHandler alloc] initWithRequest:v11 completionHandler:v8 queue:self->_calloutQueue];
+    v10 = [[PBFPosterSnapshotFetchCompletionHandler alloc] initWithRequest:v11 completionHandler:completionCopy queue:self->_calloutQueue];
 
     if (v9)
     {
@@ -496,22 +496,22 @@ void __58__PBFPosterSnapshotManager_duplicateSnapshotsFromPath_to___block_invoke
       [(NSMapTable *)self->_lock_requestToCompletion setObject:v9 forKey:v11];
     }
 
-    v6 = v11;
+    requestCopy = v11;
   }
 }
 
-- (void)_lock_fireCompletionsForRequest:(id)a3 snapshotImagesByReservation:(id)a4 error:(id)a5
+- (void)_lock_fireCompletionsForRequest:(id)request snapshotImagesByReservation:(id)reservation error:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  requestCopy = request;
+  reservationCopy = reservation;
+  errorCopy = error;
+  if (requestCopy)
   {
     [(PFOSUnfairLock *)self->_lock assertOwner];
-    if (v10)
+    if (errorCopy)
     {
-      v11 = [v10 pbf_isGeneralCancelledError] ^ 1;
+      v11 = [errorCopy pbf_isGeneralCancelledError] ^ 1;
     }
 
     else
@@ -519,7 +519,7 @@ void __58__PBFPosterSnapshotManager_duplicateSnapshotsFromPath_to___block_invoke
       v11 = 0;
     }
 
-    v12 = [(NSMapTable *)self->_lock_requestToCompletion objectForKey:v8];
+    v12 = [(NSMapTable *)self->_lock_requestToCompletion objectForKey:requestCopy];
     if ([v12 count])
     {
       v22 = 0u;
@@ -543,14 +543,14 @@ void __58__PBFPosterSnapshotManager_duplicateSnapshotsFromPath_to___block_invoke
             }
 
             v18 = *(*(&v20 + 1) + 8 * v17);
-            if (v10)
+            if (errorCopy)
             {
-              [v18 finishWithError:v10];
+              [v18 finishWithError:errorCopy];
             }
 
             else
             {
-              [v18 finishWithSuccess:{v9, v20}];
+              [v18 finishWithSuccess:{reservationCopy, v20}];
             }
 
             ++v17;
@@ -564,27 +564,27 @@ void __58__PBFPosterSnapshotManager_duplicateSnapshotsFromPath_to___block_invoke
       }
     }
 
-    v19 = [v8 path];
-    [(PBFPosterSnapshotManager *)self _lock_fireDidUpdateSnapshotForPath:v19 snapshotImagesByReservation:v9];
+    path = [requestCopy path];
+    [(PBFPosterSnapshotManager *)self _lock_fireDidUpdateSnapshotForPath:path snapshotImagesByReservation:reservationCopy];
 
-    [(PBFPosterSnapshotManager *)self _lock_cleanupAfterCompletionForRequest:v8 shouldTerminateProcess:v11];
+    [(PBFPosterSnapshotManager *)self _lock_cleanupAfterCompletionForRequest:requestCopy shouldTerminateProcess:v11];
   }
 }
 
-- (void)_lock_fireDidUpdateSnapshotForPath:(id)a3 snapshotImagesByReservation:(id)a4
+- (void)_lock_fireDidUpdateSnapshotForPath:(id)path snapshotImagesByReservation:(id)reservation
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  pathCopy = path;
+  reservationCopy = reservation;
+  if ([reservationCopy count])
   {
     [(PFOSUnfairLock *)self->_lock assertOwner];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __91__PBFPosterSnapshotManager__lock_fireDidUpdateSnapshotForPath_snapshotImagesByReservation___block_invoke;
     v8[3] = &unk_2782C8158;
-    v9 = v7;
-    v10 = self;
-    v11 = v6;
+    v9 = reservationCopy;
+    selfCopy = self;
+    v11 = pathCopy;
     [(PBFPosterSnapshotManager *)self _lock_enumerateObservers:v8];
   }
 }
@@ -632,36 +632,36 @@ void __91__PBFPosterSnapshotManager__lock_fireDidUpdateSnapshotForPath_snapshotI
   }
 }
 
-- (void)_lock_cleanupAfterCompletionForRequest:(id)a3 shouldTerminateProcess:(BOOL)a4
+- (void)_lock_cleanupAfterCompletionForRequest:(id)request shouldTerminateProcess:(BOOL)process
 {
-  v4 = a4;
+  processCopy = process;
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  requestCopy = request;
+  if (requestCopy)
   {
     [(PFOSUnfairLock *)self->_lock assertOwner];
-    v7 = [(NSMapTable *)self->_lock_snapshotRequestToSnapshotter objectForKey:v6];
+    v7 = [(NSMapTable *)self->_lock_snapshotRequestToSnapshotter objectForKey:requestCopy];
     if (v7)
     {
-      [(NSMapTable *)self->_lock_snapshotRequestToSnapshotter removeObjectForKey:v6];
+      [(NSMapTable *)self->_lock_snapshotRequestToSnapshotter removeObjectForKey:requestCopy];
     }
 
-    v8 = [(BSMutableOrderedDictionary *)self->_lock_activeRequestToSnapshotRequests objectForKey:v6];
+    v8 = [(BSMutableOrderedDictionary *)self->_lock_activeRequestToSnapshotRequests objectForKey:requestCopy];
 
-    [(NSMapTable *)self->_lock_requestToCompletion removeObjectForKey:v6];
-    [(BSMutableOrderedDictionary *)self->_lock_activeRequestToSnapshotRequests removeObjectForKey:v6];
-    [(BSMutableOrderedDictionary *)self->_lock_enqueuedRequestToSnapshotRequests removeObjectForKey:v6];
-    if (!v8 || v4)
+    [(NSMapTable *)self->_lock_requestToCompletion removeObjectForKey:requestCopy];
+    [(BSMutableOrderedDictionary *)self->_lock_activeRequestToSnapshotRequests removeObjectForKey:requestCopy];
+    [(BSMutableOrderedDictionary *)self->_lock_enqueuedRequestToSnapshotRequests removeObjectForKey:requestCopy];
+    if (!v8 || processCopy)
     {
       v12 = PBFLogSnapshotter();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138543362;
-        v14 = v6;
+        v14 = requestCopy;
         _os_log_impl(&dword_21B526000, v12, OS_LOG_TYPE_DEFAULT, "_lock_cleanupAfterCompletionForRequest: %{public}@, performing post-invalidation cleanup now", &v13, 0xCu);
       }
 
-      [(PBFPosterSnapshotManager *)self _lock_cleanupAfterSceneInvalidationForRequest:v6 snapshotter:v7 shouldTerminateProcess:v4];
+      [(PBFPosterSnapshotManager *)self _lock_cleanupAfterSceneInvalidationForRequest:requestCopy snapshotter:v7 shouldTerminateProcess:processCopy];
     }
 
     else if (v7)
@@ -670,39 +670,39 @@ void __91__PBFPosterSnapshotManager__lock_fireDidUpdateSnapshotForPath_snapshotI
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138543362;
-        v14 = v6;
+        v14 = requestCopy;
         _os_log_impl(&dword_21B526000, v9, OS_LOG_TYPE_DEFAULT, "_lock_cleanupAfterCompletionForRequest: %{public}@, waiting until scene invalidates for post-invalidation cleanup", &v13, 0xCu);
       }
 
       lock_snapshotterToSnapshotInvalidationWrapper = self->_lock_snapshotterToSnapshotInvalidationWrapper;
-      v11 = [[_PBFPosterSnapshotInvalidationWrapper alloc] initWithSnapshotRequest:v6 shouldTerminateProcess:0];
+      v11 = [[_PBFPosterSnapshotInvalidationWrapper alloc] initWithSnapshotRequest:requestCopy shouldTerminateProcess:0];
       [(NSMapTable *)lock_snapshotterToSnapshotInvalidationWrapper setObject:v11 forKey:v7];
     }
   }
 }
 
-- (void)_lock_cleanupAfterSceneInvalidationForRequest:(id)a3 snapshotter:(id)a4 shouldTerminateProcess:(BOOL)a5
+- (void)_lock_cleanupAfterSceneInvalidationForRequest:(id)request snapshotter:(id)snapshotter shouldTerminateProcess:(BOOL)process
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  processCopy = process;
+  requestCopy = request;
+  snapshotterCopy = snapshotter;
+  if (requestCopy)
   {
     [(PFOSUnfairLock *)self->_lock assertOwner];
-    if (v9)
+    if (snapshotterCopy)
     {
-      v10 = [v8 path];
-      v11 = [v10 identity];
-      v12 = [v11 provider];
+      path = [requestCopy path];
+      identity = [path identity];
+      provider = [identity provider];
 
-      v13 = [v9 extensionInstance];
-      v14 = v13;
-      if (v13)
+      extensionInstance = [snapshotterCopy extensionInstance];
+      v14 = extensionInstance;
+      if (extensionInstance)
       {
-        if (v5)
+        if (processCopy)
         {
           v25 = 0;
-          v15 = [v13 terminateWithExplanation:@"process failed to complete snapshot" error:&v25];
+          v15 = [extensionInstance terminateWithExplanation:@"process failed to complete snapshot" error:&v25];
           v16 = v25;
           v17 = PBFLogSnapshotter();
           v18 = os_log_type_enabled(v17, OS_LOG_TYPE_ERROR);
@@ -722,11 +722,11 @@ void __91__PBFPosterSnapshotManager__lock_fireDidUpdateSnapshotForPath_snapshotI
 
         else
         {
-          v16 = [(NSMutableDictionary *)self->_lock_providerToExtensionInstance objectForKey:v12];
+          v16 = [(NSMutableDictionary *)self->_lock_providerToExtensionInstance objectForKey:provider];
           if (!v16)
           {
             v16 = objc_opt_new();
-            [(NSMutableDictionary *)self->_lock_providerToExtensionInstance setObject:v16 forKey:v12];
+            [(NSMutableDictionary *)self->_lock_providerToExtensionInstance setObject:v16 forKey:provider];
           }
 
           [v16 bs_safeAddObject:v14];
@@ -750,29 +750,29 @@ void __91__PBFPosterSnapshotManager__lock_fireDidUpdateSnapshotForPath_snapshotI
   [(PFOSUnfairLock *)lock unlock];
 }
 
-- (void)cancelRequests:(id)a3 reason:(id)a4
+- (void)cancelRequests:(id)requests reason:(id)reason
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  requestsCopy = requests;
+  reasonCopy = reason;
+  if ([requestsCopy count])
   {
-    v17 = v7;
+    v17 = reasonCopy;
     [(PFOSUnfairLock *)self->_lock lock];
     ++self->_lock_preventKickCount;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    obj = v6;
+    obj = requestsCopy;
     v8 = [obj countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v8)
     {
       v9 = v8;
       v10 = *v20;
-      if (v7)
+      if (reasonCopy)
       {
-        v11 = v7;
+        v11 = reasonCopy;
       }
 
       else
@@ -807,15 +807,15 @@ void __91__PBFPosterSnapshotManager__lock_fireDidUpdateSnapshotForPath_snapshotI
     --self->_lock_preventKickCount;
     [(PBFPosterSnapshotManager *)self _lock_kickoffNextOperation];
     [(PFOSUnfairLock *)self->_lock unlock];
-    v7 = v17;
+    reasonCopy = v17;
   }
 }
 
-- (BOOL)cancelRequestedSnapshotsForExtensionBundleIdentifier:(id)a3
+- (BOOL)cancelRequestedSnapshotsForExtensionBundleIdentifier:(id)identifier
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     [(PFOSUnfairLock *)self->_lock lock];
     ++self->_lock_preventKickCount;
@@ -823,12 +823,12 @@ void __91__PBFPosterSnapshotManager__lock_fireDidUpdateSnapshotForPath_snapshotI
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v35 = self;
+    selfCopy = self;
     v5 = [(NSMapTable *)self->_lock_snapshotRequestToSnapshotter copy];
-    v6 = [v5 keyEnumerator];
+    keyEnumerator = [v5 keyEnumerator];
 
-    obj = v6;
-    v7 = [v6 countByEnumeratingWithState:&v40 objects:v45 count:16];
+    obj = keyEnumerator;
+    v7 = [keyEnumerator countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v7)
     {
       v8 = v7;
@@ -844,15 +844,15 @@ void __91__PBFPosterSnapshotManager__lock_fireDidUpdateSnapshotForPath_snapshotI
           }
 
           v12 = *(*(&v40 + 1) + 8 * i);
-          v13 = [v12 path];
-          v14 = [v13 identity];
-          v15 = [v14 provider];
-          v16 = [v15 isEqualToString:v4];
+          path = [v12 path];
+          identity = [path identity];
+          provider = [identity provider];
+          v16 = [provider isEqualToString:identifierCopy];
 
           if (v16)
           {
             v17 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:4 userInfo:&unk_282D0A308];
-            [(PBFPosterSnapshotManager *)v35 _lock_fireCompletionsForRequest:v12 snapshotImagesByReservation:0 error:v17];
+            [(PBFPosterSnapshotManager *)selfCopy _lock_fireCompletionsForRequest:v12 snapshotImagesByReservation:0 error:v17];
 
             v9 = 1;
           }
@@ -875,11 +875,11 @@ void __91__PBFPosterSnapshotManager__lock_fireDidUpdateSnapshotForPath_snapshotI
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v19 = [(BSMutableOrderedDictionary *)v35->_lock_enqueuedRequestToSnapshotRequests copy];
-    v20 = [v19 allKeys];
+    v19 = [(BSMutableOrderedDictionary *)selfCopy->_lock_enqueuedRequestToSnapshotRequests copy];
+    allKeys = [v19 allKeys];
 
-    v21 = v20;
-    v22 = [v20 countByEnumeratingWithState:&v36 objects:v44 count:16];
+    v21 = allKeys;
+    v22 = [allKeys countByEnumeratingWithState:&v36 objects:v44 count:16];
     if (v22)
     {
       v23 = v22;
@@ -894,15 +894,15 @@ void __91__PBFPosterSnapshotManager__lock_fireDidUpdateSnapshotForPath_snapshotI
           }
 
           v26 = *(*(&v36 + 1) + 8 * j);
-          v27 = [v26 path];
-          v28 = [v27 identity];
-          v29 = [v28 provider];
-          v30 = [v29 isEqualToString:v4];
+          path2 = [v26 path];
+          identity2 = [path2 identity];
+          provider2 = [identity2 provider];
+          v30 = [provider2 isEqualToString:identifierCopy];
 
           if (v30)
           {
             v31 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:4 userInfo:&unk_282D0A330];
-            [(PBFPosterSnapshotManager *)v35 _lock_fireCompletionsForRequest:v26 snapshotImagesByReservation:0 error:v31];
+            [(PBFPosterSnapshotManager *)selfCopy _lock_fireCompletionsForRequest:v26 snapshotImagesByReservation:0 error:v31];
 
             v33 = 1;
           }
@@ -914,14 +914,14 @@ void __91__PBFPosterSnapshotManager__lock_fireDidUpdateSnapshotForPath_snapshotI
       while (v23);
     }
 
-    --v35->_lock_preventKickCount;
+    --selfCopy->_lock_preventKickCount;
     v18 = v33;
     if (v33)
     {
-      [(PBFPosterSnapshotManager *)v35 _lock_kickoffNextOperation];
+      [(PBFPosterSnapshotManager *)selfCopy _lock_kickoffNextOperation];
     }
 
-    [(PFOSUnfairLock *)v35->_lock unlock];
+    [(PFOSUnfairLock *)selfCopy->_lock unlock];
   }
 
   else
@@ -932,11 +932,11 @@ void __91__PBFPosterSnapshotManager__lock_fireDidUpdateSnapshotForPath_snapshotI
   return v18 & 1;
 }
 
-- (BOOL)hasRequestsInFlightForIdentity:(id)a3
+- (BOOL)hasRequestsInFlightForIdentity:(id)identity
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  identityCopy = identity;
+  if (!identityCopy)
   {
     LOBYTE(v15) = 0;
     goto LABEL_22;
@@ -948,9 +948,9 @@ void __91__PBFPosterSnapshotManager__lock_fireDidUpdateSnapshotForPath_snapshotI
   v26 = 0u;
   v27 = 0u;
   v5 = [(NSMapTable *)self->_lock_snapshotRequestToSnapshotter copy];
-  v6 = [v5 keyEnumerator];
+  keyEnumerator = [v5 keyEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
@@ -961,12 +961,12 @@ LABEL_4:
     {
       if (*v27 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(keyEnumerator);
       }
 
-      v11 = [*(*(&v26 + 1) + 8 * v10) path];
-      v12 = [v11 identity];
-      v13 = [v12 isEqual:v4];
+      path = [*(*(&v26 + 1) + 8 * v10) path];
+      identity = [path identity];
+      v13 = [identity isEqual:identityCopy];
 
       if (v13)
       {
@@ -975,7 +975,7 @@ LABEL_4:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v8 = [keyEnumerator countByEnumeratingWithState:&v26 objects:v31 count:16];
         if (v8)
         {
           goto LABEL_4;
@@ -991,9 +991,9 @@ LABEL_4:
   v22 = 0u;
   v23 = 0u;
   v14 = [(BSMutableOrderedDictionary *)self->_lock_enqueuedRequestToSnapshotRequests copy];
-  v6 = [v14 allKeys];
+  keyEnumerator = [v14 allKeys];
 
-  v15 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  v15 = [keyEnumerator countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v15)
   {
     v16 = *v23;
@@ -1003,12 +1003,12 @@ LABEL_12:
     {
       if (*v23 != v16)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(keyEnumerator);
       }
 
-      v18 = [*(*(&v22 + 1) + 8 * v17) path];
-      v19 = [v18 identity];
-      v20 = [v19 isEqual:v4];
+      path2 = [*(*(&v22 + 1) + 8 * v17) path];
+      identity2 = [path2 identity];
+      v20 = [identity2 isEqual:identityCopy];
 
       if (v20)
       {
@@ -1017,7 +1017,7 @@ LABEL_12:
 
       if (v15 == ++v17)
       {
-        v15 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v15 = [keyEnumerator countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v15)
         {
           goto LABEL_12;
@@ -1039,11 +1039,11 @@ LABEL_22:
   return v15;
 }
 
-- (BOOL)cancelRequestedSnapshotsForIdentity:(id)a3
+- (BOOL)cancelRequestedSnapshotsForIdentity:(id)identity
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identityCopy = identity;
+  if (identityCopy)
   {
     [(PFOSUnfairLock *)self->_lock lock];
     ++self->_lock_preventKickCount;
@@ -1051,11 +1051,11 @@ LABEL_22:
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v29 = self;
+    selfCopy = self;
     v5 = [(NSMapTable *)self->_lock_snapshotRequestToSnapshotter copy];
-    v6 = [v5 keyEnumerator];
+    keyEnumerator = [v5 keyEnumerator];
 
-    v7 = [v6 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    v7 = [keyEnumerator countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1067,24 +1067,24 @@ LABEL_22:
         {
           if (*v35 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v12 = *(*(&v34 + 1) + 8 * i);
-          v13 = [v12 path];
-          v14 = [v13 identity];
-          v15 = [v14 isEqual:v4];
+          path = [v12 path];
+          identity = [path identity];
+          v15 = [identity isEqual:identityCopy];
 
           if (v15)
           {
             v16 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:4 userInfo:&unk_282D0A358];
-            [(PBFPosterSnapshotManager *)v29 _lock_fireCompletionsForRequest:v12 snapshotImagesByReservation:0 error:v16];
+            [(PBFPosterSnapshotManager *)selfCopy _lock_fireCompletionsForRequest:v12 snapshotImagesByReservation:0 error:v16];
 
             v9 = 1;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v8 = [keyEnumerator countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
       while (v8);
@@ -1099,10 +1099,10 @@ LABEL_22:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v17 = [(BSMutableOrderedDictionary *)v29->_lock_enqueuedRequestToSnapshotRequests copy];
-    v18 = [v17 allKeys];
+    v17 = [(BSMutableOrderedDictionary *)selfCopy->_lock_enqueuedRequestToSnapshotRequests copy];
+    allKeys = [v17 allKeys];
 
-    v19 = [v18 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    v19 = [allKeys countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v19)
     {
       v20 = v19;
@@ -1113,36 +1113,36 @@ LABEL_22:
         {
           if (*v31 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(allKeys);
           }
 
           v23 = *(*(&v30 + 1) + 8 * j);
-          v24 = [v23 path];
-          v25 = [v24 identity];
-          v26 = [v25 isEqual:v4];
+          path2 = [v23 path];
+          identity2 = [path2 identity];
+          v26 = [identity2 isEqual:identityCopy];
 
           if (v26)
           {
             v27 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:4 userInfo:&unk_282D0A380];
-            [(PBFPosterSnapshotManager *)v29 _lock_fireCompletionsForRequest:v23 snapshotImagesByReservation:0 error:v27];
+            [(PBFPosterSnapshotManager *)selfCopy _lock_fireCompletionsForRequest:v23 snapshotImagesByReservation:0 error:v27];
 
             v9 = 1;
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v20 = [allKeys countByEnumeratingWithState:&v30 objects:v38 count:16];
       }
 
       while (v20);
     }
 
-    --v29->_lock_preventKickCount;
+    --selfCopy->_lock_preventKickCount;
     if (v9)
     {
-      [(PBFPosterSnapshotManager *)v29 _lock_kickoffNextOperation];
+      [(PBFPosterSnapshotManager *)selfCopy _lock_kickoffNextOperation];
     }
 
-    [(PFOSUnfairLock *)v29->_lock unlock];
+    [(PFOSUnfairLock *)selfCopy->_lock unlock];
   }
 
   else
@@ -1153,11 +1153,11 @@ LABEL_22:
   return v9 & 1;
 }
 
-- (BOOL)cancelRequestedSnapshotsForRequests:(id)a3 reason:(id)a4
+- (BOOL)cancelRequestedSnapshotsForRequests:(id)requests reason:(id)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 count])
+  requestsCopy = requests;
+  if ([requestsCopy count])
   {
     [(PFOSUnfairLock *)self->_lock lock];
     ++self->_lock_preventKickCount;
@@ -1165,7 +1165,7 @@ LABEL_22:
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = v5;
+    v6 = requestsCopy;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
     v8 = v7 != 0;
     if (v7)
@@ -1214,18 +1214,18 @@ LABEL_22:
   return v8;
 }
 
-- (BOOL)_lock_cancelRequestedSnapshotsForRequests:(id)a3 reason:(id)a4
+- (BOOL)_lock_cancelRequestedSnapshotsForRequests:(id)requests reason:(id)reason
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 count])
+  requestsCopy = requests;
+  if ([requestsCopy count])
   {
     ++self->_lock_preventKickCount;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v5;
+    v6 = requestsCopy;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -1275,18 +1275,18 @@ LABEL_22:
 {
   [(PFOSUnfairLock *)self->_lock assertOwner];
   v8 = objc_opt_new();
-  v3 = [(BSMutableOrderedDictionary *)self->_lock_activeRequestToSnapshotRequests allKeys];
-  [v8 addObjectsFromArray:v3];
+  allKeys = [(BSMutableOrderedDictionary *)self->_lock_activeRequestToSnapshotRequests allKeys];
+  [v8 addObjectsFromArray:allKeys];
 
-  v4 = [(BSMutableOrderedDictionary *)self->_lock_enqueuedRequestToSnapshotRequests allKeys];
-  [v8 addObjectsFromArray:v4];
+  allKeys2 = [(BSMutableOrderedDictionary *)self->_lock_enqueuedRequestToSnapshotRequests allKeys];
+  [v8 addObjectsFromArray:allKeys2];
 
-  v5 = [(NSMapTable *)self->_lock_requestToCompletion keyEnumerator];
-  v6 = [v5 allObjects];
-  [v8 addObjectsFromArray:v6];
+  keyEnumerator = [(NSMapTable *)self->_lock_requestToCompletion keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  [v8 addObjectsFromArray:allObjects];
 
-  v7 = [v8 allObjects];
-  [(PBFPosterSnapshotManager *)self _lock_cancelRequestedSnapshotsForRequests:v7 reason:@"cancel all requests"];
+  allObjects2 = [v8 allObjects];
+  [(PBFPosterSnapshotManager *)self _lock_cancelRequestedSnapshotsForRequests:allObjects2 reason:@"cancel all requests"];
 
   [(PBFPosterSnapshotManager *)self _lock_teardownAssertionsAndSnapshottersIfNecessary];
 }
@@ -1304,8 +1304,8 @@ LABEL_22:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSMapTable *)self->_lock_snapshotRequestToSnapshotter objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMapTable *)self->_lock_snapshotRequestToSnapshotter objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1316,7 +1316,7 @@ LABEL_22:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -1324,7 +1324,7 @@ LABEL_22:
         [v9 invalidate];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1373,7 +1373,7 @@ void __78__PBFPosterSnapshotManager__lock_teardownAssertionsAndSnapshottersIfNec
   {
     lock_preventKickCount = self->_lock_preventKickCount;
     v4 = PBFLogSnapshotter();
-    v5 = v4;
+    processInfo = v4;
     if (lock_preventKickCount)
     {
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1381,7 +1381,7 @@ void __78__PBFPosterSnapshotManager__lock_teardownAssertionsAndSnapshottersIfNec
         v6 = self->_lock_preventKickCount;
         *buf = 134349056;
         v48 = v6;
-        _os_log_impl(&dword_21B526000, v5, OS_LOG_TYPE_DEFAULT, "bailing kickoffNextOperation because of preventKickCount (%{public}lu)", buf, 0xCu);
+        _os_log_impl(&dword_21B526000, processInfo, OS_LOG_TYPE_DEFAULT, "bailing kickoffNextOperation because of preventKickCount (%{public}lu)", buf, 0xCu);
       }
     }
 
@@ -1390,14 +1390,14 @@ void __78__PBFPosterSnapshotManager__lock_teardownAssertionsAndSnapshottersIfNec
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&dword_21B526000, v5, OS_LOG_TYPE_INFO, "kickoffNextOperation is running...", buf, 2u);
+        _os_log_impl(&dword_21B526000, processInfo, OS_LOG_TYPE_INFO, "kickoffNextOperation is running...", buf, 2u);
       }
 
-      v7 = [(PBFApplicationStateMonitor *)self->_applicationStateMonitor isForeground];
-      v5 = [MEMORY[0x277CCAC38] processInfo];
-      v8 = [v5 thermalState];
-      v9 = [v5 isLowPowerModeEnabled];
-      if (v8 == 3 || (!v7 ? (v10 = 4) : (v10 = 12), !v7 ? (v11 = 2) : (v11 = 4), v9))
+      isForeground = [(PBFApplicationStateMonitor *)self->_applicationStateMonitor isForeground];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      thermalState = [processInfo thermalState];
+      isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
+      if (thermalState == 3 || (!isForeground ? (v10 = 4) : (v10 = 12), !isForeground ? (v11 = 2) : (v11 = 4), isLowPowerModeEnabled))
       {
         v12 = PBFLogSnapshotter();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1440,21 +1440,21 @@ void __78__PBFPosterSnapshotManager__lock_teardownAssertionsAndSnapshottersIfNec
 
           [(PFPosterExtensionProvider *)self->_extensionProvider start];
           runtimeAssertionProvider = self->_runtimeAssertionProvider;
-          v20 = [MEMORY[0x277D47008] currentProcess];
-          v21 = [(PBFRuntimeAssertionProviding *)runtimeAssertionProvider acquirePrewarmRuntimeAssertionForReason:@"Snapshotter is snapshotting" target:v20 invalidationHandler:0];
+          currentProcess = [MEMORY[0x277D47008] currentProcess];
+          v21 = [(PBFRuntimeAssertionProviding *)runtimeAssertionProvider acquirePrewarmRuntimeAssertionForReason:@"Snapshotter is snapshotting" target:currentProcess invalidationHandler:0];
           lock_posterBoardPrewarmAssertion = self->_lock_posterBoardPrewarmAssertion;
           self->_lock_posterBoardPrewarmAssertion = v21;
 
           os_activity_scope_enter(self->_snapshotActivity, &self->_snapshotActivityState);
         }
 
-        v41 = v5;
+        v41 = processInfo;
         v23 = PBFLogSnapshotter();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           v24 = @"BACKGROUND";
           *buf = 138544386;
-          if (v7)
+          if (isForeground)
           {
             v24 = @"FOREGROUND";
           }
@@ -1481,14 +1481,14 @@ void __78__PBFPosterSnapshotManager__lock_teardownAssertionsAndSnapshottersIfNec
         v40 = v25;
         v45 = v40;
         v26 = _Block_copy(aBlock);
-        v27 = [(BSMutableOrderedDictionary *)self->_lock_enqueuedRequestToSnapshotRequests allKeys];
-        v28 = [v27 mutableCopy];
+        allKeys = [(BSMutableOrderedDictionary *)self->_lock_enqueuedRequestToSnapshotRequests allKeys];
+        v28 = [allKeys mutableCopy];
 
-        if (v7)
+        if (isForeground)
         {
-          v29 = [(PBFApplicationStateMonitor *)self->_applicationStateMonitor currentApplicationContext];
-          v30 = [v29 posterUUIDs];
-          v31 = [v30 count];
+          currentApplicationContext = [(PBFApplicationStateMonitor *)self->_applicationStateMonitor currentApplicationContext];
+          posterUUIDs = [currentApplicationContext posterUUIDs];
+          v31 = [posterUUIDs count];
 
           if (v31)
           {
@@ -1496,7 +1496,7 @@ void __78__PBFPosterSnapshotManager__lock_teardownAssertionsAndSnapshottersIfNec
             v42[1] = 3221225472;
             v42[2] = __54__PBFPosterSnapshotManager__lock_kickoffNextOperation__block_invoke_2_152;
             v42[3] = &unk_2782C5C60;
-            v43 = v29;
+            v43 = currentApplicationContext;
             v32 = [v28 bs_filter:v42];
             v33 = [v32 mutableCopy];
 
@@ -1512,9 +1512,9 @@ void __78__PBFPosterSnapshotManager__lock_teardownAssertionsAndSnapshottersIfNec
                 break;
               }
 
-              v34 = [v33 firstObject];
-              v26[2](v26, v34);
-              [v28 removeObject:v34];
+              firstObject = [v33 firstObject];
+              v26[2](v26, firstObject);
+              [v28 removeObject:firstObject];
               [v33 removeObjectAtIndex:0];
             }
           }
@@ -1524,9 +1524,9 @@ void __78__PBFPosterSnapshotManager__lock_teardownAssertionsAndSnapshottersIfNec
         do
         {
           v36 = v35;
-          v37 = [v28 objectEnumerator];
-          v38 = [v37 allObjects];
-          v35 = [v38 bs_firstObjectPassingTest:&__block_literal_global_156_0];
+          objectEnumerator = [v28 objectEnumerator];
+          allObjects = [objectEnumerator allObjects];
+          v35 = [allObjects bs_firstObjectPassingTest:&__block_literal_global_156_0];
 
           if (!v35)
           {
@@ -1544,12 +1544,12 @@ void __78__PBFPosterSnapshotManager__lock_teardownAssertionsAndSnapshottersIfNec
         while (self->_lock_numberOfRunningSnapshotters < v10);
         while ([v28 count] && self->_lock_numberOfRunningSnapshotters < v10)
         {
-          v39 = [v28 firstObject];
-          v26[2](v26, v39);
-          [v28 removeObject:v39];
+          firstObject2 = [v28 firstObject];
+          v26[2](v26, firstObject2);
+          [v28 removeObject:firstObject2];
         }
 
-        v5 = v41;
+        processInfo = v41;
       }
 
       else
@@ -1807,16 +1807,16 @@ uint64_t __54__PBFPosterSnapshotManager__lock_kickoffNextOperation__block_invoke
   return v8;
 }
 
-- (id)snapshotCoordinatorForPath:(id)a3
+- (id)snapshotCoordinatorForPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 serverIdentity];
+  pathCopy = path;
+  serverIdentity = [pathCopy serverIdentity];
 
-  if (v5)
+  if (serverIdentity)
   {
     WeakRetained = objc_loadWeakRetained(&self->_modelCoordinatorProvider);
-    v7 = [v4 serverIdentity];
-    v8 = [WeakRetained pbf_posterSnapshotCoordinatorForIdentity:v7];
+    serverIdentity2 = [pathCopy serverIdentity];
+    v8 = [WeakRetained pbf_posterSnapshotCoordinatorForIdentity:serverIdentity2];
   }
 
   else
@@ -1827,10 +1827,10 @@ uint64_t __54__PBFPosterSnapshotManager__lock_kickoffNextOperation__block_invoke
   return v8;
 }
 
-- (void)_lock_enumerateObservers:(id)a3
+- (void)_lock_enumerateObservers:(id)observers
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observersCopy = observers;
   [(PFOSUnfairLock *)self->_lock assertOwner];
   v14 = 0u;
   v15 = 0u;
@@ -1853,7 +1853,7 @@ LABEL_3:
 
       v10 = *(*(&v12 + 1) + 8 * v9);
       v11 = 0;
-      v4[2](v4, v10, &v11);
+      observersCopy[2](observersCopy, v10, &v11);
       if (v11)
       {
         break;
@@ -1878,20 +1878,20 @@ LABEL_3:
   v19 = *MEMORY[0x277D85DE8];
   [(PFOSUnfairLock *)self->_lock assertOwner];
   v3 = objc_opt_new();
-  v4 = [(NSMapTable *)self->_lock_requestToCompletion keyEnumerator];
-  v5 = [v4 nextObject];
-  if (v5)
+  keyEnumerator = [(NSMapTable *)self->_lock_requestToCompletion keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    v6 = nextObject;
     do
     {
       [v3 addObject:v6];
-      v7 = [v4 nextObject];
+      nextObject2 = [keyEnumerator nextObject];
 
-      v6 = v7;
+      v6 = nextObject2;
     }
 
-    while (v7);
+    while (nextObject2);
   }
 
   v8 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
@@ -1926,11 +1926,11 @@ LABEL_3:
   }
 }
 
-- (void)snapshotterDidInvalidateScene:(id)a3 didWaitForSceneInvalidation:(BOOL)a4 forRequest:(id)a5
+- (void)snapshotterDidInvalidateScene:(id)scene didWaitForSceneInvalidation:(BOOL)invalidation forRequest:(id)request
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  sceneCopy = scene;
+  requestCopy = request;
   [(PFOSUnfairLock *)self->_lock lock];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -1938,9 +1938,9 @@ LABEL_3:
   aBlock[3] = &unk_2782C5888;
   aBlock[4] = self;
   v10 = _Block_copy(aBlock);
-  v11 = [(NSMapTable *)self->_lock_snapshotRequestToSnapshotter objectEnumerator];
-  v12 = [v11 allObjects];
-  v13 = [v12 containsObject:v8];
+  objectEnumerator = [(NSMapTable *)self->_lock_snapshotRequestToSnapshotter objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  v13 = [allObjects containsObject:sceneCopy];
 
   if (v13)
   {
@@ -1951,46 +1951,46 @@ LABEL_3:
       *buf = 138543618;
       v22 = v15;
       v23 = 2114;
-      v24 = v8;
+      v24 = sceneCopy;
       _os_log_impl(&dword_21B526000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}@, but we're still expecting more work from this snapshotter", buf, 0x16u);
     }
   }
 
   else
   {
-    v14 = [(NSMapTable *)self->_lock_snapshotterToSnapshotInvalidationWrapper objectForKey:v8];
+    v14 = [(NSMapTable *)self->_lock_snapshotterToSnapshotInvalidationWrapper objectForKey:sceneCopy];
     if (v14)
     {
       v16 = PBFLogSnapshotter();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = NSStringFromSelector(a2);
-        v18 = [v14 snapshotRequest];
+        snapshotRequest = [v14 snapshotRequest];
         *buf = 138543874;
         v22 = v17;
         v23 = 2114;
-        v24 = v8;
+        v24 = sceneCopy;
         v25 = 2114;
-        v26 = v18;
+        v26 = snapshotRequest;
         _os_log_impl(&dword_21B526000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}@, now cleaning up after request: %{public}@", buf, 0x20u);
       }
 
-      v19 = [v14 snapshotRequest];
-      [(PBFPosterSnapshotManager *)self _lock_cleanupAfterSceneInvalidationForRequest:v19 snapshotter:v8 shouldTerminateProcess:[v14 shouldTerminateProcess]];
+      snapshotRequest2 = [v14 snapshotRequest];
+      [(PBFPosterSnapshotManager *)self _lock_cleanupAfterSceneInvalidationForRequest:snapshotRequest2 snapshotter:sceneCopy shouldTerminateProcess:[v14 shouldTerminateProcess]];
 
-      [(NSMapTable *)self->_lock_snapshotterToSnapshotInvalidationWrapper removeObjectForKey:v8];
+      [(NSMapTable *)self->_lock_snapshotterToSnapshotInvalidationWrapper removeObjectForKey:sceneCopy];
     }
   }
 
   v10[2](v10);
 }
 
-- (BOOL)ingestSnapshotCollection:(id)a3 forConfiguration:(id)a4 error:(id *)a5
+- (BOOL)ingestSnapshotCollection:(id)collection forConfiguration:(id)configuration error:(id *)error
 {
   v148 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v9;
+  collectionCopy = collection;
+  configurationCopy = configuration;
+  v11 = collectionCopy;
   NSClassFromString(&cfstr_Prspostersnaps_0.isa);
   if (!v11)
   {
@@ -2002,7 +2002,7 @@ LABEL_3:
     [PBFPosterSnapshotManager ingestSnapshotCollection:a2 forConfiguration:? error:?];
   }
 
-  v12 = v10;
+  v12 = configurationCopy;
   NSClassFromString(&cfstr_Prposterconfig.isa);
   if (!v12)
   {
@@ -2014,19 +2014,19 @@ LABEL_3:
     [PBFPosterSnapshotManager ingestSnapshotCollection:a2 forConfiguration:? error:?];
   }
 
-  v124 = [v12 _path];
-  v13 = [v11 primaryLayersSnapshot];
-  v14 = [v13 surface];
+  _path = [v12 _path];
+  primaryLayersSnapshot = [v11 primaryLayersSnapshot];
+  surface = [primaryLayersSnapshot surface];
 
-  v15 = [v11 floatingLayerSnapshot];
-  v128 = [v15 surface];
+  floatingLayerSnapshot = [v11 floatingLayerSnapshot];
+  surface2 = [floatingLayerSnapshot surface];
 
-  if (v14)
+  if (surface)
   {
     IsVolatile = PUIIOSurfaceIsVolatile();
     v17 = PBFLogSnapshotter();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-    v107 = a5;
+    errorCopy = error;
     v108 = v12;
     if (IsVolatile)
     {
@@ -2035,12 +2035,12 @@ LABEL_3:
         goto LABEL_17;
       }
 
-      v19 = [v124 serverIdentity];
-      v20 = [v19 posterUUID];
+      serverIdentity = [_path serverIdentity];
+      posterUUID = [serverIdentity posterUUID];
       *buf = 138412546;
-      v145 = v14;
+      v145 = surface;
       v146 = 2114;
-      v147 = v20;
+      v147 = posterUUID;
       v21 = "Attempting to ingest *VOLATILE* Surface %@ for path %{public}@";
       v22 = v17;
       v23 = 22;
@@ -2053,10 +2053,10 @@ LABEL_3:
         goto LABEL_17;
       }
 
-      v19 = [v124 serverIdentity];
-      v20 = [v19 posterUUID];
+      serverIdentity = [_path serverIdentity];
+      posterUUID = [serverIdentity posterUUID];
       *buf = 138543362;
-      v145 = v20;
+      v145 = posterUUID;
       v21 = "Attempting to ingest Surface for path %{public}@";
       v22 = v17;
       v23 = 12;
@@ -2065,16 +2065,16 @@ LABEL_3:
     _os_log_impl(&dword_21B526000, v22, OS_LOG_TYPE_DEFAULT, v21, buf, v23);
 
 LABEL_17:
-    v30 = [v11 interfaceStyle];
-    v31 = v30 == 1;
-    if (v30 == 2)
+    interfaceStyle = [v11 interfaceStyle];
+    v31 = interfaceStyle == 1;
+    if (interfaceStyle == 2)
     {
       v31 = 2;
     }
 
     v121 = v31;
-    v32 = [v11 accessibilityContrast];
-    if (v32 == 1)
+    accessibilityContrast = [v11 accessibilityContrast];
+    if (accessibilityContrast == 1)
     {
       v33 = 0;
     }
@@ -2084,26 +2084,26 @@ LABEL_17:
       v33 = -1;
     }
 
-    if (v32 == 2)
+    if (accessibilityContrast == 2)
     {
       v33 = 1;
     }
 
     v120 = v33;
-    v34 = [v14 attachmentForKey:@"kPaperboardIOSurfaceDeviceOrientationPropertiesKey"];
-    v119 = [v34 unsignedIntegerValue];
+    v34 = [surface attachmentForKey:@"kPaperboardIOSurfaceDeviceOrientationPropertiesKey"];
+    unsignedIntegerValue = [v34 unsignedIntegerValue];
 
-    v123 = v14;
-    v35 = [v14 attachmentForKey:@"kPaperboardIOSurfaceInterfaceOrientationPropertiesKey"];
-    v118 = [v35 unsignedIntegerValue];
+    v123 = surface;
+    v35 = [surface attachmentForKey:@"kPaperboardIOSurfaceInterfaceOrientationPropertiesKey"];
+    unsignedIntegerValue2 = [v35 unsignedIntegerValue];
 
     [v11 snapshotScale];
     v37 = v36;
-    v106 = [v11 snapshotDisplayIdentity];
+    snapshotDisplayIdentity = [v11 snapshotDisplayIdentity];
     v122 = [MEMORY[0x277D0ACE0] pui_displayConfigurationForIdentity:?];
     v38 = +[PBFPosterSnapshotDefinition switcherSnapshotDefinition];
     v39 = +[PBFPosterSnapshotDefinition switcherFloatingLayerSnapshotDefinition];
-    v105 = [(PBFPosterSnapshotManager *)self snapshotCoordinatorForPath:v124];
+    v105 = [(PBFPosterSnapshotManager *)self snapshotCoordinatorForPath:_path];
     v109 = v11;
     [v11 salientContentRectangle];
     v41 = v40;
@@ -2148,15 +2148,15 @@ LABEL_17:
           if (!v50)
           {
             v54 = objc_alloc(MEMORY[0x277D3EF78]);
-            v55 = [v122 pui_displayConfigurationIdentifier];
-            v50 = [v54 initWithHardwareIdentifier:v55 userInterfaceStyle:v121 interfaceOrientation:v118 deviceOrientation:v119];
+            pui_displayConfigurationIdentifier = [v122 pui_displayConfigurationIdentifier];
+            v50 = [v54 initWithHardwareIdentifier:pui_displayConfigurationIdentifier userInterfaceStyle:v121 interfaceOrientation:unsignedIntegerValue2 deviceOrientation:unsignedIntegerValue];
 
-            [v50 updateWithPoster:v124];
+            [v50 updateWithPoster:_path];
             v56 = [MEMORY[0x277CCABB0] numberWithInteger:v120];
             [v50 setObject:v56 forKeyedSubscript:v117];
 
-            v57 = [v53 uniqueIdentifier];
-            [v50 setObject:v57 forKeyedSubscript:v116];
+            uniqueIdentifier = [v53 uniqueIdentifier];
+            [v50 setObject:uniqueIdentifier forKeyedSubscript:v116];
 
             v58 = [MEMORY[0x277CCABB0] numberWithDouble:v37];
             [v50 setObject:v58 forKeyedSubscript:v115];
@@ -2164,10 +2164,10 @@ LABEL_17:
             v59 = [MEMORY[0x277CCABB0] numberWithInteger:v121];
             [v50 setObject:v59 forKeyedSubscript:v114];
 
-            v60 = [MEMORY[0x277CCABB0] numberWithInteger:v119];
+            v60 = [MEMORY[0x277CCABB0] numberWithInteger:unsignedIntegerValue];
             [v50 setObject:v60 forKeyedSubscript:v113];
 
-            v61 = [MEMORY[0x277CCABB0] numberWithInteger:v118];
+            v61 = [MEMORY[0x277CCABB0] numberWithInteger:unsignedIntegerValue2];
             [v50 setObject:v61 forKeyedSubscript:v112];
 
             if (PUICGRectIsValidSalientContentRectangle())
@@ -2199,14 +2199,14 @@ LABEL_17:
           if (v38 == v53)
           {
             v66 = v123;
-            v68 = [MEMORY[0x277D3EF70] allLevelsExceptFloating];
+            allLevelsExceptFloating = [MEMORY[0x277D3EF70] allLevelsExceptFloating];
 LABEL_41:
-            v67 = v68;
+            v67 = allLevelsExceptFloating;
             goto LABEL_42;
           }
 
-          v65 = v128;
-          if (!v128)
+          v65 = surface2;
+          if (!surface2)
           {
             goto LABEL_47;
           }
@@ -2214,7 +2214,7 @@ LABEL_41:
           v66 = v65;
           if (v125 == v53)
           {
-            v68 = [MEMORY[0x277D3EF70] floatingLevelSet];
+            allLevelsExceptFloating = [MEMORY[0x277D3EF70] floatingLevelSet];
             goto LABEL_41;
           }
 
@@ -2229,9 +2229,9 @@ LABEL_42:
             v71 = PBFLogSnapshotter();
             if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
             {
-              v72 = [v53 uniqueIdentifier];
+              uniqueIdentifier2 = [v53 uniqueIdentifier];
               *buf = 138543618;
-              v145 = v72;
+              v145 = uniqueIdentifier2;
               v146 = 2114;
               v147 = v69;
               _os_log_error_impl(&dword_21B526000, v71, OS_LOG_TYPE_ERROR, "failed to capture snapshot collection definition %{public}@: %{public}@", buf, 0x16u);
@@ -2257,12 +2257,12 @@ LABEL_47:
 LABEL_51:
 
     v73 = MEMORY[0x277CCACA8];
-    v74 = [v38 uniqueIdentifier];
-    v75 = [v73 stringWithFormat:@"Snapshot-%@.pks", v74];
+    uniqueIdentifier3 = [v38 uniqueIdentifier];
+    v75 = [v73 stringWithFormat:@"Snapshot-%@.pks", uniqueIdentifier3];
     v76 = [v110 URLByAppendingPathComponent:v75];
-    v77 = [MEMORY[0x277D3EF60] defaultFormat];
+    defaultFormat = [MEMORY[0x277D3EF60] defaultFormat];
     v130 = 0;
-    v78 = [v50 buildWithOutputURL:v76 diskFormat:v77 error:&v130];
+    v78 = [v50 buildWithOutputURL:v76 diskFormat:defaultFormat error:&v130];
     v79 = v130;
 
     v12 = v108;
@@ -2317,14 +2317,14 @@ LABEL_53:
           v83 = v82;
         }
 
-        v93 = [MEMORY[0x277CCAA00] defaultManager];
-        [v93 removeItemAtURL:v110 error:0];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        [defaultManager removeItemAtURL:v110 error:0];
 
         v29 = v83 == 0;
-        if (v107 && v83)
+        if (errorCopy && v83)
         {
           v94 = v83;
-          *v107 = v83;
+          *errorCopy = v83;
         }
 
         goto LABEL_70;
@@ -2335,12 +2335,12 @@ LABEL_53:
 LABEL_70:
 
     v11 = v109;
-    v14 = v123;
-    v28 = v106;
+    surface = v123;
+    v28 = snapshotDisplayIdentity;
     goto LABEL_71;
   }
 
-  if (a5)
+  if (error)
   {
     v24 = MEMORY[0x277CCA9B8];
     v142 = *MEMORY[0x277CCA470];
@@ -2349,7 +2349,7 @@ LABEL_70:
     v26 = [v24 pbf_dataStoreErrorWithCode:-2214 userInfo:v25];
 
     v27 = v26;
-    *a5 = v26;
+    *error = v26;
   }
 
   v28 = PBFLogSnapshotter();
@@ -2366,12 +2366,12 @@ LABEL_71:
   return v29;
 }
 
-- (void)fetchPosterSnapshotForRequest:(id)a3 definition:(id)a4 completion:(id)a5
+- (void)fetchPosterSnapshotForRequest:(id)request definition:(id)definition completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
+  requestCopy = request;
+  definitionCopy = definition;
+  completionCopy = completion;
+  v12 = requestCopy;
   NSClassFromString(&cfstr_Pbfpostersnaps_6.isa);
   if (!v12)
   {
@@ -2383,7 +2383,7 @@ LABEL_71:
     [PBFPosterSnapshotManager fetchPosterSnapshotForRequest:a2 definition:? completion:?];
   }
 
-  v13 = v10;
+  v13 = definitionCopy;
   NSClassFromString(&cfstr_Pbfpostersnaps_2.isa);
   if (!v13)
   {
@@ -2395,13 +2395,13 @@ LABEL_71:
     [PBFPosterSnapshotManager fetchPosterSnapshotForRequest:a2 definition:? completion:?];
   }
 
-  v14 = [v12 path];
-  v15 = [(PBFPosterSnapshotManager *)self snapshotCoordinatorForPath:v14];
+  path = [v12 path];
+  v15 = [(PBFPosterSnapshotManager *)self snapshotCoordinatorForPath:path];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __80__PBFPosterSnapshotManager_fetchPosterSnapshotForRequest_definition_completion___block_invoke;
   aBlock[3] = &unk_2782C8280;
-  v16 = v11;
+  v16 = completionCopy;
   v24 = v16;
   v17 = _Block_copy(aBlock);
   if (v16)
@@ -2486,31 +2486,31 @@ void __80__PBFPosterSnapshotManager_fetchPosterSnapshotForRequest_definition_com
   (*(*(a1 + 64) + 16))();
 }
 
-- (id)posterSnapshotForRequest:(id)a3 definition:(id)a4 error:(id *)a5
+- (id)posterSnapshotForRequest:(id)request definition:(id)definition error:(id *)error
 {
   v5 = 0;
-  if (a3 && a4)
+  if (request && definition)
   {
-    v9 = a4;
-    v10 = a3;
-    v11 = [v10 path];
-    v12 = [(PBFPosterSnapshotManager *)self snapshotCoordinatorForPath:v11];
-    v13 = [v10 displayContext];
+    definitionCopy = definition;
+    requestCopy = request;
+    path = [requestCopy path];
+    v12 = [(PBFPosterSnapshotManager *)self snapshotCoordinatorForPath:path];
+    displayContext = [requestCopy displayContext];
 
-    v14 = [PBFPosterSnapshotContext snapshotContextForDisplayContext:v13 definition:v9];
+    v14 = [PBFPosterSnapshotContext snapshotContextForDisplayContext:displayContext definition:definitionCopy];
 
     v15 = [v12 snapshotReservationForContext:v14];
-    v5 = [v15 fetchImageWithError:a5];
+    v5 = [v15 fetchImageWithError:error];
   }
 
   return v5;
 }
 
-- (void)prewarmSnapshotsForRequests:(id)a3 completion:(id)a4
+- (void)prewarmSnapshotsForRequests:(id)requests completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  requestsCopy = requests;
+  completionCopy = completion;
+  if ([requestsCopy count])
   {
     v8 = dispatch_group_create();
     dispatch_group_enter(v8);
@@ -2520,24 +2520,24 @@ void __80__PBFPosterSnapshotManager_fetchPosterSnapshotForRequest_definition_com
     v13[3] = &unk_2782C82F8;
     v9 = v8;
     v14 = v9;
-    v15 = self;
-    [v6 enumerateObjectsUsingBlock:v13];
+    selfCopy = self;
+    [requestsCopy enumerateObjectsUsingBlock:v13];
     dispatch_group_leave(v9);
-    if (v7)
+    if (completionCopy)
     {
       v10 = dispatch_get_global_queue(25, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __67__PBFPosterSnapshotManager_prewarmSnapshotsForRequests_completion___block_invoke_3;
       block[3] = &unk_2782C6068;
-      v12 = v7;
+      v12 = completionCopy;
       dispatch_group_notify(v9, v10, block);
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -2555,10 +2555,10 @@ void __67__PBFPosterSnapshotManager_prewarmSnapshotsForRequests_completion___blo
   [v5 _enqueueSnapshotForRequestIfNeeded:v4 completion:v6];
 }
 
-- (id)enqueueRequest:(id)a3 completion:(id)a4
+- (id)enqueueRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8 = MEMORY[0x277D3EC40];
   v15[0] = MEMORY[0x277D85DD0];
@@ -2566,14 +2566,14 @@ void __67__PBFPosterSnapshotManager_prewarmSnapshotsForRequests_completion___blo
   v15[2] = __54__PBFPosterSnapshotManager_enqueueRequest_completion___block_invoke;
   v15[3] = &unk_2782C70C0;
   objc_copyWeak(&v17, &location);
-  v9 = v6;
+  v9 = requestCopy;
   v16 = v9;
   v10 = [v8 tokenWithCancellationBlock:v15];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __54__PBFPosterSnapshotManager_enqueueRequest_completion___block_invoke_2;
   v13[3] = &unk_2782C8320;
-  v11 = v7;
+  v11 = completionCopy;
   v14 = v11;
   [(PBFPosterSnapshotManager *)self _enqueueSnapshotForRequestIfNeeded:v9 completion:v13];
 
@@ -2608,22 +2608,22 @@ uint64_t __54__PBFPosterSnapshotManager_enqueueRequest_completion___block_invoke
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (id)providerForPath:(id)a3
+- (id)providerForPath:(id)path
 {
-  v4 = [a3 identity];
-  v5 = [v4 provider];
+  identity = [path identity];
+  provider = [identity provider];
 
-  v6 = [(PBFPosterSnapshotManager *)self providerForExtensionIdentifier:v5];
+  v6 = [(PBFPosterSnapshotManager *)self providerForExtensionIdentifier:provider];
 
   return v6;
 }
 
-- (id)providerForExtensionIdentifier:(id)a3
+- (id)providerForExtensionIdentifier:(id)identifier
 {
   extensionProvider = self->_extensionProvider;
-  v4 = a3;
-  v5 = [(PFPosterExtensionProvider *)extensionProvider extensionForIdentifier];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  extensionForIdentifier = [(PFPosterExtensionProvider *)extensionProvider extensionForIdentifier];
+  v6 = [extensionForIdentifier objectForKey:identifierCopy];
 
   return v6;
 }

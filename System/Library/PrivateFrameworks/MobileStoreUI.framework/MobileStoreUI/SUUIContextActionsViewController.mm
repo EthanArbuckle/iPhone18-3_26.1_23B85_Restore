@@ -1,24 +1,24 @@
 @interface SUUIContextActionsViewController
 - (CGPoint)gestureRecognizerInitialLocation;
-- (SUUIContextActionsViewController)initWithCoder:(id)a3;
-- (SUUIContextActionsViewController)initWithConfiguration:(id)a3;
-- (id)_transitionPresentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4;
-- (id)animationControllerForDismissedController:(id)a3;
+- (SUUIContextActionsViewController)initWithCoder:(id)coder;
+- (SUUIContextActionsViewController)initWithConfiguration:(id)configuration;
+- (id)_transitionPresentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController;
+- (id)animationControllerForDismissedController:(id)controller;
 - (void)_applySystemRecognizer;
 - (void)_reloadViewsConfiguration;
-- (void)animateTransition:(id)a3;
-- (void)interfaceAction:(id)a3 invokeActionHandler:(id)a4 completion:(id)a5;
-- (void)systemProvidedGestureRecognzierTriggered:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)animateTransition:(id)transition;
+- (void)interfaceAction:(id)action invokeActionHandler:(id)handler completion:(id)completion;
+- (void)systemProvidedGestureRecognzierTriggered:(id)triggered;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SUUIContextActionsViewController
 
-- (SUUIContextActionsViewController)initWithCoder:(id)a3
+- (SUUIContextActionsViewController)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = objc_opt_class();
@@ -28,16 +28,16 @@
   return 0;
 }
 
-- (SUUIContextActionsViewController)initWithConfiguration:(id)a3
+- (SUUIContextActionsViewController)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = SUUIContextActionsViewController;
   v6 = [(SUUIContextActionsViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v7->_orbPresentation = 0;
     v7->_appliedSystemRecognizer = 0;
     [(SUUIContextActionsViewController *)v7 setTransitioningDelegate:v7];
@@ -53,8 +53,8 @@
   v16.super_class = SUUIContextActionsViewController;
   [(SUUIContextActionsViewController *)&v16 viewDidLoad];
   v3 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_viewTapped_];
-  v4 = [(SUUIContextActionsViewController *)self view];
-  [v4 addGestureRecognizer:v3];
+  view = [(SUUIContextActionsViewController *)self view];
+  [view addGestureRecognizer:v3];
 
   v5 = objc_alloc(MEMORY[0x277D75D68]);
   v6 = [MEMORY[0x277D75210] effectWithStyle:0];
@@ -68,8 +68,8 @@
   self->_backgroundView = v7;
   v9 = v7;
 
-  v10 = [(SUUIContextActionsViewController *)self view];
-  [v10 addSubview:v9];
+  view2 = [(SUUIContextActionsViewController *)self view];
+  [view2 addSubview:v9];
 
   v11 = objc_alloc(MEMORY[0x277D75A68]);
   v12 = [v11 initWithArrangedSubviews:MEMORY[0x277CBEBF8]];
@@ -79,32 +79,32 @@
   self->_stackView = v12;
   v14 = v12;
 
-  v15 = [(SUUIContextActionsViewController *)self view];
-  [v15 addSubview:v14];
+  view3 = [(SUUIContextActionsViewController *)self view];
+  [view3 addSubview:v14];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SUUIContextActionsViewController;
-  [(SUUIContextActionsViewController *)&v4 viewWillAppear:a3];
+  [(SUUIContextActionsViewController *)&v4 viewWillAppear:appear];
   [(SUUIContextActionsViewController *)self _reloadViewsConfiguration];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = SUUIContextActionsViewController;
-  [(SUUIContextActionsViewController *)&v7 viewDidAppear:a3];
-  v4 = [(SUUIContextActionsViewController *)self systemProvidedGestureRecognzier];
-  if (v4)
+  [(SUUIContextActionsViewController *)&v7 viewDidAppear:appear];
+  systemProvidedGestureRecognzier = [(SUUIContextActionsViewController *)self systemProvidedGestureRecognzier];
+  if (systemProvidedGestureRecognzier)
   {
-    v5 = [(SUUIContextActionsViewController *)self view];
-    v6 = [v5 window];
-    [v4 locationInView:v6];
+    view = [(SUUIContextActionsViewController *)self view];
+    window = [view window];
+    [systemProvidedGestureRecognzier locationInView:window];
     [(SUUIContextActionsViewController *)self setGestureRecognizerInitialLocation:?];
 
-    [v4 addTarget:self action:sel_systemProvidedGestureRecognzierTriggered_];
+    [systemProvidedGestureRecognzier addTarget:self action:sel_systemProvidedGestureRecognzierTriggered_];
   }
 }
 
@@ -113,13 +113,13 @@
   v13.receiver = self;
   v13.super_class = SUUIContextActionsViewController;
   [(SUUIContextActionsViewController *)&v13 viewDidLayoutSubviews];
-  v3 = [(SUUIContextActionsViewController *)self scrollableActionGroupView];
-  v4 = [(SUUIContextActionsViewController *)self view];
-  [v4 bounds];
-  [v3 systemLayoutSizeFittingSize:{v5, v6}];
+  scrollableActionGroupView = [(SUUIContextActionsViewController *)self scrollableActionGroupView];
+  view = [(SUUIContextActionsViewController *)self view];
+  [view bounds];
+  [scrollableActionGroupView systemLayoutSizeFittingSize:{v5, v6}];
   v8 = v7;
-  v9 = [(SUUIContextActionsViewController *)self scrollableActionGroupView];
-  [v9 bounds];
+  scrollableActionGroupView2 = [(SUUIContextActionsViewController *)self scrollableActionGroupView];
+  [scrollableActionGroupView2 bounds];
   Height = CGRectGetHeight(v14);
 
   if (v8 > Height)
@@ -132,23 +132,23 @@
     [MEMORY[0x277D75348] clearColor];
   }
   v11 = ;
-  v12 = [(SUUIContextActionsViewController *)self scrollableActionGroupView];
-  [v12 setBackgroundColor:v11];
+  scrollableActionGroupView3 = [(SUUIContextActionsViewController *)self scrollableActionGroupView];
+  [scrollableActionGroupView3 setBackgroundColor:v11];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = SUUIContextActionsViewController;
-  [(SUUIContextActionsViewController *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(SUUIContextActionsViewController *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [v4 horizontalSizeClass];
-    v6 = [(SUUIContextActionsViewController *)self traitCollection];
-    v7 = [v6 horizontalSizeClass];
+    horizontalSizeClass = [changeCopy horizontalSizeClass];
+    traitCollection = [(SUUIContextActionsViewController *)self traitCollection];
+    horizontalSizeClass2 = [traitCollection horizontalSizeClass];
 
-    if (v5 != v7)
+    if (horizontalSizeClass != horizontalSizeClass2)
     {
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
@@ -227,18 +227,18 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)systemProvidedGestureRecognzierTriggered:(id)a3
+- (void)systemProvidedGestureRecognzierTriggered:(id)triggered
 {
-  v17 = a3;
+  triggeredCopy = triggered;
   [(SUUIContextActionsViewController *)self gestureRecognizerInitialLocation];
   v6 = v5;
   v7 = v4;
   v8 = v5 == *MEMORY[0x277CBF348] && v4 == *(MEMORY[0x277CBF348] + 8);
-  if (!v8 && [v17 state] == 2)
+  if (!v8 && [triggeredCopy state] == 2)
   {
-    v9 = [(SUUIContextActionsViewController *)self view];
-    v10 = [v9 window];
-    [v17 locationInView:v10];
+    view = [(SUUIContextActionsViewController *)self view];
+    window = [view window];
+    [triggeredCopy locationInView:window];
     v12 = v11;
     v14 = v13;
 
@@ -269,16 +269,16 @@ LABEL_12:
 
 - (void)_applySystemRecognizer
 {
-  v3 = [(SUUIContextActionsViewController *)self contextActionView];
-  v4 = [(SUUIContextActionsViewController *)self systemProvidedGestureRecognzier];
-  [v3 beginTrackingSessionByTakingOverForSystemProvidedGestureRecognizer:v4];
+  contextActionView = [(SUUIContextActionsViewController *)self contextActionView];
+  systemProvidedGestureRecognzier = [(SUUIContextActionsViewController *)self systemProvidedGestureRecognzier];
+  [contextActionView beginTrackingSessionByTakingOverForSystemProvidedGestureRecognizer:systemProvidedGestureRecognzier];
 
-  v5 = [(SUUIContextActionsViewController *)self systemProvidedGestureRecognzier];
+  systemProvidedGestureRecognzier2 = [(SUUIContextActionsViewController *)self systemProvidedGestureRecognzier];
 
-  if (v5)
+  if (systemProvidedGestureRecognzier2)
   {
-    v6 = [(SUUIContextActionsViewController *)self systemProvidedGestureRecognzier];
-    [v6 removeTarget:self action:sel_systemProvidedGestureRecognzierTriggered_];
+    systemProvidedGestureRecognzier3 = [(SUUIContextActionsViewController *)self systemProvidedGestureRecognzier];
+    [systemProvidedGestureRecognzier3 removeTarget:self action:sel_systemProvidedGestureRecognzierTriggered_];
   }
 
   [(SUUIContextActionsViewController *)self setAppliedSystemRecognizer:1];
@@ -288,17 +288,17 @@ LABEL_12:
 {
   v165 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAAD0];
-  v4 = [(SUUIContextActionsViewController *)self constraints];
-  [v3 deactivateConstraints:v4];
+  constraints = [(SUUIContextActionsViewController *)self constraints];
+  [v3 deactivateConstraints:constraints];
 
   v156 = 0u;
   v157 = 0u;
   v154 = 0u;
   v155 = 0u;
-  v5 = [(SUUIContextActionsViewController *)self stackView];
-  v6 = [v5 arrangedSubviews];
+  stackView = [(SUUIContextActionsViewController *)self stackView];
+  arrangedSubviews = [stackView arrangedSubviews];
 
-  v7 = [v6 countByEnumeratingWithState:&v154 objects:v164 count:16];
+  v7 = [arrangedSubviews countByEnumeratingWithState:&v154 objects:v164 count:16];
   if (v7)
   {
     v8 = v7;
@@ -309,20 +309,20 @@ LABEL_12:
       {
         if (*v155 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v11 = *(*(&v154 + 1) + 8 * i);
-        v12 = [(SUUIContextActionsViewController *)self stackView];
-        [v12 setSpacing:0.0];
+        stackView2 = [(SUUIContextActionsViewController *)self stackView];
+        [stackView2 setSpacing:0.0];
 
-        v13 = [(SUUIContextActionsViewController *)self stackView];
-        [v13 removeArrangedSubview:v11];
+        stackView3 = [(SUUIContextActionsViewController *)self stackView];
+        [stackView3 removeArrangedSubview:v11];
 
         [v11 removeFromSuperview];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v154 objects:v164 count:16];
+      v8 = [arrangedSubviews countByEnumeratingWithState:&v154 objects:v164 count:16];
     }
 
     while (v8);
@@ -338,12 +338,12 @@ LABEL_12:
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v163 forKeys:&v162 count:1];
   v19 = __61__SUUIContextActionsViewController__reloadViewsConfiguration__block_invoke(v18, v15, v18, 0);
 
-  v20 = [(SUUIContextActionsViewController *)self configuration];
-  v21 = [v20 contextActions];
+  configuration = [(SUUIContextActionsViewController *)self configuration];
+  contextActions = [configuration contextActions];
 
   v22 = objc_alloc(MEMORY[0x277D75628]);
-  v145 = v21;
-  v23 = [MEMORY[0x277D75620] actionGroupWithActions:v21];
+  v145 = contextActions;
+  v23 = [MEMORY[0x277D75620] actionGroupWithActions:contextActions];
   v24 = [v22 initWithActionGroup:v23 actionHandlerInvocationDelegate:self];
 
   v147 = v17;
@@ -365,8 +365,8 @@ LABEL_12:
     v30 = [v27 actionWithTitle:v29 type:1 handler:&__block_literal_global_44];
 
     v31 = MEMORY[0x277D755B8];
-    v32 = [MEMORY[0x277D75348] clearColor];
-    v33 = [v31 singlePointImageWithColor:v32];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    v33 = [v31 singlePointImageWithColor:clearColor];
     v34 = [v33 imageWithAlignmentRectInsets:{-55.0, 0.0, 0.0, 0.0}];
     [v30 setTrailingImage:v34];
 
@@ -378,8 +378,8 @@ LABEL_12:
     v26 = [v35 initWithActionGroup:v38 actionHandlerInvocationDelegate:self];
 
     v39 = MEMORY[0x277CCAAD0];
-    v40 = [v26 heightAnchor];
-    v41 = [v40 constraintEqualToConstant:56.0];
+    heightAnchor = [v26 heightAnchor];
+    v41 = [heightAnchor constraintEqualToConstant:56.0];
     v160 = v41;
     v42 = [MEMORY[0x277CBEA60] arrayWithObjects:&v160 count:1];
     [v39 activateConstraints:v42];
@@ -391,146 +391,146 @@ LABEL_12:
   v44 = [v43 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v44 setAxis:1];
   [v44 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v45 = [(SUUIContextActionsViewController *)self stackView];
-  [v45 addArrangedSubview:v44];
+  stackView4 = [(SUUIContextActionsViewController *)self stackView];
+  [stackView4 addArrangedSubview:v44];
 
-  v46 = [(SUUIContextActionsViewController *)self _isInPopoverPresentation];
-  if ((v46 & 1) == 0)
+  _isInPopoverPresentation = [(SUUIContextActionsViewController *)self _isInPopoverPresentation];
+  if ((_isInPopoverPresentation & 1) == 0)
   {
-    v47 = [(SUUIContextActionsViewController *)self contextActionView];
-    [v47 _setContinuousCornerRadius:16.0];
+    contextActionView = [(SUUIContextActionsViewController *)self contextActionView];
+    [contextActionView _setContinuousCornerRadius:16.0];
 
-    v48 = [(SUUIContextActionsViewController *)self contextActionView];
-    [v48 setClipsToBounds:1];
+    contextActionView2 = [(SUUIContextActionsViewController *)self contextActionView];
+    [contextActionView2 setClipsToBounds:1];
 
-    v49 = [(SUUIContextActionsViewController *)self contextActionView];
-    v50 = [v49 layer];
-    [v50 setMaskedCorners:15];
+    contextActionView3 = [(SUUIContextActionsViewController *)self contextActionView];
+    layer = [contextActionView3 layer];
+    [layer setMaskedCorners:15];
   }
 
-  v51 = [(SUUIContextActionsViewController *)self contextActionView];
-  [v51 _setDrawsBackground:0];
+  contextActionView4 = [(SUUIContextActionsViewController *)self contextActionView];
+  [contextActionView4 _setDrawsBackground:0];
 
-  v52 = [(SUUIContextActionsViewController *)self contextActionView];
-  [v44 addArrangedSubview:v52];
+  contextActionView5 = [(SUUIContextActionsViewController *)self contextActionView];
+  [v44 addArrangedSubview:contextActionView5];
 
   if ([(SUUIContextActionsViewController *)self hasAppliedSystemRecognizer])
   {
-    v53 = [(SUUIContextActionsViewController *)self contextActionView];
-    v54 = [(SUUIContextActionsViewController *)self systemProvidedGestureRecognzier];
-    [v53 beginTrackingSessionByTakingOverForSystemProvidedGestureRecognizer:v54];
+    contextActionView6 = [(SUUIContextActionsViewController *)self contextActionView];
+    systemProvidedGestureRecognzier = [(SUUIContextActionsViewController *)self systemProvidedGestureRecognzier];
+    [contextActionView6 beginTrackingSessionByTakingOverForSystemProvidedGestureRecognizer:systemProvidedGestureRecognzier];
   }
 
   if (v26)
   {
-    v55 = [(SUUIContextActionsViewController *)self stackView];
-    [v55 setSpacing:8.0];
+    stackView5 = [(SUUIContextActionsViewController *)self stackView];
+    [stackView5 setSpacing:8.0];
 
-    v56 = [(SUUIContextActionsViewController *)self stackView];
-    [v56 addArrangedSubview:v26];
+    stackView6 = [(SUUIContextActionsViewController *)self stackView];
+    [stackView6 addArrangedSubview:v26];
   }
 
-  if ((v46 | [(SUUIContextActionsViewController *)self isOrbPresentation]) == 1)
+  if ((_isInPopoverPresentation | [(SUUIContextActionsViewController *)self isOrbPresentation]) == 1)
   {
-    v57 = [(SUUIContextActionsViewController *)self stackView];
-    v58 = [v57 centerYAnchor];
-    v59 = [(SUUIContextActionsViewController *)self view];
-    v60 = [v59 centerYAnchor];
-    v153 = [v58 constraintEqualToAnchor:v60];
-  }
-
-  else
-  {
-    v61 = [(SUUIContextActionsViewController *)self view];
-    v62 = [v61 layoutMarginsGuide];
-    v57 = [v62 bottomAnchor];
-
-    v58 = [(SUUIContextActionsViewController *)self stackView];
-    v59 = [v58 bottomAnchor];
-    v153 = [v59 constraintEqualToAnchor:v57 constant:-10.0];
-  }
-
-  v63 = [(SUUIContextActionsViewController *)self view];
-  v64 = v63;
-  if (v46)
-  {
-    v65 = [v63 leadingAnchor];
-
-    v66 = [(SUUIContextActionsViewController *)self view];
-    v67 = [v66 trailingAnchor];
+    stackView7 = [(SUUIContextActionsViewController *)self stackView];
+    centerYAnchor = [stackView7 centerYAnchor];
+    view = [(SUUIContextActionsViewController *)self view];
+    centerYAnchor2 = [view centerYAnchor];
+    v153 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   }
 
   else
   {
-    v68 = [v63 layoutMarginsGuide];
-    v65 = [v68 leadingAnchor];
+    view2 = [(SUUIContextActionsViewController *)self view];
+    layoutMarginsGuide = [view2 layoutMarginsGuide];
+    stackView7 = [layoutMarginsGuide bottomAnchor];
 
-    v66 = [(SUUIContextActionsViewController *)self view];
-    v69 = [v66 layoutMarginsGuide];
-    v67 = [v69 trailingAnchor];
+    centerYAnchor = [(SUUIContextActionsViewController *)self stackView];
+    view = [centerYAnchor bottomAnchor];
+    v153 = [view constraintEqualToAnchor:stackView7 constant:-10.0];
+  }
+
+  view3 = [(SUUIContextActionsViewController *)self view];
+  v64 = view3;
+  if (_isInPopoverPresentation)
+  {
+    leadingAnchor = [view3 leadingAnchor];
+
+    view4 = [(SUUIContextActionsViewController *)self view];
+    trailingAnchor = [view4 trailingAnchor];
+  }
+
+  else
+  {
+    layoutMarginsGuide2 = [view3 layoutMarginsGuide];
+    leadingAnchor = [layoutMarginsGuide2 leadingAnchor];
+
+    view4 = [(SUUIContextActionsViewController *)self view];
+    layoutMarginsGuide3 = [view4 layoutMarginsGuide];
+    trailingAnchor = [layoutMarginsGuide3 trailingAnchor];
   }
 
   v143 = v26;
   v146 = v19;
 
-  v70 = [(SUUIContextActionsViewController *)self stackView];
-  v71 = [v70 leadingAnchor];
-  v141 = v65;
-  v72 = [v71 constraintEqualToAnchor:v65];
+  stackView8 = [(SUUIContextActionsViewController *)self stackView];
+  leadingAnchor2 = [stackView8 leadingAnchor];
+  v141 = leadingAnchor;
+  v72 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor];
 
-  v73 = [(SUUIContextActionsViewController *)self stackView];
-  v74 = [v73 trailingAnchor];
-  v140 = v67;
-  v75 = [v74 constraintEqualToAnchor:v67];
+  stackView9 = [(SUUIContextActionsViewController *)self stackView];
+  trailingAnchor2 = [stackView9 trailingAnchor];
+  v140 = trailingAnchor;
+  v75 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor];
 
-  v142 = v46;
+  v142 = _isInPopoverPresentation;
   v148 = v75;
   v149 = v72;
   v150 = v44;
-  if ((v46 & 1) == 0)
+  if ((_isInPopoverPresentation & 1) == 0)
   {
-    v76 = [(SUUIContextActionsViewController *)self view];
-    [v76 layoutMargins];
+    view5 = [(SUUIContextActionsViewController *)self view];
+    [view5 layoutMargins];
     v78 = v77;
-    v79 = [(SUUIContextActionsViewController *)self view];
-    [v79 layoutMargins];
+    view6 = [(SUUIContextActionsViewController *)self view];
+    [view6 layoutMargins];
     v81 = -(v78 + v80);
 
-    v82 = [(SUUIContextActionsViewController *)self stackView];
-    v83 = [v82 widthAnchor];
-    v84 = [(SUUIContextActionsViewController *)self view];
-    v85 = [v84 heightAnchor];
-    v86 = [v83 constraintEqualToAnchor:v85 constant:v81];
+    stackView10 = [(SUUIContextActionsViewController *)self stackView];
+    widthAnchor = [stackView10 widthAnchor];
+    view7 = [(SUUIContextActionsViewController *)self view];
+    heightAnchor2 = [view7 heightAnchor];
+    v86 = [widthAnchor constraintEqualToAnchor:heightAnchor2 constant:v81];
 
     LODWORD(v87) = 1132068864;
     v88 = v86;
     v151 = v86;
     [v86 setPriority:v87];
-    v89 = [(SUUIContextActionsViewController *)self stackView];
-    v90 = [v89 topAnchor];
-    v91 = [(SUUIContextActionsViewController *)self view];
-    v92 = [v91 topAnchor];
-    v93 = [v90 constraintGreaterThanOrEqualToAnchor:v92 constant:70.0];
+    stackView11 = [(SUUIContextActionsViewController *)self stackView];
+    topAnchor = [stackView11 topAnchor];
+    view8 = [(SUUIContextActionsViewController *)self view];
+    topAnchor2 = [view8 topAnchor];
+    v93 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:70.0];
 
     LODWORD(v94) = 1148829696;
     [v93 setPriority:v94];
-    v131 = [(SUUIContextActionsViewController *)self constraints];
+    constraints2 = [(SUUIContextActionsViewController *)self constraints];
     v159[0] = v93;
     v159[1] = v88;
-    v137 = [(SUUIContextActionsViewController *)self stackView];
-    v133 = [v137 widthAnchor];
-    v135 = [(SUUIContextActionsViewController *)self view];
-    v95 = [v135 heightAnchor];
-    v96 = [v133 constraintLessThanOrEqualToAnchor:v95 constant:v81];
+    stackView12 = [(SUUIContextActionsViewController *)self stackView];
+    widthAnchor2 = [stackView12 widthAnchor];
+    view9 = [(SUUIContextActionsViewController *)self view];
+    heightAnchor3 = [view9 heightAnchor];
+    v96 = [widthAnchor2 constraintLessThanOrEqualToAnchor:heightAnchor3 constant:v81];
     v159[2] = v96;
-    v97 = [(SUUIContextActionsViewController *)self stackView];
-    v98 = [v97 centerXAnchor];
-    v99 = [(SUUIContextActionsViewController *)self view];
-    v100 = [v99 centerXAnchor];
-    v101 = [v98 constraintEqualToAnchor:v100];
+    stackView13 = [(SUUIContextActionsViewController *)self stackView];
+    centerXAnchor = [stackView13 centerXAnchor];
+    view10 = [(SUUIContextActionsViewController *)self view];
+    centerXAnchor2 = [view10 centerXAnchor];
+    v101 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v159[3] = v101;
     v102 = [MEMORY[0x277CBEA60] arrayWithObjects:v159 count:4];
-    [v131 addObjectsFromArray:v102];
+    [constraints2 addObjectsFromArray:v102];
 
     v75 = v148;
     v72 = v149;
@@ -540,53 +540,53 @@ LABEL_12:
     [v149 setPriority:v103];
     LODWORD(v104) = 1144750080;
     [v148 setPriority:v104];
-    v105 = [(SUUIContextActionsViewController *)self backgroundView];
-    [v105 setHidden:0];
+    backgroundView = [(SUUIContextActionsViewController *)self backgroundView];
+    [backgroundView setHidden:0];
   }
 
-  v152 = [(SUUIContextActionsViewController *)self constraints];
+  constraints3 = [(SUUIContextActionsViewController *)self constraints];
   v158[0] = v153;
   v158[1] = v72;
   v158[2] = v75;
-  v139 = [(SUUIContextActionsViewController *)self stackView];
-  v136 = [v139 bottomAnchor];
-  v138 = [(SUUIContextActionsViewController *)self view];
-  v134 = [v138 bottomAnchor];
-  v132 = [v136 constraintLessThanOrEqualToAnchor:v134];
+  stackView14 = [(SUUIContextActionsViewController *)self stackView];
+  bottomAnchor = [stackView14 bottomAnchor];
+  view11 = [(SUUIContextActionsViewController *)self view];
+  bottomAnchor2 = [view11 bottomAnchor];
+  v132 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v158[3] = v132;
-  v130 = [(SUUIContextActionsViewController *)self backgroundView];
-  v129 = [v130 centerYAnchor];
-  v128 = [v44 centerYAnchor];
-  v127 = [v129 constraintEqualToAnchor:v128];
+  backgroundView2 = [(SUUIContextActionsViewController *)self backgroundView];
+  centerYAnchor3 = [backgroundView2 centerYAnchor];
+  centerYAnchor4 = [v44 centerYAnchor];
+  v127 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v158[4] = v127;
-  v126 = [(SUUIContextActionsViewController *)self backgroundView];
-  v125 = [v126 centerXAnchor];
-  v124 = [v44 centerXAnchor];
-  v123 = [v125 constraintEqualToAnchor:v124];
+  backgroundView3 = [(SUUIContextActionsViewController *)self backgroundView];
+  centerXAnchor3 = [backgroundView3 centerXAnchor];
+  centerXAnchor4 = [v44 centerXAnchor];
+  v123 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v158[5] = v123;
-  v106 = [(SUUIContextActionsViewController *)self backgroundView];
-  v107 = [v106 widthAnchor];
-  v108 = [v44 widthAnchor];
-  v109 = [v107 constraintEqualToAnchor:v108];
+  backgroundView4 = [(SUUIContextActionsViewController *)self backgroundView];
+  widthAnchor3 = [backgroundView4 widthAnchor];
+  widthAnchor4 = [v44 widthAnchor];
+  v109 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
   v158[6] = v109;
-  v110 = [(SUUIContextActionsViewController *)self backgroundView];
-  v111 = [v110 heightAnchor];
-  v112 = [v44 heightAnchor];
-  v113 = [v111 constraintEqualToAnchor:v112];
+  backgroundView5 = [(SUUIContextActionsViewController *)self backgroundView];
+  heightAnchor4 = [backgroundView5 heightAnchor];
+  heightAnchor5 = [v44 heightAnchor];
+  v113 = [heightAnchor4 constraintEqualToAnchor:heightAnchor5];
   v158[7] = v113;
   v114 = [MEMORY[0x277CBEA60] arrayWithObjects:v158 count:8];
-  [v152 addObjectsFromArray:v114];
+  [constraints3 addObjectsFromArray:v114];
 
   v115 = MEMORY[0x277CCAAD0];
-  v116 = [(SUUIContextActionsViewController *)self constraints];
-  [v115 activateConstraints:v116];
+  constraints4 = [(SUUIContextActionsViewController *)self constraints];
+  [v115 activateConstraints:constraints4];
 
   if (v142)
   {
-    v117 = [(SUUIContextActionsViewController *)self stackView];
-    v118 = [(SUUIContextActionsViewController *)self view];
-    [v118 bounds];
-    [v117 systemLayoutSizeFittingSize:{v119, v120}];
+    stackView15 = [(SUUIContextActionsViewController *)self stackView];
+    view12 = [(SUUIContextActionsViewController *)self view];
+    [view12 bounds];
+    [stackView15 systemLayoutSizeFittingSize:{v119, v120}];
     v122 = v121;
 
     [(SUUIContextActionsViewController *)self setPreferredContentSize:347.0, v122];
@@ -617,32 +617,32 @@ id __61__SUUIContextActionsViewController__reloadViewsConfiguration__block_invok
   return v11;
 }
 
-- (void)interfaceAction:(id)a3 invokeActionHandler:(id)a4 completion:(id)a5
+- (void)interfaceAction:(id)action invokeActionHandler:(id)handler completion:(id)completion
 {
-  v8 = a5;
-  if (a4)
+  completionCopy = completion;
+  if (handler)
   {
     v11 = 0;
-    (*(a4 + 2))(a4, a3, &v11);
+    (*(handler + 2))(handler, action, &v11);
     if (v11 == 1)
     {
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __83__SUUIContextActionsViewController_interfaceAction_invokeActionHandler_completion___block_invoke;
       v9[3] = &unk_2798F8B98;
-      v10 = v8;
+      v10 = completionCopy;
       [(SUUIContextActionsViewController *)self dismissViewControllerAnimated:1 completion:v9];
     }
 
-    else if (v8)
+    else if (completionCopy)
     {
-      v8[2](v8);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    [(SUUIContextActionsViewController *)self dismissViewControllerAnimated:1 completion:v8];
+    [(SUUIContextActionsViewController *)self dismissViewControllerAnimated:1 completion:completionCopy];
   }
 }
 
@@ -657,43 +657,43 @@ uint64_t __83__SUUIContextActionsViewController_interfaceAction_invokeActionHand
   return result;
 }
 
-- (id)_transitionPresentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (id)_transitionPresentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUUIContextActionsViewController *)self transitionPresentationController];
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  transitionPresentationController = [(SUUIContextActionsViewController *)self transitionPresentationController];
 
-  if (!v8)
+  if (!transitionPresentationController)
   {
-    v9 = [[SUUIContextActionsPresentationController alloc] initWithPresentedViewController:v6 presentingViewController:v7];
+    v9 = [[SUUIContextActionsPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
     [(SUUIContextActionsViewController *)self setTransitionPresentationController:v9];
   }
 
-  v10 = [(SUUIContextActionsViewController *)self transitionPresentationController];
+  transitionPresentationController2 = [(SUUIContextActionsViewController *)self transitionPresentationController];
 
-  return v10;
+  return transitionPresentationController2;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   if ([(SUUIContextActionsViewController *)self isOrbPresentation])
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   v5 = MEMORY[0x277D75D18];
-  [(SUUIContextActionsViewController *)self transitionDuration:v4];
+  [(SUUIContextActionsViewController *)self transitionDuration:transitionCopy];
   v7 = v6;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -704,8 +704,8 @@ uint64_t __83__SUUIContextActionsViewController_interfaceAction_invokeActionHand
   v9[1] = 3221225472;
   v9[2] = __54__SUUIContextActionsViewController_animateTransition___block_invoke_2;
   v9[3] = &unk_2798F5D30;
-  v10 = v4;
-  v8 = v4;
+  v10 = transitionCopy;
+  v8 = transitionCopy;
   [v5 animateWithDuration:0 delay:v11 usingSpringWithDamping:v9 initialSpringVelocity:v7 options:0.0 animations:1.0 completion:0.0];
 }
 

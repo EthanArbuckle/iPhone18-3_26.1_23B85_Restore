@@ -1,22 +1,22 @@
 @interface NLXMetadataGenerator
-+ (id)createEventMetadataWithNlId:(id)a3 andWithTrpId:(id)a4 andWithRequestId:(id)a5 andWithResultCandidateId:(id)a6 andWithRequester:(int)a7;
++ (id)createEventMetadataWithNlId:(id)id andWithTrpId:(id)trpId andWithRequestId:(id)requestId andWithResultCandidateId:(id)candidateId andWithRequester:(int)requester;
 @end
 
 @implementation NLXMetadataGenerator
 
-+ (id)createEventMetadataWithNlId:(id)a3 andWithTrpId:(id)a4 andWithRequestId:(id)a5 andWithResultCandidateId:(id)a6 andWithRequester:(int)a7
++ (id)createEventMetadataWithNlId:(id)id andWithTrpId:(id)trpId andWithRequestId:(id)requestId andWithResultCandidateId:(id)candidateId andWithRequester:(int)requester
 {
-  v25 = a7;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  requesterCopy = requester;
+  candidateIdCopy = candidateId;
+  requestIdCopy = requestId;
+  trpIdCopy = trpId;
+  idCopy = id;
   v14 = os_log_create("com.apple.siri.marrs", "General");
-  v15 = [MEMORY[0x277D5DEE8] convertFromUUID:v11];
+  v15 = [MEMORY[0x277D5DEE8] convertFromUUID:requestIdCopy];
 
-  LODWORD(v11) = AFDeviceSupportsSAE();
+  LODWORD(requestIdCopy) = AFDeviceSupportsSAE();
   v16 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (v11)
+  if (requestIdCopy)
   {
     if (v16)
     {
@@ -42,7 +42,7 @@
 
   v19 = MEMORY[0x277D5DEF8];
   v20 = v15;
-  v21 = [v19 createNLXClientEventMetadataWithNlId:v13 andWithTrpId:v12 andWithRequestId:v17 andWithSubRequestId:v18 andWithResultCandidateId:v10 andWithRequester:&v25];
+  v21 = [v19 createNLXClientEventMetadataWithNlId:idCopy andWithTrpId:trpIdCopy andWithRequestId:v17 andWithSubRequestId:v18 andWithResultCandidateId:candidateIdCopy andWithRequester:&requesterCopy];
 
   return v21;
 }

@@ -1,217 +1,217 @@
 @interface MOContext
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isWithinDistanceFromLocation:(id)a3 maxDistance:(double)a4;
-- (MOContext)initWithCoder:(id)a3;
-- (MOContext)initWithContextIdentifier:(id)a3 contextCreationTimestamp:(id)a4;
-- (MOContext)initWithContextMO:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isWithinDistanceFromLocation:(id)location maxDistance:(double)distance;
+- (MOContext)initWithCoder:(id)coder;
+- (MOContext)initWithContextIdentifier:(id)identifier contextCreationTimestamp:(id)timestamp;
+- (MOContext)initWithContextMO:(id)o;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOContext
 
-- (MOContext)initWithContextIdentifier:(id)a3 contextCreationTimestamp:(id)a4
+- (MOContext)initWithContextIdentifier:(id)identifier contextCreationTimestamp:(id)timestamp
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  timestampCopy = timestamp;
   v12.receiver = self;
   v12.super_class = MOContext;
   v9 = [(MOContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contextIdentifier, a3);
-    objc_storeStrong(&v10->_contextCreationTimestamp, a4);
+    objc_storeStrong(&v9->_contextIdentifier, identifier);
+    objc_storeStrong(&v10->_contextCreationTimestamp, timestamp);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contextIdentifier = self->_contextIdentifier;
-  v5 = a3;
-  [v5 encodeObject:contextIdentifier forKey:@"contextIndentifier"];
-  [v5 encodeObject:self->_contextCreationTimestamp forKey:@"contextCreationTimestamp"];
-  [v5 encodeObject:self->_contextStrings forKey:@"contextStrings"];
-  [v5 encodeObject:self->_associatedLocations forKey:@"associatedLocations"];
-  [v5 encodeObject:self->_associatedContacts forKey:@"associatedContacts"];
-  [v5 encodeObject:self->_associatedActivities forKey:@"associatedActivities"];
-  [v5 encodeObject:self->_associatedPhotos forKey:@"associatedPhotos"];
-  [v5 encodeObject:self->_associatedTime forKey:@"associatedTime"];
-  [v5 encodeObject:self->_associatedMusic forKey:@"associatedMusic"];
-  [v5 encodeInteger:self->_associatedPatternType forKey:@"associatedPatternType"];
-  [v5 encodeObject:self->_associatedRequestID forKey:@"associatedRequestID"];
-  [v5 encodeObject:self->_associatedBundleID forKey:@"associatedBundleID"];
-  [v5 encodeObject:self->_associatedSuggestionID forKey:@"associatedSuggestionID"];
-  [v5 encodeInteger:self->_actionType forKey:@"actionType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contextIdentifier forKey:@"contextIndentifier"];
+  [coderCopy encodeObject:self->_contextCreationTimestamp forKey:@"contextCreationTimestamp"];
+  [coderCopy encodeObject:self->_contextStrings forKey:@"contextStrings"];
+  [coderCopy encodeObject:self->_associatedLocations forKey:@"associatedLocations"];
+  [coderCopy encodeObject:self->_associatedContacts forKey:@"associatedContacts"];
+  [coderCopy encodeObject:self->_associatedActivities forKey:@"associatedActivities"];
+  [coderCopy encodeObject:self->_associatedPhotos forKey:@"associatedPhotos"];
+  [coderCopy encodeObject:self->_associatedTime forKey:@"associatedTime"];
+  [coderCopy encodeObject:self->_associatedMusic forKey:@"associatedMusic"];
+  [coderCopy encodeInteger:self->_associatedPatternType forKey:@"associatedPatternType"];
+  [coderCopy encodeObject:self->_associatedRequestID forKey:@"associatedRequestID"];
+  [coderCopy encodeObject:self->_associatedBundleID forKey:@"associatedBundleID"];
+  [coderCopy encodeObject:self->_associatedSuggestionID forKey:@"associatedSuggestionID"];
+  [coderCopy encodeInteger:self->_actionType forKey:@"actionType"];
 }
 
-- (MOContext)initWithCoder:(id)a3
+- (MOContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contextIndentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contextCreationTimestamp"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contextIndentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contextCreationTimestamp"];
   v7 = [(MOContext *)self initWithContextIdentifier:v5 contextCreationTimestamp:v6];
   if (v7)
   {
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v8, objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"contextStrings"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"contextStrings"];
     contextStrings = v7->_contextStrings;
     v7->_contextStrings = v10;
 
-    v7->_associatedPatternType = [v4 decodeIntegerForKey:@"associatedPatternType"];
+    v7->_associatedPatternType = [coderCopy decodeIntegerForKey:@"associatedPatternType"];
     v12 = objc_opt_class();
     v13 = [NSSet setWithObjects:v12, objc_opt_class(), 0];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"associatedLocations"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"associatedLocations"];
     associatedLocations = v7->_associatedLocations;
     v7->_associatedLocations = v14;
 
     v16 = objc_opt_class();
     v17 = [NSSet setWithObjects:v16, objc_opt_class(), 0];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"associatedContacts"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"associatedContacts"];
     associatedContacts = v7->_associatedContacts;
     v7->_associatedContacts = v18;
 
     v20 = objc_opt_class();
     v21 = [NSSet setWithObjects:v20, objc_opt_class(), 0];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"associatedActivities"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"associatedActivities"];
     associatedActivities = v7->_associatedActivities;
     v7->_associatedActivities = v22;
 
     v24 = objc_opt_class();
     v25 = [NSSet setWithObjects:v24, objc_opt_class(), 0];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"associatedPhotos"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"associatedPhotos"];
     associatedPhotos = v7->_associatedPhotos;
     v7->_associatedPhotos = v26;
 
     v28 = objc_opt_class();
     v29 = [NSSet setWithObjects:v28, objc_opt_class(), 0];
-    v30 = [v4 decodeObjectOfClasses:v29 forKey:@"associatedTime"];
+    v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"associatedTime"];
     associatedTime = v7->_associatedTime;
     v7->_associatedTime = v30;
 
     v32 = objc_opt_class();
     v33 = [NSSet setWithObjects:v32, objc_opt_class(), 0];
-    v34 = [v4 decodeObjectOfClasses:v33 forKey:@"associatedMusic"];
+    v34 = [coderCopy decodeObjectOfClasses:v33 forKey:@"associatedMusic"];
     associatedMusic = v7->_associatedMusic;
     v7->_associatedMusic = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedRequestID"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedRequestID"];
     associatedRequestID = v7->_associatedRequestID;
     v7->_associatedRequestID = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedBundleID"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedBundleID"];
     associatedBundleID = v7->_associatedBundleID;
     v7->_associatedBundleID = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedSuggestionID"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedSuggestionID"];
     associatedSuggestionID = v7->_associatedSuggestionID;
     v7->_associatedSuggestionID = v40;
 
-    v7->_actionType = [v4 decodeIntegerForKey:@"actionType"];
+    v7->_actionType = [coderCopy decodeIntegerForKey:@"actionType"];
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()];
   contextIdentifier = self->_contextIdentifier;
-  v7 = [v4 contextIdentifier];
-  LOBYTE(contextIdentifier) = [(NSUUID *)contextIdentifier isEqual:v7];
+  contextIdentifier = [equalCopy contextIdentifier];
+  LOBYTE(contextIdentifier) = [(NSUUID *)contextIdentifier isEqual:contextIdentifier];
 
   contextCreationTimestamp = self->_contextCreationTimestamp;
-  v9 = [v4 contextCreationTimestamp];
+  contextCreationTimestamp = [equalCopy contextCreationTimestamp];
 
-  LOBYTE(contextCreationTimestamp) = [(NSDate *)contextCreationTimestamp isEqual:v9];
+  LOBYTE(contextCreationTimestamp) = [(NSDate *)contextCreationTimestamp isEqual:contextCreationTimestamp];
   return v5 & contextIdentifier & contextCreationTimestamp;
 }
 
 - (id)description
 {
-  v3 = [(MOContext *)self contextIdentifier];
-  v4 = [(MOContext *)self contextCreationTimestamp];
-  v5 = [(MOContext *)self associatedRequestID];
-  v6 = [(MOContext *)self associatedBundleID];
-  v7 = [(MOContext *)self associatedSuggestionID];
-  v8 = [(MOContext *)self contextStrings];
-  v9 = [NSString stringWithFormat:@"contextIdentifier, %@, contextCreationTimestamp, %@, associated request ID, %@, associated bundle ID, %@, associated suggestion ID, %@, contextStrings, %@, actionType, %lu ", v3, v4, v5, v6, v7, v8, [(MOContext *)self actionType]];
+  contextIdentifier = [(MOContext *)self contextIdentifier];
+  contextCreationTimestamp = [(MOContext *)self contextCreationTimestamp];
+  associatedRequestID = [(MOContext *)self associatedRequestID];
+  associatedBundleID = [(MOContext *)self associatedBundleID];
+  associatedSuggestionID = [(MOContext *)self associatedSuggestionID];
+  contextStrings = [(MOContext *)self contextStrings];
+  v9 = [NSString stringWithFormat:@"contextIdentifier, %@, contextCreationTimestamp, %@, associated request ID, %@, associated bundle ID, %@, associated suggestion ID, %@, contextStrings, %@, actionType, %lu ", contextIdentifier, contextCreationTimestamp, associatedRequestID, associatedBundleID, associatedSuggestionID, contextStrings, [(MOContext *)self actionType]];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MOContext alloc];
-  v5 = [(MOContext *)self contextIdentifier];
-  v6 = [(MOContext *)self contextCreationTimestamp];
-  v7 = [(MOContext *)v4 initWithContextIdentifier:v5 contextCreationTimestamp:v6];
+  contextIdentifier = [(MOContext *)self contextIdentifier];
+  contextCreationTimestamp = [(MOContext *)self contextCreationTimestamp];
+  v7 = [(MOContext *)v4 initWithContextIdentifier:contextIdentifier contextCreationTimestamp:contextCreationTimestamp];
 
-  v8 = [(MOContext *)self contextStrings];
-  [(MOContext *)v7 setContextStrings:v8];
+  contextStrings = [(MOContext *)self contextStrings];
+  [(MOContext *)v7 setContextStrings:contextStrings];
 
   [(MOContext *)v7 setAssociatedPatternType:[(MOContext *)self associatedPatternType]];
-  v9 = [(MOContext *)self associatedLocations];
-  [(MOContext *)v7 setAssociatedLocations:v9];
+  associatedLocations = [(MOContext *)self associatedLocations];
+  [(MOContext *)v7 setAssociatedLocations:associatedLocations];
 
-  v10 = [(MOContext *)self associatedContacts];
-  [(MOContext *)v7 setAssociatedContacts:v10];
+  associatedContacts = [(MOContext *)self associatedContacts];
+  [(MOContext *)v7 setAssociatedContacts:associatedContacts];
 
-  v11 = [(MOContext *)self associatedActivities];
-  [(MOContext *)v7 setAssociatedActivities:v11];
+  associatedActivities = [(MOContext *)self associatedActivities];
+  [(MOContext *)v7 setAssociatedActivities:associatedActivities];
 
-  v12 = [(MOContext *)self associatedPhotos];
-  [(MOContext *)v7 setAssociatedPhotos:v12];
+  associatedPhotos = [(MOContext *)self associatedPhotos];
+  [(MOContext *)v7 setAssociatedPhotos:associatedPhotos];
 
-  v13 = [(MOContext *)self associatedTime];
-  [(MOContext *)v7 setAssociatedTime:v13];
+  associatedTime = [(MOContext *)self associatedTime];
+  [(MOContext *)v7 setAssociatedTime:associatedTime];
 
-  v14 = [(MOContext *)self associatedMusic];
-  [(MOContext *)v7 setAssociatedMusic:v14];
+  associatedMusic = [(MOContext *)self associatedMusic];
+  [(MOContext *)v7 setAssociatedMusic:associatedMusic];
 
-  v15 = [(MOContext *)self associatedRequestID];
-  [(MOContext *)v7 setAssociatedRequestID:v15];
+  associatedRequestID = [(MOContext *)self associatedRequestID];
+  [(MOContext *)v7 setAssociatedRequestID:associatedRequestID];
 
-  v16 = [(MOContext *)self associatedBundleID];
-  [(MOContext *)v7 setAssociatedBundleID:v16];
+  associatedBundleID = [(MOContext *)self associatedBundleID];
+  [(MOContext *)v7 setAssociatedBundleID:associatedBundleID];
 
-  v17 = [(MOContext *)self associatedSuggestionID];
-  [(MOContext *)v7 setAssociatedSuggestionID:v17];
+  associatedSuggestionID = [(MOContext *)self associatedSuggestionID];
+  [(MOContext *)v7 setAssociatedSuggestionID:associatedSuggestionID];
 
   [(MOContext *)v7 setActionType:[(MOContext *)self actionType]];
   return v7;
 }
 
-- (BOOL)isWithinDistanceFromLocation:(id)a3 maxDistance:(double)a4
+- (BOOL)isWithinDistanceFromLocation:(id)location maxDistance:(double)distance
 {
-  v6 = a3;
-  v7 = [(MOContext *)self associatedLocations];
-  v8 = [v7 objectAtIndexedSubscript:0];
-  v9 = [v8 location];
+  locationCopy = location;
+  associatedLocations = [(MOContext *)self associatedLocations];
+  v8 = [associatedLocations objectAtIndexedSubscript:0];
+  location = [v8 location];
 
-  [v6 distanceFromLocation:v9];
+  [locationCopy distanceFromLocation:location];
   v11 = v10;
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [(MOContext *)self associatedLocations];
-    v14 = [v13 objectAtIndexedSubscript:0];
-    v15 = [v14 location];
-    [v15 coordinate];
+    associatedLocations2 = [(MOContext *)self associatedLocations];
+    v14 = [associatedLocations2 objectAtIndexedSubscript:0];
+    location2 = [v14 location];
+    [location2 coordinate];
     v17 = v16;
-    v18 = [(MOContext *)self associatedLocations];
-    v19 = [v18 objectAtIndexedSubscript:0];
-    v20 = [v19 location];
-    [v20 coordinate];
+    associatedLocations3 = [(MOContext *)self associatedLocations];
+    v19 = [associatedLocations3 objectAtIndexedSubscript:0];
+    location3 = [v19 location];
+    [location3 coordinate];
     v22 = v21;
-    [v6 coordinate];
+    [locationCopy coordinate];
     v24 = v23;
-    [v6 coordinate];
+    [locationCopy coordinate];
     v27 = 134219008;
     v28 = v17;
     v29 = 2048;
@@ -225,32 +225,32 @@
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "contextLocation,(%f,%f),targetLocation,(%f,%f),distance,%f", &v27, 0x34u);
   }
 
-  return v11 <= a4;
+  return v11 <= distance;
 }
 
-- (MOContext)initWithContextMO:(id)a3
+- (MOContext)initWithContextMO:(id)o
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  oCopy = o;
+  v5 = oCopy;
+  if (oCopy)
   {
-    v6 = [v4 contextIdentifier];
-    v7 = [v5 contextCreationTimestamp];
-    self = [(MOContext *)self initWithContextIdentifier:v6 contextCreationTimestamp:v7];
+    contextIdentifier = [oCopy contextIdentifier];
+    contextCreationTimestamp = [v5 contextCreationTimestamp];
+    self = [(MOContext *)self initWithContextIdentifier:contextIdentifier contextCreationTimestamp:contextCreationTimestamp];
 
     -[MOContext setAssociatedPatternType:](self, "setAssociatedPatternType:", [v5 associatedPatternType]);
     -[MOContext setActionType:](self, "setActionType:", [v5 actionType]);
-    v8 = [v5 associatedRequestID];
-    [(MOContext *)self setAssociatedRequestID:v8];
+    associatedRequestID = [v5 associatedRequestID];
+    [(MOContext *)self setAssociatedRequestID:associatedRequestID];
 
-    v9 = [v5 associatedBundleID];
-    [(MOContext *)self setAssociatedBundleID:v9];
+    associatedBundleID = [v5 associatedBundleID];
+    [(MOContext *)self setAssociatedBundleID:associatedBundleID];
 
-    v10 = [v5 associatedSuggestionID];
-    [(MOContext *)self setAssociatedSuggestionID:v10];
+    associatedSuggestionID = [v5 associatedSuggestionID];
+    [(MOContext *)self setAssociatedSuggestionID:associatedSuggestionID];
 
-    v11 = [v5 bundleContentIdentifier];
-    [(MOContext *)self setBundleContentIdentifier:v11];
+    bundleContentIdentifier = [v5 bundleContentIdentifier];
+    [(MOContext *)self setBundleContentIdentifier:bundleContentIdentifier];
 
     NSSelectorFromString(@"contextStrings");
     if (objc_opt_respondsToSelector())
@@ -260,8 +260,8 @@
       v67 = 0u;
       v68 = 0u;
       v69 = 0u;
-      v13 = [v5 contextStrings];
-      v14 = [v13 countByEnumeratingWithState:&v66 objects:v76 count:16];
+      contextStrings = [v5 contextStrings];
+      v14 = [contextStrings countByEnumeratingWithState:&v66 objects:v76 count:16];
       if (v14)
       {
         v15 = v14;
@@ -272,14 +272,14 @@
           {
             if (*v67 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(contextStrings);
             }
 
             v18 = [[MOContextString alloc] initWithContextStringMO:*(*(&v66 + 1) + 8 * i)];
             [v12 addObject:v18];
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v66 objects:v76 count:16];
+          v15 = [contextStrings countByEnumeratingWithState:&v66 objects:v76 count:16];
         }
 
         while (v15);
@@ -292,7 +292,7 @@
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v75 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "fetch context, %@", buf, 0xCu);
     }
 
@@ -304,8 +304,8 @@
       v63 = 0u;
       v64 = 0u;
       v65 = 0u;
-      v21 = [v5 associatedLocations];
-      v22 = [v21 countByEnumeratingWithState:&v62 objects:v73 count:16];
+      associatedLocations = [v5 associatedLocations];
+      v22 = [associatedLocations countByEnumeratingWithState:&v62 objects:v73 count:16];
       if (v22)
       {
         v23 = v22;
@@ -316,14 +316,14 @@
           {
             if (*v63 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(associatedLocations);
             }
 
             v26 = [[MOContextLocationMetaData alloc] initWithLocationMetaDataMO:*(*(&v62 + 1) + 8 * j)];
             [v20 addObject:v26];
           }
 
-          v23 = [v21 countByEnumeratingWithState:&v62 objects:v73 count:16];
+          v23 = [associatedLocations countByEnumeratingWithState:&v62 objects:v73 count:16];
         }
 
         while (v23);
@@ -340,8 +340,8 @@
       v59 = 0u;
       v60 = 0u;
       v61 = 0u;
-      v28 = [v5 associatedContacts];
-      v29 = [v28 countByEnumeratingWithState:&v58 objects:v72 count:16];
+      associatedContacts = [v5 associatedContacts];
+      v29 = [associatedContacts countByEnumeratingWithState:&v58 objects:v72 count:16];
       if (v29)
       {
         v30 = v29;
@@ -352,14 +352,14 @@
           {
             if (*v59 != v31)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(associatedContacts);
             }
 
             v33 = [[MOContextContactMetaData alloc] initWithContactMetaDataMO:*(*(&v58 + 1) + 8 * k)];
             [v27 addObject:v33];
           }
 
-          v30 = [v28 countByEnumeratingWithState:&v58 objects:v72 count:16];
+          v30 = [associatedContacts countByEnumeratingWithState:&v58 objects:v72 count:16];
         }
 
         while (v30);
@@ -376,8 +376,8 @@
       v55 = 0u;
       v56 = 0u;
       v57 = 0u;
-      v35 = [v5 associatedTime];
-      v36 = [v35 countByEnumeratingWithState:&v54 objects:v71 count:16];
+      associatedTime = [v5 associatedTime];
+      v36 = [associatedTime countByEnumeratingWithState:&v54 objects:v71 count:16];
       if (v36)
       {
         v37 = v36;
@@ -388,14 +388,14 @@
           {
             if (*v55 != v38)
             {
-              objc_enumerationMutation(v35);
+              objc_enumerationMutation(associatedTime);
             }
 
             v40 = [[MOContextTimeMetaData alloc] initWithTimeMetaDataMO:*(*(&v54 + 1) + 8 * m)];
             [v34 addObject:v40];
           }
 
-          v37 = [v35 countByEnumeratingWithState:&v54 objects:v71 count:16];
+          v37 = [associatedTime countByEnumeratingWithState:&v54 objects:v71 count:16];
         }
 
         while (v37);
@@ -412,8 +412,8 @@
       v51 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v42 = [v5 associatedMusic];
-      v43 = [v42 countByEnumeratingWithState:&v50 objects:v70 count:16];
+      associatedMusic = [v5 associatedMusic];
+      v43 = [associatedMusic countByEnumeratingWithState:&v50 objects:v70 count:16];
       if (v43)
       {
         v44 = v43;
@@ -424,14 +424,14 @@
           {
             if (*v51 != v45)
             {
-              objc_enumerationMutation(v42);
+              objc_enumerationMutation(associatedMusic);
             }
 
             v47 = [[MOContextMusicMetaData alloc] initWithMusicMetaDataMO:*(*(&v50 + 1) + 8 * n)];
             [v41 addObject:v47];
           }
 
-          v44 = [v42 countByEnumeratingWithState:&v50 objects:v70 count:16];
+          v44 = [associatedMusic countByEnumeratingWithState:&v50 objects:v70 count:16];
         }
 
         while (v44);
@@ -440,15 +440,15 @@
       [(MOContext *)self setAssociatedMusic:v41];
     }
 
-    v48 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v48 = 0;
+    selfCopy2 = 0;
   }
 
-  return v48;
+  return selfCopy2;
 }
 
 @end

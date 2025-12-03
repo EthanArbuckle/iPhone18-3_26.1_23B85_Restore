@@ -1,51 +1,51 @@
 @interface PDAbstractClassZoneOperation
-- (BOOL)_deleteDraftAnswer:(id)a3;
-- (BOOL)_deleteEntity:(Class)a3 identity:(id)a4;
-- (BOOL)_deleteStateChanges:(id)a3;
-- (BOOL)_deleteSurvey:(id)a3;
-- (BOOL)_deleteSurveyStep:(id)a3;
-- (BOOL)_deleteWithPayload:(id)a3 error:(id *)a4;
-- (BOOL)_insertOrUpdateArchivedHandout:(id)a3;
-- (BOOL)_insertOrUpdateArchivedSurveyStep:(id)a3;
-- (BOOL)_insertOrUpdateCollectionItem:(id)a3;
-- (BOOL)_insertOrUpdateEntity:(id)a3;
-- (BOOL)_insertOrUpdateSurveyAnswer:(id)a3;
-- (BOOL)_insertOrUpdateSurveyStep:(id)a3;
-- (BOOL)deleteClassWithObjectID:(id)a3 deletePersons:(BOOL)a4;
-- (BOOL)deleteCollectionItemsWithReferenceObjectID:(id)a3;
-- (BOOL)deleteHandoutWithObjectID:(id)a3 shouldDeleteDrafts:(BOOL)a4;
-- (BOOL)parseStreamedResponse:(id)a3;
-- (BOOL)processAttachment:(id)a3;
-- (BOOL)processAuthorizationStatus:(id)a3;
-- (BOOL)processCompletionStatus:(id)a3;
-- (BOOL)processPayloadFromResponse:(id)a3 error:(id *)a4;
-- (BOOL)processPayloadStatus:(id)a3 allowMixedResponse:(BOOL)a4 error:(id *)a5;
-- (BOOL)processPayloadWithinWriteTransaction:(id)a3 error:(id *)a4 stop:(BOOL *)a5;
-- (BOOL)processPayloadsFromResponse:(id)a3 error:(id *)a4;
-- (BOOL)processResponse:(id *)a3;
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4;
-- (BOOL)processStateChange:(id)a3 error:(id *)a4;
-- (BOOL)readStreamablePayload:(id)a3 reader:(id)a4 error:(id *)a5;
-- (BOOL)resolveMissingEntityWithObjectID:(id)a3;
-- (BOOL)updateCollectionItemsReferenceObjectID:(id)a3 toType:(int64_t)a4 andObjectID:(id)a5;
-- (BOOL)validateStateChangePayload:(id)a3 error:(id *)a4;
-- (id)_applyStateChangesToParentHandoutEntity:(id)a3;
-- (void)_setAuthorizationForAttachmentWithObjectID:(id)a3 shouldAuthorize:(BOOL)a4;
-- (void)logPayloadBeforeProcessing:(id)a3;
-- (void)setCompletionAndLockedStatusForStateChange:(id)a3 andStateChangePayload:(id)a4 forAttachment:(id)a5;
-- (void)setHandoutClosedStatusForStateChange:(id)a3 andStateChangePayload:(id)a4 forHandout:(id)a5;
+- (BOOL)_deleteDraftAnswer:(id)answer;
+- (BOOL)_deleteEntity:(Class)entity identity:(id)identity;
+- (BOOL)_deleteStateChanges:(id)changes;
+- (BOOL)_deleteSurvey:(id)survey;
+- (BOOL)_deleteSurveyStep:(id)step;
+- (BOOL)_deleteWithPayload:(id)payload error:(id *)error;
+- (BOOL)_insertOrUpdateArchivedHandout:(id)handout;
+- (BOOL)_insertOrUpdateArchivedSurveyStep:(id)step;
+- (BOOL)_insertOrUpdateCollectionItem:(id)item;
+- (BOOL)_insertOrUpdateEntity:(id)entity;
+- (BOOL)_insertOrUpdateSurveyAnswer:(id)answer;
+- (BOOL)_insertOrUpdateSurveyStep:(id)step;
+- (BOOL)deleteClassWithObjectID:(id)d deletePersons:(BOOL)persons;
+- (BOOL)deleteCollectionItemsWithReferenceObjectID:(id)d;
+- (BOOL)deleteHandoutWithObjectID:(id)d shouldDeleteDrafts:(BOOL)drafts;
+- (BOOL)parseStreamedResponse:(id)response;
+- (BOOL)processAttachment:(id)attachment;
+- (BOOL)processAuthorizationStatus:(id)status;
+- (BOOL)processCompletionStatus:(id)status;
+- (BOOL)processPayloadFromResponse:(id)response error:(id *)error;
+- (BOOL)processPayloadStatus:(id)status allowMixedResponse:(BOOL)response error:(id *)error;
+- (BOOL)processPayloadWithinWriteTransaction:(id)transaction error:(id *)error stop:(BOOL *)stop;
+- (BOOL)processPayloadsFromResponse:(id)response error:(id *)error;
+- (BOOL)processResponse:(id *)response;
+- (BOOL)processResponseObject:(id)object error:(id *)error;
+- (BOOL)processStateChange:(id)change error:(id *)error;
+- (BOOL)readStreamablePayload:(id)payload reader:(id)reader error:(id *)error;
+- (BOOL)resolveMissingEntityWithObjectID:(id)d;
+- (BOOL)updateCollectionItemsReferenceObjectID:(id)d toType:(int64_t)type andObjectID:(id)iD;
+- (BOOL)validateStateChangePayload:(id)payload error:(id *)error;
+- (id)_applyStateChangesToParentHandoutEntity:(id)entity;
+- (void)_setAuthorizationForAttachmentWithObjectID:(id)d shouldAuthorize:(BOOL)authorize;
+- (void)logPayloadBeforeProcessing:(id)processing;
+- (void)setCompletionAndLockedStatusForStateChange:(id)change andStateChangePayload:(id)payload forAttachment:(id)attachment;
+- (void)setHandoutClosedStatusForStateChange:(id)change andStateChangePayload:(id)payload forHandout:(id)handout;
 @end
 
 @implementation PDAbstractClassZoneOperation
 
-- (BOOL)readStreamablePayload:(id)a3 reader:(id)a4 error:(id *)a5
+- (BOOL)readStreamablePayload:(id)payload reader:(id)reader error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  payloadCopy = payload;
+  readerCopy = reader;
   [(PDAbstractClassZoneOperation *)self streamablePayloadClass];
   if (objc_opt_isKindOfClass())
   {
-    v10 = sub_100131A44(v8, v9);
+    v10 = sub_100131A44(payloadCopy, readerCopy);
   }
 
   else
@@ -61,18 +61,18 @@
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Parse Error! Cannot read streamed response payloads of type '%@'!", buf, 0xCu);
     }
 
-    [NSError cls_assignError:a5 code:300 format:@"Cannot read streamed responses containing payloads of type '%@'!", objc_opt_class()];
+    [NSError cls_assignError:error code:300 format:@"Cannot read streamed responses containing payloads of type '%@'!", objc_opt_class()];
     v10 = 0;
   }
 
   return v10;
 }
 
-- (BOOL)parseStreamedResponse:(id)a3
+- (BOOL)parseStreamedResponse:(id)response
 {
   v6.receiver = self;
   v6.super_class = PDAbstractClassZoneOperation;
-  v4 = [(PDEndpointRequestOperation *)&v6 parseStreamedResponse:a3];
+  v4 = [(PDEndpointRequestOperation *)&v6 parseStreamedResponse:response];
   if (BYTE2(self->super._responseStatusError) == 1)
   {
     v4 &= ![(PDAbstractClassZoneOperation *)self stopProcessingIfResponseStatusPayloadFailed];
@@ -81,9 +81,9 @@
   return v4;
 }
 
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4
+- (BOOL)processResponseObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   if ([(PDOperation *)self isAborted])
   {
     v7 = 0;
@@ -92,113 +92,113 @@
   else
   {
     CLSInitLog();
-    v8 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    logSubsystem = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_INFO))
     {
       v9 = objc_opt_class();
       v10 = v9;
-      v11 = [(PDURLRequestOperation *)self operationID];
+      operationID = [(PDURLRequestOperation *)self operationID];
       v16 = 138543618;
       v17 = v9;
       v18 = 2114;
-      v19 = v11;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ processing response;", &v16, 0x16u);
+      v19 = operationID;
+      _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ processing response;", &v16, 0x16u);
     }
 
-    v12 = [v6 payloads];
-    v13 = [v12 count];
-    v14 = [(PDURLRequestOperation *)self stats];
-    if (v14)
+    payloads = [objectCopy payloads];
+    v13 = [payloads count];
+    stats = [(PDURLRequestOperation *)self stats];
+    if (stats)
     {
-      v14[15] = v13;
+      stats[15] = v13;
     }
 
-    v7 = [(PDAbstractClassZoneOperation *)self processPayloadsFromResponse:v12 error:a4];
+    v7 = [(PDAbstractClassZoneOperation *)self processPayloadsFromResponse:payloads error:error];
   }
 
   return v7;
 }
 
-- (BOOL)processPayloadWithinWriteTransaction:(id)a3 error:(id *)a4 stop:(BOOL *)a5
+- (BOOL)processPayloadWithinWriteTransaction:(id)transaction error:(id *)error stop:(BOOL *)stop
 {
-  v8 = a3;
+  transactionCopy = transaction;
   if ([(PDOperation *)self isAborted])
   {
     LOBYTE(v9) = 0;
-    *a5 = 1;
+    *stop = 1;
   }
 
   else
   {
-    v10 = v8;
-    v9 = [(PDAbstractClassZoneOperation *)self processPayloadFromResponse:v10 error:a4];
-    v11 = [(PDURLRequestOperation *)self stats];
-    sub_10009EB5C(v11, [v10 type], v9);
+    v10 = transactionCopy;
+    v9 = [(PDAbstractClassZoneOperation *)self processPayloadFromResponse:v10 error:error];
+    stats = [(PDURLRequestOperation *)self stats];
+    sub_10009EB5C(stats, [v10 type], v9);
 
     if ((v9 & 1) == 0)
     {
       CLSInitLog();
-      v12 = [(PDOperation *)self logSubsystem];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      logSubsystem = [(PDOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_ERROR))
       {
         v14 = objc_opt_class();
         v15 = v14;
-        v16 = [(PDURLRequestOperation *)self operationID];
-        v17 = *a4;
+        operationID = [(PDURLRequestOperation *)self operationID];
+        v17 = *error;
         v18 = 138543874;
         v19 = v14;
         v20 = 2114;
-        v21 = v16;
+        v21 = operationID;
         v22 = 2114;
         v23 = v17;
-        _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ failed to process payload: %{public}@", &v18, 0x20u);
+        _os_log_error_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ failed to process payload: %{public}@", &v18, 0x20u);
       }
     }
 
     if (BYTE2(self->super._responseStatusError) == 1 && [(PDAbstractClassZoneOperation *)self stopProcessingIfResponseStatusPayloadFailed])
     {
-      *a5 = 1;
-      if (a4)
+      *stop = 1;
+      if (error)
       {
-        [(PDEndpointRequestOperation *)self setResponseStatusError:*a4];
+        [(PDEndpointRequestOperation *)self setResponseStatusError:*error];
       }
 
       LOBYTE(v9) = 0;
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
   }
 
   return v9;
 }
 
-- (BOOL)processResponse:(id *)a3
+- (BOOL)processResponse:(id *)response
 {
   v11.receiver = self;
   v11.super_class = PDAbstractClassZoneOperation;
   v5 = [(PDEndpointRequestOperation *)&v11 processResponse:?];
   if (BYTE2(self->super._responseStatusError) == 1 && [(PDAbstractClassZoneOperation *)self stopProcessingIfResponseStatusPayloadFailed])
   {
-    if (a3)
+    if (response)
     {
-      *a3 = [(PDEndpointRequestOperation *)self responseStatusError];
+      *response = [(PDEndpointRequestOperation *)self responseStatusError];
     }
 
     CLSInitLog();
-    v6 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    logSubsystem = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
       v8 = v7;
-      v9 = [(PDURLRequestOperation *)self operationID];
+      operationID = [(PDURLRequestOperation *)self operationID];
       *buf = 138543618;
       v13 = v7;
       v14 = 2114;
-      v15 = v9;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ response processing terminated by failed status.", buf, 0x16u);
+      v15 = operationID;
+      _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ response processing terminated by failed status.", buf, 0x16u);
     }
 
     return 0;
@@ -207,9 +207,9 @@
   return v5;
 }
 
-- (BOOL)processPayloadsFromResponse:(id)a3 error:(id *)a4
+- (BOOL)processPayloadsFromResponse:(id)response error:(id *)error
 {
-  v6 = a3;
+  responseCopy = response;
   if ([(PDOperation *)self isAborted])
   {
     v7 = 0;
@@ -223,17 +223,17 @@
     v17 = sub_100060340;
     v18 = sub_100060350;
     v19 = 0;
-    v8 = [(PDOperation *)self database];
+    database = [(PDOperation *)self database];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100060358;
     v11[3] = &unk_100203110;
     v11[4] = self;
-    v12 = v6;
+    v12 = responseCopy;
     v13 = &v14;
-    if (v8)
+    if (database)
     {
-      v7 = [v8 performTransaction:v11 forWriting:1];
+      v7 = [database performTransaction:v11 forWriting:1];
     }
 
     else
@@ -245,9 +245,9 @@
     if (v9)
     {
       v7 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = v9;
+        *error = v9;
       }
     }
 
@@ -257,91 +257,91 @@
   return v7;
 }
 
-- (void)logPayloadBeforeProcessing:(id)a3
+- (void)logPayloadBeforeProcessing:(id)processing
 {
-  v4 = a3;
+  processingCopy = processing;
   CLSInitLog();
-  v5 = [(PDOperation *)self logSubsystem];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  logSubsystem = [(PDOperation *)self logSubsystem];
+  if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_INFO))
   {
     v6 = objc_opt_class();
-    v7 = [(PDURLRequestOperation *)self operationID];
-    v8 = [v4 type];
-    if (v8 < 0x27 && ((0x7FFFFE91DFuLL >> v8) & 1) != 0)
+    operationID = [(PDURLRequestOperation *)self operationID];
+    type = [processingCopy type];
+    if (type < 0x27 && ((0x7FFFFE91DFuLL >> type) & 1) != 0)
     {
-      v9 = *(&off_1002038D0 + v8);
+      v9 = *(&off_1002038D0 + type);
     }
 
     else
     {
-      v9 = [NSString stringWithFormat:@"(unknown: %i)", v8];
+      v9 = [NSString stringWithFormat:@"(unknown: %i)", type];
     }
 
-    v10 = [v4 dictionaryRepresentation];
+    dictionaryRepresentation = [processingCopy dictionaryRepresentation];
     *buf = 138544130;
     v12 = v6;
     v13 = 2114;
-    v14 = v7;
+    v14 = operationID;
     v15 = 2114;
     v16 = v9;
     v17 = 2112;
-    v18 = v10;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ Processing payload type: %{public}@\n    payload: %@", buf, 0x2Au);
+    v18 = dictionaryRepresentation;
+    _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ Processing payload type: %{public}@\n    payload: %@", buf, 0x2Au);
   }
 }
 
-- (BOOL)processPayloadFromResponse:(id)a3 error:(id *)a4
+- (BOOL)processPayloadFromResponse:(id)response error:(id *)error
 {
-  v6 = a3;
+  responseCopy = response;
   if ([(PDOperation *)self isAborted])
   {
 LABEL_2:
-    LOBYTE(v7) = 0;
+    LOBYTE(handout) = 0;
     goto LABEL_19;
   }
 
-  if (!-[PDAbstractClassZoneOperation acceptsPayloadType:](self, "acceptsPayloadType:", [v6 type]))
+  if (!-[PDAbstractClassZoneOperation acceptsPayloadType:](self, "acceptsPayloadType:", [responseCopy type]))
   {
     CLSInitLog();
-    v8 = [(PDOperation *)self logSubsystem];
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    logSubsystem = [(PDOperation *)self logSubsystem];
+    if (!os_log_type_enabled(logSubsystem, OS_LOG_TYPE_INFO))
     {
 LABEL_18:
 
-      LOBYTE(v7) = 1;
+      LOBYTE(handout) = 1;
       goto LABEL_19;
     }
 
     v9 = objc_opt_class();
-    v10 = [(PDURLRequestOperation *)self operationID];
-    v11 = [v6 type];
-    if (v11 < 0x27 && ((0x7FFFFE91DFuLL >> v11) & 1) != 0)
+    operationID = [(PDURLRequestOperation *)self operationID];
+    type = [responseCopy type];
+    if (type < 0x27 && ((0x7FFFFE91DFuLL >> type) & 1) != 0)
     {
-      v12 = *(&off_1002038D0 + v11);
+      v12 = *(&off_1002038D0 + type);
     }
 
     else
     {
-      v12 = [NSString stringWithFormat:@"(unknown: %i)", v11];
+      v12 = [NSString stringWithFormat:@"(unknown: %i)", type];
     }
 
     *buf = 138543874;
     v77 = v9;
     v78 = 2114;
-    v79 = v10;
+    v79 = operationID;
     v80 = 2114;
     v81 = v12;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ Ignoring payload type: %{public}@", buf, 0x20u);
+    _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ Ignoring payload type: %{public}@", buf, 0x20u);
 
 LABEL_16:
     goto LABEL_18;
   }
 
-  [(PDAbstractClassZoneOperation *)self logPayloadBeforeProcessing:v6];
-  if ([v6 type] == 1)
+  [(PDAbstractClassZoneOperation *)self logPayloadBeforeProcessing:responseCopy];
+  if ([responseCopy type] == 1)
   {
-    LOBYTE(v7) = 1;
-    if ([(PDAbstractClassZoneOperation *)self processPayloadStatus:v6 allowMixedResponse:[(PDAbstractClassZoneOperation *)self allowMixedResponseStatusCode] error:a4])
+    LOBYTE(handout) = 1;
+    if ([(PDAbstractClassZoneOperation *)self processPayloadStatus:responseCopy allowMixedResponse:[(PDAbstractClassZoneOperation *)self allowMixedResponseStatusCode] error:error])
     {
       goto LABEL_19;
     }
@@ -350,52 +350,52 @@ LABEL_16:
     goto LABEL_2;
   }
 
-  if (![v6 action])
+  if (![responseCopy action])
   {
     CLSInitLog();
-    v8 = [(PDOperation *)self logSubsystem];
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    logSubsystem = [(PDOperation *)self logSubsystem];
+    if (!os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_18;
     }
 
     v19 = objc_opt_class();
     v9 = v19;
-    v10 = [(PDURLRequestOperation *)self operationID];
-    v20 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v6 action]);
-    v21 = [v6 dictionaryRepresentation];
+    operationID = [(PDURLRequestOperation *)self operationID];
+    v20 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [responseCopy action]);
+    dictionaryRepresentation = [responseCopy dictionaryRepresentation];
     *buf = 138544130;
     v77 = v19;
     v78 = 2114;
-    v79 = v10;
+    v79 = operationID;
     v80 = 2114;
     v81 = v20;
     v82 = 2112;
-    v83 = v21;
-    _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ unknown action: %{public}@; payload: %@", buf, 0x2Au);
+    v83 = dictionaryRepresentation;
+    _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ unknown action: %{public}@; payload: %@", buf, 0x2Au);
 
     goto LABEL_16;
   }
 
-  if ([v6 action] == 3)
+  if ([responseCopy action] == 3)
   {
-    LOBYTE(v7) = [(PDAbstractClassZoneOperation *)self _deleteWithPayload:v6 error:a4];
+    LOBYTE(handout) = [(PDAbstractClassZoneOperation *)self _deleteWithPayload:responseCopy error:error];
     goto LABEL_19;
   }
 
-  if (-[PDAbstractClassZoneOperation allowMixedResponseStatusCode](self, "allowMixedResponseStatusCode") && [v6 hasStatus] && !-[PDAbstractClassZoneOperation processPayloadStatus:allowMixedResponse:error:](self, "processPayloadStatus:allowMixedResponse:error:", v6, 0, a4))
+  if (-[PDAbstractClassZoneOperation allowMixedResponseStatusCode](self, "allowMixedResponseStatusCode") && [responseCopy hasStatus] && !-[PDAbstractClassZoneOperation processPayloadStatus:allowMixedResponse:error:](self, "processPayloadStatus:allowMixedResponse:error:", responseCopy, 0, error))
   {
     goto LABEL_2;
   }
 
-  v14 = [(PDOperation *)self database];
-  v15 = *a4;
+  database = [(PDOperation *)self database];
+  v15 = *error;
   v16 = objc_autoreleasePoolPush();
-  switch([v6 type])
+  switch([responseCopy type])
   {
     case 2u:
-      v7 = [v6 handout];
-      v17 = sub_1000192B0(v7);
+      handout = [responseCopy handout];
+      v17 = sub_1000192B0(handout);
 
       v73[0] = _NSConcreteStackBlock;
       v73[1] = 3221225472;
@@ -403,66 +403,66 @@ LABEL_16:
       v73[3] = &unk_100202140;
       v73[4] = self;
       v74 = v17;
-      v18 = v17;
-      [v14 withSyncEnabled:v73];
-      LOBYTE(v7) = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:v18];
+      attachment = v17;
+      [database withSyncEnabled:v73];
+      LOBYTE(handout) = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:attachment];
 
       goto LABEL_77;
     case 3u:
-      v18 = [v6 attachment];
-      v31 = [(PDAbstractClassZoneOperation *)self processAttachment:v18];
+      attachment = [responseCopy attachment];
+      v31 = [(PDAbstractClassZoneOperation *)self processAttachment:attachment];
       goto LABEL_76;
     case 4u:
-      v7 = [v6 recipient];
-      v18 = sub_100019E08(v7);
+      handout = [responseCopy recipient];
+      attachment = sub_100019E08(handout);
 
-      LODWORD(v7) = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:v18];
-      if (!v7)
+      LODWORD(handout) = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:attachment];
+      if (!handout)
       {
         goto LABEL_77;
       }
 
-      v33 = [v18 personID];
+      personID = [attachment personID];
       v34 = objc_opt_class();
-      v35 = [v18 objectID];
-      [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:v33 forClass:v34 fromEntityWithID:v35 withClass:objc_opt_class()];
+      objectID = [attachment objectID];
+      [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:personID forClass:v34 fromEntityWithID:objectID withClass:objc_opt_class()];
 
-      v24 = [v18 classID];
+      classID = [attachment classID];
       v36 = objc_opt_class();
-      v37 = [v18 objectID];
-      [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:v24 forClass:v36 fromEntityWithID:v37 withClass:objc_opt_class()];
+      objectID2 = [attachment objectID];
+      [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:classID forClass:v36 fromEntityWithID:objectID2 withClass:objc_opt_class()];
 
       goto LABEL_82;
     case 6u:
-      v22 = [v6 classInfo];
-      v23 = sub_1000851D4(v22);
+      classInfo = [responseCopy classInfo];
+      v23 = sub_1000851D4(classInfo);
       goto LABEL_75;
     case 7u:
-      v22 = [v6 person];
-      v23 = sub_1000847C8(v22);
+      classInfo = [responseCopy person];
+      v23 = sub_1000847C8(classInfo);
       goto LABEL_75;
     case 8u:
-      v22 = [v6 classMember];
-      v23 = sub_100085548(v22);
+      classInfo = [responseCopy classMember];
+      v23 = sub_100085548(classInfo);
       goto LABEL_75;
     case 0xFu:
-      v7 = [v6 asset];
-      v42 = sub_10001E8EC(v7, v14);
+      handout = [responseCopy asset];
+      v42 = sub_10001E8EC(handout, database);
 
-      LODWORD(v7) = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:v42];
-      if (!v7)
+      LODWORD(handout) = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:v42];
+      if (!handout)
       {
         goto LABEL_90;
       }
 
-      v43 = [v42 parentEntityClass];
-      if (v43)
+      parentEntityClass = [v42 parentEntityClass];
+      if (parentEntityClass)
       {
-        v44 = v43;
-        v45 = [v42 parentObjectID];
+        v44 = parentEntityClass;
+        parentObjectID = [v42 parentObjectID];
         [v42 objectID];
         v46 = v66 = v42;
-        [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:v45 forClass:v44 fromEntityWithID:v46 withClass:objc_opt_class()];
+        [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:parentObjectID forClass:v44 fromEntityWithID:v46 withClass:objc_opt_class()];
 
         v42 = v66;
       }
@@ -472,11 +472,11 @@ LABEL_16:
         goto LABEL_90;
       }
 
-      if (sub_10015D3C8(v14, v42))
+      if (sub_10015D3C8(database, v42))
       {
         CLSInitLog();
-        v47 = [(PDOperation *)self logSubsystem];
-        if (!os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
+        logSubsystem2 = [(PDOperation *)self logSubsystem];
+        if (!os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_INFO))
         {
           goto LABEL_89;
         }
@@ -494,10 +494,10 @@ LABEL_16:
 
       else
       {
-        sub_10012E18C(PDFileSyncManager, v42, v14);
+        sub_10012E18C(PDFileSyncManager, v42, database);
         CLSInitLog();
-        v47 = [(PDOperation *)self logSubsystem];
-        if (!os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
+        logSubsystem2 = [(PDOperation *)self logSubsystem];
+        if (!os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_INFO))
         {
           goto LABEL_89;
         }
@@ -513,7 +513,7 @@ LABEL_16:
         v51 = "%{public}@: Prefetching asset: assetID %{public}@;";
       }
 
-      _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_INFO, v51, buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_INFO, v51, buf, 0x16u);
 
       v42 = v49;
 LABEL_89:
@@ -521,48 +521,48 @@ LABEL_89:
 LABEL_90:
       goto LABEL_78;
     case 0x11u:
-      v18 = [v6 authStatus];
-      v31 = [(PDAbstractClassZoneOperation *)self processAuthorizationStatus:v18];
+      attachment = [responseCopy authStatus];
+      v31 = [(PDAbstractClassZoneOperation *)self processAuthorizationStatus:attachment];
       goto LABEL_76;
     case 0x12u:
-      v18 = [v6 completionStatus];
-      v31 = [(PDAbstractClassZoneOperation *)self processCompletionStatus:v18];
+      attachment = [responseCopy completionStatus];
+      v31 = [(PDAbstractClassZoneOperation *)self processCompletionStatus:attachment];
       goto LABEL_76;
     case 0x13u:
-      v60 = [v6 stateChange];
+      stateChange = [responseCopy stateChange];
       v72 = v15;
-      LOBYTE(v7) = [(PDAbstractClassZoneOperation *)self processStateChange:v60 error:&v72];
+      LOBYTE(handout) = [(PDAbstractClassZoneOperation *)self processStateChange:stateChange error:&v72];
       v61 = v72;
 
       v15 = v61;
       goto LABEL_78;
     case 0x14u:
-      v27 = [v6 collection];
-      v18 = sub_10001D104(v27);
+      collection = [responseCopy collection];
+      attachment = sub_10001D104(collection);
 
       v28 = objc_opt_class();
-      v29 = [v18 objectID];
-      v24 = [v14 select:v28 identity:v29];
+      objectID3 = [attachment objectID];
+      classID = [database select:v28 identity:objectID3];
 
-      if (v24 && ([v18 isEqual:v24] & 1) != 0)
+      if (classID && ([attachment isEqual:classID] & 1) != 0)
       {
-        LOBYTE(v7) = 1;
+        LOBYTE(handout) = 1;
       }
 
       else
       {
-        LOBYTE(v7) = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:v18];
+        LOBYTE(handout) = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:attachment];
       }
 
       goto LABEL_82;
     case 0x15u:
-      v18 = [v6 collectionItem];
-      sub_10001D7AC(v18);
+      attachment = [responseCopy collectionItem];
+      sub_10001D7AC(attachment);
       v68 = 0u;
       v69 = 0u;
       v70 = 0u;
-      v24 = v71 = 0u;
-      v38 = [v24 countByEnumeratingWithState:&v68 objects:v75 count:16];
+      classID = v71 = 0u;
+      v38 = [classID countByEnumeratingWithState:&v68 objects:v75 count:16];
       if (!v38)
       {
         goto LABEL_47;
@@ -572,127 +572,127 @@ LABEL_90:
       v40 = *v69;
       break;
     case 0x16u:
-      v30 = [v6 handout];
-      v18 = sub_10001D9F0(v30);
+      handout2 = [responseCopy handout];
+      attachment = sub_10001D9F0(handout2);
 
-      v31 = [(PDAbstractClassZoneOperation *)self _insertOrUpdateArchivedHandout:v18];
+      v31 = [(PDAbstractClassZoneOperation *)self _insertOrUpdateArchivedHandout:attachment];
       goto LABEL_76;
     case 0x17u:
-      v22 = [v6 attachment];
-      v23 = sub_10001DBAC(v22);
+      classInfo = [responseCopy attachment];
+      v23 = sub_10001DBAC(classInfo);
       goto LABEL_75;
     case 0x18u:
-      v52 = [v6 asset];
-      v18 = sub_10001DF68(v52, v14);
+      asset = [responseCopy asset];
+      attachment = sub_10001DF68(asset, database);
 
-      v7 = objc_opt_class();
-      v53 = [v18 objectID];
-      v54 = [v14 entityExistsByClass:v7 identity:v53];
+      handout = objc_opt_class();
+      objectID4 = [attachment objectID];
+      v54 = [database entityExistsByClass:handout identity:objectID4];
 
-      LODWORD(v7) = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:v18];
-      if (v7 && (v54 & 1) == 0 && [v18 type] == 3)
+      LODWORD(handout) = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:attachment];
+      if (handout && (v54 & 1) == 0 && [attachment type] == 3)
       {
-        sub_10012E18C(PDFileSyncManager, v18, v14);
+        sub_10012E18C(PDFileSyncManager, attachment, database);
       }
 
       goto LABEL_77;
     case 0x19u:
-      if ([v6 action] == 4)
+      if ([responseCopy action] == 4)
       {
-        v55 = [v6 survey];
-        [(PDAbstractClassZoneOperation *)self _deleteSurvey:v55];
+        survey = [responseCopy survey];
+        [(PDAbstractClassZoneOperation *)self _deleteSurvey:survey];
       }
 
-      v22 = [v6 survey];
-      v23 = sub_10001BA94(v22);
+      classInfo = [responseCopy survey];
+      v23 = sub_10001BA94(classInfo);
       goto LABEL_75;
     case 0x1Au:
-      v63 = [v6 surveyStep];
-      v18 = sub_10001C3C0(v63);
+      surveyStep = [responseCopy surveyStep];
+      attachment = sub_10001C3C0(surveyStep);
 
-      v31 = [(PDAbstractClassZoneOperation *)self _insertOrUpdateSurveyStep:v18];
+      v31 = [(PDAbstractClassZoneOperation *)self _insertOrUpdateSurveyStep:attachment];
       goto LABEL_76;
     case 0x1Bu:
-      v62 = [v6 surveyStepAnswer];
-      v18 = sub_10001B6E8(v62);
+      surveyStepAnswer = [responseCopy surveyStepAnswer];
+      attachment = sub_10001B6E8(surveyStepAnswer);
 
-      v31 = [(PDAbstractClassZoneOperation *)self _insertOrUpdateSurveyAnswer:v18];
+      v31 = [(PDAbstractClassZoneOperation *)self _insertOrUpdateSurveyAnswer:attachment];
       goto LABEL_76;
     case 0x1Cu:
-      v22 = [v6 survey];
-      v23 = sub_10001BC8C(v22);
+      classInfo = [responseCopy survey];
+      v23 = sub_10001BC8C(classInfo);
       goto LABEL_75;
     case 0x1Du:
-      v32 = [v6 surveyStep];
-      v18 = sub_10001C8D4(v32);
+      surveyStep2 = [responseCopy surveyStep];
+      attachment = sub_10001C8D4(surveyStep2);
 
-      v31 = [(PDAbstractClassZoneOperation *)self _insertOrUpdateArchivedSurveyStep:v18];
+      v31 = [(PDAbstractClassZoneOperation *)self _insertOrUpdateArchivedSurveyStep:attachment];
       goto LABEL_76;
     case 0x1Eu:
-      v22 = [v6 schedule];
-      v23 = sub_1000200F0(v22);
+      classInfo = [responseCopy schedule];
+      v23 = sub_1000200F0(classInfo);
 LABEL_75:
-      v18 = v23;
+      attachment = v23;
 
-      v31 = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:v18];
+      v31 = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:attachment];
 LABEL_76:
-      LOBYTE(v7) = v31;
+      LOBYTE(handout) = v31;
       goto LABEL_77;
     case 0x1Fu:
-      v7 = [v6 scheduledEvent];
-      v18 = sub_1000203D4(v7);
+      handout = [responseCopy scheduledEvent];
+      attachment = sub_1000203D4(handout);
 
-      LOBYTE(v7) = [v14 insertOrUpdateObject:v18];
-      if (v7)
+      LOBYTE(handout) = [database insertOrUpdateObject:attachment];
+      if (handout)
       {
         goto LABEL_77;
       }
 
       CLSInitLog();
-      v24 = [(PDOperation *)self logSubsystem];
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+      classID = [(PDOperation *)self logSubsystem];
+      if (os_log_type_enabled(classID, OS_LOG_TYPE_DEFAULT))
       {
         v25 = objc_opt_class();
         v65 = v25;
-        v26 = [(PDURLRequestOperation *)self operationID];
+        operationID2 = [(PDURLRequestOperation *)self operationID];
         *buf = 138543874;
         v77 = v25;
         v78 = 2114;
-        v79 = v26;
+        v79 = operationID2;
         v80 = 2114;
-        v81 = v18;
-        _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Failed to insert %{public}@.", buf, 0x20u);
+        v81 = attachment;
+        _os_log_impl(&_mh_execute_header, classID, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Failed to insert %{public}@.", buf, 0x20u);
       }
 
       goto LABEL_82;
     default:
       CLSInitLog();
-      v7 = [(PDOperation *)self logSubsystem];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+      handout = [(PDOperation *)self logSubsystem];
+      if (os_log_type_enabled(handout, OS_LOG_TYPE_INFO))
       {
         v56 = objc_opt_class();
-        v57 = [(PDURLRequestOperation *)self operationID];
-        v58 = [v6 type];
-        if (v58 < 0x27 && ((0x7FFFFE91DFuLL >> v58) & 1) != 0)
+        operationID3 = [(PDURLRequestOperation *)self operationID];
+        type2 = [responseCopy type];
+        if (type2 < 0x27 && ((0x7FFFFE91DFuLL >> type2) & 1) != 0)
         {
-          v59 = *(&off_1002038D0 + v58);
+          v59 = *(&off_1002038D0 + type2);
         }
 
         else
         {
-          v59 = [NSString stringWithFormat:@"(unknown: %i)", v58];
+          v59 = [NSString stringWithFormat:@"(unknown: %i)", type2];
         }
 
         *buf = 138543874;
         v77 = v56;
         v78 = 2114;
-        v79 = v57;
+        v79 = operationID3;
         v80 = 2114;
         v81 = v59;
-        _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ Unexpected payload type: %{public}@;", buf, 0x20u);
+        _os_log_impl(&_mh_execute_header, handout, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ Unexpected payload type: %{public}@;", buf, 0x20u);
       }
 
-      LOBYTE(v7) = 1;
+      LOBYTE(handout) = 1;
       goto LABEL_78;
   }
 
@@ -702,17 +702,17 @@ LABEL_76:
     {
       if (*v69 != v40)
       {
-        objc_enumerationMutation(v24);
+        objc_enumerationMutation(classID);
       }
 
       if (![(PDAbstractClassZoneOperation *)self _insertOrUpdateCollectionItem:*(*(&v68 + 1) + 8 * i)])
       {
-        LOBYTE(v7) = 0;
+        LOBYTE(handout) = 0;
         goto LABEL_81;
       }
     }
 
-    v39 = [v24 countByEnumeratingWithState:&v68 objects:v75 count:16];
+    v39 = [classID countByEnumeratingWithState:&v68 objects:v75 count:16];
     if (v39)
     {
       continue;
@@ -722,7 +722,7 @@ LABEL_76:
   }
 
 LABEL_47:
-  LOBYTE(v7) = 1;
+  LOBYTE(handout) = 1;
 LABEL_81:
 
 LABEL_82:
@@ -732,33 +732,33 @@ LABEL_78:
   objc_autoreleasePoolPop(v16);
 
 LABEL_19:
-  return v7;
+  return handout;
 }
 
-- (BOOL)_insertOrUpdateSurveyAnswer:(id)a3
+- (BOOL)_insertOrUpdateSurveyAnswer:(id)answer
 {
-  v4 = a3;
-  v5 = [(PDOperation *)self database];
+  answerCopy = answer;
+  database = [(PDOperation *)self database];
   v6 = objc_opt_class();
-  v7 = [v4 objectID];
-  v8 = [v5 select:v6 identity:v7];
+  objectID = [answerCopy objectID];
+  v8 = [database select:v6 identity:objectID];
 
   if (!v8 || [v8 state] != 1)
   {
     goto LABEL_6;
   }
 
-  v9 = [v8 dateLastModified];
-  v10 = [v4 dateLastModified];
-  v11 = sub_1000F1454(v9, v10, 5.0);
+  dateLastModified = [v8 dateLastModified];
+  dateLastModified2 = [answerCopy dateLastModified];
+  v11 = sub_1000F1454(dateLastModified, dateLastModified2, 5.0);
 
   if (v11 != 1)
   {
-    v13 = [v8 objectID];
-    [(PDAbstractClassZoneOperation *)self _deleteDraftAnswer:v13];
+    objectID2 = [v8 objectID];
+    [(PDAbstractClassZoneOperation *)self _deleteDraftAnswer:objectID2];
 
 LABEL_6:
-    v12 = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:v4];
+    v12 = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:answerCopy];
     goto LABEL_7;
   }
 
@@ -768,32 +768,32 @@ LABEL_7:
   return v12;
 }
 
-- (BOOL)_insertOrUpdateArchivedHandout:(id)a3
+- (BOOL)_insertOrUpdateArchivedHandout:(id)handout
 {
-  v4 = a3;
-  v5 = [v4 objectID];
-  v6 = sub_10001D4FC(v5);
-  v7 = [v4 objectID];
-  [(PDAbstractClassZoneOperation *)self updateCollectionItemsReferenceObjectID:v6 toType:2 andObjectID:v7];
+  handoutCopy = handout;
+  objectID = [handoutCopy objectID];
+  v6 = sub_10001D4FC(objectID);
+  objectID2 = [handoutCopy objectID];
+  [(PDAbstractClassZoneOperation *)self updateCollectionItemsReferenceObjectID:v6 toType:2 andObjectID:objectID2];
 
-  LOBYTE(self) = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:v4];
+  LOBYTE(self) = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:handoutCopy];
   return self;
 }
 
-- (BOOL)updateCollectionItemsReferenceObjectID:(id)a3 toType:(int64_t)a4 andObjectID:(id)a5
+- (BOOL)updateCollectionItemsReferenceObjectID:(id)d toType:(int64_t)type andObjectID:(id)iD
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
   [(PDOperation *)self database];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000619C4;
   v18 = v17[3] = &unk_1002037E8;
-  v19 = v8;
-  v20 = v9;
-  v21 = a4;
-  v10 = v9;
-  v11 = v8;
+  v19 = dCopy;
+  v20 = iDCopy;
+  typeCopy = type;
+  v10 = iDCopy;
+  v11 = dCopy;
   v12 = v18;
   v13 = v12;
   if (v12)
@@ -811,51 +811,51 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)deleteCollectionItemsWithReferenceObjectID:(id)a3
+- (BOOL)deleteCollectionItemsWithReferenceObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(PDOperation *)self database];
+  dCopy = d;
+  database = [(PDOperation *)self database];
   v6 = objc_opt_class();
-  v9 = v4;
+  v9 = dCopy;
   v7 = [NSArray arrayWithObjects:&v9 count:1];
 
-  LOBYTE(v6) = [v5 deleteAll:v6 where:@"referenceObjectID = ?" bindings:v7];
+  LOBYTE(v6) = [database deleteAll:v6 where:@"referenceObjectID = ?" bindings:v7];
   return v6;
 }
 
-- (BOOL)processPayloadStatus:(id)a3 allowMixedResponse:(BOOL)a4 error:(id *)a5
+- (BOOL)processPayloadStatus:(id)status allowMixedResponse:(BOOL)response error:(id *)error
 {
-  v8 = [a3 status];
-  if ([v8 hasInternalMessage])
+  status = [status status];
+  if ([status hasInternalMessage])
   {
     CLSInitLog();
-    v9 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    logSubsystem = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
     {
       v17 = objc_opt_class();
       v25 = v17;
-      v18 = [(PDURLRequestOperation *)self operationID];
-      v19 = [v8 code];
-      v20 = [v8 message];
-      v21 = [v8 internalMessage];
+      operationID = [(PDURLRequestOperation *)self operationID];
+      code = [status code];
+      message = [status message];
+      internalMessage = [status internalMessage];
       *buf = 138544386;
       v27 = v17;
       v28 = 2114;
-      v29 = v18;
+      v29 = operationID;
       v30 = 1024;
-      *v31 = v19;
+      *v31 = code;
       *&v31[4] = 2112;
-      *&v31[6] = v20;
+      *&v31[6] = message;
       v32 = 2112;
-      v33 = v21;
-      _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ status code: %d message: %@ internal message:%@", buf, 0x30u);
+      v33 = internalMessage;
+      _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ status code: %d message: %@ internal message:%@", buf, 0x30u);
     }
   }
 
-  v10 = sub_100105CA4(v8);
+  v10 = sub_100105CA4(status);
   [(PDEndpointRequestOperation *)self handleServerAlerts:v10];
 
-  if (-[PDAbstractClassZoneOperation shouldProcessPayloadWithStatusCode:](self, "shouldProcessPayloadWithStatusCode:", [v8 code]) || (sub_1001055FC(v8, a4), (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (-[PDAbstractClassZoneOperation shouldProcessPayloadWithStatusCode:](self, "shouldProcessPayloadWithStatusCode:", [status code]) || (sub_1001055FC(status, response), (v11 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v15 = 1;
   }
@@ -864,26 +864,26 @@ LABEL_7:
   {
     v12 = v11;
     [(PDEndpointRequestOperation *)self setResponseStatusError:v11];
-    if (a5)
+    if (error)
     {
       v13 = v12;
-      *a5 = v12;
+      *error = v12;
     }
 
     CLSInitLog();
-    v14 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    logSubsystem2 = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_ERROR))
     {
       v22 = objc_opt_class();
       v23 = v22;
-      v24 = [(PDURLRequestOperation *)self operationID];
+      operationID2 = [(PDURLRequestOperation *)self operationID];
       *buf = 138543874;
       v27 = v22;
       v28 = 2114;
-      v29 = v24;
+      v29 = operationID2;
       v30 = 2114;
       *v31 = v12;
-      _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ assignment request errored: %{public}@;", buf, 0x20u);
+      _os_log_error_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ assignment request errored: %{public}@;", buf, 0x20u);
     }
 
     v15 = 0;
@@ -892,16 +892,16 @@ LABEL_7:
   return v15;
 }
 
-- (BOOL)processAttachment:(id)a3
+- (BOOL)processAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = sub_1000196F4(v4);
+  attachmentCopy = attachment;
+  v5 = sub_1000196F4(attachmentCopy);
   if (v5)
   {
-    v6 = [(PDOperation *)self database];
+    database = [(PDOperation *)self database];
     v7 = objc_opt_class();
-    v8 = [v4 objectId];
-    v9 = [v6 select:v7 identity:v8];
+    objectId = [attachmentCopy objectId];
+    v9 = [database select:v7 identity:objectId];
 
     if (v9)
     {
@@ -914,63 +914,63 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)processAuthorizationStatus:(id)a3
+- (BOOL)processAuthorizationStatus:(id)status
 {
-  v4 = a3;
-  v5 = [v4 parentObjectId];
-  if (v5)
+  statusCopy = status;
+  parentObjectId = [statusCopy parentObjectId];
+  if (parentObjectId)
   {
-    -[PDAbstractClassZoneOperation _setAuthorizationForAttachmentWithObjectID:shouldAuthorize:](self, "_setAuthorizationForAttachmentWithObjectID:shouldAuthorize:", v5, [v4 isAuthorizable]);
+    -[PDAbstractClassZoneOperation _setAuthorizationForAttachmentWithObjectID:shouldAuthorize:](self, "_setAuthorizationForAttachmentWithObjectID:shouldAuthorize:", parentObjectId, [statusCopy isAuthorizable]);
   }
 
   else
   {
     CLSInitLog();
-    v6 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    logSubsystem = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_ERROR))
     {
       v8 = objc_opt_class();
       v9 = v8;
-      v10 = [(PDURLRequestOperation *)self operationID];
+      operationID = [(PDURLRequestOperation *)self operationID];
       v11 = 138543874;
       v12 = v8;
       v13 = 2114;
-      v14 = v10;
+      v14 = operationID;
       v15 = 2112;
-      v16 = v4;
-      _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ Invalid authorization status payload! Payload: %@ - missing parentObjectId.", &v11, 0x20u);
+      v16 = statusCopy;
+      _os_log_error_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ Invalid authorization status payload! Payload: %@ - missing parentObjectId.", &v11, 0x20u);
     }
   }
 
   return 1;
 }
 
-- (BOOL)processCompletionStatus:(id)a3
+- (BOOL)processCompletionStatus:(id)status
 {
-  v4 = a3;
-  v5 = [v4 parentObjectId];
-  if (v5)
+  statusCopy = status;
+  parentObjectId = [statusCopy parentObjectId];
+  if (parentObjectId)
   {
-    v6 = [(PDOperation *)self database];
-    v7 = [v6 select:objc_opt_class() identity:v5];
+    database = [(PDOperation *)self database];
+    v7 = [database select:objc_opt_class() identity:parentObjectId];
     if (v7)
     {
-      if (![v4 hasStatus])
+      if (![statusCopy hasStatus])
       {
 LABEL_15:
         v13 = 0;
         goto LABEL_16;
       }
 
-      v25 = sub_10001E418([v4 status]);
-      v8 = [v7 isLocked];
-      v9 = [v4 dateLastCompleted];
-      v10 = sub_1001043D0(v9);
-      v11 = [v4 dateLastModified];
-      v12 = sub_1001043D0(v11);
-      LOBYTE(v8) = [(PDAbstractClassZoneOperation *)self setCompletionStatus:v25 forAttachment:v7 locked:v8 dateCompleted:v10 dateModified:v12];
+      v25 = sub_10001E418([statusCopy status]);
+      isLocked = [v7 isLocked];
+      dateLastCompleted = [statusCopy dateLastCompleted];
+      v10 = sub_1001043D0(dateLastCompleted);
+      dateLastModified = [statusCopy dateLastModified];
+      v12 = sub_1001043D0(dateLastModified);
+      LOBYTE(isLocked) = [(PDAbstractClassZoneOperation *)self setCompletionStatus:v25 forAttachment:v7 locked:isLocked dateCompleted:v10 dateModified:v12];
 
-      if (v8)
+      if (isLocked)
       {
         v13 = 1;
 LABEL_16:
@@ -979,38 +979,38 @@ LABEL_16:
       }
 
       CLSInitLog();
-      v14 = [(PDOperation *)self logSubsystem];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      logSubsystem = [(PDOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_ERROR))
       {
         v22 = objc_opt_class();
         v23 = v22;
-        v24 = [(PDURLRequestOperation *)self operationID];
+        operationID = [(PDURLRequestOperation *)self operationID];
         *buf = 138543874;
         v27 = v22;
         v28 = 2114;
-        v29 = v24;
+        v29 = operationID;
         v30 = 2114;
-        v31 = v5;
-        _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ Failed to update completion status of handout attachment with objectID = %{public}@;.", buf, 0x20u);
+        v31 = parentObjectId;
+        _os_log_error_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ Failed to update completion status of handout attachment with objectID = %{public}@;.", buf, 0x20u);
       }
     }
 
     else
     {
       CLSInitLog();
-      v14 = [(PDOperation *)self logSubsystem];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      logSubsystem = [(PDOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_ERROR))
       {
         v19 = objc_opt_class();
         v20 = v19;
-        v21 = [(PDURLRequestOperation *)self operationID];
+        operationID2 = [(PDURLRequestOperation *)self operationID];
         *buf = 138543874;
         v27 = v19;
         v28 = 2114;
-        v29 = v21;
+        v29 = operationID2;
         v30 = 2114;
-        v31 = v5;
-        _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ Failed to find handout attachment with objectID = %{public}@;.", buf, 0x20u);
+        v31 = parentObjectId;
+        _os_log_error_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ Failed to find handout attachment with objectID = %{public}@;.", buf, 0x20u);
       }
     }
 
@@ -1018,19 +1018,19 @@ LABEL_16:
   }
 
   CLSInitLog();
-  v6 = [(PDOperation *)self logSubsystem];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  database = [(PDOperation *)self logSubsystem];
+  if (os_log_type_enabled(database, OS_LOG_TYPE_ERROR))
   {
     v16 = objc_opt_class();
     v17 = v16;
-    v18 = [(PDURLRequestOperation *)self operationID];
+    operationID3 = [(PDURLRequestOperation *)self operationID];
     *buf = 138543874;
     v27 = v16;
     v28 = 2114;
-    v29 = v18;
+    v29 = operationID3;
     v30 = 2112;
-    v31 = v4;
-    _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ Invalid completion status payload! Payload: %@ - missing parentObjectId.", buf, 0x20u);
+    v31 = statusCopy;
+    _os_log_error_impl(&_mh_execute_header, database, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ Invalid completion status payload! Payload: %@ - missing parentObjectId.", buf, 0x20u);
   }
 
   v13 = 0;
@@ -1039,22 +1039,22 @@ LABEL_17:
   return v13;
 }
 
-- (BOOL)processStateChange:(id)a3 error:(id *)a4
+- (BOOL)processStateChange:(id)change error:(id *)error
 {
-  v6 = a3;
-  if ([(PDAbstractClassZoneOperation *)self validateStateChangePayload:v6 error:a4])
+  changeCopy = change;
+  if ([(PDAbstractClassZoneOperation *)self validateStateChangePayload:changeCopy error:error])
   {
-    v7 = [(PDOperation *)self database];
-    v8 = sub_10001A6C0(v6);
+    database = [(PDOperation *)self database];
+    v8 = sub_10001A6C0(changeCopy);
     v9 = [NSMutableArray arrayWithArray:v8];
     v10 = +[PDUserDefaults sharedDefaults];
-    v11 = [v10 enableVerboseLogging];
+    enableVerboseLogging = [v10 enableVerboseLogging];
 
     v46 = v9;
-    if (v11)
+    if (enableVerboseLogging)
     {
-      v43 = v6;
-      v44 = a4;
+      v43 = changeCopy;
+      errorCopy = error;
       v52 = 0u;
       v53 = 0u;
       v50 = 0u;
@@ -1067,7 +1067,7 @@ LABEL_17:
         v14 = v13;
         v15 = *v51;
         v48 = v12;
-        v49 = v7;
+        v49 = database;
         do
         {
           v16 = 0;
@@ -1080,47 +1080,47 @@ LABEL_17:
 
             v17 = *(*(&v50 + 1) + 8 * v16);
             v18 = objc_opt_class();
-            v19 = [v17 objectID];
-            v20 = [v7 select:v18 identity:v19];
+            objectID = [v17 objectID];
+            v20 = [database select:v18 identity:objectID];
 
             CLSInitLog();
-            v21 = [(PDOperation *)self logSubsystem];
-            if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
+            logSubsystem = [(PDOperation *)self logSubsystem];
+            if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
             {
               v23 = objc_opt_class();
               v47 = v23;
-              v24 = [(PDURLRequestOperation *)self operationID];
-              v25 = [v20 dictionaryRepresentation];
+              operationID = [(PDURLRequestOperation *)self operationID];
+              dictionaryRepresentation = [v20 dictionaryRepresentation];
               *buf = 138543874;
               v56 = v23;
               v57 = 2114;
-              v58 = v24;
+              v58 = operationID;
               v59 = 2112;
-              v60 = v25;
-              _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Updating state old: %@", buf, 0x20u);
+              v60 = dictionaryRepresentation;
+              _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Updating state old: %@", buf, 0x20u);
 
               v12 = v48;
-              v7 = v49;
+              database = v49;
             }
 
             CLSInitLog();
-            v22 = [(PDOperation *)self logSubsystem];
-            if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+            logSubsystem2 = [(PDOperation *)self logSubsystem];
+            if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEBUG))
             {
               v26 = objc_opt_class();
               v27 = v26;
-              v28 = [(PDURLRequestOperation *)self operationID];
-              v29 = [v17 dictionaryRepresentation];
+              operationID2 = [(PDURLRequestOperation *)self operationID];
+              dictionaryRepresentation2 = [v17 dictionaryRepresentation];
               *buf = 138543874;
               v56 = v26;
               v12 = v48;
               v57 = 2114;
-              v58 = v28;
+              v58 = operationID2;
               v59 = 2112;
-              v60 = v29;
-              _os_log_debug_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Updating state new: %@", buf, 0x20u);
+              v60 = dictionaryRepresentation2;
+              _os_log_debug_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Updating state new: %@", buf, 0x20u);
 
-              v7 = v49;
+              database = v49;
             }
 
             v16 = v16 + 1;
@@ -1133,43 +1133,43 @@ LABEL_17:
         while (v14);
       }
 
-      v6 = v43;
-      a4 = v44;
+      changeCopy = v43;
+      error = errorCopy;
       v8 = v42;
       v9 = v46;
     }
 
-    v30 = [(PDAbstractClassZoneOperation *)self _applyStateChangesToParentHandoutEntity:v6];
+    v30 = [(PDAbstractClassZoneOperation *)self _applyStateChangesToParentHandoutEntity:changeCopy];
     if (v30)
     {
       [v9 addObject:v30];
     }
 
-    v31 = [v7 insertOrUpdateObjects:v9];
+    v31 = [database insertOrUpdateObjects:v9];
     if ((v31 & 1) == 0)
     {
       CLSInitLog();
-      v32 = [(PDOperation *)self logSubsystem];
-      if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+      logSubsystem3 = [(PDOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem3, OS_LOG_TYPE_DEFAULT))
       {
         v33 = objc_opt_class();
-        v45 = a4;
+        errorCopy2 = error;
         v34 = v33;
-        v35 = [(PDURLRequestOperation *)self operationID];
+        operationID3 = [(PDURLRequestOperation *)self operationID];
         *buf = 138543874;
         v56 = v33;
         v57 = 2114;
-        v58 = v35;
+        v58 = operationID3;
         v59 = 2112;
-        v60 = v6;
-        _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Failed to save state changes for payload: %@", buf, 0x20u);
+        v60 = changeCopy;
+        _os_log_impl(&_mh_execute_header, logSubsystem3, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Failed to save state changes for payload: %@", buf, 0x20u);
 
-        a4 = v45;
+        error = errorCopy2;
       }
 
       v36 = objc_opt_class();
-      v37 = [(PDURLRequestOperation *)self operationID];
-      [NSError cls_assignError:a4 code:308 format:@"%@: %@ Failed to save state changes for payload: %@", v36, v37, v6];
+      operationID4 = [(PDURLRequestOperation *)self operationID];
+      [NSError cls_assignError:error code:308 format:@"%@: %@ Failed to save state changes for payload: %@", v36, operationID4, changeCopy];
 
       v9 = v46;
     }
@@ -1178,19 +1178,19 @@ LABEL_17:
   else
   {
     CLSInitLog();
-    v7 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    database = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(database, OS_LOG_TYPE_DEFAULT))
     {
       v38 = objc_opt_class();
       v39 = v38;
-      v40 = [(PDURLRequestOperation *)self operationID];
+      operationID5 = [(PDURLRequestOperation *)self operationID];
       *buf = 138543874;
       v56 = v38;
       v57 = 2114;
-      v58 = v40;
+      v58 = operationID5;
       v59 = 2112;
-      v60 = v6;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Skipping invalid payload: %@", buf, 0x20u);
+      v60 = changeCopy;
+      _os_log_impl(&_mh_execute_header, database, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Skipping invalid payload: %@", buf, 0x20u);
     }
 
     v31 = 0;
@@ -1199,121 +1199,121 @@ LABEL_17:
   return v31;
 }
 
-- (BOOL)validateStateChangePayload:(id)a3 error:(id *)a4
+- (BOOL)validateStateChangePayload:(id)payload error:(id *)error
 {
-  v6 = a3;
-  if (([v6 hasTargetObjectId] & 1) == 0)
+  payloadCopy = payload;
+  if (([payloadCopy hasTargetObjectId] & 1) == 0)
   {
     CLSInitLog();
-    v59 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
+    logSubsystem = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEFAULT))
     {
       v60 = objc_opt_class();
       v61 = v60;
       [(PDURLRequestOperation *)self operationID];
-      v63 = v62 = v6;
+      v63 = v62 = payloadCopy;
       *buf = 138543618;
       v106 = v60;
       v107 = 2114;
       v108 = v63;
-      _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Invalid state change (missing targetObjectID).", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Invalid state change (missing targetObjectID).", buf, 0x16u);
 
-      v6 = v62;
+      payloadCopy = v62;
     }
 
     v64 = objc_opt_class();
-    v14 = [(PDURLRequestOperation *)self operationID];
-    [NSError cls_assignError:a4 code:308 format:@"%@: %@ Invalid state change (missing targetObjectID).", v64, v14];
+    operationID = [(PDURLRequestOperation *)self operationID];
+    [NSError cls_assignError:error code:308 format:@"%@: %@ Invalid state change (missing targetObjectID).", v64, operationID];
     goto LABEL_50;
   }
 
-  if (([v6 hasTargetEntityName] & 1) == 0)
+  if (([payloadCopy hasTargetEntityName] & 1) == 0)
   {
     CLSInitLog();
-    v65 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
+    logSubsystem2 = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEFAULT))
     {
       v66 = objc_opt_class();
       v67 = v66;
       [(PDURLRequestOperation *)self operationID];
-      v69 = v68 = v6;
-      v70 = [v68 targetObjectId];
+      v69 = v68 = payloadCopy;
+      targetObjectId = [v68 targetObjectId];
       *buf = 138543874;
       v106 = v66;
       v107 = 2114;
       v108 = v69;
       v109 = 2112;
-      v110 = v70;
-      _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Invalid state change (missing targetEntityName for targetObjectID %@).", buf, 0x20u);
+      v110 = targetObjectId;
+      _os_log_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Invalid state change (missing targetEntityName for targetObjectID %@).", buf, 0x20u);
 
-      v6 = v68;
+      payloadCopy = v68;
     }
 
     v71 = objc_opt_class();
-    v14 = [(PDURLRequestOperation *)self operationID];
-    v72 = [v6 targetObjectId];
-    [NSError cls_assignError:a4 code:308 format:@"%@: %@ Invalid state change (missing targetEntityName for targetObjectID %@).", v71, v14, v72];
+    operationID = [(PDURLRequestOperation *)self operationID];
+    targetObjectId2 = [payloadCopy targetObjectId];
+    [NSError cls_assignError:error code:308 format:@"%@: %@ Invalid state change (missing targetEntityName for targetObjectID %@).", v71, operationID, targetObjectId2];
     goto LABEL_49;
   }
 
-  if (([v6 hasTargetOwnerPersonId] & 1) == 0)
+  if (([payloadCopy hasTargetOwnerPersonId] & 1) == 0)
   {
     CLSInitLog();
-    v73 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
+    logSubsystem3 = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem3, OS_LOG_TYPE_DEFAULT))
     {
       v74 = objc_opt_class();
       v75 = v74;
       [(PDURLRequestOperation *)self operationID];
-      v77 = v76 = v6;
-      v78 = [v76 targetObjectId];
+      v77 = v76 = payloadCopy;
+      targetObjectId3 = [v76 targetObjectId];
       *buf = 138543874;
       v106 = v74;
       v107 = 2114;
       v108 = v77;
       v109 = 2112;
-      v110 = v78;
-      _os_log_impl(&_mh_execute_header, v73, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Invalid state change (missing targetOwnerPersonID for targetObjectID %@).", buf, 0x20u);
+      v110 = targetObjectId3;
+      _os_log_impl(&_mh_execute_header, logSubsystem3, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Invalid state change (missing targetOwnerPersonID for targetObjectID %@).", buf, 0x20u);
 
-      v6 = v76;
+      payloadCopy = v76;
     }
 
     v79 = objc_opt_class();
-    v14 = [(PDURLRequestOperation *)self operationID];
-    v72 = [v6 targetObjectId];
-    [NSError cls_assignError:a4 code:308 format:@"%@: %@ Invalid state change (missing targetOwnerPersonID for targetObjectID %@).", v79, v14, v72];
+    operationID = [(PDURLRequestOperation *)self operationID];
+    targetObjectId2 = [payloadCopy targetObjectId];
+    [NSError cls_assignError:error code:308 format:@"%@: %@ Invalid state change (missing targetOwnerPersonID for targetObjectID %@).", v79, operationID, targetObjectId2];
     goto LABEL_49;
   }
 
-  v7 = [v6 stateChangePayloads];
-  v8 = [v7 count];
+  stateChangePayloads = [payloadCopy stateChangePayloads];
+  v8 = [stateChangePayloads count];
 
   if (!v8)
   {
     CLSInitLog();
-    v86 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT))
+    logSubsystem4 = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem4, OS_LOG_TYPE_DEFAULT))
     {
       v87 = objc_opt_class();
       v88 = v87;
       [(PDURLRequestOperation *)self operationID];
-      v90 = v89 = v6;
-      v91 = [v89 targetObjectId];
+      v90 = v89 = payloadCopy;
+      targetObjectId4 = [v89 targetObjectId];
       *buf = 138543874;
       v106 = v87;
       v107 = 2114;
       v108 = v90;
       v109 = 2112;
-      v110 = v91;
-      _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Invalid state change (empty stateChangePayloads for targetObjectID %@).", buf, 0x20u);
+      v110 = targetObjectId4;
+      _os_log_impl(&_mh_execute_header, logSubsystem4, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Invalid state change (empty stateChangePayloads for targetObjectID %@).", buf, 0x20u);
 
-      v6 = v89;
+      payloadCopy = v89;
     }
 
     v92 = objc_opt_class();
-    v14 = [(PDURLRequestOperation *)self operationID];
-    v72 = [v6 targetObjectId];
-    [NSError cls_assignError:a4 code:308 format:@"%@: %@ Invalid state change (empty stateChangePayloads for targetObjectID %@).", v92, v14, v72];
+    operationID = [(PDURLRequestOperation *)self operationID];
+    targetObjectId2 = [payloadCopy targetObjectId];
+    [NSError cls_assignError:error code:308 format:@"%@: %@ Invalid state change (empty stateChangePayloads for targetObjectID %@).", v92, operationID, targetObjectId2];
 LABEL_49:
 
 LABEL_50:
@@ -1321,67 +1321,67 @@ LABEL_50:
     goto LABEL_51;
   }
 
-  v9 = [v6 targetObjectId];
-  v10 = [v6 targetOwnerPersonId];
-  [v6 stateChangePayloads];
-  v11 = v96 = v6;
+  targetObjectId5 = [payloadCopy targetObjectId];
+  targetOwnerPersonId = [payloadCopy targetOwnerPersonId];
+  [payloadCopy stateChangePayloads];
+  v11 = v96 = payloadCopy;
   v12 = [v11 objectAtIndexedSubscript:0];
   v13 = &CLSLogAsset_ptr;
-  v14 = +[CLSCollaborationState identifierForTargetObjectID:ownerPersonID:domain:](CLSCollaborationState, "identifierForTargetObjectID:ownerPersonID:domain:", v9, v10, [v12 domain]);
+  operationID = +[CLSCollaborationState identifierForTargetObjectID:ownerPersonID:domain:](CLSCollaborationState, "identifierForTargetObjectID:ownerPersonID:domain:", targetObjectId5, targetOwnerPersonId, [v12 domain]);
 
-  v6 = v96;
+  payloadCopy = v96;
   if ([v96 hasTargetClassId])
   {
-    v15 = [v96 targetClassId];
+    targetClassId = [v96 targetClassId];
     v16 = objc_opt_class();
-    LODWORD(v16) = [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:v15 forClass:v16 fromEntityWithID:v14 withClass:objc_opt_class()];
+    LODWORD(v16) = [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:targetClassId forClass:v16 fromEntityWithID:operationID withClass:objc_opt_class()];
 
     if (v16)
     {
       CLSInitLog();
-      v17 = [(PDOperation *)self logSubsystem];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      logSubsystem5 = [(PDOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem5, OS_LOG_TYPE_DEFAULT))
       {
         v18 = objc_opt_class();
         v19 = v18;
-        v20 = [(PDURLRequestOperation *)self operationID];
-        v21 = [v96 targetClassId];
+        operationID2 = [(PDURLRequestOperation *)self operationID];
+        targetClassId2 = [v96 targetClassId];
         *buf = 138543874;
         v106 = v18;
         v107 = 2114;
-        v108 = v20;
+        v108 = operationID2;
         v109 = 2112;
-        v110 = v21;
-        _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ State change missing reference (targetClassId '%@' is not in roster).", buf, 0x20u);
+        v110 = targetClassId2;
+        _os_log_impl(&_mh_execute_header, logSubsystem5, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ State change missing reference (targetClassId '%@' is not in roster).", buf, 0x20u);
 
-        v6 = v96;
+        payloadCopy = v96;
       }
     }
   }
 
-  v22 = [v6 targetOwnerPersonId];
+  targetOwnerPersonId2 = [payloadCopy targetOwnerPersonId];
   v23 = objc_opt_class();
-  LODWORD(v23) = [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:v22 forClass:v23 fromEntityWithID:v14 withClass:objc_opt_class()];
+  LODWORD(v23) = [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:targetOwnerPersonId2 forClass:v23 fromEntityWithID:operationID withClass:objc_opt_class()];
 
   if (v23)
   {
     CLSInitLog();
-    v24 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    logSubsystem6 = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem6, OS_LOG_TYPE_DEFAULT))
     {
       v25 = objc_opt_class();
       v26 = v25;
-      v27 = [(PDURLRequestOperation *)self operationID];
-      v28 = [v96 targetOwnerPersonId];
+      operationID3 = [(PDURLRequestOperation *)self operationID];
+      targetOwnerPersonId3 = [v96 targetOwnerPersonId];
       *buf = 138543874;
       v106 = v25;
       v107 = 2114;
-      v108 = v27;
+      v108 = operationID3;
       v109 = 2112;
-      v110 = v28;
-      _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ State change missing reference. (ownerPersonID '%@' is not in roster).", buf, 0x20u);
+      v110 = targetOwnerPersonId3;
+      _os_log_impl(&_mh_execute_header, logSubsystem6, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ State change missing reference. (ownerPersonID '%@' is not in roster).", buf, 0x20u);
 
-      v6 = v96;
+      payloadCopy = v96;
     }
   }
 
@@ -1389,12 +1389,12 @@ LABEL_50:
   v103 = 0u;
   v100 = 0u;
   v101 = 0u;
-  obj = [v6 stateChangePayloads];
+  obj = [payloadCopy stateChangePayloads];
   v99 = [obj countByEnumeratingWithState:&v100 objects:v104 count:16];
   if (v99)
   {
-    v94 = a4;
-    v95 = v14;
+    errorCopy = error;
+    v95 = operationID;
     v98 = *v101;
     while (2)
     {
@@ -1407,102 +1407,102 @@ LABEL_50:
 
         v30 = *(*(&v100 + 1) + 8 * i);
         v31 = v13[75];
-        v32 = [v6 targetObjectId];
-        v33 = [v6 targetOwnerPersonId];
-        v34 = [v31 identifierForTargetObjectID:v32 ownerPersonID:v33 domain:{objc_msgSend(v30, "domain")}];
+        targetObjectId6 = [payloadCopy targetObjectId];
+        targetOwnerPersonId4 = [payloadCopy targetOwnerPersonId];
+        v34 = [v31 identifierForTargetObjectID:targetObjectId6 ownerPersonID:targetOwnerPersonId4 domain:{objc_msgSend(v30, "domain")}];
 
         if (([v30 hasParticipants] & 1) == 0)
         {
           CLSInitLog();
-          v80 = [(PDOperation *)self logSubsystem];
-          if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
+          logSubsystem7 = [(PDOperation *)self logSubsystem];
+          if (os_log_type_enabled(logSubsystem7, OS_LOG_TYPE_DEFAULT))
           {
             v81 = objc_opt_class();
             v82 = v81;
-            v83 = [(PDURLRequestOperation *)self operationID];
+            operationID4 = [(PDURLRequestOperation *)self operationID];
             *buf = 138543874;
             v106 = v81;
             v107 = 2114;
-            v108 = v83;
+            v108 = operationID4;
             v109 = 2112;
             v110 = v30;
-            _os_log_impl(&_mh_execute_header, v80, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Invalid stateChangePayload (missing participants) %@", buf, 0x20u);
+            _os_log_impl(&_mh_execute_header, logSubsystem7, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Invalid stateChangePayload (missing participants) %@", buf, 0x20u);
           }
 
           v84 = objc_opt_class();
-          v85 = [(PDURLRequestOperation *)self operationID];
-          [NSError cls_assignError:v94 code:308 format:@"%@: %@ Invalid stateChangePayload (missing participants) %@", v84, v85, v30];
+          operationID5 = [(PDURLRequestOperation *)self operationID];
+          [NSError cls_assignError:errorCopy code:308 format:@"%@: %@ Invalid stateChangePayload (missing participants) %@", v84, operationID5, v30];
 
           v58 = 0;
-          v6 = v96;
+          payloadCopy = v96;
           goto LABEL_45;
         }
 
-        v35 = [v30 participants];
-        v36 = [v35 senderPersonId];
+        participants = [v30 participants];
+        senderPersonId = [participants senderPersonId];
 
-        if (v36)
+        if (senderPersonId)
         {
-          v37 = [v30 participants];
-          v38 = [v37 senderPersonId];
+          participants2 = [v30 participants];
+          senderPersonId2 = [participants2 senderPersonId];
           v39 = objc_opt_class();
           v40 = v13[75];
-          LODWORD(v39) = [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:v38 forClass:v39 fromEntityWithID:v34 withClass:objc_opt_class()];
+          LODWORD(v39) = [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:senderPersonId2 forClass:v39 fromEntityWithID:v34 withClass:objc_opt_class()];
 
           if (v39)
           {
             CLSInitLog();
-            v41 = [(PDOperation *)self logSubsystem];
-            if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
+            logSubsystem8 = [(PDOperation *)self logSubsystem];
+            if (os_log_type_enabled(logSubsystem8, OS_LOG_TYPE_DEFAULT))
             {
               v42 = objc_opt_class();
               v43 = v42;
-              v44 = [(PDURLRequestOperation *)self operationID];
-              v45 = [v30 participants];
-              v46 = [v45 senderPersonId];
+              operationID6 = [(PDURLRequestOperation *)self operationID];
+              participants3 = [v30 participants];
+              senderPersonId3 = [participants3 senderPersonId];
               *buf = 138543874;
               v106 = v42;
               v107 = 2114;
-              v108 = v44;
+              v108 = operationID6;
               v109 = 2112;
-              v110 = v46;
-              _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ State change missing reference. (senderPersonId '%@' is not in roster).", buf, 0x20u);
+              v110 = senderPersonId3;
+              _os_log_impl(&_mh_execute_header, logSubsystem8, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ State change missing reference. (senderPersonId '%@' is not in roster).", buf, 0x20u);
 
-              v6 = v96;
+              payloadCopy = v96;
             }
           }
         }
 
-        v47 = [v30 participants];
-        v48 = [v47 recipientPersonId];
+        participants4 = [v30 participants];
+        recipientPersonId = [participants4 recipientPersonId];
 
-        if (v48)
+        if (recipientPersonId)
         {
-          v49 = [v30 participants];
-          v50 = [v49 recipientPersonId];
+          participants5 = [v30 participants];
+          recipientPersonId2 = [participants5 recipientPersonId];
           v51 = objc_opt_class();
-          LODWORD(v51) = [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:v50 forClass:v51 fromEntityWithID:v34 withClass:objc_opt_class()];
+          LODWORD(v51) = [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:recipientPersonId2 forClass:v51 fromEntityWithID:v34 withClass:objc_opt_class()];
 
           if (v51)
           {
             CLSInitLog();
-            v52 = [(PDOperation *)self logSubsystem];
-            if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
+            logSubsystem9 = [(PDOperation *)self logSubsystem];
+            if (os_log_type_enabled(logSubsystem9, OS_LOG_TYPE_DEFAULT))
             {
               v53 = objc_opt_class();
               v54 = v53;
-              v55 = [(PDURLRequestOperation *)self operationID];
-              v56 = [v30 participants];
-              v57 = [v56 recipientPersonId];
+              operationID7 = [(PDURLRequestOperation *)self operationID];
+              participants6 = [v30 participants];
+              recipientPersonId3 = [participants6 recipientPersonId];
               *buf = 138543874;
               v106 = v53;
               v107 = 2114;
-              v108 = v55;
+              v108 = operationID7;
               v109 = 2112;
-              v110 = v57;
-              _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ State change missing reference. (recipientPersonId '%@' is not in roster).", buf, 0x20u);
+              v110 = recipientPersonId3;
+              _os_log_impl(&_mh_execute_header, logSubsystem9, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ State change missing reference. (recipientPersonId '%@' is not in roster).", buf, 0x20u);
 
-              v6 = v96;
+              payloadCopy = v96;
             }
           }
         }
@@ -1521,7 +1521,7 @@ LABEL_50:
 
     v58 = 1;
 LABEL_45:
-    v14 = v95;
+    operationID = v95;
   }
 
   else
@@ -1533,68 +1533,68 @@ LABEL_51:
   return v58;
 }
 
-- (BOOL)resolveMissingEntityWithObjectID:(id)a3
+- (BOOL)resolveMissingEntityWithObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(PDOperation *)self database];
+  dCopy = d;
+  database = [(PDOperation *)self database];
   v6 = objc_opt_class();
-  v9 = v4;
+  v9 = dCopy;
   v7 = [NSArray arrayWithObjects:&v9 count:1];
 
-  LOBYTE(v6) = [v5 deleteAll:v6 where:@"entityID = ?" bindings:v7];
+  LOBYTE(v6) = [database deleteAll:v6 where:@"entityID = ?" bindings:v7];
   return v6;
 }
 
-- (id)_applyStateChangesToParentHandoutEntity:(id)a3
+- (id)_applyStateChangesToParentHandoutEntity:(id)entity
 {
-  v4 = a3;
-  v40 = [(PDOperation *)self database];
-  v5 = sub_1000711FC(v40);
-  v6 = [v5 objectID];
+  entityCopy = entity;
+  database = [(PDOperation *)self database];
+  v5 = sub_1000711FC(database);
+  objectID = [v5 objectID];
 
-  if (!v6)
+  if (!objectID)
   {
     CLSInitLog();
-    v11 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    logSubsystem = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
     {
       v35 = objc_opt_class();
       v36 = v35;
-      v37 = [(PDURLRequestOperation *)self operationID];
+      operationID = [(PDURLRequestOperation *)self operationID];
       *buf = 138543874;
       v48 = v35;
       v49 = 2114;
-      v50 = v37;
+      v50 = operationID;
       v51 = 2112;
-      v52 = v4;
-      _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ No currentUser. Not applying changes to parent entity for payload: %@", buf, 0x20u);
+      v52 = entityCopy;
+      _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ No currentUser. Not applying changes to parent entity for payload: %@", buf, 0x20u);
     }
 
     v12 = 0;
     goto LABEL_39;
   }
 
-  v7 = [v4 targetEntityName];
-  v8 = sub_100104ED0(v7);
+  targetEntityName = [entityCopy targetEntityName];
+  v8 = sub_100104ED0(targetEntityName);
 
   if (v8 == objc_opt_class())
   {
     v13 = objc_opt_class();
-    v14 = [v4 targetObjectId];
-    v15 = [v40 select:v13 identity:v14];
+    targetObjectId = [entityCopy targetObjectId];
+    v15 = [database select:v13 identity:targetObjectId];
     v9 = 0;
     v10 = v15;
 LABEL_10:
 
-    [v4 targetOwnerPersonId];
+    [entityCopy targetOwnerPersonId];
     goto LABEL_11;
   }
 
   if (v8 == objc_opt_class())
   {
     v16 = objc_opt_class();
-    v14 = [v4 targetObjectId];
-    v15 = [v40 select:v16 identity:v14];
+    targetObjectId = [entityCopy targetObjectId];
+    v15 = [database select:v16 identity:targetObjectId];
     v10 = 0;
     v9 = v15;
     goto LABEL_10;
@@ -1602,14 +1602,14 @@ LABEL_10:
 
   v9 = 0;
   v10 = 0;
-  [v4 targetOwnerPersonId];
+  [entityCopy targetOwnerPersonId];
   v17 = LABEL_11:;
-  v39 = v6;
-  v41 = self;
+  v39 = objectID;
+  selfCopy = self;
   if (v17)
   {
-    v18 = [v4 targetOwnerPersonId];
-    v19 = [v6 isEqualToString:v18];
+    targetOwnerPersonId = [entityCopy targetOwnerPersonId];
+    v19 = [objectID isEqualToString:targetOwnerPersonId];
   }
 
   else
@@ -1621,9 +1621,9 @@ LABEL_10:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v20 = v4;
-  v21 = [v4 stateChangePayloads];
-  v22 = [v21 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  v20 = entityCopy;
+  stateChangePayloads = [entityCopy stateChangePayloads];
+  v22 = [stateChangePayloads countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v22)
   {
     v23 = v22;
@@ -1644,33 +1644,33 @@ LABEL_10:
       {
         if (*v43 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(stateChangePayloads);
         }
 
         v27 = *(*(&v42 + 1) + 8 * i);
         v28 = objc_autoreleasePoolPush();
-        v29 = [v27 domain];
-        if (v29 == 1)
+        domain = [v27 domain];
+        if (domain == 1)
         {
           if (v10)
           {
-            [(PDAbstractClassZoneOperation *)v41 setCompletionAndLockedStatusForStateChange:v20 andStateChangePayload:v27 forAttachment:v10];
+            [(PDAbstractClassZoneOperation *)selfCopy setCompletionAndLockedStatusForStateChange:v20 andStateChangePayload:v27 forAttachment:v10];
           }
         }
 
-        else if (v29 == 5)
+        else if (domain == 5)
         {
           if (v9)
           {
-            [(PDAbstractClassZoneOperation *)v41 setHandoutClosedStatusForStateChange:v20 andStateChangePayload:v27 forHandout:v9];
+            [(PDAbstractClassZoneOperation *)selfCopy setHandoutClosedStatusForStateChange:v20 andStateChangePayload:v27 forHandout:v9];
           }
         }
 
-        else if (v29 == 3 && v25 != 0)
+        else if (domain == 3 && v25 != 0)
         {
           if ([v27 state] == 1)
           {
-            v31 = v40;
+            v31 = database;
             v32 = v10;
             v33 = 0;
           }
@@ -1682,7 +1682,7 @@ LABEL_10:
               goto LABEL_36;
             }
 
-            v31 = v40;
+            v31 = database;
             v32 = v10;
             v33 = 1;
           }
@@ -1694,33 +1694,33 @@ LABEL_36:
         objc_autoreleasePoolPop(v28);
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v42 objects:v46 count:16];
+      v23 = [stateChangePayloads countByEnumeratingWithState:&v42 objects:v46 count:16];
     }
 
     while (v23);
   }
 
-  v11 = v38;
-  v12 = v11;
-  v4 = v20;
-  v6 = v39;
+  logSubsystem = v38;
+  v12 = logSubsystem;
+  entityCopy = v20;
+  objectID = v39;
 LABEL_39:
 
   return v12;
 }
 
-- (void)setCompletionAndLockedStatusForStateChange:(id)a3 andStateChangePayload:(id)a4 forAttachment:(id)a5
+- (void)setCompletionAndLockedStatusForStateChange:(id)change andStateChangePayload:(id)payload forAttachment:(id)attachment
 {
-  v24 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 isComplete];
-  v10 = [v8 completionStatus] == 1 || objc_msgSend(v8, "completionStatus") == 2;
-  if ([v7 state] == 5)
+  changeCopy = change;
+  payloadCopy = payload;
+  attachmentCopy = attachment;
+  isComplete = [attachmentCopy isComplete];
+  v10 = [attachmentCopy completionStatus] == 1 || objc_msgSend(attachmentCopy, "completionStatus") == 2;
+  if ([payloadCopy state] == 5)
   {
-    v11 = [v7 flags];
+    flags = [payloadCopy flags];
     objc_opt_self();
-    v12 = (v11 & 0x11) != 0;
+    v12 = (flags & 0x11) != 0;
   }
 
   else
@@ -1728,78 +1728,78 @@ LABEL_39:
     v12 = 0;
   }
 
-  v13 = [v7 state];
+  state = [payloadCopy state];
   objc_opt_self();
-  v14 = v13 == 2 || v12;
-  v15 = ([v7 flags] >> 2) & 1;
-  v16 = [v7 state];
-  v17 = [v7 state];
-  [v8 setLocked:v15];
-  if (v17 && (((v9 ^ v14 | v10) & 1) != 0 || v16 == 4))
+  v14 = state == 2 || v12;
+  v15 = ([payloadCopy flags] >> 2) & 1;
+  state2 = [payloadCopy state];
+  state3 = [payloadCopy state];
+  [attachmentCopy setLocked:v15];
+  if (state3 && (((isComplete ^ v14 | v10) & 1) != 0 || state2 == 4))
   {
-    v18 = [v7 state];
+    state4 = [payloadCopy state];
     objc_opt_self();
-    v19 = v18 > 5 ? 3 : dword_1001A8490[v18];
-    [v8 setCompletionStatus:v19];
+    v19 = state4 > 5 ? 3 : dword_1001A8490[state4];
+    [attachmentCopy setCompletionStatus:v19];
     if (v14)
     {
-      if ([v24 hasDateLastModified])
+      if ([changeCopy hasDateLastModified])
       {
-        v20 = [v24 dateLastModified];
-        v21 = sub_1001043D0(v20);
-        [v8 setDateLastCompleted:v21];
+        dateLastModified = [changeCopy dateLastModified];
+        v21 = sub_1001043D0(dateLastModified);
+        [attachmentCopy setDateLastCompleted:v21];
       }
 
       else
       {
-        v20 = +[NSDate date];
-        [v8 setDateLastCompleted:v20];
+        dateLastModified = +[NSDate date];
+        [attachmentCopy setDateLastCompleted:dateLastModified];
       }
     }
   }
 
-  if ([v24 hasDateLastModified])
+  if ([changeCopy hasDateLastModified])
   {
-    v22 = [v24 dateLastModified];
-    v23 = sub_1001043D0(v22);
-    [v8 setDateLastModified:v23];
+    dateLastModified2 = [changeCopy dateLastModified];
+    v23 = sub_1001043D0(dateLastModified2);
+    [attachmentCopy setDateLastModified:v23];
   }
 }
 
-- (void)setHandoutClosedStatusForStateChange:(id)a3 andStateChangePayload:(id)a4 forHandout:(id)a5
+- (void)setHandoutClosedStatusForStateChange:(id)change andStateChangePayload:(id)payload forHandout:(id)handout
 {
-  v6 = a5;
-  [v6 setReviewed:{objc_msgSend(a4, "state") == 2}];
+  handoutCopy = handout;
+  [handoutCopy setReviewed:{objc_msgSend(payload, "state") == 2}];
 }
 
-- (BOOL)_insertOrUpdateEntity:(id)a3
+- (BOOL)_insertOrUpdateEntity:(id)entity
 {
-  v4 = a3;
-  if (v4)
+  entityCopy = entity;
+  if (entityCopy)
   {
-    v5 = [(PDOperation *)self database];
-    if ([v5 insertOrUpdateObject:v4])
+    database = [(PDOperation *)self database];
+    if ([database insertOrUpdateObject:entityCopy])
     {
-      v6 = [v4 objectID];
-      v7 = [(PDAbstractClassZoneOperation *)self resolveMissingEntityWithObjectID:v6];
+      objectID = [entityCopy objectID];
+      v7 = [(PDAbstractClassZoneOperation *)self resolveMissingEntityWithObjectID:objectID];
     }
 
     else
     {
       CLSInitLog();
-      v8 = [(PDOperation *)self logSubsystem];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      logSubsystem = [(PDOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEFAULT))
       {
         v9 = objc_opt_class();
         v10 = v9;
-        v11 = [(PDURLRequestOperation *)self operationID];
+        operationID = [(PDURLRequestOperation *)self operationID];
         v13 = 138543874;
         v14 = v9;
         v15 = 2114;
-        v16 = v11;
+        v16 = operationID;
         v17 = 2114;
-        v18 = v4;
-        _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Failed to insert %{public}@.", &v13, 0x20u);
+        v18 = entityCopy;
+        _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Failed to insert %{public}@.", &v13, 0x20u);
       }
 
       v7 = 0;
@@ -1814,35 +1814,35 @@ LABEL_39:
   return v7;
 }
 
-- (BOOL)_insertOrUpdateCollectionItem:(id)a3
+- (BOOL)_insertOrUpdateCollectionItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PDOperation *)self database];
+  itemCopy = item;
+  database = [(PDOperation *)self database];
   v6 = objc_opt_class();
-  v7 = [v4 parentObjectID];
-  v14[0] = v7;
-  v8 = [v4 referenceObjectID];
-  v14[1] = v8;
+  parentObjectID = [itemCopy parentObjectID];
+  v14[0] = parentObjectID;
+  referenceObjectID = [itemCopy referenceObjectID];
+  v14[1] = referenceObjectID;
   v9 = [NSArray arrayWithObjects:v14 count:2];
-  v10 = [v5 select:v6 where:@"parentObjectID = ? AND referenceObjectID = ?" bindings:v9];
+  v10 = [database select:v6 where:@"parentObjectID = ? AND referenceObjectID = ?" bindings:v9];
 
-  if (v10 && ([v10 objectID], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "setObjectID:", v11), v11, (objc_msgSend(v4, "isEqual:", v10) & 1) != 0))
+  if (v10 && ([v10 objectID], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(itemCopy, "setObjectID:", v11), v11, (objc_msgSend(itemCopy, "isEqual:", v10) & 1) != 0))
   {
     v12 = 1;
   }
 
   else
   {
-    v12 = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:v4];
+    v12 = [(PDAbstractClassZoneOperation *)self _insertOrUpdateEntity:itemCopy];
   }
 
   return v12;
 }
 
-- (BOOL)_insertOrUpdateSurveyStep:(id)a3
+- (BOOL)_insertOrUpdateSurveyStep:(id)step
 {
-  v4 = a3;
-  v5 = [(PDOperation *)self database];
+  stepCopy = step;
+  database = [(PDOperation *)self database];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1850,16 +1850,16 @@ LABEL_39:
     goto LABEL_30;
   }
 
-  v6 = v4;
+  v6 = stepCopy;
   v7 = objc_opt_new();
   [v7 addObject:v6];
-  v8 = [v6 questionType];
-  v33 = v5;
-  if (v8 <= 2)
+  questionType = [v6 questionType];
+  v33 = database;
+  if (questionType <= 2)
   {
-    if (v8 != 1)
+    if (questionType != 1)
     {
-      if (v8 != 2)
+      if (questionType != 2)
       {
         goto LABEL_20;
       }
@@ -1867,11 +1867,11 @@ LABEL_39:
 LABEL_9:
       context = objc_autoreleasePoolPush();
       v10 = objc_opt_new();
-      v11 = [v6 answerFormat];
-      [v7 addObject:v11];
+      answerFormat = [v6 answerFormat];
+      [v7 addObject:answerFormat];
       v12 = objc_opt_class();
-      v13 = [v11 objectID];
-      v46 = v13;
+      objectID = [answerFormat objectID];
+      v46 = objectID;
       v14 = [NSArray arrayWithObjects:&v46 count:1];
       v42[0] = _NSConcreteStackBlock;
       v42[1] = 3221225472;
@@ -1879,15 +1879,15 @@ LABEL_9:
       v42[3] = &unk_100203810;
       v15 = v10;
       v43 = v15;
-      [v5 selectAll:v12 where:@"parentObjectID = ?" bindings:v14 block:v42];
+      [database selectAll:v12 where:@"parentObjectID = ?" bindings:v14 block:v42];
 
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v31 = v11;
-      v16 = [v11 answerChoiceItems];
-      v17 = [v16 countByEnumeratingWithState:&v38 objects:v45 count:16];
+      v31 = answerFormat;
+      answerChoiceItems = [answerFormat answerChoiceItems];
+      v17 = [answerChoiceItems countByEnumeratingWithState:&v38 objects:v45 count:16];
       if (v17)
       {
         v18 = v17;
@@ -1898,16 +1898,16 @@ LABEL_9:
           {
             if (*v39 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(answerChoiceItems);
             }
 
             v21 = *(*(&v38 + 1) + 8 * i);
             [v7 addObject:v21];
-            v22 = [v21 objectID];
-            [v15 removeObject:v22];
+            objectID2 = [v21 objectID];
+            [v15 removeObject:objectID2];
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v38 objects:v45 count:16];
+          v18 = [answerChoiceItems countByEnumeratingWithState:&v38 objects:v45 count:16];
         }
 
         while (v18);
@@ -1926,16 +1926,16 @@ LABEL_9:
     goto LABEL_19;
   }
 
-  if (v8 == 3)
+  if (questionType == 3)
   {
 LABEL_19:
-    v24 = [v6 answerFormat];
-    [v7 addObject:v24];
+    answerFormat2 = [v6 answerFormat];
+    [v7 addObject:answerFormat2];
 
     goto LABEL_20;
   }
 
-  if (v8 == 4)
+  if (questionType == 4)
   {
     goto LABEL_9;
   }
@@ -1975,15 +1975,15 @@ LABEL_20:
     LOBYTE(v9) = 1;
   }
 
-  v5 = v33;
+  database = v33;
 LABEL_30:
 
   return v9;
 }
 
-- (BOOL)_insertOrUpdateArchivedSurveyStep:(id)a3
+- (BOOL)_insertOrUpdateArchivedSurveyStep:(id)step
 {
-  v4 = a3;
+  stepCopy = step;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1991,15 +1991,15 @@ LABEL_30:
     goto LABEL_29;
   }
 
-  v5 = v4;
+  v5 = stepCopy;
   v6 = objc_opt_new();
   [v6 addObject:v5];
-  v7 = [v5 questionType];
-  if (v7 <= 2)
+  questionType = [v5 questionType];
+  if (questionType <= 2)
   {
-    if (v7 != 1)
+    if (questionType != 1)
     {
-      if (v7 != 2)
+      if (questionType != 2)
       {
         goto LABEL_19;
       }
@@ -2008,29 +2008,29 @@ LABEL_30:
     }
 
 LABEL_17:
-    v9 = [v5 archivedAnswerFormat];
-    [v6 addObject:v9];
+    archivedAnswerFormat = [v5 archivedAnswerFormat];
+    [v6 addObject:archivedAnswerFormat];
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  if (v7 == 3)
+  if (questionType == 3)
   {
     goto LABEL_17;
   }
 
-  if (v7 == 4)
+  if (questionType == 4)
   {
 LABEL_9:
-    v9 = [v5 archivedAnswerFormat];
-    [v6 addObject:v9];
+    archivedAnswerFormat = [v5 archivedAnswerFormat];
+    [v6 addObject:archivedAnswerFormat];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = [v9 archivedAnswerChoiceItems];
-    v11 = [v10 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    archivedAnswerChoiceItems = [archivedAnswerFormat archivedAnswerChoiceItems];
+    v11 = [archivedAnswerChoiceItems countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v11)
     {
       v12 = v11;
@@ -2041,13 +2041,13 @@ LABEL_9:
         {
           if (*v26 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(archivedAnswerChoiceItems);
           }
 
           [v6 addObject:*(*(&v25 + 1) + 8 * i)];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v12 = [archivedAnswerChoiceItems countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v12);
@@ -2095,10 +2095,10 @@ LABEL_29:
   return v8;
 }
 
-- (BOOL)_deleteWithPayload:(id)a3 error:(id *)a4
+- (BOOL)_deleteWithPayload:(id)payload error:(id *)error
 {
-  v5 = a3;
-  if ([v5 hasStatus] && (objc_msgSend(v5, "status"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "code"), v6, v7 != 1))
+  payloadCopy = payload;
+  if ([payloadCopy hasStatus] && (objc_msgSend(payloadCopy, "status"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "code"), v6, v7 != 1))
   {
     v8 = 0;
   }
@@ -2106,81 +2106,81 @@ LABEL_29:
   else
   {
     v8 = 1;
-    switch([v5 type])
+    switch([payloadCopy type])
     {
       case 1u:
         break;
       case 2u:
-        v9 = [v5 handout];
-        v10 = [v9 objectId];
-        [(PDAbstractClassZoneOperation *)self deleteCollectionItemsWithReferenceObjectID:v10];
+        handout = [payloadCopy handout];
+        objectId = [handout objectId];
+        [(PDAbstractClassZoneOperation *)self deleteCollectionItemsWithReferenceObjectID:objectId];
 
-        v11 = [v5 handout];
-        v12 = [v11 objectId];
-        v13 = [(PDAbstractClassZoneOperation *)self deleteHandoutWithObjectID:v12 shouldDeleteDrafts:0];
+        handout2 = [payloadCopy handout];
+        objectId2 = [handout2 objectId];
+        v13 = [(PDAbstractClassZoneOperation *)self deleteHandoutWithObjectID:objectId2 shouldDeleteDrafts:0];
         goto LABEL_44;
       case 3u:
-        v41 = [v5 attachment];
-        v11 = [v41 objectId];
+        attachment = [payloadCopy attachment];
+        handout2 = [attachment objectId];
 
-        [(PDAbstractClassZoneOperation *)self _setAuthorizationForAttachmentWithObjectID:v11 shouldAuthorize:0];
-        v16 = [(PDAbstractClassZoneOperation *)self _deleteEntity:objc_opt_class() identity:v11];
+        [(PDAbstractClassZoneOperation *)self _setAuthorizationForAttachmentWithObjectID:handout2 shouldAuthorize:0];
+        v16 = [(PDAbstractClassZoneOperation *)self _deleteEntity:objc_opt_class() identity:handout2];
         goto LABEL_39;
       case 4u:
         v32 = objc_opt_class();
-        v35 = [v5 recipient];
+        recipient = [payloadCopy recipient];
         goto LABEL_31;
       case 6u:
-        v11 = [v5 classInfo];
-        v12 = [v11 classId];
-        v13 = [(PDAbstractClassZoneOperation *)self deleteClassWithObjectID:v12 deletePersons:0];
+        handout2 = [payloadCopy classInfo];
+        objectId2 = [handout2 classId];
+        v13 = [(PDAbstractClassZoneOperation *)self deleteClassWithObjectID:objectId2 deletePersons:0];
         goto LABEL_44;
       case 7u:
         v32 = objc_opt_class();
-        v11 = [v5 person];
-        v33 = [v11 personId];
+        handout2 = [payloadCopy person];
+        personId = [handout2 personId];
         goto LABEL_32;
       case 8u:
         v32 = objc_opt_class();
-        v11 = [v5 classMember];
-        v33 = [v11 classMemberId];
+        handout2 = [payloadCopy classMember];
+        personId = [handout2 classMemberId];
         goto LABEL_32;
       case 0xFu:
         v32 = objc_opt_class();
-        v35 = [v5 asset];
+        recipient = [payloadCopy asset];
 LABEL_31:
-        v11 = v35;
-        v33 = [v35 objectId];
+        handout2 = recipient;
+        personId = [recipient objectId];
         goto LABEL_32;
       case 0x11u:
-        v11 = [v5 authStatus];
-        v16 = [(PDAbstractClassZoneOperation *)self processAuthorizationStatus:v11];
+        handout2 = [payloadCopy authStatus];
+        v16 = [(PDAbstractClassZoneOperation *)self processAuthorizationStatus:handout2];
         goto LABEL_39;
       case 0x12u:
-        v11 = [v5 completionStatus];
-        v16 = [(PDAbstractClassZoneOperation *)self processCompletionStatus:v11];
+        handout2 = [payloadCopy completionStatus];
+        v16 = [(PDAbstractClassZoneOperation *)self processCompletionStatus:handout2];
         goto LABEL_39;
       case 0x13u:
-        v11 = [v5 stateChange];
-        v16 = [(PDAbstractClassZoneOperation *)self _deleteStateChanges:v11];
+        handout2 = [payloadCopy stateChange];
+        v16 = [(PDAbstractClassZoneOperation *)self _deleteStateChanges:handout2];
 LABEL_39:
         v8 = v16;
         goto LABEL_45;
       case 0x14u:
-        v34 = [v5 collection];
-        v11 = sub_10001D104(v34);
+        collection = [payloadCopy collection];
+        handout2 = sub_10001D104(collection);
 
         v32 = objc_opt_class();
-        v33 = [v11 objectID];
+        personId = [handout2 objectID];
 LABEL_32:
-        v12 = v33;
-        v42 = self;
+        objectId2 = personId;
+        selfCopy3 = self;
         v43 = v32;
         goto LABEL_43;
       case 0x15u:
-        v48 = v5;
-        v17 = [v5 collectionItem];
-        v18 = sub_10001D7AC(v17);
+        v48 = payloadCopy;
+        collectionItem = [payloadCopy collectionItem];
+        v18 = sub_10001D7AC(collectionItem);
 
         v55 = 0u;
         v56 = 0u;
@@ -2206,12 +2206,12 @@ LABEL_32:
               v23 = *(*(&v53 + 1) + 8 * v22);
               if ([v23 type] == 2)
               {
-                v24 = self;
-                v25 = [(PDOperation *)self database];
+                selfCopy2 = self;
+                database = [(PDOperation *)self database];
                 v26 = objc_opt_new();
                 v27 = objc_opt_class();
-                v28 = [v23 referenceObjectID];
-                v63[0] = v28;
+                referenceObjectID = [v23 referenceObjectID];
+                v63[0] = referenceObjectID;
                 v63[1] = &off_10021B630;
                 v29 = [NSArray arrayWithObjects:v63 count:2];
                 v51[0] = _NSConcreteStackBlock;
@@ -2220,15 +2220,15 @@ LABEL_32:
                 v51[3] = &unk_100203838;
                 v30 = v26;
                 v52 = v30;
-                [v25 selectAll:v27 where:@"referenceObjectID = ? and type = ?" bindings:v29 block:v51];
+                [database selectAll:v27 where:@"referenceObjectID = ? and type = ?" bindings:v29 block:v51];
 
                 if ([v30 count])
                 {
                   v31 = [PDDatabase whereSQLForArray:v30 prefix:@"objectID in "];
-                  [v25 deleteAllWithoutTracking:objc_opt_class() where:v31 bindings:v30];
+                  [database deleteAllWithoutTracking:objc_opt_class() where:v31 bindings:v30];
                 }
 
-                self = v24;
+                self = selfCopy2;
                 v20 = v49;
               }
 
@@ -2243,39 +2243,39 @@ LABEL_32:
         }
 
         v8 = 1;
-        v5 = v48;
+        payloadCopy = v48;
         break;
       case 0x19u:
-        v14 = [v5 survey];
-        v15 = [(PDAbstractClassZoneOperation *)self _deleteSurvey:v14];
+        survey = [payloadCopy survey];
+        v15 = [(PDAbstractClassZoneOperation *)self _deleteSurvey:survey];
         goto LABEL_34;
       case 0x1Au:
-        v14 = [v5 surveyStep];
-        v15 = [(PDAbstractClassZoneOperation *)self _deleteSurveyStep:v14];
+        survey = [payloadCopy surveyStep];
+        v15 = [(PDAbstractClassZoneOperation *)self _deleteSurveyStep:survey];
 LABEL_34:
         v8 = v15;
         goto LABEL_36;
       case 0x1Bu:
-        v14 = [v5 surveyStepAnswer];
-        v44 = [v14 objectId];
-        v8 = [(PDAbstractClassZoneOperation *)self _deleteDraftAnswer:v44];
+        survey = [payloadCopy surveyStepAnswer];
+        objectId3 = [survey objectId];
+        v8 = [(PDAbstractClassZoneOperation *)self _deleteDraftAnswer:objectId3];
 
 LABEL_36:
         break;
       case 0x1Eu:
         v45 = objc_opt_class();
-        v46 = [v5 schedule];
+        schedule = [payloadCopy schedule];
         goto LABEL_42;
       case 0x1Fu:
         v45 = objc_opt_class();
-        v46 = [v5 scheduledEvent];
+        schedule = [payloadCopy scheduledEvent];
 LABEL_42:
-        v11 = v46;
-        v12 = [v46 objectId];
-        v42 = self;
+        handout2 = schedule;
+        objectId2 = [schedule objectId];
+        selfCopy3 = self;
         v43 = v45;
 LABEL_43:
-        v13 = [(PDAbstractClassZoneOperation *)v42 _deleteEntity:v43 identity:v12];
+        v13 = [(PDAbstractClassZoneOperation *)selfCopy3 _deleteEntity:v43 identity:objectId2];
 LABEL_44:
         v8 = v13;
 
@@ -2283,29 +2283,29 @@ LABEL_45:
         break;
       default:
         CLSInitLog();
-        v36 = [(PDOperation *)self logSubsystem];
-        if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
+        logSubsystem = [(PDOperation *)self logSubsystem];
+        if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_INFO))
         {
           v37 = objc_opt_class();
-          v38 = [(PDURLRequestOperation *)self operationID];
-          v39 = [v5 type];
-          if (v39 < 0x27 && ((0x7FFFFE91DFuLL >> v39) & 1) != 0)
+          operationID = [(PDURLRequestOperation *)self operationID];
+          type = [payloadCopy type];
+          if (type < 0x27 && ((0x7FFFFE91DFuLL >> type) & 1) != 0)
           {
-            v40 = *(&off_1002038D0 + v39);
+            v40 = *(&off_1002038D0 + type);
           }
 
           else
           {
-            v40 = [NSString stringWithFormat:@"(unknown: %i)", v39];
+            v40 = [NSString stringWithFormat:@"(unknown: %i)", type];
           }
 
           *buf = 138543874;
           v58 = v37;
           v59 = 2114;
-          v60 = v38;
+          v60 = operationID;
           v61 = 2114;
           v62 = v40;
-          _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ Unexpected payload type: %{public}@;", buf, 0x20u);
+          _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ Unexpected payload type: %{public}@;", buf, 0x20u);
         }
 
         v8 = 1;
@@ -2316,13 +2316,13 @@ LABEL_45:
   return v8;
 }
 
-- (BOOL)deleteHandoutWithObjectID:(id)a3 shouldDeleteDrafts:(BOOL)a4
+- (BOOL)deleteHandoutWithObjectID:(id)d shouldDeleteDrafts:(BOOL)drafts
 {
-  v6 = a3;
-  v7 = [(PDOperation *)self database];
-  if (!a4)
+  dCopy = d;
+  database = [(PDOperation *)self database];
+  if (!drafts)
   {
-    v8 = [v7 select:objc_opt_class() identity:v6];
+    v8 = [database select:objc_opt_class() identity:dCopy];
     v9 = v8;
     if (v8 && ![v8 state])
     {
@@ -2332,7 +2332,7 @@ LABEL_45:
     }
   }
 
-  v14[0] = v6;
+  v14[0] = dCopy;
   v14[1] = &off_10021B648;
   v10 = [NSArray arrayWithObjects:v14 count:2];
   v13[0] = _NSConcreteStackBlock;
@@ -2340,32 +2340,32 @@ LABEL_45:
   v13[2] = sub_1000650C0;
   v13[3] = &unk_100203860;
   v13[4] = self;
-  [v7 selectAll:objc_opt_class() where:@"parentObjectID = ? and type = ?" bindings:v10 block:v13];
-  v11 = [(PDAbstractClassZoneOperation *)self _deleteEntity:objc_opt_class() identity:v6];
+  [database selectAll:objc_opt_class() where:@"parentObjectID = ? and type = ?" bindings:v10 block:v13];
+  v11 = [(PDAbstractClassZoneOperation *)self _deleteEntity:objc_opt_class() identity:dCopy];
 
 LABEL_6:
   return v11;
 }
 
-- (BOOL)deleteClassWithObjectID:(id)a3 deletePersons:(BOOL)a4
+- (BOOL)deleteClassWithObjectID:(id)d deletePersons:(BOOL)persons
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PDOperation *)self database];
-  v8 = v7;
-  if (v4)
+  personsCopy = persons;
+  dCopy = d;
+  database = [(PDOperation *)self database];
+  v8 = database;
+  if (personsCopy)
   {
-    v9 = sub_1000765A0(v7, v6);
+    v9 = sub_1000765A0(database, dCopy);
     v10 = sub_1000711FC(v8);
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 objectID];
+      objectID = [v10 objectID];
 
-      if (v12)
+      if (objectID)
       {
-        v13 = [v11 objectID];
-        [v9 removeObject:v13];
+        objectID2 = [v11 objectID];
+        [v9 removeObject:objectID2];
       }
     }
   }
@@ -2375,7 +2375,7 @@ LABEL_6:
     v9 = 0;
   }
 
-  v14 = [(PDAbstractClassZoneOperation *)self _deleteEntity:objc_opt_class() identity:v6];
+  v14 = [(PDAbstractClassZoneOperation *)self _deleteEntity:objc_opt_class() identity:dCopy];
   if ((v14 & 1) == 0)
   {
     CLSInitLog();
@@ -2386,13 +2386,13 @@ LABEL_6:
       v24 = 138543618;
       v25 = objc_opt_class();
       v26 = 2114;
-      v27 = v6;
+      v27 = dCopy;
       v17 = v25;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ failed to delete class %{public}@", &v24, 0x16u);
     }
   }
 
-  if (v4 && [v9 count])
+  if (personsCopy && [v9 count])
   {
     v18 = [PDDatabase whereSQLForArray:v9 prefix:@"objectID in "];
     v14 = [v8 deleteAll:objc_opt_class() where:v18 bindings:v9];
@@ -2407,7 +2407,7 @@ LABEL_6:
         v24 = 138543618;
         v25 = v21;
         v26 = 2114;
-        v27 = v6;
+        v27 = dCopy;
         v22 = v21;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ failed to delete persons in class %{public}@", &v24, 0x16u);
       }
@@ -2417,80 +2417,80 @@ LABEL_6:
   return v14;
 }
 
-- (BOOL)_deleteEntity:(Class)a3 identity:(id)a4
+- (BOOL)_deleteEntity:(Class)entity identity:(id)identity
 {
-  v6 = a4;
-  v7 = [(PDOperation *)self database];
-  v25 = v6;
+  identityCopy = identity;
+  database = [(PDOperation *)self database];
+  v25 = identityCopy;
   v8 = [NSArray arrayWithObjects:&v25 count:1];
-  v9 = [(objc_class *)a3 identityColumnName];
-  v10 = [v9 stringByAppendingString:@" = ?"];
+  identityColumnName = [(objc_class *)entity identityColumnName];
+  v10 = [identityColumnName stringByAppendingString:@" = ?"];
 
-  if (([v7 deleteAll:a3 where:v10 bindings:v8] & 1) == 0)
+  if (([database deleteAll:entity where:v10 bindings:v8] & 1) == 0)
   {
     CLSInitLog();
-    v12 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    logSubsystem = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEFAULT))
     {
       v13 = objc_opt_class();
       v14 = v13;
-      v15 = [(PDURLRequestOperation *)self operationID];
+      operationID = [(PDURLRequestOperation *)self operationID];
       v17 = 138544130;
       v18 = v13;
       v19 = 2114;
-      v20 = v15;
+      v20 = operationID;
       v21 = 2114;
-      v22 = a3;
+      entityCopy = entity;
       v23 = 2112;
-      v24 = v6;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Failed to delete %{public}@ %@.", &v17, 0x2Au);
+      v24 = identityCopy;
+      _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Failed to delete %{public}@ %@.", &v17, 0x2Au);
     }
 
     goto LABEL_9;
   }
 
-  if (!-[PDAbstractClassZoneOperation resolveMissingEntityWithObjectID:](self, "resolveMissingEntityWithObjectID:", v6) || ![v7 deleteAll:objc_opt_class() where:@"entityIdentity = ?" bindings:v8] || !objc_msgSend(v7, "deleteAll:where:bindings:", objc_opt_class(), @"objectID = ?", v8))
+  if (!-[PDAbstractClassZoneOperation resolveMissingEntityWithObjectID:](self, "resolveMissingEntityWithObjectID:", identityCopy) || ![database deleteAll:objc_opt_class() where:@"entityIdentity = ?" bindings:v8] || !objc_msgSend(database, "deleteAll:where:bindings:", objc_opt_class(), @"objectID = ?", v8))
   {
 LABEL_9:
     v11 = 0;
     goto LABEL_10;
   }
 
-  [v7 deleteAll:objc_opt_class() where:@"objectID = ?" bindings:v8];
-  [v7 deleteAll:objc_opt_class() where:@"objectID = ?" bindings:v8];
-  [v7 deleteAll:objc_opt_class() where:@"objectID = ?" bindings:v8];
+  [database deleteAll:objc_opt_class() where:@"objectID = ?" bindings:v8];
+  [database deleteAll:objc_opt_class() where:@"objectID = ?" bindings:v8];
+  [database deleteAll:objc_opt_class() where:@"objectID = ?" bindings:v8];
   v11 = 1;
 LABEL_10:
 
   return v11;
 }
 
-- (BOOL)_deleteDraftAnswer:(id)a3
+- (BOOL)_deleteDraftAnswer:(id)answer
 {
-  v4 = a3;
+  answerCopy = answer;
   [(PDOperation *)self database];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10006571C;
   v10 = v9[3] = &unk_100202140;
-  v11 = v4;
-  v5 = v4;
+  v11 = answerCopy;
+  v5 = answerCopy;
   v6 = v10;
   v7 = [v6 withSyncEnabled:v9];
 
   return v7;
 }
 
-- (BOOL)_deleteStateChanges:(id)a3
+- (BOOL)_deleteStateChanges:(id)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   v4 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [v3 stateChangePayloads];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  stateChangePayloads = [changesCopy stateChangePayloads];
+  v6 = [stateChangePayloads countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2501,28 +2501,28 @@ LABEL_10:
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(stateChangePayloads);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        v11 = [v3 targetObjectId];
-        v12 = [v3 targetOwnerPersonId];
-        v13 = +[CLSCollaborationState identifierForTargetObjectID:ownerPersonID:domain:](CLSCollaborationState, "identifierForTargetObjectID:ownerPersonID:domain:", v11, v12, [v10 domain]);
+        targetObjectId = [changesCopy targetObjectId];
+        targetOwnerPersonId = [changesCopy targetOwnerPersonId];
+        v13 = +[CLSCollaborationState identifierForTargetObjectID:ownerPersonID:domain:](CLSCollaborationState, "identifierForTargetObjectID:ownerPersonID:domain:", targetObjectId, targetOwnerPersonId, [v10 domain]);
 
         [v4 addObject:v13];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v7 = [stateChangePayloads countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v7);
   }
 
-  v14 = [(PDOperation *)self database];
+  database = [(PDOperation *)self database];
   if ([v4 count])
   {
     v15 = [PDDatabase whereSQLForArray:v4 prefix:@"objectID in "];
-    v16 = [v14 deleteAll:objc_opt_class() where:v15 bindings:v4];
+    v16 = [database deleteAll:objc_opt_class() where:v15 bindings:v4];
     if ((v16 & 1) == 0)
     {
       CLSInitLog();
@@ -2534,7 +2534,7 @@ LABEL_10:
         *buf = 138543618;
         v28 = v19;
         v29 = 2114;
-        v30 = v3;
+        v30 = changesCopy;
         v20 = v19;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ failed to delete CLSCollaborationStateChanges in payload %{public}@", buf, 0x16u);
       }
@@ -2549,14 +2549,14 @@ LABEL_10:
   return v16;
 }
 
-- (BOOL)_deleteSurvey:(id)a3
+- (BOOL)_deleteSurvey:(id)survey
 {
-  v4 = a3;
-  v5 = [v4 objectId];
-  v6 = [(PDOperation *)self database];
+  surveyCopy = survey;
+  objectId = [surveyCopy objectId];
+  database = [(PDOperation *)self database];
   v7 = objc_opt_new();
   v8 = objc_opt_class();
-  v37 = v5;
+  v37 = objectId;
   v9 = [NSArray arrayWithObjects:&v37 count:1];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
@@ -2564,12 +2564,12 @@ LABEL_10:
   v29[3] = &unk_100203888;
   v10 = v7;
   v30 = v10;
-  [v6 selectAll:v8 where:@"parentObjectID = ?" bindings:v9 block:v29];
+  [database selectAll:v8 where:@"parentObjectID = ?" bindings:v9 block:v29];
 
   if ([v10 count])
   {
     v11 = [PDDatabase whereSQLForArray:v10 prefix:@"objectID in "];
-    if (([v6 deleteAll:objc_opt_class() where:v11 bindings:v10] & 1) == 0)
+    if (([database deleteAll:objc_opt_class() where:v11 bindings:v10] & 1) == 0)
     {
       CLSInitLog();
       v12 = CLSLogDatabase;
@@ -2580,7 +2580,7 @@ LABEL_10:
         *buf = 138543618;
         v34 = v14;
         v35 = 2114;
-        v36 = v5;
+        v36 = objectId;
         v15 = v14;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ failed to manually delete survey questions %{public}@", buf, 0x16u);
       }
@@ -2588,9 +2588,9 @@ LABEL_10:
   }
 
   v16 = objc_opt_class();
-  v32 = v5;
+  v32 = objectId;
   v17 = [NSArray arrayWithObjects:&v32 count:1];
-  LOBYTE(v16) = [v6 deleteAllWithoutTracking:v16 where:@"objectID = ?" bindings:v17];
+  LOBYTE(v16) = [database deleteAllWithoutTracking:v16 where:@"objectID = ?" bindings:v17];
 
   if ((v16 & 1) == 0)
   {
@@ -2603,7 +2603,7 @@ LABEL_10:
       *buf = 138543618;
       v34 = v27;
       v35 = 2114;
-      v36 = v4;
+      v36 = surveyCopy;
       v24 = v27;
       v25 = "%{public}@ failed to delete CLSSurvey in payload %{public}@";
       goto LABEL_12;
@@ -2615,10 +2615,10 @@ LABEL_13:
   }
 
   v18 = objc_opt_class();
-  v31 = v5;
+  v31 = objectId;
   v19 = 1;
   v20 = [NSArray arrayWithObjects:&v31 count:1];
-  LOBYTE(v18) = [v6 deleteAllWithoutTracking:v18 where:@"surveyID = ?" bindings:v20];
+  LOBYTE(v18) = [database deleteAllWithoutTracking:v18 where:@"surveyID = ?" bindings:v20];
 
   if ((v18 & 1) == 0)
   {
@@ -2631,7 +2631,7 @@ LABEL_13:
       *buf = 138543618;
       v34 = v23;
       v35 = 2114;
-      v36 = v5;
+      v36 = objectId;
       v24 = v23;
       v25 = "%{public}@ failed to delete answers associate with the survey %{public}@";
 LABEL_12:
@@ -2648,19 +2648,19 @@ LABEL_14:
   return v19;
 }
 
-- (BOOL)_deleteSurveyStep:(id)a3
+- (BOOL)_deleteSurveyStep:(id)step
 {
-  v4 = a3;
-  v5 = [v4 objectId];
-  v6 = [(PDOperation *)self database];
-  if ([(PDAbstractClassZoneOperation *)self _deleteEntity:objc_opt_class() identity:v5])
+  stepCopy = step;
+  objectId = [stepCopy objectId];
+  database = [(PDOperation *)self database];
+  if ([(PDAbstractClassZoneOperation *)self _deleteEntity:objc_opt_class() identity:objectId])
   {
-    v7 = [v4 answerFormatObjectId];
-    v8 = [v4 answerFormatType];
-    v36 = v7;
-    if (v8 == 1 || v8 == 3 || v8 == 2)
+    answerFormatObjectId = [stepCopy answerFormatObjectId];
+    answerFormatType = [stepCopy answerFormatType];
+    v36 = answerFormatObjectId;
+    if (answerFormatType == 1 || answerFormatType == 3 || answerFormatType == 2)
     {
-      if (![(PDAbstractClassZoneOperation *)self _deleteEntity:objc_opt_class() identity:v7, v7])
+      if (![(PDAbstractClassZoneOperation *)self _deleteEntity:objc_opt_class() identity:answerFormatObjectId, answerFormatObjectId])
       {
         CLSInitLog();
         v11 = CLSLogDatabase;
@@ -2670,7 +2670,7 @@ LABEL_14:
           *buf = 138543618;
           v48 = objc_opt_class();
           v49 = 2114;
-          v50 = v7;
+          v50 = answerFormatObjectId;
           v29 = v48;
           _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%{public}@ failed to delete answer format %{public}@", buf, 0x16u);
         }
@@ -2696,8 +2696,8 @@ LABEL_16:
     v13 = objc_opt_new();
     v14 = objc_opt_new();
     v15 = objc_opt_class();
-    v38 = v5;
-    v46 = v5;
+    v38 = objectId;
+    v46 = objectId;
     v16 = [NSArray arrayWithObjects:&v46 count:1];
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
@@ -2707,12 +2707,12 @@ LABEL_16:
     v44 = v17;
     v18 = v14;
     v45 = v18;
-    [v6 selectAll:v15 where:@"questionID = ?" bindings:v16 block:v43];
+    [database selectAll:v15 where:@"questionID = ?" bindings:v16 block:v43];
 
     if ([v18 count])
     {
       v19 = [PDDatabase whereSQLForArray:v18 prefix:@"objectID IN "];
-      v10 = [v6 deleteAll:objc_opt_class() where:v19 bindings:v18];
+      v10 = [database deleteAll:objc_opt_class() where:v19 bindings:v18];
       if ((v10 & 1) == 0)
       {
         CLSInitLog();
@@ -2738,7 +2738,7 @@ LABEL_16:
       v39[1] = 3221225472;
       v39[2] = sub_1000664AC;
       v39[3] = &unk_1002038B0;
-      v40 = v6;
+      v40 = database;
       v22 = v21;
       v41 = v22;
       v23 = v17;
@@ -2762,7 +2762,7 @@ LABEL_16:
       }
     }
 
-    v5 = v38;
+    objectId = v38;
     goto LABEL_27;
   }
 
@@ -2774,7 +2774,7 @@ LABEL_16:
     *buf = 138543618;
     v48 = objc_opt_class();
     v49 = 2114;
-    v50 = v4;
+    v50 = stepCopy;
     v27 = v48;
     _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%{public}@ failed to delete CLSQuestionStep in payload %{public}@", buf, 0x16u);
   }
@@ -2785,29 +2785,29 @@ LABEL_27:
   return v10;
 }
 
-- (void)_setAuthorizationForAttachmentWithObjectID:(id)a3 shouldAuthorize:(BOOL)a4
+- (void)_setAuthorizationForAttachmentWithObjectID:(id)d shouldAuthorize:(BOOL)authorize
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PDOperation *)self database];
-  LOBYTE(v4) = sub_10016032C(v7, v6, v4);
+  authorizeCopy = authorize;
+  dCopy = d;
+  database = [(PDOperation *)self database];
+  LOBYTE(authorizeCopy) = sub_10016032C(database, dCopy, authorizeCopy);
 
-  if ((v4 & 1) == 0)
+  if ((authorizeCopy & 1) == 0)
   {
     CLSInitLog();
-    v8 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    logSubsystem = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEFAULT))
     {
       v9 = objc_opt_class();
       v10 = v9;
-      v11 = [(PDURLRequestOperation *)self operationID];
+      operationID = [(PDURLRequestOperation *)self operationID];
       v12 = 138543874;
       v13 = v9;
       v14 = 2114;
-      v15 = v11;
+      v15 = operationID;
       v16 = 2114;
-      v17 = v6;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Failed to update authorization for attchment with objectID = %{public}@; - skipping authorization status.", &v12, 0x20u);
+      v17 = dCopy;
+      _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Failed to update authorization for attchment with objectID = %{public}@; - skipping authorization status.", &v12, 0x20u);
     }
   }
 }

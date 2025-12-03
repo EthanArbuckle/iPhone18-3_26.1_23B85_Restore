@@ -1,11 +1,11 @@
 @interface UpdatesManager
-+ (BOOL)isTVProviderApp:(unint64_t)a3;
++ (BOOL)isTVProviderApp:(unint64_t)app;
 + (BOOL)shouldUseModernUpdates;
 + (UpdatesControllerInterface)sharedManager;
 + (id)_internalManager;
 - (BOOL)shouldUseModernUpdates;
 - (UpdatesManager)init;
-- (void)_invalidateCachedModernUpdatesValue:(id)a3;
+- (void)_invalidateCachedModernUpdatesValue:(id)value;
 @end
 
 @implementation UpdatesManager
@@ -52,10 +52,10 @@
 
 + (UpdatesControllerInterface)sharedManager
 {
-  v2 = [a1 _internalManager];
-  v3 = [v2 shouldUseModernUpdates];
+  _internalManager = [self _internalManager];
+  shouldUseModernUpdates = [_internalManager shouldUseModernUpdates];
 
-  if (v3)
+  if (shouldUseModernUpdates)
   {
     +[_TtC9appstored20UpdatesManager_Swift shared];
   }
@@ -71,20 +71,20 @@
 
 + (BOOL)shouldUseModernUpdates
 {
-  v2 = [a1 _internalManager];
-  v3 = [v2 shouldUseModernUpdates];
+  _internalManager = [self _internalManager];
+  shouldUseModernUpdates = [_internalManager shouldUseModernUpdates];
 
-  return v3;
+  return shouldUseModernUpdates;
 }
 
-+ (BOOL)isTVProviderApp:(unint64_t)a3
++ (BOOL)isTVProviderApp:(unint64_t)app
 {
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [a1 sharedManager];
+  sharedManager = [self sharedManager];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100320DE4;
@@ -92,13 +92,13 @@
   v11 = &v12;
   v7 = v5;
   v10 = v7;
-  [v6 isTVProviderApp:a3 withReplyHandler:v9];
+  [sharedManager isTVProviderApp:app withReplyHandler:v9];
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
-  LOBYTE(a3) = *(v13 + 24);
+  LOBYTE(app) = *(v13 + 24);
 
   _Block_object_dispose(&v12, 8);
-  return a3;
+  return app;
 }
 
 - (BOOL)shouldUseModernUpdates
@@ -120,20 +120,20 @@
   v4 = v20[5];
   if (!v4)
   {
-    v6 = [(UpdatesManager *)self _shouldUseModernUpdates];
+    _shouldUseModernUpdates = [(UpdatesManager *)self _shouldUseModernUpdates];
     v7 = sub_1003D3F88(AppDefaultsManager, @"CurrentUpdateSource");
     v8 = [v7 isEqualToNumber:&off_100547FC8];
     v9 = v8;
-    if (v6)
+    if (_shouldUseModernUpdates)
     {
-      v5 = [v6 BOOLValue];
+      bOOLValue = [_shouldUseModernUpdates BOOLValue];
       v10 = self->_unfairLock;
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = sub_1003210A4;
       v16[3] = &unk_10051C8F8;
       v16[4] = self;
-      v17 = v5;
+      v17 = bOOLValue;
       sub_100379C5C(v10, v16);
       if (!v7)
       {
@@ -143,39 +143,39 @@
 
     else
     {
-      v5 = v8;
+      bOOLValue = v8;
       if (!v7)
       {
 LABEL_9:
-        v12 = [NSNumber numberWithBool:v5];
+        v12 = [NSNumber numberWithBool:bOOLValue];
         sub_1003D4024(AppDefaultsManager, v12, @"CurrentUpdateSource");
 
         goto LABEL_10;
       }
     }
 
-    if (v9 != v5)
+    if (v9 != bOOLValue)
     {
       v11 = sub_1002BB3F0();
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_1003210F4;
       v14[3] = &unk_100523300;
-      v15 = v5;
+      v15 = bOOLValue;
       [v11 modifyUsingTransaction:v14];
     }
 
     goto LABEL_9;
   }
 
-  LOBYTE(v5) = [v4 BOOLValue];
+  LOBYTE(bOOLValue) = [v4 BOOLValue];
 LABEL_10:
   _Block_object_dispose(&v19, 8);
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)_invalidateCachedModernUpdatesValue:(id)a3
+- (void)_invalidateCachedModernUpdatesValue:(id)value
 {
   unfairLock = self->_unfairLock;
   v4[0] = _NSConcreteStackBlock;

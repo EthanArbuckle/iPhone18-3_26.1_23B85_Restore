@@ -1,16 +1,16 @@
 @interface SoftwareUpdateRequiredFlow
-- (_TtC18SharingViewService26SoftwareUpdateRequiredFlow)initWithCoder:(id)a3;
-- (_TtC18SharingViewService26SoftwareUpdateRequiredFlow)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (_TtC18SharingViewService26SoftwareUpdateRequiredFlow)initWithCoder:(id)coder;
+- (_TtC18SharingViewService26SoftwareUpdateRequiredFlow)initWithNibName:(id)name bundle:(id)bundle;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)proxCardFlowDidDismiss;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation SoftwareUpdateRequiredFlow
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -25,13 +25,13 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  [(SoftwareUpdateRequiredFlow *)&v8 viewDidAppear:v3];
+  [(SoftwareUpdateRequiredFlow *)&v8 viewDidAppear:appearCopy];
   v5 = sub_100070288();
   if (v5)
   {
@@ -43,34 +43,34 @@
   v7 = [v4 presentProxCardFlowWithDelegate:v4 initialViewController:v6];
 }
 
-- (_TtC18SharingViewService26SoftwareUpdateRequiredFlow)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18SharingViewService26SoftwareUpdateRequiredFlow)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v8 = a4;
-    a3 = String._bridgeToObjectiveC()();
+    bundleCopy = bundle;
+    name = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v9 = a4;
+    bundleCopy2 = bundle;
   }
 
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(SoftwareUpdateRequiredFlow *)&v12 initWithNibName:a3 bundle:a4];
+  v10 = [(SoftwareUpdateRequiredFlow *)&v12 initWithNibName:name bundle:bundle];
 
   return v10;
 }
 
-- (_TtC18SharingViewService26SoftwareUpdateRequiredFlow)initWithCoder:(id)a3
+- (_TtC18SharingViewService26SoftwareUpdateRequiredFlow)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(SoftwareUpdateRequiredFlow *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SoftwareUpdateRequiredFlow *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -81,7 +81,7 @@
 
 - (void)proxCardFlowDidDismiss
 {
-  v3 = self;
+  selfCopy = self;
   v2 = sub_100070288();
   if (v2)
   {

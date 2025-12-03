@@ -1,7 +1,7 @@
 @interface PPTRunner
 + (_TtC5Books9PPTRunner)shared;
-+ (void)setShared:(id)a3;
-- (BOOL)runTestWithName:(id)a3 options:(id)a4;
++ (void)setShared:(id)shared;
+- (BOOL)runTestWithName:(id)name options:(id)options;
 - (_TtC5Books9PPTRunner)init;
 @end
 
@@ -19,27 +19,27 @@
   return v3;
 }
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
   v3 = qword_100AD1550;
-  v4 = a3;
+  sharedCopy = shared;
   if (v3 != -1)
   {
-    v6 = v4;
+    v6 = sharedCopy;
     swift_once();
-    v4 = v6;
+    sharedCopy = v6;
   }
 
   v5 = qword_100B232B8;
-  qword_100B232B8 = v4;
+  qword_100B232B8 = sharedCopy;
 }
 
-- (BOOL)runTestWithName:(id)a3 options:(id)a4
+- (BOOL)runTestWithName:(id)name options:(id)options
 {
   v5 = sub_1007A2254();
   v7 = v6;
   v8 = sub_1007A2044();
-  v9 = self;
+  selfCopy = self;
   LOBYTE(v5) = sub_1003F2694(v5, v7, v8);
 
   return v5 & 1;

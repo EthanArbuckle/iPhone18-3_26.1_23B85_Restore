@@ -1,16 +1,16 @@
 @interface ATXUpdatePredictionsLogger
 - (ATXUpdatePredictionsLogger)init;
-- (ATXUpdatePredictionsLogger)initWithUserDefaults:(id)a3 petLogger:(id)a4;
+- (ATXUpdatePredictionsLogger)initWithUserDefaults:(id)defaults petLogger:(id)logger;
 - (NSDate)now;
-- (id)_countDictionaryDefaultsKeyForClient:(unint64_t)a3;
-- (id)_countDictionaryForClient:(unint64_t)a3;
-- (id)_stringForATXUpdatePredictionsClient:(unint64_t)a3;
-- (int)_clientTypeForUpdatePredictionsClient:(unint64_t)a3;
-- (int)_triggerTypeForUpdatePredictionsReason:(unint64_t)a3;
-- (void)_logPredictionUpdatesForClient:(unint64_t)a3 lastLogDate:(id)a4 now:(id)a5;
+- (id)_countDictionaryDefaultsKeyForClient:(unint64_t)client;
+- (id)_countDictionaryForClient:(unint64_t)client;
+- (id)_stringForATXUpdatePredictionsClient:(unint64_t)client;
+- (int)_clientTypeForUpdatePredictionsClient:(unint64_t)client;
+- (int)_triggerTypeForUpdatePredictionsReason:(unint64_t)reason;
+- (void)_logPredictionUpdatesForClient:(unint64_t)client lastLogDate:(id)date now:(id)now;
 - (void)_resetCountDictionariesForAllClients;
-- (void)_setCountDictionary:(id)a3 forClient:(unint64_t)a4;
-- (void)countPredictionUpdateWithReason:(unint64_t)a3 client:(unint64_t)a4;
+- (void)_setCountDictionary:(id)dictionary forClient:(unint64_t)client;
+- (void)countPredictionUpdateWithReason:(unint64_t)reason client:(unint64_t)client;
 - (void)flushCountedPredictionUpdatesToLogger;
 @end
 
@@ -26,39 +26,39 @@
   return v6;
 }
 
-- (ATXUpdatePredictionsLogger)initWithUserDefaults:(id)a3 petLogger:(id)a4
+- (ATXUpdatePredictionsLogger)initWithUserDefaults:(id)defaults petLogger:(id)logger
 {
-  v7 = a3;
-  v8 = a4;
+  defaultsCopy = defaults;
+  loggerCopy = logger;
   v12.receiver = self;
   v12.super_class = ATXUpdatePredictionsLogger;
   v9 = [(ATXUpdatePredictionsLogger *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_userDefaults, a3);
-    objc_storeStrong(&v10->_petLogger, a4);
+    objc_storeStrong(&v9->_userDefaults, defaults);
+    objc_storeStrong(&v10->_petLogger, logger);
   }
 
   return v10;
 }
 
-- (void)countPredictionUpdateWithReason:(unint64_t)a3 client:(unint64_t)a4
+- (void)countPredictionUpdateWithReason:(unint64_t)reason client:(unint64_t)client
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277D42598] isClassCLocked];
-  if (a3 != 22 && (v7 & 1) == 0)
+  isClassCLocked = [MEMORY[0x277D42598] isClassCLocked];
+  if (reason != 22 && (isClassCLocked & 1) == 0)
   {
     pthread_mutex_lock(&lock_1);
-    v8 = [(ATXUpdatePredictionsLogger *)self _countDictionaryForClient:a4];
-    [(ATXUpdatePredictionsLogger *)self _incrementCountInDictionary:v8 forTriggerType:[(ATXUpdatePredictionsLogger *)self _triggerTypeForUpdatePredictionsReason:a3]];
+    v8 = [(ATXUpdatePredictionsLogger *)self _countDictionaryForClient:client];
+    [(ATXUpdatePredictionsLogger *)self _incrementCountInDictionary:v8 forTriggerType:[(ATXUpdatePredictionsLogger *)self _triggerTypeForUpdatePredictionsReason:reason]];
     [(ATXUpdatePredictionsLogger *)self _incrementCountInDictionary:v8 forTriggerType:7];
-    [(ATXUpdatePredictionsLogger *)self _setCountDictionary:v8 forClient:a4];
+    [(ATXUpdatePredictionsLogger *)self _setCountDictionary:v8 forClient:client];
     v9 = __atxlog_handle_default();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [(ATXUpdatePredictionsLogger *)self _stringForATXUpdatePredictionsClient:a4];
-      v12 = [ATXUpdatePredictionsReasons stringForUpdatePredictionsReason:a3];
+      v11 = [(ATXUpdatePredictionsLogger *)self _stringForATXUpdatePredictionsClient:client];
+      v12 = [ATXUpdatePredictionsReasons stringForUpdatePredictionsReason:reason];
       v13 = 138412802;
       v14 = v11;
       v15 = 2112;
@@ -78,16 +78,16 @@
 {
   v3 = os_transaction_create();
   pthread_mutex_lock(&lock_1);
-  v4 = [(ATXUpdatePredictionsLogger *)self _lastLogDate];
+  _lastLogDate = [(ATXUpdatePredictionsLogger *)self _lastLogDate];
   v5 = [(ATXUpdatePredictionsLogger *)self now];
   v6 = v5;
-  if (v4)
+  if (_lastLogDate)
   {
-    [v5 timeIntervalSinceDate:v4];
+    [v5 timeIntervalSinceDate:_lastLogDate];
     if (v7 >= 79200.0)
     {
-      [(ATXUpdatePredictionsLogger *)self _logPredictionUpdatesForClient:0 lastLogDate:v4 now:v6];
-      [(ATXUpdatePredictionsLogger *)self _logPredictionUpdatesForClient:1 lastLogDate:v4 now:v6];
+      [(ATXUpdatePredictionsLogger *)self _logPredictionUpdatesForClient:0 lastLogDate:_lastLogDate now:v6];
+      [(ATXUpdatePredictionsLogger *)self _logPredictionUpdatesForClient:1 lastLogDate:_lastLogDate now:v6];
       [(ATXUpdatePredictionsLogger *)self _resetCountDictionariesForAllClients];
       [(ATXUpdatePredictionsLogger *)self _setLastLogDate:v6];
       v8 = __atxlog_handle_default();
@@ -121,25 +121,25 @@
   pthread_mutex_unlock(&lock_1);
 }
 
-- (void)_logPredictionUpdatesForClient:(unint64_t)a3 lastLogDate:(id)a4 now:(id)a5
+- (void)_logPredictionUpdatesForClient:(unint64_t)client lastLogDate:(id)date now:(id)now
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ATXUpdatePredictionsLogger *)self _countDictionaryForClient:a3];
+  dateCopy = date;
+  nowCopy = now;
+  v10 = [(ATXUpdatePredictionsLogger *)self _countDictionaryForClient:client];
   v11 = 0;
   *&v12 = 138412802;
   v21 = v12;
   do
   {
-    v13 = [(ATXUpdatePredictionsLogger *)self _protobufForTriggerType:v11 client:a3, v21];
+    v13 = [(ATXUpdatePredictionsLogger *)self _protobufForTriggerType:v11 client:client, v21];
     v14 = [v10 objectForKey:off_2785A0F80[v11]];
-    -[ATXUpdatePredictionsLogger _normalizeCountPer24HoursWithStartDate:endDate:count:](self, "_normalizeCountPer24HoursWithStartDate:endDate:count:", v8, v9, [v14 unsignedIntegerValue]);
+    -[ATXUpdatePredictionsLogger _normalizeCountPer24HoursWithStartDate:endDate:count:](self, "_normalizeCountPer24HoursWithStartDate:endDate:count:", dateCopy, nowCopy, [v14 unsignedIntegerValue]);
     v16 = v15;
     v17 = __atxlog_handle_default();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [(ATXUpdatePredictionsLogger *)self _stringForATXUpdatePredictionsClient:a3];
+      v18 = [(ATXUpdatePredictionsLogger *)self _stringForATXUpdatePredictionsClient:client];
       v19 = off_2785A0F80[v11];
       *buf = v21;
       v23 = v18;
@@ -159,17 +159,17 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_countDictionaryDefaultsKeyForClient:(unint64_t)a3
+- (id)_countDictionaryDefaultsKeyForClient:(unint64_t)client
 {
-  v3 = [(ATXUpdatePredictionsLogger *)self _stringForATXUpdatePredictionsClient:a3];
+  v3 = [(ATXUpdatePredictionsLogger *)self _stringForATXUpdatePredictionsClient:client];
   v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@-%@", @"ATXUpdatePredictionsLoggerCountsDictionary", v3];
 
   return v4;
 }
 
-- (id)_countDictionaryForClient:(unint64_t)a3
+- (id)_countDictionaryForClient:(unint64_t)client
 {
-  v4 = [(ATXUpdatePredictionsLogger *)self _countDictionaryDefaultsKeyForClient:a3];
+  v4 = [(ATXUpdatePredictionsLogger *)self _countDictionaryDefaultsKeyForClient:client];
   v5 = [(NSUserDefaults *)self->_userDefaults objectForKey:v4];
   v6 = [v5 mutableCopy];
 
@@ -181,11 +181,11 @@
   return v6;
 }
 
-- (void)_setCountDictionary:(id)a3 forClient:(unint64_t)a4
+- (void)_setCountDictionary:(id)dictionary forClient:(unint64_t)client
 {
-  v6 = a3;
-  v7 = [(ATXUpdatePredictionsLogger *)self _countDictionaryDefaultsKeyForClient:a4];
-  [(NSUserDefaults *)self->_userDefaults setObject:v6 forKey:v7];
+  dictionaryCopy = dictionary;
+  v7 = [(ATXUpdatePredictionsLogger *)self _countDictionaryDefaultsKeyForClient:client];
+  [(NSUserDefaults *)self->_userDefaults setObject:dictionaryCopy forKey:v7];
 }
 
 - (void)_resetCountDictionariesForAllClients
@@ -196,18 +196,18 @@
   [(ATXUpdatePredictionsLogger *)self _setCountDictionary:v3 forClient:1];
 }
 
-- (int)_triggerTypeForUpdatePredictionsReason:(unint64_t)a3
+- (int)_triggerTypeForUpdatePredictionsReason:(unint64_t)reason
 {
-  if (a3 > 5)
+  if (reason > 5)
   {
-    if (a3 - 7 < 0xF)
+    if (reason - 7 < 0xF)
     {
       return 6;
     }
 
-    if (a3 - 22 >= 2)
+    if (reason - 22 >= 2)
     {
-      v7 = a3 == 6;
+      v7 = reason == 6;
       v8 = 5;
       goto LABEL_18;
     }
@@ -215,11 +215,11 @@
     goto LABEL_21;
   }
 
-  if (a3 <= 1)
+  if (reason <= 1)
   {
-    if (a3)
+    if (reason)
     {
-      v7 = a3 == 1;
+      v7 = reason == 1;
       v8 = 1;
 LABEL_18:
       if (v7)
@@ -237,14 +237,14 @@ LABEL_21:
     v9 = __atxlog_handle_default();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(ATXUpdatePredictionsLogger *)a3 _triggerTypeForUpdatePredictionsReason:v9, v10, v11, v12, v13, v14, v15];
+      [(ATXUpdatePredictionsLogger *)reason _triggerTypeForUpdatePredictionsReason:v9, v10, v11, v12, v13, v14, v15];
     }
 
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"stringForConsumerType called with invalid ATXEngagementType value of %lu", a3}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"stringForConsumerType called with invalid ATXEngagementType value of %lu", reason}];
     return 6;
   }
 
-  if (a3 == 5)
+  if (reason == 5)
   {
     v5 = 4;
   }
@@ -254,7 +254,7 @@ LABEL_21:
     v5 = 0;
   }
 
-  if (a3 == 3)
+  if (reason == 3)
   {
     v6 = 3;
   }
@@ -264,7 +264,7 @@ LABEL_21:
     v6 = v5;
   }
 
-  if (a3 == 2)
+  if (reason == 2)
   {
     return 2;
   }
@@ -275,14 +275,14 @@ LABEL_21:
   }
 }
 
-- (int)_clientTypeForUpdatePredictionsClient:(unint64_t)a3
+- (int)_clientTypeForUpdatePredictionsClient:(unint64_t)client
 {
-  if (a3 == 1)
+  if (client == 1)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!client)
   {
     return 0;
   }
@@ -290,21 +290,21 @@ LABEL_21:
   v5 = __atxlog_handle_default();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(ATXUpdatePredictionsLogger *)a3 _clientTypeForUpdatePredictionsClient:v5, v6, v7, v8, v9, v10, v11];
+    [(ATXUpdatePredictionsLogger *)client _clientTypeForUpdatePredictionsClient:v5, v6, v7, v8, v9, v10, v11];
   }
 
-  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"_clientTypeForUpdatePredictionsClient called with invalid ATXUpdatePredictionsClient value of %lu", a3}];
+  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"_clientTypeForUpdatePredictionsClient called with invalid ATXUpdatePredictionsClient value of %lu", client}];
   return 0x7FFFFFFF;
 }
 
-- (id)_stringForATXUpdatePredictionsClient:(unint64_t)a3
+- (id)_stringForATXUpdatePredictionsClient:(unint64_t)client
 {
-  if (!a3)
+  if (!client)
   {
     return @"AppPredictions";
   }
 
-  if (a3 == 1)
+  if (client == 1)
   {
     return @"ActionPredictions";
   }
@@ -312,10 +312,10 @@ LABEL_21:
   v5 = __atxlog_handle_default();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(ATXUpdatePredictionsLogger *)a3 _stringForATXUpdatePredictionsClient:v5, v6, v7, v8, v9, v10, v11];
+    [(ATXUpdatePredictionsLogger *)client _stringForATXUpdatePredictionsClient:v5, v6, v7, v8, v9, v10, v11];
   }
 
-  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"stringForATXUpdatePredictionsClient called with invalid ATXUpdatePredictionsClient value of %lu", a3}];
+  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"stringForATXUpdatePredictionsClient called with invalid ATXUpdatePredictionsClient value of %lu", client}];
   return @"Error";
 }
 

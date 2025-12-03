@@ -6,10 +6,10 @@
 
 + (id)accountName
 {
-  v0 = [MEMORY[0x277D0C010] daemonProxy];
-  v1 = [v0 accountName];
+  daemonProxy = [MEMORY[0x277D0C010] daemonProxy];
+  accountName = [daemonProxy accountName];
 
-  return v1;
+  return accountName;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface RSPointLists
 - (RSPointLists)init;
-- (void)generateRSPointListsWithWalls:(id)a3;
+- (void)generateRSPointListsWithWalls:(id)walls;
 @end
 
 @implementation RSPointLists
 
-- (void)generateRSPointListsWithWalls:(id)a3
+- (void)generateRSPointListsWithWalls:(id)walls
 {
   v251 = *MEMORY[0x277D85DE8];
-  v211 = a3;
+  wallsCopy = walls;
   objc_msgSend_removeAllObjects(self->_pointLists_array, v4, v5);
   objc_msgSend_removeAllObjects(self->_wallLists_array, v6, v7);
   objc_msgSend_removeAllObjects(self->_outerPointList_array, v8, v9);
@@ -18,7 +18,7 @@
   v227 = 0;
   v228 = 0;
   v229 = 0;
-  v215 = v211;
+  v215 = wallsCopy;
   v12 = 0;
   v244 = 0uLL;
   v245 = 0;
@@ -39,7 +39,7 @@
     sub_2621C729C(v240, v12++);
   }
 
-  v214 = self;
+  selfCopy = self;
   if (*(&v241 + 1))
   {
     v234 = &v234;
@@ -228,7 +228,7 @@
 
   v42 = v227;
   v41 = v228;
-  if (v214 && v228 != v227)
+  if (selfCopy && v228 != v227)
   {
     v43 = 0;
     do
@@ -345,7 +345,7 @@
         objc_msgSend_addObject_(v69, v82, v81);
       }
 
-      objc_msgSend_addObject_(v214->_pointLists_array, v67, v69);
+      objc_msgSend_addObject_(selfCopy->_pointLists_array, v67, v69);
 
       if (__p)
       {
@@ -367,7 +367,7 @@
     v239 = 0;
     v92 = v215;
     v94 = v215;
-    if (!v214)
+    if (!selfCopy)
     {
 
       goto LABEL_205;
@@ -391,7 +391,7 @@
         objc_msgSend_addObject_(v86, v91, v90);
       }
 
-      objc_msgSend_addObject_(v214->_wallLists_array, v85, v86);
+      objc_msgSend_addObject_(selfCopy->_wallLists_array, v85, v86);
 
       if (v87)
       {
@@ -902,7 +902,7 @@ LABEL_197:
     v197 = v193;
     do
     {
-      outerPointList_array = v214->_outerPointList_array;
+      outerPointList_array = selfCopy->_outerPointList_array;
       v226 = *v197->f32;
       v199 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v195, v196);
       v246[0] = v199;

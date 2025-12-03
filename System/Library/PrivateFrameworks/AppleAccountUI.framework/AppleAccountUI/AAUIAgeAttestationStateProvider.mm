@@ -12,40 +12,40 @@
   v2 = [(AAUIAgeAttestationStateProvider *)&v19 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E698DD70] sharedManager];
+    mEMORY[0x1E698DD70] = [MEMORY[0x1E698DD70] sharedManager];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [MEMORY[0x1E698DD70] sharedManager];
-      v2->_ageAttestationPhase1Enabled = [v5 isAgeAttestationPhase1Enabled];
+      mEMORY[0x1E698DD70]2 = [MEMORY[0x1E698DD70] sharedManager];
+      v2->_ageAttestationPhase1Enabled = [mEMORY[0x1E698DD70]2 isAgeAttestationPhase1Enabled];
     }
 
-    v6 = [MEMORY[0x1E698DC80] sharedInstance];
+    mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [MEMORY[0x1E698DC80] sharedInstance];
-      v2->_shieldSignInOrCreateFlows = [v8 shieldSignInOrCreateFlows];
+      mEMORY[0x1E698DC80]2 = [MEMORY[0x1E698DC80] sharedInstance];
+      v2->_shieldSignInOrCreateFlows = [mEMORY[0x1E698DC80]2 shieldSignInOrCreateFlows];
     }
 
-    v9 = [MEMORY[0x1E698DD70] sharedManager];
+    mEMORY[0x1E698DD70]3 = [MEMORY[0x1E698DD70] sharedManager];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [MEMORY[0x1E698DD70] sharedManager];
-      v2->_ageBasedAccountSupportEnabled = [v11 isAgeBasedAccountSupportEnabled];
+      mEMORY[0x1E698DD70]4 = [MEMORY[0x1E698DD70] sharedManager];
+      v2->_ageBasedAccountSupportEnabled = [mEMORY[0x1E698DD70]4 isAgeBasedAccountSupportEnabled];
     }
 
-    v12 = [MEMORY[0x1E698DC80] sharedInstance];
-    v13 = [v12 protoAccount];
-    v14 = [v13 proto_ageRange];
+    mEMORY[0x1E698DC80]3 = [MEMORY[0x1E698DC80] sharedInstance];
+    protoAccount = [mEMORY[0x1E698DC80]3 protoAccount];
+    proto_ageRange = [protoAccount proto_ageRange];
 
     v15 = _AALogSystem();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG);
-    if (v14 == 2)
+    if (proto_ageRange == 2)
     {
       if (v16)
       {
@@ -59,7 +59,7 @@
     {
       if (v16)
       {
-        [(AAUIAgeAttestationStateProvider *)v14 init];
+        [(AAUIAgeAttestationStateProvider *)proto_ageRange init];
       }
 
       v17 = 0;
@@ -75,7 +75,7 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 134217984;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1C5355000, a2, OS_LOG_TYPE_DEBUG, "Not shielding sign in / create flows for non-teen age range: %lu", &v2, 0xCu);
 }
 

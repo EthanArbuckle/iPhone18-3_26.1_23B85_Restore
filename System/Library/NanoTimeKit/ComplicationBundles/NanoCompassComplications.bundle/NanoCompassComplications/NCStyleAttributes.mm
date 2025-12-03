@@ -1,31 +1,31 @@
 @interface NCStyleAttributes
-+ (id)fillColorFor:(id)a3;
-+ (id)symbolImageFor:(id)a3;
++ (id)fillColorFor:(id)for;
++ (id)symbolImageFor:(id)for;
 - (NCStyleAttributes)init;
 @end
 
 @implementation NCStyleAttributes
 
-+ (id)fillColorFor:(id)a3
++ (id)fillColorFor:(id)for
 {
-  v4 = a3;
-  v5 = _s24NanoCompassComplications17NCStyleAttributesC9fillColor3forSo7UIColorCSgSo015GEOFeatureStyleE0CSg_tFZ_0(a3);
+  forCopy = for;
+  v5 = _s24NanoCompassComplications17NCStyleAttributesC9fillColor3forSo7UIColorCSgSo015GEOFeatureStyleE0CSg_tFZ_0(for);
 
   return v5;
 }
 
-+ (id)symbolImageFor:(id)a3
++ (id)symbolImageFor:(id)for
 {
-  if (a3)
+  if (for)
   {
     v4 = objc_opt_self();
     v5 = objc_opt_self();
-    v6 = a3;
-    v7 = [v5 mainScreen];
-    [v7 scale];
+    forCopy = for;
+    mainScreen = [v5 mainScreen];
+    [mainScreen scale];
     v9 = v8;
 
-    v10 = [v4 imageForStyle:v6 size:2 forScale:1 format:1 transparent:v9];
+    v10 = [v4 imageForStyle:forCopy size:2 forScale:1 format:1 transparent:v9];
   }
 
   else

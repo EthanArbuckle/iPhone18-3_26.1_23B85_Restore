@@ -1,7 +1,7 @@
 @interface AAUIAccountBeneficiaryViewController
 - (AAUIAccountBeneficiaryViewController)init;
-- (AAUIAccountBeneficiaryViewController)initWithAccountManager:(id)a3;
-- (AAUIAccountBeneficiaryViewController)initWithAccountManager:(id)a3 highlightRowIdentifier:(id)a4;
+- (AAUIAccountBeneficiaryViewController)initWithAccountManager:(id)manager;
+- (AAUIAccountBeneficiaryViewController)initWithAccountManager:(id)manager highlightRowIdentifier:(id)identifier;
 - (BOOL)_canBeBeneficiary;
 - (BOOL)_canHaveBeneficiary;
 - (id)_addBeneficiarySpecifier;
@@ -15,10 +15,10 @@
 - (void)_beginObservingTrustedContactChangeNotification;
 - (void)_fetchAllBeneficiaryContacts;
 - (void)_learnMoreWasTapped;
-- (void)_myBenefactorWasTapped:(id)a3;
-- (void)_myBeneficiaryWasTapped:(id)a3;
+- (void)_myBenefactorWasTapped:(id)tapped;
+- (void)_myBeneficiaryWasTapped:(id)tapped;
 - (void)_showAddBeneficiary;
-- (void)_showViewController:(id)a3;
+- (void)_showViewController:(id)controller;
 - (void)_stopObservingTrustedContactChangeNotification;
 - (void)_syncTrustedContactsFromCloudKit;
 - (void)dealloc;
@@ -58,34 +58,34 @@
   return v2;
 }
 
-- (AAUIAccountBeneficiaryViewController)initWithAccountManager:(id)a3
+- (AAUIAccountBeneficiaryViewController)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v6 = [(AAUIAccountBeneficiaryViewController *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
+    objc_storeStrong(&v6->_accountManager, manager);
   }
 
   return v7;
 }
 
-- (AAUIAccountBeneficiaryViewController)initWithAccountManager:(id)a3 highlightRowIdentifier:(id)a4
+- (AAUIAccountBeneficiaryViewController)initWithAccountManager:(id)manager highlightRowIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  identifierCopy = identifier;
   v9 = [(AAUIAccountBeneficiaryViewController *)self init];
   if (v9)
   {
     v10 = _AAUILogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [AAUIAccountBeneficiaryViewController initWithAccountManager:v8 highlightRowIdentifier:v10];
+      [AAUIAccountBeneficiaryViewController initWithAccountManager:identifierCopy highlightRowIdentifier:v10];
     }
 
-    objc_storeStrong((&v9->super.super.super.super.super.isa + *MEMORY[0x1E69C57A8]), a4);
-    objc_storeStrong(&v9->_accountManager, a3);
+    objc_storeStrong((&v9->super.super.super.super.super.isa + *MEMORY[0x1E69C57A8]), identifier);
+    objc_storeStrong(&v9->_accountManager, manager);
   }
 
   return v9;
@@ -117,15 +117,15 @@
   [(AAUIAccountBeneficiaryViewController *)&v8 viewDidLoad];
   if (!self->_accountManager)
   {
-    v3 = [(AAUIAccountBeneficiaryViewController *)self specifier];
-    v4 = [v3 objectForKeyedSubscript:@"icloudAccountManager"];
+    specifier = [(AAUIAccountBeneficiaryViewController *)self specifier];
+    v4 = [specifier objectForKeyedSubscript:@"icloudAccountManager"];
     accountManager = self->_accountManager;
     self->_accountManager = v4;
   }
 
-  v6 = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel title];
-  v7 = [(AAUIAccountBeneficiaryViewController *)self navigationItem];
-  [v7 setTitle:v6];
+  title = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel title];
+  navigationItem = [(AAUIAccountBeneficiaryViewController *)self navigationItem];
+  [navigationItem setTitle:title];
 
   [(AAUIAccountBeneficiaryViewController *)self _fetchAllBeneficiaryContacts];
   [(AAUIAccountBeneficiaryViewController *)self _beginObservingTrustedContactChangeNotification];
@@ -134,14 +134,14 @@
 
 - (void)_beginObservingTrustedContactChangeNotification
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 addObserver:self selector:sel__fetchAllBeneficiaryContacts name:*MEMORY[0x1E698B7C8] object:0 suspensionBehavior:4];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__fetchAllBeneficiaryContacts name:*MEMORY[0x1E698B7C8] object:0 suspensionBehavior:4];
 }
 
 - (void)_stopObservingTrustedContactChangeNotification
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E698B7C8] object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E698B7C8] object:0];
 }
 
 - (id)specifiers
@@ -167,14 +167,14 @@
         _os_log_impl(&dword_1C5355000, v6, OS_LOG_TYPE_DEFAULT, "Account can have beneficiary, adding beneficiary specifiers to UI...", &v20, 2u);
       }
 
-      v7 = [(AAUIAccountBeneficiaryViewController *)self _myBeneficiariesGroupSpecifier];
-      [v5 addObject:v7];
+      _myBeneficiariesGroupSpecifier = [(AAUIAccountBeneficiaryViewController *)self _myBeneficiariesGroupSpecifier];
+      [v5 addObject:_myBeneficiariesGroupSpecifier];
 
-      v8 = [(AAUIAccountBeneficiaryViewController *)self _myBeneficiariesSpecifiers];
-      [v5 addObjectsFromArray:v8];
+      _myBeneficiariesSpecifiers = [(AAUIAccountBeneficiaryViewController *)self _myBeneficiariesSpecifiers];
+      [v5 addObjectsFromArray:_myBeneficiariesSpecifiers];
 
-      v9 = [(AAUIAccountBeneficiaryViewController *)self _addBeneficiarySpecifier];
-      [v5 addObject:v9];
+      _addBeneficiarySpecifier = [(AAUIAccountBeneficiaryViewController *)self _addBeneficiarySpecifier];
+      [v5 addObject:_addBeneficiarySpecifier];
     }
 
     if ([(AAUIAccountBeneficiaryViewController *)self _canBeBeneficiary])
@@ -188,11 +188,11 @@
 
       if ([(NSArray *)self->_myBenefactors count])
       {
-        v11 = [(AAUIAccountBeneficiaryViewController *)self _myBenefactorsGroupSpecifier];
-        [v5 addObject:v11];
+        _myBenefactorsGroupSpecifier = [(AAUIAccountBeneficiaryViewController *)self _myBenefactorsGroupSpecifier];
+        [v5 addObject:_myBenefactorsGroupSpecifier];
 
-        v12 = [(AAUIAccountBeneficiaryViewController *)self _myBenefactorsSpecifiers];
-        [v5 addObjectsFromArray:v12];
+        _myBenefactorsSpecifiers = [(AAUIAccountBeneficiaryViewController *)self _myBenefactorsSpecifiers];
+        [v5 addObjectsFromArray:_myBenefactorsSpecifiers];
       }
     }
 
@@ -205,8 +205,8 @@
         _os_log_impl(&dword_1C5355000, v13, OS_LOG_TYPE_DEFAULT, "Account can't have beneficiary and does not have any benefactors, adding no benefactor specifier to UI...", &v20, 2u);
       }
 
-      v14 = [(AAUIAccountBeneficiaryViewController *)self _noBenefactorSpecifier];
-      [v5 addObject:v14];
+      _noBenefactorSpecifier = [(AAUIAccountBeneficiaryViewController *)self _noBenefactorSpecifier];
+      [v5 addObject:_noBenefactorSpecifier];
     }
 
     v15 = *(&self->super.super.super.super.super.isa + v3);
@@ -303,12 +303,12 @@ void __68__AAUIAccountBeneficiaryViewController__fetchAllBeneficiaryContacts__bl
 - (id)_myBeneficiariesGroupSpecifier
 {
   v3 = objc_opt_new();
-  v4 = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel myBeneficiariesGroupTitle];
-  v5 = [v4 uppercaseString];
-  v6 = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel myBeneficiariesGroupTitle];
-  v7 = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel myBeneficiariesGroupFooter];
-  v8 = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel learnMore];
-  v9 = [v3 createGroupSpecifierWithIdentifier:v5 title:v6 footerText:v7 linkText:v8 actionMethodName:@"_learnMoreWasTapped" target:self];
+  myBeneficiariesGroupTitle = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel myBeneficiariesGroupTitle];
+  uppercaseString = [myBeneficiariesGroupTitle uppercaseString];
+  myBeneficiariesGroupTitle2 = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel myBeneficiariesGroupTitle];
+  myBeneficiariesGroupFooter = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel myBeneficiariesGroupFooter];
+  learnMore = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel learnMore];
+  v9 = [v3 createGroupSpecifierWithIdentifier:uppercaseString title:myBeneficiariesGroupTitle2 footerText:myBeneficiariesGroupFooter linkText:learnMore actionMethodName:@"_learnMoreWasTapped" target:self];
 
   return v9;
 }
@@ -316,9 +316,9 @@ void __68__AAUIAccountBeneficiaryViewController__fetchAllBeneficiaryContacts__bl
 - (id)_noBenefactorSpecifier
 {
   v3 = objc_opt_new();
-  v4 = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel noBenefactorFooter];
-  v5 = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel learnMore];
-  v6 = [v3 createGroupSpecifierWithIdentifier:@"noBenefactor" title:0 footerText:v4 linkText:v5 actionMethodName:@"_learnMoreWasTapped" target:self];
+  noBenefactorFooter = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel noBenefactorFooter];
+  learnMore = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel learnMore];
+  v6 = [v3 createGroupSpecifierWithIdentifier:@"noBenefactor" title:0 footerText:noBenefactorFooter linkText:learnMore actionMethodName:@"_learnMoreWasTapped" target:self];
 
   return v6;
 }
@@ -362,8 +362,8 @@ void __68__AAUIAccountBeneficiaryViewController__fetchAllBeneficiaryContacts__bl
 - (id)_addBeneficiarySpecifier
 {
   v3 = objc_opt_new();
-  v4 = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel myBeneficiariesAdd];
-  v5 = [v3 createAddTableCellWithTitle:v4 loadAction:sel__showAddBeneficiary target:self];
+  myBeneficiariesAdd = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel myBeneficiariesAdd];
+  v5 = [v3 createAddTableCellWithTitle:myBeneficiariesAdd loadAction:sel__showAddBeneficiary target:self];
 
   return v5;
 }
@@ -371,10 +371,10 @@ void __68__AAUIAccountBeneficiaryViewController__fetchAllBeneficiaryContacts__bl
 - (id)_myBenefactorsGroupSpecifier
 {
   v3 = MEMORY[0x1E69C5748];
-  v4 = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel beneficiaryForGroupTitle];
-  v5 = [v4 uppercaseString];
-  v6 = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel beneficiaryForGroupTitle];
-  v7 = [v3 groupSpecifierWithID:v5 name:v6];
+  beneficiaryForGroupTitle = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel beneficiaryForGroupTitle];
+  uppercaseString = [beneficiaryForGroupTitle uppercaseString];
+  beneficiaryForGroupTitle2 = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel beneficiaryForGroupTitle];
+  v7 = [v3 groupSpecifierWithID:uppercaseString name:beneficiaryForGroupTitle2];
 
   return v7;
 }
@@ -419,21 +419,21 @@ void __68__AAUIAccountBeneficiaryViewController__fetchAllBeneficiaryContacts__bl
   return v3;
 }
 
-- (void)_myBeneficiaryWasTapped:(id)a3
+- (void)_myBeneficiaryWasTapped:(id)tapped
 {
-  v10 = [a3 userInfo];
-  v4 = [v10 trustedContactStatus];
+  userInfo = [tapped userInfo];
+  trustedContactStatus = [userInfo trustedContactStatus];
   v5 = off_1E8209C48;
-  if (v4 != 1)
+  if (trustedContactStatus != 1)
   {
     v5 = off_1E8209C38;
   }
 
-  v6 = [objc_alloc(*v5) initWithAccountManager:self->_accountManager localContact:v10];
+  v6 = [objc_alloc(*v5) initWithAccountManager:self->_accountManager localContact:userInfo];
   v7 = objc_opt_new();
-  v8 = [v7 viewModelForFlow:2 withContact:v10];
+  v8 = [v7 viewModelForFlow:2 withContact:userInfo];
 
-  v9 = [[AAUITrustedContactDetailsViewController alloc] initWithContact:v10 viewModel:v8 actionHandler:v6];
+  v9 = [[AAUITrustedContactDetailsViewController alloc] initWithContact:userInfo viewModel:v8 actionHandler:v6];
   [(AAUIAccountBeneficiaryViewController *)self _showViewController:v9];
 }
 
@@ -443,25 +443,25 @@ void __68__AAUIAccountBeneficiaryViewController__fetchAllBeneficiaryContacts__bl
   v3 = _AAUILogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel learnMoreURL];
+    learnMoreURL = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel learnMoreURL];
     v7 = 138412290;
-    v8 = v4;
+    v8 = learnMoreURL;
     _os_log_impl(&dword_1C5355000, v3, OS_LOG_TYPE_DEFAULT, "Learn more was tapped, URL is: %@", &v7, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  v6 = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel learnMoreURL];
-  [v5 openURL:v6 withCompletionHandler:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  learnMoreURL2 = [(AAAccountBeneficiaryManagementViewModel *)self->_viewModel learnMoreURL];
+  [mEMORY[0x1E69DC668] openURL:learnMoreURL2 withCompletionHandler:0];
 }
 
-- (void)_myBenefactorWasTapped:(id)a3
+- (void)_myBenefactorWasTapped:(id)tapped
 {
-  v8 = [a3 userInfo];
-  v4 = [[AAUIMyBenefactorActionHandler alloc] initWithAccountManager:self->_accountManager localContact:v8];
+  userInfo = [tapped userInfo];
+  v4 = [[AAUIMyBenefactorActionHandler alloc] initWithAccountManager:self->_accountManager localContact:userInfo];
   v5 = objc_opt_new();
-  v6 = [v5 viewModelForFlow:3 withContact:v8];
+  v6 = [v5 viewModelForFlow:3 withContact:userInfo];
 
-  v7 = [[AAUITrustedContactDetailsViewController alloc] initWithContact:v8 viewModel:v6 actionHandler:v4];
+  v7 = [[AAUITrustedContactDetailsViewController alloc] initWithContact:userInfo viewModel:v6 actionHandler:v4];
   [(AAUIAccountBeneficiaryViewController *)self _showViewController:v7];
 }
 
@@ -474,8 +474,8 @@ void __68__AAUIAccountBeneficiaryViewController__fetchAllBeneficiaryContacts__bl
     _os_log_impl(&dword_1C5355000, v3, OS_LOG_TYPE_DEFAULT, "Initiating Inheritance Beneficiary setup flow...", v9, 2u);
   }
 
-  v4 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v5 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   if (v5)
   {
@@ -484,24 +484,24 @@ void __68__AAUIAccountBeneficiaryViewController__fetchAllBeneficiaryContacts__bl
     self->_inheritanceSetupFlowController = v6;
 
     [(AAUIInheritanceSetupFlowController *)self->_inheritanceSetupFlowController start];
-    v8 = [(AAUIInheritanceSetupFlowController *)self->_inheritanceSetupFlowController navigationController];
-    [(AAUIAccountBeneficiaryViewController *)self _showViewController:v8];
+    navigationController = [(AAUIInheritanceSetupFlowController *)self->_inheritanceSetupFlowController navigationController];
+    [(AAUIAccountBeneficiaryViewController *)self _showViewController:navigationController];
   }
 }
 
-- (void)_showViewController:(id)a3
+- (void)_showViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(AAUIAccountBeneficiaryViewController *)self presentViewController:v4 animated:1 completion:0];
+    [(AAUIAccountBeneficiaryViewController *)self presentViewController:controllerCopy animated:1 completion:0];
   }
 
   else
   {
-    [(AAUIAccountBeneficiaryViewController *)self showViewController:v4 sender:self];
+    [(AAUIAccountBeneficiaryViewController *)self showViewController:controllerCopy sender:self];
   }
 }
 
@@ -510,12 +510,12 @@ void __68__AAUIAccountBeneficiaryViewController__fetchAllBeneficiaryContacts__bl
   idmsAccount = self->_idmsAccount;
   if (!idmsAccount)
   {
-    v4 = [(AIDAAccountManager *)self->_accountManager accounts];
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+    accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+    v5 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
-    v6 = [MEMORY[0x1E698DC80] sharedInstance];
-    v7 = [v5 aa_altDSID];
-    v8 = [v6 authKitAccountWithAltDSID:v7];
+    mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+    aa_altDSID = [v5 aa_altDSID];
+    v8 = [mEMORY[0x1E698DC80] authKitAccountWithAltDSID:aa_altDSID];
     v9 = self->_idmsAccount;
     self->_idmsAccount = v8;
 
@@ -527,18 +527,18 @@ void __68__AAUIAccountBeneficiaryViewController__fetchAllBeneficiaryContacts__bl
 
 - (BOOL)_canHaveBeneficiary
 {
-  v3 = [MEMORY[0x1E698DC80] sharedInstance];
-  v4 = [(AAUIAccountBeneficiaryViewController *)self _idmsAccount];
-  v5 = [v3 canHaveBeneficiaryForAccount:v4];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  _idmsAccount = [(AAUIAccountBeneficiaryViewController *)self _idmsAccount];
+  v5 = [mEMORY[0x1E698DC80] canHaveBeneficiaryForAccount:_idmsAccount];
 
   return v5;
 }
 
 - (BOOL)_canBeBeneficiary
 {
-  v3 = [MEMORY[0x1E698DC80] sharedInstance];
-  v4 = [(AAUIAccountBeneficiaryViewController *)self _idmsAccount];
-  v5 = [v3 canBeBeneficiaryForAccount:v4];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  _idmsAccount = [(AAUIAccountBeneficiaryViewController *)self _idmsAccount];
+  v5 = [mEMORY[0x1E698DC80] canBeBeneficiaryForAccount:_idmsAccount];
 
   return v5;
 }

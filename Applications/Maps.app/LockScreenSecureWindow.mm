@@ -1,42 +1,42 @@
 @interface LockScreenSecureWindow
-- (LockScreenSecureWindow)initWithCoder:(id)a3;
-- (LockScreenSecureWindow)initWithFrame:(CGRect)a3;
+- (LockScreenSecureWindow)initWithCoder:(id)coder;
+- (LockScreenSecureWindow)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)registerEventTap:(id)a3;
-- (void)sendEvent:(id)a3;
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service willChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)registerEventTap:(id)tap;
+- (void)sendEvent:(id)event;
+- (void)setOverrideUserInterfaceStyle:(int64_t)style;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation LockScreenSecureWindow
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = LockScreenSecureWindow;
-  v4 = a3;
-  [(LockScreenSecureWindow *)&v11 traitCollectionDidChange:v4];
-  v5 = [(LockScreenSecureWindow *)self traitCollection];
-  v6 = sub_100017FE8(v4, v5);
+  changeCopy = change;
+  [(LockScreenSecureWindow *)&v11 traitCollectionDidChange:changeCopy];
+  traitCollection = [(LockScreenSecureWindow *)self traitCollection];
+  v6 = sub_100017FE8(changeCopy, traitCollection);
 
   if (v6)
   {
-    v7 = [(LockScreenSecureWindow *)self traitCollection];
-    v8 = [v7 isLuminanceReduced];
+    traitCollection2 = [(LockScreenSecureWindow *)self traitCollection];
+    isLuminanceReduced = [traitCollection2 isLuminanceReduced];
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1008B7590;
     v9[3] = &unk_101661AE0;
-    v10 = v8;
+    v10 = isLuminanceReduced;
     v9[4] = self;
-    [UIView _maps_animateForAndromeda:v8 animations:v9];
+    [UIView _maps_animateForAndromeda:isLuminanceReduced animations:v9];
   }
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   if (MNNavigationServiceStateIsNavigating())
   {
@@ -46,7 +46,7 @@
   }
 }
 
-- (void)navigationService:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service willChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   if ((MNNavigationServiceStateIsNavigating() & 1) == 0)
   {
@@ -61,9 +61,9 @@
   }
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (self->_hasEventTaps)
   {
     if ([(NSHashTable *)self->_eventTaps count])
@@ -88,7 +88,7 @@
               objc_enumerationMutation(v5);
             }
 
-            [*(*(&v11 + 1) + 8 * v9) sendEvent:v4];
+            [*(*(&v11 + 1) + 8 * v9) sendEvent:eventCopy];
             v9 = v9 + 1;
           }
 
@@ -108,29 +108,29 @@
 
   v10.receiver = self;
   v10.super_class = LockScreenSecureWindow;
-  [(LockScreenSecureWindow *)&v10 sendEvent:v4];
+  [(LockScreenSecureWindow *)&v10 sendEvent:eventCopy];
 }
 
-- (void)registerEventTap:(id)a3
+- (void)registerEventTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   eventTaps = self->_eventTaps;
-  v8 = v4;
+  v8 = tapCopy;
   if (!eventTaps)
   {
     v6 = +[NSHashTable weakObjectsHashTable];
     v7 = self->_eventTaps;
     self->_eventTaps = v6;
 
-    v4 = v8;
+    tapCopy = v8;
     eventTaps = self->_eventTaps;
   }
 
-  [(NSHashTable *)eventTaps addObject:v4];
+  [(NSHashTable *)eventTaps addObject:tapCopy];
   self->_hasEventTaps = 1;
 }
 
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3
+- (void)setOverrideUserInterfaceStyle:(int64_t)style
 {
   v5 = sub_10000B11C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -138,13 +138,13 @@
     *buf = 136446466;
     v8 = "[LockScreenSecureWindow setOverrideUserInterfaceStyle:]";
     v9 = 2050;
-    v10 = a3;
+    styleCopy = style;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%{public}s %{public}ld", buf, 0x16u);
   }
 
   v6.receiver = self;
   v6.super_class = LockScreenSecureWindow;
-  [(LockScreenSecureWindow *)&v6 setOverrideUserInterfaceStyle:a3];
+  [(LockScreenSecureWindow *)&v6 setOverrideUserInterfaceStyle:style];
 }
 
 - (void)_commonInit
@@ -157,11 +157,11 @@
   [v4 registerObserver:self];
 }
 
-- (LockScreenSecureWindow)initWithFrame:(CGRect)a3
+- (LockScreenSecureWindow)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = LockScreenSecureWindow;
-  v3 = [(LockScreenSecureWindow *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LockScreenSecureWindow *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -171,11 +171,11 @@
   return v4;
 }
 
-- (LockScreenSecureWindow)initWithCoder:(id)a3
+- (LockScreenSecureWindow)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = LockScreenSecureWindow;
-  v3 = [(LockScreenSecureWindow *)&v6 initWithCoder:a3];
+  v3 = [(LockScreenSecureWindow *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

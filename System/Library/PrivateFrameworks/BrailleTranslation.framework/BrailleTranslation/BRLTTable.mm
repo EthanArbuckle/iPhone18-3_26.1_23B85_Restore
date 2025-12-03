@@ -1,14 +1,14 @@
 @interface BRLTTable
-- (BOOL)_isEqualToTable:(id)a3;
+- (BOOL)_isEqualToTable:(id)table;
 - (BOOL)isCustomBrailleTable;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)supportsTranslationByCell;
 - (BOOL)supportsTranslationMode8Dot;
 - (BOOL)supportsTranslationModeContracted;
-- (BRLTTable)initWithExternalIdentifier:(id)a3;
-- (BRLTTable)initWithIdentifier:(id)a3;
-- (BRLTTable)initWithServiceIdentifier:(id)a3 language:(id)a4 variant:(id)a5;
-- (BRLTTable)initWithServiceIdentifier:(id)a3 tableIdentifier:(id)a4;
+- (BRLTTable)initWithExternalIdentifier:(id)identifier;
+- (BRLTTable)initWithIdentifier:(id)identifier;
+- (BRLTTable)initWithServiceIdentifier:(id)identifier language:(id)language variant:(id)variant;
+- (BRLTTable)initWithServiceIdentifier:(id)identifier tableIdentifier:(id)tableIdentifier;
 - (NSArray)replacements;
 - (NSBundle)_bundle;
 - (NSSet)locales;
@@ -22,67 +22,67 @@
 - (NSString)localizedVariant;
 - (NSString)tableIdentifier;
 - (id)_brailleTableDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation BRLTTable
 
-- (BRLTTable)initWithIdentifier:(id)a3
+- (BRLTTable)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = BRLTTable;
   v5 = [(BRLTTable *)&v13 init];
   if (v5)
   {
-    v6 = [v4 brl_serviceIdentifier];
+    brl_serviceIdentifier = [identifierCopy brl_serviceIdentifier];
     serviceIdentifier = v5->_serviceIdentifier;
-    v5->_serviceIdentifier = v6;
+    v5->_serviceIdentifier = brl_serviceIdentifier;
 
-    v8 = [v4 brl_language];
+    brl_language = [identifierCopy brl_language];
     language = v5->_language;
-    v5->_language = v8;
+    v5->_language = brl_language;
 
-    v10 = [v4 brl_variant];
+    brl_variant = [identifierCopy brl_variant];
     variant = v5->_variant;
-    v5->_variant = v10;
+    v5->_variant = brl_variant;
   }
 
   return v5;
 }
 
-- (BRLTTable)initWithServiceIdentifier:(id)a3 tableIdentifier:(id)a4
+- (BRLTTable)initWithServiceIdentifier:(id)identifier tableIdentifier:(id)tableIdentifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 brl_language];
-  v9 = [v6 brl_variant];
+  tableIdentifierCopy = tableIdentifier;
+  identifierCopy = identifier;
+  brl_language = [tableIdentifierCopy brl_language];
+  brl_variant = [tableIdentifierCopy brl_variant];
 
-  v10 = [(BRLTTable *)self initWithServiceIdentifier:v7 language:v8 variant:v9];
+  v10 = [(BRLTTable *)self initWithServiceIdentifier:identifierCopy language:brl_language variant:brl_variant];
   return v10;
 }
 
-- (BRLTTable)initWithServiceIdentifier:(id)a3 language:(id)a4 variant:(id)a5
+- (BRLTTable)initWithServiceIdentifier:(id)identifier language:(id)language variant:(id)variant
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  languageCopy = language;
+  variantCopy = variant;
   v19.receiver = self;
   v19.super_class = BRLTTable;
   v11 = [(BRLTTable *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     serviceIdentifier = v11->_serviceIdentifier;
     v11->_serviceIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [languageCopy copy];
     language = v11->_language;
     v11->_language = v14;
 
-    v16 = [v10 copy];
+    v16 = [variantCopy copy];
     variant = v11->_variant;
     v11->_variant = v16;
   }
@@ -90,45 +90,45 @@
   return v11;
 }
 
-- (BRLTTable)initWithExternalIdentifier:(id)a3
+- (BRLTTable)initWithExternalIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 brl_serviceIdentifier];
-  v6 = [v4 brl_tableIdentifier];
-  if ([v4 isEqualToString:@"system.ko24g1"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"system.ja"))
+  identifierCopy = identifier;
+  brl_serviceIdentifier = [identifierCopy brl_serviceIdentifier];
+  brl_tableIdentifier = [identifierCopy brl_tableIdentifier];
+  if ([identifierCopy isEqualToString:@"system.ko24g1"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"system.ja"))
   {
     v7 = @"apple";
 LABEL_4:
 
-    v5 = v7;
+    brl_serviceIdentifier = v7;
     goto LABEL_5;
   }
 
-  if ([v5 isEqualToString:@"system"])
+  if ([brl_serviceIdentifier isEqualToString:@"system"])
   {
     v7 = @"duxbury";
     goto LABEL_4;
   }
 
-  if (([v4 isEqualToString:@"system.ebupharma"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"system.ascii") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"system.ipa") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"system.unicode"))
+  if (([identifierCopy isEqualToString:@"system.ebupharma"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"system.ascii") & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"system.ipa") & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"system.unicode"))
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.scrod.braille.table.%@", v6, v11];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.scrod.braille.table.%@", brl_tableIdentifier, v11];
     goto LABEL_6;
   }
 
 LABEL_5:
-  [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.scrod.braille.table.%@.%@", v5, v6];
+  [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.scrod.braille.table.%@.%@", brl_serviceIdentifier, brl_tableIdentifier];
   v8 = LABEL_6:;
   v9 = [(BRLTTable *)self initWithIdentifier:v8];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[BRLTTable allocWithZone:?]language:"initWithServiceIdentifier:language:variant:" variant:self->_serviceIdentifier, self->_language, self->_variant];
-  v5 = [(BRLTTable *)self _bundle];
-  [(BRLTTable *)v4 set_bundle:v5];
+  _bundle = [(BRLTTable *)self _bundle];
+  [(BRLTTable *)v4 set_bundle:_bundle];
 
   return v4;
 }
@@ -136,16 +136,16 @@ LABEL_5:
 - (NSString)identifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(BRLTTable *)self serviceIdentifier];
-  v5 = [(BRLTTable *)self language];
-  v6 = [v3 stringWithFormat:@"%@.%@", v4, v5];
+  serviceIdentifier = [(BRLTTable *)self serviceIdentifier];
+  language = [(BRLTTable *)self language];
+  v6 = [v3 stringWithFormat:@"%@.%@", serviceIdentifier, language];
 
-  v7 = [(BRLTTable *)self variant];
+  variant = [(BRLTTable *)self variant];
 
-  if (v7)
+  if (variant)
   {
-    v8 = [(BRLTTable *)self variant];
-    v9 = [v6 stringByAppendingFormat:@"-%@", v8];
+    variant2 = [(BRLTTable *)self variant];
+    v9 = [v6 stringByAppendingFormat:@"-%@", variant2];
 
     v6 = v9;
   }
@@ -161,8 +161,8 @@ LABEL_5:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 translatorBundles];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  translatorBundles = [v3 translatorBundles];
+  v5 = [translatorBundles countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -173,12 +173,12 @@ LABEL_5:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(translatorBundles);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) bundleIdentifier];
-        v10 = [(BRLTTable *)self serviceIdentifier];
-        v11 = [v9 isEqualToString:v10];
+        bundleIdentifier = [*(*(&v15 + 1) + 8 * i) bundleIdentifier];
+        serviceIdentifier = [(BRLTTable *)self serviceIdentifier];
+        v11 = [bundleIdentifier isEqualToString:serviceIdentifier];
 
         if (v11)
         {
@@ -188,7 +188,7 @@ LABEL_5:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [translatorBundles countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -209,8 +209,8 @@ LABEL_11:
 - (NSString)externalServiceIdentifier
 {
   v3 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"."];
-  v4 = [(BRLTTable *)self serviceIdentifier];
-  v5 = [v4 rangeOfCharacterFromSet:v3 options:4];
+  serviceIdentifier = [(BRLTTable *)self serviceIdentifier];
+  v5 = [serviceIdentifier rangeOfCharacterFromSet:v3 options:4];
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -219,8 +219,8 @@ LABEL_11:
 
   else
   {
-    v7 = [(BRLTTable *)self serviceIdentifier];
-    v6 = [v7 substringFromIndex:v5 + 1];
+    serviceIdentifier2 = [(BRLTTable *)self serviceIdentifier];
+    v6 = [serviceIdentifier2 substringFromIndex:v5 + 1];
 
     if (([(__CFString *)v6 isEqualToString:@"duxbury"]& 1) != 0 || [(__CFString *)v6 isEqualToString:@"apple"])
     {
@@ -234,49 +234,49 @@ LABEL_11:
 
 - (NSString)tableIdentifier
 {
-  v3 = [(BRLTTable *)self language];
-  v4 = [(BRLTTable *)self variant];
+  language = [(BRLTTable *)self language];
+  variant = [(BRLTTable *)self variant];
 
-  if (v4)
+  if (variant)
   {
-    v5 = [(BRLTTable *)self variant];
-    v6 = [v3 stringByAppendingFormat:@"-%@", v5];
+    variant2 = [(BRLTTable *)self variant];
+    v6 = [language stringByAppendingFormat:@"-%@", variant2];
 
-    v3 = v6;
+    language = v6;
   }
 
-  return v3;
+  return language;
 }
 
 - (NSString)localizedName
 {
-  v3 = [(BRLTTable *)self _brailleTableDictionary];
-  v4 = [v3 objectForKey:@"identifierIsLanguage"];
-  v5 = [v4 BOOLValue];
+  _brailleTableDictionary = [(BRLTTable *)self _brailleTableDictionary];
+  v4 = [_brailleTableDictionary objectForKey:@"identifierIsLanguage"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
-    v6 = [(BRLTTable *)self tableIdentifier];
-    v7 = BRLTLocalizedNameForLanguage(v6);
+    tableIdentifier = [(BRLTTable *)self tableIdentifier];
+    localizedLanguage2 = BRLTLocalizedNameForLanguage(tableIdentifier);
   }
 
   else
   {
-    v6 = [(BRLTTable *)self localizedVariant];
-    if (v6)
+    tableIdentifier = [(BRLTTable *)self localizedVariant];
+    if (tableIdentifier)
     {
       v8 = MEMORY[0x277CCACA8];
       v9 = BRLTLocalizedStringForKey(@"table.name.with.variant");
-      v10 = [(BRLTTable *)self localizedLanguage];
-      v11 = [v8 localizedStringWithFormat:v9, v10, v6];
+      localizedLanguage = [(BRLTTable *)self localizedLanguage];
+      v11 = [v8 localizedStringWithFormat:v9, localizedLanguage, tableIdentifier];
 
       goto LABEL_7;
     }
 
-    v7 = [(BRLTTable *)self localizedLanguage];
+    localizedLanguage2 = [(BRLTTable *)self localizedLanguage];
   }
 
-  v11 = v7;
+  v11 = localizedLanguage2;
 LABEL_7:
 
   return v11;
@@ -284,42 +284,42 @@ LABEL_7:
 
 - (NSString)localizedNameWithService
 {
-  v3 = [(BRLTTable *)self _brailleTableDictionary];
-  v4 = [v3 objectForKey:@"identifierIsLanguage"];
-  v5 = [v4 BOOLValue];
+  _brailleTableDictionary = [(BRLTTable *)self _brailleTableDictionary];
+  v4 = [_brailleTableDictionary objectForKey:@"identifierIsLanguage"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = BRLTLocalizedStringForKey(@"table.name.with.service");
-    v8 = [(BRLTTable *)self tableIdentifier];
-    v9 = BRLTLocalizedNameForLanguage(v8);
-    v10 = [(BRLTTable *)self localizedService];
-    [v6 localizedStringWithFormat:v7, v9, v10, v15];
+    localizedVariant = BRLTLocalizedStringForKey(@"table.name.with.service");
+    tableIdentifier = [(BRLTTable *)self tableIdentifier];
+    localizedLanguage = BRLTLocalizedNameForLanguage(tableIdentifier);
+    localizedService = [(BRLTTable *)self localizedService];
+    [v6 localizedStringWithFormat:localizedVariant, localizedLanguage, localizedService, v15];
   }
 
   else
   {
-    v7 = [(BRLTTable *)self localizedVariant];
+    localizedVariant = [(BRLTTable *)self localizedVariant];
     v11 = MEMORY[0x277CCACA8];
-    if (v7)
+    if (localizedVariant)
     {
-      v8 = BRLTLocalizedStringForKey(@"table.name.with.variant.and.service");
-      v9 = [(BRLTTable *)self localizedLanguage];
-      v10 = [(BRLTTable *)self localizedService];
-      v14 = v7;
-      v15 = v10;
+      tableIdentifier = BRLTLocalizedStringForKey(@"table.name.with.variant.and.service");
+      localizedLanguage = [(BRLTTable *)self localizedLanguage];
+      localizedService = [(BRLTTable *)self localizedService];
+      v14 = localizedVariant;
+      v15 = localizedService;
     }
 
     else
     {
-      v8 = BRLTLocalizedStringForKey(@"table.name.with.service");
-      v9 = [(BRLTTable *)self localizedLanguage];
-      v10 = [(BRLTTable *)self localizedService];
-      v14 = v10;
+      tableIdentifier = BRLTLocalizedStringForKey(@"table.name.with.service");
+      localizedLanguage = [(BRLTTable *)self localizedLanguage];
+      localizedService = [(BRLTTable *)self localizedService];
+      v14 = localizedService;
     }
 
-    [v11 localizedStringWithFormat:v8, v9, v14, v15];
+    [v11 localizedStringWithFormat:tableIdentifier, localizedLanguage, v14, v15];
   }
   v12 = ;
 
@@ -328,31 +328,31 @@ LABEL_7:
 
 - (NSString)localizedService
 {
-  v2 = [(BRLTTable *)self serviceIdentifier];
-  v3 = BRLTLocalizedStringForKey(v2);
+  serviceIdentifier = [(BRLTTable *)self serviceIdentifier];
+  v3 = BRLTLocalizedStringForKey(serviceIdentifier);
 
   return v3;
 }
 
 - (NSString)localizedLanguage
 {
-  v3 = [(BRLTTable *)self _bundle];
-  v4 = [v3 localizedInfoDictionary];
-  v5 = [(BRLTTable *)self language];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  _bundle = [(BRLTTable *)self _bundle];
+  localizedInfoDictionary = [_bundle localizedInfoDictionary];
+  language = [(BRLTTable *)self language];
+  v6 = [localizedInfoDictionary objectForKeyedSubscript:language];
 
   if (![v6 length])
   {
-    v7 = [(BRLTTable *)self language];
-    v8 = BRLTLocalizedStringForKey(v7);
+    language2 = [(BRLTTable *)self language];
+    v8 = BRLTLocalizedStringForKey(language2);
 
-    v9 = [(BRLTTable *)self language];
-    LODWORD(v7) = [v8 isEqualToString:v9];
+    language3 = [(BRLTTable *)self language];
+    LODWORD(language2) = [v8 isEqualToString:language3];
 
-    if (v7)
+    if (language2)
     {
-      v10 = [(BRLTTable *)self language];
-      v11 = BRLTLocalizedNameForLanguage(v10);
+      language4 = [(BRLTTable *)self language];
+      v11 = BRLTLocalizedNameForLanguage(language4);
 
       v6 = BRLTLocalizedStringForKey(v11);
     }
@@ -368,8 +368,8 @@ LABEL_7:
 
 - (NSString)localizedVariant
 {
-  v3 = [(BRLTTable *)self variant];
-  v4 = [v3 length];
+  variant = [(BRLTTable *)self variant];
+  v4 = [variant length];
 
   if (!v4)
   {
@@ -378,8 +378,8 @@ LABEL_7:
 
   if (_os_feature_enabled_impl())
   {
-    v5 = [(BRLTTable *)self variant];
-    v6 = [v5 isEqualToString:@"g1"];
+    variant2 = [(BRLTTable *)self variant];
+    v6 = [variant2 isEqualToString:@"g1"];
 
     if (v6)
     {
@@ -389,8 +389,8 @@ LABEL_9:
       goto LABEL_25;
     }
 
-    v8 = [(BRLTTable *)self variant];
-    v9 = [v8 isEqualToString:@"g2"];
+    variant3 = [(BRLTTable *)self variant];
+    v9 = [variant3 isEqualToString:@"g2"];
 
     if (v9)
     {
@@ -398,8 +398,8 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v10 = [(BRLTTable *)self variant];
-    v11 = [v10 isEqualToString:@"8dot"];
+    variant4 = [(BRLTTable *)self variant];
+    v11 = [variant4 isEqualToString:@"8dot"];
 
     if (v11)
     {
@@ -407,8 +407,8 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v13 = [(BRLTTable *)self variant];
-    v14 = [v13 isEqualToString:@"6dot"];
+    variant5 = [(BRLTTable *)self variant];
+    v14 = [variant5 isEqualToString:@"6dot"];
 
     if (v14)
     {
@@ -419,10 +419,10 @@ LABEL_11:
   }
 
   v15 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"_"];
-  v16 = [(BRLTTable *)self variant];
-  v17 = [v16 rangeOfCharacterFromSet:v15 options:4];
+  variant6 = [(BRLTTable *)self variant];
+  v17 = [variant6 rangeOfCharacterFromSet:v15 options:4];
 
-  v18 = [(BRLTTable *)self variant];
+  variant7 = [(BRLTTable *)self variant];
   if (v17 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v19 = 0;
@@ -430,18 +430,18 @@ LABEL_11:
 
   else
   {
-    v20 = [(BRLTTable *)self variant];
-    v21 = [v20 substringToIndex:v17];
+    variant8 = [(BRLTTable *)self variant];
+    v21 = [variant8 substringToIndex:v17];
 
-    v22 = [(BRLTTable *)self variant];
-    v19 = [v22 substringFromIndex:v17 + 1];
+    variant9 = [(BRLTTable *)self variant];
+    v19 = [variant9 substringFromIndex:v17 + 1];
 
-    v18 = v21;
+    variant7 = v21;
   }
 
   v23 = MEMORY[0x277CCACA8];
-  v24 = [(BRLTTable *)self language];
-  v25 = [v23 stringWithFormat:@"%@.%@.variant", v24, v18];
+  language = [(BRLTTable *)self language];
+  v25 = [v23 stringWithFormat:@"%@.%@.variant", language, variant7];
 
   v12 = BRLTLocalizedStringForKey(v25);
   if ([v19 isEqualToString:@"g1"])
@@ -483,70 +483,70 @@ LABEL_25:
 
 - (BOOL)supportsTranslationModeContracted
 {
-  v2 = [(BRLTTable *)self _brailleTableDictionary];
-  v3 = v2;
-  if (v2)
+  _brailleTableDictionary = [(BRLTTable *)self _brailleTableDictionary];
+  v3 = _brailleTableDictionary;
+  if (_brailleTableDictionary)
   {
-    v4 = [v2 objectForKeyedSubscript:@"supportsContraction"];
+    v4 = [_brailleTableDictionary objectForKeyedSubscript:@"supportsContraction"];
     v5 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
     }
 
     else
     {
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)supportsTranslationMode8Dot
 {
-  v2 = [(BRLTTable *)self _brailleTableDictionary];
-  v3 = v2;
-  if (v2)
+  _brailleTableDictionary = [(BRLTTable *)self _brailleTableDictionary];
+  v3 = _brailleTableDictionary;
+  if (_brailleTableDictionary)
   {
-    v4 = [v2 objectForKeyedSubscript:@"supports8dot"];
+    v4 = [_brailleTableDictionary objectForKeyedSubscript:@"supports8dot"];
     v5 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
     }
 
     else
     {
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (NSArray)replacements
 {
   v28 = *MEMORY[0x277D85DE8];
-  v2 = [(BRLTTable *)self _brailleTableDictionary];
-  v3 = v2;
-  if (v2)
+  _brailleTableDictionary = [(BRLTTable *)self _brailleTableDictionary];
+  v3 = _brailleTableDictionary;
+  if (_brailleTableDictionary)
   {
-    v4 = [v2 objectForKeyedSubscript:@"replacements"];
+    v4 = [_brailleTableDictionary objectForKeyedSubscript:@"replacements"];
     v5 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -579,8 +579,8 @@ LABEL_25:
             if ([v14 rangeOfCharacterFromSet:v8 options:4] == 0x7FFFFFFFFFFFFFFFLL)
             {
               v15 = MEMORY[0x277CCACA8];
-              v16 = [(BRLTTable *)self serviceIdentifier];
-              v17 = [v15 stringWithFormat:@"%@.%@", v16, v14];
+              serviceIdentifier = [(BRLTTable *)self serviceIdentifier];
+              v17 = [v15 stringWithFormat:@"%@.%@", serviceIdentifier, v14];
               [v7 addObject:v17];
             }
 
@@ -618,69 +618,69 @@ LABEL_25:
 
 - (BOOL)isCustomBrailleTable
 {
-  v2 = [(BRLTTable *)self _brailleTableDictionary];
-  v3 = v2;
-  if (v2)
+  _brailleTableDictionary = [(BRLTTable *)self _brailleTableDictionary];
+  v3 = _brailleTableDictionary;
+  if (_brailleTableDictionary)
   {
-    v4 = [v2 objectForKeyedSubscript:@"customBraille"];
+    v4 = [_brailleTableDictionary objectForKeyedSubscript:@"customBraille"];
     v5 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
     }
 
     else
     {
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)supportsTranslationByCell
 {
-  v2 = [(BRLTTable *)self _brailleTableDictionary];
-  v3 = v2;
-  if (v2)
+  _brailleTableDictionary = [(BRLTTable *)self _brailleTableDictionary];
+  v3 = _brailleTableDictionary;
+  if (_brailleTableDictionary)
   {
-    v4 = [v2 objectForKeyedSubscript:@"supportsTranslationByCell"];
+    v4 = [_brailleTableDictionary objectForKeyedSubscript:@"supportsTranslationByCell"];
     v5 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
     }
 
     else
     {
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (NSString)candidateSelectionLanguage
 {
-  v2 = [(BRLTTable *)self _brailleTableDictionary];
-  v3 = v2;
-  if (v2)
+  _brailleTableDictionary = [(BRLTTable *)self _brailleTableDictionary];
+  v3 = _brailleTableDictionary;
+  if (_brailleTableDictionary)
   {
-    v4 = [v2 objectForKeyedSubscript:@"candidateSelectionLanguage"];
+    v4 = [_brailleTableDictionary objectForKeyedSubscript:@"candidateSelectionLanguage"];
     v5 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -705,13 +705,13 @@ LABEL_25:
 
 - (id)_brailleTableDictionary
 {
-  v3 = [(BRLTTable *)self _bundle];
-  v4 = [(BRLTTable *)self identifier];
-  v5 = [v3 bundleIdentifier];
-  v6 = v5;
-  if (v5)
+  _bundle = [(BRLTTable *)self _bundle];
+  identifier = [(BRLTTable *)self identifier];
+  bundleIdentifier = [_bundle bundleIdentifier];
+  v6 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v7 = [v4 substringFromIndex:{objc_msgSend(v5, "length") + 1}];
+    v7 = [identifier substringFromIndex:{objc_msgSend(bundleIdentifier, "length") + 1}];
   }
 
   else
@@ -719,7 +719,7 @@ LABEL_25:
     v7 = 0;
   }
 
-  v8 = [v3 objectForInfoDictionaryKey:@"BrailleTables"];
+  v8 = [_bundle objectForInfoDictionaryKey:@"BrailleTables"];
   v9 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -767,8 +767,8 @@ LABEL_12:
     v18 = 0u;
     v19 = 0u;
     v16 = v20 = 0u;
-    v5 = [v16 translatorBundles];
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    translatorBundles = [v16 translatorBundles];
+    v6 = [translatorBundles countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
       v7 = v6;
@@ -779,13 +779,13 @@ LABEL_12:
         {
           if (*v18 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(translatorBundles);
           }
 
           v10 = *(*(&v17 + 1) + 8 * i);
-          v11 = [v10 bundleIdentifier];
-          v12 = [(BRLTTable *)self serviceIdentifier];
-          v13 = [v11 isEqualToString:v12];
+          bundleIdentifier = [v10 bundleIdentifier];
+          serviceIdentifier = [(BRLTTable *)self serviceIdentifier];
+          v13 = [bundleIdentifier isEqualToString:serviceIdentifier];
 
           if (v13)
           {
@@ -794,7 +794,7 @@ LABEL_12:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [translatorBundles countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v7)
         {
           continue;
@@ -814,32 +814,32 @@ LABEL_12:
   return bundle;
 }
 
-- (BOOL)_isEqualToTable:(id)a3
+- (BOOL)_isEqualToTable:(id)table
 {
-  v4 = a3;
-  v5 = [(BRLTTable *)self serviceIdentifier];
-  v6 = [v4 serviceIdentifier];
-  if (v5 | v6 && ![v5 isEqualToString:v6])
+  tableCopy = table;
+  serviceIdentifier = [(BRLTTable *)self serviceIdentifier];
+  serviceIdentifier2 = [tableCopy serviceIdentifier];
+  if (serviceIdentifier | serviceIdentifier2 && ![serviceIdentifier isEqualToString:serviceIdentifier2])
   {
     v11 = 0;
   }
 
   else
   {
-    v7 = [(BRLTTable *)self language];
-    v8 = [v4 language];
-    if (v7 | v8 && ![v7 isEqualToString:v8])
+    language = [(BRLTTable *)self language];
+    language2 = [tableCopy language];
+    if (language | language2 && ![language isEqualToString:language2])
     {
       v11 = 0;
     }
 
     else
     {
-      v9 = [(BRLTTable *)self variant];
-      v10 = [v4 variant];
-      if (v9 | v10)
+      variant = [(BRLTTable *)self variant];
+      variant2 = [tableCopy variant];
+      if (variant | variant2)
       {
-        v11 = [v9 isEqualToString:v10];
+        v11 = [variant isEqualToString:variant2];
       }
 
       else
@@ -852,12 +852,12 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = BRLTTable;
-  if ([(BRLTTable *)&v7 isEqual:v4])
+  if ([(BRLTTable *)&v7 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -865,7 +865,7 @@ LABEL_12:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRLTTable *)self _isEqualToTable:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRLTTable *)self _isEqualToTable:equalCopy];
   }
 
   return v5;
@@ -873,8 +873,8 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v2 = [(BRLTTable *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(BRLTTable *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -885,10 +885,10 @@ LABEL_12:
   v10.receiver = self;
   v10.super_class = BRLTTable;
   v4 = [(BRLTTable *)&v10 description];
-  v5 = [(BRLTTable *)self serviceIdentifier];
-  v6 = [(BRLTTable *)self language];
-  v7 = [(BRLTTable *)self variant];
-  v8 = [v3 stringWithFormat:@"<%@ service:%@ lang:%@ variant:%@>", v4, v5, v6, v7];
+  serviceIdentifier = [(BRLTTable *)self serviceIdentifier];
+  language = [(BRLTTable *)self language];
+  variant = [(BRLTTable *)self variant];
+  v8 = [v3 stringWithFormat:@"<%@ service:%@ lang:%@ variant:%@>", v4, serviceIdentifier, language, variant];
 
   return v8;
 }

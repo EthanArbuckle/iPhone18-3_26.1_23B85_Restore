@@ -1,22 +1,22 @@
 @interface TVUTSNetworkManagerProxy
-+ (void)cancel:(NSURLRequest *)a3 completion:(id)a4;
-+ (void)executeRequest:(NSURLRequest *)a3 completion:(id)a4;
-+ (void)fetchConfiguration:(BOOL)a3 completion:(id)a4;
++ (void)cancel:(NSURLRequest *)cancel completion:(id)completion;
++ (void)executeRequest:(NSURLRequest *)request completion:(id)completion;
++ (void)fetchConfiguration:(BOOL)configuration completion:(id)completion;
 - (_TtC18TVIntentsExtension24TVUTSNetworkManagerProxy)init;
 @end
 
 @implementation TVUTSNetworkManagerProxy
 
-+ (void)executeRequest:(NSURLRequest *)a3 completion:(id)a4
++ (void)executeRequest:(NSURLRequest *)request completion:(id)completion
 {
   v7 = (*(*(sub_100002C2C(&qword_10000C7B0, &qword_100006450) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = request;
   v11[3] = v10;
-  v11[4] = a1;
+  v11[4] = self;
   v12 = sub_1000056F8();
   (*(*(v12 - 8) + 56))(v9, 1, 1, v12);
   v13 = swift_allocObject();
@@ -29,20 +29,20 @@
   v14[3] = 0;
   v14[4] = &unk_100006590;
   v14[5] = v13;
-  v15 = a3;
+  requestCopy = request;
   sub_100003108(0, 0, v9, &unk_100006598, v14);
 }
 
-+ (void)cancel:(NSURLRequest *)a3 completion:(id)a4
++ (void)cancel:(NSURLRequest *)cancel completion:(id)completion
 {
   v7 = (*(*(sub_100002C2C(&qword_10000C7B0, &qword_100006450) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = cancel;
   v11[3] = v10;
-  v11[4] = a1;
+  v11[4] = self;
   v12 = sub_1000056F8();
   (*(*(v12 - 8) + 56))(v9, 1, 1, v12);
   v13 = swift_allocObject();
@@ -55,20 +55,20 @@
   v14[3] = 0;
   v14[4] = &unk_100006570;
   v14[5] = v13;
-  v15 = a3;
+  cancelCopy = cancel;
   sub_100003108(0, 0, v9, &unk_100006578, v14);
 }
 
-+ (void)fetchConfiguration:(BOOL)a3 completion:(id)a4
++ (void)fetchConfiguration:(BOOL)configuration completion:(id)completion
 {
   v7 = (*(*(sub_100002C2C(&qword_10000C7B0, &qword_100006450) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v9 = &v15 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  *(v11 + 16) = a3;
+  *(v11 + 16) = configuration;
   *(v11 + 24) = v10;
-  *(v11 + 32) = a1;
+  *(v11 + 32) = self;
   v12 = sub_1000056F8();
   (*(*(v12 - 8) + 56))(v9, 1, 1, v12);
   v13 = swift_allocObject();

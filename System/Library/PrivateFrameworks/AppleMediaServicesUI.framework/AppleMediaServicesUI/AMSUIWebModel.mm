@@ -1,17 +1,17 @@
 @interface AMSUIWebModel
-+ (CGSize)windowSizeFromJSObject:(id)a3 key:(id)a4;
-+ (CGSize)windowSizeFromPageModel:(id)a3;
-+ (id)backgroundColorFromPageModel:(id)a3;
-+ (id)impressionEventFromPageModel:(id)a3 context:(id)a4;
-+ (id)navigationBarFromPageModel:(id)a3 context:(id)a4;
-+ (id)pageModelFromJSObject:(id)a3 context:(id)a4;
++ (CGSize)windowSizeFromJSObject:(id)object key:(id)key;
++ (CGSize)windowSizeFromPageModel:(id)model;
++ (id)backgroundColorFromPageModel:(id)model;
++ (id)impressionEventFromPageModel:(id)model context:(id)context;
++ (id)navigationBarFromPageModel:(id)model context:(id)context;
++ (id)pageModelFromJSObject:(id)object context:(id)context;
 @end
 
 @implementation AMSUIWebModel
 
-+ (id)backgroundColorFromPageModel:(id)a3
++ (id)backgroundColorFromPageModel:(id)model
 {
-  v3 = [a3 objectForKeyedSubscript:@"backgroundColor"];
+  v3 = [model objectForKeyedSubscript:@"backgroundColor"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -26,10 +26,10 @@
   return v4;
 }
 
-+ (id)impressionEventFromPageModel:(id)a3 context:(id)a4
++ (id)impressionEventFromPageModel:(id)model context:(id)context
 {
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"impressionEvent"];
+  contextCopy = context;
+  v6 = [model objectForKeyedSubscript:@"impressionEvent"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -43,7 +43,7 @@
 
   if (v7)
   {
-    v8 = [[AMSUIWebMetricsEvent alloc] initWithJSObject:v7 context:v5];
+    v8 = [[AMSUIWebMetricsEvent alloc] initWithJSObject:v7 context:contextCopy];
   }
 
   else
@@ -54,24 +54,24 @@
   return v8;
 }
 
-+ (id)navigationBarFromPageModel:(id)a3 context:(id)a4
++ (id)navigationBarFromPageModel:(id)model context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  modelCopy = model;
   v7 = [AMSUIWebNavigationBarModel alloc];
-  v8 = [v6 objectForKeyedSubscript:@"navigationBar"];
+  v8 = [modelCopy objectForKeyedSubscript:@"navigationBar"];
 
-  v9 = [(AMSUIWebNavigationBarModel *)v7 initWithJSObject:v8 context:v5];
+  v9 = [(AMSUIWebNavigationBarModel *)v7 initWithJSObject:v8 context:contextCopy];
 
   return v9;
 }
 
-+ (id)pageModelFromJSObject:(id)a3 context:(id)a4
++ (id)pageModelFromJSObject:(id)object context:(id)context
 {
   v25[8] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"modelClass"];
+  objectCopy = object;
+  contextCopy = context;
+  v7 = [objectCopy objectForKeyedSubscript:@"modelClass"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -101,26 +101,26 @@
   v25[7] = objc_opt_class();
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:8];
   v10 = [v9 objectForKeyedSubscript:v8];
-  if (!v10 || (v11 = [[v10 alloc] initWithJSObject:v5 context:v6]) == 0)
+  if (!v10 || (v11 = [[v10 alloc] initWithJSObject:objectCopy context:contextCopy]) == 0)
   {
-    v12 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v12)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v12 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v14 = objc_opt_class();
-      v15 = [v6 logKey];
+      logKey = [contextCopy logKey];
       v18 = 138543874;
       v19 = v14;
       v20 = 2114;
-      v21 = v15;
+      v21 = logKey;
       v22 = 2114;
       v23 = v8;
-      _os_log_impl(&dword_1BB036000, v13, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid page model: %{public}@", &v18, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid page model: %{public}@", &v18, 0x20u);
     }
 
     v11 = 0;
@@ -131,17 +131,17 @@
   return v11;
 }
 
-+ (CGSize)windowSizeFromPageModel:(id)a3
++ (CGSize)windowSizeFromPageModel:(id)model
 {
-  [a1 windowSizeFromJSObject:a3 key:@"windowSize"];
+  [self windowSizeFromJSObject:model key:@"windowSize"];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-+ (CGSize)windowSizeFromJSObject:(id)a3 key:(id)a4
++ (CGSize)windowSizeFromJSObject:(id)object key:(id)key
 {
-  v4 = [a3 objectForKeyedSubscript:a4];
+  v4 = [object objectForKeyedSubscript:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

@@ -1,9 +1,9 @@
 @interface AVTAvatarActionsViewControllerPadLayout
 + (double)buttonHeight;
-+ (double)heightForButtonsViewWithButtonCount:(int64_t)a3;
-- (AVTAvatarActionsViewControllerPadLayout)initWithContainerSize:(CGSize)a3 insets:(UIEdgeInsets)a4 buttonCount:(int64_t)a5 avtViewLayoutInfo:(id)a6;
++ (double)heightForButtonsViewWithButtonCount:(int64_t)count;
+- (AVTAvatarActionsViewControllerPadLayout)initWithContainerSize:(CGSize)size insets:(UIEdgeInsets)insets buttonCount:(int64_t)count avtViewLayoutInfo:(id)info;
 - (CGRect)actionButtonsViewFrame;
-- (CGRect)actionButtonsViewFrameForButtonCount:(int64_t)a3;
+- (CGRect)actionButtonsViewFrameForButtonCount:(int64_t)count;
 - (CGRect)avatarContainerViewFrame;
 - (CGRect)userInfoFrame;
 - (CGSize)containerSize;
@@ -23,22 +23,22 @@
   return v6;
 }
 
-+ (double)heightForButtonsViewWithButtonCount:(int64_t)a3
++ (double)heightForButtonsViewWithButtonCount:(int64_t)count
 {
-  v4 = a3;
-  [a1 buttonHeight];
-  return (a3 - 1) * 10.0 + v4 * v5;
+  countCopy = count;
+  [self buttonHeight];
+  return (count - 1) * 10.0 + countCopy * v5;
 }
 
-- (AVTAvatarActionsViewControllerPadLayout)initWithContainerSize:(CGSize)a3 insets:(UIEdgeInsets)a4 buttonCount:(int64_t)a5 avtViewLayoutInfo:(id)a6
+- (AVTAvatarActionsViewControllerPadLayout)initWithContainerSize:(CGSize)size insets:(UIEdgeInsets)insets buttonCount:(int64_t)count avtViewLayoutInfo:(id)info
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  height = a3.height;
-  width = a3.width;
-  v15 = a6;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  infoCopy = info;
   v19.receiver = self;
   v19.super_class = AVTAvatarActionsViewControllerPadLayout;
   v16 = [(AVTAvatarActionsViewControllerPadLayout *)&v19 init];
@@ -51,16 +51,16 @@
     v16->_edgeInsets.left = left;
     v16->_edgeInsets.bottom = bottom;
     v16->_edgeInsets.right = right;
-    v16->_buttonCount = a5;
-    objc_storeStrong(&v16->_avtViewLayout, a6);
+    v16->_buttonCount = count;
+    objc_storeStrong(&v16->_avtViewLayout, info);
   }
 
   return v17;
 }
 
-- (CGRect)actionButtonsViewFrameForButtonCount:(int64_t)a3
+- (CGRect)actionButtonsViewFrameForButtonCount:(int64_t)count
 {
-  [objc_opt_class() heightForButtonsViewWithButtonCount:a3];
+  [objc_opt_class() heightForButtonsViewWithButtonCount:count];
   v5 = v4;
   [(AVTAvatarActionsViewControllerPadLayout *)self containerSize];
   v7 = v6 + -20.0;
@@ -112,11 +112,11 @@
   v4 = v3;
   [(AVTAvatarActionsViewControllerPadLayout *)self containerSize];
   v6 = fmin(v5, 624.0);
-  v7 = [(AVTAvatarActionsViewControllerPadLayout *)self avtViewLayout];
-  [v7 avtViewBackingSize];
+  avtViewLayout = [(AVTAvatarActionsViewControllerPadLayout *)self avtViewLayout];
+  [avtViewLayout avtViewBackingSize];
   v9 = v8;
-  v10 = [(AVTAvatarActionsViewControllerPadLayout *)self avtViewLayout];
-  [v10 avtViewBackingSize];
+  avtViewLayout2 = [(AVTAvatarActionsViewControllerPadLayout *)self avtViewLayout];
+  [avtViewLayout2 avtViewBackingSize];
   v12 = v9 / v11;
 
   if (v6 * v12 <= 300.0)

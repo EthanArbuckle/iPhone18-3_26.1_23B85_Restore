@@ -1,29 +1,29 @@
 @interface MGServiceClient
-- (BOOL)isEqual:(id)a3;
-- (MGServiceClient)initWithConnection:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MGServiceClient)initWithConnection:(id)connection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)outstandingQueryForIdentifier:(id)a3;
+- (id)outstandingQueryForIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)_withLock:(os_unfair_lock_s *)a1;
-- (void)addQuery:(id)a3;
-- (void)enumerateQueriesUsingBlock:(id)a3;
-- (void)removeQuery:(id)a3;
-- (void)setQueries:(id)a3;
+- (void)_withLock:(os_unfair_lock_s *)lock;
+- (void)addQuery:(id)query;
+- (void)enumerateQueriesUsingBlock:(id)block;
+- (void)removeQuery:(id)query;
+- (void)setQueries:(id)queries;
 @end
 
 @implementation MGServiceClient
 
-- (MGServiceClient)initWithConnection:(id)a3
+- (MGServiceClient)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = MGServiceClient;
   v6 = [(MGServiceClient *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     queries = v7->_queries;
     v7->_queries = MEMORY[0x277CBEC10];
   }
@@ -31,10 +31,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -44,9 +44,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(MGServiceClient *)self connection];
-      v6 = [(MGServiceClient *)v4 connection];
-      v7 = [v5 isEqual:v6];
+      connection = [(MGServiceClient *)self connection];
+      connection2 = [(MGServiceClient *)equalCopy connection];
+      v7 = [connection isEqual:connection2];
     }
 
     else
@@ -60,17 +60,17 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MGServiceClient *)self connection];
-  v3 = [v2 hash];
+  connection = [(MGServiceClient *)self connection];
+  v3 = [connection hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MGServiceClient alloc];
-  v5 = [(MGServiceClient *)self connection];
-  v6 = [(MGServiceClient *)v4 initWithConnection:v5];
+  connection = [(MGServiceClient *)self connection];
+  v6 = [(MGServiceClient *)v4 initWithConnection:connection];
 
   return v6;
 }
@@ -80,44 +80,44 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MGServiceClient *)self connection];
-  v7 = [v3 stringWithFormat:@"<%@: %p, connection = %p>", v5, self, v6];
+  connection = [(MGServiceClient *)self connection];
+  v7 = [v3 stringWithFormat:@"<%@: %p, connection = %p>", v5, self, connection];
 
   return v7;
 }
 
-- (void)_withLock:(os_unfair_lock_s *)a1
+- (void)_withLock:(os_unfair_lock_s *)lock
 {
-  if (a1)
+  if (lock)
   {
     v3 = a2;
-    os_unfair_lock_lock(a1 + 2);
+    os_unfair_lock_lock(lock + 2);
     v3[2](v3);
 
-    os_unfair_lock_unlock(a1 + 2);
+    os_unfair_lock_unlock(lock + 2);
   }
 }
 
-- (void)setQueries:(id)a3
+- (void)setQueries:(id)queries
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queriesCopy = queries;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(MGServiceClient *)self queries];
-  v6 = [v4 isEqualToDictionary:v5];
+  queries = [(MGServiceClient *)self queries];
+  v6 = [queriesCopy isEqualToDictionary:queries];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [v4 copy];
+    v7 = [queriesCopy copy];
     queries = self->_queries;
     self->_queries = v7;
 
     v9 = [(NSDictionary *)self->_queries count];
-    v10 = [(MGServiceClient *)self transaction];
-    v11 = v10;
-    if (!v9 || v10)
+    transaction = [(MGServiceClient *)self transaction];
+    v11 = transaction;
+    if (!v9 || transaction)
     {
-      if (!v9 && v10)
+      if (!v9 && transaction)
       {
         [(MGServiceClient *)self setTransaction:0];
       }
@@ -125,11 +125,11 @@
 
     else
     {
-      v12 = [(MGServiceClient *)self connection];
-      v13 = [v12 processIdentifier];
+      connection = [(MGServiceClient *)self connection];
+      processIdentifier = [connection processIdentifier];
 
       memset(buffer, 0, sizeof(buffer));
-      *(buffer + proc_name(v13, buffer, 0x40u)) = 0;
+      *(buffer + proc_name(processIdentifier, buffer, 0x40u)) = 0;
       if (LOBYTE(buffer[0]))
       {
         v14 = buffer;
@@ -150,16 +150,16 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addQuery:(id)a3
+- (void)addQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __28__MGServiceClient_addQuery___block_invoke;
   v6[3] = &unk_27989EE80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = queryCopy;
+  v5 = queryCopy;
   [(MGServiceClient *)self _withLock:v6];
 }
 
@@ -175,16 +175,16 @@ void __28__MGServiceClient_addQuery___block_invoke(uint64_t a1)
   [*(a1 + 32) setQueries:v5];
 }
 
-- (void)removeQuery:(id)a3
+- (void)removeQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __31__MGServiceClient_removeQuery___block_invoke;
   v6[3] = &unk_27989EE80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = queryCopy;
+  v5 = queryCopy;
   [(MGServiceClient *)self _withLock:v6];
 }
 
@@ -199,9 +199,9 @@ void __31__MGServiceClient_removeQuery___block_invoke(uint64_t a1)
   [*(a1 + 32) setQueries:v4];
 }
 
-- (id)outstandingQueryForIdentifier:(id)a3
+- (id)outstandingQueryForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -214,7 +214,7 @@ void __31__MGServiceClient_removeQuery___block_invoke(uint64_t a1)
   v8[3] = &unk_27989EEF8;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = identifierCopy;
   v9 = v5;
   [(MGServiceClient *)self _withLock:v8];
   v6 = v12[5];
@@ -233,9 +233,9 @@ void __49__MGServiceClient_outstandingQueryForIdentifier___block_invoke(uint64_t
   *(v3 + 40) = v2;
 }
 
-- (void)enumerateQueriesUsingBlock:(id)a3
+- (void)enumerateQueriesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -254,7 +254,7 @@ void __49__MGServiceClient_outstandingQueryForIdentifier___block_invoke(uint64_t
   v7[1] = 3221225472;
   v7[2] = __46__MGServiceClient_enumerateQueriesUsingBlock___block_invoke_2;
   v7[3] = &unk_27989F990;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
   [v5 enumerateKeysAndObjectsUsingBlock:v7];
 

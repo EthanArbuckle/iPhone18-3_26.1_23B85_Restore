@@ -1,18 +1,18 @@
 @interface _DYSubCache
-- (BOOL)withVMLayoutData:(id)a3;
+- (BOOL)withVMLayoutData:(id)data;
 - (_DYSubCache)init;
 @end
 
 @implementation _DYSubCache
 
-- (BOOL)withVMLayoutData:(id)a3
+- (BOOL)withVMLayoutData:(id)data
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(data);
   if (*(&self->super.isa + OBJC_IVAR____DYSubCache_impl))
   {
     v5 = v4;
     _Block_copy(v4);
-    v6 = self;
+    selfCopy = self;
 
     v8 = sub_1AE4DF534(v7, v5);
     _Block_release(v5);

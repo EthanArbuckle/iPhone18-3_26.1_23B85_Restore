@@ -1,20 +1,20 @@
 @interface PHShareParticipant
 + (id)entityKeyMap;
-+ (id)fetchContributorForComment:(id)a3 options:(id)a4;
-+ (id)fetchContributorsForAsset:(id)a3 options:(id)a4;
-+ (id)fetchContributorsForAssets:(id)a3 options:(id)a4;
-+ (id)fetchCurrentUserParticipantInShare:(id)a3 options:(id)a4;
-+ (id)fetchOwnerParticipantInShare:(id)a3 options:(id)a4;
-+ (id)fetchParticipantsInShare:(id)a3 options:(id)a4;
-+ (id)fetchParticipantsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)fetchParticipantsWithParticipantIDs:(id)a3 options:(id)a4;
-+ (id)fetchShareParticipantForPerson:(id)a3 options:(id)a4;
-+ (id)localIdentifierWithUUID:(id)a3;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4;
-+ (void)queryParticipantsWithEmails:(id)a3 phoneNumbers:(id)a4 photoLibrary:(id)a5 completionHandler:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (PHShareParticipant)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
++ (id)fetchContributorForComment:(id)comment options:(id)options;
++ (id)fetchContributorsForAsset:(id)asset options:(id)options;
++ (id)fetchContributorsForAssets:(id)assets options:(id)options;
++ (id)fetchCurrentUserParticipantInShare:(id)share options:(id)options;
++ (id)fetchOwnerParticipantInShare:(id)share options:(id)options;
++ (id)fetchParticipantsInShare:(id)share options:(id)options;
++ (id)fetchParticipantsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)fetchParticipantsWithParticipantIDs:(id)ds options:(id)options;
++ (id)fetchShareParticipantForPerson:(id)person options:(id)options;
++ (id)localIdentifierWithUUID:(id)d;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path;
++ (void)queryParticipantsWithEmails:(id)emails phoneNumbers:(id)numbers photoLibrary:(id)library completionHandler:(id)handler;
+- (BOOL)isEqual:(id)equal;
+- (PHShareParticipant)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
 - (id)fullName;
 - (unint64_t)hash;
 @end
@@ -23,21 +23,21 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PHShareParticipant *)self role];
-  v4 = [(PHShareParticipant *)self phoneNumber];
-  v5 = [v4 hash];
-  v6 = [(PHShareParticipant *)self emailAddress];
-  v7 = v5 ^ [v6 hash] ^ v3;
-  v8 = [(PHShareParticipant *)self nameComponents];
-  v9 = [v8 hash];
+  role = [(PHShareParticipant *)self role];
+  phoneNumber = [(PHShareParticipant *)self phoneNumber];
+  v5 = [phoneNumber hash];
+  emailAddress = [(PHShareParticipant *)self emailAddress];
+  v7 = v5 ^ [emailAddress hash] ^ role;
+  nameComponents = [(PHShareParticipant *)self nameComponents];
+  v9 = [nameComponents hash];
 
   return v7 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     IsEqual = 1;
   }
@@ -47,20 +47,20 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PHShareParticipant *)v5 role];
-      if (v6 == [(PHShareParticipant *)self role])
+      v5 = equalCopy;
+      role = [(PHShareParticipant *)v5 role];
+      if (role == [(PHShareParticipant *)self role])
       {
-        v7 = [(PHShareParticipant *)v5 phoneNumber];
-        v8 = [(PHShareParticipant *)self phoneNumber];
+        phoneNumber = [(PHShareParticipant *)v5 phoneNumber];
+        phoneNumber2 = [(PHShareParticipant *)self phoneNumber];
         if (PLObjectIsEqual())
         {
-          v9 = [(PHShareParticipant *)v5 nameComponents];
-          v10 = [(PHShareParticipant *)self nameComponents];
+          nameComponents = [(PHShareParticipant *)v5 nameComponents];
+          nameComponents2 = [(PHShareParticipant *)self nameComponents];
           if (PLObjectIsEqual())
           {
-            v11 = [(PHShareParticipant *)v5 emailAddress];
-            v12 = [(PHShareParticipant *)self emailAddress];
+            emailAddress = [(PHShareParticipant *)v5 emailAddress];
+            emailAddress2 = [(PHShareParticipant *)self emailAddress];
             IsEqual = PLObjectIsEqual();
           }
 
@@ -93,13 +93,13 @@
 
 - (id)fullName
 {
-  v3 = [(PHShareParticipant *)self nameComponents];
+  nameComponents = [(PHShareParticipant *)self nameComponents];
 
-  if (v3)
+  if (nameComponents)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696ADF8]);
-    v5 = [(PHShareParticipant *)self nameComponents];
-    v6 = [v4 stringFromPersonNameComponents:v5];
+    nameComponents2 = [(PHShareParticipant *)self nameComponents];
+    v6 = [v4 stringFromPersonNameComponents:nameComponents2];
   }
 
   else
@@ -110,105 +110,105 @@
   return v6;
 }
 
-- (PHShareParticipant)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHShareParticipant)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v30.receiver = self;
   v30.super_class = PHShareParticipant;
-  v9 = [(PHObject *)&v30 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHObject *)&v30 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"emailAddress"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"emailAddress"];
     emailAddress = v9->_emailAddress;
     v9->_emailAddress = v10;
 
-    v12 = [v8 objectForKeyedSubscript:@"nameComponents"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"nameComponents"];
     nameComponents = v9->_nameComponents;
     v9->_nameComponents = v12;
 
-    v14 = [v8 objectForKeyedSubscript:@"phoneNumber"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"phoneNumber"];
     phoneNumber = v9->_phoneNumber;
     v9->_phoneNumber = v14;
 
-    v16 = [v8 objectForKeyedSubscript:@"role"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"role"];
     v9->_role = [v16 integerValue];
 
-    v17 = [v8 objectForKeyedSubscript:@"permission"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"permission"];
     v9->_permission = [v17 integerValue];
 
-    v18 = [v8 objectForKeyedSubscript:@"acceptanceStatus"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"acceptanceStatus"];
     v9->_acceptanceStatus = [v18 integerValue];
 
-    v19 = [v8 objectForKeyedSubscript:@"exitState"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"exitState"];
     v9->_exitState = [v19 integerValue];
 
-    v20 = [v8 objectForKeyedSubscript:@"isCurrentUser"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"isCurrentUser"];
     v9->_isCurrentUser = [v20 BOOLValue];
 
-    v21 = [v8 objectForKeyedSubscript:@"participantID"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"participantID"];
     participantID = v9->_participantID;
     v9->_participantID = v21;
 
-    v23 = [v8 objectForKeyedSubscript:@"hashedPersonID"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"hashedPersonID"];
     hashedPersonID = v9->_hashedPersonID;
     v9->_hashedPersonID = v23;
 
-    v25 = [v8 objectForKeyedSubscript:@"subscriptionDate"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"subscriptionDate"];
     subscriptionDate = v9->_subscriptionDate;
     v9->_subscriptionDate = v25;
 
-    v27 = [v8 objectForKeyedSubscript:@"allowlistedState"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"allowlistedState"];
     v9->_allowlistedState = [v27 integerValue];
 
-    v28 = [v8 objectForKeyedSubscript:@"participantKind"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"participantKind"];
     v9->_participantKind = [v28 integerValue];
   }
 
   return v9;
 }
 
-+ (id)fetchShareParticipantForPerson:(id)a3 options:(id)a4
++ (id)fetchShareParticipantForPerson:(id)person options:(id)options
 {
-  if (a3)
+  if (person)
   {
-    v4 = [PHQuery queryForShareParticipantWithPerson:a3 options:a4];
-    v5 = [v4 executeQuery];
+    v4 = [PHQuery queryForShareParticipantWithPerson:person options:options];
+    executeQuery = [v4 executeQuery];
   }
 
   else
   {
-    v5 = 0;
+    executeQuery = 0;
   }
 
-  return v5;
+  return executeQuery;
 }
 
-+ (void)queryParticipantsWithEmails:(id)a3 phoneNumbers:(id)a4 photoLibrary:(id)a5 completionHandler:(id)a6
++ (void)queryParticipantsWithEmails:(id)emails phoneNumbers:(id)numbers photoLibrary:(id)library completionHandler:(id)handler
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [a5 assetsdClient];
-  v13 = [v12 cloudInternalClient];
+  handlerCopy = handler;
+  numbersCopy = numbers;
+  emailsCopy = emails;
+  assetsdClient = [library assetsdClient];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __94__PHShareParticipant_queryParticipantsWithEmails_phoneNumbers_photoLibrary_completionHandler___block_invoke;
   v15[3] = &unk_1E75A8C38;
-  v16 = v9;
-  v14 = v9;
-  [v13 queryParticipantsWithEmails:v11 phoneNumbers:v10 completionHandler:v15];
+  v16 = handlerCopy;
+  v14 = handlerCopy;
+  [cloudInternalClient queryParticipantsWithEmails:emailsCopy phoneNumbers:numbersCopy completionHandler:v15];
 }
 
-+ (id)fetchCurrentUserParticipantInShare:(id)a3 options:(id)a4
++ (id)fetchCurrentUserParticipantInShare:(id)share options:(id)options
 {
-  v5 = a3;
+  shareCopy = share;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__PHShareParticipant_fetchCurrentUserParticipantInShare_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = shareCopy;
+  v6 = shareCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -221,16 +221,16 @@ id __65__PHShareParticipant_fetchCurrentUserParticipantInShare_options___block_i
   return v3;
 }
 
-+ (id)fetchOwnerParticipantInShare:(id)a3 options:(id)a4
++ (id)fetchOwnerParticipantInShare:(id)share options:(id)options
 {
-  v5 = a3;
+  shareCopy = share;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__PHShareParticipant_fetchOwnerParticipantInShare_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = shareCopy;
+  v6 = shareCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -243,16 +243,16 @@ id __59__PHShareParticipant_fetchOwnerParticipantInShare_options___block_invoke(
   return v3;
 }
 
-+ (id)fetchContributorForComment:(id)a3 options:(id)a4
++ (id)fetchContributorForComment:(id)comment options:(id)options
 {
-  v5 = a3;
+  commentCopy = comment;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__PHShareParticipant_fetchContributorForComment_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = commentCopy;
+  v6 = commentCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -265,22 +265,22 @@ id __57__PHShareParticipant_fetchContributorForComment_options___block_invoke(ui
   return v3;
 }
 
-+ (id)fetchContributorsForAssets:(id)a3 options:(id)a4
++ (id)fetchContributorsForAssets:(id)assets options:(id)options
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  assetsCopy = assets;
+  optionsCopy = options;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = v5;
+  v8 = assetsCopy;
   v9 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v9)
   {
     v10 = v9;
-    v11 = 0;
+    photoLibrary = 0;
     v12 = *v32;
     do
     {
@@ -292,13 +292,13 @@ id __57__PHShareParticipant_fetchContributorForComment_options___block_invoke(ui
         }
 
         v14 = *(*(&v31 + 1) + 8 * i);
-        if (!v11)
+        if (!photoLibrary)
         {
-          v11 = [*(*(&v31 + 1) + 8 * i) photoLibrary];
+          photoLibrary = [*(*(&v31 + 1) + 8 * i) photoLibrary];
         }
 
-        v15 = [v14 uuid];
-        [v7 addObject:v15];
+        uuid = [v14 uuid];
+        [v7 addObject:uuid];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
@@ -309,38 +309,38 @@ id __57__PHShareParticipant_fetchContributorForComment_options___block_invoke(ui
 
   else
   {
-    v11 = 0;
+    photoLibrary = 0;
   }
 
   v16 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-  v17 = [v11 photoLibrary];
+  v11PhotoLibrary = [photoLibrary photoLibrary];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __57__PHShareParticipant_fetchContributorsForAssets_options___block_invoke;
   v27[3] = &unk_1E75AB248;
   v18 = v7;
   v28 = v18;
-  v19 = v11;
+  v19 = photoLibrary;
   v29 = v19;
   v20 = v16;
   v30 = v20;
-  [v17 performBlockAndWait:v27];
+  [v11PhotoLibrary performBlockAndWait:v27];
 
-  if (([v6 hasAnySortDescriptors] & 1) == 0)
+  if (([optionsCopy hasAnySortDescriptors] & 1) == 0)
   {
     v21 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"isCurrentUser" ascending:0];
     v35 = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
 
-    [v6 setSortDescriptors:v22];
+    [optionsCopy setSortDescriptors:v22];
   }
 
-  v23 = [v20 array];
-  v24 = [PHQuery queryForShareParticipantsWithLocalIdentifiers:v23 options:v6];
+  array = [v20 array];
+  v24 = [PHQuery queryForShareParticipantsWithLocalIdentifiers:array options:optionsCopy];
 
-  v25 = [v24 executeQuery];
+  executeQuery = [v24 executeQuery];
 
-  return v25;
+  return executeQuery;
 }
 
 void __57__PHShareParticipant_fetchContributorsForAssets_options___block_invoke(uint64_t a1)
@@ -438,30 +438,30 @@ LABEL_18:
   }
 }
 
-+ (id)fetchContributorsForAsset:(id)a3 options:(id)a4
++ (id)fetchContributorsForAsset:(id)asset options:(id)options
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  assetCopy = asset;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v12 count:1];
+  optionsCopy = options;
+  assetCopy2 = asset;
+  v9 = [v6 arrayWithObjects:&assetCopy count:1];
 
-  v10 = [a1 fetchContributorsForAssets:v9 options:{v7, v12, v13}];
+  v10 = [self fetchContributorsForAssets:v9 options:{optionsCopy, assetCopy, v13}];
 
   return v10;
 }
 
-+ (id)fetchParticipantsWithParticipantIDs:(id)a3 options:(id)a4
++ (id)fetchParticipantsWithParticipantIDs:(id)ds options:(id)options
 {
-  v5 = a3;
+  dsCopy = ds;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __66__PHShareParticipant_fetchParticipantsWithParticipantIDs_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = dsCopy;
+  v6 = dsCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -474,16 +474,16 @@ id __66__PHShareParticipant_fetchParticipantsWithParticipantIDs_options___block_
   return v3;
 }
 
-+ (id)fetchParticipantsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)fetchParticipantsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__PHShareParticipant_fetchParticipantsWithLocalIdentifiers_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = identifiersCopy;
+  v6 = identifiersCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -496,41 +496,41 @@ id __68__PHShareParticipant_fetchParticipantsWithLocalIdentifiers_options___bloc
   return v3;
 }
 
-+ (id)fetchParticipantsInShare:(id)a3 options:(id)a4
++ (id)fetchParticipantsInShare:(id)share options:(id)options
 {
-  v4 = [PHQuery queryForShareParticipantsInShare:a3 options:a4];
-  v5 = [v4 executeQuery];
+  v4 = [PHQuery queryForShareParticipantsInShare:share options:options];
+  executeQuery = [v4 executeQuery];
 
-  return v5;
+  return executeQuery;
 }
 
-+ (id)localIdentifierWithUUID:(id)a3
++ (id)localIdentifierWithUUID:(id)d
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [a1 identifierCode];
-  v7 = [v4 stringWithFormat:@"%@/L0/%@", v5, v6];
+  dCopy = d;
+  identifierCode = [self identifierCode];
+  v7 = [v4 stringWithFormat:@"%@/L0/%@", dCopy, identifierCode];
 
   return v7;
 }
 
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  expressionCopy = expression;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__PHShareParticipant_transformValueExpression_forKeyPath___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transformValueExpression_forKeyPath__onceToken_36462 != -1)
   {
     dispatch_once(&transformValueExpression_forKeyPath__onceToken_36462, block);
   }
 
-  if ([transformValueExpression_forKeyPath___passThroughSet_36463 containsObject:v7])
+  if ([transformValueExpression_forKeyPath___passThroughSet_36463 containsObject:pathCopy])
   {
-    v8 = v6;
+    v8 = expressionCopy;
   }
 
   else
@@ -639,7 +639,7 @@ void __34__PHShareParticipant_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_15_36469 = v10;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   if (propertiesToFetchWithHint__onceToken_36478 != -1)
   {

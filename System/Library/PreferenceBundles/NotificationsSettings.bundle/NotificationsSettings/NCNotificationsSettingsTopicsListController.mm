@@ -1,9 +1,9 @@
 @interface NCNotificationsSettingsTopicsListController
-- (id)allowNotifications:(id)a3;
-- (id)specifierForSubsectionInfo:(id)a3;
+- (id)allowNotifications:(id)notifications;
+- (id)specifierForSubsectionInfo:(id)info;
 - (id)specifiers;
-- (id)specifiersForSubsectionInfos:(id)a3;
-- (void)setAllowNotifications:(id)a3 specifier:(id)a4;
+- (id)specifiersForSubsectionInfos:(id)infos;
+- (void)setAllowNotifications:(id)notifications specifier:(id)specifier;
 @end
 
 @implementation NCNotificationsSettingsTopicsListController
@@ -15,8 +15,8 @@
   if (!v4)
   {
     v5 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"BBSECTION_INFO_KEY"];
-    v6 = [v5 subsections];
-    v7 = [(NCNotificationsSettingsTopicsListController *)self specifiersForSubsectionInfos:v6];
+    subsections = [v5 subsections];
+    v7 = [(NCNotificationsSettingsTopicsListController *)self specifiersForSubsectionInfos:subsections];
 
     v8 = *&self->PSListController_opaque[v3];
     *&self->PSListController_opaque[v3] = v7;
@@ -27,29 +27,29 @@
   return v4;
 }
 
-- (id)specifierForSubsectionInfo:(id)a3
+- (id)specifierForSubsectionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = PSDisplayNameForBBSection();
   v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:"setAllowNotifications:specifier:" get:"allowNotifications:" detail:0 cell:6 edit:0];
 
-  v7 = [v4 subsectionID];
-  [v6 setIdentifier:v7];
+  subsectionID = [infoCopy subsectionID];
+  [v6 setIdentifier:subsectionID];
 
-  [v6 setProperty:v4 forKey:@"BBSECTION_INFO_KEY"];
+  [v6 setProperty:infoCopy forKey:@"BBSECTION_INFO_KEY"];
 
   return v6;
 }
 
-- (id)specifiersForSubsectionInfos:(id)a3
+- (id)specifiersForSubsectionInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v5 = objc_alloc_init(NSMutableArray);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = infosCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -77,22 +77,22 @@
   return v5;
 }
 
-- (id)allowNotifications:(id)a3
+- (id)allowNotifications:(id)notifications
 {
-  v3 = [a3 propertyForKey:@"BBSECTION_INFO_KEY"];
+  v3 = [notifications propertyForKey:@"BBSECTION_INFO_KEY"];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 allowsNotifications]);
 
   return v4;
 }
 
-- (void)setAllowNotifications:(id)a3 specifier:(id)a4
+- (void)setAllowNotifications:(id)notifications specifier:(id)specifier
 {
-  v5 = a4;
-  v6 = a3;
-  v11 = [v5 propertyForKey:@"BBSECTION_INFO_KEY"];
-  v7 = [v6 BOOLValue];
+  specifierCopy = specifier;
+  notificationsCopy = notifications;
+  v11 = [specifierCopy propertyForKey:@"BBSECTION_INFO_KEY"];
+  bOOLValue = [notificationsCopy BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = 2;
   }
@@ -103,11 +103,11 @@
   }
 
   [v11 setAuthorizationStatus:v8];
-  [v5 setProperty:v11 forKey:@"BBSECTION_INFO_KEY"];
+  [specifierCopy setProperty:v11 forKey:@"BBSECTION_INFO_KEY"];
 
   v9 = +[NCSettingsGatewayController sharedInstance];
-  v10 = [v11 sectionID];
-  [v9 setSectionInfo:v11 forSectionID:v10];
+  sectionID = [v11 sectionID];
+  [v9 setSectionInfo:v11 forSectionID:sectionID];
 }
 
 @end

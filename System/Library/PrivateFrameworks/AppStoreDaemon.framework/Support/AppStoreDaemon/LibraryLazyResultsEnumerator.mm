@@ -1,30 +1,30 @@
 @interface LibraryLazyResultsEnumerator
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation LibraryLazyResultsEnumerator
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = self;
+  selfCopy = self;
   if (self)
   {
     enumerator = self->_enumerator;
     if (!enumerator)
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = (*(v8->_block + 2))();
-      v12 = v8->_enumerator;
-      v8->_enumerator = v11;
+      v11 = (*(selfCopy->_block + 2))();
+      v12 = selfCopy->_enumerator;
+      selfCopy->_enumerator = v11;
 
       objc_autoreleasePoolPop(v10);
-      enumerator = v8->_enumerator;
+      enumerator = selfCopy->_enumerator;
     }
 
-    v8 = enumerator;
+    selfCopy = enumerator;
   }
 
-  v13 = [(LibraryLazyResultsEnumerator *)v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  v13 = [(LibraryLazyResultsEnumerator *)selfCopy countByEnumeratingWithState:state objects:objects count:count];
 
   return v13;
 }

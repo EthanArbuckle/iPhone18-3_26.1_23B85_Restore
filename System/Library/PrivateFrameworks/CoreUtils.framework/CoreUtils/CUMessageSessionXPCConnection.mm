@@ -1,24 +1,24 @@
 @interface CUMessageSessionXPCConnection
 - (void)connectionInvalidated;
-- (void)remoteRegisterRequestID:(id)a3 options:(id)a4;
-- (void)remoteSendRequestID:(id)a3 options:(id)a4 request:(id)a5 responseHandler:(id)a6;
+- (void)remoteRegisterRequestID:(id)d options:(id)options;
+- (void)remoteSendRequestID:(id)d options:(id)options request:(id)request responseHandler:(id)handler;
 @end
 
 @implementation CUMessageSessionXPCConnection
 
-- (void)remoteSendRequestID:(id)a3 options:(id)a4 request:(id)a5 responseHandler:(id)a6
+- (void)remoteSendRequestID:(id)d options:(id)options request:(id)request responseHandler:(id)handler
 {
-  v22 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  optionsCopy = options;
+  requestCopy = request;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_invalidated)
   {
     if (gLogCategory_CUMessageSession <= 60 && (gLogCategory_CUMessageSession != -1 || _LogCategory_Initialize(&gLogCategory_CUMessageSession, 0x3Cu)))
     {
       [(NSXPCConnection *)self->_xpcCnx processIdentifier];
-      LogPrintF(&gLogCategory_CUMessageSession, "[CUMessageSessionXPCConnection remoteSendRequestID:options:request:responseHandler:]", 0x3Cu, "### SendRequestID '%@' from %#{pid} after invalidate\n", v13, v14, v15, v16, v22);
+      LogPrintF(&gLogCategory_CUMessageSession, "[CUMessageSessionXPCConnection remoteSendRequestID:options:request:responseHandler:]", 0x3Cu, "### SendRequestID '%@' from %#{pid} after invalidate\n", v13, v14, v15, v16, dCopy);
     }
   }
 
@@ -27,28 +27,28 @@
     sendRequestHandler = self->_server->_sendRequestHandler;
     if (sendRequestHandler)
     {
-      sendRequestHandler[2](sendRequestHandler, v22, v10, v11, v12);
+      sendRequestHandler[2](sendRequestHandler, dCopy, optionsCopy, requestCopy, handlerCopy);
     }
 
     else if (gLogCategory_CUMessageSession <= 60 && (gLogCategory_CUMessageSession != -1 || _LogCategory_Initialize(&gLogCategory_CUMessageSession, 0x3Cu)))
     {
       [(NSXPCConnection *)self->_xpcCnx processIdentifier];
-      LogPrintF(&gLogCategory_CUMessageSession, "[CUMessageSessionXPCConnection remoteSendRequestID:options:request:responseHandler:]", 0x3Cu, "### SendRequestID '%@' from %#{pid} with no handler\n", v18, v19, v20, v21, v22);
+      LogPrintF(&gLogCategory_CUMessageSession, "[CUMessageSessionXPCConnection remoteSendRequestID:options:request:responseHandler:]", 0x3Cu, "### SendRequestID '%@' from %#{pid} with no handler\n", v18, v19, v20, v21, dCopy);
     }
   }
 }
 
-- (void)remoteRegisterRequestID:(id)a3 options:(id)a4
+- (void)remoteRegisterRequestID:(id)d options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  optionsCopy = options;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_invalidated)
   {
     if (gLogCategory_CUMessageSession <= 60 && (gLogCategory_CUMessageSession != -1 || _LogCategory_Initialize(&gLogCategory_CUMessageSession, 0x3Cu)))
     {
       [(NSXPCConnection *)self->_xpcCnx processIdentifier];
-      LogPrintF(&gLogCategory_CUMessageSession, "[CUMessageSessionXPCConnection remoteRegisterRequestID:options:]", 0x3Cu, "### RegisterRequestID '%@' from %#{pid} after invalidate\n", v8, v9, v10, v11, v6);
+      LogPrintF(&gLogCategory_CUMessageSession, "[CUMessageSessionXPCConnection remoteRegisterRequestID:options:]", 0x3Cu, "### RegisterRequestID '%@' from %#{pid} after invalidate\n", v8, v9, v10, v11, dCopy);
     }
   }
 
@@ -64,21 +64,21 @@
       registeredRequestIDs = self->_registeredRequestIDs;
     }
 
-    [(NSMutableSet *)registeredRequestIDs addObject:v6];
+    [(NSMutableSet *)registeredRequestIDs addObject:dCopy];
     registerRequestHandler = self->_server->_registerRequestHandler;
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __65__CUMessageSessionXPCConnection_remoteRegisterRequestID_options___block_invoke;
     v20[3] = &unk_1E73A3630;
     v20[4] = self;
-    v21 = v6;
-    registerRequestHandler[2](registerRequestHandler, v21, v7, v20);
+    v21 = dCopy;
+    registerRequestHandler[2](registerRequestHandler, v21, optionsCopy, v20);
   }
 
   else if (gLogCategory_CUMessageSession <= 60 && (gLogCategory_CUMessageSession != -1 || _LogCategory_Initialize(&gLogCategory_CUMessageSession, 0x3Cu)))
   {
     [(NSXPCConnection *)self->_xpcCnx processIdentifier];
-    LogPrintF(&gLogCategory_CUMessageSession, "[CUMessageSessionXPCConnection remoteRegisterRequestID:options:]", 0x3Cu, "### RegisterRequestID '%@' from %#{pid} with no handler\n", v16, v17, v18, v19, v6);
+    LogPrintF(&gLogCategory_CUMessageSession, "[CUMessageSessionXPCConnection remoteRegisterRequestID:options:]", 0x3Cu, "### RegisterRequestID '%@' from %#{pid} with no handler\n", v16, v17, v18, v19, dCopy);
   }
 }
 
@@ -153,8 +153,8 @@ uint64_t __65__CUMessageSessionXPCConnection_remoteRegisterRequestID_options___b
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_CUMessageSession <= 20 && (gLogCategory_CUMessageSession != -1 || _LogCategory_Initialize(&gLogCategory_CUMessageSession, 0x14u)))
   {
-    v3 = [(NSXPCConnection *)self->_xpcCnx processIdentifier];
-    LogPrintF(&gLogCategory_CUMessageSession, "[CUMessageSessionXPCConnection connectionInvalidated]", 0x14u, "XPC connection invalidated from %#{pid}\n", v4, v5, v6, v7, v3);
+    processIdentifier = [(NSXPCConnection *)self->_xpcCnx processIdentifier];
+    LogPrintF(&gLogCategory_CUMessageSession, "[CUMessageSessionXPCConnection connectionInvalidated]", 0x14u, "XPC connection invalidated from %#{pid}\n", v4, v5, v6, v7, processIdentifier);
   }
 
   self->_invalidated = 1;

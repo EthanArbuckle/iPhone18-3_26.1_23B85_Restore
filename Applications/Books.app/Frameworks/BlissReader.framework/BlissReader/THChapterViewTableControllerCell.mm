@@ -10,29 +10,29 @@
 - (void)updateConstraints
 {
   v3 = +[UIFont bc_accessibilityFontSizesEnabled];
-  v4 = [(THChapterViewTableControllerCell *)self usingLargerTextConstraints];
+  usingLargerTextConstraints = [(THChapterViewTableControllerCell *)self usingLargerTextConstraints];
   if (v3)
   {
-    if ((v4 & 1) == 0)
+    if ((usingLargerTextConstraints & 1) == 0)
     {
       [(THChapterViewTableControllerCell *)self updateLabels];
-      v5 = [(THChapterViewTableControllerCell *)self regularTextConstraints];
-      [NSLayoutConstraint deactivateConstraints:v5];
+      regularTextConstraints = [(THChapterViewTableControllerCell *)self regularTextConstraints];
+      [NSLayoutConstraint deactivateConstraints:regularTextConstraints];
 
-      v6 = [(THChapterViewTableControllerCell *)self largerTextConstraints];
+      largerTextConstraints = [(THChapterViewTableControllerCell *)self largerTextConstraints];
 LABEL_6:
-      v8 = v6;
-      [NSLayoutConstraint activateConstraints:v6];
+      v8 = largerTextConstraints;
+      [NSLayoutConstraint activateConstraints:largerTextConstraints];
     }
   }
 
-  else if (v4)
+  else if (usingLargerTextConstraints)
   {
     [(THChapterViewTableControllerCell *)self updateLabels];
-    v7 = [(THChapterViewTableControllerCell *)self largerTextConstraints];
-    [NSLayoutConstraint deactivateConstraints:v7];
+    largerTextConstraints2 = [(THChapterViewTableControllerCell *)self largerTextConstraints];
+    [NSLayoutConstraint deactivateConstraints:largerTextConstraints2];
 
-    v6 = [(THChapterViewTableControllerCell *)self regularTextConstraints];
+    largerTextConstraints = [(THChapterViewTableControllerCell *)self regularTextConstraints];
     goto LABEL_6;
   }
 
@@ -48,12 +48,12 @@ LABEL_6:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(THChapterViewTableControllerCell *)self sectionLabel];
-  v23[0] = v3;
-  v4 = [(THChapterViewTableControllerCell *)self titleLabel];
-  v23[1] = v4;
-  v5 = [(THChapterViewTableControllerCell *)self pageLabel];
-  v23[2] = v5;
+  sectionLabel = [(THChapterViewTableControllerCell *)self sectionLabel];
+  v23[0] = sectionLabel;
+  titleLabel = [(THChapterViewTableControllerCell *)self titleLabel];
+  v23[1] = titleLabel;
+  pageLabel = [(THChapterViewTableControllerCell *)self pageLabel];
+  v23[2] = pageLabel;
   v6 = [NSArray arrayWithObjects:v23 count:3];
 
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v24 count:16];
@@ -86,8 +86,8 @@ LABEL_6:
   }
 
   v13 = +[UIColor bc_booksBackground];
-  v14 = [(THChapterViewTableControllerCell *)self contentView];
-  [v14 setBackgroundColor:v13];
+  contentView = [(THChapterViewTableControllerCell *)self contentView];
+  [contentView setBackgroundColor:v13];
 
   v15 = +[UIFont bc_accessibilityFontSizesEnabled];
   titleLabel = self->_titleLabel;
@@ -107,27 +107,27 @@ LABEL_6:
     v17 = 2;
   }
 
-  v18 = [(THChapterViewTableControllerCell *)self pageLabel];
-  [v18 setTextAlignment:v17];
+  pageLabel2 = [(THChapterViewTableControllerCell *)self pageLabel];
+  [pageLabel2 setTextAlignment:v17];
 
   [(THChapterViewTableControllerCell *)self layoutIfNeeded];
 }
 
 - (id)regularTextConstraints
 {
-  v3 = [(THChapterViewTableControllerCell *)self sectionLabelBaselineConstraint];
-  v4 = [(THChapterViewTableControllerCell *)self pageLabelBaselineToTitleLabelConstraint];
-  v12[1] = v4;
-  v5 = [(THChapterViewTableControllerCell *)self titleLabelBaselineToSectionLabelConstraint];
-  v12[2] = v5;
-  v6 = [(THChapterViewTableControllerCell *)self titleLabelBaselineToPageLabelConstraint];
-  v12[3] = v6;
-  v7 = [(THChapterViewTableControllerCell *)self titleLabelLeadingConstraint];
-  v12[4] = v7;
-  v8 = [(THChapterViewTableControllerCell *)self titleLabelTrailingConstraint];
-  v12[5] = v8;
-  v9 = [(THChapterViewTableControllerCell *)self pageLabelTrailingConstraint];
-  v12[6] = v9;
+  sectionLabelBaselineConstraint = [(THChapterViewTableControllerCell *)self sectionLabelBaselineConstraint];
+  pageLabelBaselineToTitleLabelConstraint = [(THChapterViewTableControllerCell *)self pageLabelBaselineToTitleLabelConstraint];
+  v12[1] = pageLabelBaselineToTitleLabelConstraint;
+  titleLabelBaselineToSectionLabelConstraint = [(THChapterViewTableControllerCell *)self titleLabelBaselineToSectionLabelConstraint];
+  v12[2] = titleLabelBaselineToSectionLabelConstraint;
+  titleLabelBaselineToPageLabelConstraint = [(THChapterViewTableControllerCell *)self titleLabelBaselineToPageLabelConstraint];
+  v12[3] = titleLabelBaselineToPageLabelConstraint;
+  titleLabelLeadingConstraint = [(THChapterViewTableControllerCell *)self titleLabelLeadingConstraint];
+  v12[4] = titleLabelLeadingConstraint;
+  titleLabelTrailingConstraint = [(THChapterViewTableControllerCell *)self titleLabelTrailingConstraint];
+  v12[5] = titleLabelTrailingConstraint;
+  pageLabelTrailingConstraint = [(THChapterViewTableControllerCell *)self pageLabelTrailingConstraint];
+  v12[6] = pageLabelTrailingConstraint;
   v10 = [NSArray arrayWithObjects:v12 count:7];
 
   return v10;
@@ -135,40 +135,40 @@ LABEL_6:
 
 - (id)largerTextConstraints
 {
-  v3 = [(THChapterViewTableControllerCell *)self cachedLargerTextConstraints];
+  cachedLargerTextConstraints = [(THChapterViewTableControllerCell *)self cachedLargerTextConstraints];
 
-  if (!v3)
+  if (!cachedLargerTextConstraints)
   {
-    v4 = [(THChapterViewTableControllerCell *)self sectionLabel];
-    v5 = [(THChapterViewTableControllerCell *)self titleLabel];
-    v6 = [(THChapterViewTableControllerCell *)self pageLabel];
-    v7 = _NSDictionaryOfVariableBindings(@"sectionLabel, titleLabel, pageLabel", v4, v5, v6, 0);
+    sectionLabel = [(THChapterViewTableControllerCell *)self sectionLabel];
+    titleLabel = [(THChapterViewTableControllerCell *)self titleLabel];
+    pageLabel = [(THChapterViewTableControllerCell *)self pageLabel];
+    v7 = _NSDictionaryOfVariableBindings(@"sectionLabel, titleLabel, pageLabel", sectionLabel, titleLabel, pageLabel, 0);
     v8 = +[NSMutableArray array];
     v9 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-[sectionLabel]-(2)-[titleLabel(>=20)]-(2)-[pageLabel]-|", 0, 0, v7);
     [v8 addObjectsFromArray:v9];
 
-    v10 = [NSLayoutConstraint constraintWithItem:v5 attribute:4 relatedBy:0 toItem:v6 attribute:3 multiplier:1.0 constant:0.0];
+    v10 = [NSLayoutConstraint constraintWithItem:titleLabel attribute:4 relatedBy:0 toItem:pageLabel attribute:3 multiplier:1.0 constant:0.0];
     [v8 addObject:v10];
 
-    v11 = [NSLayoutConstraint constraintWithItem:v5 attribute:3 relatedBy:0 toItem:v4 attribute:4 multiplier:1.0 constant:0.0];
+    v11 = [NSLayoutConstraint constraintWithItem:titleLabel attribute:3 relatedBy:0 toItem:sectionLabel attribute:4 multiplier:1.0 constant:0.0];
     [v8 addObject:v11];
 
-    v12 = [NSLayoutConstraint constraintWithItem:v5 attribute:5 relatedBy:0 toItem:v4 attribute:5 multiplier:1.0 constant:0.0];
+    v12 = [NSLayoutConstraint constraintWithItem:titleLabel attribute:5 relatedBy:0 toItem:sectionLabel attribute:5 multiplier:1.0 constant:0.0];
     [v8 addObject:v12];
 
-    v13 = [NSLayoutConstraint constraintWithItem:v6 attribute:5 relatedBy:0 toItem:v4 attribute:5 multiplier:1.0 constant:0.0];
+    v13 = [NSLayoutConstraint constraintWithItem:pageLabel attribute:5 relatedBy:0 toItem:sectionLabel attribute:5 multiplier:1.0 constant:0.0];
     [v8 addObject:v13];
 
-    v14 = [NSLayoutConstraint constraintWithItem:v4 attribute:6 relatedBy:0 toItem:self attribute:6 multiplier:1.0 constant:-10.0];
+    v14 = [NSLayoutConstraint constraintWithItem:sectionLabel attribute:6 relatedBy:0 toItem:self attribute:6 multiplier:1.0 constant:-10.0];
     [v8 addObject:v14];
 
-    v15 = [NSLayoutConstraint constraintWithItem:v5 attribute:6 relatedBy:0 toItem:self attribute:6 multiplier:1.0 constant:-10.0];
+    v15 = [NSLayoutConstraint constraintWithItem:titleLabel attribute:6 relatedBy:0 toItem:self attribute:6 multiplier:1.0 constant:-10.0];
     [v8 addObject:v15];
 
-    v16 = [NSLayoutConstraint constraintWithItem:v6 attribute:6 relatedBy:0 toItem:self attribute:6 multiplier:1.0 constant:-10.0];
+    v16 = [NSLayoutConstraint constraintWithItem:pageLabel attribute:6 relatedBy:0 toItem:self attribute:6 multiplier:1.0 constant:-10.0];
     [v8 addObject:v16];
 
-    v17 = [NSLayoutConstraint constraintWithItem:v6 attribute:4 relatedBy:0 toItem:self attribute:4 multiplier:1.0 constant:-12.0];
+    v17 = [NSLayoutConstraint constraintWithItem:pageLabel attribute:4 relatedBy:0 toItem:self attribute:4 multiplier:1.0 constant:-12.0];
     [v8 addObject:v17];
 
     v18 = [v8 copy];

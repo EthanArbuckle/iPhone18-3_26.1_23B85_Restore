@@ -1,21 +1,21 @@
 @interface MPSGraphSignalEvent
-- (MPSGraphSignalEvent)initWithEvent:(id)a3 executionStage:(unint64_t)a4 value:(unint64_t)a5;
+- (MPSGraphSignalEvent)initWithEvent:(id)event executionStage:(unint64_t)stage value:(unint64_t)value;
 @end
 
 @implementation MPSGraphSignalEvent
 
-- (MPSGraphSignalEvent)initWithEvent:(id)a3 executionStage:(unint64_t)a4 value:(unint64_t)a5
+- (MPSGraphSignalEvent)initWithEvent:(id)event executionStage:(unint64_t)stage value:(unint64_t)value
 {
-  v8 = a3;
+  eventCopy = event;
   v13.receiver = self;
   v13.super_class = MPSGraphSignalEvent;
   v9 = [(MPSGraphSignalEvent *)&v13 init];
   event = v9->_event;
-  v9->_event = v8;
+  v9->_event = eventCopy;
   v11 = v9;
 
-  v11->_value = a5;
-  v11->_executionStage = a4;
+  v11->_value = value;
+  v11->_executionStage = stage;
   return v11;
 }
 

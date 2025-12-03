@@ -1,7 +1,7 @@
 @interface FCNonDestructivePrivateDataMigrationHandler
 - (FCNonDestructivePrivateDataMigrationHandler)init;
-- (FCNonDestructivePrivateDataMigrationHandler)initWithPrivateDataActionProvider:(id)a3 privateDataControllers:(id)a4 privateDataSyncingEnabled:(BOOL)a5;
-- (void)handleMigrationWithPrivateDataDirectory:(id)a3;
+- (FCNonDestructivePrivateDataMigrationHandler)initWithPrivateDataActionProvider:(id)provider privateDataControllers:(id)controllers privateDataSyncingEnabled:(BOOL)enabled;
+- (void)handleMigrationWithPrivateDataDirectory:(id)directory;
 @end
 
 @implementation FCNonDestructivePrivateDataMigrationHandler
@@ -32,12 +32,12 @@
   objc_exception_throw(v6);
 }
 
-- (FCNonDestructivePrivateDataMigrationHandler)initWithPrivateDataActionProvider:(id)a3 privateDataControllers:(id)a4 privateDataSyncingEnabled:(BOOL)a5
+- (FCNonDestructivePrivateDataMigrationHandler)initWithPrivateDataActionProvider:(id)provider privateDataControllers:(id)controllers privateDataSyncingEnabled:(BOOL)enabled
 {
   v28 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  providerCopy = provider;
+  controllersCopy = controllers;
+  if (!providerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "privateDataActionProvider"];
     *buf = 136315906;
@@ -50,13 +50,13 @@
     v27 = v17;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v10)
+    if (controllersCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v10)
+  else if (controllersCopy)
   {
     goto LABEL_6;
   }
@@ -82,46 +82,46 @@ LABEL_6:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_privateDataActionProvider, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_privateDataActionProvider, provider);
+    v13 = [controllersCopy copy];
     privateDataControllers = v12->_privateDataControllers;
     v12->_privateDataControllers = v13;
 
-    v12->_privateDataSyncingEnabled = a5;
+    v12->_privateDataSyncingEnabled = enabled;
   }
 
   v15 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-- (void)handleMigrationWithPrivateDataDirectory:(id)a3
+- (void)handleMigrationWithPrivateDataDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [(FCNonDestructivePrivateDataMigrationHandler *)self privateDataControllers];
+  directoryCopy = directory;
+  privateDataControllers = [(FCNonDestructivePrivateDataMigrationHandler *)self privateDataControllers];
   v6 = dispatch_group_create();
-  v7 = [(FCNonDestructivePrivateDataMigrationHandler *)self privateDataActionProvider];
+  privateDataActionProvider = [(FCNonDestructivePrivateDataMigrationHandler *)self privateDataActionProvider];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __87__FCNonDestructivePrivateDataMigrationHandler_handleMigrationWithPrivateDataDirectory___block_invoke;
   v16[3] = &unk_1E7C437B0;
-  v8 = v5;
+  v8 = privateDataControllers;
   v17 = v8;
-  v9 = v4;
+  v9 = directoryCopy;
   v18 = v9;
   v10 = v6;
   v19 = v10;
-  [v7 consumeNonDestructiveActionsSyncWithBlock:v16];
+  [privateDataActionProvider consumeNonDestructiveActionsSyncWithBlock:v16];
 
-  v11 = [(FCNonDestructivePrivateDataMigrationHandler *)self isPrivateDataSyncingEnabled];
+  isPrivateDataSyncingEnabled = [(FCNonDestructivePrivateDataMigrationHandler *)self isPrivateDataSyncingEnabled];
   v12 = &selRef_enableSyncing;
-  if (!v11)
+  if (!isPrivateDataSyncingEnabled)
   {
     v12 = &selRef_disableSyncing;
   }
 
   [v8 makeObjectsPerformSelector:*v12];
-  v13 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v14 = [v13 BOOLForKey:@"personalization_disable_syncing"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v14 = [standardUserDefaults BOOLForKey:@"personalization_disable_syncing"];
 
   if (v14)
   {

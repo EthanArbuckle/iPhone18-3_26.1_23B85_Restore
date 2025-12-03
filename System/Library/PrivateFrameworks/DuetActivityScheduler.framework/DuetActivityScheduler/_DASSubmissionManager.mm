@@ -1,18 +1,18 @@
 @interface _DASSubmissionManager
-+ (id)groupNameForActivity:(id)a3;
-- (BOOL)shouldDelayGroupSubmissionOfActivity:(id)a3;
++ (id)groupNameForActivity:(id)activity;
+- (BOOL)shouldDelayGroupSubmissionOfActivity:(id)activity;
 - (_DASSubmissionManager)init;
-- (unint64_t)capacityForGroupName:(id)a3;
-- (void)activityCanceled:(id)a3 withScheduler:(id)a4;
-- (void)admitNextActivityAfterCompletionOf:(id)a3 withScheduler:(id)a4;
-- (void)createActivityGroup:(id)a3;
+- (unint64_t)capacityForGroupName:(id)name;
+- (void)activityCanceled:(id)canceled withScheduler:(id)scheduler;
+- (void)admitNextActivityAfterCompletionOf:(id)of withScheduler:(id)scheduler;
+- (void)createActivityGroup:(id)group;
 - (void)dealloc;
-- (void)handleCanceledActivity:(id)a3 withGroupName:(id)a4;
+- (void)handleCanceledActivity:(id)activity withGroupName:(id)name;
 - (void)removeAllObjects;
-- (void)submitActivities:(id)a3 withScheduler:(id)a4;
-- (void)submitActivity:(id)a3 inGroup:(id)a4 withScheduler:(id)a5;
-- (void)submitActivity:(id)a3 withScheduler:(id)a4;
-- (void)updateCapacity:(unint64_t)a3 forGroupName:(id)a4;
+- (void)submitActivities:(id)activities withScheduler:(id)scheduler;
+- (void)submitActivity:(id)activity inGroup:(id)group withScheduler:(id)scheduler;
+- (void)submitActivity:(id)activity withScheduler:(id)scheduler;
+- (void)updateCapacity:(unint64_t)capacity forGroupName:(id)name;
 @end
 
 @implementation _DASSubmissionManager
@@ -28,17 +28,17 @@
     rateLimiter = v2->_rateLimiter;
     v2->_rateLimiter = v3;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     submittedActivities = v2->_submittedActivities;
-    v2->_submittedActivities = v5;
+    v2->_submittedActivities = dictionary;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     activityGroupQueue = v2->_activityGroupQueue;
-    v2->_activityGroupQueue = v7;
+    v2->_activityGroupQueue = dictionary2;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     activityGroups = v2->_activityGroups;
-    v2->_activityGroups = v9;
+    v2->_activityGroups = dictionary3;
 
     v11 = os_log_create("com.apple.duetactivityscheduler", "submissionManager");
     log = v2->_log;
@@ -79,20 +79,20 @@
   objc_sync_exit(obj);
 }
 
-+ (id)groupNameForActivity:(id)a3
++ (id)groupNameForActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 groupName];
-  if (v4)
+  activityCopy = activity;
+  groupName = [activityCopy groupName];
+  if (groupName)
   {
-    if ([v3 requiresPlugin])
+    if ([activityCopy requiresPlugin])
     {
-      v5 = [objc_opt_class() pluginGroupNameForGroupName:v4];
+      v5 = [objc_opt_class() pluginGroupNameForGroupName:groupName];
     }
 
     else
     {
-      v5 = v4;
+      v5 = groupName;
     }
 
     v6 = v5;
@@ -106,35 +106,35 @@
   return v6;
 }
 
-- (void)updateCapacity:(unint64_t)a3 forGroupName:(id)a4
+- (void)updateCapacity:(unint64_t)capacity forGroupName:(id)name
 {
-  v11 = a4;
-  if (v11)
+  nameCopy = name;
+  if (nameCopy)
   {
     v6 = self->_activityGroups;
     objc_sync_enter(v6);
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    [(NSMutableDictionary *)self->_activityGroups setObject:v7 forKeyedSubscript:v11];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:capacity];
+    [(NSMutableDictionary *)self->_activityGroups setObject:v7 forKeyedSubscript:nameCopy];
 
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:capacity];
     activityGroups = self->_activityGroups;
-    v10 = [objc_opt_class() pluginGroupNameForGroupName:v11];
+    v10 = [objc_opt_class() pluginGroupNameForGroupName:nameCopy];
     [(NSMutableDictionary *)activityGroups setObject:v8 forKeyedSubscript:v10];
 
     objc_sync_exit(v6);
   }
 }
 
-- (unint64_t)capacityForGroupName:(id)a3
+- (unint64_t)capacityForGroupName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = self->_activityGroups;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_activityGroups objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_activityGroups objectForKeyedSubscript:nameCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
@@ -142,26 +142,26 @@
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
     {
-      [(_DASSubmissionManager *)v4 capacityForGroupName:?];
+      [(_DASSubmissionManager *)nameCopy capacityForGroupName:?];
     }
 
-    v8 = 15;
+    unsignedIntegerValue = 15;
   }
 
   objc_sync_exit(v5);
-  return v8;
+  return unsignedIntegerValue;
 }
 
-- (BOOL)shouldDelayGroupSubmissionOfActivity:(id)a3
+- (BOOL)shouldDelayGroupSubmissionOfActivity:(id)activity
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 rateLimitConfigurationName];
+  activityCopy = activity;
+  rateLimitConfigurationName = [activityCopy rateLimitConfigurationName];
 
-  if (!v5)
+  if (!rateLimitConfigurationName)
   {
-    v7 = [objc_opt_class() groupNameForActivity:v4];
-    if (!v7 || ![v4 isPartOfCustomGroup])
+    v7 = [objc_opt_class() groupNameForActivity:activityCopy];
+    if (!v7 || ![activityCopy isPartOfCustomGroup])
     {
       goto LABEL_11;
     }
@@ -188,7 +188,7 @@
             if (v17)
             {
               v19 = [v17 count];
-              if ([(_DASSubmissionManager *)self shouldQueueActivity:v4]&& v19 >= v15 && v19 >= 0xF)
+              if ([(_DASSubmissionManager *)self shouldQueueActivity:activityCopy]&& v19 >= v15 && v19 >= 0xF)
               {
                 v20 = [(NSMutableDictionary *)self->_activityGroupQueue objectForKeyedSubscript:v7];
                 if (!v20)
@@ -197,7 +197,7 @@
                   [(NSMutableDictionary *)self->_activityGroupQueue setObject:v20 forKeyedSubscript:v7];
                 }
 
-                -[NSObject addObject:withPriority:](v20, "addObject:withPriority:", v4, [v4 schedulingPriority]);
+                -[NSObject addObject:withPriority:](v20, "addObject:withPriority:", activityCopy, [activityCopy schedulingPriority]);
                 v21 = self->_log;
                 if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
                 {
@@ -214,7 +214,7 @@
 
               else
               {
-                [v18 addObject:v4];
+                [v18 addObject:activityCopy];
                 v20 = self->_log;
                 if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
                 {
@@ -234,7 +234,7 @@
 
             else
             {
-              v25 = [MEMORY[0x1E695DFA8] setWithObject:v4];
+              v25 = [MEMORY[0x1E695DFA8] setWithObject:activityCopy];
               [(NSMutableDictionary *)self->_submittedActivities setObject:v25 forKeyedSubscript:v7];
               v23 = 0;
             }
@@ -263,48 +263,48 @@ LABEL_13:
   return v6;
 }
 
-- (void)handleCanceledActivity:(id)a3 withGroupName:(id)a4
+- (void)handleCanceledActivity:(id)activity withGroupName:(id)name
 {
-  v9 = a3;
-  v6 = a4;
+  activityCopy = activity;
+  nameCopy = name;
   v7 = self->_activityGroupQueue;
   objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)self->_activityGroupQueue objectForKeyedSubscript:v6];
-  [v8 removeObject:v9 atPriority:{objc_msgSend(v9, "schedulingPriority")}];
+  v8 = [(NSMutableDictionary *)self->_activityGroupQueue objectForKeyedSubscript:nameCopy];
+  [v8 removeObject:activityCopy atPriority:{objc_msgSend(activityCopy, "schedulingPriority")}];
 
   objc_sync_exit(v7);
 }
 
-- (void)admitNextActivityAfterCompletionOf:(id)a3 withScheduler:(id)a4
+- (void)admitNextActivityAfterCompletionOf:(id)of withScheduler:(id)scheduler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() groupNameForActivity:v6];
+  ofCopy = of;
+  schedulerCopy = scheduler;
+  v8 = [objc_opt_class() groupNameForActivity:ofCopy];
   if (v8)
   {
     v9 = self->_activityGroupQueue;
     objc_sync_enter(v9);
     v10 = [(NSMutableDictionary *)self->_submittedActivities objectForKeyedSubscript:v8];
-    [v10 removeObject:v6];
+    [v10 removeObject:ofCopy];
 
     v11 = [(NSMutableDictionary *)self->_activityGroupQueue objectForKeyedSubscript:v8];
-    v12 = [v11 popFirst];
-    if (v12)
+    popFirst = [v11 popFirst];
+    if (popFirst)
     {
       v13 = [(NSMutableDictionary *)self->_submittedActivities objectForKeyedSubscript:v8];
-      [v13 addObject:v12];
+      [v13 addObject:popFirst];
 
       objc_sync_exit(v9);
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
       {
         v16 = 138412290;
-        v17 = v12;
+        v17 = popFirst;
         _os_log_impl(&dword_1B6E2F000, log, OS_LOG_TYPE_INFO, "ADMITTING delayed activity %@", &v16, 0xCu);
       }
 
-      [v7 submitActivity:v12 inGroupWithName:v8];
+      [schedulerCopy submitActivity:popFirst inGroupWithName:v8];
     }
 
     else
@@ -317,37 +317,37 @@ LABEL_13:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createActivityGroup:(id)a3
+- (void)createActivityGroup:(id)group
 {
-  v4 = a3;
-  v5 = [v4 maxConcurrent];
-  v6 = [v4 name];
+  groupCopy = group;
+  maxConcurrent = [groupCopy maxConcurrent];
+  name = [groupCopy name];
 
-  [(_DASSubmissionManager *)self updateCapacity:v5 forGroupName:v6];
+  [(_DASSubmissionManager *)self updateCapacity:maxConcurrent forGroupName:name];
 }
 
-- (void)submitActivity:(id)a3 withScheduler:(id)a4
+- (void)submitActivity:(id)activity withScheduler:(id)scheduler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([(_DASSubmissionRateLimiter *)self->_rateLimiter trackActivity:v6]|| ![(_DASSubmissionManager *)self shouldDelayGroupSubmissionOfActivity:v6])
+  activityCopy = activity;
+  schedulerCopy = scheduler;
+  if ([(_DASSubmissionRateLimiter *)self->_rateLimiter trackActivity:activityCopy]|| ![(_DASSubmissionManager *)self shouldDelayGroupSubmissionOfActivity:activityCopy])
   {
-    [v7 submitActivity:v6];
+    [schedulerCopy submitActivity:activityCopy];
   }
 
   else
   {
-    v8 = [objc_opt_class() groupNameForActivity:v6];
+    v8 = [objc_opt_class() groupNameForActivity:activityCopy];
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v10 = log;
-      v11 = [v6 shortDescription];
+      shortDescription = [activityCopy shortDescription];
       v13 = 138543874;
-      v14 = v6;
+      v14 = activityCopy;
       v15 = 2112;
-      v16 = v11;
+      v16 = shortDescription;
       v17 = 2114;
       v18 = v8;
       _os_log_impl(&dword_1B6E2F000, v10, OS_LOG_TYPE_DEFAULT, "Delaying submission of %{public}@ %@, group %{public}@ full", &v13, 0x20u);
@@ -357,14 +357,14 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)submitActivities:(id)a3 withScheduler:(id)a4
+- (void)submitActivities:(id)activities withScheduler:(id)scheduler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v18 = a4;
-  v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_4];
-  v19 = v6;
-  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  activitiesCopy = activities;
+  schedulerCopy = scheduler;
+  v7 = [activitiesCopy sortedArrayUsingComparator:&__block_literal_global_4];
+  v19 = activitiesCopy;
+  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(activitiesCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -411,28 +411,28 @@ LABEL_13:
     while (v11);
   }
 
-  [v18 submitActivities:v8];
+  [schedulerCopy submitActivities:v8];
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)submitActivity:(id)a3 inGroup:(id)a4 withScheduler:(id)a5
+- (void)submitActivity:(id)activity inGroup:(id)group withScheduler:(id)scheduler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 maxConcurrent];
-  v12 = [v9 name];
-  [(_DASSubmissionManager *)self updateCapacity:v11 forGroupName:v12];
+  activityCopy = activity;
+  groupCopy = group;
+  schedulerCopy = scheduler;
+  maxConcurrent = [groupCopy maxConcurrent];
+  name = [groupCopy name];
+  [(_DASSubmissionManager *)self updateCapacity:maxConcurrent forGroupName:name];
 
-  if ([(_DASSubmissionManager *)self shouldDelayGroupSubmissionOfActivity:v8])
+  if ([(_DASSubmissionManager *)self shouldDelayGroupSubmissionOfActivity:activityCopy])
   {
-    v13 = [objc_opt_class() groupNameForActivity:v8];
+    v13 = [objc_opt_class() groupNameForActivity:activityCopy];
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543618;
-      v17 = v8;
+      v17 = activityCopy;
       v18 = 2114;
       v19 = v13;
       _os_log_impl(&dword_1B6E2F000, log, OS_LOG_TYPE_DEFAULT, "Delaying submission of %{public}@, group %{public}@ full", &v16, 0x16u);
@@ -441,24 +441,24 @@ LABEL_13:
 
   else
   {
-    [v10 submitActivity:v8 inGroup:v9];
+    [schedulerCopy submitActivity:activityCopy inGroup:groupCopy];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activityCanceled:(id)a3 withScheduler:(id)a4
+- (void)activityCanceled:(id)canceled withScheduler:(id)scheduler
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v9 groupName];
+  canceledCopy = canceled;
+  schedulerCopy = scheduler;
+  groupName = [canceledCopy groupName];
 
-  if (v7)
+  if (groupName)
   {
-    v8 = [objc_opt_class() groupNameForActivity:v9];
-    [(_DASSubmissionManager *)self handleCanceledActivity:v9 withGroupName:v8];
+    v8 = [objc_opt_class() groupNameForActivity:canceledCopy];
+    [(_DASSubmissionManager *)self handleCanceledActivity:canceledCopy withGroupName:v8];
 
-    [(_DASSubmissionManager *)self admitNextActivityAfterCompletionOf:v9 withScheduler:v6];
+    [(_DASSubmissionManager *)self admitNextActivityAfterCompletionOf:canceledCopy withScheduler:schedulerCopy];
   }
 }
 

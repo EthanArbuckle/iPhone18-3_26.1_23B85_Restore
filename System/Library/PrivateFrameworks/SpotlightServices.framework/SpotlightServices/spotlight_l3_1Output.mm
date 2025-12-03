@@ -1,45 +1,45 @@
 @interface spotlight_l3_1Output
-- (id)featureValueForName:(id)a3;
-- (spotlight_l3_1Output)initWithY:(id)a3 id_features:(id)a4;
+- (id)featureValueForName:(id)name;
+- (spotlight_l3_1Output)initWithY:(id)y id_features:(id)id_features;
 @end
 
 @implementation spotlight_l3_1Output
 
-- (spotlight_l3_1Output)initWithY:(id)a3 id_features:(id)a4
+- (spotlight_l3_1Output)initWithY:(id)y id_features:(id)id_features
 {
-  v7 = a3;
-  v8 = a4;
+  yCopy = y;
+  id_featuresCopy = id_features;
   v12.receiver = self;
   v12.super_class = spotlight_l3_1Output;
   v9 = [(spotlight_l3_1Output *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_y, a3);
-    objc_storeStrong(&v10->_id_features, a4);
+    objc_storeStrong(&v9->_y, y);
+    objc_storeStrong(&v10->_id_features, id_features);
   }
 
   return v10;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"y"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"y"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(spotlight_l3_1Output *)self y];
+    id_features = [(spotlight_l3_1Output *)self y];
 LABEL_5:
-    v7 = v6;
-    v8 = [v5 featureValueWithMultiArray:v6];
+    v7 = id_features;
+    v8 = [v5 featureValueWithMultiArray:id_features];
 
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"id_features"])
+  if ([nameCopy isEqualToString:@"id_features"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(spotlight_l3_1Output *)self id_features];
+    id_features = [(spotlight_l3_1Output *)self id_features];
     goto LABEL_5;
   }
 

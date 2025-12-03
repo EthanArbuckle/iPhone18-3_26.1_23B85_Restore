@@ -3,22 +3,22 @@
 - (CGRect)preferredMinimalBounds;
 - (CGRect)preferredTrailingBounds;
 - (NSDirectionalEdgeInsets)preferredEdgeOutsets;
-- (SBSAElementContextMutator)initWithSystemApertureElementContext:(id)a3;
-- (void)setKeyColor:(id)a3;
+- (SBSAElementContextMutator)initWithSystemApertureElementContext:(id)context;
+- (void)setKeyColor:(id)color;
 @end
 
 @implementation SBSAElementContextMutator
 
-- (SBSAElementContextMutator)initWithSystemApertureElementContext:(id)a3
+- (SBSAElementContextMutator)initWithSystemApertureElementContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = SBSAElementContextMutator;
   v6 = [(SBSAElementContextMutator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_systemApertureElementContext, a3);
+    objc_storeStrong(&v6->_systemApertureElementContext, context);
   }
 
   return v7;
@@ -34,15 +34,15 @@
   return result;
 }
 
-- (void)setKeyColor:(id)a3
+- (void)setKeyColor:(id)color
 {
-  v6 = a3;
-  v4 = [(SBSAElementContext *)self->_systemApertureElementContext keyColor];
+  colorCopy = color;
+  keyColor = [(SBSAElementContext *)self->_systemApertureElementContext keyColor];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    [(SBSAElementContext *)self->_systemApertureElementContext _setKeyColor:v6];
+    [(SBSAElementContext *)self->_systemApertureElementContext _setKeyColor:colorCopy];
   }
 }
 

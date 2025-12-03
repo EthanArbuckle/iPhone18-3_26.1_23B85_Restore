@@ -1,12 +1,12 @@
 @interface WBSFoundInRecommendationManager
-+ (BOOL)isBundleIdentifierFromCalendar:(id)a3;
-+ (BOOL)isBundleIdentifierFromMessages:(id)a3;
-+ (id)_linkRecommendationsFromSGSuggestions:(id)a3 contactStoreProvider:(id)a4;
-+ (unint64_t)foundInSourceFromBundleIdentifier:(id)a3;
++ (BOOL)isBundleIdentifierFromCalendar:(id)calendar;
++ (BOOL)isBundleIdentifierFromMessages:(id)messages;
++ (id)_linkRecommendationsFromSGSuggestions:(id)suggestions contactStoreProvider:(id)provider;
++ (unint64_t)foundInSourceFromBundleIdentifier:(id)identifier;
 - (void)_createInternalQueueIfNecessary;
-- (void)_recentURLRecommendationsWithCompletionHandler:(id)a3;
+- (void)_recentURLRecommendationsWithCompletionHandler:(id)handler;
 - (void)beginListeningForURLSuggestionChanges;
-- (void)recentRecommendationsWithCompletionHandler:(id)a3;
+- (void)recentRecommendationsWithCompletionHandler:(id)handler;
 - (void)stopListeningForURLSuggestionChanges;
 @end
 
@@ -74,9 +74,9 @@ void __72__WBSFoundInRecommendationManager_beginListeningForURLSuggestionChanges
   }
 }
 
-- (void)recentRecommendationsWithCompletionHandler:(id)a3
+- (void)recentRecommendationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   [(WBSFoundInRecommendationManager *)self _createInternalQueueIfNecessary];
   v6[0] = MEMORY[0x1E69E9820];
@@ -84,7 +84,7 @@ void __72__WBSFoundInRecommendationManager_beginListeningForURLSuggestionChanges
   v6[2] = __78__WBSFoundInRecommendationManager_recentRecommendationsWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E8285590;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = handlerCopy;
   v7 = v5;
   [(WBSFoundInRecommendationManager *)self _recentURLRecommendationsWithCompletionHandler:v6];
 
@@ -115,17 +115,17 @@ void __78__WBSFoundInRecommendationManager_recentRecommendationsWithCompletionHa
   }
 }
 
-- (void)_recentURLRecommendationsWithCompletionHandler:(id)a3
+- (void)_recentURLRecommendationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __82__WBSFoundInRecommendationManager__recentURLRecommendationsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E8284830;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -212,19 +212,19 @@ void __82__WBSFoundInRecommendationManager__recentURLRecommendationsWithCompleti
   }
 }
 
-+ (id)_linkRecommendationsFromSGSuggestions:(id)a3 contactStoreProvider:(id)a4
++ (id)_linkRecommendationsFromSGSuggestions:(id)suggestions contactStoreProvider:(id)provider
 {
   v132 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v111 = [MEMORY[0x1E695DF90] dictionary];
+  suggestionsCopy = suggestions;
+  providerCopy = provider;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
   v122 = 0u;
-  v7 = v5;
+  v7 = suggestionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v119 objects:v131 count:16];
-  v96 = v6;
+  v96 = providerCopy;
   if (!v8)
   {
     v109 = 0;
@@ -251,8 +251,8 @@ void __82__WBSFoundInRecommendationManager__recentURLRecommendationsWithCompleti
 
       v13 = *(*(&v119 + 1) + 8 * v12);
       v14 = *(v11 + 2400);
-      v15 = [v13 bundleIdentifier];
-      v16 = [v14 foundInSourceFromBundleIdentifier:v15];
+      bundleIdentifier = [v13 bundleIdentifier];
+      v16 = [v14 foundInSourceFromBundleIdentifier:bundleIdentifier];
 
       if (v16 < 2)
       {
@@ -260,12 +260,12 @@ void __82__WBSFoundInRecommendationManager__recentURLRecommendationsWithCompleti
       }
 
       v17 = [v13 url];
-      v18 = [v17 scheme];
-      if ([v18 length])
+      scheme = [v17 scheme];
+      if ([scheme length])
       {
-        v19 = [v17 safari_isHTTPFamilyURL];
+        safari_isHTTPFamilyURL = [v17 safari_isHTTPFamilyURL];
 
-        if ((v19 & 1) == 0)
+        if ((safari_isHTTPFamilyURL & 1) == 0)
         {
           goto LABEL_44;
         }
@@ -275,9 +275,9 @@ void __82__WBSFoundInRecommendationManager__recentURLRecommendationsWithCompleti
       {
       }
 
-      v20 = [v17 safari_canonicalURLForStartPage];
-      v21 = [v20 host];
-      if (![v21 length] || (objc_msgSend(v21, "safari_looksLikeIPAddress") & 1) != 0)
+      safari_canonicalURLForStartPage = [v17 safari_canonicalURLForStartPage];
+      host = [safari_canonicalURLForStartPage host];
+      if (![host length] || (objc_msgSend(host, "safari_looksLikeIPAddress") & 1) != 0)
       {
         goto LABEL_43;
       }
@@ -297,12 +297,12 @@ LABEL_41:
           goto LABEL_42;
         }
 
-        v23 = [v13 documentDate];
-        if (v23)
+        documentDate = [v13 documentDate];
+        if (documentDate)
         {
           [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
           v32 = v31;
-          [v23 timeIntervalSinceReferenceDate];
+          [documentDate timeIntervalSinceReferenceDate];
           v34 = v33;
           if (v32 >= v33 + -600.0)
           {
@@ -325,19 +325,19 @@ LABEL_41:
           goto LABEL_41;
         }
 
-        v23 = [v13 documentDate];
-        if (v23)
+        documentDate = [v13 documentDate];
+        if (documentDate)
         {
-          v24 = [MEMORY[0x1E695DEE8] currentCalendar];
-          [v24 components:96 fromDate:v23];
-          v25 = v105 = v23;
+          currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+          [currentCalendar components:96 fromDate:documentDate];
+          v25 = v105 = documentDate;
 
           v112 = v25;
           if ([v25 hour] || objc_msgSend(v25, "minute"))
           {
             [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
             v27 = v26;
-            v23 = v105;
+            documentDate = v105;
             [v105 timeIntervalSinceReferenceDate];
             LOBYTE(v7) = v27 <= v28 + 3600.0 && v27 >= v28 + -3600.0;
           }
@@ -345,7 +345,7 @@ LABEL_41:
           else
           {
             LOBYTE(v7) = 0;
-            v23 = v105;
+            documentDate = v105;
           }
 
           goto LABEL_29;
@@ -358,18 +358,18 @@ LABEL_29:
 LABEL_30:
       if (v7)
       {
-        v113 = [v13 documentIdentifier];
-        v35 = [v111 objectForKeyedSubscript:?];
+        documentIdentifier = [v13 documentIdentifier];
+        v35 = [dictionary objectForKeyedSubscript:?];
         v17 = v35;
         if (!v35)
         {
 LABEL_37:
           v44 = [v13 url];
-          v20 = [v44 safari_canonicalURLForStartPage];
+          safari_canonicalURLForStartPage = [v44 safari_canonicalURLForStartPage];
 
-          v21 = bestDateForSuggestion(v13);
-          v45 = [v13 bundleIdentifier];
-          v46 = [WBSFoundInRecommendationManager foundInSourceFromBundleIdentifier:v45];
+          host = bestDateForSuggestion(v13);
+          bundleIdentifier2 = [v13 bundleIdentifier];
+          v46 = [WBSFoundInRecommendationManager foundInSourceFromBundleIdentifier:bundleIdentifier2];
 
           v47 = 0;
           if (v46 > 1)
@@ -390,13 +390,13 @@ LABEL_58:
             v52 = v13;
             if ((objc_opt_respondsToSelector() & 1) != 0 && ([v52 documentTitle], v53 = objc_claimAutoreleasedReturnValue(), v54 = objc_msgSend(v53, "length"), v53, v54))
             {
-              v55 = [v52 documentTitle];
+              documentTitle = [v52 documentTitle];
             }
 
             else
             {
-              v56 = [v52 title];
-              v57 = [v56 length];
+              title = [v52 title];
+              v57 = [title length];
 
               if (!v57)
               {
@@ -404,24 +404,24 @@ LABEL_58:
                 goto LABEL_65;
               }
 
-              v55 = [v52 title];
+              documentTitle = [v52 title];
             }
 
-            v58 = v55;
+            v58 = documentTitle;
 LABEL_65:
 
-            v59 = [(WBSForYouLinkRecommendation *)v102 initWithTitle:v58 url:v20 lastSeenDate:v21 source:v107 topicSource:0];
-            v60 = [v52 bundleIdentifier];
-            [(WBSForYouLinkRecommendation *)v59 setBundleIdentifier:v60];
+            v59 = [(WBSForYouLinkRecommendation *)v102 initWithTitle:v58 url:safari_canonicalURLForStartPage lastSeenDate:host source:v107 topicSource:0];
+            bundleIdentifier3 = [v52 bundleIdentifier];
+            [(WBSForYouLinkRecommendation *)v59 setBundleIdentifier:bundleIdentifier3];
 
-            v13 = v113;
-            [(WBSForYouLinkRecommendation *)v59 setSourceID:v113];
+            v13 = documentIdentifier;
+            [(WBSForYouLinkRecommendation *)v59 setSourceID:documentIdentifier];
             if (v46 == 3 || v46 == 2)
             {
               v68 = MEMORY[0x1E696AEC0];
               v69 = _WBSLocalizedString();
-              v70 = [(WBSForYouLinkRecommendation *)v59 title];
-              v71 = [v68 localizedStringWithFormat:v69, v70];
+              title2 = [(WBSForYouLinkRecommendation *)v59 title];
+              v71 = [v68 localizedStringWithFormat:v69, title2];
               [(WBSForYouLinkRecommendation *)v59 setTitle:v71];
 
               v72 = _WBSLocalizedString();
@@ -439,16 +439,16 @@ LABEL_65:
               }
 
               v98 = _WBSLocalizedString();
-              v61 = [v52 receivedFromHandle];
-              if ([v61 hasPrefix:@"e:"])
+              receivedFromHandle = [v52 receivedFromHandle];
+              if ([receivedFromHandle hasPrefix:@"e:"])
               {
-                v62 = [v61 substringFromIndex:2];
+                v62 = [receivedFromHandle substringFromIndex:2];
 
-                v61 = v62;
+                receivedFromHandle = v62;
               }
 
               v63 = v101;
-              v64 = v61;
+              v64 = receivedFromHandle;
               if (!v101)
               {
                 v65 = v64;
@@ -500,9 +500,9 @@ LABEL_65:
               v77 = [v63 contactForHandle:v64 error:&v117];
               v110 = v117;
               v104 = v67;
-              v78 = [v67 identifier];
-              v79 = [v77 identifier];
-              v80 = [v78 isEqualToString:v79];
+              identifier = [v67 identifier];
+              identifier2 = [v77 identifier];
+              v80 = [identifier isEqualToString:identifier2];
 
               if (v80)
               {
@@ -513,24 +513,24 @@ LABEL_65:
                   *buf = 138478083;
                   v126 = v108;
                   v127 = 2113;
-                  v128 = v113;
+                  v128 = documentIdentifier;
                   _os_log_debug_impl(&dword_1C6968000, v81, OS_LOG_TYPE_DEBUG, "Skipping suggestion from Me contact with handle: %{private}@ document identifier: %{private}@", buf, 0x16u);
                 }
 
                 v99 = 1;
-                v13 = v113;
+                v13 = documentIdentifier;
                 v73 = v104;
 LABEL_92:
                 v59 = v97;
                 goto LABEL_78;
               }
 
-              v82 = [v77 safari_fullName];
+              safari_fullName = [v77 safari_fullName];
               v83 = v77;
               v100 = v77;
-              if ([v82 length])
+              if ([safari_fullName length])
               {
-                v84 = v82;
+                v84 = safari_fullName;
               }
 
               else
@@ -538,7 +538,7 @@ LABEL_92:
                 v84 = v108;
                 if (v101)
                 {
-                  v87 = v82;
+                  v87 = safari_fullName;
                   v88 = WBS_LOG_CHANNEL_PREFIXSiriIntelligence();
                   v89 = v88;
                   v7 = v114;
@@ -561,7 +561,7 @@ LABEL_92:
                   }
 
                   v99 = 1;
-                  v13 = v113;
+                  v13 = documentIdentifier;
                   goto LABEL_92;
                 }
               }
@@ -571,7 +571,7 @@ LABEL_92:
               v95 = v84;
               v93 = MEMORY[0x1E696AEC0];
               _WBSLocalizedString();
-              v85 = v94 = v82;
+              v85 = v94 = safari_fullName;
               v72 = v98;
               v86 = [v93 localizedStringWithFormat:v85, v98, v84];
               [(WBSForYouLinkRecommendation *)v97 setFootnote:v86];
@@ -581,9 +581,9 @@ LABEL_92:
             }
 
             v7 = v114;
-            v13 = v113;
+            v13 = documentIdentifier;
 LABEL_77:
-            [v111 setObject:v59 forKeyedSubscript:v13];
+            [dictionary setObject:v59 forKeyedSubscript:v13];
 LABEL_78:
 
             v109 = v73;
@@ -609,18 +609,18 @@ LABEL_45:
           goto LABEL_55;
         }
 
-        v20 = [v35 pageURL];
-        v21 = [v13 url];
-        v36 = [v20 host];
-        v37 = [v21 host];
-        v38 = [v36 isEqualToString:v37];
+        safari_canonicalURLForStartPage = [v35 pageURL];
+        host = [v13 url];
+        host2 = [safari_canonicalURLForStartPage host];
+        v21Host = [host host];
+        v38 = [host2 isEqualToString:v21Host];
 
         if (v38)
         {
-          v39 = [v21 pathComponents];
-          v106 = [v39 count];
-          v40 = [v20 pathComponents];
-          v41 = [v40 count];
+          pathComponents = [host pathComponents];
+          v106 = [pathComponents count];
+          pathComponents2 = [safari_canonicalURLForStartPage pathComponents];
+          v41 = [pathComponents2 count];
 
           v42 = WBS_LOG_CHANNEL_PREFIXSiriIntelligence();
           v43 = os_log_type_enabled(v42, OS_LOG_TYPE_ERROR);
@@ -629,7 +629,7 @@ LABEL_45:
             if (v43)
             {
               *buf = 138543362;
-              v126 = v113;
+              v126 = documentIdentifier;
               _os_log_error_impl(&dword_1C6968000, v42, OS_LOG_TYPE_ERROR, "We have a Found In link with a duplicate GUID and host but more path components so we'll replace the existing one: %{public}@", buf, 0xCu);
             }
 
@@ -639,15 +639,15 @@ LABEL_45:
           if (!v43)
           {
 LABEL_55:
-            v13 = v113;
+            v13 = documentIdentifier;
 LABEL_42:
             v7 = v114;
             goto LABEL_43;
           }
 
           *buf = 138543362;
-          v13 = v113;
-          v126 = v113;
+          v13 = documentIdentifier;
+          v126 = documentIdentifier;
           v49 = v42;
           v50 = "Skipping Found In link with a duplicate GUID and host but less path components: %{public}@";
         }
@@ -661,8 +661,8 @@ LABEL_42:
           }
 
           *buf = 138543362;
-          v13 = v113;
-          v126 = v113;
+          v13 = documentIdentifier;
+          v126 = documentIdentifier;
           v49 = v48;
           v50 = "Skipping Found In link with a duplicate GUID but different URL host: %{public}@";
         }
@@ -685,28 +685,28 @@ LABEL_46:
   while (v90);
 LABEL_108:
 
-  v91 = [v111 allValues];
+  allValues = [dictionary allValues];
 
-  return v91;
+  return allValues;
 }
 
-+ (unint64_t)foundInSourceFromBundleIdentifier:(id)a3
++ (unint64_t)foundInSourceFromBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([a1 isBundleIdentifierFromCalendar:v4])
+  identifierCopy = identifier;
+  if ([self isBundleIdentifierFromCalendar:identifierCopy])
   {
     v5 = 2;
   }
 
-  else if ([a1 isBundleIdentifierFromMessages:v4])
+  else if ([self isBundleIdentifierFromMessages:identifierCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 lowercaseString];
-    v7 = [v6 isEqualToString:@"com.apple.reminders"];
+    lowercaseString = [identifierCopy lowercaseString];
+    v7 = [lowercaseString isEqualToString:@"com.apple.reminders"];
 
     if (v7)
     {
@@ -722,33 +722,33 @@ LABEL_108:
   return v5;
 }
 
-+ (BOOL)isBundleIdentifierFromCalendar:(id)a3
++ (BOOL)isBundleIdentifierFromCalendar:(id)calendar
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.mobilecal"])
+  calendarCopy = calendar;
+  if ([calendarCopy isEqualToString:@"com.apple.mobilecal"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.iCal"];
+    v4 = [calendarCopy isEqualToString:@"com.apple.iCal"];
   }
 
   return v4;
 }
 
-+ (BOOL)isBundleIdentifierFromMessages:(id)a3
++ (BOOL)isBundleIdentifierFromMessages:(id)messages
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.iChat"])
+  messagesCopy = messages;
+  if ([messagesCopy isEqualToString:@"com.apple.iChat"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.MobileSMS"];
+    v4 = [messagesCopy isEqualToString:@"com.apple.MobileSMS"];
   }
 
   return v4;

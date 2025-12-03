@@ -1,40 +1,40 @@
 @interface NEProcessIdentity
-- (NEProcessIdentity)initWithCoder:(id)a3;
-- (NEProcessIdentity)initWithPID:(int)a3 auditToken:(id *)a4;
-- (id)initFromXPCConnection:(id)a3;
-- (id)initFromXPCMessage:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NEProcessIdentity)initWithCoder:(id)coder;
+- (NEProcessIdentity)initWithPID:(int)d auditToken:(id *)token;
+- (id)initFromXPCConnection:(id)connection;
+- (id)initFromXPCMessage:(id)message;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEProcessIdentity
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:-[NEProcessIdentity pid](self forKey:{"pid"), @"pid"}];
-  [v4 encodeInt32:-[NEProcessIdentity pidVersion](self forKey:{"pidVersion"), @"pidVersion"}];
-  v5 = [(NEProcessIdentity *)self uuid];
-  [v4 encodeObject:v5 forKey:@"uuid"];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[NEProcessIdentity pid](self forKey:{"pid"), @"pid"}];
+  [coderCopy encodeInt32:-[NEProcessIdentity pidVersion](self forKey:{"pidVersion"), @"pidVersion"}];
+  uuid = [(NEProcessIdentity *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
 
-  v6 = [(NEProcessIdentity *)self auditTokenData];
-  [v4 encodeObject:v6 forKey:@"auditToken"];
+  auditTokenData = [(NEProcessIdentity *)self auditTokenData];
+  [coderCopy encodeObject:auditTokenData forKey:@"auditToken"];
 }
 
-- (NEProcessIdentity)initWithCoder:(id)a3
+- (NEProcessIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = NEProcessIdentity;
   v5 = [(NEProcessIdentity *)&v11 init];
   if (v5)
   {
-    v5->_pid = [v4 decodeIntForKey:@"pid"];
-    v5->_pidVersion = [v4 decodeInt32ForKey:@"pidVersion"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v5->_pid = [coderCopy decodeIntForKey:@"pid"];
+    v5->_pidVersion = [coderCopy decodeInt32ForKey:@"pidVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"auditToken"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"auditToken"];
     auditTokenData = v5->_auditTokenData;
     v5->_auditTokenData = v8;
   }
@@ -42,10 +42,10 @@
   return v5;
 }
 
-- (id)initFromXPCMessage:(id)a3
+- (id)initFromXPCMessage:(id)message
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v18.receiver = self;
   v18.super_class = NEProcessIdentity;
   v5 = [(NEProcessIdentity *)&v18 init];
@@ -54,7 +54,7 @@
     goto LABEL_10;
   }
 
-  if (!v4 || MEMORY[0x1BFAFC5E0](v4) != MEMORY[0x1E69E9E80])
+  if (!messageCopy || MEMORY[0x1BFAFC5E0](messageCopy) != MEMORY[0x1E69E9E80])
   {
     v6 = 0;
     v7 = 0;
@@ -125,14 +125,14 @@ LABEL_17:
   return v14;
 }
 
-- (id)initFromXPCConnection:(id)a3
+- (id)initFromXPCConnection:(id)connection
 {
   v8 = 0u;
   v9 = 0u;
-  if (a3)
+  if (connection)
   {
-    v4 = a3;
-    pid = xpc_connection_get_pid(v4);
+    connectionCopy = connection;
+    pid = xpc_connection_get_pid(connectionCopy);
     xpc_connection_get_audit_token();
   }
 
@@ -146,7 +146,7 @@ LABEL_17:
   return [(NEProcessIdentity *)self initWithPID:pid auditToken:v7];
 }
 
-- (NEProcessIdentity)initWithPID:(int)a3 auditToken:(id *)a4
+- (NEProcessIdentity)initWithPID:(int)d auditToken:(id *)token
 {
   v22 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -157,11 +157,11 @@ LABEL_17:
     goto LABEL_11;
   }
 
-  if (a3)
+  if (d)
   {
     v21 = 0;
     memset(buffer, 0, sizeof(buffer));
-    if (proc_pidinfo(a3, 17, 1uLL, buffer, 56) == 56)
+    if (proc_pidinfo(d, 17, 1uLL, buffer, 56) == 56)
     {
       v7 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:buffer];
       v8 = buffer[2];
@@ -173,11 +173,11 @@ LABEL_17:
       v8 = 0;
     }
 
-    v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:a4 length:32];
+    v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:token length:32];
     v9 = v10;
     if (v8 && v7 && v10)
     {
-      v6->_pid = a3;
+      v6->_pid = d;
       v6->_pidVersion = v8;
       uuid = v6->_uuid;
       v6->_uuid = v7;
@@ -204,7 +204,7 @@ LABEL_11:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
     LODWORD(buffer[0]) = 67109890;
-    DWORD1(buffer[0]) = a3;
+    DWORD1(buffer[0]) = d;
     WORD4(buffer[0]) = 1024;
     *(buffer + 10) = v8;
     HIWORD(buffer[0]) = 2112;

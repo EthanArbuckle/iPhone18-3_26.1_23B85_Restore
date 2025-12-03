@@ -1,63 +1,63 @@
 @interface BRCDataOrDocsScopeGatherer
-- (BRCDataOrDocsScopeGatherer)initWithNotificationPipe:(id)a3 appLibraries:(id)a4 startingRank:(unint64_t)a5 maxRank:(unint64_t)a6 withDeadItems:(BOOL)a7 gatherReply:(id)a8;
+- (BRCDataOrDocsScopeGatherer)initWithNotificationPipe:(id)pipe appLibraries:(id)libraries startingRank:(unint64_t)rank maxRank:(unint64_t)maxRank withDeadItems:(BOOL)items gatherReply:(id)reply;
 - (id)_popGatherReply;
 - (void)dealloc;
 - (void)done;
-- (void)gatherWithBatchSize:(int64_t)a3 completion:(id)a4;
+- (void)gatherWithBatchSize:(int64_t)size completion:(id)completion;
 - (void)invalidate;
 @end
 
 @implementation BRCDataOrDocsScopeGatherer
 
-- (BRCDataOrDocsScopeGatherer)initWithNotificationPipe:(id)a3 appLibraries:(id)a4 startingRank:(unint64_t)a5 maxRank:(unint64_t)a6 withDeadItems:(BOOL)a7 gatherReply:(id)a8
+- (BRCDataOrDocsScopeGatherer)initWithNotificationPipe:(id)pipe appLibraries:(id)libraries startingRank:(unint64_t)rank maxRank:(unint64_t)maxRank withDeadItems:(BOOL)items gatherReply:(id)reply
 {
   v49 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  pipeCopy = pipe;
+  librariesCopy = libraries;
+  replyCopy = reply;
   v40.receiver = self;
   v40.super_class = BRCDataOrDocsScopeGatherer;
   v17 = [(BRCDataOrDocsScopeGatherer *)&v40 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_pipe, v14);
-    v19 = [v14 queue];
+    objc_storeWeak(&v17->_pipe, pipeCopy);
+    queue = [pipeCopy queue];
     v34 = MEMORY[0x277D85DD0];
     v35 = 3221225472;
     v36 = __115__BRCDataOrDocsScopeGatherer_initWithNotificationPipe_appLibraries_startingRank_maxRank_withDeadItems_gatherReply___block_invoke;
     v37 = &unk_2785014D0;
-    v20 = v19;
+    v20 = queue;
     v38 = v20;
-    v39 = v16;
+    v39 = replyCopy;
     v21 = MEMORY[0x22AA4A310](&v34);
     gatherReply = v18->_gatherReply;
     v18->_gatherReply = v21;
 
-    v23 = [v14 manager];
-    v24 = [v23 session];
+    manager = [pipeCopy manager];
+    session = [manager session];
     session = v18->_session;
-    v18->_session = v24;
+    v18->_session = session;
 
-    v18->_gatheringRankMin = a5;
-    v18->_gatheringRankMax = a6;
-    v26 = [v15 mutableCopy];
+    v18->_gatheringRankMin = rank;
+    v18->_gatheringRankMax = maxRank;
+    v26 = [librariesCopy mutableCopy];
     gatheringAppLibraries = v18->_gatheringAppLibraries;
     v18->_gatheringAppLibraries = v26;
 
-    objc_storeStrong(&v18->_gatheringNamePrefix, v14[18]);
-    v18->_includesDeadItems = a7;
+    objc_storeStrong(&v18->_gatheringNamePrefix, pipeCopy[18]);
+    v18->_includesDeadItems = items;
     v18->_invalidated = 0;
     v28 = brc_bread_crumbs();
     v29 = brc_notifications_log();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138413058;
-      v42 = v14;
+      v42 = pipeCopy;
       v43 = 2048;
-      v44 = a5;
+      rankCopy = rank;
       v45 = 2048;
-      v46 = a6;
+      maxRankCopy = maxRank;
       v47 = 2112;
       v48 = v28;
       _os_log_debug_impl(&dword_223E7A000, v29, OS_LOG_TYPE_DEBUG, "[NOTIF] %@: gathering from %lld to %lld%@", buf, 0x2Au);
@@ -89,38 +89,38 @@ void __115__BRCDataOrDocsScopeGatherer_initWithNotificationPipe_appLibraries_sta
   (*(v5 + 16))(v5, v6);
 }
 
-- (void)gatherWithBatchSize:(int64_t)a3 completion:(id)a4
+- (void)gatherWithBatchSize:(int64_t)size completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v26 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_pipe);
   v7 = WeakRetained;
   if (WeakRetained)
   {
-    v25 = a3;
-    v8 = [WeakRetained manager];
-    v27 = [v8 session];
+    sizeCopy = size;
+    manager = [WeakRetained manager];
+    session = [manager session];
 
-    v9 = [v27 readOnlyDB];
+    readOnlyDB = [session readOnlyDB];
     objc_initWeak(&location, self);
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __61__BRCDataOrDocsScopeGatherer_gatherWithBatchSize_completion___block_invoke;
     v35[3] = &unk_2785014F8;
     objc_copyWeak(&v37, &location);
-    v10 = v26;
+    v10 = completionCopy;
     v36 = v10;
     v11 = MEMORY[0x22AA4A310](v35);
-    v12 = [v9 serialQueue];
-    if (v12)
+    serialQueue = [readOnlyDB serialQueue];
+    if (serialQueue)
     {
-      v13 = [v27 personaIdentifier];
-      if (v13)
+      personaIdentifier = [session personaIdentifier];
+      if (personaIdentifier)
       {
-        v14 = [v27 personaIdentifier];
-        v15 = [MEMORY[0x277D77BF8] sharedManager];
-        v16 = [v15 br_currentPersonaID];
-        v17 = [v14 isEqualToString:v16];
+        personaIdentifier2 = [session personaIdentifier];
+        mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+        br_currentPersonaID = [mEMORY[0x277D77BF8] br_currentPersonaID];
+        v17 = [personaIdentifier2 isEqualToString:br_currentPersonaID];
 
         if ((v17 & 1) == 0)
         {
@@ -132,18 +132,18 @@ void __115__BRCDataOrDocsScopeGatherer_initWithNotificationPipe_appLibraries_sta
       {
       }
 
-      v22 = [v9 serialQueue];
+      serialQueue2 = [readOnlyDB serialQueue];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __61__BRCDataOrDocsScopeGatherer_gatherWithBatchSize_completion___block_invoke_2;
       v28[3] = &unk_278501548;
       objc_copyWeak(v32, &location);
-      v32[1] = v25;
+      v32[1] = sizeCopy;
       v30 = v11;
-      v29 = v9;
+      v29 = readOnlyDB;
       v31 = v10;
       v23 = v11;
-      dispatch_async(v22, v28);
+      dispatch_async(serialQueue2, v28);
 
       objc_destroyWeak(v32);
 LABEL_12:
@@ -163,25 +163,25 @@ LABEL_5:
       _os_log_impl(&dword_223E7A000, v19, OS_LOG_TYPE_DEFAULT, "[WARNING] Can't gather anymore because the personaID is incorrect or db has no serial queue%@", buf, 0xCu);
     }
 
-    v20 = [v7 queue];
+    queue = [v7 queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __61__BRCDataOrDocsScopeGatherer_gatherWithBatchSize_completion___block_invoke_14;
     block[3] = &unk_278501520;
     v34 = v11;
     v21 = v11;
-    dispatch_async(v20, block);
+    dispatch_async(queue, block);
 
     goto LABEL_12;
   }
 
-  v27 = brc_bread_crumbs();
-  v9 = brc_default_log();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  session = brc_bread_crumbs();
+  readOnlyDB = brc_default_log();
+  if (os_log_type_enabled(readOnlyDB, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v40 = v27;
-    _os_log_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEFAULT, "[WARNING] Notification pipe got deallocated. Nothing to do%@", buf, 0xCu);
+    v40 = session;
+    _os_log_impl(&dword_223E7A000, readOnlyDB, OS_LOG_TYPE_DEFAULT, "[WARNING] Notification pipe got deallocated. Nothing to do%@", buf, 0xCu);
   }
 
 LABEL_13:
@@ -684,14 +684,14 @@ uint64_t __61__BRCDataOrDocsScopeGatherer_gatherWithBatchSize_completion___block
 
 - (id)_popGatherReply
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = MEMORY[0x22AA4A310](v2->_gatherReply);
-  gatherReply = v2->_gatherReply;
-  v2->_gatherReply = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = MEMORY[0x22AA4A310](selfCopy->_gatherReply);
+  gatherReply = selfCopy->_gatherReply;
+  selfCopy->_gatherReply = 0;
 
   v5 = MEMORY[0x22AA4A310](v3);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }

@@ -2,14 +2,14 @@
 - (NSString)description;
 - (TSSPropertySource)propertiesAfterChange;
 - (TSSPropertySource)propertiesBeforeChange;
-- (id)initDeletePrototypeChangeForPrototype:(id)a3 replacement:(id)a4;
-- (id)initReplacePrototypeChangeForPrototype:(id)a3 toReplacement:(id)a4;
+- (id)initDeletePrototypeChangeForPrototype:(id)prototype replacement:(id)replacement;
+- (id)initReplacePrototypeChangeForPrototype:(id)prototype toReplacement:(id)replacement;
 - (void)dealloc;
 @end
 
 @implementation TSDReplaceDeletePrototypeChange
 
-- (id)initReplacePrototypeChangeForPrototype:(id)a3 toReplacement:(id)a4
+- (id)initReplacePrototypeChangeForPrototype:(id)prototype toReplacement:(id)replacement
 {
   v9.receiver = self;
   v9.super_class = TSDReplaceDeletePrototypeChange;
@@ -18,14 +18,14 @@
   if (v6)
   {
     v6->mPrototypeIsBeingReplaced = 1;
-    v6->mPrototype = a3;
-    v7->mReplacement = a4;
+    v6->mPrototype = prototype;
+    v7->mReplacement = replacement;
   }
 
   return v7;
 }
 
-- (id)initDeletePrototypeChangeForPrototype:(id)a3 replacement:(id)a4
+- (id)initDeletePrototypeChangeForPrototype:(id)prototype replacement:(id)replacement
 {
   v9.receiver = self;
   v9.super_class = TSDReplaceDeletePrototypeChange;
@@ -34,9 +34,9 @@
   if (v6)
   {
     v6->mPrototypeIsBeingDeleted = 1;
-    v6->mPrototypeIsBeingReplaced = a4 != 0;
-    v6->mPrototype = a3;
-    v7->mReplacement = a4;
+    v6->mPrototypeIsBeingReplaced = replacement != 0;
+    v6->mPrototype = prototype;
+    v7->mReplacement = replacement;
   }
 
   return v7;
@@ -51,10 +51,10 @@
 
 - (NSString)description
 {
-  v3 = [(TSDReplaceDeletePrototypeChange *)self prototypeIsBeingReplaced];
+  prototypeIsBeingReplaced = [(TSDReplaceDeletePrototypeChange *)self prototypeIsBeingReplaced];
   v4 = MEMORY[0x277D6C2C8];
   v5 = objc_opt_class();
-  if (v3)
+  if (prototypeIsBeingReplaced)
   {
     v6 = [v4 descriptionWithObject:self class:v5 format:{@": replaced with %p", -[TSDReplaceDeletePrototypeChange replacement](self, "replacement")}];
   }
@@ -89,9 +89,9 @@
   v3 = TSUProtocolCast();
   if (!v3)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDReplaceDeletePrototypeChange propertiesBeforeChange]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPrototypeChange.m"), 98, @"Tried to treat %@ as a property source when it's not", -[TSDReplaceDeletePrototypeChange prototype](self, "prototype")}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPrototypeChange.m"), 98, @"Tried to treat %@ as a property source when it's not", -[TSDReplaceDeletePrototypeChange prototype](self, "prototype")}];
   }
 
   return v3;
@@ -103,9 +103,9 @@
   {
     if (![(TSDReplaceDeletePrototypeChange *)self prototypeIsBeingReplaced])
     {
-      v3 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDReplaceDeletePrototypeChange propertiesAfterChange]"];
-      [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPrototypeChange.m"), 104, @"%@ is being deleted, but we're calling -newProperties on a prototypeChange for it.", -[TSDReplaceDeletePrototypeChange prototype](self, "prototype")}];
+      [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPrototypeChange.m"), 104, @"%@ is being deleted, but we're calling -newProperties on a prototypeChange for it.", -[TSDReplaceDeletePrototypeChange prototype](self, "prototype")}];
     }
   }
 
@@ -118,9 +118,9 @@
       return result;
     }
 
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDReplaceDeletePrototypeChange propertiesAfterChange]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPrototypeChange.m"), 107, @"Tried to treat %@ as a property source when it's not", -[TSDReplaceDeletePrototypeChange replacement](self, "replacement")}];
+    [currentHandler2 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPrototypeChange.m"), 107, @"Tried to treat %@ as a property source when it's not", -[TSDReplaceDeletePrototypeChange replacement](self, "replacement")}];
   }
 
   return 0;

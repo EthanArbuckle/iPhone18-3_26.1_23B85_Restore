@@ -1,53 +1,53 @@
 @interface SSVMediaSocialAdminStatus
-- (SSVMediaSocialAdminStatus)initWithAdminStatus:(BOOL)a3 dateUpdated:(id)a4;
-- (SSVMediaSocialAdminStatus)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SSVMediaSocialAdminStatus)initWithAdminStatus:(BOOL)status dateUpdated:(id)updated;
+- (SSVMediaSocialAdminStatus)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SSVMediaSocialAdminStatus
 
-- (SSVMediaSocialAdminStatus)initWithAdminStatus:(BOOL)a3 dateUpdated:(id)a4
+- (SSVMediaSocialAdminStatus)initWithAdminStatus:(BOOL)status dateUpdated:(id)updated
 {
-  v6 = a4;
+  updatedCopy = updated;
   v12.receiver = self;
   v12.super_class = SSVMediaSocialAdminStatus;
   v7 = [(SSVMediaSocialAdminStatus *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_admin = a3;
-    if (v6)
+    v7->_admin = status;
+    if (updatedCopy)
     {
-      v9 = v6;
+      date = updatedCopy;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
     }
 
     dateUpdated = v8->_dateUpdated;
-    v8->_dateUpdated = v9;
+    v8->_dateUpdated = date;
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SSVMediaSocialAdminStatus *)self dateUpdated];
+  coderCopy = coder;
+  dateUpdated = [(SSVMediaSocialAdminStatus *)self dateUpdated];
   v6 = NSStringFromSelector(sel_dateUpdated);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:dateUpdated forKey:v6];
 
-  v7 = [(SSVMediaSocialAdminStatus *)self isAdmin];
+  isAdmin = [(SSVMediaSocialAdminStatus *)self isAdmin];
   v8 = NSStringFromSelector(sel_isAdmin);
-  [v4 encodeBool:v7 forKey:v8];
+  [coderCopy encodeBool:isAdmin forKey:v8];
 }
 
-- (SSVMediaSocialAdminStatus)initWithCoder:(id)a3
+- (SSVMediaSocialAdminStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = SSVMediaSocialAdminStatus;
   v5 = [(SSVMediaSocialAdminStatus *)&v12 init];
@@ -55,12 +55,12 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_dateUpdated);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     dateUpdated = v5->_dateUpdated;
     v5->_dateUpdated = v8;
 
     v10 = NSStringFromSelector(sel_isAdmin);
-    v5->_admin = [v4 decodeBoolForKey:v10];
+    v5->_admin = [coderCopy decodeBoolForKey:v10];
   }
 
   return v5;

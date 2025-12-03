@@ -5,14 +5,14 @@
 - (void)_locationStoppedTimerFired;
 - (void)_updateForParkedCar;
 - (void)_updateForResumeDriving;
-- (void)_updateVehicleMonitorShouldStart:(BOOL)a3;
+- (void)_updateVehicleMonitorShouldStart:(BOOL)start;
 - (void)dealloc;
 - (void)startMonitoring;
 - (void)stopMonitoring;
-- (void)updateForLocation:(id)a3;
-- (void)valueChangedForGEOConfigKey:(id)a3;
-- (void)vehicleMonitorDidConnectToVehicle:(id)a3;
-- (void)vehicleMonitorDidDisconnectFromVehicle:(id)a3;
+- (void)updateForLocation:(id)location;
+- (void)valueChangedForGEOConfigKey:(id)key;
+- (void)vehicleMonitorDidConnectToVehicle:(id)vehicle;
+- (void)vehicleMonitorDidDisconnectFromVehicle:(id)vehicle;
 @end
 
 @implementation MNParkedVehicleDetector
@@ -24,7 +24,7 @@
   return WeakRetained;
 }
 
-- (void)vehicleMonitorDidDisconnectFromVehicle:(id)a3
+- (void)vehicleMonitorDidDisconnectFromVehicle:(id)vehicle
 {
   if (GEOConfigGetBOOL())
   {
@@ -91,7 +91,7 @@ void __66__MNParkedVehicleDetector_vehicleMonitorDidDisconnectFromVehicle___bloc
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)vehicleMonitorDidConnectToVehicle:(id)a3
+- (void)vehicleMonitorDidConnectToVehicle:(id)vehicle
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -101,9 +101,9 @@ void __66__MNParkedVehicleDetector_vehicleMonitorDidDisconnectFromVehicle___bloc
   MNRunAsyncOnNavigationQueue(v3);
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  if (a3.var0 == 92 && a3.var1 == &NavigationConfig_Parking_EasyParkingDetection_Metadata)
+  if (key.var0 == 92 && key.var1 == &NavigationConfig_Parking_EasyParkingDetection_Metadata)
   {
     v5 = self->_isMonitoring & GEOConfigGetBOOL() & 1;
 
@@ -151,11 +151,11 @@ void __66__MNParkedVehicleDetector_vehicleMonitorDidDisconnectFromVehicle___bloc
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateVehicleMonitorShouldStart:(BOOL)a3
+- (void)_updateVehicleMonitorShouldStart:(BOOL)start
 {
-  v3 = a3;
+  startCopy = start;
   BOOL = GEOConfigGetBOOL();
-  if (v3 && BOOL)
+  if (startCopy && BOOL)
   {
     v6 = objc_alloc_init(MNVehicleMonitor);
     vehicleMonitor = self->_vehicleMonitor;
@@ -241,11 +241,11 @@ uint64_t __53__MNParkedVehicleDetector__locationStoppedTimerFired__block_invoke(
   return result;
 }
 
-- (void)updateForLocation:(id)a3
+- (void)updateForLocation:(id)location
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 speed];
+  locationCopy = location;
+  [locationCopy speed];
   v6 = v5;
   GEOConfigGetDouble();
   if (v6 >= v7)
@@ -303,7 +303,7 @@ uint64_t __53__MNParkedVehicleDetector__locationStoppedTimerFired__block_invoke(
 
   GEOConfigGetDouble();
   v19 = v18;
-  [v4 speed];
+  [locationCopy speed];
   if (v20 >= v19)
   {
     if (self->_state == 1)
@@ -311,7 +311,7 @@ uint64_t __53__MNParkedVehicleDetector__locationStoppedTimerFired__block_invoke(
       v21 = MNGetMNParkedVehicleDetectorLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        [v4 speed];
+        [locationCopy speed];
         *buf = 134218240;
         v29 = v22;
         v30 = 2048;
@@ -327,7 +327,7 @@ uint64_t __53__MNParkedVehicleDetector__locationStoppedTimerFired__block_invoke(
       v23 = MNGetMNParkedVehicleDetectorLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        [v4 speed];
+        [locationCopy speed];
         *buf = 134218240;
         v29 = v24;
         v30 = 2048;
@@ -366,8 +366,8 @@ void __45__MNParkedVehicleDetector_updateForLocation___block_invoke(uint64_t a1)
     self->_simulateParkedVehicleEventToken = 0;
     GEOConfigRemoveDelegateListenerForAllKeys();
     [(MNParkedVehicleDetector *)self _updateVehicleMonitorShouldStart:0];
-    v7 = [getRTRoutineManagerClass() defaultManager];
-    [v7 stopMonitoringVehicleEvents];
+    defaultManager = [getRTRoutineManagerClass() defaultManager];
+    [defaultManager stopMonitoringVehicleEvents];
 
     v8 = MNGetMNParkedVehicleDetectorLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -387,13 +387,13 @@ void __45__MNParkedVehicleDetector_updateForLocation___block_invoke(uint64_t a1)
     self->_isMonitoring = 1;
     self->_state = 0;
     objc_initWeak(&location, self);
-    v3 = [getRTRoutineManagerClass() defaultManager];
+    defaultManager = [getRTRoutineManagerClass() defaultManager];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __42__MNParkedVehicleDetector_startMonitoring__block_invoke;
     v10[3] = &unk_1E8430E20;
     objc_copyWeak(&v11, &location);
-    [v3 startMonitoringVehicleEventsWithHandler:v10];
+    [defaultManager startMonitoringVehicleEventsWithHandler:v10];
 
     v4 = MNGetMNParkedVehicleDetectorLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

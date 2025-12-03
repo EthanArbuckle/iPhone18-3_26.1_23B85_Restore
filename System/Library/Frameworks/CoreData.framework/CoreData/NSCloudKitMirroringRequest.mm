@@ -1,12 +1,12 @@
 @interface NSCloudKitMirroringRequest
 + (id)allRequestClasses;
-- (NSCloudKitMirroringRequest)initWithActivity:(id)a3 options:(id)a4 completionBlock:(id)a5;
-- (NSCloudKitMirroringRequest)initWithOptions:(id)a3 completionBlock:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSCloudKitMirroringRequest)initWithActivity:(id)activity options:(id)options completionBlock:(id)block;
+- (NSCloudKitMirroringRequest)initWithOptions:(id)options completionBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (uint64_t)_invokeContainerBlocksWithResult:(uint64_t)result;
 - (uint64_t)invokeCompletionBlockWithResult:(uint64_t)result;
-- (void)addContainerBlock:(uint64_t)a1;
+- (void)addContainerBlock:(uint64_t)block;
 - (void)dealloc;
 @end
 
@@ -25,7 +25,7 @@
   [(NSPersistentStoreRequest *)&v3 dealloc];
 }
 
-- (NSCloudKitMirroringRequest)initWithOptions:(id)a3 completionBlock:(id)a4
+- (NSCloudKitMirroringRequest)initWithOptions:(id)options completionBlock:(id)block
 {
   v10.receiver = self;
   v10.super_class = NSCloudKitMirroringRequest;
@@ -33,19 +33,19 @@
   v7 = v6;
   if (v6)
   {
-    if (a3)
+    if (options)
     {
-      v8 = [a3 copy];
+      createDefaultOptions = [options copy];
     }
 
     else
     {
-      v8 = [(NSCloudKitMirroringRequest *)v6 createDefaultOptions];
+      createDefaultOptions = [(NSCloudKitMirroringRequest *)v6 createDefaultOptions];
     }
 
-    v7->_options = v8;
+    v7->_options = createDefaultOptions;
     v7->_requestIdentifier = objc_alloc_init(MEMORY[0x1E696AFB0]);
-    v7->_requestCompletionBlock = [a4 copy];
+    v7->_requestCompletionBlock = [block copy];
     v7->_deferredByBackgroundTimeout = 0;
     v7->_containerBlocks = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
@@ -53,12 +53,12 @@
   return v7;
 }
 
-- (NSCloudKitMirroringRequest)initWithActivity:(id)a3 options:(id)a4 completionBlock:(id)a5
+- (NSCloudKitMirroringRequest)initWithActivity:(id)activity options:(id)options completionBlock:(id)block
 {
-  v6 = [(NSCloudKitMirroringRequest *)self initWithOptions:a4 completionBlock:a5];
+  v6 = [(NSCloudKitMirroringRequest *)self initWithOptions:options completionBlock:block];
   if (v6)
   {
-    v6->_schedulerActivity = a3;
+    v6->_schedulerActivity = activity;
   }
 
   return v6;
@@ -75,11 +75,11 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NSCloudKitMirroringRequest;
-  v4 = [(NSPersistentStoreRequest *)&v6 copyWithZone:a3];
+  v4 = [(NSPersistentStoreRequest *)&v6 copyWithZone:zone];
   v4[2] = self->_requestIdentifier;
   v4[3] = self->_options;
   v4[4] = self->_requestCompletionBlock;
@@ -148,13 +148,13 @@
   return result;
 }
 
-- (void)addContainerBlock:(uint64_t)a1
+- (void)addContainerBlock:(uint64_t)block
 {
-  if (a1)
+  if (block)
   {
     v4 = objc_autoreleasePoolPush();
     v5 = [a2 copy];
-    [*(a1 + 48) addObject:v5];
+    [*(block + 48) addObject:v5];
 
     objc_autoreleasePoolPop(v4);
   }

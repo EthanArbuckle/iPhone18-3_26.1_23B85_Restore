@@ -1,14 +1,14 @@
 @interface PPXProductPageActions
 + (id)sharedInstance;
 - (PPXProductPageActions)init;
-- (void)cancelDownloadForBook:(id)a3;
+- (void)cancelDownloadForBook:(id)book;
 - (void)dealloc;
-- (void)downloadBookWithRedownloadParameters:(id)a3 isAudiobook:(BOOL)a4 hasRacSupport:(BOOL)a5 uiManager:(id)a6 tracker:(id)a7;
-- (void)downloadBooks:(id)a3;
-- (void)openBook:(id)a3 options:(id)a4;
-- (void)openSampleBook:(id)a3 withSampleURL:(id)a4;
-- (void)previewAudiobook:(id)a3;
-- (void)removeDownload:(id)a3 isAudiobook:(BOOL)a4;
+- (void)downloadBookWithRedownloadParameters:(id)parameters isAudiobook:(BOOL)audiobook hasRacSupport:(BOOL)support uiManager:(id)manager tracker:(id)tracker;
+- (void)downloadBooks:(id)books;
+- (void)openBook:(id)book options:(id)options;
+- (void)openSampleBook:(id)book withSampleURL:(id)l;
+- (void)previewAudiobook:(id)audiobook;
+- (void)removeDownload:(id)download isAudiobook:(BOOL)audiobook;
 @end
 
 @implementation PPXProductPageActions
@@ -38,8 +38,8 @@
     v6 = [v3 initWithQueue:v5];
     [(PPXProductPageActions *)v2 setNetworkMonitor:v6];
 
-    v7 = [(PPXProductPageActions *)v2 networkMonitor];
-    [v7 start];
+    networkMonitor = [(PPXProductPageActions *)v2 networkMonitor];
+    [networkMonitor start];
   }
 
   return v2;
@@ -47,28 +47,28 @@
 
 - (void)dealloc
 {
-  v3 = [(PPXProductPageActions *)self networkMonitor];
-  [v3 stop];
+  networkMonitor = [(PPXProductPageActions *)self networkMonitor];
+  [networkMonitor stop];
 
   v4.receiver = self;
   v4.super_class = PPXProductPageActions;
   [(PPXProductPageActions *)&v4 dealloc];
 }
 
-- (void)removeDownload:(id)a3 isAudiobook:(BOOL)a4
+- (void)removeDownload:(id)download isAudiobook:(BOOL)audiobook
 {
-  v4 = a4;
-  v5 = a3;
-  if (!v5)
+  audiobookCopy = audiobook;
+  downloadCopy = download;
+  if (!downloadCopy)
   {
     goto LABEL_14;
   }
 
-  if (!v4)
+  if (!audiobookCopy)
   {
     v14 = +[BLLibrary defaultBookLibrary];
     v17 = 0;
-    [v14 removeBookFromLibraryWithIdentifier:v5 error:&v17];
+    [v14 removeBookFromLibraryWithIdentifier:downloadCopy error:&v17];
     v15 = v17;
 
     if (v15)
@@ -84,7 +84,7 @@
 
 LABEL_12:
     v15 = BSUIGetLibraryItemStateUpdater();
-    [v15 updateStateToDeletedForIdentifier:v5];
+    [v15 updateStateToDeletedForIdentifier:downloadCopy];
 LABEL_13:
 
     goto LABEL_14;
@@ -94,13 +94,13 @@ LABEL_13:
   if (v6)
   {
     v7 = v6;
-    v18 = v5;
+    v18 = downloadCopy;
     v8 = [NSArray arrayWithObjects:&v18 count:1];
     v9 = [MPMediaPropertyPredicate predicateWithValue:v8 forProperty:MPMediaItemPropertyStorePlaylistID comparisonType:108];
     [v7 addFilterPredicate:v9];
     v10 = +[MPMediaLibrary defaultMediaLibrary];
-    v11 = [v7 items];
-    v12 = [v10 removeItems:v11];
+    items = [v7 items];
+    v12 = [v10 removeItems:items];
 
     v13 = BCProductPageExtensionLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -117,19 +117,19 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)downloadBooks:(id)a3
+- (void)downloadBooks:(id)books
 {
-  v3 = a3;
+  booksCopy = books;
   v4 = +[BUAccountsProvider sharedProvider];
-  v5 = [v4 activeStoreAccount];
-  v6 = [v5 ams_DSID];
+  activeStoreAccount = [v4 activeStoreAccount];
+  ams_DSID = [activeStoreAccount ams_DSID];
 
-  if (v6)
+  if (ams_DSID)
   {
-    v26 = v3;
-    v7 = [NSSet setWithArray:v3];
+    v26 = booksCopy;
+    v7 = [NSSet setWithArray:booksCopy];
     v8 = +[BLJaliscoReadOnlyDAAPClient sharedClient];
-    v32 = v6;
+    v32 = ams_DSID;
     v9 = [NSArray arrayWithObjects:&v32 count:1];
     v25 = v7;
     v10 = [v8 fetchServerItemsForStoreIDs:v7 andDSIDS:v9];
@@ -154,21 +154,21 @@ LABEL_14:
           }
 
           v16 = *(*(&v27 + 1) + 8 * i);
-          v17 = [v16 storeID];
-          if (v17)
+          storeID = [v16 storeID];
+          if (storeID)
           {
             v18 = BSUIGetLibraryItemStateUpdater();
-            [v18 updateStateToPurchasingForIdentifier:v17];
+            [v18 updateStateToPurchasingForIdentifier:storeID];
 
-            v19 = [v16 storeDownloadParameters];
-            v20 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v17 longLongValue]);
-            v21 = [BLPurchaseRequest requestWithBuyParameters:v19 storeIdentifier:v20];
+            storeDownloadParameters = [v16 storeDownloadParameters];
+            v20 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [storeID longLongValue]);
+            v21 = [BLPurchaseRequest requestWithBuyParameters:storeDownloadParameters storeIdentifier:v20];
 
             v22 = +[JSABridge sharedInstance];
-            v23 = [v22 windowManager];
+            windowManager = [v22 windowManager];
 
             v24 = +[BLDownloadQueue sharedInstance];
-            [v24 purchaseWithRequest:v21 uiManager:v23 completion:&stru_1000316D8];
+            [v24 purchaseWithRequest:v21 uiManager:windowManager completion:&stru_1000316D8];
           }
         }
 
@@ -178,47 +178,47 @@ LABEL_14:
       while (v13);
     }
 
-    v3 = v26;
+    booksCopy = v26;
   }
 }
 
-- (void)downloadBookWithRedownloadParameters:(id)a3 isAudiobook:(BOOL)a4 hasRacSupport:(BOOL)a5 uiManager:(id)a6 tracker:(id)a7
+- (void)downloadBookWithRedownloadParameters:(id)parameters isAudiobook:(BOOL)audiobook hasRacSupport:(BOOL)support uiManager:(id)manager tracker:(id)tracker
 {
-  v10 = a3;
-  v11 = a7;
-  v12 = [BLUtilities storeIDFromBuyParameters:v10];
-  v13 = [v12 stringValue];
+  parametersCopy = parameters;
+  trackerCopy = tracker;
+  v12 = [BLUtilities storeIDFromBuyParameters:parametersCopy];
+  stringValue = [v12 stringValue];
 
   v14 = BSUIGetLibraryItemStateUpdater();
-  [v14 updateStateToPurchasingForIdentifier:v13];
+  [v14 updateStateToPurchasingForIdentifier:stringValue];
 
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1000051A0;
   v22[3] = &unk_100031728;
-  v23 = v10;
-  v24 = v13;
-  v26 = a4;
-  v25 = v11;
-  v27 = a5;
-  v15 = v11;
-  v16 = v13;
-  v17 = v10;
+  v23 = parametersCopy;
+  v24 = stringValue;
+  audiobookCopy = audiobook;
+  v25 = trackerCopy;
+  supportCopy = support;
+  v15 = trackerCopy;
+  v16 = stringValue;
+  v17 = parametersCopy;
   v18 = objc_retainBlock(v22);
   (v18[2])(v18, v19, v20, v21);
 }
 
-- (void)cancelDownloadForBook:(id)a3
+- (void)cancelDownloadForBook:(id)book
 {
-  v3 = a3;
+  bookCopy = book;
   v4 = +[PPXBLDownloadController sharedController];
-  [v4 cancelDownloadForAssetID:v3];
+  [v4 cancelDownloadForAssetID:bookCopy];
 }
 
-- (void)openBook:(id)a3 options:(id)a4
+- (void)openBook:(id)book options:(id)options
 {
-  v4 = [NSString stringWithFormat:@"ibooks://storeid/%@", a4, a3];
-  v5 = [NSURL URLWithString:v4];
+  book = [NSString stringWithFormat:@"ibooks://storeid/%@", options, book];
+  v5 = [NSURL URLWithString:book];
   v6 = +[LSApplicationWorkspace defaultWorkspace];
   v11 = 0;
   v7 = [v6 openSensitiveURL:v5 withOptions:0 error:&v11];
@@ -244,10 +244,10 @@ LABEL_14:
   }
 }
 
-- (void)openSampleBook:(id)a3 withSampleURL:(id)a4
+- (void)openSampleBook:(id)book withSampleURL:(id)l
 {
-  v4 = [NSString stringWithFormat:@"itms-bookss://?action=read-sample-book&contentId=%@", a4, a3];
-  v5 = [NSURL URLWithString:v4];
+  book = [NSString stringWithFormat:@"itms-bookss://?action=read-sample-book&contentId=%@", l, book];
+  v5 = [NSURL URLWithString:book];
   v6 = +[LSApplicationWorkspace defaultWorkspace];
   v11 = 0;
   v7 = [v6 openSensitiveURL:v5 withOptions:0 error:&v11];
@@ -273,10 +273,10 @@ LABEL_14:
   }
 }
 
-- (void)previewAudiobook:(id)a3
+- (void)previewAudiobook:(id)audiobook
 {
-  v3 = [NSString stringWithFormat:@"itms-bookss://?action=preview-audiobook&contentId=%@", a3];
-  v4 = [NSURL URLWithString:v3];
+  audiobook = [NSString stringWithFormat:@"itms-bookss://?action=preview-audiobook&contentId=%@", audiobook];
+  v4 = [NSURL URLWithString:audiobook];
   v5 = +[LSApplicationWorkspace defaultWorkspace];
   v10 = 0;
   v6 = [v5 openSensitiveURL:v4 withOptions:0 error:&v10];

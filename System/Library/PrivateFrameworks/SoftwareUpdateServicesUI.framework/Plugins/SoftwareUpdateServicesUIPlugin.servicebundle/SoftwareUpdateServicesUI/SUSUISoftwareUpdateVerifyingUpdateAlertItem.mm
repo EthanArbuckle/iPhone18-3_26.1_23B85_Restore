@@ -8,12 +8,12 @@
 {
   v14[2] = self;
   v14[1] = a2;
-  v5 = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
+  descriptor = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
   v12 = 0;
   v10 = 0;
   v8 = 0;
   v6 = 0;
-  if (([(SUDescriptor *)v5 isSplatOnly]& 1) != 0)
+  if (([(SUDescriptor *)descriptor isSplatOnly]& 1) != 0)
   {
     v13 = sub_1DC40();
     v12 = 1;

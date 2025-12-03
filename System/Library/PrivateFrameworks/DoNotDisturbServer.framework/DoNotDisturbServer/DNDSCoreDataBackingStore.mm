@@ -1,14 +1,14 @@
 @interface DNDSCoreDataBackingStore
-- (id)_initWithURL:(id)a3;
+- (id)_initWithURL:(id)l;
 - (id)newManagedObjectContext;
 - (void)setupPersistentStoreIfNeeded;
 @end
 
 @implementation DNDSCoreDataBackingStore
 
-- (id)_initWithURL:(id)a3
+- (id)_initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = DNDSCoreDataBackingStore;
   v6 = [(DNDSCoreDataBackingStore *)&v9 init];
@@ -16,11 +16,11 @@
   if (v6)
   {
     v6->_setupLock._os_unfair_lock_opaque = 0;
-    if (v5)
+    if (lCopy)
     {
       if (os_variant_has_internal_content())
       {
-        objc_storeStrong(p_isa + 3, a3);
+        objc_storeStrong(p_isa + 3, l);
       }
     }
   }
@@ -37,9 +37,9 @@
   }
 
   v4 = +[DNDSKeybag sharedInstance];
-  v5 = [v4 hasUnlockedSinceBoot];
+  hasUnlockedSinceBoot = [v4 hasUnlockedSinceBoot];
 
-  if ((v5 & 1) == 0)
+  if ((hasUnlockedSinceBoot & 1) == 0)
   {
     v7 = DNDSLogSettings;
     if (os_log_type_enabled(DNDSLogSettings, OS_LOG_TYPE_DEFAULT))
@@ -58,21 +58,21 @@
     v9 = [v8 URLForResource:@"DNDSettingsModel" withExtension:@"momd"];
 
     v10 = [objc_alloc(MEMORY[0x277CBE450]) initWithContentsOfURL:v9];
-    v11 = [MEMORY[0x277CBEBC0] dnds_backingStoreRootDirectoryURL];
-    v12 = [v11 URLByAppendingPathComponent:@"Settings.sqlite"];
+    dnds_backingStoreRootDirectoryURL = [MEMORY[0x277CBEBC0] dnds_backingStoreRootDirectoryURL];
+    v12 = [dnds_backingStoreRootDirectoryURL URLByAppendingPathComponent:@"Settings.sqlite"];
 
     if (os_variant_has_internal_content())
     {
       testDatabaseURL = self->_testDatabaseURL;
       if (testDatabaseURL)
       {
-        v14 = [v12 lastPathComponent];
-        v15 = [(NSURL *)testDatabaseURL URLByAppendingPathComponent:v14];
+        lastPathComponent = [v12 lastPathComponent];
+        v15 = [(NSURL *)testDatabaseURL URLByAppendingPathComponent:lastPathComponent];
 
-        v16 = [MEMORY[0x277CCAA00] defaultManager];
-        v17 = [v15 URLByDeletingLastPathComponent];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        uRLByDeletingLastPathComponent = [v15 URLByDeletingLastPathComponent];
         v29 = 0;
-        [v16 createDirectoryAtURL:v17 withIntermediateDirectories:1 attributes:0 error:&v29];
+        [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v29];
         v18 = v29;
 
         if (v18)
@@ -92,8 +92,8 @@
     }
 
     v20 = MEMORY[0x277CBE4E0];
-    v21 = [v12 filePathURL];
-    v18 = [v20 persistentStoreDescriptionWithURL:v21];
+    filePathURL = [v12 filePathURL];
+    v18 = [v20 persistentStoreDescriptionWithURL:filePathURL];
 
     [v18 setType:*MEMORY[0x277CBE2E8]];
     [v18 setShouldInferMappingModelAutomatically:1];
@@ -113,7 +113,7 @@
     v26 = v22;
     v15 = v12;
     v27 = v15;
-    v28 = self;
+    selfCopy = self;
     v24 = v22;
     [v24 loadPersistentStoresWithCompletionHandler:v25];
     os_unfair_lock_unlock(&self->_setupLock);
@@ -189,9 +189,9 @@ void __56__DNDSCoreDataBackingStore_setupPersistentStoreIfNeeded__block_invoke(u
 - (id)newManagedObjectContext
 {
   [(DNDSCoreDataBackingStore *)self setupPersistentStoreIfNeeded];
-  v3 = [(NSPersistentContainer *)self->_persistentContainer newBackgroundContext];
-  [(NSManagedObjectContext *)v3 setMergePolicy:*MEMORY[0x277CBE1C8]];
-  return v3;
+  newBackgroundContext = [(NSPersistentContainer *)self->_persistentContainer newBackgroundContext];
+  [(NSManagedObjectContext *)newBackgroundContext setMergePolicy:*MEMORY[0x277CBE1C8]];
+  return newBackgroundContext;
 }
 
 void __56__DNDSCoreDataBackingStore_setupPersistentStoreIfNeeded__block_invoke_cold_1(uint64_t a1, NSObject *a2)

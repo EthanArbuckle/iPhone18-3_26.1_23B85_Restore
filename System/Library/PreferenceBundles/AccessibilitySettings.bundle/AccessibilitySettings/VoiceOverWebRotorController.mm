@@ -1,19 +1,19 @@
 @interface VoiceOverWebRotorController
-- (BOOL)isItemEnabled:(id)a3;
-- (BOOL)shouldShowItem:(id)a3 withSearchText:(id)a4;
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
+- (BOOL)isItemEnabled:(id)enabled;
+- (BOOL)shouldShowItem:(id)item withSearchText:(id)text;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
 - (NSMutableArray)allItems;
 - (VoiceOverWebRotorController)init;
-- (id)itemAfterTogglingEnabledState:(id)a3;
+- (id)itemAfterTogglingEnabledState:(id)state;
 - (id)itemsFromPreferences;
 - (id)specifiers;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)titleForItem:(id)a3;
-- (void)searchBarTextDidEndEditing:(id)a3;
-- (void)updateItemsInPreferences:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)titleForItem:(id)item;
+- (void)searchBarTextDidEndEditing:(id)editing;
+- (void)updateItemsInPreferences:(id)preferences;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation VoiceOverWebRotorController
@@ -26,8 +26,8 @@
   if (v2)
   {
     v3 = settingsLocString(@"WEB_ROTOR", @"VoiceOverSettings");
-    v4 = [(VoiceOverWebRotorController *)v2 navigationItem];
-    [v4 setTitle:v3];
+    navigationItem = [(VoiceOverWebRotorController *)v2 navigationItem];
+    [navigationItem setTitle:v3];
 
     v5 = v2;
   }
@@ -46,24 +46,24 @@
 
   [(UISearchController *)self->_searchController setSearchResultsUpdater:self];
   [(UISearchController *)self->_searchController setObscuresBackgroundDuringPresentation:0];
-  v5 = [(UISearchController *)self->_searchController searchBar];
-  [v5 setDelegate:self];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  [searchBar setDelegate:self];
 
-  v6 = [(UISearchController *)self->_searchController searchBar];
-  [v6 setAutocapitalizationType:0];
+  searchBar2 = [(UISearchController *)self->_searchController searchBar];
+  [searchBar2 setAutocapitalizationType:0];
 
-  v7 = [(UISearchController *)self->_searchController searchBar];
-  [v7 setKeyboardType:0];
+  searchBar3 = [(UISearchController *)self->_searchController searchBar];
+  [searchBar3 setKeyboardType:0];
 
-  v8 = [(UISearchController *)self->_searchController searchBar];
-  [v8 setAutocorrectionType:1];
+  searchBar4 = [(UISearchController *)self->_searchController searchBar];
+  [searchBar4 setAutocorrectionType:1];
 
   v9 = self->_searchController;
-  v10 = [(VoiceOverWebRotorController *)self navigationItem];
-  [v10 setSearchController:v9];
+  navigationItem = [(VoiceOverWebRotorController *)self navigationItem];
+  [navigationItem setSearchController:v9];
 
-  v11 = [(VoiceOverWebRotorController *)self navigationItem];
-  [v11 setHidesSearchBarWhenScrolling:0];
+  navigationItem2 = [(VoiceOverWebRotorController *)self navigationItem];
+  [navigationItem2 setHidesSearchBarWhenScrolling:0];
 
   [(VoiceOverWebRotorController *)self setDefinesPresentationContext:1];
 }
@@ -76,18 +76,18 @@
   {
     if (!self->_allItems)
     {
-      v5 = [(VoiceOverWebRotorController *)self itemsFromPreferences];
-      v6 = [v5 mutableCopy];
+      itemsFromPreferences = [(VoiceOverWebRotorController *)self itemsFromPreferences];
+      v6 = [itemsFromPreferences mutableCopy];
       allItems = self->_allItems;
       self->_allItems = v6;
     }
 
-    v8 = [(VoiceOverWebRotorController *)self searchText];
-    if ([v8 length])
+    searchText = [(VoiceOverWebRotorController *)self searchText];
+    if ([searchText length])
     {
-      v9 = [(VoiceOverWebRotorController *)self filteredItems];
+      filteredItems = [(VoiceOverWebRotorController *)self filteredItems];
 
-      if (v9)
+      if (filteredItems)
       {
         v26 = v3;
         v10 = +[NSMutableArray array];
@@ -95,8 +95,8 @@
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v11 = [(VoiceOverWebRotorController *)self filteredItems];
-        v12 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        filteredItems2 = [(VoiceOverWebRotorController *)self filteredItems];
+        v12 = [filteredItems2 countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v12)
         {
           v13 = v12;
@@ -107,7 +107,7 @@
             {
               if (*v28 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(filteredItems2);
               }
 
               v16 = *(*(&v27 + 1) + 8 * i);
@@ -116,8 +116,8 @@
                 v17 = [(VoiceOverWebRotorController *)self titleForItem:v16];
                 v18 = [PSSpecifier preferenceSpecifierNamed:v17 target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
-                v19 = [(VoiceOverWebRotorController *)self allItems];
-                v20 = [v19 indexOfObject:v16];
+                allItems = [(VoiceOverWebRotorController *)self allItems];
+                v20 = [allItems indexOfObject:v16];
 
                 v21 = [NSNumber numberWithUnsignedInteger:v20];
                 [v18 setProperty:v21 forKey:@"AXReorderableItemIndex"];
@@ -129,7 +129,7 @@
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+            v13 = [filteredItems2 countByEnumeratingWithState:&v27 objects:v31 count:16];
           }
 
           while (v13);
@@ -146,9 +146,9 @@
     {
     }
 
-    v24 = [(AXReorderableCheckmarkListController *)self itemSpecifiers];
+    itemSpecifiers = [(AXReorderableCheckmarkListController *)self itemSpecifiers];
     v23 = *&self->super.super.AXUISettingsSetupCapableListController_opaque[v3];
-    *&self->super.super.AXUISettingsSetupCapableListController_opaque[v3] = v24;
+    *&self->super.super.AXUISettingsSetupCapableListController_opaque[v3] = itemSpecifiers;
 LABEL_18:
 
     [(VoiceOverWebRotorController *)self setAllSpecifiers:*&self->super.super.AXUISettingsSetupCapableListController_opaque[v3]];
@@ -161,9 +161,9 @@ LABEL_18:
 - (id)itemsFromPreferences
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 voiceOverRotorItems];
+  voiceOverRotorItems = [v2 voiceOverRotorItems];
 
-  return v3;
+  return voiceOverRotorItems;
 }
 
 - (NSMutableArray)allItems
@@ -171,8 +171,8 @@ LABEL_18:
   allItems = self->_allItems;
   if (!allItems)
   {
-    v4 = [(VoiceOverWebRotorController *)self itemsFromPreferences];
-    v5 = [v4 mutableCopy];
+    itemsFromPreferences = [(VoiceOverWebRotorController *)self itemsFromPreferences];
+    v5 = [itemsFromPreferences mutableCopy];
     v6 = self->_allItems;
     self->_allItems = v5;
 
@@ -182,39 +182,39 @@ LABEL_18:
   return allItems;
 }
 
-- (void)updateItemsInPreferences:(id)a3
+- (void)updateItemsInPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverRotorItems:v4];
+  [v5 setVoiceOverRotorItems:preferencesCopy];
 
   allItems = self->_allItems;
   self->_allItems = 0;
 }
 
-- (BOOL)isItemEnabled:(id)a3
+- (BOOL)isItemEnabled:(id)enabled
 {
   v4.receiver = self;
   v4.super_class = VoiceOverWebRotorController;
-  return [(VoiceOverRotorController *)&v4 isItemEnabled:a3];
+  return [(VoiceOverRotorController *)&v4 isItemEnabled:enabled];
 }
 
-- (id)titleForItem:(id)a3
+- (id)titleForItem:(id)item
 {
-  v4 = [a3 objectForKey:@"RotorItem"];
+  v4 = [item objectForKey:@"RotorItem"];
   v5 = [(VoiceOverWebRotorController *)self stringForSearchRotorItem:v4];
 
   return v5;
 }
 
-- (id)itemAfterTogglingEnabledState:(id)a3
+- (id)itemAfterTogglingEnabledState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  v5 = [v3 objectForKey:@"Enabled"];
+  stateCopy = state;
+  v4 = [stateCopy mutableCopy];
+  v5 = [stateCopy objectForKey:@"Enabled"];
 
-  LODWORD(v3) = [v5 BOOLValue];
-  v6 = [NSNumber numberWithInt:v3 ^ 1];
+  LODWORD(stateCopy) = [v5 BOOLValue];
+  v6 = [NSNumber numberWithInt:stateCopy ^ 1];
   [v4 setObject:v6 forKey:@"Enabled"];
 
   v7 = [v4 copy];
@@ -222,24 +222,24 @@ LABEL_18:
   return v7;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [a3 searchBar];
-  v5 = [v4 text];
-  [(VoiceOverWebRotorController *)self setSearchText:v5];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
+  [(VoiceOverWebRotorController *)self setSearchText:text];
 
-  v6 = [(VoiceOverWebRotorController *)self searchText];
-  v7 = [v6 length];
+  searchText = [(VoiceOverWebRotorController *)self searchText];
+  v7 = [searchText length];
 
   if (v7)
   {
     v8 = +[NSMutableArray array];
-    v9 = [(VoiceOverWebRotorController *)self allItems];
+    allItems = [(VoiceOverWebRotorController *)self allItems];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v10 = [allItems countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -251,12 +251,12 @@ LABEL_18:
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allItems);
           }
 
           v14 = *(*(&v18 + 1) + 8 * v13);
-          v15 = [(VoiceOverWebRotorController *)self searchText];
-          v16 = [(VoiceOverWebRotorController *)self shouldShowItem:v14 withSearchText:v15];
+          searchText2 = [(VoiceOverWebRotorController *)self searchText];
+          v16 = [(VoiceOverWebRotorController *)self shouldShowItem:v14 withSearchText:searchText2];
 
           if (v16)
           {
@@ -267,7 +267,7 @@ LABEL_18:
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [allItems countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v11);
@@ -287,15 +287,15 @@ LABEL_18:
   [(VoiceOverWebRotorController *)self reloadSpecifiers];
 }
 
-- (BOOL)shouldShowItem:(id)a3 withSearchText:(id)a4
+- (BOOL)shouldShowItem:(id)item withSearchText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  itemCopy = item;
+  textCopy = text;
+  if ([textCopy length])
   {
-    v8 = [v6 objectForKey:@"RotorItem"];
+    v8 = [itemCopy objectForKey:@"RotorItem"];
     v9 = [(VoiceOverWebRotorController *)self stringForSearchRotorItem:v8];
-    v10 = [v9 rangeOfString:v7 options:1] != 0x7FFFFFFFFFFFFFFFLL;
+    v10 = [v9 rangeOfString:textCopy options:1] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -306,33 +306,33 @@ LABEL_18:
   return v10;
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v7 = a3;
-  v4 = [(VoiceOverWebRotorController *)self searchText];
-  v5 = [v4 length];
+  editingCopy = editing;
+  searchText = [(VoiceOverWebRotorController *)self searchText];
+  v5 = [searchText length];
 
   if (v5)
   {
-    v6 = [(VoiceOverWebRotorController *)self searchText];
-    [v7 setText:v6];
+    searchText2 = [(VoiceOverWebRotorController *)self searchText];
+    [editingCopy setText:searchText2];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = VoiceOverWebRotorController;
-  v7 = a4;
-  [(VoiceOverWebRotorController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(VoiceOverWebRotorController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __82__VoiceOverWebRotorController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v8[3] = &unk_256678;
   v8[4] = self;
-  [v7 animateAlongsideTransition:&__block_literal_global_15 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:&__block_literal_global_15 completion:v8];
 }
 
 void __82__VoiceOverWebRotorController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2(uint64_t a1)
@@ -342,12 +342,12 @@ void __82__VoiceOverWebRotorController_viewWillTransitionToSize_withTransitionCo
   [v1 sizeToFit];
 }
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VoiceOverWebRotorController *)self searchText];
-  if ([v8 length])
+  viewCopy = view;
+  pathCopy = path;
+  searchText = [(VoiceOverWebRotorController *)self searchText];
+  if ([searchText length])
   {
     v9 = 0;
   }
@@ -356,30 +356,30 @@ void __82__VoiceOverWebRotorController_viewWillTransitionToSize_withTransitionCo
   {
     v11.receiver = self;
     v11.super_class = VoiceOverWebRotorController;
-    v9 = [(AXReorderableCheckmarkListController *)&v11 tableView:v6 canMoveRowAtIndexPath:v7];
+    v9 = [(AXReorderableCheckmarkListController *)&v11 tableView:viewCopy canMoveRowAtIndexPath:pathCopy];
   }
 
   return v9;
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(VoiceOverWebRotorController *)self searchText];
-  v12 = [v11 length];
+  viewCopy = view;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  searchText = [(VoiceOverWebRotorController *)self searchText];
+  v12 = [searchText length];
 
   if (v12)
   {
-    v13 = v9;
+    v13 = pathCopy;
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = VoiceOverWebRotorController;
-    v13 = [(AXReorderableCheckmarkListController *)&v16 tableView:v8 targetIndexPathForMoveFromRowAtIndexPath:v9 toProposedIndexPath:v10];
+    v13 = [(AXReorderableCheckmarkListController *)&v16 tableView:viewCopy targetIndexPathForMoveFromRowAtIndexPath:pathCopy toProposedIndexPath:indexPathCopy];
   }
 
   v14 = v13;

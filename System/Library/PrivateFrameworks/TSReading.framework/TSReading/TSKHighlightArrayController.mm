@@ -1,26 +1,26 @@
 @interface TSKHighlightArrayController
 - (CGAffineTransform)transform;
-- (TSKHighlightArrayController)initWithZOrder:(double)a3 delegate:(id)a4;
-- (id)buildHighlightsForSearchReferences:(id)a3 contentsScaleForLayers:(double)a4;
+- (TSKHighlightArrayController)initWithZOrder:(double)order delegate:(id)delegate;
+- (id)buildHighlightsForSearchReferences:(id)references contentsScaleForLayers:(double)layers;
 - (void)dealloc;
 - (void)reset;
-- (void)setCanvasTransform:(CGAffineTransform *)a3 layerTransform:(CGAffineTransform *)a4;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setCanvasTransform:(CGAffineTransform *)transform layerTransform:(CGAffineTransform *)layerTransform;
+- (void)setTransform:(CGAffineTransform *)transform;
 - (void)startAnimating;
 - (void)stop;
 @end
 
 @implementation TSKHighlightArrayController
 
-- (TSKHighlightArrayController)initWithZOrder:(double)a3 delegate:(id)a4
+- (TSKHighlightArrayController)initWithZOrder:(double)order delegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = TSKHighlightArrayController;
   result = [(TSKHighlightArrayController *)&v7 init];
   if (result)
   {
-    result->_delegate = a4;
-    result->_zOrder = a3;
+    result->_delegate = delegate;
+    result->_zOrder = order;
   }
 
   return result;
@@ -63,15 +63,15 @@
   self->_layers = 0;
 }
 
-- (id)buildHighlightsForSearchReferences:(id)a3 contentsScaleForLayers:(double)a4
+- (id)buildHighlightsForSearchReferences:(id)references contentsScaleForLayers:(double)layers
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(references, "count")}];
   if (self->_creatingLayers)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKHighlightArrayController buildHighlightsForSearchReferences:contentsScaleForLayers:]"];
-    [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKHighlightArrayController.m"), 82, @"buildHighlightsForSearchReferences: should not be called recursively."}];
+    [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKHighlightArrayController.m"), 82, @"buildHighlightsForSearchReferences: should not be called recursively."}];
   }
 
   else
@@ -79,14 +79,14 @@
     self->_creatingLayers = 1;
     if (!self->_layers)
     {
-      self->_layers = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(a3, "count")}];
+      self->_layers = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(references, "count")}];
     }
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v10 = [a3 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    v10 = [references countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v10)
     {
       v11 = v10;
@@ -98,7 +98,7 @@
         {
           if (*v29 != v12)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(references);
           }
 
           v14 = *(*(&v28 + 1) + 8 * v13);
@@ -137,7 +137,7 @@
             v26[2] = v22;
             [(TSKHighlightController *)v16 setCanvasTransform:v27 layerTransform:v26];
             v23 = [(TSKHighlightArrayControllerProtocol *)self->_delegate imageForSearchReference:v14 forPath:v18 shouldPulsate:self->_shouldPulsate];
-            [(TSKHighlightController *)v16 createLayerWithZOrder:self->_zOrder contentsScaleForLayers:a4];
+            [(TSKHighlightController *)v16 createLayerWithZOrder:self->_zOrder contentsScaleForLayers:layers];
             [(TSKHighlightController *)v16 buildLayersForPath:v18 withImage:v23];
             [(NSMutableArray *)self->_layers addObject:[(TSKHighlightController *)v16 layer]];
           }
@@ -147,7 +147,7 @@
         }
 
         while (v11 != v13);
-        v11 = [a3 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v11 = [references countByEnumeratingWithState:&v28 objects:v32 count:16];
       }
 
       while (v11);
@@ -159,7 +159,7 @@
   controllers = self->_controllers;
   if (!controllers)
   {
-    if ([a3 count])
+    if ([references count])
     {
       self->_controllers = [v7 mutableCopy];
       return v7;
@@ -172,16 +172,16 @@
   return v7;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_layerTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_layerTransform.c = *&transform->c;
   *&self->_layerTransform.tx = v4;
   *&self->_layerTransform.a = v3;
-  v5 = *&a3->a;
-  v6 = *&a3->tx;
-  *&self->_canvasTransform.c = *&a3->c;
+  v5 = *&transform->a;
+  v6 = *&transform->tx;
+  *&self->_canvasTransform.c = *&transform->c;
   *&self->_canvasTransform.tx = v6;
   *&self->_canvasTransform.a = v5;
 }
@@ -195,16 +195,16 @@
   return self;
 }
 
-- (void)setCanvasTransform:(CGAffineTransform *)a3 layerTransform:(CGAffineTransform *)a4
+- (void)setCanvasTransform:(CGAffineTransform *)transform layerTransform:(CGAffineTransform *)layerTransform
 {
-  v4 = *&a3->a;
-  v5 = *&a3->tx;
-  *&self->_canvasTransform.c = *&a3->c;
+  v4 = *&transform->a;
+  v5 = *&transform->tx;
+  *&self->_canvasTransform.c = *&transform->c;
   *&self->_canvasTransform.tx = v5;
   *&self->_canvasTransform.a = v4;
-  v6 = *&a4->a;
-  v7 = *&a4->tx;
-  *&self->_layerTransform.c = *&a4->c;
+  v6 = *&layerTransform->a;
+  v7 = *&layerTransform->tx;
+  *&self->_layerTransform.c = *&layerTransform->c;
   *&self->_layerTransform.tx = v7;
   *&self->_layerTransform.a = v6;
 }

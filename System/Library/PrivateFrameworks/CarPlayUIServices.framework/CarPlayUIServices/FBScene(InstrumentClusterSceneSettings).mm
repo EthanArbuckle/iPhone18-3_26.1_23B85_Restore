@@ -15,7 +15,7 @@
     v6[2] = __79__FBScene_InstrumentClusterSceneSettings__updateClusterSceneSettingsWithBlock___block_invoke;
     v6[3] = &unk_278DA0C18;
     v7 = v4;
-    [a1 updateSettingsWithBlock:v6];
+    [self updateSettingsWithBlock:v6];
   }
 }
 

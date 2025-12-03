@@ -1,41 +1,41 @@
 @interface WKAccessibilityWebPageObjectAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (WKAccessibilityWebPageObjectAccessibility)init;
 - (id)_accessibilityApplication;
 - (id)_accessibilityResponderElement;
 - (id)_accessibilityTextViewTextOperationResponder;
-- (id)_axUnarchivedTokenForData:(id)a3;
+- (id)_axUnarchivedTokenForData:(id)data;
 - (id)accessibilityElements;
-- (id)accessibilityHitTest:(CGPoint)a3;
-- (id)accessibilityRemoteSubstituteChildren:(id)a3;
+- (id)accessibilityHitTest:(CGPoint)test;
+- (id)accessibilityRemoteSubstituteChildren:(id)children;
 - (int)_accessibilityHostPid;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axCachedRootObject;
 - (void)_axListenForRemoteElement;
-- (void)_axRemoteElementRegistered:(id)a3;
-- (void)_axSetCachedRootObject:(id)a3;
+- (void)_axRemoteElementRegistered:(id)registered;
+- (void)_axSetCachedRootObject:(id)object;
 - (void)_disableCaching;
 - (void)_enableCaching;
 - (void)_initializeRootIfNecessary;
 - (void)dealloc;
-- (void)setRemoteTokenData:(id)a3;
+- (void)setRemoteTokenData:(id)data;
 @end
 
 @implementation WKAccessibilityWebPageObjectAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WKAccessibilityWebPageObject" hasInstanceMethod:@"setRemoteTokenData:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"WKAccessibilityWebPageObject" hasInstanceMethod:@"_accessibilityCategoryInstalled:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"WKAccessibilityWebPageObject" hasInstanceMethod:@"remoteTokenData" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WKAccessibilityWebPageObject" hasInstanceMethod:@"accessibilityHitTest:" withFullSignature:{"@", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"WKAccessibilityWebPageObjectBase" hasInstanceMethod:@"accessibilityRootObjectWrapper" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WKAccessibilityWebPageObjectBase" hasInstanceMethod:@"accessibilityFocusedUIElement" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WKAccessibilityWebPageObject" isKindOfClass:@"WKAccessibilityWebPageObjectBase"];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"enableAttributeCaching" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"disableAttributeCaching" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WKAccessibilityWebPageObject" hasInstanceMethod:@"setRemoteTokenData:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"WKAccessibilityWebPageObject" hasInstanceMethod:@"_accessibilityCategoryInstalled:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"WKAccessibilityWebPageObject" hasInstanceMethod:@"remoteTokenData" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WKAccessibilityWebPageObject" hasInstanceMethod:@"accessibilityHitTest:" withFullSignature:{"@", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"WKAccessibilityWebPageObjectBase" hasInstanceMethod:@"accessibilityRootObjectWrapper" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WKAccessibilityWebPageObjectBase" hasInstanceMethod:@"accessibilityFocusedUIElement" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WKAccessibilityWebPageObject" isKindOfClass:@"WKAccessibilityWebPageObjectBase"];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"enableAttributeCaching" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"disableAttributeCaching" withFullSignature:{"v", 0}];
 }
 
 - (WKAccessibilityWebPageObjectAccessibility)init
@@ -51,9 +51,9 @@
 - (void)dealloc
 {
   v3 = [(WKAccessibilityWebPageObjectAccessibility *)self _accessibilityValueForKey:@"axRemoteElement"];
-  v4 = [v3 remoteChildrenDelegate];
+  remoteChildrenDelegate = [v3 remoteChildrenDelegate];
 
-  if (v4 == self)
+  if (remoteChildrenDelegate == self)
   {
     [v3 setRemoteChildrenDelegate:0];
     [v3 unregister];
@@ -71,15 +71,15 @@
   v2 = [(WKAccessibilityWebPageObjectAccessibility *)self _accessibilityValueForKey:@"axRemoteElement"];
   if ([v2 remotePid] < 1)
   {
-    v3 = 0;
+    remotePid = 0;
   }
 
   else
   {
-    v3 = [v2 remotePid];
+    remotePid = [v2 remotePid];
   }
 
-  return v3;
+  return remotePid;
 }
 
 - (id)_accessibilityApplication
@@ -99,10 +99,10 @@
   return AppElementWithPid;
 }
 
-- (id)accessibilityHitTest:(CGPoint)a3
+- (id)accessibilityHitTest:(CGPoint)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   [(WKAccessibilityWebPageObjectAccessibility *)self _initializeRootIfNecessary];
   v8.receiver = self;
   v8.super_class = WKAccessibilityWebPageObjectAccessibility;
@@ -113,23 +113,23 @@
 
 - (void)_enableCaching
 {
-  v2 = [(WKAccessibilityWebPageObjectAccessibility *)self accessibilityElements];
-  v4 = [v2 firstObject];
+  accessibilityElements = [(WKAccessibilityWebPageObjectAccessibility *)self accessibilityElements];
+  firstObject = [accessibilityElements firstObject];
 
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v4 safeValueForKey:@"enableAttributeCaching"];
+    v3 = [firstObject safeValueForKey:@"enableAttributeCaching"];
   }
 }
 
 - (void)_disableCaching
 {
-  v2 = [(WKAccessibilityWebPageObjectAccessibility *)self accessibilityElements];
-  v4 = [v2 firstObject];
+  accessibilityElements = [(WKAccessibilityWebPageObjectAccessibility *)self accessibilityElements];
+  firstObject = [accessibilityElements firstObject];
 
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v4 safeValueForKey:@"disableAttributeCaching"];
+    v3 = [firstObject safeValueForKey:@"disableAttributeCaching"];
   }
 }
 
@@ -144,7 +144,7 @@
 
 - (id)_accessibilityTextViewTextOperationResponder
 {
-  v2 = [(WKAccessibilityWebPageObjectAccessibility *)self accessibilityContainer];
+  accessibilityContainer = [(WKAccessibilityWebPageObjectAccessibility *)self accessibilityContainer];
   v3 = __UIAccessibilitySafeClass();
 
   [v3 setOnClientSide:1];
@@ -157,28 +157,28 @@
 - (void)_axCachedRootObject
 {
   v2 = [(WKAccessibilityWebPageObjectAccessibility *)self _accessibilityValueForKey:@"AXRootObjectCache"];
-  v3 = [v2 pointerValue];
+  pointerValue = [v2 pointerValue];
 
-  return v3;
+  return pointerValue;
 }
 
-- (void)_axSetCachedRootObject:(id)a3
+- (void)_axSetCachedRootObject:(id)object
 {
-  v4 = [MEMORY[0x29EDBA168] valueWithPointer:a3];
+  v4 = [MEMORY[0x29EDBA168] valueWithPointer:object];
   [(WKAccessibilityWebPageObjectAccessibility *)self _accessibilitySetRetainedValue:v4 forKey:@"AXRootObjectCache"];
 }
 
 - (void)_initializeRootIfNecessary
 {
   v7 = [(WKAccessibilityWebPageObjectAccessibility *)self safeValueForKey:@"accessibilityRootObjectWrapper"];
-  v3 = [v7 accessibilityContainer];
-  if (v3)
+  accessibilityContainer = [v7 accessibilityContainer];
+  if (accessibilityContainer)
   {
-    v4 = v3;
-    v5 = [(WKAccessibilityWebPageObjectAccessibility *)self _axCachedRootObject];
+    v4 = accessibilityContainer;
+    _axCachedRootObject = [(WKAccessibilityWebPageObjectAccessibility *)self _axCachedRootObject];
 
     v6 = v7;
-    if (v7 && v7 != v5)
+    if (v7 && v7 != _axCachedRootObject)
     {
       goto LABEL_4;
     }
@@ -216,7 +216,7 @@ LABEL_4:
   return v4;
 }
 
-- (id)accessibilityRemoteSubstituteChildren:(id)a3
+- (id)accessibilityRemoteSubstituteChildren:(id)children
 {
   v5[1] = *MEMORY[0x29EDCA608];
   v5[0] = self;
@@ -225,11 +225,11 @@ LABEL_4:
   return v3;
 }
 
-- (void)_axRemoteElementRegistered:(id)a3
+- (void)_axRemoteElementRegistered:(id)registered
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"element"];
+  registeredCopy = registered;
+  userInfo = [registeredCopy userInfo];
+  v6 = [userInfo objectForKey:@"element"];
 
   if (!v6)
   {
@@ -240,9 +240,9 @@ LABEL_4:
   v8 = __UIAccessibilitySafeClass();
 
   v9 = [(WKAccessibilityWebPageObjectAccessibility *)self _axUnarchivedTokenForData:v8];
-  v10 = [v6 uuid];
+  uuid = [v6 uuid];
   v11 = [v9 objectForKey:@"ax-uuid"];
-  v12 = [v10 isEqual:v11];
+  v12 = [uuid isEqual:v11];
 
   if (v12)
   {
@@ -260,8 +260,8 @@ LABEL_4:
 
 - (void)_axListenForRemoteElement
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 addObserver:self selector:sel__axRemoteElementRegistered_ name:@"ax_remote_element_registered" object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__axRemoteElementRegistered_ name:@"ax_remote_element_registered" object:0];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -271,21 +271,21 @@ LABEL_4:
   [(WKAccessibilityWebPageObjectAccessibility *)&v5 _accessibilityLoadAccessibilityInformation];
   _AXAddToElementCache();
   [(WKAccessibilityWebPageObjectAccessibility *)self _axListenForRemoteElement];
-  v3 = [(WKAccessibilityWebPageObjectAccessibility *)self remoteTokenData];
-  if (v3)
+  remoteTokenData = [(WKAccessibilityWebPageObjectAccessibility *)self remoteTokenData];
+  if (remoteTokenData)
   {
-    v4 = [(WKAccessibilityWebPageObjectAccessibility *)self _axUnarchivedTokenForData:v3];
+    v4 = [(WKAccessibilityWebPageObjectAccessibility *)self _axUnarchivedTokenForData:remoteTokenData];
     [(WKAccessibilityWebPageObjectAccessibility *)self _initializeRemoteElement:v4];
   }
 }
 
-- (void)setRemoteTokenData:(id)a3
+- (void)setRemoteTokenData:(id)data
 {
   v6.receiver = self;
   v6.super_class = WKAccessibilityWebPageObjectAccessibility;
-  v4 = a3;
-  [(WKAccessibilityWebPageObjectAccessibility *)&v6 setRemoteTokenData:v4];
-  v5 = [(WKAccessibilityWebPageObjectAccessibility *)self _axUnarchivedTokenForData:v4, v6.receiver, v6.super_class];
+  dataCopy = data;
+  [(WKAccessibilityWebPageObjectAccessibility *)&v6 setRemoteTokenData:dataCopy];
+  v5 = [(WKAccessibilityWebPageObjectAccessibility *)self _axUnarchivedTokenForData:dataCopy, v6.receiver, v6.super_class];
 
   [(WKAccessibilityWebPageObjectAccessibility *)self _initializeRemoteElement:v5];
 }
@@ -310,16 +310,16 @@ LABEL_4:
   return result;
 }
 
-- (id)_axUnarchivedTokenForData:(id)a3
+- (id)_axUnarchivedTokenForData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = MEMORY[0x29EDBA000];
   v5 = MEMORY[0x29EDB8E50];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v5 setWithObjects:{v6, v7, objc_opt_class(), 0}];
   v13 = 0;
-  v9 = [v4 unarchivedObjectOfClasses:v8 fromData:v3 error:&v13];
+  v9 = [v4 unarchivedObjectOfClasses:v8 fromData:dataCopy error:&v13];
   v10 = v13;
 
   if (v10)
@@ -327,7 +327,7 @@ LABEL_4:
     v11 = AXLogAppAccessibility();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(WKAccessibilityWebPageObjectAccessibility *)v10 _axUnarchivedTokenForData:v3, v11];
+      [(WKAccessibilityWebPageObjectAccessibility *)v10 _axUnarchivedTokenForData:dataCopy, v11];
     }
   }
 

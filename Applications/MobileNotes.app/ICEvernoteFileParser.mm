@@ -1,14 +1,14 @@
 @interface ICEvernoteFileParser
-- (BOOL)canHandleFileURL:(id)a3;
+- (BOOL)canHandleFileURL:(id)l;
 - (ICEvernoteFileParser)init;
 - (NSArray)allowedContentTypes;
-- (id)getTypeIdentifierForFileURL:(id)a3;
-- (void)addAttachmentsInContent:(id)a3 forEvernoteResource:(id)a4 forNote:(id)a5;
-- (void)addTitleInContent:(id)a3 forEvernoteNote:(id)a4;
-- (void)addTodoListsIfNeededInContent:(id)a3 forEvernoteNote:(id)a4;
+- (id)getTypeIdentifierForFileURL:(id)l;
+- (void)addAttachmentsInContent:(id)content forEvernoteResource:(id)resource forNote:(id)note;
+- (void)addTitleInContent:(id)content forEvernoteNote:(id)note;
+- (void)addTodoListsIfNeededInContent:(id)content forEvernoteNote:(id)note;
 - (void)cancelParsing;
-- (void)parseFileURL:(id)a3 newNoteBlock:(id)a4 updatedNoteBlock:(id)a5 errorBlock:(id)a6 completionBlock:(id)a7;
-- (void)totalNotesFoundAtFileURL:(id)a3 completionBlock:(id)a4;
+- (void)parseFileURL:(id)l newNoteBlock:(id)block updatedNoteBlock:(id)noteBlock errorBlock:(id)errorBlock completionBlock:(id)completionBlock;
+- (void)totalNotesFoundAtFileURL:(id)l completionBlock:(id)block;
 @end
 
 @implementation ICEvernoteFileParser
@@ -33,10 +33,10 @@
   return v2;
 }
 
-- (void)totalNotesFoundAtFileURL:(id)a3 completionBlock:(id)a4
+- (void)totalNotesFoundAtFileURL:(id)l completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  blockCopy = block;
   if ([(ICEvernoteFileParser *)self isParsing])
   {
     v8 = os_log_create("com.apple.notes", "Import");
@@ -45,33 +45,33 @@
       sub_1004DDA60();
     }
 
-    if (v7)
+    if (blockCopy)
     {
-      v7[2](v7, 0);
+      blockCopy[2](blockCopy, 0);
     }
   }
 
   else
   {
     [(ICEvernoteFileParser *)self setIsParsing:1];
-    v9 = [(ICEvernoteFileParser *)self notesImporterClient];
+    notesImporterClient = [(ICEvernoteFileParser *)self notesImporterClient];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000BF670;
     v10[3] = &unk_100648638;
     v10[4] = self;
-    v11 = v7;
-    [v9 countEvernoteNotesFromFileURL:v6 completionBlock:v10];
+    v11 = blockCopy;
+    [notesImporterClient countEvernoteNotesFromFileURL:lCopy completionBlock:v10];
   }
 }
 
-- (void)parseFileURL:(id)a3 newNoteBlock:(id)a4 updatedNoteBlock:(id)a5 errorBlock:(id)a6 completionBlock:(id)a7
+- (void)parseFileURL:(id)l newNoteBlock:(id)block updatedNoteBlock:(id)noteBlock errorBlock:(id)errorBlock completionBlock:(id)completionBlock
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  blockCopy = block;
+  noteBlockCopy = noteBlock;
+  errorBlockCopy = errorBlock;
+  completionBlockCopy = completionBlock;
   if ([(ICEvernoteFileParser *)self isParsing])
   {
     v17 = os_log_create("com.apple.notes", "Import");
@@ -80,9 +80,9 @@
       sub_1004DDA60();
     }
 
-    if (v16)
+    if (completionBlockCopy)
     {
-      v16[2](v16);
+      completionBlockCopy[2](completionBlockCopy);
     }
   }
 
@@ -90,18 +90,18 @@
   {
     [(ICEvernoteFileParser *)self setIsParsing:1];
     objc_initWeak(&location, self);
-    v18 = [(ICEvernoteFileParser *)self notesImporterClient];
+    notesImporterClient = [(ICEvernoteFileParser *)self notesImporterClient];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000BF8C0;
     v19[3] = &unk_1006486D8;
     objc_copyWeak(&v24, &location);
     v19[4] = self;
-    v20 = v15;
-    v21 = v13;
-    v22 = v14;
-    v23 = v16;
-    [v18 archiveEvernoteNotesFromFileURL:v12 completionBlock:v19];
+    v20 = errorBlockCopy;
+    v21 = blockCopy;
+    v22 = noteBlockCopy;
+    v23 = completionBlockCopy;
+    [notesImporterClient archiveEvernoteNotesFromFileURL:lCopy completionBlock:v19];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&location);
@@ -117,9 +117,9 @@
   return v3;
 }
 
-- (BOOL)canHandleFileURL:(id)a3
+- (BOOL)canHandleFileURL:(id)l
 {
-  v3 = [(ICEvernoteFileParser *)self getTypeIdentifierForFileURL:a3];
+  v3 = [(ICEvernoteFileParser *)self getTypeIdentifierForFileURL:l];
   if (v3)
   {
     v4 = [UTType importedTypeWithIdentifier:v3];
@@ -153,35 +153,35 @@
   }
 }
 
-- (void)addAttachmentsInContent:(id)a3 forEvernoteResource:(id)a4 forNote:(id)a5
+- (void)addAttachmentsInContent:(id)content forEvernoteResource:(id)resource forNote:(id)note
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  contentCopy = content;
+  resourceCopy = resource;
+  noteCopy = note;
+  if (contentCopy)
   {
-    if (v8)
+    if (resourceCopy)
     {
-      v10 = [v8 md5Hash];
+      md5Hash = [resourceCopy md5Hash];
 
-      if (v10)
+      if (md5Hash)
       {
-        v11 = [v8 md5Hash];
-        v38 = [NSString stringWithFormat:@"{{NotesAttachment:%@}}", v11];
+        md5Hash2 = [resourceCopy md5Hash];
+        v38 = [NSString stringWithFormat:@"{{NotesAttachment:%@}}", md5Hash2];
 
-        v12 = [v7 string];
-        v13 = [v12 length];
+        string = [contentCopy string];
+        v13 = [string length];
 
         if (v13)
         {
           v14 = 0;
           do
           {
-            v15 = [v7 string];
-            v16 = ([v15 length] - v14);
+            string2 = [contentCopy string];
+            v16 = ([string2 length] - v14);
 
-            v17 = [v7 string];
-            v18 = [v17 rangeOfString:v38 options:2 range:{v14, v16}];
+            string3 = [contentCopy string];
+            v18 = [string3 rangeOfString:v38 options:2 range:{v14, v16}];
             v20 = v19;
 
             if (v18 == 0x7FFFFFFFFFFFFFFFLL)
@@ -189,20 +189,20 @@
               break;
             }
 
-            v21 = [v8 mime];
-            v22 = [UTType typeWithMIMEType:v21];
-            v23 = [v22 identifier];
+            mime = [resourceCopy mime];
+            v22 = [UTType typeWithMIMEType:mime];
+            identifier = [v22 identifier];
 
-            v24 = [v8 fileName];
-            v25 = v24;
-            if (v24)
+            fileName = [resourceCopy fileName];
+            v25 = fileName;
+            if (fileName)
             {
-              v26 = v24;
+              v26 = fileName;
             }
 
             else
             {
-              v26 = [ICAttachment filenameFromUTI:v23];
+              v26 = [ICAttachment filenameFromUTI:identifier];
             }
 
             v27 = v26;
@@ -213,19 +213,19 @@
             v50 = sub_1000C0204;
             v51 = sub_1000C0214;
             v52 = 0;
-            v28 = [v9 managedObjectContext];
+            managedObjectContext = [noteCopy managedObjectContext];
             v41[0] = _NSConcreteStackBlock;
             v41[1] = 3221225472;
             v41[2] = sub_1000C0CF0;
             v41[3] = &unk_100648700;
-            v42 = v9;
-            v29 = v23;
+            v42 = noteCopy;
+            v29 = identifier;
             v43 = v29;
-            v44 = v8;
+            v44 = resourceCopy;
             v30 = v27;
             v45 = v30;
             v46 = &v47;
-            [v28 performBlockAndWait:v41];
+            [managedObjectContext performBlockAndWait:v41];
 
             if (v48[5])
             {
@@ -236,7 +236,7 @@
               v33 = [[NSAttributedString alloc] initWithString:@"\n"];
               [v32 appendAttributedString:v33];
 
-              [v7 replaceCharactersInRange:v18 withAttributedString:{v20, v32}];
+              [contentCopy replaceCharactersInRange:v18 withAttributedString:{v20, v32}];
               v34 = [v32 length];
             }
 
@@ -248,15 +248,15 @@
                 sub_1004DDB08(&buf, v40, v35);
               }
 
-              [v7 replaceCharactersInRange:v18 withString:{v20, @"\n\n"}];
+              [contentCopy replaceCharactersInRange:v18 withString:{v20, @"\n\n"}];
               v34 = [@"\n\n" length];
             }
 
             v14 = &v18[v34];
 
             _Block_object_dispose(&v47, 8);
-            v36 = [v7 string];
-            v37 = [v36 length];
+            string4 = [contentCopy string];
+            v37 = [string4 length];
           }
 
           while (v14 < v37);
@@ -271,23 +271,23 @@
   }
 }
 
-- (void)addTodoListsIfNeededInContent:(id)a3 forEvernoteNote:(id)a4
+- (void)addTodoListsIfNeededInContent:(id)content forEvernoteNote:(id)note
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  contentCopy = content;
+  noteCopy = note;
+  v7 = noteCopy;
+  if (contentCopy)
   {
-    v29 = v6;
+    v29 = noteCopy;
     v30 = 0;
     v8 = [NSRegularExpression regularExpressionWithPattern:@"\\{\\{NotesCheckbox\\:(.+?)\\}\\}" options:1 error:&v30];
     v28 = v30;
     v9 = &ICTagSelectionMenuReplacementSubstring_ptr;
     while (1)
     {
-      v10 = [v5 string];
-      v11 = [v5 string];
-      v12 = [v8 rangeOfFirstMatchInString:v10 options:1 range:{0, objc_msgSend(v11, "length")}];
+      string = [contentCopy string];
+      string2 = [contentCopy string];
+      v12 = [v8 rangeOfFirstMatchInString:string options:1 range:{0, objc_msgSend(string2, "length")}];
       v14 = v13;
 
       if (v12 == 0x7FFFFFFFFFFFFFFFLL && !v14)
@@ -295,11 +295,11 @@
         break;
       }
 
-      v15 = [v5 string];
-      v16 = [v15 substringWithRange:{v12 + 16, v14 - 18}];
+      string3 = [contentCopy string];
+      v16 = [string3 substringWithRange:{v12 + 16, v14 - 18}];
 
       v17 = [objc_alloc(v9[269]) initWithString:&stru_100661CF0];
-      [v5 replaceCharactersInRange:v12 withAttributedString:{v14, v17}];
+      [contentCopy replaceCharactersInRange:v12 withAttributedString:{v14, v17}];
 
       v18 = [ICTTParagraphStyle paragraphStyleNamed:103];
       if ([v16 BOOLValue])
@@ -316,11 +316,11 @@
         v18 = v23;
       }
 
-      v24 = [v5 string];
-      v25 = [v24 paragraphRangeForRange:{v12, 0}];
+      string4 = [contentCopy string];
+      v25 = [string4 paragraphRangeForRange:{v12, 0}];
       v27 = v26;
 
-      [v5 addAttribute:ICTTAttributeNameParagraphStyle value:v18 range:{v25, v27}];
+      [contentCopy addAttribute:ICTTAttributeNameParagraphStyle value:v18 range:{v25, v27}];
     }
 
     v7 = v29;
@@ -332,21 +332,21 @@
   }
 }
 
-- (void)addTitleInContent:(id)a3 forEvernoteNote:(id)a4
+- (void)addTitleInContent:(id)content forEvernoteNote:(id)note
 {
-  v5 = a4;
-  v6 = a3;
+  noteCopy = note;
+  contentCopy = content;
   v7 = [[NSAttributedString alloc] initWithString:@"\n"];
-  [v6 insertAttributedString:v7 atIndex:0];
+  [contentCopy insertAttributedString:v7 atIndex:0];
 
   v8 = [ICTTParagraphStyle paragraphStyleNamed:0];
   v9 = [NSAttributedString alloc];
-  v10 = [v5 title];
+  title = [noteCopy title];
 
   v11 = &stru_100661CF0;
-  if (v10)
+  if (title)
   {
-    v11 = v10;
+    v11 = title;
   }
 
   v12 = [NSString localizedStringWithFormat:@"%@\n", v11];
@@ -355,15 +355,15 @@
   v13 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
   v14 = [v9 initWithString:v12 attributes:v13];
 
-  [v6 insertAttributedString:v14 atIndex:0];
+  [contentCopy insertAttributedString:v14 atIndex:0];
 }
 
-- (id)getTypeIdentifierForFileURL:(id)a3
+- (id)getTypeIdentifierForFileURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v10 = 0;
   v9 = 0;
-  v4 = [v3 getResourceValue:&v10 forKey:NSURLTypeIdentifierKey error:&v9];
+  v4 = [lCopy getResourceValue:&v10 forKey:NSURLTypeIdentifierKey error:&v9];
   v5 = v10;
   v6 = v9;
   if ((v4 & 1) == 0)
@@ -371,7 +371,7 @@
     v7 = os_log_create("com.apple.notes", "Import");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_1004DDB48(v6, v3, v7);
+      sub_1004DDB48(v6, lCopy, v7);
     }
   }
 

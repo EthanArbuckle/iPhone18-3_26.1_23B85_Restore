@@ -1,5 +1,5 @@
 @interface AVOutputDeviceViewAreaInfo
-- (AVOutputDeviceViewAreaInfo)initWithViewArea:(id)a3 transitionControl:(BOOL)a4 supportsFocusTransfer:(BOOL)a5 statusBarEdge:(id)a6 safeArea:(id)a7;
+- (AVOutputDeviceViewAreaInfo)initWithViewArea:(id)area transitionControl:(BOOL)control supportsFocusTransfer:(BOOL)transfer statusBarEdge:(id)edge safeArea:(id)safeArea;
 - (void)dealloc;
 @end
 
@@ -12,18 +12,18 @@
   [(AVOutputDeviceViewAreaInfo *)&v3 dealloc];
 }
 
-- (AVOutputDeviceViewAreaInfo)initWithViewArea:(id)a3 transitionControl:(BOOL)a4 supportsFocusTransfer:(BOOL)a5 statusBarEdge:(id)a6 safeArea:(id)a7
+- (AVOutputDeviceViewAreaInfo)initWithViewArea:(id)area transitionControl:(BOOL)control supportsFocusTransfer:(BOOL)transfer statusBarEdge:(id)edge safeArea:(id)safeArea
 {
   v15.receiver = self;
   v15.super_class = AVOutputDeviceViewAreaInfo;
   v12 = [(AVOutputDeviceViewAreaInfo *)&v15 init];
   if (v12)
   {
-    v12->_viewArea = a3;
-    v12->_transitionControl = a4;
-    v12->_supportsFocusTransfer = a5;
-    v12->_statusBarEdge = a6;
-    v12->_safeArea = a7;
+    v12->_viewArea = area;
+    v12->_transitionControl = control;
+    v12->_supportsFocusTransfer = transfer;
+    v12->_statusBarEdge = edge;
+    v12->_safeArea = safeArea;
     v13 = v12;
   }
 

@@ -1,6 +1,6 @@
 @interface StreamingMetadataProcessor
 - (_TtC6Tamale26StreamingMetadataProcessor)init;
-- (void)captureOutput:(id)a3 didOutputMetadataObjectCollections:(id)a4 fromConnection:(id)a5;
+- (void)captureOutput:(id)output didOutputMetadataObjectCollections:(id)collections fromConnection:(id)connection;
 @end
 
 @implementation StreamingMetadataProcessor
@@ -32,19 +32,19 @@
   return [(StreamingMetadataProcessor *)&v18 init];
 }
 
-- (void)captureOutput:(id)a3 didOutputMetadataObjectCollections:(id)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputMetadataObjectCollections:(id)collections fromConnection:(id)connection
 {
-  v6 = a4;
-  if (a4)
+  collectionsCopy = collections;
+  if (collections)
   {
     sub_10005BBC4(0, &qword_1001D7FF0);
-    v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    collectionsCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
-  sub_10005AC7C(v6);
+  outputCopy = output;
+  connectionCopy = connection;
+  selfCopy = self;
+  sub_10005AC7C(collectionsCopy);
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface ACCHWComponentAuthService
-- (BOOL)_getForVeridianFDRData:(id)a3 intermediateCert:(id *)a4 leafCert:(id *)a5;
-- (BOOL)_verifyDeviceIDSN:(unsigned int)a3;
-- (BOOL)_verifyDeviceInfo:(unsigned int)a3;
-- (BOOL)_verifyModuleFDR:(id)a3 forModuleType:(int)a4;
-- (int)_signChallenge:(id)a3;
-- (int)_verifyBatteryMatch:(id)a3 outputBatteryCode:(unsigned __int16 *)a4;
-- (int)_verifyCertificate:(id)a3;
-- (int)_verifyModuleCertificate:(id)a3 forModuleType:(int)a4;
-- (int)_verifySignature:(id)a3;
-- (unsigned)_findModuleAuthService:(int)a3 withAuthFlags:(unsigned int *)a4;
-- (void)_authenticateModuleWithChallenge:(id)a3 completionHandler:(id)a4 moduleType:(int)a5 updateRegistry:(BOOL)a6 updateUIProperty:(BOOL)a7 logToAnalytics:(BOOL)a8;
-- (void)_logToAnalytics:(int)a3 authError:(int)a4 fdrValidationStatus:(int)a5 authDurationInMS:(unint64_t)a6;
+- (BOOL)_getForVeridianFDRData:(id)data intermediateCert:(id *)cert leafCert:(id *)leafCert;
+- (BOOL)_verifyDeviceIDSN:(unsigned int)n;
+- (BOOL)_verifyDeviceInfo:(unsigned int)info;
+- (BOOL)_verifyModuleFDR:(id)r forModuleType:(int)type;
+- (int)_signChallenge:(id)challenge;
+- (int)_verifyBatteryMatch:(id)match outputBatteryCode:(unsigned __int16 *)code;
+- (int)_verifyCertificate:(id)certificate;
+- (int)_verifyModuleCertificate:(id)certificate forModuleType:(int)type;
+- (int)_verifySignature:(id)signature;
+- (unsigned)_findModuleAuthService:(int)service withAuthFlags:(unsigned int *)flags;
+- (void)_authenticateModuleWithChallenge:(id)challenge completionHandler:(id)handler moduleType:(int)type updateRegistry:(BOOL)registry updateUIProperty:(BOOL)property logToAnalytics:(BOOL)analytics;
+- (void)_logToAnalytics:(int)analytics authError:(int)error fdrValidationStatus:(int)status authDurationInMS:(unint64_t)s;
 - (void)_notifyComponentAuthFailure;
-- (void)authenticateBatteryWithChallenge:(id)a3 completionHandler:(id)a4;
-- (void)authenticateLASWithChallenge:(id)a3 completionHandler:(id)a4 updateRegistry:(BOOL)a5;
-- (void)authenticateTouchControllerWithChallenge:(id)a3 completionHandler:(id)a4 updateRegistry:(BOOL)a5;
-- (void)authenticateVeridianWithChallenge:(id)a3 completionHandler:(id)a4;
-- (void)authenticateVeridianWithChallenge:(id)a3 completionHandler:(id)a4 updateRegistry:(BOOL)a5 updateUIProperty:(BOOL)a6 logToAnalytics:(BOOL)a7;
-- (void)signVeridianChallenge:(id)a3 completionHandler:(id)a4;
-- (void)verifyBatteryMatch:(id)a3 completionHandler:(id)a4;
+- (void)authenticateBatteryWithChallenge:(id)challenge completionHandler:(id)handler;
+- (void)authenticateLASWithChallenge:(id)challenge completionHandler:(id)handler updateRegistry:(BOOL)registry;
+- (void)authenticateTouchControllerWithChallenge:(id)challenge completionHandler:(id)handler updateRegistry:(BOOL)registry;
+- (void)authenticateVeridianWithChallenge:(id)challenge completionHandler:(id)handler;
+- (void)authenticateVeridianWithChallenge:(id)challenge completionHandler:(id)handler updateRegistry:(BOOL)registry updateUIProperty:(BOOL)property logToAnalytics:(BOOL)analytics;
+- (void)signVeridianChallenge:(id)challenge completionHandler:(id)handler;
+- (void)verifyBatteryMatch:(id)match completionHandler:(id)handler;
 @end
 
 @implementation ACCHWComponentAuthService
 
-- (void)authenticateBatteryWithChallenge:(id)a3 completionHandler:(id)a4
+- (void)authenticateBatteryWithChallenge:(id)challenge completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if (authenticateBatteryWithChallenge_completionHandler__onceToken != -1)
   {
     [ACCHWComponentAuthService authenticateBatteryWithChallenge:completionHandler:];
@@ -38,10 +38,10 @@
   block[2] = __80__ACCHWComponentAuthService_authenticateBatteryWithChallenge_completionHandler___block_invoke_2;
   block[3] = &unk_100020D30;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = challengeCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = challengeCopy;
   dispatch_async(v8, block);
 }
 
@@ -56,10 +56,10 @@ void __80__ACCHWComponentAuthService_authenticateBatteryWithChallenge_completion
   dispatch_set_target_queue(v3, v4);
 }
 
-- (void)authenticateTouchControllerWithChallenge:(id)a3 completionHandler:(id)a4 updateRegistry:(BOOL)a5
+- (void)authenticateTouchControllerWithChallenge:(id)challenge completionHandler:(id)handler updateRegistry:(BOOL)registry
 {
-  v8 = a3;
-  v9 = a4;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if (authenticateTouchControllerWithChallenge_completionHandler_updateRegistry__onceToken != -1)
   {
     [ACCHWComponentAuthService authenticateTouchControllerWithChallenge:completionHandler:updateRegistry:];
@@ -71,11 +71,11 @@ void __80__ACCHWComponentAuthService_authenticateBatteryWithChallenge_completion
   v13[2] = __103__ACCHWComponentAuthService_authenticateTouchControllerWithChallenge_completionHandler_updateRegistry___block_invoke_2;
   v13[3] = &unk_100020D78;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = challengeCopy;
+  v15 = handlerCopy;
+  registryCopy = registry;
+  v11 = handlerCopy;
+  v12 = challengeCopy;
   dispatch_async(v10, v13);
 }
 
@@ -90,10 +90,10 @@ void __103__ACCHWComponentAuthService_authenticateTouchControllerWithChallenge_c
   dispatch_set_target_queue(v3, v4);
 }
 
-- (void)authenticateVeridianWithChallenge:(id)a3 completionHandler:(id)a4
+- (void)authenticateVeridianWithChallenge:(id)challenge completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if (authenticateVeridianWithChallenge_completionHandler__onceToken != -1)
   {
     [ACCHWComponentAuthService authenticateVeridianWithChallenge:completionHandler:];
@@ -105,10 +105,10 @@ void __103__ACCHWComponentAuthService_authenticateTouchControllerWithChallenge_c
   block[2] = __81__ACCHWComponentAuthService_authenticateVeridianWithChallenge_completionHandler___block_invoke_2;
   block[3] = &unk_100020D30;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = challengeCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = challengeCopy;
   dispatch_async(v8, block);
 }
 
@@ -123,10 +123,10 @@ void __81__ACCHWComponentAuthService_authenticateVeridianWithChallenge_completio
   dispatch_set_target_queue(v3, v4);
 }
 
-- (void)authenticateVeridianWithChallenge:(id)a3 completionHandler:(id)a4 updateRegistry:(BOOL)a5 updateUIProperty:(BOOL)a6 logToAnalytics:(BOOL)a7
+- (void)authenticateVeridianWithChallenge:(id)challenge completionHandler:(id)handler updateRegistry:(BOOL)registry updateUIProperty:(BOOL)property logToAnalytics:(BOOL)analytics
 {
-  v12 = a3;
-  v13 = a4;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if (authenticateVeridianWithChallenge_completionHandler_updateRegistry_updateUIProperty_logToAnalytics__onceToken != -1)
   {
     [ACCHWComponentAuthService authenticateVeridianWithChallenge:completionHandler:updateRegistry:updateUIProperty:logToAnalytics:];
@@ -138,13 +138,13 @@ void __81__ACCHWComponentAuthService_authenticateVeridianWithChallenge_completio
   v17[2] = __128__ACCHWComponentAuthService_authenticateVeridianWithChallenge_completionHandler_updateRegistry_updateUIProperty_logToAnalytics___block_invoke_2;
   v17[3] = &unk_100020DE0;
   v17[4] = self;
-  v18 = v12;
-  v19 = v13;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v15 = v13;
-  v16 = v12;
+  v18 = challengeCopy;
+  v19 = handlerCopy;
+  registryCopy = registry;
+  propertyCopy = property;
+  analyticsCopy = analytics;
+  v15 = handlerCopy;
+  v16 = challengeCopy;
   dispatch_async(v14, v17);
 }
 
@@ -159,10 +159,10 @@ void __128__ACCHWComponentAuthService_authenticateVeridianWithChallenge_completi
   dispatch_set_target_queue(v3, v4);
 }
 
-- (void)authenticateLASWithChallenge:(id)a3 completionHandler:(id)a4 updateRegistry:(BOOL)a5
+- (void)authenticateLASWithChallenge:(id)challenge completionHandler:(id)handler updateRegistry:(BOOL)registry
 {
-  v8 = a3;
-  v9 = a4;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if (authenticateLASWithChallenge_completionHandler_updateRegistry__onceToken != -1)
   {
     [ACCHWComponentAuthService authenticateLASWithChallenge:completionHandler:updateRegistry:];
@@ -174,11 +174,11 @@ void __128__ACCHWComponentAuthService_authenticateVeridianWithChallenge_completi
   v13[2] = __91__ACCHWComponentAuthService_authenticateLASWithChallenge_completionHandler_updateRegistry___block_invoke_2;
   v13[3] = &unk_100020D78;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = challengeCopy;
+  v15 = handlerCopy;
+  registryCopy = registry;
+  v11 = handlerCopy;
+  v12 = challengeCopy;
   dispatch_async(v10, v13);
 }
 
@@ -193,13 +193,13 @@ void __91__ACCHWComponentAuthService_authenticateLASWithChallenge_completionHand
   dispatch_set_target_queue(v3, v4);
 }
 
-- (void)_authenticateModuleWithChallenge:(id)a3 completionHandler:(id)a4 moduleType:(int)a5 updateRegistry:(BOOL)a6 updateUIProperty:(BOOL)a7 logToAnalytics:(BOOL)a8
+- (void)_authenticateModuleWithChallenge:(id)challenge completionHandler:(id)handler moduleType:(int)type updateRegistry:(BOOL)registry updateUIProperty:(BOOL)property logToAnalytics:(BOOL)analytics
 {
-  v8 = a8;
-  v168 = a7;
-  v170 = a6;
-  v11 = a3;
-  v12 = a4;
+  analyticsCopy = analytics;
+  propertyCopy = property;
+  registryCopy = registry;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   init_logging();
   v13 = objc_alloc_init(ACCHWComponentAuthServiceParams);
   v181 = -1431655766;
@@ -211,16 +211,16 @@ void __91__ACCHWComponentAuthService_authenticateLASWithChallenge_completionHand
   v177[1] = 3221225472;
   v177[2] = __138__ACCHWComponentAuthService__authenticateModuleWithChallenge_completionHandler_moduleType_updateRegistry_updateUIProperty_logToAnalytics___block_invoke;
   v177[3] = &__block_descriptor_36_e5_v8__0l;
-  v174 = a5;
-  v178 = a5;
+  typeCopy = type;
+  typeCopy2 = type;
   v15 = v177;
   if (_authenticateModuleWithChallenge_completionHandler_moduleType_updateRegistry_updateUIProperty_logToAnalytics__onceToken != -1)
   {
     dispatch_once(&_authenticateModuleWithChallenge_completionHandler_moduleType_updateRegistry_updateUIProperty_logToAnalytics__onceToken, v15);
   }
 
-  v173 = v12;
-  v171 = v8;
+  v173 = handlerCopy;
+  v171 = analyticsCopy;
   v169 = CurrentUnixTimeMS;
   if (_authenticateModuleWithChallenge_completionHandler_moduleType_updateRegistry_updateUIProperty_logToAnalytics__disableAuth == 1)
   {
@@ -240,12 +240,12 @@ void __91__ACCHWComponentAuthService_authenticateLASWithChallenge_completionHand
       v18 = &_os_log_default;
     }
 
-    v172 = v11;
-    v19 = a5;
+    v172 = challengeCopy;
+    typeCopy4 = type;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      *&buf[4] = a5;
+      *&buf[4] = type;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "(moduleType=%d) skip component auth", buf, 8u);
     }
 
@@ -277,7 +277,7 @@ void __91__ACCHWComponentAuthService_authenticateLASWithChallenge_completionHand
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *&buf[4] = a5;
+    *&buf[4] = type;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "(moduleType=%d)", buf, 8u);
   }
 
@@ -301,7 +301,7 @@ void __91__ACCHWComponentAuthService_authenticateLASWithChallenge_completionHand
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109888;
-    *&buf[4] = a5;
+    *&buf[4] = type;
     *&buf[8] = 1024;
     *&buf[10] = 389;
     *&buf[14] = 2048;
@@ -311,20 +311,20 @@ void __91__ACCHWComponentAuthService_authenticateLASWithChallenge_completionHand
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "(moduleType=%d) %d: %ld.%03llu", buf, 0x22u);
   }
 
-  [(ACCHWComponentAuthServiceParams *)v13 setModuleAuthService:[(ACCHWComponentAuthService *)self _findModuleAuthService:a5 withAuthFlags:&v181]];
+  [(ACCHWComponentAuthServiceParams *)v13 setModuleAuthService:[(ACCHWComponentAuthService *)self _findModuleAuthService:type withAuthFlags:&v181]];
   if (![(ACCHWComponentAuthServiceParams *)v13 moduleAuthService])
   {
-    v172 = v11;
+    v172 = challengeCopy;
     [ACCHWComponentAuthService _authenticateModuleWithChallenge:completionHandler:moduleType:updateRegistry:updateUIProperty:logToAnalytics:];
     v21 = 0;
     v125 = 0;
     v20 = 22;
-    v19 = a5;
+    typeCopy4 = type;
     goto LABEL_290;
   }
 
-  v60 = a5 == 3;
-  v25 = a5 != 3;
+  v60 = type == 3;
+  v25 = type != 3;
   if (v60)
   {
     v26 = kCFAllocatorDefault;
@@ -336,8 +336,8 @@ void __91__ACCHWComponentAuthService_authenticateLASWithChallenge_completionHand
     if (!IORegistryEntryCreateCFProperty([(ACCHWComponentAuthServiceParams *)v13 moduleAuthService], @"iboot-auth", kCFAllocatorDefault, 0))
     {
       v25 = 0;
-      v19 = v174;
-      if (v11)
+      typeCopy4 = typeCopy;
+      if (challengeCopy)
       {
         goto LABEL_41;
       }
@@ -347,18 +347,18 @@ void __91__ACCHWComponentAuthService_authenticateLASWithChallenge_completionHand
   }
 
   v27 = IORegistryEntryCreateCFProperty([(ACCHWComponentAuthServiceParams *)v13 moduleAuthService], @"pretend_auth", v26, 0);
-  v19 = v174;
+  typeCopy4 = typeCopy;
   if (v27)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v28 = [v27 charValue];
-      if ((v28 - 3) >= 0xFEu)
+      charValue = [v27 charValue];
+      if ((charValue - 3) >= 0xFEu)
       {
-        v172 = v11;
-        v21 = v28 == 2;
-        if (v28 == 2)
+        v172 = challengeCopy;
+        v21 = charValue == 2;
+        if (charValue == 2)
         {
           v20 = 0;
         }
@@ -378,7 +378,7 @@ void __91__ACCHWComponentAuthService_authenticateLASWithChallenge_completionHand
     }
   }
 
-  if (!v11)
+  if (!challengeCopy)
   {
 LABEL_39:
     if (!v25)
@@ -388,13 +388,13 @@ LABEL_39:
       *buf = v29;
       *&buf[16] = v29;
       arc4random_buf(buf, 0x20uLL);
-      v11 = [NSData dataWithBytes:buf length:32];
+      challengeCopy = [NSData dataWithBytes:buf length:32];
     }
   }
 
 LABEL_41:
   v30 = !v25;
-  if (v11)
+  if (challengeCopy)
   {
     v30 = 1;
   }
@@ -407,8 +407,8 @@ LABEL_41:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v31;
-        [(ACCHWComponentAuthServiceParams *)v13 setChallenge:v11];
+        challengeCopy = v31;
+        [(ACCHWComponentAuthServiceParams *)v13 setChallenge:challengeCopy];
         v32 = IORegistryEntryCreateCFProperty([(ACCHWComponentAuthServiceParams *)v13 moduleAuthService], @"Signature", v26, 0);
         if (v32)
         {
@@ -431,7 +431,7 @@ LABEL_41:
           }
         }
 
-        v172 = v11;
+        v172 = challengeCopy;
         [ACCHWComponentAuthService _authenticateModuleWithChallenge:completionHandler:moduleType:updateRegistry:updateUIProperty:logToAnalytics:];
       }
 
@@ -441,7 +441,7 @@ LABEL_41:
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109120;
-          *&buf[4] = v19;
+          *&buf[4] = typeCopy4;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "(moduleType=%d) Error: challenge==NULL", buf, 8u);
         }
 
@@ -458,11 +458,11 @@ LABEL_41:
     *buf = v34;
     *&buf[16] = v34;
     arc4random_buf(buf, 0x20uLL);
-    v11 = [NSData dataWithBytes:buf length:32];
+    challengeCopy = [NSData dataWithBytes:buf length:32];
 LABEL_52:
   }
 
-  [(ACCHWComponentAuthServiceParams *)v13 setChallenge:v11];
+  [(ACCHWComponentAuthServiceParams *)v13 setChallenge:challengeCopy];
   [(ACCHWComponentAuthServiceParams *)v13 setAuthFlags:v181];
   if (gLogObjects && gNumLogObjects >= 4)
   {
@@ -485,9 +485,9 @@ LABEL_52:
     [ACCHWComponentAuthService _authenticateModuleWithChallenge:v13 completionHandler:? moduleType:? updateRegistry:? updateUIProperty:? logToAnalytics:?];
   }
 
-  v172 = v11;
+  v172 = challengeCopy;
 
-  if (v19 != 2)
+  if (typeCopy4 != 2)
   {
     v66 = 0;
     *&v37 = 67109376;
@@ -529,7 +529,7 @@ LABEL_52:
       if (os_log_type_enabled(v71, OS_LOG_TYPE_DEBUG))
       {
         *buf = 67109632;
-        *&buf[4] = v19;
+        *&buf[4] = typeCopy4;
         *&buf[8] = 1024;
         *&buf[10] = v66 + 1;
         *&buf[14] = 1024;
@@ -563,7 +563,7 @@ LABEL_52:
       if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109888;
-        *&buf[4] = v19;
+        *&buf[4] = typeCopy4;
         *&buf[8] = 1024;
         *&buf[10] = 544;
         *&buf[14] = 2048;
@@ -600,7 +600,7 @@ LABEL_52:
         if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
         {
           *buf = 67109120;
-          *&buf[4] = v19;
+          *&buf[4] = typeCopy4;
           _os_log_error_impl(&_mh_execute_header, v81, OS_LOG_TYPE_ERROR, "(moduleType=%d) authError = eAuthDeviceInfoError after _verifyDeviceInfo", buf, 8u);
         }
 
@@ -634,7 +634,7 @@ LABEL_52:
       if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109888;
-        *&buf[4] = v19;
+        *&buf[4] = typeCopy4;
         *&buf[8] = 1024;
         *&buf[10] = 553;
         *&buf[14] = 2048;
@@ -671,7 +671,7 @@ LABEL_52:
         if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
         {
           *buf = 67109120;
-          *&buf[4] = v19;
+          *&buf[4] = typeCopy4;
           _os_log_error_impl(&_mh_execute_header, v81, OS_LOG_TYPE_ERROR, "(moduleType=%d) authError = eNoDeviceIDSNError after _verifyDeviceIDSN", buf, 8u);
         }
 
@@ -705,7 +705,7 @@ LABEL_52:
       if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109888;
-        *&buf[4] = v19;
+        *&buf[4] = typeCopy4;
         *&buf[8] = 1024;
         *&buf[10] = 562;
         *&buf[14] = 2048;
@@ -747,7 +747,7 @@ LABEL_52:
         }
 
         *buf = v167;
-        *&buf[4] = v19;
+        *&buf[4] = typeCopy4;
         *&buf[8] = 1024;
         *&buf[10] = v20;
         v98 = v81;
@@ -783,7 +783,7 @@ LABEL_52:
         if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109888;
-          *&buf[4] = v19;
+          *&buf[4] = typeCopy4;
           *&buf[8] = 1024;
           *&buf[10] = 571;
           *&buf[14] = 2048;
@@ -826,7 +826,7 @@ LABEL_52:
       if (os_log_type_enabled(v106, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109888;
-        *&buf[4] = v19;
+        *&buf[4] = typeCopy4;
         *&buf[8] = 1024;
         *&buf[10] = 580;
         *&buf[14] = 2048;
@@ -836,7 +836,7 @@ LABEL_52:
         _os_log_impl(&_mh_execute_header, v106, OS_LOG_TYPE_DEFAULT, "(moduleType=%d) %d: %ld.%03llu", buf, 0x22u);
       }
 
-      v20 = [(ACCHWComponentAuthService *)self _verifyModuleCertificate:v13 forModuleType:v19];
+      v20 = [(ACCHWComponentAuthService *)self _verifyModuleCertificate:v13 forModuleType:typeCopy4];
       if (!v20)
       {
 LABEL_228:
@@ -860,7 +860,7 @@ LABEL_228:
         if (os_log_type_enabled(v112, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109888;
-          *&buf[4] = v19;
+          *&buf[4] = typeCopy4;
           *&buf[8] = 1024;
           *&buf[10] = 593;
           *&buf[14] = 2048;
@@ -870,7 +870,7 @@ LABEL_228:
           _os_log_impl(&_mh_execute_header, v112, OS_LOG_TYPE_DEFAULT, "(moduleType=%d) %d: %ld.%03llu", buf, 0x22u);
         }
 
-        v21 = [(ACCHWComponentAuthService *)self _verifyModuleFDR:v13 forModuleType:v19];
+        v21 = [(ACCHWComponentAuthService *)self _verifyModuleFDR:v13 forModuleType:typeCopy4];
         goto LABEL_277;
       }
 
@@ -899,7 +899,7 @@ LABEL_228:
       if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
       {
         *buf = v167;
-        *&buf[4] = v19;
+        *&buf[4] = typeCopy4;
         *&buf[8] = 1024;
         *&buf[10] = v20;
         v98 = v81;
@@ -945,7 +945,7 @@ LABEL_227:
     }
 
     *buf = v167;
-    *&buf[4] = v19;
+    *&buf[4] = typeCopy4;
     *&buf[8] = 1024;
     *&buf[10] = v20;
     v98 = v81;
@@ -1132,7 +1132,7 @@ LABEL_227:
       v53 = &_os_log_default;
     }
 
-    v19 = v174;
+    typeCopy4 = typeCopy;
     if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109376;
@@ -1170,7 +1170,7 @@ LABEL_108:
         v64 = &_os_log_default;
       }
 
-      v19 = v174;
+      typeCopy4 = typeCopy;
       if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109376;
@@ -1189,7 +1189,7 @@ LABEL_108:
     }
   }
 
-  v19 = v174;
+  typeCopy4 = typeCopy;
 LABEL_238:
   clock_gettime(_CLOCK_REALTIME, &__tp);
   if (gLogObjects && gNumLogObjects >= 4)
@@ -1304,7 +1304,7 @@ LABEL_238:
   }
 
 LABEL_277:
-  if (v19 == 2)
+  if (typeCopy4 == 2)
   {
     clock_gettime(_CLOCK_REALTIME, &__tp);
     if (gLogObjects && gNumLogObjects >= 4)
@@ -1340,8 +1340,8 @@ LABEL_277:
     {
       *buf = 0;
       [(ACCHWComponentAuthServiceParams *)v13 setBatteryCode:0];
-      v124 = [(ACCHWComponentAuthServiceParams *)v13 certificate];
-      v20 = [(ACCHWComponentAuthService *)self _verifyBatteryMatch:v124 outputBatteryCode:buf];
+      certificate = [(ACCHWComponentAuthServiceParams *)v13 certificate];
+      v20 = [(ACCHWComponentAuthService *)self _verifyBatteryMatch:certificate outputBatteryCode:buf];
 
       if (*buf)
       {
@@ -1351,7 +1351,7 @@ LABEL_277:
   }
 
 LABEL_289:
-  v125 = v170;
+  v125 = registryCopy;
 LABEL_290:
   v126 = v20 == 0;
   if ([(ACCHWComponentAuthServiceParams *)v13 skipComms])
@@ -1396,20 +1396,20 @@ LABEL_290:
     if (os_log_type_enabled(v129, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      *&buf[4] = v19;
+      *&buf[4] = typeCopy4;
       _os_log_impl(&_mh_execute_header, v129, OS_LOG_TYPE_DEFAULT, "(moduleType=%d) updateRegistry", buf, 8u);
     }
 
     if (![(ACCHWComponentAuthServiceParams *)v13 moduleAuthService])
     {
-      [(ACCHWComponentAuthServiceParams *)v13 setModuleAuthService:[(ACCHWComponentAuthService *)self _findModuleAuthService:v19 withAuthFlags:&v181]];
+      [(ACCHWComponentAuthServiceParams *)v13 setModuleAuthService:[(ACCHWComponentAuthService *)self _findModuleAuthService:typeCopy4 withAuthFlags:&v181]];
     }
 
     if ([(ACCHWComponentAuthServiceParams *)v13 moduleAuthService])
     {
       connect = 0;
-      v131 = [(ACCHWComponentAuthServiceParams *)v13 moduleAuthService];
-      if (!IOServiceOpen(v131, mach_task_self_, 0, &connect))
+      moduleAuthService = [(ACCHWComponentAuthServiceParams *)v13 moduleAuthService];
+      if (!IOServiceOpen(moduleAuthService, mach_task_self_, 0, &connect))
       {
         if (gLogObjects && gNumLogObjects >= 4)
         {
@@ -1430,7 +1430,7 @@ LABEL_290:
         if (os_log_type_enabled(v132, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109120;
-          *&buf[4] = v19;
+          *&buf[4] = typeCopy4;
           _os_log_impl(&_mh_execute_header, v132, OS_LOG_TYPE_DEFAULT, "(moduleType=%d) updateRegistry: cpSetAuthStatus, cpSetTrustStatus", buf, 8u);
         }
 
@@ -1457,7 +1457,7 @@ LABEL_290:
           if (os_log_type_enabled(v136, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 67109376;
-            *&buf[4] = v19;
+            *&buf[4] = typeCopy4;
             *&buf[8] = 1024;
             *&buf[10] = v135;
             _os_log_impl(&_mh_execute_header, v136, OS_LOG_TYPE_DEFAULT, "(moduleType=%d) cpSetAuthStatus failed: 0x%x", buf, 0xEu);
@@ -1487,14 +1487,14 @@ LABEL_290:
           if (os_log_type_enabled(v140, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 67109376;
-            *&buf[4] = v19;
+            *&buf[4] = typeCopy4;
             *&buf[8] = 1024;
             *&buf[10] = v139;
             _os_log_impl(&_mh_execute_header, v140, OS_LOG_TYPE_DEFAULT, "(moduleType=%d) cpSetTrustStatus failed: 0x%x", buf, 0xEu);
           }
         }
 
-        if (v128 && v168)
+        if (v128 && propertyCopy)
         {
           v142 = cpSetTrustStatusForUI(connect, 1u);
           if (v142)
@@ -1519,7 +1519,7 @@ LABEL_290:
             if (os_log_type_enabled(v144, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 67109376;
-              *&buf[4] = v19;
+              *&buf[4] = typeCopy4;
               *&buf[8] = 1024;
               *&buf[10] = v143;
               _os_log_impl(&_mh_execute_header, v144, OS_LOG_TYPE_DEFAULT, "(moduleType=%d) cpSetTrustStatusForUI failed: 0x%x", buf, 0xEu);
@@ -1550,7 +1550,7 @@ LABEL_290:
           if (os_log_type_enabled(v148, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 67109376;
-            *&buf[4] = v19;
+            *&buf[4] = typeCopy4;
             *&buf[8] = 1024;
             *&buf[10] = v147;
             _os_log_impl(&_mh_execute_header, v148, OS_LOG_TYPE_DEFAULT, "(moduleType=%d) cpSetAuthError failed: 0x%x", buf, 0xEu);
@@ -1582,10 +1582,10 @@ LABEL_290:
 
   if (v126)
   {
-    v153 = [(ACCHWComponentAuthServiceParams *)v13 batteryCode];
-    if (v19 == 2)
+    batteryCode = [(ACCHWComponentAuthServiceParams *)v13 batteryCode];
+    if (typeCopy4 == 2)
     {
-      if (v153)
+      if (batteryCode)
       {
         if (![(ACCHWComponentAuthServiceParams *)v13 moduleAuthService])
         {
@@ -1595,8 +1595,8 @@ LABEL_290:
         if ([(ACCHWComponentAuthServiceParams *)v13 moduleAuthService])
         {
           connect = 0;
-          v154 = [(ACCHWComponentAuthServiceParams *)v13 moduleAuthService];
-          if (!IOServiceOpen(v154, mach_task_self_, 0, &connect))
+          moduleAuthService2 = [(ACCHWComponentAuthServiceParams *)v13 moduleAuthService];
+          if (!IOServiceOpen(moduleAuthService2, mach_task_self_, 0, &connect))
           {
             v155 = cpSetBatteryCode(connect, [(ACCHWComponentAuthServiceParams *)v13 batteryCode]);
             if (v155)
@@ -1648,7 +1648,7 @@ LABEL_290:
       v160 = 1;
     }
 
-    [(ACCHWComponentAuthService *)self _logToAnalytics:v19 authError:v20 fdrValidationStatus:v160 authDurationInMS:v159, v167];
+    [(ACCHWComponentAuthService *)self _logToAnalytics:typeCopy4 authError:v20 fdrValidationStatus:v160 authDurationInMS:v159, v167];
   }
 
   clock_gettime(_CLOCK_REALTIME, &__tp);
@@ -1671,7 +1671,7 @@ LABEL_290:
   if (os_log_type_enabled(v161, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109888;
-    *&buf[4] = v174;
+    *&buf[4] = typeCopy;
     *&buf[8] = 1024;
     *&buf[10] = 744;
     *&buf[14] = 2048;
@@ -1700,7 +1700,7 @@ LABEL_290:
   if (os_log_type_enabled(v163, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109888;
-    *&buf[4] = v174;
+    *&buf[4] = typeCopy;
     *&buf[8] = 1024;
     *&buf[10] = v126 & 1;
     *&buf[14] = 1024;
@@ -1710,16 +1710,16 @@ LABEL_290:
     _os_log_impl(&_mh_execute_header, v163, OS_LOG_TYPE_DEFAULT, "(moduleType=%d) Replying with authPassed = %d, fdrValid = %d, authError = %d", buf, 0x1Au);
   }
 
-  v165 = [(ACCHWComponentAuthServiceParams *)v13 certificate];
-  v166 = [(ACCHWComponentAuthServiceParams *)v13 signature];
-  (v173)[2](v173, v126 & 1, v165, v166, v21, v20);
+  certificate2 = [(ACCHWComponentAuthServiceParams *)v13 certificate];
+  signature = [(ACCHWComponentAuthServiceParams *)v13 signature];
+  (v173)[2](v173, v126 & 1, certificate2, signature, v21, v20);
 }
 
-- (unsigned)_findModuleAuthService:(int)a3 withAuthFlags:(unsigned int *)a4
+- (unsigned)_findModuleAuthService:(int)service withAuthFlags:(unsigned int *)flags
 {
   v6 = IOServiceMatching("AppleAuthCP");
-  v24 = a4;
-  if (!a4)
+  flagsCopy = flags;
+  if (!flags)
   {
     return 0;
   }
@@ -1760,7 +1760,7 @@ LABEL_290:
     {
       v13 = mach_error_string(v8);
       *buf = 67109378;
-      LODWORD(v28) = a3;
+      LODWORD(v28) = service;
       WORD2(v28) = 2080;
       *(&v28 + 6) = v13;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "(moduleType=%d) Could not find authcp services: %s\n", buf, 0x12u);
@@ -1827,7 +1827,7 @@ LABEL_39:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         *buf = 67109632;
-        LODWORD(v28) = a3;
+        LODWORD(v28) = service;
         WORD2(v28) = 1024;
         *(&v28 + 6) = v15;
         WORD5(v28) = 1024;
@@ -1835,9 +1835,9 @@ LABEL_39:
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "(moduleType=%d) authCP service %d tmpAuthFlags == 0x%x", buf, 0x14u);
       }
 
-      if (a3 > 1)
+      if (service > 1)
       {
-        if (a3 == 2)
+        if (service == 2)
         {
           if ((valuePtr & 0xFF000C) != 0x10008)
           {
@@ -1845,15 +1845,15 @@ LABEL_39:
           }
         }
 
-        else if (a3 != 3 || BYTE2(valuePtr) << 16 != 0x80000)
+        else if (service != 3 || BYTE2(valuePtr) << 16 != 0x80000)
         {
           goto LABEL_38;
         }
       }
 
-      else if (a3)
+      else if (service)
       {
-        if (a3 != 1 || BYTE2(valuePtr) << 16 != 196608)
+        if (service != 1 || BYTE2(valuePtr) << 16 != 196608)
         {
           goto LABEL_38;
         }
@@ -1865,7 +1865,7 @@ LABEL_39:
       }
 
       IOObjectRetain(v15);
-      *v24 = valuePtr;
+      *flagsCopy = valuePtr;
       v11 = v15;
     }
 
@@ -1880,11 +1880,11 @@ LABEL_46:
   return v11;
 }
 
-- (BOOL)_verifyDeviceIDSN:(unsigned int)a3
+- (BOOL)_verifyDeviceIDSN:(unsigned int)n
 {
   v9 = 0xAAAAAAAAAAAAAAAALL;
   v10 = 0xAAAAAAAAAAAAAAAALL;
-  DeviceIDSN = cpGetDeviceIDSN(a3, &v10, &v9);
+  DeviceIDSN = cpGetDeviceIDSN(n, &v10, &v9);
   if (DeviceIDSN)
   {
     if (gLogObjects)
@@ -1925,14 +1925,14 @@ LABEL_46:
   return DeviceIDSN == 0;
 }
 
-- (BOOL)_verifyDeviceInfo:(unsigned int)a3
+- (BOOL)_verifyDeviceInfo:(unsigned int)info
 {
   v13 = -86;
   v12 = -86;
   v11 = -86;
   v10 = -86;
   v9 = -1431655766;
-  DeviceInfo = cpGetDeviceInfo(a3, &v13, &v12, &v11, &v10, &v9);
+  DeviceInfo = cpGetDeviceInfo(info, &v13, &v12, &v11, &v10, &v9);
   if (DeviceInfo)
   {
     if (gLogObjects)
@@ -1973,10 +1973,10 @@ LABEL_46:
   return DeviceInfo == 0;
 }
 
-- (int)_verifyCertificate:(id)a3
+- (int)_verifyCertificate:(id)certificate
 {
-  v3 = a3;
-  if (([v3 authFlags] & 0xC) == 8)
+  certificateCopy = certificate;
+  if (([certificateCopy authFlags] & 0xC) == 8)
   {
     [ACCHWComponentAuthService _verifyCertificate:];
     v6 = 0;
@@ -1985,9 +1985,9 @@ LABEL_46:
     v4 = 0;
 LABEL_7:
     v11 = [v10 objectForKey:@"LeafCertData"];
-    [v3 setCertificate:v11];
+    [certificateCopy setCertificate:v11];
 
-    [v3 setCertificateInfo:v10];
+    [certificateCopy setCertificateInfo:v10];
     if (gLogObjects && gNumLogObjects >= 4)
     {
       v12 = *(gLogObjects + 24);
@@ -2006,14 +2006,14 @@ LABEL_7:
 
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [ACCHWComponentAuthService _verifyCertificate:v3];
+      [ACCHWComponentAuthService _verifyCertificate:certificateCopy];
     }
 
     v14 = 0;
     goto LABEL_16;
   }
 
-  v4 = cpCopyCertificate([v3 moduleAuthService]);
+  v4 = cpCopyCertificate([certificateCopy moduleAuthService]);
   if (!v4)
   {
     v16 = logObjectForModule();
@@ -2095,8 +2095,8 @@ LABEL_32:
 LABEL_36:
 
   connect = 0;
-  v17 = [v3 moduleAuthService];
-  if (!IOServiceOpen(v17, mach_task_self_, 0, &connect))
+  moduleAuthService = [certificateCopy moduleAuthService];
+  if (!IOServiceOpen(moduleAuthService, mach_task_self_, 0, &connect))
   {
     cpClearCertificate(connect);
     IOServiceClose(connect);
@@ -2111,9 +2111,9 @@ LABEL_16:
   return v14;
 }
 
-- (int)_verifySignature:(id)a3
+- (int)_verifySignature:(id)signature
 {
-  v3 = a3;
+  signatureCopy = signature;
   connect = -1431655766;
   __tp.tv_sec = 0xAAAAAAAAAAAAAAAALL;
   __tp.tv_nsec = 0xAAAAAAAAAAAAAAAALL;
@@ -2155,8 +2155,8 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "_verifySignature %d: %ld.%03llu", buf, 0x1Cu);
   }
 
-  v7 = [v3 moduleAuthService];
-  v8 = IOServiceOpen(v7, mach_task_self_, 0, &connect);
+  moduleAuthService = [signatureCopy moduleAuthService];
+  v8 = IOServiceOpen(moduleAuthService, mach_task_self_, 0, &connect);
   if (!v8)
   {
     v35 = 0xAAAAAAAAAAAAAAAALL;
@@ -2189,8 +2189,8 @@ LABEL_16:
     }
 
     v16 = connect;
-    v17 = [v3 challenge];
-    v18 = cpCreateSignature(v16, v17, &v35);
+    challenge = [signatureCopy challenge];
+    v18 = cpCreateSignature(v16, challenge, &v35);
 
     IOServiceClose(connect);
     if ((v18 & 0xE3FFBF00) == 0xE3FF8000)
@@ -2255,8 +2255,8 @@ LABEL_16:
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "_verifySignature %d: %ld.%03llu", buf, 0x1Cu);
         }
 
-        v29 = [v3 certificate];
-        v30 = [v3 challenge];
+        certificate = [signatureCopy certificate];
+        challenge2 = [signatureCopy challenge];
         v31 = MFAAVerifyNonceSignature();
 
         if (gLogObjects && gNumLogObjects >= 4)
@@ -2299,7 +2299,7 @@ LABEL_16:
         }
 
         v19 = v35;
-        [v3 setSignature:{v35, v35}];
+        [signatureCopy setSignature:{v35, v35}];
         goto LABEL_52;
       }
 
@@ -2371,12 +2371,12 @@ LABEL_53:
   return v14;
 }
 
-- (int)_signChallenge:(id)a3
+- (int)_signChallenge:(id)challenge
 {
-  v3 = a3;
+  challengeCopy = challenge;
   connect = -1431655766;
-  v4 = [v3 moduleAuthService];
-  v5 = IOServiceOpen(v4, mach_task_self_, 0, &connect);
+  moduleAuthService = [challengeCopy moduleAuthService];
+  v5 = IOServiceOpen(moduleAuthService, mach_task_self_, 0, &connect);
   if (v5)
   {
     v6 = v5;
@@ -2418,8 +2418,8 @@ LABEL_53:
   {
     v28 = 0;
     v9 = connect;
-    v10 = [v3 challenge];
-    v11 = cpCreateSignature(v9, v10, &v28);
+    challenge = [challengeCopy challenge];
+    v11 = cpCreateSignature(v9, challenge, &v28);
 
     IOServiceClose(connect);
     if ((v11 & 0xE3FFBF00) == 0xE3FF8000)
@@ -2490,10 +2490,10 @@ LABEL_53:
     else
     {
       v17 = v28;
-      [v3 setSignature:v28];
+      [challengeCopy setSignature:v28];
 
-      v18 = cpCopyDeviceNonce([v3 moduleAuthService]);
-      [v3 setDeviceNonce:v18];
+      v18 = cpCopyDeviceNonce([challengeCopy moduleAuthService]);
+      [challengeCopy setDeviceNonce:v18];
 
       if (gLogObjects && gNumLogObjects >= 4)
       {
@@ -2513,9 +2513,9 @@ LABEL_53:
 
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v3 signature];
+        signature = [challengeCopy signature];
         *buf = 138412290;
-        v31 = v23;
+        v31 = signature;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Battery signature = %@", buf, 0xCu);
       }
 
@@ -2537,9 +2537,9 @@ LABEL_53:
 
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v3 deviceNonce];
+        deviceNonce = [challengeCopy deviceNonce];
         *buf = 138412290;
-        v31 = v26;
+        v31 = deviceNonce;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Battery device nonce = %@", buf, 0xCu);
       }
 
@@ -2550,12 +2550,12 @@ LABEL_53:
   return v14;
 }
 
-- (int)_verifyModuleCertificate:(id)a3 forModuleType:(int)a4
+- (int)_verifyModuleCertificate:(id)certificate forModuleType:(int)type
 {
-  v5 = a3;
-  v6 = [v5 certificateInfo];
+  certificateCopy = certificate;
+  certificateInfo = [certificateCopy certificateInfo];
 
-  if (!v6)
+  if (!certificateInfo)
   {
     [ACCHWComponentAuthService _verifyModuleCertificate:forModuleType:];
 LABEL_63:
@@ -2563,11 +2563,11 @@ LABEL_63:
     goto LABEL_58;
   }
 
-  v7 = [v5 certificateInfo];
-  v8 = [MFAACertificateManager isMFi2_3CertInfo:v7];
+  certificateInfo2 = [certificateCopy certificateInfo];
+  v8 = [MFAACertificateManager isMFi2_3CertInfo:certificateInfo2];
 
-  v9 = [v5 certificateInfo];
-  v10 = [MFAACertificateManager isComponentCertInfo:v9];
+  certificateInfo3 = [certificateCopy certificateInfo];
+  v10 = [MFAACertificateManager isComponentCertInfo:certificateInfo3];
 
   if (gLogObjects && gNumLogObjects >= 4)
   {
@@ -2588,7 +2588,7 @@ LABEL_63:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v36 = 67109632;
-    v37 = a4;
+    typeCopy2 = type;
     v38 = 1024;
     v39 = v8;
     v40 = 1024;
@@ -2605,8 +2605,8 @@ LABEL_53:
       goto LABEL_54;
     }
 
-    v15 = [v5 certificateInfo];
-    v16 = [v15 objectForKey:@"ExtensionValue"];
+    certificateInfo4 = [certificateCopy certificateInfo];
+    v16 = [certificateInfo4 objectForKey:@"ExtensionValue"];
 
     if (!v16)
     {
@@ -2619,7 +2619,7 @@ LABEL_53:
       goto LABEL_60;
     }
 
-    switch(a4)
+    switch(type)
     {
       case 3:
         v20 = "Mac LAS";
@@ -2712,7 +2712,7 @@ LABEL_54:
     goto LABEL_56;
   }
 
-  v13 = [v5 certificate];
+  certificate = [certificateCopy certificate];
   v14 = MFAACreateCapsFromAuthCert();
 
   if (!v14)
@@ -2721,7 +2721,7 @@ LABEL_54:
     goto LABEL_63;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     if (MFAAIsAppleTouchControllerModule())
     {
@@ -2731,12 +2731,12 @@ LABEL_54:
     goto LABEL_54;
   }
 
-  if (a4)
+  if (type)
   {
     goto LABEL_54;
   }
 
-  if (([v5 authFlags] & 0xC) == 8)
+  if (([certificateCopy authFlags] & 0xC) == 8)
   {
     [ACCHWComponentAuthService _verifyModuleCertificate:forModuleType:];
     v25 = 0;
@@ -2768,7 +2768,7 @@ LABEL_29:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     v36 = 67109120;
-    v37 = a4;
+    typeCopy2 = type;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "(moduleType=%d) Success: validated cert caps", &v36, 8u);
   }
 
@@ -2786,20 +2786,20 @@ LABEL_58:
   return v25;
 }
 
-- (BOOL)_verifyModuleFDR:(id)a3 forModuleType:(int)a4
+- (BOOL)_verifyModuleFDR:(id)r forModuleType:(int)type
 {
-  v5 = a3;
+  rCopy = r;
   v49 = @"CopyAllowUnsealed";
   v50 = &__kCFBooleanTrue;
   v6 = 1;
   v7 = [NSDictionary dictionaryWithObjects:&v50 forKeys:&v49 count:1];
-  LOBYTE(v8) = 0;
+  LOBYTE(challenge) = 0;
   v9 = 0;
-  if (a4 <= 1)
+  if (type <= 1)
   {
-    if (a4)
+    if (type)
     {
-      if (a4 == 1)
+      if (type == 1)
       {
         goto LABEL_7;
       }
@@ -2823,19 +2823,19 @@ LABEL_10:
 
     if (v6)
     {
-      v10 = [v5 certificate];
-      if (v10)
+      certificate = [rCopy certificate];
+      if (certificate)
       {
-        v11 = v10;
-        v12 = [v5 certificateInfo];
+        v11 = certificate;
+        certificateInfo = [rCopy certificateInfo];
 
-        if (v12)
+        if (certificateInfo)
         {
-          v13 = [v5 certificateInfo];
-          v14 = [MFAACertificateManager isMFi2_3CertInfo:v13];
+          certificateInfo2 = [rCopy certificateInfo];
+          v14 = [MFAACertificateManager isMFi2_3CertInfo:certificateInfo2];
 
-          v15 = [v5 certificateInfo];
-          v16 = [MFAACertificateManager isComponentCertInfo:v15];
+          certificateInfo3 = [rCopy certificateInfo];
+          v16 = [MFAACertificateManager isComponentCertInfo:certificateInfo3];
 
           if (v14)
           {
@@ -2843,17 +2843,17 @@ LABEL_10:
             if (v17)
             {
               v18 = v17;
-              v19 = [v5 certificate];
-              if (([(__CFData *)v18 isEqualToData:v19]& 1) != 0)
+              certificate2 = [rCopy certificate];
+              if (([(__CFData *)v18 isEqualToData:certificate2]& 1) != 0)
               {
-                LODWORD(v8) = 1;
+                LODWORD(challenge) = 1;
               }
 
               else
               {
-                v41 = [v5 certificateInfo];
-                v42 = [v41 objectForKey:@"FullCertData"];
-                LODWORD(v8) = [(__CFData *)v18 isEqualToData:v42];
+                certificateInfo4 = [rCopy certificateInfo];
+                v42 = [certificateInfo4 objectForKey:@"FullCertData"];
+                LODWORD(challenge) = [(__CFData *)v18 isEqualToData:v42];
               }
 
               goto LABEL_50;
@@ -2870,7 +2870,7 @@ LABEL_10:
 
           if (!v16)
           {
-            LODWORD(v8) = 0;
+            LODWORD(challenge) = 0;
             goto LABEL_50;
           }
 
@@ -2879,12 +2879,12 @@ LABEL_10:
           if (!v31)
           {
             v39 = 0;
-            LODWORD(v8) = 0;
+            LODWORD(challenge) = 0;
 LABEL_39:
 
             if (!v39)
             {
-              LOBYTE(v8) = 0;
+              LOBYTE(challenge) = 0;
               goto LABEL_59;
             }
 
@@ -2908,9 +2908,9 @@ LABEL_50:
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 67109376;
-              v46 = a4;
+              typeCopy = type;
               v47 = 1024;
-              v48 = v8;
+              v48 = challenge;
               _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "(moduleType=%d) equal:%d", buf, 0xEu);
             }
 
@@ -2926,8 +2926,8 @@ LABEL_50:
             {
               v36 = v35;
               v37 = [v35 objectForKey:@"LeafCertData"];
-              v38 = [v5 certificate];
-              LODWORD(v8) = [v37 isEqualToData:v38];
+              certificate3 = [rCopy certificate];
+              LODWORD(challenge) = [v37 isEqualToData:certificate3];
 
               v39 = 1;
 LABEL_38:
@@ -2948,7 +2948,7 @@ LABEL_38:
           }
 
           v39 = 0;
-          LODWORD(v8) = 0;
+          LODWORD(challenge) = 0;
           goto LABEL_38;
         }
       }
@@ -2975,7 +2975,7 @@ LABEL_38:
       }
 
 LABEL_46:
-      LOBYTE(v8) = 0;
+      LOBYTE(challenge) = 0;
       goto LABEL_58;
     }
 
@@ -2985,23 +2985,23 @@ LABEL_46:
       goto LABEL_46;
     }
 
-    v8 = [v5 challenge];
+    challenge = [rCopy challenge];
 
-    if (!v8)
+    if (!challenge)
     {
       goto LABEL_58;
     }
 
-    v8 = [v5 signature];
+    challenge = [rCopy signature];
 
-    if (!v8)
+    if (!challenge)
     {
       goto LABEL_58;
     }
 
-    v8 = [v5 deviceNonce];
+    challenge = [rCopy deviceNonce];
 
-    if (!v8)
+    if (!challenge)
     {
       goto LABEL_58;
     }
@@ -3010,20 +3010,20 @@ LABEL_46:
     if (v21)
     {
       v22 = v21;
-      v8 = [v20 copyEvaluatedCertificateChainInfo:v21];
-      if (!v8)
+      challenge = [v20 copyEvaluatedCertificateChainInfo:v21];
+      if (!challenge)
       {
         [ACCHWComponentAuthService _verifyModuleCertificate:forModuleType:];
         goto LABEL_29;
       }
 
-      v23 = [v5 deviceNonce];
-      v24 = [v5 challenge];
-      v25 = [v20 createVeridianNonce:v23 withChallenge:v24];
+      deviceNonce = [rCopy deviceNonce];
+      challenge2 = [rCopy challenge];
+      v25 = [v20 createVeridianNonce:deviceNonce withChallenge:challenge2];
 
       if (v25)
       {
-        if (a4 == 2)
+        if (type == 2)
         {
           v26 = +[ACCUserDefaults sharedDefaults];
           v27 = [v26 BOOLForKey:@"SkipGaugeSignatureCheck"];
@@ -3034,29 +3034,29 @@ LABEL_46:
           }
         }
 
-        v28 = [v5 signature];
-        v29 = [v20 verifyNonceSignature:v8 nonce:v25 signature:v28];
+        signature = [rCopy signature];
+        v29 = [v20 verifyNonceSignature:challenge nonce:v25 signature:signature];
 
         if (v29)
         {
 LABEL_28:
-          v30 = [v8 objectForKey:@"LeafCertData"];
-          [v5 setCertificate:v30];
+          v30 = [challenge objectForKey:@"LeafCertData"];
+          [rCopy setCertificate:v30];
 
-          [v5 setCertificateInfo:v8];
-          LOBYTE(v8) = 1;
+          [rCopy setCertificateInfo:challenge];
+          LOBYTE(challenge) = 1;
 LABEL_29:
 
 LABEL_58:
           goto LABEL_59;
         }
 
-        [(ACCHWComponentAuthService *)a4 _verifyModuleFDR:v25 forModuleType:v8];
+        [(ACCHWComponentAuthService *)type _verifyModuleFDR:v25 forModuleType:challenge];
       }
 
       else
       {
-        [ACCHWComponentAuthService _verifyModuleFDR:a4 forModuleType:v8];
+        [ACCHWComponentAuthService _verifyModuleFDR:type forModuleType:challenge];
       }
     }
 
@@ -3069,17 +3069,17 @@ LABEL_58:
       }
     }
 
-    LOBYTE(v8) = 0;
+    LOBYTE(challenge) = 0;
     goto LABEL_29;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v6 = 0;
     goto LABEL_10;
   }
 
-  if (a4 == 3)
+  if (type == 3)
   {
 LABEL_7:
     v6 = 1;
@@ -3088,16 +3088,16 @@ LABEL_7:
 
 LABEL_59:
 
-  return v8 & 1;
+  return challenge & 1;
 }
 
-- (BOOL)_getForVeridianFDRData:(id)a3 intermediateCert:(id *)a4 leafCert:(id *)a5
+- (BOOL)_getForVeridianFDRData:(id)data intermediateCert:(id *)cert leafCert:(id *)leafCert
 {
-  v7 = a3;
+  dataCopy = data;
   memset(v14, 170, sizeof(v14));
-  v13[0] = [v7 bytes];
-  v13[1] = [v7 length];
-  if (DERDecodeItem(v13, v14) || v14[0] != 0x2000000000000010 || (v8 = v14[1] - v13[0] + v14[2], v8 > [v7 length]) || (+[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", v13[0], v8), *a4 = objc_claimAutoreleasedReturnValue(), v12[0] = objc_msgSend(v7, "bytes") + v8, v12[1] = objc_msgSend(v7, "length") - v8, DERDecodeItem(v12, v14)) || v14[0] != 0x2000000000000010 || (v9 = v14[1] - v12[0] + v14[2], v9 + v8 > objc_msgSend(v7, "length")))
+  v13[0] = [dataCopy bytes];
+  v13[1] = [dataCopy length];
+  if (DERDecodeItem(v13, v14) || v14[0] != 0x2000000000000010 || (v8 = v14[1] - v13[0] + v14[2], v8 > [dataCopy length]) || (+[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", v13[0], v8), *cert = objc_claimAutoreleasedReturnValue(), v12[0] = objc_msgSend(dataCopy, "bytes") + v8, v12[1] = objc_msgSend(dataCopy, "length") - v8, DERDecodeItem(v12, v14)) || v14[0] != 0x2000000000000010 || (v9 = v14[1] - v12[0] + v14[2], v9 + v8 > objc_msgSend(dataCopy, "length")))
   {
     NSLog(@"%s: error", "[ACCHWComponentAuthService _getForVeridianFDRData:intermediateCert:leafCert:]");
     v10 = 0;
@@ -3105,7 +3105,7 @@ LABEL_59:
 
   else
   {
-    *a5 = [NSData dataWithBytes:v12[0] length:v9];
+    *leafCert = [NSData dataWithBytes:v12[0] length:v9];
     v10 = 1;
   }
 
@@ -3150,11 +3150,11 @@ LABEL_59:
   notify_post("com.apple.accessories.hwComponent.isTrusted.failure");
 }
 
-- (int)_verifyBatteryMatch:(id)a3 outputBatteryCode:(unsigned __int16 *)a4
+- (int)_verifyBatteryMatch:(id)match outputBatteryCode:(unsigned __int16 *)code
 {
   v19.tv_sec = 0xAAAAAAAAAAAAAAAALL;
   v19.tv_nsec = 0xAAAAAAAAAAAAAAAALL;
-  v5 = a3;
+  matchCopy = match;
   clock_gettime(_CLOCK_REALTIME, &v19);
   if (gLogObjects)
   {
@@ -3193,7 +3193,7 @@ LABEL_59:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "_verifyBatteryMatch %d: %ld.%03llu", buf, 0x1Cu);
   }
 
-  v9 = SecCertificateCreateWithData(kCFAllocatorDefault, v5);
+  v9 = SecCertificateCreateWithData(kCFAllocatorDefault, matchCopy);
   v10 = SecCertificateCopyComponentAttributes();
   v11 = [v10 objectForKey:&off_100023688];
   v12 = [v10 objectForKey:&off_1000236A0];
@@ -3221,7 +3221,7 @@ LABEL_59:
       goto LABEL_29;
     }
 
-    v15 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
     if (v13)
     {
       v16 = 27;
@@ -3232,7 +3232,7 @@ LABEL_59:
       v16 = 0;
     }
 
-    if (v15)
+    if (bOOLValue)
     {
       v17 = 0;
     }
@@ -3242,11 +3242,11 @@ LABEL_59:
       v17 = v16;
     }
 
-    if (a4 && v12 && ((v15 | v13 ^ 1) & 1) != 0)
+    if (code && v12 && ((bOOLValue | v13 ^ 1) & 1) != 0)
     {
       *buf = 0;
       [v12 getBytes:buf length:2];
-      *a4 = *buf;
+      *code = *buf;
       if (!v9)
       {
         goto LABEL_30;
@@ -3272,17 +3272,17 @@ LABEL_30:
   return v17;
 }
 
-- (void)signVeridianChallenge:(id)a3 completionHandler:(id)a4
+- (void)signVeridianChallenge:(id)challenge completionHandler:(id)handler
 {
-  v6 = a3;
-  v40 = a4;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   init_logging();
   v7 = objc_alloc_init(ACCHWComponentAuthServiceParams);
   v41 = -1431655766;
-  [(ACCHWComponentAuthServiceParams *)v7 setChallenge:v6];
+  [(ACCHWComponentAuthServiceParams *)v7 setChallenge:challengeCopy];
   [(ACCHWComponentAuthServiceParams *)v7 setModuleAuthService:[(ACCHWComponentAuthService *)self _findModuleAuthService:2 withAuthFlags:&v41]];
   [(ACCHWComponentAuthServiceParams *)v7 setAuthFlags:v41];
-  v8 = [(ACCHWComponentAuthServiceParams *)v7 moduleAuthService];
+  moduleAuthService = [(ACCHWComponentAuthServiceParams *)v7 moduleAuthService];
   if (gLogObjects)
   {
     v9 = gNumLogObjects <= 3;
@@ -3294,7 +3294,7 @@ LABEL_30:
   }
 
   v10 = !v9;
-  if (v8)
+  if (moduleAuthService)
   {
     if (v10)
     {
@@ -3502,26 +3502,26 @@ LABEL_70:
 
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
-    v36 = [(ACCHWComponentAuthServiceParams *)v7 signature];
-    v37 = [(ACCHWComponentAuthServiceParams *)v7 deviceNonce];
+    signature = [(ACCHWComponentAuthServiceParams *)v7 signature];
+    deviceNonce = [(ACCHWComponentAuthServiceParams *)v7 deviceNonce];
     *buf = 138412802;
-    *v43 = v36;
+    *v43 = signature;
     *&v43[8] = 2112;
-    v44 = v37;
+    v44 = deviceNonce;
     v45 = 1024;
     v46 = v25;
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "signVeridianChallenge Replying with signature=%@, deviceNonce=%@, authError = %d", buf, 0x1Cu);
   }
 
-  v38 = [(ACCHWComponentAuthServiceParams *)v7 signature];
-  v39 = [(ACCHWComponentAuthServiceParams *)v7 deviceNonce];
-  v40[2](v40, v38, v39, v25);
+  signature2 = [(ACCHWComponentAuthServiceParams *)v7 signature];
+  deviceNonce2 = [(ACCHWComponentAuthServiceParams *)v7 deviceNonce];
+  handlerCopy[2](handlerCopy, signature2, deviceNonce2, v25);
 }
 
-- (void)verifyBatteryMatch:(id)a3 completionHandler:(id)a4
+- (void)verifyBatteryMatch:(id)match completionHandler:(id)handler
 {
-  v6 = a3;
-  v25 = a4;
+  matchCopy = match;
+  handlerCopy = handler;
   init_logging();
   v7 = 0;
   while (1)
@@ -3557,7 +3557,7 @@ LABEL_70:
       _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "tryCount = %d (max tries %d)", buf, 0xEu);
     }
 
-    v13 = [(ACCHWComponentAuthService *)self _verifyBatteryMatch:v6];
+    v13 = [(ACCHWComponentAuthService *)self _verifyBatteryMatch:matchCopy];
     v14 = v13;
     v15 = gLogObjects;
     v16 = gNumLogObjects;
@@ -3651,13 +3651,13 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "verifyBatteryMatch Replying with authError = %d", buf, 8u);
   }
 
-  v25[2](v25, v14);
+  handlerCopy[2](handlerCopy, v14);
 }
 
-- (void)_logToAnalytics:(int)a3 authError:(int)a4 fdrValidationStatus:(int)a5 authDurationInMS:(unint64_t)a6
+- (void)_logToAnalytics:(int)analytics authError:(int)error fdrValidationStatus:(int)status authDurationInMS:(unint64_t)s
 {
   v9 = @"Failed";
-  if (!a4)
+  if (!error)
   {
     v9 = @"Passed";
   }
@@ -3665,7 +3665,7 @@ LABEL_36:
   v30[0] = v9;
   v29[0] = @"authState";
   v29[1] = @"authErrorDescription";
-  v10 = [NSString stringWithUTF8String:kACCTransport_IOAccessoryAuthCP_AuthError_Strings[a4]];
+  v10 = [NSString stringWithUTF8String:kACCTransport_IOAccessoryAuthCP_AuthError_Strings[error]];
   v30[1] = v10;
   v29[2] = @"isInductive";
   v11 = [NSNumber numberWithBool:0];
@@ -3676,18 +3676,18 @@ LABEL_36:
   v13 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:4];
   v14 = [NSMutableDictionary dictionaryWithDictionary:v13];
 
-  BucketizedWiredAuthDuration = acc_analytics_createBucketizedWiredAuthDuration(a6);
+  BucketizedWiredAuthDuration = acc_analytics_createBucketizedWiredAuthDuration(s);
   [v14 setObject:BucketizedWiredAuthDuration forKey:@"wiredAuthDuration"];
 
-  if ((a3 - 1) < 3)
+  if ((analytics - 1) < 3)
   {
-    v16 = *(&kACCHWComponentAuthServiceInternalModule_Strings + a3);
+    v16 = *(&kACCHWComponentAuthServiceInternalModule_Strings + analytics);
 LABEL_7:
     [v14 setObject:v16 forKey:@"internalModuleType"];
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!analytics)
   {
     v17 = [NSNumber numberWithBool:1];
     [v14 setObject:v17 forKey:@"isBatteryModule"];
@@ -3697,7 +3697,7 @@ LABEL_7:
   }
 
 LABEL_8:
-  v18 = [NSString stringWithUTF8String:(&kACCHWComponentAuthServiceFDRStatus_Strings)[a5]];
+  v18 = [NSString stringWithUTF8String:(&kACCHWComponentAuthServiceFDRStatus_Strings)[status]];
   [v14 setObject:v18 forKey:@"FDRStatus"];
 
   v19 = +[NSProcessInfo processInfo];

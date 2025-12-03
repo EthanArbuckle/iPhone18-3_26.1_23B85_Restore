@@ -13,7 +13,7 @@
 
   v2 = localizedFormat_HCNumberFormatter;
 
-  return [v2 stringFromNumber:a1];
+  return [v2 stringFromNumber:self];
 }
 
 @end

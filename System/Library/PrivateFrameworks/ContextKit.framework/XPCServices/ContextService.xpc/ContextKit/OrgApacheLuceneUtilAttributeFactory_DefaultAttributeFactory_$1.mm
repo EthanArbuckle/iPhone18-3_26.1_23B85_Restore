@@ -1,27 +1,27 @@
 @interface OrgApacheLuceneUtilAttributeFactory_DefaultAttributeFactory_$1
-- (OrgApacheLuceneUtilAttributeFactory_DefaultAttributeFactory_$1)initWithOrgApacheLuceneUtilAttributeFactory_DefaultAttributeFactory:(id)a3;
-- (id)computeValueWithIOSClass:(id)a3;
+- (OrgApacheLuceneUtilAttributeFactory_DefaultAttributeFactory_$1)initWithOrgApacheLuceneUtilAttributeFactory_DefaultAttributeFactory:(id)factory;
+- (id)computeValueWithIOSClass:(id)class;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilAttributeFactory_DefaultAttributeFactory_$1
 
-- (id)computeValueWithIOSClass:(id)a3
+- (id)computeValueWithIOSClass:(id)class
 {
-  if (!a3)
+  if (!class)
   {
     JreThrowNullPointerException();
   }
 
-  v3 = [a3 asSubclass:OrgApacheLuceneUtilAttribute_class_()];
+  v3 = [class asSubclass:OrgApacheLuceneUtilAttribute_class_()];
   v4 = sub_1000C7704(v3);
 
   return OrgApacheLuceneUtilAttributeFactory_findAttributeImplCtorWithIOSClass_(v4);
 }
 
-- (OrgApacheLuceneUtilAttributeFactory_DefaultAttributeFactory_$1)initWithOrgApacheLuceneUtilAttributeFactory_DefaultAttributeFactory:(id)a3
+- (OrgApacheLuceneUtilAttributeFactory_DefaultAttributeFactory_$1)initWithOrgApacheLuceneUtilAttributeFactory_DefaultAttributeFactory:(id)factory
 {
-  JreStrongAssign(&self->this$0_, a3);
+  JreStrongAssign(&self->this$0_, factory);
   OrgLukhnosPortmobileLangClassValue_init(self);
   return self;
 }

@@ -1,12 +1,12 @@
 @interface CertUIRelay
 - (CertUIRelay)init;
 - (id)_uniqueDigest;
-- (void)_centerDiedWithNotification:(id)a3;
+- (void)_centerDiedWithNotification:(id)notification;
 - (void)_registerNewRequest;
 - (void)_registerReply;
 - (void)_showNextPrompt;
 - (void)_shutdown;
-- (void)_trustInfoMessageReceived:(id)a3 userInfo:(id)a4 auditToken:(id *)a5;
+- (void)_trustInfoMessageReceived:(id)received userInfo:(id)info auditToken:(id *)token;
 @end
 
 @implementation CertUIRelay
@@ -23,23 +23,23 @@
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
 
-  v5 = [(CertUIRelay *)self _relayCenter];
-  [v5 stopServer];
+  _relayCenter = [(CertUIRelay *)self _relayCenter];
+  [_relayCenter stopServer];
 
   exit(0);
 }
 
-- (void)_centerDiedWithNotification:(id)a3
+- (void)_centerDiedWithNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = _CertUILogObjects[1];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 object];
-    v8 = [v7 name];
+    object = [notificationCopy object];
+    name = [object name];
     v9 = 138412290;
-    v10 = v8;
+    v10 = name;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Center died %@", &v9, 0xCu);
   }
 
@@ -76,8 +76,8 @@
 - (void)_showNextPrompt
 {
   self->_waitingOnPrompt = 1;
-  v3 = [(NSMutableDictionary *)self->_promptsForDigest allKeys];
-  v4 = [v3 objectAtIndex:0];
+  allKeys = [(NSMutableDictionary *)self->_promptsForDigest allKeys];
+  v4 = [allKeys objectAtIndex:0];
 
   v5 = [(NSMutableDictionary *)self->_promptsForDigest objectForKey:v4];
   v6 = [v5 objectAtIndex:0];
@@ -92,7 +92,7 @@
   v13[2] = sub_100001174;
   v13[3] = &unk_100008310;
   v14 = v6;
-  v15 = self;
+  selfCopy = self;
   v16 = v5;
   v8 = v4;
   v17 = v8;
@@ -133,10 +133,10 @@ LABEL_4:
   return v5;
 }
 
-- (void)_trustInfoMessageReceived:(id)a3 userInfo:(id)a4 auditToken:(id *)a5
+- (void)_trustInfoMessageReceived:(id)received userInfo:(id)info auditToken:(id *)token
 {
-  v7 = a4;
-  v8 = [CertUIUtilities bundleIDFromAuditToken:a5];
+  infoCopy = info;
+  v8 = [CertUIUtilities bundleIDFromAuditToken:token];
   v9 = [CertUIUtilities localizedAppTitleForBundleID:v8];
   v10 = _CertUILogObjects[1];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -149,23 +149,23 @@ LABEL_4:
   }
 
   [(CertUIRelay *)self _registerNewRequest];
-  v11 = [(CertUIRelay *)self _relayCenter];
-  v12 = [v11 delayReply];
+  _relayCenter = [(CertUIRelay *)self _relayCenter];
+  delayReply = [_relayCenter delayReply];
 
-  v13 = [[CertUIRelayPrompt alloc] initWithMessageInfo:v7 localizedOriginatingAppName:v9 replyContext:v12];
-  v14 = [(CertUIRelayPrompt *)v13 trustDigest];
-  v15 = v14;
-  if (v14)
+  v13 = [[CertUIRelayPrompt alloc] initWithMessageInfo:infoCopy localizedOriginatingAppName:v9 replyContext:delayReply];
+  trustDigest = [(CertUIRelayPrompt *)v13 trustDigest];
+  v15 = trustDigest;
+  if (trustDigest)
   {
-    v16 = v14;
+    _uniqueDigest = trustDigest;
   }
 
   else
   {
-    v16 = [(CertUIRelay *)self _uniqueDigest];
+    _uniqueDigest = [(CertUIRelay *)self _uniqueDigest];
   }
 
-  v17 = v16;
+  v17 = _uniqueDigest;
 
   v18 = [(NSMutableDictionary *)self->_promptsForDigest objectForKey:v17];
   if (!v18)
@@ -195,9 +195,9 @@ LABEL_4:
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "CertUIRelay starting", v13, 2u);
     }
 
-    v4 = [(CertUIRelay *)v2 _relayCenter];
-    [v4 registerForMessageName:kCertUIPresentTrustInfoMessage target:v2 selector:"_trustInfoMessageReceived:userInfo:auditToken:"];
-    [v4 runServerOnCurrentThread];
+    _relayCenter = [(CertUIRelay *)v2 _relayCenter];
+    [_relayCenter registerForMessageName:kCertUIPresentTrustInfoMessage target:v2 selector:"_trustInfoMessageReceived:userInfo:auditToken:"];
+    [_relayCenter runServerOnCurrentThread];
     v5 = [NSTimer scheduledTimerWithTimeInterval:v2 target:"_killTimerFired" selector:0 userInfo:0 repeats:5.0];
     killTimer = v2->_killTimer;
     v2->_killTimer = v5;

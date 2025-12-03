@@ -1,27 +1,27 @@
 @interface NESMPathControllerSession
-- (BOOL)handleUpdateConfiguration:(id)a3;
-- (NESMPathControllerSession)initWithConfiguration:(id)a3 andServer:(id)a4;
+- (BOOL)handleUpdateConfiguration:(id)configuration;
+- (NESMPathControllerSession)initWithConfiguration:(id)configuration andServer:(id)server;
 - (void)dealloc;
-- (void)didStartTrackingNOI:(id)a3;
-- (void)didStopTrackingAllNOIs:(id)a3;
-- (void)didStopTrackingNOI:(id)a3;
-- (void)handleChangeEventForFallbackInterfaces:(id)a3;
+- (void)didStartTrackingNOI:(id)i;
+- (void)didStopTrackingAllNOIs:(id)is;
+- (void)didStopTrackingNOI:(id)i;
+- (void)handleChangeEventForFallbackInterfaces:(id)interfaces;
 - (void)handleInstalledAppsChanged;
-- (void)handleNetworkConfigurationChange:(int64_t)a3;
-- (void)handleNetworkDetectionNotification:(int)a3;
-- (void)handleStartMessage:(id)a3;
+- (void)handleNetworkConfigurationChange:(int64_t)change;
+- (void)handleNetworkDetectionNotification:(int)notification;
+- (void)handleStartMessage:(id)message;
 - (void)install;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)uninstall;
 @end
 
 @implementation NESMPathControllerSession
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   if (self)
   {
     Property = objc_getProperty(self, v11, 392, 1);
@@ -32,12 +32,12 @@
     Property = 0;
   }
 
-  if (Property == v10 && [v9 isEqualToString:@"status"])
+  if (Property == objectCopy && [pathCopy isEqualToString:@"status"])
   {
     v14 = ne_log_obj();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v62 = v9;
+      v62 = pathCopy;
       if (self)
       {
         v63 = objc_getProperty(self, v15, 392, 1);
@@ -48,14 +48,14 @@
         v63 = 0;
       }
 
-      v64 = [v63 status];
+      status = [v63 status];
       v65 = @"Invalid";
-      if (v64 == 2)
+      if (status == 2)
       {
         v65 = @"Not Available";
       }
 
-      if (v64 == 1)
+      if (status == 1)
       {
         v65 = @"Available";
       }
@@ -65,7 +65,7 @@
       *v180 = v66;
       _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Roaming status changed to %@", buf, 0xCu);
 
-      v9 = v62;
+      pathCopy = v62;
     }
 
     v16 = 1;
@@ -76,16 +76,16 @@
     v16 = 0;
   }
 
-  v17 = [(NESMSession *)self server];
-  if (v17 == v10)
+  server = [(NESMSession *)self server];
+  if (server == objectCopy)
   {
-    if ([v9 isEqualToString:@"primaryCellularInterface"])
+    if ([pathCopy isEqualToString:@"primaryCellularInterface"])
     {
     }
 
     else
     {
-      v18 = [v9 isEqualToString:@"primaryPhysicalInterface"];
+      v18 = [pathCopy isEqualToString:@"primaryPhysicalInterface"];
 
       if ((v18 & 1) == 0)
       {
@@ -94,7 +94,7 @@
       }
     }
 
-    v20 = [v9 isEqualToString:@"primaryCellularInterface"];
+    v20 = [pathCopy isEqualToString:@"primaryCellularInterface"];
     v21 = ne_log_obj();
     v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG);
     if (v20)
@@ -104,10 +104,10 @@
         goto LABEL_17;
       }
 
-      v23 = [(NESMSession *)self server];
-      v24 = [v23 primaryCellularInterface];
+      server2 = [(NESMSession *)self server];
+      primaryCellularInterface = [server2 primaryCellularInterface];
       *buf = 138412290;
-      *v180 = v24;
+      *v180 = primaryCellularInterface;
       v25 = "Primary cellular interface changed to %@";
     }
 
@@ -118,10 +118,10 @@
         goto LABEL_17;
       }
 
-      v23 = [(NESMSession *)self server];
-      v24 = [v23 primaryPhysicalInterface];
+      server2 = [(NESMSession *)self server];
+      primaryCellularInterface = [server2 primaryPhysicalInterface];
       *buf = 138412290;
-      *v180 = v24;
+      *v180 = primaryCellularInterface;
       v25 = "Primary physical interface changed to %@";
     }
 
@@ -129,46 +129,46 @@
 
 LABEL_17:
     v169 = v16;
-    v163 = v10;
-    v165 = v12;
+    v163 = objectCopy;
+    v165 = changeCopy;
 
-    v26 = [(NESMSession *)self server];
-    v27 = [v26 primaryCellularInterface];
+    server3 = [(NESMSession *)self server];
+    primaryCellularInterface2 = [server3 primaryCellularInterface];
     v28 = &selRef_temporaryAllowMulticastNetworkName;
-    if (v27)
+    if (primaryCellularInterface2)
     {
-      v29 = v27;
-      v30 = [(NESMSession *)self server];
-      v31 = [v30 primaryCellularInterface];
-      [v31 interfaceName];
+      v29 = primaryCellularInterface2;
+      server4 = [(NESMSession *)self server];
+      primaryCellularInterface3 = [server4 primaryCellularInterface];
+      [primaryCellularInterface3 interfaceName];
       v33 = v32 = self;
-      v34 = [(NESMSession *)v32 server];
-      v35 = [v34 primaryPhysicalInterface];
-      [v35 interfaceName];
-      v36 = v158 = v9;
+      server5 = [(NESMSession *)v32 server];
+      primaryPhysicalInterface = [server5 primaryPhysicalInterface];
+      [primaryPhysicalInterface interfaceName];
+      v36 = v158 = pathCopy;
       v37 = [v33 isEqualToString:v36];
 
-      v9 = v158;
+      pathCopy = v158;
       v28 = &selRef_temporaryAllowMulticastNetworkName;
 
       self = v32;
       v39 = buf;
       if ((v37 & 1) == 0)
       {
-        v40 = [(NESMSession *)v32 server];
-        v17 = [v40 primaryCellularInterface];
+        server6 = [(NESMSession *)v32 server];
+        server = [server6 primaryCellularInterface];
 
-        v41 = [(NESMSession *)v32 server];
-        v42 = [v41 primaryPhysicalInterface];
+        server7 = [(NESMSession *)v32 server];
+        primaryPhysicalInterface2 = [server7 primaryPhysicalInterface];
 
-        if (v17)
+        if (server)
         {
-          v12 = v165;
+          changeCopy = v165;
           v28 = &selRef_temporaryAllowMulticastNetworkName;
           if (!v32)
           {
             v16 = 1;
-            v10 = v163;
+            objectCopy = v163;
             goto LABEL_80;
           }
 
@@ -186,27 +186,27 @@ LABEL_17:
 
         else
         {
-          v12 = v165;
+          changeCopy = v165;
           v28 = &selRef_temporaryAllowMulticastNetworkName;
-          v17 = 0;
+          server = 0;
           if (!v32)
           {
-            if (v42)
+            if (primaryPhysicalInterface2)
             {
-              v9 = v158;
+              pathCopy = v158;
               self = 0;
               v16 = 1;
-              v10 = v163;
-              v12 = v165;
+              objectCopy = v163;
+              changeCopy = v165;
               goto LABEL_80;
             }
 
             v166 = 0;
-            v42 = 0;
-            v9 = v158;
+            primaryPhysicalInterface2 = 0;
+            pathCopy = v158;
             self = 0;
-            v10 = v163;
-            v12 = v165;
+            objectCopy = v163;
+            changeCopy = v165;
             v16 = v169;
 LABEL_82:
 
@@ -219,18 +219,18 @@ LABEL_82:
 
 LABEL_25:
         v45 = objc_getProperty(self, v38, *(v28 + 723), 1);
-        v34 = v45;
-        if (v17 != v45)
+        server5 = v45;
+        if (server != v45)
         {
 
           if ((v166 & 1) == 0)
           {
 LABEL_59:
             v16 = 1;
-            v10 = v163;
+            objectCopy = v163;
 LABEL_79:
-            objc_setProperty_atomic(self, v46, v17, *(v28 + 723));
-            objc_setProperty_atomic(self, v67, v42, 440);
+            objc_setProperty_atomic(self, v46, server, *(v28 + 723));
+            objc_setProperty_atomic(self, v67, primaryPhysicalInterface2, 440);
 LABEL_80:
             v68 = ne_log_obj();
             if (os_log_type_enabled(v68, OS_LOG_TYPE_DEBUG))
@@ -245,7 +245,7 @@ LABEL_80:
                 v79 = 0;
               }
 
-              v81 = [v79 interfaceName];
+              interfaceName = [v79 interfaceName];
               if (self)
               {
                 v82 = objc_getProperty(self, v80, 440, 1);
@@ -256,11 +256,11 @@ LABEL_80:
                 v82 = 0;
               }
 
-              v83 = [v82 interfaceName];
+              interfaceName2 = [v82 interfaceName];
               *buf = 138412546;
-              *v180 = v81;
+              *v180 = interfaceName;
               *&v180[8] = 2112;
-              v181 = v83;
+              v181 = interfaceName2;
               _os_log_debug_impl(&_mh_execute_header, v68, OS_LOG_TYPE_DEBUG, "Fallback interface set to %@ from %@", buf, 0x16u);
             }
 
@@ -275,48 +275,48 @@ LABEL_80:
         v156 = 1;
         if (!v166)
         {
-          v161 = v42;
-          v51 = self;
+          v161 = primaryPhysicalInterface2;
+          selfCopy3 = self;
           v155 = 0;
           goto LABEL_40;
         }
 
 LABEL_30:
-        v161 = v42;
+        v161 = primaryPhysicalInterface2;
         v47 = objc_getProperty(self, v38, *(v28 + 723), 1);
         if (v47)
         {
           v167 = v44;
           v154 = v47;
-          v48 = [v17 interfaceName];
+          interfaceName3 = [server interfaceName];
           HIDWORD(v155) = 1;
           v50 = objc_getProperty(self, v49, *(v28 + 723), 1);
-          v42 = [v50 interfaceName];
-          if ([v48 isEqualToString:v42])
+          primaryPhysicalInterface2 = [v50 interfaceName];
+          if ([interfaceName3 isEqualToString:primaryPhysicalInterface2])
           {
 
             if (v156)
             {
             }
 
-            v10 = v163;
-            v12 = v165;
-            v42 = v161;
+            objectCopy = v163;
+            changeCopy = v165;
+            primaryPhysicalInterface2 = v161;
             goto LABEL_77;
           }
 
           v152 = v50;
-          v153 = v48;
-          v51 = self;
+          v153 = interfaceName3;
+          selfCopy3 = self;
           LODWORD(v155) = 1;
-          v12 = v165;
+          changeCopy = v165;
           v44 = v167;
         }
 
         else
         {
           v155 = 0x100000000;
-          v51 = self;
+          selfCopy3 = self;
           v154 = 0;
         }
 
@@ -324,35 +324,35 @@ LABEL_40:
         v168 = v44;
         if (v161)
         {
-          v52 = objc_getProperty(v51, v38, 440, 1);
+          v52 = objc_getProperty(selfCopy3, v38, 440, 1);
           if (v52)
           {
             v53 = v52;
-            v159 = v9;
+            v159 = pathCopy;
             v54 = 0;
 LABEL_48:
-            v58 = v51;
-            if (objc_getProperty(v51, v38, 440, 1))
+            v58 = selfCopy3;
+            if (objc_getProperty(selfCopy3, v38, 440, 1))
             {
-              v59 = [(uint8_t *)v161 interfaceName];
+              interfaceName4 = [(uint8_t *)v161 interfaceName];
               v57 = v58;
               v61 = [objc_getProperty(v58 v60];
-              v56 = [v59 isEqualToString:v61];
+              v56 = [interfaceName4 isEqualToString:v61];
             }
 
             else
             {
-              v57 = v51;
+              v57 = selfCopy3;
               v56 = 0;
             }
 
-            v12 = v165;
+            changeCopy = v165;
             v28 = &selRef_temporaryAllowMulticastNetworkName;
             if (v54)
             {
             }
 
-            v9 = v159;
+            pathCopy = v159;
 LABEL_55:
 
             self = v57;
@@ -366,15 +366,15 @@ LABEL_55:
           }
         }
 
-        self = v51;
-        v55 = objc_getProperty(v51, v38, 440, 1);
+        self = selfCopy3;
+        v55 = objc_getProperty(selfCopy3, v38, 440, 1);
         v39 = v55;
         v56 = v161 != v55;
         if (v161 == v55)
         {
           if (v161)
           {
-            v159 = v9;
+            v159 = pathCopy;
             v53 = 0;
             v54 = 1;
             goto LABEL_48;
@@ -386,7 +386,7 @@ LABEL_55:
 
           if (v161)
           {
-            v57 = v51;
+            v57 = selfCopy3;
             v53 = 0;
             v56 = 1;
             v28 = &selRef_temporaryAllowMulticastNetworkName;
@@ -403,7 +403,7 @@ LABEL_56:
           if ((v155 & 0x100000000) == 0)
           {
 LABEL_57:
-            v42 = v161;
+            primaryPhysicalInterface2 = v161;
             if (v156)
             {
 
@@ -415,7 +415,7 @@ LABEL_57:
               goto LABEL_74;
             }
 
-            v10 = v163;
+            objectCopy = v163;
             if (v56)
             {
               v16 = 1;
@@ -438,11 +438,11 @@ LABEL_71:
 
 LABEL_72:
 
-        v42 = v161;
+        primaryPhysicalInterface2 = v161;
         if ((v156 & 1) == 0)
         {
 
-          v10 = v163;
+          objectCopy = v163;
           if ((v56 & 1) == 0)
           {
             goto LABEL_101;
@@ -462,12 +462,12 @@ LABEL_77:
 LABEL_74:
           v166 = 0;
 LABEL_75:
-          v10 = v163;
+          objectCopy = v163;
           goto LABEL_82;
         }
 
 LABEL_27:
-        v10 = v163;
+        objectCopy = v163;
         goto LABEL_77;
       }
     }
@@ -479,13 +479,13 @@ LABEL_27:
     }
 
     v166 = 0;
-    v42 = 0;
-    v17 = 0;
-    v12 = v165;
+    primaryPhysicalInterface2 = 0;
+    server = 0;
+    changeCopy = v165;
     v16 = v169;
     if (!self)
     {
-      v17 = 0;
+      server = 0;
       goto LABEL_75;
     }
 
@@ -508,7 +508,7 @@ LABEL_84:
 
   v71 = &selRef_temporaryAllowMulticastNetworkName;
   v170 = v16;
-  if (v70 == v10 && [v9 isEqualToString:@"considerAlternateUpdate"])
+  if (v70 == objectCopy && [pathCopy isEqualToString:@"considerAlternateUpdate"])
   {
     if (self)
     {
@@ -520,27 +520,27 @@ LABEL_84:
       v72 = 0;
     }
 
-    v73 = [v72 considerAlternateUpdate];
+    considerAlternateUpdate = [v72 considerAlternateUpdate];
     v74 = ne_log_obj();
     if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *v180 = v73;
+      *v180 = considerAlternateUpdate;
       _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "Consider alternate update, new advice: %@", buf, 0xCu);
     }
 
-    v162 = [v73 applications];
-    v75 = [v73 level];
-    v157 = v73;
+    applications = [considerAlternateUpdate applications];
+    level = [considerAlternateUpdate level];
+    v157 = considerAlternateUpdate;
     if (self)
     {
-      if (self->_level == v75)
+      if (self->_level == level)
       {
         goto LABEL_122;
       }
 
-      self->_level = v75;
-      if (v75 == 2)
+      self->_level = level;
+      if (level == 2)
       {
         if (self->_fallbackEnabled)
         {
@@ -552,7 +552,7 @@ LABEL_84:
 
         else
         {
-          v92 = v12;
+          v92 = changeCopy;
           v93 = ne_log_obj();
           if (os_log_type_enabled(v93, OS_LOG_TYPE_DEFAULT))
           {
@@ -561,16 +561,16 @@ LABEL_84:
           }
 
           v94 = [NSString alloc];
-          v95 = [(NESMSession *)self configuration];
-          v96 = [v95 identifier];
-          v97 = [v94 initWithFormat:@"com.apple.nesessionmanager.strongFallback.%@", v96];
+          configuration = [(NESMSession *)self configuration];
+          identifier = [configuration identifier];
+          v97 = [v94 initWithFormat:@"com.apple.nesessionmanager.strongFallback.%@", identifier];
 
           [v97 UTF8String];
           v98 = os_transaction_create();
           objc_setProperty_atomic(self, v99, v98, 424);
 
           v170 = 1;
-          v12 = v92;
+          changeCopy = v92;
         }
 
         v78 = 0;
@@ -578,7 +578,7 @@ LABEL_84:
         goto LABEL_121;
       }
 
-      if (v75 == 1)
+      if (level == 1)
       {
         if (self->_fallbackEnabled)
         {
@@ -590,7 +590,7 @@ LABEL_84:
 
         else
         {
-          v84 = v12;
+          v84 = changeCopy;
           v85 = ne_log_obj();
           if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
           {
@@ -599,16 +599,16 @@ LABEL_84:
           }
 
           v86 = [NSString alloc];
-          v87 = [(NESMSession *)self configuration];
-          v88 = [v87 identifier];
-          v89 = [v86 initWithFormat:@"com.apple.nesessionmanager.weakFallback.%@", v88];
+          configuration2 = [(NESMSession *)self configuration];
+          identifier2 = [configuration2 identifier];
+          v89 = [v86 initWithFormat:@"com.apple.nesessionmanager.weakFallback.%@", identifier2];
 
           [v89 UTF8String];
           v90 = os_transaction_create();
           objc_setProperty_atomic(self, v91, v90, 424);
 
           v170 = 1;
-          v12 = v84;
+          changeCopy = v84;
         }
 
         v78 = 1;
@@ -616,10 +616,10 @@ LABEL_84:
         goto LABEL_121;
       }
 
-      if (v75)
+      if (level)
       {
 LABEL_122:
-        v100 = v162;
+        v100 = applications;
         v102 = objc_getProperty(self, v101, 512, 1);
         if (v102)
         {
@@ -632,7 +632,7 @@ LABEL_122:
 
             if (v108)
             {
-              v164 = v10;
+              v164 = objectCopy;
               v109 = +[NSMutableSet set];
               v173 = 0u;
               v174 = 0u;
@@ -644,7 +644,7 @@ LABEL_122:
               {
                 v112 = v111;
                 v113 = v109;
-                v160 = v9;
+                v160 = pathCopy;
                 v114 = 0;
                 v115 = *v174;
                 do
@@ -657,29 +657,29 @@ LABEL_122:
                     }
 
                     v117 = *(*(&v173 + 1) + 8 * i);
-                    v118 = [v117 bundleIdentifier];
-                    if (v118)
+                    bundleIdentifier = [v117 bundleIdentifier];
+                    if (bundleIdentifier)
                     {
-                      [v113 addObject:v118];
-                      if ([v117 state] == 2 && (objc_msgSend(objc_getProperty(self, v119, 456, 1), "containsObject:", v118) & 1) == 0)
+                      [v113 addObject:bundleIdentifier];
+                      if ([v117 state] == 2 && (objc_msgSend(objc_getProperty(self, v119, 456, 1), "containsObject:", bundleIdentifier) & 1) == 0)
                       {
                         v114 = 1;
                         [objc_getProperty(self v120];
                       }
 
-                      else if ([v117 state] == 1 && objc_msgSend(objc_getProperty(self, v121, 456, 1), "containsObject:", v118))
+                      else if ([v117 state] == 1 && objc_msgSend(objc_getProperty(self, v121, 456, 1), "containsObject:", bundleIdentifier))
                       {
                         v114 = 1;
                         [objc_getProperty(self v122];
                       }
 
-                      if ([v117 state] == 1 && (objc_msgSend(objc_getProperty(self, v123, 464, 1), "containsObject:", v118) & 1) == 0)
+                      if ([v117 state] == 1 && (objc_msgSend(objc_getProperty(self, v123, 464, 1), "containsObject:", bundleIdentifier) & 1) == 0)
                       {
                         v114 = 1;
                         [objc_getProperty(self v124];
                       }
 
-                      else if ([v117 state] == 2 && objc_msgSend(objc_getProperty(self, v125, 464, 1), "containsObject:", v118))
+                      else if ([v117 state] == 2 && objc_msgSend(objc_getProperty(self, v125, 464, 1), "containsObject:", bundleIdentifier))
                       {
                         v114 = 1;
                         [objc_getProperty(self v126];
@@ -693,8 +693,8 @@ LABEL_122:
                 while (v112);
 
                 v128 = v157;
-                v9 = v160;
-                v10 = v164;
+                pathCopy = v160;
+                objectCopy = v164;
                 v109 = v113;
                 v129 = &selRef_temporaryAllowMulticastNetworkName;
                 if (v114)
@@ -704,7 +704,7 @@ LABEL_122:
                   {
                     v149 = objc_getProperty(self, v131, 456, 1);
                     *v177 = 138412290;
-                    v178 = v149;
+                    selfCopy5 = v149;
                     _os_log_debug_impl(&_mh_execute_header, v130, OS_LOG_TYPE_DEBUG, "Foreground apps changed to %@", v177, 0xCu);
                   }
 
@@ -713,7 +713,7 @@ LABEL_122:
                   {
                     v150 = objc_getProperty(self, v133, 464, 1);
                     *v177 = 138412290;
-                    v178 = v150;
+                    selfCopy5 = v150;
                     _os_log_debug_impl(&_mh_execute_header, v132, OS_LOG_TYPE_DEBUG, "Background running apps changed to %@", v177, 0xCu);
                   }
 
@@ -721,7 +721,7 @@ LABEL_122:
                   if (os_log_type_enabled(v134, OS_LOG_TYPE_DEFAULT))
                   {
                     *v177 = 138412290;
-                    v178 = self;
+                    selfCopy5 = self;
                     _os_log_impl(&_mh_execute_header, v134, OS_LOG_TYPE_DEFAULT, "%@: Updating policies on app state change", v177, 0xCu);
                   }
 
@@ -732,7 +732,7 @@ LABEL_122:
               else
               {
 
-                v10 = v164;
+                objectCopy = v164;
                 v128 = v157;
                 v129 = &selRef_temporaryAllowMulticastNetworkName;
               }
@@ -746,7 +746,7 @@ LABEL_122:
                 {
                   v148 = objc_getProperty(self, v137, *(v129 + 736), 1);
                   *v177 = 138412290;
-                  v178 = v148;
+                  selfCopy5 = v148;
                   _os_log_debug_impl(&_mh_execute_header, v136, OS_LOG_TYPE_DEBUG, "Fallback allowed apps changed to %@", v177, 0xCu);
                 }
 
@@ -754,7 +754,7 @@ LABEL_122:
                 if (os_log_type_enabled(v138, OS_LOG_TYPE_DEFAULT))
                 {
                   *v177 = 138412290;
-                  v178 = self;
+                  selfCopy5 = self;
                   _os_log_impl(&_mh_execute_header, v138, OS_LOG_TYPE_DEFAULT, "%@: Updating policies on fallback app change", v177, 0xCu);
                 }
 
@@ -779,9 +779,9 @@ LABEL_164:
       }
     }
 
-    else if (!v75)
+    else if (!level)
     {
-      v151 = v162;
+      v151 = applications;
       goto LABEL_155;
     }
 
@@ -828,7 +828,7 @@ LABEL_165:
   {
     v142 = ne_session_status_to_string();
     v143 = *(&self->super.super.isa + v139);
-    v145 = [objc_getProperty(self v144];
+    v144 = [objc_getProperty(self v144];
     *buf = 138413058;
     *v180 = self;
     *&v180[8] = 2080;
@@ -836,18 +836,18 @@ LABEL_165:
     v182 = 1024;
     v183 = v143;
     v184 = 1024;
-    v185 = v145;
+    v185 = v144;
     _os_log_impl(&_mh_execute_header, v141, OS_LOG_TYPE_DEFAULT, "Will update session %@ status to %s (fallback %u non-default %u)", buf, 0x22u);
   }
 
-  v146 = [(NESMSession *)self queue];
+  queue = [(NESMSession *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000AB154;
   block[3] = &unk_1000EB338;
   block[4] = self;
   v172 = v140;
-  dispatch_async(v146, block);
+  dispatch_async(queue, block);
 
   if ((v166 | v170) == 1)
   {
@@ -865,18 +865,18 @@ LABEL_165:
   }
 }
 
-- (void)handleChangeEventForFallbackInterfaces:(id)a3
+- (void)handleChangeEventForFallbackInterfaces:(id)interfaces
 {
-  v4 = a3;
-  v5 = [(NESMSession *)self queue];
+  interfacesCopy = interfaces;
+  queue = [(NESMSession *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000AB2D8;
   v7[3] = &unk_1000EB198;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = interfacesCopy;
+  v6 = interfacesCopy;
+  dispatch_async(queue, v7);
 }
 
 - (void)dealloc
@@ -900,8 +900,8 @@ LABEL_165:
     }
   }
 
-  v5 = [(NESMSession *)self policySession];
-  sub_100030CC4(v5);
+  policySession = [(NESMSession *)self policySession];
+  sub_100030CC4(policySession);
 
   [(NESMSession *)self setStatus:1];
 }
@@ -938,9 +938,9 @@ LABEL_165:
             }
 
             v13 = [NSString alloc];
-            v14 = [(NESMSession *)self configuration];
-            v15 = [v14 identifier];
-            v16 = [v13 initWithFormat:@"com.apple.nesessionmanager.RoamingMonitor.%@", v15];
+            configuration = [(NESMSession *)self configuration];
+            identifier = [configuration identifier];
+            v16 = [v13 initWithFormat:@"com.apple.nesessionmanager.RoamingMonitor.%@", identifier];
 
             [v16 UTF8String];
             v17 = os_transaction_create();
@@ -985,8 +985,8 @@ LABEL_165:
         objc_setProperty_atomic(self, v27, v26, 480);
 
         self->_fallbackInUseToken = -1;
-        v28 = [(NESMSession *)self queue];
-        v29 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v28);
+        queue = [(NESMSession *)self queue];
+        v29 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
 
         v30 = dispatch_time(0, -1);
         dispatch_source_set_timer(v29, v30, 0xFFFFFFFFFFFFFFFFLL, 0x1DCD6500uLL);
@@ -994,7 +994,7 @@ LABEL_165:
         *(&handler + 1) = 3221225472;
         v48 = sub_1000AC418;
         v49 = &unk_1000EB1C0;
-        v50 = self;
+        selfCopy = self;
         dispatch_source_set_event_handler(v29, &handler);
         dispatch_resume(v29);
         objc_setProperty_atomic(self, v31, v29, 488);
@@ -1005,8 +1005,8 @@ LABEL_165:
         if (objc_getProperty(self, v34, 512, 1))
         {
           v36 = objc_getProperty(self, v35, 512, 1);
-          v37 = [(NESMSession *)self queue];
-          [v36 setQueue:v37];
+          queue2 = [(NESMSession *)self queue];
+          [v36 setQueue:queue2];
 
           [objc_getProperty(self v38];
           [objc_getProperty(self v39];
@@ -1022,11 +1022,11 @@ LABEL_165:
           }
         }
 
-        v41 = [(NESMSession *)self server];
-        [v41 addObserver:self forKeyPath:@"primaryCellularInterface" options:5 context:0];
+        server = [(NESMSession *)self server];
+        [server addObserver:self forKeyPath:@"primaryCellularInterface" options:5 context:0];
 
-        v42 = [(NESMSession *)self server];
-        [v42 addObserver:self forKeyPath:@"primaryPhysicalInterface" options:5 context:0];
+        server2 = [(NESMSession *)self server];
+        [server2 addObserver:self forKeyPath:@"primaryPhysicalInterface" options:5 context:0];
 
         self->_watchingFallbackNotifications = 1;
       }
@@ -1068,20 +1068,20 @@ LABEL_165:
   [(NESMSession *)self sendConfigurationChangeHandledNotification];
 }
 
-- (void)didStopTrackingAllNOIs:(id)a3
+- (void)didStopTrackingAllNOIs:(id)is
 {
-  v4 = a3;
+  isCopy = is;
   v5 = ne_log_large_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = isCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "didStopTrackingAllNOIs %@", &v10, 0xCu);
   }
 
   if (self)
   {
-    if ([v4 containsObject:{objc_getProperty(self, v6, 520, 1)}])
+    if ([isCopy containsObject:{objc_getProperty(self, v6, 520, 1)}])
     {
       [objc_getProperty(self v7];
       objc_setProperty_atomic(self, v8, 0, 520);
@@ -1093,46 +1093,46 @@ LABEL_165:
     }
   }
 
-  else if ([v4 containsObject:0])
+  else if ([isCopy containsObject:0])
   {
     [0 removeObserver:0 forKeyPath:@"considerAlternateUpdate"];
   }
 }
 
-- (void)didStopTrackingNOI:(id)a3
+- (void)didStopTrackingNOI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = iCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "didStopTrackingNOI %@", &v9, 0xCu);
   }
 
   if (self)
   {
-    if (objc_getProperty(self, v6, 520, 1) == v4)
+    if (objc_getProperty(self, v6, 520, 1) == iCopy)
     {
       [objc_getProperty(self v7];
       objc_setProperty_atomic(self, v8, 0, 520);
     }
   }
 
-  else if (!v4)
+  else if (!iCopy)
   {
     [0 removeObserver:0 forKeyPath:@"considerAlternateUpdate"];
   }
 }
 
-- (void)didStartTrackingNOI:(id)a3
+- (void)didStartTrackingNOI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = iCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "didStartTrackingNOI %@", &v10, 0xCu);
   }
 
@@ -1145,64 +1145,64 @@ LABEL_165:
       [v7 removeObserver:self forKeyPath:@"considerAlternateUpdate"];
     }
 
-    objc_setProperty_atomic(self, v8, v4, 520);
+    objc_setProperty_atomic(self, v8, iCopy, 520);
   }
 
-  [v4 addObserver:self forKeyPath:@"considerAlternateUpdate" options:5 context:0];
+  [iCopy addObserver:self forKeyPath:@"considerAlternateUpdate" options:5 context:0];
 }
 
 - (void)handleInstalledAppsChanged
 {
-  v3 = [(NESMSession *)self queue];
+  queue = [(NESMSession *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000ACA30;
   block[3] = &unk_1000EB1C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)handleNetworkConfigurationChange:(int64_t)a3
+- (void)handleNetworkConfigurationChange:(int64_t)change
 {
-  v4 = [(NESMSession *)self queue];
+  queue = [(NESMSession *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000ACC64;
   block[3] = &unk_1000EB1C0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
-- (void)handleNetworkDetectionNotification:(int)a3
+- (void)handleNetworkDetectionNotification:(int)notification
 {
-  if (a3 <= 5)
+  if (notification <= 5)
   {
     v10 = v3;
     v11 = v4;
-    if (((1 << a3) & 0x2A) != 0)
+    if (((1 << notification) & 0x2A) != 0)
     {
-      v7 = [(NESMSession *)self queue];
+      queue = [(NESMSession *)self queue];
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_1000ACD70;
       v8[3] = &unk_1000EB338;
       v8[4] = self;
-      v9 = a3;
-      dispatch_async(v7, v8);
+      notificationCopy = notification;
+      dispatch_async(queue, v8);
     }
   }
 }
 
-- (BOOL)handleUpdateConfiguration:(id)a3
+- (BOOL)handleUpdateConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4 && (v13.receiver = self, v13.super_class = NESMPathControllerSession, [(NESMSession *)&v13 handleUpdateConfiguration:v4]))
+  configurationCopy = configuration;
+  if (configurationCopy && (v13.receiver = self, v13.super_class = NESMPathControllerSession, [(NESMSession *)&v13 handleUpdateConfiguration:configurationCopy]))
   {
-    v5 = [v4 pathController];
-    v7 = v5;
+    pathController = [configurationCopy pathController];
+    v7 = pathController;
     if (self)
     {
-      objc_setProperty_atomic(self, v6, v5, 368);
+      objc_setProperty_atomic(self, v6, pathController, 368);
 
       self->_needsRoamingMonitor = sub_1000AC420(self, 0);
       self->_needsFallbackNotifications = sub_1000ACF88(self, v8);
@@ -1213,8 +1213,8 @@ LABEL_165:
     {
     }
 
-    v10 = [(NESMSession *)self server];
-    [v10 requestInstallForSession:self withParentSession:0 exclusive:0];
+    server = [(NESMSession *)self server];
+    [server requestInstallForSession:self withParentSession:0 exclusive:0];
 
     v11 = 1;
   }
@@ -1227,38 +1227,38 @@ LABEL_165:
   return v11;
 }
 
-- (void)handleStartMessage:(id)a3
+- (void)handleStartMessage:(id)message
 {
   v5.receiver = self;
   v5.super_class = NESMPathControllerSession;
-  [(NESMSession *)&v5 handleStartMessage:a3];
-  v4 = [(NESMSession *)self server];
-  [v4 requestInstallForSession:self withParentSession:0 exclusive:0];
+  [(NESMSession *)&v5 handleStartMessage:message];
+  server = [(NESMSession *)self server];
+  [server requestInstallForSession:self withParentSession:0 exclusive:0];
 }
 
-- (NESMPathControllerSession)initWithConfiguration:(id)a3 andServer:(id)a4
+- (NESMPathControllerSession)initWithConfiguration:(id)configuration andServer:(id)server
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = NESMPathControllerSession;
-  v7 = [(NESMSession *)&v17 initWithConfiguration:v6 andServer:a4];
+  v7 = [(NESMSession *)&v17 initWithConfiguration:configurationCopy andServer:server];
   v8 = v7;
   if (v7)
   {
     v7->_level = 0;
-    v9 = [v6 pathController];
+    pathController = [configurationCopy pathController];
     controllerConfiguration = v8->_controllerConfiguration;
-    v8->_controllerConfiguration = v9;
+    v8->_controllerConfiguration = pathController;
 
     v8->_needsRoamingMonitor = sub_1000AC420(v8, 0);
     v8->_needsFallbackNotifications = sub_1000ACF88(v8, v11);
     sub_1000AD084(v8, v12);
     v13 = [NESMPolicySession alloc];
-    v14 = [v6 identifier];
-    v15 = [v6 grade];
+    identifier = [configurationCopy identifier];
+    grade = [configurationCopy grade];
     if (v13)
     {
-      v13 = sub_100033D18(&v13->super.isa, v14, 5, v15, 1, 1);
+      v13 = sub_100033D18(&v13->super.isa, identifier, 5, grade, 1, 1);
     }
 
     [(NESMSession *)v8 setPolicySession:v13];

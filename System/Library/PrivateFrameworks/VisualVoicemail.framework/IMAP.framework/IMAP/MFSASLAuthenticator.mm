@@ -1,26 +1,26 @@
 @interface MFSASLAuthenticator
 - (BOOL)isUsingSSL;
-- (MFSASLAuthenticator)initWithAuthScheme:(id)a3 account:(id)a4 connection:(id)a5;
+- (MFSASLAuthenticator)initWithAuthScheme:(id)scheme account:(id)account connection:(id)connection;
 - (void)dealloc;
 - (void)setMissingPasswordError;
 @end
 
 @implementation MFSASLAuthenticator
 
-- (MFSASLAuthenticator)initWithAuthScheme:(id)a3 account:(id)a4 connection:(id)a5
+- (MFSASLAuthenticator)initWithAuthScheme:(id)scheme account:(id)account connection:(id)connection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  schemeCopy = scheme;
+  accountCopy = account;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = MFSASLAuthenticator;
   v12 = [(MFSASLAuthenticator *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_authScheme, a3);
-    objc_storeStrong(&v13->_account, a4);
-    objc_storeStrong(&v13->_connection, a5);
+    objc_storeStrong(&v12->_authScheme, scheme);
+    objc_storeStrong(&v13->_account, account);
+    objc_storeStrong(&v13->_connection, connection);
   }
 
   return v13;
@@ -35,11 +35,11 @@
 
 - (BOOL)isUsingSSL
 {
-  v2 = [(MFConnection *)self->_connection securityProtocol];
-  v3 = v2;
-  if (v2)
+  securityProtocol = [(MFConnection *)self->_connection securityProtocol];
+  v3 = securityProtocol;
+  if (securityProtocol)
   {
-    v4 = [v2 caseInsensitiveCompare:*MEMORY[0x277CBF0A0]] != 0;
+    v4 = [securityProtocol caseInsensitiveCompare:*MEMORY[0x277CBF0A0]] != 0;
   }
 
   else
@@ -52,8 +52,8 @@
 
 - (void)setMissingPasswordError
 {
-  v2 = [(MFSASLAuthenticator *)self account];
-  v4 = [v2 missingPasswordErrorWithTitle:0];
+  account = [(MFSASLAuthenticator *)self account];
+  v4 = [account missingPasswordErrorWithTitle:0];
 
   v3 = +[MFActivityMonitor currentMonitor];
   [v3 setError:v4];

@@ -1,10 +1,10 @@
 @interface PKIOSurfaceUtilities
-+ (uint64_t)makeCGImageFromIOSurfaceFramebuffer:(int)a3 opaque:;
++ (uint64_t)makeCGImageFromIOSurfaceFramebuffer:(int)framebuffer opaque:;
 @end
 
 @implementation PKIOSurfaceUtilities
 
-+ (uint64_t)makeCGImageFromIOSurfaceFramebuffer:(int)a3 opaque:
++ (uint64_t)makeCGImageFromIOSurfaceFramebuffer:(int)framebuffer opaque:
 {
   v32 = *MEMORY[0x1E69E9840];
   v4 = a2;
@@ -109,7 +109,7 @@ LABEL_8:
         }
       }
 
-      if (a3)
+      if (framebuffer)
       {
         v23 = 8198;
       }

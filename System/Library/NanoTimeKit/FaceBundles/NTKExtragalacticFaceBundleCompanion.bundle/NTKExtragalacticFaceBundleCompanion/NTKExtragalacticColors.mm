@@ -1,87 +1,87 @@
 @interface NTKExtragalacticColors
-+ (id)identityColorForCorner:(unint64_t)a3;
-+ (id)identityColorForGlyphColor:(unint64_t)a3;
-+ (id)lutFilterFromPalette:(id)a3;
++ (id)identityColorForCorner:(unint64_t)corner;
++ (id)identityColorForGlyphColor:(unint64_t)color;
++ (id)lutFilterFromPalette:(id)palette;
 @end
 
 @implementation NTKExtragalacticColors
 
-+ (id)identityColorForGlyphColor:(unint64_t)a3
++ (id)identityColorForGlyphColor:(unint64_t)color
 {
-  switch(a3)
+  switch(color)
   {
     case 2uLL:
-      a1 = [MEMORY[0x277D75348] blueColor];
+      self = [MEMORY[0x277D75348] blueColor];
       break;
     case 1uLL:
-      a1 = [MEMORY[0x277D75348] greenColor];
+      self = [MEMORY[0x277D75348] greenColor];
       break;
     case 0uLL:
-      a1 = [MEMORY[0x277D75348] redColor];
+      self = [MEMORY[0x277D75348] redColor];
       break;
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)identityColorForCorner:(unint64_t)a3
++ (id)identityColorForCorner:(unint64_t)corner
 {
-  if (a3 > 1)
+  if (corner > 1)
   {
-    if (a3 == 2)
+    if (corner == 2)
     {
-      a1 = [MEMORY[0x277D75348] cyanColor];
+      self = [MEMORY[0x277D75348] cyanColor];
     }
 
-    else if (a3 == 3)
+    else if (corner == 3)
     {
-      a1 = [MEMORY[0x277D75348] blackColor];
+      self = [MEMORY[0x277D75348] blackColor];
     }
   }
 
-  else if (a3)
+  else if (corner)
   {
-    if (a3 == 1)
+    if (corner == 1)
     {
-      a1 = [MEMORY[0x277D75348] magentaColor];
+      self = [MEMORY[0x277D75348] magentaColor];
     }
   }
 
   else
   {
-    a1 = [MEMORY[0x277D75348] yellowColor];
+    self = [MEMORY[0x277D75348] yellowColor];
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)lutFilterFromPalette:(id)a3
++ (id)lutFilterFromPalette:(id)palette
 {
   v37[8] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  paletteCopy = palette;
   v4 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
-  v5 = [v3 glyphColor0];
-  v6 = [v3 glyphColor1];
-  v7 = [v3 glyphColor2];
-  v8 = [v3 blackOverlapAndBackground];
-  v9 = [v3 backgroundTopLeft];
-  v10 = [v3 backgroundTopRight];
-  v11 = [v3 backgroundBottomLeft];
-  v26 = v8;
-  v27 = v7;
-  v37[0] = v8;
-  v37[1] = v5;
-  v28 = v6;
-  v29 = v5;
-  v37[2] = v6;
-  v37[3] = v9;
-  v37[4] = v7;
-  v37[5] = v10;
-  v37[6] = v11;
+  glyphColor0 = [paletteCopy glyphColor0];
+  glyphColor1 = [paletteCopy glyphColor1];
+  glyphColor2 = [paletteCopy glyphColor2];
+  blackOverlapAndBackground = [paletteCopy blackOverlapAndBackground];
+  backgroundTopLeft = [paletteCopy backgroundTopLeft];
+  backgroundTopRight = [paletteCopy backgroundTopRight];
+  backgroundBottomLeft = [paletteCopy backgroundBottomLeft];
+  v26 = blackOverlapAndBackground;
+  v27 = glyphColor2;
+  v37[0] = blackOverlapAndBackground;
+  v37[1] = glyphColor0;
+  v28 = glyphColor1;
+  v29 = glyphColor0;
+  v37[2] = glyphColor1;
+  v37[3] = backgroundTopLeft;
+  v37[4] = glyphColor2;
+  v37[5] = backgroundTopRight;
+  v37[6] = backgroundBottomLeft;
   v37[7] = v4;
   v30 = v4;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:8];
-  v13 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -103,7 +103,7 @@
 
         v19 = *(*(&v31 + 1) + 8 * i);
         v20 = NTKRGBAArrayWithColor();
-        [v13 addObjectsFromArray:v20];
+        [array addObjectsFromArray:v20];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v31 objects:v36 count:16];
@@ -113,7 +113,7 @@
   }
 
   v21 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA590]];
-  v22 = [v13 copy];
+  v22 = [array copy];
   [v21 setValue:v22 forKey:*MEMORY[0x277CDA540]];
 
   v35 = v21;

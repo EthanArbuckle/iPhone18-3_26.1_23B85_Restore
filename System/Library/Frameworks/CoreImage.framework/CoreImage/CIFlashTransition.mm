@@ -213,8 +213,8 @@
   v59 = v38;
   v60 = [CIVector vectorWithX:100.0 Y:(v59 * v59) Z:1.0 / (v97 * v59) W:v33];
   v61 = [CIVector vectorWithX:(v96 * v7) Y:(1.0 - v7) * v96 * 0.5];
-  v62 = [(CIFlashTransition *)self _geomKernel];
-  v63 = [(CIFlashTransition *)self _colorKernel];
+  _geomKernel = [(CIFlashTransition *)self _geomKernel];
+  _colorKernel = [(CIFlashTransition *)self _colorKernel];
   v64 = +[CIImage noiseImage];
   v65 = MEMORY[0x1E695F040];
   v66 = *MEMORY[0x1E695F040];
@@ -222,7 +222,7 @@
   v68 = *(MEMORY[0x1E695F040] + 16);
   v69 = *(MEMORY[0x1E695F040] + 24);
   v100 = [CIVector vectorWithX:v94.f32[0] Y:v95];
-  v70 = [v62 applyWithExtent:&__block_literal_global_32 roiCallback:v64 inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v100, 1), v66, v67, v68, v69}];
+  v70 = [_geomKernel applyWithExtent:&__block_literal_global_32 roiCallback:v64 inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v100, 1), v66, v67, v68, v69}];
   [(CIVector *)v60 Z];
   v72 = 1.0 / v71;
   v73 = v94.f32[0] - v72;
@@ -267,7 +267,7 @@
   v99[4] = v70;
   v99[5] = v60;
   v99[6] = v61;
-  v37 = [v63 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v99, 7), v110.origin.x, v110.origin.y, v110.size.width, v110.size.height}];
+  v37 = [_colorKernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v99, 7), v110.origin.x, v110.origin.y, v110.size.width, v110.size.height}];
   v115.origin.x = v73;
   v115.origin.y = v74;
   v115.size.width = v75;

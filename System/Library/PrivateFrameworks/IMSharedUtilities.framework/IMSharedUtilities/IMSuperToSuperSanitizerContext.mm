@@ -1,23 +1,23 @@
 @interface IMSuperToSuperSanitizerContext
-- (IMSuperToSuperSanitizerContext)initWithAttributedString:(id)a3 extractAttachments:(BOOL)a4;
+- (IMSuperToSuperSanitizerContext)initWithAttributedString:(id)string extractAttachments:(BOOL)attachments;
 - (void)dealloc;
-- (void)parser:(id)a3 foundAttributes:(id)a4 inRange:(_NSRange)a5 characters:(id)a6;
-- (void)parser:(id)a3 foundAttributes:(id)a4 inRange:(_NSRange)a5 fileTransferGUID:(id)a6 filename:(id)a7 bookmark:(id)a8 width:(id)a9 height:(id)a10 isAnimoji:(id)a11;
-- (void)parserDidEnd:(id)a3;
-- (void)parserDidStart:(id)a3 bodyAttributes:(id)a4;
+- (void)parser:(id)parser foundAttributes:(id)attributes inRange:(_NSRange)range characters:(id)characters;
+- (void)parser:(id)parser foundAttributes:(id)attributes inRange:(_NSRange)range fileTransferGUID:(id)d filename:(id)filename bookmark:(id)bookmark width:(id)width height:(id)self0 isAnimoji:(id)self1;
+- (void)parserDidEnd:(id)end;
+- (void)parserDidStart:(id)start bodyAttributes:(id)attributes;
 @end
 
 @implementation IMSuperToSuperSanitizerContext
 
-- (IMSuperToSuperSanitizerContext)initWithAttributedString:(id)a3 extractAttachments:(BOOL)a4
+- (IMSuperToSuperSanitizerContext)initWithAttributedString:(id)string extractAttachments:(BOOL)attachments
 {
-  v4 = a4;
+  attachmentsCopy = attachments;
   v8.receiver = self;
   v8.super_class = IMSuperToSuperSanitizerContext;
-  v5 = [(IMFromSuperParserContext *)&v8 initWithAttributedString:a3];
+  v5 = [(IMFromSuperParserContext *)&v8 initWithAttributedString:string];
   if (v5)
   {
-    if (v4)
+    if (attachmentsCopy)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -28,7 +28,7 @@
     }
 
     v5->_attachments = v6;
-    v5->_extractAttachments = v4;
+    v5->_extractAttachments = attachmentsCopy;
   }
 
   return v5;
@@ -41,13 +41,13 @@
   [(IMFromSuperParserContext *)&v3 dealloc];
 }
 
-- (void)parserDidStart:(id)a3 bodyAttributes:(id)a4
+- (void)parserDidStart:(id)start bodyAttributes:(id)attributes
 {
   v12.receiver = self;
   v12.super_class = IMSuperToSuperSanitizerContext;
   self->_content = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:{-[NSAttributedString string](-[IMAttributedStringParserContext inString](&v12, sel_inString), "string")}];
   self->_offset = 0;
-  v6 = [a4 objectForKey:*MEMORY[0x1E69A5FC8]];
+  v6 = [attributes objectForKey:*MEMORY[0x1E69A5FC8]];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -58,7 +58,7 @@
   }
 
   self->_backgroundColor = v8;
-  v9 = [a4 objectForKey:*MEMORY[0x1E69A5FD0]];
+  v9 = [attributes objectForKey:*MEMORY[0x1E69A5FD0]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -72,12 +72,12 @@
   }
 
   self->_foregroundColor = v10;
-  v11 = [a4 objectForKey:*MEMORY[0x1E69A5F10]];
+  v11 = [attributes objectForKey:*MEMORY[0x1E69A5F10]];
   self->_hadBaseWritingDirectionAttribute = v11 != 0;
   self->_baseWritingDirection = [v11 integerValue];
 }
 
-- (void)parserDidEnd:(id)a3
+- (void)parserDidEnd:(id)end
 {
   backgroundColor = self->_backgroundColor;
   if (backgroundColor)
@@ -96,10 +96,10 @@
   }
 }
 
-- (void)parser:(id)a3 foundAttributes:(id)a4 inRange:(_NSRange)a5 characters:(id)a6
+- (void)parser:(id)parser foundAttributes:(id)attributes inRange:(_NSRange)range characters:(id)characters
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = objc_opt_class();
@@ -108,10 +108,10 @@
   v17[1] = 3221225472;
   v18 = sub_1A86D0E30;
   v19 = &unk_1E7829CD8;
-  v20 = a4;
+  attributesCopy = attributes;
   v21 = v12;
   v13 = *MEMORY[0x1E69A5F78];
-  v14 = [a4 objectForKey:*MEMORY[0x1E69A5F78]];
+  v14 = [attributes objectForKey:*MEMORY[0x1E69A5F78]];
   if (objc_opt_isKindOfClass())
   {
     [v21 setObject:v14 forKey:v13];
@@ -131,7 +131,7 @@
   (v18)(v17, *MEMORY[0x1E69A5F10], v10);
   (v18)(v17, *MEMORY[0x1E69A5F28], v9);
   (v18)(v17, *MEMORY[0x1E69A5F30], v10);
-  if (![a4 objectForKey:v15] && -[NSString length](self->_foregroundColor, "length"))
+  if (![attributes objectForKey:v15] && -[NSString length](self->_foregroundColor, "length"))
   {
     [v12 setObject:self->_foregroundColor forKey:v15];
   }
@@ -139,13 +139,13 @@
   [(NSMutableAttributedString *)self->_content setAttributes:v12 range:location - self->_offset, length];
 }
 
-- (void)parser:(id)a3 foundAttributes:(id)a4 inRange:(_NSRange)a5 fileTransferGUID:(id)a6 filename:(id)a7 bookmark:(id)a8 width:(id)a9 height:(id)a10 isAnimoji:(id)a11
+- (void)parser:(id)parser foundAttributes:(id)attributes inRange:(_NSRange)range fileTransferGUID:(id)d filename:(id)filename bookmark:(id)bookmark width:(id)width height:(id)self0 isAnimoji:(id)self1
 {
   if (self->_extractAttachments)
   {
-    length = a5.length;
-    location = a5.location;
-    [(NSMutableArray *)self->_attachments addObject:a4];
+    length = range.length;
+    location = range.location;
+    [(NSMutableArray *)self->_attachments addObject:attributes];
     if (location < [(NSMutableAttributedString *)self->_content length])
     {
       [(NSMutableAttributedString *)self->_content deleteCharactersInRange:location, length];

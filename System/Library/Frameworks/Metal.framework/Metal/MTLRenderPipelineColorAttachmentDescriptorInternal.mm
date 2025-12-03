@@ -1,8 +1,8 @@
 @interface MTLRenderPipelineColorAttachmentDescriptorInternal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLRenderPipelineColorAttachmentDescriptorInternal)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
 @end
 
@@ -24,20 +24,20 @@
   [(MTLRenderPipelineColorAttachmentDescriptorInternal *)&v2 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  return Class == object_getClass(a3) && self->_private.var0.var1.var0 == *(a3 + 1);
+  return Class == object_getClass(equal) && self->_private.var0.var1.var0 == *(equal + 1);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (result)
   {
     *(result + 1) = self->_private.var0.var1.var0;
@@ -46,13 +46,13 @@
   return result;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v5 = MEMORY[0x1E696AEC0];
   v8.receiver = self;
   v8.super_class = MTLRenderPipelineColorAttachmentDescriptorInternal;
   v6 = [(MTLRenderPipelineColorAttachmentDescriptorInternal *)&v8 description];
-  return [v5 stringWithFormat:@"%@%@", v6, pipelineColorAttachmentFormattedDescription(a3 + 4, self)];
+  return [v5 stringWithFormat:@"%@%@", v6, pipelineColorAttachmentFormattedDescription(description + 4, self)];
 }
 
 @end

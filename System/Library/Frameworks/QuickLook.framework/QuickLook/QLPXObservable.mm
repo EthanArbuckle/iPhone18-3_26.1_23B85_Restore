@@ -5,10 +5,10 @@
 - (void)_observersQueue_copyChangeObserversForWriteIfNeeded;
 - (void)_publishChanges;
 - (void)_willChange;
-- (void)enumerateObserversUsingBlock:(id)a3;
-- (void)performChanges:(id)a3;
-- (void)registerChangeObserver:(id)a3 context:(void *)a4;
-- (void)unregisterChangeObserver:(id)a3 context:(void *)a4;
+- (void)enumerateObserversUsingBlock:(id)block;
+- (void)performChanges:(id)changes;
+- (void)registerChangeObserver:(id)observer context:(void *)context;
+- (void)unregisterChangeObserver:(id)observer context:(void *)context;
 @end
 
 @implementation QLPXObservable
@@ -30,23 +30,23 @@
   return v2;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
-  v12 = v4;
+  changesCopy = changes;
+  v12 = changesCopy;
   if (self->_isEnumeratingObservers)
   {
     pendingChangeBlocks = self->_pendingChangeBlocks;
     if (pendingChangeBlocks)
     {
-      v6 = [v4 copy];
+      v6 = [changesCopy copy];
       [(NSMutableArray *)pendingChangeBlocks addObject:v6];
     }
 
     else
     {
       v8 = MEMORY[0x277CBEB18];
-      v9 = [v4 copy];
+      v9 = [changesCopy copy];
       v10 = [v8 arrayWithObject:v9];
       v11 = self->_pendingChangeBlocks;
       self->_pendingChangeBlocks = v10;
@@ -56,25 +56,25 @@
   else
   {
     [(QLPXObservable *)self _willChange];
-    v7 = [(QLPXObservable *)self mutableChangeObject];
-    v12[2](v12, v7);
+    mutableChangeObject = [(QLPXObservable *)self mutableChangeObject];
+    v12[2](v12, mutableChangeObject);
 
     [(QLPXObservable *)self _didChange];
   }
 }
 
-- (void)registerChangeObserver:(id)a3 context:(void *)a4
+- (void)registerChangeObserver:(id)observer context:(void *)context
 {
-  v6 = a3;
+  observerCopy = observer;
   observersQueue = self->_observersQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__QLPXObservable_registerChangeObserver_context___block_invoke;
   block[3] = &unk_278B57480;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = observerCopy;
+  contextCopy = context;
+  v8 = observerCopy;
   dispatch_sync(observersQueue, block);
 }
 
@@ -105,25 +105,25 @@ void __49__QLPXObservable_registerChangeObserver_context___block_invoke(uint64_t
   }
 }
 
-- (void)unregisterChangeObserver:(id)a3 context:(void *)a4
+- (void)unregisterChangeObserver:(id)observer context:(void *)context
 {
-  v6 = a3;
+  observerCopy = observer;
   observersQueue = self->_observersQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__QLPXObservable_unregisterChangeObserver_context___block_invoke;
   block[3] = &unk_278B57480;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = observerCopy;
+  contextCopy = context;
+  v8 = observerCopy;
   dispatch_sync(observersQueue, block);
 }
 
-- (void)enumerateObserversUsingBlock:(id)a3
+- (void)enumerateObserversUsingBlock:(id)block
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   isEnumeratingObservers = self->_isEnumeratingObservers;
   self->_isEnumeratingObservers = 1;
   v24 = 0;
@@ -145,8 +145,8 @@ void __49__QLPXObservable_registerChangeObserver_context___block_invoke(uint64_t
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v25[5] keyEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v30 count:16];
+  keyEnumerator = [v25[5] keyEnumerator];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v30 count:16];
   if (v7)
   {
     v8 = *v19;
@@ -156,7 +156,7 @@ LABEL_3:
     {
       if (*v19 != v8)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(keyEnumerator);
       }
 
       v10 = *(*(&v18 + 1) + 8 * v9);
@@ -164,7 +164,7 @@ LABEL_3:
       v12 = 0;
       while (v12 < [v11 count])
       {
-        v4[2](v4, v10, [v11 pointerAtIndex:v12++], &v22);
+        blockCopy[2](blockCopy, v10, [v11 pointerAtIndex:v12++], &v22);
         if (v22 == 1)
         {
 
@@ -181,7 +181,7 @@ LABEL_3:
 
       if (++v9 == v7)
       {
-        v7 = [v6 countByEnumeratingWithState:&v18 objects:v30 count:16];
+        v7 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v30 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -323,13 +323,13 @@ void __38__QLPXObservable__applyPendingChanges__block_invoke(uint64_t a1, void *
   v19 = *MEMORY[0x277D85DE8];
   if (self->_observersQueue_shouldCopyChangeObserversOnWrite)
   {
-    v3 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = [(NSMapTable *)self->_observersQueue_changeObserversWithContexts keyEnumerator];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    keyEnumerator = [(NSMapTable *)self->_observersQueue_changeObserversWithContexts keyEnumerator];
+    v5 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -340,24 +340,24 @@ void __38__QLPXObservable__applyPendingChanges__block_invoke(uint64_t a1, void *
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
           v10 = [(NSMapTable *)self->_observersQueue_changeObserversWithContexts objectForKey:v9];
           v11 = [v10 copy];
 
-          [(NSMapTable *)v3 setObject:v11 forKey:v9];
+          [(NSMapTable *)weakToStrongObjectsMapTable setObject:v11 forKey:v9];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v6);
     }
 
     observersQueue_changeObserversWithContexts = self->_observersQueue_changeObserversWithContexts;
-    self->_observersQueue_changeObserversWithContexts = v3;
+    self->_observersQueue_changeObserversWithContexts = weakToStrongObjectsMapTable;
 
     self->_observersQueue_shouldCopyChangeObserversOnWrite = 0;
   }

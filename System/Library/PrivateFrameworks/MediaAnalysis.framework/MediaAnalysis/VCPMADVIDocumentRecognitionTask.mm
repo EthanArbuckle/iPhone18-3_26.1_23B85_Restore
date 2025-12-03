@@ -1,27 +1,27 @@
 @interface VCPMADVIDocumentRecognitionTask
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
 - (BOOL)canReuseResultsForRequest;
-- (VCPMADVIDocumentRecognitionTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
+- (VCPMADVIDocumentRecognitionTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
 - (int)run;
 - (void)cancel;
 @end
 
 @implementation VCPMADVIDocumentRecognitionTask
 
-- (VCPMADVIDocumentRecognitionTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
+- (VCPMADVIDocumentRecognitionTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
   v17.receiver = self;
   v17.super_class = VCPMADVIDocumentRecognitionTask;
   v12 = [(VCPMADVIDocumentRecognitionTask *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_imageAsset, a4);
-    objc_storeStrong(&v13->_signpostPayload, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_imageAsset, asset);
+    objc_storeStrong(&v13->_signpostPayload, payload);
     v14 = dispatch_queue_create("VCPMADVIDocumentRecognitionTask", 0);
     cancelQueue = v13->_cancelQueue;
     v13->_cancelQueue = v14;
@@ -30,15 +30,15 @@
   return v13;
 }
 
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v11 = [[a1 alloc] initWithRequest:v8 imageAsset:v9 andSignpostPayload:v10];
+    v11 = [[self alloc] initWithRequest:requestCopy imageAsset:assetCopy andSignpostPayload:payloadCopy];
   }
 
   else
@@ -90,25 +90,25 @@ void __41__VCPMADVIDocumentRecognitionTask_cancel__block_invoke(uint64_t a1)
     goto LABEL_6;
   }
 
-  v3 = [(MADVIDocumentRecognitionRequest *)self->_request usesLanguageDetection];
-  if (v3)
+  usesLanguageDetection = [(MADVIDocumentRecognitionRequest *)self->_request usesLanguageDetection];
+  if (usesLanguageDetection)
   {
-    v3 = [(MADVIDocumentRecognitionRequest *)self->_request usesLanguageCorrection];
-    if (v3)
+    usesLanguageDetection = [(MADVIDocumentRecognitionRequest *)self->_request usesLanguageCorrection];
+    if (usesLanguageDetection)
     {
       if (([(MADVIDocumentRecognitionRequest *)self->_request usesFormFieldDetection]& 1) != 0 || [(MADVIDocumentRecognitionRequest *)self->_request recognitionLevel])
       {
 LABEL_6:
-        LOBYTE(v3) = 0;
-        return v3;
+        LOBYTE(usesLanguageDetection) = 0;
+        return usesLanguageDetection;
       }
 
       [(MADVIDocumentRecognitionRequest *)self->_request minimumTextHeight];
-      LOBYTE(v3) = v4 == 0.0;
+      LOBYTE(usesLanguageDetection) = v4 == 0.0;
     }
   }
 
-  return v3;
+  return usesLanguageDetection;
 }
 
 - (int)run
@@ -120,8 +120,8 @@ LABEL_6:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "VCPMADVIDocumentRecognitionTask running...", buf, 2u);
   }
 
-  v3 = [(VCPMADServiceImageAsset *)self->_imageAsset documentObservations];
-  if (!v3)
+  documentObservations = [(VCPMADServiceImageAsset *)self->_imageAsset documentObservations];
+  if (!documentObservations)
   {
     v61 = 0;
     v60 = 0;
@@ -149,34 +149,34 @@ LABEL_6:
     v12 = +[VCPMADResourceManager sharedManager];
     v56 = [v12 activateResource:v10];
 
-    v13 = [MEMORY[0x1E6984628] mad_defaultRequest];
-    v14 = [(MADVIDocumentRecognitionRequest *)self->_request languages];
-    v15 = v14 == 0;
+    mad_defaultRequest = [MEMORY[0x1E6984628] mad_defaultRequest];
+    languages = [(MADVIDocumentRecognitionRequest *)self->_request languages];
+    v15 = languages == 0;
 
     if (!v15)
     {
-      v16 = [(MADVIDocumentRecognitionRequest *)self->_request languages];
-      [v13 setRecognitionLanguages:v16];
+      languages2 = [(MADVIDocumentRecognitionRequest *)self->_request languages];
+      [mad_defaultRequest setRecognitionLanguages:languages2];
     }
 
-    [v13 setMaximumCandidateCount:{-[MADVIDocumentRecognitionRequest maximumCandidateCount](self->_request, "maximumCandidateCount")}];
-    [v13 setUsesLanguageDetection:{-[MADVIDocumentRecognitionRequest usesLanguageDetection](self->_request, "usesLanguageDetection")}];
-    [v13 setUsesLanguageCorrection:{-[MADVIDocumentRecognitionRequest usesLanguageCorrection](self->_request, "usesLanguageCorrection")}];
-    [v13 setRecognitionLevel:{-[MADVIDocumentRecognitionRequest recognitionLevel](self->_request, "recognitionLevel")}];
+    [mad_defaultRequest setMaximumCandidateCount:{-[MADVIDocumentRecognitionRequest maximumCandidateCount](self->_request, "maximumCandidateCount")}];
+    [mad_defaultRequest setUsesLanguageDetection:{-[MADVIDocumentRecognitionRequest usesLanguageDetection](self->_request, "usesLanguageDetection")}];
+    [mad_defaultRequest setUsesLanguageCorrection:{-[MADVIDocumentRecognitionRequest usesLanguageCorrection](self->_request, "usesLanguageCorrection")}];
+    [mad_defaultRequest setRecognitionLevel:{-[MADVIDocumentRecognitionRequest recognitionLevel](self->_request, "recognitionLevel")}];
     [(MADVIDocumentRecognitionRequest *)self->_request minimumTextHeight];
-    [v13 setMinimumTextHeight:?];
-    [v13 setUsesFormFieldDetection:{-[MADVIDocumentRecognitionRequest usesFormFieldDetection](self->_request, "usesFormFieldDetection")}];
+    [mad_defaultRequest setMinimumTextHeight:?];
+    [mad_defaultRequest setUsesFormFieldDetection:{-[MADVIDocumentRecognitionRequest usesFormFieldDetection](self->_request, "usesFormFieldDetection")}];
     if (self->_preferredMetalDevice)
     {
       v17 = [MEMORY[0x1E6984608] deviceForMetalDevice:?];
-      [v13 setProcessingDevice:v17];
+      [mad_defaultRequest setProcessingDevice:v17];
 
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
-        v18 = [v13 processingDevice];
+        processingDevice = [mad_defaultRequest processingDevice];
         preferredMetalDevice = self->_preferredMetalDevice;
         *buf = 138412546;
-        v65 = v18;
+        v65 = processingDevice;
         v66 = 2112;
         v67 = preferredMetalDevice;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[DocumentRecognition] Set VNProcessingDevice: %@ (%@)", buf, 0x16u);
@@ -189,7 +189,7 @@ LABEL_6:
     block[2] = __38__VCPMADVIDocumentRecognitionTask_run__block_invoke;
     block[3] = &unk_1E834D238;
     block[4] = self;
-    v55 = v13;
+    v55 = mad_defaultRequest;
     v59 = v55;
     dispatch_sync(cancelQueue, block);
     v21 = atomic_load(&self->_canceled);
@@ -220,8 +220,8 @@ LABEL_50:
     v27 = objc_alloc(MEMORY[0x1E69845B8]);
     v28 = v61;
     v29 = v60;
-    v30 = [v10 session];
-    v54 = [v27 initWithCVPixelBuffer:v28 orientation:v29 options:MEMORY[0x1E695E0F8] session:v30];
+    session = [v10 session];
+    v54 = [v27 initWithCVPixelBuffer:v28 orientation:v29 options:MEMORY[0x1E695E0F8] session:session];
 
     v31 = VCPSignPostLog();
     v32 = v31;
@@ -266,20 +266,20 @@ LABEL_50:
     {
       v44 = self->_request;
       v45 = objc_alloc(MEMORY[0x1E69AE410]);
-      v46 = [v55 results];
-      v47 = [v45 initWithObservations:v46];
+      results = [v55 results];
+      v47 = [v45 initWithObservations:results];
       v62 = v47;
       v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v62 count:1];
       [(MADVIDocumentRecognitionRequest *)v44 setResults:v48];
 
-      v49 = [(MADVIDocumentRecognitionRequest *)self->_request results];
-      v50 = [v49 firstObject];
-      [v50 setExecutionNanoseconds:{objc_msgSend(v55, "executionNanoseconds")}];
+      results2 = [(MADVIDocumentRecognitionRequest *)self->_request results];
+      firstObject = [results2 firstObject];
+      [firstObject setExecutionNanoseconds:{objc_msgSend(v55, "executionNanoseconds")}];
 
       if ([(VCPMADVIDocumentRecognitionTask *)self canReuseResultsForRequest])
       {
-        v51 = [v55 results];
-        [(VCPMADServiceImageAsset *)self->_imageAsset setDocumentObservations:v51];
+        results3 = [v55 results];
+        [(VCPMADServiceImageAsset *)self->_imageAsset setDocumentObservations:results3];
       }
 
       else if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -321,7 +321,7 @@ LABEL_48:
   }
 
   v4 = self->_request;
-  v5 = [objc_alloc(MEMORY[0x1E69AE410]) initWithObservations:v3];
+  v5 = [objc_alloc(MEMORY[0x1E69AE410]) initWithObservations:documentObservations];
   v70[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:1];
   [(MADVIDocumentRecognitionRequest *)v4 setResults:v6];

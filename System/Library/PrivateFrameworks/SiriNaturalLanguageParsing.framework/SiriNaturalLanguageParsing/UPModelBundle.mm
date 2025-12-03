@@ -1,34 +1,34 @@
 @interface UPModelBundle
-- (UPModelBundle)initWithLoadedModelConfiguration:(id)a3 parserModel:(id)a4 calibrationModel:(id)a5;
-- (UPModelBundle)initWithPreprocessor:(id)a3 parserModel:(id)a4 calibrationModel:(id)a5;
+- (UPModelBundle)initWithLoadedModelConfiguration:(id)configuration parserModel:(id)model calibrationModel:(id)calibrationModel;
+- (UPModelBundle)initWithPreprocessor:(id)preprocessor parserModel:(id)model calibrationModel:(id)calibrationModel;
 @end
 
 @implementation UPModelBundle
 
-- (UPModelBundle)initWithLoadedModelConfiguration:(id)a3 parserModel:(id)a4 calibrationModel:(id)a5
+- (UPModelBundle)initWithLoadedModelConfiguration:(id)configuration parserModel:(id)model calibrationModel:(id)calibrationModel
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 preprocessor];
-  v11 = [(UPModelBundle *)self initWithPreprocessor:v10 parserModel:v8 calibrationModel:v9];
+  modelCopy = model;
+  calibrationModelCopy = calibrationModel;
+  preprocessor = [configuration preprocessor];
+  v11 = [(UPModelBundle *)self initWithPreprocessor:preprocessor parserModel:modelCopy calibrationModel:calibrationModelCopy];
 
   return v11;
 }
 
-- (UPModelBundle)initWithPreprocessor:(id)a3 parserModel:(id)a4 calibrationModel:(id)a5
+- (UPModelBundle)initWithPreprocessor:(id)preprocessor parserModel:(id)model calibrationModel:(id)calibrationModel
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  preprocessorCopy = preprocessor;
+  modelCopy = model;
+  calibrationModelCopy = calibrationModel;
   v15.receiver = self;
   v15.super_class = UPModelBundle;
   v12 = [(UPModelBundle *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_preprocessor, a3);
-    objc_storeStrong(&v13->_parserModel, a4);
-    objc_storeStrong(&v13->_calibrationModel, a5);
+    objc_storeStrong(&v12->_preprocessor, preprocessor);
+    objc_storeStrong(&v13->_parserModel, model);
+    objc_storeStrong(&v13->_calibrationModel, calibrationModel);
   }
 
   return v13;

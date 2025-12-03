@@ -1,24 +1,24 @@
 @interface _NCWidgetExtensionContext
 - (BOOL)widgetIsForeground;
-- (CGSize)_maximumSizeForDisplayMode:(int64_t)a3;
-- (_NCWidgetExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5;
+- (CGSize)_maximumSizeForDisplayMode:(int64_t)mode;
+- (_NCWidgetExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d;
 - (_NCWidgetViewController)_hostViewController;
 - (int64_t)widgetLargestAvailableDisplayMode;
-- (void)_setMaximumSize:(CGSize)a3 forDisplayMode:(int64_t)a4;
-- (void)openURL:(id)a3 completionHandler:(id)a4;
-- (void)setWidgetLargestAvailableDisplayMode:(int64_t)a3;
+- (void)_setMaximumSize:(CGSize)size forDisplayMode:(int64_t)mode;
+- (void)openURL:(id)l completionHandler:(id)handler;
+- (void)setWidgetLargestAvailableDisplayMode:(int64_t)mode;
 @end
 
 @implementation _NCWidgetExtensionContext
 
-- (_NCWidgetExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5
+- (_NCWidgetExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  endpointCopy = endpoint;
+  dCopy = d;
   v22.receiver = self;
   v22.super_class = _NCWidgetExtensionContext;
-  v11 = [(_NCWidgetExtensionContext *)&v22 initWithInputItems:v8 listenerEndpoint:v9 contextUUID:v10];
+  v11 = [(_NCWidgetExtensionContext *)&v22 initWithInputItems:itemsCopy listenerEndpoint:endpointCopy contextUUID:dCopy];
   v12 = v11;
   if (v11)
   {
@@ -38,7 +38,7 @@
     v16 = v20;
     v15 = v11;
     v17 = v18;
-    [v8 enumerateObjectsUsingBlock:v14];
+    [itemsCopy enumerateObjectsUsingBlock:v14];
 
     _Block_object_dispose(v18, 8);
     _Block_object_dispose(v20, 8);
@@ -47,10 +47,10 @@
   return v12;
 }
 
-- (void)openURL:(id)a3 completionHandler:(id)a4
+- (void)openURL:(id)l completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
@@ -60,20 +60,20 @@
   block[1] = 3221225472;
   block[2] = __55___NCWidgetExtensionContext_openURL_completionHandler___block_invoke;
   block[3] = &unk_278750C38;
-  v12 = v6;
+  v12 = handlerCopy;
   v13 = v14;
-  v11 = v5;
-  v8 = v6;
-  v9 = v5;
+  v11 = lCopy;
+  v8 = handlerCopy;
+  v9 = lCopy;
   dispatch_async(v7, block);
 
   _Block_object_dispose(v14, 8);
 }
 
-- (CGSize)_maximumSizeForDisplayMode:(int64_t)a3
+- (CGSize)_maximumSizeForDisplayMode:(int64_t)mode
 {
   v3 = &OBJC_IVAR____NCWidgetExtensionContext__maxCompactSize;
-  if (a3 == 1)
+  if (mode == 1)
   {
     v3 = &OBJC_IVAR____NCWidgetExtensionContext__maxExpandedSize;
   }
@@ -86,11 +86,11 @@
   return result;
 }
 
-- (void)_setMaximumSize:(CGSize)a3 forDisplayMode:(int64_t)a4
+- (void)_setMaximumSize:(CGSize)size forDisplayMode:(int64_t)mode
 {
-  if (a4)
+  if (mode)
   {
-    if (a4 != 1)
+    if (mode != 1)
     {
       return;
     }
@@ -103,7 +103,7 @@
     v4 = &OBJC_IVAR____NCWidgetExtensionContext__maxCompactSize;
   }
 
-  *(&self->super.super.isa + *v4) = a3;
+  *(&self->super.super.isa + *v4) = size;
 }
 
 - (int64_t)widgetLargestAvailableDisplayMode
@@ -119,13 +119,13 @@
   }
 }
 
-- (void)setWidgetLargestAvailableDisplayMode:(int64_t)a3
+- (void)setWidgetLargestAvailableDisplayMode:(int64_t)mode
 {
-  if (self->_largestAvailableDisplayMode != a3)
+  if (self->_largestAvailableDisplayMode != mode)
   {
-    self->_largestAvailableDisplayMode = a3;
-    v4 = [(_NCWidgetExtensionContext *)self _hostViewController];
-    [v4 _clientLargestSupportedDisplayModeDidChange];
+    self->_largestAvailableDisplayMode = mode;
+    _hostViewController = [(_NCWidgetExtensionContext *)self _hostViewController];
+    [_hostViewController _clientLargestSupportedDisplayModeDidChange];
   }
 }
 

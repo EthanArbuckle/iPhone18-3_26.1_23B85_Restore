@@ -2,12 +2,12 @@
 - (BOOL)isAccessAllowed;
 - (BOOL)isAdministrator;
 - (BOOL)isAnnounceAccessAllowed;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOwner;
 - (BOOL)isRemoteAccessAllowed;
 - (BOOL)isRestrictedGuest;
 - (BOOL)isRestrictedGuestInAllowedPeriod;
-- (HMHomeAccessControl)initWithUser:(id)a3 allowAccess:(BOOL)a4 owner:(BOOL)a5 administratorPrivilege:(BOOL)a6 remoteAccess:(BOOL)a7 presenceAuthStatus:(id)a8 presenceComputeStatus:(id)a9 announceAccess:(BOOL)a10 camerasAccess:(id)a11 audioAnalysisUserDropInAccessLevel:(unint64_t)a12 restrictedGuest:(BOOL)a13 restrictedGuestAccessSettings:(id)a14;
+- (HMHomeAccessControl)initWithUser:(id)user allowAccess:(BOOL)access owner:(BOOL)owner administratorPrivilege:(BOOL)privilege remoteAccess:(BOOL)remoteAccess presenceAuthStatus:(id)status presenceComputeStatus:(id)computeStatus announceAccess:(BOOL)self0 camerasAccess:(id)self1 audioAnalysisUserDropInAccessLevel:(unint64_t)self2 restrictedGuest:(BOOL)self3 restrictedGuestAccessSettings:(id)self4;
 - (HMRestrictedGuestHomeAccessSettings)restrictedGuestAccessSettings;
 - (HMUserCameraAccess)camerasAccess;
 - (HMUserPresenceAuthorization)presenceAuthStatus;
@@ -16,23 +16,23 @@
 - (unint64_t)camerasAccessLevel;
 - (unint64_t)presenceAuthorizationStatus;
 - (unint64_t)presenceComputationStatus;
-- (void)_updateAccessForUser:(id)a3 restrictedGuestAccessSettings:(id)a4 completionHandler:(id)a5;
-- (void)setAccessAllowed:(BOOL)a3;
-- (void)setAdministrator:(BOOL)a3;
-- (void)setAnnounceAccessAllowed:(BOOL)a3;
-- (void)setAudioAnalysisUserDropinAccessLevel:(unint64_t)a3;
-- (void)setCamerasAccess:(id)a3;
-- (void)setOwner:(BOOL)a3;
-- (void)setPresenceAuthStatus:(id)a3;
-- (void)setPresenceComputeStatus:(id)a3;
-- (void)setRemoteAccessAllowed:(BOOL)a3;
-- (void)setRestrictedGuest:(BOOL)a3;
-- (void)setUserAccessSettings:(id)a3;
-- (void)updateAudioAnalysisUserDropinAccessLevel:(unint64_t)a3 completionHandler:(id)a4;
-- (void)updateCamerasAccessLevel:(unint64_t)a3 completionHandler:(id)a4;
-- (void)updatePresenceAuthorizationStatus:(unint64_t)a3 completionHandler:(id)a4;
-- (void)updateRestrictedGuestSchedule:(id)a3 completionHandler:(id)a4;
-- (void)updateRestrictedGuestSettings:(id)a3 completionHandler:(id)a4;
+- (void)_updateAccessForUser:(id)user restrictedGuestAccessSettings:(id)settings completionHandler:(id)handler;
+- (void)setAccessAllowed:(BOOL)allowed;
+- (void)setAdministrator:(BOOL)administrator;
+- (void)setAnnounceAccessAllowed:(BOOL)allowed;
+- (void)setAudioAnalysisUserDropinAccessLevel:(unint64_t)level;
+- (void)setCamerasAccess:(id)access;
+- (void)setOwner:(BOOL)owner;
+- (void)setPresenceAuthStatus:(id)status;
+- (void)setPresenceComputeStatus:(id)status;
+- (void)setRemoteAccessAllowed:(BOOL)allowed;
+- (void)setRestrictedGuest:(BOOL)guest;
+- (void)setUserAccessSettings:(id)settings;
+- (void)updateAudioAnalysisUserDropinAccessLevel:(unint64_t)level completionHandler:(id)handler;
+- (void)updateCamerasAccessLevel:(unint64_t)level completionHandler:(id)handler;
+- (void)updatePresenceAuthorizationStatus:(unint64_t)status completionHandler:(id)handler;
+- (void)updateRestrictedGuestSchedule:(id)schedule completionHandler:(id)handler;
+- (void)updateRestrictedGuestSettings:(id)settings completionHandler:(id)handler;
 @end
 
 @implementation HMHomeAccessControl
@@ -45,19 +45,19 @@
   return v3;
 }
 
-- (void)_updateAccessForUser:(id)a3 restrictedGuestAccessSettings:(id)a4 completionHandler:(id)a5
+- (void)_updateAccessForUser:(id)user restrictedGuestAccessSettings:(id)settings completionHandler:(id)handler
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 home];
-  v12 = [v11 context];
-  if (!v10)
+  userCopy = user;
+  settingsCopy = settings;
+  handlerCopy = handler;
+  home = [userCopy home];
+  context = [home context];
+  if (!handlerCopy)
   {
     v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMHomeAccessControl _updateAccessForUser:restrictedGuestAccessSettings:completionHandler:]", @"completion"];
     v34 = objc_autoreleasePoolPush();
-    v35 = self;
+    selfCopy = self;
     v36 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
@@ -74,67 +74,67 @@
     objc_exception_throw(v38);
   }
 
-  v13 = v12;
-  if (v12)
+  v13 = context;
+  if (context)
   {
-    v40 = v12;
-    v14 = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
+    v40 = context;
+    internalOnlyInitializer = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
-      v39 = v11;
-      v19 = v18 = v9;
-      v20 = [v14 UUID];
-      v21 = [v8 userID];
+      v39 = home;
+      v19 = v18 = settingsCopy;
+      uUID = [internalOnlyInitializer UUID];
+      userID = [userCopy userID];
       *buf = 138544130;
       v50 = v19;
       v51 = 2112;
-      v52 = v20;
+      v52 = uUID;
       v53 = 2112;
       v54 = v18;
       v55 = 2112;
-      v56 = v21;
+      v56 = userID;
       _os_log_impl(&dword_19BB39000, v17, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Restricted Guest}] Updating restricted guest settings: %@ for userID: %@", buf, 0x2Au);
 
-      v9 = v18;
-      v11 = v39;
+      settingsCopy = v18;
+      home = v39;
     }
 
     objc_autoreleasePoolPop(v15);
     v47[0] = @"kUserIDKey";
-    v22 = [v8 userID];
-    v48[0] = v22;
+    userID2 = [userCopy userID];
+    v48[0] = userID2;
     v47[1] = @"HMRestrictedGuestHomeAccessControlSettingsKey";
-    v23 = encodeRootObject(v9);
+    v23 = encodeRootObject(settingsCopy);
     v48[1] = v23;
     v47[2] = *MEMORY[0x1E69A29A8];
     v24 = HMFEncodedRootObject();
     v48[2] = v24;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:3];
 
-    v26 = [v11 uuid];
+    uuid = [home uuid];
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
     v41[2] = __92__HMHomeAccessControl__updateAccessForUser_restrictedGuestAccessSettings_completionHandler___block_invoke;
     v41[3] = &unk_1E75470B0;
-    v41[4] = v16;
-    v42 = v14;
-    v43 = v8;
+    v41[4] = selfCopy2;
+    v42 = internalOnlyInitializer;
+    v43 = userCopy;
     v44 = v40;
-    v46 = v10;
-    v45 = v9;
-    v27 = v14;
+    v46 = handlerCopy;
+    v45 = settingsCopy;
+    v27 = internalOnlyInitializer;
     v13 = v40;
-    [(_HMContext *)v44 sendMessage:v26 target:v25 payload:v41 responseHandler:?];
+    [(_HMContext *)v44 sendMessage:uuid target:v25 payload:v41 responseHandler:?];
   }
 
   else
   {
     v28 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy3 = self;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
@@ -148,7 +148,7 @@
 
     objc_autoreleasePoolPop(v28);
     v25 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v10 + 2))(v10, v25);
+    (*(handlerCopy + 2))(handlerCopy, v25);
   }
 
   v32 = *MEMORY[0x1E69E9840];
@@ -222,18 +222,18 @@ void __92__HMHomeAccessControl__updateAccessForUser_restrictedGuestAccessSetting
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateRestrictedGuestSettings:(id)a3 completionHandler:(id)a4
+- (void)updateRestrictedGuestSettings:(id)settings completionHandler:(id)handler
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMAccessControl *)self user];
-  v9 = [v8 home];
-  if (!v7)
+  settingsCopy = settings;
+  handlerCopy = handler;
+  user = [(HMAccessControl *)self user];
+  home = [user home];
+  if (!handlerCopy)
   {
     v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMHomeAccessControl updateRestrictedGuestSettings:completionHandler:]", @"completion"];
     v37 = objc_autoreleasePoolPush();
-    v38 = self;
+    selfCopy = self;
     v39 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
     {
@@ -250,11 +250,11 @@ void __92__HMHomeAccessControl__updateAccessForUser_restrictedGuestAccessSetting
     objc_exception_throw(v41);
   }
 
-  v10 = v9;
-  if (!v8 || ([v8 userID], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
+  v10 = home;
+  if (!user || ([user userID], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy3 = self;
     v18 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -264,7 +264,7 @@ LABEL_14:
       v21 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:2];
 LABEL_15:
       v22 = v21;
-      v7[2](v7, v21);
+      handlerCopy[2](handlerCopy, v21);
 
       goto LABEL_16;
     }
@@ -282,7 +282,7 @@ LABEL_13:
   if (!v10)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy3 = self;
     v18 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -299,7 +299,7 @@ LABEL_13:
   if (![(HMHomeAccessControl *)self isRestrictedGuest])
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy4 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -314,10 +314,10 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  if (!v6)
+  if (!settingsCopy)
   {
     v28 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy7 = self;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
@@ -339,10 +339,10 @@ LABEL_28:
     goto LABEL_15;
   }
 
-  if (([v6 doAllAccessoriesBelongToHome:v10] & 1) == 0)
+  if (([settingsCopy doAllAccessoriesBelongToHome:v10] & 1) == 0)
   {
     v28 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy7 = self;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
@@ -360,17 +360,17 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v12 = [v6 guestAccessSchedule];
-  if (v12)
+  guestAccessSchedule = [settingsCopy guestAccessSchedule];
+  if (guestAccessSchedule)
   {
-    v13 = v12;
-    v14 = [v6 guestAccessSchedule];
-    v15 = [v14 isValidSchedule];
+    v13 = guestAccessSchedule;
+    guestAccessSchedule2 = [settingsCopy guestAccessSchedule];
+    isValidSchedule = [guestAccessSchedule2 isValidSchedule];
 
-    if ((v15 & 1) == 0)
+    if ((isValidSchedule & 1) == 0)
     {
       v28 = objc_autoreleasePoolPush();
-      v29 = self;
+      selfCopy7 = self;
       v30 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
@@ -378,42 +378,42 @@ LABEL_28:
       }
 
       v31 = HMFGetLogIdentifier();
-      v35 = [v6 guestAccessSchedule];
+      guestAccessSchedule3 = [settingsCopy guestAccessSchedule];
       *buf = 138543618;
       v43 = v31;
       v44 = 2112;
-      v45 = v35;
+      v45 = guestAccessSchedule3;
       _os_log_impl(&dword_19BB39000, v30, OS_LOG_TYPE_ERROR, "%{public}@Cannot update user access settings, the schedule is invalid: %@", buf, 0x16u);
 
       goto LABEL_27;
     }
   }
 
-  [(HMHomeAccessControl *)self _updateAccessForUser:v8 restrictedGuestAccessSettings:v6 completionHandler:v7];
+  [(HMHomeAccessControl *)self _updateAccessForUser:user restrictedGuestAccessSettings:settingsCopy completionHandler:handlerCopy];
 LABEL_16:
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateRestrictedGuestSchedule:(id)a3 completionHandler:(id)a4
+- (void)updateRestrictedGuestSchedule:(id)schedule completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMHomeAccessControl *)self restrictedGuestAccessSettings];
-  v9 = v8;
-  if (v8)
+  scheduleCopy = schedule;
+  handlerCopy = handler;
+  restrictedGuestAccessSettings = [(HMHomeAccessControl *)self restrictedGuestAccessSettings];
+  v9 = restrictedGuestAccessSettings;
+  if (restrictedGuestAccessSettings)
   {
-    v10 = [v8 mutableCopy];
-    [v10 setGuestAccessSchedule:v6];
+    v10 = [restrictedGuestAccessSettings mutableCopy];
+    [v10 setGuestAccessSchedule:scheduleCopy];
     v11 = [v10 copy];
-    [(HMHomeAccessControl *)self updateRestrictedGuestSettings:v11 completionHandler:v7];
+    [(HMHomeAccessControl *)self updateRestrictedGuestSettings:v11 completionHandler:handlerCopy];
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -425,7 +425,7 @@ LABEL_16:
 
     objc_autoreleasePoolPop(v12);
     v10 = [MEMORY[0x1E696ABC0] hmPrivateErrorWithCode:2901];
-    v7[2](v7, v10);
+    handlerCopy[2](handlerCopy, v10);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -433,45 +433,45 @@ LABEL_16:
 
 - (BOOL)isRestrictedGuestInAllowedPeriod
 {
-  v3 = [(HMHomeAccessControl *)self restrictedGuestAccessSettings];
-  v4 = [v3 guestAccessSchedule];
+  restrictedGuestAccessSettings = [(HMHomeAccessControl *)self restrictedGuestAccessSettings];
+  guestAccessSchedule = [restrictedGuestAccessSettings guestAccessSchedule];
 
-  if (!v4)
+  if (!guestAccessSchedule)
   {
     return 1;
   }
 
-  v5 = [(HMAccessControl *)self user];
-  v6 = [v5 home];
+  user = [(HMAccessControl *)self user];
+  home = [user home];
 
-  v7 = [v6 timeZone];
-  v8 = v7;
-  if (v7)
+  timeZone = [home timeZone];
+  v8 = timeZone;
+  if (timeZone)
   {
-    v9 = v7;
+    systemTimeZone = timeZone;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DFE8] systemTimeZone];
+    systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
   }
 
-  v11 = v9;
+  v11 = systemTimeZone;
 
   v12 = [MEMORY[0x1E695DF00] now];
-  v13 = [(HMHomeAccessControl *)self restrictedGuestAccessSettings];
-  v14 = [v13 guestAccessSchedule];
-  v15 = [HMRestrictedGuestHomeAccessSchedule isDate:v12 withinAllowedTimeForSchedule:v14 forHomeInTimeZone:v11];
+  restrictedGuestAccessSettings2 = [(HMHomeAccessControl *)self restrictedGuestAccessSettings];
+  guestAccessSchedule2 = [restrictedGuestAccessSettings2 guestAccessSchedule];
+  v15 = [HMRestrictedGuestHomeAccessSchedule isDate:v12 withinAllowedTimeForSchedule:guestAccessSchedule2 forHomeInTimeZone:v11];
 
   return v15;
 }
 
-- (void)setUserAccessSettings:(id)a3
+- (void)setUserAccessSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   os_unfair_lock_lock_with_options();
   accessNotAllowedReasonCode = self->_accessNotAllowedReasonCode;
-  self->_accessNotAllowedReasonCode = v4;
+  self->_accessNotAllowedReasonCode = settingsCopy;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -485,32 +485,32 @@ LABEL_16:
   return v3;
 }
 
-- (void)setRestrictedGuest:(BOOL)a3
+- (void)setRestrictedGuest:(BOOL)guest
 {
   os_unfair_lock_lock_with_options();
-  BYTE1(self->_presenceAuthStatus) = a3;
+  BYTE1(self->_presenceAuthStatus) = guest;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)updateCamerasAccessLevel:(unint64_t)a3 completionHandler:(id)a4
+- (void)updateCamerasAccessLevel:(unint64_t)level completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (!v6)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v29 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"You must provide a completion handler" userInfo:0];
     objc_exception_throw(v29);
   }
 
-  v7 = v6;
+  v7 = handlerCopy;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = HMUserCameraAccessLevelAsString(a3);
+    v12 = HMUserCameraAccessLevelAsString(level);
     v30 = 138543618;
     v31 = v11;
     v32 = 2112;
@@ -519,22 +519,22 @@ LABEL_16:
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMAccessControl *)v9 user];
-  v14 = v13;
-  if (v13)
+  user = [(HMAccessControl *)selfCopy user];
+  v14 = user;
+  if (user)
   {
-    v15 = [v13 home];
-    if (v15)
+    home = [user home];
+    if (home)
     {
-      if (![(HMHomeAccessControl *)v9 isRestrictedGuest])
+      if (![(HMHomeAccessControl *)selfCopy isRestrictedGuest])
       {
-        v27 = [v14 userID];
-        [v15 updateAccessForUser:v27 camerasAccessLevel:a3 completionHandler:v7];
+        userID = [v14 userID];
+        [home updateAccessForUser:userID camerasAccessLevel:level completionHandler:v7];
         goto LABEL_18;
       }
 
       v16 = objc_autoreleasePoolPush();
-      v17 = v9;
+      v17 = selfCopy;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -564,7 +564,7 @@ LABEL_16:
       v20 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:2];
     }
 
-    v27 = v20;
+    userID = v20;
     v7[2](v7, v20);
 LABEL_18:
 
@@ -582,21 +582,21 @@ LABEL_18:
   }
 
   objc_autoreleasePoolPop(v21);
-  v15 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:2];
-  (v7)[2](v7, v15);
+  home = [MEMORY[0x1E696ABC0] hmfErrorWithCode:2];
+  (v7)[2](v7, home);
 LABEL_19:
 
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updatePresenceAuthorizationStatus:(unint64_t)a3 completionHandler:(id)a4
+- (void)updatePresenceAuthorizationStatus:(unint64_t)status completionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   if ([(HMHomeAccessControl *)self isRestrictedGuest])
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -608,29 +608,29 @@ LABEL_19:
 
     objc_autoreleasePoolPop(v7);
     v11 = [MEMORY[0x1E696ABC0] hmPrivateErrorWithCode:2902];
-    v6[2](v6, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 
   else
   {
-    v12 = [(HMAccessControl *)self user];
-    [v12 updatePresenceAuthorizationStatus:a3 completionHandler:v6];
+    user = [(HMAccessControl *)self user];
+    [user updatePresenceAuthorizationStatus:status completionHandler:handlerCopy];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateAudioAnalysisUserDropinAccessLevel:(unint64_t)a3 completionHandler:(id)a4
+- (void)updateAudioAnalysisUserDropinAccessLevel:(unint64_t)level completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(HMAccessControl *)self user];
-  v8 = [v7 home];
-  if (!v6)
+  handlerCopy = handler;
+  user = [(HMAccessControl *)self user];
+  home = [user home];
+  if (!handlerCopy)
   {
     v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMHomeAccessControl updateAudioAnalysisUserDropinAccessLevel:completionHandler:]", @"completion"];
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -647,20 +647,20 @@ LABEL_19:
     objc_exception_throw(v31);
   }
 
-  v9 = v8;
-  if (v7)
+  v9 = home;
+  if (user)
   {
-    if (v8)
+    if (home)
     {
       if (![(HMHomeAccessControl *)self isRestrictedGuest])
       {
-        v24 = [v7 userID];
-        [v9 updateAccessForUser:v24 audioAnalysisUserDropinAccessLevel:a3 completionHandler:v6];
+        userID = [user userID];
+        [v9 updateAccessForUser:userID audioAnalysisUserDropinAccessLevel:level completionHandler:handlerCopy];
         goto LABEL_15;
       }
 
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy2 = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
@@ -678,7 +678,7 @@ LABEL_19:
     else
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy3 = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
@@ -697,7 +697,7 @@ LABEL_19:
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy4 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -712,8 +712,8 @@ LABEL_19:
     v15 = 2019;
   }
 
-  v24 = [v14 hmPrivateErrorWithCode:v15];
-  v6[2](v6, v24);
+  userID = [v14 hmPrivateErrorWithCode:v15];
+  handlerCopy[2](handlerCopy, userID);
 LABEL_15:
 
   v25 = *MEMORY[0x1E69E9840];
@@ -727,18 +727,18 @@ LABEL_15:
   return isa;
 }
 
-- (void)setAudioAnalysisUserDropinAccessLevel:(unint64_t)a3
+- (void)setAudioAnalysisUserDropinAccessLevel:(unint64_t)level
 {
   os_unfair_lock_lock_with_options();
-  self[1].super.super.isa = a3;
+  self[1].super.super.isa = level;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setAnnounceAccessAllowed:(BOOL)a3
+- (void)setAnnounceAccessAllowed:(BOOL)allowed
 {
   os_unfair_lock_lock_with_options();
-  LOBYTE(self->_presenceAuthStatus) = a3;
+  LOBYTE(self->_presenceAuthStatus) = allowed;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -754,17 +754,17 @@ LABEL_15:
 - (unint64_t)camerasAccessLevel
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMRestrictedGuestHomeAccessSettings *)self->_restrictedGuestAccessSettings value];
+  value = [(HMRestrictedGuestHomeAccessSettings *)self->_restrictedGuestAccessSettings value];
   os_unfair_lock_unlock(&self->super._lock);
-  return v3;
+  return value;
 }
 
-- (void)setCamerasAccess:(id)a3
+- (void)setCamerasAccess:(id)access
 {
-  v4 = a3;
+  accessCopy = access;
   os_unfair_lock_lock_with_options();
   restrictedGuestAccessSettings = self->_restrictedGuestAccessSettings;
-  self->_restrictedGuestAccessSettings = v4;
+  self->_restrictedGuestAccessSettings = accessCopy;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -781,25 +781,25 @@ LABEL_15:
 - (unint64_t)presenceComputationStatus
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMUserCameraAccess *)self->_camerasAccess value];
+  value = [(HMUserCameraAccess *)self->_camerasAccess value];
   os_unfair_lock_unlock(&self->super._lock);
-  return v3;
+  return value;
 }
 
 - (unint64_t)presenceAuthorizationStatus
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMUserPresenceCompute *)self->_presenceComputeStatus value];
+  value = [(HMUserPresenceCompute *)self->_presenceComputeStatus value];
   os_unfair_lock_unlock(&self->super._lock);
-  return v3;
+  return value;
 }
 
-- (void)setPresenceComputeStatus:(id)a3
+- (void)setPresenceComputeStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   os_unfair_lock_lock_with_options();
   camerasAccess = self->_camerasAccess;
-  self->_camerasAccess = v4;
+  self->_camerasAccess = statusCopy;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -813,12 +813,12 @@ LABEL_15:
   return v3;
 }
 
-- (void)setPresenceAuthStatus:(id)a3
+- (void)setPresenceAuthStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   os_unfair_lock_lock_with_options();
   presenceComputeStatus = self->_presenceComputeStatus;
-  self->_presenceComputeStatus = v4;
+  self->_presenceComputeStatus = statusCopy;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -832,10 +832,10 @@ LABEL_15:
   return v3;
 }
 
-- (void)setRemoteAccessAllowed:(BOOL)a3
+- (void)setRemoteAccessAllowed:(BOOL)allowed
 {
   os_unfair_lock_lock_with_options();
-  *(&self->_restrictedGuestInAllowedPeriod + 1) = a3;
+  *(&self->_restrictedGuestInAllowedPeriod + 1) = allowed;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -848,10 +848,10 @@ LABEL_15:
   return v3;
 }
 
-- (void)setAccessAllowed:(BOOL)a3
+- (void)setAccessAllowed:(BOOL)allowed
 {
   os_unfair_lock_lock_with_options();
-  self->_restrictedGuestInAllowedPeriod = a3;
+  self->_restrictedGuestInAllowedPeriod = allowed;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -864,10 +864,10 @@ LABEL_15:
   return restrictedGuestInAllowedPeriod;
 }
 
-- (void)setAdministrator:(BOOL)a3
+- (void)setAdministrator:(BOOL)administrator
 {
   os_unfair_lock_lock_with_options();
-  self->_restrictedGuest = a3;
+  self->_restrictedGuest = administrator;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -880,10 +880,10 @@ LABEL_15:
   return restrictedGuest;
 }
 
-- (void)setOwner:(BOOL)a3
+- (void)setOwner:(BOOL)owner
 {
   os_unfair_lock_lock_with_options();
-  self->_announceAccessAllowed = a3;
+  self->_announceAccessAllowed = owner;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -896,10 +896,10 @@ LABEL_15:
   return announceAccessAllowed;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v20 = 1;
   }
@@ -908,9 +908,9 @@ LABEL_15:
   {
     v24.receiver = self;
     v24.super_class = HMHomeAccessControl;
-    if ([(HMAccessControl *)&v24 isEqual:v4])
+    if ([(HMAccessControl *)&v24 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -929,56 +929,56 @@ LABEL_15:
         goto LABEL_17;
       }
 
-      v8 = [(HMHomeAccessControl *)self isAccessAllowed];
-      if (v8 != [(HMHomeAccessControl *)v7 isAccessAllowed])
+      isAccessAllowed = [(HMHomeAccessControl *)self isAccessAllowed];
+      if (isAccessAllowed != [(HMHomeAccessControl *)v7 isAccessAllowed])
       {
         goto LABEL_17;
       }
 
-      v9 = [(HMHomeAccessControl *)self isAdministrator];
-      if (v9 != [(HMHomeAccessControl *)v7 isAdministrator])
+      isAdministrator = [(HMHomeAccessControl *)self isAdministrator];
+      if (isAdministrator != [(HMHomeAccessControl *)v7 isAdministrator])
       {
         goto LABEL_17;
       }
 
-      v10 = [(HMHomeAccessControl *)self isOwner];
-      if (v10 != [(HMHomeAccessControl *)v7 isOwner])
+      isOwner = [(HMHomeAccessControl *)self isOwner];
+      if (isOwner != [(HMHomeAccessControl *)v7 isOwner])
       {
         goto LABEL_17;
       }
 
-      v11 = [(HMHomeAccessControl *)self isRemoteAccessAllowed];
-      if (v11 != [(HMHomeAccessControl *)v7 isRemoteAccessAllowed])
+      isRemoteAccessAllowed = [(HMHomeAccessControl *)self isRemoteAccessAllowed];
+      if (isRemoteAccessAllowed != [(HMHomeAccessControl *)v7 isRemoteAccessAllowed])
       {
         goto LABEL_17;
       }
 
-      v12 = [(HMHomeAccessControl *)self presenceAuthorizationStatus];
-      if (v12 != [(HMHomeAccessControl *)v7 presenceAuthorizationStatus])
+      presenceAuthorizationStatus = [(HMHomeAccessControl *)self presenceAuthorizationStatus];
+      if (presenceAuthorizationStatus != [(HMHomeAccessControl *)v7 presenceAuthorizationStatus])
       {
         goto LABEL_17;
       }
 
-      v13 = [(HMHomeAccessControl *)self presenceComputationStatus];
-      if (v13 != [(HMHomeAccessControl *)v7 presenceComputationStatus])
+      presenceComputationStatus = [(HMHomeAccessControl *)self presenceComputationStatus];
+      if (presenceComputationStatus != [(HMHomeAccessControl *)v7 presenceComputationStatus])
       {
         goto LABEL_17;
       }
 
-      v14 = [(HMHomeAccessControl *)self camerasAccess];
-      v15 = [(HMHomeAccessControl *)v7 camerasAccess];
-      v16 = [v14 isEqual:v15];
+      camerasAccess = [(HMHomeAccessControl *)self camerasAccess];
+      camerasAccess2 = [(HMHomeAccessControl *)v7 camerasAccess];
+      v16 = [camerasAccess isEqual:camerasAccess2];
 
       if (!v16)
       {
         goto LABEL_17;
       }
 
-      v17 = [(HMHomeAccessControl *)self isAnnounceAccessAllowed];
-      if (v17 == [(HMHomeAccessControl *)v7 isAnnounceAccessAllowed]&& (v18 = [(HMHomeAccessControl *)self audioAnalysisUserDropInAccessLevel], v18 == [(HMHomeAccessControl *)v7 audioAnalysisUserDropInAccessLevel]) && (v19 = [(HMHomeAccessControl *)self isRestrictedGuest], v19 == [(HMHomeAccessControl *)v7 isRestrictedGuest]))
+      isAnnounceAccessAllowed = [(HMHomeAccessControl *)self isAnnounceAccessAllowed];
+      if (isAnnounceAccessAllowed == [(HMHomeAccessControl *)v7 isAnnounceAccessAllowed]&& (v18 = [(HMHomeAccessControl *)self audioAnalysisUserDropInAccessLevel], v18 == [(HMHomeAccessControl *)v7 audioAnalysisUserDropInAccessLevel]) && (v19 = [(HMHomeAccessControl *)self isRestrictedGuest], v19 == [(HMHomeAccessControl *)v7 isRestrictedGuest]))
       {
-        v22 = [(HMHomeAccessControl *)self restrictedGuestAccessSettings];
-        v23 = [(HMHomeAccessControl *)v7 restrictedGuestAccessSettings];
+        restrictedGuestAccessSettings = [(HMHomeAccessControl *)self restrictedGuestAccessSettings];
+        restrictedGuestAccessSettings2 = [(HMHomeAccessControl *)v7 restrictedGuestAccessSettings];
         v20 = HMFEqualObjects();
       }
 
@@ -998,32 +998,32 @@ LABEL_17:
   return v20;
 }
 
-- (HMHomeAccessControl)initWithUser:(id)a3 allowAccess:(BOOL)a4 owner:(BOOL)a5 administratorPrivilege:(BOOL)a6 remoteAccess:(BOOL)a7 presenceAuthStatus:(id)a8 presenceComputeStatus:(id)a9 announceAccess:(BOOL)a10 camerasAccess:(id)a11 audioAnalysisUserDropInAccessLevel:(unint64_t)a12 restrictedGuest:(BOOL)a13 restrictedGuestAccessSettings:(id)a14
+- (HMHomeAccessControl)initWithUser:(id)user allowAccess:(BOOL)access owner:(BOOL)owner administratorPrivilege:(BOOL)privilege remoteAccess:(BOOL)remoteAccess presenceAuthStatus:(id)status presenceComputeStatus:(id)computeStatus announceAccess:(BOOL)self0 camerasAccess:(id)self1 audioAnalysisUserDropInAccessLevel:(unint64_t)self2 restrictedGuest:(BOOL)self3 restrictedGuestAccessSettings:(id)self4
 {
   v37 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v20 = a8;
-  v33 = a9;
-  v32 = a11;
-  v31 = a14;
+  userCopy = user;
+  statusCopy = status;
+  computeStatusCopy = computeStatus;
+  camerasAccessCopy = camerasAccess;
+  settingsCopy = settings;
   v34.receiver = self;
   v34.super_class = HMHomeAccessControl;
-  v21 = [(HMAccessControl *)&v34 initWithUser:v19];
+  v21 = [(HMAccessControl *)&v34 initWithUser:userCopy];
   v22 = v21;
   if (v21)
   {
-    v29 = v20;
-    v21->_restrictedGuestInAllowedPeriod = a4;
-    v21->_announceAccessAllowed = a5;
-    v21->_restrictedGuest = a6;
-    *(&v21->_restrictedGuestInAllowedPeriod + 1) = a7;
-    objc_storeStrong(&v21->_presenceComputeStatus, a8);
-    objc_storeStrong(&v22->_camerasAccess, a9);
-    objc_storeStrong(&v22->_restrictedGuestAccessSettings, a11);
-    LOBYTE(v22->_presenceAuthStatus) = a10;
-    v22[1].super.super.isa = a12;
-    BYTE1(v22->_presenceAuthStatus) = a13;
-    objc_storeStrong(&v22->_accessNotAllowedReasonCode, a14);
+    v29 = statusCopy;
+    v21->_restrictedGuestInAllowedPeriod = access;
+    v21->_announceAccessAllowed = owner;
+    v21->_restrictedGuest = privilege;
+    *(&v21->_restrictedGuestInAllowedPeriod + 1) = remoteAccess;
+    objc_storeStrong(&v21->_presenceComputeStatus, status);
+    objc_storeStrong(&v22->_camerasAccess, computeStatus);
+    objc_storeStrong(&v22->_restrictedGuestAccessSettings, camerasAccess);
+    LOBYTE(v22->_presenceAuthStatus) = announceAccess;
+    v22[1].super.super.isa = level;
+    BYTE1(v22->_presenceAuthStatus) = guest;
+    objc_storeStrong(&v22->_accessNotAllowedReasonCode, settings);
     if (BYTE1(v22->_presenceAuthStatus) == 1 && !v22->_accessNotAllowedReasonCode)
     {
       v23 = objc_autoreleasePoolPush();
@@ -1038,7 +1038,7 @@ LABEL_17:
       }
 
       objc_autoreleasePoolPop(v23);
-      v20 = v29;
+      statusCopy = v29;
     }
   }
 

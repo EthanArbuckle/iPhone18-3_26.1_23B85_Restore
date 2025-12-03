@@ -1,15 +1,15 @@
 @interface PXWidgetCompositionViewElement
 - (CGPoint)_anchorOffset;
 - (CGPoint)_anchorPoint;
-- (CGPoint)tilingController:(id)a3 initialVisibleOriginForLayout:(id)a4;
+- (CGPoint)tilingController:(id)controller initialVisibleOriginForLayout:(id)layout;
 - (id)checkOutViewTile;
 - (id)contentTilingController;
 - (id)createTileAnimator;
-- (id)tilingController:(id)a3 tileIdentifierConverterForChange:(id)a4;
+- (id)tilingController:(id)controller tileIdentifierConverterForChange:(id)change;
 - (void)_loadTilingController;
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4;
-- (void)checkInViewTile:(id)a3;
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4;
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier;
+- (void)checkInViewTile:(id)tile;
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout;
 - (void)saveAnchoring;
 @end
 
@@ -24,32 +24,32 @@
   return result;
 }
 
-- (CGPoint)tilingController:(id)a3 initialVisibleOriginForLayout:(id)a4
+- (CGPoint)tilingController:(id)controller initialVisibleOriginForLayout:(id)layout
 {
-  v5 = a4;
+  layoutCopy = layout;
   [(PXWidgetCompositionViewElement *)self _anchorOffset];
   PXPointIsNull();
 }
 
-- (id)tilingController:(id)a3 tileIdentifierConverterForChange:(id)a4
+- (id)tilingController:(id)controller tileIdentifierConverterForChange:(id)change
 {
   v4 = objc_alloc_init(PXTileIdentifierIdentityConverter);
 
   return v4;
 }
 
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier
 {
-  v7 = a3;
+  tileCopy = tile;
   [(PXWidgetCompositionViewElement *)self setIsCheckingInTile:1];
   +[PXWidgetCompositionViewElementLayout viewTileIdentifier];
-  v8 = *&a4->index[5];
-  v19[2] = *&a4->index[3];
+  v8 = *&identifier->index[5];
+  v19[2] = *&identifier->index[3];
   v19[3] = v8;
-  v19[4] = *&a4->index[7];
-  v20 = a4->index[9];
-  v9 = *&a4->index[1];
-  v19[0] = *&a4->length;
+  v19[4] = *&identifier->index[7];
+  v20 = identifier->index[9];
+  v9 = *&identifier->index[1];
+  v19[0] = *&identifier->length;
   v19[1] = v9;
   v10 = *&v19[0] == *&v21[0];
   if (*&v19[0] && *&v19[0] == *&v21[0])
@@ -73,38 +73,38 @@
 
   if (!v10)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    v16 = *&a4->index[5];
-    v21[2] = *&a4->index[3];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v16 = *&identifier->index[5];
+    v21[2] = *&identifier->index[3];
     v21[3] = v16;
-    v21[4] = *&a4->index[7];
-    v22 = a4->index[9];
-    v17 = *&a4->index[1];
-    v21[0] = *&a4->length;
+    v21[4] = *&identifier->index[7];
+    v22 = identifier->index[9];
+    v17 = *&identifier->index[1];
+    v21[0] = *&identifier->length;
     v21[1] = v17;
     v18 = PXTileIdentifierDescription(v21);
-    [v15 handleFailureInMethod:a2 object:self file:@"PXWidgetCompositionViewElement.m" lineNumber:117 description:{@"unknown identifier %@", v18}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetCompositionViewElement.m" lineNumber:117 description:{@"unknown identifier %@", v18}];
 
     abort();
   }
 
-  [(PXWidgetCompositionViewElement *)self checkInViewTile:v7];
+  [(PXWidgetCompositionViewElement *)self checkInViewTile:tileCopy];
   [(PXWidgetCompositionViewElement *)self setIsCheckingInTile:0];
-  v14 = [(PXWidgetCompositionViewElement *)self _tilesInUse];
-  [v14 removeObject:v7];
+  _tilesInUse = [(PXWidgetCompositionViewElement *)self _tilesInUse];
+  [_tilesInUse removeObject:tileCopy];
 }
 
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout
 {
-  v7 = a4;
+  layoutCopy = layout;
   +[PXWidgetCompositionViewElementLayout viewTileIdentifier];
-  v8 = *&a3->index[5];
-  v21[2] = *&a3->index[3];
+  v8 = *&identifier->index[5];
+  v21[2] = *&identifier->index[3];
   v21[3] = v8;
-  v21[4] = *&a3->index[7];
-  v22 = a3->index[9];
-  v9 = *&a3->index[1];
-  v21[0] = *&a3->length;
+  v21[4] = *&identifier->index[7];
+  v22 = identifier->index[9];
+  v9 = *&identifier->index[1];
+  v21[0] = *&identifier->length;
   v21[1] = v9;
   v10 = *&v21[0] == *&v23[0];
   if (*&v21[0] && *&v21[0] == *&v23[0])
@@ -128,38 +128,38 @@
 
   if (!v10)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    v18 = *&a3->index[5];
-    v23[2] = *&a3->index[3];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v18 = *&identifier->index[5];
+    v23[2] = *&identifier->index[3];
     v23[3] = v18;
-    v23[4] = *&a3->index[7];
-    v24 = a3->index[9];
-    v19 = *&a3->index[1];
-    v23[0] = *&a3->length;
+    v23[4] = *&identifier->index[7];
+    v24 = identifier->index[9];
+    v19 = *&identifier->index[1];
+    v23[0] = *&identifier->length;
     v23[1] = v19;
     v20 = PXTileIdentifierDescription(v23);
-    [v17 handleFailureInMethod:a2 object:self file:@"PXWidgetCompositionViewElement.m" lineNumber:102 description:{@"unknown identifier %@", v20}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetCompositionViewElement.m" lineNumber:102 description:{@"unknown identifier %@", v20}];
 
     abort();
   }
 
-  v14 = [(PXWidgetCompositionViewElement *)self checkOutViewTile];
-  v15 = [(PXWidgetCompositionViewElement *)self _tilesInUse];
-  [v15 addObject:v14];
+  checkOutViewTile = [(PXWidgetCompositionViewElement *)self checkOutViewTile];
+  _tilesInUse = [(PXWidgetCompositionViewElement *)self _tilesInUse];
+  [_tilesInUse addObject:checkOutViewTile];
 
-  return v14;
+  return checkOutViewTile;
 }
 
 - (CGPoint)_anchorPoint
 {
-  v4 = [(PXWidgetCompositionViewElement *)self _layout];
-  [v4 contentBounds];
+  _layout = [(PXWidgetCompositionViewElement *)self _layout];
+  [_layout contentBounds];
 
-  v5 = [(PXWidgetCompositionElement *)self widget];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (v6 = [v5 contentViewAnchoringType]) == 0)
+  widget = [(PXWidgetCompositionElement *)self widget];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (v6 = [widget contentViewAnchoringType]) == 0)
   {
-    v7 = [(PXWidgetCompositionElement *)self widget];
-    v6 = [(PXWidgetCompositionElement *)self widgetDefaultContentViewAnchoringTypeForDisclosureHeightChange:v7];
+    widget2 = [(PXWidgetCompositionElement *)self widget];
+    v6 = [(PXWidgetCompositionElement *)self widgetDefaultContentViewAnchoringTypeForDisclosureHeightChange:widget2];
   }
 
   if (v6)
@@ -167,8 +167,8 @@
     PXRectEdgeValue();
   }
 
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v8 handleFailureInMethod:a2 object:self file:@"PXWidgetCompositionViewElement.m" lineNumber:79 description:@"Code which should be unreachable has been reached"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetCompositionViewElement.m" lineNumber:79 description:@"Code which should be unreachable has been reached"];
 
   abort();
 }
@@ -177,9 +177,9 @@
 {
   if (!self->__tilingController)
   {
-    v3 = [(PXWidgetCompositionViewElement *)self createTileAnimator];
+    createTileAnimator = [(PXWidgetCompositionViewElement *)self createTileAnimator];
     tileAnimator = self->__tileAnimator;
-    self->__tileAnimator = v3;
+    self->__tileAnimator = createTileAnimator;
 
     v5 = [MEMORY[0x1E695DFA8] set];
     tilesInUse = self->__tilesInUse;
@@ -194,8 +194,8 @@
     self->__tilingController = v9;
 
     v11 = self->__tilingController;
-    v12 = [(PXWidgetCompositionElement *)self scrollViewController];
-    [(PXTilingController *)v11 setScrollController:v12];
+    scrollViewController = [(PXWidgetCompositionElement *)self scrollViewController];
+    [(PXTilingController *)v11 setScrollController:scrollViewController];
 
     [(PXTilingController *)self->__tilingController setTileAnimator:self->__tileAnimator];
     [(PXTilingController *)self->__tilingController setTileSource:self];
@@ -220,19 +220,19 @@
   return [(PXWidgetCompositionViewElement *)self _tilingController];
 }
 
-- (void)checkInViewTile:(id)a3
+- (void)checkInViewTile:(id)tile
 {
-  v3 = [a3 view];
-  [v3 removeFromSuperview];
+  view = [tile view];
+  [view removeFromSuperview];
 }
 
 - (id)checkOutViewTile
 {
-  v3 = [(PXWidgetCompositionElement *)self widget];
-  v4 = [[PXWidgetCompositionUIViewElementTile alloc] initWithWidget:v3];
-  v5 = [(PXWidgetCompositionElement *)self scrollViewController];
-  v6 = [(PXWidgetCompositionUIViewElementTile *)v4 view];
-  [v5 addSubview:v6];
+  widget = [(PXWidgetCompositionElement *)self widget];
+  v4 = [[PXWidgetCompositionUIViewElementTile alloc] initWithWidget:widget];
+  scrollViewController = [(PXWidgetCompositionElement *)self scrollViewController];
+  view = [(PXWidgetCompositionUIViewElementTile *)v4 view];
+  [scrollViewController addSubview:view];
 
   return v4;
 }

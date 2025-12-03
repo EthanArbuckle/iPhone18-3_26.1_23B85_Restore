@@ -1,7 +1,7 @@
 @interface FMStewieSettingsView
 - (BOOL)isHidden;
 - (void)handleButtonRowAction;
-- (void)setHidden:(BOOL)a3;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation FMStewieSettingsView
@@ -13,19 +13,19 @@
   return [(FMStewieSettingsView *)&v3 isHidden];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v8.receiver = self;
   v8.super_class = type metadata accessor for FMStewieSettingsView();
   v4 = v8.receiver;
-  [(FMStewieSettingsView *)&v8 setHidden:v3];
+  [(FMStewieSettingsView *)&v8 setHidden:hiddenCopy];
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
-    v7 = [v4 isHidden];
-    [*(v6 + OBJC_IVAR____TtC6FindMy18FMMeViewController_stewieSettingsContainerView) setHidden:v7];
+    isHidden = [v4 isHidden];
+    [*(v6 + OBJC_IVAR____TtC6FindMy18FMMeViewController_stewieSettingsContainerView) setHidden:isHidden];
 
     swift_unknownObjectRelease();
   }
@@ -39,7 +39,7 @@
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v3 = self;
+    selfCopy = self;
     sub_10008D940(1);
     swift_unknownObjectRelease();
   }

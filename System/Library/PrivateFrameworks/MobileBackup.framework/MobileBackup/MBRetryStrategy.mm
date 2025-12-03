@@ -1,16 +1,16 @@
 @interface MBRetryStrategy
-+ (BOOL)couldRetryError:(id)a3;
-- (BOOL)_consumeTokensAfterError:(id)a3 networkAvailable:(BOOL)a4 attempt:(unsigned int *)a5;
-- (BOOL)_sleep:(double)a3;
-- (BOOL)canRetryAfterError:(id)a3;
-- (BOOL)shouldRetryAfterError:(id)a3;
++ (BOOL)couldRetryError:(id)error;
+- (BOOL)_consumeTokensAfterError:(id)error networkAvailable:(BOOL)available attempt:(unsigned int *)attempt;
+- (BOOL)_sleep:(double)_sleep;
+- (BOOL)canRetryAfterError:(id)error;
+- (BOOL)shouldRetryAfterError:(id)error;
 - (MBNetworkAvailabilityProvider)networkAvailabilityProvider;
-- (MBRetryStrategy)initWithDebugContext:(id)a3 networkAvailabilityProvider:(id)a4 engineMode:(int)a5 restoreType:(int)a6;
-- (MBRetryStrategy)initWithEngine:(id)a3;
-- (double)_backoffForError:(id)a3 networkAvailable:(BOOL)a4 attempt:(unsigned int)a5 backoffCache:(id)a6;
+- (MBRetryStrategy)initWithDebugContext:(id)context networkAvailabilityProvider:(id)provider engineMode:(int)mode restoreType:(int)type;
+- (MBRetryStrategy)initWithEngine:(id)engine;
+- (double)_backoffForError:(id)error networkAvailable:(BOOL)available attempt:(unsigned int)attempt backoffCache:(id)cache;
 - (unsigned)maxConsecutiveRetryCountWhenNetworkConnected;
 - (unsigned)maxConsecutiveRetryCountWhenNetworkDisconnected;
-- (void)_replenishTokensWithNetworkAvailable:(BOOL)a3;
+- (void)_replenishTokensWithNetworkAvailable:(BOOL)available;
 - (void)cancel;
 - (void)replenishRetryTokens;
 - (void)reset;
@@ -18,36 +18,36 @@
 
 @implementation MBRetryStrategy
 
-- (MBRetryStrategy)initWithDebugContext:(id)a3 networkAvailabilityProvider:(id)a4 engineMode:(int)a5 restoreType:(int)a6
+- (MBRetryStrategy)initWithDebugContext:(id)context networkAvailabilityProvider:(id)provider engineMode:(int)mode restoreType:(int)type
 {
-  v9 = a3;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = MBRetryStrategy;
   v10 = [(MBRetryStrategy *)&v16 init];
   v11 = v10;
   if (v10)
   {
-    v10->_engineMode = a5;
-    v10->_restoreType = a6;
-    if (!v9)
+    v10->_engineMode = mode;
+    v10->_restoreType = type;
+    if (!contextCopy)
     {
-      v9 = +[MBDebugContext defaultDebugContext];
+      contextCopy = +[MBDebugContext defaultDebugContext];
     }
 
-    [v9 setInt:0 forName:@"RetryCount"];
-    objc_storeStrong(&v11->_debugContext, v9);
+    [contextCopy setInt:0 forName:@"RetryCount"];
+    objc_storeStrong(&v11->_debugContext, contextCopy);
     [(MBRetryStrategy *)v11 setShouldRetryWhenNetworkUnavailable:1];
     [(MBRetryStrategy *)v11 setMaxServiceRetryAfterInterval:14400.0];
     [(MBRetryStrategy *)v11 setMinSleepIntervalWhenConnected:10.0];
     [(MBRetryStrategy *)v11 minSleepIntervalWhenConnected];
     [(MBRetryStrategy *)v11 setMinSleepIntervalWhenDisconnected:v12 + v12];
     v13 = 1800.0;
-    if (a5 == 1)
+    if (mode == 1)
     {
       v14 = 600.0;
     }
 
-    else if (a5 == 2)
+    else if (mode == 2)
     {
       v14 = 0.0;
     }
@@ -66,23 +66,23 @@
   return v11;
 }
 
-- (MBRetryStrategy)initWithEngine:(id)a3
+- (MBRetryStrategy)initWithEngine:(id)engine
 {
-  v4 = a3;
-  v5 = [v4 engineMode];
-  if (v5 == 2)
+  engineCopy = engine;
+  engineMode = [engineCopy engineMode];
+  if (engineMode == 2)
   {
-    v6 = [v4 restoreType];
+    restoreType = [engineCopy restoreType];
   }
 
   else
   {
-    v6 = 0;
+    restoreType = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = v4;
+    v7 = engineCopy;
   }
 
   else
@@ -91,59 +91,59 @@
   }
 
   v8 = v7;
-  v9 = [v4 debugContext];
-  v10 = [(MBRetryStrategy *)self initWithDebugContext:v9 networkAvailabilityProvider:v8 engineMode:v5 restoreType:v6];
+  debugContext = [engineCopy debugContext];
+  v10 = [(MBRetryStrategy *)self initWithDebugContext:debugContext networkAvailabilityProvider:v8 engineMode:engineMode restoreType:restoreType];
 
   return v10;
 }
 
 - (unsigned)maxConsecutiveRetryCountWhenNetworkConnected
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  maxTokenCount = v2->_tokenBuckets[1].maxTokenCount;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  maxTokenCount = selfCopy->_tokenBuckets[1].maxTokenCount;
+  objc_sync_exit(selfCopy);
 
   return maxTokenCount;
 }
 
 - (unsigned)maxConsecutiveRetryCountWhenNetworkDisconnected
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  maxTokenCount = v2->_tokenBuckets[0].maxTokenCount;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  maxTokenCount = selfCopy->_tokenBuckets[0].maxTokenCount;
+  objc_sync_exit(selfCopy);
 
   return maxTokenCount;
 }
 
 - (void)reset
 {
-  v3 = [(MBRetryStrategy *)self debugContext];
-  v4 = [v3 time];
+  debugContext = [(MBRetryStrategy *)self debugContext];
+  time = [debugContext time];
 
   v5 = dispatch_semaphore_create(0);
   [(MBRetryStrategy *)self setRetrySemaphore:v5];
 
   obj = self;
   objc_sync_enter(obj);
-  [(MBRetryStrategy *)obj setLastRetryAttemptTime:v4];
-  [(MBRetryStrategy *)obj setLastConsecutiveRetryStartTime:v4];
+  [(MBRetryStrategy *)obj setLastRetryAttemptTime:time];
+  [(MBRetryStrategy *)obj setLastConsecutiveRetryStartTime:time];
   [(MBRetryStrategy *)obj setConsecutiveRetryCount:0];
   [(MBRetryStrategy *)obj setConsecutiveRetryCountWhenConnected:0];
   [(MBRetryStrategy *)obj setConsecutiveRetryCountWhenDisconnected:0];
   *&obj->_tokenBuckets[0].retryCount = xmmword_1002B9E70;
   obj->_tokenBuckets[0].tokensPerInterval = 1;
   obj->_tokenBuckets[0].replenishInterval = 60;
-  obj->_tokenBuckets[0].lastReplenishTime = v4;
+  obj->_tokenBuckets[0].lastReplenishTime = time;
   *&obj->_tokenBuckets[1].retryCount = xmmword_1002B9E80;
   obj->_tokenBuckets[1].tokensPerInterval = 1;
   obj->_tokenBuckets[1].replenishInterval = 60;
-  obj->_tokenBuckets[1].lastReplenishTime = v4;
+  obj->_tokenBuckets[1].lastReplenishTime = time;
   *&obj->_tokenBuckets[2].retryCount = xmmword_1002B9E80;
   obj->_tokenBuckets[2].tokensPerInterval = 1;
   obj->_tokenBuckets[2].replenishInterval = 1800;
-  obj->_tokenBuckets[2].lastReplenishTime = v4;
+  obj->_tokenBuckets[2].lastReplenishTime = time;
   if (obj->_engineMode == 2)
   {
     obj->_tokenBuckets[0].maxTokenCount = 20;
@@ -157,13 +157,13 @@
   objc_sync_exit(obj);
 }
 
-+ (BOOL)couldRetryError:(id)a3
++ (BOOL)couldRetryError:(id)error
 {
-  v3 = [MBError underlyingErrorFromCKCancelationError:a3];
+  v3 = [MBError underlyingErrorFromCKCancelationError:error];
   if ([MBError isError:v3 withCode:2])
   {
-    v4 = [v3 userInfo];
-    v5 = [v4 objectForKeyedSubscript:@"kMBUnderlyingErrorsKey"];
+    userInfo = [v3 userInfo];
+    v5 = [userInfo objectForKeyedSubscript:@"kMBUnderlyingErrorsKey"];
 
     if (!v5)
     {
@@ -175,8 +175,8 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = v5;
-    v7 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    allValues = v5;
+    v7 = [allValues countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v7)
     {
       v8 = v7;
@@ -187,7 +187,7 @@ LABEL_5:
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v24 + 1) + 8 * v10);
@@ -198,7 +198,7 @@ LABEL_5:
 
         if (v8 == ++v10)
         {
-          v8 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+          v8 = [allValues countByEnumeratingWithState:&v24 objects:v29 count:16];
           LOBYTE(v12) = 1;
           if (v8)
           {
@@ -222,15 +222,15 @@ LABEL_30:
 
   if ([MBError isCKPartialFailureError:v3])
   {
-    v13 = [v3 userInfo];
-    v5 = [v13 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+    userInfo2 = [v3 userInfo];
+    v5 = [userInfo2 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = [v5 allValues];
-    v14 = [v6 countByEnumeratingWithState:&v20 objects:v28 count:16];
+    allValues = [v5 allValues];
+    v14 = [allValues countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v14)
     {
       v15 = v14;
@@ -241,7 +241,7 @@ LABEL_16:
       {
         if (*v21 != v16)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v18 = *(*(&v20 + 1) + 8 * v17);
@@ -252,7 +252,7 @@ LABEL_16:
 
         if (v15 == ++v17)
         {
-          v15 = [v6 countByEnumeratingWithState:&v20 objects:v28 count:16];
+          v15 = [allValues countByEnumeratingWithState:&v20 objects:v28 count:16];
           LOBYTE(v12) = 1;
           if (v15)
           {
@@ -289,19 +289,19 @@ LABEL_31:
   return v12;
 }
 
-- (BOOL)canRetryAfterError:(id)a3
+- (BOOL)canRetryAfterError:(id)error
 {
-  v4 = a3;
-  if ([MBRetryStrategy couldRetryError:v4])
+  errorCopy = error;
+  if ([MBRetryStrategy couldRetryError:errorCopy])
   {
-    if ([MBError isError:v4 withCode:2])
+    if ([MBError isError:errorCopy withCode:2])
     {
-      v5 = [v4 userInfo];
-      v6 = [v5 objectForKeyedSubscript:@"kMBUnderlyingErrorsKey"];
+      userInfo = [errorCopy userInfo];
+      v6 = [userInfo objectForKeyedSubscript:@"kMBUnderlyingErrorsKey"];
 
       if (!v6)
       {
-        v13 = 0;
+        shouldRetryWhenNetworkUnavailable = 0;
         goto LABEL_38;
       }
 
@@ -309,8 +309,8 @@ LABEL_31:
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v7 = v6;
-      v8 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      allValues = v6;
+      v8 = [allValues countByEnumeratingWithState:&v31 objects:v36 count:16];
       if (v8)
       {
         v9 = v8;
@@ -321,7 +321,7 @@ LABEL_6:
         {
           if (*v32 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           v12 = *(*(&v31 + 1) + 8 * v11);
@@ -332,8 +332,8 @@ LABEL_6:
 
           if (v9 == ++v11)
           {
-            v9 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
-            v13 = 1;
+            v9 = [allValues countByEnumeratingWithState:&v31 objects:v36 count:16];
+            shouldRetryWhenNetworkUnavailable = 1;
             if (v9)
             {
               goto LABEL_6;
@@ -344,7 +344,7 @@ LABEL_6:
         }
 
 LABEL_30:
-        v13 = 0;
+        shouldRetryWhenNetworkUnavailable = 0;
 LABEL_36:
 
 LABEL_38:
@@ -354,17 +354,17 @@ LABEL_38:
       goto LABEL_35;
     }
 
-    if ([MBError isCKPartialFailureError:v4])
+    if ([MBError isCKPartialFailureError:errorCopy])
     {
-      v14 = [v4 userInfo];
-      v6 = [v14 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+      userInfo2 = [errorCopy userInfo];
+      v6 = [userInfo2 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v7 = [v6 allValues];
-      v15 = [v7 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      allValues = [v6 allValues];
+      v15 = [allValues countByEnumeratingWithState:&v27 objects:v35 count:16];
       if (v15)
       {
         v16 = v15;
@@ -375,7 +375,7 @@ LABEL_22:
         {
           if (*v28 != v17)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           v19 = *(*(&v27 + 1) + 8 * v18);
@@ -386,8 +386,8 @@ LABEL_22:
 
           if (v16 == ++v18)
           {
-            v16 = [v7 countByEnumeratingWithState:&v27 objects:v35 count:16];
-            v13 = 1;
+            v16 = [allValues countByEnumeratingWithState:&v27 objects:v35 count:16];
+            shouldRetryWhenNetworkUnavailable = 1;
             if (v16)
             {
               goto LABEL_22;
@@ -399,36 +399,36 @@ LABEL_22:
       }
 
 LABEL_35:
-      v13 = 1;
+      shouldRetryWhenNetworkUnavailable = 1;
       goto LABEL_36;
     }
 
-    if ([(MBRetryStrategy *)self shouldRetryWhenNetworkUnavailable]|| ![MBError isCKError:v4 withCode:3]&& ([MBError isError:v4 withCode:308]& 1) == 0)
+    if ([(MBRetryStrategy *)self shouldRetryWhenNetworkUnavailable]|| ![MBError isCKError:errorCopy withCode:3]&& ([MBError isError:errorCopy withCode:308]& 1) == 0)
     {
       goto LABEL_34;
     }
 
 LABEL_42:
-    v13 = 0;
+    shouldRetryWhenNetworkUnavailable = 0;
     goto LABEL_43;
   }
 
-  if (self->_restoreType == 1 && ([MBError isError:v4 withCode:308]& 1) != 0)
+  if (self->_restoreType == 1 && ([MBError isError:errorCopy withCode:308]& 1) != 0)
   {
 LABEL_34:
-    v13 = 1;
+    shouldRetryWhenNetworkUnavailable = 1;
     goto LABEL_43;
   }
 
-  if (![MBError isCKError:v4 withCodes:7, 23, 0])
+  if (![MBError isCKError:errorCopy withCodes:7, 23, 0])
   {
     goto LABEL_42;
   }
 
-  if (![MBError isNetworkDisconnectedError:v4])
+  if (![MBError isNetworkDisconnectedError:errorCopy])
   {
-    v20 = [v4 userInfo];
-    v21 = [v20 objectForKeyedSubscript:CKErrorRetryAfterKey];
+    userInfo3 = [errorCopy userInfo];
+    v21 = [userInfo3 objectForKeyedSubscript:CKErrorRetryAfterKey];
 
     v22 = 10.0;
     if (v21)
@@ -448,24 +448,24 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v13 = [(MBRetryStrategy *)self shouldRetryWhenNetworkUnavailable];
+  shouldRetryWhenNetworkUnavailable = [(MBRetryStrategy *)self shouldRetryWhenNetworkUnavailable];
 LABEL_43:
 
-  return v13;
+  return shouldRetryWhenNetworkUnavailable;
 }
 
-- (double)_backoffForError:(id)a3 networkAvailable:(BOOL)a4 attempt:(unsigned int)a5 backoffCache:(id)a6
+- (double)_backoffForError:(id)error networkAvailable:(BOOL)available attempt:(unsigned int)attempt backoffCache:(id)cache
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
+  availableCopy = available;
+  errorCopy = error;
+  cacheCopy = cache;
   v12 = [NSString alloc];
-  v13 = [v10 domain];
-  v14 = [v12 initWithFormat:@"%@|%ld", v13, objc_msgSend(v10, "code")];
+  domain = [errorCopy domain];
+  v14 = [v12 initWithFormat:@"%@|%ld", domain, objc_msgSend(errorCopy, "code")];
 
-  v15 = self;
-  objc_sync_enter(v15);
-  v16 = [v11 objectForKeyedSubscript:v14];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v16 = [cacheCopy objectForKeyedSubscript:v14];
   v17 = v16;
   if (v16)
   {
@@ -475,11 +475,11 @@ LABEL_43:
 
   else
   {
-    if (v8)
+    if (availableCopy)
     {
-      [(MBRetryStrategy *)v15 minSleepIntervalWhenConnected];
+      [(MBRetryStrategy *)selfCopy minSleepIntervalWhenConnected];
       v21 = v20;
-      if (v15->_engineMode == 2)
+      if (selfCopy->_engineMode == 2)
       {
         v22 = 90.0;
       }
@@ -489,7 +489,7 @@ LABEL_43:
         v22 = 60.0;
       }
 
-      if ([MBError isCKError:v10 withCodes:4, 3, 0]|| (v23 = 20.0, [MBError isError:v10 withCodes:300, 308, 0]))
+      if ([MBError isCKError:errorCopy withCodes:4, 3, 0]|| (v23 = 20.0, [MBError isError:errorCopy withCodes:300, 308, 0]))
       {
         v23 = 10.0;
       }
@@ -497,9 +497,9 @@ LABEL_43:
 
     else
     {
-      [(MBRetryStrategy *)v15 minSleepIntervalWhenDisconnected];
+      [(MBRetryStrategy *)selfCopy minSleepIntervalWhenDisconnected];
       v21 = v24;
-      if (v15->_engineMode == 2)
+      if (selfCopy->_engineMode == 2)
       {
         v22 = 90.0;
       }
@@ -512,7 +512,7 @@ LABEL_43:
       v23 = 20.0;
     }
 
-    v25 = fmin(v22, fmax(v21, exp2(a5) * v23));
+    v25 = fmin(v22, fmax(v21, exp2(attempt) * v23));
     v26 = arc4random_uniform((v25 * 0.5));
     v27 = MBGetDefaultLog();
     v19 = fmax(v21, v25 * 0.5) + v26;
@@ -525,45 +525,45 @@ LABEL_43:
       v34 = 1024;
       v35 = v26;
       v36 = 1024;
-      v37 = a5;
+      attemptCopy = attempt;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "=retry= backoff, %.3f, %.3f, %u, %u", buf, 0x22u);
       _MBLog();
     }
 
     v28 = [NSNumber numberWithDouble:v19];
-    [v11 setObject:v28 forKeyedSubscript:v14];
+    [cacheCopy setObject:v28 forKeyedSubscript:v14];
   }
 
-  objc_sync_exit(v15);
+  objc_sync_exit(selfCopy);
   return v19;
 }
 
-- (BOOL)_sleep:(double)a3
+- (BOOL)_sleep:(double)_sleep
 {
-  v5 = [(MBRetryStrategy *)self debugContext];
-  v6 = [v5 isFlagSet:@"RetryStrategyShouldNotSleep"];
+  debugContext = [(MBRetryStrategy *)self debugContext];
+  v6 = [debugContext isFlagSet:@"RetryStrategyShouldNotSleep"];
 
   if (v6)
   {
-    v7 = [(MBRetryStrategy *)self debugContext];
-    v8 = [v7 intForName:@"RetryStrategyWouldSleep"];
+    debugContext2 = [(MBRetryStrategy *)self debugContext];
+    v8 = [debugContext2 intForName:@"RetryStrategyWouldSleep"];
 
-    v9 = [(MBRetryStrategy *)self debugContext];
-    [v9 setInt:(v8 + a3) forName:@"RetryStrategyWouldSleep"];
+    debugContext3 = [(MBRetryStrategy *)self debugContext];
+    [debugContext3 setInt:(v8 + _sleep) forName:@"RetryStrategyWouldSleep"];
 
     return 1;
   }
 
   else
   {
-    v11 = [(MBRetryStrategy *)self retrySemaphore];
-    if (!v11)
+    retrySemaphore = [(MBRetryStrategy *)self retrySemaphore];
+    if (!retrySemaphore)
     {
       __assert_rtn("[MBRetryStrategy _sleep:]", "MBRetryStrategy.m", 406, "semaphore && Retry after cancelation");
     }
 
-    v12 = v11;
-    v13 = dispatch_time(0, 1000000 * (a3 * 1000.0));
+    v12 = retrySemaphore;
+    v13 = dispatch_time(0, 1000000 * (_sleep * 1000.0));
     v14 = dispatch_semaphore_wait(v12, v13);
     if (!v14)
     {
@@ -571,7 +571,7 @@ LABEL_43:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v18 = a3;
+        _sleepCopy = _sleep;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "=retry= Sleep canceled for (%.3fs)", buf, 0xCu);
         _MBLog();
       }
@@ -585,50 +585,50 @@ LABEL_43:
   return v10;
 }
 
-- (BOOL)shouldRetryAfterError:(id)a3
+- (BOOL)shouldRetryAfterError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_networkAvailabilityProvider);
-  v6 = [WeakRetained isNetworkAvailable];
+  isNetworkAvailable = [WeakRetained isNetworkAvailable];
 
-  LOBYTE(self) = [(MBRetryStrategy *)self shouldRetryAfterError:v4 connected:v6];
+  LOBYTE(self) = [(MBRetryStrategy *)self shouldRetryAfterError:errorCopy connected:isNetworkAvailable];
   return self;
 }
 
 - (void)cancel
 {
-  v2 = [(MBRetryStrategy *)self retrySemaphore];
-  if (v2)
+  retrySemaphore = [(MBRetryStrategy *)self retrySemaphore];
+  if (retrySemaphore)
   {
-    v3 = v2;
-    dispatch_semaphore_signal(v2);
-    v2 = v3;
+    v3 = retrySemaphore;
+    dispatch_semaphore_signal(retrySemaphore);
+    retrySemaphore = v3;
   }
 }
 
-- (BOOL)_consumeTokensAfterError:(id)a3 networkAvailable:(BOOL)a4 attempt:(unsigned int *)a5
+- (BOOL)_consumeTokensAfterError:(id)error networkAvailable:(BOOL)available attempt:(unsigned int *)attempt
 {
-  v5 = a4;
-  v7 = a3;
-  v29 = v5;
-  if (v5)
+  availableCopy = available;
+  errorCopy = error;
+  v29 = availableCopy;
+  if (availableCopy)
   {
-    if ([MBError isCKError:v7 matchingSubErrors:1 withCodes:3, 4, 6, 7, 23, 0]|| [MBError isError:v7 withCodes:308, 300, 0])
+    if ([MBError isCKError:errorCopy matchingSubErrors:1 withCodes:3, 4, 6, 7, 23, 0]|| [MBError isError:errorCopy withCodes:308, 300, 0])
     {
-      v5 = ![MBError isNetworkDisconnectedError:v7];
+      availableCopy = ![MBError isNetworkDisconnectedError:errorCopy];
     }
 
     else
     {
-      v5 = 2;
+      availableCopy = 2;
     }
   }
 
-  v30 = v7;
-  v32 = [MBError loggableDescriptionForError:v7];
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = v8 + 40 * v5;
+  v30 = errorCopy;
+  v32 = [MBError loggableDescriptionForError:errorCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = selfCopy + 40 * availableCopy;
   v10 = *(v9 + 4);
   v11 = *(v9 + 5);
   v12 = (v9 + 16);
@@ -645,8 +645,8 @@ LABEL_43:
     v14 = 0;
   }
 
-  v28 = v5;
-  *a5 = v12[3] - v13;
+  v28 = availableCopy;
+  *attempt = v12[3] - v13;
   v15 = MBGetDefaultLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -659,7 +659,7 @@ LABEL_43:
       v17 = v12[1];
       v19 = *(v12 + 4);
       *buf = 138546690;
-      v34 = v8;
+      v34 = selfCopy;
       v35 = 1024;
       v36 = v14;
       v37 = 1024;
@@ -677,13 +677,13 @@ LABEL_43:
       v49 = 2048;
       v50 = v19;
       v51 = 1024;
-      v52 = [(MBRetryStrategy *)v8 consecutiveRetryCountWhenConnected];
+      consecutiveRetryCountWhenConnected = [(MBRetryStrategy *)selfCopy consecutiveRetryCountWhenConnected];
       v53 = 1024;
-      v54 = [(MBRetryStrategy *)v8 consecutiveRetryCountWhenDisconnected];
+      consecutiveRetryCountWhenDisconnected = [(MBRetryStrategy *)selfCopy consecutiveRetryCountWhenDisconnected];
       v55 = 1024;
-      v56 = [(MBRetryStrategy *)v8 consecutiveRetryCount];
+      consecutiveRetryCount = [(MBRetryStrategy *)selfCopy consecutiveRetryCount];
       v57 = 1024;
-      v58 = [(MBRetryStrategy *)v8 totalRetryCount];
+      totalRetryCount = [(MBRetryStrategy *)selfCopy totalRetryCount];
       v59 = 2112;
       v60 = v32;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "=retry= %{public}@: %d, isNetworkAvailable:%d, bucket[%d]:%u/%u|%u/%u|%lu, rc:%u|%u|%u|%u: %@", buf, 0x62u);
@@ -694,15 +694,15 @@ LABEL_43:
     v22 = *v12;
     v21 = v12[1];
     v23 = *(v12 + 4);
-    [(MBRetryStrategy *)v8 consecutiveRetryCountWhenConnected];
-    [(MBRetryStrategy *)v8 consecutiveRetryCountWhenDisconnected];
-    [(MBRetryStrategy *)v8 consecutiveRetryCount];
-    [(MBRetryStrategy *)v8 totalRetryCount];
+    [(MBRetryStrategy *)selfCopy consecutiveRetryCountWhenConnected];
+    [(MBRetryStrategy *)selfCopy consecutiveRetryCountWhenDisconnected];
+    [(MBRetryStrategy *)selfCopy consecutiveRetryCount];
+    [(MBRetryStrategy *)selfCopy totalRetryCount];
     _MBLog();
   }
 
-  objc_sync_exit(v8);
-  if (v14 && !*a5)
+  objc_sync_exit(selfCopy);
+  if (v14 && !*attempt)
   {
     __assert_rtn("[MBRetryStrategy _consumeTokensAfterError:networkAvailable:attempt:]", "MBRetryStrategy.m", 539, "!result || 0 < *attempt");
   }
@@ -710,27 +710,27 @@ LABEL_43:
   return v14;
 }
 
-- (void)_replenishTokensWithNetworkAvailable:(BOOL)a3
+- (void)_replenishTokensWithNetworkAvailable:(BOOL)available
 {
   if (atomic_exchange(&self->_needsReplenishing, 0))
   {
-    v3 = a3;
-    v5 = [(MBRetryStrategy *)self lastNeedsReplenishingTime];
-    if (!v5)
+    availableCopy = available;
+    lastNeedsReplenishingTime = [(MBRetryStrategy *)self lastNeedsReplenishingTime];
+    if (!lastNeedsReplenishingTime)
     {
       __assert_rtn("[MBRetryStrategy _replenishTokensWithNetworkAvailable:]", "MBRetryStrategy.m", 546, "lastNeedsReplenishingTime != 0");
     }
 
-    v6 = v5;
-    v7 = [(MBRetryStrategy *)self debugContext];
-    v8 = [v7 time];
+    v6 = lastNeedsReplenishingTime;
+    debugContext = [(MBRetryStrategy *)self debugContext];
+    time = [debugContext time];
 
-    v9 = self;
-    p_tokenCount = &v9->_tokenBuckets[0].tokenCount;
-    objc_sync_enter(v9);
+    selfCopy = self;
+    p_tokenCount = &selfCopy->_tokenBuckets[0].tokenCount;
+    objc_sync_enter(selfCopy);
     for (i = 0; i != 3; ++i)
     {
-      if (i || v3)
+      if (i || availableCopy)
       {
         v12 = *(p_tokenCount + 2);
         v13 = v6 - *(p_tokenCount + 3);
@@ -759,7 +759,7 @@ LABEL_43:
           }
 
           *p_tokenCount = v15;
-          *(p_tokenCount + 3) = v8;
+          *(p_tokenCount + 3) = time;
           v16 = MBGetDefaultLog();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
@@ -769,9 +769,9 @@ LABEL_43:
             v20 = *(p_tokenCount - 1);
             v21 = *(p_tokenCount + 3);
             *buf = 138545410;
-            v28 = v9;
+            v28 = selfCopy;
             v29 = 1024;
-            v30 = v3;
+            v30 = availableCopy;
             v31 = 1024;
             v32 = i;
             v33 = 1024;
@@ -800,25 +800,25 @@ LABEL_43:
       p_tokenCount += 10;
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 }
 
 - (void)replenishRetryTokens
 {
-  v3 = [(MBRetryStrategy *)self debugContext];
-  v4 = [v3 time];
+  debugContext = [(MBRetryStrategy *)self debugContext];
+  time = [debugContext time];
 
-  [(MBRetryStrategy *)self setLastNeedsReplenishingTime:v4];
+  [(MBRetryStrategy *)self setLastNeedsReplenishingTime:time];
   if ((atomic_exchange(&self->_needsReplenishing, 1u) & 1) == 0)
   {
     v5 = MBGetDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v7 = self;
+      selfCopy = self;
       v8 = 2048;
-      v9 = v4;
+      v9 = time;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "=retry= %{public}@: scheduled token replenishing (%ld)", buf, 0x16u);
       _MBLog();
     }

@@ -1,30 +1,30 @@
 @interface NavSignLaneGuidanceView
-+ (_NSRange)_visibleLaneRangeForNumberOfLanes:(unint64_t)a3 maxNumberOfVisibleLanes:(unint64_t)a4 highlightedLaneRange:(_NSRange)a5;
-+ (int64_t)maxNumberVisibleLanesForSignWidth:(double)a3;
++ (_NSRange)_visibleLaneRangeForNumberOfLanes:(unint64_t)lanes maxNumberOfVisibleLanes:(unint64_t)visibleLanes highlightedLaneRange:(_NSRange)range;
++ (int64_t)maxNumberVisibleLanesForSignWidth:(double)width;
 - (BOOL)highlightedLanesNotInVisibleRange;
-- (NavSignLaneGuidanceView)initWithLaneStyle:(unint64_t)a3;
+- (NavSignLaneGuidanceView)initWithLaneStyle:(unint64_t)style;
 - (UIEdgeInsets)edgeInsets;
 - (_NSRange)highlightedLaneRange;
 - (_NSRange)visibleLaneRange;
 - (double)availableLaneWidth;
 - (double)availableWidthForLanes;
-- (id)_laneViewForLane:(id)a3;
-- (id)_newGradientLayerWithFrame:(CGRect)a3 forLeftEdge:(BOOL)a4;
+- (id)_laneViewForLane:(id)lane;
+- (id)_newGradientLayerWithFrame:(CGRect)frame forLeftEdge:(BOOL)edge;
 - (id)accessibilityIdentifier;
 - (id)duplicateLaneGuidanceView;
 - (unint64_t)_rightmostVisibleLaneIndex;
-- (void)_debugHighlightLaneView:(id)a3;
+- (void)_debugHighlightLaneView:(id)view;
 - (void)_resetLanes;
 - (void)_setupConstraints;
 - (void)_updateLaneContentMargins;
-- (void)_updateMaxLanesForSignWidth:(double)a3;
+- (void)_updateMaxLanesForSignWidth:(double)width;
 - (void)layoutSubviews;
-- (void)setDebugHighlightLanes:(BOOL)a3;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setInvalidArrowColor:(id)a3;
-- (void)setLanes:(id)a3;
-- (void)setShouldTransformWithVerticalScale:(BOOL)a3;
-- (void)setVerticalScale:(double)a3;
+- (void)setDebugHighlightLanes:(BOOL)lanes;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setInvalidArrowColor:(id)color;
+- (void)setLanes:(id)lanes;
+- (void)setShouldTransformWithVerticalScale:(BOOL)scale;
+- (void)setVerticalScale:(double)scale;
 @end
 
 @implementation NavSignLaneGuidanceView
@@ -52,10 +52,10 @@
   return result;
 }
 
-- (id)_laneViewForLane:(id)a3
+- (id)_laneViewForLane:(id)lane
 {
-  v4 = a3;
-  v5 = [[GuidanceLaneView alloc] initWithLaneInfo:v4 maneuverHasPreferredLane:self->_maneuverHasPreferredLane drawingBiasDirection:self->_laneArrowBiasDirection laneStyle:self->_laneStyle];
+  laneCopy = lane;
+  v5 = [[GuidanceLaneView alloc] initWithLaneInfo:laneCopy maneuverHasPreferredLane:self->_maneuverHasPreferredLane drawingBiasDirection:self->_laneArrowBiasDirection laneStyle:self->_laneStyle];
 
   [(GuidanceLaneView *)v5 setInvalidArrowColor:self->_invalidArrowColor];
   [(GuidanceLaneView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -71,23 +71,23 @@
   return v5;
 }
 
-- (void)_debugHighlightLaneView:(id)a3
+- (void)_debugHighlightLaneView:(id)view
 {
-  v11 = a3;
+  viewCopy = view;
   if (![(NavSignLaneGuidanceView *)self debugHighlightLanes])
   {
     goto LABEL_4;
   }
 
-  v4 = [v11 laneInfo];
-  v5 = [v4 isPreferredLaneForManeuver];
+  laneInfo = [viewCopy laneInfo];
+  isPreferredLaneForManeuver = [laneInfo isPreferredLaneForManeuver];
 
-  if (!v5)
+  if (!isPreferredLaneForManeuver)
   {
-    v8 = [v11 laneInfo];
-    v9 = [v8 isLaneForManeuver];
+    laneInfo2 = [viewCopy laneInfo];
+    isLaneForManeuver = [laneInfo2 isLaneForManeuver];
 
-    if (v9)
+    if (isLaneForManeuver)
     {
       v6 = +[UIColor yellowColor];
       goto LABEL_7;
@@ -95,7 +95,7 @@
 
 LABEL_4:
     v7 = +[UIColor clearColor];
-    [v11 setBackgroundColor:v7];
+    [viewCopy setBackgroundColor:v7];
     goto LABEL_8;
   }
 
@@ -103,7 +103,7 @@ LABEL_4:
 LABEL_7:
   v7 = v6;
   v10 = [v6 colorWithAlphaComponent:0.5];
-  [v11 setBackgroundColor:v10];
+  [viewCopy setBackgroundColor:v10];
 
 LABEL_8:
 }
@@ -118,7 +118,7 @@ LABEL_8:
     [(NavSignLaneGuidanceView *)self frame];
     v6 = NSStringFromCGRect(v84);
     *buf = 134349826;
-    v76 = self;
+    selfCopy4 = self;
     v77 = 2048;
     v78 = v4;
     v79 = 2112;
@@ -165,24 +165,24 @@ LABEL_8:
   [(NSMutableArray *)self->_laneViews removeAllObjects];
   v68 = self->_lanes;
   v14 = [(NSArray *)v68 count];
-  v15 = [(NavSignLaneGuidanceView *)self highlightedLaneRange];
+  highlightedLaneRange = [(NavSignLaneGuidanceView *)self highlightedLaneRange];
   p_visibleLaneRange = &self->_visibleLaneRange;
-  self->_visibleLaneRange.location = [NavSignLaneGuidanceView _visibleLaneRangeForNumberOfLanes:v14 maxNumberOfVisibleLanes:self->_maxNumberOfVisibleLanes highlightedLaneRange:v15, v17];
+  self->_visibleLaneRange.location = [NavSignLaneGuidanceView _visibleLaneRangeForNumberOfLanes:v14 maxNumberOfVisibleLanes:self->_maxNumberOfVisibleLanes highlightedLaneRange:highlightedLaneRange, v17];
   self->_visibleLaneRange.length = v18;
   if (v14 && v18)
   {
-    v19 = [(NavSignLaneGuidanceView *)self _leftmostVisibleLaneIndex];
-    v20 = [(NavSignLaneGuidanceView *)self _rightmostVisibleLaneIndex];
+    _leftmostVisibleLaneIndex = [(NavSignLaneGuidanceView *)self _leftmostVisibleLaneIndex];
+    _rightmostVisibleLaneIndex = [(NavSignLaneGuidanceView *)self _rightmostVisibleLaneIndex];
     length = self->_visibleLaneRange.length;
     v22 = +[NSMutableArray array];
     v23 = 0.5 / length;
     v62 = v14 - 1;
-    v69 = -(v19 + (length >> 1));
+    v69 = -(_leftmostVisibleLaneIndex + (length >> 1));
     v66 = -v14;
     v67 = length;
-    v63 = -v20;
+    v63 = -_rightmostVisibleLaneIndex;
     v64 = v22;
-    v65 = -v19;
+    v65 = -_leftmostVisibleLaneIndex;
     v24 = -1;
     v25 = &OBJC_IVAR___CarZoomButtonView__panButton;
     v26 = 1.0 / length;
@@ -198,9 +198,9 @@ LABEL_8:
       {
         if (v27 == -1)
         {
-          v32 = [(NavSignLaneGuidanceView *)v29 centerXAnchor];
-          v33 = [(NavSignLaneGuidanceView *)self centerXAnchor];
-          v34 = [v32 constraintEqualToAnchor:v33];
+          centerXAnchor = [(NavSignLaneGuidanceView *)v29 centerXAnchor];
+          centerXAnchor2 = [(NavSignLaneGuidanceView *)self centerXAnchor];
+          v34 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 LABEL_21:
           v36 = v34;
           [v22 addObject:v34];
@@ -211,21 +211,21 @@ LABEL_21:
       {
         if (v27 == -1)
         {
-          v30 = [(NavSignLaneGuidanceView *)self centerXAnchor];
-          v31 = v29;
+          centerXAnchor3 = [(NavSignLaneGuidanceView *)self centerXAnchor];
+          selfCopy2 = v29;
           goto LABEL_20;
         }
 
         if (v69 + v24 == -2)
         {
-          v30 = [(NavSignLaneGuidanceView *)v29 centerXAnchor];
-          v31 = self;
+          centerXAnchor3 = [(NavSignLaneGuidanceView *)v29 centerXAnchor];
+          selfCopy2 = self;
 LABEL_20:
-          v35 = [(NavSignLaneGuidanceView *)v31 centerXAnchor];
-          v32 = [v30 anchorWithOffsetToAnchor:v35];
+          centerXAnchor4 = [(NavSignLaneGuidanceView *)selfCopy2 centerXAnchor];
+          centerXAnchor = [centerXAnchor3 anchorWithOffsetToAnchor:centerXAnchor4];
 
-          v33 = [*(&self->super.super.super.super.isa + v25[542]) widthAnchor];
-          v34 = [v32 constraintEqualToAnchor:v33 multiplier:v23];
+          centerXAnchor2 = [*(&self->super.super.super.super.isa + v25[542]) widthAnchor];
+          v34 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 multiplier:v23];
           goto LABEL_21;
         }
       }
@@ -233,24 +233,24 @@ LABEL_20:
       if (v24 != -1)
       {
         v37 = [(NSMutableArray *)self->_laneViews objectAtIndexedSubscript:v24];
-        v38 = [v37 centerXAnchor];
-        v39 = [(NavSignLaneGuidanceView *)v29 centerXAnchor];
-        v40 = [v38 anchorWithOffsetToAnchor:v39];
+        centerXAnchor5 = [v37 centerXAnchor];
+        centerXAnchor6 = [(NavSignLaneGuidanceView *)v29 centerXAnchor];
+        v40 = [centerXAnchor5 anchorWithOffsetToAnchor:centerXAnchor6];
 
-        v41 = [*(&self->super.super.super.super.isa + v25[542]) widthAnchor];
-        v42 = [v40 constraintEqualToAnchor:v41 multiplier:v26];
+        widthAnchor = [*(&self->super.super.super.super.isa + v25[542]) widthAnchor];
+        v42 = [v40 constraintEqualToAnchor:widthAnchor multiplier:v26];
         [v22 addObject:v42];
       }
 
-      v43 = [(NavSignLaneGuidanceView *)v29 topAnchor];
+      topAnchor = [(NavSignLaneGuidanceView *)v29 topAnchor];
       v44 = v25[542];
-      v45 = [*(&self->super.super.super.super.isa + v44) topAnchor];
-      v46 = [v43 constraintEqualToAnchor:v45];
+      topAnchor2 = [*(&self->super.super.super.super.isa + v44) topAnchor];
+      v46 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [v22 addObject:v46];
 
-      v47 = [(NavSignLaneGuidanceView *)v29 bottomAnchor];
-      v48 = [*(&self->super.super.super.super.isa + v44) bottomAnchor];
-      v49 = [v47 constraintEqualToAnchor:v48];
+      bottomAnchor = [(NavSignLaneGuidanceView *)v29 bottomAnchor];
+      bottomAnchor2 = [*(&self->super.super.super.super.isa + v44) bottomAnchor];
+      v49 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [v22 addObject:v49];
 
       v50 = v65 + v24 != -1 || v24 == -1;
@@ -266,8 +266,8 @@ LABEL_20:
         v53 = *p_leftEdgeLaneGradientLayer;
       }
 
-      v56 = [(NavSignLaneGuidanceView *)v29 layer];
-      [v56 setMask:v53];
+      layer = [(NavSignLaneGuidanceView *)v29 layer];
+      [layer setMask:v53];
 
       [(NavSignLaneGuidanceView *)self _debugHighlightLaneView:v29];
       ++v24;
@@ -282,7 +282,7 @@ LABEL_20:
           v58 = [(NSMutableArray *)self->_laneViews count];
           v59 = NSStringFromRange(self->_visibleLaneRange);
           *buf = 134349570;
-          v76 = self;
+          selfCopy4 = self;
           v77 = 2048;
           v78 = v58;
           v79 = 2112;
@@ -305,7 +305,7 @@ LABEL_20:
     v83.length = self->_visibleLaneRange.length;
     v61 = NSStringFromRange(v83);
     *buf = 134349570;
-    v76 = self;
+    selfCopy4 = self;
     v77 = 2048;
     v78 = v60;
     v79 = 2112;
@@ -324,27 +324,27 @@ LABEL_41:
   self->_laneContentGuide = v3;
 
   [(NavSignLaneGuidanceView *)self addLayoutGuide:self->_laneContentGuide];
-  v5 = [(UILayoutGuide *)self->_laneContentGuide topAnchor];
-  v6 = [(NavSignLaneGuidanceView *)self topAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  topAnchor = [(UILayoutGuide *)self->_laneContentGuide topAnchor];
+  topAnchor2 = [(NavSignLaneGuidanceView *)self topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   laneContentTopMarginConstraint = self->_laneContentTopMarginConstraint;
   self->_laneContentTopMarginConstraint = v7;
 
-  v9 = [(NavSignLaneGuidanceView *)self bottomAnchor];
-  v10 = [(UILayoutGuide *)self->_laneContentGuide bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomAnchor = [(NavSignLaneGuidanceView *)self bottomAnchor];
+  bottomAnchor2 = [(UILayoutGuide *)self->_laneContentGuide bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   laneContentBottomMarginConstraint = self->_laneContentBottomMarginConstraint;
   self->_laneContentBottomMarginConstraint = v11;
 
-  v13 = [(UILayoutGuide *)self->_laneContentGuide leftAnchor];
-  v14 = [(NavSignLaneGuidanceView *)self leftAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  leftAnchor = [(UILayoutGuide *)self->_laneContentGuide leftAnchor];
+  leftAnchor2 = [(NavSignLaneGuidanceView *)self leftAnchor];
+  v15 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   laneContentLeftMarginConstraint = self->_laneContentLeftMarginConstraint;
   self->_laneContentLeftMarginConstraint = v15;
 
-  v17 = [(NavSignLaneGuidanceView *)self rightAnchor];
-  v18 = [(UILayoutGuide *)self->_laneContentGuide rightAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  rightAnchor = [(NavSignLaneGuidanceView *)self rightAnchor];
+  rightAnchor2 = [(UILayoutGuide *)self->_laneContentGuide rightAnchor];
+  v19 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   laneContentRightMarginConstraint = self->_laneContentRightMarginConstraint;
   self->_laneContentRightMarginConstraint = v19;
 
@@ -362,22 +362,22 @@ LABEL_41:
   self->_offsetFromBottomGuide = v24;
 
   [(NavSignLaneGuidanceView *)self addLayoutGuide:self->_offsetFromBottomGuide];
-  v26 = [(UILayoutGuide *)self->_offsetFromBottomGuide heightAnchor];
-  v27 = [v26 constraintEqualToConstant:0.0];
+  heightAnchor = [(UILayoutGuide *)self->_offsetFromBottomGuide heightAnchor];
+  v27 = [heightAnchor constraintEqualToConstant:0.0];
   offsetFromBottomHeightConstraint = self->_offsetFromBottomHeightConstraint;
   self->_offsetFromBottomHeightConstraint = v27;
 
-  v39 = [(UILayoutGuide *)self->_offsetFromBottomGuide bottomAnchor];
-  v29 = [(UILayoutGuide *)self->_laneContentGuide bottomAnchor];
-  v30 = [v39 constraintEqualToAnchor:v29];
+  bottomAnchor3 = [(UILayoutGuide *)self->_offsetFromBottomGuide bottomAnchor];
+  bottomAnchor4 = [(UILayoutGuide *)self->_laneContentGuide bottomAnchor];
+  v30 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v41[0] = v30;
-  v31 = [(UILayoutGuide *)self->_offsetFromBottomGuide leftAnchor];
-  v32 = [(UILayoutGuide *)self->_laneContentGuide leftAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32];
+  leftAnchor3 = [(UILayoutGuide *)self->_offsetFromBottomGuide leftAnchor];
+  leftAnchor4 = [(UILayoutGuide *)self->_laneContentGuide leftAnchor];
+  v33 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   v41[1] = v33;
-  v34 = [(UILayoutGuide *)self->_offsetFromBottomGuide rightAnchor];
-  v35 = [(UILayoutGuide *)self->_laneContentGuide rightAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
+  rightAnchor3 = [(UILayoutGuide *)self->_offsetFromBottomGuide rightAnchor];
+  rightAnchor4 = [(UILayoutGuide *)self->_laneContentGuide rightAnchor];
+  v36 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   v37 = self->_offsetFromBottomHeightConstraint;
   v41[2] = v36;
   v41[3] = v37;
@@ -404,29 +404,29 @@ LABEL_41:
   return result;
 }
 
-- (id)_newGradientLayerWithFrame:(CGRect)a3 forLeftEdge:(BOOL)a4
+- (id)_newGradientLayerWithFrame:(CGRect)frame forLeftEdge:(BOOL)edge
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(NavSignLaneGuidanceView *)self theme];
-  v10 = [v9 navSignPrimaryColor];
+  edgeCopy = edge;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  theme = [(NavSignLaneGuidanceView *)self theme];
+  navSignPrimaryColor = [theme navSignPrimaryColor];
 
   v11 = objc_alloc_init(CAGradientLayer);
   [v11 setFrame:{x, y, width, height}];
   [v11 setAnchorPoint:{CGPointZero.x, CGPointZero.y}];
   v12 = 0.0;
-  v13 = [v10 colorWithAlphaComponent:0.0];
+  v13 = [navSignPrimaryColor colorWithAlphaComponent:0.0];
   v18[0] = [v13 CGColor];
-  v14 = [v10 colorWithAlphaComponent:1.0];
+  v14 = [navSignPrimaryColor colorWithAlphaComponent:1.0];
   v18[1] = [v14 CGColor];
   v15 = [NSArray arrayWithObjects:v18 count:2];
   [v11 setColors:v15];
 
   [v11 setLocations:&off_1016EDA00];
-  if (v4)
+  if (edgeCopy)
   {
     v16 = 0.0;
   }
@@ -436,7 +436,7 @@ LABEL_41:
     v16 = 1.0;
   }
 
-  if (v4)
+  if (edgeCopy)
   {
     v12 = 1.0;
   }
@@ -461,37 +461,37 @@ LABEL_41:
   [(NSLayoutConstraint *)laneContentRightMarginConstraint setConstant:v5];
 }
 
-- (void)_updateMaxLanesForSignWidth:(double)a3
+- (void)_updateMaxLanesForSignWidth:(double)width
 {
   v5 = sub_100D6E0B8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     lastUpdatedSignWidth = self->_lastUpdatedSignWidth;
     v10 = 134349568;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 2048;
-    v13 = a3;
+    widthCopy = width;
     v14 = 2048;
     v15 = lastUpdatedSignWidth;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] _updateMaxLanesForSignWidth: %.2f, previousWidth: %.2f", &v10, 0x20u);
   }
 
-  if (a3 > 0.0 && vabdd_f64(self->_lastUpdatedSignWidth, a3) > 2.22044605e-16)
+  if (width > 0.0 && vabdd_f64(self->_lastUpdatedSignWidth, width) > 2.22044605e-16)
   {
-    self->_lastUpdatedSignWidth = a3;
+    self->_lastUpdatedSignWidth = width;
     if (self->_laneStyle - 1 < 2)
     {
-      a3 = a3 + a3;
+      width = width + width;
     }
 
-    if ([NavSignLaneGuidanceView maxNumberVisibleLanesForSignWidth:a3]< 0)
+    if ([NavSignLaneGuidanceView maxNumberVisibleLanesForSignWidth:width]< 0)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = [NavSignLaneGuidanceView maxNumberVisibleLanesForSignWidth:a3];
+      v7 = [NavSignLaneGuidanceView maxNumberVisibleLanesForSignWidth:width];
     }
 
     self->_maxNumberOfVisibleLanes = v7;
@@ -500,9 +500,9 @@ LABEL_41:
     {
       maxNumberOfVisibleLanes = self->_maxNumberOfVisibleLanes;
       v10 = 134349312;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2048;
-      v13 = *&maxNumberOfVisibleLanes;
+      widthCopy = *&maxNumberOfVisibleLanes;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] _updateMaxLanesForSignWidth: _maxNumberOfVisibleLanes set to %lu", &v10, 0x16u);
     }
 
@@ -521,13 +521,13 @@ LABEL_41:
     v4 = [(NSMutableArray *)self->_laneViews count];
     [(NavSignLaneGuidanceView *)self bounds];
     v5 = NSStringFromCGRect(v64);
-    v6 = [(NavSignLaneGuidanceView *)self superview];
-    [v6 bounds];
+    superview = [(NavSignLaneGuidanceView *)self superview];
+    [superview bounds];
     v7 = NSStringFromCGRect(v65);
     lastUpdatedSignWidth = self->_lastUpdatedSignWidth;
     v9 = NSStringFromRange(self->_visibleLaneRange);
     *buf = 134350338;
-    v53 = self;
+    selfCopy4 = self;
     v54 = 2048;
     v55 = v4;
     v56 = 2112;
@@ -550,7 +550,7 @@ LABEL_41:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         *buf = 134349056;
-        v53 = self;
+        selfCopy4 = self;
         v24 = "[%{public}p] layoutSubviews zero bounds";
 LABEL_16:
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, v24, buf, 0xCu);
@@ -562,13 +562,13 @@ LABEL_17:
     }
 
     v13 = v10;
-    v14 = [(NavSignLaneGuidanceView *)self superview];
-    if (v14)
+    superview2 = [(NavSignLaneGuidanceView *)self superview];
+    if (superview2)
     {
-      v15 = v14;
+      v15 = superview2;
       v16 = self->_lastUpdatedSignWidth;
-      v17 = [(NavSignLaneGuidanceView *)self superview];
-      [v17 bounds];
+      superview3 = [(NavSignLaneGuidanceView *)self superview];
+      [superview3 bounds];
       v19 = vabdd_f64(v16, v18);
 
       if (v19 > 2.22044605e-16)
@@ -577,12 +577,12 @@ LABEL_17:
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
           *buf = 134349056;
-          v53 = self;
+          selfCopy4 = self;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "[%{public}p] layoutSubviews. _lastUpdatedSignWidth does not match current bounds, will update lanes for new width", buf, 0xCu);
         }
 
-        v21 = [(NavSignLaneGuidanceView *)self superview];
-        [v21 bounds];
+        superview4 = [(NavSignLaneGuidanceView *)self superview];
+        [superview4 bounds];
         [(NavSignLaneGuidanceView *)self _updateMaxLanesForSignWidth:v22];
 
         [(NavSignLaneGuidanceView *)self layoutIfNeeded];
@@ -596,7 +596,7 @@ LABEL_17:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         *buf = 134349056;
-        v53 = self;
+        selfCopy4 = self;
         v24 = "[%{public}p] layoutSubviews. _lastUpdatedSignWidth is 0";
         goto LABEL_16;
       }
@@ -604,18 +604,18 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    v25 = [(NavSignLaneGuidanceView *)self _leftmostVisibleLaneIndex];
-    v26 = [(NavSignLaneGuidanceView *)self _rightmostVisibleLaneIndex];
-    if (v25 && v25 != 0x7FFFFFFFFFFFFFFFLL)
+    _leftmostVisibleLaneIndex = [(NavSignLaneGuidanceView *)self _leftmostVisibleLaneIndex];
+    _rightmostVisibleLaneIndex = [(NavSignLaneGuidanceView *)self _rightmostVisibleLaneIndex];
+    if (_leftmostVisibleLaneIndex && _leftmostVisibleLaneIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v27 = [(NSMutableArray *)self->_laneViews objectAtIndexedSubscript:v25];
+      v27 = [(NSMutableArray *)self->_laneViews objectAtIndexedSubscript:_leftmostVisibleLaneIndex];
       [v27 bounds];
       [(CAGradientLayer *)self->_leftEdgeLaneGradientLayer setFrame:?];
     }
 
-    if (v26 != 0x7FFFFFFFFFFFFFFFLL && v26 + 1 < [(NSMutableArray *)self->_laneViews count])
+    if (_rightmostVisibleLaneIndex != 0x7FFFFFFFFFFFFFFFLL && _rightmostVisibleLaneIndex + 1 < [(NSMutableArray *)self->_laneViews count])
     {
-      v28 = [(NSMutableArray *)self->_laneViews objectAtIndexedSubscript:v26];
+      v28 = [(NSMutableArray *)self->_laneViews objectAtIndexedSubscript:_rightmostVisibleLaneIndex];
       [v28 bounds];
       [(CAGradientLayer *)self->_rightEdgeLaneGradientLayer setFrame:?];
     }
@@ -635,9 +635,9 @@ LABEL_17:
         }
       }
 
-      v34 = [(NavSignLaneGuidanceView *)self window];
-      v35 = [v34 screen];
-      [v35 nativeScale];
+      window = [(NavSignLaneGuidanceView *)self window];
+      screen = [window screen];
+      [screen nativeScale];
       if (v36 <= 2.0)
       {
         v37 = 51.0;
@@ -655,9 +655,9 @@ LABEL_17:
 
       v38 = 0.0;
       v39 = 0.0;
-      if (v25 <= v26)
+      if (_leftmostVisibleLaneIndex <= _rightmostVisibleLaneIndex)
       {
-        v40 = v25;
+        v40 = _leftmostVisibleLaneIndex;
         do
         {
           v41 = [(NSMutableArray *)self->_laneViews objectAtIndexedSubscript:v40];
@@ -678,7 +678,7 @@ LABEL_17:
           ++v40;
         }
 
-        while (v40 <= v26);
+        while (v40 <= _rightmostVisibleLaneIndex);
       }
 
       if (v38 * v31 > v30 && v38 > 0.0)
@@ -701,8 +701,8 @@ LABEL_17:
       v50[1] = 3221225472;
       v50[2] = sub_100D6EEC8;
       v50[3] = &unk_101652F88;
-      v50[5] = v25;
-      v50[6] = v26;
+      v50[5] = _leftmostVisibleLaneIndex;
+      v50[6] = _rightmostVisibleLaneIndex;
       *&v50[7] = v31;
       *&v50[8] = v48;
       v50[4] = self;
@@ -726,8 +726,8 @@ LABEL_17:
   [(NavSignLaneGuidanceView *)self verticalScale];
   [v3 setVerticalScale:?];
   [v3 setShouldTransformWithVerticalScale:{-[NavSignLaneGuidanceView shouldTransformWithVerticalScale](self, "shouldTransformWithVerticalScale")}];
-  v4 = [(NavSignLaneGuidanceView *)self lanes];
-  [v3 setLanes:v4];
+  lanes = [(NavSignLaneGuidanceView *)self lanes];
+  [v3 setLanes:lanes];
 
   return v3;
 }
@@ -755,30 +755,30 @@ LABEL_17:
 
 - (BOOL)highlightedLanesNotInVisibleRange
 {
-  v3 = [(NavSignLaneGuidanceView *)self lanes];
-  v4 = [v3 count];
-  v5 = [(NavSignLaneGuidanceView *)self maxNumberOfVisibleLanes];
+  lanes = [(NavSignLaneGuidanceView *)self lanes];
+  v4 = [lanes count];
+  maxNumberOfVisibleLanes = [(NavSignLaneGuidanceView *)self maxNumberOfVisibleLanes];
 
-  if (v4 > v5)
+  if (v4 > maxNumberOfVisibleLanes)
   {
-    v6 = [(NavSignLaneGuidanceView *)self highlightedLaneRange];
+    highlightedLaneRange = [(NavSignLaneGuidanceView *)self highlightedLaneRange];
     v8 = v7;
-    if (v7 >= [(NavSignLaneGuidanceView *)self maxNumberOfVisibleLanes]|| v6 && v6 <= [(NavSignLaneGuidanceView *)self _leftmostVisibleLaneIndex])
+    if (v7 >= [(NavSignLaneGuidanceView *)self maxNumberOfVisibleLanes]|| highlightedLaneRange && highlightedLaneRange <= [(NavSignLaneGuidanceView *)self _leftmostVisibleLaneIndex])
     {
       return 1;
     }
 
-    v9 = &v6[v8 - 1];
-    v10 = [(NavSignLaneGuidanceView *)self lanes];
-    if (v9 >= [v10 count] - 1)
+    v9 = &highlightedLaneRange[v8 - 1];
+    lanes2 = [(NavSignLaneGuidanceView *)self lanes];
+    if (v9 >= [lanes2 count] - 1)
     {
     }
 
     else
     {
-      v11 = [(NavSignLaneGuidanceView *)self _rightmostVisibleLaneIndex];
+      _rightmostVisibleLaneIndex = [(NavSignLaneGuidanceView *)self _rightmostVisibleLaneIndex];
 
-      if (v9 >= v11)
+      if (v9 >= _rightmostVisibleLaneIndex)
       {
         return 1;
       }
@@ -788,13 +788,13 @@ LABEL_17:
   return 0;
 }
 
-- (void)setInvalidArrowColor:(id)a3
+- (void)setInvalidArrowColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && self->_invalidArrowColor != v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (colorCopy && self->_invalidArrowColor != colorCopy)
   {
-    objc_storeStrong(&self->_invalidArrowColor, a3);
+    objc_storeStrong(&self->_invalidArrowColor, color);
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
@@ -831,8 +831,8 @@ LABEL_17:
 
 - (_NSRange)highlightedLaneRange
 {
-  v2 = [(NavSignLaneGuidanceView *)self lanes];
-  v3 = [NavSignLaneGuidanceInfo highlightedLaneRangeForLanes:v2];
+  lanes = [(NavSignLaneGuidanceView *)self lanes];
+  v3 = [NavSignLaneGuidanceInfo highlightedLaneRangeForLanes:lanes];
   v5 = v4;
 
   v6 = v3;
@@ -842,11 +842,11 @@ LABEL_17:
   return result;
 }
 
-- (void)setDebugHighlightLanes:(BOOL)a3
+- (void)setDebugHighlightLanes:(BOOL)lanes
 {
-  if (self->_debugHighlightLanes != a3)
+  if (self->_debugHighlightLanes != lanes)
   {
-    self->_debugHighlightLanes = a3;
+    self->_debugHighlightLanes = lanes;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -880,25 +880,25 @@ LABEL_17:
   }
 }
 
-- (void)setLanes:(id)a3
+- (void)setLanes:(id)lanes
 {
-  v4 = a3;
-  if (([MNComparison isValue:v4 equalTo:self->_lanes]& 1) == 0)
+  lanesCopy = lanes;
+  if (([MNComparison isValue:lanesCopy equalTo:self->_lanes]& 1) == 0)
   {
     v5 = sub_100D6E0B8();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       lanes = self->_lanes;
       *buf = 134349570;
-      v25 = self;
+      selfCopy = self;
       v26 = 2112;
-      v27 = lanes;
+      lanesCopy2 = lanes;
       v28 = 2112;
-      v29 = v4;
+      v29 = lanesCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Changing lanes from %@ to %@", buf, 0x20u);
     }
 
-    v7 = [v4 copy];
+    v7 = [lanesCopy copy];
     v8 = self->_lanes;
     self->_lanes = v7;
 
@@ -926,9 +926,9 @@ LABEL_17:
           v14 = *(*(&v19 + 1) + 8 * i);
           if ([v14 isPreferredLaneForManeuver])
           {
-            v17 = [v14 directions];
-            v18 = [v17 firstObject];
-            [v18 direction];
+            directions = [v14 directions];
+            firstObject = [directions firstObject];
+            [firstObject direction];
             self->_laneArrowBiasDirection = MKLaneDirectionIsToTheLeft() ^ 1;
 
             self->_maneuverHasPreferredLane = 1;
@@ -937,9 +937,9 @@ LABEL_17:
 
           if ([v14 isLaneForManeuver])
           {
-            v15 = [v14 directions];
-            v16 = [v15 firstObject];
-            [v16 direction];
+            directions2 = [v14 directions];
+            firstObject2 = [directions2 firstObject];
+            [firstObject2 direction];
             self->_laneArrowBiasDirection = MKLaneDirectionIsToTheLeft() ^ 1;
           }
         }
@@ -960,38 +960,38 @@ LABEL_16:
   }
 }
 
-- (void)setShouldTransformWithVerticalScale:(BOOL)a3
+- (void)setShouldTransformWithVerticalScale:(BOOL)scale
 {
-  if (self->_shouldTransformWithVerticalScale != a3)
+  if (self->_shouldTransformWithVerticalScale != scale)
   {
-    self->_shouldTransformWithVerticalScale = a3;
+    self->_shouldTransformWithVerticalScale = scale;
     [(NavSignLaneGuidanceView *)self setNeedsLayout];
   }
 }
 
-- (void)setVerticalScale:(double)a3
+- (void)setVerticalScale:(double)scale
 {
-  if (self->_verticalScale != a3 && a3 > 0.0 && a3 <= 1.0)
+  if (self->_verticalScale != scale && scale > 0.0 && scale <= 1.0)
   {
-    self->_verticalScale = a3;
+    self->_verticalScale = scale;
     [(NavSignLaneGuidanceView *)self setNeedsLayout];
   }
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vcltz_s16(vshl_n_s16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_edgeInsets.top, v3), vceqq_f64(*&self->_edgeInsets.bottom, v4))), 0xFuLL))) & 1) == 0)
   {
-    self->_edgeInsets = a3;
+    self->_edgeInsets = insets;
     [(NavSignLaneGuidanceView *)self _updateLaneContentMargins];
   }
 }
 
-- (NavSignLaneGuidanceView)initWithLaneStyle:(unint64_t)a3
+- (NavSignLaneGuidanceView)initWithLaneStyle:(unint64_t)style
 {
   v10.receiver = self;
   v10.super_class = NavSignLaneGuidanceView;
@@ -1002,7 +1002,7 @@ LABEL_16:
     laneViews = v4->_laneViews;
     v4->_laneViews = v5;
 
-    v4->_laneStyle = a3;
+    v4->_laneStyle = style;
     v4->_lastUpdatedSignWidth = 0.0;
     v4->_maxNumberOfVisibleLanes = 0x7FFFFFFFFFFFFFFFLL;
     v7 = *&UIEdgeInsetsZero.bottom;
@@ -1018,36 +1018,36 @@ LABEL_16:
   return v4;
 }
 
-+ (_NSRange)_visibleLaneRangeForNumberOfLanes:(unint64_t)a3 maxNumberOfVisibleLanes:(unint64_t)a4 highlightedLaneRange:(_NSRange)a5
++ (_NSRange)_visibleLaneRangeForNumberOfLanes:(unint64_t)lanes maxNumberOfVisibleLanes:(unint64_t)visibleLanes highlightedLaneRange:(_NSRange)range
 {
-  v5 = 0;
+  lanesCopy = 0;
   v6 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 && a4)
+  if (lanes && visibleLanes)
   {
-    v7 = a3 - a4;
-    if (a3 >= a4)
+    v7 = lanes - visibleLanes;
+    if (lanes >= visibleLanes)
     {
-      v5 = a4;
+      lanesCopy = visibleLanes;
     }
 
     else
     {
-      v5 = a3;
+      lanesCopy = lanes;
     }
 
-    if (a3 > a4)
+    if (lanes > visibleLanes)
     {
-      if (a3 - (a5.length + a5.location) >= a5.location || a5.location < v7)
+      if (lanes - (range.length + range.location) >= range.location || range.location < v7)
       {
         v7 = 0;
       }
 
-      if (a5.length > a4)
+      if (range.length > visibleLanes)
       {
         v7 = 0;
       }
 
-      if (a5.location == 0x7FFFFFFFFFFFFFFFLL)
+      if (range.location == 0x7FFFFFFFFFFFFFFFLL)
       {
         v6 = 0;
       }
@@ -1064,21 +1064,21 @@ LABEL_16:
     }
   }
 
-  result.length = v5;
+  result.length = lanesCopy;
   result.location = v6;
   return result;
 }
 
-+ (int64_t)maxNumberVisibleLanesForSignWidth:(double)a3
++ (int64_t)maxNumberVisibleLanesForSignWidth:(double)width
 {
-  if (a3 <= 0.0)
+  if (width <= 0.0)
   {
     return 0;
   }
 
   else
   {
-    return llround(a3 * 0.00266666667 * GEOConfigGetInteger());
+    return llround(width * 0.00266666667 * GEOConfigGetInteger());
   }
 }
 

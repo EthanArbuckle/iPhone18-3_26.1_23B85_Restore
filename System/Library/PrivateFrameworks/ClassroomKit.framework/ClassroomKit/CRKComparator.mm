@@ -1,20 +1,20 @@
 @interface CRKComparator
 + (id)compare;
-+ (id)compareWithCriteria:(id)a3;
++ (id)compareWithCriteria:(id)criteria;
 - (CRKComparator)init;
 - (id)compare;
-- (id)compareWithCriteria:(id)a3;
+- (id)compareWithCriteria:(id)criteria;
 - (id)run;
 - (int64_t)runComparison;
 @end
 
 @implementation CRKComparator
 
-+ (id)compareWithCriteria:(id)a3
++ (id)compareWithCriteria:(id)criteria
 {
-  v3 = a3;
+  criteriaCopy = criteria;
   v4 = objc_opt_new();
-  v5 = [v4 compareWithCriteria:v3];
+  v5 = [v4 compareWithCriteria:criteriaCopy];
 
   return v5;
 }
@@ -25,17 +25,13 @@
   v4[1] = 3221225472;
   v4[2] = __24__CRKComparator_compare__block_invoke;
   v4[3] = &__block_descriptor_40_e29___CRKComparator_16__0___q___8l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = MEMORY[0x245D3AAD0](v4, a2);
 
   return v2;
 }
 
 uint64_t __24__CRKComparator_compare__block_invoke(uint64_t a1, uint64_t a2)
-{
-  return [*(a1 + 32) compareWithCriteria:a2];
-}
-
 {
   return [*(a1 + 32) compareWithCriteria:a2];
 }
@@ -47,8 +43,8 @@ uint64_t __24__CRKComparator_compare__block_invoke(uint64_t a1, uint64_t a2)
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(CRKComparator *)self allCriteria];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allCriteria = [(CRKComparator *)self allCriteria];
+  v3 = [allCriteria countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -60,7 +56,7 @@ uint64_t __24__CRKComparator_compare__block_invoke(uint64_t a1, uint64_t a2)
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allCriteria);
         }
 
         v7 = (*(*(*(&v10 + 1) + 8 * v6) + 16))();
@@ -74,7 +70,7 @@ uint64_t __24__CRKComparator_compare__block_invoke(uint64_t a1, uint64_t a2)
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [allCriteria countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -102,13 +98,13 @@ LABEL_11:
   return v2;
 }
 
-- (id)compareWithCriteria:(id)a3
+- (id)compareWithCriteria:(id)criteria
 {
-  v4 = a3;
-  v5 = [(CRKComparator *)self allCriteria];
-  v6 = MEMORY[0x245D3AAD0](v4);
+  criteriaCopy = criteria;
+  allCriteria = [(CRKComparator *)self allCriteria];
+  v6 = MEMORY[0x245D3AAD0](criteriaCopy);
 
-  [v5 addObject:v6];
+  [allCriteria addObject:v6];
   return self;
 }
 

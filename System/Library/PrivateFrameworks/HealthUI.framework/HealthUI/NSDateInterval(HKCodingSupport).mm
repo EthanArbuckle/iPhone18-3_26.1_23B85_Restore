@@ -27,12 +27,12 @@
 - (HKCodableDateInterval)hk_codableDateInterval
 {
   v2 = objc_alloc_init(HKCodableDateInterval);
-  v3 = [a1 startDate];
-  [v3 timeIntervalSinceReferenceDate];
+  startDate = [self startDate];
+  [startDate timeIntervalSinceReferenceDate];
   [(HKCodableDateInterval *)v2 setStartDate:?];
 
-  v4 = [a1 endDate];
-  [v4 timeIntervalSinceReferenceDate];
+  endDate = [self endDate];
+  [endDate timeIntervalSinceReferenceDate];
   [(HKCodableDateInterval *)v2 setEndDate:?];
 
   return v2;

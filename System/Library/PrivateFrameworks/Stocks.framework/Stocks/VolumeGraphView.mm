@@ -1,17 +1,17 @@
 @interface VolumeGraphView
-- (VolumeGraphView)initWithFrame:(CGRect)a3;
-- (void)resizeSelectedVolumeClipViewWithLeftX:(double)a3 rightX:(double)a4;
-- (void)setGraphImageSet:(id)a3;
-- (void)setShowingSelectedRegion:(BOOL)a3;
+- (VolumeGraphView)initWithFrame:(CGRect)frame;
+- (void)resizeSelectedVolumeClipViewWithLeftX:(double)x rightX:(double)rightX;
+- (void)setGraphImageSet:(id)set;
+- (void)setShowingSelectedRegion:(BOOL)region;
 @end
 
 @implementation VolumeGraphView
 
-- (VolumeGraphView)initWithFrame:(CGRect)a3
+- (VolumeGraphView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VolumeGraphView;
-  v3 = [(VolumeGraphView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VolumeGraphView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -21,33 +21,33 @@
   return v4;
 }
 
-- (void)setGraphImageSet:(id)a3
+- (void)setGraphImageSet:(id)set
 {
-  v10 = a3;
-  v4 = [v10 volumeGraphImage];
+  setCopy = set;
+  volumeGraphImage = [setCopy volumeGraphImage];
   volumeImage = self->_volumeImage;
 
-  if (v4 != volumeImage)
+  if (volumeGraphImage != volumeImage)
   {
-    v6 = [v10 volumeGraphImage];
+    volumeGraphImage2 = [setCopy volumeGraphImage];
     v7 = self->_volumeImage;
-    self->_volumeImage = v6;
+    self->_volumeImage = volumeGraphImage2;
 
-    v8 = [(UIImage *)self->_volumeImage CGImage];
-    v9 = [(VolumeGraphView *)self layer];
-    [v9 setContents:v8];
+    cGImage = [(UIImage *)self->_volumeImage CGImage];
+    layer = [(VolumeGraphView *)self layer];
+    [layer setContents:cGImage];
 
     [(TintedView *)self->_tintedVolumeView setImage:self->_volumeImage];
   }
 }
 
-- (void)setShowingSelectedRegion:(BOOL)a3
+- (void)setShowingSelectedRegion:(BOOL)region
 {
-  if (self->_showingTintedRegion != a3)
+  if (self->_showingTintedRegion != region)
   {
-    v4 = a3;
-    self->_showingTintedRegion = a3;
-    if (a3)
+    regionCopy = region;
+    self->_showingTintedRegion = region;
+    if (region)
     {
       if (!self->_tintedVolumeView)
       {
@@ -57,8 +57,8 @@
 
         v8 = self->_tintedVolumeView;
         v9 = +[StocksStyle sharedStyle];
-        v10 = [v9 chartHighlightColor];
-        [(TintedView *)v8 setTintColor:v10];
+        chartHighlightColor = [v9 chartHighlightColor];
+        [(TintedView *)v8 setTintColor:chartHighlightColor];
 
         v11 = objc_alloc(MEMORY[0x277D75D18]);
         [(VolumeGraphView *)self bounds];
@@ -80,24 +80,24 @@
 
     v14 = self->_tintedRegionClipView;
 
-    [(UIView *)v14 setAlpha:v4];
+    [(UIView *)v14 setAlpha:regionCopy];
   }
 }
 
-- (void)resizeSelectedVolumeClipViewWithLeftX:(double)a3 rightX:(double)a4
+- (void)resizeSelectedVolumeClipViewWithLeftX:(double)x rightX:(double)rightX
 {
-  v7 = [(TintedView *)self->_tintedVolumeView layer];
-  [v7 removeAllAnimations];
+  layer = [(TintedView *)self->_tintedVolumeView layer];
+  [layer removeAllAnimations];
 
-  v8 = [(UIView *)self->_tintedRegionClipView layer];
-  [v8 removeAllAnimations];
+  layer2 = [(UIView *)self->_tintedRegionClipView layer];
+  [layer2 removeAllAnimations];
 
   [(VolumeGraphView *)self bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [(UIView *)self->_tintedRegionClipView setFrame:a3, 0.0, a4 - a3];
+  [(UIView *)self->_tintedRegionClipView setFrame:x, 0.0, rightX - x];
   tintedVolumeView = self->_tintedVolumeView;
   [(VolumeGraphView *)self convertRect:self->_tintedRegionClipView toView:v10, v12, v14, v16];
 

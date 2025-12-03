@@ -1,18 +1,18 @@
 @interface NSStringDrawingTextStorage
 + (id)stringDrawingTextStorage;
 + (void)initialize;
-+ (void)performLayoutOperation:(id)a3;
-- (CGPoint)defaultTextContainerOriginForRect:(CGRect)a3;
-- (CGRect)usedRectForTextContainer:(id)a3;
++ (void)performLayoutOperation:(id)operation;
+- (CGPoint)defaultTextContainerOriginForRect:(CGRect)rect;
+- (CGRect)usedRectForTextContainer:(id)container;
 - (NSStringDrawingTextStorage)init;
-- (id)textContainerForAttributedString:(id)a3 containerSize:(CGSize)a4 lineFragmentPadding:(double)a5;
-- (void)_setBaselineMode:(BOOL)a3;
-- (void)_setForceWordWrapping:(BOOL)a3;
-- (void)_setUsesSimpleTextEffects:(BOOL)a3;
-- (void)_setWrappedByCluster:(BOOL)a3;
+- (id)textContainerForAttributedString:(id)string containerSize:(CGSize)size lineFragmentPadding:(double)padding;
+- (void)_setBaselineMode:(BOOL)mode;
+- (void)_setForceWordWrapping:(BOOL)wrapping;
+- (void)_setUsesSimpleTextEffects:(BOOL)effects;
+- (void)_setWrappedByCluster:(BOOL)cluster;
 - (void)dealloc;
-- (void)drawTextContainer:(id)a3 range:(_NSRange)a4 withRect:(CGRect)a5 graphicsContext:(CGContext *)a6 baselineMode:(BOOL)a7 scrollable:(BOOL)a8 padding:(double)a9;
-- (void)drawTextContainer:(id)a3 withRect:(CGRect)a4 graphicsContext:(CGContext *)a5 baselineMode:(BOOL)a6 scrollable:(BOOL)a7 padding:(double)a8;
+- (void)drawTextContainer:(id)container range:(_NSRange)range withRect:(CGRect)rect graphicsContext:(CGContext *)context baselineMode:(BOOL)mode scrollable:(BOOL)scrollable padding:(double)padding;
+- (void)drawTextContainer:(id)container withRect:(CGRect)rect graphicsContext:(CGContext *)context baselineMode:(BOOL)mode scrollable:(BOOL)scrollable padding:(double)padding;
 - (void)processEditing;
 @end
 
@@ -34,7 +34,7 @@
   return v2;
 }
 
-+ (void)performLayoutOperation:(id)a3
++ (void)performLayoutOperation:(id)operation
 {
   os_unfair_lock_lock_with_options();
   v5 = __NSStringDrawingTextStorageCacheNextIndex;
@@ -54,9 +54,9 @@
     os_unfair_lock_unlock(&__NSStringDrawingTextStorageLock);
   }
 
-  v10 = objc_alloc_init(a1);
+  v10 = objc_alloc_init(self);
 LABEL_6:
-  (*(a3 + 2))(a3, v10, [v10 layoutManager], objc_msgSend(v10, "textContainer"));
+  (*(operation + 2))(operation, v10, [v10 layoutManager], objc_msgSend(v10, "textContainer"));
   os_unfair_lock_lock_with_options();
   v6 = [v10 retainCount] != 1 || __NSStringDrawingTextStorageCacheNextIndex > 3;
   if (!v6 && ((v7 = [v10 length], v8 = __NSStringDrawingTextStorageCacheNextIndex, v7 >= 0x190) ? (v9 = __NSStringDrawingTextStorageCacheNextIndex == 0) : (v9 = 1), v9))
@@ -73,12 +73,12 @@ LABEL_6:
   }
 }
 
-- (CGRect)usedRectForTextContainer:(id)a3
+- (CGRect)usedRectForTextContainer:(id)container
 {
   [(NSLayoutManager *)self->_layoutManager ensureLayoutForTextContainer:?];
   layoutManager = self->_layoutManager;
 
-  [(NSLayoutManager *)layoutManager usedRectForTextContainer:a3];
+  [(NSLayoutManager *)layoutManager usedRectForTextContainer:container];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -86,9 +86,9 @@ LABEL_6:
   return result;
 }
 
-- (void)_setBaselineMode:(BOOL)a3
+- (void)_setBaselineMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 32;
   }
@@ -101,9 +101,9 @@ LABEL_6:
   self->_sdflags = (*&self->_sdflags & 0xFFFFFFDF | v3);
 }
 
-- (void)_setWrappedByCluster:(BOOL)a3
+- (void)_setWrappedByCluster:(BOOL)cluster
 {
-  if (a3)
+  if (cluster)
   {
     v3 = 2048;
   }
@@ -116,9 +116,9 @@ LABEL_6:
   self->_sdflags = (*&self->_sdflags & 0xFFFFF7FF | v3);
 }
 
-- (void)_setUsesSimpleTextEffects:(BOOL)a3
+- (void)_setUsesSimpleTextEffects:(BOOL)effects
 {
-  if (a3)
+  if (effects)
   {
     v3 = 128;
   }
@@ -131,9 +131,9 @@ LABEL_6:
   self->_sdflags = (*&self->_sdflags & 0xFFFFFF7F | v3);
 }
 
-- (void)_setForceWordWrapping:(BOOL)a3
+- (void)_setForceWordWrapping:(BOOL)wrapping
 {
-  if (a3)
+  if (wrapping)
   {
     v3 = 64;
   }
@@ -146,29 +146,29 @@ LABEL_6:
   self->_sdflags = (*&self->_sdflags & 0xFFFFFFBF | v3);
 }
 
-- (void)drawTextContainer:(id)a3 withRect:(CGRect)a4 graphicsContext:(CGContext *)a5 baselineMode:(BOOL)a6 scrollable:(BOOL)a7 padding:(double)a8
+- (void)drawTextContainer:(id)container withRect:(CGRect)rect graphicsContext:(CGContext *)context baselineMode:(BOOL)mode scrollable:(BOOL)scrollable padding:(double)padding
 {
-  v9 = a7;
-  v10 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  scrollableCopy = scrollable;
+  modeCopy = mode;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v18 = [(NSStringDrawingTextStorage *)self length];
 
-  [(NSStringDrawingTextStorage *)self drawTextContainer:a3 range:0 withRect:v18 graphicsContext:a5 baselineMode:v10 scrollable:v9 padding:x, y, width, height, a8];
+  [(NSStringDrawingTextStorage *)self drawTextContainer:container range:0 withRect:v18 graphicsContext:context baselineMode:modeCopy scrollable:scrollableCopy padding:x, y, width, height, padding];
 }
 
-- (void)drawTextContainer:(id)a3 range:(_NSRange)a4 withRect:(CGRect)a5 graphicsContext:(CGContext *)a6 baselineMode:(BOOL)a7 scrollable:(BOOL)a8 padding:(double)a9
+- (void)drawTextContainer:(id)container range:(_NSRange)range withRect:(CGRect)rect graphicsContext:(CGContext *)context baselineMode:(BOOL)mode scrollable:(BOOL)scrollable padding:(double)padding
 {
-  v9 = a8;
-  v10 = a7;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  length = a4.length;
-  location = a4.location;
+  scrollableCopy = scrollable;
+  modeCopy = mode;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  length = range.length;
+  location = range.location;
   v19 = [(objc_class *)+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider graphicsContextForApplicationFrameworkContext:"graphicsContextForApplicationFrameworkContext:", [(NSStringDrawingTextStorage *)self _applicationFrameworkContext]];
   v20 = MEMORY[0x1E696AA80];
   if (v19)
@@ -183,13 +183,13 @@ LABEL_6:
 
   v22 = *v20;
   v67 = v20[1];
-  [(NSStringDrawingTextStorage *)self usedRectForTextContainer:a3];
+  [(NSStringDrawingTextStorage *)self usedRectForTextContainer:container];
   v27 = v24;
   v28 = v25;
   v29 = v26;
-  if (width > 0.0 && v25 > width || (v30 = 0, height > 0.0) && v26 > height)
+  if (width > 0.0 && v25 > width || (contextCopy = 0, height > 0.0) && v26 > height)
   {
-    v30 = a6;
+    contextCopy = context;
   }
 
   v31 = v23 + v25;
@@ -217,24 +217,24 @@ LABEL_6:
 
   v60 = v33;
   v61 = v32;
-  v34 = [(NSLayoutManager *)self->_layoutManager glyphRangeForBoundingRect:a3 inTextContainer:v22, v67];
+  v34 = [(NSLayoutManager *)self->_layoutManager glyphRangeForBoundingRect:container inTextContainer:v22, v67];
   v36 = v35;
   baselineDelta = 0.0;
-  if (v10)
+  if (modeCopy)
   {
     baselineDelta = self->_baselineDelta;
   }
 
   v38 = 0;
   v64 = x;
-  if (width > 0.0 && v9)
+  if (width > 0.0 && scrollableCopy)
   {
     [(NSStringDrawingTextStorage *)self defaultTextContainerOriginForRect:x, y, width, height];
     v38 = 0;
     x = floor(v39);
-    if (!v10 && height > 0.0 && v28 >= width + width)
+    if (!modeCopy && height > 0.0 && v28 >= width + width)
     {
-      v34 = [(NSLayoutManager *)self->_layoutManager glyphRangeForBoundingRectWithoutAdditionalLayout:a3 inTextContainer:v62, v67, v61, v60];
+      v34 = [(NSLayoutManager *)self->_layoutManager glyphRangeForBoundingRectWithoutAdditionalLayout:container inTextContainer:v62, v67, v61, v60];
       v36 = v40;
       v38 = 1;
     }
@@ -251,7 +251,7 @@ LABEL_6:
   }
 
   v42 = v27 + v41;
-  if (v10)
+  if (modeCopy)
   {
     v42 = baselineDelta;
   }
@@ -267,7 +267,7 @@ LABEL_6:
     v44 = y - (v27 + baselineDelta);
   }
 
-  if (v30)
+  if (contextCopy)
   {
     v59 = v44;
     v45 = v63;
@@ -276,7 +276,7 @@ LABEL_6:
       v45 = width;
     }
 
-    v46 = v45 + a9 * 2.0;
+    v46 = v45 + padding * 2.0;
     if (height > 0.0)
     {
       v47 = height;
@@ -294,7 +294,7 @@ LABEL_6:
       v49 = -baselineDelta;
     }
 
-    if (v10)
+    if (modeCopy)
     {
       v48 = v49;
     }
@@ -307,7 +307,7 @@ LABEL_6:
 
     if ((v38 & 1) == 0 && v29 >= height + height)
     {
-      v51 = [(NSLayoutManager *)self->_layoutManager glyphRangeForBoundingRectWithoutAdditionalLayout:a3 inTextContainer:v62, v67, v61, v60];
+      v51 = [(NSLayoutManager *)self->_layoutManager glyphRangeForBoundingRectWithoutAdditionalLayout:container inTextContainer:v62, v67, v61, v60];
       v53 = v51 + v52 >= v34 + v36 ? v36 : v51 + v52 - v34;
       if (v52)
       {
@@ -315,12 +315,12 @@ LABEL_6:
       }
     }
 
-    CGContextSaveGState(v30);
-    v72.origin.x = v64 - a9;
+    CGContextSaveGState(contextCopy);
+    v72.origin.x = v64 - padding;
     v72.origin.y = v50;
     v72.size.width = v46;
     v72.size.height = v47;
-    CGContextClipToRect(v30, v72);
+    CGContextClipToRect(contextCopy, v72);
   }
 
   v68 = 0;
@@ -353,18 +353,18 @@ LABEL_6:
 LABEL_56:
   [(NSLayoutManager *)self->_layoutManager drawGlyphsForGlyphRange:v55.location atPoint:v55.length, x, v44];
   [(NSLayoutManager *)self->_layoutManager setFlipsIfNeeded:0];
-  if (v30)
+  if (contextCopy)
   {
-    CGContextRestoreGState(v30);
+    CGContextRestoreGState(contextCopy);
   }
 }
 
-- (CGPoint)defaultTextContainerOriginForRect:(CGRect)a3
+- (CGPoint)defaultTextContainerOriginForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(NSLayoutManager *)self->_layoutManager usedRectForTextContainer:self->_textContainer];
   v9 = v8;
   v11 = v10;
@@ -377,13 +377,13 @@ LABEL_56:
   return result;
 }
 
-- (id)textContainerForAttributedString:(id)a3 containerSize:(CGSize)a4 lineFragmentPadding:(double)a5
+- (id)textContainerForAttributedString:(id)string containerSize:(CGSize)size lineFragmentPadding:(double)padding
 {
-  height = a4.height;
-  width = a4.width;
-  [(NSConcreteMutableAttributedString *)self->_contents replaceCharactersInRange:0 withAttributedString:[(NSStringDrawingTextStorage *)self length], a3];
+  height = size.height;
+  width = size.width;
+  [(NSConcreteMutableAttributedString *)self->_contents replaceCharactersInRange:0 withAttributedString:[(NSStringDrawingTextStorage *)self length], string];
   [(NSTextContainer *)self->_textContainer setSize:width, height];
-  [(NSTextContainer *)self->_textContainer setLineFragmentPadding:a5];
+  [(NSTextContainer *)self->_textContainer setLineFragmentPadding:padding];
   return self->_textContainer;
 }
 
@@ -460,14 +460,14 @@ LABEL_56:
 
 - (void)processEditing
 {
-  v3 = [(NSTextStorage *)self editedRange];
+  editedRange = [(NSTextStorage *)self editedRange];
   v5 = v4;
-  [(NSTextStorage *)self invalidateAttributesInRange:v3, v4];
-  v6 = [(NSTextStorage *)self editedMask];
-  v7 = [(NSTextStorage *)self changeInLength];
-  v9 = [(NSTextStorage *)self editedRange];
+  [(NSTextStorage *)self invalidateAttributesInRange:editedRange, v4];
+  editedMask = [(NSTextStorage *)self editedMask];
+  changeInLength = [(NSTextStorage *)self changeInLength];
+  editedRange2 = [(NSTextStorage *)self editedRange];
 
-  [(NSTextStorage *)self _notifyEdited:v6 range:v3 changeInLength:v5 invalidatedRange:v7, v9, v8];
+  [(NSTextStorage *)self _notifyEdited:editedMask range:editedRange changeInLength:v5 invalidatedRange:changeInLength, editedRange2, v8];
 }
 
 @end

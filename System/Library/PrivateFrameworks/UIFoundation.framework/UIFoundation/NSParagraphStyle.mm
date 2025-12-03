@@ -4,9 +4,9 @@
 + (int64_t)_defaultWritingDirection;
 + (void)initialize;
 - (BOOL)_alignmentFollowsWritingDirection;
-- (BOOL)_isSuitableForFastStringDrawingWithAlignment:(int64_t *)a3 mirrorsTextAlignment:(BOOL)a4 lineBreakMode:(int64_t *)a5 tighteningFactorForTruncation:(double *)a6;
+- (BOOL)_isSuitableForFastStringDrawingWithAlignment:(int64_t *)alignment mirrorsTextAlignment:(BOOL)textAlignment lineBreakMode:(int64_t *)mode tighteningFactorForTruncation:(double *)truncation;
 - (BOOL)allowsHangingPunctuation;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFullyJustified;
 - (BOOL)spansAllLines;
 - (BOOL)usesDefaultHyphenation;
@@ -19,15 +19,15 @@
 - (NSArray)textLists;
 - (NSInteger)headerLevel;
 - (NSLineBreakStrategy)lineBreakStrategy;
-- (NSParagraphStyle)initWithCoder:(id)a3;
+- (NSParagraphStyle)initWithCoder:(id)coder;
 - (NSString)codeBlockIntentLanguageHint;
 - (NSString)description;
 - (NSWritingDirection)baseWritingDirection;
 - (double)baselineInterval;
 - (float)hyphenationFactor;
 - (float)tighteningFactorForTruncation;
-- (id)_initWithParagraphStyle:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithParagraphStyle:(id)style;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)_listIntentOrdinal;
 - (int64_t)compositionLanguage;
 - (int64_t)horizontalAlignment;
@@ -38,7 +38,7 @@
 - (unint64_t)hash;
 - (void)_allocExtraData;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSParagraphStyle
@@ -62,8 +62,8 @@
   v2 = _defaultWritingDirection_defaultDirection;
   if (_defaultWritingDirection_defaultDirection == -1)
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    if ([v4 BOOLForKey:@"NSForceRightToLeftWritingDirection"])
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    if ([standardUserDefaults BOOLForKey:@"NSForceRightToLeftWritingDirection"])
     {
       v2 = 1;
 LABEL_12:
@@ -83,7 +83,7 @@ LABEL_12:
     if (v9)
     {
       v10 = v9;
-      v2 = [a1 defaultWritingDirectionForLanguage:{-[__CFArray objectAtIndex:](v9, "objectAtIndex:", 0)}];
+      v2 = [self defaultWritingDirectionForLanguage:{-[__CFArray objectAtIndex:](v9, "objectAtIndex:", 0)}];
       CFRelease(v10);
       if (v2 != 1)
       {
@@ -92,7 +92,7 @@ LABEL_10:
         goto LABEL_12;
       }
 
-      if (([v4 BOOLForKey:@"NSForceLeftToRightWritingDirection"] & 1) == 0)
+      if (([standardUserDefaults BOOLForKey:@"NSForceLeftToRightWritingDirection"] & 1) == 0)
       {
         ValueForInfoDictionaryKey = CFBundleGetValueForInfoDictionaryKey(v6, @"NSForceLeftToRightWritingDirection");
         if (!ValueForInfoDictionaryKey || ((v13 = ValueForInfoDictionaryKey, v14 = CFGetTypeID(ValueForInfoDictionaryKey), CFBooleanGetTypeID() != v14) || !CFBooleanGetValue(v13)) && (CFNumberGetTypeID() != v14 || ([(__CFBoolean *)v13 BOOLValue]& 1) == 0) && (CFStringGetTypeID() != v14 || CFStringGetLength(v13) < 1 || CFStringGetCharacterAtIndex(v13, 0) != 89 && CFStringGetCharacterAtIndex(v13, 0) != 121))
@@ -119,15 +119,15 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(NSParagraphStyle *)self horizontalAlignment];
-  v4 = [(NSParagraphStyle *)self isFullyJustified];
+  horizontalAlignment = [(NSParagraphStyle *)self horizontalAlignment];
+  isFullyJustified = [(NSParagraphStyle *)self isFullyJustified];
   v5 = 0x10000000;
-  if (!v4)
+  if (!isFullyJustified)
   {
     v5 = 0;
   }
 
-  v6 = v5 + (v3 << 24) + (self->_headIndent << 16) + (self->_firstLineHeadIndent << 8);
+  v6 = v5 + (horizontalAlignment << 24) + (self->_headIndent << 16) + (self->_firstLineHeadIndent << 8);
   tabStops = self->_tabStops;
   if (tabStops)
   {
@@ -328,19 +328,19 @@ LABEL_10:
     return;
   }
 
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 floatForKey:@"NSTighteningFactorForTruncation"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults floatForKey:@"NSTighteningFactorForTruncation"];
   v4 = v3;
   __NSParagraphStyleClass = objc_opt_class();
   __NSMutableParagraphStyleClass = objc_opt_class();
-  if (v4 > 0.0 || v4 == 0.0 && [v2 objectForKey:@"NSTighteningFactorForTruncation"])
+  if (v4 > 0.0 || v4 == 0.0 && [standardUserDefaults objectForKey:@"NSTighteningFactorForTruncation"])
   {
     *&__NSTightenFactor = v4;
   }
 
-  if ([v2 objectForKey:@"NSAllowsDefaultTighteningForTruncation"])
+  if ([standardUserDefaults objectForKey:@"NSAllowsDefaultTighteningForTruncation"])
   {
-    v5 = [v2 BOOLForKey:@"NSAllowsDefaultTighteningForTruncation"];
+    v5 = [standardUserDefaults BOOLForKey:@"NSAllowsDefaultTighteningForTruncation"];
   }
 
   else
@@ -355,25 +355,25 @@ LABEL_10:
 
   __NSAllowsDefaultTightening = v5;
 LABEL_11:
-  if ([v2 objectForKey:@"NSUsesDefaultHyphenation"])
+  if ([standardUserDefaults objectForKey:@"NSUsesDefaultHyphenation"])
   {
-    __NSUsesDefaultHyphenation_0 = [v2 BOOLForKey:@"NSUsesDefaultHyphenation"];
+    __NSUsesDefaultHyphenation_0 = [standardUserDefaults BOOLForKey:@"NSUsesDefaultHyphenation"];
   }
 
-  if ([v2 objectForKey:@"NSDefaultHyphenationFactor"])
+  if ([standardUserDefaults objectForKey:@"NSDefaultHyphenationFactor"])
   {
-    [v2 floatForKey:@"NSDefaultHyphenationFactor"];
+    [standardUserDefaults floatForKey:@"NSDefaultHyphenationFactor"];
     __NSDefaultHyphenationFactor = v6;
   }
 
-  if ([v2 objectForKey:@"NSUsesOptimalLineBreaking"])
+  if ([standardUserDefaults objectForKey:@"NSUsesOptimalLineBreaking"])
   {
-    __NSUsesOptimalLineBreaking = [v2 BOOLForKey:@"NSUsesOptimalLineBreaking"];
+    __NSUsesOptimalLineBreaking = [standardUserDefaults BOOLForKey:@"NSUsesOptimalLineBreaking"];
   }
 
-  if ([v2 objectForKey:@"NSUsesOptimalLineBreakingForNonJustifiedAlignments"])
+  if ([standardUserDefaults objectForKey:@"NSUsesOptimalLineBreakingForNonJustifiedAlignments"])
   {
-    __NSUsesOptimalLineBreakingForNonJustifiedAlignments = [v2 BOOLForKey:@"NSUsesOptimalLineBreakingForNonJustifiedAlignments"];
+    __NSUsesOptimalLineBreakingForNonJustifiedAlignments = [standardUserDefaults BOOLForKey:@"NSUsesOptimalLineBreakingForNonJustifiedAlignments"];
   }
 }
 
@@ -434,11 +434,11 @@ LABEL_11:
     v5->_hyphenationFactor = 0.0;
     [(NSParagraphStyle *)self tighteningFactorForTruncation];
     v5->_tighteningFactor = v8;
-    v9 = [(NSParagraphStyle *)self headerLevel];
+    headerLevel = [(NSParagraphStyle *)self headerLevel];
     v5->_presentationIntents = 0;
     v5->_textBlocks = 0;
     v5->_textLists = 0;
-    v5->_headerLevel = v9;
+    v5->_headerLevel = headerLevel;
     v5->_lineBoundsOptions = [(NSParagraphStyle *)self _lineBoundsOptions];
     v5->_lineBreakStrategy = [(NSParagraphStyle *)self lineBreakStrategy];
     v5->_usesDefaultHyphenation = [(NSParagraphStyle *)self usesDefaultHyphenation];
@@ -473,9 +473,9 @@ LABEL_11:
 
   if (object_getClass(self) != __NSParagraphStyleClass && object_getClass(self) != __NSMutableParagraphStyleClass)
   {
-    v5 = [(NSParagraphStyle *)self allowsHangingPunctuation];
+    allowsHangingPunctuation = [(NSParagraphStyle *)self allowsHangingPunctuation];
     v6 = 4;
-    if (!v5)
+    if (!allowsHangingPunctuation)
     {
       v6 = 0;
     }
@@ -657,13 +657,13 @@ uint64_t __41__NSParagraphStyle_defaultParagraphStyle__block_invoke()
   else
   {
 
-    return [a1 _defaultWritingDirection];
+    return [self _defaultWritingDirection];
   }
 
   return result;
 }
 
-- (id)_initWithParagraphStyle:(id)a3
+- (id)_initWithParagraphStyle:(id)style
 {
   v61.receiver = self;
   v61.super_class = NSParagraphStyle;
@@ -674,7 +674,7 @@ uint64_t __41__NSParagraphStyle_defaultParagraphStyle__block_invoke()
     return v5;
   }
 
-  if (!a3)
+  if (!style)
   {
     v4->_maximumLineHeight = 0.0;
     v38 = NSTextAlignmentToCTTextAlignment(NSTextAlignmentNatural);
@@ -686,51 +686,51 @@ uint64_t __41__NSParagraphStyle_defaultParagraphStyle__block_invoke()
     return v5;
   }
 
-  if (object_getClass(a3) != __NSParagraphStyleClass && object_getClass(a3) != __NSMutableParagraphStyleClass)
+  if (object_getClass(style) != __NSParagraphStyleClass && object_getClass(style) != __NSMutableParagraphStyleClass)
   {
-    [a3 paragraphSpacingBefore];
+    [style paragraphSpacingBefore];
     v7 = v6;
-    [a3 lineHeightMultiple];
+    [style lineHeightMultiple];
     v60 = v8;
-    [a3 hyphenationFactor];
+    [style hyphenationFactor];
     v10 = v9;
-    [a3 tighteningFactorForTruncation];
+    [style tighteningFactorForTruncation];
     v12 = v11;
-    v13 = [a3 baseWritingDirection];
-    v14 = [a3 headerLevel];
-    v15 = [a3 textBlocks];
-    v16 = [a3 textLists];
-    v59 = [a3 _lineBoundsOptions];
-    v17 = [a3 lineBreakStrategy];
-    v18 = [a3 usesDefaultHyphenation];
-    v58 = [a3 spansAllLines];
-    v57 = [a3 secondaryLineBreakMode];
-    v53 = [a3 baselineIntervalType];
-    [a3 baselineInterval];
+    baseWritingDirection = [style baseWritingDirection];
+    headerLevel = [style headerLevel];
+    textBlocks = [style textBlocks];
+    textLists = [style textLists];
+    _lineBoundsOptions = [style _lineBoundsOptions];
+    lineBreakStrategy = [style lineBreakStrategy];
+    usesDefaultHyphenation = [style usesDefaultHyphenation];
+    spansAllLines = [style spansAllLines];
+    secondaryLineBreakMode = [style secondaryLineBreakMode];
+    baselineIntervalType = [style baselineIntervalType];
+    [style baselineInterval];
     v20 = v19;
-    v54 = [a3 _alignmentFollowsWritingDirection];
-    v21 = [a3 compositionLanguage];
-    v56 = [a3 horizontalAlignment];
-    v55 = [a3 isFullyJustified];
-    v5[18] = v5[18] & 0xFFFFFFF0 | NSTextAlignmentToCTTextAlignment([a3 alignment]) & 0xF;
-    [a3 lineSpacing];
+    _alignmentFollowsWritingDirection = [style _alignmentFollowsWritingDirection];
+    compositionLanguage = [style compositionLanguage];
+    horizontalAlignment = [style horizontalAlignment];
+    isFullyJustified = [style isFullyJustified];
+    v5[18] = v5[18] & 0xFFFFFFF0 | NSTextAlignmentToCTTextAlignment([style alignment]) & 0xF;
+    [style lineSpacing];
     *(v5 + 1) = v22;
-    v5[18] = v5[18] & 0xFFFFFF0F | (16 * ([a3 lineBreakMode] & 0xF));
-    [a3 firstLineHeadIndent];
+    v5[18] = v5[18] & 0xFFFFFF0F | (16 * ([style lineBreakMode] & 0xF));
+    [style firstLineHeadIndent];
     *(v5 + 5) = v23;
-    [a3 paragraphSpacing];
+    [style paragraphSpacing];
     *(v5 + 2) = v24;
-    [a3 headIndent];
+    [style headIndent];
     *(v5 + 3) = v25;
-    [a3 tailIndent];
+    [style tailIndent];
     *(v5 + 4) = v26;
-    [a3 minimumLineHeight];
+    [style minimumLineHeight];
     *(v5 + 6) = v27;
-    [a3 maximumLineHeight];
+    [style maximumLineHeight];
     *(v5 + 7) = v28;
-    [a3 defaultTabInterval];
+    [style defaultTabInterval];
     *(v5 + 10) = v29;
-    if ([a3 allowsDefaultTighteningForTruncation])
+    if ([style allowsDefaultTighteningForTruncation])
     {
       v30 = 0x2000;
     }
@@ -741,9 +741,9 @@ uint64_t __41__NSParagraphStyle_defaultParagraphStyle__block_invoke()
     }
 
     v5[18] = v5[18] & 0xFFFFDFFF | v30;
-    *(v5 + 8) = [objc_msgSend(a3 "tabStops")];
+    *(v5 + 8) = [objc_msgSend(style "tabStops")];
     v31 = v5[18];
-    if (v13 == -1)
+    if (baseWritingDirection == -1)
     {
       v5[18] = v31 & 0xFFFFFCFF | 0x200;
       v32 = v5[18] & 0xFFFFFBFF | (([objc_opt_class() _defaultWritingDirection] == 1) << 10);
@@ -751,12 +751,12 @@ uint64_t __41__NSParagraphStyle_defaultParagraphStyle__block_invoke()
 
     else
     {
-      v32 = v31 & 0xFFFFF8FF | ((v13 == 1) << 10);
+      v32 = v31 & 0xFFFFF8FF | ((baseWritingDirection == 1) << 10);
     }
 
     v47 = v12;
     v5[18] = v32;
-    if (v7 != 0.0 || (v51 = vdupq_lane_s64(*&v60, 0), (vmaxv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v51, xmmword_18E856490), vceqq_f64(v51, xmmword_18E8564A0)))) & 1) == 0) || v15 || v16 || v10 != 0.0 || *&__NSTightenFactor != v47 || v14 || v59 || v17 || __NSUsesDefaultHyphenation_0 != v18 || (v58 & 1) != 0 || v57 || v21 || [v5 _listIntentOrdinal] || objc_msgSend(objc_msgSend(v5, "_presentationIntents"), "count") || objc_msgSend(objc_msgSend(v5, "codeBlockIntentLanguageHint"), "length") || v56 || (v55 & 1) != 0 || (v54 & 1) != 0 || v53 || v20 != 0.0)
+    if (v7 != 0.0 || (v51 = vdupq_lane_s64(*&v60, 0), (vmaxv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v51, xmmword_18E856490), vceqq_f64(v51, xmmword_18E8564A0)))) & 1) == 0) || textBlocks || textLists || v10 != 0.0 || *&__NSTightenFactor != v47 || headerLevel || _lineBoundsOptions || lineBreakStrategy || __NSUsesDefaultHyphenation_0 != usesDefaultHyphenation || (spansAllLines & 1) != 0 || secondaryLineBreakMode || compositionLanguage || [v5 _listIntentOrdinal] || objc_msgSend(objc_msgSend(v5, "_presentationIntents"), "count") || objc_msgSend(objc_msgSend(v5, "codeBlockIntentLanguageHint"), "length") || horizontalAlignment || (isFullyJustified & 1) != 0 || (_alignmentFollowsWritingDirection & 1) != 0 || baselineIntervalType || v20 != 0.0)
     {
       v5[18] &= 0xFFFFE7FF;
       v48 = -[NSParagraphStyleExtraData init](+[NSParagraphStyleExtraData allocWithZone:](NSParagraphStyleExtraData, "allocWithZone:", [v5 zone]), "init");
@@ -764,38 +764,38 @@ uint64_t __41__NSParagraphStyle_defaultParagraphStyle__block_invoke()
       v48->_lineHeightMultiple = v60;
       v48->_paragraphSpacingBefore = v7;
       v48->_tighteningFactor = v47;
-      v48->_headerLevel = v14;
-      if (v15)
+      v48->_headerLevel = headerLevel;
+      if (textBlocks)
       {
-        v48->_textBlocks = [v15 copyWithZone:{objc_msgSend(v5, "zone")}];
+        v48->_textBlocks = [textBlocks copyWithZone:{objc_msgSend(v5, "zone")}];
       }
 
-      if (v16)
+      if (textLists)
       {
-        v48->_textLists = [v16 copyWithZone:{objc_msgSend(v5, "zone")}];
+        v48->_textLists = [textLists copyWithZone:{objc_msgSend(v5, "zone")}];
       }
 
-      v48->_lineBoundsOptions = v59;
-      v48->_lineBreakStrategy = v17;
-      v48->_compositionLanguage = v21;
-      v48->_usesDefaultHyphenation = v18;
-      v48->_spansAllLines = v58;
-      v48->_alignmentFollowsWritingDirection = v54;
-      v48->_secondaryLineBreakMode = v57;
-      v48->_baselineIntervalType = v53;
+      v48->_lineBoundsOptions = _lineBoundsOptions;
+      v48->_lineBreakStrategy = lineBreakStrategy;
+      v48->_compositionLanguage = compositionLanguage;
+      v48->_usesDefaultHyphenation = usesDefaultHyphenation;
+      v48->_spansAllLines = spansAllLines;
+      v48->_alignmentFollowsWritingDirection = _alignmentFollowsWritingDirection;
+      v48->_secondaryLineBreakMode = secondaryLineBreakMode;
+      v48->_baselineIntervalType = baselineIntervalType;
       v48->_baselineInterval = v20;
       v49 = 0.0;
-      if ((v18 & (v10 == *&__NSDefaultHyphenationFactor)) == 0)
+      if ((usesDefaultHyphenation & (v10 == *&__NSDefaultHyphenationFactor)) == 0)
       {
         v49 = v10;
       }
 
       v48->_hyphenationFactor = v49;
-      v48->_listIntentOrdinal = [a3 _listIntentOrdinal];
-      v48->_presentationIntents = [objc_msgSend(a3 "_presentationIntents")];
-      v48->_codeBlockIntentLanguageHint = [objc_msgSend(a3 "codeBlockIntentLanguageHint")];
-      v48->_horizontalAlignment = v56;
-      v48->_fullyJustified = v55;
+      v48->_listIntentOrdinal = [style _listIntentOrdinal];
+      v48->_presentationIntents = [objc_msgSend(style "_presentationIntents")];
+      v48->_codeBlockIntentLanguageHint = [objc_msgSend(style "codeBlockIntentLanguageHint")];
+      v48->_horizontalAlignment = horizontalAlignment;
+      v48->_fullyJustified = isFullyJustified;
       goto LABEL_32;
     }
 
@@ -821,27 +821,27 @@ uint64_t __41__NSParagraphStyle_defaultParagraphStyle__block_invoke()
 
     v5[18] = v52;
 LABEL_32:
-    if ([a3 _presentationIntents])
+    if ([style _presentationIntents])
     {
-      *(*(v5 + 11) + 96) = [objc_msgSend(a3 "_presentationIntents")];
+      *(*(v5 + 11) + 96) = [objc_msgSend(style "_presentationIntents")];
     }
 
     return v5;
   }
 
-  v33 = [a3 baseWritingDirection];
-  v34 = v5[18] & 0xFFFFFFF0 | *(a3 + 18) & 0xF;
+  baseWritingDirection2 = [style baseWritingDirection];
+  v34 = v5[18] & 0xFFFFFFF0 | *(style + 18) & 0xF;
   v5[18] = v34;
-  *(v5 + 3) = *(a3 + 3);
-  *(v5 + 4) = *(a3 + 4);
-  *(v5 + 1) = *(a3 + 1);
-  v35 = v34 & 0xFFFFFF0F | (16 * ((*(a3 + 18) >> 4) & 0xF));
+  *(v5 + 3) = *(style + 3);
+  *(v5 + 4) = *(style + 4);
+  *(v5 + 1) = *(style + 1);
+  v35 = v34 & 0xFFFFFF0F | (16 * ((*(style + 18) >> 4) & 0xF));
   v5[18] = v35;
-  *(v5 + 5) = *(a3 + 5);
-  *(v5 + 2) = *(a3 + 2);
-  *(v5 + 6) = *(a3 + 6);
-  *(v5 + 7) = *(a3 + 7);
-  v36 = *(a3 + 8);
+  *(v5 + 5) = *(style + 5);
+  *(v5 + 2) = *(style + 2);
+  *(v5 + 6) = *(style + 6);
+  *(v5 + 7) = *(style + 7);
+  v36 = *(style + 8);
   if (v36)
   {
     v37 = [v36 copyWithZone:{objc_msgSend(v5, "zone")}];
@@ -855,12 +855,12 @@ LABEL_32:
 
   *(v5 + 8) = v37;
   v5[18] = v35 & 0xFFFFFEFF;
-  v40 = *(a3 + 18) & 0x1800 | v35 & 0xFFFFE6FF;
+  v40 = *(style + 18) & 0x1800 | v35 & 0xFFFFE6FF;
   v5[18] = v40;
-  v41 = v40 & 0xFFFFDFFF | *(a3 + 18) & 0x2000;
+  v41 = v40 & 0xFFFFDFFF | *(style + 18) & 0x2000;
   v5[18] = v41;
-  *(v5 + 10) = *(a3 + 10);
-  if (v33 == -1)
+  *(v5 + 10) = *(style + 10);
+  if (baseWritingDirection2 == -1)
   {
     v5[18] = v41 | 0x200;
     v42 = v5[18] & 0xFFFFFBFF | (([objc_opt_class() _defaultWritingDirection] == 1) << 10);
@@ -868,15 +868,15 @@ LABEL_32:
 
   else
   {
-    v42 = v41 & 0xFFFFF8FF | ((v33 == 1) << 10);
+    v42 = v41 & 0xFFFFF8FF | ((baseWritingDirection2 == 1) << 10);
   }
 
   v5[18] = v42;
-  if (*(a3 + 11))
+  if (*(style + 11))
   {
     v43 = -[NSParagraphStyleExtraData init](+[NSParagraphStyleExtraData allocWithZone:](NSParagraphStyleExtraData, "allocWithZone:", [v5 zone]), "init");
     *(v5 + 11) = v43;
-    v44 = *(a3 + 11);
+    v44 = *(style + 11);
     v43->_lineHeightMultiple = *(v44 + 8);
     v43->_paragraphSpacingBefore = *(v44 + 16);
     v43->_hyphenationFactor = *(v44 + 24);
@@ -913,171 +913,171 @@ LABEL_32:
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [NSMutableParagraphStyle allocWithZone:[(NSParagraphStyle *)self zone]];
 
   return [(NSParagraphStyle *)v4 _initWithParagraphStyle:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     goto LABEL_164;
   }
 
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_149;
   }
 
-  if (object_getClass(self) != __NSParagraphStyleClass && object_getClass(self) != __NSMutableParagraphStyleClass || object_getClass(a3) != __NSParagraphStyleClass && object_getClass(a3) != __NSMutableParagraphStyleClass)
+  if (object_getClass(self) != __NSParagraphStyleClass && object_getClass(self) != __NSMutableParagraphStyleClass || object_getClass(equal) != __NSParagraphStyleClass && object_getClass(equal) != __NSMutableParagraphStyleClass)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NSParagraphStyle *)self horizontalAlignment];
-      if (v5 == [a3 horizontalAlignment])
+      horizontalAlignment = [(NSParagraphStyle *)self horizontalAlignment];
+      if (horizontalAlignment == [equal horizontalAlignment])
       {
-        v6 = [(NSParagraphStyle *)self isFullyJustified];
-        if (v6 == [a3 isFullyJustified])
+        isFullyJustified = [(NSParagraphStyle *)self isFullyJustified];
+        if (isFullyJustified == [equal isFullyJustified])
         {
           [(NSParagraphStyle *)self headIndent];
           v8 = v7;
-          [a3 headIndent];
+          [equal headIndent];
           if (v8 == v9)
           {
             [(NSParagraphStyle *)self firstLineHeadIndent];
             v11 = v10;
-            [a3 firstLineHeadIndent];
+            [equal firstLineHeadIndent];
             if (v11 == v12)
             {
               [(NSParagraphStyle *)self tailIndent];
               v14 = v13;
-              [a3 tailIndent];
+              [equal tailIndent];
               if (v14 == v15)
               {
                 [(NSParagraphStyle *)self lineSpacing];
                 v17 = v16;
-                [a3 lineSpacing];
+                [equal lineSpacing];
                 if (v17 == v18)
                 {
-                  v19 = [(NSParagraphStyle *)self lineBreakMode];
-                  if (v19 == [a3 lineBreakMode])
+                  lineBreakMode = [(NSParagraphStyle *)self lineBreakMode];
+                  if (lineBreakMode == [equal lineBreakMode])
                   {
                     [(NSParagraphStyle *)self paragraphSpacing];
                     v21 = v20;
-                    [a3 paragraphSpacing];
+                    [equal paragraphSpacing];
                     if (v21 == v22)
                     {
                       [(NSParagraphStyle *)self minimumLineHeight];
                       v24 = v23;
-                      [a3 minimumLineHeight];
+                      [equal minimumLineHeight];
                       if (v24 == v25)
                       {
                         [(NSParagraphStyle *)self maximumLineHeight];
                         v27 = v26;
-                        [a3 maximumLineHeight];
+                        [equal maximumLineHeight];
                         if (v27 == v28)
                         {
                           [(NSParagraphStyle *)self lineHeightMultiple];
                           v30 = v29;
-                          [a3 lineHeightMultiple];
+                          [equal lineHeightMultiple];
                           if (v30 == v31)
                           {
                             [(NSParagraphStyle *)self paragraphSpacingBefore];
                             v33 = v32;
-                            [a3 paragraphSpacingBefore];
+                            [equal paragraphSpacingBefore];
                             if (v33 == v34)
                             {
                               [(NSParagraphStyle *)self hyphenationFactor];
                               v36 = v35;
-                              [a3 hyphenationFactor];
+                              [equal hyphenationFactor];
                               if (v36 == v37)
                               {
                                 [(NSParagraphStyle *)self tighteningFactorForTruncation];
                                 v39 = v38;
-                                [a3 tighteningFactorForTruncation];
+                                [equal tighteningFactorForTruncation];
                                 if (v39 == v40)
                                 {
-                                  v41 = [(NSParagraphStyle *)self headerLevel];
-                                  if (v41 == [a3 headerLevel])
+                                  headerLevel = [(NSParagraphStyle *)self headerLevel];
+                                  if (headerLevel == [equal headerLevel])
                                   {
                                     [(NSParagraphStyle *)self defaultTabInterval];
                                     v43 = v42;
-                                    [a3 defaultTabInterval];
+                                    [equal defaultTabInterval];
                                     if (v43 == v44)
                                     {
-                                      v45 = [(NSParagraphStyle *)self baseWritingDirection];
-                                      if (v45 == [a3 baseWritingDirection])
+                                      baseWritingDirection = [(NSParagraphStyle *)self baseWritingDirection];
+                                      if (baseWritingDirection == [equal baseWritingDirection])
                                       {
-                                        v46 = [(NSParagraphStyle *)self tabStops];
-                                        if (v46 != [a3 tabStops])
+                                        tabStops = [(NSParagraphStyle *)self tabStops];
+                                        if (tabStops != [equal tabStops])
                                         {
-                                          v47 = -[NSArray isEqualToArray:](-[NSParagraphStyle tabStops](self, "tabStops"), "isEqualToArray:", [a3 tabStops]);
+                                          v47 = -[NSArray isEqualToArray:](-[NSParagraphStyle tabStops](self, "tabStops"), "isEqualToArray:", [equal tabStops]);
                                           if (!v47)
                                           {
                                             return v47;
                                           }
                                         }
 
-                                        v48 = [(NSParagraphStyle *)self textBlocks];
-                                        if (v48 != [a3 textBlocks])
+                                        textBlocks = [(NSParagraphStyle *)self textBlocks];
+                                        if (textBlocks != [equal textBlocks])
                                         {
-                                          v47 = -[NSArray isEqualToArray:](-[NSParagraphStyle textBlocks](self, "textBlocks"), "isEqualToArray:", [a3 textBlocks]);
+                                          v47 = -[NSArray isEqualToArray:](-[NSParagraphStyle textBlocks](self, "textBlocks"), "isEqualToArray:", [equal textBlocks]);
                                           if (!v47)
                                           {
                                             return v47;
                                           }
                                         }
 
-                                        v49 = [(NSParagraphStyle *)self textLists];
-                                        if (v49 != [a3 textLists])
+                                        textLists = [(NSParagraphStyle *)self textLists];
+                                        if (textLists != [equal textLists])
                                         {
-                                          v47 = -[NSArray isEqualToArray:](-[NSParagraphStyle textLists](self, "textLists"), "isEqualToArray:", [a3 textLists]);
+                                          v47 = -[NSArray isEqualToArray:](-[NSParagraphStyle textLists](self, "textLists"), "isEqualToArray:", [equal textLists]);
                                           if (!v47)
                                           {
                                             return v47;
                                           }
                                         }
 
-                                        v50 = [(NSParagraphStyle *)self allowsDefaultTighteningForTruncation];
-                                        if (v50 == [a3 allowsDefaultTighteningForTruncation])
+                                        allowsDefaultTighteningForTruncation = [(NSParagraphStyle *)self allowsDefaultTighteningForTruncation];
+                                        if (allowsDefaultTighteningForTruncation == [equal allowsDefaultTighteningForTruncation])
                                         {
-                                          v51 = [(NSParagraphStyle *)self _lineBoundsOptions];
-                                          if (v51 == [a3 _lineBoundsOptions])
+                                          _lineBoundsOptions = [(NSParagraphStyle *)self _lineBoundsOptions];
+                                          if (_lineBoundsOptions == [equal _lineBoundsOptions])
                                           {
-                                            v52 = [(NSParagraphStyle *)self lineBreakStrategy];
-                                            if (v52 == [a3 lineBreakStrategy])
+                                            lineBreakStrategy = [(NSParagraphStyle *)self lineBreakStrategy];
+                                            if (lineBreakStrategy == [equal lineBreakStrategy])
                                             {
-                                              v53 = [(NSParagraphStyle *)self usesDefaultHyphenation];
-                                              if (v53 == [a3 usesDefaultHyphenation])
+                                              usesDefaultHyphenation = [(NSParagraphStyle *)self usesDefaultHyphenation];
+                                              if (usesDefaultHyphenation == [equal usesDefaultHyphenation])
                                               {
-                                                v54 = [(NSParagraphStyle *)self spansAllLines];
-                                                if (v54 == [a3 spansAllLines])
+                                                spansAllLines = [(NSParagraphStyle *)self spansAllLines];
+                                                if (spansAllLines == [equal spansAllLines])
                                                 {
-                                                  v55 = [(NSParagraphStyle *)self secondaryLineBreakMode];
-                                                  if (v55 == [a3 secondaryLineBreakMode])
+                                                  secondaryLineBreakMode = [(NSParagraphStyle *)self secondaryLineBreakMode];
+                                                  if (secondaryLineBreakMode == [equal secondaryLineBreakMode])
                                                   {
-                                                    v56 = [(NSParagraphStyle *)self baselineIntervalType];
-                                                    if (v56 == [a3 baselineIntervalType])
+                                                    baselineIntervalType = [(NSParagraphStyle *)self baselineIntervalType];
+                                                    if (baselineIntervalType == [equal baselineIntervalType])
                                                     {
                                                       [(NSParagraphStyle *)self baselineInterval];
                                                       v58 = v57;
-                                                      [a3 baselineInterval];
+                                                      [equal baselineInterval];
                                                       if (v58 == v59)
                                                       {
-                                                        v60 = [(NSParagraphStyle *)self _alignmentFollowsWritingDirection];
-                                                        if (v60 == [a3 _alignmentFollowsWritingDirection])
+                                                        _alignmentFollowsWritingDirection = [(NSParagraphStyle *)self _alignmentFollowsWritingDirection];
+                                                        if (_alignmentFollowsWritingDirection == [equal _alignmentFollowsWritingDirection])
                                                         {
-                                                          v61 = [(NSParagraphStyle *)self compositionLanguage];
-                                                          if (v61 == [a3 compositionLanguage])
+                                                          compositionLanguage = [(NSParagraphStyle *)self compositionLanguage];
+                                                          if (compositionLanguage == [equal compositionLanguage])
                                                           {
-                                                            v62 = [(NSParagraphStyle *)self _presentationIntents];
+                                                            _presentationIntents = [(NSParagraphStyle *)self _presentationIntents];
                                                             v63 = MEMORY[0x1E695E0F0];
-                                                            if (v62)
+                                                            if (_presentationIntents)
                                                             {
-                                                              v64 = v62;
+                                                              v64 = _presentationIntents;
                                                             }
 
                                                             else
@@ -1085,10 +1085,10 @@ LABEL_32:
                                                               v64 = MEMORY[0x1E695E0F0];
                                                             }
 
-                                                            v65 = [a3 _presentationIntents];
-                                                            if (v65)
+                                                            _presentationIntents2 = [equal _presentationIntents];
+                                                            if (_presentationIntents2)
                                                             {
-                                                              v66 = v65;
+                                                              v66 = _presentationIntents2;
                                                             }
 
                                                             else
@@ -1102,13 +1102,13 @@ LABEL_32:
                                                               return v47;
                                                             }
 
-                                                            v67 = [(NSParagraphStyle *)self _listIntentOrdinal];
-                                                            if (v67 == [a3 _listIntentOrdinal])
+                                                            _listIntentOrdinal = [(NSParagraphStyle *)self _listIntentOrdinal];
+                                                            if (_listIntentOrdinal == [equal _listIntentOrdinal])
                                                             {
-                                                              v68 = [(NSParagraphStyle *)self codeBlockIntentLanguageHint];
-                                                              v69 = [a3 codeBlockIntentLanguageHint];
+                                                              codeBlockIntentLanguageHint = [(NSParagraphStyle *)self codeBlockIntentLanguageHint];
+                                                              codeBlockIntentLanguageHint2 = [equal codeBlockIntentLanguageHint];
 
-                                                              LOBYTE(v47) = [(NSString *)v68 isEqual:v69];
+                                                              LOBYTE(v47) = [(NSString *)codeBlockIntentLanguageHint isEqual:codeBlockIntentLanguageHint2];
                                                               return v47;
                                                             }
                                                           }
@@ -1146,7 +1146,7 @@ LABEL_149:
   }
 
   extraData = self->_extraData;
-  v71 = *(a3 + 11);
+  v71 = *(equal + 11);
   if (extraData && v71)
   {
     if (*(extraData + 1) != *(v71 + 8) || *(extraData + 2) != *(v71 + 16) || *(extraData + 3) != *(v71 + 24) || *(extraData + 4) != *(v71 + 32) || *(extraData + 5) != *(v71 + 40))
@@ -1250,7 +1250,7 @@ LABEL_149:
     flags = self->_flags;
     if (extraData || !v71)
     {
-      if (((*(a3 + 18) ^ *&flags) & 0x180F) != 0)
+      if (((*(equal + 18) ^ *&flags) & 0x180F) != 0)
       {
         goto LABEL_149;
       }
@@ -1370,7 +1370,7 @@ LABEL_149:
 
   else
   {
-    v81 = (*(a3 + 18) >> 11) & 3;
+    v81 = (*(equal + 18) >> 11) & 3;
     v82 = vcvtd_n_f64_u32(v81 + 1, 1uLL);
     if (!v81)
     {
@@ -1473,55 +1473,55 @@ LABEL_149:
     }
 
     v83 = *(extraData + 15);
-    if (v83 != [a3 horizontalAlignment] || (extraData[82] & 1) != 0)
+    if (v83 != [equal horizontalAlignment] || (extraData[82] & 1) != 0)
     {
       goto LABEL_149;
     }
   }
 
-  if (self->_headIndent != *(a3 + 3))
+  if (self->_headIndent != *(equal + 3))
   {
     goto LABEL_149;
   }
 
-  if (self->_firstLineHeadIndent != *(a3 + 5))
+  if (self->_firstLineHeadIndent != *(equal + 5))
   {
     goto LABEL_149;
   }
 
-  if (self->_tailIndent != *(a3 + 4))
+  if (self->_tailIndent != *(equal + 4))
   {
     goto LABEL_149;
   }
 
-  if (self->_lineSpacing != *(a3 + 1))
+  if (self->_lineSpacing != *(equal + 1))
   {
     goto LABEL_149;
   }
 
-  v88 = *(a3 + 18) ^ *&self->_flags;
-  if ((v88 & 0xF0) != 0 || self->_paragraphSpacing != *(a3 + 2) || self->_minimumLineHeight != *(a3 + 6) || self->_maximumLineHeight != *(a3 + 7))
+  v88 = *(equal + 18) ^ *&self->_flags;
+  if ((v88 & 0xF0) != 0 || self->_paragraphSpacing != *(equal + 2) || self->_minimumLineHeight != *(equal + 6) || self->_maximumLineHeight != *(equal + 7))
   {
     goto LABEL_149;
   }
 
   LOBYTE(v47) = 0;
-  if ((v88 & 0x2600) != 0 || self->_defaultTabInterval != *(a3 + 10))
+  if ((v88 & 0x2600) != 0 || self->_defaultTabInterval != *(equal + 10))
   {
     return v47;
   }
 
-  if (self->_tabStops == *(a3 + 8))
+  if (self->_tabStops == *(equal + 8))
   {
 LABEL_164:
     LOBYTE(v47) = 1;
     return v47;
   }
 
-  v89 = [(NSParagraphStyle *)self tabStops];
-  v90 = [a3 tabStops];
+  tabStops2 = [(NSParagraphStyle *)self tabStops];
+  tabStops3 = [equal tabStops];
 
-  LOBYTE(v47) = [(NSArray *)v89 isEqualToArray:v90];
+  LOBYTE(v47) = [(NSArray *)tabStops2 isEqualToArray:tabStops3];
   return v47;
 }
 
@@ -1557,9 +1557,9 @@ LABEL_164:
   return v3;
 }
 
-- (BOOL)_isSuitableForFastStringDrawingWithAlignment:(int64_t *)a3 mirrorsTextAlignment:(BOOL)a4 lineBreakMode:(int64_t *)a5 tighteningFactorForTruncation:(double *)a6
+- (BOOL)_isSuitableForFastStringDrawingWithAlignment:(int64_t *)alignment mirrorsTextAlignment:(BOOL)textAlignment lineBreakMode:(int64_t *)mode tighteningFactorForTruncation:(double *)truncation
 {
-  v8 = a4;
+  textAlignmentCopy = textAlignment;
   if (object_getClass(self) == __NSParagraphStyleClass || object_getClass(self) == __NSMutableParagraphStyleClass)
   {
     if (self->_headIndent != 0.0 || self->_tailIndent != 0.0 || self->_firstLineHeadIndent != 0.0 || self->_minimumLineHeight != 0.0 || self->_maximumLineHeight != 0.0 || (*&self->_flags & 0x400) != 0)
@@ -1593,7 +1593,7 @@ LABEL_40:
       }
 
       v29 = *(extraData + 83) == 0;
-      if (a6 && (*(extraData + 83) & 1) == 0)
+      if (truncation && (*(extraData + 83) & 1) == 0)
       {
         v30 = extraData + 4;
         goto LABEL_48;
@@ -1604,61 +1604,61 @@ LABEL_40:
     {
       v28 = *&self->_flags & 0x1000;
       v29 = v28 == 0;
-      if (a6 && !v28)
+      if (truncation && !v28)
       {
         v30 = &__NSTightenFactor;
 LABEL_48:
-        *a6 = *v30;
-        v31 = [(NSParagraphStyle *)self baseWritingDirection];
+        *truncation = *v30;
+        baseWritingDirection = [(NSParagraphStyle *)self baseWritingDirection];
 LABEL_50:
-        v32 = v31;
-        if (v31 == NSWritingDirectionRightToLeft || v31 == NSWritingDirectionNatural && [objc_opt_class() _defaultWritingDirection] == 1)
+        _defaultWritingDirection = baseWritingDirection;
+        if (baseWritingDirection == NSWritingDirectionRightToLeft || baseWritingDirection == NSWritingDirectionNatural && [objc_opt_class() _defaultWritingDirection] == 1)
         {
           return 0;
         }
 
-        if (a3)
+        if (alignment)
         {
-          v33 = [(NSParagraphStyle *)self alignment];
-          *a3 = v33;
-          if ((v33 - 3) <= 1)
+          alignment = [(NSParagraphStyle *)self alignment];
+          *alignment = alignment;
+          if ((alignment - 3) <= 1)
           {
-            if (v32 == -1)
+            if (_defaultWritingDirection == -1)
             {
-              v32 = [objc_opt_class() _defaultWritingDirection];
+              _defaultWritingDirection = [objc_opt_class() _defaultWritingDirection];
             }
 
-            v34 = 2 * (v32 == 1);
+            v34 = 2 * (_defaultWritingDirection == 1);
             goto LABEL_58;
           }
 
-          if (v8)
+          if (textAlignmentCopy)
           {
-            if (v33 == NSTextAlignmentLeft)
+            if (alignment == NSTextAlignmentLeft)
             {
               v34 = 2;
               goto LABEL_58;
             }
 
-            if (v33 == NSTextAlignmentRight)
+            if (alignment == NSTextAlignmentRight)
             {
               v34 = 0;
 LABEL_58:
-              *a3 = v34;
+              *alignment = v34;
             }
           }
         }
 
-        if (a5)
+        if (mode)
         {
-          *a5 = (*&self->_flags << 24) >> 28;
+          *mode = (*&self->_flags << 24) >> 28;
         }
 
         return 1;
       }
     }
 
-    v31 = [(NSParagraphStyle *)self baseWritingDirection];
+    baseWritingDirection = [(NSParagraphStyle *)self baseWritingDirection];
     if (!v29)
     {
       return 0;
@@ -1703,10 +1703,10 @@ LABEL_58:
     goto LABEL_40;
   }
 
-  v17 = [(NSParagraphStyle *)self textBlocks];
-  if (v17)
+  textBlocks = [(NSParagraphStyle *)self textBlocks];
+  if (textBlocks)
   {
-    if ([(NSArray *)v17 count])
+    if ([(NSArray *)textBlocks count])
     {
       goto LABEL_40;
     }
@@ -1717,33 +1717,33 @@ LABEL_58:
     goto LABEL_40;
   }
 
-  v18 = [(NSParagraphStyle *)self _alignmentFollowsWritingDirection];
-  v19 = [(NSParagraphStyle *)self baseWritingDirection];
-  if (v18)
+  _alignmentFollowsWritingDirection = [(NSParagraphStyle *)self _alignmentFollowsWritingDirection];
+  baseWritingDirection2 = [(NSParagraphStyle *)self baseWritingDirection];
+  if (_alignmentFollowsWritingDirection)
   {
     return 0;
   }
 
-  v20 = v19;
-  if (v19 == NSWritingDirectionRightToLeft || v19 == NSWritingDirectionNatural && [objc_opt_class() _defaultWritingDirection] == 1)
+  _defaultWritingDirection2 = baseWritingDirection2;
+  if (baseWritingDirection2 == NSWritingDirectionRightToLeft || baseWritingDirection2 == NSWritingDirectionNatural && [objc_opt_class() _defaultWritingDirection] == 1)
   {
     return 0;
   }
 
-  if (a3)
+  if (alignment)
   {
-    v21 = [(NSParagraphStyle *)self alignment];
-    *a3 = v21;
-    if ((v21 - 3) > 1)
+    alignment2 = [(NSParagraphStyle *)self alignment];
+    *alignment = alignment2;
+    if ((alignment2 - 3) > 1)
     {
-      if (!v8)
+      if (!textAlignmentCopy)
       {
         goto LABEL_69;
       }
 
-      if (v21)
+      if (alignment2)
       {
-        if (v21 != NSTextAlignmentRight)
+        if (alignment2 != NSTextAlignmentRight)
         {
           goto LABEL_69;
         }
@@ -1759,33 +1759,33 @@ LABEL_58:
 
     else
     {
-      if (v20 == -1)
+      if (_defaultWritingDirection2 == -1)
       {
-        v20 = [objc_opt_class() _defaultWritingDirection];
+        _defaultWritingDirection2 = [objc_opt_class() _defaultWritingDirection];
       }
 
-      v22 = 2 * (v20 == 1);
+      v22 = 2 * (_defaultWritingDirection2 == 1);
     }
 
-    *a3 = v22;
+    *alignment = v22;
   }
 
 LABEL_69:
-  if (a5)
+  if (mode)
   {
-    *a5 = [(NSParagraphStyle *)self lineBreakMode];
+    *mode = [(NSParagraphStyle *)self lineBreakMode];
   }
 
-  if (a6)
+  if (truncation)
   {
     [(NSParagraphStyle *)self tighteningFactorForTruncation];
-    *a6 = v35;
+    *truncation = v35;
   }
 
   return 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *&v61[60] = *MEMORY[0x1E69E9840];
   flags = self->_flags;
@@ -1856,89 +1856,89 @@ LABEL_69:
     v11 = 0.0;
   }
 
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     v22 = self->_flags;
     if ((*&v22 & 0xF) != 0)
     {
-      [a3 encodeInteger:? forKey:?];
+      [coder encodeInteger:? forKey:?];
       v22 = self->_flags;
     }
 
     if (*&v22 >> 4)
     {
-      [a3 encodeInteger:(*&v22 << 24) >> 28 forKey:@"NSLineBreakMode"];
+      [coder encodeInteger:(*&v22 << 24) >> 28 forKey:@"NSLineBreakMode"];
     }
 
     if (self->_lineSpacing != 0.0)
     {
-      [a3 encodeDouble:@"NSLineSpacing" forKey:?];
+      [coder encodeDouble:@"NSLineSpacing" forKey:?];
     }
 
     if (self->_paragraphSpacing != 0.0)
     {
-      [a3 encodeDouble:@"NSParagraphSpacing" forKey:?];
+      [coder encodeDouble:@"NSParagraphSpacing" forKey:?];
     }
 
     if (self->_headIndent != 0.0)
     {
-      [a3 encodeDouble:@"NSHeadIndent" forKey:?];
+      [coder encodeDouble:@"NSHeadIndent" forKey:?];
     }
 
     if (self->_firstLineHeadIndent != 0.0)
     {
-      [a3 encodeDouble:@"NSFirstLineHeadIndent" forKey:?];
+      [coder encodeDouble:@"NSFirstLineHeadIndent" forKey:?];
     }
 
     if (self->_tailIndent != 0.0)
     {
-      [a3 encodeDouble:@"NSTailIndent" forKey:?];
+      [coder encodeDouble:@"NSTailIndent" forKey:?];
     }
 
     if (self->_minimumLineHeight != 0.0)
     {
-      [a3 encodeDouble:@"NSMinLineHeight" forKey:?];
+      [coder encodeDouble:@"NSMinLineHeight" forKey:?];
     }
 
     if (self->_maximumLineHeight != 0.0)
     {
-      [a3 encodeDouble:@"NSMaxLineHeight" forKey:?];
+      [coder encodeDouble:@"NSMaxLineHeight" forKey:?];
     }
 
     if (v8 != 0.0)
     {
-      [a3 encodeDouble:@"NSLineHeightMultiple" forKey:v8];
+      [coder encodeDouble:@"NSLineHeightMultiple" forKey:v8];
     }
 
     if (v11 != 0.0)
     {
-      [a3 encodeDouble:@"NSParagraphSpacingBefore" forKey:v11];
+      [coder encodeDouble:@"NSParagraphSpacingBefore" forKey:v11];
     }
 
     if (self->_defaultTabInterval != 0.0)
     {
-      [a3 encodeDouble:@"NSDefaultTabInterval" forKey:?];
+      [coder encodeDouble:@"NSDefaultTabInterval" forKey:?];
     }
 
     if (v7 != 0.0)
     {
-      [a3 encodeDouble:@"NSHyphenationFactor" forKey:v7];
+      [coder encodeDouble:@"NSHyphenationFactor" forKey:v7];
     }
 
     if (v12 != *&__NSTightenFactor)
     {
-      [a3 encodeDouble:@"NSTighteningFactorForTruncation" forKey:v12];
+      [coder encodeDouble:@"NSTighteningFactorForTruncation" forKey:v12];
     }
 
     if (v13 != 0.0)
     {
-      [a3 encodeDouble:@"NSHeaderLevel" forKey:v13];
+      [coder encodeDouble:@"NSHeaderLevel" forKey:v13];
     }
 
     if (self->_tabStops && (*(&self->_flags + 1) & 1) != 0)
     {
       v50 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:self->_tabStops];
-      [a3 encodeObject:v50 forKey:@"NSTabStops"];
+      [coder encodeObject:v50 forKey:@"NSTabStops"];
 
       if (!v15)
       {
@@ -1948,13 +1948,13 @@ LABEL_69:
 
     else
     {
-      [a3 encodeObject:? forKey:?];
+      [coder encodeObject:? forKey:?];
       if (!v15)
       {
 LABEL_45:
         if (v14)
         {
-          [a3 encodeObject:v14 forKey:@"NSTextLists"];
+          [coder encodeObject:v14 forKey:@"NSTextLists"];
         }
 
         v23 = self->_flags;
@@ -1970,71 +1970,71 @@ LABEL_45:
             v24 = 1;
           }
 
-          [a3 encodeInteger:v24 forKey:@"NSWritingDirection"];
+          [coder encodeInteger:v24 forKey:@"NSWritingDirection"];
         }
 
         if (v17)
         {
-          [a3 encodeInteger:v17 forKey:@"NSLineBoundsOptions"];
+          [coder encodeInteger:v17 forKey:@"NSLineBoundsOptions"];
         }
 
         if ((*(&self->_flags + 1) & 0x20) != 0)
         {
-          [a3 encodeInteger:1 forKey:@"NSAllowsTighteningForTruncation"];
+          [coder encodeInteger:1 forKey:@"NSAllowsTighteningForTruncation"];
         }
 
         if (v16)
         {
-          [a3 encodeInteger:v16 forKey:@"NSLineBreakStrategy"];
+          [coder encodeInteger:v16 forKey:@"NSLineBreakStrategy"];
         }
 
         if (v52)
         {
-          [a3 encodeBool:1 forKey:@"NSUsesDefaultHyphenation"];
+          [coder encodeBool:1 forKey:@"NSUsesDefaultHyphenation"];
         }
 
         if (v53)
         {
-          [a3 encodeBool:1 forKey:@"NSSpansAllLines"];
+          [coder encodeBool:1 forKey:@"NSSpansAllLines"];
         }
 
         if (v20)
         {
-          [a3 encodeInteger:v20 forKey:@"NSSecondaryLineBreakMode"];
+          [coder encodeInteger:v20 forKey:@"NSSecondaryLineBreakMode"];
         }
 
         if (v18)
         {
-          [a3 encodeInteger:v18 forKey:@"NSCompositionLanguage"];
+          [coder encodeInteger:v18 forKey:@"NSCompositionLanguage"];
         }
 
         if (v19 && (v19 != v56 || (v54 & 1) != v51))
         {
-          [a3 encodeInteger:v19 forKey:@"NSTextHorizontalAlignment"];
+          [coder encodeInteger:v19 forKey:@"NSTextHorizontalAlignment"];
         }
 
         if ((v54 & 1) != 0 && (!v51 || v19 != v56))
         {
-          [a3 encodeBool:1 forKey:@"NSFullyJustified"];
+          [coder encodeBool:1 forKey:@"NSFullyJustified"];
         }
 
         if ((v54 & 0x100000000) != 0)
         {
-          [a3 encodeBool:1 forKey:@"NSAlignmentFollowsWritingDirection"];
+          [coder encodeBool:1 forKey:@"NSAlignmentFollowsWritingDirection"];
         }
 
         if (v55)
         {
-          [a3 encodeInteger:v55 forKey:@"NSBaselineIntervalType"];
+          [coder encodeInteger:v55 forKey:@"NSBaselineIntervalType"];
 
-          [a3 encodeDouble:@"NSBaselineInterval" forKey:v21];
+          [coder encodeDouble:@"NSBaselineInterval" forKey:v21];
         }
 
         return;
       }
     }
 
-    [a3 encodeObject:v15 forKey:@"NSTextBlocks"];
+    [coder encodeObject:v15 forKey:@"NSTextBlocks"];
     goto LABEL_45;
   }
 
@@ -2163,14 +2163,14 @@ LABEL_45:
     *&v61[4 * v30++ - 4] = v49;
   }
 
-  [a3 encodeValuesOfObjCTypes:{"CC@S", &v59, &v58, &self->_tabStops, &v57}];
+  [coder encodeValuesOfObjCTypes:{"CC@S", &v59, &v58, &self->_tabStops, &v57}];
   if (v57)
   {
-    [a3 encodeArrayOfObjCType:"f" count:v30 at:&v60];
+    [coder encodeArrayOfObjCType:"f" count:v30 at:&v60];
   }
 }
 
-- (NSParagraphStyle)initWithCoder:(id)a3
+- (NSParagraphStyle)initWithCoder:(id)coder
 {
   *&v81[60] = *MEMORY[0x1E69E9840];
   v4 = *&__NSTightenFactor;
@@ -2180,10 +2180,10 @@ LABEL_45:
   v6 = [(NSParagraphStyle *)&v79 init];
   if (v6)
   {
-    if ([a3 allowsKeyedCoding])
+    if ([coder allowsKeyedCoding])
     {
-      v7 = [a3 decodeIntegerForKey:@"NSWritingDirection"];
-      v8 = [a3 decodeIntegerForKey:@"NSAlignment"];
+      v7 = [coder decodeIntegerForKey:@"NSWritingDirection"];
+      v8 = [coder decodeIntegerForKey:@"NSAlignment"];
       *(v6 + 18) = *(v6 + 18) & 0xFFFFFFF0 | v8 & 0xF;
       if ((v8 & 0xFu) > 4)
       {
@@ -2197,44 +2197,44 @@ LABEL_45:
         v71 = 0x1000000uLL >> (8 * (v8 & 0xFu));
       }
 
-      *(v6 + 18) = *(v6 + 18) & 0xFFFFFF0F | (16 * ([a3 decodeIntegerForKey:@"NSLineBreakMode"] & 0xF));
-      [a3 decodeDoubleForKey:@"NSLineSpacing"];
+      *(v6 + 18) = *(v6 + 18) & 0xFFFFFF0F | (16 * ([coder decodeIntegerForKey:@"NSLineBreakMode"] & 0xF));
+      [coder decodeDoubleForKey:@"NSLineSpacing"];
       *(v6 + 1) = v18;
-      [a3 decodeDoubleForKey:@"NSParagraphSpacing"];
+      [coder decodeDoubleForKey:@"NSParagraphSpacing"];
       *(v6 + 2) = v19;
-      [a3 decodeDoubleForKey:@"NSHeadIndent"];
+      [coder decodeDoubleForKey:@"NSHeadIndent"];
       *(v6 + 3) = v20;
-      [a3 decodeDoubleForKey:@"NSFirstLineHeadIndent"];
+      [coder decodeDoubleForKey:@"NSFirstLineHeadIndent"];
       *(v6 + 5) = v21;
-      [a3 decodeDoubleForKey:@"NSTailIndent"];
+      [coder decodeDoubleForKey:@"NSTailIndent"];
       *(v6 + 4) = v22;
-      [a3 decodeDoubleForKey:@"NSMinLineHeight"];
+      [coder decodeDoubleForKey:@"NSMinLineHeight"];
       *(v6 + 6) = v23;
-      [a3 decodeDoubleForKey:@"NSMaxLineHeight"];
+      [coder decodeDoubleForKey:@"NSMaxLineHeight"];
       *(v6 + 7) = v24;
-      [a3 decodeDoubleForKey:@"NSLineHeightMultiple"];
+      [coder decodeDoubleForKey:@"NSLineHeightMultiple"];
       v76 = v25;
-      [a3 decodeDoubleForKey:@"NSParagraphSpacingBefore"];
+      [coder decodeDoubleForKey:@"NSParagraphSpacingBefore"];
       v27 = v26;
-      [a3 decodeDoubleForKey:@"NSDefaultTabInterval"];
+      [coder decodeDoubleForKey:@"NSDefaultTabInterval"];
       *(v6 + 10) = v28;
-      [a3 decodeDoubleForKey:@"NSHyphenationFactor"];
+      [coder decodeDoubleForKey:@"NSHyphenationFactor"];
       v30 = v29;
-      if ([a3 containsValueForKey:@"NSTighteningFactorForTruncation"])
+      if ([coder containsValueForKey:@"NSTighteningFactorForTruncation"])
       {
-        [a3 decodeDoubleForKey:@"NSTighteningFactorForTruncation"];
+        [coder decodeDoubleForKey:@"NSTighteningFactorForTruncation"];
         v4 = v31;
       }
 
-      [a3 decodeDoubleForKey:@"NSHeaderLevel"];
+      [coder decodeDoubleForKey:@"NSHeaderLevel"];
       v33 = v32;
       v34 = MEMORY[0x1E695DFD8];
       v35 = objc_opt_class();
-      v36 = [a3 decodeObjectOfClasses:objc_msgSend(v34 forKey:{"setWithObjects:", v35, objc_opt_class(), 0), @"NSTabStops"}];
+      v36 = [coder decodeObjectOfClasses:objc_msgSend(v34 forKey:{"setWithObjects:", v35, objc_opt_class(), 0), @"NSTabStops"}];
       *(v6 + 8) = v36;
       if (v36)
       {
-        if ([a3 decodeBoolForKey:@"NSTabStopsMutable"])
+        if ([coder decodeBoolForKey:@"NSTabStopsMutable"])
         {
           v37 = 256;
         }
@@ -2249,10 +2249,10 @@ LABEL_45:
 
       v38 = MEMORY[0x1E695DFD8];
       v39 = objc_opt_class();
-      v75 = [a3 decodeObjectOfClasses:objc_msgSend(v38 forKey:{"setWithObjects:", v39, objc_opt_class(), 0), @"NSTextBlocks"}];
+      v75 = [coder decodeObjectOfClasses:objc_msgSend(v38 forKey:{"setWithObjects:", v39, objc_opt_class(), 0), @"NSTextBlocks"}];
       v40 = MEMORY[0x1E695DFD8];
       v41 = objc_opt_class();
-      v74 = [a3 decodeObjectOfClasses:objc_msgSend(v40 forKey:{"setWithObjects:", v41, objc_opt_class(), 0), @"NSTextLists"}];
+      v74 = [coder decodeObjectOfClasses:objc_msgSend(v40 forKey:{"setWithObjects:", v41, objc_opt_class(), 0), @"NSTextLists"}];
       v42 = *(v6 + 18);
       if (v7)
       {
@@ -2266,17 +2266,17 @@ LABEL_45:
       }
 
       *(v6 + 18) = v43;
-      v73 = [a3 decodeIntegerForKey:@"NSLineBoundsOptions"];
-      *(v6 + 18) = *(v6 + 18) & 0xFFFFDFFF | (([a3 decodeIntegerForKey:@"NSAllowsTighteningForTruncation"] != 0) << 13);
-      v72 = [a3 decodeIntegerForKey:@"NSLineBreakStrategy"];
-      if ([a3 containsValueForKey:@"NSUsesDefaultHyphenation"])
+      v73 = [coder decodeIntegerForKey:@"NSLineBoundsOptions"];
+      *(v6 + 18) = *(v6 + 18) & 0xFFFFDFFF | (([coder decodeIntegerForKey:@"NSAllowsTighteningForTruncation"] != 0) << 13);
+      v72 = [coder decodeIntegerForKey:@"NSLineBreakStrategy"];
+      if ([coder containsValueForKey:@"NSUsesDefaultHyphenation"])
       {
-        v5 = [a3 decodeBoolForKey:@"NSUsesDefaultHyphenation"];
+        v5 = [coder decodeBoolForKey:@"NSUsesDefaultHyphenation"];
       }
 
-      if ([a3 containsValueForKey:@"NSSpansAllLines"])
+      if ([coder containsValueForKey:@"NSSpansAllLines"])
       {
-        v45 = [a3 decodeBoolForKey:@"NSSpansAllLines"];
+        v45 = [coder decodeBoolForKey:@"NSSpansAllLines"];
       }
 
       else
@@ -2284,9 +2284,9 @@ LABEL_45:
         v45 = 0;
       }
 
-      if ([a3 containsValueForKey:@"NSSecondaryLineBreakMode"])
+      if ([coder containsValueForKey:@"NSSecondaryLineBreakMode"])
       {
-        v46 = [a3 decodeIntegerForKey:@"NSSecondaryLineBreakMode"] != 0;
+        v46 = [coder decodeIntegerForKey:@"NSSecondaryLineBreakMode"] != 0;
       }
 
       else
@@ -2295,9 +2295,9 @@ LABEL_45:
       }
 
       v44 = v5;
-      if ([a3 containsValueForKey:@"NSCompositionLanguage"])
+      if ([coder containsValueForKey:@"NSCompositionLanguage"])
       {
-        v47 = [a3 decodeIntegerForKey:@"NSCompositionLanguage"];
+        v47 = [coder decodeIntegerForKey:@"NSCompositionLanguage"];
       }
 
       else
@@ -2306,20 +2306,20 @@ LABEL_45:
       }
 
       v70 = v9;
-      if ([a3 containsValueForKey:@"NSTextHorizontalAlignment"])
+      if ([coder containsValueForKey:@"NSTextHorizontalAlignment"])
       {
-        v9 = [a3 decodeIntegerForKey:@"NSTextHorizontalAlignment"];
+        v9 = [coder decodeIntegerForKey:@"NSTextHorizontalAlignment"];
       }
 
       v48 = v71;
-      if ([a3 containsValueForKey:@"NSFullyJustified"])
+      if ([coder containsValueForKey:@"NSFullyJustified"])
       {
-        v48 = [a3 decodeBoolForKey:@"NSFullyJustified"];
+        v48 = [coder decodeBoolForKey:@"NSFullyJustified"];
       }
 
-      if ([a3 containsValueForKey:@"NSAlignmentFollowsWritingDirection"])
+      if ([coder containsValueForKey:@"NSAlignmentFollowsWritingDirection"])
       {
-        v49 = [a3 decodeBoolForKey:@"NSAlignmentFollowsWritingDirection"];
+        v49 = [coder decodeBoolForKey:@"NSAlignmentFollowsWritingDirection"];
       }
 
       else
@@ -2327,8 +2327,8 @@ LABEL_45:
         v49 = 0;
       }
 
-      v50 = [a3 decodeIntegerForKey:@"NSBaselineIntervalType"];
-      [a3 decodeDoubleForKey:@"NSBaselineInterval"];
+      v50 = [coder decodeIntegerForKey:@"NSBaselineIntervalType"];
+      [coder decodeDoubleForKey:@"NSBaselineInterval"];
       v11 = v51;
 LABEL_73:
       if (v27 == 0.0)
@@ -2425,7 +2425,7 @@ LABEL_74:
 
     v78 = 0;
     v77 = 0;
-    [a3 decodeValuesOfObjCTypes:{"CC@S", &v78 + 1, &v78, v6 + 64, &v77}];
+    [coder decodeValuesOfObjCTypes:{"CC@S", &v78 + 1, &v78, v6 + 64, &v77}];
     v10 = *(v6 + 18) & 0xFFFFFE00 | HIBYTE(v78) & 0xF | (16 * (v78 & 0xF));
     *(v6 + 18) = v10;
     v11 = 0.0;
@@ -2470,7 +2470,7 @@ LABEL_72:
     }
 
     while (!v15);
-    [a3 decodeArrayOfObjCType:"f" count:v12 at:&v80];
+    [coder decodeArrayOfObjCType:"f" count:v12 at:&v80];
     v16 = v77;
     if (v77)
     {
@@ -2615,18 +2615,18 @@ LABEL_52:
 - (NSString)description
 {
   v52 = MEMORY[0x1E696AEC0];
-  v3 = [(NSParagraphStyle *)self alignment];
-  if (v3 >= (NSTextAlignmentNatural|NSTextAlignmentCenter))
+  alignment = [(NSParagraphStyle *)self alignment];
+  if (alignment >= (NSTextAlignmentNatural|NSTextAlignmentCenter))
   {
-    v51 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", v3];
+    v51 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", alignment];
   }
 
   else
   {
-    v51 = off_1E72674A8[v3];
+    v51 = off_1E72674A8[alignment];
   }
 
-  v4 = [(NSParagraphStyle *)self spansAllLines];
+  spansAllLines = [(NSParagraphStyle *)self spansAllLines];
   [(NSParagraphStyle *)self lineSpacing];
   v50 = v5;
   [(NSParagraphStyle *)self paragraphSpacing];
@@ -2648,15 +2648,15 @@ LABEL_52:
   if ([(NSParagraphStyle *)self baselineIntervalType])
   {
     v20 = MEMORY[0x1E696AEC0];
-    v21 = [(NSParagraphStyle *)self baselineIntervalType];
-    if (v21 >= 4)
+    baselineIntervalType = [(NSParagraphStyle *)self baselineIntervalType];
+    if (baselineIntervalType >= 4)
     {
-      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", v21];
+      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", baselineIntervalType];
     }
 
     else
     {
-      v22 = off_1E72674D0[v21];
+      v22 = off_1E72674D0[baselineIntervalType];
     }
 
     [(NSParagraphStyle *)self baselineInterval];
@@ -2668,29 +2668,29 @@ LABEL_52:
     v47 = &stru_1F01AD578;
   }
 
-  v24 = [(NSParagraphStyle *)self lineBreakMode];
-  if (v24 >= (NSLineBreakByTruncatingTail|NSLineBreakByClipping))
+  lineBreakMode = [(NSParagraphStyle *)self lineBreakMode];
+  if (lineBreakMode >= (NSLineBreakByTruncatingTail|NSLineBreakByClipping))
   {
-    v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", v24];
+    v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", lineBreakMode];
   }
 
   else
   {
-    v46 = off_1E72674F0[v24];
+    v46 = off_1E72674F0[lineBreakMode];
   }
 
   if ([(NSParagraphStyle *)self secondaryLineBreakMode])
   {
     v25 = MEMORY[0x1E696AEC0];
-    v26 = [(NSParagraphStyle *)self secondaryLineBreakMode];
-    if (v26 >= 3)
+    secondaryLineBreakMode = [(NSParagraphStyle *)self secondaryLineBreakMode];
+    if (secondaryLineBreakMode >= 3)
     {
-      v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", v26];
+      v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", secondaryLineBreakMode];
     }
 
     else
     {
-      v27 = off_1E7267520[v26];
+      v27 = off_1E7267520[secondaryLineBreakMode];
     }
 
     v45 = [v25 stringWithFormat:@", SecondaryLineBreakMode %@", v27];
@@ -2701,23 +2701,23 @@ LABEL_52:
     v45 = &stru_1F01AD578;
   }
 
-  v44 = [(NSParagraphStyle *)self tabStops];
+  tabStops = [(NSParagraphStyle *)self tabStops];
   [(NSParagraphStyle *)self defaultTabInterval];
   v29 = v28;
-  v43 = [(NSParagraphStyle *)self textBlocks];
-  v30 = [(NSParagraphStyle *)self textLists];
-  v31 = [(NSParagraphStyle *)self baseWritingDirection];
-  if ((v31 + 1) >= 3)
+  textBlocks = [(NSParagraphStyle *)self textBlocks];
+  textLists = [(NSParagraphStyle *)self textLists];
+  baseWritingDirection = [(NSParagraphStyle *)self baseWritingDirection];
+  if ((baseWritingDirection + 1) >= 3)
   {
-    v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", v31];
+    v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", baseWritingDirection];
   }
 
   else
   {
-    v32 = off_1E7267538[v31 + 1];
+    v32 = off_1E7267538[baseWritingDirection + 1];
   }
 
-  if (v4)
+  if (spansAllLines)
   {
     v33 = @", SpansAllLines YES";
   }
@@ -2739,8 +2739,8 @@ LABEL_52:
     v36 = @"NO";
   }
 
-  v37 = [(NSParagraphStyle *)self headerLevel];
-  v38 = [(NSParagraphStyle *)self lineBreakStrategy];
+  headerLevel = [(NSParagraphStyle *)self headerLevel];
+  lineBreakStrategy = [(NSParagraphStyle *)self lineBreakStrategy];
   if ([(NSParagraphStyle *)self usesDefaultHyphenation])
   {
     v39 = @", UsesDefaultHyphenation YES";
@@ -2751,10 +2751,10 @@ LABEL_52:
     v39 = &stru_1F01AD578;
   }
 
-  v40 = [(NSParagraphStyle *)self _presentationIntents];
-  if (v40)
+  _presentationIntents = [(NSParagraphStyle *)self _presentationIntents];
+  if (_presentationIntents)
   {
-    v41 = v40;
+    v41 = _presentationIntents;
   }
 
   else
@@ -2762,14 +2762,14 @@ LABEL_52:
     v41 = MEMORY[0x1E695E0F0];
   }
 
-  return [v52 stringWithFormat:@"Alignment %@%@, LineSpacing %g, ParagraphSpacing %g, ParagraphSpacingBefore %g, HeadIndent %g, TailIndent %g, FirstLineHeadIndent %g, LineHeight %g/%g, LineHeightMultiple %g%@ LineBreakMode %@%@, Tabs %@, DefaultTabInterval %g, Blocks %@, Lists %@, BaseWritingDirection %@, HyphenationFactor %g, TighteningForTruncation %@, HeaderLevel %ld LineBreakStrategy %lu%@ PresentationIntents %@ ListIntentOrdinal %ld CodeBlockIntentLanguageHint '%@'", v51, v33, v50, v49, v48, v9, v11, v13, v15, v17, v19, v47, v46, v45, v44, v29, v43, v30, v32, *&v35, v36, v37, v38, v39, v41, -[NSParagraphStyle _listIntentOrdinal](self, "_listIntentOrdinal"), -[NSParagraphStyle codeBlockIntentLanguageHint](self, "codeBlockIntentLanguageHint")];
+  return [v52 stringWithFormat:@"Alignment %@%@, LineSpacing %g, ParagraphSpacing %g, ParagraphSpacingBefore %g, HeadIndent %g, TailIndent %g, FirstLineHeadIndent %g, LineHeight %g/%g, LineHeightMultiple %g%@ LineBreakMode %@%@, Tabs %@, DefaultTabInterval %g, Blocks %@, Lists %@, BaseWritingDirection %@, HyphenationFactor %g, TighteningForTruncation %@, HeaderLevel %ld LineBreakStrategy %lu%@ PresentationIntents %@ ListIntentOrdinal %ld CodeBlockIntentLanguageHint '%@'", v51, v33, v50, v49, v48, v9, v11, v13, v15, v17, v19, v47, v46, v45, tabStops, v29, textBlocks, textLists, v32, *&v35, v36, headerLevel, lineBreakStrategy, v39, v41, -[NSParagraphStyle _listIntentOrdinal](self, "_listIntentOrdinal"), -[NSParagraphStyle codeBlockIntentLanguageHint](self, "codeBlockIntentLanguageHint")];
 }
 
 - (uint64_t)_allocExtraData
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
 
-  return [v4 handleFailureInMethod:a1 object:a2 file:@"NSParagraphStyle.m" lineNumber:580 description:@"_allocExtraData is not reentrant!"];
+  return [currentHandler handleFailureInMethod:self object:a2 file:@"NSParagraphStyle.m" lineNumber:580 description:@"_allocExtraData is not reentrant!"];
 }
 
 @end

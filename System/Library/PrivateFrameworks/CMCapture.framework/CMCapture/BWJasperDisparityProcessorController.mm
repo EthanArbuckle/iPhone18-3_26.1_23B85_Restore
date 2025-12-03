@@ -1,14 +1,14 @@
 @interface BWJasperDisparityProcessorController
 + (void)initialize;
 - (BOOL)finishProcessingCurrentInputNow;
-- (BWJasperDisparityProcessorController)initWithConfiguration:(id)a3;
-- (id)jasperPointCloudForColorBuffer:(id)a3;
+- (BWJasperDisparityProcessorController)initWithConfiguration:(id)configuration;
+- (id)jasperPointCloudForColorBuffer:(id)buffer;
 - (int)_setupJasperDisparityProcessor;
-- (int)enqueueInputForProcessing:(id)a3 delegate:(id)a4;
+- (int)enqueueInputForProcessing:(id)processing delegate:(id)delegate;
 - (void)_execute;
 - (void)_serviceNextRequest;
 - (void)_updateStateIfNeeded;
-- (void)addPointCloudToTimeMachine:(opaqueCMSampleBuffer *)a3;
+- (void)addPointCloudToTimeMachine:(opaqueCMSampleBuffer *)machine;
 - (void)cancelProcessing;
 - (void)dealloc;
 @end
@@ -17,7 +17,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -26,14 +26,14 @@
   }
 }
 
-- (BWJasperDisparityProcessorController)initWithConfiguration:(id)a3
+- (BWJasperDisparityProcessorController)initWithConfiguration:(id)configuration
 {
   v9.receiver = self;
   v9.super_class = BWJasperDisparityProcessorController;
   v4 = [(BWJasperDisparityProcessorController *)&v9 init];
   if (v4)
   {
-    v4->_configuration = a3;
+    v4->_configuration = configuration;
     v4->_requestQueue = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5 = [[FigStateMachine alloc] initWithLabel:@"BWJasperDisparityProcessorController state machine" stateCount:4 initialState:1 owner:v4];
     [(FigStateMachine *)v5 setPerformsAtomicStateTransitions:0];
@@ -52,9 +52,9 @@
     v4->_pointClouds = objc_alloc_init(MEMORY[0x1E695DF70]);
     v4->_pointCloudsLock._os_unfair_lock_opaque = 0;
     v6 = objc_autoreleasePoolPush();
-    v7 = [(BWJasperDisparityProcessorController *)v4 _setupJasperDisparityProcessor];
+    _setupJasperDisparityProcessor = [(BWJasperDisparityProcessorController *)v4 _setupJasperDisparityProcessor];
     objc_autoreleasePoolPop(v6);
-    if (v7)
+    if (_setupJasperDisparityProcessor)
     {
 
       return 0;
@@ -77,9 +77,9 @@
   [(BWStillImageProcessorController *)&v4 dealloc];
 }
 
-- (int)enqueueInputForProcessing:(id)a3 delegate:(id)a4
+- (int)enqueueInputForProcessing:(id)processing delegate:(id)delegate
 {
-  v5 = [[BWJasperDisparityProcessorRequest alloc] initWithInput:a3 delegate:a4];
+  v5 = [[BWJasperDisparityProcessorRequest alloc] initWithInput:processing delegate:delegate];
   [(NSMutableArray *)self->_requestQueue addObject:v5];
 
   if ([(FigStateMachine *)self->_stateMachine currentState]== 1)
@@ -99,12 +99,12 @@
   return v3;
 }
 
-- (void)addPointCloudToTimeMachine:(opaqueCMSampleBuffer *)a3
+- (void)addPointCloudToTimeMachine:(opaqueCMSampleBuffer *)machine
 {
-  if (a3)
+  if (machine)
   {
     os_unfair_lock_lock(&self->_pointCloudsLock);
-    [(NSMutableArray *)self->_pointClouds addObject:a3];
+    [(NSMutableArray *)self->_pointClouds addObject:machine];
     v5 = [(NSMutableArray *)self->_pointClouds count];
     if (v5 > [(BWJasperDisparityProcessorControllerConfiguration *)self->_configuration pointCloudTimeMachineCapacity])
     {
@@ -128,10 +128,10 @@
   [(BWJasperDisparityProcessorController *)self _serviceNextRequest];
 }
 
-- (id)jasperPointCloudForColorBuffer:(id)a3
+- (id)jasperPointCloudForColorBuffer:(id)buffer
 {
   os_unfair_lock_lock(&self->_pointCloudsLock);
-  if ([a3 colorBuffer] && -[NSMutableArray count](self->_pointClouds, "count"))
+  if ([buffer colorBuffer] && -[NSMutableArray count](self->_pointClouds, "count"))
   {
     if (dword_1EB58E7A0)
     {
@@ -142,14 +142,14 @@
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    v6 = [a3 colorBuffer];
+    colorBuffer = [buffer colorBuffer];
     v7 = *off_1E798A3C8;
-    [objc_msgSend(CMGetAttachment(v6 *off_1E798A3C8];
+    [objc_msgSend(CMGetAttachment(colorBuffer *off_1E798A3C8];
     v9 = v8;
-    v10 = [a3 colorBuffer];
-    if (v10)
+    colorBuffer2 = [buffer colorBuffer];
+    if (colorBuffer2)
     {
-      v11 = CMGetAttachment(v10, v7, 0);
+      v11 = CMGetAttachment(colorBuffer2, v7, 0);
       v12 = *off_1E798A420;
       CMTimeMakeFromDictionary(&time, [v11 objectForKeyedSubscript:*off_1E798A420]);
       Seconds = CMTimeGetSeconds(&time);
@@ -277,15 +277,15 @@
 - (void)_updateStateIfNeeded
 {
   currentRequest = self->_currentRequest;
-  v4 = [(FigStateMachine *)self->_stateMachine currentState];
+  currentState = [(FigStateMachine *)self->_stateMachine currentState];
   if (currentRequest)
   {
-    if (v4 == 2)
+    if (currentState == 2)
     {
       v5 = 4;
     }
 
-    else if (v4 == 4)
+    else if (currentState == 4)
     {
       if ([(BWJasperDisparityProcessorInput *)[(BWJasperDisparityProcessorRequest *)currentRequest input] isReadyToExecute])
       {
@@ -319,16 +319,16 @@
 
 - (void)_serviceNextRequest
 {
-  v3 = [(BWJasperDisparityProcessorRequest *)self->_currentRequest delegate];
-  v4 = [(BWJasperDisparityProcessorRequest *)self->_currentRequest input];
+  delegate = [(BWJasperDisparityProcessorRequest *)self->_currentRequest delegate];
+  input = [(BWJasperDisparityProcessorRequest *)self->_currentRequest input];
   v5 = [(BWJasperDisparityProcessorRequest *)self->_currentRequest err];
 
   self->_currentRequest = 0;
-  [(BWJasperDisparityProcessorControllerDelegate *)v3 processorController:self didFinishProcessingInput:v4 err:v5];
+  [(BWJasperDisparityProcessorControllerDelegate *)delegate processorController:self didFinishProcessingInput:input err:v5];
 
-  v6 = [(NSMutableArray *)self->_requestQueue firstObject];
-  self->_currentRequest = v6;
-  if (v6)
+  firstObject = [(NSMutableArray *)self->_requestQueue firstObject];
+  self->_currentRequest = firstObject;
+  if (firstObject)
   {
     [(NSMutableArray *)self->_requestQueue removeObjectAtIndex:0];
     [(BWJasperDisparityProcessorInput *)[(BWJasperDisparityProcessorRequest *)self->_currentRequest input] setDelegate:self];
@@ -342,9 +342,9 @@
   v24 = 0;
   v25 = 0;
   v23 = 0;
-  v3 = [(BWJasperDisparityProcessorInput *)[(BWJasperDisparityProcessorRequest *)self->_currentRequest input] colorBuffer];
+  colorBuffer = [(BWJasperDisparityProcessorInput *)[(BWJasperDisparityProcessorRequest *)self->_currentRequest input] colorBuffer];
   currentRequest = self->_currentRequest;
-  if (!v3)
+  if (!colorBuffer)
   {
     goto LABEL_18;
   }
@@ -356,7 +356,7 @@
 
   if (![(BWJasperDisparityProcessorInput *)[(BWJasperDisparityProcessorRequest *)self->_currentRequest input] skipProcessing])
   {
-    v5 = [CMGetAttachment(v3 *off_1E798A3C8];
+    v5 = [CMGetAttachment(colorBuffer *off_1E798A3C8];
     v6 = *off_1E798A0C8;
     v7 = [(NSDictionary *)[(BWStillImageProcessorControllerConfiguration *)self->_configuration sensorConfigurationsByPortType] objectForKeyedSubscript:v5];
     v8 = [(NSDictionary *)[(BWStillImageProcessorControllerConfiguration *)self->_configuration sensorConfigurationsByPortType] objectForKeyedSubscript:v6];
@@ -371,7 +371,7 @@
       goto LABEL_15;
     }
 
-    ImageBuffer = CMSampleBufferGetImageBuffer(v3);
+    ImageBuffer = CMSampleBufferGetImageBuffer(colorBuffer);
     currentRequest = self->_currentRequest;
     if (ImageBuffer)
     {
@@ -389,7 +389,7 @@
           [(BWJasperDisparityProcessorRequest *)self->_currentRequest setErr:FigCaptureCreateJasperToColorCameraTransformForJasperSensorConfiguration(v9, &v17)];
           if (![(BWJasperDisparityProcessorRequest *)self->_currentRequest err])
           {
-            [(BWJasperDisparityProcessorRequest *)self->_currentRequest setErr:FigCaptureCreateColorCameraCalibrationForColorSampleBuffer(v3, v7, [(BWJasperDisparityProcessorControllerConfiguration *)self->_configuration horizontalSensorBinningFactor], [(BWJasperDisparityProcessorControllerConfiguration *)self->_configuration verticalSensorBinningFactor], &v24)];
+            [(BWJasperDisparityProcessorRequest *)self->_currentRequest setErr:FigCaptureCreateColorCameraCalibrationForColorSampleBuffer(colorBuffer, v7, [(BWJasperDisparityProcessorControllerConfiguration *)self->_configuration horizontalSensorBinningFactor], [(BWJasperDisparityProcessorControllerConfiguration *)self->_configuration verticalSensorBinningFactor], &v24)];
             if (![(BWJasperDisparityProcessorRequest *)self->_currentRequest err])
             {
               if (v24)
@@ -403,8 +403,8 @@
                   {
                     v12 = *off_1E798D2B8;
                     CMSetAttachment(v25, *off_1E798D2B8, v23, 1u);
-                    CMSetAttachment(v3, v12, v23, 1u);
-                    BWSampleBufferSetAttachedMediaFromPixelBuffer(v3, @"Depth", v25, &self->_depthFormatDescription, 0, 0, 1);
+                    CMSetAttachment(colorBuffer, v12, v23, 1u);
+                    BWSampleBufferSetAttachedMediaFromPixelBuffer(colorBuffer, @"Depth", v25, &self->_depthFormatDescription, 0, 0, 1);
                   }
                 }
               }
@@ -437,7 +437,7 @@ LABEL_18:
   }
 
 LABEL_15:
-  [(BWJasperDisparityProcessorControllerDelegate *)[(BWJasperDisparityProcessorRequest *)self->_currentRequest delegate:v15] processorController:self didFinishProcessingSampleBuffer:v3 type:[(BWJasperDisparityProcessorInput *)[(BWJasperDisparityProcessorRequest *)self->_currentRequest input] colorBufferType] processorInput:[(BWJasperDisparityProcessorRequest *)self->_currentRequest input] err:[(BWJasperDisparityProcessorRequest *)self->_currentRequest err]];
+  [(BWJasperDisparityProcessorControllerDelegate *)[(BWJasperDisparityProcessorRequest *)self->_currentRequest delegate:v15] processorController:self didFinishProcessingSampleBuffer:colorBuffer type:[(BWJasperDisparityProcessorInput *)[(BWJasperDisparityProcessorRequest *)self->_currentRequest input] colorBufferType] processorInput:[(BWJasperDisparityProcessorRequest *)self->_currentRequest input] err:[(BWJasperDisparityProcessorRequest *)self->_currentRequest err]];
   if (v25)
   {
     CFRelease(v25);

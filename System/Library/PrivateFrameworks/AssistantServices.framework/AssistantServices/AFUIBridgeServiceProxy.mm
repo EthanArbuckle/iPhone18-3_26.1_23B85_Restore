@@ -1,15 +1,15 @@
 @interface AFUIBridgeServiceProxy
 - (AFUIBridgeClient)client;
-- (AFUIBridgeServiceProxy)initWithClient:(id)a3;
+- (AFUIBridgeServiceProxy)initWithClient:(id)client;
 - (void)uiBridgeServiceDetectedSiriDirectedSpeech;
 - (void)uiBridgeServiceDetectedSpeechStart;
-- (void)uiBridgeServiceDetectedSpeechStart:(BOOL)a3;
+- (void)uiBridgeServiceDetectedSpeechStart:(BOOL)start;
 - (void)uiBridgeServiceDidStart;
 - (void)uiBridgeServiceDidStartAttending;
-- (void)uiBridgeServiceDidStartAttendingWithRootRequestId:(id)a3;
-- (void)uiBridgeServiceDidStopAttendingUnexpectedlyWithReason:(unint64_t)a3;
+- (void)uiBridgeServiceDidStartAttendingWithRootRequestId:(id)id;
+- (void)uiBridgeServiceDidStopAttendingUnexpectedlyWithReason:(unint64_t)reason;
 - (void)uiBridgeServiceReceivedShowAssetsDownloadPrompt;
-- (void)uiBridgeServiceReceivedSpeechMitigationResult:(unint64_t)a3;
+- (void)uiBridgeServiceReceivedSpeechMitigationResult:(unint64_t)result;
 - (void)uiBridgeServiceWillStartAttending;
 @end
 
@@ -30,13 +30,13 @@
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_client);
-    v5 = [v4 delegateQueue];
+    delegateQueue = [v4 delegateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __73__AFUIBridgeServiceProxy_uiBridgeServiceReceivedShowAssetsDownloadPrompt__block_invoke;
     block[3] = &unk_1E73497C8;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(delegateQueue, block);
   }
 
   else
@@ -66,7 +66,7 @@ void __73__AFUIBridgeServiceProxy_uiBridgeServiceReceivedShowAssetsDownloadPromp
   }
 }
 
-- (void)uiBridgeServiceReceivedSpeechMitigationResult:(unint64_t)a3
+- (void)uiBridgeServiceReceivedSpeechMitigationResult:(unint64_t)result
 {
   v13 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_client);
@@ -74,14 +74,14 @@ void __73__AFUIBridgeServiceProxy_uiBridgeServiceReceivedShowAssetsDownloadPromp
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_client);
-    v7 = [v6 delegateQueue];
+    delegateQueue = [v6 delegateQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __72__AFUIBridgeServiceProxy_uiBridgeServiceReceivedSpeechMitigationResult___block_invoke;
     v10[3] = &unk_1E7348498;
     v10[4] = self;
-    v10[5] = a3;
-    dispatch_async(v7, v10);
+    v10[5] = result;
+    dispatch_async(delegateQueue, v10);
   }
 
   else
@@ -111,7 +111,7 @@ void __72__AFUIBridgeServiceProxy_uiBridgeServiceReceivedSpeechMitigationResult_
   }
 }
 
-- (void)uiBridgeServiceDetectedSpeechStart:(BOOL)a3
+- (void)uiBridgeServiceDetectedSpeechStart:(BOOL)start
 {
   v14 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_client);
@@ -119,14 +119,14 @@ void __72__AFUIBridgeServiceProxy_uiBridgeServiceReceivedSpeechMitigationResult_
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_client);
-    v7 = [v6 delegateQueue];
+    delegateQueue = [v6 delegateQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __61__AFUIBridgeServiceProxy_uiBridgeServiceDetectedSpeechStart___block_invoke;
     v10[3] = &unk_1E7347F98;
     v10[4] = self;
-    v11 = a3;
-    dispatch_async(v7, v10);
+    startCopy = start;
+    dispatch_async(delegateQueue, v10);
   }
 
   else
@@ -164,13 +164,13 @@ void __61__AFUIBridgeServiceProxy_uiBridgeServiceDetectedSpeechStart___block_inv
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_client);
-    v5 = [v4 delegateQueue];
+    delegateQueue = [v4 delegateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __60__AFUIBridgeServiceProxy_uiBridgeServiceDetectedSpeechStart__block_invoke;
     block[3] = &unk_1E73497C8;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(delegateQueue, block);
   }
 
   else
@@ -208,13 +208,13 @@ void __60__AFUIBridgeServiceProxy_uiBridgeServiceDetectedSpeechStart__block_invo
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_client);
-    v5 = [v4 delegateQueue];
+    delegateQueue = [v4 delegateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __67__AFUIBridgeServiceProxy_uiBridgeServiceDetectedSiriDirectedSpeech__block_invoke;
     block[3] = &unk_1E73497C8;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(delegateQueue, block);
   }
 
   else
@@ -244,7 +244,7 @@ void __67__AFUIBridgeServiceProxy_uiBridgeServiceDetectedSiriDirectedSpeech__blo
   }
 }
 
-- (void)uiBridgeServiceDidStopAttendingUnexpectedlyWithReason:(unint64_t)a3
+- (void)uiBridgeServiceDidStopAttendingUnexpectedlyWithReason:(unint64_t)reason
 {
   v13 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_client);
@@ -252,14 +252,14 @@ void __67__AFUIBridgeServiceProxy_uiBridgeServiceDetectedSiriDirectedSpeech__blo
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_client);
-    v7 = [v6 delegateQueue];
+    delegateQueue = [v6 delegateQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __80__AFUIBridgeServiceProxy_uiBridgeServiceDidStopAttendingUnexpectedlyWithReason___block_invoke;
     v10[3] = &unk_1E7348498;
     v10[4] = self;
-    v10[5] = a3;
-    dispatch_async(v7, v10);
+    v10[5] = reason;
+    dispatch_async(delegateQueue, v10);
   }
 
   else
@@ -289,23 +289,23 @@ void __80__AFUIBridgeServiceProxy_uiBridgeServiceDidStopAttendingUnexpectedlyWit
   }
 }
 
-- (void)uiBridgeServiceDidStartAttendingWithRootRequestId:(id)a3
+- (void)uiBridgeServiceDidStartAttendingWithRootRequestId:(id)id
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   WeakRetained = objc_loadWeakRetained(&self->_client);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_client);
-    v7 = [v6 delegateQueue];
+    delegateQueue = [v6 delegateQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __76__AFUIBridgeServiceProxy_uiBridgeServiceDidStartAttendingWithRootRequestId___block_invoke;
     v10[3] = &unk_1E7349860;
     v10[4] = self;
-    v11 = v4;
-    dispatch_async(v7, v10);
+    v11 = idCopy;
+    dispatch_async(delegateQueue, v10);
   }
 
   else
@@ -343,13 +343,13 @@ void __76__AFUIBridgeServiceProxy_uiBridgeServiceDidStartAttendingWithRootReques
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_client);
-    v5 = [v4 delegateQueue];
+    delegateQueue = [v4 delegateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__AFUIBridgeServiceProxy_uiBridgeServiceDidStartAttending__block_invoke;
     block[3] = &unk_1E73497C8;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(delegateQueue, block);
   }
 
   else
@@ -387,13 +387,13 @@ void __58__AFUIBridgeServiceProxy_uiBridgeServiceDidStartAttending__block_invoke
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_client);
-    v5 = [v4 delegateQueue];
+    delegateQueue = [v4 delegateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __49__AFUIBridgeServiceProxy_uiBridgeServiceDidStart__block_invoke;
     block[3] = &unk_1E73497C8;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(delegateQueue, block);
   }
 
   else
@@ -431,13 +431,13 @@ void __49__AFUIBridgeServiceProxy_uiBridgeServiceDidStart__block_invoke(uint64_t
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_client);
-    v5 = [v4 delegateQueue];
+    delegateQueue = [v4 delegateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __59__AFUIBridgeServiceProxy_uiBridgeServiceWillStartAttending__block_invoke;
     block[3] = &unk_1E73497C8;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(delegateQueue, block);
   }
 
   else
@@ -468,16 +468,16 @@ void __59__AFUIBridgeServiceProxy_uiBridgeServiceWillStartAttending__block_invok
   }
 }
 
-- (AFUIBridgeServiceProxy)initWithClient:(id)a3
+- (AFUIBridgeServiceProxy)initWithClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v8.receiver = self;
   v8.super_class = AFUIBridgeServiceProxy;
   v5 = [(AFUIBridgeServiceProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_client, v4);
+    objc_storeWeak(&v5->_client, clientCopy);
   }
 
   return v6;

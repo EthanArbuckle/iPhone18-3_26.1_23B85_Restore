@@ -1,39 +1,39 @@
 @interface PKMetalStrokeRenderCache
-- (BOOL)isCompatibleWithInk:(id)a3 renderZoomFactor:(int64_t)a4;
-- (BOOL)lockPurgeableResourcesAddToSet:(id)a3;
-- (PKMetalStrokeRenderCache)initWithInk:(id)a3 renderZoomFactor:(int64_t)a4;
-- (void)addBuffer:(id)a3;
-- (void)addSecondaryBuffer:(id)a3;
+- (BOOL)isCompatibleWithInk:(id)ink renderZoomFactor:(int64_t)factor;
+- (BOOL)lockPurgeableResourcesAddToSet:(id)set;
+- (PKMetalStrokeRenderCache)initWithInk:(id)ink renderZoomFactor:(int64_t)factor;
+- (void)addBuffer:(id)buffer;
+- (void)addSecondaryBuffer:(id)buffer;
 @end
 
 @implementation PKMetalStrokeRenderCache
 
-- (PKMetalStrokeRenderCache)initWithInk:(id)a3 renderZoomFactor:(int64_t)a4
+- (PKMetalStrokeRenderCache)initWithInk:(id)ink renderZoomFactor:(int64_t)factor
 {
-  v7 = a3;
+  inkCopy = ink;
   v12.receiver = self;
   v12.super_class = PKMetalStrokeRenderCache;
   v8 = [(PKMetalStrokeRenderCache *)&v12 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     buffers = v8->_buffers;
-    v8->_buffers = v9;
+    v8->_buffers = array;
 
-    objc_storeStrong(&v8->_ink, a3);
-    v8->_renderZoomFactor = a4;
+    objc_storeStrong(&v8->_ink, ink);
+    v8->_renderZoomFactor = factor;
   }
 
   return v8;
 }
 
-- (void)addBuffer:(id)a3
+- (void)addBuffer:(id)buffer
 {
-  v5 = a3;
+  bufferCopy = buffer;
   [(NSMutableArray *)self->_buffers addObject:?];
-  if (v5)
+  if (bufferCopy)
   {
-    v4 = v5[4] * v5[3];
+    v4 = bufferCopy[4] * bufferCopy[3];
   }
 
   else
@@ -44,22 +44,22 @@
   self->_totalCost += v4;
 }
 
-- (void)addSecondaryBuffer:(id)a3
+- (void)addSecondaryBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   secondaryBuffers = self->_secondaryBuffers;
-  v9 = v4;
+  v9 = bufferCopy;
   if (!secondaryBuffers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_secondaryBuffers;
-    self->_secondaryBuffers = v6;
+    self->_secondaryBuffers = array;
 
     secondaryBuffers = self->_secondaryBuffers;
-    v4 = v9;
+    bufferCopy = v9;
   }
 
-  [(NSMutableArray *)secondaryBuffers addObject:v4];
+  [(NSMutableArray *)secondaryBuffers addObject:bufferCopy];
   if (v9)
   {
     v8 = v9[4] * v9[3];
@@ -73,22 +73,22 @@
   self->_totalCost += v8;
 }
 
-- (BOOL)isCompatibleWithInk:(id)a3 renderZoomFactor:(int64_t)a4
+- (BOOL)isCompatibleWithInk:(id)ink renderZoomFactor:(int64_t)factor
 {
-  v6 = a3;
+  inkCopy = ink;
   v7 = [(PKMetalStrokeRenderCache *)self ink];
-  v8 = [v7 version];
-  if (v8 == [v6 version])
+  version = [v7 version];
+  if (version == [inkCopy version])
   {
     v9 = [(PKMetalStrokeRenderCache *)self ink];
-    v10 = [v9 requiredContentVersion];
-    if (v10 == [v6 requiredContentVersion])
+    requiredContentVersion = [v9 requiredContentVersion];
+    if (requiredContentVersion == [inkCopy requiredContentVersion])
     {
       v11 = [(PKMetalStrokeRenderCache *)self ink];
-      v12 = [v11 color];
-      Alpha = CGColorGetAlpha([v12 CGColor]);
-      v14 = [v6 color];
-      v15 = vabdd_f64(Alpha, CGColorGetAlpha([v14 CGColor])) < 0.00999999978 && self->_renderZoomFactor == a4;
+      color = [v11 color];
+      Alpha = CGColorGetAlpha([color CGColor]);
+      color2 = [inkCopy color];
+      v15 = vabdd_f64(Alpha, CGColorGetAlpha([color2 CGColor])) < 0.00999999978 && self->_renderZoomFactor == factor;
     }
 
     else
@@ -105,10 +105,10 @@
   return v15;
 }
 
-- (BOOL)lockPurgeableResourcesAddToSet:(id)a3
+- (BOOL)lockPurgeableResourcesAddToSet:(id)set
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setCopy = set;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -127,7 +127,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      if (([(PKMetalStrokeRenderCacheBuffer *)*(*(&v18 + 1) + 8 * v8) lockPurgeableResourcesAddToSet:v4]& 1) == 0)
+      if (([(PKMetalStrokeRenderCacheBuffer *)*(*(&v18 + 1) + 8 * v8) lockPurgeableResourcesAddToSet:setCopy]& 1) == 0)
       {
         break;
       }
@@ -171,7 +171,7 @@ LABEL_11:
         objc_enumerationMutation(v5);
       }
 
-      if (([(PKMetalStrokeRenderCacheBuffer *)*(*(&v14 + 1) + 8 * v11) lockPurgeableResourcesAddToSet:v4]& 1) == 0)
+      if (([(PKMetalStrokeRenderCacheBuffer *)*(*(&v14 + 1) + 8 * v11) lockPurgeableResourcesAddToSet:setCopy]& 1) == 0)
       {
         break;
       }

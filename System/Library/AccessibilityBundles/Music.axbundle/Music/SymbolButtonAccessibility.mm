@@ -1,5 +1,5 @@
 @interface SymbolButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsCircularProgressView;
 - (BOOL)_axIsInToolbar;
 - (BOOL)isAccessibilityElement;
@@ -12,33 +12,33 @@
 
 @implementation SymbolButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicCoreUI.SymbolButton" hasInstanceMethod:@"accessibilityCustomView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicCoreUI.SymbolButton" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicCoreUI.SymbolButton" hasInstanceMethod:@"accessibilityImageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicCoreUI.CircularProgressView"];
-  [v3 validateClass:@"UIImageView" hasInstanceMethod:@"image" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIImage" hasInstanceVariable:@"_imageAsset" withType:"UIImageAsset"];
-  [v3 validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicCoreUI.SymbolButton" hasInstanceMethod:@"accessibilityUpdateSymbolButton" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MusicCoreUI.CoreAnimationPackageView"];
-  [v3 validateClass:@"MusicCoreUI.CoreAnimationPackageView" hasSwiftField:@"definition" withSwiftType:"CAPackageDefinition"];
-  [v3 validateSwiftStruct:@"MusicCoreUI.CAPackageDefinition"];
-  [v3 validateSwiftStruct:@"MusicCoreUI.CAPackageDefinition" hasSwiftField:@"name" withSwiftType:"String"];
-  [v3 validateClass:@"MusicCoreUI.SymbolButton" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"UIControl" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UIControl" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicCoreUI.SymbolButton" hasInstanceMethod:@"accessibilityCustomView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicCoreUI.SymbolButton" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicCoreUI.SymbolButton" hasInstanceMethod:@"accessibilityImageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicCoreUI.CircularProgressView"];
+  [validationsCopy validateClass:@"UIImageView" hasInstanceMethod:@"image" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIImage" hasInstanceVariable:@"_imageAsset" withType:"UIImageAsset"];
+  [validationsCopy validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicCoreUI.SymbolButton" hasInstanceMethod:@"accessibilityUpdateSymbolButton" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MusicCoreUI.CoreAnimationPackageView"];
+  [validationsCopy validateClass:@"MusicCoreUI.CoreAnimationPackageView" hasSwiftField:@"definition" withSwiftType:"CAPackageDefinition"];
+  [validationsCopy validateSwiftStruct:@"MusicCoreUI.CAPackageDefinition"];
+  [validationsCopy validateSwiftStruct:@"MusicCoreUI.CAPackageDefinition" hasSwiftField:@"name" withSwiftType:"String"];
+  [validationsCopy validateClass:@"MusicCoreUI.SymbolButton" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"UIControl" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UIControl" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(SymbolButtonAccessibility *)self _accessibilityLabelHelper];
-  v3 = v2;
-  if (v2)
+  _accessibilityLabelHelper = [(SymbolButtonAccessibility *)self _accessibilityLabelHelper];
+  v3 = _accessibilityLabelHelper;
+  if (_accessibilityLabelHelper)
   {
-    v4 = [v2 length] != 0;
+    v4 = [_accessibilityLabelHelper length] != 0;
   }
 
   else
@@ -51,18 +51,18 @@
 
 - (BOOL)_axIsCircularProgressView
 {
-  v2 = [(SymbolButtonAccessibility *)self _axCustomView];
-  if (v2 && (MEMORY[0x29C2E2910](@"MusicCoreUI.CircularProgressView"), (objc_opt_isKindOfClass() & 1) != 0))
+  _axCustomView = [(SymbolButtonAccessibility *)self _axCustomView];
+  if (_axCustomView && (MEMORY[0x29C2E2910](@"MusicCoreUI.CircularProgressView"), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 _accessibilityViewIsVisible];
+    _accessibilityViewIsVisible = [_axCustomView _accessibilityViewIsVisible];
   }
 
   else
   {
-    v3 = 0;
+    _accessibilityViewIsVisible = 0;
   }
 
-  return v3;
+  return _accessibilityViewIsVisible;
 }
 
 - (id)_accessibilityLabelHelper
@@ -81,9 +81,9 @@
 
   if (![v5 length] && v3 && objc_msgSend(v3, "_accessibilityViewIsVisible"))
   {
-    v6 = [v3 accessibilityLabel];
+    accessibilityLabel = [v3 accessibilityLabel];
 
-    v5 = v6;
+    v5 = accessibilityLabel;
   }
 
   if (![v5 length])
@@ -188,16 +188,16 @@
         {
           if (![v9 isEqualToString:@"lossless"])
           {
-            v11 = [v4 accessibilityLabel];
+            accessibilityLabel2 = [v4 accessibilityLabel];
             goto LABEL_14;
           }
 
           v21 = @"lossless";
         }
 
-        v11 = accessibilityOasisMusicLocalizedString(v21);
+        accessibilityLabel2 = accessibilityOasisMusicLocalizedString(v21);
 LABEL_14:
-        v12 = v11;
+        v12 = accessibilityLabel2;
 
         v5 = v12;
 LABEL_15:
@@ -224,7 +224,7 @@ LABEL_15:
       v10 = @"add.to.library";
     }
 
-    v11 = accessibilityMusicLocalizedString(v10);
+    accessibilityLabel2 = accessibilityMusicLocalizedString(v10);
     goto LABEL_14;
   }
 
@@ -246,34 +246,34 @@ uint64_t __54__SymbolButtonAccessibility__accessibilityLabelHelper__block_invoke
 {
   v6.receiver = self;
   v6.super_class = SymbolButtonAccessibility;
-  v3 = [(SymbolButtonAccessibility *)&v6 accessibilityLabel];
-  if (![v3 length])
+  accessibilityLabel = [(SymbolButtonAccessibility *)&v6 accessibilityLabel];
+  if (![accessibilityLabel length])
   {
-    v4 = [(SymbolButtonAccessibility *)self _accessibilityLabelHelper];
+    _accessibilityLabelHelper = [(SymbolButtonAccessibility *)self _accessibilityLabelHelper];
 
-    v3 = v4;
+    accessibilityLabel = _accessibilityLabelHelper;
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   v7.receiver = self;
   v7.super_class = SymbolButtonAccessibility;
-  v3 = [(SymbolButtonAccessibility *)&v7 accessibilityValue];
+  accessibilityValue = [(SymbolButtonAccessibility *)&v7 accessibilityValue];
   if ([(SymbolButtonAccessibility *)self _axIsCircularProgressView])
   {
-    v4 = [(SymbolButtonAccessibility *)self _axCustomView];
-    v5 = [v4 accessibilityValue];
+    _axCustomView = [(SymbolButtonAccessibility *)self _axCustomView];
+    accessibilityValue2 = [_axCustomView accessibilityValue];
   }
 
   else
   {
-    v5 = v3;
+    accessibilityValue2 = accessibilityValue;
   }
 
-  return v5;
+  return accessibilityValue2;
 }
 
 - (unint64_t)accessibilityTraits
@@ -283,8 +283,8 @@ uint64_t __54__SymbolButtonAccessibility__accessibilityLabelHelper__block_invoke
   v3 = *MEMORY[0x29EDC7F70] | [(SymbolButtonAccessibility *)&v8 accessibilityTraits];
   if ([(SymbolButtonAccessibility *)self _axIsCircularProgressView])
   {
-    v4 = [(SymbolButtonAccessibility *)self _axCustomView];
-    v3 |= [v4 accessibilityTraits];
+    _axCustomView = [(SymbolButtonAccessibility *)self _axCustomView];
+    v3 |= [_axCustomView accessibilityTraits];
   }
 
   v5 = [(SymbolButtonAccessibility *)self _accessibilityFindSubviewDescendant:&__block_literal_global_470];
@@ -337,19 +337,19 @@ uint64_t __43__SymbolButtonAccessibility__axIsInToolbar__block_invoke(uint64_t a
   v6.receiver = self;
   v6.super_class = SymbolButtonAccessibility;
   [(SymbolButtonAccessibility *)&v6 accessibilityUpdateSymbolButton];
-  v3 = [(SymbolButtonAccessibility *)self _axIsInToolbar];
+  _axIsInToolbar = [(SymbolButtonAccessibility *)self _axIsInToolbar];
   v4 = *MEMORY[0x29EDC7ED8];
-  if (v3)
+  if (_axIsInToolbar)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], v5);
+  UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], selfCopy);
 }
 
 @end

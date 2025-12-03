@@ -1,35 +1,35 @@
 @interface _CDSpotlightCoalescedDeletionManager
-- (_CDSpotlightCoalescedDeletionManager)initWithKnowledgeStore:(id)a3;
-- (_CDSpotlightCoalescedDeletionManager)initWithKnowledgeStore:(id)a3 persistencePath:(id)a4 delay:(double)a5;
-- (void)deleteKnowledgeEventsMatchingPredicate:(id)a3 withCompletion:(id)a4;
+- (_CDSpotlightCoalescedDeletionManager)initWithKnowledgeStore:(id)store;
+- (_CDSpotlightCoalescedDeletionManager)initWithKnowledgeStore:(id)store persistencePath:(id)path delay:(double)delay;
+- (void)deleteKnowledgeEventsMatchingPredicate:(id)predicate withCompletion:(id)completion;
 - (void)setupCoalescingTimer;
 @end
 
 @implementation _CDSpotlightCoalescedDeletionManager
 
-- (_CDSpotlightCoalescedDeletionManager)initWithKnowledgeStore:(id)a3
+- (_CDSpotlightCoalescedDeletionManager)initWithKnowledgeStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = +[_CDPaths systemCachesDirectory];
   v6 = [v5 stringByAppendingPathComponent:@"_CDSpotlightCoalescedDeletionManager"];
 
-  v7 = [(_CDSpotlightCoalescedDeletionManager *)self initWithKnowledgeStore:v4 persistencePath:v6 delay:5.0];
+  v7 = [(_CDSpotlightCoalescedDeletionManager *)self initWithKnowledgeStore:storeCopy persistencePath:v6 delay:5.0];
   return v7;
 }
 
-- (_CDSpotlightCoalescedDeletionManager)initWithKnowledgeStore:(id)a3 persistencePath:(id)a4 delay:(double)a5
+- (_CDSpotlightCoalescedDeletionManager)initWithKnowledgeStore:(id)store persistencePath:(id)path delay:(double)delay
 {
-  v9 = a3;
-  v10 = a4;
+  storeCopy = store;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = _CDSpotlightCoalescedDeletionManager;
   v11 = [(_CDSpotlightCoalescedDeletionManager *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    v11->_delay = a5;
-    objc_storeStrong(&v11->_persistencePath, a4);
-    objc_storeStrong(&v12->_knowledgeStore, a3);
+    v11->_delay = delay;
+    objc_storeStrong(&v11->_persistencePath, path);
+    objc_storeStrong(&v12->_knowledgeStore, store);
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_create("deletionCoalesingQueue", v13);
     deletionCoalescingQueue = v12->_deletionCoalescingQueue;
@@ -54,13 +54,13 @@
   self->_deletionCoalescingTimer = v4;
 }
 
-- (void)deleteKnowledgeEventsMatchingPredicate:(id)a3 withCompletion:(id)a4
+- (void)deleteKnowledgeEventsMatchingPredicate:(id)predicate withCompletion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   knowledgeStore = self->_knowledgeStore;
   v17 = 0;
-  v8 = [(_DKKnowledgeEventStreamDeleting *)knowledgeStore deleteAllEventsMatchingPredicate:a3 error:&v17];
+  v8 = [(_DKKnowledgeEventStreamDeleting *)knowledgeStore deleteAllEventsMatchingPredicate:predicate error:&v17];
   v9 = v17;
   if (v9)
   {
@@ -109,9 +109,9 @@
 
 LABEL_10:
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, v9 == 0, v9);
+    completionCopy[2](completionCopy, v9 == 0, v9);
   }
 
   v16 = *MEMORY[0x1E69E9840];

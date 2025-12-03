@@ -1,6 +1,6 @@
 @interface DMCAlert
 - (NSString)summary;
-- (id)notificationParametersOutFlags:(unint64_t *)a3;
+- (id)notificationParametersOutFlags:(unint64_t *)flags;
 @end
 
 @implementation DMCAlert
@@ -8,89 +8,89 @@
 - (NSString)summary
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(DMCAlert *)self title];
-  v5 = [(DMCAlert *)self message];
-  v6 = [(DMCAlert *)self defaultButtonText];
-  v7 = [(DMCAlert *)self alternateButtonText];
-  v8 = [(DMCAlert *)self otherButtonText];
-  v9 = [v3 stringWithFormat:@"%@ - %@ [%@] [%@] [%@]", v4, v5, v6, v7, v8];
+  title = [(DMCAlert *)self title];
+  message = [(DMCAlert *)self message];
+  defaultButtonText = [(DMCAlert *)self defaultButtonText];
+  alternateButtonText = [(DMCAlert *)self alternateButtonText];
+  otherButtonText = [(DMCAlert *)self otherButtonText];
+  v9 = [v3 stringWithFormat:@"%@ - %@ [%@] [%@] [%@]", title, message, defaultButtonText, alternateButtonText, otherButtonText];
 
   return v9;
 }
 
-- (id)notificationParametersOutFlags:(unint64_t *)a3
+- (id)notificationParametersOutFlags:(unint64_t *)flags
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:DMCSBUserNotificationDontDismissOnUnlock()];
-  v6 = [(DMCAlert *)self title];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:DMCSBUserNotificationDontDismissOnUnlock()];
+  title = [(DMCAlert *)self title];
 
-  if (v6)
+  if (title)
   {
-    v7 = [(DMCAlert *)self title];
-    [v5 setObject:v7 forKeyedSubscript:*MEMORY[0x1E695EE58]];
+    title2 = [(DMCAlert *)self title];
+    [dictionary setObject:title2 forKeyedSubscript:*MEMORY[0x1E695EE58]];
   }
 
-  v8 = [(DMCAlert *)self message];
+  message = [(DMCAlert *)self message];
 
-  if (v8)
+  if (message)
   {
-    v9 = [(DMCAlert *)self message];
-    [v5 setObject:v9 forKeyedSubscript:*MEMORY[0x1E695EE60]];
+    message2 = [(DMCAlert *)self message];
+    [dictionary setObject:message2 forKeyedSubscript:*MEMORY[0x1E695EE60]];
   }
 
-  v10 = [(DMCAlert *)self defaultButtonText];
+  defaultButtonText = [(DMCAlert *)self defaultButtonText];
 
-  if (v10)
+  if (defaultButtonText)
   {
-    v11 = [(DMCAlert *)self defaultButtonText];
-    [v5 setObject:v11 forKeyedSubscript:*MEMORY[0x1E695EE78]];
+    defaultButtonText2 = [(DMCAlert *)self defaultButtonText];
+    [dictionary setObject:defaultButtonText2 forKeyedSubscript:*MEMORY[0x1E695EE78]];
   }
 
-  v12 = [(DMCAlert *)self alternateButtonText];
+  alternateButtonText = [(DMCAlert *)self alternateButtonText];
 
-  if (v12)
+  if (alternateButtonText)
   {
-    v13 = [(DMCAlert *)self alternateButtonText];
-    [v5 setObject:v13 forKeyedSubscript:*MEMORY[0x1E695EE70]];
+    alternateButtonText2 = [(DMCAlert *)self alternateButtonText];
+    [dictionary setObject:alternateButtonText2 forKeyedSubscript:*MEMORY[0x1E695EE70]];
   }
 
-  v14 = [(DMCAlert *)self otherButtonText];
+  otherButtonText = [(DMCAlert *)self otherButtonText];
 
-  if (v14)
+  if (otherButtonText)
   {
-    v15 = [(DMCAlert *)self otherButtonText];
-    [v5 setObject:v15 forKeyedSubscript:*MEMORY[0x1E695EE98]];
+    otherButtonText2 = [(DMCAlert *)self otherButtonText];
+    [dictionary setObject:otherButtonText2 forKeyedSubscript:*MEMORY[0x1E695EE98]];
   }
 
   if ([(DMCAlert *)self destructive])
   {
-    [v5 setObject:&unk_1F2868230 forKeyedSubscript:@"SBUserNotificationAlternateButtonPresentationStyle"];
+    [dictionary setObject:&unk_1F2868230 forKeyedSubscript:@"SBUserNotificationAlternateButtonPresentationStyle"];
   }
 
   if ([(DMCAlert *)self displayOnLockScreen])
   {
-    [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E695EE68]];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E695EE68]];
   }
 
   if ([(DMCAlert *)self dismissOnLock])
   {
-    [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:DMCSBUserNotificationDismissOnLock()];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:DMCSBUserNotificationDismissOnLock()];
   }
 
-  *a3 = 0;
-  v16 = [(DMCAlert *)self defaultButtonText];
-  if (v16)
+  *flags = 0;
+  defaultButtonText3 = [(DMCAlert *)self defaultButtonText];
+  if (defaultButtonText3)
   {
-    v17 = v16;
-    v18 = [(DMCAlert *)self alternateButtonText];
-    if (v18)
+    v17 = defaultButtonText3;
+    alternateButtonText3 = [(DMCAlert *)self alternateButtonText];
+    if (alternateButtonText3)
     {
-      v19 = v18;
-      v20 = [(DMCAlert *)self otherButtonText];
+      v19 = alternateButtonText3;
+      otherButtonText3 = [(DMCAlert *)self otherButtonText];
 
-      if (v20)
+      if (otherButtonText3)
       {
-        *a3 |= 0x20uLL;
+        *flags |= 0x20uLL;
       }
     }
 
@@ -99,7 +99,7 @@
     }
   }
 
-  return v5;
+  return dictionary;
 }
 
 @end

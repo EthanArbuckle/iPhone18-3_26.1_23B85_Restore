@@ -1,17 +1,17 @@
 @interface WebThumbnailProvider
-- (void)_sendReplyFor:(id)a3 fromCGImage:(CGImage *)a4 extension:(id)a5 error:(id)a6 completionHandler:(id)a7;
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4;
+- (void)_sendReplyFor:(id)for fromCGImage:(CGImage *)image extension:(id)extension error:(id)error completionHandler:(id)handler;
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation WebThumbnailProvider
 
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 maximumSize];
-  v7 = [v5 contentType];
-  v8 = [UTType typeWithIdentifier:v7];
+  requestCopy = request;
+  handlerCopy = handler;
+  [requestCopy maximumSize];
+  contentType = [requestCopy contentType];
+  v8 = [UTType typeWithIdentifier:contentType];
 
   if ([v8 conformsToType:UTTypeHTML])
   {
@@ -28,13 +28,13 @@
     v9 = 0;
   }
 
-  v10 = [v5 generationData];
-  v11 = [v10 objectForKeyedSubscript:QLWebExtensionThumbnailPropertyPageSize];
+  generationData = [requestCopy generationData];
+  v11 = [generationData objectForKeyedSubscript:QLWebExtensionThumbnailPropertyPageSize];
 
   size = CGSizeZero;
   CGSizeMakeWithDictionaryRepresentation(v11, &size);
-  v12 = [v5 generationData];
-  v13 = [v12 objectForKeyedSubscript:QLWebExtensionThumbnailPropertyPageXPath];
+  generationData2 = [requestCopy generationData];
+  v13 = [generationData2 objectForKeyedSubscript:QLWebExtensionThumbnailPropertyPageXPath];
 
   v14 = size.width == CGSizeZero.width;
   if (size.height != CGSizeZero.height)
@@ -63,8 +63,8 @@
   v26 = sub_10000295C;
   v27 = sub_10000296C;
   v16 = [QLWebviewSnapshotter alloc];
-  v17 = [v5 item];
-  v28 = [(QLWebviewSnapshotter *)v16 initWithItem:v17 previewSize:size.width, size.height];
+  item = [requestCopy item];
+  v28 = [(QLWebviewSnapshotter *)v16 initWithItem:item previewSize:size.width, size.height];
 
   v18 = v24[5];
   if (v15)
@@ -75,9 +75,9 @@
     v21[2] = sub_1000029C8;
     v21[3] = &unk_100008420;
     v21[4] = self;
-    v21[5] = v5;
+    v21[5] = requestCopy;
     v21[6] = v9;
-    v21[7] = v6;
+    v21[7] = handlerCopy;
     v21[8] = &v23;
     [v18 requestSnapshotThumbnail:v21];
   }
@@ -90,9 +90,9 @@
     v22[2] = sub_100002974;
     v22[3] = &unk_100008420;
     v22[4] = self;
-    v22[5] = v5;
+    v22[5] = requestCopy;
     v22[6] = v9;
-    v22[7] = v6;
+    v22[7] = handlerCopy;
     v22[8] = &v23;
     [v18 requestSnapshotThumbnailForPage:0 withXPathQuery:v13 completion:v22];
   }
@@ -100,20 +100,20 @@
   _Block_object_dispose(&v23, 8);
 }
 
-- (void)_sendReplyFor:(id)a3 fromCGImage:(CGImage *)a4 extension:(id)a5 error:(id)a6 completionHandler:(id)a7
+- (void)_sendReplyFor:(id)for fromCGImage:(CGImage *)image extension:(id)extension error:(id)error completionHandler:(id)handler
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
-  [v14 maximumSize];
+  handlerCopy = handler;
+  errorCopy = error;
+  extensionCopy = extension;
+  forCopy = for;
+  [forCopy maximumSize];
   v16 = v15;
   v18 = v17;
-  [v14 scale];
+  [forCopy scale];
   v20 = v19;
 
-  Width = CGImageGetWidth(a4);
-  Height = CGImageGetHeight(a4);
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
   if (v16 < Width || v18 < Height)
   {
     v24 = v18 * (Width / Height);
@@ -139,7 +139,7 @@
     }
   }
 
-  CGImageRetain(a4);
+  CGImageRetain(image);
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_100002BB0;
@@ -147,12 +147,12 @@
   v27[4] = v20;
   *&v27[5] = Width;
   *&v27[6] = Height;
-  v27[7] = a4;
-  v26 = [QLThumbnailReply replyWithContextSize:v27 drawingBlock:Width, Height];
-  [v26 setColorSpace:CGImageGetColorSpace(a4)];
-  [v26 setExtensionBadge:v13];
+  v27[7] = image;
+  height = [QLThumbnailReply replyWithContextSize:v27 drawingBlock:Width, Height];
+  [height setColorSpace:CGImageGetColorSpace(image)];
+  [height setExtensionBadge:extensionCopy];
 
-  v11[2](v11, v26, v12);
+  handlerCopy[2](handlerCopy, height, errorCopy);
 }
 
 @end

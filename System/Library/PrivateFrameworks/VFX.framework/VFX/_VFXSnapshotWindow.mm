@@ -1,7 +1,7 @@
 @interface _VFXSnapshotWindow
-- (CGPoint)_warpPoint:(CGPoint)a3 outOfBounds:(BOOL *)a4;
-- (CGPoint)warpPoint:(CGPoint)a3;
-- (id)_hitTest:(CGPoint)a3 withEvent:(id)a4 windowServerHitTestWindow:(id)a5;
+- (CGPoint)_warpPoint:(CGPoint)point outOfBounds:(BOOL *)bounds;
+- (CGPoint)warpPoint:(CGPoint)point;
+- (id)_hitTest:(CGPoint)test withEvent:(id)event windowServerHitTestWindow:(id)window;
 - (id)vfxView;
 - (void)dealloc;
 @end
@@ -15,11 +15,11 @@
   [(_VFXSnapshotWindow *)&v2 dealloc];
 }
 
-- (id)_hitTest:(CGPoint)a3 withEvent:(id)a4 windowServerHitTestWindow:(id)a5
+- (id)_hitTest:(CGPoint)test withEvent:(id)event windowServerHitTestWindow:(id)window
 {
-  y = a3.y;
-  x = a3.x;
-  if (objc_msgSend_vfxView(self, a2, a4, a5))
+  y = test.y;
+  x = test.x;
+  if (objc_msgSend_vfxView(self, a2, event, window))
   {
     v12 = objc_msgSend_layer(self, v9, v10, v11);
     objc_msgSend_convertPoint_toLayer_(v12, v13, 0, v14, x, y);
@@ -30,7 +30,7 @@
     {
       v36.receiver = self;
       v36.super_class = _VFXSnapshotWindow;
-      for (i = [(_VFXSnapshotWindow *)&v36 hitTest:a4 withEvent:?]; i; i = objc_msgSend_superview(i, v32, v33, v34))
+      for (i = [(_VFXSnapshotWindow *)&v36 hitTest:event withEvent:?]; i; i = objc_msgSend_superview(i, v32, v33, v34))
       {
         v22 = objc_msgSend_gestureRecognizers(i, v18, v19, v20);
         if (objc_msgSend_count(v22, v23, v24, v25))
@@ -71,17 +71,17 @@
   {
     v35.receiver = self;
     v35.super_class = _VFXSnapshotWindow;
-    return [(_VFXSnapshotWindow *)&v35 hitTest:a4 withEvent:x, y];
+    return [(_VFXSnapshotWindow *)&v35 hitTest:event withEvent:x, y];
   }
 
   return result;
 }
 
-- (CGPoint)_warpPoint:(CGPoint)a3 outOfBounds:(BOOL *)a4
+- (CGPoint)_warpPoint:(CGPoint)point outOfBounds:(BOOL *)bounds
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = objc_msgSend_vfxView(self, a2, a4, v4);
+  y = point.y;
+  x = point.x;
+  v9 = objc_msgSend_vfxView(self, a2, bounds, v4);
   if (v9)
   {
     v12 = v9;
@@ -113,9 +113,9 @@
       y = v79 * v101;
     }
 
-    else if (a4)
+    else if (bounds)
     {
-      *a4 = 1;
+      *bounds = 1;
     }
   }
 
@@ -126,10 +126,10 @@
   return result;
 }
 
-- (CGPoint)warpPoint:(CGPoint)a3
+- (CGPoint)warpPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v8 = objc_msgSend_layer(self, a2, v3, v4);
   objc_msgSend_convertPoint_toLayer_(v8, v9, 0, v10, x, y);
 

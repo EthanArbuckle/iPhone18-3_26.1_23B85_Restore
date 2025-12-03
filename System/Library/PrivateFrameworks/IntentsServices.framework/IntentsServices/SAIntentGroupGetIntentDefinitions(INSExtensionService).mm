@@ -41,7 +41,7 @@
         v45 = v4;
         v42 = v10;
         v43 = v8;
-        v40 = a1;
+        selfCopy = self;
         do
         {
           for (i = 0; i != v47; ++i)
@@ -84,7 +84,7 @@
               v58 = 0u;
               v55 = 0u;
               v56 = 0u;
-              obj = [a1 queries];
+              obj = [self queries];
               v19 = [obj countByEnumeratingWithState:&v55 objects:v64 count:16];
               v49 = v19;
               if (v19)
@@ -103,8 +103,8 @@
                     }
 
                     v22 = *(*(&v55 + 1) + 8 * v20);
-                    v23 = [v22 entity];
-                    v24 = [v14 caseInsensitiveCompare:v23];
+                    entity = [v22 entity];
+                    v24 = [v14 caseInsensitiveCompare:entity];
 
                     if (!v24)
                     {
@@ -128,8 +128,8 @@
                             }
 
                             v30 = *(*(&v51 + 1) + 8 * j);
-                            v31 = [v22 verb];
-                            v32 = [v30 caseInsensitiveCompare:v31];
+                            verb = [v22 verb];
+                            v32 = [v30 caseInsensitiveCompare:verb];
 
                             if (!v32)
                             {
@@ -172,7 +172,7 @@
                   v33 = [obj countByEnumeratingWithState:&v55 objects:v64 count:16];
                   v11 = v44;
                   v4 = v45;
-                  a1 = v40;
+                  self = selfCopy;
                   v5 = MEMORY[0x277CD38C8];
                   v49 = v33;
                 }
@@ -235,19 +235,19 @@ LABEL_47:
   if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_DEBUG))
   {
     v23 = v4;
-    v24 = [a1 queries];
+    queries = [self queries];
     *buf = 136315394;
     v34 = "[SAIntentGroupGetIntentDefinitions(INSExtensionService) ins_getIntentDefinitionsWithCompletionHandler:]";
     v35 = 2112;
-    v36 = v24;
+    v36 = queries;
     _os_log_debug_impl(&dword_25553C000, v23, OS_LOG_TYPE_DEBUG, "%s Finding intent definitions for GetIntentDefinition query: %@", buf, 0x16u);
   }
 
   v5 = INIntentDefinitionURLsForInstalledApps();
   v6 = objc_alloc_init(MEMORY[0x277D473C8]);
-  v7 = [a1 aceId];
+  aceId = [self aceId];
   v25 = v6;
-  [v6 setRefId:v7];
+  [v6 setRefId:aceId];
 
   v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
   v28 = 0u;
@@ -270,7 +270,7 @@ LABEL_47:
         }
 
         v14 = *(*(&v28 + 1) + 8 * i);
-        if ([a1 _matchesIntentDefinition:v14])
+        if ([self _matchesIntentDefinition:v14])
         {
           v15 = objc_alloc(MEMORY[0x277CBEA90]);
           v27 = 0;

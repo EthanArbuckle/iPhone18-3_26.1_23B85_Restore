@@ -1,25 +1,25 @@
 @interface CLKImageProvider
-+ (CLKImageProvider)imageProviderWithImageViewCreationHandler:(id)a3;
-+ (CLKImageProvider)imageProviderWithJSONObjectRepresentation:(id)a3 bundle:(id)a4;
-+ (CLKImageProvider)imageProviderWithLayerMaskImage:(id)a3;
++ (CLKImageProvider)imageProviderWithImageViewCreationHandler:(id)handler;
++ (CLKImageProvider)imageProviderWithJSONObjectRepresentation:(id)representation bundle:(id)bundle;
++ (CLKImageProvider)imageProviderWithLayerMaskImage:(id)image;
 + (CLKImageProvider)imageProviderWithOnePieceImage:(UIImage *)onePieceImage twoPieceImageBackground:(UIImage *)twoPieceImageBackground twoPieceImageForeground:(UIImage *)twoPieceImageForeground;
 + (CLKImageProvider)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)validate;
 - (CGSize)maxSize;
-- (CLKImageProvider)initWithCoder:(id)a3;
-- (CLKImageProvider)initWithForegroundAccentImage:(id)a3;
-- (CLKImageProvider)initWithJSONObjectRepresentation:(id)a3 bundle:(id)a4;
+- (CLKImageProvider)initWithCoder:(id)coder;
+- (CLKImageProvider)initWithForegroundAccentImage:(id)image;
+- (CLKImageProvider)initWithJSONObjectRepresentation:(id)representation bundle:(id)bundle;
 - (CLKImageProvider)initWithOnePieceImage:(UIImage *)onePieceImage twoPieceImageBackground:(UIImage *)twoPieceImageBackground twoPieceImageForeground:(UIImage *)twoPieceImageForeground;
-- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initPrivate;
 - (unint64_t)hash;
-- (void)_resizeImagesIfNecessaryWithMaxSDKSize:(CGSize)a3 andCornerRadius:(double)a4;
-- (void)_resizeImagesIfNecessaryWithMaxSDKSize:(CGSize)a3 andMaskToCircle:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)finalizeWithMaxSDKSize:(CGSize)a3 maxDeviceSize:(CGSize)a4 cornerRadius:(double)a5;
-- (void)finalizeWithMaxSDKSize:(CGSize)a3 maxDeviceSize:(CGSize)a4 maskToCircle:(BOOL)a5;
+- (void)_resizeImagesIfNecessaryWithMaxSDKSize:(CGSize)size andCornerRadius:(double)radius;
+- (void)_resizeImagesIfNecessaryWithMaxSDKSize:(CGSize)size andMaskToCircle:(BOOL)circle;
+- (void)encodeWithCoder:(id)coder;
+- (void)finalizeWithMaxSDKSize:(CGSize)size maxDeviceSize:(CGSize)deviceSize cornerRadius:(double)radius;
+- (void)finalizeWithMaxSDKSize:(CGSize)size maxDeviceSize:(CGSize)deviceSize maskToCircle:(BOOL)circle;
 - (void)setOnePieceImage:(UIImage *)onePieceImage;
 - (void)setTwoPieceImageBackground:(UIImage *)twoPieceImageBackground;
 - (void)setTwoPieceImageForeground:(UIImage *)twoPieceImageForeground;
@@ -43,7 +43,7 @@
 
 + (CLKImageProvider)new
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___CLKImageProvider;
   return objc_msgSendSuper2(&v3, "new");
 }
@@ -53,11 +53,11 @@
   v8 = onePieceImage;
   v9 = twoPieceImageBackground;
   v10 = twoPieceImageForeground;
-  v11 = [(CLKImageProvider *)self initPrivate];
-  v12 = v11;
-  if (v11)
+  initPrivate = [(CLKImageProvider *)self initPrivate];
+  v12 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKImageProvider *)v11 setOnePieceImage:v8];
+    [(CLKImageProvider *)initPrivate setOnePieceImage:v8];
     [(CLKImageProvider *)v12 setTwoPieceImageBackground:v9];
     [(CLKImageProvider *)v12 setTwoPieceImageForeground:v10];
   }
@@ -65,14 +65,14 @@
   return v12;
 }
 
-- (CLKImageProvider)initWithForegroundAccentImage:(id)a3
+- (CLKImageProvider)initWithForegroundAccentImage:(id)image
 {
-  v4 = a3;
-  v5 = [(CLKImageProvider *)self initPrivate];
-  v6 = v5;
-  if (v5)
+  imageCopy = image;
+  initPrivate = [(CLKImageProvider *)self initPrivate];
+  v6 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKImageProvider *)v5 setForegroundAccentImage:v4];
+    [(CLKImageProvider *)initPrivate setForegroundAccentImage:imageCopy];
   }
 
   return v6;
@@ -83,23 +83,23 @@
   v8 = twoPieceImageForeground;
   v9 = twoPieceImageBackground;
   v10 = onePieceImage;
-  v11 = [[a1 alloc] initWithOnePieceImage:v10 twoPieceImageBackground:v9 twoPieceImageForeground:v8];
+  v11 = [[self alloc] initWithOnePieceImage:v10 twoPieceImageBackground:v9 twoPieceImageForeground:v8];
 
   return v11;
 }
 
-+ (CLKImageProvider)imageProviderWithImageViewCreationHandler:(id)a3
++ (CLKImageProvider)imageProviderWithImageViewCreationHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initPrivate];
-  [v5 setImageViewCreationHandler:v4];
+  handlerCopy = handler;
+  initPrivate = [[self alloc] initPrivate];
+  [initPrivate setImageViewCreationHandler:handlerCopy];
 
-  return v5;
+  return initPrivate;
 }
 
-+ (CLKImageProvider)imageProviderWithLayerMaskImage:(id)a3
++ (CLKImageProvider)imageProviderWithLayerMaskImage:(id)image
 {
-  v3 = [a1 imageProviderWithOnePieceImage:a3];
+  v3 = [self imageProviderWithOnePieceImage:image];
   [v3 setUseOnePieceAsLayerMask:1];
 
   return v3;
@@ -154,22 +154,22 @@ LABEL_13:
   return 1;
 }
 
-- (void)finalizeWithMaxSDKSize:(CGSize)a3 maxDeviceSize:(CGSize)a4 maskToCircle:(BOOL)a5
+- (void)finalizeWithMaxSDKSize:(CGSize)size maxDeviceSize:(CGSize)deviceSize maskToCircle:(BOOL)circle
 {
   if (!self->_finalized)
   {
-    self->_maxSize = a4;
-    [(CLKImageProvider *)self _resizeImagesIfNecessaryWithMaxSDKSize:a5 andMaskToCircle:a3.width, a3.height];
+    self->_maxSize = deviceSize;
+    [(CLKImageProvider *)self _resizeImagesIfNecessaryWithMaxSDKSize:circle andMaskToCircle:size.width, size.height];
     self->_finalized = 1;
   }
 }
 
-- (void)finalizeWithMaxSDKSize:(CGSize)a3 maxDeviceSize:(CGSize)a4 cornerRadius:(double)a5
+- (void)finalizeWithMaxSDKSize:(CGSize)size maxDeviceSize:(CGSize)deviceSize cornerRadius:(double)radius
 {
   if (!self->_finalized)
   {
-    self->_maxSize = a4;
-    [(CLKImageProvider *)self _resizeImagesIfNecessaryWithMaxSDKSize:a3.width andCornerRadius:a3.height, a5];
+    self->_maxSize = deviceSize;
+    [(CLKImageProvider *)self _resizeImagesIfNecessaryWithMaxSDKSize:size.width andCornerRadius:size.height, radius];
     self->_finalized = 1;
   }
 }
@@ -179,9 +179,9 @@ LABEL_13:
   v6 = onePieceImage;
   if (([(UIImage *)v6 isEqual:self->_onePieceImage]& 1) == 0)
   {
-    v4 = [(UIImage *)v6 _imageThatSuppressesAccessibilityHairlineThickening];
+    _imageThatSuppressesAccessibilityHairlineThickening = [(UIImage *)v6 _imageThatSuppressesAccessibilityHairlineThickening];
     v5 = self->_onePieceImage;
-    self->_onePieceImage = v4;
+    self->_onePieceImage = _imageThatSuppressesAccessibilityHairlineThickening;
   }
 }
 
@@ -190,9 +190,9 @@ LABEL_13:
   v6 = twoPieceImageForeground;
   if (([(UIImage *)v6 isEqual:self->_twoPieceImageForeground]& 1) == 0)
   {
-    v4 = [(UIImage *)v6 _imageThatSuppressesAccessibilityHairlineThickening];
+    _imageThatSuppressesAccessibilityHairlineThickening = [(UIImage *)v6 _imageThatSuppressesAccessibilityHairlineThickening];
     v5 = self->_twoPieceImageForeground;
-    self->_twoPieceImageForeground = v4;
+    self->_twoPieceImageForeground = _imageThatSuppressesAccessibilityHairlineThickening;
   }
 }
 
@@ -201,108 +201,108 @@ LABEL_13:
   v6 = twoPieceImageBackground;
   if (([(UIImage *)v6 isEqual:self->_twoPieceImageBackground]& 1) == 0)
   {
-    v4 = [(UIImage *)v6 _imageThatSuppressesAccessibilityHairlineThickening];
+    _imageThatSuppressesAccessibilityHairlineThickening = [(UIImage *)v6 _imageThatSuppressesAccessibilityHairlineThickening];
     v5 = self->_twoPieceImageBackground;
-    self->_twoPieceImageBackground = v4;
+    self->_twoPieceImageBackground = _imageThatSuppressesAccessibilityHairlineThickening;
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   onePieceImage = self->_onePieceImage;
-  v5 = a3;
-  [v5 encodeObject:onePieceImage forKey:@"OnePieceImage"];
-  [v5 encodeObject:self->_twoPieceImageBackground forKey:@"TwoPieceImageBackground"];
-  [v5 encodeObject:self->_twoPieceImageForeground forKey:@"TwoPieceImageForeground"];
-  [v5 encodeObject:self->_tintColor forKey:@"TintColor"];
-  [v5 encodeObject:self->_accessibilityLabel forKey:@"AccessibilityLabel"];
-  [v5 encodeObject:self->_foregroundAccentImage forKey:@"ForegroundAccentImageKey"];
-  [v5 encodeBool:self->_foregroundAccentImageTinted forKey:@"ForegroundAccentImageTintedKey"];
-  [v5 encodeBool:self->_finalized forKey:@"Finalized"];
-  [v5 encodeCGSize:@"MaxSize" forKey:{self->_maxSize.width, self->_maxSize.height}];
-  [v5 encodeBool:self->_useOnePieceAsLayerMask forKey:@"UseOnePieceAsLayerMask"];
+  coderCopy = coder;
+  [coderCopy encodeObject:onePieceImage forKey:@"OnePieceImage"];
+  [coderCopy encodeObject:self->_twoPieceImageBackground forKey:@"TwoPieceImageBackground"];
+  [coderCopy encodeObject:self->_twoPieceImageForeground forKey:@"TwoPieceImageForeground"];
+  [coderCopy encodeObject:self->_tintColor forKey:@"TintColor"];
+  [coderCopy encodeObject:self->_accessibilityLabel forKey:@"AccessibilityLabel"];
+  [coderCopy encodeObject:self->_foregroundAccentImage forKey:@"ForegroundAccentImageKey"];
+  [coderCopy encodeBool:self->_foregroundAccentImageTinted forKey:@"ForegroundAccentImageTintedKey"];
+  [coderCopy encodeBool:self->_finalized forKey:@"Finalized"];
+  [coderCopy encodeCGSize:@"MaxSize" forKey:{self->_maxSize.width, self->_maxSize.height}];
+  [coderCopy encodeBool:self->_useOnePieceAsLayerMask forKey:@"UseOnePieceAsLayerMask"];
 }
 
-- (CLKImageProvider)initWithCoder:(id)a3
+- (CLKImageProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CLKImageProvider *)self initPrivate];
-  if (v5)
+  coderCopy = coder;
+  initPrivate = [(CLKImageProvider *)self initPrivate];
+  if (initPrivate)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OnePieceImage"];
-    v7 = [v6 _imageThatSuppressesAccessibilityHairlineThickening];
-    onePieceImage = v5->_onePieceImage;
-    v5->_onePieceImage = v7;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OnePieceImage"];
+    _imageThatSuppressesAccessibilityHairlineThickening = [v6 _imageThatSuppressesAccessibilityHairlineThickening];
+    onePieceImage = initPrivate->_onePieceImage;
+    initPrivate->_onePieceImage = _imageThatSuppressesAccessibilityHairlineThickening;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TwoPieceImageBackground"];
-    v10 = [v9 _imageThatSuppressesAccessibilityHairlineThickening];
-    twoPieceImageBackground = v5->_twoPieceImageBackground;
-    v5->_twoPieceImageBackground = v10;
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TwoPieceImageBackground"];
+    _imageThatSuppressesAccessibilityHairlineThickening2 = [v9 _imageThatSuppressesAccessibilityHairlineThickening];
+    twoPieceImageBackground = initPrivate->_twoPieceImageBackground;
+    initPrivate->_twoPieceImageBackground = _imageThatSuppressesAccessibilityHairlineThickening2;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TwoPieceImageForeground"];
-    v13 = [v12 _imageThatSuppressesAccessibilityHairlineThickening];
-    twoPieceImageForeground = v5->_twoPieceImageForeground;
-    v5->_twoPieceImageForeground = v13;
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TwoPieceImageForeground"];
+    _imageThatSuppressesAccessibilityHairlineThickening3 = [v12 _imageThatSuppressesAccessibilityHairlineThickening];
+    twoPieceImageForeground = initPrivate->_twoPieceImageForeground;
+    initPrivate->_twoPieceImageForeground = _imageThatSuppressesAccessibilityHairlineThickening3;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TintColor"];
-    tintColor = v5->_tintColor;
-    v5->_tintColor = v15;
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TintColor"];
+    tintColor = initPrivate->_tintColor;
+    initPrivate->_tintColor = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AccessibilityLabel"];
-    accessibilityLabel = v5->_accessibilityLabel;
-    v5->_accessibilityLabel = v17;
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AccessibilityLabel"];
+    accessibilityLabel = initPrivate->_accessibilityLabel;
+    initPrivate->_accessibilityLabel = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ForegroundAccentImageKey"];
-    foregroundAccentImage = v5->_foregroundAccentImage;
-    v5->_foregroundAccentImage = v19;
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ForegroundAccentImageKey"];
+    foregroundAccentImage = initPrivate->_foregroundAccentImage;
+    initPrivate->_foregroundAccentImage = v19;
 
-    v5->_foregroundAccentImageTinted = [v4 decodeBoolForKey:@"ForegroundAccentImageTintedKey"];
-    v5->_finalized = [v4 decodeBoolForKey:@"Finalized"];
-    if ([v4 containsValueForKey:@"MaxSize"])
+    initPrivate->_foregroundAccentImageTinted = [coderCopy decodeBoolForKey:@"ForegroundAccentImageTintedKey"];
+    initPrivate->_finalized = [coderCopy decodeBoolForKey:@"Finalized"];
+    if ([coderCopy containsValueForKey:@"MaxSize"])
     {
-      [v4 decodeCGSizeForKey:@"MaxSize"];
-      v5->_maxSize.width = v21;
-      v5->_maxSize.height = v22;
+      [coderCopy decodeCGSizeForKey:@"MaxSize"];
+      initPrivate->_maxSize.width = v21;
+      initPrivate->_maxSize.height = v22;
     }
 
-    v5->_useOnePieceAsLayerMask = [v4 decodeBoolForKey:@"UseOnePieceAsLayerMask"];
+    initPrivate->_useOnePieceAsLayerMask = [coderCopy decodeBoolForKey:@"UseOnePieceAsLayerMask"];
   }
 
-  return v5;
+  return initPrivate;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     onePieceImage = self->_onePieceImage;
-    v6 = [v4 onePieceImage];
-    if (CLKEqualObjects(onePieceImage, v6))
+    onePieceImage = [equalCopy onePieceImage];
+    if (CLKEqualObjects(onePieceImage, onePieceImage))
     {
       twoPieceImageBackground = self->_twoPieceImageBackground;
-      v8 = [v4 twoPieceImageBackground];
-      if (CLKEqualObjects(twoPieceImageBackground, v8))
+      twoPieceImageBackground = [equalCopy twoPieceImageBackground];
+      if (CLKEqualObjects(twoPieceImageBackground, twoPieceImageBackground))
       {
         twoPieceImageForeground = self->_twoPieceImageForeground;
-        v10 = [v4 twoPieceImageForeground];
-        if (CLKEqualObjects(twoPieceImageForeground, v10))
+        twoPieceImageForeground = [equalCopy twoPieceImageForeground];
+        if (CLKEqualObjects(twoPieceImageForeground, twoPieceImageForeground))
         {
           tintColor = self->_tintColor;
-          v12 = [v4 tintColor];
-          if (CLKEqualObjects(tintColor, v12))
+          tintColor = [equalCopy tintColor];
+          if (CLKEqualObjects(tintColor, tintColor))
           {
             foregroundAccentImage = self->_foregroundAccentImage;
-            v14 = [v4 foregroundAccentImage];
-            if (CLKEqualObjects(foregroundAccentImage, v14) && (foregroundAccentImageTinted = self->_foregroundAccentImageTinted, foregroundAccentImageTinted == [v4 isForegroundAccentImageTinted]))
+            foregroundAccentImage = [equalCopy foregroundAccentImage];
+            if (CLKEqualObjects(foregroundAccentImage, foregroundAccentImage) && (foregroundAccentImageTinted = self->_foregroundAccentImageTinted, foregroundAccentImageTinted == [equalCopy isForegroundAccentImageTinted]))
             {
               accessibilityLabel = self->_accessibilityLabel;
-              v17 = [v4 accessibilityLabel];
-              if (CLKEqualObjects(accessibilityLabel, v17))
+              accessibilityLabel = [equalCopy accessibilityLabel];
+              if (CLKEqualObjects(accessibilityLabel, accessibilityLabel))
               {
                 useOnePieceAsLayerMask = self->_useOnePieceAsLayerMask;
-                v19 = useOnePieceAsLayerMask == [v4 useOnePieceAsLayerMask];
+                v19 = useOnePieceAsLayerMask == [equalCopy useOnePieceAsLayerMask];
               }
 
               else
@@ -363,7 +363,7 @@ LABEL_13:
   return (v8 + v9 * 100.0 + v10 * 10.0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_finalized)
   {
@@ -373,7 +373,7 @@ LABEL_13:
 
   else
   {
-    v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+    v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
     [v5 setOnePieceImage:self->_onePieceImage];
     [v5 setTwoPieceImageBackground:self->_twoPieceImageBackground];
     [v5 setTwoPieceImageForeground:self->_twoPieceImageForeground];
@@ -387,10 +387,10 @@ LABEL_13:
   }
 }
 
-+ (CLKImageProvider)imageProviderWithJSONObjectRepresentation:(id)a3 bundle:(id)a4
++ (CLKImageProvider)imageProviderWithJSONObjectRepresentation:(id)representation bundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
+  representationCopy = representation;
+  bundleCopy = bundle;
   if (imageProviderWithJSONObjectRepresentation_bundle__onceToken != -1)
   {
     +[CLKImageProvider imageProviderWithJSONObjectRepresentation:bundle:];
@@ -399,11 +399,11 @@ LABEL_13:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"must be a dictionary. Invalid value: %@", v5}];
+    [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"must be a dictionary. Invalid value: %@", representationCopy}];
   }
 
   v7 = objc_opt_class();
-  v8 = [v5 objectForKeyedSubscript:@"class"];
+  v8 = [representationCopy objectForKeyedSubscript:@"class"];
   v9 = v8;
   if (!v8)
   {
@@ -418,7 +418,7 @@ LABEL_9:
     v11 = v7;
   }
 
-  v12 = [[v11 alloc] initWithJSONObjectRepresentation:v5 bundle:v6];
+  v12 = [[v11 alloc] initWithJSONObjectRepresentation:representationCopy bundle:bundleCopy];
 
   return v12;
 }
@@ -435,50 +435,50 @@ void __69__CLKImageProvider_imageProviderWithJSONObjectRepresentation_bundle___b
   imageProviderWithJSONObjectRepresentation_bundle__allowedClasses = v2;
 }
 
-- (CLKImageProvider)initWithJSONObjectRepresentation:(id)a3 bundle:(id)a4
+- (CLKImageProvider)initWithJSONObjectRepresentation:(id)representation bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CLKImageProvider *)self initPrivate];
-  if (v8)
+  representationCopy = representation;
+  bundleCopy = bundle;
+  initPrivate = [(CLKImageProvider *)self initPrivate];
+  if (initPrivate)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"must be a dictionary. Invalid value: %@", v6}];
+      [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"must be a dictionary. Invalid value: %@", representationCopy}];
     }
 
-    v9 = [v6 objectForKeyedSubscript:@"onePieceImage"];
-    v10 = [MEMORY[0x277D755B8] imageWithJSONObjectRepresentation:v9 bundle:v7];
-    v11 = [v10 _imageThatSuppressesAccessibilityHairlineThickening];
-    onePieceImage = v8->_onePieceImage;
-    v8->_onePieceImage = v11;
+    v9 = [representationCopy objectForKeyedSubscript:@"onePieceImage"];
+    v10 = [MEMORY[0x277D755B8] imageWithJSONObjectRepresentation:v9 bundle:bundleCopy];
+    _imageThatSuppressesAccessibilityHairlineThickening = [v10 _imageThatSuppressesAccessibilityHairlineThickening];
+    onePieceImage = initPrivate->_onePieceImage;
+    initPrivate->_onePieceImage = _imageThatSuppressesAccessibilityHairlineThickening;
 
-    v13 = [v6 objectForKeyedSubscript:@"twoPieceImageBackground"];
-    v14 = [v6 objectForKeyedSubscript:@"twoPieceImageForeground"];
+    v13 = [representationCopy objectForKeyedSubscript:@"twoPieceImageBackground"];
+    v14 = [representationCopy objectForKeyedSubscript:@"twoPieceImageForeground"];
     v15 = v14;
     if (v13 && v14)
     {
-      v16 = [MEMORY[0x277D755B8] imageWithJSONObjectRepresentation:v13 bundle:v7];
-      v17 = [v16 _imageThatSuppressesAccessibilityHairlineThickening];
-      twoPieceImageBackground = v8->_twoPieceImageBackground;
-      v8->_twoPieceImageBackground = v17;
+      v16 = [MEMORY[0x277D755B8] imageWithJSONObjectRepresentation:v13 bundle:bundleCopy];
+      _imageThatSuppressesAccessibilityHairlineThickening2 = [v16 _imageThatSuppressesAccessibilityHairlineThickening];
+      twoPieceImageBackground = initPrivate->_twoPieceImageBackground;
+      initPrivate->_twoPieceImageBackground = _imageThatSuppressesAccessibilityHairlineThickening2;
 
-      v19 = [MEMORY[0x277D755B8] imageWithJSONObjectRepresentation:v15 bundle:v7];
-      v20 = [v19 _imageThatSuppressesAccessibilityHairlineThickening];
-      twoPieceImageForeground = v8->_twoPieceImageForeground;
-      v8->_twoPieceImageForeground = v20;
+      v19 = [MEMORY[0x277D755B8] imageWithJSONObjectRepresentation:v15 bundle:bundleCopy];
+      _imageThatSuppressesAccessibilityHairlineThickening3 = [v19 _imageThatSuppressesAccessibilityHairlineThickening];
+      twoPieceImageForeground = initPrivate->_twoPieceImageForeground;
+      initPrivate->_twoPieceImageForeground = _imageThatSuppressesAccessibilityHairlineThickening3;
     }
 
-    v22 = [v6 objectForKeyedSubscript:@"tintColor"];
+    v22 = [representationCopy objectForKeyedSubscript:@"tintColor"];
     if (v22)
     {
       v23 = [objc_alloc(MEMORY[0x277D75348]) initWithJSONObjectRepresentation:v22];
-      tintColor = v8->_tintColor;
-      v8->_tintColor = v23;
+      tintColor = initPrivate->_tintColor;
+      initPrivate->_tintColor = v23;
     }
 
-    v25 = [v6 objectForKeyedSubscript:@"accessibilityLabel"];
+    v25 = [representationCopy objectForKeyedSubscript:@"accessibilityLabel"];
     if (v25)
     {
       objc_opt_class();
@@ -487,33 +487,33 @@ void __69__CLKImageProvider_imageProviderWithJSONObjectRepresentation_bundle___b
         [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"value for key '%@' must be a string - invalid value: %@", @"accessibilityLabel", v25}];
       }
 
-      objc_storeStrong(&v8->_accessibilityLabel, v25);
+      objc_storeStrong(&initPrivate->_accessibilityLabel, v25);
     }
   }
 
-  return v8;
+  return initPrivate;
 }
 
-- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)a3
+- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_opt_new();
-  v6 = [(UIImage *)self->_onePieceImage JSONObjectRepresentationWritingResourcesToBundlePath:v4];
+  v6 = [(UIImage *)self->_onePieceImage JSONObjectRepresentationWritingResourcesToBundlePath:pathCopy];
   [v5 setObject:v6 forKeyedSubscript:@"onePieceImage"];
 
   twoPieceImageBackground = self->_twoPieceImageBackground;
   if (twoPieceImageBackground && self->_twoPieceImageForeground)
   {
-    v8 = [(UIImage *)twoPieceImageBackground JSONObjectRepresentationWritingResourcesToBundlePath:v4];
+    v8 = [(UIImage *)twoPieceImageBackground JSONObjectRepresentationWritingResourcesToBundlePath:pathCopy];
     [v5 setObject:v8 forKeyedSubscript:@"twoPieceImageBackground"];
 
-    v9 = [(UIImage *)self->_twoPieceImageForeground JSONObjectRepresentationWritingResourcesToBundlePath:v4];
+    v9 = [(UIImage *)self->_twoPieceImageForeground JSONObjectRepresentationWritingResourcesToBundlePath:pathCopy];
     [v5 setObject:v9 forKeyedSubscript:@"twoPieceImageForeground"];
   }
 
   [v5 setObject:self->_accessibilityLabel forKeyedSubscript:@"accessibilityLabel"];
-  v10 = [(UIColor *)self->_tintColor JSONObjectRepresentation];
-  [v5 setObject:v10 forKeyedSubscript:@"tintColor"];
+  jSONObjectRepresentation = [(UIColor *)self->_tintColor JSONObjectRepresentation];
+  [v5 setObject:jSONObjectRepresentation forKeyedSubscript:@"tintColor"];
 
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
@@ -522,11 +522,11 @@ void __69__CLKImageProvider_imageProviderWithJSONObjectRepresentation_bundle___b
   return v5;
 }
 
-- (void)_resizeImagesIfNecessaryWithMaxSDKSize:(CGSize)a3 andMaskToCircle:(BOOL)a4
+- (void)_resizeImagesIfNecessaryWithMaxSDKSize:(CGSize)size andMaskToCircle:(BOOL)circle
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  circleCopy = circle;
+  height = size.height;
+  width = size.width;
   [(UIImage *)self->_onePieceImage size];
   v9 = v8;
   v11 = v10;
@@ -597,11 +597,11 @@ void __69__CLKImageProvider_imageProviderWithJSONObjectRepresentation_bundle___b
     if ((v18 < 1.0) | v23 & 1)
     {
       v26 = fmin(v18, 1.0);
-      v27 = [v25 imageForRawImage:self->_twoPieceImageBackground scale:v4 sdkDeviceScale:v26 maskMode:v24];
+      v27 = [v25 imageForRawImage:self->_twoPieceImageBackground scale:circleCopy sdkDeviceScale:v26 maskMode:v24];
       twoPieceImageBackground = self->_twoPieceImageBackground;
       self->_twoPieceImageBackground = v27;
 
-      v29 = [v33 imageForRawImage:self->_twoPieceImageForeground scale:v4 sdkDeviceScale:v26 maskMode:v24];
+      v29 = [v33 imageForRawImage:self->_twoPieceImageForeground scale:circleCopy sdkDeviceScale:v26 maskMode:v24];
       twoPieceImageForeground = self->_twoPieceImageForeground;
       self->_twoPieceImageForeground = v29;
 
@@ -610,7 +610,7 @@ void __69__CLKImageProvider_imageProviderWithJSONObjectRepresentation_bundle___b
 
     if ((v21 < 1.0) | v23 & 1)
     {
-      v31 = [v33 imageForRawImage:self->_onePieceImage scale:v4 sdkDeviceScale:fmin(v21 maskMode:{1.0), v24}];
+      v31 = [v33 imageForRawImage:self->_onePieceImage scale:circleCopy sdkDeviceScale:fmin(v21 maskMode:{1.0), v24}];
       onePieceImage = self->_onePieceImage;
       self->_onePieceImage = v31;
 
@@ -619,20 +619,20 @@ void __69__CLKImageProvider_imageProviderWithJSONObjectRepresentation_bundle___b
   }
 }
 
-- (void)_resizeImagesIfNecessaryWithMaxSDKSize:(CGSize)a3 andCornerRadius:(double)a4
+- (void)_resizeImagesIfNecessaryWithMaxSDKSize:(CGSize)size andCornerRadius:(double)radius
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v14 = +[CLKTreatedImageCache sharedInstance];
-  v8 = [v14 imageForRawImage:self->_onePieceImage maxSDKSize:width maxDeviceSize:height cornerRadius:{self->_maxSize.width, self->_maxSize.height, a4}];
+  v8 = [v14 imageForRawImage:self->_onePieceImage maxSDKSize:width maxDeviceSize:height cornerRadius:{self->_maxSize.width, self->_maxSize.height, radius}];
   onePieceImage = self->_onePieceImage;
   self->_onePieceImage = v8;
 
-  v10 = [v14 imageForRawImage:self->_twoPieceImageBackground maxSDKSize:width maxDeviceSize:height cornerRadius:{self->_maxSize.width, self->_maxSize.height, a4}];
+  v10 = [v14 imageForRawImage:self->_twoPieceImageBackground maxSDKSize:width maxDeviceSize:height cornerRadius:{self->_maxSize.width, self->_maxSize.height, radius}];
   twoPieceImageBackground = self->_twoPieceImageBackground;
   self->_twoPieceImageBackground = v10;
 
-  v12 = [v14 imageForRawImage:self->_twoPieceImageForeground maxSDKSize:width maxDeviceSize:height cornerRadius:{self->_maxSize.width, self->_maxSize.height, a4}];
+  v12 = [v14 imageForRawImage:self->_twoPieceImageForeground maxSDKSize:width maxDeviceSize:height cornerRadius:{self->_maxSize.width, self->_maxSize.height, radius}];
   twoPieceImageForeground = self->_twoPieceImageForeground;
   self->_twoPieceImageForeground = v12;
 }

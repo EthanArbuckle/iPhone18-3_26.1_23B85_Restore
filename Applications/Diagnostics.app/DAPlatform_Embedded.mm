@@ -1,23 +1,23 @@
 @interface DAPlatform_Embedded
-- (void)_activateCFUserNotificationWithTitle:(id)a3 message:(id)a4 defaultButtonName:(id)a5 cancelButtonName:(id)a6 handler:(id)a7;
+- (void)_activateCFUserNotificationWithTitle:(id)title message:(id)message defaultButtonName:(id)name cancelButtonName:(id)buttonName handler:(id)handler;
 @end
 
 @implementation DAPlatform_Embedded
 
-- (void)_activateCFUserNotificationWithTitle:(id)a3 message:(id)a4 defaultButtonName:(id)a5 cancelButtonName:(id)a6 handler:(id)a7
+- (void)_activateCFUserNotificationWithTitle:(id)title message:(id)message defaultButtonName:(id)name cancelButtonName:(id)buttonName handler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  handlerCopy = handler;
+  buttonNameCopy = buttonName;
+  nameCopy = name;
+  messageCopy = message;
+  titleCopy = title;
   v17 = objc_alloc_init(NSMutableDictionary);
-  [v17 setObject:v16 forKeyedSubscript:kCFUserNotificationAlertHeaderKey];
+  [v17 setObject:titleCopy forKeyedSubscript:kCFUserNotificationAlertHeaderKey];
 
-  [v17 setObject:v15 forKeyedSubscript:kCFUserNotificationAlertMessageKey];
-  [v17 setObject:v13 forKeyedSubscript:kCFUserNotificationDefaultButtonTitleKey];
+  [v17 setObject:messageCopy forKeyedSubscript:kCFUserNotificationAlertMessageKey];
+  [v17 setObject:buttonNameCopy forKeyedSubscript:kCFUserNotificationDefaultButtonTitleKey];
 
-  [v17 setObject:v14 forKeyedSubscript:kCFUserNotificationAlternateButtonTitleKey];
+  [v17 setObject:nameCopy forKeyedSubscript:kCFUserNotificationAlternateButtonTitleKey];
   [v17 setObject:&__kCFBooleanTrue forKeyedSubscript:kCFUserNotificationAlertTopMostKey];
   [(DAPlatform_Embedded *)self _addPlatformCFUserNotificationOptions:v17];
   v18 = CFUserNotificationCreate(kCFAllocatorDefault, 0.0, 0, 0, v17);
@@ -27,9 +27,9 @@
     responseFlags = 0;
     CFUserNotificationReceiveResponse(v18, 0.0, &responseFlags);
     CFRelease(v19);
-    if (v12 && responseFlags == 1)
+    if (handlerCopy && responseFlags == 1)
     {
-      v12[2](v12);
+      handlerCopy[2](handlerCopy);
     }
   }
 

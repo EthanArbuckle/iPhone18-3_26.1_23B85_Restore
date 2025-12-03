@@ -1,22 +1,22 @@
 @interface _APRSFreezerRecommendation
 + (id)sharedInstance;
-- (BOOL)process:(id)a3 inSet:(id)a4;
+- (BOOL)process:(id)process inSet:(id)set;
 - (_APRSFreezerRecommendation)init;
-- (double)scoreForApplication:(id)a3 atDate:(id)a4;
-- (double)secondsFrom:(unint64_t)a3 until:(unint64_t)a4;
+- (double)scoreForApplication:(id)application atDate:(id)date;
+- (double)secondsFrom:(unint64_t)from until:(unint64_t)until;
 - (id)_queue_computeScores;
-- (id)aggregatorScoresForAllApplicationsAtDate:(id)a3;
-- (id)appActivationTimeScores:(id)a3;
+- (id)aggregatorScoresForAllApplicationsAtDate:(id)date;
+- (id)appActivationTimeScores:(id)scores;
 - (id)appsFromProactiveSuggestions;
 - (id)appsRecentlyForegrounded;
 - (id)frequentlyUserKilledApps;
-- (id)killScoresForAllApplicationsAtDate:(id)a3;
-- (id)predictedAppsAtDate:(id)a3;
-- (id)predictionScoresForAllApplicationsAtDate:(id)a3;
-- (id)scoresForAppPredictionType:(int64_t)a3;
+- (id)killScoresForAllApplicationsAtDate:(id)date;
+- (id)predictedAppsAtDate:(id)date;
+- (id)predictionScoresForAllApplicationsAtDate:(id)date;
+- (id)scoresForAppPredictionType:(int64_t)type;
 - (void)_queue_loadHistograms;
 - (void)_queue_updateHistograms;
-- (void)convertTimelineToApplicationDictionaries:(id)a3;
+- (void)convertTimelineToApplicationDictionaries:(id)dictionaries;
 - (void)evaluateFreezerRecommendations;
 - (void)incorporateLatestJetsamStatistics;
 - (void)registerDailyModelUpdateTask;
@@ -180,7 +180,7 @@
   return v7;
 }
 
-- (id)scoresForAppPredictionType:(int64_t)a3
+- (id)scoresForAppPredictionType:(int64_t)type
 {
   v30 = +[NSMutableDictionary dictionary];
   v32 = +[NSMutableDictionary dictionary];
@@ -203,7 +203,7 @@
   v5 = v4;
   _Block_object_dispose(&v37, 8);
   v29 = [v4 alloc];
-  v28 = [v29 cachedSuggestionsForClientModelType:a3];
+  v28 = [v29 cachedSuggestionsForClientModelType:type];
   [v28 suggestions];
   v35 = 0u;
   v36 = 0u;
@@ -223,36 +223,36 @@
         }
 
         v9 = *(*(&v33 + 1) + 8 * i);
-        v10 = [v9 executableSpecification];
-        v11 = [v10 executableObject];
+        executableSpecification = [v9 executableSpecification];
+        executableObject = [executableSpecification executableObject];
 
-        if (v11)
+        if (executableObject)
         {
-          v12 = [v9 scoreSpecification];
-          v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 suggestedConfidenceCategory]);
-          v14 = [v11 description];
+          scoreSpecification = [v9 scoreSpecification];
+          v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [scoreSpecification suggestedConfidenceCategory]);
+          v14 = [executableObject description];
           [v32 setObject:v13 forKeyedSubscript:v14];
 
           v15 = objc_autoreleasePoolPush();
           v16 = [LSApplicationRecord alloc];
-          v17 = [v11 description];
+          v17 = [executableObject description];
           v18 = [v16 initWithBundleIdentifier:v17 allowPlaceholder:0 error:0];
-          v19 = [v18 compatibilityObject];
+          compatibilityObject = [v18 compatibilityObject];
 
-          v20 = [v19 bundleExecutable];
-          if (v20)
+          bundleExecutable = [compatibilityObject bundleExecutable];
+          if (bundleExecutable)
           {
-            v21 = [v9 scoreSpecification];
-            v22 = [v21 suggestedConfidenceCategory];
+            scoreSpecification2 = [v9 scoreSpecification];
+            suggestedConfidenceCategory = [scoreSpecification2 suggestedConfidenceCategory];
 
             v23 = 0.0;
-            if ((v22 - 2) <= 2)
+            if ((suggestedConfidenceCategory - 2) <= 2)
             {
-              v23 = dbl_100158E48[(v22 - 2)];
+              v23 = dbl_100158E48[(suggestedConfidenceCategory - 2)];
             }
 
             v24 = [NSNumber numberWithDouble:v23];
-            [v30 setObject:v24 forKeyedSubscript:v20];
+            [v30 setObject:v24 forKeyedSubscript:bundleExecutable];
           }
 
           objc_autoreleasePoolPop(v15);
@@ -276,19 +276,19 @@
   return v30;
 }
 
-- (void)convertTimelineToApplicationDictionaries:(id)a3
+- (void)convertTimelineToApplicationDictionaries:(id)dictionaries
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dictionariesCopy = dictionaries;
+  v5 = dictionariesCopy;
+  if (dictionariesCopy)
   {
-    v6 = [v4 transitionDates];
-    v7 = [v6 firstObject];
-    [(_APRSFreezerRecommendation *)self setTransitionDate:v7];
+    transitionDates = [dictionariesCopy transitionDates];
+    firstObject = [transitionDates firstObject];
+    [(_APRSFreezerRecommendation *)self setTransitionDate:firstObject];
 
     v8 = +[NSMutableSet set];
-    v9 = [v5 startDate];
-    v42 = [v5 valueAtDate:v9];
+    startDate = [v5 startDate];
+    v42 = [v5 valueAtDate:startDate];
 
     v41 = [v5 valueAtDate:self->_transitionDate];
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
@@ -296,18 +296,18 @@
       sub_100122750();
     }
 
-    v36 = self;
+    selfCopy = self;
     v37 = v5;
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
     {
       sub_1001227B8();
     }
 
-    v10 = [v42 allKeys];
-    [v8 addObjectsFromArray:v10];
+    allKeys = [v42 allKeys];
+    [v8 addObjectsFromArray:allKeys];
 
-    v11 = [v41 allKeys];
-    [v8 addObjectsFromArray:v11];
+    allKeys2 = [v41 allKeys];
+    [v8 addObjectsFromArray:allKeys2];
 
     v40 = +[NSMutableDictionary dictionary];
     v39 = +[NSMutableDictionary dictionary];
@@ -333,10 +333,10 @@
           v16 = *(*(&v43 + 1) + 8 * i);
           v17 = objc_autoreleasePoolPush();
           v18 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v16 allowPlaceholder:0 error:0];
-          v19 = [v18 compatibilityObject];
+          compatibilityObject = [v18 compatibilityObject];
 
-          v20 = [v19 bundleExecutable];
-          if (v20)
+          bundleExecutable = [compatibilityObject bundleExecutable];
+          if (bundleExecutable)
           {
             v21 = [v42 objectForKeyedSubscript:v16];
             [v21 doubleValue];
@@ -350,7 +350,7 @@
               v23 = v21;
             }
 
-            [v40 setObject:v23 forKeyedSubscript:v20];
+            [v40 setObject:v23 forKeyedSubscript:bundleExecutable];
             v24 = [v41 objectForKeyedSubscript:v16];
 
             [v24 doubleValue];
@@ -364,7 +364,7 @@
               v26 = v24;
             }
 
-            [v39 setObject:v26 forKeyedSubscript:v20];
+            [v39 setObject:v26 forKeyedSubscript:bundleExecutable];
           }
 
           objc_autoreleasePoolPop(v17);
@@ -377,29 +377,29 @@
     }
 
     v27 = [v40 copy];
-    [(_APRSFreezerRecommendation *)v36 setCurrentProbabilities:v27];
+    [(_APRSFreezerRecommendation *)selfCopy setCurrentProbabilities:v27];
 
     v28 = [v39 copy];
-    [(_APRSFreezerRecommendation *)v36 setNextProbabilities:v28];
+    [(_APRSFreezerRecommendation *)selfCopy setNextProbabilities:v28];
 
-    log = v36->_log;
+    log = selfCopy->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v30 = log;
-      v31 = [(_APRSFreezerRecommendation *)v36 currentProbabilities];
+      currentProbabilities = [(_APRSFreezerRecommendation *)selfCopy currentProbabilities];
       *buf = 138412290;
-      v48 = v31;
+      v48 = currentProbabilities;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Current Probabilities: %@", buf, 0xCu);
     }
 
-    v32 = v36->_log;
+    v32 = selfCopy->_log;
     v5 = v37;
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       v33 = v32;
-      v34 = [(_APRSFreezerRecommendation *)v36 nextProbabilities];
+      nextProbabilities = [(_APRSFreezerRecommendation *)selfCopy nextProbabilities];
       *buf = 138412290;
-      v48 = v34;
+      v48 = nextProbabilities;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Next Probabilities: %@", buf, 0xCu);
     }
   }
@@ -440,12 +440,12 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (double)scoreForApplication:(id)a3 atDate:(id)a4
+- (double)scoreForApplication:(id)application atDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_APRSFreezerRecommendation *)self transitionDate];
-  [v6 timeIntervalSinceDate:v8];
+  dateCopy = date;
+  applicationCopy = application;
+  transitionDate = [(_APRSFreezerRecommendation *)self transitionDate];
+  [dateCopy timeIntervalSinceDate:transitionDate];
   v10 = v9;
 
   if (v10 <= 0.0)
@@ -458,7 +458,7 @@
     [(_APRSFreezerRecommendation *)self nextProbabilities];
   }
   v11 = ;
-  v12 = [v11 objectForKeyedSubscript:v7];
+  v12 = [v11 objectForKeyedSubscript:applicationCopy];
 
   [v12 doubleValue];
   v14 = v13;
@@ -466,11 +466,11 @@
   return v14;
 }
 
-- (id)predictionScoresForAllApplicationsAtDate:(id)a3
+- (id)predictionScoresForAllApplicationsAtDate:(id)date
 {
-  v4 = a3;
-  v5 = [(_APRSFreezerRecommendation *)self transitionDate];
-  [v4 timeIntervalSinceDate:v5];
+  dateCopy = date;
+  transitionDate = [(_APRSFreezerRecommendation *)self transitionDate];
+  [dateCopy timeIntervalSinceDate:transitionDate];
   v7 = v6;
 
   if (v7 <= 0.0)
@@ -487,13 +487,13 @@
   return v8;
 }
 
-- (id)predictedAppsAtDate:(id)a3
+- (id)predictedAppsAtDate:(id)date
 {
-  v4 = [(_APRSFreezerRecommendation *)self predictionScoresForAllApplicationsAtDate:a3];
+  v4 = [(_APRSFreezerRecommendation *)self predictionScoresForAllApplicationsAtDate:date];
   v5 = [v4 mutableCopy];
 
-  v6 = [(_APRSFreezerRecommendation *)self appsFromProactiveSuggestions];
-  v7 = [v6 mutableCopy];
+  appsFromProactiveSuggestions = [(_APRSFreezerRecommendation *)self appsFromProactiveSuggestions];
+  v7 = [appsFromProactiveSuggestions mutableCopy];
 
   v8 = v7;
   if (![v7 count])
@@ -511,11 +511,11 @@ LABEL_13:
   }
 
   v9 = +[NSMutableSet set];
-  v10 = [v5 allKeys];
-  [v9 addObjectsFromArray:v10];
+  allKeys = [v5 allKeys];
+  [v9 addObjectsFromArray:allKeys];
 
-  v11 = [v5 allKeys];
-  [v9 addObjectsFromArray:v11];
+  allKeys2 = [v5 allKeys];
+  [v9 addObjectsFromArray:allKeys2];
 
   v12 = +[NSMutableDictionary dictionary];
   v29 = 0u;
@@ -562,21 +562,21 @@ LABEL_14:
   return v12;
 }
 
-- (id)aggregatorScoresForAllApplicationsAtDate:(id)a3
+- (id)aggregatorScoresForAllApplicationsAtDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = os_transaction_create();
   v6 = objc_autoreleasePoolPush();
   v7 = +[NSMutableSet set];
   v8 = +[NSMutableArray array];
-  v9 = [(_APRSFreezerRecommendation *)self predictedAppsAtDate:v4];
+  v9 = [(_APRSFreezerRecommendation *)self predictedAppsAtDate:dateCopy];
   v10 = [v9 count];
   v70 = v8;
   [v8 addObject:v9];
-  v11 = [v9 allKeys];
-  [v7 addObjectsFromArray:v11];
+  allKeys = [v9 allKeys];
+  [v7 addObjectsFromArray:allKeys];
 
-  v71 = self;
+  selfCopy = self;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -585,14 +585,14 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Prediction scores %@", buf, 0xCu);
   }
 
-  v13 = [(_APRSFreezerRecommendation *)self killScoresForAllApplicationsAtDate:v4];
+  v13 = [(_APRSFreezerRecommendation *)self killScoresForAllApplicationsAtDate:dateCopy];
   v14 = [v13 mutableCopy];
 
   if ([v14 count])
   {
     [v70 addObject:v14];
-    v15 = [v14 allKeys];
-    [v7 addObjectsFromArray:v15];
+    allKeys2 = [v14 allKeys];
+    [v7 addObjectsFromArray:allKeys2];
 
     v16 = 3;
   }
@@ -611,14 +611,14 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Kill scores %@", buf, 0xCu);
   }
 
-  v18 = [(_APRSFreezerRecommendation *)self appActivationTimeScores:v4];
+  v18 = [(_APRSFreezerRecommendation *)self appActivationTimeScores:dateCopy];
   v19 = [v18 mutableCopy];
 
   if ([v19 count])
   {
     [v70 addObject:v19];
-    v20 = [v19 allKeys];
-    [v7 addObjectsFromArray:v20];
+    allKeys3 = [v19 allKeys];
+    [v7 addObjectsFromArray:allKeys3];
   }
 
   else
@@ -626,7 +626,7 @@ LABEL_14:
     --v74;
   }
 
-  v21 = v71->_log;
+  v21 = selfCopy->_log;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
@@ -638,7 +638,7 @@ LABEL_14:
   if (v74 == 1)
   {
     v22 = v70;
-    v23 = [v70 firstObject];
+    firstObject = [v70 firstObject];
     v24 = 0;
     v25 = 0;
   }
@@ -649,8 +649,8 @@ LABEL_14:
     v64 = v9;
     v66 = v6;
     v67 = v5;
-    v68 = v4;
-    v26 = [(_APRSFreezerRecommendation *)v71 frequentlyUserKilledApps];
+    v68 = dateCopy;
+    frequentlyUserKilledApps = [(_APRSFreezerRecommendation *)selfCopy frequentlyUserKilledApps];
     v73 = +[NSMutableDictionary dictionary];
     v75 = 0u;
     v76 = 0u;
@@ -658,7 +658,7 @@ LABEL_14:
     v78 = 0u;
     v65 = v7;
     v27 = v7;
-    v28 = v71;
+    v28 = selfCopy;
     v29 = v27;
     v30 = [v27 countByEnumeratingWithState:&v75 objects:v79 count:16];
     v31 = v70;
@@ -677,7 +677,7 @@ LABEL_14:
           }
 
           v35 = *(*(&v75 + 1) + 8 * i);
-          if ([v26 containsObject:v35])
+          if ([frequentlyUserKilledApps containsObject:v35])
           {
             v36 = v28->_log;
             if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -692,17 +692,17 @@ LABEL_14:
           {
             if (v74 == 2)
             {
-              v37 = [v31 firstObject];
-              v38 = [v37 objectForKeyedSubscript:v35];
+              firstObject2 = [v31 firstObject];
+              v38 = [firstObject2 objectForKeyedSubscript:v35];
               [v38 doubleValue];
               v40 = v39;
-              v41 = [v31 lastObject];
-              v42 = [v41 objectForKeyedSubscript:v35];
+              lastObject = [v31 lastObject];
+              v42 = [lastObject objectForKeyedSubscript:v35];
               [v42 doubleValue];
               v44 = [NSNumber numberWithDouble:v43 * 0.75 + v40 * 0.25];
               [v73 setObject:v44 forKeyedSubscript:v35];
 
-              v28 = v71;
+              v28 = selfCopy;
               v31 = v70;
 
               v29 = v72;
@@ -710,14 +710,14 @@ LABEL_14:
 
             else
             {
-              v45 = [v31 firstObject];
-              v46 = [v45 objectForKeyedSubscript:v35];
+              firstObject3 = [v31 firstObject];
+              v46 = [firstObject3 objectForKeyedSubscript:v35];
 
               v47 = 0.0;
               v48 = 0.0;
               if (v46)
               {
-                v49 = [v45 objectForKeyedSubscript:v35];
+                v49 = [firstObject3 objectForKeyedSubscript:v35];
                 [v49 doubleValue];
                 v48 = v50;
               }
@@ -733,11 +733,11 @@ LABEL_14:
                 v47 = v54;
               }
 
-              v55 = [v31 lastObject];
+              lastObject2 = [v31 lastObject];
 
-              v56 = [v55 objectForKeyedSubscript:v35];
+              v56 = [lastObject2 objectForKeyedSubscript:v35];
 
-              if (v56 && ([v55 objectForKeyedSubscript:v35], v57 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v57, "doubleValue"), v59 = v58, v57, v59 != -1.0))
+              if (v56 && ([lastObject2 objectForKeyedSubscript:v35], v57 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v57, "doubleValue"), v59 = v58, v57, v59 != -1.0))
               {
                 v60 = v47 * 0.25 + v48 * 0.25 + v59 * 0.5;
               }
@@ -761,13 +761,13 @@ LABEL_14:
       while (v32);
     }
 
-    v23 = v73;
+    firstObject = v73;
     [v73 setObject:&off_1001CA060 forKeyedSubscript:@"MobileSafari"];
     v25 = [v73 copy];
 
     v24 = 1;
     v5 = v67;
-    v4 = v68;
+    dateCopy = v68;
     v22 = v31;
     v7 = v65;
     v6 = v66;
@@ -779,24 +779,24 @@ LABEL_14:
   {
     v24 = 0;
     v25 = 0;
-    v23 = &__NSDictionary0__struct;
+    firstObject = &__NSDictionary0__struct;
     v22 = v70;
   }
 
   objc_autoreleasePoolPop(v6);
   if (v24)
   {
-    v23 = v25;
+    firstObject = v25;
   }
 
-  return v23;
+  return firstObject;
 }
 
-- (id)appActivationTimeScores:(id)a3
+- (id)appActivationTimeScores:(id)scores
 {
   v4 = +[NSMutableDictionary dictionary];
   v5 = +[_APRSBiomeEventAnalyzer sharedInstance];
-  v6 = [v5 meanDeltaTimeBetweenColdLaunchAndResume];
+  meanDeltaTimeBetweenColdLaunchAndResume = [v5 meanDeltaTimeBetweenColdLaunchAndResume];
 
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
@@ -809,7 +809,7 @@ LABEL_14:
   v9[3] = &unk_1001B5608;
   v7 = v4;
   v10 = v7;
-  [v6 enumerateKeysAndObjectsUsingBlock:v9];
+  [meanDeltaTimeBetweenColdLaunchAndResume enumerateKeysAndObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -892,10 +892,10 @@ LABEL_14:
   v9[0] = self->_todaysKillHistogram;
   v9[1] = historicalKillHistogram;
   v8[2] = @"zeros";
-  v5 = [(NSMutableSet *)self->_zerosSet allObjects];
+  allObjects = [(NSMutableSet *)self->_zerosSet allObjects];
   v8[3] = @"snapshotTS";
   lastSnapshotTime = self->_lastSnapshotTime;
-  v9[2] = v5;
+  v9[2] = allObjects;
   v9[3] = lastSnapshotTime;
   v7 = [NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:4];
 
@@ -985,14 +985,14 @@ LABEL_14:
   }
 }
 
-- (double)secondsFrom:(unint64_t)a3 until:(unint64_t)a4
+- (double)secondsFrom:(unint64_t)from until:(unint64_t)until
 {
   if (qword_10020B548 != -1)
   {
     sub_100122888();
   }
 
-  return (((a3 - a4) * dword_10020B540) / *algn_10020B544) / 1000000000.0;
+  return (((from - until) * dword_10020B540) / *algn_10020B544) / 1000000000.0;
 }
 
 - (id)appsRecentlyForegrounded
@@ -1002,9 +1002,9 @@ LABEL_14:
   v3 = [_DASBMHistogramBuilder builderForAppInFocusStreamStarting:v2];
 
   v34 = v3;
-  v4 = [v3 histogram];
-  v5 = [v4 counts];
-  v6 = [NSMutableSet setWithSet:v5];
+  histogram = [v3 histogram];
+  counts = [histogram counts];
+  v6 = [NSMutableSet setWithSet:counts];
 
   v7 = +[_CDClientContext userContext];
   v8 = +[_CDContextQueries keyPathForAppUsageDataDictionaries];
@@ -1065,12 +1065,12 @@ LABEL_14:
         v24 = *(*(&v36 + 1) + 8 * j);
         v25 = objc_autoreleasePoolPush();
         v26 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v24 allowPlaceholder:0 error:0];
-        v27 = [v26 compatibilityObject];
+        compatibilityObject = [v26 compatibilityObject];
 
-        v28 = [v27 bundleExecutable];
-        if (v28)
+        bundleExecutable = [compatibilityObject bundleExecutable];
+        if (bundleExecutable)
         {
-          [v18 addObject:v28];
+          [v18 addObject:bundleExecutable];
         }
 
         objc_autoreleasePoolPop(v25);
@@ -1095,17 +1095,17 @@ LABEL_14:
   return v30;
 }
 
-- (BOOL)process:(id)a3 inSet:(id)a4
+- (BOOL)process:(id)process inSet:(id)set
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] > 0x1F)
+  processCopy = process;
+  setCopy = set;
+  if ([processCopy length] > 0x1F)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = v6;
+    v8 = setCopy;
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
@@ -1120,7 +1120,7 @@ LABEL_14:
             objc_enumerationMutation(v8);
           }
 
-          if ([*(*(&v14 + 1) + 8 * i) hasPrefix:{v5, v14}])
+          if ([*(*(&v14 + 1) + 8 * i) hasPrefix:{processCopy, v14}])
           {
 
             v7 = 1;
@@ -1143,7 +1143,7 @@ LABEL_14:
 
   else
   {
-    v7 = [v6 containsObject:v5];
+    v7 = [setCopy containsObject:processCopy];
   }
 
 LABEL_13:
@@ -1153,19 +1153,19 @@ LABEL_13:
 
 - (void)incorporateLatestJetsamStatistics
 {
-  v3 = [(_APRSFreezerRecommendation *)self appsRecentlyForegrounded];
+  appsRecentlyForegrounded = [(_APRSFreezerRecommendation *)self appsRecentlyForegrounded];
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000804BC;
   v6[3] = &unk_1001B56E0;
   v6[4] = self;
-  v7 = v3;
-  v5 = v3;
+  v7 = appsRecentlyForegrounded;
+  v5 = appsRecentlyForegrounded;
   dispatch_sync(queue, v6);
 }
 
-- (id)killScoresForAllApplicationsAtDate:(id)a3
+- (id)killScoresForAllApplicationsAtDate:(id)date
 {
   v4 = +[NSMutableDictionary dictionary];
   queue = self->_queue;
@@ -1173,7 +1173,7 @@ LABEL_13:
   v11 = 3221225472;
   v12 = sub_100080B64;
   v13 = &unk_1001B56E0;
-  v14 = self;
+  selfCopy = self;
   v6 = v4;
   v15 = v6;
   dispatch_sync(queue, &v10);
@@ -1194,14 +1194,14 @@ LABEL_13:
 {
   v26 = +[NSMutableArray array];
   v2 = +[_APRSBiomeEventAnalyzer sharedInstance];
-  v3 = [v2 allAppKillsInfo];
+  allAppKillsInfo = [v2 allAppKillsInfo];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  allKeys = [allAppKillsInfo allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1212,11 +1212,11 @@ LABEL_13:
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v27 + 1) + 8 * i);
-        v10 = [v3 objectForKeyedSubscript:v9];
+        v10 = [allAppKillsInfo objectForKeyedSubscript:v9];
         [v10 meanSpringBoardKills];
         v12 = v11;
         [v10 meanJetsamKills];
@@ -1232,13 +1232,13 @@ LABEL_13:
           {
             v20 = objc_autoreleasePoolPush();
             v21 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v9 allowPlaceholder:0 error:0];
-            v22 = [v21 compatibilityObject];
+            compatibilityObject = [v21 compatibilityObject];
 
-            v23 = [v22 bundleExecutable];
-            if (v23)
+            bundleExecutable = [compatibilityObject bundleExecutable];
+            if (bundleExecutable)
             {
-              v24 = v23;
-              [v26 addObject:v23];
+              v24 = bundleExecutable;
+              [v26 addObject:bundleExecutable];
             }
 
             objc_autoreleasePoolPop(v20);
@@ -1246,7 +1246,7 @@ LABEL_13:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v6);

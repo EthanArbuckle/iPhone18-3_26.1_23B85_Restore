@@ -1,12 +1,12 @@
 @interface VideoHeaderPlayButton
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC16MusicApplication21VideoHeaderPlayButton)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC16MusicApplication21VideoHeaderPlayButton)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation VideoHeaderPlayButton
 
-- (_TtC16MusicApplication21VideoHeaderPlayButton)initWithCoder:(id)a3
+- (_TtC16MusicApplication21VideoHeaderPlayButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC16MusicApplication21VideoHeaderPlayButton_isBlurBackgroundEnabled) = 0;
   v3 = OBJC_IVAR____TtC16MusicApplication21VideoHeaderPlayButton_backgroundView;
@@ -18,20 +18,20 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_41AF4C();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  if (a3.height >= a3.width)
+  if (fits.height >= fits.width)
   {
-    width = a3.width;
+    width = fits.width;
   }
 
   else
   {
-    width = a3.height;
+    width = fits.height;
   }
 
   sub_471A4();

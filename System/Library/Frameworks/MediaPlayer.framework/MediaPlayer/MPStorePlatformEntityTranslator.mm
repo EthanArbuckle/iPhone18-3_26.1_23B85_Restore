@@ -1,63 +1,63 @@
 @interface MPStorePlatformEntityTranslator
-+ (id)translatorForKind:(id)a3;
++ (id)translatorForKind:(id)kind;
 + (void)buildSchemaIfNeeded;
-- (id)prepareSource:(id)a3 context:(id)a4 properties:(id)a5;
-- (void)mapIdentifierCreationKeyPaths:(id)a3 transformBlock:(id)a4;
-- (void)mapPropertyKey:(id)a3 toPayloadKeyPath:(id)a4;
-- (void)mapPropertyKey:(id)a3 toPayloadKeyPaths:(id)a4 valueTransformer:(id)a5;
-- (void)mapPropertyKey:(id)a3 toPayloadKeyPaths:(id)a4 valueTransformerFunction:(void *)a5;
-- (void)mapRelationshipKey:(id)a3 toModelClass:(Class)a4 payloadTransform:(id)a5;
+- (id)prepareSource:(id)source context:(id)context properties:(id)properties;
+- (void)mapIdentifierCreationKeyPaths:(id)paths transformBlock:(id)block;
+- (void)mapPropertyKey:(id)key toPayloadKeyPath:(id)path;
+- (void)mapPropertyKey:(id)key toPayloadKeyPaths:(id)paths valueTransformer:(id)transformer;
+- (void)mapPropertyKey:(id)key toPayloadKeyPaths:(id)paths valueTransformerFunction:(void *)function;
+- (void)mapRelationshipKey:(id)key toModelClass:(Class)class payloadTransform:(id)transform;
 @end
 
 @implementation MPStorePlatformEntityTranslator
 
-- (void)mapRelationshipKey:(id)a3 toModelClass:(Class)a4 payloadTransform:(id)a5
+- (void)mapRelationshipKey:(id)key toModelClass:(Class)class payloadTransform:(id)transform
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[_MPStorePlatformEntityRelationshipTranslator alloc] initWithRelatedMPModelClass:a4 payloadTransformBlock:v8];
+  transformCopy = transform;
+  keyCopy = key;
+  v10 = [[_MPStorePlatformEntityRelationshipTranslator alloc] initWithRelatedMPModelClass:class payloadTransformBlock:transformCopy];
 
-  [MPBaseEntityTranslator mapRelationshipKey:v9 ofModelClass:v10 toRelationshipTranslator:?];
+  [MPBaseEntityTranslator mapRelationshipKey:keyCopy ofModelClass:v10 toRelationshipTranslator:?];
 }
 
-- (void)mapPropertyKey:(id)a3 toPayloadKeyPaths:(id)a4 valueTransformerFunction:(void *)a5
+- (void)mapPropertyKey:(id)key toPayloadKeyPaths:(id)paths valueTransformerFunction:(void *)function
 {
-  v8 = a3;
-  v9 = [(_MPKeyPathEntityPropertyTranslator *)_MPStorePlatformEntityPropertyTranslator translatorForKeyPaths:a4 valueTransformFunction:a5];
-  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:v8 toPropertyTranslator:v9];
+  keyCopy = key;
+  v9 = [(_MPKeyPathEntityPropertyTranslator *)_MPStorePlatformEntityPropertyTranslator translatorForKeyPaths:paths valueTransformFunction:function];
+  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:keyCopy toPropertyTranslator:v9];
 }
 
-- (void)mapPropertyKey:(id)a3 toPayloadKeyPaths:(id)a4 valueTransformer:(id)a5
+- (void)mapPropertyKey:(id)key toPayloadKeyPaths:(id)paths valueTransformer:(id)transformer
 {
-  v8 = a3;
-  v9 = [(_MPKeyPathEntityPropertyTranslator *)_MPStorePlatformEntityPropertyTranslator translatorForKeyPaths:a4 valueTransformBlock:a5];
-  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:v8 toPropertyTranslator:v9];
+  keyCopy = key;
+  v9 = [(_MPKeyPathEntityPropertyTranslator *)_MPStorePlatformEntityPropertyTranslator translatorForKeyPaths:paths valueTransformBlock:transformer];
+  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:keyCopy toPropertyTranslator:v9];
 }
 
-- (void)mapPropertyKey:(id)a3 toPayloadKeyPath:(id)a4
+- (void)mapPropertyKey:(id)key toPayloadKeyPath:(id)path
 {
   v12 = *MEMORY[0x1E69E9840];
-  v11 = a4;
+  pathCopy = path;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v11 count:1];
-  v10 = [(_MPKeyPathEntityPropertyTranslator *)_MPStorePlatformEntityPropertyTranslator translatorForKeyPaths:v9 valueTransformFunction:_MPKeyPathValueTransformFirstKeyPath, v11, v12];
+  pathCopy2 = path;
+  keyCopy = key;
+  v9 = [v6 arrayWithObjects:&pathCopy count:1];
+  v10 = [(_MPKeyPathEntityPropertyTranslator *)_MPStorePlatformEntityPropertyTranslator translatorForKeyPaths:v9 valueTransformFunction:_MPKeyPathValueTransformFirstKeyPath, pathCopy, v12];
 
-  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:v8 toPropertyTranslator:v10];
+  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:keyCopy toPropertyTranslator:v10];
 }
 
-- (void)mapIdentifierCreationKeyPaths:(id)a3 transformBlock:(id)a4
+- (void)mapIdentifierCreationKeyPaths:(id)paths transformBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __80__MPStorePlatformEntityTranslator_mapIdentifierCreationKeyPaths_transformBlock___block_invoke;
   v9[3] = &unk_1E767F318;
   v9[4] = self;
-  v10 = v6;
-  v7 = v6;
-  v8 = [(_MPKeyPathEntityPropertyTranslator *)_MPStorePlatformEntityPropertyTranslator translatorForKeyPaths:a3 valueTransformBlock:v9];
+  v10 = blockCopy;
+  v7 = blockCopy;
+  v8 = [(_MPKeyPathEntityPropertyTranslator *)_MPStorePlatformEntityPropertyTranslator translatorForKeyPaths:paths valueTransformBlock:v9];
   [(MPBaseEntityTranslator *)&self->super.super.isa mapIdentifiersToPropertyTranslator:v8];
 }
 
@@ -82,19 +82,19 @@ MPIdentifierSet *__80__MPStorePlatformEntityTranslator_mapIdentifierCreationKeyP
   return v12;
 }
 
-- (id)prepareSource:(id)a3 context:(id)a4 properties:(id)a5
+- (id)prepareSource:(id)source context:(id)context properties:(id)properties
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  propertiesCopy = properties;
   v35.receiver = self;
   v35.super_class = MPStorePlatformEntityTranslator;
-  v9 = [(MPBaseEntityTranslator *)&v35 prepareSource:a3 context:a4 properties:v8];
-  v10 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v8, "count")}];
+  v9 = [(MPBaseEntityTranslator *)&v35 prepareSource:source context:context properties:propertiesCopy];
+  v10 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = v8;
+  v11 = propertiesCopy;
   v12 = [v11 countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v12)
   {
@@ -110,8 +110,8 @@ MPIdentifierSet *__80__MPStorePlatformEntityTranslator_mapIdentifierCreationKeyP
         }
 
         v16 = [(MPBaseEntityTranslator *)&self->super.super.isa propertyTranslatorForPropertyKey:?];
-        v17 = [v16 sourceKeyPaths];
-        [v10 addObjectsFromArray:v17];
+        sourceKeyPaths = [v16 sourceKeyPaths];
+        [v10 addObjectsFromArray:sourceKeyPaths];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v31 objects:v37 count:16];
@@ -154,20 +154,20 @@ MPIdentifierSet *__80__MPStorePlatformEntityTranslator_mapIdentifierCreationKeyP
   return v18;
 }
 
-+ (id)translatorForKind:(id)a3
++ (id)translatorForKind:(id)kind
 {
   v9[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  kindCopy = kind;
   v9[0] = @"song";
   v9[1] = @"musicVideo";
   v9[2] = @"uploadedAudio";
   v9[3] = @"uploadedVideo";
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:4];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:kindCopy];
 
-  if ((v6 & 1) != 0 || ([v4 isEqualToString:@"playlist"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"artist") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"album") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"radioStation") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"tvEpisode") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"tvSeason") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"tvShow") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"movie"))
+  if ((v6 & 1) != 0 || ([kindCopy isEqualToString:@"playlist"] & 1) != 0 || (objc_msgSend(kindCopy, "isEqualToString:", @"artist") & 1) != 0 || (objc_msgSend(kindCopy, "isEqualToString:", @"album") & 1) != 0 || (objc_msgSend(kindCopy, "isEqualToString:", @"radioStation") & 1) != 0 || (objc_msgSend(kindCopy, "isEqualToString:", @"tvEpisode") & 1) != 0 || (objc_msgSend(kindCopy, "isEqualToString:", @"tvSeason") & 1) != 0 || (objc_msgSend(kindCopy, "isEqualToString:", @"tvShow") & 1) != 0 || objc_msgSend(kindCopy, "isEqualToString:", @"movie"))
   {
-    v7 = [a1 translatorForMPModelClass:objc_opt_class()];
+    v7 = [self translatorForMPModelClass:objc_opt_class()];
   }
 
   else

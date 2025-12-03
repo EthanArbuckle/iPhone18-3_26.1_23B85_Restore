@@ -1,10 +1,10 @@
 @interface BKTOCAnnotationTableCell
-+ (CGSize)dateLabelSizeForString:(id)a3 font:(id)a4 bounds:(CGRect)a5;
++ (CGSize)dateLabelSizeForString:(id)string font:(id)font bounds:(CGRect)bounds;
 + (id)dateFontForPopover;
 + (id)pageNumberFontForPopover;
 - (UILabel)dateLabel;
 - (UILabel)noteLabel;
-- (void)configureWithPageString:(id)a3 dateString:(id)a4 insets:(UIEdgeInsets)a5;
+- (void)configureWithPageString:(id)string dateString:(id)dateString insets:(UIEdgeInsets)insets;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
@@ -31,13 +31,13 @@
   return v3;
 }
 
-+ (CGSize)dateLabelSizeForString:(id)a3 font:(id)a4 bounds:(CGRect)a5
++ (CGSize)dateLabelSizeForString:(id)string font:(id)font bounds:(CGRect)bounds
 {
-  width = a5.size.width;
-  v7 = a4;
-  v8 = a3;
-  [v7 lineHeight];
-  [UILabel bkSizeForString:v8 constrainedToSize:v7 font:4 lineBreakMode:width, v9];
+  width = bounds.size.width;
+  fontCopy = font;
+  stringCopy = string;
+  [fontCopy lineHeight];
+  [UILabel bkSizeForString:stringCopy constrainedToSize:fontCopy font:4 lineBreakMode:width, v9];
   v11 = v10;
   v13 = v12;
 
@@ -53,8 +53,8 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(BKTOCTableViewCell *)self pageLabel];
-  [v3 frame];
+  pageLabel = [(BKTOCTableViewCell *)self pageLabel];
+  [pageLabel frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -63,11 +63,11 @@
   v28.receiver = self;
   v28.super_class = BKTOCAnnotationTableCell;
   [(BKTOCTableViewCell *)&v28 layoutSubviews];
-  v12 = [(BKTOCTableViewCell *)self pageLabel];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  pageLabel2 = [(BKTOCTableViewCell *)self pageLabel];
+  [pageLabel2 setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(BKTOCAnnotationTableCell *)self contentView];
-  [v13 bounds];
+  contentView = [(BKTOCAnnotationTableCell *)self contentView];
+  [contentView bounds];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -91,19 +91,19 @@
   [(UILabel *)self->_dateLabel setText:0];
 }
 
-- (void)configureWithPageString:(id)a3 dateString:(id)a4 insets:(UIEdgeInsets)a5
+- (void)configureWithPageString:(id)string dateString:(id)dateString insets:(UIEdgeInsets)insets
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  v16 = a3;
-  v11 = a4;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  stringCopy = string;
+  dateStringCopy = dateString;
   [(BKTOCTableViewCell *)self setupSelectedBackgroundNil];
-  v12 = [(BKTOCTableViewCell *)self pageLabel];
-  if (v16)
+  pageLabel = [(BKTOCTableViewCell *)self pageLabel];
+  if (stringCopy)
   {
-    [v12 setHidden:0];
+    [pageLabel setHidden:0];
     if ([(BKTOCTableViewCell *)self usesPopoverStyle])
     {
       [objc_opt_class() pageNumberFontForPopover];
@@ -115,15 +115,15 @@
       [UIFont systemFontOfSize:?];
     }
     v13 = ;
-    [v12 bkSetText:v16 font:v13 lineBreakMode:4];
+    [pageLabel bkSetText:stringCopy font:v13 lineBreakMode:4];
   }
 
   else
   {
-    [v12 setHidden:1];
+    [pageLabel setHidden:1];
   }
 
-  if ([v11 length])
+  if ([dateStringCopy length])
   {
     if ([(BKTOCTableViewCell *)self usesPopoverStyle])
     {
@@ -136,8 +136,8 @@
       [UIFont systemFontOfSize:?];
     }
     v14 = ;
-    v15 = [(BKTOCAnnotationTableCell *)self dateLabel];
-    [v15 bkSetText:v11 font:v14 lineBreakMode:4];
+    dateLabel = [(BKTOCAnnotationTableCell *)self dateLabel];
+    [dateLabel bkSetText:dateStringCopy font:v14 lineBreakMode:4];
   }
 
   [(BKTOCTableViewCell *)self setContentInsets:top, left, bottom, right];
@@ -156,8 +156,8 @@
     [(UILabel *)self->_dateLabel setOpaque:0];
     [(UILabel *)self->_dateLabel setNumberOfLines:1];
     [(UILabel *)self->_dateLabel setTextAlignment:2 * ([(BKTOCAnnotationTableCell *)self effectiveUserInterfaceLayoutDirection]!= &dword_0 + 1)];
-    v6 = [(BKTOCAnnotationTableCell *)self contentView];
-    [v6 addSubview:self->_dateLabel];
+    contentView = [(BKTOCAnnotationTableCell *)self contentView];
+    [contentView addSubview:self->_dateLabel];
 
     dateLabel = self->_dateLabel;
   }
@@ -177,8 +177,8 @@
     [(UILabel *)self->_noteLabel setOpaque:0];
     [(UILabel *)self->_noteLabel setNumberOfLines:3];
     [(UILabel *)self->_noteLabel setTextAlignment:2 * ([(BKTOCAnnotationTableCell *)self effectiveUserInterfaceLayoutDirection]== &dword_0 + 1)];
-    v6 = [(BKTOCAnnotationTableCell *)self contentView];
-    [v6 addSubview:self->_noteLabel];
+    contentView = [(BKTOCAnnotationTableCell *)self contentView];
+    [contentView addSubview:self->_noteLabel];
 
     noteLabel = self->_noteLabel;
   }

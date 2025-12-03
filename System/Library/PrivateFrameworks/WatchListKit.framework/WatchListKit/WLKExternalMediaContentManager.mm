@@ -4,8 +4,8 @@
 - (id)_connection;
 - (id)_init;
 - (id)_proxy;
-- (void)_deletePlaybackActivityWithIdentifier:(id)a3 bundleID:(id)a4;
-- (void)deletePlaybackActivityWithIdentifier:(id)a3;
+- (void)_deletePlaybackActivityWithIdentifier:(id)identifier bundleID:(id)d;
+- (void)deletePlaybackActivityWithIdentifier:(id)identifier;
 @end
 
 @implementation WLKExternalMediaContentManager
@@ -45,21 +45,21 @@ uint64_t __47__WLKExternalMediaContentManager_sharedManager__block_invoke()
   return [(WLKExternalMediaContentManager *)&v3 init];
 }
 
-- (void)deletePlaybackActivityWithIdentifier:(id)a3
+- (void)deletePlaybackActivityWithIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
-  v7 = [v4 mainBundle];
-  v6 = [v7 bundleIdentifier];
-  [(WLKExternalMediaContentManager *)self _deletePlaybackActivityWithIdentifier:v5 bundleID:v6];
+  identifierCopy = identifier;
+  mainBundle = [v4 mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [(WLKExternalMediaContentManager *)self _deletePlaybackActivityWithIdentifier:identifierCopy bundleID:bundleIdentifier];
 }
 
-- (void)_deletePlaybackActivityWithIdentifier:(id)a3 bundleID:(id)a4
+- (void)_deletePlaybackActivityWithIdentifier:(id)identifier bundleID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WLKExternalMediaContentManager *)self _proxy];
-  [v8 deletePlaybackActivityWithIdentifier:v7 bundleID:v6];
+  dCopy = d;
+  identifierCopy = identifier;
+  _proxy = [(WLKExternalMediaContentManager *)self _proxy];
+  [_proxy deletePlaybackActivityWithIdentifier:identifierCopy bundleID:dCopy];
 }
 
 - (id)_connection
@@ -114,8 +114,8 @@ void __45__WLKExternalMediaContentManager__connection__block_invoke_2(uint64_t a
 
 - (id)_proxy
 {
-  v2 = [(WLKExternalMediaContentManager *)self _connection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_122];
+  _connection = [(WLKExternalMediaContentManager *)self _connection];
+  v3 = [_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_122];
 
   return v3;
 }

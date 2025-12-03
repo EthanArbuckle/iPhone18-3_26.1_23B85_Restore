@@ -1,30 +1,30 @@
 @interface _AXTodayPanGestureRecognizer
-- (CGPoint)translationInView:(id)a3;
-- (CGPoint)velocityInView:(id)a3;
+- (CGPoint)translationInView:(id)view;
+- (CGPoint)velocityInView:(id)view;
 - (double)_xDimensionForTransition;
-- (id)initGestureToShow:(BOOL)a3 leading:(BOOL)a4;
+- (id)initGestureToShow:(BOOL)show leading:(BOOL)leading;
 @end
 
 @implementation _AXTodayPanGestureRecognizer
 
-- (id)initGestureToShow:(BOOL)a3 leading:(BOOL)a4
+- (id)initGestureToShow:(BOOL)show leading:(BOOL)leading
 {
-  v4 = a4;
-  v5 = a3;
+  leadingCopy = leading;
+  showCopy = show;
   v9.receiver = self;
   v9.super_class = _AXTodayPanGestureRecognizer;
   v6 = [(_AXTodayPanGestureRecognizer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    [(_AXTodayPanGestureRecognizer *)v6 setShow:v5];
-    [(_AXTodayPanGestureRecognizer *)v7 setLeading:v4];
+    [(_AXTodayPanGestureRecognizer *)v6 setShow:showCopy];
+    [(_AXTodayPanGestureRecognizer *)v7 setLeading:leadingCopy];
   }
 
   return v7;
 }
 
-- (CGPoint)translationInView:(id)a3
+- (CGPoint)translationInView:(id)view
 {
   [(_AXTodayPanGestureRecognizer *)self _xDimensionForTransition];
   v4 = 0.0;
@@ -33,7 +33,7 @@
   return result;
 }
 
-- (CGPoint)velocityInView:(id)a3
+- (CGPoint)velocityInView:(id)view
 {
   [(_AXTodayPanGestureRecognizer *)self _xDimensionForTransition];
   v4 = 0.0;
@@ -44,8 +44,8 @@
 
 - (double)_xDimensionForTransition
 {
-  v3 = [(_AXTodayPanGestureRecognizer *)self _accessibilityIsRTL];
-  if ([(_AXTodayPanGestureRecognizer *)self leading]!= v3)
+  _accessibilityIsRTL = [(_AXTodayPanGestureRecognizer *)self _accessibilityIsRTL];
+  if ([(_AXTodayPanGestureRecognizer *)self leading]!= _accessibilityIsRTL)
   {
     v4 = 5000.0;
   }
@@ -55,9 +55,9 @@
     v4 = -5000.0;
   }
 
-  v5 = [(_AXTodayPanGestureRecognizer *)self show];
+  show = [(_AXTodayPanGestureRecognizer *)self show];
   result = -v4;
-  if (v5)
+  if (show)
   {
     return v4;
   }

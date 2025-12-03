@@ -2,15 +2,15 @@
 - (AVInputContextDestinationChange)init;
 - (id)description;
 - (int64_t)status;
-- (void)_setStatus:(int64_t)a3;
-- (void)changeToTerminalStatusBasedOnInputRouteChangeEndedReason:(__CFString *)a3;
-- (void)changeToTerminalStatusBasedOnInputRouteConfigUpdatedReason:(__CFString *)a3;
+- (void)_setStatus:(int64_t)status;
+- (void)changeToTerminalStatusBasedOnInputRouteChangeEndedReason:(__CFString *)reason;
+- (void)changeToTerminalStatusBasedOnInputRouteConfigUpdatedReason:(__CFString *)reason;
 - (void)dealloc;
 @end
 
 @implementation AVInputContextDestinationChange
 
-- (void)changeToTerminalStatusBasedOnInputRouteChangeEndedReason:(__CFString *)a3
+- (void)changeToTerminalStatusBasedOnInputRouteChangeEndedReason:(__CFString *)reason
 {
   v4 = *MEMORY[0x1E69AF450];
   if (FigCFEqual())
@@ -28,7 +28,7 @@
   }
 }
 
-- (void)changeToTerminalStatusBasedOnInputRouteConfigUpdatedReason:(__CFString *)a3
+- (void)changeToTerminalStatusBasedOnInputRouteConfigUpdatedReason:(__CFString *)reason
 {
   v4 = *MEMORY[0x1E69AF3E8];
   if (FigCFEqual() || (v5 = *MEMORY[0x1E69AF3D0], !FigCFEqual()) && ((v6 = *MEMORY[0x1E69AF3E0], FigCFEqual()) || (v7 = *MEMORY[0x1E69AF3C8], FigCFEqual())))
@@ -88,7 +88,7 @@
   return v3;
 }
 
-- (void)_setStatus:(int64_t)a3
+- (void)_setStatus:(int64_t)status
 {
   ivarAccessQueue = self->_ivars->ivarAccessQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -96,7 +96,7 @@
   v4[2] = __46__AVInputContextDestinationChange__setStatus___block_invoke;
   v4[3] = &unk_1E794ED50;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = status;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v4);
 }
 

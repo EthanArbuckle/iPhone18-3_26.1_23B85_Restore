@@ -2,10 +2,10 @@
 - (BOOL)_isHomeContext;
 - (BOOL)_isNotificationPayloadValid;
 - (BOOL)_isRoomContext;
-- (HUAnnouncementsBrowserViewController)initWithNotificationPayload:(id)a3 delegate:(id)a4;
+- (HUAnnouncementsBrowserViewController)initWithNotificationPayload:(id)payload delegate:(id)delegate;
 - (HUAnnouncementsBrowserViewControllerDelegate)delegate;
 - (double)_transcriptionStackViewHeight;
-- (id)_announcerNameFromNotificationPayload:(id)a3;
+- (id)_announcerNameFromNotificationPayload:(id)payload;
 - (id)_backgroundColorForNextAnnouncementButton;
 - (id)_fontForAnnouncementProgressLabel;
 - (id)_lightedCircleBackgroundColorForCurrentInterfaceStyle;
@@ -13,60 +13,60 @@
 - (id)_waveformColor;
 - (void)_addCommonTranscriptionConstraints;
 - (void)_addTranscriptionConstraintsForValidNotificationPayload;
-- (void)_applyTranscriptionText:(id)a3;
-- (void)_beginRecordingReply:(id)a3;
+- (void)_applyTranscriptionText:(id)text;
+- (void)_beginRecordingReply:(id)reply;
 - (void)_commonInit;
 - (void)_configureSubViewsForValidNotificationPayload;
 - (void)_configureVisualStyleForLightedCircleView;
 - (void)_deleteAudioFile;
-- (void)_deleteRecording:(id)a3;
-- (void)_dismissViewOrDisplayError:(id)a3;
+- (void)_deleteRecording:(id)recording;
+- (void)_dismissViewOrDisplayError:(id)error;
 - (void)_hideRecordingUI;
-- (void)_recordButtonLongPressGesture:(id)a3;
-- (void)_recordButtonTapped:(id)a3;
-- (void)_sendAnnouncement:(id)a3;
-- (void)_sendAnnouncementReply:(id)a3;
+- (void)_recordButtonLongPressGesture:(id)gesture;
+- (void)_recordButtonTapped:(id)tapped;
+- (void)_sendAnnouncement:(id)announcement;
+- (void)_sendAnnouncementReply:(id)reply;
 - (void)_setupRecipientInformation;
-- (void)_skipToNextAnnouncement:(id)a3;
-- (void)_stopRecordingAndSendReply:(id)a3;
+- (void)_skipToNextAnnouncement:(id)announcement;
+- (void)_stopRecordingAndSendReply:(id)reply;
 - (void)_submitAnalyticsForAnnounceNotificationUsage;
-- (void)_submitAnalyticsForAnnounceRecordingCompletedSuccessfully:(BOOL)a3 interruptedByUser:(BOOL)a4;
+- (void)_submitAnalyticsForAnnounceRecordingCompletedSuccessfully:(BOOL)successfully interruptedByUser:(BOOL)user;
 - (void)_updateUIBasedOnReachabilityStatus;
-- (void)accessoryDidUpdateControllable:(id)a3;
-- (void)accessoryDidUpdateReachability:(id)a3;
-- (void)accessoryDidUpdateReachableTransports:(id)a3;
-- (void)audioRecorderDidStartRecording:(id)a3;
-- (void)audioRecorderFailedToFinishRecording:(id)a3;
-- (void)audioRecorderFinishedRecording:(id)a3 audioFile:(id)a4;
+- (void)accessoryDidUpdateControllable:(id)controllable;
+- (void)accessoryDidUpdateReachability:(id)reachability;
+- (void)accessoryDidUpdateReachableTransports:(id)transports;
+- (void)audioRecorderDidStartRecording:(id)recording;
+- (void)audioRecorderFailedToFinishRecording:(id)recording;
+- (void)audioRecorderFinishedRecording:(id)recording audioFile:(id)file;
 - (void)dealloc;
-- (void)didSelectItemWithInfo:(id)a3 totalNumberOfAnnouncements:(unint64_t)a4;
-- (void)didUpdateAveragePower:(float)a3;
+- (void)didSelectItemWithInfo:(id)info totalNumberOfAnnouncements:(unint64_t)announcements;
+- (void)didUpdateAveragePower:(float)power;
 - (void)tearDownAudioActivity;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation HUAnnouncementsBrowserViewController
 
-- (HUAnnouncementsBrowserViewController)initWithNotificationPayload:(id)a3 delegate:(id)a4
+- (HUAnnouncementsBrowserViewController)initWithNotificationPayload:(id)payload delegate:(id)delegate
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  payloadCopy = payload;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = HUAnnouncementsBrowserViewController;
   v9 = [(HUAnnouncementsBrowserViewController *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    objc_storeStrong(&v10->_notificationPayload, a3);
-    v11 = [(HUAnnouncementsBrowserViewController *)v10 _isNotificationPayloadValid];
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    objc_storeStrong(&v10->_notificationPayload, payload);
+    _isNotificationPayloadValid = [(HUAnnouncementsBrowserViewController *)v10 _isNotificationPayloadValid];
     v12 = HFLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = @"NO";
-      if (v11)
+      if (_isNotificationPayloadValid)
       {
         v13 = @"YES";
       }
@@ -76,8 +76,8 @@
       _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "Notification payload is valid = [%@]", buf, 0xCu);
     }
 
-    v14 = [MEMORY[0x277CBEAA8] date];
-    [v14 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v10->_notificationLaunchTimeInterval = v15;
 
     [(HUAnnouncementsBrowserViewController *)v10 _commonInit];
@@ -89,21 +89,21 @@
 - (void)tearDownAudioActivity
 {
   [(HUAnnouncementsBrowserViewController *)self setIsTearingDown:1];
-  v3 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
-  v4 = [v3 isRecording];
+  audioRecorder = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
+  isRecording = [audioRecorder isRecording];
 
-  if (v4)
+  if (isRecording)
   {
     self->_shouldNotSendCurrentRecording = 1;
-    v5 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
-    [v5 stopRecording];
+    audioRecorder2 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
+    [audioRecorder2 stopRecording];
   }
 
-  v6 = [(HUAnnouncementsBrowserViewController *)self announcementGlobeView];
-  [v6 teardownAnnouncements];
+  announcementGlobeView = [(HUAnnouncementsBrowserViewController *)self announcementGlobeView];
+  [announcementGlobeView teardownAnnouncements];
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v7 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   [(HUAnnouncementsBrowserViewController *)self setNotificationDismissTimeInterval:?];
 
   [(HUAnnouncementsBrowserViewController *)self _submitAnalyticsForAnnounceNotificationUsage];
@@ -111,20 +111,20 @@
 
 - (void)dealloc
 {
-  v3 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
-  v4 = [v3 isRecording];
+  audioRecorder = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
+  isRecording = [audioRecorder isRecording];
 
-  if (v4)
+  if (isRecording)
   {
     self->_shouldNotSendCurrentRecording = 1;
     [(HUAnnouncementsBrowserViewController *)self _submitAnalyticsForAnnounceRecordingCompletedSuccessfully:1 interruptedByUser:1];
-    v5 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
-    [v5 stopRecording];
+    audioRecorder2 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
+    [audioRecorder2 stopRecording];
   }
 
   [(HUAnnouncementsBrowserViewController *)self _deleteAudioFile];
-  v6 = [(HUAnnouncementsBrowserViewController *)self announcementGlobeView];
-  [v6 teardownAnnouncements];
+  announcementGlobeView = [(HUAnnouncementsBrowserViewController *)self announcementGlobeView];
+  [announcementGlobeView teardownAnnouncements];
 
   v7.receiver = self;
   v7.super_class = HUAnnouncementsBrowserViewController;
@@ -139,19 +139,19 @@
   [(HUAnnouncementsBrowserViewController *)self setIsTearingDown:0];
   [(HUAnnouncementsBrowserViewController *)self _configureSubViewsForValidNotificationPayload];
   [(HUAnnouncementsBrowserViewController *)self _updateUIBasedOnReachabilityStatus];
-  v3 = [MEMORY[0x277D146E8] sharedDispatcher];
-  [v3 addAccessoryObserver:self];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  [mEMORY[0x277D146E8] addAccessoryObserver:self];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [(HUAnnouncementsBrowserViewController *)self nextAnnouncementButton];
-  v5 = [MEMORY[0x277D755B8] hu_fastForwardButtonImage];
-  [v4 setImage:v5 forState:0];
+  nextAnnouncementButton = [(HUAnnouncementsBrowserViewController *)self nextAnnouncementButton];
+  hu_fastForwardButtonImage = [MEMORY[0x277D755B8] hu_fastForwardButtonImage];
+  [nextAnnouncementButton setImage:hu_fastForwardButtonImage forState:0];
 
-  v6 = [(HUAnnouncementsBrowserViewController *)self audioWaveformView];
-  v7 = [(HUAnnouncementsBrowserViewController *)self _waveformColor];
-  [v6 setWaveformColor:v7];
+  audioWaveformView = [(HUAnnouncementsBrowserViewController *)self audioWaveformView];
+  _waveformColor = [(HUAnnouncementsBrowserViewController *)self _waveformColor];
+  [audioWaveformView setWaveformColor:_waveformColor];
 
   [(HUAnnouncementsBrowserViewController *)self _configureVisualStyleForLightedCircleView];
 }
@@ -172,19 +172,19 @@
   announce = self->_announce;
   self->_announce = v7;
 
-  v9 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CEA9F8]];
+  notificationPayload = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  v10 = [notificationPayload objectForKeyedSubscript:*MEMORY[0x277CEA9F8]];
 
-  v11 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v12 = [v11 allHomesFuture];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  allHomesFuture = [mEMORY[0x277D146E8] allHomesFuture];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke;
   v15[3] = &unk_277DBE8D0;
   v16 = v10;
-  v17 = self;
+  selfCopy = self;
   v13 = v10;
-  v14 = [v12 addCompletionBlock:v15];
+  v14 = [allHomesFuture addCompletionBlock:v15];
 }
 
 void __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -243,18 +243,18 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
 
 - (void)_setupRecipientInformation
 {
-  v3 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  v20 = [v3 objectForKeyedSubscript:*MEMORY[0x277CEAA80]];
+  notificationPayload = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  v20 = [notificationPayload objectForKeyedSubscript:*MEMORY[0x277CEAA80]];
 
   if ([v20 count])
   {
-    v4 = [v20 allValues];
-    if ([v4 count])
+    allValues = [v20 allValues];
+    if ([allValues count])
     {
       v5 = 0;
       do
       {
-        if ([v4 count] > 1 && v5 == objc_msgSend(v4, "count") - 1)
+        if ([allValues count] > 1 && v5 == objc_msgSend(allValues, "count") - 1)
         {
           recipientTitle = self->_recipientTitle;
           v7 = _HULocalizedStringWithDefaultValue(@"HUAnnounceRecipientTitle_Concatenator", @"HUAnnounceRecipientTitle_Concatenator", 1);
@@ -264,7 +264,7 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
         }
 
         v10 = self->_recipientTitle;
-        v11 = [v4 objectAtIndexedSubscript:v5];
+        v11 = [allValues objectAtIndexedSubscript:v5];
         v12 = v11;
         if (v10)
         {
@@ -280,7 +280,7 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
           v12 = v15;
         }
 
-        if (++v5 < [v4 count])
+        if (++v5 < [allValues count])
         {
           v16 = [(NSString *)self->_recipientTitle stringByAppendingString:@", "];
           v17 = self->_recipientTitle;
@@ -288,14 +288,14 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
         }
       }
 
-      while (v5 < [v4 count]);
+      while (v5 < [allValues count]);
     }
   }
 
   else
   {
-    v4 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-    v18 = [v4 objectForKeyedSubscript:*MEMORY[0x277CEAA10]];
+    allValues = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+    v18 = [allValues objectForKeyedSubscript:*MEMORY[0x277CEAA10]];
     v19 = self->_recipientTitle;
     self->_recipientTitle = v18;
   }
@@ -306,105 +306,105 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
   v78[1] = *MEMORY[0x277D85DE8];
   if (_AXSShowAudioTranscriptions())
   {
-    v3 = [(HUAnnouncementsBrowserViewController *)self announcementProgressLabel];
-    [v3 setAlpha:0.0];
+    announcementProgressLabel = [(HUAnnouncementsBrowserViewController *)self announcementProgressLabel];
+    [announcementProgressLabel setAlpha:0.0];
 
-    v4 = [(HUAnnouncementsBrowserViewController *)self transcriptionTitleLabel];
-    v5 = [v4 text];
-    v6 = [(HUAnnouncementsBrowserViewController *)self view];
-    [v6 frame];
+    transcriptionTitleLabel = [(HUAnnouncementsBrowserViewController *)self transcriptionTitleLabel];
+    text = [transcriptionTitleLabel text];
+    view = [(HUAnnouncementsBrowserViewController *)self view];
+    [view frame];
     v8 = v7;
     v77 = *MEMORY[0x277D740A8];
     v9 = v77;
-    v10 = [(UILabel *)self->_transcriptionTitleLabel font];
-    v78[0] = v10;
+    font = [(UILabel *)self->_transcriptionTitleLabel font];
+    v78[0] = font;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v78 forKeys:&v77 count:1];
-    [v5 boundingRectWithSize:1 options:v11 attributes:0 context:{v8, 3.40282347e38}];
+    [text boundingRectWithSize:1 options:v11 attributes:0 context:{v8, 3.40282347e38}];
     v13 = v12;
 
-    v14 = [(UILabel *)self->_transcriptionTitleLabel font];
-    [v14 lineHeight];
+    font2 = [(UILabel *)self->_transcriptionTitleLabel font];
+    [font2 lineHeight];
     v16 = ceil(v13 / v15);
 
-    v17 = [(HUAnnouncementsBrowserViewController *)self transcriptionText];
-    v18 = [v17 text];
-    v19 = [(HUAnnouncementsBrowserViewController *)self view];
-    [v19 frame];
+    transcriptionText = [(HUAnnouncementsBrowserViewController *)self transcriptionText];
+    text2 = [transcriptionText text];
+    view2 = [(HUAnnouncementsBrowserViewController *)self view];
+    [view2 frame];
     v21 = v20;
     v75 = v9;
-    v22 = [(UILabel *)self->_transcriptionText font];
-    v76 = v22;
+    font3 = [(UILabel *)self->_transcriptionText font];
+    v76 = font3;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
-    [v18 boundingRectWithSize:1 options:v23 attributes:0 context:{v21, 3.40282347e38}];
+    [text2 boundingRectWithSize:1 options:v23 attributes:0 context:{v21, 3.40282347e38}];
     v25 = v24;
 
-    v26 = [(UILabel *)self->_transcriptionText font];
-    [v26 lineHeight];
+    font4 = [(UILabel *)self->_transcriptionText font];
+    [font4 lineHeight];
     v28 = ceil(v25 / v27);
 
-    v29 = [(UILabel *)self->_transcriptionTitleLabel font];
-    [v29 _scaledValueForValue:32.0];
+    font5 = [(UILabel *)self->_transcriptionTitleLabel font];
+    [font5 _scaledValueForValue:32.0];
     v31 = v30 * v16;
 
-    v32 = [(UILabel *)self->_transcriptionText font];
-    [v32 _scaledValueForValue:20.0];
+    font6 = [(UILabel *)self->_transcriptionText font];
+    [font6 _scaledValueForValue:20.0];
     v34 = v33 * v28;
 
     v35 = v31 + v34 + 6.0;
-    v36 = [(UIScrollView *)self->_transcriptionScrollView heightAnchor];
-    v37 = [v36 constraintEqualToConstant:v35];
+    heightAnchor = [(UIScrollView *)self->_transcriptionScrollView heightAnchor];
+    v37 = [heightAnchor constraintEqualToConstant:v35];
 
     LODWORD(v38) = 1132003328;
     [v37 setPriority:v38];
     p_announcementGlobeView = &self->_announcementGlobeView;
     announcementGlobeView = self->_announcementGlobeView;
-    v41 = [(UIScrollView *)self->_transcriptionScrollView topAnchor];
+    topAnchor = [(UIScrollView *)self->_transcriptionScrollView topAnchor];
     if (!announcementGlobeView)
     {
       p_announcementGlobeView = &self->_announcementDeliveryFailureLabel;
     }
 
-    v42 = [*p_announcementGlobeView bottomAnchor];
-    v73 = [v41 constraintEqualToAnchor:v42 constant:6.0];
+    bottomAnchor = [*p_announcementGlobeView bottomAnchor];
+    v73 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:6.0];
 
     v62 = MEMORY[0x277CCAAD0];
     v74[0] = v37;
     v74[1] = v73;
-    v71 = [(UIScrollView *)self->_transcriptionScrollView leadingAnchor];
-    v72 = [(HUAnnouncementsBrowserViewController *)self view];
-    v70 = [v72 safeAreaLayoutGuide];
-    v69 = [v70 leadingAnchor];
-    v68 = [v71 constraintEqualToAnchor:v69];
+    leadingAnchor = [(UIScrollView *)self->_transcriptionScrollView leadingAnchor];
+    view3 = [(HUAnnouncementsBrowserViewController *)self view];
+    safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v68 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v74[2] = v68;
-    v66 = [(UIScrollView *)self->_transcriptionScrollView trailingAnchor];
-    v67 = [(HUAnnouncementsBrowserViewController *)self view];
-    v65 = [v67 safeAreaLayoutGuide];
-    v64 = [v65 trailingAnchor];
-    v63 = [v66 constraintEqualToAnchor:v64];
+    trailingAnchor = [(UIScrollView *)self->_transcriptionScrollView trailingAnchor];
+    view4 = [(HUAnnouncementsBrowserViewController *)self view];
+    safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+    v63 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v74[3] = v63;
-    v60 = [(UIStackView *)self->_transcriptionStackView topAnchor];
-    v59 = [(UIScrollView *)self->_transcriptionScrollView topAnchor];
-    v58 = [v60 constraintEqualToAnchor:v59];
+    topAnchor2 = [(UIStackView *)self->_transcriptionStackView topAnchor];
+    topAnchor3 = [(UIScrollView *)self->_transcriptionScrollView topAnchor];
+    v58 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v74[4] = v58;
-    v57 = [(UIStackView *)self->_transcriptionStackView leadingAnchor];
-    v56 = [(UIScrollView *)self->_transcriptionScrollView leadingAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56];
+    leadingAnchor3 = [(UIStackView *)self->_transcriptionStackView leadingAnchor];
+    leadingAnchor4 = [(UIScrollView *)self->_transcriptionScrollView leadingAnchor];
+    v55 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v74[5] = v55;
-    v54 = [(UIStackView *)self->_transcriptionStackView trailingAnchor];
-    v53 = [(UIScrollView *)self->_transcriptionScrollView trailingAnchor];
-    v43 = [v54 constraintEqualToAnchor:v53];
+    trailingAnchor3 = [(UIStackView *)self->_transcriptionStackView trailingAnchor];
+    trailingAnchor4 = [(UIScrollView *)self->_transcriptionScrollView trailingAnchor];
+    v43 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v74[6] = v43;
     [(UIStackView *)self->_transcriptionStackView bottomAnchor];
     v44 = v61 = v37;
-    v45 = [(UIScrollView *)self->_transcriptionScrollView bottomAnchor];
-    v46 = [v44 constraintEqualToAnchor:v45];
+    bottomAnchor2 = [(UIScrollView *)self->_transcriptionScrollView bottomAnchor];
+    v46 = [v44 constraintEqualToAnchor:bottomAnchor2];
     v74[7] = v46;
-    v47 = [(UIStackView *)self->_transcriptionStackView heightAnchor];
-    v48 = [v47 constraintEqualToConstant:v35];
+    heightAnchor2 = [(UIStackView *)self->_transcriptionStackView heightAnchor];
+    v48 = [heightAnchor2 constraintEqualToConstant:v35];
     v74[8] = v48;
-    v49 = [(UIStackView *)self->_transcriptionStackView widthAnchor];
-    v50 = [(UIScrollView *)self->_transcriptionScrollView widthAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50];
+    widthAnchor = [(UIStackView *)self->_transcriptionStackView widthAnchor];
+    widthAnchor2 = [(UIScrollView *)self->_transcriptionScrollView widthAnchor];
+    v51 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v74[9] = v51;
     v52 = [MEMORY[0x277CBEA60] arrayWithObjects:v74 count:10];
     [v62 activateConstraints:v52];
@@ -417,14 +417,14 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
   if (_AXSShowAudioTranscriptions())
   {
     v3 = MEMORY[0x277CBEB18];
-    v4 = [(UIScrollView *)self->_transcriptionScrollView bottomAnchor];
-    v5 = [(HURecordingButton *)self->_recordButton topAnchor];
-    v6 = [v4 constraintEqualToAnchor:v5 constant:-20.0];
+    bottomAnchor = [(UIScrollView *)self->_transcriptionScrollView bottomAnchor];
+    topAnchor = [(HURecordingButton *)self->_recordButton topAnchor];
+    v6 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:-20.0];
     v12 = [v3 arrayWithObject:v6];
 
-    v7 = [(HUAnnouncementGlobeView *)self->_announcementGlobeView topAnchor];
-    v8 = [(UILabel *)self->_subTitleLabel bottomAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8 constant:40.0];
+    topAnchor2 = [(HUAnnouncementGlobeView *)self->_announcementGlobeView topAnchor];
+    bottomAnchor2 = [(UILabel *)self->_subTitleLabel bottomAnchor];
+    v9 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:40.0];
     [v12 na_safeAddObject:v9];
 
     v10 = MEMORY[0x277CCAAD0];
@@ -436,9 +436,9 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
 - (void)_configureSubViewsForValidNotificationPayload
 {
   v306[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CEAAF0]];
-  v5 = [v4 unsignedIntegerValue];
+  notificationPayload = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  v4 = [notificationPayload objectForKeyedSubscript:*MEMORY[0x277CEAAF0]];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
   v6 = objc_alloc_init(MEMORY[0x277D756B8]);
   largeTitleLabel = self->_largeTitleLabel;
@@ -455,17 +455,17 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
   [(UILabel *)self->_largeTitleLabel setNumberOfLines:0];
   [(UILabel *)self->_largeTitleLabel setLineBreakMode:0];
   v12 = self->_largeTitleLabel;
-  v13 = [MEMORY[0x277D75348] labelColor];
-  [(UILabel *)v12 setTextColor:v13];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [(UILabel *)v12 setTextColor:labelColor];
 
   v14 = self->_largeTitleLabel;
-  v15 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  v16 = [(HUAnnouncementsBrowserViewController *)self _announcerNameFromNotificationPayload:v15];
+  notificationPayload2 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  v16 = [(HUAnnouncementsBrowserViewController *)self _announcerNameFromNotificationPayload:notificationPayload2];
   [(UILabel *)v14 setText:v16];
 
   [(UILabel *)self->_largeTitleLabel setTextAlignment:1];
-  v17 = [(HUAnnouncementsBrowserViewController *)self view];
-  [v17 naui_addAutoLayoutSubview:self->_largeTitleLabel];
+  view = [(HUAnnouncementsBrowserViewController *)self view];
+  [view naui_addAutoLayoutSubview:self->_largeTitleLabel];
 
   v18 = objc_alloc_init(MEMORY[0x277D756B8]);
   subTitleLabel = self->_subTitleLabel;
@@ -475,31 +475,31 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
   v20 = [MEMORY[0x277D74300] preferredFontForTextStyle:?];
   [(UILabel *)self->_subTitleLabel setFont:v20];
 
-  v21 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [(UILabel *)self->_subTitleLabel setTextColor:v21];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [(UILabel *)self->_subTitleLabel setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_subTitleLabel setNumberOfLines:0];
   [(UILabel *)self->_subTitleLabel setLineBreakMode:0];
   v22 = self->_subTitleLabel;
-  v23 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  v24 = [v23 objectForKeyedSubscript:*MEMORY[0x277CEAAA0]];
+  notificationPayload3 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  v24 = [notificationPayload3 objectForKeyedSubscript:*MEMORY[0x277CEAAA0]];
   [(UILabel *)v22 setText:v24];
 
   [(UILabel *)self->_subTitleLabel setTextAlignment:1];
-  v25 = [(HUAnnouncementsBrowserViewController *)self view];
-  [v25 naui_addAutoLayoutSubview:self->_subTitleLabel];
+  view2 = [(HUAnnouncementsBrowserViewController *)self view];
+  [view2 naui_addAutoLayoutSubview:self->_subTitleLabel];
 
   v26 = MEMORY[0x277CBF3A0];
-  if (v5)
+  if (unsignedIntegerValue)
   {
     v27 = self->_largeTitleLabel;
-    v28 = [(HUAnnouncementsBrowserViewController *)self recipientTitle];
-    v35 = HULocalizedStringWithFormat(@"HUAnnounceRecipient_Title", @"%@", v29, v30, v31, v32, v33, v34, v28);
+    recipientTitle = [(HUAnnouncementsBrowserViewController *)self recipientTitle];
+    v35 = HULocalizedStringWithFormat(@"HUAnnounceRecipient_Title", @"%@", v29, v30, v31, v32, v33, v34, recipientTitle);
     [(UILabel *)v27 setText:v35];
 
     v36 = self->_subTitleLabel;
-    v37 = _HULocalizedStringWithDefaultValue(@"HUAnnounceSubtitle_Title", @"HUAnnounceSubtitle_Title", 1);
-    [(UILabel *)v36 setText:v37];
+    view5 = _HULocalizedStringWithDefaultValue(@"HUAnnounceSubtitle_Title", @"HUAnnounceSubtitle_Title", 1);
+    [(UILabel *)v36 setText:view5];
     v38 = 1.0;
     v39 = 0x277D75000;
   }
@@ -511,46 +511,46 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
     self->_lightedCircleView = v40;
 
     [(UIView *)self->_lightedCircleView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v42 = [(UIView *)self->_lightedCircleView layer];
-    [v42 setCornerRadius:74.0];
+    layer = [(UIView *)self->_lightedCircleView layer];
+    [layer setCornerRadius:74.0];
 
     [(HUAnnouncementsBrowserViewController *)self _configureVisualStyleForLightedCircleView];
-    v43 = [(HUAnnouncementsBrowserViewController *)self view];
-    [v43 naui_addAutoLayoutSubview:self->_lightedCircleView];
+    view3 = [(HUAnnouncementsBrowserViewController *)self view];
+    [view3 naui_addAutoLayoutSubview:self->_lightedCircleView];
 
     v44 = [HUAnnouncementGlobeView alloc];
-    v45 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-    v46 = [(HUAnnouncementGlobeView *)v44 initWithAnnouncementPayload:v45 delegate:self];
+    notificationPayload4 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+    v46 = [(HUAnnouncementGlobeView *)v44 initWithAnnouncementPayload:notificationPayload4 delegate:self];
     announcementGlobeView = self->_announcementGlobeView;
     self->_announcementGlobeView = v46;
 
-    v48 = [MEMORY[0x277D75348] clearColor];
-    v49 = [v48 CGColor];
-    v50 = [(HUAnnouncementGlobeView *)self->_announcementGlobeView layer];
-    [v50 setBackgroundColor:v49];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    cGColor = [clearColor CGColor];
+    layer2 = [(HUAnnouncementGlobeView *)self->_announcementGlobeView layer];
+    [layer2 setBackgroundColor:cGColor];
 
     [(HUAnnouncementGlobeView *)self->_announcementGlobeView setOpaque:0];
-    v51 = [(HUAnnouncementsBrowserViewController *)self view];
-    [v51 naui_addAutoLayoutSubview:self->_announcementGlobeView];
+    view4 = [(HUAnnouncementsBrowserViewController *)self view];
+    [view4 naui_addAutoLayoutSubview:self->_announcementGlobeView];
 
     v39 = 0x277D75000uLL;
     v52 = objc_alloc_init(MEMORY[0x277D756B8]);
     announcementProgressLabel = self->_announcementProgressLabel;
     self->_announcementProgressLabel = v52;
 
-    v54 = [(HUAnnouncementsBrowserViewController *)self _fontForAnnouncementProgressLabel];
-    [(UILabel *)self->_announcementProgressLabel setFont:v54];
+    _fontForAnnouncementProgressLabel = [(HUAnnouncementsBrowserViewController *)self _fontForAnnouncementProgressLabel];
+    [(UILabel *)self->_announcementProgressLabel setFont:_fontForAnnouncementProgressLabel];
 
-    v55 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)self->_announcementProgressLabel setTextColor:v55];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)self->_announcementProgressLabel setTextColor:systemGrayColor];
 
     v56 = self->_announcementProgressLabel;
     v63 = HULocalizedStringWithFormat(@"HUAnnounceProgressLabel_Description", @"%lu %lu", v57, v58, v59, v60, v61, v62, 1);
     [(UILabel *)v56 setText:v63];
 
     [(UILabel *)self->_announcementProgressLabel setTextAlignment:1];
-    v37 = [(HUAnnouncementsBrowserViewController *)self view];
-    [v37 naui_addAutoLayoutSubview:self->_announcementProgressLabel];
+    view5 = [(HUAnnouncementsBrowserViewController *)self view];
+    [view5 naui_addAutoLayoutSubview:self->_announcementProgressLabel];
     v38 = 0.0;
     v10 = 1.0;
   }
@@ -559,8 +559,8 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
   transcriptionScrollView = self->_transcriptionScrollView;
   self->_transcriptionScrollView = v64;
 
-  v66 = [(HUAnnouncementsBrowserViewController *)self view];
-  [v66 naui_addAutoLayoutSubview:self->_transcriptionScrollView];
+  view6 = [(HUAnnouncementsBrowserViewController *)self view];
+  [view6 naui_addAutoLayoutSubview:self->_transcriptionScrollView];
 
   v67 = objc_alloc_init(*(v39 + 1720));
   transcriptionTitleLabel = self->_transcriptionTitleLabel;
@@ -572,8 +572,8 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
   v69 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A28]];
   [(UILabel *)self->_transcriptionTitleLabel setFont:v69];
 
-  v70 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [(UILabel *)self->_transcriptionTitleLabel setTextColor:v70];
+  secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+  [(UILabel *)self->_transcriptionTitleLabel setTextColor:secondaryLabelColor2];
 
   [(UILabel *)self->_transcriptionTitleLabel setTextAlignment:1];
   v71 = self->_transcriptionTitleLabel;
@@ -590,11 +590,11 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
   v75 = [MEMORY[0x277D74300] preferredFontForTextStyle:v302];
   [(UILabel *)self->_transcriptionText setFont:v75];
 
-  v76 = [MEMORY[0x277D75348] labelColor];
-  [(UILabel *)self->_transcriptionText setTextColor:v76];
+  labelColor2 = [MEMORY[0x277D75348] labelColor];
+  [(UILabel *)self->_transcriptionText setTextColor:labelColor2];
 
-  v77 = [MEMORY[0x277D75348] clearColor];
-  [(UILabel *)self->_transcriptionText setBackgroundColor:v77];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  [(UILabel *)self->_transcriptionText setBackgroundColor:clearColor2];
 
   v78 = self->_transcriptionText;
   v79 = _HULocalizedStringWithDefaultValue(@"HUAnnounceTranscript_NoTranscript", @"HUAnnounceTranscript_NoTranscript", 1);
@@ -615,24 +615,24 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
   [(UIStackView *)self->_transcriptionStackView setDistribution:0];
   [(UIStackView *)self->_transcriptionStackView setAlignment:0];
   [(UIScrollView *)self->_transcriptionScrollView naui_addAutoLayoutSubview:self->_transcriptionStackView];
-  v85 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  v86 = [v85 objectForKeyedSubscript:*MEMORY[0x277CEAAC8]];
+  notificationPayload5 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  v86 = [notificationPayload5 objectForKeyedSubscript:*MEMORY[0x277CEAAC8]];
   [(HUAnnouncementsBrowserViewController *)self _applyTranscriptionText:v86];
 
   v87 = [HUWaveformView alloc];
-  v88 = [(HUAnnouncementsBrowserViewController *)self _waveformColor];
-  v89 = [MEMORY[0x277D75348] systemLightGrayColor];
+  _waveformColor = [(HUAnnouncementsBrowserViewController *)self _waveformColor];
+  systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
   v90 = *v26;
   v91 = v26[1];
   v92 = v26[2];
   v93 = v26[3];
-  v94 = [(HUWaveformView *)v87 initWithFrame:v88 waveformColor:v89 backgroundColor:*v26, v91, v92, v93];
+  v94 = [(HUWaveformView *)v87 initWithFrame:_waveformColor waveformColor:systemLightGrayColor backgroundColor:*v26, v91, v92, v93];
   audioWaveformView = self->_audioWaveformView;
   self->_audioWaveformView = v94;
 
   [(HUWaveformView *)self->_audioWaveformView setAlpha:0.0];
-  v96 = [(HUAnnouncementsBrowserViewController *)self view];
-  [v96 naui_addAutoLayoutSubview:self->_audioWaveformView];
+  view7 = [(HUAnnouncementsBrowserViewController *)self view];
+  [view7 naui_addAutoLayoutSubview:self->_audioWaveformView];
 
   v97 = [objc_alloc(*(v39 + 1720)) initWithFrame:{v90, v91, v92, v93}];
   announcementDeliveryFailureLabel = self->_announcementDeliveryFailureLabel;
@@ -643,32 +643,32 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
   [(UILabel *)self->_announcementDeliveryFailureLabel setFont:v99];
 
   [(UILabel *)self->_announcementDeliveryFailureLabel setTextAlignment:1];
-  v100 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [(UILabel *)self->_announcementDeliveryFailureLabel setTextColor:v100];
+  secondaryLabelColor3 = [MEMORY[0x277D75348] secondaryLabelColor];
+  [(UILabel *)self->_announcementDeliveryFailureLabel setTextColor:secondaryLabelColor3];
 
-  v101 = [(HUAnnouncementsBrowserViewController *)self recipientTitle];
-  v108 = HULocalizedStringWithFormat(@"HUAnnounceNotDeliveredLabel_Description", @"%@", v102, v103, v104, v105, v106, v107, v101);
+  recipientTitle2 = [(HUAnnouncementsBrowserViewController *)self recipientTitle];
+  v108 = HULocalizedStringWithFormat(@"HUAnnounceNotDeliveredLabel_Description", @"%@", v102, v103, v104, v105, v106, v107, recipientTitle2);
   [(UILabel *)self->_announcementDeliveryFailureLabel setText:v108];
 
   [(UILabel *)self->_announcementDeliveryFailureLabel setNumberOfLines:0];
   [(UILabel *)self->_announcementDeliveryFailureLabel setLineBreakMode:0];
-  v109 = [(HUAnnouncementsBrowserViewController *)self view];
-  [v109 naui_addAutoLayoutSubview:self->_announcementDeliveryFailureLabel];
+  view8 = [(HUAnnouncementsBrowserViewController *)self view];
+  [view8 naui_addAutoLayoutSubview:self->_announcementDeliveryFailureLabel];
 
   v110 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel__recordButtonLongPressGesture_];
   longPressGestureRecognizer = self->_longPressGestureRecognizer;
   self->_longPressGestureRecognizer = v110;
 
   v112 = [HURecordingButton alloc];
-  v113 = [MEMORY[0x277D75348] hf_keyColor];
-  v114 = [(HURecordingButton *)v112 initWithSize:v113 backgroundColor:64.0, 64.0];
+  hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+  v114 = [(HURecordingButton *)v112 initWithSize:hf_keyColor backgroundColor:64.0, 64.0];
   recordButton = self->_recordButton;
   self->_recordButton = v114;
 
   [(HURecordingButton *)self->_recordButton addTarget:self action:sel__recordButtonTapped_ forControlEvents:64];
   [(HURecordingButton *)self->_recordButton addGestureRecognizer:self->_longPressGestureRecognizer];
-  v116 = [(HUAnnouncementsBrowserViewController *)self view];
-  [v116 naui_addAutoLayoutSubview:self->_recordButton];
+  view9 = [(HUAnnouncementsBrowserViewController *)self view];
+  [view9 naui_addAutoLayoutSubview:self->_recordButton];
 
   v117 = objc_alloc_init(*(v39 + 1720));
   recordButtonLabel = self->_recordButtonLabel;
@@ -684,50 +684,50 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
   [(UILabel *)v121 setText:v122];
 
   [(UILabel *)self->_recordButtonLabel setIsAccessibilityElement:0];
-  v123 = [(HUAnnouncementsBrowserViewController *)self view];
-  [v123 naui_addAutoLayoutSubview:self->_recordButtonLabel];
+  view10 = [(HUAnnouncementsBrowserViewController *)self view];
+  [view10 naui_addAutoLayoutSubview:self->_recordButtonLabel];
 
   v124 = objc_alloc_init(MEMORY[0x277D75220]);
   v125 = v39;
   nextAnnouncementButton = self->_nextAnnouncementButton;
   self->_nextAnnouncementButton = v124;
 
-  v127 = [MEMORY[0x277D75230] glassButtonConfiguration];
-  v128 = [MEMORY[0x277D75348] secondarySystemFillColor];
-  [v127 setBaseBackgroundColor:v128];
+  glassButtonConfiguration = [MEMORY[0x277D75230] glassButtonConfiguration];
+  secondarySystemFillColor = [MEMORY[0x277D75348] secondarySystemFillColor];
+  [glassButtonConfiguration setBaseBackgroundColor:secondarySystemFillColor];
 
-  v129 = [MEMORY[0x277D75348] secondarySystemFillColor];
-  v130 = [v127 background];
-  [v130 setBackgroundColor:v129];
+  secondarySystemFillColor2 = [MEMORY[0x277D75348] secondarySystemFillColor];
+  background = [glassButtonConfiguration background];
+  [background setBackgroundColor:secondarySystemFillColor2];
 
-  [(UIButton *)self->_nextAnnouncementButton setConfiguration:v127];
+  [(UIButton *)self->_nextAnnouncementButton setConfiguration:glassButtonConfiguration];
   v131 = self->_nextAnnouncementButton;
-  v132 = [MEMORY[0x277D755B8] hu_fastForwardButtonImage];
-  [(UIButton *)v131 setImage:v132 forState:0];
+  hu_fastForwardButtonImage = [MEMORY[0x277D755B8] hu_fastForwardButtonImage];
+  [(UIButton *)v131 setImage:hu_fastForwardButtonImage forState:0];
 
-  v133 = [(UIButton *)self->_nextAnnouncementButton layer];
-  [v133 setCornerRadius:22.0];
+  layer3 = [(UIButton *)self->_nextAnnouncementButton layer];
+  [layer3 setCornerRadius:22.0];
 
-  v134 = [(UIButton *)self->_nextAnnouncementButton layer];
-  [v134 setMasksToBounds:1];
+  layer4 = [(UIButton *)self->_nextAnnouncementButton layer];
+  [layer4 setMasksToBounds:1];
 
   [(UIButton *)self->_nextAnnouncementButton addTarget:self action:sel__skipToNextAnnouncement_ forControlEvents:64];
   v135 = _HULocalizedStringWithDefaultValue(@"HUAnnounceNextButton_AX_Label_Title", @"HUAnnounceNextButton_AX_Label_Title", 1);
   [(UIButton *)self->_nextAnnouncementButton setAccessibilityLabel:v135];
 
   [(UIButton *)self->_nextAnnouncementButton setAlpha:v10];
-  v136 = [(HUAnnouncementsBrowserViewController *)self view];
-  [v136 naui_addAutoLayoutSubview:self->_nextAnnouncementButton];
+  view11 = [(HUAnnouncementsBrowserViewController *)self view];
+  [view11 naui_addAutoLayoutSubview:self->_nextAnnouncementButton];
 
-  v137 = [(UILabel *)self->_recordButtonLabel text];
-  v138 = [(HUAnnouncementsBrowserViewController *)self view];
-  [v138 bounds];
+  text = [(UILabel *)self->_recordButtonLabel text];
+  view12 = [(HUAnnouncementsBrowserViewController *)self view];
+  [view12 bounds];
   v140 = v139;
   v304 = *MEMORY[0x277D740A8];
-  v141 = [(UILabel *)self->_recordButtonLabel font];
-  v305 = v141;
+  font = [(UILabel *)self->_recordButtonLabel font];
+  v305 = font;
   v142 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v305 forKeys:&v304 count:1];
-  [v137 boundingRectWithSize:1 options:v142 attributes:0 context:{v140, 3.40282347e38}];
+  [text boundingRectWithSize:1 options:v142 attributes:0 context:{v140, 3.40282347e38}];
   v144 = v143;
 
   v145 = objc_alloc_init(*(v125 + 1720));
@@ -737,203 +737,203 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
   v147 = [MEMORY[0x277D74300] preferredFontForTextStyle:v119];
   [(UILabel *)self->_errorStatusLabel setFont:v147];
 
-  v148 = [MEMORY[0x277D75348] systemRedColor];
-  [(UILabel *)self->_errorStatusLabel setTextColor:v148];
+  systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+  [(UILabel *)self->_errorStatusLabel setTextColor:systemRedColor];
 
   [(UILabel *)self->_errorStatusLabel setTextAlignment:1];
   [(UILabel *)self->_errorStatusLabel setNumberOfLines:0];
   [(UILabel *)self->_errorStatusLabel setAlpha:v38];
-  v149 = [(HUAnnouncementsBrowserViewController *)self view];
-  [v149 naui_addAutoLayoutSubview:self->_errorStatusLabel];
+  view13 = [(HUAnnouncementsBrowserViewController *)self view];
+  [view13 naui_addAutoLayoutSubview:self->_errorStatusLabel];
 
   v150 = objc_opt_new();
-  v151 = [(UILabel *)self->_largeTitleLabel leadingAnchor];
-  v152 = [(HUAnnouncementsBrowserViewController *)self view];
-  v153 = [v152 safeAreaLayoutGuide];
-  v154 = [v153 leadingAnchor];
-  v155 = [v151 constraintEqualToAnchor:v154 constant:24.0];
+  leadingAnchor = [(UILabel *)self->_largeTitleLabel leadingAnchor];
+  view14 = [(HUAnnouncementsBrowserViewController *)self view];
+  safeAreaLayoutGuide = [view14 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v155 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:24.0];
   [v150 addObject:v155];
 
-  v156 = [(UILabel *)self->_largeTitleLabel trailingAnchor];
-  v157 = [(HUAnnouncementsBrowserViewController *)self view];
-  v158 = [v157 safeAreaLayoutGuide];
-  v159 = [v158 trailingAnchor];
-  v160 = [v156 constraintEqualToAnchor:v159 constant:-24.0];
+  trailingAnchor = [(UILabel *)self->_largeTitleLabel trailingAnchor];
+  view15 = [(HUAnnouncementsBrowserViewController *)self view];
+  safeAreaLayoutGuide2 = [view15 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v160 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-24.0];
   [v150 addObject:v160];
 
-  v161 = [(UILabel *)self->_largeTitleLabel topAnchor];
-  v162 = [(HUAnnouncementsBrowserViewController *)self view];
-  v163 = [v162 safeAreaLayoutGuide];
-  v164 = [v163 topAnchor];
-  v165 = [v161 constraintEqualToAnchor:v164 constant:20.0];
+  topAnchor = [(UILabel *)self->_largeTitleLabel topAnchor];
+  view16 = [(HUAnnouncementsBrowserViewController *)self view];
+  safeAreaLayoutGuide3 = [view16 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+  v165 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
   [v150 addObject:v165];
 
-  v166 = [(UILabel *)self->_subTitleLabel leadingAnchor];
-  v167 = [(HUAnnouncementsBrowserViewController *)self view];
-  v168 = [v167 safeAreaLayoutGuide];
-  v169 = [v168 leadingAnchor];
-  v170 = [(HUAnnouncementsBrowserViewController *)self view];
-  [v170 safeAreaInsets];
-  v172 = [v166 constraintEqualToAnchor:v169 constant:v171];
+  leadingAnchor3 = [(UILabel *)self->_subTitleLabel leadingAnchor];
+  view17 = [(HUAnnouncementsBrowserViewController *)self view];
+  safeAreaLayoutGuide4 = [view17 safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide4 leadingAnchor];
+  view18 = [(HUAnnouncementsBrowserViewController *)self view];
+  [view18 safeAreaInsets];
+  v172 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v171];
   [v150 addObject:v172];
 
-  v173 = [(UILabel *)self->_subTitleLabel trailingAnchor];
-  v174 = [(HUAnnouncementsBrowserViewController *)self view];
-  v175 = [v174 safeAreaLayoutGuide];
-  v176 = [v175 trailingAnchor];
-  v177 = [(HUAnnouncementsBrowserViewController *)self view];
-  [v177 safeAreaInsets];
-  v179 = [v173 constraintEqualToAnchor:v176 constant:v178];
+  trailingAnchor3 = [(UILabel *)self->_subTitleLabel trailingAnchor];
+  view19 = [(HUAnnouncementsBrowserViewController *)self view];
+  safeAreaLayoutGuide5 = [view19 safeAreaLayoutGuide];
+  trailingAnchor4 = [safeAreaLayoutGuide5 trailingAnchor];
+  view20 = [(HUAnnouncementsBrowserViewController *)self view];
+  [view20 safeAreaInsets];
+  v179 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:v178];
   [v150 addObject:v179];
 
-  v180 = [(UILabel *)self->_subTitleLabel topAnchor];
-  v181 = [(UILabel *)self->_largeTitleLabel bottomAnchor];
-  v182 = [v180 constraintEqualToAnchor:v181];
+  topAnchor3 = [(UILabel *)self->_subTitleLabel topAnchor];
+  bottomAnchor = [(UILabel *)self->_largeTitleLabel bottomAnchor];
+  v182 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   [v150 addObject:v182];
 
   if (self->_announcementGlobeView)
   {
-    v183 = [(UIView *)self->_lightedCircleView centerXAnchor];
-    v184 = [(HUAnnouncementsBrowserViewController *)self view];
-    v185 = [v184 centerXAnchor];
-    v186 = [v183 constraintEqualToAnchor:v185];
+    centerXAnchor = [(UIView *)self->_lightedCircleView centerXAnchor];
+    view21 = [(HUAnnouncementsBrowserViewController *)self view];
+    centerXAnchor2 = [view21 centerXAnchor];
+    v186 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v150 addObject:v186];
 
-    v187 = [(UIView *)self->_lightedCircleView topAnchor];
-    v188 = [(UILabel *)self->_subTitleLabel bottomAnchor];
-    v189 = [v187 constraintEqualToAnchor:v188 constant:56.0];
+    topAnchor4 = [(UIView *)self->_lightedCircleView topAnchor];
+    bottomAnchor2 = [(UILabel *)self->_subTitleLabel bottomAnchor];
+    v189 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:56.0];
     [v150 addObject:v189];
 
-    v190 = [(UIView *)self->_lightedCircleView heightAnchor];
-    v191 = [v190 constraintEqualToConstant:148.0];
+    heightAnchor = [(UIView *)self->_lightedCircleView heightAnchor];
+    v191 = [heightAnchor constraintEqualToConstant:148.0];
     [v150 addObject:v191];
 
-    v192 = [(UIView *)self->_lightedCircleView widthAnchor];
-    v193 = [(UIView *)self->_lightedCircleView heightAnchor];
-    v194 = [v192 constraintEqualToAnchor:v193];
+    widthAnchor = [(UIView *)self->_lightedCircleView widthAnchor];
+    heightAnchor2 = [(UIView *)self->_lightedCircleView heightAnchor];
+    v194 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
     [v150 addObject:v194];
 
-    v195 = [(HUAnnouncementGlobeView *)self->_announcementGlobeView centerXAnchor];
-    v196 = [(HUAnnouncementsBrowserViewController *)self view];
-    v197 = [v196 centerXAnchor];
-    v198 = [v195 constraintEqualToAnchor:v197];
+    centerXAnchor3 = [(HUAnnouncementGlobeView *)self->_announcementGlobeView centerXAnchor];
+    view22 = [(HUAnnouncementsBrowserViewController *)self view];
+    centerXAnchor4 = [view22 centerXAnchor];
+    v198 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v150 addObject:v198];
 
-    v199 = [(HUAnnouncementGlobeView *)self->_announcementGlobeView topAnchor];
-    v200 = [(UILabel *)self->_subTitleLabel bottomAnchor];
-    v201 = [v199 constraintEqualToAnchor:v200 constant:44.0];
+    topAnchor5 = [(HUAnnouncementGlobeView *)self->_announcementGlobeView topAnchor];
+    bottomAnchor3 = [(UILabel *)self->_subTitleLabel bottomAnchor];
+    v201 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:44.0];
     [v150 addObject:v201];
 
-    v202 = [(HUAnnouncementGlobeView *)self->_announcementGlobeView heightAnchor];
-    v203 = [v202 constraintEqualToConstant:176.0];
+    heightAnchor3 = [(HUAnnouncementGlobeView *)self->_announcementGlobeView heightAnchor];
+    v203 = [heightAnchor3 constraintEqualToConstant:176.0];
     [v150 addObject:v203];
 
-    v204 = [(HUAnnouncementGlobeView *)self->_announcementGlobeView widthAnchor];
-    v205 = [(HUAnnouncementGlobeView *)self->_announcementGlobeView heightAnchor];
-    v206 = [v204 constraintEqualToAnchor:v205];
+    widthAnchor2 = [(HUAnnouncementGlobeView *)self->_announcementGlobeView widthAnchor];
+    heightAnchor4 = [(HUAnnouncementGlobeView *)self->_announcementGlobeView heightAnchor];
+    v206 = [widthAnchor2 constraintEqualToAnchor:heightAnchor4];
     [v150 addObject:v206];
 
-    v207 = [(UILabel *)self->_announcementProgressLabel centerXAnchor];
-    v208 = [(HUAnnouncementsBrowserViewController *)self view];
-    v209 = [v208 centerXAnchor];
-    v210 = [v207 constraintEqualToAnchor:v209];
+    centerXAnchor5 = [(UILabel *)self->_announcementProgressLabel centerXAnchor];
+    view23 = [(HUAnnouncementsBrowserViewController *)self view];
+    centerXAnchor6 = [view23 centerXAnchor];
+    v210 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     [v150 addObject:v210];
 
-    v211 = [(UILabel *)self->_announcementProgressLabel topAnchor];
-    v212 = [(HUAnnouncementGlobeView *)self->_announcementGlobeView bottomAnchor];
-    v213 = [v211 constraintEqualToAnchor:v212 constant:10.0];
+    topAnchor6 = [(UILabel *)self->_announcementProgressLabel topAnchor];
+    bottomAnchor4 = [(HUAnnouncementGlobeView *)self->_announcementGlobeView bottomAnchor];
+    v213 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4 constant:10.0];
     [v150 addObject:v213];
   }
 
-  v214 = [(HUWaveformView *)self->_audioWaveformView leadingAnchor];
-  v215 = [(HUAnnouncementsBrowserViewController *)self view];
-  v216 = [v215 safeAreaLayoutGuide];
-  v217 = [v216 leadingAnchor];
-  v218 = [v214 constraintEqualToAnchor:v217 constant:100.0];
+  leadingAnchor5 = [(HUWaveformView *)self->_audioWaveformView leadingAnchor];
+  view24 = [(HUAnnouncementsBrowserViewController *)self view];
+  safeAreaLayoutGuide6 = [view24 safeAreaLayoutGuide];
+  leadingAnchor6 = [safeAreaLayoutGuide6 leadingAnchor];
+  v218 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:100.0];
   audioWaveformViewLeadingConstraint = self->_audioWaveformViewLeadingConstraint;
   self->_audioWaveformViewLeadingConstraint = v218;
 
-  v220 = [(HUWaveformView *)self->_audioWaveformView trailingAnchor];
-  v221 = [(HUAnnouncementsBrowserViewController *)self view];
-  v222 = [v221 safeAreaLayoutGuide];
-  v223 = [v222 trailingAnchor];
-  v224 = [v220 constraintEqualToAnchor:v223 constant:-100.0];
+  trailingAnchor5 = [(HUWaveformView *)self->_audioWaveformView trailingAnchor];
+  view25 = [(HUAnnouncementsBrowserViewController *)self view];
+  safeAreaLayoutGuide7 = [view25 safeAreaLayoutGuide];
+  trailingAnchor6 = [safeAreaLayoutGuide7 trailingAnchor];
+  v224 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-100.0];
   audioWaveformViewTrailingConstraint = self->_audioWaveformViewTrailingConstraint;
   self->_audioWaveformViewTrailingConstraint = v224;
 
   [v150 addObject:self->_audioWaveformViewLeadingConstraint];
   [v150 addObject:self->_audioWaveformViewTrailingConstraint];
-  v226 = [(HUWaveformView *)self->_audioWaveformView centerYAnchor];
-  v227 = [(HUAnnouncementsBrowserViewController *)self view];
-  v228 = [v227 centerYAnchor];
-  v229 = [v226 constraintEqualToAnchor:v228];
+  centerYAnchor = [(HUWaveformView *)self->_audioWaveformView centerYAnchor];
+  view26 = [(HUAnnouncementsBrowserViewController *)self view];
+  centerYAnchor2 = [view26 centerYAnchor];
+  v229 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v150 addObject:v229];
 
-  v230 = [(HUWaveformView *)self->_audioWaveformView heightAnchor];
-  v231 = [v230 constraintEqualToConstant:100.0];
+  heightAnchor5 = [(HUWaveformView *)self->_audioWaveformView heightAnchor];
+  v231 = [heightAnchor5 constraintEqualToConstant:100.0];
   [v150 addObject:v231];
 
-  v232 = [(UILabel *)self->_announcementDeliveryFailureLabel leadingAnchor];
-  v233 = [(HUAnnouncementsBrowserViewController *)self view];
-  v234 = [v233 safeAreaLayoutGuide];
-  v235 = [v234 leadingAnchor];
-  v236 = [v232 constraintEqualToAnchor:v235];
+  leadingAnchor7 = [(UILabel *)self->_announcementDeliveryFailureLabel leadingAnchor];
+  view27 = [(HUAnnouncementsBrowserViewController *)self view];
+  safeAreaLayoutGuide8 = [view27 safeAreaLayoutGuide];
+  leadingAnchor8 = [safeAreaLayoutGuide8 leadingAnchor];
+  v236 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   [v150 addObject:v236];
 
-  v237 = [(UILabel *)self->_announcementDeliveryFailureLabel trailingAnchor];
-  v238 = [(HUAnnouncementsBrowserViewController *)self view];
-  v239 = [v238 safeAreaLayoutGuide];
-  v240 = [v239 trailingAnchor];
-  v241 = [v237 constraintEqualToAnchor:v240];
+  trailingAnchor7 = [(UILabel *)self->_announcementDeliveryFailureLabel trailingAnchor];
+  view28 = [(HUAnnouncementsBrowserViewController *)self view];
+  safeAreaLayoutGuide9 = [view28 safeAreaLayoutGuide];
+  trailingAnchor8 = [safeAreaLayoutGuide9 trailingAnchor];
+  v241 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   [v150 addObject:v241];
 
-  v242 = [(UILabel *)self->_announcementDeliveryFailureLabel centerYAnchor];
-  v243 = [(HUAnnouncementsBrowserViewController *)self view];
-  v244 = [v243 centerYAnchor];
-  v245 = [v242 constraintEqualToAnchor:v244];
+  centerYAnchor3 = [(UILabel *)self->_announcementDeliveryFailureLabel centerYAnchor];
+  view29 = [(HUAnnouncementsBrowserViewController *)self view];
+  centerYAnchor4 = [view29 centerYAnchor];
+  v245 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v150 addObject:v245];
 
-  v246 = [(HURecordingButton *)self->_recordButton topAnchor];
-  v247 = [(UILabel *)self->_announcementDeliveryFailureLabel bottomAnchor];
-  v248 = [v246 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v247 multiplier:1.0];
+  topAnchor7 = [(HURecordingButton *)self->_recordButton topAnchor];
+  bottomAnchor5 = [(UILabel *)self->_announcementDeliveryFailureLabel bottomAnchor];
+  v248 = [topAnchor7 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:bottomAnchor5 multiplier:1.0];
   [v150 addObject:v248];
 
-  v249 = [(HURecordingButton *)self->_recordButton topAnchor];
-  v250 = [(UILabel *)self->_errorStatusLabel bottomAnchor];
-  v251 = [v249 constraintEqualToAnchor:v250 constant:20.0];
+  topAnchor8 = [(HURecordingButton *)self->_recordButton topAnchor];
+  bottomAnchor6 = [(UILabel *)self->_errorStatusLabel bottomAnchor];
+  v251 = [topAnchor8 constraintEqualToAnchor:bottomAnchor6 constant:20.0];
   [v150 addObject:v251];
 
-  v252 = [(UILabel *)self->_errorStatusLabel centerXAnchor];
-  v253 = [(HUAnnouncementsBrowserViewController *)self view];
-  v254 = [v253 centerXAnchor];
-  v255 = [v252 constraintEqualToAnchor:v254];
+  centerXAnchor7 = [(UILabel *)self->_errorStatusLabel centerXAnchor];
+  view30 = [(HUAnnouncementsBrowserViewController *)self view];
+  centerXAnchor8 = [view30 centerXAnchor];
+  v255 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
   [v150 addObject:v255];
 
-  v256 = [(UILabel *)self->_errorStatusLabel leadingAnchor];
-  v257 = [(HUAnnouncementsBrowserViewController *)self view];
-  v258 = [v257 leadingAnchor];
-  v259 = [v256 constraintEqualToAnchor:v258];
+  leadingAnchor9 = [(UILabel *)self->_errorStatusLabel leadingAnchor];
+  view31 = [(HUAnnouncementsBrowserViewController *)self view];
+  leadingAnchor10 = [view31 leadingAnchor];
+  v259 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   [v150 addObject:v259];
 
-  v260 = [(UILabel *)self->_errorStatusLabel trailingAnchor];
-  v261 = [(HUAnnouncementsBrowserViewController *)self view];
-  v262 = [v261 trailingAnchor];
-  v263 = [v260 constraintEqualToAnchor:v262];
+  trailingAnchor9 = [(UILabel *)self->_errorStatusLabel trailingAnchor];
+  view32 = [(HUAnnouncementsBrowserViewController *)self view];
+  trailingAnchor10 = [view32 trailingAnchor];
+  v263 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   [v150 addObject:v263];
 
-  v264 = [(HURecordingButton *)self->_recordButton centerXAnchor];
-  v265 = [(HUAnnouncementsBrowserViewController *)self view];
-  v266 = [v265 centerXAnchor];
-  v267 = [v264 constraintEqualToAnchor:v266];
+  centerXAnchor9 = [(HURecordingButton *)self->_recordButton centerXAnchor];
+  view33 = [(HUAnnouncementsBrowserViewController *)self view];
+  centerXAnchor10 = [view33 centerXAnchor];
+  v267 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
   [v150 addObject:v267];
 
-  v268 = [(HURecordingButton *)self->_recordButton heightAnchor];
-  v269 = [v268 constraintEqualToConstant:64.0];
+  heightAnchor6 = [(HURecordingButton *)self->_recordButton heightAnchor];
+  v269 = [heightAnchor6 constraintEqualToConstant:64.0];
   [v150 addObject:v269];
 
-  v270 = [(HURecordingButton *)self->_recordButton widthAnchor];
-  v271 = [(HURecordingButton *)self->_recordButton heightAnchor];
-  v272 = [v270 constraintEqualToAnchor:v271];
+  widthAnchor3 = [(HURecordingButton *)self->_recordButton widthAnchor];
+  heightAnchor7 = [(HURecordingButton *)self->_recordButton heightAnchor];
+  v272 = [widthAnchor3 constraintEqualToAnchor:heightAnchor7];
   [v150 addObject:v272];
 
   if (_AXSShowAudioTranscriptions())
@@ -947,64 +947,64 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
     v274 = 132.0;
   }
 
-  v275 = [(HURecordingButton *)self->_recordButton topAnchor];
-  v276 = [(HUAnnouncementsBrowserViewController *)self view];
-  v277 = [v276 centerYAnchor];
-  v278 = [v275 constraintEqualToAnchor:v277 constant:v274];
+  topAnchor9 = [(HURecordingButton *)self->_recordButton topAnchor];
+  view34 = [(HUAnnouncementsBrowserViewController *)self view];
+  centerYAnchor5 = [view34 centerYAnchor];
+  v278 = [topAnchor9 constraintEqualToAnchor:centerYAnchor5 constant:v274];
   [v150 addObject:v278];
 
-  v279 = [(UILabel *)self->_recordButtonLabel centerXAnchor];
-  v280 = [(HURecordingButton *)self->_recordButton centerXAnchor];
-  v281 = [v279 constraintEqualToAnchor:v280];
+  centerXAnchor11 = [(UILabel *)self->_recordButtonLabel centerXAnchor];
+  centerXAnchor12 = [(HURecordingButton *)self->_recordButton centerXAnchor];
+  v281 = [centerXAnchor11 constraintEqualToAnchor:centerXAnchor12];
   [v150 addObject:v281];
 
-  v282 = [(UILabel *)self->_recordButtonLabel topAnchor];
-  v283 = [(HURecordingButton *)self->_recordButton bottomAnchor];
-  v284 = [v282 constraintEqualToAnchor:v283 constant:6.0];
+  topAnchor10 = [(UILabel *)self->_recordButtonLabel topAnchor];
+  bottomAnchor7 = [(HURecordingButton *)self->_recordButton bottomAnchor];
+  v284 = [topAnchor10 constraintEqualToAnchor:bottomAnchor7 constant:6.0];
   [v150 addObject:v284];
 
-  v285 = [(UILabel *)self->_recordButtonLabel heightAnchor];
-  v286 = [v285 constraintEqualToConstant:v144];
+  heightAnchor8 = [(UILabel *)self->_recordButtonLabel heightAnchor];
+  v286 = [heightAnchor8 constraintEqualToConstant:v144];
   [v150 addObject:v286];
 
-  v287 = [(UILabel *)self->_recordButtonLabel bottomAnchor];
-  v288 = [(HUAnnouncementsBrowserViewController *)self view];
-  v289 = [v288 bottomAnchor];
-  v290 = [v287 constraintEqualToAnchor:v289 constant:-20.0];
+  bottomAnchor8 = [(UILabel *)self->_recordButtonLabel bottomAnchor];
+  view35 = [(HUAnnouncementsBrowserViewController *)self view];
+  bottomAnchor9 = [view35 bottomAnchor];
+  v290 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9 constant:-20.0];
   [v150 addObject:v290];
 
-  v291 = [(UIButton *)self->_nextAnnouncementButton centerYAnchor];
-  v292 = [(HURecordingButton *)self->_recordButton centerYAnchor];
-  v293 = [v291 constraintEqualToAnchor:v292];
+  centerYAnchor6 = [(UIButton *)self->_nextAnnouncementButton centerYAnchor];
+  centerYAnchor7 = [(HURecordingButton *)self->_recordButton centerYAnchor];
+  v293 = [centerYAnchor6 constraintEqualToAnchor:centerYAnchor7];
   [v150 addObject:v293];
 
-  v294 = [(UIButton *)self->_nextAnnouncementButton leadingAnchor];
-  v295 = [(UILabel *)self->_recordButtonLabel trailingAnchor];
-  v296 = [v294 constraintEqualToAnchor:v295 constant:48.0];
+  leadingAnchor11 = [(UIButton *)self->_nextAnnouncementButton leadingAnchor];
+  trailingAnchor11 = [(UILabel *)self->_recordButtonLabel trailingAnchor];
+  v296 = [leadingAnchor11 constraintEqualToAnchor:trailingAnchor11 constant:48.0];
   [v150 addObject:v296];
 
-  v297 = [(UIButton *)self->_nextAnnouncementButton heightAnchor];
-  v298 = [v297 constraintEqualToConstant:44.0];
+  heightAnchor9 = [(UIButton *)self->_nextAnnouncementButton heightAnchor];
+  v298 = [heightAnchor9 constraintEqualToConstant:44.0];
   [v150 addObject:v298];
 
-  v299 = [(UIButton *)self->_nextAnnouncementButton widthAnchor];
-  v300 = [(UIButton *)self->_nextAnnouncementButton heightAnchor];
-  v301 = [v299 constraintEqualToAnchor:v300];
+  widthAnchor4 = [(UIButton *)self->_nextAnnouncementButton widthAnchor];
+  heightAnchor10 = [(UIButton *)self->_nextAnnouncementButton heightAnchor];
+  v301 = [widthAnchor4 constraintEqualToAnchor:heightAnchor10];
   [v150 addObject:v301];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v150];
   [(HUAnnouncementsBrowserViewController *)self _addTranscriptionConstraintsForValidNotificationPayload];
 }
 
-- (void)_applyTranscriptionText:(id)a3
+- (void)_applyTranscriptionText:(id)text
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  textCopy = text;
   if (_AXSShowAudioTranscriptions())
   {
-    if ([v4 length])
+    if ([textCopy length])
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v4];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@", textCopy];
     }
 
     else
@@ -1017,23 +1017,23 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
     v6 = HFLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [(UILabel *)self->_transcriptionText text];
+      text = [(UILabel *)self->_transcriptionText text];
       *buf = 138412290;
-      v9 = v7;
+      v9 = text;
       _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_INFO, "Setting transcript text: %@", buf, 0xCu);
     }
   }
 }
 
-- (void)_recordButtonLongPressGesture:(id)a3
+- (void)_recordButtonLongPressGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 state];
-  switch(v5)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  switch(state)
   {
     case 4:
-      v11 = [v4 view];
-      [(HUAnnouncementsBrowserViewController *)self _deleteRecording:v11];
+      view = [gestureCopy view];
+      [(HUAnnouncementsBrowserViewController *)self _deleteRecording:view];
 
       v7 = MEMORY[0x277D75D18];
       v12[0] = MEMORY[0x277D85DD0];
@@ -1045,8 +1045,8 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
       v9 = v12;
       goto LABEL_7;
     case 3:
-      v10 = [v4 view];
-      [(HUAnnouncementsBrowserViewController *)self _stopRecordingAndSendReply:v10];
+      view2 = [gestureCopy view];
+      [(HUAnnouncementsBrowserViewController *)self _stopRecordingAndSendReply:view2];
 
       v7 = MEMORY[0x277D75D18];
       v13[0] = MEMORY[0x277D85DD0];
@@ -1058,8 +1058,8 @@ uint64_t __51__HUAnnouncementsBrowserViewController__commonInit__block_invoke_2(
       v9 = v13;
       goto LABEL_7;
     case 1:
-      v6 = [v4 view];
-      [(HUAnnouncementsBrowserViewController *)self _beginRecordingReply:v6];
+      view3 = [gestureCopy view];
+      [(HUAnnouncementsBrowserViewController *)self _beginRecordingReply:view3];
 
       v7 = MEMORY[0x277D75D18];
       v14[0] = MEMORY[0x277D85DD0];
@@ -1103,64 +1103,64 @@ void __70__HUAnnouncementsBrowserViewController__recordButtonLongPressGesture___
   [v1 setTransform:v3];
 }
 
-- (void)_recordButtonTapped:(id)a3
+- (void)_recordButtonTapped:(id)tapped
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = "[HUAnnouncementsBrowserViewController _recordButtonTapped:]";
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped record button", &v8, 0x16u);
   }
 
-  v6 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
-  v7 = [v6 isRecording];
+  audioRecorder = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
+  isRecording = [audioRecorder isRecording];
 
-  if (v7)
+  if (isRecording)
   {
-    [(HUAnnouncementsBrowserViewController *)self _stopRecordingAndSendReply:v4];
+    [(HUAnnouncementsBrowserViewController *)self _stopRecordingAndSendReply:tappedCopy];
   }
 
   else
   {
-    [(HUAnnouncementsBrowserViewController *)self _beginRecordingReply:v4];
+    [(HUAnnouncementsBrowserViewController *)self _beginRecordingReply:tappedCopy];
   }
 }
 
-- (void)_beginRecordingReply:(id)a3
+- (void)_beginRecordingReply:(id)reply
 {
-  v4 = [(HUAnnouncementsBrowserViewController *)self announcementGlobeView];
-  [v4 stopPlayback];
+  announcementGlobeView = [(HUAnnouncementsBrowserViewController *)self announcementGlobeView];
+  [announcementGlobeView stopPlayback];
 
-  v5 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
-  v6 = [v5 isRecording];
+  audioRecorder = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
+  isRecording = [audioRecorder isRecording];
 
-  if ((v6 & 1) == 0)
+  if ((isRecording & 1) == 0)
   {
     v7 = objc_alloc_init(MEMORY[0x277CEAB30]);
     [v7 prewarmWithHandler:0];
-    v8 = [(HUAnnouncementsBrowserViewController *)self feedbackGenerator];
-    [v8 prepare];
+    feedbackGenerator = [(HUAnnouncementsBrowserViewController *)self feedbackGenerator];
+    [feedbackGenerator prepare];
 
-    v9 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
-    [v9 playAlertSoundForType:0 withCompletion:0];
+    audioRecorder2 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
+    [audioRecorder2 playAlertSoundForType:0 withCompletion:0];
 
-    v10 = [(HUAnnouncementsBrowserViewController *)self audioWaveformView];
-    [v10 clearPowerLevels];
+    audioWaveformView = [(HUAnnouncementsBrowserViewController *)self audioWaveformView];
+    [audioWaveformView clearPowerLevels];
 
-    v11 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
-    [v11 prepareRecording];
+    audioRecorder3 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
+    [audioRecorder3 prepareRecording];
 
-    v12 = [(HUAnnouncementsBrowserViewController *)self recordButton];
-    [v12 startRecording];
+    recordButton = [(HUAnnouncementsBrowserViewController *)self recordButton];
+    [recordButton startRecording];
 
-    v13 = [(HUAnnouncementsBrowserViewController *)self recordButtonLabel];
+    recordButtonLabel = [(HUAnnouncementsBrowserViewController *)self recordButtonLabel];
     v14 = _HULocalizedStringWithDefaultValue(@"HUAnnounceRecordingStopLabel_Title", @"HUAnnounceRecordingStopLabel_Title", 1);
-    [v13 setText:v14];
+    [recordButtonLabel setText:v14];
 
     v16[4] = self;
     v17[0] = MEMORY[0x277D85DD0];
@@ -1173,8 +1173,8 @@ void __70__HUAnnouncementsBrowserViewController__recordButtonLongPressGesture___
     v16[2] = __61__HUAnnouncementsBrowserViewController__beginRecordingReply___block_invoke_2;
     v16[3] = &unk_277DB8C28;
     [MEMORY[0x277D75D18] animateWithDuration:v17 animations:v16 completion:0.25];
-    v15 = [(HUAnnouncementsBrowserViewController *)self view];
-    [v15 layoutIfNeeded];
+    view = [(HUAnnouncementsBrowserViewController *)self view];
+    [view layoutIfNeeded];
   }
 }
 
@@ -1280,53 +1280,53 @@ void __61__HUAnnouncementsBrowserViewController__beginRecordingReply___block_inv
   }
 }
 
-- (void)_stopRecordingAndSendReply:(id)a3
+- (void)_stopRecordingAndSendReply:(id)reply
 {
-  v4 = [(HUAnnouncementsBrowserViewController *)self recordButton];
-  [v4 setEnabled:0];
+  recordButton = [(HUAnnouncementsBrowserViewController *)self recordButton];
+  [recordButton setEnabled:0];
 
-  v5 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
-  [v5 stopRecording];
+  audioRecorder = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
+  [audioRecorder stopRecording];
 
-  v6 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
-  [v6 playAlertSoundForType:0 withCompletion:0];
+  audioRecorder2 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
+  [audioRecorder2 playAlertSoundForType:0 withCompletion:0];
 }
 
-- (void)_sendAnnouncementReply:(id)a3
+- (void)_sendAnnouncementReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  if (v5)
+  replyCopy = reply;
+  notificationPayload = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  if (notificationPayload)
   {
-    v6 = v5;
-    v7 = [(HUAnnouncementsBrowserViewController *)self shouldNotSendCurrentRecording];
+    v6 = notificationPayload;
+    shouldNotSendCurrentRecording = [(HUAnnouncementsBrowserViewController *)self shouldNotSendCurrentRecording];
 
-    if (!v7)
+    if (!shouldNotSendCurrentRecording)
     {
-      v8 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-      v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277CEAAF0]];
-      v10 = [v9 unsignedIntegerValue];
+      notificationPayload2 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+      v9 = [notificationPayload2 objectForKeyedSubscript:*MEMORY[0x277CEAAF0]];
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-      if (v10 == 1)
+      if (unsignedIntegerValue == 1)
       {
-        [(HUAnnouncementsBrowserViewController *)self _sendAnnouncement:v4];
+        [(HUAnnouncementsBrowserViewController *)self _sendAnnouncement:replyCopy];
       }
 
       else
       {
-        v11 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-        v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CEA768]];
+        notificationPayload3 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+        v12 = [notificationPayload3 objectForKeyedSubscript:*MEMORY[0x277CEA768]];
 
-        v13 = [(HUAnnouncementsBrowserViewController *)self announce];
-        v14 = [(HUAnnouncementsBrowserViewController *)self recordedAnnouncementURL];
+        announce = [(HUAnnouncementsBrowserViewController *)self announce];
+        recordedAnnouncementURL = [(HUAnnouncementsBrowserViewController *)self recordedAnnouncementURL];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __63__HUAnnouncementsBrowserViewController__sendAnnouncementReply___block_invoke;
         v16[3] = &unk_277DC33D0;
         v17 = v12;
-        v18 = self;
+        selfCopy = self;
         v15 = v12;
-        [v13 broadcastReply:v14 forAnnouncementID:v15 completion:v16];
+        [announce broadcastReply:recordedAnnouncementURL forAnnouncementID:v15 completion:v16];
       }
     }
   }
@@ -1360,16 +1360,16 @@ void __63__HUAnnouncementsBrowserViewController__sendAnnouncementReply___block_i
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
-- (void)_sendAnnouncement:(id)a3
+- (void)_sendAnnouncement:(id)announcement
 {
-  v4 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CEAA80]];
+  notificationPayload = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  v5 = [notificationPayload objectForKeyedSubscript:*MEMORY[0x277CEAA80]];
 
-  v6 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CEA9F8]];
+  notificationPayload2 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  v7 = [notificationPayload2 objectForKeyedSubscript:*MEMORY[0x277CEA9F8]];
 
-  v8 = [v5 allKeys];
-  if ([v8 count])
+  allKeys = [v5 allKeys];
+  if ([allKeys count])
   {
     v9 = objc_opt_new();
     v24[0] = MEMORY[0x277D85DD0];
@@ -1378,32 +1378,32 @@ void __63__HUAnnouncementsBrowserViewController__sendAnnouncementReply___block_i
     v24[3] = &unk_277DC2600;
     v10 = v9;
     v25 = v10;
-    [v8 na_each:v24];
-    v11 = [(HUAnnouncementsBrowserViewController *)self announce];
-    v12 = [(HUAnnouncementsBrowserViewController *)self recordedAnnouncementURL];
+    [allKeys na_each:v24];
+    announce = [(HUAnnouncementsBrowserViewController *)self announce];
+    recordedAnnouncementURL = [(HUAnnouncementsBrowserViewController *)self recordedAnnouncementURL];
     v13 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __58__HUAnnouncementsBrowserViewController__sendAnnouncement___block_invoke_2;
     v21[3] = &unk_277DC33D0;
     v22 = v10;
-    v23 = self;
+    selfCopy = self;
     v14 = v10;
-    [v11 sendAnnouncement:v12 toRoomsWithIDs:v14 andZonesWithIDs:MEMORY[0x277CBEBF8] inHomeWithID:v13 completion:v21];
+    [announce sendAnnouncement:recordedAnnouncementURL toRoomsWithIDs:v14 andZonesWithIDs:MEMORY[0x277CBEBF8] inHomeWithID:v13 completion:v21];
   }
 
   else
   {
-    v15 = [(HUAnnouncementsBrowserViewController *)self announce];
-    v16 = [(HUAnnouncementsBrowserViewController *)self recordedAnnouncementURL];
+    announce2 = [(HUAnnouncementsBrowserViewController *)self announce];
+    recordedAnnouncementURL2 = [(HUAnnouncementsBrowserViewController *)self recordedAnnouncementURL];
     v17 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __58__HUAnnouncementsBrowserViewController__sendAnnouncement___block_invoke_2_172;
     v18[3] = &unk_277DC33D0;
     v19 = v7;
-    v20 = self;
-    [v15 sendAnnouncement:v16 toHomeWithID:v17 completion:v18];
+    selfCopy2 = self;
+    [announce2 sendAnnouncement:recordedAnnouncementURL2 toHomeWithID:v17 completion:v18];
 
     v14 = v19;
   }
@@ -1474,11 +1474,11 @@ void __58__HUAnnouncementsBrowserViewController__sendAnnouncement___block_invoke
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
-- (void)_deleteRecording:(id)a3
+- (void)_deleteRecording:(id)recording
 {
   [(HUAnnouncementsBrowserViewController *)self _deleteAudioFile];
-  v4 = [(HUAnnouncementsBrowserViewController *)self audioWaveformView];
-  [v4 clearPowerLevels];
+  audioWaveformView = [(HUAnnouncementsBrowserViewController *)self audioWaveformView];
+  [audioWaveformView clearPowerLevels];
 
   [(HUAnnouncementsBrowserViewController *)self _hideRecordingUI];
 }
@@ -1486,21 +1486,21 @@ void __58__HUAnnouncementsBrowserViewController__sendAnnouncement___block_invoke
 - (void)_deleteAudioFile
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HUAnnouncementsBrowserViewController *)self recordedAnnouncementURL];
-  if (v3)
+  recordedAnnouncementURL = [(HUAnnouncementsBrowserViewController *)self recordedAnnouncementURL];
+  if (recordedAnnouncementURL)
   {
-    v4 = v3;
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [(HUAnnouncementsBrowserViewController *)self recordedAnnouncementURL];
-    v7 = [v6 path];
-    v8 = [v5 fileExistsAtPath:v7];
+    v4 = recordedAnnouncementURL;
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    recordedAnnouncementURL2 = [(HUAnnouncementsBrowserViewController *)self recordedAnnouncementURL];
+    path = [recordedAnnouncementURL2 path];
+    v8 = [defaultManager fileExistsAtPath:path];
 
     if (v8)
     {
-      v9 = [MEMORY[0x277CCAA00] defaultManager];
-      v10 = [(HUAnnouncementsBrowserViewController *)self recordedAnnouncementURL];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      recordedAnnouncementURL3 = [(HUAnnouncementsBrowserViewController *)self recordedAnnouncementURL];
       v13 = 0;
-      [v9 removeItemAtURL:v10 error:&v13];
+      [defaultManager2 removeItemAtURL:recordedAnnouncementURL3 error:&v13];
       v11 = v13;
 
       if (v11)
@@ -1629,40 +1629,40 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
   }
 }
 
-- (void)_dismissViewOrDisplayError:(id)a3
+- (void)_dismissViewOrDisplayError:(id)error
 {
-  if (a3)
+  if (error)
   {
-    v4 = [(HUAnnouncementsBrowserViewController *)self audioWaveformView];
-    [v4 setAlpha:0.0];
+    audioWaveformView = [(HUAnnouncementsBrowserViewController *)self audioWaveformView];
+    [audioWaveformView setAlpha:0.0];
 
-    v5 = [(HUAnnouncementsBrowserViewController *)self announcementDeliveryFailureLabel];
-    [v5 setAlpha:1.0];
+    announcementDeliveryFailureLabel = [(HUAnnouncementsBrowserViewController *)self announcementDeliveryFailureLabel];
+    [announcementDeliveryFailureLabel setAlpha:1.0];
 
-    v6 = [(HUAnnouncementsBrowserViewController *)self recordButton];
-    [v6 setEnabled:1];
+    recordButton = [(HUAnnouncementsBrowserViewController *)self recordButton];
+    [recordButton setEnabled:1];
 
-    v7 = [(HUAnnouncementsBrowserViewController *)self recordButtonLabel];
+    recordButtonLabel = [(HUAnnouncementsBrowserViewController *)self recordButtonLabel];
     v8 = _HULocalizedStringWithDefaultValue(@"HUAnnounceButton_Title", @"HUAnnounceButton_Title", 1);
-    [v7 setText:v8];
+    [recordButtonLabel setText:v8];
 
-    v14 = [(HUAnnouncementsBrowserViewController *)self recordButton];
-    [v14 stopRecording];
+    recordButton2 = [(HUAnnouncementsBrowserViewController *)self recordButton];
+    [recordButton2 stopRecording];
   }
 
   else
   {
-    v9 = [(HUAnnouncementsBrowserViewController *)self delegate];
-    if (!v9)
+    delegate = [(HUAnnouncementsBrowserViewController *)self delegate];
+    if (!delegate)
     {
       return;
     }
 
-    v14 = v9;
-    v10 = [(HUAnnouncementsBrowserViewController *)self delegate];
-    if ([v10 conformsToProtocol:&unk_2825BDB40])
+    recordButton2 = delegate;
+    delegate2 = [(HUAnnouncementsBrowserViewController *)self delegate];
+    if ([delegate2 conformsToProtocol:&unk_2825BDB40])
     {
-      v11 = [(HUAnnouncementsBrowserViewController *)self delegate];
+      delegate3 = [(HUAnnouncementsBrowserViewController *)self delegate];
       v12 = objc_opt_respondsToSelector();
 
       if ((v12 & 1) == 0)
@@ -1670,9 +1670,9 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
         return;
       }
 
-      v14 = [(HUAnnouncementsBrowserViewController *)self delegate];
-      v13 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-      [v14 didSendAnnouncementReplyforNotificationPayload:v13];
+      recordButton2 = [(HUAnnouncementsBrowserViewController *)self delegate];
+      notificationPayload = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+      [recordButton2 didSendAnnouncementReplyforNotificationPayload:notificationPayload];
     }
 
     else
@@ -1681,20 +1681,20 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
   }
 }
 
-- (void)_skipToNextAnnouncement:(id)a3
+- (void)_skipToNextAnnouncement:(id)announcement
 {
-  v3 = [(HUAnnouncementsBrowserViewController *)self announcementGlobeView];
-  [v3 skipToNextAnnouncement];
+  announcementGlobeView = [(HUAnnouncementsBrowserViewController *)self announcementGlobeView];
+  [announcementGlobeView skipToNextAnnouncement];
 }
 
 - (double)_transcriptionStackViewHeight
 {
-  v3 = [(UILabel *)self->_transcriptionTitleLabel font];
-  [v3 _scaledValueForValue:32.0];
+  font = [(UILabel *)self->_transcriptionTitleLabel font];
+  [font _scaledValueForValue:32.0];
   v5 = v4;
 
-  v6 = [(UILabel *)self->_transcriptionText font];
-  [v6 _scaledValueForValue:20.0];
+  font2 = [(UILabel *)self->_transcriptionText font];
+  [font2 _scaledValueForValue:20.0];
   v8 = v7;
 
   return v5 + v8 + 6.0;
@@ -1702,36 +1702,36 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
 
 - (void)_configureVisualStyleForLightedCircleView
 {
-  v3 = [(HUAnnouncementsBrowserViewController *)self _lightedCircleBackgroundColorForCurrentInterfaceStyle];
-  v4 = [(HUAnnouncementsBrowserViewController *)self lightedCircleView];
-  [v4 setBackgroundColor:v3];
+  _lightedCircleBackgroundColorForCurrentInterfaceStyle = [(HUAnnouncementsBrowserViewController *)self _lightedCircleBackgroundColorForCurrentInterfaceStyle];
+  lightedCircleView = [(HUAnnouncementsBrowserViewController *)self lightedCircleView];
+  [lightedCircleView setBackgroundColor:_lightedCircleBackgroundColorForCurrentInterfaceStyle];
 
-  v10 = [(UIView *)self->_lightedCircleView layer];
+  layer = [(UIView *)self->_lightedCircleView layer];
   LODWORD(v5) = 0.5;
-  [v10 setShadowOpacity:v5];
-  v6 = [(HUAnnouncementsBrowserViewController *)self _lightedCircleShadowColorForCurrentInterfaceStyle];
-  [v10 setShadowColor:{objc_msgSend(v6, "CGColor")}];
+  [layer setShadowOpacity:v5];
+  _lightedCircleShadowColorForCurrentInterfaceStyle = [(HUAnnouncementsBrowserViewController *)self _lightedCircleShadowColorForCurrentInterfaceStyle];
+  [layer setShadowColor:{objc_msgSend(_lightedCircleShadowColorForCurrentInterfaceStyle, "CGColor")}];
 
-  [v10 setShadowOffset:{0.0, 12.0}];
-  [v10 setShadowRadius:16.0];
+  [layer setShadowOffset:{0.0, 12.0}];
+  [layer setShadowRadius:16.0];
   v7 = MEMORY[0x277D75208];
-  v8 = [(HUAnnouncementsBrowserViewController *)self lightedCircleView];
-  [v8 bounds];
+  lightedCircleView2 = [(HUAnnouncementsBrowserViewController *)self lightedCircleView];
+  [lightedCircleView2 bounds];
   v9 = [v7 bezierPathWithOvalInRect:?];
-  [v10 setShadowPath:{objc_msgSend(v9, "CGPath")}];
+  [layer setShadowPath:{objc_msgSend(v9, "CGPath")}];
 }
 
 - (id)_lightedCircleBackgroundColorForCurrentInterfaceStyle
 {
   v3 = [MEMORY[0x277D75348] colorWithRed:0.31372549 green:0.333333333 blue:0.360784314 alpha:1.0];
-  v4 = [(HUAnnouncementsBrowserViewController *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  traitCollection = [(HUAnnouncementsBrowserViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v5 == 2)
+  if (userInterfaceStyle == 2)
   {
-    v6 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
 
-    v3 = v6;
+    v3 = whiteColor;
   }
 
   return v3;
@@ -1739,18 +1739,18 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
 
 - (id)_lightedCircleShadowColorForCurrentInterfaceStyle
 {
-  v3 = [MEMORY[0x277D75348] systemGrayColor];
-  v4 = [(HUAnnouncementsBrowserViewController *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  traitCollection = [(HUAnnouncementsBrowserViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v5 == 2)
+  if (userInterfaceStyle == 2)
   {
-    v6 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
 
-    v3 = v6;
+    systemGrayColor = whiteColor;
   }
 
-  return v3;
+  return systemGrayColor;
 }
 
 - (id)_fontForAnnouncementProgressLabel
@@ -1778,42 +1778,42 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
 
 - (id)_backgroundColorForNextAnnouncementButton
 {
-  v3 = [MEMORY[0x277D75348] secondarySystemFillColor];
-  v4 = [(HUAnnouncementsBrowserViewController *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  secondarySystemFillColor = [MEMORY[0x277D75348] secondarySystemFillColor];
+  traitCollection = [(HUAnnouncementsBrowserViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v5 == 2)
+  if (userInterfaceStyle == 2)
   {
-    v6 = [MEMORY[0x277D75348] systemDarkGrayColor];
+    systemDarkGrayColor = [MEMORY[0x277D75348] systemDarkGrayColor];
 
-    v3 = v6;
+    secondarySystemFillColor = systemDarkGrayColor;
   }
 
-  return v3;
+  return secondarySystemFillColor;
 }
 
 - (id)_waveformColor
 {
-  v3 = [MEMORY[0x277D75348] systemBlackColor];
-  v4 = [(HUAnnouncementsBrowserViewController *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+  traitCollection = [(HUAnnouncementsBrowserViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v5 == 2)
+  if (userInterfaceStyle == 2)
   {
-    v6 = [MEMORY[0x277D75348] systemWhiteColor];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
 
-    v3 = v6;
+    systemBlackColor = systemWhiteColor;
   }
 
-  return v3;
+  return systemBlackColor;
 }
 
 - (BOOL)_isNotificationPayloadValid
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  notificationPayload = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
 
-  if (!v3)
+  if (!notificationPayload)
   {
     return 0;
   }
@@ -1821,26 +1821,26 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+    notificationPayload2 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
     v24 = 138412290;
-    v25 = v5;
+    v25 = notificationPayload2;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "Received Notification with payload %@", &v24, 0xCu);
   }
 
-  v6 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CEA7C0]];
+  notificationPayload3 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  v7 = [notificationPayload3 objectForKeyedSubscript:*MEMORY[0x277CEA7C0]];
 
-  v8 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277CEAAA0]];
+  notificationPayload4 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  v9 = [notificationPayload4 objectForKeyedSubscript:*MEMORY[0x277CEAAA0]];
 
-  v10 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277CEA7F0]];
+  notificationPayload5 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  v11 = [notificationPayload5 objectForKeyedSubscript:*MEMORY[0x277CEA7F0]];
 
-  v12 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CEA9F8]];
+  notificationPayload6 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  v13 = [notificationPayload6 objectForKeyedSubscript:*MEMORY[0x277CEA9F8]];
 
-  v14 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277CEAA10]];
+  notificationPayload7 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  v15 = [notificationPayload7 objectForKeyedSubscript:*MEMORY[0x277CEAA10]];
 
   if (v13)
   {
@@ -1853,8 +1853,8 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
   }
 
   v17 = !v16;
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
-  v19 = [v18 fileExistsAtPath:v11];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v19 = [defaultManager fileExistsAtPath:v11];
 
   v20 = HFLogForCategory();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -1896,42 +1896,42 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
       _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "Checking reachability for context Room", &v29, 2u);
     }
 
-    v4 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CEAA80]];
+    notificationPayload = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+    v5 = [notificationPayload objectForKeyedSubscript:*MEMORY[0x277CEAA80]];
 
-    v6 = [v5 allKeys];
-    v7 = [(HUAnnouncementsBrowserViewController *)self currentHome];
+    allKeys = [v5 allKeys];
+    currentHome = [(HUAnnouncementsBrowserViewController *)self currentHome];
     v8 = objc_alloc(MEMORY[0x277CCAD78]);
-    v9 = [v6 firstObject];
-    v10 = [v8 initWithUUIDString:v9];
-    v11 = [v7 hf_roomWithIdentifier:v10];
+    firstObject = [allKeys firstObject];
+    v10 = [v8 initWithUUIDString:firstObject];
+    v11 = [currentHome hf_roomWithIdentifier:v10];
 
-    v12 = [v11 hf_hasAtLeastOneAnnounceSupportedAccessory];
-    if (v12)
+    hf_hasAtLeastOneAnnounceSupportedAccessory = [v11 hf_hasAtLeastOneAnnounceSupportedAccessory];
+    if (hf_hasAtLeastOneAnnounceSupportedAccessory)
     {
-      v13 = [v11 hf_hasAtLeastOneReachableHomeMediaAccessory];
+      hf_hasAtLeastOneReachableHomeMediaAccessory = [v11 hf_hasAtLeastOneReachableHomeMediaAccessory];
     }
 
     else
     {
-      v13 = 0;
+      hf_hasAtLeastOneReachableHomeMediaAccessory = 0;
     }
 
     v20 = HFLogForCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v11 uniqueIdentifier];
+      uniqueIdentifier = [v11 uniqueIdentifier];
       v29 = 138412802;
-      *v30 = v21;
+      *v30 = uniqueIdentifier;
       *&v30[8] = 1024;
-      v31 = v12;
+      v31 = hf_hasAtLeastOneAnnounceSupportedAccessory;
       v32 = 1024;
-      v33 = v13 & 1;
+      v33 = hf_hasAtLeastOneReachableHomeMediaAccessory & 1;
       _os_log_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_DEFAULT, "Room ID [%@], hasAtleastOneHomePodInThisRoom:%{BOOL}d, isAtleastOneHomePodOnlineInThisRoom:%{BOOL}d", &v29, 0x18u);
     }
 
-    v22 = v12 ^ 1;
-    v16 = v13;
+    v22 = hf_hasAtLeastOneAnnounceSupportedAccessory ^ 1;
+    hf_hasAtLeastOneReachableHomeMediaAccessory2 = hf_hasAtLeastOneReachableHomeMediaAccessory;
   }
 
   else
@@ -1945,28 +1945,28 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
         _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "Checking reachability for context Home", &v29, 2u);
       }
 
-      v15 = [(HUAnnouncementsBrowserViewController *)self currentHome];
-      v16 = [v15 hf_hasAtLeastOneReachableHomeMediaAccessory];
+      currentHome2 = [(HUAnnouncementsBrowserViewController *)self currentHome];
+      hf_hasAtLeastOneReachableHomeMediaAccessory2 = [currentHome2 hf_hasAtLeastOneReachableHomeMediaAccessory];
 
       v17 = HFLogForCategory();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [(HUAnnouncementsBrowserViewController *)self currentHome];
-        v19 = [v18 uniqueIdentifier];
+        currentHome3 = [(HUAnnouncementsBrowserViewController *)self currentHome];
+        uniqueIdentifier2 = [currentHome3 uniqueIdentifier];
         v29 = 138412546;
-        *v30 = v19;
+        *v30 = uniqueIdentifier2;
         *&v30[8] = 1024;
-        v31 = v16;
+        v31 = hf_hasAtLeastOneReachableHomeMediaAccessory2;
         _os_log_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEFAULT, "Home ID [%@], hf_hasAtLeastOneReachableHomeMediaAccessory:%{BOOL}d", &v29, 0x12u);
       }
 
-      LOBYTE(v13) = 0;
+      LOBYTE(hf_hasAtLeastOneReachableHomeMediaAccessory) = 0;
     }
 
     else
     {
-      LOBYTE(v13) = 0;
-      v16 = 0;
+      LOBYTE(hf_hasAtLeastOneReachableHomeMediaAccessory) = 0;
+      hf_hasAtLeastOneReachableHomeMediaAccessory2 = 0;
     }
 
     v22 = 1;
@@ -1974,7 +1974,7 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
 
   if ([(HUAnnouncementsBrowserViewController *)self _isRoomContext])
   {
-    v23 = v22 | v13;
+    v23 = v22 | hf_hasAtLeastOneReachableHomeMediaAccessory;
   }
 
   else
@@ -1982,7 +1982,7 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
     v23 = 0;
   }
 
-  v24 = v16 & [(HUAnnouncementsBrowserViewController *)self _isHomeContext];
+  v24 = hf_hasAtLeastOneReachableHomeMediaAccessory2 & [(HUAnnouncementsBrowserViewController *)self _isHomeContext];
   v25 = HFLogForCategory();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
@@ -1993,32 +1993,32 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
     _os_log_impl(&dword_20CEB6000, v25, OS_LOG_TYPE_DEFAULT, "shouldAllowRecordingForRoom:%{BOOL}d, shouldAllowRecordingForHome:%{BOOL}d", &v29, 0xEu);
   }
 
-  v26 = [(HUAnnouncementsBrowserViewController *)self recordedAnnouncementURL];
+  recordedAnnouncementURL = [(HUAnnouncementsBrowserViewController *)self recordedAnnouncementURL];
 
-  if (!v26)
+  if (!recordedAnnouncementURL)
   {
-    v27 = [(HUAnnouncementsBrowserViewController *)self recordButton];
-    [v27 setEnabled:(v23 | v24) & 1];
+    recordButton = [(HUAnnouncementsBrowserViewController *)self recordButton];
+    [recordButton setEnabled:(v23 | v24) & 1];
   }
 
-  v28 = [(HUAnnouncementsBrowserViewController *)self view];
-  [v28 layoutIfNeeded];
+  view = [(HUAnnouncementsBrowserViewController *)self view];
+  [view layoutIfNeeded];
 }
 
 - (BOOL)_isRoomContext
 {
-  v3 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  notificationPayload = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
 
-  if (!v3)
+  if (!notificationPayload)
   {
     return 0;
   }
 
-  v4 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CEA9F8]];
+  notificationPayload2 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  v5 = [notificationPayload2 objectForKeyedSubscript:*MEMORY[0x277CEA9F8]];
 
-  v6 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CEAA80]];
+  notificationPayload3 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  v7 = [notificationPayload3 objectForKeyedSubscript:*MEMORY[0x277CEAA80]];
 
   if (v5)
   {
@@ -2035,18 +2035,18 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
 
 - (BOOL)_isHomeContext
 {
-  v3 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  notificationPayload = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
 
-  if (!v3)
+  if (!notificationPayload)
   {
     return 0;
   }
 
-  v4 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CEA9F8]];
+  notificationPayload2 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  v5 = [notificationPayload2 objectForKeyedSubscript:*MEMORY[0x277CEA9F8]];
 
-  v6 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CEAA80]];
+  notificationPayload3 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+  v7 = [notificationPayload3 objectForKeyedSubscript:*MEMORY[0x277CEAA80]];
 
   if (v5)
   {
@@ -2061,14 +2061,14 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
   return v8;
 }
 
-- (id)_announcerNameFromNotificationPayload:(id)a3
+- (id)_announcerNameFromNotificationPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CEA7D0]];
+  payloadCopy = payload;
+  v4 = [payloadCopy objectForKeyedSubscript:*MEMORY[0x277CEA7D0]];
   v5 = [MEMORY[0x277D14CE8] preferredNameFromUserID:v4];
   if ([v5 isEqualToString:v4])
   {
-    v6 = [v3 objectForKeyedSubscript:*MEMORY[0x277CEA7C0]];
+    v6 = [payloadCopy objectForKeyedSubscript:*MEMORY[0x277CEA7C0]];
 
     v5 = v6;
   }
@@ -2076,53 +2076,53 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
   return v5;
 }
 
-- (void)didUpdateAveragePower:(float)a3
+- (void)didUpdateAveragePower:(float)power
 {
-  v4 = [(HUAnnouncementsBrowserViewController *)self audioWaveformView];
-  [v4 appendPowerLevel:a3];
+  audioWaveformView = [(HUAnnouncementsBrowserViewController *)self audioWaveformView];
+  [audioWaveformView appendPowerLevel:power];
 }
 
-- (void)audioRecorderDidStartRecording:(id)a3
+- (void)audioRecorderDidStartRecording:(id)recording
 {
-  v4 = [(HUAnnouncementsBrowserViewController *)self recordButton];
-  [v4 setEnabled:1];
+  recordButton = [(HUAnnouncementsBrowserViewController *)self recordButton];
+  [recordButton setEnabled:1];
 
-  v5 = [(HUAnnouncementsBrowserViewController *)self recordButtonLabel];
-  [v5 setEnabled:1];
+  recordButtonLabel = [(HUAnnouncementsBrowserViewController *)self recordButtonLabel];
+  [recordButtonLabel setEnabled:1];
 }
 
-- (void)audioRecorderFailedToFinishRecording:(id)a3
+- (void)audioRecorderFailedToFinishRecording:(id)recording
 {
   [(HUAnnouncementsBrowserViewController *)self _submitAnalyticsForAnnounceRecordingCompletedSuccessfully:0 interruptedByUser:0];
 
   [(HUAnnouncementsBrowserViewController *)self _hideRecordingUI];
 }
 
-- (void)audioRecorderFinishedRecording:(id)a3 audioFile:(id)a4
+- (void)audioRecorderFinishedRecording:(id)recording audioFile:(id)file
 {
-  v14 = a4;
+  fileCopy = file;
   [(HUAnnouncementsBrowserViewController *)self _submitAnalyticsForAnnounceRecordingCompletedSuccessfully:1 interruptedByUser:0];
-  v5 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
-  [v5 currentRecordedDuration];
+  audioRecorder = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
+  [audioRecorder currentRecordedDuration];
   v7 = v6;
 
   if (v7 >= 0.5)
   {
-    [(HUAnnouncementsBrowserViewController *)self setRecordedAnnouncementURL:v14];
-    v8 = [(HUAnnouncementsBrowserViewController *)self recordButton];
-    [v8 setEnabled:1];
+    [(HUAnnouncementsBrowserViewController *)self setRecordedAnnouncementURL:fileCopy];
+    recordButton = [(HUAnnouncementsBrowserViewController *)self recordButton];
+    [recordButton setEnabled:1];
 
-    v9 = [(HUAnnouncementsBrowserViewController *)self audioWaveformView];
-    [v9 setAlpha:0.0];
+    audioWaveformView = [(HUAnnouncementsBrowserViewController *)self audioWaveformView];
+    [audioWaveformView setAlpha:0.0];
 
     [(HUAnnouncementsBrowserViewController *)self _sendAnnouncementReply:0];
     v10 = _HULocalizedStringWithDefaultValue(@"HUAnnounceRecordButton_AX_Label_Title", @"HUAnnounceRecordButton_AX_Label_Title", 1);
-    v11 = [(HUAnnouncementsBrowserViewController *)self recordButton];
-    [v11 setAccessibilityLabel:v10];
+    recordButton2 = [(HUAnnouncementsBrowserViewController *)self recordButton];
+    [recordButton2 setAccessibilityLabel:v10];
 
     v12 = _HULocalizedStringWithDefaultValue(@"HUAnnounceRecordButton_AX_Label_Hint", @"HUAnnounceRecordButton_AX_Label_Hint", 1);
-    v13 = [(HUAnnouncementsBrowserViewController *)self recordButton];
-    [v13 setAccessibilityHint:v12];
+    recordButton3 = [(HUAnnouncementsBrowserViewController *)self recordButton];
+    [recordButton3 setAccessibilityHint:v12];
   }
 
   else
@@ -2131,66 +2131,66 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
   }
 }
 
-- (void)didSelectItemWithInfo:(id)a3 totalNumberOfAnnouncements:(unint64_t)a4
+- (void)didSelectItemWithInfo:(id)info totalNumberOfAnnouncements:(unint64_t)announcements
 {
-  v29 = a3;
-  v6 = [(HUAnnouncementsBrowserViewController *)self largeTitleLabel];
-  v7 = [(HUAnnouncementsBrowserViewController *)self _announcerNameFromNotificationPayload:v29];
-  [v6 setText:v7];
+  infoCopy = info;
+  largeTitleLabel = [(HUAnnouncementsBrowserViewController *)self largeTitleLabel];
+  v7 = [(HUAnnouncementsBrowserViewController *)self _announcerNameFromNotificationPayload:infoCopy];
+  [largeTitleLabel setText:v7];
 
-  v8 = [(HUAnnouncementsBrowserViewController *)self subTitleLabel];
-  v9 = [v29 objectForKeyedSubscript:*MEMORY[0x277CEAAA0]];
-  [v8 setText:v9];
+  subTitleLabel = [(HUAnnouncementsBrowserViewController *)self subTitleLabel];
+  v9 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CEAAA0]];
+  [subTitleLabel setText:v9];
 
-  v10 = [v29 objectForKeyedSubscript:*MEMORY[0x277CEAA18]];
-  v11 = [v10 unsignedIntegerValue];
+  v10 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CEAA18]];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  v12 = [(HUAnnouncementsBrowserViewController *)self announcementProgressLabel];
-  v13 = v11 + 1;
-  v20 = HULocalizedStringWithFormat(@"HUAnnounceProgressLabel_Description", @"%lu %lu", v14, v15, v16, v17, v18, v19, v11 + 1);
-  [v12 setText:v20];
+  announcementProgressLabel = [(HUAnnouncementsBrowserViewController *)self announcementProgressLabel];
+  v13 = unsignedIntegerValue + 1;
+  v20 = HULocalizedStringWithFormat(@"HUAnnounceProgressLabel_Description", @"%lu %lu", v14, v15, v16, v17, v18, v19, unsignedIntegerValue + 1);
+  [announcementProgressLabel setText:v20];
 
-  v21 = [(HUAnnouncementsBrowserViewController *)self announcementProgressLabel];
-  [v21 setHidden:a4 == 1];
+  announcementProgressLabel2 = [(HUAnnouncementsBrowserViewController *)self announcementProgressLabel];
+  [announcementProgressLabel2 setHidden:announcements == 1];
 
-  v22 = [(HUAnnouncementsBrowserViewController *)self nextAnnouncementButton];
-  v23 = v22;
-  if (v13 >= a4)
+  nextAnnouncementButton = [(HUAnnouncementsBrowserViewController *)self nextAnnouncementButton];
+  v23 = nextAnnouncementButton;
+  if (v13 >= announcements)
   {
-    [v22 setEnabled:0];
+    [nextAnnouncementButton setEnabled:0];
   }
 
   else
   {
-    v24 = [(HUAnnouncementsBrowserViewController *)self announcementGlobeView];
-    [v23 setEnabled:{objc_msgSend(v24, "hasActivePlaybackSession")}];
+    announcementGlobeView = [(HUAnnouncementsBrowserViewController *)self announcementGlobeView];
+    [v23 setEnabled:{objc_msgSend(announcementGlobeView, "hasActivePlaybackSession")}];
   }
 
-  v25 = [(HUAnnouncementsBrowserViewController *)self nextAnnouncementButton];
-  v26 = v25;
-  if (a4 == 1)
+  nextAnnouncementButton2 = [(HUAnnouncementsBrowserViewController *)self nextAnnouncementButton];
+  v26 = nextAnnouncementButton2;
+  if (announcements == 1)
   {
-    [v25 setHidden:1];
+    [nextAnnouncementButton2 setHidden:1];
   }
 
   else
   {
-    v27 = [(HUAnnouncementsBrowserViewController *)self announcementGlobeView];
-    [v26 setHidden:{objc_msgSend(v27, "hasActivePlaybackSession") ^ 1}];
+    announcementGlobeView2 = [(HUAnnouncementsBrowserViewController *)self announcementGlobeView];
+    [v26 setHidden:{objc_msgSend(announcementGlobeView2, "hasActivePlaybackSession") ^ 1}];
   }
 
-  v28 = [v29 objectForKeyedSubscript:*MEMORY[0x277CEAAC8]];
+  v28 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CEAAC8]];
   [(HUAnnouncementsBrowserViewController *)self _applyTranscriptionText:v28];
 }
 
-- (void)accessoryDidUpdateReachability:(id)a3
+- (void)accessoryDidUpdateReachability:(id)reachability
 {
-  v7 = a3;
-  if ([v7 hf_isHomeMediaAccessory])
+  reachabilityCopy = reachability;
+  if ([reachabilityCopy hf_isHomeMediaAccessory])
   {
-    v4 = [v7 home];
-    v5 = [(HUAnnouncementsBrowserViewController *)self currentHome];
-    v6 = [v4 isEqual:v5];
+    home = [reachabilityCopy home];
+    currentHome = [(HUAnnouncementsBrowserViewController *)self currentHome];
+    v6 = [home isEqual:currentHome];
 
     if (v6)
     {
@@ -2199,14 +2199,14 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
   }
 }
 
-- (void)accessoryDidUpdateReachableTransports:(id)a3
+- (void)accessoryDidUpdateReachableTransports:(id)transports
 {
-  v7 = a3;
-  if ([v7 hf_isHomeMediaAccessory])
+  transportsCopy = transports;
+  if ([transportsCopy hf_isHomeMediaAccessory])
   {
-    v4 = [v7 home];
-    v5 = [(HUAnnouncementsBrowserViewController *)self currentHome];
-    v6 = [v4 isEqual:v5];
+    home = [transportsCopy home];
+    currentHome = [(HUAnnouncementsBrowserViewController *)self currentHome];
+    v6 = [home isEqual:currentHome];
 
     if (v6)
     {
@@ -2215,14 +2215,14 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
   }
 }
 
-- (void)accessoryDidUpdateControllable:(id)a3
+- (void)accessoryDidUpdateControllable:(id)controllable
 {
-  v7 = a3;
-  if ([v7 hf_isHomeMediaAccessory])
+  controllableCopy = controllable;
+  if ([controllableCopy hf_isHomeMediaAccessory])
   {
-    v4 = [v7 home];
-    v5 = [(HUAnnouncementsBrowserViewController *)self currentHome];
-    v6 = [v4 isEqual:v5];
+    home = [controllableCopy home];
+    currentHome = [(HUAnnouncementsBrowserViewController *)self currentHome];
+    v6 = [home isEqual:currentHome];
 
     if (v6)
     {
@@ -2231,48 +2231,48 @@ void __56__HUAnnouncementsBrowserViewController__hideRecordingUI__block_invoke_3
   }
 }
 
-- (void)_submitAnalyticsForAnnounceRecordingCompletedSuccessfully:(BOOL)a3 interruptedByUser:(BOOL)a4
+- (void)_submitAnalyticsForAnnounceRecordingCompletedSuccessfully:(BOOL)successfully interruptedByUser:(BOOL)user
 {
-  v4 = a3;
-  v6 = [(HUAnnouncementsBrowserViewController *)self notificationPayload:a3];
+  successfullyCopy = successfully;
+  v6 = [(HUAnnouncementsBrowserViewController *)self notificationPayload:successfully];
 
   if (v6)
   {
-    v7 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
-    v8 = [v7 recordingStopSource];
+    audioRecorder = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
+    recordingStopSource = [audioRecorder recordingStopSource];
 
-    v9 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
-    [v9 currentRecordedDuration];
+    audioRecorder2 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
+    [audioRecorder2 currentRecordedDuration];
     v11 = v10;
 
-    v12 = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
-    v25 = [v12 objectForKeyedSubscript:*MEMORY[0x277CEA768]];
+    notificationPayload = [(HUAnnouncementsBrowserViewController *)self notificationPayload];
+    v25 = [notificationPayload objectForKeyedSubscript:*MEMORY[0x277CEA768]];
 
     v13 = objc_opt_new();
     v14 = [MEMORY[0x277CCABB0] numberWithDouble:v11];
     [v13 setObject:v14 forKey:*MEMORY[0x277D13428]];
 
-    v15 = [MEMORY[0x277CCABB0] numberWithInt:!v4];
+    v15 = [MEMORY[0x277CCABB0] numberWithInt:!successfullyCopy];
     [v13 setObject:v15 forKey:*MEMORY[0x277D13430]];
 
     [v13 setObject:v25 forKey:*MEMORY[0x277D13420]];
-    v16 = [MEMORY[0x277CCABB0] numberWithInt:v8 == 0];
+    v16 = [MEMORY[0x277CCABB0] numberWithInt:recordingStopSource == 0];
     [v13 setObject:v16 forKey:*MEMORY[0x277D13458]];
 
-    v17 = [MEMORY[0x277CCABB0] numberWithInt:(v8 - 1) < 2];
+    v17 = [MEMORY[0x277CCABB0] numberWithInt:(recordingStopSource - 1) < 2];
     [v13 setObject:v17 forKey:*MEMORY[0x277D13450]];
 
-    v18 = [MEMORY[0x277CCABB0] numberWithInt:v8 == 3];
+    v18 = [MEMORY[0x277CCABB0] numberWithInt:recordingStopSource == 3];
     [v13 setObject:v18 forKey:*MEMORY[0x277D13448]];
 
-    v19 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
-    v20 = [v19 routeChangeReason];
+    audioRecorder3 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
+    routeChangeReason = [audioRecorder3 routeChangeReason];
 
-    if (v20)
+    if (routeChangeReason)
     {
-      v21 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
-      v22 = [v21 routeChangeReason];
-      [v13 setObject:v22 forKey:*MEMORY[0x277D13690]];
+      audioRecorder4 = [(HUAnnouncementsBrowserViewController *)self audioRecorder];
+      routeChangeReason2 = [audioRecorder4 routeChangeReason];
+      [v13 setObject:routeChangeReason2 forKey:*MEMORY[0x277D13690]];
     }
 
     [v13 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D13460]];

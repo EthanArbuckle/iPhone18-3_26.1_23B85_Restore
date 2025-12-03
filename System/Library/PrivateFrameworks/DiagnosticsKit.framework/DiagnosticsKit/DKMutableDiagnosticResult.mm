@@ -1,7 +1,7 @@
 @interface DKMutableDiagnosticResult
 - (DKMutableDiagnosticResult)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DKMutableDiagnosticResult
@@ -20,41 +20,41 @@
     data = v2->_data;
     v2->_data = MEMORY[0x277CBEC10];
 
-    v6 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     files = v2->_files;
-    v2->_files = v6;
+    v2->_files = array;
 
-    v8 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
     fileSandboxTokens = v2->_fileSandboxTokens;
-    v2->_fileSandboxTokens = v8;
+    v2->_fileSandboxTokens = array2;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [DKDiagnosticResult allocWithZone:a3];
+  v4 = [DKDiagnosticResult allocWithZone:zone];
 
   return [(DKDiagnosticResult *)v4 initWithMutableResult:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = DKMutableDiagnosticResult;
   v5 = [(DKDiagnosticResult *)&v11 mutableCopyWithZone:?];
-  v6 = [(NSDictionary *)self->_data mutableCopyWithZone:a3];
+  v6 = [(NSDictionary *)self->_data mutableCopyWithZone:zone];
   [v5 setData:v6];
 
-  v7 = [(NSArray *)self->_files mutableCopyWithZone:a3];
+  v7 = [(NSArray *)self->_files mutableCopyWithZone:zone];
   [v5 setFiles:v7];
 
-  v8 = [(NSArray *)self->_fileSandboxTokens mutableCopyWithZone:a3];
+  v8 = [(NSArray *)self->_fileSandboxTokens mutableCopyWithZone:zone];
   [v5 setFileSandboxTokens:v8];
 
   [v5 setStatusCode:self->_statusCode];
-  v9 = [(NSArray *)self->_uploadStatus mutableCopyWithZone:a3];
+  v9 = [(NSArray *)self->_uploadStatus mutableCopyWithZone:zone];
   [v5 setUploadStatus:v9];
 
   return v5;

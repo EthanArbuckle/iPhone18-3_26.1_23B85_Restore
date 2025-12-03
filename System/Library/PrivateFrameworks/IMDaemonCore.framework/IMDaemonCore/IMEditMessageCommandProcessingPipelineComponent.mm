@@ -1,30 +1,30 @@
 @interface IMEditMessageCommandProcessingPipelineComponent
-- (IMEditMessageCommandProcessingPipelineComponent)initWithPipelineResources:(id)a3;
+- (IMEditMessageCommandProcessingPipelineComponent)initWithPipelineResources:(id)resources;
 - (double)_messageEditReceivedTimeout;
-- (double)_messageRetractionReceivedTimeoutEnforcingExactTimeoutInterval:(BOOL)a3;
-- (double)_timeoutIntervalForEditType:(unint64_t)a3 enforceExactRetractionTimeoutInterval:(BOOL)a4;
+- (double)_messageRetractionReceivedTimeoutEnforcingExactTimeoutInterval:(BOOL)interval;
+- (double)_timeoutIntervalForEditType:(unint64_t)type enforceExactRetractionTimeoutInterval:(BOOL)interval;
 - (id)_account;
-- (id)_adaptiveImageGlyphFileTransferGUIDsInMessageItem:(id)a3;
-- (id)_applyEditsToMessage:(id)a3 preEditFullMessageText:(id)a4 editType:(unint64_t)a5 editedPartIndex:(int64_t)a6 editedMessagePartText:(id)a7 editedMessagePartTranslation:(id)a8 shouldRetractSubject:(BOOL)a9 editTimestamp:(id)a10;
+- (id)_adaptiveImageGlyphFileTransferGUIDsInMessageItem:(id)item;
+- (id)_applyEditsToMessage:(id)message preEditFullMessageText:(id)text editType:(unint64_t)type editedPartIndex:(int64_t)index editedMessagePartText:(id)partText editedMessagePartTranslation:(id)translation shouldRetractSubject:(BOOL)subject editTimestamp:(id)self0;
 - (id)_idsAccount;
 - (id)_messageStore;
-- (id)_storeEditedMessage:(id)a3 editedPartIndex:(int64_t)a4 editType:(unint64_t)a5 previousMessage:(id)a6 updateChats:(id)a7;
-- (id)runIndividuallyWithInput:(id)a3;
+- (id)_storeEditedMessage:(id)message editedPartIndex:(int64_t)index editType:(unint64_t)type previousMessage:(id)previousMessage updateChats:(id)chats;
+- (id)runIndividuallyWithInput:(id)input;
 - (int64_t)_messageEditHistoryLimit;
 @end
 
 @implementation IMEditMessageCommandProcessingPipelineComponent
 
-- (IMEditMessageCommandProcessingPipelineComponent)initWithPipelineResources:(id)a3
+- (IMEditMessageCommandProcessingPipelineComponent)initWithPipelineResources:(id)resources
 {
-  v5 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = IMEditMessageCommandProcessingPipelineComponent;
   v6 = [(IMEditMessageCommandProcessingPipelineComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pipelineResources, a3);
+    objc_storeStrong(&v6->_pipelineResources, resources);
   }
 
   return v7;
@@ -32,54 +32,54 @@
 
 - (id)_idsAccount
 {
-  v2 = [(IMEditMessageCommandProcessingPipelineComponent *)self pipelineResources];
-  v3 = [v2 imdAccount];
+  pipelineResources = [(IMEditMessageCommandProcessingPipelineComponent *)self pipelineResources];
+  imdAccount = [pipelineResources imdAccount];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 idsAccount];
+    idsAccount = [imdAccount idsAccount];
   }
 
   else
   {
-    v4 = 0;
+    idsAccount = 0;
   }
 
-  return v4;
+  return idsAccount;
 }
 
 - (id)_account
 {
-  v2 = [(IMEditMessageCommandProcessingPipelineComponent *)self pipelineResources];
-  v3 = [v2 imdAccount];
+  pipelineResources = [(IMEditMessageCommandProcessingPipelineComponent *)self pipelineResources];
+  imdAccount = [pipelineResources imdAccount];
 
-  return v3;
+  return imdAccount;
 }
 
 - (id)_messageStore
 {
-  v2 = [(IMEditMessageCommandProcessingPipelineComponent *)self pipelineResources];
-  v3 = [v2 messageStore];
+  pipelineResources = [(IMEditMessageCommandProcessingPipelineComponent *)self pipelineResources];
+  messageStore = [pipelineResources messageStore];
 
-  return v3;
+  return messageStore;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v123 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v95 = [v4 editCommandGUID];
-  v5 = [v4 editedMessageGUID];
+  inputCopy = input;
+  editCommandGUID = [inputCopy editCommandGUID];
+  editedMessageGUID = [inputCopy editedMessageGUID];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v114 = v95;
+      v114 = editCommandGUID;
       v115 = 2112;
-      v116 = v5;
+      v116 = editedMessageGUID;
       _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_INFO, "<IMEditMessageCommandProcessingPipelineComponent> Started processing for EditMessageCommand editCommandGUID: %@ editedMessageGUID: %@", buf, 0x16u);
     }
   }
@@ -92,19 +92,19 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v114 = v95;
+        v114 = editCommandGUID;
         _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "    Ignoring edit message command for message: %@", buf, 0xCu);
       }
     }
 
-    v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+    v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
     goto LABEL_73;
   }
 
-  if ([v5 length])
+  if ([editedMessageGUID length])
   {
-    v9 = [(IMEditMessageCommandProcessingPipelineComponent *)self _messageStore];
-    v10 = [v9 messageWithGUID:v5];
+    _messageStore = [(IMEditMessageCommandProcessingPipelineComponent *)self _messageStore];
+    v10 = [_messageStore messageWithGUID:editedMessageGUID];
 
     if (!v10)
     {
@@ -115,53 +115,53 @@
       }
 
       v32 = objc_alloc(MEMORY[0x277CCA9B8]);
-      v11 = [v32 initWithDomain:*MEMORY[0x277D18DF8] code:5 userInfo:0];
-      v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithError:v11];
+      body = [v32 initWithDomain:*MEMORY[0x277D18DF8] code:5 userInfo:0];
+      v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithError:body];
       goto LABEL_72;
     }
 
-    v11 = [v10 body];
-    if (!v11)
+    body = [v10 body];
+    if (!body)
     {
-      v12 = [v10 plainBody];
-      v13 = v12;
+      plainBody = [v10 plainBody];
+      v13 = plainBody;
       v14 = &stru_283F23018;
-      if (v12)
+      if (plainBody)
       {
-        v14 = v12;
+        v14 = plainBody;
       }
 
       v15 = v14;
 
-      v11 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v15];
+      body = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v15];
     }
 
-    v16 = [v10 sender];
-    v93 = [v16 _stripFZIDPrefix];
+    sender = [v10 sender];
+    _stripFZIDPrefix = [sender _stripFZIDPrefix];
 
-    v17 = [v4 idsTrustedData];
-    v18 = [v17 fromIdentifier];
-    v92 = [v18 _stripFZIDPrefix];
+    idsTrustedData = [inputCopy idsTrustedData];
+    fromIdentifier = [idsTrustedData fromIdentifier];
+    _stripFZIDPrefix2 = [fromIdentifier _stripFZIDPrefix];
 
-    v19 = [v4 idsTrustedData];
-    v20 = [v19 isFromMe];
+    idsTrustedData2 = [inputCopy idsTrustedData];
+    isFromMe = [idsTrustedData2 isFromMe];
 
-    v21 = [v10 isFromMe];
-    if ((v20 & v21 & 1) == 0 && ([v92 isEqualToString:v93] & 1) == 0)
+    isFromMe2 = [v10 isFromMe];
+    if ((isFromMe & isFromMe2 & 1) == 0 && ([_stripFZIDPrefix2 isEqualToString:_stripFZIDPrefix] & 1) == 0)
     {
       v35 = IMLogHandleForCategory();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413314;
-        v114 = v5;
+        v114 = editedMessageGUID;
         v115 = 2112;
-        v116 = v92;
+        v116 = _stripFZIDPrefix2;
         v117 = 2112;
-        v118 = v93;
+        v118 = _stripFZIDPrefix;
         v119 = 2048;
-        v120 = v21;
+        v120 = isFromMe2;
         v121 = 2048;
-        v122 = v20;
+        v122 = isFromMe;
         _os_log_error_impl(&dword_22B4CC000, v35, OS_LOG_TYPE_ERROR, "Not allowing message edit for guid %@. Edit sender %@, original sender %@, original isFromMe %ld, edit isFromMe %ld", buf, 0x34u);
       }
 
@@ -171,8 +171,8 @@
       goto LABEL_71;
     }
 
-    v22 = [(IMEditMessageCommandProcessingPipelineComponent *)self _messageStore];
-    v94 = [v22 chatsForMessageGUID:v5];
+    _messageStore2 = [(IMEditMessageCommandProcessingPipelineComponent *)self _messageStore];
+    v94 = [_messageStore2 chatsForMessageGUID:editedMessageGUID];
 
     if (IMOSLoggingEnabled())
     {
@@ -180,7 +180,7 @@
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v114 = v5;
+        v114 = editedMessageGUID;
         v115 = 2112;
         v116 = v94;
         _os_log_impl(&dword_22B4CC000, v23, OS_LOG_TYPE_INFO, "Found chats for messageID: %@  chats: %@", buf, 0x16u);
@@ -202,14 +202,14 @@
       goto LABEL_71;
     }
 
-    v90 = [v4 editedMessagePartBody];
-    v87 = [v4 editedMessagePartTranslation];
-    v84 = [v4 editedMessagePartIndex];
-    v24 = [v4 editType];
-    v88 = [v4 editedMessagePartFileTransferGUIDs];
-    v81 = [v4 shouldRetractMessageSubject];
-    v25 = [v4 hasEditTypeAndPartIndex];
-    if ((v24 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+    editedMessagePartBody = [inputCopy editedMessagePartBody];
+    editedMessagePartTranslation = [inputCopy editedMessagePartTranslation];
+    editedMessagePartIndex = [inputCopy editedMessagePartIndex];
+    editType = [inputCopy editType];
+    editedMessagePartFileTransferGUIDs = [inputCopy editedMessagePartFileTransferGUIDs];
+    shouldRetractMessageSubject = [inputCopy shouldRetractMessageSubject];
+    hasEditTypeAndPartIndex = [inputCopy hasEditTypeAndPartIndex];
+    if ((editType - 3) <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v26 = IMLogHandleForCategory();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -223,15 +223,15 @@
       goto LABEL_70;
     }
 
-    v37 = v25;
+    v37 = hasEditTypeAndPartIndex;
     v38 = MEMORY[0x277CBEAA8];
-    v39 = [v4 timestamp];
-    v89 = [v38 __im_iMessageDateFromTimeStamp:v39];
+    timestamp = [inputCopy timestamp];
+    v89 = [v38 __im_iMessageDateFromTimeStamp:timestamp];
 
-    v85 = [v10 time];
-    [v89 timeIntervalSinceDate:v85];
+    time = [v10 time];
+    [v89 timeIntervalSinceDate:time];
     v41 = v40;
-    [(IMEditMessageCommandProcessingPipelineComponent *)self _timeoutIntervalForEditType:v24 enforceExactRetractionTimeoutInterval:v37 ^ 1u];
+    [(IMEditMessageCommandProcessingPipelineComponent *)self _timeoutIntervalForEditType:editType enforceExactRetractionTimeoutInterval:v37 ^ 1u];
     v42 = fabs(v41);
     if (v42 > v43)
     {
@@ -244,22 +244,22 @@
         v115 = 2048;
         v116 = v73;
         v117 = 2112;
-        v118 = v85;
+        v118 = time;
         v119 = 2112;
         v120 = v89;
         _os_log_error_impl(&dword_22B4CC000, v44, OS_LOG_TYPE_ERROR, "Unable to apply edits, message edit timestamp exceeds maximum receive timeout. TimeBetweenOriginalAndEdit: %ld, MaximumInterval: %ld, OriginalDate: %@, EditedDate: %@", buf, 0x2Au);
       }
 
       v45 = objc_alloc(MEMORY[0x277CCA9B8]);
-      v86 = [v45 initWithDomain:*MEMORY[0x277D18DF8] code:14 userInfo:0];
-      v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithError:v86];
+      dateEdited = [v45 initWithDomain:*MEMORY[0x277D18DF8] code:14 userInfo:0];
+      v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithError:dateEdited];
       goto LABEL_69;
     }
 
-    v86 = [v10 dateEdited];
-    if (v86)
+    dateEdited = [v10 dateEdited];
+    if (dateEdited)
     {
-      if ([v86 compare:v89] == 1)
+      if ([dateEdited compare:v89] == 1)
       {
         v46 = IMLogHandleForCategory();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
@@ -282,28 +282,28 @@
           *buf = 138412546;
           v114 = v89;
           v115 = 2112;
-          v116 = v86;
+          v116 = dateEdited;
           _os_log_impl(&dword_22B4CC000, v48, OS_LOG_TYPE_INFO, "Message has already been edited, processing newer edit. ThisEdit: %@, DateOfLastEdit: %@", buf, 0x16u);
         }
       }
     }
 
-    v80 = [v10 historyForMessagePart:v84];
-    v77 = [v80 lastObject];
-    v78 = [v77 dateSent];
-    if (v78)
+    v80 = [v10 historyForMessagePart:editedMessagePartIndex];
+    lastObject = [v80 lastObject];
+    dateSent = [lastObject dateSent];
+    if (dateSent)
     {
-      if ([v78 compare:v89] == 1)
+      if ([dateSent compare:v89] == 1)
       {
         v49 = IMLogHandleForCategory();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
         {
           *buf = 134218498;
-          v114 = v84;
+          v114 = editedMessagePartIndex;
           v115 = 2112;
           v116 = v89;
           v117 = 2112;
-          v118 = v78;
+          v118 = dateSent;
           _os_log_error_impl(&dword_22B4CC000, v49, OS_LOG_TYPE_ERROR, "Unable to apply edits, message edit is older than previously processed edit for message part %ld. ThisEdit: %@, DateOfLastEdit: %@", buf, 0x20u);
         }
 
@@ -321,14 +321,14 @@
           *buf = 138412546;
           v114 = v89;
           v115 = 2112;
-          v116 = v78;
+          v116 = dateSent;
           _os_log_impl(&dword_22B4CC000, v52, OS_LOG_TYPE_INFO, "Message part has already been edited, processing newer edit. ThisEdit: %@, DateOfLastPartEdit: %@", buf, 0x16u);
         }
       }
     }
 
-    v53 = [(IMEditMessageCommandProcessingPipelineComponent *)self _messageEditHistoryLimit];
-    if ([v80 count] > v53 && v24 == 1)
+    _messageEditHistoryLimit = [(IMEditMessageCommandProcessingPipelineComponent *)self _messageEditHistoryLimit];
+    if ([v80 count] > _messageEditHistoryLimit && editType == 1)
     {
       v54 = IMLogHandleForCategory();
       if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
@@ -339,16 +339,16 @@
 
     else
     {
-      if (v24 != 1 || [v90 length])
+      if (editType != 1 || [editedMessagePartBody length])
       {
-        if ([v88 count])
+        if ([editedMessagePartFileTransferGUIDs count])
         {
           v83 = [(IMEditMessageCommandProcessingPipelineComponent *)self _adaptiveImageGlyphFileTransferGUIDsInMessageItem:v10];
           v110 = 0u;
           v111 = 0u;
           v108 = 0u;
           v109 = 0u;
-          obj = v88;
+          obj = editedMessagePartFileTransferGUIDs;
           v58 = [obj countByEnumeratingWithState:&v108 objects:v112 count:16];
           if (v58)
           {
@@ -390,29 +390,29 @@
           }
         }
 
-        if (v24 == 2)
+        if (editType == 2)
         {
           v61 = objc_alloc_init(MEMORY[0x277D669B0]);
           [v61 deleteSnapshotsForApplicationIdentifier:@"com.apple.MobileSMS"];
           [v61 invalidate];
         }
 
-        LOBYTE(v74) = v81;
-        v83 = [(IMEditMessageCommandProcessingPipelineComponent *)self _applyEditsToMessage:v10 preEditFullMessageText:v11 editType:v24 editedPartIndex:v84 editedMessagePartText:v90 editedMessagePartTranslation:v87 shouldRetractSubject:v74 editTimestamp:v89];
-        v82 = [v94 firstObject];
+        LOBYTE(v74) = shouldRetractMessageSubject;
+        v83 = [(IMEditMessageCommandProcessingPipelineComponent *)self _applyEditsToMessage:v10 preEditFullMessageText:body editType:editType editedPartIndex:editedMessagePartIndex editedMessagePartText:editedMessagePartBody editedMessagePartTranslation:editedMessagePartTranslation shouldRetractSubject:v74 editTimestamp:v89];
+        firstObject = [v94 firstObject];
         v8 = objc_opt_new();
-        if (v24 == 1 && [v82 isAutomaticallyTranslating])
+        if (editType == 1 && [firstObject isAutomaticallyTranslating])
         {
-          v62 = [v83 messageParts];
+          messageParts = [v83 messageParts];
           v106[0] = MEMORY[0x277D85DD0];
           v106[1] = 3221225472;
           v106[2] = sub_22B658DB8;
           v106[3] = &unk_278707150;
           v63 = v83;
           v107 = v63;
-          [v62 enumerateObjectsUsingBlock:v106];
+          [messageParts enumerateObjectsUsingBlock:v106];
 
-          obja = [[IMDIncomingMessageTranslator alloc] initWithChat:v82];
+          obja = [[IMDIncomingMessageTranslator alloc] initWithChat:firstObject];
           [(IMDIncomingMessageTranslator *)obja beginProcessingMessage:v63];
           v96[0] = MEMORY[0x277D85DD0];
           v96[1] = 3221225472;
@@ -420,13 +420,13 @@
           v96[3] = &unk_278707178;
           v96[4] = self;
           v97 = v63;
-          v104 = v84;
+          v104 = editedMessagePartIndex;
           v105 = 1;
           v98 = v10;
           v99 = v94;
-          v100 = v5;
-          v101 = v4;
-          v102 = v82;
+          v100 = editedMessageGUID;
+          v101 = inputCopy;
+          v102 = firstObject;
           v64 = v8;
           v103 = v64;
           [(IMDIncomingMessageTranslator *)obja finishProcessingMessage:v97 completion:v96];
@@ -437,23 +437,23 @@
 
         else
         {
-          v66 = [(IMEditMessageCommandProcessingPipelineComponent *)self _storeEditedMessage:v83 editedPartIndex:v84 editType:v24 previousMessage:v10 updateChats:v94];
+          v66 = [(IMEditMessageCommandProcessingPipelineComponent *)self _storeEditedMessage:v83 editedPartIndex:editedMessagePartIndex editType:editType previousMessage:v10 updateChats:v94];
           if (IMOSLoggingEnabled())
           {
             v67 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v67, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v114 = v5;
+              v114 = editedMessageGUID;
               _os_log_impl(&dword_22B4CC000, v67, OS_LOG_TYPE_INFO, "Successfully edited message with GUID=%@", buf, 0xCu);
             }
           }
 
-          [v4 setChat:v82];
+          [inputCopy setChat:firstObject];
           v68 = [v66 copy];
-          [v4 setMessageItems:v68];
+          [inputCopy setMessageItems:v68];
 
-          [v8 fullfillWithValue:v4];
+          [v8 fullfillWithValue:inputCopy];
           v69 = v8;
         }
 
@@ -499,29 +499,29 @@ LABEL_73:
   return v8;
 }
 
-- (id)_applyEditsToMessage:(id)a3 preEditFullMessageText:(id)a4 editType:(unint64_t)a5 editedPartIndex:(int64_t)a6 editedMessagePartText:(id)a7 editedMessagePartTranslation:(id)a8 shouldRetractSubject:(BOOL)a9 editTimestamp:(id)a10
+- (id)_applyEditsToMessage:(id)message preEditFullMessageText:(id)text editType:(unint64_t)type editedPartIndex:(int64_t)index editedMessagePartText:(id)partText editedMessagePartTranslation:(id)translation shouldRetractSubject:(BOOL)subject editTimestamp:(id)self0
 {
   v39 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v36 = a4;
-  v34 = a7;
-  v33 = a8;
-  v16 = a10;
-  v35 = [v15 guid];
+  messageCopy = message;
+  textCopy = text;
+  partTextCopy = partText;
+  translationCopy = translation;
+  timestampCopy = timestamp;
+  guid = [messageCopy guid];
   if (IMOSLoggingEnabled())
   {
     v17 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v38 = v35;
+      v38 = guid;
       _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "Applying edits to the content of message: %@", buf, 0xCu);
     }
   }
 
-  v18 = [v15 copyWithFlags:{objc_msgSend(v15, "flags")}];
-  [v18 _setMessageID:{objc_msgSend(v15, "messageID")}];
-  switch(a5)
+  v18 = [messageCopy copyWithFlags:{objc_msgSend(messageCopy, "flags")}];
+  [v18 _setMessageID:{objc_msgSend(messageCopy, "messageID")}];
+  switch(type)
   {
     case 0uLL:
       v20 = IMLogHandleForCategory();
@@ -533,42 +533,42 @@ LABEL_73:
       v19 = 0;
       goto LABEL_19;
     case 2uLL:
-      v19 = [v36 __im_messageTextByRemovingMessagePartIndex:a6];
-      [v18 addRetractedPartIndex:a6];
-      if (a9)
+      v19 = [textCopy __im_messageTextByRemovingMessagePartIndex:index];
+      [v18 addRetractedPartIndex:index];
+      if (subject)
       {
         [v18 setSubject:0];
       }
 
-      v20 = [v36 __im_messagePartMatchingPartIndex:a6];
-      v26 = [v20 transferGUID];
-      if ([v26 length])
+      v20 = [textCopy __im_messagePartMatchingPartIndex:index];
+      transferGUID = [v20 transferGUID];
+      if ([transferGUID length])
       {
-        v27 = [v15 fileTransferGUIDs];
-        v28 = [v27 mutableCopy];
+        fileTransferGUIDs = [messageCopy fileTransferGUIDs];
+        v28 = [fileTransferGUIDs mutableCopy];
 
-        [v28 removeObject:v26];
+        [v28 removeObject:transferGUID];
         v29 = [v28 copy];
         [v18 setFileTransferGUIDs:v29];
       }
 
       goto LABEL_19;
     case 1uLL:
-      v19 = [v36 __im_messageTextByReplacingMessagePartIndex:a6 withNewPartText:v34];
-      v20 = [v15 translationsForMessagePart:a6];
+      v19 = [textCopy __im_messageTextByReplacingMessagePartIndex:index withNewPartText:partTextCopy];
+      v20 = [messageCopy translationsForMessagePart:index];
       if ([v20 count])
       {
-        v32 = [v20 firstObject];
-        v21 = [objc_alloc(MEMORY[0x277D1ACB0]) initWithDictionaryRepresentation:v32];
+        firstObject = [v20 firstObject];
+        v21 = [objc_alloc(MEMORY[0x277D1ACB0]) initWithDictionaryRepresentation:firstObject];
         v22 = objc_alloc(MEMORY[0x277D1ACB0]);
-        v23 = [v21 sourceLanguage];
-        v24 = [v21 translationLanguage];
-        v25 = [v22 initWithSourceLanguage:v23 translationLanguage:v24 translatedText:v33];
+        sourceLanguage = [v21 sourceLanguage];
+        translationLanguage = [v21 translationLanguage];
+        v25 = [v22 initWithSourceLanguage:sourceLanguage translationLanguage:translationLanguage translatedText:translationCopy];
 
-        [v18 addTranslation:v25 forMessagePart:a6];
+        [v18 addTranslation:v25 forMessagePart:index];
       }
 
-      [v18 addEditedPartIndex:a6];
+      [v18 addEditedPartIndex:index];
 LABEL_19:
 
       goto LABEL_21;
@@ -578,34 +578,34 @@ LABEL_19:
 LABEL_21:
   [v18 setBody:v19];
   [v18 setPlainBody:0];
-  [v18 setDateEdited:v16];
+  [v18 setDateEdited:timestampCopy];
 
   v30 = *MEMORY[0x277D85DE8];
 
   return v18;
 }
 
-- (id)_storeEditedMessage:(id)a3 editedPartIndex:(int64_t)a4 editType:(unint64_t)a5 previousMessage:(id)a6 updateChats:(id)a7
+- (id)_storeEditedMessage:(id)message editedPartIndex:(int64_t)index editType:(unint64_t)type previousMessage:(id)previousMessage updateChats:(id)chats
 {
   v37 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  messageCopy = message;
+  previousMessageCopy = previousMessage;
+  chatsCopy = chats;
   v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v15 = [(IMEditMessageCommandProcessingPipelineComponent *)self pipelineResources];
-  v16 = [v15 messageStore];
+  pipelineResources = [(IMEditMessageCommandProcessingPipelineComponent *)self pipelineResources];
+  messageStore = [pipelineResources messageStore];
 
-  v17 = [v14 firstObject];
+  firstObject = [chatsCopy firstObject];
   v35 = 0;
-  v30 = v12;
-  v18 = [v16 storeEditedMessage:v12 editedPartIndex:a4 editType:a5 previousMessage:v13 chat:v17 updatedAssociatedMessageItems:&v35];
+  v30 = messageCopy;
+  v18 = [messageStore storeEditedMessage:messageCopy editedPartIndex:index editType:type previousMessage:previousMessageCopy chat:firstObject updatedAssociatedMessageItems:&v35];
   v19 = v35;
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v20 = v14;
+  v20 = chatsCopy;
   v21 = [v20 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v21)
   {
@@ -646,18 +646,18 @@ LABEL_21:
   return v29;
 }
 
-- (id)_adaptiveImageGlyphFileTransferGUIDsInMessageItem:(id)a3
+- (id)_adaptiveImageGlyphFileTransferGUIDsInMessageItem:(id)item
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = +[IMDFileTransferCenter sharedInstance];
-  v6 = [v3 fileTransferGUIDs];
+  fileTransferGUIDs = [itemCopy fileTransferGUIDs];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [fileTransferGUIDs countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -668,7 +668,7 @@ LABEL_21:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(fileTransferGUIDs);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -679,7 +679,7 @@ LABEL_21:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [fileTransferGUIDs countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -692,14 +692,14 @@ LABEL_21:
   return v13;
 }
 
-- (double)_timeoutIntervalForEditType:(unint64_t)a3 enforceExactRetractionTimeoutInterval:(BOOL)a4
+- (double)_timeoutIntervalForEditType:(unint64_t)type enforceExactRetractionTimeoutInterval:(BOOL)interval
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     MEMORY[0x2821F9670](self, sel__messageRetractionReceivedTimeoutEnforcingExactTimeoutInterval_);
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
     MEMORY[0x2821F9670](self, sel__messageEditReceivedTimeout);
   }
@@ -780,10 +780,10 @@ LABEL_21:
   return v6;
 }
 
-- (double)_messageRetractionReceivedTimeoutEnforcingExactTimeoutInterval:(BOOL)a3
+- (double)_messageRetractionReceivedTimeoutEnforcingExactTimeoutInterval:(BOOL)interval
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (interval)
   {
     v3 = MEMORY[0x277D19FD8];
   }

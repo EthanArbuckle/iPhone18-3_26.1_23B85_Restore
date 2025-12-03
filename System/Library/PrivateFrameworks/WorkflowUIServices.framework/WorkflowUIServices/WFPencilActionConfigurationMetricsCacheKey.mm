@@ -1,8 +1,8 @@
 @interface WFPencilActionConfigurationMetricsCacheKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)screenSize;
-- (WFPencilActionConfigurationMetricsCacheKey)initWithInterfaceOrientation:(int64_t)a3 screenSize:(CGSize)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFPencilActionConfigurationMetricsCacheKey)initWithInterfaceOrientation:(int64_t)orientation screenSize:(CGSize)size;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -17,24 +17,24 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [WFPencilActionConfigurationMetricsCacheKey alloc];
-  v5 = [(WFPencilActionConfigurationMetricsCacheKey *)self interfaceOrientation];
+  interfaceOrientation = [(WFPencilActionConfigurationMetricsCacheKey *)self interfaceOrientation];
   [(WFPencilActionConfigurationMetricsCacheKey *)self screenSize];
 
-  return [(WFPencilActionConfigurationMetricsCacheKey *)v4 initWithInterfaceOrientation:v5 screenSize:?];
+  return [(WFPencilActionConfigurationMetricsCacheKey *)v4 initWithInterfaceOrientation:interfaceOrientation screenSize:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -55,8 +55,8 @@
   [v6 screenSize];
   if (v8 == v12 && v10 == v11)
   {
-    v15 = [(WFPencilActionConfigurationMetricsCacheKey *)self interfaceOrientation];
-    v14 = v15 == [v6 interfaceOrientation];
+    interfaceOrientation = [(WFPencilActionConfigurationMetricsCacheKey *)self interfaceOrientation];
+    v14 = interfaceOrientation == [v6 interfaceOrientation];
   }
 
   else
@@ -77,15 +77,15 @@
   [(WFPencilActionConfigurationMetricsCacheKey *)self screenSize];
   v8 = [v6 numberWithDouble:v7];
   v9 = [v8 hash] ^ v5;
-  v10 = [(WFPencilActionConfigurationMetricsCacheKey *)self interfaceOrientation];
+  interfaceOrientation = [(WFPencilActionConfigurationMetricsCacheKey *)self interfaceOrientation];
 
-  return v9 ^ v10;
+  return v9 ^ interfaceOrientation;
 }
 
-- (WFPencilActionConfigurationMetricsCacheKey)initWithInterfaceOrientation:(int64_t)a3 screenSize:(CGSize)a4
+- (WFPencilActionConfigurationMetricsCacheKey)initWithInterfaceOrientation:(int64_t)orientation screenSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v11.receiver = self;
   v11.super_class = WFPencilActionConfigurationMetricsCacheKey;
   v7 = [(WFPencilActionConfigurationMetricsCacheKey *)&v11 init];
@@ -94,7 +94,7 @@
   {
     v7->_screenSize.width = width;
     v7->_screenSize.height = height;
-    v7->_interfaceOrientation = a3;
+    v7->_interfaceOrientation = orientation;
     v9 = v7;
   }
 

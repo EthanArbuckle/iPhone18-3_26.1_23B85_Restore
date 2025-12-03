@@ -1,18 +1,18 @@
 @interface DEAttachmentItem
-+ (id)attachmentWithPath:(id)a3;
-+ (id)attachmentWithPath:(id)a3 withDisplayName:(id)a4 modificationDate:(id)a5 andFilesize:(id)a6;
-+ (id)attachmentWithPathURL:(id)a3;
++ (id)attachmentWithPath:(id)path;
++ (id)attachmentWithPath:(id)path withDisplayName:(id)name modificationDate:(id)date andFilesize:(id)filesize;
++ (id)attachmentWithPathURL:(id)l;
 - (DEAttachmentItem)init;
-- (DEAttachmentItem)initWithCoder:(id)a3;
-- (DEAttachmentItem)initWithPath:(id)a3;
-- (DEAttachmentItem)initWithPath:(id)a3 withDisplayName:(id)a4 modificationDate:(id)a5 andFilesize:(id)a6;
-- (DEAttachmentItem)initWithPathURL:(id)a3 shouldCheckURLAttributes:(BOOL)a4;
-- (id)attachToDestinationDir:(id)a3;
+- (DEAttachmentItem)initWithCoder:(id)coder;
+- (DEAttachmentItem)initWithPath:(id)path;
+- (DEAttachmentItem)initWithPath:(id)path withDisplayName:(id)name modificationDate:(id)date andFilesize:(id)filesize;
+- (DEAttachmentItem)initWithPathURL:(id)l shouldCheckURLAttributes:(BOOL)attributes;
+- (id)attachToDestinationDir:(id)dir;
 - (id)description;
-- (id)sandboxExtensionHandleWithErrorOut:(id *)a3;
-- (void)_generateSandboxExtensionTokenForPID:(int)a3;
+- (id)sandboxExtensionHandleWithErrorOut:(id *)out;
+- (void)_generateSandboxExtensionTokenForPID:(int)d;
 - (void)detach;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DEAttachmentItem
@@ -54,25 +54,25 @@
   return v3;
 }
 
-- (DEAttachmentItem)initWithPath:(id)a3
+- (DEAttachmentItem)initWithPath:(id)path
 {
-  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3];
+  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:path];
   v5 = [(DEAttachmentItem *)self initWithPathURL:v4];
 
   return v5;
 }
 
-- (DEAttachmentItem)initWithPathURL:(id)a3 shouldCheckURLAttributes:(BOOL)a4
+- (DEAttachmentItem)initWithPathURL:(id)l shouldCheckURLAttributes:(BOOL)attributes
 {
-  v4 = a4;
+  attributesCopy = attributes;
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  lCopy = l;
   v36 = 0;
-  v7 = [v6 checkResourceIsReachableAndReturnError:&v36];
+  v7 = [lCopy checkResourceIsReachableAndReturnError:&v36];
   v8 = v36;
   if (!v7)
   {
-    if (!v4)
+    if (!attributesCopy)
     {
 LABEL_20:
       v15 = 0;
@@ -92,13 +92,13 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v4)
+  if (!attributesCopy)
   {
     v20 = +[DELogging fwHandle];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v38 = v6;
+      v38 = lCopy;
       _os_log_impl(&dword_248AB3000, v20, OS_LOG_TYPE_DEFAULT, "Not checking attributes on %{public}@", buf, 0xCu);
     }
 
@@ -108,7 +108,7 @@ LABEL_19:
   v35 = 0;
   v9 = *MEMORY[0x277CBE7B0];
   v34 = 0;
-  [v6 getResourceValue:&v35 forKey:v9 error:&v34];
+  [lCopy getResourceValue:&v35 forKey:v9 error:&v34];
   v10 = v35;
   v11 = v34;
   if (v11)
@@ -124,7 +124,7 @@ LABEL_19:
   v33 = 0;
   v14 = *MEMORY[0x277CBE868];
   v32 = 0;
-  [v6 getResourceValue:&v33 forKey:v14 error:&v32];
+  [lCopy getResourceValue:&v33 forKey:v14 error:&v32];
   v15 = v33;
   v16 = v32;
   if (v16)
@@ -139,7 +139,7 @@ LABEL_19:
 
   if (v15 && [v15 BOOLValue])
   {
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{+[DEUtils getDirectorySize:](DEUtils, "getDirectorySize:", v6)}];
+    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{+[DEUtils getDirectorySize:](DEUtils, "getDirectorySize:", lCopy)}];
   }
 
   else
@@ -147,7 +147,7 @@ LABEL_19:
     v31 = 0;
     v26 = *MEMORY[0x277CBE838];
     v30 = 0;
-    [v6 getResourceValue:&v31 forKey:v26 error:&v30];
+    [lCopy getResourceValue:&v31 forKey:v26 error:&v30];
     v19 = v31;
     v27 = v30;
     if (v27)
@@ -166,7 +166,7 @@ LABEL_21:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v38 = v6;
+    v38 = lCopy;
     v39 = 2112;
     v40 = v10;
     v41 = 2112;
@@ -174,27 +174,27 @@ LABEL_21:
     _os_log_impl(&dword_248AB3000, v21, OS_LOG_TYPE_DEFAULT, "New attachment at path: [%{public}@] mod date: %@ size: %@", buf, 0x20u);
   }
 
-  v22 = [v6 lastPathComponent];
-  v23 = [(DEAttachmentItem *)self initWithPath:v6 withDisplayName:v22 modificationDate:v10 andFilesize:v19];
+  lastPathComponent = [lCopy lastPathComponent];
+  v23 = [(DEAttachmentItem *)self initWithPath:lCopy withDisplayName:lastPathComponent modificationDate:v10 andFilesize:v19];
 
   v24 = *MEMORY[0x277D85DE8];
   return v23;
 }
 
-- (void)_generateSandboxExtensionTokenForPID:(int)a3
+- (void)_generateSandboxExtensionTokenForPID:(int)d
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = [(DEAttachmentItem *)self deleteOnAttach];
-  [v5 BOOLValue];
+  deleteOnAttach = [(DEAttachmentItem *)self deleteOnAttach];
+  [deleteOnAttach BOOLValue];
 
-  v6 = [(DEAttachmentItem *)self path];
-  v7 = [v6 fileSystemRepresentation];
+  path = [(DEAttachmentItem *)self path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
-  if (v7)
+  if (fileSystemRepresentation)
   {
-    v8 = [(DEAttachmentItem *)self path];
+    path2 = [(DEAttachmentItem *)self path];
     v34 = 0;
-    v9 = [v8 checkResourceIsReachableAndReturnError:&v34];
+    v9 = [path2 checkResourceIsReachableAndReturnError:&v34];
     v10 = v34;
 
     if (v9)
@@ -207,20 +207,20 @@ LABEL_21:
       {
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
         {
-          v27 = [(DEAttachmentItem *)self deleteOnAttach];
-          v28 = [v27 BOOLValue];
+          deleteOnAttach2 = [(DEAttachmentItem *)self deleteOnAttach];
+          bOOLValue = [deleteOnAttach2 BOOLValue];
           v29 = "R";
           *buf = 136315650;
-          if (v28)
+          if (bOOLValue)
           {
             v29 = "RW";
           }
 
           v36 = v29;
           v37 = 2082;
-          v38 = v7;
+          v38 = fileSystemRepresentation;
           v39 = 1024;
-          v40 = a3;
+          dCopy2 = d;
           _os_log_debug_impl(&dword_248AB3000, v14, OS_LOG_TYPE_DEBUG, "Granted %s sandbox extension for attachment item '%{public}s' to process with PID: %d.", buf, 0x1Cu);
         }
 
@@ -236,8 +236,8 @@ LABEL_6:
 
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v30 = [(DEAttachmentItem *)self deleteOnAttach];
-        if ([v30 BOOLValue])
+        deleteOnAttach3 = [(DEAttachmentItem *)self deleteOnAttach];
+        if ([deleteOnAttach3 BOOLValue])
         {
           v31 = "RW";
         }
@@ -252,18 +252,18 @@ LABEL_6:
         *buf = 136315906;
         v36 = v31;
         v37 = 2082;
-        v38 = v7;
+        v38 = fileSystemRepresentation;
         v39 = 1024;
-        v40 = a3;
+        dCopy2 = d;
         v41 = 2080;
         v42 = v33;
         _os_log_error_impl(&dword_248AB3000, v14, OS_LOG_TYPE_ERROR, "Failed to grant %s sandbox extension for attachment item '%{public}s' for PID: %d with error: %s. This DiagnosticExtension may not have appropriate access to the specified item.", buf, 0x26u);
       }
 
-      v20 = [(DEAttachmentItem *)self deleteOnAttach];
-      v21 = [v20 BOOLValue];
+      deleteOnAttach4 = [(DEAttachmentItem *)self deleteOnAttach];
+      bOOLValue2 = [deleteOnAttach4 BOOLValue];
 
-      if (v21)
+      if (bOOLValue2)
       {
         v22 = sandbox_extension_issue_file_to_process_by_pid();
         v23 = +[DELogging fwHandle];
@@ -295,7 +295,7 @@ LABEL_6:
       v18 = +[DELogging fwHandle];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        [(DEAttachmentItem *)v7 _generateSandboxExtensionTokenForPID:v10];
+        [(DEAttachmentItem *)fileSystemRepresentation _generateSandboxExtensionTokenForPID:v10];
       }
     }
   }
@@ -314,22 +314,22 @@ LABEL_12:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (DEAttachmentItem)initWithPath:(id)a3 withDisplayName:(id)a4 modificationDate:(id)a5 andFilesize:(id)a6
+- (DEAttachmentItem)initWithPath:(id)path withDisplayName:(id)name modificationDate:(id)date andFilesize:(id)filesize
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  pathCopy = path;
+  dateCopy = date;
+  filesizeCopy = filesize;
   v13 = [(DEAttachmentItem *)self init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_path, a3);
-    v15 = [v10 lastPathComponent];
+    objc_storeStrong(&v13->_path, path);
+    lastPathComponent = [pathCopy lastPathComponent];
     displayName = v14->_displayName;
-    v14->_displayName = v15;
+    v14->_displayName = lastPathComponent;
 
-    objc_storeStrong(&v14->_modificationDate, a5);
-    objc_storeStrong(&v14->_filesize, a6);
+    objc_storeStrong(&v14->_modificationDate, date);
+    objc_storeStrong(&v14->_filesize, filesize);
     attachmentType = v14->_attachmentType;
     v14->_attachmentType = @"DEAttachmentTypeItem";
   }
@@ -337,39 +337,39 @@ LABEL_12:
   return v14;
 }
 
-- (DEAttachmentItem)initWithCoder:(id)a3
+- (DEAttachmentItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DEAttachmentItem *)self init];
-  v6 = [v4 decodeObjectForKey:@"DisplayName"];
+  v6 = [coderCopy decodeObjectForKey:@"DisplayName"];
   displayName = v5->_displayName;
   v5->_displayName = v6;
 
-  v8 = [v4 decodeObjectForKey:@"Path"];
+  v8 = [coderCopy decodeObjectForKey:@"Path"];
   path = v5->_path;
   v5->_path = v8;
 
-  v10 = [v4 decodeObjectForKey:@"ShouldCompress"];
+  v10 = [coderCopy decodeObjectForKey:@"ShouldCompress"];
   shouldCompress = v5->_shouldCompress;
   v5->_shouldCompress = v10;
 
-  v12 = [v4 decodeObjectForKey:@"ModificationDate"];
+  v12 = [coderCopy decodeObjectForKey:@"ModificationDate"];
   modificationDate = v5->_modificationDate;
   v5->_modificationDate = v12;
 
-  v14 = [v4 decodeObjectForKey:@"AttachedPath"];
+  v14 = [coderCopy decodeObjectForKey:@"AttachedPath"];
   attachedPath = v5->_attachedPath;
   v5->_attachedPath = v14;
 
-  v16 = [v4 decodeObjectForKey:@"AttachmentType"];
+  v16 = [coderCopy decodeObjectForKey:@"AttachmentType"];
   attachmentType = v5->_attachmentType;
   v5->_attachmentType = v16;
 
-  v18 = [v4 decodeObjectForKey:@"DeleteOnAttach"];
+  v18 = [coderCopy decodeObjectForKey:@"DeleteOnAttach"];
   deleteOnAttach = v5->_deleteOnAttach;
   v5->_deleteOnAttach = v18;
 
-  v20 = [v4 decodeObjectForKey:@"SandboxExtensionToken"];
+  v20 = [coderCopy decodeObjectForKey:@"SandboxExtensionToken"];
 
   sandboxExtensionToken = v5->__sandboxExtensionToken;
   v5->__sandboxExtensionToken = v20;
@@ -377,111 +377,111 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   path = self->_path;
-  v5 = a3;
-  [v5 encodeObject:path forKey:@"Path"];
-  [v5 encodeObject:self->_displayName forKey:@"DisplayName"];
-  [v5 encodeObject:self->_shouldCompress forKey:@"ShouldCompress"];
-  [v5 encodeObject:self->_modificationDate forKey:@"ModificationDate"];
-  [v5 encodeObject:self->_attachedPath forKey:@"AttachedPath"];
-  [v5 encodeObject:self->_attachmentType forKey:@"AttachmentType"];
-  [v5 encodeObject:self->_deleteOnAttach forKey:@"DeleteOnAttach"];
-  [v5 encodeObject:self->__sandboxExtensionToken forKey:@"SandboxExtensionToken"];
+  coderCopy = coder;
+  [coderCopy encodeObject:path forKey:@"Path"];
+  [coderCopy encodeObject:self->_displayName forKey:@"DisplayName"];
+  [coderCopy encodeObject:self->_shouldCompress forKey:@"ShouldCompress"];
+  [coderCopy encodeObject:self->_modificationDate forKey:@"ModificationDate"];
+  [coderCopy encodeObject:self->_attachedPath forKey:@"AttachedPath"];
+  [coderCopy encodeObject:self->_attachmentType forKey:@"AttachmentType"];
+  [coderCopy encodeObject:self->_deleteOnAttach forKey:@"DeleteOnAttach"];
+  [coderCopy encodeObject:self->__sandboxExtensionToken forKey:@"SandboxExtensionToken"];
 }
 
-- (id)attachToDestinationDir:(id)a3
+- (id)attachToDestinationDir:(id)dir
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dirCopy = dir;
   v5 = +[DELogging fwHandle];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v17 = 138543362;
-    v18 = v4;
+    v18 = dirCopy;
     _os_log_impl(&dword_248AB3000, v5, OS_LOG_TYPE_INFO, "Log destination directory: %{public}@", &v17, 0xCu);
   }
 
-  v6 = [(DEAttachmentItem *)self path];
-  v7 = [(DEAttachmentItem *)self shouldCompress];
-  v8 = +[DEUtils copyItem:toDestinationDir:zipped:](DEUtils, "copyItem:toDestinationDir:zipped:", v6, v4, [v7 BOOLValue]);
+  path = [(DEAttachmentItem *)self path];
+  shouldCompress = [(DEAttachmentItem *)self shouldCompress];
+  v8 = +[DEUtils copyItem:toDestinationDir:zipped:](DEUtils, "copyItem:toDestinationDir:zipped:", path, dirCopy, [shouldCompress BOOLValue]);
   [(DEAttachmentItem *)self setAttachedPath:v8];
 
-  v9 = [(DEAttachmentItem *)self attachedPath];
-  if (v9)
+  attachedPath = [(DEAttachmentItem *)self attachedPath];
+  if (attachedPath)
   {
-    v10 = v9;
-    v11 = [(DEAttachmentItem *)self deleteOnAttach];
-    v12 = [v11 BOOLValue];
+    v10 = attachedPath;
+    deleteOnAttach = [(DEAttachmentItem *)self deleteOnAttach];
+    bOOLValue = [deleteOnAttach BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
-      v13 = [(DEAttachmentItem *)self path];
-      [DEUtils removeFile:v13];
+      path2 = [(DEAttachmentItem *)self path];
+      [DEUtils removeFile:path2];
     }
   }
 
-  v14 = [(DEAttachmentItem *)self attachedPath];
+  attachedPath2 = [(DEAttachmentItem *)self attachedPath];
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return attachedPath2;
 }
 
 - (void)detach
 {
-  v3 = [(DEAttachmentItem *)self attachedPath];
-  [DEUtils removeFile:v3];
+  attachedPath = [(DEAttachmentItem *)self attachedPath];
+  [DEUtils removeFile:attachedPath];
 
   [(DEAttachmentItem *)self setAttachedPath:0];
 }
 
 - (id)description
 {
-  v2 = [(DEAttachmentItem *)self path];
-  v3 = [v2 path];
+  path = [(DEAttachmentItem *)self path];
+  v2Path = [path path];
 
-  return v3;
+  return v2Path;
 }
 
-+ (id)attachmentWithPath:(id)a3 withDisplayName:(id)a4 modificationDate:(id)a5 andFilesize:(id)a6
++ (id)attachmentWithPath:(id)path withDisplayName:(id)name modificationDate:(id)date andFilesize:(id)filesize
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[DEAttachmentItem alloc] initWithPath:v12 withDisplayName:v11 modificationDate:v10 andFilesize:v9];
+  filesizeCopy = filesize;
+  dateCopy = date;
+  nameCopy = name;
+  pathCopy = path;
+  v13 = [[DEAttachmentItem alloc] initWithPath:pathCopy withDisplayName:nameCopy modificationDate:dateCopy andFilesize:filesizeCopy];
 
   return v13;
 }
 
-+ (id)attachmentWithPath:(id)a3
++ (id)attachmentWithPath:(id)path
 {
-  v3 = a3;
-  v4 = [[DEAttachmentItem alloc] initWithPath:v3];
+  pathCopy = path;
+  v4 = [[DEAttachmentItem alloc] initWithPath:pathCopy];
 
   return v4;
 }
 
-+ (id)attachmentWithPathURL:(id)a3
++ (id)attachmentWithPathURL:(id)l
 {
-  v3 = a3;
-  v4 = [[DEAttachmentItem alloc] initWithPathURL:v3];
+  lCopy = l;
+  v4 = [[DEAttachmentItem alloc] initWithPathURL:lCopy];
 
   return v4;
 }
 
-- (id)sandboxExtensionHandleWithErrorOut:(id *)a3
+- (id)sandboxExtensionHandleWithErrorOut:(id *)out
 {
-  v5 = [(DEAttachmentItem *)self _sandboxExtensionToken];
+  _sandboxExtensionToken = [(DEAttachmentItem *)self _sandboxExtensionToken];
 
-  if (v5)
+  if (_sandboxExtensionToken)
   {
     v6 = [DEAttachmentItemSandboxExtensionHandle alloc];
-    v7 = [(DEAttachmentItem *)self _sandboxExtensionToken];
-    v8 = [(DEAttachmentItem *)self path];
-    v9 = [(DEAttachmentItemSandboxExtensionHandle *)v6 initWithSandboxExtensionToken:v7 itemURL:v8 errorOut:a3];
+    _sandboxExtensionToken2 = [(DEAttachmentItem *)self _sandboxExtensionToken];
+    path = [(DEAttachmentItem *)self path];
+    v9 = [(DEAttachmentItemSandboxExtensionHandle *)v6 initWithSandboxExtensionToken:_sandboxExtensionToken2 itemURL:path errorOut:out];
 
     sandboxExtensionToken = self->__sandboxExtensionToken;
     self->__sandboxExtensionToken = 0;

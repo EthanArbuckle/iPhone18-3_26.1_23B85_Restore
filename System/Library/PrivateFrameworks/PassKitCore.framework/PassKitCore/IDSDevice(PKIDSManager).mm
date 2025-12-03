@@ -9,36 +9,36 @@
 - (id)pk_idsDestination
 {
   v2 = IDSCopyIDForDevice();
-  v3 = [a1 name];
-  v4 = [PKIDSDestination destinationWithDeviceIdentifier:v2 name:v3];
+  name = [self name];
+  v4 = [PKIDSDestination destinationWithDeviceIdentifier:v2 name:name];
 
   return v4;
 }
 
 - (uint64_t)pk_isApplePayCapable
 {
-  v2 = [a1 nsuuid];
-  if (v2)
+  nsuuid = [self nsuuid];
+  if (nsuuid)
   {
-    v3 = [a1 pk_isValidHandoffDevice];
+    pk_isValidHandoffDevice = [self pk_isValidHandoffDevice];
   }
 
   else
   {
-    v3 = 0;
+    pk_isValidHandoffDevice = 0;
   }
 
-  return v3;
+  return pk_isValidHandoffDevice;
 }
 
 - (BOOL)pk_isValidHandoffDevice
 {
-  if (![a1 supportsApplePay])
+  if (![self supportsApplePay])
   {
     return 0;
   }
 
-  v2 = [[PKRemoteDevice alloc] initWithIDSDevice:a1];
+  v2 = [[PKRemoteDevice alloc] initWithIDSDevice:self];
   v3 = [(PKRemoteDevice *)v2 type]< 2;
 
   return v3;

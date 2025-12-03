@@ -1,10 +1,10 @@
 @interface CBThermalManager
 + (id)sharedInstance;
-- (BOOL)_isLevelBlocked:(int64_t)a3;
+- (BOOL)_isLevelBlocked:(int64_t)blocked;
 - (BOOL)isThermalBlocked;
 - (CBThermalManager)init;
 - (void)_beginThermalJetsamCPUSampling;
-- (void)_calculateAppsCPUTimesWithCompletion:(id)a3;
+- (void)_calculateAppsCPUTimesWithCompletion:(id)completion;
 - (void)_killThermallyActiveApplication;
 - (void)_killThermallyActiveDiagnosticsApplication;
 - (void)_respondToCurrentThermalCondition;
@@ -81,9 +81,9 @@
   return v2;
 }
 
-- (BOOL)_isLevelBlocked:(int64_t)a3
+- (BOOL)_isLevelBlocked:(int64_t)blocked
 {
-  v3 = a3 - 3;
+  v3 = blocked - 3;
   v4 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -156,8 +156,8 @@
 
   state64 = 0;
   notify_get_state([(CBThermalManager *)self coldTempToken], &state64);
-  v7 = [(CBThermalManager *)self level];
-  v8 = [(CBThermalManager *)self isInSunlight];
+  level = [(CBThermalManager *)self level];
+  isInSunlight = [(CBThermalManager *)self isInSunlight];
   if (v5 >= _OSThermalNotificationLevelForBehavior())
   {
     v10 = 4;
@@ -216,17 +216,17 @@
     }
   }
 
-  if (v7 != [(CBThermalManager *)self level]|| v8 != [(CBThermalManager *)self isInSunlight])
+  if (level != [(CBThermalManager *)self level]|| isInSunlight != [(CBThermalManager *)self isInSunlight])
   {
     v12 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(CBThermalManager *)self level];
-      v14 = [(CBThermalManager *)self isInSunlight];
+      level2 = [(CBThermalManager *)self level];
+      isInSunlight2 = [(CBThermalManager *)self isInSunlight];
       *buf = 134218240;
-      *&buf[4] = v13;
+      *&buf[4] = level2;
       v24 = 1024;
-      v25 = v14;
+      v25 = isInSunlight2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Device is at level (%ld) and in sunlight (%d). inPosting thermal conditions did change notification", buf, 0x12u);
     }
 
@@ -234,11 +234,11 @@
     [v15 postNotificationName:@"CBThermalConditionsDidChangeNotification" object:self userInfo:0];
   }
 
-  v16 = [(CBThermalManager *)self _isLevelBlocked:v7];
-  v17 = [(CBThermalManager *)self isThermalBlocked];
-  if (v16 != v17)
+  v16 = [(CBThermalManager *)self _isLevelBlocked:level];
+  isThermalBlocked = [(CBThermalManager *)self isThermalBlocked];
+  if (v16 != isThermalBlocked)
   {
-    v18 = v17;
+    v18 = isThermalBlocked;
     v19 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
@@ -298,10 +298,10 @@
   }
 }
 
-- (void)_calculateAppsCPUTimesWithCompletion:(id)a3
+- (void)_calculateAppsCPUTimesWithCompletion:(id)completion
 {
-  v3 = a3;
-  if (v3)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v4 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -312,12 +312,12 @@
 
     v5 = +[NSMutableDictionary dictionary];
     v6 = +[FBProcessManager sharedInstance];
-    v7 = [v6 allApplicationProcesses];
+    allApplicationProcesses = [v6 allApplicationProcesses];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    v8 = [allApplicationProcesses countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -328,32 +328,32 @@
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allApplicationProcesses);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
           [v12 elapsedCPUTime];
           v13 = [NSNumber numberWithDouble:?];
-          v14 = [v12 bundleIdentifier];
-          [v5 setObject:v13 forKey:v14];
+          bundleIdentifier = [v12 bundleIdentifier];
+          [v5 setObject:v13 forKey:bundleIdentifier];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v9 = [allApplicationProcesses countByEnumeratingWithState:&v15 objects:v20 count:16];
       }
 
       while (v9);
     }
 
-    v3[2](v3, v5);
+    completionCopy[2](completionCopy, v5);
   }
 }
 
 - (void)_killThermallyActiveApplication
 {
-  v3 = [(CBThermalManager *)self sampling];
+  sampling = [(CBThermalManager *)self sampling];
   v4 = CheckerBoardLogHandleForCategory();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (sampling)
   {
     if (v5)
     {
@@ -380,18 +380,18 @@
   {
     v3 = OSThermalNotificationCurrentLevel();
     v4 = +[CBAppManager sharedInstance];
-    v5 = [v4 primaryAppBundleID];
+    primaryAppBundleID = [v4 primaryAppBundleID];
     v6 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109378;
       v10 = v3;
       v11 = 2112;
-      v12 = v5;
+      v12 = primaryAppBundleID;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Thermal status level is urgent (%d). Attempt to kill %@", buf, 0x12u);
     }
 
-    [v4 terminateAppWithBundleID:v5 reason:4 reportCrash:1 description:0 completion:0];
+    [v4 terminateAppWithBundleID:primaryAppBundleID reason:4 reportCrash:1 description:0 completion:0];
     v8 = NSRunLoopCommonModes;
     v7 = [NSArray arrayWithObjects:&v8 count:1];
     [(CBThermalManager *)self performSelector:"_respondToCurrentThermalCondition" withObject:0 afterDelay:v7 inModes:30.0];

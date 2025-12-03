@@ -1,19 +1,19 @@
 @interface _MTL4CommandEncoder
-- (_MTL4CommandEncoder)initWithCommandAllocator:(id)a3;
+- (_MTL4CommandEncoder)initWithCommandAllocator:(id)allocator;
 - (void)dealloc;
 @end
 
 @implementation _MTL4CommandEncoder
 
-- (_MTL4CommandEncoder)initWithCommandAllocator:(id)a3
+- (_MTL4CommandEncoder)initWithCommandAllocator:(id)allocator
 {
   v6.receiver = self;
   v6.super_class = _MTL4CommandEncoder;
   v4 = [(_MTLObjectWithLabel *)&v6 init];
   if (v4)
   {
-    v4->_commandAllocator = a3;
-    v4->_device = [a3 device];
+    v4->_commandAllocator = allocator;
+    v4->_device = [allocator device];
   }
 
   return v4;

@@ -52,7 +52,7 @@ void __51__SFSafariViewControllerDataStore_defaultDataStore__block_invoke()
 
   else
   {
-    v6 = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
+    invoke = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __73__SFSafariViewControllerDataStore_clearWebsiteDataWithCompletionHandler___block_invoke_2;

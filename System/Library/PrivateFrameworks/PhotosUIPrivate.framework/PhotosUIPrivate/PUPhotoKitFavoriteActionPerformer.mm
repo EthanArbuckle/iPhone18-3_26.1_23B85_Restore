@@ -1,17 +1,17 @@
 @interface PUPhotoKitFavoriteActionPerformer
-- (void)_logEventForAssets:(id)a3 favorite:(BOOL)a4;
+- (void)_logEventForAssets:(id)assets favorite:(BOOL)favorite;
 - (void)performBackgroundTask;
 @end
 
 @implementation PUPhotoKitFavoriteActionPerformer
 
-- (void)_logEventForAssets:(id)a3 favorite:(BOOL)a4
+- (void)_logEventForAssets:(id)assets favorite:(BOOL)favorite
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (assets)
   {
     v5 = MEMORY[0x1E6991C70];
-    if (!a4)
+    if (!favorite)
     {
       v5 = MEMORY[0x1E6991C78];
     }
@@ -19,12 +19,12 @@
     v6 = *v5;
     v7 = MEMORY[0x1E6991F28];
     v8 = *MEMORY[0x1E6991E18];
-    v16[0] = a3;
+    v16[0] = assets;
     v9 = *MEMORY[0x1E6991E20];
     v15[0] = v8;
     v15[1] = v9;
     v10 = v6;
-    v11 = a3;
+    assetsCopy = assets;
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     v16[1] = v13;
@@ -36,17 +36,17 @@
 - (void)performBackgroundTask
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoKitFavoriteActionPerformer *)self favorite];
-  if (!v3)
+  favorite = [(PUPhotoKitFavoriteActionPerformer *)self favorite];
+  if (!favorite)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = [(PUAssetActionPerformer *)self assetsByAssetCollection];
-    v5 = [v4 allKeys];
+    assetsByAssetCollection = [(PUAssetActionPerformer *)self assetsByAssetCollection];
+    allKeys = [assetsByAssetCollection allKeys];
 
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v6 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
       v7 = v6;
@@ -57,7 +57,7 @@
         {
           if (*v18 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
           v10 = *(*(&v17 + 1) + 8 * i);
@@ -69,7 +69,7 @@
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v7)
         {
           continue;
@@ -82,17 +82,17 @@
 
 LABEL_13:
   v11 = objc_alloc(MEMORY[0x1E69C3550]);
-  v12 = [(PUAssetActionPerformer *)self assets];
-  v13 = [v11 initWithAssets:v12 favorite:v3];
+  assets = [(PUAssetActionPerformer *)self assets];
+  v13 = [v11 initWithAssets:assets favorite:favorite];
 
-  v14 = [(PUAssetActionPerformer *)self undoManager];
+  undoManager = [(PUAssetActionPerformer *)self undoManager];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __58__PUPhotoKitFavoriteActionPerformer_performBackgroundTask__block_invoke;
   v15[3] = &unk_1E7B7BAF0;
   v15[4] = self;
-  v16 = v3;
-  [v13 executeWithUndoManager:v14 completionHandler:v15];
+  v16 = favorite;
+  [v13 executeWithUndoManager:undoManager completionHandler:v15];
 }
 
 void __58__PUPhotoKitFavoriteActionPerformer_performBackgroundTask__block_invoke(uint64_t a1, uint64_t a2, void *a3)

@@ -1,17 +1,17 @@
 @interface OCPZipPackage
-- (OCPZipPackage)initWithArchive:(id)a3;
-- (OCPZipPackage)initWithData:(id)a3;
-- (OCPZipPackage)initWithPath:(id)a3;
-- (id)partForLocation:(id)a3;
-- (void)resetPartForLocation:(id)a3;
+- (OCPZipPackage)initWithArchive:(id)archive;
+- (OCPZipPackage)initWithData:(id)data;
+- (OCPZipPackage)initWithPath:(id)path;
+- (id)partForLocation:(id)location;
+- (void)resetPartForLocation:(id)location;
 @end
 
 @implementation OCPZipPackage
 
-- (OCPZipPackage)initWithPath:(id)a3
+- (OCPZipPackage)initWithPath:(id)path
 {
-  v4 = a3;
-  v5 = [[OISFUZipArchive alloc] initWithPath:v4 collapseCommonRootDirectory:0];
+  pathCopy = path;
+  v5 = [[OISFUZipArchive alloc] initWithPath:pathCopy collapseCommonRootDirectory:0];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   mParts = self->mParts;
   self->mParts = v6;
@@ -20,10 +20,10 @@
   return v8;
 }
 
-- (OCPZipPackage)initWithData:(id)a3
+- (OCPZipPackage)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [[OISFUZipArchive alloc] initWithData:v4 collapseCommonRootDirectory:0];
+  dataCopy = data;
+  v5 = [[OISFUZipArchive alloc] initWithData:dataCopy collapseCommonRootDirectory:0];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   mParts = self->mParts;
   self->mParts = v6;
@@ -32,23 +32,23 @@
   return v8;
 }
 
-- (id)partForLocation:(id)a3
+- (id)partForLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->mParts objectForKey:v4];
-  if (!v5)
+  locationCopy = location;
+  null = [(NSMutableDictionary *)self->mParts objectForKey:locationCopy];
+  if (!null)
   {
-    if ([v4 isInternalToPackage])
+    if ([locationCopy isInternalToPackage])
     {
-      v6 = [v4 path];
-      if ([v6 isAbsolutePath] && objc_msgSend(v6, "length") >= 2)
+      path = [locationCopy path];
+      if ([path isAbsolutePath] && objc_msgSend(path, "length") >= 2)
       {
-        v5 = [[OCPZipPackagePart alloc] initWithArchive:self->mArchive location:v4 package:self];
+        null = [[OCPZipPackagePart alloc] initWithArchive:self->mArchive location:locationCopy package:self];
 
-        if (v5)
+        if (null)
         {
 LABEL_9:
-          [(NSMutableDictionary *)self->mParts setObject:v5 forKey:v4];
+          [(NSMutableDictionary *)self->mParts setObject:null forKey:locationCopy];
           goto LABEL_10;
         }
       }
@@ -58,36 +58,36 @@ LABEL_9:
       }
     }
 
-    v5 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     goto LABEL_9;
   }
 
 LABEL_10:
-  v7 = [MEMORY[0x277CBEB68] null];
+  null2 = [MEMORY[0x277CBEB68] null];
 
-  if (v5 == v7)
+  if (null == null2)
   {
 
-    v5 = 0;
+    null = 0;
   }
 
-  return v5;
+  return null;
 }
 
-- (void)resetPartForLocation:(id)a3
+- (void)resetPartForLocation:(id)location
 {
-  v5 = a3;
+  locationCopy = location;
   v4 = [(NSMutableDictionary *)self->mParts objectForKey:?];
   if (v4)
   {
-    [(NSMutableDictionary *)self->mParts removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->mParts removeObjectForKey:locationCopy];
   }
 }
 
-- (OCPZipPackage)initWithArchive:(id)a3
+- (OCPZipPackage)initWithArchive:(id)archive
 {
-  v19 = a3;
-  objc_storeStrong(&self->mArchive, a3);
+  archiveCopy = archive;
+  objc_storeStrong(&self->mArchive, archive);
   v18 = [@"." stringByAppendingString:@"rels"];
   v5 = [@"_rels" stringByAppendingPathComponent:v18];
   v6 = [(OISFUZipArchive *)self->mArchive entryWithName:v5];
@@ -96,29 +96,29 @@ LABEL_10:
     [OCPException raise:@"OCPZipPackageError" format:@"No package relationships"];
   }
 
-  v7 = [v6 xmlDocument];
+  xmlDocument = [v6 xmlDocument];
   v8 = [(OISFUZipArchive *)self->mArchive entryWithName:@"docProps/core.xml"];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 xmlDocument];
+    xmlDocument2 = [v8 xmlDocument];
   }
 
   else
   {
-    v10 = 0;
+    xmlDocument2 = 0;
   }
 
   v11 = [(OISFUZipArchive *)self->mArchive entryWithName:@"docProps/app.xml"];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 xmlDocument];
+    xmlDocument3 = [v11 xmlDocument];
   }
 
   else
   {
-    v13 = 0;
+    xmlDocument3 = 0;
   }
 
   v14 = [(OISFUZipArchive *)self->mArchive entryWithName:@"[Content_Types].xml"];
@@ -127,27 +127,27 @@ LABEL_10:
     [OCPException raise:@"OCPZipPackageError" format:@"No package content types"];
   }
 
-  v15 = [v14 xmlDocument];
+  xmlDocument4 = [v14 xmlDocument];
 
-  v16 = [(OCPPackage *)self initWithRelationshipsXml:v7 corePropertiesXml:v10 appPropertiesXml:v13 contentTypesXml:v15];
-  if (v7)
+  v16 = [(OCPPackage *)self initWithRelationshipsXml:xmlDocument corePropertiesXml:xmlDocument2 appPropertiesXml:xmlDocument3 contentTypesXml:xmlDocument4];
+  if (xmlDocument)
   {
-    xmlFreeDoc(v7);
+    xmlFreeDoc(xmlDocument);
   }
 
-  if (v10)
+  if (xmlDocument2)
   {
-    xmlFreeDoc(v10);
+    xmlFreeDoc(xmlDocument2);
   }
 
-  if (v13)
+  if (xmlDocument3)
   {
-    xmlFreeDoc(v13);
+    xmlFreeDoc(xmlDocument3);
   }
 
-  if (v15)
+  if (xmlDocument4)
   {
-    xmlFreeDoc(v15);
+    xmlFreeDoc(xmlDocument4);
   }
 
   return v16;

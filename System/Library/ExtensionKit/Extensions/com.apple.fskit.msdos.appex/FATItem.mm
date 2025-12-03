@@ -1,24 +1,24 @@
 @interface FATItem
-+ (id)dynamicCast:(id)a3;
-- (BOOL)shouldUpdateMTimeInSetAttr:(id)a3;
++ (id)dynamicCast:(id)cast;
+- (BOOL)shouldUpdateMTimeInSetAttr:(id)attr;
 - (id)flushDirEntryData;
-- (id)getAttributes:(id)a3;
-- (id)initInVolume:(id)a3 inDir:(id)a4 startingAt:(unsigned int)a5 withData:(id)a6 andName:(id)a7 isRoot:(BOOL)a8;
-- (id)reclaim:(BOOL)a3;
-- (id)setAttributes:(id)a3;
+- (id)getAttributes:(id)attributes;
+- (id)initInVolume:(id)volume inDir:(id)dir startingAt:(unsigned int)at withData:(id)data andName:(id)name isRoot:(BOOL)root;
+- (id)reclaim:(BOOL)reclaim;
+- (id)setAttributes:(id)attributes;
 - (unint64_t)getFileID;
-- (void)purgeMetaBlocksFromCache:(id)a3;
+- (void)purgeMetaBlocksFromCache:(id)cache;
 - (void)setDeleted;
 @end
 
 @implementation FATItem
 
-+ (id)dynamicCast:(id)a3
++ (id)dynamicCast:(id)cast
 {
-  v3 = a3;
+  castCopy = cast;
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = castCopy;
   }
 
   else
@@ -31,12 +31,12 @@
   return v4;
 }
 
-- (id)initInVolume:(id)a3 inDir:(id)a4 startingAt:(unsigned int)a5 withData:(id)a6 andName:(id)a7 isRoot:(BOOL)a8
+- (id)initInVolume:(id)volume inDir:(id)dir startingAt:(unsigned int)at withData:(id)data andName:(id)name isRoot:(BOOL)root
 {
-  v14 = a3;
-  v24 = a4;
-  v23 = a6;
-  v15 = a7;
+  volumeCopy = volume;
+  dirCopy = dir;
+  dataCopy = data;
+  nameCopy = name;
   v35 = 0;
   v36[0] = &v35;
   v36[1] = 0x3032000000;
@@ -57,16 +57,16 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_volume, a3);
-    v17->_firstCluster = a5;
-    objc_storeStrong(&v17->_entryData, a6);
-    objc_storeStrong(&v17->_name, a7);
-    objc_storeStrong(&v17->_parentDir, a4);
+    objc_storeStrong(&v16->_volume, volume);
+    v17->_firstCluster = at;
+    objc_storeStrong(&v17->_entryData, data);
+    objc_storeStrong(&v17->_name, name);
+    objc_storeStrong(&v17->_parentDir, dir);
     v17->_isDeleted = 0;
     v17->_includedInVolumeOUFiles = 0;
     if (v17->_firstCluster)
     {
-      v18 = [(FATVolume *)v17->_volume fatManager:v23];
+      v18 = [(FATVolume *)v17->_volume fatManager:dataCopy];
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
       v25[2] = sub_100018358;
@@ -113,9 +113,9 @@ LABEL_10:
 
 - (unint64_t)getFileID
 {
-  v3 = [(FATItem *)self volume];
-  v4 = [(FATItem *)self entryData];
-  v5 = [v3 getFileID:v4];
+  volume = [(FATItem *)self volume];
+  entryData = [(FATItem *)self entryData];
+  v5 = [volume getFileID:entryData];
 
   return v5;
 }
@@ -124,8 +124,8 @@ LABEL_10:
 {
   if (![(FATItem *)self isDeleted])
   {
-    v3 = [(FATItem *)self volume];
-    [v3 incNumberOfOpenUnlinkedFiles];
+    volume = [(FATItem *)self volume];
+    [volume incNumberOfOpenUnlinkedFiles];
 
     [(FATItem *)self setIsDeleted:1];
 
@@ -133,19 +133,19 @@ LABEL_10:
   }
 }
 
-- (id)getAttributes:(id)a3
+- (id)getAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = objc_alloc_init(FSItemAttributes);
   v34 = 0;
   v35 = 0;
-  if ([v4 isAttributeWanted:1])
+  if ([attributesCopy isAttributeWanted:1])
   {
-    v6 = [(FATItem *)self entryData];
-    if (v6)
+    entryData = [(FATItem *)self entryData];
+    if (entryData)
     {
-      v7 = [(FATItem *)self entryData];
-      [v5 setType:{objc_msgSend(v7, "type")}];
+      entryData2 = [(FATItem *)self entryData];
+      [v5 setType:{objc_msgSend(entryData2, "type")}];
     }
 
     else
@@ -154,81 +154,81 @@ LABEL_10:
     }
   }
 
-  if ([v4 isAttributeWanted:2])
+  if ([attributesCopy isAttributeWanted:2])
   {
     [v5 setMode:448];
   }
 
-  if ([v4 isAttributeWanted:4])
+  if ([attributesCopy isAttributeWanted:4])
   {
     [v5 setLinkCount:1];
   }
 
-  v8 = [(FATItem *)self numberOfClusters];
-  v9 = [(FATItem *)self volume];
-  v10 = [v9 systemInfo];
-  v11 = [v10 bytesPerCluster] * v8;
+  numberOfClusters = [(FATItem *)self numberOfClusters];
+  volume = [(FATItem *)self volume];
+  systemInfo = [volume systemInfo];
+  v11 = [systemInfo bytesPerCluster] * numberOfClusters;
 
-  if ([v4 isAttributeWanted:128])
+  if ([attributesCopy isAttributeWanted:128])
   {
     [v5 setAllocSize:v11];
   }
 
-  v12 = [(FATItem *)self entryData];
-  if (v12)
+  entryData3 = [(FATItem *)self entryData];
+  if (entryData3)
   {
-    v13 = v12;
-    v14 = [v4 isAttributeWanted:64];
+    v13 = entryData3;
+    v14 = [attributesCopy isAttributeWanted:64];
 
     if (v14)
     {
-      v15 = [(FATItem *)self entryData];
-      v16 = [v15 type];
+      entryData4 = [(FATItem *)self entryData];
+      type = [entryData4 type];
 
-      if (v16 == 2)
+      if (type == 2)
       {
         [v5 setSize:v11];
       }
 
       else
       {
-        v17 = [(FATItem *)self entryData];
-        v18 = [v17 type];
+        entryData5 = [(FATItem *)self entryData];
+        type2 = [entryData5 type];
 
-        if (v18 == 1)
+        if (type2 == 1)
         {
-          v19 = [(FATItem *)self entryData];
-          [v5 setSize:{objc_msgSend(v19, "getValidDataLength")}];
+          entryData6 = [(FATItem *)self entryData];
+          [v5 setSize:{objc_msgSend(entryData6, "getValidDataLength")}];
         }
       }
     }
   }
 
-  if ([v4 isAttributeWanted:256])
+  if ([attributesCopy isAttributeWanted:256])
   {
     [v5 setFileID:{-[FATItem getFileID](self, "getFileID")}];
   }
 
-  if ([v4 isAttributeWanted:512])
+  if ([attributesCopy isAttributeWanted:512])
   {
-    v20 = [(FATItem *)self parentDir];
+    parentDir = [(FATItem *)self parentDir];
 
-    if (v20)
+    if (parentDir)
     {
-      v21 = [(FATItem *)self parentDir];
-      [v5 setParentID:{objc_msgSend(v21, "getFileID")}];
+      parentDir2 = [(FATItem *)self parentDir];
+      [v5 setParentID:{objc_msgSend(parentDir2, "getFileID")}];
     }
 
     else
     {
       v32 = [(FATItem *)DirItem dynamicCast:self];
-      v21 = v32;
+      parentDir2 = v32;
       if (v32)
       {
         if ([v32 isRoot])
         {
-          v33 = [(FATItem *)self volume];
-          [v5 setParentID:{objc_msgSend(v33, "getNextAvailableFileID")}];
+          volume2 = [(FATItem *)self volume];
+          [v5 setParentID:{objc_msgSend(volume2, "getNextAvailableFileID")}];
         }
 
         else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
@@ -244,59 +244,59 @@ LABEL_10:
     }
   }
 
-  if ([v4 isAttributeWanted:32])
+  if ([attributesCopy isAttributeWanted:32])
   {
-    v22 = [(FATItem *)self entryData];
-    [v5 setFlags:{objc_msgSend(v22, "bsdFlags")}];
+    entryData7 = [(FATItem *)self entryData];
+    [v5 setFlags:{objc_msgSend(entryData7, "bsdFlags")}];
   }
 
-  if ([v4 isAttributeWanted:1024])
+  if ([attributesCopy isAttributeWanted:1024])
   {
-    v23 = [(FATItem *)self entryData];
+    entryData8 = [(FATItem *)self entryData];
 
-    if (v23)
+    if (entryData8)
     {
-      v24 = [(FATItem *)self entryData];
-      [v24 getAccessTime:&v34];
+      entryData9 = [(FATItem *)self entryData];
+      [entryData9 getAccessTime:&v34];
 
       [v5 setAccessTime:{v34, v35}];
     }
   }
 
-  if ([v4 isAttributeWanted:2048])
+  if ([attributesCopy isAttributeWanted:2048])
   {
-    v25 = [(FATItem *)self entryData];
+    entryData10 = [(FATItem *)self entryData];
 
-    if (v25)
+    if (entryData10)
     {
-      v26 = [(FATItem *)self entryData];
-      [v26 getModifyTime:&v34];
+      entryData11 = [(FATItem *)self entryData];
+      [entryData11 getModifyTime:&v34];
 
       [v5 setModifyTime:{v34, v35}];
     }
   }
 
-  if ([v4 isAttributeWanted:4096])
+  if ([attributesCopy isAttributeWanted:4096])
   {
-    v27 = [(FATItem *)self entryData];
+    entryData12 = [(FATItem *)self entryData];
 
-    if (v27)
+    if (entryData12)
     {
-      v28 = [(FATItem *)self entryData];
-      [v28 getChangeTime:&v34];
+      entryData13 = [(FATItem *)self entryData];
+      [entryData13 getChangeTime:&v34];
 
       [v5 setChangeTime:{v34, v35}];
     }
   }
 
-  if ([v4 isAttributeWanted:0x2000])
+  if ([attributesCopy isAttributeWanted:0x2000])
   {
-    v29 = [(FATItem *)self entryData];
+    entryData14 = [(FATItem *)self entryData];
 
-    if (v29)
+    if (entryData14)
     {
-      v30 = [(FATItem *)self entryData];
-      [v30 getBirthTime:&v34];
+      entryData15 = [(FATItem *)self entryData];
+      [entryData15 getBirthTime:&v34];
 
       [v5 setBirthTime:{v34, v35}];
     }
@@ -305,12 +305,12 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)shouldUpdateMTimeInSetAttr:(id)a3
+- (BOOL)shouldUpdateMTimeInSetAttr:(id)attr
 {
-  v3 = a3;
-  if ([v3 isValid:64])
+  attrCopy = attr;
+  if ([attrCopy isValid:64])
   {
-    v4 = [v3 isValid:2048] ^ 1;
+    v4 = [attrCopy isValid:2048] ^ 1;
   }
 
   else
@@ -321,11 +321,11 @@ LABEL_10:
   return v4;
 }
 
-- (id)setAttributes:(id)a3
+- (id)setAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = [(FATItem *)DirItem dynamicCast:self];
-  v6 = [(FATItem *)self entryData];
+  entryData = [(FATItem *)self entryData];
   __tp.tv_sec = 0;
   __tp.tv_nsec = 0;
   if (v5 && [v5 isRoot] && (objc_msgSend(v5, "entryData"), v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
@@ -335,8 +335,8 @@ LABEL_10:
 
   else
   {
-    [v6 setArchiveBit];
-    v8 = [v4 isValid:64];
+    [entryData setArchiveBit];
+    v8 = [attributesCopy isValid:64];
     if (v8)
     {
       v9 = [(FATItem *)FileItem dynamicCast:self];
@@ -348,58 +348,58 @@ LABEL_13:
         goto LABEL_43;
       }
 
-      v10 = [(FATItem *)self numberOfClusters];
-      v11 = [(FATItem *)self volume];
-      v12 = [v11 systemInfo];
-      v13 = [v12 bytesPerCluster] * v10;
+      numberOfClusters = [(FATItem *)self numberOfClusters];
+      volume = [(FATItem *)self volume];
+      systemInfo = [volume systemInfo];
+      v13 = [systemInfo bytesPerCluster] * numberOfClusters;
 
-      if ([v4 size] > v13 || (v14 = objc_msgSend(v4, "size"), v14 < objc_msgSend(v6, "getSize")))
+      if ([attributesCopy size] > v13 || (v14 = objc_msgSend(attributesCopy, "size"), v14 < objc_msgSend(entryData, "getSize")))
       {
-        v15 = [v9 truncateTo:objc_msgSend(v4 allowPartial:"size") mustBeContig:{0, 0}];
+        v15 = [v9 truncateTo:objc_msgSend(attributesCopy allowPartial:"size") mustBeContig:{0, 0}];
         if (v15)
         {
           v16 = v15;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
           {
-            sub_100031C2C(v4);
+            sub_100031C2C(attributesCopy);
           }
 
           goto LABEL_13;
         }
       }
 
-      [v6 setSize:{objc_msgSend(v4, "size")}];
-      [v6 setValidDataLength:{objc_msgSend(v4, "size")}];
+      [entryData setSize:{objc_msgSend(attributesCopy, "size")}];
+      [entryData setValidDataLength:{objc_msgSend(attributesCopy, "size")}];
       if ([v9 isPreAllocated])
       {
-        v18 = [v6 getSize];
-        v41 = [(FATItem *)self volume];
-        v40 = [v41 systemInfo];
-        v19 = v18 % [v40 bytesPerCluster];
-        v20 = [v6 getSize];
+        getSize = [entryData getSize];
+        volume2 = [(FATItem *)self volume];
+        systemInfo2 = [volume2 systemInfo];
+        v19 = getSize % [systemInfo2 bytesPerCluster];
+        getSize2 = [entryData getSize];
         v39 = v19;
         if (v19)
         {
-          v38 = [(FATItem *)self volume];
-          v37 = [v38 systemInfo];
-          v21 = [v37 bytesPerCluster];
-          v22 = [v6 getSize];
-          v36 = [(FATItem *)self volume];
-          v35 = [v36 systemInfo];
-          v23 = [v35 bytesPerCluster];
-          v20 += v21 + v22 / v23 * v23 - v22;
+          volume3 = [(FATItem *)self volume];
+          systemInfo3 = [volume3 systemInfo];
+          bytesPerCluster = [systemInfo3 bytesPerCluster];
+          getSize3 = [entryData getSize];
+          volume4 = [(FATItem *)self volume];
+          systemInfo4 = [volume4 systemInfo];
+          bytesPerCluster2 = [systemInfo4 bytesPerCluster];
+          getSize2 += bytesPerCluster + getSize3 / bytesPerCluster2 * bytesPerCluster2 - getSize3;
         }
 
-        v24 = [(FATItem *)self volume];
-        v25 = [v24 systemInfo];
-        v26 = v20 / [v25 bytesPerCluster];
-        v27 = [v9 numberOfClusters];
+        volume5 = [(FATItem *)self volume];
+        systemInfo5 = [volume5 systemInfo];
+        v26 = getSize2 / [systemInfo5 bytesPerCluster];
+        numberOfClusters2 = [v9 numberOfClusters];
 
         if (v39)
         {
         }
 
-        if (v26 == v27)
+        if (v26 == numberOfClusters2)
         {
           [v9 setPreAllocated:0];
         }
@@ -413,39 +413,39 @@ LABEL_13:
       v17 = 0;
     }
 
-    v28 = [(FATItem *)self isDeleted];
-    if (!v5 || (v28 & 1) != 0 || ([v5 isRoot] & 1) != 0 || (objc_msgSend(v4, "isValid:", 1024) & 1) == 0 && (objc_msgSend(v4, "isValid:", 2048) & 1) == 0 && !objc_msgSend(v4, "isValid:", 0x2000) || (objc_msgSend(v5, "updateDotDirEntryTimes:", v4), (v16 = objc_claimAutoreleasedReturnValue()) == 0))
+    isDeleted = [(FATItem *)self isDeleted];
+    if (!v5 || (isDeleted & 1) != 0 || ([v5 isRoot] & 1) != 0 || (objc_msgSend(attributesCopy, "isValid:", 1024) & 1) == 0 && (objc_msgSend(attributesCopy, "isValid:", 2048) & 1) == 0 && !objc_msgSend(attributesCopy, "isValid:", 0x2000) || (objc_msgSend(v5, "updateDotDirEntryTimes:", attributesCopy), (v16 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      if ([v4 isValid:1024])
+      if ([attributesCopy isValid:1024])
       {
-        __tp.tv_sec = [v4 accessTime];
+        __tp.tv_sec = [attributesCopy accessTime];
         __tp.tv_nsec = v29;
-        [v6 setAccessTime:&__tp];
+        [entryData setAccessTime:&__tp];
         v17 |= 0x400uLL;
         v8 = 1;
       }
 
-      if ([v4 isValid:2048])
+      if ([attributesCopy isValid:2048])
       {
-        __tp.tv_sec = [v4 modifyTime];
+        __tp.tv_sec = [attributesCopy modifyTime];
         __tp.tv_nsec = v30;
-        [v6 setModifyTime:&__tp];
+        [entryData setModifyTime:&__tp];
         v17 |= 0x800uLL;
         v8 = 1;
       }
 
-      if ([v4 isValid:0x2000])
+      if ([attributesCopy isValid:0x2000])
       {
-        __tp.tv_sec = [v4 birthTime];
+        __tp.tv_sec = [attributesCopy birthTime];
         __tp.tv_nsec = v31;
-        [v6 setBirthTime:&__tp];
+        [entryData setBirthTime:&__tp];
         v17 |= 0x2000uLL;
         v8 = 1;
       }
 
-      if ([v4 isValid:32])
+      if ([attributesCopy isValid:32])
       {
-        v16 = [v6 setBsdFlags:{objc_msgSend(v4, "flags")}];
+        v16 = [entryData setBsdFlags:{objc_msgSend(attributesCopy, "flags")}];
         v8 = 1;
       }
 
@@ -454,15 +454,15 @@ LABEL_13:
         v16 = 0;
       }
 
-      [v4 setConsumedAttributes:v17];
-      v32 = [(FATItem *)self shouldUpdateMTimeInSetAttr:v4];
+      [attributesCopy setConsumedAttributes:v17];
+      v32 = [(FATItem *)self shouldUpdateMTimeInSetAttr:attributesCopy];
       if (v8 && v32)
       {
         clock_gettime(_CLOCK_REALTIME, &__tp);
-        [v6 setModifyTime:&__tp];
+        [entryData setModifyTime:&__tp];
       }
 
-      v33 = [(FATItem *)self flushDirEntryData];
+      flushDirEntryData = [(FATItem *)self flushDirEntryData];
     }
   }
 
@@ -480,8 +480,8 @@ LABEL_43:
     goto LABEL_7;
   }
 
-  v5 = [(FATItem *)self parentDir];
-  v6 = [(FATItem *)DirItem dynamicCast:v5];
+  parentDir = [(FATItem *)self parentDir];
+  v6 = [(FATItem *)DirItem dynamicCast:parentDir];
 
   if (v6)
   {
@@ -492,8 +492,8 @@ LABEL_43:
   {
     v6 = v3;
 LABEL_6:
-    v7 = [(FATItem *)self entryData];
-    v4 = [v6 writeDirEntryDataToDisk:v7];
+    entryData = [(FATItem *)self entryData];
+    v4 = [v6 writeDirEntryDataToDisk:entryData];
 
     goto LABEL_7;
   }
@@ -509,7 +509,7 @@ LABEL_7:
   return v4;
 }
 
-- (id)reclaim:(BOOL)a3
+- (id)reclaim:(BOOL)reclaim
 {
   v7 = [(FATItem *)SymLinkItem dynamicCast:self];
   if ([(FATItem *)self isDeleted])
@@ -521,24 +521,24 @@ LABEL_7:
         [v7 purgeMetaBlocksFromCache:&stru_100051020];
       }
 
-      v8 = [(FATItem *)self volume];
-      v9 = [v8 fatManager];
-      [v9 setDirtyBitValue:1 forceWriteToDisk:0 replyHandler:&stru_100051040];
+      volume = [(FATItem *)self volume];
+      fatManager = [volume fatManager];
+      [fatManager setDirtyBitValue:1 forceWriteToDisk:0 replyHandler:&stru_100051040];
 
-      v10 = [(FATItem *)self volume];
-      v11 = [v10 fatManager];
-      [v11 freeClusters:-[FATItem numberOfClusters](self ofItem:"numberOfClusters") replyHandler:{self, &stru_100051060}];
+      volume2 = [(FATItem *)self volume];
+      fatManager2 = [volume2 fatManager];
+      [fatManager2 freeClusters:-[FATItem numberOfClusters](self ofItem:"numberOfClusters") replyHandler:{self, &stru_100051060}];
     }
 
     if ([(FATItem *)self includedInVolumeOUFiles])
     {
-      v12 = [(FATItem *)self volume];
-      v13 = [v12 getNumberOfOpenUnlinkedFiles];
+      volume3 = [(FATItem *)self volume];
+      getNumberOfOpenUnlinkedFiles = [volume3 getNumberOfOpenUnlinkedFiles];
 
-      if (v13)
+      if (getNumberOfOpenUnlinkedFiles)
       {
-        v14 = [(FATItem *)self volume];
-        [v14 decNumberOfOpenUnlinkedFiles];
+        volume4 = [(FATItem *)self volume];
+        [volume4 decNumberOfOpenUnlinkedFiles];
       }
 
       else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -554,72 +554,72 @@ LABEL_7:
   v16 = v15;
   if (v15 && [v15 isPreAllocated])
   {
-    v44 = a3;
+    reclaimCopy = reclaim;
     v45 = v7;
-    v43 = [v16 entryData];
-    v17 = [v43 getSize];
-    v42 = [(FATItem *)self volume];
-    v18 = [v42 systemInfo];
-    v19 = v17 % [v18 bytesPerCluster];
-    v20 = [v16 entryData];
-    v21 = [v20 getSize];
+    entryData = [v16 entryData];
+    getSize = [entryData getSize];
+    volume5 = [(FATItem *)self volume];
+    systemInfo = [volume5 systemInfo];
+    v19 = getSize % [systemInfo bytesPerCluster];
+    entryData2 = [v16 entryData];
+    getSize2 = [entryData2 getSize];
     if (v19)
     {
-      v41 = [(FATItem *)self volume];
-      v40 = [v41 systemInfo];
-      v22 = [v40 bytesPerCluster];
-      v39 = [v16 entryData];
-      v23 = [v39 getSize];
-      v4 = [(FATItem *)self volume];
-      v3 = [v4 systemInfo];
-      v24 = [v3 bytesPerCluster];
-      v21 += v22 + v23 / v24 * v24 - v23;
+      volume6 = [(FATItem *)self volume];
+      systemInfo2 = [volume6 systemInfo];
+      bytesPerCluster = [systemInfo2 bytesPerCluster];
+      entryData3 = [v16 entryData];
+      getSize3 = [entryData3 getSize];
+      volume7 = [(FATItem *)self volume];
+      systemInfo3 = [volume7 systemInfo];
+      bytesPerCluster2 = [systemInfo3 bytesPerCluster];
+      getSize2 += bytesPerCluster + getSize3 / bytesPerCluster2 * bytesPerCluster2 - getSize3;
     }
 
-    v25 = [(FATItem *)self volume];
-    v26 = [v25 systemInfo];
-    v27 = v21 / [v26 bytesPerCluster];
+    volume8 = [(FATItem *)self volume];
+    systemInfo4 = [volume8 systemInfo];
+    v27 = getSize2 / [systemInfo4 bytesPerCluster];
 
     if (v19)
     {
     }
 
-    v28 = [v16 numberOfClusters];
+    numberOfClusters = [v16 numberOfClusters];
     v7 = v45;
-    a3 = v44;
-    if (v27 < v28)
+    reclaim = reclaimCopy;
+    if (v27 < numberOfClusters)
     {
-      v29 = v28;
-      v30 = [(FATItem *)self volume];
-      v31 = [v30 fatManager];
-      [v31 setDirtyBitValue:1 forceWriteToDisk:0 replyHandler:&stru_100051080];
+      v29 = numberOfClusters;
+      volume9 = [(FATItem *)self volume];
+      fatManager3 = [volume9 fatManager];
+      [fatManager3 setDirtyBitValue:1 forceWriteToDisk:0 replyHandler:&stru_100051080];
 
-      v32 = [(FATItem *)self volume];
-      v33 = [v32 fatManager];
-      [v33 freeClusters:v29 - v27 ofItem:v16 replyHandler:&stru_1000510A0];
+      volume10 = [(FATItem *)self volume];
+      fatManager4 = [volume10 fatManager];
+      [fatManager4 freeClusters:v29 - v27 ofItem:v16 replyHandler:&stru_1000510A0];
 
       [v16 setPreAllocated:0];
     }
   }
 
-  if (!a3)
+  if (!reclaim)
   {
     v34 = [(FATItem *)DirItem dynamicCast:self];
     if (v34)
     {
       v35 = v34;
-      v36 = [(FATItem *)self volume];
-      v37 = [v36 nameCachePool];
-      [v37 removeNameCacheForDir:v35];
+      volume11 = [(FATItem *)self volume];
+      nameCachePool = [volume11 nameCachePool];
+      [nameCachePool removeNameCacheForDir:v35];
     }
   }
 
   return 0;
 }
 
-- (void)purgeMetaBlocksFromCache:(id)a3
+- (void)purgeMetaBlocksFromCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v5 = [(FATItem *)FileItem dynamicCast:self];
 
   if (v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -628,7 +628,7 @@ LABEL_7:
   }
 
   v6 = fs_errorForPOSIXError();
-  v4[2](v4, v6);
+  cacheCopy[2](cacheCopy, v6);
 }
 
 @end

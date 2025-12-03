@@ -3,11 +3,11 @@
 - (id)keyboardsSectionSpecifiers;
 - (id)newSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)loadKeyboards;
 - (void)reloadSpecifiersWithAnimation;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -19,9 +19,9 @@
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(TIHardwareKeyboardKeyboardTypeRemapController *)self newSpecifiers];
+    newSpecifiers = [(TIHardwareKeyboardKeyboardTypeRemapController *)self newSpecifiers];
     v6 = *&self->PSListController_opaque[v3];
-    *&self->PSListController_opaque[v3] = v5;
+    *&self->PSListController_opaque[v3] = newSpecifiers;
 
     v4 = *&self->PSListController_opaque[v3];
   }
@@ -51,9 +51,9 @@
 
 - (void)reloadSpecifiersWithAnimation
 {
-  v4 = [(TIHardwareKeyboardKeyboardTypeRemapController *)self specifiers];
-  v3 = [(TIHardwareKeyboardKeyboardTypeRemapController *)self newSpecifiers];
-  -[TIHardwareKeyboardKeyboardTypeRemapController updateSpecifiersInRange:withSpecifiers:](self, "updateSpecifiersInRange:withSpecifiers:", 0, [v4 count], v3);
+  specifiers = [(TIHardwareKeyboardKeyboardTypeRemapController *)self specifiers];
+  newSpecifiers = [(TIHardwareKeyboardKeyboardTypeRemapController *)self newSpecifiers];
+  -[TIHardwareKeyboardKeyboardTypeRemapController updateSpecifiersInRange:withSpecifiers:](self, "updateSpecifiersInRange:withSpecifiers:", 0, [specifiers count], newSpecifiers);
 }
 
 - (void)loadKeyboards
@@ -225,8 +225,8 @@ LABEL_26:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v33 = [v25 standardType];
-              if (v33 == [v32 intValue])
+              standardType = [v25 standardType];
+              if (standardType == [v32 intValue])
               {
                 v42->_currentKeyboard = v31;
 
@@ -253,8 +253,8 @@ LABEL_46:
         goto LABEL_49;
       }
 
-      v39 = [(NSMutableArray *)v26 firstObject];
-      v42->_currentKeyboard = v39;
+      firstObject = [(NSMutableArray *)v26 firstObject];
+      v42->_currentKeyboard = firstObject;
 LABEL_48:
 
 LABEL_49:
@@ -265,18 +265,18 @@ LABEL_49:
   {
     v24 = v42;
     v42->_currentKeyboard = 0;
-    v34 = [(TIHardwareKeyboardKeyboardTypeRemapController *)v42 navigationController];
-    v35 = [v34 viewControllers];
-    v36 = [v35 indexOfObject:v42];
+    navigationController = [(TIHardwareKeyboardKeyboardTypeRemapController *)v42 navigationController];
+    viewControllers = [navigationController viewControllers];
+    v36 = [viewControllers indexOfObject:v42];
 
     if (v36 && v36 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v37 = [(TIHardwareKeyboardKeyboardTypeRemapController *)v42 navigationController];
-      v38 = [v37 viewControllers];
-      v25 = [v38 objectAtIndex:v36 - 1];
+      navigationController2 = [(TIHardwareKeyboardKeyboardTypeRemapController *)v42 navigationController];
+      viewControllers2 = [navigationController2 viewControllers];
+      v25 = [viewControllers2 objectAtIndex:v36 - 1];
 
-      v39 = [(TIHardwareKeyboardKeyboardTypeRemapController *)v42 navigationController];
-      v40 = [(__IOHIDServiceClient *)v39 popToViewController:v25 animated:1];
+      firstObject = [(TIHardwareKeyboardKeyboardTypeRemapController *)v42 navigationController];
+      v40 = [(__IOHIDServiceClient *)firstObject popToViewController:v25 animated:1];
       goto LABEL_48;
     }
   }
@@ -299,11 +299,11 @@ LABEL_49:
 
   if ([(NSMutableArray *)keyboards count])
   {
-    v5 = [(TIHardwareKeyboardKeyboardTypeRemapController *)self keyboardsSectionSpecifiers];
-    [v3 addObjectsFromArray:v5];
+    keyboardsSectionSpecifiers = [(TIHardwareKeyboardKeyboardTypeRemapController *)self keyboardsSectionSpecifiers];
+    [v3 addObjectsFromArray:keyboardsSectionSpecifiers];
 
-    v6 = [(TIHardwareKeyboardKeyboardTypeRemapController *)self keyboardTypeSectionSpecifiers];
-    [v3 addObjectsFromArray:v6];
+    keyboardTypeSectionSpecifiers = [(TIHardwareKeyboardKeyboardTypeRemapController *)self keyboardTypeSectionSpecifiers];
+    [v3 addObjectsFromArray:keyboardTypeSectionSpecifiers];
   }
 
   return v3;
@@ -352,9 +352,9 @@ LABEL_49:
           if (objc_opt_isKindOfClass())
           {
             v13 = [v39 objectForKey:v12];
-            v14 = [v13 integerValue];
+            integerValue = [v13 integerValue];
 
-            v15 = [NSNumber numberWithInteger:v14 + 1];
+            v15 = [NSNumber numberWithInteger:integerValue + 1];
             [v39 setObject:v15 forKey:v12];
           }
         }
@@ -396,10 +396,10 @@ LABEL_49:
           if (objc_opt_isKindOfClass())
           {
             v26 = [v39 objectForKey:v24];
-            v27 = [v26 integerValue];
+            integerValue2 = [v26 integerValue];
 
             v25 = v24;
-            if (v27 >= 2)
+            if (integerValue2 >= 2)
             {
               v28 = @"%@ (Smart Connector)";
               if ([v23 isEqual:@"AID"] & 1) != 0 || (v28 = @"%@ (Bluetooth)", (objc_msgSend(v23, "isEqual:", @"Bluetooth")) || (v28 = @"%@ (USB)", v25 = v24, objc_msgSend(v23, "isEqual:", @"USB")))
@@ -487,53 +487,53 @@ LABEL_49:
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = TIHardwareKeyboardKeyboardTypeRemapController;
-  v7 = [(TIHardwareKeyboardKeyboardTypeRemapController *)&v12 tableView:a3 cellForRowAtIndexPath:v6];
-  if ([v6 section] == (self->_keysSectionStart - 1))
+  v7 = [(TIHardwareKeyboardKeyboardTypeRemapController *)&v12 tableView:view cellForRowAtIndexPath:pathCopy];
+  if ([pathCopy section] == (self->_keysSectionStart - 1))
   {
     if (self->_currentKeyboard)
     {
-      [v7 setChecked:{-[NSMutableArray indexOfObject:](self->_keyboards, "indexOfObject:") == objc_msgSend(v6, "row")}];
+      [v7 setChecked:{-[NSMutableArray indexOfObject:](self->_keyboards, "indexOfObject:") == objc_msgSend(pathCopy, "row")}];
     }
   }
 
-  else if ([v6 section] == self->_keysSectionStart)
+  else if ([pathCopy section] == self->_keysSectionStart)
   {
     v8 = IOHIDServiceClientGetRegistryID(self->_currentKeyboard);
     [v8 unsignedLongLongValue];
     v9 = BKSHIDKeyboardGetDeviceProperties();
-    v10 = [v9 standardType];
-    if (v10 == -1)
+    standardType = [v9 standardType];
+    if (standardType == -1)
     {
-      v10 = 2 * ([v9 countryCode] == 15);
+      standardType = 2 * ([v9 countryCode] == 15);
     }
 
-    [v7 setChecked:{objc_msgSend(v6, "row") == v10}];
+    [v7 setChecked:{objc_msgSend(pathCopy, "row") == standardType}];
   }
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v6 section];
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
   v8 = self->_keysSectionStart - 1;
-  v9 = [v6 row];
-  if (v7 == v8)
+  v9 = [pathCopy row];
+  if (section == v8)
   {
     if (v9 < [(NSMutableArray *)self->_keyboards count])
     {
-      v10 = -[NSMutableArray objectAtIndexedSubscript:](self->_keyboards, "objectAtIndexedSubscript:", [v6 row]);
+      v10 = -[NSMutableArray objectAtIndexedSubscript:](self->_keyboards, "objectAtIndexedSubscript:", [pathCopy row]);
       self->_currentKeyboard = v10;
 
       [(TIHardwareKeyboardKeyboardTypeRemapController *)self reloadSpecifiers];
-      [v12 deselectRowAtIndexPath:v6 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     }
   }
 
@@ -543,7 +543,7 @@ LABEL_49:
     [v11 unsignedLongLongValue];
     BKSHIDServicesSetStandardType();
     [(TIHardwareKeyboardKeyboardTypeRemapController *)self reloadSpecifiers];
-    [v12 deselectRowAtIndexPath:v6 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 }
 

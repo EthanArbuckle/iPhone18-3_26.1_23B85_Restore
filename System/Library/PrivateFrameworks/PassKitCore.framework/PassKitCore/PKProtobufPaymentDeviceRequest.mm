@@ -1,21 +1,21 @@
 @interface PKProtobufPaymentDeviceRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addKnownManifestHashes:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasShouldAdvertise:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addKnownManifestHashes:(id)hashes;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasShouldAdvertise:(BOOL)advertise;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufPaymentDeviceRequest
 
-- (void)setHasShouldAdvertise:(BOOL)a3
+- (void)setHasShouldAdvertise:(BOOL)advertise
 {
-  if (a3)
+  if (advertise)
   {
     v3 = 2;
   }
@@ -28,22 +28,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addKnownManifestHashes:(id)a3
+- (void)addKnownManifestHashes:(id)hashes
 {
-  v4 = a3;
+  hashesCopy = hashes;
   knownManifestHashes = self->_knownManifestHashes;
-  v8 = v4;
+  v8 = hashesCopy;
   if (!knownManifestHashes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_knownManifestHashes;
     self->_knownManifestHashes = v6;
 
-    v4 = v8;
+    hashesCopy = v8;
     knownManifestHashes = self->_knownManifestHashes;
   }
 
-  [(NSMutableArray *)knownManifestHashes addObject:v4];
+  [(NSMutableArray *)knownManifestHashes addObject:hashesCopy];
 }
 
 - (id)description
@@ -52,20 +52,20 @@
   v8.receiver = self;
   v8.super_class = PKProtobufPaymentDeviceRequest;
   v4 = [(PKProtobufPaymentDeviceRequest *)&v8 description];
-  v5 = [(PKProtobufPaymentDeviceRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufPaymentDeviceRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   deviceName = self->_deviceName;
   if (deviceName)
   {
-    [v3 setObject:deviceName forKey:@"deviceName"];
+    [dictionary setObject:deviceName forKey:@"deviceName"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -89,10 +89,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_deviceName)
   {
     PBDataWriterWriteStringField();
@@ -140,29 +140,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_deviceName)
   {
-    [v4 setDeviceName:?];
-    v4 = v9;
+    [toCopy setDeviceName:?];
+    toCopy = v9;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[28] = self->_shouldAdvertise;
-    v4[32] |= 2u;
+    toCopy[28] = self->_shouldAdvertise;
+    toCopy[32] |= 2u;
   }
 
   if ([(PKProtobufPaymentDeviceRequest *)self knownManifestHashesCount])
   {
     [v9 clearKnownManifestHashes];
-    v5 = [(PKProtobufPaymentDeviceRequest *)self knownManifestHashesCount];
-    if (v5)
+    knownManifestHashesCount = [(PKProtobufPaymentDeviceRequest *)self knownManifestHashesCount];
+    if (knownManifestHashesCount)
     {
-      v6 = v5;
+      v6 = knownManifestHashesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PKProtobufPaymentDeviceRequest *)self knownManifestHashesAtIndex:i];
@@ -178,11 +178,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_deviceName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_deviceName copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -211,7 +211,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{zone, v15}];
         [v5 addKnownManifestHashes:v13];
       }
 
@@ -230,16 +230,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   deviceName = self->_deviceName;
-  if (deviceName | *(v4 + 1))
+  if (deviceName | *(equalCopy + 1))
   {
     if (![(NSString *)deviceName isEqual:?])
     {
@@ -248,35 +248,35 @@
   }
 
   has = self->_has;
-  v7 = *(v4 + 32);
+  v7 = *(equalCopy + 32);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0)
+    if ((*(equalCopy + 32) & 2) == 0)
     {
       goto LABEL_14;
     }
 
     if (self->_shouldAdvertise)
     {
-      if ((*(v4 + 28) & 1) == 0)
+      if ((*(equalCopy + 28) & 1) == 0)
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(v4 + 28))
+    else if (*(equalCopy + 28))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_14;
   }
 
   knownManifestHashes = self->_knownManifestHashes;
-  if (knownManifestHashes | *(v4 + 2))
+  if (knownManifestHashes | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)knownManifestHashes isEqual:?])
     {
@@ -284,13 +284,13 @@
     }
 
     has = self->_has;
-    v7 = *(v4 + 32);
+    v7 = *(equalCopy + 32);
   }
 
   v9 = (v7 & 1) == 0;
   if (has)
   {
-    if ((v7 & 1) != 0 && self->_protocolVersion == *(v4 + 6))
+    if ((v7 & 1) != 0 && self->_protocolVersion == *(equalCopy + 6))
     {
       v9 = 1;
       goto LABEL_15;
@@ -332,18 +332,18 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(PKProtobufPaymentDeviceRequest *)self setDeviceName:?];
   }
 
-  if ((*(v4 + 32) & 2) != 0)
+  if ((*(fromCopy + 32) & 2) != 0)
   {
-    self->_shouldAdvertise = *(v4 + 28);
+    self->_shouldAdvertise = *(fromCopy + 28);
     *&self->_has |= 2u;
   }
 
@@ -351,7 +351,7 @@ LABEL_15:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -375,9 +375,9 @@ LABEL_15:
     while (v7);
   }
 
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
-    self->_protocolVersion = *(v4 + 6);
+    self->_protocolVersion = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 }

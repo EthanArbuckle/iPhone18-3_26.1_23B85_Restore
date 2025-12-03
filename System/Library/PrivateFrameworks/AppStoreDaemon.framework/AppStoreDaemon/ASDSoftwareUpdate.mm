@@ -1,29 +1,29 @@
 @interface ASDSoftwareUpdate
-- (ASDSoftwareUpdate)initWithCoder:(id)a3;
-- (ASDSoftwareUpdate)initWithUpdateDictionary:(id)a3;
+- (ASDSoftwareUpdate)initWithCoder:(id)coder;
+- (ASDSoftwareUpdate)initWithUpdateDictionary:(id)dictionary;
 - (BOOL)isArcade;
 - (NSDictionary)updateDictionary;
 - (NSNumber)externalVersionIdentifier;
 - (NSString)bundleIdentifier;
 - (NSString)buyParams;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)releaseDate;
 - (int64_t)parentalControlsRank;
 - (int64_t)storeItemIdentifier;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDSoftwareUpdate
 
-- (ASDSoftwareUpdate)initWithUpdateDictionary:(id)a3
+- (ASDSoftwareUpdate)initWithUpdateDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ASDSoftwareUpdate;
   v5 = [(ASDSoftwareUpdate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     rawUpdateDictionary = v5->_rawUpdateDictionary;
     v5->_rawUpdateDictionary = v6;
   }
@@ -76,15 +76,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 firstObject];
+      firstObject = [v5 firstObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v4 = [v6 valueForKey:@"buyParams"];
+        v4 = [firstObject valueForKey:@"buyParams"];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v7 = [v6 objectForKey:@"action-params"];
+          v7 = [firstObject objectForKey:@"action-params"];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
@@ -129,8 +129,8 @@
     goto LABEL_10;
   }
 
-  v6 = [v5 firstObject];
-  v7 = [v6 objectForKey:@"version"];
+  firstObject = [v5 firstObject];
+  v7 = [firstObject objectForKey:@"version"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -180,15 +180,15 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)parentalControlsRank
@@ -204,27 +204,27 @@ LABEL_14:
       v4 = [v3 objectForKey:@"value"];
       if (objc_opt_respondsToSelector())
       {
-        v5 = [v4 integerValue];
+        integerValue = [v4 integerValue];
       }
 
       else
       {
-        v5 = 0;
+        integerValue = 0;
       }
     }
 
     else
     {
-      v5 = 0;
+      integerValue = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
 - (id)releaseDate
@@ -258,15 +258,15 @@ LABEL_14:
   v2 = [(NSDictionary *)self->_rawUpdateDictionary objectForKey:@"id"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 longLongValue];
+    longLongValue = [v2 longLongValue];
   }
 
   else
   {
-    v3 = 0;
+    longLongValue = 0;
   }
 
-  return v3;
+  return longLongValue;
 }
 
 - (NSDictionary)updateDictionary
@@ -320,35 +320,35 @@ LABEL_14:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[ASDSoftwareUpdate allocWithZone:](ASDSoftwareUpdate init];
   v5->_autoUpdateEnabled = self->_autoUpdateEnabled;
-  v6 = [(NSArray *)self->_blockedBy copyWithZone:a3];
+  v6 = [(NSArray *)self->_blockedBy copyWithZone:zone];
   blockedBy = v5->_blockedBy;
   v5->_blockedBy = v6;
 
   v5->_deviceFamilies = self->_deviceFamilies;
   v5->_downloaded = self->_downloaded;
-  v8 = [(NSDate *)self->_installDate copyWithZone:a3];
+  v8 = [(NSDate *)self->_installDate copyWithZone:zone];
   installDate = v5->_installDate;
   v5->_installDate = v8;
 
   v5->_installerPackagingType = self->_installerPackagingType;
   v5->_iOSBinaryMacOSCompatible = self->_iOSBinaryMacOSCompatible;
-  v10 = [(NSDictionary *)self->_metrics copyWithZone:a3];
+  v10 = [(NSDictionary *)self->_metrics copyWithZone:zone];
   metrics = v5->_metrics;
   v5->_metrics = v10;
 
   v5->_packageType = self->_packageType;
   v5->_perDevice = self->_perDevice;
   v5->_profileValidated = self->_profileValidated;
-  v12 = [(NSDictionary *)self->_rawUpdateDictionary copyWithZone:a3];
+  v12 = [(NSDictionary *)self->_rawUpdateDictionary copyWithZone:zone];
   rawUpdateDictionary = v5->_rawUpdateDictionary;
   v5->_rawUpdateDictionary = v12;
 
   v5->_rawUpdateState = self->_rawUpdateState;
-  v14 = [(NSDate *)self->_timestamp copyWithZone:a3];
+  v14 = [(NSDate *)self->_timestamp copyWithZone:zone];
   timestamp = v5->_timestamp;
   v5->_timestamp = v14;
 
@@ -356,65 +356,65 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  [v9 encodeBool:-[ASDSoftwareUpdate autoUpdateEnabled](self forKey:{"autoUpdateEnabled"), @"autoUpdateEnabled"}];
-  v4 = [(ASDSoftwareUpdate *)self blockedBy];
-  [v9 encodeObject:v4 forKey:@"blockedBy"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[ASDSoftwareUpdate autoUpdateEnabled](self forKey:{"autoUpdateEnabled"), @"autoUpdateEnabled"}];
+  blockedBy = [(ASDSoftwareUpdate *)self blockedBy];
+  [coderCopy encodeObject:blockedBy forKey:@"blockedBy"];
 
-  [v9 encodeInteger:-[ASDSoftwareUpdate deviceFamilies](self forKey:{"deviceFamilies"), @"deviceFamilies"}];
-  v5 = [(ASDSoftwareUpdate *)self installDate];
-  [v9 encodeObject:v5 forKey:@"installDate"];
+  [coderCopy encodeInteger:-[ASDSoftwareUpdate deviceFamilies](self forKey:{"deviceFamilies"), @"deviceFamilies"}];
+  installDate = [(ASDSoftwareUpdate *)self installDate];
+  [coderCopy encodeObject:installDate forKey:@"installDate"];
 
-  [v9 encodeInteger:-[ASDSoftwareUpdate installerPackagingType](self forKey:{"installerPackagingType"), @"InstallerPackagingType"}];
-  [v9 encodeBool:-[ASDSoftwareUpdate isIOSBinaryMacOSCompatible](self forKey:{"isIOSBinaryMacOSCompatible"), @"iOSBinaryMacOSCompatible"}];
-  [v9 encodeBool:-[ASDSoftwareUpdate isDownloaded](self forKey:{"isDownloaded"), @"IsDownloaded"}];
-  [v9 encodeBool:-[ASDSoftwareUpdate isPerDevice](self forKey:{"isPerDevice"), @"IsPerDevice"}];
-  [v9 encodeBool:-[ASDSoftwareUpdate isProfileValidated](self forKey:{"isProfileValidated"), @"IsProfileValidated"}];
-  v6 = [(ASDSoftwareUpdate *)self metrics];
-  [v9 encodeObject:v6 forKey:@"metrics"];
+  [coderCopy encodeInteger:-[ASDSoftwareUpdate installerPackagingType](self forKey:{"installerPackagingType"), @"InstallerPackagingType"}];
+  [coderCopy encodeBool:-[ASDSoftwareUpdate isIOSBinaryMacOSCompatible](self forKey:{"isIOSBinaryMacOSCompatible"), @"iOSBinaryMacOSCompatible"}];
+  [coderCopy encodeBool:-[ASDSoftwareUpdate isDownloaded](self forKey:{"isDownloaded"), @"IsDownloaded"}];
+  [coderCopy encodeBool:-[ASDSoftwareUpdate isPerDevice](self forKey:{"isPerDevice"), @"IsPerDevice"}];
+  [coderCopy encodeBool:-[ASDSoftwareUpdate isProfileValidated](self forKey:{"isProfileValidated"), @"IsProfileValidated"}];
+  metrics = [(ASDSoftwareUpdate *)self metrics];
+  [coderCopy encodeObject:metrics forKey:@"metrics"];
 
-  [v9 encodeInteger:-[ASDSoftwareUpdate packageType](self forKey:{"packageType"), @"packageType"}];
-  v7 = [(ASDSoftwareUpdate *)self rawUpdateDictionary];
-  [v9 encodeObject:v7 forKey:@"updateDictionary"];
+  [coderCopy encodeInteger:-[ASDSoftwareUpdate packageType](self forKey:{"packageType"), @"packageType"}];
+  rawUpdateDictionary = [(ASDSoftwareUpdate *)self rawUpdateDictionary];
+  [coderCopy encodeObject:rawUpdateDictionary forKey:@"updateDictionary"];
 
-  [v9 encodeInteger:-[ASDSoftwareUpdate rawUpdateState](self forKey:{"rawUpdateState"), @"rawUpdateState"}];
-  v8 = [(ASDSoftwareUpdate *)self timestamp];
-  [v9 encodeObject:v8 forKey:@"updateTimestamp"];
+  [coderCopy encodeInteger:-[ASDSoftwareUpdate rawUpdateState](self forKey:{"rawUpdateState"), @"rawUpdateState"}];
+  timestamp = [(ASDSoftwareUpdate *)self timestamp];
+  [coderCopy encodeObject:timestamp forKey:@"updateTimestamp"];
 
-  [v9 encodeInteger:-[ASDSoftwareUpdate updateState](self forKey:{"updateState"), @"updateState"}];
+  [coderCopy encodeInteger:-[ASDSoftwareUpdate updateState](self forKey:{"updateState"), @"updateState"}];
 }
 
-- (ASDSoftwareUpdate)initWithCoder:(id)a3
+- (ASDSoftwareUpdate)initWithCoder:(id)coder
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = ASDSoftwareUpdate;
   v5 = [(ASDSoftwareUpdate *)&v24 init];
   if (v5)
   {
-    v5->_autoUpdateEnabled = [v4 decodeBoolForKey:@"autoUpdateEnabled"];
+    v5->_autoUpdateEnabled = [coderCopy decodeBoolForKey:@"autoUpdateEnabled"];
     v6 = MEMORY[0x1E695DFD8];
     v26[0] = objc_opt_class();
     v26[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"blockedBy"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"blockedBy"];
     blockedBy = v5->_blockedBy;
     v5->_blockedBy = v9;
 
-    v5->_deviceFamilies = [v4 decodeIntegerForKey:@"deviceFamilies"];
-    v5->_downloaded = [v4 decodeBoolForKey:@"IsDownloaded"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installDate"];
+    v5->_deviceFamilies = [coderCopy decodeIntegerForKey:@"deviceFamilies"];
+    v5->_downloaded = [coderCopy decodeBoolForKey:@"IsDownloaded"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installDate"];
     installDate = v5->_installDate;
     v5->_installDate = v11;
 
-    v5->_installerPackagingType = [v4 decodeIntegerForKey:@"InstallerPackagingType"];
-    v5->_iOSBinaryMacOSCompatible = [v4 decodeBoolForKey:@"iOSBinaryMacOSCompatible"];
-    v5->_perDevice = [v4 decodeBoolForKey:@"IsPerDevice"];
-    v5->_profileValidated = [v4 decodeBoolForKey:@"IsProfileValidated"];
+    v5->_installerPackagingType = [coderCopy decodeIntegerForKey:@"InstallerPackagingType"];
+    v5->_iOSBinaryMacOSCompatible = [coderCopy decodeBoolForKey:@"iOSBinaryMacOSCompatible"];
+    v5->_perDevice = [coderCopy decodeBoolForKey:@"IsPerDevice"];
+    v5->_profileValidated = [coderCopy decodeBoolForKey:@"IsProfileValidated"];
     v25[0] = objc_opt_class();
     v25[1] = objc_opt_class();
     v25[2] = objc_opt_class();
@@ -422,22 +422,22 @@ LABEL_14:
     v25[4] = objc_opt_class();
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:5];
     v14 = [MEMORY[0x1E695DFD8] setWithArray:v13];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"metrics"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"metrics"];
     metrics = v5->_metrics;
     v5->_metrics = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"updateTimestamp"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"updateTimestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v17;
 
-    v5->_packageType = [v4 decodeIntegerForKey:@"packageType"];
+    v5->_packageType = [coderCopy decodeIntegerForKey:@"packageType"];
     v19 = [MEMORY[0x1E695DFD8] setWithArray:v13];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"updateDictionary"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"updateDictionary"];
     rawUpdateDictionary = v5->_rawUpdateDictionary;
     v5->_rawUpdateDictionary = v20;
 
-    v5->_rawUpdateState = [v4 decodeIntegerForKey:@"rawUpdateState"];
-    v5->_updateState = [v4 decodeIntegerForKey:@"updateState"];
+    v5->_rawUpdateState = [coderCopy decodeIntegerForKey:@"rawUpdateState"];
+    v5->_updateState = [coderCopy decodeIntegerForKey:@"updateState"];
   }
 
   v22 = *MEMORY[0x1E69E9840];

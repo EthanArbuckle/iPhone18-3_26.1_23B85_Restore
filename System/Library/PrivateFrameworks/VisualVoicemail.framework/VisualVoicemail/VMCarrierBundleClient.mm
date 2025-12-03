@@ -3,9 +3,9 @@
 - (BOOL)isPasswordChangeSupportedForSubscription;
 - (BOOL)isServiceSupportedForSubscription;
 - (BOOL)isServiceSupportedOnInternetForSubscription;
-- (VMCarrierBundleClient)initWithTelephonyClient:(id)a3 context:(id)a4;
-- (id)cbValueForDomain:(id)a3 key:(id)a4;
-- (id)cbValueForKey:(id)a3;
+- (VMCarrierBundleClient)initWithTelephonyClient:(id)client context:(id)context;
+- (id)cbValueForDomain:(id)domain key:(id)key;
+- (id)cbValueForKey:(id)key;
 - (id)serviceNameForSubscription;
 - (unint64_t)maximumGreetingDurationForSubscription;
 - (void)dealloc;
@@ -13,23 +13,23 @@
 
 @implementation VMCarrierBundleClient
 
-- (VMCarrierBundleClient)initWithTelephonyClient:(id)a3 context:(id)a4
+- (VMCarrierBundleClient)initWithTelephonyClient:(id)client context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = VMCarrierBundleClient;
   v8 = [(VMCarrierBundleClient *)&v15 init];
   if (v8)
   {
-    [v7 slotID];
+    [contextCopy slotID];
     v8->instanceID = ++qword_10010D788;
     v8->mambaID = calculateLogPrefix();
-    [(VMCarrierBundleClient *)v8 setTelephonyClient:v6];
+    [(VMCarrierBundleClient *)v8 setTelephonyClient:clientCopy];
     v9 = objc_opt_new();
     [(VMCarrierBundleClient *)v8 setValues:v9];
 
-    [(VMCarrierBundleClient *)v8 setContext:v7];
+    [(VMCarrierBundleClient *)v8 setContext:contextCopy];
     v8->_accessorLock._os_unfair_lock_opaque = 0;
     v10 = sub_100002630();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -45,7 +45,7 @@
       v22 = 2048;
       v23 = v8;
       v24 = 2112;
-      v25 = v7;
+      v25 = contextCopy;
       v13 = v12;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "#I %s%s<%@ %p> Created for subscription %@", buf, 0x34u);
     }
@@ -56,8 +56,8 @@
 
 - (void)dealloc
 {
-  v3 = [(VMCarrierBundleClient *)self telephonyClient];
-  [v3 removeDelegate:self];
+  telephonyClient = [(VMCarrierBundleClient *)self telephonyClient];
+  [telephonyClient removeDelegate:self];
 
   v4 = sub_100002630();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -70,7 +70,7 @@
     v12 = 2112;
     v13 = objc_opt_class();
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v6 = v13;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#I %s%s<%@ %p> Deleted", buf, 0x2Au);
   }
@@ -86,15 +86,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 1;
+    bOOLValue = 1;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unint64_t)maximumGreetingDurationForSubscription
@@ -103,15 +103,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)isPasswordChangeSupportedForSubscription
@@ -120,15 +120,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 1;
+    bOOLValue = 1;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)serviceNameForSubscription
@@ -195,22 +195,22 @@
   return v3;
 }
 
-- (id)cbValueForKey:(id)a3
+- (id)cbValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock_with_options();
-  v5 = [(VMCarrierBundleClient *)self context];
-  v6 = [v5 context];
+  context = [(VMCarrierBundleClient *)self context];
+  v5Context = [context context];
 
-  v7 = [(VMCarrierBundleClient *)self values];
-  v8 = [v7 objectForKey:v4];
+  values = [(VMCarrierBundleClient *)self values];
+  v8 = [values objectForKey:keyCopy];
   if (!v8)
   {
-    v9 = [(VMCarrierBundleClient *)self telephonyClient];
-    v29 = v4;
+    telephonyClient = [(VMCarrierBundleClient *)self telephonyClient];
+    v29 = keyCopy;
     v10 = [NSArray arrayWithObjects:&v29 count:1];
     v18 = 0;
-    v8 = [v9 context:v6 getCarrierBundleValue:v10 error:&v18];
+    v8 = [telephonyClient context:v5Context getCarrierBundleValue:v10 error:&v18];
     v11 = v18;
 
     if (v11)
@@ -224,7 +224,7 @@ LABEL_11:
       }
 
       mambaID = self->mambaID;
-      v14 = [(VMCarrierBundleClient *)self context];
+      context2 = [(VMCarrierBundleClient *)self context];
       *buf = 136316162;
       v20 = mambaID;
       v21 = 2080;
@@ -232,7 +232,7 @@ LABEL_11:
       v23 = 2112;
       v24 = v8;
       v25 = 2112;
-      v26 = v14;
+      v26 = context2;
       v27 = 2112;
       v28 = v11;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "#E %s%sCould not retrieve carrier bundle key %@ value for subscription %@ with error %@", buf, 0x34u);
@@ -242,13 +242,13 @@ LABEL_11:
     {
       if (v8)
       {
-        [v7 setObject:v8 forKey:v4];
+        [values setObject:v8 forKey:keyCopy];
       }
 
       else
       {
         v15 = +[NSNull null];
-        [v7 setObject:v15 forKey:v4];
+        [values setObject:v15 forKey:keyCopy];
       }
 
       v12 = sub_100002630();
@@ -258,17 +258,17 @@ LABEL_11:
       }
 
       v16 = self->mambaID;
-      v14 = [(VMCarrierBundleClient *)self context];
+      context2 = [(VMCarrierBundleClient *)self context];
       *buf = 136316162;
       v20 = v16;
       v21 = 2080;
       v22 = " ";
       v23 = 2112;
-      v24 = v4;
+      v24 = keyCopy;
       v25 = 2112;
       v26 = v8;
       v27 = 2112;
-      v28 = v14;
+      v28 = context2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "#I %s%sRetrieved carrier bundle key %@ value %@ for subscription %@", buf, 0x34u);
     }
 
@@ -288,31 +288,31 @@ LABEL_12:
   return v8;
 }
 
-- (id)cbValueForDomain:(id)a3 key:(id)a4
+- (id)cbValueForDomain:(id)domain key:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  keyCopy = key;
   os_unfair_lock_lock_with_options();
-  v8 = [(VMCarrierBundleClient *)self context];
-  v9 = [v8 context];
+  context = [(VMCarrierBundleClient *)self context];
+  v8Context = [context context];
 
-  v10 = [(VMCarrierBundleClient *)self values];
-  v11 = [v10 objectForKey:v6];
+  values = [(VMCarrierBundleClient *)self values];
+  v11 = [values objectForKey:domainCopy];
   if (!v11)
   {
     v11 = objc_opt_new();
   }
 
-  v12 = [v11 objectForKey:v7];
+  v12 = [v11 objectForKey:keyCopy];
   v13 = NSDateComponentsFormatter_ptr;
   if (!v12)
   {
-    v14 = [(VMCarrierBundleClient *)self telephonyClient];
-    v39[0] = v6;
-    v39[1] = v7;
+    telephonyClient = [(VMCarrierBundleClient *)self telephonyClient];
+    v39[0] = domainCopy;
+    v39[1] = keyCopy;
     v15 = [NSArray arrayWithObjects:v39 count:2];
     v26 = 0;
-    v12 = [v14 context:v9 getCarrierBundleValue:v15 error:&v26];
+    v12 = [telephonyClient context:v8Context getCarrierBundleValue:v15 error:&v26];
     v16 = v26;
 
     if (v16)
@@ -327,18 +327,18 @@ LABEL_13:
       }
 
       mambaID = self->mambaID;
-      v19 = [(VMCarrierBundleClient *)self context];
+      context2 = [(VMCarrierBundleClient *)self context];
       *buf = 136316418;
       v28 = mambaID;
       v29 = 2080;
       v30 = " ";
       v31 = 2112;
-      v32 = v7;
+      v32 = keyCopy;
       v33 = 2112;
-      v34 = v6;
+      v34 = domainCopy;
       v35 = 2112;
-      v36 = v19;
-      v20 = v19;
+      v36 = context2;
+      v20 = context2;
       v37 = 2112;
       v38 = v16;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "#E %s%sCould not retrieve carrier bundle key %@ domain %@ value for subscription %@ with error %@", buf, 0x3Eu);
@@ -348,13 +348,13 @@ LABEL_13:
     {
       if (v12)
       {
-        [v11 setObject:v12 forKey:v7];
+        [v11 setObject:v12 forKey:keyCopy];
       }
 
       else
       {
         v21 = +[NSNull null];
-        [v11 setObject:v21 forKey:v7];
+        [v11 setObject:v21 forKey:keyCopy];
       }
 
       v17 = sub_100002630();
@@ -364,20 +364,20 @@ LABEL_13:
       }
 
       v22 = self->mambaID;
-      v23 = [(VMCarrierBundleClient *)self context];
+      context3 = [(VMCarrierBundleClient *)self context];
       *buf = 136316418;
       v28 = v22;
       v29 = 2080;
       v30 = " ";
       v31 = 2112;
-      v32 = v7;
+      v32 = keyCopy;
       v33 = 2112;
-      v34 = v6;
+      v34 = domainCopy;
       v35 = 2112;
       v36 = v12;
       v37 = 2112;
-      v38 = v23;
-      v20 = v23;
+      v38 = context3;
+      v20 = context3;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "#I %s%sRetrieved carrier bundle key %@ domain %@ value %@ for subscription %@", buf, 0x3Eu);
     }
 

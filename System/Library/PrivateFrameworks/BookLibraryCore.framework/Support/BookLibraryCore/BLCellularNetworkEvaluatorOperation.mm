@@ -1,17 +1,17 @@
 @interface BLCellularNetworkEvaluatorOperation
-- (id)_presentDialogRequest:(id)a3 outError:(id *)a4;
+- (id)_presentDialogRequest:(id)request outError:(id *)error;
 - (void)run;
 @end
 
 @implementation BLCellularNetworkEvaluatorOperation
 
-- (id)_presentDialogRequest:(id)a3 outError:(id *)a4
+- (id)_presentDialogRequest:(id)request outError:(id *)error
 {
-  v5 = a3;
-  v6 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v5];
+  requestCopy = request;
+  v6 = [[AMSSystemAlertDialogTask alloc] initWithRequest:requestCopy];
 
-  v7 = [v6 present];
-  v8 = [v7 resultWithError:a4];
+  present = [v6 present];
+  v8 = [present resultWithError:error];
 
   return v8;
 }
@@ -27,12 +27,12 @@
       v5 = BLServiceLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [(BLEvaluatorDownload *)self->_cellularDownload logKey];
-        v7 = [(BLEvaluatorDownload *)self->_cellularDownload bytes];
+        logKey = [(BLEvaluatorDownload *)self->_cellularDownload logKey];
+        bytes = [(BLEvaluatorDownload *)self->_cellularDownload bytes];
         *buf = 138543618;
-        v28 = v6;
+        v28 = logKey;
         v29 = 2048;
-        v30 = v7;
+        v30 = bytes;
         v8 = "[%{public}@]: Download of size %llu exceeds cellular limit, but not prompting for automatic download.";
 LABEL_16:
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, v8, buf, 0x16u);
@@ -44,20 +44,20 @@ LABEL_16:
     }
 
     v9 = +[BLNetworkMonitor defaultMonitor];
-    v10 = [v9 isExpensive];
+    isExpensive = [v9 isExpensive];
 
     v5 = BLServiceLog();
     v11 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    if ((v10 & 1) == 0)
+    if ((isExpensive & 1) == 0)
     {
       if (v11)
       {
-        v6 = [(BLEvaluatorDownload *)self->_cellularDownload logKey];
-        v18 = [(BLEvaluatorDownload *)self->_cellularDownload bytes];
+        logKey = [(BLEvaluatorDownload *)self->_cellularDownload logKey];
+        bytes2 = [(BLEvaluatorDownload *)self->_cellularDownload bytes];
         *buf = 138543618;
-        v28 = v6;
+        v28 = logKey;
         v29 = 2048;
-        v30 = v18;
+        v30 = bytes2;
         v8 = "[%{public}@]: Download of size %llu exceeds cellular limit, but not prompting for inexpensive network.";
         goto LABEL_16;
       }
@@ -69,12 +69,12 @@ LABEL_17:
 
     if (v11)
     {
-      v12 = [(BLEvaluatorDownload *)self->_cellularDownload logKey];
-      v13 = [(BLEvaluatorDownload *)self->_cellularDownload bytes];
+      logKey2 = [(BLEvaluatorDownload *)self->_cellularDownload logKey];
+      bytes3 = [(BLEvaluatorDownload *)self->_cellularDownload bytes];
       *buf = 138543618;
-      v28 = v12;
+      v28 = logKey2;
       v29 = 2048;
-      v30 = v13;
+      v30 = bytes3;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Download of size %llu exceeds cellular limit, asking how to proceed.", buf, 0x16u);
     }
 
@@ -87,9 +87,9 @@ LABEL_17:
       v16 = BLServiceLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(BLEvaluatorDownload *)self->_cellularDownload logKey];
+        logKey3 = [(BLEvaluatorDownload *)self->_cellularDownload logKey];
         *buf = 138543618;
-        v28 = v17;
+        v28 = logKey3;
         v29 = 2114;
         v30 = v5;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Error delivering dialog request: %{public}@", buf, 0x16u);
@@ -106,8 +106,8 @@ LABEL_17:
         goto LABEL_13;
       }
 
-      v21 = [v15 selectedActionIdentifier];
-      v22 = [v21 isEqualToString:@"BLCellularDataPromptActionDownloadNow"];
+      selectedActionIdentifier = [v15 selectedActionIdentifier];
+      v22 = [selectedActionIdentifier isEqualToString:@"BLCellularDataPromptActionDownloadNow"];
 
       v16 = BLServiceLog();
       v23 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
@@ -115,9 +115,9 @@ LABEL_17:
       {
         if (v23)
         {
-          v24 = [(BLEvaluatorDownload *)self->_cellularDownload logKey];
+          logKey4 = [(BLEvaluatorDownload *)self->_cellularDownload logKey];
           *buf = 138543362;
-          v28 = v24;
+          v28 = logKey4;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@]: We were asked to download now.  Not requiring inexpensive data.", buf, 0xCu);
         }
 
@@ -128,9 +128,9 @@ LABEL_17:
       {
         if (v23)
         {
-          v25 = [(BLEvaluatorDownload *)self->_cellularDownload logKey];
+          logKey5 = [(BLEvaluatorDownload *)self->_cellularDownload logKey];
           *buf = 138543362;
-          v28 = v25;
+          v28 = logKey5;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@]: We were asked to download later.  Requiring inexpensive data.", buf, 0xCu);
         }
 
@@ -145,9 +145,9 @@ LABEL_18:
   v19 = BLServiceLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(BLEvaluatorDownload *)self->_cellularDownload logKey];
+    logKey6 = [(BLEvaluatorDownload *)self->_cellularDownload logKey];
     *buf = 138543618;
-    v28 = v20;
+    v28 = logKey6;
     v29 = 2048;
     v30 = v4;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Evaluation for download completed with result: %ld", buf, 0x16u);

@@ -1,11 +1,11 @@
 @interface SessionAccessoryView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 @end
 
 @implementation SessionAccessoryView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 40.0;
   v4 = 40.0;
@@ -16,8 +16,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  [(SessionAccessoryView *)v2 sizeThatFits:sub_1A2252E94()];
+  selfCopy = self;
+  [(SessionAccessoryView *)selfCopy sizeThatFits:sub_1A2252E94()];
   v4 = v3;
   v6 = v5;
 

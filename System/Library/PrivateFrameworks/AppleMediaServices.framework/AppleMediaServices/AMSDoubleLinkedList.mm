@@ -1,13 +1,13 @@
 @interface AMSDoubleLinkedList
 - (AMSDoubleLinkedList)init;
 - (NSArray)allNodes;
-- (id)appendObject:(id)a3;
+- (id)appendObject:(id)object;
 - (id)description;
-- (id)insertObject:(id)a3;
-- (void)appendNode:(id)a3;
-- (void)insertNode:(id)a3;
+- (id)insertObject:(id)object;
+- (void)appendNode:(id)node;
+- (void)insertNode:(id)node;
 - (void)removeAllNodes;
-- (void)removeNode:(id)a3;
+- (void)removeNode:(id)node;
 @end
 
 @implementation AMSDoubleLinkedList
@@ -19,10 +19,10 @@
   v2 = [(AMSDoubleLinkedList *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     listIdentifier = v2->_listIdentifier;
-    v2->_listIdentifier = v4;
+    v2->_listIdentifier = uUIDString;
   }
 
   return v2;
@@ -31,96 +31,96 @@
 - (NSArray)allNodes
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(AMSDoubleLinkedList *)self head];
-  if (v4)
+  head = [(AMSDoubleLinkedList *)self head];
+  if (head)
   {
-    v5 = v4;
+    v5 = head;
     do
     {
       [v3 addObject:v5];
-      v6 = [v5 next];
+      next = [v5 next];
 
-      v5 = v6;
+      v5 = next;
     }
 
-    while (v6);
+    while (next);
   }
 
   return v3;
 }
 
-- (void)appendNode:(id)a3
+- (void)appendNode:(id)node
 {
-  v9 = a3;
-  v4 = [v9 listIdentifier];
+  nodeCopy = node;
+  listIdentifier = [nodeCopy listIdentifier];
 
-  if (v4)
+  if (listIdentifier)
   {
     v8 = [MEMORY[0x1E695DF30] exceptionWithName:@"AMSDoubleLinkedListInvalidNode" reason:@"Attempting to add a node that has already been added to another list." userInfo:0];
     objc_exception_throw(v8);
   }
 
-  v5 = [(AMSDoubleLinkedList *)self tail];
-  [(AMSDoubleLinkedList *)self setTail:v9];
-  v6 = [(AMSDoubleLinkedList *)self head];
+  tail = [(AMSDoubleLinkedList *)self tail];
+  [(AMSDoubleLinkedList *)self setTail:nodeCopy];
+  head = [(AMSDoubleLinkedList *)self head];
 
-  if (!v6)
+  if (!head)
   {
-    [(AMSDoubleLinkedList *)self setHead:v9];
+    [(AMSDoubleLinkedList *)self setHead:nodeCopy];
   }
 
-  [v9 setPrevious:v5];
-  [v9 setNext:0];
-  [v5 setNext:v9];
-  v7 = [(AMSDoubleLinkedList *)self listIdentifier];
-  [v9 setListIdentifier:v7];
+  [nodeCopy setPrevious:tail];
+  [nodeCopy setNext:0];
+  [tail setNext:nodeCopy];
+  listIdentifier2 = [(AMSDoubleLinkedList *)self listIdentifier];
+  [nodeCopy setListIdentifier:listIdentifier2];
 
   ++self->_count;
 }
 
-- (id)appendObject:(id)a3
+- (id)appendObject:(id)object
 {
-  v4 = a3;
-  v5 = [[AMSDoubleLinkedListNode alloc] initWithObject:v4];
+  objectCopy = object;
+  v5 = [[AMSDoubleLinkedListNode alloc] initWithObject:objectCopy];
 
   [(AMSDoubleLinkedList *)self appendNode:v5];
 
   return v5;
 }
 
-- (void)insertNode:(id)a3
+- (void)insertNode:(id)node
 {
-  v9 = a3;
-  v4 = [v9 listIdentifier];
+  nodeCopy = node;
+  listIdentifier = [nodeCopy listIdentifier];
 
-  if (v4)
+  if (listIdentifier)
   {
     v8 = [MEMORY[0x1E695DF30] exceptionWithName:@"AMSDoubleLinkedListInvalidNode" reason:@"Attempting to add a node that has already been added to another list." userInfo:0];
     objc_exception_throw(v8);
   }
 
-  v5 = [(AMSDoubleLinkedList *)self head];
-  [(AMSDoubleLinkedList *)self setHead:v9];
-  v6 = [(AMSDoubleLinkedList *)self tail];
+  head = [(AMSDoubleLinkedList *)self head];
+  [(AMSDoubleLinkedList *)self setHead:nodeCopy];
+  tail = [(AMSDoubleLinkedList *)self tail];
 
-  if (!v6)
+  if (!tail)
   {
-    [(AMSDoubleLinkedList *)self setTail:v9];
+    [(AMSDoubleLinkedList *)self setTail:nodeCopy];
   }
 
-  [v9 setPrevious:0];
-  [v9 setNext:v5];
-  [v5 setPrevious:v9];
-  v7 = [(AMSDoubleLinkedList *)self listIdentifier];
-  [v9 setListIdentifier:v7];
+  [nodeCopy setPrevious:0];
+  [nodeCopy setNext:head];
+  [head setPrevious:nodeCopy];
+  listIdentifier2 = [(AMSDoubleLinkedList *)self listIdentifier];
+  [nodeCopy setListIdentifier:listIdentifier2];
 
   ++self->_count;
 }
 
-- (id)insertObject:(id)a3
+- (id)insertObject:(id)object
 {
-  v4 = a3;
-  v5 = [[AMSDoubleLinkedListNode alloc] initWithObject:v4];
+  objectCopy = object;
+  v5 = [[AMSDoubleLinkedListNode alloc] initWithObject:objectCopy];
 
   [(AMSDoubleLinkedList *)self insertNode:v5];
 
@@ -134,12 +134,12 @@
   self->_count = 0;
 }
 
-- (void)removeNode:(id)a3
+- (void)removeNode:(id)node
 {
-  v16 = a3;
-  v4 = [v16 listIdentifier];
-  v5 = [(AMSDoubleLinkedList *)self listIdentifier];
-  v6 = [v4 isEqual:v5];
+  nodeCopy = node;
+  listIdentifier = [nodeCopy listIdentifier];
+  listIdentifier2 = [(AMSDoubleLinkedList *)self listIdentifier];
+  v6 = [listIdentifier isEqual:listIdentifier2];
 
   if ((v6 & 1) == 0)
   {
@@ -147,31 +147,31 @@
     objc_exception_throw(v15);
   }
 
-  v7 = [v16 next];
-  v8 = [v16 previous];
-  [v7 setPrevious:v8];
+  next = [nodeCopy next];
+  previous = [nodeCopy previous];
+  [next setPrevious:previous];
 
-  v9 = [v16 previous];
-  v10 = [v16 next];
-  [v9 setNext:v10];
+  previous2 = [nodeCopy previous];
+  next2 = [nodeCopy next];
+  [previous2 setNext:next2];
 
-  v11 = [(AMSDoubleLinkedList *)self head];
+  head = [(AMSDoubleLinkedList *)self head];
 
-  if (v11 == v16)
+  if (head == nodeCopy)
   {
-    v12 = [v16 next];
-    [(AMSDoubleLinkedList *)self setHead:v12];
+    next3 = [nodeCopy next];
+    [(AMSDoubleLinkedList *)self setHead:next3];
   }
 
-  v13 = [(AMSDoubleLinkedList *)self tail];
+  tail = [(AMSDoubleLinkedList *)self tail];
 
-  if (v13 == v16)
+  if (tail == nodeCopy)
   {
-    v14 = [v16 previous];
-    [(AMSDoubleLinkedList *)self setTail:v14];
+    previous3 = [nodeCopy previous];
+    [(AMSDoubleLinkedList *)self setTail:previous3];
   }
 
-  [v16 setListIdentifier:0];
+  [nodeCopy setListIdentifier:0];
   --self->_count;
 }
 
@@ -183,8 +183,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(AMSDoubleLinkedList *)self allNodes];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allNodes = [(AMSDoubleLinkedList *)self allNodes];
+  v5 = [allNodes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -195,22 +195,22 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allNodes);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 object];
-        [v3 appendFormat:@"%@", v10];
+        object = [v9 object];
+        [v3 appendFormat:@"%@", object];
 
-        v11 = [(AMSDoubleLinkedList *)self tail];
+        tail = [(AMSDoubleLinkedList *)self tail];
 
-        if (v9 != v11)
+        if (v9 != tail)
         {
           [v3 appendString:{@", \n"}];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allNodes countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);

@@ -1,49 +1,49 @@
 @interface SUUIViewModification
-- (SUUIViewModification)initWithViewReusePool:(id)a3;
-- (id)_addImageViewWithReuseIdentifier:(id)a3 viewElement:(id)a4 context:(id)a5;
-- (id)_attributedStringViewForLayout:(id)a3;
-- (id)_itemStateForButton:(id)a3;
-- (id)addBadgeViewWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addBarRatingWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addButtonWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addDividerWithElement:(id)a3 context:(id)a4;
-- (id)addHeaderViewWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addHorizontalListWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addHorizontalLockupWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addImageDeckViewWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addImageGridViewWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addImageViewWithElement:(id)a3 context:(id)a4;
-- (id)addImageViewWithVideoElement:(id)a3 context:(id)a4;
-- (id)addLabelViewWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addLabelViewWithOrdinalElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addMenuButtonWithTitleItem:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addOfferViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addResponseViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addReusableViewWithReuseIdentifier:(id)a3;
-- (id)addReviewListTitleViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addStackItemViewWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addStackListViewWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addStarRatingControlViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addStarRatingViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addTabularLockupWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addTextViewWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addTomatoRatingViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)_styleItemOfferButton:(id)a3 forElement:(id)a4 context:(id)a5;
-- (void)setTextProperties:(id)a3 forView:(id)a4;
+- (SUUIViewModification)initWithViewReusePool:(id)pool;
+- (id)_addImageViewWithReuseIdentifier:(id)identifier viewElement:(id)element context:(id)context;
+- (id)_attributedStringViewForLayout:(id)layout;
+- (id)_itemStateForButton:(id)button;
+- (id)addBadgeViewWithElement:(id)element width:(double)width context:(id)context;
+- (id)addBarRatingWithElement:(id)element width:(double)width context:(id)context;
+- (id)addButtonWithElement:(id)element width:(double)width context:(id)context;
+- (id)addDividerWithElement:(id)element context:(id)context;
+- (id)addHeaderViewWithElement:(id)element width:(double)width context:(id)context;
+- (id)addHorizontalListWithElement:(id)element width:(double)width context:(id)context;
+- (id)addHorizontalLockupWithElement:(id)element width:(double)width context:(id)context;
+- (id)addImageDeckViewWithElement:(id)element width:(double)width context:(id)context;
+- (id)addImageGridViewWithElement:(id)element width:(double)width context:(id)context;
+- (id)addImageViewWithElement:(id)element context:(id)context;
+- (id)addImageViewWithVideoElement:(id)element context:(id)context;
+- (id)addLabelViewWithElement:(id)element width:(double)width context:(id)context;
+- (id)addLabelViewWithOrdinalElement:(id)element width:(double)width context:(id)context;
+- (id)addMenuButtonWithTitleItem:(id)item width:(double)width context:(id)context;
+- (id)addOfferViewWithViewElement:(id)element width:(double)width context:(id)context;
+- (id)addResponseViewWithViewElement:(id)element width:(double)width context:(id)context;
+- (id)addReusableViewWithReuseIdentifier:(id)identifier;
+- (id)addReviewListTitleViewWithViewElement:(id)element width:(double)width context:(id)context;
+- (id)addStackItemViewWithElement:(id)element width:(double)width context:(id)context;
+- (id)addStackListViewWithElement:(id)element width:(double)width context:(id)context;
+- (id)addStarRatingControlViewWithViewElement:(id)element width:(double)width context:(id)context;
+- (id)addStarRatingViewWithViewElement:(id)element width:(double)width context:(id)context;
+- (id)addTabularLockupWithElement:(id)element width:(double)width context:(id)context;
+- (id)addTextViewWithElement:(id)element width:(double)width context:(id)context;
+- (id)addTomatoRatingViewWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)_styleItemOfferButton:(id)button forElement:(id)element context:(id)context;
+- (void)setTextProperties:(id)properties forView:(id)view;
 @end
 
 @implementation SUUIViewModification
 
-- (SUUIViewModification)initWithViewReusePool:(id)a3
+- (SUUIViewModification)initWithViewReusePool:(id)pool
 {
-  v5 = a3;
+  poolCopy = pool;
   v11.receiver = self;
   v11.super_class = SUUIViewModification;
   v6 = [(SUUIViewModification *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewPool, a3);
+    objc_storeStrong(&v6->_viewPool, pool);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     views = v7->_views;
     v7->_views = v8;
@@ -52,9 +52,9 @@
   return v7;
 }
 
-- (id)addReusableViewWithReuseIdentifier:(id)a3
+- (id)addReusableViewWithReuseIdentifier:(id)identifier
 {
-  v4 = [(SUUIViewReusePool *)self->_viewPool dequeueReusableViewWithReuseIdentifier:a3];
+  v4 = [(SUUIViewReusePool *)self->_viewPool dequeueReusableViewWithReuseIdentifier:identifier];
   if (v4)
   {
     [(NSMutableArray *)self->_views addObject:v4];
@@ -63,10 +63,10 @@
   return v4;
 }
 
-- (void)setTextProperties:(id)a3 forView:(id)a4
+- (void)setTextProperties:(id)properties forView:(id)view
 {
-  v10 = a3;
-  v6 = a4;
+  propertiesCopy = properties;
+  viewCopy = view;
   if (!self->_allViewTextProperties)
   {
     v7 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:0 capacity:1];
@@ -75,84 +75,84 @@
   }
 
   v9 = self->_allViewTextProperties;
-  if (v10)
+  if (propertiesCopy)
   {
-    [(NSMapTable *)v9 setObject:v10 forKey:v6];
+    [(NSMapTable *)v9 setObject:propertiesCopy forKey:viewCopy];
   }
 
   else
   {
-    [(NSMapTable *)v9 removeObjectForKey:v6];
+    [(NSMapTable *)v9 removeObjectForKey:viewCopy];
   }
 }
 
-- (id)addBadgeViewWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addBadgeViewWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 badgeType] == 1)
+  elementCopy = element;
+  contextCopy = context;
+  if ([elementCopy badgeType] == 1)
   {
-    v10 = [v9 labelLayoutCache];
-    v11 = [v10 layoutForWidth:a4 viewElement:v8];
+    labelLayoutCache = [contextCopy labelLayoutCache];
+    v11 = [labelLayoutCache layoutForWidth:width viewElement:elementCopy];
 
     v12 = [(SUUIViewModification *)self _attributedStringViewForLayout:v11];
     [v12 setLayout:v11];
     [v12 setStringTreatment:1];
-    v13 = [v8 style];
-    v14 = [v13 ikBackgroundColor];
-    v15 = [v14 color];
-    [v12 setTreatmentColor:v15];
+    style = [elementCopy style];
+    ikBackgroundColor = [style ikBackgroundColor];
+    color = [ikBackgroundColor color];
+    [v12 setTreatmentColor:color];
 
     goto LABEL_16;
   }
 
-  v16 = [v8 resourceName];
-  v13 = v16;
-  if (v16)
+  resourceName = [elementCopy resourceName];
+  style = resourceName;
+  if (resourceName)
   {
-    v17 = SUUIImageWithResourceName(v16);
+    fallbackImage = SUUIImageWithResourceName(resourceName);
   }
 
   else
   {
-    v18 = [v8 URL];
+    v18 = [elementCopy URL];
 
     if (v18)
     {
-      v19 = [v9 requestIdentifierForViewElement:v8];
+      v19 = [contextCopy requestIdentifierForViewElement:elementCopy];
       if (v19)
       {
-        v20 = [v9 resourceLoader];
-        v11 = [v20 cachedResourceForRequestIdentifier:{objc_msgSend(v19, "unsignedIntegerValue")}];
-        if (!v11 && ([v20 trySetReason:1 forRequestWithIdentifier:{objc_msgSend(v19, "unsignedIntegerValue")}] & 1) == 0)
+        resourceLoader = [contextCopy resourceLoader];
+        v11 = [resourceLoader cachedResourceForRequestIdentifier:{objc_msgSend(v19, "unsignedIntegerValue")}];
+        if (!v11 && ([resourceLoader trySetReason:1 forRequestWithIdentifier:{objc_msgSend(v19, "unsignedIntegerValue")}] & 1) == 0)
         {
-          [v9 loadTemplatedImageForBadgeElement:v8 reason:1];
+          [contextCopy loadTemplatedImageForBadgeElement:elementCopy reason:1];
         }
       }
 
       else
       {
-        [v9 loadTemplatedImageForBadgeElement:v8 reason:1];
+        [contextCopy loadTemplatedImageForBadgeElement:elementCopy reason:1];
         v11 = 0;
       }
 
       goto LABEL_15;
     }
 
-    v17 = [v8 fallbackImage];
+    fallbackImage = [elementCopy fallbackImage];
   }
 
-  v11 = v17;
+  v11 = fallbackImage;
 LABEL_15:
   v12 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF9940];
-  v21 = [v8 accessibilityText];
-  [v12 setAccessibilityLabel:v21];
+  accessibilityText = [elementCopy accessibilityText];
+  [v12 setAccessibilityLabel:accessibilityText];
 
   [v12 setImage:v11];
-  [v8 size];
+  [elementCopy size];
   [v12 setImageSize:?];
-  v22 = [v8 style];
-  v23 = SUUIViewElementPlainColorWithStyle(v22, 0);
+  style2 = [elementCopy style];
+  v23 = SUUIViewElementPlainColorWithStyle(style2, 0);
   [v12 setTintColor:v23];
 
   [v12 setUserInteractionEnabled:0];
@@ -161,94 +161,94 @@ LABEL_16:
   return v12;
 }
 
-- (id)addBarRatingWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addBarRatingWithElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a5;
-  v8 = a3;
+  contextCopy = context;
+  elementCopy = element;
   v9 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF98A0];
-  [v8 ratingValue];
+  [elementCopy ratingValue];
   [v9 setRatingValue:?];
-  v10 = [v8 style];
+  style = [elementCopy style];
 
-  v11 = [v7 tintColor];
-  v12 = SUUIViewElementPlainColorWithStyle(v10, v11);
+  tintColor = [contextCopy tintColor];
+  blackColor = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
-  if (!v12)
+  if (!blackColor)
   {
-    v12 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  [v9 setTintColor:v12];
-  v13 = [v7 clientContext];
-  v14 = SUUIUserInterfaceIdiom(v13) != 1;
+  [v9 setTintColor:blackColor];
+  clientContext = [contextCopy clientContext];
+  v14 = SUUIUserInterfaceIdiom(clientContext) != 1;
 
   [v9 setBarRatingStyle:v14];
 
   return v9;
 }
 
-- (id)addButtonWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addButtonWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 buttonViewType];
-  v11 = v10;
+  elementCopy = element;
+  contextCopy = context;
+  buttonViewType = [elementCopy buttonViewType];
+  v11 = buttonViewType;
   v12 = 0;
-  if (v10 <= 5)
+  if (buttonViewType <= 5)
   {
-    if (v10 > 1)
+    if (buttonViewType > 1)
     {
-      if ((v10 - 2) < 2)
+      if ((buttonViewType - 2) < 2)
       {
-        v56 = [(SUUIViewModification *)self _itemStateForButton:v8];
+        v56 = [(SUUIViewModification *)self _itemStateForButton:elementCopy];
         v12 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF9980];
-        [v12 setElement:v8];
+        [v12 setElement:elementCopy];
       }
 
       else
       {
-        if (v10 != 4)
+        if (buttonViewType != 4)
         {
-          if (v10 == 5)
+          if (buttonViewType == 5)
           {
             v12 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF9920];
-            v13 = [v12 imageView];
-            v14 = [v12 additionalImageView];
-            v15 = [v8 buttonImage];
-            v113 = __RequestImage(v15, v9);
-            [v13 setContents:?];
-            [v9 sizeForImageElement:v15];
-            v115 = v13;
-            [v13 setImageSize:?];
-            v16 = [v8 additionalButtonImage];
-            v17 = __RequestImage(v16, v9);
-            [v14 setContents:v17];
-            [v9 sizeForImageElement:v16];
-            [v14 setImageSize:?];
-            v18 = [v15 accessibilityText];
-            if (!v18)
+            imageView = [v12 imageView];
+            additionalImageView = [v12 additionalImageView];
+            buttonImage = [elementCopy buttonImage];
+            v113 = __RequestImage(buttonImage, contextCopy);
+            [imageView setContents:?];
+            [contextCopy sizeForImageElement:buttonImage];
+            v115 = imageView;
+            [imageView setImageSize:?];
+            additionalButtonImage = [elementCopy additionalButtonImage];
+            v17 = __RequestImage(additionalButtonImage, contextCopy);
+            [additionalImageView setContents:v17];
+            [contextCopy sizeForImageElement:additionalButtonImage];
+            [additionalImageView setImageSize:?];
+            accessibilityText = [buttonImage accessibilityText];
+            if (!accessibilityText)
             {
-              v18 = [v8 accessibilityText];
+              accessibilityText = [elementCopy accessibilityText];
             }
 
-            [v12 setAccessibilityLabel:v18];
-            v19 = [v8 isEnabled];
+            [v12 setAccessibilityLabel:accessibilityText];
+            isEnabled = [elementCopy isEnabled];
             v20 = 0.4;
-            if (v19)
+            if (isEnabled)
             {
               v20 = 1.0;
             }
 
             [v12 setAlpha:v20];
-            [v12 setEnabled:v19];
-            v21 = [v8 style];
-            v22 = SUUIViewElementPlainColorWithStyle(v21, 0);
+            [v12 setEnabled:isEnabled];
+            style = [elementCopy style];
+            v22 = SUUIViewElementPlainColorWithStyle(style, 0);
             [v12 setTintColor:v22];
 
-            if ([v8 isBigHitButton])
+            if ([elementCopy isBigHitButton])
             {
               [v12 setUseBigHitTarget:1];
-              [v8 bigHitSize];
+              [elementCopy bigHitSize];
               v24 = -v23;
               v25 = v23 == 0.0;
               v26 = -15.0;
@@ -270,20 +270,20 @@ LABEL_16:
         }
 
         v12 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF9980];
-        v56 = [(SUUIViewModification *)self _itemStateForButton:v8];
+        v56 = [(SUUIViewModification *)self _itemStateForButton:elementCopy];
       }
 
-      v62 = [v8 buyButtonDescriptor];
-      v63 = [v9 clientContext];
-      [v12 setValuesUsingBuyButtonDescriptor:v62 itemState:v56 clientContext:v63 animated:0];
+      buyButtonDescriptor = [elementCopy buyButtonDescriptor];
+      clientContext = [contextCopy clientContext];
+      [v12 setValuesUsingBuyButtonDescriptor:buyButtonDescriptor itemState:v56 clientContext:clientContext animated:0];
 
-      [(SUUIViewModification *)self _styleItemOfferButton:v12 forElement:v8 context:v9];
+      [(SUUIViewModification *)self _styleItemOfferButton:v12 forElement:elementCopy context:contextCopy];
       goto LABEL_83;
     }
 
-    if (v10)
+    if (buttonViewType)
     {
-      if (v10 != 1)
+      if (buttonViewType != 1)
       {
         goto LABEL_83;
       }
@@ -294,20 +294,20 @@ LABEL_16:
     goto LABEL_26;
   }
 
-  if (v10 <= 0xD)
+  if (buttonViewType <= 0xD)
   {
-    if (((1 << v10) & 0x2D00) != 0)
+    if (((1 << buttonViewType) & 0x2D00) != 0)
     {
 LABEL_26:
-      v37 = [v8 buttonViewSubType];
-      if (v37 == 1)
+      buttonViewSubType = [elementCopy buttonViewSubType];
+      if (buttonViewSubType == 1)
       {
         v38 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF9AA0];
-        v39 = [v8 nonToggledText];
-        [v38 setNonToggledTitle:v39];
+        nonToggledText = [elementCopy nonToggledText];
+        [v38 setNonToggledTitle:nonToggledText];
 
-        v40 = [v8 toggledText];
-        [v38 setToggledTitle:v40];
+        toggledText = [elementCopy toggledText];
+        [v38 setToggledTitle:toggledText];
 
         v41 = v38;
         v42 = v41;
@@ -331,48 +331,48 @@ LABEL_26:
 
       [v42 setButtonType:v43];
       v44 = [SUUIButtonBorderStyle alloc];
-      v45 = [v8 style];
-      v46 = [(SUUIButtonBorderStyle *)v44 initWithElementStyle:v45];
+      style2 = [elementCopy style];
+      imageView2 = [(SUUIButtonBorderStyle *)v44 initWithElementStyle:style2];
 
-      [v42 setBorderStyle:v46];
-      v47 = [v9 labelLayoutCache];
-      v48 = [v47 layoutForWidth:a4 viewElement:v8];
+      [v42 setBorderStyle:imageView2];
+      labelLayoutCache = [contextCopy labelLayoutCache];
+      v48 = [labelLayoutCache layoutForWidth:width viewElement:elementCopy];
       [v42 setTitleLayout:v48];
 
-      v49 = [v8 isEnabled];
-      [v42 setEnabled:v49];
+      isEnabled2 = [elementCopy isEnabled];
+      [v42 setEnabled:isEnabled2];
       v50 = 0.4;
-      if (v49)
+      if (isEnabled2)
       {
         v50 = 1.0;
       }
 
       [v42 setAlpha:v50];
-      if (v37 == 1)
+      if (buttonViewSubType == 1)
       {
-        v51 = [v8 toggleItemIdentifier];
-        if ([v51 length])
+        toggleItemIdentifier = [elementCopy toggleItemIdentifier];
+        if ([toggleItemIdentifier length])
         {
           v52 = +[SUUIToggleStateCenter defaultCenter];
-          [v41 setToggleItemIdentifier:v51];
-          v53 = [v52 itemForIdentifier:v51];
+          [v41 setToggleItemIdentifier:toggleItemIdentifier];
+          v53 = [v52 itemForIdentifier:toggleItemIdentifier];
           v54 = v53;
           if (!v53 || ([v53 toggled] & 0x80000000) != 0)
           {
-            v55 = [v8 isToggled];
+            isToggled = [elementCopy isToggled];
           }
 
           else
           {
-            v55 = [v54 toggled] == 1;
+            isToggled = [v54 toggled] == 1;
           }
 
-          [v41 setToggled:v55 animated:0];
+          [v41 setToggled:isToggled animated:0];
         }
 
         else
         {
-          [v41 setToggled:objc_msgSend(v8 animated:{"isToggled"), 0}];
+          [v41 setToggled:objc_msgSend(elementCopy animated:{"isToggled"), 0}];
         }
       }
 
@@ -382,101 +382,101 @@ LABEL_60:
       goto LABEL_83;
     }
 
-    if (v10 == 9)
+    if (buttonViewType == 9)
     {
       v12 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF8620];
       [v12 setAlpha:1.0];
       [v12 setBorderStyle:0];
-      v64 = 1;
+      isEnabled3 = 1;
       [v12 setButtonType:1];
-      v65 = [v9 labelLayoutCache];
-      v66 = [v65 layoutForWidth:a4 viewElement:v8];
+      labelLayoutCache2 = [contextCopy labelLayoutCache];
+      v66 = [labelLayoutCache2 layoutForWidth:width viewElement:elementCopy];
       [v12 setTitleLayout:v66];
 
-      v29 = [(SUUIViewModification *)self _itemStateForButton:v8];
-      v67 = [v8 buyButtonDescriptor];
-      v68 = [v9 clientContext];
-      [v12 setValuesUsingBuyButtonDescriptor:v67 itemState:v29 clientContext:v68 animated:0];
+      playItemIdentifier = [(SUUIViewModification *)self _itemStateForButton:elementCopy];
+      buyButtonDescriptor2 = [elementCopy buyButtonDescriptor];
+      clientContext2 = [contextCopy clientContext];
+      [v12 setValuesUsingBuyButtonDescriptor:buyButtonDescriptor2 itemState:playItemIdentifier clientContext:clientContext2 animated:0];
 
       if (([v12 isUsingItemOfferAppearance] & 1) == 0)
       {
-        v64 = [v8 isEnabled];
+        isEnabled3 = [elementCopy isEnabled];
       }
 
-      [v12 setEnabled:v64];
-      v69 = [v8 style];
-      v70 = SUUIViewElementPlainColorWithStyle(v69, 0);
+      [v12 setEnabled:isEnabled3];
+      style3 = [elementCopy style];
+      v70 = SUUIViewElementPlainColorWithStyle(style3, 0);
 
       [v12 setTintColor:v70];
       goto LABEL_82;
     }
 
-    if (v10 == 12)
+    if (buttonViewType == 12)
     {
       v12 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF99A0];
-      v27 = [v8 sizeVariant];
-      v28 = [v27 isEqualToString:@"large"];
+      sizeVariant = [elementCopy sizeVariant];
+      v28 = [sizeVariant isEqualToString:@"large"];
 
       [v12 setStyle:v28];
-      v29 = [v8 playItemIdentifier];
+      playItemIdentifier = [elementCopy playItemIdentifier];
       if ([v12 isIndeterminate])
       {
         [v12 endIndeterminateAnimation];
       }
 
-      [v12 setShowOnDemand:{objc_msgSend(v8, "showOnDemand")}];
+      [v12 setShowOnDemand:{objc_msgSend(elementCopy, "showOnDemand")}];
       [v12 showPlayIndicator:1];
-      [v12 setPlayItemIdentifier:v29];
-      [v12 setItemIdentifier:{objc_msgSend(v29, "longLongValue")}];
+      [v12 setPlayItemIdentifier:playItemIdentifier];
+      [v12 setItemIdentifier:{objc_msgSend(playItemIdentifier, "longLongValue")}];
       [v12 setBigHitInsets:{-15.0, -15.0, -15.0, -15.0}];
-      v30 = [v8 style];
-      v31 = [v30 ikBackgroundColor];
+      style4 = [elementCopy style];
+      ikBackgroundColor = [style4 ikBackgroundColor];
 
-      v32 = [v31 colorType];
-      if (v32 == 2)
+      colorType = [ikBackgroundColor colorType];
+      if (colorType == 2)
       {
-        v35 = 0;
-        v36 = 0;
+        color2 = 0;
+        color = 0;
       }
 
       else
       {
-        if (v32 == 3)
+        if (colorType == 3)
         {
-          v33 = [v31 gradientDirectionType] == 2;
-          v34 = [v31 gradientColors];
-          [v12 setBackgroundGradientColors:v34 withGradientType:v33];
-          v35 = 0;
-          v36 = 0;
-          v32 = 4;
+          v33 = [ikBackgroundColor gradientDirectionType] == 2;
+          gradientColors = [ikBackgroundColor gradientColors];
+          [v12 setBackgroundGradientColors:gradientColors withGradientType:v33];
+          color2 = 0;
+          color = 0;
+          colorType = 4;
         }
 
         else
         {
-          v36 = [v31 color];
-          v34 = [v8 style];
-          v88 = [v34 ikColor];
-          v35 = [v88 color];
+          color = [ikBackgroundColor color];
+          gradientColors = [elementCopy style];
+          ikColor = [gradientColors ikColor];
+          color2 = [ikColor color];
 
-          v32 = 1;
+          colorType = 1;
         }
       }
 
-      [v12 setItemIdentifier:{objc_msgSend(v29, "longLongValue")}];
-      [v12 setBackgroundType:v32];
-      if (v35)
+      [v12 setItemIdentifier:{objc_msgSend(playItemIdentifier, "longLongValue")}];
+      [v12 setBackgroundType:colorType];
+      if (color2)
       {
-        [v12 setControlForegroundColor:v35];
+        [v12 setControlForegroundColor:color2];
       }
 
-      if (v36)
+      if (color)
       {
-        [v12 setControlColor:v36];
+        [v12 setControlColor:color];
       }
 
-      [v12 setElement:v8];
-      [v12 setEnabled:{objc_msgSend(v8, "isEnabled")}];
-      [v12 setDisabledButSelectable:{objc_msgSend(v8, "isDisabledButSelectable")}];
+      [v12 setElement:elementCopy];
+      [v12 setEnabled:{objc_msgSend(elementCopy, "isEnabled")}];
+      [v12 setDisabledButSelectable:{objc_msgSend(elementCopy, "isDisabledButSelectable")}];
       [v12 setHidden:{objc_msgSend(v12, "showOnDemand")}];
 
 LABEL_82:
@@ -484,18 +484,18 @@ LABEL_82:
     }
   }
 
-  if (v10 == 6)
+  if (buttonViewType == 6)
   {
-    if ([v8 buttonViewSubType] == 1)
+    if ([elementCopy buttonViewSubType] == 1)
     {
       v71 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF9AA0];
-      v72 = [v8 nonToggledText];
-      [v71 setNonToggledTitle:v72];
+      nonToggledText2 = [elementCopy nonToggledText];
+      [v71 setNonToggledTitle:nonToggledText2];
 
-      v73 = [v8 toggledText];
-      [v71 setToggledTitle:v73];
+      toggledText2 = [elementCopy toggledText];
+      [v71 setToggledTitle:toggledText2];
 
-      [v71 setAutoIncrement:{objc_msgSend(v8, "autoIncrementCount")}];
+      [v71 setAutoIncrement:{objc_msgSend(elementCopy, "autoIncrementCount")}];
       v41 = v71;
       v74 = v41;
     }
@@ -507,10 +507,10 @@ LABEL_82:
     }
 
     [v74 setBorderStyle:0];
-    v75 = [SUUIStyledButton buttonTypeForElement:v8];
-    if ([v8 isBigHitButton])
+    v75 = [SUUIStyledButton buttonTypeForElement:elementCopy];
+    if ([elementCopy isBigHitButton])
     {
-      [v8 bigHitSize];
+      [elementCopy bigHitSize];
       v77 = -v76;
       v25 = v76 == 0.0;
       v78 = -15.0;
@@ -524,35 +524,35 @@ LABEL_82:
     }
 
     [v74 setButtonType:v75];
-    v79 = [v9 labelLayoutCache];
-    v80 = [v79 layoutForWidth:a4 viewElement:v8];
+    labelLayoutCache3 = [contextCopy labelLayoutCache];
+    v80 = [labelLayoutCache3 layoutForWidth:width viewElement:elementCopy];
     [v74 setTitleLayout:v80];
 
-    v81 = [v8 style];
-    [v81 elementPadding];
+    style5 = [elementCopy style];
+    [style5 elementPadding];
     [v74 setButtonPadding:?];
 
-    v82 = [v8 isEnabled];
-    [v74 setEnabled:v82];
+    isEnabled4 = [elementCopy isEnabled];
+    [v74 setEnabled:isEnabled4];
     v83 = 0.4;
-    if (v82)
+    if (isEnabled4)
     {
       v83 = 1.0;
     }
 
     [v74 setAlpha:v83];
-    v46 = [v74 imageView];
-    v84 = [v8 buttonImage];
-    v85 = __RequestImage(v84, v9);
+    imageView2 = [v74 imageView];
+    buttonImage2 = [elementCopy buttonImage];
+    v85 = __RequestImage(buttonImage2, contextCopy);
     if (v41)
     {
-      [v41 setElement:v8];
-      v86 = [v8 toggleItemIdentifier];
+      [v41 setElement:elementCopy];
+      toggleItemIdentifier2 = [elementCopy toggleItemIdentifier];
       v114 = +[SUUIToggleStateCenter defaultCenter];
-      if ([v86 length])
+      if ([toggleItemIdentifier2 length])
       {
-        [v41 setToggleItemIdentifier:v86];
-        v87 = [v114 itemForIdentifier:v86];
+        [v41 setToggleItemIdentifier:toggleItemIdentifier2];
+        v87 = [v114 itemForIdentifier:toggleItemIdentifier2];
       }
 
       else
@@ -562,20 +562,20 @@ LABEL_82:
 
       if (([v87 toggled] & 0x80000000) != 0)
       {
-        v112 = [v8 isToggled];
+        isToggled2 = [elementCopy isToggled];
       }
 
       else
       {
-        v112 = [v87 count];
+        isToggled2 = [v87 count];
       }
 
       v116 = v87;
-      v97 = [v8 additionalButtonImage];
-      if (v97)
+      additionalButtonImage2 = [elementCopy additionalButtonImage];
+      if (additionalButtonImage2)
       {
         [v41 setToggleButtonType:1];
-        v98 = __RequestImage(v97, v9);
+        v98 = __RequestImage(additionalButtonImage2, contextCopy);
       }
 
       else
@@ -584,60 +584,60 @@ LABEL_82:
         v98 = 0;
       }
 
-      if ([v8 autoIncrementCount] && objc_msgSend(v116, "toggled") == -1)
+      if ([elementCopy autoIncrementCount] && objc_msgSend(v116, "toggled") == -1)
       {
-        v106 = v46;
-        v107 = v86;
-        v110 = [v41 titleLayout];
-        v102 = [v110 attributedString];
-        v103 = [v102 string];
+        v106 = imageView2;
+        v107 = toggleItemIdentifier2;
+        titleLayout = [v41 titleLayout];
+        attributedString = [titleLayout attributedString];
+        string = [attributedString string];
 
-        v111 = v103;
-        if ([v103 length])
+        v111 = string;
+        if ([string length])
         {
           if (addButtonWithElement_width_context__sOnceToken != -1)
           {
             [SUUIViewModification(SUUIViewElementView) addButtonWithElement:width:context:];
           }
 
-          v86 = v107;
-          v46 = v106;
+          toggleItemIdentifier2 = v107;
+          imageView2 = v106;
           v104 = [addButtonWithElement_width_context__sNumberFormatter numberFromString:v111];
           if (v104)
           {
             v108 = v104;
-            v112 = [v104 integerValue];
+            isToggled2 = [v104 integerValue];
             v104 = v108;
           }
         }
 
         else
         {
-          v46 = v106;
-          v86 = v107;
+          imageView2 = v106;
+          toggleItemIdentifier2 = v107;
         }
 
-        if (v112 < 1)
+        if (isToggled2 < 1)
         {
           [v41 setButtonTitleText:@" "];
-          [v41 setAutoIncrementCount:v112];
+          [v41 setAutoIncrementCount:isToggled2];
         }
 
         else
         {
-          [v41 setAutoIncrementCount:v112];
+          [v41 setAutoIncrementCount:isToggled2];
           [v41 setButtonTitleText:v111];
         }
 
-        [v41 setAutoIncrementCount:v112];
-        [v41 setToggled:{objc_msgSend(v8, "isToggled")}];
+        [v41 setAutoIncrementCount:isToggled2];
+        [v41 setToggled:{objc_msgSend(elementCopy, "isToggled")}];
       }
 
-      else if ([v8 autoIncrementCount])
+      else if ([elementCopy autoIncrementCount])
       {
-        v109 = v97;
+        v109 = additionalButtonImage2;
         [v41 setToggled:{objc_msgSend(v116, "toggled") == 1}];
-        if (v112 < 1)
+        if (isToggled2 < 1)
         {
           [v41 setButtonTitleText:@" "];
         }
@@ -646,19 +646,19 @@ LABEL_82:
         {
           [v116 toggledString];
           v99 = v85;
-          v101 = v100 = v86;
+          v101 = v100 = toggleItemIdentifier2;
           [v41 setButtonTitleText:v101];
 
-          v86 = v100;
+          toggleItemIdentifier2 = v100;
           v85 = v99;
         }
 
-        v97 = v109;
+        additionalButtonImage2 = v109;
       }
 
       else
       {
-        [v41 setToggled:{objc_msgSend(v8, "isToggled")}];
+        [v41 setToggled:{objc_msgSend(elementCopy, "isToggled")}];
       }
 
       [v41 setNonToggledContents:v85];
@@ -673,22 +673,22 @@ LABEL_82:
         v105 = v85;
       }
 
-      [(SUUIButtonBorderStyle *)v46 setContents:v105];
+      [(SUUIButtonBorderStyle *)imageView2 setContents:v105];
     }
 
     else
     {
-      [(SUUIButtonBorderStyle *)v46 setContents:v85];
+      [(SUUIButtonBorderStyle *)imageView2 setContents:v85];
     }
 
-    [v9 sizeForImageElement:v84];
-    [(SUUIButtonBorderStyle *)v46 setImageSize:?];
+    [contextCopy sizeForImageElement:buttonImage2];
+    [(SUUIButtonBorderStyle *)imageView2 setImageSize:?];
     v12 = v74;
 
     goto LABEL_60;
   }
 
-  if (v10 != 7)
+  if (buttonViewType != 7)
   {
     goto LABEL_83;
   }
@@ -707,22 +707,22 @@ LABEL_42:
   }
 
   [v12 setButtonType:v57];
-  v58 = [v9 labelLayoutCache];
-  v59 = [v58 layoutForWidth:a4 viewElement:v8];
+  labelLayoutCache4 = [contextCopy labelLayoutCache];
+  v59 = [labelLayoutCache4 layoutForWidth:width viewElement:elementCopy];
   [v12 setTitleLayout:v59];
 
-  v60 = [v8 isEnabled];
-  [v12 setEnabled:v60];
+  isEnabled5 = [elementCopy isEnabled];
+  [v12 setEnabled:isEnabled5];
   v61 = 0.4;
-  if (v60)
+  if (isEnabled5)
   {
     v61 = 1.0;
   }
 
   [v12 setAlpha:v61];
 LABEL_83:
-  v89 = [v8 attributes];
-  v90 = [v89 objectForKeyedSubscript:@"privacy"];
+  attributes = [elementCopy attributes];
+  v90 = [attributes objectForKeyedSubscript:@"privacy"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -740,17 +740,17 @@ LABEL_83:
   if (objc_opt_isKindOfClass())
   {
     v92 = v12;
-    v93 = [v8 buttonTitleStyle];
-    v94 = v93;
-    if (!v93)
+    buttonTitleStyle = [elementCopy buttonTitleStyle];
+    style6 = buttonTitleStyle;
+    if (!buttonTitleStyle)
     {
-      v94 = [v8 style];
+      style6 = [elementCopy style];
     }
 
-    v95 = [v94 ikColor];
-    [v92 setUsesTintColor:{objc_msgSend(v95, "colorType") == 1}];
+    ikColor2 = [style6 ikColor];
+    [v92 setUsesTintColor:{objc_msgSend(ikColor2, "colorType") == 1}];
 
-    if (!v93)
+    if (!buttonTitleStyle)
     {
     }
   }
@@ -769,19 +769,19 @@ uint64_t __80__SUUIViewModification_SUUIViewElementView__addButtonWithElement_wi
   return [v2 setNumberStyle:1];
 }
 
-- (id)addDividerWithElement:(id)a3 context:(id)a4
+- (id)addDividerWithElement:(id)element context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  contextCopy = context;
   v8 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AEF420];
-  v9 = [v6 style];
-  v10 = [v7 tintColor];
+  style = [elementCopy style];
+  tintColor = [contextCopy tintColor];
 
-  v11 = SUUIViewElementPlainColorWithStyle(v9, v10);
+  v11 = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
-  if (v11 || [v6 dividerType] == 3)
+  if (v11 || [elementCopy dividerType] == 3)
   {
-    if ([v6 dividerType] == 3)
+    if ([elementCopy dividerType] == 3)
     {
 
       v11 = 0;
@@ -798,220 +798,220 @@ uint64_t __80__SUUIViewModification_SUUIViewElementView__addButtonWithElement_wi
   return v8;
 }
 
-- (id)addHeaderViewWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addHeaderViewWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF8820];
-  [v10 reloadWithViewElement:v9 width:v8 context:a4];
+  [v10 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v10;
 }
 
-- (id)addHorizontalListWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addHorizontalListWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF98C0];
-  v11 = [v9 style];
-  [v11 elementPadding];
+  style = [elementCopy style];
+  [style elementPadding];
   [v10 setContentInset:?];
 
-  [v10 reloadWithViewElement:v9 width:v8 context:a4];
+  [v10 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v10;
 }
 
-- (id)addHorizontalLockupWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addHorizontalLockupWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF9900];
-  [v10 reloadWithViewElement:v9 width:v8 context:a4];
+  [v10 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v10;
 }
 
-- (id)addImageDeckViewWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addImageDeckViewWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF8860];
-  [v10 reloadWithViewElement:v9 width:v8 context:a4];
+  [v10 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v10;
 }
 
-- (id)addImageGridViewWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addImageGridViewWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF8880];
-  [v10 reloadWithViewElement:v9 width:v8 context:a4];
+  [v10 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v10;
 }
 
-- (id)addImageViewWithElement:(id)a3 context:(id)a4
+- (id)addImageViewWithElement:(id)element context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 style];
-  v9 = [v8 imageTreatment];
-  v10 = SUUIImageTreatmentForString(v9);
+  elementCopy = element;
+  contextCopy = context;
+  style = [elementCopy style];
+  imageTreatment = [style imageTreatment];
+  v10 = SUUIImageTreatmentForString(imageTreatment);
 
   if (v10 == 13)
   {
-    v11 = [(SUUIViewModification *)self _addImageViewWithReuseIdentifier:0x286AF99C0 viewElement:v6 context:v7];
-    if (v8)
+    v11 = [(SUUIViewModification *)self _addImageViewWithReuseIdentifier:0x286AF99C0 viewElement:elementCopy context:contextCopy];
+    if (style)
     {
-      [v8 transform];
+      [style transform];
       [v11 setTransform:v27];
     }
 
-    v13 = SUUIViewElementPlainColorWithStyle(v8, 0);
+    v13 = SUUIViewElementPlainColorWithStyle(style, 0);
     [v11 setTintColor:v13];
 
-    [v8 elementPadding];
+    [style elementPadding];
     [v11 setImagePadding:?];
-    v12 = [v8 ikBackgroundColor];
-    v14 = [v12 color];
-    [v11 setBackgroundColor:v14];
+    ikBackgroundColor = [style ikBackgroundColor];
+    color = [ikBackgroundColor color];
+    [v11 setBackgroundColor:color];
   }
 
   else if (v10 == 7)
   {
-    v11 = [(SUUIViewModification *)self _addImageViewWithReuseIdentifier:0x286AF9A20 viewElement:v6 context:v7];
-    v12 = [v7 borderDrawingCache];
-    [v11 setBorderDrawingCache:v12];
+    v11 = [(SUUIViewModification *)self _addImageViewWithReuseIdentifier:0x286AF9A20 viewElement:elementCopy context:contextCopy];
+    ikBackgroundColor = [contextCopy borderDrawingCache];
+    [v11 setBorderDrawingCache:ikBackgroundColor];
   }
 
   else
   {
-    v15 = [v6 children];
-    v16 = [v15 count];
+    children = [elementCopy children];
+    v16 = [children count];
 
     if (v16)
     {
-      v11 = [(SUUIViewModification *)self _addImageViewWithReuseIdentifier:0x286AF9840 viewElement:v6 context:v7];
-      [v6 size];
-      [v11 reloadWithViewElement:v6 width:v7 context:?];
+      v11 = [(SUUIViewModification *)self _addImageViewWithReuseIdentifier:0x286AF9840 viewElement:elementCopy context:contextCopy];
+      [elementCopy size];
+      [v11 reloadWithViewElement:elementCopy width:contextCopy context:?];
     }
 
     else
     {
-      [v6 shadowOffset];
+      [elementCopy shadowOffset];
       if (v18 == *MEMORY[0x277CBF3A8] && v17 == *(MEMORY[0x277CBF3A8] + 8))
       {
-        v11 = [(SUUIViewModification *)self _addImageViewWithReuseIdentifier:0x286AF9940 viewElement:v6 context:v7];
-        [v6 layerShadowOpacity];
+        v11 = [(SUUIViewModification *)self _addImageViewWithReuseIdentifier:0x286AF9940 viewElement:elementCopy context:contextCopy];
+        [elementCopy layerShadowOpacity];
         if (v20 != 0.0)
         {
-          v21 = [v11 layer];
-          [v21 setMasksToBounds:0];
+          layer = [v11 layer];
+          [layer setMasksToBounds:0];
 
-          v22 = [v11 layer];
-          [v6 layerShadowOpacity];
-          [v22 setShadowOpacity:?];
+          layer2 = [v11 layer];
+          [elementCopy layerShadowOpacity];
+          [layer2 setShadowOpacity:?];
 
-          v23 = [v11 layer];
-          [v6 layerShadowOffset];
-          [v23 setShadowOffset:?];
+          layer3 = [v11 layer];
+          [elementCopy layerShadowOffset];
+          [layer3 setShadowOffset:?];
         }
 
-        [v6 layerShadowRadius];
+        [elementCopy layerShadowRadius];
         if (v24 != 0.0)
         {
-          v25 = [v11 layer];
-          [v6 layerShadowRadius];
-          [v25 setShadowRadius:?];
+          layer4 = [v11 layer];
+          [elementCopy layerShadowRadius];
+          [layer4 setShadowRadius:?];
         }
       }
 
       else
       {
-        v11 = [(SUUIViewModification *)self _addImageViewWithReuseIdentifier:0x286AF9960 viewElement:v6 context:v7];
+        v11 = [(SUUIViewModification *)self _addImageViewWithReuseIdentifier:0x286AF9960 viewElement:elementCopy context:contextCopy];
         [v11 setContentMode:4];
       }
     }
 
-    if (v8)
+    if (style)
     {
-      [v8 transform];
+      [style transform];
       [v11 setTransform:v27];
     }
 
-    v12 = SUUIViewElementPlainColorWithStyle(v8, 0);
-    [v11 setTintColor:v12];
+    ikBackgroundColor = SUUIViewElementPlainColorWithStyle(style, 0);
+    [v11 setTintColor:ikBackgroundColor];
   }
 
   return v11;
 }
 
-- (id)addImageViewWithVideoElement:(id)a3 context:(id)a4
+- (id)addImageViewWithVideoElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 thumbnailImage];
-  v9 = [v7 isEnabled];
+  contextCopy = context;
+  elementCopy = element;
+  thumbnailImage = [elementCopy thumbnailImage];
+  isEnabled = [elementCopy isEnabled];
 
-  if (v9)
+  if (isEnabled)
   {
-    v10 = [v8 style];
-    v11 = [(SUUIViewModification *)self _addImageViewWithReuseIdentifier:0x286AEECE0 viewElement:v8 context:v6];
-    if (v10)
+    style = [thumbnailImage style];
+    v11 = [(SUUIViewModification *)self _addImageViewWithReuseIdentifier:0x286AEECE0 viewElement:thumbnailImage context:contextCopy];
+    if (style)
     {
-      [v10 transform];
+      [style transform];
       [v11 setTransform:&v13];
     }
   }
 
   else
   {
-    v11 = [(SUUIViewModification *)self addImageViewWithElement:v8 context:v6];
+    v11 = [(SUUIViewModification *)self addImageViewWithElement:thumbnailImage context:contextCopy];
   }
 
   return v11;
 }
 
-- (id)addLabelViewWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addLabelViewWithElement:(id)element width:(double)width context:(id)context
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 labelLayoutCache];
-  v11 = [v10 layoutForWidth:a4 viewElement:v8];
+  elementCopy = element;
+  contextCopy = context;
+  labelLayoutCache = [contextCopy labelLayoutCache];
+  v11 = [labelLayoutCache layoutForWidth:width viewElement:elementCopy];
 
   v12 = [(SUUIViewModification *)self _attributedStringViewForLayout:v11];
   [v12 setLayout:v11];
-  [v12 setContainsLinks:{objc_msgSend(v8, "containsLinks")}];
-  if ([v8 containsLinks])
+  [v12 setContainsLinks:{objc_msgSend(elementCopy, "containsLinks")}];
+  if ([elementCopy containsLinks])
   {
-    v13 = [v8 linkDelegate];
-    [v12 setLinkDelegate:v13];
+    linkDelegate = [elementCopy linkDelegate];
+    [v12 setLinkDelegate:linkDelegate];
   }
 
   [v12 setStringTreatment:0];
   [v12 setTreatmentColor:0];
-  v14 = [v8 style];
-  v15 = [v14 ikColor];
-  [v12 setTextColorFollowsTintColor:{objc_msgSend(v15, "colorType") == 1}];
+  style = [elementCopy style];
+  ikColor = [style ikColor];
+  [v12 setTextColorFollowsTintColor:{objc_msgSend(ikColor, "colorType") == 1}];
 
   if (v11)
   {
-    v16 = [v8 trailingBadges];
-    v17 = [v9 badgeImageLoader];
-    v18 = [v8 badges];
+    trailingBadges = [elementCopy trailingBadges];
+    badgeImageLoader = [contextCopy badgeImageLoader];
+    badges = [elementCopy badges];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v19 = [v18 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    v19 = [badges countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v19)
     {
       v20 = v19;
-      v27 = v16;
-      v28 = v9;
+      v27 = trailingBadges;
+      v28 = contextCopy;
       LOBYTE(v21) = 0;
       v22 = *v30;
       do
@@ -1020,7 +1020,7 @@ uint64_t __80__SUUIViewModification_SUUIViewElementView__addButtonWithElement_wi
         {
           if (*v30 != v22)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(badges);
           }
 
           v24 = *(*(&v29 + 1) + 8 * i);
@@ -1031,66 +1031,66 @@ uint64_t __80__SUUIViewModification_SUUIViewElementView__addButtonWithElement_wi
 
           else
           {
-            v25 = [*(*(&v29 + 1) + 8 * i) image];
-            v21 = v25 == 0;
+            image = [*(*(&v29 + 1) + 8 * i) image];
+            v21 = image == 0;
           }
 
-          [v17 loadImageForBadge:v24 layout:v11 reason:{1, v27, v28}];
+          [badgeImageLoader loadImageForBadge:v24 layout:v11 reason:{1, v27, v28}];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v20 = [badges countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v20);
-      v16 = v27;
-      v9 = v28;
+      trailingBadges = v27;
+      contextCopy = v28;
       if (v21)
       {
-        [v17 connectStringView:v12];
+        [badgeImageLoader connectStringView:v12];
       }
     }
   }
 
   else
   {
-    v16 = 0;
+    trailingBadges = 0;
   }
 
-  [v12 setRequiredBadges:v16];
-  [v12 setBadgePlacement:{objc_msgSend(v8, "badgePlacement") == 1}];
+  [v12 setRequiredBadges:trailingBadges];
+  [v12 setBadgePlacement:{objc_msgSend(elementCopy, "badgePlacement") == 1}];
 
   return v12;
 }
 
-- (id)addLabelViewWithOrdinalElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addLabelViewWithOrdinalElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = [a5 labelLayoutCache];
-  v10 = [v9 layoutForWidth:a4 viewElement:v8];
+  elementCopy = element;
+  labelLayoutCache = [context labelLayoutCache];
+  v10 = [labelLayoutCache layoutForWidth:width viewElement:elementCopy];
 
   v11 = [(SUUIViewModification *)self _attributedStringViewForLayout:v10];
   [v11 setLayout:v10];
   [v11 setStringTreatment:0];
   [v11 setTreatmentColor:0];
-  v12 = [v8 style];
+  style = [elementCopy style];
 
-  v13 = [v12 ikColor];
-  [v11 setTextColorFollowsTintColor:{objc_msgSend(v13, "colorType") == 1}];
+  ikColor = [style ikColor];
+  [v11 setTextColorFollowsTintColor:{objc_msgSend(ikColor, "colorType") == 1}];
 
   return v11;
 }
 
-- (id)addMenuButtonWithTitleItem:(id)a3 width:(double)a4 context:(id)a5
+- (id)addMenuButtonWithTitleItem:(id)item width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  itemCopy = item;
   v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF8620];
   [v10 setBorderStyle:0];
   [v10 setButtonType:2];
-  [v10 setEnabled:{objc_msgSend(v9, "isEnabled")}];
-  v11 = [v8 labelLayoutCache];
+  [v10 setEnabled:{objc_msgSend(itemCopy, "isEnabled")}];
+  labelLayoutCache = [contextCopy labelLayoutCache];
 
-  v12 = [v11 layoutForWidth:a4 viewElement:v9];
+  v12 = [labelLayoutCache layoutForWidth:width viewElement:itemCopy];
 
   [v10 setTitleLayout:v12];
   [v10 setUsesTintColor:1];
@@ -1098,157 +1098,157 @@ uint64_t __80__SUUIViewModification_SUUIViewElementView__addButtonWithElement_wi
   return v10;
 }
 
-- (id)addOfferViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addOfferViewWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF0300];
-  [v10 reloadWithViewElement:v9 width:v8 context:a4];
+  [v10 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v10;
 }
 
-- (id)addStackListViewWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addStackListViewWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF8DA0];
-  v11 = [v9 style];
-  [v11 elementPadding];
+  style = [elementCopy style];
+  [style elementPadding];
   [v10 setContentInset:?];
 
-  [v10 reloadWithViewElement:v9 width:v8 context:a4];
+  [v10 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v10;
 }
 
-- (id)addStackItemViewWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addStackItemViewWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF6060];
-  v11 = [v9 style];
-  [v11 elementPadding];
+  style = [elementCopy style];
+  [style elementPadding];
   [v10 setContentInset:?];
 
-  [v10 reloadWithViewElement:v9 width:v8 context:a4];
+  [v10 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v10;
 }
 
-- (id)addReviewListTitleViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addReviewListTitleViewWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF99E0];
-  [v10 reloadWithViewElement:v9 width:v8 context:a4];
+  [v10 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v10;
 }
 
-- (id)addResponseViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addResponseViewWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF8BE0];
-  [v10 reloadWithViewElement:v9 width:v8 context:a4];
+  [v10 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v10;
 }
 
-- (id)addStarRatingViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addStarRatingViewWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF8DE0];
   [v10 setElementSpacing:3];
-  [v10 reloadWithViewElement:v9 width:v8 context:a4];
+  [v10 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v10;
 }
 
-- (id)addStarRatingControlViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addStarRatingControlViewWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF9A40];
-  [v10 setEnabled:{objc_msgSend(v9, "isEnabled")}];
-  [v10 reloadWithViewElement:v9 width:v8 context:a4];
+  [v10 setEnabled:{objc_msgSend(elementCopy, "isEnabled")}];
+  [v10 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v10;
 }
 
-- (id)addTabularLockupWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addTabularLockupWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF9A60];
-  [v10 reloadWithViewElement:v9 width:v8 context:a4];
+  [v10 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v10;
 }
 
-- (id)addTextViewWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addTextViewWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF9A80];
-  v11 = [v9 editorialLayoutForLabelElement:v8 width:a4];
+  v11 = [contextCopy editorialLayoutForLabelElement:elementCopy width:width];
   v12 = [v11 bodyTextLayoutForOrientation:0];
   [v10 setContentInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
   [v10 setEnabled:0];
   [v10 setFixedWidthTextFrame:{objc_msgSend(v12, "textFrame")}];
-  v13 = [v8 moreButtonTitle];
-  [v10 setMoreButtonTitle:v13];
+  moreButtonTitle = [elementCopy moreButtonTitle];
+  [v10 setMoreButtonTitle:moreButtonTitle];
 
-  if ([v12 requiresTruncation] && (objc_msgSend(v9, "isEditorialLayoutExpanded:", v11) & 1) == 0)
+  if ([v12 requiresTruncation] && (objc_msgSend(contextCopy, "isEditorialLayoutExpanded:", v11) & 1) == 0)
   {
-    v14 = [v8 isEnabled];
+    isEnabled = [elementCopy isEnabled];
   }
 
   else
   {
-    v14 = 0;
+    isEnabled = 0;
   }
 
-  [v10 setUserInteractionEnabled:v14];
-  if ([v9 isEditorialLayoutExpanded:v11])
+  [v10 setUserInteractionEnabled:isEnabled];
+  if ([contextCopy isEditorialLayoutExpanded:v11])
   {
-    v15 = 0;
+    numberOfLines = 0;
   }
 
   else
   {
-    v15 = [v8 numberOfLines];
+    numberOfLines = [elementCopy numberOfLines];
   }
 
-  [v10 setNumberOfVisibleLines:v15];
+  [v10 setNumberOfVisibleLines:numberOfLines];
 
   return v10;
 }
 
-- (id)addTomatoRatingViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addTomatoRatingViewWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:0x286AF8E00];
-  [v10 reloadWithViewElement:v9 width:v8 context:a4];
+  [v10 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v10;
 }
 
-- (id)_addImageViewWithReuseIdentifier:(id)a3 viewElement:(id)a4 context:(id)a5
+- (id)_addImageViewWithReuseIdentifier:(id)identifier viewElement:(id)element context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:a3];
-  v11 = [v9 accessibilityText];
-  [v10 setAccessibilityLabel:v11];
+  contextCopy = context;
+  elementCopy = element;
+  v10 = [(SUUIViewModification *)self addReusableViewWithReuseIdentifier:identifier];
+  accessibilityText = [elementCopy accessibilityText];
+  [v10 setAccessibilityLabel:accessibilityText];
 
-  [v10 setUserInteractionEnabled:{objc_msgSend(v9, "isEnabled")}];
-  v12 = __RequestImage(v9, v8);
+  [v10 setUserInteractionEnabled:{objc_msgSend(elementCopy, "isEnabled")}];
+  v12 = __RequestImage(elementCopy, contextCopy);
   [v10 setContents:v12];
-  [v8 sizeForImageElement:v9];
+  [contextCopy sizeForImageElement:elementCopy];
   v14 = v13;
   v16 = v15;
 
@@ -1257,22 +1257,22 @@ uint64_t __80__SUUIViewModification_SUUIViewElementView__addButtonWithElement_wi
   return v10;
 }
 
-- (id)_itemStateForButton:(id)a3
+- (id)_itemStateForButton:(id)button
 {
-  v3 = a3;
-  v4 = [v3 itemIdentifier];
-  v5 = [v3 storeIdentifier];
-  if (!v5 && v4)
+  buttonCopy = button;
+  itemIdentifier = [buttonCopy itemIdentifier];
+  storeIdentifier = [buttonCopy storeIdentifier];
+  if (!storeIdentifier && itemIdentifier)
   {
-    v5 = [[SUUIStoreIdentifier alloc] initWithLongLong:v4];
+    storeIdentifier = [[SUUIStoreIdentifier alloc] initWithLongLong:itemIdentifier];
   }
 
-  if (v5)
+  if (storeIdentifier)
   {
     v6 = +[SUUIItemStateCenter defaultCenter];
-    v7 = [v6 stateForItemWithStoreIdentifier:v5];
+    v7 = [v6 stateForItemWithStoreIdentifier:storeIdentifier];
 
-    if (v7 && ([v3 buyButtonDescriptor], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "canPersonalizeUsingItemState:", v7), v8, v9))
+    if (v7 && ([buttonCopy buyButtonDescriptor], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "canPersonalizeUsingItemState:", v7), v8, v9))
     {
       v10 = v7;
     }
@@ -1291,52 +1291,52 @@ uint64_t __80__SUUIViewModification_SUUIViewElementView__addButtonWithElement_wi
   return v10;
 }
 
-- (void)_styleItemOfferButton:(id)a3 forElement:(id)a4 context:(id)a5
+- (void)_styleItemOfferButton:(id)button forElement:(id)element context:(id)context
 {
-  v20 = a3;
-  v7 = a4;
-  v8 = [a5 tintColor];
-  v9 = [v7 style];
-  v10 = SUUIViewElementPlainColorWithStyle(v9, v8);
+  buttonCopy = button;
+  elementCopy = element;
+  tintColor = [context tintColor];
+  style = [elementCopy style];
+  v10 = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
-  [v20 setTintColor:v10];
-  v11 = v7;
+  [buttonCopy setTintColor:v10];
+  v11 = elementCopy;
   v12 = v11;
   if (v11)
   {
-    v13 = v11;
+    parent = v11;
     do
     {
-      v14 = v13;
-      v15 = [v13 style];
-      v16 = [v15 ikBackgroundColor];
-      v17 = SUUIViewElementPlainColorWithIKColor(v16, v8);
+      v14 = parent;
+      style2 = [parent style];
+      ikBackgroundColor = [style2 ikBackgroundColor];
+      v17 = SUUIViewElementPlainColorWithIKColor(ikBackgroundColor, tintColor);
 
-      v13 = [v14 parent];
+      parent = [v14 parent];
     }
 
-    while (v13 && !v17);
+    while (parent && !v17);
   }
 
   else
   {
     v17 = 0;
-    v13 = 0;
+    parent = 0;
   }
 
   v18 = [objc_opt_class() cloudTintColorForBackgroundColor:v17];
-  [v20 setCloudTintColor:v18];
+  [buttonCopy setCloudTintColor:v18];
 
-  [v20 setElement:v12];
-  [v20 setEnabled:{objc_msgSend(v12, "isEnabled")}];
-  [v20 setDisabledButSelectable:{objc_msgSend(v12, "isDisabledButSelectable")}];
-  v19 = [v12 badgeResourceName];
-  [v20 setUniversal:{objc_msgSend(v19, "isEqualToString:", @"plus"}];
+  [buttonCopy setElement:v12];
+  [buttonCopy setEnabled:{objc_msgSend(v12, "isEnabled")}];
+  [buttonCopy setDisabledButSelectable:{objc_msgSend(v12, "isDisabledButSelectable")}];
+  badgeResourceName = [v12 badgeResourceName];
+  [buttonCopy setUniversal:{objc_msgSend(badgeResourceName, "isEqualToString:", @"plus"}];
 }
 
-- (id)_attributedStringViewForLayout:(id)a3
+- (id)_attributedStringViewForLayout:(id)layout
 {
-  [a3 edgeInsetsForShadow];
+  [layout edgeInsetsForShadow];
   v5.f64[1] = v4;
   v7.f64[1] = v6;
   if (vaddvq_s32(vandq_s8(vuzp1q_s32(vceqq_f64(v5, *MEMORY[0x277D768C8]), vceqq_f64(v7, *(MEMORY[0x277D768C8] + 16))), xmmword_259FCAF40)) == 15)

@@ -1,14 +1,14 @@
 @interface _HDEventsCollectionAssertion
-- (void)setEventCollectors:(uint64_t)a1;
+- (void)setEventCollectors:(uint64_t)collectors;
 @end
 
 @implementation _HDEventsCollectionAssertion
 
-- (void)setEventCollectors:(uint64_t)a1
+- (void)setEventCollectors:(uint64_t)collectors
 {
-  if (a1)
+  if (collectors)
   {
-    objc_storeStrong((a1 + 88), a2);
+    objc_storeStrong((collectors + 88), a2);
   }
 }
 

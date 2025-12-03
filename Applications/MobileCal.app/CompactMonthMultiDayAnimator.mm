@@ -1,15 +1,15 @@
 @interface CompactMonthMultiDayAnimator
-- (CompactMonthMultiDayAnimator)initWithModel:(id)a3 paletteView:(id)a4 reverse:(BOOL)a5;
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
+- (CompactMonthMultiDayAnimator)initWithModel:(id)model paletteView:(id)view reverse:(BOOL)reverse;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation CompactMonthMultiDayAnimator
 
-- (CompactMonthMultiDayAnimator)initWithModel:(id)a3 paletteView:(id)a4 reverse:(BOOL)a5
+- (CompactMonthMultiDayAnimator)initWithModel:(id)model paletteView:(id)view reverse:(BOOL)reverse
 {
-  v9 = a3;
-  v10 = a4;
+  modelCopy = model;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = CompactMonthMultiDayAnimator;
   v11 = [(CompactMonthMultiDayAnimator *)&v15 init];
@@ -19,52 +19,52 @@
     transitionView = v11->_transitionView;
     v11->_transitionView = v12;
 
-    v11->_reverse = a5;
-    objc_storeStrong(&v11->_model, a3);
-    objc_storeStrong(&v11->_paletteView, a4);
+    v11->_reverse = reverse;
+    objc_storeStrong(&v11->_model, model);
+    objc_storeStrong(&v11->_paletteView, view);
   }
 
   return v11;
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  v3 = [(CompactMonthMultiDayAnimator *)self transitionView];
-  [v3 animationDuration];
+  transitionView = [(CompactMonthMultiDayAnimator *)self transitionView];
+  [transitionView animationDuration];
   v5 = v4;
 
   return v5;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v6 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v7 = [v5 view];
-  v8 = [v6 view];
-  v9 = [v4 containerView];
-  v49 = v7;
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  v6 = [transitionCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  view = [v5 view];
+  view2 = [v6 view];
+  containerView = [transitionCopy containerView];
+  v49 = view;
   if ([(CompactMonthMultiDayAnimator *)self reverse])
   {
-    [v9 addSubview:v8];
+    [containerView addSubview:view2];
   }
 
   else
   {
-    [v9 insertSubview:v8 belowSubview:v7];
+    [containerView insertSubview:view2 belowSubview:view];
   }
 
-  v10 = [(CompactMonthMultiDayAnimator *)self transitionView];
-  [v9 addSubview:v10];
+  transitionView = [(CompactMonthMultiDayAnimator *)self transitionView];
+  [containerView addSubview:transitionView];
 
-  v11 = [(CompactMonthMultiDayAnimator *)self transitionView];
-  [v9 bringSubviewToFront:v11];
+  transitionView2 = [(CompactMonthMultiDayAnimator *)self transitionView];
+  [containerView bringSubviewToFront:transitionView2];
 
-  v52 = [(CompactMonthMultiDayAnimator *)self transitionView];
-  v12 = [(CompactMonthMultiDayAnimator *)self reverse];
-  v13 = v12 == 0;
-  if (v12)
+  transitionView3 = [(CompactMonthMultiDayAnimator *)self transitionView];
+  reverse = [(CompactMonthMultiDayAnimator *)self reverse];
+  v13 = reverse == 0;
+  if (reverse)
   {
     v14 = v6;
   }
@@ -84,77 +84,77 @@
     v15 = v5;
   }
 
-  v16 = [v14 currentChildViewController];
-  v17 = [v15 currentChildViewController];
+  currentChildViewController = [v14 currentChildViewController];
+  currentChildViewController2 = [v15 currentChildViewController];
   [v6 viewWillLayoutSubviews];
-  v18 = [v6 view];
-  [v18 layoutSubviews];
+  view3 = [v6 view];
+  [view3 layoutSubviews];
 
   [v6 viewDidLayoutSubviews];
   [(PaletteView *)self->_paletteView layoutSubviews];
-  v19 = [(CompactMonthMultiDayAnimator *)self model];
-  v20 = [v19 selectedDate];
+  model = [(CompactMonthMultiDayAnimator *)self model];
+  selectedDate = [model selectedDate];
 
-  v21 = v20;
-  v22 = [v20 date];
-  v48 = v8;
-  v51 = v22;
+  v21 = selectedDate;
+  date = [selectedDate date];
+  v48 = view2;
+  v51 = date;
   if ([(CompactMonthMultiDayAnimator *)self reverse])
   {
-    v23 = [v16 view];
-    [v23 layoutIfNeeded];
+    view4 = [currentChildViewController view];
+    [view4 layoutIfNeeded];
 
-    [v16 showDate:v22 animated:0];
+    [currentChildViewController showDate:date animated:0];
   }
 
   else
   {
-    [v17 selectDate:v21 animated:{0, v21}];
+    [currentChildViewController2 selectDate:v21 animated:{0, v21}];
   }
 
-  [v9 bounds];
-  v24 = v52;
-  [v52 setFrame:?];
-  v25 = [v16 view];
-  v26 = [v17 view];
-  [v52 prepareTransitionWithTopView:v25 bottomView:v26 allDayView:0 topLabelsContainer:0];
+  [containerView bounds];
+  v24 = transitionView3;
+  [transitionView3 setFrame:?];
+  view5 = [currentChildViewController view];
+  view6 = [currentChildViewController2 view];
+  [transitionView3 prepareTransitionWithTopView:view5 bottomView:view6 allDayView:0 topLabelsContainer:0];
 
-  v27 = [v6 currentChildViewController];
+  currentChildViewController3 = [v6 currentChildViewController];
 
-  v50 = v17;
-  if (v16 == v27)
+  v50 = currentChildViewController2;
+  if (currentChildViewController == currentChildViewController3)
   {
-    v28 = [(CompactMonthMultiDayAnimator *)self model];
-    v29 = [v28 selectedDate];
-    v30 = [v16 subviewForDate:v29];
+    model2 = [(CompactMonthMultiDayAnimator *)self model];
+    selectedDate2 = [model2 selectedDate];
+    v30 = [currentChildViewController subviewForDate:selectedDate2];
 
     if (!v30)
     {
-      v31 = [v16 view];
-      [v31 layoutBelowIfNeeded];
+      view7 = [currentChildViewController view];
+      [view7 layoutBelowIfNeeded];
 
-      v32 = [(CompactMonthMultiDayAnimator *)self model];
-      v33 = [v32 selectedDate];
-      v30 = [v16 subviewForDate:v33];
+      model3 = [(CompactMonthMultiDayAnimator *)self model];
+      selectedDate3 = [model3 selectedDate];
+      v30 = [currentChildViewController subviewForDate:selectedDate3];
     }
 
     [v30 layoutSubviews];
 
-    v17 = v50;
-    v24 = v52;
+    currentChildViewController2 = v50;
+    v24 = transitionView3;
   }
 
-  v47 = v9;
+  v47 = containerView;
   v34 = CUIKTodayDate();
-  [v24 prepareTransitionScrubberWithSelectedDate:v51 todayDate:v34 dayViewController:v17 monthViewController:v16 paletteView:self->_paletteView reverse:{-[CompactMonthMultiDayAnimator reverse](self, "reverse")}];
+  [v24 prepareTransitionScrubberWithSelectedDate:v51 todayDate:v34 dayViewController:currentChildViewController2 monthViewController:currentChildViewController paletteView:self->_paletteView reverse:{-[CompactMonthMultiDayAnimator reverse](self, "reverse")}];
 
   [v24 setHidden:0];
   [v6 updatePalette:self->_paletteView];
   [v5 setAnimatingViewTransition:1];
   [v6 setAnimatingViewTransition:1];
-  v35 = [(CompactMonthMultiDayAnimator *)self reverse];
-  v36 = [(CompactMonthMultiDayAnimator *)self transitionView];
-  if (v35)
+  reverse2 = [(CompactMonthMultiDayAnimator *)self reverse];
+  transitionView4 = [(CompactMonthMultiDayAnimator *)self transitionView];
+  if (reverse2)
   {
     v57[0] = _NSConcreteStackBlock;
     v57[1] = 3221225472;
@@ -166,11 +166,11 @@
     v59[0] = v6;
     v39 = &v60;
     v59[1] = self;
-    v60 = v4;
-    v40 = v4;
+    v60 = transitionCopy;
+    v40 = transitionCopy;
     v41 = v6;
     v42 = v5;
-    [v36 animateToMonthWithCompletion:v57];
+    [transitionView4 animateToMonthWithCompletion:v57];
   }
 
   else
@@ -185,11 +185,11 @@
     v55[0] = v6;
     v39 = &v56;
     v55[1] = self;
-    v56 = v4;
-    v43 = v4;
+    v56 = transitionCopy;
+    v43 = transitionCopy;
     v44 = v6;
     v45 = v5;
-    [v36 animateToDayWithCompletion:v53];
+    [transitionView4 animateToDayWithCompletion:v53];
   }
 }
 

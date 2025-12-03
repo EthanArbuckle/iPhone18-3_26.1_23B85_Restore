@@ -1,16 +1,16 @@
 @interface TVRCDeviceInfo
-- (BOOL)containsID:(id)a3;
+- (BOOL)containsID:(id)d;
 - (id)description;
-- (void)_populateValidIdentifiers:(id)a3;
+- (void)_populateValidIdentifiers:(id)identifiers;
 @end
 
 @implementation TVRCDeviceInfo
 
-- (BOOL)containsID:(id)a3
+- (BOOL)containsID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = self->_mediaRemoteID && ([v4 isEqualToString:?] & 1) != 0 || self->_airplayID && objc_msgSend(v5, "isEqualToString:");
+  dCopy = d;
+  v5 = dCopy;
+  v6 = self->_mediaRemoteID && ([dCopy isEqualToString:?] & 1) != 0 || self->_airplayID && objc_msgSend(v5, "isEqualToString:");
 
   return v6;
 }
@@ -40,14 +40,14 @@
   return v5;
 }
 
-- (void)_populateValidIdentifiers:(id)a3
+- (void)_populateValidIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"MediaRemoteID"];
+  identifiersCopy = identifiers;
+  v5 = [identifiersCopy objectForKey:@"MediaRemoteID"];
   mediaRemoteID = self->_mediaRemoteID;
   self->_mediaRemoteID = v5;
 
-  v7 = [v4 objectForKey:@"AirplayID"];
+  v7 = [identifiersCopy objectForKey:@"AirplayID"];
 
   airplayID = self->_airplayID;
   self->_airplayID = v7;

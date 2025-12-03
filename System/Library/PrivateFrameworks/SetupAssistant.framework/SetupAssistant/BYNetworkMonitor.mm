@@ -1,13 +1,13 @@
 @interface BYNetworkMonitor
 + (id)sharedInstance;
-+ (void)setHoldsWiFiAssertion:(BOOL)a3;
++ (void)setHoldsWiFiAssertion:(BOOL)assertion;
 - (BYNetworkMonitor)init;
 - (void)_initNetworkObservation;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
-- (void)setCurrentNetworkType:(int)a3;
-- (void)withMinimumNetworkType:(int)a3 timeout:(double)a4 runBlock:(id)a5;
+- (void)removeObserver:(id)observer;
+- (void)setCurrentNetworkType:(int)type;
+- (void)withMinimumNetworkType:(int)type timeout:(double)timeout runBlock:(id)block;
 @end
 
 @implementation BYNetworkMonitor
@@ -19,17 +19,17 @@
   v2 = [(BYNetworkMonitor *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     networkTypeBlocks = v2->_networkTypeBlocks;
-    v2->_networkTypeBlocks = v3;
+    v2->_networkTypeBlocks = dictionary;
 
     v5 = dispatch_queue_create("by-network-monitor network type", 0);
     networkTypeQueue = v2->_networkTypeQueue;
     v2->_networkTypeQueue = v5;
 
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v7;
+    v2->_observers = weakObjectsHashTable;
 
     v2->_currentNetworkType = 0;
   }
@@ -73,9 +73,9 @@ uint64_t __34__BYNetworkMonitor_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers addObject:?];
 
@@ -83,28 +83,28 @@ uint64_t __34__BYNetworkMonitor_sharedInstance__block_invoke()
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
 }
 
-- (void)withMinimumNetworkType:(int)a3 timeout:(double)a4 runBlock:(id)a5
+- (void)withMinimumNetworkType:(int)type timeout:(double)timeout runBlock:(id)block
 {
-  v8 = a5;
-  if (v8)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v9 = v8;
-    if ([(BYNetworkMonitor *)self currentNetworkType]>= a3)
+    v9 = blockCopy;
+    if ([(BYNetworkMonitor *)self currentNetworkType]>= type)
     {
       v9[2](v9, 0);
     }
 
     else
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         [objc_opt_class() setHoldsWiFiAssertion:1];
         v15[0] = MEMORY[0x1E69E9820];
@@ -121,10 +121,10 @@ uint64_t __34__BYNetworkMonitor_sharedInstance__block_invoke()
       v11[1] = 3221225472;
       v11[2] = __60__BYNetworkMonitor_withMinimumNetworkType_timeout_runBlock___block_invoke_2;
       v11[3] = &unk_1E7D03C10;
-      v14 = a3;
+      typeCopy = type;
       v11[4] = self;
       v12 = v9;
-      v13 = a4;
+      timeoutCopy = timeout;
       v9 = v9;
       dispatch_async(networkTypeQueue, v11);
     }
@@ -202,16 +202,16 @@ void __60__BYNetworkMonitor_withMinimumNetworkType_timeout_runBlock___block_invo
   }
 }
 
-- (void)setCurrentNetworkType:(int)a3
+- (void)setCurrentNetworkType:(int)type
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (self->_currentNetworkType != a3)
+  if (self->_currentNetworkType != type)
   {
     v5 = _BYLoggingFacility();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"Wifi";
-      if (!a3)
+      if (!type)
       {
         v6 = @"None";
       }
@@ -223,13 +223,13 @@ void __60__BYNetworkMonitor_withMinimumNetworkType_timeout_runBlock___block_invo
     }
 
     currentNetworkType = self->_currentNetworkType;
-    self->_currentNetworkType = a3;
-    v9 = [(NSHashTable *)self->_observers allObjects];
+    self->_currentNetworkType = type;
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v10 = [allObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = v10;
@@ -241,7 +241,7 @@ void __60__BYNetworkMonitor_withMinimumNetworkType_timeout_runBlock___block_invo
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allObjects);
           }
 
           v14 = *(*(&v19 + 1) + 8 * v13);
@@ -254,7 +254,7 @@ void __60__BYNetworkMonitor_withMinimumNetworkType_timeout_runBlock___block_invo
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v11 = [allObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v11);
@@ -265,7 +265,7 @@ void __60__BYNetworkMonitor_withMinimumNetworkType_timeout_runBlock___block_invo
     v17[1] = 3221225472;
     v17[2] = __42__BYNetworkMonitor_setCurrentNetworkType___block_invoke;
     v17[3] = &unk_1E7D03C38;
-    v18 = a3;
+    typeCopy = type;
     v17[4] = self;
     dispatch_async(networkTypeQueue, v17);
   }
@@ -368,14 +368,14 @@ void __42__BYNetworkMonitor_setCurrentNetworkType___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setHoldsWiFiAssertion:(BOOL)a3
++ (void)setHoldsWiFiAssertion:(BOOL)assertion
 {
   if (!MGGetBoolAnswer())
   {
     return;
   }
 
-  if (a3)
+  if (assertion)
   {
     v4 = 1;
   }

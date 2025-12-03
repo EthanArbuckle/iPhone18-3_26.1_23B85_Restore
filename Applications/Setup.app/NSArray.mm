@@ -1,23 +1,23 @@
 @interface NSArray
-- (id)buddy_filterToOrderedSet:(id)a3;
-- (id)buddy_mapArray:(id)a3;
-- (id)buddy_mapCountedSet:(id)a3;
-- (id)buddy_mapOrderedSet:(id)a3;
-- (id)buddy_mapSet:(id)a3;
-- (unint64_t)indexOfFirstMatchingCondition:(id)a3;
+- (id)buddy_filterToOrderedSet:(id)set;
+- (id)buddy_mapArray:(id)array;
+- (id)buddy_mapCountedSet:(id)set;
+- (id)buddy_mapOrderedSet:(id)set;
+- (id)buddy_mapSet:(id)set;
+- (unint64_t)indexOfFirstMatchingCondition:(id)condition;
 @end
 
 @implementation NSArray
 
-- (id)buddy_mapCountedSet:(id)a3
+- (id)buddy_mapCountedSet:(id)set
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, set);
   v13 = objc_alloc_init(NSCountedSet);
   memset(v11, 0, sizeof(v11));
-  v3 = v15;
+  v3 = selfCopy;
   v4 = [v3 countByEnumeratingWithState:v11 objects:v16 count:16];
   if (v4)
   {
@@ -49,15 +49,15 @@
   return v9;
 }
 
-- (id)buddy_mapSet:(id)a3
+- (id)buddy_mapSet:(id)set
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, set);
   v13 = objc_alloc_init(NSMutableSet);
   memset(v11, 0, sizeof(v11));
-  v3 = v15;
+  v3 = selfCopy;
   v4 = [v3 countByEnumeratingWithState:v11 objects:v16 count:16];
   if (v4)
   {
@@ -90,15 +90,15 @@
   return v9;
 }
 
-- (id)buddy_mapOrderedSet:(id)a3
+- (id)buddy_mapOrderedSet:(id)set
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, set);
   v13 = +[NSMutableOrderedSet orderedSet];
   memset(v11, 0, sizeof(v11));
-  v3 = v15;
+  v3 = selfCopy;
   v4 = [v3 countByEnumeratingWithState:v11 objects:v16 count:16];
   if (v4)
   {
@@ -131,15 +131,15 @@
   return v9;
 }
 
-- (id)buddy_filterToOrderedSet:(id)a3
+- (id)buddy_filterToOrderedSet:(id)set
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, set);
   v11 = +[NSMutableOrderedSet orderedSet];
   memset(v9, 0, sizeof(v9));
-  v3 = v13;
+  v3 = selfCopy;
   v4 = [v3 countByEnumeratingWithState:v9 objects:v14 count:16];
   if (v4)
   {
@@ -173,15 +173,15 @@
   return v7;
 }
 
-- (id)buddy_mapArray:(id)a3
+- (id)buddy_mapArray:(id)array
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, array);
   v13 = objc_alloc_init(NSMutableArray);
   memset(v11, 0, sizeof(v11));
-  v3 = v15;
+  v3 = selfCopy;
   v4 = [v3 countByEnumeratingWithState:v11 objects:v16 count:16];
   if (v4)
   {
@@ -214,15 +214,15 @@
   return v9;
 }
 
-- (unint64_t)indexOfFirstMatchingCondition:(id)a3
+- (unint64_t)indexOfFirstMatchingCondition:(id)condition
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, condition);
   v11 = 0;
   memset(__b, 0, sizeof(__b));
-  v3 = v13;
+  v3 = selfCopy;
   v4 = [v3 countByEnumeratingWithState:__b objects:v15 count:16];
   if (v4)
   {

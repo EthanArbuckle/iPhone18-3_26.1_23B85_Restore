@@ -1,30 +1,30 @@
 @interface THUpdateAnnotationAction
-- (THUpdateAnnotationAction)initWithAnnotation:(id)a3 contentNode:(id)a4 updateBlock:(id)a5;
-- (void)commitWithChangeList:(id)a3 annotationHost:(id)a4 moc:(id)a5;
+- (THUpdateAnnotationAction)initWithAnnotation:(id)annotation contentNode:(id)node updateBlock:(id)block;
+- (void)commitWithChangeList:(id)list annotationHost:(id)host moc:(id)moc;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)p_maintainIntegrity:(id)a3;
-- (void)p_maintainIntegrityForStorageRangeChange:(id)a3;
-- (void)p_restoreChangedProperties:(id)a3;
-- (void)p_updateAnnotationForStorageRangeChange:(id)a3;
-- (void)p_updateContextAndCFIForStorage:(id)a3 storageID:(id)a4 range:(_NSRange)a5 annotation:(id)a6;
-- (void)p_updatePageAnnotationForPageChange:(id)a3;
-- (void)redoWithChangeList:(id)a3 annotationHost:(id)a4 moc:(id)a5;
-- (void)undoWithChangeList:(id)a3 annotationHost:(id)a4 moc:(id)a5;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)p_maintainIntegrity:(id)integrity;
+- (void)p_maintainIntegrityForStorageRangeChange:(id)change;
+- (void)p_restoreChangedProperties:(id)properties;
+- (void)p_updateAnnotationForStorageRangeChange:(id)change;
+- (void)p_updateContextAndCFIForStorage:(id)storage storageID:(id)d range:(_NSRange)range annotation:(id)annotation;
+- (void)p_updatePageAnnotationForPageChange:(id)change;
+- (void)redoWithChangeList:(id)list annotationHost:(id)host moc:(id)moc;
+- (void)undoWithChangeList:(id)list annotationHost:(id)host moc:(id)moc;
 @end
 
 @implementation THUpdateAnnotationAction
 
-- (THUpdateAnnotationAction)initWithAnnotation:(id)a3 contentNode:(id)a4 updateBlock:(id)a5
+- (THUpdateAnnotationAction)initWithAnnotation:(id)annotation contentNode:(id)node updateBlock:(id)block
 {
   v10.receiver = self;
   v10.super_class = THUpdateAnnotationAction;
   v8 = [(THUpdateAnnotationAction *)&v10 init];
   if (v8)
   {
-    v8->_annotationUuid = [objc_msgSend(a3 "annotationUuid")];
-    v8->_contentNode = a4;
-    v8->_updateBlock = [a5 copy];
+    v8->_annotationUuid = [objc_msgSend(annotation "annotationUuid")];
+    v8->_contentNode = node;
+    v8->_updateBlock = [block copy];
   }
 
   return v8;
@@ -37,9 +37,9 @@
   [(THUpdateAnnotationAction *)&v3 dealloc];
 }
 
-- (void)commitWithChangeList:(id)a3 annotationHost:(id)a4 moc:(id)a5
+- (void)commitWithChangeList:(id)list annotationHost:(id)host moc:(id)moc
 {
-  v7 = [a4 annotationForUUID:self->_annotationUuid includeDeleted:1 moc:a5];
+  v7 = [host annotationForUUID:self->_annotationUuid includeDeleted:1 moc:moc];
   if (v7)
   {
     v8 = v7;
@@ -114,39 +114,39 @@
       while (v16);
     }
 
-    [a3 registerAnnotationChangedWithUUID:objc_msgSend(v8 inContentNodeWithID:{"annotationUuid"), objc_msgSend(v8, "annotationContentNodeID")}];
+    [list registerAnnotationChangedWithUUID:objc_msgSend(v8 inContentNodeWithID:{"annotationUuid"), objc_msgSend(v8, "annotationContentNodeID")}];
   }
 }
 
-- (void)undoWithChangeList:(id)a3 annotationHost:(id)a4 moc:(id)a5
+- (void)undoWithChangeList:(id)list annotationHost:(id)host moc:(id)moc
 {
-  v7 = [a4 annotationForUUID:self->_annotationUuid includeDeleted:1 moc:a5];
+  v7 = [host annotationForUUID:self->_annotationUuid includeDeleted:1 moc:moc];
   if (v7)
   {
     v8 = v7;
     [(THUpdateAnnotationAction *)self p_restoreChangedProperties:v7];
-    v9 = [v8 annotationUuid];
-    v10 = [v8 annotationContentNodeID];
+    annotationUuid = [v8 annotationUuid];
+    annotationContentNodeID = [v8 annotationContentNodeID];
 
-    [a3 registerAnnotationChangedWithUUID:v9 inContentNodeWithID:v10];
+    [list registerAnnotationChangedWithUUID:annotationUuid inContentNodeWithID:annotationContentNodeID];
   }
 }
 
-- (void)redoWithChangeList:(id)a3 annotationHost:(id)a4 moc:(id)a5
+- (void)redoWithChangeList:(id)list annotationHost:(id)host moc:(id)moc
 {
-  v7 = [a4 annotationForUUID:self->_annotationUuid includeDeleted:1 moc:a5];
+  v7 = [host annotationForUUID:self->_annotationUuid includeDeleted:1 moc:moc];
   if (v7)
   {
     v8 = v7;
     [(THUpdateAnnotationAction *)self p_restoreChangedProperties:v7];
-    v9 = [v8 annotationUuid];
-    v10 = [v8 annotationContentNodeID];
+    annotationUuid = [v8 annotationUuid];
+    annotationContentNodeID = [v8 annotationContentNodeID];
 
-    [a3 registerAnnotationChangedWithUUID:v9 inContentNodeWithID:v10];
+    [list registerAnnotationChangedWithUUID:annotationUuid inContentNodeWithID:annotationContentNodeID];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   changedProperties = self->_changedProperties;
   if (!changedProperties)
@@ -155,9 +155,9 @@
     changedProperties = self->_changedProperties;
   }
 
-  if (![(NSMutableDictionary *)changedProperties objectForKey:a3, a4, a5, a6])
+  if (![(NSMutableDictionary *)changedProperties objectForKey:path, object, change, context])
   {
-    v10 = [a5 objectForKey:NSKeyValueChangeOldKey];
+    v10 = [change objectForKey:NSKeyValueChangeOldKey];
     if (!v10)
     {
       v10 = +[NSNull null];
@@ -165,11 +165,11 @@
 
     v11 = self->_changedProperties;
 
-    [(NSMutableDictionary *)v11 setObject:v10 forKey:a3];
+    [(NSMutableDictionary *)v11 setObject:v10 forKey:path];
   }
 }
 
-- (void)p_maintainIntegrityForStorageRangeChange:(id)a3
+- (void)p_maintainIntegrityForStorageRangeChange:(id)change
 {
   if ([(NSMutableDictionary *)self->_changedProperties objectForKey:@"annotationLocation"])
   {
@@ -186,15 +186,15 @@
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [(THUpdateAnnotationAction *)self p_updateAnnotationForStorageRangeChange:a3];
+  [(THUpdateAnnotationAction *)self p_updateAnnotationForStorageRangeChange:change];
 }
 
-- (void)p_maintainIntegrity:(id)a3
+- (void)p_maintainIntegrity:(id)integrity
 {
-  v5 = [a3 annotationType];
-  if (v5 != 1 && v5 != 3)
+  annotationType = [integrity annotationType];
+  if (annotationType != 1 && annotationType != 3)
   {
-    if (v5 != 2)
+    if (annotationType != 2)
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
       return;
@@ -212,7 +212,7 @@ LABEL_13:
     if ([(NSMutableDictionary *)changedProperties objectForKey:@"plLocationRangeStart"]|| [(NSMutableDictionary *)self->_changedProperties objectForKey:@"plLocationRangeEnd"]|| [(NSMutableDictionary *)self->_changedProperties objectForKey:@"plStorageUUID"])
     {
 
-      [(THUpdateAnnotationAction *)self p_maintainIntegrityForStorageRangeChange:a3];
+      [(THUpdateAnnotationAction *)self p_maintainIntegrityForStorageRangeChange:integrity];
     }
 
     return;
@@ -228,49 +228,49 @@ LABEL_13:
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [(THUpdateAnnotationAction *)self p_updatePageAnnotationForPageChange:a3];
+  [(THUpdateAnnotationAction *)self p_updatePageAnnotationForPageChange:integrity];
 }
 
-- (void)p_updatePageAnnotationForPageChange:(id)a3
+- (void)p_updatePageAnnotationForPageChange:(id)change
 {
-  [a3 setContentNodeRelativePageIndex:{-[THModelNode relativePageIndexForAbsolutePageIndex:](self->_contentNode, "relativePageIndexForAbsolutePageIndex:", objc_msgSend(a3, "absolutePhysicalPageIndex"))}];
-  v5 = [a3 annotationStorageRange];
+  [change setContentNodeRelativePageIndex:{-[THModelNode relativePageIndexForAbsolutePageIndex:](self->_contentNode, "relativePageIndexForAbsolutePageIndex:", objc_msgSend(change, "absolutePhysicalPageIndex"))}];
+  annotationStorageRange = [change annotationStorageRange];
   v7 = v6;
-  v8 = [a3 annotationStorageIDWithoutContentNodeID];
+  annotationStorageIDWithoutContentNodeID = [change annotationStorageIDWithoutContentNodeID];
   objc_opt_class();
-  [(THModelContentNode *)self->_contentNode infoForNodeUniqueID:v8];
+  [(THModelContentNode *)self->_contentNode infoForNodeUniqueID:annotationStorageIDWithoutContentNodeID];
   v9 = TSUDynamicCast();
   if (!v9)
   {
     objc_opt_class();
-    [(THModelContentNode *)self->_contentNode infoForNodeUniqueID:v8 forPresentationType:[THPresentationType flowPresentationTypeInContext:[(THModelContentNode *)self->_contentNode context]]];
+    [(THModelContentNode *)self->_contentNode infoForNodeUniqueID:annotationStorageIDWithoutContentNodeID forPresentationType:[THPresentationType flowPresentationTypeInContext:[(THModelContentNode *)self->_contentNode context]]];
     v9 = TSUDynamicCast();
   }
 
-  [(THUpdateAnnotationAction *)self p_updateContextAndCFIForStorage:v9 storageID:v8 range:v5 annotation:v7, a3];
-  if (!v9 || v5 == 0x7FFFFFFFFFFFFFFFLL)
+  [(THUpdateAnnotationAction *)self p_updateContextAndCFIForStorage:v9 storageID:annotationStorageIDWithoutContentNodeID range:annotationStorageRange annotation:v7, change];
+  if (!v9 || annotationStorageRange == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a3 setAnnotationRepresentativeText:0];
-    [a3 setSelectionPreContextText:0];
+    [change setAnnotationRepresentativeText:0];
+    [change setSelectionPreContextText:0];
 
-    [a3 setSelectionPostContextText:0];
+    [change setSelectionPostContextText:0];
   }
 }
 
-- (void)p_updateAnnotationForStorageRangeChange:(id)a3
+- (void)p_updateAnnotationForStorageRangeChange:(id)change
 {
-  v5 = [a3 annotationStorageRange];
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+  annotationStorageRange = [change annotationStorageRange];
+  if (annotationStorageRange != 0x7FFFFFFFFFFFFFFFLL)
   {
     if (self->_contentNode)
     {
-      v7 = v5;
+      v7 = annotationStorageRange;
       v8 = v6;
-      v9 = [a3 annotationStorageIDWithoutContentNodeID];
+      annotationStorageIDWithoutContentNodeID = [change annotationStorageIDWithoutContentNodeID];
       objc_opt_class();
-      [(THModelContentNode *)self->_contentNode infoForNodeUniqueID:v9 forPresentationType:[THPresentationType paginatedPresentationTypeInContext:[(THModelContentNode *)self->_contentNode context]]];
+      [(THModelContentNode *)self->_contentNode infoForNodeUniqueID:annotationStorageIDWithoutContentNodeID forPresentationType:[THPresentationType paginatedPresentationTypeInContext:[(THModelContentNode *)self->_contentNode context]]];
       v10 = TSUDynamicCast();
-      if (v10 || (objc_opt_class(), [(THModelContentNode *)self->_contentNode infoForNodeUniqueID:v9 forPresentationType:[THPresentationType flowPresentationTypeInContext:[(THModelContentNode *)self->_contentNode context]]], (v10 = TSUDynamicCast()) != 0))
+      if (v10 || (objc_opt_class(), [(THModelContentNode *)self->_contentNode infoForNodeUniqueID:annotationStorageIDWithoutContentNodeID forPresentationType:[THPresentationType flowPresentationTypeInContext:[(THModelContentNode *)self->_contentNode context]]], (v10 = TSUDynamicCast()) != 0))
       {
         v11 = v10;
         if (&v7[v8] > [v10 length])
@@ -280,31 +280,31 @@ LABEL_13:
 
         if (&v7[v8] <= [v11 length])
         {
-          [a3 setContentNodeRelativePageIndex:{-[THModelContentNode relativePageIndexForCharacterIndex:forInfo:](self->_contentNode, "relativePageIndexForCharacterIndex:forInfo:", v7, v11)}];
-          [a3 setAbsolutePhysicalPageIndex:{-[THModelNode absolutePageIndexForRelativePageIndex:forPresentationType:](self->_contentNode, "absolutePageIndexForRelativePageIndex:forPresentationType:", objc_msgSend(a3, "contentNodeRelativePageIndex"), +[THPresentationType paginatedPresentationTypeInContext:](THPresentationType, "paginatedPresentationTypeInContext:", objc_msgSend(v11, "context")))}];
+          [change setContentNodeRelativePageIndex:{-[THModelContentNode relativePageIndexForCharacterIndex:forInfo:](self->_contentNode, "relativePageIndexForCharacterIndex:forInfo:", v7, v11)}];
+          [change setAbsolutePhysicalPageIndex:{-[THModelNode absolutePageIndexForRelativePageIndex:forPresentationType:](self->_contentNode, "absolutePageIndexForRelativePageIndex:forPresentationType:", objc_msgSend(change, "contentNodeRelativePageIndex"), +[THPresentationType paginatedPresentationTypeInContext:](THPresentationType, "paginatedPresentationTypeInContext:", objc_msgSend(v11, "context")))}];
 
-          [(THUpdateAnnotationAction *)self p_updateContextAndCFIForStorage:v11 storageID:v9 range:v7 annotation:v8, a3];
+          [(THUpdateAnnotationAction *)self p_updateContextAndCFIForStorage:v11 storageID:annotationStorageIDWithoutContentNodeID range:v7 annotation:v8, change];
         }
       }
     }
   }
 }
 
-- (void)p_updateContextAndCFIForStorage:(id)a3 storageID:(id)a4 range:(_NSRange)a5 annotation:(id)a6
+- (void)p_updateContextAndCFIForStorage:(id)storage storageID:(id)d range:(_NSRange)range annotation:(id)annotation
 {
-  length = a5.length;
-  location = a5.location;
-  [a6 setAnnotationLocation:{-[THModelContentNode cfiForRange:storageUID:includeFilename:pedantic:](self->_contentNode, "cfiForRange:storageUID:includeFilename:pedantic:", a5.location, a5.length, a4, 1, 0)}];
-  if (a3 && location != 0x7FFFFFFFFFFFFFFFLL && location + length > [a3 length])
+  length = range.length;
+  location = range.location;
+  [annotation setAnnotationLocation:{-[THModelContentNode cfiForRange:storageUID:includeFilename:pedantic:](self->_contentNode, "cfiForRange:storageUID:includeFilename:pedantic:", range.location, range.length, d, 1, 0)}];
+  if (storage && location != 0x7FFFFFFFFFFFFFFFLL && location + length > [storage length])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (a3 && location != 0x7FFFFFFFFFFFFFFFLL && location + length <= [a3 length])
+  if (storage && location != 0x7FFFFFFFFFFFFFFFLL && location + length <= [storage length])
   {
     v11 = 0;
     v12 = 0;
-    if ([a6 annotationType] == 2)
+    if ([annotation annotationType] == 2)
     {
       v10 = length;
     }
@@ -314,18 +314,18 @@ LABEL_13:
       v10 = 0;
     }
 
-    [a3 contextualStringsForSelection:location prefix:v10 suffix:{&v12, &v11}];
-    [a6 setAnnotationRepresentativeText:{objc_msgSend(a3, "substringWithRange:", location, length)}];
-    [a6 setSelectionPreContextText:v12];
-    [a6 setSelectionPostContextText:v11];
+    [storage contextualStringsForSelection:location prefix:v10 suffix:{&v12, &v11}];
+    [annotation setAnnotationRepresentativeText:{objc_msgSend(storage, "substringWithRange:", location, length)}];
+    [annotation setSelectionPreContextText:v12];
+    [annotation setSelectionPostContextText:v11];
   }
 }
 
-- (void)p_restoreChangedProperties:(id)a3
+- (void)p_restoreChangedProperties:(id)properties
 {
   v5 = objc_alloc_init(NSMutableDictionary);
-  v23 = [objc_msgSend(a3 "annotationModificationDate")];
-  v22 = [objc_msgSend(a3 "userModificationDate")];
+  v23 = [objc_msgSend(properties "annotationModificationDate")];
+  v22 = [objc_msgSend(properties "userModificationDate")];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -346,7 +346,7 @@ LABEL_13:
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
-        v12 = [a3 valueForKey:v11];
+        v12 = [properties valueForKey:v11];
         if (!v12)
         {
           v12 = +[NSNull null];
@@ -393,7 +393,7 @@ LABEL_13:
           v21 = v20;
         }
 
-        [a3 setValue:v21 forKey:v19];
+        [properties setValue:v21 forKey:v19];
       }
 
       v16 = [(NSMutableDictionary *)v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -402,8 +402,8 @@ LABEL_13:
     while (v16);
   }
 
-  [a3 setAnnotationModificationDate:self->_modificationDate];
-  [a3 setUserModificationDate:self->_userModificationDate];
+  [properties setAnnotationModificationDate:self->_modificationDate];
+  [properties setUserModificationDate:self->_userModificationDate];
 
   self->_changedProperties = v5;
   self->_modificationDate = v23;

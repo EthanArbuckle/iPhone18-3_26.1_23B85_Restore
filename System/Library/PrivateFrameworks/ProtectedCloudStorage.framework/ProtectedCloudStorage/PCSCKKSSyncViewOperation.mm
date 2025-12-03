@@ -1,6 +1,6 @@
 @interface PCSCKKSSyncViewOperation
 - (BOOL)ensureControl;
-- (PCSCKKSSyncViewOperation)initWithItemModifyContext:(id)a3;
+- (PCSCKKSSyncViewOperation)initWithItemModifyContext:(id)context;
 - (void)checkTLKStatus;
 - (void)start;
 - (void)syncView;
@@ -8,10 +8,10 @@
 
 @implementation PCSCKKSSyncViewOperation
 
-- (PCSCKKSSyncViewOperation)initWithItemModifyContext:(id)a3
+- (PCSCKKSSyncViewOperation)initWithItemModifyContext:(id)context
 {
-  v5 = a3;
-  if ((PCSCurrentPersonaMatchesDSIDFromSet([v5 set]) & 1) == 0)
+  contextCopy = context;
+  if ((PCSCurrentPersonaMatchesDSIDFromSet([contextCopy set]) & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
@@ -22,30 +22,30 @@
     goto LABEL_8;
   }
 
-  if (!v5)
+  if (!contextCopy)
   {
     goto LABEL_8;
   }
 
-  v6 = [v5 serviceContexts];
-  v7 = [v6 count];
+  serviceContexts = [contextCopy serviceContexts];
+  v7 = [serviceContexts count];
 
   if (!v7 || (v12.receiver = self, v12.super_class = PCSCKKSSyncViewOperation, v8 = [(PCSCKKSSyncViewOperation *)&v12 init], (self = v8) == 0))
   {
 LABEL_8:
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
-  objc_storeStrong(&v8->_context, a3);
+  objc_storeStrong(&v8->_context, context);
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SyncViewOperation"];
   [(PCSCKKSSyncViewOperation *)self setName:v9];
 
   self = self;
-  v10 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)start
@@ -53,8 +53,8 @@ LABEL_9:
   PCSMigrationLog([(PCSCKKSItemModifyContext *)self->_context log], @"Starting: %s", "[PCSCKKSSyncViewOperation start]");
   if ([(PCSCKKSOperation *)self startOperation])
   {
-    v3 = [(PCSCKKSSyncViewOperation *)self context];
-    v4 = PCSCurrentPersonaMatchesDSIDFromSet([v3 set]);
+    context = [(PCSCKKSSyncViewOperation *)self context];
+    v4 = PCSCurrentPersonaMatchesDSIDFromSet([context set]);
 
     if (v4)
     {
@@ -87,8 +87,8 @@ LABEL_9:
 - (BOOL)ensureControl
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PCSCKKSSyncViewOperation *)self context];
-  v4 = PCSCurrentPersonaMatchesDSIDFromSet([v3 set]);
+  context = [(PCSCKKSSyncViewOperation *)self context];
+  v4 = PCSCurrentPersonaMatchesDSIDFromSet([context set]);
 
   if ((v4 & 1) == 0)
   {
@@ -108,10 +108,10 @@ LABEL_9:
   v6 = v13;
   [(PCSCKKSSyncViewOperation *)self setCKKSControl:v5];
 
-  v7 = [(PCSCKKSSyncViewOperation *)self CKKSControl];
-  v8 = v7 != 0;
+  cKKSControl = [(PCSCKKSSyncViewOperation *)self CKKSControl];
+  v8 = cKKSControl != 0;
 
-  if (!v7)
+  if (!cKKSControl)
   {
     if (v6)
     {
@@ -141,8 +141,8 @@ LABEL_10:
   v33[1] = *MEMORY[0x1E69E9840];
   if ([(PCSCKKSSyncViewOperation *)self ensureControl])
   {
-    v3 = [(PCSCKKSSyncViewOperation *)self context];
-    v4 = PCSCurrentPersonaMatchesDSIDFromSet([v3 set]);
+    context = [(PCSCKKSSyncViewOperation *)self context];
+    v4 = PCSCurrentPersonaMatchesDSIDFromSet([context set]);
 
     if (v4)
     {
@@ -151,10 +151,10 @@ LABEL_10:
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v6 = [(PCSCKKSSyncViewOperation *)self context];
-      v7 = [v6 serviceContexts];
+      context2 = [(PCSCKKSSyncViewOperation *)self context];
+      serviceContexts = [context2 serviceContexts];
 
-      v8 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
+      v8 = [serviceContexts countByEnumeratingWithState:&v25 objects:v31 count:16];
       if (v8)
       {
         v9 = v8;
@@ -165,21 +165,21 @@ LABEL_10:
           {
             if (*v26 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(serviceContexts);
             }
 
             v12 = PCSServiceItemGetCKKSViewByName(*(*(&v25 + 1) + 8 * i));
             [v5 addObject:v12];
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
+          v9 = [serviceContexts countByEnumeratingWithState:&v25 objects:v31 count:16];
         }
 
         while (v9);
       }
 
-      v13 = [v5 allObjects];
-      v14 = [v13 sortedArrayUsingSelector:sel_compare_];
+      allObjects = [v5 allObjects];
+      v14 = [allObjects sortedArrayUsingSelector:sel_compare_];
       v15 = [v14 componentsJoinedByString:{@", "}];
 
       v16 = pcsLogObjForScope("ckks");
@@ -190,13 +190,13 @@ LABEL_10:
         _os_log_impl(&dword_1B229C000, v16, OS_LOG_TYPE_DEFAULT, "Checking if CKKS reports bad state for active views (%{public}@)", buf, 0xCu);
       }
 
-      v17 = [(PCSCKKSSyncViewOperation *)self CKKSControl];
+      cKKSControl = [(PCSCKKSSyncViewOperation *)self CKKSControl];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __42__PCSCKKSSyncViewOperation_checkTLKStatus__block_invoke;
       v24[3] = &unk_1E7B190E8;
       v24[4] = self;
-      [v17 rpcKnownBadStateForViews:v13 reply:v24];
+      [cKKSControl rpcKnownBadStateForViews:allObjects reply:v24];
     }
 
     else
@@ -319,8 +319,8 @@ LABEL_26:
   v29[1] = *MEMORY[0x1E69E9840];
   if ([(PCSCKKSSyncViewOperation *)self ensureControl])
   {
-    v3 = [(PCSCKKSSyncViewOperation *)self context];
-    v4 = PCSCurrentPersonaMatchesDSIDFromSet([v3 set]);
+    context = [(PCSCKKSSyncViewOperation *)self context];
+    v4 = PCSCurrentPersonaMatchesDSIDFromSet([context set]);
 
     if (v4)
     {
@@ -331,31 +331,31 @@ LABEL_26:
         _os_log_impl(&dword_1B229C000, v5, OS_LOG_TYPE_DEFAULT, "Syncing ckks views", buf, 2u);
       }
 
-      v6 = [(PCSCKKSSyncViewOperation *)self context];
-      v7 = [v6 mtt];
+      context2 = [(PCSCKKSSyncViewOperation *)self context];
+      v7 = [context2 mtt];
       v8 = [v7 measurePoint:@"CKKSSyncView"];
 
       v21 = MEMORY[0x1E69E9820];
       v22 = 3221225472;
       v23 = __36__PCSCKKSSyncViewOperation_syncView__block_invoke;
       v24 = &unk_1E7B19110;
-      v25 = self;
+      selfCopy = self;
       v26 = v8;
       v9 = v8;
       v10 = MEMORY[0x1B2745320](&v21);
       v11 = [(PCSCKKSSyncViewOperation *)self context:v21];
-      v12 = [v11 forceSync];
+      forceSync = [v11 forceSync];
 
-      v13 = [(PCSCKKSSyncViewOperation *)self CKKSControl];
-      v14 = v13;
-      if (v12)
+      cKKSControl = [(PCSCKKSSyncViewOperation *)self CKKSControl];
+      v14 = cKKSControl;
+      if (forceSync)
       {
-        [v13 rpcFetchAndProcessChanges:0 reply:v10];
+        [cKKSControl rpcFetchAndProcessChanges:0 reply:v10];
       }
 
       else
       {
-        [v13 rpcFetchAndProcessChangesIfNoRecentFetch:0 reply:v10];
+        [cKKSControl rpcFetchAndProcessChangesIfNoRecentFetch:0 reply:v10];
       }
     }
 

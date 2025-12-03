@@ -2,21 +2,21 @@
 - (NSExtension)weakExtension;
 - (double)_keyboardHeightOffset;
 - (void)dealloc;
-- (void)hostKeyboardOffset:(id)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)hostKeyboardOffset:(id)offset;
+- (void)viewServiceDidTerminateWithError:(id)error;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation _CDPHostViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(_CDPHostViewController *)v4 viewServiceDidTerminateWithError:v5];
+    [(_CDPHostViewController *)errorCopy viewServiceDidTerminateWithError:v5];
   }
 
   viewServiceTerminationBlock = self->_viewServiceTerminationBlock;
@@ -26,35 +26,35 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = _CDPHostViewController;
   [(_UIRemoteViewController *)&v6 viewWillAppear:?];
-  v5 = [(_CDPHostViewController *)self navigationController];
-  [v5 setNavigationBarHidden:1 animated:v3];
+  navigationController = [(_CDPHostViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:1 animated:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = _CDPHostViewController;
   [(_UIRemoteViewController *)&v6 viewWillDisappear:?];
-  v5 = [(_CDPHostViewController *)self navigationController];
-  [v5 setNavigationBarHidden:0 animated:v3];
+  navigationController = [(_CDPHostViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:0 animated:disappearCopy];
 }
 
-- (void)hostKeyboardOffset:(id)a3
+- (void)hostKeyboardOffset:(id)offset
 {
-  if (a3)
+  if (offset)
   {
     v5 = MEMORY[0x277CCABB0];
-    v6 = a3;
+    offsetCopy = offset;
     [(_CDPHostViewController *)self _keyboardHeightOffset];
     v7 = [v5 numberWithDouble:?];
-    (*(a3 + 2))(v6, v7);
+    (*(offset + 2))(offsetCopy, v7);
   }
 }
 
@@ -62,17 +62,17 @@
 {
   [MEMORY[0x277D75658] sizeForInterfaceOrientation:{-[_CDPHostViewController interfaceOrientation](self, "interfaceOrientation")}];
   v30 = v3;
-  v4 = [(_CDPHostViewController *)self view];
-  v5 = [(_CDPHostViewController *)self view];
-  [v5 bounds];
-  [v4 convertRect:0 toView:?];
+  view = [(_CDPHostViewController *)self view];
+  view2 = [(_CDPHostViewController *)self view];
+  [view2 bounds];
+  [view convertRect:0 toView:?];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [MEMORY[0x277D759A0] mainScreen];
-  [v14 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -88,10 +88,10 @@
   v32.size.width = v11;
   v32.size.height = v13;
   v24 = v30 - (MaxY - CGRectGetMaxY(v32));
-  v25 = [MEMORY[0x277D75418] currentDevice];
-  v26 = [v25 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
   v27 = 50.0;
-  if (v26 != 1)
+  if (userInterfaceIdiom != 1)
   {
     v27 = 0.0;
   }
@@ -103,13 +103,13 @@
 
 - (void)dealloc
 {
-  v3 = [(_CDPHostViewController *)self request];
+  request = [(_CDPHostViewController *)self request];
 
-  if (v3)
+  if (request)
   {
-    v4 = [(_CDPHostViewController *)self weakExtension];
-    v5 = [(_CDPHostViewController *)self request];
-    [v4 cancelExtensionRequestWithIdentifier:v5];
+    weakExtension = [(_CDPHostViewController *)self weakExtension];
+    request2 = [(_CDPHostViewController *)self request];
+    [weakExtension cancelExtensionRequestWithIdentifier:request2];
   }
 
   v6.receiver = self;

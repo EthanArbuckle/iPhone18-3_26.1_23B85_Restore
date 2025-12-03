@@ -1,23 +1,23 @@
 @interface OrgApacheLuceneIndexStandardDirectoryReader_$2
-- (OrgApacheLuceneIndexStandardDirectoryReader_$2)initWithOrgApacheLuceneIndexStandardDirectoryReader:(id)a3 withOrgApacheLuceneStoreDirectory:(id)a4;
-- (id)doBodyWithNSString:(id)a3;
+- (OrgApacheLuceneIndexStandardDirectoryReader_$2)initWithOrgApacheLuceneIndexStandardDirectoryReader:(id)reader withOrgApacheLuceneStoreDirectory:(id)directory;
+- (id)doBodyWithNSString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexStandardDirectoryReader_$2
 
-- (id)doBodyWithNSString:(id)a3
+- (id)doBodyWithNSString:(id)string
 {
-  CommitWithOrgApacheLuceneStoreDirectory_withNSString = OrgApacheLuceneIndexSegmentInfos_readCommitWithOrgApacheLuceneStoreDirectory_withNSString_(self->super.directory_, a3);
+  CommitWithOrgApacheLuceneStoreDirectory_withNSString = OrgApacheLuceneIndexSegmentInfos_readCommitWithOrgApacheLuceneStoreDirectory_withNSString_(self->super.directory_, string);
   v5 = self->this$0_;
 
   return [(OrgApacheLuceneIndexStandardDirectoryReader *)v5 doOpenIfChangedWithOrgApacheLuceneIndexSegmentInfos:CommitWithOrgApacheLuceneStoreDirectory_withNSString];
 }
 
-- (OrgApacheLuceneIndexStandardDirectoryReader_$2)initWithOrgApacheLuceneIndexStandardDirectoryReader:(id)a3 withOrgApacheLuceneStoreDirectory:(id)a4
+- (OrgApacheLuceneIndexStandardDirectoryReader_$2)initWithOrgApacheLuceneIndexStandardDirectoryReader:(id)reader withOrgApacheLuceneStoreDirectory:(id)directory
 {
-  JreStrongAssign(&self->this$0_, a3);
-  OrgApacheLuceneIndexSegmentInfos_FindSegmentsFile_initWithOrgApacheLuceneStoreDirectory_(self, a4);
+  JreStrongAssign(&self->this$0_, reader);
+  OrgApacheLuceneIndexSegmentInfos_FindSegmentsFile_initWithOrgApacheLuceneStoreDirectory_(self, directory);
   return self;
 }
 

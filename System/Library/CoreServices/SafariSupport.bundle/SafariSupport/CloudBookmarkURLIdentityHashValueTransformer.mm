@@ -1,33 +1,33 @@
 @interface CloudBookmarkURLIdentityHashValueTransformer
-- (BOOL)isEmptyValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (BOOL)isEmptyValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation CloudBookmarkURLIdentityHashValueTransformer
 
-- (BOOL)isEmptyValue:(id)a3
+- (BOOL)isEmptyValue:(id)value
 {
-  v3 = [a3 absoluteString];
-  v4 = [v3 length] == 0;
+  absoluteString = [value absoluteString];
+  v4 = [absoluteString length] == 0;
 
   return v4;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 absoluteString];
+    absoluteString = [valueCopy absoluteString];
   }
 
   else
   {
-    v4 = 0;
+    absoluteString = 0;
   }
 
-  return v4;
+  return absoluteString;
 }
 
 @end

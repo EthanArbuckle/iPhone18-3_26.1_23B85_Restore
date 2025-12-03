@@ -1,19 +1,19 @@
 @interface SSJournalResultBuilder
-- (SSJournalResultBuilder)initWithResult:(id)a3;
+- (SSJournalResultBuilder)initWithResult:(id)result;
 - (id)buildFootnote;
 @end
 
 @implementation SSJournalResultBuilder
 
-- (SSJournalResultBuilder)initWithResult:(id)a3
+- (SSJournalResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v8.receiver = self;
   v8.super_class = SSJournalResultBuilder;
-  v5 = [(SSResultBuilder *)&v8 initWithResult:v4];
+  v5 = [(SSResultBuilder *)&v8 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
     [(SSJournalResultBuilder *)v5 setDateCreated:v6];
   }
 
@@ -23,12 +23,12 @@
 - (id)buildFootnote
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v3 = [(SSJournalResultBuilder *)self dateCreated];
+  dateCreated = [(SSJournalResultBuilder *)self dateCreated];
 
-  if (v3)
+  if (dateCreated)
   {
-    v4 = [(SSJournalResultBuilder *)self dateCreated];
-    v5 = [SSDateFormatManager dynamicMediumStringFromDate:v4];
+    dateCreated2 = [(SSJournalResultBuilder *)self dateCreated];
+    v5 = [SSDateFormatManager dynamicMediumStringFromDate:dateCreated2];
 
     if ([v5 length])
     {
@@ -41,7 +41,7 @@
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:3];
       v9 = [v8 componentsJoinedByString:&stru_1F556FE60];
 
-      v10 = [MEMORY[0x1E69CA3A0] textWithString:v9];
+      buildFootnote = [MEMORY[0x1E69CA3A0] textWithString:v9];
 
       goto LABEL_6;
     }
@@ -49,11 +49,11 @@
 
   v13.receiver = self;
   v13.super_class = SSJournalResultBuilder;
-  v10 = [(SSResultBuilder *)&v13 buildFootnote];
+  buildFootnote = [(SSResultBuilder *)&v13 buildFootnote];
 LABEL_6:
   v11 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return buildFootnote;
 }
 
 @end

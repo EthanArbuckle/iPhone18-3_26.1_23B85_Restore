@@ -1,10 +1,10 @@
 @interface UIMutableSceneWindowLayerPresentationContext
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UIMutableSceneWindowLayerPresentationContext
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UISceneWindowLayerPresentationContext alloc];
 

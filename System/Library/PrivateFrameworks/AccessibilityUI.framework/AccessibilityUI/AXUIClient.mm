@@ -1,17 +1,17 @@
 @interface AXUIClient
-- (AXUIClient)initWithIdentifier:(id)a3 serviceBundleName:(id)a4;
+- (AXUIClient)initWithIdentifier:(id)identifier serviceBundleName:(id)name;
 - (AXUIClientDelegate)delegate;
 - (NSString)description;
-- (id)sendSynchronousMessage:(id)a3 withIdentifier:(unint64_t)a4 error:(id *)a5;
+- (id)sendSynchronousMessage:(id)message withIdentifier:(unint64_t)identifier error:(id *)error;
 - (void)_cleanUp;
 - (void)_requestInitializationMessageFromDelegateIfNeeded;
-- (void)clientConnection:(id)a3 didChangeConnectedState:(BOOL)a4;
+- (void)clientConnection:(id)connection didChangeConnectedState:(BOOL)state;
 - (void)dealloc;
-- (void)invalidate:(id)a3;
-- (void)messageSender:(id)a3 accessLaunchAngelConnectionForMessageWithContext:(void *)a4 usingBlock:(id)a5;
-- (void)messageSender:(id)a3 extractCustomDataFromXPCReply:(id)a4 numberOfKeyValuePairsForCustomData:(unint64_t *)a5;
-- (void)messageSender:(id)a3 processCustomDataFromXPCReply:(void *)a4;
-- (void)messageSender:(id)a3 willSendXPCMessage:(id)a4 context:(void *)a5;
+- (void)invalidate:(id)invalidate;
+- (void)messageSender:(id)sender accessLaunchAngelConnectionForMessageWithContext:(void *)context usingBlock:(id)block;
+- (void)messageSender:(id)sender extractCustomDataFromXPCReply:(id)reply numberOfKeyValuePairsForCustomData:(unint64_t *)data;
+- (void)messageSender:(id)sender processCustomDataFromXPCReply:(void *)reply;
+- (void)messageSender:(id)sender willSendXPCMessage:(id)message context:(void *)context;
 @end
 
 @implementation AXUIClient
@@ -25,15 +25,15 @@
 
 - (void)_requestInitializationMessageFromDelegateIfNeeded
 {
-  v3 = [(AXUIClient *)self delegate];
+  delegate = [(AXUIClient *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v10 = 0;
     v11 = &v10;
     v12 = 0x2020000000;
     v13 = 0;
-    v4 = [(AXUIClient *)self messageSender];
-    v5 = [v4 messageSchedulingSerializationQueue];
+    messageSender = [(AXUIClient *)self messageSender];
+    messageSchedulingSerializationQueue = [messageSender messageSchedulingSerializationQueue];
 
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -41,11 +41,11 @@
     v9[3] = &unk_278BF22B8;
     v9[4] = self;
     v9[5] = &v10;
-    [v5 performSynchronousReadingBlock:v9];
+    [messageSchedulingSerializationQueue performSynchronousReadingBlock:v9];
     if ((v11[3] & 1) == 0)
     {
       v6 = objc_opt_new();
-      [v3 userInterfaceClient:self willActivateUserInterfaceServiceWithInitializationMessage:v6];
+      [delegate userInterfaceClient:self willActivateUserInterfaceServiceWithInitializationMessage:v6];
       if ([v6 count])
       {
         v7[0] = MEMORY[0x277D85DD0];
@@ -54,7 +54,7 @@
         v7[3] = &unk_278BF2290;
         v7[4] = self;
         v8 = v6;
-        [v5 performSynchronousWritingBlock:v7];
+        [messageSchedulingSerializationQueue performSynchronousWritingBlock:v7];
       }
     }
 
@@ -62,10 +62,10 @@
   }
 }
 
-- (AXUIClient)initWithIdentifier:(id)a3 serviceBundleName:(id)a4
+- (AXUIClient)initWithIdentifier:(id)identifier serviceBundleName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = AXUIClient;
   v8 = [(AXUIClient *)&v14 init];
@@ -73,15 +73,15 @@
   {
     v9 = objc_opt_new();
     v10 = +[AXUIClientConnection sharedClientConnection];
-    v11 = [v6 length];
-    if (v7 && v11 && v9 && v10)
+    v11 = [identifierCopy length];
+    if (nameCopy && v11 && v9 && v10)
     {
-      [(AXUIClient *)v8 setClientIdentifier:v6];
-      [(AXUIClient *)v8 setServiceBundleName:v7];
+      [(AXUIClient *)v8 setClientIdentifier:identifierCopy];
+      [(AXUIClient *)v8 setServiceBundleName:nameCopy];
       [(AXUIClient *)v8 setMessageSender:v9];
       [(AXUIClient *)v8 setClientConnection:v10];
-      v12 = [(AXUIClient *)v8 clientConnection];
-      [v12 registerConnectionStateObserver:v8];
+      clientConnection = [(AXUIClient *)v8 clientConnection];
+      [clientConnection registerConnectionStateObserver:v8];
 
       [v9 setDelegate:v8];
     }
@@ -111,42 +111,42 @@
   [(AXUIClient *)&v4 dealloc];
 }
 
-- (id)sendSynchronousMessage:(id)a3 withIdentifier:(unint64_t)a4 error:(id *)a5
+- (id)sendSynchronousMessage:(id)message withIdentifier:(unint64_t)identifier error:(id *)error
 {
-  v8 = a3;
+  messageCopy = message;
   [(AXUIClient *)self _requestInitializationMessageFromDelegateIfNeeded];
-  v9 = [(AXUIClient *)self messageSender];
-  v10 = [v9 sendSynchronousMessage:v8 withIdentifier:a4 context:0 error:a5];
+  messageSender = [(AXUIClient *)self messageSender];
+  v10 = [messageSender sendSynchronousMessage:messageCopy withIdentifier:identifier context:0 error:error];
 
   return v10;
 }
 
-- (void)messageSender:(id)a3 accessLaunchAngelConnectionForMessageWithContext:(void *)a4 usingBlock:(id)a5
+- (void)messageSender:(id)sender accessLaunchAngelConnectionForMessageWithContext:(void *)context usingBlock:(id)block
 {
-  v6 = a5;
-  v7 = [(AXUIClient *)self clientConnection];
-  [v7 performLaunchAngelTask:v6];
+  blockCopy = block;
+  clientConnection = [(AXUIClient *)self clientConnection];
+  [clientConnection performLaunchAngelTask:blockCopy];
 }
 
-- (void)messageSender:(id)a3 extractCustomDataFromXPCReply:(id)a4 numberOfKeyValuePairsForCustomData:(unint64_t *)a5
+- (void)messageSender:(id)sender extractCustomDataFromXPCReply:(id)reply numberOfKeyValuePairsForCustomData:(unint64_t *)data
 {
-  v6 = xpc_dictionary_get_value(a4, *MEMORY[0x277CE77A8]);
+  v6 = xpc_dictionary_get_value(reply, *MEMORY[0x277CE77A8]);
   v7 = v6;
-  if (a5)
+  if (data)
   {
-    *a5 = v6 != 0;
+    *data = v6 != 0;
   }
 
   return v7;
 }
 
-- (void)messageSender:(id)a3 processCustomDataFromXPCReply:(void *)a4
+- (void)messageSender:(id)sender processCustomDataFromXPCReply:(void *)reply
 {
-  v6 = [(AXUIClient *)self messageSender];
-  v7 = [v6 messageSchedulingSerializationQueue];
-  v8 = [v7 canWriteInCurrentExecutionThread];
+  messageSender = [(AXUIClient *)self messageSender];
+  messageSchedulingSerializationQueue = [messageSender messageSchedulingSerializationQueue];
+  canWriteInCurrentExecutionThread = [messageSchedulingSerializationQueue canWriteInCurrentExecutionThread];
 
-  if ((v8 & 1) == 0)
+  if ((canWriteInCurrentExecutionThread & 1) == 0)
   {
     v9 = AXLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -155,25 +155,25 @@
     }
   }
 
-  v10 = a4;
-  v11 = v10;
-  if (v10 && MEMORY[0x23EEF8420](v10) == MEMORY[0x277D86448] && xpc_BOOL_get_value(v11))
+  replyCopy = reply;
+  v11 = replyCopy;
+  if (replyCopy && MEMORY[0x23EEF8420](replyCopy) == MEMORY[0x277D86448] && xpc_BOOL_get_value(v11))
   {
-    v12 = [(AXUIClient *)self clientConnection];
+    clientConnection = [(AXUIClient *)self clientConnection];
     [(AXUIClient *)self setRegisteredWithServer:1];
-    v13 = [(AXUIClient *)self clientIdentifier];
-    [v12 registerClient:self withIdentifier:v13];
+    clientIdentifier = [(AXUIClient *)self clientIdentifier];
+    [clientConnection registerClient:self withIdentifier:clientIdentifier];
   }
 }
 
-- (void)messageSender:(id)a3 willSendXPCMessage:(id)a4 context:(void *)a5
+- (void)messageSender:(id)sender willSendXPCMessage:(id)message context:(void *)context
 {
-  v6 = a4;
-  v7 = [(AXUIClient *)self messageSender];
-  v8 = [v7 messageSchedulingSerializationQueue];
-  v9 = [v8 canReadInCurrentExecutionThread];
+  messageCopy = message;
+  messageSender = [(AXUIClient *)self messageSender];
+  messageSchedulingSerializationQueue = [messageSender messageSchedulingSerializationQueue];
+  canReadInCurrentExecutionThread = [messageSchedulingSerializationQueue canReadInCurrentExecutionThread];
 
-  if ((v9 & 1) == 0)
+  if ((canReadInCurrentExecutionThread & 1) == 0)
   {
     v10 = AXLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -185,23 +185,23 @@
   if (![(AXUIClient *)self isRegisteredWithServer])
   {
     v11 = *MEMORY[0x277CE77D8];
-    v12 = [(AXUIClient *)self serviceBundleName];
-    xpc_dictionary_set_string(v6, v11, [v12 UTF8String]);
+    serviceBundleName = [(AXUIClient *)self serviceBundleName];
+    xpc_dictionary_set_string(messageCopy, v11, [serviceBundleName UTF8String]);
   }
 
   v13 = *MEMORY[0x277CE77B8];
-  v14 = [(AXUIClient *)self clientIdentifier];
-  xpc_dictionary_set_string(v6, v13, [v14 UTF8String]);
+  clientIdentifier = [(AXUIClient *)self clientIdentifier];
+  xpc_dictionary_set_string(messageCopy, v13, [clientIdentifier UTF8String]);
 
-  v15 = [(AXUIClient *)self initializationMessage];
-  if (v15)
+  initializationMessage = [(AXUIClient *)self initializationMessage];
+  if (initializationMessage)
   {
     v19 = 0;
-    v16 = [MEMORY[0x277CE69B8] copyXPCMessageFromDictionary:v15 inReplyToXPCMessage:0 error:&v19];
+    v16 = [MEMORY[0x277CE69B8] copyXPCMessageFromDictionary:initializationMessage inReplyToXPCMessage:0 error:&v19];
     v17 = v19;
     if (v16)
     {
-      xpc_dictionary_set_value(v6, *MEMORY[0x277CE77C0], v16);
+      xpc_dictionary_set_value(messageCopy, *MEMORY[0x277CE77C0], v16);
       [(AXUIClient *)self setInitializationMessage:0];
     }
 
@@ -216,10 +216,10 @@
   }
 }
 
-- (void)invalidate:(id)a3
+- (void)invalidate:(id)invalidate
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  invalidateCopy = invalidate;
   v5 = AXLogAssertions();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -235,8 +235,8 @@
   v10[2] = __25__AXUIClient_invalidate___block_invoke;
   v10[3] = &unk_278BF2268;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = invalidateCopy;
+  v8 = invalidateCopy;
   [(AXUIClient *)self sendAsynchronousMessage:MEMORY[0x277CBEC10] withIdentifier:v7 targetAccessQueue:0 completion:v10];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -276,27 +276,27 @@ uint64_t __25__AXUIClient_invalidate___block_invoke(uint64_t a1)
     }
   }
 
-  v5 = [(AXUIClient *)self clientConnection];
-  v6 = [(AXUIClient *)self clientConnection];
-  [v6 unregisterConnectionStateObserver:self];
+  clientConnection = [(AXUIClient *)self clientConnection];
+  clientConnection2 = [(AXUIClient *)self clientConnection];
+  [clientConnection2 unregisterConnectionStateObserver:self];
 
-  v7 = [(AXUIClient *)self messageSender];
-  v8 = [v7 messageSchedulingSerializationQueue];
+  messageSender = [(AXUIClient *)self messageSender];
+  messageSchedulingSerializationQueue = [messageSender messageSchedulingSerializationQueue];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __22__AXUIClient__cleanUp__block_invoke;
   v16 = &unk_278BF2290;
-  v17 = self;
-  v18 = v5;
-  v9 = v5;
-  [v8 performSynchronousWritingBlock:&v13];
+  selfCopy = self;
+  v18 = clientConnection;
+  v9 = clientConnection;
+  [messageSchedulingSerializationQueue performSynchronousWritingBlock:&v13];
 
   v10 = [(AXUIClient *)self clientConnection:v13];
   [v10 cleanUp];
 
   [(AXUIClient *)self setClientConnection:0];
-  v11 = [(AXUIClient *)self messageSender];
-  [v11 setDelegate:0];
+  messageSender2 = [(AXUIClient *)self messageSender];
+  [messageSender2 setDelegate:0];
 
   [(AXUIClient *)self setMessageSender:0];
   [(AXUIClient *)self setServiceBundleName:0];
@@ -331,29 +331,29 @@ uint64_t __63__AXUIClient__requestInitializationMessageFromDelegateIfNeeded__blo
   return result;
 }
 
-- (void)clientConnection:(id)a3 didChangeConnectedState:(BOOL)a4
+- (void)clientConnection:(id)connection didChangeConnectedState:(BOOL)state
 {
-  v5 = a3;
-  v6 = [(AXUIClient *)self clientConnection];
+  connectionCopy = connection;
+  clientConnection = [(AXUIClient *)self clientConnection];
 
-  if (v6 == v5 && ([v5 isConnected] & 1) == 0)
+  if (clientConnection == connectionCopy && ([connectionCopy isConnected] & 1) == 0)
   {
-    v7 = [(AXUIClient *)self messageSender];
-    v8 = [v7 messageSchedulingSerializationQueue];
+    messageSender = [(AXUIClient *)self messageSender];
+    messageSchedulingSerializationQueue = [messageSender messageSchedulingSerializationQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __55__AXUIClient_clientConnection_didChangeConnectedState___block_invoke;
     v11[3] = &unk_278BF22E0;
     v11[4] = self;
-    [v8 performSynchronousWritingBlock:v11];
+    [messageSchedulingSerializationQueue performSynchronousWritingBlock:v11];
 
-    v9 = [MEMORY[0x277CE6948] backgroundAccessQueue];
+    backgroundAccessQueue = [MEMORY[0x277CE6948] backgroundAccessQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __55__AXUIClient_clientConnection_didChangeConnectedState___block_invoke_2;
     v10[3] = &unk_278BF22E0;
     v10[4] = self;
-    [v9 performAsynchronousWritingBlock:v10];
+    [backgroundAccessQueue performAsynchronousWritingBlock:v10];
   }
 }
 
@@ -389,8 +389,8 @@ void __55__AXUIClient_clientConnection_didChangeConnectedState___block_invoke_2(
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(AXUIClient *)self clientIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@: %p clientIdentifier = %@>", v5, self, v6];;
+  clientIdentifier = [(AXUIClient *)self clientIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@: %p clientIdentifier = %@>", v5, self, clientIdentifier];;
 
   return v7;
 }

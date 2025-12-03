@@ -1,8 +1,8 @@
 @interface PUAnimatableBarButtonItem
-+ (id)barButtonItemWithSystemImageName:(id)a3;
++ (id)barButtonItemWithSystemImageName:(id)name;
 - (NSString)currentImageName;
-- (void)addTarget:(id)a3 action:(SEL)a4 for:(unint64_t)a5;
-- (void)setCurrentImageName:(id)a3;
+- (void)addTarget:(id)target action:(SEL)action for:(unint64_t)for;
+- (void)setCurrentImageName:(id)name;
 @end
 
 @implementation PUAnimatableBarButtonItem
@@ -23,9 +23,9 @@
   return v3;
 }
 
-- (void)setCurrentImageName:(id)a3
+- (void)setCurrentImageName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_1B3C9C5E8();
     v6 = v5;
@@ -37,11 +37,11 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1B3841874(v4, v6);
 }
 
-+ (id)barButtonItemWithSystemImageName:(id)a3
++ (id)barButtonItemWithSystemImageName:(id)name
 {
   v3 = sub_1B3C9C5E8();
   v5 = v4;
@@ -51,11 +51,11 @@
   return v6;
 }
 
-- (void)addTarget:(id)a3 action:(SEL)a4 for:(unint64_t)a5
+- (void)addTarget:(id)target action:(SEL)action for:(unint64_t)for
 {
-  if (a3)
+  if (target)
   {
-    v8 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1B3C9D1E8();
     swift_unknownObjectRelease();
@@ -64,10 +64,10 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v9 = self;
+    selfCopy2 = self;
   }
 
-  sub_1B3842DB4(v10, a4, a5);
+  sub_1B3842DB4(v10, action, for);
 
   sub_1B36FA490(v10);
 }

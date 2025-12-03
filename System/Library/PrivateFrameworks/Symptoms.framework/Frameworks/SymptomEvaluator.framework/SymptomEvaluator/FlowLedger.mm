@@ -1,6 +1,6 @@
 @interface FlowLedger
-- (BOOL)statisticsForAccumulatedSamples:(unint64_t *)a3 sampleDuration:(double *)a4 avgRxTput:(double *)a5 avgCeilingRxTput:(double *)a6 avgTxTput:(double *)a7 avgCeilingTxTput:(double *)a8;
-- (BOOL)statisticsForSampleCount:(unint64_t *)a3 sampleDuration:(double *)a4 minRxTput:(double *)a5 avgRxTput:(double *)a6 maxRxTput:(double *)a7 avgCeilingRxTput:(double *)a8 normalizedRxStdDeviation:(double *)a9 minTxTput:(double *)a10 avgTxTput:(double *)a11 maxTxTput:(double *)a12 avgCeilingTxTput:(double *)a13 normalizedTxStdDeviation:(double *)a14 requiredMinSampleCount:(unint64_t)a15;
+- (BOOL)statisticsForAccumulatedSamples:(unint64_t *)samples sampleDuration:(double *)duration avgRxTput:(double *)tput avgCeilingRxTput:(double *)rxTput avgTxTput:(double *)txTput avgCeilingTxTput:(double *)ceilingTxTput;
+- (BOOL)statisticsForSampleCount:(unint64_t *)count sampleDuration:(double *)duration minRxTput:(double *)tput avgRxTput:(double *)rxTput maxRxTput:(double *)maxRxTput avgCeilingRxTput:(double *)ceilingRxTput normalizedRxStdDeviation:(double *)deviation minTxTput:(double *)self0 avgTxTput:(double *)self1 maxTxTput:(double *)self2 avgCeilingTxTput:(double *)self3 normalizedTxStdDeviation:(double *)self4 requiredMinSampleCount:(unint64_t)self5;
 - (double)recentCellRxThroughput;
 - (double)recentCellTxThroughput;
 - (double)recentRxThroughput;
@@ -9,7 +9,7 @@
 - (double)recentWiFiTxThroughput;
 - (id)briefDescription;
 - (id)description;
-- (id)expectedTransferStateToString:(unsigned int)a3;
+- (id)expectedTransferStateToString:(unsigned int)string;
 - (id)statisticsDescription;
 @end
 
@@ -20,9 +20,9 @@
   v2 = 0.0;
   if (!self->_lastSampleWasIdle)
   {
-    v4 = [(NSMutableArray *)self->_nonIdleSamples lastObject];
-    v5 = v4;
-    if (v4 && ([v4 elapsedTime], v6 > 1.0))
+    lastObject = [(NSMutableArray *)self->_nonIdleSamples lastObject];
+    v5 = lastObject;
+    if (lastObject && ([lastObject elapsedTime], v6 > 1.0))
     {
       [v5 averageRxThroughput];
       v2 = v7;
@@ -30,17 +30,17 @@
 
     else if ([(NSMutableArray *)self->_nonIdleSamples count]>= 2)
     {
-      v8 = [v5 totalObservedRxBytes];
+      totalObservedRxBytes = [v5 totalObservedRxBytes];
       [v5 elapsedTime];
       v10 = v9;
       v11 = [(NSMutableArray *)self->_nonIdleSamples objectAtIndexedSubscript:[(NSMutableArray *)self->_nonIdleSamples count]- 2];
-      v12 = [v11 totalObservedRxBytes];
+      totalObservedRxBytes2 = [v11 totalObservedRxBytes];
       [v11 elapsedTime];
       v14 = v10 + v13;
       v2 = 0.0;
       if (v14 > 1.0)
       {
-        v2 = mbpsThroughput(v12 + v8, v14);
+        v2 = mbpsThroughput(totalObservedRxBytes2 + totalObservedRxBytes, v14);
       }
     }
   }
@@ -53,9 +53,9 @@
   v2 = 0.0;
   if (!self->_lastSampleWasIdle)
   {
-    v4 = [(NSMutableArray *)self->_nonIdleSamples lastObject];
-    v5 = v4;
-    if (v4 && ([v4 elapsedTime], v6 > 1.0))
+    lastObject = [(NSMutableArray *)self->_nonIdleSamples lastObject];
+    v5 = lastObject;
+    if (lastObject && ([lastObject elapsedTime], v6 > 1.0))
     {
       [v5 averageTxThroughput];
       v2 = v7;
@@ -63,17 +63,17 @@
 
     else if ([(NSMutableArray *)self->_nonIdleSamples count]>= 2)
     {
-      v8 = [v5 totalObservedTxBytes];
+      totalObservedTxBytes = [v5 totalObservedTxBytes];
       [v5 elapsedTime];
       v10 = v9;
       v11 = [(NSMutableArray *)self->_nonIdleSamples objectAtIndexedSubscript:[(NSMutableArray *)self->_nonIdleSamples count]- 2];
-      v12 = [v11 totalObservedTxBytes];
+      totalObservedTxBytes2 = [v11 totalObservedTxBytes];
       [v11 elapsedTime];
       v14 = v10 + v13;
       v2 = 0.0;
       if (v14 > 1.0)
       {
-        v2 = mbpsThroughput(v12 + v8, v14);
+        v2 = mbpsThroughput(totalObservedTxBytes2 + totalObservedTxBytes, v14);
       }
     }
   }
@@ -86,9 +86,9 @@
   v2 = 0.0;
   if (!self->_lastSampleWasIdle)
   {
-    v4 = [(NSMutableArray *)self->_nonIdleSamples lastObject];
-    v5 = v4;
-    if (v4 && ([v4 elapsedTime], v6 > 1.0))
+    lastObject = [(NSMutableArray *)self->_nonIdleSamples lastObject];
+    v5 = lastObject;
+    if (lastObject && ([lastObject elapsedTime], v6 > 1.0))
     {
       [v5 averageCellRxThroughput];
       v2 = v7;
@@ -96,17 +96,17 @@
 
     else if ([(NSMutableArray *)self->_nonIdleSamples count]>= 2)
     {
-      v8 = [v5 totalObservedCellRxBytes];
+      totalObservedCellRxBytes = [v5 totalObservedCellRxBytes];
       [v5 elapsedTime];
       v10 = v9;
       v11 = [(NSMutableArray *)self->_nonIdleSamples objectAtIndexedSubscript:[(NSMutableArray *)self->_nonIdleSamples count]- 2];
-      v12 = [v11 totalObservedCellRxBytes];
+      totalObservedCellRxBytes2 = [v11 totalObservedCellRxBytes];
       [v11 elapsedTime];
       v14 = v10 + v13;
       v2 = 0.0;
       if (v14 > 1.0)
       {
-        v2 = mbpsThroughput(v12 + v8, v14);
+        v2 = mbpsThroughput(totalObservedCellRxBytes2 + totalObservedCellRxBytes, v14);
       }
     }
   }
@@ -119,9 +119,9 @@
   v2 = 0.0;
   if (!self->_lastSampleWasIdle)
   {
-    v4 = [(NSMutableArray *)self->_nonIdleSamples lastObject];
-    v5 = v4;
-    if (v4 && ([v4 elapsedTime], v6 > 1.0))
+    lastObject = [(NSMutableArray *)self->_nonIdleSamples lastObject];
+    v5 = lastObject;
+    if (lastObject && ([lastObject elapsedTime], v6 > 1.0))
     {
       [v5 averageCellTxThroughput];
       v2 = v7;
@@ -129,17 +129,17 @@
 
     else if ([(NSMutableArray *)self->_nonIdleSamples count]>= 2)
     {
-      v8 = [v5 totalObservedCellTxBytes];
+      totalObservedCellTxBytes = [v5 totalObservedCellTxBytes];
       [v5 elapsedTime];
       v10 = v9;
       v11 = [(NSMutableArray *)self->_nonIdleSamples objectAtIndexedSubscript:[(NSMutableArray *)self->_nonIdleSamples count]- 2];
-      v12 = [v11 totalObservedCellTxBytes];
+      totalObservedCellTxBytes2 = [v11 totalObservedCellTxBytes];
       [v11 elapsedTime];
       v14 = v10 + v13;
       v2 = 0.0;
       if (v14 > 1.0)
       {
-        v2 = mbpsThroughput(v12 + v8, v14);
+        v2 = mbpsThroughput(totalObservedCellTxBytes2 + totalObservedCellTxBytes, v14);
       }
     }
   }
@@ -152,9 +152,9 @@
   v2 = 0.0;
   if (!self->_lastSampleWasIdle)
   {
-    v4 = [(NSMutableArray *)self->_nonIdleSamples lastObject];
-    v5 = v4;
-    if (v4 && ([v4 elapsedTime], v6 > 1.0))
+    lastObject = [(NSMutableArray *)self->_nonIdleSamples lastObject];
+    v5 = lastObject;
+    if (lastObject && ([lastObject elapsedTime], v6 > 1.0))
     {
       [v5 averageWiFiRxThroughput];
       v2 = v7;
@@ -162,17 +162,17 @@
 
     else if ([(NSMutableArray *)self->_nonIdleSamples count]>= 2)
     {
-      v8 = [v5 totalObservedWiFiRxBytes];
+      totalObservedWiFiRxBytes = [v5 totalObservedWiFiRxBytes];
       [v5 elapsedTime];
       v10 = v9;
       v11 = [(NSMutableArray *)self->_nonIdleSamples objectAtIndexedSubscript:[(NSMutableArray *)self->_nonIdleSamples count]- 2];
-      v12 = [v11 totalObservedWiFiRxBytes];
+      totalObservedWiFiRxBytes2 = [v11 totalObservedWiFiRxBytes];
       [v11 elapsedTime];
       v14 = v10 + v13;
       v2 = 0.0;
       if (v14 > 1.0)
       {
-        v2 = mbpsThroughput(v12 + v8, v14);
+        v2 = mbpsThroughput(totalObservedWiFiRxBytes2 + totalObservedWiFiRxBytes, v14);
       }
     }
   }
@@ -185,9 +185,9 @@
   v2 = 0.0;
   if (!self->_lastSampleWasIdle)
   {
-    v4 = [(NSMutableArray *)self->_nonIdleSamples lastObject];
-    v5 = v4;
-    if (v4 && ([v4 elapsedTime], v6 > 1.0))
+    lastObject = [(NSMutableArray *)self->_nonIdleSamples lastObject];
+    v5 = lastObject;
+    if (lastObject && ([lastObject elapsedTime], v6 > 1.0))
     {
       [v5 averageWiFiTxThroughput];
       v2 = v7;
@@ -195,17 +195,17 @@
 
     else if ([(NSMutableArray *)self->_nonIdleSamples count]>= 2)
     {
-      v8 = [v5 totalObservedWiFiTxBytes];
+      totalObservedWiFiTxBytes = [v5 totalObservedWiFiTxBytes];
       [v5 elapsedTime];
       v10 = v9;
       v11 = [(NSMutableArray *)self->_nonIdleSamples objectAtIndexedSubscript:[(NSMutableArray *)self->_nonIdleSamples count]- 2];
-      v12 = [v11 totalObservedWiFiTxBytes];
+      totalObservedWiFiTxBytes2 = [v11 totalObservedWiFiTxBytes];
       [v11 elapsedTime];
       v14 = v10 + v13;
       v2 = 0.0;
       if (v14 > 1.0)
       {
-        v2 = mbpsThroughput(v12 + v8, v14);
+        v2 = mbpsThroughput(totalObservedWiFiTxBytes2 + totalObservedWiFiTxBytes, v14);
       }
     }
   }
@@ -213,13 +213,13 @@
   return v2;
 }
 
-- (BOOL)statisticsForSampleCount:(unint64_t *)a3 sampleDuration:(double *)a4 minRxTput:(double *)a5 avgRxTput:(double *)a6 maxRxTput:(double *)a7 avgCeilingRxTput:(double *)a8 normalizedRxStdDeviation:(double *)a9 minTxTput:(double *)a10 avgTxTput:(double *)a11 maxTxTput:(double *)a12 avgCeilingTxTput:(double *)a13 normalizedTxStdDeviation:(double *)a14 requiredMinSampleCount:(unint64_t)a15
+- (BOOL)statisticsForSampleCount:(unint64_t *)count sampleDuration:(double *)duration minRxTput:(double *)tput avgRxTput:(double *)rxTput maxRxTput:(double *)maxRxTput avgCeilingRxTput:(double *)ceilingRxTput normalizedRxStdDeviation:(double *)deviation minTxTput:(double *)self0 avgTxTput:(double *)self1 maxTxTput:(double *)self2 avgCeilingTxTput:(double *)self3 normalizedTxStdDeviation:(double *)self4 requiredMinSampleCount:(unint64_t)self5
 {
   v22 = [(NSMutableArray *)self->_nonIdleSamples count];
   v23 = v22;
   if (v22)
   {
-    v24 = v22 >= a15;
+    v24 = v22 >= sampleCount;
   }
 
   else
@@ -233,55 +233,55 @@
     return v25;
   }
 
-  v77 = a6;
-  v78 = a8;
+  rxTputCopy = rxTput;
+  ceilingRxTputCopy = ceilingRxTput;
   v80 = [(NSMutableArray *)self->_nonIdleSamples objectAtIndexedSubscript:0];
   [v80 elapsedTime];
-  v27 = (__PAIR128__(v23, 4.0) - v26) >> 64;
-  v75 = a5;
-  if (a3)
+  sampleCountCopy = (__PAIR128__(v23, 4.0) - v26) >> 64;
+  tputCopy = tput;
+  if (count)
   {
-    v28 = *a3;
-    if (*a3)
+    v28 = *count;
+    if (*count)
     {
 LABEL_10:
-      if (v27 < v28)
+      if (sampleCountCopy < v28)
       {
-        v28 = v27;
+        v28 = sampleCountCopy;
       }
 
-      if (v28 <= a15)
+      if (v28 <= sampleCount)
       {
-        v27 = a15;
+        sampleCountCopy = sampleCount;
       }
 
       else
       {
-        v27 = v28;
+        sampleCountCopy = v28;
       }
 
       goto LABEL_17;
     }
   }
 
-  if (a4)
+  if (duration)
   {
-    v29 = *a4;
-    if (*a4 != 0.0)
+    v29 = *duration;
+    if (*duration != 0.0)
     {
-      if (!a3 || (v28 = *a3) == 0)
+      if (!count || (v28 = *count) == 0)
       {
-        if (v27)
+        if (sampleCountCopy)
         {
           v67 = 0.0;
           v68 = 1;
-          v69 = v27;
+          v69 = sampleCountCopy;
           while (1)
           {
             v70 = [(NSMutableArray *)self->_nonIdleSamples objectAtIndexedSubscript:v69, v29];
             [v70 elapsedTime];
             v67 = v67 + v71;
-            v72 = *a4;
+            v72 = *duration;
 
             if (v67 > v72)
             {
@@ -295,7 +295,7 @@ LABEL_10:
             }
           }
 
-          v27 = v68;
+          sampleCountCopy = v68;
         }
 
         goto LABEL_17;
@@ -306,9 +306,9 @@ LABEL_10:
   }
 
 LABEL_17:
-  v76 = a7;
-  v79 = v27;
-  v30 = [(NSMutableArray *)self->_nonIdleSamples count]- v27;
+  maxRxTputCopy = maxRxTput;
+  v79 = sampleCountCopy;
+  v30 = [(NSMutableArray *)self->_nonIdleSamples count]- sampleCountCopy;
   if (v30 >= [(NSMutableArray *)self->_nonIdleSamples count])
   {
     v32 = 0;
@@ -339,8 +339,8 @@ LABEL_17:
       v41 = [(NSMutableArray *)self->_nonIdleSamples objectAtIndexedSubscript:v38];
       [v41 elapsedTime];
       v43 = v42;
-      v44 = [v41 totalObservedRxBytes];
-      v45 = [v41 totalObservedTxBytes];
+      totalObservedRxBytes = [v41 totalObservedRxBytes];
+      totalObservedTxBytes = [v41 totalObservedTxBytes];
       [v41 maxRxThroughput];
       if (v46 > v35)
       {
@@ -370,8 +370,8 @@ LABEL_17:
       }
 
       v40 = v40 + v43;
-      v31 += v44;
-      v32 += v45;
+      v31 += totalObservedRxBytes;
+      v32 += totalObservedTxBytes;
       [v41 ceilingRxThroughput];
       v37 = v37 + v54;
       [v41 ceilingTxThroughput];
@@ -388,54 +388,54 @@ LABEL_17:
   v57 = mbpsThroughput(v32, v40);
   v58 = [(NSMutableArray *)self->_nonIdleSamples count];
   v59 = [(NSMutableArray *)self->_nonIdleSamples count];
-  if (v75)
+  if (tputCopy)
   {
-    *v75 = v33;
+    *tputCopy = v33;
   }
 
-  if (v76)
+  if (maxRxTputCopy)
   {
-    *v76 = v35;
+    *maxRxTputCopy = v35;
   }
 
-  if (v77)
+  if (rxTputCopy)
   {
-    *v77 = v56;
+    *rxTputCopy = v56;
   }
 
-  if (v78)
+  if (ceilingRxTputCopy)
   {
-    *v78 = v37 / (v58 - v30);
+    *ceilingRxTputCopy = v37 / (v58 - v30);
   }
 
-  if (a10)
+  if (txTput)
   {
-    *a10 = v34;
+    *txTput = v34;
   }
 
-  if (a12)
+  if (maxTxTput)
   {
-    *a12 = v74;
+    *maxTxTput = v74;
   }
 
-  if (a11)
+  if (avgTxTput)
   {
-    *a11 = v57;
+    *avgTxTput = v57;
   }
 
-  if (a13)
+  if (ceilingTxTput)
   {
-    *a13 = v39 / (v59 - v30);
+    *ceilingTxTput = v39 / (v59 - v30);
   }
 
-  if (a4)
+  if (duration)
   {
-    *a4 = v40;
+    *duration = v40;
   }
 
-  if (a3)
+  if (count)
   {
-    *a3 = v79;
+    *count = v79;
   }
 
   v60 = 0.0;
@@ -458,21 +458,21 @@ LABEL_17:
   }
 
   v66 = v79;
-  if (a9)
+  if (deviation)
   {
-    *a9 = sqrt(v60 / v66) / v56;
+    *deviation = sqrt(v60 / v66) / v56;
   }
 
-  if (a14)
+  if (stdDeviation)
   {
-    *a14 = sqrt(v61 / v66) / v57;
+    *stdDeviation = sqrt(v61 / v66) / v57;
   }
 
   LOBYTE(v25) = 1;
   return v25;
 }
 
-- (BOOL)statisticsForAccumulatedSamples:(unint64_t *)a3 sampleDuration:(double *)a4 avgRxTput:(double *)a5 avgCeilingRxTput:(double *)a6 avgTxTput:(double *)a7 avgCeilingTxTput:(double *)a8
+- (BOOL)statisticsForAccumulatedSamples:(unint64_t *)samples sampleDuration:(double *)duration avgRxTput:(double *)tput avgCeilingRxTput:(double *)rxTput avgTxTput:(double *)txTput avgCeilingTxTput:(double *)ceilingTxTput
 {
   v51 = *MEMORY[0x277D85DE8];
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -497,11 +497,11 @@ LABEL_17:
   v21 = [v15 count];
   if (v21)
   {
-    v41 = a6;
-    v42 = a7;
-    v43 = a8;
-    v44 = a4;
-    v45 = a3;
+    rxTputCopy = rxTput;
+    txTputCopy = txTput;
+    ceilingTxTputCopy = ceilingTxTput;
+    durationCopy = duration;
+    samplesCopy = samples;
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
@@ -554,35 +554,35 @@ LABEL_17:
 
     v36 = mbpsThroughput(v25, v29);
     v37 = mbpsThroughput(v26, v29);
-    if (a5)
+    if (tput)
     {
-      *a5 = v36;
+      *tput = v36;
     }
 
     v38 = v21;
-    if (v41)
+    if (rxTputCopy)
     {
-      *v41 = v30 / v38;
+      *rxTputCopy = v30 / v38;
     }
 
-    if (v42)
+    if (txTputCopy)
     {
-      *v42 = v37;
+      *txTputCopy = v37;
     }
 
-    if (v43)
+    if (ceilingTxTputCopy)
     {
-      *v43 = v28 / v38;
+      *ceilingTxTputCopy = v28 / v38;
     }
 
-    if (v44)
+    if (durationCopy)
     {
-      *v44 = v29;
+      *durationCopy = v29;
     }
 
-    if (v45)
+    if (samplesCopy)
     {
-      *v45 = v21;
+      *samplesCopy = v21;
     }
   }
 
@@ -615,16 +615,16 @@ LABEL_17:
   return v3;
 }
 
-- (id)expectedTransferStateToString:(unsigned int)a3
+- (id)expectedTransferStateToString:(unsigned int)string
 {
-  if (a3 > 6)
+  if (string > 6)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_27898F3B0[a3];
+    return off_27898F3B0[string];
   }
 }
 
@@ -636,7 +636,7 @@ LABEL_17:
   v30 = v3;
   v27 = flowUUID;
   flowType = self->_flowType;
-  v5 = [(FlowLedger *)self createdBy];
+  createdBy = [(FlowLedger *)self createdBy];
   if (self->_rxTransferSizeLowerThreshold || self->_rxTransferSizeUpperThreshold || self->_txTransferSizeLowerThreshold || self->_txTransferSizeUpperThreshold)
   {
     latestClassification = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@-plus-transfer", self->_latestClassification];
@@ -666,7 +666,7 @@ LABEL_17:
   [(FlowLedger *)self recentWiFiRxThroughput];
   v21 = v20;
   [(FlowLedger *)self recentWiFiTxThroughput];
-  v23 = [v30 initWithFormat:@"FlowLedger %lld flow-type %@ flow-uuid %@ from %@ classified %@ sample %@ cell/wifi rx-bytes %lld/%lld tx-bytes %lld/%lld idle %f non-idle %f max-rx-tput %.6f Mbps max-tx-put %.6f Mbps fgAV %d anyAV %d recent cell/wifi rx-tput %.6f/%.6f tx-tput %.6f/%.6f alternating %@ accumulating %@", flowIdentifier, flowType, v27, v5, latestClassification, v7, totalObservedCellRxBytes, totalObservedWiFiRxBytes, totalObservedCellTxBytes, totalObservedWiFiTxBytes, v25, *&maxRxThroughput, *&maxTxThroughput, notedAsFGAudioVideoTC, notedAsAudioVideoTC, v17, v19, v21, v22, self->_alternatingIdleNonIdlePeriods, self->_nonIdleSamples];
+  v23 = [v30 initWithFormat:@"FlowLedger %lld flow-type %@ flow-uuid %@ from %@ classified %@ sample %@ cell/wifi rx-bytes %lld/%lld tx-bytes %lld/%lld idle %f non-idle %f max-rx-tput %.6f Mbps max-tx-put %.6f Mbps fgAV %d anyAV %d recent cell/wifi rx-tput %.6f/%.6f tx-tput %.6f/%.6f alternating %@ accumulating %@", flowIdentifier, flowType, v27, createdBy, latestClassification, v7, totalObservedCellRxBytes, totalObservedWiFiRxBytes, totalObservedCellTxBytes, totalObservedWiFiTxBytes, v25, *&maxRxThroughput, *&maxTxThroughput, notedAsFGAudioVideoTC, notedAsAudioVideoTC, v17, v19, v21, v22, self->_alternatingIdleNonIdlePeriods, self->_nonIdleSamples];
 
   if (v26)
   {

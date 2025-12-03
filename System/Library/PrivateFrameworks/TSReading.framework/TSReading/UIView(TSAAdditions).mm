@@ -7,17 +7,17 @@
 
 - (uint64_t)p_translateToView:()TSAAdditions above:siblingView:shouldScale:
 {
-  [a1 center];
-  [objc_msgSend(a1 "superview")];
-  [a1 setCenter:?];
+  [self center];
+  [objc_msgSend(self "superview")];
+  [self setCenter:?];
   if (a6)
   {
-    [objc_msgSend(a1 "superview")];
+    [objc_msgSend(self "superview")];
     v14 = v13;
     v16 = v15;
-    if (a1)
+    if (self)
     {
-      [a1 transform];
+      [self transform];
     }
 
     else
@@ -27,20 +27,20 @@
 
     CGAffineTransformScale(&v19, &v18, v14, v16);
     v18 = v19;
-    [a1 setTransform:&v18];
+    [self setTransform:&v18];
   }
 
   if (!a5)
   {
-    return [a3 addSubview:a1];
+    return [a3 addSubview:self];
   }
 
   if (a4)
   {
-    return [a3 insertSubview:a1 aboveSubview:a5];
+    return [a3 insertSubview:self aboveSubview:a5];
   }
 
-  return [a3 insertSubview:a1 belowSubview:a5];
+  return [a3 insertSubview:self belowSubview:a5];
 }
 
 - (void)childAtPoint:()TSAAdditions
@@ -50,8 +50,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a1 subviews];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subviews = [self subviews];
+  v6 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v6)
   {
     return 0;
@@ -65,7 +65,7 @@ LABEL_3:
   {
     if (*v13 != v8)
     {
-      objc_enumerationMutation(v5);
+      objc_enumerationMutation(subviews);
     }
 
     v10 = *(*(&v12 + 1) + 8 * v9);
@@ -79,7 +79,7 @@ LABEL_3:
 
     if (v7 == ++v9)
     {
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         goto LABEL_3;

@@ -1,25 +1,25 @@
 @interface PKMemoIconChooserViewController
 - ($85E40A55691FE2F31975A98F57E3065D)pkui_navigationStatusBarStyleDescriptor;
-- (PKMemoIconChooserViewController)initWithDelegate:(id)a3 memo:(id)a4 context:(int64_t)a5 mode:(unint64_t)a6;
+- (PKMemoIconChooserViewController)initWithDelegate:(id)delegate memo:(id)memo context:(int64_t)context mode:(unint64_t)mode;
 - (void)_cancelTapped;
 - (void)_doneTapped;
-- (void)cell:(id)a3 didUpdateText:(id)a4;
-- (void)didSelectItem:(id)a3;
+- (void)cell:(id)cell didUpdateText:(id)text;
+- (void)didSelectItem:(id)item;
 - (void)invalidateLayout;
 - (void)loadView;
-- (void)memoIconChooserDidChooseMemo:(id)a3;
-- (void)selectCellForItem:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)memoIconChooserDidChooseMemo:(id)memo;
+- (void)selectCellForItem:(id)item;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation PKMemoIconChooserViewController
 
-- (PKMemoIconChooserViewController)initWithDelegate:(id)a3 memo:(id)a4 context:(int64_t)a5 mode:(unint64_t)a6
+- (PKMemoIconChooserViewController)initWithDelegate:(id)delegate memo:(id)memo context:(int64_t)context mode:(unint64_t)mode
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  obj = a3;
-  v10 = a4;
+  obj = delegate;
+  memoCopy = memo;
   v36.receiver = self;
   v36.super_class = PKMemoIconChooserViewController;
   v11 = [(PKDynamicCollectionViewController *)&v36 init];
@@ -27,10 +27,10 @@
   if (v11)
   {
     objc_storeWeak(&v11->_delegate, obj);
-    v12->_context = a5;
-    v12->_mode = a6;
+    v12->_context = context;
+    v12->_mode = mode;
     [(PKDynamicCollectionViewController *)v12 setUseItemIdentityWhenUpdating:1];
-    v13 = [[PKMemoIconChooserSectionController alloc] initWithDelegate:v12 mode:a6 memo:v10];
+    v13 = [[PKMemoIconChooserSectionController alloc] initWithDelegate:v12 mode:mode memo:memoCopy];
     section = v12->_section;
     v12->_section = v13;
 
@@ -68,11 +68,11 @@
     v23 = [v22 actionWithHandler:v31];
     v24 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 primaryAction:v23];
     [v24 setAccessibilityIdentifier:*MEMORY[0x1E69B95A0]];
-    v25 = [(PKMemoIconChooserViewController *)v12 navigationItem];
-    [v25 setRightBarButtonItem:v12->_doneButton];
-    [v25 setLeftBarButtonItem:v24];
+    navigationItem = [(PKMemoIconChooserViewController *)v12 navigationItem];
+    [navigationItem setRightBarButtonItem:v12->_doneButton];
+    [navigationItem setLeftBarButtonItem:v24];
     v26 = PKLocalizedPeerPaymentRecurringString(&cfstr_MemoPickerChoo.isa);
-    [v25 setTitle:v26];
+    [navigationItem setTitle:v26];
 
     v37 = objc_opt_class();
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
@@ -114,19 +114,19 @@ void __70__PKMemoIconChooserViewController_initWithDelegate_memo_context_mode___
   v6.receiver = self;
   v6.super_class = PKMemoIconChooserViewController;
   [(PKDynamicCollectionViewController *)&v6 loadView];
-  v3 = [(PKDynamicCollectionViewController *)self collectionView];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [collectionView setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v5 setKeyboardDismissMode:1];
+  collectionView2 = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView2 setKeyboardDismissMode:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PKMemoIconChooserViewController;
-  [(PKDynamicCollectionViewController *)&v6 viewDidAppear:a3];
+  [(PKDynamicCollectionViewController *)&v6 viewDidAppear:appear];
   if (self->_mode == 1)
   {
     v4 = [[PKMemoItem alloc] initWithMemo:0 type:2];
@@ -140,8 +140,8 @@ void __70__PKMemoIconChooserViewController_initWithDelegate_memo_context_mode___
   v5.receiver = self;
   v5.super_class = PKMemoIconChooserViewController;
   [(PKMemoIconChooserViewController *)&v5 viewDidLayoutSubviews];
-  v3 = [(PKMemoIconChooserViewController *)self view];
-  [v3 bounds];
+  view = [(PKMemoIconChooserViewController *)self view];
+  [view bounds];
   v4 = [PKMemoIconChooserSectionController suggestedStyleForAvailableWidth:CGRectGetWidth(v6)];
 
   if ([(PKMemoIconChooserSectionController *)self->_section style]!= v4)
@@ -152,13 +152,13 @@ void __70__PKMemoIconChooserViewController_initWithDelegate_memo_context_mode___
 
 - (void)_doneTapped
 {
-  v3 = [(PKMemoIconChooserViewController *)self presentingViewController];
+  presentingViewController = [(PKMemoIconChooserViewController *)self presentingViewController];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __46__PKMemoIconChooserViewController__doneTapped__block_invoke;
   v4[3] = &unk_1E8010970;
   v4[4] = self;
-  [v3 dismissViewControllerAnimated:1 completion:v4];
+  [presentingViewController dismissViewControllerAnimated:1 completion:v4];
 }
 
 void __46__PKMemoIconChooserViewController__doneTapped__block_invoke(uint64_t a1)
@@ -170,34 +170,34 @@ void __46__PKMemoIconChooserViewController__doneTapped__block_invoke(uint64_t a1
 
 - (void)_cancelTapped
 {
-  v2 = [(PKMemoIconChooserViewController *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PKMemoIconChooserViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)invalidateLayout
 {
-  v3 = [(PKDynamicCollectionViewController *)self collectionView];
-  v2 = [v3 collectionViewLayout];
-  [v2 invalidateLayout];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v4 = a3;
-  v9 = v4;
+  itemCopy = item;
+  v9 = itemCopy;
   if (!self->_mode)
   {
     [(UIBarButtonItem *)self->_doneButton setEnabled:1];
-    v4 = v9;
+    itemCopy = v9;
   }
 
-  if ([v4 type] == 1)
+  if ([itemCopy type] == 1)
   {
-    v5 = [(PKMemoIconChooserViewController *)self overrideUserInterfaceStyle];
+    overrideUserInterfaceStyle = [(PKMemoIconChooserViewController *)self overrideUserInterfaceStyle];
     v6 = [[PKMemoIconChooserViewController alloc] initWithDelegate:self memo:0 context:self->_context mode:1];
-    [(PKMemoIconChooserViewController *)v6 setOverrideUserInterfaceStyle:v5];
+    [(PKMemoIconChooserViewController *)v6 setOverrideUserInterfaceStyle:overrideUserInterfaceStyle];
     v7 = [[PKNavigationController alloc] initWithRootViewController:v6];
-    [(PKNavigationController *)v7 setOverrideUserInterfaceStyle:v5];
+    [(PKNavigationController *)v7 setOverrideUserInterfaceStyle:overrideUserInterfaceStyle];
     if (self->_context == 9 && (PKIsPad() & 1) != 0)
     {
       v8 = 0;
@@ -223,33 +223,33 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)selectCellForItem:(id)a3
+- (void)selectCellForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PKDynamicCollectionViewController *)self cellForItem:v4];
+  itemCopy = item;
+  v5 = [(PKDynamicCollectionViewController *)self cellForItem:itemCopy];
   [v5 setSelected:1];
-  [(PKDynamicCollectionViewController *)self reloadItem:v4 animated:0];
+  [(PKDynamicCollectionViewController *)self reloadItem:itemCopy animated:0];
 }
 
-- (void)cell:(id)a3 didUpdateText:(id)a4
+- (void)cell:(id)cell didUpdateText:(id)text
 {
   doneButton = self->_doneButton;
-  v5 = [a4 length] != 0;
+  v5 = [text length] != 0;
 
   [(UIBarButtonItem *)doneButton setEnabled:v5];
 }
 
-- (void)memoIconChooserDidChooseMemo:(id)a3
+- (void)memoIconChooserDidChooseMemo:(id)memo
 {
-  v4 = a3;
+  memoCopy = memo;
   PKPeerPaymentAddRecurringPaymentRecentMemoIcon();
   [(PKMemoIconChooserSectionController *)self->_section reloadItems];
   v6 = [MEMORY[0x1E696AC88] indexPathForItem:1 inSection:1];
-  v5 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v5 selectItemAtIndexPath:v6 animated:1 scrollPosition:0];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView selectItemAtIndexPath:v6 animated:1 scrollPosition:0];
 
   [(UIBarButtonItem *)self->_doneButton setEnabled:1];
-  [(PKMemoIconChooserSectionController *)self->_section setMemoSelection:v4];
+  [(PKMemoIconChooserSectionController *)self->_section setMemoSelection:memoCopy];
 }
 
 - ($85E40A55691FE2F31975A98F57E3065D)pkui_navigationStatusBarStyleDescriptor

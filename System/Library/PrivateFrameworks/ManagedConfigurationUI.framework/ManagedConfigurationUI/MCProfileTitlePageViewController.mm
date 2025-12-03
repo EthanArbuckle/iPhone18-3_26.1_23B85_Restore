@@ -1,53 +1,53 @@
 @interface MCProfileTitlePageViewController
-- (BOOL)questionsControllerIsDisplayedInSheet:(id)a3;
+- (BOOL)questionsControllerIsDisplayedInSheet:(id)sheet;
 - (MCProfileTitlePageMetaDataSectionAnimationController)animationController;
-- (MCProfileTitlePageViewController)initWithViewModel:(id)a3;
-- (id)_sectionControllersWithProfile:(id)a3;
+- (MCProfileTitlePageViewController)initWithViewModel:(id)model;
+- (id)_sectionControllersWithProfile:(id)profile;
 - (id)defaultView;
-- (void)_resetNavigationBarStyleForViewController:(id)a3;
-- (void)_showAlertForInstallError:(id)a3;
+- (void)_resetNavigationBarStyleForViewController:(id)controller;
+- (void)_showAlertForInstallError:(id)error;
 - (void)_updateBottomInsetToEnableCompleteScrollAnimation;
 - (void)_updateMetaDataSectionHeight;
-- (void)cancelButtonTapped:(id)a3;
+- (void)cancelButtonTapped:(id)tapped;
 - (void)dealloc;
 - (void)dmc_viewControllerHasBeenDismissed;
-- (void)infoButtonTapped:(id)a3;
-- (void)informQuestionViewControllerOfPreflightResult:(id)a3 profileConnection:(id)a4;
-- (void)installButtonTapped:(id)a3;
-- (void)installationFinishedSuccessfully:(BOOL)a3 shouldDismiss:(BOOL)a4 shouldRedirect:(BOOL)a5 errorToDisplay:(id)a6;
+- (void)infoButtonTapped:(id)tapped;
+- (void)informQuestionViewControllerOfPreflightResult:(id)result profileConnection:(id)connection;
+- (void)installButtonTapped:(id)tapped;
+- (void)installationFinishedSuccessfully:(BOOL)successfully shouldDismiss:(BOOL)dismiss shouldRedirect:(BOOL)redirect errorToDisplay:(id)display;
 - (void)loadView;
-- (void)presentAuthenticationViewControllerWithContext:(id)a3 authenticationPreparationHandler:(id)a4 authenticationCompletionHandler:(id)a5;
-- (void)presentRestoreFailedAlertWithError:(id)a3 completionHandler:(id)a4;
+- (void)presentAuthenticationViewControllerWithContext:(id)context authenticationPreparationHandler:(id)handler authenticationCompletionHandler:(id)completionHandler;
+- (void)presentRestoreFailedAlertWithError:(id)error completionHandler:(id)handler;
 - (void)presentSpinnerViewController;
-- (void)promptForManagedRestoreWithManagedAppleID:(id)a3 snapshot:(id)a4 conflictingApps:(id)a5 completionHandler:(id)a6;
-- (void)promptForPasscodeWithCompletionHandler:(id)a3;
-- (void)promptForUserInput:(id)a3 completionHandler:(id)a4;
-- (void)questionsController:(id)a3 didFinishWithResponses:(id)a4;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)signInViewController:(id)a3 didAuthenticateWithResults:(id)a4 error:(id)a5;
-- (void)signInViewController:(id)a3 willAuthenticateWithCompletionHandler:(id)a4;
-- (void)signInViewControllerDidCancelAuthentication:(id)a3;
+- (void)promptForManagedRestoreWithManagedAppleID:(id)d snapshot:(id)snapshot conflictingApps:(id)apps completionHandler:(id)handler;
+- (void)promptForPasscodeWithCompletionHandler:(id)handler;
+- (void)promptForUserInput:(id)input completionHandler:(id)handler;
+- (void)questionsController:(id)controller didFinishWithResponses:(id)responses;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)signInViewController:(id)controller didAuthenticateWithResults:(id)results error:(id)error;
+- (void)signInViewController:(id)controller willAuthenticateWithCompletionHandler:(id)handler;
+- (void)signInViewControllerDidCancelAuthentication:(id)authentication;
 - (void)viewDidLoad;
 @end
 
 @implementation MCProfileTitlePageViewController
 
-- (MCProfileTitlePageViewController)initWithViewModel:(id)a3
+- (MCProfileTitlePageViewController)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v11.receiver = self;
   v11.super_class = MCProfileTitlePageViewController;
   v6 = [(MCProfileTitlePageViewController *)&v11 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     [(MCProfileTitlePageViewModel *)v7->_viewModel setDelegate:v7];
-    v8 = [v5 profile];
-    v9 = [(MCProfileTitlePageViewController *)v7 _sectionControllersWithProfile:v8];
+    profile = [modelCopy profile];
+    v9 = [(MCProfileTitlePageViewController *)v7 _sectionControllersWithProfile:profile];
     [(MCSectionBasedTableViewController *)v7 setSectionControllers:v9];
   }
 
@@ -59,17 +59,17 @@
   v9.receiver = self;
   v9.super_class = MCProfileTitlePageViewController;
   [(MCSectionBasedTableViewController *)&v9 loadView];
-  v3 = [(MCProfileTitlePageViewController *)self view];
-  [(MCProfileTitlePageViewController *)self setProfileTitlePageView:v3];
+  view = [(MCProfileTitlePageViewController *)self view];
+  [(MCProfileTitlePageViewController *)self setProfileTitlePageView:view];
 
-  v4 = [(MCProfileTitlePageViewController *)self navigationController];
-  [v4 setNavigationBarHidden:1];
+  navigationController = [(MCProfileTitlePageViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:1];
 
-  v5 = [(MCProfileTitlePageViewController *)self navigationController];
-  v6 = [v5 view];
-  v7 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-  v8 = [v7 bottomBarView];
-  [v6 addSubview:v8];
+  navigationController2 = [(MCProfileTitlePageViewController *)self navigationController];
+  view2 = [navigationController2 view];
+  profileTitlePageView = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+  bottomBarView = [profileTitlePageView bottomBarView];
+  [view2 addSubview:bottomBarView];
 }
 
 - (id)defaultView
@@ -84,58 +84,58 @@
   v35.receiver = self;
   v35.super_class = MCProfileTitlePageViewController;
   [(MCSectionBasedTableViewController *)&v35 viewDidLoad];
-  v3 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-  v4 = [v3 tableView];
-  [v4 reloadData];
+  profileTitlePageView = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+  tableView = [profileTitlePageView tableView];
+  [tableView reloadData];
 
-  v5 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-  v6 = [v5 tableView];
-  [v6 contentInset];
+  profileTitlePageView2 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+  tableView2 = [profileTitlePageView2 tableView];
+  [tableView2 contentInset];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(MCProfileTitlePageViewController *)self metaDataSectionController];
-  [v15 heightForHeader];
+  metaDataSectionController = [(MCProfileTitlePageViewController *)self metaDataSectionController];
+  [metaDataSectionController heightForHeader];
   v17 = v8 - v16;
 
-  v18 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-  v19 = [v18 tableView];
-  [v19 setContentInset:{v17, v10, v12, v14}];
+  profileTitlePageView3 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+  tableView3 = [profileTitlePageView3 tableView];
+  [tableView3 setContentInset:{v17, v10, v12, v14}];
 
-  v20 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-  v21 = [v20 tableView];
-  v22 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-  v23 = [v22 tableView];
-  [v23 contentInset];
-  [v21 setContentOffset:0 animated:{0.0, -v24}];
+  profileTitlePageView4 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+  tableView4 = [profileTitlePageView4 tableView];
+  profileTitlePageView5 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+  tableView5 = [profileTitlePageView5 tableView];
+  [tableView5 contentInset];
+  [tableView4 setContentOffset:0 animated:{0.0, -v24}];
 
   [(MCProfileTitlePageViewController *)self _updateMetaDataSectionHeight];
-  v25 = [(MCProfileTitlePageViewController *)self animationController];
-  v26 = [(MCProfileTitlePageViewController *)self metaDataSectionController];
-  v27 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-  v28 = [v27 topBarView];
-  [v25 startTrackingWithMetaDataSectionController:v26 topBar:v28];
+  animationController = [(MCProfileTitlePageViewController *)self animationController];
+  metaDataSectionController2 = [(MCProfileTitlePageViewController *)self metaDataSectionController];
+  profileTitlePageView6 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+  topBarView = [profileTitlePageView6 topBarView];
+  [animationController startTrackingWithMetaDataSectionController:metaDataSectionController2 topBar:topBarView];
 
-  v29 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-  v30 = [v29 infoButton];
-  [v30 addTarget:self action:sel_infoButtonTapped_ forControlEvents:64];
+  profileTitlePageView7 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+  infoButton = [profileTitlePageView7 infoButton];
+  [infoButton addTarget:self action:sel_infoButtonTapped_ forControlEvents:64];
 
-  v31 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-  v32 = [v31 installButton];
-  [v32 addTarget:self action:sel_installButtonTapped_ forControlEvents:64];
+  profileTitlePageView8 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+  installButton = [profileTitlePageView8 installButton];
+  [installButton addTarget:self action:sel_installButtonTapped_ forControlEvents:64];
 
-  v33 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-  v34 = [v33 cancelButton];
-  [v34 addTarget:self action:sel_cancelButtonTapped_ forControlEvents:64];
+  profileTitlePageView9 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+  cancelButton = [profileTitlePageView9 cancelButton];
+  [cancelButton addTarget:self action:sel_cancelButtonTapped_ forControlEvents:64];
 }
 
 - (void)dealloc
 {
-  v3 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-  v4 = [v3 bottomBarView];
-  [v4 removeFromSuperview];
+  profileTitlePageView = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+  bottomBarView = [profileTitlePageView bottomBarView];
+  [bottomBarView removeFromSuperview];
 
   v5.receiver = self;
   v5.super_class = MCProfileTitlePageViewController;
@@ -144,47 +144,47 @@
 
 - (void)dmc_viewControllerHasBeenDismissed
 {
-  v3 = [(MCProfileTitlePageViewController *)self viewModel];
-  [v3 terminateProfileInstallationFlow];
+  viewModel = [(MCProfileTitlePageViewController *)self viewModel];
+  [viewModel terminateProfileInstallationFlow];
 
   [(MCProfileTitlePageViewController *)self setUserInteractionEnabled:1];
 }
 
-- (id)_sectionControllersWithProfile:(id)a3
+- (id)_sectionControllersWithProfile:(id)profile
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   v5 = objc_opt_new();
-  v6 = [[MCProfileTitlePageMetaDataSectionController alloc] initWithProfile:v4];
+  v6 = [[MCProfileTitlePageMetaDataSectionController alloc] initWithProfile:profileCopy];
   metaDataSectionController = self->_metaDataSectionController;
   self->_metaDataSectionController = v6;
 
   v8 = objc_opt_new();
-  v9 = [v4 installationWarnings];
-  [v8 addObjectsFromArray:v9];
+  installationWarnings = [profileCopy installationWarnings];
+  [v8 addObjectsFromArray:installationWarnings];
 
-  v10 = [v4 localizedConsentText];
+  localizedConsentText = [profileCopy localizedConsentText];
 
-  if (v10)
+  if (localizedConsentText)
   {
     v11 = MEMORY[0x277CCACA8];
     v12 = MCUILocalizedString(@"INSTALL_CONSENT_MESSAGE_FROM_%@");
-    v13 = [v4 organization];
-    v14 = v13;
-    if (v13)
+    organization = [profileCopy organization];
+    v14 = organization;
+    if (organization)
     {
-      v15 = [v11 stringWithFormat:v12, v13];
+      v15 = [v11 stringWithFormat:v12, organization];
     }
 
     else
     {
-      v16 = [v4 friendlyName];
-      v15 = [v11 stringWithFormat:v12, v16];
+      friendlyName = [profileCopy friendlyName];
+      v15 = [v11 stringWithFormat:v12, friendlyName];
     }
 
     v17 = objc_alloc(MEMORY[0x277D262B0]);
-    v18 = [v4 localizedConsentText];
-    v19 = [v17 initWithLocalizedTitle:v15 localizedBody:v18 isLongForm:1];
+    localizedConsentText2 = [profileCopy localizedConsentText];
+    v19 = [v17 initWithLocalizedTitle:v15 localizedBody:localizedConsentText2 isLongForm:1];
 
     [v8 addObject:v19];
   }
@@ -227,35 +227,35 @@
 
 - (void)_updateMetaDataSectionHeight
 {
-  v13 = [(MCProfileTitlePageViewController *)self metaDataSectionController];
-  v3 = [v13 iconCell];
-  [v3 bounds];
+  metaDataSectionController = [(MCProfileTitlePageViewController *)self metaDataSectionController];
+  iconCell = [metaDataSectionController iconCell];
+  [iconCell bounds];
   Height = CGRectGetHeight(v15);
-  v5 = [(MCProfileTitlePageViewController *)self metaDataSectionController];
-  v6 = [v5 titleCell];
-  [v6 bounds];
+  metaDataSectionController2 = [(MCProfileTitlePageViewController *)self metaDataSectionController];
+  titleCell = [metaDataSectionController2 titleCell];
+  [titleCell bounds];
   v7 = Height + CGRectGetHeight(v16);
-  v8 = [(MCProfileTitlePageViewController *)self metaDataSectionController];
-  v9 = [v8 subtitleCell];
-  [v9 bounds];
+  metaDataSectionController3 = [(MCProfileTitlePageViewController *)self metaDataSectionController];
+  subtitleCell = [metaDataSectionController3 subtitleCell];
+  [subtitleCell bounds];
   v10 = v7 + CGRectGetHeight(v17);
-  v11 = [(MCProfileTitlePageViewController *)self metaDataSectionController];
-  v12 = [v11 orgCell];
-  [v12 bounds];
+  metaDataSectionController4 = [(MCProfileTitlePageViewController *)self metaDataSectionController];
+  orgCell = [metaDataSectionController4 orgCell];
+  [orgCell bounds];
   [(MCProfileTitlePageViewController *)self setMetaDataSectionHeight:v10 + CGRectGetHeight(v18)];
 }
 
-- (void)_resetNavigationBarStyleForViewController:(id)a3
+- (void)_resetNavigationBarStyleForViewController:(id)controller
 {
-  v3 = a3;
-  v4 = [v3 navigationController];
-  v5 = [v4 navigationBar];
-  [v5 setBackgroundImage:0 forBarMetrics:0];
+  controllerCopy = controller;
+  navigationController = [controllerCopy navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setBackgroundImage:0 forBarMetrics:0];
 
-  v7 = [v3 navigationController];
+  navigationController2 = [controllerCopy navigationController];
 
-  v6 = [v7 navigationBar];
-  [v6 setShadowImage:0];
+  navigationBar2 = [navigationController2 navigationBar];
+  [navigationBar2 setShadowImage:0];
 }
 
 - (void)_updateBottomInsetToEnableCompleteScrollAnimation
@@ -263,18 +263,18 @@
   if (![(MCProfileTitlePageViewController *)self hasUpdatedBottomInset])
   {
     [(MCProfileTitlePageViewController *)self setHasUpdatedBottomInset:1];
-    v3 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-    v4 = [v3 tableView];
-    [v4 contentSize];
+    profileTitlePageView = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+    tableView = [profileTitlePageView tableView];
+    [tableView contentSize];
     v6 = v5;
 
-    v7 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-    v8 = [v7 tableView];
-    [v8 frame];
+    profileTitlePageView2 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+    tableView2 = [profileTitlePageView2 tableView];
+    [tableView2 frame];
     v10 = v9;
-    v11 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-    v12 = [v11 tableView];
-    [v12 contentInset];
+    profileTitlePageView3 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+    tableView3 = [profileTitlePageView3 tableView];
+    [tableView3 contentInset];
     v14 = v13;
 
     v15 = -v14;
@@ -284,9 +284,9 @@
     }
 
     v16 = v10 - v15;
-    v17 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-    v18 = [v17 tableView];
-    [v18 contentInset];
+    profileTitlePageView4 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+    tableView4 = [profileTitlePageView4 tableView];
+    [tableView4 contentInset];
     v20 = v19;
 
     v21 = -v20;
@@ -300,9 +300,9 @@
     NSLog(&cfstr_ContentsizeFVi.isa, *&v6, *&v22);
     if (v6 > v22)
     {
-      v23 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-      v24 = [v23 tableView];
-      [v24 contentInset];
+      profileTitlePageView5 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+      tableView5 = [profileTitlePageView5 tableView];
+      [tableView5 contentInset];
       v26 = v25;
       v28 = v27;
       v30 = v29;
@@ -310,9 +310,9 @@
 
       [(MCProfileTitlePageViewController *)self metaDataSectionHeight];
       v34 = v30 + fmax(v33 - (v6 - v22), 0.0);
-      v36 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-      v35 = [v36 tableView];
-      [v35 setContentInset:{v26, v28, v34, v32}];
+      profileTitlePageView6 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+      tableView6 = [profileTitlePageView6 tableView];
+      [tableView6 setContentInset:{v26, v28, v34, v32}];
     }
   }
 }
@@ -332,133 +332,133 @@
   return animationController;
 }
 
-- (void)infoButtonTapped:(id)a3
+- (void)infoButtonTapped:(id)tapped
 {
   v4 = objc_alloc(MEMORY[0x277D03268]);
-  v5 = [(MCProfileTitlePageViewController *)self viewModel];
-  v6 = [v5 profileViewModel];
-  v10 = [v4 initWithProfileViewModel:v6];
+  viewModel = [(MCProfileTitlePageViewController *)self viewModel];
+  profileViewModel = [viewModel profileViewModel];
+  v10 = [v4 initWithProfileViewModel:profileViewModel];
 
-  v7 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-  v8 = [v7 bottomBarView];
-  [v8 frame];
+  profileTitlePageView = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+  bottomBarView = [profileTitlePageView bottomBarView];
+  [bottomBarView frame];
   [v10 setTableViewBottomInset:CGRectGetHeight(v12)];
 
   [(MCProfileTitlePageViewController *)self dmc_pushViewController:v10 animated:1];
-  v9 = [v10 navigationController];
-  [v9 setNavigationBarHidden:0 animated:1];
+  navigationController = [v10 navigationController];
+  [navigationController setNavigationBarHidden:0 animated:1];
 
   [(MCProfileTitlePageViewController *)self _resetNavigationBarStyleForViewController:v10];
 }
 
-- (void)installButtonTapped:(id)a3
+- (void)installButtonTapped:(id)tapped
 {
-  v3 = [(MCProfileTitlePageViewController *)self viewModel];
-  [v3 startProfileInstallationFlow];
+  viewModel = [(MCProfileTitlePageViewController *)self viewModel];
+  [viewModel startProfileInstallationFlow];
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
-  v3 = [(MCProfileTitlePageViewController *)self viewModel];
-  [v3 terminateProfileInstallationFlowAndDeleteProfile];
+  viewModel = [(MCProfileTitlePageViewController *)self viewModel];
+  [viewModel terminateProfileInstallationFlowAndDeleteProfile];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  [v4 contentOffset];
+  draggingCopy = dragging;
+  [draggingCopy contentOffset];
   v6 = v5;
-  [v4 contentInset];
+  [draggingCopy contentInset];
   v8 = v7;
 
-  v10 = [(MCProfileTitlePageViewController *)self animationController];
+  animationController = [(MCProfileTitlePageViewController *)self animationController];
   [(MCProfileTitlePageViewController *)self metaDataSectionHeight];
-  [v10 updateProgressWithTranslationDistance:1 referenceDistance:v6 + v8 isScrolling:v9];
+  [animationController updateProgressWithTranslationDistance:1 referenceDistance:v6 + v8 isScrolling:v9];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  [v4 contentOffset];
+  scrollCopy = scroll;
+  [scrollCopy contentOffset];
   v6 = v5;
-  [v4 contentInset];
+  [scrollCopy contentInset];
   v8 = v7;
 
-  v10 = [(MCProfileTitlePageViewController *)self animationController];
+  animationController = [(MCProfileTitlePageViewController *)self animationController];
   [(MCProfileTitlePageViewController *)self metaDataSectionHeight];
-  [v10 updateProgressWithTranslationDistance:1 referenceDistance:v6 + v8 isScrolling:v9];
+  [animationController updateProgressWithTranslationDistance:1 referenceDistance:v6 + v8 isScrolling:v9];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  [v4 contentOffset];
+  deceleratingCopy = decelerating;
+  [deceleratingCopy contentOffset];
   v6 = v5;
-  [v4 contentInset];
+  [deceleratingCopy contentInset];
   v8 = v7;
 
-  v10 = [(MCProfileTitlePageViewController *)self animationController];
+  animationController = [(MCProfileTitlePageViewController *)self animationController];
   [(MCProfileTitlePageViewController *)self metaDataSectionHeight];
-  [v10 updateProgressWithTranslationDistance:0 referenceDistance:v6 + v8 isScrolling:v9];
+  [animationController updateProgressWithTranslationDistance:0 referenceDistance:v6 + v8 isScrolling:v9];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
-    v6 = a3;
-    [v6 contentOffset];
+    draggingCopy = dragging;
+    [draggingCopy contentOffset];
     v8 = v7;
-    [v6 contentInset];
+    [draggingCopy contentInset];
     v10 = v9;
 
-    v12 = [(MCProfileTitlePageViewController *)self animationController];
+    animationController = [(MCProfileTitlePageViewController *)self animationController];
     [(MCProfileTitlePageViewController *)self metaDataSectionHeight];
-    [v12 updateProgressWithTranslationDistance:0 referenceDistance:v8 + v10 isScrolling:v11];
+    [animationController updateProgressWithTranslationDistance:0 referenceDistance:v8 + v10 isScrolling:v11];
   }
 }
 
-- (void)promptForPasscodeWithCompletionHandler:(id)a3
+- (void)promptForPasscodeWithCompletionHandler:(id)handler
 {
-  [(MCProfileTitlePageViewController *)self setPasscodeCompletionHandler:a3];
+  [(MCProfileTitlePageViewController *)self setPasscodeCompletionHandler:handler];
   v7 = objc_opt_new();
   [v7 setDelegate:self];
   v4 = [objc_alloc(MEMORY[0x277D03260]) initWithRootViewController:v7];
   [v4 setModalInPresentation:1];
-  v5 = [(MCProfileTitlePageViewController *)self navigationController];
-  [v5 presentViewController:v4 animated:1 completion:0];
+  navigationController = [(MCProfileTitlePageViewController *)self navigationController];
+  [navigationController presentViewController:v4 animated:1 completion:0];
 
-  v6 = [v7 navigationController];
-  [v6 setNavigationBarHidden:0 animated:0];
+  navigationController2 = [v7 navigationController];
+  [navigationController2 setNavigationBarHidden:0 animated:0];
 }
 
-- (void)promptForUserInput:(id)a3 completionHandler:(id)a4
+- (void)promptForUserInput:(id)input completionHandler:(id)handler
 {
-  v6 = a3;
-  [(MCProfileTitlePageViewController *)self setUserInputCompletionHandler:a4];
-  v9 = [objc_alloc(MEMORY[0x277D03258]) initWithUserInput:v6];
+  inputCopy = input;
+  [(MCProfileTitlePageViewController *)self setUserInputCompletionHandler:handler];
+  v9 = [objc_alloc(MEMORY[0x277D03258]) initWithUserInput:inputCopy];
 
   [v9 setQuestionsDelegate:self];
   [(MCProfileTitlePageViewController *)self dmc_popToViewController:self pushViewController:v9];
-  v7 = [v9 navigationController];
-  [v7 setNavigationBarHidden:0 animated:1];
+  navigationController = [v9 navigationController];
+  [navigationController setNavigationBarHidden:0 animated:1];
 
   [(MCProfileTitlePageViewController *)self _resetNavigationBarStyleForViewController:v9];
-  v8 = [(MCProfileTitlePageViewController *)self profileTitlePageView];
-  [v8 showBottomView:0 animated:1];
+  profileTitlePageView = [(MCProfileTitlePageViewController *)self profileTitlePageView];
+  [profileTitlePageView showBottomView:0 animated:1];
 }
 
-- (void)informQuestionViewControllerOfPreflightResult:(id)a3 profileConnection:(id)a4
+- (void)informQuestionViewControllerOfPreflightResult:(id)result profileConnection:(id)connection
 {
-  v5 = a3;
+  resultCopy = result;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __100__MCProfileTitlePageViewController_informQuestionViewControllerOfPreflightResult_profileConnection___block_invoke;
   block[3] = &unk_279861A40;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = resultCopy;
+  v6 = resultCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v9);
@@ -478,20 +478,20 @@ void __100__MCProfileTitlePageViewController_informQuestionViewControllerOfPrefl
   }
 }
 
-- (void)presentAuthenticationViewControllerWithContext:(id)a3 authenticationPreparationHandler:(id)a4 authenticationCompletionHandler:(id)a5
+- (void)presentAuthenticationViewControllerWithContext:(id)context authenticationPreparationHandler:(id)handler authenticationCompletionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a5;
-  [(MCProfileTitlePageViewController *)self setAuthenticationPreparationHandler:a4];
-  [(MCProfileTitlePageViewController *)self setAuthenticationCompletionHandler:v9];
+  contextCopy = context;
+  completionHandlerCopy = completionHandler;
+  [(MCProfileTitlePageViewController *)self setAuthenticationPreparationHandler:handler];
+  [(MCProfileTitlePageViewController *)self setAuthenticationCompletionHandler:completionHandlerCopy];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __148__MCProfileTitlePageViewController_presentAuthenticationViewControllerWithContext_authenticationPreparationHandler_authenticationCompletionHandler___block_invoke;
   v11[3] = &unk_279861C40;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = contextCopy;
+  v10 = contextCopy;
   dispatch_async(MEMORY[0x277D85CD0], v11);
 }
 
@@ -513,23 +513,23 @@ void __148__MCProfileTitlePageViewController_presentAuthenticationViewController
   [v6 showBottomView:0 animated:1];
 }
 
-- (void)promptForManagedRestoreWithManagedAppleID:(id)a3 snapshot:(id)a4 conflictingApps:(id)a5 completionHandler:(id)a6
+- (void)promptForManagedRestoreWithManagedAppleID:(id)d snapshot:(id)snapshot conflictingApps:(id)apps completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  [(MCProfileTitlePageViewController *)self setRestoreCompletionHandler:a6];
+  dCopy = d;
+  snapshotCopy = snapshot;
+  appsCopy = apps;
+  [(MCProfileTitlePageViewController *)self setRestoreCompletionHandler:handler];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __121__MCProfileTitlePageViewController_promptForManagedRestoreWithManagedAppleID_snapshot_conflictingApps_completionHandler___block_invoke;
   v16[3] = &unk_279861C68;
   v16[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v19 = v12;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v17 = dCopy;
+  v18 = snapshotCopy;
+  v19 = appsCopy;
+  v13 = appsCopy;
+  v14 = snapshotCopy;
+  v15 = dCopy;
   dispatch_async(MEMORY[0x277D85CD0], v16);
 }
 
@@ -544,8 +544,8 @@ void __121__MCProfileTitlePageViewController_promptForManagedRestoreWithManagedA
 - (void)presentSpinnerViewController
 {
   v3 = objc_opt_new();
-  v4 = [(MCActivityViewController *)v3 view];
-  [v4 setUserInteractionEnabled:0];
+  view = [(MCActivityViewController *)v3 view];
+  [view setUserInteractionEnabled:0];
 
   v5 = MCUILocalizedString(@"BLOB_SIGN_IN_ACCOUNT");
   [(MCActivityViewController *)v3 setInProgresText:v5];
@@ -558,27 +558,27 @@ void __121__MCProfileTitlePageViewController_promptForManagedRestoreWithManagedA
 
   [(MCActivityViewController *)v3 setLongWaitingWarningThreshold:20.0];
   [(MCProfileTitlePageViewController *)self dmc_popToViewController:self pushViewController:v3];
-  v8 = [(MCActivityViewController *)v3 navigationController];
-  [v8 setNavigationBarHidden:1 animated:1];
+  navigationController = [(MCActivityViewController *)v3 navigationController];
+  [navigationController setNavigationBarHidden:1 animated:1];
 
   activityViewController = self->_activityViewController;
   self->_activityViewController = v3;
 }
 
-- (void)installationFinishedSuccessfully:(BOOL)a3 shouldDismiss:(BOOL)a4 shouldRedirect:(BOOL)a5 errorToDisplay:(id)a6
+- (void)installationFinishedSuccessfully:(BOOL)successfully shouldDismiss:(BOOL)dismiss shouldRedirect:(BOOL)redirect errorToDisplay:(id)display
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = a6;
-  v11 = [(MCProfileTitlePageViewController *)self navigationController];
-  v12 = [v11 topViewController];
-  v13 = [v12 isEqual:self->_activityViewController];
+  dismissCopy = dismiss;
+  successfullyCopy = successfully;
+  displayCopy = display;
+  navigationController = [(MCProfileTitlePageViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
+  v13 = [topViewController isEqual:self->_activityViewController];
 
-  if (!v8)
+  if (!successfullyCopy)
   {
 LABEL_10:
     v18 = 0;
-    if (v10)
+    if (displayCopy)
     {
       goto LABEL_11;
     }
@@ -598,9 +598,9 @@ LABEL_10:
   else
   {
     [(MCProfileTitlePageViewController *)self presentSpinnerViewController];
-    v15 = [(MCProfileTitlePageViewController *)self navigationController];
-    v16 = [v15 topViewController];
-    v17 = [v16 isEqual:self->_activityViewController];
+    navigationController2 = [(MCProfileTitlePageViewController *)self navigationController];
+    topViewController2 = [navigationController2 topViewController];
+    v17 = [topViewController2 isEqual:self->_activityViewController];
 
     if (!v17)
     {
@@ -612,7 +612,7 @@ LABEL_10:
 
   [(MCActivityViewController *)activityViewController completeActivityAnimated:1];
   v18 = 1200000047;
-  if (v10)
+  if (displayCopy)
   {
 LABEL_11:
     v20 = dispatch_time(0, 1000000000);
@@ -621,14 +621,14 @@ LABEL_11:
     v21[2] = __113__MCProfileTitlePageViewController_installationFinishedSuccessfully_shouldDismiss_shouldRedirect_errorToDisplay___block_invoke_2;
     v21[3] = &unk_279861C40;
     v21[4] = self;
-    v22 = v10;
+    v22 = displayCopy;
     dispatch_after(v20, MEMORY[0x277D85CD0], v21);
 
     goto LABEL_12;
   }
 
 LABEL_8:
-  if (v7)
+  if (dismissCopy)
   {
     v19 = dispatch_time(0, v18);
     block[0] = MEMORY[0x277D85DD0];
@@ -636,7 +636,7 @@ LABEL_8:
     block[2] = __113__MCProfileTitlePageViewController_installationFinishedSuccessfully_shouldDismiss_shouldRedirect_errorToDisplay___block_invoke;
     block[3] = &unk_279861C18;
     block[4] = self;
-    v24 = a5;
+    redirectCopy = redirect;
     dispatch_after(v19, MEMORY[0x277D85CD0], block);
   }
 
@@ -666,14 +666,14 @@ uint64_t __113__MCProfileTitlePageViewController_installationFinishedSuccessfull
   return [v2 _showAlertForInstallError:v3];
 }
 
-- (void)_showAlertForInstallError:(id)a3
+- (void)_showAlertForInstallError:(id)error
 {
   v4 = MEMORY[0x277D75110];
-  v5 = a3;
-  v6 = [v5 localizedDescription];
-  v7 = [v5 localizedRecoverySuggestion];
+  errorCopy = error;
+  localizedDescription = [errorCopy localizedDescription];
+  localizedRecoverySuggestion = [errorCopy localizedRecoverySuggestion];
 
-  v9 = [v4 alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+  v9 = [v4 alertControllerWithTitle:localizedDescription message:localizedRecoverySuggestion preferredStyle:1];
 
   v8 = MCUILocalizedString(@"OK");
   [v9 MCUIAddCancelActionWithTitle:v8];
@@ -681,17 +681,17 @@ uint64_t __113__MCProfileTitlePageViewController_installationFinishedSuccessfull
   [(MCProfileTitlePageViewController *)self dmc_presentAlert:v9 completion:0];
 }
 
-- (void)presentRestoreFailedAlertWithError:(id)a3 completionHandler:(id)a4
+- (void)presentRestoreFailedAlertWithError:(id)error completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__MCProfileTitlePageViewController_presentRestoreFailedAlertWithError_completionHandler___block_invoke;
   block[3] = &unk_279861BD0;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v9);
@@ -745,49 +745,49 @@ void __66__MCProfileTitlePageViewController__didFinishPINEntrySuccess_pin___bloc
   }
 }
 
-- (void)questionsController:(id)a3 didFinishWithResponses:(id)a4
+- (void)questionsController:(id)controller didFinishWithResponses:(id)responses
 {
-  v5 = a4;
-  v6 = [(MCProfileTitlePageViewController *)self userInputCompletionHandler];
-  v6[2](v6, v5, [v5 count] == 0);
+  responsesCopy = responses;
+  userInputCompletionHandler = [(MCProfileTitlePageViewController *)self userInputCompletionHandler];
+  userInputCompletionHandler[2](userInputCompletionHandler, responsesCopy, [responsesCopy count] == 0);
 }
 
-- (BOOL)questionsControllerIsDisplayedInSheet:(id)a3
+- (BOOL)questionsControllerIsDisplayedInSheet:(id)sheet
 {
-  v3 = [(MCProfileTitlePageViewController *)self presentingViewController];
-  v4 = v3 != 0;
+  presentingViewController = [(MCProfileTitlePageViewController *)self presentingViewController];
+  v4 = presentingViewController != 0;
 
   return v4;
 }
 
-- (void)signInViewController:(id)a3 didAuthenticateWithResults:(id)a4 error:(id)a5
+- (void)signInViewController:(id)controller didAuthenticateWithResults:(id)results error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(MCProfileTitlePageViewController *)self authenticationCompletionHandler];
-  v9[2](v9, v8, v7, 0);
+  errorCopy = error;
+  resultsCopy = results;
+  authenticationCompletionHandler = [(MCProfileTitlePageViewController *)self authenticationCompletionHandler];
+  authenticationCompletionHandler[2](authenticationCompletionHandler, resultsCopy, errorCopy, 0);
 }
 
-- (void)signInViewControllerDidCancelAuthentication:(id)a3
+- (void)signInViewControllerDidCancelAuthentication:(id)authentication
 {
-  v3 = [(MCProfileTitlePageViewController *)self authenticationCompletionHandler];
-  (*(v3 + 2))(v3, 0, 0, 1);
+  authenticationCompletionHandler = [(MCProfileTitlePageViewController *)self authenticationCompletionHandler];
+  (*(authenticationCompletionHandler + 2))(authenticationCompletionHandler, 0, 0, 1);
 }
 
-- (void)signInViewController:(id)a3 willAuthenticateWithCompletionHandler:(id)a4
+- (void)signInViewController:(id)controller willAuthenticateWithCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v5 = [(MCProfileTitlePageViewController *)self authenticationPreparationHandler];
+  handlerCopy = handler;
+  authenticationPreparationHandler = [(MCProfileTitlePageViewController *)self authenticationPreparationHandler];
 
-  if (v5)
+  if (authenticationPreparationHandler)
   {
-    v6 = [(MCProfileTitlePageViewController *)self authenticationPreparationHandler];
-    (v6)[2](v6, v7);
+    authenticationPreparationHandler2 = [(MCProfileTitlePageViewController *)self authenticationPreparationHandler];
+    (authenticationPreparationHandler2)[2](authenticationPreparationHandler2, handlerCopy);
   }
 
   else
   {
-    v7[2]();
+    handlerCopy[2]();
   }
 }
 

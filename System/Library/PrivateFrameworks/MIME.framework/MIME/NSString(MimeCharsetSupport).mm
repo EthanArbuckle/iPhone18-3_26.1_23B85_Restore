@@ -37,7 +37,7 @@ LABEL_3:
 
       if ((v7 & 1) == 0)
       {
-        CanBeConvertedLosslessly = MFStringCanBeConvertedLosslessly(a1, 0);
+        CanBeConvertedLosslessly = MFStringCanBeConvertedLosslessly(self, 0);
       }
 
       v7 = 1;
@@ -62,7 +62,7 @@ LABEL_15:
 
     CanBeConvertedLosslessly = 0;
 LABEL_12:
-    if ([v10 cfStringEncoding] != 1586 && MFStringCanBeConvertedLosslessly(a1, objc_msgSend(v10, "cfStringEncoding")))
+    if ([v10 cfStringEncoding] != 1586 && MFStringCanBeConvertedLosslessly(self, objc_msgSend(v10, "cfStringEncoding")))
     {
       v11 = v10;
       if (v11)
@@ -88,7 +88,7 @@ LABEL_19:
 {
   v35 = *MEMORY[0x1E69E9840];
   v29 = +[MFMimeCharset allMimeCharsets];
-  v5 = [a1 _mf_bestMimeCharset:v29];
+  v5 = [self _mf_bestMimeCharset:v29];
   v6 = v5;
   if (v5)
   {
@@ -100,12 +100,12 @@ LABEL_19:
       if (v12 > v11 && v11 != 0x7FFFFFFFFFFFFFFFLL && v12 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v28 = [MFMimeCharset charsetForEncoding:a3];
-        v13 = [v28 primaryLanguage];
-        v27 = v13;
-        if (v13)
+        primaryLanguage = [v28 primaryLanguage];
+        v27 = primaryLanguage;
+        if (primaryLanguage)
         {
           v26 = v29;
-          v14 = v13;
+          v14 = primaryLanguage;
           if ([v14 length])
           {
             v32 = 0u;
@@ -113,7 +113,7 @@ LABEL_19:
             v30 = 0u;
             v31 = 0u;
             v15 = v26;
-            v16 = 0;
+            array = 0;
             v17 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
             if (v17)
             {
@@ -128,16 +128,16 @@ LABEL_19:
                   }
 
                   v20 = *(*(&v30 + 1) + 8 * i);
-                  v21 = [v20 primaryLanguage];
-                  v22 = v21;
-                  if (v21 && [v21 isEqualToString:v14])
+                  primaryLanguage2 = [v20 primaryLanguage];
+                  v22 = primaryLanguage2;
+                  if (primaryLanguage2 && [primaryLanguage2 isEqualToString:v14])
                   {
-                    if (!v16)
+                    if (!array)
                     {
-                      v16 = [MEMORY[0x1E695DF70] array];
+                      array = [MEMORY[0x1E695DF70] array];
                     }
 
-                    [v16 addObject:v20];
+                    [array addObject:v20];
                   }
 
                   else
@@ -155,10 +155,10 @@ LABEL_19:
 
           else
           {
-            v16 = v26;
+            array = v26;
           }
 
-          v23 = [a1 _mf_bestMimeCharset:v16];
+          v23 = [self _mf_bestMimeCharset:array];
           v24 = v23;
           if (v23)
           {
@@ -186,7 +186,7 @@ LABEL_19:
 
   else
   {
-    [a1 mf_bestMimeCharset];
+    [self mf_bestMimeCharset];
   }
   v5 = ;
 

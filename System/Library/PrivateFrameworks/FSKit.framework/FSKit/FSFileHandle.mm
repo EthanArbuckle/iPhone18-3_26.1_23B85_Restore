@@ -1,21 +1,21 @@
 @interface FSFileHandle
-- (BOOL)isEqual:(id)a3;
-- (FSFileHandle)initWithCoder:(id)a3;
-- (FSFileHandle)initWithValue:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (FSFileHandle)initWithCoder:(id)coder;
+- (FSFileHandle)initWithValue:(unint64_t)value;
 - (NSString)base64String;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation FSFileHandle
 
-- (FSFileHandle)initWithValue:(unint64_t)a3
+- (FSFileHandle)initWithValue:(unint64_t)value
 {
   v5.receiver = self;
   v5.super_class = FSFileHandle;
   result = [(FSFileHandle *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = value;
   }
 
   return result;
@@ -29,31 +29,31 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_value == v4[1];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_value == equalCopy[1];
 
   return v5;
 }
 
-- (FSFileHandle)initWithCoder:(id)a3
+- (FSFileHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = FSFileHandle;
   v5 = [(FSFileHandle *)&v7 init];
   if (v5)
   {
-    v5->_value = [v4 decodeInt64ForKey:@"FSFileHandle.value"];
+    v5->_value = [coderCopy decodeInt64ForKey:@"FSFileHandle.value"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   value = self->_value;
 
   return [v4 initWithValue:value];

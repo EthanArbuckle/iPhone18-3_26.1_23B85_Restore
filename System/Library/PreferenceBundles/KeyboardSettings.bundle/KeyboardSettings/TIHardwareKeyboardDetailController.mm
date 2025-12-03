@@ -4,8 +4,8 @@
 - (id)newSpecifiers;
 - (id)specifiers;
 - (void)dealloc;
-- (void)setHardwareLayout:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setHardwareLayout:(id)layout;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -43,7 +43,7 @@
 
 - (id)newSpecifiers
 {
-  v3 = [(TIHardwareKeyboardDetailController *)self inputMode];
+  inputMode = [(TIHardwareKeyboardDetailController *)self inputMode];
   obj = UIKeyboardGetSupportedHardwareKeyboardsForInputMode();
   v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(obj, "count") + 1}];
   v5 = [PSSpecifier groupSpecifierWithID:0];
@@ -71,7 +71,7 @@ LABEL_3:
       }
 
       v11 = *(*(&v29 + 1) + 8 * v10);
-      if ([(NSString *)v3 isEqualToString:UIKeyboardInputModeGetNormalizedIdentifier()])
+      if ([(NSString *)inputMode isEqualToString:UIKeyboardInputModeGetNormalizedIdentifier()])
       {
         v12 = [UIKeyboardInputModeGetComponentsFromIdentifier() objectForKey:@"hw"];
         if ([v12 length])
@@ -142,16 +142,16 @@ LABEL_10:
   return v24;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = TIHardwareKeyboardDetailController;
   [TIHardwareKeyboardDetailController tableView:"tableView:didSelectRowAtIndexPath:" didSelectRowAtIndexPath:?];
-  v7 = [a3 cellForRowAtIndexPath:a4];
+  v7 = [view cellForRowAtIndexPath:path];
   if (v7)
   {
-    v8 = [v7 specifier];
-    v9 = [v8 propertyForKey:PSIDKey];
+    specifier = [v7 specifier];
+    v9 = [specifier propertyForKey:PSIDKey];
     if ([v9 length])
     {
       [(TIHardwareKeyboardDetailController *)self setHardwareLayout:v9];
@@ -164,8 +164,8 @@ LABEL_10:
   result = self->_inputMode;
   if (!result)
   {
-    v4 = [(TIHardwareKeyboardDetailController *)self specifier];
-    result = [objc_msgSend(v4 propertyForKey:{PSIDKey), "copy"}];
+    specifier = [(TIHardwareKeyboardDetailController *)self specifier];
+    result = [objc_msgSend(specifier propertyForKey:{PSIDKey), "copy"}];
     self->_inputMode = result;
   }
 
@@ -177,15 +177,15 @@ LABEL_10:
   result = self->_uiKeyboardinputMode;
   if (!result)
   {
-    v4 = [(TIHardwareKeyboardDetailController *)self specifier];
-    result = -[UIKeyboardInputMode copy](+[UIKeyboardInputMode keyboardInputModeWithIdentifier:](UIKeyboardInputMode, "keyboardInputModeWithIdentifier:", [v4 propertyForKey:PSIDKey]), "copy");
+    specifier = [(TIHardwareKeyboardDetailController *)self specifier];
+    result = -[UIKeyboardInputMode copy](+[UIKeyboardInputMode keyboardInputModeWithIdentifier:](UIKeyboardInputMode, "keyboardInputModeWithIdentifier:", [specifier propertyForKey:PSIDKey]), "copy");
     self->_uiKeyboardinputMode = result;
   }
 
   return result;
 }
 
-- (void)setHardwareLayout:(id)a3
+- (void)setHardwareLayout:(id)layout
 {
   v5 = [+[TIKeyboardListController inputModes](TIKeyboardListController "inputModes")];
   if ([v5 count])
@@ -206,9 +206,9 @@ LABEL_4:
         {
           v11 = [UIKeyboardInputModeGetComponentsFromIdentifier() mutableCopy];
           v12 = [v11 objectForKey:@"hw"];
-          if (!v12 || ![v12 isEqualToString:a3])
+          if (!v12 || ![v12 isEqualToString:layout])
           {
-            [v11 setObject:a3 forKey:@"hw"];
+            [v11 setObject:layout forKey:@"hw"];
             [v5 replaceObjectAtIndex:v10 withObject:UIKeyboardInputModeGetIdentifierFromComponents()];
             v9 = v10 + 1;
             v8 = 1;

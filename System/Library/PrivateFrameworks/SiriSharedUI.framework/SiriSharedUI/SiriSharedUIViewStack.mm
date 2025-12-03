@@ -1,20 +1,20 @@
 @interface SiriSharedUIViewStack
-- (SiriSharedUIViewStack)initWithContentViews:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)nextViewAfterContentView:(id)a3;
-- (id)previousViewBeforeContentView:(id)a3;
-- (id)viewAtIndex:(int64_t)a3;
-- (void)addContentView:(id)a3;
-- (void)removeContentView:(id)a3;
+- (SiriSharedUIViewStack)initWithContentViews:(id)views;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)nextViewAfterContentView:(id)view;
+- (id)previousViewBeforeContentView:(id)view;
+- (id)viewAtIndex:(int64_t)index;
+- (void)addContentView:(id)view;
+- (void)removeContentView:(id)view;
 - (void)reset;
-- (void)setContentViews:(id)a3;
+- (void)setContentViews:(id)views;
 @end
 
 @implementation SiriSharedUIViewStack
 
-- (SiriSharedUIViewStack)initWithContentViews:(id)a3
+- (SiriSharedUIViewStack)initWithContentViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   v9.receiver = self;
   v9.super_class = SiriSharedUIViewStack;
   v5 = [(SiriSharedUIViewStack *)&v9 init];
@@ -24,26 +24,26 @@
     mutableViews = v5->_mutableViews;
     v5->_mutableViews = v6;
 
-    [(SiriSharedUIViewStack *)v5 setContentViews:v4];
+    [(SiriSharedUIViewStack *)v5 setContentViews:viewsCopy];
   }
 
   return v5;
 }
 
-- (void)setContentViews:(id)a3
+- (void)setContentViews:(id)views
 {
   v4 = MEMORY[0x277CBEB40];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithArray:v5];
+  viewsCopy = views;
+  v6 = [[v4 alloc] initWithArray:viewsCopy];
 
   mutableViews = self->_mutableViews;
   self->_mutableViews = v6;
 }
 
-- (void)addContentView:(id)a3
+- (void)addContentView:(id)view
 {
-  v4 = a3;
-  if ([(SiriSharedUIViewStack *)self containsContentView:v4])
+  viewCopy = view;
+  if ([(SiriSharedUIViewStack *)self containsContentView:viewCopy])
   {
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
     {
@@ -53,16 +53,16 @@
 
   else
   {
-    [(NSMutableOrderedSet *)self->_mutableViews addObject:v4];
+    [(NSMutableOrderedSet *)self->_mutableViews addObject:viewCopy];
   }
 }
 
-- (void)removeContentView:(id)a3
+- (void)removeContentView:(id)view
 {
-  v4 = a3;
-  if ([(SiriSharedUIViewStack *)self containsContentView:v4])
+  viewCopy = view;
+  if ([(SiriSharedUIViewStack *)self containsContentView:viewCopy])
   {
-    [(NSMutableOrderedSet *)self->_mutableViews removeObject:v4];
+    [(NSMutableOrderedSet *)self->_mutableViews removeObject:viewCopy];
   }
 
   else if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
@@ -71,9 +71,9 @@
   }
 }
 
-- (id)nextViewAfterContentView:(id)a3
+- (id)nextViewAfterContentView:(id)view
 {
-  v4 = [(NSMutableOrderedSet *)self->_mutableViews indexOfObject:a3];
+  v4 = [(NSMutableOrderedSet *)self->_mutableViews indexOfObject:view];
   if (v4 > 0x7FFFFFFFFFFFFFFELL)
   {
     v5 = 0;
@@ -87,32 +87,32 @@
   return v5;
 }
 
-- (id)viewAtIndex:(int64_t)a3
+- (id)viewAtIndex:(int64_t)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     v6 = 0;
   }
 
   else
   {
-    if ([(NSMutableOrderedSet *)self->_mutableViews count]<= a3)
+    if ([(NSMutableOrderedSet *)self->_mutableViews count]<= index)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = [(NSMutableOrderedSet *)self->_mutableViews objectAtIndex:a3];
+      v6 = [(NSMutableOrderedSet *)self->_mutableViews objectAtIndex:index];
     }
   }
 
   return v6;
 }
 
-- (id)previousViewBeforeContentView:(id)a3
+- (id)previousViewBeforeContentView:(id)view
 {
-  if (([(NSMutableOrderedSet *)self->_mutableViews indexOfObject:a3]- 1) > 0x7FFFFFFFFFFFFFFDLL)
+  if (([(NSMutableOrderedSet *)self->_mutableViews indexOfObject:view]- 1) > 0x7FFFFFFFFFFFFFFDLL)
   {
     v4 = 0;
   }
@@ -139,10 +139,10 @@
   [(NSMutableOrderedSet *)self->_mutableViews removeAllObjects];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(SiriSharedUIViewStack *)self contentViews];
-  v5 = [[SiriSharedUIViewStack allocWithZone:?], "initWithContentViews:", v4];
+  contentViews = [(SiriSharedUIViewStack *)self contentViews];
+  v5 = [[SiriSharedUIViewStack allocWithZone:?], "initWithContentViews:", contentViews];
 
   return v5;
 }

@@ -1,15 +1,15 @@
 @interface MusicKit_SoftLinking_MPModelAlbum
-+ (id)trackPopularityForIdentifiers:(id)a3 underlyingModelAlbum:(id)a4 tracksPopularityBlock:(id)a5;
++ (id)trackPopularityForIdentifiers:(id)identifiers underlyingModelAlbum:(id)album tracksPopularityBlock:(id)block;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelAlbum
 
-+ (id)trackPopularityForIdentifiers:(id)a3 underlyingModelAlbum:(id)a4 tracksPopularityBlock:(id)a5
++ (id)trackPopularityForIdentifiers:(id)identifiers underlyingModelAlbum:(id)album tracksPopularityBlock:(id)block
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = _Block_copy(a5);
-  v10 = v9[2](v9, v7, v8);
+  albumCopy = album;
+  identifiersCopy = identifiers;
+  v9 = _Block_copy(block);
+  v10 = v9[2](v9, albumCopy, identifiersCopy);
 
   return v10;
 }

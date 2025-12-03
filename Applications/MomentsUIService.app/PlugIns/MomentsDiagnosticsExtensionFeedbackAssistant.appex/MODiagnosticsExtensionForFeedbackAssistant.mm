@@ -1,12 +1,12 @@
 @interface MODiagnosticsExtensionForFeedbackAssistant
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation MODiagnosticsExtensionForFeedbackAssistant
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -49,8 +49,8 @@
     if (v11)
     {
       v14 = +[NSUUID UUID];
-      v15 = [v14 UUIDString];
-      v16 = [NSString stringWithFormat:@"config-%@.json", v15];
+      uUIDString = [v14 UUIDString];
+      v16 = [NSString stringWithFormat:@"config-%@.json", uUIDString];
       v17 = [@"/var/mobile/Library/com.apple.MomentsDiagnosticExtension/Temp/JournalingSuggestionConfiguration" stringByAppendingPathComponent:v16];
       v18 = [NSURL fileURLWithPath:v17 isDirectory:0];
 

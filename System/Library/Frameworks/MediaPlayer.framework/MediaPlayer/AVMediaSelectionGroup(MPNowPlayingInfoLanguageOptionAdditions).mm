@@ -8,12 +8,12 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [a1 options];
+  options = [self options];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [options countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -24,35 +24,35 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(options);
         }
 
-        v8 = [*(*(&v14 + 1) + 8 * i) makeNowPlayingInfoLanguageOption];
-        if (v8)
+        makeNowPlayingInfoLanguageOption = [*(*(&v14 + 1) + 8 * i) makeNowPlayingInfoLanguageOption];
+        if (makeNowPlayingInfoLanguageOption)
         {
-          [v2 addObject:v8];
+          [v2 addObject:makeNowPlayingInfoLanguageOption];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [options countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [a1 defaultOption];
-  if (v9)
+  defaultOption = [self defaultOption];
+  if (defaultOption)
   {
-    v10 = [a1 defaultOption];
-    v11 = [v10 makeNowPlayingInfoLanguageOption];
+    defaultOption2 = [self defaultOption];
+    makeNowPlayingInfoLanguageOption2 = [defaultOption2 makeNowPlayingInfoLanguageOption];
   }
 
   else
   {
-    v11 = 0;
+    makeNowPlayingInfoLanguageOption2 = 0;
   }
 
-  v12 = -[MPNowPlayingInfoLanguageOptionGroup initWithLanguageOptions:defaultLanguageOption:allowEmptySelection:]([MPNowPlayingInfoLanguageOptionGroup alloc], "initWithLanguageOptions:defaultLanguageOption:allowEmptySelection:", v2, v11, [a1 allowsEmptySelection]);
+  v12 = -[MPNowPlayingInfoLanguageOptionGroup initWithLanguageOptions:defaultLanguageOption:allowEmptySelection:]([MPNowPlayingInfoLanguageOptionGroup alloc], "initWithLanguageOptions:defaultLanguageOption:allowEmptySelection:", v2, makeNowPlayingInfoLanguageOption2, [self allowsEmptySelection]);
 
   return v12;
 }

@@ -1,14 +1,14 @@
 @interface PKPaymentTransactionDetailLineItemTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation PKPaymentTransactionDetailLineItemTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaymentTransactionDetailLineItemTableViewCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPaymentTransactionDetailLineItemTableViewCell" hasInstanceVariable:@"_valueLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaymentTransactionDetailLineItemTableViewCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPaymentTransactionDetailLineItemTableViewCell" hasInstanceVariable:@"_valueLabel" withType:"UILabel"];
 }
 
 @end

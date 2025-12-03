@@ -1,15 +1,15 @@
 @interface CHMergeColumnsStep
-- (BOOL)_doesColumnContainSameMathTranscriptionCandidates:(id)a3;
-- (id)process:(id)a3 options:(id)a4;
+- (BOOL)_doesColumnContainSameMathTranscriptionCandidates:(id)candidates;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHMergeColumnsStep
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v415 = *MEMORY[0x1E69E9840];
-  v384 = a3;
-  v380 = a4;
+  processCopy = process;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -22,13 +22,13 @@
     _os_log_impl(&dword_18366B000, v5, OS_LOG_TYPE_DEBUG, "CHMergeColumnsStep is running", buf, 2u);
   }
 
-  v11 = objc_msgSend_result(v384, v6, v7, v8, v9, v10);
+  v11 = objc_msgSend_result(processCopy, v6, v7, v8, v9, v10);
   v17 = objc_msgSend_transcriptionPaths(v11, v12, v13, v14, v15, v16);
   v23 = objc_msgSend_count(v17, v18, v19, v20, v21, v22) < 2;
 
   if (v23)
   {
-    v29 = v384;
+    v29 = processCopy;
     goto LABEL_108;
   }
 
@@ -50,7 +50,7 @@
   v400 = 0u;
   v401 = 0u;
   v402 = 0u;
-  v30 = objc_msgSend_result(v384, v24, v25, v26, v27, v28);
+  v30 = objc_msgSend_result(processCopy, v24, v25, v26, v27, v28);
   obj = objc_msgSend_transcriptionPaths(v30, v31, v32, v33, v34, v35);
 
   v38 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v36, &v399, v414, 16, v37);
@@ -90,14 +90,14 @@
         v395[1] = v395;
         v395[2] = 0x2020000000;
         v395[3] = 1;
-        v48 = objc_msgSend_result(v384, v39, v40, v41, v42, v43);
-        v54 = objc_msgSend_result(v384, v49, v50, v51, v52, v53);
+        v48 = objc_msgSend_result(processCopy, v39, v40, v41, v42, v43);
+        v54 = objc_msgSend_result(processCopy, v49, v50, v51, v52, v53);
         v60 = objc_msgSend_tokenColumnCount(v54, v55, v56, v57, v58, v59);
         v386[0] = MEMORY[0x1E69E9820];
         v386[1] = 3221225472;
         v387[0] = sub_18368303C;
         v387[1] = &unk_1E6DDBF50;
-        v61 = v384;
+        v61 = processCopy;
         v388 = v61;
         v389 = v412;
         v390 = v398;
@@ -211,7 +211,7 @@
 
   for (i = 1; ; ++i)
   {
-    v98 = objc_msgSend_result(v384, v92, v93, v94, v95, v96);
+    v98 = objc_msgSend_result(processCopy, v92, v93, v94, v95, v96);
     v104 = i < objc_msgSend_tokenColumnCount(v98, v99, v100, v101, v102, v103);
 
     if (!v104)
@@ -219,7 +219,7 @@
       break;
     }
 
-    v110 = objc_msgSend_result(v384, v105, v106, v107, v108, v109);
+    v110 = objc_msgSend_result(processCopy, v105, v106, v107, v108, v109);
     v116 = objc_msgSend_tokenColumns(v110, v111, v112, v113, v114, v115);
     v121 = objc_msgSend_objectAtIndexedSubscript_(v116, v117, i, v118, v119, v120);
 
@@ -318,7 +318,7 @@
 
   for (j = 0; ; j = v230 + 1)
   {
-    v196 = objc_msgSend_result(v384, v105, v106, v107, v108, v109);
+    v196 = objc_msgSend_result(processCopy, v105, v106, v107, v108, v109);
     v202 = j < objc_msgSend_tokenColumnCount(v196, v197, v198, v199, v200, v201);
 
     if (!v202)
@@ -326,7 +326,7 @@
       break;
     }
 
-    v208 = objc_msgSend_result(v384, v203, v204, v205, v206, v207);
+    v208 = objc_msgSend_result(processCopy, v203, v204, v205, v206, v207);
     v214 = objc_msgSend_tokenColumns(v208, v209, v210, v211, v212, v213);
     v219 = objc_msgSend_objectAtIndexedSubscript_(v214, v215, j, v216, v217, v218);
 
@@ -339,7 +339,7 @@
     do
     {
       v230 = v229;
-      v231 = objc_msgSend_result(v384, v224, v225, v226, v227, v228);
+      v231 = objc_msgSend_result(processCopy, v224, v225, v226, v227, v228);
       v237 = v230 + 1 < objc_msgSend_tokenColumnCount(v231, v232, v233, v234, v235, v236);
 
       if (!v237)
@@ -347,7 +347,7 @@
         break;
       }
 
-      v238 = objc_msgSend_result(v384, v224, v225, v226, v227, v228);
+      v238 = objc_msgSend_result(processCopy, v224, v225, v226, v227, v228);
       v244 = objc_msgSend_tokenColumns(v238, v239, v240, v241, v242, v243);
       v249 = objc_msgSend_objectAtIndexedSubscript_(v244, v245, v230 + 1, v246, v247, v248);
 
@@ -357,9 +357,9 @@
 
     while ((v238 & 1) != 0);
     v254 = j - 1;
-    if (j < 1 || (objc_msgSend_result(v384, v224, v225, v226, v227, v228), v255 = objc_claimAutoreleasedReturnValue(), objc_msgSend_tokenColumns(v255, v256, v257, v258, v259, v260), v261 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectAtIndexedSubscript_(v261, v262, j - 1, v263, v264, v265), v266 = objc_claimAutoreleasedReturnValue(), objc_msgSend_tokenRows(v266, v267, v268, v269, v270, v271), v272 = objc_claimAutoreleasedReturnValue(), v278 = objc_msgSend_count(v272, v273, v274, v275, v276, v277) > 1, v272, v266, v261, v255, !v278))
+    if (j < 1 || (objc_msgSend_result(processCopy, v224, v225, v226, v227, v228), v255 = objc_claimAutoreleasedReturnValue(), objc_msgSend_tokenColumns(v255, v256, v257, v258, v259, v260), v261 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectAtIndexedSubscript_(v261, v262, j - 1, v263, v264, v265), v266 = objc_claimAutoreleasedReturnValue(), objc_msgSend_tokenRows(v266, v267, v268, v269, v270, v271), v272 = objc_claimAutoreleasedReturnValue(), v278 = objc_msgSend_count(v272, v273, v274, v275, v276, v277) > 1, v272, v266, v261, v255, !v278))
     {
-      v279 = objc_msgSend_result(v384, v224, v225, v226, v227, v228);
+      v279 = objc_msgSend_result(processCopy, v224, v225, v226, v227, v228);
       if (v230 >= objc_msgSend_tokenColumnCount(v279, v280, v281, v282, v283, v284) - 1)
       {
 
@@ -386,7 +386,7 @@ LABEL_79:
         goto LABEL_80;
       }
 
-      v290 = objc_msgSend_result(v384, v285, v286, v287, v288, v289);
+      v290 = objc_msgSend_result(processCopy, v285, v286, v287, v288, v289);
       v296 = objc_msgSend_tokenColumns(v290, v291, v292, v293, v294, v295);
       v301 = objc_msgSend_objectAtIndexedSubscript_(v296, v297, ++v230, v298, v299, v300);
       v307 = objc_msgSend_tokenRows(v301, v302, v303, v304, v305, v306);
@@ -532,11 +532,11 @@ LABEL_80:
     while (v355 < v356);
   }
 
-  v369 = objc_msgSend_result(v384, v347, v348, v349, v350, v351, v352);
+  v369 = objc_msgSend_result(processCopy, v347, v348, v349, v350, v351, v352);
   v373 = objc_msgSend_mathResultWithMergedColumns_columnRangesToMerge_(CHTokenizedMathResult, v370, v369, v341, v371, v372);
-  objc_msgSend_setResult_(v384, v374, v373, v375, v376, v377);
+  objc_msgSend_setResult_(processCopy, v374, v373, v375, v376, v377);
 
-  v378 = v384;
+  v378 = processCopy;
   _Block_object_dispose(buf, 8);
   if (__p)
   {
@@ -546,14 +546,14 @@ LABEL_80:
 
 LABEL_108:
 
-  return v384;
+  return processCopy;
 }
 
-- (BOOL)_doesColumnContainSameMathTranscriptionCandidates:(id)a3
+- (BOOL)_doesColumnContainSameMathTranscriptionCandidates:(id)candidates
 {
   v95 = *MEMORY[0x1E69E9840];
-  v83 = a3;
-  v8 = objc_msgSend_tokenRows(v83, v3, v4, v5, v6, v7);
+  candidatesCopy = candidates;
+  v8 = objc_msgSend_tokenRows(candidatesCopy, v3, v4, v5, v6, v7);
   v14 = objc_msgSend_count(v8, v9, v10, v11, v12, v13);
 
   if (v14 < 2)
@@ -568,7 +568,7 @@ LABEL_108:
     v92 = 0u;
     v89 = 0u;
     v90 = 0u;
-    v26 = objc_msgSend_mathTokenRows(v83, v21, v22, v23, v24, v25);
+    v26 = objc_msgSend_mathTokenRows(candidatesCopy, v21, v22, v23, v24, v25);
     obj = v26;
     v34 = objc_msgSend_countByEnumeratingWithState_objects_count_(v26, v27, &v89, v94, 16, v28);
     if (v34)
@@ -625,7 +625,7 @@ LABEL_108:
     }
 
     v69 = objc_msgSend_count(v20, v64, v65, v66, v67, v68);
-    v75 = objc_msgSend_tokenRows(v83, v70, v71, v72, v73, v74);
+    v75 = objc_msgSend_tokenRows(candidatesCopy, v70, v71, v72, v73, v74);
     v81 = v69 != objc_msgSend_count(v75, v76, v77, v78, v79, v80);
   }
 

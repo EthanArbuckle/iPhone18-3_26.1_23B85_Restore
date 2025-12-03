@@ -1,13 +1,13 @@
 @interface MOScreenTimeProvider
 - (_TtC8momentsd20MOScreenTimeProvider)init;
-- (void)fetchHourlyAppUsageWithStartDate:(id)a3 endDate:(id)a4 completion:(id)a5;
+- (void)fetchHourlyAppUsageWithStartDate:(id)date endDate:(id)endDate completion:(id)completion;
 @end
 
 @implementation MOScreenTimeProvider
 
-- (void)fetchHourlyAppUsageWithStartDate:(id)a3 endDate:(id)a4 completion:(id)a5
+- (void)fetchHourlyAppUsageWithStartDate:(id)date endDate:(id)endDate completion:(id)completion
 {
-  v44 = a4;
+  endDateCopy = endDate;
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v7 = *(*(v6 - 8) + 64);
   __chkstk_darwin(v6 - 8, v8);
@@ -24,7 +24,7 @@
   v23 = &v40 - v22;
   __chkstk_darwin(v21, v24);
   v26 = &v40 - v25;
-  v27 = _Block_copy(a5);
+  v27 = _Block_copy(completion);
   v45 = v26;
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
   v43 = v23;

@@ -1,22 +1,22 @@
 @interface TUIKeyboardInputModeIconRenderer
-- (id)attributedStringForPrimaryLabel:(id)a3 secondaryLabel:(id)a4 withTintColor:(id)a5 detailTintColor:(id)a6 language:(id)a7;
-- (id)attributedStringWithText:(id)a3 color:(id)a4;
-- (id)imageForPrimaryLabel:(id)a3 secondaryLabel:(id)a4 withConfiguration:(id)a5;
-- (void)drawPrimaryLabel:(id)a3 secondaryLabel:(id)a4 withConfiguration:(id)a5 inContext:(CGContext *)a6;
+- (id)attributedStringForPrimaryLabel:(id)label secondaryLabel:(id)secondaryLabel withTintColor:(id)color detailTintColor:(id)tintColor language:(id)language;
+- (id)attributedStringWithText:(id)text color:(id)color;
+- (id)imageForPrimaryLabel:(id)label secondaryLabel:(id)secondaryLabel withConfiguration:(id)configuration;
+- (void)drawPrimaryLabel:(id)label secondaryLabel:(id)secondaryLabel withConfiguration:(id)configuration inContext:(CGContext *)context;
 @end
 
 @implementation TUIKeyboardInputModeIconRenderer
 
-- (id)imageForPrimaryLabel:(id)a3 secondaryLabel:(id)a4 withConfiguration:(id)a5
+- (id)imageForPrimaryLabel:(id)label secondaryLabel:(id)secondaryLabel withConfiguration:(id)configuration
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [v8 size];
+  configurationCopy = configuration;
+  secondaryLabelCopy = secondaryLabel;
+  labelCopy = label;
+  [configurationCopy size];
   v12 = v11;
   v14 = v13;
-  v15 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v15 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v17 = v16;
 
   if (v17 >= 1.0)
@@ -32,7 +32,7 @@
   v22.width = v12;
   v22.height = v14;
   UIGraphicsBeginImageContextWithOptions(v22, 0, v18);
-  [(TUIKeyboardInputModeIconRenderer *)self drawPrimaryLabel:v10 secondaryLabel:v9 withConfiguration:v8 inContext:UIGraphicsGetCurrentContext()];
+  [(TUIKeyboardInputModeIconRenderer *)self drawPrimaryLabel:labelCopy secondaryLabel:secondaryLabelCopy withConfiguration:configurationCopy inContext:UIGraphicsGetCurrentContext()];
 
   v19 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -40,19 +40,19 @@
   return v19;
 }
 
-- (void)drawPrimaryLabel:(id)a3 secondaryLabel:(id)a4 withConfiguration:(id)a5 inContext:(CGContext *)a6
+- (void)drawPrimaryLabel:(id)label secondaryLabel:(id)secondaryLabel withConfiguration:(id)configuration inContext:(CGContext *)context
 {
   v118[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  labelCopy = label;
+  secondaryLabelCopy = secondaryLabel;
+  configurationCopy = configuration;
   v14 = *MEMORY[0x1E695EFF8];
   v13 = *(MEMORY[0x1E695EFF8] + 8);
-  [v12 size];
+  [configurationCopy size];
   v16 = v15;
   v18 = v17;
-  v19 = [v12 style];
-  if (v19 == 3)
+  style = [configurationCopy style];
+  if (style == 3)
   {
     v127.origin.x = v14;
     v127.origin.y = v13;
@@ -63,7 +63,7 @@
     y = v128.origin.y;
     width = v128.size.width;
     height = v128.size.height;
-    UIGraphicsPushContext(a6);
+    UIGraphicsPushContext(context);
     v39 = MEMORY[0x1E69DC728];
     v129.origin.x = v14;
     v129.origin.y = v13;
@@ -74,7 +74,7 @@
     goto LABEL_7;
   }
 
-  if (v19 == 2)
+  if (style == 2)
   {
     v123.origin.x = v14;
     v123.origin.y = v13;
@@ -85,7 +85,7 @@
     y = v124.origin.y;
     width = v124.size.width;
     height = v124.size.height;
-    UIGraphicsPushContext(a6);
+    UIGraphicsPushContext(context);
     v32 = MEMORY[0x1E69DC728];
     v125.origin.x = v14;
     v125.origin.y = v13;
@@ -96,18 +96,18 @@
     v34 = v126.origin.y;
     v35 = v126.size.width;
     v36 = v126.size.height;
-    [v12 backgroundCornerRadius];
+    [configurationCopy backgroundCornerRadius];
     v38 = [v32 _bezierPathWithArcRoundedRect:v33 cornerRadius:{v34, v35, v36, v37}];
 LABEL_7:
     v30 = v38;
-    v40 = [v12 backgroundColor];
-    [v40 setFill];
+    backgroundColor = [configurationCopy backgroundColor];
+    [backgroundColor setFill];
 
     [v30 fill];
     goto LABEL_8;
   }
 
-  if (v19 != 1)
+  if (style != 1)
   {
     goto LABEL_9;
   }
@@ -121,7 +121,7 @@ LABEL_7:
   y = v120.origin.y;
   width = v120.size.width;
   height = v120.size.height;
-  UIGraphicsPushContext(a6);
+  UIGraphicsPushContext(context);
   v24 = MEMORY[0x1E69DC728];
   v121.origin.x = v14;
   v121.origin.y = v13;
@@ -132,10 +132,10 @@ LABEL_7:
   v26 = v122.origin.y;
   v27 = v122.size.width;
   v28 = v122.size.height;
-  [v12 backgroundCornerRadius];
+  [configurationCopy backgroundCornerRadius];
   v30 = [v24 _bezierPathWithPillRect:v25 cornerRadius:{v26, v27, v28, v29}];
-  v31 = [v12 backgroundColor];
-  [v31 setStroke];
+  backgroundColor2 = [configurationCopy backgroundColor];
+  [backgroundColor2 setStroke];
 
   [v30 setLineWidth:1.5];
   [v30 stroke];
@@ -147,17 +147,17 @@ LABEL_8:
   UIGraphicsPopContext();
 
 LABEL_9:
-  v41 = [v12 artwork];
+  artwork = [configurationCopy artwork];
 
-  if (v41)
+  if (artwork)
   {
     v42 = MEMORY[0x1E69DCAB8];
-    v43 = [v12 artwork];
+    artwork2 = [configurationCopy artwork];
     v44 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v45 = [v42 imageNamed:v43 inBundle:v44];
+    v45 = [v42 imageNamed:artwork2 inBundle:v44];
 
-    v46 = [v12 tintColor];
-    v47 = [v45 imageWithTintColor:v46 renderingMode:2];
+    tintColor = [configurationCopy tintColor];
+    v47 = [v45 imageWithTintColor:tintColor renderingMode:2];
 
     [v47 size];
     v49 = v48;
@@ -166,7 +166,7 @@ LABEL_9:
     if (v18 >= v49)
     {
       v66 = v50;
-      [v12 baseFontSize];
+      [configurationCopy baseFontSize];
       v68 = v67 / 17.0 * (v18 / v52);
       v69 = v66 * v68;
       v70 = v52 * v68;
@@ -200,7 +200,7 @@ LABEL_9:
       v13 = v132.origin.y;
       v75 = v132.size.width;
       v76 = v132.size.height;
-      [v12 baseFontSize];
+      [configurationCopy baseFontSize];
       v78 = v77 / 17.0 * (v76 / v57);
       v69 = v56 * v78;
       v70 = v57 * v78;
@@ -210,29 +210,29 @@ LABEL_9:
     }
 
     v79 = v13 + v73 * v71;
-    UIGraphicsPushContext(a6);
+    UIGraphicsPushContext(context);
     [v47 drawInRect:{v72, v79, v69, v70}];
     UIGraphicsPopContext();
   }
 
   else
   {
-    [v12 baseFontSize];
+    [configurationCopy baseFontSize];
     v59 = v58;
-    v60 = [v12 tintColor];
-    v61 = [v12 tintColor];
-    [v12 detailLabelAlpha];
-    v62 = [v61 colorWithAlphaComponent:?];
-    v63 = [v12 language];
-    v64 = [(TUIKeyboardInputModeIconRenderer *)self attributedStringForPrimaryLabel:v10 secondaryLabel:v11 withTintColor:v60 detailTintColor:v62 language:v63];
+    tintColor2 = [configurationCopy tintColor];
+    tintColor3 = [configurationCopy tintColor];
+    [configurationCopy detailLabelAlpha];
+    v62 = [tintColor3 colorWithAlphaComponent:?];
+    language = [configurationCopy language];
+    v64 = [(TUIKeyboardInputModeIconRenderer *)self attributedStringForPrimaryLabel:labelCopy secondaryLabel:secondaryLabelCopy withTintColor:tintColor2 detailTintColor:v62 language:language];
 
     if ([v64 length] > 1)
     {
       v59 = v59 + -1.0;
     }
 
-    v108 = v11;
-    v109 = v10;
+    v108 = secondaryLabelCopy;
+    v109 = labelCopy;
     if ([v64 length] >= 2)
     {
       if ([v64 length] == 2)
@@ -245,7 +245,7 @@ LABEL_9:
         v65 = 65.0;
       }
 
-      else if ([v11 length] >= 2)
+      else if ([secondaryLabelCopy length] >= 2)
       {
         v65 = 30.0;
       }
@@ -284,12 +284,12 @@ LABEL_9:
     v88 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v118 forKeys:v117 count:2];
     v89 = [v80 initWithFontAttributes:v88];
 
-    v90 = [v12 fontFamily];
+    fontFamily = [configurationCopy fontFamily];
 
-    if (v90)
+    if (fontFamily)
     {
-      v91 = [v12 fontFamily];
-      v92 = [v89 fontDescriptorWithFamily:v91];
+      fontFamily2 = [configurationCopy fontFamily];
+      v92 = [v89 fontDescriptorWithFamily:fontFamily2];
 
       v89 = v92;
     }
@@ -352,68 +352,68 @@ LABEL_42:
     CGAffineTransformInvert(&transform, &v110);
     v106 = transform.tx + v105 * transform.c + transform.a * v104;
     v107 = transform.ty + v105 * transform.d + transform.b * v104;
-    CGContextSaveGState(a6);
+    CGContextSaveGState(context);
     transform = v112;
-    CGContextConcatCTM(a6, &transform);
-    CGContextSetTextPosition(a6, v106, v107);
-    CTLineDraw(v102, a6);
-    CGContextRestoreGState(a6);
+    CGContextConcatCTM(context, &transform);
+    CGContextSetTextPosition(context, v106, v107);
+    CTLineDraw(v102, context);
+    CGContextRestoreGState(context);
     CFRelease(v102);
 
-    v11 = v108;
-    v10 = v109;
+    secondaryLabelCopy = v108;
+    labelCopy = v109;
   }
 }
 
-- (id)attributedStringForPrimaryLabel:(id)a3 secondaryLabel:(id)a4 withTintColor:(id)a5 detailTintColor:(id)a6 language:(id)a7
+- (id)attributedStringForPrimaryLabel:(id)label secondaryLabel:(id)secondaryLabel withTintColor:(id)color detailTintColor:(id)tintColor language:(id)language
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v14)
+  labelCopy = label;
+  secondaryLabelCopy = secondaryLabel;
+  colorCopy = color;
+  tintColorCopy = tintColor;
+  languageCopy = language;
+  if (!colorCopy)
   {
-    v14 = [MEMORY[0x1E69DC888] labelColor];
+    colorCopy = [MEMORY[0x1E69DC888] labelColor];
   }
 
   v17 = objc_alloc_init(MEMORY[0x1E696AD40]);
-  v18 = [v13 length];
-  v19 = v12;
+  v18 = [secondaryLabelCopy length];
+  v19 = labelCopy;
   if (v18)
   {
-    v20 = [(TUIKeyboardInputModeIconRenderer *)self attributedStringWithText:v12 color:v15];
+    v20 = [(TUIKeyboardInputModeIconRenderer *)self attributedStringWithText:labelCopy color:tintColorCopy];
     [v17 appendAttributedString:v20];
 
-    v21 = [(TUIKeyboardInputModeIconRenderer *)self attributedStringWithText:@" " color:v14];
+    v21 = [(TUIKeyboardInputModeIconRenderer *)self attributedStringWithText:@" " color:colorCopy];
     [v17 appendAttributedString:v21];
 
-    v19 = v13;
+    v19 = secondaryLabelCopy;
   }
 
-  v22 = [(TUIKeyboardInputModeIconRenderer *)self attributedStringWithText:v19 color:v14];
+  v22 = [(TUIKeyboardInputModeIconRenderer *)self attributedStringWithText:v19 color:colorCopy];
   [v17 appendAttributedString:v22];
 
-  if (v16)
+  if (languageCopy)
   {
-    [v17 addAttribute:*MEMORY[0x1E696A518] value:v16 range:{0, objc_msgSend(v17, "length")}];
+    [v17 addAttribute:*MEMORY[0x1E696A518] value:languageCopy range:{0, objc_msgSend(v17, "length")}];
   }
 
   return v17;
 }
 
-- (id)attributedStringWithText:(id)a3 color:(id)a4
+- (id)attributedStringWithText:(id)text color:(id)color
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AAB0];
-  v6 = a4;
-  v7 = a3;
+  colorCopy = color;
+  textCopy = text;
   v8 = [v5 alloc];
   v12 = *MEMORY[0x1E69DB650];
-  v13[0] = v6;
+  v13[0] = colorCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-  v10 = [v8 initWithString:v7 attributes:v9];
+  v10 = [v8 initWithString:textCopy attributes:v9];
 
   return v10;
 }

@@ -1,28 +1,28 @@
 @interface MRRapportTransportConfiguration
-- (MRRapportTransportConfiguration)initWithCoder:(id)a3;
+- (MRRapportTransportConfiguration)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MRRapportTransportConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceUID = self->_deviceUID;
-  v5 = a3;
-  [v5 encodeObject:deviceUID forKey:@"device"];
-  [v5 encodeObject:self->_sessionUID forKey:@"session"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deviceUID forKey:@"device"];
+  [coderCopy encodeObject:self->_sessionUID forKey:@"session"];
 }
 
-- (MRRapportTransportConfiguration)initWithCoder:(id)a3
+- (MRRapportTransportConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(MRRapportTransportConfiguration);
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"device"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"device"];
   v7 = [v6 copy];
   [(MRRapportTransportConfiguration *)v5 setDeviceUID:v7];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"session"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"session"];
 
   v9 = [v8 copy];
   [(MRRapportTransportConfiguration *)v5 setSessionUID:v9];

@@ -1,23 +1,23 @@
 @interface CLCKController
 - (id)actionTypes;
-- (id)areConversationDetailsEnabled:(id)a3;
+- (id)areConversationDetailsEnabled:(id)enabled;
 - (id)bundleIdentifiers;
 - (id)contactPickerPrompt;
 - (id)favoritesFooterText;
 - (id)incomingHeaderText;
-- (id)isEmojiKeyboardEnabled:(id)a3;
-- (id)isPhotoKeyboardEnabled:(id)a3;
-- (id)isSoftwareKeyboardEnabled:(id)a3;
-- (id)isTapToSpeakEnabled:(id)a3;
-- (id)isVideoRecordingEnabled:(id)a3;
+- (id)isEmojiKeyboardEnabled:(id)enabled;
+- (id)isPhotoKeyboardEnabled:(id)enabled;
+- (id)isSoftwareKeyboardEnabled:(id)enabled;
+- (id)isTapToSpeakEnabled:(id)enabled;
+- (id)isVideoRecordingEnabled:(id)enabled;
 - (id)outgoingHeaderText;
 - (id)specifiers;
-- (void)setConversationDetailsEnabled:(id)a3 specifier:(id)a4;
-- (void)setEmojiKeyboardEnabled:(id)a3 specifier:(id)a4;
-- (void)setPhotoKeyboardEnabled:(id)a3 specifier:(id)a4;
-- (void)setSoftwareKeyboardEnabled:(id)a3 specifier:(id)a4;
-- (void)setTapToSpeakEnabled:(id)a3 specifier:(id)a4;
-- (void)setVideoRecordingEnabled:(id)a3 specifier:(id)a4;
+- (void)setConversationDetailsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setEmojiKeyboardEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPhotoKeyboardEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSoftwareKeyboardEnabled:(id)enabled specifier:(id)specifier;
+- (void)setTapToSpeakEnabled:(id)enabled specifier:(id)specifier;
+- (void)setVideoRecordingEnabled:(id)enabled specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -29,8 +29,8 @@
   v5.super_class = CLCKController;
   [(CLCKController *)&v5 viewDidLoad];
   v3 = AXAppNameForBundleId();
-  v4 = [(CLCKController *)self navigationItem];
-  [v4 setTitle:v3];
+  navigationItem = [(CLCKController *)self navigationItem];
+  [navigationItem setTitle:v3];
 }
 
 - (id)specifiers
@@ -39,8 +39,8 @@
   v4 = *&self->AXCLFCommunicationLimitController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(CLCKController *)self communicationLimitSpecifiers];
-    v6 = [v5 mutableCopy];
+    communicationLimitSpecifiers = [(CLCKController *)self communicationLimitSpecifiers];
+    v6 = [communicationLimitSpecifiers mutableCopy];
 
     v7 = [(CLCKController *)self loadSpecifiersFromPlistName:@"CLCKController" target:self];
     [v6 addObjectsFromArray:v7];
@@ -102,14 +102,14 @@
   return v2;
 }
 
-- (void)setConversationDetailsEnabled:(id)a3 specifier:(id)a4
+- (void)setConversationDetailsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFMessagesSettings sharedInstance];
-  [v5 setConversationDetailsEnabled:v4];
+  [v5 setConversationDetailsEnabled:bOOLValue];
 }
 
-- (id)areConversationDetailsEnabled:(id)a3
+- (id)areConversationDetailsEnabled:(id)enabled
 {
   v3 = +[CLFMessagesSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 conversationDetailsEnabled]);
@@ -117,14 +117,14 @@
   return v4;
 }
 
-- (void)setTapToSpeakEnabled:(id)a3 specifier:(id)a4
+- (void)setTapToSpeakEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFMessagesSettings sharedInstance];
-  [v5 setTapToSpeakEnabled:v4];
+  [v5 setTapToSpeakEnabled:bOOLValue];
 }
 
-- (id)isTapToSpeakEnabled:(id)a3
+- (id)isTapToSpeakEnabled:(id)enabled
 {
   v3 = +[CLFMessagesSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 tapToSpeakEnabled]);
@@ -132,14 +132,14 @@
   return v4;
 }
 
-- (void)setSoftwareKeyboardEnabled:(id)a3 specifier:(id)a4
+- (void)setSoftwareKeyboardEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFMessagesSettings sharedInstance];
-  [v5 setSoftwareKeyboardEnabled:v4];
+  [v5 setSoftwareKeyboardEnabled:bOOLValue];
 }
 
-- (id)isSoftwareKeyboardEnabled:(id)a3
+- (id)isSoftwareKeyboardEnabled:(id)enabled
 {
   v3 = +[CLFMessagesSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 softwareKeyboardEnabled]);
@@ -147,14 +147,14 @@
   return v4;
 }
 
-- (void)setVideoRecordingEnabled:(id)a3 specifier:(id)a4
+- (void)setVideoRecordingEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFMessagesSettings sharedInstance];
-  [v5 setVideoRecordingEnabled:v4];
+  [v5 setVideoRecordingEnabled:bOOLValue];
 }
 
-- (id)isVideoRecordingEnabled:(id)a3
+- (id)isVideoRecordingEnabled:(id)enabled
 {
   v3 = +[CLFMessagesSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 videoRecordingEnabled]);
@@ -162,14 +162,14 @@
   return v4;
 }
 
-- (void)setEmojiKeyboardEnabled:(id)a3 specifier:(id)a4
+- (void)setEmojiKeyboardEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFMessagesSettings sharedInstance];
-  [v5 setEmojiKeyboardEnabled:v4];
+  [v5 setEmojiKeyboardEnabled:bOOLValue];
 }
 
-- (id)isEmojiKeyboardEnabled:(id)a3
+- (id)isEmojiKeyboardEnabled:(id)enabled
 {
   v3 = +[CLFMessagesSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 emojiKeyboardEnabled]);
@@ -177,14 +177,14 @@
   return v4;
 }
 
-- (void)setPhotoKeyboardEnabled:(id)a3 specifier:(id)a4
+- (void)setPhotoKeyboardEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFMessagesSettings sharedInstance];
-  [v5 setPhotoKeyboardEnabled:v4];
+  [v5 setPhotoKeyboardEnabled:bOOLValue];
 }
 
-- (id)isPhotoKeyboardEnabled:(id)a3
+- (id)isPhotoKeyboardEnabled:(id)enabled
 {
   v3 = +[CLFMessagesSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 photoKeyboardEnabled]);

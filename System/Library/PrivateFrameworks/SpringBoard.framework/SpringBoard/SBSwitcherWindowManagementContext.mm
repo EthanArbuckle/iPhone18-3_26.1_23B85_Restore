@@ -1,8 +1,8 @@
 @interface SBSwitcherWindowManagementContext
 + (id)singleAppContext;
 - (BOOL)isChamoisOrFlexibleWindowing;
-- (BOOL)isEqual:(id)a3;
-- (SBSwitcherWindowManagementContext)initWithBaseStyle:(unint64_t)a3 automaticStageCreationEnabled:(BOOL)a4 restoresPreviouslyOpenWindows:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (SBSwitcherWindowManagementContext)initWithBaseStyle:(unint64_t)style automaticStageCreationEnabled:(BOOL)enabled restoresPreviouslyOpenWindows:(BOOL)windows;
 - (int64_t)telemetryMultitaskingMode;
 @end
 
@@ -22,22 +22,22 @@
   }
 }
 
-- (SBSwitcherWindowManagementContext)initWithBaseStyle:(unint64_t)a3 automaticStageCreationEnabled:(BOOL)a4 restoresPreviouslyOpenWindows:(BOOL)a5
+- (SBSwitcherWindowManagementContext)initWithBaseStyle:(unint64_t)style automaticStageCreationEnabled:(BOOL)enabled restoresPreviouslyOpenWindows:(BOOL)windows
 {
-  v6 = a4;
+  enabledCopy = enabled;
   v15.receiver = self;
   v15.super_class = SBSwitcherWindowManagementContext;
   v9 = [(SBSwitcherWindowManagementContext *)&v15 init];
   if (v9)
   {
-    if (!a3 && v6)
+    if (!style && enabledCopy)
     {
       [SBSwitcherWindowManagementContext initWithBaseStyle:a2 automaticStageCreationEnabled:v9 restoresPreviouslyOpenWindows:?];
     }
 
-    v9->_baseStyle = a3;
-    v9->_automaticStageCreationEnabled = v6;
-    v9->_restoresPreviouslyOpenWindows = a5;
+    v9->_baseStyle = style;
+    v9->_automaticStageCreationEnabled = enabledCopy;
+    v9->_restoresPreviouslyOpenWindows = windows;
     v10 = objc_alloc_init(MEMORY[0x277CF0C40]);
     v11 = [v10 appendUnsignedInteger:v9->_baseStyle];
     v12 = [v10 appendBool:v9->_automaticStageCreationEnabled];
@@ -50,15 +50,15 @@
 
 + (id)singleAppContext
 {
-  v2 = [[a1 alloc] initWithBaseStyle:0 automaticStageCreationEnabled:0 restoresPreviouslyOpenWindows:0];
+  v2 = [[self alloc] initWithBaseStyle:0 automaticStageCreationEnabled:0 restoresPreviouslyOpenWindows:0];
 
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -68,7 +68,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_baseStyle == v5->_baseStyle && self->_automaticStageCreationEnabled == v5->_automaticStageCreationEnabled && self->_restoresPreviouslyOpenWindows == v5->_restoresPreviouslyOpenWindows;
     }
 
@@ -83,13 +83,13 @@
 
 - (int64_t)telemetryMultitaskingMode
 {
-  v3 = [(SBSwitcherWindowManagementContext *)self baseStyle];
-  if (!v3)
+  baseStyle = [(SBSwitcherWindowManagementContext *)self baseStyle];
+  if (!baseStyle)
   {
     return 1;
   }
 
-  if (v3 != 2)
+  if (baseStyle != 2)
   {
     return 0;
   }

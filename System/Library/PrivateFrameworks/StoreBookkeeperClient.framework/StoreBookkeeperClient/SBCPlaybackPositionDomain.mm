@@ -1,39 +1,39 @@
 @interface SBCPlaybackPositionDomain
 + (id)domainForExtrasValues;
-+ (id)domainForSyncingMusicLibraryWithLibraryPath:(id)a3;
-- (SBCPlaybackPositionDomain)initWithCoder:(id)a3;
-- (SBCPlaybackPositionDomain)initWithDomainIdentifier:(id)a3 foreignDatabasePath:(id)a4;
++ (id)domainForSyncingMusicLibraryWithLibraryPath:(id)path;
+- (SBCPlaybackPositionDomain)initWithCoder:(id)coder;
+- (SBCPlaybackPositionDomain)initWithDomainIdentifier:(id)identifier foreignDatabasePath:(id)path;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBCPlaybackPositionDomain
 
-- (SBCPlaybackPositionDomain)initWithCoder:(id)a3
+- (SBCPlaybackPositionDomain)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"SBCDomainIdentifier"];
-  v6 = [v4 decodeObjectForKey:@"SBCForeignDatabasePath"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"SBCDomainIdentifier"];
+  v6 = [coderCopy decodeObjectForKey:@"SBCForeignDatabasePath"];
   v7 = [(SBCPlaybackPositionDomain *)self initWithDomainIdentifier:v5 foreignDatabasePath:v6];
   if (v7)
   {
-    v8 = [v4 decodeObjectForKey:@"SBCUbiquitousDatabasePath"];
+    v8 = [coderCopy decodeObjectForKey:@"SBCUbiquitousDatabasePath"];
     [(SBCPlaybackPositionDomain *)v7 setUbiquitousDatabasePath:v8];
 
-    -[SBCPlaybackPositionDomain setSupportsSyncProtocol:](v7, "setSupportsSyncProtocol:", [v4 decodeBoolForKey:@"SBCSupportsSyncProtocol"]);
+    -[SBCPlaybackPositionDomain setSupportsSyncProtocol:](v7, "setSupportsSyncProtocol:", [coderCopy decodeBoolForKey:@"SBCSupportsSyncProtocol"]);
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   domainIdentifier = self->_domainIdentifier;
-  v5 = a3;
-  [v5 encodeObject:domainIdentifier forKey:@"SBCDomainIdentifier"];
-  [v5 encodeObject:self->_foreignDatabasePath forKey:@"SBCForeignDatabasePath"];
-  [v5 encodeObject:self->_ubiquitousDatabasePath forKey:@"SBCUbiquitousDatabasePath"];
-  [v5 encodeBool:self->_supportsSyncProtocol forKey:@"SBCSupportsSyncProtocol"];
+  coderCopy = coder;
+  [coderCopy encodeObject:domainIdentifier forKey:@"SBCDomainIdentifier"];
+  [coderCopy encodeObject:self->_foreignDatabasePath forKey:@"SBCForeignDatabasePath"];
+  [coderCopy encodeObject:self->_ubiquitousDatabasePath forKey:@"SBCUbiquitousDatabasePath"];
+  [coderCopy encodeBool:self->_supportsSyncProtocol forKey:@"SBCSupportsSyncProtocol"];
 }
 
 - (id)description
@@ -68,20 +68,20 @@
   return v8;
 }
 
-- (SBCPlaybackPositionDomain)initWithDomainIdentifier:(id)a3 foreignDatabasePath:(id)a4
+- (SBCPlaybackPositionDomain)initWithDomainIdentifier:(id)identifier foreignDatabasePath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = SBCPlaybackPositionDomain;
   v9 = [(SBCPlaybackPositionDomain *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_domainIdentifier, a3);
-    v11 = [v8 stringByStandardizingPath];
+    objc_storeStrong(&v9->_domainIdentifier, identifier);
+    stringByStandardizingPath = [pathCopy stringByStandardizingPath];
     foreignDatabasePath = v10->_foreignDatabasePath;
-    v10->_foreignDatabasePath = v11;
+    v10->_foreignDatabasePath = stringByStandardizingPath;
   }
 
   return v10;
@@ -89,17 +89,17 @@
 
 + (id)domainForExtrasValues
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [v2 initWithDomainIdentifier:*MEMORY[0x277D7F950] foreignDatabasePath:0];
 
   return v3;
 }
 
-+ (id)domainForSyncingMusicLibraryWithLibraryPath:(id)a3
++ (id)domainForSyncingMusicLibraryWithLibraryPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = [SBCMusicLibraryPlaybackPositionDomain alloc];
-  v5 = [(SBCPlaybackPositionDomain *)v4 initWithDomainIdentifier:*MEMORY[0x277D7F948] foreignDatabasePath:v3];
+  v5 = [(SBCPlaybackPositionDomain *)v4 initWithDomainIdentifier:*MEMORY[0x277D7F948] foreignDatabasePath:pathCopy];
 
   [(SBCPlaybackPositionDomain *)v5 setSupportsSyncProtocol:1];
 

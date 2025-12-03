@@ -3,8 +3,8 @@
 + (id)entryEventPointDefinitions;
 + (void)load;
 - (PLBLDService)init;
-- (id)batteryBreakdownWithPayload:(id)a3;
-- (id)bldEntryWithBatteryBreakdown:(id)a3;
+- (id)batteryBreakdownWithPayload:(id)payload;
+- (id)bldEntryWithBatteryBreakdown:(id)breakdown;
 - (void)initOperatorDependancies;
 @end
 
@@ -12,7 +12,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLBLDService;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -40,17 +40,17 @@
   v21[0] = v2;
   v20[1] = *MEMORY[0x277D3F540];
   v16[0] = @"BUIOutput";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
-  v17[0] = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v17[0] = commonTypeDict_StringFormat;
   v16[1] = @"JSON";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_BoolFormat];
-  v17[1] = v6;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]2 commonTypeDict_BoolFormat];
+  v17[1] = commonTypeDict_BoolFormat;
   v16[2] = @"LastUpDateTime";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_DateFormat];
-  v17[2] = v8;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]3 commonTypeDict_DateFormat];
+  v17[2] = commonTypeDict_DateFormat;
   v16[3] = @"BLDRetail";
   v14 = *MEMORY[0x277D3F5A8];
   v15 = &unk_287147B18;
@@ -69,7 +69,7 @@
 {
   if (([MEMORY[0x277D3F208] isHomePod] & 1) != 0 || +[PLUtilities isPerfPowerMetricd](PLUtilities, "isPerfPowerMetricd"))
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -77,10 +77,10 @@
     v5.receiver = self;
     v5.super_class = PLBLDService;
     self = [(PLOperator *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
@@ -153,13 +153,13 @@ uint64_t __40__PLBLDService_initOperatorDependancies__block_invoke_2(uint64_t a1
   return result;
 }
 
-- (id)batteryBreakdownWithPayload:(id)a3
+- (id)batteryBreakdownWithPayload:(id)payload
 {
   v108 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:@"PLBatteryUIQueryTypeKey"];
-  v5 = [v4 intValue];
+  v4 = [payload objectForKeyedSubscript:@"PLBatteryUIQueryTypeKey"];
+  intValue = [v4 intValue];
 
-  v97 = self;
+  selfCopy = self;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v6 = objc_opt_class();
@@ -175,12 +175,12 @@ uint64_t __40__PLBLDService_initOperatorDependancies__block_invoke_2(uint64_t a1
 
     if (batteryBreakdownWithPayload__classDebugEnabled == 1)
     {
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryType=%i", v5];
+      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryType=%i", intValue];
       v8 = MEMORY[0x277D3F178];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBLDService.m"];
-      v10 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBLDService batteryBreakdownWithPayload:]"];
-      [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:118];
+      [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:118];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -188,25 +188,25 @@ uint64_t __40__PLBLDService_initOperatorDependancies__block_invoke_2(uint64_t a1
         __111__PLProcessPortMap_pidAndProcessNameForDestAddress_withDestPort_withSourceAddress_withSourcePort_withProtocol___block_invoke_cold_1();
       }
 
-      self = v97;
+      self = selfCopy;
     }
   }
 
-  if (v5 == 1)
+  if (intValue == 1)
   {
-    v13 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     v99 = objc_opt_new();
-    v14 = [MEMORY[0x277CBEB38] dictionary];
-    v15 = [v13 dateByAddingTimeInterval:-86400.0];
-    v16 = v13;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v15 = [monotonicDate dateByAddingTimeInterval:-86400.0];
+    v16 = monotonicDate;
     [v15 timeIntervalSince1970];
     v18 = v17;
     [v16 timeIntervalSince1970];
     v20 = v19;
 
     v95 = [(PLBatteryBreakdownService *)self batteryBreakdownWithTimeRange:1 withDataRange:v18 withEntryTimeInterval:v20 - v18 withQueryType:0.0, 0.0, 3600.0];
-    [v14 setObject:v95 forKeyedSubscript:@"PLBatteryUIQueryRangeDayKey"];
-    v21 = [(PLBLDService *)self bldEntryWithBatteryBreakdown:v14];
+    [dictionary setObject:v95 forKeyedSubscript:@"PLBatteryUIQueryRangeDayKey"];
+    v21 = [(PLBLDService *)self bldEntryWithBatteryBreakdown:dictionary];
     if (+[PLUtilities isPowerlogHelperd])
     {
       if ([MEMORY[0x277D3F180] debugEnabled])
@@ -227,9 +227,9 @@ uint64_t __40__PLBLDService_initOperatorDependancies__block_invoke_2(uint64_t a1
           v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s/%d: past day results generated", "-[PLBLDService batteryBreakdownWithPayload:]", 139];
           v24 = MEMORY[0x277D3F178];
           v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBLDService.m"];
-          v26 = [v25 lastPathComponent];
+          lastPathComponent2 = [v25 lastPathComponent];
           v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBLDService batteryBreakdownWithPayload:]"];
-          [v24 logMessage:v23 fromFile:v26 fromFunction:v27 fromLineNumber:139];
+          [v24 logMessage:v23 fromFile:lastPathComponent2 fromFunction:v27 fromLineNumber:139];
 
           v28 = PLLogCommon();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -237,12 +237,12 @@ uint64_t __40__PLBLDService_initOperatorDependancies__block_invoke_2(uint64_t a1
             __111__PLProcessPortMap_pidAndProcessNameForDestAddress_withDestPort_withSourceAddress_withSourcePort_withProtocol___block_invoke_cold_1();
           }
 
-          self = v97;
+          self = selfCopy;
         }
       }
 
-      v29 = [v21 serialized];
-      [v99 addObject:v29];
+      serialized = [v21 serialized];
+      [v99 addObject:serialized];
     }
 
     else
@@ -250,7 +250,7 @@ uint64_t __40__PLBLDService_initOperatorDependancies__block_invoke_2(uint64_t a1
       [(PLOperator *)self logEntry:v21];
     }
 
-    v30 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
 
     v31 = [v16 dateByAddingTimeInterval:-604800.0];
     v32 = v16;
@@ -260,9 +260,9 @@ uint64_t __40__PLBLDService_initOperatorDependancies__block_invoke_2(uint64_t a1
     v36 = v35;
 
     v37 = [(PLBatteryBreakdownService *)self batteryBreakdownWithTimeRange:1 withDataRange:v34 withEntryTimeInterval:v36 - v34 withQueryType:0.0, 0.0, 3600.0];
-    [v30 setObject:v37 forKeyedSubscript:@"PLBatteryUIQueryRangeWeekKey"];
+    [dictionary2 setObject:v37 forKeyedSubscript:@"PLBatteryUIQueryRangeWeekKey"];
 
-    v38 = [(PLBLDService *)self bldEntryWithBatteryBreakdown:v30];
+    v38 = [(PLBLDService *)self bldEntryWithBatteryBreakdown:dictionary2];
     v94 = v21;
     v96 = v38;
     if (+[PLUtilities isPowerlogHelperd])
@@ -285,9 +285,9 @@ uint64_t __40__PLBLDService_initOperatorDependancies__block_invoke_2(uint64_t a1
           v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s/%d: past week results generated", "-[PLBLDService batteryBreakdownWithPayload:]", 155];
           v41 = MEMORY[0x277D3F178];
           v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBLDService.m"];
-          v43 = [v42 lastPathComponent];
+          lastPathComponent3 = [v42 lastPathComponent];
           v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBLDService batteryBreakdownWithPayload:]"];
-          [v41 logMessage:v40 fromFile:v43 fromFunction:v44 fromLineNumber:155];
+          [v41 logMessage:v40 fromFile:lastPathComponent3 fromFunction:v44 fromLineNumber:155];
 
           v45 = PLLogCommon();
           if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
@@ -296,12 +296,12 @@ uint64_t __40__PLBLDService_initOperatorDependancies__block_invoke_2(uint64_t a1
           }
 
           v38 = v96;
-          self = v97;
+          self = selfCopy;
         }
       }
 
-      v46 = [v38 serialized];
-      [v99 addObject:v46];
+      serialized2 = [v38 serialized];
+      [v99 addObject:serialized2];
     }
 
     else
@@ -310,12 +310,12 @@ uint64_t __40__PLBLDService_initOperatorDependancies__block_invoke_2(uint64_t a1
     }
 
     v93 = v32;
-    v47 = [v32 convertFromMonotonicToSystem];
+    convertFromMonotonicToSystem = [v32 convertFromMonotonicToSystem];
     v48 = 6;
     do
     {
       v49 = MEMORY[0x277CBEAA8];
-      v50 = [v47 dateByAddingTimeInterval:-600.0];
+      v50 = [convertFromMonotonicToSystem dateByAddingTimeInterval:-600.0];
       v51 = [v49 nearestMidnightBeforeDate:v50];
 
       v52 = @"PLBatteryUIQueryRangeTodayKey";
@@ -326,19 +326,19 @@ uint64_t __40__PLBLDService_initOperatorDependancies__block_invoke_2(uint64_t a1
         v52 = [v53 stringWithFormat:@"PLBatteryUIQueryRangeDay_%@_Key", v54];
       }
 
-      v55 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary3 = [MEMORY[0x277CBEB38] dictionary];
 
-      v56 = [v51 convertFromSystemToMonotonic];
-      v57 = [v47 convertFromSystemToMonotonic];
-      [v56 timeIntervalSince1970];
+      convertFromSystemToMonotonic = [v51 convertFromSystemToMonotonic];
+      convertFromSystemToMonotonic2 = [convertFromMonotonicToSystem convertFromSystemToMonotonic];
+      [convertFromSystemToMonotonic timeIntervalSince1970];
       v59 = v58;
-      [v57 timeIntervalSince1970];
+      [convertFromSystemToMonotonic2 timeIntervalSince1970];
       v61 = v60 - v59;
 
       v62 = [(PLBatteryBreakdownService *)self batteryBreakdownWithTimeRange:1 withDataRange:v59 withEntryTimeInterval:v61 withQueryType:0.0, 0.0, 3600.0];
-      [v55 setObject:v62 forKeyedSubscript:v52];
+      [dictionary3 setObject:v62 forKeyedSubscript:v52];
 
-      v63 = [(PLBLDService *)self bldEntryWithBatteryBreakdown:v55];
+      v63 = [(PLBLDService *)self bldEntryWithBatteryBreakdown:dictionary3];
       if (+[PLUtilities isPowerlogHelperd])
       {
         if ([MEMORY[0x277D3F180] debugEnabled])
@@ -360,9 +360,9 @@ uint64_t __40__PLBLDService_initOperatorDependancies__block_invoke_2(uint64_t a1
             v65 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s/%d: past N days results generated", "-[PLBLDService batteryBreakdownWithPayload:]", 176];
             v66 = MEMORY[0x277D3F178];
             v67 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBLDService.m"];
-            v68 = [v67 lastPathComponent];
+            lastPathComponent4 = [v67 lastPathComponent];
             v69 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBLDService batteryBreakdownWithPayload:]"];
-            [v66 logMessage:v65 fromFile:v68 fromFunction:v69 fromLineNumber:176];
+            [v66 logMessage:v65 fromFile:lastPathComponent4 fromFunction:v69 fromLineNumber:176];
 
             v70 = PLLogCommon();
             if (os_log_type_enabled(v70, OS_LOG_TYPE_DEBUG))
@@ -372,13 +372,13 @@ uint64_t __40__PLBLDService_initOperatorDependancies__block_invoke_2(uint64_t a1
               _os_log_debug_impl(&dword_25EE51000, v70, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
             }
 
-            self = v97;
+            self = selfCopy;
             v51 = v98;
           }
         }
 
-        v71 = [v63 serialized];
-        [v99 addObject:v71];
+        serialized3 = [v63 serialized];
+        [v99 addObject:serialized3];
       }
 
       else
@@ -387,17 +387,17 @@ uint64_t __40__PLBLDService_initOperatorDependancies__block_invoke_2(uint64_t a1
       }
 
       v48 = (v48 - 1);
-      v30 = v55;
-      v47 = v51;
+      dictionary2 = dictionary3;
+      convertFromMonotonicToSystem = v51;
     }
 
     while (v48 != -1);
-    v72 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     v73 = [v95 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
     v74 = [(PLBatteryBreakdownService *)self suggestionsWithEnergyEntries:v73];
-    [v72 setObject:v74 forKeyedSubscript:@"PLBatteryUISuggestionArrayKey"];
+    [dictionary4 setObject:v74 forKeyedSubscript:@"PLBatteryUISuggestionArrayKey"];
 
-    v75 = [(PLBLDService *)self bldEntryWithBatteryBreakdown:v72];
+    v75 = [(PLBLDService *)self bldEntryWithBatteryBreakdown:dictionary4];
     if (+[PLUtilities isPowerlogHelperd])
     {
       if ([MEMORY[0x277D3F180] debugEnabled])
@@ -418,9 +418,9 @@ uint64_t __40__PLBLDService_initOperatorDependancies__block_invoke_2(uint64_t a1
           v77 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s/%d: suggestion array generated", "-[PLBLDService batteryBreakdownWithPayload:]", 198];
           v78 = MEMORY[0x277D3F178];
           v79 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBLDService.m"];
-          v80 = [v79 lastPathComponent];
+          lastPathComponent5 = [v79 lastPathComponent];
           v81 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBLDService batteryBreakdownWithPayload:]"];
-          [v78 logMessage:v77 fromFile:v80 fromFunction:v81 fromLineNumber:198];
+          [v78 logMessage:v77 fromFile:lastPathComponent5 fromFunction:v81 fromLineNumber:198];
 
           v82 = PLLogCommon();
           if (os_log_type_enabled(v82, OS_LOG_TYPE_DEBUG))
@@ -428,12 +428,12 @@ uint64_t __40__PLBLDService_initOperatorDependancies__block_invoke_2(uint64_t a1
             __111__PLProcessPortMap_pidAndProcessNameForDestAddress_withDestPort_withSourceAddress_withSourcePort_withProtocol___block_invoke_cold_1();
           }
 
-          self = v97;
+          self = selfCopy;
         }
       }
 
-      v83 = [v75 serialized];
-      [v99 addObject:v83];
+      serialized4 = [v75 serialized];
+      [v99 addObject:serialized4];
     }
 
     else
@@ -460,9 +460,9 @@ uint64_t __40__PLBLDService_initOperatorDependancies__block_invoke_2(uint64_t a1
         v85 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s/%d: allEntries=%@", "-[PLBLDService batteryBreakdownWithPayload:]", 209, v99];
         v86 = MEMORY[0x277D3F178];
         v87 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBLDService.m"];
-        v88 = [v87 lastPathComponent];
+        lastPathComponent6 = [v87 lastPathComponent];
         v89 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBLDService batteryBreakdownWithPayload:]"];
-        [v86 logMessage:v85 fromFile:v88 fromFunction:v89 fromLineNumber:209];
+        [v86 logMessage:v85 fromFile:lastPathComponent6 fromFunction:v89 fromLineNumber:209];
 
         v90 = PLLogCommon();
         if (os_log_type_enabled(v90, OS_LOG_TYPE_DEBUG))
@@ -525,9 +525,9 @@ uint64_t __44__PLBLDService_batteryBreakdownWithPayload___block_invoke_107(uint6
   return result;
 }
 
-- (id)bldEntryWithBatteryBreakdown:(id)a3
+- (id)bldEntryWithBatteryBreakdown:(id)breakdown
 {
-  v4 = a3;
+  breakdownCopy = breakdown;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__PLBLDService_bldEntryWithBatteryBreakdown___block_invoke;
@@ -541,10 +541,10 @@ uint64_t __44__PLBLDService_batteryBreakdownWithPayload___block_invoke_107(uint6
   v5 = objc_alloc(MEMORY[0x277D3F190]);
   v6 = [v5 initWithEntryKey:bldEntryWithBatteryBreakdown__entryKey];
   [v6 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"BLDRetail"];
-  v7 = [v6 entryDate];
-  [v6 setObject:v7 forKeyedSubscript:@"LastUpDateTime"];
+  entryDate = [v6 entryDate];
+  [v6 setObject:entryDate forKeyedSubscript:@"LastUpDateTime"];
 
-  v8 = [PLUtilities JSONSanitizeDictionary:v4];
+  v8 = [PLUtilities JSONSanitizeDictionary:breakdownCopy];
   v9 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v8 options:0 error:0];
   if (v9)
   {

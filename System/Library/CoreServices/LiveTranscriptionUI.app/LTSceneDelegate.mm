@@ -1,21 +1,21 @@
 @interface LTSceneDelegate
 - (_TtC19LiveTranscriptionUI15LTSceneDelegate)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation LTSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_10001A568(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_10001A568(sceneCopy);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   static os_log_type_t.debug.getter();
   if (qword_1000626F0 != -1)

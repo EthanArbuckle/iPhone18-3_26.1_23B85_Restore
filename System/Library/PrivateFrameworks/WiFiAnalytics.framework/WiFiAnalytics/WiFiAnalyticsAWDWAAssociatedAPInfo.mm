@@ -1,12 +1,12 @@
 @interface WiFiAnalyticsAWDWAAssociatedAPInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWAAssociatedAPInfo
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWAAssociatedAPInfo;
   v4 = [(WiFiAnalyticsAWDWAAssociatedAPInfo *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWAAssociatedAPInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWAAssociatedAPInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   manufacturerElement = self->_manufacturerElement;
   if (manufacturerElement)
   {
-    [v3 setObject:manufacturerElement forKey:@"ManufacturerElement"];
+    [dictionary setObject:manufacturerElement forKey:@"ManufacturerElement"];
   }
 
   modelName = self->_modelName;
@@ -60,109 +60,109 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_manufacturerElement)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_modelName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_modelNumber)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deviceNameElement)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deviceNameData)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_manufacturerElement)
   {
-    [v4 setManufacturerElement:?];
-    v4 = v5;
+    [toCopy setManufacturerElement:?];
+    toCopy = v5;
   }
 
   if (self->_modelName)
   {
     [v5 setModelName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_modelNumber)
   {
     [v5 setModelNumber:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deviceNameElement)
   {
     [v5 setDeviceNameElement:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deviceNameData)
   {
     [v5 setDeviceNameData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_manufacturerElement copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_manufacturerElement copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_modelName copyWithZone:a3];
+  v8 = [(NSString *)self->_modelName copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_modelNumber copyWithZone:a3];
+  v10 = [(NSString *)self->_modelNumber copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
-  v12 = [(NSString *)self->_deviceNameElement copyWithZone:a3];
+  v12 = [(NSString *)self->_deviceNameElement copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
-  v14 = [(NSString *)self->_deviceNameData copyWithZone:a3];
+  v14 = [(NSString *)self->_deviceNameData copyWithZone:zone];
   v15 = v5[1];
   v5[1] = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((manufacturerElement = self->_manufacturerElement, !(manufacturerElement | v4[3])) || -[NSString isEqual:](manufacturerElement, "isEqual:")) && ((modelName = self->_modelName, !(modelName | v4[4])) || -[NSString isEqual:](modelName, "isEqual:")) && ((modelNumber = self->_modelNumber, !(modelNumber | v4[5])) || -[NSString isEqual:](modelNumber, "isEqual:")) && ((deviceNameElement = self->_deviceNameElement, !(deviceNameElement | v4[2])) || -[NSString isEqual:](deviceNameElement, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((manufacturerElement = self->_manufacturerElement, !(manufacturerElement | equalCopy[3])) || -[NSString isEqual:](manufacturerElement, "isEqual:")) && ((modelName = self->_modelName, !(modelName | equalCopy[4])) || -[NSString isEqual:](modelName, "isEqual:")) && ((modelNumber = self->_modelNumber, !(modelNumber | equalCopy[5])) || -[NSString isEqual:](modelNumber, "isEqual:")) && ((deviceNameElement = self->_deviceNameElement, !(deviceNameElement | equalCopy[2])) || -[NSString isEqual:](deviceNameElement, "isEqual:")))
   {
     deviceNameData = self->_deviceNameData;
-    if (deviceNameData | v4[1])
+    if (deviceNameData | equalCopy[1])
     {
       v10 = [(NSString *)deviceNameData isEqual:?];
     }
@@ -190,30 +190,30 @@
   return v6 ^ [(NSString *)self->_deviceNameData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[3])
+  fromCopy = from;
+  if (fromCopy[3])
   {
     [(WiFiAnalyticsAWDWAAssociatedAPInfo *)self setManufacturerElement:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(WiFiAnalyticsAWDWAAssociatedAPInfo *)self setModelName:?];
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(WiFiAnalyticsAWDWAAssociatedAPInfo *)self setModelNumber:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(WiFiAnalyticsAWDWAAssociatedAPInfo *)self setDeviceNameElement:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(WiFiAnalyticsAWDWAAssociatedAPInfo *)self setDeviceNameData:?];
   }

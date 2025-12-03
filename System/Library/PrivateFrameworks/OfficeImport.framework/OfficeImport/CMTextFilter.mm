@@ -1,10 +1,10 @@
 @interface CMTextFilter
-+ (id)convertLineBreaksToParagraphBreaks:(id)a3;
-+ (id)convertToVericalString:(id)a3;
-+ (id)covertFormatString:(id)a3;
-+ (id)filterHyperlinkField:(id)a3;
-+ (id)filterSpecialCodes:(id)a3;
-+ (id)filterToPreserveMultipleWhiteSpaces:(id)a3;
++ (id)convertLineBreaksToParagraphBreaks:(id)breaks;
++ (id)convertToVericalString:(id)string;
++ (id)covertFormatString:(id)string;
++ (id)filterHyperlinkField:(id)field;
++ (id)filterSpecialCodes:(id)codes;
++ (id)filterToPreserveMultipleWhiteSpaces:(id)spaces;
 - (CMTextFilter)init;
 @end
 
@@ -17,19 +17,19 @@
   return [(CMTextFilter *)&v3 init];
 }
 
-+ (id)filterHyperlinkField:(id)a3
++ (id)filterHyperlinkField:(id)field
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"HYPERLINK"];
+  fieldCopy = field;
+  v4 = [fieldCopy rangeOfString:@"HYPERLINK"];
   v6 = v5;
   if (v5)
   {
     v7 = v4;
-    v8 = [MEMORY[0x277CCAB68] stringWithString:v3];
+    v8 = [MEMORY[0x277CCAB68] stringWithString:fieldCopy];
     [v8 deleteCharactersInRange:{v7, v6}];
     [v8 replaceOccurrencesOfString:@" withString:&stru_286EE1130 options:2 range:{0, objc_msgSend(v8, "length"")}];
-    v9 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v10 = [v8 oi_rangeOfCharactersFromSet:v9 index:0];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v10 = [v8 oi_rangeOfCharactersFromSet:whitespaceCharacterSet index:0];
     v12 = v11;
 
     if (v12 && !v10)
@@ -45,8 +45,8 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v13 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v14 = [v8 oi_rangeOfCharactersFromSet:v13 index:0];
+    whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v14 = [v8 oi_rangeOfCharactersFromSet:whitespaceCharacterSet2 index:0];
     v16 = v15;
 
     if (v16 && v10 == [v8 length] - v16)
@@ -82,20 +82,20 @@ LABEL_17:
   return v6;
 }
 
-+ (id)covertFormatString:(id)a3
++ (id)covertFormatString:(id)string
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAB68] stringWithString:v3];
-  [v4 replaceOccurrencesOfString:@" withString:&stru_286EE1130 options:2 range:{0, objc_msgSend(v3, "length"")}];
+  stringCopy = string;
+  v4 = [MEMORY[0x277CCAB68] stringWithString:stringCopy];
+  [v4 replaceOccurrencesOfString:@" withString:&stru_286EE1130 options:2 range:{0, objc_msgSend(stringCopy, "length"")}];
 
   return v4;
 }
 
-+ (id)filterSpecialCodes:(id)a3
++ (id)filterSpecialCodes:(id)codes
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:v3];
-  v5 = [v3 length];
+  codesCopy = codes;
+  v4 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:codesCopy];
+  v5 = [codesCopy length];
   if (v5)
   {
     for (i = 0; i < v5; ++i)
@@ -134,10 +134,10 @@ LABEL_17:
   return v4;
 }
 
-+ (id)convertLineBreaksToParagraphBreaks:(id)a3
++ (id)convertLineBreaksToParagraphBreaks:(id)breaks
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:v3];
+  breaksCopy = breaks;
+  v4 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:breaksCopy];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c", 10];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c", 13];
   [v4 replaceOccurrencesOfString:v5 withString:v6 options:2 range:{0, objc_msgSend(v4, "length")}];
@@ -145,10 +145,10 @@ LABEL_17:
   return v4;
 }
 
-+ (id)filterToPreserveMultipleWhiteSpaces:(id)a3
++ (id)filterToPreserveMultipleWhiteSpaces:(id)spaces
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:v3];
+  spacesCopy = spaces;
+  v4 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:spacesCopy];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@" &nbsp"];;
     ;
   }
@@ -156,15 +156,15 @@ LABEL_17:
   return v4;
 }
 
-+ (id)convertToVericalString:(id)a3
++ (id)convertToVericalString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  for (i = 0; [v3 length] > i; ++i)
+  for (i = 0; [stringCopy length] > i; ++i)
   {
-    v6 = [v3 characterAtIndex:i];
-    v7 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v8 = [v7 characterIsMember:v6];
+    v6 = [stringCopy characterAtIndex:i];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v8 = [whitespaceAndNewlineCharacterSet characterIsMember:v6];
 
     if (v8)
     {

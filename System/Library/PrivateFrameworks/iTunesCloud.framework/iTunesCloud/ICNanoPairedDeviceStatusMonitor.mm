@@ -11,26 +11,26 @@
 - (id)_allObservers;
 - (id)_init;
 - (void)_handlePairedDeviceChangedNotification;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)deviceBecameActive:(id)a3;
-- (void)initialSyncStateObserver:(id)a3 initialSyncDidCompleteForPairingIdentifier:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)deviceBecameActive:(id)active;
+- (void)initialSyncStateObserver:(id)observer initialSyncDidCompleteForPairingIdentifier:(id)identifier;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation ICNanoPairedDeviceStatusMonitor
 
-- (void)initialSyncStateObserver:(id)a3 initialSyncDidCompleteForPairingIdentifier:(id)a4
+- (void)initialSyncStateObserver:(id)observer initialSyncDidCompleteForPairingIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   callBackQueue = self->_callBackQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __103__ICNanoPairedDeviceStatusMonitor_initialSyncStateObserver_initialSyncDidCompleteForPairingIdentifier___block_invoke;
   v8[3] = &unk_1E7BFA078;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = identifierCopy;
+  v7 = identifierCopy;
   dispatch_async(callBackQueue, v8);
 }
 
@@ -74,7 +74,7 @@ void __103__ICNanoPairedDeviceStatusMonitor_initialSyncStateObserver_initialSync
   }
 }
 
-- (void)deviceBecameActive:(id)a3
+- (void)deviceBecameActive:(id)active
 {
   callBackQueue = self->_callBackQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -184,12 +184,12 @@ void __73__ICNanoPairedDeviceStatusMonitor__handlePairedDeviceChangedNotificatio
 
 - (id)_activePairedDevice
 {
-  v2 = [getNRPairedDeviceRegistryClass() sharedInstance];
-  v3 = [getNRPairedDeviceRegistryClass() activeDeviceSelectorBlock];
-  v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  sharedInstance = [getNRPairedDeviceRegistryClass() sharedInstance];
+  activeDeviceSelectorBlock = [getNRPairedDeviceRegistryClass() activeDeviceSelectorBlock];
+  v4 = [sharedInstance getAllDevicesWithArchivedAltAccountDevicesMatching:activeDeviceSelectorBlock];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (id)_allObservers
@@ -231,15 +231,15 @@ void __48__ICNanoPairedDeviceStatusMonitor__allObservers__block_invoke(uint64_t 
   v16 = 0x2020000000;
   v17 = 0;
   v3 = +[ICDefaults standardDefaults];
-  v4 = [v3 shouldForceWatchInitialSyncCompletion];
+  shouldForceWatchInitialSyncCompletion = [v3 shouldForceWatchInitialSyncCompletion];
 
-  if (v4)
+  if (shouldForceWatchInitialSyncCompletion)
   {
     v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v19 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Forcing initial sync completion from debug override", buf, 0xCu);
     }
 
@@ -248,16 +248,16 @@ void __48__ICNanoPairedDeviceStatusMonitor__allObservers__block_invoke(uint64_t 
 
   else
   {
-    v7 = [(ICNanoPairedDeviceStatusMonitor *)self activePairedDevicePairingID];
+    activePairedDevicePairingID = [(ICNanoPairedDeviceStatusMonitor *)self activePairedDevicePairingID];
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __56__ICNanoPairedDeviceStatusMonitor_isInitialSyncComplete__block_invoke;
     block[3] = &unk_1E7BF97E8;
-    v11 = v7;
-    v12 = self;
+    v11 = activePairedDevicePairingID;
+    selfCopy2 = self;
     v13 = &v14;
-    v5 = v7;
+    v5 = activePairedDevicePairingID;
     dispatch_sync(queue, block);
     v6 = *(v15 + 24);
   }
@@ -341,8 +341,8 @@ void __56__ICNanoPairedDeviceStatusMonitor_isInitialSyncComplete__block_invoke_2
   pairedDeviceMediaGUID = self->_pairedDeviceMediaGUID;
   if (!pairedDeviceMediaGUID)
   {
-    v4 = [(ICNanoPairedDeviceStatusMonitor *)self _activePairedDevice];
-    if (v4)
+    _activePairedDevice = [(ICNanoPairedDeviceStatusMonitor *)self _activePairedDevice];
+    if (_activePairedDevice)
     {
       v27 = 0;
       v28 = &v27;
@@ -365,22 +365,22 @@ void __56__ICNanoPairedDeviceStatusMonitor_isInitialSyncComplete__block_invoke_2
       _Block_object_dispose(&v27, 8);
       if (!v5)
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getNRDevicePropertyIsAltAccount(void)"];
-        [v20 handleFailureInFunction:v21 file:@"ICNanoPairedDeviceStatusMonitor.m" lineNumber:38 description:{@"%s", dlerror()}];
+        [currentHandler handleFailureInFunction:v21 file:@"ICNanoPairedDeviceStatusMonitor.m" lineNumber:38 description:{@"%s", dlerror()}];
         goto LABEL_25;
       }
 
-      v7 = [v4 valueForProperty:*v5];
-      v8 = [v7 BOOLValue];
+      v7 = [_activePairedDevice valueForProperty:*v5];
+      bOOLValue = [v7 BOOLValue];
 
-      if (v8)
+      if (bOOLValue)
       {
         goto LABEL_20;
       }
 
       v9 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"C5DDE5DD-2FF7-4735-80A3-0108488556DE"];
-      v10 = [v4 supportsCapability:v9];
+      v10 = [_activePairedDevice supportsCapability:v9];
 
       if (v10)
       {
@@ -407,9 +407,9 @@ void __56__ICNanoPairedDeviceStatusMonitor_isInitialSyncComplete__block_invoke_2
         {
           while (1)
           {
-            v20 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
             v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getNRDevicePropertyCompanionMusicGUID(void)"];
-            [v20 handleFailureInFunction:v21 file:@"ICNanoPairedDeviceStatusMonitor.m" lineNumber:36 description:{@"%s", dlerror()}];
+            [currentHandler handleFailureInFunction:v21 file:@"ICNanoPairedDeviceStatusMonitor.m" lineNumber:36 description:{@"%s", dlerror()}];
 LABEL_25:
 
             __break(1u);
@@ -425,7 +425,7 @@ LABEL_25:
       }
 
       v16 = v13;
-      v17 = [v4 valueForProperty:v13];
+      v17 = [_activePairedDevice valueForProperty:v13];
       v18 = self->_pairedDeviceMediaGUID;
       self->_pairedDeviceMediaGUID = v17;
 
@@ -467,11 +467,11 @@ LABEL_20:
   pairedDeviceGUID = self->_pairedDeviceGUID;
   if (!pairedDeviceGUID)
   {
-    v4 = [(ICNanoPairedDeviceStatusMonitor *)self _activePairedDevice];
-    if (v4)
+    _activePairedDevice = [(ICNanoPairedDeviceStatusMonitor *)self _activePairedDevice];
+    if (_activePairedDevice)
     {
       v5 = getNRDevicePropertyUDID();
-      v6 = [v4 valueForProperty:v5];
+      v6 = [_activePairedDevice valueForProperty:v5];
       v7 = self->_pairedDeviceGUID;
       self->_pairedDeviceGUID = v6;
 
@@ -521,7 +521,7 @@ LABEL_11:
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__7401;
   v11 = __Block_byref_object_dispose__7402;
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -738,7 +738,7 @@ void __62__ICNanoPairedDeviceStatusMonitor_activePairedDevicePairingID__block_in
   *(v3 + 40) = v2;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   queue = self->_queue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -746,22 +746,22 @@ void __62__ICNanoPairedDeviceStatusMonitor_activePairedDevicePairingID__block_in
   v5[2] = __50__ICNanoPairedDeviceStatusMonitor_removeObserver___block_invoke;
   v5[3] = &unk_1E7BF9890;
   v5[4] = self;
-  v5[5] = a3;
-  v4 = a3;
+  v5[5] = observer;
+  observerCopy = observer;
   dispatch_async(queue, v5);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__ICNanoPairedDeviceStatusMonitor_addObserver___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -774,9 +774,9 @@ void __62__ICNanoPairedDeviceStatusMonitor_activePairedDevicePairingID__block_in
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.nanoregistry.devicedidpair", 0);
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.nanoregistry.devicedidunpair", 0);
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.nanoregistry.paireddevicedidchangeversion", 0);
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = getNRPairedDeviceRegistryDeviceDidBecomeActive();
-  [v5 removeObserver:self name:v6 object:0];
+  [defaultCenter removeObserver:self name:v6 object:0];
 
   v7.receiver = self;
   v7.super_class = ICNanoPairedDeviceStatusMonitor;
@@ -862,16 +862,16 @@ void __62__ICNanoPairedDeviceStatusMonitor_activePairedDevicePairingID__block_in
 
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, HandleDeviceDidPairNotification, @"com.apple.nanoregistry.devicedidpair", 0, CFNotificationSuspensionBehaviorDrop);
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, HandleDeviceDidUnPairNotification, @"com.apple.nanoregistry.devicedidunpair", 0, CFNotificationSuspensionBehaviorDrop);
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v21 = getNRPairedDeviceRegistryDeviceDidBecomeActive();
-    [v20 addObserver:v2 selector:sel_deviceBecameActive_ name:v21 object:0];
+    [defaultCenter addObserver:v2 selector:sel_deviceBecameActive_ name:v21 object:0];
 
     return v2;
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getNRDevicePropertyPairingID(void)"];
-  [v23 handleFailureInFunction:v24 file:@"ICNanoPairedDeviceStatusMonitor.m" lineNumber:34 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v24 file:@"ICNanoPairedDeviceStatusMonitor.m" lineNumber:34 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;

@@ -1,15 +1,15 @@
 @interface PLModelMigrationAction_UpdatePlaybackControlBadgeAttribute
 - (id)buildFetchRequest;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_UpdatePlaybackControlBadgeAttribute
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v91 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLModelMigrationAction_UpdatePlaybackControlBadgeAttribute *)self buildFetchRequest];
+  contextCopy = context;
+  buildFetchRequest = [(PLModelMigrationAction_UpdatePlaybackControlBadgeAttribute *)self buildFetchRequest];
   v50 = 0;
   v51 = &v50;
   v52 = 0x3032000000;
@@ -23,7 +23,7 @@
   v48[1] = 3221225472;
   v48[2] = __106__PLModelMigrationAction_UpdatePlaybackControlBadgeAttribute_performActionWithManagedObjectContext_error___block_invoke;
   v48[3] = &unk_1E7575B30;
-  v11 = v6;
+  v11 = contextCopy;
   v49 = v11;
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
@@ -36,7 +36,7 @@
   v46[2] = __106__PLModelMigrationAction_UpdatePlaybackControlBadgeAttribute_performActionWithManagedObjectContext_error___block_invoke_3;
   v46[3] = &unk_1E756C620;
   v46[4] = &v50;
-  v12 = [(PLEnumerateAndSaveController *)v8 initWithName:v10 fetchRequest:v7 context:v11 options:4 generateContextBlock:v48 didFetchObjectIDsBlock:v47 processResultBlock:v46];
+  v12 = [(PLEnumerateAndSaveController *)v8 initWithName:v10 fetchRequest:buildFetchRequest context:v11 options:4 generateContextBlock:v48 didFetchObjectIDsBlock:v47 processResultBlock:v46];
 
   v45 = 0;
   v13 = [(PLEnumerateAndSaveController *)v12 processObjectsWithError:&v45];
@@ -48,17 +48,17 @@
 
     if (v16)
     {
-      v17 = [(PLModelMigrationActionCore *)self logger];
-      v18 = v17 == 0;
+      logger = [(PLModelMigrationActionCore *)self logger];
+      v18 = logger == 0;
 
       if (v18)
       {
         v32 = PLMigrationGetLog();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
         {
-          v33 = [v51[5] completedUnitCount];
+          completedUnitCount = [v51[5] completedUnitCount];
           *buf = 134217984;
-          *&buf[4] = v33;
+          *&buf[4] = completedUnitCount;
           _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_INFO, "Completed playback bit update on %lu assets", buf, 0xCu);
         }
       }
@@ -98,9 +98,9 @@
         memset(buf, 0, sizeof(buf));
         v19 = PLMigrationGetLog();
         os_log_type_enabled(v19, OS_LOG_TYPE_INFO);
-        v20 = [v51[5] completedUnitCount];
+        completedUnitCount2 = [v51[5] completedUnitCount];
         v56 = 134217984;
-        v57 = v20;
+        v57 = completedUnitCount2;
         LODWORD(v43) = 12;
         v21 = _os_log_send_and_compose_impl();
 
@@ -124,8 +124,8 @@
 
     if (v24)
     {
-      v25 = [(PLModelMigrationActionCore *)self logger];
-      v26 = v25 == 0;
+      logger2 = [(PLModelMigrationActionCore *)self logger];
+      v26 = logger2 == 0;
 
       if (v26)
       {
@@ -144,7 +144,7 @@
 
       else
       {
-        v44 = a4;
+        errorCopy = error;
         v89 = 0u;
         v90 = 0u;
         v87 = 0u;
@@ -187,7 +187,7 @@
         LODWORD(v43) = 22;
         v30 = _os_log_send_and_compose_impl();
 
-        a4 = v44;
+        error = errorCopy;
         v31 = [(PLModelMigrationActionCore *)self logger:&v56];
         [v31 logWithMessage:v30 fromCodeLocation:"PLModelMigrationActions_18000.m" type:{563, 16}];
 
@@ -204,7 +204,7 @@
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v38 = v14;
   v39 = v38;
-  if (a4)
+  if (error)
   {
     v40 = v13;
   }
@@ -217,7 +217,7 @@
   if ((v40 & 1) == 0)
   {
     v41 = v38;
-    *a4 = v39;
+    *error = v39;
   }
 
   _Block_object_dispose(&v50, 8);

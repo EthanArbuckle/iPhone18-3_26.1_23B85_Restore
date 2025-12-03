@@ -1,31 +1,31 @@
 @interface VSDigitView
 - (CGSize)intrinsicContentSize;
-- (VSDigitView)initWithFrame:(CGRect)a3;
+- (VSDigitView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation VSDigitView
 
-- (VSDigitView)initWithFrame:(CGRect)a3
+- (VSDigitView)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = VSDigitView;
-  v3 = [(VSDigitView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VSDigitView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] whiteColor];
-    [(VSDigitView *)v3 setBackgroundColor:v4];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(VSDigitView *)v3 setBackgroundColor:whiteColor];
 
-    v5 = [(VSDigitView *)v3 layer];
-    v6 = [MEMORY[0x277D75348] systemGrayColor];
-    [v5 setBorderColor:{objc_msgSend(v6, "CGColor")}];
+    layer = [(VSDigitView *)v3 layer];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [layer setBorderColor:{objc_msgSend(systemGrayColor, "CGColor")}];
 
-    v7 = [(VSDigitView *)v3 layer];
-    [v7 setCornerRadius:5.0];
+    layer2 = [(VSDigitView *)v3 layer];
+    [layer2 setCornerRadius:5.0];
 
     v8 = objc_alloc_init(MEMORY[0x277D756B8]);
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [MEMORY[0x277D75348] blackColor];
-    [v8 setTextColor:v9];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [v8 setTextColor:blackColor];
 
     v10 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A08]];
     [v8 setFont:v10];
@@ -34,24 +34,24 @@
     [(VSDigitView *)v3 setLabel:v8];
     [(VSDigitView *)v3 addSubview:v8];
     [(VSDigitView *)v3 setUserInteractionEnabled:0];
-    v11 = [v8 topAnchor];
-    v12 = [(VSDigitView *)v3 topAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:0.0];
+    topAnchor = [v8 topAnchor];
+    topAnchor2 = [(VSDigitView *)v3 topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     [v13 setActive:1];
 
-    v14 = [v8 bottomAnchor];
-    v15 = [(VSDigitView *)v3 bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15 constant:0.0];
+    bottomAnchor = [v8 bottomAnchor];
+    bottomAnchor2 = [(VSDigitView *)v3 bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
     [v16 setActive:1];
 
-    v17 = [v8 leftAnchor];
-    v18 = [(VSDigitView *)v3 leftAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18 constant:0.0];
+    leftAnchor = [v8 leftAnchor];
+    leftAnchor2 = [(VSDigitView *)v3 leftAnchor];
+    v19 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:0.0];
     [v19 setActive:1];
 
-    v20 = [v8 rightAnchor];
-    v21 = [(VSDigitView *)v3 rightAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21 constant:0.0];
+    rightAnchor = [v8 rightAnchor];
+    rightAnchor2 = [(VSDigitView *)v3 rightAnchor];
+    v22 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:0.0];
     [v22 setActive:1];
   }
 

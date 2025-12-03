@@ -1,17 +1,17 @@
 @interface TSDMutableInfoGeometry
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setHeightValid:(BOOL)a3;
-- (void)setHorizontalFlip:(BOOL)a3;
-- (void)setPosition:(CGPoint)a3;
-- (void)setSize:(CGSize)a3;
-- (void)setTransformedBoundsOrigin:(CGPoint)a3;
-- (void)setVerticalFlip:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setCenter:(CGPoint)center;
+- (void)setHeightValid:(BOOL)valid;
+- (void)setHorizontalFlip:(BOOL)flip;
+- (void)setPosition:(CGPoint)position;
+- (void)setSize:(CGSize)size;
+- (void)setTransformedBoundsOrigin:(CGPoint)origin;
+- (void)setVerticalFlip:(BOOL)flip;
 @end
 
 @implementation TSDMutableInfoGeometry
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSDInfoGeometry alloc];
   flags = self->super._flags;
@@ -24,10 +24,10 @@
   return objc_msgSend_initWithPosition_size_widthValid_heightValid_horizontalFlip_verticalFlip_angle_(v4, v5, *&flags & 1, (*&flags >> 1) & 1, (*&flags >> 2) & 1, (*&flags >> 3) & 1, x, y, width, height, angle);
 }
 
-- (void)setPosition:(CGPoint)a3
+- (void)setPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   if ((TSUPointIsFinite() & 1) == 0)
   {
     v7 = MEMORY[0x277D81150];
@@ -44,10 +44,10 @@
   self->super._position.y = y;
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (TSUSizeHasNaNComponents())
   {
     v7 = MEMORY[0x277D81150];
@@ -74,9 +74,9 @@
   self->super._size.height = height;
 }
 
-- (void)setHeightValid:(BOOL)a3
+- (void)setHeightValid:(BOOL)valid
 {
-  if (a3)
+  if (valid)
   {
     v3 = 2;
   }
@@ -89,9 +89,9 @@
   *&self->super._flags = *&self->super._flags & 0xFD | v3;
 }
 
-- (void)setHorizontalFlip:(BOOL)a3
+- (void)setHorizontalFlip:(BOOL)flip
 {
-  if (a3)
+  if (flip)
   {
     v3 = 4;
   }
@@ -104,9 +104,9 @@
   *&self->super._flags = *&self->super._flags & 0xFB | v3;
 }
 
-- (void)setVerticalFlip:(BOOL)a3
+- (void)setVerticalFlip:(BOOL)flip
 {
-  if (a3)
+  if (flip)
   {
     v3 = 8;
   }
@@ -119,15 +119,15 @@
   *&self->super._flags = *&self->super._flags & 0xF7 | v3;
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
   __asm { FMOV            V3.2D, #-0.5 }
 
-  y = a3.y;
-  self->super._position = vaddq_f64(a3, vmulq_f64(self->super._size, _Q3));
+  y = center.y;
+  self->super._position = vaddq_f64(center, vmulq_f64(self->super._size, _Q3));
 }
 
-- (void)setTransformedBoundsOrigin:(CGPoint)a3
+- (void)setTransformedBoundsOrigin:(CGPoint)origin
 {
   objc_msgSend_transformedBoundsOrigin(self, a2, v3);
   TSUSubtractPoints();

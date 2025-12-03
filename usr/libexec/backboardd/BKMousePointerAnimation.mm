@@ -1,7 +1,7 @@
 @interface BKMousePointerAnimation
-- (BKMousePointerAnimation)initWithRelativeTranslation:(CGPoint)a3 destinationPoint:(CGPoint)a4 animationDriver:(id)a5 updateRate:(int64_t)a6 applierBlock:(id)a7 completionBlock:(id)a8;
+- (BKMousePointerAnimation)initWithRelativeTranslation:(CGPoint)translation destinationPoint:(CGPoint)point animationDriver:(id)driver updateRate:(int64_t)rate applierBlock:(id)block completionBlock:(id)completionBlock;
 - (CGPoint)destinationPoint;
-- (void)displayLinkFired:(id)a3;
+- (void)displayLinkFired:(id)fired;
 - (void)start;
 - (void)stop;
 @end
@@ -51,9 +51,9 @@
   }
 }
 
-- (void)displayLinkFired:(id)a3
+- (void)displayLinkFired:(id)fired
 {
-  [a3 timestamp];
+  [fired timestamp];
   [(BKMousePointerAnimationDriver *)self->_animationDriver applyForTime:v4 - self->_initialTimestamp];
   [(BKMousePointerAnimationDriver *)self->_animationDriver currentTranslation];
   v7 = self->_lastSentOriginRelativeOffset.y + v6 - self->_lastSentOriginRelativeOffset.y;
@@ -84,15 +84,15 @@
   }
 }
 
-- (BKMousePointerAnimation)initWithRelativeTranslation:(CGPoint)a3 destinationPoint:(CGPoint)a4 animationDriver:(id)a5 updateRate:(int64_t)a6 applierBlock:(id)a7 completionBlock:(id)a8
+- (BKMousePointerAnimation)initWithRelativeTranslation:(CGPoint)translation destinationPoint:(CGPoint)point animationDriver:(id)driver updateRate:(int64_t)rate applierBlock:(id)block completionBlock:(id)completionBlock
 {
-  y = a4.y;
-  x = a4.x;
-  v14 = a3.y;
-  v15 = a3.x;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
+  y = point.y;
+  x = point.x;
+  v14 = translation.y;
+  v15 = translation.x;
+  driverCopy = driver;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v27.receiver = self;
   v27.super_class = BKMousePointerAnimation;
   v20 = [(BKMousePointerAnimation *)&v27 init];
@@ -105,13 +105,13 @@
     v20->_relativeTranslation.y = v14;
     v20->_destinationPoint.x = x;
     v20->_destinationPoint.y = y;
-    objc_storeStrong(&v20->_animationDriver, a5);
-    v21->_targetFPS = a6;
-    v22 = [v18 copy];
+    objc_storeStrong(&v20->_animationDriver, driver);
+    v21->_targetFPS = rate;
+    v22 = [blockCopy copy];
     applierBlock = v21->_applierBlock;
     v21->_applierBlock = v22;
 
-    v24 = [v19 copy];
+    v24 = [completionBlockCopy copy];
     completionBlock = v21->_completionBlock;
     v21->_completionBlock = v24;
   }

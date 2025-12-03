@@ -1,18 +1,18 @@
 @interface SCUIContactParentsHelper
-+ (id)urlFromAddressList:(id)a3;
-+ (void)obtainChatWithParentsURLForInterventionType:(int64_t)a3 completionHandler:(id)a4;
-+ (void)obtainParentsForCurrentContact:(id)a3;
-+ (void)openChatWithParentsForInterventionType:(int64_t)a3;
-+ (void)openChatWithURL:(id)a3;
++ (id)urlFromAddressList:(id)list;
++ (void)obtainChatWithParentsURLForInterventionType:(int64_t)type completionHandler:(id)handler;
++ (void)obtainParentsForCurrentContact:(id)contact;
++ (void)openChatWithParentsForInterventionType:(int64_t)type;
++ (void)openChatWithURL:(id)l;
 @end
 
 @implementation SCUIContactParentsHelper
 
-+ (void)openChatWithParentsForInterventionType:(int64_t)a3
++ (void)openChatWithParentsForInterventionType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       dispatch_async(MEMORY[0x1E69E96A0], &__block_literal_global);
     }
@@ -48,13 +48,13 @@ void __67__SCUIContactParentsHelper_openChatWithParentsForInterventionType___blo
   [SCUIContactParentsHelper openChatWithURL:v1];
 }
 
-+ (void)obtainChatWithParentsURLForInterventionType:(int64_t)a3 completionHandler:(id)a4
++ (void)obtainChatWithParentsURLForInterventionType:(int64_t)type completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3)
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v7 = [SCUIContactParentsHelper urlFromAddressList:0];
       (v6)[2](v6, v7);
@@ -67,7 +67,7 @@ void __67__SCUIContactParentsHelper_openChatWithParentsForInterventionType___blo
     v8[1] = 3221225472;
     v8[2] = __90__SCUIContactParentsHelper_obtainChatWithParentsURLForInterventionType_completionHandler___block_invoke;
     v8[3] = &unk_1E7FF2478;
-    v9 = v5;
+    v9 = handlerCopy;
     [SCUIContactParentsHelper obtainParentsForCurrentContact:v8];
   }
 }
@@ -79,17 +79,17 @@ void __90__SCUIContactParentsHelper_obtainChatWithParentsURLForInterventionType_
   (*(v2 + 16))(v2, v3);
 }
 
-+ (void)openChatWithURL:(id)a3
++ (void)openChatWithURL:(id)l
 {
   v3 = MEMORY[0x1E69DC668];
-  v4 = a3;
-  v5 = [v3 sharedApplication];
-  [v5 openURL:v4 options:MEMORY[0x1E695E0F8] completionHandler:0];
+  lCopy = l;
+  sharedApplication = [v3 sharedApplication];
+  [sharedApplication openURL:lCopy options:MEMORY[0x1E695E0F8] completionHandler:0];
 }
 
-+ (id)urlFromAddressList:(id)a3
++ (id)urlFromAddressList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v4 = objc_opt_new();
   v5 = [MEMORY[0x1E696AF60] queryItemWithName:@"service" value:@"iMessage"];
   [v4 addObject:v5];
@@ -99,10 +99,10 @@ void __90__SCUIContactParentsHelper_obtainChatWithParentsURLForInterventionType_
   v8 = [v6 queryItemWithName:@"body" value:v7];
   [v4 addObject:v8];
 
-  if ([v3 count])
+  if ([listCopy count])
   {
     v9 = MEMORY[0x1E696AF60];
-    v10 = [v3 componentsJoinedByString:{@", "}];
+    v10 = [listCopy componentsJoinedByString:{@", "}];
     v11 = [v9 queryItemWithName:@"recipients" value:v10];
     [v4 addObject:v11];
 
@@ -117,16 +117,16 @@ void __90__SCUIContactParentsHelper_obtainChatWithParentsURLForInterventionType_
   return v14;
 }
 
-+ (void)obtainParentsForCurrentContact:(id)a3
++ (void)obtainParentsForCurrentContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = objc_alloc_init(MEMORY[0x1E699C070]);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__SCUIContactParentsHelper_obtainParentsForCurrentContact___block_invoke;
   v6[3] = &unk_1E7FF24A0;
-  v7 = v3;
-  v5 = v3;
+  v7 = contactCopy;
+  v5 = contactCopy;
   [v4 startRequestWithCompletionHandler:v6];
 }
 

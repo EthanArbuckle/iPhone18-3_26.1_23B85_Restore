@@ -1,16 +1,16 @@
 @interface MTSleepModeStateMachineOffState
-- (void)didEnterWithPreviousState:(id)a3;
+- (void)didEnterWithPreviousState:(id)state;
 @end
 
 @implementation MTSleepModeStateMachineOffState
 
-- (void)didEnterWithPreviousState:(id)a3
+- (void)didEnterWithPreviousState:(id)state
 {
-  if (self != a3 && a3)
+  if (self != state && state)
   {
-    v6 = [(MTStateMachineState *)self stateMachine];
-    v5 = [(MTStateMachineState *)self stateMachine];
-    [v6 stateMachine:v5 disengageSleepModeUserRequested:0];
+    stateMachine = [(MTStateMachineState *)self stateMachine];
+    stateMachine2 = [(MTStateMachineState *)self stateMachine];
+    [stateMachine stateMachine:stateMachine2 disengageSleepModeUserRequested:0];
   }
 }
 

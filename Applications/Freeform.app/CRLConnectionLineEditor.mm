@@ -1,36 +1,36 @@
 @interface CRLConnectionLineEditor
-- (BOOL)canHandleInsertAndConnectBoardItem:(id)a3;
+- (BOOL)canHandleInsertAndConnectBoardItem:(id)item;
 - (BOOL)currentSelectionIsValidForInsertAndConnectBoardItem;
 - (BOOL)p_canSaveDefaultInsertionPreset;
-- (CGPoint)p_unscaledOffsetWhenInsertItem:(id)a3 atEnd:(id)a4;
-- (double)p_outsetOnLeft:(BOOL)a3;
+- (CGPoint)p_unscaledOffsetWhenInsertItem:(id)item atEnd:(id)end;
+- (double)p_outsetOnLeft:(BOOL)left;
 - (id)anyConnectionLine;
 - (id)connectionLines;
-- (id)p_insertionContextForInsertAndConnectBoardItem:(id)a3;
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4;
-- (unint64_t)p_getMagnetTypeOppositeFromType:(unint64_t)a3;
-- (void)addMiniFormatterElementsToArray:(id)a3 atPoint:(CGPoint)a4;
+- (id)p_insertionContextForInsertAndConnectBoardItem:(id)item;
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender;
+- (unint64_t)p_getMagnetTypeOppositeFromType:(unint64_t)type;
+- (void)addMiniFormatterElementsToArray:(id)array atPoint:(CGPoint)point;
 - (void)beginChangingConnectionOutset;
 - (void)endChangingConnectionOutset;
-- (void)insertAndConnectBoardItem:(id)a3 postProcessBlock:(id)a4;
-- (void)p_didChangeConnectionOutset:(double)a3 onLeft:(BOOL)a4;
-- (void)p_setDynamicOutsetFrom:(id)a3;
-- (void)saveDefaultInsertionPreset:(id)a3;
-- (void)setConnectionLineType:(int64_t)a3;
-- (void)toggleLineType:(id)a3;
+- (void)insertAndConnectBoardItem:(id)item postProcessBlock:(id)block;
+- (void)p_didChangeConnectionOutset:(double)outset onLeft:(BOOL)left;
+- (void)p_setDynamicOutsetFrom:(id)from;
+- (void)saveDefaultInsertionPreset:(id)preset;
+- (void)setConnectionLineType:(int64_t)type;
+- (void)toggleLineType:(id)type;
 @end
 
 @implementation CRLConnectionLineEditor
 
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if ("toggleLineType:" == a3 || "setConnectionLineType:" == a3)
+  senderCopy = sender;
+  if ("toggleLineType:" == action || "setConnectionLineType:" == action)
   {
     v8 = 1;
   }
 
-  else if ("saveDefaultInsertionPreset:" == a3)
+  else if ("saveDefaultInsertionPreset:" == action)
   {
     if ([(CRLConnectionLineEditor *)self p_canSaveDefaultInsertionPreset])
     {
@@ -47,29 +47,29 @@
   {
     v10.receiver = self;
     v10.super_class = CRLConnectionLineEditor;
-    v8 = [(CRLShapeEditor *)&v10 canPerformEditorAction:a3 withSender:v6];
+    v8 = [(CRLShapeEditor *)&v10 canPerformEditorAction:action withSender:senderCopy];
   }
 
   return v8;
 }
 
-- (void)toggleLineType:(id)a3
+- (void)toggleLineType:(id)type
 {
-  v4 = [(CRLBoardItemEditor *)self editingCoordinator];
-  v5 = [v4 commandController];
+  editingCoordinator = [(CRLBoardItemEditor *)self editingCoordinator];
+  commandController = [editingCoordinator commandController];
 
   v6 = [CRLCanvasCommandSelectionBehavior alloc];
-  v7 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v8 = [v7 canvasEditor];
-  v9 = [(CRLCanvasCommandSelectionBehavior *)v6 initWithCanvasEditor:v8];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  v9 = [(CRLCanvasCommandSelectionBehavior *)v6 initWithCanvasEditor:canvasEditor];
 
-  [v5 openGroupWithSelectionBehavior:v9];
+  [commandController openGroupWithSelectionBehavior:v9];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(CRLBoardItemEditor *)self layouts];
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  layouts = [(CRLBoardItemEditor *)self layouts];
+  v11 = [layouts countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
     v12 = v11;
@@ -81,47 +81,47 @@
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(layouts);
         }
 
         v15 = *(*(&v17 + 1) + 8 * v14);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [v15 commandToToggleConnectionType];
-          [v5 enqueueCommand:v16];
+          commandToToggleConnectionType = [v15 commandToToggleConnectionType];
+          [commandController enqueueCommand:commandToToggleConnectionType];
         }
 
         v14 = v14 + 1;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [layouts countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v12);
   }
 
-  [v5 closeGroup];
+  [commandController closeGroup];
 }
 
-- (void)setConnectionLineType:(int64_t)a3
+- (void)setConnectionLineType:(int64_t)type
 {
-  v5 = [(CRLBoardItemEditor *)self editingCoordinator];
-  v6 = [v5 commandController];
+  editingCoordinator = [(CRLBoardItemEditor *)self editingCoordinator];
+  commandController = [editingCoordinator commandController];
 
   v7 = [CRLCanvasCommandSelectionBehavior alloc];
-  v8 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v9 = [v8 canvasEditor];
-  v10 = [(CRLCanvasCommandSelectionBehavior *)v7 initWithCanvasEditor:v9];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  v10 = [(CRLCanvasCommandSelectionBehavior *)v7 initWithCanvasEditor:canvasEditor];
 
-  [v6 openGroupWithSelectionBehavior:v10];
+  [commandController openGroupWithSelectionBehavior:v10];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [(CRLBoardItemEditor *)self layouts];
-  v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  layouts = [(CRLBoardItemEditor *)self layouts];
+  v12 = [layouts countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
     v13 = v12;
@@ -133,28 +133,28 @@
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(layouts);
         }
 
         v16 = *(*(&v18 + 1) + 8 * v15);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v17 = [v16 commandForSettingConnectionType:a3];
-          [v6 enqueueCommand:v17];
+          v17 = [v16 commandForSettingConnectionType:type];
+          [commandController enqueueCommand:v17];
         }
 
         v15 = v15 + 1;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v13 = [layouts countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v13);
   }
 
-  [v6 closeGroup];
+  [commandController closeGroup];
 }
 
 - (id)anyConnectionLine
@@ -163,8 +163,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(CRLBoardItemEditor *)self layouts];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  layouts = [(CRLBoardItemEditor *)self layouts];
+  v3 = [layouts countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v3)
   {
 LABEL_9:
@@ -181,7 +181,7 @@ LABEL_3:
   {
     if (*v13 != v5)
     {
-      objc_enumerationMutation(v2);
+      objc_enumerationMutation(layouts);
     }
 
     v7 = *(*(&v12 + 1) + 8 * v6);
@@ -193,7 +193,7 @@ LABEL_3:
 
     if (v4 == ++v6)
     {
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [layouts countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (!v4)
       {
         goto LABEL_9;
@@ -215,8 +215,8 @@ LABEL_3:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(CRLBoardItemEditor *)self layouts];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  layouts = [(CRLBoardItemEditor *)self layouts];
+  v5 = [layouts countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -227,7 +227,7 @@ LABEL_3:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(layouts);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -238,7 +238,7 @@ LABEL_3:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [layouts countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -247,19 +247,19 @@ LABEL_3:
   return v3;
 }
 
-- (double)p_outsetOnLeft:(BOOL)a3
+- (double)p_outsetOnLeft:(BOOL)left
 {
-  v3 = a3;
+  leftCopy = left;
   v5 = objc_opt_class();
-  v6 = [(CRLBoardItemEditor *)self layouts];
-  v7 = [v6 anyObject];
-  v8 = sub_100014370(v5, v7);
+  layouts = [(CRLBoardItemEditor *)self layouts];
+  anyObject = [layouts anyObject];
+  v8 = sub_100014370(v5, anyObject);
 
   [(CRLConnectionLineEditor *)self p_setDynamicOutsetFrom:v8];
-  v9 = [v8 dynamicOutsetType];
-  if (v3)
+  dynamicOutsetType = [v8 dynamicOutsetType];
+  if (leftCopy)
   {
-    if (v9 == 1 || [v8 dynamicOutsetType] != 2)
+    if (dynamicOutsetType == 1 || [v8 dynamicOutsetType] != 2)
     {
       goto LABEL_4;
     }
@@ -269,7 +269,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v9 == 1)
+  if (dynamicOutsetType == 1)
   {
     goto LABEL_6;
   }
@@ -287,14 +287,14 @@ LABEL_7:
   if ((BYTE3(self->super.mNextPathEditor) & 1) == 0)
   {
     BYTE3(self->super.mNextPathEditor) = 1;
-    v3 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    [v3 beginDynamicOperation];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    [interactiveCanvasController beginDynamicOperation];
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(CRLBoardItemEditor *)self boardItems];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    boardItems = [(CRLBoardItemEditor *)self boardItems];
+    v5 = [boardItems countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -305,18 +305,18 @@ LABEL_7:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(boardItems);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
           v10 = objc_opt_class();
-          v11 = [v3 layoutForInfo:v9];
+          v11 = [interactiveCanvasController layoutForInfo:v9];
           v12 = sub_100014370(v10, v11);
 
           [v12 beginDynamicOutsetChange];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [boardItems countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);
@@ -324,19 +324,19 @@ LABEL_7:
   }
 }
 
-- (void)p_didChangeConnectionOutset:(double)a3 onLeft:(BOOL)a4
+- (void)p_didChangeConnectionOutset:(double)outset onLeft:(BOOL)left
 {
   if (BYTE3(self->super.mNextPathEditor) == 1)
   {
-    v4 = a4;
-    v7 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    leftCopy = left;
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = self;
-    v8 = [(CRLBoardItemEditor *)self boardItems];
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    selfCopy = self;
+    boardItems = [(CRLBoardItemEditor *)self boardItems];
+    v9 = [boardItems countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (!v9)
     {
       goto LABEL_19;
@@ -350,47 +350,47 @@ LABEL_7:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(boardItems);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
         v14 = objc_opt_class();
-        v15 = [v7 layoutForInfo:v13];
+        v15 = [interactiveCanvasController layoutForInfo:v13];
         v16 = sub_100014370(v14, v15);
 
         if (v16)
         {
           if (![v16 dynamicOutsetType])
           {
-            [(CRLConnectionLineEditor *)v18 p_setDynamicOutsetFrom:v16];
+            [(CRLConnectionLineEditor *)selfCopy p_setDynamicOutsetFrom:v16];
           }
 
-          v17 = [v16 dynamicOutsetType];
-          if (v4)
+          dynamicOutsetType = [v16 dynamicOutsetType];
+          if (leftCopy)
           {
-            if (v17 == 1 || [v16 dynamicOutsetType] != 2)
+            if (dynamicOutsetType == 1 || [v16 dynamicOutsetType] != 2)
             {
 LABEL_13:
-              [v16 setDynamicOutsetFrom:a3];
+              [v16 setDynamicOutsetFrom:outset];
 LABEL_16:
               [v16 invalidatePath];
               goto LABEL_17;
             }
           }
 
-          else if (v17 != 1)
+          else if (dynamicOutsetType != 1)
           {
             goto LABEL_13;
           }
 
-          [v16 setDynamicOutsetTo:a3];
+          [v16 setDynamicOutsetTo:outset];
           goto LABEL_16;
         }
 
 LABEL_17:
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [boardItems countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (!v10)
       {
 LABEL_19:
@@ -401,10 +401,10 @@ LABEL_19:
   }
 }
 
-- (void)p_setDynamicOutsetFrom:(id)a3
+- (void)p_setDynamicOutsetFrom:(id)from
 {
-  v4 = a3;
-  if ([v4 isTailEndOnLeft])
+  fromCopy = from;
+  if ([fromCopy isTailEndOnLeft])
   {
     v3 = 1;
   }
@@ -414,20 +414,20 @@ LABEL_19:
     v3 = 2;
   }
 
-  [v4 setDynamicOutsetType:v3];
+  [fromCopy setDynamicOutsetType:v3];
 }
 
 - (void)endChangingConnectionOutset
 {
   if (BYTE3(self->super.mNextPathEditor) == 1)
   {
-    v3 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(CRLBoardItemEditor *)self boardItems];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    boardItems = [(CRLBoardItemEditor *)self boardItems];
+    v5 = [boardItems countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -439,12 +439,12 @@ LABEL_19:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(boardItems);
           }
 
           v9 = *(*(&v13 + 1) + 8 * v8);
           v10 = objc_opt_class();
-          v11 = [v3 layoutForInfo:v9];
+          v11 = [interactiveCanvasController layoutForInfo:v9];
           v12 = sub_100014370(v10, v11);
 
           [v12 endDynamicOutsetChange];
@@ -452,26 +452,26 @@ LABEL_19:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [boardItems countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);
     }
 
-    [v3 willEndDynamicOperation];
-    [v3 endDynamicOperation];
+    [interactiveCanvasController willEndDynamicOperation];
+    [interactiveCanvasController endDynamicOperation];
     BYTE3(self->super.mNextPathEditor) = 0;
   }
 }
 
-- (void)addMiniFormatterElementsToArray:(id)a3 atPoint:(CGPoint)a4
+- (void)addMiniFormatterElementsToArray:(id)array atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v13.receiver = self;
   v13.super_class = CRLConnectionLineEditor;
-  v6 = a3;
-  [(CRLShapeEditor *)&v13 addMiniFormatterElementsToArray:v6 atPoint:x, y];
+  arrayCopy = array;
+  [(CRLShapeEditor *)&v13 addMiniFormatterElementsToArray:arrayCopy atPoint:x, y];
   v7 = [NSBundle mainBundle:v13.receiver];
   v8 = [v7 localizedStringForKey:@"Set Connection Line Style" value:0 table:0];
   v9 = [CRLImage crl_quickInspectorImageNamed:@"app.connected.to.app.below.fill"];
@@ -482,18 +482,18 @@ LABEL_19:
   v12 = [v11 localizedStringForKey:@"Choose a connection style" value:0 table:0];
   [v10 setToolTip:v12];
 
-  [v6 insertObject:v10 atIndex:{objc_msgSend(v6, "count")}];
+  [arrayCopy insertObject:v10 atIndex:{objc_msgSend(arrayCopy, "count")}];
 }
 
-- (id)p_insertionContextForInsertAndConnectBoardItem:(id)a3
+- (id)p_insertionContextForInsertAndConnectBoardItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CRLConnectionLineEditor *)self connectionLines];
-  if ([v5 count] == 1)
+  itemCopy = item;
+  connectionLines = [(CRLConnectionLineEditor *)self connectionLines];
+  if ([connectionLines count] == 1)
   {
-    v6 = [v5 firstObject];
-    v7 = v6;
-    if (!v6 || ([v6 connectedFrom], (v8 = objc_claimAutoreleasedReturnValue()) == 0) || (v9 = v8, objc_msgSend(v7, "connectedTo"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
+    firstObject = [connectionLines firstObject];
+    v7 = firstObject;
+    if (!firstObject || ([firstObject connectedFrom], (v8 = objc_claimAutoreleasedReturnValue()) == 0) || (v9 = v8, objc_msgSend(v7, "connectedTo"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
     {
       v11 = 0;
 LABEL_6:
@@ -501,12 +501,12 @@ LABEL_6:
       goto LABEL_8;
     }
 
-    v13 = [v7 connectionLineInfo];
-    if (v13)
+    connectionLineInfo = [v7 connectionLineInfo];
+    if (connectionLineInfo)
     {
       v14 = objc_opt_class();
-      v15 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-      v16 = [v15 repForInfo:v13];
+      interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+      v16 = [interactiveCanvasController repForInfo:connectionLineInfo];
       v17 = sub_100013F00(v14, v16);
 
       if (!v17)
@@ -525,9 +525,9 @@ LABEL_38:
         [v7 convertNaturalPointToUnscaledCanvas:?];
         v21 = v20;
         v23 = v22;
-        if (v4)
+        if (itemCopy)
         {
-          [(CRLConnectionLineEditor *)self p_unscaledOffsetWhenInsertItem:v4 atEnd:v7];
+          [(CRLConnectionLineEditor *)self p_unscaledOffsetWhenInsertItem:itemCopy atEnd:v7];
           v20 = sub_10011F334(v21, v23, v24);
         }
 
@@ -603,13 +603,13 @@ LABEL_8:
   return v11;
 }
 
-- (CGPoint)p_unscaledOffsetWhenInsertItem:(id)a3 atEnd:(id)a4
+- (CGPoint)p_unscaledOffsetWhenInsertItem:(id)item atEnd:(id)end
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 connectedFrom];
-  v9 = [v8 geometry];
-  [v9 size];
+  endCopy = end;
+  itemCopy = item;
+  connectedFrom = [endCopy connectedFrom];
+  geometry = [connectedFrom geometry];
+  [geometry size];
   v11 = v10;
   v13 = v12;
 
@@ -623,9 +623,9 @@ LABEL_8:
     v14 = v13;
   }
 
-  v15 = [v7 geometry];
+  geometry2 = [itemCopy geometry];
 
-  [v15 size];
+  [geometry2 size];
   v17 = v16;
   v19 = v18;
 
@@ -641,19 +641,19 @@ LABEL_8:
 
   v21 = v14 + v20;
   v22 = objc_opt_class();
-  v23 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v24 = [v6 info];
-  v25 = [v23 repForInfo:v24];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  info = [endCopy info];
+  v25 = [interactiveCanvasController repForInfo:info];
   v26 = sub_100013F00(v22, v25);
 
   v27 = [v26 knobForTag:11];
   [v27 position];
-  [v6 convertNaturalPointToUnscaledCanvas:?];
+  [endCopy convertNaturalPointToUnscaledCanvas:?];
   v29 = v28;
   v31 = v30;
   v32 = [v26 knobForTag:10];
   [v32 position];
-  [v6 convertNaturalPointToUnscaledCanvas:?];
+  [endCopy convertNaturalPointToUnscaledCanvas:?];
   v34 = v33;
 
   v35 = sub_10011F31C(v29, v31, v34);
@@ -676,17 +676,17 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)canHandleInsertAndConnectBoardItem:(id)a3
+- (BOOL)canHandleInsertAndConnectBoardItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CRLConnectionLineEditor *)self p_insertionContextForInsertAndConnectBoardItem:v4];
+  itemCopy = item;
+  v5 = [(CRLConnectionLineEditor *)self p_insertionContextForInsertAndConnectBoardItem:itemCopy];
   if (v5)
   {
-    v6 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v7 = [v6 canvasEditor];
-    v11 = v4;
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    canvasEditor = [interactiveCanvasController canvasEditor];
+    v11 = itemCopy;
     v8 = [NSArray arrayWithObjects:&v11 count:1];
-    v9 = [v7 canHandleInsertionOfBoardItems:v8 insertionContext:v5];
+    v9 = [canvasEditor canHandleInsertionOfBoardItems:v8 insertionContext:v5];
   }
 
   else
@@ -697,13 +697,13 @@ LABEL_8:
   return v9;
 }
 
-- (void)insertAndConnectBoardItem:(id)a3 postProcessBlock:(id)a4
+- (void)insertAndConnectBoardItem:(id)item postProcessBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v64 = v7;
-  if (!v8)
+  itemCopy = item;
+  blockCopy = block;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  v64 = blockCopy;
+  if (!interactiveCanvasController)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -731,11 +731,11 @@ LABEL_8:
     v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLConnectionLineEditor.m"];
     [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:331 isFatal:0 description:"invalid nil value for '%{public}s'", "icc"];
 
-    v7 = v64;
+    blockCopy = v64;
   }
 
-  v63 = [v8 canvasEditor];
-  if (!v63)
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  if (!canvasEditor)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -764,8 +764,8 @@ LABEL_8:
     [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:334 isFatal:0 description:"invalid nil value for '%{public}s'", "canvasEditor"];
   }
 
-  v15 = [(CRLConnectionLineEditor *)self anyConnectionLine];
-  if (!v15)
+  anyConnectionLine = [(CRLConnectionLineEditor *)self anyConnectionLine];
+  if (!anyConnectionLine)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -794,9 +794,9 @@ LABEL_8:
     [CRLAssertionHandler handleFailureInFunction:v17 file:v18 lineNumber:337 isFatal:0 description:"invalid nil value for '%{public}s'", "connectionLineLayout"];
   }
 
-  v19 = [v15 connectedTo];
+  connectedTo = [anyConnectionLine connectedTo];
 
-  if (v19)
+  if (connectedTo)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -825,16 +825,16 @@ LABEL_8:
     [CRLAssertionHandler handleFailureInFunction:v21 file:v22 lineNumber:338 isFatal:0 description:"Connection line already has something connected to its to-end."];
   }
 
-  v23 = [v15 connectionLineInfo];
-  if (v23)
+  connectionLineInfo = [anyConnectionLine connectionLineInfo];
+  if (connectionLineInfo)
   {
-    v24 = [v8 commandController];
-    [v24 openGroup];
+    commandController = [interactiveCanvasController commandController];
+    [commandController openGroup];
 
-    v25 = [v8 commandController];
-    [v25 enableProgressiveEnqueuingInCurrentGroup];
+    commandController2 = [interactiveCanvasController commandController];
+    [commandController2 enableProgressiveEnqueuingInCurrentGroup];
 
-    v26 = [(CRLConnectionLineEditor *)self p_insertionContextForInsertAndConnectBoardItem:v6];
+    v26 = [(CRLConnectionLineEditor *)self p_insertionContextForInsertAndConnectBoardItem:itemCopy];
     if (!v26)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -864,59 +864,59 @@ LABEL_8:
       [CRLAssertionHandler handleFailureInFunction:v28 file:v29 lineNumber:353 isFatal:0 description:"invalid nil value for '%{public}s'", "insertionContext"];
     }
 
-    v66 = v6;
+    v66 = itemCopy;
     v30 = [NSArray arrayWithObjects:&v66 count:1];
-    [v63 prepareGeometryForInsertingBoardItems:v30 withInsertionContext:v26 ignoreCanvasBackgroundAlignmentProvidedSnapping:1];
+    [canvasEditor prepareGeometryForInsertingBoardItems:v30 withInsertionContext:v26 ignoreCanvasBackgroundAlignmentProvidedSnapping:1];
 
-    v65 = v6;
+    v65 = itemCopy;
     v31 = [NSArray arrayWithObjects:&v65 count:1];
-    [v63 insertBoardItems:v31 withInsertionContext:v26 postProcessBlock:0];
+    [canvasEditor insertBoardItems:v31 withInsertionContext:v26 postProcessBlock:0];
 
-    v32 = [v23 connectionLinePathSource];
-    v33 = [v32 copy];
+    connectionLinePathSource = [connectionLineInfo connectionLinePathSource];
+    v33 = [connectionLinePathSource copy];
 
     v34 = [[CRLConnectionLineMagnet alloc] initWithType:1 normalizedPosition:0.5, 0.5];
     [v33 setHeadMagnet:v34];
 
-    v35 = [[_TtC8Freeform37CRLCommandSetConnectionLineConnection alloc] initWithConnectionLine:v23 connectedItem:v6 chirality:1 pathSource:v33];
-    v36 = [v8 commandController];
-    [v36 enqueueCommand:v35];
+    v35 = [[_TtC8Freeform37CRLCommandSetConnectionLineConnection alloc] initWithConnectionLine:connectionLineInfo connectedItem:itemCopy chirality:1 pathSource:v33];
+    commandController3 = [interactiveCanvasController commandController];
+    [commandController3 enqueueCommand:v35];
 
-    [v8 layoutIfNeeded];
-    [v15 headPoint];
-    [v15 convertNaturalPointToUnscaledCanvas:?];
+    [interactiveCanvasController layoutIfNeeded];
+    [anyConnectionLine headPoint];
+    [anyConnectionLine convertNaturalPointToUnscaledCanvas:?];
     v38 = v37;
-    [v15 unclippedHeadPoint];
-    [v15 convertNaturalPointToUnscaledCanvas:?];
+    [anyConnectionLine unclippedHeadPoint];
+    [anyConnectionLine convertNaturalPointToUnscaledCanvas:?];
     v41 = sub_10011F31C(v39, v40, v38);
-    [(CRLConnectionLineEditor *)self p_unscaledOffsetWhenInsertItem:v6 atEnd:v15];
+    [(CRLConnectionLineEditor *)self p_unscaledOffsetWhenInsertItem:itemCopy atEnd:anyConnectionLine];
     v44 = sub_10011F340(v42, v43, -1.0);
     v46 = sub_10011F334(v44, v45, v41);
     v48 = v47;
-    v49 = [v8 layoutForInfo:v6];
+    v49 = [interactiveCanvasController layoutForInfo:itemCopy];
     [v49 centerForConnecting];
     v51 = sub_10011F334(v46, v48, v50);
     v53 = v52;
 
     v54 = [CRLCanvasInfoGeometry alloc];
-    v55 = [v6 geometry];
-    [v55 size];
+    geometry = [itemCopy geometry];
+    [geometry size];
     v58 = [(CRLCanvasInfoGeometry *)v54 initWithCenter:v51 size:v53, v56, v57];
 
-    v59 = [[_TtC8Freeform25CRLCommandSetInfoGeometry alloc] initWithBoardItem:v6 geometry:v58];
-    v60 = [v8 commandController];
-    [v60 enqueueCommand:v59];
+    v59 = [[_TtC8Freeform25CRLCommandSetInfoGeometry alloc] initWithBoardItem:itemCopy geometry:v58];
+    commandController4 = [interactiveCanvasController commandController];
+    [commandController4 enqueueCommand:v59];
 
     if (v64)
     {
       v64[2]();
     }
 
-    v61 = [v8 commandController];
-    [v61 closeGroup];
+    commandController5 = [interactiveCanvasController commandController];
+    [commandController5 closeGroup];
 
-    v7 = v64;
-    [v8 layoutIfNeeded];
+    blockCopy = v64;
+    [interactiveCanvasController layoutIfNeeded];
   }
 
   else
@@ -949,31 +949,31 @@ LABEL_8:
   }
 }
 
-- (unint64_t)p_getMagnetTypeOppositeFromType:(unint64_t)a3
+- (unint64_t)p_getMagnetTypeOppositeFromType:(unint64_t)type
 {
-  if (a3 - 2 > 3)
+  if (type - 2 > 3)
   {
     return 1;
   }
 
   else
   {
-    return qword_101465AE8[a3 - 2];
+    return qword_101465AE8[type - 2];
   }
 }
 
 - (BOOL)p_canSaveDefaultInsertionPreset
 {
-  v2 = [(CRLBoardItemEditor *)self boardItems];
-  v3 = [v2 count] == 1;
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v3 = [boardItems count] == 1;
 
   return v3;
 }
 
-- (void)saveDefaultInsertionPreset:(id)a3
+- (void)saveDefaultInsertionPreset:(id)preset
 {
-  v4 = [(CRLBoardItemEditor *)self boardItems];
-  v5 = [v4 count];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v5 = [boardItems count];
 
   if (v5 != 1)
   {
@@ -1005,34 +1005,34 @@ LABEL_8:
   }
 
   v9 = objc_opt_class();
-  v10 = [(CRLBoardItemEditor *)self boardItems];
-  v11 = [v10 anyObject];
-  v12 = sub_100013F00(v9, v11);
+  boardItems2 = [(CRLBoardItemEditor *)self boardItems];
+  anyObject = [boardItems2 anyObject];
+  v12 = sub_100013F00(v9, anyObject);
 
   if (v12)
   {
     v13 = objc_opt_class();
-    v14 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v15 = [v14 editingCoordinator];
-    v16 = [v15 boardItemFactory];
-    v17 = [v16 makeShapeItemWithShapeType:1];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    editingCoordinator = [interactiveCanvasController editingCoordinator];
+    boardItemFactory = [editingCoordinator boardItemFactory];
+    v17 = [boardItemFactory makeShapeItemWithShapeType:1];
     v18 = sub_100013F00(v13, v17);
 
     if (v18)
     {
-      v19 = [v12 stroke];
-      [v18 setStroke:v19];
+      stroke = [v12 stroke];
+      [v18 setStroke:stroke];
 
-      v20 = [v12 fill];
-      [v18 setFill:v20];
+      fill = [v12 fill];
+      [v18 setFill:fill];
 
-      v21 = [v12 shadow];
-      [v18 setShadow:v21];
+      shadow = [v12 shadow];
+      [v18 setShadow:shadow];
 
       v22 = [[_TtC8Freeform40CRLCommandSetDefaultShapeInsertionPreset alloc] initWithShapeItem:v18 shapeType:2];
-      v23 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-      v24 = [v23 commandController];
-      [v24 enqueueCommand:v22];
+      interactiveCanvasController2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+      commandController = [interactiveCanvasController2 commandController];
+      [commandController enqueueCommand:v22];
     }
   }
 }

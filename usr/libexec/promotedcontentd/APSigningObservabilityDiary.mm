@@ -7,13 +7,13 @@
 
 - (void)recordFailure
 {
-  v2 = self;
+  selfCopy = self;
   sub_10035A0DC();
 }
 
 - (void)recordSuccess
 {
-  v2 = self;
+  selfCopy = self;
   sub_10035A7D8();
 }
 

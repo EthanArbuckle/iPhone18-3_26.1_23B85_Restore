@@ -1,49 +1,49 @@
 @interface CloudTabGroupSyncManager
-+ (id)_createOperationGroupWithName:(id)a3;
++ (id)_createOperationGroupWithName:(id)name;
 - (BOOL)_accountTermsVerified;
 - (BOOL)_deviceToDeviceEncryptionEnabled;
 - (BOOL)_hasEntitlementForSensitiveOperation;
 - (BOOL)_readyToScheduleSync;
 - (BOOL)_shouldSync;
 - (BOOL)shouldScheduleDiscretionarySync;
-- (CloudTabGroupSyncManager)initWithConfiguration:(id)a3 container:(id)a4 accountStore:(id)a5;
-- (CloudTabGroupSyncManager)initWithConfiguration:(id)a3 container:(id)a4 accountStore:(id)a5 maintenanceActivity:(id)a6;
+- (CloudTabGroupSyncManager)initWithConfiguration:(id)configuration container:(id)container accountStore:(id)store;
+- (CloudTabGroupSyncManager)initWithConfiguration:(id)configuration container:(id)container accountStore:(id)store maintenanceActivity:(id)activity;
 - (CloudTabGroupSyncManagerDelegate)delegate;
 - (NSString)databasePath;
-- (id)_tabRecordIDFromTabUUID:(id)a3 inTabCollection:(id)a4;
-- (id)cloudTabGroupSyncCoordinator:(id)a3 accountPropertiesStoreForCollection:(id)a4;
+- (id)_tabRecordIDFromTabUUID:(id)d inTabCollection:(id)collection;
+- (id)cloudTabGroupSyncCoordinator:(id)coordinator accountPropertiesStoreForCollection:(id)collection;
 - (void)_cancelSyncTimer;
-- (void)_pcsIdentitiesChangedNotification:(id)a3;
-- (void)_processLocalTabOperation:(id)a3 completionHandler:(id)a4;
+- (void)_pcsIdentitiesChangedNotification:(id)notification;
+- (void)_processLocalTabOperation:(id)operation completionHandler:(id)handler;
 - (void)_scheduleSyncIfNeeded;
-- (void)acceptShareForURL:(id)a3 invitationTokenData:(id)a4 completionHandler:(id)a5;
-- (void)addParticipants:(id)a3 toShare:(id)a4 completionHandler:(id)a5;
-- (void)addSyncObserver:(id)a3;
-- (void)beginSharingTabGroupWithUUID:(id)a3 completionHandler:(id)a4;
+- (void)acceptShareForURL:(id)l invitationTokenData:(id)data completionHandler:(id)handler;
+- (void)addParticipants:(id)participants toShare:(id)share completionHandler:(id)handler;
+- (void)addSyncObserver:(id)observer;
+- (void)beginSharingTabGroupWithUUID:(id)d completionHandler:(id)handler;
 - (void)clearCachedRecordZone;
-- (void)cloudTabGroupSyncCoordinator:(id)a3 activeParticipantsDidUpdateInTabGroupWithUUID:(id)a4;
-- (void)cloudTabGroupSyncCoordinator:(id)a3 activeParticipantsDidUpdateInTabWithUUID:(id)a4;
-- (void)cloudTabGroupSyncCoordinator:(id)a3 didAddTabWithUUID:(id)a4 title:(id)a5 inSharedTabGroupWithUUID:(id)a6 byParticipantWithRecordID:(id)a7;
-- (void)cloudTabGroupSyncCoordinator:(id)a3 didChangeBackgroundImageInTabGroupWithUUID:(id)a4 byParticipantWithRecordID:(id)a5;
-- (void)cloudTabGroupSyncCoordinator:(id)a3 didChangeScopedFavoritesInSharedTabGroupWithUUID:(id)a4 byParticipantWithRecordID:(id)a5;
-- (void)cloudTabGroupSyncCoordinator:(id)a3 didFetchRecentlyAcceptedSharedTabGroupWithUUID:(id)a4 acceptedShareDate:(id)a5;
-- (void)cloudTabGroupSyncCoordinator:(id)a3 didNavigateInTabWithUUID:(id)a4 title:(id)a5 inSharedTabGroupWithUUID:(id)a6 byParticipantWithRecordID:(id)a7;
-- (void)cloudTabGroupSyncCoordinator:(id)a3 didReceiveChangesForUnhandledRecordZoneIDs:(id)a4;
-- (void)cloudTabGroupSyncCoordinator:(id)a3 didRemoveTabWithUUID:(id)a4 title:(id)a5 inSharedTabGroupWithUUID:(id)a6 byParticipantWithRecordID:(id)a7;
-- (void)cloudTabGroupSyncCoordinator:(id)a3 didUpdateShareForTabGroupWithUUID:(id)a4;
-- (void)cloudTabGroupSyncCoordinator:(id)a3 participants:(id)a4 didJoinSharedTabGroupWithUUID:(id)a5;
-- (void)cloudTabGroupSyncCoordinator:(id)a3 participants:(id)a4 didLeaveSharedTabGroupWithUUID:(id)a5;
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator activeParticipantsDidUpdateInTabGroupWithUUID:(id)d;
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator activeParticipantsDidUpdateInTabWithUUID:(id)d;
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator didAddTabWithUUID:(id)d title:(id)title inSharedTabGroupWithUUID:(id)iD byParticipantWithRecordID:(id)recordID;
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator didChangeBackgroundImageInTabGroupWithUUID:(id)d byParticipantWithRecordID:(id)iD;
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator didChangeScopedFavoritesInSharedTabGroupWithUUID:(id)d byParticipantWithRecordID:(id)iD;
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator didFetchRecentlyAcceptedSharedTabGroupWithUUID:(id)d acceptedShareDate:(id)date;
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator didNavigateInTabWithUUID:(id)d title:(id)title inSharedTabGroupWithUUID:(id)iD byParticipantWithRecordID:(id)recordID;
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator didReceiveChangesForUnhandledRecordZoneIDs:(id)ds;
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator didRemoveTabWithUUID:(id)d title:(id)title inSharedTabGroupWithUUID:(id)iD byParticipantWithRecordID:(id)recordID;
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator didUpdateShareForTabGroupWithUUID:(id)d;
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator participants:(id)participants didJoinSharedTabGroupWithUUID:(id)d;
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator participants:(id)participants didLeaveSharedTabGroupWithUUID:(id)d;
 - (void)dealloc;
-- (void)fetchPrivateDatabaseSubscriptionStatusInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
-- (void)fetchSharedDatabaseSubscriptionStatusInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
-- (void)movePresenceForParticipantToTabWithUUID:(id)a3;
-- (void)removeSyncObserver:(id)a3;
-- (void)savePrivateDatabaseSubscriptionInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
-- (void)saveSharedDatabaseSubscriptionInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
+- (void)fetchPrivateDatabaseSubscriptionStatusInOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)fetchSharedDatabaseSubscriptionStatusInOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)movePresenceForParticipantToTabWithUUID:(id)d;
+- (void)removeSyncObserver:(id)observer;
+- (void)savePrivateDatabaseSubscriptionInOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)saveSharedDatabaseSubscriptionInOperationGroup:(id)group withCompletionHandler:(id)handler;
 - (void)scheduleSyncIfNeeded;
-- (void)sendSyncDidFinishNotificationWithResult:(int64_t)a3;
+- (void)sendSyncDidFinishNotificationWithResult:(int64_t)result;
 - (void)startMigrationIfNeeded;
-- (void)userDidAcceptTabGroupShareWithMetadata:(id)a3 inProfileWithIdentifier:(id)a4 completionHandler:(id)a5;
+- (void)userDidAcceptTabGroupShareWithMetadata:(id)metadata inProfileWithIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation CloudTabGroupSyncManager
@@ -194,10 +194,10 @@ LABEL_7:
 
 - (BOOL)_shouldSync
 {
-  v2 = [(CloudTabGroupSyncManager *)self configuration];
-  v3 = [v2 storeOwner];
+  configuration = [(CloudTabGroupSyncManager *)self configuration];
+  storeOwner = [configuration storeOwner];
 
-  return (v3 - 1) < 3;
+  return (storeOwner - 1) < 3;
 }
 
 - (BOOL)_deviceToDeviceEncryptionEnabled
@@ -216,26 +216,26 @@ LABEL_7:
   return v4;
 }
 
-- (CloudTabGroupSyncManager)initWithConfiguration:(id)a3 container:(id)a4 accountStore:(id)a5
+- (CloudTabGroupSyncManager)initWithConfiguration:(id)configuration container:(id)container accountStore:(id)store
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[CloudTabGroupMaintenanceActivity alloc] initWithConfiguration:v10];
+  storeCopy = store;
+  containerCopy = container;
+  configurationCopy = configuration;
+  v11 = [[CloudTabGroupMaintenanceActivity alloc] initWithConfiguration:configurationCopy];
   [(CloudTabGroupMaintenanceActivity *)v11 setDelegate:self];
-  v12 = [(CloudTabGroupSyncManager *)self initWithConfiguration:v10 container:v9 accountStore:v8 maintenanceActivity:v11];
+  v12 = [(CloudTabGroupSyncManager *)self initWithConfiguration:configurationCopy container:containerCopy accountStore:storeCopy maintenanceActivity:v11];
 
   return v12;
 }
 
-+ (id)_createOperationGroupWithName:(id)a3
++ (id)_createOperationGroupWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_alloc_init(CKOperationGroup);
   v5 = objc_alloc_init(CKOperationConfiguration);
   [v5 setQualityOfService:17];
   [v5 setTimeoutIntervalForRequest:30.0];
-  [v4 setName:v3];
+  [v4 setName:nameCopy];
 
   [v4 setExpectedSendSize:1];
   [v4 setExpectedReceiveSize:1];
@@ -244,20 +244,20 @@ LABEL_7:
   return v4;
 }
 
-- (CloudTabGroupSyncManager)initWithConfiguration:(id)a3 container:(id)a4 accountStore:(id)a5 maintenanceActivity:(id)a6
+- (CloudTabGroupSyncManager)initWithConfiguration:(id)configuration container:(id)container accountStore:(id)store maintenanceActivity:(id)activity
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configurationCopy = configuration;
+  containerCopy = container;
+  storeCopy = store;
+  activityCopy = activity;
   v54.receiver = self;
   v54.super_class = CloudTabGroupSyncManager;
-  v14 = [(CloudTabGroupSyncManager *)&v54 initWithConfiguration:v10];
+  v14 = [(CloudTabGroupSyncManager *)&v54 initWithConfiguration:configurationCopy];
   if (v14)
   {
     objc_initWeak(&location, v14);
-    objc_storeStrong(&v14->_accountStore, a5);
-    objc_storeStrong(&v14->_container, a4);
+    objc_storeStrong(&v14->_accountStore, store);
+    objc_storeStrong(&v14->_container, container);
     v15 = +[NSMutableSet set];
     syncObservers = v14->_syncObservers;
     v14->_syncObservers = v15;
@@ -266,7 +266,7 @@ LABEL_7:
     syncObserversToProxyObservers = v14->_syncObserversToProxyObservers;
     v14->_syncObserversToProxyObservers = v17;
 
-    v19 = [[CKSystemSharingUIObserver alloc] initWithContainer:v11];
+    v19 = [[CKSystemSharingUIObserver alloc] initWithContainer:containerCopy];
     sharedTabGroupsObserver = v14->_sharedTabGroupsObserver;
     v14->_sharedTabGroupsObserver = v19;
 
@@ -286,7 +286,7 @@ LABEL_7:
     [(CKSystemSharingUIObserver *)v14->_sharedTabGroupsObserver setSystemSharingUIDidSaveShareBlock:v49];
     if ([(CloudTabGroupSyncManager *)v14 _shouldSync])
     {
-      v23 = +[CloudBookmarkDatabaseAccessProvider tabGroupDatabaseAccessorWithStoreOwner:](CloudBookmarkDatabaseAccessProvider, "tabGroupDatabaseAccessorWithStoreOwner:", [v10 storeOwner]);
+      v23 = +[CloudBookmarkDatabaseAccessProvider tabGroupDatabaseAccessorWithStoreOwner:](CloudBookmarkDatabaseAccessProvider, "tabGroupDatabaseAccessorWithStoreOwner:", [configurationCopy storeOwner]);
       databaseAccessor = v14->_databaseAccessor;
       v14->_databaseAccessor = v23;
 
@@ -299,19 +299,19 @@ LABEL_7:
       v28 = +[NSUserDefaults safari_cloudBookmarksDefaults];
       v46 = [(CloudBookmarkStoreUserDefaultsStorage *)v27 initWithUserDefaults:v28 type:1];
 
-      v29 = [[CloudBookmarkStore alloc] initWithType:1 container:v11 localStorage:v46];
+      v29 = [[CloudBookmarkStore alloc] initWithType:1 container:containerCopy localStorage:v46];
       cloudBookmarkStore = v14->_cloudBookmarkStore;
       v14->_cloudBookmarkStore = v29;
 
-      v31 = [[CloudTabGroupSyncCoordinator alloc] initWithBookmarkStore:v14->_cloudBookmarkStore collectionConfiguration:v10 accountStore:v12];
+      v31 = [[CloudTabGroupSyncCoordinator alloc] initWithBookmarkStore:v14->_cloudBookmarkStore collectionConfiguration:configurationCopy accountStore:storeCopy];
       syncCoordinator = v14->_syncCoordinator;
       v14->_syncCoordinator = v31;
 
       [(CloudTabGroupSyncCoordinator *)v14->_syncCoordinator setDataSource:v14];
       [(CloudTabGroupSyncCoordinator *)v14->_syncCoordinator setDelegate:v14];
       v33 = [WBTabCollection alloc];
-      v34 = [(CloudTabGroupSyncManager *)v14 configuration];
-      v35 = [v33 initWithConfiguration:v34 openDatabase:1];
+      configuration = [(CloudTabGroupSyncManager *)v14 configuration];
+      v35 = [v33 initWithConfiguration:configuration openDatabase:1];
 
       v36 = [[CloudTabGroupSyncObserver alloc] initWithProfileProvider:v35];
       tabGroupSyncObserver = v14->_tabGroupSyncObserver;
@@ -343,7 +343,7 @@ LABEL_7:
       objc_destroyWeak(&v48);
     }
 
-    objc_storeStrong(&v14->_maintenanceActivity, a6);
+    objc_storeStrong(&v14->_maintenanceActivity, activity);
     [(CloudTabGroupMaintenanceActivity *)v14->_maintenanceActivity registerActivity];
     v44 = v14;
 
@@ -364,8 +364,8 @@ LABEL_7:
 
 - (NSString)databasePath
 {
-  v2 = [(CloudTabGroupSyncManager *)self configuration];
-  v3 = [WBTabCollection databasePathForConfiguration:v2];
+  configuration = [(CloudTabGroupSyncManager *)self configuration];
+  v3 = [WBTabCollection databasePathForConfiguration:configuration];
 
   return v3;
 }
@@ -397,62 +397,62 @@ LABEL_7:
   }
 }
 
-- (void)fetchPrivateDatabaseSubscriptionStatusInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)fetchPrivateDatabaseSubscriptionStatusInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
   cloudBookmarkStore = self->_cloudBookmarkStore;
   container = self->_container;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(CKContainer *)container privateCloudDatabase];
-  [(CloudBookmarkStore *)cloudBookmarkStore fetchSubscriptionWithID:@"TabGroupsPrivateDatabaseSubscription" inDatabase:v9 operationGroup:v8 withCompletionHandler:v7];
+  handlerCopy = handler;
+  groupCopy = group;
+  privateCloudDatabase = [(CKContainer *)container privateCloudDatabase];
+  [(CloudBookmarkStore *)cloudBookmarkStore fetchSubscriptionWithID:@"TabGroupsPrivateDatabaseSubscription" inDatabase:privateCloudDatabase operationGroup:groupCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)savePrivateDatabaseSubscriptionInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)savePrivateDatabaseSubscriptionInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   v8 = objc_alloc_init(CKNotificationInfo);
   [v8 setShouldSendContentAvailable:1];
   v9 = [[CKDatabaseSubscription alloc] initWithSubscriptionID:@"TabGroupsPrivateDatabaseSubscription"];
   [v9 setNotificationInfo:v8];
   cloudBookmarkStore = self->_cloudBookmarkStore;
-  v11 = [(CKContainer *)self->_container privateCloudDatabase];
+  privateCloudDatabase = [(CKContainer *)self->_container privateCloudDatabase];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100081C2C;
   v14[3] = &unk_100131FB8;
-  v15 = v6;
-  v16 = v7;
+  v15 = groupCopy;
+  v16 = handlerCopy;
   v14[4] = self;
-  v12 = v6;
-  v13 = v7;
-  [(CloudBookmarkStore *)cloudBookmarkStore saveSubscription:v9 inDatabase:v11 operationGroup:v12 withCompletionHandler:v14];
+  v12 = groupCopy;
+  v13 = handlerCopy;
+  [(CloudBookmarkStore *)cloudBookmarkStore saveSubscription:v9 inDatabase:privateCloudDatabase operationGroup:v12 withCompletionHandler:v14];
 }
 
-- (void)fetchSharedDatabaseSubscriptionStatusInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)fetchSharedDatabaseSubscriptionStatusInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
   cloudBookmarkStore = self->_cloudBookmarkStore;
   container = self->_container;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(CKContainer *)container sharedCloudDatabase];
-  [(CloudBookmarkStore *)cloudBookmarkStore fetchSubscriptionWithID:@"TabGroupsSharedDatabaseSubscription" inDatabase:v9 operationGroup:v8 withCompletionHandler:v7];
+  handlerCopy = handler;
+  groupCopy = group;
+  sharedCloudDatabase = [(CKContainer *)container sharedCloudDatabase];
+  [(CloudBookmarkStore *)cloudBookmarkStore fetchSubscriptionWithID:@"TabGroupsSharedDatabaseSubscription" inDatabase:sharedCloudDatabase operationGroup:groupCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)saveSharedDatabaseSubscriptionInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)saveSharedDatabaseSubscriptionInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  groupCopy = group;
   v11 = objc_alloc_init(CKNotificationInfo);
   [v11 setShouldSendContentAvailable:1];
   v8 = [[CKDatabaseSubscription alloc] initWithSubscriptionID:@"TabGroupsSharedDatabaseSubscription"];
   [v8 setNotificationInfo:v11];
   cloudBookmarkStore = self->_cloudBookmarkStore;
-  v10 = [(CKContainer *)self->_container sharedCloudDatabase];
-  [(CloudBookmarkStore *)cloudBookmarkStore saveSubscription:v8 inDatabase:v10 operationGroup:v7 withCompletionHandler:v6];
+  sharedCloudDatabase = [(CKContainer *)self->_container sharedCloudDatabase];
+  [(CloudBookmarkStore *)cloudBookmarkStore saveSubscription:v8 inDatabase:sharedCloudDatabase operationGroup:groupCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)_pcsIdentitiesChangedNotification:(id)a3
+- (void)_pcsIdentitiesChangedNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -472,14 +472,14 @@ LABEL_7:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [(CloudTabGroupSyncManager *)self configuration];
-      [v6 storeOwner];
+      configuration = [(CloudTabGroupSyncManager *)self configuration];
+      [configuration storeOwner];
       v7 = WBNSStringFromCollectionStoreOwner();
-      v8 = [v3 safari_logDescription];
+      safari_logDescription = [v3 safari_logDescription];
       *buf = 138543618;
       v14 = v7;
       v15 = 2114;
-      v16 = v8;
+      v16 = safari_logDescription;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "*•• Starting TabGroups migration for manager %{public}@ with %{public}@", buf, 0x16u);
     }
 
@@ -495,49 +495,49 @@ LABEL_7:
   }
 }
 
-- (void)sendSyncDidFinishNotificationWithResult:(int64_t)a3
+- (void)sendSyncDidFinishNotificationWithResult:(int64_t)result
 {
   v4 = [CloudTabGroupSyncCoordinator _tabGroupsLog]_0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v11 = a3;
+    resultCopy = result;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Sending notification of tab group sync result: %{public}zu", buf, 0xCu);
   }
 
-  v5 = [NSNumber numberWithInteger:a3, WBTabGroupSyncAgentSyncResultKey];
-  v9 = v5;
+  wBTabGroupSyncAgentSyncResultKey = [NSNumber numberWithInteger:result, WBTabGroupSyncAgentSyncResultKey];
+  v9 = wBTabGroupSyncAgentSyncResultKey;
   v6 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
 
   v7 = +[NSDistributedNotificationCenter defaultCenter];
   [v7 postNotificationName:WBTabGroupSyncAgentDidFinishSyncNotificationName object:0 userInfo:v6];
 }
 
-- (void)addSyncObserver:(id)a3
+- (void)addSyncObserver:(id)observer
 {
-  v4 = a3;
-  v3 = v4;
+  observerCopy = observer;
+  v3 = observerCopy;
   WBSDispatchSyncToMainQueueWithAutoreleasePool();
 }
 
-- (void)removeSyncObserver:(id)a3
+- (void)removeSyncObserver:(id)observer
 {
-  v4 = a3;
-  v3 = v4;
+  observerCopy = observer;
+  v3 = observerCopy;
   WBSDispatchSyncToMainQueueWithAutoreleasePool();
 }
 
-- (void)userDidAcceptTabGroupShareWithMetadata:(id)a3 inProfileWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)userDidAcceptTabGroupShareWithMetadata:(id)metadata inProfileWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (![(CloudTabGroupSyncManager *)self _hasEntitlementForSensitiveOperation])
   {
     v11 = sub_10000A9A4();
 LABEL_6:
     v12 = v11;
-    v10[2](v10, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
 
     goto LABEL_7;
   }
@@ -548,24 +548,24 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v15 = v10;
-  v13 = v8;
-  v14 = v9;
+  v15 = handlerCopy;
+  v13 = metadataCopy;
+  v14 = identifierCopy;
   WBSDispatchAsyncToMainQueueWithAutoreleasePool();
 
 LABEL_7:
 }
 
-- (void)beginSharingTabGroupWithUUID:(id)a3 completionHandler:(id)a4
+- (void)beginSharingTabGroupWithUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if (![(CloudTabGroupSyncManager *)self _hasEntitlementForSensitiveOperation])
   {
     v14 = sub_10000A9A4();
 LABEL_8:
     v15 = v14;
-    v7[2](v7, 0, v14);
+    handlerCopy[2](handlerCopy, 0, v14);
 
     goto LABEL_9;
   }
@@ -581,11 +581,11 @@ LABEL_8:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v8 safari_logDescription];
+    safari_logDescription = [v8 safari_logDescription];
     *buf = 138543618;
-    v21 = v6;
+    v21 = dCopy;
     v22 = 2114;
-    v23 = v11;
+    v23 = safari_logDescription;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "••* Will begin sharing tab group with UUID: %{public}@, with %{public}@", buf, 0x16u);
   }
 
@@ -594,42 +594,42 @@ LABEL_8:
   v16[1] = 3221225472;
   v16[2] = sub_100083AF0;
   v16[3] = &unk_100135310;
-  v17 = v6;
+  v17 = dCopy;
   v18 = v8;
-  v19 = v7;
+  v19 = handlerCopy;
   v13 = v8;
   [(CloudTabGroupSyncCoordinator *)syncCoordinator beginSharingTabGroupWithUUID:v17 inOperationGroup:v13 completionHandler:v16];
 
 LABEL_9:
 }
 
-- (void)movePresenceForParticipantToTabWithUUID:(id)a3
+- (void)movePresenceForParticipantToTabWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(CloudTabGroupSyncManager *)self _hasEntitlementForSensitiveOperation]&& [(CloudTabGroupSyncManager *)self _deviceToDeviceEncryptionEnabled])
   {
-    v5 = v4;
+    v5 = dCopy;
     WBSDispatchAsyncToMainQueueWithAutoreleasePool();
   }
 }
 
-- (id)_tabRecordIDFromTabUUID:(id)a3 inTabCollection:(id)a4
+- (id)_tabRecordIDFromTabUUID:(id)d inTabCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 length])
+  dCopy = d;
+  collectionCopy = collection;
+  if (![dCopy length])
   {
     v9 = 0;
     goto LABEL_6;
   }
 
-  v8 = [v7 tabWithUUID:v6];
+  v8 = [collectionCopy tabWithUUID:dCopy];
   if (v8)
   {
-    v9 = [v7 recordIDForTab:v8];
+    v9 = [collectionCopy recordIDForTab:v8];
     cloudBookmarkStore = self->_cloudBookmarkStore;
-    v11 = [v9 zoneID];
-    LOBYTE(cloudBookmarkStore) = [(CloudBookmarkStore *)cloudBookmarkStore isSecondaryRecordZoneID:v11];
+    zoneID = [v9 zoneID];
+    LOBYTE(cloudBookmarkStore) = [(CloudBookmarkStore *)cloudBookmarkStore isSecondaryRecordZoneID:zoneID];
 
     if (cloudBookmarkStore)
     {
@@ -664,17 +664,17 @@ LABEL_13:
   return v12;
 }
 
-- (void)acceptShareForURL:(id)a3 invitationTokenData:(id)a4 completionHandler:(id)a5
+- (void)acceptShareForURL:(id)l invitationTokenData:(id)data completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  dataCopy = data;
+  handlerCopy = handler;
   if (![(CloudTabGroupSyncManager *)self _hasEntitlementForSensitiveOperation])
   {
     v14 = sub_10000A9A4();
 LABEL_8:
     v15 = v14;
-    v10[2](v10, 0, v14);
+    handlerCopy[2](handlerCopy, 0, v14);
 
     goto LABEL_9;
   }
@@ -698,29 +698,29 @@ LABEL_8:
   v16[1] = 3221225472;
   v16[2] = sub_100084234;
   v16[3] = &unk_100135358;
-  v17 = v10;
-  [(CloudTabGroupSyncCoordinator *)syncCoordinator acceptShareForURL:v8 invitationTokenData:v9 inOperationGroup:v12 completionHandler:v16];
+  v17 = handlerCopy;
+  [(CloudTabGroupSyncCoordinator *)syncCoordinator acceptShareForURL:lCopy invitationTokenData:dataCopy inOperationGroup:v12 completionHandler:v16];
 
 LABEL_9:
 }
 
-- (void)addParticipants:(id)a3 toShare:(id)a4 completionHandler:(id)a5
+- (void)addParticipants:(id)participants toShare:(id)share completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  shareCopy = share;
+  participantsCopy = participants;
   v14 = [objc_opt_class() _createOperationGroupWithName:@"Cloud Tab Groups Add Participants"];
   cloudBookmarkStore = self->_cloudBookmarkStore;
-  v12 = [v9 recordID];
+  recordID = [shareCopy recordID];
 
-  v13 = [v12 zoneID];
-  [(CloudBookmarkStore *)cloudBookmarkStore addParticipantsWithEmailAddresses:v10 toShareInRecordZoneWithID:v13 inOperationGroup:v14 completionHandler:v8];
+  zoneID = [recordID zoneID];
+  [(CloudBookmarkStore *)cloudBookmarkStore addParticipantsWithEmailAddresses:participantsCopy toShareInRecordZoneWithID:zoneID inOperationGroup:v14 completionHandler:handlerCopy];
 }
 
-- (void)_processLocalTabOperation:(id)a3 completionHandler:(id)a4
+- (void)_processLocalTabOperation:(id)operation completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  handlerCopy = handler;
   v8 = [CloudTabGroupSyncCoordinator _tabGroupsLog]_0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -740,8 +740,8 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v9 = [(CloudBookmarkDatabaseLockArbiter *)self->_databaseLockArbiter isDatabaseOpen];
-  if ((v9 & 1) == 0 && ![(CloudBookmarkDatabaseLockArbiter *)self->_databaseLockArbiter openDatabase])
+  isDatabaseOpen = [(CloudBookmarkDatabaseLockArbiter *)self->_databaseLockArbiter isDatabaseOpen];
+  if ((isDatabaseOpen & 1) == 0 && ![(CloudBookmarkDatabaseLockArbiter *)self->_databaseLockArbiter openDatabase])
   {
     v15 = [CloudTabGroupSyncCoordinator _tabGroupsLog]_0();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -752,24 +752,24 @@ LABEL_9:
     v14 = +[NSError wb_databaseOpenError];
 LABEL_11:
     v10 = v14;
-    v7[2](v7, 0, v14);
+    handlerCopy[2](handlerCopy, 0, v14);
     goto LABEL_16;
   }
 
   v10 = [[WBTabCollection alloc] initWithTabCollection:{-[CloudBookmarkDatabaseLockArbiter databaseRef](self->_databaseLockArbiter, "databaseRef")}];
-  v11 = v6[2](v6, v10);
+  v11 = operationCopy[2](operationCopy, v10);
   if (v11)
   {
-    v12 = 0;
+    error = 0;
   }
 
   else
   {
-    v12 = [v10 error];
+    error = [v10 error];
   }
 
-  v7[2](v7, v11, v12);
-  if ((v9 & 1) == 0)
+  handlerCopy[2](handlerCopy, v11, error);
+  if ((isDatabaseOpen & 1) == 0)
   {
     [(CloudBookmarkDatabaseLockArbiter *)self->_databaseLockArbiter closeDatabaseAndSave:1];
   }
@@ -806,27 +806,27 @@ LABEL_16:
   return v4;
 }
 
-- (id)cloudTabGroupSyncCoordinator:(id)a3 accountPropertiesStoreForCollection:(id)a4
+- (id)cloudTabGroupSyncCoordinator:(id)coordinator accountPropertiesStoreForCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [[CloudTabGroupAccountPropertiesStore alloc] initWithAccountStore:self->_accountStore collection:v5];
+  collectionCopy = collection;
+  v6 = [[CloudTabGroupAccountPropertiesStore alloc] initWithAccountStore:self->_accountStore collection:collectionCopy];
 
   return v6;
 }
 
-- (void)cloudTabGroupSyncCoordinator:(id)a3 didReceiveChangesForUnhandledRecordZoneIDs:(id)a4
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator didReceiveChangesForUnhandledRecordZoneIDs:(id)ds
 {
-  v6 = a4;
+  dsCopy = ds;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained cloudTabGroupSyncManager:self didFindChangesToRecordZonesWithIDs:v6];
+    [WeakRetained cloudTabGroupSyncManager:self didFindChangesToRecordZonesWithIDs:dsCopy];
   }
 }
 
-- (void)cloudTabGroupSyncCoordinator:(id)a3 didUpdateShareForTabGroupWithUUID:(id)a4
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator didUpdateShareForTabGroupWithUUID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -847,7 +847,7 @@ LABEL_16:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) shareDidUpdateForTabGroupWithUUID:{v5, v11}];
+        [*(*(&v11 + 1) + 8 * v10) shareDidUpdateForTabGroupWithUUID:{dCopy, v11}];
         v10 = v10 + 1;
       }
 
@@ -859,10 +859,10 @@ LABEL_16:
   }
 }
 
-- (void)cloudTabGroupSyncCoordinator:(id)a3 participants:(id)a4 didJoinSharedTabGroupWithUUID:(id)a5
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator participants:(id)participants didJoinSharedTabGroupWithUUID:(id)d
 {
-  v7 = a4;
-  v8 = a5;
+  participantsCopy = participants;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -883,7 +883,7 @@ LABEL_16:
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * v13) participants:v7 didJoinSharedTabGroupWithUUID:{v8, v14}];
+        [*(*(&v14 + 1) + 8 * v13) participants:participantsCopy didJoinSharedTabGroupWithUUID:{dCopy, v14}];
         v13 = v13 + 1;
       }
 
@@ -895,10 +895,10 @@ LABEL_16:
   }
 }
 
-- (void)cloudTabGroupSyncCoordinator:(id)a3 participants:(id)a4 didLeaveSharedTabGroupWithUUID:(id)a5
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator participants:(id)participants didLeaveSharedTabGroupWithUUID:(id)d
 {
-  v7 = a4;
-  v8 = a5;
+  participantsCopy = participants;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -919,7 +919,7 @@ LABEL_16:
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * v13) participants:v7 didLeaveSharedTabGroupWithUUID:{v8, v14}];
+        [*(*(&v14 + 1) + 8 * v13) participants:participantsCopy didLeaveSharedTabGroupWithUUID:{dCopy, v14}];
         v13 = v13 + 1;
       }
 
@@ -931,9 +931,9 @@ LABEL_16:
   }
 }
 
-- (void)cloudTabGroupSyncCoordinator:(id)a3 activeParticipantsDidUpdateInTabGroupWithUUID:(id)a4
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator activeParticipantsDidUpdateInTabGroupWithUUID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -954,7 +954,7 @@ LABEL_16:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) activeParticipantsDidUpdateInTabGroupWithUUID:{v5, v11}];
+        [*(*(&v11 + 1) + 8 * v10) activeParticipantsDidUpdateInTabGroupWithUUID:{dCopy, v11}];
         v10 = v10 + 1;
       }
 
@@ -966,9 +966,9 @@ LABEL_16:
   }
 }
 
-- (void)cloudTabGroupSyncCoordinator:(id)a3 activeParticipantsDidUpdateInTabWithUUID:(id)a4
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator activeParticipantsDidUpdateInTabWithUUID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -989,7 +989,7 @@ LABEL_16:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) activeParticipantsDidUpdateInTabWithUUID:{v5, v11}];
+        [*(*(&v11 + 1) + 8 * v10) activeParticipantsDidUpdateInTabWithUUID:{dCopy, v11}];
         v10 = v10 + 1;
       }
 
@@ -1001,12 +1001,12 @@ LABEL_16:
   }
 }
 
-- (void)cloudTabGroupSyncCoordinator:(id)a3 didAddTabWithUUID:(id)a4 title:(id)a5 inSharedTabGroupWithUUID:(id)a6 byParticipantWithRecordID:(id)a7
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator didAddTabWithUUID:(id)d title:(id)title inSharedTabGroupWithUUID:(id)iD byParticipantWithRecordID:(id)recordID
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  dCopy = d;
+  titleCopy = title;
+  iDCopy = iD;
+  recordIDCopy = recordID;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -1027,7 +1027,7 @@ LABEL_16:
           objc_enumerationMutation(v15);
         }
 
-        [*(*(&v20 + 1) + 8 * v19) didAddTabWithUUID:v11 title:v12 inSharedTabGroupWithUUID:v13 byParticipantWithRecordID:{v14, v20}];
+        [*(*(&v20 + 1) + 8 * v19) didAddTabWithUUID:dCopy title:titleCopy inSharedTabGroupWithUUID:iDCopy byParticipantWithRecordID:{recordIDCopy, v20}];
         v19 = v19 + 1;
       }
 
@@ -1039,12 +1039,12 @@ LABEL_16:
   }
 }
 
-- (void)cloudTabGroupSyncCoordinator:(id)a3 didNavigateInTabWithUUID:(id)a4 title:(id)a5 inSharedTabGroupWithUUID:(id)a6 byParticipantWithRecordID:(id)a7
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator didNavigateInTabWithUUID:(id)d title:(id)title inSharedTabGroupWithUUID:(id)iD byParticipantWithRecordID:(id)recordID
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  dCopy = d;
+  titleCopy = title;
+  iDCopy = iD;
+  recordIDCopy = recordID;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -1065,7 +1065,7 @@ LABEL_16:
           objc_enumerationMutation(v15);
         }
 
-        [*(*(&v20 + 1) + 8 * v19) didNavigateInTabWithUUID:v11 title:v12 inSharedTabGroupWithUUID:v13 byParticipantWithRecordID:{v14, v20}];
+        [*(*(&v20 + 1) + 8 * v19) didNavigateInTabWithUUID:dCopy title:titleCopy inSharedTabGroupWithUUID:iDCopy byParticipantWithRecordID:{recordIDCopy, v20}];
         v19 = v19 + 1;
       }
 
@@ -1077,12 +1077,12 @@ LABEL_16:
   }
 }
 
-- (void)cloudTabGroupSyncCoordinator:(id)a3 didRemoveTabWithUUID:(id)a4 title:(id)a5 inSharedTabGroupWithUUID:(id)a6 byParticipantWithRecordID:(id)a7
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator didRemoveTabWithUUID:(id)d title:(id)title inSharedTabGroupWithUUID:(id)iD byParticipantWithRecordID:(id)recordID
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  dCopy = d;
+  titleCopy = title;
+  iDCopy = iD;
+  recordIDCopy = recordID;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -1103,7 +1103,7 @@ LABEL_16:
           objc_enumerationMutation(v15);
         }
 
-        [*(*(&v20 + 1) + 8 * v19) didRemoveTabWithUUID:v11 title:v12 inSharedTabGroupWithUUID:v13 byParticipantWithRecordID:{v14, v20}];
+        [*(*(&v20 + 1) + 8 * v19) didRemoveTabWithUUID:dCopy title:titleCopy inSharedTabGroupWithUUID:iDCopy byParticipantWithRecordID:{recordIDCopy, v20}];
         v19 = v19 + 1;
       }
 
@@ -1115,10 +1115,10 @@ LABEL_16:
   }
 }
 
-- (void)cloudTabGroupSyncCoordinator:(id)a3 didChangeScopedFavoritesInSharedTabGroupWithUUID:(id)a4 byParticipantWithRecordID:(id)a5
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator didChangeScopedFavoritesInSharedTabGroupWithUUID:(id)d byParticipantWithRecordID:(id)iD
 {
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1139,7 +1139,7 @@ LABEL_16:
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * v13) didChangeScopedFavoritesInSharedTabGroupWithUUID:v7 byParticipantWithRecordID:{v8, v14}];
+        [*(*(&v14 + 1) + 8 * v13) didChangeScopedFavoritesInSharedTabGroupWithUUID:dCopy byParticipantWithRecordID:{iDCopy, v14}];
         v13 = v13 + 1;
       }
 
@@ -1151,10 +1151,10 @@ LABEL_16:
   }
 }
 
-- (void)cloudTabGroupSyncCoordinator:(id)a3 didChangeBackgroundImageInTabGroupWithUUID:(id)a4 byParticipantWithRecordID:(id)a5
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator didChangeBackgroundImageInTabGroupWithUUID:(id)d byParticipantWithRecordID:(id)iD
 {
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1175,7 +1175,7 @@ LABEL_16:
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * v13) didChangeBackgroundImageInSharedTabGroupWithUUID:v7 byParticipantWithRecordID:{v8, v14}];
+        [*(*(&v14 + 1) + 8 * v13) didChangeBackgroundImageInSharedTabGroupWithUUID:dCopy byParticipantWithRecordID:{iDCopy, v14}];
         v13 = v13 + 1;
       }
 
@@ -1187,10 +1187,10 @@ LABEL_16:
   }
 }
 
-- (void)cloudTabGroupSyncCoordinator:(id)a3 didFetchRecentlyAcceptedSharedTabGroupWithUUID:(id)a4 acceptedShareDate:(id)a5
+- (void)cloudTabGroupSyncCoordinator:(id)coordinator didFetchRecentlyAcceptedSharedTabGroupWithUUID:(id)d acceptedShareDate:(id)date
 {
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  dateCopy = date;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1211,7 +1211,7 @@ LABEL_16:
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * v13) didFetchRecentlyAcceptedSharedTabGroupWithUUID:v7 acceptedShareDate:{v8, v14}];
+        [*(*(&v14 + 1) + 8 * v13) didFetchRecentlyAcceptedSharedTabGroupWithUUID:dCopy acceptedShareDate:{dateCopy, v14}];
         v13 = v13 + 1;
       }
 

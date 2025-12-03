@@ -1,70 +1,70 @@
 @interface SCLScheduleTime
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDateComponents)dateComponents;
-- (SCLScheduleTime)initWithCoder:(id)a3;
-- (SCLScheduleTime)initWithHour:(unint64_t)a3 minute:(unint64_t)a4;
-- (SCLScheduleTime)initWithScheduleTime:(id)a3;
+- (SCLScheduleTime)initWithCoder:(id)coder;
+- (SCLScheduleTime)initWithHour:(unint64_t)hour minute:(unint64_t)minute;
+- (SCLScheduleTime)initWithScheduleTime:(id)time;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCLScheduleTime
 
-- (SCLScheduleTime)initWithHour:(unint64_t)a3 minute:(unint64_t)a4
+- (SCLScheduleTime)initWithHour:(unint64_t)hour minute:(unint64_t)minute
 {
   v7.receiver = self;
   v7.super_class = SCLScheduleTime;
   result = [(SCLScheduleTime *)&v7 init];
   if (result)
   {
-    result->_hour = a3;
-    result->_minute = a4;
+    result->_hour = hour;
+    result->_minute = minute;
   }
 
   return result;
 }
 
-- (SCLScheduleTime)initWithCoder:(id)a3
+- (SCLScheduleTime)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SCLScheduleTime;
   v5 = [(SCLScheduleTime *)&v7 init];
   if (v5)
   {
-    v5->_minute = [v4 decodeIntegerForKey:@"minute"];
-    v5->_hour = [v4 decodeIntegerForKey:@"hour"];
+    v5->_minute = [coderCopy decodeIntegerForKey:@"minute"];
+    v5->_hour = [coderCopy decodeIntegerForKey:@"hour"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   minute = self->_minute;
-  v5 = a3;
-  [v5 encodeInteger:minute forKey:@"minute"];
-  [v5 encodeInteger:self->_hour forKey:@"hour"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:minute forKey:@"minute"];
+  [coderCopy encodeInteger:self->_hour forKey:@"hour"];
 }
 
-- (SCLScheduleTime)initWithScheduleTime:(id)a3
+- (SCLScheduleTime)initWithScheduleTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   v7.receiver = self;
   v7.super_class = SCLScheduleTime;
   v5 = [(SCLScheduleTime *)&v7 init];
   if (v5)
   {
-    v5->_minute = [v4 minute];
-    v5->_hour = [v4 hour];
+    v5->_minute = [timeCopy minute];
+    v5->_hour = [timeCopy hour];
   }
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SCLMutableScheduleTime alloc];
 
@@ -92,18 +92,18 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 hour];
-    if (v6 == [(SCLScheduleTime *)self hour])
+    v5 = equalCopy;
+    hour = [v5 hour];
+    if (hour == [(SCLScheduleTime *)self hour])
     {
-      v7 = [v5 minute];
-      v8 = v7 == [(SCLScheduleTime *)self minute];
+      minute = [v5 minute];
+      v8 = minute == [(SCLScheduleTime *)self minute];
     }
 
     else
@@ -120,25 +120,25 @@
   return v8;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(SCLScheduleTime *)self hour];
-  if (v5 == [v4 hour])
+  compareCopy = compare;
+  hour = [(SCLScheduleTime *)self hour];
+  if (hour == [compareCopy hour])
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SCLScheduleTime minute](self, "minute")}];
     v7 = MEMORY[0x277CCABB0];
-    v8 = [v4 minute];
+    minute = [compareCopy minute];
   }
 
   else
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SCLScheduleTime hour](self, "hour")}];
     v7 = MEMORY[0x277CCABB0];
-    v8 = [v4 hour];
+    minute = [compareCopy hour];
   }
 
-  v9 = [v7 numberWithUnsignedInteger:v8];
+  v9 = [v7 numberWithUnsignedInteger:minute];
   v10 = [v6 compare:v9];
 
   return v10;

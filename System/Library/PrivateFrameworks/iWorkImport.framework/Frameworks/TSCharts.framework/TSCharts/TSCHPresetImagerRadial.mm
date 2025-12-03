@@ -1,15 +1,15 @@
 @interface TSCHPresetImagerRadial
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8;
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache;
 @end
 
 @implementation TSCHPresetImagerRadial
 
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v69 = *MEMORY[0x277D85DE8];
-  v66 = objc_msgSend_seriesStyles(a6, a2, a4.width, a4.height, a5);
+  v66 = objc_msgSend_seriesStyles(preset, a2, size.width, size.height, scale);
   v17 = objc_msgSend_count(v66, v12, v13, v14, v15);
   v18 = 0;
   v67[0] = xmmword_2764D6F50;
@@ -42,7 +42,7 @@
   do
   {
     v30 = v29;
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     v35 = objc_msgSend_objectAtIndexedSubscript_(v66, v31, v32, v33, v34, v28 % v17);
     v40 = objc_msgSend_strokeFromStyle_(self, v36, v37, v38, v39, v35);
     v46 = objc_msgSend_fillFromStyle_(self, v41, v42, v43, v44, v35);
@@ -69,32 +69,32 @@
     v29 = v29 + v50;
     v51 = *(v68 + v28);
     v52 = __sincos_stret(v30 + v50 * 0.5);
-    sub_27628CE0C(a3, MidX + v51 * v52.__cosval, MidY + v51 * v52.__sinval);
+    sub_27628CE0C(context, MidX + v51 * v52.__cosval, MidY + v51 * v52.__sinval);
     started = objc_msgSend_newMutablePathWithRadius_center_startAngle_endAngle_(self, v53, v24, v54, v55, v30, v29);
     if (v46)
     {
-      objc_msgSend_p_fillPath_withFill_inContext_(self, v56, v58, v59, v60, started, v46, a3);
+      objc_msgSend_p_fillPath_withFill_inContext_(self, v56, v58, v59, v60, started, v46, context);
     }
 
     if (v40 && objc_msgSend_shouldRender(v40, v56, v58, v59, v60))
     {
-      objc_msgSend_applyToContext_insideStroke_(v40, v61, v62, v63, v64, a3, 1);
+      objc_msgSend_applyToContext_insideStroke_(v40, v61, v62, v63, v64, context, 1);
       CGContextAddPathSafe();
-      CGContextClip(a3);
+      CGContextClip(context);
       CGContextAddPathSafe();
-      CGContextStrokePath(a3);
+      CGContextStrokePath(context);
     }
 
     CGPathRelease(started);
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
 
     --v28;
   }
 
   while (v28 != -1);
-  if (a8)
+  if (cache)
   {
-    *a8 = hasAllResourcesForFill;
+    *cache = hasAllResourcesForFill;
   }
 }
 

@@ -1,11 +1,11 @@
 @interface ICLiveLinkEvent
-+ (id)eventWithCustomEvent:(id)a3 participant:(id)a4;
-+ (id)eventWithPlaybackEvent:(id)a3 participant:(id)a4;
-+ (id)eventWithQueueEvent:(id)a3 participant:(id)a4;
-+ (id)eventWithReactionEvent:(id)a3 participant:(id)a4;
-+ (id)eventWithSessionEvent:(id)a3 participant:(id)a4;
++ (id)eventWithCustomEvent:(id)event participant:(id)participant;
++ (id)eventWithPlaybackEvent:(id)event participant:(id)participant;
++ (id)eventWithQueueEvent:(id)event participant:(id)participant;
++ (id)eventWithReactionEvent:(id)event participant:(id)participant;
++ (id)eventWithSessionEvent:(id)event participant:(id)participant;
 - (NSString)primaryReferencedIdentifier;
-- (id)_initWithType:(int64_t)a3 participant:(id)a4;
+- (id)_initWithType:(int64_t)type participant:(id)participant;
 - (id)description;
 @end
 
@@ -16,7 +16,7 @@
   type = self->_type;
   if (type == 4)
   {
-    v7 = [(ICLiveLinkReactionEvent *)self->_reactionEvent itemIdentifier];
+    itemIdentifier = [(ICLiveLinkReactionEvent *)self->_reactionEvent itemIdentifier];
     goto LABEL_18;
   }
 
@@ -26,55 +26,55 @@
   }
 
   v3 = self->_queueEvent;
-  v4 = [(ICLiveLinkQueueEvent *)v3 kind];
-  if (v4 > 4)
+  kind = [(ICLiveLinkQueueEvent *)v3 kind];
+  if (kind > 4)
   {
-    if (v4 == 5)
+    if (kind == 5)
     {
-      v8 = [(ICLiveLinkQueueEvent *)v3 contentReplaced];
+      contentReplaced = [(ICLiveLinkQueueEvent *)v3 contentReplaced];
     }
 
     else
     {
-      if (v4 != 6)
+      if (kind != 6)
       {
 LABEL_11:
 
 LABEL_12:
-        v7 = 0;
+        itemIdentifier = 0;
         goto LABEL_18;
       }
 
-      v8 = [(ICLiveLinkQueueEvent *)v3 contentPlayedNow];
+      contentReplaced = [(ICLiveLinkQueueEvent *)v3 contentPlayedNow];
     }
 
-    v5 = v8;
-    v6 = [v8 startItemIdentifier];
+    contentReordered = contentReplaced;
+    startItemIdentifier = [contentReplaced startItemIdentifier];
     goto LABEL_16;
   }
 
-  if (v4 != 1)
+  if (kind != 1)
   {
-    if (v4 == 3)
+    if (kind == 3)
     {
-      v5 = [(ICLiveLinkQueueEvent *)v3 contentReordered];
-      v6 = [v5 itemIdentifier];
+      contentReordered = [(ICLiveLinkQueueEvent *)v3 contentReordered];
+      startItemIdentifier = [contentReordered itemIdentifier];
 LABEL_16:
-      v7 = v6;
+      itemIdentifier = startItemIdentifier;
       goto LABEL_17;
     }
 
     goto LABEL_11;
   }
 
-  v5 = [(ICLiveLinkQueueEvent *)v3 contentAdded];
-  v9 = [v5 itemIdentifiers];
-  v7 = [v9 firstObject];
+  contentReordered = [(ICLiveLinkQueueEvent *)v3 contentAdded];
+  itemIdentifiers = [contentReordered itemIdentifiers];
+  itemIdentifier = [itemIdentifiers firstObject];
 
 LABEL_17:
 LABEL_18:
 
-  return v7;
+  return itemIdentifier;
 }
 
 - (id)description
@@ -131,17 +131,17 @@ LABEL_12:
   return v3;
 }
 
-- (id)_initWithType:(int64_t)a3 participant:(id)a4
+- (id)_initWithType:(int64_t)type participant:(id)participant
 {
-  v6 = a4;
+  participantCopy = participant;
   v12.receiver = self;
   v12.super_class = ICLiveLinkEvent;
   v7 = [(ICLiveLinkEvent *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 copy];
+    v7->_type = type;
+    v9 = [participantCopy copy];
     participant = v8->_participant;
     v8->_participant = v9;
   }
@@ -149,62 +149,62 @@ LABEL_12:
   return v8;
 }
 
-+ (id)eventWithCustomEvent:(id)a3 participant:(id)a4
++ (id)eventWithCustomEvent:(id)event participant:(id)participant
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[ICLiveLinkEvent alloc] _initWithType:5 participant:v6];
+  eventCopy = event;
+  participantCopy = participant;
+  v7 = [[ICLiveLinkEvent alloc] _initWithType:5 participant:participantCopy];
 
   v8 = v7[7];
-  v7[7] = v5;
+  v7[7] = eventCopy;
 
   return v7;
 }
 
-+ (id)eventWithReactionEvent:(id)a3 participant:(id)a4
++ (id)eventWithReactionEvent:(id)event participant:(id)participant
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[ICLiveLinkEvent alloc] _initWithType:4 participant:v6];
+  eventCopy = event;
+  participantCopy = participant;
+  v7 = [[ICLiveLinkEvent alloc] _initWithType:4 participant:participantCopy];
 
   v8 = v7[6];
-  v7[6] = v5;
+  v7[6] = eventCopy;
 
   return v7;
 }
 
-+ (id)eventWithQueueEvent:(id)a3 participant:(id)a4
++ (id)eventWithQueueEvent:(id)event participant:(id)participant
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[ICLiveLinkEvent alloc] _initWithType:3 participant:v6];
+  eventCopy = event;
+  participantCopy = participant;
+  v7 = [[ICLiveLinkEvent alloc] _initWithType:3 participant:participantCopy];
 
   v8 = v7[5];
-  v7[5] = v5;
+  v7[5] = eventCopy;
 
   return v7;
 }
 
-+ (id)eventWithPlaybackEvent:(id)a3 participant:(id)a4
++ (id)eventWithPlaybackEvent:(id)event participant:(id)participant
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[ICLiveLinkEvent alloc] _initWithType:2 participant:v6];
+  eventCopy = event;
+  participantCopy = participant;
+  v7 = [[ICLiveLinkEvent alloc] _initWithType:2 participant:participantCopy];
 
   v8 = v7[4];
-  v7[4] = v5;
+  v7[4] = eventCopy;
 
   return v7;
 }
 
-+ (id)eventWithSessionEvent:(id)a3 participant:(id)a4
++ (id)eventWithSessionEvent:(id)event participant:(id)participant
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[ICLiveLinkEvent alloc] _initWithType:1 participant:v6];
+  eventCopy = event;
+  participantCopy = participant;
+  v7 = [[ICLiveLinkEvent alloc] _initWithType:1 participant:participantCopy];
 
   v8 = v7[3];
-  v7[3] = v5;
+  v7[3] = eventCopy;
 
   return v7;
 }

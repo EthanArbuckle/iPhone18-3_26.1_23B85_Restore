@@ -9,16 +9,16 @@
 {
   v5.receiver = self;
   v5.super_class = NLPredictedWorkoutActivityType;
-  v2 = [(FIUIWorkoutActivityType *)&v5 uniqueIdentifier];
-  v3 = [v2 stringByAppendingString:{@", predictedType"}];
+  uniqueIdentifier = [(FIUIWorkoutActivityType *)&v5 uniqueIdentifier];
+  v3 = [uniqueIdentifier stringByAppendingString:{@", predictedType"}];
 
   return v3;
 }
 
 - (NSDictionary)baseMetadata
 {
-  v2 = [(FIUIWorkoutActivityType *)self metadata];
-  v3 = [v2 mutableCopy];
+  metadata = [(FIUIWorkoutActivityType *)self metadata];
+  v3 = [metadata mutableCopy];
 
   [v3 removeObjectForKey:@"BackdatedStartDate"];
   [v3 removeObjectForKey:@"PredictionSessionUUID"];

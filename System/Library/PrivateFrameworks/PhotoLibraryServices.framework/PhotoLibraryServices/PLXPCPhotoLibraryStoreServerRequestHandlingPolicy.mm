@@ -1,24 +1,24 @@
 @interface PLXPCPhotoLibraryStoreServerRequestHandlingPolicy
-- (BOOL)_restrictedLockedContentAccessAllowedForContext:(id)a3;
+- (BOOL)_restrictedLockedContentAccessAllowedForContext:(id)context;
 - (PLXPCPhotoLibraryStoreServerRequestHandlingPolicy)init;
-- (PLXPCPhotoLibraryStoreServerRequestHandlingPolicy)initWithConnectionAuthorization:(id)a3;
-- (id)_assetFilterPredicateWithClientContext:(id)a3;
-- (id)_backgroundUploadPredicateForEntityName:(id)a3 withClientContext:(id)a4;
-- (id)_captureSessionPredicateForEntityName:(id)a3;
-- (id)_entityNamesAllowedByRestrictedDataEntitlements:(id)a3;
-- (id)_filterPredicateForEntityName:(id)a3 withClientContext:(id)a4;
-- (id)_limitedLibraryFilterPredicateForEntityName:(id)a3 withClientContext:(id)a4;
-- (id)_lockedCaptureSessionPredicateForEntityName:(id)a3 sessionIdentifier:(id)a4;
-- (id)_predicateForEntityName:(id)a3 captureSessionState:(id)a4;
-- (id)_restrictedEntityNamesAllowedForContext:(id)a3;
-- (id)allowableClassesForClientWithContext:(id)a3;
-- (id)processFaultForObjectWithID:(id)a3 fromClientWithContext:(id)a4 error:(id *)a5;
-- (id)processFaultForRelationshipWithName:(id)a3 onObjectWithID:(id)a4 fromClientWithContext:(id)a5 error:(id *)a6;
-- (id)processRequest:(id)a3 fromClientWithContext:(id)a4 error:(id *)a5;
-- (id)restrictingReadPredicateForEntity:(id)a3 fromClientWithContext:(id)a4;
+- (PLXPCPhotoLibraryStoreServerRequestHandlingPolicy)initWithConnectionAuthorization:(id)authorization;
+- (id)_assetFilterPredicateWithClientContext:(id)context;
+- (id)_backgroundUploadPredicateForEntityName:(id)name withClientContext:(id)context;
+- (id)_captureSessionPredicateForEntityName:(id)name;
+- (id)_entityNamesAllowedByRestrictedDataEntitlements:(id)entitlements;
+- (id)_filterPredicateForEntityName:(id)name withClientContext:(id)context;
+- (id)_limitedLibraryFilterPredicateForEntityName:(id)name withClientContext:(id)context;
+- (id)_lockedCaptureSessionPredicateForEntityName:(id)name sessionIdentifier:(id)identifier;
+- (id)_predicateForEntityName:(id)name captureSessionState:(id)state;
+- (id)_restrictedEntityNamesAllowedForContext:(id)context;
+- (id)allowableClassesForClientWithContext:(id)context;
+- (id)processFaultForObjectWithID:(id)d fromClientWithContext:(id)context error:(id *)error;
+- (id)processFaultForRelationshipWithName:(id)name onObjectWithID:(id)d fromClientWithContext:(id)context error:(id *)error;
+- (id)processRequest:(id)request fromClientWithContext:(id)context error:(id *)error;
+- (id)restrictingReadPredicateForEntity:(id)entity fromClientWithContext:(id)context;
 - (void)clearCrashLogMessage;
 - (void)dealloc;
-- (void)setCrashLogMessageForRequest:(id)a3 context:(id)a4;
+- (void)setCrashLogMessageForRequest:(id)request context:(id)context;
 @end
 
 @implementation PLXPCPhotoLibraryStoreServerRequestHandlingPolicy
@@ -32,20 +32,20 @@
   }
 }
 
-- (void)setCrashLogMessageForRequest:(id)a3 context:(id)a4
+- (void)setCrashLogMessageForRequest:(id)request context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  contextCopy = context;
   if (MEMORY[0x19EAEE230]())
   {
-    if (v6)
+    if (contextCopy)
     {
-      [v6 auditToken];
+      [contextCopy auditToken];
     }
 
     v7 = PLClientApplicationIdentifierFromAuditToken();
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"XPC [%@] %@", v7, v5];
-    v8 = v9;
+    requestCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"XPC [%@] %@", v7, requestCopy];
+    v8 = requestCopy;
     PLRunWithUnfairLock();
   }
 }
@@ -57,30 +57,30 @@ size_t __90__PLXPCPhotoLibraryStoreServerRequestHandlingPolicy_setCrashLogMessag
   return result;
 }
 
-- (id)processRequest:(id)a3 fromClientWithContext:(id)a4 error:(id *)a5
+- (id)processRequest:(id)request fromClientWithContext:(id)context error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self setCrashLogMessageForRequest:v8 context:v9];
-  if ([v8 requestType] != 1)
+  requestCopy = request;
+  contextCopy = context;
+  [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self setCrashLogMessageForRequest:requestCopy context:contextCopy];
+  if ([requestCopy requestType] != 1)
   {
     goto LABEL_6;
   }
 
-  v10 = [v8 entityName];
+  entityName = [requestCopy entityName];
   v11 = +[PLPhotosHighlight entityName];
-  v12 = [v10 isEqualToString:v11];
+  v12 = [entityName isEqualToString:v11];
 
   if (!v12)
   {
     goto LABEL_6;
   }
 
-  v13 = v8;
+  v13 = requestCopy;
   v14 = MEMORY[0x1E695DFD8];
-  v15 = [v13 propertiesToFetch];
-  v16 = [v14 setWithArray:v15];
+  propertiesToFetch = [v13 propertiesToFetch];
+  v16 = [v14 setWithArray:propertiesToFetch];
 
   v17 = +[PLPhotosHighlight allowedPropertiesForMomentList];
   v18 = [v16 isSubsetOfSet:v17];
@@ -97,13 +97,13 @@ LABEL_6:
     if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
     {
       *buf = 134217984;
-      v29 = [v8 requestType];
+      requestType = [requestCopy requestType];
       _os_signpost_emit_with_name_impl(&dword_19BF1F000, v22, OS_SIGNPOST_INTERVAL_BEGIN, v20, "XPCStoreRequest", "type: %lu", buf, 0xCu);
     }
 
     v27.receiver = self;
     v27.super_class = PLXPCPhotoLibraryStoreServerRequestHandlingPolicy;
-    v23 = [(NSXPCStoreServerRequestHandlingPolicy *)&v27 processRequest:v8 fromClientWithContext:v9 error:a5];
+    v23 = [(NSXPCStoreServerRequestHandlingPolicy *)&v27 processRequest:requestCopy fromClientWithContext:contextCopy error:error];
     v24 = v22;
     v16 = v24;
     if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
@@ -120,7 +120,7 @@ LABEL_6:
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v29 = v13;
+    requestType = v13;
     _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_DEFAULT, "Disallowed PhotosHighlight store request: %{public}@", buf, 0xCu);
   }
 
@@ -132,31 +132,31 @@ LABEL_13:
   return v23;
 }
 
-- (id)_backgroundUploadPredicateForEntityName:(id)a3 withClientContext:(id)a4
+- (id)_backgroundUploadPredicateForEntityName:(id)name withClientContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  contextCopy = context;
   v8 = +[PLAssetResourceUploadJobConfiguration entityName];
-  v9 = [v6 isEqualToString:v8];
+  v9 = [nameCopy isEqualToString:v8];
 
   if (v9)
   {
-    v10 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self backgroundUploadExtensionSupport];
-    v11 = [v10 backgroundUploadJobConfigurationPredicateWithClientAuthorization:self->_connectionAuthorization];
+    backgroundUploadExtensionSupport = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self backgroundUploadExtensionSupport];
+    v11 = [backgroundUploadExtensionSupport backgroundUploadJobConfigurationPredicateWithClientAuthorization:self->_connectionAuthorization];
 LABEL_5:
 
     goto LABEL_7;
   }
 
   v12 = +[PLAssetResourceUploadJob entityName];
-  v13 = [v6 isEqualToString:v12];
+  v13 = [nameCopy isEqualToString:v12];
 
   if (v13)
   {
-    v10 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self backgroundUploadExtensionSupport];
+    backgroundUploadExtensionSupport = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self backgroundUploadExtensionSupport];
     connectionAuthorization = self->_connectionAuthorization;
-    v15 = [v7 managedObjectContext];
-    v11 = [v10 backgroundUploadJobPredicateWithClientAuthorization:connectionAuthorization managedObjectContext:v15];
+    managedObjectContext = [contextCopy managedObjectContext];
+    v11 = [backgroundUploadExtensionSupport backgroundUploadJobPredicateWithClientAuthorization:connectionAuthorization managedObjectContext:managedObjectContext];
 
     goto LABEL_5;
   }
@@ -167,30 +167,30 @@ LABEL_7:
   return v11;
 }
 
-- (id)_lockedCaptureSessionPredicateForEntityName:(id)a3 sessionIdentifier:(id)a4
+- (id)_lockedCaptureSessionPredicateForEntityName:(id)name sessionIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   v7 = [MEMORY[0x1E696AE18] predicateWithValue:0];
   v8 = +[PLManagedAsset entityName];
-  v9 = [v5 isEqual:v8];
+  v9 = [nameCopy isEqual:v8];
 
   if (v9)
   {
-    v10 = [PLManagedAsset predicateToLimitToCaptureSessionIdentifier:v6];
+    identifierCopy = [PLManagedAsset predicateToLimitToCaptureSessionIdentifier:identifierCopy];
 LABEL_6:
-    v15 = v10;
+    v15 = identifierCopy;
 
     v7 = v15;
     goto LABEL_7;
   }
 
   v11 = +[PLAdditionalAssetAttributes entityName];
-  v12 = [v5 isEqual:v11];
+  v12 = [nameCopy isEqual:v11];
 
-  if (v12 || (+[PLInternalResource entityName](PLInternalResource, "entityName"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v5 isEqual:v13], v13, v14))
+  if (v12 || (+[PLInternalResource entityName](PLInternalResource, "entityName"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [nameCopy isEqual:v13], v13, v14))
   {
-    v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"asset.captureSessionIdentifier", v6];
+    identifierCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"asset.captureSessionIdentifier", identifierCopy];
     goto LABEL_6;
   }
 
@@ -199,21 +199,21 @@ LABEL_7:
   return v7;
 }
 
-- (id)_predicateForEntityName:(id)a3 captureSessionState:(id)a4
+- (id)_predicateForEntityName:(id)name captureSessionState:(id)state
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 type];
+  nameCopy = name;
+  stateCopy = state;
+  type = [stateCopy type];
   v9 = 0;
-  if (v8 > 1)
+  if (type > 1)
   {
-    if (v8 == 3)
+    if (type == 3)
     {
       goto LABEL_21;
     }
 
-    if (v8 != 2)
+    if (type != 2)
     {
 LABEL_15:
       v17 = PLBackendGetLog();
@@ -223,7 +223,7 @@ LABEL_15:
         *buf = 138543618;
         v26 = connectionAuthorization;
         v27 = 2114;
-        v28 = v7;
+        v28 = stateCopy;
         v19 = "Capture Session: [client %{public}@] Unexpected state for XPC store predicate: %{public}@";
         v20 = v17;
         v21 = OS_LOG_TYPE_ERROR;
@@ -237,7 +237,7 @@ LABEL_19:
     }
 
     v10 = objc_opt_class();
-    v11 = v7;
+    v11 = stateCopy;
     if (v11)
     {
       if (objc_opt_isKindOfClass())
@@ -256,23 +256,23 @@ LABEL_19:
         goto LABEL_14;
       }
 
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"id  _Nullable _PLAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nullable __strong)"}];
-      [v14 handleFailureInFunction:v15 file:@"PLHelperExtension.h" lineNumber:78 description:{@"Expected class of %@ but was %@", v10, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v15 file:@"PLHelperExtension.h" lineNumber:78 description:{@"Expected class of %@ but was %@", v10, objc_opt_class()}];
     }
 
     v13 = 0;
 LABEL_14:
 
-    v16 = [v13 sessionIdentifier];
-    v9 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _lockedCaptureSessionPredicateForEntityName:v6 sessionIdentifier:v16];
+    sessionIdentifier = [v13 sessionIdentifier];
+    v9 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _lockedCaptureSessionPredicateForEntityName:nameCopy sessionIdentifier:sessionIdentifier];
 
     goto LABEL_21;
   }
 
-  if (v8)
+  if (type)
   {
-    if (v8 == 1)
+    if (type == 1)
     {
       goto LABEL_21;
     }
@@ -301,14 +301,14 @@ LABEL_21:
   return v9;
 }
 
-- (id)_captureSessionPredicateForEntityName:(id)a3
+- (id)_captureSessionPredicateForEntityName:(id)name
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization captureSessionState];
-  if (v5)
+  nameCopy = name;
+  captureSessionState = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization captureSessionState];
+  if (captureSessionState)
   {
-    v6 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _predicateForEntityName:v4 captureSessionState:v5];
+    v6 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _predicateForEntityName:nameCopy captureSessionState:captureSessionState];
   }
 
   else
@@ -333,7 +333,7 @@ LABEL_21:
     v13 = 138543874;
     v14 = v11;
     v15 = 2114;
-    v16 = v4;
+    v16 = nameCopy;
     v17 = 2112;
     v18 = v9;
     _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_INFO, "Capture Session: [client %{public}@] Predicate for entity %{public}@: %@", &v13, 0x20u);
@@ -366,10 +366,10 @@ void __87__PLXPCPhotoLibraryStoreServerRequestHandlingPolicy_limitedLibraryFetch
   }
 }
 
-- (id)_limitedLibraryFilterPredicateForEntityName:(id)a3 withClientContext:(id)a4
+- (id)_limitedLibraryFilterPredicateForEntityName:(id)name withClientContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  contextCopy = context;
   if (PLPlatformLimitedLibrarySupported())
   {
     v11 = 0;
@@ -378,8 +378,8 @@ void __87__PLXPCPhotoLibraryStoreServerRequestHandlingPolicy_limitedLibraryFetch
     v14 = __Block_byref_object_copy__32618;
     v15 = __Block_byref_object_dispose__32619;
     v16 = 0;
-    v9 = v6;
-    v10 = v5;
+    v9 = contextCopy;
+    v10 = nameCopy;
     PLSafeRunWithUnfairLock();
     v7 = v12[5];
 
@@ -549,10 +549,10 @@ LABEL_26:
 LABEL_27:
 }
 
-- (id)_assetFilterPredicateWithClientContext:(id)a3
+- (id)_assetFilterPredicateWithClientContext:(id)context
 {
-  v4 = a3;
-  if (PLIsContentPrivacyEnabled() && ![(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _restrictedLockedContentAccessAllowedForContext:v4])
+  contextCopy = context;
+  if (PLIsContentPrivacyEnabled() && ![(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _restrictedLockedContentAccessAllowedForContext:contextCopy])
   {
     v5 = +[PLManagedAsset predicateToExcludeRestrictedLockedAssets];
   }
@@ -565,27 +565,27 @@ LABEL_27:
   return v5;
 }
 
-- (id)_filterPredicateForEntityName:(id)a3 withClientContext:(id)a4
+- (id)_filterPredicateForEntityName:(id)name withClientContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  contextCopy = context;
   v8 = +[PLManagedAsset entityName];
-  v9 = [v6 isEqualToString:v8];
+  v9 = [nameCopy isEqualToString:v8];
 
   if (v9)
   {
-    v10 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _assetFilterPredicateWithClientContext:v7];
+    _internalResourceFilterPredicate = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _assetFilterPredicateWithClientContext:contextCopy];
 LABEL_5:
-    v13 = v10;
+    v13 = _internalResourceFilterPredicate;
     goto LABEL_7;
   }
 
   v11 = +[PLInternalResource entityName];
-  v12 = [v6 isEqualToString:v11];
+  v12 = [nameCopy isEqualToString:v11];
 
   if (v12)
   {
-    v10 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _internalResourceFilterPredicate];
+    _internalResourceFilterPredicate = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _internalResourceFilterPredicate];
     goto LABEL_5;
   }
 
@@ -595,29 +595,29 @@ LABEL_7:
   return v13;
 }
 
-- (id)restrictingReadPredicateForEntity:(id)a3 fromClientWithContext:(id)a4
+- (id)restrictingReadPredicateForEntity:(id)entity fromClientWithContext:(id)context
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 name];
-  v8 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _restrictedEntityNamesAllowedForContext:v6];
-  v9 = v7;
+  contextCopy = context;
+  name = [entity name];
+  v8 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _restrictedEntityNamesAllowedForContext:contextCopy];
+  v9 = name;
   v10 = PLXPCStoreAllowedEntityNames();
   v11 = [v10 containsObject:v9];
 
   if ((v11 & 1) != 0 || [v8 containsObject:v9])
   {
     v26 = v8;
-    v12 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _limitedLibraryFilterPredicateForEntityName:v9 withClientContext:v6];
+    v12 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _limitedLibraryFilterPredicateForEntityName:v9 withClientContext:contextCopy];
     v13 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _captureSessionPredicateForEntityName:v9];
-    v14 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _backgroundUploadPredicateForEntityName:v9 withClientContext:v6];
-    v15 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _filterPredicateForEntityName:v9 withClientContext:v6];
+    v14 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _backgroundUploadPredicateForEntityName:v9 withClientContext:contextCopy];
+    v15 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self _filterPredicateForEntityName:v9 withClientContext:contextCopy];
     v16 = objc_alloc_init(MEMORY[0x1E69BF1E8]);
     [v16 addPredicate:v12];
     [v16 addPredicate:v13];
     [v16 addPredicate:v14];
     [v16 addPredicate:v15];
-    v17 = [v16 buildAndPredicate];
+    buildAndPredicate = [v16 buildAndPredicate];
     v18 = PLBackendGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
@@ -625,7 +625,7 @@ LABEL_7:
       *buf = 138543618;
       v28 = connectionAuthorization;
       v29 = 2112;
-      v30 = v17;
+      v30 = buildAndPredicate;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEBUG, "[client %{public}@] XPC store fetchFilterPredicate: %@", buf, 0x16u);
     }
 
@@ -648,12 +648,12 @@ LABEL_7:
         _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "Attempted to fetch disallowed entity: %{public}@", buf, 0xCu);
       }
 
-      v17 = 0;
+      buildAndPredicate = 0;
     }
 
     else
     {
-      if (a3)
+      if (entity)
       {
         v25 = PLBackendGetLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
@@ -664,20 +664,20 @@ LABEL_7:
         }
       }
 
-      v17 = [MEMORY[0x1E696AE18] predicateWithValue:1];
+      buildAndPredicate = [MEMORY[0x1E696AE18] predicateWithValue:1];
     }
   }
 
-  return v17;
+  return buildAndPredicate;
 }
 
-- (BOOL)_restrictedLockedContentAccessAllowedForContext:(id)a3
+- (BOOL)_restrictedLockedContentAccessAllowedForContext:(id)context
 {
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v5 = a3;
+  contextCopy = context;
   PLSafeRunWithUnfairLock();
   v3 = *(v7 + 24);
 
@@ -730,7 +730,7 @@ uint64_t __101__PLXPCPhotoLibraryStoreServerRequestHandlingPolicy__restrictedLoc
   return result;
 }
 
-- (id)_restrictedEntityNamesAllowedForContext:(id)a3
+- (id)_restrictedEntityNamesAllowedForContext:(id)context
 {
   v6 = 0;
   v7 = &v6;
@@ -738,7 +738,7 @@ uint64_t __101__PLXPCPhotoLibraryStoreServerRequestHandlingPolicy__restrictedLoc
   v9 = __Block_byref_object_copy__32618;
   v10 = __Block_byref_object_dispose__32619;
   v11 = 0;
-  v5 = a3;
+  contextCopy = context;
   PLSafeRunWithUnfairLock();
   v3 = v7[5];
 
@@ -768,10 +768,10 @@ void __93__PLXPCPhotoLibraryStoreServerRequestHandlingPolicy__restrictedEntityNa
   }
 }
 
-- (id)_entityNamesAllowedByRestrictedDataEntitlements:(id)a3
+- (id)_entityNamesAllowedByRestrictedDataEntitlements:(id)entitlements
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  entitlementsCopy = entitlements;
   pl_dispatch_once();
   v4 = _entityNamesAllowedByRestrictedDataEntitlements__pl_once_object_17;
   v5 = [MEMORY[0x1E695DFA8] set];
@@ -782,7 +782,7 @@ void __93__PLXPCPhotoLibraryStoreServerRequestHandlingPolicy__restrictedEntityNa
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v3;
+    v6 = entitlementsCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -866,79 +866,79 @@ void __101__PLXPCPhotoLibraryStoreServerRequestHandlingPolicy__entityNamesAllowe
   _entityNamesAllowedByRestrictedDataEntitlements__pl_once_object_17 = v10;
 }
 
-- (id)processFaultForRelationshipWithName:(id)a3 onObjectWithID:(id)a4 fromClientWithContext:(id)a5 error:(id *)a6
+- (id)processFaultForRelationshipWithName:(id)name onObjectWithID:(id)d fromClientWithContext:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v31 = a5;
-  v12 = [v11 entity];
-  v13 = [v12 relationshipsByName];
-  v14 = [v13 objectForKeyedSubscript:v10];
+  nameCopy = name;
+  dCopy = d;
+  contextCopy = context;
+  entity = [dCopy entity];
+  relationshipsByName = [entity relationshipsByName];
+  v14 = [relationshipsByName objectForKeyedSubscript:nameCopy];
 
-  v15 = [v14 destinationEntity];
-  v16 = [v12 name];
+  destinationEntity = [v14 destinationEntity];
+  name = [entity name];
   v17 = +[PLPhotosHighlight entityName];
-  if ([v16 isEqualToString:v17])
+  if ([name isEqualToString:v17])
   {
   }
 
   else
   {
-    v29 = self;
-    [v15 name];
+    selfCopy = self;
+    [destinationEntity name];
     v30 = v14;
-    v18 = v15;
-    v19 = v11;
-    v20 = v10;
-    v22 = v21 = a6;
+    v18 = destinationEntity;
+    v19 = dCopy;
+    v20 = nameCopy;
+    v22 = v21 = error;
     v23 = +[PLPhotosHighlight entityName];
     v24 = [v22 isEqualToString:v23];
 
-    a6 = v21;
-    v10 = v20;
-    v11 = v19;
-    v15 = v18;
+    error = v21;
+    nameCopy = v20;
+    dCopy = v19;
+    destinationEntity = v18;
     v14 = v30;
 
     if (!v24)
     {
-      v32.receiver = v29;
+      v32.receiver = selfCopy;
       v32.super_class = PLXPCPhotoLibraryStoreServerRequestHandlingPolicy;
-      v25 = v31;
-      a6 = [(NSXPCStoreServerRequestHandlingPolicy *)&v32 processFaultForRelationshipWithName:v10 onObjectWithID:v11 fromClientWithContext:v31 error:a6];
+      v25 = contextCopy;
+      error = [(NSXPCStoreServerRequestHandlingPolicy *)&v32 processFaultForRelationshipWithName:nameCopy onObjectWithID:dCopy fromClientWithContext:contextCopy error:error];
       goto LABEL_7;
     }
   }
 
-  v25 = v31;
-  if (a6)
+  v25 = contextCopy;
+  if (error)
   {
     v26 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3328 userInfo:0];
-    v27 = a6;
-    a6 = 0;
-    *v27 = v26;
+    errorCopy = error;
+    error = 0;
+    *errorCopy = v26;
   }
 
 LABEL_7:
 
-  return a6;
+  return error;
 }
 
-- (id)processFaultForObjectWithID:(id)a3 fromClientWithContext:(id)a4 error:(id *)a5
+- (id)processFaultForObjectWithID:(id)d fromClientWithContext:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 entity];
-  v11 = [v10 name];
+  dCopy = d;
+  contextCopy = context;
+  entity = [dCopy entity];
+  name = [entity name];
   v12 = +[PLPhotosHighlight entityName];
-  v13 = [v11 isEqualToString:v12];
+  v13 = [name isEqualToString:v12];
 
   if (v13)
   {
-    if (a5)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3328 userInfo:0];
-      *a5 = v14 = 0;
+      *error = v14 = 0;
     }
 
     else
@@ -951,13 +951,13 @@ LABEL_7:
   {
     v16.receiver = self;
     v16.super_class = PLXPCPhotoLibraryStoreServerRequestHandlingPolicy;
-    v14 = [(NSXPCStoreServerRequestHandlingPolicy *)&v16 processFaultForObjectWithID:v8 fromClientWithContext:v9 error:a5];
+    v14 = [(NSXPCStoreServerRequestHandlingPolicy *)&v16 processFaultForObjectWithID:dCopy fromClientWithContext:contextCopy error:error];
   }
 
   return v14;
 }
 
-- (id)allowableClassesForClientWithContext:(id)a3
+- (id)allowableClassesForClientWithContext:(id)context
 {
   v3 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_class();
@@ -969,8 +969,8 @@ LABEL_7:
 {
   if ([(NSNumber *)self->_fetchFilterLock_fetchFilterEnabledStatus BOOLValue])
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self];
   }
 
   v4.receiver = self;
@@ -978,14 +978,14 @@ LABEL_7:
   [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)&v4 dealloc];
 }
 
-- (PLXPCPhotoLibraryStoreServerRequestHandlingPolicy)initWithConnectionAuthorization:(id)a3
+- (PLXPCPhotoLibraryStoreServerRequestHandlingPolicy)initWithConnectionAuthorization:(id)authorization
 {
-  v5 = a3;
+  authorizationCopy = authorization;
   v6 = [(PLXPCPhotoLibraryStoreServerRequestHandlingPolicy *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connectionAuthorization, a3);
+    objc_storeStrong(&v6->_connectionAuthorization, authorization);
   }
 
   return v7;

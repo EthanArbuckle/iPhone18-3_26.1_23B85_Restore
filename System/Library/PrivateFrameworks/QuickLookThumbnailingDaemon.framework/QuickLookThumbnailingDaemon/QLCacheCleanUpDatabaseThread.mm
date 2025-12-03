@@ -1,11 +1,11 @@
 @interface QLCacheCleanUpDatabaseThread
 - (BOOL)_updateHitCount;
-- (QLCacheCleanUpDatabaseThread)initWithCacheThread:(id)a3;
+- (QLCacheCleanUpDatabaseThread)initWithCacheThread:(id)thread;
 - (unint64_t)hitToSaveCount;
 - (void)_stopWriteAndCleanUpThreadRunLoop;
 - (void)_threadMain;
 - (void)_writeAndCleanUp;
-- (void)addHitWithThumbnailData:(id)a3;
+- (void)addHitWithThumbnailData:(id)data;
 - (void)cleanUpForReset;
 - (void)dealloc;
 - (void)pause;
@@ -134,13 +134,13 @@
 
 - (void)_writeAndCleanUp
 {
-  v3 = [(_QLCacheThread *)self->_cacheThread diskCache];
+  diskCache = [(_QLCacheThread *)self->_cacheThread diskCache];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__QLCacheCleanUpDatabaseThread__writeAndCleanUp__block_invoke;
   v7[3] = &unk_279ADDB60;
   v7[4] = self;
-  v4 = [v3 doWriting:v7];
+  v4 = [diskCache doWriting:v7];
 
   if ((v4 & 1) == 0)
   {
@@ -150,8 +150,8 @@
       [QLCacheCleanUpDatabaseThread _writeAndCleanUp];
     }
 
-    v6 = [(_QLCacheThread *)self->_cacheThread memoryCache];
-    [v6 reset];
+    memoryCache = [(_QLCacheThread *)self->_cacheThread memoryCache];
+    [memoryCache reset];
 
     self->_diskCacheCleanupDone = 1;
     [(_QLCacheThread *)self->_cacheThread _cleanUpDatabaseDone];
@@ -162,14 +162,14 @@
 {
   v3 = self->_thumbnailsHit;
   objc_sync_enter(v3);
-  v4 = [(NSMutableDictionary *)self->_thumbnailsHit allKeys];
-  v5 = [v4 count];
+  allKeys = [(NSMutableDictionary *)self->_thumbnailsHit allKeys];
+  v5 = [allKeys count];
   if (v5)
   {
-    v6 = [v4 objectAtIndex:0];
-    v7 = [(_QLCacheThread *)self->_cacheThread diskCache];
+    v6 = [allKeys objectAtIndex:0];
+    diskCache = [(_QLCacheThread *)self->_cacheThread diskCache];
     v8 = [(NSMutableDictionary *)self->_thumbnailsHit objectForKey:v6];
-    [v7 updateHitCount:v8 forFileIdentifier:v6];
+    [diskCache updateHitCount:v8 forFileIdentifier:v6];
 
     [(NSMutableDictionary *)self->_thumbnailsHit removeObjectForKey:v6];
   }
@@ -296,21 +296,21 @@ uint64_t __48__QLCacheCleanUpDatabaseThread__writeAndCleanUp__block_invoke(uint6
 - (void)startCleanUp
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v4 = 138412290;
   v5 = v2;
   _os_log_debug_impl(&dword_2615D3000, a2, OS_LOG_TYPE_DEBUG, "start thread %@", &v4, 0xCu);
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (QLCacheCleanUpDatabaseThread)initWithCacheThread:(id)a3
+- (QLCacheCleanUpDatabaseThread)initWithCacheThread:(id)thread
 {
-  v5 = a3;
+  threadCopy = thread;
   v6 = [(QLCacheCleanUpDatabaseThread *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cacheThread, a3);
+    objc_storeStrong(&v6->_cacheThread, thread);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     thumbnailsHit = v7->_thumbnailsHit;
     v7->_thumbnailsHit = v8;
@@ -401,37 +401,37 @@ uint64_t __48__QLCacheCleanUpDatabaseThread__writeAndCleanUp__block_invoke(uint6
   [(NSConditionLock *)self->_threadLock unlockWithCondition:0];
 }
 
-- (void)addHitWithThumbnailData:(id)a3
+- (void)addHitWithThumbnailData:(id)data
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = self->_thumbnailsHit;
   objc_sync_enter(v5);
   v6 = [QLCachedThumbnailDescriptor alloc];
-  [v4 size];
+  [dataCopy size];
   v8 = v7;
-  v9 = [v4 iconMode];
-  v10 = [v4 badgeType];
-  v11 = [v4 externalGeneratorDataHash];
+  iconMode = [dataCopy iconMode];
+  badgeType = [dataCopy badgeType];
+  externalGeneratorDataHash = [dataCopy externalGeneratorDataHash];
   LODWORD(v12) = v8;
-  v13 = [(QLCachedThumbnailDescriptor *)v6 initWithSize:v9 iconMode:v10 badgeType:v11 externalGeneratorDataHash:v12];
+  v13 = [(QLCachedThumbnailDescriptor *)v6 initWithSize:iconMode iconMode:badgeType badgeType:externalGeneratorDataHash externalGeneratorDataHash:v12];
   v14 = _dbLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [v4 fileIdentifier];
-    [(QLCacheCleanUpDatabaseThread *)v15 addHitWithThumbnailData:v26, v14];
+    fileIdentifier = [dataCopy fileIdentifier];
+    [(QLCacheCleanUpDatabaseThread *)fileIdentifier addHitWithThumbnailData:v26, v14];
   }
 
   thumbnailsHit = self->_thumbnailsHit;
-  v17 = [v4 fileIdentifier];
-  v18 = [(NSMutableDictionary *)thumbnailsHit objectForKey:v17];
+  fileIdentifier2 = [dataCopy fileIdentifier];
+  v18 = [(NSMutableDictionary *)thumbnailsHit objectForKey:fileIdentifier2];
 
   if (!v18)
   {
     v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v19 = self->_thumbnailsHit;
-    v20 = [v4 fileIdentifier];
-    [(NSMutableDictionary *)v19 setObject:v18 forKey:v20];
+    fileIdentifier3 = [dataCopy fileIdentifier];
+    [(NSMutableDictionary *)v19 setObject:v18 forKey:fileIdentifier3];
   }
 
   v21 = [v18 objectForKey:v13];
@@ -457,25 +457,25 @@ uint64_t __48__QLCacheCleanUpDatabaseThread__writeAndCleanUp__block_invoke(uint6
 - (void)cleanUpForReset
 {
   [(NSConditionLock *)self->_threadLock lockWhenCondition:0];
-  v3 = [(_QLCacheThread *)self->_cacheThread diskCache];
+  diskCache = [(_QLCacheThread *)self->_cacheThread diskCache];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__QLCacheCleanUpDatabaseThread_cleanUpForReset__block_invoke;
   v8[3] = &unk_279ADDB60;
   v8[4] = self;
-  v4 = [v3 doWriting:v8];
+  v4 = [diskCache doWriting:v8];
 
   if ((v4 & 1) == 0)
   {
-    v5 = [(_QLCacheThread *)self->_cacheThread memoryCache];
-    [v5 reset];
+    memoryCache = [(_QLCacheThread *)self->_cacheThread memoryCache];
+    [memoryCache reset];
 
-    v6 = [(QLCacheCleanUpDatabaseThread *)self thumbnailsHit];
-    objc_sync_enter(v6);
-    v7 = [(QLCacheCleanUpDatabaseThread *)self thumbnailsHit];
-    [v7 removeAllObjects];
+    thumbnailsHit = [(QLCacheCleanUpDatabaseThread *)self thumbnailsHit];
+    objc_sync_enter(thumbnailsHit);
+    thumbnailsHit2 = [(QLCacheCleanUpDatabaseThread *)self thumbnailsHit];
+    [thumbnailsHit2 removeAllObjects];
 
-    objc_sync_exit(v6);
+    objc_sync_exit(thumbnailsHit);
   }
 
   [(NSConditionLock *)self->_threadLock unlock];

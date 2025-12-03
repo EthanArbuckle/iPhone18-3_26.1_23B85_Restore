@@ -1,10 +1,10 @@
 @interface MutablePhotosFamilyViewModel
-- (_TtC9MomentsUI28MutablePhotosFamilyViewModel)initWithCoder:(id)a3;
+- (_TtC9MomentsUI28MutablePhotosFamilyViewModel)initWithCoder:(id)coder;
 @end
 
 @implementation MutablePhotosFamilyViewModel
 
-- (_TtC9MomentsUI28MutablePhotosFamilyViewModel)initWithCoder:(id)a3
+- (_TtC9MomentsUI28MutablePhotosFamilyViewModel)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC9MomentsUI28MutablePhotosFamilyViewModel_portraitCropRect;
   *v3 = 0u;

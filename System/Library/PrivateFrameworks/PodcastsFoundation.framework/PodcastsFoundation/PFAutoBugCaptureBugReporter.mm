@@ -1,16 +1,16 @@
 @interface PFAutoBugCaptureBugReporter
 + (id)sharedInstance;
-- (BOOL)_timeSinceLastSimilarReport:(id)a3 hasExceededElapsedTimeThreshold:(double)a4;
-- (BOOL)canSubmitNewReport:(id)a3 withMinimumElapsedTime:(double)a4;
+- (BOOL)_timeSinceLastSimilarReport:(id)report hasExceededElapsedTimeThreshold:(double)threshold;
+- (BOOL)canSubmitNewReport:(id)report withMinimumElapsedTime:(double)time;
 - (PFAutoBugCaptureBugReporter)init;
-- (id)_lastSubmissionTimeForReport:(id)a3;
+- (id)_lastSubmissionTimeForReport:(id)report;
 - (id)_processName;
-- (void)_executeSubmitBugReport:(id)a3 userInfo:(id)a4 withMaximumSubmissionCadence:(double)a5;
-- (void)_reportSignature:(id)a3 forReport:(id)a4;
-- (void)_scheduleSubmissionOfBugReport:(id)a3 withUserInfo:(id)a4;
-- (void)_setLastSubmissionTime:(id)a3 forReport:(id)a4;
-- (void)_submitBugReport:(id)a3 withUserInfo:(id)a4;
-- (void)submitBugReport:(id)a3 userInfo:(id)a4 withMaximumSubmissionCadence:(double)a5;
+- (void)_executeSubmitBugReport:(id)report userInfo:(id)info withMaximumSubmissionCadence:(double)cadence;
+- (void)_reportSignature:(id)signature forReport:(id)report;
+- (void)_scheduleSubmissionOfBugReport:(id)report withUserInfo:(id)info;
+- (void)_setLastSubmissionTime:(id)time forReport:(id)report;
+- (void)_submitBugReport:(id)report withUserInfo:(id)info;
+- (void)submitBugReport:(id)report userInfo:(id)info withMaximumSubmissionCadence:(double)cadence;
 @end
 
 @implementation PFAutoBugCaptureBugReporter
@@ -83,11 +83,11 @@ void __35__PFAutoBugCaptureBugReporter_init__block_invoke(uint64_t a1)
   *(v5 + 8) = v4;
 }
 
-- (void)submitBugReport:(id)a3 userInfo:(id)a4 withMaximumSubmissionCadence:(double)a5
+- (void)submitBugReport:(id)report userInfo:(id)info withMaximumSubmissionCadence:(double)cadence
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  reportCopy = report;
+  infoCopy = info;
+  if (reportCopy)
   {
     reportQueue = self->_reportQueue;
     v11[0] = MEMORY[0x1E69E9820];
@@ -95,9 +95,9 @@ void __35__PFAutoBugCaptureBugReporter_init__block_invoke(uint64_t a1)
     v11[2] = __85__PFAutoBugCaptureBugReporter_submitBugReport_userInfo_withMaximumSubmissionCadence___block_invoke;
     v11[3] = &unk_1E856B500;
     v11[4] = self;
-    v12 = v8;
-    v14 = a5;
-    v13 = v9;
+    v12 = reportCopy;
+    cadenceCopy = cadence;
+    v13 = infoCopy;
     dispatch_async(reportQueue, v11);
   }
 
@@ -123,9 +123,9 @@ uint64_t __85__PFAutoBugCaptureBugReporter_submitBugReport_userInfo_withMaximumS
   return result;
 }
 
-- (BOOL)canSubmitNewReport:(id)a3 withMinimumElapsedTime:(double)a4
+- (BOOL)canSubmitNewReport:(id)report withMinimumElapsedTime:(double)time
 {
-  v6 = a3;
+  reportCopy = report;
   if (isRunningUnitTests())
   {
     [PFAutoBugCaptureBugReporter canSubmitNewReport:withMinimumElapsedTime:];
@@ -134,20 +134,20 @@ uint64_t __85__PFAutoBugCaptureBugReporter_submitBugReport_userInfo_withMaximumS
 
   else
   {
-    v7 = ([v6 forceSubmissionAttempt] & 1) != 0 || -[PFAutoBugCaptureBugReporter _timeSinceLastSimilarReport:hasExceededElapsedTimeThreshold:](self, "_timeSinceLastSimilarReport:hasExceededElapsedTimeThreshold:", v6, a4);
+    v7 = ([reportCopy forceSubmissionAttempt] & 1) != 0 || -[PFAutoBugCaptureBugReporter _timeSinceLastSimilarReport:hasExceededElapsedTimeThreshold:](self, "_timeSinceLastSimilarReport:hasExceededElapsedTimeThreshold:", reportCopy, time);
   }
 
   return v7;
 }
 
-- (BOOL)_timeSinceLastSimilarReport:(id)a3 hasExceededElapsedTimeThreshold:(double)a4
+- (BOOL)_timeSinceLastSimilarReport:(id)report hasExceededElapsedTimeThreshold:(double)threshold
 {
-  v5 = [(PFAutoBugCaptureBugReporter *)self _lastSubmissionTimeForReport:a3];
+  v5 = [(PFAutoBugCaptureBugReporter *)self _lastSubmissionTimeForReport:report];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DF00] now];
     [v6 timeIntervalSinceDate:v5];
-    v8 = v7 > a4;
+    v8 = v7 > threshold;
   }
 
   else
@@ -158,37 +158,37 @@ uint64_t __85__PFAutoBugCaptureBugReporter_submitBugReport_userInfo_withMaximumS
   return v8;
 }
 
-- (id)_lastSubmissionTimeForReport:(id)a3
+- (id)_lastSubmissionTimeForReport:(id)report
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  v6 = [v4 signature];
+  reportCopy = report;
+  standardUserDefaults = [v3 standardUserDefaults];
+  signature = [reportCopy signature];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [standardUserDefaults objectForKey:signature];
 
   return v7;
 }
 
-- (void)_setLastSubmissionTime:(id)a3 forReport:(id)a4
+- (void)_setLastSubmissionTime:(id)time forReport:(id)report
 {
   v5 = MEMORY[0x1E695E000];
-  v6 = a4;
-  v7 = a3;
-  v9 = [v5 standardUserDefaults];
-  v8 = [v6 signature];
+  reportCopy = report;
+  timeCopy = time;
+  standardUserDefaults = [v5 standardUserDefaults];
+  signature = [reportCopy signature];
 
-  [v9 setObject:v7 forKey:v8];
+  [standardUserDefaults setObject:timeCopy forKey:signature];
 }
 
-- (void)_executeSubmitBugReport:(id)a3 userInfo:(id)a4 withMaximumSubmissionCadence:(double)a5
+- (void)_executeSubmitBugReport:(id)report userInfo:(id)info withMaximumSubmissionCadence:(double)cadence
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  reportCopy = report;
+  infoCopy = info;
+  v9 = infoCopy;
   if (self->_reporter)
   {
-    if (v8)
+    if (infoCopy)
     {
       objc_initWeak(location, self);
       v12[0] = MEMORY[0x1E69E9820];
@@ -196,7 +196,7 @@ uint64_t __85__PFAutoBugCaptureBugReporter_submitBugReport_userInfo_withMaximumS
       v12[2] = __93__PFAutoBugCaptureBugReporter__executeSubmitBugReport_userInfo_withMaximumSubmissionCadence___block_invoke;
       v12[3] = &unk_1E856B528;
       objc_copyWeak(&v14, location);
-      v13 = v7;
+      v13 = reportCopy;
       (v9)[2](v9, v12);
 
       objc_destroyWeak(&v14);
@@ -206,7 +206,7 @@ uint64_t __85__PFAutoBugCaptureBugReporter_submitBugReport_userInfo_withMaximumS
     else
     {
       v11 = objc_opt_new();
-      [(PFAutoBugCaptureBugReporter *)self _submitBugReport:v7 withUserInfo:v11];
+      [(PFAutoBugCaptureBugReporter *)self _submitBugReport:reportCopy withUserInfo:v11];
     }
   }
 
@@ -228,38 +228,38 @@ void __93__PFAutoBugCaptureBugReporter__executeSubmitBugReport_userInfo_withMaxi
   [WeakRetained _scheduleSubmissionOfBugReport:*(a1 + 32) withUserInfo:v3];
 }
 
-- (void)_scheduleSubmissionOfBugReport:(id)a3 withUserInfo:(id)a4
+- (void)_scheduleSubmissionOfBugReport:(id)report withUserInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  reportCopy = report;
+  infoCopy = info;
   reportQueue = self->_reportQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__PFAutoBugCaptureBugReporter__scheduleSubmissionOfBugReport_withUserInfo___block_invoke;
   block[3] = &unk_1E856AFB8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = reportCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = reportCopy;
   dispatch_async(reportQueue, block);
 }
 
-- (void)_submitBugReport:(id)a3 withUserInfo:(id)a4
+- (void)_submitBugReport:(id)report withUserInfo:(id)info
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  reportCopy = report;
+  infoCopy = info;
   reporter = self->_reporter;
-  v9 = [v6 domainString];
-  v10 = [v6 systemString];
-  v11 = [v6 errorKindString];
-  v12 = [(PFAutoBugCaptureBugReporter *)self _processName];
-  v13 = [(SDRDiagnosticReporter *)reporter signatureWithDomain:v9 type:v10 subType:v11 detectedProcess:v12 triggerThresholdValues:0];
+  domainString = [reportCopy domainString];
+  systemString = [reportCopy systemString];
+  errorKindString = [reportCopy errorKindString];
+  _processName = [(PFAutoBugCaptureBugReporter *)self _processName];
+  v13 = [(SDRDiagnosticReporter *)reporter signatureWithDomain:domainString type:systemString subType:errorKindString detectedProcess:_processName triggerThresholdValues:0];
 
-  if (v7)
+  if (infoCopy)
   {
-    [v13 addEntriesFromDictionary:v7];
+    [v13 addEntriesFromDictionary:infoCopy];
   }
 
   v14 = _MTLogCategoryDefault();
@@ -270,22 +270,22 @@ void __93__PFAutoBugCaptureBugReporter__executeSubmitBugReport_userInfo_withMaxi
     _os_log_impl(&dword_1D8CEC000, v14, OS_LOG_TYPE_INFO, "Automatic bug identified, signature: %{public}@", &v16, 0xCu);
   }
 
-  [(PFAutoBugCaptureBugReporter *)self _reportSignature:v13 forReport:v6];
+  [(PFAutoBugCaptureBugReporter *)self _reportSignature:v13 forReport:reportCopy];
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_reportSignature:(id)a3 forReport:(id)a4
+- (void)_reportSignature:(id)signature forReport:(id)report
 {
-  v6 = a4;
+  reportCopy = report;
   reporter = self->_reporter;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__PFAutoBugCaptureBugReporter__reportSignature_forReport___block_invoke;
   v9[3] = &unk_1E856B550;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [(SDRDiagnosticReporter *)reporter snapshotWithSignature:a3 duration:0 event:0 payload:v9 reply:300.0];
+  v10 = reportCopy;
+  v8 = reportCopy;
+  [(SDRDiagnosticReporter *)reporter snapshotWithSignature:signature duration:0 event:0 payload:v9 reply:300.0];
 }
 
 void __58__PFAutoBugCaptureBugReporter__reportSignature_forReport___block_invoke(uint64_t a1, void *a2)
@@ -338,16 +338,16 @@ LABEL_6:
 
 - (id)_processName
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 processName];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
 
-  if (!v3 || [(__CFString *)v3 isEqualToString:&stru_1F548B930])
+  if (!processName || [(__CFString *)processName isEqualToString:&stru_1F548B930])
   {
 
-    v3 = @"com.apple.podcasts";
+    processName = @"com.apple.podcasts";
   }
 
-  return v3;
+  return processName;
 }
 
 - (void)submitBugReport:userInfo:withMaximumSubmissionCadence:.cold.1()

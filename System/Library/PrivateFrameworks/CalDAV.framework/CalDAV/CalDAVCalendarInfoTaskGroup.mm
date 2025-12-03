@@ -1,17 +1,17 @@
 @interface CalDAVCalendarInfoTaskGroup
-- (CalDAVCalendarInfoTaskGroup)initWithAccountInfoProvider:(id)a3 containerURLs:(id)a4 taskManager:(id)a5;
+- (CalDAVCalendarInfoTaskGroup)initWithAccountInfoProvider:(id)provider containerURLs:(id)ls taskManager:(id)manager;
 - (id)_copyContainerParserMappings;
-- (id)_copyContainerWithURL:(id)a3 andProperties:(id)a4;
-- (id)containerForURL:(id)a3;
+- (id)_copyContainerWithURL:(id)l andProperties:(id)properties;
+- (id)containerForURL:(id)l;
 @end
 
 @implementation CalDAVCalendarInfoTaskGroup
 
-- (CalDAVCalendarInfoTaskGroup)initWithAccountInfoProvider:(id)a3 containerURLs:(id)a4 taskManager:(id)a5
+- (CalDAVCalendarInfoTaskGroup)initWithAccountInfoProvider:(id)provider containerURLs:(id)ls taskManager:(id)manager
 {
   v8.receiver = self;
   v8.super_class = CalDAVCalendarInfoTaskGroup;
-  v5 = [(CoreDAVContainerInfoTaskGroup *)&v8 initWithAccountInfoProvider:a3 containerURLs:a4 taskManager:a5];
+  v5 = [(CoreDAVContainerInfoTaskGroup *)&v8 initWithAccountInfoProvider:provider containerURLs:ls taskManager:manager];
   v6 = v5;
   if (v5)
   {
@@ -28,9 +28,9 @@
   v29 = *MEMORY[0x277D85DE8];
   v27.receiver = self;
   v27.super_class = CalDAVCalendarInfoTaskGroup;
-  v3 = [(CoreDAVContainerInfoTaskGroup *)&v27 _copyContainerParserMappings];
+  _copyContainerParserMappings = [(CoreDAVContainerInfoTaskGroup *)&v27 _copyContainerParserMappings];
   v4 = +[CalDAVContainer copyPropertyMappingsForParser];
-  v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:v3];
+  v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:_copyContainerParserMappings];
   if ([(CalDAVCalendarInfoTaskGroup *)self fetchSharees])
   {
     [v5 CDVAddItemParserMappingWithNameSpace:*MEMORY[0x277CFDE90] name:@"invite" parseClass:objc_opt_class()];
@@ -51,7 +51,7 @@
 
   v8 = v7;
   v20 = v4;
-  v21 = v3;
+  v21 = _copyContainerParserMappings;
   v22 = 0;
   v9 = *v24;
   v10 = *MEMORY[0x277CFDEF8];
@@ -66,18 +66,18 @@
       }
 
       v13 = *(*(&v23 + 1) + 8 * i);
-      v14 = [v13 nameSpace];
-      if ([v14 isEqualToString:v10])
+      nameSpace = [v13 nameSpace];
+      if ([nameSpace isEqualToString:v10])
       {
-        v15 = [v13 name];
-        v16 = [v15 isEqualToString:v11];
+        name = [v13 name];
+        v16 = [name isEqualToString:v11];
 
         if (!v16)
         {
           continue;
         }
 
-        v14 = v22;
+        nameSpace = v22;
         v22 = v13;
       }
     }
@@ -88,7 +88,7 @@
   while (v8);
 
   v4 = v20;
-  v3 = v21;
+  _copyContainerParserMappings = v21;
   v17 = v22;
   if (v22)
   {
@@ -102,26 +102,26 @@ LABEL_17:
   return v6;
 }
 
-- (id)_copyContainerWithURL:(id)a3 andProperties:(id)a4
+- (id)_copyContainerWithURL:(id)l andProperties:(id)properties
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(CoreDAVContainer *)[CalDAVContainer alloc] initWithURL:v6 andProperties:v5];
+  propertiesCopy = properties;
+  lCopy = l;
+  v7 = [(CoreDAVContainer *)[CalDAVContainer alloc] initWithURL:lCopy andProperties:propertiesCopy];
 
   return v7;
 }
 
-- (id)containerForURL:(id)a3
+- (id)containerForURL:(id)l
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 absoluteString];
-  v6 = [v5 appendSlashIfNeeded];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  appendSlashIfNeeded = [absoluteString appendSlashIfNeeded];
 
-  v27 = v4;
-  v7 = [v4 URLWithoutUsername];
-  v8 = [v7 absoluteString];
-  v32 = [v8 appendSlashIfNeeded];
+  v27 = lCopy;
+  uRLWithoutUsername = [lCopy URLWithoutUsername];
+  absoluteString2 = [uRLWithoutUsername absoluteString];
+  appendSlashIfNeeded2 = [absoluteString2 appendSlashIfNeeded];
 
   v35 = 0u;
   v36 = 0u;
@@ -147,10 +147,10 @@ LABEL_17:
 
       v10 = *(*(&v33 + 1) + 8 * i);
       v11 = [v10 url];
-      v12 = [v11 absoluteString];
-      v13 = [v12 appendSlashIfNeeded];
+      absoluteString3 = [v11 absoluteString];
+      appendSlashIfNeeded3 = [absoluteString3 appendSlashIfNeeded];
 
-      if ([v13 isEqualToString:v6])
+      if ([appendSlashIfNeeded3 isEqualToString:appendSlashIfNeeded])
       {
         v22 = v10;
 LABEL_20:
@@ -158,8 +158,8 @@ LABEL_20:
         goto LABEL_22;
       }
 
-      v14 = [v13 stringByRemovingPercentEncoding];
-      if ([v14 isEqualToString:v6])
+      stringByRemovingPercentEncoding = [appendSlashIfNeeded3 stringByRemovingPercentEncoding];
+      if ([stringByRemovingPercentEncoding isEqualToString:appendSlashIfNeeded])
       {
         v23 = v10;
 LABEL_19:
@@ -167,8 +167,8 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v15 = [v6 stringByRemovingPercentEncoding];
-      if ([v13 isEqualToString:v15])
+      stringByRemovingPercentEncoding2 = [appendSlashIfNeeded stringByRemovingPercentEncoding];
+      if ([appendSlashIfNeeded3 isEqualToString:stringByRemovingPercentEncoding2])
       {
         v24 = v10;
 
@@ -176,11 +176,11 @@ LABEL_19:
       }
 
       v16 = [v10 url];
-      v17 = [v16 URLWithoutUsername];
-      v18 = [v17 absoluteString];
-      v19 = [v18 appendSlashIfNeeded];
+      uRLWithoutUsername2 = [v16 URLWithoutUsername];
+      absoluteString4 = [uRLWithoutUsername2 absoluteString];
+      appendSlashIfNeeded4 = [absoluteString4 appendSlashIfNeeded];
 
-      v20 = [v19 isEqualToString:v32];
+      v20 = [appendSlashIfNeeded4 isEqualToString:appendSlashIfNeeded2];
       v21 = v20;
       if (v20)
       {

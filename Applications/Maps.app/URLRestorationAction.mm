@@ -1,10 +1,10 @@
 @interface URLRestorationAction
-- (URLRestorationAction)initWithResetUI:(BOOL)a3 compatibleWithNavigation:(BOOL)a4;
+- (URLRestorationAction)initWithResetUI:(BOOL)i compatibleWithNavigation:(BOOL)navigation;
 @end
 
 @implementation URLRestorationAction
 
-- (URLRestorationAction)initWithResetUI:(BOOL)a3 compatibleWithNavigation:(BOOL)a4
+- (URLRestorationAction)initWithResetUI:(BOOL)i compatibleWithNavigation:(BOOL)navigation
 {
   v9.receiver = self;
   v9.super_class = URLRestorationAction;
@@ -12,8 +12,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_resetUI = a3;
-    v6->_compatibleWithNavigation = a4;
+    v6->_resetUI = i;
+    v6->_compatibleWithNavigation = navigation;
     [(RestorationAction *)v6 setSource:2];
   }
 

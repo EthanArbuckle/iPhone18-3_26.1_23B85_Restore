@@ -1,6 +1,6 @@
 @interface NSStoreMappingGenerator
 + (NSStoreMappingGenerator)defaultMappingGenerator;
-- (void)mappingsDictForConfigurationWithName:(void *)a3 inModel:;
+- (void)mappingsDictForConfigurationWithName:(void *)name inModel:;
 @end
 
 @implementation NSStoreMappingGenerator
@@ -18,22 +18,22 @@
   return result;
 }
 
-- (void)mappingsDictForConfigurationWithName:(void *)a3 inModel:
+- (void)mappingsDictForConfigurationWithName:(void *)name inModel:
 {
   v62 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v34 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v38 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    obj = [a3 entitiesForConfiguration:a2];
+    obj = [name entitiesForConfiguration:a2];
     v37 = [obj countByEnumeratingWithState:&v46 objects:v59 count:16];
     if (v37)
     {
@@ -52,7 +52,7 @@
           v40 = v6;
           v7 = *(*(&v46 + 1) + 8 * v6);
           v39 = [[NSEntityStoreMapping alloc] initWithEntity:v7];
-          v8 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
           v41 = v7;
           v9 = [objc_msgSend(v7 "attributesByName")];
           v54 = 0u;
@@ -76,7 +76,7 @@
                 v14 = *(*(&v54 + 1) + 8 * i);
                 v15 = [objc_alloc((p_superclass + 429)) initWithProperty:v14];
                 [v15 setExternalType:{objc_msgSend(v14, "attributeType")}];
-                [v8 setObject:v15 forKey:{objc_msgSend(v14, "name")}];
+                [dictionary2 setObject:v15 forKey:{objc_msgSend(v14, "name")}];
               }
 
               v11 = [v9 countByEnumeratingWithState:&v54 objects:v61 count:16];
@@ -109,15 +109,15 @@
                 -[NSRelationshipStoreMapping setDestinationEntityExternalName:](v22, [objc_msgSend(objc_msgSend(v21 "destinationEntity")]);
                 if ([v21 isToMany])
                 {
-                  v23 = [v21 entity];
+                  entity = [v21 entity];
                 }
 
                 else
                 {
-                  v23 = [v21 destinationEntity];
+                  entity = [v21 destinationEntity];
                 }
 
-                v24 = [objc_msgSend(objc_msgSend(v23 "name")];
+                v24 = [objc_msgSend(objc_msgSend(entity "name")];
                 v25 = [MEMORY[0x1E695DEC8] arrayWithObject:{+[NSJoin joinWithSourceAttributeName:destinationAttributeName:](NSJoin, v24, v24)}];
                 [(NSRelationshipStoreMapping *)v22 setJoins:v25];
                 v26 = [objc_msgSend(v25 valueForKey:{@"sourceAttributeName", "mutableCopy"}];
@@ -129,7 +129,7 @@
                   v22->_joinSemantic = 2;
                 }
 
-                [v8 setObject:v22 forKey:{objc_msgSend(v21, "name")}];
+                [dictionary2 setObject:v22 forKey:{objc_msgSend(v21, "name")}];
               }
 
               v18 = [v16 countByEnumeratingWithState:&v50 objects:v60 count:16];
@@ -138,9 +138,9 @@
             while (v18);
           }
 
-          [(NSEntityStoreMapping *)v39 setPropertyMappings:v8];
+          [(NSEntityStoreMapping *)v39 setPropertyMappings:dictionary2];
           -[NSEntityStoreMapping setPrimaryKeys:](v39, [MEMORY[0x1E695DEC8] arrayWithObject:{objc_msgSend(objc_msgSend(objc_msgSend(v41, "name"), "stringByAppendingString:", @"_id", "lowercaseString")}]);
-          [v38 addObject:v39];
+          [array addObject:v39];
           v6 = v40 + 1;
           p_superclass = (PFCloudKitStoreComparisonCache + 8);
         }
@@ -152,25 +152,25 @@
       while (v37);
     }
 
-    v27 = [v38 countByEnumeratingWithState:&v42 objects:v58 count:16];
+    v27 = [array countByEnumeratingWithState:&v42 objects:v58 count:16];
     if (v27)
     {
       v28 = v27;
       v29 = *v43;
-      v30 = v34;
+      v30 = dictionary;
       do
       {
         for (k = 0; k != v28; ++k)
         {
           if (*v43 != v29)
           {
-            objc_enumerationMutation(v38);
+            objc_enumerationMutation(array);
           }
 
-          [v34 setObject:*(*(&v42 + 1) + 8 * k) forKey:{objc_msgSend(objc_msgSend(*(*(&v42 + 1) + 8 * k), "entity"), "name")}];
+          [dictionary setObject:*(*(&v42 + 1) + 8 * k) forKey:{objc_msgSend(objc_msgSend(*(*(&v42 + 1) + 8 * k), "entity"), "name")}];
         }
 
-        v28 = [v38 countByEnumeratingWithState:&v42 objects:v58 count:16];
+        v28 = [array countByEnumeratingWithState:&v42 objects:v58 count:16];
       }
 
       while (v28);
@@ -178,7 +178,7 @@
 
     else
     {
-      v30 = v34;
+      v30 = dictionary;
     }
   }
 

@@ -1,5 +1,5 @@
 @interface SSScreenTimeRequestResultBuilder
-- (SSScreenTimeRequestResultBuilder)initWithResult:(id)a3;
+- (SSScreenTimeRequestResultBuilder)initWithResult:(id)result;
 - (id)buildButtonItems;
 - (id)buildCommand;
 - (id)buildDescriptions;
@@ -13,19 +13,19 @@
 
 @implementation SSScreenTimeRequestResultBuilder
 
-- (SSScreenTimeRequestResultBuilder)initWithResult:(id)a3
+- (SSScreenTimeRequestResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v24.receiver = self;
   v24.super_class = SSScreenTimeRequestResultBuilder;
-  v5 = [(SSResultBuilder *)&v24 initWithResult:v4];
+  v5 = [(SSResultBuilder *)&v24 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x1E6963C88] withType:objc_opt_class()];
-    v7 = [v4 valueForAttribute:*MEMORY[0x1E6964C28] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x1E6963C88] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x1E6964C28] withType:objc_opt_class()];
     [(SSScreenTimeRequestResultBuilder *)v5 setRequestedItemName:v7];
 
-    v8 = [v6 firstObject];
+    firstObject = [v6 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,39 +39,39 @@
 
     [(SSScreenTimeRequestResultBuilder *)v5 setApprovers:v9];
 
-    v10 = [v4 valueForAttribute:*MEMORY[0x1E6963F28] withType:objc_opt_class()];
+    v10 = [resultCopy valueForAttribute:*MEMORY[0x1E6963F28] withType:objc_opt_class()];
     [(SSScreenTimeRequestResultBuilder *)v5 setRequestedItemDescription:v10];
 
-    v11 = [v4 valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
+    v11 = [resultCopy valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
     [(SSScreenTimeRequestResultBuilder *)v5 setRequestDate:v11];
 
-    v12 = [v4 valueForAttribute:*MEMORY[0x1E6964290] withType:objc_opt_class()];
+    v12 = [resultCopy valueForAttribute:*MEMORY[0x1E6964290] withType:objc_opt_class()];
     [(SSScreenTimeRequestResultBuilder *)v5 setExpireDate:v12];
 
-    v13 = [v4 valueForAttribute:*MEMORY[0x1E6963C60] withType:objc_opt_class()];
+    v13 = [resultCopy valueForAttribute:*MEMORY[0x1E6963C60] withType:objc_opt_class()];
     -[SSScreenTimeRequestResultBuilder setRequestStatus:](v5, "setRequestStatus:", [v13 unsignedIntValue]);
 
-    v14 = [v4 valueForAttribute:*MEMORY[0x1E6963C68] withType:objc_opt_class()];
+    v14 = [resultCopy valueForAttribute:*MEMORY[0x1E6963C68] withType:objc_opt_class()];
     [(SSScreenTimeRequestResultBuilder *)v5 setRequestStatusString:v14];
 
-    v15 = [v4 valueForAttribute:*MEMORY[0x1E6963E40] withType:objc_opt_class()];
+    v15 = [resultCopy valueForAttribute:*MEMORY[0x1E6963E40] withType:objc_opt_class()];
     [(SSScreenTimeRequestResultBuilder *)v5 setRequesterContactIdentifier:v15];
 
-    v16 = [v4 valueForAttribute:*MEMORY[0x1E6964C48] withType:objc_opt_class()];
+    v16 = [resultCopy valueForAttribute:*MEMORY[0x1E6964C48] withType:objc_opt_class()];
     [(SSScreenTimeRequestResultBuilder *)v5 setRequestIdentifier:v16];
 
-    v17 = [v4 valueForAttribute:*MEMORY[0x1E6963E88] withType:objc_opt_class()];
+    v17 = [resultCopy valueForAttribute:*MEMORY[0x1E6963E88] withType:objc_opt_class()];
     [(SSScreenTimeRequestResultBuilder *)v5 setRespondDate:v17];
 
-    v18 = [v4 valueForAttribute:*MEMORY[0x1E6963CF0] withType:objc_opt_class()];
+    v18 = [resultCopy valueForAttribute:*MEMORY[0x1E6963CF0] withType:objc_opt_class()];
     [(SSScreenTimeRequestResultBuilder *)v5 setRequesterDSID:v18];
 
-    v19 = [v4 valueForAttribute:*MEMORY[0x1E6963FA0] withType:objc_opt_class()];
+    v19 = [resultCopy valueForAttribute:*MEMORY[0x1E6963FA0] withType:objc_opt_class()];
     [(SSScreenTimeRequestResultBuilder *)v5 setRequestAmountDuration:v19];
 
-    v20 = [(SSScreenTimeRequestResultBuilder *)v5 requestAmountDuration];
+    requestAmountDuration = [(SSScreenTimeRequestResultBuilder *)v5 requestAmountDuration];
 
-    if (!v20)
+    if (!requestAmountDuration)
     {
       if ([(SSScreenTimeRequestResultBuilder *)v5 requestStatus]== 3)
       {
@@ -95,22 +95,22 @@
 {
   v6.receiver = self;
   v6.super_class = SSScreenTimeRequestResultBuilder;
-  v2 = [(SSResultBuilder *)&v6 buildInlineCardSection];
-  v3 = [v2 descriptions];
-  v4 = [v3 firstObject];
-  [v4 setMaxLines:1];
+  buildInlineCardSection = [(SSResultBuilder *)&v6 buildInlineCardSection];
+  descriptions = [buildInlineCardSection descriptions];
+  firstObject = [descriptions firstObject];
+  [firstObject setMaxLines:1];
 
-  return v2;
+  return buildInlineCardSection;
 }
 
 - (id)buildInlineCardSections
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(SSScreenTimeRequestResultBuilder *)self buildInlineCardSection];
-  v3 = v2;
-  if (v2)
+  buildInlineCardSection = [(SSScreenTimeRequestResultBuilder *)self buildInlineCardSection];
+  v3 = buildInlineCardSection;
+  if (buildInlineCardSection)
   {
-    v7[0] = v2;
+    v7[0] = buildInlineCardSection;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   }
 
@@ -126,22 +126,22 @@
 
 - (id)subclassBuildHorizontallyScrollingCardSection
 {
-  v2 = [(SSScreenTimeRequestResultBuilder *)self buildInlineCardSection];
-  [v2 setPreventThumbnailImageScaling:1];
+  buildInlineCardSection = [(SSScreenTimeRequestResultBuilder *)self buildInlineCardSection];
+  [buildInlineCardSection setPreventThumbnailImageScaling:1];
 
-  return v2;
+  return buildInlineCardSection;
 }
 
 - (id)buildDescriptions
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(SSScreenTimeRequestResultBuilder *)self requestedItemDescription];
+  requestedItemDescription = [(SSScreenTimeRequestResultBuilder *)self requestedItemDescription];
 
-  if (v4)
+  if (requestedItemDescription)
   {
-    v5 = [(SSScreenTimeRequestResultBuilder *)self requestedItemDescription];
-    [v3 appendString:v5];
+    requestedItemDescription2 = [(SSScreenTimeRequestResultBuilder *)self requestedItemDescription];
+    [v3 appendString:requestedItemDescription2];
   }
 
   if ([v3 length])
@@ -163,28 +163,28 @@
 
 - (id)buildFootnote
 {
-  v3 = [(SSScreenTimeRequestResultBuilder *)self requestStatus];
-  v4 = [(SSScreenTimeRequestResultBuilder *)self requestStatus];
-  if (v3 == 3 || v4 == 2)
+  requestStatus = [(SSScreenTimeRequestResultBuilder *)self requestStatus];
+  requestStatus2 = [(SSScreenTimeRequestResultBuilder *)self requestStatus];
+  if (requestStatus == 3 || requestStatus2 == 2)
   {
-    v6 = [(SSScreenTimeRequestResultBuilder *)self requestAmountDuration];
-    v7 = [v6 intValue];
+    requestAmountDuration = [(SSScreenTimeRequestResultBuilder *)self requestAmountDuration];
+    intValue = [requestAmountDuration intValue];
 
     v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v9 = v8;
     v10 = @"ASK_FOR_TIME_APPROVED15";
     v11 = @"ASK_FOR_TIME_DECLINED";
-    if (v7 == 3600)
+    if (intValue == 3600)
     {
       v11 = @"ASK_FOR_TIME_APPROVED_HOUR";
     }
 
-    if (v7 != 900)
+    if (intValue != 900)
     {
       v10 = v11;
     }
 
-    if (v7 == -1)
+    if (intValue == -1)
     {
       v12 = @"ASK_FOR_TIME_APPROVED_DAY";
     }
@@ -209,13 +209,13 @@
 
 - (id)buildSecondaryTitle
 {
-  v3 = [(SSScreenTimeRequestResultBuilder *)self requestDate];
+  requestDate = [(SSScreenTimeRequestResultBuilder *)self requestDate];
 
-  if (v3)
+  if (requestDate)
   {
     v4 = MEMORY[0x1E69CA0F0];
-    v5 = [(SSScreenTimeRequestResultBuilder *)self requestDate];
-    v6 = [SSDateFormatManager dynamicCompactStringFromDate:v5];
+    requestDate2 = [(SSScreenTimeRequestResultBuilder *)self requestDate];
+    v6 = [SSDateFormatManager dynamicCompactStringFromDate:requestDate2];
     v7 = [v4 textWithString:v6];
   }
 
@@ -229,21 +229,21 @@
 
 - (id)buildCommand
 {
-  v3 = [(SSScreenTimeRequestResultBuilder *)self requesterDSID];
-  if (!v3)
+  requesterDSID = [(SSScreenTimeRequestResultBuilder *)self requesterDSID];
+  if (!requesterDSID)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:0];
+    requesterDSID = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:0];
   }
 
   v4 = MEMORY[0x1E695DFF8];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(SSScreenTimeRequestResultBuilder *)self requestIdentifier];
-  v7 = [v5 stringWithFormat:@"prefs:root=SCREEN_TIME&path=CHILD_%@#ASK_%@", v3, v6];
+  requestIdentifier = [(SSScreenTimeRequestResultBuilder *)self requestIdentifier];
+  v7 = [v5 stringWithFormat:@"prefs:root=SCREEN_TIME&path=CHILD_%@#ASK_%@", requesterDSID, requestIdentifier];
   v8 = [v4 URLWithString:v7];
 
   v9 = [MEMORY[0x1E69CA320] punchoutWithURL:v8];
-  v10 = [(SSScreenTimeRequestResultBuilder *)self requestIdentifier];
-  [v9 setLabel:v10];
+  requestIdentifier2 = [(SSScreenTimeRequestResultBuilder *)self requestIdentifier];
+  [v9 setLabel:requestIdentifier2];
 
   v11 = objc_opt_new();
   [v11 setPunchout:v9];
@@ -266,8 +266,8 @@
     v6 = [v5 localizedStringForKey:@"VIEW" value:&stru_1F556FE60 table:@"SpotlightServices"];
     [v4 setTitle:v6];
 
-    v7 = [(SSScreenTimeRequestResultBuilder *)self buildCommand];
-    [v4 setCommand:v7];
+    buildCommand = [(SSScreenTimeRequestResultBuilder *)self buildCommand];
+    [v4 setCommand:buildCommand];
 
     v10[0] = v4;
     v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
@@ -282,10 +282,10 @@
 {
   v4.receiver = self;
   v4.super_class = SSScreenTimeRequestResultBuilder;
-  v2 = [(SSResultBuilder *)&v4 buildThumbnail];
-  [v2 setCornerRoundingStyle:3];
+  buildThumbnail = [(SSResultBuilder *)&v4 buildThumbnail];
+  [buildThumbnail setCornerRoundingStyle:3];
 
-  return v2;
+  return buildThumbnail;
 }
 
 @end

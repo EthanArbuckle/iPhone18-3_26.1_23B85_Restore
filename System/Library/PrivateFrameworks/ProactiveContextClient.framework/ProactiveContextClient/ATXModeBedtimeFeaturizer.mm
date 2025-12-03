@@ -1,8 +1,8 @@
 @interface ATXModeBedtimeFeaturizer
 - (ATXModeFeaturizerDelegate)delegate;
-- (id)_provideFeaturesWithSleepEvent:(id)a3;
+- (id)_provideFeaturesWithSleepEvent:(id)event;
 - (id)provideFeatures;
-- (void)_processNewSleepEvent:(id)a3;
+- (void)_processNewSleepEvent:(id)event;
 - (void)beginListening;
 - (void)stopListening;
 @end
@@ -18,9 +18,9 @@
   v15 = __Block_byref_object_dispose__10;
   v16 = 0;
   v3 = BiomeLibrary();
-  v4 = [v3 UserFocus];
-  v5 = [v4 SleepMode];
-  v6 = [v5 atx_publisherWithStartDate:0 endDate:0 maxEvents:&unk_28733C820 lastN:&unk_28733C820 reversed:0];
+  userFocus = [v3 UserFocus];
+  sleepMode = [userFocus SleepMode];
+  v6 = [sleepMode atx_publisherWithStartDate:0 endDate:0 maxEvents:&unk_28733C820 lastN:&unk_28733C820 reversed:0];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -66,11 +66,11 @@ uint64_t __43__ATXModeBedtimeFeaturizer_provideFeatures__block_invoke_12(uint64_
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_provideFeaturesWithSleepEvent:(id)a3
+- (id)_provideFeaturesWithSleepEvent:(id)event
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 state] == 3 || objc_msgSend(v3, "state") == 2;
+  eventCopy = event;
+  v4 = [eventCopy state] == 3 || objc_msgSend(eventCopy, "state") == 2;
   v5 = objc_alloc_init(ATXModeFeatureSet);
   [(ATXModeFeatureSet *)v5 setValue:v4 forBinaryFeatureOfType:7];
   v6 = __atxlog_handle_modes();
@@ -86,11 +86,11 @@ uint64_t __43__ATXModeBedtimeFeaturizer_provideFeatures__block_invoke_12(uint64_
   return v5;
 }
 
-- (void)_processNewSleepEvent:(id)a3
+- (void)_processNewSleepEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [(ATXModeBedtimeFeaturizer *)self _provideFeaturesWithSleepEvent:v4];
+  v5 = [(ATXModeBedtimeFeaturizer *)self _provideFeaturesWithSleepEvent:eventCopy];
 
   [WeakRetained featurizer:self didUpdateFeatures:v5];
 }
@@ -118,10 +118,10 @@ uint64_t __43__ATXModeBedtimeFeaturizer_provideFeatures__block_invoke_12(uint64_
   self->_scheduler = v7;
 
   v9 = BiomeLibrary();
-  v10 = [v9 UserFocus];
-  v11 = [v10 SleepMode];
-  v12 = [v11 atx_DSLPublisher];
-  v13 = [v12 subscribeOn:self->_scheduler];
+  userFocus = [v9 UserFocus];
+  sleepMode = [userFocus SleepMode];
+  atx_DSLPublisher = [sleepMode atx_DSLPublisher];
+  v13 = [atx_DSLPublisher subscribeOn:self->_scheduler];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __42__ATXModeBedtimeFeaturizer_beginListening__block_invoke_21;

@@ -1,101 +1,101 @@
 @interface KTOptIOValidatorResult
-- (KTOptIOValidatorResult)initWithCoder:(id)a3;
-- (KTOptIOValidatorResult)initWithState:(unint64_t)a3 timestamp:(id)a4;
+- (KTOptIOValidatorResult)initWithCoder:(id)coder;
+- (KTOptIOValidatorResult)initWithState:(unint64_t)state timestamp:(id)timestamp;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KTOptIOValidatorResult
 
-- (KTOptIOValidatorResult)initWithState:(unint64_t)a3 timestamp:(id)a4
+- (KTOptIOValidatorResult)initWithState:(unint64_t)state timestamp:(id)timestamp
 {
-  v6 = a4;
+  timestampCopy = timestamp;
   v11.receiver = self;
   v11.super_class = KTOptIOValidatorResult;
   v7 = [(KTOptIOValidatorResult *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    [(KTOptIOValidatorResult *)v7 setState:a3];
-    [(KTOptIOValidatorResult *)v8 setTimestamp:v6];
+    [(KTOptIOValidatorResult *)v7 setState:state];
+    [(KTOptIOValidatorResult *)v8 setTimestamp:timestampCopy];
     v9 = v8;
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  [v10 encodeInt:-[KTOptIOValidatorResult state](self forKey:{"state"), @"state"}];
-  v4 = [(KTOptIOValidatorResult *)self uriNeedsOptInChange];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[KTOptIOValidatorResult state](self forKey:{"state"), @"state"}];
+  uriNeedsOptInChange = [(KTOptIOValidatorResult *)self uriNeedsOptInChange];
 
-  if (v4)
+  if (uriNeedsOptInChange)
   {
-    v5 = [(KTOptIOValidatorResult *)self uriNeedsOptInChange];
-    [v10 encodeObject:v5 forKey:@"uriNeedsOptInChange"];
+    uriNeedsOptInChange2 = [(KTOptIOValidatorResult *)self uriNeedsOptInChange];
+    [coderCopy encodeObject:uriNeedsOptInChange2 forKey:@"uriNeedsOptInChange"];
   }
 
-  v6 = [(KTOptIOValidatorResult *)self uris];
+  uris = [(KTOptIOValidatorResult *)self uris];
 
-  if (v6)
+  if (uris)
   {
-    v7 = [(KTOptIOValidatorResult *)self uris];
-    [v10 encodeObject:v7 forKey:@"uris"];
+    uris2 = [(KTOptIOValidatorResult *)self uris];
+    [coderCopy encodeObject:uris2 forKey:@"uris"];
   }
 
-  v8 = [(KTOptIOValidatorResult *)self timestamp];
+  timestamp = [(KTOptIOValidatorResult *)self timestamp];
 
-  if (v8)
+  if (timestamp)
   {
-    v9 = [(KTOptIOValidatorResult *)self timestamp];
-    [v10 encodeObject:v9 forKey:@"timestamp"];
+    timestamp2 = [(KTOptIOValidatorResult *)self timestamp];
+    [coderCopy encodeObject:timestamp2 forKey:@"timestamp"];
   }
 
   if ([(KTOptIOValidatorResult *)self usedIntendedState])
   {
-    [v10 encodeInt:-[KTOptIOValidatorResult usedIntendedState](self forKey:{"usedIntendedState"), @"usedIntendedState"}];
+    [coderCopy encodeInt:-[KTOptIOValidatorResult usedIntendedState](self forKey:{"usedIntendedState"), @"usedIntendedState"}];
   }
 }
 
-- (KTOptIOValidatorResult)initWithCoder:(id)a3
+- (KTOptIOValidatorResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntForKey:@"state"];
-  v6 = [v4 decodeIntForKey:@"usedIntendedState"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntForKey:@"state"];
+  v6 = [coderCopy decodeIntForKey:@"usedIntendedState"];
   if (v5 <= 2 && (v7 = v6, v15.receiver = self, v15.super_class = KTOptIOValidatorResult, v8 = [(KTOptIOValidatorResult *)&v15 init], (self = v8) != 0))
   {
     [(KTOptIOValidatorResult *)v8 setState:v5];
     v9 = objc_opt_class();
-    v10 = [v4 decodeDictionaryWithKeysOfClass:v9 objectsOfClass:objc_opt_class() forKey:@"uriNeedsOptInChange"];
+    v10 = [coderCopy decodeDictionaryWithKeysOfClass:v9 objectsOfClass:objc_opt_class() forKey:@"uriNeedsOptInChange"];
     [(KTOptIOValidatorResult *)self setUriNeedsOptInChange:v10];
 
-    v11 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"uris"];
+    v11 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"uris"];
     [(KTOptIOValidatorResult *)self setUris:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     [(KTOptIOValidatorResult *)self setTimestamp:v12];
 
     [(KTOptIOValidatorResult *)self setUsedIntendedState:v7 != 0];
     self = self;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(KTOptIOValidatorResult *)self state];
-  v5 = [(KTOptIOValidatorResult *)self timestamp];
-  v6 = [(KTOptIOValidatorResult *)self uriNeedsOptInChange];
-  v7 = [v3 stringWithFormat:@"<KTOptIOValidatorResult state: %d timestamp: %@ uriNeedsOptInChange: %@>", v4, v5, v6];
+  state = [(KTOptIOValidatorResult *)self state];
+  timestamp = [(KTOptIOValidatorResult *)self timestamp];
+  uriNeedsOptInChange = [(KTOptIOValidatorResult *)self uriNeedsOptInChange];
+  v7 = [v3 stringWithFormat:@"<KTOptIOValidatorResult state: %d timestamp: %@ uriNeedsOptInChange: %@>", state, timestamp, uriNeedsOptInChange];
 
   return v7;
 }

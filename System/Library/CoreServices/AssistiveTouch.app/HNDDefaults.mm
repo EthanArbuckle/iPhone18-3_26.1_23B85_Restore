@@ -1,7 +1,7 @@
 @interface HNDDefaults
 + (void)initialize;
-- (id)preferenceForKey:(id)a3;
-- (void)setPreference:(id)a3 forKey:(id)a4;
+- (id)preferenceForKey:(id)key;
+- (void)setPreference:(id)preference forKey:(id)key;
 @end
 
 @implementation HNDDefaults
@@ -16,11 +16,11 @@
   _objc_release_x1(v2, v3);
 }
 
-- (id)preferenceForKey:(id)a3
+- (id)preferenceForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v4 = CFPreferencesCopyAppValue(a3, @"com.apple.handtool");
+    v4 = CFPreferencesCopyAppValue(key, @"com.apple.handtool");
   }
 
   else
@@ -31,11 +31,11 @@
   return v4;
 }
 
-- (void)setPreference:(id)a3 forKey:(id)a4
+- (void)setPreference:(id)preference forKey:(id)key
 {
-  if (a4)
+  if (key)
   {
-    CFPreferencesSetAppValue(a4, a3, @"com.apple.handtool");
+    CFPreferencesSetAppValue(key, preference, @"com.apple.handtool");
 
     CFPreferencesAppSynchronize(@"com.apple.handtool");
   }

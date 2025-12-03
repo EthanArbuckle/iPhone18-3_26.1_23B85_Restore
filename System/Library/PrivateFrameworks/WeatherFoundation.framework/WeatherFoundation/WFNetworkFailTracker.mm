@@ -1,18 +1,18 @@
 @interface WFNetworkFailTracker
-- (BOOL)lastFailTimeExpiredForSettings:(id)a3;
+- (BOOL)lastFailTimeExpiredForSettings:(id)settings;
 @end
 
 @implementation WFNetworkFailTracker
 
-- (BOOL)lastFailTimeExpiredForSettings:(id)a3
+- (BOOL)lastFailTimeExpiredForSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   Current = CFAbsoluteTimeGetCurrent();
   [(WFNetworkFailTracker *)self lastFailTimeInSeconds];
   v7 = Current - v6;
-  v8 = [v4 networkSwitchExpirationTimeInSeconds];
+  networkSwitchExpirationTimeInSeconds = [settingsCopy networkSwitchExpirationTimeInSeconds];
 
-  return v7 >= v8;
+  return v7 >= networkSwitchExpirationTimeInSeconds;
 }
 
 @end

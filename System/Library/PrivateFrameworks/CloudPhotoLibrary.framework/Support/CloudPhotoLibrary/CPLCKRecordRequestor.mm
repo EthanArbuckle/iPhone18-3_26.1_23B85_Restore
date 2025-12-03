@@ -1,26 +1,26 @@
 @interface CPLCKRecordRequestor
-- (BOOL)processedFetchedRequestedRecordsWithError:(id *)a3;
-- (CPLCKRecordRequestor)initWithFetchCache:(id)a3 scopeProvider:(id)a4;
+- (BOOL)processedFetchedRequestedRecordsWithError:(id *)error;
+- (CPLCKRecordRequestor)initWithFetchCache:(id)cache scopeProvider:(id)provider;
 - (NSArray)requestedRecordIDs;
-- (void)_fetchRecordsForNextOperationTypeInEnumerator:(id)a3 task:(id)a4 completionHandler:(id)a5;
-- (void)fetchRequestedRecordsForTransportTask:(id)a3 completionHandler:(id)a4;
-- (void)requestRecordWithRecordID:(id)a3 operationType:(int64_t)a4 forRecordWithRecordID:(id)a5 completionHandler:(id)a6;
+- (void)_fetchRecordsForNextOperationTypeInEnumerator:(id)enumerator task:(id)task completionHandler:(id)handler;
+- (void)fetchRequestedRecordsForTransportTask:(id)task completionHandler:(id)handler;
+- (void)requestRecordWithRecordID:(id)d operationType:(int64_t)type forRecordWithRecordID:(id)iD completionHandler:(id)handler;
 @end
 
 @implementation CPLCKRecordRequestor
 
-- (CPLCKRecordRequestor)initWithFetchCache:(id)a3 scopeProvider:(id)a4
+- (CPLCKRecordRequestor)initWithFetchCache:(id)cache scopeProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  cacheCopy = cache;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = CPLCKRecordRequestor;
   v8 = [(CPLCKRecordRequestor *)&v12 init];
   if (v8)
   {
-    if (v6)
+    if (cacheCopy)
     {
-      v9 = v6;
+      v9 = cacheCopy;
     }
 
     else
@@ -31,17 +31,17 @@
     fetchCache = v8->_fetchCache;
     v8->_fetchCache = v9;
 
-    objc_storeStrong(&v8->_scopeProvider, a4);
+    objc_storeStrong(&v8->_scopeProvider, provider);
   }
 
   return v8;
 }
 
-- (void)requestRecordWithRecordID:(id)a3 operationType:(int64_t)a4 forRecordWithRecordID:(id)a5 completionHandler:(id)a6
+- (void)requestRecordWithRecordID:(id)d operationType:(int64_t)type forRecordWithRecordID:(id)iD completionHandler:(id)handler
 {
-  v25 = a3;
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  handlerCopy = handler;
   requestedRecordIDs = self->_requestedRecordIDs;
   if (!requestedRecordIDs)
   {
@@ -60,76 +60,76 @@
     requestedRecordIDs = self->_requestedRecordIDs;
   }
 
-  [(NSMutableSet *)requestedRecordIDs addObject:v25];
-  v19 = sub_1001AAB10([CPLCKRecordRequest alloc], v25, v10, v11);
+  [(NSMutableSet *)requestedRecordIDs addObject:dCopy];
+  v19 = sub_1001AAB10([CPLCKRecordRequest alloc], dCopy, iDCopy, handlerCopy);
   [(NSMutableArray *)self->_requests addObject:v19];
   v20 = self->_requestedRecordIDsPerOperationType;
-  v21 = [NSNumber numberWithInteger:a4];
+  v21 = [NSNumber numberWithInteger:type];
   v22 = [(NSMutableDictionary *)v20 objectForKeyedSubscript:v21];
 
   if (!v22)
   {
     v22 = objc_alloc_init(NSMutableSet);
     v23 = self->_requestedRecordIDsPerOperationType;
-    v24 = [NSNumber numberWithInteger:a4];
+    v24 = [NSNumber numberWithInteger:type];
     [(NSMutableDictionary *)v23 setObject:v22 forKeyedSubscript:v24];
   }
 
-  [v22 addObject:v25];
+  [v22 addObject:dCopy];
 }
 
-- (void)_fetchRecordsForNextOperationTypeInEnumerator:(id)a3 task:(id)a4 completionHandler:(id)a5
+- (void)_fetchRecordsForNextOperationTypeInEnumerator:(id)enumerator task:(id)task completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 nextObject];
-  if (v11)
+  enumeratorCopy = enumerator;
+  taskCopy = task;
+  handlerCopy = handler;
+  nextObject = [enumeratorCopy nextObject];
+  if (nextObject)
   {
-    v12 = [(NSMutableDictionary *)self->_requestedRecordIDsPerOperationType objectForKeyedSubscript:v11];
-    v13 = [v12 allObjects];
+    v12 = [(NSMutableDictionary *)self->_requestedRecordIDsPerOperationType objectForKeyedSubscript:nextObject];
+    allObjects = [v12 allObjects];
 
-    v14 = [v11 integerValue];
+    integerValue = [nextObject integerValue];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10009615C;
     v15[3] = &unk_100276660;
-    v19 = v10;
-    v16 = v9;
-    v17 = self;
-    v18 = v8;
-    [v16 fetchRecordsWithIDs:v13 fetchResources:0 wantsAllRecords:0 type:v14 completionHandler:v15];
+    v19 = handlerCopy;
+    v16 = taskCopy;
+    selfCopy = self;
+    v18 = enumeratorCopy;
+    [v16 fetchRecordsWithIDs:allObjects fetchResources:0 wantsAllRecords:0 type:integerValue completionHandler:v15];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)fetchRequestedRecordsForTransportTask:(id)a3 completionHandler:(id)a4
+- (void)fetchRequestedRecordsForTransportTask:(id)task completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   requestedRecordIDsPerOperationType = self->_requestedRecordIDsPerOperationType;
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)requestedRecordIDsPerOperationType keyEnumerator];
+  taskCopy = task;
+  keyEnumerator = [(NSMutableDictionary *)requestedRecordIDsPerOperationType keyEnumerator];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100096330;
   v11[3] = &unk_1002727E8;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [(CPLCKRecordRequestor *)self _fetchRecordsForNextOperationTypeInEnumerator:v9 task:v8 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [(CPLCKRecordRequestor *)self _fetchRecordsForNextOperationTypeInEnumerator:keyEnumerator task:taskCopy completionHandler:v11];
 }
 
 - (NSArray)requestedRecordIDs
 {
-  v2 = [(NSMutableSet *)self->_requestedRecordIDs allObjects];
-  v3 = v2;
-  if (v2)
+  allObjects = [(NSMutableSet *)self->_requestedRecordIDs allObjects];
+  v3 = allObjects;
+  if (allObjects)
   {
-    v4 = v2;
+    v4 = allObjects;
   }
 
   else
@@ -142,7 +142,7 @@
   return v4;
 }
 
-- (BOOL)processedFetchedRequestedRecordsWithError:(id *)a3
+- (BOOL)processedFetchedRequestedRecordsWithError:(id *)error
 {
   v4 = objc_alloc_init(NSMutableDictionary);
   v32 = 0u;
@@ -260,10 +260,10 @@
     v26 = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
     v27 = [CPLErrors cplErrorWithCode:18 underlyingError:0 userInfo:v26 description:@"Rejecting some records because of bad or missing requested records"];
 
-    if (a3)
+    if (error)
     {
       v28 = v27;
-      *a3 = v27;
+      *error = v27;
     }
   }
 

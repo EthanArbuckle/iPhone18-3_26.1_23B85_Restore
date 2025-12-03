@@ -1,9 +1,9 @@
 @interface WCM_CellularRc1CoexIssue
-- (BOOL)setIssueFrequencyRangeByIssueBand:(id)a3;
-- (BOOL)uwbCoexIssueFreqRangeForCellDlLowFreq:(double)a3 cellDlHighFreq:(double)a4 cellUlLowFreq:(double)a5 cellUlHighFreq:(double)a6 uwbIssueFreqRange:(id *)a7;
+- (BOOL)setIssueFrequencyRangeByIssueBand:(id)band;
+- (BOOL)uwbCoexIssueFreqRangeForCellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq uwbIssueFreqRange:(id *)range;
 - (WCM_CellularRc1CoexIssue)init;
-- (id)uwbNbDynamicCoexPolicyForCellDlLowFreq:(double)a3 cellDlHighFreq:(double)a4 cellUlLowFreq:(double)a5 cellUlHighFreq:(double)a6;
-- (void)uwbNbCoexIssueChannelForCellDlLowFreq:(double)a3 cellDlHighFreq:(double)a4 cellUlLowFreq:(double)a5 cellUlHighFreq:(double)a6 uwbNbIssueChannelBegin:(int *)a7 uwbNbIssueChannelEnd:(int *)a8;
+- (id)uwbNbDynamicCoexPolicyForCellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq;
+- (void)uwbNbCoexIssueChannelForCellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq uwbNbIssueChannelBegin:(int *)begin uwbNbIssueChannelEnd:(int *)end;
 @end
 
 @implementation WCM_CellularRc1CoexIssue
@@ -25,30 +25,30 @@
   return v2;
 }
 
-- (BOOL)setIssueFrequencyRangeByIssueBand:(id)a3
+- (BOOL)setIssueFrequencyRangeByIssueBand:(id)band
 {
-  v4 = a3;
-  if (v4)
+  bandCopy = band;
+  if (bandCopy)
   {
-    v5 = unk_1002B9F28(off_1002B76C0, "objectForKey:", v4);
+    v5 = unk_1002B9F28(off_1002B76C0, "objectForKey:", bandCopy);
 
     if (v5)
     {
-      v6 = unk_1002B9F30(off_1002B76C0, "objectForKey:", v4);
+      v6 = unk_1002B9F30(off_1002B76C0, "objectForKey:", bandCopy);
       v7 = [v6 objectAtIndexedSubscript:0];
       self->_bandInfoType = [v7 intValue];
 
       v8 = [v6 objectAtIndexedSubscript:1];
-      v9 = [v8 intValue];
+      intValue = [v8 intValue];
 
-      self->_cellBand = v9;
+      self->_cellBand = intValue;
       bandInfoType = self->_bandInfoType;
-      if ((bandInfoType & 0x40) != 0 && v9 <= 0x4F)
+      if ((bandInfoType & 0x40) != 0 && intValue <= 0x4F)
       {
         v11 = &unk_100196030;
       }
 
-      else if ((bandInfoType & 1) != 0 && v9 <= 0x58)
+      else if ((bandInfoType & 1) != 0 && intValue <= 0x58)
       {
         v11 = &unk_100196CB0;
       }
@@ -56,7 +56,7 @@
       else
       {
         v12 = 0;
-        if ((bandInfoType & 8) == 0 || v9 > 0x15)
+        if ((bandInfoType & 8) == 0 || intValue > 0x15)
         {
           goto LABEL_14;
         }
@@ -64,7 +64,7 @@
         v11 = &unk_100197A98;
       }
 
-      v13 = &v11[40 * v9];
+      v13 = &v11[40 * intValue];
       self->_downlinkLowFreq_Hz = *v13 * 1000000.0;
       self->_downlinkHighFreq_Hz = v13[1] * 1000000.0;
       self->_uplinkLowFreq_Hz = v13[2] * 1000000.0;
@@ -82,7 +82,7 @@ LABEL_15:
   return v12;
 }
 
-- (BOOL)uwbCoexIssueFreqRangeForCellDlLowFreq:(double)a3 cellDlHighFreq:(double)a4 cellUlLowFreq:(double)a5 cellUlHighFreq:(double)a6 uwbIssueFreqRange:(id *)a7
+- (BOOL)uwbCoexIssueFreqRangeForCellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq uwbIssueFreqRange:(id *)range
 {
   v21 = 0.0;
   v22 = 0.0;
@@ -164,8 +164,8 @@ LABEL_22:
   v12 = 0.0;
   v11 = 0.0;
 LABEL_23:
-  v13 = a6 - a5;
-  v14 = a4 - a3;
+  v13 = ulHighFreq - lowFreq;
+  v14 = highFreq - freq;
   issueType = self->_issueType;
   if (issueType > 8)
   {
@@ -178,13 +178,13 @@ LABEL_23:
     {
       if (issueType == 9)
       {
-        v16 = sub_10008E4F4(0, v20.f64, a5, a6 - a5, v12, v11);
+        v16 = sub_10008E4F4(0, v20.f64, lowFreq, ulHighFreq - lowFreq, v12, v11);
         if (!v16)
         {
           goto LABEL_44;
         }
 
-        [WCM_Logging logLevel:4 message:@"2 x CellTx(%lf~%lf) = RC1 Rx(%lf~%lf)", *&a5, v13 + a5, *&v20.f64[0], v20.f64[0] + v20.f64[1], v18, v19];
+        [WCM_Logging logLevel:4 message:@"2 x CellTx(%lf~%lf) = RC1 Rx(%lf~%lf)", *&lowFreq, v13 + lowFreq, *&v20.f64[0], v20.f64[0] + v20.f64[1], v18, v19];
         goto LABEL_43;
       }
 
@@ -193,13 +193,13 @@ LABEL_23:
         goto LABEL_49;
       }
 
-      v16 = sub_10008E4F4(&v20, 0, v12, v11, a3, v14);
+      v16 = sub_10008E4F4(&v20, 0, v12, v11, freq, v14);
       if (!v16)
       {
         goto LABEL_44;
       }
 
-      [WCM_Logging logLevel:4 message:@"(2 x RC1 Tx)(i.e. %lf~%lf) = CellRx(%lf~%lf)", *&v20.f64[0], v20.f64[0] + v20.f64[1], *&a3, v14 + a3, v18, v19];
+      [WCM_Logging logLevel:4 message:@"(2 x RC1 Tx)(i.e. %lf~%lf) = CellRx(%lf~%lf)", *&v20.f64[0], v20.f64[0] + v20.f64[1], *&freq, v14 + freq, v18, v19];
     }
 
 LABEL_43:
@@ -211,13 +211,13 @@ LABEL_43:
   {
     if (issueType == 3)
     {
-      v16 = sub_10008E790(v20.f64, 0, &v21, v12, v11, a5, a6 - a5, a3, v14);
+      v16 = sub_10008E790(v20.f64, 0, &v21, v12, v11, lowFreq, ulHighFreq - lowFreq, freq, v14);
       if (!v16)
       {
         goto LABEL_44;
       }
 
-      [WCM_Logging logLevel:4 message:@"RC1 Tx(%lf~%lf) - CellTx(%lf~%lf) = CellRx(%lf~%lf)", *&v20.f64[0], v20.f64[0] + v20.f64[1], *&a5, v13 + a5, *&v21, v21 + v22];
+      [WCM_Logging logLevel:4 message:@"RC1 Tx(%lf~%lf) - CellTx(%lf~%lf) = CellRx(%lf~%lf)", *&v20.f64[0], v20.f64[0] + v20.f64[1], *&lowFreq, v13 + lowFreq, *&v21, v21 + v22];
       goto LABEL_43;
     }
 
@@ -231,13 +231,13 @@ LABEL_43:
 
   if (!issueType)
   {
-    v16 = sub_10008E554(0, v20.f64, a5, a6 - a5, v12, v11);
+    v16 = sub_10008E554(0, v20.f64, lowFreq, ulHighFreq - lowFreq, v12, v11);
     if (!v16)
     {
       goto LABEL_44;
     }
 
-    [WCM_Logging logLevel:4 message:@"3 x CellTx(%lf~%lf) = RC1 Rx(%lf~%lf)", *&a5, v13 + a5, *&v20.f64[0], v20.f64[0] + v20.f64[1]];
+    [WCM_Logging logLevel:4 message:@"3 x CellTx(%lf~%lf) = RC1 Rx(%lf~%lf)", *&lowFreq, v13 + lowFreq, *&v20.f64[0], v20.f64[0] + v20.f64[1]];
     v20 = vaddq_f64(v20, xmmword_100195970);
     goto LABEL_43;
   }
@@ -245,13 +245,13 @@ LABEL_43:
   if (issueType == 1)
   {
 LABEL_36:
-    v16 = sub_10008E9F8(v20.f64, 0, &v21, v12, v11, a5, a6 - a5, a3, v14);
+    v16 = sub_10008E9F8(v20.f64, 0, &v21, v12, v11, lowFreq, ulHighFreq - lowFreq, freq, v14);
     if (!v16)
     {
       goto LABEL_44;
     }
 
-    [WCM_Logging logLevel:4 message:@"2 x RC1 Tx(%lf~%lf) - CellTx(%lf~%lf) = CellRx(%lf~%lf)", *&v20.f64[0], v20.f64[0] + v20.f64[1], *&a5, v13 + a5, *&v21, v21 + v22];
+    [WCM_Logging logLevel:4 message:@"2 x RC1 Tx(%lf~%lf) - CellTx(%lf~%lf) = CellRx(%lf~%lf)", *&v20.f64[0], v20.f64[0] + v20.f64[1], *&lowFreq, v13 + lowFreq, *&v21, v21 + v22];
     goto LABEL_43;
   }
 
@@ -259,15 +259,15 @@ LABEL_49:
   [WCM_Logging logLevel:0 message:@"WCM_WiFiCellCoexIssue(%p) has invalid _issueType(%d)", self, issueType];
   LOBYTE(v16) = 0;
 LABEL_44:
-  if (a7)
+  if (range)
   {
-    *a7 = v20;
+    *range = v20;
   }
 
   return v16;
 }
 
-- (void)uwbNbCoexIssueChannelForCellDlLowFreq:(double)a3 cellDlHighFreq:(double)a4 cellUlLowFreq:(double)a5 cellUlHighFreq:(double)a6 uwbNbIssueChannelBegin:(int *)a7 uwbNbIssueChannelEnd:(int *)a8
+- (void)uwbNbCoexIssueChannelForCellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq uwbNbIssueChannelBegin:(int *)begin uwbNbIssueChannelEnd:(int *)end
 {
   Rc1IssueChannel = self->_Rc1IssueChannel;
   if (Rc1IssueChannel <= 31)
@@ -316,38 +316,38 @@ LABEL_12:
 LABEL_14:
   v19 = 0.0;
   v20 = 0.0;
-  if ([(WCM_CellularRc1CoexIssue *)self uwbCoexIssueFreqRangeForCellDlLowFreq:&v19 cellDlHighFreq:a3 cellUlLowFreq:a4 cellUlHighFreq:a5 uwbIssueFreqRange:a6])
+  if ([(WCM_CellularRc1CoexIssue *)self uwbCoexIssueFreqRangeForCellDlLowFreq:&v19 cellDlHighFreq:freq cellUlLowFreq:highFreq cellUlHighFreq:lowFreq uwbIssueFreqRange:ulHighFreq])
   {
     if (v19 == 0.0)
     {
-      *a7 = [(WCM_CellularRc1CoexIssue *)self nbChannelToAvoidStart];
-      v14 = [(WCM_CellularRc1CoexIssue *)self nbChannelToAvoidEnd];
+      *begin = [(WCM_CellularRc1CoexIssue *)self nbChannelToAvoidStart];
+      nbChannelToAvoidEnd = [(WCM_CellularRc1CoexIssue *)self nbChannelToAvoidEnd];
     }
 
     else
     {
       v16 = v19 + v20 - v13 + -1.0;
-      *a7 = v12 + (v19 - v13) / 0x2625A0;
-      v14 = v12 + (v16 / 0x2625A0);
+      *begin = v12 + (v19 - v13) / 0x2625A0;
+      nbChannelToAvoidEnd = v12 + (v16 / 0x2625A0);
     }
 
-    *a8 = v14;
-    v17 = *a7;
-    v18 = v14;
+    *end = nbChannelToAvoidEnd;
+    v17 = *begin;
+    v18 = nbChannelToAvoidEnd;
     v15 = @"RC1 NB channels with issue [%d - %d]";
   }
 
   else
   {
-    *a7 = -1;
-    *a8 = -1;
+    *begin = -1;
+    *end = -1;
     v15 = @"RC1 NB channels with issue: NONE";
   }
 
   [WCM_Logging logLevel:4 message:v15, v17, v18];
 }
 
-- (id)uwbNbDynamicCoexPolicyForCellDlLowFreq:(double)a3 cellDlHighFreq:(double)a4 cellUlLowFreq:(double)a5 cellUlHighFreq:(double)a6
+- (id)uwbNbDynamicCoexPolicyForCellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq
 {
   v14 = -1;
   v15 = -1;
@@ -359,7 +359,7 @@ LABEL_14:
 
   else
   {
-    v12 = [WCM_CellularRc1CoexIssue generateDynamicPolicyForCoexIssueForCellDlLowFreq:"generateDynamicPolicyForCoexIssueForCellDlLowFreq:cellDlHighFreq:cellUlLowFreq:cellUlHighFreq:rc1NbIssueChannelBegin:rc1NbIssueChannelEnd:" cellDlHighFreq:a3 cellUlLowFreq:a4 cellUlHighFreq:a5 rc1NbIssueChannelBegin:a6 rc1NbIssueChannelEnd:?];
+    v12 = [WCM_CellularRc1CoexIssue generateDynamicPolicyForCoexIssueForCellDlLowFreq:"generateDynamicPolicyForCoexIssueForCellDlLowFreq:cellDlHighFreq:cellUlLowFreq:cellUlHighFreq:rc1NbIssueChannelBegin:rc1NbIssueChannelEnd:" cellDlHighFreq:freq cellUlLowFreq:highFreq cellUlHighFreq:lowFreq rc1NbIssueChannelBegin:ulHighFreq rc1NbIssueChannelEnd:?];
   }
 
   return v12;

@@ -1,50 +1,50 @@
 @interface NavContainerResumeRouteControl
-- (NavContainerResumeRouteControl)initWithFrame:(CGRect)a3;
-- (id)constraintsForPositionInStatusBarBackgroundView:(id)a3;
-- (id)initialConstraintsForAnimatingPositionInStatusBarBackgroundView:(id)a3;
+- (NavContainerResumeRouteControl)initWithFrame:(CGRect)frame;
+- (id)constraintsForPositionInStatusBarBackgroundView:(id)view;
+- (id)initialConstraintsForAnimatingPositionInStatusBarBackgroundView:(id)view;
 - (void)_updateBackgroundColor;
 - (void)didMoveToSuperview;
 - (void)hideIfNeeded;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setTitle:(id)title;
 - (void)showIfNeeded;
 @end
 
 @implementation NavContainerResumeRouteControl
 
-- (id)initialConstraintsForAnimatingPositionInStatusBarBackgroundView:(id)a3
+- (id)initialConstraintsForAnimatingPositionInStatusBarBackgroundView:(id)view
 {
-  v4 = a3;
-  v5 = [(NavContainerResumeRouteControl *)self bottomConstraintWhenHidden];
-  v6 = [(NavContainerResumeRouteControl *)self leadingAnchor];
-  v7 = [v4 leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  viewCopy = view;
+  bottomConstraintWhenHidden = [(NavContainerResumeRouteControl *)self bottomConstraintWhenHidden];
+  leadingAnchor = [(NavContainerResumeRouteControl *)self leadingAnchor];
+  leadingAnchor2 = [viewCopy leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v14[1] = v8;
-  v9 = [(NavContainerResumeRouteControl *)self trailingAnchor];
-  v10 = [v4 trailingAnchor];
+  trailingAnchor = [(NavContainerResumeRouteControl *)self trailingAnchor];
+  trailingAnchor2 = [viewCopy trailingAnchor];
 
-  v11 = [v9 constraintEqualToAnchor:v10];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v14[2] = v11;
   v12 = [NSArray arrayWithObjects:v14 count:3];
 
   return v12;
 }
 
-- (id)constraintsForPositionInStatusBarBackgroundView:(id)a3
+- (id)constraintsForPositionInStatusBarBackgroundView:(id)view
 {
-  v4 = a3;
-  v5 = [(NavContainerResumeRouteControl *)self topConstraint];
-  v15[0] = v5;
-  v6 = [(NavContainerResumeRouteControl *)self bottomConstraint];
-  v15[1] = v6;
-  v7 = [(NavContainerResumeRouteControl *)self leadingAnchor];
-  v8 = [v4 leadingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  viewCopy = view;
+  topConstraint = [(NavContainerResumeRouteControl *)self topConstraint];
+  v15[0] = topConstraint;
+  bottomConstraint = [(NavContainerResumeRouteControl *)self bottomConstraint];
+  v15[1] = bottomConstraint;
+  leadingAnchor = [(NavContainerResumeRouteControl *)self leadingAnchor];
+  leadingAnchor2 = [viewCopy leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v15[2] = v9;
-  v10 = [(NavContainerResumeRouteControl *)self trailingAnchor];
-  v11 = [v4 trailingAnchor];
+  trailingAnchor = [(NavContainerResumeRouteControl *)self trailingAnchor];
+  trailingAnchor2 = [viewCopy trailingAnchor];
 
-  v12 = [v10 constraintEqualToAnchor:v11];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v15[3] = v12;
   v13 = [NSArray arrayWithObjects:v15 count:4];
 
@@ -53,14 +53,14 @@
 
 - (void)showIfNeeded
 {
-  v3 = [(NavContainerResumeRouteControl *)self contentHeightCollapsedConstraint];
-  v4 = [v3 isActive];
+  contentHeightCollapsedConstraint = [(NavContainerResumeRouteControl *)self contentHeightCollapsedConstraint];
+  isActive = [contentHeightCollapsedConstraint isActive];
 
-  if (v4)
+  if (isActive)
   {
     titleText = self->_titleText;
-    v6 = [(NavContainerResumeRouteControl *)self titleLabel];
-    [v6 setText:titleText];
+    titleLabel = [(NavContainerResumeRouteControl *)self titleLabel];
+    [titleLabel setText:titleText];
 
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
@@ -73,13 +73,13 @@
 
 - (void)hideIfNeeded
 {
-  v3 = [(NavContainerResumeRouteControl *)self contentHeightCollapsedConstraint];
-  v4 = [v3 isActive];
+  contentHeightCollapsedConstraint = [(NavContainerResumeRouteControl *)self contentHeightCollapsedConstraint];
+  isActive = [contentHeightCollapsedConstraint isActive];
 
-  if ((v4 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
-    v5 = [(NavContainerResumeRouteControl *)self titleLabel];
-    [v5 setText:0];
+    titleLabel = [(NavContainerResumeRouteControl *)self titleLabel];
+    [titleLabel setText:0];
 
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
@@ -90,22 +90,22 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   titleText = self->_titleText;
   self->_titleText = v4;
 
   v6 = self->_titleText;
-  v7 = [(NavContainerResumeRouteControl *)self titleLabel];
-  [v7 setText:v6];
+  titleLabel = [(NavContainerResumeRouteControl *)self titleLabel];
+  [titleLabel setText:v6];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = NavContainerResumeRouteControl;
-  [(NavContainerResumeRouteControl *)&v4 setHighlighted:a3];
+  [(NavContainerResumeRouteControl *)&v4 setHighlighted:highlighted];
   [(NavContainerResumeRouteControl *)self _updateBackgroundColor];
 }
 
@@ -123,28 +123,28 @@
   bottomConstraintWhenHidden = self->_bottomConstraintWhenHidden;
   self->_bottomConstraintWhenHidden = 0;
 
-  v6 = [(NavContainerResumeRouteControl *)self superview];
+  superview = [(NavContainerResumeRouteControl *)self superview];
 
-  if (v6)
+  if (superview)
   {
-    v7 = [(NavContainerResumeRouteControl *)self topAnchor];
-    v8 = [(NavContainerResumeRouteControl *)self superview];
-    v9 = [v8 topAnchor];
-    v10 = [v7 constraintEqualToAnchor:v9];
+    topAnchor = [(NavContainerResumeRouteControl *)self topAnchor];
+    superview2 = [(NavContainerResumeRouteControl *)self superview];
+    topAnchor2 = [superview2 topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v11 = self->_topConstraint;
     self->_topConstraint = v10;
 
-    v12 = [(NavContainerResumeRouteControl *)self bottomAnchor];
-    v13 = [(NavContainerResumeRouteControl *)self superview];
-    v14 = [v13 bottomAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    bottomAnchor = [(NavContainerResumeRouteControl *)self bottomAnchor];
+    superview3 = [(NavContainerResumeRouteControl *)self superview];
+    bottomAnchor2 = [superview3 bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v16 = self->_bottomConstraint;
     self->_bottomConstraint = v15;
 
-    v17 = [(NavContainerResumeRouteControl *)self bottomAnchor];
-    v18 = [(NavContainerResumeRouteControl *)self superview];
-    v19 = [v18 topAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    bottomAnchor3 = [(NavContainerResumeRouteControl *)self bottomAnchor];
+    superview4 = [(NavContainerResumeRouteControl *)self superview];
+    topAnchor3 = [superview4 topAnchor];
+    v20 = [bottomAnchor3 constraintEqualToAnchor:topAnchor3];
     v21 = self->_bottomConstraintWhenHidden;
     self->_bottomConstraintWhenHidden = v20;
   }
@@ -152,25 +152,25 @@
 
 - (void)_updateBackgroundColor
 {
-  v4 = [(NavContainerResumeRouteControl *)self theme];
+  theme = [(NavContainerResumeRouteControl *)self theme];
   if ([(NavContainerResumeRouteControl *)self isHighlighted])
   {
-    [v4 navResumeRouteBannerHighlightColor];
+    [theme navResumeRouteBannerHighlightColor];
   }
 
   else
   {
-    [v4 navResumeRouteBannerBackgroundColor];
+    [theme navResumeRouteBannerBackgroundColor];
   }
   v3 = ;
   [(NavContainerResumeRouteControl *)self setBackgroundColor:v3];
 }
 
-- (NavContainerResumeRouteControl)initWithFrame:(CGRect)a3
+- (NavContainerResumeRouteControl)initWithFrame:(CGRect)frame
 {
   v114.receiver = self;
   v114.super_class = NavContainerResumeRouteControl;
-  v3 = [(NavContainerResumeRouteControl *)&v114 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NavContainerResumeRouteControl *)&v114 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();
@@ -182,8 +182,8 @@
     contentLayoutGuide = v3->_contentLayoutGuide;
     v3->_contentLayoutGuide = v6;
 
-    v8 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
-    [(NavContainerResumeRouteControl *)v3 addLayoutGuide:v8];
+    contentLayoutGuide = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
+    [(NavContainerResumeRouteControl *)v3 addLayoutGuide:contentLayoutGuide];
 
     v9 = [UILabel alloc];
     y = CGRectZero.origin.y;
@@ -193,155 +193,155 @@
     titleLabel = v3->_titleLabel;
     v3->_titleLabel = v13;
 
-    v15 = [(NavContainerResumeRouteControl *)v3 titleLabel];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    titleLabel = [(NavContainerResumeRouteControl *)v3 titleLabel];
+    [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v16 = +[UIColor whiteColor];
-    v17 = [(NavContainerResumeRouteControl *)v3 titleLabel];
-    [v17 setTextColor:v16];
+    titleLabel2 = [(NavContainerResumeRouteControl *)v3 titleLabel];
+    [titleLabel2 setTextColor:v16];
 
     v18 = [UIFont _maps_systemFontWithSize:17.0];
-    v19 = [(NavContainerResumeRouteControl *)v3 titleLabel];
-    [v19 setFont:v18];
+    titleLabel3 = [(NavContainerResumeRouteControl *)v3 titleLabel];
+    [titleLabel3 setFont:v18];
 
-    v20 = [(NavContainerResumeRouteControl *)v3 titleLabel];
-    [v20 setNumberOfLines:2];
+    titleLabel4 = [(NavContainerResumeRouteControl *)v3 titleLabel];
+    [titleLabel4 setNumberOfLines:2];
 
-    v21 = [(NavContainerResumeRouteControl *)v3 titleLabel];
+    titleLabel5 = [(NavContainerResumeRouteControl *)v3 titleLabel];
     LODWORD(v22) = 1148846080;
-    [v21 setContentCompressionResistancePriority:1 forAxis:v22];
+    [titleLabel5 setContentCompressionResistancePriority:1 forAxis:v22];
 
-    v23 = [(NavContainerResumeRouteControl *)v3 titleLabel];
-    [v23 setAccessibilityIdentifier:@"TitleLabel"];
+    titleLabel6 = [(NavContainerResumeRouteControl *)v3 titleLabel];
+    [titleLabel6 setAccessibilityIdentifier:@"TitleLabel"];
 
-    v24 = [(NavContainerResumeRouteControl *)v3 titleLabel];
-    [(NavContainerResumeRouteControl *)v3 addSubview:v24];
+    titleLabel7 = [(NavContainerResumeRouteControl *)v3 titleLabel];
+    [(NavContainerResumeRouteControl *)v3 addSubview:titleLabel7];
 
     v25 = [[UIButton alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     closeButton = v3->_closeButton;
     v3->_closeButton = v25;
 
-    v27 = [(NavContainerResumeRouteControl *)v3 closeButton];
-    [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+    closeButton = [(NavContainerResumeRouteControl *)v3 closeButton];
+    [closeButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v28 = [(NavContainerResumeRouteControl *)v3 closeButton];
+    closeButton2 = [(NavContainerResumeRouteControl *)v3 closeButton];
     v29 = [UIImage systemImageNamed:@"xmark.circle.fill"];
-    [v28 setImage:v29 forState:0];
+    [closeButton2 setImage:v29 forState:0];
 
-    v30 = [(NavContainerResumeRouteControl *)v3 closeButton];
+    closeButton3 = [(NavContainerResumeRouteControl *)v3 closeButton];
     v31 = [UIImageSymbolConfiguration configurationWithPointSize:19.0];
-    [v30 setPreferredSymbolConfiguration:v31 forImageInState:0];
+    [closeButton3 setPreferredSymbolConfiguration:v31 forImageInState:0];
 
     v32 = +[UIColor whiteColor];
-    v33 = [(NavContainerResumeRouteControl *)v3 closeButton];
-    [v33 setTintColor:v32];
+    closeButton4 = [(NavContainerResumeRouteControl *)v3 closeButton];
+    [closeButton4 setTintColor:v32];
 
-    v34 = [(NavContainerResumeRouteControl *)v3 closeButton];
-    [v34 addTarget:v3 action:"_closeButtonAction" forControlEvents:64];
+    closeButton5 = [(NavContainerResumeRouteControl *)v3 closeButton];
+    [closeButton5 addTarget:v3 action:"_closeButtonAction" forControlEvents:64];
 
-    v35 = [(NavContainerResumeRouteControl *)v3 closeButton];
-    [v35 _setTouchInsets:{-3.0, -3.0, -3.0, -3.0}];
+    closeButton6 = [(NavContainerResumeRouteControl *)v3 closeButton];
+    [closeButton6 _setTouchInsets:{-3.0, -3.0, -3.0, -3.0}];
 
-    v36 = [(NavContainerResumeRouteControl *)v3 closeButton];
-    [v36 setAccessibilityIdentifier:@"CloseButton"];
+    closeButton7 = [(NavContainerResumeRouteControl *)v3 closeButton];
+    [closeButton7 setAccessibilityIdentifier:@"CloseButton"];
 
-    v37 = [(NavContainerResumeRouteControl *)v3 closeButton];
-    [(NavContainerResumeRouteControl *)v3 addSubview:v37];
+    closeButton8 = [(NavContainerResumeRouteControl *)v3 closeButton];
+    [(NavContainerResumeRouteControl *)v3 addSubview:closeButton8];
 
-    v38 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
-    v39 = [v38 heightAnchor];
-    v40 = [v39 constraintEqualToConstant:0.0];
+    contentLayoutGuide2 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
+    heightAnchor = [contentLayoutGuide2 heightAnchor];
+    v40 = [heightAnchor constraintEqualToConstant:0.0];
     [(NavContainerResumeRouteControl *)v3 setContentHeightCollapsedConstraint:v40];
 
-    v41 = [(NavContainerResumeRouteControl *)v3 closeButton];
-    v42 = [v41 heightAnchor];
-    v43 = [v42 constraintEqualToConstant:40.0];
+    closeButton9 = [(NavContainerResumeRouteControl *)v3 closeButton];
+    heightAnchor2 = [closeButton9 heightAnchor];
+    v43 = [heightAnchor2 constraintEqualToConstant:40.0];
     [(NavContainerResumeRouteControl *)v3 setCloseButtonHeightConstraint:v43];
 
-    v44 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
-    v45 = [v44 heightAnchor];
-    v46 = [v45 constraintEqualToConstant:60.0];
+    contentLayoutGuide3 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
+    heightAnchor3 = [contentLayoutGuide3 heightAnchor];
+    v46 = [heightAnchor3 constraintEqualToConstant:60.0];
 
     LODWORD(v47) = 1148829696;
     v103 = v46;
     [v46 setPriority:v47];
-    v113 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
-    v111 = [v113 leadingAnchor];
-    v112 = [(NavContainerResumeRouteControl *)v3 safeAreaLayoutGuide];
-    v110 = [v112 leadingAnchor];
-    v109 = [v111 constraintEqualToAnchor:v110 constant:13.0];
+    contentLayoutGuide4 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
+    leadingAnchor = [contentLayoutGuide4 leadingAnchor];
+    safeAreaLayoutGuide = [(NavContainerResumeRouteControl *)v3 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v109 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:13.0];
     v115[0] = v109;
-    v108 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
-    v106 = [v108 trailingAnchor];
-    v107 = [(NavContainerResumeRouteControl *)v3 safeAreaLayoutGuide];
-    v105 = [v107 trailingAnchor];
-    v104 = [v106 constraintEqualToAnchor:v105 constant:-13.0];
+    contentLayoutGuide5 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
+    trailingAnchor = [contentLayoutGuide5 trailingAnchor];
+    safeAreaLayoutGuide2 = [(NavContainerResumeRouteControl *)v3 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+    v104 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-13.0];
     v115[1] = v104;
-    v102 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
-    v100 = [v102 topAnchor];
-    v101 = [(NavContainerResumeRouteControl *)v3 safeAreaLayoutGuide];
-    v99 = [v101 topAnchor];
-    v98 = [v100 constraintEqualToAnchor:v99];
+    contentLayoutGuide6 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
+    topAnchor = [contentLayoutGuide6 topAnchor];
+    safeAreaLayoutGuide3 = [(NavContainerResumeRouteControl *)v3 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+    v98 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v115[2] = v98;
-    v97 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
-    v96 = [v97 bottomAnchor];
-    v95 = [(NavContainerResumeRouteControl *)v3 bottomAnchor];
-    v94 = [v96 constraintEqualToAnchor:v95];
+    contentLayoutGuide7 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
+    bottomAnchor = [contentLayoutGuide7 bottomAnchor];
+    bottomAnchor2 = [(NavContainerResumeRouteControl *)v3 bottomAnchor];
+    v94 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v115[3] = v94;
     v115[4] = v46;
-    v93 = [(NavContainerResumeRouteControl *)v3 titleLabel];
-    v91 = [v93 topAnchor];
-    v92 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
-    v90 = [v92 topAnchor];
-    v89 = [v91 constraintEqualToAnchor:v90];
+    titleLabel8 = [(NavContainerResumeRouteControl *)v3 titleLabel];
+    topAnchor3 = [titleLabel8 topAnchor];
+    contentLayoutGuide8 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
+    topAnchor4 = [contentLayoutGuide8 topAnchor];
+    v89 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v115[5] = v89;
-    v88 = [(NavContainerResumeRouteControl *)v3 titleLabel];
-    v86 = [v88 bottomAnchor];
-    v87 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
-    v85 = [v87 bottomAnchor];
-    v84 = [v86 constraintEqualToAnchor:v85];
+    titleLabel9 = [(NavContainerResumeRouteControl *)v3 titleLabel];
+    bottomAnchor3 = [titleLabel9 bottomAnchor];
+    contentLayoutGuide9 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
+    bottomAnchor4 = [contentLayoutGuide9 bottomAnchor];
+    v84 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v115[6] = v84;
-    v83 = [(NavContainerResumeRouteControl *)v3 titleLabel];
-    v81 = [v83 leadingAnchor];
-    v82 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
-    v80 = [v82 leadingAnchor];
-    v79 = [v81 constraintEqualToAnchor:v80];
+    titleLabel10 = [(NavContainerResumeRouteControl *)v3 titleLabel];
+    leadingAnchor3 = [titleLabel10 leadingAnchor];
+    contentLayoutGuide10 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
+    leadingAnchor4 = [contentLayoutGuide10 leadingAnchor];
+    v79 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v115[7] = v79;
-    v78 = [(NavContainerResumeRouteControl *)v3 titleLabel];
-    v76 = [v78 trailingAnchor];
-    v77 = [(NavContainerResumeRouteControl *)v3 closeButton];
-    v75 = [v77 leadingAnchor];
-    v74 = [v76 constraintEqualToAnchor:v75 constant:-13.0];
+    titleLabel11 = [(NavContainerResumeRouteControl *)v3 titleLabel];
+    trailingAnchor3 = [titleLabel11 trailingAnchor];
+    closeButton10 = [(NavContainerResumeRouteControl *)v3 closeButton];
+    leadingAnchor5 = [closeButton10 leadingAnchor];
+    v74 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor5 constant:-13.0];
     v115[8] = v74;
-    v73 = [(NavContainerResumeRouteControl *)v3 closeButton];
-    v71 = [v73 topAnchor];
-    v72 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
-    v70 = [v72 topAnchor];
-    v69 = [v71 constraintGreaterThanOrEqualToAnchor:v70 constant:10.0];
+    closeButton11 = [(NavContainerResumeRouteControl *)v3 closeButton];
+    topAnchor5 = [closeButton11 topAnchor];
+    contentLayoutGuide11 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
+    topAnchor6 = [contentLayoutGuide11 topAnchor];
+    v69 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor6 constant:10.0];
     v115[9] = v69;
-    v68 = [(NavContainerResumeRouteControl *)v3 closeButton];
-    v66 = [v68 bottomAnchor];
-    v67 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
-    v65 = [v67 bottomAnchor];
-    v64 = [v66 constraintLessThanOrEqualToAnchor:v65 constant:-10.0];
+    closeButton12 = [(NavContainerResumeRouteControl *)v3 closeButton];
+    bottomAnchor5 = [closeButton12 bottomAnchor];
+    contentLayoutGuide12 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
+    bottomAnchor6 = [contentLayoutGuide12 bottomAnchor];
+    v64 = [bottomAnchor5 constraintLessThanOrEqualToAnchor:bottomAnchor6 constant:-10.0];
     v115[10] = v64;
-    v63 = [(NavContainerResumeRouteControl *)v3 closeButton];
-    v61 = [v63 centerYAnchor];
-    v62 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
-    v60 = [v62 centerYAnchor];
-    v59 = [v61 constraintEqualToAnchor:v60];
+    closeButton13 = [(NavContainerResumeRouteControl *)v3 closeButton];
+    centerYAnchor = [closeButton13 centerYAnchor];
+    contentLayoutGuide13 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
+    centerYAnchor2 = [contentLayoutGuide13 centerYAnchor];
+    v59 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v115[11] = v59;
-    v58 = [(NavContainerResumeRouteControl *)v3 closeButton];
-    v48 = [v58 trailingAnchor];
-    v49 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
-    v50 = [v49 trailingAnchor];
-    v51 = [v48 constraintEqualToAnchor:v50];
+    closeButton14 = [(NavContainerResumeRouteControl *)v3 closeButton];
+    trailingAnchor4 = [closeButton14 trailingAnchor];
+    contentLayoutGuide14 = [(NavContainerResumeRouteControl *)v3 contentLayoutGuide];
+    trailingAnchor5 = [contentLayoutGuide14 trailingAnchor];
+    v51 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v115[12] = v51;
-    v52 = [(NavContainerResumeRouteControl *)v3 closeButtonHeightConstraint];
-    v115[13] = v52;
-    v53 = [(NavContainerResumeRouteControl *)v3 closeButton];
-    v54 = [v53 widthAnchor];
-    v55 = [v54 constraintEqualToConstant:40.0];
+    closeButtonHeightConstraint = [(NavContainerResumeRouteControl *)v3 closeButtonHeightConstraint];
+    v115[13] = closeButtonHeightConstraint;
+    closeButton15 = [(NavContainerResumeRouteControl *)v3 closeButton];
+    widthAnchor = [closeButton15 widthAnchor];
+    v55 = [widthAnchor constraintEqualToConstant:40.0];
     v115[14] = v55;
     v56 = [NSArray arrayWithObjects:v115 count:15];
     [NSLayoutConstraint activateConstraints:v56];

@@ -1,17 +1,17 @@
 @interface GQUCommon
-+ (BOOL)fileExistsAtUrl:(__CFURL *)a3;
++ (BOOL)fileExistsAtUrl:(__CFURL *)url;
 @end
 
 @implementation GQUCommon
 
-+ (BOOL)fileExistsAtUrl:(__CFURL *)a3
++ (BOOL)fileExistsAtUrl:(__CFURL *)url
 {
-  if (!a3)
+  if (!url)
   {
     return 0;
   }
 
-  v3 = CFURLCopyFileSystemPath(a3, kCFURLPOSIXPathStyle);
+  v3 = CFURLCopyFileSystemPath(url, kCFURLPOSIXPathStyle);
   if (!v3)
   {
     return 0;

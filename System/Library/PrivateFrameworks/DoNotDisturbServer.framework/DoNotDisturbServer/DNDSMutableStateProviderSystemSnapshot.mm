@@ -1,40 +1,40 @@
 @interface DNDSMutableStateProviderSystemSnapshot
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setActiveAssertionUUIDs:(id)a3;
-- (void)setActiveDateIntervalByAssertionUUID:(id)a3;
-- (void)setAssertions:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setActiveAssertionUUIDs:(id)ds;
+- (void)setActiveDateIntervalByAssertionUUID:(id)d;
+- (void)setAssertions:(id)assertions;
 @end
 
 @implementation DNDSMutableStateProviderSystemSnapshot
 
-- (void)setAssertions:(id)a3
+- (void)setAssertions:(id)assertions
 {
-  v4 = [a3 copy];
+  v4 = [assertions copy];
   assertions = self->super._assertions;
   self->super._assertions = v4;
 
   MEMORY[0x2821F96F8](v4, assertions);
 }
 
-- (void)setActiveAssertionUUIDs:(id)a3
+- (void)setActiveAssertionUUIDs:(id)ds
 {
-  v4 = [a3 copy];
+  v4 = [ds copy];
   activeAssertionUUIDs = self->super._activeAssertionUUIDs;
   self->super._activeAssertionUUIDs = v4;
 
   MEMORY[0x2821F96F8](v4, activeAssertionUUIDs);
 }
 
-- (void)setActiveDateIntervalByAssertionUUID:(id)a3
+- (void)setActiveDateIntervalByAssertionUUID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   activeDateIntervalByAssertionUUID = self->super._activeDateIntervalByAssertionUUID;
   self->super._activeDateIntervalByAssertionUUID = v4;
 
   MEMORY[0x2821F96F8](v4, activeDateIntervalByAssertionUUID);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSStateProviderSystemSnapshot alloc];
 

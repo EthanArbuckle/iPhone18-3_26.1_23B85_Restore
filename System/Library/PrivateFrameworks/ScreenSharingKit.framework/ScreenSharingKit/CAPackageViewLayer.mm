@@ -1,7 +1,7 @@
 @interface CAPackageViewLayer
 - (_TtC16ScreenSharingKit18CAPackageViewLayer)init;
-- (_TtC16ScreenSharingKit18CAPackageViewLayer)initWithCoder:(id)a3;
-- (_TtC16ScreenSharingKit18CAPackageViewLayer)initWithLayer:(id)a3;
+- (_TtC16ScreenSharingKit18CAPackageViewLayer)initWithCoder:(id)coder;
+- (_TtC16ScreenSharingKit18CAPackageViewLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
@@ -9,7 +9,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_264A58EA0();
 }
 
@@ -21,7 +21,7 @@
   return [(CAPackageViewLayer *)&v3 init];
 }
 
-- (_TtC16ScreenSharingKit18CAPackageViewLayer)initWithLayer:(id)a3
+- (_TtC16ScreenSharingKit18CAPackageViewLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_264B41664();
@@ -37,13 +37,13 @@
   return v5;
 }
 
-- (_TtC16ScreenSharingKit18CAPackageViewLayer)initWithCoder:(id)a3
+- (_TtC16ScreenSharingKit18CAPackageViewLayer)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC16ScreenSharingKit18CAPackageViewLayer_packageLayer) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CAPackageViewLayer();
-  v4 = a3;
-  v5 = [(CAPackageViewLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CAPackageViewLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,10 +1,10 @@
 @interface TagESLService
-- (void)fetchFeedItemsWithCursor:(_TtC8NewsCore13TagESLService *)self feedItemHandler:(SEL)a2 networkEventHandler:(FCFeedItemServiceCursor *)a3 completionHandler:(id)a4;
+- (void)fetchFeedItemsWithCursor:(_TtC8NewsCore13TagESLService *)self feedItemHandler:(SEL)handler networkEventHandler:(FCFeedItemServiceCursor *)eventHandler completionHandler:(id)completionHandler;
 @end
 
 @implementation TagESLService
 
-- (void)fetchFeedItemsWithCursor:(_TtC8NewsCore13TagESLService *)self feedItemHandler:(SEL)a2 networkEventHandler:(FCFeedItemServiceCursor *)a3 completionHandler:(id)a4
+- (void)fetchFeedItemsWithCursor:(_TtC8NewsCore13TagESLService *)self feedItemHandler:(SEL)handler networkEventHandler:(FCFeedItemServiceCursor *)eventHandler completionHandler:(id)completionHandler
 {
   v6 = v5;
   v7 = v4;
@@ -12,11 +12,11 @@
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x1EEE9AC00](v11 - 8);
   v14 = &v23 - v13;
-  v15 = _Block_copy(a4);
+  v15 = _Block_copy(completionHandler);
   v16 = _Block_copy(v7);
   v17 = _Block_copy(v6);
   v18 = swift_allocObject();
-  v18[2] = a3;
+  v18[2] = eventHandler;
   v18[3] = v15;
   v18[4] = v16;
   v18[5] = v17;
@@ -33,7 +33,7 @@
   v21[3] = 0;
   v21[4] = &unk_1B68112E8;
   v21[5] = v20;
-  v22 = a3;
+  eventHandlerCopy = eventHandler;
 
   sub_1B64664B8(0, 0, v14, &unk_1B68112F8, v21);
 }

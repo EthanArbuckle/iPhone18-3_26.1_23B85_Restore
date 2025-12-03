@@ -8,25 +8,25 @@
 - (_UIPortalView)liftPortal;
 - (double)alpha;
 - (int64_t)style;
-- (void)_removeAllAnimations:(BOOL)a3;
+- (void)_removeAllAnimations:(BOOL)animations;
 - (void)_visibilityDidChange;
-- (void)actuallySetLifted:(BOOL)a3 animated:(BOOL)a4 alongsideAnimations:(id)a5 completion:(id)a6;
+- (void)actuallySetLifted:(BOOL)lifted animated:(BOOL)animated alongsideAnimations:(id)animations completion:(id)completion;
 - (void)didMoveToWindow;
 - (void)forceUnliftWithoutAnimations;
-- (void)setAlpha:(double)a3;
-- (void)setBelowGlassWarpBackdrop:(id)a3;
-- (void)setLiftPortal:(id)a3;
-- (void)setLifted:(BOOL)a3 animated:(BOOL)a4 alongsideAnimations:(id)a5 completion:(id)a6;
-- (void)setLiftedContentMode:(int64_t)a3;
-- (void)setLiftedContentPunchout:(id)a3;
-- (void)setLiftedContentView:(id)a3;
-- (void)setOverridePunchoutView:(id)a3;
-- (void)setRestingBackgroundColor:(id)a3;
-- (void)setRestingShadowProperties:(id)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setUnliftDelayTimer:(id)a3;
-- (void)updateGlassPlacementIfNeededWithAnimated:(BOOL)a3;
-- (void)updateProgressBasedAnimationsForPresentation:(BOOL)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setBelowGlassWarpBackdrop:(id)backdrop;
+- (void)setLiftPortal:(id)portal;
+- (void)setLifted:(BOOL)lifted animated:(BOOL)animated alongsideAnimations:(id)animations completion:(id)completion;
+- (void)setLiftedContentMode:(int64_t)mode;
+- (void)setLiftedContentPunchout:(id)punchout;
+- (void)setLiftedContentView:(id)view;
+- (void)setOverridePunchoutView:(id)view;
+- (void)setRestingBackgroundColor:(id)color;
+- (void)setRestingShadowProperties:(id)properties;
+- (void)setStyle:(int64_t)style;
+- (void)setUnliftDelayTimer:(id)timer;
+- (void)updateGlassPlacementIfNeededWithAnimated:(BOOL)animated;
+- (void)updateProgressBasedAnimationsForPresentation:(BOOL)presentation;
 - (void)updatePunchoutView;
 - (void)updateRestingBackgroundView;
 @end
@@ -35,17 +35,17 @@
 
 - (int64_t)style
 {
-  v2 = [(_UILiquidLensView *)self glass];
-  v3 = *(&v2->super.super.super.isa + OBJC_IVAR____TtCE5UIKitCSo17_UILiquidLensViewP33_4C400BD973F5E4E0B779D1A21A7AEB2714ClearGlassView_style);
+  glass = [(_UILiquidLensView *)self glass];
+  v3 = *(&glass->super.super.super.isa + OBJC_IVAR____TtCE5UIKitCSo17_UILiquidLensViewP33_4C400BD973F5E4E0B779D1A21A7AEB2714ClearGlassView_style);
 
   return v3;
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  v5 = self;
-  v4 = [(_UILiquidLensView *)v5 glass];
-  *(&v4->super.super.super.isa + OBJC_IVAR____TtCE5UIKitCSo17_UILiquidLensViewP33_4C400BD973F5E4E0B779D1A21A7AEB2714ClearGlassView_style) = a3;
+  selfCopy = self;
+  glass = [(_UILiquidLensView *)selfCopy glass];
+  *(&glass->super.super.super.isa + OBJC_IVAR____TtCE5UIKitCSo17_UILiquidLensViewP33_4C400BD973F5E4E0B779D1A21A7AEB2714ClearGlassView_style) = style;
   sub_1891F7824();
 }
 
@@ -56,22 +56,22 @@
   return Strong;
 }
 
-- (void)setLiftedContentView:(id)a3
+- (void)setLiftedContentView:(id)view
 {
-  v6 = a3;
-  v5 = self;
-  sub_1891F8ED0(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1891F8ED0(view);
 }
 
-- (void)setLiftedContentMode:(int64_t)a3
+- (void)setLiftedContentMode:(int64_t)mode
 {
   v4 = OBJC_IVAR____UILiquidLensView_liftedContentMode;
-  *(self + OBJC_IVAR____UILiquidLensView_liftedContentMode) = a3;
-  v6 = self;
-  v5 = [(_UILiquidLensView *)v6 glass];
-  [*(&v5->super.super.super.isa + OBJC_IVAR____TtCE5UIKitCSo17_UILiquidLensViewP33_4C400BD973F5E4E0B779D1A21A7AEB2714ClearGlassView_liftedContentPortalView) setHidesSourceView_];
+  *(self + OBJC_IVAR____UILiquidLensView_liftedContentMode) = mode;
+  selfCopy = self;
+  glass = [(_UILiquidLensView *)selfCopy glass];
+  [*(&glass->super.super.super.isa + OBJC_IVAR____TtCE5UIKitCSo17_UILiquidLensViewP33_4C400BD973F5E4E0B779D1A21A7AEB2714ClearGlassView_liftedContentPortalView) setHidesSourceView_];
 
-  [(_UILiquidLensView *)v6 updateGlassPlacementIfNeededWithAnimated:0];
+  [(_UILiquidLensView *)selfCopy updateGlassPlacementIfNeededWithAnimated:0];
 }
 
 - (UIView)overridePunchoutView
@@ -81,47 +81,47 @@
   return Strong;
 }
 
-- (void)setOverridePunchoutView:(id)a3
+- (void)setOverridePunchoutView:(id)view
 {
   swift_unknownObjectWeakAssign();
 
   [(_UILiquidLensView *)self updatePunchoutView];
 }
 
-- (void)setRestingBackgroundColor:(id)a3
+- (void)setRestingBackgroundColor:(id)color
 {
   v4 = *(self + OBJC_IVAR____UILiquidLensView_restingBackgroundColor);
-  *(self + OBJC_IVAR____UILiquidLensView_restingBackgroundColor) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR____UILiquidLensView_restingBackgroundColor) = color;
+  colorCopy = color;
+  selfCopy = self;
 
-  [(_UILiquidLensView *)v6 updateRestingBackgroundView];
+  [(_UILiquidLensView *)selfCopy updateRestingBackgroundView];
 }
 
-- (void)setRestingShadowProperties:(id)a3
+- (void)setRestingShadowProperties:(id)properties
 {
   v4 = *(self + OBJC_IVAR____UILiquidLensView_restingShadowProperties);
-  *(self + OBJC_IVAR____UILiquidLensView_restingShadowProperties) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR____UILiquidLensView_restingShadowProperties) = properties;
+  propertiesCopy = properties;
+  selfCopy = self;
 
   sub_1891F154C();
 }
 
 - (UIView)restingBackgroundView
 {
-  v2 = self;
-  if ([(_UILiquidLensView *)v2 hasCustomRestingBackground])
+  selfCopy = self;
+  if ([(_UILiquidLensView *)selfCopy hasCustomRestingBackground])
   {
-    v3 = [(_UILiquidLensView *)v2 restingBackground];
+    restingBackground = [(_UILiquidLensView *)selfCopy restingBackground];
   }
 
   else
   {
-    v3 = 0;
+    restingBackground = 0;
   }
 
-  return v3;
+  return restingBackground;
 }
 
 - (CGRect)frame
@@ -156,93 +156,93 @@
   return result;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v7.receiver = self;
   v7.super_class = _UILiquidLensView;
-  v4 = self;
-  [(UIView *)&v7 setAlpha:a3];
-  if ([(_UILiquidLensView *)v4 liftedContentMode:v7.receiver])
+  selfCopy = self;
+  [(UIView *)&v7 setAlpha:alpha];
+  if ([(_UILiquidLensView *)selfCopy liftedContentMode:v7.receiver])
   {
-    v5 = [(_UILiquidLensView *)v4 liftedContentPunchout];
-    if (v5)
+    liftedContentPunchout = [(_UILiquidLensView *)selfCopy liftedContentPunchout];
+    if (liftedContentPunchout)
     {
-      v6 = v5;
-      [(_UILiquidLensView *)v4 alpha];
+      v6 = liftedContentPunchout;
+      [(_UILiquidLensView *)selfCopy alpha];
       [(_UILiquidLensView *)v6 setAlpha:?];
 
-      v4 = v6;
+      selfCopy = v6;
     }
   }
 }
 
 - (_UIPortalView)liftPortal
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1891F1BC4();
 
   return v3;
 }
 
-- (void)setLiftPortal:(id)a3
+- (void)setLiftPortal:(id)portal
 {
   v4 = *(self + OBJC_IVAR____UILiquidLensView____lazy_storage___liftPortal);
-  *(self + OBJC_IVAR____UILiquidLensView____lazy_storage___liftPortal) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UILiquidLensView____lazy_storage___liftPortal) = portal;
+  portalCopy = portal;
 }
 
-- (void)setBelowGlassWarpBackdrop:(id)a3
+- (void)setBelowGlassWarpBackdrop:(id)backdrop
 {
   v4 = *(self + OBJC_IVAR____UILiquidLensView_belowGlassWarpBackdrop);
-  *(self + OBJC_IVAR____UILiquidLensView_belowGlassWarpBackdrop) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UILiquidLensView_belowGlassWarpBackdrop) = backdrop;
+  backdropCopy = backdrop;
 }
 
-- (void)setLiftedContentPunchout:(id)a3
+- (void)setLiftedContentPunchout:(id)punchout
 {
   v4 = *(self + OBJC_IVAR____UILiquidLensView_liftedContentPunchout);
-  *(self + OBJC_IVAR____UILiquidLensView_liftedContentPunchout) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UILiquidLensView_liftedContentPunchout) = punchout;
+  punchoutCopy = punchout;
 }
 
-- (void)setUnliftDelayTimer:(id)a3
+- (void)setUnliftDelayTimer:(id)timer
 {
   v4 = *(self + OBJC_IVAR____UILiquidLensView_unliftDelayTimer);
-  *(self + OBJC_IVAR____UILiquidLensView_unliftDelayTimer) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UILiquidLensView_unliftDelayTimer) = timer;
+  timerCopy = timer;
 }
 
 - (void)_visibilityDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1891F2EF8();
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1891F3114();
 }
 
 - (void)forceUnliftWithoutAnimations
 {
-  v5 = self;
-  v2 = [(_UILiquidLensView *)v5 unliftDelayTimer];
-  if (v2)
+  selfCopy = self;
+  unliftDelayTimer = [(_UILiquidLensView *)selfCopy unliftDelayTimer];
+  if (unliftDelayTimer)
   {
-    v3 = v2;
-    v4 = [(_UILiquidLensView *)v5 forceUnliftTimerWithoutAnimations];
-    [(_UILiquidLensView *)v5 setForceUnliftTimerWithoutAnimations:1];
+    v3 = unliftDelayTimer;
+    forceUnliftTimerWithoutAnimations = [(_UILiquidLensView *)selfCopy forceUnliftTimerWithoutAnimations];
+    [(_UILiquidLensView *)selfCopy setForceUnliftTimerWithoutAnimations:1];
     [(NSTimer *)v3 fire];
-    [(_UILiquidLensView *)v5 setUnliftDelayTimer:0];
-    [(_UILiquidLensView *)v5 setForceUnliftTimerWithoutAnimations:v4];
+    [(_UILiquidLensView *)selfCopy setUnliftDelayTimer:0];
+    [(_UILiquidLensView *)selfCopy setForceUnliftTimerWithoutAnimations:forceUnliftTimerWithoutAnimations];
   }
 }
 
-- (void)setLifted:(BOOL)a3 animated:(BOOL)a4 alongsideAnimations:(id)a5 completion:(id)a6
+- (void)setLifted:(BOOL)lifted animated:(BOOL)animated alongsideAnimations:(id)animations completion:(id)completion
 {
-  v10 = _Block_copy(a5);
-  v11 = _Block_copy(a6);
+  v10 = _Block_copy(animations);
+  v11 = _Block_copy(completion);
   v12 = v11;
   if (v10)
   {
@@ -270,16 +270,16 @@ LABEL_3:
 
   v14 = 0;
 LABEL_6:
-  v15 = self;
-  sub_1891F343C(a3, a4, v10, v13, v12, v14);
+  selfCopy = self;
+  sub_1891F343C(lifted, animated, v10, v13, v12, v14);
   sub_188A55B8C(v12);
   sub_188A55B8C(v10);
 }
 
-- (void)actuallySetLifted:(BOOL)a3 animated:(BOOL)a4 alongsideAnimations:(id)a5 completion:(id)a6
+- (void)actuallySetLifted:(BOOL)lifted animated:(BOOL)animated alongsideAnimations:(id)animations completion:(id)completion
 {
-  v10 = _Block_copy(a5);
-  v11 = _Block_copy(a6);
+  v10 = _Block_copy(animations);
+  v11 = _Block_copy(completion);
   v12 = v11;
   if (v10)
   {
@@ -307,45 +307,45 @@ LABEL_3:
 
   v14 = 0;
 LABEL_6:
-  v15 = self;
-  sub_1891F3B30(a3, a4, v10, v13, v12, v14);
+  selfCopy = self;
+  sub_1891F3B30(lifted, animated, v10, v13, v12, v14);
   sub_188A55B8C(v12);
   sub_188A55B8C(v10);
 }
 
-- (void)updateGlassPlacementIfNeededWithAnimated:(BOOL)a3
+- (void)updateGlassPlacementIfNeededWithAnimated:(BOOL)animated
 {
-  v4 = self;
-  sub_1891F56EC(a3);
+  selfCopy = self;
+  sub_1891F56EC(animated);
 }
 
 - (void)updatePunchoutView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1891F5D20();
 }
 
-- (void)_removeAllAnimations:(BOOL)a3
+- (void)_removeAllAnimations:(BOOL)animations
 {
-  v4 = self;
-  sub_1891F63B0(a3);
+  selfCopy = self;
+  sub_1891F63B0(animations);
 }
 
-- (void)updateProgressBasedAnimationsForPresentation:(BOOL)a3
+- (void)updateProgressBasedAnimationsForPresentation:(BOOL)presentation
 {
-  v4 = self;
-  sub_1891F662C(a3);
+  selfCopy = self;
+  sub_1891F662C(presentation);
 }
 
 - (void)updateRestingBackgroundView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1891F6980();
 }
 
 - (_TtC5UIKit28_UILiquidLensViewVariantSpec)spec
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1891F6AF8();
 
   return v3;

@@ -1,10 +1,10 @@
 @interface _PXStoryInternalErrorRecoveryAttempter
-- (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (_PXStoryInternalErrorRecoveryAttempter)initWithRecoveryAttempter:(id)a3;
+- (BOOL)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (_PXStoryInternalErrorRecoveryAttempter)initWithRecoveryAttempter:(id)attempter;
 - (id)description;
 - (id)recoveryAttempter;
-- (void)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4 delegate:(id)a5 didRecoverSelector:(SEL)a6 contextInfo:(void *)a7;
+- (void)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index delegate:(id)delegate didRecoverSelector:(SEL)selector contextInfo:(void *)info;
 @end
 
 @implementation _PXStoryInternalErrorRecoveryAttempter
@@ -16,11 +16,11 @@
   return WeakRetained;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (sel_attemptRecoveryFromError_optionIndex_delegate_didRecoverSelector_contextInfo_ == a3 || sel_attemptRecoveryFromError_optionIndex_ == a3)
+  if (sel_attemptRecoveryFromError_optionIndex_delegate_didRecoverSelector_contextInfo_ == selector || sel_attemptRecoveryFromError_optionIndex_ == selector)
   {
-    v4 = [(_PXStoryInternalErrorRecoveryAttempter *)self recoveryAttempter];
+    recoveryAttempter = [(_PXStoryInternalErrorRecoveryAttempter *)self recoveryAttempter];
     v5 = objc_opt_respondsToSelector();
   }
 
@@ -28,49 +28,49 @@
   {
     v7.receiver = self;
     v7.super_class = _PXStoryInternalErrorRecoveryAttempter;
-    v5 = [(_PXStoryInternalErrorRecoveryAttempter *)&v7 respondsToSelector:a3];
+    v5 = [(_PXStoryInternalErrorRecoveryAttempter *)&v7 respondsToSelector:selector];
   }
 
   return v5 & 1;
 }
 
-- (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4
+- (BOOL)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(_PXStoryInternalErrorRecoveryAttempter *)self recoveryAttempter];
-  LOBYTE(a4) = [v7 attemptRecoveryFromError:v6 optionIndex:a4];
+  errorCopy = error;
+  recoveryAttempter = [(_PXStoryInternalErrorRecoveryAttempter *)self recoveryAttempter];
+  LOBYTE(index) = [recoveryAttempter attemptRecoveryFromError:errorCopy optionIndex:index];
 
-  return a4;
+  return index;
 }
 
-- (void)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4 delegate:(id)a5 didRecoverSelector:(SEL)a6 contextInfo:(void *)a7
+- (void)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index delegate:(id)delegate didRecoverSelector:(SEL)selector contextInfo:(void *)info
 {
-  v12 = a5;
-  v13 = a3;
-  v14 = [(_PXStoryInternalErrorRecoveryAttempter *)self recoveryAttempter];
-  [v14 attemptRecoveryFromError:v13 optionIndex:a4 delegate:v12 didRecoverSelector:a6 contextInfo:a7];
+  delegateCopy = delegate;
+  errorCopy = error;
+  recoveryAttempter = [(_PXStoryInternalErrorRecoveryAttempter *)self recoveryAttempter];
+  [recoveryAttempter attemptRecoveryFromError:errorCopy optionIndex:index delegate:delegateCopy didRecoverSelector:selector contextInfo:info];
 }
 
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(_PXStoryInternalErrorRecoveryAttempter *)self recoveryAttempter];
-  v6 = [v3 initWithFormat:@"<%@; %p, recoveryAttempter: %@>", v4, self, v5];
+  recoveryAttempter = [(_PXStoryInternalErrorRecoveryAttempter *)self recoveryAttempter];
+  v6 = [v3 initWithFormat:@"<%@; %p, recoveryAttempter: %@>", v4, self, recoveryAttempter];
 
   return v6;
 }
 
-- (_PXStoryInternalErrorRecoveryAttempter)initWithRecoveryAttempter:(id)a3
+- (_PXStoryInternalErrorRecoveryAttempter)initWithRecoveryAttempter:(id)attempter
 {
-  v4 = a3;
+  attempterCopy = attempter;
   v8.receiver = self;
   v8.super_class = _PXStoryInternalErrorRecoveryAttempter;
   v5 = [(_PXStoryInternalErrorRecoveryAttempter *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_recoveryAttempter, v4);
+    objc_storeWeak(&v5->_recoveryAttempter, attempterCopy);
   }
 
   return v6;

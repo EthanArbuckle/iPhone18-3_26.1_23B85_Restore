@@ -1,21 +1,21 @@
 @interface ATXUserNotificationGroup
-- (ATXUserNotificationGroup)initWithNotifications:(id)a3;
-- (BOOL)runCachedCheckOnNotificationsWithIvar:(int64_t *)a3 block:(id)a4;
+- (ATXUserNotificationGroup)initWithNotifications:(id)notifications;
+- (BOOL)runCachedCheckOnNotificationsWithIvar:(int64_t *)ivar block:(id)block;
 - (double)latestNotificationTimestamp;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation ATXUserNotificationGroup
 
-- (ATXUserNotificationGroup)initWithNotifications:(id)a3
+- (ATXUserNotificationGroup)initWithNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   v9.receiver = self;
   v9.super_class = ATXUserNotificationGroup;
   v5 = [(ATXUserNotificationGroup *)&v9 init];
   if (v5)
   {
-    v6 = [v4 sortedArrayUsingComparator:&__block_literal_global_194];
+    v6 = [notificationsCopy sortedArrayUsingComparator:&__block_literal_global_194];
     notifications = v5->_notifications;
     v5->_notifications = v6;
   }
@@ -39,13 +39,13 @@ uint64_t __50__ATXUserNotificationGroup_initWithNotifications___block_invoke(uin
   return v11;
 }
 
-- (BOOL)runCachedCheckOnNotificationsWithIvar:(int64_t *)a3 block:(id)a4
+- (BOOL)runCachedCheckOnNotificationsWithIvar:(int64_t *)ivar block:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (*a3)
+  blockCopy = block;
+  if (*ivar)
   {
-    LOBYTE(v7) = *a3 == 2;
+    LOBYTE(v7) = *ivar == 2;
   }
 
   else
@@ -69,7 +69,7 @@ uint64_t __50__ATXUserNotificationGroup_initWithNotifications___block_invoke(uin
             objc_enumerationMutation(v8);
           }
 
-          if (v6[2](v6, *(*(&v14 + 1) + 8 * i)))
+          if (blockCopy[2](blockCopy, *(*(&v14 + 1) + 8 * i)))
           {
             LOBYTE(v7) = 1;
             goto LABEL_13;
@@ -89,7 +89,7 @@ uint64_t __50__ATXUserNotificationGroup_initWithNotifications___block_invoke(uin
     v10 = 1;
 LABEL_13:
 
-    *a3 = v10;
+    *ivar = v10;
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -141,36 +141,36 @@ LABEL_13:
   return v6;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(ATXUserNotificationGroup *)self hasCriticalNotifications];
-  if (v5 != [v4 hasCriticalNotifications])
+  compareCopy = compare;
+  hasCriticalNotifications = [(ATXUserNotificationGroup *)self hasCriticalNotifications];
+  if (hasCriticalNotifications != [compareCopy hasCriticalNotifications])
   {
-    v6 = [(ATXUserNotificationGroup *)self hasCriticalNotifications];
+    hasCriticalNotifications2 = [(ATXUserNotificationGroup *)self hasCriticalNotifications];
     goto LABEL_9;
   }
 
-  v7 = [(ATXUserNotificationGroup *)self hasTimeSensitiveNotifications];
-  if (v7 != [v4 hasTimeSensitiveNotifications])
+  hasTimeSensitiveNotifications = [(ATXUserNotificationGroup *)self hasTimeSensitiveNotifications];
+  if (hasTimeSensitiveNotifications != [compareCopy hasTimeSensitiveNotifications])
   {
-    v6 = [(ATXUserNotificationGroup *)self hasTimeSensitiveNotifications];
+    hasCriticalNotifications2 = [(ATXUserNotificationGroup *)self hasTimeSensitiveNotifications];
     goto LABEL_9;
   }
 
-  v8 = [(ATXUserNotificationGroup *)self hasCommunicationsNotifications];
-  if (v8 != [v4 hasCommunicationsNotifications])
+  hasCommunicationsNotifications = [(ATXUserNotificationGroup *)self hasCommunicationsNotifications];
+  if (hasCommunicationsNotifications != [compareCopy hasCommunicationsNotifications])
   {
-    v6 = [(ATXUserNotificationGroup *)self hasCommunicationsNotifications];
+    hasCriticalNotifications2 = [(ATXUserNotificationGroup *)self hasCommunicationsNotifications];
     goto LABEL_9;
   }
 
-  v9 = [(ATXUserNotificationGroup *)self qualifiesForHighEngagement];
-  if (v9 != [v4 qualifiesForHighEngagement])
+  qualifiesForHighEngagement = [(ATXUserNotificationGroup *)self qualifiesForHighEngagement];
+  if (qualifiesForHighEngagement != [compareCopy qualifiesForHighEngagement])
   {
-    v6 = [(ATXUserNotificationGroup *)self qualifiesForHighEngagement];
+    hasCriticalNotifications2 = [(ATXUserNotificationGroup *)self qualifiesForHighEngagement];
 LABEL_9:
-    if (v6)
+    if (hasCriticalNotifications2)
     {
       v10 = 1;
     }
@@ -185,7 +185,7 @@ LABEL_9:
 
   [(ATXUserNotificationGroup *)self latestNotificationTimestamp];
   v13 = v12;
-  [v4 latestNotificationTimestamp];
+  [compareCopy latestNotificationTimestamp];
   if (v13 == v14)
   {
     v10 = 0;
@@ -195,7 +195,7 @@ LABEL_9:
   {
     [(ATXUserNotificationGroup *)self latestNotificationTimestamp];
     v16 = v15;
-    [v4 latestNotificationTimestamp];
+    [compareCopy latestNotificationTimestamp];
     if (v16 > v17)
     {
       v10 = 1;

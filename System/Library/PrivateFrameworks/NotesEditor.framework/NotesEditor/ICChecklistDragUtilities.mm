@@ -1,75 +1,75 @@
 @interface ICChecklistDragUtilities
-+ (BOOL)shouldDropAboveForTrackedTodoParagraph:(id)a3 forPoint:(CGPoint)a4 textView:(id)a5;
-+ (CGRect)insertionRectForTrackedTodoParagraph:(id)a3 drawAbove:(BOOL)a4 inTextView:(id)a5;
-+ (unint64_t)tabIndentationEqualivantForString:(id)a3;
++ (BOOL)shouldDropAboveForTrackedTodoParagraph:(id)paragraph forPoint:(CGPoint)point textView:(id)view;
++ (CGRect)insertionRectForTrackedTodoParagraph:(id)paragraph drawAbove:(BOOL)above inTextView:(id)view;
++ (unint64_t)tabIndentationEqualivantForString:(id)string;
 @end
 
 @implementation ICChecklistDragUtilities
 
-+ (BOOL)shouldDropAboveForTrackedTodoParagraph:(id)a3 forPoint:(CGPoint)a4 textView:(id)a5
++ (BOOL)shouldDropAboveForTrackedTodoParagraph:(id)paragraph forPoint:(CGPoint)point textView:(id)view
 {
-  y = a4.y;
-  v7 = a5;
-  v8 = a3;
-  v9 = [v8 characterRange];
+  y = point.y;
+  viewCopy = view;
+  paragraphCopy = paragraph;
+  characterRange = [paragraphCopy characterRange];
   v11 = v10;
-  v12 = [v8 characterRange];
+  characterRange2 = [paragraphCopy characterRange];
   v14 = v13;
 
-  v15 = v9 + v11;
-  v16 = [v7 textStorage];
-  v17 = [v16 length];
+  v15 = characterRange + v11;
+  textStorage = [viewCopy textStorage];
+  v17 = [textStorage length];
 
   v18 = v14 - (v15 >= v17);
   if (ICInternalSettingsIsTextKit2Enabled())
   {
-    [v7 ic_rectForRange:{v12, v18}];
+    [viewCopy ic_rectForRange:{characterRange2, v18}];
   }
 
   else
   {
-    v19 = [v7 icLayoutManager];
-    v20 = [v19 glyphRangeForCharacterRange:v12 actualCharacterRange:{v18, 0}];
+    icLayoutManager = [viewCopy icLayoutManager];
+    v20 = [icLayoutManager glyphRangeForCharacterRange:characterRange2 actualCharacterRange:{v18, 0}];
     v22 = v21;
-    v23 = [v7 textContainer];
-    [v19 boundingRectForGlyphRange:v20 inTextContainer:{v22, v23}];
+    textContainer = [viewCopy textContainer];
+    [icLayoutManager boundingRectForGlyphRange:v20 inTextContainer:{v22, textContainer}];
   }
 
-  [v7 textContainerInset];
+  [viewCopy textContainerInset];
   TSDCenterOfRect();
   v25 = y <= v24;
 
   return v25;
 }
 
-+ (CGRect)insertionRectForTrackedTodoParagraph:(id)a3 drawAbove:(BOOL)a4 inTextView:(id)a5
++ (CGRect)insertionRectForTrackedTodoParagraph:(id)paragraph drawAbove:(BOOL)above inTextView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  aboveCopy = above;
+  paragraphCopy = paragraph;
+  viewCopy = view;
   v10 = *MEMORY[0x277CBF3A0];
   v9 = *(MEMORY[0x277CBF3A0] + 8);
   v11 = *(MEMORY[0x277CBF3A0] + 16);
   v12 = *(MEMORY[0x277CBF3A0] + 24);
-  if ([v8 isDraggingChecklistItem] && objc_msgSend(v8, "isDraggingOverChecklistItem"))
+  if ([viewCopy isDraggingChecklistItem] && objc_msgSend(viewCopy, "isDraggingOverChecklistItem"))
   {
     if (ICInternalSettingsIsTextKit2Enabled())
     {
       objc_opt_class();
-      v13 = [v8 textLayoutManager];
-      v14 = ICCheckedDynamicCast();
+      textLayoutManager = [viewCopy textLayoutManager];
+      icLayoutManager = ICCheckedDynamicCast();
 
-      v15 = [v14 todoButtonForTrackedParagraph:v7];
+      v15 = [icLayoutManager todoButtonForTrackedParagraph:paragraphCopy];
       [v15 imageFrame];
-      [v8 convertRect:v15 fromView:?];
+      [viewCopy convertRect:v15 fromView:?];
       v17 = v16;
       v65 = v18;
       v66 = v19;
       v67 = v20;
-      v21 = [v7 characterRange];
-      v23 = v21;
+      characterRange = [paragraphCopy characterRange];
+      v23 = characterRange;
       v24 = v22;
-      if (v6)
+      if (aboveCopy)
       {
         v25 = -1;
       }
@@ -79,25 +79,25 @@
         v25 = v22;
       }
 
-      v26 = [v14 trackedTodoParagraphAtIndex:v21 + v25];
-      v27 = [v14 todoButtonForTrackedParagraph:v26];
+      v26 = [icLayoutManager trackedTodoParagraphAtIndex:characterRange + v25];
+      v27 = [icLayoutManager todoButtonForTrackedParagraph:v26];
       [v27 imageFrame];
-      [v8 convertRect:v27 fromView:?];
+      [viewCopy convertRect:v27 fromView:?];
     }
 
     else
     {
-      v14 = [v8 icLayoutManager];
-      v15 = [v14 todoButtonForTrackedParagraphIfExists:v7];
+      icLayoutManager = [viewCopy icLayoutManager];
+      v15 = [icLayoutManager todoButtonForTrackedParagraphIfExists:paragraphCopy];
       [v15 imageFrame];
       v17 = v32;
       v65 = v33;
       v66 = v34;
       v67 = v35;
-      v36 = [v7 characterRange];
-      v23 = v36;
+      characterRange2 = [paragraphCopy characterRange];
+      v23 = characterRange2;
       v24 = v37;
-      if (v6)
+      if (aboveCopy)
       {
         v38 = -1;
       }
@@ -107,8 +107,8 @@
         v38 = v37;
       }
 
-      v26 = [v14 trackedTodoParagraphAtIndexIfExists:v36 + v38];
-      v27 = [v14 todoButtonForTrackedParagraphIfExists:v26];
+      v26 = [icLayoutManager trackedTodoParagraphAtIndexIfExists:characterRange2 + v38];
+      v27 = [icLayoutManager todoButtonForTrackedParagraphIfExists:v26];
       [v27 imageFrame];
     }
 
@@ -116,11 +116,11 @@
     v40 = v29;
     v41 = v30;
     v42 = v31;
-    v43 = [v14 lineCountForCharacterRange:{v23, v24}];
+    v43 = [icLayoutManager lineCountForCharacterRange:{v23, v24}];
     if (v26)
     {
-      v44 = [v26 characterRange];
-      v46 = ([v14 lineCountForCharacterRange:{v44, v45}] - 3) < 0xFFFFFFFFFFFFFFFELL;
+      characterRange3 = [v26 characterRange];
+      v46 = ([icLayoutManager lineCountForCharacterRange:{characterRange3, v45}] - 3) < 0xFFFFFFFFFFFFFFFELL;
     }
 
     else
@@ -139,7 +139,7 @@
     {
       if (!v47 && !v46)
       {
-        if (v6)
+        if (aboveCopy)
         {
           v54 = v39;
         }
@@ -149,7 +149,7 @@
           v54 = v17;
         }
 
-        if (v6)
+        if (aboveCopy)
         {
           v55 = v40;
         }
@@ -160,7 +160,7 @@
         }
 
         v11 = v67;
-        if (v6)
+        if (aboveCopy)
         {
           v56 = v41;
         }
@@ -170,7 +170,7 @@
           v56 = v67;
         }
 
-        if (v6)
+        if (aboveCopy)
         {
           v57 = v42;
         }
@@ -180,7 +180,7 @@
           v57 = v66;
         }
 
-        if (v6)
+        if (aboveCopy)
         {
           v58 = v17;
         }
@@ -190,7 +190,7 @@
           v58 = v39;
         }
 
-        if (v6)
+        if (aboveCopy)
         {
           v59 = v65;
         }
@@ -200,7 +200,7 @@
           v59 = v40;
         }
 
-        if (v6)
+        if (aboveCopy)
         {
           v41 = v67;
           v42 = v66;
@@ -216,7 +216,7 @@
         goto LABEL_55;
       }
 
-      if (v6)
+      if (aboveCopy)
       {
         v48 = v17;
       }
@@ -228,13 +228,13 @@
 
       v49 = v65;
       v50 = v66;
-      if (!v6)
+      if (!aboveCopy)
       {
         v49 = v40;
       }
 
       v11 = v67;
-      if (v6)
+      if (aboveCopy)
       {
         v51 = v67;
       }
@@ -244,7 +244,7 @@
         v51 = v41;
       }
 
-      if (!v6)
+      if (!aboveCopy)
       {
         v50 = v42;
       }
@@ -252,7 +252,7 @@
 
     else
     {
-      if ((v47 || v46) && !v6 || !v6)
+      if ((v47 || v46) && !aboveCopy || !aboveCopy)
       {
         v69.origin.x = v17;
         v69.origin.y = v65;
@@ -292,11 +292,11 @@ LABEL_56:
   return result;
 }
 
-+ (unint64_t)tabIndentationEqualivantForString:(id)a3
++ (unint64_t)tabIndentationEqualivantForString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 ic_trimmedString];
-  v5 = [v4 length];
+  stringCopy = string;
+  ic_trimmedString = [stringCopy ic_trimmedString];
+  v5 = [ic_trimmedString length];
 
   if (v5)
   {
@@ -305,15 +305,15 @@ LABEL_56:
 
   else
   {
-    if ([v3 ic_isLastCharacterANewline])
+    if ([stringCopy ic_isLastCharacterANewline])
     {
-      v7 = [v3 ic_substringWithRange:{0, objc_msgSend(v3, "length") - 1}];
+      v7 = [stringCopy ic_substringWithRange:{0, objc_msgSend(stringCopy, "length") - 1}];
 
-      v3 = v7;
+      stringCopy = v7;
     }
 
     v8 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"\t"];
-    v6 = [v3 ic_countOfCharactersInSet:v8];
+    v6 = [stringCopy ic_countOfCharactersInSet:v8];
   }
 
   return v6;

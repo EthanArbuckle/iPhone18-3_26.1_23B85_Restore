@@ -1,21 +1,21 @@
 @interface OAXFontReference
-+ (void)readFromNode:(_xmlNode *)a3 fontReference:(id)a4;
-+ (void)writeReference:(id)a3 to:(id)a4 state:(id)a5;
++ (void)readFromNode:(_xmlNode *)node fontReference:(id)reference;
++ (void)writeReference:(id)reference to:(id)to state:(id)state;
 @end
 
 @implementation OAXFontReference
 
-+ (void)readFromNode:(_xmlNode *)a3 fontReference:(id)a4
++ (void)readFromNode:(_xmlNode *)node fontReference:(id)reference
 {
-  v6 = a4;
+  referenceCopy = reference;
   if (+[OAXFontReference readFromNode:fontReference:]::once != -1)
   {
     +[OAXFontReference readFromNode:fontReference:];
   }
 
-  [v6 setIndex:{objc_msgSend(+[OAXFontReference readFromNode:fontReference:]::indexMap, "readFromNode:ns:name:", a3, 0, "idx")}];
-  v5 = [OAXColor readColorFromParentXmlNode:a3];
-  [v6 setColor:v5];
+  [referenceCopy setIndex:{objc_msgSend(+[OAXFontReference readFromNode:fontReference:]::indexMap, "readFromNode:ns:name:", node, 0, "idx")}];
+  v5 = [OAXColor readColorFromParentXmlNode:node];
+  [referenceCopy setColor:v5];
 }
 
 void __47__OAXFontReference_readFromNode_fontReference___block_invoke()
@@ -30,26 +30,26 @@ void __47__OAXFontReference_readFromNode_fontReference___block_invoke()
   +[OAXFontReference readFromNode:fontReference:]::indexMap = v0;
 }
 
-+ (void)writeReference:(id)a3 to:(id)a4 state:(id)a5
++ (void)writeReference:(id)reference to:(id)to state:(id)state
 {
-  v10 = a3;
-  v6 = a4;
-  [v6 startElement:@"fontRef"];
-  v7 = [v10 index] + 1;
+  referenceCopy = reference;
+  toCopy = to;
+  [toCopy startElement:@"fontRef"];
+  v7 = [referenceCopy index] + 1;
   if (v7 < 3)
   {
-    [v6 writeAttribute:@"idx" content:off_2799C7AC8[v7]];
+    [toCopy writeAttribute:@"idx" content:off_2799C7AC8[v7]];
   }
 
-  v8 = [v10 color];
+  color = [referenceCopy color];
 
-  if (v8)
+  if (color)
   {
-    v9 = [v10 color];
-    [OAXColor writeColor:v9 to:v6];
+    color2 = [referenceCopy color];
+    [OAXColor writeColor:color2 to:toCopy];
   }
 
-  [v6 endElement];
+  [toCopy endElement];
 }
 
 void __47__OAXFontReference_readFromNode_fontReference___block_invoke_cold_1()

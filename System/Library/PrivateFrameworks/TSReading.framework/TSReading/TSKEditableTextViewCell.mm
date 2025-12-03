@@ -1,29 +1,29 @@
 @interface TSKEditableTextViewCell
 - (BOOL)isNegative;
-- (TSKEditableTextViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (TSKEditableTextViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)beginEditing;
 - (void)dealloc;
 - (void)deleteBackward;
 - (void)endEditing;
 - (void)insertDecimalSeparator;
-- (void)insertNumber:(int64_t)a3;
+- (void)insertNumber:(int64_t)number;
 - (void)layoutSubviews;
-- (void)p_insertString:(id)a3;
-- (void)p_parseText:(id)a3;
+- (void)p_insertString:(id)string;
+- (void)p_parseText:(id)text;
 - (void)parseText;
-- (void)setInputView:(id)a3;
-- (void)setString:(id)a3;
+- (void)setInputView:(id)view;
+- (void)setString:(id)string;
 - (void)tintColorDidChange;
 - (void)toggleNegative;
 @end
 
 @implementation TSKEditableTextViewCell
 
-- (TSKEditableTextViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TSKEditableTextViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = TSKEditableTextViewCell;
-  v4 = [(TSKEditableTextViewCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(TSKEditableTextViewCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     -[TSKEditableTextViewCell setFont:](v4, "setFont:", [MEMORY[0x277D74300] systemFontOfSize:17.0]);
@@ -38,8 +38,8 @@
     [(TSKPlaceholderTextView *)v4->mTextView setScrollEnabled:0];
     [(TSKPlaceholderTextView *)v4->mTextView setOpaque:0];
     -[TSKPlaceholderTextView setBackgroundColor:](v4->mTextView, "setBackgroundColor:", [MEMORY[0x277D75348] clearColor]);
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v4 selector:sel_textFieldDidEndEditing_ name:*MEMORY[0x277D770B8] object:v4->mTextView];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_textFieldDidEndEditing_ name:*MEMORY[0x277D770B8] object:v4->mTextView];
   }
 
   return v4;
@@ -56,10 +56,10 @@
 
 - (void)tintColorDidChange
 {
-  v3 = [(TSKEditableTextViewCell *)self tintColor];
+  tintColor = [(TSKEditableTextViewCell *)self tintColor];
   mTextView = self->mTextView;
 
-  [(TSKPlaceholderTextView *)mTextView setTextColor:v3];
+  [(TSKPlaceholderTextView *)mTextView setTextColor:tintColor];
 }
 
 - (void)layoutSubviews
@@ -72,8 +72,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TSKEditableTextViewCell *)self textLabel];
-  [v11 frame];
+  textLabel = [(TSKEditableTextViewCell *)self textLabel];
+  [textLabel frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -81,10 +81,10 @@
   v19.origin.y = v6;
   v19.size.width = v8;
   v19.size.height = v10;
-  [v11 setFrame:{v13, v15, CGRectGetMaxX(v19) + -160.0, v17}];
-  [v11 setAdjustsLetterSpacingToFitWidth:1];
-  [v11 setAdjustsFontSizeToFitWidth:1];
-  [v11 setMinimumFontSize:12.0];
+  [textLabel setFrame:{v13, v15, CGRectGetMaxX(v19) + -160.0, v17}];
+  [textLabel setAdjustsLetterSpacingToFitWidth:1];
+  [textLabel setAdjustsFontSizeToFitWidth:1];
+  [textLabel setMinimumFontSize:12.0];
   v20.origin.x = v4;
   v20.origin.y = v6;
   v20.size.width = v8;
@@ -101,15 +101,15 @@
   }
 }
 
-- (void)p_parseText:(id)a3
+- (void)p_parseText:(id)text
 {
   self->mNumberHasDecimal = 0;
-  v5 = [a3 length];
+  v5 = [text length];
   if (v5)
   {
     v6 = v5;
     v7 = 0;
-    while ([a3 characterAtIndex:v7] != 46)
+    while ([text characterAtIndex:v7] != 46)
     {
       if (v6 == ++v7)
       {
@@ -121,21 +121,21 @@
   }
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
   [(TSKEditableTextViewCell *)self p_parseText:?];
   mTextView = self->mTextView;
 
-  [(TSKPlaceholderTextView *)mTextView setText:a3];
+  [(TSKPlaceholderTextView *)mTextView setText:string];
 }
 
-- (void)setInputView:(id)a3
+- (void)setInputView:(id)view
 {
   mInputView = self->mInputView;
-  if (mInputView != a3)
+  if (mInputView != view)
   {
 
-    self->mInputView = a3;
+    self->mInputView = view;
   }
 }
 
@@ -152,11 +152,11 @@
   [(TSKPlaceholderTextView *)self->mTextView becomeFirstResponder];
   if (([(TSKPlaceholderTextView *)self->mTextView isFirstResponder]& 1) == 0)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKEditableTextViewCell beginEditing]"];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKEditableTextViewCell.m"];
 
-    [v3 handleFailureInFunction:v4 file:v5 lineNumber:321 description:{@"We just tried to begin text view editing, but did not become a first responder."}];
+    [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:321 description:{@"We just tried to begin text view editing, but did not become a first responder."}];
   }
 }
 
@@ -169,58 +169,58 @@
   [(TSKPlaceholderTextView *)self->mTextView setDelegate:self];
   if ([(TSKPlaceholderTextView *)self->mTextView isFirstResponder])
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKEditableTextViewCell endEditing]"];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKEditableTextViewCell.m"];
 
-    [v3 handleFailureInFunction:v4 file:v5 lineNumber:336 description:{@"We just tried to end text view editing, but did not resign the first responder."}];
+    [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:336 description:{@"We just tried to end text view editing, but did not resign the first responder."}];
   }
 }
 
-- (void)p_insertString:(id)a3
+- (void)p_insertString:(id)string
 {
-  v5 = [(TSKPlaceholderTextView *)self->mTextView selectedRange];
+  selectedRange = [(TSKPlaceholderTextView *)self->mTextView selectedRange];
   v7 = v6;
-  if (![(TSKEditableTextViewCell *)self isNegative]|| v5)
+  if (![(TSKEditableTextViewCell *)self isNegative]|| selectedRange)
   {
     v9 = [(NSString *)[(TSKEditableTextViewCell *)self string] mutableCopy];
-    [v9 replaceCharactersInRange:v5 withString:{v7, a3}];
-    v8 = [a3 length];
+    [v9 replaceCharactersInRange:selectedRange withString:{v7, string}];
+    v8 = [string length];
     [(TSKEditableTextViewCell *)self setString:v9];
-    [(TSKPlaceholderTextView *)self->mTextView setSelectedRange:v8 + v5, 0];
+    [(TSKPlaceholderTextView *)self->mTextView setSelectedRange:v8 + selectedRange, 0];
   }
 }
 
 - (void)parseText
 {
-  v3 = [(TSKEditableTextViewCell *)self string];
+  string = [(TSKEditableTextViewCell *)self string];
 
-  [(TSKEditableTextViewCell *)self p_parseText:v3];
+  [(TSKEditableTextViewCell *)self p_parseText:string];
 }
 
 - (BOOL)isNegative
 {
-  v2 = [(TSKEditableTextViewCell *)self string];
-  v3 = [(NSString *)v2 length];
+  string = [(TSKEditableTextViewCell *)self string];
+  v3 = [(NSString *)string length];
   if (v3)
   {
-    LOBYTE(v3) = [(NSString *)v2 characterAtIndex:0]== 45;
+    LOBYTE(v3) = [(NSString *)string characterAtIndex:0]== 45;
   }
 
   return v3;
 }
 
-- (void)insertNumber:(int64_t)a3
+- (void)insertNumber:(int64_t)number
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", a3];
+  number = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", number];
   if (([(TSKPlaceholderTextView *)self->mTextView isFirstResponder]& 1) == 0)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKEditableTextViewCell insertNumber:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKEditableTextViewCell.m"), 392, @"The current cell is not the first responder!"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKEditableTextViewCell.m"), 392, @"The current cell is not the first responder!"}];
   }
 
-  [(TSKEditableTextViewCell *)self p_insertString:v4];
+  [(TSKEditableTextViewCell *)self p_insertString:number];
 }
 
 - (void)insertDecimalSeparator
@@ -229,9 +229,9 @@
   {
     if (([(TSKPlaceholderTextView *)self->mTextView isFirstResponder]& 1) == 0)
     {
-      v3 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKEditableTextViewCell insertDecimalSeparator]"];
-      [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKEditableTextViewCell.m"), 403, @"The current cell is not the first responder!"}];
+      [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKEditableTextViewCell.m"), 403, @"The current cell is not the first responder!"}];
     }
 
     -[TSKEditableTextViewCell p_insertString:](self, "p_insertString:", [MEMORY[0x277D6C330] currentLocaleDecimalSeparator]);
@@ -243,17 +243,17 @@
 {
   if (([(TSKPlaceholderTextView *)self->mTextView isFirstResponder]& 1) == 0)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKEditableTextViewCell deleteBackward]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKEditableTextViewCell.m"), 415, @"The current cell is not the first responder!"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKEditableTextViewCell.m"), 415, @"The current cell is not the first responder!"}];
   }
 
   v10 = [(NSString *)[(TSKEditableTextViewCell *)self string] mutableCopy];
   if ([v10 length])
   {
-    v5 = [(TSKPlaceholderTextView *)self->mTextView selectedRange];
-    v7 = (v6 == 0) & (v5 != 0);
-    if (v6 == 0 && v5 != 0)
+    selectedRange = [(TSKPlaceholderTextView *)self->mTextView selectedRange];
+    v7 = (v6 == 0) & (selectedRange != 0);
+    if (v6 == 0 && selectedRange != 0)
     {
       v8 = 1;
     }
@@ -263,8 +263,8 @@
       v8 = v6;
     }
 
-    v9 = v5 - v7;
-    [v10 deleteCharactersInRange:{v5 - v7, v8}];
+    v9 = selectedRange - v7;
+    [v10 deleteCharactersInRange:{selectedRange - v7, v8}];
     [(TSKEditableTextViewCell *)self setString:v10];
     [(TSKPlaceholderTextView *)self->mTextView setSelectedRange:v9, 0];
   }
@@ -274,30 +274,30 @@
 {
   if (([(TSKPlaceholderTextView *)self->mTextView isFirstResponder]& 1) == 0)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKEditableTextViewCell toggleNegative]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKEditableTextViewCell.m"), 442, @"The current cell is not the first responder!"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKEditableTextViewCell.m"), 442, @"The current cell is not the first responder!"}];
   }
 
-  v5 = [(TSKEditableTextViewCell *)self string];
-  v6 = [(TSKPlaceholderTextView *)self->mTextView selectedRange];
+  string = [(TSKEditableTextViewCell *)self string];
+  selectedRange = [(TSKPlaceholderTextView *)self->mTextView selectedRange];
   v8 = v7;
   if ([(TSKEditableTextViewCell *)self isNegative])
   {
-    v9 = [(NSString *)v5 substringFromIndex:1];
+    v9 = [(NSString *)string substringFromIndex:1];
     v10 = -1;
   }
 
   else
   {
-    v9 = [@"-" stringByAppendingString:v5];
+    v9 = [@"-" stringByAppendingString:string];
     v10 = 1;
   }
 
   [(TSKEditableTextViewCell *)self setString:v9];
   mTextView = self->mTextView;
 
-  [(TSKPlaceholderTextView *)mTextView setSelectedRange:v6 + v10, v8];
+  [(TSKPlaceholderTextView *)mTextView setSelectedRange:selectedRange + v10, v8];
 }
 
 @end

@@ -3,16 +3,16 @@
 - (NSArray)urlSandboxExtensions;
 - (NSDictionary)activitiesByUUID;
 - (_TtC16SharingUIService19ShareSheetViewModel)init;
-- (void)setActivitiesByUUID:(id)a3;
-- (void)setCollaborationFooterViewModel:(id)a3;
-- (void)setCustomHeaderButtonColor:(id)a3;
-- (void)setCustomHeaderButtonTitle:(id)a3;
-- (void)setCustomViewController:(id)a3;
-- (void)setCustomViewControllerSectionHeightWrapper:(id)a3;
-- (void)setCustomViewControllerVerticalInsetWrapper:(id)a3;
-- (void)setMetadataValues:(id)a3;
-- (void)setNearbyCountSlotID:(id)a3;
-- (void)setUrlSandboxExtensions:(id)a3;
+- (void)setActivitiesByUUID:(id)d;
+- (void)setCollaborationFooterViewModel:(id)model;
+- (void)setCustomHeaderButtonColor:(id)color;
+- (void)setCustomHeaderButtonTitle:(id)title;
+- (void)setCustomViewController:(id)controller;
+- (void)setCustomViewControllerSectionHeightWrapper:(id)wrapper;
+- (void)setCustomViewControllerVerticalInsetWrapper:(id)wrapper;
+- (void)setMetadataValues:(id)values;
+- (void)setNearbyCountSlotID:(id)d;
+- (void)setUrlSandboxExtensions:(id)extensions;
 @end
 
 @implementation ShareSheetViewModel
@@ -27,7 +27,7 @@
   return v3.super.isa;
 }
 
-- (void)setMetadataValues:(id)a3
+- (void)setMetadataValues:(id)values
 {
   sub_10000A598(0, &unk_100046C90, LPLinkMetadata_ptr);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -52,9 +52,9 @@
   return v3.super.isa;
 }
 
-- (void)setUrlSandboxExtensions:(id)a3
+- (void)setUrlSandboxExtensions:(id)extensions
 {
-  if (a3)
+  if (extensions)
   {
     v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -68,53 +68,53 @@
   *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_urlSandboxExtensions) = v4;
 }
 
-- (void)setCustomHeaderButtonTitle:(id)a3
+- (void)setCustomHeaderButtonTitle:(id)title
 {
   v4 = *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_customHeaderButtonTitle);
-  *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_customHeaderButtonTitle) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_customHeaderButtonTitle) = title;
+  titleCopy = title;
 }
 
-- (void)setCustomHeaderButtonColor:(id)a3
+- (void)setCustomHeaderButtonColor:(id)color
 {
   v4 = *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_customHeaderButtonColor);
-  *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_customHeaderButtonColor) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_customHeaderButtonColor) = color;
+  colorCopy = color;
 }
 
-- (void)setCollaborationFooterViewModel:(id)a3
+- (void)setCollaborationFooterViewModel:(id)model
 {
   v4 = *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_collaborationFooterViewModel);
-  *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_collaborationFooterViewModel) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_collaborationFooterViewModel) = model;
+  modelCopy = model;
 }
 
-- (void)setCustomViewController:(id)a3
+- (void)setCustomViewController:(id)controller
 {
   v4 = *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_customViewController);
-  *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_customViewController) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_customViewController) = controller;
+  controllerCopy = controller;
 }
 
-- (void)setCustomViewControllerVerticalInsetWrapper:(id)a3
+- (void)setCustomViewControllerVerticalInsetWrapper:(id)wrapper
 {
   v4 = *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_customViewControllerVerticalInsetWrapper);
-  *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_customViewControllerVerticalInsetWrapper) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_customViewControllerVerticalInsetWrapper) = wrapper;
+  wrapperCopy = wrapper;
 }
 
-- (void)setCustomViewControllerSectionHeightWrapper:(id)a3
+- (void)setCustomViewControllerSectionHeightWrapper:(id)wrapper
 {
   v4 = *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_customViewControllerSectionHeightWrapper);
-  *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_customViewControllerSectionHeightWrapper) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_customViewControllerSectionHeightWrapper) = wrapper;
+  wrapperCopy = wrapper;
 }
 
-- (void)setNearbyCountSlotID:(id)a3
+- (void)setNearbyCountSlotID:(id)d
 {
   v4 = *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_nearbyCountSlotID);
-  *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_nearbyCountSlotID) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC16SharingUIService19ShareSheetViewModel_nearbyCountSlotID) = d;
+  dCopy = d;
 }
 
 - (NSDictionary)activitiesByUUID
@@ -129,7 +129,7 @@
   return v3.super.isa;
 }
 
-- (void)setActivitiesByUUID:(id)a3
+- (void)setActivitiesByUUID:(id)d
 {
   type metadata accessor for UUID();
   sub_10000A598(0, &unk_100047A10, UIActivity_ptr);

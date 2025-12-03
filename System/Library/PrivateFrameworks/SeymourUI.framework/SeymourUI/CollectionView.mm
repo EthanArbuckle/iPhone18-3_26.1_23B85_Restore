@@ -1,6 +1,6 @@
 @interface CollectionView
-- (BOOL)_scrollToTopIfPossible:(BOOL)a3;
-- (_TtC9SeymourUI14CollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (BOOL)_scrollToTopIfPossible:(BOOL)possible;
+- (_TtC9SeymourUI14CollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 - (void)layoutSubviews;
 @end
 
@@ -26,20 +26,20 @@
   }
 }
 
-- (BOOL)_scrollToTopIfPossible:(BOOL)a3
+- (BOOL)_scrollToTopIfPossible:(BOOL)possible
 {
-  v4 = self;
-  v5 = sub_20BD12948(a3);
+  selfCopy = self;
+  v5 = sub_20BD12948(possible);
 
   return v5 & 1;
 }
 
-- (_TtC9SeymourUI14CollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC9SeymourUI14CollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI14CollectionView_contentInsetBehaviorProvider);
   *v9 = 0;
   v9[1] = 0;
@@ -49,7 +49,7 @@
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI14CollectionView____lazy_storage___smoothDecelerationAnimation) = 0;
   v12.receiver = self;
   v12.super_class = type metadata accessor for CollectionView();
-  return [(CollectionView *)&v12 initWithFrame:a4 collectionViewLayout:x, y, width, height];
+  return [(CollectionView *)&v12 initWithFrame:layout collectionViewLayout:x, y, width, height];
 }
 
 @end

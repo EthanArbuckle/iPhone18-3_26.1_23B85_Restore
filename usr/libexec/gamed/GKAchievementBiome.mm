@@ -1,6 +1,6 @@
 @interface GKAchievementBiome
 + (GKAchievementBiome)shared;
-- (void)logEarnedWithAchievement:(id)a3;
+- (void)logEarnedWithAchievement:(id)achievement;
 @end
 
 @implementation GKAchievementBiome
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (void)logEarnedWithAchievement:(id)a3
+- (void)logEarnedWithAchievement:(id)achievement
 {
-  v4 = a3;
-  v5 = self;
-  AchievementBiome.logEarned(achievement:)(v4);
+  achievementCopy = achievement;
+  selfCopy = self;
+  AchievementBiome.logEarned(achievement:)(achievementCopy);
 }
 
 @end

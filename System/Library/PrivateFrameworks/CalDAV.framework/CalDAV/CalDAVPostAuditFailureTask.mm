@@ -1,15 +1,15 @@
 @interface CalDAVPostAuditFailureTask
-+ (id)_stringForReason:(unint64_t)a3;
-- (CalDAVPostAuditFailureTask)initWithResourceURL:(id)a3 reason:(unint64_t)a4;
++ (id)_stringForReason:(unint64_t)reason;
+- (CalDAVPostAuditFailureTask)initWithResourceURL:(id)l reason:(unint64_t)reason;
 @end
 
 @implementation CalDAVPostAuditFailureTask
 
-- (CalDAVPostAuditFailureTask)initWithResourceURL:(id)a3 reason:(unint64_t)a4
+- (CalDAVPostAuditFailureTask)initWithResourceURL:(id)l reason:(unint64_t)reason
 {
-  v6 = [MEMORY[0x277CCACE0] componentsWithURL:a3 resolvingAgainstBaseURL:1];
-  v7 = [v6 queryItems];
-  v8 = [v7 mutableCopy];
+  v6 = [MEMORY[0x277CCACE0] componentsWithURL:l resolvingAgainstBaseURL:1];
+  queryItems = [v6 queryItems];
+  v8 = [queryItems mutableCopy];
   v9 = v8;
   if (v8)
   {
@@ -27,7 +27,7 @@
   [v11 addObject:v12];
 
   v13 = MEMORY[0x277CCAD18];
-  v14 = [objc_opt_class() _stringForReason:a4];
+  v14 = [objc_opt_class() _stringForReason:reason];
   v15 = [v13 queryItemWithName:@"reason" value:v14];
   [v11 addObject:v15];
 
@@ -40,9 +40,9 @@
   return v17;
 }
 
-+ (id)_stringForReason:(unint64_t)a3
++ (id)_stringForReason:(unint64_t)reason
 {
-  if (a3)
+  if (reason)
   {
     v6 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Unexpected value for reason argument." userInfo:{0, v3, v4}];
     objc_exception_throw(v6);

@@ -1,6 +1,6 @@
 @interface WLQRCodeListViewController
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -15,62 +15,62 @@
   v4 = [v3 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v4];
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  v6 = [MEMORY[0x277D75348] clearColor];
-  [v5 setBackgroundColor:v6];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView setBackgroundColor:clearColor];
 
-  v7 = [(OBTableWelcomeController *)self tableView];
-  [v7 setDataSource:self];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setDataSource:self];
 
-  v8 = [(OBTableWelcomeController *)self tableView];
-  [v8 setDelegate:self];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setDelegate:self];
 
-  v9 = [(OBTableWelcomeController *)self tableView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"WLQRCodeListViewCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"WLQRCodeListViewCell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"WLQRCodeListViewCell"];
     [v7 setAccessoryType:1];
-    v8 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-    [v7 setBackgroundColor:v8];
+    secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+    [v7 setBackgroundColor:secondarySystemBackgroundColor];
   }
 
-  v9 = -[NSArray objectAtIndex:](self->_qrcodes, "objectAtIndex:", [v6 row]);
-  v10 = [v7 textLabel];
-  v11 = [v9 name];
-  [v10 setText:v11];
+  v9 = -[NSArray objectAtIndex:](self->_qrcodes, "objectAtIndex:", [pathCopy row]);
+  textLabel = [v7 textLabel];
+  name = [v9 name];
+  [textLabel setText:name];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
   qrcodes = self->_qrcodes;
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   v18 = [(NSArray *)qrcodes objectAtIndex:v8];
-  v9 = [v18 title];
+  title = [v18 title];
   v10 = MEMORY[0x277CCACA8];
   v11 = WLLocalizedString();
-  v12 = [v18 name];
-  v13 = [v10 stringWithFormat:v11, v12];
+  name = [v18 name];
+  v13 = [v10 stringWithFormat:v11, name];
 
-  v14 = [[WLQRCodeViewController alloc] initWithTitle:v9 detailText:v13 symbolName:@"qrcode"];
+  v14 = [[WLQRCodeViewController alloc] initWithTitle:title detailText:v13 symbolName:@"qrcode"];
   [(WLQRCodeViewController *)v14 setQrcode:v18];
-  v15 = [(WLQRCodeListViewController *)self navigationController];
-  [v15 pushViewController:v14 animated:1];
+  navigationController = [(WLQRCodeListViewController *)self navigationController];
+  [navigationController pushViewController:v14 animated:1];
 
-  v16 = [MEMORY[0x277D7B8D0] sharedInstance];
-  v17 = [v18 code];
-  [v16 didLoadAndroidStore:v17 selected:1 canceled:0 inAttempts:self->_attempts];
+  mEMORY[0x277D7B8D0] = [MEMORY[0x277D7B8D0] sharedInstance];
+  code = [v18 code];
+  [mEMORY[0x277D7B8D0] didLoadAndroidStore:code selected:1 canceled:0 inAttempts:self->_attempts];
 
   ++self->_attempts;
 }

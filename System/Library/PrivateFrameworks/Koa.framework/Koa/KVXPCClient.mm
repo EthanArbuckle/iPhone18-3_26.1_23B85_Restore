@@ -1,23 +1,23 @@
 @interface KVXPCClient
 + (void)initialize;
 - (KVXPCClient)init;
-- (id)_errorHandlerWithCompletion:(id)a3;
-- (id)_failureHandlerWithResponse:(unsigned __int16)a3;
-- (id)_remoteObjectProxy:(BOOL)a3 errorCompletion:(id)a4;
+- (id)_errorHandlerWithCompletion:(id)completion;
+- (id)_failureHandlerWithResponse:(unsigned __int16)response;
+- (id)_remoteObjectProxy:(BOOL)proxy errorCompletion:(id)completion;
 - (void)dealloc;
-- (void)serviceArrayRespondingRequestWithCompletion:(id)a3 usingBlock:(id)a4;
+- (void)serviceArrayRespondingRequestWithCompletion:(id)completion usingBlock:(id)block;
 @end
 
 @implementation KVXPCClient
 
-- (id)_remoteObjectProxy:(BOOL)a3 errorCompletion:(id)a4
+- (id)_remoteObjectProxy:(BOOL)proxy errorCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v11 = objc_msgSend__errorHandlerWithCompletion_(self, v7, v6, v8, v9, v10);
+  proxyCopy = proxy;
+  completionCopy = completion;
+  v11 = objc_msgSend__errorHandlerWithCompletion_(self, v7, completionCopy, v8, v9, v10);
   v17 = objc_msgSend_connection(self, v12, v13, v14, v15, v16);
   v22 = v17;
-  if (v4)
+  if (proxyCopy)
   {
     objc_msgSend_synchronousRemoteObjectProxyWithErrorHandler_(v17, v18, v11, v19, v20, v21);
   }
@@ -28,43 +28,43 @@
   }
   v23 = ;
 
-  if (v6 && !v23)
+  if (completionCopy && !v23)
   {
     v29 = objc_msgSend_failureCode(self, v24, v25, v26, v27, v28);
-    v6[2](v6, v29);
+    completionCopy[2](completionCopy, v29);
   }
 
   return v23;
 }
 
-- (void)serviceArrayRespondingRequestWithCompletion:(id)a3 usingBlock:(id)a4
+- (void)serviceArrayRespondingRequestWithCompletion:(id)completion usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  blockCopy = block;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_2559AEF48;
   v13[3] = &unk_279803A00;
-  v8 = v6;
+  v8 = completionCopy;
   v14 = v8;
   v12 = objc_msgSend__remoteObjectProxy_errorCompletion_(self, v9, 1, v13, v10, v11);
   if (v12)
   {
-    v7[2](v7, v12, v8);
+    blockCopy[2](blockCopy, v12, v8);
   }
 }
 
-- (id)_errorHandlerWithCompletion:(id)a3
+- (id)_errorHandlerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2559AF2D4;
   v8[3] = &unk_2798039D8;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v5 = v4;
+  v9 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x259C45590](v8);
 
   objc_destroyWeak(&v10);
@@ -73,7 +73,7 @@
   return v6;
 }
 
-- (id)_failureHandlerWithResponse:(unsigned __int16)a3
+- (id)_failureHandlerWithResponse:(unsigned __int16)response
 {
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
@@ -81,7 +81,7 @@
   v6[2] = sub_2559AF4E0;
   v6[3] = &unk_2798039B0;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  responseCopy = response;
   v4 = MEMORY[0x259C45590](v6);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);

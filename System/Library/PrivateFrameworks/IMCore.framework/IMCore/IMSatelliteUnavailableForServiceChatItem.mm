@@ -1,11 +1,11 @@
 @interface IMSatelliteUnavailableForServiceChatItem
-- (id)_initWithItem:(id)a3 service:(id)a4 recipientID:(id)a5 isGroupChat:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithItem:(id)item service:(id)service recipientID:(id)d isGroupChat:(BOOL)chat;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation IMSatelliteUnavailableForServiceChatItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__item(self, v5, v6);
@@ -14,20 +14,20 @@
   return v9;
 }
 
-- (id)_initWithItem:(id)a3 service:(id)a4 recipientID:(id)a5 isGroupChat:(BOOL)a6
+- (id)_initWithItem:(id)item service:(id)service recipientID:(id)d isGroupChat:(BOOL)chat
 {
-  v11 = a4;
-  v12 = a5;
+  serviceCopy = service;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = IMSatelliteUnavailableForServiceChatItem;
-  v13 = [(IMChatItem *)&v17 _initWithItem:a3];
+  v13 = [(IMChatItem *)&v17 _initWithItem:item];
   v15 = v13;
   if (v13)
   {
     objc_msgSend__setGUID_(v13, v14, @"ug:");
-    objc_storeStrong(v15 + 8, a4);
-    objc_storeStrong(v15 + 9, a5);
-    *(v15 + 56) = a6;
+    objc_storeStrong(v15 + 8, service);
+    objc_storeStrong(v15 + 9, d);
+    *(v15 + 56) = chat;
   }
 
   return v15;

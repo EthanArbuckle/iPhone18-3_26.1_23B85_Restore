@@ -1,12 +1,12 @@
 @interface NowPlayingAutoPlayHeaderView
-- (_TtC5Music28NowPlayingAutoPlayHeaderView)initWithCoder:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (_TtC5Music28NowPlayingAutoPlayHeaderView)initWithCoder:(id)coder;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 @end
 
 @implementation NowPlayingAutoPlayHeaderView
 
-- (_TtC5Music28NowPlayingAutoPlayHeaderView)initWithCoder:(id)a3
+- (_TtC5Music28NowPlayingAutoPlayHeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC5Music28NowPlayingAutoPlayHeaderView_backdropView;
   v5 = type metadata accessor for BackdropView();
@@ -20,19 +20,19 @@
   return result;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for NowPlayingAutoPlayHeaderView();
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = v6.receiver;
-  [(NowPlayingAutoPlayHeaderView *)&v6 applyLayoutAttributes:v4];
+  [(NowPlayingAutoPlayHeaderView *)&v6 applyLayoutAttributes:attributesCopy];
   [v5 setClipsToBounds:{sub_10056B5F4() & 1, v6.receiver, v6.super_class}];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10056B0BC();
 }
 

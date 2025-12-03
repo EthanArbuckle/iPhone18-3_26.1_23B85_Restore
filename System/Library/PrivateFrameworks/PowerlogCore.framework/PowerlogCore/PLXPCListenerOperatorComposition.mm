@@ -1,8 +1,8 @@
 @interface PLXPCListenerOperatorComposition
 - (PLOperator)operator;
-- (PLXPCListenerOperatorComposition)initWithOperator:(id)a3 withRegistration:(id)a4 withBlock:(id)a5;
+- (PLXPCListenerOperatorComposition)initWithOperator:(id)operator withRegistration:(id)registration withBlock:(id)block;
 - (id)description;
-- (void)messageRecievedForClientID:(signed __int16)a3 withProcessName:(id)a4 withKey:(id)a5 withPayload:(id)a6;
+- (void)messageRecievedForClientID:(signed __int16)d withProcessName:(id)name withKey:(id)key withPayload:(id)payload;
 @end
 
 @implementation PLXPCListenerOperatorComposition
@@ -14,28 +14,28 @@
   return WeakRetained;
 }
 
-- (PLXPCListenerOperatorComposition)initWithOperator:(id)a3 withRegistration:(id)a4 withBlock:(id)a5
+- (PLXPCListenerOperatorComposition)initWithOperator:(id)operator withRegistration:(id)registration withBlock:(id)block
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operatorCopy = operator;
+  registrationCopy = registration;
+  blockCopy = block;
   v18.receiver = self;
   v18.super_class = PLXPCListenerOperatorComposition;
   v11 = [(PLXPCListenerOperatorComposition *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_operator, v8);
-    v13 = MEMORY[0x1DA71B0D0](v10);
+    objc_storeWeak(&v11->_operator, operatorCopy);
+    v13 = MEMORY[0x1DA71B0D0](blockCopy);
     operatorBlock = v12->_operatorBlock;
     v12->_operatorBlock = v13;
 
-    objc_storeStrong(&v12->_registration, a4);
+    objc_storeStrong(&v12->_registration, registration);
     v19[0] = @"type";
     v19[1] = @"registration";
     v20[0] = @"Post";
-    v20[1] = v9;
+    v20[1] = registrationCopy;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
     [PLUtilities postNotificationName:@"register.PLXPCService" object:v12 userInfo:v15];
   }
@@ -44,26 +44,26 @@
   return v12;
 }
 
-- (void)messageRecievedForClientID:(signed __int16)a3 withProcessName:(id)a4 withKey:(id)a5 withPayload:(id)a6
+- (void)messageRecievedForClientID:(signed __int16)d withProcessName:(id)name withKey:(id)key withPayload:(id)payload
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(PLXPCListenerOperatorComposition *)self operator];
-  v14 = [v13 workQueue];
+  nameCopy = name;
+  keyCopy = key;
+  payloadCopy = payload;
+  operator = [(PLXPCListenerOperatorComposition *)self operator];
+  workQueue = [operator workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __99__PLXPCListenerOperatorComposition_messageRecievedForClientID_withProcessName_withKey_withPayload___block_invoke;
   block[3] = &unk_1E851B098;
-  v22 = a3;
+  dCopy = d;
   block[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  dispatch_async(v14, block);
+  v19 = nameCopy;
+  v20 = keyCopy;
+  v21 = payloadCopy;
+  v15 = payloadCopy;
+  v16 = keyCopy;
+  v17 = nameCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __99__PLXPCListenerOperatorComposition_messageRecievedForClientID_withProcessName_withKey_withPayload___block_invoke(uint64_t a1)
@@ -78,13 +78,13 @@ void __99__PLXPCListenerOperatorComposition_messageRecievedForClientID_withProce
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLXPCListenerOperatorComposition *)self operator];
-  v5 = [v4 className];
-  v6 = [(PLXPCListenerOperatorComposition *)self registration];
-  v7 = [v6 description];
+  operator = [(PLXPCListenerOperatorComposition *)self operator];
+  className = [operator className];
+  registration = [(PLXPCListenerOperatorComposition *)self registration];
+  v7 = [registration description];
   v8 = [v7 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_1F539D228];
   v9 = [v8 stringByReplacingOccurrencesOfString:@"\t" withString:&stru_1F539D228];
-  v10 = [v3 stringWithFormat:@"<PLXPCListenerOperatorComposition(%@-%@): %p>", v5, v9, self];
+  v10 = [v3 stringWithFormat:@"<PLXPCListenerOperatorComposition(%@-%@): %p>", className, v9, self];
 
   return v10;
 }

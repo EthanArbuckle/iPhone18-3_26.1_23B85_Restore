@@ -1,24 +1,24 @@
 @interface MUIAvatarImageGeneratorResult
 + (id)circularPlaceholderResult;
 - (BOOL)canShowBorder;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)needsBorderFor:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)needsBorderFor:(int64_t)for;
 - (CNContact)contact;
-- (MUIAvatarImageGeneratorResult)initWithAddress:(id)a3 image:(id)a4 style:(int64_t)a5 type:(int64_t)a6;
-- (MUIAvatarImageGeneratorResult)initWithContact:(id)a3 address:(id)a4 imageProvider:(id)a5 style:(int64_t)a6;
+- (MUIAvatarImageGeneratorResult)initWithAddress:(id)address image:(id)image style:(int64_t)style type:(int64_t)type;
+- (MUIAvatarImageGeneratorResult)initWithContact:(id)contact address:(id)address imageProvider:(id)provider style:(int64_t)style;
 - (MUISenderHeaderColors)headerColors;
 - (NSString)debugDescription;
 - (NSString)description;
 - (UIImage)image;
-- (id)init:(id)a3 address:(id)a4 imageProvider:(id)a5 style:(int64_t)a6 type:(int64_t)a7;
+- (id)init:(id)init address:(id)address imageProvider:(id)provider style:(int64_t)style type:(int64_t)type;
 - (int64_t)avatarStyle;
 - (int64_t)avatarType;
 - (int64_t)hash;
-- (void)setAvatarStyle:(int64_t)a3;
-- (void)setAvatarType:(int64_t)a3;
-- (void)setContact:(id)a3;
-- (void)setHeaderColors:(id)a3;
-- (void)setImage:(id)a3;
+- (void)setAvatarStyle:(int64_t)style;
+- (void)setAvatarType:(int64_t)type;
+- (void)setContact:(id)contact;
+- (void)setHeaderColors:(id)colors;
+- (void)setImage:(id)image;
 @end
 
 @implementation MUIAvatarImageGeneratorResult
@@ -53,11 +53,11 @@
   return v5;
 }
 
-- (BOOL)needsBorderFor:(int64_t)a3
+- (BOOL)needsBorderFor:(int64_t)for
 {
   swift_getObjectType();
   MEMORY[0x277D82BE0](self);
-  MUIAvatarImageGeneratorResult.needsBorder(for:)(a3);
+  MUIAvatarImageGeneratorResult.needsBorder(for:)(for);
   MEMORY[0x277D82BD8](self);
   return sub_214CCD384() & 1;
 }
@@ -71,12 +71,12 @@
   return v5;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](contact);
   MEMORY[0x277D82BE0](self);
-  MUIAvatarImageGeneratorResult.contact.setter(a3);
+  MUIAvatarImageGeneratorResult.contact.setter(contact);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -90,28 +90,28 @@
   return v5;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](image);
   MEMORY[0x277D82BE0](self);
-  MUIAvatarImageGeneratorResult.image.setter(a3);
+  MUIAvatarImageGeneratorResult.image.setter(image);
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)setAvatarStyle:(int64_t)a3
+- (void)setAvatarStyle:(int64_t)style
 {
   swift_getObjectType();
   MEMORY[0x277D82BE0](self);
-  MUIAvatarImageGeneratorResult.style.setter(a3);
+  MUIAvatarImageGeneratorResult.style.setter(style);
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)setAvatarType:(int64_t)a3
+- (void)setAvatarType:(int64_t)type
 {
   swift_getObjectType();
   MEMORY[0x277D82BE0](self);
-  sub_214BFEAC4(a3);
+  sub_214BFEAC4(type);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -125,32 +125,32 @@
   return v5;
 }
 
-- (void)setHeaderColors:(id)a3
+- (void)setHeaderColors:(id)colors
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](colors);
   MEMORY[0x277D82BE0](self);
-  MUIAvatarImageGeneratorResult.colors.setter(a3);
+  MUIAvatarImageGeneratorResult.colors.setter(colors);
   MEMORY[0x277D82BD8](self);
 }
 
-- (MUIAvatarImageGeneratorResult)initWithAddress:(id)a3 image:(id)a4 style:(int64_t)a5 type:(int64_t)a6
+- (MUIAvatarImageGeneratorResult)initWithAddress:(id)address image:(id)image style:(int64_t)style type:(int64_t)type
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  MEMORY[0x277D82BE0](a4);
-  return MUIAvatarImageGeneratorResult.init(_:image:style:type:)(a3, a4, a5, a6);
+  MEMORY[0x277D82BE0](image);
+  return MUIAvatarImageGeneratorResult.init(_:image:style:type:)(address, image, style, type);
 }
 
-- (MUIAvatarImageGeneratorResult)initWithContact:(id)a3 address:(id)a4 imageProvider:(id)a5 style:(int64_t)a6
+- (MUIAvatarImageGeneratorResult)initWithContact:(id)contact address:(id)address imageProvider:(id)provider style:(int64_t)style
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](contact);
   swift_unknownObjectRetain();
-  v9 = _Block_copy(a5);
+  v9 = _Block_copy(provider);
   v6 = swift_allocObject();
   *(v6 + 16) = v9;
-  return MUIAvatarImageGeneratorResult.init(_:address:imageProvider:style:)(a3, a4, sub_214BFF924, v6, a6);
+  return MUIAvatarImageGeneratorResult.init(_:address:imageProvider:style:)(contact, address, sub_214BFF924, v6, style);
 }
 
 + (id)circularPlaceholderResult
@@ -162,15 +162,15 @@
   return v2;
 }
 
-- (id)init:(id)a3 address:(id)a4 imageProvider:(id)a5 style:(int64_t)a6 type:(int64_t)a7
+- (id)init:(id)init address:(id)address imageProvider:(id)provider style:(int64_t)style type:(int64_t)type
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](init);
   swift_unknownObjectRetain();
-  v10 = _Block_copy(a5);
+  v10 = _Block_copy(provider);
   v7 = swift_allocObject();
   *(v7 + 16) = v10;
-  return sub_214BFFC1C(a3, a4, sub_214BFF924, v7, a6, a7);
+  return sub_214BFFC1C(init, address, sub_214BFF924, v7, style, type);
 }
 
 - (BOOL)canShowBorder
@@ -182,12 +182,12 @@
   return sub_214CCD384() & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
   MEMORY[0x277D82BE0](self);
-  if (a3)
+  if (equal)
   {
     sub_214CD0054();
     sub_214B11A4C(v6, v7);

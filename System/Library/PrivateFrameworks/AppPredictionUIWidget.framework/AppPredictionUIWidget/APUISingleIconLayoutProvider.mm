@@ -1,11 +1,11 @@
 @interface APUISingleIconLayoutProvider
 - (CGSize)size;
-- (id)layoutForIconLocation:(id)a3;
+- (id)layoutForIconLocation:(id)location;
 @end
 
 @implementation APUISingleIconLayoutProvider
 
-- (id)layoutForIconLocation:(id)a3
+- (id)layoutForIconLocation:(id)location
 {
   v4 = objc_alloc_init(APUISingleIconLayout);
   [(APUISingleIconLayout *)v4 setSize:self->_size.width, self->_size.height];

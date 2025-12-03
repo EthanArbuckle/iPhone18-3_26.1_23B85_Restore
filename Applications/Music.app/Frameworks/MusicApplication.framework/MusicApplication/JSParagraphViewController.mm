@@ -1,16 +1,16 @@
 @interface JSParagraphViewController
-- (_TtC16MusicApplication25JSParagraphViewController)initWithCoder:(id)a3;
-- (_TtC16MusicApplication25JSParagraphViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16MusicApplication25JSParagraphViewController)initWithCoder:(id)coder;
+- (_TtC16MusicApplication25JSParagraphViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)music_viewInheritedLayoutInsetsDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation JSParagraphViewController
 
-- (_TtC16MusicApplication25JSParagraphViewController)initWithCoder:(id)a3
+- (_TtC16MusicApplication25JSParagraphViewController)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC16MusicApplication25JSParagraphViewController_additionalContentInsets);
   v4 = *&UIEdgeInsetsZero.bottom;
@@ -24,23 +24,23 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_37E3B4();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_37EB0C();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_37ECFC(a4, width, height);
+  selfCopy = self;
+  sub_37ECFC(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
@@ -53,14 +53,14 @@
   sub_37F2C4();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_37F068(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_37F068(change);
 }
 
-- (_TtC16MusicApplication25JSParagraphViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication25JSParagraphViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

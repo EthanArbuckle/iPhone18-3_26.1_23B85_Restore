@@ -1,13 +1,13 @@
 @interface SSDoubleLinkedList
 - (NSArray)allNodes;
 - (SSDoubleLinkedList)init;
-- (id)appendObject:(id)a3;
+- (id)appendObject:(id)object;
 - (id)description;
-- (id)insertObject:(id)a3;
-- (void)appendNode:(id)a3;
-- (void)insertNode:(id)a3;
+- (id)insertObject:(id)object;
+- (void)appendNode:(id)node;
+- (void)insertNode:(id)node;
 - (void)removeAllNodes;
-- (void)removeNode:(id)a3;
+- (void)removeNode:(id)node;
 @end
 
 @implementation SSDoubleLinkedList
@@ -19,10 +19,10 @@
   v2 = [(SSDoubleLinkedList *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     listIdentifier = v2->_listIdentifier;
-    v2->_listIdentifier = v4;
+    v2->_listIdentifier = uUIDString;
   }
 
   return v2;
@@ -31,96 +31,96 @@
 - (NSArray)allNodes
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(SSDoubleLinkedList *)self head];
-  if (v4)
+  head = [(SSDoubleLinkedList *)self head];
+  if (head)
   {
-    v5 = v4;
+    v5 = head;
     do
     {
       [v3 addObject:v5];
-      v6 = [v5 next];
+      next = [v5 next];
 
-      v5 = v6;
+      v5 = next;
     }
 
-    while (v6);
+    while (next);
   }
 
   return v3;
 }
 
-- (void)appendNode:(id)a3
+- (void)appendNode:(id)node
 {
-  v9 = a3;
-  v4 = [v9 listIdentifier];
+  nodeCopy = node;
+  listIdentifier = [nodeCopy listIdentifier];
 
-  if (v4)
+  if (listIdentifier)
   {
     v8 = [MEMORY[0x1E695DF30] exceptionWithName:@"SSDoubleLinkedListInvalidNode" reason:@"Attempting to add a node that has already been added to another list." userInfo:0];
     objc_exception_throw(v8);
   }
 
-  v5 = [(SSDoubleLinkedList *)self tail];
-  [(SSDoubleLinkedList *)self setTail:v9];
-  v6 = [(SSDoubleLinkedList *)self head];
+  tail = [(SSDoubleLinkedList *)self tail];
+  [(SSDoubleLinkedList *)self setTail:nodeCopy];
+  head = [(SSDoubleLinkedList *)self head];
 
-  if (!v6)
+  if (!head)
   {
-    [(SSDoubleLinkedList *)self setHead:v9];
+    [(SSDoubleLinkedList *)self setHead:nodeCopy];
   }
 
-  [v9 setPrevious:v5];
-  [v9 setNext:0];
-  [v5 setNext:v9];
-  v7 = [(SSDoubleLinkedList *)self listIdentifier];
-  [v9 setListIdentifier:v7];
+  [nodeCopy setPrevious:tail];
+  [nodeCopy setNext:0];
+  [tail setNext:nodeCopy];
+  listIdentifier2 = [(SSDoubleLinkedList *)self listIdentifier];
+  [nodeCopy setListIdentifier:listIdentifier2];
 
   ++self->_count;
 }
 
-- (id)appendObject:(id)a3
+- (id)appendObject:(id)object
 {
-  v4 = a3;
-  v5 = [[SSDoubleLinkedListNode alloc] initWithObject:v4];
+  objectCopy = object;
+  v5 = [[SSDoubleLinkedListNode alloc] initWithObject:objectCopy];
 
   [(SSDoubleLinkedList *)self appendNode:v5];
 
   return v5;
 }
 
-- (void)insertNode:(id)a3
+- (void)insertNode:(id)node
 {
-  v9 = a3;
-  v4 = [v9 listIdentifier];
+  nodeCopy = node;
+  listIdentifier = [nodeCopy listIdentifier];
 
-  if (v4)
+  if (listIdentifier)
   {
     v8 = [MEMORY[0x1E695DF30] exceptionWithName:@"SSDoubleLinkedListInvalidNode" reason:@"Attempting to add a node that has already been added to another list." userInfo:0];
     objc_exception_throw(v8);
   }
 
-  v5 = [(SSDoubleLinkedList *)self head];
-  [(SSDoubleLinkedList *)self setHead:v9];
-  v6 = [(SSDoubleLinkedList *)self tail];
+  head = [(SSDoubleLinkedList *)self head];
+  [(SSDoubleLinkedList *)self setHead:nodeCopy];
+  tail = [(SSDoubleLinkedList *)self tail];
 
-  if (!v6)
+  if (!tail)
   {
-    [(SSDoubleLinkedList *)self setTail:v9];
+    [(SSDoubleLinkedList *)self setTail:nodeCopy];
   }
 
-  [v9 setPrevious:0];
-  [v9 setNext:v5];
-  [v5 setPrevious:v9];
-  v7 = [(SSDoubleLinkedList *)self listIdentifier];
-  [v9 setListIdentifier:v7];
+  [nodeCopy setPrevious:0];
+  [nodeCopy setNext:head];
+  [head setPrevious:nodeCopy];
+  listIdentifier2 = [(SSDoubleLinkedList *)self listIdentifier];
+  [nodeCopy setListIdentifier:listIdentifier2];
 
   ++self->_count;
 }
 
-- (id)insertObject:(id)a3
+- (id)insertObject:(id)object
 {
-  v4 = a3;
-  v5 = [[SSDoubleLinkedListNode alloc] initWithObject:v4];
+  objectCopy = object;
+  v5 = [[SSDoubleLinkedListNode alloc] initWithObject:objectCopy];
 
   [(SSDoubleLinkedList *)self insertNode:v5];
 
@@ -134,43 +134,43 @@
   self->_count = 0;
 }
 
-- (void)removeNode:(id)a3
+- (void)removeNode:(id)node
 {
-  v15 = a3;
-  v4 = [v15 listIdentifier];
-  v5 = [(SSDoubleLinkedList *)self listIdentifier];
+  nodeCopy = node;
+  listIdentifier = [nodeCopy listIdentifier];
+  listIdentifier2 = [(SSDoubleLinkedList *)self listIdentifier];
 
-  if (v4 != v5)
+  if (listIdentifier != listIdentifier2)
   {
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:@"SSDoubleLinkedListInvalidNode" reason:@"Attempting to remove a node from a list it doesn't belong to." userInfo:0];
     objc_exception_throw(v14);
   }
 
-  v6 = [v15 next];
-  v7 = [v15 previous];
-  [v6 setPrevious:v7];
+  next = [nodeCopy next];
+  previous = [nodeCopy previous];
+  [next setPrevious:previous];
 
-  v8 = [v15 previous];
-  v9 = [v15 next];
-  [v8 setNext:v9];
+  previous2 = [nodeCopy previous];
+  next2 = [nodeCopy next];
+  [previous2 setNext:next2];
 
-  v10 = [(SSDoubleLinkedList *)self head];
+  head = [(SSDoubleLinkedList *)self head];
 
-  if (v10 == v15)
+  if (head == nodeCopy)
   {
-    v11 = [v15 next];
-    [(SSDoubleLinkedList *)self setHead:v11];
+    next3 = [nodeCopy next];
+    [(SSDoubleLinkedList *)self setHead:next3];
   }
 
-  v12 = [(SSDoubleLinkedList *)self tail];
+  tail = [(SSDoubleLinkedList *)self tail];
 
-  if (v12 == v15)
+  if (tail == nodeCopy)
   {
-    v13 = [v15 previous];
-    [(SSDoubleLinkedList *)self setTail:v13];
+    previous3 = [nodeCopy previous];
+    [(SSDoubleLinkedList *)self setTail:previous3];
   }
 
-  [v15 setListIdentifier:0];
+  [nodeCopy setListIdentifier:0];
   --self->_count;
 }
 
@@ -182,8 +182,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(SSDoubleLinkedList *)self allNodes];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allNodes = [(SSDoubleLinkedList *)self allNodes];
+  v5 = [allNodes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -194,22 +194,22 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allNodes);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 object];
-        [v3 appendFormat:@"%@", v10];
+        object = [v9 object];
+        [v3 appendFormat:@"%@", object];
 
-        v11 = [(SSDoubleLinkedList *)self tail];
+        tail = [(SSDoubleLinkedList *)self tail];
 
-        if (v9 != v11)
+        if (v9 != tail)
         {
           [v3 appendString:{@", \n"}];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allNodes countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);

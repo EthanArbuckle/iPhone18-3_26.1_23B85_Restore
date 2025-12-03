@@ -1,6 +1,6 @@
 @interface MercuryPosterUpdater
 - (_TtC22MercuryPosterExtension20MercuryPosterUpdater)init;
-- (void)updateDescriptors:(id)a3 withSessionInfo:(id)a4 completion:(id)a5;
+- (void)updateDescriptors:(id)descriptors withSessionInfo:(id)info completion:(id)completion;
 @end
 
 @implementation MercuryPosterUpdater
@@ -12,14 +12,14 @@
   return [(MercuryPosterUpdater *)&v3 init];
 }
 
-- (void)updateDescriptors:(id)a3 withSessionInfo:(id)a4 completion:(id)a5
+- (void)updateDescriptors:(id)descriptors withSessionInfo:(id)info completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   sub_1000250A8();
   v8 = sub_1000E98A4();
   _Block_copy(v7);
-  v9 = a4;
-  v10 = self;
+  infoCopy = info;
+  selfCopy = self;
   sub_100025694(v8, v7);
   _Block_release(v7);
   _Block_release(v7);

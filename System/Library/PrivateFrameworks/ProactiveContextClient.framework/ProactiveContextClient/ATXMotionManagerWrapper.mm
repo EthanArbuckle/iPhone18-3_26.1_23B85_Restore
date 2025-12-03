@@ -5,9 +5,9 @@
 - (id)_fetchMotionActivities;
 - (id)_motionActivityHandler;
 - (id)getCurrentActivity;
-- (void)startUpdatingMotionType:(int64_t)a3 forDelegate:(id)a4;
-- (void)stopUpdatingMotionType:(int64_t)a3 forDelegate:(id)a4;
-- (void)updateCurrentActivity:(id)a3;
+- (void)startUpdatingMotionType:(int64_t)type forDelegate:(id)delegate;
+- (void)stopUpdatingMotionType:(int64_t)type forDelegate:(id)delegate;
+- (void)updateCurrentActivity:(id)activity;
 @end
 
 @implementation ATXMotionManagerWrapper
@@ -77,7 +77,7 @@ void __45__ATXMotionManagerWrapper_getCurrentActivity__block_invoke(uint64_t a1,
   v3 = dispatch_semaphore_create(0);
   motionActivityManager = self->_motionActivityManager;
   v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-30.0];
-  v6 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   motionActivityQueue = self->_motionActivityQueue;
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
@@ -86,7 +86,7 @@ void __45__ATXMotionManagerWrapper_getCurrentActivity__block_invoke(uint64_t a1,
   v17 = &v18;
   v8 = v3;
   v16 = v8;
-  [(CMMotionActivityManager *)motionActivityManager queryActivityStartingFromDate:v5 toDate:v6 toQueue:motionActivityQueue withHandler:&v12];
+  [(CMMotionActivityManager *)motionActivityManager queryActivityStartingFromDate:v5 toDate:date toQueue:motionActivityQueue withHandler:&v12];
 
   if ([MEMORY[0x277D425A0] waitForSemaphore:v8 timeoutSeconds:{60.0, v12, v13, v14, v15}] == 1)
   {
@@ -206,14 +206,14 @@ void __49__ATXMotionManagerWrapper__fetchMotionActivities__block_invoke(uint64_t
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)updateCurrentActivity:(id)a3
+- (void)updateCurrentActivity:(id)activity
 {
-  v6 = a3;
-  v4 = [(ATXMotionManagerWrapper *)self _fetchMotionActivities];
-  if (v4)
+  activityCopy = activity;
+  _fetchMotionActivities = [(ATXMotionManagerWrapper *)self _fetchMotionActivities];
+  if (_fetchMotionActivities)
   {
-    v5 = [ATXMotion summarizeActivityStream:v4];
-    [v6 update:v5];
+    v5 = [ATXMotion summarizeActivityStream:_fetchMotionActivities];
+    [activityCopy update:v5];
   }
 }
 
@@ -498,121 +498,121 @@ void __49__ATXMotionManagerWrapper__motionActivityHandler__block_invoke(uint64_t
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startUpdatingMotionType:(int64_t)a3 forDelegate:(id)a4
+- (void)startUpdatingMotionType:(int64_t)type forDelegate:(id)delegate
 {
-  v24 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  if (v6->_motionActivityManager)
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_motionActivityManager)
   {
-    v7 = [(NSMutableDictionary *)v6->_delegatesMonitoringForMotionType count];
-    delegatesMonitoringForMotionType = v6->_delegatesMonitoringForMotionType;
+    v7 = [(NSMutableDictionary *)selfCopy->_delegatesMonitoringForMotionType count];
+    delegatesMonitoringForMotionType = selfCopy->_delegatesMonitoringForMotionType;
     if (!v7)
     {
-      v19 = [MEMORY[0x277CBEB58] setWithObject:v24];
-      v20 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v19 = [MEMORY[0x277CBEB58] setWithObject:delegateCopy];
+      v20 = [MEMORY[0x277CCABB0] numberWithInteger:type];
       [(NSMutableDictionary *)delegatesMonitoringForMotionType setObject:v19 forKey:v20];
 
-      motionActivityManager = v6->_motionActivityManager;
-      motionActivityQueue = v6->_motionActivityQueue;
-      v23 = [(ATXMotionManagerWrapper *)v6 _motionActivityHandler];
-      [(CMMotionActivityManager *)motionActivityManager startActivityUpdatesToQueue:motionActivityQueue withHandler:v23];
+      motionActivityManager = selfCopy->_motionActivityManager;
+      motionActivityQueue = selfCopy->_motionActivityQueue;
+      _motionActivityHandler = [(ATXMotionManagerWrapper *)selfCopy _motionActivityHandler];
+      [(CMMotionActivityManager *)motionActivityManager startActivityUpdatesToQueue:motionActivityQueue withHandler:_motionActivityHandler];
 
       goto LABEL_19;
     }
 
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     v10 = [(NSMutableDictionary *)delegatesMonitoringForMotionType objectForKey:v9];
 
     if (!v10)
     {
-      v11 = v6->_delegatesMonitoringForMotionType;
+      v11 = selfCopy->_delegatesMonitoringForMotionType;
       v12 = objc_opt_new();
-      v13 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v13 = [MEMORY[0x277CCABB0] numberWithInteger:type];
       [(NSMutableDictionary *)v11 setObject:v12 forKey:v13];
     }
 
-    v14 = v6->_delegatesMonitoringForMotionType;
-    v15 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v14 = selfCopy->_delegatesMonitoringForMotionType;
+    v15 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     v16 = [(NSMutableDictionary *)v14 objectForKey:v15];
-    [v16 addObject:v24];
+    [v16 addObject:delegateCopy];
 
-    mostRecentActivity = v6->_mostRecentActivity;
+    mostRecentActivity = selfCopy->_mostRecentActivity;
     if (mostRecentActivity)
     {
-      if (a3 <= 1)
+      if (type <= 1)
       {
-        if (a3)
+        if (type)
         {
-          if (a3 != 1)
+          if (type != 1)
           {
             goto LABEL_19;
           }
 
-          v18 = [(CMMotionActivity *)mostRecentActivity running];
+          running = [(CMMotionActivity *)mostRecentActivity running];
         }
 
         else
         {
-          v18 = [(CMMotionActivity *)mostRecentActivity walking];
+          running = [(CMMotionActivity *)mostRecentActivity walking];
         }
       }
 
       else
       {
-        switch(a3)
+        switch(type)
         {
           case 2:
-            v18 = [(CMMotionActivity *)mostRecentActivity cycling];
+            running = [(CMMotionActivity *)mostRecentActivity cycling];
             break;
           case 3:
-            v18 = [(CMMotionActivity *)mostRecentActivity automotive];
+            running = [(CMMotionActivity *)mostRecentActivity automotive];
             break;
           case 4:
-            v18 = [(CMMotionActivity *)mostRecentActivity unknown];
+            running = [(CMMotionActivity *)mostRecentActivity unknown];
             break;
           default:
             goto LABEL_19;
         }
       }
 
-      [v24 didUpdateMotionType:a3 isActive:v18];
+      [delegateCopy didUpdateMotionType:type isActive:running];
     }
   }
 
 LABEL_19:
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)stopUpdatingMotionType:(int64_t)a3 forDelegate:(id)a4
+- (void)stopUpdatingMotionType:(int64_t)type forDelegate:(id)delegate
 {
-  v12 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  if (v6->_motionActivityManager)
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_motionActivityManager)
   {
-    delegatesMonitoringForMotionType = v6->_delegatesMonitoringForMotionType;
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    delegatesMonitoringForMotionType = selfCopy->_delegatesMonitoringForMotionType;
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     v9 = [(NSMutableDictionary *)delegatesMonitoringForMotionType objectForKey:v8];
 
     if (v9)
     {
-      [v9 removeObject:v12];
+      [v9 removeObject:delegateCopy];
       if (![v9 count])
       {
-        v10 = v6->_delegatesMonitoringForMotionType;
-        v11 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+        v10 = selfCopy->_delegatesMonitoringForMotionType;
+        v11 = [MEMORY[0x277CCABB0] numberWithInteger:type];
         [(NSMutableDictionary *)v10 removeObjectForKey:v11];
 
-        if (![(NSMutableDictionary *)v6->_delegatesMonitoringForMotionType count])
+        if (![(NSMutableDictionary *)selfCopy->_delegatesMonitoringForMotionType count])
         {
-          [(CMMotionActivityManager *)v6->_motionActivityManager stopActivityUpdates];
+          [(CMMotionActivityManager *)selfCopy->_motionActivityManager stopActivityUpdates];
         }
       }
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 @end

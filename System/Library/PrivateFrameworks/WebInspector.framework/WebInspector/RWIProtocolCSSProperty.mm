@@ -5,51 +5,51 @@
 - (NSString)priority;
 - (NSString)text;
 - (NSString)value;
-- (RWIProtocolCSSProperty)initWithName:(id)a3 value:(id)a4;
+- (RWIProtocolCSSProperty)initWithName:(id)name value:(id)value;
 - (RWIProtocolCSSSourceRange)range;
 - (int64_t)status;
-- (void)setName:(id)a3;
-- (void)setPriority:(id)a3;
-- (void)setRange:(id)a3;
-- (void)setStatus:(int64_t)a3;
-- (void)setText:(id)a3;
-- (void)setValue:(id)a3;
+- (void)setName:(id)name;
+- (void)setPriority:(id)priority;
+- (void)setRange:(id)range;
+- (void)setStatus:(int64_t)status;
+- (void)setText:(id)text;
+- (void)setValue:(id)value;
 @end
 
 @implementation RWIProtocolCSSProperty
 
-- (RWIProtocolCSSProperty)initWithName:(id)a3 value:(id)a4
+- (RWIProtocolCSSProperty)initWithName:(id)name value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = RWIProtocolCSSProperty;
   v8 = [(RWIProtocolJSONObject *)&v11 init];
   if (v8)
   {
-    if (!v6)
+    if (!nameCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"name"}];
     }
 
-    if (!v7)
+    if (!valueCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"value"}];
     }
 
-    [(RWIProtocolCSSProperty *)v8 setName:v6];
-    [(RWIProtocolCSSProperty *)v8 setValue:v7];
+    [(RWIProtocolCSSProperty *)v8 setName:nameCopy];
+    [(RWIProtocolCSSProperty *)v8 setValue:valueCopy];
     v9 = v8;
   }
 
   return v8;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSProperty;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"name"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"name"];
 }
 
 - (NSString)name
@@ -61,11 +61,11 @@
   return v2;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSProperty;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"value"];
+  [(RWIProtocolJSONObject *)&v3 setString:value forKey:@"value"];
 }
 
 - (NSString)value
@@ -77,11 +77,11 @@
   return v2;
 }
 
-- (void)setPriority:(id)a3
+- (void)setPriority:(id)priority
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSProperty;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"priority"];
+  [(RWIProtocolJSONObject *)&v3 setString:priority forKey:@"priority"];
 }
 
 - (NSString)priority
@@ -100,11 +100,11 @@
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"implicit"];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSProperty;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"text"];
+  [(RWIProtocolJSONObject *)&v3 setString:text forKey:@"text"];
 }
 
 - (NSString)text
@@ -123,7 +123,7 @@
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"parsedOk"];
 }
 
-- (void)setStatus:(int64_t)a3
+- (void)setStatus:(int64_t)status
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)
@@ -191,11 +191,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setRange:(id)a3
+- (void)setRange:(id)range
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSProperty;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"range"];
+  [(RWIProtocolJSONObject *)&v3 setObject:range forKey:@"range"];
 }
 
 - (RWIProtocolCSSSourceRange)range

@@ -1,6 +1,6 @@
 @interface DAProximityManager
 + (id)sharedInstance;
-- (BOOL)startProximitySensorUpdatesWithHandler:(id)a3;
+- (BOOL)startProximitySensorUpdatesWithHandler:(id)handler;
 - (BOOL)stopProximitySensorUpdates;
 - (DAProximityManager)init;
 - (void)dealloc;
@@ -84,25 +84,25 @@
   [(DAProximityManager *)&v4 dealloc];
 }
 
-- (BOOL)startProximitySensorUpdatesWithHandler:(id)a3
+- (BOOL)startProximitySensorUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DAProximityManager *)self updating];
-  if ((v5 & 1) == 0)
+  handlerCopy = handler;
+  updating = [(DAProximityManager *)self updating];
+  if ((updating & 1) == 0)
   {
     [(DAProximityManager *)self deviceStart];
     [(DAProximityManager *)self registerProximityChangedCallback];
-    [(DAProximityManager *)self setHandler:v4];
+    [(DAProximityManager *)self setHandler:handlerCopy];
     [(DAProximityManager *)self setUpdating:1];
   }
 
-  return v5 ^ 1;
+  return updating ^ 1;
 }
 
 - (BOOL)stopProximitySensorUpdates
 {
-  v3 = [(DAProximityManager *)self updating];
-  if (v3)
+  updating = [(DAProximityManager *)self updating];
+  if (updating)
   {
     [(DAProximityManager *)self deviceStop];
     [(DAProximityManager *)self unregisterProximityChangedCallback];
@@ -113,7 +113,7 @@
     [(DAProximityManager *)self setHandler:0];
   }
 
-  return v3;
+  return updating;
 }
 
 - (void)deviceStart
@@ -134,16 +134,16 @@
 
 - (void)registerProximityChangedCallback
 {
-  v2 = [(DAProximityManager *)self deviceRef];
+  deviceRef = [(DAProximityManager *)self deviceRef];
 
-  _MTRegisterOpticalProximityChangedCallback(v2, sub_10002C070, 0);
+  _MTRegisterOpticalProximityChangedCallback(deviceRef, sub_10002C070, 0);
 }
 
 - (void)unregisterProximityChangedCallback
 {
-  v2 = [(DAProximityManager *)self deviceRef];
+  deviceRef = [(DAProximityManager *)self deviceRef];
 
-  _MTUnregisterOpticalProximityChangedCallback(v2, sub_10002C070);
+  _MTUnregisterOpticalProximityChangedCallback(deviceRef, sub_10002C070);
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface CKSyndicationSharedWithYouViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (CGSize)maxContentSize;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)_appIconNameForBundleID:(id)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index;
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)_appIconNameForBundleID:(id)d;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)loadView;
-- (void)setMaxContentSize:(CGSize)a3;
+- (void)setMaxContentSize:(CGSize)size;
 - (void)updateViewConstraints;
 @end
 
@@ -20,8 +20,8 @@
   v15.receiver = self;
   v15.super_class = CKSyndicationSharedWithYouViewController;
   [(CKSyndicationSharedWithYouViewController *)&v15 loadView];
-  v3 = [MEMORY[0x1E69A8288] onboardingAppBundleIDs];
-  [(CKSyndicationSharedWithYouViewController *)self setDefaultAppBundleIDs:v3];
+  onboardingAppBundleIDs = [MEMORY[0x1E69A8288] onboardingAppBundleIDs];
+  [(CKSyndicationSharedWithYouViewController *)self setDefaultAppBundleIDs:onboardingAppBundleIDs];
 
   v4 = objc_alloc(MEMORY[0x1E69DD250]);
   v5 = *MEMORY[0x1E695F058];
@@ -31,49 +31,49 @@
   v9 = [v4 initWithFrame:{*MEMORY[0x1E695F058], v6, v7, v8}];
   [(CKSyndicationSharedWithYouViewController *)self setView:v9];
 
-  v10 = [(CKSyndicationSharedWithYouViewController *)self view];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(CKSyndicationSharedWithYouViewController *)self view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v11 = objc_alloc_init(MEMORY[0x1E69DC840]);
   v12 = [objc_alloc(MEMORY[0x1E69DC7F0]) initWithFrame:v11 collectionViewLayout:{v5, v6, v7, v8}];
   [(CKSyndicationSharedWithYouViewController *)self setCollectionView:v12];
   [v12 setDelegate:self];
   [v12 setDataSource:self];
-  v13 = [MEMORY[0x1E69DC888] clearColor];
-  [v12 setBackgroundColor:v13];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v12 setBackgroundColor:clearColor];
 
   [v12 setClipsToBounds:0];
   [v12 setSemanticContentAttribute:3];
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v14 = [(CKSyndicationSharedWithYouViewController *)self view];
-  [v14 addSubview:v12];
+  view2 = [(CKSyndicationSharedWithYouViewController *)self view];
+  [view2 addSubview:v12];
 }
 
-- (void)setMaxContentSize:(CGSize)a3
+- (void)setMaxContentSize:(CGSize)size
 {
-  if (a3.width != self->_maxContentSize.width || a3.height != self->_maxContentSize.height)
+  if (size.width != self->_maxContentSize.width || size.height != self->_maxContentSize.height)
   {
-    self->_maxContentSize = a3;
-    v6 = [(CKSyndicationSharedWithYouViewController *)self collectionView];
-    v7 = [v6 collectionViewLayout];
-    [v7 invalidateLayout];
+    self->_maxContentSize = size;
+    collectionView = [(CKSyndicationSharedWithYouViewController *)self collectionView];
+    collectionViewLayout = [collectionView collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
 
-    v8 = [(CKSyndicationSharedWithYouViewController *)self view];
-    [v8 setNeedsUpdateConstraints];
+    view = [(CKSyndicationSharedWithYouViewController *)self view];
+    [view setNeedsUpdateConstraints];
   }
 }
 
 - (void)updateViewConstraints
 {
   v35[5] = *MEMORY[0x1E69E9840];
-  v3 = [(CKSyndicationSharedWithYouViewController *)self constraints];
-  v4 = [v3 count];
+  constraints = [(CKSyndicationSharedWithYouViewController *)self constraints];
+  v4 = [constraints count];
 
   if (v4)
   {
     v5 = MEMORY[0x1E696ACD8];
-    v6 = [(CKSyndicationSharedWithYouViewController *)self constraints];
-    [v5 deactivateConstraints:v6];
+    constraints2 = [(CKSyndicationSharedWithYouViewController *)self constraints];
+    [v5 deactivateConstraints:constraints2];
   }
 
   [(CKSyndicationSharedWithYouViewController *)self maxContentSize];
@@ -96,39 +96,39 @@
   [(CKSyndicationSharedWithYouViewController *)self maxContentSize];
   v10 = v11 * v9;
 LABEL_9:
-  v33 = [(CKSyndicationSharedWithYouViewController *)self view];
-  v32 = [v33 widthAnchor];
-  v31 = [v32 constraintEqualToConstant:v10];
+  view = [(CKSyndicationSharedWithYouViewController *)self view];
+  widthAnchor = [view widthAnchor];
+  v31 = [widthAnchor constraintEqualToConstant:v10];
   v35[0] = v31;
-  v30 = [(CKSyndicationSharedWithYouViewController *)self view];
-  v29 = [v30 heightAnchor];
-  v28 = [v29 constraintEqualToConstant:v10];
+  view2 = [(CKSyndicationSharedWithYouViewController *)self view];
+  heightAnchor = [view2 heightAnchor];
+  v28 = [heightAnchor constraintEqualToConstant:v10];
   v35[1] = v28;
-  v27 = [(CKSyndicationSharedWithYouViewController *)self collectionView];
-  v26 = [v27 widthAnchor];
-  v25 = [v26 constraintEqualToConstant:v10];
+  collectionView = [(CKSyndicationSharedWithYouViewController *)self collectionView];
+  widthAnchor2 = [collectionView widthAnchor];
+  v25 = [widthAnchor2 constraintEqualToConstant:v10];
   v35[2] = v25;
-  v12 = [(CKSyndicationSharedWithYouViewController *)self collectionView];
-  v13 = [v12 heightAnchor];
-  v14 = [v13 constraintEqualToConstant:v10];
+  collectionView2 = [(CKSyndicationSharedWithYouViewController *)self collectionView];
+  heightAnchor2 = [collectionView2 heightAnchor];
+  v14 = [heightAnchor2 constraintEqualToConstant:v10];
   v35[3] = v14;
-  v15 = [(CKSyndicationSharedWithYouViewController *)self collectionView];
-  v16 = [v15 centerXAnchor];
-  v17 = [(CKSyndicationSharedWithYouViewController *)self view];
-  v18 = [v17 centerXAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  collectionView3 = [(CKSyndicationSharedWithYouViewController *)self collectionView];
+  centerXAnchor = [collectionView3 centerXAnchor];
+  view3 = [(CKSyndicationSharedWithYouViewController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v35[4] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:5];
   [(CKSyndicationSharedWithYouViewController *)self setConstraints:v20];
 
-  v21 = [(CKSyndicationSharedWithYouViewController *)self constraints];
-  v22 = [v21 count];
+  constraints3 = [(CKSyndicationSharedWithYouViewController *)self constraints];
+  v22 = [constraints3 count];
 
   if (v22)
   {
     v23 = MEMORY[0x1E696ACD8];
-    v24 = [(CKSyndicationSharedWithYouViewController *)self constraints];
-    [v23 activateConstraints:v24];
+    constraints4 = [(CKSyndicationSharedWithYouViewController *)self constraints];
+    [v23 activateConstraints:constraints4];
   }
 
   v34.receiver = self;
@@ -136,30 +136,30 @@ LABEL_9:
   [(CKSyndicationSharedWithYouViewController *)&v34 updateViewConstraints];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(CKSyndicationSharedWithYouViewController *)self defaultAppBundleIDs:a3];
+  v4 = [(CKSyndicationSharedWithYouViewController *)self defaultAppBundleIDs:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CKSyndicationSharedWithYouViewController *)self collectionView];
+  pathCopy = path;
+  collectionView = [(CKSyndicationSharedWithYouViewController *)self collectionView];
   v7 = objc_opt_class();
   v8 = +[CKAppIconCollectionViewCell reuseIdentifier];
-  [v6 registerClass:v7 forCellWithReuseIdentifier:v8];
+  [collectionView registerClass:v7 forCellWithReuseIdentifier:v8];
 
-  v9 = [(CKSyndicationSharedWithYouViewController *)self collectionView];
+  collectionView2 = [(CKSyndicationSharedWithYouViewController *)self collectionView];
   v10 = +[CKAppIconCollectionViewCell reuseIdentifier];
-  v11 = [v9 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v5];
+  v11 = [collectionView2 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:pathCopy];
 
-  v12 = [(CKSyndicationSharedWithYouViewController *)self defaultAppBundleIDs];
-  v13 = [v5 item];
+  defaultAppBundleIDs = [(CKSyndicationSharedWithYouViewController *)self defaultAppBundleIDs];
+  item = [pathCopy item];
 
-  v14 = [v12 objectAtIndex:v13];
+  v14 = [defaultAppBundleIDs objectAtIndex:item];
 
   v15 = [(CKSyndicationSharedWithYouViewController *)self _appIconNameForBundleID:v14];
   if (v15 != -1)
@@ -170,7 +170,7 @@ LABEL_9:
   return v11;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   if (IMSharedHelperDeviceIsiPad() && !CKIsRunningInMacCatalyst())
   {
@@ -206,7 +206,7 @@ LABEL_9:
   return result;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index
 {
   if (IMSharedHelperDeviceIsiPad() && !CKIsRunningInMacCatalyst())
   {
@@ -232,7 +232,7 @@ LABEL_9:
   }
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index
 {
   if (IMSharedHelperDeviceIsiPad() && !CKIsRunningInMacCatalyst())
   {
@@ -255,7 +255,7 @@ LABEL_9:
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   if (IMSharedHelperDeviceIsiPad() && !CKIsRunningInMacCatalyst())
   {
@@ -303,15 +303,15 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if (!IMSharedHelperDeviceIsiPad() || CKIsRunningInMacCatalyst())
   {
     CKIsRunningInMacCatalyst();
   }
 
-  [v6 frame];
+  [viewCopy frame];
   v8 = v7;
   [(CKSyndicationSharedWithYouViewController *)self maxContentSize];
   v10 = v9 / 40.0;
@@ -323,37 +323,37 @@ LABEL_9:
   return result;
 }
 
-- (int64_t)_appIconNameForBundleID:(id)a3
+- (int64_t)_appIconNameForBundleID:(id)d
 {
-  v3 = a3;
-  if ([v3 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    if ([v3 isEqualToString:@"com.apple.podcasts"])
+    if ([dCopy isEqualToString:@"com.apple.podcasts"])
     {
       v4 = 3;
     }
 
-    else if ([v3 isEqualToString:@"com.apple.news"])
+    else if ([dCopy isEqualToString:@"com.apple.news"])
     {
       v4 = 5;
     }
 
-    else if ([v3 isEqualToString:@"com.apple.mobileslideshow"])
+    else if ([dCopy isEqualToString:@"com.apple.mobileslideshow"])
     {
       v4 = 2;
     }
 
-    else if ([v3 isEqualToString:@"com.apple.tv"])
+    else if ([dCopy isEqualToString:@"com.apple.tv"])
     {
       v4 = 4;
     }
 
-    else if ([v3 isEqualToString:@"com.apple.mobilesafari"])
+    else if ([dCopy isEqualToString:@"com.apple.mobilesafari"])
     {
       v4 = 0;
     }
 
-    else if ([v3 isEqualToString:@"com.apple.Music"])
+    else if ([dCopy isEqualToString:@"com.apple.Music"])
     {
       v4 = 1;
     }

@@ -1,7 +1,7 @@
 @interface NTKRichComplicationExtraLargeCircularClosedGaugeImageView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 - (NTKRichComplicationExtraLargeCircularClosedGaugeImageView)init;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 @end
 
 @implementation NTKRichComplicationExtraLargeCircularClosedGaugeImageView
@@ -13,25 +13,25 @@
   return [(NTKRichComplicationCircularClosedGaugeContentView *)&v3 initWithFamily:12];
 }
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
   v9.receiver = self;
   v9.super_class = NTKRichComplicationExtraLargeCircularClosedGaugeImageView;
-  v6 = a3;
-  [(NTKRichComplicationCircularClosedGaugeContentView *)&v9 _handleTemplate:v6 reason:a4];
-  v7 = [v6 imageProvider];
+  templateCopy = template;
+  [(NTKRichComplicationCircularClosedGaugeContentView *)&v9 _handleTemplate:templateCopy reason:reason];
+  imageProvider = [templateCopy imageProvider];
 
-  v8 = [(NTKRichComplicationBaseCircularClosedGaugeImageView *)self imageView];
-  [v8 setImageProvider:v7 reason:a4];
+  imageView = [(NTKRichComplicationBaseCircularClosedGaugeImageView *)self imageView];
+  [imageView setImageProvider:imageProvider reason:reason];
 }
 
 @end

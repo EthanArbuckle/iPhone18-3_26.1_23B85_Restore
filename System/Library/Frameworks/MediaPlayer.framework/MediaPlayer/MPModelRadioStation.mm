@@ -41,8 +41,8 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [(MPModelRadioStation *)self stationEvents];
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  stationEvents = [(MPModelRadioStation *)self stationEvents];
+  v5 = [stationEvents countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -54,12 +54,12 @@
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(stationEvents);
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 startTime];
-        v12 = [v3 compare:v11];
+        startTime = [v10 startTime];
+        v12 = [v3 compare:startTime];
 
         if (v12 == -1)
         {
@@ -72,7 +72,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v6 = [stationEvents countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v6);
@@ -112,9 +112,9 @@
 
         v9 = *(*(&v23 + 1) + 8 * i);
         v10 = objc_alloc(MEMORY[0x1E696AB80]);
-        v11 = [v9 startTime];
-        v12 = [v9 endTime];
-        v13 = [v10 initWithStartDate:v11 endDate:v12];
+        startTime = [v9 startTime];
+        endTime = [v9 endTime];
+        v13 = [v10 initWithStartDate:startTime endDate:endTime];
 
         if ([v13 containsDate:v3])
         {
@@ -143,11 +143,11 @@
 
 - (id)editorialArtworkCatalog
 {
-  v3 = [(MPModelRadioStation *)self editorialArtworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  editorialArtworkCatalogBlock = [(MPModelRadioStation *)self editorialArtworkCatalogBlock];
+  v4 = editorialArtworkCatalogBlock;
+  if (editorialArtworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(editorialArtworkCatalogBlock + 16))(editorialArtworkCatalogBlock, self);
   }
 
   else
@@ -160,11 +160,11 @@
 
 - (id)stationGlyph
 {
-  v3 = [(MPModelRadioStation *)self stationGlyphBlock];
-  v4 = v3;
-  if (v3)
+  stationGlyphBlock = [(MPModelRadioStation *)self stationGlyphBlock];
+  v4 = stationGlyphBlock;
+  if (stationGlyphBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(stationGlyphBlock + 16))(stationGlyphBlock, self);
   }
 
   else
@@ -177,11 +177,11 @@
 
 - (id)artworkCatalog
 {
-  v3 = [(MPModelRadioStation *)self artworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  artworkCatalogBlock = [(MPModelRadioStation *)self artworkCatalogBlock];
+  v4 = artworkCatalogBlock;
+  if (artworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(artworkCatalogBlock + 16))(artworkCatalogBlock, self);
   }
 
   else
@@ -195,15 +195,15 @@
 - (id)humanDescription
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(MPModelObject *)self identifiers];
-  v5 = [v4 humanDescription];
-  v6 = [v3 stringWithFormat:@"radio station %@", v5];
+  identifiers = [(MPModelObject *)self identifiers];
+  humanDescription = [identifiers humanDescription];
+  v6 = [v3 stringWithFormat:@"radio station %@", humanDescription];
 
   if ([(MPModelObject *)self hasLoadedValueForKey:@"MPModelPropertyRadioStationName"])
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(MPModelRadioStation *)self name];
-    v9 = [v7 stringWithFormat:@"“%@” ", v8];
+    name = [(MPModelRadioStation *)self name];
+    v9 = [v7 stringWithFormat:@"“%@” ", name];
 
     [v6 insertString:v9 atIndex:0];
   }
@@ -213,134 +213,134 @@
 
 + (void)__MPModelPropertyRadioStationEndingAirDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:105 description:@"Translator was missing mapping for MPModelPropertyRadioStationEndingAirDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:105 description:@"Translator was missing mapping for MPModelPropertyRadioStationEndingAirDate"];
 }
 
 + (void)__MPModelPropertyRadioStationStartingAirDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:104 description:@"Translator was missing mapping for MPModelPropertyRadioStationStartingAirDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:104 description:@"Translator was missing mapping for MPModelPropertyRadioStationStartingAirDate"];
 }
 
 + (void)__MPModelPropertyRadioStationProviderID__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:103 description:@"Translator was missing mapping for MPModelPropertyRadioStationProviderID"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:103 description:@"Translator was missing mapping for MPModelPropertyRadioStationProviderID"];
 }
 
 + (void)__MPModelPropertyRadioStationProviderBundleIdentifier__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:102 description:@"Translator was missing mapping for MPModelPropertyRadioStationProviderBundleIdentifier"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:102 description:@"Translator was missing mapping for MPModelPropertyRadioStationProviderBundleIdentifier"];
 }
 
 + (void)__MPModelPropertyRadioStationProviderUniversalLink__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:101 description:@"Translator was missing mapping for MPModelPropertyRadioStationProviderUniversalLink"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:101 description:@"Translator was missing mapping for MPModelPropertyRadioStationProviderUniversalLink"];
 }
 
 + (void)__MPModelPropertyRadioStationSubscriptionRequired__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:100 description:@"Translator was missing mapping for MPModelPropertyRadioStationSubscriptionRequired"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:100 description:@"Translator was missing mapping for MPModelPropertyRadioStationSubscriptionRequired"];
 }
 
 + (void)__MPModelPropertyRadioStationProviderName__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:99 description:@"Translator was missing mapping for MPModelPropertyRadioStationProviderName"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:99 description:@"Translator was missing mapping for MPModelPropertyRadioStationProviderName"];
 }
 
 + (void)__MPModelPropertyRadioStationAttributionLabel__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:98 description:@"Translator was missing mapping for MPModelPropertyRadioStationAttributionLabel"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:98 description:@"Translator was missing mapping for MPModelPropertyRadioStationAttributionLabel"];
 }
 
 + (void)__MPModelPropertyRadioStationSubtype__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:97 description:@"Translator was missing mapping for MPModelPropertyRadioStationSubtype"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:97 description:@"Translator was missing mapping for MPModelPropertyRadioStationSubtype"];
 }
 
 + (void)__MPModelPropertyRadioStationType__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:96 description:@"Translator was missing mapping for MPModelPropertyRadioStationType"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:96 description:@"Translator was missing mapping for MPModelPropertyRadioStationType"];
 }
 
 + (void)__MPModelPropertyRadioStationAllowsItemLiking__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:95 description:@"Translator was missing mapping for MPModelPropertyRadioStationAllowsItemLiking"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:95 description:@"Translator was missing mapping for MPModelPropertyRadioStationAllowsItemLiking"];
 }
 
 + (void)__MPModelPropertyRadioStationEditorialArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:94 description:@"Translator was missing mapping for MPModelPropertyRadioStationEditorialArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:94 description:@"Translator was missing mapping for MPModelPropertyRadioStationEditorialArtwork"];
 }
 
 + (void)__MPModelPropertyRadioStationGlyph__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:93 description:@"Translator was missing mapping for MPModelPropertyRadioStationGlyph"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:93 description:@"Translator was missing mapping for MPModelPropertyRadioStationGlyph"];
 }
 
 + (void)__MPModelPropertyRadioStationArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:92 description:@"Translator was missing mapping for MPModelPropertyRadioStationArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:92 description:@"Translator was missing mapping for MPModelPropertyRadioStationArtwork"];
 }
 
 + (void)__MPModelPropertyRadioStationEvents__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:91 description:@"Translator was missing mapping for MPModelPropertyRadioStationEvents"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:91 description:@"Translator was missing mapping for MPModelPropertyRadioStationEvents"];
 }
 
 + (void)__MPModelPropertyRadioStationHasExplicitContent__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:90 description:@"Translator was missing mapping for MPModelPropertyRadioStationHasExplicitContent"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:90 description:@"Translator was missing mapping for MPModelPropertyRadioStationHasExplicitContent"];
 }
 
 + (void)__MPModelPropertyRadioStationShortEditorNotes__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:89 description:@"Translator was missing mapping for MPModelPropertyRadioStationShortEditorNotes"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:89 description:@"Translator was missing mapping for MPModelPropertyRadioStationShortEditorNotes"];
 }
 
 + (void)__MPModelPropertyRadioStationEditorNotes__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:88 description:@"Translator was missing mapping for MPModelPropertyRadioStationEditorNotes"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:88 description:@"Translator was missing mapping for MPModelPropertyRadioStationEditorNotes"];
 }
 
 + (void)__MPModelPropertyRadioStationName__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:87 description:@"Translator was missing mapping for MPModelPropertyRadioStationName"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:87 description:@"Translator was missing mapping for MPModelPropertyRadioStationName"];
 }
 
 + (void)__MPModelPropertyRadioStationContainsVideo__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:86 description:@"Translator was missing mapping for MPModelPropertyRadioStationContainsVideo"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:86 description:@"Translator was missing mapping for MPModelPropertyRadioStationContainsVideo"];
 }
 
 + (void)__MPModelPropertyRadioStationLive__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:85 description:@"Translator was missing mapping for MPModelPropertyRadioStationLive"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:85 description:@"Translator was missing mapping for MPModelPropertyRadioStationLive"];
 }
 
 + (void)__MPModelPropertyRadioStationBeats1__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelRadioStation.m" lineNumber:84 description:@"Translator was missing mapping for MPModelPropertyRadioStationBeats1"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelRadioStation.m" lineNumber:84 description:@"Translator was missing mapping for MPModelPropertyRadioStationBeats1"];
 }
 
 + (id)classesForSecureCoding

@@ -1,10 +1,10 @@
 @interface ConfirmationDialogSystemApertureViewController
 - (NSString)associatedAppBundleIdentifier;
 - (SBUISystemApertureAccessoryView)trailingView;
-- (_TtC23NetworkEndpointPickerUI46ConfirmationDialogSystemApertureViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setAssociatedAppBundleIdentifier:(id)a3;
+- (_TtC23NetworkEndpointPickerUI46ConfirmationDialogSystemApertureViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setAssociatedAppBundleIdentifier:(id)identifier;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ConfirmationDialogSystemApertureViewController
@@ -27,9 +27,9 @@
   return v4;
 }
 
-- (void)setAssociatedAppBundleIdentifier:(id)a3
+- (void)setAssociatedAppBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -55,23 +55,23 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100003548();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_100003FEC(a4, width, height);
+  selfCopy = self;
+  sub_100003FEC(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (_TtC23NetworkEndpointPickerUI46ConfirmationDialogSystemApertureViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23NetworkEndpointPickerUI46ConfirmationDialogSystemApertureViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -83,8 +83,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000044B8(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000044B8(v5, v7, bundle);
 }
 
 @end

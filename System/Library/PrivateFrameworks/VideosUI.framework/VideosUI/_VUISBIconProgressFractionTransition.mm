@@ -1,37 +1,37 @@
 @interface _VUISBIconProgressFractionTransition
-+ (id)newTransitionToFraction:(double)a3;
-- (void)_updateView:(id)a3 forDisplayedFraction:(double)a4;
-- (void)updateView:(id)a3 withElapsedTime:(double)a4;
++ (id)newTransitionToFraction:(double)fraction;
+- (void)_updateView:(id)view forDisplayedFraction:(double)fraction;
+- (void)updateView:(id)view withElapsedTime:(double)time;
 @end
 
 @implementation _VUISBIconProgressFractionTransition
 
-+ (id)newTransitionToFraction:(double)a3
++ (id)newTransitionToFraction:(double)fraction
 {
-  v4 = objc_alloc_init(a1);
-  [v4 updateToFraction:a3];
+  v4 = objc_alloc_init(self);
+  [v4 updateToFraction:fraction];
   return v4;
 }
 
-- (void)updateView:(id)a3 withElapsedTime:(double)a4
+- (void)updateView:(id)view withElapsedTime:(double)time
 {
-  v6 = a4 * 0.3;
-  [a3 displayedFraction];
+  v6 = time * 0.3;
+  [view displayedFraction];
   targetFraction = v6 + v7;
   if (self->_targetFraction < targetFraction)
   {
     targetFraction = self->_targetFraction;
   }
 
-  [(_VUISBIconProgressFractionTransition *)self _updateView:a3 forDisplayedFraction:targetFraction];
+  [(_VUISBIconProgressFractionTransition *)self _updateView:view forDisplayedFraction:targetFraction];
 }
 
-- (void)_updateView:(id)a3 forDisplayedFraction:(double)a4
+- (void)_updateView:(id)view forDisplayedFraction:(double)fraction
 {
-  [a3 setDisplayedFraction:a4];
-  [a3 circleBoundingRect];
+  [view setDisplayedFraction:fraction];
+  [view circleBoundingRect];
 
-  [a3 setNeedsDisplayInRect:?];
+  [view setNeedsDisplayInRect:?];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface SCATModernMenuGestureFingersSheet
 - (SCATMenuFingerItemsViewDelegate)delegate;
 - (id)makeMenuItemsIfNeeded;
-- (void)menuItemWasActivated:(id)a3;
+- (void)menuItemWasActivated:(id)activated;
 @end
 
 @implementation SCATModernMenuGestureFingersSheet
@@ -32,45 +32,45 @@
   return v3;
 }
 
-- (void)menuItemWasActivated:(id)a3
+- (void)menuItemWasActivated:(id)activated
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:@"gestures_fingers1"])
+  activatedCopy = activated;
+  identifier = [activatedCopy identifier];
+  if ([identifier isEqualToString:@"gestures_fingers1"])
   {
     v6 = 1;
   }
 
-  else if ([v5 isEqualToString:@"gestures_fingers2"])
+  else if ([identifier isEqualToString:@"gestures_fingers2"])
   {
     v6 = 2;
   }
 
-  else if ([v5 isEqualToString:@"gestures_fingers3"])
+  else if ([identifier isEqualToString:@"gestures_fingers3"])
   {
     v6 = 3;
   }
 
-  else if ([v5 isEqualToString:@"gestures_fingers4"])
+  else if ([identifier isEqualToString:@"gestures_fingers4"])
   {
     v6 = 4;
   }
 
   else
   {
-    if (![v5 isEqualToString:@"gestures_fingers5"])
+    if (![identifier isEqualToString:@"gestures_fingers5"])
     {
       v8.receiver = self;
       v8.super_class = SCATModernMenuGestureFingersSheet;
-      [(SCATModernMenuSheet *)&v8 menuItemWasActivated:v4];
+      [(SCATModernMenuSheet *)&v8 menuItemWasActivated:activatedCopy];
       goto LABEL_12;
     }
 
     v6 = 5;
   }
 
-  v7 = [(SCATModernMenuGestureFingersSheet *)self delegate];
-  [v7 fingerItemsViewController:self didChooseNumberOfFingers:v6];
+  delegate = [(SCATModernMenuGestureFingersSheet *)self delegate];
+  [delegate fingerItemsViewController:self didChooseNumberOfFingers:v6];
 
 LABEL_12:
 }

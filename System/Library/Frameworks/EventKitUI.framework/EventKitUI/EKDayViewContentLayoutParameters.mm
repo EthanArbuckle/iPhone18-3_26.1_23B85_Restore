@@ -1,15 +1,15 @@
 @interface EKDayViewContentLayoutParameters
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)boundsSize;
-- (EKDayViewContentLayoutParameters)initWithBoundsSize:(CGSize)a3;
+- (EKDayViewContentLayoutParameters)initWithBoundsSize:(CGSize)size;
 @end
 
 @implementation EKDayViewContentLayoutParameters
 
-- (EKDayViewContentLayoutParameters)initWithBoundsSize:(CGSize)a3
+- (EKDayViewContentLayoutParameters)initWithBoundsSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = EKDayViewContentLayoutParameters;
   result = [(EKDayViewContentLayoutParameters *)&v6 init];
@@ -22,10 +22,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }

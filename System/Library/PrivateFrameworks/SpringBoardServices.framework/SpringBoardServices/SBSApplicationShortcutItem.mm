@@ -1,21 +1,21 @@
 @interface SBSApplicationShortcutItem
-+ (id)_staticApplicationShortcutItemsFromInfoPlistEntry:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_staticApplicationShortcutItemsFromInfoPlistEntry:(id)entry;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)userInfo;
 - (NSString)description;
-- (SBSApplicationShortcutItem)initWithXPCDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_localizeWithHandler:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
-- (void)setUserInfo:(id)a3;
+- (SBSApplicationShortcutItem)initWithXPCDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_localizeWithHandler:(id)handler;
+- (void)encodeWithXPCDictionary:(id)dictionary;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation SBSApplicationShortcutItem
 
-- (SBSApplicationShortcutItem)initWithXPCDictionary:(id)a3
+- (SBSApplicationShortcutItem)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v30.receiver = self;
     v30.super_class = SBSApplicationShortcutItem;
@@ -45,13 +45,13 @@
       icon = v5->_icon;
       v5->_icon = v15;
 
-      v5->_activationMode = xpc_dictionary_get_int64(v4, [@"activationMode" UTF8String]);
+      v5->_activationMode = xpc_dictionary_get_int64(dictionaryCopy, [@"activationMode" UTF8String]);
       [@"targetContentIdentifier" UTF8String];
       v17 = BSDeserializeStringFromXPCDictionaryWithKey();
       targetContentIdentifier = v5->_targetContentIdentifier;
       v5->_targetContentIdentifier = v17;
 
-      v19 = xpc_dictionary_get_value(v4, [@"userInfoData" UTF8String]);
+      v19 = xpc_dictionary_get_value(dictionaryCopy, [@"userInfoData" UTF8String]);
       v20 = v19;
       if (v19 && MEMORY[0x193AFFE60](v19) == MEMORY[0x1E69E9E70])
       {
@@ -70,20 +70,20 @@
     }
 
     self = v5;
-    v28 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v28 = 0;
+    selfCopy = 0;
   }
 
-  return v28;
+  return selfCopy;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
+  xdict = dictionary;
   if (xdict)
   {
     [@"type" UTF8String];
@@ -107,10 +107,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v9) = 1;
   }
@@ -120,72 +120,72 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SBSApplicationShortcutItem *)v5 type];
-      if (v6 == self->_type)
+      v5 = equalCopy;
+      type = [(SBSApplicationShortcutItem *)v5 type];
+      if (type == self->_type)
       {
         v8 = 1;
       }
 
       else
       {
-        v7 = [(SBSApplicationShortcutItem *)v5 type];
-        v8 = [v7 isEqualToString:self->_type];
+        type2 = [(SBSApplicationShortcutItem *)v5 type];
+        v8 = [type2 isEqualToString:self->_type];
       }
 
-      v10 = [(SBSApplicationShortcutItem *)v5 localizedTitle];
-      if (v10 != self->_localizedTitle)
+      localizedTitle = [(SBSApplicationShortcutItem *)v5 localizedTitle];
+      if (localizedTitle != self->_localizedTitle)
       {
-        v11 = [(SBSApplicationShortcutItem *)v5 localizedTitle];
-        if (![v11 isEqualToString:self->_localizedTitle])
+        localizedTitle2 = [(SBSApplicationShortcutItem *)v5 localizedTitle];
+        if (![localizedTitle2 isEqualToString:self->_localizedTitle])
         {
           v8 = 0;
         }
       }
 
-      v12 = [(SBSApplicationShortcutItem *)v5 localizedSubtitle];
-      if (v12 != self->_localizedSubtitle)
+      localizedSubtitle = [(SBSApplicationShortcutItem *)v5 localizedSubtitle];
+      if (localizedSubtitle != self->_localizedSubtitle)
       {
-        v13 = [(SBSApplicationShortcutItem *)v5 localizedSubtitle];
-        if (![v13 isEqualToString:self->_localizedSubtitle])
+        localizedSubtitle2 = [(SBSApplicationShortcutItem *)v5 localizedSubtitle];
+        if (![localizedSubtitle2 isEqualToString:self->_localizedSubtitle])
         {
           v8 = 0;
         }
       }
 
-      v14 = [(SBSApplicationShortcutItem *)v5 icon];
-      if (v14 != self->_icon)
+      icon = [(SBSApplicationShortcutItem *)v5 icon];
+      if (icon != self->_icon)
       {
-        v15 = [(SBSApplicationShortcutItem *)v5 icon];
-        if (![v15 isEqual:self->_icon])
+        icon2 = [(SBSApplicationShortcutItem *)v5 icon];
+        if (![icon2 isEqual:self->_icon])
         {
           v8 = 0;
         }
       }
 
-      v16 = [(SBSApplicationShortcutItem *)v5 userInfoData];
-      if (v16 != self->_userInfoData)
+      userInfoData = [(SBSApplicationShortcutItem *)v5 userInfoData];
+      if (userInfoData != self->_userInfoData)
       {
-        v17 = [(SBSApplicationShortcutItem *)v5 userInfoData];
-        if (![v17 isEqual:self->_userInfoData])
+        userInfoData2 = [(SBSApplicationShortcutItem *)v5 userInfoData];
+        if (![userInfoData2 isEqual:self->_userInfoData])
         {
           v8 = 0;
         }
       }
 
       v9 = [(SBSApplicationShortcutItem *)v5 activationMode]== self->_activationMode && v8 != 0;
-      v19 = [(SBSApplicationShortcutItem *)v5 bundleIdentifierToLaunch];
-      if (v19 != self->_bundleIdentifierToLaunch)
+      bundleIdentifierToLaunch = [(SBSApplicationShortcutItem *)v5 bundleIdentifierToLaunch];
+      if (bundleIdentifierToLaunch != self->_bundleIdentifierToLaunch)
       {
-        v20 = [(SBSApplicationShortcutItem *)v5 bundleIdentifierToLaunch];
-        v9 &= [v20 isEqualToString:self->_bundleIdentifierToLaunch];
+        bundleIdentifierToLaunch2 = [(SBSApplicationShortcutItem *)v5 bundleIdentifierToLaunch];
+        v9 &= [bundleIdentifierToLaunch2 isEqualToString:self->_bundleIdentifierToLaunch];
       }
 
-      v21 = [(SBSApplicationShortcutItem *)v5 targetContentIdentifier];
-      if (v21 != self->_targetContentIdentifier)
+      targetContentIdentifier = [(SBSApplicationShortcutItem *)v5 targetContentIdentifier];
+      if (targetContentIdentifier != self->_targetContentIdentifier)
       {
-        v22 = [(SBSApplicationShortcutItem *)v5 targetContentIdentifier];
-        v9 &= [v22 isEqualToString:self->_targetContentIdentifier];
+        targetContentIdentifier2 = [(SBSApplicationShortcutItem *)v5 targetContentIdentifier];
+        v9 &= [targetContentIdentifier2 isEqualToString:self->_targetContentIdentifier];
       }
     }
 
@@ -208,19 +208,19 @@
   v4 = [v3 appendObject:self->_icon withName:@"icon"];
   [v3 appendString:self->_bundleIdentifierToLaunch withName:@"bundleIdentifierToLaunch"];
   v5 = [v3 appendInt:LODWORD(self->_activationMode) withName:@"activationMode"];
-  v6 = [(SBSApplicationShortcutItem *)self userInfoData];
+  userInfoData = [(SBSApplicationShortcutItem *)self userInfoData];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __41__SBSApplicationShortcutItem_description__block_invoke;
   v11[3] = &unk_1E735F650;
-  v12 = v6;
-  v7 = v6;
+  v12 = userInfoData;
+  v7 = userInfoData;
   v8 = __41__SBSApplicationShortcutItem_description__block_invoke(v11);
   [v3 appendDictionarySection:v8 withName:@"userInfoData" skipIfEmpty:1];
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 id __41__SBSApplicationShortcutItem_description__block_invoke(uint64_t a1)
@@ -239,7 +239,7 @@ id __41__SBSApplicationShortcutItem_description__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setType:self->_type];
@@ -272,10 +272,10 @@ LABEL_5:
   return v3;
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -288,7 +288,7 @@ LABEL_5:
     self->_userInfoData = 0;
 
     v16 = 0;
-    v6 = [MEMORY[0x1E696AE40] dataWithPropertyList:v4 format:200 options:0 error:&v16];
+    v6 = [MEMORY[0x1E696AE40] dataWithPropertyList:infoCopy format:200 options:0 error:&v16];
     v7 = v16;
     v8 = self->_userInfoData;
     self->_userInfoData = v6;
@@ -312,10 +312,10 @@ LABEL_5:
   }
 }
 
-+ (id)_staticApplicationShortcutItemsFromInfoPlistEntry:(id)a3
++ (id)_staticApplicationShortcutItemsFromInfoPlistEntry:(id)entry
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -327,8 +327,8 @@ LABEL_5:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v26 = v3;
-  v4 = v3;
+  v26 = entryCopy;
+  v4 = entryCopy;
   v5 = [v4 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (!v5)
   {
@@ -437,29 +437,29 @@ LABEL_14:
   while (v23);
 LABEL_33:
 
-  v3 = v26;
+  entryCopy = v26;
 LABEL_34:
   v24 = [v7 copy];
 
   return v24;
 }
 
-- (void)_localizeWithHandler:(id)a3
+- (void)_localizeWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v4 = a3;
-    v8 = [(SBSApplicationShortcutItem *)self localizedTitle];
-    v5 = [(SBSApplicationShortcutItem *)self localizedSubtitle];
-    v6 = v4[2](v4, v8);
-    v7 = v4[2](v4, v5);
+    handlerCopy = handler;
+    localizedTitle = [(SBSApplicationShortcutItem *)self localizedTitle];
+    localizedSubtitle = [(SBSApplicationShortcutItem *)self localizedSubtitle];
+    v6 = handlerCopy[2](handlerCopy, localizedTitle);
+    v7 = handlerCopy[2](handlerCopy, localizedSubtitle);
 
-    if (v6 && ([v6 isEqualToString:v8] & 1) == 0)
+    if (v6 && ([v6 isEqualToString:localizedTitle] & 1) == 0)
     {
       [(SBSApplicationShortcutItem *)self setLocalizedTitle:v6];
     }
 
-    if (v7 && ([v7 isEqualToString:v5] & 1) == 0)
+    if (v7 && ([v7 isEqualToString:localizedSubtitle] & 1) == 0)
     {
       [(SBSApplicationShortcutItem *)self setLocalizedSubtitle:v7];
     }

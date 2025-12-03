@@ -1,10 +1,10 @@
 @interface VSBaseHelpResultHandler
-- (id)actionForRecognitionResult:(id)a3;
+- (id)actionForRecognitionResult:(id)result;
 @end
 
 @implementation VSBaseHelpResultHandler
 
-- (id)actionForRecognitionResult:(id)a3
+- (id)actionForRecognitionResult:(id)result
 {
   if (MGGetBoolAnswer())
   {

@@ -1,5 +1,5 @@
 @interface SBWorkspaceApplicationSceneTransitionContext
-- (CGRect)frameForApplicationSceneEntity:(id)a3;
+- (CGRect)frameForApplicationSceneEntity:(id)entity;
 - (FBSDisplayIdentity)displayIdentity;
 - (NSArray)entitiesWithRemovalContexts;
 - (NSDictionary)requestedEntityIdentifierToLayoutAttributes;
@@ -13,59 +13,59 @@
 - (double)watchdogScaleFactor;
 - (id)_displayConfiguration;
 - (id)appClipPlaceholderEntities;
-- (id)appClipPlaceholderEntityForBundleID:(id)a3;
-- (id)applicationSceneEntityForBundleID:(id)a3;
-- (id)applicationSceneEntityForLayoutRole:(int64_t)a3;
-- (id)compactDescriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)entityForLayoutRole:(int64_t)a3;
+- (id)appClipPlaceholderEntityForBundleID:(id)d;
+- (id)applicationSceneEntityForBundleID:(id)d;
+- (id)applicationSceneEntityForLayoutRole:(int64_t)role;
+- (id)compactDescriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)entityForLayoutRole:(int64_t)role;
 - (id)previousAppClipPlaceholderEntities;
-- (id)previousAppClipPlaceholderEntityForBundleID:(id)a3;
-- (id)previousApplicationSceneEntityForBundleID:(id)a3;
-- (id)previousApplicationSceneEntityForLayoutRole:(int64_t)a3;
-- (id)previousEntityForLayoutRole:(int64_t)a3;
-- (id)requestedLayoutAttributesForEntity:(id)a3;
-- (id)requestedWorkspaceEntityForLayoutRole:(int64_t)a3;
+- (id)previousAppClipPlaceholderEntityForBundleID:(id)d;
+- (id)previousApplicationSceneEntityForBundleID:(id)d;
+- (id)previousApplicationSceneEntityForLayoutRole:(int64_t)role;
+- (id)previousEntityForLayoutRole:(int64_t)role;
+- (id)requestedLayoutAttributesForEntity:(id)entity;
+- (id)requestedWorkspaceEntityForLayoutRole:(int64_t)role;
 - (id)succinctDescriptionBuilder;
 - (int64_t)_lockedInterfaceOrientation;
 - (int64_t)interfaceOrientationOrPreferredOrientation;
 - (void)_displayConfiguration;
-- (void)_setRequestedFrontmostEntity:(id)a3;
-- (void)_setRequestedWorkspaceEntity:(id)a3 forLayoutRole:(int64_t)a4;
+- (void)_setRequestedFrontmostEntity:(id)entity;
+- (void)_setRequestedWorkspaceEntity:(id)entity forLayoutRole:(int64_t)role;
 - (void)dealloc;
 - (void)displayIdentity;
 - (void)finalize;
-- (void)sendActivationResultError:(id)a3;
-- (void)setEntities:(id)a3 startingAtLayoutRole:(int64_t)a4 withPolicy:(int64_t)a5 centerEntity:(id)a6 floatingEntity:(id)a7;
-- (void)setEntity:(id)a3 forLayoutRole:(int64_t)a4;
-- (void)setPreviousEntity:(id)a3 forLayoutRole:(int64_t)a4;
-- (void)setRemovalContext:(id)a3 forEntity:(id)a4;
-- (void)setRequestedAppExposeBundleID:(id)a3;
-- (void)setRequestedCenterConfiguration:(int64_t)a3;
-- (void)setRequestedEntityIdentifierToLayoutAttributes:(id)a3;
-- (void)setRequestedFloatingConfiguration:(int64_t)a3;
-- (void)setRequestedFloatingSwitcherVisible:(int64_t)a3;
-- (void)setRequestedLayoutAttributes:(id)a3 forEntity:(id)a4;
-- (void)setRequestedSpaceConfiguration:(int64_t)a3;
-- (void)setRequestedUnlockedEnvironmentMode:(int64_t)a3;
+- (void)sendActivationResultError:(id)error;
+- (void)setEntities:(id)entities startingAtLayoutRole:(int64_t)role withPolicy:(int64_t)policy centerEntity:(id)entity floatingEntity:(id)floatingEntity;
+- (void)setEntity:(id)entity forLayoutRole:(int64_t)role;
+- (void)setPreviousEntity:(id)entity forLayoutRole:(int64_t)role;
+- (void)setRemovalContext:(id)context forEntity:(id)entity;
+- (void)setRequestedAppExposeBundleID:(id)d;
+- (void)setRequestedCenterConfiguration:(int64_t)configuration;
+- (void)setRequestedEntityIdentifierToLayoutAttributes:(id)attributes;
+- (void)setRequestedFloatingConfiguration:(int64_t)configuration;
+- (void)setRequestedFloatingSwitcherVisible:(int64_t)visible;
+- (void)setRequestedLayoutAttributes:(id)attributes forEntity:(id)entity;
+- (void)setRequestedSpaceConfiguration:(int64_t)configuration;
+- (void)setRequestedUnlockedEnvironmentMode:(int64_t)mode;
 @end
 
 @implementation SBWorkspaceApplicationSceneTransitionContext
 
 - (NSSet)applicationSceneEntities
 {
-  v2 = [(SBWorkspaceTransitionContext *)self entities];
-  v3 = [v2 objectsPassingTest:&__block_literal_global_185];
+  entities = [(SBWorkspaceTransitionContext *)self entities];
+  v3 = [entities objectsPassingTest:&__block_literal_global_185];
 
   return v3;
 }
 
 - (SBWorkspaceEntity)resolvedActivatingWorkspaceEntity
 {
-  v3 = [(SBWorkspaceApplicationSceneTransitionContext *)self activatingEntity];
-  v4 = v3;
-  if (v3)
+  activatingEntity = [(SBWorkspaceApplicationSceneTransitionContext *)self activatingEntity];
+  v4 = activatingEntity;
+  if (activatingEntity)
   {
-    v5 = v3;
+    v5 = activatingEntity;
   }
 
   else
@@ -91,7 +91,7 @@
 - (void)dealloc
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -127,10 +127,10 @@
 
 - (NSArray)entitiesWithRemovalContexts
 {
-  v2 = [(NSMapTable *)self->_entityToRemovalContext keyEnumerator];
-  v3 = [v2 allObjects];
+  keyEnumerator = [(NSMapTable *)self->_entityToRemovalContext keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSDictionary)requestedEntityIdentifierToLayoutAttributes
@@ -146,15 +146,15 @@
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = WeakRetained;
+    request = WeakRetained;
   }
 
   else
   {
-    v5 = [(SBWorkspaceTransitionContext *)self request];
+    request = [(SBWorkspaceTransitionContext *)self request];
   }
 
-  v6 = v5;
+  v6 = request;
 
   return v6;
 }
@@ -162,7 +162,7 @@
 - (void)finalize
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -172,8 +172,8 @@
   previousLayoutState = self->_previousLayoutState;
   if (!previousLayoutState)
   {
-    v4 = [(SBWorkspaceApplicationSceneTransitionContext *)self delegate];
-    v5 = [v4 previousLayoutStateForApplicationTransitionContext:self];
+    delegate = [(SBWorkspaceApplicationSceneTransitionContext *)self delegate];
+    v5 = [delegate previousLayoutStateForApplicationTransitionContext:self];
     v6 = self->_previousLayoutState;
     self->_previousLayoutState = v5;
 
@@ -188,8 +188,8 @@
   layoutState = self->_layoutState;
   if (!layoutState)
   {
-    v4 = [(SBWorkspaceApplicationSceneTransitionContext *)self delegate];
-    v5 = [v4 layoutStateForApplicationTransitionContext:self];
+    delegate = [(SBWorkspaceApplicationSceneTransitionContext *)self delegate];
+    v5 = [delegate layoutStateForApplicationTransitionContext:self];
     v6 = self->_layoutState;
     self->_layoutState = v5;
 
@@ -201,8 +201,8 @@
 
 - (NSSet)previousApplicationSceneEntities
 {
-  v2 = [(SBWorkspaceTransitionContext *)self previousEntities];
-  v3 = [v2 objectsPassingTest:&__block_literal_global_42_1];
+  previousEntities = [(SBWorkspaceTransitionContext *)self previousEntities];
+  v3 = [previousEntities objectsPassingTest:&__block_literal_global_42_1];
 
   return v3;
 }
@@ -214,8 +214,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(SBWorkspaceApplicationSceneTransitionContext *)self applicationSceneEntities];
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  applicationSceneEntities = [(SBWorkspaceApplicationSceneTransitionContext *)self applicationSceneEntities];
+  v4 = [applicationSceneEntities countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v4)
   {
 
@@ -231,17 +231,17 @@
     {
       if (*v18 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(applicationSceneEntities);
       }
 
-      v9 = [*(*(&v17 + 1) + 8 * i) application];
-      v10 = [v9 processState];
-      v11 = [v10 isRunning];
+      application = [*(*(&v17 + 1) + 8 * i) application];
+      processState = [application processState];
+      isRunning = [processState isRunning];
 
-      v6 += v11 ^ 1u;
+      v6 += isRunning ^ 1u;
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v5 = [applicationSceneEntities countByEnumeratingWithState:&v17 objects:v21 count:16];
   }
 
   while (v5);
@@ -249,13 +249,13 @@
   if (v6 <= 1)
   {
 LABEL_11:
-    v12 = [(SBWorkspaceTransitionContext *)self request];
-    v13 = [v12 workspace];
-    v14 = [v13 pipCoordinator];
-    v15 = [v14 isAnyPictureInPictureWindowVisible];
+    request = [(SBWorkspaceTransitionContext *)self request];
+    workspace = [request workspace];
+    pipCoordinator = [workspace pipCoordinator];
+    isAnyPictureInPictureWindowVisible = [pipCoordinator isAnyPictureInPictureWindowVisible];
 
     result = 1.0;
-    if (!v15)
+    if (!isAnyPictureInPictureWindowVisible)
     {
       return result;
     }
@@ -266,15 +266,15 @@ LABEL_11:
 
 - (FBSDisplayIdentity)displayIdentity
 {
-  v2 = [(SBWorkspaceTransitionContext *)self request];
-  if (!v2)
+  request = [(SBWorkspaceTransitionContext *)self request];
+  if (!request)
   {
     [SBWorkspaceApplicationSceneTransitionContext displayIdentity];
   }
 
-  v3 = [v2 displayIdentity];
+  displayIdentity = [request displayIdentity];
 
-  return v3;
+  return displayIdentity;
 }
 
 - (int64_t)interfaceOrientationOrPreferredOrientation
@@ -289,76 +289,76 @@ LABEL_11:
   return result;
 }
 
-- (void)sendActivationResultError:(id)a3
+- (void)sendActivationResultError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (!self->_sentActivationResult)
   {
     self->_sentActivationResult = 1;
     resultBlock = self->_resultBlock;
     if (resultBlock)
     {
-      v7 = v4;
+      v7 = errorCopy;
       resultBlock[2]();
       v6 = self->_resultBlock;
       self->_resultBlock = 0;
 
-      v4 = v7;
+      errorCopy = v7;
     }
   }
 }
 
-- (id)entityForLayoutRole:(int64_t)a3
+- (id)entityForLayoutRole:(int64_t)role
 {
-  v4 = SBLayoutRoleIdentifierForRole(a3);
+  v4 = SBLayoutRoleIdentifierForRole(role);
   v5 = [(SBWorkspaceTransitionContext *)self entityForKey:v4];
 
   return v5;
 }
 
-- (void)setEntity:(id)a3 forLayoutRole:(int64_t)a4
+- (void)setEntity:(id)entity forLayoutRole:(int64_t)role
 {
-  v10 = a3;
-  v6 = SBLayoutRoleIdentifierForRole(a4);
-  v7 = v10;
+  entityCopy = entity;
+  v6 = SBLayoutRoleIdentifierForRole(role);
+  v7 = entityCopy;
   v8 = v6;
-  if (v10)
+  if (entityCopy)
   {
-    [v10 setLayoutRole:a4];
-    v9 = [(SBWorkspaceApplicationSceneTransitionContext *)self activatingEntity];
+    [entityCopy setLayoutRole:role];
+    activatingEntity = [(SBWorkspaceApplicationSceneTransitionContext *)self activatingEntity];
 
-    v7 = v10;
-    if (v9 == v10)
+    v7 = entityCopy;
+    if (activatingEntity == entityCopy)
     {
       [(SBWorkspaceApplicationSceneTransitionContext *)self setActivatingEntity:0];
-      v7 = v10;
+      v7 = entityCopy;
     }
   }
 
   [(SBWorkspaceTransitionContext *)self setEntity:v7 forKey:v8];
 }
 
-- (void)setEntities:(id)a3 startingAtLayoutRole:(int64_t)a4 withPolicy:(int64_t)a5 centerEntity:(id)a6 floatingEntity:(id)a7
+- (void)setEntities:(id)entities startingAtLayoutRole:(int64_t)role withPolicy:(int64_t)policy centerEntity:(id)entity floatingEntity:(id)floatingEntity
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  if (SBLayoutRoleIsValidForSplitView(a4))
+  entitiesCopy = entities;
+  entityCopy = entity;
+  floatingEntityCopy = floatingEntity;
+  if (SBLayoutRoleIsValidForSplitView(role))
   {
-    if (v13)
+    if (entityCopy)
     {
 LABEL_3:
-      [(SBWorkspaceApplicationSceneTransitionContext *)self setEntity:v13 forLayoutRole:4];
-      [v12 sb_arrayByRemovingObject:v13];
-      v12 = v15 = v12;
+      [(SBWorkspaceApplicationSceneTransitionContext *)self setEntity:entityCopy forLayoutRole:4];
+      [entitiesCopy sb_arrayByRemovingObject:entityCopy];
+      entitiesCopy = v15 = entitiesCopy;
       goto LABEL_6;
     }
   }
 
   else
   {
-    [SBWorkspaceApplicationSceneTransitionContext setEntities:a4 startingAtLayoutRole:? withPolicy:? centerEntity:? floatingEntity:?];
-    if (v13)
+    [SBWorkspaceApplicationSceneTransitionContext setEntities:role startingAtLayoutRole:? withPolicy:? centerEntity:? floatingEntity:?];
+    if (entityCopy)
     {
       goto LABEL_3;
     }
@@ -368,11 +368,11 @@ LABEL_3:
   [(SBWorkspaceApplicationSceneTransitionContext *)self setEntity:v15 forLayoutRole:4];
 LABEL_6:
 
-  if (v14)
+  if (floatingEntityCopy)
   {
-    [(SBWorkspaceApplicationSceneTransitionContext *)self setEntity:v14 forLayoutRole:3];
-    [v12 sb_arrayByRemovingObject:v14];
-    v12 = v16 = v12;
+    [(SBWorkspaceApplicationSceneTransitionContext *)self setEntity:floatingEntityCopy forLayoutRole:3];
+    [entitiesCopy sb_arrayByRemovingObject:floatingEntityCopy];
+    entitiesCopy = v16 = entitiesCopy;
   }
 
   else
@@ -388,16 +388,16 @@ LABEL_6:
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x2020000000;
-  v24[3] = a4;
+  v24[3] = role;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __120__SBWorkspaceApplicationSceneTransitionContext_setEntities_startingAtLayoutRole_withPolicy_centerEntity_floatingEntity___block_invoke;
   v18[3] = &unk_2783B7950;
-  v22 = a5;
-  v23 = a4;
+  policyCopy = policy;
+  roleCopy = role;
   v18[4] = self;
   v20 = v25;
-  v17 = v12;
+  v17 = entitiesCopy;
   v19 = v17;
   v21 = v24;
   SBLayoutRoleEnumerateValidRoles(v18);
@@ -475,28 +475,28 @@ LABEL_16:
   while ((SBLayoutRoleIsValidForSplitView(v14) & 1) == 0 && SBLayoutRoleIsValid(*(*(*(a1 + 56) + 8) + 24)));
 }
 
-- (id)previousEntityForLayoutRole:(int64_t)a3
+- (id)previousEntityForLayoutRole:(int64_t)role
 {
-  v4 = SBLayoutRoleIdentifierForRole(a3);
+  v4 = SBLayoutRoleIdentifierForRole(role);
   v5 = [(SBWorkspaceTransitionContext *)self previousEntityForKey:v4];
 
   return v5;
 }
 
-- (void)setPreviousEntity:(id)a3 forLayoutRole:(int64_t)a4
+- (void)setPreviousEntity:(id)entity forLayoutRole:(int64_t)role
 {
-  v8 = a3;
-  v6 = SBLayoutRoleIdentifierForRole(a4);
-  [(SBWorkspaceTransitionContext *)self setPreviousEntity:v8 forKey:v6];
+  entityCopy = entity;
+  v6 = SBLayoutRoleIdentifierForRole(role);
+  [(SBWorkspaceTransitionContext *)self setPreviousEntity:entityCopy forKey:v6];
   v7 = [(SBWorkspaceTransitionContext *)self previousEntityForKey:v6];
   if (v7)
   {
-    if (v7 == v8)
+    if (v7 == entityCopy)
     {
       [SBWorkspaceApplicationSceneTransitionContext setPreviousEntity:forLayoutRole:];
     }
 
-    [v7 setLayoutRole:a4];
+    [v7 setLayoutRole:role];
     if ([v7 isApplicationSceneEntity])
     {
       [v7 clearProcessSettings];
@@ -504,32 +504,32 @@ LABEL_16:
   }
 }
 
-- (void)setRequestedSpaceConfiguration:(int64_t)a3
+- (void)setRequestedSpaceConfiguration:(int64_t)configuration
 {
   if ([(SBWorkspaceTransitionContext *)self isFinalized])
   {
     [SBWorkspaceApplicationSceneTransitionContext setRequestedSpaceConfiguration:];
   }
 
-  if (self->_requestedSpaceConfiguration != a3)
+  if (self->_requestedSpaceConfiguration != configuration)
   {
-    self->_requestedSpaceConfiguration = a3;
+    self->_requestedSpaceConfiguration = configuration;
   }
 }
 
-- (void)setRequestedEntityIdentifierToLayoutAttributes:(id)a3
+- (void)setRequestedEntityIdentifierToLayoutAttributes:(id)attributes
 {
-  v8 = a3;
+  attributesCopy = attributes;
   if ([(SBWorkspaceTransitionContext *)self isFinalized])
   {
     [SBWorkspaceApplicationSceneTransitionContext setRequestedEntityIdentifierToLayoutAttributes:];
   }
 
-  v4 = v8;
-  if (self->_requestedEntityIdentifierToLayoutAttributes != v8)
+  v4 = attributesCopy;
+  if (self->_requestedEntityIdentifierToLayoutAttributes != attributesCopy)
   {
-    v5 = v8;
-    if (!v8)
+    v5 = attributesCopy;
+    if (!attributesCopy)
     {
       v5 = MEMORY[0x277CBEC10];
     }
@@ -538,26 +538,26 @@ LABEL_16:
     requestedEntityIdentifierToLayoutAttributes = self->_requestedEntityIdentifierToLayoutAttributes;
     self->_requestedEntityIdentifierToLayoutAttributes = v6;
 
-    v4 = v8;
+    v4 = attributesCopy;
   }
 }
 
-- (id)requestedLayoutAttributesForEntity:(id)a3
+- (id)requestedLayoutAttributesForEntity:(id)entity
 {
   requestedEntityIdentifierToLayoutAttributes = self->_requestedEntityIdentifierToLayoutAttributes;
-  v4 = [a3 uniqueIdentifier];
-  v5 = [(NSMutableDictionary *)requestedEntityIdentifierToLayoutAttributes objectForKey:v4];
+  uniqueIdentifier = [entity uniqueIdentifier];
+  v5 = [(NSMutableDictionary *)requestedEntityIdentifierToLayoutAttributes objectForKey:uniqueIdentifier];
 
   return v5;
 }
 
-- (void)setRequestedLayoutAttributes:(id)a3 forEntity:(id)a4
+- (void)setRequestedLayoutAttributes:(id)attributes forEntity:(id)entity
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11)
+  attributesCopy = attributes;
+  entityCopy = entity;
+  if (attributesCopy)
   {
-    if (v6)
+    if (entityCopy)
     {
       goto LABEL_3;
     }
@@ -566,7 +566,7 @@ LABEL_16:
   else
   {
     [SBWorkspaceApplicationSceneTransitionContext setRequestedLayoutAttributes:forEntity:];
-    if (v6)
+    if (entityCopy)
     {
       goto LABEL_3;
     }
@@ -589,30 +589,30 @@ LABEL_3:
     requestedEntityIdentifierToLayoutAttributes = self->_requestedEntityIdentifierToLayoutAttributes;
   }
 
-  v10 = [v6 uniqueIdentifier];
-  [(NSMutableDictionary *)requestedEntityIdentifierToLayoutAttributes setObject:v11 forKey:v10];
+  uniqueIdentifier = [entityCopy uniqueIdentifier];
+  [(NSMutableDictionary *)requestedEntityIdentifierToLayoutAttributes setObject:attributesCopy forKey:uniqueIdentifier];
 }
 
-- (void)_setRequestedFrontmostEntity:(id)a3
+- (void)_setRequestedFrontmostEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [v4 applicationSceneEntity];
-  if (!v5)
+  entityCopy = entity;
+  applicationSceneEntity = [entityCopy applicationSceneEntity];
+  if (!applicationSceneEntity)
   {
     goto LABEL_62;
   }
 
-  v59 = [SBLayoutElement elementWithDescriptor:v4];
-  v6 = [v59 uniqueIdentifier];
+  v59 = [SBLayoutElement elementWithDescriptor:entityCopy];
+  uniqueIdentifier = [v59 uniqueIdentifier];
   v78[0] = MEMORY[0x277D85DD0];
   v78[1] = 3221225472;
   v78[2] = __77__SBWorkspaceApplicationSceneTransitionContext__setRequestedFrontmostEntity___block_invoke;
   v78[3] = &unk_2783A8C90;
-  v62 = v6;
+  v62 = uniqueIdentifier;
   v79 = v62;
   v7 = MEMORY[0x223D6F7F0](v78);
   v8 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-  v9 = [v8 _recentAppLayoutsController];
+  _recentAppLayoutsController = [v8 _recentAppLayoutsController];
 
   v76[0] = MEMORY[0x277D85DD0];
   v76[1] = 3221225472;
@@ -620,14 +620,14 @@ LABEL_3:
   v76[3] = &unk_2783B7978;
   v60 = v7;
   v77 = v60;
-  v10 = [v9 mostRecentAppLayoutIncludingHiddenAppLayouts:1 passingTest:v76];
-  v63 = [v9 layoutAttributesProvider];
-  v11 = [(SBWorkspaceApplicationSceneTransitionContext *)self previousLayoutState];
-  v12 = [v11 interfaceOrientation];
+  v10 = [_recentAppLayoutsController mostRecentAppLayoutIncludingHiddenAppLayouts:1 passingTest:v76];
+  layoutAttributesProvider = [_recentAppLayoutsController layoutAttributesProvider];
+  previousLayoutState = [(SBWorkspaceApplicationSceneTransitionContext *)self previousLayoutState];
+  interfaceOrientation = [previousLayoutState interfaceOrientation];
 
-  v13 = [(SBWorkspaceApplicationSceneTransitionContext *)self previousLayoutState];
+  previousLayoutState2 = [(SBWorkspaceApplicationSceneTransitionContext *)self previousLayoutState];
   v14 = objc_opt_class();
-  v15 = v13;
+  v15 = previousLayoutState2;
   if (v14)
   {
     if (objc_opt_isKindOfClass())
@@ -648,20 +648,20 @@ LABEL_3:
 
   v17 = v16;
 
-  v61 = [v17 elementIdentifiersToLayoutAttributes];
+  elementIdentifiersToLayoutAttributes = [v17 elementIdentifiersToLayoutAttributes];
 
-  v18 = [(SBWorkspaceApplicationSceneTransitionContext *)self requestedLayoutAttributesForEntity:v4];
+  v18 = [(SBWorkspaceApplicationSceneTransitionContext *)self requestedLayoutAttributesForEntity:entityCopy];
   if (v18)
   {
     goto LABEL_30;
   }
 
-  v18 = [v61 objectForKey:v62];
+  v18 = [elementIdentifiersToLayoutAttributes objectForKey:v62];
   if (!v18 && v10)
   {
-    v19 = [(SBWorkspaceApplicationSceneTransitionContext *)self previousLayoutState];
+    previousLayoutState3 = [(SBWorkspaceApplicationSceneTransitionContext *)self previousLayoutState];
     v20 = objc_opt_class();
-    v21 = v19;
+    v21 = previousLayoutState3;
     if (v20)
     {
       if (objc_opt_isKindOfClass())
@@ -684,20 +684,20 @@ LABEL_3:
 
     if (v23 && (v24 = [v23 displayOrdinal], objc_msgSend(v10, "preferredDisplayOrdinal") != v24))
     {
-      v25 = [v10 allItems];
-      v26 = [v25 bs_firstObjectPassingTest:v60];
+      allItems = [v10 allItems];
+      v26 = [allItems bs_firstObjectPassingTest:v60];
 
-      if ((v12 - 1) < 2)
+      if ((interfaceOrientation - 1) < 2)
       {
         v27 = 1;
       }
 
       else
       {
-        v27 = 2 * ((v12 - 3) < 2);
+        v27 = 2 * ((interfaceOrientation - 3) < 2);
       }
 
-      v18 = [v63 layoutAttributesForDisplayItem:v26 inAppLayout:v10 displayOrdinal:v24 orientation:v27];
+      v18 = [layoutAttributesProvider layoutAttributesForDisplayItem:v26 inAppLayout:v10 displayOrdinal:v24 orientation:v27];
     }
 
     else
@@ -708,20 +708,20 @@ LABEL_3:
 
   if (!v18 && v10)
   {
-    v28 = [v10 allItems];
-    v29 = [v28 bs_firstObjectPassingTest:v60];
-    v30 = [v10 preferredDisplayOrdinal];
-    if ((v12 - 1) < 2)
+    allItems2 = [v10 allItems];
+    v29 = [allItems2 bs_firstObjectPassingTest:v60];
+    preferredDisplayOrdinal = [v10 preferredDisplayOrdinal];
+    if ((interfaceOrientation - 1) < 2)
     {
       v31 = 1;
     }
 
     else
     {
-      v31 = 2 * ((v12 - 3) < 2);
+      v31 = 2 * ((interfaceOrientation - 3) < 2);
     }
 
-    v18 = [v63 layoutAttributesForDisplayItem:v29 inAppLayout:v10 displayOrdinal:v30 orientation:v31];
+    v18 = [layoutAttributesProvider layoutAttributesForDisplayItem:v29 inAppLayout:v10 displayOrdinal:preferredDisplayOrdinal orientation:v31];
   }
 
   if (v18)
@@ -742,22 +742,22 @@ LABEL_30:
     }
   }
 
-  v32 = [v5 application];
-  v33 = [v32 bundleIdentifier];
+  application = [applicationSceneEntity application];
+  bundleIdentifier = [application bundleIdentifier];
 
-  if (v33)
+  if (bundleIdentifier)
   {
     v74[0] = MEMORY[0x277D85DD0];
     v74[1] = 3221225472;
     v74[2] = __77__SBWorkspaceApplicationSceneTransitionContext__setRequestedFrontmostEntity___block_invoke_3;
     v74[3] = &unk_2783A8CB8;
-    v34 = v33;
+    v34 = bundleIdentifier;
     v75 = v34;
-    v35 = [v9 mostRecentAppLayoutIncludingHiddenAppLayouts:1 passingTest:v74];
+    v35 = [_recentAppLayoutsController mostRecentAppLayoutIncludingHiddenAppLayouts:1 passingTest:v74];
     if (!v35)
     {
 LABEL_49:
-      if ([v4 layoutRole] == 4)
+      if ([entityCopy layoutRole] == 4)
       {
         SBDisplayItemAttributedSizeUnspecified(&v68);
         v46 = [SBDisplayItemLayoutAttributes attributesByModifyingAttributedSize:v18];
@@ -768,16 +768,16 @@ LABEL_49:
       goto LABEL_52;
     }
 
-    v57 = v12;
-    v58 = v33;
-    if ((v12 - 1) < 2)
+    v57 = interfaceOrientation;
+    v58 = bundleIdentifier;
+    if ((interfaceOrientation - 1) < 2)
     {
       v36 = 1;
     }
 
     else
     {
-      v36 = 2 * ((v12 - 3) < 2);
+      v36 = 2 * ((interfaceOrientation - 3) < 2);
     }
 
     v72[0] = MEMORY[0x277D85DD0];
@@ -785,32 +785,32 @@ LABEL_49:
     v72[2] = __77__SBWorkspaceApplicationSceneTransitionContext__setRequestedFrontmostEntity___block_invoke_4;
     v72[3] = &unk_2783A8C90;
     v73 = v34;
-    v37 = [v63 lastInteractedDisplayItemInAppLayout:v35 orientation:v36 passingTest:v72];
+    v37 = [layoutAttributesProvider lastInteractedDisplayItemInAppLayout:v35 orientation:v36 passingTest:v72];
     if (!v37)
     {
-      v33 = v58;
+      bundleIdentifier = v58;
 LABEL_48:
 
-      v12 = v57;
+      interfaceOrientation = v57;
       goto LABEL_49;
     }
 
     v55 = v35;
-    v53 = [v63 layoutAttributesForDisplayItem:v37 inAppLayout:v35 displayOrdinal:objc_msgSend(v35 orientation:{"preferredDisplayOrdinal"), v36}];
+    v53 = [layoutAttributesProvider layoutAttributesForDisplayItem:v37 inAppLayout:v35 displayOrdinal:objc_msgSend(v35 orientation:{"preferredDisplayOrdinal"), v36}];
     v38 = +[SBMainSwitcherControllerCoordinator sharedInstance];
     v39 = [v38 switcherControllerForDisplayItem:v37];
 
-    v40 = [v5 deviceApplicationSceneEntity];
-    v41 = [v40 sceneHandle];
+    deviceApplicationSceneEntity = [applicationSceneEntity deviceApplicationSceneEntity];
+    sceneHandle = [deviceApplicationSceneEntity sceneHandle];
     v54 = v37;
     v56 = v39;
-    if ([v41 supportsCenterWindow])
+    if ([sceneHandle supportsCenterWindow])
     {
       v42 = v37;
       v43 = v53;
       v52 = [v39 _isDisplayItemFullScreen:v42 preferredAttributes:v53];
 
-      v33 = v58;
+      bundleIdentifier = v58;
       if (v52)
       {
         v71 = 0;
@@ -838,7 +838,7 @@ LABEL_48:
     else
     {
 
-      v33 = v58;
+      bundleIdentifier = v58;
       v43 = v53;
     }
 
@@ -858,8 +858,8 @@ LABEL_47:
 LABEL_52:
 
 LABEL_53:
-  v47 = [v4 displayItemRepresentation];
-  if (v47)
+  displayItemRepresentation = [entityCopy displayItemRepresentation];
+  if (displayItemRepresentation)
   {
     [(SBDisplayItemLayoutAttributes *)v18 slideOverConfiguration];
     if (SBDisplayItemSlideOverConfigurationIsValid(&v68))
@@ -868,8 +868,8 @@ LABEL_53:
       v64[1] = 3221225472;
       v64[2] = __77__SBWorkspaceApplicationSceneTransitionContext__setRequestedFrontmostEntity___block_invoke_5;
       v64[3] = &unk_2783A8CB8;
-      v65 = v47;
-      v48 = [v9 mostRecentAppLayoutIncludingHiddenAppLayouts:0 passingTest:v64];
+      v65 = displayItemRepresentation;
+      v48 = [_recentAppLayoutsController mostRecentAppLayoutIncludingHiddenAppLayouts:0 passingTest:v64];
       if (!v48)
       {
         [(SBDisplayItemLayoutAttributes *)v18 slideOverConfiguration];
@@ -881,20 +881,20 @@ LABEL_53:
     }
   }
 
-  if ((v12 - 1) < 2)
+  if ((interfaceOrientation - 1) < 2)
   {
     v50 = 1;
   }
 
   else
   {
-    v50 = 2 * ((v12 - 3) < 2);
+    v50 = 2 * ((interfaceOrientation - 3) < 2);
   }
 
-  [v9 _nextInteractionTimeInOrientation:v50];
+  [_recentAppLayoutsController _nextInteractionTimeInOrientation:v50];
   v51 = [SBDisplayItemLayoutAttributes attributesByModifyingLastInteractionTime:v18];
 
-  [(SBWorkspaceApplicationSceneTransitionContext *)self setRequestedLayoutAttributes:v51 forEntity:v4];
+  [(SBWorkspaceApplicationSceneTransitionContext *)self setRequestedLayoutAttributes:v51 forEntity:entityCopy];
 LABEL_62:
 }
 
@@ -951,51 +951,51 @@ uint64_t __77__SBWorkspaceApplicationSceneTransitionContext__setRequestedFrontmo
   return v4;
 }
 
-- (void)setRequestedCenterConfiguration:(int64_t)a3
+- (void)setRequestedCenterConfiguration:(int64_t)configuration
 {
-  if (self->_requestedCenterConfiguration != a3)
+  if (self->_requestedCenterConfiguration != configuration)
   {
-    self->_requestedCenterConfiguration = a3;
+    self->_requestedCenterConfiguration = configuration;
   }
 }
 
-- (void)setRequestedFloatingConfiguration:(int64_t)a3
+- (void)setRequestedFloatingConfiguration:(int64_t)configuration
 {
-  if (self->_requestedFloatingConfiguration != a3)
+  if (self->_requestedFloatingConfiguration != configuration)
   {
-    self->_requestedFloatingConfiguration = a3;
+    self->_requestedFloatingConfiguration = configuration;
   }
 }
 
-- (void)setRequestedUnlockedEnvironmentMode:(int64_t)a3
+- (void)setRequestedUnlockedEnvironmentMode:(int64_t)mode
 {
-  if (self->_requestedUnlockedEnvironmentMode != a3)
+  if (self->_requestedUnlockedEnvironmentMode != mode)
   {
-    self->_requestedUnlockedEnvironmentMode = a3;
+    self->_requestedUnlockedEnvironmentMode = mode;
   }
 }
 
-- (void)setRequestedFloatingSwitcherVisible:(int64_t)a3
+- (void)setRequestedFloatingSwitcherVisible:(int64_t)visible
 {
-  if (self->_requestedFloatingSwitcherVisible != a3)
+  if (self->_requestedFloatingSwitcherVisible != visible)
   {
-    self->_requestedFloatingSwitcherVisible = a3;
+    self->_requestedFloatingSwitcherVisible = visible;
   }
 }
 
-- (void)setRequestedAppExposeBundleID:(id)a3
+- (void)setRequestedAppExposeBundleID:(id)d
 {
-  if (self->_requestedAppExposeBundleID != a3)
+  if (self->_requestedAppExposeBundleID != d)
   {
-    v4 = [a3 copy];
+    v4 = [d copy];
     requestedAppExposeBundleID = self->_requestedAppExposeBundleID;
     self->_requestedAppExposeBundleID = v4;
   }
 }
 
-- (id)applicationSceneEntityForLayoutRole:(int64_t)a3
+- (id)applicationSceneEntityForLayoutRole:(int64_t)role
 {
-  v3 = [(SBWorkspaceApplicationSceneTransitionContext *)self entityForLayoutRole:a3];
+  v3 = [(SBWorkspaceApplicationSceneTransitionContext *)self entityForLayoutRole:role];
   if ([v3 isApplicationSceneEntity])
   {
     v4 = v3;
@@ -1009,16 +1009,16 @@ uint64_t __77__SBWorkspaceApplicationSceneTransitionContext__setRequestedFrontmo
   return v4;
 }
 
-- (id)applicationSceneEntityForBundleID:(id)a3
+- (id)applicationSceneEntityForBundleID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SBWorkspaceApplicationSceneTransitionContext *)self applicationSceneEntities];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  applicationSceneEntities = [(SBWorkspaceApplicationSceneTransitionContext *)self applicationSceneEntities];
+  v6 = [applicationSceneEntities countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -1028,13 +1028,13 @@ uint64_t __77__SBWorkspaceApplicationSceneTransitionContext__setRequestedFrontmo
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(applicationSceneEntities);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 application];
-        v11 = [v10 bundleIdentifier];
-        v12 = [v11 isEqualToString:v4];
+        application = [v9 application];
+        bundleIdentifier = [application bundleIdentifier];
+        v12 = [bundleIdentifier isEqualToString:dCopy];
 
         if (v12)
         {
@@ -1043,7 +1043,7 @@ uint64_t __77__SBWorkspaceApplicationSceneTransitionContext__setRequestedFrontmo
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [applicationSceneEntities countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -1058,9 +1058,9 @@ LABEL_11:
   return v6;
 }
 
-- (id)previousApplicationSceneEntityForLayoutRole:(int64_t)a3
+- (id)previousApplicationSceneEntityForLayoutRole:(int64_t)role
 {
-  v3 = [(SBWorkspaceApplicationSceneTransitionContext *)self previousEntityForLayoutRole:a3];
+  v3 = [(SBWorkspaceApplicationSceneTransitionContext *)self previousEntityForLayoutRole:role];
   if ([v3 isApplicationSceneEntity])
   {
     v4 = v3;
@@ -1074,16 +1074,16 @@ LABEL_11:
   return v4;
 }
 
-- (id)previousApplicationSceneEntityForBundleID:(id)a3
+- (id)previousApplicationSceneEntityForBundleID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SBWorkspaceApplicationSceneTransitionContext *)self previousApplicationSceneEntities];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  previousApplicationSceneEntities = [(SBWorkspaceApplicationSceneTransitionContext *)self previousApplicationSceneEntities];
+  v6 = [previousApplicationSceneEntities countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -1093,13 +1093,13 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(previousApplicationSceneEntities);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 application];
-        v11 = [v10 bundleIdentifier];
-        v12 = [v11 isEqualToString:v4];
+        application = [v9 application];
+        bundleIdentifier = [application bundleIdentifier];
+        v12 = [bundleIdentifier isEqualToString:dCopy];
 
         if (v12)
         {
@@ -1108,7 +1108,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [previousApplicationSceneEntities countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -1125,30 +1125,30 @@ LABEL_11:
 
 - (id)appClipPlaceholderEntities
 {
-  v2 = [(SBWorkspaceTransitionContext *)self entities];
-  v3 = [v2 objectsPassingTest:&__block_literal_global_44_0];
+  entities = [(SBWorkspaceTransitionContext *)self entities];
+  v3 = [entities objectsPassingTest:&__block_literal_global_44_0];
 
   return v3;
 }
 
 - (id)previousAppClipPlaceholderEntities
 {
-  v2 = [(SBWorkspaceTransitionContext *)self previousEntities];
-  v3 = [v2 objectsPassingTest:&__block_literal_global_46];
+  previousEntities = [(SBWorkspaceTransitionContext *)self previousEntities];
+  v3 = [previousEntities objectsPassingTest:&__block_literal_global_46];
 
   return v3;
 }
 
-- (id)appClipPlaceholderEntityForBundleID:(id)a3
+- (id)appClipPlaceholderEntityForBundleID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(SBWorkspaceApplicationSceneTransitionContext *)self appClipPlaceholderEntities];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  appClipPlaceholderEntities = [(SBWorkspaceApplicationSceneTransitionContext *)self appClipPlaceholderEntities];
+  v6 = [appClipPlaceholderEntities countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -1158,12 +1158,12 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(appClipPlaceholderEntities);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 bundleIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        bundleIdentifier = [v9 bundleIdentifier];
+        v11 = [bundleIdentifier isEqualToString:dCopy];
 
         if (v11)
         {
@@ -1172,7 +1172,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [appClipPlaceholderEntities countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -1187,16 +1187,16 @@ LABEL_11:
   return v6;
 }
 
-- (id)previousAppClipPlaceholderEntityForBundleID:(id)a3
+- (id)previousAppClipPlaceholderEntityForBundleID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(SBWorkspaceApplicationSceneTransitionContext *)self previousAppClipPlaceholderEntities];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  previousAppClipPlaceholderEntities = [(SBWorkspaceApplicationSceneTransitionContext *)self previousAppClipPlaceholderEntities];
+  v6 = [previousAppClipPlaceholderEntities countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -1206,12 +1206,12 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(previousAppClipPlaceholderEntities);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 bundleIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        bundleIdentifier = [v9 bundleIdentifier];
+        v11 = [bundleIdentifier isEqualToString:dCopy];
 
         if (v11)
         {
@@ -1220,7 +1220,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [previousAppClipPlaceholderEntities countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -1235,44 +1235,44 @@ LABEL_11:
   return v6;
 }
 
-- (id)requestedWorkspaceEntityForLayoutRole:(int64_t)a3
+- (id)requestedWorkspaceEntityForLayoutRole:(int64_t)role
 {
   requestedWorkspaceEntityForLayoutRoleMutableDictionary = self->_requestedWorkspaceEntityForLayoutRoleMutableDictionary;
-  v4 = SBLayoutRoleIdentifierForRole(a3);
+  v4 = SBLayoutRoleIdentifierForRole(role);
   v5 = [(NSMutableDictionary *)requestedWorkspaceEntityForLayoutRoleMutableDictionary objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)_setRequestedWorkspaceEntity:(id)a3 forLayoutRole:(int64_t)a4
+- (void)_setRequestedWorkspaceEntity:(id)entity forLayoutRole:(int64_t)role
 {
   requestedWorkspaceEntityForLayoutRoleMutableDictionary = self->_requestedWorkspaceEntityForLayoutRoleMutableDictionary;
-  v6 = a3;
-  v7 = SBLayoutRoleIdentifierForRole(a4);
-  [(NSMutableDictionary *)requestedWorkspaceEntityForLayoutRoleMutableDictionary setObject:v6 forKeyedSubscript:v7];
+  entityCopy = entity;
+  v7 = SBLayoutRoleIdentifierForRole(role);
+  [(NSMutableDictionary *)requestedWorkspaceEntityForLayoutRoleMutableDictionary setObject:entityCopy forKeyedSubscript:v7];
 }
 
 - (int64_t)_lockedInterfaceOrientation
 {
-  v2 = [(SBWorkspaceApplicationSceneTransitionContext *)self displayIdentity];
-  v3 = [v2 isMainDisplay];
+  displayIdentity = [(SBWorkspaceApplicationSceneTransitionContext *)self displayIdentity];
+  isMainDisplay = [displayIdentity isMainDisplay];
 
-  if (!v3)
+  if (!isMainDisplay)
   {
     return 0;
   }
 
   v4 = +[SBOrientationLockManager sharedInstance];
-  v5 = [v4 userLockOrientation];
+  userLockOrientation = [v4 userLockOrientation];
 
-  return v5;
+  return userLockOrientation;
 }
 
-- (CGRect)frameForApplicationSceneEntity:(id)a3
+- (CGRect)frameForApplicationSceneEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [(SBWorkspaceApplicationSceneTransitionContext *)self delegate];
-  [v5 applicationTransitionContext:self frameForApplicationSceneEntity:v4];
+  entityCopy = entity;
+  delegate = [(SBWorkspaceApplicationSceneTransitionContext *)self delegate];
+  [delegate applicationTransitionContext:self frameForApplicationSceneEntity:entityCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1289,22 +1289,22 @@ LABEL_11:
   return result;
 }
 
-- (void)setRemovalContext:(id)a3 forEntity:(id)a4
+- (void)setRemovalContext:(id)context forEntity:(id)entity
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = v13;
-  v8 = v6;
+  contextCopy = context;
+  entityCopy = entity;
+  v7 = contextCopy;
+  v8 = entityCopy;
   entityToRemovalContext = self->_entityToRemovalContext;
-  if (v13)
+  if (contextCopy)
   {
     if (!entityToRemovalContext)
     {
-      v10 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
       v11 = self->_entityToRemovalContext;
-      self->_entityToRemovalContext = v10;
+      self->_entityToRemovalContext = strongToStrongObjectsMapTable;
 
-      v7 = v13;
+      v7 = contextCopy;
       entityToRemovalContext = self->_entityToRemovalContext;
     }
 
@@ -1330,16 +1330,16 @@ LABEL_11:
     [SBWorkspaceApplicationSceneTransitionContext _displayConfiguration];
   }
 
-  v3 = [WeakRetained displayConfiguration];
+  displayConfiguration = [WeakRetained displayConfiguration];
 
-  return v3;
+  return displayConfiguration;
 }
 
-- (id)compactDescriptionBuilderWithMultilinePrefix:(id)a3
+- (id)compactDescriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v9.receiver = self;
   v9.super_class = SBWorkspaceApplicationSceneTransitionContext;
-  v4 = [(SBWorkspaceTransitionContext *)&v9 compactDescriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBWorkspaceTransitionContext *)&v9 compactDescriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendBool:self->_background withName:@"background"];
   if ([(SBWorkspaceApplicationSceneTransitionContext *)self interfaceOrientation])
   {
@@ -1354,51 +1354,51 @@ LABEL_11:
 {
   v24.receiver = self;
   v24.super_class = SBWorkspaceApplicationSceneTransitionContext;
-  v3 = [(SBWorkspaceTransitionContext *)&v24 succinctDescriptionBuilder];
-  v4 = [v3 appendBool:self->_background withName:@"background"];
-  v5 = [v3 appendBool:self->_fencesAnimations withName:@"fenceAnimations" ifEqualTo:1];
-  v6 = [v3 appendBool:self->_inLiveResize withName:@"isInLiveResize" ifEqualTo:1];
-  v7 = [v3 appendBool:self->_alwaysRunsWatchdog withName:@"alwaysWatchdog" ifEqualTo:1];
-  v8 = [v3 appendBool:self->_waitsForSceneUpdates withName:@"waitForScenes"];
-  v9 = [(SBWorkspaceApplicationSceneTransitionContext *)self displayIdentity];
-  v10 = [v3 appendObject:v9 withName:@"display"];
+  succinctDescriptionBuilder = [(SBWorkspaceTransitionContext *)&v24 succinctDescriptionBuilder];
+  v4 = [succinctDescriptionBuilder appendBool:self->_background withName:@"background"];
+  v5 = [succinctDescriptionBuilder appendBool:self->_fencesAnimations withName:@"fenceAnimations" ifEqualTo:1];
+  v6 = [succinctDescriptionBuilder appendBool:self->_inLiveResize withName:@"isInLiveResize" ifEqualTo:1];
+  v7 = [succinctDescriptionBuilder appendBool:self->_alwaysRunsWatchdog withName:@"alwaysWatchdog" ifEqualTo:1];
+  v8 = [succinctDescriptionBuilder appendBool:self->_waitsForSceneUpdates withName:@"waitForScenes"];
+  displayIdentity = [(SBWorkspaceApplicationSceneTransitionContext *)self displayIdentity];
+  v10 = [succinctDescriptionBuilder appendObject:displayIdentity withName:@"display"];
 
   if ([(SBWorkspaceApplicationSceneTransitionContext *)self interfaceOrientation])
   {
     v11 = [MEMORY[0x277D75128] stringForInterfaceOrientation:{-[SBWorkspaceApplicationSceneTransitionContext interfaceOrientation](self, "interfaceOrientation")}];
-    v12 = [v3 appendObject:v11 withName:@"interfaceOrientation"];
+    v12 = [succinctDescriptionBuilder appendObject:v11 withName:@"interfaceOrientation"];
   }
 
   if ([(SBWorkspaceApplicationSceneTransitionContext *)self requestedUnlockedEnvironmentMode])
   {
     v13 = SBStringForUnlockedEnvironmentMode([(SBWorkspaceApplicationSceneTransitionContext *)self requestedUnlockedEnvironmentMode]);
-    v14 = [v3 appendObject:v13 withName:@"unlockedEnvironmentMode"];
+    v14 = [succinctDescriptionBuilder appendObject:v13 withName:@"unlockedEnvironmentMode"];
   }
 
-  v15 = [(SBWorkspaceApplicationSceneTransitionContext *)self requestedAppExposeBundleID];
+  requestedAppExposeBundleID = [(SBWorkspaceApplicationSceneTransitionContext *)self requestedAppExposeBundleID];
 
-  if (v15)
+  if (requestedAppExposeBundleID)
   {
-    v16 = [(SBWorkspaceApplicationSceneTransitionContext *)self requestedAppExposeBundleID];
-    v17 = [v3 appendObject:v16 withName:@"appExposeBundleID"];
+    requestedAppExposeBundleID2 = [(SBWorkspaceApplicationSceneTransitionContext *)self requestedAppExposeBundleID];
+    v17 = [succinctDescriptionBuilder appendObject:requestedAppExposeBundleID2 withName:@"appExposeBundleID"];
   }
 
-  v18 = [v3 appendObject:self->_layoutState withName:@"layoutState"];
-  v19 = [v3 appendObject:self->_previousLayoutState withName:@"previousLayoutState"];
-  v20 = [(SBWorkspaceApplicationSceneTransitionContext *)self delegate];
-  if (v20)
+  v18 = [succinctDescriptionBuilder appendObject:self->_layoutState withName:@"layoutState"];
+  v19 = [succinctDescriptionBuilder appendObject:self->_previousLayoutState withName:@"previousLayoutState"];
+  delegate = [(SBWorkspaceApplicationSceneTransitionContext *)self delegate];
+  if (delegate)
   {
-    v21 = [MEMORY[0x277CF0C00] descriptionForObject:v20];
-    v22 = [v3 appendObject:v21 withName:@"delegate"];
+    v21 = [MEMORY[0x277CF0C00] descriptionForObject:delegate];
+    v22 = [succinctDescriptionBuilder appendObject:v21 withName:@"delegate"];
   }
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
 - (void)displayIdentity
 {
   OUTLINED_FUNCTION_1_2();
-  v2 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v1 handleFailureInMethod:v0 object:? file:? lineNumber:? description:?];
 }
@@ -1473,7 +1473,7 @@ LABEL_11:
 - (void)_displayConfiguration
 {
   OUTLINED_FUNCTION_1_2();
-  v2 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v1 handleFailureInMethod:v0 object:? file:? lineNumber:? description:?];
 }

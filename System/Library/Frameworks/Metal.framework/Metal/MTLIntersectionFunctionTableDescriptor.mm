@@ -1,23 +1,23 @@
 @interface MTLIntersectionFunctionTableDescriptor
-+ (MTLIntersectionFunctionTableDescriptor)allocWithZone:(_NSZone *)a3;
++ (MTLIntersectionFunctionTableDescriptor)allocWithZone:(_NSZone *)zone;
 + (MTLIntersectionFunctionTableDescriptor)intersectionFunctionTableDescriptor;
 @end
 
 @implementation MTLIntersectionFunctionTableDescriptor
 
-+ (MTLIntersectionFunctionTableDescriptor)allocWithZone:(_NSZone *)a3
++ (MTLIntersectionFunctionTableDescriptor)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [MTLIntersectionFunctionTableDescriptorInternal allocWithZone:a3];
+    return [MTLIntersectionFunctionTableDescriptorInternal allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___MTLIntersectionFunctionTableDescriptor;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 

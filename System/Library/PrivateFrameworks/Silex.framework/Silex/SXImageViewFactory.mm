@@ -1,48 +1,48 @@
 @interface SXImageViewFactory
-- (SXImageViewFactory)initWithResourceDataSourceProvider:(id)a3 reachabilityProvider:(id)a4;
-- (id)imageViewForResource:(id)a3;
-- (id)repeatableImageViewForResource:(id)a3;
+- (SXImageViewFactory)initWithResourceDataSourceProvider:(id)provider reachabilityProvider:(id)reachabilityProvider;
+- (id)imageViewForResource:(id)resource;
+- (id)repeatableImageViewForResource:(id)resource;
 @end
 
 @implementation SXImageViewFactory
 
-- (SXImageViewFactory)initWithResourceDataSourceProvider:(id)a3 reachabilityProvider:(id)a4
+- (SXImageViewFactory)initWithResourceDataSourceProvider:(id)provider reachabilityProvider:(id)reachabilityProvider
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  reachabilityProviderCopy = reachabilityProvider;
   v12.receiver = self;
   v12.super_class = SXImageViewFactory;
   v9 = [(SXImageViewFactory *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_resourceDataSourceProvider, a3);
-    objc_storeStrong(&v10->_reachabilityProvider, a4);
+    objc_storeStrong(&v9->_resourceDataSourceProvider, provider);
+    objc_storeStrong(&v10->_reachabilityProvider, reachabilityProvider);
   }
 
   return v10;
 }
 
-- (id)imageViewForResource:(id)a3
+- (id)imageViewForResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v5 = [SXImageView alloc];
-  v6 = [(SXImageViewFactory *)self resourceDataSourceProvider];
-  v7 = [v6 resourceDataSource];
-  v8 = [(SXImageViewFactory *)self reachabilityProvider];
-  v9 = [(SXImageView *)v5 initWithImageResource:v4 resourceDataSource:v7 reachabilityProvider:v8];
+  resourceDataSourceProvider = [(SXImageViewFactory *)self resourceDataSourceProvider];
+  resourceDataSource = [resourceDataSourceProvider resourceDataSource];
+  reachabilityProvider = [(SXImageViewFactory *)self reachabilityProvider];
+  v9 = [(SXImageView *)v5 initWithImageResource:resourceCopy resourceDataSource:resourceDataSource reachabilityProvider:reachabilityProvider];
 
   return v9;
 }
 
-- (id)repeatableImageViewForResource:(id)a3
+- (id)repeatableImageViewForResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v5 = [SXRepeatableImageView alloc];
-  v6 = [(SXImageViewFactory *)self resourceDataSourceProvider];
-  v7 = [v6 resourceDataSource];
-  v8 = [(SXImageViewFactory *)self reachabilityProvider];
-  v9 = [(SXImageView *)v5 initWithImageResource:v4 resourceDataSource:v7 reachabilityProvider:v8];
+  resourceDataSourceProvider = [(SXImageViewFactory *)self resourceDataSourceProvider];
+  resourceDataSource = [resourceDataSourceProvider resourceDataSource];
+  reachabilityProvider = [(SXImageViewFactory *)self reachabilityProvider];
+  v9 = [(SXImageView *)v5 initWithImageResource:resourceCopy resourceDataSource:resourceDataSource reachabilityProvider:reachabilityProvider];
 
   return v9;
 }

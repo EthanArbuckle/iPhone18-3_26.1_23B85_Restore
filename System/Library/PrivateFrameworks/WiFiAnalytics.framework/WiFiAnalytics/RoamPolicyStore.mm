@@ -1,40 +1,40 @@
 @interface RoamPolicyStore
-+ (BOOL)doWeHaveEnoughSamplesToBuildChanList:(unint64_t)a3 numRoamSamples:(unint64_t)a4;
-+ (BOOL)doWeHaveEnoughSamplesToBuildRoamCache:(unint64_t)a3 numRoamSamples:(unint64_t)a4;
-+ (BOOL)doWeHaveEnoughSamplesToDeriveRSSITrigger:(unint64_t)a3 numRoamSamples:(unint64_t)a4;
-+ (id)extractChannelList:(id)a3 channelKeyPath:(id)a4 bandKeyPath:(id)a5 logFor:(const char *)a6;
-+ (id)neighborChannelsAsArrayOfChanInfo:(id)a3;
-+ (id)neighborChannelsOf:(id)a3;
-+ (id)rangeStringWithRssiLevel:(unint64_t)a3;
-- (BOOL)buildRoamCacheInfoForBss:(id)a3 numRoamSamples:(unint64_t)a4 withError:(id *)a5;
-- (BOOL)buildRoamPoliciesForSourceBSS:(id)a3 numRoamSamples:(unint64_t)a4 withError:(id *)a5;
-- (BOOL)monitorDeploymentChangesAfterRoam:(id)a3;
-- (RoamPolicyStore)initWithAnalyticsStore:(id)a3;
-- (id)deriveRoamInfo:(id)a3 numRoamSamplesCollectedSoFar:(unint64_t)a4;
-- (void)checkForFrequentRoams:(unint64_t)a3 date:(id)a4 motionState:(int64_t)a5;
-- (void)deriveRoamDeltaFromRoamCacheInfo:(id)a3 neighborCount:(unint64_t)a4;
-- (void)listOutBTMRoams:(unint64_t)a3;
-- (void)listOutLazyRoamScanInfo:(id)a3 neighborCount:(unint64_t)a4 sourceRssi:(int64_t)a5;
-- (void)listOutMostUsedRoamReasons:(unint64_t)a3 roamReason:(unint64_t)a4;
-- (void)listOutMostUsedSourceRssi:(id)a3 neighborCount:(unint64_t)a4 sourceRssi:(int64_t)a5;
-- (void)listOutReassocRoams:(id)a3 neighborCount:(unint64_t)a4 sourceRssi:(int64_t)a5;
-- (void)listOutTimeSpentOnBss:(unint64_t)a3 timeSpentOnBss:(unint64_t)a4 motionState:(int64_t)a5;
-- (void)locateTheNeighbor:(unint64_t)a3 cacheRssi:(int64_t)a4;
-- (void)resetAdaptiveRoamingStateMachine:(id)a3;
-- (void)setDeploymentFromRoamCacheInfo:(id)a3 neighborCount:(unint64_t)a4;
-- (void)setDeploymentFromRoamInfo:(id)a3 neighborCount:(unint64_t)a4;
-- (void)storeNeighborsInfoLearningsFromRoamCacheInfo:(id)a3 neighborCount:(unint64_t)a4;
-- (void)storeNeighborsInfoLearningsFromRoamInfo:(id)a3 neighborCount:(unint64_t)a4;
-- (void)updateNeighborChannelsFromRoamTargetsChannels:(id)a3 bss:(id)a4;
-- (void)updateNeighborChannelsInCoreDataWith:(id)a3 bss:(id)a4;
++ (BOOL)doWeHaveEnoughSamplesToBuildChanList:(unint64_t)list numRoamSamples:(unint64_t)samples;
++ (BOOL)doWeHaveEnoughSamplesToBuildRoamCache:(unint64_t)cache numRoamSamples:(unint64_t)samples;
++ (BOOL)doWeHaveEnoughSamplesToDeriveRSSITrigger:(unint64_t)trigger numRoamSamples:(unint64_t)samples;
++ (id)extractChannelList:(id)list channelKeyPath:(id)path bandKeyPath:(id)keyPath logFor:(const char *)for;
++ (id)neighborChannelsAsArrayOfChanInfo:(id)info;
++ (id)neighborChannelsOf:(id)of;
++ (id)rangeStringWithRssiLevel:(unint64_t)level;
+- (BOOL)buildRoamCacheInfoForBss:(id)bss numRoamSamples:(unint64_t)samples withError:(id *)error;
+- (BOOL)buildRoamPoliciesForSourceBSS:(id)s numRoamSamples:(unint64_t)samples withError:(id *)error;
+- (BOOL)monitorDeploymentChangesAfterRoam:(id)roam;
+- (RoamPolicyStore)initWithAnalyticsStore:(id)store;
+- (id)deriveRoamInfo:(id)info numRoamSamplesCollectedSoFar:(unint64_t)far;
+- (void)checkForFrequentRoams:(unint64_t)roams date:(id)date motionState:(int64_t)state;
+- (void)deriveRoamDeltaFromRoamCacheInfo:(id)info neighborCount:(unint64_t)count;
+- (void)listOutBTMRoams:(unint64_t)roams;
+- (void)listOutLazyRoamScanInfo:(id)info neighborCount:(unint64_t)count sourceRssi:(int64_t)rssi;
+- (void)listOutMostUsedRoamReasons:(unint64_t)reasons roamReason:(unint64_t)reason;
+- (void)listOutMostUsedSourceRssi:(id)rssi neighborCount:(unint64_t)count sourceRssi:(int64_t)sourceRssi;
+- (void)listOutReassocRoams:(id)roams neighborCount:(unint64_t)count sourceRssi:(int64_t)rssi;
+- (void)listOutTimeSpentOnBss:(unint64_t)bss timeSpentOnBss:(unint64_t)onBss motionState:(int64_t)state;
+- (void)locateTheNeighbor:(unint64_t)neighbor cacheRssi:(int64_t)rssi;
+- (void)resetAdaptiveRoamingStateMachine:(id)machine;
+- (void)setDeploymentFromRoamCacheInfo:(id)info neighborCount:(unint64_t)count;
+- (void)setDeploymentFromRoamInfo:(id)info neighborCount:(unint64_t)count;
+- (void)storeNeighborsInfoLearningsFromRoamCacheInfo:(id)info neighborCount:(unint64_t)count;
+- (void)storeNeighborsInfoLearningsFromRoamInfo:(id)info neighborCount:(unint64_t)count;
+- (void)updateNeighborChannelsFromRoamTargetsChannels:(id)channels bss:(id)bss;
+- (void)updateNeighborChannelsInCoreDataWith:(id)with bss:(id)bss;
 @end
 
 @implementation RoamPolicyStore
 
-- (RoamPolicyStore)initWithAnalyticsStore:(id)a3
+- (RoamPolicyStore)initWithAnalyticsStore:(id)store
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = RoamPolicyStore;
   v6 = [(RoamPolicyStore *)&v12 init];
@@ -46,7 +46,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v6->_roamPolicyMOHandler, a3);
+  objc_storeStrong(&v6->_roamPolicyMOHandler, store);
   if (!v7->_roamPolicyMOHandler)
   {
     v9 = WALogCategoryDeviceStoreHandle();
@@ -69,67 +69,67 @@ LABEL_8:
   return v8;
 }
 
-+ (BOOL)doWeHaveEnoughSamplesToBuildChanList:(unint64_t)a3 numRoamSamples:(unint64_t)a4
++ (BOOL)doWeHaveEnoughSamplesToBuildChanList:(unint64_t)list numRoamSamples:(unint64_t)samples
 {
-  v4 = a4 >> 1;
-  if (!a4)
+  v4 = samples >> 1;
+  if (!samples)
   {
     v4 = 50;
   }
 
-  return v4 <= a3;
+  return v4 <= list;
 }
 
-+ (BOOL)doWeHaveEnoughSamplesToBuildRoamCache:(unint64_t)a3 numRoamSamples:(unint64_t)a4
++ (BOOL)doWeHaveEnoughSamplesToBuildRoamCache:(unint64_t)cache numRoamSamples:(unint64_t)samples
 {
-  v4 = 100;
-  if (a4)
+  samplesCopy = 100;
+  if (samples)
   {
-    v4 = a4;
+    samplesCopy = samples;
   }
 
-  return v4 <= a3;
+  return samplesCopy <= cache;
 }
 
-+ (BOOL)doWeHaveEnoughSamplesToDeriveRSSITrigger:(unint64_t)a3 numRoamSamples:(unint64_t)a4
++ (BOOL)doWeHaveEnoughSamplesToDeriveRSSITrigger:(unint64_t)trigger numRoamSamples:(unint64_t)samples
 {
-  v4 = 100;
-  if (a4)
+  samplesCopy = 100;
+  if (samples)
   {
-    v4 = a4;
+    samplesCopy = samples;
   }
 
-  return v4 <= a3;
+  return samplesCopy <= trigger;
 }
 
-- (BOOL)buildRoamPoliciesForSourceBSS:(id)a3 numRoamSamples:(unint64_t)a4 withError:(id *)a5
+- (BOOL)buildRoamPoliciesForSourceBSS:(id)s numRoamSamples:(unint64_t)samples withError:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  sCopy = s;
   v9 = WALogCategoryDeviceStoreHandle();
   if (os_signpost_enabled(v9))
   {
-    v10 = [v8 bssid];
+    bssid = [sCopy bssid];
     *buf = 138412290;
-    v64 = v10;
+    v64 = bssid;
     _os_signpost_emit_with_name_impl(&dword_1C8460000, v9, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "RoamingPolicies buildRoamPoliciesForNetwork:", "%@", buf, 0xCu);
   }
 
   v11 = objc_autoreleasePoolPush();
-  if (a4)
+  if (samples)
   {
-    v12 = a4;
+    samplesCopy = samples;
   }
 
   else
   {
-    v12 = 100;
+    samplesCopy = 100;
   }
 
-  v13 = [v8 network];
-  v14 = [v13 didDeploymentChange];
+  network = [sCopy network];
+  didDeploymentChange = [network didDeploymentChange];
 
-  if (v14)
+  if (didDeploymentChange)
   {
     v15 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -145,14 +145,14 @@ LABEL_8:
   }
 
   v56 = v11;
-  v57 = a5;
-  v16 = [(RoamPolicyStore *)self roamPolicyMOHandler];
-  v17 = [v16 persistentContainer];
+  errorCopy = error;
+  roamPolicyMOHandler = [(RoamPolicyStore *)self roamPolicyMOHandler];
+  persistentContainer = [roamPolicyMOHandler persistentContainer];
   v18 = +[RoamMO entity];
-  v58 = v8;
-  v19 = [RoamMO successfulRoamsOutOf:v8];
+  v58 = sCopy;
+  v19 = [RoamMO successfulRoamsOutOf:sCopy];
   v61 = 0;
-  v20 = [v17 countObjects:v18 withPredicate:v19 withError:&v61];
+  v20 = [persistentContainer countObjects:v18 withPredicate:v19 withError:&v61];
   v21 = v61;
 
   if (v21)
@@ -169,13 +169,13 @@ LABEL_8:
     v65 = 1024;
     *v66 = 168;
     *&v66[4] = 2048;
-    *&v66[6] = v12;
+    *&v66[6] = samplesCopy;
     v67 = 2048;
     v68 = v20;
     _os_log_impl(&dword_1C8460000, v22, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Building Roam Policies: NumRoamSamples to collect = %lu numRoamSamplesCollectedSoFar = %lu", buf, 0x26u);
   }
 
-  v23 = [objc_opt_class() doWeHaveEnoughSamplesToBuildChanList:v20 numRoamSamples:a4];
+  v23 = [objc_opt_class() doWeHaveEnoughSamplesToBuildChanList:v20 numRoamSamples:samples];
   v24 = WALogCategoryDeviceStoreHandle();
   v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
   v26 = v58;
@@ -195,28 +195,28 @@ LABEL_8:
     goto LABEL_42;
   }
 
-  v59 = a4;
+  samplesCopy2 = samples;
   if (v25)
   {
-    v27 = [v58 bssid];
+    bssid2 = [v58 bssid];
     *buf = 136446722;
     v64 = "[RoamPolicyStore buildRoamPoliciesForSourceBSS:numRoamSamples:withError:]";
     v65 = 1024;
     *v66 = 176;
     *&v66[4] = 2112;
-    *&v66[6] = v27;
+    *&v66[6] = bssid2;
     _os_log_impl(&dword_1C8460000, v24, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Derive Channel Info for %@", buf, 0x1Cu);
   }
 
-  v28 = [(RoamPolicyStore *)self roamPolicyMOHandler];
-  v29 = [v28 persistentContainer];
+  roamPolicyMOHandler2 = [(RoamPolicyStore *)self roamPolicyMOHandler];
+  persistentContainer2 = [roamPolicyMOHandler2 persistentContainer];
   v30 = +[RoamMO entity];
   v31 = [RoamMO roamsOutOf:v58];
   v32 = +[WAPersistentContainer sortByNewestDateFirst];
   v62 = v32;
   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v62 count:1];
   v60 = 0;
-  v34 = [v29 fetchDistinctPropertiesIn:v30 withPredicate:v31 withSorting:v33 withPrefetchedProperties:&unk_1F483E698 withLimit:v20 withError:&v60];
+  v34 = [persistentContainer2 fetchDistinctPropertiesIn:v30 withPredicate:v31 withSorting:v33 withPrefetchedProperties:&unk_1F483E698 withLimit:v20 withError:&v60];
   v21 = v60;
 
   if (v21)
@@ -225,7 +225,7 @@ LABEL_37:
     v55 = 0;
     v38 = 0;
     v44 = 0;
-    v45 = v57;
+    v45 = errorCopy;
     v26 = v58;
     v46 = v56;
     goto LABEL_29;
@@ -237,13 +237,13 @@ LABEL_37:
     v24 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v54 = [v58 bssid];
+      bssid3 = [v58 bssid];
       *buf = 136446722;
       v64 = "[RoamPolicyStore buildRoamPoliciesForSourceBSS:numRoamSamples:withError:]";
       v65 = 1024;
       *v66 = 184;
       *&v66[4] = 2112;
-      *&v66[6] = v54;
+      *&v66[6] = bssid3;
       _os_log_impl(&dword_1C8460000, v24, OS_LOG_TYPE_ERROR, "%{public}s::%d:found no roams from %@", buf, 0x1Cu);
     }
 
@@ -254,7 +254,7 @@ LABEL_43:
     v44 = 0;
 LABEL_49:
     v46 = v56;
-    v45 = v57;
+    v45 = errorCopy;
 
     v38 = 0;
     v21 = 0;
@@ -296,7 +296,7 @@ LABEL_49:
   }
 
   [(RoamPolicyStore *)self updateNeighborChannelsFromRoamTargetsChannels:v35 bss:v58];
-  if (([objc_opt_class() doWeHaveEnoughSamplesToDeriveRSSITrigger:v20 numRoamSamples:v59] & 1) == 0)
+  if (([objc_opt_class() doWeHaveEnoughSamplesToDeriveRSSITrigger:v20 numRoamSamples:samplesCopy2] & 1) == 0)
   {
     v24 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -344,7 +344,7 @@ LABEL_49:
     while (v39 < [v38 count]);
     v21 = 0;
     v44 = 1;
-    v45 = v57;
+    v45 = errorCopy;
     v26 = v58;
     v46 = v56;
   }
@@ -354,15 +354,15 @@ LABEL_49:
     v21 = 0;
     v44 = 1;
     v46 = v56;
-    v45 = v57;
+    v45 = errorCopy;
   }
 
 LABEL_29:
   v47 = WALogCategoryDeviceStoreHandle();
   if (os_signpost_enabled(v47))
   {
-    v48 = [v26 bssid];
-    v49 = v48;
+    bssid4 = [v26 bssid];
+    v49 = bssid4;
     v50 = @"NO";
     if (v44)
     {
@@ -370,7 +370,7 @@ LABEL_29:
     }
 
     *buf = 138412546;
-    v64 = v48;
+    v64 = bssid4;
     v65 = 2112;
     *v66 = v50;
     _os_signpost_emit_with_name_impl(&dword_1C8460000, v47, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "RoamingPolicies buildRoamPoliciesForNetwork:", "%@ hasUpdated: %@", buf, 0x16u);
@@ -387,13 +387,13 @@ LABEL_29:
   return v44;
 }
 
-- (void)updateNeighborChannelsFromRoamTargetsChannels:(id)a3 bss:(id)a4
+- (void)updateNeighborChannelsFromRoamTargetsChannels:(id)channels bss:(id)bss
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  channelsCopy = channels;
+  bssCopy = bss;
   v7 = objc_autoreleasePoolPush();
-  if (!v5)
+  if (!channelsCopy)
   {
     v8 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -411,7 +411,7 @@ LABEL_10:
     goto LABEL_5;
   }
 
-  if (![v5 count])
+  if (![channelsCopy count])
   {
     v8 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -427,24 +427,24 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  [v6 setNeighborChannels:v5];
+  [bssCopy setNeighborChannels:channelsCopy];
   v8 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 bssid];
-    v10 = [v6 network];
-    v11 = [v10 ssid];
-    v12 = [v6 neighborChannels];
+    bssid = [bssCopy bssid];
+    network = [bssCopy network];
+    ssid = [network ssid];
+    neighborChannels = [bssCopy neighborChannels];
     v15 = 136447234;
     v16 = "[RoamPolicyStore updateNeighborChannelsFromRoamTargetsChannels:bss:]";
     v17 = 1024;
     v18 = 224;
     v19 = 2112;
-    v20 = v9;
+    v20 = bssid;
     v21 = 2112;
-    v22 = v11;
+    v22 = ssid;
     v23 = 2112;
-    v24 = v12;
+    v24 = neighborChannels;
     _os_log_impl(&dword_1C8460000, v8, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:[BSS:%@ SSID:%@] Updated neighborChannels: %@", &v15, 0x30u);
   }
 
@@ -454,10 +454,10 @@ LABEL_5:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)deriveRoamInfo:(id)a3 numRoamSamplesCollectedSoFar:(unint64_t)a4
+- (id)deriveRoamInfo:(id)info numRoamSamplesCollectedSoFar:(unint64_t)far
 {
   v96[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  infoCopy = info;
   v6 = WALogCategoryDeviceStoreHandle();
   if (os_signpost_enabled(v6))
   {
@@ -466,16 +466,16 @@ LABEL_5:
   }
 
   context = objc_autoreleasePoolPush();
-  v79 = [MEMORY[0x1E695DF70] array];
-  v80 = [MEMORY[0x1E695DF70] array];
-  v78 = [MEMORY[0x1E695DF70] array];
-  v77 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   bzero(&roamInfo, 0xDC0uLL);
-  v7 = [(RoamPolicyStore *)self roamPolicyMOHandler];
-  v8 = [v7 persistentContainer];
+  roamPolicyMOHandler = [(RoamPolicyStore *)self roamPolicyMOHandler];
+  persistentContainer = [roamPolicyMOHandler persistentContainer];
   v9 = +[RoamMO entity];
-  v74 = v5;
-  v10 = [RoamMO successfulRoamsOutOf:v5];
+  v74 = infoCopy;
+  v10 = [RoamMO successfulRoamsOutOf:infoCopy];
   v11 = +[WAPersistentContainer sortByNewestDateFirst];
   v96[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v96 count:1];
@@ -487,7 +487,7 @@ LABEL_5:
   v95[5] = @"date";
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v95 count:6];
   v84 = 0;
-  v14 = [v8 fetchDistinctPropertiesIn:v9 withPredicate:v10 withSorting:v12 withPrefetchedProperties:v13 withLimit:a4 withError:&v84];
+  v14 = [persistentContainer fetchDistinctPropertiesIn:v9 withPredicate:v10 withSorting:v12 withPrefetchedProperties:v13 withLimit:far withError:&v84];
   v15 = v84;
 
   v72 = v15;
@@ -504,19 +504,19 @@ LABEL_5:
       goto LABEL_71;
     }
 
-    v67 = [v74 bssid];
+    bssid = [v74 bssid];
     *buf = 136446722;
     v86 = "[RoamPolicyStore deriveRoamInfo:numRoamSamplesCollectedSoFar:]";
     v87 = 1024;
     v88 = 262;
     v89 = 2112;
-    v90 = v67;
+    v90 = bssid;
     v68 = "%{public}s::%d:found no successful roams from %@";
     v69 = v43;
     goto LABEL_69;
   }
 
-  v17 = v79;
+  v17 = array;
   v75 = v14;
   if ([v14 count])
   {
@@ -550,11 +550,11 @@ LABEL_5:
       else
       {
         [v17 addObject:v22];
-        v23 = [v22 UTF8String];
-        v24 = strlen(v23);
+        uTF8String = [v22 UTF8String];
+        v24 = strlen(uTF8String);
         if (v24 < 0x14)
         {
-          memcpy(&roamInfo + 352 * v19++, v23, v24);
+          memcpy(&roamInfo + 352 * v19++, uTF8String, v24);
 LABEL_14:
           v76 = v18;
           v25 = 0;
@@ -570,31 +570,31 @@ LABEL_14:
             }
 
             v28 = [v21 valueForKey:@"fwReason"];
-            v29 = [v28 unsignedIntegerValue];
+            unsignedIntegerValue = [v28 unsignedIntegerValue];
 
             v30 = [v21 valueForKey:@"sourceRssi"];
-            v31 = [v30 integerValue];
+            integerValue = [v30 integerValue];
 
             v32 = [v21 valueForKey:@"sourceTimeSpentSecs"];
-            v33 = [v32 unsignedIntegerValue];
+            unsignedIntegerValue2 = [v32 unsignedIntegerValue];
 
             v34 = [v21 valueForKey:@"motionState"];
-            v35 = [v34 integerValue];
+            integerValue2 = [v34 integerValue];
 
             v36 = [v21 valueForKey:@"date"];
             ++v26[39];
-            [(RoamPolicyStore *)self listOutMostUsedRoamReasons:v25 roamReason:v29];
-            [(RoamPolicyStore *)self listOutTimeSpentOnBss:v25 timeSpentOnBss:v33 motionState:v35];
-            [(RoamPolicyStore *)self checkForFrequentRoams:v25 date:v36 motionState:v35];
-            if (v29 <= -528348153)
+            [(RoamPolicyStore *)self listOutMostUsedRoamReasons:v25 roamReason:unsignedIntegerValue];
+            [(RoamPolicyStore *)self listOutTimeSpentOnBss:v25 timeSpentOnBss:unsignedIntegerValue2 motionState:integerValue2];
+            [(RoamPolicyStore *)self checkForFrequentRoams:v25 date:v36 motionState:integerValue2];
+            if (unsignedIntegerValue <= -528348153)
             {
-              if (v29 == -528348159)
+              if (unsignedIntegerValue == -528348159)
               {
-                [(RoamPolicyStore *)self listOutMostUsedSourceRssi:v80 neighborCount:v25 sourceRssi:v31];
+                [(RoamPolicyStore *)self listOutMostUsedSourceRssi:array2 neighborCount:v25 sourceRssi:integerValue];
                 goto LABEL_26;
               }
 
-              if (v29 != -528348154)
+              if (unsignedIntegerValue != -528348154)
               {
                 goto LABEL_26;
               }
@@ -602,17 +602,17 @@ LABEL_14:
 
             else
             {
-              if (v29 == -528348152)
+              if (unsignedIntegerValue == -528348152)
               {
-                [(RoamPolicyStore *)self listOutLazyRoamScanInfo:v78 neighborCount:v25 sourceRssi:v31];
+                [(RoamPolicyStore *)self listOutLazyRoamScanInfo:array3 neighborCount:v25 sourceRssi:integerValue];
                 goto LABEL_26;
               }
 
-              if (v29 != -528348149)
+              if (unsignedIntegerValue != -528348149)
               {
-                if (v29 == -528348141)
+                if (unsignedIntegerValue == -528348141)
                 {
-                  [(RoamPolicyStore *)self listOutReassocRoams:v77 neighborCount:v25 sourceRssi:v31];
+                  [(RoamPolicyStore *)self listOutReassocRoams:array4 neighborCount:v25 sourceRssi:integerValue];
                 }
 
 LABEL_26:
@@ -626,7 +626,7 @@ LABEL_27:
                 v26 += 44;
                 if (v19 == v25)
                 {
-                  v17 = v79;
+                  v17 = array;
                   v14 = v75;
                   v18 = v76;
                   goto LABEL_33;
@@ -656,7 +656,7 @@ LABEL_27:
         }
       }
 
-      v17 = v79;
+      v17 = array;
 LABEL_33:
 
       ++v18;
@@ -668,18 +668,18 @@ LABEL_33:
   v38 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
   {
-    v39 = [v74 bssid];
+    bssid2 = [v74 bssid];
     *buf = 136446722;
     v86 = "[RoamPolicyStore deriveRoamInfo:numRoamSamplesCollectedSoFar:]";
     v87 = 1024;
     v88 = 338;
     v89 = 2112;
-    v90 = v39;
+    v90 = bssid2;
     _os_log_impl(&dword_1C8460000, v38, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Neighbors of BSS %@:", buf, 0x1Cu);
   }
 
-  v40 = v79;
-  if ([v79 count])
+  v40 = array;
+  if ([array count])
   {
     v41 = 0;
     v42 = &qword_1EC2AB278;
@@ -707,17 +707,17 @@ LABEL_33:
       }
 
       ++v41;
-      v40 = v79;
+      v40 = array;
       v42 += 44;
-      if (v41 >= [v79 count])
+      if (v41 >= [array count])
       {
         goto LABEL_43;
       }
     }
 
-    v67 = WALogCategoryDeviceStoreHandle();
+    bssid = WALogCategoryDeviceStoreHandle();
     v14 = v75;
-    if (!os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(bssid, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_70;
     }
@@ -729,7 +729,7 @@ LABEL_33:
     v89 = 2112;
     v90 = v43;
     v68 = "%{public}s::%d:Not enough roam samples with %@";
-    v69 = v67;
+    v69 = bssid;
 LABEL_69:
     _os_log_impl(&dword_1C8460000, v69, OS_LOG_TYPE_ERROR, v68, buf, 0x1Cu);
 LABEL_70:
@@ -745,33 +745,33 @@ LABEL_72:
 
     v64 = 0;
     v58 = v74;
-    v63 = v79;
-    v46 = v80;
+    v63 = array;
+    v46 = array2;
     goto LABEL_64;
   }
 
 LABEL_43:
-  v46 = v80;
-  v47 = [v80 count];
+  v46 = array2;
+  v47 = [array2 count];
   if (v47)
   {
     v48 = v47;
     while (1)
     {
       v49 = [v46 valueForKeyPath:@"@max.self"];
-      v50 = [v49 intValue];
+      intValue = [v49 intValue];
 
-      v51 = [MEMORY[0x1E696AD98] numberWithInteger:v50];
+      v51 = [MEMORY[0x1E696AD98] numberWithInteger:intValue];
       v52 = [objc_alloc(MEMORY[0x1E696AB50]) initWithArray:v46];
       v53 = [v52 countForObject:v51];
-      if (v50 <= -77)
+      if (intValue <= -77)
       {
         v54 = -77;
       }
 
       else
       {
-        v54 = v50;
+        v54 = intValue;
       }
 
       v55 = WALogCategoryDeviceStoreHandle();
@@ -795,9 +795,9 @@ LABEL_43:
         break;
       }
 
-      v46 = v80;
-      [v80 removeObject:v51];
-      v48 = [v80 count];
+      v46 = array2;
+      [array2 removeObject:v51];
+      v48 = [array2 count];
 
       if (!v48)
       {
@@ -826,7 +826,7 @@ LABEL_43:
       v54 = -70;
     }
 
-    v46 = v80;
+    v46 = array2;
   }
 
   else
@@ -839,26 +839,26 @@ LABEL_59:
   v58 = v74;
   if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
   {
-    v59 = [v74 bssid];
+    bssid3 = [v74 bssid];
     *buf = 136446978;
     v86 = "[RoamPolicyStore deriveRoamInfo:numRoamSamplesCollectedSoFar:]";
     v87 = 1024;
     v88 = 377;
     v89 = 2112;
-    v90 = v59;
+    v90 = bssid3;
     v91 = 2048;
     v92 = v54;
     _os_log_impl(&dword_1C8460000, v57, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:BSSID %@ Derived RSSI =%ld", buf, 0x26u);
   }
 
   [v74 setRoamTriggerRssi:v54];
-  v60 = [MEMORY[0x1E695DEC8] arrayWithArray:v79];
+  v60 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
   [v74 setNeighborBSSIDs:v60];
 
-  v61 = [(RoamPolicyStore *)self roamPolicyMOHandler];
-  [v61 updateManagedObjectContextWithoutSave];
+  roamPolicyMOHandler2 = [(RoamPolicyStore *)self roamPolicyMOHandler];
+  [roamPolicyMOHandler2 updateManagedObjectContextWithoutSave];
 
-  -[RoamPolicyStore storeNeighborsInfoLearningsFromRoamInfo:neighborCount:](self, "storeNeighborsInfoLearningsFromRoamInfo:neighborCount:", v74, [v79 count]);
+  -[RoamPolicyStore storeNeighborsInfoLearningsFromRoamInfo:neighborCount:](self, "storeNeighborsInfoLearningsFromRoamInfo:neighborCount:", v74, [array count]);
   v62 = WALogCategoryDeviceStoreHandle();
   if (os_signpost_enabled(v62))
   {
@@ -866,8 +866,8 @@ LABEL_59:
     _os_signpost_emit_with_name_impl(&dword_1C8460000, v62, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "RoamingPolicies deriveRoamInfo:ssid:numRoamSamplesCollectedSoFar:", "", buf, 2u);
   }
 
-  v63 = v79;
-  v64 = v79;
+  v63 = array;
+  v64 = array;
   v14 = v75;
 LABEL_64:
 
@@ -877,62 +877,62 @@ LABEL_64:
   return v64;
 }
 
-- (void)listOutMostUsedRoamReasons:(unint64_t)a3 roamReason:(unint64_t)a4
+- (void)listOutMostUsedRoamReasons:(unint64_t)reasons roamReason:(unint64_t)reason
 {
-  v4 = a4;
+  reasonCopy = reason;
   v31 = *MEMORY[0x1E69E9840];
-  switch(a4)
+  switch(reason)
   {
     case 0xE0820C00:
       break;
     case 0xE0820C01:
-      ++*(&roamInfo + 44 * a3 + 3);
+      ++*(&roamInfo + 44 * reasons + 3);
       break;
     case 0xE0820C02:
     case 0xE0820C03:
     case 0xE0820C13:
-      ++*(&roamInfo + 44 * a3 + 7);
+      ++*(&roamInfo + 44 * reasons + 7);
       break;
     case 0xE0820C04:
     case 0xE0820C05:
-      ++*(&roamInfo + 44 * a3 + 6);
+      ++*(&roamInfo + 44 * reasons + 6);
       break;
     case 0xE0820C06:
     case 0xE0820C0B:
-      ++*(&roamInfo + 44 * a3 + 4);
+      ++*(&roamInfo + 44 * reasons + 4);
       break;
     case 0xE0820C07:
-      ++*(&roamInfo + 44 * a3 + 9);
+      ++*(&roamInfo + 44 * reasons + 9);
       break;
     case 0xE0820C08:
-      ++*(&roamInfo + 44 * a3 + 5);
+      ++*(&roamInfo + 44 * reasons + 5);
       break;
     case 0xE0820C09:
-      ++*(&roamInfo + 44 * a3 + 10);
+      ++*(&roamInfo + 44 * reasons + 10);
       break;
     case 0xE0820C0A:
-      ++*(&roamInfo + 44 * a3 + 11);
+      ++*(&roamInfo + 44 * reasons + 11);
       break;
     case 0xE0820C0C:
-      ++*(&roamInfo + 44 * a3 + 12);
+      ++*(&roamInfo + 44 * reasons + 12);
       break;
     case 0xE0820C0D:
-      ++*(&roamInfo + 44 * a3 + 13);
+      ++*(&roamInfo + 44 * reasons + 13);
       break;
     case 0xE0820C0E:
-      ++*(&roamInfo + 44 * a3 + 14);
+      ++*(&roamInfo + 44 * reasons + 14);
       break;
     case 0xE0820C0F:
-      ++*(&roamInfo + 44 * a3 + 15);
+      ++*(&roamInfo + 44 * reasons + 15);
       break;
     case 0xE0820C10:
-      ++*(&roamInfo + 44 * a3 + 16);
+      ++*(&roamInfo + 44 * reasons + 16);
       break;
     case 0xE0820C11:
-      ++*(&roamInfo + 44 * a3 + 17);
+      ++*(&roamInfo + 44 * reasons + 17);
       break;
     case 0xE0820C12:
-      ++*(&roamInfo + 44 * a3 + 18);
+      ++*(&roamInfo + 44 * reasons + 18);
       break;
     default:
       v6 = WALogCategoryDeviceStoreHandle();
@@ -943,7 +943,7 @@ LABEL_64:
         v17 = 1024;
         v18 = 466;
         v19 = 1024;
-        v20 = v4;
+        v20 = reasonCopy;
         _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:This Roam reason %u is not categorized", &v15, 0x18u);
       }
 
@@ -953,7 +953,7 @@ LABEL_64:
   v7 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = (&roamInfo + 352 * a3);
+    v8 = (&roamInfo + 352 * reasons);
     v10 = v8[6];
     v9 = v8[7];
     v11 = v8[3];
@@ -964,7 +964,7 @@ LABEL_64:
     v17 = 1024;
     v18 = 470;
     v19 = 1024;
-    v20 = v4;
+    v20 = reasonCopy;
     v21 = 2048;
     v22 = v11;
     v23 = 2048;
@@ -981,16 +981,16 @@ LABEL_64:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)listOutMostUsedSourceRssi:(id)a3 neighborCount:(unint64_t)a4 sourceRssi:(int64_t)a5
+- (void)listOutMostUsedSourceRssi:(id)rssi neighborCount:(unint64_t)count sourceRssi:(int64_t)sourceRssi
 {
   v56 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
-  if (a5 <= -70)
+  rssiCopy = rssi;
+  v9 = rssiCopy;
+  if (sourceRssi <= -70)
   {
     v10 = 0;
-    v11 = &roamInfo + 352 * a4;
-    v33 = v8;
+    v11 = &roamInfo + 352 * count;
+    v33 = rssiCopy;
     v34 = v11 + 200;
     v35 = v11 + 152;
     v12 = v11 + 192;
@@ -1003,7 +1003,7 @@ LABEL_64:
     {
       v18 = v17;
       v17 = roamOriginRssiLevels[v10 + 1];
-      if ([(RoamPolicyStore *)self inRange:v18 high:v17 value:a5])
+      if ([(RoamPolicyStore *)self inRange:v18 high:v17 value:sourceRssi])
       {
         if (v10 == 4)
         {
@@ -1069,7 +1069,7 @@ LABEL_64:
       v38 = 1024;
       v39 = 513;
       v40 = 2048;
-      v41 = a5;
+      sourceRssiCopy = sourceRssi;
       v42 = 2048;
       v43 = v24;
       v44 = 2048;
@@ -1087,7 +1087,7 @@ LABEL_64:
       _os_log_impl(&dword_1C8460000, v23, OS_LOG_TYPE_INFO, "%{public}s::%d:Source RSSI %ld HighRSSI %ld UpperHigh %ld Optimum %ld UpperOptimim %ld Mid %ld UpperMid %ld Low %ld", buf, 0x62u);
     }
 
-    v31 = [MEMORY[0x1E696AD98] numberWithInt:a5];
+    v31 = [MEMORY[0x1E696AD98] numberWithInt:sourceRssi];
     v9 = v33;
     [v33 addObject:v31];
   }
@@ -1095,51 +1095,51 @@ LABEL_64:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)listOutTimeSpentOnBss:(unint64_t)a3 timeSpentOnBss:(unint64_t)a4 motionState:(int64_t)a5
+- (void)listOutTimeSpentOnBss:(unint64_t)bss timeSpentOnBss:(unint64_t)onBss motionState:(int64_t)state
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (a4 > 0x14)
+  if (onBss > 0x14)
   {
-    if (a4 > 0x3C)
+    if (onBss > 0x3C)
     {
-      if (a4 > 0x78)
+      if (onBss > 0x78)
       {
-        if (a4 > 0x1F4)
+        if (onBss > 0x1F4)
         {
-          if (a4 > 0x258)
+          if (onBss > 0x258)
           {
             goto LABEL_13;
           }
 
-          v7 = &roamInfo + 352 * a3 + 288;
+          v7 = &roamInfo + 352 * bss + 288;
         }
 
         else
         {
-          v7 = &roamInfo + 352 * a3 + 280;
+          v7 = &roamInfo + 352 * bss + 280;
         }
       }
 
       else
       {
-        v7 = &roamInfo + 352 * a3 + 272;
+        v7 = &roamInfo + 352 * bss + 272;
       }
     }
 
     else
     {
-      v7 = &roamInfo + 352 * a3 + 264;
+      v7 = &roamInfo + 352 * bss + 264;
     }
   }
 
   else
   {
-    if (a5)
+    if (state)
     {
       goto LABEL_13;
     }
 
-    v7 = &roamInfo + 352 * a3 + 256;
+    v7 = &roamInfo + 352 * bss + 256;
   }
 
   ++*v7;
@@ -1147,7 +1147,7 @@ LABEL_13:
   v8 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = (&roamInfo + 352 * a3);
+    v9 = (&roamInfo + 352 * bss);
     v10 = v9[32];
     v11 = v9[33];
     v12 = v9[34];
@@ -1158,7 +1158,7 @@ LABEL_13:
     v18 = 1024;
     v19 = 538;
     v20 = 2048;
-    v21 = a4;
+    onBssCopy = onBss;
     v22 = 2048;
     v23 = v10;
     v24 = 2048;
@@ -1175,13 +1175,13 @@ LABEL_13:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkForFrequentRoams:(unint64_t)a3 date:(id)a4 motionState:(int64_t)a5
+- (void)checkForFrequentRoams:(unint64_t)roams date:(id)date motionState:(int64_t)state
 {
   v30 = *MEMORY[0x1E69E9840];
-  [a4 timeIntervalSinceReferenceDate];
-  v8 = &roamInfo + 352 * a3;
+  [date timeIntervalSinceReferenceDate];
+  v8 = &roamInfo + 352 * roams;
   *(v8 + 38) = v7;
-  if (a5 <= 1 && *(v8 + 37) != 0.0)
+  if (state <= 1 && *(v8 + 37) != 0.0)
   {
     v9 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:*(v8 + 37)];
     v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:*(v8 + 38)];
@@ -1236,17 +1236,17 @@ LABEL_13:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)listOutLazyRoamScanInfo:(id)a3 neighborCount:(unint64_t)a4 sourceRssi:(int64_t)a5
+- (void)listOutLazyRoamScanInfo:(id)info neighborCount:(unint64_t)count sourceRssi:(int64_t)rssi
 {
   v62 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
-  if (a5 && a5 >= -70)
+  infoCopy = info;
+  v9 = infoCopy;
+  if (rssi && rssi >= -70)
   {
     v10 = 0;
-    v11 = &roamInfo + 352 * a4;
+    v11 = &roamInfo + 352 * count;
     v12 = v11 + 248;
-    v42 = v8;
+    v42 = infoCopy;
     v43 = v11 + 208;
     v13 = v11 + 240;
     v14 = v11 + 232;
@@ -1257,7 +1257,7 @@ LABEL_13:
     {
       v18 = v17;
       v17 = lazyRoamOriginRssiLevels[v10 + 1];
-      if ([(RoamPolicyStore *)self inRange:v18 high:v17 value:a5, v42])
+      if ([(RoamPolicyStore *)self inRange:v18 high:v17 value:rssi, v42])
       {
         if (v10 == 4)
         {
@@ -1315,7 +1315,7 @@ LABEL_13:
       v46 = 1024;
       v47 = 601;
       v48 = 2048;
-      v49 = a5;
+      rssiCopy = rssi;
       v50 = 2048;
       v51 = v22;
       v52 = 2048;
@@ -1331,7 +1331,7 @@ LABEL_13:
       _os_log_impl(&dword_1C8460000, v21, OS_LOG_TYPE_INFO, "%{public}s::%d:Lazy Roam: Source RSSI %ld HighRSSI %ld UpperHigh %ld Optimum %ld UpperOptimim %ld Mid %ld UpperMid %ld", buf, 0x58u);
     }
 
-    v28 = [MEMORY[0x1E696AD98] numberWithInt:a5];
+    v28 = [MEMORY[0x1E696AD98] numberWithInt:rssi];
     v9 = v42;
     [v42 addObject:v28];
 
@@ -1379,7 +1379,7 @@ LABEL_13:
       v46 = 1024;
       v47 = 633;
       v48 = 2048;
-      v49 = v36 & ~(v36 >> 63);
+      rssiCopy = v36 & ~(v36 >> 63);
       v37 = "%{public}s::%d:Largest LazyRoam Bin is %ld\n";
       v38 = v35;
       v39 = OS_LOG_TYPE_INFO;
@@ -1409,19 +1409,19 @@ LABEL_36:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)listOutReassocRoams:(id)a3 neighborCount:(unint64_t)a4 sourceRssi:(int64_t)a5
+- (void)listOutReassocRoams:(id)roams neighborCount:(unint64_t)count sourceRssi:(int64_t)rssi
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithInt:a5];
-  [v7 addObject:v8];
+  roamsCopy = roams;
+  v8 = [v6 numberWithInt:rssi];
+  [roamsCopy addObject:v8];
 }
 
-- (void)listOutBTMRoams:(unint64_t)a3
+- (void)listOutBTMRoams:(unint64_t)roams
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = &roamInfo + 352 * a3;
-  if (*(v3 + 4) > 50 * a3 / 0x64)
+  v3 = &roamInfo + 352 * roams;
+  if (*(v3 + 4) > 50 * roams / 0x64)
   {
     v4 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1440,19 +1440,19 @@ LABEL_36:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)monitorDeploymentChangesAfterRoam:(id)a3
+- (BOOL)monitorDeploymentChangesAfterRoam:(id)roam
 {
   v147[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  roamCopy = roam;
   v88 = objc_autoreleasePoolPush();
-  v89 = [v4 neighborCache];
-  v116 = self;
-  v5 = [(RoamPolicyStore *)self roamPolicyMOHandler];
-  v6 = [v5 persistentContainer];
+  neighborCache = [roamCopy neighborCache];
+  selfCopy = self;
+  roamPolicyMOHandler = [(RoamPolicyStore *)self roamPolicyMOHandler];
+  persistentContainer = [roamPolicyMOHandler persistentContainer];
   v7 = +[RoamMO entity];
-  v90 = v4;
-  v8 = [v4 source];
-  v9 = [RoamMO roamsOutOf:v8];
+  v90 = roamCopy;
+  source = [roamCopy source];
+  v9 = [RoamMO roamsOutOf:source];
   v10 = +[WAPersistentContainer sortByNewestDateFirst];
   v147[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v147 count:1];
@@ -1462,7 +1462,7 @@ LABEL_36:
   v146[3] = @"cacheRssiBin";
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v146 count:4];
   v130 = 0;
-  v13 = [v6 fetchDistinctPropertiesIn:v7 withPredicate:v9 withSorting:v11 withPrefetchedProperties:v12 withLimit:100 withError:&v130];
+  v13 = [persistentContainer fetchDistinctPropertiesIn:v7 withPredicate:v9 withSorting:v11 withPrefetchedProperties:v12 withLimit:100 withError:&v130];
   v14 = v130;
 
   if (v14)
@@ -1478,14 +1478,14 @@ LABEL_36:
     v21 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
-      v86 = [v90 source];
-      v87 = [v86 bssid];
+      source2 = [v90 source];
+      bssid = [source2 bssid];
       *buf = 136446722;
       v134 = "[RoamPolicyStore monitorDeploymentChangesAfterRoam:]";
       v135 = 1024;
       v136 = 670;
       v137 = 2112;
-      v138 = v87;
+      v138 = bssid;
       _os_log_impl(&dword_1C8460000, v21, OS_LOG_TYPE_FAULT, "%{public}s::%d:found no roams from originBSS:%@ (should have found at least the current one)", buf, 0x1Cu);
     }
 
@@ -1496,13 +1496,13 @@ LABEL_36:
   }
 
   v92 = v13;
-  v15 = [(RoamPolicyStore *)v116 roamPolicyMOHandler];
-  v16 = [v15 persistentContainer];
+  roamPolicyMOHandler2 = [(RoamPolicyStore *)selfCopy roamPolicyMOHandler];
+  persistentContainer2 = [roamPolicyMOHandler2 persistentContainer];
   v17 = +[RoamMO entity];
-  v18 = [v90 target];
-  v19 = [RoamMO successfulRoamsInOrOutOf:v18];
+  target = [v90 target];
+  v19 = [RoamMO successfulRoamsInOrOutOf:target];
   v129 = 0;
-  v20 = [v16 countObjects:v17 withPredicate:v19 withError:&v129];
+  v20 = [persistentContainer2 countObjects:v17 withPredicate:v19 withError:&v129];
   v14 = v129;
 
   if (v14)
@@ -1518,14 +1518,14 @@ LABEL_36:
     v21 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v82 = [v90 target];
-      v83 = [v82 bssid];
+      target2 = [v90 target];
+      bssid2 = [target2 bssid];
       *buf = 136446722;
       v134 = "[RoamPolicyStore monitorDeploymentChangesAfterRoam:]";
       v135 = 1024;
       v136 = 680;
       v137 = 2112;
-      v138 = v83;
+      v138 = bssid2;
       _os_log_impl(&dword_1C8460000, v21, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:New BSS %@ Added to the deployment", buf, 0x1Cu);
     }
 
@@ -1538,7 +1538,7 @@ LABEL_36:
   v128 = 0u;
   v125 = 0u;
   v126 = 0u;
-  v21 = v89;
+  v21 = neighborCache;
   v99 = [v21 countByEnumeratingWithState:&v125 objects:v145 count:16];
   if (!v99)
   {
@@ -1597,14 +1597,14 @@ LABEL_81:
   v29 = [v28 objectForKey:@"rssi"];
   v30 = [v28 objectForKey:@"roamDelta"];
   v101 = v29;
-  v115 = [v29 integerValue];
-  v113 = [v30 integerValue];
+  integerValue = [v29 integerValue];
+  integerValue2 = [v30 integerValue];
   v31 = [v28 objectForKey:@"channel"];
-  v32 = [v31 shortValue];
+  shortValue = [v31 shortValue];
   v33 = [v28 objectForKey:@"band"];
-  v34 = +[WAChanInfo chanInfoWithChannel:band:](WAChanInfo, "chanInfoWithChannel:band:", v32, [v33 shortValue]);
+  v34 = +[WAChanInfo chanInfoWithChannel:band:](WAChanInfo, "chanInfoWithChannel:band:", shortValue, [v33 shortValue]);
 
-  v35 = [v34 chanInfoDictionary];
+  chanInfoDictionary = [v34 chanInfoDictionary];
   if ([*(v24 + 664) isWildcardMacAddress:v108])
   {
 
@@ -1626,18 +1626,18 @@ LABEL_81:
     v137 = 2112;
     v138 = v108;
     v139 = 2048;
-    v140 = v115;
+    v140 = integerValue;
     v141 = 2112;
-    v142 = v35;
+    v142 = chanInfoDictionary;
     v143 = 2048;
-    v144 = v113;
+    v144 = integerValue2;
     _os_log_impl(&dword_1C8460000, v36, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:currentCacheBssid  %@ currentRssi %ld currentChannel: %@ currentRoamDelta %ld", buf, 0x3Au);
   }
 
-  v107 = v35;
+  v107 = chanInfoDictionary;
 
-  v37 = [(AnalyticsStoreMOHandler *)v116->_roamPolicyMOHandler persistentContainer];
-  v38 = [v37 bssForBssid:v108 prefetchProperties:&unk_1F483E6B0 withError:0];
+  persistentContainer3 = [(AnalyticsStoreMOHandler *)selfCopy->_roamPolicyMOHandler persistentContainer];
+  v38 = [persistentContainer3 bssForBssid:v108 prefetchProperties:&unk_1F483E6B0 withError:0];
 
   v23 = 0x1E695D000uLL;
   v39 = v101;
@@ -1646,14 +1646,14 @@ LABEL_81:
   if (v38)
   {
     v41 = +[WAChanInfo chanInfoWithChannel:band:](WAChanInfo, "chanInfoWithChannel:band:", [v38 mostRecentChannel], objc_msgSend(v38, "mostRecentBand"));
-    v42 = [v41 chanInfoDictionary];
+    chanInfoDictionary2 = [v41 chanInfoDictionary];
     v43 = WALogCategoryDeviceStoreHandle();
-    v105 = v42;
+    v105 = chanInfoDictionary2;
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
     {
-      v44 = [v90 source];
-      v45 = [v44 network];
-      v46 = [v45 ssid];
+      source3 = [v90 source];
+      network = [source3 network];
+      ssid = [network ssid];
       *buf = 136447234;
       v134 = "[RoamPolicyStore monitorDeploymentChangesAfterRoam:]";
       v135 = 1024;
@@ -1661,18 +1661,18 @@ LABEL_81:
       v137 = 2112;
       v138 = v108;
       v139 = 2112;
-      v140 = v46;
+      v140 = ssid;
       v141 = 2112;
       v142 = v105;
       _os_log_impl(&dword_1C8460000, v43, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:MyChannel for bssid[%@] ssid[%@] : %@", buf, 0x30u);
 
       v23 = 0x1E695D000;
-      v42 = v105;
+      chanInfoDictionary2 = v105;
 
       v40 = v110;
     }
 
-    v47 = [v42 isEqualToDictionary:v107];
+    v47 = [chanInfoDictionary2 isEqualToDictionary:v107];
     v48 = v96;
     if ((v47 & 1) == 0)
     {
@@ -1692,7 +1692,7 @@ LABEL_81:
         _os_log_impl(&dword_1C8460000, v49, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Change in Channel for BSSID =%@, currentChannel = %@, bssChannel = %@", buf, 0x30u);
       }
 
-      [(RoamPolicyStore *)v116 updateNeighborChannelsInCoreDataWith:v41 bss:v94];
+      [(RoamPolicyStore *)selfCopy updateNeighborChannelsInCoreDataWith:v41 bss:v94];
     }
   }
 
@@ -1771,21 +1771,21 @@ LABEL_81:
           v59 = [*(*(&v117 + 1) + 8 * v58) objectForKey:@"bssid"];
           if (([*(v24 + 664) isWildcardMacAddress:v59] & 1) == 0)
           {
-            v60 = [(RoamPolicyStore *)v116 roamPolicyMOHandler];
-            v61 = [v60 persistentContainer];
-            v62 = [v61 mostRecentRoamsFromBssid:v59 withPrefetchedProperties:&unk_1F483E6C8 limit:1];
+            roamPolicyMOHandler3 = [(RoamPolicyStore *)selfCopy roamPolicyMOHandler];
+            persistentContainer4 = [roamPolicyMOHandler3 persistentContainer];
+            v62 = [persistentContainer4 mostRecentRoamsFromBssid:v59 withPrefetchedProperties:&unk_1F483E6C8 limit:1];
 
-            v63 = [v62 firstObject];
-            v64 = v63;
-            if (v63)
+            firstObject = [v62 firstObject];
+            v64 = firstObject;
+            if (firstObject)
             {
-              if ([v63 cacheChannel])
+              if ([firstObject cacheChannel])
               {
                 v65 = [WAChanInfo chanInfoWithObjectHavingChInfo:v64 withPrefix:@"cacheC"];
-                v66 = [v65 chanInfoDictionary];
+                chanInfoDictionary3 = [v65 chanInfoDictionary];
 
-                v67 = [v64 cacheRssiBin];
-                v68 = [v64 roamDelta];
+                cacheRssiBin = [v64 cacheRssiBin];
+                roamDelta = [v64 roamDelta];
                 v69 = WALogCategoryDeviceStoreHandle();
                 if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
                 {
@@ -1796,17 +1796,17 @@ LABEL_81:
                   v137 = 2112;
                   v138 = v59;
                   v139 = 2048;
-                  v140 = v67;
+                  v140 = cacheRssiBin;
                   v141 = 2112;
-                  v142 = v66;
+                  v142 = chanInfoDictionary3;
                   v143 = 2048;
-                  v144 = v68;
+                  v144 = roamDelta;
                   _os_log_impl(&dword_1C8460000, v69, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:CacheBssid  %@ CacheRssiBin %ld CacheChannel %@ CacheRoamDelta %ld", buf, 0x3Au);
                 }
 
                 if ([v108 isEqualToString:v59])
                 {
-                  if (![v66 isEqualToDictionary:v107])
+                  if (![chanInfoDictionary3 isEqualToDictionary:v107])
                   {
                     v70 = WALogCategoryDeviceStoreHandle();
                     if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
@@ -1818,16 +1818,16 @@ LABEL_81:
                       v137 = 2112;
                       v138 = v59;
                       v139 = 2112;
-                      v140 = v66;
+                      v140 = chanInfoDictionary3;
                       v141 = 2112;
                       v142 = v105;
                       _os_log_impl(&dword_1C8460000, v70, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Change in Channel for BSSID %@: CurrentCacheChannel = %@ cacheChannel = %@", buf, 0x30u);
                     }
 
-                    v71 = [(AnalyticsStoreMOHandler *)v116->_roamPolicyMOHandler persistentContainer];
-                    v72 = [v71 bssForBssid:v59 prefetchProperties:0 withError:0];
+                    persistentContainer5 = [(AnalyticsStoreMOHandler *)selfCopy->_roamPolicyMOHandler persistentContainer];
+                    v72 = [persistentContainer5 bssForBssid:v59 prefetchProperties:0 withError:0];
 
-                    [(RoamPolicyStore *)v116 updateNeighborChannelsInCoreDataWith:v106 bss:v72];
+                    [(RoamPolicyStore *)selfCopy updateNeighborChannelsInCoreDataWith:v106 bss:v72];
                   }
 
                   v73 = 0;
@@ -1836,7 +1836,7 @@ LABEL_81:
                   {
                     v75 = v74;
                     v74 = roamCacheRssiLevels[v73 + 1];
-                    if ([(RoamPolicyStore *)v116 inRange:v75 high:v74 value:v115])
+                    if ([(RoamPolicyStore *)selfCopy inRange:v75 high:v74 value:integerValue])
                     {
                       v22 = v73;
                       if (v73 > 3)
@@ -1853,7 +1853,7 @@ LABEL_81:
 
                   v22 = v73;
 LABEL_54:
-                  if (v22 == v67)
+                  if (v22 == cacheRssiBin)
                   {
                     v76 = WALogCategoryDeviceStoreHandle();
                     if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
@@ -1865,19 +1865,19 @@ LABEL_54:
                       v137 = 2112;
                       v138 = v59;
                       v139 = 2048;
-                      v140 = v67;
+                      v140 = cacheRssiBin;
                       v141 = 2048;
-                      v142 = v67;
+                      v142 = cacheRssiBin;
                       _os_log_impl(&dword_1C8460000, v76, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:No Change in location of the BSS = %@ CurrentRssiLevel = %lu cacheRssiBin = %ld", buf, 0x30u);
                     }
 
                     goto LABEL_64;
                   }
 
-                  v77 = v67 - v22;
-                  if (v22 > v67)
+                  v77 = cacheRssiBin - v22;
+                  if (v22 > cacheRssiBin)
                   {
-                    v77 = v22 - v67;
+                    v77 = v22 - cacheRssiBin;
                   }
 
                   if (v77 >= 2)
@@ -1895,7 +1895,7 @@ LABEL_54:
                       v139 = 2048;
                       v140 = v22;
                       v141 = 2112;
-                      v142 = v66;
+                      v142 = chanInfoDictionary3;
                       _os_log_impl(&dword_1C8460000, v79, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Deployment Changed: Network %@ is signicantly moved in or an obstacle is taken out.CurrentRssiLevel = %lu cacheChannel = %@", buf, 0x30u);
                     }
 
@@ -1920,14 +1920,14 @@ LABEL_54:
                       v137 = 2048;
                       v138 = v22;
                       v139 = 2112;
-                      v140 = v66;
+                      v140 = chanInfoDictionary3;
                       _os_log_impl(&dword_1C8460000, v76, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Deployment did Change but the change is not significant, CurrentRssiLevel = %lu cacheChannel = %@", buf, 0x26u);
                     }
 
-                    v67 = v22;
+                    cacheRssiBin = v22;
 LABEL_64:
 
-                    v22 = v67;
+                    v22 = cacheRssiBin;
                   }
                 }
 
@@ -1941,8 +1941,8 @@ LABEL_66:
               goto LABEL_68;
             }
 
-            v66 = WALogCategoryDeviceStoreHandle();
-            if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
+            chanInfoDictionary3 = WALogCategoryDeviceStoreHandle();
+            if (os_log_type_enabled(chanInfoDictionary3, OS_LOG_TYPE_ERROR))
             {
               *buf = 136446722;
               v134 = "[RoamPolicyStore monitorDeploymentChangesAfterRoam:]";
@@ -1950,7 +1950,7 @@ LABEL_66:
               v136 = 739;
               v137 = 2112;
               v138 = v59;
-              _os_log_impl(&dword_1C8460000, v66, OS_LOG_TYPE_ERROR, "%{public}s::%d:no roams from %@", buf, 0x1Cu);
+              _os_log_impl(&dword_1C8460000, chanInfoDictionary3, OS_LOG_TYPE_ERROR, "%{public}s::%d:no roams from %@", buf, 0x1Cu);
             }
 
             goto LABEL_66;
@@ -2012,10 +2012,10 @@ LABEL_91:
   return v81 & 1;
 }
 
-- (BOOL)buildRoamCacheInfoForBss:(id)a3 numRoamSamples:(unint64_t)a4 withError:(id *)a5
+- (BOOL)buildRoamCacheInfoForBss:(id)bss numRoamSamples:(unint64_t)samples withError:(id *)error
 {
   v138[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bssCopy = bss;
   context = objc_autoreleasePoolPush();
   v7 = WALogCategoryDeviceStoreHandle();
   if (os_signpost_enabled(v7))
@@ -2025,18 +2025,18 @@ LABEL_91:
   }
 
   bzero(&roamCacheInfo, 0x410uLL);
-  v116 = self;
-  v8 = [(RoamPolicyStore *)self roamPolicyMOHandler];
-  v9 = [v8 persistentContainer];
+  selfCopy = self;
+  roamPolicyMOHandler = [(RoamPolicyStore *)self roamPolicyMOHandler];
+  persistentContainer = [roamPolicyMOHandler persistentContainer];
   v10 = +[RoamMO entity];
-  v11 = [RoamMO roamsOutOf:v6];
+  v11 = [RoamMO roamsOutOf:bssCopy];
   v12 = +[WAPersistentContainer sortByNewestDateFirst];
   v138[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v138 count:1];
   v137 = @"neighborCache";
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v137 count:1];
   v129 = 0;
-  v15 = [v9 fetchDistinctPropertiesIn:v10 withPredicate:v11 withSorting:v13 withPrefetchedProperties:v14 withLimit:100 withError:&v129];
+  v15 = [persistentContainer fetchDistinctPropertiesIn:v10 withPredicate:v11 withSorting:v13 withPrefetchedProperties:v14 withLimit:100 withError:&v129];
   v16 = v129;
 
   v102 = v16;
@@ -2050,13 +2050,13 @@ LABEL_91:
     v98 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v98, OS_LOG_TYPE_ERROR))
     {
-      v99 = [v6 bssid];
+      bssid = [bssCopy bssid];
       *buf = 136446722;
       v132 = "[RoamPolicyStore buildRoamCacheInfoForBss:numRoamSamples:withError:]";
       v133 = 1024;
       v134 = 830;
       v135 = 2112;
-      v136 = v99;
+      v136 = bssid;
       _os_log_impl(&dword_1C8460000, v98, OS_LOG_TYPE_ERROR, "%{public}s::%d:fetchDistinctProperties for roamsOutOf:%@ returned nil", buf, 0x1Cu);
     }
 
@@ -2076,7 +2076,7 @@ LABEL_91:
     _os_log_impl(&dword_1C8460000, v18, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Roam Cache Policy: numRoamSamplesCollectedSoFar =%lu", buf, 0x1Cu);
   }
 
-  if (![objc_opt_class() doWeHaveEnoughSamplesToBuildRoamCache:v17 numRoamSamples:a4])
+  if (![objc_opt_class() doWeHaveEnoughSamplesToBuildRoamCache:v17 numRoamSamples:samples])
   {
     v98 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v98, OS_LOG_TYPE_DEFAULT))
@@ -2106,7 +2106,7 @@ LABEL_108:
   v124 = 0;
   v19 = 0;
   v20 = 0x1E695D000uLL;
-  v109 = v6;
+  v109 = bssCopy;
   v103 = v15;
   do
   {
@@ -2115,7 +2115,7 @@ LABEL_108:
     v21 = [v104 valueForKey:@"neighborCache"];
     if (v21)
     {
-      v106 = [MEMORY[0x1E696AD60] string];
+      string = [MEMORY[0x1E696AD60] string];
       v125 = 0u;
       v126 = 0u;
       v127 = 0u;
@@ -2153,32 +2153,32 @@ LABEL_108:
             v31 = [v28 objectForKey:@"bssid"];
             v121 = [v28 objectForKey:@"roamDelta"];
             v32 = [v28 objectForKey:@"channel"];
-            v33 = [v32 shortValue];
+            shortValue = [v32 shortValue];
             v34 = [v28 objectForKey:@"band"];
-            v35 = [v34 shortValue];
-            v36 = v33;
+            shortValue2 = [v34 shortValue];
+            v36 = shortValue;
             v37 = v30;
-            v38 = [WAChanInfo chanInfoWithChannel:v36 band:v35];
+            v38 = [WAChanInfo chanInfoWithChannel:v36 band:shortValue2];
 
-            v39 = [v29 integerValue];
+            integerValue = [v29 integerValue];
             v117 = v38;
-            v40 = [v38 simplifiedChannelFlags];
-            v41 = [v37 integerValue];
+            simplifiedChannelFlags = [v38 simplifiedChannelFlags];
+            integerValue2 = [v37 integerValue];
             v119 = v37;
             if (v29)
             {
               if (v37)
               {
-                v42 = v41;
-                v43 = [v6 bssid];
-                if (v43)
+                v42 = integerValue2;
+                bssid2 = [bssCopy bssid];
+                if (bssid2)
                 {
-                  v44 = v43;
+                  v44 = bssid2;
                   v45 = [WAUtil isWildcardMacAddress:v31];
 
                   if (!v45)
                   {
-                    [v106 appendFormat:@" {%@, %@, %@, %@} ", v31, v37, v29, v121];
+                    [string appendFormat:@" {%@, %@, %@, %@} ", v31, v37, v29, v121];
                     v46 = WALogCategoryDeviceStoreHandle();
                     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
                     {
@@ -2187,14 +2187,14 @@ LABEL_108:
                       v133 = 1024;
                       v134 = 870;
                       v135 = 2112;
-                      v136 = v106;
+                      v136 = string;
                       _os_log_impl(&dword_1C8460000, v46, OS_LOG_TYPE_DEBUG, "%{public}s::%d:roamCacheStr:%@", buf, 0x1Cu);
                     }
 
                     v47 = v124;
                     if (v124)
                     {
-                      v107 = v40;
+                      v107 = simplifiedChannelFlags;
                       v48 = &roamCacheInfo;
                       while (1)
                       {
@@ -2211,29 +2211,29 @@ LABEL_108:
                         {
                           v108 = 0;
                           v47 = v124;
-                          v40 = v107;
+                          simplifiedChannelFlags = v107;
                           goto LABEL_28;
                         }
                       }
 
                       v108 = 1;
                       v47 = v124;
-                      v40 = v107;
+                      simplifiedChannelFlags = v107;
 LABEL_33:
                       if (v47)
                       {
 LABEL_34:
                         v124 = v47;
                         v53 = 0;
-                        v54 = v40;
+                        v54 = simplifiedChannelFlags;
                         v55 = &roamCacheInfo;
                         do
                         {
                           v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v55];
                           if ([v31 isEqual:v56])
                           {
-                            [(RoamPolicyStore *)v116 locateTheNeighbor:v53 cacheRssi:v42];
-                            v55[8] = v39;
+                            [(RoamPolicyStore *)selfCopy locateTheNeighbor:v53 cacheRssi:v42];
+                            v55[8] = integerValue;
                             v55[9] = v54;
                           }
 
@@ -2258,11 +2258,11 @@ LABEL_28:
                         goto LABEL_33;
                       }
 
-                      v51 = [v31 UTF8String];
-                      v52 = strlen(v51);
+                      uTF8String = [v31 UTF8String];
+                      v52 = strlen(uTF8String);
                       if (v52 < 0x14)
                       {
-                        memcpy(&roamCacheInfo + 104 * v124, v51, v52);
+                        memcpy(&roamCacheInfo + 104 * v124, uTF8String, v52);
                         v108 = 0;
                         v47 = v124 + 1;
                         goto LABEL_34;
@@ -2284,7 +2284,7 @@ LABEL_28:
                     }
                   }
 
-                  v6 = v109;
+                  bssCopy = v109;
                 }
               }
             }
@@ -2311,7 +2311,7 @@ LABEL_47:
     }
 
     v58 = WALogCategoryDeviceStoreHandle();
-    v106 = v58;
+    string = v58;
     if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
     {
       *buf = 136446466;
@@ -2337,7 +2337,7 @@ LABEL_92:
 
   v60 = &roamCacheInfo;
   v61 = v124;
-  v62 = v116;
+  v62 = selfCopy;
   do
   {
     v122 = v61;
@@ -2396,14 +2396,14 @@ LABEL_92:
 
     v113 = v65;
     v72 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v60];
-    v73 = [(RoamPolicyStore *)v62 roamPolicyMOHandler];
-    v74 = [v73 persistentContainer];
+    roamPolicyMOHandler2 = [(RoamPolicyStore *)v62 roamPolicyMOHandler];
+    persistentContainer2 = [roamPolicyMOHandler2 persistentContainer];
     v120 = v72;
-    v75 = [v74 mostRecentRoamsFromBssid:v72 withPrefetchedProperties:&unk_1F483E6E0 limit:1];
+    v75 = [persistentContainer2 mostRecentRoamsFromBssid:v72 withPrefetchedProperties:&unk_1F483E6E0 limit:1];
 
-    v76 = [v75 firstObject];
-    v77 = v76;
-    if (v76)
+    firstObject = [v75 firstObject];
+    v77 = firstObject;
+    if (firstObject)
     {
       if (v64 <= v63)
       {
@@ -2461,12 +2461,12 @@ LABEL_92:
 
       if (v86 >= 50 * v85 / 0x64)
       {
-        [v76 setCacheRssiBin:v113];
+        [firstObject setCacheRssiBin:v113];
       }
 
       [v77 setCacheChannel:*(v60 + 32)];
       [v77 setCacheChannelFlags:*(v60 + 36)];
-      v6 = v109;
+      bssCopy = v109;
       v15 = v103;
       v88 = v120;
       v87 = v122;
@@ -2487,24 +2487,24 @@ LABEL_92:
         _os_log_impl(&dword_1C8460000, v90, OS_LOG_TYPE_ERROR, "%{public}s::%d:no recent roams from %@", buf, 0x1Cu);
       }
 
-      v6 = v109;
+      bssCopy = v109;
       v15 = v103;
       v87 = v122;
     }
 
     v60 += 13;
-    v62 = v116;
-    v89 = [(RoamPolicyStore *)v116 roamPolicyMOHandler];
-    [v89 updateManagedObjectContextWithoutSave];
+    v62 = selfCopy;
+    roamPolicyMOHandler3 = [(RoamPolicyStore *)selfCopy roamPolicyMOHandler];
+    [roamPolicyMOHandler3 updateManagedObjectContextWithoutSave];
 
     v61 = v87 - 1;
   }
 
   while (v61);
 LABEL_93:
-  if (v6)
+  if (bssCopy)
   {
-    [(RoamPolicyStore *)v116 storeNeighborsInfoLearningsFromRoamCacheInfo:v6 neighborCount:v124];
+    [(RoamPolicyStore *)selfCopy storeNeighborsInfoLearningsFromRoamCacheInfo:bssCopy neighborCount:v124];
   }
 
   v91 = 1;
@@ -2525,22 +2525,22 @@ LABEL_96:
 
   objc_autoreleasePoolPop(context);
   v94 = v102;
-  if (a5)
+  if (error)
   {
     v95 = v102;
     v94 = v102;
-    *a5 = v102;
+    *error = v102;
   }
 
   v96 = *MEMORY[0x1E69E9840];
   return v91;
 }
 
-- (void)locateTheNeighbor:(unint64_t)a3 cacheRssi:(int64_t)a4
+- (void)locateTheNeighbor:(unint64_t)neighbor cacheRssi:(int64_t)rssi
 {
   v6 = 0;
   v44 = *MEMORY[0x1E69E9840];
-  v7 = &roamCacheInfo + 104 * a3;
+  v7 = &roamCacheInfo + 104 * neighbor;
   v8 = v7 + 56;
   v9 = v7 + 24;
   v10 = v7 + 48;
@@ -2551,7 +2551,7 @@ LABEL_96:
   {
     v14 = v13;
     v13 = roamCacheRssiLevels[v6 + 1];
-    if (![(RoamPolicyStore *)self inRange:v14 high:v13 value:a4])
+    if (![(RoamPolicyStore *)self inRange:v14 high:v13 value:rssi])
     {
       goto LABEL_11;
     }
@@ -2598,7 +2598,7 @@ LABEL_11:
   v16 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = (&roamCacheInfo + 104 * a3);
+    v17 = (&roamCacheInfo + 104 * neighbor);
     v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v17];
     v19 = v17[3];
     v20 = v17[4];
@@ -2612,7 +2612,7 @@ LABEL_11:
     v30 = 2112;
     v31 = v18;
     v32 = 2048;
-    v33 = a4;
+    rssiCopy = rssi;
     v34 = 2048;
     v35 = v19;
     v36 = 2048;
@@ -2629,62 +2629,62 @@ LABEL_11:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resetAdaptiveRoamingStateMachine:(id)a3
+- (void)resetAdaptiveRoamingStateMachine:(id)machine
 {
-  v4 = a3;
-  [v4 setRoamTriggerRssi:4294967168];
-  [v4 setNeighborChannels:0];
+  machineCopy = machine;
+  [machineCopy setRoamTriggerRssi:4294967168];
+  [machineCopy setNeighborChannels:0];
 
-  v5 = [(RoamPolicyStore *)self roamPolicyMOHandler];
-  [v5 updateManagedObjectContextWithoutSave];
+  roamPolicyMOHandler = [(RoamPolicyStore *)self roamPolicyMOHandler];
+  [roamPolicyMOHandler updateManagedObjectContextWithoutSave];
 }
 
-- (void)updateNeighborChannelsInCoreDataWith:(id)a3 bss:(id)a4
+- (void)updateNeighborChannelsInCoreDataWith:(id)with bss:(id)bss
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  withCopy = with;
+  bssCopy = bss;
   v8 = objc_autoreleasePoolPush();
   v9 = MEMORY[0x1E695DFA8];
-  v10 = [RoamPolicyStore neighborChannelsOf:v7];
+  v10 = [RoamPolicyStore neighborChannelsOf:bssCopy];
   v11 = [v9 setWithSet:v10];
 
-  v12 = [v6 chanInfoDictionary];
-  [v11 addObject:v12];
+  chanInfoDictionary = [withCopy chanInfoDictionary];
+  [v11 addObject:chanInfoDictionary];
 
   v13 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v7 bssid];
-    v15 = [v7 network];
-    v16 = [v15 ssid];
+    bssid = [bssCopy bssid];
+    network = [bssCopy network];
+    ssid = [network ssid];
     v19 = 136447490;
     v20 = "[RoamPolicyStore updateNeighborChannelsInCoreDataWith:bss:]";
     v21 = 1024;
     v22 = 1028;
     v23 = 2112;
-    v24 = v14;
+    v24 = bssid;
     v25 = 2112;
-    v26 = v16;
+    v26 = ssid;
     v27 = 1024;
-    v28 = [v6 channel];
+    channel = [withCopy channel];
     v29 = 1024;
-    v30 = [v6 band];
+    band = [withCopy band];
     _os_log_impl(&dword_1C8460000, v13, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:[BSS:%@ SSID:%@] Added Channel %hd Band %hd", &v19, 0x32u);
   }
 
-  [v7 setNeighborChannels:v11];
-  v17 = [(RoamPolicyStore *)self roamPolicyMOHandler];
-  [v17 updateManagedObjectContextWithoutSave];
+  [bssCopy setNeighborChannels:v11];
+  roamPolicyMOHandler = [(RoamPolicyStore *)self roamPolicyMOHandler];
+  [roamPolicyMOHandler updateManagedObjectContextWithoutSave];
 
   objc_autoreleasePoolPop(v8);
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)storeNeighborsInfoLearningsFromRoamInfo:(id)a3 neighborCount:(unint64_t)a4
+- (void)storeNeighborsInfoLearningsFromRoamInfo:(id)info neighborCount:(unint64_t)count
 {
   v102 = *MEMORY[0x1E69E9840];
-  v70 = a3;
+  infoCopy = info;
   v61 = objc_autoreleasePoolPush();
   v5 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -2694,13 +2694,13 @@ LABEL_11:
     v84 = 1024;
     v85 = 1044;
     v86 = 2048;
-    v87 = a4;
+    countCopy3 = count;
     _os_log_impl(&dword_1C8460000, v5, OS_LOG_TYPE_INFO, "%{public}s::%d:neighborCount: %lu", buf, 0x1Cu);
   }
 
-  v64 = a4;
+  countCopy2 = count;
 
-  if (!v70)
+  if (!infoCopy)
   {
     v56 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
@@ -2716,7 +2716,7 @@ LABEL_11:
     goto LABEL_34;
   }
 
-  if (!a4)
+  if (!count)
   {
     v56 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
@@ -2735,7 +2735,7 @@ LABEL_34:
     goto LABEL_37;
   }
 
-  if (a4 >= 0xA)
+  if (count >= 0xA)
   {
     v56 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
@@ -2748,7 +2748,7 @@ LABEL_34:
     v84 = 1024;
     v85 = 1048;
     v86 = 2048;
-    v87 = a4;
+    countCopy3 = count;
     v58 = "%{public}s::%d:neighborCount %lu greater than kMaxNumOfNeighbors.. bailing";
     v59 = v56;
     v60 = 28;
@@ -2757,47 +2757,47 @@ LABEL_37:
     goto LABEL_29;
   }
 
-  v71 = [MEMORY[0x1E695DF70] array];
-  v63 = [BSSMO bssManagedObjectPropertyValue:v70 forKey:@"NeighborInfo"];
+  array = [MEMORY[0x1E695DF70] array];
+  v63 = [BSSMO bssManagedObjectPropertyValue:infoCopy forKey:@"NeighborInfo"];
   if (v63)
   {
-    v74 = [MEMORY[0x1E695DF70] arrayWithArray:?];
-    if (!v74)
+    array2 = [MEMORY[0x1E695DF70] arrayWithArray:?];
+    if (!array2)
     {
-      v74 = 0;
+      array2 = 0;
       goto LABEL_14;
     }
 
     v6 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v7 = [v74 count];
-      v8 = [v70 bssid];
+      v7 = [array2 count];
+      bssid = [infoCopy bssid];
       *buf = 136446978;
       v83 = "[RoamPolicyStore storeNeighborsInfoLearningsFromRoamInfo:neighborCount:]";
       v84 = 1024;
       v85 = 1056;
       v86 = 2048;
-      v87 = v7;
+      countCopy3 = v7;
       v88 = 2112;
-      v89 = v8;
+      v89 = bssid;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Prev Neighbor count:%lu for BSSID:%@", buf, 0x26u);
     }
   }
 
   else
   {
-    v74 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v6 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [v70 bssid];
+      bssid2 = [infoCopy bssid];
       *buf = 136446722;
       v83 = "[RoamPolicyStore storeNeighborsInfoLearningsFromRoamInfo:neighborCount:]";
       v84 = 1024;
       v85 = 1060;
       v86 = 2112;
-      v87 = v9;
+      countCopy3 = bssid2;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_DEBUG, "%{public}s::%d:No Neighbor Info for BSSID:%@", buf, 0x1Cu);
     }
   }
@@ -2806,114 +2806,114 @@ LABEL_14:
   v10 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [v70 bssid];
+    bssid3 = [infoCopy bssid];
     *buf = 136446978;
     v83 = "[RoamPolicyStore storeNeighborsInfoLearningsFromRoamInfo:neighborCount:]";
     v84 = 1024;
     v85 = 1063;
     v86 = 2048;
-    v87 = v64;
+    countCopy3 = countCopy2;
     v88 = 2112;
-    v89 = v11;
+    v89 = bssid3;
     _os_log_impl(&dword_1C8460000, v10, OS_LOG_TYPE_DEBUG, "%{public}s::%d:new Neighbor count:%lu  Info for BSSID:%@", buf, 0x26u);
   }
 
   v12 = &roamInfo;
-  v13 = v64;
+  v13 = countCopy2;
   do
   {
     context = objc_autoreleasePoolPush();
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v12];
-    [v14 setValue:v15 forKey:@"NeighborBssid"];
+    [dictionary setValue:v15 forKey:@"NeighborBssid"];
 
     v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[3]];
-    [v14 setValue:v16 forKey:@"NeighborBssNumRoamDueToLowRssi"];
+    [dictionary setValue:v16 forKey:@"NeighborBssNumRoamDueToLowRssi"];
 
     v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[4]];
-    [v14 setValue:v17 forKey:@"NeighborBssNumRoamDueToBTM"];
+    [dictionary setValue:v17 forKey:@"NeighborBssNumRoamDueToBTM"];
 
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[5]];
-    [v14 setValue:v18 forKey:@"NeighborBssNumRoamDueToLazyScan"];
+    [dictionary setValue:v18 forKey:@"NeighborBssNumRoamDueToLazyScan"];
 
     v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[6]];
-    [v14 setValue:v19 forKey:@"NeighborBssNumRoamDueToBeaconLoss"];
+    [dictionary setValue:v19 forKey:@"NeighborBssNumRoamDueToBeaconLoss"];
 
     v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[7]];
-    [v14 setValue:v20 forKey:@"NeighborBssNumRoamDueToLinkLossSuppression"];
+    [dictionary setValue:v20 forKey:@"NeighborBssNumRoamDueToLinkLossSuppression"];
 
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[8]];
-    [v14 setValue:v21 forKey:@"NeighborBssNumRoamDueToFastRoamFailure"];
+    [dictionary setValue:v21 forKey:@"NeighborBssNumRoamDueToFastRoamFailure"];
 
     v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[9]];
-    [v14 setValue:v22 forKey:@"NeighborBssNumRoamDueToTSpecRejection"];
+    [dictionary setValue:v22 forKey:@"NeighborBssNumRoamDueToTSpecRejection"];
 
     v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[10]];
-    [v14 setValue:v23 forKey:@"NeighborBssNumRoamDueToMinTxRate"];
+    [dictionary setValue:v23 forKey:@"NeighborBssNumRoamDueToMinTxRate"];
 
     v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[11]];
-    [v14 setValue:v24 forKey:@"NeighborBssNumRoamDueToAsymmetricChannel"];
+    [dictionary setValue:v24 forKey:@"NeighborBssNumRoamDueToAsymmetricChannel"];
 
     v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[12]];
-    [v14 setValue:v25 forKey:@"NeighborBssNumRoamDueToLowRssiAndChannelUsage"];
+    [dictionary setValue:v25 forKey:@"NeighborBssNumRoamDueToLowRssiAndChannelUsage"];
 
     v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[13]];
-    [v14 setValue:v26 forKey:@"NeighborBssNumRoamDueToRadar"];
+    [dictionary setValue:v26 forKey:@"NeighborBssNumRoamDueToRadar"];
 
     v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[14]];
-    [v14 setValue:v27 forKey:@"NeighborBssNumRoamDueToCSA"];
+    [dictionary setValue:v27 forKey:@"NeighborBssNumRoamDueToCSA"];
 
     v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[15]];
-    [v14 setValue:v28 forKey:@"NeighborBssNumRoamDueToEstimatedTPutLow"];
+    [dictionary setValue:v28 forKey:@"NeighborBssNumRoamDueToEstimatedTPutLow"];
 
     v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[16]];
-    [v14 setValue:v29 forKey:@"NeighborBssNumRoamDueToSilentRoam"];
+    [dictionary setValue:v29 forKey:@"NeighborBssNumRoamDueToSilentRoam"];
 
     v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[17]];
-    [v14 setValue:v30 forKey:@"NeighborBssNumRoamDueToInactivity"];
+    [dictionary setValue:v30 forKey:@"NeighborBssNumRoamDueToInactivity"];
 
     v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[18]];
-    [v14 setValue:v31 forKey:@"NeighborBssNumRoamDueToRoamScanTimeout"];
+    [dictionary setValue:v31 forKey:@"NeighborBssNumRoamDueToRoamScanTimeout"];
 
     v32 = [MEMORY[0x1E696AD98] numberWithInteger:v12[19]];
-    [v14 setValue:v32 forKey:@"NeighborBssNumRoamOriginRssiHigh"];
+    [dictionary setValue:v32 forKey:@"NeighborBssNumRoamOriginRssiHigh"];
 
     v33 = [MEMORY[0x1E696AD98] numberWithInteger:v12[20]];
-    [v14 setValue:v33 forKey:@"NeighborBssNumRoamOriginRssiUpperHigh"];
+    [dictionary setValue:v33 forKey:@"NeighborBssNumRoamOriginRssiUpperHigh"];
 
     v34 = [MEMORY[0x1E696AD98] numberWithInteger:v12[21]];
-    [v14 setValue:v34 forKey:@"NeighborBssNumRoamOriginRssiOptimum"];
+    [dictionary setValue:v34 forKey:@"NeighborBssNumRoamOriginRssiOptimum"];
 
     v35 = [MEMORY[0x1E696AD98] numberWithInteger:v12[22]];
-    [v14 setValue:v35 forKey:@"NeighborBssNumRoamOriginRssiUpperOptimum"];
+    [dictionary setValue:v35 forKey:@"NeighborBssNumRoamOriginRssiUpperOptimum"];
 
     v36 = [MEMORY[0x1E696AD98] numberWithInteger:v12[23]];
-    [v14 setValue:v36 forKey:@"NeighborBssNumRoamOriginRssiMid"];
+    [dictionary setValue:v36 forKey:@"NeighborBssNumRoamOriginRssiMid"];
 
     v37 = [MEMORY[0x1E696AD98] numberWithInteger:v12[24]];
-    [v14 setValue:v37 forKey:@"NeighborBssNumRoamOriginRssiUpperMid"];
+    [dictionary setValue:v37 forKey:@"NeighborBssNumRoamOriginRssiUpperMid"];
 
     v38 = [MEMORY[0x1E696AD98] numberWithInteger:v12[25]];
-    [v14 setValue:v38 forKey:@"NeighborBssNumRoamOriginRssiLow"];
+    [dictionary setValue:v38 forKey:@"NeighborBssNumRoamOriginRssiLow"];
 
     v39 = [MEMORY[0x1E696AD98] numberWithInteger:v12[26]];
-    [v14 setValue:v39 forKey:@"NeighborBssNumLazyRoamOriginRssiHigh"];
+    [dictionary setValue:v39 forKey:@"NeighborBssNumLazyRoamOriginRssiHigh"];
 
     v40 = [MEMORY[0x1E696AD98] numberWithInteger:v12[27]];
-    [v14 setValue:v40 forKey:@"NeighborBssNumLazyRoamOriginRssiUpperHigh"];
+    [dictionary setValue:v40 forKey:@"NeighborBssNumLazyRoamOriginRssiUpperHigh"];
 
     v41 = [MEMORY[0x1E696AD98] numberWithInteger:v12[28]];
-    [v14 setValue:v41 forKey:@"NeighborBssNumLazyRoamOriginRssiOptimum"];
+    [dictionary setValue:v41 forKey:@"NeighborBssNumLazyRoamOriginRssiOptimum"];
 
     v42 = [MEMORY[0x1E696AD98] numberWithInteger:v12[29]];
-    [v14 setValue:v42 forKey:@"NeighborBssNumLazyRoamOriginRssiUpperOptimum"];
+    [dictionary setValue:v42 forKey:@"NeighborBssNumLazyRoamOriginRssiUpperOptimum"];
 
     v43 = [MEMORY[0x1E696AD98] numberWithInteger:v12[30]];
-    [v14 setValue:v43 forKey:@"NeighborBssNumLazyRoamOriginRssiMid"];
+    [dictionary setValue:v43 forKey:@"NeighborBssNumLazyRoamOriginRssiMid"];
 
     v44 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v12];
     v72 = v13;
-    if (v74 && [v74 count])
+    if (array2 && [array2 count])
     {
       v78 = 0;
       v79 = &v78;
@@ -2926,13 +2926,13 @@ LABEL_14:
       v45 = v44;
       v76 = v45;
       v77 = &v78;
-      [v74 enumerateObjectsUsingBlock:v75];
+      [array2 enumerateObjectsUsingBlock:v75];
       if (v79[3] != -1)
       {
-        v69 = [v74 objectAtIndex:?];
+        v69 = [array2 objectAtIndex:?];
         v46 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:?];
-        [v46 addEntriesFromDictionary:v14];
-        [v74 replaceObjectAtIndex:v79[3] withObject:v46];
+        [v46 addEntriesFromDictionary:dictionary];
+        [array2 replaceObjectAtIndex:v79[3] withObject:v46];
         v47 = WALogCategoryDeviceStoreHandle();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
         {
@@ -2949,7 +2949,7 @@ LABEL_14:
           v84 = 1024;
           v85 = 1132;
           v86 = 2048;
-          v87 = v66;
+          countCopy3 = v66;
           v88 = 2112;
           v89 = v45;
           v90 = 2112;
@@ -2979,19 +2979,19 @@ LABEL_14:
     v52 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
     {
-      v53 = [v70 bssid];
+      bssid4 = [infoCopy bssid];
       *buf = 136446978;
       v83 = "[RoamPolicyStore storeNeighborsInfoLearningsFromRoamInfo:neighborCount:]";
       v84 = 1024;
       v85 = 1137;
       v86 = 2112;
-      v87 = v53;
+      countCopy3 = bssid4;
       v88 = 2112;
       v89 = v44;
       _os_log_impl(&dword_1C8460000, v52, OS_LOG_TYPE_DEBUG, "%{public}s::%d:New Neighbor for BSSID:%@ --- %@", buf, 0x26u);
     }
 
-    [v71 addObject:v14];
+    [array addObject:dictionary];
 LABEL_27:
 
     objc_autoreleasePoolPop(context);
@@ -3000,14 +3000,14 @@ LABEL_27:
   }
 
   while (v72 != 1);
-  [v74 addObjectsFromArray:v71];
-  v54 = [(RoamPolicyStore *)self roamPolicyMOHandler];
-  [v54 setBssManagedObjectPropertyValueForKeyWithoutSave:v70 forKey:@"NeighborInfo" withValue:v74];
+  [array2 addObjectsFromArray:array];
+  roamPolicyMOHandler = [(RoamPolicyStore *)self roamPolicyMOHandler];
+  [roamPolicyMOHandler setBssManagedObjectPropertyValueForKeyWithoutSave:infoCopy forKey:@"NeighborInfo" withValue:array2];
 
-  v55 = [v70 bssid];
-  [(RoamPolicyStore *)self setDeploymentFromRoamInfo:v55 neighborCount:v64];
+  bssid5 = [infoCopy bssid];
+  [(RoamPolicyStore *)self setDeploymentFromRoamInfo:bssid5 neighborCount:countCopy2];
 
-  v56 = v71;
+  v56 = array;
 LABEL_29:
 
   objc_autoreleasePoolPop(v61);
@@ -3027,10 +3027,10 @@ void __73__RoamPolicyStore_storeNeighborsInfoLearningsFromRoamInfo_neighborCount
   }
 }
 
-- (void)storeNeighborsInfoLearningsFromRoamCacheInfo:(id)a3 neighborCount:(unint64_t)a4
+- (void)storeNeighborsInfoLearningsFromRoamCacheInfo:(id)info neighborCount:(unint64_t)count
 {
   v61 = *MEMORY[0x1E69E9840];
-  v41 = a3;
+  infoCopy = info;
   context = objc_autoreleasePoolPush();
   v5 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -3040,13 +3040,13 @@ void __73__RoamPolicyStore_storeNeighborsInfoLearningsFromRoamInfo_neighborCount
     v53 = 1024;
     v54 = 1158;
     v55 = 2048;
-    v56 = a4;
+    countCopy3 = count;
     _os_log_impl(&dword_1C8460000, v5, OS_LOG_TYPE_INFO, "%{public}s::%d:neighborCount: %lu", buf, 0x1Cu);
   }
 
-  v40 = a4;
+  countCopy2 = count;
 
-  if (!v41)
+  if (!infoCopy)
   {
     v32 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -3062,7 +3062,7 @@ void __73__RoamPolicyStore_storeNeighborsInfoLearningsFromRoamInfo_neighborCount
     goto LABEL_34;
   }
 
-  if (!a4)
+  if (!count)
   {
     v32 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -3081,7 +3081,7 @@ LABEL_34:
     goto LABEL_37;
   }
 
-  if (a4 >= 0xA)
+  if (count >= 0xA)
   {
     v32 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -3094,7 +3094,7 @@ LABEL_34:
     v53 = 1024;
     v54 = 1162;
     v55 = 2048;
-    v56 = a4;
+    countCopy3 = count;
     v34 = "%{public}s::%d:neighborCount %lu greater than kMaxNumOfNeighbors.. bailing";
     v35 = v32;
     v36 = 28;
@@ -3103,49 +3103,49 @@ LABEL_37:
     goto LABEL_29;
   }
 
-  v42 = [MEMORY[0x1E695DF70] array];
-  v38 = [BSSMO bssManagedObjectPropertyValue:v41 forKey:@"NeighborInfo"];
+  array = [MEMORY[0x1E695DF70] array];
+  v38 = [BSSMO bssManagedObjectPropertyValue:infoCopy forKey:@"NeighborInfo"];
   if (v38)
   {
-    v43 = [MEMORY[0x1E695DF70] arrayWithArray:?];
-    if (!v43)
+    array2 = [MEMORY[0x1E695DF70] arrayWithArray:?];
+    if (!array2)
     {
-      v43 = 0;
+      array2 = 0;
       goto LABEL_14;
     }
 
     v6 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v7 = [v43 count];
-      v8 = [v41 bssid];
+      v7 = [array2 count];
+      bssid = [infoCopy bssid];
       *buf = 136447234;
       v52 = "[RoamPolicyStore storeNeighborsInfoLearningsFromRoamCacheInfo:neighborCount:]";
       v53 = 1024;
       v54 = 1170;
       v55 = 2048;
-      v56 = v7;
+      countCopy3 = v7;
       v57 = 2112;
-      v58 = v8;
+      v58 = bssid;
       v59 = 2112;
-      v60 = v43;
+      v60 = array2;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Prev Neighbor count:%lu  Info for BSSID:%@ --- %@", buf, 0x30u);
     }
   }
 
   else
   {
-    v43 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v6 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [v41 bssid];
+      bssid2 = [infoCopy bssid];
       *buf = 136446722;
       v52 = "[RoamPolicyStore storeNeighborsInfoLearningsFromRoamCacheInfo:neighborCount:]";
       v53 = 1024;
       v54 = 1174;
       v55 = 2112;
-      v56 = v9;
+      countCopy3 = bssid2;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_DEBUG, "%{public}s::%d:No Neighbor Info for BSSID:%@", buf, 0x1Cu);
     }
   }
@@ -3154,44 +3154,44 @@ LABEL_14:
   v10 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v41 bssid];
+    bssid3 = [infoCopy bssid];
     *buf = 136446978;
     v52 = "[RoamPolicyStore storeNeighborsInfoLearningsFromRoamCacheInfo:neighborCount:]";
     v53 = 1024;
     v54 = 1177;
     v55 = 2048;
-    v56 = v40;
+    countCopy3 = countCopy2;
     v57 = 2112;
-    v58 = v11;
+    v58 = bssid3;
     _os_log_impl(&dword_1C8460000, v10, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:new Neighbor count:%lu  Info for BSSID:%@", buf, 0x26u);
   }
 
   v12 = &roamCacheInfo;
-  v13 = v40;
+  v13 = countCopy2;
   do
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v12];
-    [v15 setValue:v16 forKey:@"NeighborBssid"];
+    [dictionary setValue:v16 forKey:@"NeighborBssid"];
 
     v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[3]];
-    [v15 setValue:v17 forKey:@"NeighborBssNumRoamCacheRssiHigh"];
+    [dictionary setValue:v17 forKey:@"NeighborBssNumRoamCacheRssiHigh"];
 
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[4]];
-    [v15 setValue:v18 forKey:@"NeighborBssNumRoamCacheRssiMid"];
+    [dictionary setValue:v18 forKey:@"NeighborBssNumRoamCacheRssiMid"];
 
     v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[5]];
-    [v15 setValue:v19 forKey:@"NeighborBssNumRoamCacheRssiUpperMid"];
+    [dictionary setValue:v19 forKey:@"NeighborBssNumRoamCacheRssiUpperMid"];
 
     v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[6]];
-    [v15 setValue:v20 forKey:@"NeighborBssNumRoamCacheRssiLow"];
+    [dictionary setValue:v20 forKey:@"NeighborBssNumRoamCacheRssiLow"];
 
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12[7]];
-    [v15 setValue:v21 forKey:@"NeighborBssNumRoamCacheRssiReallyLow"];
+    [dictionary setValue:v21 forKey:@"NeighborBssNumRoamCacheRssiReallyLow"];
 
     v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v12];
-    if (v43 && [v43 count])
+    if (array2 && [array2 count])
     {
       v47 = 0;
       v48 = &v47;
@@ -3204,13 +3204,13 @@ LABEL_14:
       v23 = v22;
       v45 = v23;
       v46 = &v47;
-      [v43 enumerateObjectsUsingBlock:v44];
+      [array2 enumerateObjectsUsingBlock:v44];
       if (v48[3] != -1)
       {
-        v24 = [v43 objectAtIndex:?];
+        v24 = [array2 objectAtIndex:?];
         v25 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v24];
-        [v25 addEntriesFromDictionary:v15];
-        [v43 replaceObjectAtIndex:v48[3] withObject:v25];
+        [v25 addEntriesFromDictionary:dictionary];
+        [array2 replaceObjectAtIndex:v48[3] withObject:v25];
         v26 = WALogCategoryDeviceStoreHandle();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
         {
@@ -3220,7 +3220,7 @@ LABEL_14:
           v53 = 1024;
           v54 = 1214;
           v55 = 2112;
-          v56 = v23;
+          countCopy3 = v23;
           v57 = 2048;
           v58 = v27;
           _os_log_impl(&dword_1C8460000, v26, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Replaced neighbor %@ dict at existing array index %lu", buf, 0x26u);
@@ -3236,19 +3236,19 @@ LABEL_14:
     v28 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [v41 bssid];
+      bssid4 = [infoCopy bssid];
       *buf = 136446978;
       v52 = "[RoamPolicyStore storeNeighborsInfoLearningsFromRoamCacheInfo:neighborCount:]";
       v53 = 1024;
       v54 = 1219;
       v55 = 2112;
-      v56 = v29;
+      countCopy3 = bssid4;
       v57 = 2112;
       v58 = v22;
       _os_log_impl(&dword_1C8460000, v28, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:New Neighbor for BSSID:%@ --- %@", buf, 0x26u);
     }
 
-    [v42 addObject:v15];
+    [array addObject:dictionary];
 LABEL_27:
 
     objc_autoreleasePoolPop(v14);
@@ -3257,14 +3257,14 @@ LABEL_27:
   }
 
   while (v13);
-  [v43 addObjectsFromArray:v42];
-  v30 = [(RoamPolicyStore *)self roamPolicyMOHandler];
-  [v30 setBssManagedObjectPropertyValueForKeyWithoutSave:v41 forKey:@"NeighborInfo" withValue:v43];
+  [array2 addObjectsFromArray:array];
+  roamPolicyMOHandler = [(RoamPolicyStore *)self roamPolicyMOHandler];
+  [roamPolicyMOHandler setBssManagedObjectPropertyValueForKeyWithoutSave:infoCopy forKey:@"NeighborInfo" withValue:array2];
 
-  v31 = [v41 bssid];
-  [(RoamPolicyStore *)self setDeploymentFromRoamCacheInfo:v31 neighborCount:v40];
+  bssid5 = [infoCopy bssid];
+  [(RoamPolicyStore *)self setDeploymentFromRoamCacheInfo:bssid5 neighborCount:countCopy2];
 
-  v32 = v42;
+  v32 = array;
 LABEL_29:
 
   objc_autoreleasePoolPop(context);
@@ -3284,12 +3284,12 @@ void __78__RoamPolicyStore_storeNeighborsInfoLearningsFromRoamCacheInfo_neighbor
   }
 }
 
-- (void)setDeploymentFromRoamInfo:(id)a3 neighborCount:(unint64_t)a4
+- (void)setDeploymentFromRoamInfo:(id)info neighborCount:(unint64_t)count
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  infoCopy = info;
   v7 = objc_autoreleasePoolPush();
-  if (!v6)
+  if (!infoCopy)
   {
     v8 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -3309,7 +3309,7 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if (a4 >= 0xA)
+  if (count >= 0xA)
   {
     v8 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -3322,7 +3322,7 @@ LABEL_16:
     v22 = 1024;
     v23 = 1239;
     v24 = 2048;
-    v25 = a4;
+    countCopy = count;
     v17 = "%{public}s::%d:neighborCount %lu greater than kMaxNumOfNeighbors.. bailing";
     v18 = v8;
     v19 = 28;
@@ -3330,11 +3330,11 @@ LABEL_16:
   }
 
   v8 = [MEMORY[0x1E695DFA8] set];
-  [v8 addObject:v6];
-  if (a4)
+  [v8 addObject:infoCopy];
+  if (count)
   {
     v9 = &roamInfo;
-    v10 = a4;
+    countCopy2 = count;
     do
     {
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
@@ -3344,10 +3344,10 @@ LABEL_16:
       }
 
       v9 += 352;
-      --v10;
+      --countCopy2;
     }
 
-    while (v10);
+    while (countCopy2);
   }
 
   v12 = WALogCategoryDeviceStoreHandle();
@@ -3358,18 +3358,18 @@ LABEL_16:
     v22 = 1024;
     v23 = 1251;
     v24 = 2112;
-    v25 = v6;
+    countCopy = infoCopy;
     v26 = 2048;
-    v27 = a4;
+    countCopy3 = count;
     v28 = 2112;
     v29 = v8;
     _os_log_impl(&dword_1C8460000, v12, OS_LOG_TYPE_DEBUG, "%{public}s::%d:bssid:%@ neighborCount: %lu neigbors: %@", &v20, 0x30u);
   }
 
-  v13 = [v8 allObjects];
-  v14 = [(RoamPolicyStore *)self roamPolicyMOHandler];
-  v15 = [v14 managedObjectContext];
-  [BSSMO coalesceBssidsIntoDeployment:v13 moc:v15];
+  allObjects = [v8 allObjects];
+  roamPolicyMOHandler = [(RoamPolicyStore *)self roamPolicyMOHandler];
+  managedObjectContext = [roamPolicyMOHandler managedObjectContext];
+  [BSSMO coalesceBssidsIntoDeployment:allObjects moc:managedObjectContext];
 
 LABEL_11:
   objc_autoreleasePoolPop(v7);
@@ -3377,12 +3377,12 @@ LABEL_11:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDeploymentFromRoamCacheInfo:(id)a3 neighborCount:(unint64_t)a4
+- (void)setDeploymentFromRoamCacheInfo:(id)info neighborCount:(unint64_t)count
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  infoCopy = info;
   v7 = objc_autoreleasePoolPush();
-  if (!v6)
+  if (!infoCopy)
   {
     v8 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -3402,7 +3402,7 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if (a4 >= 0xA)
+  if (count >= 0xA)
   {
     v8 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -3415,7 +3415,7 @@ LABEL_16:
     v22 = 1024;
     v23 = 1264;
     v24 = 2048;
-    v25 = a4;
+    countCopy3 = count;
     v17 = "%{public}s::%d:neighborCount %lu greater than kMaxNumOfNeighbors.. bailing";
     v18 = v8;
     v19 = 28;
@@ -3423,11 +3423,11 @@ LABEL_16:
   }
 
   v8 = [MEMORY[0x1E695DFA8] set];
-  [v8 addObject:v6];
-  if (a4)
+  [v8 addObject:infoCopy];
+  if (count)
   {
     v9 = &roamCacheInfo;
-    v10 = a4;
+    countCopy2 = count;
     do
     {
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
@@ -3437,10 +3437,10 @@ LABEL_16:
       }
 
       v9 += 104;
-      --v10;
+      --countCopy2;
     }
 
-    while (v10);
+    while (countCopy2);
   }
 
   v12 = WALogCategoryDeviceStoreHandle();
@@ -3451,16 +3451,16 @@ LABEL_16:
     v22 = 1024;
     v23 = 1276;
     v24 = 2048;
-    v25 = a4;
+    countCopy3 = count;
     v26 = 2112;
     v27 = v8;
     _os_log_impl(&dword_1C8460000, v12, OS_LOG_TYPE_DEBUG, "%{public}s::%d:neighborCount: %lu neigbors: %@", &v20, 0x26u);
   }
 
-  v13 = [v8 allObjects];
-  v14 = [(RoamPolicyStore *)self roamPolicyMOHandler];
-  v15 = [v14 managedObjectContext];
-  [BSSMO coalesceBssidsIntoDeployment:v13 moc:v15];
+  allObjects = [v8 allObjects];
+  roamPolicyMOHandler = [(RoamPolicyStore *)self roamPolicyMOHandler];
+  managedObjectContext = [roamPolicyMOHandler managedObjectContext];
+  [BSSMO coalesceBssidsIntoDeployment:allObjects moc:managedObjectContext];
 
 LABEL_11:
   objc_autoreleasePoolPop(v7);
@@ -3468,10 +3468,10 @@ LABEL_11:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)rangeStringWithRssiLevel:(unint64_t)a3
++ (id)rangeStringWithRssiLevel:(unint64_t)level
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a3 >= 8)
+  if (level >= 8)
   {
     v13 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -3488,14 +3488,14 @@ LABEL_11:
 
   else
   {
-    v3 = &roamOriginRssiLevels[a3];
+    v3 = &roamOriginRssiLevels[level];
     v4 = *v3;
     v5 = MEMORY[0x1E696AEC0];
     v6 = [MEMORY[0x1E696AD98] numberWithInteger:v3[1]];
-    v7 = [v6 stringValue];
+    stringValue = [v6 stringValue];
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
-    v9 = [v8 stringValue];
-    v10 = [v5 stringWithFormat:@"[%@, %@]", v7, v9];
+    stringValue2 = [v8 stringValue];
+    v10 = [v5 stringWithFormat:@"[%@, %@]", stringValue, stringValue2];
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -3503,12 +3503,12 @@ LABEL_11:
   return v10;
 }
 
-- (void)deriveRoamDeltaFromRoamCacheInfo:(id)a3 neighborCount:(unint64_t)a4
+- (void)deriveRoamDeltaFromRoamCacheInfo:(id)info neighborCount:(unint64_t)count
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  infoCopy = info;
   v6 = objc_autoreleasePoolPush();
-  if (!v5)
+  if (!infoCopy)
   {
     v7 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -3528,7 +3528,7 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if (a4 >= 0xA)
+  if (count >= 0xA)
   {
     v7 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -3541,7 +3541,7 @@ LABEL_16:
     v18 = 1024;
     v19 = 1306;
     v20 = 2048;
-    v21 = a4;
+    countCopy3 = count;
     v13 = "%{public}s::%d:neighborCount %lu greater than kMaxNumOfNeighbors.. bailing";
     v14 = v7;
     v15 = 28;
@@ -3549,11 +3549,11 @@ LABEL_16:
   }
 
   v7 = [MEMORY[0x1E695DFA8] set];
-  [v7 addObject:v5];
-  if (a4)
+  [v7 addObject:infoCopy];
+  if (count)
   {
     v8 = &roamCacheInfo;
-    v9 = a4;
+    countCopy2 = count;
     do
     {
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v8];
@@ -3563,10 +3563,10 @@ LABEL_16:
       }
 
       v8 += 104;
-      --v9;
+      --countCopy2;
     }
 
-    while (v9);
+    while (countCopy2);
   }
 
   v11 = WALogCategoryDeviceStoreHandle();
@@ -3577,7 +3577,7 @@ LABEL_16:
     v18 = 1024;
     v19 = 1318;
     v20 = 2048;
-    v21 = a4;
+    countCopy3 = count;
     v22 = 2112;
     v23 = v7;
     _os_log_impl(&dword_1C8460000, v11, OS_LOG_TYPE_DEBUG, "%{public}s::%d:neighborCount: %lu neigbors: %@", &v16, 0x26u);
@@ -3589,18 +3589,18 @@ LABEL_11:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)extractChannelList:(id)a3 channelKeyPath:(id)a4 bandKeyPath:(id)a5 logFor:(const char *)a6
++ (id)extractChannelList:(id)list channelKeyPath:(id)path bandKeyPath:(id)keyPath logFor:(const char *)for
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v33 = a5;
+  listCopy = list;
+  pathCopy = path;
+  keyPathCopy = keyPath;
   v32 = objc_opt_new();
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v10 = v8;
+  v10 = listCopy;
   v11 = [v10 countByEnumeratingWithState:&v34 objects:v46 count:16];
   if (v11)
   {
@@ -3618,37 +3618,37 @@ LABEL_11:
         }
 
         v16 = *(*(&v34 + 1) + 8 * i);
-        v17 = [v16 valueForKey:{v9, v30}];
+        v17 = [v16 valueForKey:{pathCopy, v30}];
         if (v17)
         {
           v18 = v17;
-          v19 = [v16 valueForKey:v9];
-          v20 = [v19 integerValue];
+          v19 = [v16 valueForKey:pathCopy];
+          integerValue = [v19 integerValue];
 
-          if (v20)
+          if (integerValue)
           {
-            v21 = [v16 valueForKey:v9];
-            v22 = [v21 shortValue];
-            v23 = [v16 valueForKey:v33];
-            v24 = +[WAChanInfo chanInfoWithChannel:band:](WAChanInfo, "chanInfoWithChannel:band:", v22, [v23 shortValue]);
+            v21 = [v16 valueForKey:pathCopy];
+            shortValue = [v21 shortValue];
+            v23 = [v16 valueForKey:keyPathCopy];
+            v24 = +[WAChanInfo chanInfoWithChannel:band:](WAChanInfo, "chanInfoWithChannel:band:", shortValue, [v23 shortValue]);
 
             if (v24)
             {
-              v25 = [v24 chanInfoDictionary];
-              [v32 addObject:v25];
+              chanInfoDictionary = [v24 chanInfoDictionary];
+              [v32 addObject:chanInfoDictionary];
 
               v26 = WALogCategoryDeviceStoreHandle();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
               {
-                v27 = [v24 chanInfoDictionary];
+                chanInfoDictionary2 = [v24 chanInfoDictionary];
                 *buf = v30;
                 v39 = "+[RoamPolicyStore extractChannelList:channelKeyPath:bandKeyPath:logFor:]";
                 v40 = 1024;
                 v41 = 1342;
                 v42 = 2080;
-                v43 = a6;
+                forCopy = for;
                 v44 = 2112;
-                v45 = v27;
+                v45 = chanInfoDictionary2;
                 _os_log_impl(&dword_1C8460000, v26, OS_LOG_TYPE_DEBUG, "%{public}s::%d:%s - %@", buf, 0x26u);
               }
             }
@@ -3667,16 +3667,16 @@ LABEL_11:
   return v32;
 }
 
-+ (id)neighborChannelsAsArrayOfChanInfo:(id)a3
++ (id)neighborChannelsAsArrayOfChanInfo:(id)info
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_opt_new();
-  v5 = [v3 neighborChannels];
+  neighborChannels = [infoCopy neighborChannels];
 
-  if (v5)
+  if (neighborChannels)
   {
-    v6 = [v3 neighborChannels];
+    neighborChannels2 = [infoCopy neighborChannels];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -3686,8 +3686,8 @@ LABEL_11:
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v8 = [v3 neighborChannels];
-      v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      neighborChannels3 = [infoCopy neighborChannels];
+      v9 = [neighborChannels3 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
         v10 = v9;
@@ -3698,7 +3698,7 @@ LABEL_11:
           {
             if (*v17 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(neighborChannels3);
             }
 
             v13 = [WAChanInfo chanInfoWithObjectHavingChInfo:*(*(&v16 + 1) + 8 * i) withPrefix:@"c"];
@@ -3708,7 +3708,7 @@ LABEL_11:
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v10 = [neighborChannels3 countByEnumeratingWithState:&v16 objects:v20 count:16];
         }
 
         while (v10);
@@ -3721,18 +3721,18 @@ LABEL_11:
   return v4;
 }
 
-+ (id)neighborChannelsOf:(id)a3
++ (id)neighborChannelsOf:(id)of
 {
-  v3 = a3;
+  ofCopy = of;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 neighborChannels];
+    v4 = ofCopy;
+    neighborChannels = [v4 neighborChannels];
 
-    if (v5)
+    if (neighborChannels)
     {
-      v6 = [v4 neighborChannels];
+      neighborChannels2 = [v4 neighborChannels];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -3741,30 +3741,30 @@ LABEL_11:
         goto LABEL_11;
       }
 
-      v8 = [v4 neighborChannels];
-      v9 = [v8 anyObject];
+      neighborChannels3 = [v4 neighborChannels];
+      anyObject = [neighborChannels3 anyObject];
       objc_opt_class();
       v10 = objc_opt_isKindOfClass();
 
       if (v10)
       {
-        v5 = [v4 neighborChannels];
+        neighborChannels = [v4 neighborChannels];
       }
 
       else
       {
 LABEL_11:
-        v5 = 0;
+        neighborChannels = 0;
       }
     }
   }
 
   else
   {
-    v5 = 0;
+    neighborChannels = 0;
   }
 
-  return v5;
+  return neighborChannels;
 }
 
 @end

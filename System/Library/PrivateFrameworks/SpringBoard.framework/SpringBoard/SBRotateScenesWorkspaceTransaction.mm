@@ -8,16 +8,16 @@
 
 - (BOOL)_isOrientationChanging
 {
-  v2 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v3 = [v2 applicationContext];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  applicationContext = [transitionRequest applicationContext];
 
-  v4 = [v3 previousLayoutState];
-  v5 = [v4 interfaceOrientation];
+  previousLayoutState = [applicationContext previousLayoutState];
+  interfaceOrientation = [previousLayoutState interfaceOrientation];
 
-  v6 = [v3 layoutState];
-  v7 = [v6 interfaceOrientation];
+  layoutState = [applicationContext layoutState];
+  interfaceOrientation2 = [layoutState interfaceOrientation];
 
-  return v5 != v7;
+  return interfaceOrientation != interfaceOrientation2;
 }
 
 - (unint64_t)_serialOverlayPreDismissalOptions
@@ -40,16 +40,16 @@
     return 0;
   }
 
-  v3 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v4 = [v3 applicationContext];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  applicationContext = [transitionRequest applicationContext];
 
-  v5 = [v4 previousLayoutState];
-  v6 = [v5 interfaceOrientation];
+  previousLayoutState = [applicationContext previousLayoutState];
+  interfaceOrientation = [previousLayoutState interfaceOrientation];
 
-  v7 = [v4 layoutState];
-  v8 = [v7 interfaceOrientation];
+  layoutState = [applicationContext layoutState];
+  interfaceOrientation2 = [layoutState interfaceOrientation];
 
-  if ((v6 - 3) > 1 || (v8 - 1) > 1)
+  if ((interfaceOrientation - 3) > 1 || (interfaceOrientation2 - 1) > 1)
   {
     v11.receiver = self;
     v11.super_class = SBRotateScenesWorkspaceTransaction;

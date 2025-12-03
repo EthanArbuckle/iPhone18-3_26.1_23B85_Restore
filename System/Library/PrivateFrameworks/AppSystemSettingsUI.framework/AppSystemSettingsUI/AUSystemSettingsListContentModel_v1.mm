@@ -1,7 +1,7 @@
 @interface AUSystemSettingsListContentModel_v1
 - (_TtC19AppSystemSettingsUI35AUSystemSettingsListContentModel_v1)init;
-- (void)systemSettingsSpecifiersProvider:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5;
-- (void)systemSettingsSpecifiersProviderDidReloadSpecifiers:(id)a3;
+- (void)systemSettingsSpecifiersProvider:(id)provider presentViewController:(id)controller animated:(BOOL)animated;
+- (void)systemSettingsSpecifiersProviderDidReloadSpecifiers:(id)specifiers;
 @end
 
 @implementation AUSystemSettingsListContentModel_v1
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (void)systemSettingsSpecifiersProvider:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5
+- (void)systemSettingsSpecifiersProvider:(id)provider presentViewController:(id)controller animated:(BOOL)animated
 {
   sub_21BB230CC();
   sub_21BB230BC();
@@ -31,13 +31,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_21BB1F938(v10, a5);
+  providerCopy = provider;
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_21BB1F938(controllerCopy, animated);
 }
 
-- (void)systemSettingsSpecifiersProviderDidReloadSpecifiers:(id)a3
+- (void)systemSettingsSpecifiersProviderDidReloadSpecifiers:(id)specifiers
 {
   sub_21BB230CC();
   sub_21BB230BC();
@@ -47,7 +47,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_21BB1ED74();
 }
 

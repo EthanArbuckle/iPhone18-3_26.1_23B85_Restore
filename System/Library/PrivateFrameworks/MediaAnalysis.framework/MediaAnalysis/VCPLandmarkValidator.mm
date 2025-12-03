@@ -1,14 +1,14 @@
 @interface VCPLandmarkValidator
-- (VCPLandmarkValidator)initWithModelFile:(id)a3 paramFile:(__sFILE *)a4 numTri:(unsigned __int8)a5 triList:(char *)a6 angle:(float *)a7;
-- (int)validateOneImage:(__CVBuffer *)a3 landmarks:(float *)a4 numofLandmarks:(int)a5 score:(float *)a6;
+- (VCPLandmarkValidator)initWithModelFile:(id)file paramFile:(__sFILE *)paramFile numTri:(unsigned __int8)tri triList:(char *)list angle:(float *)angle;
+- (int)validateOneImage:(__CVBuffer *)image landmarks:(float *)landmarks numofLandmarks:(int)numofLandmarks score:(float *)score;
 - (void)dealloc;
 @end
 
 @implementation VCPLandmarkValidator
 
-- (VCPLandmarkValidator)initWithModelFile:(id)a3 paramFile:(__sFILE *)a4 numTri:(unsigned __int8)a5 triList:(char *)a6 angle:(float *)a7
+- (VCPLandmarkValidator)initWithModelFile:(id)file paramFile:(__sFILE *)paramFile numTri:(unsigned __int8)tri triList:(char *)list angle:(float *)angle
 {
-  v8 = a3;
+  fileCopy = file;
   v9 = +[VCPCNNMetalContext supportGPU];
   if (+[VCPCNNMetalContext supportVectorForward])
   {
@@ -43,8 +43,8 @@
     v16 = v12->_model;
     if (v16)
     {
-      v17 = [(VCPCNNModel *)v16 getGPUContext];
-      v18 = [VCPCNNData cnnDataWithPlane:1 height:66 width:66 context:v17];
+      getGPUContext = [(VCPCNNModel *)v16 getGPUContext];
+      v18 = [VCPCNNData cnnDataWithPlane:1 height:66 width:66 context:getGPUContext];
       input = v12->_input;
       v12->_input = v18;
 
@@ -108,7 +108,7 @@
                   v34 = v26;
                   v28 = v12->_model;
                   v29 = [(VCPCNNData *)v12->_input size];
-                  LODWORD(v28) = [(VCPCNNModel *)v28 prepareNetworkFromURL:v8 withInputSize:v29];
+                  LODWORD(v28) = [(VCPCNNModel *)v28 prepareNetworkFromURL:fileCopy withInputSize:v29];
 
                   if (!v28)
                   {
@@ -174,12 +174,12 @@
   [(VCPLandmarkValidator *)&v8 dealloc];
 }
 
-- (int)validateOneImage:(__CVBuffer *)a3 landmarks:(float *)a4 numofLandmarks:(int)a5 score:(float *)a6
+- (int)validateOneImage:(__CVBuffer *)image landmarks:(float *)landmarks numofLandmarks:(int)numofLandmarks score:(float *)score
 {
   v72 = *MEMORY[0x1E69E9840];
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(image, 0);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(image, 0);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(image, 0);
   if (self->_numTri)
   {
     v12 = 0;
@@ -190,9 +190,9 @@
       v15 = *triList++;
       v16 = 2 * v15;
       v17 = &v69[v12];
-      *v17 = a4[v16];
+      *v17 = landmarks[v16];
       v18 = (2 * v15) | 1;
-      v17[3] = a4[v18];
+      v17[3] = landmarks[v18];
       v17[6] = 1.0;
       v19 = meanLandmarkLoc[v16] * 66.0;
       v20 = &buf[v12 * 4];
@@ -207,16 +207,16 @@
   }
 
   v69[0] = 0.0;
-  v70 = a3;
+  imageCopy = image;
   unlockFlags = 1;
-  if (a3)
+  if (image)
   {
-    v21 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+    v21 = CVPixelBufferLockBaseAddress(image, 1uLL);
     LODWORD(v69[0]) = v21;
-    if (!v21 || (v22 = v21, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 3.8521e-34, v66 = v70, v67 = 1024, v68 = v22, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v22 = LODWORD(v69[0])) == 0))
+    if (!v21 || (v22 = v21, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 3.8521e-34, v66 = imageCopy, v67 = 1024, v68 = v22, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v22 = LODWORD(v69[0])) == 0))
     {
-      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-      v24 = [(VCPCNNData *)self->_input data];
+      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(image, 0);
+      data = [(VCPCNNData *)self->_input data];
       v25 = 0;
       v26 = 0.0;
       v27 = 255.0;
@@ -293,12 +293,12 @@
             v50 = (v45 * ((v44 * v34) + (v48 * (1.0 - v44)))) + (v49 * (1.0 - v45));
             v27 = fminf(v27, v50);
             v26 = fmaxf(v26, v50);
-            v24[v25] = v50;
+            data[v25] = v50;
           }
 
           else
           {
-            v24[v25] = 0.0;
+            data[v25] = 0.0;
           }
 
           ++v29;
@@ -323,7 +323,7 @@
           {
             if (triIndexMap[i])
             {
-              v55 = (v24[i] - v27) / v52;
+              v55 = (data[i] - v27) / v52;
             }
 
             else
@@ -331,26 +331,26 @@
               v55 = 0.0;
             }
 
-            v24[i] = v55;
+            data[i] = v55;
           }
 
           ++v51;
           triIndexMap += 66;
-          v24 += 66;
+          data += 66;
         }
 
         while (v51 != 66);
         v22 = [(VCPCNNModel *)self->_model forward:self->_input];
         if (!v22)
         {
-          v56 = [(VCPCNNModel *)self->_model output];
-          v57 = [v56 softmax];
+          output = [(VCPCNNModel *)self->_model output];
+          softmax = [output softmax];
 
-          v22 = v57;
-          if (!v57)
+          v22 = softmax;
+          if (!softmax)
           {
-            v58 = [(VCPCNNModel *)self->_model output];
-            *a6 = *([v58 data] + 4);
+            output2 = [(VCPCNNModel *)self->_model output];
+            *score = *([output2 data] + 4);
 
             v22 = 0;
           }
@@ -370,7 +370,7 @@
     v69[0] = NAN;
   }
 
-  if (v70 && !LODWORD(v69[0]) && CVPixelBufferUnlockBaseAddress(v70, unlockFlags) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (imageCopy && !LODWORD(v69[0]) && CVPixelBufferUnlockBaseAddress(imageCopy, unlockFlags) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     [VCPImageExposurePreAnalyzer analyzePixelBuffer:flags:results:cancel:];
   }

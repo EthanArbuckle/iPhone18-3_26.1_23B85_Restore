@@ -21,7 +21,7 @@
 
 - (BlastDoorImage)image
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21456E86C();
 
   return v3;
@@ -42,7 +42,7 @@
 {
   self->previewImage[OBJC_IVAR___BlastDoorPreviewImage_previewImage + 450];
   self->previewImage[OBJC_IVAR___BlastDoorPreviewImage_previewImage + 450];
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2146D9588();
 
   return v3;

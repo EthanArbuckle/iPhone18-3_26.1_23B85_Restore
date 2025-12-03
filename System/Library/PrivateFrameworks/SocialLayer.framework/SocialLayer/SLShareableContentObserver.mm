@@ -6,21 +6,21 @@
 - (OS_dispatch_queue)serviceQueue;
 - (SLDServiceProxy)serviceProxy;
 - (SLShareableContentObserver)init;
-- (void)activityItemsConfigurationReadyNotification:(id)a3;
+- (void)activityItemsConfigurationReadyNotification:(id)notification;
 - (void)addObservers;
 - (void)connectAndRefreshNow;
-- (void)didBecomeActiveNotification:(id)a3;
-- (void)didEnterBackgroundNotification:(id)a3;
-- (void)documentStateChangedNotification:(id)a3;
+- (void)didBecomeActiveNotification:(id)notification;
+- (void)didEnterBackgroundNotification:(id)notification;
+- (void)documentStateChangedNotification:(id)notification;
 - (void)pause;
 - (void)refreshIfNeeded;
 - (void)reset;
 - (void)resumeIfNeeded;
-- (void)serviceProxyDidConnect:(id)a3;
-- (void)serviceProxyDidDisconnect:(id)a3;
+- (void)serviceProxyDidConnect:(id)connect;
+- (void)serviceProxyDidDisconnect:(id)disconnect;
 - (void)setNeedsRefresh;
-- (void)userActivityWasCreated:(id)a3;
-- (void)willResignActiveNotification:(id)a3;
+- (void)userActivityWasCreated:(id)created;
+- (void)willResignActiveNotification:(id)notification;
 @end
 
 @implementation SLShareableContentObserver
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = __44__SLShareableContentObserver_sharedObserver__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedObserver_onceToken != -1)
   {
     dispatch_once(&sharedObserver_onceToken, block);
@@ -69,12 +69,12 @@ uint64_t __44__SLShareableContentObserver_sharedObserver__block_invoke(uint64_t 
 - (void)addObservers
 {
   [MEMORY[0x277D77BA8] addUserActivityObserver:self];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_didBecomeActiveNotification_ name:*MEMORY[0x277D76648] object:0];
-  [v3 addObserver:self selector:sel_didEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:0];
-  [v3 addObserver:self selector:sel_willResignActiveNotification_ name:*MEMORY[0x277D76768] object:0];
-  [v3 addObserver:self selector:sel_documentStateChangedNotification_ name:*MEMORY[0x277D768A8] object:0];
-  [v3 addObserver:self selector:sel_activityItemsConfigurationReadyNotification_ name:@"ActivityItemsConfigurationReadyNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_didBecomeActiveNotification_ name:*MEMORY[0x277D76648] object:0];
+  [defaultCenter addObserver:self selector:sel_didEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:0];
+  [defaultCenter addObserver:self selector:sel_willResignActiveNotification_ name:*MEMORY[0x277D76768] object:0];
+  [defaultCenter addObserver:self selector:sel_documentStateChangedNotification_ name:*MEMORY[0x277D768A8] object:0];
+  [defaultCenter addObserver:self selector:sel_activityItemsConfigurationReadyNotification_ name:@"ActivityItemsConfigurationReadyNotification" object:0];
 }
 
 - (SLDServiceProxy)serviceProxy
@@ -83,8 +83,8 @@ uint64_t __44__SLShareableContentObserver_sharedObserver__block_invoke(uint64_t 
   if (!serviceProxy)
   {
     v4 = objc_opt_class();
-    v5 = [(SLShareableContentObserver *)self serviceQueue];
-    v6 = [SLDServiceProxy proxyForServiceClass:v4 targetSerialQueue:v5 delegate:self];
+    serviceQueue = [(SLShareableContentObserver *)self serviceQueue];
+    v6 = [SLDServiceProxy proxyForServiceClass:v4 targetSerialQueue:serviceQueue delegate:self];
     v7 = self->_serviceProxy;
     self->_serviceProxy = v6;
 
@@ -125,8 +125,8 @@ uint64_t __44__SLShareableContentObserver_sharedObserver__block_invoke(uint64_t 
 
 - (BOOL)applicationIsActive
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v2 applicationState] == 0;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v3 = [mEMORY[0x277D75128] applicationState] == 0;
 
   return v3;
 }
@@ -143,10 +143,10 @@ uint64_t __44__SLShareableContentObserver_sharedObserver__block_invoke(uint64_t 
 
 - (void)resumeIfNeeded
 {
-  v3 = [(SLShareableContentObserver *)self needsToResume];
+  needsToResume = [(SLShareableContentObserver *)self needsToResume];
   v4 = SLShareableContentLogHandle();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (needsToResume)
   {
     if (v5)
     {
@@ -179,10 +179,10 @@ uint64_t __44__SLShareableContentObserver_sharedObserver__block_invoke(uint64_t 
 
 - (void)refreshIfNeeded
 {
-  v3 = [(SLShareableContentObserver *)self needsToRefresh];
+  needsToRefresh = [(SLShareableContentObserver *)self needsToRefresh];
   v4 = SLShareableContentLogHandle();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (needsToRefresh)
   {
     if (v5)
     {
@@ -206,13 +206,13 @@ uint64_t __44__SLShareableContentObserver_sharedObserver__block_invoke(uint64_t 
 
 - (void)connectAndRefreshNow
 {
-  v3 = [(SLShareableContentObserver *)self serviceQueue];
+  serviceQueue = [(SLShareableContentObserver *)self serviceQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__SLShareableContentObserver_connectAndRefreshNow__block_invoke;
   block[3] = &unk_278925D90;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serviceQueue, block);
 }
 
 void __50__SLShareableContentObserver_connectAndRefreshNow__block_invoke(uint64_t a1)
@@ -273,16 +273,16 @@ void __50__SLShareableContentObserver_connectAndRefreshNow__block_invoke(uint64_
   [(SLShareableContentObserver *)self setNeedsRefresh:0];
 }
 
-- (void)didBecomeActiveNotification:(id)a3
+- (void)didBecomeActiveNotification:(id)notification
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     v8 = 138412290;
-    v9 = v6;
+    v9 = name;
     _os_log_impl(&dword_231772000, v5, OS_LOG_TYPE_INFO, "[observer] notification received: %@", &v8, 0xCu);
   }
 
@@ -290,16 +290,16 @@ void __50__SLShareableContentObserver_connectAndRefreshNow__block_invoke(uint64_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didEnterBackgroundNotification:(id)a3
+- (void)didEnterBackgroundNotification:(id)notification
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     v8 = 138412290;
-    v9 = v6;
+    v9 = name;
     _os_log_impl(&dword_231772000, v5, OS_LOG_TYPE_INFO, "[observer] notification received: %@", &v8, 0xCu);
   }
 
@@ -307,16 +307,16 @@ void __50__SLShareableContentObserver_connectAndRefreshNow__block_invoke(uint64_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)willResignActiveNotification:(id)a3
+- (void)willResignActiveNotification:(id)notification
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     v8 = 138412290;
-    v9 = v6;
+    v9 = name;
     _os_log_impl(&dword_231772000, v5, OS_LOG_TYPE_INFO, "[observer] notification received: %@", &v8, 0xCu);
   }
 
@@ -324,36 +324,36 @@ void __50__SLShareableContentObserver_connectAndRefreshNow__block_invoke(uint64_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)documentStateChangedNotification:(id)a3
+- (void)documentStateChangedNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     v12 = 138412290;
-    v13 = v6;
+    v13 = name;
     _os_log_impl(&dword_231772000, v5, OS_LOG_TYPE_INFO, "[observer] notification received: %@", &v12, 0xCu);
   }
 
-  v7 = [v4 object];
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
-    v9 = [v8 documentState];
+    v8 = object;
+    documentState = [v8 documentState];
     v10 = SLShareableContentLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v12 = 138412546;
       v13 = v8;
       v14 = 2048;
-      v15 = v9;
+      v15 = documentState;
       _os_log_impl(&dword_231772000, v10, OS_LOG_TYPE_INFO, "[observer] document %@ changed state to %tu", &v12, 0x16u);
     }
 
-    if (!v9)
+    if (!documentState)
     {
       [(SLShareableContentObserver *)self refreshIfNeeded];
     }
@@ -362,16 +362,16 @@ void __50__SLShareableContentObserver_connectAndRefreshNow__block_invoke(uint64_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activityItemsConfigurationReadyNotification:(id)a3
+- (void)activityItemsConfigurationReadyNotification:(id)notification
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138412290;
-    v10 = v6;
+    v10 = name;
     _os_log_impl(&dword_231772000, v5, OS_LOG_TYPE_INFO, "[observer] notification received: %@", buf, 0xCu);
   }
 
@@ -385,16 +385,16 @@ void __50__SLShareableContentObserver_connectAndRefreshNow__block_invoke(uint64_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userActivityWasCreated:(id)a3
+- (void)userActivityWasCreated:(id)created
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  createdCopy = created;
   v5 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 activityType];
+    activityType = [createdCopy activityType];
     *buf = 138412290;
-    v10 = v6;
+    v10 = activityType;
     _os_log_impl(&dword_231772000, v5, OS_LOG_TYPE_INFO, "[observer] user activity created with type %@", buf, 0xCu);
   }
 
@@ -408,7 +408,7 @@ void __50__SLShareableContentObserver_connectAndRefreshNow__block_invoke(uint64_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serviceProxyDidConnect:(id)a3
+- (void)serviceProxyDidConnect:(id)connect
 {
   v4 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -438,7 +438,7 @@ uint64_t __53__SLShareableContentObserver_serviceProxyDidConnect___block_invoke(
   return result;
 }
 
-- (void)serviceProxyDidDisconnect:(id)a3
+- (void)serviceProxyDidDisconnect:(id)disconnect
 {
   v3 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))

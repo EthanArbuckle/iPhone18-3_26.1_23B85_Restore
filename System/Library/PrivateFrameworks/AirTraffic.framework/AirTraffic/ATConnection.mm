@@ -2,25 +2,25 @@
 - (ATConnection)init;
 - (ATConnectionDelegate)delegate;
 - (BOOL)getDataRestoreIsComplete;
-- (BOOL)isSyncing:(BOOL *)a3 automatically:(BOOL *)a4 wirelessly:(BOOL *)a5;
+- (BOOL)isSyncing:(BOOL *)syncing automatically:(BOOL *)automatically wirelessly:(BOOL *)wirelessly;
 - (id)getAssetMetrics;
-- (id)restoreDeviceWithIdentifier:(id)a3;
+- (id)restoreDeviceWithIdentifier:(id)identifier;
 - (void)_handleDisconnect;
-- (void)_sendStatusRegistrationWithCompletion:(id)a3;
+- (void)_sendStatusRegistrationWithCompletion:(id)completion;
 - (void)cancelSync;
 - (void)clearSyncData;
-- (void)connection:(id)a3 updatedAssets:(id)a4;
-- (void)connection:(id)a3 updatedProgress:(id)a4;
-- (void)connectionWasInterrupted:(id)a3;
+- (void)connection:(id)connection updatedAssets:(id)assets;
+- (void)connection:(id)connection updatedProgress:(id)progress;
+- (void)connectionWasInterrupted:(id)interrupted;
 - (void)dealloc;
-- (void)initiateAssetDownloadSessionsWithCompletion:(id)a3;
+- (void)initiateAssetDownloadSessionsWithCompletion:(id)completion;
 - (void)lowBatteryNotification;
-- (void)prioritizeAsset:(id)a3 forDataclass:(id)a4;
-- (void)purgePartialAsset:(id)a3 forDataclass:(id)a4;
-- (void)registerForAssetProgressForDataclass:(id)a3;
+- (void)prioritizeAsset:(id)asset forDataclass:(id)dataclass;
+- (void)purgePartialAsset:(id)asset forDataclass:(id)dataclass;
+- (void)registerForAssetProgressForDataclass:(id)dataclass;
 - (void)registerForStatus;
 - (void)requestKeybagSyncToPairedDevice;
-- (void)requestSyncForLibrary:(id)a3;
+- (void)requestSyncForLibrary:(id)library;
 - (void)unregisterForStatus;
 @end
 
@@ -111,16 +111,16 @@
   return WeakRetained;
 }
 
-- (void)connection:(id)a3 updatedAssets:(id)a4
+- (void)connection:(id)connection updatedAssets:(id)assets
 {
-  v5 = a4;
+  assetsCopy = assets;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__ATConnection_connection_updatedAssets___block_invoke;
   v7[3] = &unk_278C6DC30;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = assetsCopy;
+  v6 = assetsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -133,16 +133,16 @@ void __41__ATConnection_connection_updatedAssets___block_invoke(uint64_t a1)
   }
 }
 
-- (void)connection:(id)a3 updatedProgress:(id)a4
+- (void)connection:(id)connection updatedProgress:(id)progress
 {
-  v5 = a4;
+  progressCopy = progress;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__ATConnection_connection_updatedProgress___block_invoke;
   v7[3] = &unk_278C6DC30;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = progressCopy;
+  v6 = progressCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -155,7 +155,7 @@ void __43__ATConnection_connection_updatedProgress___block_invoke(uint64_t a1)
   }
 }
 
-- (void)connectionWasInterrupted:(id)a3
+- (void)connectionWasInterrupted:(id)interrupted
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -174,15 +174,15 @@ void __41__ATConnection_connectionWasInterrupted___block_invoke(uint64_t a1)
   }
 }
 
-- (void)initiateAssetDownloadSessionsWithCompletion:(id)a3
+- (void)initiateAssetDownloadSessionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   xpcConnection = self->_xpcConnection;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__ATConnection_initiateAssetDownloadSessionsWithCompletion___block_invoke;
   v11[3] = &unk_278C6DA58;
-  v6 = v4;
+  v6 = completionCopy;
   v12 = v6;
   v7 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x277D85DD0];
@@ -344,9 +344,9 @@ void __31__ATConnection_getAssetMetrics__block_invoke(uint64_t a1, void *a2)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)restoreDeviceWithIdentifier:(id)a3
+- (id)restoreDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -365,7 +365,7 @@ void __31__ATConnection_getAssetMetrics__block_invoke(uint64_t a1, void *a2)
   v9[2] = __44__ATConnection_restoreDeviceWithIdentifier___block_invoke_2;
   v9[3] = &unk_278C6DAC8;
   v9[4] = &v11;
-  [v6 restoreFromDeviceWithIdentifier:v4 completion:v9];
+  [v6 restoreFromDeviceWithIdentifier:identifierCopy completion:v9];
 
   v7 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -412,7 +412,7 @@ void __50__ATConnection_openDeviceMessageLinkWithPriority___block_invoke_178(uin
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isSyncing:(BOOL *)a3 automatically:(BOOL *)a4 wirelessly:(BOOL *)a5
+- (BOOL)isSyncing:(BOOL *)syncing automatically:(BOOL *)automatically wirelessly:(BOOL *)wirelessly
 {
   v15 = 0;
   v16 = &v15;
@@ -428,22 +428,22 @@ void __50__ATConnection_openDeviceMessageLinkWithPriority___block_invoke_178(uin
   v14[4] = &v15;
   [v8 getSyncStateWithCompletion:v14];
 
-  if (a3)
+  if (syncing)
   {
     v9 = [v16[5] objectForKey:@"Syncing"];
-    *a3 = [v9 BOOLValue];
+    *syncing = [v9 BOOLValue];
   }
 
-  if (a4)
+  if (automatically)
   {
     v10 = [v16[5] objectForKey:@"Automatic"];
-    *a4 = [v10 BOOLValue];
+    *automatically = [v10 BOOLValue];
   }
 
-  if (a5)
+  if (wirelessly)
   {
     v11 = [v16[5] objectForKey:@"Wireless"];
-    *a5 = [v11 BOOLValue];
+    *wirelessly = [v11 BOOLValue];
   }
 
   v12 = v16[5] != 0;
@@ -616,12 +616,12 @@ void __29__ATConnection_clearSyncData__block_invoke(uint64_t a1, void *a2)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForAssetProgressForDataclass:(id)a3
+- (void)registerForAssetProgressForDataclass:(id)dataclass
 {
-  v4 = a3;
+  dataclassCopy = dataclass;
   if (([(NSMutableArray *)self->_registeredDataclasses containsObject:?]& 1) == 0)
   {
-    [(NSMutableArray *)self->_registeredDataclasses addObject:v4];
+    [(NSMutableArray *)self->_registeredDataclasses addObject:dataclassCopy];
     if (self->_atcRunning)
     {
       [(ATConnection *)self _sendStatusRegistrationWithCompletion:&__block_literal_global_148];
@@ -634,10 +634,10 @@ void __29__ATConnection_clearSyncData__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)_sendStatusRegistrationWithCompletion:(id)a3
+- (void)_sendStatusRegistrationWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.AirTraffic", "XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -664,7 +664,7 @@ void __29__ATConnection_clearSyncData__block_invoke(uint64_t a1, void *a2)
   v17[1] = 3221225472;
   v17[2] = __54__ATConnection__sendStatusRegistrationWithCompletion___block_invoke;
   v17[3] = &unk_278C6DA58;
-  v9 = v4;
+  v9 = completionCopy;
   v18 = v9;
   v10 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v17];
   v11 = self->_registeredDataclasses;
@@ -736,23 +736,23 @@ uint64_t __54__ATConnection__sendStatusRegistrationWithCompletion___block_invoke
   }
 }
 
-- (void)purgePartialAsset:(id)a3 forDataclass:(id)a4
+- (void)purgePartialAsset:(id)asset forDataclass:(id)dataclass
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  dataclassCopy = dataclass;
   v8 = os_log_create("com.apple.amp.AirTraffic", "XPC");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = v6;
+    v12 = assetCopy;
     v13 = 2114;
-    v14 = v7;
+    v14 = dataclassCopy;
     _os_log_impl(&dword_23EC61000, v8, OS_LOG_TYPE_DEFAULT, "purge partial asset:%{public}@ for data class:%{public}@", &v11, 0x16u);
   }
 
   v9 = [(NSXPCConnection *)self->_xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_136];
-  [v9 purgePartialAsset:v6 forDataclass:v7 withCompletion:&__block_literal_global_139];
+  [v9 purgePartialAsset:assetCopy forDataclass:dataclassCopy withCompletion:&__block_literal_global_139];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -790,23 +790,23 @@ void __47__ATConnection_purgePartialAsset_forDataclass___block_invoke(uint64_t a
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prioritizeAsset:(id)a3 forDataclass:(id)a4
+- (void)prioritizeAsset:(id)asset forDataclass:(id)dataclass
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  dataclassCopy = dataclass;
   v8 = os_log_create("com.apple.amp.AirTraffic", "XPC");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = v7;
+    v12 = dataclassCopy;
     v13 = 2114;
-    v14 = v6;
+    v14 = assetCopy;
     _os_log_impl(&dword_23EC61000, v8, OS_LOG_TYPE_DEFAULT, "prioritize asset - %{public}@ %{public}@", &v11, 0x16u);
   }
 
   v9 = [(NSXPCConnection *)self->_xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_131];
-  [v9 prioritizeAsset:v6 forDataclass:v7 withCompletion:&__block_literal_global_134];
+  [v9 prioritizeAsset:assetCopy forDataclass:dataclassCopy withCompletion:&__block_literal_global_134];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -969,20 +969,20 @@ void __55__ATConnection_requestSyncForPairedDeviceWithPriority___block_invoke(ui
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestSyncForLibrary:(id)a3
+- (void)requestSyncForLibrary:(id)library
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  libraryCopy = library;
   v5 = os_log_create("com.apple.amp.AirTraffic", "XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = libraryCopy;
     _os_log_impl(&dword_23EC61000, v5, OS_LOG_TYPE_DEFAULT, "Sync request for library %{public}@", &v8, 0xCu);
   }
 
   v6 = [(NSXPCConnection *)self->_xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_1270];
-  [v6 requestSyncForLibrary:v4 withCompletion:&__block_literal_global_114];
+  [v6 requestSyncForLibrary:libraryCopy withCompletion:&__block_literal_global_114];
 
   v7 = *MEMORY[0x277D85DE8];
 }

@@ -1,12 +1,12 @@
 @interface VSAccountChannels
-+ (id)deserializationResultWithData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)deserializationResultWithData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (VSAccountChannels)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)serializationResultWithFormat:(unint64_t)a3;
+- (id)serializationResultWithFormat:(unint64_t)format;
 - (unint64_t)hash;
-- (void)setProviderID:(id)a3;
+- (void)setProviderID:(id)d;
 @end
 
 @implementation VSAccountChannels
@@ -26,11 +26,11 @@
   return v3;
 }
 
-+ (id)deserializationResultWithData:(id)a3
++ (id)deserializationResultWithData:(id)data
 {
   v55 = *MEMORY[0x277D85DE8];
   v53 = 0;
-  v3 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:&v53];
+  v3 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:&v53];
   v4 = v53;
   if (v3)
   {
@@ -183,12 +183,12 @@
   return v36;
 }
 
-- (void)setProviderID:(id)a3
+- (void)setProviderID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = v4;
+    v5 = dCopy;
   }
 
   else
@@ -205,22 +205,22 @@
   }
 }
 
-- (id)serializationResultWithFormat:(unint64_t)a3
+- (id)serializationResultWithFormat:(unint64_t)format
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [(VSAccountChannels *)self providerID];
-  [v5 setObject:v6 forKey:@"ProviderID"];
+  providerID = [(VSAccountChannels *)self providerID];
+  [v5 setObject:providerID forKey:@"ProviderID"];
 
-  v7 = [(VSAccountChannels *)self channelIDs];
-  v8 = v7;
-  if (v7)
+  channelIDs = [(VSAccountChannels *)self channelIDs];
+  v8 = channelIDs;
+  if (channelIDs)
   {
-    v9 = [v7 allObjects];
-    [v5 setObject:v9 forKey:@"ChannelIDs"];
+    allObjects = [channelIDs allObjects];
+    [v5 setObject:allObjects forKey:@"ChannelIDs"];
   }
 
   v15 = 0;
-  v10 = [MEMORY[0x277CCAC58] dataWithPropertyList:v5 format:a3 options:0 error:&v15];
+  v10 = [MEMORY[0x277CCAC58] dataWithPropertyList:v5 format:format options:0 error:&v15];
   v11 = v15;
   if (v10)
   {
@@ -251,23 +251,23 @@ LABEL_6:
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(VSAccountChannels *)self providerID];
-  v6 = [v4 stringWithFormat:@"%@ = %@", @"providerID", v5];
+  providerID = [(VSAccountChannels *)self providerID];
+  v6 = [v4 stringWithFormat:@"%@ = %@", @"providerID", providerID];
   [v3 addObject:v6];
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(VSAccountChannels *)self adamID];
-  v9 = [v7 stringWithFormat:@"%@ = %@", @"adamID", v8];
+  adamID = [(VSAccountChannels *)self adamID];
+  v9 = [v7 stringWithFormat:@"%@ = %@", @"adamID", adamID];
   [v3 addObject:v9];
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [(VSAccountChannels *)self channelIDs];
-  v12 = [v10 stringWithFormat:@"%@ = %@", @"channelIDs", v11];
+  channelIDs = [(VSAccountChannels *)self channelIDs];
+  v12 = [v10 stringWithFormat:@"%@ = %@", @"channelIDs", channelIDs];
   [v3 addObject:v12];
 
   v13 = MEMORY[0x277CCACA8];
-  v14 = [(VSAccountChannels *)self providerInfo];
-  v15 = [v13 stringWithFormat:@"%@ = %@", @"providerInfo", v14];
+  providerInfo = [(VSAccountChannels *)self providerInfo];
+  v15 = [v13 stringWithFormat:@"%@ = %@", @"providerInfo", providerInfo];
   [v3 addObject:v15];
 
   v16 = MEMORY[0x277CCACA8];
@@ -282,35 +282,35 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  v3 = [(VSAccountChannels *)self providerID];
-  v4 = [v3 hash];
+  providerID = [(VSAccountChannels *)self providerID];
+  v4 = [providerID hash];
 
-  v5 = [(VSAccountChannels *)self adamID];
-  v6 = [v5 hash] ^ v4;
+  adamID = [(VSAccountChannels *)self adamID];
+  v6 = [adamID hash] ^ v4;
 
-  v7 = [(VSAccountChannels *)self channelIDs];
-  v8 = [v7 hash];
+  channelIDs = [(VSAccountChannels *)self channelIDs];
+  v8 = [channelIDs hash];
 
-  v9 = [(VSAccountChannels *)self providerInfo];
-  v10 = v8 ^ [v9 hash];
+  providerInfo = [(VSAccountChannels *)self providerInfo];
+  v10 = v8 ^ [providerInfo hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v14) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
-      v6 = v4;
+      v6 = equalCopy;
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -331,9 +331,9 @@ LABEL_29:
       }
 
       v11 = v6;
-      v12 = [(VSAccountChannels *)self providerID];
-      v13 = [(VSAccountChannels *)v11 providerID];
-      v14 = [v12 isEqual:v13];
+      providerID = [(VSAccountChannels *)self providerID];
+      providerID2 = [(VSAccountChannels *)v11 providerID];
+      v14 = [providerID isEqual:providerID2];
 
       if (!v14)
       {
@@ -342,10 +342,10 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v15 = [(VSAccountChannels *)self adamID];
-      v16 = [(VSAccountChannels *)v11 adamID];
-      v17 = v15;
-      v18 = v16;
+      adamID = [(VSAccountChannels *)self adamID];
+      adamID2 = [(VSAccountChannels *)v11 adamID];
+      v17 = adamID;
+      v18 = adamID2;
       v19 = v18;
       if (v17 == v18)
       {
@@ -367,19 +367,19 @@ LABEL_28:
         }
       }
 
-      v21 = [(VSAccountChannels *)self channelIDs];
-      v22 = [(VSAccountChannels *)v11 channelIDs];
-      v17 = v21;
-      v23 = v22;
+      channelIDs = [(VSAccountChannels *)self channelIDs];
+      channelIDs2 = [(VSAccountChannels *)v11 channelIDs];
+      v17 = channelIDs;
+      v23 = channelIDs2;
       v19 = v23;
       if (v17 == v23)
       {
 
 LABEL_22:
-        v25 = [(VSAccountChannels *)self providerInfo];
-        v26 = [(VSAccountChannels *)v11 providerInfo];
-        v17 = v25;
-        v27 = v26;
+        providerInfo = [(VSAccountChannels *)self providerInfo];
+        providerInfo2 = [(VSAccountChannels *)v11 providerInfo];
+        v17 = providerInfo;
+        v27 = providerInfo2;
         v19 = v27;
         if (v17 == v27)
         {
@@ -426,7 +426,7 @@ LABEL_30:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VSAccountChannels);
   v5 = [(NSString *)self->_providerID copy];

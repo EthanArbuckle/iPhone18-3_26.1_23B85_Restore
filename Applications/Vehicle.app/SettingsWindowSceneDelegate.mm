@@ -1,45 +1,45 @@
 @interface SettingsWindowSceneDelegate
 - (_TtC7Vehicle27SettingsWindowSceneDelegate)init;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
 - (void)sceneDidEnterBackground:;
-- (void)sceneWillEnterForeground:(id)a3;
+- (void)sceneWillEnterForeground:(id)foreground;
 @end
 
 @implementation SettingsWindowSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_10001071C(v8, v9, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_10001071C(sceneCopy, sessionCopy, optionsCopy);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
-  sub_100010DBC(v4);
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  sub_100010DBC(disconnectCopy);
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
   sub_1000043C8(0, &qword_100038470, UIOpenURLContext_ptr);
   sub_100011798();
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  sceneCopy = scene;
+  selfCopy = self;
   sub_1000110A8(v6);
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
-  sub_100011428(v4);
+  foregroundCopy = foreground;
+  selfCopy = self;
+  sub_100011428(foregroundCopy);
 }
 
 - (_TtC7Vehicle27SettingsWindowSceneDelegate)init
@@ -63,10 +63,10 @@
   }
 
   os_log(_:dso:log:_:_:)();
-  v5 = [objc_opt_self() sharedApplication];
-  v6 = [v5 delegate];
+  sharedApplication = [objc_opt_self() sharedApplication];
+  delegate = [sharedApplication delegate];
 
-  if (v6)
+  if (delegate)
   {
     type metadata accessor for AppDelegate();
     v7 = *(swift_dynamicCastClassUnconditional() + OBJC_IVAR____TtC7Vehicle11AppDelegate_settingsCarManager);

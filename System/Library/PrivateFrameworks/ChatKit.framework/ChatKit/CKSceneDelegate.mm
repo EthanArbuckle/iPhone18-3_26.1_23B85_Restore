@@ -1,27 +1,27 @@
 @interface CKSceneDelegate
-+ (Class)containerClassForType:(int64_t)a3;
-+ (id)stateFromUserInfoDictionary:(id)a3;
-+ (id)userInfoDictionaryForState:(id)a3;
++ (Class)containerClassForType:(int64_t)type;
++ (id)stateFromUserInfoDictionary:(id)dictionary;
++ (id)userInfoDictionaryForState:(id)state;
 - (CKSceneDelegate)init;
 - (UIWindowScene)scene;
-- (id)predicateMatchingConversation:(id)a3;
-- (id)stateRestorationActivityForScene:(id)a3;
-- (void)_scene:(id)a3 openItemProviders:(id)a4;
-- (void)installDebugHandlerForScene:(id)a3;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (id)predicateMatchingConversation:(id)conversation;
+- (id)stateRestorationActivityForScene:(id)scene;
+- (void)_scene:(id)_scene openItemProviders:(id)providers;
+- (void)installDebugHandlerForScene:(id)scene;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
 - (void)showDebugMenu;
-- (void)showInspectorViewForChatItems:(id)a3 parallelIndexes:(id)a4;
-- (void)showInspectorViewForConversations:(id)a3;
-- (void)showInspectorViewForMessage:(id)a3;
+- (void)showInspectorViewForChatItems:(id)items parallelIndexes:(id)indexes;
+- (void)showInspectorViewForConversations:(id)conversations;
+- (void)showInspectorViewForMessage:(id)message;
 - (void)updateSceneActivationConditions;
-- (void)updateSceneTitleForConversation:(id)a3;
+- (void)updateSceneTitleForConversation:(id)conversation;
 @end
 
 @implementation CKSceneDelegate
@@ -42,12 +42,12 @@
   return v2;
 }
 
-+ (Class)containerClassForType:(int64_t)a3
++ (Class)containerClassForType:(int64_t)type
 {
-  if (a3 && a3 != 1)
+  if (type && type != 1)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"CKSceneDelegate.m" lineNumber:68 description:{@"+containerClassForType: should not be called for scene delegate type: %zd", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CKSceneDelegate.m" lineNumber:68 description:{@"+containerClassForType: should not be called for scene delegate type: %zd", type}];
   }
 
   v7 = objc_opt_class();
@@ -55,12 +55,12 @@
   return v7;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
   v33 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   if (IMOSLoggingEnabled())
   {
     v12 = OSLogHandleForIMFoundationCategory();
@@ -68,14 +68,14 @@
     {
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
-      v15 = [v9 session];
-      v16 = [v15 persistentIdentifier];
+      session = [sceneCopy session];
+      persistentIdentifier = [session persistentIdentifier];
       v27 = 138412802;
       v28 = v14;
       v29 = 2080;
       v30 = "[CKSceneDelegate scene:willConnectToSession:options:]";
       v31 = 2112;
-      v32 = v16;
+      v32 = persistentIdentifier;
       _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "%@: %s %@", &v27, 0x20u);
     }
   }
@@ -86,7 +86,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v27 = 138412290;
-      v28 = v10;
+      v28 = sessionCopy;
       _os_log_impl(&dword_19020E000, v17, OS_LOG_TYPE_INFO, "Session: %@", &v27, 0xCu);
     }
   }
@@ -96,13 +96,13 @@
     v18 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v19 = [v10 stateRestorationActivity];
-      v20 = [v19 activityType];
-      v21 = [v10 stateRestorationActivity];
+      stateRestorationActivity = [sessionCopy stateRestorationActivity];
+      activityType = [stateRestorationActivity activityType];
+      stateRestorationActivity2 = [sessionCopy stateRestorationActivity];
       v27 = 138412546;
-      v28 = v20;
+      v28 = activityType;
       v29 = 2112;
-      v30 = v21;
+      v30 = stateRestorationActivity2;
       _os_log_impl(&dword_19020E000, v18, OS_LOG_TYPE_INFO, "Session state restoration activity: %@ %@", &v27, 0x16u);
     }
   }
@@ -113,7 +113,7 @@
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       v27 = 138412290;
-      v28 = v11;
+      v28 = optionsCopy;
       _os_log_impl(&dword_19020E000, v22, OS_LOG_TYPE_INFO, "Connection options: %@", &v27, 0xCu);
     }
   }
@@ -124,21 +124,21 @@
     [CKSceneDelegate scene:a2 willConnectToSession:self options:?];
   }
 
-  v23 = objc_storeWeak(&self->_scene, v9);
-  [(CKSceneDelegate *)self installDebugHandlerForScene:v9];
+  v23 = objc_storeWeak(&self->_scene, sceneCopy);
+  [(CKSceneDelegate *)self installDebugHandlerForScene:sceneCopy];
 
-  v24 = [(CKSceneDelegate *)self window];
+  window = [(CKSceneDelegate *)self window];
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  [v24 setWindowScene:WeakRetained];
+  [window setWindowScene:WeakRetained];
 
-  v26 = [(CKSceneDelegate *)self window];
-  [v26 makeKeyAndVisible];
+  window2 = [(CKSceneDelegate *)self window];
+  [window2 makeKeyAndVisible];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  disconnectCopy = disconnect;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -146,14 +146,14 @@
     {
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
-      v8 = [v4 session];
-      v9 = [v8 persistentIdentifier];
+      session = [disconnectCopy session];
+      persistentIdentifier = [session persistentIdentifier];
       v13 = 138412802;
       v14 = v7;
       v15 = 2080;
       v16 = "[CKSceneDelegate sceneDidDisconnect:]";
       v17 = 2112;
-      v18 = v9;
+      v18 = persistentIdentifier;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "%@: %s %@", &v13, 0x20u);
     }
   }
@@ -166,16 +166,16 @@
     self->_toolbarController = 0;
   }
 
-  v12 = [(CKSceneDelegate *)self window];
-  [v12 setWindowScene:0];
+  window = [(CKSceneDelegate *)self window];
+  [window setWindowScene:0];
 
   objc_storeWeak(&self->_scene, 0);
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  activeCopy = active;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -183,23 +183,23 @@
     {
       v5 = objc_opt_class();
       v6 = NSStringFromClass(v5);
-      v7 = [v3 session];
-      v8 = [v7 persistentIdentifier];
+      session = [activeCopy session];
+      persistentIdentifier = [session persistentIdentifier];
       v9 = 138412802;
       v10 = v6;
       v11 = 2080;
       v12 = "[CKSceneDelegate sceneDidBecomeActive:]";
       v13 = 2112;
-      v14 = v8;
+      v14 = persistentIdentifier;
       _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "%@: %s %@", &v9, 0x20u);
     }
   }
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  activeCopy = active;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -207,23 +207,23 @@
     {
       v5 = objc_opt_class();
       v6 = NSStringFromClass(v5);
-      v7 = [v3 session];
-      v8 = [v7 persistentIdentifier];
+      session = [activeCopy session];
+      persistentIdentifier = [session persistentIdentifier];
       v9 = 138412802;
       v10 = v6;
       v11 = 2080;
       v12 = "[CKSceneDelegate sceneWillResignActive:]";
       v13 = 2112;
-      v14 = v8;
+      v14 = persistentIdentifier;
       _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "%@: %s %@", &v9, 0x20u);
     }
   }
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  foregroundCopy = foreground;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -231,23 +231,23 @@
     {
       v5 = objc_opt_class();
       v6 = NSStringFromClass(v5);
-      v7 = [v3 session];
-      v8 = [v7 persistentIdentifier];
+      session = [foregroundCopy session];
+      persistentIdentifier = [session persistentIdentifier];
       v9 = 138412802;
       v10 = v6;
       v11 = 2080;
       v12 = "[CKSceneDelegate sceneWillEnterForeground:]";
       v13 = 2112;
-      v14 = v8;
+      v14 = persistentIdentifier;
       _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "%@: %s %@", &v9, 0x20u);
     }
   }
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  backgroundCopy = background;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -255,37 +255,37 @@
     {
       v5 = objc_opt_class();
       v6 = NSStringFromClass(v5);
-      v7 = [v3 session];
-      v8 = [v7 persistentIdentifier];
+      session = [backgroundCopy session];
+      persistentIdentifier = [session persistentIdentifier];
       v9 = 138412802;
       v10 = v6;
       v11 = 2080;
       v12 = "[CKSceneDelegate sceneDidEnterBackground:]";
       v13 = 2112;
-      v14 = v8;
+      v14 = persistentIdentifier;
       _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "%@: %s %@", &v9, 0x20u);
     }
   }
 }
 
-- (void)installDebugHandlerForScene:(id)a3
+- (void)installDebugHandlerForScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 delegate];
+    delegate = [sceneCopy delegate];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = sceneCopy;
       objc_initWeak(&location, self);
       v9 = MEMORY[0x1E69E9820];
       objc_copyWeak(&v10, &location);
-      v8 = [v7 statusBarManager];
-      [v8 setDebugMenuHandler:&v9];
+      statusBarManager = [v7 statusBarManager];
+      [statusBarManager setDebugMenuHandler:&v9];
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
@@ -301,69 +301,69 @@ void __47__CKSceneDelegate_installDebugHandlerForScene___block_invoke(uint64_t a
 
 - (void)showDebugMenu
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v4)
+  if (isInternalInstall)
   {
     v7 = +[_TtC7ChatKit44DebugInspectorContainerViewControllerFactory debugMenuViewController];
-    v5 = [(CKSceneDelegate *)self window];
-    v6 = [v5 rootViewController];
-    [v6 presentViewController:v7 animated:1 completion:0];
+    window = [(CKSceneDelegate *)self window];
+    rootViewController = [window rootViewController];
+    [rootViewController presentViewController:v7 animated:1 completion:0];
   }
 }
 
-- (void)showInspectorViewForMessage:(id)a3
+- (void)showInspectorViewForMessage:(id)message
 {
-  v9 = a3;
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  messageCopy = message;
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [_TtC7ChatKit44DebugInspectorContainerViewControllerFactory inspectorViewControllerForMessage:v9];
-    v7 = [(CKSceneDelegate *)self window];
-    v8 = [v7 rootViewController];
-    [v8 presentViewController:v6 animated:1 completion:0];
+    v6 = [_TtC7ChatKit44DebugInspectorContainerViewControllerFactory inspectorViewControllerForMessage:messageCopy];
+    window = [(CKSceneDelegate *)self window];
+    rootViewController = [window rootViewController];
+    [rootViewController presentViewController:v6 animated:1 completion:0];
   }
 }
 
-- (void)showInspectorViewForConversations:(id)a3
+- (void)showInspectorViewForConversations:(id)conversations
 {
-  v9 = a3;
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  conversationsCopy = conversations;
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [_TtC7ChatKit44DebugInspectorContainerViewControllerFactory inspectorViewControllerForConversations:v9];
-    v7 = [(CKSceneDelegate *)self window];
-    v8 = [v7 rootViewController];
-    [v8 presentViewController:v6 animated:1 completion:0];
+    v6 = [_TtC7ChatKit44DebugInspectorContainerViewControllerFactory inspectorViewControllerForConversations:conversationsCopy];
+    window = [(CKSceneDelegate *)self window];
+    rootViewController = [window rootViewController];
+    [rootViewController presentViewController:v6 animated:1 completion:0];
   }
 }
 
-- (void)showInspectorViewForChatItems:(id)a3 parallelIndexes:(id)a4
+- (void)showInspectorViewForChatItems:(id)items parallelIndexes:(id)indexes
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v8 = [v7 isInternalInstall];
+  itemsCopy = items;
+  indexesCopy = indexes;
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v8)
+  if (isInternalInstall)
   {
-    v9 = [_TtC7ChatKit44DebugInspectorContainerViewControllerFactory inspectorViewControllerForChatItems:v12 parallelIndexes:v6];
-    v10 = [(CKSceneDelegate *)self window];
-    v11 = [v10 rootViewController];
-    [v11 presentViewController:v9 animated:1 completion:0];
+    v9 = [_TtC7ChatKit44DebugInspectorContainerViewControllerFactory inspectorViewControllerForChatItems:itemsCopy parallelIndexes:indexesCopy];
+    window = [(CKSceneDelegate *)self window];
+    rootViewController = [window rootViewController];
+    [rootViewController presentViewController:v9 animated:1 completion:0];
   }
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  sceneCopy = scene;
+  contextsCopy = contexts;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -371,14 +371,14 @@ void __47__CKSceneDelegate_installDebugHandlerForScene___block_invoke(uint64_t a
     {
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [v5 session];
-      v11 = [v10 persistentIdentifier];
+      session = [sceneCopy session];
+      persistentIdentifier = [session persistentIdentifier];
       v13 = 138412802;
       v14 = v9;
       v15 = 2080;
       v16 = "[CKSceneDelegate scene:openURLContexts:]";
       v17 = 2112;
-      v18 = v11;
+      v18 = persistentIdentifier;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "%@: %s %@", &v13, 0x20u);
     }
   }
@@ -389,17 +389,17 @@ void __47__CKSceneDelegate_installDebugHandlerForScene___block_invoke(uint64_t a
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = contextsCopy;
       _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "URL Contexts: %@", &v13, 0xCu);
     }
   }
 }
 
-- (void)_scene:(id)a3 openItemProviders:(id)a4
+- (void)_scene:(id)_scene openItemProviders:(id)providers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  _sceneCopy = _scene;
+  providersCopy = providers;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -407,14 +407,14 @@ void __47__CKSceneDelegate_installDebugHandlerForScene___block_invoke(uint64_t a
     {
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [v5 session];
-      v11 = [v10 persistentIdentifier];
+      session = [_sceneCopy session];
+      persistentIdentifier = [session persistentIdentifier];
       v13 = 138412802;
       v14 = v9;
       v15 = 2080;
       v16 = "[CKSceneDelegate _scene:openItemProviders:]";
       v17 = 2112;
-      v18 = v11;
+      v18 = persistentIdentifier;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "%@: %s %@", &v13, 0x20u);
     }
   }
@@ -425,16 +425,16 @@ void __47__CKSceneDelegate_installDebugHandlerForScene___block_invoke(uint64_t a
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = providersCopy;
       _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "Item Providers: %@", &v13, 0xCu);
     }
   }
 }
 
-- (id)stateRestorationActivityForScene:(id)a3
+- (id)stateRestorationActivityForScene:(id)scene
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sceneCopy = scene;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -442,14 +442,14 @@ void __47__CKSceneDelegate_installDebugHandlerForScene___block_invoke(uint64_t a
     {
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
-      v8 = [v4 session];
-      v9 = [v8 persistentIdentifier];
+      session = [sceneCopy session];
+      persistentIdentifier = [session persistentIdentifier];
       *buf = 138412802;
       v17 = v7;
       v18 = 2080;
       v19 = "[CKSceneDelegate stateRestorationActivityForScene:]";
       v20 = 2112;
-      v21 = v9;
+      v21 = persistentIdentifier;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "%@: %s %@", buf, 0x20u);
     }
   }
@@ -464,11 +464,11 @@ void __47__CKSceneDelegate_installDebugHandlerForScene___block_invoke(uint64_t a
   return v10;
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  sceneCopy = scene;
+  activityCopy = activity;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -476,14 +476,14 @@ void __47__CKSceneDelegate_installDebugHandlerForScene___block_invoke(uint64_t a
     {
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [v5 session];
-      v11 = [v10 persistentIdentifier];
+      session = [sceneCopy session];
+      persistentIdentifier = [session persistentIdentifier];
       v14 = 138412802;
       v15 = v9;
       v16 = 2080;
       v17 = "[CKSceneDelegate scene:continueUserActivity:]";
       v18 = 2112;
-      v19 = v11;
+      v19 = persistentIdentifier;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "%@: %s %@", &v14, 0x20u);
     }
   }
@@ -493,22 +493,22 @@ void __47__CKSceneDelegate_installDebugHandlerForScene___block_invoke(uint64_t a
     v12 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v6 activityType];
+      activityType = [activityCopy activityType];
       v14 = 138412546;
-      v15 = v13;
+      v15 = activityType;
       v16 = 2112;
-      v17 = v6;
+      v17 = activityCopy;
       _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "User activity: %@ %@", &v14, 0x16u);
     }
   }
 }
 
-+ (id)userInfoDictionaryForState:(id)a3
++ (id)userInfoDictionaryForState:(id)state
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stateCopy = state;
   v9 = 0;
-  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v9];
+  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:stateCopy requiringSecureCoding:1 error:&v9];
   v5 = v9;
   if (v5)
   {
@@ -518,7 +518,7 @@ void __47__CKSceneDelegate_installDebugHandlerForScene___block_invoke(uint64_t a
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v11 = v3;
+        v11 = stateCopy;
         v12 = 2112;
         v13 = v5;
         _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Failed archiving scene state: %@, error: %@", buf, 0x16u);
@@ -538,11 +538,11 @@ void __47__CKSceneDelegate_installDebugHandlerForScene___block_invoke(uint64_t a
   return v7;
 }
 
-+ (id)stateFromUserInfoDictionary:(id)a3
++ (id)stateFromUserInfoDictionary:(id)dictionary
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"CKCanvasStateRestorationContainerState"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"CKCanvasStateRestorationContainerState"];
   if (v4)
   {
     v5 = MEMORY[0x1E696ACD0];
@@ -575,7 +575,7 @@ void __47__CKSceneDelegate_installDebugHandlerForScene___block_invoke(uint64_t a
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v14 = v3;
+      v14 = dictionaryCopy;
       _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "Didn't find scene state data in userInfo dictionary: %@", buf, 0xCu);
     }
   }
@@ -594,32 +594,32 @@ LABEL_14:
     v3 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(CKSceneDelegate *)self scene];
-      v5 = [v4 session];
-      v6 = [v5 persistentIdentifier];
+      scene = [(CKSceneDelegate *)self scene];
+      session = [scene session];
+      persistentIdentifier = [session persistentIdentifier];
       v15 = 138412546;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
-      v18 = v6;
+      v18 = persistentIdentifier;
       _os_log_impl(&dword_19020E000, v3, OS_LOG_TYPE_INFO, "Updating scene activation conditions for scene: %@ %@", &v15, 0x16u);
     }
   }
 
   v7 = objc_alloc_init(MEMORY[0x1E69DCE78]);
-  v8 = [(CKSceneDelegate *)self canActivatePredicate];
-  [v7 setCanActivateForTargetContentIdentifierPredicate:v8];
+  canActivatePredicate = [(CKSceneDelegate *)self canActivatePredicate];
+  [v7 setCanActivateForTargetContentIdentifierPredicate:canActivatePredicate];
 
-  v9 = [(CKSceneDelegate *)self prefersToActivatePredicate];
-  [v7 setPrefersToActivateForTargetContentIdentifierPredicate:v9];
+  prefersToActivatePredicate = [(CKSceneDelegate *)self prefersToActivatePredicate];
+  [v7 setPrefersToActivateForTargetContentIdentifierPredicate:prefersToActivatePredicate];
 
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v7 canActivateForTargetContentIdentifierPredicate];
+      canActivateForTargetContentIdentifierPredicate = [v7 canActivateForTargetContentIdentifierPredicate];
       v15 = 138412290;
-      v16 = v11;
+      selfCopy = canActivateForTargetContentIdentifierPredicate;
       _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "canActivateForTargetContentIdentifierPredicate: %@", &v15, 0xCu);
     }
   }
@@ -629,60 +629,60 @@ LABEL_14:
     v12 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v7 prefersToActivateForTargetContentIdentifierPredicate];
+      prefersToActivateForTargetContentIdentifierPredicate = [v7 prefersToActivateForTargetContentIdentifierPredicate];
       v15 = 138412290;
-      v16 = v13;
+      selfCopy = prefersToActivateForTargetContentIdentifierPredicate;
       _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "prefersToActivateForTargetContentIdentifierPredicate: %@", &v15, 0xCu);
     }
   }
 
-  v14 = [(CKSceneDelegate *)self scene];
-  [v14 setActivationConditions:v7];
+  scene2 = [(CKSceneDelegate *)self scene];
+  [scene2 setActivationConditions:v7];
 }
 
-- (id)predicateMatchingConversation:(id)a3
+- (id)predicateMatchingConversation:(id)conversation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  conversationCopy = conversation;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v27 = v3;
+      v27 = conversationCopy;
       _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "Creating preferred activation predicate for conversation: %@", buf, 0xCu);
     }
   }
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [v3 groupID];
-  if ([v6 length])
+  groupID = [conversationCopy groupID];
+  if ([groupID length])
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"sms:%@", v6];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"messages:%@", v6];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"sms:%@", groupID];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"messages:%@", groupID];
     v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self beginswith[cd] %@ OR self beginswith[cd] %@", v7, v8];
     [v5 addObject:v9];
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"groupid=%@", v6];
-    v11 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-    v12 = [v10 stringByAddingPercentEncodingWithAllowedCharacters:v11];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"groupid=%@", groupID];
+    uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+    v12 = [v10 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
     v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(self beginswith[c] 'sms://' OR self beginswith[c] 'messages://') AND (self contains[cd] %@ OR self contains[cd] %@)", v10, v12];
     [v5 addObject:v13];
   }
 
-  v14 = [v3 recipient];
+  recipient = [conversationCopy recipient];
 
-  if (v14)
+  if (recipient)
   {
-    v15 = [v3 recipient];
-    v16 = [v15 defaultIMHandle];
-    v17 = [v16 ID];
+    recipient2 = [conversationCopy recipient];
+    defaultIMHandle = [recipient2 defaultIMHandle];
+    v17 = [defaultIMHandle ID];
 
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"recipient=%@", v17];
     v19 = MEMORY[0x1E696AEC0];
-    v20 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-    v21 = [v17 stringByAddingPercentEncodingWithAllowedCharacters:v20];
+    uRLPathAllowedCharacterSet2 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+    v21 = [v17 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet2];
     v22 = [v19 stringWithFormat:@"recipient=%@", v21];
 
     v23 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(self beginswith[c] 'sms://' OR self beginswith[c] 'messages://') AND (self contains[cd] %@ OR self contains[cd] %@)", v18, v22];
@@ -702,22 +702,22 @@ LABEL_14:
   return v24;
 }
 
-- (void)updateSceneTitleForConversation:(id)a3
+- (void)updateSceneTitleForConversation:(id)conversation
 {
-  v4 = a3;
-  if ([v4 hasDisplayName])
+  conversationCopy = conversation;
+  if ([conversationCopy hasDisplayName])
   {
-    [v4 displayName];
+    [conversationCopy displayName];
   }
 
   else
   {
-    [v4 name];
+    [conversationCopy name];
   }
   v6 = ;
 
-  v5 = [(CKSceneDelegate *)self scene];
-  [v5 setTitle:v6];
+  scene = [(CKSceneDelegate *)self scene];
+  [scene setTitle:v6];
 }
 
 - (UIWindowScene)scene

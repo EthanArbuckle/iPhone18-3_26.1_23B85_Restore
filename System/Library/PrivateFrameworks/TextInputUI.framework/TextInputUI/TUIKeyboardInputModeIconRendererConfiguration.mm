@@ -21,9 +21,9 @@
   tintColor = self->_tintColor;
   if (!tintColor)
   {
-    v4 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     v5 = self->_tintColor;
-    self->_tintColor = v4;
+    self->_tintColor = labelColor;
 
     tintColor = self->_tintColor;
   }
@@ -36,9 +36,9 @@
   backgroundColor = self->_backgroundColor;
   if (!backgroundColor)
   {
-    v4 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
     v5 = self->_backgroundColor;
-    self->_backgroundColor = v4;
+    self->_backgroundColor = blackColor;
 
     backgroundColor = self->_backgroundColor;
   }

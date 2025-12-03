@@ -1,19 +1,19 @@
 @interface GESSAlgSplitMeshByComponentsExtended
-- (BOOL)run:(id)a3 output:(id)a4;
+- (BOOL)run:(id)run output:(id)output;
 @end
 
 @implementation GESSAlgSplitMeshByComponentsExtended
 
-- (BOOL)run:(id)a3 output:(id)a4
+- (BOOL)run:(id)run output:(id)output
 {
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_valid(v6, v8, v9, v10))
+  runCopy = run;
+  outputCopy = output;
+  if (objc_msgSend_valid(runCopy, v8, v9, v10))
   {
-    objc_msgSend_removeAllObjects(v7, v11, v12, v13);
-    if (objc_msgSend_meshType(v6, v14, v15, v16) == 1)
+    objc_msgSend_removeAllObjects(outputCopy, v11, v12, v13);
+    if (objc_msgSend_meshType(runCopy, v14, v15, v16) == 1)
     {
-      v20 = objc_msgSend_meshImpl(v6, v17, v18, v19);
+      v20 = objc_msgSend_meshImpl(runCopy, v17, v18, v19);
       v37 = 0;
       v38 = 0;
       v39 = 0;
@@ -30,9 +30,9 @@
       sub_24BD51FA4();
     }
 
-    if (objc_msgSend_meshType(v6, v17, v18, v19) == 11)
+    if (objc_msgSend_meshType(runCopy, v17, v18, v19) == 11)
     {
-      v28 = objc_msgSend_meshImpl(v6, v25, v26, v27);
+      v28 = objc_msgSend_meshImpl(runCopy, v25, v26, v27);
       v37 = 0;
       v38 = 0;
       v39 = 0;

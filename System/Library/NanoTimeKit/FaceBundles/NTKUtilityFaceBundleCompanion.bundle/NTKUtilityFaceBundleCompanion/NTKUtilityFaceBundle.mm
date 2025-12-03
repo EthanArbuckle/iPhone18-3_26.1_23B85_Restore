@@ -1,16 +1,16 @@
 @interface NTKUtilityFaceBundle
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryEditOptionsForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (int64_t)_cleanGroupZOrderForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryEditOptionsForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (int64_t)_cleanGroupZOrderForDevice:(id)device;
 @end
 
 @implementation NTKUtilityFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (NTKShowBlueRidgeUI())
   {
     v4 = 200;
@@ -21,14 +21,14 @@
     v4 = 0;
   }
 
-  v5 = [NTKUtilityFace defaultFaceOfStyle:v4 forDevice:v3];
+  v5 = [NTKUtilityFace defaultFaceOfStyle:v4 forDevice:deviceCopy];
 
   return v5;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[NSMutableArray array];
   v26[0] = NTKComplicationSlotTopLeft;
   v26[1] = NTKComplicationSlotTopRight;
@@ -38,11 +38,11 @@
   v27[2] = &off_116E0;
   v6 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:3];
   v7 = NTKComplicationSlotDate;
-  if ([v4 isRunningNapiliGMOrLater])
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     v25.receiver = self;
     v25.super_class = NTKUtilityFaceBundle;
-    v8 = [(NTKUtilityFaceBundle *)&v25 galleryFacesForDevice:v4];
+    v8 = [(NTKUtilityFaceBundle *)&v25 galleryFacesForDevice:deviceCopy];
     [v5 addObjectsFromArray:v8];
 
     v16 = _NSConcreteStackBlock;
@@ -50,8 +50,8 @@
     v18 = sub_6DF0;
     v19 = &unk_10738;
     v20 = v6;
-    v21 = self;
-    v22 = v4;
+    selfCopy = self;
+    v22 = deviceCopy;
     v24 = 4;
     v23 = v7;
     [v5 enumerateObjectsUsingBlock:&v16];
@@ -61,10 +61,10 @@
   {
     for (i = 3; i != -1; --i)
     {
-      v10 = [(NTKUtilityFaceBundle *)self defaultFaceForDevice:v4];
+      v10 = [(NTKUtilityFaceBundle *)self defaultFaceForDevice:deviceCopy];
       if (v10)
       {
-        v11 = [NTKDensityEditOption optionWithDensity:i forDevice:v4];
+        v11 = [NTKDensityEditOption optionWithDensity:i forDevice:deviceCopy];
         [v10 selectOption:v11 forCustomEditMode:11 slot:0];
 
         v12 = [v6 mutableCopy];
@@ -83,9 +83,9 @@
   return v14;
 }
 
-- (int64_t)_cleanGroupZOrderForDevice:(id)a3
+- (int64_t)_cleanGroupZOrderForDevice:(id)device
 {
-  if ([a3 deviceCategory] == &dword_0 + 2)
+  if ([device deviceCategory] == &dword_0 + 2)
   {
     return 8000;
   }
@@ -96,9 +96,9 @@
   }
 }
 
-- (id)galleryEditOptionsForDevice:(id)a3
+- (id)galleryEditOptionsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5[0] = &off_113E8;
     v5[1] = &off_11460;
@@ -115,9 +115,9 @@
   return v3;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5[0] = ntk_standard_gray;
     v5[1] = ntk_standard_gray;

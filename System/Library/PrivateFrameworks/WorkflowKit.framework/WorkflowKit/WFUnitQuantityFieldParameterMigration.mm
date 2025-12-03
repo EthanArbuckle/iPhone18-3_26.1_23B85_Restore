@@ -1,16 +1,16 @@
 @interface WFUnitQuantityFieldParameterMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFUnitQuantityFieldParameterMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"996"))
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"996"))
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.searchlocalbusinesses", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.searchlocalbusinesses", migrationCopy);
   }
 
   else
@@ -23,21 +23,21 @@
 
 - (void)migrateWorkflow
 {
-  v2 = self;
+  selfCopy = self;
   v36 = *MEMORY[0x1E69E9840];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v3 = [(WFWorkflowMigration *)self actions];
-  v4 = [v3 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  actions = [(WFWorkflowMigration *)self actions];
+  v4 = [actions countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v4)
   {
     v5 = v4;
     v6 = @"is.workflow.actions.searchlocalbusinesses";
     v7 = *v28;
     v8 = 0x1E696A000uLL;
-    v25 = v2;
+    v25 = selfCopy;
     do
     {
       v9 = 0;
@@ -45,17 +45,17 @@
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v10 = *(*(&v27 + 1) + 8 * v9);
-        v11 = [(WFWorkflowMigration *)v2 actionIdentifierKey];
-        v12 = [v10 objectForKeyedSubscript:v11];
+        actionIdentifierKey = [(WFWorkflowMigration *)selfCopy actionIdentifierKey];
+        v12 = [v10 objectForKeyedSubscript:actionIdentifierKey];
 
         if ([v12 isEqualToString:v6])
         {
-          v13 = [(WFWorkflowMigration *)v2 actionParametersKey];
-          v14 = [v10 objectForKeyedSubscript:v13];
+          actionParametersKey = [(WFWorkflowMigration *)selfCopy actionParametersKey];
+          v14 = [v10 objectForKeyedSubscript:actionParametersKey];
 
           v15 = [v14 objectForKey:@"WFSearchRadius"];
           v16 = *(v8 + 3480);
@@ -77,12 +77,12 @@
             v19 = v7;
             v20 = v5;
             v21 = v6;
-            v23 = v22 = v3;
+            v23 = v22 = actions;
 
-            v2 = v25;
+            selfCopy = v25;
             [v14 setObject:v23 forKey:@"WFSearchRadius"];
 
-            v3 = v22;
+            actions = v22;
             v6 = v21;
             v5 = v20;
             v7 = v19;
@@ -94,13 +94,13 @@
       }
 
       while (v5 != v9);
-      v5 = [v3 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v5 = [actions countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v5);
   }
 
-  [(WFWorkflowMigration *)v2 finish];
+  [(WFWorkflowMigration *)selfCopy finish];
   v24 = *MEMORY[0x1E69E9840];
 }
 

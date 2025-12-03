@@ -13,7 +13,7 @@
 + (id)chs_initWithErrorCode:()ChronoServices
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   v10 = *MEMORY[0x1E696A278];
   if ((a3 - 1) > 7)
   {

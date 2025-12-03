@@ -1,6 +1,6 @@
 @interface ACActivityProminenceListener
 - (ACActivityProminenceListener)init;
-- (id)listenForActivityProminence:(id)a3 withHandler:(id)a4;
+- (id)listenForActivityProminence:(id)prominence withHandler:(id)handler;
 @end
 
 @implementation ACActivityProminenceListener
@@ -20,18 +20,18 @@
   return v2;
 }
 
-- (id)listenForActivityProminence:(id)a3 withHandler:(id)a4
+- (id)listenForActivityProminence:(id)prominence withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   client = self->_client;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __72__ACActivityProminenceListener_listenForActivityProminence_withHandler___block_invoke;
   v17[3] = &unk_1E76B6998;
-  v18 = v6;
-  v8 = v6;
-  v9 = a3;
-  v10 = [(ActivityProminenceObservationClient *)client listenForActivityProminenceWithActivityIdentifier:v9 handler:v17];
+  v18 = handlerCopy;
+  v8 = handlerCopy;
+  prominenceCopy = prominence;
+  v10 = [(ActivityProminenceObservationClient *)client listenForActivityProminenceWithActivityIdentifier:prominenceCopy handler:v17];
   v11 = objc_alloc(MEMORY[0x1E698E778]);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -39,7 +39,7 @@
   v15[3] = &unk_1E76B6970;
   v16 = v10;
   v12 = v10;
-  v13 = [v11 initWithIdentifier:@"ACActivityProminenceListener" forReason:v9 invalidationBlock:v15];
+  v13 = [v11 initWithIdentifier:@"ACActivityProminenceListener" forReason:prominenceCopy invalidationBlock:v15];
 
   return v13;
 }

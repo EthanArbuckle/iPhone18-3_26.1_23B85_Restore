@@ -1,33 +1,33 @@
 @interface BKDownloadPurchaseMonitor
-- (void)downloadQueue:(id)a3 purchaseAttemptForRequest:(id)a4;
-- (void)downloadQueue:(id)a3 purchasedDidCompleteWithResponse:(id)a4;
-- (void)downloadQueue:(id)a3 purchasedDidFailWithResponse:(id)a4;
+- (void)downloadQueue:(id)queue purchaseAttemptForRequest:(id)request;
+- (void)downloadQueue:(id)queue purchasedDidCompleteWithResponse:(id)response;
+- (void)downloadQueue:(id)queue purchasedDidFailWithResponse:(id)response;
 @end
 
 @implementation BKDownloadPurchaseMonitor
 
-- (void)downloadQueue:(id)a3 purchaseAttemptForRequest:(id)a4
+- (void)downloadQueue:(id)queue purchaseAttemptForRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1006CF000(a4);
+  queueCopy = queue;
+  requestCopy = request;
+  selfCopy = self;
+  sub_1006CF000(request);
 }
 
-- (void)downloadQueue:(id)a3 purchasedDidCompleteWithResponse:(id)a4
+- (void)downloadQueue:(id)queue purchasedDidCompleteWithResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1006CF44C(a4);
+  queueCopy = queue;
+  responseCopy = response;
+  selfCopy = self;
+  sub_1006CF44C(response);
 }
 
-- (void)downloadQueue:(id)a3 purchasedDidFailWithResponse:(id)a4
+- (void)downloadQueue:(id)queue purchasedDidFailWithResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1006CFCA8(a4);
+  queueCopy = queue;
+  responseCopy = response;
+  selfCopy = self;
+  sub_1006CFCA8(response);
 }
 
 @end

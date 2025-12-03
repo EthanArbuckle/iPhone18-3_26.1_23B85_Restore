@@ -1,14 +1,14 @@
 @interface BKHIDGameControllerEventProcessor
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
 @end
 
 @implementation BKHIDGameControllerEventProcessor
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
   _BKHIDNoteUserEventOccurredOnDisplay();
   v9 = BKLogIdleTimer();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -17,7 +17,7 @@
     _os_log_debug_impl(&dword_241980000, v9, OS_LOG_TYPE_DEBUG, "game controller event occurred; notifying user event timer", buf, 2u);
   }
 
-  v10 = [v8 destinationsForEvent:*a3 fromSender:v7];
+  v10 = [dispatcherCopy destinationsForEvent:*event fromSender:senderCopy];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -39,9 +39,9 @@
 
         v15 = *(*(&v19 + 1) + 8 * v14);
         Copy = IOHIDEventCreateCopy();
-        [v7 eventSource];
+        [senderCopy eventSource];
         BKSHIDEventSetSimpleDeliveryInfo();
-        [v8 postEvent:Copy toDestination:v15];
+        [dispatcherCopy postEvent:Copy toDestination:v15];
         CFRelease(Copy);
         ++v14;
       }

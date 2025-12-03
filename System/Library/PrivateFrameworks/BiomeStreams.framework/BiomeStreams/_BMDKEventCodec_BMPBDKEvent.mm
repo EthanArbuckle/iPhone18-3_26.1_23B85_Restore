@@ -1,20 +1,20 @@
 @interface _BMDKEventCodec_BMPBDKEvent
-- (id)decodeWithProto:(id)a3;
-- (id)decodeWithProtoData:(id)a3;
-- (id)encodeAsProto:(id)a3;
+- (id)decodeWithProto:(id)proto;
+- (id)decodeWithProtoData:(id)data;
+- (id)encodeAsProto:(id)proto;
 @end
 
 @implementation _BMDKEventCodec_BMPBDKEvent
 
-- (id)encodeAsProto:(id)a3
+- (id)encodeAsProto:(id)proto
 {
-  v3 = a3;
+  protoCopy = proto;
   v4 = objc_opt_new();
   v5 = MEMORY[0x1E696ACC8];
-  v6 = [v3 dkEvent];
+  dkEvent = [protoCopy dkEvent];
 
   v18 = 0;
-  v7 = [v5 archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v18];
+  v7 = [v5 archivedDataWithRootObject:dkEvent requiringSecureCoding:1 error:&v18];
   v8 = v18;
 
   if (v8)
@@ -37,10 +37,10 @@
   return v16;
 }
 
-- (id)decodeWithProto:(id)a3
+- (id)decodeWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
     v21 = 0;
     goto LABEL_26;
@@ -59,7 +59,7 @@
     goto LABEL_25;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   if (([v5 hasDkEvent]& 1) == 0)
   {
     v13 = __biome_log_for_category();
@@ -93,9 +93,9 @@
   _Block_object_dispose(&v34, 8);
   v9 = [v6 setWithObject:objc_opt_class()];
   v10 = objc_alloc(MEMORY[0x1E696ACD0]);
-  v11 = [v5 dkEvent];
+  dkEvent = [v5 dkEvent];
   v32 = 0;
-  v12 = [v10 initForReadingFromData:v11 error:&v32];
+  v12 = [v10 initForReadingFromData:dkEvent error:&v32];
   v13 = v32;
 
   if (v13)
@@ -144,12 +144,12 @@ LABEL_26:
   return v21;
 }
 
-- (id)decodeWithProtoData:(id)a3
+- (id)decodeWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBDKEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBDKEvent alloc] initWithData:dataCopy];
 
     v6 = [(_BMDKEventCodec_BMPBDKEvent *)self decodeWithProto:v5];
   }

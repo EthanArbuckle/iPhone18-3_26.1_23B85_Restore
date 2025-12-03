@@ -1,44 +1,44 @@
 @interface CSSelfTriggerController
 + (BOOL)_isAVVCRefChannelAvailable;
 + (BOOL)shouldSetupSelfTrigger;
-- (CSSelfTriggerController)initWithTargetQueue:(id)a3 audioProviderSelecting:(id)a4;
-- (void)_handleEnabledPolicyEventForAudioSourceType:(unint64_t)a3 enabled:(BOOL)a4;
-- (void)_handleEnabledStatesUpdate:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)setAsset:(id)a3;
+- (CSSelfTriggerController)initWithTargetQueue:(id)queue audioProviderSelecting:(id)selecting;
+- (void)_handleEnabledPolicyEventForAudioSourceType:(unint64_t)type enabled:(BOOL)enabled;
+- (void)_handleEnabledStatesUpdate:(id)update;
+- (void)registerObserver:(id)observer;
+- (void)setAsset:(id)asset;
 - (void)start;
-- (void)unregisterObserver:(id)a3;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CSSelfTriggerController
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   selfTriggerWithAVVCAudioSource = self->_selfTriggerWithAVVCAudioSource;
-  v5 = a3;
-  [(CSSelfTriggerDetector *)selfTriggerWithAVVCAudioSource unregisterObserver:v5];
-  [(CSSelfTriggerDetector *)self->_selfTriggerWithTapAudioSource unregisterObserver:v5];
+  observerCopy = observer;
+  [(CSSelfTriggerDetector *)selfTriggerWithAVVCAudioSource unregisterObserver:observerCopy];
+  [(CSSelfTriggerDetector *)self->_selfTriggerWithTapAudioSource unregisterObserver:observerCopy];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
   selfTriggerWithAVVCAudioSource = self->_selfTriggerWithAVVCAudioSource;
-  v5 = a3;
-  [(CSSelfTriggerDetector *)selfTriggerWithAVVCAudioSource registerObserver:v5];
-  [(CSSelfTriggerDetector *)self->_selfTriggerWithTapAudioSource registerObserver:v5];
+  observerCopy = observer;
+  [(CSSelfTriggerDetector *)selfTriggerWithAVVCAudioSource registerObserver:observerCopy];
+  [(CSSelfTriggerDetector *)self->_selfTriggerWithTapAudioSource registerObserver:observerCopy];
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
   selfTriggerWithAVVCAudioSource = self->_selfTriggerWithAVVCAudioSource;
-  v5 = a3;
-  [(CSSelfTriggerDetector *)selfTriggerWithAVVCAudioSource setAsset:v5];
-  [(CSSelfTriggerDetector *)self->_selfTriggerWithTapAudioSource setAsset:v5];
+  assetCopy = asset;
+  [(CSSelfTriggerDetector *)selfTriggerWithAVVCAudioSource setAsset:assetCopy];
+  [(CSSelfTriggerDetector *)self->_selfTriggerWithTapAudioSource setAsset:assetCopy];
 }
 
-- (void)_handleEnabledStatesUpdate:(id)a3
+- (void)_handleEnabledStatesUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -50,16 +50,16 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s enabledStates : %{public}@", buf, 0x16u);
   }
 
-  v7 = [v4 objectAtIndexedSubscript:0];
-  v8 = [v7 BOOLValue];
+  v7 = [updateCopy objectAtIndexedSubscript:0];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v4 objectAtIndexedSubscript:1];
-  v10 = [v9 BOOLValue];
+  v9 = [updateCopy objectAtIndexedSubscript:1];
+  bOOLValue2 = [v9 BOOLValue];
 
-  if (!v8)
+  if (!bOOLValue)
   {
     selfTriggerWithAVVCAudioSource = self->_selfTriggerWithAVVCAudioSource;
-    if (!v10)
+    if (!bOOLValue2)
     {
       [(CSSelfTriggerDetector *)selfTriggerWithAVVCAudioSource stopAnalyzeWithCompletion:0];
       selfTriggerWithTapAudioSource = self->_selfTriggerWithTapAudioSource;
@@ -74,7 +74,7 @@
       v16 = 3221225472;
       v17 = sub_100058948;
       v18 = &unk_100253300;
-      v19 = self;
+      selfCopy = self;
       v12 = &v15;
       goto LABEL_12;
     }
@@ -96,23 +96,23 @@ LABEL_16:
   v21 = 3221225472;
   v22 = sub_10005893C;
   v23 = &unk_100253300;
-  v24 = self;
+  selfCopy2 = self;
   v12 = &v20;
 LABEL_12:
-  [(CSSelfTriggerDetector *)selfTriggerWithTapAudioSource stopAnalyzeWithCompletion:v12, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24];
+  [(CSSelfTriggerDetector *)selfTriggerWithTapAudioSource stopAnalyzeWithCompletion:v12, v15, v16, v17, v18, selfCopy, v20, v21, v22, v23, selfCopy2];
 LABEL_13:
 }
 
-- (void)_handleEnabledPolicyEventForAudioSourceType:(unint64_t)a3 enabled:(BOOL)a4
+- (void)_handleEnabledPolicyEventForAudioSourceType:(unint64_t)type enabled:(BOOL)enabled
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000589CC;
   block[3] = &unk_100253028;
-  v6 = a4;
+  enabledCopy = enabled;
   block[4] = self;
-  block[5] = a3;
+  block[5] = type;
   dispatch_async(queue, block);
 }
 
@@ -163,10 +163,10 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (CSSelfTriggerController)initWithTargetQueue:(id)a3 audioProviderSelecting:(id)a4
+- (CSSelfTriggerController)initWithTargetQueue:(id)queue audioProviderSelecting:(id)selecting
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  selectingCopy = selecting;
   v18.receiver = self;
   v18.super_class = CSSelfTriggerController;
   v8 = [(CSSelfTriggerController *)&v18 init];
@@ -184,14 +184,14 @@ LABEL_13:
     [(NSMutableArray *)v8->_enabledStates addObject:&__kCFBooleanFalse];
     if (+[CSSelfTriggerController _isAVVCRefChannelAvailable])
     {
-      v13 = [[CSSelfTriggerDetector alloc] initWithTargetQueue:v6 audioProviderSelecting:v7 audioSourceType:0];
+      v13 = [[CSSelfTriggerDetector alloc] initWithTargetQueue:queueCopy audioProviderSelecting:selectingCopy audioSourceType:0];
       selfTriggerWithAVVCAudioSource = v8->_selfTriggerWithAVVCAudioSource;
       v8->_selfTriggerWithAVVCAudioSource = v13;
     }
 
     if (+[CSUtils supportAudioTappingSelfTrigger])
     {
-      v15 = [[CSSelfTriggerDetector alloc] initWithTargetQueue:v6 audioProviderSelecting:v7 audioSourceType:1];
+      v15 = [[CSSelfTriggerDetector alloc] initWithTargetQueue:queueCopy audioProviderSelecting:selectingCopy audioSourceType:1];
       selfTriggerWithTapAudioSource = v8->_selfTriggerWithTapAudioSource;
       v8->_selfTriggerWithTapAudioSource = v15;
     }

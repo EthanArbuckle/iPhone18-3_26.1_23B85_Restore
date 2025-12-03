@@ -1,35 +1,35 @@
 @interface ATXCandidateRelevanceModelDataStoreTrainingResult
-- (ATXCandidateRelevanceModelDataStoreTrainingResult)initWithModel:(id)a3 candidate:(id)a4 featurizationManager:(id)a5 modelUUID:(id)a6 datasetMetadata:(id)a7 clientModelName:(id)a8 trainDate:(id)a9 isVerified:(BOOL)a10;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXCandidateRelevanceModelDataStoreTrainingResult:(id)a3;
+- (ATXCandidateRelevanceModelDataStoreTrainingResult)initWithModel:(id)model candidate:(id)candidate featurizationManager:(id)manager modelUUID:(id)d datasetMetadata:(id)metadata clientModelName:(id)name trainDate:(id)date isVerified:(BOOL)self0;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXCandidateRelevanceModelDataStoreTrainingResult:(id)result;
 - (id)description;
 @end
 
 @implementation ATXCandidateRelevanceModelDataStoreTrainingResult
 
-- (ATXCandidateRelevanceModelDataStoreTrainingResult)initWithModel:(id)a3 candidate:(id)a4 featurizationManager:(id)a5 modelUUID:(id)a6 datasetMetadata:(id)a7 clientModelName:(id)a8 trainDate:(id)a9 isVerified:(BOOL)a10
+- (ATXCandidateRelevanceModelDataStoreTrainingResult)initWithModel:(id)model candidate:(id)candidate featurizationManager:(id)manager modelUUID:(id)d datasetMetadata:(id)metadata clientModelName:(id)name trainDate:(id)date isVerified:(BOOL)self0
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v17 = a8;
-  v18 = a9;
+  modelCopy = model;
+  candidateCopy = candidate;
+  managerCopy = manager;
+  dCopy = d;
+  metadataCopy = metadata;
+  nameCopy = name;
+  dateCopy = date;
   v27.receiver = self;
   v27.super_class = ATXCandidateRelevanceModelDataStoreTrainingResult;
   v19 = [(ATXCandidateRelevanceModelDataStoreTrainingResult *)&v27 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_model, a3);
-    objc_storeStrong(&v20->_candidate, a4);
-    objc_storeStrong(&v20->_featurizationManager, a5);
-    objc_storeStrong(&v20->_modelUUID, a6);
-    objc_storeStrong(&v20->_datasetMetadata, a7);
-    objc_storeStrong(&v20->_clientModelName, a8);
-    objc_storeStrong(&v20->_trainDate, a9);
-    v20->_isVerified = a10;
+    objc_storeStrong(&v19->_model, model);
+    objc_storeStrong(&v20->_candidate, candidate);
+    objc_storeStrong(&v20->_featurizationManager, manager);
+    objc_storeStrong(&v20->_modelUUID, d);
+    objc_storeStrong(&v20->_datasetMetadata, metadata);
+    objc_storeStrong(&v20->_clientModelName, name);
+    objc_storeStrong(&v20->_trainDate, date);
+    v20->_isVerified = verified;
   }
 
   return v20;
@@ -44,8 +44,8 @@
   v5 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:@"en_US"];
   [v4 setLocale:v5];
 
-  v6 = [(ATXCandidate *)self->_candidate identifier];
-  [v3 appendFormat:@"Candidate Identifier: %@\n", v6];
+  identifier = [(ATXCandidate *)self->_candidate identifier];
+  [v3 appendFormat:@"Candidate Identifier: %@\n", identifier];
 
   [v3 appendFormat:@"Client Model Name: %@\n", self->_clientModelName];
   [v3 appendFormat:@"Model UUID: %@\n", self->_modelUUID];
@@ -71,29 +71,29 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXCandidateRelevanceModelDataStoreTrainingResult *)self isEqualToATXCandidateRelevanceModelDataStoreTrainingResult:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXCandidateRelevanceModelDataStoreTrainingResult *)self isEqualToATXCandidateRelevanceModelDataStoreTrainingResult:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXCandidateRelevanceModelDataStoreTrainingResult:(id)a3
+- (BOOL)isEqualToATXCandidateRelevanceModelDataStoreTrainingResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = self->_model;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == resultCopy[2])
   {
   }
 
@@ -109,7 +109,7 @@
 
   v8 = self->_candidate;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == resultCopy[3])
   {
   }
 
@@ -125,7 +125,7 @@
 
   v11 = self->_featurizationManager;
   v12 = v11;
-  if (v11 == v4[4])
+  if (v11 == resultCopy[4])
   {
   }
 
@@ -141,7 +141,7 @@
 
   v14 = self->_modelUUID;
   v15 = v14;
-  if (v14 == v4[5])
+  if (v14 == resultCopy[5])
   {
   }
 
@@ -157,7 +157,7 @@
 
   v17 = self->_datasetMetadata;
   v18 = v17;
-  if (v17 == v4[6])
+  if (v17 == resultCopy[6])
   {
   }
 
@@ -173,7 +173,7 @@
 
   v20 = self->_clientModelName;
   v21 = v20;
-  if (v20 == v4[7])
+  if (v20 == resultCopy[7])
   {
   }
 
@@ -191,7 +191,7 @@ LABEL_23:
 
   v25 = self->_trainDate;
   v26 = v25;
-  if (v25 == v4[8])
+  if (v25 == resultCopy[8])
   {
     v23 = 1;
   }

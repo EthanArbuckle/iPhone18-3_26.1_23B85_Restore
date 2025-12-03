@@ -1,15 +1,15 @@
 @interface BKSHIDEventDeferringModality
 + (id)activeInputModality;
-+ (id)build:(id)a3;
++ (id)build:(id)build;
 + (id)new;
 - (BKSHIDEventDeferringModality)init;
-- (BKSHIDEventDeferringModality)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BKSHIDEventDeferringModality)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)_init;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_initWithCopyOf:(void *)a1;
-- (void)encodeWithCoder:(id)a3;
+- (void)_initWithCopyOf:(void *)of;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventDeferringModality
@@ -63,21 +63,21 @@
   return result;
 }
 
-- (void)_initWithCopyOf:(void *)a1
+- (void)_initWithCopyOf:(void *)of
 {
   v3 = a2;
-  if (a1)
+  if (of)
   {
-    a1 = [(BKSHIDEventDeferringModality *)a1 _init];
-    if (a1)
+    of = [(BKSHIDEventDeferringModality *)of _init];
+    if (of)
     {
       v4 = [v3[1] copy];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = of[1];
+      of[1] = v4;
     }
   }
 
-  return a1;
+  return of;
 }
 
 + (id)new
@@ -103,13 +103,13 @@
   return result;
 }
 
-+ (id)build:(id)a3
++ (id)build:(id)build
 {
-  v3 = a3;
-  v4 = [(BKSHIDEventDeferringModality *)[BKSMutableHIDEventDeferringModality alloc] _init];
-  v3[2](v3, v4);
+  buildCopy = build;
+  _init = [(BKSHIDEventDeferringModality *)[BKSMutableHIDEventDeferringModality alloc] _init];
+  buildCopy[2](buildCopy, _init);
 
-  v5 = [v4 copy];
+  v5 = [_init copy];
 
   return v5;
 }
@@ -133,20 +133,20 @@ uint64_t __51__BKSHIDEventDeferringModality_activeInputModality__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [BKSMutableHIDEventDeferringModality alloc];
 
   return [(BKSHIDEventDeferringModality *)v4 _initWithCopyOf:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4[1];
+    v5 = equalCopy[1];
     identifier = self->_identifier;
     v7 = BSEqualObjects();
   }
@@ -166,22 +166,22 @@ uint64_t __51__BKSHIDEventDeferringModality_activeInputModality__block_invoke()
   return BSHashPurifyNS();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
   if (identifier)
   {
-    [a3 encodeObject:identifier forKey:@"identifier"];
+    [coder encodeObject:identifier forKey:@"identifier"];
   }
 }
 
-- (BKSHIDEventDeferringModality)initWithCoder:(id)a3
+- (BKSHIDEventDeferringModality)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = BKSHIDEventDeferringModality;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(BKSHIDEventDeferringModality *)&v8 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"identifier", v8.receiver, v8.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"identifier", v8.receiver, v8.super_class}];
 
   identifier = v4->_identifier;
   v4->_identifier = v5;

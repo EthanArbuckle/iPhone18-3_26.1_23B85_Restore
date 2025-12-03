@@ -1,33 +1,33 @@
 @interface TRITaskDatabase
-- (BOOL)_checkTaskId:(id)a3 IsPresent:(BOOL *)a4 transaction:(id)a5;
-- (BOOL)enumerateTasksWithTagsIntersectingTagSet:(id)a3 block:(id)a4;
-- (BOOL)removeTaskWithId:(id)a3 cleanupBlock:(id)a4;
-- (BOOL)updateTaskWithTaskId:(id)a3 capabilities:(unint64_t)a4 task:(id)a5;
-- (BOOL)updateTaskWithTaskId:(id)a3 startDate:(id)a4 task:(id)a5;
-- (TRITaskDatabase)initWithDatabase:(id)a3 taskSetProvider:(id)a4;
-- (id)_tasksForQuery:(id)a3 onPrep:(id)a4;
-- (id)addTask:(id)a3 startTime:(id)a4 tags:(id)a5 dependencies:(id)a6 error:(id *)a7;
+- (BOOL)_checkTaskId:(id)id IsPresent:(BOOL *)present transaction:(id)transaction;
+- (BOOL)enumerateTasksWithTagsIntersectingTagSet:(id)set block:(id)block;
+- (BOOL)removeTaskWithId:(id)id cleanupBlock:(id)block;
+- (BOOL)updateTaskWithTaskId:(id)id capabilities:(unint64_t)capabilities task:(id)task;
+- (BOOL)updateTaskWithTaskId:(id)id startDate:(id)date task:(id)task;
+- (TRITaskDatabase)initWithDatabase:(id)database taskSetProvider:(id)provider;
+- (id)_tasksForQuery:(id)query onPrep:(id)prep;
+- (id)addTask:(id)task startTime:(id)time tags:(id)tags dependencies:(id)dependencies error:(id *)error;
 - (id)allTasks;
-- (id)dependencyFreeTasksForAllowedCapabilities:(unint64_t)a3 dateForRunnability:(id)a4;
-- (id)dependencyFreeTasksForAllowedCapabilities:(unint64_t)a3 dateForRunnability:(id)a4 taskType:(int)a5;
-- (id)directDependenciesOfTaskWithId:(id)a3;
-- (id)idForTask:(id)a3;
-- (id)taskIdsWithTag:(id)a3;
-- (id)tasksDependentOnTask:(id)a3;
-- (int)taskTypeForTaskWithId:(id)a3;
+- (id)dependencyFreeTasksForAllowedCapabilities:(unint64_t)capabilities dateForRunnability:(id)runnability;
+- (id)dependencyFreeTasksForAllowedCapabilities:(unint64_t)capabilities dateForRunnability:(id)runnability taskType:(int)type;
+- (id)directDependenciesOfTaskWithId:(id)id;
+- (id)idForTask:(id)task;
+- (id)taskIdsWithTag:(id)tag;
+- (id)tasksDependentOnTask:(id)task;
+- (int)taskTypeForTaskWithId:(id)id;
 - (unint64_t)count;
 @end
 
 @implementation TRITaskDatabase
 
-- (TRITaskDatabase)initWithDatabase:(id)a3 taskSetProvider:(id)a4
+- (TRITaskDatabase)initWithDatabase:(id)database taskSetProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  databaseCopy = database;
+  providerCopy = provider;
+  v10 = providerCopy;
+  if (databaseCopy)
   {
-    if (v9)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
@@ -35,8 +35,8 @@
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"database"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"database"}];
 
     if (v10)
     {
@@ -44,8 +44,8 @@
     }
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"taskSetProvider"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"taskSetProvider"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -54,29 +54,29 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_db, a3);
-    objc_storeStrong(&v12->_taskSetProvider, a4);
+    objc_storeStrong(&v11->_db, database);
+    objc_storeStrong(&v12->_taskSetProvider, provider);
   }
 
   return v12;
 }
 
-- (id)addTask:(id)a3 startTime:(id)a4 tags:(id)a5 dependencies:(id)a6 error:(id *)a7
+- (id)addTask:(id)task startTime:(id)time tags:(id)tags dependencies:(id)dependencies error:(id *)error
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (!v13)
+  taskCopy = task;
+  timeCopy = time;
+  tagsCopy = tags;
+  dependenciesCopy = dependencies;
+  if (!taskCopy)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"task"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"task"}];
   }
 
-  if (-[TRITaskSetProviding taskClassForTaskType:](self->_taskSetProvider, "taskClassForTaskType:", [v13 taskType]))
+  if (-[TRITaskSetProviding taskClassForTaskType:](self->_taskSetProvider, "taskClassForTaskType:", [taskCopy taskType]))
   {
-    v17 = [v13 serialize];
+    serialize = [taskCopy serialize];
     v42 = 0;
     v43 = &v42;
     v44 = 0x3032000000;
@@ -94,25 +94,25 @@ LABEL_3:
     v28[2] = __61__TRITaskDatabase_addTask_startTime_tags_dependencies_error___block_invoke;
     v28[3] = &unk_279DE1E38;
     v28[4] = self;
-    v29 = v13;
+    v29 = taskCopy;
     v34 = &v42;
     v35 = &v36;
-    v30 = v16;
-    v18 = v17;
+    v30 = dependenciesCopy;
+    v18 = serialize;
     v31 = v18;
-    v32 = v14;
-    v33 = v15;
+    v32 = timeCopy;
+    v33 = tagsCopy;
     [(TRITaskDatabase *)self writeTransactionWithFailableBlock:v28];
-    if (a7)
+    if (error)
     {
       v19 = v43[5];
       if (v19)
       {
-        *a7 = v19;
+        *error = v19;
       }
     }
 
-    a7 = v37[5];
+    error = v37[5];
 
     _Block_object_dispose(&v36, 8);
     _Block_object_dispose(&v42, 8);
@@ -120,7 +120,7 @@ LABEL_3:
 
   else
   {
-    if (!a7)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -133,15 +133,15 @@ LABEL_3:
     v23 = [v21 initWithFormat:@"Can't add task of class %@ which is not registered", v18];
     v49[0] = v23;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:&v48 count:1];
-    *a7 = [v20 initWithDomain:@"TRIGeneralErrorDomain" code:2 userInfo:v24];
+    *error = [v20 initWithDomain:@"TRIGeneralErrorDomain" code:2 userInfo:v24];
 
-    a7 = 0;
+    error = 0;
   }
 
 LABEL_11:
   v25 = *MEMORY[0x277D85DE8];
 
-  return a7;
+  return error;
 }
 
 uint64_t __61__TRITaskDatabase_addTask_startTime_tags_dependencies_error___block_invoke(uint64_t a1, void *a2)
@@ -392,15 +392,15 @@ void __61__TRITaskDatabase_addTask_startTime_tags_dependencies_error___block_inv
   [v4 bindNamedParam:":dependencies" toNSArray:*(a1 + 32)];
 }
 
-- (BOOL)removeTaskWithId:(id)a3 cleanupBlock:(id)a4
+- (BOOL)removeTaskWithId:(id)id cleanupBlock:(id)block
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  idCopy = id;
+  blockCopy = block;
+  if (!idCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"taskId != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"taskId != nil"}];
   }
 
   v33 = 0;
@@ -423,11 +423,11 @@ void __61__TRITaskDatabase_addTask_startTime_tags_dependencies_error___block_inv
   v17[1] = 3221225472;
   v17[2] = __49__TRITaskDatabase_removeTaskWithId_cleanupBlock___block_invoke;
   v17[3] = &unk_279DE1E88;
-  v9 = v8;
+  v9 = blockCopy;
   v20 = v9;
-  v10 = v7;
+  v10 = idCopy;
   v18 = v10;
-  v19 = self;
+  selfCopy = self;
   v21 = v31;
   v22 = &v33;
   v23 = &v25;
@@ -976,16 +976,16 @@ uint64_t __27__TRITaskDatabase_allTasks__block_invoke_4(uint64_t a1, void *a2)
   return *v8;
 }
 
-- (id)dependencyFreeTasksForAllowedCapabilities:(unint64_t)a3 dateForRunnability:(id)a4
+- (id)dependencyFreeTasksForAllowedCapabilities:(unint64_t)capabilities dateForRunnability:(id)runnability
 {
-  v6 = a4;
+  runnabilityCopy = runnability;
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __80__TRITaskDatabase_dependencyFreeTasksForAllowedCapabilities_dateForRunnability___block_invoke;
   v14 = &unk_279DE1538;
-  v15 = v6;
-  v16 = a3;
-  v7 = v6;
+  v15 = runnabilityCopy;
+  capabilitiesCopy = capabilities;
+  v7 = runnabilityCopy;
   v8 = MEMORY[0x2743948D0](&v11);
   v9 = [(TRITaskDatabase *)self _tasksForQuery:@" SELECT * FROM tasks WHERE rowid NOT IN (SELECT taskId FROM taskDependencies)       AND (startSecondsFromEpoch IS NULL OR startSecondsFromEpoch <= :date_for_runnability)       AND (capabilities & :capabilities_mask) = capabilities" onPrep:v8, v11, v12, v13, v14];;
 
@@ -1001,17 +1001,17 @@ void __80__TRITaskDatabase_dependencyFreeTasksForAllowedCapabilities_dateForRunn
   [v4 bindNamedParam:":capabilities_mask" toInt64:*(a1 + 40)];
 }
 
-- (id)dependencyFreeTasksForAllowedCapabilities:(unint64_t)a3 dateForRunnability:(id)a4 taskType:(int)a5
+- (id)dependencyFreeTasksForAllowedCapabilities:(unint64_t)capabilities dateForRunnability:(id)runnability taskType:(int)type
 {
-  v8 = a4;
+  runnabilityCopy = runnability;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __89__TRITaskDatabase_dependencyFreeTasksForAllowedCapabilities_dateForRunnability_taskType___block_invoke;
   v13[3] = &unk_279DE1F50;
-  v14 = v8;
-  v15 = a3;
-  v16 = a5;
-  v9 = v8;
+  v14 = runnabilityCopy;
+  capabilitiesCopy = capabilities;
+  typeCopy = type;
+  v9 = runnabilityCopy;
   v10 = MEMORY[0x2743948D0](v13);
   v11 = [(TRITaskDatabase *)self _tasksForQuery:@" SELECT * FROM tasks WHERE rowid NOT IN (SELECT taskId FROM taskDependencies)       AND (startSecondsFromEpoch IS NULL OR startSecondsFromEpoch <= :date_for_runnability)       AND (capabilities & :capabilities_mask) = capabilities       AND (taskType = :task_type)" onPrep:v10];;
 
@@ -1028,10 +1028,10 @@ void __89__TRITaskDatabase_dependencyFreeTasksForAllowedCapabilities_dateForRunn
   [v4 bindNamedParam:":task_type" toInt64:*(a1 + 48)];
 }
 
-- (id)_tasksForQuery:(id)a3 onPrep:(id)a4
+- (id)_tasksForQuery:(id)query onPrep:(id)prep
 {
-  v7 = a3;
-  v8 = a4;
+  queryCopy = query;
+  prepCopy = prep;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1042,10 +1042,10 @@ void __89__TRITaskDatabase_dependencyFreeTasksForAllowedCapabilities_dateForRunn
   v13[1] = 3221225472;
   v13[2] = __41__TRITaskDatabase__tasksForQuery_onPrep___block_invoke;
   v13[3] = &unk_279DE1F78;
-  v9 = v7;
+  v9 = queryCopy;
   v14 = v9;
-  v10 = v8;
-  v15 = self;
+  v10 = prepCopy;
+  selfCopy = self;
   v16 = v10;
   v17 = &v19;
   v18 = a2;
@@ -1323,44 +1323,44 @@ uint64_t __24__TRITaskDatabase_count__block_invoke(uint64_t a1, void *a2)
   return *MEMORY[0x277D42670];
 }
 
-- (BOOL)updateTaskWithTaskId:(id)a3 startDate:(id)a4 task:(id)a5
+- (BOOL)updateTaskWithTaskId:(id)id startDate:(id)date task:(id)task
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  idCopy = id;
+  dateCopy = date;
+  taskCopy = task;
+  if (idCopy)
   {
-    if (v10)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:660 description:{@"Invalid parameter not satisfying: %@", @"startDate != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:660 description:{@"Invalid parameter not satisfying: %@", @"startDate != nil"}];
 
-    if (v11)
+    if (taskCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:661 description:{@"Invalid parameter not satisfying: %@", @"task != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:661 description:{@"Invalid parameter not satisfying: %@", @"task != nil"}];
 
     goto LABEL_4;
   }
 
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:659 description:{@"Invalid parameter not satisfying: %@", @"taskId != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:659 description:{@"Invalid parameter not satisfying: %@", @"taskId != nil"}];
 
-  if (!v10)
+  if (!dateCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v11)
+  if (!taskCopy)
   {
     goto LABEL_7;
   }
@@ -1374,13 +1374,13 @@ LABEL_4:
   v20[1] = 3221225472;
   v20[2] = __55__TRITaskDatabase_updateTaskWithTaskId_startDate_task___block_invoke;
   v20[3] = &unk_279DE17A8;
-  v12 = v9;
+  v12 = idCopy;
   v21 = v12;
-  v13 = v10;
+  v13 = dateCopy;
   v22 = v13;
-  v14 = v11;
+  v14 = taskCopy;
   v23 = v14;
-  v24 = self;
+  selfCopy = self;
   v25 = &v26;
   [(TRITaskDatabase *)self writeTransactionWithFailableBlock:v20];
   v15 = *(v27 + 24);
@@ -1452,15 +1452,15 @@ void __55__TRITaskDatabase_updateTaskWithTaskId_startDate_task___block_invoke_2(
   [v5 bindNamedParam:":hash" toInt64:{objc_msgSend(*(a1 + 48), "hash")}];
 }
 
-- (BOOL)updateTaskWithTaskId:(id)a3 capabilities:(unint64_t)a4 task:(id)a5
+- (BOOL)updateTaskWithTaskId:(id)id capabilities:(unint64_t)capabilities task:(id)task
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (!v8)
+  idCopy = id;
+  taskCopy = task;
+  v10 = taskCopy;
+  if (!idCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:701 description:{@"Invalid parameter not satisfying: %@", @"taskId != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:701 description:{@"Invalid parameter not satisfying: %@", @"taskId != nil"}];
 
     if (v10)
     {
@@ -1468,13 +1468,13 @@ void __55__TRITaskDatabase_updateTaskWithTaskId_startDate_task___block_invoke_2(
     }
 
 LABEL_5:
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:702 description:{@"Invalid parameter not satisfying: %@", @"task != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:702 description:{@"Invalid parameter not satisfying: %@", @"task != nil"}];
 
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!taskCopy)
   {
     goto LABEL_5;
   }
@@ -1488,11 +1488,11 @@ LABEL_3:
   v17[1] = 3221225472;
   v17[2] = __58__TRITaskDatabase_updateTaskWithTaskId_capabilities_task___block_invoke;
   v17[3] = &unk_279DE1758;
-  v11 = v8;
+  v11 = idCopy;
   v18 = v11;
   v12 = v10;
   v19 = v12;
-  v20 = self;
+  selfCopy = self;
   v21 = &v22;
   [(TRITaskDatabase *)self writeTransactionWithFailableBlock:v17];
   v13 = *(v23 + 24);
@@ -1562,35 +1562,35 @@ void __58__TRITaskDatabase_updateTaskWithTaskId_capabilities_task___block_invoke
   [v5 bindNamedParam:":hash" toInt64:{objc_msgSend(*(a1 + 40), "hash")}];
 }
 
-- (BOOL)enumerateTasksWithTagsIntersectingTagSet:(id)a3 block:(id)a4
+- (BOOL)enumerateTasksWithTagsIntersectingTagSet:(id)set block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  setCopy = set;
+  blockCopy = block;
+  if (!setCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:743 description:{@"Invalid parameter not satisfying: %@", @"tagSet"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:743 description:{@"Invalid parameter not satisfying: %@", @"tagSet"}];
   }
 
-  if (![v7 count])
+  if (![setCopy count])
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:744 description:{@"Invalid parameter not satisfying: %@", @"tagSet.count > 0"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:744 description:{@"Invalid parameter not satisfying: %@", @"tagSet.count > 0"}];
   }
 
-  v9 = [(TRITaskDatabase *)self allTasks];
-  if (v9)
+  allTasks = [(TRITaskDatabase *)self allTasks];
+  if (allTasks)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __66__TRITaskDatabase_enumerateTasksWithTagsIntersectingTagSet_block___block_invoke;
     v13[3] = &unk_279DE1FC8;
-    v14 = v7;
-    v15 = v8;
-    [v9 enumerateKeysAndObjectsUsingBlock:v13];
+    v14 = setCopy;
+    v15 = blockCopy;
+    [allTasks enumerateKeysAndObjectsUsingBlock:v13];
   }
 
-  return v9 != 0;
+  return allTasks != 0;
 }
 
 void __66__TRITaskDatabase_enumerateTasksWithTagsIntersectingTagSet_block___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1612,13 +1612,13 @@ void __66__TRITaskDatabase_enumerateTasksWithTagsIntersectingTagSet_block___bloc
   objc_autoreleasePoolPop(v6);
 }
 
-- (id)taskIdsWithTag:(id)a3
+- (id)taskIdsWithTag:(id)tag
 {
-  v5 = a3;
-  if (!v5)
+  tagCopy = tag;
+  if (!tagCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:766 description:{@"Invalid parameter not satisfying: %@", @"tag"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:766 description:{@"Invalid parameter not satisfying: %@", @"tag"}];
   }
 
   v15 = 0;
@@ -1631,9 +1631,9 @@ void __66__TRITaskDatabase_enumerateTasksWithTagsIntersectingTagSet_block___bloc
   v10[1] = 3221225472;
   v10[2] = __34__TRITaskDatabase_taskIdsWithTag___block_invoke;
   v10[3] = &unk_279DE1FF0;
-  v6 = v5;
+  v6 = tagCopy;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v13 = &v15;
   v14 = a2;
   [(TRITaskDatabase *)self readTransactionWithFailableBlock:v10];
@@ -1687,75 +1687,75 @@ uint64_t __34__TRITaskDatabase_taskIdsWithTag___block_invoke_3(void *a1, void *a
   return *v4;
 }
 
-- (BOOL)_checkTaskId:(id)a3 IsPresent:(BOOL *)a4 transaction:(id)a5
+- (BOOL)_checkTaskId:(id)id IsPresent:(BOOL *)present transaction:(id)transaction
 {
-  v9 = a3;
-  v10 = a5;
-  if (v9)
+  idCopy = id;
+  transactionCopy = transaction;
+  if (idCopy)
   {
-    if (a4)
+    if (present)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:803 description:{@"Invalid parameter not satisfying: %@", @"isPresent"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:803 description:{@"Invalid parameter not satisfying: %@", @"isPresent"}];
 
-    if (v10)
+    if (transactionCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:804 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:804 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
 
     goto LABEL_4;
   }
 
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:802 description:{@"Invalid parameter not satisfying: %@", @"taskId != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:802 description:{@"Invalid parameter not satisfying: %@", @"taskId != nil"}];
 
-  if (!a4)
+  if (!present)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v10)
+  if (!transactionCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  *a4 = 0;
-  v11 = [v10 db];
-  v20[4] = a4;
+  *present = 0;
+  v11 = [transactionCopy db];
+  v20[4] = present;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __54__TRITaskDatabase__checkTaskId_IsPresent_transaction___block_invoke;
   v21[3] = &unk_279DDF860;
-  v22 = v9;
+  v22 = idCopy;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __54__TRITaskDatabase__checkTaskId_IsPresent_transaction___block_invoke_2;
   v20[3] = &__block_descriptor_40_e49___PASDBIterAction__B_16__0___PASSqliteStatement_8l;
   db = self->_db;
-  v13 = v9;
+  v13 = idCopy;
   v14 = [(TRIDatabase *)db generalErrorHandlerWithOutError:0];
   v15 = [v11 prepAndRunQuery:@" SELECT 1 FROM     tasks WHERE     rowid = :task_id LIMIT 1;" onPrep:v21 onRow:v20 onError:v14];
 
   return v15;
 }
 
-- (id)directDependenciesOfTaskWithId:(id)a3
+- (id)directDependenciesOfTaskWithId:(id)id
 {
-  v5 = a3;
-  if (!v5)
+  idCopy = id;
+  if (!idCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:828 description:{@"Invalid parameter not satisfying: %@", @"taskId != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:828 description:{@"Invalid parameter not satisfying: %@", @"taskId != nil"}];
   }
 
   v14 = 0;
@@ -1769,7 +1769,7 @@ LABEL_4:
   v10[2] = __50__TRITaskDatabase_directDependenciesOfTaskWithId___block_invoke;
   v10[3] = &unk_279DE1FF0;
   v10[4] = self;
-  v6 = v5;
+  v6 = idCopy;
   v11 = v6;
   v12 = &v14;
   v13 = a2;
@@ -1856,13 +1856,13 @@ uint64_t __50__TRITaskDatabase_directDependenciesOfTaskWithId___block_invoke_2(v
   return *v4;
 }
 
-- (id)tasksDependentOnTask:(id)a3
+- (id)tasksDependentOnTask:(id)task
 {
-  v5 = a3;
-  if (!v5)
+  taskCopy = task;
+  if (!taskCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:883 description:{@"Invalid parameter not satisfying: %@", @"taskId != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:883 description:{@"Invalid parameter not satisfying: %@", @"taskId != nil"}];
   }
 
   v14 = 0;
@@ -1876,7 +1876,7 @@ uint64_t __50__TRITaskDatabase_directDependenciesOfTaskWithId___block_invoke_2(v
   v10[2] = __40__TRITaskDatabase_tasksDependentOnTask___block_invoke;
   v10[3] = &unk_279DE1FF0;
   v10[4] = self;
-  v6 = v5;
+  v6 = taskCopy;
   v11 = v6;
   v12 = &v14;
   v13 = a2;
@@ -1959,13 +1959,13 @@ uint64_t __40__TRITaskDatabase_tasksDependentOnTask___block_invoke_2(void *a1, v
   return *v4;
 }
 
-- (id)idForTask:(id)a3
+- (id)idForTask:(id)task
 {
-  v5 = a3;
-  if (!v5)
+  taskCopy = task;
+  if (!taskCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:935 description:{@"Invalid parameter not satisfying: %@", @"task"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskDatabase.m" lineNumber:935 description:{@"Invalid parameter not satisfying: %@", @"task"}];
   }
 
   v15 = 0;
@@ -1978,9 +1978,9 @@ uint64_t __40__TRITaskDatabase_tasksDependentOnTask___block_invoke_2(void *a1, v
   v10[1] = 3221225472;
   v10[2] = __29__TRITaskDatabase_idForTask___block_invoke;
   v10[3] = &unk_279DE1FF0;
-  v6 = v5;
+  v6 = taskCopy;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v13 = &v15;
   v14 = a2;
   [(TRITaskDatabase *)self readTransactionWithFailableBlock:v10];
@@ -2094,9 +2094,9 @@ uint64_t __29__TRITaskDatabase_idForTask___block_invoke_3(uint64_t a1, void *a2)
   return v13;
 }
 
-- (int)taskTypeForTaskWithId:(id)a3
+- (int)taskTypeForTaskWithId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -2105,9 +2105,9 @@ uint64_t __29__TRITaskDatabase_idForTask___block_invoke_3(uint64_t a1, void *a2)
   v8[1] = 3221225472;
   v8[2] = __41__TRITaskDatabase_taskTypeForTaskWithId___block_invoke;
   v8[3] = &unk_279DE1FF0;
-  v6 = v5;
+  v6 = idCopy;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   v11 = &v13;
   v12 = a2;
   [(TRITaskDatabase *)self readTransactionWithFailableBlock:v8];

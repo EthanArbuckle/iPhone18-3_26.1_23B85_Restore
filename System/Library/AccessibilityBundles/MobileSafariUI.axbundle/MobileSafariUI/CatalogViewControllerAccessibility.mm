@@ -1,40 +1,40 @@
 @interface CatalogViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_accessibilityAnnounceNewKeyboardCompletionWithPreviousIndexPath:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_accessibilityAnnounceNewKeyboardCompletionWithPreviousIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdateAccessibilityElements;
-- (void)completionList:(id)a3 topHitDidBecomeReadyForString:(id)a4;
+- (void)completionList:(id)list topHitDidBecomeReadyForString:(id)string;
 - (void)showUniversalSearchFirstTimeExperienceIfNotShowing;
-- (void)unifiedField:(id)a3 moveCompletionSelectionByRowOffset:(int64_t)a4;
+- (void)unifiedField:(id)field moveCompletionSelectionByRowOffset:(int64_t)offset;
 @end
 
 @implementation CatalogViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CatalogViewController" hasInstanceMethod:@"unifiedField:moveCompletionSelectionByRowOffset:" withFullSignature:{"v", "@", "q", 0}];
-  [v3 validateClass:@"CatalogViewController" hasInstanceMethod:@"completionList: topHitDidBecomeReadyForString:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"CatalogViewController" hasInstanceVariable:@"_completionsViewController" withType:"CompletionListTableViewController"];
-  [v3 validateClass:@"CompletionListTableViewController" isKindOfClass:@"UITableViewController"];
-  [v3 validateClass:@"CatalogViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CompletionListTableViewController" isKindOfClass:@"UITableViewController"];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"traitCollection" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CatalogViewController" hasInstanceMethod:@"usesPopoverStyleForFavorites" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CatalogViewController" hasInstanceMethod:@"navigationBar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CatalogViewController" hasInstanceMethod:@"universalSearchFirstTimeExperienceViewController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CatalogViewController" hasInstanceMethod:@"unifiedField:moveCompletionSelectionByRowOffset:" withFullSignature:{"v", "@", "q", 0}];
+  [validationsCopy validateClass:@"CatalogViewController" hasInstanceMethod:@"completionList: topHitDidBecomeReadyForString:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"CatalogViewController" hasInstanceVariable:@"_completionsViewController" withType:"CompletionListTableViewController"];
+  [validationsCopy validateClass:@"CompletionListTableViewController" isKindOfClass:@"UITableViewController"];
+  [validationsCopy validateClass:@"CatalogViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CompletionListTableViewController" isKindOfClass:@"UITableViewController"];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"traitCollection" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CatalogViewController" hasInstanceMethod:@"usesPopoverStyleForFavorites" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CatalogViewController" hasInstanceMethod:@"navigationBar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CatalogViewController" hasInstanceMethod:@"universalSearchFirstTimeExperienceViewController" withFullSignature:{"@", 0}];
   objc_opt_class();
-  [v3 validateClass:@"CatalogViewController" hasInstanceVariable:@"_keyboardFrame" withType:__ax_verbose_encode_with_type_encoding_group_class()];
-  [v3 validateClass:@"CatalogViewController" hasInstanceMethod:@"isShowingUniversalSearchFirstTimeExperience" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CatalogViewController" hasInstanceMethod:@"isShowingCompletions" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CatalogViewController" hasInstanceMethod:@"_setShowingCompletions:popoverDismissalReason:completionHandler:" withFullSignature:{"v", "B", "q", "@?", 0}];
-  [v3 validateClass:@"CatalogViewController" hasInstanceMethod:@"showUniversalSearchFirstTimeExperienceIfNotShowing" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AbstractCatalogViewController" hasInstanceMethod:@"startPageViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CatalogViewController" isKindOfClass:@"AbstractCatalogViewController"];
-  [v3 validateClass:@"SFStartPageViewController" hasInstanceVariable:@"_navigationController" withType:"UINavigationController"];
-  [v3 validateClass:@"BrowserController" hasInstanceVariable:@"_scrollView" withType:"UIScrollView"];
-  [v3 validateClass:@"CatalogViewController" hasInstanceMethod:@"browserController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CatalogViewController" hasInstanceMethod:@"setNavigationBar:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CatalogViewController" hasInstanceVariable:@"_keyboardFrame" withType:__ax_verbose_encode_with_type_encoding_group_class()];
+  [validationsCopy validateClass:@"CatalogViewController" hasInstanceMethod:@"isShowingUniversalSearchFirstTimeExperience" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CatalogViewController" hasInstanceMethod:@"isShowingCompletions" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CatalogViewController" hasInstanceMethod:@"_setShowingCompletions:popoverDismissalReason:completionHandler:" withFullSignature:{"v", "B", "q", "@?", 0}];
+  [validationsCopy validateClass:@"CatalogViewController" hasInstanceMethod:@"showUniversalSearchFirstTimeExperienceIfNotShowing" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AbstractCatalogViewController" hasInstanceMethod:@"startPageViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CatalogViewController" isKindOfClass:@"AbstractCatalogViewController"];
+  [validationsCopy validateClass:@"SFStartPageViewController" hasInstanceVariable:@"_navigationController" withType:"UINavigationController"];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceVariable:@"_scrollView" withType:"UIScrollView"];
+  [validationsCopy validateClass:@"CatalogViewController" hasInstanceMethod:@"browserController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CatalogViewController" hasInstanceMethod:@"setNavigationBar:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -49,10 +49,10 @@
 {
   LOBYTE(location) = 0;
   v3 = __UIAccessibilitySafeClass();
-  v4 = [v3 traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  traitCollection = [v3 traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v5 == 1 && ([(CatalogViewControllerAccessibility *)self safeBoolForKey:@"usesPopoverStyleForFavorites"]& 1) == 0)
+  if (horizontalSizeClass == 1 && ([(CatalogViewControllerAccessibility *)self safeBoolForKey:@"usesPopoverStyleForFavorites"]& 1) == 0)
   {
     objc_initWeak(&location, self);
     v6 = [(CatalogViewControllerAccessibility *)self safeValueForKey:@"browserController"];
@@ -66,25 +66,25 @@
 
     objc_opt_class();
     v8 = __UIAccessibilityCastAsClass();
-    v9 = [v8 view];
+    view = [v8 view];
 
     v17 = 0;
     objc_opt_class();
     v10 = [(CatalogViewControllerAccessibility *)self safeValueForKey:@"_completionsViewController"];
     v11 = __UIAccessibilityCastAsClass();
 
-    v12 = [v11 tableView];
+    tableView = [v11 tableView];
 
     [(CatalogViewControllerAccessibility *)self safeCGRectForKey:@"_keyboardFrame"];
-    [v12 _accessibilitySetVisibleContentInset:{0.0, 0.0, CGRectGetHeight(v21), 0.0}];
+    [tableView _accessibilitySetVisibleContentInset:{0.0, 0.0, CGRectGetHeight(v21), 0.0}];
     v14[0] = MEMORY[0x29EDCA5F8];
     v14[1] = 3221225472;
     v14[2] = __68__CatalogViewControllerAccessibility__axUpdateAccessibilityElements__block_invoke_2;
     v14[3] = &unk_29F2D7A20;
     objc_copyWeak(&v16, &location);
-    v13 = v12;
+    v13 = tableView;
     v15 = v13;
-    [v9 _setAccessibilityElementsBlock:v14];
+    [view _setAccessibilityElementsBlock:v14];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&v19);
@@ -200,32 +200,32 @@ uint64_t __102__CatalogViewControllerAccessibility__setShowingCompletions_popove
   return v3();
 }
 
-- (void)unifiedField:(id)a3 moveCompletionSelectionByRowOffset:(int64_t)a4
+- (void)unifiedField:(id)field moveCompletionSelectionByRowOffset:(int64_t)offset
 {
-  v6 = a3;
+  fieldCopy = field;
   v7 = [(CatalogViewControllerAccessibility *)self safeValueForKey:@"_completionsViewController"];
   v8 = [v7 safeValueForKey:@"tableView"];
 
-  v9 = [v8 indexPathForSelectedRow];
+  indexPathForSelectedRow = [v8 indexPathForSelectedRow];
   v10.receiver = self;
   v10.super_class = CatalogViewControllerAccessibility;
-  [(CatalogViewControllerAccessibility *)&v10 unifiedField:v6 moveCompletionSelectionByRowOffset:a4];
+  [(CatalogViewControllerAccessibility *)&v10 unifiedField:fieldCopy moveCompletionSelectionByRowOffset:offset];
 
-  [(CatalogViewControllerAccessibility *)self _accessibilityAnnounceNewKeyboardCompletionWithPreviousIndexPath:v9];
+  [(CatalogViewControllerAccessibility *)self _accessibilityAnnounceNewKeyboardCompletionWithPreviousIndexPath:indexPathForSelectedRow];
 }
 
-- (void)completionList:(id)a3 topHitDidBecomeReadyForString:(id)a4
+- (void)completionList:(id)list topHitDidBecomeReadyForString:(id)string
 {
   v8.receiver = self;
   v8.super_class = CatalogViewControllerAccessibility;
-  [(CatalogViewControllerAccessibility *)&v8 completionList:a3 topHitDidBecomeReadyForString:a4];
-  v5 = [(CatalogViewControllerAccessibility *)self _axAnnounceTimer];
-  [v5 cancel];
-  if (!v5)
+  [(CatalogViewControllerAccessibility *)&v8 completionList:list topHitDidBecomeReadyForString:string];
+  _axAnnounceTimer = [(CatalogViewControllerAccessibility *)self _axAnnounceTimer];
+  [_axAnnounceTimer cancel];
+  if (!_axAnnounceTimer)
   {
     v6 = objc_alloc(MEMORY[0x29EDBD6A0]);
-    v5 = [v6 initWithTargetSerialQueue:MEMORY[0x29EDCA578]];
-    [(CatalogViewControllerAccessibility *)self _axSetAnnounceTimer:v5];
+    _axAnnounceTimer = [v6 initWithTargetSerialQueue:MEMORY[0x29EDCA578]];
+    [(CatalogViewControllerAccessibility *)self _axSetAnnounceTimer:_axAnnounceTimer];
   }
 
   v7[0] = MEMORY[0x29EDCA5F8];
@@ -233,7 +233,7 @@ uint64_t __102__CatalogViewControllerAccessibility__setShowingCompletions_popove
   v7[2] = __83__CatalogViewControllerAccessibility_completionList_topHitDidBecomeReadyForString___block_invoke;
   v7[3] = &unk_29F2D7A98;
   v7[4] = self;
-  [v5 afterDelay:v7 processBlock:1.0];
+  [_axAnnounceTimer afterDelay:v7 processBlock:1.0];
 }
 
 uint64_t __83__CatalogViewControllerAccessibility_completionList_topHitDidBecomeReadyForString___block_invoke(uint64_t a1)
@@ -244,45 +244,45 @@ uint64_t __83__CatalogViewControllerAccessibility_completionList_topHitDidBecome
   return [v2 _axSetAnnounceTimer:0];
 }
 
-- (void)_accessibilityAnnounceNewKeyboardCompletionWithPreviousIndexPath:(id)a3
+- (void)_accessibilityAnnounceNewKeyboardCompletionWithPreviousIndexPath:(id)path
 {
-  v23 = a3;
+  pathCopy = path;
   v4 = [(CatalogViewControllerAccessibility *)self safeValueForKey:@"_completionsViewController"];
   v5 = [v4 safeValueForKey:@"tableView"];
 
-  v6 = [v5 indexPathForSelectedRow];
-  if ([v6 row] != 0x7FFFFFFFFFFFFFFFLL)
+  indexPathForSelectedRow = [v5 indexPathForSelectedRow];
+  if ([indexPathForSelectedRow row] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = [(CatalogViewControllerAccessibility *)self safeValueForKey:@"_completionsViewController"];
     v8 = [v7 safeValueForKey:@"tableView"];
 
-    v9 = [v8 indexPathForSelectedRow];
-    v10 = [v8 cellForRowAtIndexPath:v9];
-    v11 = [v23 section];
+    indexPathForSelectedRow2 = [v8 indexPathForSelectedRow];
+    v10 = [v8 cellForRowAtIndexPath:indexPathForSelectedRow2];
+    section = [pathCopy section];
     v22 = v8;
-    if (v11 == [v9 section])
+    if (section == [indexPathForSelectedRow2 section])
     {
       v12 = 0;
     }
 
     else
     {
-      v13 = [v8 headerViewForSection:{objc_msgSend(v9, "section")}];
+      v13 = [v8 headerViewForSection:{objc_msgSend(indexPathForSelectedRow2, "section")}];
       v14 = objc_alloc(MEMORY[0x29EDBD7E8]);
-      v15 = [v13 accessibilityLabel];
-      v12 = [v14 initWithString:v15];
+      accessibilityLabel = [v13 accessibilityLabel];
+      v12 = [v14 initWithString:accessibilityLabel];
 
       [v12 setAttribute:MEMORY[0x29EDB8EB0] forKey:*MEMORY[0x29EDBD940]];
     }
 
     if ([v10 isAccessibilityElement])
     {
-      v16 = [v10 accessibilityLabel];
+      accessibilityLabel2 = [v10 accessibilityLabel];
     }
 
     else if ([v10 accessibilityElementCount] < 1)
     {
-      v16 = 0;
+      accessibilityLabel2 = 0;
     }
 
     else
@@ -292,10 +292,10 @@ uint64_t __83__CatalogViewControllerAccessibility_completionList_topHitDidBecome
       do
       {
         v21 = [v10 accessibilityElementAtIndex:v17];
-        v16 = __UIAXStringForVariables();
+        accessibilityLabel2 = __UIAXStringForVariables();
 
         ++v17;
-        v18 = v16;
+        v18 = accessibilityLabel2;
       }
 
       while (v17 < [v10 accessibilityElementCount]);

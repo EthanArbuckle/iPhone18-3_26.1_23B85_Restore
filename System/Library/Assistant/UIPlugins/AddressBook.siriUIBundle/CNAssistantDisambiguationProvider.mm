@@ -1,46 +1,46 @@
 @interface CNAssistantDisambiguationProvider
-- (CNAssistantDisambiguationProvider)initWithContactStore:(id)a3;
+- (CNAssistantDisambiguationProvider)initWithContactStore:(id)store;
 - (CNContactFormatter)contactFormatter;
 - (CNFavorites)favorites;
-- (id)disambiguationForEmail:(id)a3 contactIdentifier:(id)a4;
-- (id)disambiguationForPerson:(id)a3;
-- (id)disambiguationForPhone:(id)a3 contactIdentifier:(id)a4;
-- (id)disambiguationForPostalAddress:(id)a3;
-- (id)disambiguationForRelatedName:(id)a3;
-- (id)disambiguationItemForListItem:(id)a3;
-- (id)localizedLabel:(id)a3 forPropertyKey:(id)a4;
-- (id)valueForLabel:(id)a3 propertyKey:(id)a4 contactIdentifier:(id)a5;
+- (id)disambiguationForEmail:(id)email contactIdentifier:(id)identifier;
+- (id)disambiguationForPerson:(id)person;
+- (id)disambiguationForPhone:(id)phone contactIdentifier:(id)identifier;
+- (id)disambiguationForPostalAddress:(id)address;
+- (id)disambiguationForRelatedName:(id)name;
+- (id)disambiguationItemForListItem:(id)item;
+- (id)localizedLabel:(id)label forPropertyKey:(id)key;
+- (id)valueForLabel:(id)label propertyKey:(id)key contactIdentifier:(id)identifier;
 @end
 
 @implementation CNAssistantDisambiguationProvider
 
-- (CNAssistantDisambiguationProvider)initWithContactStore:(id)a3
+- (CNAssistantDisambiguationProvider)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v10.receiver = self;
   v10.super_class = CNAssistantDisambiguationProvider;
   v6 = [(CNAssistantDisambiguationProvider *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)disambiguationItemForListItem:(id)a3
+- (id)disambiguationItemForListItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 object];
+  itemCopy = item;
+  object = [itemCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v7 = [v4 object];
+  object2 = [itemCopy object];
   if (isKindOfClass)
   {
-    v8 = [(CNAssistantDisambiguationProvider *)self disambiguationForPerson:v7];
+    v8 = [(CNAssistantDisambiguationProvider *)self disambiguationForPerson:object2];
 LABEL_11:
     v13 = v8;
     goto LABEL_12;
@@ -49,40 +49,40 @@ LABEL_11:
   objc_opt_class();
   v9 = objc_opt_isKindOfClass();
 
-  v7 = [v4 object];
+  object2 = [itemCopy object];
   if (v9)
   {
-    v8 = [(CNAssistantDisambiguationProvider *)self disambiguationForPhone:v7];
+    v8 = [(CNAssistantDisambiguationProvider *)self disambiguationForPhone:object2];
     goto LABEL_11;
   }
 
   objc_opt_class();
   v10 = objc_opt_isKindOfClass();
 
-  v7 = [v4 object];
+  object2 = [itemCopy object];
   if (v10)
   {
-    v8 = [(CNAssistantDisambiguationProvider *)self disambiguationForEmail:v7];
+    v8 = [(CNAssistantDisambiguationProvider *)self disambiguationForEmail:object2];
     goto LABEL_11;
   }
 
   objc_opt_class();
   v11 = objc_opt_isKindOfClass();
 
-  v7 = [v4 object];
+  object2 = [itemCopy object];
   if (v11)
   {
-    v8 = [(CNAssistantDisambiguationProvider *)self disambiguationForPostalAddress:v7];
+    v8 = [(CNAssistantDisambiguationProvider *)self disambiguationForPostalAddress:object2];
     goto LABEL_11;
   }
 
   objc_opt_class();
   v12 = objc_opt_isKindOfClass();
 
-  v7 = [v4 object];
+  object2 = [itemCopy object];
   if (v12)
   {
-    v8 = [(CNAssistantDisambiguationProvider *)self disambiguationForRelatedName:v7];
+    v8 = [(CNAssistantDisambiguationProvider *)self disambiguationForRelatedName:object2];
     goto LABEL_11;
   }
 
@@ -91,37 +91,37 @@ LABEL_11:
 
   if (v15)
   {
-    v16 = [v4 object];
-    v7 = [v16 object];
+    object3 = [itemCopy object];
+    object2 = [object3 object];
 
-    if (!v7)
+    if (!object2)
     {
       v13 = 0;
       goto LABEL_12;
     }
 
-    v17 = [v7 identifier];
-    v18 = [CNAssistantID contactIDFromAssistantID:v17];
+    identifier = [object2 identifier];
+    v18 = [CNAssistantID contactIDFromAssistantID:identifier];
 
-    v19 = [v7 phones];
-    if (v19 && (v20 = v19, [v7 phones], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "count"), v21, v20, v22))
+    phones = [object2 phones];
+    if (phones && (v20 = phones, [object2 phones], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "count"), v21, v20, v22))
     {
-      v23 = [v7 phones];
-      v24 = [v23 objectAtIndexedSubscript:0];
+      phones2 = [object2 phones];
+      v24 = [phones2 objectAtIndexedSubscript:0];
       v25 = [(CNAssistantDisambiguationProvider *)self disambiguationForPhone:v24 contactIdentifier:v18];
     }
 
     else
     {
-      v26 = [v7 emails];
-      if (!v26 || (v27 = v26, [v7 emails], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "count"), v28, v27, !v29))
+      emails = [object2 emails];
+      if (!emails || (v27 = emails, [object2 emails], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "count"), v28, v27, !v29))
       {
         v13 = 0;
         goto LABEL_30;
       }
 
-      v23 = [v7 emails];
-      v24 = [v23 objectAtIndexedSubscript:0];
+      phones2 = [object2 emails];
+      v24 = [phones2 objectAtIndexedSubscript:0];
       v25 = [(CNAssistantDisambiguationProvider *)self disambiguationForEmail:v24 contactIdentifier:v18];
     }
 
@@ -138,7 +138,7 @@ LABEL_12:
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
-    sub_3FF4(v4);
+    sub_3FF4(itemCopy);
   }
 
   v13 = 0;
@@ -179,24 +179,24 @@ LABEL_16:
   return favorites;
 }
 
-- (id)disambiguationForPerson:(id)a3
+- (id)disambiguationForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [(CNAssistantDisambiguationProvider *)self contactStore];
+  personCopy = person;
+  contactStore = [(CNAssistantDisambiguationProvider *)self contactStore];
 
-  if (v5)
+  if (contactStore)
   {
-    v6 = [v4 identifier];
-    v7 = [CNAssistantID contactIDFromAssistantID:v6];
+    identifier = [personCopy identifier];
+    v7 = [CNAssistantID contactIDFromAssistantID:identifier];
 
-    v8 = [(CNAssistantDisambiguationProvider *)self contactFormatter];
-    v9 = [v8 descriptorForRequiredKeys];
-    v39 = v9;
+    contactFormatter = [(CNAssistantDisambiguationProvider *)self contactFormatter];
+    descriptorForRequiredKeys = [contactFormatter descriptorForRequiredKeys];
+    v39 = descriptorForRequiredKeys;
     v10 = [NSArray arrayWithObjects:&v39 count:1];
 
-    v11 = [(CNAssistantDisambiguationProvider *)self contactStore];
+    contactStore2 = [(CNAssistantDisambiguationProvider *)self contactStore];
     v34 = 0;
-    v12 = [v11 unifiedContactWithIdentifier:v7 keysToFetch:v10 error:&v34];
+    v12 = [contactStore2 unifiedContactWithIdentifier:v7 keysToFetch:v10 error:&v34];
     v13 = v34;
 
     if (!v12)
@@ -211,71 +211,71 @@ LABEL_16:
       }
 
       v12 = objc_alloc_init(CNMutableContact);
-      v14 = [v4 firstName];
+      firstName = [personCopy firstName];
 
-      if (v14)
+      if (firstName)
       {
-        v15 = [v4 firstName];
-        [v12 setGivenName:v15];
+        firstName2 = [personCopy firstName];
+        [v12 setGivenName:firstName2];
       }
 
-      v16 = [v4 lastName];
+      lastName = [personCopy lastName];
 
-      if (v16)
+      if (lastName)
       {
-        v17 = [v4 lastName];
-        [v12 setFamilyName:v17];
+        lastName2 = [personCopy lastName];
+        [v12 setFamilyName:lastName2];
       }
 
-      v18 = [v4 nickName];
+      nickName = [personCopy nickName];
 
-      if (v18)
+      if (nickName)
       {
-        v19 = [v4 nickName];
-        [v12 setNickname:v19];
+        nickName2 = [personCopy nickName];
+        [v12 setNickname:nickName2];
       }
 
-      v20 = [v4 company];
+      company = [personCopy company];
 
-      if (v20)
+      if (company)
       {
-        v21 = [v4 company];
-        [v12 setOrganizationName:v21];
+        company2 = [personCopy company];
+        [v12 setOrganizationName:company2];
       }
 
-      v22 = [v4 emails];
-      if ([v22 count])
+      emails = [personCopy emails];
+      if ([emails count])
       {
-        v23 = [v4 firstName];
-        if (v23 || ([v4 lastName], (v23 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v4, "nickName"), (v23 = objc_claimAutoreleasedReturnValue()) != 0))
+        firstName3 = [personCopy firstName];
+        if (firstName3 || ([personCopy lastName], (firstName3 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(personCopy, "nickName"), (firstName3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v24 = v23;
+          emailAddress = firstName3;
         }
 
         else
         {
-          v32 = [v4 company];
+          company3 = [personCopy company];
 
-          if (v32)
+          if (company3)
           {
             goto LABEL_22;
           }
 
-          v33 = [v4 emails];
-          v22 = [v33 objectAtIndex:0];
+          emails2 = [personCopy emails];
+          emails = [emails2 objectAtIndex:0];
 
-          v24 = [v22 emailAddress];
-          [v12 setGivenName:v24];
+          emailAddress = [emails emailAddress];
+          [v12 setGivenName:emailAddress];
         }
       }
     }
 
 LABEL_22:
-    v25 = [(CNAssistantDisambiguationProvider *)self contactFormatter];
-    v26 = [v25 stringFromContact:v12];
+    contactFormatter2 = [(CNAssistantDisambiguationProvider *)self contactFormatter];
+    v26 = [contactFormatter2 stringFromContact:v12];
 
-    v27 = [(CNAssistantDisambiguationProvider *)self favorites];
-    v28 = [v27 entriesForContact:v12];
+    favorites = [(CNAssistantDisambiguationProvider *)self favorites];
+    v28 = [favorites entriesForContact:v12];
 
     v29 = [v28 count] != 0;
     goto LABEL_24;
@@ -291,30 +291,30 @@ LABEL_24:
   return v30;
 }
 
-- (id)valueForLabel:(id)a3 propertyKey:(id)a4 contactIdentifier:(id)a5
+- (id)valueForLabel:(id)label propertyKey:(id)key contactIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  labelCopy = label;
+  keyCopy = key;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     goto LABEL_11;
   }
 
-  v11 = [(CNAssistantDisambiguationProvider *)self contactStore];
+  contactStore = [(CNAssistantDisambiguationProvider *)self contactStore];
 
-  if (!v11)
+  if (!contactStore)
   {
     goto LABEL_11;
   }
 
-  v12 = [(CNAssistantDisambiguationProvider *)self propertyKey];
-  v13 = v12;
-  if (v12 == v9)
+  propertyKey = [(CNAssistantDisambiguationProvider *)self propertyKey];
+  v13 = propertyKey;
+  if (propertyKey == keyCopy)
   {
-    v14 = [(CNAssistantDisambiguationProvider *)self contactIdentifier];
+    contactIdentifier = [(CNAssistantDisambiguationProvider *)self contactIdentifier];
 
-    if (v14 == v10)
+    if (contactIdentifier == identifierCopy)
     {
       goto LABEL_9;
     }
@@ -324,20 +324,20 @@ LABEL_24:
   {
   }
 
-  [(CNAssistantDisambiguationProvider *)self setPropertyKey:v9];
-  [(CNAssistantDisambiguationProvider *)self setContactIdentifier:v10];
+  [(CNAssistantDisambiguationProvider *)self setPropertyKey:keyCopy];
+  [(CNAssistantDisambiguationProvider *)self setContactIdentifier:identifierCopy];
   [(CNAssistantDisambiguationProvider *)self setLabeledValues:0];
-  v15 = [(CNAssistantDisambiguationProvider *)self contactStore];
-  v37 = v9;
+  contactStore2 = [(CNAssistantDisambiguationProvider *)self contactStore];
+  v37 = keyCopy;
   v16 = [NSArray arrayWithObjects:&v37 count:1];
   v32 = 0;
-  v17 = [v15 unifiedContactWithIdentifier:v10 keysToFetch:v16 error:&v32];
+  v17 = [contactStore2 unifiedContactWithIdentifier:identifierCopy keysToFetch:v16 error:&v32];
   v18 = v32;
 
   if (v17)
   {
     v19 = +[CN contactPropertiesByKey];
-    v20 = [v19 objectForKeyedSubscript:v9];
+    v20 = [v19 objectForKeyedSubscript:keyCopy];
 
     v21 = [v20 CNValueForContact:v17];
     [(CNAssistantDisambiguationProvider *)self setLabeledValues:v21];
@@ -346,128 +346,128 @@ LABEL_24:
   else if (v18 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v34 = v10;
+    v34 = identifierCopy;
     v35 = 2112;
     v36 = v18;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Failed to fetch contact with identifier %@, error = %@", buf, 0x16u);
   }
 
 LABEL_9:
-  v22 = [(CNAssistantDisambiguationProvider *)self labeledValues];
+  labeledValues = [(CNAssistantDisambiguationProvider *)self labeledValues];
 
-  if (v22)
+  if (labeledValues)
   {
-    v23 = [(CNAssistantDisambiguationProvider *)self labeledValues];
+    labeledValues2 = [(CNAssistantDisambiguationProvider *)self labeledValues];
     v27 = _NSConcreteStackBlock;
     v28 = 3221225472;
     v29 = sub_1BF8;
     v30 = &unk_C368;
-    v31 = v8;
-    v24 = [v23 _cn_firstObjectPassingTest:&v27];
-    v25 = [v24 value];
+    v31 = labelCopy;
+    v24 = [labeledValues2 _cn_firstObjectPassingTest:&v27];
+    value = [v24 value];
 
     goto LABEL_12;
   }
 
 LABEL_11:
-  v25 = 0;
+  value = 0;
 LABEL_12:
 
-  return v25;
+  return value;
 }
 
-- (id)localizedLabel:(id)a3 forPropertyKey:(id)a4
+- (id)localizedLabel:(id)label forPropertyKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [CNLocalization localizedStringForString:v6 class:objc_opt_class() returningNilIfNotFound:0];
+  keyCopy = key;
+  labelCopy = label;
+  v7 = [CNLocalization localizedStringForString:labelCopy class:objc_opt_class() returningNilIfNotFound:0];
 
   if ((*(CNIsStringEmpty + 16))(CNIsStringEmpty, v7))
   {
-    v8 = [CNContact localizedStringForKey:v5];
-    v9 = [v8 lowercaseString];
+    v8 = [CNContact localizedStringForKey:keyCopy];
+    lowercaseString = [v8 lowercaseString];
 
-    v7 = v9;
+    v7 = lowercaseString;
   }
 
   return v7;
 }
 
-- (id)disambiguationForPhone:(id)a3 contactIdentifier:(id)a4
+- (id)disambiguationForPhone:(id)phone contactIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 label];
-  v9 = [(CNAssistantDisambiguationProvider *)self localizedLabel:v8 forPropertyKey:CNContactPhoneNumbersKey];
+  phoneCopy = phone;
+  identifierCopy = identifier;
+  label = [phoneCopy label];
+  v9 = [(CNAssistantDisambiguationProvider *)self localizedLabel:label forPropertyKey:CNContactPhoneNumbersKey];
 
-  v10 = [v6 number];
-  if (v10)
+  number = [phoneCopy number];
+  if (number)
   {
-    v11 = [v6 number];
-    [CNPhoneNumber phoneNumberWithStringValue:v11];
+    number2 = [phoneCopy number];
+    [CNPhoneNumber phoneNumberWithStringValue:number2];
   }
 
   else
   {
-    v11 = [v6 label];
-    [(CNAssistantDisambiguationProvider *)self valueForLabel:v11 propertyKey:CNContactPhoneNumbersKey contactIdentifier:v7];
+    number2 = [phoneCopy label];
+    [(CNAssistantDisambiguationProvider *)self valueForLabel:number2 propertyKey:CNContactPhoneNumbersKey contactIdentifier:identifierCopy];
   }
   v12 = ;
 
-  v13 = [v12 formattedStringValue];
+  formattedStringValue = [v12 formattedStringValue];
   v14 = +[SiriUIDisambiguationItem disambiguationItem];
   v15 = v14;
   v16 = v9;
-  if (v13)
+  if (formattedStringValue)
   {
     [v14 setHeadingText:v9];
     v14 = v15;
-    v16 = v13;
+    v16 = formattedStringValue;
   }
 
   [v14 setTitle:v16];
-  v17 = [v6 favoriteVoice];
-  if ([v17 BOOLValue])
+  favoriteVoice = [phoneCopy favoriteVoice];
+  if ([favoriteVoice BOOLValue])
   {
     [v15 setShowsFavoriteStar:1];
   }
 
   else
   {
-    v18 = [v6 favoriteFacetime];
-    if ([v18 BOOLValue])
+    favoriteFacetime = [phoneCopy favoriteFacetime];
+    if ([favoriteFacetime BOOLValue])
     {
       [v15 setShowsFavoriteStar:1];
     }
 
     else
     {
-      v19 = [v6 favoriteFacetimeAudio];
-      [v15 setShowsFavoriteStar:{objc_msgSend(v19, "BOOLValue")}];
+      favoriteFacetimeAudio = [phoneCopy favoriteFacetimeAudio];
+      [v15 setShowsFavoriteStar:{objc_msgSend(favoriteFacetimeAudio, "BOOLValue")}];
     }
   }
 
   return v15;
 }
 
-- (id)disambiguationForEmail:(id)a3 contactIdentifier:(id)a4
+- (id)disambiguationForEmail:(id)email contactIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 label];
-  v9 = [(CNAssistantDisambiguationProvider *)self localizedLabel:v8 forPropertyKey:CNContactEmailAddressesKey];
+  emailCopy = email;
+  identifierCopy = identifier;
+  label = [emailCopy label];
+  v9 = [(CNAssistantDisambiguationProvider *)self localizedLabel:label forPropertyKey:CNContactEmailAddressesKey];
 
-  v10 = [v6 emailAddress];
-  v11 = v10;
-  if (v10)
+  emailAddress = [emailCopy emailAddress];
+  v11 = emailAddress;
+  if (emailAddress)
   {
-    v12 = v10;
+    v12 = emailAddress;
   }
 
   else
   {
-    v13 = [v6 label];
-    v12 = [(CNAssistantDisambiguationProvider *)self valueForLabel:v13 propertyKey:CNContactEmailAddressesKey contactIdentifier:v7];
+    label2 = [emailCopy label];
+    v12 = [(CNAssistantDisambiguationProvider *)self valueForLabel:label2 propertyKey:CNContactEmailAddressesKey contactIdentifier:identifierCopy];
   }
 
   v14 = +[SiriUIDisambiguationItem disambiguationItem];
@@ -481,54 +481,54 @@ LABEL_12:
   }
 
   [v14 setTitle:v16];
-  v17 = [v6 favoriteFacetime];
-  if ([v17 BOOLValue])
+  favoriteFacetime = [emailCopy favoriteFacetime];
+  if ([favoriteFacetime BOOLValue])
   {
     [v15 setShowsFavoriteStar:1];
   }
 
   else
   {
-    v18 = [v6 favoriteFacetimeAudio];
-    [v15 setShowsFavoriteStar:{objc_msgSend(v18, "BOOLValue")}];
+    favoriteFacetimeAudio = [emailCopy favoriteFacetimeAudio];
+    [v15 setShowsFavoriteStar:{objc_msgSend(favoriteFacetimeAudio, "BOOLValue")}];
   }
 
   return v15;
 }
 
-- (id)disambiguationForPostalAddress:(id)a3
+- (id)disambiguationForPostalAddress:(id)address
 {
-  v4 = a3;
-  v5 = [v4 label];
-  v6 = [(CNAssistantDisambiguationProvider *)self localizedLabel:v5 forPropertyKey:CNContactPostalAddressesKey];
+  addressCopy = address;
+  label = [addressCopy label];
+  v6 = [(CNAssistantDisambiguationProvider *)self localizedLabel:label forPropertyKey:CNContactPostalAddressesKey];
 
   v7 = objc_alloc_init(CNMutablePostalAddress);
-  v8 = [v4 street];
-  [v7 setStreet:v8];
+  street = [addressCopy street];
+  [v7 setStreet:street];
 
-  v9 = [v4 subLocality];
-  [v7 setSubLocality:v9];
+  subLocality = [addressCopy subLocality];
+  [v7 setSubLocality:subLocality];
 
-  v10 = [v4 city];
-  [v7 setCity:v10];
+  city = [addressCopy city];
+  [v7 setCity:city];
 
-  v11 = [v4 subAdministrativeArea];
-  [v7 setSubAdministrativeArea:v11];
+  subAdministrativeArea = [addressCopy subAdministrativeArea];
+  [v7 setSubAdministrativeArea:subAdministrativeArea];
 
-  v12 = [v4 street];
-  if ([v12 length])
+  street2 = [addressCopy street];
+  if ([street2 length])
   {
     [v7 setState:&stru_C3C8];
   }
 
   else
   {
-    v13 = [v4 stateCode];
-    [v7 setState:v13];
+    stateCode = [addressCopy stateCode];
+    [v7 setState:stateCode];
   }
 
-  v14 = [v4 countryCode];
-  [v7 setISOCountryCode:v14];
+  countryCode = [addressCopy countryCode];
+  [v7 setISOCountryCode:countryCode];
 
   v15 = [CNPostalAddressFormatter singleLineStringFromPostalAddress:v7 addCountryName:0];
   v16 = +[SiriUIDisambiguationItem disambiguationItem];
@@ -538,17 +538,17 @@ LABEL_12:
   return v16;
 }
 
-- (id)disambiguationForRelatedName:(id)a3
+- (id)disambiguationForRelatedName:(id)name
 {
-  v4 = a3;
-  v5 = [v4 label];
-  v6 = [(CNAssistantDisambiguationProvider *)self localizedLabel:v5 forPropertyKey:CNContactRelationsKey];
+  nameCopy = name;
+  label = [nameCopy label];
+  v6 = [(CNAssistantDisambiguationProvider *)self localizedLabel:label forPropertyKey:CNContactRelationsKey];
 
   v7 = +[SiriUIDisambiguationItem disambiguationItem];
   [v7 setHeadingText:v6];
-  v8 = [v4 name];
+  name = [nameCopy name];
 
-  [v7 setTitle:v8];
+  [v7 setTitle:name];
 
   return v7;
 }

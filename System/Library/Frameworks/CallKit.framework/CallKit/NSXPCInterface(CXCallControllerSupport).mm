@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = __75__NSXPCInterface_CXCallControllerSupport___cx_callControllerAllowedClasses__block_invoke;
   block[3] = &unk_1E7C06CA8;
-  block[4] = a1;
+  block[4] = self;
   if (_cx_callControllerAllowedClasses_onceToken != -1)
   {
     dispatch_once(&_cx_callControllerAllowedClasses_onceToken, block);
@@ -41,20 +41,20 @@
 
 - (void)_cx_setAllowedClassesForCallControllerHostProtocol
 {
-  v2 = [a1 _cx_callControllerAllowedClasses];
-  [a1 setClasses:v2 forSelector:sel_requestCalls_ argumentIndex:0 ofReply:1];
+  _cx_callControllerAllowedClasses = [self _cx_callControllerAllowedClasses];
+  [self setClasses:_cx_callControllerAllowedClasses forSelector:sel_requestCalls_ argumentIndex:0 ofReply:1];
 
-  v3 = [a1 _cx_callControllerAllowedClasses];
-  [a1 setClasses:v3 forSelector:sel_requestTransaction_reply_ argumentIndex:0 ofReply:0];
+  _cx_callControllerAllowedClasses2 = [self _cx_callControllerAllowedClasses];
+  [self setClasses:_cx_callControllerAllowedClasses2 forSelector:sel_requestTransaction_reply_ argumentIndex:0 ofReply:0];
 }
 
 - (void)_cx_setAllowedClassesForCallControllerVendorProtocol
 {
-  v2 = [a1 _cx_callControllerAllowedClasses];
-  [a1 setClasses:v2 forSelector:sel_addOrUpdateCall_ argumentIndex:0 ofReply:0];
+  _cx_callControllerAllowedClasses = [self _cx_callControllerAllowedClasses];
+  [self setClasses:_cx_callControllerAllowedClasses forSelector:sel_addOrUpdateCall_ argumentIndex:0 ofReply:0];
 
-  v3 = [a1 _cx_callControllerAllowedClasses];
-  [a1 setClasses:v3 forSelector:sel_removeCall_ argumentIndex:0 ofReply:0];
+  _cx_callControllerAllowedClasses2 = [self _cx_callControllerAllowedClasses];
+  [self setClasses:_cx_callControllerAllowedClasses2 forSelector:sel_removeCall_ argumentIndex:0 ofReply:0];
 }
 
 @end

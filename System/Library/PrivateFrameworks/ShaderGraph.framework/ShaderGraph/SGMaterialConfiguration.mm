@@ -1,5 +1,5 @@
 @interface SGMaterialConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SGMaterialConfiguration)init;
 @end
 
@@ -15,11 +15,11 @@
   return [(SGMaterialConfiguration *)&v4 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -28,7 +28,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = SGMaterialConfiguration.isEqual(_:)(v8);

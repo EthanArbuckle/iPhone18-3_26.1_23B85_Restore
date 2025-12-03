@@ -1,5 +1,5 @@
 @interface NSItemProvider
-- (void)_generateFileURLDataForCachingFileAtURL:(void *)a3 typeIdentifier:(void *)a4 completionHandler:;
+- (void)_generateFileURLDataForCachingFileAtURL:(void *)l typeIdentifier:(void *)identifier completionHandler:;
 @end
 
 @implementation NSItemProvider
@@ -183,13 +183,13 @@ void __112__NSItemProvider_UIKitAdditions_Internal___addFileURLRepresentationFor
   }
 }
 
-- (void)_generateFileURLDataForCachingFileAtURL:(void *)a3 typeIdentifier:(void *)a4 completionHandler:
+- (void)_generateFileURLDataForCachingFileAtURL:(void *)l typeIdentifier:(void *)identifier completionHandler:
 {
   v59 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  lCopy = l;
+  identifierCopy = identifier;
+  if (self)
   {
     if (qword_1ED49FB88 != -1)
     {
@@ -214,8 +214,8 @@ void __112__NSItemProvider_UIKitAdditions_Internal___addFileURLRepresentationFor
     block[2] = __116__NSItemProvider_UIKitAdditions_Internal___generateFileURLDataForCachingFileAtURL_typeIdentifier_completionHandler___block_invoke_118;
     block[3] = &unk_1E7119F08;
     v45 = v47;
-    block[4] = a1;
-    v11 = v8;
+    block[4] = self;
+    v11 = lCopy;
     v44 = v11;
     v46 = &v49;
     dispatch_sync(v10, block);
@@ -235,8 +235,8 @@ void __112__NSItemProvider_UIKitAdditions_Internal___addFileURLRepresentationFor
       v13 = _UITemporaryFolderURL(@"com.apple.uikit.itemprovider.temporary");
       if (v13)
       {
-        v14 = [v7 lastPathComponent];
-        v15 = [v13 URLByAppendingPathComponent:v14];
+        lastPathComponent = [v7 lastPathComponent];
+        v15 = [v13 URLByAppendingPathComponent:lastPathComponent];
 
         if (v15 && !_UICloneFile(v7, v15))
         {
@@ -282,13 +282,13 @@ void __112__NSItemProvider_UIKitAdditions_Internal___addFileURLRepresentationFor
           dispatch_after(v23, v19, v20);
 
           _Block_object_dispose(buf, 8);
-          v16 = v40;
+          defaultManager = v40;
         }
 
         else
         {
-          v16 = [MEMORY[0x1E696AC08] defaultManager];
-          [v16 removeItemAtURL:v13 error:0];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+          [defaultManager removeItemAtURL:v13 error:0];
         }
       }
     }
@@ -310,18 +310,18 @@ void __112__NSItemProvider_UIKitAdditions_Internal___addFileURLRepresentationFor
       }
 
       v27 = v50[5];
-      v28 = [*MEMORY[0x1E6982DB8] identifier];
+      identifier = [*MEMORY[0x1E6982DB8] identifier];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __116__NSItemProvider_UIKitAdditions_Internal___generateFileURLDataForCachingFileAtURL_typeIdentifier_completionHandler___block_invoke_129;
       v31[3] = &unk_1E7119F30;
-      v32 = v9;
-      v29 = [v27 loadDataWithTypeIdentifier:v28 forItemProviderCompletionHandler:v31];
+      v32 = identifierCopy;
+      v29 = [v27 loadDataWithTypeIdentifier:identifier forItemProviderCompletionHandler:v31];
     }
 
     else
     {
-      (*(v9 + 2))(v9, 0, 0);
+      (*(identifierCopy + 2))(identifierCopy, 0, 0);
     }
 
     _Block_object_dispose(v47, 8);

@@ -1,16 +1,16 @@
 @interface ADPeerLocationConnection
-- (ADPeerLocationConnection)initWithDelegate:(id)a3;
-- (void)getBestLocationWithCompletion:(id)a3;
-- (void)peerConnection:(id)a3 handlePBSubclass:(id)a4 completion:(id)a5;
-- (void)peerConnection:(id)a3 peerAvailabilityDidChange:(BOOL)a4;
-- (void)peerLocationPolicySuggestsClearingCachedLocation:(id)a3;
+- (ADPeerLocationConnection)initWithDelegate:(id)delegate;
+- (void)getBestLocationWithCompletion:(id)completion;
+- (void)peerConnection:(id)connection handlePBSubclass:(id)subclass completion:(id)completion;
+- (void)peerConnection:(id)connection peerAvailabilityDidChange:(BOOL)change;
+- (void)peerLocationPolicySuggestsClearingCachedLocation:(id)location;
 @end
 
 @implementation ADPeerLocationConnection
 
-- (void)peerConnection:(id)a3 peerAvailabilityDidChange:(BOOL)a4
+- (void)peerConnection:(id)connection peerAvailabilityDidChange:(BOOL)change
 {
-  if (!a4)
+  if (!change)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -22,17 +22,17 @@
   }
 }
 
-- (void)peerConnection:(id)a3 handlePBSubclass:(id)a4 completion:(id)a5
+- (void)peerConnection:(id)connection handlePBSubclass:(id)subclass completion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100135EB8;
   v5[3] = &unk_100514A68;
   v5[4] = self;
-  [a4 _ad_performForPeerLocationWithCompletion:v5];
+  [subclass _ad_performForPeerLocationWithCompletion:v5];
 }
 
-- (void)peerLocationPolicySuggestsClearingCachedLocation:(id)a3
+- (void)peerLocationPolicySuggestsClearingCachedLocation:(id)location
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -43,23 +43,23 @@
   dispatch_async(queue, block);
 }
 
-- (void)getBestLocationWithCompletion:(id)a3
+- (void)getBestLocationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100136114;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (ADPeerLocationConnection)initWithDelegate:(id)a3
+- (ADPeerLocationConnection)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = ADPeerLocationConnection;
   v5 = [(ADPeerLocationConnection *)&v14 init];
@@ -71,7 +71,7 @@
     queue = v5->_queue;
     v5->_queue = v7;
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v9 = [[ADPeerConnection alloc] initWithServiceIdentifier:@"com.apple.private.alloy.siri.location" forRequests:j__objc_msgSend__ADPBLocationRequestType requireConnectedPeer:1];
     peerConnection = v5->_peerConnection;
     v5->_peerConnection = v9;

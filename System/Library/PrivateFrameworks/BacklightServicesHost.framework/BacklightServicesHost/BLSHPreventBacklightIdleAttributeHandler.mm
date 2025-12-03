@@ -1,37 +1,37 @@
 @interface BLSHPreventBacklightIdleAttributeHandler
 + (id)attributeClasses;
-+ (id)registerHandlerForService:(id)a3 provider:(id)a4;
++ (id)registerHandlerForService:(id)service provider:(id)provider;
 - (BLSHBacklightIdleProvider)provider;
-- (id)countingTargetForEntry:(id)a3;
-- (id)initForService:(id)a3 provider:(id)a4;
-- (int64_t)typeForEntry:(id)a3;
-- (void)activate:(BOOL)a3 withEntry:(id)a4;
+- (id)countingTargetForEntry:(id)entry;
+- (id)initForService:(id)service provider:(id)provider;
+- (int64_t)typeForEntry:(id)entry;
+- (void)activate:(BOOL)activate withEntry:(id)entry;
 @end
 
 @implementation BLSHPreventBacklightIdleAttributeHandler
 
-+ (id)registerHandlerForService:(id)a3 provider:(id)a4
++ (id)registerHandlerForService:(id)service provider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initForService:v7 provider:v6];
+  providerCopy = provider;
+  serviceCopy = service;
+  v8 = [[self alloc] initForService:serviceCopy provider:providerCopy];
 
   [v8 setupService];
 
   return v8;
 }
 
-- (id)initForService:(id)a3 provider:(id)a4
+- (id)initForService:(id)service provider:(id)provider
 {
-  v6 = a4;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = BLSHPreventBacklightIdleAttributeHandler;
-  v7 = [(BLSHLocalCountingAssertionAttributeHandler *)&v10 initForService:a3];
+  v7 = [(BLSHLocalCountingAssertionAttributeHandler *)&v10 initForService:service];
   v8 = v7;
   if (v7)
   {
     *(v7 + 12) = 0;
-    objc_storeWeak(v7 + 7, v6);
+    objc_storeWeak(v7 + 7, providerCopy);
   }
 
   return v8;
@@ -47,21 +47,21 @@
   return v2;
 }
 
-- (int64_t)typeForEntry:(id)a3
+- (int64_t)typeForEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 attribute];
+  entryCopy = entry;
+  attribute = [entryCopy attribute];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [BLSHPreventBacklightIdleAttributeHandler typeForEntry:a2];
   }
 
-  v6 = [v5 clearUserInteraction];
-  v7 = [v5 restartTimerOnInvalidation];
-  if (v6)
+  clearUserInteraction = [attribute clearUserInteraction];
+  restartTimerOnInvalidation = [attribute restartTimerOnInvalidation];
+  if (clearUserInteraction)
   {
-    if ((v7 & 1) == 0)
+    if ((restartTimerOnInvalidation & 1) == 0)
     {
       [BLSHPreventBacklightIdleAttributeHandler typeForEntry:a2];
     }
@@ -71,15 +71,15 @@
 
   else
   {
-    v8 = v7;
+    v8 = restartTimerOnInvalidation;
   }
 
   return v8;
 }
 
-- (id)countingTargetForEntry:(id)a3
+- (id)countingTargetForEntry:(id)entry
 {
-  v3 = [(BLSHPreventBacklightIdleAttributeHandler *)self typeForEntry:a3];
+  v3 = [(BLSHPreventBacklightIdleAttributeHandler *)self typeForEntry:entry];
   if (v3 <= 2)
   {
     v4 = NSStringFromSelector(*off_27841E9B8[v3]);
@@ -88,24 +88,24 @@
   return v4;
 }
 
-- (void)activate:(BOOL)a3 withEntry:(id)a4
+- (void)activate:(BOOL)activate withEntry:(id)entry
 {
-  v4 = a3;
+  activateCopy = activate;
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(BLSHPreventBacklightIdleAttributeHandler *)self typeForEntry:v7];
+  entryCopy = entry;
+  v8 = [(BLSHPreventBacklightIdleAttributeHandler *)self typeForEntry:entryCopy];
   os_unfair_lock_lock(&self->_lock);
   active = self->_active;
-  if (self->_active[v8] != !v4)
+  if (self->_active[v8] != !activateCopy)
   {
     [BLSHPreventBacklightIdleAttributeHandler activate:a2 withEntry:?];
   }
 
-  v24 = v7;
+  v24 = entryCopy;
   v10 = self->_active[2];
   v11 = self->_active[1] || v10;
   v12 = *active || v11;
-  active[v8] = v4;
+  active[v8] = activateCopy;
   v13 = self->_active[2];
   v14 = self->_active[1] || v13;
   v15 = *active || v14;
@@ -113,7 +113,7 @@
   os_unfair_lock_unlock(&self->_lock);
   v17 = bls_backlight_log();
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG);
-  if (v4)
+  if (activateCopy)
   {
     if (v18)
     {

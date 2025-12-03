@@ -1,19 +1,19 @@
 @interface MAPushNotificationServiceDaemon
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MAPushNotificationServiceDaemon)init;
 - (int64_t)channelTypeForDevice;
-- (void)addSyntheticJobWithType:(id)a3 assetSpecifier:(id)a4 matchingAssetVersion:(id)a5 triggerInterval:(int64_t)a6;
-- (void)channelSubscriptionsFailedWithReasons:(id)a3;
-- (void)didReceivePushNotification:(id)a3;
-- (void)pushJobsAwaitingTriggerWithCompletion:(id)a3;
+- (void)addSyntheticJobWithType:(id)type assetSpecifier:(id)specifier matchingAssetVersion:(id)version triggerInterval:(int64_t)interval;
+- (void)channelSubscriptionsFailedWithReasons:(id)reasons;
+- (void)didReceivePushNotification:(id)notification;
+- (void)pushJobsAwaitingTriggerWithCompletion:(id)completion;
 - (void)startListeningForConnections;
 - (void)subscribeToChannelForCurrentPlatform;
-- (void)subscribeToChannelWithIdentifier:(id)a3 completion:(id)a4;
-- (void)subscribedChannelIDsWithCompletion:(id)a3;
-- (void)triggerPushNotificationWithPayload:(id)a3 withCompletion:(id)a4;
+- (void)subscribeToChannelWithIdentifier:(id)identifier completion:(id)completion;
+- (void)subscribedChannelIDsWithCompletion:(id)completion;
+- (void)triggerPushNotificationWithPayload:(id)payload withCompletion:(id)completion;
 - (void)unsubscribeFromAllChannels;
-- (void)unsubscribeToChannelWithIdentifier:(id)a3 completion:(id)a4;
+- (void)unsubscribeToChannelWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation MAPushNotificationServiceDaemon
@@ -104,14 +104,14 @@ void __49__MAPushNotificationServiceDaemon_sharedInstance__block_invoke(id a1)
 - (void)subscribeToChannelForCurrentPlatform
 {
   v3 = [[MAPushChannel alloc] initWithPopulationType:[(MAPushNotificationServiceDaemon *)self channelTypeForDevice]];
-  v4 = [(MAPushNotificationServiceDaemon *)self pushServiceConnection];
-  v5 = [v4 subscribedChannels];
+  pushServiceConnection = [(MAPushNotificationServiceDaemon *)self pushServiceConnection];
+  subscribedChannels = [pushServiceConnection subscribedChannels];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v5;
+  v6 = subscribedChannels;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v7)
   {
@@ -127,9 +127,9 @@ void __49__MAPushNotificationServiceDaemon_sharedInstance__block_invoke(id a1)
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v17 + 1) + 8 * v10) identifier];
-        v12 = [(MAPushChannel *)v3 identifier];
-        v13 = [v11 isEqualToString:v12];
+        identifier = [*(*(&v17 + 1) + 8 * v10) identifier];
+        identifier2 = [(MAPushChannel *)v3 identifier];
+        v13 = [identifier isEqualToString:identifier2];
 
         if (v13)
         {
@@ -141,7 +141,7 @@ void __49__MAPushNotificationServiceDaemon_sharedInstance__block_invoke(id a1)
             _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "Already subscribed to channel %{public}@", buf, 0xCu);
           }
 
-          v15 = v6;
+          pushServiceConnection2 = v6;
           goto LABEL_15;
         }
 
@@ -167,65 +167,65 @@ void __49__MAPushNotificationServiceDaemon_sharedInstance__block_invoke(id a1)
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Subscribing to platform channel %{public}@", buf, 0xCu);
   }
 
-  v15 = [(MAPushNotificationServiceDaemon *)self pushServiceConnection];
-  [v15 subscribeToChannel:v3];
+  pushServiceConnection2 = [(MAPushNotificationServiceDaemon *)self pushServiceConnection];
+  [pushServiceConnection2 subscribeToChannel:v3];
 LABEL_15:
 }
 
-- (void)subscribeToChannelWithIdentifier:(id)a3 completion:(id)a4
+- (void)subscribeToChannelWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = _MADLog(@"PushNotification");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v6;
+    v12 = identifierCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Subscribing to channel: %{public}@", &v11, 0xCu);
   }
 
-  v9 = [[MAPushChannel alloc] initWithIdentifier:v6];
-  v10 = [(MAPushNotificationServiceDaemon *)self pushServiceConnection];
-  [v10 subscribeToChannel:v9];
+  v9 = [[MAPushChannel alloc] initWithIdentifier:identifierCopy];
+  pushServiceConnection = [(MAPushNotificationServiceDaemon *)self pushServiceConnection];
+  [pushServiceConnection subscribeToChannel:v9];
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, v9);
+    completionCopy[2](completionCopy, v9);
   }
 }
 
-- (void)unsubscribeToChannelWithIdentifier:(id)a3 completion:(id)a4
+- (void)unsubscribeToChannelWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = _MADLog(@"PushNotification");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v6;
+    v12 = identifierCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Subscribing to channel: %{public}@", &v11, 0xCu);
   }
 
-  v9 = [[MAPushChannel alloc] initWithIdentifier:v6];
-  v10 = [(MAPushNotificationServiceDaemon *)self pushServiceConnection];
-  [v10 unsubscribeFromChannel:v9];
+  v9 = [[MAPushChannel alloc] initWithIdentifier:identifierCopy];
+  pushServiceConnection = [(MAPushNotificationServiceDaemon *)self pushServiceConnection];
+  [pushServiceConnection unsubscribeFromChannel:v9];
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, v9);
+    completionCopy[2](completionCopy, v9);
   }
 }
 
 - (void)unsubscribeFromAllChannels
 {
-  v3 = [(MAPushNotificationServiceDaemon *)self pushServiceConnection];
-  v4 = [v3 subscribedChannels];
+  pushServiceConnection = [(MAPushNotificationServiceDaemon *)self pushServiceConnection];
+  subscribedChannels = [pushServiceConnection subscribedChannels];
 
   v5 = _MADLog(@"PushNotification");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v19 = v4;
+    v19 = subscribedChannels;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Unsubscribing from all channels: %{public}@", buf, 0xCu);
   }
 
@@ -233,7 +233,7 @@ LABEL_15:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v4;
+  v6 = subscribedChannels;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -250,8 +250,8 @@ LABEL_15:
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
-        v12 = [(MAPushNotificationServiceDaemon *)self pushServiceConnection];
-        [v12 unsubscribeFromChannel:v11];
+        pushServiceConnection2 = [(MAPushNotificationServiceDaemon *)self pushServiceConnection];
+        [pushServiceConnection2 unsubscribeFromChannel:v11];
 
         v10 = v10 + 1;
       }
@@ -264,18 +264,18 @@ LABEL_15:
   }
 }
 
-- (void)subscribedChannelIDsWithCompletion:(id)a3
+- (void)subscribedChannelIDsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MAPushNotificationServiceDaemon *)self pushServiceConnection];
-  v6 = [v5 subscribedChannels];
+  completionCopy = completion;
+  pushServiceConnection = [(MAPushNotificationServiceDaemon *)self pushServiceConnection];
+  subscribedChannels = [pushServiceConnection subscribedChannels];
 
   v7 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v6;
+  v8 = subscribedChannels;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -291,8 +291,8 @@ LABEL_15:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) identifier];
-        [v7 addObject:v13];
+        identifier = [*(*(&v15 + 1) + 8 * v12) identifier];
+        [v7 addObject:identifier];
 
         v12 = v12 + 1;
       }
@@ -305,29 +305,29 @@ LABEL_15:
   }
 
   v14 = [v7 copy];
-  v4[2](v4, v14);
+  completionCopy[2](completionCopy, v14);
 }
 
-- (void)triggerPushNotificationWithPayload:(id)a3 withCompletion:(id)a4
+- (void)triggerPushNotificationWithPayload:(id)payload withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  completionCopy = completion;
   v8 = _MADLog(@"PushNotification");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v6;
+    v11 = payloadCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Triggering push notification with payload: %{public}@", &v10, 0xCu);
   }
 
-  v9 = [[MAPushNotification alloc] initWithUserInfo:v6];
+  v9 = [[MAPushNotification alloc] initWithUserInfo:payloadCopy];
   [(MAPushNotificationServiceDaemon *)self didReceivePushNotification:v9];
-  v7[2](v7);
+  completionCopy[2](completionCopy);
 }
 
-- (void)pushJobsAwaitingTriggerWithCompletion:(id)a3
+- (void)pushJobsAwaitingTriggerWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[MADAutoAssetScheduler jobsAwaitingTrigger];
   v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
   v14 = 0u;
@@ -364,62 +364,62 @@ LABEL_15:
   }
 
   v13 = [v5 copy];
-  v3[2](v3, v13);
+  completionCopy[2](completionCopy, v13);
 }
 
-- (void)addSyntheticJobWithType:(id)a3 assetSpecifier:(id)a4 matchingAssetVersion:(id)a5 triggerInterval:(int64_t)a6
+- (void)addSyntheticJobWithType:(id)type assetSpecifier:(id)specifier matchingAssetVersion:(id)version triggerInterval:(int64_t)interval
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[MAAutoAssetSelector alloc] initForAssetType:v11 withAssetSpecifier:v10 matchingAssetVersion:v9 usingDecryptionKey:0];
+  versionCopy = version;
+  specifierCopy = specifier;
+  typeCopy = type;
+  v12 = [[MAAutoAssetSelector alloc] initForAssetType:typeCopy withAssetSpecifier:specifierCopy matchingAssetVersion:versionCopy usingDecryptionKey:0];
 
-  v13 = [[MADAutoAssetScheduledJob alloc] initForAssetSelector:v12 withActivityInterval:a6 forPushedJob:0];
+  v13 = [[MADAutoAssetScheduledJob alloc] initForAssetSelector:v12 withActivityInterval:interval forPushedJob:0];
   v14 = _MADLog(@"PushNotification");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v13 summary];
+    summary = [v13 summary];
     v16 = 138543362;
-    v17 = v15;
+    v17 = summary;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Adding synthetic job: %{public}@", &v16, 0xCu);
   }
 
-  [MADAutoAssetScheduler scheduleSelector:v12 triggeringAtIntervalSecs:a6];
+  [MADAutoAssetScheduler scheduleSelector:v12 triggeringAtIntervalSecs:interval];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.mobileassetd.push-notifications.private"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.mobileassetd.push-notifications.private"];
 
   if (v6)
   {
     v7 = MAPushServiceInterface();
-    [v5 setExportedInterface:v7];
-    [v5 setExportedObject:self];
+    [connectionCopy setExportedInterface:v7];
+    [connectionCopy setExportedObject:self];
     v8 = MAServiceClientInterface();
-    [v5 setRemoteObjectInterface:v8];
-    v9 = [[MAPushNotificationClient alloc] initWithConnection:v5];
-    v10 = [(MAPushNotificationServiceDaemon *)self clientQueue];
+    [connectionCopy setRemoteObjectInterface:v8];
+    v9 = [[MAPushNotificationClient alloc] initWithConnection:connectionCopy];
+    clientQueue = [(MAPushNotificationServiceDaemon *)self clientQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __70__MAPushNotificationServiceDaemon_listener_shouldAcceptNewConnection___block_invoke;
     block[3] = &unk_4B2B18;
     v11 = v9;
     v24 = v11;
-    v25 = self;
-    dispatch_sync(v10, block);
+    selfCopy = self;
+    dispatch_sync(clientQueue, block);
 
     v17 = _NSConcreteStackBlock;
     v18 = 3221225472;
     v19 = __70__MAPushNotificationServiceDaemon_listener_shouldAcceptNewConnection___block_invoke_1128;
     v20 = &unk_4B2B18;
-    v21 = self;
+    selfCopy2 = self;
     v22 = v11;
     v12 = v11;
-    [v5 setInvalidationHandler:&v17];
-    [v5 setInterruptionHandler:{&__block_literal_global_1132, v17, v18, v19, v20, v21}];
-    [v5 resume];
+    [connectionCopy setInvalidationHandler:&v17];
+    [connectionCopy setInterruptionHandler:{&__block_literal_global_1132, v17, v18, v19, v20, selfCopy2}];
+    [connectionCopy resume];
   }
 
   else
@@ -427,18 +427,18 @@ LABEL_15:
     v13 = _MADLog(@"PushNotification");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v5 remoteObjectInterface];
-      v15 = [v5 exportedInterface];
+      remoteObjectInterface = [connectionCopy remoteObjectInterface];
+      exportedInterface = [connectionCopy exportedInterface];
       *buf = 138543874;
       v27 = @"com.apple.mobileassetd.push-notifications.private";
       v28 = 2114;
-      v29 = v14;
+      v29 = remoteObjectInterface;
       v30 = 2114;
-      v31 = v15;
+      v31 = exportedInterface;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "Entitlement %{public}@ not satisfied for connection remote object interface: %{public}@, exported interface: %{public}@", buf, 0x20u);
     }
 
-    [v5 invalidate];
+    [connectionCopy invalidate];
   }
 
   return v6 != 0;
@@ -505,11 +505,11 @@ void __70__MAPushNotificationServiceDaemon_listener_shouldAcceptNewConnection___
   }
 }
 
-- (void)didReceivePushNotification:(id)a3
+- (void)didReceivePushNotification:(id)notification
 {
-  v4 = a3;
-  v74 = [v4 pushPayload];
-  v5 = [v74 safeObjectForKey:@"MAPushTestUniqueID" ofClass:objc_opt_class()];
+  notificationCopy = notification;
+  pushPayload = [notificationCopy pushPayload];
+  v5 = [pushPayload safeObjectForKey:@"MAPushTestUniqueID" ofClass:objc_opt_class()];
   v6 = _MADLog(@"PushNotification");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -541,12 +541,12 @@ void __70__MAPushNotificationServiceDaemon_listener_shouldAcceptNewConnection___
     }
   }
 
-  v11 = [v74 objectForKeyedSubscript:@"UpdatePolicyIdentifiers"];
+  v11 = [pushPayload objectForKeyedSubscript:@"UpdatePolicyIdentifiers"];
   v7 = v11;
   if (v11)
   {
     v69 = v5;
-    v70 = v4;
+    v70 = notificationCopy;
     v12 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v11 count]);
     v96 = 0u;
     v97 = 0u;
@@ -555,7 +555,7 @@ void __70__MAPushNotificationServiceDaemon_listener_shouldAcceptNewConnection___
     v68 = v7;
     obj = v7;
     v75 = [obj countByEnumeratingWithState:&v96 objects:v103 count:16];
-    v13 = self;
+    selfCopy = self;
     if (!v75)
     {
       goto LABEL_32;
@@ -563,7 +563,7 @@ void __70__MAPushNotificationServiceDaemon_listener_shouldAcceptNewConnection___
 
     v73 = *v97;
     v85 = v12;
-    v72 = self;
+    selfCopy2 = self;
     while (1)
     {
       for (i = 0; i != v75; i = v48 + 1)
@@ -576,7 +576,7 @@ void __70__MAPushNotificationServiceDaemon_listener_shouldAcceptNewConnection___
         v84 = i;
         v15 = *(*(&v96 + 1) + 8 * i);
         context = objc_autoreleasePoolPush();
-        v16 = [v74 objectForKeyedSubscript:v15];
+        v16 = [pushPayload objectForKeyedSubscript:v15];
         v89 = [v16 safeObjectForKey:@"PushReason" ofClass:objc_opt_class()];
         v17 = [v16 safeObjectForKey:@"AssetType" ofClass:objc_opt_class()];
         v82 = [v16 safeObjectForKey:@"AssetSpecifier" ofClass:objc_opt_class()];
@@ -587,16 +587,16 @@ void __70__MAPushNotificationServiceDaemon_listener_shouldAcceptNewConnection___
         v18 = v17;
         v19 = [[MAAutoAssetUpdatePolicy alloc] initUpdatePolicy:v81 forAssetType:v17];
         v20 = [v16 safeObjectForKey:@"UserInitiated" ofClass:objc_opt_class()];
-        v80 = [v20 BOOLValue];
+        bOOLValue = [v20 BOOLValue];
 
         v21 = [v16 safeObjectForKey:@"LockAcrossTermination" ofClass:objc_opt_class()];
-        v79 = [v21 BOOLValue];
+        bOOLValue2 = [v21 BOOLValue];
 
         v22 = [v16 safeObjectForKey:@"LockAcrossReboot" ofClass:objc_opt_class()];
-        v78 = [v22 BOOLValue];
+        bOOLValue3 = [v22 BOOLValue];
 
         v23 = [v16 safeObjectForKey:@"LockAcrossTermination" ofClass:objc_opt_class()];
-        v77 = [v23 BOOLValue];
+        bOOLValue4 = [v23 BOOLValue];
 
         v24 = [v16 safeObjectForKey:@"ScanInterval" ofClass:objc_opt_class()];
         [v19 setCheckForNewerIntervalSecs:{objc_msgSend(v24, "integerValue")}];
@@ -626,24 +626,24 @@ void __70__MAPushNotificationServiceDaemon_listener_shouldAcceptNewConnection___
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
           [v19 summary];
-          v34 = v33 = v13;
+          v34 = v33 = selfCopy;
           *buf = 138543362;
           v102 = v34;
           _os_log_impl(&dword_0, v32, OS_LOG_TYPE_DEFAULT, "Created the following push MAAutoAssetUpdatePolicy: %{public}@", buf, 0xCu);
 
-          v13 = v33;
+          selfCopy = v33;
         }
 
         v76 = v19;
 
         v35 = [v16 objectForKeyedSubscript:@"AdditionalInfo"];
-        v36 = [(MAPushNotificationServiceDaemon *)v13 pushServiceConnection];
-        v37 = [v36 subscribedChannels];
-        v38 = v37;
+        pushServiceConnection = [(MAPushNotificationServiceDaemon *)selfCopy pushServiceConnection];
+        subscribedChannels = [pushServiceConnection subscribedChannels];
+        v38 = subscribedChannels;
         v39 = &__NSArray0__struct;
-        if (v37)
+        if (subscribedChannels)
         {
-          v39 = v37;
+          v39 = subscribedChannels;
         }
 
         v40 = v39;
@@ -668,8 +668,8 @@ void __70__MAPushNotificationServiceDaemon_listener_shouldAcceptNewConnection___
                 objc_enumerationMutation(v42);
               }
 
-              v47 = [*(*(&v92 + 1) + 8 * j) base64ChannelId];
-              [v41 addObject:v47];
+              base64ChannelId = [*(*(&v92 + 1) + 8 * j) base64ChannelId];
+              [v41 addObject:base64ChannelId];
             }
 
             v44 = [v42 countByEnumeratingWithState:&v92 objects:v100 count:16];
@@ -699,11 +699,11 @@ void __70__MAPushNotificationServiceDaemon_listener_shouldAcceptNewConnection___
         v50 = v82;
 LABEL_30:
         v51 = [MAAutoAssetPushNotification alloc];
-        v52 = [v89 integerValue];
+        integerValue = [v89 integerValue];
         v53 = v18;
         v54 = v18;
         v55 = v35;
-        v56 = [v51 initWithPushReason:v52 forAssetType:v54 withAssetSpecifier:v50 matchingAssetVersion:v87 withUpdatePolicy:v76 withAdditional:v35];
+        v56 = [v51 initWithPushReason:integerValue forAssetType:v54 withAssetSpecifier:v50 matchingAssetVersion:v87 withUpdatePolicy:v76 withAdditional:v35];
         v57 = v53;
         [v85 addObject:v56];
 
@@ -713,10 +713,10 @@ LABEL_30:
         [MADAutoAssetHistory recordOperation:1304 toHistoryType:7 fromLayer:7 withSelector:v58];
 
         v61 = +[MADAnalyticsManager getAnalyticsManager];
-        v13 = v72;
-        BYTE1(v67) = v77;
-        LOBYTE(v67) = v78;
-        v62 = [v61 recordPushNotification:v59 assetType:v57 cloudChannels:v41 forPopulationType:-[MAPushNotificationServiceDaemon channelTypeForDevice](v72 userInitiated:"channelTypeForDevice") interestAcrossTerm:v80 lockAcrossReboot:v79 lockAcrossTermination:v67];
+        selfCopy = selfCopy2;
+        BYTE1(v67) = bOOLValue4;
+        LOBYTE(v67) = bOOLValue3;
+        v62 = [v61 recordPushNotification:v59 assetType:v57 cloudChannels:v41 forPopulationType:-[MAPushNotificationServiceDaemon channelTypeForDevice](selfCopy2 userInitiated:"channelTypeForDevice") interestAcrossTerm:bOOLValue lockAcrossReboot:bOOLValue2 lockAcrossTermination:v67];
 
         v12 = v85;
         objc_autoreleasePoolPop(context);
@@ -726,7 +726,7 @@ LABEL_30:
       if (!v75)
       {
 LABEL_32:
-        self = v13;
+        self = selfCopy;
 
         v63 = _MADLog(@"PushNotification");
         if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
@@ -741,7 +741,7 @@ LABEL_32:
         [MADAutoAssetControlManager handleReceivedPushNotifications:v65];
 
         v5 = v69;
-        v4 = v70;
+        notificationCopy = v70;
         v7 = v68;
         goto LABEL_40;
       }
@@ -757,14 +757,14 @@ LABEL_32:
 
 LABEL_40:
 
-  v66 = [(MAPushNotificationServiceDaemon *)self clientQueue];
+  clientQueue = [(MAPushNotificationServiceDaemon *)self clientQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __62__MAPushNotificationServiceDaemon_didReceivePushNotification___block_invoke;
   block[3] = &unk_4B2B18;
   block[4] = self;
-  v91 = v4;
-  dispatch_sync(v66, block);
+  v91 = notificationCopy;
+  dispatch_sync(clientQueue, block);
 
 LABEL_41:
 }
@@ -821,14 +821,14 @@ void __62__MAPushNotificationServiceDaemon_didReceivePushNotification___block_in
   [v1 didReceivePushNotificationWithInfo:v2];
 }
 
-- (void)channelSubscriptionsFailedWithReasons:(id)a3
+- (void)channelSubscriptionsFailedWithReasons:(id)reasons
 {
-  v3 = a3;
+  reasonsCopy = reasons;
   v4 = _MADLog(@"PushNotification");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
     v5 = 138543362;
-    v6 = v3;
+    v6 = reasonsCopy;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_ERROR, "Channel subscriptions failed with reasons: %{public}@", &v5, 0xCu);
   }
 }

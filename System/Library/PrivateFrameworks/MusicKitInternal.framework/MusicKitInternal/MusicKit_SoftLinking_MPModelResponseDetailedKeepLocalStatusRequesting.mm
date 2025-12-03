@@ -1,22 +1,22 @@
 @interface MusicKit_SoftLinking_MPModelResponseDetailedKeepLocalStatusRequesting
-- (MusicKit_SoftLinking_MPModelResponseDetailedKeepLocalStatusRequesting)initWithModelObject:(id)a3 children:(id)a4;
-- (id)newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:(int64_t)a3 responseHandler:(id)a4;
+- (MusicKit_SoftLinking_MPModelResponseDetailedKeepLocalStatusRequesting)initWithModelObject:(id)object children:(id)children;
+- (id)newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:(int64_t)index responseHandler:(id)handler;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelResponseDetailedKeepLocalStatusRequesting
 
-- (MusicKit_SoftLinking_MPModelResponseDetailedKeepLocalStatusRequesting)initWithModelObject:(id)a3 children:(id)a4
+- (MusicKit_SoftLinking_MPModelResponseDetailedKeepLocalStatusRequesting)initWithModelObject:(id)object children:(id)children
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  childrenCopy = children;
   v14.receiver = self;
   v14.super_class = MusicKit_SoftLinking_MPModelResponseDetailedKeepLocalStatusRequesting;
   v9 = [(MusicKit_SoftLinking_MPModelResponseDetailedKeepLocalStatusRequesting *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_modelObject, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_modelObject, object);
+    v11 = [childrenCopy copy];
     children = v10->_children;
     v10->_children = v11;
   }
@@ -24,9 +24,9 @@
   return v10;
 }
 
-- (id)newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:(int64_t)a3 responseHandler:(id)a4
+- (id)newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:(int64_t)index responseHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2050000000;
@@ -46,8 +46,8 @@
   v8 = v7;
   _Block_object_dispose(&v28, 8);
   v9 = objc_alloc_init(v7);
-  v10 = [(MusicKit_SoftLinking_MPModelObject *)self->_modelObject _underlyingModelObject];
-  [v9 appendSection:v10];
+  _underlyingModelObject = [(MusicKit_SoftLinking_MPModelObject *)self->_modelObject _underlyingModelObject];
+  [v9 appendSection:_underlyingModelObject];
 
   v11 = [(NSArray *)self->_children msv_map:&__block_literal_global_2];
   [v9 appendItems:v11];
@@ -94,9 +94,9 @@
   v21[1] = 3221225472;
   v21[2] = __158__MusicKit_SoftLinking_MPModelResponseDetailedKeepLocalStatusRequesting_newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex_responseHandler___block_invoke_2;
   v21[3] = &unk_1E84C3BF0;
-  v22 = v6;
-  v18 = v6;
-  v19 = [v17 newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:a3 responseHandler:v21];
+  v22 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = [v17 newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:index responseHandler:v21];
 
   return v19;
 }

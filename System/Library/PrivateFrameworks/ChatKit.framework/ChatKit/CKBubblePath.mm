@@ -1,7 +1,7 @@
 @interface CKBubblePath
 - (UIBezierPath)bezierPath;
-- (UIEdgeInsets)tailInsetsForBubbleSize:(CGSize)a3;
-- (UIEdgeInsets)tailInsetsForPillSize:(CGSize)a3;
+- (UIEdgeInsets)tailInsetsForBubbleSize:(CGSize)size;
+- (UIEdgeInsets)tailInsetsForPillSize:(CGSize)size;
 - (_TtC7ChatKit12CKBubblePath)init;
 - (const)cgPath;
 - (double)cornerRadius;
@@ -17,7 +17,7 @@
   v4 = *(v3 - 8);
   MEMORY[0x1EEE9AC00](v3);
   v6 = &v11 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   sub_190D56C60();
   sub_190D56C30();
   v9 = v8;
@@ -26,9 +26,9 @@
   return v9;
 }
 
-- (UIEdgeInsets)tailInsetsForBubbleSize:(CGSize)a3
+- (UIEdgeInsets)tailInsetsForBubbleSize:(CGSize)size
 {
-  v3 = sub_19024A2A0(self, a3.width, a3.height, a2, MEMORY[0x1E698F5E0]);
+  v3 = sub_19024A2A0(self, size.width, size.height, a2, MEMORY[0x1E698F5E0]);
   result.right = v6;
   result.bottom = v5;
   result.left = v4;
@@ -38,7 +38,7 @@
 
 - (const)cgPath
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190D56BD0();
 
   return v3;
@@ -46,7 +46,7 @@
 
 - (UIBezierPath)bezierPath
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190D56BF0();
 
   return v3;
@@ -54,7 +54,7 @@
 
 - (double)strokeDashLength
 {
-  v2 = self;
+  selfCopy = self;
   sub_190D56C80();
   v4 = v3;
 
@@ -63,7 +63,7 @@
 
 - (double)strokeDashPhase
 {
-  v2 = self;
+  selfCopy = self;
   sub_190D56C80();
   sub_190D56C70();
   v4 = v3;
@@ -71,9 +71,9 @@
   return v4;
 }
 
-- (UIEdgeInsets)tailInsetsForPillSize:(CGSize)a3
+- (UIEdgeInsets)tailInsetsForPillSize:(CGSize)size
 {
-  v3 = sub_19024A2A0(self, a3.width, a3.height, a2, MEMORY[0x1E698F5E8]);
+  v3 = sub_19024A2A0(self, size.width, size.height, a2, MEMORY[0x1E698F5E8]);
   result.right = v6;
   result.bottom = v5;
   result.left = v4;

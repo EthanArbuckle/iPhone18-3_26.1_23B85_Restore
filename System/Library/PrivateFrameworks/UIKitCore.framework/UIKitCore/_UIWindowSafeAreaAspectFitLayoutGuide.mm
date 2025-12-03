@@ -1,17 +1,17 @@
 @interface _UIWindowSafeAreaAspectFitLayoutGuide
 - (_UIWindowSafeAreaAspectFitLayoutGuide)init;
-- (_UIWindowSafeAreaAspectFitLayoutGuide)initWithCoder:(id)a3;
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4;
-- (void)_createOrUpdateHeightConstraintWithConstant:(double)a3 owningView:(id)a4 constraintsToActivate:(id)a5;
-- (void)_createOrUpdateLeftConstraintWithConstant:(double)a3 owningView:(id)a4 constraintsToActivate:(id)a5;
-- (void)_createOrUpdateTopConstraintWithConstant:(double)a3 owningView:(id)a4 constraintsToActivate:(id)a5;
-- (void)_createOrUpdateWidthConstraintWithConstant:(double)a3 owningView:(id)a4 constraintsToActivate:(id)a5;
-- (void)_setOwningView:(id)a3;
-- (void)_updateLayoutFrameConstraintsIfNeededWithOwningView:(id)a3;
-- (void)_updateLayoutFrameInOwningView:(id)a3 fromEngine:(id)a4;
+- (_UIWindowSafeAreaAspectFitLayoutGuide)initWithCoder:(id)coder;
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only;
+- (void)_createOrUpdateHeightConstraintWithConstant:(double)constant owningView:(id)view constraintsToActivate:(id)activate;
+- (void)_createOrUpdateLeftConstraintWithConstant:(double)constant owningView:(id)view constraintsToActivate:(id)activate;
+- (void)_createOrUpdateTopConstraintWithConstant:(double)constant owningView:(id)view constraintsToActivate:(id)activate;
+- (void)_createOrUpdateWidthConstraintWithConstant:(double)constant owningView:(id)view constraintsToActivate:(id)activate;
+- (void)_setOwningView:(id)view;
+- (void)_updateLayoutFrameConstraintsIfNeededWithOwningView:(id)view;
+- (void)_updateLayoutFrameInOwningView:(id)view fromEngine:(id)engine;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAspectRatio:(double)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAspectRatio:(double)ratio;
 @end
 
 @implementation _UIWindowSafeAreaAspectFitLayoutGuide
@@ -29,189 +29,189 @@
   return result;
 }
 
-- (_UIWindowSafeAreaAspectFitLayoutGuide)initWithCoder:(id)a3
+- (_UIWindowSafeAreaAspectFitLayoutGuide)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = _UIWindowSafeAreaAspectFitLayoutGuide;
-  v5 = [(UILayoutGuide *)&v7 initWithCoder:v4];
+  v5 = [(UILayoutGuide *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"_UIWindowSafeAreaAspectFitLayoutGuideAspectRatio"];
+    [coderCopy decodeDoubleForKey:@"_UIWindowSafeAreaAspectFitLayoutGuideAspectRatio"];
     [(_UIWindowSafeAreaAspectFitLayoutGuide *)v5 setAspectRatio:?];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UIWindowSafeAreaAspectFitLayoutGuide;
-  v4 = a3;
-  [(UILayoutGuide *)&v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(UILayoutGuide *)&v5 encodeWithCoder:coderCopy];
   [(_UIWindowSafeAreaAspectFitLayoutGuide *)self aspectRatio:v5.receiver];
-  [v4 encodeDouble:@"_UIWindowSafeAreaAspectFitLayoutGuideAspectRatio" forKey:?];
+  [coderCopy encodeDouble:@"_UIWindowSafeAreaAspectFitLayoutGuideAspectRatio" forKey:?];
 }
 
-- (void)_setOwningView:(id)a3
+- (void)_setOwningView:(id)view
 {
   v5.receiver = self;
   v5.super_class = _UIWindowSafeAreaAspectFitLayoutGuide;
-  v4 = a3;
-  [(UILayoutGuide *)&v5 _setOwningView:v4];
+  viewCopy = view;
+  [(UILayoutGuide *)&v5 _setOwningView:viewCopy];
   self->_layoutFrameDirty = 1;
-  [v4 _addBoundingPathChangeObserver:{self, v5.receiver, v5.super_class}];
+  [viewCopy _addBoundingPathChangeObserver:{self, v5.receiver, v5.super_class}];
 }
 
 - (void)dealloc
 {
-  v3 = [(UILayoutGuide *)self owningView];
-  [v3 _removeBoundingPathChangeObserver:self];
+  owningView = [(UILayoutGuide *)self owningView];
+  [owningView _removeBoundingPathChangeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _UIWindowSafeAreaAspectFitLayoutGuide;
   [(UILayoutGuide *)&v4 dealloc];
 }
 
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only
 {
-  if (!a4)
+  if (!only)
   {
     self->_layoutFrameDirty = 1;
-    v5 = [(UILayoutGuide *)self owningView];
-    [v5 setNeedsLayout];
+    owningView = [(UILayoutGuide *)self owningView];
+    [owningView setNeedsLayout];
   }
 }
 
-- (void)setAspectRatio:(double)a3
+- (void)setAspectRatio:(double)ratio
 {
-  if (a3 <= 0.0)
+  if (ratio <= 0.0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UIWindowSafeAreaAspectFitLayoutGuide.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"aspectRatio > 0.0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIWindowSafeAreaAspectFitLayoutGuide.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"aspectRatio > 0.0"}];
   }
 
-  v5 = fmax(fmin(a3, 100.0), 0.01);
+  v5 = fmax(fmin(ratio, 100.0), 0.01);
   if (self->_aspectRatio != v5)
   {
     self->_aspectRatio = v5;
     self->_layoutFrameDirty = 1;
-    v8 = [(UILayoutGuide *)self owningView];
-    [v8 setNeedsLayout];
+    owningView = [(UILayoutGuide *)self owningView];
+    [owningView setNeedsLayout];
   }
 }
 
-- (void)_updateLayoutFrameInOwningView:(id)a3 fromEngine:(id)a4
+- (void)_updateLayoutFrameInOwningView:(id)view fromEngine:(id)engine
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  engineCopy = engine;
   if (self->_layoutFrameDirty)
   {
-    [(_UIWindowSafeAreaAspectFitLayoutGuide *)self _updateLayoutFrameConstraintsIfNeededWithOwningView:v6];
+    [(_UIWindowSafeAreaAspectFitLayoutGuide *)self _updateLayoutFrameConstraintsIfNeededWithOwningView:viewCopy];
   }
 
   v8.receiver = self;
   v8.super_class = _UIWindowSafeAreaAspectFitLayoutGuide;
-  [(UILayoutGuide *)&v8 _updateLayoutFrameInOwningView:v6 fromEngine:v7];
+  [(UILayoutGuide *)&v8 _updateLayoutFrameInOwningView:viewCopy fromEngine:engineCopy];
   self->_layoutFrameDirty = 0;
 }
 
-- (void)_createOrUpdateLeftConstraintWithConstant:(double)a3 owningView:(id)a4 constraintsToActivate:(id)a5
+- (void)_createOrUpdateLeftConstraintWithConstant:(double)constant owningView:(id)view constraintsToActivate:(id)activate
 {
-  v14 = a4;
-  v8 = a5;
+  viewCopy = view;
+  activateCopy = activate;
   leftConstraint = self->_leftConstraint;
   if (leftConstraint && [(NSLayoutConstraint *)leftConstraint isActive])
   {
-    [(NSLayoutConstraint *)self->_leftConstraint setConstant:a3];
+    [(NSLayoutConstraint *)self->_leftConstraint setConstant:constant];
   }
 
   else
   {
-    v10 = [(UILayoutGuide *)self leftAnchor];
-    v11 = [v14 leftAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11 constant:a3];
+    leftAnchor = [(UILayoutGuide *)self leftAnchor];
+    leftAnchor2 = [viewCopy leftAnchor];
+    v12 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:constant];
     v13 = self->_leftConstraint;
     self->_leftConstraint = v12;
 
-    [v8 addObject:self->_leftConstraint];
+    [activateCopy addObject:self->_leftConstraint];
   }
 }
 
-- (void)_createOrUpdateTopConstraintWithConstant:(double)a3 owningView:(id)a4 constraintsToActivate:(id)a5
+- (void)_createOrUpdateTopConstraintWithConstant:(double)constant owningView:(id)view constraintsToActivate:(id)activate
 {
-  v14 = a4;
-  v8 = a5;
+  viewCopy = view;
+  activateCopy = activate;
   topConstraint = self->_topConstraint;
   if (topConstraint && [(NSLayoutConstraint *)topConstraint isActive])
   {
-    [(NSLayoutConstraint *)self->_topConstraint setConstant:a3];
+    [(NSLayoutConstraint *)self->_topConstraint setConstant:constant];
   }
 
   else
   {
-    v10 = [(UILayoutGuide *)self topAnchor];
-    v11 = [v14 topAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11 constant:a3];
+    topAnchor = [(UILayoutGuide *)self topAnchor];
+    topAnchor2 = [viewCopy topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:constant];
     v13 = self->_topConstraint;
     self->_topConstraint = v12;
 
-    [v8 addObject:self->_topConstraint];
+    [activateCopy addObject:self->_topConstraint];
   }
 }
 
-- (void)_createOrUpdateWidthConstraintWithConstant:(double)a3 owningView:(id)a4 constraintsToActivate:(id)a5
+- (void)_createOrUpdateWidthConstraintWithConstant:(double)constant owningView:(id)view constraintsToActivate:(id)activate
 {
-  v13 = a4;
-  v8 = a5;
+  viewCopy = view;
+  activateCopy = activate;
   widthConstraint = self->_widthConstraint;
   if (widthConstraint && [(NSLayoutConstraint *)widthConstraint isActive])
   {
-    [(NSLayoutConstraint *)self->_widthConstraint setConstant:a3];
+    [(NSLayoutConstraint *)self->_widthConstraint setConstant:constant];
   }
 
   else
   {
-    v10 = [(UILayoutGuide *)self widthAnchor];
-    v11 = [v10 constraintEqualToConstant:a3];
+    widthAnchor = [(UILayoutGuide *)self widthAnchor];
+    v11 = [widthAnchor constraintEqualToConstant:constant];
     v12 = self->_widthConstraint;
     self->_widthConstraint = v11;
 
-    [v8 addObject:self->_widthConstraint];
+    [activateCopy addObject:self->_widthConstraint];
   }
 }
 
-- (void)_createOrUpdateHeightConstraintWithConstant:(double)a3 owningView:(id)a4 constraintsToActivate:(id)a5
+- (void)_createOrUpdateHeightConstraintWithConstant:(double)constant owningView:(id)view constraintsToActivate:(id)activate
 {
-  v13 = a4;
-  v8 = a5;
+  viewCopy = view;
+  activateCopy = activate;
   heightConstraint = self->_heightConstraint;
   if (heightConstraint && [(NSLayoutConstraint *)heightConstraint isActive])
   {
-    [(NSLayoutConstraint *)self->_heightConstraint setConstant:a3];
+    [(NSLayoutConstraint *)self->_heightConstraint setConstant:constant];
   }
 
   else
   {
-    v10 = [(UILayoutGuide *)self heightAnchor];
-    v11 = [v10 constraintEqualToConstant:a3];
+    heightAnchor = [(UILayoutGuide *)self heightAnchor];
+    v11 = [heightAnchor constraintEqualToConstant:constant];
     v12 = self->_heightConstraint;
     self->_heightConstraint = v11;
 
-    [v8 addObject:self->_heightConstraint];
+    [activateCopy addObject:self->_heightConstraint];
   }
 }
 
-- (void)_updateLayoutFrameConstraintsIfNeededWithOwningView:(id)a3
+- (void)_updateLayoutFrameConstraintsIfNeededWithOwningView:(id)view
 {
-  v56 = a3;
-  [v56 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   MidX = CGRectGetMidX(v58);
-  [v56 bounds];
+  [viewCopy bounds];
   MidY = CGRectGetMidY(v59);
   aspectRatio = self->_aspectRatio;
-  [v56 _largestInscribedRectInBoundingPathWithCenter:MidX aspectRatio:{MidY, aspectRatio}];
+  [viewCopy _largestInscribedRectInBoundingPathWithCenter:MidX aspectRatio:{MidY, aspectRatio}];
   x = v7;
   y = v9;
   width = v11;
@@ -219,7 +219,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = v56;
+    v15 = viewCopy;
   }
 
   else
@@ -259,12 +259,12 @@
   v61.size.height = height;
   if (CGRectIsNull(v61))
   {
-    [v56 bounds];
+    [viewCopy bounds];
     v30 = v29;
     v32 = v31;
     v34 = v33;
     v36 = v35;
-    [v56 safeAreaInsets];
+    [viewCopy safeAreaInsets];
     v41 = v34 - v38 - v40;
     v42 = v41 * 0.5;
     v43 = fmax(v41, 0.0);
@@ -291,8 +291,8 @@
     height = v62.size.height;
     if (CGRectIsNull(v62))
     {
-      v46 = [v56 safeAreaLayoutGuide];
-      [v46 layoutFrame];
+      safeAreaLayoutGuide = [viewCopy safeAreaLayoutGuide];
+      [safeAreaLayoutGuide layoutFrame];
       x = v47;
       y = v48;
       width = v49;
@@ -315,22 +315,22 @@
   v66.origin.y = v52;
   v66.size.width = v53;
   v66.size.height = v54;
-  [(_UIWindowSafeAreaAspectFitLayoutGuide *)self _createOrUpdateLeftConstraintWithConstant:v56 owningView:v55 constraintsToActivate:CGRectGetMinX(v66)];
+  [(_UIWindowSafeAreaAspectFitLayoutGuide *)self _createOrUpdateLeftConstraintWithConstant:viewCopy owningView:v55 constraintsToActivate:CGRectGetMinX(v66)];
   v67.origin.x = v51;
   v67.origin.y = v52;
   v67.size.width = v53;
   v67.size.height = v54;
-  [(_UIWindowSafeAreaAspectFitLayoutGuide *)self _createOrUpdateTopConstraintWithConstant:v56 owningView:v55 constraintsToActivate:CGRectGetMinY(v67)];
+  [(_UIWindowSafeAreaAspectFitLayoutGuide *)self _createOrUpdateTopConstraintWithConstant:viewCopy owningView:v55 constraintsToActivate:CGRectGetMinY(v67)];
   v68.origin.x = v51;
   v68.origin.y = v52;
   v68.size.width = v53;
   v68.size.height = v54;
-  [(_UIWindowSafeAreaAspectFitLayoutGuide *)self _createOrUpdateWidthConstraintWithConstant:v56 owningView:v55 constraintsToActivate:CGRectGetWidth(v68)];
+  [(_UIWindowSafeAreaAspectFitLayoutGuide *)self _createOrUpdateWidthConstraintWithConstant:viewCopy owningView:v55 constraintsToActivate:CGRectGetWidth(v68)];
   v69.origin.x = v51;
   v69.origin.y = v52;
   v69.size.width = v53;
   v69.size.height = v54;
-  [(_UIWindowSafeAreaAspectFitLayoutGuide *)self _createOrUpdateHeightConstraintWithConstant:v56 owningView:v55 constraintsToActivate:CGRectGetHeight(v69)];
+  [(_UIWindowSafeAreaAspectFitLayoutGuide *)self _createOrUpdateHeightConstraintWithConstant:viewCopy owningView:v55 constraintsToActivate:CGRectGetHeight(v69)];
   if ([v55 count])
   {
     [MEMORY[0x1E69977A0] activateConstraints:v55];

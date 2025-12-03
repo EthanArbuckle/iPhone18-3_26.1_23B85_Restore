@@ -1,49 +1,49 @@
 @interface SUUIUpdateOperationDownloadAndScheduleResults
-- (SUUIUpdateOperationDownloadAndScheduleResults)initWithResult:(BOOL)a3 andScheduleResult:(BOOL)a4 download:(id)a5;
+- (SUUIUpdateOperationDownloadAndScheduleResults)initWithResult:(BOOL)result andScheduleResult:(BOOL)scheduleResult download:(id)download;
 - (id)descriptionDictionary;
 @end
 
 @implementation SUUIUpdateOperationDownloadAndScheduleResults
 
-- (SUUIUpdateOperationDownloadAndScheduleResults)initWithResult:(BOOL)a3 andScheduleResult:(BOOL)a4 download:(id)a5
+- (SUUIUpdateOperationDownloadAndScheduleResults)initWithResult:(BOOL)result andScheduleResult:(BOOL)scheduleResult download:(id)download
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = a4;
+  resultCopy = result;
+  scheduleResultCopy = scheduleResult;
   location = 0;
-  objc_storeStrong(&location, a5);
-  v5 = v14;
-  v14 = 0;
+  objc_storeStrong(&location, download);
+  v5 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v5;
   v9.super_class = SUUIUpdateOperationDownloadAndScheduleResults;
-  v8 = [(SUUIUpdateOperationDownloadResults *)&v9 initWithResult:v12 download:location];
-  v14 = v8;
-  objc_storeStrong(&v14, v8);
+  v8 = [(SUUIUpdateOperationDownloadResults *)&v9 initWithResult:resultCopy download:location];
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    v14->_scheduled = v11;
+    selfCopy->_scheduled = scheduleResultCopy;
   }
 
-  v7 = MEMORY[0x277D82BE0](v14);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
 - (id)descriptionDictionary
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v13 = self;
+  selfCopy = self;
   v12[1] = a2;
   v11.receiver = self;
   v11.super_class = SUUIUpdateOperationDownloadAndScheduleResults;
-  v5 = [(SUUIUpdateOperationDownloadResults *)&v11 descriptionDictionary];
-  v12[0] = [v5 mutableCopy];
-  MEMORY[0x277D82BD8](v5);
+  descriptionDictionary = [(SUUIUpdateOperationDownloadResults *)&v11 descriptionDictionary];
+  v12[0] = [descriptionDictionary mutableCopy];
+  MEMORY[0x277D82BD8](descriptionDictionary);
   v7 = v12[0];
   v15 = @"scheduled";
-  if (v13->_scheduled)
+  if (selfCopy->_scheduled)
   {
     v2 = @"YES";
   }

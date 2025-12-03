@@ -1,43 +1,43 @@
 @interface WLMigrator
 + (BOOL)_shouldContinueMigrationFromAnotherDevice;
 + (BOOL)_shouldTerminateMigrationBeforeImport;
-+ (id)_dataTypesAndSizesXMLDataFromMap:(id)a3;
++ (id)_dataTypesAndSizesXMLDataFromMap:(id)map;
 + (id)_systemVersion;
 + (unint64_t)_bytesFreeOnDevice;
-+ (void)_parseDataTypesXMLData:(id)a3 completion:(id)a4;
-+ (void)_presentPromptForMigrableApps:(id)a3;
++ (void)_parseDataTypesXMLData:(id)data completion:(id)completion;
++ (void)_presentPromptForMigrableApps:(id)apps;
 - (BOOL)_shouldTerminateMigrationOnError;
 - (WLSocketHandler)activeSocketHandler;
-- (double)_didFinishDownloadingSegmentOfSize:(unint64_t)a3 expectedSize:(unint64_t)a4 migratorEstimatesItemSizes:(BOOL)a5 endDate:(id)a6 context:(id)a7;
-- (double)_progressIncrementForImportedSummary:(id)a3 summaries:(id)a4 accounts:(id)a5 migrators:(id)a6;
-- (id)_downloadDataWithContext:(id)a3 failureDetailsBlock:(id)a4;
-- (id)_fetchAccountsAndSummariesWithContext:(id)a3;
-- (id)_importDataWithContext:(id)a3 failureDetailsBlock:(id)a4;
-- (id)_selectDataTypesWithContext:(id)a3;
-- (id)downloadData:(id)a3;
-- (id)fetchSummary:(id)a3;
-- (id)finishMigration:(id)a3;
-- (id)importData:(id)a3;
-- (id)migrators:(id)a3;
-- (id)prepare:(id)a3 delegate:(id)a4 error:(id *)a5;
-- (id)runPostMigrationTasks:(id)a3;
-- (id)selectDataTypes:(id)a3;
-- (void)_cleanUpAfterFinalizeMigratableAppsWithSQLController:(id)a3 completion:(id)a4;
-- (void)_deleteDownloadsPath:(id)a3;
-- (void)_finishMigrationWithError:(id)a3 context:(id)a4 disconnected:(BOOL)a5 completion:(id)a6;
-- (void)_incrementProgressBy:(double)a3 context:(id)a4;
-- (void)_logStatisticsAndSendStatisticsTelemetryWithContext:(id)a3;
-- (void)_prepareMetadata:(id)a3 usingRetryPolicies:(BOOL)a4 allowContinuationFromAnotherDevice:(BOOL)a5;
-- (void)_reportTimeEstimatesWithContext:(id)a3;
-- (void)_selectFromDataTypeToSizeMap:(id)a3 device:(id)a4 completion:(id)a5;
-- (void)_setProgressTo:(double)a3 context:(id)a4;
-- (void)_updateSourceWithProgress:(double)a3 remainingTime:(double)a4 context:(id)a5 completion:(id)a6;
+- (double)_didFinishDownloadingSegmentOfSize:(unint64_t)size expectedSize:(unint64_t)expectedSize migratorEstimatesItemSizes:(BOOL)sizes endDate:(id)date context:(id)context;
+- (double)_progressIncrementForImportedSummary:(id)summary summaries:(id)summaries accounts:(id)accounts migrators:(id)migrators;
+- (id)_downloadDataWithContext:(id)context failureDetailsBlock:(id)block;
+- (id)_fetchAccountsAndSummariesWithContext:(id)context;
+- (id)_importDataWithContext:(id)context failureDetailsBlock:(id)block;
+- (id)_selectDataTypesWithContext:(id)context;
+- (id)downloadData:(id)data;
+- (id)fetchSummary:(id)summary;
+- (id)finishMigration:(id)migration;
+- (id)importData:(id)data;
+- (id)migrators:(id)migrators;
+- (id)prepare:(id)prepare delegate:(id)delegate error:(id *)error;
+- (id)runPostMigrationTasks:(id)tasks;
+- (id)selectDataTypes:(id)types;
+- (void)_cleanUpAfterFinalizeMigratableAppsWithSQLController:(id)controller completion:(id)completion;
+- (void)_deleteDownloadsPath:(id)path;
+- (void)_finishMigrationWithError:(id)error context:(id)context disconnected:(BOOL)disconnected completion:(id)completion;
+- (void)_incrementProgressBy:(double)by context:(id)context;
+- (void)_logStatisticsAndSendStatisticsTelemetryWithContext:(id)context;
+- (void)_prepareMetadata:(id)metadata usingRetryPolicies:(BOOL)policies allowContinuationFromAnotherDevice:(BOOL)device;
+- (void)_reportTimeEstimatesWithContext:(id)context;
+- (void)_selectFromDataTypeToSizeMap:(id)map device:(id)device completion:(id)completion;
+- (void)_setProgressTo:(double)to context:(id)context;
+- (void)_updateSourceWithProgress:(double)progress remainingTime:(double)time context:(id)context completion:(id)completion;
 - (void)cleanup;
-- (void)close:(id)a3;
+- (void)close:(id)close;
 - (void)connectionDidEnd;
 - (void)dealloc;
 - (void)deleteMessages;
-- (void)finalizeMigratableAppsWithCompletion:(id)a3;
+- (void)finalizeMigratableAppsWithCompletion:(id)completion;
 @end
 
 @implementation WLMigrator
@@ -57,13 +57,13 @@
   [WeakRetained cancel];
 }
 
-- (void)_deleteDownloadsPath:(id)a3
+- (void)_deleteDownloadsPath:(id)path
 {
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
+  pathCopy = path;
+  defaultManager = [v3 defaultManager];
   v7 = 0;
-  [v5 removeItemAtPath:v4 error:&v7];
+  [defaultManager removeItemAtPath:pathCopy error:&v7];
 
   v6 = v7;
   if (v6)
@@ -72,36 +72,36 @@
   }
 }
 
-- (void)_prepareMetadata:(id)a3 usingRetryPolicies:(BOOL)a4 allowContinuationFromAnotherDevice:(BOOL)a5
+- (void)_prepareMetadata:(id)metadata usingRetryPolicies:(BOOL)policies allowContinuationFromAnotherDevice:(BOOL)device
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v20 = v8;
-  if (v5)
+  deviceCopy = device;
+  policiesCopy = policies;
+  metadataCopy = metadata;
+  v20 = metadataCopy;
+  if (deviceCopy)
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
-    [v20 setCommunicationDate:v9];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v20 setCommunicationDate:date];
 
     [v20 setAttemptCount:1];
-    v8 = v20;
+    metadataCopy = v20;
   }
 
-  if (!v6 || (v10 = [v8 state], v8 = v20, v10 != 3))
+  if (!policiesCopy || (v10 = [metadataCopy state], metadataCopy = v20, v10 != 3))
   {
-    v11 = [v8 state];
-    v8 = v20;
-    if (v11)
+    state = [metadataCopy state];
+    metadataCopy = v20;
+    if (state)
     {
-      v12 = [v20 state];
-      v8 = v20;
-      if (v12 <= 3)
+      state2 = [v20 state];
+      metadataCopy = v20;
+      if (state2 <= 3)
       {
-        v13 = [v20 communicationDate];
-        v14 = [v13 dateByAddingTimeInterval:86400.0];
+        communicationDate = [v20 communicationDate];
+        v14 = [communicationDate dateByAddingTimeInterval:86400.0];
 
-        v15 = [MEMORY[0x277CBEAA8] date];
-        v16 = [v14 compare:v15];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        v16 = [v14 compare:date2];
 
         if (v16 == -1)
         {
@@ -117,12 +117,12 @@
           [v20 setState:{0, self, v18}];
         }
 
-        v8 = v20;
+        metadataCopy = v20;
       }
     }
   }
 
-  if ([v8 state])
+  if ([metadataCopy state])
   {
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v20, "state")}];
     _WLLog();
@@ -137,68 +137,68 @@
   }
 }
 
-- (id)prepare:(id)a3 delegate:(id)a4 error:(id *)a5
+- (id)prepare:(id)prepare delegate:(id)delegate error:(id *)error
 {
   v56[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a3;
+  delegateCopy = delegate;
+  prepareCopy = prepare;
   v10 = objc_alloc_init(WLMigrationContext);
-  [(WLMigrationContext *)v10 setSourceDevice:v9];
-  [(WLMigrationContext *)v10 setDelegate:v8];
+  [(WLMigrationContext *)v10 setSourceDevice:prepareCopy];
+  [(WLMigrationContext *)v10 setDelegate:delegateCopy];
 
-  v11 = [v9 apiLevel];
-  v12 = [(WLMigrationContext *)v10 payload];
-  [v12 setAndroidAPILevel:v11];
+  apiLevel = [prepareCopy apiLevel];
+  payload = [(WLMigrationContext *)v10 payload];
+  [payload setAndroidAPILevel:apiLevel];
 
-  v13 = [v9 brand];
-  v14 = [(WLMigrationContext *)v10 payload];
-  [v14 setAndroidBrand:v13];
+  brand = [prepareCopy brand];
+  payload2 = [(WLMigrationContext *)v10 payload];
+  [payload2 setAndroidBrand:brand];
 
-  v15 = [v9 locale];
-  v16 = [(WLMigrationContext *)v10 payload];
-  [v16 setAndroidLocale:v15];
+  locale = [prepareCopy locale];
+  payload3 = [(WLMigrationContext *)v10 payload];
+  [payload3 setAndroidLocale:locale];
 
-  v17 = [v9 model];
-  v18 = [(WLMigrationContext *)v10 payload];
-  [v18 setAndroidModel:v17];
+  model = [prepareCopy model];
+  payload4 = [(WLMigrationContext *)v10 payload];
+  [payload4 setAndroidModel:model];
 
-  v19 = [v9 osVersion];
-  v20 = [(WLMigrationContext *)v10 payload];
-  [v20 setAndroidOSVersion:v19];
+  osVersion = [prepareCopy osVersion];
+  payload5 = [(WLMigrationContext *)v10 payload];
+  [payload5 setAndroidOSVersion:osVersion];
 
-  v21 = [v9 version];
-  v22 = [(WLMigrationContext *)v10 payload];
-  [v22 setAndroidVersion:v21];
+  version = [prepareCopy version];
+  payload6 = [(WLMigrationContext *)v10 payload];
+  [payload6 setAndroidVersion:version];
 
-  v23 = [v9 versionCode];
+  versionCode = [prepareCopy versionCode];
 
-  v24 = [(WLMigrationContext *)v10 payload];
-  [v24 setAndroidVersionCode:v23];
+  payload7 = [(WLMigrationContext *)v10 payload];
+  [payload7 setAndroidVersionCode:versionCode];
 
-  v25 = [(WLMigrationContext *)v10 payload];
-  [v25 setState:@"starting"];
+  payload8 = [(WLMigrationContext *)v10 payload];
+  [payload8 setState:@"starting"];
 
   v26 = +[WLCredentialStore sharedInstance];
-  v27 = [v26 currentAuthentication];
+  currentAuthentication = [v26 currentAuthentication];
 
-  if (v27 || (-[WLMigrationContext sourceDevice](v10, "sourceDevice"), v28 = objc_claimAutoreleasedReturnValue(), v29 = [v28 isLocal], v28, (v29 & 1) != 0))
+  if (currentAuthentication || (-[WLMigrationContext sourceDevice](v10, "sourceDevice"), v28 = objc_claimAutoreleasedReturnValue(), v29 = [v28 isLocal], v28, (v29 & 1) != 0))
   {
     [(WLMigrationContext *)v10 setPowerAssertion:CPPowerAssertionCreate()];
-    v54 = [(WLMigrationContext *)v10 powerAssertion];
+    powerAssertion = [(WLMigrationContext *)v10 powerAssertion];
     _WLLog();
-    v30 = [[WLURLSessionController alloc] initWithAuthentication:v27, self, v54];
+    v30 = [[WLURLSessionController alloc] initWithAuthentication:currentAuthentication, self, powerAssertion];
     [(WLMigrationContext *)v10 setUrlSessionController:v30];
 
-    v31 = [(WLMigrationContext *)v10 sourceDevice];
-    v32 = [v31 isLocal];
+    sourceDevice = [(WLMigrationContext *)v10 sourceDevice];
+    isLocal = [sourceDevice isLocal];
 
-    if (v32)
+    if (isLocal)
     {
       v33 = objc_alloc_init(WLLocalDataSource);
       [(WLMigrationContext *)v10 setDataSource:v33];
 
-      v34 = objc_alloc_init(WLMigrationDataCoordinator);
-      [(WLMigrationContext *)v10 setDataCoordinator:v34];
+      dataCoordinator = objc_alloc_init(WLMigrationDataCoordinator);
+      [(WLMigrationContext *)v10 setDataCoordinator:dataCoordinator];
     }
 
     else
@@ -211,13 +211,13 @@
       else
       {
         v39 = [WLRemoteDeviceDataSource alloc];
-        v40 = [(WLMigrationContext *)v10 sourceDevice];
-        v41 = [v40 ipAddress];
-        v42 = [(WLMigrationContext *)v10 sourceDevice];
-        v43 = [v42 httpPort];
-        v44 = [(WLMigrationContext *)v10 urlSessionController];
-        v45 = [v44 urlSession];
-        v46 = [(WLRemoteDeviceDataSource *)v39 initWithHost:v41 port:v43 session:v45];
+        sourceDevice2 = [(WLMigrationContext *)v10 sourceDevice];
+        ipAddress = [sourceDevice2 ipAddress];
+        sourceDevice3 = [(WLMigrationContext *)v10 sourceDevice];
+        httpPort = [sourceDevice3 httpPort];
+        urlSessionController = [(WLMigrationContext *)v10 urlSessionController];
+        urlSession = [urlSessionController urlSession];
+        v46 = [(WLRemoteDeviceDataSource *)v39 initWithHost:ipAddress port:httpPort session:urlSession];
         [(WLMigrationContext *)v10 setDataSource:v46];
       }
 
@@ -229,8 +229,8 @@
         goto LABEL_13;
       }
 
-      v34 = [(WLMigrationContext *)v10 dataCoordinator];
-      [(WLMigrationDataCoordinator *)v34 setStashDataLocally:1];
+      dataCoordinator = [(WLMigrationContext *)v10 dataCoordinator];
+      [(WLMigrationDataCoordinator *)dataCoordinator setStashDataLocally:1];
     }
 
 LABEL_13:
@@ -249,17 +249,17 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v35 = [(WLMigrationContext *)v10 payload];
-  [v35 setState:@"authentication_error"];
+  payload9 = [(WLMigrationContext *)v10 payload];
+  [payload9 setState:@"authentication_error"];
 
-  if (a5)
+  if (error)
   {
     v36 = MEMORY[0x277CCA9B8];
     v37 = *MEMORY[0x277D7B8F8];
     v55 = *MEMORY[0x277CCA450];
     v56[0] = @"No device authentication";
     v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:&v55 count:1];
-    *a5 = [v36 errorWithDomain:v37 code:4 userInfo:v38];
+    *error = [v36 errorWithDomain:v37 code:4 userInfo:v38];
   }
 
 LABEL_14:
@@ -269,155 +269,155 @@ LABEL_14:
   return v10;
 }
 
-- (id)migrators:(id)a3
+- (id)migrators:(id)migrators
 {
-  v3 = a3;
+  migratorsCopy = migrators;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = objc_alloc_init(WLContactsMigrator);
-  v6 = [v3 payload];
-  v7 = [v6 contacts];
-  [(WLContactsMigrator *)v5 setFeaturePayload:v7];
+  payload = [migratorsCopy payload];
+  contacts = [payload contacts];
+  [(WLContactsMigrator *)v5 setFeaturePayload:contacts];
 
   v48 = v5;
   [v4 addObject:v5];
   v8 = objc_alloc_init(WLCalendarMigrator);
-  v9 = [v3 payload];
-  v10 = [v9 calendars];
-  [(WLCalendarMigrator *)v8 setFeaturePayload:v10];
+  payload2 = [migratorsCopy payload];
+  calendars = [payload2 calendars];
+  [(WLCalendarMigrator *)v8 setFeaturePayload:calendars];
 
   v47 = v8;
   [v4 addObject:v8];
   v11 = objc_alloc_init(WLBookmarksMigrator);
-  v12 = [v3 payload];
-  v13 = [v12 bookmarks];
-  [(WLBookmarksMigrator *)v11 setFeaturePayload:v13];
+  payload3 = [migratorsCopy payload];
+  bookmarks = [payload3 bookmarks];
+  [(WLBookmarksMigrator *)v11 setFeaturePayload:bookmarks];
 
   [v4 addObject:v11];
   v14 = [WLMessagesMigrator alloc];
-  v15 = [v3 sqlController];
-  v16 = [(WLMessagesMigrator *)v14 initWithSQLController:v15];
+  sqlController = [migratorsCopy sqlController];
+  v16 = [(WLMessagesMigrator *)v14 initWithSQLController:sqlController];
 
-  v17 = [v3 payload];
-  v18 = [v17 messages];
-  [(WLMessagesMigrator *)v16 setFeaturePayload:v18];
+  payload4 = [migratorsCopy payload];
+  messages = [payload4 messages];
+  [(WLMessagesMigrator *)v16 setFeaturePayload:messages];
 
   [v4 addObject:v16];
   v19 = objc_alloc_init(WLMailAccountMigrator);
-  v20 = [v3 payload];
-  v21 = [v20 accounts];
-  [(WLMailAccountMigrator *)v19 setFeaturePayload:v21];
+  payload5 = [migratorsCopy payload];
+  accounts = [payload5 accounts];
+  [(WLMailAccountMigrator *)v19 setFeaturePayload:accounts];
 
   [v4 addObject:v19];
   v22 = objc_alloc_init(WLPhotosMigrator);
-  v23 = [v3 payload];
-  v24 = [v23 photos];
-  [(WLPhotosMigrator *)v22 setFeaturePayload:v24];
+  payload6 = [migratorsCopy payload];
+  photos = [payload6 photos];
+  [(WLPhotosMigrator *)v22 setFeaturePayload:photos];
 
   [v4 addObject:v22];
   v25 = objc_alloc_init(WLVideosMigrator);
-  v26 = [v3 payload];
-  v27 = [v26 videos];
-  [(WLVideosMigrator *)v25 setFeaturePayload:v27];
+  payload7 = [migratorsCopy payload];
+  videos = [payload7 videos];
+  [(WLVideosMigrator *)v25 setFeaturePayload:videos];
 
   [v4 addObject:v25];
-  v28 = [v3 sourceDevice];
-  LODWORD(v26) = [v28 canAddFiles];
+  sourceDevice = [migratorsCopy sourceDevice];
+  LODWORD(payload7) = [sourceDevice canAddFiles];
 
-  if (v26)
+  if (payload7)
   {
     v29 = objc_alloc_init(WLFilesMigrator);
-    v30 = [v3 payload];
-    v31 = [v30 files];
-    [(WLFilesMigrator *)v29 setFeaturePayload:v31];
+    payload8 = [migratorsCopy payload];
+    files = [payload8 files];
+    [(WLFilesMigrator *)v29 setFeaturePayload:files];
 
     [v4 addObject:v29];
   }
 
-  v32 = [v3 sourceDevice];
-  v33 = [v32 canAddDisplay];
+  sourceDevice2 = [migratorsCopy sourceDevice];
+  canAddDisplay = [sourceDevice2 canAddDisplay];
 
-  if (v33)
+  if (canAddDisplay)
   {
     v34 = objc_alloc_init(WLDisplayMigrator);
-    v35 = [v3 payload];
-    v36 = [v35 displaySettings];
-    [(WLDisplayMigrator *)v34 setFeaturePayload:v36];
+    payload9 = [migratorsCopy payload];
+    displaySettings = [payload9 displaySettings];
+    [(WLDisplayMigrator *)v34 setFeaturePayload:displaySettings];
 
     [v4 addObject:v34];
   }
 
-  v37 = [v3 sourceDevice];
-  v38 = [v37 canAddAccessibility];
+  sourceDevice3 = [migratorsCopy sourceDevice];
+  canAddAccessibility = [sourceDevice3 canAddAccessibility];
 
-  if (v38)
+  if (canAddAccessibility)
   {
     v39 = objc_alloc_init(WLAccessibilityMigrator);
-    v40 = [v3 payload];
-    v41 = [v40 accessibilitySettings];
-    [(WLAccessibilityMigrator *)v39 setFeaturePayload:v41];
+    payload10 = [migratorsCopy payload];
+    accessibilitySettings = [payload10 accessibilitySettings];
+    [(WLAccessibilityMigrator *)v39 setFeaturePayload:accessibilitySettings];
 
     [v4 addObject:v39];
   }
 
   v42 = [WLAppMigrator alloc];
-  v43 = [v3 sourceDevice];
-  v44 = [v3 sqlController];
-  v45 = [(WLAppMigrator *)v42 initWithDevice:v43 sqlController:v44];
+  sourceDevice4 = [migratorsCopy sourceDevice];
+  sqlController2 = [migratorsCopy sqlController];
+  v45 = [(WLAppMigrator *)v42 initWithDevice:sourceDevice4 sqlController:sqlController2];
 
   [v4 addObject:v45];
 
   return v4;
 }
 
-- (id)fetchSummary:(id)a3
+- (id)fetchSummary:(id)summary
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 metadata];
-  [v5 setState:1];
+  summaryCopy = summary;
+  metadata = [summaryCopy metadata];
+  [metadata setState:1];
 
-  v6 = [v4 delegate];
-  [v6 dataMigrator:self didUpdateMigrationState:1];
+  delegate = [summaryCopy delegate];
+  [delegate dataMigrator:self didUpdateMigrationState:1];
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v4 metadata];
-  [v8 setCommunicationDate:v7];
+  date = [MEMORY[0x277CBEAA8] date];
+  metadata2 = [summaryCopy metadata];
+  [metadata2 setCommunicationDate:date];
 
-  v9 = [v4 sqlController];
-  [v9 deleteMetadataForAllDevices];
+  sqlController = [summaryCopy sqlController];
+  [sqlController deleteMetadataForAllDevices];
 
-  v10 = [v4 sqlController];
-  [v10 deleteAccountsAndSummariesForAllDevices];
+  sqlController2 = [summaryCopy sqlController];
+  [sqlController2 deleteAccountsAndSummariesForAllDevices];
 
-  v11 = [v4 dataCoordinator];
-  v12 = [v11 downloadsPath];
-  [(WLMigrator *)self _deleteDownloadsPath:v12];
+  dataCoordinator = [summaryCopy dataCoordinator];
+  downloadsPath = [dataCoordinator downloadsPath];
+  [(WLMigrator *)self _deleteDownloadsPath:downloadsPath];
 
-  v13 = [v4 sqlController];
-  [v13 deleteMigratableAppsForAllDevices];
+  sqlController3 = [summaryCopy sqlController];
+  [sqlController3 deleteMigratableAppsForAllDevices];
 
-  v14 = [v4 sqlController];
-  [v14 deleteSuggestedAppBundleIDsForAllDevices];
+  sqlController4 = [summaryCopy sqlController];
+  [sqlController4 deleteSuggestedAppBundleIDsForAllDevices];
 
-  v15 = [v4 sqlController];
-  [v15 deleteGroupMessageInfoForAllDevices];
+  sqlController5 = [summaryCopy sqlController];
+  [sqlController5 deleteGroupMessageInfoForAllDevices];
 
-  v16 = [v4 sqlController];
-  [v16 deleteMessagePhoneNumbersForAllDevices];
+  sqlController6 = [summaryCopy sqlController];
+  [sqlController6 deleteMessagePhoneNumbersForAllDevices];
 
-  v17 = [v4 sqlController];
-  [v17 deleteStatisticsForAllDevices];
+  sqlController7 = [summaryCopy sqlController];
+  [sqlController7 deleteStatisticsForAllDevices];
 
-  v18 = [v4 sqlController];
-  v19 = [v4 metadata];
-  v20 = [v4 sourceDevice];
-  [v18 insertMetadata:v19 forSourceDevice:v20];
+  sqlController8 = [summaryCopy sqlController];
+  metadata3 = [summaryCopy metadata];
+  sourceDevice = [summaryCopy sourceDevice];
+  [sqlController8 insertMetadata:metadata3 forSourceDevice:sourceDevice];
 
-  v21 = [(WLMigrator *)self _fetchAccountsAndSummariesWithContext:v4];
+  v21 = [(WLMigrator *)self _fetchAccountsAndSummariesWithContext:summaryCopy];
 
   if (v21)
   {
-    v29 = self;
+    selfCopy = self;
     _WLLog();
     v22 = MEMORY[0x277CCA9B8];
     v23 = *MEMORY[0x277D7B8F8];
@@ -426,7 +426,7 @@ LABEL_14:
     v30[1] = v24;
     v31[0] = v21;
     v31[1] = @"metaSummaries";
-    v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:{2, v29, v21}];
+    v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:{2, selfCopy, v21}];
     v26 = [v22 errorWithDomain:v23 code:2 userInfo:v25];
   }
 
@@ -440,36 +440,36 @@ LABEL_14:
   return v26;
 }
 
-- (id)selectDataTypes:(id)a3
+- (id)selectDataTypes:(id)types
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 metadata];
-  [v5 setState:2];
+  typesCopy = types;
+  metadata = [typesCopy metadata];
+  [metadata setState:2];
 
-  v6 = [v4 sourceDevice];
-  v7 = [v6 isSelectingDataTypeInHandshake];
+  sourceDevice = [typesCopy sourceDevice];
+  isSelectingDataTypeInHandshake = [sourceDevice isSelectingDataTypeInHandshake];
 
-  if ((v7 & 1) == 0)
+  if ((isSelectingDataTypeInHandshake & 1) == 0)
   {
-    v8 = [v4 delegate];
-    [v8 dataMigrator:self didUpdateMigrationState:2];
+    delegate = [typesCopy delegate];
+    [delegate dataMigrator:self didUpdateMigrationState:2];
   }
 
-  v9 = [MEMORY[0x277CBEAA8] date];
-  v10 = [v4 metadata];
-  [v10 setCommunicationDate:v9];
+  date = [MEMORY[0x277CBEAA8] date];
+  metadata2 = [typesCopy metadata];
+  [metadata2 setCommunicationDate:date];
 
-  v11 = [v4 sqlController];
-  v12 = [v4 metadata];
-  v13 = [v4 sourceDevice];
-  [v11 setMetadata:v12 forSourceDevice:v13];
+  sqlController = [typesCopy sqlController];
+  metadata3 = [typesCopy metadata];
+  sourceDevice2 = [typesCopy sourceDevice];
+  [sqlController setMetadata:metadata3 forSourceDevice:sourceDevice2];
 
-  v14 = [(WLMigrator *)self _selectDataTypesWithContext:v4];
+  v14 = [(WLMigrator *)self _selectDataTypesWithContext:typesCopy];
   if (v14)
   {
     v15 = v14;
-    v23 = self;
+    selfCopy = self;
     v24 = v14;
     _WLLog();
     v16 = MEMORY[0x277CCA9B8];
@@ -479,7 +479,7 @@ LABEL_14:
     v25[1] = v18;
     v26[0] = v15;
     v26[1] = @"metaSelectingDataTypes";
-    v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:{2, v23, v24}];
+    v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:{2, selfCopy, v24}];
     v20 = [v16 errorWithDomain:v17 code:2 userInfo:v19];
   }
 
@@ -493,26 +493,26 @@ LABEL_14:
   return v20;
 }
 
-- (id)downloadData:(id)a3
+- (id)downloadData:(id)data
 {
   v48[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 metadata];
-  [v5 setState:3];
+  dataCopy = data;
+  metadata = [dataCopy metadata];
+  [metadata setState:3];
 
-  v6 = [v4 delegate];
-  [v6 dataMigrator:self didUpdateMigrationState:3];
+  delegate = [dataCopy delegate];
+  [delegate dataMigrator:self didUpdateMigrationState:3];
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v4 metadata];
-  [v8 setCommunicationDate:v7];
+  date = [MEMORY[0x277CBEAA8] date];
+  metadata2 = [dataCopy metadata];
+  [metadata2 setCommunicationDate:date];
 
-  v9 = [v4 sqlController];
+  sqlController = [dataCopy sqlController];
   v10 = +[WLStatistics aggregateContentType];
-  v11 = [v9 statisticsForContentType:v10];
-  [v4 setAggregateStatistics:v11];
+  v11 = [sqlController statisticsForContentType:v10];
+  [dataCopy setAggregateStatistics:v11];
 
-  [(WLMigrator *)self _setProgressTo:v4 context:0.0];
+  [(WLMigrator *)self _setProgressTo:dataCopy context:0.0];
   v12 = dispatch_semaphore_create(0);
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
@@ -520,12 +520,12 @@ LABEL_14:
   v45[3] = &unk_279EB54A0;
   v13 = v12;
   v46 = v13;
-  [(WLMigrator *)self _updateSourceWithProgress:v4 remainingTime:v45 context:0.0 completion:0.0];
+  [(WLMigrator *)self _updateSourceWithProgress:dataCopy remainingTime:v45 context:0.0 completion:0.0];
   dispatch_semaphore_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
-  v14 = [v4 sqlController];
-  v15 = [v4 metadata];
-  v16 = [v4 sourceDevice];
-  [v14 setMetadata:v15 forSourceDevice:v16];
+  sqlController2 = [dataCopy sqlController];
+  metadata3 = [dataCopy metadata];
+  sourceDevice = [dataCopy sourceDevice];
+  [sqlController2 setMetadata:metadata3 forSourceDevice:sourceDevice];
 
   v39 = 0;
   v40 = &v39;
@@ -538,10 +538,10 @@ LABEL_14:
   v38[2] = __27__WLMigrator_downloadData___block_invoke_115;
   v38[3] = &unk_279EB5990;
   v38[4] = &v39;
-  v17 = [(WLMigrator *)self _downloadDataWithContext:v4 failureDetailsBlock:v38];
+  v17 = [(WLMigrator *)self _downloadDataWithContext:dataCopy failureDetailsBlock:v38];
   if (v17)
   {
-    v33 = self;
+    selfCopy = self;
     _WLLog();
     v18 = objc_alloc(MEMORY[0x277CBEB38]);
     v19 = *MEMORY[0x277D7B908];
@@ -549,7 +549,7 @@ LABEL_14:
     v47[1] = v19;
     v48[0] = v17;
     v48[1] = MEMORY[0x277CBEC38];
-    v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:{2, v33, v17}];
+    v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:{2, selfCopy, v17}];
     v21 = [v18 initWithDictionary:v20];
 
     v22 = v40[5];
@@ -566,20 +566,20 @@ LABEL_14:
 
   else
   {
-    [(WLMigrator *)self _setProgressTo:v4 context:0.8];
+    [(WLMigrator *)self _setProgressTo:dataCopy context:0.8];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __27__WLMigrator_downloadData___block_invoke_2;
     v36[3] = &unk_279EB54A0;
     v26 = v13;
     v37 = v26;
-    [(WLMigrator *)self _updateSourceWithProgress:v4 remainingTime:v36 context:1.0 completion:0.0];
+    [(WLMigrator *)self _updateSourceWithProgress:dataCopy remainingTime:v36 context:1.0 completion:0.0];
     dispatch_semaphore_wait(v26, 0xFFFFFFFFFFFFFFFFLL);
-    [(WLMigrator *)self _reportTimeEstimatesWithContext:v4];
-    v27 = [v4 throughputSamples];
-    [v27 removeAllObjects];
+    [(WLMigrator *)self _reportTimeEstimatesWithContext:dataCopy];
+    throughputSamples = [dataCopy throughputSamples];
+    [throughputSamples removeAllObjects];
 
-    [v4 setTimeEstimateAccuracyTracker:0];
+    [dataCopy setTimeEstimateAccuracyTracker:0];
     v28 = dispatch_semaphore_create(0);
     v29 = +[WLWiFiController sharedInstance];
     v34[0] = MEMORY[0x277D85DD0];
@@ -601,36 +601,36 @@ LABEL_14:
   return v25;
 }
 
-- (id)importData:(id)a3
+- (id)importData:(id)data
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 metadata];
-  [v5 setState:4];
+  dataCopy = data;
+  metadata = [dataCopy metadata];
+  [metadata setState:4];
 
-  v6 = [v4 delegate];
-  [v6 dataMigrator:self didUpdateMigrationState:4];
+  delegate = [dataCopy delegate];
+  [delegate dataMigrator:self didUpdateMigrationState:4];
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v4 aggregateStatistics];
-  [v8 setImportStartDate:v7];
+  date = [MEMORY[0x277CBEAA8] date];
+  aggregateStatistics = [dataCopy aggregateStatistics];
+  [aggregateStatistics setImportStartDate:date];
 
   v9 = +[WLMigrator _bytesFreeOnDevice];
-  v10 = [v4 aggregateStatistics];
-  [v10 setImportStartBytesFree:v9];
+  aggregateStatistics2 = [dataCopy aggregateStatistics];
+  [aggregateStatistics2 setImportStartBytesFree:v9];
 
-  v11 = [v4 delegate];
-  [v11 dataMigratorDidBecomeRestartable:self];
+  delegate2 = [dataCopy delegate];
+  [delegate2 dataMigratorDidBecomeRestartable:self];
 
-  [(WLMigrator *)self _setProgressTo:v4 context:0.8];
-  v12 = [v4 sqlController];
-  v13 = [v4 metadata];
-  v14 = [v4 sourceDevice];
-  [v12 setMetadata:v13 forSourceDevice:v14];
+  [(WLMigrator *)self _setProgressTo:dataCopy context:0.8];
+  sqlController = [dataCopy sqlController];
+  metadata2 = [dataCopy metadata];
+  sourceDevice = [dataCopy sourceDevice];
+  [sqlController setMetadata:metadata2 forSourceDevice:sourceDevice];
 
-  v15 = [v4 sqlController];
-  v16 = [v4 aggregateStatistics];
-  [v15 updateStatistics:v16];
+  sqlController2 = [dataCopy sqlController];
+  aggregateStatistics3 = [dataCopy aggregateStatistics];
+  [sqlController2 updateStatistics:aggregateStatistics3];
 
   if (+[WLMigrator _shouldTerminateMigrationBeforeImport])
   {
@@ -656,24 +656,24 @@ LABEL_14:
     v33[2] = __25__WLMigrator_importData___block_invoke;
     v33[3] = &unk_279EB5990;
     v33[4] = &v34;
-    v21 = [(WLMigrator *)self _importDataWithContext:v4 failureDetailsBlock:v33];
+    v21 = [(WLMigrator *)self _importDataWithContext:dataCopy failureDetailsBlock:v33];
     if (v21)
     {
-      v32 = self;
+      selfCopy = self;
       _WLLog();
       v22 = objc_alloc(MEMORY[0x277CBEB38]);
       v40 = *MEMORY[0x277CCA7E8];
       v41 = v21;
-      v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v41 forKeys:&v40 count:{1, v32, v21}];
-      v24 = [v22 initWithDictionary:v23];
+      v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v41 forKeys:&v40 count:{1, selfCopy, v21}];
+      date2 = [v22 initWithDictionary:v23];
 
       v25 = v35[5];
       if (v25)
       {
-        [v24 setObject:v25 forKeyedSubscript:*MEMORY[0x277D7B8F0]];
+        [date2 setObject:v25 forKeyedSubscript:*MEMORY[0x277D7B8F0]];
       }
 
-      v26 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7B8F8] code:3 userInfo:v24];
+      v26 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7B8F8] code:3 userInfo:date2];
 
       v20 = v26;
     }
@@ -681,12 +681,12 @@ LABEL_14:
     else
     {
       v27 = +[WLMigrator _bytesFreeOnDevice];
-      v28 = [v4 aggregateStatistics];
-      [v28 setImportEndBytesFree:v27];
+      aggregateStatistics4 = [dataCopy aggregateStatistics];
+      [aggregateStatistics4 setImportEndBytesFree:v27];
 
-      v24 = [MEMORY[0x277CBEAA8] date];
-      v29 = [v4 aggregateStatistics];
-      [v29 setImportEndDate:v24];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      aggregateStatistics5 = [dataCopy aggregateStatistics];
+      [aggregateStatistics5 setImportEndDate:date2];
 
       v20 = 0;
     }
@@ -699,37 +699,37 @@ LABEL_14:
   return v20;
 }
 
-- (id)runPostMigrationTasks:(id)a3
+- (id)runPostMigrationTasks:(id)tasks
 {
-  v4 = a3;
-  v5 = [v4 metadata];
-  [v5 setState:5];
+  tasksCopy = tasks;
+  metadata = [tasksCopy metadata];
+  [metadata setState:5];
 
-  [(WLMigrator *)self _setProgressTo:v4 context:1.0];
+  [(WLMigrator *)self _setProgressTo:tasksCopy context:1.0];
   return 0;
 }
 
-- (id)finishMigration:(id)a3
+- (id)finishMigration:(id)migration
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 metadata];
-  [v5 setState:6];
+  migrationCopy = migration;
+  metadata = [migrationCopy metadata];
+  [metadata setState:6];
 
-  [(WLMigrator *)self _setProgressTo:v4 context:1.0];
-  v6 = [v4 delegate];
-  [v6 dataMigrator:self didUpdateMigrationState:5];
+  [(WLMigrator *)self _setProgressTo:migrationCopy context:1.0];
+  delegate = [migrationCopy delegate];
+  [delegate dataMigrator:self didUpdateMigrationState:5];
 
-  v7 = [v4 sqlController];
-  v8 = [v7 migrationErrors];
-  [v4 setImportErrors:v8];
+  sqlController = [migrationCopy sqlController];
+  migrationErrors = [sqlController migrationErrors];
+  [migrationCopy setImportErrors:migrationErrors];
 
-  v9 = [v4 importErrors];
-  v10 = [v9 count];
+  importErrors = [migrationCopy importErrors];
+  v10 = [importErrors count];
 
   if (v10)
   {
-    [v4 importErrors];
+    [migrationCopy importErrors];
     v33 = v32 = self;
     _WLLog();
   }
@@ -739,13 +739,13 @@ LABEL_14:
   v13 = *MEMORY[0x277CBF010];
   CFPreferencesSetValue(@"MigratedFromAndroid", *MEMORY[0x277CBED28], *MEMORY[0x277CBF008], *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   CFPreferencesSetValue(@"MigratedFromAndroidToiOSVersion", +[WLMigrator _systemVersion], v11, v12, v13);
-  v14 = [v4 metadata];
-  v15 = [v14 deviceType];
-  CFPreferencesSetValue(@"MigratedFromAndroidDeviceType", v15, v11, v12, v13);
+  metadata2 = [migrationCopy metadata];
+  deviceType = [metadata2 deviceType];
+  CFPreferencesSetValue(@"MigratedFromAndroidDeviceType", deviceType, v11, v12, v13);
 
-  v16 = [v4 metadata];
-  v17 = [v16 deviceOSVersion];
-  CFPreferencesSetValue(@"MigratedFromAndroidOSVersion", v17, v11, v12, v13);
+  metadata3 = [migrationCopy metadata];
+  deviceOSVersion = [metadata3 deviceOSVersion];
+  CFPreferencesSetValue(@"MigratedFromAndroidOSVersion", deviceOSVersion, v11, v12, v13);
 
   v18 = objc_alloc_init(MEMORY[0x277D7B868]);
   [v18 setIsEnabled:0];
@@ -753,8 +753,8 @@ LABEL_14:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v19 = [v4 migrators];
-  v20 = [v19 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  migrators = [migrationCopy migrators];
+  v20 = [migrators countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v20)
   {
     v21 = v20;
@@ -765,17 +765,17 @@ LABEL_14:
       {
         if (*v35 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(migrators);
         }
 
         v24 = *(*(&v34 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v25 = [v24 importErrorCount];
+          importErrorCount = [v24 importErrorCount];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v26 = [v18 image];
+            image = [v18 image];
           }
 
           else
@@ -786,53 +786,53 @@ LABEL_14:
               continue;
             }
 
-            v26 = [v18 video];
+            image = [v18 video];
           }
 
-          v27 = v26;
-          if (v26)
+          v27 = image;
+          if (image)
           {
-            [v26 setImportErrorCount:v25];
+            [image setImportErrorCount:importErrorCount];
           }
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v21 = [migrators countByEnumeratingWithState:&v34 objects:v38 count:16];
     }
 
     while (v21);
   }
 
-  v28 = [v4 delegate];
-  v29 = [v4 importErrors];
-  [v28 dataMigratorDidFinish:self withImportErrors:objc_msgSend(v29 context:{"count") != 0, v18, v32, v33}];
+  delegate2 = [migrationCopy delegate];
+  importErrors2 = [migrationCopy importErrors];
+  [delegate2 dataMigratorDidFinish:self withImportErrors:objc_msgSend(importErrors2 context:{"count") != 0, v18, v32, v33}];
 
   v30 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (void)_finishMigrationWithError:(id)a3 context:(id)a4 disconnected:(BOOL)a5 completion:(id)a6
+- (void)_finishMigrationWithError:(id)error context:(id)context disconnected:(BOOL)disconnected completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v10)
+  errorCopy = error;
+  contextCopy = context;
+  completionCopy = completion;
+  if (!errorCopy)
   {
-    v25 = [v11 metadata];
-    [v25 setCrashCount:{objc_msgSend(v25, "crashCount") - 1}];
+    metadata = [contextCopy metadata];
+    [metadata setCrashCount:{objc_msgSend(metadata, "crashCount") - 1}];
 
-    v26 = [v11 sqlController];
-    v27 = [v11 metadata];
-    v28 = [v11 sourceDevice];
-    [v26 setMetadata:v27 forSourceDevice:v28];
+    sqlController = [contextCopy sqlController];
+    metadata2 = [contextCopy metadata];
+    sourceDevice = [contextCopy sourceDevice];
+    [sqlController setMetadata:metadata2 forSourceDevice:sourceDevice];
 
-    v29 = [MEMORY[0x277D7B8D0] sharedInstance];
-    v30 = [v11 payload];
-    [v29 migratorDidFinish:v30];
+    mEMORY[0x277D7B8D0] = [MEMORY[0x277D7B8D0] sharedInstance];
+    payload = [contextCopy payload];
+    [mEMORY[0x277D7B8D0] migratorDidFinish:payload];
 
-    [(WLMigrator *)self _logStatisticsAndSendStatisticsTelemetryWithContext:v11];
-    v31 = [v11 importErrors];
-    v32 = [v31 count];
+    [(WLMigrator *)self _logStatisticsAndSendStatisticsTelemetryWithContext:contextCopy];
+    importErrors = [contextCopy importErrors];
+    v32 = [importErrors count];
 
     if (v32)
     {
@@ -842,7 +842,7 @@ LABEL_14:
     goto LABEL_4;
   }
 
-  if (!a5)
+  if (!disconnected)
   {
     objc_initWeak(&location, self);
     v33 = +[WLWiFiController sharedInstance];
@@ -851,9 +851,9 @@ LABEL_14:
     v34[2] = __72__WLMigrator__finishMigrationWithError_context_disconnected_completion___block_invoke;
     v34[3] = &unk_279EB5710;
     objc_copyWeak(&v38, &location);
-    v35 = v10;
-    v36 = v11;
-    v37 = v12;
+    v35 = errorCopy;
+    v36 = contextCopy;
+    v37 = completionCopy;
     [v33 disableSoftAPWithCompletion:v34];
 
     objc_destroyWeak(&v38);
@@ -861,54 +861,54 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v13 = [MEMORY[0x277D7B8D0] sharedInstance];
-  v14 = [v11 payload];
-  [v13 migratorDidFinish:v14];
+  mEMORY[0x277D7B8D0]2 = [MEMORY[0x277D7B8D0] sharedInstance];
+  payload2 = [contextCopy payload];
+  [mEMORY[0x277D7B8D0]2 migratorDidFinish:payload2];
 
-  v15 = [v11 delegate];
-  [v15 dataMigrator:self didFailWithError:v10];
+  delegate = [contextCopy delegate];
+  [delegate dataMigrator:self didFailWithError:errorCopy];
 
-  v16 = [v11 metadata];
-  v17 = [v16 state];
+  metadata3 = [contextCopy metadata];
+  state = [metadata3 state];
 
-  if (v17 == 4)
+  if (state == 4)
   {
 LABEL_4:
-    v18 = [v11 sqlController];
-    [v18 deleteMetadataForAllDevices];
+    sqlController2 = [contextCopy sqlController];
+    [sqlController2 deleteMetadataForAllDevices];
 
-    v19 = [v11 sqlController];
-    [v19 deleteAccountsAndSummariesForAllDevices];
+    sqlController3 = [contextCopy sqlController];
+    [sqlController3 deleteAccountsAndSummariesForAllDevices];
 
-    v20 = [v11 sqlController];
-    [v20 deleteStatisticsForAllDevices];
+    sqlController4 = [contextCopy sqlController];
+    [sqlController4 deleteStatisticsForAllDevices];
 
-    v21 = [v11 dataCoordinator];
-    v22 = [v21 downloadsPath];
-    [(WLMigrator *)self _deleteDownloadsPath:v22];
+    dataCoordinator = [contextCopy dataCoordinator];
+    downloadsPath = [dataCoordinator downloadsPath];
+    [(WLMigrator *)self _deleteDownloadsPath:downloadsPath];
   }
 
 LABEL_5:
-  v23 = [v11 urlSessionController];
-  [v23 invalidate];
+  urlSessionController = [contextCopy urlSessionController];
+  [urlSessionController invalidate];
 
-  v24 = [v11 migrators];
-  [v24 removeAllObjects];
+  migrators = [contextCopy migrators];
+  [migrators removeAllObjects];
 
   if (+[WLMigrator stashDataLocally])
   {
     [WLMigrator setStashDataLocally:0];
   }
 
-  if ([v11 powerAssertion])
+  if ([contextCopy powerAssertion])
   {
-    CFRelease([v11 powerAssertion]);
-    [v11 setPowerAssertion:0];
+    CFRelease([contextCopy powerAssertion]);
+    [contextCopy setPowerAssertion:0];
   }
 
-  if (v12)
+  if (completionCopy)
   {
-    v12[2](v12);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_14:
@@ -920,28 +920,28 @@ void __72__WLMigrator__finishMigrationWithError_context_disconnected_completion_
   [WeakRetained _finishMigrationWithError:*(a1 + 32) context:*(a1 + 40) disconnected:1 completion:*(a1 + 48)];
 }
 
-- (id)_fetchAccountsAndSummariesWithContext:(id)a3
+- (id)_fetchAccountsAndSummariesWithContext:(id)context
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
   v44 = __Block_byref_object_copy__2;
   v45 = __Block_byref_object_dispose__2;
   v46 = 0;
-  v4 = [v3 sqlController];
+  sqlController = [contextCopy sqlController];
   v5 = +[WLStatistics fetchContentType];
-  v27 = [v4 statisticsForContentType:v5];
+  v27 = [sqlController statisticsForContentType:v5];
 
-  v24 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   [v27 setFetchStartBytesFree:{+[WLMigrator _bytesFreeOnDevice](WLMigrator, "_bytesFreeOnDevice")}];
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = [v3 migrators];
-  v7 = [v6 countByEnumeratingWithState:&v37 objects:v47 count:16];
+  migrators = [contextCopy migrators];
+  v7 = [migrators countByEnumeratingWithState:&v37 objects:v47 count:16];
   if (v7)
   {
     v25 = *v38;
@@ -951,20 +951,20 @@ LABEL_3:
     {
       if (*v38 != v25)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(migrators);
       }
 
       v9 = *(*(&v37 + 1) + 8 * v8);
-      v10 = [MEMORY[0x277CBEAA8] date];
+      date2 = [MEMORY[0x277CBEAA8] date];
       v11 = dispatch_semaphore_create(0);
-      v12 = [v3 dataCoordinator];
-      v13 = [v3 dataSource];
+      dataCoordinator = [contextCopy dataCoordinator];
+      dataSource = [contextCopy dataSource];
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __52__WLMigrator__fetchAccountsAndSummariesWithContext___block_invoke;
       v35[3] = &unk_279EB59B8;
       v35[4] = v9;
-      v36 = v3;
+      v36 = contextCopy;
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __52__WLMigrator__fetchAccountsAndSummariesWithContext___block_invoke_2;
@@ -981,24 +981,24 @@ LABEL_3:
       v30 = v9;
       v14 = v11;
       v31 = v14;
-      [v12 fetchAccountsAndSummariesFromSource:v13 forMigrator:v9 statistics:v27 accountsRequestDurationBlock:v35 summariesRequestDurationBlock:v33 completion:v28];
+      [dataCoordinator fetchAccountsAndSummariesFromSource:dataSource forMigrator:v9 statistics:v27 accountsRequestDurationBlock:v35 summariesRequestDurationBlock:v33 completion:v28];
 
       dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
-      v15 = [MEMORY[0x277CBEAA8] date];
-      [v15 timeIntervalSinceDate:v10];
+      date3 = [MEMORY[0x277CBEAA8] date];
+      [date3 timeIntervalSinceDate:date2];
       v17 = v16;
 
       [v9 addWorkingTime:v17];
-      LOBYTE(v15) = v42[5] == 0;
+      LOBYTE(date3) = v42[5] == 0;
 
-      if ((v15 & 1) == 0)
+      if ((date3 & 1) == 0)
       {
         break;
       }
 
       if (v7 == ++v8)
       {
-        v7 = [v6 countByEnumeratingWithState:&v37 objects:v47 count:16];
+        v7 = [migrators countByEnumeratingWithState:&v37 objects:v47 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -1010,11 +1010,11 @@ LABEL_3:
   }
 
   [v27 setFetchEndBytesFree:{+[WLMigrator _bytesFreeOnDevice](WLMigrator, "_bytesFreeOnDevice")}];
-  v18 = [MEMORY[0x277CBEAA8] date];
-  [v18 timeIntervalSinceDate:v24];
+  date4 = [MEMORY[0x277CBEAA8] date];
+  [date4 timeIntervalSinceDate:date];
   [v27 setFetchDuration:vcvtpd_u64_f64(v19)];
-  v20 = [v3 sqlController];
-  [v20 updateStatistics:v27];
+  sqlController2 = [contextCopy sqlController];
+  [sqlController2 updateStatistics:v27];
 
   v21 = v42[5];
   _Block_object_dispose(&v41, 8);
@@ -1142,10 +1142,10 @@ void __52__WLMigrator__fetchAccountsAndSummariesWithContext___block_invoke_3(uin
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_selectDataTypesWithContext:(id)a3
+- (id)_selectDataTypesWithContext:(id)context
 {
   v94 = *MEMORY[0x277D85DE8];
-  v58 = a3;
+  contextCopy = context;
   v85 = 0;
   v86 = &v85;
   v87 = 0x3032000000;
@@ -1153,16 +1153,16 @@ void __52__WLMigrator__fetchAccountsAndSummariesWithContext___block_invoke_3(uin
   v89 = __Block_byref_object_dispose__2;
   v90 = 0;
   v3 = objc_alloc(MEMORY[0x277CBEB38]);
-  v4 = [v58 migrators];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  migrators = [contextCopy migrators];
+  v5 = [v3 initWithCapacity:{objc_msgSend(migrators, "count")}];
 
   v55 = dispatch_semaphore_create(0);
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v6 = [v58 migrators];
-  v7 = [v6 countByEnumeratingWithState:&v81 objects:v93 count:16];
+  migrators2 = [contextCopy migrators];
+  v7 = [migrators2 countByEnumeratingWithState:&v81 objects:v93 count:16];
   if (v7)
   {
     v8 = *v82;
@@ -1172,20 +1172,20 @@ void __52__WLMigrator__fetchAccountsAndSummariesWithContext___block_invoke_3(uin
       {
         if (*v82 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(migrators2);
         }
 
         v10 = *(*(&v81 + 1) + 8 * i);
-        v11 = [v58 sqlController];
-        v12 = [v58 sourceDevice];
-        v13 = [v11 accountsForMigrator:v10 device:v12];
+        sqlController = [contextCopy sqlController];
+        sourceDevice = [contextCopy sourceDevice];
+        v13 = [sqlController accountsForMigrator:v10 device:sourceDevice];
 
         if ([v13 count])
         {
-          v54 = [v10 contentType];
+          contentType = [v10 contentType];
           _WLLog();
 
-          v14 = [v58 sqlController];
+          sqlController2 = [contextCopy sqlController];
           v77[0] = MEMORY[0x277D85DD0];
           v77[1] = 3221225472;
           v77[2] = __42__WLMigrator__selectDataTypesWithContext___block_invoke;
@@ -1196,12 +1196,12 @@ void __52__WLMigrator__fetchAccountsAndSummariesWithContext___block_invoke_3(uin
           v78 = v5;
           v15 = v55;
           v79 = v15;
-          [v14 totalSummaryItemSizeForAccounts:v13 addOverhead:1 completion:v77];
+          [sqlController2 totalSummaryItemSizeForAccounts:v13 addOverhead:1 completion:v77];
 
           dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
-          LOBYTE(v14) = v86[5] == 0;
+          LOBYTE(sqlController2) = v86[5] == 0;
 
-          if ((v14 & 1) == 0)
+          if ((sqlController2 & 1) == 0)
           {
 
             goto LABEL_12;
@@ -1209,7 +1209,7 @@ void __52__WLMigrator__fetchAccountsAndSummariesWithContext___block_invoke_3(uin
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v81 objects:v93 count:16];
+      v7 = [migrators2 countByEnumeratingWithState:&v81 objects:v93 count:16];
       if (v7)
       {
         continue;
@@ -1227,8 +1227,8 @@ LABEL_12:
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v16 = [v5 allKeys];
-    v17 = [v16 countByEnumeratingWithState:&v73 objects:v92 count:16];
+    allKeys = [v5 allKeys];
+    v17 = [allKeys countByEnumeratingWithState:&v73 objects:v92 count:16];
     if (v17)
     {
       v18 = *v74;
@@ -1238,18 +1238,18 @@ LABEL_12:
         {
           if (*v74 != v18)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(allKeys);
           }
 
           v20 = *(*(&v73 + 1) + 8 * j);
           v21 = [v5 objectForKeyedSubscript:v20];
-          v22 = [v21 unsignedLongLongValue];
+          unsignedLongLongValue = [v21 unsignedLongLongValue];
 
-          v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:(v22 * 1.2)];
+          v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:(unsignedLongLongValue * 1.2)];
           [v5 setObject:v23 forKeyedSubscript:v20];
         }
 
-        v17 = [v16 countByEnumeratingWithState:&v73 objects:v92 count:16];
+        v17 = [allKeys countByEnumeratingWithState:&v73 objects:v92 count:16];
       }
 
       while (v17);
@@ -1274,7 +1274,7 @@ LABEL_12:
   if (!v86[5])
   {
     _WLLog();
-    v27 = [v58 sourceDevice];
+    sourceDevice2 = [contextCopy sourceDevice];
     v63[0] = MEMORY[0x277D85DD0];
     v63[1] = 3221225472;
     v63[2] = __42__WLMigrator__selectDataTypesWithContext___block_invoke_2;
@@ -1284,7 +1284,7 @@ LABEL_12:
     v66 = &v85;
     v28 = v55;
     v64 = v28;
-    [(WLMigrator *)self _selectFromDataTypeToSizeMap:v5 device:v27 completion:v63];
+    [(WLMigrator *)self _selectFromDataTypeToSizeMap:v5 device:sourceDevice2 completion:v63];
 
     dispatch_semaphore_wait(v28, 0xFFFFFFFFFFFFFFFFLL);
   }
@@ -1302,15 +1302,15 @@ LABEL_12:
   if (!v33)
   {
     v34 = objc_alloc(MEMORY[0x277CBEB18]);
-    v35 = [v58 migrators];
-    v57 = [v34 initWithCapacity:{objc_msgSend(v35, "count")}];
+    migrators3 = [contextCopy migrators];
+    v57 = [v34 initWithCapacity:{objc_msgSend(migrators3, "count")}];
 
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v36 = [v58 migrators];
-    v37 = [v36 countByEnumeratingWithState:&v59 objects:v91 count:16];
+    migrators4 = [contextCopy migrators];
+    v37 = [migrators4 countByEnumeratingWithState:&v59 objects:v91 count:16];
     if (v37)
     {
       v38 = *v60;
@@ -1320,48 +1320,48 @@ LABEL_12:
         {
           if (*v60 != v38)
           {
-            objc_enumerationMutation(v36);
+            objc_enumerationMutation(migrators4);
           }
 
           v40 = *(*(&v59 + 1) + 8 * k);
           v41 = v68[5];
-          v42 = [v40 dataType];
-          LODWORD(v41) = [v41 containsObject:v42];
+          dataType = [v40 dataType];
+          LODWORD(v41) = [v41 containsObject:dataType];
 
           if (v41)
           {
             [v57 addObject:v40];
-            v43 = [v58 sqlController];
-            v44 = [v40 contentType];
-            v45 = [v43 statisticsForContentType:v44];
+            sqlController3 = [contextCopy sqlController];
+            contentType2 = [v40 contentType];
+            sqlController5 = [sqlController3 statisticsForContentType:contentType2];
 
-            [v45 setSelectedForMigration:1];
-            v46 = [v58 sqlController];
-            [v46 updateStatistics:v45];
+            [sqlController5 setSelectedForMigration:1];
+            sqlController4 = [contextCopy sqlController];
+            [sqlController4 updateStatistics:sqlController5];
 
-            v47 = [v40 dataType];
-            v48 = [v5 objectForKeyedSubscript:v47];
-            v49 = [v48 unsignedLongLongValue];
+            dataType2 = [v40 dataType];
+            v48 = [v5 objectForKeyedSubscript:dataType2];
+            unsignedLongLongValue2 = [v48 unsignedLongLongValue];
 
             [v40 enable];
-            [v40 setEstimatedDataSize:v49];
+            [v40 setEstimatedDataSize:unsignedLongLongValue2];
           }
 
           else
           {
-            v45 = [v58 sqlController];
-            v50 = [v58 sourceDevice];
-            [v45 deleteAccountsAndSummariesForMigrator:v40 device:v50];
+            sqlController5 = [contextCopy sqlController];
+            sourceDevice3 = [contextCopy sourceDevice];
+            [sqlController5 deleteAccountsAndSummariesForMigrator:v40 device:sourceDevice3];
           }
         }
 
-        v37 = [v36 countByEnumeratingWithState:&v59 objects:v91 count:16];
+        v37 = [migrators4 countByEnumeratingWithState:&v59 objects:v91 count:16];
       }
 
       while (v37);
     }
 
-    [v58 setMigrators:v57];
+    [contextCopy setMigrators:v57];
     v33 = v86[5];
   }
 
@@ -1431,12 +1431,12 @@ void __42__WLMigrator__selectDataTypesWithContext___block_invoke_2(uint64_t a1, 
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)_selectFromDataTypeToSizeMap:(id)a3 device:(id)a4 completion:(id)a5
+- (void)_selectFromDataTypeToSizeMap:(id)map device:(id)device completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 socketPort])
+  mapCopy = map;
+  deviceCopy = device;
+  completionCopy = completion;
+  if ([deviceCopy socketPort])
   {
     objc_initWeak(&location, self);
     v11 = dispatch_get_global_queue(25, 0);
@@ -1446,19 +1446,19 @@ void __42__WLMigrator__selectDataTypesWithContext___block_invoke_2(uint64_t a1, 
     v13[3] = &unk_279EB5AF8;
     objc_copyWeak(&v17, &location);
     v13[4] = self;
-    v14 = v9;
-    v15 = v8;
-    v16 = v10;
+    v14 = deviceCopy;
+    v15 = mapCopy;
+    v16 = completionCopy;
     dispatch_async(v11, v13);
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    v12 = [v8 allKeys];
-    (*(v10 + 2))(v10, v12, 0);
+    allKeys = [mapCopy allKeys];
+    (*(completionCopy + 2))(completionCopy, allKeys, 0);
   }
 }
 
@@ -1817,10 +1817,10 @@ void __61__WLMigrator__selectFromDataTypeToSizeMap_device_completion___block_inv
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-+ (id)_dataTypesAndSizesXMLDataFromMap:(id)a3
++ (id)_dataTypesAndSizesXMLDataFromMap:(id)map
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  mapCopy = map;
   v4 = [@"<?xml version=1.0?>\r\n" stringByAppendingString:@"<root>\r\n"];
   v5 = [v4 stringByAppendingString:@"<datasetsavailable>\r\n"];
 
@@ -1828,7 +1828,7 @@ void __61__WLMigrator__selectFromDataTypeToSizeMap_device_completion___block_inv
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = [v3 allKeys];
+  obj = [mapCopy allKeys];
   v6 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
   {
@@ -1850,9 +1850,9 @@ void __61__WLMigrator__selectFromDataTypeToSizeMap_device_completion___block_inv
         v13 = [v11 stringByAppendingString:v12];
 
         v14 = MEMORY[0x277CCACA8];
-        v15 = [v3 objectForKeyedSubscript:v10];
-        v16 = [v15 stringValue];
-        v17 = [v14 stringWithFormat:@"<datasetsize>%@</datasetsize>\r\n", v16];
+        v15 = [mapCopy objectForKeyedSubscript:v10];
+        stringValue = [v15 stringValue];
+        v17 = [v14 stringWithFormat:@"<datasetsize>%@</datasetsize>\r\n", stringValue];
         v18 = [v13 stringByAppendingString:v17];
 
         v5 = [v18 stringByAppendingString:@"</dataset>\r\n"];
@@ -1875,12 +1875,12 @@ void __61__WLMigrator__selectFromDataTypeToSizeMap_device_completion___block_inv
   return v21;
 }
 
-+ (void)_parseDataTypesXMLData:(id)a3 completion:(id)a4
++ (void)_parseDataTypesXMLData:(id)data completion:(id)completion
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  Memory = xmlReadMemory([v5 bytes], objc_msgSend(v5, "length"), 0, 0, 0);
+  dataCopy = data;
+  completionCopy = completion;
+  Memory = xmlReadMemory([dataCopy bytes], objc_msgSend(dataCopy, "length"), 0, 0, 0);
   if (Memory)
   {
     RootElement = xmlDocGetRootElement(Memory);
@@ -1953,7 +1953,7 @@ LABEL_11:
   if (!children || v17 || (v17 = children->children) == 0)
   {
 LABEL_19:
-    if (v6)
+    if (completionCopy)
     {
       goto LABEL_20;
     }
@@ -1993,7 +1993,7 @@ LABEL_18:
   v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
   v17 = [v24 errorWithDomain:v25 code:1 userInfo:v26];
 
-  if (!v6)
+  if (!completionCopy)
   {
     goto LABEL_24;
   }
@@ -2009,37 +2009,37 @@ LABEL_20:
     v22 = v18;
   }
 
-  (v6)[2](v6, v22, v17);
+  (completionCopy)[2](completionCopy, v22, v17);
 LABEL_24:
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_downloadDataWithContext:(id)a3 failureDetailsBlock:(id)a4
+- (id)_downloadDataWithContext:(id)context failureDetailsBlock:(id)block
 {
   v156 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v86 = a4;
+  contextCopy = context;
+  blockCopy = block;
   v144 = 0;
   v145 = &v144;
   v146 = 0x3032000000;
   v147 = __Block_byref_object_copy__2;
   v148 = __Block_byref_object_dispose__2;
   v149 = 0;
-  [v6 setCompletedDownloadSegmentCount:0];
-  [v6 setExpectedDownloadSegmentsRemaining:0];
-  [v6 setExpectedDownloadSegmentsRemainingForItemsWithEstimatedSizes:0];
+  [contextCopy setCompletedDownloadSegmentCount:0];
+  [contextCopy setExpectedDownloadSegmentsRemaining:0];
+  [contextCopy setExpectedDownloadSegmentsRemainingForItemsWithEstimatedSizes:0];
   dsema = dispatch_semaphore_create(0);
   v140 = 0u;
   v141 = 0u;
   v142 = 0u;
   v143 = 0u;
-  v7 = [v6 migrators];
-  v8 = [v7 countByEnumeratingWithState:&v140 objects:v155 count:16];
+  migrators = [contextCopy migrators];
+  v8 = [migrators countByEnumeratingWithState:&v140 objects:v155 count:16];
   if (v8)
   {
     v99 = *v141;
-    obj = v7;
+    obj = migrators;
     do
     {
       v9 = 0;
@@ -2053,49 +2053,49 @@ LABEL_24:
 
         v10 = *(*(&v140 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v6 sqlController];
-        v13 = [v6 sourceDevice];
-        v14 = [v12 accountsForMigrator:v10 device:v13];
+        sqlController = [contextCopy sqlController];
+        sourceDevice = [contextCopy sourceDevice];
+        v14 = [sqlController accountsForMigrator:v10 device:sourceDevice];
 
         if ([v14 count])
         {
-          v77 = [v10 contentType];
+          contentType = [v10 contentType];
           _WLLog();
 
-          v15 = [v6 sqlController];
-          v16 = [v15 totalSummaryDownloadedSegmentCountForAccounts:v14];
+          sqlController2 = [contextCopy sqlController];
+          v16 = [sqlController2 totalSummaryDownloadedSegmentCountForAccounts:v14];
 
-          v17 = [v10 contentType];
+          contentType2 = [v10 contentType];
           v81 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v16];
           _WLLog();
 
-          [v6 setCompletedDownloadSegmentCount:{objc_msgSend(v6, "completedDownloadSegmentCount", self, v17, v81) + v16}];
-          v78 = [v10 contentType];
+          [contextCopy setCompletedDownloadSegmentCount:{objc_msgSend(contextCopy, "completedDownloadSegmentCount", self, contentType2, v81) + v16}];
+          contentType3 = [v10 contentType];
           _WLLog();
 
-          v18 = [v6 sqlController];
-          v19 = [v18 totalSummaryDownloadSegmentCountForAccounts:v14];
+          sqlController3 = [contextCopy sqlController];
+          v19 = [sqlController3 totalSummaryDownloadSegmentCountForAccounts:v14];
 
-          v20 = [v10 contentType];
+          contentType4 = [v10 contentType];
           v82 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v19];
           _WLLog();
 
-          [v6 setExpectedDownloadSegmentsRemaining:{objc_msgSend(v6, "expectedDownloadSegmentsRemaining", self, v20, v82) + v19}];
+          [contextCopy setExpectedDownloadSegmentsRemaining:{objc_msgSend(contextCopy, "expectedDownloadSegmentsRemaining", self, contentType4, v82) + v19}];
           if (objc_opt_respondsToSelector())
           {
-            [v6 setExpectedDownloadSegmentsRemainingForItemsWithEstimatedSizes:{objc_msgSend(v6, "expectedDownloadSegmentsRemainingForItemsWithEstimatedSizes") + v19}];
+            [contextCopy setExpectedDownloadSegmentsRemainingForItemsWithEstimatedSizes:{objc_msgSend(contextCopy, "expectedDownloadSegmentsRemainingForItemsWithEstimatedSizes") + v19}];
           }
 
           else
           {
-            v79 = [v10 contentType];
+            contentType5 = [v10 contentType];
             _WLLog();
 
             v136 = 0;
             v137 = &v136;
             v138 = 0x2020000000;
             v139 = 0;
-            v21 = [v6 sqlController];
+            sqlController4 = [contextCopy sqlController];
             v133[0] = MEMORY[0x277D85DD0];
             v133[1] = 3221225472;
             v133[2] = __59__WLMigrator__downloadDataWithContext_failureDetailsBlock___block_invoke;
@@ -2105,10 +2105,10 @@ LABEL_24:
             v135 = &v136;
             v22 = dsema;
             v134 = v22;
-            [v21 totalSummaryItemSizeForAccounts:v14 addOverhead:0 completion:v133];
+            [sqlController4 totalSummaryItemSizeForAccounts:v14 addOverhead:0 completion:v133];
 
             dispatch_semaphore_wait(v22, 0xFFFFFFFFFFFFFFFFLL);
-            [v6 setExpectedDownloadBytesRemainingForItemsWithConcreteSizes:{v137[3] + objc_msgSend(v6, "expectedDownloadBytesRemainingForItemsWithConcreteSizes")}];
+            [contextCopy setExpectedDownloadBytesRemainingForItemsWithConcreteSizes:{v137[3] + objc_msgSend(contextCopy, "expectedDownloadBytesRemainingForItemsWithConcreteSizes")}];
 
             _Block_object_dispose(&v136, 8);
           }
@@ -2119,25 +2119,25 @@ LABEL_24:
       }
 
       while (v101 != v9);
-      v7 = obj;
+      migrators = obj;
       v8 = [obj countByEnumeratingWithState:&v140 objects:v155 count:16];
     }
 
     while (v8);
   }
 
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "completedDownloadSegmentCount")}];
-  v83 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "expectedDownloadSegmentsRemaining")}];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(contextCopy, "completedDownloadSegmentCount")}];
+  v83 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(contextCopy, "expectedDownloadSegmentsRemaining")}];
   _WLLog();
 
-  if ([v6 completedDownloadSegmentCount])
+  if ([contextCopy completedDownloadSegmentCount])
   {
-    v24 = [v6 completedDownloadSegmentCount];
-    v25 = [v6 expectedDownloadSegmentsRemaining];
-    v26 = [v6 completedDownloadSegmentCount];
-    if (v24 / (v26 + v25) * 0.8 <= 0.8)
+    completedDownloadSegmentCount = [contextCopy completedDownloadSegmentCount];
+    expectedDownloadSegmentsRemaining = [contextCopy expectedDownloadSegmentsRemaining];
+    completedDownloadSegmentCount2 = [contextCopy completedDownloadSegmentCount];
+    if (completedDownloadSegmentCount / (completedDownloadSegmentCount2 + expectedDownloadSegmentsRemaining) * 0.8 <= 0.8)
     {
-      v27 = v24 / (v26 + v25) * 0.8;
+      v27 = completedDownloadSegmentCount / (completedDownloadSegmentCount2 + expectedDownloadSegmentsRemaining) * 0.8;
     }
 
     else
@@ -2145,14 +2145,14 @@ LABEL_24:
       v27 = 0.8;
     }
 
-    v28 = [v6 completedDownloadSegmentCount];
-    v29 = [v6 expectedDownloadSegmentsRemaining];
+    completedDownloadSegmentCount3 = [contextCopy completedDownloadSegmentCount];
+    expectedDownloadSegmentsRemaining2 = [contextCopy expectedDownloadSegmentsRemaining];
     v85 = [MEMORY[0x277CCABB0] numberWithDouble:v27];
     _WLLog();
 
-    [(WLMigrator *)self _setProgressTo:v6 context:v27, v28, v29, v85];
+    [(WLMigrator *)self _setProgressTo:contextCopy context:v27, completedDownloadSegmentCount3, expectedDownloadSegmentsRemaining2, v85];
     v30 = dispatch_semaphore_create(0);
-    [v6 progress];
+    [contextCopy progress];
     v32 = v31;
     v131[0] = MEMORY[0x277D85DD0];
     v131[1] = 3221225472;
@@ -2160,14 +2160,14 @@ LABEL_24:
     v131[3] = &unk_279EB54A0;
     v33 = v30;
     v132 = v33;
-    [(WLMigrator *)self _updateSourceWithProgress:v6 remainingTime:v131 context:v32 completion:0.0];
+    [(WLMigrator *)self _updateSourceWithProgress:contextCopy remainingTime:v131 context:v32 completion:0.0];
   }
 
-  v34 = [MEMORY[0x277CBEAA8] date];
-  [v6 setThroughputSegmentStartDate:v34];
+  date = [MEMORY[0x277CBEAA8] date];
+  [contextCopy setThroughputSegmentStartDate:date];
 
-  v35 = [v6 migrators];
-  v36 = [v35 sortedArrayUsingComparator:&__block_literal_global_7];
+  migrators2 = [contextCopy migrators];
+  v36 = [migrators2 sortedArrayUsingComparator:&__block_literal_global_7];
 
   v129 = 0u;
   v130 = 0u;
@@ -2197,11 +2197,11 @@ LABEL_24:
       v100 = *(*(&v127 + 1) + 8 * v91);
 
       [v100 setState:@"downloading"];
-      v40 = [v6 sqlController];
-      v41 = [v100 contentType];
-      v98 = [v40 statisticsForContentType:v41];
+      sqlController5 = [contextCopy sqlController];
+      contentType6 = [v100 contentType];
+      v98 = [sqlController5 statisticsForContentType:contentType6];
 
-      v90 = [MEMORY[0x277CBEAA8] date];
+      date2 = [MEMORY[0x277CBEAA8] date];
       if ([(WLMigrator *)self _shouldForceDownloadError])
       {
         _WLLog();
@@ -2211,7 +2211,7 @@ LABEL_24:
         v69 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v153 forKeys:&v152 count:{1, self}];
         v70 = [v68 errorWithDomain:*MEMORY[0x277D7B8F8] code:1 userInfo:v69];
         v92 = v69;
-        v71 = v145[5];
+        contentType7 = v145[5];
         v145[5] = v70;
 LABEL_53:
 
@@ -2220,17 +2220,17 @@ LABEL_53:
       }
 
       v42 = objc_opt_respondsToSelector();
-      v43 = [v6 sqlController];
-      v44 = [v6 sourceDevice];
-      v45 = [v43 accountsForMigrator:v100 device:v44];
+      sqlController6 = [contextCopy sqlController];
+      sourceDevice2 = [contextCopy sourceDevice];
+      v45 = [sqlController6 accountsForMigrator:v100 device:sourceDevice2];
 
       v125 = 0u;
       v126 = 0u;
       v123 = 0u;
       v124 = 0u;
-      v46 = v45;
-      v47 = [v46 countByEnumeratingWithState:&v123 objects:v151 count:16];
-      v92 = v46;
+      date3 = v45;
+      v47 = [date3 countByEnumeratingWithState:&v123 objects:v151 count:16];
+      v92 = date3;
       if (!v47)
       {
         goto LABEL_46;
@@ -2251,8 +2251,8 @@ LABEL_25:
 
         v95 = v49;
         v50 = *(*(&v123 + 1) + 8 * v49);
-        v51 = [v6 sqlController];
-        v52 = [v51 summariesForAccount:v50];
+        sqlController7 = [contextCopy sqlController];
+        v52 = [sqlController7 summariesForAccount:v50];
 
         v121 = 0u;
         v122 = 0u;
@@ -2275,10 +2275,10 @@ LABEL_25:
               v57 = *(*(&v119 + 1) + 8 * i);
               if ([v57 didDownload])
               {
-                v58 = [v57 identifier];
+                identifier = [v57 identifier];
                 [v50 identifier];
-                v84 = v80 = v58;
-                v76 = self;
+                v84 = v80 = identifier;
+                selfCopy2 = self;
                 _WLLog();
               }
 
@@ -2289,11 +2289,11 @@ LABEL_25:
                   v59 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v57, "itemSize")}];
                   [v57 dataFilePath];
                   v84 = v80 = v59;
-                  v76 = self;
+                  selfCopy2 = self;
                   _WLLog();
 
-                  v60 = [v6 dataCoordinator];
-                  v61 = [v6 dataSource];
+                  dataCoordinator = [contextCopy dataCoordinator];
+                  dataSource = [contextCopy dataSource];
                   v116[0] = MEMORY[0x277D85DD0];
                   v116[1] = 3221225472;
                   v116[2] = __59__WLMigrator__downloadDataWithContext_failureDetailsBlock___block_invoke_5;
@@ -2301,7 +2301,7 @@ LABEL_25:
                   v116[4] = self;
                   v116[5] = v57;
                   v118 = v97;
-                  v117 = v6;
+                  v117 = contextCopy;
                   v111[0] = MEMORY[0x277D85DD0];
                   v111[1] = 3221225472;
                   v111[2] = __59__WLMigrator__downloadDataWithContext_failureDetailsBlock___block_invoke_7;
@@ -2312,25 +2312,25 @@ LABEL_25:
                   v115 = &v144;
                   v113 = v98;
                   v114 = dsema;
-                  [v60 downloadFileFromSource:v61 forMigrator:v100 summary:v57 account:v50 segmentCompletion:v116 completion:v111];
+                  [dataCoordinator downloadFileFromSource:dataSource forMigrator:v100 summary:v57 account:v50 segmentCompletion:v116 completion:v111];
                 }
 
                 else
                 {
-                  v62 = [v6 dataCoordinator];
-                  v63 = [v6 dataSource];
+                  dataCoordinator2 = [contextCopy dataCoordinator];
+                  dataSource2 = [contextCopy dataSource];
                   v103[0] = MEMORY[0x277D85DD0];
                   v103[1] = 3221225472;
                   v103[2] = __59__WLMigrator__downloadDataWithContext_failureDetailsBlock___block_invoke_8;
                   v103[3] = &unk_279EB5BB8;
-                  v104 = v6;
+                  v104 = contextCopy;
                   v105 = v57;
                   v106 = v98;
-                  v107 = self;
+                  selfCopy3 = self;
                   v110 = v97;
                   v109 = &v144;
                   v108 = dsema;
-                  [v62 downloadDataFromSource:v63 forMigrator:v100 summary:v57 account:v50 completion:v103];
+                  [dataCoordinator2 downloadDataFromSource:dataSource2 forMigrator:v100 summary:v57 account:v50 completion:v103];
                 }
 
                 dispatch_semaphore_wait(dsema, 0xFFFFFFFFFFFFFFFFLL);
@@ -2371,12 +2371,12 @@ LABEL_41:
 
       if (v48)
       {
-        v46 = [MEMORY[0x277CBEAA8] date];
-        [v46 timeIntervalSinceDate:v90];
+        date3 = [MEMORY[0x277CBEAA8] date];
+        [date3 timeIntervalSinceDate:date2];
         v66 = vcvtpd_u64_f64(v65);
         [v98 setDownloadDuration:{objc_msgSend(v98, "downloadDuration") + v66}];
-        v67 = [v6 sqlController];
-        [v67 updateStatistics:v98];
+        sqlController8 = [contextCopy sqlController];
+        [sqlController8 updateStatistics:v98];
 
         [v100 addWorkingTime:v66];
 LABEL_46:
@@ -2384,8 +2384,8 @@ LABEL_46:
 
       if (v145[5])
       {
-        v71 = [v100 contentType];
-        v86[2](v86, v71);
+        contentType7 = [v100 contentType];
+        blockCopy[2](blockCopy, contentType7);
         goto LABEL_53;
       }
 
@@ -2619,46 +2619,46 @@ LABEL_9:
   dispatch_semaphore_signal(*(a1 + 64));
 }
 
-- (double)_didFinishDownloadingSegmentOfSize:(unint64_t)a3 expectedSize:(unint64_t)a4 migratorEstimatesItemSizes:(BOOL)a5 endDate:(id)a6 context:(id)a7
+- (double)_didFinishDownloadingSegmentOfSize:(unint64_t)size expectedSize:(unint64_t)expectedSize migratorEstimatesItemSizes:(BOOL)sizes endDate:(id)date context:(id)context
 {
-  v8 = a5;
-  v12 = a6;
-  v13 = a7;
-  [v13 setCompletedDownloadSegmentCount:{objc_msgSend(v13, "completedDownloadSegmentCount") + 1}];
-  [v13 setExpectedDownloadSegmentsRemaining:{objc_msgSend(v13, "expectedDownloadSegmentsRemaining") - 1}];
-  if (v8)
+  sizesCopy = sizes;
+  dateCopy = date;
+  contextCopy = context;
+  [contextCopy setCompletedDownloadSegmentCount:{objc_msgSend(contextCopy, "completedDownloadSegmentCount") + 1}];
+  [contextCopy setExpectedDownloadSegmentsRemaining:{objc_msgSend(contextCopy, "expectedDownloadSegmentsRemaining") - 1}];
+  if (sizesCopy)
   {
-    [v13 setExpectedDownloadSegmentsRemainingForItemsWithEstimatedSizes:{objc_msgSend(v13, "expectedDownloadSegmentsRemainingForItemsWithEstimatedSizes") - 1}];
+    [contextCopy setExpectedDownloadSegmentsRemainingForItemsWithEstimatedSizes:{objc_msgSend(contextCopy, "expectedDownloadSegmentsRemainingForItemsWithEstimatedSizes") - 1}];
   }
 
   else
   {
-    [v13 setExpectedDownloadBytesRemainingForItemsWithConcreteSizes:{objc_msgSend(v13, "expectedDownloadBytesRemainingForItemsWithConcreteSizes") - a4}];
+    [contextCopy setExpectedDownloadBytesRemainingForItemsWithConcreteSizes:{objc_msgSend(contextCopy, "expectedDownloadBytesRemainingForItemsWithConcreteSizes") - expectedSize}];
   }
 
   while (1)
   {
-    v14 = [v13 throughputSamples];
-    if ([v14 count] < 0x14)
+    throughputSamples = [contextCopy throughputSamples];
+    if ([throughputSamples count] < 0x14)
     {
       break;
     }
 
 LABEL_8:
-    v20 = [v13 throughputSamples];
-    [v20 removeObjectAtIndex:0];
+    throughputSamples2 = [contextCopy throughputSamples];
+    [throughputSamples2 removeObjectAtIndex:0];
 
-    v21 = [v13 throughputSamples];
-    v22 = [v21 firstObject];
-    [v13 setThroughputBytesInCurrentPeriod:{objc_msgSend(v13, "throughputBytesInCurrentPeriod") - objc_msgSend(v22, "bytes")}];
+    throughputSamples3 = [contextCopy throughputSamples];
+    firstObject = [throughputSamples3 firstObject];
+    [contextCopy setThroughputBytesInCurrentPeriod:{objc_msgSend(contextCopy, "throughputBytesInCurrentPeriod") - objc_msgSend(firstObject, "bytes")}];
 
-    [v13 setThroughputSegmentsInCurrentPeriod:{objc_msgSend(v13, "throughputSegmentsInCurrentPeriod") - 1}];
+    [contextCopy setThroughputSegmentsInCurrentPeriod:{objc_msgSend(contextCopy, "throughputSegmentsInCurrentPeriod") - 1}];
   }
 
-  v15 = [v13 throughputSamples];
-  v16 = [v15 firstObject];
-  v17 = [v16 endDate];
-  [v12 timeIntervalSinceDate:v17];
+  throughputSamples4 = [contextCopy throughputSamples];
+  firstObject2 = [throughputSamples4 firstObject];
+  endDate = [firstObject2 endDate];
+  [dateCopy timeIntervalSinceDate:endDate];
   v19 = v18;
 
   if (v19 > 120.0)
@@ -2667,19 +2667,19 @@ LABEL_8:
   }
 
   v23 = objc_alloc_init(WLThroughputSample);
-  v24 = [v13 throughputSegmentStartDate];
-  [(WLThroughputSample *)v23 setStartDate:v24];
+  throughputSegmentStartDate = [contextCopy throughputSegmentStartDate];
+  [(WLThroughputSample *)v23 setStartDate:throughputSegmentStartDate];
 
-  [(WLThroughputSample *)v23 setEndDate:v12];
-  v25 = [(WLThroughputSample *)v23 startDate];
-  [v12 timeIntervalSinceDate:v25];
+  [(WLThroughputSample *)v23 setEndDate:dateCopy];
+  startDate = [(WLThroughputSample *)v23 startDate];
+  [dateCopy timeIntervalSinceDate:startDate];
   [(WLThroughputSample *)v23 setDuration:?];
 
-  [(WLThroughputSample *)v23 setBytes:a3];
-  [(WLThroughputSample *)v23 setExpectedBytes:a4];
+  [(WLThroughputSample *)v23 setBytes:size];
+  [(WLThroughputSample *)v23 setExpectedBytes:expectedSize];
   [(WLThroughputSample *)v23 duration];
   v27 = v26;
-  v28 = [(WLThroughputSample *)v23 bytes];
+  bytes = [(WLThroughputSample *)v23 bytes];
   [(WLThroughputSample *)v23 duration];
   if (v29 == 0.0)
   {
@@ -2688,46 +2688,46 @@ LABEL_8:
 
   else
   {
-    v30 = [(WLThroughputSample *)v23 bytes];
+    bytes2 = [(WLThroughputSample *)v23 bytes];
     [(WLThroughputSample *)v23 duration];
-    v32 = (v30 / v31);
+    v32 = (bytes2 / v31);
   }
 
   v58 = v32;
   _WLLog();
-  v33 = [v13 throughputSamples];
-  [v33 addObject:v23];
+  throughputSamples5 = [contextCopy throughputSamples];
+  [throughputSamples5 addObject:v23];
 
-  [v13 setThroughputBytesInCurrentPeriod:{objc_msgSend(v13, "throughputBytesInCurrentPeriod") + -[WLThroughputSample bytes](v23, "bytes")}];
-  [v13 setThroughputSegmentsInCurrentPeriod:{objc_msgSend(v13, "throughputSegmentsInCurrentPeriod") + 1}];
-  [v13 setThroughputSegmentStartDate:v12];
-  v34 = [v13 throughputSamples];
-  v35 = [v34 firstObject];
-  v36 = [v35 startDate];
-  [v12 timeIntervalSinceDate:v36];
+  [contextCopy setThroughputBytesInCurrentPeriod:{objc_msgSend(contextCopy, "throughputBytesInCurrentPeriod") + -[WLThroughputSample bytes](v23, "bytes")}];
+  [contextCopy setThroughputSegmentsInCurrentPeriod:{objc_msgSend(contextCopy, "throughputSegmentsInCurrentPeriod") + 1}];
+  [contextCopy setThroughputSegmentStartDate:dateCopy];
+  throughputSamples6 = [contextCopy throughputSamples];
+  firstObject3 = [throughputSamples6 firstObject];
+  startDate2 = [firstObject3 startDate];
+  [dateCopy timeIntervalSinceDate:startDate2];
   v38 = v37;
 
   v39 = -1.0;
   if (v38 > 0.0)
   {
-    if ([v13 throughputBytesInCurrentPeriod])
+    if ([contextCopy throughputBytesInCurrentPeriod])
     {
-      if ([v13 throughputSegmentsInCurrentPeriod])
+      if ([contextCopy throughputSegmentsInCurrentPeriod])
       {
-        v40 = [v13 throughputBytesInCurrentPeriod] / v38;
-        v41 = [v13 throughputSegmentsInCurrentPeriod] / v38;
-        v42 = [v13 throughputBytesInCurrentPeriod];
-        v60 = [v13 throughputSegmentsInCurrentPeriod];
+        v40 = [contextCopy throughputBytesInCurrentPeriod] / v38;
+        v41 = [contextCopy throughputSegmentsInCurrentPeriod] / v38;
+        throughputBytesInCurrentPeriod = [contextCopy throughputBytesInCurrentPeriod];
+        throughputSegmentsInCurrentPeriod = [contextCopy throughputSegmentsInCurrentPeriod];
         v56 = v38;
         _WLLog();
         if (v40 > 0.0 && v41 > 0.0)
         {
-          v43 = ([v13 expectedDownloadBytesRemainingForItemsWithConcreteSizes] / v40);
-          v44 = ([v13 expectedDownloadSegmentsRemainingForItemsWithEstimatedSizes] / v41);
+          v43 = ([contextCopy expectedDownloadBytesRemainingForItemsWithConcreteSizes] / v40);
+          v44 = ([contextCopy expectedDownloadSegmentsRemainingForItemsWithEstimatedSizes] / v41);
           v39 = (v44 + v43);
-          v45 = [v13 expectedDownloadBytesRemainingForItemsWithConcreteSizes];
-          v59 = [v13 expectedDownloadSegmentsRemainingForItemsWithEstimatedSizes];
-          v56 = *&v45;
+          expectedDownloadBytesRemainingForItemsWithConcreteSizes = [contextCopy expectedDownloadBytesRemainingForItemsWithConcreteSizes];
+          expectedDownloadSegmentsRemainingForItemsWithEstimatedSizes = [contextCopy expectedDownloadSegmentsRemainingForItemsWithEstimatedSizes];
+          v56 = *&expectedDownloadBytesRemainingForItemsWithConcreteSizes;
           _WLLog();
           if (v44 + v43)
           {
@@ -2747,21 +2747,21 @@ LABEL_8:
               v47 = @"items with sizes";
             }
 
-            v48 = [MEMORY[0x277CBEAA8] date];
-            v49 = [v13 timeEstimateAccuracyTracker];
-            [v49 didCalculateTimeEstimate:v39 atDate:v48 associatedObject:v47];
+            date = [MEMORY[0x277CBEAA8] date];
+            timeEstimateAccuracyTracker = [contextCopy timeEstimateAccuracyTracker];
+            [timeEstimateAccuracyTracker didCalculateTimeEstimate:v39 atDate:date associatedObject:v47];
           }
         }
       }
     }
   }
 
-  v50 = [v13 completedDownloadSegmentCount];
-  v51 = [v13 expectedDownloadSegmentsRemaining];
-  v52 = [v13 completedDownloadSegmentCount];
-  if (v50 / (v52 + v51) * 0.8 <= 0.8)
+  completedDownloadSegmentCount = [contextCopy completedDownloadSegmentCount];
+  expectedDownloadSegmentsRemaining = [contextCopy expectedDownloadSegmentsRemaining];
+  completedDownloadSegmentCount2 = [contextCopy completedDownloadSegmentCount];
+  if (completedDownloadSegmentCount / (completedDownloadSegmentCount2 + expectedDownloadSegmentsRemaining) * 0.8 <= 0.8)
   {
-    v53 = v50 / (v52 + v51) * 0.8;
+    v53 = completedDownloadSegmentCount / (completedDownloadSegmentCount2 + expectedDownloadSegmentsRemaining) * 0.8;
   }
 
   else
@@ -2772,24 +2772,24 @@ LABEL_8:
   v57 = [MEMORY[0x277CCABB0] numberWithDouble:v53];
   _WLLog();
 
-  [(WLMigrator *)self _setProgressTo:v13 context:v53, v57];
+  [(WLMigrator *)self _setProgressTo:contextCopy context:v53, v57];
   if (v39 != -1.0)
   {
-    v54 = [v13 delegate];
-    [v54 dataMigrator:self didUpdateRemainingDownloadTime:v39];
+    delegate = [contextCopy delegate];
+    [delegate dataMigrator:self didUpdateRemainingDownloadTime:v39];
   }
 
   return v39;
 }
 
-- (void)_reportTimeEstimatesWithContext:(id)a3
+- (void)_reportTimeEstimatesWithContext:(id)context
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v6 = [v3 date];
-  v5 = [v4 timeEstimateAccuracyTracker];
+  contextCopy = context;
+  date = [v3 date];
+  timeEstimateAccuracyTracker = [contextCopy timeEstimateAccuracyTracker];
 
-  [v5 estimatesDidResolveAtDate:v6 block:&__block_literal_global_362];
+  [timeEstimateAccuracyTracker estimatesDidResolveAtDate:date block:&__block_literal_global_362];
 }
 
 void __46__WLMigrator__reportTimeEstimatesWithContext___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, void *a5)
@@ -2800,17 +2800,17 @@ void __46__WLMigrator__reportTimeEstimatesWithContext___block_invoke(uint64_t a1
   [v10 didResolveTimeEstimate:a2 forDownloadTask:v9 threshold:a3 actualTime:a4];
 }
 
-- (id)_importDataWithContext:(id)a3 failureDetailsBlock:(id)a4
+- (id)_importDataWithContext:(id)context failureDetailsBlock:(id)block
 {
   v89 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  blockCopy = block;
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v7 = [v5 migrators];
-  v61 = [v7 countByEnumeratingWithState:&v83 objects:v88 count:16];
+  migrators = [contextCopy migrators];
+  v61 = [migrators countByEnumeratingWithState:&v83 objects:v88 count:16];
   if (!v61)
   {
 
@@ -2821,12 +2821,12 @@ void __46__WLMigrator__reportTimeEstimatesWithContext___block_invoke(uint64_t a1
 
   v8 = 0;
   v68 = 0;
-  obj = v7;
+  obj = migrators;
   v60 = *v84;
   v9 = &selRef_createFileAtPath_contents_attributes_;
   v10 = &selRef_createFileAtPath_contents_attributes_;
   v11 = &selRef_createFileAtPath_contents_attributes_;
-  v65 = v6;
+  v65 = blockCopy;
   while (2)
   {
     v12 = 0;
@@ -2846,32 +2846,32 @@ void __46__WLMigrator__reportTimeEstimatesWithContext___block_invoke(uint64_t a1
 
       [v8 setState:@"importing"];
       context = objc_autoreleasePoolPush();
-      v15 = [v5 sqlController];
-      v16 = [v8 contentType];
-      v17 = [v15 statisticsForContentType:v16];
+      sqlController = [contextCopy sqlController];
+      contentType = [v8 contentType];
+      v17 = [sqlController statisticsForContentType:contentType];
 
-      v18 = [v17 importStartDate];
+      importStartDate = [v17 importStartDate];
 
-      if (!v18)
+      if (!importStartDate)
       {
-        v19 = [MEMORY[0x277CBEAA8] date];
-        [v17 setImportStartDate:v19];
+        date = [MEMORY[0x277CBEAA8] date];
+        [v17 setImportStartDate:date];
 
         [v17 setImportStartBytesFree:{+[WLMigrator _bytesFreeOnDevice](WLMigrator, "_bytesFreeOnDevice")}];
-        v20 = [v5 sqlController];
-        [v20 updateStatistics:v17];
+        sqlController2 = [contextCopy sqlController];
+        [sqlController2 updateStatistics:v17];
       }
 
-      v21 = [v5 sqlController];
-      v22 = [v5 sourceDevice];
-      v23 = [v21 accountsForMigrator:v8 device:v22];
+      sqlController3 = [contextCopy sqlController];
+      sourceDevice = [contextCopy sourceDevice];
+      v23 = [sqlController3 accountsForMigrator:v8 device:sourceDevice];
 
       if (objc_opt_respondsToSelector())
       {
         v59 = v17;
-        v24 = [v5 sqlController];
+        sqlController4 = [contextCopy sqlController];
         v58 = v23;
-        v25 = [v24 summariesForAccounts:v23 sortedByModifiedDate:0];
+        v25 = [sqlController4 summariesForAccounts:v23 sortedByModifiedDate:0];
 
         v81 = 0u;
         v82 = 0u;
@@ -2894,8 +2894,8 @@ void __46__WLMigrator__reportTimeEstimatesWithContext___block_invoke(uint64_t a1
 
               v31 = *(*(&v79 + 1) + 8 * i);
               v32 = objc_autoreleasePoolPush();
-              v33 = [v5 sqlController];
-              v34 = [v33 dataForSummary:v31];
+              sqlController5 = [contextCopy sqlController];
+              v34 = [sqlController5 dataForSummary:v31];
 
               [v8 performPreImportPhaseForSummary:v31 data:v34];
               objc_autoreleasePoolPop(v32);
@@ -2913,34 +2913,34 @@ void __46__WLMigrator__reportTimeEstimatesWithContext___block_invoke(uint64_t a1
 
       if (objc_opt_respondsToSelector())
       {
-        v35 = [v8 importWillBegin];
+        importWillBegin = [v8 importWillBegin];
 
-        if (v35)
+        if (importWillBegin)
         {
-          v53 = [v8 contentType];
+          contentType2 = [v8 contentType];
           v54 = v23;
-          v6 = v65;
-          v65[2](v65, v53);
+          blockCopy = v65;
+          v65[2](v65, contentType2);
 
           objc_autoreleasePoolPop(context);
-          v68 = v35;
+          v68 = importWillBegin;
           goto LABEL_32;
         }
 
         v68 = 0;
       }
 
-      v36 = [v5 sqlController];
-      v37 = [v36 summariesForAccounts:v23 sortedByModifiedDate:1];
+      sqlController6 = [contextCopy sqlController];
+      v37 = [sqlController6 summariesForAccounts:v23 sortedByModifiedDate:1];
 
       v77[0] = MEMORY[0x277D85DD0];
       v77[1] = 3221225472;
       v77[2] = __57__WLMigrator__importDataWithContext_failureDetailsBlock___block_invoke;
       v77[3] = &unk_279EB5C00;
-      v38 = v5;
+      v38 = contextCopy;
       v78 = v38;
       v39 = MEMORY[0x2743DF630](v77);
-      v40 = [v38 dataCoordinator];
+      dataCoordinator = [v38 dataCoordinator];
       v75[0] = MEMORY[0x277D85DD0];
       v75[1] = 3221225472;
       v75[2] = __57__WLMigrator__importDataWithContext_failureDetailsBlock___block_invoke_2;
@@ -2961,18 +2961,18 @@ void __46__WLMigrator__reportTimeEstimatesWithContext___block_invoke(uint64_t a1
       v73 = v8;
       v45 = v17;
       v74 = v45;
-      [v40 importDataForMigrator:v8 fromProvider:v39 forSummaries:v42 summaryStart:v75 summaryCompletion:v69];
+      [dataCoordinator importDataForMigrator:v8 fromProvider:v39 forSummaries:v42 summaryStart:v75 summaryCompletion:v69];
 
       if (objc_opt_respondsToSelector())
       {
-        v46 = [v8 importDidEnd];
+        importDidEnd = [v8 importDidEnd];
 
-        if (v46)
+        if (importDidEnd)
         {
-          v47 = [v8 contentType];
-          v65[2](v65, v47);
+          contentType3 = [v8 contentType];
+          v65[2](v65, contentType3);
           v48 = 0;
-          v68 = v46;
+          v68 = importDidEnd;
           goto LABEL_25;
         }
 
@@ -2980,15 +2980,15 @@ void __46__WLMigrator__reportTimeEstimatesWithContext___block_invoke(uint64_t a1
       }
 
       [v45 setImportEndBytesFree:{+[WLMigrator _bytesFreeOnDevice](WLMigrator, "_bytesFreeOnDevice")}];
-      v49 = [MEMORY[0x277CBEAA8] date];
-      [v45 setImportEndDate:v49];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [v45 setImportEndDate:date2];
 
-      v50 = [v44 sqlController];
-      [v50 updateStatistics:v45];
+      sqlController7 = [v44 sqlController];
+      [sqlController7 updateStatistics:v45];
 
-      v47 = [v45 importEndDate];
-      v51 = [v45 importStartDate];
-      [v47 timeIntervalSinceDate:v51];
+      contentType3 = [v45 importEndDate];
+      importStartDate2 = [v45 importStartDate];
+      [contentType3 timeIntervalSinceDate:importStartDate2];
       [v8 addWorkingTime:v52];
 
       v48 = 1;
@@ -2997,12 +2997,12 @@ LABEL_25:
       objc_autoreleasePoolPop(context);
       if (!v48)
       {
-        v6 = v65;
+        blockCopy = v65;
         goto LABEL_32;
       }
 
       [v8 setState:@"imported"];
-      v6 = v65;
+      blockCopy = v65;
       v12 = v66 + 1;
       v13 = v8;
     }
@@ -3112,134 +3112,134 @@ void __57__WLMigrator__importDataWithContext_failureDetailsBlock___block_invoke_
   [v23 updateStatistics:*(a1 + 72)];
 }
 
-- (double)_progressIncrementForImportedSummary:(id)a3 summaries:(id)a4 accounts:(id)a5 migrators:(id)a6
+- (double)_progressIncrementForImportedSummary:(id)summary summaries:(id)summaries accounts:(id)accounts migrators:(id)migrators
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = 1.0 / [a4 count];
-  v11 = [v9 count];
+  migratorsCopy = migrators;
+  accountsCopy = accounts;
+  v10 = 1.0 / [summaries count];
+  v11 = [accountsCopy count];
 
-  v12 = [v8 count];
+  v12 = [migratorsCopy count];
   return v10 * (1.0 / v11) * (1.0 / v12) * 0.2;
 }
 
-- (void)_logStatisticsAndSendStatisticsTelemetryWithContext:(id)a3
+- (void)_logStatisticsAndSendStatisticsTelemetryWithContext:(id)context
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 sourceDevice];
-  v6 = [v5 isLocal];
+  contextCopy = context;
+  sourceDevice = [contextCopy sourceDevice];
+  isLocal = [sourceDevice isLocal];
 
   v7 = v3;
   _WLLog();
-  v8 = [v4 sqlController];
+  sqlController = [contextCopy sqlController];
   v9 = +[WLStatistics fetchContentType];
-  v10 = [v8 statisticsForContentType:v9];
+  v10 = [sqlController statisticsForContentType:v9];
 
   v42 = v10;
-  v39 = [v10 fetchLogString];
+  fetchLogString = [v10 fetchLogString];
   _WLLog();
 
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v11 = [v4 migrators];
-  v59 = [v11 countByEnumeratingWithState:&v60 objects:v64 count:16];
+  migrators = [contextCopy migrators];
+  v59 = [migrators countByEnumeratingWithState:&v60 objects:v64 count:16];
   if (v59)
   {
     v57 = *v61;
-    v44 = v6;
-    v43 = v4;
+    v44 = isLocal;
+    v43 = contextCopy;
     do
     {
       for (i = 0; i != v59; ++i)
       {
         if (*v61 != v57)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(migrators);
         }
 
         v13 = *(*(&v60 + 1) + 8 * i);
-        v14 = [v4 sqlController];
-        v15 = [v13 contentType];
-        v16 = [v14 statisticsForContentType:v15];
+        sqlController2 = [contextCopy sqlController];
+        contentType = [v13 contentType];
+        v16 = [sqlController2 statisticsForContentType:contentType];
 
         v40 = v16;
         _WLLog();
-        if ((v6 & 1) == 0)
+        if ((isLocal & 1) == 0)
         {
-          v17 = [v13 contentType];
-          v18 = [v17 isEqualToString:@"unsupported"];
+          contentType2 = [v13 contentType];
+          v18 = [contentType2 isEqualToString:@"unsupported"];
 
           if ((v18 & 1) == 0)
           {
             if (v16)
             {
-              v49 = [MEMORY[0x277D7B8D0] sharedInstance];
-              v55 = [v13 contentType];
-              v51 = [v16 downloadByteCount];
-              v50 = [v16 importRecordCount];
-              v48 = [v16 importFailedRecordCount];
-              v47 = [v16 downloadDuration];
-              v46 = [v16 importDuration];
-              v53 = [v4 metadata];
-              v45 = [v53 deviceOSVersion];
-              v19 = [v4 metadata];
-              v20 = [v19 deviceModel];
-              v21 = [v4 metadata];
-              [v21 clientVersion];
-              v22 = v11;
+              mEMORY[0x277D7B8D0] = [MEMORY[0x277D7B8D0] sharedInstance];
+              contentType3 = [v13 contentType];
+              downloadByteCount = [v16 downloadByteCount];
+              importRecordCount = [v16 importRecordCount];
+              importFailedRecordCount = [v16 importFailedRecordCount];
+              downloadDuration = [v16 downloadDuration];
+              importDuration = [v16 importDuration];
+              metadata = [contextCopy metadata];
+              deviceOSVersion = [metadata deviceOSVersion];
+              metadata2 = [contextCopy metadata];
+              deviceModel = [metadata2 deviceModel];
+              metadata3 = [contextCopy metadata];
+              [metadata3 clientVersion];
+              v22 = migrators;
               v24 = v23 = v7;
-              [v49 contentTypeDidComplete:v55 downloadByteCount:v51 importRecordCount:v50 importFailedRecordCount:v48 downloadDuration:v47 importDuration:v46 android:v45 model:v20 version:v24];
+              [mEMORY[0x277D7B8D0] contentTypeDidComplete:contentType3 downloadByteCount:downloadByteCount importRecordCount:importRecordCount importFailedRecordCount:importFailedRecordCount downloadDuration:downloadDuration importDuration:importDuration android:deviceOSVersion model:deviceModel version:v24];
 
               v7 = v23;
-              v11 = v22;
+              migrators = v22;
 
-              v6 = v44;
-              v4 = v43;
+              isLocal = v44;
+              contextCopy = v43;
             }
           }
         }
 
-        v25 = [v4 aggregateStatistics];
-        [v25 setDownloadDuration:{objc_msgSend(v25, "downloadDuration") + objc_msgSend(v16, "downloadDuration")}];
+        aggregateStatistics = [contextCopy aggregateStatistics];
+        [aggregateStatistics setDownloadDuration:{objc_msgSend(aggregateStatistics, "downloadDuration") + objc_msgSend(v16, "downloadDuration")}];
 
-        v26 = [v4 aggregateStatistics];
-        [v26 setDownloadByteCount:{objc_msgSend(v26, "downloadByteCount") + objc_msgSend(v16, "downloadByteCount")}];
+        aggregateStatistics2 = [contextCopy aggregateStatistics];
+        [aggregateStatistics2 setDownloadByteCount:{objc_msgSend(aggregateStatistics2, "downloadByteCount") + objc_msgSend(v16, "downloadByteCount")}];
 
-        v27 = [v4 aggregateStatistics];
-        [v27 setImportRecordCount:{objc_msgSend(v27, "importRecordCount") + objc_msgSend(v16, "importRecordCount")}];
+        aggregateStatistics3 = [contextCopy aggregateStatistics];
+        [aggregateStatistics3 setImportRecordCount:{objc_msgSend(aggregateStatistics3, "importRecordCount") + objc_msgSend(v16, "importRecordCount")}];
 
-        v28 = [v4 aggregateStatistics];
-        [v28 setImportFailedRecordCount:{objc_msgSend(v28, "importFailedRecordCount") + objc_msgSend(v16, "importFailedRecordCount")}];
+        aggregateStatistics4 = [contextCopy aggregateStatistics];
+        [aggregateStatistics4 setImportFailedRecordCount:{objc_msgSend(aggregateStatistics4, "importFailedRecordCount") + objc_msgSend(v16, "importFailedRecordCount")}];
       }
 
-      v59 = [v11 countByEnumeratingWithState:&v60 objects:v64 count:16];
+      v59 = [migrators countByEnumeratingWithState:&v60 objects:v64 count:16];
     }
 
     while (v59);
   }
 
-  v41 = [v4 aggregateStatistics];
+  aggregateStatistics5 = [contextCopy aggregateStatistics];
   _WLLog();
 
-  if ((v6 & 1) == 0)
+  if ((isLocal & 1) == 0)
   {
-    v29 = [v4 aggregateStatistics];
-    v30 = [MEMORY[0x277D7B8D0] sharedInstance];
-    v58 = [v29 downloadByteCount];
-    v56 = [v29 importRecordCount];
-    v54 = [v29 importFailedRecordCount];
-    v52 = [v29 downloadDuration];
-    v31 = [v29 importDuration];
-    v32 = [v4 metadata];
-    v33 = [v32 deviceOSVersion];
-    v34 = [v4 metadata];
-    v35 = [v34 deviceModel];
-    v36 = [v4 metadata];
-    v37 = [v36 clientVersion];
-    [v30 contentTypeDidComplete:@"(aggregate)" downloadByteCount:v58 importRecordCount:v56 importFailedRecordCount:v54 downloadDuration:v52 importDuration:v31 android:v33 model:v35 version:v37];
+    aggregateStatistics6 = [contextCopy aggregateStatistics];
+    mEMORY[0x277D7B8D0]2 = [MEMORY[0x277D7B8D0] sharedInstance];
+    downloadByteCount2 = [aggregateStatistics6 downloadByteCount];
+    importRecordCount2 = [aggregateStatistics6 importRecordCount];
+    importFailedRecordCount2 = [aggregateStatistics6 importFailedRecordCount];
+    downloadDuration2 = [aggregateStatistics6 downloadDuration];
+    importDuration2 = [aggregateStatistics6 importDuration];
+    metadata4 = [contextCopy metadata];
+    deviceOSVersion2 = [metadata4 deviceOSVersion];
+    metadata5 = [contextCopy metadata];
+    deviceModel2 = [metadata5 deviceModel];
+    metadata6 = [contextCopy metadata];
+    clientVersion = [metadata6 clientVersion];
+    [mEMORY[0x277D7B8D0]2 contentTypeDidComplete:@"(aggregate)" downloadByteCount:downloadByteCount2 importRecordCount:importRecordCount2 importFailedRecordCount:importFailedRecordCount2 downloadDuration:downloadDuration2 importDuration:importDuration2 android:deviceOSVersion2 model:deviceModel2 version:clientVersion];
   }
 
   _WLLog();
@@ -3255,16 +3255,16 @@ void __57__WLMigrator__importDataWithContext_failureDetailsBlock___block_invoke_
   return v3;
 }
 
-- (void)close:(id)a3
+- (void)close:(id)close
 {
-  v4 = a3;
+  closeCopy = close;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __20__WLMigrator_close___block_invoke;
   v6[3] = &unk_279EB53E0;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = closeCopy;
   v7 = v5;
   [(WLMigrator *)self finalizeMigratableAppsWithCompletion:v6];
 
@@ -3294,31 +3294,31 @@ void __20__WLMigrator_close___block_invoke(uint64_t a1)
   }
 }
 
-- (void)finalizeMigratableAppsWithCompletion:(id)a3
+- (void)finalizeMigratableAppsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(WLSQLController);
-  v6 = [(WLSQLController *)v5 migratableAppsForAllDevices];
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
+  migratableAppsForAllDevices = [(WLSQLController *)v5 migratableAppsForAllDevices];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(migratableAppsForAllDevices, "count")}];
   _WLLog();
 
-  if ([v6 count])
+  if ([migratableAppsForAllDevices count])
   {
     _WLLog();
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __51__WLMigrator_finalizeMigratableAppsWithCompletion___block_invoke;
     v8[3] = &unk_279EB5CA0;
-    v9 = v6;
-    v10 = self;
+    v9 = migratableAppsForAllDevices;
+    selfCopy = self;
     v11 = v5;
-    v12 = v4;
+    v12 = completionCopy;
     [WLMigrator _presentPromptForMigrableApps:v8];
   }
 
   else
   {
-    [(WLMigrator *)self _cleanUpAfterFinalizeMigratableAppsWithSQLController:v5 completion:v4];
+    [(WLMigrator *)self _cleanUpAfterFinalizeMigratableAppsWithSQLController:v5 completion:completionCopy];
   }
 }
 
@@ -3365,10 +3365,10 @@ uint64_t __51__WLMigrator_finalizeMigratableAppsWithCompletion___block_invoke_2(
   return [v2 _cleanUpAfterFinalizeMigratableAppsWithSQLController:v3 completion:v4];
 }
 
-+ (void)_presentPromptForMigrableApps:(id)a3
++ (void)_presentPromptForMigrableApps:(id)apps
 {
   v17[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  appsCopy = apps;
   v16[0] = *MEMORY[0x277CBF188];
   v4 = WLLocalizedString();
   v17[0] = v4;
@@ -3389,9 +3389,9 @@ uint64_t __51__WLMigrator_finalizeMigratableAppsWithCompletion___block_invoke_2(
   block[1] = 3221225472;
   block[2] = __44__WLMigrator__presentPromptForMigrableApps___block_invoke;
   block[3] = &unk_279EB5CC8;
-  v14 = v3;
+  v14 = appsCopy;
   v15 = v9;
-  v11 = v3;
+  v11 = appsCopy;
   dispatch_async(v10, block);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -3405,18 +3405,18 @@ uint64_t __44__WLMigrator__presentPromptForMigrableApps___block_invoke(uint64_t 
   return (*(*(a1 + 32) + 16))(*(a1 + 32), responseFlags == 0);
 }
 
-- (void)_cleanUpAfterFinalizeMigratableAppsWithSQLController:(id)a3 completion:(id)a4
+- (void)_cleanUpAfterFinalizeMigratableAppsWithSQLController:(id)controller completion:(id)completion
 {
-  v7 = a4;
-  v5 = a3;
-  [v5 deleteMigratableAppsForAllDevices];
-  [v5 deleteSuggestedAppBundleIDsForAllDevices];
+  completionCopy = completion;
+  controllerCopy = controller;
+  [controllerCopy deleteMigratableAppsForAllDevices];
+  [controllerCopy deleteSuggestedAppBundleIDsForAllDevices];
 
-  v6 = v7;
-  if (v7)
+  v6 = completionCopy;
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7);
-    v6 = v7;
+    (*(completionCopy + 2))(completionCopy);
+    v6 = completionCopy;
   }
 }
 
@@ -3483,75 +3483,75 @@ uint64_t __46__WLMigrator__shouldTerminateMigrationOnError__block_invoke()
   return result;
 }
 
-- (void)_setProgressTo:(double)a3 context:(id)a4
+- (void)_setProgressTo:(double)to context:(id)context
 {
-  obj = a4;
+  obj = context;
   objc_sync_enter(obj);
-  [obj setProgress:a3];
-  v6 = [obj delegate];
-  *&v7 = a3;
-  [v6 dataMigrator:self didUpdateProgressPercentage:v7];
+  [obj setProgress:to];
+  delegate = [obj delegate];
+  *&v7 = to;
+  [delegate dataMigrator:self didUpdateProgressPercentage:v7];
 
   _WLLog();
   objc_sync_exit(obj);
 }
 
-- (void)_incrementProgressBy:(double)a3 context:(id)a4
+- (void)_incrementProgressBy:(double)by context:(id)context
 {
-  obj = a4;
+  obj = context;
   objc_sync_enter(obj);
   [obj progress];
-  [obj setProgress:v6 + a3];
-  v7 = [obj delegate];
+  [obj setProgress:v6 + by];
+  delegate = [obj delegate];
   [obj progress];
   *&v8 = v8;
-  [v7 dataMigrator:self didUpdateProgressPercentage:v8];
+  [delegate dataMigrator:self didUpdateProgressPercentage:v8];
 
   [obj progress];
   _WLLog();
   objc_sync_exit(obj);
 }
 
-- (void)_updateSourceWithProgress:(double)a3 remainingTime:(double)a4 context:(id)a5 completion:(id)a6
+- (void)_updateSourceWithProgress:(double)progress remainingTime:(double)time context:(id)context completion:(id)completion
 {
-  v10 = a5;
-  if (a6)
+  contextCopy = context;
+  if (completion)
   {
-    v11 = a6;
+    completionCopy = completion;
   }
 
   else
   {
-    v11 = &__block_literal_global_457;
+    completionCopy = &__block_literal_global_457;
   }
 
-  v12 = MEMORY[0x2743DF630](v11);
+  v12 = MEMORY[0x2743DF630](completionCopy);
   v13 = [MEMORY[0x277CBEAA8] now];
-  v14 = [v10 lastProgressSentDate];
-  [v13 timeIntervalSinceDate:v14];
+  lastProgressSentDate = [contextCopy lastProgressSentDate];
+  [v13 timeIntervalSinceDate:lastProgressSentDate];
   v16 = v15;
 
-  if (v16 >= 5.0 || ([v10 lastProgressSentToAndroidDevice], a3 == 0.8) || a3 - v17 >= 0.01)
+  if (v16 >= 5.0 || ([contextCopy lastProgressSentToAndroidDevice], progress == 0.8) || progress - v17 >= 0.01)
   {
-    [v10 setLastProgressSentToAndroidDevice:a3];
-    [v10 setLastProgressSentDate:v13];
-    [v10 lastProgressSentToAndroidDevice];
+    [contextCopy setLastProgressSentToAndroidDevice:progress];
+    [contextCopy setLastProgressSentDate:v13];
+    [contextCopy lastProgressSentToAndroidDevice];
     v19 = v18;
-    v24 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    v24 = [MEMORY[0x277CCABB0] numberWithDouble:progress];
     _WLLog();
 
-    v20 = [v10 dataCoordinator];
-    v21 = [v10 dataSource];
-    [v10 lastProgressSentToAndroidDevice];
+    dataCoordinator = [contextCopy dataCoordinator];
+    dataSource = [contextCopy dataSource];
+    [contextCopy lastProgressSentToAndroidDevice];
     v23 = v22;
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __73__WLMigrator__updateSourceWithProgress_remainingTime_context_completion___block_invoke_2;
     v25[3] = &unk_279EB5CF0;
     v25[4] = self;
-    v26 = v10;
+    v26 = contextCopy;
     v27 = v12;
-    [v20 updateSource:v21 withProgress:v25 remainingTime:v23 completion:a4];
+    [dataCoordinator updateSource:dataSource withProgress:v25 remainingTime:v23 completion:time];
   }
 
   else
@@ -3578,23 +3578,23 @@ uint64_t __73__WLMigrator__updateSourceWithProgress_remainingTime_context_comple
 {
   v2 = MGCopyAnswer();
   objc_opt_class();
-  v3 = 0;
+  unsignedLongLongValue = 0;
   if (objc_opt_isKindOfClass())
   {
     v4 = [v2 objectForKeyedSubscript:*MEMORY[0x277D82398]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [v4 unsignedLongLongValue];
+      unsignedLongLongValue = [v4 unsignedLongLongValue];
     }
 
     else
     {
-      v3 = 0;
+      unsignedLongLongValue = 0;
     }
   }
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (void)deleteMessages

@@ -1,6 +1,6 @@
 @interface ScrollPocketCollectorModel
 - (NSString)description;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
 @end
 
 @implementation ScrollPocketCollectorModel
@@ -10,8 +10,8 @@
   v3 = objc_opt_self();
   v4 = objc_opt_self();
 
-  v5 = [v4 succinctStyle];
-  v6 = [v3 descriptionForRootObject:self withStyle:v5];
+  succinctStyle = [v4 succinctStyle];
+  v6 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   if (!v6)
   {
@@ -22,11 +22,11 @@
   return v6;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v3 = a3;
+  streamCopy = stream;
 
-  sub_188FAB1D8(v3);
+  sub_188FAB1D8(streamCopy);
 }
 
 @end

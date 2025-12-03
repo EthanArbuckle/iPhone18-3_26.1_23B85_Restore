@@ -1,10 +1,10 @@
 @interface MRUVolumeNowPlayingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRUVolumeNowPlayingView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRUVolumeNowPlayingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setIcon:(id)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setIcon:(id)icon;
+- (void)setStylingProvider:(id)provider;
+- (void)setTitle:(id)title;
 - (void)updateContentSizeCategory;
 - (void)updateVisualStyling;
 @end
@@ -88,12 +88,12 @@
   [(UILabel *)*p_titleLabel setFrame:?];
 }
 
-- (MRUVolumeNowPlayingView)initWithFrame:(CGRect)a3
+- (MRUVolumeNowPlayingView)initWithFrame:(CGRect)frame
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = MRUVolumeNowPlayingView;
-  v3 = [(MRUVolumeNowPlayingView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUVolumeNowPlayingView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -123,13 +123,13 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = 20.0;
-  v7 = [MEMORY[0x1E69DB878] mru_volumeButtonSubtitleFont];
-  [v7 lineHeight];
+  mru_volumeButtonSubtitleFont = [MEMORY[0x1E69DB878] mru_volumeButtonSubtitleFont];
+  [mru_volumeButtonSubtitleFont lineHeight];
   UICeilToViewScale();
   v9 = v8;
 
@@ -194,33 +194,33 @@
   return result;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  objc_storeStrong(&self->_icon, a3);
-  v5 = a3;
-  [(UIImageView *)self->_imageView setImage:v5];
+  objc_storeStrong(&self->_icon, icon);
+  iconCopy = icon;
+  [(UIImageView *)self->_imageView setImage:iconCopy];
 
   [(MRUVolumeNowPlayingView *)self setNeedsLayout];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
-  [(UILabel *)self->_titleLabel setText:v5];
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
+  [(UILabel *)self->_titleLabel setText:titleCopy];
 
   [(MRUVolumeNowPlayingView *)self setNeedsLayout];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUVolumeNowPlayingView *)self updateVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
@@ -228,14 +228,14 @@
 {
   stylingProvider = self->_stylingProvider;
   titleLabel = self->_titleLabel;
-  v4 = [(MRUVolumeNowPlayingView *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:titleLabel traitCollection:v4];
+  traitCollection = [(MRUVolumeNowPlayingView *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:titleLabel traitCollection:traitCollection];
 }
 
 - (void)updateContentSizeCategory
 {
-  v3 = [MEMORY[0x1E69DB878] mru_volumeButtonSubtitleFont];
-  [(UILabel *)self->_titleLabel setFont:v3];
+  mru_volumeButtonSubtitleFont = [MEMORY[0x1E69DB878] mru_volumeButtonSubtitleFont];
+  [(UILabel *)self->_titleLabel setFont:mru_volumeButtonSubtitleFont];
 }
 
 @end

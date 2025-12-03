@@ -1,61 +1,61 @@
 @interface _HKReferenceRangeDotViewDot
-- (_HKReferenceRangeDotViewDot)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setDotColor:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_HKReferenceRangeDotViewDot)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setDotColor:(id)color;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation _HKReferenceRangeDotViewDot
 
-- (_HKReferenceRangeDotViewDot)initWithFrame:(CGRect)a3
+- (_HKReferenceRangeDotViewDot)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _HKReferenceRangeDotViewDot;
-  v3 = [(_HKReferenceRangeDotViewDot *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_HKReferenceRangeDotViewDot *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(_HKReferenceRangeDotViewDot *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(_HKReferenceRangeDotViewDot *)v3 setBackgroundColor:clearColor];
   }
 
   return v3;
 }
 
-- (void)setDotColor:(id)a3
+- (void)setDotColor:(id)color
 {
-  v5 = a3;
-  if (self->_dotColor != v5)
+  colorCopy = color;
+  if (self->_dotColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_dotColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_dotColor, color);
     [(_HKReferenceRangeDotViewDot *)self setNeedsDisplay];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = _HKReferenceRangeDotViewDot;
-  [(_HKReferenceRangeDotViewDot *)&v4 traitCollectionDidChange:a3];
+  [(_HKReferenceRangeDotViewDot *)&v4 traitCollectionDidChange:change];
   [(_HKReferenceRangeDotViewDot *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v7.receiver = self;
   v7.super_class = _HKReferenceRangeDotViewDot;
-  [(_HKReferenceRangeDotViewDot *)&v7 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(_HKReferenceRangeDotViewDot *)&v7 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   dotColor = self->_dotColor;
-  v6 = dotColor;
+  blackColor = dotColor;
   if (!dotColor)
   {
-    v6 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
   }
 
-  CGContextSetFillColorWithColor(CurrentContext, [v6 CGColor]);
+  CGContextSetFillColorWithColor(CurrentContext, [blackColor CGColor]);
   if (!dotColor)
   {
   }

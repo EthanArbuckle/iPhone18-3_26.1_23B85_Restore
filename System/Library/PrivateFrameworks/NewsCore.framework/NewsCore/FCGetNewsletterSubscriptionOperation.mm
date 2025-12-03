@@ -1,5 +1,5 @@
 @interface FCGetNewsletterSubscriptionOperation
-- (FCGetNewsletterSubscriptionOperation)initWithEndpointConnection:(id)a3 completion:(id)a4;
+- (FCGetNewsletterSubscriptionOperation)initWithEndpointConnection:(id)connection completion:(id)completion;
 - (void)performOperation;
 @end
 
@@ -33,18 +33,18 @@ void __56__FCGetNewsletterSubscriptionOperation_performOperation__block_invoke(u
   [v10 finishedPerformingOperationWithError:v9];
 }
 
-- (FCGetNewsletterSubscriptionOperation)initWithEndpointConnection:(id)a3 completion:(id)a4
+- (FCGetNewsletterSubscriptionOperation)initWithEndpointConnection:(id)connection completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = FCGetNewsletterSubscriptionOperation;
   v9 = [(FCOperation *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_endpointConnection, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_endpointConnection, connection);
+    v11 = _Block_copy(completionCopy);
     completion = v10->_completion;
     v10->_completion = v11;
   }

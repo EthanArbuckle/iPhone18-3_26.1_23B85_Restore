@@ -2,35 +2,35 @@
 - (BOOL)containsComponentsWithAction;
 - (BOOL)isPresentedWithSmartDialogText;
 - (BOOL)requestsKeyWindow;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)aceCommands;
 - (NSString)description;
 - (VRXInteractionDelegate)interactionDelegate;
-- (_TtC9SnippetUI28VisualResponseViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9SnippetUI28VisualResponseViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)snippetWidth;
 - (int64_t)backgroundMaterial;
-- (void)postSiriEvent:(int64_t)a3;
+- (void)postSiriEvent:(int64_t)event;
 - (void)postSiriSpeechEvent;
-- (void)setAsrText:(id)a3;
-- (void)setBackgroundMaterial:(int64_t)a3;
-- (void)setCurrentIdiom:(int64_t)a3;
-- (void)setInitialFocusIndex:(int64_t)a3;
-- (void)setInteractionDelegate:(id)a3;
-- (void)setIsInAmbient:(BOOL)a3 withScaleFactor:(double)a4;
-- (void)setIsPresentedWithSmartDialogText:(BOOL)a3;
-- (void)setPlayerState:(int64_t)a3 aceId:(id)a4;
-- (void)setSnippetWidth:(double)a3;
-- (void)updateSharedState:(id)a3;
-- (void)updateSharedStateData:(id)a3;
+- (void)setAsrText:(id)text;
+- (void)setBackgroundMaterial:(int64_t)material;
+- (void)setCurrentIdiom:(int64_t)idiom;
+- (void)setInitialFocusIndex:(int64_t)index;
+- (void)setInteractionDelegate:(id)delegate;
+- (void)setIsInAmbient:(BOOL)ambient withScaleFactor:(double)factor;
+- (void)setIsPresentedWithSmartDialogText:(BOOL)text;
+- (void)setPlayerState:(int64_t)state aceId:(id)id;
+- (void)setSnippetWidth:(double)width;
+- (void)updateSharedState:(id)state;
+- (void)updateSharedStateData:(id)data;
 @end
 
 @implementation VisualResponseViewController
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_26A6F18F8(width, height);
   v7 = v6;
   v9 = v8;
@@ -42,34 +42,34 @@
   return result;
 }
 
-- (_TtC9SnippetUI28VisualResponseViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SnippetUI28VisualResponseViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_26A8517B8();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   VisualResponseViewController.init(nibName:bundle:)();
 }
 
-- (void)setInitialFocusIndex:(int64_t)a3
+- (void)setInitialFocusIndex:(int64_t)index
 {
-  v4 = self;
-  VisualResponseViewController.setInitialFocus(_:)(a3);
+  selfCopy = self;
+  VisualResponseViewController.setInitialFocus(_:)(index);
 }
 
-- (void)updateSharedState:(id)a3
+- (void)updateSharedState:(id)state
 {
   v4 = sub_26A851698();
-  v5 = self;
+  selfCopy = self;
   VisualResponseViewController.updateSharedState(_:)(v4);
 }
 
-- (void)updateSharedStateData:(id)a3
+- (void)updateSharedStateData:(id)data
 {
-  v4 = a3;
-  v8 = self;
+  dataCopy = data;
+  selfCopy = self;
   v5 = sub_26A84ABF8();
   v7 = v6;
 
@@ -77,11 +77,11 @@
   sub_26A513D40(v5, v7);
 }
 
-- (void)setAsrText:(id)a3
+- (void)setAsrText:(id)text
 {
   v4 = sub_26A8517B8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   VisualResponseViewController.setAsrText(_:)(v8);
@@ -89,48 +89,48 @@
 
 - (void)postSiriSpeechEvent
 {
-  v2 = self;
+  selfCopy = self;
   VisualResponseViewController.postSiriSpeechEvent()();
 }
 
-- (void)setIsInAmbient:(BOOL)a3 withScaleFactor:(double)a4
+- (void)setIsInAmbient:(BOOL)ambient withScaleFactor:(double)factor
 {
-  v5 = self;
-  VisualResponseViewController.setIsInAmbient(_:withScaleFactor:)(a4);
+  selfCopy = self;
+  VisualResponseViewController.setIsInAmbient(_:withScaleFactor:)(factor);
 }
 
-- (void)setPlayerState:(int64_t)a3 aceId:(id)a4
+- (void)setPlayerState:(int64_t)state aceId:(id)id
 {
   v6 = sub_26A8517B8();
   v8 = v7;
-  v9 = self;
-  VisualResponseViewController.setPlayerState(_:aceId:)(a3, v6, v8);
+  selfCopy = self;
+  VisualResponseViewController.setPlayerState(_:aceId:)(state, v6, v8);
 }
 
-- (void)postSiriEvent:(int64_t)a3
+- (void)postSiriEvent:(int64_t)event
 {
-  v3 = self;
+  selfCopy = self;
   VisualResponseViewController.postSiriEvent(_:)();
 }
 
-- (void)setCurrentIdiom:(int64_t)a3
+- (void)setCurrentIdiom:(int64_t)idiom
 {
-  v4 = self;
-  VisualResponseViewController.currentIdiom.setter(a3);
+  selfCopy = self;
+  VisualResponseViewController.currentIdiom.setter(idiom);
 }
 
 - (double)snippetWidth
 {
-  v2 = self;
+  selfCopy = self;
   v3 = VisualResponseViewController.snippetWidth.getter();
 
   return v3;
 }
 
-- (void)setSnippetWidth:(double)a3
+- (void)setSnippetWidth:(double)width
 {
-  v5 = self;
-  v4.n128_f64[0] = a3;
+  selfCopy = self;
+  v4.n128_f64[0] = width;
   VisualResponseViewController.snippetWidth.setter(v4);
 }
 
@@ -141,31 +141,31 @@
   return v2;
 }
 
-- (void)setInteractionDelegate:(id)a3
+- (void)setInteractionDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   VisualResponseViewController.interactionDelegate.setter();
 }
 
 - (int64_t)backgroundMaterial
 {
-  v2 = self;
+  selfCopy = self;
   v3 = VisualResponseViewController.backgroundMaterial.getter();
 
   return v3;
 }
 
-- (void)setBackgroundMaterial:(int64_t)a3
+- (void)setBackgroundMaterial:(int64_t)material
 {
-  v3 = a3;
-  v4 = self;
-  VisualResponseViewController.backgroundMaterial.setter(v3);
+  materialCopy = material;
+  selfCopy = self;
+  VisualResponseViewController.backgroundMaterial.setter(materialCopy);
 }
 
 - (NSArray)aceCommands
 {
-  v2 = self;
+  selfCopy = self;
   VisualResponseViewController.aceCommands.getter();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_2803B3630);
@@ -176,7 +176,7 @@
 
 - (BOOL)containsComponentsWithAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = VisualResponseViewController.containsComponentsWithAction.getter();
 
   return v3 & 1;
@@ -184,7 +184,7 @@
 
 - (BOOL)requestsKeyWindow
 {
-  v2 = self;
+  selfCopy = self;
   VisualResponseViewController.requestsKeyWindow.getter();
 
   return 0;
@@ -192,21 +192,21 @@
 
 - (BOOL)isPresentedWithSmartDialogText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = VisualResponseViewController.isPresentedWithSmartDialogText.getter();
 
   return v3 & 1;
 }
 
-- (void)setIsPresentedWithSmartDialogText:(BOOL)a3
+- (void)setIsPresentedWithSmartDialogText:(BOOL)text
 {
-  v3 = self;
+  selfCopy = self;
   VisualResponseViewController.isPresentedWithSmartDialogText.setter();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   VisualResponseViewController.description.getter();
 
   v3 = sub_26A851788();

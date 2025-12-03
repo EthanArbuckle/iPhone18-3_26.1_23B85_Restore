@@ -1,47 +1,47 @@
 @interface UASharedPasteboardInfoWrapper
-- (UASharedPasteboardInfoWrapper)initWithCoder:(id)a3;
+- (UASharedPasteboardInfoWrapper)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UASharedPasteboardInfoWrapper
 
-- (UASharedPasteboardInfoWrapper)initWithCoder:(id)a3
+- (UASharedPasteboardInfoWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(UASharedPasteboardInfoWrapper *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UASharedPasteboardInfoWrapperPBInfoKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UASharedPasteboardInfoWrapperPBInfoKey"];
     [(UASharedPasteboardInfoWrapper *)v5 setPbinfo:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UASharedPasteboardInfoWrapperExtraDataKey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UASharedPasteboardInfoWrapperExtraDataKey"];
     [(UASharedPasteboardInfoWrapper *)v5 setExtraData:v7];
 
-    -[UASharedPasteboardInfoWrapper setExtraDataType:](v5, "setExtraDataType:", [v4 decodeIntegerForKey:@"UASharedPasteboardInfoWrapperExtraTypeKey"]);
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UASharedPasteboardInfoWrapperErrorKey"];
+    -[UASharedPasteboardInfoWrapper setExtraDataType:](v5, "setExtraDataType:", [coderCopy decodeIntegerForKey:@"UASharedPasteboardInfoWrapperExtraTypeKey"]);
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UASharedPasteboardInfoWrapperErrorKey"];
     [(UASharedPasteboardInfoWrapper *)v5 setError:v8];
 
-    -[UASharedPasteboardInfoWrapper setProtocolVersion:](v5, "setProtocolVersion:", [v4 decodeIntegerForKey:@"UASharedPasteboardInfoWrapperProtocolVersionKey"]);
+    -[UASharedPasteboardInfoWrapper setProtocolVersion:](v5, "setProtocolVersion:", [coderCopy decodeIntegerForKey:@"UASharedPasteboardInfoWrapperProtocolVersionKey"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(UASharedPasteboardInfoWrapper *)self pbinfo];
-  [v7 encodeObject:v4 forKey:@"UASharedPasteboardInfoWrapperPBInfoKey"];
+  coderCopy = coder;
+  pbinfo = [(UASharedPasteboardInfoWrapper *)self pbinfo];
+  [coderCopy encodeObject:pbinfo forKey:@"UASharedPasteboardInfoWrapperPBInfoKey"];
 
-  v5 = [(UASharedPasteboardInfoWrapper *)self extraData];
-  [v7 encodeObject:v5 forKey:@"UASharedPasteboardInfoWrapperExtraDataKey"];
+  extraData = [(UASharedPasteboardInfoWrapper *)self extraData];
+  [coderCopy encodeObject:extraData forKey:@"UASharedPasteboardInfoWrapperExtraDataKey"];
 
-  [v7 encodeInteger:-[UASharedPasteboardInfoWrapper extraDataType](self forKey:{"extraDataType"), @"UASharedPasteboardInfoWrapperExtraTypeKey"}];
-  v6 = [(UASharedPasteboardInfoWrapper *)self error];
-  [v7 encodeObject:v6 forKey:@"UASharedPasteboardInfoWrapperErrorKey"];
+  [coderCopy encodeInteger:-[UASharedPasteboardInfoWrapper extraDataType](self forKey:{"extraDataType"), @"UASharedPasteboardInfoWrapperExtraTypeKey"}];
+  error = [(UASharedPasteboardInfoWrapper *)self error];
+  [coderCopy encodeObject:error forKey:@"UASharedPasteboardInfoWrapperErrorKey"];
 
-  [v7 encodeInteger:-[UASharedPasteboardInfoWrapper protocolVersion](self forKey:{"protocolVersion"), @"UASharedPasteboardInfoWrapperProtocolVersionKey"}];
+  [coderCopy encodeInteger:-[UASharedPasteboardInfoWrapper protocolVersion](self forKey:{"protocolVersion"), @"UASharedPasteboardInfoWrapperProtocolVersionKey"}];
 }
 
 - (id)description
@@ -50,10 +50,10 @@
   v9.receiver = self;
   v9.super_class = UASharedPasteboardInfoWrapper;
   v4 = [(UASharedPasteboardInfoWrapper *)&v9 description];
-  v5 = [(UASharedPasteboardInfoWrapper *)self extraDataType];
-  v6 = [(UASharedPasteboardInfoWrapper *)self error];
-  v7 = [(UASharedPasteboardInfoWrapper *)self pbinfo];
-  [v3 appendFormat:@"%@: Extra Data Type: %ld, Error: %@, PBInfo: %@", v4, v5, v6, v7];
+  extraDataType = [(UASharedPasteboardInfoWrapper *)self extraDataType];
+  error = [(UASharedPasteboardInfoWrapper *)self error];
+  pbinfo = [(UASharedPasteboardInfoWrapper *)self pbinfo];
+  [v3 appendFormat:@"%@: Extra Data Type: %ld, Error: %@, PBInfo: %@", v4, extraDataType, error, pbinfo];
 
   return v3;
 }

@@ -1,76 +1,76 @@
 @interface ExtragalacticPosterEditor
-- (BOOL)editor:(id)a3 shouldAllowUserToSelectTimeFontConfiguration:(id)a4;
-- (id)additionalTimeFontConfigurationsForEditor:(id)a3;
-- (id)initialLookIdentifierForEditor:(id)a3;
-- (id)looksForEditor:(id)a3;
-- (id)timeColorPickerConfigurationForEditor:(id)a3;
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5;
-- (void)editor:(id)a3 finalizeWithCompletion:(id)a4;
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5;
-- (void)editorDidInvalidate:(id)a3;
+- (BOOL)editor:(id)editor shouldAllowUserToSelectTimeFontConfiguration:(id)configuration;
+- (id)additionalTimeFontConfigurationsForEditor:(id)editor;
+- (id)initialLookIdentifierForEditor:(id)editor;
+- (id)looksForEditor:(id)editor;
+- (id)timeColorPickerConfigurationForEditor:(id)editor;
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition;
+- (void)editor:(id)editor finalizeWithCompletion:(id)completion;
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look;
+- (void)editorDidInvalidate:(id)invalidate;
 @end
 
 @implementation ExtragalacticPosterEditor
 
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look
 {
-  v8 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_100006258(v8, a4, v9);
+  lookCopy = look;
+  selfCopy = self;
+  sub_100006258(editorCopy, views, lookCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition
 {
-  v7 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v8 = a5;
-  v9 = self;
-  sub_100006EC0(v7, a5);
+  transitionCopy = transition;
+  selfCopy = self;
+  sub_100006EC0(editorCopy, transition);
 
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(id)a3 finalizeWithCompletion:(id)a4
+- (void)editor:(id)editor finalizeWithCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_100007148(v7, v6);
+  editorCopy = editor;
+  selfCopy = self;
+  sub_100007148(editorCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)editorDidInvalidate:(id)a3
+- (void)editorDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   sub_100007494();
 }
 
-- (BOOL)editor:(id)a3 shouldAllowUserToSelectTimeFontConfiguration:(id)a4
+- (BOOL)editor:(id)editor shouldAllowUserToSelectTimeFontConfiguration:(id)configuration
 {
   v4 = qword_100022888;
-  v5 = a4;
-  v6 = v5;
+  configurationCopy = configuration;
+  v6 = configurationCopy;
   if (v4 != -1)
   {
-    v5 = swift_once();
+    configurationCopy = swift_once();
   }
 
   v11 = v6;
-  __chkstk_darwin(v5);
+  __chkstk_darwin(configurationCopy);
   v10[2] = &v11;
   v8 = sub_100006D98(sub_100007F80, v10, v7);
 
   return v8 & 1;
 }
 
-- (id)additionalTimeFontConfigurationsForEditor:(id)a3
+- (id)additionalTimeFontConfigurationsForEditor:(id)editor
 {
   if (qword_100022888 != -1)
   {
@@ -83,16 +83,16 @@
   return v3.super.isa;
 }
 
-- (id)timeColorPickerConfigurationForEditor:(id)a3
+- (id)timeColorPickerConfigurationForEditor:(id)editor
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_100007750(v4);
+  editorCopy = editor;
+  selfCopy = self;
+  v6 = sub_100007750(editorCopy);
 
   return v6;
 }
 
-- (id)looksForEditor:(id)a3
+- (id)looksForEditor:(id)editor
 {
   sub_100007A30();
   sub_100008110(0, &qword_100023198, PREditingLook_ptr);
@@ -101,11 +101,11 @@
   return v3.super.isa;
 }
 
-- (id)initialLookIdentifierForEditor:(id)a3
+- (id)initialLookIdentifierForEditor:(id)editor
 {
-  v4 = a3;
-  v5 = self;
-  sub_100007DEC(v4);
+  editorCopy = editor;
+  selfCopy = self;
+  sub_100007DEC(editorCopy);
 
   v6 = sub_1000138C8();
 

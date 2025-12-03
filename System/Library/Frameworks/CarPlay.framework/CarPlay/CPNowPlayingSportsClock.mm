@@ -1,64 +1,64 @@
 @interface CPNowPlayingSportsClock
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSportsClock:(id)a3;
-- (CPNowPlayingSportsClock)initWithCoder:(id)a3;
-- (CPNowPlayingSportsClock)initWithElapsedTime:(double)a3 paused:(BOOL)a4;
-- (CPNowPlayingSportsClock)initWithTimeRemaining:(double)a3 paused:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSportsClock:(id)clock;
+- (CPNowPlayingSportsClock)initWithCoder:(id)coder;
+- (CPNowPlayingSportsClock)initWithElapsedTime:(double)time paused:(BOOL)paused;
+- (CPNowPlayingSportsClock)initWithTimeRemaining:(double)remaining paused:(BOOL)paused;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPNowPlayingSportsClock
 
-- (CPNowPlayingSportsClock)initWithElapsedTime:(double)a3 paused:(BOOL)a4
+- (CPNowPlayingSportsClock)initWithElapsedTime:(double)time paused:(BOOL)paused
 {
   v7.receiver = self;
   v7.super_class = CPNowPlayingSportsClock;
   result = [(CPNowPlayingSportsClock *)&v7 init];
   if (result)
   {
-    result->_timeValue = a3;
-    result->_paused = a4;
+    result->_timeValue = time;
+    result->_paused = paused;
     result->_countsUp = 1;
   }
 
   return result;
 }
 
-- (CPNowPlayingSportsClock)initWithTimeRemaining:(double)a3 paused:(BOOL)a4
+- (CPNowPlayingSportsClock)initWithTimeRemaining:(double)remaining paused:(BOOL)paused
 {
   v7.receiver = self;
   v7.super_class = CPNowPlayingSportsClock;
   result = [(CPNowPlayingSportsClock *)&v7 init];
   if (result)
   {
-    result->_timeValue = a3;
-    result->_paused = a4;
+    result->_timeValue = remaining;
+    result->_paused = paused;
     result->_countsUp = 0;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CPNowPlayingSportsClock *)self isEqualToSportsClock:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CPNowPlayingSportsClock *)self isEqualToSportsClock:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToSportsClock:(id)a3
+- (BOOL)isEqualToSportsClock:(id)clock
 {
-  v4 = a3;
+  clockCopy = clock;
   [(CPNowPlayingSportsClock *)self timeValue];
   v6 = v5;
-  [v4 timeValue];
-  if (v6 == v7 && (v8 = -[CPNowPlayingSportsClock isPaused](self, "isPaused"), v8 == [v4 isPaused]))
+  [clockCopy timeValue];
+  if (v6 == v7 && (v8 = -[CPNowPlayingSportsClock isPaused](self, "isPaused"), v8 == [clockCopy isPaused]))
   {
-    v10 = [(CPNowPlayingSportsClock *)self countsUp];
-    v9 = v10 ^ [v4 countsUp] ^ 1;
+    countsUp = [(CPNowPlayingSportsClock *)self countsUp];
+    v9 = countsUp ^ [clockCopy countsUp] ^ 1;
   }
 
   else
@@ -75,36 +75,36 @@
   [(CPNowPlayingSportsClock *)self timeValue];
   v4 = [v3 numberWithDouble:?];
   v5 = [v4 hash];
-  v6 = [(CPNowPlayingSportsClock *)self isPaused];
-  v7 = v6 ^ [(CPNowPlayingSportsClock *)self countsUp];
+  isPaused = [(CPNowPlayingSportsClock *)self isPaused];
+  v7 = isPaused ^ [(CPNowPlayingSportsClock *)self countsUp];
 
   return v5 ^ v7;
 }
 
-- (CPNowPlayingSportsClock)initWithCoder:(id)a3
+- (CPNowPlayingSportsClock)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CPNowPlayingSportsClock;
   v5 = [(CPNowPlayingSportsClock *)&v8 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"kCPNowPlayingSportsTimerTimeValueKey"];
+    [coderCopy decodeDoubleForKey:@"kCPNowPlayingSportsTimerTimeValueKey"];
     v5->_timeValue = v6;
-    v5->_paused = [v4 decodeBoolForKey:@"kCPNowPlayingSportsTimerPausedKey"];
-    v5->_countsUp = [v4 decodeBoolForKey:@"kCPNowPlayingSportsTimerCountsUpKey"];
+    v5->_paused = [coderCopy decodeBoolForKey:@"kCPNowPlayingSportsTimerPausedKey"];
+    v5->_countsUp = [coderCopy decodeBoolForKey:@"kCPNowPlayingSportsTimerCountsUpKey"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(CPNowPlayingSportsClock *)self timeValue];
-  [v4 encodeDouble:@"kCPNowPlayingSportsTimerTimeValueKey" forKey:?];
-  [v4 encodeBool:-[CPNowPlayingSportsClock isPaused](self forKey:{"isPaused"), @"kCPNowPlayingSportsTimerPausedKey"}];
-  [v4 encodeBool:-[CPNowPlayingSportsClock countsUp](self forKey:{"countsUp"), @"kCPNowPlayingSportsTimerCountsUpKey"}];
+  [coderCopy encodeDouble:@"kCPNowPlayingSportsTimerTimeValueKey" forKey:?];
+  [coderCopy encodeBool:-[CPNowPlayingSportsClock isPaused](self forKey:{"isPaused"), @"kCPNowPlayingSportsTimerPausedKey"}];
+  [coderCopy encodeBool:-[CPNowPlayingSportsClock countsUp](self forKey:{"countsUp"), @"kCPNowPlayingSportsTimerCountsUpKey"}];
 }
 
 @end

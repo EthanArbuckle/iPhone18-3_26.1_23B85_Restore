@@ -1,13 +1,13 @@
 @interface SBFAuthenticationAssertionManager
 - (BOOL)hasActiveAssertions;
-- (BOOL)isAssertionValid:(id)a3;
+- (BOOL)isAssertionValid:(id)valid;
 - (SBFAuthenticationAssertionManager)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)addAssertion:(id)a3;
+- (void)addAssertion:(id)assertion;
 - (void)dealloc;
-- (void)removeAssertion:(id)a3;
+- (void)removeAssertion:(id)assertion;
 @end
 
 @implementation SBFAuthenticationAssertionManager
@@ -71,105 +71,105 @@ id __41__SBFAuthenticationAssertionManager_init__block_invoke(uint64_t a1)
 
 - (id)succinctDescription
 {
-  v2 = [(SBFAuthenticationAssertionManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFAuthenticationAssertionManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFAuthenticationAssertionManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFAuthenticationAssertionManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBFAuthenticationAssertionManager *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBFAuthenticationAssertionManager *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __75__SBFAuthenticationAssertionManager_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E807F290;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
 }
 
-- (void)addAssertion:(id)a3
+- (void)addAssertion:(id)assertion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = SBLogAuthenticationAssertions();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 publicDescription];
+    publicDescription = [assertionCopy publicDescription];
     v9 = 138543362;
-    v10 = v6;
+    v10 = publicDescription;
     _os_log_impl(&dword_1BEA11000, v5, OS_LOG_TYPE_DEFAULT, "Adding authentication assertion %{public}@", &v9, 0xCu);
   }
 
-  v7 = [v4 type];
-  if (v7 == 1)
+  type = [assertionCopy type];
+  if (type == 1)
   {
     v8 = 8;
     goto LABEL_7;
   }
 
-  if (v7 == 2)
+  if (type == 2)
   {
     v8 = 16;
 LABEL_7:
-    [*(&self->super.isa + v8) addAssertion:v4];
+    [*(&self->super.isa + v8) addAssertion:assertionCopy];
   }
 }
 
-- (void)removeAssertion:(id)a3
+- (void)removeAssertion:(id)assertion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = SBLogAuthenticationAssertions();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 publicDescription];
+    publicDescription = [assertionCopy publicDescription];
     v9 = 138543362;
-    v10 = v6;
+    v10 = publicDescription;
     _os_log_impl(&dword_1BEA11000, v5, OS_LOG_TYPE_DEFAULT, "Removed authentication assertion %{public}@", &v9, 0xCu);
   }
 
-  v7 = [v4 type];
-  if (v7 == 1)
+  type = [assertionCopy type];
+  if (type == 1)
   {
     v8 = 8;
     goto LABEL_7;
   }
 
-  if (v7 == 2)
+  if (type == 2)
   {
     v8 = 16;
 LABEL_7:
-    [*(&self->super.isa + v8) removeAssertion:v4];
+    [*(&self->super.isa + v8) removeAssertion:assertionCopy];
   }
 }
 
-- (BOOL)isAssertionValid:(id)a3
+- (BOOL)isAssertionValid:(id)valid
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == 1)
+  validCopy = valid;
+  type = [validCopy type];
+  if (type == 1)
   {
     v6 = 8;
   }
 
   else
   {
-    if (v5 != 2)
+    if (type != 2)
     {
       v7 = 0;
       goto LABEL_7;
@@ -178,7 +178,7 @@ LABEL_7:
     v6 = 16;
   }
 
-  v7 = [*(&self->super.isa + v6) isAssertionValid:v4];
+  v7 = [*(&self->super.isa + v6) isAssertionValid:validCopy];
 LABEL_7:
 
   return v7;

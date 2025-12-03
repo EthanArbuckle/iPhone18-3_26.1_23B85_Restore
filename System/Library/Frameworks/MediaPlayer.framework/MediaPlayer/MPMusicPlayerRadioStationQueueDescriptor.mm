@@ -1,40 +1,40 @@
 @interface MPMusicPlayerRadioStationQueueDescriptor
-- (BOOL)isEqual:(id)a3;
-- (MPMusicPlayerRadioStationQueueDescriptor)initWithCoder:(id)a3;
-- (MPMusicPlayerRadioStationQueueDescriptor)initWithRadioStation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MPMusicPlayerRadioStationQueueDescriptor)initWithCoder:(id)coder;
+- (MPMusicPlayerRadioStationQueueDescriptor)initWithRadioStation:(id)station;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPMusicPlayerRadioStationQueueDescriptor
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MPMusicPlayerRadioStationQueueDescriptor;
-  v4 = [(MPMusicPlayerQueueDescriptor *)&v6 copyWithZone:a3];
+  v4 = [(MPMusicPlayerQueueDescriptor *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 11, self->_radioStation);
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPMusicPlayerRadioStationQueueDescriptor;
-  v4 = a3;
-  [(MPMusicPlayerQueueDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_radioStation forKey:{@"radioStation", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(MPMusicPlayerQueueDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_radioStation forKey:{@"radioStation", v5.receiver, v5.super_class}];
 }
 
-- (MPMusicPlayerRadioStationQueueDescriptor)initWithCoder:(id)a3
+- (MPMusicPlayerRadioStationQueueDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MPMusicPlayerRadioStationQueueDescriptor;
-  v5 = [(MPMusicPlayerQueueDescriptor *)&v9 initWithCoder:v4];
+  v5 = [(MPMusicPlayerQueueDescriptor *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"radioStation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"radioStation"];
     radioStation = v5->_radioStation;
     v5->_radioStation = v6;
   }
@@ -42,14 +42,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = MPMusicPlayerRadioStationQueueDescriptor;
-  if ([(MPMusicPlayerQueueDescriptor *)&v10 isEqual:v4])
+  if ([(MPMusicPlayerQueueDescriptor *)&v10 isEqual:equalCopy])
   {
-    v5 = v4[11];
+    v5 = equalCopy[11];
     v6 = self->_radioStation;
     v7 = v6;
     if (v6 == v5)
@@ -71,16 +71,16 @@
   return v8;
 }
 
-- (MPMusicPlayerRadioStationQueueDescriptor)initWithRadioStation:(id)a3
+- (MPMusicPlayerRadioStationQueueDescriptor)initWithRadioStation:(id)station
 {
-  v5 = a3;
+  stationCopy = station;
   v9.receiver = self;
   v9.super_class = MPMusicPlayerRadioStationQueueDescriptor;
-  v6 = [(MPMusicPlayerQueueDescriptor *)&v9 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(MPMusicPlayerQueueDescriptor *)&v9 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 11, a3);
+    objc_storeStrong(_init + 11, station);
   }
 
   return v7;

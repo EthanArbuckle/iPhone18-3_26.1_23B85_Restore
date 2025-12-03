@@ -1,112 +1,112 @@
 @interface CSDMessagingConversationActivity
-+ (CSDMessagingConversationActivity)activityWithCSDConversationActivity:(id)a3 fromConversation:(id)a4 forStorage:(BOOL)a5;
-+ (CSDMessagingConversationActivity)activityWithCSDConversationActivity:(id)a3 handle:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (CSDMessagingConversationActivity)activityWithCSDConversationActivity:(id)activity fromConversation:(id)conversation forStorage:(BOOL)storage;
++ (CSDMessagingConversationActivity)activityWithCSDConversationActivity:(id)activity handle:(id)handle;
+- (BOOL)isEqual:(id)equal;
 - (TUConversationActivity)tuConversationActivity;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int64_t)mappedLifetimePolicy:(int64_t)a3;
+- (int64_t)mappedLifetimePolicy:(int64_t)policy;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsSystemActivity:(BOOL)a3;
-- (void)setHasUpdatedDateEpochTime:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsSystemActivity:(BOOL)activity;
+- (void)setHasUpdatedDateEpochTime:(BOOL)time;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingConversationActivity
 
-+ (CSDMessagingConversationActivity)activityWithCSDConversationActivity:(id)a3 fromConversation:(id)a4 forStorage:(BOOL)a5
++ (CSDMessagingConversationActivity)activityWithCSDConversationActivity:(id)activity fromConversation:(id)conversation forStorage:(BOOL)storage
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  storageCopy = storage;
+  activityCopy = activity;
+  conversationCopy = conversation;
   v9 = objc_alloc_init(CSDMessagingConversationActivity);
-  v10 = [v7 UUID];
-  v11 = [v10 UUIDString];
-  [(CSDMessagingConversationActivity *)v9 setIdentifierUUIDString:v11];
+  uUID = [activityCopy UUID];
+  uUIDString = [uUID UUIDString];
+  [(CSDMessagingConversationActivity *)v9 setIdentifierUUIDString:uUIDString];
 
-  v12 = [v7 applicationContext];
-  [(CSDMessagingConversationActivity *)v9 setApplicationContext:v12];
+  applicationContext = [activityCopy applicationContext];
+  [(CSDMessagingConversationActivity *)v9 setApplicationContext:applicationContext];
 
-  v13 = [v7 bundleIdentifier];
-  [(CSDMessagingConversationActivity *)v9 setBundleIdentifier:v13];
+  bundleIdentifier = [activityCopy bundleIdentifier];
+  [(CSDMessagingConversationActivity *)v9 setBundleIdentifier:bundleIdentifier];
 
-  v14 = [v7 activityIdentifier];
-  [(CSDMessagingConversationActivity *)v9 setActivityIdentifier:v14];
+  activityIdentifier = [activityCopy activityIdentifier];
+  [(CSDMessagingConversationActivity *)v9 setActivityIdentifier:activityIdentifier];
 
-  v15 = [v7 metadata];
-  v16 = [v15 context];
-  v17 = [CSDMessagingConversationActivityContext activityContextWithTUActivityContext:v16];
+  metadata = [activityCopy metadata];
+  context = [metadata context];
+  v17 = [CSDMessagingConversationActivityContext activityContextWithTUActivityContext:context];
   [(CSDMessagingConversationActivity *)v9 setActivityContext:v17];
 
-  v18 = [v8 localMember];
+  localMember = [conversationCopy localMember];
 
-  v19 = [v18 handle];
-  v20 = [CSDMessagingHandle handleWithTUHandle:v19];
+  handle = [localMember handle];
+  v20 = [CSDMessagingHandle handleWithTUHandle:handle];
   [(CSDMessagingConversationActivity *)v9 setOriginatorHandle:v20];
 
-  v21 = [v7 timestamp];
-  [v21 timeIntervalSince1970];
+  timestamp = [activityCopy timestamp];
+  [timestamp timeIntervalSince1970];
   [(CSDMessagingConversationActivity *)v9 setUpdatedDateEpochTime:?];
 
-  v22 = [v7 fallbackApplicationName];
-  [(CSDMessagingConversationActivity *)v9 setFallbackApplicationName:v22];
+  fallbackApplicationName = [activityCopy fallbackApplicationName];
+  [(CSDMessagingConversationActivity *)v9 setFallbackApplicationName:fallbackApplicationName];
 
-  -[CSDMessagingConversationActivity setIsSystemActivity:](v9, "setIsSystemActivity:", [v7 isSystemActivity]);
-  v23 = [v7 timestamp];
-  [v23 timeIntervalSinceReferenceDate];
+  -[CSDMessagingConversationActivity setIsSystemActivity:](v9, "setIsSystemActivity:", [activityCopy isSystemActivity]);
+  timestamp2 = [activityCopy timestamp];
+  [timestamp2 timeIntervalSinceReferenceDate];
   [(CSDMessagingConversationActivity *)v9 setTimestampAsTimeIntervalSinceReferenceDate:?];
 
   v24 = objc_alloc_init(CSDMessagingConversationActivityMetadata);
-  v25 = [v7 metadata];
-  v26 = [v25 title];
-  [(CSDMessagingConversationActivityMetadata *)v24 setTitle:v26];
+  metadata2 = [activityCopy metadata];
+  title = [metadata2 title];
+  [(CSDMessagingConversationActivityMetadata *)v24 setTitle:title];
 
-  v27 = [v7 metadata];
-  v28 = [v27 subTitle];
-  [(CSDMessagingConversationActivityMetadata *)v24 setSubtitle:v28];
+  metadata3 = [activityCopy metadata];
+  subTitle = [metadata3 subTitle];
+  [(CSDMessagingConversationActivityMetadata *)v24 setSubtitle:subTitle];
 
-  v29 = [v7 metadata];
-  v30 = [v29 fallbackURL];
-  v31 = [v30 absoluteString];
-  [(CSDMessagingConversationActivityMetadata *)v24 setFallbackURL:v31];
+  metadata4 = [activityCopy metadata];
+  fallbackURL = [metadata4 fallbackURL];
+  absoluteString = [fallbackURL absoluteString];
+  [(CSDMessagingConversationActivityMetadata *)v24 setFallbackURL:absoluteString];
 
-  v32 = [v7 metadata];
-  -[CSDMessagingConversationActivityMetadata setSupportsContinuationOnTV:](v24, "setSupportsContinuationOnTV:", [v32 supportsContinuationOnTV]);
+  metadata5 = [activityCopy metadata];
+  -[CSDMessagingConversationActivityMetadata setSupportsContinuationOnTV:](v24, "setSupportsContinuationOnTV:", [metadata5 supportsContinuationOnTV]);
 
-  v33 = [v7 metadata];
-  -[CSDMessagingConversationActivityMetadata setPreferredBroadcastingAttributes:](v24, "setPreferredBroadcastingAttributes:", [v33 preferredBroadcastingAttributes]);
+  metadata6 = [activityCopy metadata];
+  -[CSDMessagingConversationActivityMetadata setPreferredBroadcastingAttributes:](v24, "setPreferredBroadcastingAttributes:", [metadata6 preferredBroadcastingAttributes]);
 
-  v34 = [v7 metadata];
-  -[CSDMessagingConversationActivityMetadata setLifetimePolicy:](v24, "setLifetimePolicy:", [v34 lifetimePolicy]);
+  metadata7 = [activityCopy metadata];
+  -[CSDMessagingConversationActivityMetadata setLifetimePolicy:](v24, "setLifetimePolicy:", [metadata7 lifetimePolicy]);
 
   v35 = objc_alloc_init(CSDMessagingConversationActivitySceneAssociationBehavior);
-  v36 = [v7 metadata];
-  v37 = [v36 sceneAssociationBehavior];
-  v38 = [v37 targetContentIdentifier];
-  [(CSDMessagingConversationActivitySceneAssociationBehavior *)v35 setTargetContentIdentifier:v38];
+  metadata8 = [activityCopy metadata];
+  sceneAssociationBehavior = [metadata8 sceneAssociationBehavior];
+  targetContentIdentifier = [sceneAssociationBehavior targetContentIdentifier];
+  [(CSDMessagingConversationActivitySceneAssociationBehavior *)v35 setTargetContentIdentifier:targetContentIdentifier];
 
-  v39 = [v7 metadata];
-  v40 = [v39 sceneAssociationBehavior];
-  -[CSDMessagingConversationActivitySceneAssociationBehavior setShouldAssociateScene:](v35, "setShouldAssociateScene:", [v40 shouldAssociateScene]);
+  metadata9 = [activityCopy metadata];
+  sceneAssociationBehavior2 = [metadata9 sceneAssociationBehavior];
+  -[CSDMessagingConversationActivitySceneAssociationBehavior setShouldAssociateScene:](v35, "setShouldAssociateScene:", [sceneAssociationBehavior2 shouldAssociateScene]);
 
-  v41 = [v7 metadata];
-  v42 = [v41 sceneAssociationBehavior];
-  v43 = [v42 preferredSceneSessionRole];
-  [(CSDMessagingConversationActivitySceneAssociationBehavior *)v35 setPreferredSceneSessionRole:v43];
+  metadata10 = [activityCopy metadata];
+  sceneAssociationBehavior3 = [metadata10 sceneAssociationBehavior];
+  preferredSceneSessionRole = [sceneAssociationBehavior3 preferredSceneSessionRole];
+  [(CSDMessagingConversationActivitySceneAssociationBehavior *)v35 setPreferredSceneSessionRole:preferredSceneSessionRole];
 
   [(CSDMessagingConversationActivityMetadata *)v24 setSceneAssociationBehavior:v35];
   [(CSDMessagingConversationActivity *)v9 setActivityMetadata:v24];
-  if (v5)
+  if (storageCopy)
   {
-    v44 = [v7 trustedFromHandle];
+    trustedFromHandle = [activityCopy trustedFromHandle];
 
-    if (v44)
+    if (trustedFromHandle)
     {
-      v45 = [v7 trustedFromHandle];
-      v46 = [CSDMessagingHandle handleWithTUHandle:v45];
+      trustedFromHandle2 = [activityCopy trustedFromHandle];
+      v46 = [CSDMessagingHandle handleWithTUHandle:trustedFromHandle2];
       [(CSDMessagingConversationActivity *)v9 setFromHandle:v46];
     }
   }
@@ -114,90 +114,90 @@
   return v9;
 }
 
-+ (CSDMessagingConversationActivity)activityWithCSDConversationActivity:(id)a3 handle:(id)a4
++ (CSDMessagingConversationActivity)activityWithCSDConversationActivity:(id)activity handle:(id)handle
 {
-  v5 = a4;
-  v6 = a3;
+  handleCopy = handle;
+  activityCopy = activity;
   v7 = objc_alloc_init(CSDMessagingConversationActivity);
-  v8 = [v6 UUID];
-  v9 = [v8 UUIDString];
-  [(CSDMessagingConversationActivity *)v7 setIdentifierUUIDString:v9];
+  uUID = [activityCopy UUID];
+  uUIDString = [uUID UUIDString];
+  [(CSDMessagingConversationActivity *)v7 setIdentifierUUIDString:uUIDString];
 
-  v10 = [v6 applicationContext];
-  [(CSDMessagingConversationActivity *)v7 setApplicationContext:v10];
+  applicationContext = [activityCopy applicationContext];
+  [(CSDMessagingConversationActivity *)v7 setApplicationContext:applicationContext];
 
-  v11 = [v6 bundleIdentifier];
-  [(CSDMessagingConversationActivity *)v7 setBundleIdentifier:v11];
+  bundleIdentifier = [activityCopy bundleIdentifier];
+  [(CSDMessagingConversationActivity *)v7 setBundleIdentifier:bundleIdentifier];
 
-  v12 = [v6 activityIdentifier];
-  [(CSDMessagingConversationActivity *)v7 setActivityIdentifier:v12];
+  activityIdentifier = [activityCopy activityIdentifier];
+  [(CSDMessagingConversationActivity *)v7 setActivityIdentifier:activityIdentifier];
 
-  v13 = [v6 metadata];
-  v14 = [v13 context];
-  v15 = [CSDMessagingConversationActivityContext activityContextWithTUActivityContext:v14];
+  metadata = [activityCopy metadata];
+  context = [metadata context];
+  v15 = [CSDMessagingConversationActivityContext activityContextWithTUActivityContext:context];
   [(CSDMessagingConversationActivity *)v7 setActivityContext:v15];
 
-  v16 = [CSDMessagingHandle handleWithTUHandle:v5];
+  v16 = [CSDMessagingHandle handleWithTUHandle:handleCopy];
 
   [(CSDMessagingConversationActivity *)v7 setOriginatorHandle:v16];
-  v17 = [v6 timestamp];
-  [v17 timeIntervalSince1970];
+  timestamp = [activityCopy timestamp];
+  [timestamp timeIntervalSince1970];
   [(CSDMessagingConversationActivity *)v7 setUpdatedDateEpochTime:?];
 
-  v18 = [v6 fallbackApplicationName];
-  [(CSDMessagingConversationActivity *)v7 setFallbackApplicationName:v18];
+  fallbackApplicationName = [activityCopy fallbackApplicationName];
+  [(CSDMessagingConversationActivity *)v7 setFallbackApplicationName:fallbackApplicationName];
 
-  -[CSDMessagingConversationActivity setIsSystemActivity:](v7, "setIsSystemActivity:", [v6 isSystemActivity]);
-  v19 = [v6 timestamp];
-  [v19 timeIntervalSinceReferenceDate];
+  -[CSDMessagingConversationActivity setIsSystemActivity:](v7, "setIsSystemActivity:", [activityCopy isSystemActivity]);
+  timestamp2 = [activityCopy timestamp];
+  [timestamp2 timeIntervalSinceReferenceDate];
   [(CSDMessagingConversationActivity *)v7 setTimestampAsTimeIntervalSinceReferenceDate:?];
 
   v20 = objc_alloc_init(CSDMessagingConversationActivityMetadata);
-  v21 = [v6 metadata];
-  v22 = [v21 title];
-  [(CSDMessagingConversationActivityMetadata *)v20 setTitle:v22];
+  metadata2 = [activityCopy metadata];
+  title = [metadata2 title];
+  [(CSDMessagingConversationActivityMetadata *)v20 setTitle:title];
 
-  v23 = [v6 metadata];
-  v24 = [v23 subTitle];
-  [(CSDMessagingConversationActivityMetadata *)v20 setSubtitle:v24];
+  metadata3 = [activityCopy metadata];
+  subTitle = [metadata3 subTitle];
+  [(CSDMessagingConversationActivityMetadata *)v20 setSubtitle:subTitle];
 
-  v25 = [v6 metadata];
-  v26 = [v25 imageData];
-  [(CSDMessagingConversationActivityMetadata *)v20 setImage:v26];
+  metadata4 = [activityCopy metadata];
+  imageData = [metadata4 imageData];
+  [(CSDMessagingConversationActivityMetadata *)v20 setImage:imageData];
 
-  v27 = [v6 metadata];
-  v28 = [v27 fallbackURL];
-  v29 = [v28 absoluteString];
-  [(CSDMessagingConversationActivityMetadata *)v20 setFallbackURL:v29];
+  metadata5 = [activityCopy metadata];
+  fallbackURL = [metadata5 fallbackURL];
+  absoluteString = [fallbackURL absoluteString];
+  [(CSDMessagingConversationActivityMetadata *)v20 setFallbackURL:absoluteString];
 
-  v30 = [v6 metadata];
-  -[CSDMessagingConversationActivityMetadata setSupportsContinuationOnTV:](v20, "setSupportsContinuationOnTV:", [v30 supportsContinuationOnTV]);
+  metadata6 = [activityCopy metadata];
+  -[CSDMessagingConversationActivityMetadata setSupportsContinuationOnTV:](v20, "setSupportsContinuationOnTV:", [metadata6 supportsContinuationOnTV]);
 
-  v31 = [v6 metadata];
-  -[CSDMessagingConversationActivityMetadata setPreferredBroadcastingAttributes:](v20, "setPreferredBroadcastingAttributes:", [v31 preferredBroadcastingAttributes]);
+  metadata7 = [activityCopy metadata];
+  -[CSDMessagingConversationActivityMetadata setPreferredBroadcastingAttributes:](v20, "setPreferredBroadcastingAttributes:", [metadata7 preferredBroadcastingAttributes]);
 
-  v32 = [v6 metadata];
-  -[CSDMessagingConversationActivityMetadata setLifetimePolicy:](v20, "setLifetimePolicy:", [v32 lifetimePolicy]);
+  metadata8 = [activityCopy metadata];
+  -[CSDMessagingConversationActivityMetadata setLifetimePolicy:](v20, "setLifetimePolicy:", [metadata8 lifetimePolicy]);
 
   v33 = objc_alloc_init(CSDMessagingConversationActivitySceneAssociationBehavior);
-  v34 = [v6 metadata];
-  v35 = [v34 sceneAssociationBehavior];
-  v36 = [v35 targetContentIdentifier];
-  [(CSDMessagingConversationActivitySceneAssociationBehavior *)v33 setTargetContentIdentifier:v36];
+  metadata9 = [activityCopy metadata];
+  sceneAssociationBehavior = [metadata9 sceneAssociationBehavior];
+  targetContentIdentifier = [sceneAssociationBehavior targetContentIdentifier];
+  [(CSDMessagingConversationActivitySceneAssociationBehavior *)v33 setTargetContentIdentifier:targetContentIdentifier];
 
-  v37 = [v6 metadata];
-  v38 = [v37 sceneAssociationBehavior];
-  -[CSDMessagingConversationActivitySceneAssociationBehavior setShouldAssociateScene:](v33, "setShouldAssociateScene:", [v38 shouldAssociateScene]);
+  metadata10 = [activityCopy metadata];
+  sceneAssociationBehavior2 = [metadata10 sceneAssociationBehavior];
+  -[CSDMessagingConversationActivitySceneAssociationBehavior setShouldAssociateScene:](v33, "setShouldAssociateScene:", [sceneAssociationBehavior2 shouldAssociateScene]);
 
-  v39 = [v6 metadata];
-  v40 = [v39 sceneAssociationBehavior];
-  v41 = [v40 preferredSceneSessionRole];
-  [(CSDMessagingConversationActivitySceneAssociationBehavior *)v33 setPreferredSceneSessionRole:v41];
+  metadata11 = [activityCopy metadata];
+  sceneAssociationBehavior3 = [metadata11 sceneAssociationBehavior];
+  preferredSceneSessionRole = [sceneAssociationBehavior3 preferredSceneSessionRole];
+  [(CSDMessagingConversationActivitySceneAssociationBehavior *)v33 setPreferredSceneSessionRole:preferredSceneSessionRole];
 
   [(CSDMessagingConversationActivityMetadata *)v20 setSceneAssociationBehavior:v33];
-  v42 = [v6 metadata];
+  metadata12 = [activityCopy metadata];
 
-  -[CSDMessagingConversationActivityMetadata setSupportsActivityPreviews:](v20, "setSupportsActivityPreviews:", [v42 supportsActivityPreviews]);
+  -[CSDMessagingConversationActivityMetadata setSupportsActivityPreviews:](v20, "setSupportsActivityPreviews:", [metadata12 supportsActivityPreviews]);
   [(CSDMessagingConversationActivity *)v7 setActivityMetadata:v20];
 
   return v7;
@@ -206,23 +206,23 @@
 - (TUConversationActivity)tuConversationActivity
 {
   v3 = +[TUConversationActivitySceneAssociationBehavior defaultBehavior];
-  v4 = [(CSDMessagingConversationActivity *)self activityMetadata];
-  v5 = [v4 hasSceneAssociationBehavior];
+  activityMetadata = [(CSDMessagingConversationActivity *)self activityMetadata];
+  hasSceneAssociationBehavior = [activityMetadata hasSceneAssociationBehavior];
 
-  if (v5)
+  if (hasSceneAssociationBehavior)
   {
     v6 = [TUConversationActivitySceneAssociationBehavior alloc];
-    v55 = [(CSDMessagingConversationActivity *)self activityMetadata];
-    v53 = [v55 sceneAssociationBehavior];
-    v7 = [v53 targetContentIdentifier];
-    v8 = [(CSDMessagingConversationActivity *)self activityMetadata];
-    v9 = [v8 sceneAssociationBehavior];
-    v10 = [v9 shouldAssociateScene];
+    activityMetadata2 = [(CSDMessagingConversationActivity *)self activityMetadata];
+    sceneAssociationBehavior = [activityMetadata2 sceneAssociationBehavior];
+    targetContentIdentifier = [sceneAssociationBehavior targetContentIdentifier];
+    activityMetadata3 = [(CSDMessagingConversationActivity *)self activityMetadata];
+    sceneAssociationBehavior2 = [activityMetadata3 sceneAssociationBehavior];
+    shouldAssociateScene = [sceneAssociationBehavior2 shouldAssociateScene];
     [(CSDMessagingConversationActivity *)self activityMetadata];
     v12 = v11 = v3;
-    v13 = [v12 sceneAssociationBehavior];
-    v14 = [v13 preferredSceneSessionRole];
-    v15 = [v6 initWithTargetContentIdentifier:v7 shouldAssociateScene:v10 preferredSceneSessionRole:v14];
+    sceneAssociationBehavior3 = [v12 sceneAssociationBehavior];
+    preferredSceneSessionRole = [sceneAssociationBehavior3 preferredSceneSessionRole];
+    v15 = [v6 initWithTargetContentIdentifier:targetContentIdentifier shouldAssociateScene:shouldAssociateScene preferredSceneSessionRole:preferredSceneSessionRole];
 
     v56 = v15;
   }
@@ -233,45 +233,45 @@
   }
 
   v47 = [TUConversationActivityMetadata alloc];
-  v54 = [(CSDMessagingConversationActivity *)self activityContext];
-  v16 = [v54 tuConversationActivityContext];
-  v52 = [(CSDMessagingConversationActivity *)self activityMetadata];
-  v51 = [v52 fallbackURL];
-  v46 = [NSURL URLWithString:v51];
-  v50 = [(CSDMessagingConversationActivity *)self activityMetadata];
-  v45 = [v50 supportsContinuationOnTV];
-  v49 = [(CSDMessagingConversationActivity *)self activityMetadata];
-  v43 = [v49 title];
-  v48 = [(CSDMessagingConversationActivity *)self activityMetadata];
-  v17 = [v48 subtitle];
-  v44 = [(CSDMessagingConversationActivity *)self activityMetadata];
-  v18 = [v44 image];
-  v19 = [(CSDMessagingConversationActivity *)self activityMetadata];
-  v20 = [v19 preferredBroadcastingAttributes];
-  v21 = [(CSDMessagingConversationActivity *)self activityMetadata];
-  v22 = [v21 supportsActivityPreviews];
-  v23 = [(CSDMessagingConversationActivity *)self activityMetadata];
-  LOBYTE(v42) = v22;
-  v24 = [v47 initWithContext:v16 linkMetadata:0 fallbackURL:v46 invitationURL:0 supportsContinuationOnTV:v45 title:v43 subTitle:v17 imageData:v18 preferredBroadcastingAttributes:v20 sceneAssociationBehavior:v56 supportsActivityPreviews:v42 lifetimePolicy:{-[CSDMessagingConversationActivity mappedLifetimePolicy:](self, "mappedLifetimePolicy:", objc_msgSend(v23, "lifetimePolicy"))}];
+  activityContext = [(CSDMessagingConversationActivity *)self activityContext];
+  tuConversationActivityContext = [activityContext tuConversationActivityContext];
+  activityMetadata4 = [(CSDMessagingConversationActivity *)self activityMetadata];
+  fallbackURL = [activityMetadata4 fallbackURL];
+  v46 = [NSURL URLWithString:fallbackURL];
+  activityMetadata5 = [(CSDMessagingConversationActivity *)self activityMetadata];
+  supportsContinuationOnTV = [activityMetadata5 supportsContinuationOnTV];
+  activityMetadata6 = [(CSDMessagingConversationActivity *)self activityMetadata];
+  title = [activityMetadata6 title];
+  activityMetadata7 = [(CSDMessagingConversationActivity *)self activityMetadata];
+  subtitle = [activityMetadata7 subtitle];
+  activityMetadata8 = [(CSDMessagingConversationActivity *)self activityMetadata];
+  image = [activityMetadata8 image];
+  activityMetadata9 = [(CSDMessagingConversationActivity *)self activityMetadata];
+  preferredBroadcastingAttributes = [activityMetadata9 preferredBroadcastingAttributes];
+  activityMetadata10 = [(CSDMessagingConversationActivity *)self activityMetadata];
+  supportsActivityPreviews = [activityMetadata10 supportsActivityPreviews];
+  activityMetadata11 = [(CSDMessagingConversationActivity *)self activityMetadata];
+  LOBYTE(v42) = supportsActivityPreviews;
+  v24 = [v47 initWithContext:tuConversationActivityContext linkMetadata:0 fallbackURL:v46 invitationURL:0 supportsContinuationOnTV:supportsContinuationOnTV title:title subTitle:subtitle imageData:image preferredBroadcastingAttributes:preferredBroadcastingAttributes sceneAssociationBehavior:v56 supportsActivityPreviews:v42 lifetimePolicy:{-[CSDMessagingConversationActivity mappedLifetimePolicy:](self, "mappedLifetimePolicy:", objc_msgSend(activityMetadata11, "lifetimePolicy"))}];
 
   v25 = v24;
   v26 = [TUConversationActivity alloc];
-  v27 = [(CSDMessagingConversationActivity *)self bundleIdentifier];
-  v28 = [(CSDMessagingConversationActivity *)self applicationContext];
+  bundleIdentifier = [(CSDMessagingConversationActivity *)self bundleIdentifier];
+  applicationContext = [(CSDMessagingConversationActivity *)self applicationContext];
   v29 = [NSUUID alloc];
-  v30 = [(CSDMessagingConversationActivity *)self identifierUUIDString];
-  v31 = [v29 initWithUUIDString:v30];
-  v32 = [(CSDMessagingConversationActivity *)self activityIdentifier];
-  v33 = [(CSDMessagingConversationActivity *)self fallbackApplicationName];
-  v34 = [v26 initWithBundleIdentifier:v27 metadata:v25 applicationContext:v28 uuid:v31 activityIdentifier:v32 fallbackApplicationName:v33];
+  identifierUUIDString = [(CSDMessagingConversationActivity *)self identifierUUIDString];
+  v31 = [v29 initWithUUIDString:identifierUUIDString];
+  activityIdentifier = [(CSDMessagingConversationActivity *)self activityIdentifier];
+  fallbackApplicationName = [(CSDMessagingConversationActivity *)self fallbackApplicationName];
+  v34 = [v26 initWithBundleIdentifier:bundleIdentifier metadata:v25 applicationContext:applicationContext uuid:v31 activityIdentifier:activityIdentifier fallbackApplicationName:fallbackApplicationName];
 
-  v35 = [(CSDMessagingConversationActivity *)self originatorHandle];
-  v36 = [v35 tuHandle];
-  [v34 setOriginator:v36];
+  originatorHandle = [(CSDMessagingConversationActivity *)self originatorHandle];
+  tuHandle = [originatorHandle tuHandle];
+  [v34 setOriginator:tuHandle];
 
-  v37 = [(CSDMessagingConversationActivity *)self fromHandle];
-  v38 = [v37 tuHandle];
-  [v34 setTrustedFromHandle:v38];
+  fromHandle = [(CSDMessagingConversationActivity *)self fromHandle];
+  tuHandle2 = [fromHandle tuHandle];
+  [v34 setTrustedFromHandle:tuHandle2];
 
   [v34 setSystemActivity:{-[CSDMessagingConversationActivity isSystemActivity](self, "isSystemActivity")}];
   if ([(CSDMessagingConversationActivity *)self hasTimestampAsTimeIntervalSinceReferenceDate])
@@ -288,9 +288,9 @@
   v39 = ;
   [v34 setTimestamp:v39];
 
-  v40 = [v34 sanitizedCopy];
+  sanitizedCopy = [v34 sanitizedCopy];
 
-  return v40;
+  return sanitizedCopy;
 }
 
 - (id)description
@@ -298,35 +298,35 @@
   v8.receiver = self;
   v8.super_class = CSDMessagingConversationActivity;
   v3 = [(CSDMessagingConversationActivity *)&v8 description];
-  v4 = [(CSDMessagingConversationActivity *)self dictionaryRepresentation];
+  dictionaryRepresentation = [(CSDMessagingConversationActivity *)self dictionaryRepresentation];
   v5 = TULoggableStringForObject();
   v6 = [NSString stringWithFormat:@"%@ %@", v3, v5];
 
   return v6;
 }
 
-- (int64_t)mappedLifetimePolicy:(int64_t)a3
+- (int64_t)mappedLifetimePolicy:(int64_t)policy
 {
-  v3 = a3;
-  if ((a3 - 1) >= 2)
+  policyCopy = policy;
+  if ((policy - 1) >= 2)
   {
     v4 = sub_100004778();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134217984;
-      v7 = v3;
+      v7 = policyCopy;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Couldn't convert TUConversationActivityLifetimePolicy=%ld to known value, setting to TUConversationActivityLifetimePolicyUnknown", &v6, 0xCu);
     }
 
     return 0;
   }
 
-  return v3;
+  return policyCopy;
 }
 
-- (void)setHasUpdatedDateEpochTime:(BOOL)a3
+- (void)setHasUpdatedDateEpochTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2;
   }
@@ -339,9 +339,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsSystemActivity:(BOOL)a3
+- (void)setHasIsSystemActivity:(BOOL)activity
 {
-  if (a3)
+  if (activity)
   {
     v3 = 4;
   }
@@ -391,15 +391,15 @@
   activityContext = self->_activityContext;
   if (activityContext)
   {
-    v11 = [(CSDMessagingConversationActivityContext *)activityContext dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"activityContext"];
+    dictionaryRepresentation = [(CSDMessagingConversationActivityContext *)activityContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"activityContext"];
   }
 
   originatorHandle = self->_originatorHandle;
   if (originatorHandle)
   {
-    v13 = [(CSDMessagingHandle *)originatorHandle dictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"originatorHandle"];
+    dictionaryRepresentation2 = [(CSDMessagingHandle *)originatorHandle dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"originatorHandle"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -417,8 +417,8 @@
   activityMetadata = self->_activityMetadata;
   if (activityMetadata)
   {
-    v17 = [(CSDMessagingConversationActivityMetadata *)activityMetadata dictionaryRepresentation];
-    [v4 setObject:v17 forKey:@"activityMetadata"];
+    dictionaryRepresentation3 = [(CSDMessagingConversationActivityMetadata *)activityMetadata dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"activityMetadata"];
   }
 
   has = self->_has;
@@ -439,76 +439,76 @@
   fromHandle = self->_fromHandle;
   if (fromHandle)
   {
-    v22 = [(CSDMessagingHandle *)fromHandle dictionaryRepresentation];
-    [v4 setObject:v22 forKey:@"fromHandle"];
+    dictionaryRepresentation4 = [(CSDMessagingHandle *)fromHandle dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"fromHandle"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_identifierUUIDString)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_applicationContext)
   {
     PBDataWriterWriteDataField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_bundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_activityIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_metadata)
   {
     PBDataWriterWriteDataField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_activityContext)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_originatorHandle)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     updatedDateEpochTime = self->_updatedDateEpochTime;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_fallbackApplicationName)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_activityMetadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -516,7 +516,7 @@
   {
     isSystemActivity = self->_isSystemActivity;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
   }
 
@@ -524,129 +524,129 @@
   {
     timestampAsTimeIntervalSinceReferenceDate = self->_timestampAsTimeIntervalSinceReferenceDate;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_fromHandle)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_identifierUUIDString)
   {
-    [v4 setIdentifierUUIDString:?];
-    v4 = v6;
+    [toCopy setIdentifierUUIDString:?];
+    toCopy = v6;
   }
 
   if (self->_applicationContext)
   {
     [v6 setApplicationContext:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bundleIdentifier)
   {
     [v6 setBundleIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_activityIdentifier)
   {
     [v6 setActivityIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_metadata)
   {
     [v6 setMetadata:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_activityContext)
   {
     [v6 setActivityContext:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_originatorHandle)
   {
     [v6 setOriginatorHandle:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_updatedDateEpochTime;
-    *(v4 + 108) |= 2u;
+    *(toCopy + 2) = *&self->_updatedDateEpochTime;
+    *(toCopy + 108) |= 2u;
   }
 
   if (self->_fallbackApplicationName)
   {
     [v6 setFallbackApplicationName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_activityMetadata)
   {
     [v6 setActivityMetadata:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 104) = self->_isSystemActivity;
-    *(v4 + 108) |= 4u;
+    *(toCopy + 104) = self->_isSystemActivity;
+    *(toCopy + 108) |= 4u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_timestampAsTimeIntervalSinceReferenceDate;
-    *(v4 + 108) |= 1u;
+    *(toCopy + 1) = *&self->_timestampAsTimeIntervalSinceReferenceDate;
+    *(toCopy + 108) |= 1u;
   }
 
   if (self->_fromHandle)
   {
     [v6 setFromHandle:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifierUUIDString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifierUUIDString copyWithZone:zone];
   v7 = v5[10];
   v5[10] = v6;
 
-  v8 = [(NSData *)self->_applicationContext copyWithZone:a3];
+  v8 = [(NSData *)self->_applicationContext copyWithZone:zone];
   v9 = v5[6];
   v5[6] = v8;
 
-  v10 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   v11 = v5[7];
   v5[7] = v10;
 
-  v12 = [(NSString *)self->_activityIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_activityIdentifier copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(NSData *)self->_metadata copyWithZone:a3];
+  v14 = [(NSData *)self->_metadata copyWithZone:zone];
   v15 = v5[11];
   v5[11] = v14;
 
-  v16 = [(CSDMessagingConversationActivityContext *)self->_activityContext copyWithZone:a3];
+  v16 = [(CSDMessagingConversationActivityContext *)self->_activityContext copyWithZone:zone];
   v17 = v5[3];
   v5[3] = v16;
 
-  v18 = [(CSDMessagingHandle *)self->_originatorHandle copyWithZone:a3];
+  v18 = [(CSDMessagingHandle *)self->_originatorHandle copyWithZone:zone];
   v19 = v5[12];
   v5[12] = v18;
 
@@ -656,11 +656,11 @@
     *(v5 + 108) |= 2u;
   }
 
-  v20 = [(NSString *)self->_fallbackApplicationName copyWithZone:a3];
+  v20 = [(NSString *)self->_fallbackApplicationName copyWithZone:zone];
   v21 = v5[8];
   v5[8] = v20;
 
-  v22 = [(CSDMessagingConversationActivityMetadata *)self->_activityMetadata copyWithZone:a3];
+  v22 = [(CSDMessagingConversationActivityMetadata *)self->_activityMetadata copyWithZone:zone];
   v23 = v5[5];
   v5[5] = v22;
 
@@ -678,23 +678,23 @@
     *(v5 + 108) |= 1u;
   }
 
-  v25 = [(CSDMessagingHandle *)self->_fromHandle copyWithZone:a3];
+  v25 = [(CSDMessagingHandle *)self->_fromHandle copyWithZone:zone];
   v26 = v5[9];
   v5[9] = v25;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_39;
   }
 
   identifierUUIDString = self->_identifierUUIDString;
-  if (identifierUUIDString | *(v4 + 10))
+  if (identifierUUIDString | *(equalCopy + 10))
   {
     if (![(NSString *)identifierUUIDString isEqual:?])
     {
@@ -703,7 +703,7 @@
   }
 
   applicationContext = self->_applicationContext;
-  if (applicationContext | *(v4 + 6))
+  if (applicationContext | *(equalCopy + 6))
   {
     if (![(NSData *)applicationContext isEqual:?])
     {
@@ -712,7 +712,7 @@
   }
 
   bundleIdentifier = self->_bundleIdentifier;
-  if (bundleIdentifier | *(v4 + 7))
+  if (bundleIdentifier | *(equalCopy + 7))
   {
     if (![(NSString *)bundleIdentifier isEqual:?])
     {
@@ -721,7 +721,7 @@
   }
 
   activityIdentifier = self->_activityIdentifier;
-  if (activityIdentifier | *(v4 + 4))
+  if (activityIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)activityIdentifier isEqual:?])
     {
@@ -730,7 +730,7 @@
   }
 
   metadata = self->_metadata;
-  if (metadata | *(v4 + 11))
+  if (metadata | *(equalCopy + 11))
   {
     if (![(NSData *)metadata isEqual:?])
     {
@@ -739,7 +739,7 @@
   }
 
   activityContext = self->_activityContext;
-  if (activityContext | *(v4 + 3))
+  if (activityContext | *(equalCopy + 3))
   {
     if (![(CSDMessagingConversationActivityContext *)activityContext isEqual:?])
     {
@@ -748,7 +748,7 @@
   }
 
   originatorHandle = self->_originatorHandle;
-  if (originatorHandle | *(v4 + 12))
+  if (originatorHandle | *(equalCopy + 12))
   {
     if (![(CSDMessagingHandle *)originatorHandle isEqual:?])
     {
@@ -756,28 +756,28 @@
     }
   }
 
-  v12 = *(v4 + 108);
+  v12 = *(equalCopy + 108);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 108) & 2) == 0 || self->_updatedDateEpochTime != *(v4 + 2))
+    if ((*(equalCopy + 108) & 2) == 0 || self->_updatedDateEpochTime != *(equalCopy + 2))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 108) & 2) != 0)
+  else if ((*(equalCopy + 108) & 2) != 0)
   {
     goto LABEL_39;
   }
 
   fallbackApplicationName = self->_fallbackApplicationName;
-  if (fallbackApplicationName | *(v4 + 8) && ![(NSString *)fallbackApplicationName isEqual:?])
+  if (fallbackApplicationName | *(equalCopy + 8) && ![(NSString *)fallbackApplicationName isEqual:?])
   {
     goto LABEL_39;
   }
 
   activityMetadata = self->_activityMetadata;
-  if (activityMetadata | *(v4 + 5))
+  if (activityMetadata | *(equalCopy + 5))
   {
     if (![(CSDMessagingConversationActivityMetadata *)activityMetadata isEqual:?])
     {
@@ -785,10 +785,10 @@
     }
   }
 
-  v15 = *(v4 + 108);
+  v15 = *(equalCopy + 108);
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 108) & 4) == 0)
+    if ((*(equalCopy + 108) & 4) == 0)
     {
       goto LABEL_27;
     }
@@ -798,21 +798,21 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  if ((*(v4 + 108) & 4) == 0)
+  if ((*(equalCopy + 108) & 4) == 0)
   {
     goto LABEL_39;
   }
 
-  v16 = *(v4 + 104);
+  v16 = *(equalCopy + 104);
   if (self->_isSystemActivity)
   {
-    if ((*(v4 + 104) & 1) == 0)
+    if ((*(equalCopy + 104) & 1) == 0)
     {
       goto LABEL_39;
     }
   }
 
-  else if (*(v4 + 104))
+  else if (*(equalCopy + 104))
   {
     goto LABEL_39;
   }
@@ -820,19 +820,19 @@ LABEL_39:
 LABEL_27:
   if (*&self->_has)
   {
-    if ((*(v4 + 108) & 1) == 0 || self->_timestampAsTimeIntervalSinceReferenceDate != *(v4 + 1))
+    if ((*(equalCopy + 108) & 1) == 0 || self->_timestampAsTimeIntervalSinceReferenceDate != *(equalCopy + 1))
     {
       goto LABEL_39;
     }
   }
 
-  else if (*(v4 + 108))
+  else if (*(equalCopy + 108))
   {
     goto LABEL_39;
   }
 
   fromHandle = self->_fromHandle;
-  if (fromHandle | *(v4 + 9))
+  if (fromHandle | *(equalCopy + 9))
   {
     v18 = [(CSDMessagingHandle *)fromHandle isEqual:?];
   }
@@ -939,42 +939,42 @@ LABEL_11:
   return v24 ^ v25 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v10 ^ v14 ^ v15 ^ v18 ^ v22 ^ [(CSDMessagingHandle *)self->_fromHandle hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v14 = v4;
-  if (*(v4 + 10))
+  fromCopy = from;
+  v14 = fromCopy;
+  if (*(fromCopy + 10))
   {
     [(CSDMessagingConversationActivity *)self setIdentifierUUIDString:?];
-    v4 = v14;
+    fromCopy = v14;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(CSDMessagingConversationActivity *)self setApplicationContext:?];
-    v4 = v14;
+    fromCopy = v14;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(CSDMessagingConversationActivity *)self setBundleIdentifier:?];
-    v4 = v14;
+    fromCopy = v14;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(CSDMessagingConversationActivity *)self setActivityIdentifier:?];
-    v4 = v14;
+    fromCopy = v14;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(CSDMessagingConversationActivity *)self setMetadata:?];
-    v4 = v14;
+    fromCopy = v14;
   }
 
   activityContext = self->_activityContext;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (activityContext)
   {
     if (!v6)
@@ -995,10 +995,10 @@ LABEL_11:
     [(CSDMessagingConversationActivity *)self setActivityContext:?];
   }
 
-  v4 = v14;
+  fromCopy = v14;
 LABEL_17:
   originatorHandle = self->_originatorHandle;
-  v8 = *(v4 + 12);
+  v8 = *(fromCopy + 12);
   if (originatorHandle)
   {
     if (!v8)
@@ -1019,22 +1019,22 @@ LABEL_17:
     [(CSDMessagingConversationActivity *)self setOriginatorHandle:?];
   }
 
-  v4 = v14;
+  fromCopy = v14;
 LABEL_23:
-  if ((*(v4 + 108) & 2) != 0)
+  if ((*(fromCopy + 108) & 2) != 0)
   {
-    self->_updatedDateEpochTime = *(v4 + 2);
+    self->_updatedDateEpochTime = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(CSDMessagingConversationActivity *)self setFallbackApplicationName:?];
-    v4 = v14;
+    fromCopy = v14;
   }
 
   activityMetadata = self->_activityMetadata;
-  v10 = *(v4 + 5);
+  v10 = *(fromCopy + 5);
   if (activityMetadata)
   {
     if (!v10)
@@ -1055,24 +1055,24 @@ LABEL_23:
     [(CSDMessagingConversationActivity *)self setActivityMetadata:?];
   }
 
-  v4 = v14;
+  fromCopy = v14;
 LABEL_33:
-  v11 = *(v4 + 108);
+  v11 = *(fromCopy + 108);
   if ((v11 & 4) != 0)
   {
-    self->_isSystemActivity = *(v4 + 104);
+    self->_isSystemActivity = *(fromCopy + 104);
     *&self->_has |= 4u;
-    v11 = *(v4 + 108);
+    v11 = *(fromCopy + 108);
   }
 
   if (v11)
   {
-    self->_timestampAsTimeIntervalSinceReferenceDate = *(v4 + 1);
+    self->_timestampAsTimeIntervalSinceReferenceDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
   fromHandle = self->_fromHandle;
-  v13 = *(v4 + 9);
+  v13 = *(fromCopy + 9);
   if (fromHandle)
   {
     if (!v13)
@@ -1093,7 +1093,7 @@ LABEL_33:
     [(CSDMessagingConversationActivity *)self setFromHandle:?];
   }
 
-  v4 = v14;
+  fromCopy = v14;
 LABEL_43:
 }
 

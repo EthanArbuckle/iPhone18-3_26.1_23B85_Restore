@@ -1,7 +1,7 @@
 @interface HFAbstractPositionStatusItem
-- (id)_characteristicsToReadForCharacteristicTypes:(id)a3 inServices:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)defaultTitleForRepresentedHomeKitObjects:(id)a3;
+- (id)_characteristicsToReadForCharacteristicTypes:(id)types inServices:(id)services;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)defaultTitleForRepresentedHomeKitObjects:(id)objects;
 - (id)multipleClosedServicesDescriptionString;
 - (id)multipleClosingServicesDescriptionString;
 - (id)multipleObstructedServicesDescriptionString;
@@ -18,23 +18,23 @@
 
 @implementation HFAbstractPositionStatusItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = objc_opt_class();
-  v6 = [objc_opt_class() serviceTypes];
-  v7 = [v6 anyObject];
-  v8 = [v5 characteristicTypesForServiceType:v7 includingAssociatedTypes:1];
+  serviceTypes = [objc_opt_class() serviceTypes];
+  anyObject = [serviceTypes anyObject];
+  v8 = [v5 characteristicTypesForServiceType:anyObject includingAssociatedTypes:1];
 
-  v9 = [objc_opt_class() serviceTypes];
-  v10 = [v9 allObjects];
-  v11 = [v8 allObjects];
-  v12 = [(HFStatusItem *)self filteredServicesOfTypes:v10 containingCharacteristicTypes:v11];
+  serviceTypes2 = [objc_opt_class() serviceTypes];
+  allObjects = [serviceTypes2 allObjects];
+  allObjects2 = [v8 allObjects];
+  v12 = [(HFStatusItem *)self filteredServicesOfTypes:allObjects containingCharacteristicTypes:allObjects2];
 
   v13 = [(HFAbstractPositionStatusItem *)self _characteristicsToReadForCharacteristicTypes:v8 inServices:v12];
   objc_initWeak(&location, self);
-  v14 = [(HFStatusItem *)self valueSource];
-  v15 = [v14 readValuesForCharacteristics:v13];
+  valueSource = [(HFStatusItem *)self valueSource];
+  v15 = [valueSource readValuesForCharacteristics:v13];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __60__HFAbstractPositionStatusItem__subclass_updateWithOptions___block_invoke;
@@ -365,123 +365,123 @@ LABEL_15:
 
 - (id)oneServiceTitleString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:164 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem oneServiceTitleString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:164 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem oneServiceTitleString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)multipleServiceTitleFormatString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:170 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem multipleServiceTitleFormatString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:170 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem multipleServiceTitleFormatString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)oneObstructedServiceDescriptionString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:176 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem oneObstructedServiceDescriptionString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:176 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem oneObstructedServiceDescriptionString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)multipleObstructedServicesDescriptionString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:182 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem multipleObstructedServicesDescriptionString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:182 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem multipleObstructedServicesDescriptionString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)oneOpenServiceDescriptionString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:188 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem oneOpenServiceDescriptionString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:188 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem oneOpenServiceDescriptionString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)multipleOpenServicesDescriptionString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:194 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem multipleOpenServicesDescriptionString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:194 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem multipleOpenServicesDescriptionString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)oneOpeningServiceDescriptionString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:200 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem oneOpeningServiceDescriptionString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:200 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem oneOpeningServiceDescriptionString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)multipleOpeningServicesDescriptionString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:206 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem multipleOpeningServicesDescriptionString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:206 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem multipleOpeningServicesDescriptionString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)oneClosingServiceDescriptionString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:212 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem oneClosingServiceDescriptionString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:212 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem oneClosingServiceDescriptionString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)multipleClosingServicesDescriptionString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:218 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem multipleClosingServicesDescriptionString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:218 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem multipleClosingServicesDescriptionString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)oneClosedServiceDescriptionString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:224 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem oneClosedServiceDescriptionString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:224 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem oneClosedServiceDescriptionString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)multipleClosedServicesDescriptionString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:230 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem multipleClosedServicesDescriptionString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractPositionStatusItem.m" lineNumber:230 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPositionStatusItem multipleClosedServicesDescriptionString]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)defaultTitleForRepresentedHomeKitObjects:(id)a3
+- (id)defaultTitleForRepresentedHomeKitObjects:(id)objects
 {
-  v4 = a3;
-  if ([v4 count] == 1)
+  objectsCopy = objects;
+  if ([objectsCopy count] == 1)
   {
-    v5 = [v4 anyObject];
-    v6 = [(HFStatusItem *)self displayNameForHomeKitObject:v5];
+    anyObject = [objectsCopy anyObject];
+    v6 = [(HFStatusItem *)self displayNameForHomeKitObject:anyObject];
 LABEL_6:
 
     goto LABEL_8;
   }
 
-  if ([v4 count] >= 2)
+  if ([objectsCopy count] >= 2)
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(HFAbstractPositionStatusItem *)self multipleServiceTitleFormatString];
+    multipleServiceTitleFormatString = [(HFAbstractPositionStatusItem *)self multipleServiceTitleFormatString];
     v10 = 0;
-    v6 = [v7 localizedStringWithValidatedFormat:v8 validFormatSpecifiers:@"%lu" error:&v10, objc_msgSend(v4, "count")];
-    v5 = v10;
+    v6 = [v7 localizedStringWithValidatedFormat:multipleServiceTitleFormatString validFormatSpecifiers:@"%lu" error:&v10, objc_msgSend(objectsCopy, "count")];
+    anyObject = v10;
 
     if (!v6)
     {
-      NSLog(&cfstr_CouldnTLocaliz_1.isa, v5);
+      NSLog(&cfstr_CouldnTLocaliz_1.isa, anyObject);
     }
 
     goto LABEL_6;
@@ -493,16 +493,16 @@ LABEL_8:
   return v6;
 }
 
-- (id)_characteristicsToReadForCharacteristicTypes:(id)a3 inServices:(id)a4
+- (id)_characteristicsToReadForCharacteristicTypes:(id)types inServices:(id)services
 {
-  v5 = a4;
+  servicesCopy = services;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __88__HFAbstractPositionStatusItem__characteristicsToReadForCharacteristicTypes_inServices___block_invoke;
   v9[3] = &unk_277DF2DD8;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 na_flatMap:v9];
+  v10 = servicesCopy;
+  v6 = servicesCopy;
+  v7 = [types na_flatMap:v9];
 
   return v7;
 }

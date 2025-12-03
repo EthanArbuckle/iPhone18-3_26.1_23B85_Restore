@@ -1,17 +1,17 @@
 @interface SearchUIWatchListButtonItem
-- (id)commandForStatus:(unint64_t)a3;
+- (id)commandForStatus:(unint64_t)status;
 @end
 
 @implementation SearchUIWatchListButtonItem
 
-- (id)commandForStatus:(unint64_t)a3
+- (id)commandForStatus:(unint64_t)status
 {
   v5 = objc_opt_new();
-  v6 = [(SearchUIButtonItem *)self sfButtonItem];
-  v7 = [v6 watchListItem];
-  [v5 setWatchListItem:v7];
+  sfButtonItem = [(SearchUIButtonItem *)self sfButtonItem];
+  watchListItem = [sfButtonItem watchListItem];
+  [v5 setWatchListItem:watchListItem];
 
-  [v5 setShouldAddToWatchList:a3 == 0];
+  [v5 setShouldAddToWatchList:status == 0];
 
   return v5;
 }

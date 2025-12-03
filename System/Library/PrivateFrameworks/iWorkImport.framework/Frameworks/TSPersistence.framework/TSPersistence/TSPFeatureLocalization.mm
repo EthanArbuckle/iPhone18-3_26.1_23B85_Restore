@@ -1,5 +1,5 @@
 @interface TSPFeatureLocalization
-+ (BOOL)validateFeatureIdentifier:(id)a3;
++ (BOOL)validateFeatureIdentifier:(id)identifier;
 + (id)localizationForFeatureIdentifiers;
 @end
 
@@ -17,16 +17,16 @@
   return v3;
 }
 
-+ (BOOL)validateFeatureIdentifier:(id)a3
++ (BOOL)validateFeatureIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 1;
   }
 
-  v4 = a3;
-  v7 = objc_msgSend_localizationForFeatureIdentifiers(a1, v5, v6);
-  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v4);
+  identifierCopy = identifier;
+  v7 = objc_msgSend_localizationForFeatureIdentifiers(self, v5, v6);
+  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, identifierCopy);
 
   v10 = v9 != 0;
   return v10;

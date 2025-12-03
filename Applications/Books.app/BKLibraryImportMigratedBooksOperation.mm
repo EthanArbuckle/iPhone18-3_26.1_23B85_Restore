@@ -1,20 +1,20 @@
 @interface BKLibraryImportMigratedBooksOperation
-- (BKLibraryImportMigratedBooksOperation)initWithLibraryAssetProvider:(id)a3;
+- (BKLibraryImportMigratedBooksOperation)initWithLibraryAssetProvider:(id)provider;
 - (void)main;
 @end
 
 @implementation BKLibraryImportMigratedBooksOperation
 
-- (BKLibraryImportMigratedBooksOperation)initWithLibraryAssetProvider:(id)a3
+- (BKLibraryImportMigratedBooksOperation)initWithLibraryAssetProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = BKLibraryImportMigratedBooksOperation;
   v6 = [(BKLibraryImportMigratedBooksOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_libraryAssetProvider, a3);
+    objc_storeStrong(&v6->_libraryAssetProvider, provider);
   }
 
   return v7;
@@ -53,8 +53,8 @@ LABEL_3:
         break;
       }
 
-      v13 = [(BKLibraryImportMigratedBooksOperation *)self libraryAssetProvider];
-      [v13 importURL:v12 openInPlace:0 options:0 completion:0];
+      libraryAssetProvider = [(BKLibraryImportMigratedBooksOperation *)self libraryAssetProvider];
+      [libraryAssetProvider importURL:v12 openInPlace:0 options:0 completion:0];
 
       if (v9 == ++v11)
       {

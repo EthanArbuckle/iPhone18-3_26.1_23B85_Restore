@@ -1,59 +1,59 @@
 @interface RamrodMDNSAnnouncer
-- (RamrodMDNSAnnouncer)initWithPort:(unsigned __int16)a3;
-- (RamrodMDNSAnnouncer)initWithPort:(unsigned __int16)a3 domainName:(id)a4 hostName:(id)a5;
-- (void)_announceWithTTL:(unsigned int)a3;
+- (RamrodMDNSAnnouncer)initWithPort:(unsigned __int16)port;
+- (RamrodMDNSAnnouncer)initWithPort:(unsigned __int16)port domainName:(id)name hostName:(id)hostName;
+- (void)_announceWithTTL:(unsigned int)l;
 - (void)_invalidate;
-- (void)_resetTimerAndFire:(BOOL)a3;
+- (void)_resetTimerAndFire:(BOOL)fire;
 - (void)activate;
-- (void)addHostAlias:(id)a3;
-- (void)addRamDiskServiceWithType:(id)a3 port:(unsigned __int16)a4;
-- (void)addService:(id)a3 port:(unsigned __int16)a4 name:(id)a5 text:(id)a6;
+- (void)addHostAlias:(id)alias;
+- (void)addRamDiskServiceWithType:(id)type port:(unsigned __int16)port;
+- (void)addService:(id)service port:(unsigned __int16)port name:(id)name text:(id)text;
 - (void)announce;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeHostAlias:(id)a3;
+- (void)removeHostAlias:(id)alias;
 - (void)removeRamDiskService;
-- (void)removeService:(id)a3;
-- (void)setFastAnnounce:(BOOL)a3;
+- (void)removeService:(id)service;
+- (void)setFastAnnounce:(BOOL)announce;
 @end
 
 @implementation RamrodMDNSAnnouncer
 
-- (RamrodMDNSAnnouncer)initWithPort:(unsigned __int16)a3
+- (RamrodMDNSAnnouncer)initWithPort:(unsigned __int16)port
 {
-  v3 = a3;
+  portCopy = port;
   memset(out, 0, sizeof(out));
   memset(v8, 0, 37);
   uuid_generate_random(out);
   uuid_unparse_upper(out, v8);
   v5 = [NSString stringWithUTF8String:v8];
-  v6 = [(RamrodMDNSAnnouncer *)self initWithPort:v3 domainName:@"local" hostName:v5, *v8, *&v8[16], *&v8[24]];
+  v6 = [(RamrodMDNSAnnouncer *)self initWithPort:portCopy domainName:@"local" hostName:v5, *v8, *&v8[16], *&v8[24]];
 
   return v6;
 }
 
-- (RamrodMDNSAnnouncer)initWithPort:(unsigned __int16)a3 domainName:(id)a4 hostName:(id)a5
+- (RamrodMDNSAnnouncer)initWithPort:(unsigned __int16)port domainName:(id)name hostName:(id)hostName
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  portCopy = port;
+  nameCopy = name;
+  hostNameCopy = hostName;
   v39.receiver = self;
   v39.super_class = RamrodMDNSAnnouncer;
   v10 = [(RamrodMDNSAnnouncer *)&v39 init];
   if (!v10)
   {
-    v11 = v8;
-    v12 = v9;
+    v11 = nameCopy;
+    v12 = hostNameCopy;
     goto LABEL_7;
   }
 
-  v11 = [v8 copy];
+  v11 = [nameCopy copy];
 
   objc_storeStrong(v10 + 9, v11);
-  v12 = [v9 copy];
+  v12 = [hostNameCopy copy];
 
   objc_storeStrong(v10 + 10, v12);
-  *(v10 + 33) = v6;
+  *(v10 + 33) = portCopy;
   v13 = objc_alloc_init(NSCountedSet);
   v14 = *(v10 + 1);
   *(v10 + 1) = v13;
@@ -83,7 +83,7 @@
   v37 = 0;
   v38 = 0;
   v35[0] = 7708;
-  v35[1] = __rev16(v6);
+  v35[1] = __rev16(portCopy);
   bound_socket = create_bound_socket(v35, 2, 0, 1, 0);
   *(v10 + 10) = bound_socket;
   if (bound_socket != -1 && fcntl(bound_socket, 4, 4) != -1)
@@ -131,14 +131,14 @@ LABEL_8:
   dispatch_activate(timer);
 }
 
-- (void)setFastAnnounce:(BOOL)a3
+- (void)setFastAnnounce:(BOOL)announce
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3254779904;
   v4[2] = sub_59624;
   v4[3] = &unk_1AE328;
-  v5 = a3;
+  announceCopy = announce;
   v4[4] = self;
   dispatch_sync(queue, v4);
 }
@@ -177,7 +177,7 @@ LABEL_8:
   }
 }
 
-- (void)_announceWithTTL:(unsigned int)a3
+- (void)_announceWithTTL:(unsigned int)l
 {
   sock = self->_sock;
   v5 = self->_hostName;
@@ -305,7 +305,7 @@ LABEL_18:
         }
 
         *(v45 + 6) = v19;
-        v20 = [[RamrodMDNSEncoder alloc] initWithTTL:a3];
+        v20 = [[RamrodMDNSEncoder alloc] initWithTTL:l];
         v21 = v39[5];
         v39[5] = v20;
       }
@@ -331,7 +331,7 @@ LABEL_18:
   }
 }
 
-- (void)_resetTimerAndFire:(BOOL)a3
+- (void)_resetTimerAndFire:(BOOL)fire
 {
   if (self->_fastAnnounce)
   {
@@ -343,7 +343,7 @@ LABEL_18:
     v4 = 20000000000;
   }
 
-  if (a3)
+  if (fire)
   {
     v5 = 0;
   }
@@ -358,11 +358,11 @@ LABEL_18:
   self->_timerNeedsReset = 0;
 }
 
-- (void)addService:(id)a3 port:(unsigned __int16)a4 name:(id)a5 text:(id)a6
+- (void)addService:(id)service port:(unsigned __int16)port name:(id)name text:(id)text
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [a3 copy];
+  nameCopy = name;
+  textCopy = text;
+  v12 = [service copy];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3254779904;
@@ -370,18 +370,18 @@ LABEL_18:
   block[3] = &unk_1AE388;
   block[4] = self;
   v18 = v12;
-  v21 = a4;
-  v19 = v10;
-  v20 = v11;
-  v14 = v11;
-  v15 = v10;
+  portCopy = port;
+  v19 = nameCopy;
+  v20 = textCopy;
+  v14 = textCopy;
+  v15 = nameCopy;
   v16 = v12;
   dispatch_sync(queue, block);
 }
 
-- (void)removeService:(id)a3
+- (void)removeService:(id)service
 {
-  v4 = [a3 copy];
+  v4 = [service copy];
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3254779904;
@@ -393,9 +393,9 @@ LABEL_18:
   dispatch_sync(queue, v7);
 }
 
-- (void)addHostAlias:(id)a3
+- (void)addHostAlias:(id)alias
 {
-  v4 = [a3 copy];
+  v4 = [alias copy];
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3254779904;
@@ -407,9 +407,9 @@ LABEL_18:
   dispatch_sync(queue, v7);
 }
 
-- (void)removeHostAlias:(id)a3
+- (void)removeHostAlias:(id)alias
 {
-  v4 = [a3 copy];
+  v4 = [alias copy];
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3254779904;
@@ -421,13 +421,13 @@ LABEL_18:
   dispatch_sync(queue, v7);
 }
 
-- (void)addRamDiskServiceWithType:(id)a3 port:(unsigned __int16)a4
+- (void)addRamDiskServiceWithType:(id)type port:(unsigned __int16)port
 {
-  v4 = a4;
-  v6 = a3;
+  portCopy = port;
+  typeCopy = type;
   v7 = +[NSMutableArray array];
   sub_5AB0C(v7, @"txtvers", @"1");
-  sub_5AB0C(v7, @"type", v6);
+  sub_5AB0C(v7, @"type", typeCopy);
 
   v8 = IORegistryEntryFromPath(kIOMasterPortDefault, "IODeviceTree:/chosen");
   CFProperty = IORegistryEntryCreateCFProperty(v8, @"security-domain", 0, 0);
@@ -451,7 +451,7 @@ LABEL_18:
   v16 = MGCopyAnswer();
   sub_5AB0C(v7, @"UDID", udid_string);
   sub_5AB0C(v7, @"SrNm", v16);
-  [(RamrodMDNSAnnouncer *)self addService:@"_apple-ramdisk._tcp" port:v4 name:udid_string text:v7];
+  [(RamrodMDNSAnnouncer *)self addService:@"_apple-ramdisk._tcp" port:portCopy name:udid_string text:v7];
   [(RamrodMDNSAnnouncer *)self addHostAlias:udid_string];
 }
 

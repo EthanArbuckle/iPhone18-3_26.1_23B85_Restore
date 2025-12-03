@@ -1,7 +1,7 @@
 @interface ICNoteQuickLookViewController
 + (void)initialize;
 - (UIView)notePreviewControllerView;
-- (void)preparePreviewOfSearchableItemWithIdentifier:(id)a3 queryString:(id)a4 completionHandler:(id)a5;
+- (void)preparePreviewOfSearchableItemWithIdentifier:(id)identifier queryString:(id)string completionHandler:(id)handler;
 - (void)updateNotePreviewControllerFrame;
 - (void)viewDidLayoutSubviews;
 @end
@@ -18,12 +18,12 @@
   [NSTextAttachment registerTextAttachmentClass:objc_opt_class() forFileType:PKApplePaperTypeIdentifier];
 }
 
-- (void)preparePreviewOfSearchableItemWithIdentifier:(id)a3 queryString:(id)a4 completionHandler:(id)a5
+- (void)preparePreviewOfSearchableItemWithIdentifier:(id)identifier queryString:(id)string completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v9 = +[ICSearchIndexer sharedIndexer];
-  v10 = [v9 mainContextObjectForObjectIDURIString:v7];
+  v10 = [v9 mainContextObjectForObjectIDURIString:identifierCopy];
 
   if (v10)
   {
@@ -37,9 +37,9 @@
     v14 = ICDynamicCast();
     if (v11)
     {
-      v15 = [v11 note];
+      note = [v11 note];
       v16 = v13;
-      v13 = v15;
+      v13 = note;
     }
 
     else
@@ -49,15 +49,15 @@
         goto LABEL_10;
       }
 
-      v18 = [v12 note];
+      note2 = [v12 note];
       v16 = v14;
-      v14 = v18;
+      v14 = note2;
     }
 
 LABEL_10:
     if (v13)
     {
-      v26 = v7;
+      v26 = identifierCopy;
       v19 = ICNotePreviewController_ptr;
       v20 = v13;
     }
@@ -71,7 +71,7 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v26 = v7;
+      v26 = identifierCopy;
       v19 = NotePreviewController_ptr;
       v20 = v14;
     }
@@ -80,13 +80,13 @@ LABEL_15:
     [v21 setupPreviewWithInitialFrame:{0.0, 0.0, 343.0, 490.0}];
     [(ICNoteQuickLookViewController *)self view];
     v23 = v22 = self;
-    v24 = [v21 view];
-    [v23 addSubview:v24];
+    view = [v21 view];
+    [v23 addSubview:view];
 
-    v25 = [v21 view];
-    [(ICNoteQuickLookViewController *)v22 setNotePreviewControllerView:v25];
+    view2 = [v21 view];
+    [(ICNoteQuickLookViewController *)v22 setNotePreviewControllerView:view2];
 
-    v7 = v26;
+    identifierCopy = v26;
     goto LABEL_15;
   }
 
@@ -94,12 +94,12 @@ LABEL_15:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v7;
+    v28 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Failed to get searchIndexableObject for objectIDURI %@", buf, 0xCu);
   }
 
 LABEL_16:
-  v8[2](v8, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 - (void)viewDidLayoutSubviews
@@ -114,14 +114,14 @@ LABEL_16:
 {
   if ([(ICNoteQuickLookViewController *)self _appearState]== 2 || [(ICNoteQuickLookViewController *)self _appearState]== 1)
   {
-    v12 = [(ICNoteQuickLookViewController *)self view];
-    [v12 bounds];
+    view = [(ICNoteQuickLookViewController *)self view];
+    [view bounds];
     v4 = v3;
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(ICNoteQuickLookViewController *)self notePreviewControllerView];
-    [v11 setFrame:{v4, v6, v8, v10}];
+    notePreviewControllerView = [(ICNoteQuickLookViewController *)self notePreviewControllerView];
+    [notePreviewControllerView setFrame:{v4, v6, v8, v10}];
   }
 }
 

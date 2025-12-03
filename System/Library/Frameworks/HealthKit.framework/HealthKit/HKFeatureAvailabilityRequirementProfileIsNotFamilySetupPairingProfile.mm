@@ -1,6 +1,6 @@
 @interface HKFeatureAvailabilityRequirementProfileIsNotFamilySetupPairingProfile
-- (BOOL)isEqual:(id)a3;
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error;
 - (id)requirementDescription;
 - (unint64_t)hash;
 @end
@@ -10,9 +10,9 @@
 - (id)requirementDescription
 {
   v2 = +[_HKBehavior sharedBehavior];
-  v3 = [v2 isAppleWatch];
+  isAppleWatch = [v2 isAppleWatch];
 
-  if (v3)
+  if (isAppleWatch)
   {
     return @"This watch must not be part of a Family Setup pairing";
   }
@@ -23,34 +23,34 @@
   }
 }
 
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error
 {
-  v4 = a3;
-  v5 = [v4 behavior];
-  v6 = [v5 isAppleWatch];
+  sourceCopy = source;
+  behavior = [sourceCopy behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
   v7 = MEMORY[0x1E696AD98];
-  if (v6)
+  if (isAppleWatch)
   {
-    v8 = [v4 behavior];
+    behavior2 = [sourceCopy behavior];
 
-    v9 = [v7 numberWithInt:{objc_msgSend(v8, "tinkerModeEnabled") ^ 1}];
+    v9 = [v7 numberWithInt:{objc_msgSend(behavior2, "tinkerModeEnabled") ^ 1}];
   }
 
   else
   {
-    v8 = [v4 healthDataSource];
+    behavior2 = [sourceCopy healthDataSource];
 
-    v10 = [v8 profileIdentifier];
-    v9 = [v7 numberWithInt:{objc_msgSend(v10, "type") == 1}];
+    profileIdentifier = [behavior2 profileIdentifier];
+    v9 = [v7 numberWithInt:{objc_msgSend(profileIdentifier, "type") == 1}];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

@@ -1,47 +1,47 @@
 @interface DIResizeParams
-- (BOOL)resizeWithError:(id *)a3;
-- (DIResizeParams)initWithCoder:(id)a3;
-- (DIResizeParams)initWithExistingParams:(id)a3 size:(unint64_t)a4 error:(id *)a5;
-- (DIResizeParams)initWithURL:(id)a3 size:(unint64_t)a4 error:(id *)a5;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)resizeWithError:(id *)error;
+- (DIResizeParams)initWithCoder:(id)coder;
+- (DIResizeParams)initWithExistingParams:(id)params size:(unint64_t)size error:(id *)error;
+- (DIResizeParams)initWithURL:(id)l size:(unint64_t)size error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DIResizeParams
 
-- (DIResizeParams)initWithURL:(id)a3 size:(unint64_t)a4 error:(id *)a5
+- (DIResizeParams)initWithURL:(id)l size:(unint64_t)size error:(id *)error
 {
   v7.receiver = self;
   v7.super_class = DIResizeParams;
-  result = [(DIBaseParams *)&v7 initWithURL:a3 error:a5];
+  result = [(DIBaseParams *)&v7 initWithURL:l error:error];
   if (result)
   {
-    result->_size = a4;
+    result->_size = size;
   }
 
   return result;
 }
 
-- (DIResizeParams)initWithExistingParams:(id)a3 size:(unint64_t)a4 error:(id *)a5
+- (DIResizeParams)initWithExistingParams:(id)params size:(unint64_t)size error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 inputURL];
+  paramsCopy = params;
+  inputURL = [paramsCopy inputURL];
   v18.receiver = self;
   v18.super_class = DIResizeParams;
-  v10 = [(DIBaseParams *)&v18 initWithURL:v9 error:a5];
+  v10 = [(DIBaseParams *)&v18 initWithURL:inputURL error:error];
 
   if (!v10)
   {
     goto LABEL_3;
   }
 
-  v10->_size = a4;
-  v11 = [v8 diskImageParamsXPC];
-  [(DIBaseParams *)v10 setDiskImageParamsXPC:v11];
+  v10->_size = size;
+  diskImageParamsXPC = [paramsCopy diskImageParamsXPC];
+  [(DIBaseParams *)v10 setDiskImageParamsXPC:diskImageParamsXPC];
 
-  v12 = [(DIBaseParams *)v10 shadowChain];
-  v13 = [v8 shadowChain];
-  v14 = [v13 nodes];
-  v15 = [v12 addShadowNodes:v14 error:a5];
+  shadowChain = [(DIBaseParams *)v10 shadowChain];
+  shadowChain2 = [paramsCopy shadowChain];
+  nodes = [shadowChain2 nodes];
+  v15 = [shadowChain addShadowNodes:nodes error:error];
 
   if ((v15 & 1) == 0)
   {
@@ -57,30 +57,30 @@ LABEL_3:
   return v16;
 }
 
-- (DIResizeParams)initWithCoder:(id)a3
+- (DIResizeParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = DIResizeParams;
-  v5 = [(DIBaseParams *)&v7 initWithCoder:v4];
+  v5 = [(DIBaseParams *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_size = [v4 decodeInt64ForKey:@"size"];
+    v5->_size = [coderCopy decodeInt64ForKey:@"size"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = DIResizeParams;
-  [(DIBaseParams *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:-[DIResizeParams size](self forKey:{"size"), @"size"}];
+  [(DIBaseParams *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:-[DIResizeParams size](self forKey:{"size"), @"size"}];
 }
 
-- (BOOL)resizeWithError:(id *)a3
+- (BOOL)resizeWithError:(id *)error
 {
   if ([(DIResizeParams *)self openExistingImageWithError:?])
   {
@@ -94,7 +94,7 @@ LABEL_3:
       v37 = 2080;
       v38 = "[DIResizeParams resizeWithError:]";
       v39 = 2114;
-      v40 = self;
+      selfCopy2 = self;
       v7 = _os_log_send_and_compose_impl();
 
       if (v7)
@@ -113,14 +113,14 @@ LABEL_3:
         v37 = 2080;
         v38 = "[DIResizeParams resizeWithError:]";
         v39 = 2114;
-        v40 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%.*s: entry: %{public}@", buf, 0x1Cu);
       }
     }
 
     *__error() = v5;
     v10 = objc_alloc_init(DIClient2Controller_XPCHandler);
-    if (![(DIClient2Controller_XPCHandler *)v10 connectWithError:a3]|| ![(DIBaseParams *)self prepareImageWithXpcHandler:v10 fileMode:1 error:a3])
+    if (![(DIClient2Controller_XPCHandler *)v10 connectWithError:error]|| ![(DIBaseParams *)self prepareImageWithXpcHandler:v10 fileMode:1 error:error])
     {
       v8 = 0;
 LABEL_29:
@@ -128,12 +128,12 @@ LABEL_29:
       return v8;
     }
 
-    v11 = [(DIBaseParams *)self diskImageParamsXPC];
-    v12 = [(DIBaseParams *)self shadowChain];
-    v13 = [v12 shouldValidate];
-    if (v11)
+    diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
+    shadowChain = [(DIBaseParams *)self shadowChain];
+    shouldValidate = [shadowChain shouldValidate];
+    if (diskImageParamsXPC)
     {
-      [v11 createDiskImageWithCache:0 shadowValidation:v13];
+      [diskImageParamsXPC createDiskImageWithCache:0 shadowValidation:shouldValidate];
       v14 = *buf;
     }
 
@@ -188,8 +188,8 @@ LABEL_29:
         goto LABEL_28;
       }
 
-      v23 = [(DIBaseParams *)self diskImageParamsXPC];
-      v24 = [v23 setSizeWithDiskImage:v14 newSize:v18];
+      diskImageParamsXPC2 = [(DIBaseParams *)self diskImageParamsXPC];
+      v24 = [diskImageParamsXPC2 setSizeWithDiskImage:v14 newSize:v18];
 
       if (!v24)
       {
@@ -206,7 +206,7 @@ LABEL_29:
           v37 = 2080;
           v38 = "[DIResizeParams resizeWithError:]";
           v39 = 2048;
-          v40 = v30;
+          selfCopy2 = v30;
           v31 = _os_log_send_and_compose_impl();
 
           if (v31)
@@ -227,7 +227,7 @@ LABEL_29:
             v37 = 2080;
             v38 = "[DIResizeParams resizeWithError:]";
             v39 = 2048;
-            v40 = v33;
+            selfCopy2 = v33;
             _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%.*s: Disk image resized to %llu bytes", buf, 0x1Cu);
           }
         }
@@ -237,7 +237,7 @@ LABEL_29:
         v35 = sub_10000FC18(v34);
         if (v35)
         {
-          v8 = [DIError failWithPOSIXCode:v35 error:a3];
+          v8 = [DIError failWithPOSIXCode:v35 error:error];
         }
 
         else
@@ -253,12 +253,12 @@ LABEL_29:
         goto LABEL_28;
       }
 
-      v22 = [DIError failWithPOSIXCode:v24 verboseInfo:@"Failed to resize the image" error:a3];
+      v22 = [DIError failWithPOSIXCode:v24 verboseInfo:@"Failed to resize the image" error:error];
     }
 
     else
     {
-      v22 = [DIError failWithPOSIXCode:45 verboseInfo:@"Image doesn't support resizing" error:a3];
+      v22 = [DIError failWithPOSIXCode:45 verboseInfo:@"Image doesn't support resizing" error:error];
     }
 
     v8 = v22;

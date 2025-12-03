@@ -1,15 +1,15 @@
 @interface TSACaptionRep
-- (id)textureForDescription:(id)a3;
+- (id)textureForDescription:(id)description;
 @end
 
 @implementation TSACaptionRep
 
-- (id)textureForDescription:(id)a3
+- (id)textureForDescription:(id)description
 {
   v48 = *MEMORY[0x277D85DE8];
   v46.receiver = self;
   v46.super_class = TSACaptionRep;
-  v4 = [(TSDStyledRep *)&v46 textureForDescription:a3];
+  v4 = [(TSDStyledRep *)&v46 textureForDescription:description];
   objc_opt_class();
   v8 = objc_msgSend_parentRep(self, v5, v6, v7);
   v12 = objc_msgSend_info(v8, v9, v10, v11);

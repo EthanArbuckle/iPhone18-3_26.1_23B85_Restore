@@ -1,9 +1,9 @@
 @interface CSDSimulatedIDSService
 + (CSDSimulatedIDSService)sharedInstance;
-- (BOOL)isServiceEnabledForTelephonySubscriptionLabelIdentifier:(id)a3;
-- (BOOL)sendData:(id)a3 fromAccount:(id)a4 toDestinations:(id)a5 priority:(int64_t)a6 options:(id)a7 identifier:(id *)a8 error:(id *)a9;
-- (BOOL)sendData:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8;
-- (BOOL)sendResourceAtURL:(id)a3 metadata:(id)a4 toDestinations:(id)a5 priority:(int64_t)a6 options:(id)a7 identifier:(id *)a8 error:(id *)a9;
+- (BOOL)isServiceEnabledForTelephonySubscriptionLabelIdentifier:(id)identifier;
+- (BOOL)sendData:(id)data fromAccount:(id)account toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendData:(id)data toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendResourceAtURL:(id)l metadata:(id)metadata toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
 - (CSDIDSServiceDependencies)service;
 - (IDSAccount)account;
 - (NSArray)allAliases;
@@ -13,18 +13,18 @@
 - (NSString)callerID;
 - (NSString)name;
 - (id)accountWithCallerID:;
-- (id)createGroupSessionProviderWithGroupID:(id)a3 participantDestinationIDs:(id)a4 callerID:(id)a5 account:(id)a6 queue:(id)a7 isOneToOneModeEnabled:(BOOL)a8 localMember:(id)a9 avLess:(BOOL)a10 isScreenSharingRequest:(BOOL)a11 ABTestConfiguration:(id)a12 isInitiator:(BOOL)a13;
-- (id)deviceDestinationsWithCapability:(id)a3 localHandle:(id)a4;
-- (id)devicesWithCapability:(id)a3;
-- (void)addFirewallEntriesForHandleToDate:(id)a3;
-- (void)addFirewallEntriesForHandles:(id)a3 lastSeenDate:(id)a4;
-- (void)addFirewallEntryForHandle:(id)a3 lastSeenDate:(id)a4;
-- (void)addServiceDelegate:(id)a3 queue:(id)a4;
-- (void)removeFirewallEntries:(id)a3;
-- (void)removeServiceDelegate:(id)a3;
-- (void)setAccount:(id)a3;
-- (void)signData:(id)a3 withAlgorithm:(int64_t)a4 completion:(id)a5;
-- (void)verifySignedData:(id)a3 matchesExpectedData:(id)a4 withTokenURI:(id)a5 forAlgorithm:(int64_t)a6 completion:(id)a7;
+- (id)createGroupSessionProviderWithGroupID:(id)d participantDestinationIDs:(id)ds callerID:(id)iD account:(id)account queue:(id)queue isOneToOneModeEnabled:(BOOL)enabled localMember:(id)member avLess:(BOOL)self0 isScreenSharingRequest:(BOOL)self1 ABTestConfiguration:(id)self2 isInitiator:(BOOL)self3;
+- (id)deviceDestinationsWithCapability:(id)capability localHandle:(id)handle;
+- (id)devicesWithCapability:(id)capability;
+- (void)addFirewallEntriesForHandleToDate:(id)date;
+- (void)addFirewallEntriesForHandles:(id)handles lastSeenDate:(id)date;
+- (void)addFirewallEntryForHandle:(id)handle lastSeenDate:(id)date;
+- (void)addServiceDelegate:(id)delegate queue:(id)queue;
+- (void)removeFirewallEntries:(id)entries;
+- (void)removeServiceDelegate:(id)delegate;
+- (void)setAccount:(id)account;
+- (void)signData:(id)data withAlgorithm:(int64_t)algorithm completion:(id)completion;
+- (void)verifySignedData:(id)data matchesExpectedData:(id)expectedData withTokenURI:(id)i forAlgorithm:(int64_t)algorithm completion:(id)completion;
 @end
 
 @implementation CSDSimulatedIDSService
@@ -67,22 +67,22 @@
 
 - (IDSAccount)account
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1003C0C80();
 
   return v3;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v5 = a3;
-  v6 = self;
-  sub_1003C0E50(a3);
+  accountCopy = account;
+  selfCopy = self;
+  sub_1003C0E50(account);
 }
 
 - (NSArray)allAliases
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003C0EC8();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -116,7 +116,7 @@
 
 - (NSSet)aliases
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003C1080();
 
   v3.super.isa = Set._bridgeToObjectiveC()().super.isa;
@@ -124,7 +124,7 @@
   return v3.super.isa;
 }
 
-- (id)devicesWithCapability:(id)a3
+- (id)devicesWithCapability:(id)capability
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -134,7 +134,7 @@
   return v3.super.isa;
 }
 
-- (id)deviceDestinationsWithCapability:(id)a3 localHandle:(id)a4
+- (id)deviceDestinationsWithCapability:(id)capability localHandle:(id)handle
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -144,31 +144,31 @@
   return v4.super.isa;
 }
 
-- (void)addServiceDelegate:(id)a3 queue:(id)a4
+- (void)addServiceDelegate:(id)delegate queue:(id)queue
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  sub_1003C11EC(a3, v7);
+  queueCopy = queue;
+  selfCopy = self;
+  sub_1003C11EC(delegate, queueCopy);
   swift_unknownObjectRelease();
 }
 
-- (void)removeServiceDelegate:(id)a3
+- (void)removeServiceDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1003C1290(a3);
+  selfCopy = self;
+  sub_1003C1290(delegate);
   swift_unknownObjectRelease();
 }
 
-- (BOOL)isServiceEnabledForTelephonySubscriptionLabelIdentifier:(id)a3
+- (BOOL)isServiceEnabledForTelephonySubscriptionLabelIdentifier:(id)identifier
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
 
   return 0;
 }
 
-- (void)addFirewallEntriesForHandleToDate:(id)a3
+- (void)addFirewallEntriesForHandleToDate:(id)date
 {
   sub_100006AF0(0, &qword_1006A2640, TUHandle_ptr);
   type metadata accessor for Date();
@@ -176,7 +176,7 @@
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
 }
 
-- (void)addFirewallEntryForHandle:(id)a3 lastSeenDate:(id)a4
+- (void)addFirewallEntryForHandle:(id)handle lastSeenDate:(id)date
 {
   v4 = type metadata accessor for Date();
   v5 = *(v4 - 8);
@@ -187,7 +187,7 @@
   (*(v5 + 8))(v9, v4);
 }
 
-- (void)addFirewallEntriesForHandles:(id)a3 lastSeenDate:(id)a4
+- (void)addFirewallEntriesForHandles:(id)handles lastSeenDate:(id)date
 {
   v4 = type metadata accessor for Date();
   v5 = *(v4 - 8);
@@ -201,25 +201,25 @@
   (*(v5 + 8))(v9, v4);
 }
 
-- (void)removeFirewallEntries:(id)a3
+- (void)removeFirewallEntries:(id)entries
 {
   sub_100006AF0(0, &qword_1006A2640, TUHandle_ptr);
   sub_10000CE3C(&qword_1006A3C50, &qword_1006A2640, TUHandle_ptr);
   static Set._unconditionallyBridgeFromObjectiveC(_:)();
 }
 
-- (BOOL)sendData:(id)a3 fromAccount:(id)a4 toDestinations:(id)a5 priority:(int64_t)a6 options:(id)a7 identifier:(id *)a8 error:(id *)a9
+- (BOOL)sendData:(id)data fromAccount:(id)account toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = self;
-  v17 = a7;
+  dataCopy = data;
+  accountCopy = account;
+  destinationsCopy = destinations;
+  selfCopy = self;
+  optionsCopy = options;
   v18 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v20 = v19;
 
   static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  if (v17)
+  if (optionsCopy)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -228,42 +228,42 @@
   return 1;
 }
 
-- (id)createGroupSessionProviderWithGroupID:(id)a3 participantDestinationIDs:(id)a4 callerID:(id)a5 account:(id)a6 queue:(id)a7 isOneToOneModeEnabled:(BOOL)a8 localMember:(id)a9 avLess:(BOOL)a10 isScreenSharingRequest:(BOOL)a11 ABTestConfiguration:(id)a12 isInitiator:(BOOL)a13
+- (id)createGroupSessionProviderWithGroupID:(id)d participantDestinationIDs:(id)ds callerID:(id)iD account:(id)account queue:(id)queue isOneToOneModeEnabled:(BOOL)enabled localMember:(id)member avLess:(BOOL)self0 isScreenSharingRequest:(BOOL)self1 ABTestConfiguration:(id)self2 isInitiator:(BOOL)self3
 {
   v16 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v18 = v17;
   v19 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v20 = a6;
-  v21 = a7;
-  v22 = a9;
-  v23 = a12;
-  v24 = self;
-  sub_1003C17E4(v16, v18, v19, v25, v26, v27, v21, 0, v22);
+  accountCopy = account;
+  queueCopy = queue;
+  memberCopy = member;
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_1003C17E4(v16, v18, v19, v25, v26, v27, queueCopy, 0, memberCopy);
   v29 = v28;
 
   return v29;
 }
 
-- (BOOL)sendData:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8
+- (BOOL)sendData:(id)data toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v10 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v12 = a4;
-    v13 = a6;
-    v14 = self;
-    v15 = v10;
-    v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    destinationsCopy = destinations;
+    optionsCopy = options;
+    selfCopy = self;
+    v15 = dataCopy;
+    dataCopy = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v17 = v16;
 
-    if (a4)
+    if (destinations)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    if (!a6)
+    if (!options)
     {
       goto LABEL_7;
     }
@@ -271,11 +271,11 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  v18 = a4;
-  v19 = a6;
-  v20 = self;
+  destinationsCopy2 = destinations;
+  optionsCopy2 = options;
+  selfCopy2 = self;
   v17 = 0xF000000000000000;
-  if (!a4)
+  if (!destinations)
   {
     goto LABEL_6;
   }
@@ -283,7 +283,7 @@ LABEL_6:
 LABEL_3:
   static Set._unconditionallyBridgeFromObjectiveC(_:)();
 
-  if (a6)
+  if (options)
   {
 LABEL_4:
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
@@ -291,11 +291,11 @@ LABEL_4:
 
 LABEL_7:
 
-  sub_100290B6C(v10, v17);
+  sub_100290B6C(dataCopy, v17);
   return 1;
 }
 
-- (BOOL)sendResourceAtURL:(id)a3 metadata:(id)a4 toDestinations:(id)a5 priority:(int64_t)a6 options:(id)a7 identifier:(id *)a8 error:(id *)a9
+- (BOOL)sendResourceAtURL:(id)l metadata:(id)metadata toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
   v11 = type metadata accessor for URL();
   v12 = *(v11 - 8);
@@ -303,13 +303,13 @@ LABEL_7:
   __chkstk_darwin(v11, v14);
   v16 = &v18 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (metadata)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
   static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a7)
+  if (options)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -319,27 +319,27 @@ LABEL_7:
   return 1;
 }
 
-- (void)signData:(id)a3 withAlgorithm:(int64_t)a4 completion:(id)a5
+- (void)signData:(id)data withAlgorithm:(int64_t)algorithm completion:(id)completion
 {
-  v8 = _Block_copy(a5);
-  v9 = a3;
-  v13 = self;
+  v8 = _Block_copy(completion);
+  dataCopy = data;
+  selfCopy = self;
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
 
   _Block_copy(v8);
-  sub_1003C1D74(v10, v12, a4, v13, v8);
+  sub_1003C1D74(v10, v12, algorithm, selfCopy, v8);
   _Block_release(v8);
   sub_100049B14(v10, v12);
 }
 
-- (void)verifySignedData:(id)a3 matchesExpectedData:(id)a4 withTokenURI:(id)a5 forAlgorithm:(int64_t)a6 completion:(id)a7
+- (void)verifySignedData:(id)data matchesExpectedData:(id)expectedData withTokenURI:(id)i forAlgorithm:(int64_t)algorithm completion:(id)completion
 {
-  v12 = _Block_copy(a7);
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v22 = self;
+  v12 = _Block_copy(completion);
+  dataCopy = data;
+  expectedDataCopy = expectedData;
+  iCopy = i;
+  selfCopy = self;
   v16 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v18 = v17;
 
@@ -347,7 +347,7 @@ LABEL_7:
   v21 = v20;
 
   _Block_copy(v12);
-  sub_1003C1E84(v16, v18, v19, v21, v15, a6, v22, v12);
+  sub_1003C1E84(v16, v18, v19, v21, iCopy, algorithm, selfCopy, v12);
   _Block_release(v12);
   sub_100049B14(v19, v21);
   sub_100049B14(v16, v18);

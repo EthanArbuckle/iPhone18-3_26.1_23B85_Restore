@@ -28,10 +28,10 @@
 
 - (BOOL)_waitForPricingAppUpdateIfNeeded
 {
-  v2 = [(MSDOperation *)self context];
-  v3 = [v2 pricingAppUpdateDeferred];
+  context = [(MSDOperation *)self context];
+  pricingAppUpdateDeferred = [context pricingAppUpdateDeferred];
 
-  if (v3)
+  if (pricingAppUpdateDeferred)
   {
     v4 = sub_100063A54();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -50,48 +50,48 @@
 - (BOOL)_determineAppInstallNecessity
 {
   v3 = +[MSDAppHelper sharedInstance];
-  v4 = [v3 installedApps];
+  installedApps = [v3 installedApps];
 
-  v5 = [(MSDOperation *)self context];
-  v6 = [v5 identifier];
+  context = [(MSDOperation *)self context];
+  identifier = [context identifier];
 
-  if ([v4 containsObject:v6])
+  if ([installedApps containsObject:identifier])
   {
     v7 = sub_100063A54();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138543362;
-      v22 = v6;
+      v22 = identifier;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "App is already installed: %{public}@", &v21, 0xCu);
     }
 
     v8 = +[MSDAppHelper sharedInstance];
-    v9 = [v8 bundlePathForInstalledApp:v6];
+    v9 = [v8 bundlePathForInstalledApp:identifier];
 
     v10 = v9 != 0;
     if (v9)
     {
       v11 = [MSDiOSApp appWithPath:v9];
-      v12 = [v11 uniqueIdentifier];
+      uniqueIdentifier = [v11 uniqueIdentifier];
 
-      v13 = [(MSDOperation *)self context];
-      v14 = [v13 uniqueIdentifier];
-      v15 = [v14 isEqualToString:v12];
+      context2 = [(MSDOperation *)self context];
+      uniqueIdentifier2 = [context2 uniqueIdentifier];
+      v15 = [uniqueIdentifier2 isEqualToString:uniqueIdentifier];
 
       [(MSDOperation *)self setSkipped:v15];
-      v16 = [(MSDOperation *)self context];
-      [v16 setAlreadyInstalled:1];
+      context3 = [(MSDOperation *)self context];
+      [context3 setAlreadyInstalled:1];
 
-      v17 = [(MSDOperation *)self context];
-      [v17 setCurrentUniqueIdentifier:v12];
+      context4 = [(MSDOperation *)self context];
+      [context4 setCurrentUniqueIdentifier:uniqueIdentifier];
     }
 
     else
     {
-      v12 = sub_100063A54();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      uniqueIdentifier = sub_100063A54();
+      if (os_log_type_enabled(uniqueIdentifier, OS_LOG_TYPE_ERROR))
       {
-        sub_1000D6598(v6, v12);
+        sub_1000D6598(identifier, uniqueIdentifier);
       }
     }
   }
@@ -99,11 +99,11 @@
   else
   {
     [(MSDOperation *)self setSkipped:0];
-    v18 = [(MSDOperation *)self context];
-    [v18 setAlreadyInstalled:0];
+    context5 = [(MSDOperation *)self context];
+    [context5 setAlreadyInstalled:0];
 
-    v19 = [(MSDOperation *)self context];
-    [v19 setCurrentUniqueIdentifier:0];
+    context6 = [(MSDOperation *)self context];
+    [context6 setCurrentUniqueIdentifier:0];
 
     v10 = 1;
   }

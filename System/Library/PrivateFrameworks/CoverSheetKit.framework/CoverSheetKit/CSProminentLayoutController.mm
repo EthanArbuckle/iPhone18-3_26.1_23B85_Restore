@@ -1,87 +1,87 @@
 @interface CSProminentLayoutController
-+ (CGRect)_mainDisplayBoundsForInterfaceOrientation:(int64_t)a3;
-+ (CGRect)adaptiveTimeFrameForContext:(id)a3 timeHeight:(double)a4;
-+ (CGRect)boundsForElements:(unint64_t)a3;
-+ (CGRect)boundsForElements:(unint64_t)a3 variant:(unint64_t)a4;
-+ (CGRect)editingBoundsForElements:(unint64_t)a3;
-+ (CGRect)editingFrameForElements:(unint64_t)a3;
-+ (CGRect)frameForElements:(unint64_t)a3;
-+ (CGRect)frameForElements:(unint64_t)a3 variant:(unint64_t)a4;
-+ (CGRect)frameForElements:(unint64_t)a3 variant:(unint64_t)a4 forcePortraitBounds:(BOOL)a5;
-+ (CGRect)frameForElements:(unint64_t)a3 variant:(unint64_t)a4 interfaceOrientation:(int64_t)a5;
-+ (CGRect)tightBoundsForElements:(unint64_t)a3;
-+ (CGRect)tightFrameForElements:(unint64_t)a3;
++ (CGRect)_mainDisplayBoundsForInterfaceOrientation:(int64_t)orientation;
++ (CGRect)adaptiveTimeFrameForContext:(id)context timeHeight:(double)height;
++ (CGRect)boundsForElements:(unint64_t)elements;
++ (CGRect)boundsForElements:(unint64_t)elements variant:(unint64_t)variant;
++ (CGRect)editingBoundsForElements:(unint64_t)elements;
++ (CGRect)editingFrameForElements:(unint64_t)elements;
++ (CGRect)frameForElements:(unint64_t)elements;
++ (CGRect)frameForElements:(unint64_t)elements variant:(unint64_t)variant;
++ (CGRect)frameForElements:(unint64_t)elements variant:(unint64_t)variant forcePortraitBounds:(BOOL)bounds;
++ (CGRect)frameForElements:(unint64_t)elements variant:(unint64_t)variant interfaceOrientation:(int64_t)orientation;
++ (CGRect)tightBoundsForElements:(unint64_t)elements;
++ (CGRect)tightFrameForElements:(unint64_t)elements;
 + (double)_landscapeReductionFactor;
 + (double)_maximumTimeElementFontSize;
 + (double)_minimumTimeElementFontSize;
-+ (double)_safeAreaTopInset:(unint64_t)a3;
++ (double)_safeAreaTopInset:(unint64_t)inset;
 + (double)_subtitleElementBoundingTopY;
 + (double)_subtitleElementFontSize;
 + (double)_timeAscenderTopYAdjustment;
 + (double)_timeElementBoundingTopY;
 + (double)_timeElementFontSize;
-+ (double)_timeElementPadFromSubtitleForOrientation:(int64_t)a3;
-+ (double)_timeElementTightBoundingTopYForOrientation:(int64_t)a3;
++ (double)_timeElementPadFromSubtitleForOrientation:(int64_t)orientation;
++ (double)_timeElementTightBoundingTopYForOrientation:(int64_t)orientation;
 + (double)_timeTightBoundingHeight;
-+ (double)adaptiveTimeWidthInsetForOrientation:(int64_t)a3 deviceCategory:(unint64_t)a4 hasSidebarContents:(BOOL)a5 boundingWidth:(double)a6;
++ (double)adaptiveTimeWidthInsetForOrientation:(int64_t)orientation deviceCategory:(unint64_t)category hasSidebarContents:(BOOL)contents boundingWidth:(double)width;
 + (double)complicationElementBoundingTopY;
 + (double)complicationElementEditingReticleInset;
-+ (double)fontSizeForElementType:(unint64_t)a3 isLandscapeVariant:(BOOL)a4;
-+ (double)fontWeightForElementType:(unint64_t)a3;
-+ (double)fontWeightForElementType:(unint64_t)a3 familyName:(id)a4;
++ (double)fontSizeForElementType:(unint64_t)type isLandscapeVariant:(BOOL)variant;
++ (double)fontWeightForElementType:(unint64_t)type;
++ (double)fontWeightForElementType:(unint64_t)type familyName:(id)name;
 + (double)landscapePadSubtitleElementBoundingTopY;
 + (double)leadingLandscapeLayoutInset;
 + (double)leadingPortraitLayoutInset;
-+ (double)maximumAdaptiveFontSizeForElementType:(unint64_t)a3 isLandscapeVariant:(BOOL)a4;
-+ (double)minimumAdaptiveFontSizeForElementType:(unint64_t)a3 isLandscapeVariant:(BOOL)a4;
++ (double)maximumAdaptiveFontSizeForElementType:(unint64_t)type isLandscapeVariant:(BOOL)variant;
++ (double)minimumAdaptiveFontSizeForElementType:(unint64_t)type isLandscapeVariant:(BOOL)variant;
 + (double)reticlePortraitLayoutInset;
 + (double)reticleSpacing;
 + (double)timeElementBoundingHeight;
 + (double)timeElementReticleInset;
 + (id)_timeMeasurementFontProvider;
-+ (id)_timeMeasurementFontProviderPrimedForContext:(id)a3 measurementBoundingRect:(CGRect *)a4;
-+ (void)minimumAndMaximumAdaptiveTimeHeightForContext:(id)a3 result:(id)a4;
-- (BOOL)shouldCenterElementsInBoundingRect:(CGRect)a3;
-- (CGRect)_frameForElement:(unint64_t)a3 withBoundingRect:(CGRect)a4;
-- (CGRect)_frameForElement:(unint64_t)a3 withBoundingRect:(CGRect)a4 variant:(unint64_t)a5;
-- (CGRect)_quickActionLeadingElementEditingReticleFrameWithBoundingRect:(CGRect)a3;
-- (CGRect)_quickActionTrailingElementEditingReticleFrameWithBoundingRect:(CGRect)a3;
-- (CGRect)_quickActionsFrameWithMinX:(double)a3 boundingRect:(CGRect)a4;
-- (CGRect)_quickActionsLeadingFrameWithBoundingRect:(CGRect)a3;
-- (CGRect)_quickActionsTrailingFrameWithBoundingRect:(CGRect)a3;
-- (CGRect)boundsForElements:(unint64_t)a3 variant:(unint64_t)a4 withBoundingRect:(CGRect)a5;
-- (CGRect)boundsForElements:(unint64_t)a3 withBoundingRect:(CGRect)a4;
-- (CGRect)complicationBottomRowElementEditingReticleFrameWithBoundingRect:(CGRect)a3;
-- (CGRect)complicationRowElementEditingReticleFrameWithBoundingRect:(CGRect)a3;
-- (CGRect)complicationSidebarElementEditingReticleFrameWithBoundingRect:(CGRect)a3;
-- (CGRect)editingBoundsForElements:(unint64_t)a3 withBoundingRect:(CGRect)a4;
-- (CGRect)editingFrameForElements:(unint64_t)a3 withBoundingRect:(CGRect)a4;
-- (CGRect)editingNormalizedBoundsForElements:(unint64_t)a3 inBoundingRect:(CGRect)a4;
-- (CGRect)editingNormalizedFrameForElements:(unint64_t)a3 inBoundingRect:(CGRect)a4;
-- (CGRect)editingReticleFrameForElement:(unint64_t)a3 withBoundingRect:(CGRect)result;
-- (CGRect)elementHorizontalFrameInBoundingRect:(CGRect)a3 forElementType:(unint64_t)a4;
-- (CGRect)frameForElements:(unint64_t)a3 variant:(unint64_t)a4 withBoundingRect:(CGRect)a5;
-- (CGRect)frameForElements:(unint64_t)a3 withBoundingRect:(CGRect)a4;
-- (CGRect)normalizedBoundsForElements:(unint64_t)a3 inBoundingRect:(CGRect)a4;
-- (CGRect)normalizedBoundsForElements:(unint64_t)a3 variant:(unint64_t)a4 inBoundingRect:(CGRect)a5;
-- (CGRect)normalizedFrameForElements:(unint64_t)a3 inBoundingRect:(CGRect)a4;
-- (CGRect)normalizedFrameForElements:(unint64_t)a3 variant:(unint64_t)a4 inBoundingRect:(CGRect)a5;
-- (CGRect)subtitleElementEditingReticleFrameWithBoundingRect:(CGRect)a3;
-- (CGRect)tightBoundsForElements:(unint64_t)a3 withBoundingRect:(CGRect)a4;
-- (CGRect)tightFrameForElements:(unint64_t)a3 withBoundingRect:(CGRect)a4;
-- (CGRect)tightNormalizedBoundsForElements:(unint64_t)a3 inBoundingRect:(CGRect)a4;
-- (CGRect)tightNormalizedFrameForElements:(unint64_t)a3 inBoundingRect:(CGRect)a4;
-- (CGRect)timeElementEditingReticleFrameWithBoundingRect:(CGRect)a3;
-- (CSProminentLayoutController)initWithTraitEnvironment:(id)a3;
++ (id)_timeMeasurementFontProviderPrimedForContext:(id)context measurementBoundingRect:(CGRect *)rect;
++ (void)minimumAndMaximumAdaptiveTimeHeightForContext:(id)context result:(id)result;
+- (BOOL)shouldCenterElementsInBoundingRect:(CGRect)rect;
+- (CGRect)_frameForElement:(unint64_t)element withBoundingRect:(CGRect)rect;
+- (CGRect)_frameForElement:(unint64_t)element withBoundingRect:(CGRect)rect variant:(unint64_t)variant;
+- (CGRect)_quickActionLeadingElementEditingReticleFrameWithBoundingRect:(CGRect)rect;
+- (CGRect)_quickActionTrailingElementEditingReticleFrameWithBoundingRect:(CGRect)rect;
+- (CGRect)_quickActionsFrameWithMinX:(double)x boundingRect:(CGRect)rect;
+- (CGRect)_quickActionsLeadingFrameWithBoundingRect:(CGRect)rect;
+- (CGRect)_quickActionsTrailingFrameWithBoundingRect:(CGRect)rect;
+- (CGRect)boundsForElements:(unint64_t)elements variant:(unint64_t)variant withBoundingRect:(CGRect)rect;
+- (CGRect)boundsForElements:(unint64_t)elements withBoundingRect:(CGRect)rect;
+- (CGRect)complicationBottomRowElementEditingReticleFrameWithBoundingRect:(CGRect)rect;
+- (CGRect)complicationRowElementEditingReticleFrameWithBoundingRect:(CGRect)rect;
+- (CGRect)complicationSidebarElementEditingReticleFrameWithBoundingRect:(CGRect)rect;
+- (CGRect)editingBoundsForElements:(unint64_t)elements withBoundingRect:(CGRect)rect;
+- (CGRect)editingFrameForElements:(unint64_t)elements withBoundingRect:(CGRect)rect;
+- (CGRect)editingNormalizedBoundsForElements:(unint64_t)elements inBoundingRect:(CGRect)rect;
+- (CGRect)editingNormalizedFrameForElements:(unint64_t)elements inBoundingRect:(CGRect)rect;
+- (CGRect)editingReticleFrameForElement:(unint64_t)element withBoundingRect:(CGRect)result;
+- (CGRect)elementHorizontalFrameInBoundingRect:(CGRect)rect forElementType:(unint64_t)type;
+- (CGRect)frameForElements:(unint64_t)elements variant:(unint64_t)variant withBoundingRect:(CGRect)rect;
+- (CGRect)frameForElements:(unint64_t)elements withBoundingRect:(CGRect)rect;
+- (CGRect)normalizedBoundsForElements:(unint64_t)elements inBoundingRect:(CGRect)rect;
+- (CGRect)normalizedBoundsForElements:(unint64_t)elements variant:(unint64_t)variant inBoundingRect:(CGRect)rect;
+- (CGRect)normalizedFrameForElements:(unint64_t)elements inBoundingRect:(CGRect)rect;
+- (CGRect)normalizedFrameForElements:(unint64_t)elements variant:(unint64_t)variant inBoundingRect:(CGRect)rect;
+- (CGRect)subtitleElementEditingReticleFrameWithBoundingRect:(CGRect)rect;
+- (CGRect)tightBoundsForElements:(unint64_t)elements withBoundingRect:(CGRect)rect;
+- (CGRect)tightFrameForElements:(unint64_t)elements withBoundingRect:(CGRect)rect;
+- (CGRect)tightNormalizedBoundsForElements:(unint64_t)elements inBoundingRect:(CGRect)rect;
+- (CGRect)tightNormalizedFrameForElements:(unint64_t)elements inBoundingRect:(CGRect)rect;
+- (CGRect)timeElementEditingReticleFrameWithBoundingRect:(CGRect)rect;
+- (CSProminentLayoutController)initWithTraitEnvironment:(id)environment;
 - (UITraitEnvironment)traitEnvironment;
-- (double)_complicationRowHorizontalReticleInsetWithBoundingRect:(CGRect)a3;
-- (double)_complicationRowVerticalReticleInsetWithBoundingRect:(CGRect)a3;
+- (double)_complicationRowHorizontalReticleInsetWithBoundingRect:(CGRect)rect;
+- (double)_complicationRowVerticalReticleInsetWithBoundingRect:(CGRect)rect;
 - (double)_padElementWidth;
-- (double)complicationElementEditingOffsetWithBoundingRect:(CGRect)a3;
+- (double)complicationElementEditingOffsetWithBoundingRect:(CGRect)rect;
 - (double)leadingLandscapeLayoutInset;
 - (double)leadingPortraitLayoutInset;
 - (double)padTimeElementBoundingWidth;
-- (double)subtitleElementEditingOffsetWithBoundingRect:(CGRect)a3;
+- (double)subtitleElementEditingOffsetWithBoundingRect:(CGRect)rect;
 - (double)subtitleElementTightBoundingHeight;
 @end
 
@@ -168,41 +168,41 @@
     case 8uLL:
     case 9uLL:
     case 0x11uLL:
-      [a1 _safeAreaTopInset:{v3, 63.0}];
+      [self _safeAreaTopInset:{v3, 63.0}];
       *&v6 = 46.0;
       goto LABEL_14;
     case 5uLL:
     case 7uLL:
-      [a1 _safeAreaTopInset:{v3, 63.0}];
+      [self _safeAreaTopInset:{v3, 63.0}];
       v7 = 59.0;
       goto LABEL_15;
     case 6uLL:
       v8 = 92.0;
       goto LABEL_21;
     case 0xAuLL:
-      [a1 _safeAreaTopInset:{10, 63.0}];
+      [self _safeAreaTopInset:{10, 63.0}];
       v7 = 49.0;
       goto LABEL_15;
     case 0xBuLL:
-      [a1 _safeAreaTopInset:{11, 63.0}];
+      [self _safeAreaTopInset:{11, 63.0}];
       *&v6 = 56.0;
       goto LABEL_14;
     case 0xDuLL:
-      [a1 _safeAreaTopInset:{13, 63.0}];
+      [self _safeAreaTopInset:{13, 63.0}];
       v7 = 39.666666;
       goto LABEL_15;
     case 0xFuLL:
-      [a1 _safeAreaTopInset:{15, 63.0}];
+      [self _safeAreaTopInset:{15, 63.0}];
       v7 = 43.0;
       goto LABEL_15;
     case 0x10uLL:
-      [a1 _safeAreaTopInset:{16, 63.0}];
+      [self _safeAreaTopInset:{16, 63.0}];
       *&v6 = 40.0;
 LABEL_14:
       v7 = *&v6;
       goto LABEL_15;
     case 0x12uLL:
-      [a1 _safeAreaTopInset:{18, 63.0}];
+      [self _safeAreaTopInset:{18, 63.0}];
       v7 = 61.0;
       goto LABEL_15;
     case 0x13uLL:
@@ -210,11 +210,11 @@ LABEL_14:
       v8 = 68.0;
       goto LABEL_21;
     case 0x14uLL:
-      [a1 _safeAreaTopInset:{20, 63.0}];
+      [self _safeAreaTopInset:{20, 63.0}];
       v7 = 31.33333;
       goto LABEL_15;
     case 0x16uLL:
-      [a1 _safeAreaTopInset:{22, 63.0}];
+      [self _safeAreaTopInset:{22, 63.0}];
       v7 = 38.33333;
 LABEL_15:
       result = v5 + v7;
@@ -246,9 +246,9 @@ LABEL_21:
 
 + (double)_timeTightBoundingHeight
 {
-  [a1 _timeElementFontSize];
+  [self _timeElementFontSize];
   v4 = v3;
-  [a1 fontWeightForElementType:1];
+  [self fontWeightForElementType:1];
   v6 = [MEMORY[0x1E69DB878] systemFontOfSize:v4 weight:v5];
   [v6 capHeight];
   v8 = v7;
@@ -260,28 +260,28 @@ LABEL_21:
 {
   v3 = +[CSDeviceDetermination effectiveCategory];
 
-  [a1 _timeElementFontSizeForCategory:v3];
+  [self _timeElementFontSizeForCategory:v3];
   return result;
 }
 
-- (CSProminentLayoutController)initWithTraitEnvironment:(id)a3
+- (CSProminentLayoutController)initWithTraitEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v8.receiver = self;
   v8.super_class = CSProminentLayoutController;
   v5 = [(CSProminentLayoutController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_traitEnvironment, v4);
+    objc_storeWeak(&v5->_traitEnvironment, environmentCopy);
   }
 
   return v6;
 }
 
-+ (CGRect)frameForElements:(unint64_t)a3
++ (CGRect)frameForElements:(unint64_t)elements
 {
-  [a1 frameForElements:a3 variant:0];
+  [self frameForElements:elements variant:0];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -289,9 +289,9 @@ LABEL_21:
   return result;
 }
 
-+ (CGRect)boundsForElements:(unint64_t)a3
++ (CGRect)boundsForElements:(unint64_t)elements
 {
-  [a1 boundsForElements:a3 variant:0];
+  [self boundsForElements:elements variant:0];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -299,9 +299,9 @@ LABEL_21:
   return result;
 }
 
-+ (CGRect)frameForElements:(unint64_t)a3 variant:(unint64_t)a4
++ (CGRect)frameForElements:(unint64_t)elements variant:(unint64_t)variant
 {
-  [a1 frameForElements:a3 variant:a4 forcePortraitBounds:0];
+  [self frameForElements:elements variant:variant forcePortraitBounds:0];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -309,11 +309,11 @@ LABEL_21:
   return result;
 }
 
-+ (CGRect)frameForElements:(unint64_t)a3 variant:(unint64_t)a4 interfaceOrientation:(int64_t)a5
++ (CGRect)frameForElements:(unint64_t)elements variant:(unint64_t)variant interfaceOrientation:(int64_t)orientation
 {
-  if (!a5)
+  if (!orientation)
   {
-    [CSProminentLayoutController frameForElements:a2 variant:a1 interfaceOrientation:?];
+    [CSProminentLayoutController frameForElements:a2 variant:self interfaceOrientation:?];
   }
 
   if (frameForElements_variant_interfaceOrientation__onceToken != -1)
@@ -321,10 +321,10 @@ LABEL_21:
     +[CSProminentLayoutController frameForElements:variant:interfaceOrientation:];
   }
 
-  [a1 _mainDisplayBoundsForInterfaceOrientation:a5];
+  [self _mainDisplayBoundsForInterfaceOrientation:orientation];
   v9 = frameForElements_variant_interfaceOrientation__mainScreenLayoutController;
 
-  [v9 frameForElements:a3 variant:a4 withBoundingRect:?];
+  [v9 frameForElements:elements variant:variant withBoundingRect:?];
   result.size.height = v13;
   result.size.width = v12;
   result.origin.y = v11;
@@ -359,15 +359,15 @@ void __77__CSProminentLayoutController_frameForElements_variant_interfaceOrienta
   [v4 setDisplayScale:*(a1 + 32)];
 }
 
-+ (CGRect)frameForElements:(unint64_t)a3 variant:(unint64_t)a4 forcePortraitBounds:(BOOL)a5
++ (CGRect)frameForElements:(unint64_t)elements variant:(unint64_t)variant forcePortraitBounds:(BOOL)bounds
 {
-  v5 = a5;
-  v8 = [MEMORY[0x1E69DCEB0] mainScreen];
+  boundsCopy = bounds;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__CSProminentLayoutController_frameForElements_variant_forcePortraitBounds___block_invoke;
   block[3] = &unk_1E76B9E48;
-  v9 = v8;
+  v9 = mainScreen;
   v32 = v9;
   if (frameForElements_variant_forcePortraitBounds__onceToken != -1)
   {
@@ -379,7 +379,7 @@ void __77__CSProminentLayoutController_frameForElements_variant_interfaceOrienta
   v14 = v13;
   v16 = v15;
   v17 = v10;
-  if (v5 && v16 > v10)
+  if (boundsCopy && v16 > v10)
   {
     v10 = v16;
     v18 = v12;
@@ -392,7 +392,7 @@ void __77__CSProminentLayoutController_frameForElements_variant_interfaceOrienta
     v14 = v12;
   }
 
-  [frameForElements_variant_forcePortraitBounds__mainScreenLayoutController frameForElements:a3 variant:a4 withBoundingRect:{v14, v18, v17, v10}];
+  [frameForElements_variant_forcePortraitBounds__mainScreenLayoutController frameForElements:elements variant:variant withBoundingRect:{v14, v18, v17, v10}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -416,9 +416,9 @@ uint64_t __76__CSProminentLayoutController_frameForElements_variant_forcePortrai
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (CGRect)boundsForElements:(unint64_t)a3 variant:(unint64_t)a4
++ (CGRect)boundsForElements:(unint64_t)elements variant:(unint64_t)variant
 {
-  [a1 frameForElements:a3 variant:a4];
+  [self frameForElements:elements variant:variant];
   v6 = 0.0;
   v7 = 0.0;
   result.size.height = v5;
@@ -428,9 +428,9 @@ uint64_t __76__CSProminentLayoutController_frameForElements_variant_forcePortrai
   return result;
 }
 
-- (CGRect)frameForElements:(unint64_t)a3 withBoundingRect:(CGRect)a4
+- (CGRect)frameForElements:(unint64_t)elements withBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self frameForElements:a3 variant:0 withBoundingRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(CSProminentLayoutController *)self frameForElements:elements variant:0 withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -438,9 +438,9 @@ uint64_t __76__CSProminentLayoutController_frameForElements_variant_forcePortrai
   return result;
 }
 
-- (CGRect)boundsForElements:(unint64_t)a3 withBoundingRect:(CGRect)a4
+- (CGRect)boundsForElements:(unint64_t)elements withBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self boundsForElements:a3 variant:0 withBoundingRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(CSProminentLayoutController *)self boundsForElements:elements variant:0 withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -448,20 +448,20 @@ uint64_t __76__CSProminentLayoutController_frameForElements_variant_forcePortrai
   return result;
 }
 
-- (CGRect)frameForElements:(unint64_t)a3 variant:(unint64_t)a4 withBoundingRect:(CGRect)a5
+- (CGRect)frameForElements:(unint64_t)elements variant:(unint64_t)variant withBoundingRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  elementsCopy = elements;
   v13 = *MEMORY[0x1E695F050];
   v12 = *(MEMORY[0x1E695F050] + 8);
   v15 = *(MEMORY[0x1E695F050] + 16);
   v14 = *(MEMORY[0x1E695F050] + 24);
-  if (a3)
+  if (elements)
   {
-    [(CSProminentLayoutController *)self _frameForElement:1 withBoundingRect:a4 variant:a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+    [(CSProminentLayoutController *)self _frameForElement:1 withBoundingRect:variant variant:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
     v70.origin.x = v24;
     v70.origin.y = v25;
     v70.size.width = v26;
@@ -475,10 +475,10 @@ uint64_t __76__CSProminentLayoutController_frameForElements_variant_forcePortrai
     v12 = v55.origin.y;
     v15 = v55.size.width;
     v14 = v55.size.height;
-    if ((v10 & 2) == 0)
+    if ((elementsCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v10 & 4) == 0)
+      if ((elementsCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -487,12 +487,12 @@ LABEL_3:
     }
   }
 
-  else if ((a3 & 2) == 0)
+  else if ((elements & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  [(CSProminentLayoutController *)self _frameForElement:2 withBoundingRect:a4 variant:x, y, width, height];
+  [(CSProminentLayoutController *)self _frameForElement:2 withBoundingRect:variant variant:x, y, width, height];
   v71.origin.x = v28;
   v71.origin.y = v29;
   v71.size.width = v30;
@@ -506,10 +506,10 @@ LABEL_3:
   v12 = v57.origin.y;
   v15 = v57.size.width;
   v14 = v57.size.height;
-  if ((v10 & 4) == 0)
+  if ((elementsCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v10 & 8) == 0)
+    if ((elementsCopy & 8) == 0)
     {
       goto LABEL_5;
     }
@@ -518,7 +518,7 @@ LABEL_4:
   }
 
 LABEL_13:
-  [(CSProminentLayoutController *)self _frameForElement:4 withBoundingRect:a4 variant:x, y, width, height];
+  [(CSProminentLayoutController *)self _frameForElement:4 withBoundingRect:variant variant:x, y, width, height];
   v72.origin.x = v32;
   v72.origin.y = v33;
   v72.size.width = v34;
@@ -532,10 +532,10 @@ LABEL_13:
   v12 = v59.origin.y;
   v15 = v59.size.width;
   v14 = v59.size.height;
-  if ((v10 & 8) == 0)
+  if ((elementsCopy & 8) == 0)
   {
 LABEL_5:
-    if ((v10 & 0x10) == 0)
+    if ((elementsCopy & 0x10) == 0)
     {
       goto LABEL_6;
     }
@@ -544,7 +544,7 @@ LABEL_5:
   }
 
 LABEL_14:
-  [(CSProminentLayoutController *)self _frameForElement:8 withBoundingRect:a4 variant:x, y, width, height];
+  [(CSProminentLayoutController *)self _frameForElement:8 withBoundingRect:variant variant:x, y, width, height];
   v73.origin.x = v36;
   v73.origin.y = v37;
   v73.size.width = v38;
@@ -558,10 +558,10 @@ LABEL_14:
   v12 = v61.origin.y;
   v15 = v61.size.width;
   v14 = v61.size.height;
-  if ((v10 & 0x10) == 0)
+  if ((elementsCopy & 0x10) == 0)
   {
 LABEL_6:
-    if ((v10 & 0x20) == 0)
+    if ((elementsCopy & 0x20) == 0)
     {
       goto LABEL_7;
     }
@@ -570,7 +570,7 @@ LABEL_6:
   }
 
 LABEL_15:
-  [(CSProminentLayoutController *)self _frameForElement:16 withBoundingRect:a4 variant:x, y, width, height];
+  [(CSProminentLayoutController *)self _frameForElement:16 withBoundingRect:variant variant:x, y, width, height];
   v74.origin.x = v40;
   v74.origin.y = v41;
   v74.size.width = v42;
@@ -584,16 +584,16 @@ LABEL_15:
   v12 = v63.origin.y;
   v15 = v63.size.width;
   v14 = v63.size.height;
-  if ((v10 & 0x20) == 0)
+  if ((elementsCopy & 0x20) == 0)
   {
 LABEL_7:
-    if ((v10 & 0x80) == 0)
+    if ((elementsCopy & 0x80) == 0)
     {
       goto LABEL_8;
     }
 
 LABEL_17:
-    [(CSProminentLayoutController *)self _frameForElement:128 withBoundingRect:a4 variant:x, y, width, height];
+    [(CSProminentLayoutController *)self _frameForElement:128 withBoundingRect:variant variant:x, y, width, height];
     v76.origin.x = v48;
     v76.origin.y = v49;
     v76.size.width = v50;
@@ -607,7 +607,7 @@ LABEL_17:
     v12 = v67.origin.y;
     v15 = v67.size.width;
     v14 = v67.size.height;
-    if ((v10 & 0x100) == 0)
+    if ((elementsCopy & 0x100) == 0)
     {
       goto LABEL_10;
     }
@@ -616,7 +616,7 @@ LABEL_17:
   }
 
 LABEL_16:
-  [(CSProminentLayoutController *)self _frameForElement:32 withBoundingRect:a4 variant:x, y, width, height];
+  [(CSProminentLayoutController *)self _frameForElement:32 withBoundingRect:variant variant:x, y, width, height];
   v75.origin.x = v44;
   v75.origin.y = v45;
   v75.size.width = v46;
@@ -630,16 +630,16 @@ LABEL_16:
   v12 = v65.origin.y;
   v15 = v65.size.width;
   v14 = v65.size.height;
-  if ((v10 & 0x80) != 0)
+  if ((elementsCopy & 0x80) != 0)
   {
     goto LABEL_17;
   }
 
 LABEL_8:
-  if ((v10 & 0x100) != 0)
+  if ((elementsCopy & 0x100) != 0)
   {
 LABEL_9:
-    [(CSProminentLayoutController *)self _frameForElement:256 withBoundingRect:a4 variant:x, y, width, height];
+    [(CSProminentLayoutController *)self _frameForElement:256 withBoundingRect:variant variant:x, y, width, height];
     v69.origin.x = v16;
     v69.origin.y = v17;
     v69.size.width = v18;
@@ -667,9 +667,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)boundsForElements:(unint64_t)a3 variant:(unint64_t)a4 withBoundingRect:(CGRect)a5
+- (CGRect)boundsForElements:(unint64_t)elements variant:(unint64_t)variant withBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self frameForElements:a3 variant:a4 withBoundingRect:a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  [(CSProminentLayoutController *)self frameForElements:elements variant:variant withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v7 = 0.0;
   v8 = 0.0;
   result.size.height = v6;
@@ -679,9 +679,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)normalizedFrameForElements:(unint64_t)a3 inBoundingRect:(CGRect)a4
+- (CGRect)normalizedFrameForElements:(unint64_t)elements inBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self normalizedFrameForElements:a3 variant:0 inBoundingRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(CSProminentLayoutController *)self normalizedFrameForElements:elements variant:0 inBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -689,9 +689,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)normalizedBoundsForElements:(unint64_t)a3 inBoundingRect:(CGRect)a4
+- (CGRect)normalizedBoundsForElements:(unint64_t)elements inBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self normalizedBoundsForElements:a3 variant:0 inBoundingRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(CSProminentLayoutController *)self normalizedBoundsForElements:elements variant:0 inBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -699,11 +699,11 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)normalizedFrameForElements:(unint64_t)a3 variant:(unint64_t)a4 inBoundingRect:(CGRect)a5
+- (CGRect)normalizedFrameForElements:(unint64_t)elements variant:(unint64_t)variant inBoundingRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  [(CSProminentLayoutController *)self frameForElements:a3 variant:a4 withBoundingRect:a5.origin.x, a5.origin.y];
+  height = rect.size.height;
+  width = rect.size.width;
+  [(CSProminentLayoutController *)self frameForElements:elements variant:variant withBoundingRect:rect.origin.x, rect.origin.y];
   v8 = v7 / width;
   v10 = v9 / height;
   v12 = v11 / width;
@@ -715,9 +715,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)normalizedBoundsForElements:(unint64_t)a3 variant:(unint64_t)a4 inBoundingRect:(CGRect)a5
+- (CGRect)normalizedBoundsForElements:(unint64_t)elements variant:(unint64_t)variant inBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self normalizedFrameForElements:a3 variant:a4 inBoundingRect:a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  [(CSProminentLayoutController *)self normalizedFrameForElements:elements variant:variant inBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v7 = 0.0;
   v8 = 0.0;
   result.size.height = v6;
@@ -727,9 +727,9 @@ LABEL_10:
   return result;
 }
 
-+ (CGRect)tightFrameForElements:(unint64_t)a3
++ (CGRect)tightFrameForElements:(unint64_t)elements
 {
-  [a1 frameForElements:a3 variant:1];
+  [self frameForElements:elements variant:1];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -737,9 +737,9 @@ LABEL_10:
   return result;
 }
 
-+ (CGRect)tightBoundsForElements:(unint64_t)a3
++ (CGRect)tightBoundsForElements:(unint64_t)elements
 {
-  [a1 boundsForElements:a3 variant:1];
+  [self boundsForElements:elements variant:1];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -747,9 +747,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)tightFrameForElements:(unint64_t)a3 withBoundingRect:(CGRect)a4
+- (CGRect)tightFrameForElements:(unint64_t)elements withBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self frameForElements:a3 variant:1 withBoundingRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(CSProminentLayoutController *)self frameForElements:elements variant:1 withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -757,9 +757,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)tightBoundsForElements:(unint64_t)a3 withBoundingRect:(CGRect)a4
+- (CGRect)tightBoundsForElements:(unint64_t)elements withBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self boundsForElements:a3 variant:1 withBoundingRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(CSProminentLayoutController *)self boundsForElements:elements variant:1 withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -767,9 +767,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)tightNormalizedFrameForElements:(unint64_t)a3 inBoundingRect:(CGRect)a4
+- (CGRect)tightNormalizedFrameForElements:(unint64_t)elements inBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self normalizedFrameForElements:a3 variant:1 inBoundingRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(CSProminentLayoutController *)self normalizedFrameForElements:elements variant:1 inBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -777,9 +777,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)tightNormalizedBoundsForElements:(unint64_t)a3 inBoundingRect:(CGRect)a4
+- (CGRect)tightNormalizedBoundsForElements:(unint64_t)elements inBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self normalizedBoundsForElements:a3 variant:1 inBoundingRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(CSProminentLayoutController *)self normalizedBoundsForElements:elements variant:1 inBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -787,9 +787,9 @@ LABEL_10:
   return result;
 }
 
-+ (CGRect)editingFrameForElements:(unint64_t)a3
++ (CGRect)editingFrameForElements:(unint64_t)elements
 {
-  [a1 frameForElements:a3 variant:2];
+  [self frameForElements:elements variant:2];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -797,9 +797,9 @@ LABEL_10:
   return result;
 }
 
-+ (CGRect)editingBoundsForElements:(unint64_t)a3
++ (CGRect)editingBoundsForElements:(unint64_t)elements
 {
-  [a1 boundsForElements:a3 variant:2];
+  [self boundsForElements:elements variant:2];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -807,9 +807,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)editingFrameForElements:(unint64_t)a3 withBoundingRect:(CGRect)a4
+- (CGRect)editingFrameForElements:(unint64_t)elements withBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self frameForElements:a3 variant:2 withBoundingRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(CSProminentLayoutController *)self frameForElements:elements variant:2 withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -817,9 +817,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)editingBoundsForElements:(unint64_t)a3 withBoundingRect:(CGRect)a4
+- (CGRect)editingBoundsForElements:(unint64_t)elements withBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self boundsForElements:a3 variant:2 withBoundingRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(CSProminentLayoutController *)self boundsForElements:elements variant:2 withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -827,9 +827,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)editingNormalizedFrameForElements:(unint64_t)a3 inBoundingRect:(CGRect)a4
+- (CGRect)editingNormalizedFrameForElements:(unint64_t)elements inBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self normalizedFrameForElements:a3 variant:2 inBoundingRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(CSProminentLayoutController *)self normalizedFrameForElements:elements variant:2 inBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -837,9 +837,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)editingNormalizedBoundsForElements:(unint64_t)a3 inBoundingRect:(CGRect)a4
+- (CGRect)editingNormalizedBoundsForElements:(unint64_t)elements inBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self normalizedBoundsForElements:a3 variant:2 inBoundingRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(CSProminentLayoutController *)self normalizedBoundsForElements:elements variant:2 inBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -847,9 +847,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)_frameForElement:(unint64_t)a3 withBoundingRect:(CGRect)a4
+- (CGRect)_frameForElement:(unint64_t)element withBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self _frameForElement:a3 withBoundingRect:0 variant:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(CSProminentLayoutController *)self _frameForElement:element withBoundingRect:0 variant:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -857,15 +857,15 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)_frameForElement:(unint64_t)a3 withBoundingRect:(CGRect)a4 variant:(unint64_t)a5
+- (CGRect)_frameForElement:(unint64_t)element withBoundingRect:(CGRect)rect variant:(unint64_t)variant
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (a5 == 3)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (variant == 3)
   {
-    [(CSProminentLayoutController *)self editingReticleFrameForElement:a3 withBoundingRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+    [(CSProminentLayoutController *)self editingReticleFrameForElement:element withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
     MinX = v11;
     v14 = v13;
     v16 = v15;
@@ -873,25 +873,25 @@ LABEL_10:
     goto LABEL_53;
   }
 
-  [(CSProminentLayoutController *)self elementHorizontalFrameInBoundingRect:a3 forElementType:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(CSProminentLayoutController *)self elementHorizontalFrameInBoundingRect:element forElementType:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v21 = v20;
   v93 = v22;
   v95 = v23;
   v25 = v24;
-  v26 = [MEMORY[0x1E698E730] sharedInstance];
-  v27 = [v26 deviceClass];
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  deviceClass = [mEMORY[0x1E698E730] deviceClass];
 
-  v28 = [(CSProminentLayoutController *)self _isPortraitForBoundingRect:x, y, width, height];
-  if (a3 > 15)
+  height = [(CSProminentLayoutController *)self _isPortraitForBoundingRect:x, y, width, height];
+  if (element > 15)
   {
-    if (a3 > 94)
+    if (element > 94)
     {
-      if (a3 == 95)
+      if (element == 95)
       {
         goto LABEL_29;
       }
 
-      if (a3 == 128)
+      if (element == 128)
       {
         [(CSProminentLayoutController *)self _quickActionsLeadingFrameWithBoundingRect:x, y, width, height];
         v72 = v71;
@@ -920,7 +920,7 @@ LABEL_10:
 
       v18 = 0.0;
       v14 = 0.0;
-      if (a3 == 256)
+      if (element == 256)
       {
         [(CSProminentLayoutController *)self _quickActionsLeadingFrameWithBoundingRect:x, y, width, height];
         v40 = v39;
@@ -950,7 +950,7 @@ LABEL_10:
 
     else
     {
-      if (a3 == 16)
+      if (element == 16)
       {
         [objc_opt_class() landscapePadSubtitleElementBoundingTopY];
         v14 = v53;
@@ -991,7 +991,7 @@ LABEL_10:
         goto LABEL_53;
       }
 
-      if (a3 == 32)
+      if (element == 32)
       {
         [objc_opt_class() complicationElementBoundingHeight];
         v18 = v66;
@@ -999,7 +999,7 @@ LABEL_10:
         v68 = v67 - v18;
         [objc_opt_class() bottomComplicationElementYSpacer];
         v14 = v68 - v69;
-        if (a5 == 2)
+        if (variant == 2)
         {
           [objc_opt_class() bottomComplicationElementEditingOffset];
           v14 = v14 - v70;
@@ -1010,7 +1010,7 @@ LABEL_10:
 
       v18 = 0.0;
       v14 = 0.0;
-      if (a3 == 64)
+      if (element == 64)
       {
         goto LABEL_29;
       }
@@ -1019,12 +1019,12 @@ LABEL_10:
     goto LABEL_50;
   }
 
-  v29 = v28;
-  if (a3 <= 1)
+  v29 = height;
+  if (element <= 1)
   {
-    if (a3 + 1 >= 2)
+    if (element + 1 >= 2)
     {
-      if (a3 == 1)
+      if (element == 1)
       {
         v30 = objc_opt_class();
         if (v29)
@@ -1039,14 +1039,14 @@ LABEL_10:
 
         [v30 _timeElementTightBoundingTopYForOrientation:v31];
         [objc_opt_class() _timeTightBoundingHeight];
-        if (a5 != 1)
+        if (variant != 1)
         {
           [objc_opt_class() _timeAscenderTopYAdjustment];
         }
 
-        v32 = [(CSProminentLayoutController *)self traitEnvironment];
-        v33 = [v32 traitCollection];
-        [v33 displayScale];
+        traitEnvironment = [(CSProminentLayoutController *)self traitEnvironment];
+        traitCollection = [traitEnvironment traitCollection];
+        [traitCollection displayScale];
 
         UIRoundToScale();
         v14 = v34;
@@ -1066,9 +1066,9 @@ LABEL_29:
     goto LABEL_53;
   }
 
-  if (a3 != 2 && a3 != 4)
+  if (element != 2 && element != 4)
   {
-    if (a3 != 8)
+    if (element != 8)
     {
 LABEL_49:
       v18 = 0.0;
@@ -1080,7 +1080,7 @@ LABEL_49:
     v18 = v36;
     [objc_opt_class() complicationElementBoundingTopY];
     v14 = v37;
-    if (a5 == 2)
+    if (variant == 2)
     {
       [(CSProminentLayoutController *)self complicationElementEditingOffsetWithBoundingRect:x, y, width, height];
 LABEL_47:
@@ -1101,7 +1101,7 @@ LABEL_36:
     goto LABEL_44;
   }
 
-  if (v27 == 2)
+  if (deviceClass == 2)
   {
     [objc_opt_class() landscapePadSubtitleElementBoundingTopY];
     goto LABEL_36;
@@ -1110,13 +1110,13 @@ LABEL_36:
   [(CSProminentLayoutController *)self leadingLandscapeLayoutInset];
   v14 = floor(v83 * 0.75);
 LABEL_44:
-  if (a5 == 1)
+  if (variant == 1)
   {
     [(CSProminentLayoutController *)self subtitleElementTightBoundingHeight];
     goto LABEL_50;
   }
 
-  if (a5 == 2)
+  if (variant == 2)
   {
     [(CSProminentLayoutController *)self subtitleElementEditingOffsetWithBoundingRect:x, y, width, height];
     goto LABEL_47;
@@ -1134,11 +1134,11 @@ LABEL_50:
   v102.size.width = v95;
   v102.size.height = v25;
   v16 = CGRectGetWidth(v102);
-  if (a5 == 1 && (BSFloatIsZero() & 1) == 0)
+  if (variant == 1 && (BSFloatIsZero() & 1) == 0)
   {
-    v85 = [(CSProminentLayoutController *)self traitEnvironment];
-    v86 = [v85 traitCollection];
-    [v86 displayScale];
+    traitEnvironment2 = [(CSProminentLayoutController *)self traitEnvironment];
+    traitCollection2 = [traitEnvironment2 traitCollection];
+    [traitCollection2 displayScale];
 
     UIRoundToScale();
     v14 = v87;
@@ -1168,12 +1168,12 @@ LABEL_53:
   return result;
 }
 
-- (CGRect)_quickActionsFrameWithMinX:(double)a3 boundingRect:(CGRect)a4
+- (CGRect)_quickActionsFrameWithMinX:(double)x boundingRect:(CGRect)rect
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  width = rect.size.width;
+  height = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
   +[CSProminentButtonsView _buttonOutsets];
   v7 = v6;
   v9 = v8;
@@ -1190,20 +1190,20 @@ LABEL_53:
   v18 = CGRectGetHeight(v25) - v17 - (v7 + v15);
   v19 = v13 + v9 + v15;
   v20 = v11 + v7 + v15;
-  v21 = a3;
+  xCopy = x;
   result.size.height = v20;
   result.size.width = v19;
   result.origin.y = v18;
-  result.origin.x = v21;
+  result.origin.x = xCopy;
   return result;
 }
 
-- (CGRect)_quickActionsLeadingFrameWithBoundingRect:(CGRect)a3
+- (CGRect)_quickActionsLeadingFrameWithBoundingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   +[CSProminentButtonsView _buttonInsetX];
   v9 = v8;
   +[CSProminentButtonsView _leadingOutset];
@@ -1217,13 +1217,13 @@ LABEL_53:
   return result;
 }
 
-- (CGRect)_quickActionsTrailingFrameWithBoundingRect:(CGRect)a3
+- (CGRect)_quickActionsTrailingFrameWithBoundingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetWidth(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = CGRectGetWidth(rect);
   +[CSProminentButtonsView _buttonInsetX];
   v10 = v8 - v9;
   +[CSProminentButtonsView _buttonDiameter];
@@ -1251,20 +1251,20 @@ LABEL_53:
   return result;
 }
 
-+ (double)fontSizeForElementType:(unint64_t)a3 isLandscapeVariant:(BOOL)a4
++ (double)fontSizeForElementType:(unint64_t)type isLandscapeVariant:(BOOL)variant
 {
-  if (a3 == 4 || a3 == 2)
+  if (type == 4 || type == 2)
   {
 
-    [a1 _subtitleElementFontSize];
+    [self _subtitleElementFontSize];
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
-    v5 = a4;
+    variantCopy = variant;
     v6 = +[CSDeviceDetermination effectiveCategory];
 
-    [CSAdaptiveFontProvider minimumFontSizeWithPortrait:!v5 deviceCategory:v6];
+    [CSAdaptiveFontProvider minimumFontSizeWithPortrait:!variantCopy deviceCategory:v6];
   }
 
   else
@@ -1275,49 +1275,49 @@ LABEL_53:
   return result;
 }
 
-+ (double)minimumAdaptiveFontSizeForElementType:(unint64_t)a3 isLandscapeVariant:(BOOL)a4
++ (double)minimumAdaptiveFontSizeForElementType:(unint64_t)type isLandscapeVariant:(BOOL)variant
 {
-  v4 = a4;
-  if (a3 == 1)
+  variantCopy = variant;
+  if (type == 1)
   {
     v5 = +[CSDeviceDetermination effectiveCategory];
 
-    [CSAdaptiveFontProvider minimumFontSizeWithPortrait:!v4 deviceCategory:v5];
+    [CSAdaptiveFontProvider minimumFontSizeWithPortrait:!variantCopy deviceCategory:v5];
   }
 
   else
   {
 
-    [a1 fontSizeForElementType:? isLandscapeVariant:?];
+    [self fontSizeForElementType:? isLandscapeVariant:?];
   }
 
   return result;
 }
 
-+ (double)maximumAdaptiveFontSizeForElementType:(unint64_t)a3 isLandscapeVariant:(BOOL)a4
++ (double)maximumAdaptiveFontSizeForElementType:(unint64_t)type isLandscapeVariant:(BOOL)variant
 {
-  v4 = a4;
-  if (a3 == 1)
+  variantCopy = variant;
+  if (type == 1)
   {
     v5 = +[CSDeviceDetermination effectiveCategory];
 
-    [CSAdaptiveFontProvider maximumFontSizeWithPortrait:!v4 deviceCategory:v5];
+    [CSAdaptiveFontProvider maximumFontSizeWithPortrait:!variantCopy deviceCategory:v5];
   }
 
   else
   {
 
-    [a1 fontSizeForElementType:? isLandscapeVariant:?];
+    [self fontSizeForElementType:? isLandscapeVariant:?];
   }
 
   return result;
 }
 
-+ (double)fontWeightForElementType:(unint64_t)a3
++ (double)fontWeightForElementType:(unint64_t)type
 {
-  if (a3 > 94)
+  if (type > 94)
   {
-    if (a3 == 95 || a3 == 128 || a3 == 256)
+    if (type == 95 || type == 128 || type == 256)
     {
       goto LABEL_12;
     }
@@ -1325,8 +1325,8 @@ LABEL_53:
 
   else
   {
-    v3 = a3 - 1;
-    if (a3 - 1 <= 0x3F)
+    v3 = type - 1;
+    if (type - 1 <= 0x3F)
     {
       if (((1 << v3) & 0x8000000080008080) != 0)
       {
@@ -1335,14 +1335,14 @@ LABEL_12:
         return *v4;
       }
 
-      if (((1 << v3) & 0xA) != 0 || a3 == 1)
+      if (((1 << v3) & 0xA) != 0 || type == 1)
       {
         v4 = MEMORY[0x1E69DB980];
         return *v4;
       }
     }
 
-    if (a3 + 1 < 2)
+    if (type + 1 < 2)
     {
       goto LABEL_12;
     }
@@ -1351,13 +1351,13 @@ LABEL_12:
   return result;
 }
 
-+ (double)fontWeightForElementType:(unint64_t)a3 familyName:(id)a4
++ (double)fontWeightForElementType:(unint64_t)type familyName:(id)name
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 > 94)
+  nameCopy = name;
+  v7 = nameCopy;
+  if (type > 94)
   {
-    if (a3 == 95 || a3 == 128 || a3 == 256)
+    if (type == 95 || type == 128 || type == 256)
     {
       goto LABEL_14;
     }
@@ -1365,8 +1365,8 @@ LABEL_12:
 
   else
   {
-    v8 = a3 - 1;
-    if (a3 - 1 <= 0x3F)
+    v8 = type - 1;
+    if (type - 1 <= 0x3F)
     {
       if (((1 << v8) & 0x8000000080008080) != 0)
       {
@@ -1380,9 +1380,9 @@ LABEL_14:
         goto LABEL_5;
       }
 
-      if (a3 == 1)
+      if (type == 1)
       {
-        if ([v6 containsString:@"Rail"])
+        if ([nameCopy containsString:@"Rail"])
         {
           v9 = MEMORY[0x1E69DB958];
           goto LABEL_15;
@@ -1396,7 +1396,7 @@ LABEL_15:
       }
     }
 
-    if (a3 + 1 < 2)
+    if (type + 1 < 2)
     {
       goto LABEL_14;
     }
@@ -1407,39 +1407,39 @@ LABEL_16:
   return v4;
 }
 
-+ (void)minimumAndMaximumAdaptiveTimeHeightForContext:(id)a3 result:(id)a4
++ (void)minimumAndMaximumAdaptiveTimeHeightForContext:(id)context result:(id)result
 {
-  v6 = a4;
-  v10 = [a1 _timeMeasurementFontProviderPrimedForContext:a3 measurementBoundingRect:0];
+  resultCopy = result;
+  v10 = [self _timeMeasurementFontProviderPrimedForContext:context measurementBoundingRect:0];
   [v10 minimumHeight];
   v8 = v7;
   [v10 maximumHeight];
-  v6[2](v6, v8, v9);
+  resultCopy[2](resultCopy, v8, v9);
 }
 
-+ (CGRect)adaptiveTimeFrameForContext:(id)a3 timeHeight:(double)a4
++ (CGRect)adaptiveTimeFrameForContext:(id)context timeHeight:(double)height
 {
   v38[1] = *MEMORY[0x1E69E9840];
   v35 = 0u;
   v36 = 0u;
-  v6 = a3;
-  v7 = [a1 _timeMeasurementFontProviderPrimedForContext:v6 measurementBoundingRect:&v35];
+  contextCopy = context;
+  v7 = [self _timeMeasurementFontProviderPrimedForContext:contextCopy measurementBoundingRect:&v35];
   [v7 maximumHeight];
   v9 = v8;
   [v7 minimumHeight];
-  if (v10 < a4)
+  if (heightCopy < height)
   {
-    v10 = a4;
+    heightCopy = height;
   }
 
-  if (v9 <= v10)
+  if (v9 <= heightCopy)
   {
     v11 = v9;
   }
 
   else
   {
-    v11 = v10;
+    v11 = heightCopy;
   }
 
   v12 = [v7 fontForHeight:@"00:00" string:v11];
@@ -1454,8 +1454,8 @@ LABEL_16:
   v17 = v16;
   v19 = v18;
 
-  v20 = [v6 orientation];
-  [a1 frameForElements:1 variant:1 interfaceOrientation:v20];
+  orientation = [contextCopy orientation];
+  [self frameForElements:1 variant:1 interfaceOrientation:orientation];
   CGRectGetMinY(v39);
   v40.origin.y = v33;
   v40.origin.x = v34;
@@ -1481,16 +1481,16 @@ LABEL_16:
   return result;
 }
 
-+ (double)adaptiveTimeWidthInsetForOrientation:(int64_t)a3 deviceCategory:(unint64_t)a4 hasSidebarContents:(BOOL)a5 boundingWidth:(double)a6
++ (double)adaptiveTimeWidthInsetForOrientation:(int64_t)orientation deviceCategory:(unint64_t)category hasSidebarContents:(BOOL)contents boundingWidth:(double)width
 {
-  v7 = a5;
-  if ([CSDeviceDetermination isCategoryPhone:a4])
+  contentsCopy = contents;
+  if ([CSDeviceDetermination isCategoryPhone:category])
   {
     [CSProminentLayoutController frameForElements:1 variant:3 interfaceOrientation:1];
     return CGRectGetMinX(v17) + 3.0;
   }
 
-  else if ((a3 - 1) >= 2)
+  else if ((orientation - 1) >= 2)
   {
     [CSProminentLayoutController frameForElements:16 variant:3 interfaceOrientation:4];
     x = v18.origin.x;
@@ -1502,14 +1502,14 @@ LABEL_16:
     v19.origin.y = y;
     v19.size.width = width;
     v19.size.height = height;
-    v15 = a6 - CGRectGetMaxX(v19);
+    v15 = width - CGRectGetMaxX(v19);
     if (MinX >= v15)
     {
       MinX = v15;
     }
 
     v9 = MinX + 3.0;
-    if (v7)
+    if (contentsCopy)
     {
       v20.origin.x = x;
       v20.origin.y = y;
@@ -1557,9 +1557,9 @@ LABEL_16:
 
 + (double)_timeAscenderTopYAdjustment
 {
-  [a1 _timeElementFontSize];
+  [self _timeElementFontSize];
   v4 = v3;
-  [a1 fontWeightForElementType:1];
+  [self fontWeightForElementType:1];
   v6 = [MEMORY[0x1E69DB878] systemFontOfSize:v4 weight:v5];
   [v6 capHeight];
   v8 = v7;
@@ -1569,13 +1569,13 @@ LABEL_16:
   return v10;
 }
 
-+ (double)_timeElementPadFromSubtitleForOrientation:(int64_t)a3
++ (double)_timeElementPadFromSubtitleForOrientation:(int64_t)orientation
 {
-  v3 = [MEMORY[0x1E698E730] sharedInstance];
-  v4 = [v3 deviceClass];
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  deviceClass = [mEMORY[0x1E698E730] deviceClass];
 
   result = 16.0;
-  if (v4 == 2)
+  if (deviceClass == 2)
   {
     return 20.0;
   }
@@ -1583,11 +1583,11 @@ LABEL_16:
   return result;
 }
 
-+ (double)_timeElementTightBoundingTopYForOrientation:(int64_t)a3
++ (double)_timeElementTightBoundingTopYForOrientation:(int64_t)orientation
 {
-  [a1 _timeElementPadFromSubtitleForOrientation:?];
+  [self _timeElementPadFromSubtitleForOrientation:?];
   v6 = v5;
-  [a1 frameForElements:2 variant:1 interfaceOrientation:a3];
+  [self frameForElements:2 variant:1 interfaceOrientation:orientation];
   return v6 + CGRectGetMaxY(v8);
 }
 
@@ -1680,12 +1680,12 @@ LABEL_18:
   return v7;
 }
 
-- (double)subtitleElementEditingOffsetWithBoundingRect:(CGRect)a3
+- (double)subtitleElementEditingOffsetWithBoundingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(CSProminentLayoutController *)self _frameForElement:2 withBoundingRect:0 variant:?];
   rect = v8;
   v10 = v9;
@@ -1696,8 +1696,8 @@ LABEL_18:
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [MEMORY[0x1E698E730] sharedInstance];
-  if ([v23 deviceClass] == 2)
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  if ([mEMORY[0x1E698E730] deviceClass] == 2)
   {
     v24 = 40.0;
   }
@@ -1743,36 +1743,36 @@ LABEL_18:
     case 8uLL:
     case 9uLL:
     case 0x11uLL:
-      [a1 _safeAreaTopInset:{v3, 48.0}];
+      [self _safeAreaTopInset:{v3, 48.0}];
       v6 = 35.0;
       goto LABEL_18;
     case 5uLL:
     case 7uLL:
-      [a1 _safeAreaTopInset:{v3, 48.0}];
+      [self _safeAreaTopInset:{v3, 48.0}];
       *&v8 = 50.0;
       goto LABEL_17;
     case 0xAuLL:
-      [a1 _safeAreaTopInset:{10, 48.0}];
+      [self _safeAreaTopInset:{10, 48.0}];
       *&v8 = 38.0;
       goto LABEL_17;
     case 0xBuLL:
-      [a1 _safeAreaTopInset:{11, 48.0}];
+      [self _safeAreaTopInset:{11, 48.0}];
       v6 = 45.0;
       goto LABEL_18;
     case 0xDuLL:
-      [a1 _safeAreaTopInset:{13, 48.0}];
+      [self _safeAreaTopInset:{13, 48.0}];
       v6 = 27.0;
       goto LABEL_18;
     case 0xFuLL:
-      [a1 _safeAreaTopInset:{15, 48.0}];
+      [self _safeAreaTopInset:{15, 48.0}];
       v6 = 30.0;
       goto LABEL_18;
     case 0x10uLL:
-      [a1 _safeAreaTopInset:{16, 48.0}];
+      [self _safeAreaTopInset:{16, 48.0}];
       v6 = 33.0;
       goto LABEL_18;
     case 0x12uLL:
-      [a1 _safeAreaTopInset:{18, 48.0}];
+      [self _safeAreaTopInset:{18, 48.0}];
       *&v8 = 52.0;
 LABEL_17:
       v6 = *&v8;
@@ -1782,11 +1782,11 @@ LABEL_17:
       v7 = 62.0;
       goto LABEL_7;
     case 0x14uLL:
-      [a1 _safeAreaTopInset:{20, 48.0}];
+      [self _safeAreaTopInset:{20, 48.0}];
       v6 = 24.666666;
       goto LABEL_18;
     case 0x16uLL:
-      [a1 _safeAreaTopInset:{22, 48.0}];
+      [self _safeAreaTopInset:{22, 48.0}];
       v6 = 29.0;
 LABEL_18:
       result = v5 + v6;
@@ -1824,25 +1824,25 @@ LABEL_7:
     return dbl_1A2DA3E28[v3];
   }
 
-  [a1 _subtitleElementBoundingTopY];
+  [self _subtitleElementBoundingTopY];
   return result;
 }
 
-- (CGRect)editingReticleFrameForElement:(unint64_t)a3 withBoundingRect:(CGRect)result
+- (CGRect)editingReticleFrameForElement:(unint64_t)element withBoundingRect:(CGRect)result
 {
-  if (a3 > 15)
+  if (element > 15)
   {
-    if (a3 > 94)
+    if (element > 94)
     {
-      if (a3 != 95)
+      if (element != 95)
       {
-        if (a3 == 128)
+        if (element == 128)
         {
           [(CSProminentLayoutController *)self _quickActionLeadingElementEditingReticleFrameWithBoundingRect:result.origin.x, result.origin.y, result.size.width, result.size.height];
           goto LABEL_24;
         }
 
-        if (a3 == 256)
+        if (element == 256)
         {
           [(CSProminentLayoutController *)self _quickActionTrailingElementEditingReticleFrameWithBoundingRect:result.origin.x, result.origin.y, result.size.width, result.size.height];
           goto LABEL_24;
@@ -1854,19 +1854,19 @@ LABEL_7:
 
     else
     {
-      if (a3 == 16)
+      if (element == 16)
       {
         [(CSProminentLayoutController *)self complicationSidebarElementEditingReticleFrameWithBoundingRect:result.origin.x, result.origin.y, result.size.width, result.size.height];
         goto LABEL_24;
       }
 
-      if (a3 == 32)
+      if (element == 32)
       {
         [(CSProminentLayoutController *)self complicationBottomRowElementEditingReticleFrameWithBoundingRect:result.origin.x, result.origin.y, result.size.width, result.size.height];
         goto LABEL_24;
       }
 
-      if (a3 != 64)
+      if (element != 64)
       {
         goto LABEL_25;
       }
@@ -1875,11 +1875,11 @@ LABEL_7:
     goto LABEL_19;
   }
 
-  if (a3 <= 1)
+  if (element <= 1)
   {
-    if (a3 + 1 >= 2)
+    if (element + 1 >= 2)
     {
-      if (a3 == 1)
+      if (element == 1)
       {
         [(CSProminentLayoutController *)self timeElementEditingReticleFrameWithBoundingRect:result.origin.x, result.origin.y, result.size.width, result.size.height];
 LABEL_24:
@@ -1899,13 +1899,13 @@ LABEL_19:
     goto LABEL_25;
   }
 
-  if (a3 == 2 || a3 == 4)
+  if (element == 2 || element == 4)
   {
     [(CSProminentLayoutController *)self subtitleElementEditingReticleFrameWithBoundingRect:result.origin.x, result.origin.y, result.size.width, result.size.height];
     goto LABEL_24;
   }
 
-  if (a3 == 8)
+  if (element == 8)
   {
     [(CSProminentLayoutController *)self complicationRowElementEditingReticleFrameWithBoundingRect:result.origin.x, result.origin.y, result.size.width, result.size.height];
     goto LABEL_24;
@@ -1919,21 +1919,21 @@ LABEL_25:
   return result;
 }
 
-- (CGRect)timeElementEditingReticleFrameWithBoundingRect:(CGRect)a3
+- (CGRect)timeElementEditingReticleFrameWithBoundingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(CSProminentLayoutController *)self frameForElements:1 variant:2 withBoundingRect:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [MEMORY[0x1E698E730] sharedInstance];
-  v17 = [v16 deviceClass];
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  deviceClass = [mEMORY[0x1E698E730] deviceClass];
 
-  if (v17 == 2)
+  if (deviceClass == 2)
   {
     [(CSProminentLayoutController *)self frameForElements:1 variant:1 withBoundingRect:x, y, width, height];
     v18 = v35.origin.x;
@@ -1968,15 +1968,15 @@ LABEL_25:
   return CGRectInset(*&v27, v31, v26);
 }
 
-- (CGRect)subtitleElementEditingReticleFrameWithBoundingRect:(CGRect)a3
+- (CGRect)subtitleElementEditingReticleFrameWithBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self frameForElements:2 variant:2 withBoundingRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CSProminentLayoutController *)self frameForElements:2 variant:2 withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [MEMORY[0x1E698E730] sharedInstance];
-  if ([v12 deviceClass] == 2)
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  if ([mEMORY[0x1E698E730] deviceClass] == 2)
   {
     v13 = 40.0;
   }
@@ -1990,10 +1990,10 @@ LABEL_25:
   v15 = v13 - v14;
   v16 = v11 + v15;
   v17 = v7 + v15 * -0.5;
-  v18 = [MEMORY[0x1E698E730] sharedInstance];
-  v19 = [v18 deviceClass];
+  mEMORY[0x1E698E730]2 = [MEMORY[0x1E698E730] sharedInstance];
+  deviceClass = [mEMORY[0x1E698E730]2 deviceClass];
 
-  if (v19 == 2)
+  if (deviceClass == 2)
   {
     v24.origin.x = v5;
     v24.origin.y = v17;
@@ -2017,12 +2017,12 @@ LABEL_25:
   return CGRectInset(v25, v22, 0.0);
 }
 
-- (CGRect)complicationRowElementEditingReticleFrameWithBoundingRect:(CGRect)a3
+- (CGRect)complicationRowElementEditingReticleFrameWithBoundingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(CSProminentLayoutController *)self frameForElements:8 variant:2 withBoundingRect:?];
   rect = v8;
   v10 = v9;
@@ -2032,25 +2032,25 @@ LABEL_25:
   v16 = v15;
   [(CSProminentLayoutController *)self _complicationRowVerticalReticleInsetWithBoundingRect:x, y, width, height];
   v18 = v17;
-  v19 = rect;
+  rectCopy = rect;
   v20 = v10;
   v21 = v12;
   v22 = v14;
 
-  return CGRectInset(*&v19, v16, v18);
+  return CGRectInset(*&rectCopy, v16, v18);
 }
 
-- (double)_complicationRowHorizontalReticleInsetWithBoundingRect:(CGRect)a3
+- (double)_complicationRowHorizontalReticleInsetWithBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self frameForElements:8 variant:2 withBoundingRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CSProminentLayoutController *)self frameForElements:8 variant:2 withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [MEMORY[0x1E698E730] sharedInstance];
-  v13 = [v12 deviceClass];
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  deviceClass = [mEMORY[0x1E698E730] deviceClass];
 
-  if (v13 == 2)
+  if (deviceClass == 2)
   {
     v18.origin.x = v5;
     v18.origin.y = v7;
@@ -2068,17 +2068,17 @@ LABEL_25:
   }
 }
 
-- (double)_complicationRowVerticalReticleInsetWithBoundingRect:(CGRect)a3
+- (double)_complicationRowVerticalReticleInsetWithBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self frameForElements:8 variant:0 withBoundingRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CSProminentLayoutController *)self frameForElements:8 variant:0 withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [MEMORY[0x1E698E730] sharedInstance];
-  v12 = [v11 deviceClass];
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  deviceClass = [mEMORY[0x1E698E730] deviceClass];
 
-  if (v12 == 2)
+  if (deviceClass == 2)
   {
     v19.origin.x = v4;
     v19.origin.y = v6;
@@ -2098,24 +2098,24 @@ LABEL_25:
   }
 }
 
-- (CGRect)complicationSidebarElementEditingReticleFrameWithBoundingRect:(CGRect)a3
+- (CGRect)complicationSidebarElementEditingReticleFrameWithBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self frameForElements:16 variant:2 withBoundingRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CSProminentLayoutController *)self frameForElements:16 variant:2 withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 
   return CGRectInset(*&v3, -8.0, -8.0);
 }
 
-- (CGRect)complicationBottomRowElementEditingReticleFrameWithBoundingRect:(CGRect)a3
+- (CGRect)complicationBottomRowElementEditingReticleFrameWithBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self frameForElements:32 variant:2 withBoundingRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CSProminentLayoutController *)self frameForElements:32 variant:2 withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [MEMORY[0x1E698E730] sharedInstance];
-  v13 = [v12 deviceClass];
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  deviceClass = [mEMORY[0x1E698E730] deviceClass];
 
-  if (v13 == 2)
+  if (deviceClass == 2)
   {
     v28.origin.x = v5;
     v28.origin.y = v7;
@@ -2154,9 +2154,9 @@ LABEL_25:
   return CGRectInset(*&v22, v26, v21);
 }
 
-- (CGRect)_quickActionLeadingElementEditingReticleFrameWithBoundingRect:(CGRect)a3
+- (CGRect)_quickActionLeadingElementEditingReticleFrameWithBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self frameForElements:128 variant:2 withBoundingRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CSProminentLayoutController *)self frameForElements:128 variant:2 withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -2171,9 +2171,9 @@ LABEL_25:
   return CGRectInset(*&v13, v12, v12);
 }
 
-- (CGRect)_quickActionTrailingElementEditingReticleFrameWithBoundingRect:(CGRect)a3
+- (CGRect)_quickActionTrailingElementEditingReticleFrameWithBoundingRect:(CGRect)rect
 {
-  [(CSProminentLayoutController *)self frameForElements:256 variant:2 withBoundingRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CSProminentLayoutController *)self frameForElements:256 variant:2 withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -2202,11 +2202,11 @@ LABEL_25:
 
 + (double)complicationElementEditingReticleInset
 {
-  v2 = [MEMORY[0x1E698E730] sharedInstance];
-  v3 = [v2 deviceClass];
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  deviceClass = [mEMORY[0x1E698E730] deviceClass];
 
   result = 0.0;
-  if (v3 == 2)
+  if (deviceClass == 2)
   {
     return 14.0;
   }
@@ -2226,12 +2226,12 @@ LABEL_25:
   return result;
 }
 
-+ (double)_safeAreaTopInset:(unint64_t)a3
++ (double)_safeAreaTopInset:(unint64_t)inset
 {
   result = 0.0;
-  if (a3 - 3 <= 0x13)
+  if (inset - 3 <= 0x13)
   {
-    return dbl_1A2DA4028[a3 - 3];
+    return dbl_1A2DA4028[inset - 3];
   }
 
   return result;
@@ -2240,7 +2240,7 @@ LABEL_25:
 + (double)reticlePortraitLayoutInset
 {
   +[CSDeviceDetermination effectiveCategory];
-  [a1 leadingPortraitLayoutInset];
+  [self leadingPortraitLayoutInset];
   result = v3 + -9.0;
   if (result < 0.0)
   {
@@ -2276,23 +2276,23 @@ LABEL_25:
   return result;
 }
 
-- (BOOL)shouldCenterElementsInBoundingRect:(CGRect)a3
+- (BOOL)shouldCenterElementsInBoundingRect:(CGRect)rect
 {
-  v3 = [(CSProminentLayoutController *)self _isPortraitForBoundingRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [MEMORY[0x1E698E730] sharedInstance];
-  v5 = [v4 deviceClass];
+  v3 = [(CSProminentLayoutController *)self _isPortraitForBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  deviceClass = [mEMORY[0x1E698E730] deviceClass];
 
-  return v5 == 2 || v3;
+  return deviceClass == 2 || v3;
 }
 
-- (CGRect)elementHorizontalFrameInBoundingRect:(CGRect)a3 forElementType:(unint64_t)a4
+- (CGRect)elementHorizontalFrameInBoundingRect:(CGRect)rect forElementType:(unint64_t)type
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(CSProminentLayoutController *)self traitEnvironment];
-  v11 = [v10 traitCollection];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  traitEnvironment = [(CSProminentLayoutController *)self traitEnvironment];
+  traitCollection = [traitEnvironment traitCollection];
 
   [(CSProminentLayoutController *)self leadingPortraitLayoutInset];
   v13 = v12;
@@ -2300,12 +2300,12 @@ LABEL_25:
   v15 = v14;
   if ([(CSProminentLayoutController *)self shouldCenterElementsInBoundingRect:x, y, width, height])
   {
-    v16 = [MEMORY[0x1E698E730] sharedInstance];
-    v17 = [v16 deviceClass];
+    mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+    deviceClass = [mEMORY[0x1E698E730] deviceClass];
 
-    if (v17 == 2)
+    if (deviceClass == 2)
     {
-      if (a4 == 1)
+      if (type == 1)
       {
         [(CSProminentLayoutController *)self padTimeElementBoundingWidth];
         v19 = width - v18;
@@ -2346,15 +2346,15 @@ LABEL_25:
 
   else
   {
-    [v11 layoutDirection];
+    [traitCollection layoutDirection];
     v37.origin.x = x;
     v37.origin.y = y;
     v37.size.width = width;
     v37.size.height = height;
     v20 = CGRectGetWidth(v37) / 3.0 - v15;
-    v21 = [(CSProminentLayoutController *)self traitEnvironment];
-    v22 = [v21 traitCollection];
-    [v22 displayScale];
+    traitEnvironment2 = [(CSProminentLayoutController *)self traitEnvironment];
+    traitCollection2 = [traitEnvironment2 traitCollection];
+    [traitCollection2 displayScale];
 
     UIRoundToScale();
     v24 = v23;
@@ -2373,12 +2373,12 @@ LABEL_25:
   return result;
 }
 
-- (double)complicationElementEditingOffsetWithBoundingRect:(CGRect)a3
+- (double)complicationElementEditingOffsetWithBoundingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(CSProminentLayoutController *)self _frameForElement:1 withBoundingRect:3 variant:?];
   MaxY = CGRectGetMaxY(v15);
   [objc_opt_class() complicationElementBoundingTopY];
@@ -2407,12 +2407,12 @@ LABEL_25:
     case 4uLL:
     case 9uLL:
     case 0x11uLL:
-      [a1 _safeAreaTopInset:{v3, 173.0}];
+      [self _safeAreaTopInset:{v3, 173.0}];
       v9 = 172.0;
       goto LABEL_21;
     case 5uLL:
     case 7uLL:
-      [a1 _safeAreaTopInset:{v3, 173.0}];
+      [self _safeAreaTopInset:{v3, 173.0}];
       v9 = 192.0;
       goto LABEL_21;
     case 6uLL:
@@ -2420,45 +2420,45 @@ LABEL_25:
     case 8uLL:
       return 219.0;
     case 0xAuLL:
-      [a1 _safeAreaTopInset:{10, 173.0}];
+      [self _safeAreaTopInset:{10, 173.0}];
       v9 = 175.0;
       goto LABEL_21;
     case 0xBuLL:
-      [a1 _safeAreaTopInset:{11, 173.0}];
+      [self _safeAreaTopInset:{11, 173.0}];
       v9 = 182.0;
       goto LABEL_21;
     case 0xDuLL:
-      [a1 _safeAreaTopInset:{13, 173.0}];
+      [self _safeAreaTopInset:{13, 173.0}];
       v9 = 164.0;
       goto LABEL_21;
     case 0xEuLL:
       return 175.0;
     case 0xFuLL:
-      [a1 _safeAreaTopInset:{15, 173.0}];
+      [self _safeAreaTopInset:{15, 173.0}];
       v9 = 167.0;
       goto LABEL_21;
     case 0x10uLL:
-      v10 = a1;
+      selfCopy2 = self;
       v11 = 16;
       goto LABEL_20;
     case 0x12uLL:
-      [a1 _safeAreaTopInset:{18, 173.0}];
+      [self _safeAreaTopInset:{18, 173.0}];
       v9 = 194.0;
       goto LABEL_21;
     case 0x13uLL:
       return 194.0;
     case 0x14uLL:
-      [a1 _safeAreaTopInset:{20, 173.0}];
+      [self _safeAreaTopInset:{20, 173.0}];
       v9 = 162.0;
       goto LABEL_21;
     case 0x15uLL:
       v12 = 200.0;
       goto LABEL_25;
     case 0x16uLL:
-      v10 = a1;
+      selfCopy2 = self;
       v11 = 22;
 LABEL_20:
-      [v10 _safeAreaTopInset:{v11, 173.0}];
+      [selfCopy2 _safeAreaTopInset:{v11, 173.0}];
       v9 = 170.0;
 LABEL_21:
       result = v8 + v9;
@@ -2474,9 +2474,9 @@ LABEL_21:
     case 0x1FuLL:
     case 0x20uLL:
     case 0x21uLL:
-      [a1 _timeElementBoundingTopY];
+      [self _timeElementBoundingTopY];
       v6 = v5 + 13.0;
-      [a1 timeElementBoundingHeight];
+      [self timeElementBoundingHeight];
       result = v6 + v7;
       break;
     default:
@@ -2509,20 +2509,20 @@ void __59__CSProminentLayoutController__timeMeasurementFontProvider__block_invok
   _timeMeasurementFontProvider_fontProvider = v0;
 }
 
-+ (id)_timeMeasurementFontProviderPrimedForContext:(id)a3 measurementBoundingRect:(CGRect *)a4
++ (id)_timeMeasurementFontProviderPrimedForContext:(id)context measurementBoundingRect:(CGRect *)rect
 {
-  v6 = a3;
-  v7 = [a1 _timeMeasurementFontProvider];
-  v8 = [v6 orientation];
-  v9 = [v6 hasSidebarContents];
+  contextCopy = context;
+  _timeMeasurementFontProvider = [self _timeMeasurementFontProvider];
+  orientation = [contextCopy orientation];
+  hasSidebarContents = [contextCopy hasSidebarContents];
 
   v10 = +[CSDeviceDetermination effectiveCategory];
-  [a1 _mainDisplayBoundsForInterfaceOrientation:1];
+  [self _mainDisplayBoundsForInterfaceOrientation:1];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  [a1 _mainDisplayBoundsForInterfaceOrientation:4];
+  [self _mainDisplayBoundsForInterfaceOrientation:4];
   v49 = v20;
   v50 = v19;
   v47 = v22;
@@ -2531,13 +2531,13 @@ void __59__CSProminentLayoutController__timeMeasurementFontProvider__block_invok
   v53.origin.y = v14;
   v53.size.width = v16;
   v53.size.height = v18;
-  [a1 adaptiveTimeWidthInsetForOrientation:1 deviceCategory:v10 hasSidebarContents:v9 boundingWidth:CGRectGetWidth(v53)];
+  [self adaptiveTimeWidthInsetForOrientation:1 deviceCategory:v10 hasSidebarContents:hasSidebarContents boundingWidth:CGRectGetWidth(v53)];
   v24 = v23;
   v54.origin.x = v12;
   v54.origin.y = v14;
   v54.size.width = v16;
   v54.size.height = v18;
-  [a1 adaptiveTimeWidthInsetForOrientation:4 deviceCategory:v10 hasSidebarContents:v9 boundingWidth:CGRectGetHeight(v54)];
+  [self adaptiveTimeWidthInsetForOrientation:4 deviceCategory:v10 hasSidebarContents:hasSidebarContents boundingWidth:CGRectGetHeight(v54)];
   v26 = v25;
   v51 = v12;
   v55.origin.x = v12;
@@ -2557,15 +2557,15 @@ void __59__CSProminentLayoutController__timeMeasurementFontProvider__block_invok
   v57.size.width = width;
   v57.size.height = height;
   v32 = CGRectGetHeight(v57);
-  v33 = v8 - 1;
+  v33 = orientation - 1;
   v34 = +[CSDeviceDetermination effectiveCategory];
   v35 = [MEMORY[0x1E696AD98] numberWithDouble:v31];
   v36 = [MEMORY[0x1E696AD98] numberWithDouble:v32];
   v37 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"00:00"];
-  v38 = [CSAdaptiveFontLayoutContext layoutContextWithPortrait:(v8 - 1) < 2 deviceCategory:v34 maximumWidthPortrait:v35 maximumWidthLandscape:v36 text:v37];
+  v38 = [CSAdaptiveFontLayoutContext layoutContextWithPortrait:(orientation - 1) < 2 deviceCategory:v34 maximumWidthPortrait:v35 maximumWidthLandscape:v36 text:v37];
 
-  [v7 updateLayoutContext:v38];
-  if (a4)
+  [_timeMeasurementFontProvider updateLayoutContext:v38];
+  if (rect)
   {
     if (v33 > 1)
     {
@@ -2585,13 +2585,13 @@ void __59__CSProminentLayoutController__timeMeasurementFontProvider__block_invok
       v43 = v46;
     }
 
-    *a4 = CGRectInset(*&v39, v43, 0.0);
+    *rect = CGRectInset(*&v39, v43, 0.0);
   }
 
-  return v7;
+  return _timeMeasurementFontProvider;
 }
 
-+ (CGRect)_mainDisplayBoundsForInterfaceOrientation:(int64_t)a3
++ (CGRect)_mainDisplayBoundsForInterfaceOrientation:(int64_t)orientation
 {
   if (_mainDisplayBoundsForInterfaceOrientation__onceToken != -1)
   {
@@ -2602,20 +2602,20 @@ void __59__CSProminentLayoutController__timeMeasurementFontProvider__block_invok
   y = *&_mainDisplayBoundsForInterfaceOrientation__mainDisplayBoundsPortrait_1;
   width = *&_mainDisplayBoundsForInterfaceOrientation__mainDisplayBoundsPortrait_2;
   height = *&_mainDisplayBoundsForInterfaceOrientation__mainDisplayBoundsPortrait_3;
-  if (a3 <= 2)
+  if (orientation <= 2)
   {
-    if (a3 == 2)
+    if (orientation == 2)
     {
       v10 = 3.14159265;
       goto LABEL_10;
     }
 
-    if (!a3)
+    if (!orientation)
     {
       v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unhandled UIInterfaceOrientationUnknown"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        [(CSProminentLayoutController *)a2 _mainDisplayBoundsForInterfaceOrientation:a1, v15];
+        [(CSProminentLayoutController *)a2 _mainDisplayBoundsForInterfaceOrientation:self, v15];
       }
 
       [v15 UTF8String];
@@ -2627,13 +2627,13 @@ void __59__CSProminentLayoutController__timeMeasurementFontProvider__block_invok
 
   else
   {
-    if (a3 == 3)
+    if (orientation == 3)
     {
       v10 = 1.57079633;
       goto LABEL_10;
     }
 
-    if (a3 == 4)
+    if (orientation == 4)
     {
       v10 = -1.57079633;
 LABEL_10:

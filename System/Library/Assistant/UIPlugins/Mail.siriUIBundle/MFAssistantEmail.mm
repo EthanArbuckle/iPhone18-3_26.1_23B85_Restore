@@ -1,25 +1,25 @@
 @interface MFAssistantEmail
-+ (int64_t)MSSendTypeForSAEMailType:(id)a3;
++ (int64_t)MSSendTypeForSAEMailType:(id)type;
 @end
 
 @implementation MFAssistantEmail
 
-+ (int64_t)MSSendTypeForSAEMailType:(id)a3
++ (int64_t)MSSendTypeForSAEMailType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:SAEmailTypeReplyValue])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:SAEmailTypeReplyValue])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:SAEmailTypeForwardValue])
+  else if ([typeCopy isEqualToString:SAEmailTypeForwardValue])
   {
     v4 = 3;
   }
 
   else
   {
-    [v3 isEqualToString:SAEmailTypeNewValue];
+    [typeCopy isEqualToString:SAEmailTypeNewValue];
     v4 = 1;
   }
 

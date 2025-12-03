@@ -1,6 +1,6 @@
 @interface UIView
-- (BOOL)_accessibilityUserTestingIsTypeOfButton:(void *)a1;
-- (id)_accessibilitySecureTextForString:(uint64_t)a1;
+- (BOOL)_accessibilityUserTestingIsTypeOfButton:(void *)button;
+- (id)_accessibilitySecureTextForString:(uint64_t)string;
 - (uint64_t)_accessibilityTextAreaTraits;
 @end
 
@@ -8,23 +8,23 @@
 
 - (uint64_t)_accessibilityTextAreaTraits
 {
-  v6 = a1;
-  if (!a1)
+  selfCopy = self;
+  if (!self)
   {
     return 0;
   }
 
   v5 = 0;
-  location = [v6 safeValueForKey:@"textInputTraits"];
+  location = [selfCopy safeValueForKey:@"textInputTraits"];
   if (([location safeBoolForKey:@"isSecureTextEntry"] & 1) != 0 && (objc_msgSend(location, "safeBoolForKey:", @"displaySecureTextUsingPlainText") & 1) == 0)
   {
     v5 |= *MEMORY[0x29EDC7568];
   }
 
-  v2 = [v6 safeValueForKey:@"isEnabled"];
-  v3 = [v2 BOOLValue];
+  v2 = [selfCopy safeValueForKey:@"isEnabled"];
+  bOOLValue = [v2 BOOLValue];
   MEMORY[0x29EDC9740](v2);
-  if ((v3 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v5 |= *MEMORY[0x29EDC7FA8];
   }
@@ -34,12 +34,12 @@
   return v7;
 }
 
-- (id)_accessibilitySecureTextForString:(uint64_t)a1
+- (id)_accessibilitySecureTextForString:(uint64_t)string
 {
-  v10 = a1;
+  stringCopy = string;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v10)
+  if (stringCopy)
   {
     v7 = [objc_allocWithZone(MEMORY[0x29EDBA050]) init];
     v6 = [location length];
@@ -68,12 +68,12 @@
   return v2;
 }
 
-- (BOOL)_accessibilityUserTestingIsTypeOfButton:(void *)a1
+- (BOOL)_accessibilityUserTestingIsTypeOfButton:(void *)button
 {
-  v23 = a1;
+  buttonCopy = button;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v23)
+  if (buttonCopy)
   {
     v14 = 0;
     v15 = &v14;
@@ -88,21 +88,21 @@
     v10 = __75__UIView_AutomationAccessibility___accessibilityUserTestingIsTypeOfButton___block_invoke;
     v11 = &unk_29F30D3D8;
     v12 = &v14;
-    v13 = [v23 _accessibilityFindViewAncestor:? startWithSelf:?];
+    v13 = [buttonCopy _accessibilityFindViewAncestor:? startWithSelf:?];
     if (v15[5])
     {
-      v6 = [v15[5] indexOfObject:v23];
-      v5 = -1;
+      v6 = [v15[5] indexOfObject:buttonCopy];
+      integerValue = -1;
       if ([location isEqualToString:@"default"])
       {
         v4 = [v13 safeValueForKey:@"_defaultButton"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v5 = [v4 integerValue];
+          integerValue = [v4 integerValue];
         }
 
-        if (v5 == -1 && v6 == [v15[5] count] - 1)
+        if (integerValue == -1 && v6 == [v15[5] count] - 1)
         {
           v24 = 1;
           v21 = 1;
@@ -126,13 +126,13 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v5 = [v3 integerValue];
+          integerValue = [v3 integerValue];
         }
 
         objc_storeStrong(&v3, 0);
       }
 
-      v24 = v6 == v5;
+      v24 = v6 == integerValue;
       v21 = 1;
     }
 

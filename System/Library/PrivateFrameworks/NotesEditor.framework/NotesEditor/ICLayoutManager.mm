@@ -1,97 +1,97 @@
 @interface ICLayoutManager
-- (BOOL)selectedRangesIntersectWithRange:(_NSRange)a3;
-- (BOOL)unhideSupplementalView:(id)a3 forIdentifier:(id)a4;
+- (BOOL)selectedRangesIntersectWithRange:(_NSRange)range;
+- (BOOL)unhideSupplementalView:(id)view forIdentifier:(id)identifier;
 - (CGPoint)cachedOrigin;
-- (CGRect)boundingRectForGlyphRange:(_NSRange)a3 inTextContainer:(id)a4;
+- (CGRect)boundingRectForGlyphRange:(_NSRange)range inTextContainer:(id)container;
 - (CGRect)layoutEnsuredBounds;
-- (CGRect)lineFragmentRectForGlyphAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (CGRect)lineRectForRange:(_NSRange)a3;
-- (CGRect)usedLineRectForRange:(_NSRange)a3;
+- (CGRect)lineFragmentRectForGlyphAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (CGRect)lineRectForRange:(_NSRange)range;
+- (CGRect)usedLineRectForRange:(_NSRange)range;
 - (CGSize)cachedTextContainerSize;
 - (ICAttachmentViewDelegate)attachmentViewDelegate;
 - (ICNAEventReporter)eventReporter;
 - (NSDictionary)trackedToDoParagraphs;
-- (_NSRange)rangeForAttachment:(id)a3 withTextAttachment:(id *)a4;
-- (_NSRange)rangeForBaseAttachment:(id)a3 withTextAttachment:(id *)a4;
-- (id)drawTodoViewForListRange:(_NSRange)a3 paragraphStyle:(id)a4 checkmarkHighlightValue:(id)a5 atPoint:(CGPoint)a6;
+- (_NSRange)rangeForAttachment:(id)attachment withTextAttachment:(id *)textAttachment;
+- (_NSRange)rangeForBaseAttachment:(id)attachment withTextAttachment:(id *)textAttachment;
+- (id)drawTodoViewForListRange:(_NSRange)range paragraphStyle:(id)style checkmarkHighlightValue:(id)value atPoint:(CGPoint)point;
 - (id)editingTextView;
-- (id)glyphIndexesForMatchesInTextStorage:(id)a3 regexFinder:(id)a4 glyphRange:(_NSRange)a5;
-- (id)icaxTodoButtonForParagraphStyle:(id)a3;
-- (id)initForTemporaryProcessing:(BOOL)a3;
-- (id)linkAttributesForLink:(id)a3 forCharacterAtIndex:(unint64_t)a4;
-- (id)paragraphStyleForCharacterIndex:(unint64_t)a3;
-- (id)supplementalViewForIdentifier:(id)a3 allowHiddenViews:(BOOL)a4;
-- (id)textContainerForGlyphAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)todoButtonForTrackedParagraphIfExists:(id)a3;
-- (id)todoButtonsForCharacterRange:(_NSRange)a3;
-- (id)trackedTodoParagraphAtIndexIfExists:(unint64_t)a3;
-- (id)viewControllerForTextAttachment:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)viewForBaseTextAttachmentNoCreate:(id)a3;
-- (id)viewForTextAttachment:(id)a3 initialCharacterIndex:(unint64_t)a4;
-- (id)viewForTextAttachmentNoCreate:(id)a3;
-- (id)viewProviderForTextAttachment:(id)a3 parentView:(id)a4 characterIndex:(unint64_t)a5;
-- (unint64_t)lineCountForCharacterRange:(_NSRange)a3;
+- (id)glyphIndexesForMatchesInTextStorage:(id)storage regexFinder:(id)finder glyphRange:(_NSRange)range;
+- (id)icaxTodoButtonForParagraphStyle:(id)style;
+- (id)initForTemporaryProcessing:(BOOL)processing;
+- (id)linkAttributesForLink:(id)link forCharacterAtIndex:(unint64_t)index;
+- (id)paragraphStyleForCharacterIndex:(unint64_t)index;
+- (id)supplementalViewForIdentifier:(id)identifier allowHiddenViews:(BOOL)views;
+- (id)textContainerForGlyphAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)todoButtonForTrackedParagraphIfExists:(id)exists;
+- (id)todoButtonsForCharacterRange:(_NSRange)range;
+- (id)trackedTodoParagraphAtIndexIfExists:(unint64_t)exists;
+- (id)viewControllerForTextAttachment:(id)attachment createIfNeeded:(BOOL)needed;
+- (id)viewForBaseTextAttachmentNoCreate:(id)create;
+- (id)viewForTextAttachment:(id)attachment initialCharacterIndex:(unint64_t)index;
+- (id)viewForTextAttachmentNoCreate:(id)create;
+- (id)viewProviderForTextAttachment:(id)attachment parentView:(id)view characterIndex:(unint64_t)index;
+- (unint64_t)lineCountForCharacterRange:(_NSRange)range;
 - (void)_clearRemovedAttachments;
-- (void)attachmentDidLoad:(id)a3;
-- (void)attachmentInlineDrawingMergeableDataDidChange:(id)a3;
+- (void)attachmentDidLoad:(id)load;
+- (void)attachmentInlineDrawingMergeableDataDidChange:(id)change;
 - (void)cleanUpAfterScreenshot;
 - (void)cleanupStaleTodoButtons;
-- (void)cleanupStaleTodoButtonsAndUpdateSupplementalViewsForDictionary:(id)a3;
+- (void)cleanupStaleTodoButtonsAndUpdateSupplementalViewsForDictionary:(id)dictionary;
 - (void)clearAllSupplementalViews;
 - (void)clearAllTodoSupplementalViews;
 - (void)clearAllTodos;
 - (void)clearRemovedAttachmentsIfNeeded;
-- (void)clearSupplementalViewForIdentifier:(id)a3;
-- (void)clearViewForTextAttachment:(id)a3;
+- (void)clearSupplementalViewForIdentifier:(id)identifier;
+- (void)clearViewForTextAttachment:(id)attachment;
 - (void)clearViewsForAllTextAttachmentsThatSupportThumbnailMode;
 - (void)contentSizeCategoryDidChange;
 - (void)dealloc;
-- (void)didAddViewForTextAttachment:(id)a3;
-- (void)didPressTodoButton:(id)a3;
-- (void)drawGlyphsForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4;
-- (void)drawGlyphsForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4 updateAttachments:(BOOL)a5;
+- (void)didAddViewForTextAttachment:(id)attachment;
+- (void)didPressTodoButton:(id)button;
+- (void)drawGlyphsForGlyphRange:(_NSRange)range atPoint:(CGPoint)point;
+- (void)drawGlyphsForGlyphRange:(_NSRange)range atPoint:(CGPoint)point updateAttachments:(BOOL)attachments;
 - (void)ensureLayoutForSurroundingPages;
-- (void)ensureLayoutForTextContainer:(id)a3;
-- (void)ensureViewIsAddedForAttachment:(id)a3 inCharacterRange:(_NSRange)a4;
-- (void)enumerateAttachmentViewsInRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)eventReporterLostSession:(id)a3;
-- (void)fillBackgroundRectArray:(const CGRect *)a3 count:(unint64_t)a4 forCharacterRange:(_NSRange)a5 color:(id)a6;
-- (void)filterAttachmentsInTextStorage:(id)a3 range:(_NSRange)a4 targetAttachment:(id)a5;
-- (void)handleTodoButtonPress:(id)a3;
-- (void)hideSupplementalView:(id)a3 forIdentifier:(id)a4;
+- (void)ensureLayoutForTextContainer:(id)container;
+- (void)ensureViewIsAddedForAttachment:(id)attachment inCharacterRange:(_NSRange)range;
+- (void)enumerateAttachmentViewsInRange:(_NSRange)range usingBlock:(id)block;
+- (void)eventReporterLostSession:(id)session;
+- (void)fillBackgroundRectArray:(const CGRect *)array count:(unint64_t)count forCharacterRange:(_NSRange)range color:(id)color;
+- (void)filterAttachmentsInTextStorage:(id)storage range:(_NSRange)range targetAttachment:(id)attachment;
+- (void)handleTodoButtonPress:(id)press;
+- (void)hideSupplementalView:(id)view forIdentifier:(id)identifier;
 - (void)hideVisibleTodoButtons;
-- (void)icReplaceTextStorage:(id)a3;
+- (void)icReplaceTextStorage:(id)storage;
 - (void)invalidateLayoutAfterAttachmentViewTypeChange;
 - (void)invalidateLayoutAfterAttachmentViewTypeChangeIfNecessary;
-- (void)invalidateLayoutForAttachment:(id)a3;
-- (void)invalidateLayoutForCharacterRange:(_NSRange)a3 actualCharacterRange:(_NSRange *)a4;
-- (void)layoutViewForInlineTextAttachment:(id)a3 atCharacterIndex:(unint64_t)a4;
-- (void)manuallyRenderSubviewsForCharacterRange:(_NSRange)a3;
-- (void)mediaDidLoad:(id)a3;
-- (void)prepareForScreenshotWithVisibleRange:(_NSRange)a3;
-- (void)processEditingForTextStorage:(id)a3 edited:(unint64_t)a4 range:(_NSRange)a5 changeInLength:(int64_t)a6 invalidatedRange:(_NSRange)a7;
-- (void)receivedMemoryWarning:(id)a3;
-- (void)removeClearingControllerForView:(id)a3;
-- (void)removeClearingControllerForView:(id)a3 viewIdentifier:(id)a4;
-- (void)setCachedOrigin:(CGPoint)a3;
-- (void)setHighlightPatternRegexFinder:(id)a3;
-- (void)setNeedsClearRemovedAttachments:(BOOL)a3;
-- (void)textContainerChangedGeometry:(id)a3;
-- (void)textController:(id)a3 removedTrackedAttribute:(id)a4;
-- (void)textStorageDidEndEditingNotification:(id)a3;
+- (void)invalidateLayoutForAttachment:(id)attachment;
+- (void)invalidateLayoutForCharacterRange:(_NSRange)range actualCharacterRange:(_NSRange *)characterRange;
+- (void)layoutViewForInlineTextAttachment:(id)attachment atCharacterIndex:(unint64_t)index;
+- (void)manuallyRenderSubviewsForCharacterRange:(_NSRange)range;
+- (void)mediaDidLoad:(id)load;
+- (void)prepareForScreenshotWithVisibleRange:(_NSRange)range;
+- (void)processEditingForTextStorage:(id)storage edited:(unint64_t)edited range:(_NSRange)range changeInLength:(int64_t)length invalidatedRange:(_NSRange)invalidatedRange;
+- (void)receivedMemoryWarning:(id)warning;
+- (void)removeClearingControllerForView:(id)view;
+- (void)removeClearingControllerForView:(id)view viewIdentifier:(id)identifier;
+- (void)setCachedOrigin:(CGPoint)origin;
+- (void)setHighlightPatternRegexFinder:(id)finder;
+- (void)setNeedsClearRemovedAttachments:(BOOL)attachments;
+- (void)textContainerChangedGeometry:(id)geometry;
+- (void)textController:(id)controller removedTrackedAttribute:(id)attribute;
+- (void)textStorageDidEndEditingNotification:(id)notification;
 - (void)unHideVisibleTodoButtons;
 - (void)updateHiddenSupplementalViews;
 - (void)updateInlineDrawingViews;
-- (void)updateSubviewsForCharacterRange:(_NSRange)a3;
-- (void)updateSubviewsForCharacterRange:(_NSRange)a3 atPoint:(CGPoint)a4;
+- (void)updateSubviewsForCharacterRange:(_NSRange)range;
+- (void)updateSubviewsForCharacterRange:(_NSRange)range atPoint:(CGPoint)point;
 - (void)updateVisibleSupplementalViews;
-- (void)willPlaceView:(id)a3 forTextAttachment:(id)a4;
+- (void)willPlaceView:(id)view forTextAttachment:(id)attachment;
 - (void)zoomFactorOrInsetsDidChange;
 @end
 
 @implementation ICLayoutManager
 
-- (id)initForTemporaryProcessing:(BOOL)a3
+- (id)initForTemporaryProcessing:(BOOL)processing
 {
   v21.receiver = self;
   v21.super_class = ICLayoutManager;
@@ -101,43 +101,43 @@
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [(ICLayoutManager *)v4 setTodoButtonsByTrackingUUID:v5];
 
-    if (!a3)
+    if (!processing)
     {
-      v6 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v6 addObserver:v4 selector:sel_attachmentDidLoad_ name:*MEMORY[0x277D35B88] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v4 selector:sel_attachmentDidLoad_ name:*MEMORY[0x277D35B88] object:0];
 
-      v7 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v7 addObserver:v4 selector:sel_mediaDidLoad_ name:*MEMORY[0x277D35C70] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:v4 selector:sel_mediaDidLoad_ name:*MEMORY[0x277D35C70] object:0];
 
-      v8 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
       v9 = *MEMORY[0x277D36650];
-      v10 = [(ICLayoutManager *)v4 textStorage];
-      [v8 addObserver:v4 selector:sel_textStorageDidEndEditingNotification_ name:v9 object:v10];
+      textStorage = [(ICLayoutManager *)v4 textStorage];
+      [defaultCenter3 addObserver:v4 selector:sel_textStorageDidEndEditingNotification_ name:v9 object:textStorage];
 
-      v11 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v11 addObserver:v4 selector:sel_attachmentInlineDrawingMergeableDataDidChange_ name:*MEMORY[0x277D36450] object:0];
+      defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter4 addObserver:v4 selector:sel_attachmentInlineDrawingMergeableDataDidChange_ name:*MEMORY[0x277D36450] object:0];
 
-      v12 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v12 addObserver:v4 selector:sel_receivedMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
+      defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter5 addObserver:v4 selector:sel_receivedMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
     }
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
-    [(ICLayoutManager *)v4 setActiveSupplementalViews:v13];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(ICLayoutManager *)v4 setActiveSupplementalViews:dictionary];
 
-    v14 = [MEMORY[0x277CBEB38] dictionary];
-    [(ICLayoutManager *)v4 setHiddenSupplementalViews:v14];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [(ICLayoutManager *)v4 setHiddenSupplementalViews:dictionary2];
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
-    [(ICLayoutManager *)v4 setSupplementalViewControllers:v15];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+    [(ICLayoutManager *)v4 setSupplementalViewControllers:dictionary3];
 
     v16 = [[ICTextAttachmentLocationCache alloc] initWithLayoutManager:v4 cachedTextAttachmentType:objc_opt_class()];
     [(ICLayoutManager *)v4 setInlineAttachmentLocationCache:v16];
 
-    v17 = [MEMORY[0x277CBEB38] dictionary];
-    [(ICLayoutManager *)v4 setSupplementalViewProviders:v17];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
+    [(ICLayoutManager *)v4 setSupplementalViewProviders:dictionary4];
 
-    v18 = [MEMORY[0x277CBEB38] dictionary];
-    [(ICLayoutManager *)v4 setDelayedScrollOutViewDictionary:v18];
+    dictionary5 = [MEMORY[0x277CBEB38] dictionary];
+    [(ICLayoutManager *)v4 setDelayedScrollOutViewDictionary:dictionary5];
 
     v19 = [objc_alloc(MEMORY[0x277D36258]) initWithTarget:v4 selector:sel_updateHiddenSupplementalViews delay:1 waitToFireUntilRequestsStop:1 callOnMainThread:0.1];
     [(ICLayoutManager *)v4 setUpdateHiddenViewsSelectorDelayer:v19];
@@ -148,11 +148,11 @@
 
 - (void)dealloc
 {
-  v3 = [(ICLayoutManager *)self updateHiddenViewsSelectorDelayer];
-  [v3 cancelPreviousFireRequests];
+  updateHiddenViewsSelectorDelayer = [(ICLayoutManager *)self updateHiddenViewsSelectorDelayer];
+  [updateHiddenViewsSelectorDelayer cancelPreviousFireRequests];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(ICLayoutManager *)self clearAllSupplementalViews];
   v5.receiver = self;
@@ -162,53 +162,53 @@
 
 - (NSDictionary)trackedToDoParagraphs
 {
-  v3 = [(ICBaseLayoutManager *)self textController];
-  v4 = v3;
-  if (v3)
+  textController = [(ICBaseLayoutManager *)self textController];
+  v4 = textController;
+  if (textController)
   {
-    v5 = [v3 trackedToDoParagraphs];
+    trackedToDoParagraphs = [textController trackedToDoParagraphs];
   }
 
   else
   {
-    v5 = self->_trackedToDoParagraphs;
+    trackedToDoParagraphs = self->_trackedToDoParagraphs;
   }
 
-  v6 = v5;
+  v6 = trackedToDoParagraphs;
 
   return v6;
 }
 
-- (void)drawGlyphsForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4
+- (void)drawGlyphsForGlyphRange:(_NSRange)range atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  length = a3.length;
-  location = a3.location;
+  y = point.y;
+  x = point.x;
+  length = range.length;
+  location = range.location;
   [(ICLayoutManager *)self setLineHeightIncludeParagraphSpacing:1];
   [(ICLayoutManager *)self drawGlyphsForGlyphRange:location atPoint:length updateAttachments:1, x, y];
 
   [(ICLayoutManager *)self setLineHeightIncludeParagraphSpacing:0];
 }
 
-- (id)textContainerForGlyphAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)textContainerForGlyphAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v7 = [(ICLayoutManager *)self characterIndexForGlyphAtIndex:?];
-  v8 = [(ICLayoutManager *)self textStorage];
-  v9 = [v8 length];
+  textStorage = [(ICLayoutManager *)self textStorage];
+  v9 = [textStorage length];
 
   if (v7 <= v9)
   {
     v13.receiver = self;
     v13.super_class = ICLayoutManager;
-    v11 = [(ICLayoutManager *)&v13 textContainerForGlyphAtIndex:a3 effectiveRange:a4];
+    v11 = [(ICLayoutManager *)&v13 textContainerForGlyphAtIndex:index effectiveRange:range];
   }
 
   else
   {
-    if (a4)
+    if (range)
     {
-      a4->location = 0x7FFFFFFFFFFFFFFFLL;
+      range->location = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     v10 = os_log_create("com.apple.notes", "UI");
@@ -223,38 +223,38 @@
   return v11;
 }
 
-- (void)setHighlightPatternRegexFinder:(id)a3
+- (void)setHighlightPatternRegexFinder:(id)finder
 {
-  v5 = a3;
-  v6 = [(ICSearchResultRegexMatchFinder *)self->_highlightPatternRegexFinder isEqual:v5];
+  finderCopy = finder;
+  v6 = [(ICSearchResultRegexMatchFinder *)self->_highlightPatternRegexFinder isEqual:finderCopy];
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_highlightPatternRegexFinder, a3);
+    objc_storeStrong(&self->_highlightPatternRegexFinder, finder);
   }
 
-  v7 = [(ICLayoutManager *)self supplementalViewControllers];
+  supplementalViewControllers = [(ICLayoutManager *)self supplementalViewControllers];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __50__ICLayoutManager_setHighlightPatternRegexFinder___block_invoke;
   v22 = &unk_2781ACB48;
-  v8 = v5;
+  v8 = finderCopy;
   v23 = v8;
-  [v7 enumerateKeysAndObjectsUsingBlock:&v19];
+  [supplementalViewControllers enumerateKeysAndObjectsUsingBlock:&v19];
 
-  v9 = [(ICLayoutManager *)self activeSupplementalViews];
+  activeSupplementalViews = [(ICLayoutManager *)self activeSupplementalViews];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __50__ICLayoutManager_setHighlightPatternRegexFinder___block_invoke_2;
   v17 = &unk_2781ACB70;
   v18 = v8;
   v10 = v8;
-  [v9 enumerateKeysAndObjectsUsingBlock:&v14];
+  [activeSupplementalViews enumerateKeysAndObjectsUsingBlock:&v14];
 
   if ((v6 & 1) == 0)
   {
     v11 = [(ICLayoutManager *)self textStorage:v14];
-    v12 = [v11 ic_range];
-    [(ICLayoutManager *)self invalidateDisplayForCharacterRange:v12, v13];
+    ic_range = [v11 ic_range];
+    [(ICLayoutManager *)self invalidateDisplayForCharacterRange:ic_range, v13];
   }
 }
 
@@ -277,26 +277,26 @@ void __50__ICLayoutManager_setHighlightPatternRegexFinder___block_invoke_2(uint6
   [v5 setHighlightPatternRegexFinder:*(a1 + 32)];
 }
 
-- (void)setCachedOrigin:(CGPoint)a3
+- (void)setCachedOrigin:(CGPoint)origin
 {
   if (!self->_shouldIgnoreCachedOriginUpdates)
   {
-    self->_cachedOrigin = a3;
+    self->_cachedOrigin = origin;
   }
 }
 
-- (id)glyphIndexesForMatchesInTextStorage:(id)a3 regexFinder:(id)a4 glyphRange:(_NSRange)a5
+- (id)glyphIndexesForMatchesInTextStorage:(id)storage regexFinder:(id)finder glyphRange:(_NSRange)range
 {
-  v7 = a3;
-  v8 = a4;
+  storageCopy = storage;
+  finderCopy = finder;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__3;
   v18 = __Block_byref_object_dispose__3;
   v19 = 0;
-  v9 = [v7 string];
-  v10 = [v8 matchesInDocumentWithPerTokenFallback:v9];
+  string = [storageCopy string];
+  v10 = [finderCopy matchesInDocumentWithPerTokenFallback:string];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -331,19 +331,19 @@ void __78__ICLayoutManager_glyphIndexesForMatchesInTextStorage_regexFinder_glyph
   [*(*(*(a1 + 40) + 8) + 40) addIndexesInRange:{v9, v10}];
 }
 
-- (void)drawGlyphsForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4 updateAttachments:(BOOL)a5
+- (void)drawGlyphsForGlyphRange:(_NSRange)range atPoint:(CGPoint)point updateAttachments:(BOOL)attachments
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
-  length = a3.length;
-  location = a3.location;
-  v11 = [(ICLayoutManager *)self characterRangeForGlyphRange:a3.location actualGlyphRange:a3.length, 0];
+  attachmentsCopy = attachments;
+  y = point.y;
+  x = point.x;
+  length = range.length;
+  location = range.location;
+  v11 = [(ICLayoutManager *)self characterRangeForGlyphRange:range.location actualGlyphRange:range.length, 0];
   v13 = v12;
   [(ICLayoutManager *)self cachedOrigin];
   v15 = v14;
   v17 = v16;
-  if (v5)
+  if (attachmentsCopy)
   {
     [(ICLayoutManager *)self updateSubviewsForCharacterRange:v11 atPoint:v13, x, y];
   }
@@ -359,42 +359,42 @@ void __78__ICLayoutManager_glyphIndexesForMatchesInTextStorage_regexFinder_glyph
   }
 }
 
-- (void)icReplaceTextStorage:(id)a3
+- (void)icReplaceTextStorage:(id)storage
 {
-  v5 = a3;
-  v4 = [(ICLayoutManager *)self textStorage];
-  [v4 removeLayoutManager:self];
+  storageCopy = storage;
+  textStorage = [(ICLayoutManager *)self textStorage];
+  [textStorage removeLayoutManager:self];
 
-  [v5 addLayoutManager:self];
+  [storageCopy addLayoutManager:self];
 }
 
-- (void)processEditingForTextStorage:(id)a3 edited:(unint64_t)a4 range:(_NSRange)a5 changeInLength:(int64_t)a6 invalidatedRange:(_NSRange)a7
+- (void)processEditingForTextStorage:(id)storage edited:(unint64_t)edited range:(_NSRange)range changeInLength:(int64_t)length invalidatedRange:(_NSRange)invalidatedRange
 {
-  length = a5.length;
-  location = a5.location;
-  v12 = a3;
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
   [(ICLayoutManager *)self setNeedsClearRemovedAttachments:1];
-  v13 = [(ICLayoutManager *)self textStorage];
+  textStorage = [(ICLayoutManager *)self textStorage];
   v14 = *MEMORY[0x277D74060];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __93__ICLayoutManager_processEditingForTextStorage_edited_range_changeInLength_invalidatedRange___block_invoke;
   v20[3] = &unk_2781ACBC0;
   v20[4] = self;
-  [v13 enumerateAttribute:v14 inRange:location options:length usingBlock:{0, v20}];
+  [textStorage enumerateAttribute:v14 inRange:location options:length usingBlock:{0, v20}];
 
-  v15 = [(ICLayoutManager *)self icTextView];
-  v16 = [v15 isInProcessEditingForTextStorage];
+  icTextView = [(ICLayoutManager *)self icTextView];
+  isInProcessEditingForTextStorage = [icTextView isInProcessEditingForTextStorage];
 
-  v17 = [(ICLayoutManager *)self icTextView];
-  [v17 setIsInProcessEditingForTextStorage:1];
+  icTextView2 = [(ICLayoutManager *)self icTextView];
+  [icTextView2 setIsInProcessEditingForTextStorage:1];
 
   v19.receiver = self;
   v19.super_class = ICLayoutManager;
-  [(ICLayoutManager *)&v19 processEditingForTextStorage:v12 edited:a4 range:location changeInLength:length invalidatedRange:a6, a7.location, a7.length];
+  [(ICLayoutManager *)&v19 processEditingForTextStorage:storageCopy edited:edited range:location changeInLength:length invalidatedRange:length, invalidatedRange.location, invalidatedRange.length];
 
-  v18 = [(ICLayoutManager *)self icTextView];
-  [v18 setIsInProcessEditingForTextStorage:v16];
+  icTextView3 = [(ICLayoutManager *)self icTextView];
+  [icTextView3 setIsInProcessEditingForTextStorage:isInProcessEditingForTextStorage];
 }
 
 void __93__ICLayoutManager_processEditingForTextStorage_edited_range_changeInLength_invalidatedRange___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -407,37 +407,37 @@ void __93__ICLayoutManager_processEditingForTextStorage_edited_range_changeInLen
   }
 }
 
-- (void)textContainerChangedGeometry:(id)a3
+- (void)textContainerChangedGeometry:(id)geometry
 {
-  v4 = a3;
-  [v4 size];
+  geometryCopy = geometry;
+  [geometryCopy size];
   v6 = v5;
   v8 = v7;
   [(ICLayoutManager *)self cachedTextContainerSize];
   if (v6 != v10 || v8 != v9)
   {
-    [v4 size];
+    [geometryCopy size];
     [(ICLayoutManager *)self setCachedTextContainerSize:?];
     v12.receiver = self;
     v12.super_class = ICLayoutManager;
-    [(ICLayoutManager *)&v12 textContainerChangedGeometry:v4];
+    [(ICLayoutManager *)&v12 textContainerChangedGeometry:geometryCopy];
   }
 }
 
-- (CGRect)lineFragmentRectForGlyphAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (CGRect)lineFragmentRectForGlyphAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v104.receiver = self;
   v104.super_class = ICLayoutManager;
-  [(ICLayoutManager *)&v104 lineFragmentRectForGlyphAtIndex:a3 effectiveRange:a4];
+  [(ICLayoutManager *)&v104 lineFragmentRectForGlyphAtIndex:index effectiveRange:range];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
   if (![(ICLayoutManager *)self lineHeightIncludeParagraphSpacing])
   {
-    v14 = [(ICLayoutManager *)self characterIndexForGlyphAtIndex:a3];
-    v15 = [(ICLayoutManager *)self textStorage];
-    v16 = [v15 length];
+    v14 = [(ICLayoutManager *)self characterIndexForGlyphAtIndex:index];
+    textStorage = [(ICLayoutManager *)self textStorage];
+    v16 = [textStorage length];
 
     if (v14 >= v16)
     {
@@ -449,20 +449,20 @@ void __93__ICLayoutManager_processEditingForTextStorage_edited_range_changeInLen
       v17 = v14;
     }
 
-    v18 = [(ICLayoutManager *)self textStorage];
-    v19 = [v18 length] - 1;
+    textStorage2 = [(ICLayoutManager *)self textStorage];
+    v19 = [textStorage2 length] - 1;
 
     if (v17 >= v19)
     {
-      v20 = [(ICBaseLayoutManager *)self textView];
-      v22 = [v20 typingAttributes];
-      v21 = [v22 objectForKeyedSubscript:*MEMORY[0x277D74118]];
+      textView = [(ICBaseLayoutManager *)self textView];
+      typingAttributes = [textView typingAttributes];
+      v21 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x277D74118]];
     }
 
     else
     {
-      v20 = [(ICLayoutManager *)self textStorage];
-      v21 = [v20 attribute:*MEMORY[0x277D74118] atIndex:v17 effectiveRange:0];
+      textView = [(ICLayoutManager *)self textStorage];
+      v21 = [textView attribute:*MEMORY[0x277D74118] atIndex:v17 effectiveRange:0];
     }
 
     if (v21)
@@ -470,11 +470,11 @@ void __93__ICLayoutManager_processEditingForTextStorage_edited_range_changeInLen
       v97 = v9;
       v98 = v11;
       v99 = v7;
-      v23 = [(ICBaseLayoutManager *)self textView];
-      v24 = [v23 selectedRange];
+      textView2 = [(ICBaseLayoutManager *)self textView];
+      selectedRange = [textView2 selectedRange];
       v26 = v25;
 
-      v27 = [(ICLayoutManager *)self glyphRangeForCharacterRange:v24 actualCharacterRange:v26, 0];
+      v27 = [(ICLayoutManager *)self glyphRangeForCharacterRange:selectedRange actualCharacterRange:v26, 0];
       if (v26)
       {
         v29 = v27;
@@ -521,9 +521,9 @@ void __93__ICLayoutManager_processEditingForTextStorage_edited_range_changeInLen
         v43 = 0;
       }
 
-      v46 = [(ICLayoutManager *)self textStorage];
-      v47 = [v46 string];
-      v48 = [v47 paragraphRangeForRange:{v17, 0}];
+      textStorage3 = [(ICLayoutManager *)self textStorage];
+      string = [textStorage3 string];
+      v48 = [string paragraphRangeForRange:{v17, 0}];
       v50 = v49;
 
       v51 = [(ICLayoutManager *)self glyphRangeForCharacterRange:v48 actualCharacterRange:v50, 0];
@@ -596,9 +596,9 @@ void __93__ICLayoutManager_processEditingForTextStorage_edited_range_changeInLen
 
       if (v73 == v74 && !v45)
       {
-        v77 = [(ICLayoutManager *)self textStorage];
-        v78 = [v77 string];
-        v79 = [v78 paragraphRangeForRange:{v48 + v50, 0}];
+        textStorage4 = [(ICLayoutManager *)self textStorage];
+        string2 = [textStorage4 string];
+        v79 = [string2 paragraphRangeForRange:{v48 + v50, 0}];
         v81 = v80;
 
         if (v48 != v79 || v50 != v81)
@@ -621,7 +621,7 @@ void __93__ICLayoutManager_processEditingForTextStorage_edited_range_changeInLen
   return result;
 }
 
-- (CGRect)lineRectForRange:(_NSRange)a3
+- (CGRect)lineRectForRange:(_NSRange)range
 {
   v16 = 0;
   v17 = &v16;
@@ -630,7 +630,7 @@ void __93__ICLayoutManager_processEditingForTextStorage_edited_range_changeInLen
   v4 = *(MEMORY[0x277CBF398] + 16);
   v20 = *MEMORY[0x277CBF398];
   v21 = v4;
-  v5 = [(ICLayoutManager *)self glyphRangeForCharacterRange:a3.location actualCharacterRange:a3.length, 0];
+  v5 = [(ICLayoutManager *)self glyphRangeForCharacterRange:range.location actualCharacterRange:range.length, 0];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __36__ICLayoutManager_lineRectForRange___block_invoke;
@@ -662,7 +662,7 @@ void __36__ICLayoutManager_lineRectForRange___block_invoke(uint64_t a1, CGFloat 
   *(*(*(a1 + 32) + 8) + 32) = CGRectUnion(*(*(*(a1 + 32) + 8) + 32), v5);
 }
 
-- (CGRect)usedLineRectForRange:(_NSRange)a3
+- (CGRect)usedLineRectForRange:(_NSRange)range
 {
   v16 = 0;
   v17 = &v16;
@@ -671,7 +671,7 @@ void __36__ICLayoutManager_lineRectForRange___block_invoke(uint64_t a1, CGFloat 
   v4 = *(MEMORY[0x277CBF398] + 16);
   v20 = *MEMORY[0x277CBF398];
   v21 = v4;
-  v5 = [(ICLayoutManager *)self glyphRangeForCharacterRange:a3.location actualCharacterRange:a3.length, 0];
+  v5 = [(ICLayoutManager *)self glyphRangeForCharacterRange:range.location actualCharacterRange:range.length, 0];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __40__ICLayoutManager_usedLineRectForRange___block_invoke;
@@ -694,34 +694,34 @@ void __36__ICLayoutManager_lineRectForRange___block_invoke(uint64_t a1, CGFloat 
   return result;
 }
 
-- (void)textController:(id)a3 removedTrackedAttribute:(id)a4
+- (void)textController:(id)controller removedTrackedAttribute:(id)attribute
 {
-  v5 = [a4 paragraph];
-  v10 = [v5 todoTrackingUUID];
+  paragraph = [attribute paragraph];
+  todoTrackingUUID = [paragraph todoTrackingUUID];
 
-  v6 = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
-  v7 = [v6 objectForKeyedSubscript:v10];
+  todoButtonsByTrackingUUID = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
+  v7 = [todoButtonsByTrackingUUID objectForKeyedSubscript:todoTrackingUUID];
 
   [v7 removeFromSuperview];
-  v8 = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
-  [v8 removeObjectForKey:v10];
+  todoButtonsByTrackingUUID2 = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
+  [todoButtonsByTrackingUUID2 removeObjectForKey:todoTrackingUUID];
 
-  v9 = [v10 UUIDString];
-  [(ICLayoutManager *)self clearSupplementalViewForIdentifier:v9];
+  uUIDString = [todoTrackingUUID UUIDString];
+  [(ICLayoutManager *)self clearSupplementalViewForIdentifier:uUIDString];
 }
 
 - (void)contentSizeCategoryDidChange
 {
-  v3 = [(ICLayoutManager *)self textStorage];
+  textStorage = [(ICLayoutManager *)self textStorage];
   v4 = *MEMORY[0x277D74060];
-  v5 = [(ICLayoutManager *)self textStorage];
-  v6 = [v5 length];
+  textStorage2 = [(ICLayoutManager *)self textStorage];
+  v6 = [textStorage2 length];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__ICLayoutManager_contentSizeCategoryDidChange__block_invoke;
   v7[3] = &unk_2781AC5D8;
   v7[4] = self;
-  [v3 enumerateAttribute:v4 inRange:0 options:v6 usingBlock:{0, v7}];
+  [textStorage enumerateAttribute:v4 inRange:0 options:v6 usingBlock:{0, v7}];
 }
 
 void __47__ICLayoutManager_contentSizeCategoryDidChange__block_invoke(uint64_t a1, void *a2)
@@ -753,16 +753,16 @@ void __47__ICLayoutManager_contentSizeCategoryDidChange__block_invoke(uint64_t a
 
 - (void)zoomFactorOrInsetsDidChange
 {
-  v3 = [(ICLayoutManager *)self textStorage];
+  textStorage = [(ICLayoutManager *)self textStorage];
   v4 = *MEMORY[0x277D74060];
-  v5 = [(ICLayoutManager *)self textStorage];
-  v6 = [v5 length];
+  textStorage2 = [(ICLayoutManager *)self textStorage];
+  v6 = [textStorage2 length];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__ICLayoutManager_zoomFactorOrInsetsDidChange__block_invoke;
   v7[3] = &unk_2781AC5D8;
   v7[4] = self;
-  [v3 enumerateAttribute:v4 inRange:0 options:v6 usingBlock:{0, v7}];
+  [textStorage enumerateAttribute:v4 inRange:0 options:v6 usingBlock:{0, v7}];
 }
 
 uint64_t __46__ICLayoutManager_zoomFactorOrInsetsDidChange__block_invoke(uint64_t a1, void *a2)
@@ -782,17 +782,17 @@ uint64_t __46__ICLayoutManager_zoomFactorOrInsetsDidChange__block_invoke(uint64_
   return MEMORY[0x2821F9730]();
 }
 
-- (id)drawTodoViewForListRange:(_NSRange)a3 paragraphStyle:(id)a4 checkmarkHighlightValue:(id)a5 atPoint:(CGPoint)a6
+- (id)drawTodoViewForListRange:(_NSRange)range paragraphStyle:(id)style checkmarkHighlightValue:(id)value atPoint:(CGPoint)point
 {
-  y = a6.y;
-  x = a6.x;
-  length = a3.length;
-  location = a3.location;
-  v12 = a4;
-  v13 = a5;
-  v14 = [(ICLayoutManager *)self trackedToDoParagraphs];
-  v15 = [v12 todoTrackingUUID];
-  v16 = [v14 objectForKeyedSubscript:v15];
+  y = point.y;
+  x = point.x;
+  length = range.length;
+  location = range.location;
+  styleCopy = style;
+  valueCopy = value;
+  trackedToDoParagraphs = [(ICLayoutManager *)self trackedToDoParagraphs];
+  todoTrackingUUID = [styleCopy todoTrackingUUID];
+  v16 = [trackedToDoParagraphs objectForKeyedSubscript:todoTrackingUUID];
 
   if (!v16)
   {
@@ -805,72 +805,72 @@ uint64_t __46__ICLayoutManager_zoomFactorOrInsetsDidChange__block_invoke(uint64_
     goto LABEL_5;
   }
 
-  v17 = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
-  v18 = [v16 paragraph];
-  v19 = [v18 todoTrackingUUID];
-  v20 = [v17 objectForKeyedSubscript:v19];
+  todoButtonsByTrackingUUID = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
+  paragraph = [v16 paragraph];
+  todoTrackingUUID2 = [paragraph todoTrackingUUID];
+  v20 = [todoButtonsByTrackingUUID objectForKeyedSubscript:todoTrackingUUID2];
 
   if (!v20)
   {
 LABEL_5:
     v21 = objc_alloc(MEMORY[0x277D36990]);
-    v22 = [(ICLayoutManager *)self icTextView];
-    v23 = [v22 textDragInteraction];
-    v24 = [v23 delegate];
-    v20 = [v21 initWithDragDelegate:v24];
+    icTextView = [(ICLayoutManager *)self icTextView];
+    textDragInteraction = [icTextView textDragInteraction];
+    delegate = [textDragInteraction delegate];
+    v20 = [v21 initWithDragDelegate:delegate];
 
-    v25 = [(ICLayoutManager *)self overrideTraitCollection];
+    overrideTraitCollection = [(ICLayoutManager *)self overrideTraitCollection];
 
-    if (v25)
+    if (overrideTraitCollection)
     {
       v26 = MEMORY[0x277D75348];
-      v27 = [(ICLayoutManager *)self overrideTraitCollection];
-      v28 = [v26 ic_tintColorWithTraitCollection:v27];
+      overrideTraitCollection2 = [(ICLayoutManager *)self overrideTraitCollection];
+      v28 = [v26 ic_tintColorWithTraitCollection:overrideTraitCollection2];
       [v20 setOverrideTintColor:v28];
     }
 
     [v20 setTrackedParagraph:v16];
-    v29 = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
-    v30 = [v12 todoTrackingUUID];
-    [v29 setObject:v20 forKeyedSubscript:v30];
+    todoButtonsByTrackingUUID2 = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
+    todoTrackingUUID3 = [styleCopy todoTrackingUUID];
+    [todoButtonsByTrackingUUID2 setObject:v20 forKeyedSubscript:todoTrackingUUID3];
 
-    v31 = [(ICLayoutManager *)self activeSupplementalViews];
-    v32 = [v12 todoTrackingUUID];
-    v33 = [v32 UUIDString];
-    [v31 setObject:v20 forKeyedSubscript:v33];
+    activeSupplementalViews = [(ICLayoutManager *)self activeSupplementalViews];
+    todoTrackingUUID4 = [styleCopy todoTrackingUUID];
+    uUIDString = [todoTrackingUUID4 UUIDString];
+    [activeSupplementalViews setObject:v20 forKeyedSubscript:uUIDString];
 
     [v20 addTarget:self action:sel_didPressTodoButton_ forControlEvents:64];
   }
 
-  v34 = [v20 superview];
+  superview = [v20 superview];
 
-  if (!v34)
+  if (!superview)
   {
-    v35 = [(ICLayoutManager *)self icTextView];
-    v36 = [v35 containerViewForAttachments];
-    [v36 addSubview:v20];
+    icTextView2 = [(ICLayoutManager *)self icTextView];
+    containerViewForAttachments = [icTextView2 containerViewForAttachments];
+    [containerViewForAttachments addSubview:v20];
   }
 
-  v37 = [v12 todo];
-  [v20 setDone:objc_msgSend(v37 animated:{"done"), 0}];
+  todo = [styleCopy todo];
+  [v20 setDone:objc_msgSend(todo animated:{"done"), 0}];
 
-  [v13 foregroundAlpha];
+  [valueCopy foregroundAlpha];
   if (v38 == 0.0)
   {
     v38 = 1.0;
   }
 
   [v20 ic_setAlpha:v38];
-  v39 = [v13 highlightColor];
-  [v20 setHighlightColor:v39];
+  highlightColor = [valueCopy highlightColor];
+  [v20 setHighlightColor:highlightColor];
 
   [(ICLayoutManager *)self lineFragmentUsedRectForGlyphAtIndex:[(ICLayoutManager *)self glyphRangeForCharacterRange:location actualCharacterRange:length effectiveRange:0], 0];
   v41 = v40;
   v43 = v42;
   v45 = x + v44;
   v47 = y + v46;
-  v48 = [(ICBaseLayoutManager *)self textContainer];
-  [v48 lineFragmentPadding];
+  textContainer = [(ICBaseLayoutManager *)self textContainer];
+  [textContainer lineFragmentPadding];
   v50 = v49;
   v79.origin.x = v45;
   v79.origin.y = v47;
@@ -891,12 +891,12 @@ LABEL_5:
     [v20 frame];
     v56 = v55;
     v58 = v57;
-    v59 = [v12 layoutWritingDirection];
+    layoutWritingDirection = [styleCopy layoutWritingDirection];
     v60 = v51;
     v61 = v52;
     v62 = width;
     v63 = height;
-    if (v59)
+    if (layoutWritingDirection)
     {
       MaxX = CGRectGetMaxX(*&v60);
       v65 = 4.0;
@@ -927,7 +927,7 @@ LABEL_5:
     v75 = v68;
     v76 = v56;
     v77 = v58;
-    v73 = v12;
+    v73 = styleCopy;
     [v69 ic_performWithoutAnimation:v71];
   }
 
@@ -948,68 +948,68 @@ uint64_t __91__ICLayoutManager_drawTodoViewForListRange_paragraphStyle_checkmark
   return [v2 setFrame:v3 leftToRight:{v4, v5, v6, v7}];
 }
 
-- (void)didPressTodoButton:(id)a3
+- (void)didPressTodoButton:(id)button
 {
-  v6 = a3;
+  buttonCopy = button;
   objc_opt_class();
-  v4 = [(ICLayoutManager *)self icTextView];
+  icTextView = [(ICLayoutManager *)self icTextView];
   v5 = ICDynamicCast();
 
   if (([v5 isDraggingChecklistItem] & 1) == 0)
   {
-    [(ICLayoutManager *)self handleTodoButtonPress:v6];
+    [(ICLayoutManager *)self handleTodoButtonPress:buttonCopy];
   }
 }
 
-- (void)handleTodoButtonPress:(id)a3
+- (void)handleTodoButtonPress:(id)press
 {
-  v4 = a3;
-  v5 = [(ICLayoutManager *)self icTextView];
-  v6 = [v5 delegate];
-  v7 = [(ICBaseLayoutManager *)self textView];
-  v8 = [v6 textViewShouldBeginEditing:v7];
+  pressCopy = press;
+  icTextView = [(ICLayoutManager *)self icTextView];
+  delegate = [icTextView delegate];
+  textView = [(ICBaseLayoutManager *)self textView];
+  v8 = [delegate textViewShouldBeginEditing:textView];
 
-  v9 = [v4 trackedParagraph];
-  v10 = [v9 characterRange];
+  trackedParagraph = [pressCopy trackedParagraph];
+  characterRange = [trackedParagraph characterRange];
   if (!v8)
   {
     goto LABEL_19;
   }
 
-  v12 = v10;
+  v12 = characterRange;
   v13 = v11;
-  v14 = [v4 isDone];
-  v15 = [(ICBaseLayoutManager *)self textController];
-  v16 = [(ICLayoutManager *)self textStorage];
-  v17 = [v15 setDone:v14 ^ 1u range:v12 inTextStorage:{v13, v16}];
+  isDone = [pressCopy isDone];
+  textController = [(ICBaseLayoutManager *)self textController];
+  textStorage = [(ICLayoutManager *)self textStorage];
+  v17 = [textController setDone:isDone ^ 1u range:v12 inTextStorage:{v13, textStorage}];
 
   if (v17)
   {
-    [v4 setDone:v14 ^ 1u];
-    [v4 wasPressed];
-    v18 = [(ICLayoutManager *)self icTextView];
-    v19 = [v18 icDelegate];
+    [pressCopy setDone:isDone ^ 1u];
+    [pressCopy wasPressed];
+    icTextView2 = [(ICLayoutManager *)self icTextView];
+    icDelegate = [icTextView2 icDelegate];
     v20 = objc_opt_respondsToSelector();
 
     if (v20)
     {
-      v21 = [(ICLayoutManager *)self icTextView];
-      v22 = [v21 icDelegate];
-      [v22 didInvokeAnalyticsChecklistActionChecked:v14 ^ 1u];
+      icTextView3 = [(ICLayoutManager *)self icTextView];
+      icDelegate2 = [icTextView3 icDelegate];
+      [icDelegate2 didInvokeAnalyticsChecklistActionChecked:isDone ^ 1u];
     }
   }
 
-  v23 = [MEMORY[0x277D75718] sharedMenuController];
-  v24 = [v23 isMenuVisible];
+  mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+  isMenuVisible = [mEMORY[0x277D75718] isMenuVisible];
 
-  if (v24)
+  if (isMenuVisible)
   {
-    v25 = [MEMORY[0x277D75718] sharedMenuController];
-    [v25 setMenuVisible:0 animated:1];
+    mEMORY[0x277D75718]2 = [MEMORY[0x277D75718] sharedMenuController];
+    [mEMORY[0x277D75718]2 setMenuVisible:0 animated:1];
   }
 
-  v26 = [(ICBaseLayoutManager *)self textView];
-  if ([v26 isFirstResponder])
+  textView2 = [(ICBaseLayoutManager *)self textView];
+  if ([textView2 isFirstResponder])
   {
     v27 = [(ICLayoutManager *)self selectedRangesIntersectWithRange:v12, v13];
 
@@ -1023,39 +1023,39 @@ uint64_t __91__ICLayoutManager_drawTodoViewForListRange_paragraphStyle_checkmark
       v12 = v13 + v12 - 1;
     }
 
-    v26 = [(ICBaseLayoutManager *)self textView];
-    [v26 setSelectedRange:{v12, 0}];
+    textView2 = [(ICBaseLayoutManager *)self textView];
+    [textView2 setSelectedRange:{v12, 0}];
   }
 
 LABEL_13:
   if (v17)
   {
-    v28 = [(ICBaseLayoutManager *)self textView];
-    v29 = [v28 delegate];
+    textView3 = [(ICBaseLayoutManager *)self textView];
+    delegate2 = [textView3 delegate];
     v30 = objc_opt_respondsToSelector();
 
     if (v30)
     {
-      v31 = [(ICBaseLayoutManager *)self textView];
-      v32 = [v31 delegate];
-      v33 = [(ICBaseLayoutManager *)self textView];
-      [v32 textViewDidChange:v33];
+      textView4 = [(ICBaseLayoutManager *)self textView];
+      delegate3 = [textView4 delegate];
+      textView5 = [(ICBaseLayoutManager *)self textView];
+      [delegate3 textViewDidChange:textView5];
     }
 
     objc_opt_class();
-    v34 = [(ICLayoutManager *)self icTextView];
+    icTextView4 = [(ICLayoutManager *)self icTextView];
     v35 = ICDynamicCast();
 
     if (v35)
     {
       objc_initWeak(&location, self);
-      v36 = [(ICBaseLayoutManager *)self textController];
+      textController2 = [(ICBaseLayoutManager *)self textController];
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
       v37[2] = __41__ICLayoutManager_handleTodoButtonPress___block_invoke;
       v37[3] = &unk_2781ACC10;
       objc_copyWeak(&v38, &location);
-      [v36 autoSortChecklistIfNecessaryForTrackedParagraph:v9 textView:v35 analyticsHandler:v37];
+      [textController2 autoSortChecklistIfNecessaryForTrackedParagraph:trackedParagraph textView:v35 analyticsHandler:v37];
 
       dispatchMainAfterDelay();
       objc_destroyWeak(&v38);
@@ -1080,13 +1080,13 @@ void __41__ICLayoutManager_handleTodoButtonPress___block_invoke(uint64_t a1, uin
     v3 = objc_alloc(MEMORY[0x277D35978]);
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [(ICBaseLayoutManager *)self textView];
-    v7 = [v3 initWithSubTrackerName:v5 view:v6];
+    textView = [(ICBaseLayoutManager *)self textView];
+    v7 = [v3 initWithSubTrackerName:v5 view:textView];
     eventReporter = self->_eventReporter;
     self->_eventReporter = v7;
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:self selector:sel_eventReporterLostSession_ name:*MEMORY[0x277D35958] object:self->_eventReporter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_eventReporterLostSession_ name:*MEMORY[0x277D35958] object:self->_eventReporter];
   }
 
   v10 = self->_eventReporter;
@@ -1094,32 +1094,32 @@ void __41__ICLayoutManager_handleTodoButtonPress___block_invoke(uint64_t a1, uin
   return v10;
 }
 
-- (void)eventReporterLostSession:(id)a3
+- (void)eventReporterLostSession:(id)session
 {
   eventReporter = self->_eventReporter;
   self->_eventReporter = 0;
-  v5 = a3;
+  sessionCopy = session;
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v6 = *MEMORY[0x277D35958];
-  v7 = [v5 object];
+  object = [sessionCopy object];
 
-  [v8 removeObserver:self name:v6 object:v7];
+  [defaultCenter removeObserver:self name:v6 object:object];
 }
 
-- (BOOL)selectedRangesIntersectWithRange:(_NSRange)a3
+- (BOOL)selectedRangesIntersectWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(ICBaseLayoutManager *)self textView];
-  v6 = [v5 ic_selectedRanges];
+  textView = [(ICBaseLayoutManager *)self textView];
+  ic_selectedRanges = [textView ic_selectedRanges];
 
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [ic_selectedRanges countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1130,13 +1130,13 @@ void __41__ICLayoutManager_handleTodoButtonPress___block_invoke(uint64_t a1, uin
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(ic_selectedRanges);
         }
 
-        v11 = [*(*(&v17 + 1) + 8 * i) rangeValue];
-        v13.location = v11;
+        rangeValue = [*(*(&v17 + 1) + 8 * i) rangeValue];
+        v13.location = rangeValue;
         v13.length = v12;
-        if (v12 || (v11 >= location ? (v14 = v11 - location >= length) : (v14 = 1), v14))
+        if (v12 || (rangeValue >= location ? (v14 = rangeValue - location >= length) : (v14 = 1), v14))
         {
           v23.location = location;
           v23.length = length;
@@ -1150,7 +1150,7 @@ void __41__ICLayoutManager_handleTodoButtonPress___block_invoke(uint64_t a1, uin
         goto LABEL_17;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [ic_selectedRanges countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -1173,8 +1173,8 @@ LABEL_17:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  todoButtonsByTrackingUUID = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
+  v4 = [todoButtonsByTrackingUUID countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1186,34 +1186,34 @@ LABEL_17:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(todoButtonsByTrackingUUID);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
-        v9 = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        todoButtonsByTrackingUUID2 = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
+        v10 = [todoButtonsByTrackingUUID2 objectForKeyedSubscript:v8];
 
         [v10 removeFromSuperview];
-        v11 = [v8 UUIDString];
-        [(ICLayoutManager *)self clearSupplementalViewForIdentifier:v11];
+        uUIDString = [v8 UUIDString];
+        [(ICLayoutManager *)self clearSupplementalViewForIdentifier:uUIDString];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [todoButtonsByTrackingUUID countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
   }
 
-  v12 = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
-  [v12 removeAllObjects];
+  todoButtonsByTrackingUUID3 = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
+  [todoButtonsByTrackingUUID3 removeAllObjects];
 }
 
-- (void)prepareForScreenshotWithVisibleRange:(_NSRange)a3
+- (void)prepareForScreenshotWithVisibleRange:(_NSRange)range
 {
-  [(ICLayoutManager *)self setShouldManuallyRenderSeparateSubviews:1, a3.length];
+  [(ICLayoutManager *)self setShouldManuallyRenderSeparateSubviews:1, range.length];
 
   [(ICLayoutManager *)self hideVisibleTodoButtons];
 }
@@ -1235,8 +1235,8 @@ LABEL_17:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  todoButtonsByTrackingUUID = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
+  v5 = [todoButtonsByTrackingUUID countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1248,12 +1248,12 @@ LABEL_17:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(todoButtonsByTrackingUUID);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
-        v10 = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        todoButtonsByTrackingUUID2 = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
+        v11 = [todoButtonsByTrackingUUID2 objectForKeyedSubscript:v9];
 
         if (([v11 isHidden] & 1) == 0)
         {
@@ -1265,7 +1265,7 @@ LABEL_17:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [todoButtonsByTrackingUUID countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -1281,8 +1281,8 @@ LABEL_17:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(ICLayoutManager *)self hiddenTodosForManualLayout];
-  v4 = [v3 copy];
+  hiddenTodosForManualLayout = [(ICLayoutManager *)self hiddenTodosForManualLayout];
+  v4 = [hiddenTodosForManualLayout copy];
 
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
@@ -1312,32 +1312,32 @@ LABEL_17:
   [(ICLayoutManager *)self setHiddenTodosForManualLayout:0];
 }
 
-- (void)layoutViewForInlineTextAttachment:(id)a3 atCharacterIndex:(unint64_t)a4
+- (void)layoutViewForInlineTextAttachment:(id)attachment atCharacterIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(ICLayoutManager *)self inlineAttachmentLocationCache];
-  v8 = [v6 viewIdentifier];
-  [v7 setLocation:a4 forTextAttachmentOfViewIdentifier:v8];
+  attachmentCopy = attachment;
+  inlineAttachmentLocationCache = [(ICLayoutManager *)self inlineAttachmentLocationCache];
+  viewIdentifier = [attachmentCopy viewIdentifier];
+  [inlineAttachmentLocationCache setLocation:index forTextAttachmentOfViewIdentifier:viewIdentifier];
 
   objc_opt_class();
-  v9 = [(ICLayoutManager *)self supplementalViewControllers];
-  v10 = [v6 viewIdentifier];
+  supplementalViewControllers = [(ICLayoutManager *)self supplementalViewControllers];
+  viewIdentifier2 = [attachmentCopy viewIdentifier];
 
-  v11 = [v9 objectForKeyedSubscript:v10];
+  v11 = [supplementalViewControllers objectForKeyedSubscript:viewIdentifier2];
   v13 = ICDynamicCast();
 
   v12 = v13;
   if (v13)
   {
-    [v13 layoutWithStyleAttributesOfCharacterIndex:a4];
+    [v13 layoutWithStyleAttributesOfCharacterIndex:index];
     v12 = v13;
   }
 }
 
-- (void)manuallyRenderSubviewsForCharacterRange:(_NSRange)a3
+- (void)manuallyRenderSubviewsForCharacterRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v24 = *MEMORY[0x277D85DE8];
   CurrentContext = UIGraphicsGetCurrentContext();
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -1346,7 +1346,7 @@ LABEL_17:
   aBlock[3] = &__block_descriptor_40_e22_v24__0__UIView_8B16B20l;
   aBlock[4] = CurrentContext;
   v7 = _Block_copy(aBlock);
-  v8 = [(ICLayoutManager *)self textStorage];
+  textStorage = [(ICLayoutManager *)self textStorage];
   v9 = *MEMORY[0x277D74060];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -1355,7 +1355,7 @@ LABEL_17:
   v20[4] = self;
   v10 = v7;
   v21 = v10;
-  [v8 enumerateAttribute:v9 inRange:location options:length usingBlock:{0, v20}];
+  [textStorage enumerateAttribute:v9 inRange:location options:length usingBlock:{0, v20}];
 
   v18 = 0u;
   v19 = 0u;
@@ -1514,21 +1514,21 @@ LABEL_14:
 LABEL_15:
 }
 
-- (id)todoButtonsForCharacterRange:(_NSRange)a3
+- (id)todoButtonsForCharacterRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [(ICLayoutManager *)self textStorage];
+  length = range.length;
+  location = range.location;
+  array = [MEMORY[0x277CBEB18] array];
+  textStorage = [(ICLayoutManager *)self textStorage];
   v8 = *MEMORY[0x277D35DA8];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __48__ICLayoutManager_todoButtonsForCharacterRange___block_invoke;
   v15 = &unk_2781ACAF8;
-  v16 = self;
-  v17 = v6;
-  v9 = v6;
-  [v7 ic_enumerateUnclampedAttribute:v8 inRange:location options:length usingBlock:{0, &v12}];
+  selfCopy = self;
+  v17 = array;
+  v9 = array;
+  [textStorage ic_enumerateUnclampedAttribute:v8 inRange:location options:length usingBlock:{0, &v12}];
 
   v10 = [v9 copy];
 
@@ -1570,31 +1570,31 @@ void __48__ICLayoutManager_todoButtonsForCharacterRange___block_invoke(uint64_t 
   }
 }
 
-- (id)trackedTodoParagraphAtIndexIfExists:(unint64_t)a3
+- (id)trackedTodoParagraphAtIndexIfExists:(unint64_t)exists
 {
-  v4 = [(ICLayoutManager *)self paragraphStyleForCharacterIndex:a3];
-  v5 = [(ICLayoutManager *)self trackedToDoParagraphs];
-  v6 = [v4 todoTrackingUUID];
-  v7 = [v5 ic_objectForNonNilKey:v6];
+  v4 = [(ICLayoutManager *)self paragraphStyleForCharacterIndex:exists];
+  trackedToDoParagraphs = [(ICLayoutManager *)self trackedToDoParagraphs];
+  todoTrackingUUID = [v4 todoTrackingUUID];
+  v7 = [trackedToDoParagraphs ic_objectForNonNilKey:todoTrackingUUID];
 
   return v7;
 }
 
-- (id)todoButtonForTrackedParagraphIfExists:(id)a3
+- (id)todoButtonForTrackedParagraphIfExists:(id)exists
 {
-  v4 = [a3 paragraph];
-  v5 = [v4 todoTrackingUUID];
+  paragraph = [exists paragraph];
+  todoTrackingUUID = [paragraph todoTrackingUUID];
 
-  v6 = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
-  v7 = [v6 ic_objectForNonNilKey:v5];
+  todoButtonsByTrackingUUID = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
+  v7 = [todoButtonsByTrackingUUID ic_objectForNonNilKey:todoTrackingUUID];
 
   return v7;
 }
 
-- (unint64_t)lineCountForCharacterRange:(_NSRange)a3
+- (unint64_t)lineCountForCharacterRange:(_NSRange)range
 {
-  v3 = a3.location + a3.length;
-  if (__CFADD__(a3.location, a3.length))
+  v3 = range.location + range.length;
+  if (__CFADD__(range.location, range.length))
   {
     return 0;
   }
@@ -1610,16 +1610,16 @@ void __48__ICLayoutManager_todoButtonsForCharacterRange___block_invoke(uint64_t 
   return v5;
 }
 
-- (void)cleanupStaleTodoButtonsAndUpdateSupplementalViewsForDictionary:(id)a3
+- (void)cleanupStaleTodoButtonsAndUpdateSupplementalViewsForDictionary:(id)dictionary
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [dictionaryCopy allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1630,25 +1630,25 @@ void __48__ICLayoutManager_todoButtonsForCharacterRange___block_invoke(uint64_t 
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v3 objectForKey:v9];
+        v10 = [dictionaryCopy objectForKey:v9];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 viewIdentifier];
+          viewIdentifier = [v10 viewIdentifier];
 
-          if (!v11)
+          if (!viewIdentifier)
           {
             [v10 removeFromSuperview];
-            [v3 removeObjectForKey:v9];
+            [dictionaryCopy removeObjectForKey:v9];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -1658,16 +1658,16 @@ void __48__ICLayoutManager_todoButtonsForCharacterRange___block_invoke(uint64_t 
 - (void)cleanupStaleTodoButtons
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(ICLayoutManager *)self activeSupplementalViews];
-  [(ICLayoutManager *)self cleanupStaleTodoButtonsAndUpdateSupplementalViewsForDictionary:v3];
+  activeSupplementalViews = [(ICLayoutManager *)self activeSupplementalViews];
+  [(ICLayoutManager *)self cleanupStaleTodoButtonsAndUpdateSupplementalViewsForDictionary:activeSupplementalViews];
 
-  v4 = [(ICLayoutManager *)self hiddenSupplementalViews];
-  [(ICLayoutManager *)self cleanupStaleTodoButtonsAndUpdateSupplementalViewsForDictionary:v4];
+  hiddenSupplementalViews = [(ICLayoutManager *)self hiddenSupplementalViews];
+  [(ICLayoutManager *)self cleanupStaleTodoButtonsAndUpdateSupplementalViewsForDictionary:hiddenSupplementalViews];
 
-  v5 = [(ICLayoutManager *)self icTextView];
-  v6 = [v5 containerViewForAttachments];
-  v7 = [v6 subviews];
-  v8 = [v7 copy];
+  icTextView = [(ICLayoutManager *)self icTextView];
+  containerViewForAttachments = [icTextView containerViewForAttachments];
+  subviews = [containerViewForAttachments subviews];
+  v8 = [subviews copy];
 
   v21 = 0u;
   v22 = 0u;
@@ -1692,11 +1692,11 @@ void __48__ICLayoutManager_todoButtonsForCharacterRange___block_invoke(uint64_t 
         v14 = *(*(&v19 + 1) + 8 * v13);
         objc_opt_class();
         v15 = ICDynamicCast();
-        v16 = [v15 viewIdentifier];
-        v17 = v16;
+        viewIdentifier = [v15 viewIdentifier];
+        v17 = viewIdentifier;
         if (v15)
         {
-          v18 = v16 == 0;
+          v18 = viewIdentifier == 0;
         }
 
         else
@@ -1720,27 +1720,27 @@ void __48__ICLayoutManager_todoButtonsForCharacterRange___block_invoke(uint64_t 
   }
 }
 
-- (void)updateSubviewsForCharacterRange:(_NSRange)a3 atPoint:(CGPoint)a4
+- (void)updateSubviewsForCharacterRange:(_NSRange)range atPoint:(CGPoint)point
 {
-  length = a3.length;
-  location = a3.location;
-  [(ICLayoutManager *)self setCachedOrigin:a4.x, a4.y];
+  length = range.length;
+  location = range.location;
+  [(ICLayoutManager *)self setCachedOrigin:point.x, point.y];
 
   [(ICLayoutManager *)self updateSubviewsForCharacterRange:location, length];
 }
 
-- (void)updateSubviewsForCharacterRange:(_NSRange)a3
+- (void)updateSubviewsForCharacterRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(ICLayoutManager *)self textStorage];
+  length = range.length;
+  location = range.location;
+  textStorage = [(ICLayoutManager *)self textStorage];
   v7 = *MEMORY[0x277D35DA8];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__ICLayoutManager_updateSubviewsForCharacterRange___block_invoke;
   v8[3] = &unk_2781ACC80;
   v8[4] = self;
-  [v6 ic_enumerateUnclampedAttribute:v7 inRange:location options:length usingBlock:{0, v8}];
+  [textStorage ic_enumerateUnclampedAttribute:v7 inRange:location options:length usingBlock:{0, v8}];
 }
 
 void __51__ICLayoutManager_updateSubviewsForCharacterRange___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -1763,19 +1763,19 @@ void __51__ICLayoutManager_updateSubviewsForCharacterRange___block_invoke(uint64
 
 - (void)clearAllSupplementalViews
 {
-  v1 = [a1 supplementalViewControllers];
-  v2 = [v1 allKeys];
+  supplementalViewControllers = [self supplementalViewControllers];
+  allKeys = [supplementalViewControllers allKeys];
   OUTLINED_FUNCTION_1_0(&dword_2151A1000, v3, v4, "Cleaning up remaining view controllers after clearing supplemental views: %@", v5, v6, v7, v8, 2u);
 }
 
 - (void)clearAllTodoSupplementalViews
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(ICLayoutManager *)self activeSupplementalViews];
-  v4 = [v3 allValues];
-  v5 = [(ICLayoutManager *)self hiddenSupplementalViews];
-  v6 = [v5 allValues];
-  v7 = [v4 arrayByAddingObjectsFromArray:v6];
+  activeSupplementalViews = [(ICLayoutManager *)self activeSupplementalViews];
+  allValues = [activeSupplementalViews allValues];
+  hiddenSupplementalViews = [(ICLayoutManager *)self hiddenSupplementalViews];
+  allValues2 = [hiddenSupplementalViews allValues];
+  v7 = [allValues arrayByAddingObjectsFromArray:allValues2];
 
   v17 = 0u;
   v18 = 0u;
@@ -1814,50 +1814,50 @@ void __51__ICLayoutManager_updateSubviewsForCharacterRange___block_invoke(uint64
     while (v10);
   }
 
-  v14 = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
-  [v14 removeAllObjects];
+  todoButtonsByTrackingUUID = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
+  [todoButtonsByTrackingUUID removeAllObjects];
 }
 
-- (void)textStorageDidEndEditingNotification:(id)a3
+- (void)textStorageDidEndEditingNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [(ICLayoutManager *)self textStorage];
+  object = [notification object];
+  textStorage = [(ICLayoutManager *)self textStorage];
 
-  if (v4 == v5)
+  if (object == textStorage)
   {
 
     [(ICLayoutManager *)self clearRemovedAttachmentsIfNeeded];
   }
 }
 
-- (void)removeClearingControllerForView:(id)a3
+- (void)removeClearingControllerForView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 viewIdentifier];
-  if (!v5)
+  viewCopy = view;
+  viewIdentifier = [viewCopy viewIdentifier];
+  if (!viewIdentifier)
   {
     v6 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      [ICLayoutManager removeClearingControllerForView:v4];
+      [ICLayoutManager removeClearingControllerForView:viewCopy];
     }
   }
 
-  [(ICLayoutManager *)self removeClearingControllerForView:v4 viewIdentifier:v5];
+  [(ICLayoutManager *)self removeClearingControllerForView:viewCopy viewIdentifier:viewIdentifier];
 }
 
-- (void)removeClearingControllerForView:(id)a3 viewIdentifier:(id)a4
+- (void)removeClearingControllerForView:(id)view viewIdentifier:(id)identifier
 {
-  v18 = a3;
-  v6 = a4;
-  if (v6)
+  viewCopy = view;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v7 = [(ICLayoutManager *)self supplementalViewProviders];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    supplementalViewProviders = [(ICLayoutManager *)self supplementalViewProviders];
+    v8 = [supplementalViewProviders objectForKeyedSubscript:identifierCopy];
 
     objc_opt_class();
-    v9 = [(ICLayoutManager *)self supplementalViewControllers];
-    v10 = [v9 objectForKeyedSubscript:v6];
+    supplementalViewControllers = [(ICLayoutManager *)self supplementalViewControllers];
+    v10 = [supplementalViewControllers objectForKeyedSubscript:identifierCopy];
     v11 = ICDynamicCast();
   }
 
@@ -1868,13 +1868,13 @@ void __51__ICLayoutManager_updateSubviewsForCharacterRange___block_invoke(uint64
   }
 
   [v11 willMoveToParentViewController:0];
-  v12 = [v8 textAttachment];
+  textAttachment = [v8 textAttachment];
 
-  if (v12)
+  if (textAttachment)
   {
-    v13 = [v8 textAttachment];
-    v14 = [v18 superview];
-    [v13 detachView:v18 fromParentView:v14];
+    textAttachment2 = [v8 textAttachment];
+    superview = [viewCopy superview];
+    [textAttachment2 detachView:viewCopy fromParentView:superview];
 
     if (!v11)
     {
@@ -1884,22 +1884,22 @@ void __51__ICLayoutManager_updateSubviewsForCharacterRange___block_invoke(uint64
     goto LABEL_6;
   }
 
-  [v18 removeFromSuperview];
+  [viewCopy removeFromSuperview];
   if (v11)
   {
 LABEL_6:
-    v15 = [(ICLayoutManager *)self supplementalViewControllers];
-    [v15 removeObjectForKey:v6];
+    supplementalViewControllers2 = [(ICLayoutManager *)self supplementalViewControllers];
+    [supplementalViewControllers2 removeObjectForKey:identifierCopy];
   }
 
 LABEL_7:
-  if (v6)
+  if (identifierCopy)
   {
-    v16 = [(ICLayoutManager *)self supplementalViewProviders];
-    [v16 removeObjectForKey:v6];
+    supplementalViewProviders2 = [(ICLayoutManager *)self supplementalViewProviders];
+    [supplementalViewProviders2 removeObjectForKey:identifierCopy];
 
-    v17 = [(ICLayoutManager *)self inlineAttachmentLocationCache];
-    [v17 forgetLocationForViewIdentifier:v6];
+    inlineAttachmentLocationCache = [(ICLayoutManager *)self inlineAttachmentLocationCache];
+    [inlineAttachmentLocationCache forgetLocationForViewIdentifier:identifierCopy];
   }
 
   [v11 removeFromParentViewController];
@@ -1922,26 +1922,26 @@ LABEL_7:
 {
   v41 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(ICLayoutManager *)self textStorage];
+  textStorage = [(ICLayoutManager *)self textStorage];
   v5 = *MEMORY[0x277D74060];
-  v6 = [(ICLayoutManager *)self textStorage];
-  v7 = [v6 length];
+  textStorage2 = [(ICLayoutManager *)self textStorage];
+  v7 = [textStorage2 length];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __43__ICLayoutManager__clearRemovedAttachments__block_invoke;
   v36[3] = &unk_2781AC5D8;
   v8 = v3;
   v37 = v8;
-  [v4 enumerateAttribute:v5 inRange:0 options:v7 usingBlock:{0, v36}];
+  [textStorage enumerateAttribute:v5 inRange:0 options:v7 usingBlock:{0, v36}];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v9 = [(ICLayoutManager *)self hiddenSupplementalViews];
-  v39[0] = v9;
-  v10 = [(ICLayoutManager *)self activeSupplementalViews];
-  v39[1] = v10;
+  hiddenSupplementalViews = [(ICLayoutManager *)self hiddenSupplementalViews];
+  v39[0] = hiddenSupplementalViews;
+  activeSupplementalViews = [(ICLayoutManager *)self activeSupplementalViews];
+  v39[1] = activeSupplementalViews;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:2];
 
   obj = v11;
@@ -1965,8 +1965,8 @@ LABEL_7:
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v14 = [v13 allKeys];
-        v15 = [v14 copy];
+        allKeys = [v13 allKeys];
+        v15 = [allKeys copy];
 
         v16 = [v15 countByEnumeratingWithState:&v28 objects:v38 count:16];
         if (v16)
@@ -1991,8 +1991,8 @@ LABEL_7:
                 {
                   [(ICLayoutManager *)self removeClearingControllerForView:v21 viewIdentifier:v20];
                   [v13 removeObjectForKey:v20];
-                  v23 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
-                  [v23 removeObjectForKey:v20];
+                  delayedScrollOutViewDictionary = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
+                  [delayedScrollOutViewDictionary removeObjectForKey:v20];
                 }
               }
             }
@@ -2031,56 +2031,56 @@ void __43__ICLayoutManager__clearRemovedAttachments__block_invoke(uint64_t a1, v
   [*(a1 + 32) ic_addNonNilObject:v3];
 }
 
-- (void)setNeedsClearRemovedAttachments:(BOOL)a3
+- (void)setNeedsClearRemovedAttachments:(BOOL)attachments
 {
-  v3 = a3;
-  if (a3)
+  attachmentsCopy = attachments;
+  if (attachments)
   {
     objc_opt_class();
-    v5 = [(ICLayoutManager *)self textStorage];
+    textStorage = [(ICLayoutManager *)self textStorage];
     v6 = ICDynamicCast();
-    v7 = [v6 isEditing];
+    isEditing = [v6 isEditing];
 
-    if ((v7 & 1) == 0)
+    if ((isEditing & 1) == 0)
     {
       [(ICLayoutManager *)self _clearRemovedAttachments];
-      v3 = 0;
+      attachmentsCopy = 0;
     }
   }
 
-  self->_needsClearRemovedAttachments = v3;
+  self->_needsClearRemovedAttachments = attachmentsCopy;
 }
 
-- (void)ensureViewIsAddedForAttachment:(id)a3 inCharacterRange:(_NSRange)a4
+- (void)ensureViewIsAddedForAttachment:(id)attachment inCharacterRange:(_NSRange)range
 {
-  v12 = a3;
+  attachmentCopy = attachment;
   v5 = [(ICLayoutManager *)self viewForTextAttachment:?];
   objc_opt_class();
   v6 = ICDynamicCast();
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 attachment];
-    v9 = [v12 attachment];
+    attachment = [v6 attachment];
+    attachment2 = [attachmentCopy attachment];
 
-    if (v8 != v9)
+    if (attachment != attachment2)
     {
-      [(ICLayoutManager *)self clearViewForTextAttachment:v12];
-      v10 = [(ICLayoutManager *)self viewForTextAttachment:v12];
+      [(ICLayoutManager *)self clearViewForTextAttachment:attachmentCopy];
+      v10 = [(ICLayoutManager *)self viewForTextAttachment:attachmentCopy];
 
       v5 = v10;
     }
   }
 
-  v11 = [v12 viewIdentifier];
-  [(ICLayoutManager *)self unhideSupplementalView:v5 forIdentifier:v11];
+  viewIdentifier = [attachmentCopy viewIdentifier];
+  [(ICLayoutManager *)self unhideSupplementalView:v5 forIdentifier:viewIdentifier];
 }
 
-- (_NSRange)rangeForAttachment:(id)a3 withTextAttachment:(id *)a4
+- (_NSRange)rangeForAttachment:(id)attachment withTextAttachment:(id *)textAttachment
 {
-  v6 = a3;
-  v7 = [(ICLayoutManager *)self textStorage];
-  v8 = [v7 ic_rangeForAttachment:v6 withTextAttachment:a4];
+  attachmentCopy = attachment;
+  textStorage = [(ICLayoutManager *)self textStorage];
+  v8 = [textStorage ic_rangeForAttachment:attachmentCopy withTextAttachment:textAttachment];
   v10 = v9;
 
   v11 = v8;
@@ -2090,11 +2090,11 @@ void __43__ICLayoutManager__clearRemovedAttachments__block_invoke(uint64_t a1, v
   return result;
 }
 
-- (_NSRange)rangeForBaseAttachment:(id)a3 withTextAttachment:(id *)a4
+- (_NSRange)rangeForBaseAttachment:(id)attachment withTextAttachment:(id *)textAttachment
 {
-  v6 = a3;
-  v7 = [(ICLayoutManager *)self textStorage];
-  v8 = [v7 ic_rangeForBaseAttachment:v6 withTextAttachment:a4];
+  attachmentCopy = attachment;
+  textStorage = [(ICLayoutManager *)self textStorage];
+  v8 = [textStorage ic_rangeForBaseAttachment:attachmentCopy withTextAttachment:textAttachment];
   v10 = v9;
 
   v11 = v8;
@@ -2104,21 +2104,21 @@ void __43__ICLayoutManager__clearRemovedAttachments__block_invoke(uint64_t a1, v
   return result;
 }
 
-- (void)enumerateAttachmentViewsInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateAttachmentViewsInRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [(ICLayoutManager *)self textStorage];
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
+  textStorage = [(ICLayoutManager *)self textStorage];
   v9 = *MEMORY[0x277D74060];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__ICLayoutManager_enumerateAttachmentViewsInRange_usingBlock___block_invoke;
   v11[3] = &unk_2781ACCA8;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
-  [v8 enumerateAttribute:v9 inRange:location options:length usingBlock:{0, v11}];
+  v12 = blockCopy;
+  v10 = blockCopy;
+  [textStorage enumerateAttribute:v9 inRange:location options:length usingBlock:{0, v11}];
 }
 
 void __62__ICLayoutManager_enumerateAttachmentViewsInRange_usingBlock___block_invoke(uint64_t a1, void *a2)
@@ -2143,21 +2143,21 @@ void __62__ICLayoutManager_enumerateAttachmentViewsInRange_usingBlock___block_in
   }
 }
 
-- (id)viewProviderForTextAttachment:(id)a3 parentView:(id)a4 characterIndex:(unint64_t)a5
+- (id)viewProviderForTextAttachment:(id)attachment parentView:(id)view characterIndex:(unint64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 viewIdentifier];
-  v11 = [(ICLayoutManager *)self supplementalViewProviders];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  attachmentCopy = attachment;
+  viewCopy = view;
+  viewIdentifier = [attachmentCopy viewIdentifier];
+  supplementalViewProviders = [(ICLayoutManager *)self supplementalViewProviders];
+  v12 = [supplementalViewProviders objectForKeyedSubscript:viewIdentifier];
 
   if (!v12)
   {
     v13 = MEMORY[0x277D74270];
-    v14 = [v8 fileType];
-    v15 = [v13 textAttachmentViewProviderClassForFileType:v14];
+    fileType = [attachmentCopy fileType];
+    v15 = [v13 textAttachmentViewProviderClassForFileType:fileType];
 
-    if ((([v15 isSubclassOfClass:objc_opt_class()] & 1) == 0 && v15 || objc_msgSend(v8, "isUnsupported") && (v17 = MEMORY[0x277D35F70], objc_msgSend(v8, "fileType"), v18 = objc_claimAutoreleasedReturnValue(), LODWORD(v17) = objc_msgSend(v17, "typeUTIIsInlineAttachment:", v18), v18, v17) && (v15 = objc_msgSend(MEMORY[0x277D74270], "textAttachmentViewProviderClassForFileType:", *MEMORY[0x277D35D48])) != 0) && !objc_msgSend(v8, "isUnsupported"))
+    if ((([v15 isSubclassOfClass:objc_opt_class()] & 1) == 0 && v15 || objc_msgSend(attachmentCopy, "isUnsupported") && (v17 = MEMORY[0x277D35F70], objc_msgSend(attachmentCopy, "fileType"), v18 = objc_claimAutoreleasedReturnValue(), LODWORD(v17) = objc_msgSend(v17, "typeUTIIsInlineAttachment:", v18), v18, v17) && (v15 = objc_msgSend(MEMORY[0x277D74270], "textAttachmentViewProviderClassForFileType:", *MEMORY[0x277D35D48])) != 0) && !objc_msgSend(attachmentCopy, "isUnsupported"))
     {
       v16 = 0;
     }
@@ -2168,83 +2168,83 @@ void __62__ICLayoutManager_enumerateAttachmentViewsInRange_usingBlock___block_in
       v16 = 1;
     }
 
-    v12 = [[v15 alloc] initWithTextAttachment:v8 parentView:v9 characterIndex:a5 layoutManager:self];
-    if (v16 && v10)
+    v12 = [[v15 alloc] initWithTextAttachment:attachmentCopy parentView:viewCopy characterIndex:index layoutManager:self];
+    if (v16 && viewIdentifier)
     {
-      v19 = [(ICLayoutManager *)self supplementalViewProviders];
-      [v19 setObject:v12 forKeyedSubscript:v10];
+      supplementalViewProviders2 = [(ICLayoutManager *)self supplementalViewProviders];
+      [supplementalViewProviders2 setObject:v12 forKeyedSubscript:viewIdentifier];
     }
   }
 
   return v12;
 }
 
-- (void)willPlaceView:(id)a3 forTextAttachment:(id)a4
+- (void)willPlaceView:(id)view forTextAttachment:(id)attachment
 {
-  v9 = a3;
-  v6 = a4;
+  viewCopy = view;
+  attachmentCopy = attachment;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v9;
-    v8 = [(ICBaseLayoutManager *)self textContainer];
-    [v6 attachmentSizeForTextContainer:v8];
+    v7 = viewCopy;
+    textContainer = [(ICBaseLayoutManager *)self textContainer];
+    [attachmentCopy attachmentSizeForTextContainer:textContainer];
     [v7 setAttachmentContentSize:?];
   }
 }
 
-- (void)didAddViewForTextAttachment:(id)a3
+- (void)didAddViewForTextAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [(ICLayoutManager *)self icTextView];
+  attachmentCopy = attachment;
+  icTextView = [(ICLayoutManager *)self icTextView];
 
-  if (!v5)
+  if (!icTextView)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((self.icTextView) != nil)" functionName:"-[ICLayoutManager didAddViewForTextAttachment:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "self.icTextView"}];
   }
 
-  v6 = [(ICLayoutManager *)self supplementalViewControllers];
-  v7 = [v4 viewIdentifier];
+  supplementalViewControllers = [(ICLayoutManager *)self supplementalViewControllers];
+  viewIdentifier = [attachmentCopy viewIdentifier];
 
-  v16 = [v6 objectForKeyedSubscript:v7];
+  v16 = [supplementalViewControllers objectForKeyedSubscript:viewIdentifier];
 
   if (v16)
   {
-    v8 = [(ICLayoutManager *)self editingTextView];
-    v9 = [v8 editorController];
-    v10 = [v9 textViewController];
-    [v10 addChildViewController:v16];
+    editingTextView = [(ICLayoutManager *)self editingTextView];
+    editorController = [editingTextView editorController];
+    textViewController = [editorController textViewController];
+    [textViewController addChildViewController:v16];
 
-    v11 = [(ICLayoutManager *)self editingTextView];
-    v12 = [v11 editorController];
-    v13 = [v12 textViewController];
-    [v16 didMoveToParentViewController:v13];
+    editingTextView2 = [(ICLayoutManager *)self editingTextView];
+    editorController2 = [editingTextView2 editorController];
+    textViewController2 = [editorController2 textViewController];
+    [v16 didMoveToParentViewController:textViewController2];
 
-    v14 = [(ICLayoutManager *)self highlightPatternRegexFinder];
+    highlightPatternRegexFinder = [(ICLayoutManager *)self highlightPatternRegexFinder];
     objc_opt_class();
     v15 = ICDynamicCast();
-    [v15 setHighlightPatternRegexFinder:v14];
+    [v15 setHighlightPatternRegexFinder:highlightPatternRegexFinder];
   }
 }
 
-- (id)paragraphStyleForCharacterIndex:(unint64_t)a3
+- (id)paragraphStyleForCharacterIndex:(unint64_t)index
 {
-  v4 = [(ICLayoutManager *)self textStorage];
-  v5 = [v4 attribute:*MEMORY[0x277D35DA8] atIndex:a3 effectiveRange:0];
+  textStorage = [(ICLayoutManager *)self textStorage];
+  v5 = [textStorage attribute:*MEMORY[0x277D35DA8] atIndex:index effectiveRange:0];
 
   return v5;
 }
 
-- (void)receivedMemoryWarning:(id)a3
+- (void)receivedMemoryWarning:(id)warning
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(ICLayoutManager *)self delayedScrollOutViewDictionary:a3];
-  v5 = [v4 allKeys];
-  v6 = [v5 copy];
+  v4 = [(ICLayoutManager *)self delayedScrollOutViewDictionary:warning];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys copy];
 
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
@@ -2266,8 +2266,8 @@ void __62__ICLayoutManager_enumerateAttachmentViewsInRange_usingBlock___block_in
         v12 = [(ICLayoutManager *)self supplementalViewForIdentifier:v11 allowHiddenViews:1];
         v13 = ICDynamicCast();
 
-        v14 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
-        [v14 removeObjectForKey:v11];
+        delayedScrollOutViewDictionary = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
+        [delayedScrollOutViewDictionary removeObjectForKey:v11];
 
         [v13 didScrollOutOfVisibleRange];
         ++v10;
@@ -2280,11 +2280,11 @@ void __62__ICLayoutManager_enumerateAttachmentViewsInRange_usingBlock___block_in
     while (v8);
   }
 
-  v15 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
-  [v15 removeAllObjects];
+  delayedScrollOutViewDictionary2 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
+  [delayedScrollOutViewDictionary2 removeAllObjects];
 
-  v16 = [(ICLayoutManager *)self updateHiddenViewsSelectorDelayer];
-  [v16 cancelPreviousFireRequests];
+  updateHiddenViewsSelectorDelayer = [(ICLayoutManager *)self updateHiddenViewsSelectorDelayer];
+  [updateHiddenViewsSelectorDelayer cancelPreviousFireRequests];
 }
 
 - (void)updateHiddenSupplementalViews
@@ -2294,9 +2294,9 @@ void __62__ICLayoutManager_enumerateAttachmentViewsInRange_usingBlock___block_in
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
-  v4 = [v3 allKeys];
-  v5 = [v4 copy];
+  delayedScrollOutViewDictionary = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
+  allKeys = [delayedScrollOutViewDictionary allKeys];
+  v5 = [allKeys copy];
 
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
@@ -2314,8 +2314,8 @@ void __62__ICLayoutManager_enumerateAttachmentViewsInRange_usingBlock___block_in
         }
 
         v10 = *(*(&v21 + 1) + 8 * v9);
-        v11 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        delayedScrollOutViewDictionary2 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
+        v12 = [delayedScrollOutViewDictionary2 objectForKeyedSubscript:v10];
 
         [v12 timeIntervalSinceNow];
         if (v13 <= -0.1)
@@ -2324,8 +2324,8 @@ void __62__ICLayoutManager_enumerateAttachmentViewsInRange_usingBlock___block_in
           v14 = [(ICLayoutManager *)self supplementalViewForIdentifier:v10 allowHiddenViews:1];
           v15 = ICDynamicCast();
 
-          v16 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
-          [v16 removeObjectForKey:v10];
+          delayedScrollOutViewDictionary3 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
+          [delayedScrollOutViewDictionary3 removeObjectForKey:v10];
 
           [v15 didScrollOutOfVisibleRange];
         }
@@ -2340,27 +2340,27 @@ void __62__ICLayoutManager_enumerateAttachmentViewsInRange_usingBlock___block_in
     while (v7);
   }
 
-  v17 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
-  v18 = [v17 count];
+  delayedScrollOutViewDictionary4 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
+  v18 = [delayedScrollOutViewDictionary4 count];
 
-  v19 = [(ICLayoutManager *)self updateHiddenViewsSelectorDelayer];
-  v20 = v19;
+  updateHiddenViewsSelectorDelayer = [(ICLayoutManager *)self updateHiddenViewsSelectorDelayer];
+  v20 = updateHiddenViewsSelectorDelayer;
   if (v18)
   {
-    [v19 requestFire];
+    [updateHiddenViewsSelectorDelayer requestFire];
   }
 
   else
   {
-    [v19 cancelPreviousFireRequests];
+    [updateHiddenViewsSelectorDelayer cancelPreviousFireRequests];
   }
 }
 
-- (BOOL)unhideSupplementalView:(id)a3 forIdentifier:(id)a4
+- (BOOL)unhideSupplementalView:(id)view forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  viewCopy = view;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v19 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -2372,14 +2372,14 @@ void __62__ICLayoutManager_enumerateAttachmentViewsInRange_usingBlock___block_in
     goto LABEL_9;
   }
 
-  v8 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
-  v9 = [v8 objectForKey:v7];
+  delayedScrollOutViewDictionary = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
+  v9 = [delayedScrollOutViewDictionary objectForKey:identifierCopy];
 
-  v10 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
-  [v10 removeObjectForKey:v7];
+  delayedScrollOutViewDictionary2 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
+  [delayedScrollOutViewDictionary2 removeObjectForKey:identifierCopy];
 
-  v11 = [(ICLayoutManager *)self hiddenSupplementalViews];
-  v12 = [v11 objectForKey:v7];
+  hiddenSupplementalViews = [(ICLayoutManager *)self hiddenSupplementalViews];
+  v12 = [hiddenSupplementalViews objectForKey:identifierCopy];
 
   if (!v12)
   {
@@ -2388,18 +2388,18 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v13 = [(ICLayoutManager *)self hiddenSupplementalViews];
-  [v13 removeObjectForKey:v7];
+  hiddenSupplementalViews2 = [(ICLayoutManager *)self hiddenSupplementalViews];
+  [hiddenSupplementalViews2 removeObjectForKey:identifierCopy];
 
-  v14 = [(ICLayoutManager *)self activeSupplementalViews];
-  [v14 setObject:v6 forKeyedSubscript:v7];
+  activeSupplementalViews = [(ICLayoutManager *)self activeSupplementalViews];
+  [activeSupplementalViews setObject:viewCopy forKeyedSubscript:identifierCopy];
 
-  v15 = [(ICLayoutManager *)self highlightPatternRegexFinder];
+  highlightPatternRegexFinder = [(ICLayoutManager *)self highlightPatternRegexFinder];
   objc_opt_class();
   v16 = ICDynamicCast();
-  [v16 setHighlightPatternRegexFinder:v15];
+  [v16 setHighlightPatternRegexFinder:highlightPatternRegexFinder];
 
-  [v6 setHidden:0];
+  [viewCopy setHidden:0];
   if (!v9)
   {
     objc_opt_class();
@@ -2413,14 +2413,14 @@ LABEL_10:
   return v18;
 }
 
-- (void)hideSupplementalView:(id)a3 forIdentifier:(id)a4
+- (void)hideSupplementalView:(id)view forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  viewCopy = view;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v8 = [(ICLayoutManager *)self activeSupplementalViews];
-    v9 = [v8 objectForKey:v7];
+    activeSupplementalViews = [(ICLayoutManager *)self activeSupplementalViews];
+    v9 = [activeSupplementalViews objectForKey:identifierCopy];
 
     if (!v9)
     {
@@ -2430,19 +2430,19 @@ LABEL_16:
     }
 
     objc_opt_class();
-    v10 = [(ICLayoutManager *)self supplementalViewControllers];
-    v11 = [v10 objectForKeyedSubscript:v7];
+    supplementalViewControllers = [(ICLayoutManager *)self supplementalViewControllers];
+    v11 = [supplementalViewControllers objectForKeyedSubscript:identifierCopy];
     v12 = ICDynamicCast();
 
     if (!v12 || ([v12 isInResponderChain] & 1) == 0)
     {
-      v13 = [(ICLayoutManager *)self activeSupplementalViews];
-      [v13 removeObjectForKey:v7];
+      activeSupplementalViews2 = [(ICLayoutManager *)self activeSupplementalViews];
+      [activeSupplementalViews2 removeObjectForKey:identifierCopy];
 
-      v14 = [(ICLayoutManager *)self hiddenSupplementalViews];
-      [v14 setObject:v6 forKeyedSubscript:v7];
+      hiddenSupplementalViews = [(ICLayoutManager *)self hiddenSupplementalViews];
+      [hiddenSupplementalViews setObject:viewCopy forKeyedSubscript:identifierCopy];
 
-      [v6 setHidden:1];
+      [viewCopy setHidden:1];
     }
 
     objc_opt_class();
@@ -2450,24 +2450,24 @@ LABEL_16:
     v16 = v15;
     if (v15)
     {
-      v17 = [v15 cancelDidScrollIntoVisibleRange];
-      v18 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
-      v19 = v18;
-      if (v17)
+      cancelDidScrollIntoVisibleRange = [v15 cancelDidScrollIntoVisibleRange];
+      delayedScrollOutViewDictionary = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
+      date = delayedScrollOutViewDictionary;
+      if (cancelDidScrollIntoVisibleRange)
       {
-        [v18 removeObjectForKey:v7];
+        [delayedScrollOutViewDictionary removeObjectForKey:identifierCopy];
 LABEL_14:
 
         goto LABEL_15;
       }
 
-      v21 = [v18 objectForKeyedSubscript:v7];
+      v21 = [delayedScrollOutViewDictionary objectForKeyedSubscript:identifierCopy];
 
       if (!v21)
       {
-        v19 = [MEMORY[0x277CBEAA8] date];
-        v22 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
-        [v22 setObject:v19 forKeyedSubscript:v7];
+        date = [MEMORY[0x277CBEAA8] date];
+        delayedScrollOutViewDictionary2 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
+        [delayedScrollOutViewDictionary2 setObject:date forKeyedSubscript:identifierCopy];
 
         goto LABEL_14;
       }
@@ -2490,8 +2490,8 @@ LABEL_17:
 
 - (void)ensureLayoutForSurroundingPages
 {
-  v3 = [(ICBaseLayoutManager *)self textView];
-  [v3 bounds];
+  textView = [(ICBaseLayoutManager *)self textView];
+  [textView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -2571,47 +2571,47 @@ LABEL_17:
       v26 = v25;
       v28 = v27;
       v30 = v29;
-      v32 = [(ICBaseLayoutManager *)self textContainer];
-      [(ICLayoutManager *)self ensureLayoutForBoundingRect:v32 inTextContainer:v24, v26, v28, v30];
+      textContainer = [(ICBaseLayoutManager *)self textContainer];
+      [(ICLayoutManager *)self ensureLayoutForBoundingRect:textContainer inTextContainer:v24, v26, v28, v30];
     }
   }
 }
 
-- (void)invalidateLayoutForCharacterRange:(_NSRange)a3 actualCharacterRange:(_NSRange *)a4
+- (void)invalidateLayoutForCharacterRange:(_NSRange)range actualCharacterRange:(_NSRange *)characterRange
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if (![(ICLayoutManager *)self isSettingLinkTextAttributes])
   {
     [(ICLayoutManager *)self clearLayoutEnsuredBounds];
     v8.receiver = self;
     v8.super_class = ICLayoutManager;
-    [(ICLayoutManager *)&v8 invalidateLayoutForCharacterRange:location actualCharacterRange:length, a4];
+    [(ICLayoutManager *)&v8 invalidateLayoutForCharacterRange:location actualCharacterRange:length, characterRange];
   }
 }
 
-- (void)ensureLayoutForTextContainer:(id)a3
+- (void)ensureLayoutForTextContainer:(id)container
 {
   v4 = *MEMORY[0x277CBF390];
   v5 = *(MEMORY[0x277CBF390] + 8);
   v6 = *(MEMORY[0x277CBF390] + 16);
   v7 = *(MEMORY[0x277CBF390] + 24);
-  v8 = a3;
+  containerCopy = container;
   [(ICLayoutManager *)self setLayoutEnsuredBounds:v4, v5, v6, v7];
   v9.receiver = self;
   v9.super_class = ICLayoutManager;
-  [(ICLayoutManager *)&v9 ensureLayoutForTextContainer:v8];
+  [(ICLayoutManager *)&v9 ensureLayoutForTextContainer:containerCopy];
 }
 
-- (CGRect)boundingRectForGlyphRange:(_NSRange)a3 inTextContainer:(id)a4
+- (CGRect)boundingRectForGlyphRange:(_NSRange)range inTextContainer:(id)container
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v43 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  containerCopy = container;
   v41.receiver = self;
   v41.super_class = ICLayoutManager;
-  [(ICLayoutManager *)&v41 boundingRectForGlyphRange:location inTextContainer:length, v7];
+  [(ICLayoutManager *)&v41 boundingRectForGlyphRange:location inTextContainer:length, containerCopy];
   x = v8;
   y = v10;
   width = v12;
@@ -2621,9 +2621,9 @@ LABEL_17:
     v16 = [(ICLayoutManager *)self characterRangeForGlyphRange:location actualGlyphRange:length, 0];
     v18 = v17;
     v19 = [(ICLayoutManager *)self paragraphStyleForCharacterIndex:v16];
-    v20 = [v19 writingDirection];
+    writingDirection = [v19 writingDirection];
     v21 = [(ICLayoutManager *)self todoButtonsForCharacterRange:v16, v18];
-    [v7 textContainerOrigin];
+    [containerCopy textContainerOrigin];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
@@ -2670,7 +2670,7 @@ LABEL_17:
       while (v24);
     }
 
-    if (v20 != 1)
+    if (writingDirection != 1)
     {
       width = width + x;
       x = 0.0;
@@ -2691,22 +2691,22 @@ LABEL_17:
 - (void)updateVisibleSupplementalViews
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = [(ICLayoutManager *)self textStorage];
+  textStorage = [(ICLayoutManager *)self textStorage];
 
-  if (v3)
+  if (textStorage)
   {
-    v4 = [(ICBaseLayoutManager *)self textView];
-    [v4 bounds];
+    textView = [(ICBaseLayoutManager *)self textView];
+    [textView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
 
-    v13 = [(ICBaseLayoutManager *)self textContainer];
-    [(ICLayoutManager *)self ensureLayoutForBoundingRect:v13 inTextContainer:v6, v8, v10, v12];
+    textContainer = [(ICBaseLayoutManager *)self textContainer];
+    [(ICLayoutManager *)self ensureLayoutForBoundingRect:textContainer inTextContainer:v6, v8, v10, v12];
 
-    v14 = [(ICBaseLayoutManager *)self textContainer];
-    v15 = [(ICLayoutManager *)self glyphRangeForBoundingRect:v14 inTextContainer:v6, v8, v10, v12];
+    textContainer2 = [(ICBaseLayoutManager *)self textContainer];
+    v15 = [(ICLayoutManager *)self glyphRangeForBoundingRect:textContainer2 inTextContainer:v6, v8, v10, v12];
     v17 = v16;
 
     v18 = [(ICLayoutManager *)self characterRangeForGlyphRange:v15 actualGlyphRange:v17, 0];
@@ -2736,9 +2736,9 @@ LABEL_17:
     }
 
     v25 = MEMORY[0x277CBEB58];
-    v26 = [(ICLayoutManager *)self activeSupplementalViews];
-    v27 = [v26 allValues];
-    v28 = [v25 setWithArray:v27];
+    activeSupplementalViews = [(ICLayoutManager *)self activeSupplementalViews];
+    allValues = [activeSupplementalViews allValues];
+    v28 = [v25 setWithArray:allValues];
 
     [v28 minusSet:v22];
     v38 = 0u;
@@ -2761,8 +2761,8 @@ LABEL_17:
           }
 
           v34 = *(*(&v36 + 1) + 8 * i);
-          v35 = [v34 viewIdentifier];
-          [(ICLayoutManager *)self hideSupplementalView:v34 forIdentifier:v35];
+          viewIdentifier = [v34 viewIdentifier];
+          [(ICLayoutManager *)self hideSupplementalView:v34 forIdentifier:viewIdentifier];
         }
 
         v31 = [v29 countByEnumeratingWithState:&v36 objects:v46 count:16];
@@ -2841,17 +2841,17 @@ void __49__ICLayoutManager_updateVisibleSupplementalViews__block_invoke_3(uint64
 
 - (void)updateInlineDrawingViews
 {
-  v3 = [(ICBaseLayoutManager *)self textView];
-  v4 = [v3 textStorage];
+  textView = [(ICBaseLayoutManager *)self textView];
+  textStorage = [textView textStorage];
 
   v5 = *MEMORY[0x277D74060];
-  v6 = [v4 length];
+  v6 = [textStorage length];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__ICLayoutManager_updateInlineDrawingViews__block_invoke;
   v7[3] = &unk_2781AC5D8;
   v7[4] = self;
-  [v4 enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, v7}];
+  [textStorage enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, v7}];
 }
 
 uint64_t __43__ICLayoutManager_updateInlineDrawingViews__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -2883,22 +2883,22 @@ uint64_t __43__ICLayoutManager_updateInlineDrawingViews__block_invoke(uint64_t a
 - (id)editingTextView
 {
   objc_opt_class();
-  v3 = [(ICBaseLayoutManager *)self textView];
+  textView = [(ICBaseLayoutManager *)self textView];
   v4 = ICDynamicCast();
 
   return v4;
 }
 
-- (void)attachmentDidLoad:(id)a3
+- (void)attachmentDidLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   v5 = MEMORY[0x277D35E00];
-  v29 = v4;
-  v6 = [v4 object];
-  v7 = [(ICBaseLayoutManager *)self textController];
-  v8 = [v7 note];
-  v9 = [v8 managedObjectContext];
-  v10 = [v5 ic_existingObjectWithID:v6 context:v9];
+  v29 = loadCopy;
+  object = [loadCopy object];
+  textController = [(ICBaseLayoutManager *)self textController];
+  note = [textController note];
+  managedObjectContext = [note managedObjectContext];
+  v10 = [v5 ic_existingObjectWithID:object context:managedObjectContext];
 
   if (v10)
   {
@@ -2909,20 +2909,20 @@ uint64_t __43__ICLayoutManager_updateInlineDrawingViews__block_invoke(uint64_t a
   else
   {
     v13 = MEMORY[0x277D35EF8];
-    v14 = [v29 object];
-    v15 = [(ICBaseLayoutManager *)self textController];
-    v16 = [v15 note];
-    v17 = [v16 managedObjectContext];
-    v12 = [v13 ic_existingObjectWithID:v14 context:v17];
+    object2 = [v29 object];
+    textController2 = [(ICBaseLayoutManager *)self textController];
+    note2 = [textController2 note];
+    managedObjectContext2 = [note2 managedObjectContext];
+    v12 = [v13 ic_existingObjectWithID:object2 context:managedObjectContext2];
 
     v11 = v12;
   }
 
   v18 = v12;
-  v19 = [v18 note];
-  v20 = [(ICBaseLayoutManager *)self textController];
-  v21 = [v20 note];
-  v22 = [v19 isEqual:v21];
+  note3 = [v18 note];
+  textController3 = [(ICBaseLayoutManager *)self textController];
+  note4 = [textController3 note];
+  v22 = [note3 isEqual:note4];
 
   if (v22)
   {
@@ -2932,7 +2932,7 @@ uint64_t __43__ICLayoutManager_updateInlineDrawingViews__block_invoke(uint64_t a
       v25 = v23;
       v26 = v24;
       objc_opt_class();
-      v27 = [(ICLayoutManager *)self textStorage];
+      textStorage = [(ICLayoutManager *)self textStorage];
       v28 = ICDynamicCast();
 
       [(ICLayoutManager *)self filterAttachmentsInTextStorage:v28 range:v25 targetAttachment:v26, v18];
@@ -2941,38 +2941,38 @@ uint64_t __43__ICLayoutManager_updateInlineDrawingViews__block_invoke(uint64_t a
   }
 }
 
-- (void)filterAttachmentsInTextStorage:(id)a3 range:(_NSRange)a4 targetAttachment:(id)a5
+- (void)filterAttachmentsInTextStorage:(id)storage range:(_NSRange)range targetAttachment:(id)attachment
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
-  v9 = [a5 note];
-  [v9 filterAttachmentsInTextStorage:v8 range:{location, length}];
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
+  note = [attachment note];
+  [note filterAttachmentsInTextStorage:storageCopy range:{location, length}];
 }
 
-- (void)mediaDidLoad:(id)a3
+- (void)mediaDidLoad:(id)load
 {
   v4 = MEMORY[0x277D35F18];
-  v5 = [a3 object];
-  v6 = [(ICBaseLayoutManager *)self textController];
-  v7 = [v6 note];
-  v8 = [v7 managedObjectContext];
-  v13 = [v4 ic_existingObjectWithID:v5 context:v8];
+  object = [load object];
+  textController = [(ICBaseLayoutManager *)self textController];
+  note = [textController note];
+  managedObjectContext = [note managedObjectContext];
+  v13 = [v4 ic_existingObjectWithID:object context:managedObjectContext];
 
-  v9 = [v13 attachment];
-  v10 = [v9 note];
-  v11 = [(ICBaseLayoutManager *)self textController];
-  v12 = [v11 note];
+  attachment = [v13 attachment];
+  note2 = [attachment note];
+  textController2 = [(ICBaseLayoutManager *)self textController];
+  note3 = [textController2 note];
 
-  if (v10 == v12)
+  if (note2 == note3)
   {
-    [(ICLayoutManager *)self invalidateLayoutForAttachment:v9];
+    [(ICLayoutManager *)self invalidateLayoutForAttachment:attachment];
   }
 }
 
-- (void)invalidateLayoutForAttachment:(id)a3
+- (void)invalidateLayoutForAttachment:(id)attachment
 {
-  v4 = [(ICLayoutManager *)self rangeForAttachment:a3 withTextAttachment:0];
+  v4 = [(ICLayoutManager *)self rangeForAttachment:attachment withTextAttachment:0];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
 
@@ -2980,11 +2980,11 @@ uint64_t __43__ICLayoutManager_updateInlineDrawingViews__block_invoke(uint64_t a
   }
 }
 
-- (void)attachmentInlineDrawingMergeableDataDidChange:(id)a3
+- (void)attachmentInlineDrawingMergeableDataDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   objc_opt_class();
-  v4 = [v3 object];
+  object = [changeCopy object];
 
   v5 = ICCheckedDynamicCast();
 
@@ -3076,19 +3076,19 @@ void __65__ICLayoutManager_attachmentInlineDrawingMergeableDataDidChange___block
   }
 }
 
-- (id)supplementalViewForIdentifier:(id)a3 allowHiddenViews:(BOOL)a4
+- (id)supplementalViewForIdentifier:(id)identifier allowHiddenViews:(BOOL)views
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  viewsCopy = views;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v7 = [(ICLayoutManager *)self activeSupplementalViews];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    activeSupplementalViews = [(ICLayoutManager *)self activeSupplementalViews];
+    v8 = [activeSupplementalViews objectForKeyedSubscript:identifierCopy];
 
-    if (!v8 && v4)
+    if (!v8 && viewsCopy)
     {
-      v9 = [(ICLayoutManager *)self hiddenSupplementalViews];
-      v8 = [v9 objectForKeyedSubscript:v6];
+      hiddenSupplementalViews = [(ICLayoutManager *)self hiddenSupplementalViews];
+      v8 = [hiddenSupplementalViews objectForKeyedSubscript:identifierCopy];
     }
   }
 
@@ -3107,42 +3107,42 @@ void __65__ICLayoutManager_attachmentInlineDrawingMergeableDataDidChange___block
   return v8;
 }
 
-- (void)clearSupplementalViewForIdentifier:(id)a3
+- (void)clearSupplementalViewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(ICLayoutManager *)self activeSupplementalViews];
-    [v5 removeObjectForKey:v4];
+    activeSupplementalViews = [(ICLayoutManager *)self activeSupplementalViews];
+    [activeSupplementalViews removeObjectForKey:identifierCopy];
 
-    v6 = [(ICLayoutManager *)self hiddenSupplementalViews];
-    [v6 removeObjectForKey:v4];
+    hiddenSupplementalViews = [(ICLayoutManager *)self hiddenSupplementalViews];
+    [hiddenSupplementalViews removeObjectForKey:identifierCopy];
 
-    v7 = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
-    [v7 removeObjectForKey:v4];
+    delayedScrollOutViewDictionary = [(ICLayoutManager *)self delayedScrollOutViewDictionary];
+    [delayedScrollOutViewDictionary removeObjectForKey:identifierCopy];
   }
 
   else
   {
-    v7 = os_log_create("com.apple.notes", "UI");
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    delayedScrollOutViewDictionary = os_log_create("com.apple.notes", "UI");
+    if (os_log_type_enabled(delayedScrollOutViewDictionary, OS_LOG_TYPE_DEFAULT))
     {
       *v8 = 0;
-      _os_log_impl(&dword_2151A1000, v7, OS_LOG_TYPE_DEFAULT, "Asked to clear a supplemental view for a nil-identifier", v8, 2u);
+      _os_log_impl(&dword_2151A1000, delayedScrollOutViewDictionary, OS_LOG_TYPE_DEFAULT, "Asked to clear a supplemental view for a nil-identifier", v8, 2u);
     }
   }
 }
 
-- (id)viewForTextAttachment:(id)a3 initialCharacterIndex:(unint64_t)a4
+- (id)viewForTextAttachment:(id)attachment initialCharacterIndex:(unint64_t)index
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ICLayoutManager *)self viewForTextAttachmentNoCreate:v6];
+  attachmentCopy = attachment;
+  v7 = [(ICLayoutManager *)self viewForTextAttachmentNoCreate:attachmentCopy];
   if (v7)
   {
-    v8 = v7;
-    v9 = [(ICBaseLayoutManager *)self textContainer];
-    [v6 attachmentViewClassForTextContainer:v9];
+    viewIdentifier = v7;
+    textContainer = [(ICBaseLayoutManager *)self textContainer];
+    [attachmentCopy attachmentViewClassForTextContainer:textContainer];
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
@@ -3157,12 +3157,12 @@ void __65__ICLayoutManager_attachmentInlineDrawingMergeableDataDidChange___block
       _os_log_impl(&dword_2151A1000, v11, OS_LOG_TYPE_DEFAULT, "Found view of wrong type. Recreating.", buf, 2u);
     }
 
-    [(ICLayoutManager *)self clearViewForTextAttachment:v6];
+    [(ICLayoutManager *)self clearViewForTextAttachment:attachmentCopy];
   }
 
-  v8 = [v6 viewIdentifier];
+  viewIdentifier = [attachmentCopy viewIdentifier];
 
-  if (v8)
+  if (viewIdentifier)
   {
     if ([(ICLayoutManager *)self shouldManuallyRenderSeparateSubviews])
     {
@@ -3177,104 +3177,104 @@ void __65__ICLayoutManager_attachmentInlineDrawingMergeableDataDidChange___block
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [(ICLayoutManager *)self inlineAttachmentLocationCache];
-      v14 = [v6 viewIdentifier];
-      if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+      inlineAttachmentLocationCache = [(ICLayoutManager *)self inlineAttachmentLocationCache];
+      viewIdentifier2 = [attachmentCopy viewIdentifier];
+      if (index == 0x7FFFFFFFFFFFFFFFLL)
       {
-        a4 = [v13 locationForTextAttachmentOfViewIdentifier:v14];
+        index = [inlineAttachmentLocationCache locationForTextAttachmentOfViewIdentifier:viewIdentifier2];
       }
 
       else
       {
-        [v13 setLocation:a4 forTextAttachmentOfViewIdentifier:v14];
+        [inlineAttachmentLocationCache setLocation:index forTextAttachmentOfViewIdentifier:viewIdentifier2];
       }
     }
 
-    v15 = [v6 newlyCreatedViewControllerForManualRendering:v12 layoutManager:self initialCharacterIndex:a4];
+    v15 = [attachmentCopy newlyCreatedViewControllerForManualRendering:v12 layoutManager:self initialCharacterIndex:index];
     if (v15)
     {
-      v16 = [(ICLayoutManager *)self highlightPatternRegexFinder];
+      highlightPatternRegexFinder = [(ICLayoutManager *)self highlightPatternRegexFinder];
       objc_opt_class();
       v17 = ICDynamicCast();
-      [v17 setHighlightPatternRegexFinder:v16];
+      [v17 setHighlightPatternRegexFinder:highlightPatternRegexFinder];
 
-      v18 = [(ICLayoutManager *)self supplementalViewControllers];
-      v19 = [v6 viewIdentifier];
-      [v18 setObject:v15 forKeyedSubscript:v19];
+      supplementalViewControllers = [(ICLayoutManager *)self supplementalViewControllers];
+      viewIdentifier3 = [attachmentCopy viewIdentifier];
+      [supplementalViewControllers setObject:v15 forKeyedSubscript:viewIdentifier3];
 
-      v8 = [v15 view];
+      viewIdentifier = [v15 view];
     }
 
     else
     {
       if ([(ICLayoutManager *)self shouldManuallyRenderSeparateSubviews]&& ![(ICLayoutManager *)self isRenderingPreviewForDragAndDrop])
       {
-        v20 = [(ICBaseLayoutManager *)self textContainer];
-        v21 = [v6 newlyCreatedViewForManualRenderingInTextContainer:v20];
+        textContainer2 = [(ICBaseLayoutManager *)self textContainer];
+        v21 = [attachmentCopy newlyCreatedViewForManualRenderingInTextContainer:textContainer2];
       }
 
       else
       {
-        v20 = [(ICBaseLayoutManager *)self textContainer];
-        v21 = [v6 newlyCreatedViewForTextContainer:v20];
+        textContainer2 = [(ICBaseLayoutManager *)self textContainer];
+        v21 = [attachmentCopy newlyCreatedViewForTextContainer:textContainer2];
       }
 
-      v8 = v21;
+      viewIdentifier = v21;
     }
 
-    v22 = [(ICLayoutManager *)self activeSupplementalViews];
-    v23 = [v6 viewIdentifier];
-    [v22 setObject:v8 forKeyedSubscript:v23];
+    activeSupplementalViews = [(ICLayoutManager *)self activeSupplementalViews];
+    viewIdentifier4 = [attachmentCopy viewIdentifier];
+    [activeSupplementalViews setObject:viewIdentifier forKeyedSubscript:viewIdentifier4];
 
     objc_opt_class();
     v24 = ICDynamicCast();
-    v25 = [(ICLayoutManager *)self highlightPatternRegexFinder];
-    [v24 setHighlightPatternRegexFinder:v25];
+    highlightPatternRegexFinder2 = [(ICLayoutManager *)self highlightPatternRegexFinder];
+    [v24 setHighlightPatternRegexFinder:highlightPatternRegexFinder2];
 
-    v26 = [(ICBaseLayoutManager *)self textController];
-    v27 = [v26 authorHighlightsController];
+    textController = [(ICBaseLayoutManager *)self textController];
+    authorHighlightsController = [textController authorHighlightsController];
 
-    if (v27)
+    if (authorHighlightsController)
     {
-      [v6 foregroundAlpha];
+      [attachmentCopy foregroundAlpha];
       [v24 setForegroundAlpha:?];
-      v28 = [v6 highlightColor];
-      [v24 setHighlightColor:v28];
+      highlightColor = [attachmentCopy highlightColor];
+      [v24 setHighlightColor:highlightColor];
     }
 
-    v29 = [v6 attachment];
+    attachment = [attachmentCopy attachment];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v30 = v29;
+      v30 = attachment;
       if ([MEMORY[0x277CCACC8] isMainThread])
       {
-        v31 = [v30 managedObjectContext];
-        v32 = [v31 ic_isMainThreadContext];
+        managedObjectContext = [v30 managedObjectContext];
+        ic_isMainThreadContext = [managedObjectContext ic_isMainThreadContext];
 
-        if (v32)
+        if (ic_isMainThreadContext)
         {
           v33 = os_log_create("com.apple.notes", "UI");
           if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
           {
-            v44 = [v30 shortLoggingDescription];
+            shortLoggingDescription = [v30 shortLoggingDescription];
             v43 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v30, "markedForDeletion")}];
             v34 = MEMORY[0x277CCABB0];
-            v42 = [v30 mergeableData];
-            v40 = [v34 numberWithUnsignedInteger:{objc_msgSend(v42, "length")}];
-            v41 = [v30 media];
-            v35 = [v41 shortLoggingDescription];
+            mergeableData = [v30 mergeableData];
+            v40 = [v34 numberWithUnsignedInteger:{objc_msgSend(mergeableData, "length")}];
+            media = [v30 media];
+            shortLoggingDescription2 = [media shortLoggingDescription];
             *buf = 138413314;
-            v46 = v44;
+            v46 = shortLoggingDescription;
             v47 = 2112;
             v48 = v43;
             v49 = 2112;
             v50 = v40;
             v51 = 2112;
-            v52 = v6;
+            v52 = attachmentCopy;
             v53 = 2112;
-            v54 = v35;
-            v36 = v35;
+            v54 = shortLoggingDescription2;
+            v36 = shortLoggingDescription2;
             _os_log_impl(&dword_2151A1000, v33, OS_LOG_TYPE_INFO, "Created view for attachment %@ markedForDeletion=%@ mergeableDataLength=%@ textAttachment=%@ media=%@", buf, 0x34u);
           }
         }
@@ -3286,60 +3286,60 @@ LABEL_32:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v37 = v8;
-    v38 = [(ICLayoutManager *)self attachmentViewDelegate];
-    [v37 setDelegate:v38];
+    v37 = viewIdentifier;
+    attachmentViewDelegate = [(ICLayoutManager *)self attachmentViewDelegate];
+    [v37 setDelegate:attachmentViewDelegate];
   }
 
-  return v8;
+  return viewIdentifier;
 }
 
-- (id)viewForTextAttachmentNoCreate:(id)a3
+- (id)viewForTextAttachmentNoCreate:(id)create
 {
-  v4 = [a3 attachmentIdentifier];
-  v5 = [(ICLayoutManager *)self supplementalViewForIdentifier:v4 allowHiddenViews:1];
+  attachmentIdentifier = [create attachmentIdentifier];
+  v5 = [(ICLayoutManager *)self supplementalViewForIdentifier:attachmentIdentifier allowHiddenViews:1];
 
   return v5;
 }
 
-- (id)viewForBaseTextAttachmentNoCreate:(id)a3
+- (id)viewForBaseTextAttachmentNoCreate:(id)create
 {
-  v4 = a3;
+  createCopy = create;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ICLayoutManager *)self viewForTextAttachmentNoCreate:v4];
+    view = [(ICLayoutManager *)self viewForTextAttachmentNoCreate:createCopy];
   }
 
   else
   {
-    v6 = [v4 attachment];
-    v7 = [(ICLayoutManager *)self viewProviderForTextAttachment:v4 characterIndex:[(ICLayoutManager *)self rangeForAttachment:v6 withTextAttachment:0]];
-    v5 = [v7 view];
+    attachment = [createCopy attachment];
+    v7 = [(ICLayoutManager *)self viewProviderForTextAttachment:createCopy characterIndex:[(ICLayoutManager *)self rangeForAttachment:attachment withTextAttachment:0]];
+    view = [v7 view];
   }
 
-  return v5;
+  return view;
 }
 
-- (id)viewControllerForTextAttachment:(id)a3 createIfNeeded:(BOOL)a4
+- (id)viewControllerForTextAttachment:(id)attachment createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(ICLayoutManager *)self supplementalViewControllers];
-  v8 = [v6 viewIdentifier];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  neededCopy = needed;
+  attachmentCopy = attachment;
+  supplementalViewControllers = [(ICLayoutManager *)self supplementalViewControllers];
+  viewIdentifier = [attachmentCopy viewIdentifier];
+  v9 = [supplementalViewControllers objectForKeyedSubscript:viewIdentifier];
 
-  if (!v9 && v4)
+  if (!v9 && neededCopy)
   {
-    v10 = [(ICLayoutManager *)self viewForTextAttachment:v6];
-    v11 = [(ICLayoutManager *)self supplementalViewControllers];
-    v12 = [v6 viewIdentifier];
-    v9 = [v11 objectForKeyedSubscript:v12];
+    v10 = [(ICLayoutManager *)self viewForTextAttachment:attachmentCopy];
+    supplementalViewControllers2 = [(ICLayoutManager *)self supplementalViewControllers];
+    viewIdentifier2 = [attachmentCopy viewIdentifier];
+    v9 = [supplementalViewControllers2 objectForKeyedSubscript:viewIdentifier2];
 
-    v13 = [(ICLayoutManager *)self highlightPatternRegexFinder];
+    highlightPatternRegexFinder = [(ICLayoutManager *)self highlightPatternRegexFinder];
     objc_opt_class();
     v14 = ICDynamicCast();
-    [v14 setHighlightPatternRegexFinder:v13];
+    [v14 setHighlightPatternRegexFinder:highlightPatternRegexFinder];
   }
 
   return v9;
@@ -3347,8 +3347,8 @@ LABEL_32:
 
 - (void)clearViewsForAllTextAttachmentsThatSupportThumbnailMode
 {
-  v3 = [(ICLayoutManager *)self textStorage];
-  v4 = [v3 length];
+  textStorage = [(ICLayoutManager *)self textStorage];
+  v4 = [textStorage length];
 
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -3367,17 +3367,17 @@ void __74__ICLayoutManager_clearViewsForAllTextAttachmentsThatSupportThumbnailMo
   }
 }
 
-- (void)clearViewForTextAttachment:(id)a3
+- (void)clearViewForTextAttachment:(id)attachment
 {
-  v7 = a3;
+  attachmentCopy = attachment;
   v4 = [(ICLayoutManager *)self viewForTextAttachmentNoCreate:?];
   if (v4)
   {
-    v5 = [v7 viewIdentifier];
-    [(ICLayoutManager *)self clearSupplementalViewForIdentifier:v5];
+    viewIdentifier = [attachmentCopy viewIdentifier];
+    [(ICLayoutManager *)self clearSupplementalViewForIdentifier:viewIdentifier];
 
-    v6 = [v7 viewIdentifier];
-    [(ICLayoutManager *)self removeClearingControllerForView:v4 viewIdentifier:v6];
+    viewIdentifier2 = [attachmentCopy viewIdentifier];
+    [(ICLayoutManager *)self removeClearingControllerForView:v4 viewIdentifier:viewIdentifier2];
   }
 }
 
@@ -3393,21 +3393,21 @@ void __74__ICLayoutManager_clearViewsForAllTextAttachmentsThatSupportThumbnailMo
 
 - (void)invalidateLayoutAfterAttachmentViewTypeChange
 {
-  v3 = [(ICLayoutManager *)self textStorage];
-  v4 = [v3 length];
+  textStorage = [(ICLayoutManager *)self textStorage];
+  v4 = [textStorage length];
 
-  v5 = [(ICLayoutManager *)self textStorage];
+  textStorage2 = [(ICLayoutManager *)self textStorage];
   v6 = *MEMORY[0x277D74060];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__ICLayoutManager_invalidateLayoutAfterAttachmentViewTypeChange__block_invoke;
   v9[3] = &unk_2781AC5D8;
   v9[4] = self;
-  [v5 enumerateAttribute:v6 inRange:0 options:v4 usingBlock:{0, v9}];
+  [textStorage2 enumerateAttribute:v6 inRange:0 options:v4 usingBlock:{0, v9}];
 
-  v7 = [(ICBaseLayoutManager *)self textView];
-  v8 = [v7 textContainer];
-  [(ICLayoutManager *)self ensureLayoutForTextContainer:v8];
+  textView = [(ICBaseLayoutManager *)self textView];
+  textContainer = [textView textContainer];
+  [(ICLayoutManager *)self ensureLayoutForTextContainer:textContainer];
 }
 
 void __64__ICLayoutManager_invalidateLayoutAfterAttachmentViewTypeChange__block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -3421,13 +3421,13 @@ void __64__ICLayoutManager_invalidateLayoutAfterAttachmentViewTypeChange__block_
   }
 }
 
-- (void)fillBackgroundRectArray:(const CGRect *)a3 count:(unint64_t)a4 forCharacterRange:(_NSRange)a5 color:(id)a6
+- (void)fillBackgroundRectArray:(const CGRect *)array count:(unint64_t)count forCharacterRange:(_NSRange)range color:(id)color
 {
-  v6 = a4;
-  [a6 set];
-  if (v6)
+  countCopy = count;
+  [color set];
+  if (countCopy)
   {
-    p_size = &a3->size;
+    p_size = &array->size;
     do
     {
       width = p_size[-1].width;
@@ -3438,21 +3438,21 @@ void __64__ICLayoutManager_invalidateLayoutAfterAttachmentViewTypeChange__block_
       v13 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:width cornerRadius:{height, v11, v12, 3.0}];
       [v13 fill];
 
-      --v6;
+      --countCopy;
     }
 
-    while (v6);
+    while (countCopy);
   }
 }
 
-- (id)linkAttributesForLink:(id)a3 forCharacterAtIndex:(unint64_t)a4
+- (id)linkAttributesForLink:(id)link forCharacterAtIndex:(unint64_t)index
 {
-  v6 = [MEMORY[0x277D36708] defaultLinkTextAttributes];
-  v7 = [v6 mutableCopy];
+  defaultLinkTextAttributes = [MEMORY[0x277D36708] defaultLinkTextAttributes];
+  v7 = [defaultLinkTextAttributes mutableCopy];
 
-  v8 = [MEMORY[0x277D04328] sharedController];
-  v9 = [(ICLayoutManager *)self textStorage];
-  v10 = [v8 preferredTextAttributesForLinkAtCharacterIndex:a4 ofStorage:v9];
+  mEMORY[0x277D04328] = [MEMORY[0x277D04328] sharedController];
+  textStorage = [(ICLayoutManager *)self textStorage];
+  v10 = [mEMORY[0x277D04328] preferredTextAttributesForLinkAtCharacterIndex:index ofStorage:textStorage];
 
   v11 = [v10 mutableCopy];
   v12 = v11;
@@ -3468,8 +3468,8 @@ void __64__ICLayoutManager_invalidateLayoutAfterAttachmentViewTypeChange__block_
 
   v14 = v13;
 
-  v15 = [(ICLayoutManager *)self textStorage];
-  v16 = [v15 attribute:*MEMORY[0x277D36008] atIndex:a4 effectiveRange:0];
+  textStorage2 = [(ICLayoutManager *)self textStorage];
+  v16 = [textStorage2 attribute:*MEMORY[0x277D36008] atIndex:index effectiveRange:0];
   [v16 floatValue];
   v18 = v17;
 
@@ -3481,8 +3481,8 @@ void __64__ICLayoutManager_invalidateLayoutAfterAttachmentViewTypeChange__block_
   v22 = fabs(v18);
   if (v22 >= 0.00999999978)
   {
-    v23 = [MEMORY[0x277D75348] preferredDefaultFontColor];
-    v24 = [v21 ic_colorBlendedWithColor:v23 fraction:v22];
+    preferredDefaultFontColor = [MEMORY[0x277D75348] preferredDefaultFontColor];
+    v24 = [v21 ic_colorBlendedWithColor:preferredDefaultFontColor fraction:v22];
 
     v25 = v18 * 0.6 + 1.0;
     if (v25 < 0.0)
@@ -3510,20 +3510,20 @@ void __64__ICLayoutManager_invalidateLayoutAfterAttachmentViewTypeChange__block_
   return v27;
 }
 
-- (id)icaxTodoButtonForParagraphStyle:(id)a3
+- (id)icaxTodoButtonForParagraphStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(ICLayoutManager *)self trackedToDoParagraphs];
-  v6 = [v4 todoTrackingUUID];
+  styleCopy = style;
+  trackedToDoParagraphs = [(ICLayoutManager *)self trackedToDoParagraphs];
+  todoTrackingUUID = [styleCopy todoTrackingUUID];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [trackedToDoParagraphs objectForKeyedSubscript:todoTrackingUUID];
 
   if (v7)
   {
-    v8 = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
-    v9 = [v7 paragraph];
-    v10 = [v9 todoTrackingUUID];
-    v11 = [v8 objectForKeyedSubscript:v10];
+    todoButtonsByTrackingUUID = [(ICLayoutManager *)self todoButtonsByTrackingUUID];
+    paragraph = [v7 paragraph];
+    todoTrackingUUID2 = [paragraph todoTrackingUUID];
+    v11 = [todoButtonsByTrackingUUID objectForKeyedSubscript:todoTrackingUUID2];
   }
 
   else

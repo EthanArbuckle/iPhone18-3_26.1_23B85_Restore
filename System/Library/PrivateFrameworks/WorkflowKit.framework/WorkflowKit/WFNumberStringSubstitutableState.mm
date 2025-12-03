@@ -1,29 +1,29 @@
 @interface WFNumberStringSubstitutableState
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
 - (NSDecimalNumber)decimalNumber;
-- (WFNumberStringSubstitutableState)initWithValue:(id)a3;
+- (WFNumberStringSubstitutableState)initWithValue:(id)value;
 - (id)serializedRepresentation;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFNumberStringSubstitutableState
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  providerCopy = provider;
+  parameterCopy = parameter;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v8;
+    v11 = representationCopy;
   }
 
   else
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = &OBJC_METACLASS___WFNumberStringSubstitutableState;
-    v11 = objc_msgSendSuper2(&v14, sel_valueFromSerializedRepresentation_variableProvider_parameter_, v8, v9, v10);
+    v11 = objc_msgSendSuper2(&v14, sel_valueFromSerializedRepresentation_variableProvider_parameter_, representationCopy, providerCopy, parameterCopy);
   }
 
   v12 = v11;
@@ -31,32 +31,32 @@
   return v12;
 }
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFVariableSubstitutableParameterState *)self variable];
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
 
-  if (v11)
+  if (variable)
   {
     v19.receiver = self;
     v19.super_class = WFNumberStringSubstitutableState;
-    [(WFVariableSubstitutableParameterState *)&v19 processWithContext:v8 userInputRequiredHandler:v9 valueHandler:v10];
+    [(WFVariableSubstitutableParameterState *)&v19 processWithContext:contextCopy userInputRequiredHandler:handlerCopy valueHandler:valueHandlerCopy];
   }
 
   else
   {
-    v12 = [(WFNumberStringSubstitutableState *)self legacyNumber];
+    legacyNumber = [(WFNumberStringSubstitutableState *)self legacyNumber];
 
-    if (v12)
+    if (legacyNumber)
     {
       v13 = MEMORY[0x1E696AB90];
-      v14 = [(WFNumberStringSubstitutableState *)self legacyNumber];
-      v15 = v14;
-      if (v14)
+      legacyNumber2 = [(WFNumberStringSubstitutableState *)self legacyNumber];
+      decimalNumber = legacyNumber2;
+      if (legacyNumber2)
       {
-        [v14 decimalValue];
+        [legacyNumber2 decimalValue];
       }
 
       else
@@ -67,37 +67,37 @@
       }
 
       v16 = [v13 decimalNumberWithDecimal:v17];
-      v10[2](v10, v16, 0);
+      valueHandlerCopy[2](valueHandlerCopy, v16, 0);
     }
 
     else
     {
-      v15 = [(WFNumberStringSubstitutableState *)self decimalNumber];
-      v10[2](v10, v15, 0);
+      decimalNumber = [(WFNumberStringSubstitutableState *)self decimalNumber];
+      valueHandlerCopy[2](valueHandlerCopy, decimalNumber, 0);
     }
   }
 }
 
 - (NSDecimalNumber)decimalNumber
 {
-  v2 = [(WFVariableSubstitutableParameterState *)self value];
-  if ([v2 length])
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  if ([value length])
   {
     v3 = objc_opt_new();
     [v3 setNumberStyle:1];
     [v3 setUsesGroupingSeparator:0];
     [v3 setGeneratesDecimalNumbers:1];
-    v4 = [v3 numberFromString:v2];
+    v4 = [v3 numberFromString:value];
     if (!v4)
     {
-      [v2 doubleValue];
+      [value doubleValue];
       v5 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-      v6 = [v5 stringValue];
-      v4 = [v3 numberFromString:v6];
+      stringValue = [v5 stringValue];
+      v4 = [v3 numberFromString:stringValue];
     }
 
-    v7 = [MEMORY[0x1E696AB90] notANumber];
-    v8 = [v4 isEqual:v7];
+    notANumber = [MEMORY[0x1E696AB90] notANumber];
+    v8 = [v4 isEqual:notANumber];
 
     if (v8)
     {
@@ -120,45 +120,45 @@
 
 - (id)serializedRepresentation
 {
-  v3 = [(WFNumberStringSubstitutableState *)self legacyNumber];
+  legacyNumber = [(WFNumberStringSubstitutableState *)self legacyNumber];
 
-  if (v3)
+  if (legacyNumber)
   {
-    v4 = [(WFNumberStringSubstitutableState *)self legacyNumber];
+    legacyNumber2 = [(WFNumberStringSubstitutableState *)self legacyNumber];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = WFNumberStringSubstitutableState;
-    v4 = [(WFVariableSubstitutableParameterState *)&v6 serializedRepresentation];
+    legacyNumber2 = [(WFVariableSubstitutableParameterState *)&v6 serializedRepresentation];
   }
 
-  return v4;
+  return legacyNumber2;
 }
 
-- (WFNumberStringSubstitutableState)initWithValue:(id)a3
+- (WFNumberStringSubstitutableState)initWithValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 stringValue];
+    stringValue = [valueCopy stringValue];
   }
 
   else
   {
-    v5 = v4;
-    v4 = 0;
+    stringValue = valueCopy;
+    valueCopy = 0;
   }
 
   v10.receiver = self;
   v10.super_class = WFNumberStringSubstitutableState;
-  v6 = [(WFVariableSubstitutableParameterState *)&v10 initWithValue:v5];
+  v6 = [(WFVariableSubstitutableParameterState *)&v10 initWithValue:stringValue];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_legacyNumber, v4);
+    objc_storeStrong(&v6->_legacyNumber, valueCopy);
     v8 = v7;
   }
 

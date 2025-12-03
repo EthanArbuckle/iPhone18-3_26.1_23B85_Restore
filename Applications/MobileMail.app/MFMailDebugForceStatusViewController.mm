@@ -1,6 +1,6 @@
 @interface MFMailDebugForceStatusViewController
 + (NSString)title;
-- (MFMailDebugForceStatusViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (MFMailDebugForceStatusViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -23,15 +23,15 @@
   _objc_release(self);
 }
 
-- (MFMailDebugForceStatusViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MFMailDebugForceStatusViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  _objc_retain(a3);
-  _objc_retain(a4);
-  if (a3)
+  _objc_retain(name);
+  _objc_retain(bundle);
+  if (name)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v4;
-    _objc_release(a3);
+    _objc_release(name);
     v8 = v6;
     v9 = v7;
   }
@@ -42,7 +42,7 @@
     v9 = 0;
   }
 
-  return MailDebugForceStatusViewController.init(nibName:bundle:)(v8, v9, a4);
+  return MailDebugForceStatusViewController.init(nibName:bundle:)(v8, v9, bundle);
 }
 
 @end

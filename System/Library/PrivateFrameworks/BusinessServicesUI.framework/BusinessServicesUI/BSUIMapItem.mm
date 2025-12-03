@@ -1,10 +1,10 @@
 @interface BSUIMapItem
-- (id)_bestBrandIconURLForSize:(id *)a1 allowSmaller:(uint64_t)a2;
-- (id)_bestNavbarBrandIconURLForSize:(id *)a1 allowSmaller:(uint64_t)a2;
+- (id)_bestBrandIconURLForSize:(id *)size allowSmaller:(uint64_t)smaller;
+- (id)_bestNavbarBrandIconURLForSize:(id *)size allowSmaller:(uint64_t)smaller;
 - (id)_localizedResponseTime;
 - (id)_navBackgroundbrandColor;
 - (id)_navTintBrandColor;
-- (id)initWithMKMapItem:(id *)a1;
+- (id)initWithMKMapItem:(id *)item;
 - (id)messageBusinessHours;
 - (id)name;
 - (id)phoneNumber;
@@ -18,64 +18,64 @@
 
 - (id)phoneNumber
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[1] phoneNumber];
+    self = [self[1] phoneNumber];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_navBackgroundbrandColor
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[1] _navBackgroundbrandColor];
+    self = [self[1] _navBackgroundbrandColor];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)initWithMKMapItem:(id *)a1
+- (id)initWithMKMapItem:(id *)item
 {
   v4 = a2;
-  if (a1)
+  if (item)
   {
-    v7.receiver = a1;
+    v7.receiver = item;
     v7.super_class = BSUIMapItem;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    item = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return item;
 }
 
 - (id)name
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[1] name];
+    self = [self[1] name];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_localizedResponseTime
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[1] _localizedResponseTime];
+    self = [self[1] _localizedResponseTime];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)_isMessageIDVerified
@@ -90,85 +90,85 @@
 
 - (id)_navTintBrandColor
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[1] _navTintBrandColor];
+    self = [self[1] _navTintBrandColor];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)timeZone
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 8) _geoMapItem];
-    v2 = [v1 _messageLink];
-    v3 = [v2 timeZone];
+    _geoMapItem = [*(self + 8) _geoMapItem];
+    _messageLink = [_geoMapItem _messageLink];
+    timeZone = [_messageLink timeZone];
   }
 
   else
   {
-    v3 = 0;
+    timeZone = 0;
   }
 
-  return v3;
+  return timeZone;
 }
 
 - (id)messageBusinessHours
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[1] _messageBusinessHours];
+    self = [self[1] _messageBusinessHours];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)url
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[1] url];
+    self = [self[1] url];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)_bestBrandIconURLForSize:(id *)a1 allowSmaller:(uint64_t)a2
+- (id)_bestBrandIconURLForSize:(id *)size allowSmaller:(uint64_t)smaller
 {
-  if (a1)
+  if (size)
   {
-    a1 = [a1[1] _bestBrandIconURLForSize:a2 allowSmaller:?];
+    size = [size[1] _bestBrandIconURLForSize:smaller allowSmaller:?];
     v2 = vars8;
   }
 
-  return a1;
+  return size;
 }
 
-- (id)_bestNavbarBrandIconURLForSize:(id *)a1 allowSmaller:(uint64_t)a2
+- (id)_bestNavbarBrandIconURLForSize:(id *)size allowSmaller:(uint64_t)smaller
 {
-  if (a1)
+  if (size)
   {
-    a1 = [a1[1] _bestNavbarBrandIconURLForSize:a2 allowSmaller:?];
+    size = [size[1] _bestNavbarBrandIconURLForSize:smaller allowSmaller:?];
     v2 = vars8;
   }
 
-  return a1;
+  return size;
 }
 
 - (void)makePlacecardViewController
 {
-  if (a1)
+  if (self)
   {
-    a1 = [objc_alloc(MEMORY[0x277D266B0]) initWithMapItem:a1[1]];
+    self = [objc_alloc(MEMORY[0x277D266B0]) initWithMapItem:self[1]];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

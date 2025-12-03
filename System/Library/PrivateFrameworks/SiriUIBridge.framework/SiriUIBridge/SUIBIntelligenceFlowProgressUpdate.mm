@@ -1,31 +1,31 @@
 @interface SUIBIntelligenceFlowProgressUpdate
-- (SUIBIntelligenceFlowProgressUpdate)initWithBuilder:(id)a3;
-- (SUIBIntelligenceFlowProgressUpdate)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SUIBIntelligenceFlowProgressUpdate)initWithBuilder:(id)builder;
+- (SUIBIntelligenceFlowProgressUpdate)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUIBIntelligenceFlowProgressUpdate
 
-- (SUIBIntelligenceFlowProgressUpdate)initWithBuilder:(id)a3
+- (SUIBIntelligenceFlowProgressUpdate)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v16.receiver = self;
   v16.super_class = SUIBIntelligenceFlowProgressUpdate;
   v5 = [(SUIBIntelligenceFlowProgressUpdate *)&v16 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = objc_alloc_init(SUIBIntelligenceFlowProgressUpdateMutation);
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     [(SUIBIntelligenceFlowProgressUpdateMutation *)v7 progress];
     v6->_progress = v8;
-    v9 = [(SUIBIntelligenceFlowProgressUpdateMutation *)v7 progressDescription];
-    v10 = [v9 copy];
+    progressDescription = [(SUIBIntelligenceFlowProgressUpdateMutation *)v7 progressDescription];
+    v10 = [progressDescription copy];
     progressDescription = v6->_progressDescription;
     v6->_progressDescription = v10;
 
-    v12 = [(SUIBIntelligenceFlowProgressUpdateMutation *)v7 additionalProgressDescription];
-    v13 = [v12 copy];
+    additionalProgressDescription = [(SUIBIntelligenceFlowProgressUpdateMutation *)v7 additionalProgressDescription];
+    v13 = [additionalProgressDescription copy];
     additionalProgressDescription = v6->_additionalProgressDescription;
     v6->_additionalProgressDescription = v13;
   }
@@ -33,13 +33,13 @@
   return v6;
 }
 
-- (SUIBIntelligenceFlowProgressUpdate)initWithCoder:(id)a3
+- (SUIBIntelligenceFlowProgressUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeFloatForKey:@"SUIBIntelligenceFlowProgressUpdate::progress"];
+  coderCopy = coder;
+  [coderCopy decodeFloatForKey:@"SUIBIntelligenceFlowProgressUpdate::progress"];
   v6 = v5;
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SUIBIntelligenceFlowProgressUpdate::progressDescription"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SUIBIntelligenceFlowProgressUpdate::additionalProgressDescription"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SUIBIntelligenceFlowProgressUpdate::progressDescription"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SUIBIntelligenceFlowProgressUpdate::additionalProgressDescription"];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -65,14 +65,14 @@ void __52__SUIBIntelligenceFlowProgressUpdate_initWithCoder___block_invoke(uint6
   [v5 setAdditionalProgressDescription:*(a1 + 40)];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   progress = self->_progress;
-  v6 = a3;
+  coderCopy = coder;
   *&v5 = progress;
-  [v6 encodeFloat:@"SUIBIntelligenceFlowProgressUpdate::progress" forKey:v5];
-  [v6 encodeObject:self->_progressDescription forKey:@"SUIBIntelligenceFlowProgressUpdate::progressDescription"];
-  [v6 encodeObject:self->_additionalProgressDescription forKey:@"SUIBIntelligenceFlowProgressUpdate::additionalProgressDescription"];
+  [coderCopy encodeFloat:@"SUIBIntelligenceFlowProgressUpdate::progress" forKey:v5];
+  [coderCopy encodeObject:self->_progressDescription forKey:@"SUIBIntelligenceFlowProgressUpdate::progressDescription"];
+  [coderCopy encodeObject:self->_additionalProgressDescription forKey:@"SUIBIntelligenceFlowProgressUpdate::additionalProgressDescription"];
 }
 
 @end

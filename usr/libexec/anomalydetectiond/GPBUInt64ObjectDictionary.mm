@@ -1,25 +1,25 @@
 @interface GPBUInt64ObjectDictionary
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInitialized;
-- (GPBUInt64ObjectDictionary)initWithDictionary:(id)a3;
-- (GPBUInt64ObjectDictionary)initWithObjects:(const void *)a3 forKeys:(const unint64_t *)a4 count:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)deepCopyWithZone:(_NSZone *)a3;
-- (id)objectForKey:(unint64_t)a3;
-- (unint64_t)computeSerializedSizeAsField:(id)a3;
-- (void)addEntriesFromDictionary:(id)a3;
+- (GPBUInt64ObjectDictionary)initWithDictionary:(id)dictionary;
+- (GPBUInt64ObjectDictionary)initWithObjects:(const void *)objects forKeys:(const unint64_t *)keys count:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)deepCopyWithZone:(_NSZone *)zone;
+- (id)objectForKey:(unint64_t)key;
+- (unint64_t)computeSerializedSizeAsField:(id)field;
+- (void)addEntriesFromDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)enumerateForTextFormat:(id)a3;
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3;
-- (void)removeObjectForKey:(unint64_t)a3;
-- (void)setGPBGenericValue:(id *)a3 forGPBGenericValueKey:(id *)a4;
-- (void)setObject:(id)a3 forKey:(unint64_t)a4;
-- (void)writeToCodedOutputStream:(id)a3 asField:(id)a4;
+- (void)enumerateForTextFormat:(id)format;
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block;
+- (void)removeObjectForKey:(unint64_t)key;
+- (void)setGPBGenericValue:(id *)value forGPBGenericValueKey:(id *)key;
+- (void)setObject:(id)object forKey:(unint64_t)key;
+- (void)writeToCodedOutputStream:(id)stream asField:(id)field;
 @end
 
 @implementation GPBUInt64ObjectDictionary
 
-- (GPBUInt64ObjectDictionary)initWithObjects:(const void *)a3 forKeys:(const unint64_t *)a4 count:(unint64_t)a5
+- (GPBUInt64ObjectDictionary)initWithObjects:(const void *)objects forKeys:(const unint64_t *)keys count:(unint64_t)count
 {
   v12.receiver = self;
   v12.super_class = GPBUInt64ObjectDictionary;
@@ -27,26 +27,26 @@
   if (v8)
   {
     v8->_dictionary = objc_alloc_init(NSMutableDictionary);
-    if (a4)
+    if (keys)
     {
-      if (a3 && a5)
+      if (objects && count)
       {
         do
         {
-          v9 = *a3;
-          if (!*a3)
+          v9 = *objects;
+          if (!*objects)
           {
             [NSException raise:NSInvalidArgumentException format:@"Attempting to add nil object to a Dictionary"];
-            v9 = *a3;
+            v9 = *objects;
           }
 
-          v10 = *a4++;
+          v10 = *keys++;
           [(NSMutableDictionary *)v8->_dictionary setObject:v9 forKey:[NSNumber numberWithUnsignedLongLong:v10]];
-          ++a3;
-          --a5;
+          ++objects;
+          --count;
         }
 
-        while (a5);
+        while (count);
       }
     }
   }
@@ -54,13 +54,13 @@
   return v8;
 }
 
-- (GPBUInt64ObjectDictionary)initWithDictionary:(id)a3
+- (GPBUInt64ObjectDictionary)initWithDictionary:(id)dictionary
 {
   v4 = [(GPBUInt64ObjectDictionary *)self initWithObjects:0 forKeys:0 count:0];
   v5 = v4;
-  if (a3 && v4)
+  if (dictionary && v4)
   {
-    [(NSMutableDictionary *)v4->_dictionary addEntriesFromDictionary:*(a3 + 2)];
+    [(NSMutableDictionary *)v4->_dictionary addEntriesFromDictionary:*(dictionary + 2)];
   }
 
   return v5;
@@ -78,16 +78,16 @@
   [(GPBUInt64ObjectDictionary *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [GPBUInt64ObjectDictionary allocWithZone:a3];
+  v4 = [GPBUInt64ObjectDictionary allocWithZone:zone];
 
   return [(GPBUInt64ObjectDictionary *)v4 initWithDictionary:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -99,25 +99,25 @@
   }
 
   dictionary = self->_dictionary;
-  v6 = *(a3 + 2);
+  v6 = *(equal + 2);
 
   return [(NSMutableDictionary *)dictionary isEqual:v6];
 }
 
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block
 {
   v7 = 0;
   dictionary = self->_dictionary;
-  v5 = [(NSMutableDictionary *)dictionary keyEnumerator];
+  keyEnumerator = [(NSMutableDictionary *)dictionary keyEnumerator];
   do
   {
-    v6 = [v5 nextObject];
-    if (!v6)
+    nextObject = [keyEnumerator nextObject];
+    if (!nextObject)
     {
       break;
     }
 
-    (*(a3 + 2))(a3, [v6 unsignedLongLongValue], -[NSMutableDictionary objectForKeyedSubscript:](dictionary, "objectForKeyedSubscript:", v6), &v7);
+    (*(block + 2))(block, [nextObject unsignedLongLongValue], -[NSMutableDictionary objectForKeyedSubscript:](dictionary, "objectForKeyedSubscript:", nextObject), &v7);
   }
 
   while (v7 != 1);
@@ -129,8 +129,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NSMutableDictionary *)self->_dictionary objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_dictionary objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -141,18 +141,18 @@ LABEL_3:
     {
       if (*v10 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(objectEnumerator);
       }
 
-      v7 = [*(*(&v9 + 1) + 8 * v6) isInitialized];
-      if (!v7)
+      isInitialized = [*(*(&v9 + 1) + 8 * v6) isInitialized];
+      if (!isInitialized)
       {
         break;
       }
 
       if (v4 == ++v6)
       {
-        v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v4 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -166,60 +166,60 @@ LABEL_3:
   else
   {
 LABEL_9:
-    LOBYTE(v7) = 1;
+    LOBYTE(isInitialized) = 1;
   }
 
-  return v7;
+  return isInitialized;
 }
 
-- (id)deepCopyWithZone:(_NSZone *)a3
+- (id)deepCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(GPBUInt64ObjectDictionary);
-  v6 = [(NSMutableDictionary *)self->_dictionary keyEnumerator];
+  keyEnumerator = [(NSMutableDictionary *)self->_dictionary keyEnumerator];
   dictionary = v5->_dictionary;
-  v8 = [v6 nextObject];
-  if (v8)
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v9 = v8;
+    nextObject2 = nextObject;
     do
     {
-      v10 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_dictionary objectForKeyedSubscript:{v9), "copyWithZone:", a3}];
-      [(NSMutableDictionary *)dictionary setObject:v10 forKey:v9];
+      v10 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_dictionary objectForKeyedSubscript:{nextObject2), "copyWithZone:", zone}];
+      [(NSMutableDictionary *)dictionary setObject:v10 forKey:nextObject2];
 
-      v9 = [v6 nextObject];
+      nextObject2 = [keyEnumerator nextObject];
     }
 
-    while (v9);
+    while (nextObject2);
   }
 
   return v5;
 }
 
-- (unint64_t)computeSerializedSizeAsField:(id)a3
+- (unint64_t)computeSerializedSizeAsField:(id)field
 {
   dictionary = self->_dictionary;
   result = [(NSMutableDictionary *)dictionary count];
   if (result)
   {
     v6 = result;
-    v7 = *(*(a3 + 1) + 30);
-    v8 = [a3 mapKeyDataType];
-    v9 = [(NSMutableDictionary *)dictionary keyEnumerator];
-    v10 = [v9 nextObject];
-    if (v10)
+    v7 = *(*(field + 1) + 30);
+    mapKeyDataType = [field mapKeyDataType];
+    keyEnumerator = [(NSMutableDictionary *)dictionary keyEnumerator];
+    nextObject = [keyEnumerator nextObject];
+    if (nextObject)
     {
-      v11 = v10;
+      nextObject2 = nextObject;
       v12 = 0;
       do
       {
-        v13 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:v11];
-        v14 = sub_10031EA6C([v11 unsignedLongLongValue], 1, v8);
+        v13 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:nextObject2];
+        v14 = sub_10031EA6C([nextObject2 unsignedLongLongValue], 1, mapKeyDataType);
         v15 = &sub_10031C838(v13, v7)[v14];
         v12 += &v15[GPBComputeRawVarint32SizeForInteger(v15)];
-        v11 = [v9 nextObject];
+        nextObject2 = [keyEnumerator nextObject];
       }
 
-      while (v11);
+      while (nextObject2);
     }
 
     else
@@ -227,71 +227,71 @@ LABEL_9:
       v12 = 0;
     }
 
-    return v12 + GPBComputeWireFormatTagSize(*(*(a3 + 1) + 16), 15) * v6;
+    return v12 + GPBComputeWireFormatTagSize(*(*(field + 1) + 16), 15) * v6;
   }
 
   return result;
 }
 
-- (void)writeToCodedOutputStream:(id)a3 asField:(id)a4
+- (void)writeToCodedOutputStream:(id)stream asField:(id)field
 {
-  v7 = *(*(a4 + 1) + 30);
-  v8 = [a4 mapKeyDataType];
-  Tag = GPBWireFormatMakeTag(*(*(a4 + 1) + 16), 2);
+  v7 = *(*(field + 1) + 30);
+  mapKeyDataType = [field mapKeyDataType];
+  Tag = GPBWireFormatMakeTag(*(*(field + 1) + 16), 2);
   dictionary = self->_dictionary;
-  v11 = [(NSMutableDictionary *)dictionary keyEnumerator];
-  v12 = [v11 nextObject];
-  if (v12)
+  keyEnumerator = [(NSMutableDictionary *)dictionary keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v13 = v12;
+    nextObject2 = nextObject;
     do
     {
-      v14 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:v13];
-      [a3 writeInt32NoTag:Tag];
-      v15 = [v13 unsignedLongLongValue];
-      v16 = sub_10031EA6C(v15, 1, v8);
-      [a3 writeInt32NoTag:{sub_10031C838(v14, v7) + v16}];
-      sub_10031EC7C(a3, v15, 1, v8);
-      sub_10031CA3C(a3, v14, v7);
-      v13 = [v11 nextObject];
+      v14 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:nextObject2];
+      [stream writeInt32NoTag:Tag];
+      unsignedLongLongValue = [nextObject2 unsignedLongLongValue];
+      v16 = sub_10031EA6C(unsignedLongLongValue, 1, mapKeyDataType);
+      [stream writeInt32NoTag:{sub_10031C838(v14, v7) + v16}];
+      sub_10031EC7C(stream, unsignedLongLongValue, 1, mapKeyDataType);
+      sub_10031CA3C(stream, v14, v7);
+      nextObject2 = [keyEnumerator nextObject];
     }
 
-    while (v13);
+    while (nextObject2);
   }
 }
 
-- (void)setGPBGenericValue:(id *)a3 forGPBGenericValueKey:(id *)a4
+- (void)setGPBGenericValue:(id *)value forGPBGenericValueKey:(id *)key
 {
   dictionary = self->_dictionary;
-  var2 = a3->var2;
-  v6 = [NSNumber numberWithUnsignedLongLong:a4->var2];
+  var2 = value->var2;
+  v6 = [NSNumber numberWithUnsignedLongLong:key->var2];
 
   [(NSMutableDictionary *)dictionary setObject:var2 forKey:v6];
 }
 
-- (void)enumerateForTextFormat:(id)a3
+- (void)enumerateForTextFormat:(id)format
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10032CE3C;
   v3[3] = &unk_100435A58;
-  v3[4] = a3;
+  v3[4] = format;
   [(GPBUInt64ObjectDictionary *)self enumerateKeysAndObjectsUsingBlock:v3];
 }
 
-- (id)objectForKey:(unint64_t)a3
+- (id)objectForKey:(unint64_t)key
 {
   dictionary = self->_dictionary;
-  v4 = [NSNumber numberWithUnsignedLongLong:a3];
+  v4 = [NSNumber numberWithUnsignedLongLong:key];
 
   return [(NSMutableDictionary *)dictionary objectForKey:v4];
 }
 
-- (void)addEntriesFromDictionary:(id)a3
+- (void)addEntriesFromDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    [(NSMutableDictionary *)self->_dictionary addEntriesFromDictionary:*(a3 + 2)];
+    [(NSMutableDictionary *)self->_dictionary addEntriesFromDictionary:*(dictionary + 2)];
     autocreator = self->_autocreator;
     if (autocreator)
     {
@@ -301,14 +301,14 @@ LABEL_9:
   }
 }
 
-- (void)setObject:(id)a3 forKey:(unint64_t)a4
+- (void)setObject:(id)object forKey:(unint64_t)key
 {
-  if (!a3)
+  if (!object)
   {
     [NSException raise:NSInvalidArgumentException format:@"Attempting to add nil object to a Dictionary"];
   }
 
-  [(NSMutableDictionary *)self->_dictionary setObject:a3 forKey:[NSNumber numberWithUnsignedLongLong:a4]];
+  [(NSMutableDictionary *)self->_dictionary setObject:object forKey:[NSNumber numberWithUnsignedLongLong:key]];
   autocreator = self->_autocreator;
   if (autocreator)
   {
@@ -317,10 +317,10 @@ LABEL_9:
   }
 }
 
-- (void)removeObjectForKey:(unint64_t)a3
+- (void)removeObjectForKey:(unint64_t)key
 {
   dictionary = self->_dictionary;
-  v4 = [NSNumber numberWithUnsignedLongLong:a3];
+  v4 = [NSNumber numberWithUnsignedLongLong:key];
 
   [(NSMutableDictionary *)dictionary removeObjectForKey:v4];
 }

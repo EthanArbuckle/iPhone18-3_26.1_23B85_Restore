@@ -1,14 +1,14 @@
 @interface MPModelPlaylistKind
 + (id)identityKind;
-+ (id)kindWithVariants:(unint64_t)a3 playlistEntryKind:(id)a4 options:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (MPModelPlaylistKind)initWithCoder:(id)a3;
++ (id)kindWithVariants:(unint64_t)variants playlistEntryKind:(id)kind options:(unint64_t)options;
+- (BOOL)isEqual:(id)equal;
+- (MPModelPlaylistKind)initWithCoder:(id)coder;
 - (id)humanDescription;
-- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)a3;
+- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)property;
 - (shared_ptr<mlcore::Predicate>)representedSearchScopePredicate;
 - (unint64_t)hash;
-- (void)applyToView:(shared_ptr<mlcore:(id)a4 :LibraryView>)a3 withContext:;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyToView:(shared_ptr<mlcore:(id)view :LibraryView>)a3 withContext:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPModelPlaylistKind
@@ -157,30 +157,30 @@ LABEL_19:
   if ((v8 & 8) == 0 || v10)
   {
     [v3 appendString:@" containing "];
-    v11 = [(MPModelPlaylistEntryKind *)self->_playlistEntryKind humanDescription];
-    [v3 appendString:v11];
+    humanDescription = [(MPModelPlaylistEntryKind *)self->_playlistEntryKind humanDescription];
+    [v3 appendString:humanDescription];
   }
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPModelPlaylistKind;
-  v4 = a3;
-  [(MPModelKind *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_variants forKey:{@"variants", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_playlistEntryKind forKey:@"playlistEntryKind"];
-  [v4 encodeInteger:self->_options forKey:@"options"];
+  coderCopy = coder;
+  [(MPModelKind *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_variants forKey:{@"variants", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_playlistEntryKind forKey:@"playlistEntryKind"];
+  [coderCopy encodeInteger:self->_options forKey:@"options"];
 }
 
-- (MPModelPlaylistKind)initWithCoder:(id)a3
+- (MPModelPlaylistKind)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"variants"];
-  v6 = [v4 decodeIntegerForKey:@"options"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playlistEntryKind"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"variants"];
+  v6 = [coderCopy decodeIntegerForKey:@"options"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playlistEntryKind"];
 
   if (v7)
   {
@@ -195,14 +195,14 @@ LABEL_19:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = MPModelPlaylistKind;
-  if ([(MPModelKind *)&v8 isEqual:v4])
+  if ([(MPModelKind *)&v8 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = self->_variants == v5[2] && [(MPModelPlaylistEntryKind *)self->_playlistEntryKind isEqual:v5[3]]&& self->_options == v5[4];
   }
 
@@ -222,20 +222,20 @@ LABEL_19:
   return v3 ^ [(MPModelPlaylistEntryKind *)self->_playlistEntryKind hash];
 }
 
-+ (id)kindWithVariants:(unint64_t)a3 playlistEntryKind:(id)a4 options:(unint64_t)a5
++ (id)kindWithVariants:(unint64_t)variants playlistEntryKind:(id)kind options:(unint64_t)options
 {
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Playlist:v%lu:o%lu:pe%p", a3, a5, v8];
+  kindCopy = kind;
+  kindCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Playlist:v%lu:o%lu:pe%p", variants, options, kindCopy];
   v10 = objc_opt_class();
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __66__MPModelPlaylistKind_kindWithVariants_playlistEntryKind_options___block_invoke;
   v14[3] = &unk_1E767A050;
-  v15 = v8;
-  v16 = a3;
-  v17 = a5;
-  v11 = v8;
-  v12 = [a1 kindWithModelClass:v10 cacheKey:v9 block:v14];
+  v15 = kindCopy;
+  variantsCopy = variants;
+  optionsCopy = options;
+  v11 = kindCopy;
+  v12 = [self kindWithModelClass:v10 cacheKey:kindCopy block:v14];
 
   return v12;
 }
@@ -255,11 +255,11 @@ void __66__MPModelPlaylistKind_kindWithVariants_playlistEntryKind_options___bloc
   return [MPModelKind kindWithModelClass:v2];
 }
 
-- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)a3
+- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)property
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = [(MPModelPlaylistKind *)self variants];
-  if ((v5 & 0x82) == 2)
+  variants = [(MPModelPlaylistKind *)self variants];
+  if ((variants & 0x82) == 2)
   {
     v6 = MEMORY[0x1E69B13D8];
     v11 = @"playlistKind";
@@ -271,10 +271,10 @@ void __66__MPModelPlaylistKind_kindWithVariants_playlistEntryKind_options___bloc
     [v6 snapshotWithDomain:*MEMORY[0x1E69B1340] type:@"Bug" subType:@"MPModelLibraryRequestWithSmartPlaylistAndNoFavoriteSongs" context:@"-[MPModelLibraryRequest] Requesting playlist from an MPModelLibraryRequest with smart playlists but not the favorite songs playlist" triggerThresholdValues:0 events:v9 completion:0];
   }
 
-  IsSmart = mlcore::PlaylistPropertyIsSmart(v5);
-  if (a3)
+  IsSmart = mlcore::PlaylistPropertyIsSmart(variants);
+  if (property)
   {
-    MPMediaLibraryGetProperty(a3, IsSmart);
+    MPMediaLibraryGetProperty(property, IsSmart);
   }
 
   std::allocate_shared[abi:ne200100]<mlcore::UnaryPredicate<int>,std::allocator<mlcore::UnaryPredicate<int>>,mlcore::ModelProperty<int> *&,mlcore::UnaryOperator,0>();
@@ -288,7 +288,7 @@ void __66__MPModelPlaylistKind_kindWithVariants_playlistEntryKind_options___bloc
   return result;
 }
 
-- (void)applyToView:(shared_ptr<mlcore:(id)a4 :LibraryView>)a3 withContext:
+- (void)applyToView:(shared_ptr<mlcore:(id)view :LibraryView>)a3 withContext:
 {
   var0 = a3.var0;
   v6 = a3.var1;
@@ -314,8 +314,8 @@ void __66__MPModelPlaylistKind_kindWithVariants_playlistEntryKind_options___bloc
     mlcore::LibraryView::setFilters(*var0);
   }
 
-  v8 = [(MPModelPlaylistKind *)self playlistEntryKind];
-  v9 = v8;
+  playlistEntryKind = [(MPModelPlaylistKind *)self playlistEntryKind];
+  v9 = playlistEntryKind;
   v10 = *(var0 + 1);
   v11 = *var0;
   v12 = v10;
@@ -324,7 +324,7 @@ void __66__MPModelPlaylistKind_kindWithVariants_playlistEntryKind_options___bloc
     atomic_fetch_add_explicit(&v10->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  [v8 applyToView:&v11 withContext:v6];
+  [playlistEntryKind applyToView:&v11 withContext:v6];
   if (v12)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v12);

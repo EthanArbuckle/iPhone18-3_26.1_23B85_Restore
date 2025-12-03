@@ -1,27 +1,27 @@
 @interface _CPLResourcesMutableArray
-- (_CPLResourcesMutableArray)initWithResources:(id)a3;
-- (void)addResource:(id)a3;
+- (_CPLResourcesMutableArray)initWithResources:(id)resources;
+- (void)addResource:(id)resource;
 @end
 
 @implementation _CPLResourcesMutableArray
 
-- (void)addResource:(id)a3
+- (void)addResource:(id)resource
 {
   resourcesPerType = self->_resourcesPerType;
   v5 = MEMORY[0x1E696AD98];
-  v6 = a3;
-  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(v6, "resourceType")}];
-  [(NSMutableDictionary *)resourcesPerType setObject:v6 forKey:v7];
+  resourceCopy = resource;
+  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(resourceCopy, "resourceType")}];
+  [(NSMutableDictionary *)resourcesPerType setObject:resourceCopy forKey:v7];
 
   updatedResourcesPerType = self->_updatedResourcesPerType;
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v6, "resourceType")}];
-  [(NSMutableDictionary *)updatedResourcesPerType setObject:v6 forKey:v9];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(resourceCopy, "resourceType")}];
+  [(NSMutableDictionary *)updatedResourcesPerType setObject:resourceCopy forKey:v9];
 }
 
-- (_CPLResourcesMutableArray)initWithResources:(id)a3
+- (_CPLResourcesMutableArray)initWithResources:(id)resources
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resourcesCopy = resources;
   v24.receiver = self;
   v24.super_class = _CPLResourcesMutableArray;
   v5 = [(_CPLResourcesMutableArray *)&v24 init];
@@ -39,7 +39,7 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = v4;
+    v10 = resourcesCopy;
     v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v11)
     {

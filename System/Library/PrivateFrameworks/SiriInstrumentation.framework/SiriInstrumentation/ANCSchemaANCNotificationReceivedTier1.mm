@@ -1,26 +1,26 @@
 @interface ANCSchemaANCNotificationReceivedTier1
-- (ANCSchemaANCNotificationReceivedTier1)initWithDictionary:(id)a3;
-- (ANCSchemaANCNotificationReceivedTier1)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ANCSchemaANCNotificationReceivedTier1)initWithDictionary:(id)dictionary;
+- (ANCSchemaANCNotificationReceivedTier1)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ANCSchemaANCNotificationReceivedTier1
 
-- (ANCSchemaANCNotificationReceivedTier1)initWithDictionary:(id)a3
+- (ANCSchemaANCNotificationReceivedTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = ANCSchemaANCNotificationReceivedTier1;
   v5 = [(ANCSchemaANCNotificationReceivedTier1 *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(ANCSchemaANCNotificationReceivedTier1 *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"appBundleId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"appBundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(ANCSchemaANCNotificationReceivedTier1 *)v5 setAppBundleId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isRedactedDueToOptOut"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isRedactedDueToOptOut"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (ANCSchemaANCNotificationReceivedTier1)initWithJSON:(id)a3
+- (ANCSchemaANCNotificationReceivedTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ANCSchemaANCNotificationReceivedTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ANCSchemaANCNotificationReceivedTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ANCSchemaANCNotificationReceivedTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,39 +85,39 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_appBundleId)
   {
-    v4 = [(ANCSchemaANCNotificationReceivedTier1 *)self appBundleId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"appBundleId"];
+    appBundleId = [(ANCSchemaANCNotificationReceivedTier1 *)self appBundleId];
+    v5 = [appBundleId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"appBundleId"];
   }
 
   if (*(&self->_isRedactedDueToOptOut + 1))
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[ANCSchemaANCNotificationReceivedTier1 isRedactedDueToOptOut](self, "isRedactedDueToOptOut")}];
-    [v3 setObject:v6 forKeyedSubscript:@"isRedactedDueToOptOut"];
+    [dictionary setObject:v6 forKeyedSubscript:@"isRedactedDueToOptOut"];
   }
 
   if (self->_linkId)
   {
-    v7 = [(ANCSchemaANCNotificationReceivedTier1 *)self linkId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    linkId = [(ANCSchemaANCNotificationReceivedTier1 *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -137,28 +137,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ANCSchemaANCNotificationReceivedTier1 *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(ANCSchemaANCNotificationReceivedTier1 *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(ANCSchemaANCNotificationReceivedTier1 *)self linkId];
-  if (v7)
+  linkId3 = [(ANCSchemaANCNotificationReceivedTier1 *)self linkId];
+  if (linkId3)
   {
-    v8 = v7;
-    v9 = [(ANCSchemaANCNotificationReceivedTier1 *)self linkId];
-    v10 = [v4 linkId];
-    v11 = [v9 isEqual:v10];
+    v8 = linkId3;
+    linkId4 = [(ANCSchemaANCNotificationReceivedTier1 *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v11 = [linkId4 isEqual:linkId5];
 
     if (!v11)
     {
@@ -170,22 +170,22 @@
   {
   }
 
-  v5 = [(ANCSchemaANCNotificationReceivedTier1 *)self appBundleId];
-  v6 = [v4 appBundleId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(ANCSchemaANCNotificationReceivedTier1 *)self appBundleId];
+  linkId2 = [equalCopy appBundleId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(ANCSchemaANCNotificationReceivedTier1 *)self appBundleId];
-  if (v12)
+  appBundleId = [(ANCSchemaANCNotificationReceivedTier1 *)self appBundleId];
+  if (appBundleId)
   {
-    v13 = v12;
-    v14 = [(ANCSchemaANCNotificationReceivedTier1 *)self appBundleId];
-    v15 = [v4 appBundleId];
-    v16 = [v14 isEqual:v15];
+    v13 = appBundleId;
+    appBundleId2 = [(ANCSchemaANCNotificationReceivedTier1 *)self appBundleId];
+    appBundleId3 = [equalCopy appBundleId];
+    v16 = [appBundleId2 isEqual:appBundleId3];
 
     if (!v16)
     {
@@ -197,9 +197,9 @@ LABEL_11:
   {
   }
 
-  if (*(&self->_isRedactedDueToOptOut + 1) == (v4[25] & 1))
+  if (*(&self->_isRedactedDueToOptOut + 1) == (equalCopy[25] & 1))
   {
-    if (!*(&self->_isRedactedDueToOptOut + 1) || (isRedactedDueToOptOut = self->_isRedactedDueToOptOut, isRedactedDueToOptOut == [v4 isRedactedDueToOptOut]))
+    if (!*(&self->_isRedactedDueToOptOut + 1) || (isRedactedDueToOptOut = self->_isRedactedDueToOptOut, isRedactedDueToOptOut == [equalCopy isRedactedDueToOptOut]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -213,68 +213,68 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ANCSchemaANCNotificationReceivedTier1 *)self linkId];
+  toCopy = to;
+  linkId = [(ANCSchemaANCNotificationReceivedTier1 *)self linkId];
 
-  if (v4)
+  if (linkId)
   {
-    v5 = [(ANCSchemaANCNotificationReceivedTier1 *)self linkId];
+    linkId2 = [(ANCSchemaANCNotificationReceivedTier1 *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ANCSchemaANCNotificationReceivedTier1 *)self appBundleId];
+  appBundleId = [(ANCSchemaANCNotificationReceivedTier1 *)self appBundleId];
 
-  if (v6)
+  if (appBundleId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if (*(&self->_isRedactedDueToOptOut + 1))
   {
     PBDataWriterWriteBOOLField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = ANCSchemaANCNotificationReceivedTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(ANCSchemaANCNotificationReceivedTier1 *)self deleteAppBundleId];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(ANCSchemaANCNotificationReceivedTier1 *)self deleteAppBundleId];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(ANCSchemaANCNotificationReceivedTier1 *)self deleteAppBundleId];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(ANCSchemaANCNotificationReceivedTier1 *)self deleteAppBundleId];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(ANCSchemaANCNotificationReceivedTier1 *)self deleteAppBundleId];
   }
 
-  v6 = [(ANCSchemaANCNotificationReceivedTier1 *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  linkId = [(ANCSchemaANCNotificationReceivedTier1 *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ANCSchemaANCNotificationReceivedTier1 *)self deleteLinkId];
   }

@@ -21,14 +21,14 @@
 - (id)userRequestedWaypoints
 {
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [a1 waypoints];
+  waypoints = [self waypoints];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__GEOComposedRoute_MNExtras__userRequestedWaypoints__block_invoke;
   v7[3] = &unk_1E842BEF0;
   v4 = v2;
   v8 = v4;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [waypoints enumerateObjectsUsingBlock:v7];
 
   v5 = [v4 copy];
 
@@ -38,14 +38,14 @@
 - (uint64_t)isMultipointRoute
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [a1 legs];
-  v3 = [v2 count];
+  legs = [self legs];
+  v3 = [legs count];
 
   if (v3 >= 2)
   {
-    v5 = [a1 waypoints];
-    v6 = [a1 waypoints];
-    v7 = [v5 subarrayWithRange:{1, objc_msgSend(v6, "count") - 2}];
+    waypoints = [self waypoints];
+    waypoints2 = [self waypoints];
+    v7 = [waypoints subarrayWithRange:{1, objc_msgSend(waypoints2, "count") - 2}];
 
     v15 = 0u;
     v16 = 0u;
@@ -96,56 +96,56 @@ LABEL_13:
 
 - (uint64_t)isNavigableForWatch
 {
-  if ([a1 transportType] == 1)
+  if ([self transportType] == 1)
   {
     return 1;
   }
 
-  v2 = [MEMORY[0x1E69A1CD8] sharedConfiguration];
-  v3 = [v2 currentCountrySupportsNavigation];
+  mEMORY[0x1E69A1CD8] = [MEMORY[0x1E69A1CD8] sharedConfiguration];
+  currentCountrySupportsNavigation = [mEMORY[0x1E69A1CD8] currentCountrySupportsNavigation];
 
-  if ((v3 & 1) == 0 || ![a1 isNavigable])
+  if ((currentCountrySupportsNavigation & 1) == 0 || ![self isNavigable])
   {
     return 0;
   }
 
-  v4 = [a1 transportType];
-  v5 = 0;
-  if (v4 <= 3 && v4 != 1)
+  transportType = [self transportType];
+  isCurrentLocation = 0;
+  if (transportType <= 3 && transportType != 1)
   {
-    if (([a1 source] & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if (([self source] & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       return 1;
     }
 
-    v6 = [a1 origin];
-    if (v6)
+    origin = [self origin];
+    if (origin)
     {
-      v7 = [a1 origin];
-      v5 = [v7 isCurrentLocation];
+      origin2 = [self origin];
+      isCurrentLocation = [origin2 isCurrentLocation];
     }
 
     else
     {
-      v5 = 1;
+      isCurrentLocation = 1;
     }
   }
 
-  return v5;
+  return isCurrentLocation;
 }
 
 - (_MNMapPointsArray)_mapPoints
 {
-  v2 = [a1 pointCount];
-  v3 = v2;
-  v4 = [[_MNMapPointsArray alloc] initWithCapacity:v2];
-  if (v2)
+  pointCount = [self pointCount];
+  v3 = pointCount;
+  v4 = [[_MNMapPointsArray alloc] initWithCapacity:pointCount];
+  if (pointCount)
   {
     v5 = 0;
     v6 = 0;
     do
     {
-      [a1 pointAt:v6];
+      [self pointAt:v6];
       GEOMapPointForCoordinate();
       v8 = v7;
       v10 = v9;
@@ -165,17 +165,17 @@ LABEL_13:
 - (id)divergenceAndConvergenceWithRoute:()MNExtras outOtherRoutePoints:
 {
   v6 = a3;
-  v7 = [a1 pointCount];
-  v8 = [v6 pointCount];
+  pointCount = [self pointCount];
+  pointCount2 = [v6 pointCount];
   v9 = 0;
-  if (v7 >= 2 && v8 >= 2)
+  if (pointCount >= 2 && pointCount2 >= 2)
   {
-    v10 = [a1 _mapPoints];
-    v11 = [v6 _mapPoints];
-    [a1 pointAt:0];
+    _mapPoints = [self _mapPoints];
+    _mapPoints2 = [v6 _mapPoints];
+    [self pointAt:0];
     GEOMapPointsPerMeterAtLatitude();
     v14 = 0;
-    [MEMORY[0x1E69A1C68] findDivergenceAndConvergence:objc_msgSend(v10 pointCount:"mapPoints") otherPoints:objc_msgSend(v10 pointCount:"count") divergenceTolerance:objc_msgSend(v11 convergenceTolerance:"mapPoints") outCoordinatesA:objc_msgSend(v11 outCoordinatesB:{"count"), &v14, a4, v12 * 10.0, v12}];
+    [MEMORY[0x1E69A1C68] findDivergenceAndConvergence:objc_msgSend(_mapPoints pointCount:"mapPoints") otherPoints:objc_msgSend(_mapPoints pointCount:"count") divergenceTolerance:objc_msgSend(_mapPoints2 convergenceTolerance:"mapPoints") outCoordinatesA:objc_msgSend(_mapPoints2 outCoordinatesB:{"count"), &v14, a4, v12 * 10.0, v12}];
     v9 = v14;
   }
 
@@ -184,7 +184,7 @@ LABEL_13:
 
 - (id)divergenceAndConvergenceWithRoute:()MNExtras
 {
-  v3 = [a1 divergenceAndConvergenceWithRoute:a3 outOtherRoutePoints:0];
+  v3 = [self divergenceAndConvergenceWithRoute:a3 outOtherRoutePoints:0];
 
   return v3;
 }
@@ -192,15 +192,15 @@ LABEL_13:
 - (void)findDivergenceAndConvergenceWithRoute:()MNExtras distanceInMeters:outDivergenceCoordinate:outConvergenceCoordinate:
 {
   v15 = a4;
-  v10 = [a1 pointCount];
-  v11 = [v15 pointCount];
-  if (v10 >= 2 && v11 >= 2)
+  pointCount = [self pointCount];
+  pointCount2 = [v15 pointCount];
+  if (pointCount >= 2 && pointCount2 >= 2)
   {
-    v12 = [a1 _mapPoints];
-    v13 = [v15 _mapPoints];
-    [a1 pointAt:0];
+    _mapPoints = [self _mapPoints];
+    _mapPoints2 = [v15 _mapPoints];
+    [self pointAt:0];
     GEOMapPointsPerMeterAtLatitude();
-    [MEMORY[0x1E69A1C68] _findDivergenceAndConvergence:objc_msgSend(v12 pointCount:"mapPoints") otherPoints:objc_msgSend(v12 pointCount:"count") divergenceTolerance:objc_msgSend(v13 convergenceTolerance:"mapPoints") outDivergenceCoordinateA:objc_msgSend(v13 outDivergenceCoordinateB:"count") outConvergenceCoordinateA:a5 outConvergenceCoordinateB:{0, v14 * a2, v14 * a2, a6, 0}];
+    [MEMORY[0x1E69A1C68] _findDivergenceAndConvergence:objc_msgSend(_mapPoints pointCount:"mapPoints") otherPoints:objc_msgSend(_mapPoints pointCount:"count") divergenceTolerance:objc_msgSend(_mapPoints2 convergenceTolerance:"mapPoints") outDivergenceCoordinateA:objc_msgSend(_mapPoints2 outDivergenceCoordinateB:"count") outConvergenceCoordinateA:a5 outConvergenceCoordinateB:{0, v14 * a2, v14 * a2, a6, 0}];
   }
 }
 
@@ -274,7 +274,7 @@ LABEL_13:
 + (uint64_t)_startIndexForPoints:()MNExtras withPoints:pointCount:toleranceSquared:
 {
   v7 = a6 + 1;
-  a1.f64[1] = a2;
+  self.f64[1] = a2;
   v8 = -1;
   do
   {
@@ -290,11 +290,11 @@ LABEL_13:
     if (vaddvq_f64(v11) > 1.0e-15)
     {
       v13 = vaddq_f64(vdupq_laneq_s64(v11, 1), v11);
-      v14 = vmulq_f64(vsubq_f64(a1, v9), v10);
+      v14 = vmulq_f64(vsubq_f64(self, v9), v10);
       v12 = fmin(fmax(vdivq_f64(vaddq_f64(vdupq_laneq_s64(v14, 1), v14), v13).f64[0], 0.0), 1.0);
     }
 
-    v15 = vsubq_f64(a1, vmlaq_n_f64(v9, v10, v12));
+    v15 = vsubq_f64(self, vmlaq_n_f64(v9, v10, v12));
     ++v8;
     ++v7;
   }
@@ -428,7 +428,7 @@ LABEL_13:
       while (v11);
       v34 = *a4;
       GEOMapPointsPerMeterAtLatitude();
-      [MEMORY[0x1E69A1C68] _findDivergenceAndConvergence:-[_MNMapPointsArray mapPoints](v36 pointCount:"mapPoints") otherPoints:-[_MNMapPointsArray count](v36 pointCount:"count") divergenceTolerance:-[_MNMapPointsArray mapPoints](v18 convergenceTolerance:"mapPoints") outDivergenceCoordinateA:-[_MNMapPointsArray count](v18 outDivergenceCoordinateB:"count") outConvergenceCoordinateA:a8 outConvergenceCoordinateB:{a9, v35 * a1, v35 * a1, a10, a11}];
+      [MEMORY[0x1E69A1C68] _findDivergenceAndConvergence:-[_MNMapPointsArray mapPoints](v36 pointCount:"mapPoints") otherPoints:-[_MNMapPointsArray count](v36 pointCount:"count") divergenceTolerance:-[_MNMapPointsArray mapPoints](v18 convergenceTolerance:"mapPoints") outDivergenceCoordinateA:-[_MNMapPointsArray count](v18 outDivergenceCoordinateB:"count") outConvergenceCoordinateA:a8 outConvergenceCoordinateB:{a9, v35 * self, v35 * self, a10, a11}];
     }
   }
 }
@@ -448,11 +448,11 @@ LABEL_13:
 
   if (a6 >= 2 && a8 >= 2)
   {
-    v44 = [MEMORY[0x1E695DF70] array];
-    v43 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v46 = 0;
     v47 = 0;
-    v12 = [a1 _pointsConverge:a5 pointCount:a6 otherPoints:a7 pointCount:a8 tolerance:&v47 outCoordinatesA:&v46 outCoordinatesB:a3];
+    v12 = [self _pointsConverge:a5 pointCount:a6 otherPoints:a7 pointCount:a8 tolerance:&v47 outCoordinatesA:&v46 outCoordinatesB:a3];
     v13 = v47;
     v14 = v46;
     v15 = [v13 count];
@@ -480,9 +480,9 @@ LABEL_13:
     {
       v16 = 0;
       v17 = MEMORY[0x1E69A1918];
-      LODWORD(v18) = *MEMORY[0x1E69A1918];
+      LODWORD(routeCoordinate5) = *MEMORY[0x1E69A1918];
       v19 = *(MEMORY[0x1E69A1918] + 4);
-      LODWORD(v20) = *MEMORY[0x1E69A1918];
+      LODWORD(routeCoordinate4) = *MEMORY[0x1E69A1918];
       v21 = v19;
       while (1)
       {
@@ -491,14 +491,14 @@ LABEL_13:
 LABEL_26:
           if (a9)
           {
-            v31 = v44;
-            *a9 = v44;
+            v31 = array;
+            *a9 = array;
           }
 
           if (a10)
           {
-            v32 = v43;
-            *a10 = v43;
+            v32 = array2;
+            *a10 = array2;
           }
 
           break;
@@ -506,10 +506,10 @@ LABEL_26:
 
         v22 = [v13 objectAtIndexedSubscript:v16];
         v23 = [v14 objectAtIndexedSubscript:v16];
-        if (v20 != *v17 || (v24 = *&v20, vabds_f32(v21, v17[1]) >= 0.00000011921))
+        if (routeCoordinate4 != *v17 || (v24 = *&routeCoordinate4, vabds_f32(v21, v17[1]) >= 0.00000011921))
         {
-          v25 = [v22 routeCoordinate];
-          if (v20 > v25 || v20 == v25 && v21 >= *(&v25 + 1))
+          routeCoordinate = [v22 routeCoordinate];
+          if (routeCoordinate4 > routeCoordinate || routeCoordinate4 == routeCoordinate && v21 >= *(&routeCoordinate + 1))
           {
             goto LABEL_24;
           }
@@ -517,31 +517,31 @@ LABEL_26:
           v24 = *v17;
         }
 
-        if (v18 == LODWORD(v24) && vabds_f32(v19, v17[1]) < 0.00000011921 || (v26 = [v23 routeCoordinate], v18 <= v26) && (v18 != v26 || v19 < *(&v26 + 1)))
+        if (routeCoordinate5 == LODWORD(v24) && vabds_f32(v19, v17[1]) < 0.00000011921 || (v26 = [v23 routeCoordinate], routeCoordinate5 <= v26) && (routeCoordinate5 != v26 || v19 < *(&v26 + 1)))
         {
-          [v44 addObject:v22];
-          [v43 addObject:v23];
-          v27 = [v22 routeCoordinate];
-          v28 = [v23 routeCoordinate];
+          [array addObject:v22];
+          [array2 addObject:v23];
+          routeCoordinate2 = [v22 routeCoordinate];
+          routeCoordinate3 = [v23 routeCoordinate];
           *buf = *v17;
           v45 = *buf;
-          if (([a1 _pointsDiverge:a5 + 16 * v27 pointCount:a6 - v27 otherPoints:a7 + 16 * v28 pointCount:a8 - v28 tolerance:buf outCoordinateA:&v45 outCoordinateB:a2] & 1) == 0)
+          if (([self _pointsDiverge:a5 + 16 * routeCoordinate2 pointCount:a6 - routeCoordinate2 otherPoints:a7 + 16 * routeCoordinate3 pointCount:a8 - routeCoordinate3 tolerance:buf outCoordinateA:&v45 outCoordinateB:a2] & 1) == 0)
           {
 
             goto LABEL_26;
           }
 
-          *buf += v27;
-          LODWORD(v45) = v45 + v28;
+          *buf += routeCoordinate2;
+          LODWORD(v45) = v45 + routeCoordinate3;
           v29 = [MNRouteCoordinateWithType divergenceCoordinate:*buf];
           v30 = [MNRouteCoordinateWithType divergenceCoordinate:v45];
-          [v44 addObject:v29];
-          [v43 addObject:v30];
-          v20 = [v29 routeCoordinate];
-          v18 = [v30 routeCoordinate];
+          [array addObject:v29];
+          [array2 addObject:v30];
+          routeCoordinate4 = [v29 routeCoordinate];
+          routeCoordinate5 = [v30 routeCoordinate];
 
-          v21 = *(&v20 + 1);
-          v19 = *(&v18 + 1);
+          v21 = *(&routeCoordinate4 + 1);
+          v19 = *(&routeCoordinate5 + 1);
         }
 
 LABEL_24:
@@ -560,10 +560,10 @@ LABEL_24:
   v104 = *MEMORY[0x1E69E9840];
   if (a5 >= 2 && a7 >= 2)
   {
-    v85 = [MEMORY[0x1E695DF70] array];
-    [a1 _addPointsToArray:v85 forMapPoints:a6 pointCount:a7 isPolylineA:0];
-    [a1 _addPointsToArray:v85 forMapPoints:a4 pointCount:a5 isPolylineA:1];
-    [v85 sortUsingComparator:&__block_literal_global_8798];
+    array = [MEMORY[0x1E695DF70] array];
+    [self _addPointsToArray:array forMapPoints:a6 pointCount:a7 isPolylineA:0];
+    [self _addPointsToArray:array forMapPoints:a4 pointCount:a5 isPolylineA:1];
+    [array sortUsingComparator:&__block_literal_global_8798];
     if (a8)
     {
       *(&v90 + 1) = [MEMORY[0x1E695DF70] array];
@@ -584,33 +584,33 @@ LABEL_24:
       *&v90 = 0;
     }
 
-    v83 = [MEMORY[0x1E695DF90] dictionary];
-    v84 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v87 = 0;
     v9 = 0;
     v16 = a2 * a2;
-    while (v87 < [v85 count])
+    while (v87 < [array count])
     {
-      v17 = [v85 objectAtIndexedSubscript:?];
+      v17 = [array objectAtIndexedSubscript:?];
       if ([v17 isPolylineA])
       {
-        v18 = v83;
+        v18 = dictionary;
       }
 
       else
       {
-        v18 = v84;
+        v18 = dictionary2;
       }
 
       v88 = v18;
       if ([v17 isPolylineA])
       {
-        v19 = v84;
+        v19 = dictionary2;
       }
 
       else
       {
-        v19 = v83;
+        v19 = dictionary;
       }
 
       v86 = v19;
@@ -642,8 +642,8 @@ LABEL_24:
         v94 = 0u;
         v91 = 0u;
         v92 = 0u;
-        v22 = [v86 allValues];
-        v23 = [v22 countByEnumeratingWithState:&v91 objects:v95 count:16];
+        allValues = [v86 allValues];
+        v23 = [allValues countByEnumeratingWithState:&v91 objects:v95 count:16];
         if (v23)
         {
           v24 = *v92;
@@ -653,7 +653,7 @@ LABEL_24:
             {
               if (*v92 != v24)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(allValues);
               }
 
               v26 = *(*(&v91 + 1) + 8 * i);
@@ -716,18 +716,18 @@ LABEL_24:
                         goto LABEL_58;
                       }
 
-                      v61 = [v28 index];
-                      v62 = v61;
+                      index = [v28 index];
+                      v62 = index;
                       v63 = v56;
                       if (v63 >= 1.0)
                       {
-                        v62 = vcvtms_u32_f32(v63) + v61;
+                        v62 = vcvtms_u32_f32(v63) + index;
                         v63 = v63 - floorf(v63);
                       }
 
-                      v64 = [v30 index];
+                      index2 = [v30 index];
                       v65 = v48;
-                      v66 = vcvtms_u32_f32(v65) + v64;
+                      v66 = vcvtms_u32_f32(v65) + index2;
                       v67 = v65 - floorf(v65);
                       if (v65 >= 1.0)
                       {
@@ -746,7 +746,7 @@ LABEL_24:
 
                       else
                       {
-                        v69 = v64;
+                        v69 = index2;
                       }
 
                       v70 = [MNRouteCoordinateWithType convergenceCoordinate:v62 | (LODWORD(v63) << 32)];
@@ -762,7 +762,7 @@ LABEL_24:
               }
             }
 
-            v23 = [v22 countByEnumeratingWithState:&v91 objects:v95 count:16];
+            v23 = [allValues countByEnumeratingWithState:&v91 objects:v95 count:16];
             if (v23)
             {
               continue;
@@ -829,7 +829,7 @@ LABEL_58:
 {
   v16 = 0;
   v17 = 0;
-  v10 = [a1 _pointsConverge:a3 pointCount:a4 otherPoints:a5 pointCount:a6 tolerance:&v17 outCoordinatesA:&v16 outCoordinatesB:?];
+  v10 = [self _pointsConverge:a3 pointCount:a4 otherPoints:a5 pointCount:a6 tolerance:&v17 outCoordinatesA:&v16 outCoordinatesB:?];
   v11 = v17;
   v12 = v16;
   if (!a7)
@@ -845,8 +845,8 @@ LABEL_4:
 
   if ([v11 count])
   {
-    v13 = [v11 firstObject];
-    *a7 = [v13 routeCoordinate];
+    firstObject = [v11 firstObject];
+    *a7 = [firstObject routeCoordinate];
 
     goto LABEL_4;
   }
@@ -860,8 +860,8 @@ LABEL_4:
 LABEL_5:
   if ([v12 count])
   {
-    v14 = [v12 firstObject];
-    *a8 = [v14 routeCoordinate];
+    firstObject2 = [v12 firstObject];
+    *a8 = [firstObject2 routeCoordinate];
   }
 
   else
@@ -883,8 +883,8 @@ LABEL_10:
   }
 
   v17 = a2 * a2;
-  v18 = [a1 _startIndexForPoints:*a6 withPoints:a6[1] pointCount:a2 * a2 toleranceSquared:?];
-  v19 = [a1 _startIndexForPoints:a6 withPoints:a7 pointCount:*a4 toleranceSquared:{a4[1], v17}];
+  v18 = [self _startIndexForPoints:*a6 withPoints:a6[1] pointCount:a2 * a2 toleranceSquared:?];
+  v19 = [self _startIndexForPoints:a6 withPoints:a7 pointCount:*a4 toleranceSquared:{a4[1], v17}];
   if (v18 == 0x7FFFFFFFFFFFFFFFLL && v19 == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (a8)

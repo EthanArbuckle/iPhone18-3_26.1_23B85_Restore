@@ -3,8 +3,8 @@
 - (id)suggestionCategoryImage;
 - (id)suggestionImage;
 - (id)suggestionPrimaryAction;
-- (id)writeEMLtoDiskForMessageWithIdentifier:(id)a3;
-- (void)_dismissViewController:(id)a3 andSignalCompletionWithResult:(BOOL)a4;
+- (id)writeEMLtoDiskForMessageWithIdentifier:(id)identifier;
+- (void)_dismissViewController:(id)controller andSignalCompletionWithResult:(BOOL)result;
 @end
 
 @implementation SGRadarSuggestion
@@ -24,9 +24,9 @@
   return v2;
 }
 
-- (id)writeEMLtoDiskForMessageWithIdentifier:(id)a3
+- (id)writeEMLtoDiskForMessageWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -45,14 +45,14 @@
 
   v5 = v4;
   _Block_object_dispose(&v15, 8);
-  v6 = [v4 sharedInstance];
-  v7 = [v6 dataForMessageWithIdentifier:v3 error:0];
+  sharedInstance = [v4 sharedInstance];
+  v7 = [sharedInstance dataForMessageWithIdentifier:identifierCopy error:0];
   if (v7)
   {
     v8 = NSTemporaryDirectory();
-    v9 = [MEMORY[0x1E696AFB0] UUID];
-    v10 = [v9 UUIDString];
-    v11 = [v8 stringByAppendingPathComponent:v10];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v11 = [v8 stringByAppendingPathComponent:uUIDString];
     v12 = [v11 stringByAppendingPathExtension:@"eml"];
 
     if ([v7 writeToFile:v12 atomically:1])
@@ -81,26 +81,26 @@ LABEL_7:
   return [v2 tapToRadarImage];
 }
 
-- (void)_dismissViewController:(id)a3 andSignalCompletionWithResult:(BOOL)a4
+- (void)_dismissViewController:(id)controller andSignalCompletionWithResult:(BOOL)result
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SGRadarSuggestionBase *)self suggestionDelegate];
-  [v7 dismissViewController:v6];
+  resultCopy = result;
+  controllerCopy = controller;
+  suggestionDelegate = [(SGRadarSuggestionBase *)self suggestionDelegate];
+  [suggestionDelegate dismissViewController:controllerCopy];
 
-  v8 = [(SGRadarSuggestionBase *)self suggestionDelegate];
-  [v8 suggestion:self actionFinished:v4];
+  suggestionDelegate2 = [(SGRadarSuggestionBase *)self suggestionDelegate];
+  [suggestionDelegate2 suggestion:self actionFinished:resultCopy];
 }
 
 - (id)suggestionPrimaryAction
 {
-  v3 = [(SGRadarSuggestionBase *)self primaryActionTitle];
+  primaryActionTitle = [(SGRadarSuggestionBase *)self primaryActionTitle];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__SGRadarSuggestion_suggestionPrimaryAction__block_invoke;
   v6[3] = &unk_1E7CD9340;
   v6[4] = self;
-  v4 = [SGSuggestionAction actionWithTitle:v3 handler:v6];
+  v4 = [SGSuggestionAction actionWithTitle:primaryActionTitle handler:v6];
 
   return v4;
 }

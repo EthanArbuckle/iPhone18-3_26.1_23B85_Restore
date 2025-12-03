@@ -3,7 +3,7 @@
 - (CSVoiceTriggerStatistics)init;
 - (id)getVoiceTriggerDailyMetadata;
 - (id)getVoiceTriggerStatistics;
-- (int)_convertToFirstPassSource:(id)a3;
+- (int)_convertToFirstPassSource:(id)source;
 - (unint64_t)firstPassTriggerCount;
 - (unint64_t)getVTRejectCount;
 - (unint64_t)triggerCount;
@@ -16,31 +16,31 @@
 - (void)incrementPHSRejectCount;
 - (void)incrementVTRejectCount;
 - (void)resetVTEstimationStatistics;
-- (void)updateVTEstimationStatistics:(id)a3;
-- (void)voiceTriggerDidDetectKeyword:(id)a3 deviceId:(id)a4;
-- (void)voiceTriggerDidDetectNearMiss:(id)a3 deviceId:(id)a4;
-- (void)voiceTriggerDidRejected:(id)a3 deviceId:(id)a4;
+- (void)updateVTEstimationStatistics:(id)statistics;
+- (void)voiceTriggerDidDetectKeyword:(id)keyword deviceId:(id)id;
+- (void)voiceTriggerDidDetectNearMiss:(id)miss deviceId:(id)id;
+- (void)voiceTriggerDidRejected:(id)rejected deviceId:(id)id;
 @end
 
 @implementation CSVoiceTriggerStatistics
 
-- (void)voiceTriggerDidRejected:(id)a3 deviceId:(id)a4
+- (void)voiceTriggerDidRejected:(id)rejected deviceId:(id)id
 {
-  [(CSVoiceTriggerStatistics *)self incrementVTRejectCount:a3];
+  [(CSVoiceTriggerStatistics *)self incrementVTRejectCount:rejected];
 
   [(CSVoiceTriggerStatistics *)self increaseFalseFirstPassTriggersPerHour];
 }
 
-- (void)voiceTriggerDidDetectNearMiss:(id)a3 deviceId:(id)a4
+- (void)voiceTriggerDidDetectNearMiss:(id)miss deviceId:(id)id
 {
-  [(CSVoiceTriggerStatistics *)self incrementVTRejectCount:a3];
+  [(CSVoiceTriggerStatistics *)self incrementVTRejectCount:miss];
 
   [(CSVoiceTriggerStatistics *)self increaseFalseFirstPassTriggersPerHour];
 }
 
-- (void)voiceTriggerDidDetectKeyword:(id)a3 deviceId:(id)a4
+- (void)voiceTriggerDidDetectKeyword:(id)keyword deviceId:(id)id
 {
-  [(CSVoiceTriggerStatistics *)self increaseTriggerCount:a3];
+  [(CSVoiceTriggerStatistics *)self increaseTriggerCount:keyword];
 
   [(CSVoiceTriggerStatistics *)self clearFalseFirstPassTriggersPerHour];
 }
@@ -89,57 +89,57 @@
   return v3;
 }
 
-- (int)_convertToFirstPassSource:(id)a3
+- (int)_convertToFirstPassSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:kVTEIFirstPassTriggeredFromApplicationProcessor] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", kVTEIFirstPassTriggeredFromApplicationProcessorExclave))
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:kVTEIFirstPassTriggeredFromApplicationProcessor] & 1) != 0 || (objc_msgSend(sourceCopy, "isEqualToString:", kVTEIFirstPassTriggeredFromApplicationProcessorExclave))
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:kVTEIFirstPassTriggeredFromApplicationProcessorWithRingtone] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", kVTEIFirstPassTriggeredFromApplicationProcessorWithConnectedCall) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", kVTEIFirstPassTriggeredFromApplicationProcessorExclaveWithRingtone) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", kVTEIFirstPassTriggeredFromApplicationProcessorExclaveWithConnectedCall))
+  else if ([sourceCopy isEqualToString:kVTEIFirstPassTriggeredFromApplicationProcessorWithRingtone] & 1) != 0 || (objc_msgSend(sourceCopy, "isEqualToString:", kVTEIFirstPassTriggeredFromApplicationProcessorWithConnectedCall) & 1) != 0 || (objc_msgSend(sourceCopy, "isEqualToString:", kVTEIFirstPassTriggeredFromApplicationProcessorExclaveWithRingtone) & 1) != 0 || (objc_msgSend(sourceCopy, "isEqualToString:", kVTEIFirstPassTriggeredFromApplicationProcessorExclaveWithConnectedCall))
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:kVTEIFirstPassTriggeredFromAlwaysOnProcessor] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", kVTEIFirstPassTriggeredFromAlwaysOnProcessorExclave))
+  else if ([sourceCopy isEqualToString:kVTEIFirstPassTriggeredFromAlwaysOnProcessor] & 1) != 0 || (objc_msgSend(sourceCopy, "isEqualToString:", kVTEIFirstPassTriggeredFromAlwaysOnProcessorExclave))
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:kVTEIFirstPassTriggeredFromHearst])
+  else if ([sourceCopy isEqualToString:kVTEIFirstPassTriggeredFromHearst])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:kVTEIFirstPassTriggeredFromJarvis])
+  else if ([sourceCopy isEqualToString:kVTEIFirstPassTriggeredFromJarvis])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:kVTEIFirstPassTriggeredFromRemora])
+  else if ([sourceCopy isEqualToString:kVTEIFirstPassTriggeredFromRemora])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:kVTEIFirstPassTriggeredFromHearstAP])
+  else if ([sourceCopy isEqualToString:kVTEIFirstPassTriggeredFromHearstAP])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:kVTEIFirstPassTriggeredFromWatch])
+  else if ([sourceCopy isEqualToString:kVTEIFirstPassTriggeredFromWatch])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:kVTEIFirstPassTriggeredFromDarwin])
+  else if ([sourceCopy isEqualToString:kVTEIFirstPassTriggeredFromDarwin])
   {
     v4 = 10;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:kVTEIFirstPassTriggeredFromDefault];
+    v4 = [sourceCopy isEqualToString:kVTEIFirstPassTriggeredFromDefault];
   }
 
   return v4;
@@ -156,9 +156,9 @@
   dispatch_async(queue, block);
 }
 
-- (void)updateVTEstimationStatistics:(id)a3
+- (void)updateVTEstimationStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   if ((+[CSUtils isDarwinOS]& 1) == 0)
   {
     queue = self->_queue;
@@ -167,7 +167,7 @@
     v6[2] = sub_1000EAEE4;
     v6[3] = &unk_100253C48;
     v6[4] = self;
-    v7 = v4;
+    v7 = statisticsCopy;
     dispatch_async(queue, v6);
   }
 }

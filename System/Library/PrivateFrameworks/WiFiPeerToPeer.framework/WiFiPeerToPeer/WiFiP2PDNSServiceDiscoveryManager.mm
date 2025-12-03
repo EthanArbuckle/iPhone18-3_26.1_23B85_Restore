@@ -1,25 +1,25 @@
 @interface WiFiP2PDNSServiceDiscoveryManager
-- (id)initUsingWiFiAware:(BOOL)a3 serviceCallback:(id)a4;
-- (void)handleConnectionEstablishedWithProxy:(id)a3;
-- (void)handleEventType:(unint64_t)a3 keyData:(id)a4 valueData:(id)a5;
-- (void)startConnectionUsingProxy:(id)a3 completionHandler:(id)a4;
-- (void)startServiceDiscoveryWithConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)stopServiceDiscoveryWithConfiguration:(id)a3;
+- (id)initUsingWiFiAware:(BOOL)aware serviceCallback:(id)callback;
+- (void)handleConnectionEstablishedWithProxy:(id)proxy;
+- (void)handleEventType:(unint64_t)type keyData:(id)data valueData:(id)valueData;
+- (void)startConnectionUsingProxy:(id)proxy completionHandler:(id)handler;
+- (void)startServiceDiscoveryWithConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)stopServiceDiscoveryWithConfiguration:(id)configuration;
 @end
 
 @implementation WiFiP2PDNSServiceDiscoveryManager
 
-- (id)initUsingWiFiAware:(BOOL)a3 serviceCallback:(id)a4
+- (id)initUsingWiFiAware:(BOOL)aware serviceCallback:(id)callback
 {
-  v6 = a4;
+  callbackCopy = callback;
   v20.receiver = self;
   v20.super_class = WiFiP2PDNSServiceDiscoveryManager;
   v7 = [(WiFiP2PDNSServiceDiscoveryManager *)&v20 init];
   v8 = v7;
   if (v7)
   {
-    v7->_useWiFiAware = a3;
-    v9 = MEMORY[0x2318E0CF0](v6);
+    v7->_useWiFiAware = aware;
+    v9 = MEMORY[0x2318E0CF0](callbackCopy);
     serviceCallback = v8->_serviceCallback;
     v8->_serviceCallback = v9;
 
@@ -50,7 +50,7 @@
   return v8;
 }
 
-- (void)startConnectionUsingProxy:(id)a3 completionHandler:(id)a4
+- (void)startConnectionUsingProxy:(id)proxy completionHandler:(id)handler
 {
   if (self->_useWiFiAware)
   {
@@ -62,13 +62,13 @@
     v5 = 2;
   }
 
-  [a3 createXPCResponderWithType:v5 completionHandler:a4];
+  [proxy createXPCResponderWithType:v5 completionHandler:handler];
 }
 
-- (void)handleConnectionEstablishedWithProxy:(id)a3
+- (void)handleConnectionEstablishedWithProxy:(id)proxy
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  proxyCopy = proxy;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -89,7 +89,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [v4 startServiceDiscoveryWithConfiguration:*(*(&v11 + 1) + 8 * v9++) completionHandler:{&__block_literal_global_6, v11}];
+        [proxyCopy startServiceDiscoveryWithConfiguration:*(*(&v11 + 1) + 8 * v9++) completionHandler:{&__block_literal_global_6, v11}];
       }
 
       while (v7 != v9);
@@ -102,21 +102,21 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleEventType:(unint64_t)a3 keyData:(id)a4 valueData:(id)a5
+- (void)handleEventType:(unint64_t)type keyData:(id)data valueData:(id)valueData
 {
-  v10 = a4;
-  v8 = a5;
-  if (a3 <= 3)
+  dataCopy = data;
+  valueDataCopy = valueData;
+  if (type <= 3)
   {
-    v9 = dword_22E0049F0[a3];
+    v9 = dword_22E0049F0[type];
     (*(self->_serviceCallback + 2))();
   }
 }
 
-- (void)startServiceDiscoveryWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)startServiceDiscoveryWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
@@ -127,7 +127,7 @@
   v15[2] = __94__WiFiP2PDNSServiceDiscoveryManager_startServiceDiscoveryWithConfiguration_completionHandler___block_invoke;
   v15[3] = &unk_2787AB5B8;
   v15[4] = self;
-  v16 = v6;
+  v16 = configurationCopy;
   v17 = v18;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -137,7 +137,7 @@
   v11[4] = self;
   v9 = v16;
   v12 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v13 = v10;
   [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v15 clientCompletionHandler:v11];
 
@@ -174,9 +174,9 @@ uint64_t __94__WiFiP2PDNSServiceDiscoveryManager_startServiceDiscoveryWithConfig
   return result;
 }
 
-- (void)stopServiceDiscoveryWithConfiguration:(id)a3
+- (void)stopServiceDiscoveryWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
@@ -187,7 +187,7 @@ uint64_t __94__WiFiP2PDNSServiceDiscoveryManager_startServiceDiscoveryWithConfig
   v10[2] = __75__WiFiP2PDNSServiceDiscoveryManager_stopServiceDiscoveryWithConfiguration___block_invoke;
   v10[3] = &unk_2787AB5B8;
   v10[4] = self;
-  v11 = v4;
+  v11 = configurationCopy;
   v12 = v13;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;

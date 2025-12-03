@@ -1,19 +1,19 @@
 @interface CKFullScreenEffectMediaObject
-- (CKFullScreenEffectMediaObject)initWithFullScreenEffectAudioFileURL:(id)a3;
+- (CKFullScreenEffectMediaObject)initWithFullScreenEffectAudioFileURL:(id)l;
 @end
 
 @implementation CKFullScreenEffectMediaObject
 
-- (CKFullScreenEffectMediaObject)initWithFullScreenEffectAudioFileURL:(id)a3
+- (CKFullScreenEffectMediaObject)initWithFullScreenEffectAudioFileURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = CKFullScreenEffectMediaObject;
   v6 = [(CKFullScreenEffectMediaObject *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_audioFileURL, a3);
+    objc_storeStrong(&v6->_audioFileURL, l);
     v8 = v7;
   }
 

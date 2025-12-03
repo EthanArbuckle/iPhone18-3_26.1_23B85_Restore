@@ -1,6 +1,6 @@
 @interface CPLSimpleUpgradeHistory
-+ (void)cleanupUnusedUpgradeHistoriesWithUsedBlock:(id)a3;
-- (CPLSimpleUpgradeHistory)initWithLibraryIdentifier:(id)a3;
++ (void)cleanupUnusedUpgradeHistoriesWithUsedBlock:(id)block;
+- (CPLSimpleUpgradeHistory)initWithLibraryIdentifier:(id)identifier;
 - (NSDate)lastCPLUpgradeDate;
 - (NSDate)lastDBUpgradeDate;
 - (NSDate)lastOSBuildUpgradeDate;
@@ -9,18 +9,18 @@
 - (NSString)previousCPLVersion;
 - (NSString)previousOSBuildVersion;
 - (NSString)status;
-- (id)_valueForKey:(id)a3 class:(Class)a4;
+- (id)_valueForKey:(id)key class:(Class)class;
 - (int64_t)lastSeenDBVersion;
 - (int64_t)previousDBVersion;
 - (void)_save;
-- (void)noteDatabaseWasUpgradedToVersion:(int64_t)a3 fromVersion:(int64_t)a4;
+- (void)noteDatabaseWasUpgradedToVersion:(int64_t)version fromVersion:(int64_t)fromVersion;
 @end
 
 @implementation CPLSimpleUpgradeHistory
 
-- (CPLSimpleUpgradeHistory)initWithLibraryIdentifier:(id)a3
+- (CPLSimpleUpgradeHistory)initWithLibraryIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v42.receiver = self;
   v42.super_class = CPLSimpleUpgradeHistory;
   v5 = [(CPLSimpleUpgradeHistory *)&v42 init];
@@ -30,12 +30,12 @@
   }
 
   v6 = +[NSUserDefaults standardUserDefaults];
-  v7 = [v4 copy];
+  v7 = [identifierCopy copy];
   libraryIdentifier = v5->_libraryIdentifier;
   v5->_libraryIdentifier = v7;
 
-  v9 = [(CPLSimpleUpgradeHistory *)v5 _defaultsKey];
-  v10 = [v6 objectForKey:v9];
+  _defaultsKey = [(CPLSimpleUpgradeHistory *)v5 _defaultsKey];
+  v10 = [v6 objectForKey:_defaultsKey];
 
   if ((_CPLSilentLogging & 1) == 0)
   {
@@ -51,7 +51,7 @@
     }
   }
 
-  if ([v4 isEqualToString:CPLLibraryIdentifierSystemLibrary])
+  if ([identifierCopy isEqualToString:CPLLibraryIdentifierSystemLibrary])
   {
     v13 = v10 == 0;
   }
@@ -150,11 +150,11 @@
   }
 
   v27 = __CPLBuildVersion();
-  v28 = [(CPLSimpleUpgradeHistory *)v5 lastSeenOSBuildVersion];
-  v29 = v28;
-  if (v28 && v27)
+  lastSeenOSBuildVersion = [(CPLSimpleUpgradeHistory *)v5 lastSeenOSBuildVersion];
+  v29 = lastSeenOSBuildVersion;
+  if (lastSeenOSBuildVersion && v27)
   {
-    if ([v28 isEqual:v27])
+    if ([lastSeenOSBuildVersion isEqual:v27])
     {
       goto LABEL_50;
     }
@@ -184,7 +184,7 @@ LABEL_40:
     goto LABEL_47;
   }
 
-  if (!(v28 | v27))
+  if (!(lastSeenOSBuildVersion | v27))
   {
     goto LABEL_50;
   }
@@ -212,11 +212,11 @@ LABEL_47:
 
 LABEL_50:
   v34 = __CPLVersion();
-  v35 = [(CPLSimpleUpgradeHistory *)v5 lastSeenCPLVersion];
-  v36 = v35;
-  if (v35 && v34)
+  lastSeenCPLVersion = [(CPLSimpleUpgradeHistory *)v5 lastSeenCPLVersion];
+  v36 = lastSeenCPLVersion;
+  if (lastSeenCPLVersion && v34)
   {
-    if ([v35 isEqual:v34])
+    if ([lastSeenCPLVersion isEqual:v34])
     {
       goto LABEL_64;
     }
@@ -260,7 +260,7 @@ LABEL_55:
     goto LABEL_64;
   }
 
-  if (v35 | v34)
+  if (lastSeenCPLVersion | v34)
   {
     goto LABEL_55;
   }
@@ -275,9 +275,9 @@ LABEL_67:
   return v5;
 }
 
-- (id)_valueForKey:(id)a3 class:(Class)a4
+- (id)_valueForKey:(id)key class:(Class)class
 {
-  v4 = [(NSMutableDictionary *)self->_history objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_history objectForKeyedSubscript:key];
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -291,20 +291,20 @@ LABEL_67:
   return v5;
 }
 
-- (void)noteDatabaseWasUpgradedToVersion:(int64_t)a3 fromVersion:(int64_t)a4
+- (void)noteDatabaseWasUpgradedToVersion:(int64_t)version fromVersion:(int64_t)fromVersion
 {
-  v7 = [(CPLSimpleUpgradeHistory *)self lastSeenDBVersion];
-  if (v7)
+  lastSeenDBVersion = [(CPLSimpleUpgradeHistory *)self lastSeenDBVersion];
+  if (lastSeenDBVersion)
   {
-    v8 = v7;
+    fromVersionCopy = lastSeenDBVersion;
   }
 
   else
   {
-    v8 = a4;
+    fromVersionCopy = fromVersion;
   }
 
-  if (v8 != a3)
+  if (fromVersionCopy != version)
   {
     v9 = [NSNumber numberWithLongLong:?];
     [(NSMutableDictionary *)self->_history setObject:v9 forKeyedSubscript:@"previousDBVersion"];
@@ -312,7 +312,7 @@ LABEL_67:
     v10 = +[NSDate date];
     [(NSMutableDictionary *)self->_history setObject:v10 forKeyedSubscript:@"lastDBUpgradeDate"];
 
-    v11 = [NSNumber numberWithLongLong:a3];
+    v11 = [NSNumber numberWithLongLong:version];
     [(NSMutableDictionary *)self->_history setObject:v11 forKeyedSubscript:@"lastSeenDBVersion"];
 
     [(CPLSimpleUpgradeHistory *)self _save];
@@ -343,17 +343,17 @@ LABEL_67:
 - (int64_t)lastSeenDBVersion
 {
   v2 = [(CPLSimpleUpgradeHistory *)self _valueForKey:@"lastSeenDBVersion" class:objc_opt_class()];
-  v3 = [v2 longLongValue];
+  longLongValue = [v2 longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
 - (int64_t)previousDBVersion
 {
   v2 = [(CPLSimpleUpgradeHistory *)self _valueForKey:@"previousDBVersion" class:objc_opt_class()];
-  v3 = [v2 longLongValue];
+  longLongValue = [v2 longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
 - (NSDate)lastDBUpgradeDate
@@ -388,15 +388,15 @@ LABEL_67:
 {
   v3 = [[NSMutableArray alloc] initWithCapacity:3];
   v37 = +[NSDate date];
-  v4 = [(CPLSimpleUpgradeHistory *)self lastOSBuildUpgradeDate];
-  if (v4)
+  lastOSBuildUpgradeDate = [(CPLSimpleUpgradeHistory *)self lastOSBuildUpgradeDate];
+  if (lastOSBuildUpgradeDate)
   {
     v5 = [NSString alloc];
-    v6 = [(CPLSimpleUpgradeHistory *)self previousOSBuildVersion];
-    v7 = v6;
-    if (v6)
+    previousOSBuildVersion = [(CPLSimpleUpgradeHistory *)self previousOSBuildVersion];
+    v7 = previousOSBuildVersion;
+    if (previousOSBuildVersion)
     {
-      v8 = v6;
+      v8 = previousOSBuildVersion;
     }
 
     else
@@ -404,11 +404,11 @@ LABEL_67:
       v8 = @"unknown";
     }
 
-    v9 = [(CPLSimpleUpgradeHistory *)self lastSeenOSBuildVersion];
-    v10 = v9;
-    if (v9)
+    lastSeenOSBuildVersion = [(CPLSimpleUpgradeHistory *)self lastSeenOSBuildVersion];
+    v10 = lastSeenOSBuildVersion;
+    if (lastSeenOSBuildVersion)
     {
-      v11 = v9;
+      v11 = lastSeenOSBuildVersion;
     }
 
     else
@@ -416,20 +416,20 @@ LABEL_67:
       v11 = @"unknown";
     }
 
-    v12 = [CPLDateFormatter stringFromDateAgo:v4 now:v37];
+    v12 = [CPLDateFormatter stringFromDateAgo:lastOSBuildUpgradeDate now:v37];
     v13 = [v5 initWithFormat:@"last upgrade from %@ to %@, %@", v8, v11, v12];
     [v3 addObject:v13];
   }
 
-  v14 = [(CPLSimpleUpgradeHistory *)self lastCPLUpgradeDate];
-  if (v14)
+  lastCPLUpgradeDate = [(CPLSimpleUpgradeHistory *)self lastCPLUpgradeDate];
+  if (lastCPLUpgradeDate)
   {
     v15 = [NSString alloc];
-    v16 = [(CPLSimpleUpgradeHistory *)self previousCPLVersion];
-    v17 = v16;
-    if (v16)
+    previousCPLVersion = [(CPLSimpleUpgradeHistory *)self previousCPLVersion];
+    v17 = previousCPLVersion;
+    if (previousCPLVersion)
     {
-      v18 = v16;
+      v18 = previousCPLVersion;
     }
 
     else
@@ -437,13 +437,13 @@ LABEL_67:
       v18 = @"unknown";
     }
 
-    v19 = [(CPLSimpleUpgradeHistory *)self lastSeenCPLVersion];
-    v20 = v19;
+    lastSeenCPLVersion = [(CPLSimpleUpgradeHistory *)self lastSeenCPLVersion];
+    v20 = lastSeenCPLVersion;
     v21 = v3;
-    v22 = v4;
-    if (v19)
+    v22 = lastOSBuildUpgradeDate;
+    if (lastSeenCPLVersion)
     {
-      v23 = v19;
+      v23 = lastSeenCPLVersion;
     }
 
     else
@@ -451,29 +451,29 @@ LABEL_67:
       v23 = @"unknown";
     }
 
-    [CPLDateFormatter stringFromDateAgo:v14 now:v37];
-    v24 = v36 = v14;
+    [CPLDateFormatter stringFromDateAgo:lastCPLUpgradeDate now:v37];
+    v24 = v36 = lastCPLUpgradeDate;
     v35 = v23;
-    v4 = v22;
+    lastOSBuildUpgradeDate = v22;
     v3 = v21;
     v25 = [v15 initWithFormat:@"last CPL upgrade from %@ to %@, %@", v18, v35, v24];
     [v21 addObject:v25];
 
-    v14 = v36;
+    lastCPLUpgradeDate = v36;
   }
 
-  v26 = [(CPLSimpleUpgradeHistory *)self lastDBUpgradeDate];
-  if (v26)
+  lastDBUpgradeDate = [(CPLSimpleUpgradeHistory *)self lastDBUpgradeDate];
+  if (lastDBUpgradeDate)
   {
     v27 = [NSString alloc];
-    v28 = [(CPLSimpleUpgradeHistory *)self previousDBVersion];
-    v29 = [(CPLSimpleUpgradeHistory *)self lastSeenDBVersion];
-    [CPLDateFormatter stringFromDateAgo:v26 now:v37];
-    v31 = v30 = v14;
-    v32 = [v27 initWithFormat:@"last DB upgrade from %lld to %lld, %@", v28, v29, v31];
+    previousDBVersion = [(CPLSimpleUpgradeHistory *)self previousDBVersion];
+    lastSeenDBVersion = [(CPLSimpleUpgradeHistory *)self lastSeenDBVersion];
+    [CPLDateFormatter stringFromDateAgo:lastDBUpgradeDate now:v37];
+    v31 = v30 = lastCPLUpgradeDate;
+    v32 = [v27 initWithFormat:@"last DB upgrade from %lld to %lld, %@", previousDBVersion, lastSeenDBVersion, v31];
     [v3 addObject:v32];
 
-    v14 = v30;
+    lastCPLUpgradeDate = v30;
   }
 
   v33 = [v3 componentsJoinedByString:@"\n"];
@@ -481,9 +481,9 @@ LABEL_67:
   return v33;
 }
 
-+ (void)cleanupUnusedUpgradeHistoriesWithUsedBlock:(id)a3
++ (void)cleanupUnusedUpgradeHistoriesWithUsedBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [@"_CPLUpgradeHistory-" length];
   v35 = 0u;
@@ -491,18 +491,18 @@ LABEL_67:
   v37 = 0u;
   v38 = 0u;
   v27 = v4;
-  v6 = [v4 dictionaryRepresentation];
-  v7 = [v6 allKeys];
+  dictionaryRepresentation = [v4 dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
 
-  v8 = v7;
-  v9 = [v7 countByEnumeratingWithState:&v35 objects:v42 count:16];
+  v8 = allKeys;
+  v9 = [allKeys countByEnumeratingWithState:&v35 objects:v42 count:16];
   if (v9)
   {
     v10 = v9;
     v30 = 0;
     v11 = *v36;
-    v12 = (v3 + 2);
-    v28 = v3;
+    v12 = (blockCopy + 2);
+    v28 = blockCopy;
     v29 = *v36;
     do
     {
@@ -517,7 +517,7 @@ LABEL_67:
         if ([v14 hasPrefix:@"_CPLUpgradeHistory-"])
         {
           v15 = [v14 substringFromIndex:v5];
-          if ((v3[2](v3, v15) & 1) == 0)
+          if ((blockCopy[2](blockCopy, v15) & 1) == 0)
           {
             v16 = v12;
             v17 = v8;
@@ -544,7 +544,7 @@ LABEL_67:
             v5 = v18;
             v8 = v17;
             v12 = v16;
-            v3 = v28;
+            blockCopy = v28;
             v11 = v29;
           }
         }
@@ -616,8 +616,8 @@ LABEL_67:
 
   v6 = +[NSUserDefaults standardUserDefaults];
   v7 = self->_history;
-  v8 = [(CPLSimpleUpgradeHistory *)self _defaultsKey];
-  [v6 setObject:v7 forKey:v8];
+  _defaultsKey = [(CPLSimpleUpgradeHistory *)self _defaultsKey];
+  [v6 setObject:v7 forKey:_defaultsKey];
 }
 
 @end

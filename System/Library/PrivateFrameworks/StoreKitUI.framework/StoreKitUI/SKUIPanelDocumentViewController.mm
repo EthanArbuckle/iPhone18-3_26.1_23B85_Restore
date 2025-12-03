@@ -1,36 +1,36 @@
 @interface SKUIPanelDocumentViewController
-- (SKUIPanelDocumentViewController)initWithTemplateElement:(id)a3;
+- (SKUIPanelDocumentViewController)initWithTemplateElement:(id)element;
 - (id)_activeBackgroundColor;
-- (id)_imageForBackgroundImageElement:(id)a3;
+- (id)_imageForBackgroundImageElement:(id)element;
 - (id)_layoutContext;
 - (id)_templateBackgroundColor;
-- (void)_keyboardHideNotification:(id)a3;
-- (void)_keyboardWillChangeNotification:(id)a3;
+- (void)_keyboardHideNotification:(id)notification;
+- (void)_keyboardWillChangeNotification:(id)notification;
 - (void)_layoutBackgroundImageView;
 - (void)_layoutScrollView;
 - (void)_reloadBackgroundImageView;
 - (void)_reloadContentSize;
-- (void)_reloadPanelViewWithScrollViewSize:(CGSize)a3;
-- (void)_requestPanelViewLayoutWithContentWidth:(int64_t)a3 forced:(BOOL)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
+- (void)_reloadPanelViewWithScrollViewSize:(CGSize)size;
+- (void)_requestPanelViewLayoutWithContentWidth:(int64_t)width forced:(BOOL)forced;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
 - (void)dealloc;
-- (void)documentDidUpdate:(id)a3;
-- (void)layoutCacheDidFinishBatch:(id)a3;
+- (void)documentDidUpdate:(id)update;
+- (void)layoutCacheDidFinishBatch:(id)batch;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SKUIPanelDocumentViewController
 
-- (SKUIPanelDocumentViewController)initWithTemplateElement:(id)a3
+- (SKUIPanelDocumentViewController)initWithTemplateElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIPanelDocumentViewController initWithTemplateElement:];
@@ -43,12 +43,12 @@
   if (v6)
   {
     v6->_lastContentWidth = -1;
-    objc_storeStrong(&v6->_templateElement, a3);
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel__keyboardHideNotification_ name:*MEMORY[0x277D76BA0] object:0];
-    [v8 addObserver:v7 selector:sel__keyboardHideNotification_ name:*MEMORY[0x277D76C50] object:0];
-    [v8 addObserver:v7 selector:sel__keyboardWillChangeNotification_ name:*MEMORY[0x277D76C48] object:0];
-    [v8 addObserver:v7 selector:sel__keyboardWillChangeNotification_ name:*MEMORY[0x277D76C60] object:0];
+    objc_storeStrong(&v6->_templateElement, element);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__keyboardHideNotification_ name:*MEMORY[0x277D76BA0] object:0];
+    [defaultCenter addObserver:v7 selector:sel__keyboardHideNotification_ name:*MEMORY[0x277D76C50] object:0];
+    [defaultCenter addObserver:v7 selector:sel__keyboardWillChangeNotification_ name:*MEMORY[0x277D76C48] object:0];
+    [defaultCenter addObserver:v7 selector:sel__keyboardWillChangeNotification_ name:*MEMORY[0x277D76C60] object:0];
   }
 
   return v7;
@@ -56,11 +56,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C48] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C48] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C50] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C60] object:0];
   [(SKUIViewElementLayoutContext *)self->_layoutContext setArtworkRequestDelegate:0];
   [(SKUIViewElementLayoutContext *)self->_layoutContext setParentViewController:0];
   [(SKUILayoutCache *)self->_textLayoutCache setDelegate:0];
@@ -73,8 +73,8 @@
 - (void)loadView
 {
   v13 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v3 = [(SKUIPanelDocumentViewController *)self _templateBackgroundColor];
-  [v13 setBackgroundColor:v3];
+  _templateBackgroundColor = [(SKUIPanelDocumentViewController *)self _templateBackgroundColor];
+  [v13 setBackgroundColor:_templateBackgroundColor];
 
   [v13 setPreservesSuperviewLayoutMargins:1];
   if (!self->_panelView)
@@ -84,8 +84,8 @@
     self->_panelView = v4;
 
     v6 = self->_panelView;
-    v7 = [(SKUIPanelDocumentViewController *)self _activeBackgroundColor];
-    [(SKUIViewReuseView *)v6 setBackgroundColor:v7];
+    _activeBackgroundColor = [(SKUIPanelDocumentViewController *)self _activeBackgroundColor];
+    [(SKUIViewReuseView *)v6 setBackgroundColor:_activeBackgroundColor];
 
     [(SKUIPanelView *)self->_panelView setPreservesSuperviewLayoutMargins:1];
   }
@@ -100,8 +100,8 @@
     [(UIScrollView *)self->_scrollView setAlwaysBounceHorizontal:0];
     [(UIScrollView *)self->_scrollView setAlwaysBounceVertical:0];
     v11 = self->_scrollView;
-    v12 = [(SKUIPanelDocumentViewController *)self _activeBackgroundColor];
-    [(UIScrollView *)v11 setBackgroundColor:v12];
+    _activeBackgroundColor2 = [(SKUIPanelDocumentViewController *)self _activeBackgroundColor];
+    [(UIScrollView *)v11 setBackgroundColor:_activeBackgroundColor2];
 
     [(UIScrollView *)self->_scrollView setPreservesSuperviewLayoutMargins:1];
     [(UIScrollView *)self->_scrollView addSubview:self->_panelView];
@@ -113,9 +113,9 @@
   [(SKUIPanelDocumentViewController *)self _reloadBackgroundImageView];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v18 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(SKUIMetricsImpressionSession);
   metricsImpressionSession = self->_metricsImpressionSession;
@@ -125,8 +125,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(SKUIPanelTemplateViewElement *)self->_templateElement children];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  children = [(SKUIPanelTemplateViewElement *)self->_templateElement children];
+  v8 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -138,14 +138,14 @@
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(children);
         }
 
         [(SKUIMetricsImpressionSession *)self->_metricsImpressionSession beginActiveImpressionForViewElement:*(*(&v13 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -153,19 +153,19 @@
 
   v12.receiver = self;
   v12.super_class = SKUIPanelDocumentViewController;
-  [(SKUIPanelDocumentViewController *)&v12 viewDidAppear:v3];
+  [(SKUIPanelDocumentViewController *)&v12 viewDidAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(SKUIPanelTemplateViewElement *)self->_templateElement children];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  children = [(SKUIPanelTemplateViewElement *)self->_templateElement children];
+  v6 = [children countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -177,14 +177,14 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(children);
         }
 
         [(SKUIMetricsImpressionSession *)self->_metricsImpressionSession endActiveImpressionForViewElement:*(*(&v12 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [children countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -196,7 +196,7 @@
   self->_didAttemptBecomeFirstResponder = 0;
   v11.receiver = self;
   v11.super_class = SKUIPanelDocumentViewController;
-  [(SKUIPanelDocumentViewController *)&v11 viewDidDisappear:v3];
+  [(SKUIPanelDocumentViewController *)&v11 viewDidDisappear:disappearCopy];
 }
 
 - (void)viewDidLayoutSubviews
@@ -217,9 +217,9 @@
   [(SKUIPanelDocumentViewController *)&v3 viewDidLayoutSubviews];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SKUIPanelDocumentViewController *)self _layoutScrollView];
   if (self->_panelView)
   {
@@ -229,17 +229,17 @@
 
   v7.receiver = self;
   v7.super_class = SKUIPanelDocumentViewController;
-  [(SKUIViewController *)&v7 viewWillAppear:v3];
+  [(SKUIViewController *)&v7 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   self->_didAttemptBecomeFirstResponder = 0;
   [(SKUIPanelView *)self->_panelView resignFirstResponder];
   v5.receiver = self;
   v5.super_class = SKUIPanelDocumentViewController;
-  [(SKUIPanelDocumentViewController *)&v5 viewWillDisappear:v3];
+  [(SKUIPanelDocumentViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (void)viewWillLayoutSubviews
@@ -256,53 +256,53 @@
   [(SKUIPanelDocumentViewController *)&v3 viewWillLayoutSubviews];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   [(SKUIPanelDocumentViewController *)self _reloadPanelViewWithScrollViewSize:width, height];
   v8.receiver = self;
   v8.super_class = SKUIPanelDocumentViewController;
-  [(SKUIPanelDocumentViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(SKUIPanelDocumentViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(SKUIPanelTemplateViewElement *)self->_templateElement backgroundImageElement];
-  v8 = v7;
-  if (v7)
+  requestCopy = request;
+  imageCopy = image;
+  backgroundImageElement = [(SKUIPanelTemplateViewElement *)self->_templateElement backgroundImageElement];
+  v8 = backgroundImageElement;
+  if (backgroundImageElement)
   {
-    v9 = [v7 resourceCacheKey];
-    v10 = [v14 cacheKey];
-    v11 = [v9 isEqual:v10];
+    resourceCacheKey = [backgroundImageElement resourceCacheKey];
+    cacheKey = [requestCopy cacheKey];
+    v11 = [resourceCacheKey isEqual:cacheKey];
 
     if (v11)
     {
-      [(UIImageView *)self->_backgroundImageView setImage:v6];
+      [(UIImageView *)self->_backgroundImageView setImage:imageCopy];
       [(SKUIPanelDocumentViewController *)self _layoutBackgroundImageView];
     }
   }
 
   panelView = self->_panelView;
-  v13 = [(SKUIPanelDocumentViewController *)self _layoutContext];
-  [(SKUIPanelView *)panelView setImage:v6 forArtworkRequest:v14 context:v13];
+  _layoutContext = [(SKUIPanelDocumentViewController *)self _layoutContext];
+  [(SKUIPanelView *)panelView setImage:imageCopy forArtworkRequest:requestCopy context:_layoutContext];
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v4 = [a3 templateElement];
+  templateElement = [update templateElement];
   templateElement = self->_templateElement;
-  self->_templateElement = v4;
+  self->_templateElement = templateElement;
 
-  v11 = [(SKUIPanelDocumentViewController *)self _activeBackgroundColor];
+  _activeBackgroundColor = [(SKUIPanelDocumentViewController *)self _activeBackgroundColor];
   [(UIScrollView *)self->_scrollView setBackgroundColor:?];
   panelView = self->_panelView;
   if (panelView)
   {
-    [(SKUIViewReuseView *)panelView setBackgroundColor:v11];
+    [(SKUIViewReuseView *)panelView setBackgroundColor:_activeBackgroundColor];
     [(UIScrollView *)self->_scrollView bounds];
     [(SKUIPanelDocumentViewController *)self _reloadPanelViewWithScrollViewSize:v7, v8];
   }
@@ -310,23 +310,23 @@
   if ([(SKUIPanelDocumentViewController *)self isViewLoaded])
   {
     [(SKUIPanelDocumentViewController *)self _reloadBackgroundImageView];
-    v9 = [(SKUIPanelDocumentViewController *)self view];
-    v10 = [(SKUIPanelDocumentViewController *)self _templateBackgroundColor];
-    [v9 setBackgroundColor:v10];
+    view = [(SKUIPanelDocumentViewController *)self view];
+    _templateBackgroundColor = [(SKUIPanelDocumentViewController *)self _templateBackgroundColor];
+    [view setBackgroundColor:_templateBackgroundColor];
   }
 }
 
-- (void)layoutCacheDidFinishBatch:(id)a3
+- (void)layoutCacheDidFinishBatch:(id)batch
 {
   panelView = self->_panelView;
   templateElement = self->_templateElement;
   [(UIScrollView *)self->_scrollView bounds];
   v7 = v6;
-  v8 = [(SKUIPanelDocumentViewController *)self _layoutContext];
-  [(SKUIPanelView *)panelView reloadWithViewElement:templateElement width:v8 context:v7];
+  _layoutContext = [(SKUIPanelDocumentViewController *)self _layoutContext];
+  [(SKUIPanelView *)panelView reloadWithViewElement:templateElement width:_layoutContext context:v7];
 }
 
-- (void)_keyboardHideNotification:(id)a3
+- (void)_keyboardHideNotification:(id)notification
 {
   v4 = *(MEMORY[0x277CBF3A0] + 16);
   self->_keyboardFrame.origin = *MEMORY[0x277CBF3A0];
@@ -336,10 +336,10 @@
   [(SKUIPanelDocumentViewController *)self _reloadContentSize];
 }
 
-- (void)_keyboardWillChangeNotification:(id)a3
+- (void)_keyboardWillChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v10 = [v4 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [notification userInfo];
+  v10 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
 
   v5 = v10;
   if (v10)
@@ -357,8 +357,8 @@
 
 - (id)_activeBackgroundColor
 {
-  v3 = [(SKUIPanelTemplateViewElement *)self->_templateElement backgroundImageElement];
-  if (v3)
+  backgroundImageElement = [(SKUIPanelTemplateViewElement *)self->_templateElement backgroundImageElement];
+  if (backgroundImageElement)
   {
     [MEMORY[0x277D75348] clearColor];
   }
@@ -372,27 +372,27 @@
   return v4;
 }
 
-- (id)_imageForBackgroundImageElement:(id)a3
+- (id)_imageForBackgroundImageElement:(id)element
 {
-  v4 = a3;
-  v5 = [(SKUIPanelDocumentViewController *)self _layoutContext];
-  v6 = [v5 resourceLoader];
+  elementCopy = element;
+  _layoutContext = [(SKUIPanelDocumentViewController *)self _layoutContext];
+  resourceLoader = [_layoutContext resourceLoader];
 
-  v7 = [v4 resourceName];
-  if ([v7 length])
+  resourceName = [elementCopy resourceName];
+  if ([resourceName length])
   {
-    v8 = SKUIImageWithResourceName(v7);
+    v8 = SKUIImageWithResourceName(resourceName);
   }
 
   else
   {
-    v9 = [v4 resourceCacheKey];
-    v10 = [v6 requestIdentifierForCacheKey:v9];
+    resourceCacheKey = [elementCopy resourceCacheKey];
+    v10 = [resourceLoader requestIdentifierForCacheKey:resourceCacheKey];
     v11 = v10;
     if (v10)
     {
-      v8 = [v6 cachedResourceForRequestIdentifier:{objc_msgSend(v10, "unsignedIntegerValue")}];
-      if ([v6 trySetReason:1 forRequestWithIdentifier:{objc_msgSend(v11, "unsignedIntegerValue")}])
+      v8 = [resourceLoader cachedResourceForRequestIdentifier:{objc_msgSend(v10, "unsignedIntegerValue")}];
+      if ([resourceLoader trySetReason:1 forRequestWithIdentifier:{objc_msgSend(v11, "unsignedIntegerValue")}])
       {
 
         v12 = 0;
@@ -406,15 +406,15 @@
     }
 
     v13 = objc_alloc_init(SKUIArtworkRequest);
-    [(SKUIResourceRequest *)v13 setCacheKey:v9];
+    [(SKUIResourceRequest *)v13 setCacheKey:resourceCacheKey];
     v14 = +[(SSVURLDataConsumer *)SKUIImageDataConsumer];
     [(SKUIArtworkRequest *)v13 setDataConsumer:v14];
 
     [(SKUIArtworkRequest *)v13 setDelegate:self];
-    v15 = [v4 URL];
+    v15 = [elementCopy URL];
     [(SKUIArtworkRequest *)v13 setURL:v15];
 
-    [v6 loadResourceWithRequest:v13 reason:1];
+    [resourceLoader loadResourceWithRequest:v13 reason:1];
   }
 
   v8 = v8;
@@ -431,27 +431,27 @@ LABEL_9:
     return;
   }
 
-  v3 = [(SKUIPanelDocumentViewController *)self view];
-  [v3 bounds];
+  view = [(SKUIPanelDocumentViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v19 = [(UIImageView *)self->_backgroundImageView image];
-  if ([(UIImageView *)self->_backgroundImageView contentMode]!= 2 && v19)
+  image = [(UIImageView *)self->_backgroundImageView image];
+  if ([(UIImageView *)self->_backgroundImageView contentMode]!= 2 && image)
   {
-    [v19 size];
+    [image size];
     *&v12 = v13 * (v9 / v12);
     v14 = floorf(*&v12);
-    v15 = [(SKUIPanelTemplateViewElement *)self->_templateElement backgroundImageElement];
-    v16 = [v15 style];
-    v17 = [v16 elementPosition];
+    backgroundImageElement = [(SKUIPanelTemplateViewElement *)self->_templateElement backgroundImageElement];
+    style = [backgroundImageElement style];
+    elementPosition = [style elementPosition];
 
     v18 = 0.0;
-    if (v17 <= 9)
+    if (elementPosition <= 9)
     {
-      if (((1 << v17) & 0x33) != 0)
+      if (((1 << elementPosition) & 0x33) != 0)
       {
         v7 = floor((v11 - v14) * 0.5);
 LABEL_12:
@@ -459,7 +459,7 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      if (((1 << v17) & 0x308) != 0)
+      if (((1 << elementPosition) & 0x308) != 0)
       {
         v21.origin.x = v5;
         v21.origin.y = v7;
@@ -490,8 +490,8 @@ LABEL_13:
 
     [(SKUIViewElementLayoutContext *)self->_layoutContext setArtworkRequestDelegate:self];
     v6 = self->_layoutContext;
-    v7 = [(SKUIViewController *)self clientContext];
-    [(SKUIViewElementLayoutContext *)v6 setClientContext:v7];
+    clientContext = [(SKUIViewController *)self clientContext];
+    [(SKUIViewElementLayoutContext *)v6 setClientContext:clientContext];
 
     [(SKUIViewElementLayoutContext *)self->_layoutContext setContainerViewElementType:[(SKUIPanelTemplateViewElement *)self->_templateElement elementType]];
     [(SKUIViewElementLayoutContext *)self->_layoutContext setParentViewController:self];
@@ -503,8 +503,8 @@ LABEL_13:
     v10 = [[SKUIViewElementTextLayoutCache alloc] initWithLayoutCache:self->_textLayoutCache];
     [(SKUIViewElementLayoutContext *)self->_layoutContext setLabelLayoutCache:v10];
     v11 = [SKUIResourceLoader alloc];
-    v12 = [(SKUIViewController *)self clientContext];
-    v13 = [(SKUIResourceLoader *)v11 initWithClientContext:v12];
+    clientContext2 = [(SKUIViewController *)self clientContext];
+    v13 = [(SKUIResourceLoader *)v11 initWithClientContext:clientContext2];
 
     [(SKUIViewElementLayoutContext *)self->_layoutContext setResourceLoader:v13];
     layoutContext = self->_layoutContext;
@@ -515,8 +515,8 @@ LABEL_13:
 
 - (void)_layoutScrollView
 {
-  v3 = [(SKUIPanelDocumentViewController *)self view];
-  [v3 bounds];
+  view = [(SKUIPanelDocumentViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -530,10 +530,10 @@ LABEL_13:
 
 - (void)_reloadBackgroundImageView
 {
-  v3 = [(SKUIPanelTemplateViewElement *)self->_templateElement backgroundImageElement];
+  backgroundImageElement = [(SKUIPanelTemplateViewElement *)self->_templateElement backgroundImageElement];
   backgroundImageView = self->_backgroundImageView;
-  v16 = v3;
-  if (v3)
+  v16 = backgroundImageElement;
+  if (backgroundImageElement)
   {
     if (!backgroundImageView)
     {
@@ -542,16 +542,16 @@ LABEL_13:
       self->_backgroundImageView = v5;
 
       [(UIImageView *)self->_backgroundImageView setClipsToBounds:1];
-      v7 = [(SKUIPanelDocumentViewController *)self view];
-      [v7 insertSubview:self->_backgroundImageView atIndex:0];
+      view = [(SKUIPanelDocumentViewController *)self view];
+      [view insertSubview:self->_backgroundImageView atIndex:0];
 
-      v3 = v16;
+      backgroundImageElement = v16;
     }
 
-    v8 = [v3 style];
-    v9 = [v8 fillImage];
+    style = [backgroundImageElement style];
+    fillImage = [style fillImage];
 
-    if (v9 == 1)
+    if (fillImage == 1)
     {
       v10 = 2;
     }
@@ -563,8 +563,8 @@ LABEL_13:
 
     [(UIImageView *)self->_backgroundImageView setContentMode:v10];
     v11 = self->_backgroundImageView;
-    v12 = [(SKUIPanelDocumentViewController *)self _templateBackgroundColor];
-    [(UIImageView *)v11 setBackgroundColor:v12];
+    _templateBackgroundColor = [(SKUIPanelDocumentViewController *)self _templateBackgroundColor];
+    [(UIImageView *)v11 setBackgroundColor:_templateBackgroundColor];
 
     v13 = self->_backgroundImageView;
     v14 = [(SKUIPanelDocumentViewController *)self _imageForBackgroundImageElement:v16];
@@ -609,8 +609,8 @@ LABEL_13:
   v19 = objc_opt_class();
   v20 = v16;
   templateElement = self->_templateElement;
-  v22 = [(SKUIPanelDocumentViewController *)self _layoutContext];
-  [v19 sizeThatFitsWidth:templateElement viewElement:v22 context:v20];
+  _layoutContext = [(SKUIPanelDocumentViewController *)self _layoutContext];
+  [v19 sizeThatFitsWidth:templateElement viewElement:_layoutContext context:v20];
   v24 = v23;
   v26 = v25;
 
@@ -630,12 +630,12 @@ LABEL_13:
   [(UIScrollView *)scrollView setContentSize:v24, v26];
 }
 
-- (void)_reloadPanelViewWithScrollViewSize:(CGSize)a3
+- (void)_reloadPanelViewWithScrollViewSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   if (self->_panelView)
   {
-    v4 = a3.width <= 0.00000011920929;
+    v4 = size.width <= 0.00000011920929;
   }
 
   else
@@ -645,11 +645,11 @@ LABEL_13:
 
   if (!v4)
   {
-    v12 = [(SKUIPanelDocumentViewController *)self _layoutContext];
-    v6 = [(SKUIPanelView *)self->_panelView tintColor];
-    [v12 setTintColor:v6];
+    _layoutContext = [(SKUIPanelDocumentViewController *)self _layoutContext];
+    tintColor = [(SKUIPanelView *)self->_panelView tintColor];
+    [_layoutContext setTintColor:tintColor];
 
-    [objc_opt_class() prefetchResourcesForViewElement:self->_templateElement reason:1 context:v12];
+    [objc_opt_class() prefetchResourcesForViewElement:self->_templateElement reason:1 context:_layoutContext];
     [(SKUIPanelView *)self->_panelView layoutMargins];
     v8 = v7;
     v10 = v9;
@@ -660,35 +660,35 @@ LABEL_13:
   }
 }
 
-- (void)_requestPanelViewLayoutWithContentWidth:(int64_t)a3 forced:(BOOL)a4
+- (void)_requestPanelViewLayoutWithContentWidth:(int64_t)width forced:(BOOL)forced
 {
-  if (a4 || self->_lastContentWidth != a3)
+  if (forced || self->_lastContentWidth != width)
   {
-    v6 = [(SKUIPanelDocumentViewController *)self _layoutContext];
-    [objc_opt_class() requestLayoutForViewElement:self->_templateElement width:v6 context:a3];
+    _layoutContext = [(SKUIPanelDocumentViewController *)self _layoutContext];
+    [objc_opt_class() requestLayoutForViewElement:self->_templateElement width:_layoutContext context:width];
     [(SKUILayoutCache *)self->_textLayoutCache commitLayoutRequests];
-    [(SKUIPanelView *)self->_panelView reloadWithViewElement:self->_templateElement width:v6 context:a3];
-    self->_lastContentWidth = a3;
+    [(SKUIPanelView *)self->_panelView reloadWithViewElement:self->_templateElement width:_layoutContext context:width];
+    self->_lastContentWidth = width;
   }
 }
 
 - (id)_templateBackgroundColor
 {
-  v2 = [(SKUIPanelTemplateViewElement *)self->_templateElement style];
-  v3 = [v2 ikBackgroundColor];
-  v4 = [v3 color];
+  style = [(SKUIPanelTemplateViewElement *)self->_templateElement style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (v4)
+  if (color)
   {
-    v5 = v4;
+    whiteColor = color;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  v6 = v5;
+  v6 = whiteColor;
 
   return v6;
 }

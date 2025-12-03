@@ -1,24 +1,24 @@
 @interface _CATArbitratorResourceProxy
-- (BOOL)respondsToSelector:(SEL)a3;
-- (_CATArbitratorResourceProxy)initWithResource:(id)a3 registration:(id)a4 exclusive:(BOOL)a5;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (_CATArbitratorResourceProxy)initWithResource:(id)resource registration:(id)registration exclusive:(BOOL)exclusive;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 - (void)invalidate;
 @end
 
 @implementation _CATArbitratorResourceProxy
 
-- (_CATArbitratorResourceProxy)initWithResource:(id)a3 registration:(id)a4 exclusive:(BOOL)a5
+- (_CATArbitratorResourceProxy)initWithResource:(id)resource registration:(id)registration exclusive:(BOOL)exclusive
 {
-  v9 = a3;
-  v10 = a4;
+  resourceCopy = resource;
+  registrationCopy = registration;
   if (self)
   {
-    self->_isExclusive = a5;
-    objc_storeStrong(&self->mResource, a3);
-    objc_storeStrong(&self->mRegistration, a4);
+    self->_isExclusive = exclusive;
+    objc_storeStrong(&self->mResource, resource);
+    objc_storeStrong(&self->mRegistration, registration);
   }
 
   return self;
@@ -42,7 +42,7 @@
   [(_CATArbitratorRegistrationEntry *)mRegistration resourceProxyDidInvalidate:self];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   if (!self->mResource)
   {
@@ -53,7 +53,7 @@
   return objc_opt_respondsToSelector() & 1;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   mResource = self->mResource;
   if (mResource)
@@ -69,7 +69,7 @@
   return mResource;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   mResource = self->mResource;
   if (!mResource)
@@ -78,20 +78,20 @@
     mResource = v6;
   }
 
-  return [mResource methodSignatureForSelector:a3];
+  return [mResource methodSignatureForSelector:selector];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = v4;
+  invocationCopy = invocation;
+  v5 = invocationCopy;
   if (!self->mResource)
   {
     [_CATArbitratorResourceProxy forwardInvocation:];
-    v4 = v5;
+    invocationCopy = v5;
   }
 
-  [v4 setTarget:v5];
+  [invocationCopy setTarget:v5];
   [v6 invoke];
 }
 

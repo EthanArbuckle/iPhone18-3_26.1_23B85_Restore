@@ -1,30 +1,30 @@
 @interface SWCollaborationOptionsGroup
-+ (SWCollaborationOptionsGroup)allocWithZone:(_NSZone *)a3;
++ (SWCollaborationOptionsGroup)allocWithZone:(_NSZone *)zone;
 + (SWCollaborationOptionsGroup)optionsGroupWithIdentifier:(NSString *)identifier options:(NSArray *)options;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCollaborationOptionsGroup:(id)a3;
-- (SWCollaborationOptionsGroup)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCollaborationOptionsGroup:(id)group;
+- (SWCollaborationOptionsGroup)initWithCoder:(id)coder;
 - (SWCollaborationOptionsGroup)initWithIdentifier:(NSString *)identifier options:(NSArray *)options;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SWCollaborationOptionsGroup
 
-+ (SWCollaborationOptionsGroup)allocWithZone:(_NSZone *)a3
++ (SWCollaborationOptionsGroup)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [_SWCollaborationOptionsGroup allocWithZone:a3];
+    return [_SWCollaborationOptionsGroup allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SWCollaborationOptionsGroup;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
@@ -60,7 +60,7 @@
 {
   v6 = options;
   v7 = identifier;
-  v8 = [[a1 alloc] initWithIdentifier:v7 options:v6];
+  v8 = [[self alloc] initWithIdentifier:v7 options:v6];
 
   return v8;
 }
@@ -68,11 +68,11 @@
 - (id)description
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(SWCollaborationOptionsGroup *)self title];
-  if (v3)
+  title = [(SWCollaborationOptionsGroup *)self title];
+  if (title)
   {
-    v4 = [(SWCollaborationOptionsGroup *)self title];
-    v5 = [v4 mutableCopy];
+    title2 = [(SWCollaborationOptionsGroup *)self title];
+    v5 = [title2 mutableCopy];
   }
 
   else
@@ -84,8 +84,8 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(SWCollaborationOptionsGroup *)self options];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  options = [(SWCollaborationOptionsGroup *)self options];
+  v7 = [options countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -96,7 +96,7 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(options);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
@@ -105,7 +105,7 @@
           [v5 appendString:@"\n"];
         }
 
-        v12 = [v11 title];
+        title3 = [v11 title];
         if ([v11 isSelected])
         {
           v13 = @"YES";
@@ -116,21 +116,21 @@
           v13 = @"NO";
         }
 
-        [v5 appendFormat:@"- %@: %@", v12, v13];
+        [v5 appendFormat:@"- %@: %@", title3, v13];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [options countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
   }
 
-  v14 = [(SWCollaborationOptionsGroup *)self footer];
+  footer = [(SWCollaborationOptionsGroup *)self footer];
 
-  if (v14)
+  if (footer)
   {
-    v15 = [(SWCollaborationOptionsGroup *)self footer];
-    [v5 appendString:v15];
+    footer2 = [(SWCollaborationOptionsGroup *)self footer];
+    [v5 appendString:footer2];
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -138,30 +138,30 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SWCollaborationOptionsGroup *)self isEqualToCollaborationOptionsGroup:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SWCollaborationOptionsGroup *)self isEqualToCollaborationOptionsGroup:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToCollaborationOptionsGroup:(id)a3
+- (BOOL)isEqualToCollaborationOptionsGroup:(id)group
 {
-  v9 = a3;
-  if (v9 == self)
+  groupCopy = group;
+  if (groupCopy == self)
   {
     v11 = 1;
     goto LABEL_46;
   }
 
-  v10 = [(SWCollaborationOptionsGroup *)self title];
-  if (v10 || ([(SWCollaborationOptionsGroup *)v9 title], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  title = [(SWCollaborationOptionsGroup *)self title];
+  if (title || ([(SWCollaborationOptionsGroup *)groupCopy title], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = [(SWCollaborationOptionsGroup *)self title];
-    v5 = [(SWCollaborationOptionsGroup *)v9 title];
-    if (([v4 isEqual:v5] & 1) == 0)
+    title2 = [(SWCollaborationOptionsGroup *)self title];
+    title3 = [(SWCollaborationOptionsGroup *)groupCopy title];
+    if (([title2 isEqual:title3] & 1) == 0)
     {
 
       v11 = 0;
@@ -176,39 +176,39 @@
     v32 = 0;
   }
 
-  v12 = [(SWCollaborationOptionsGroup *)self identifier];
-  if (!v12)
+  identifier = [(SWCollaborationOptionsGroup *)self identifier];
+  if (!identifier)
   {
-    v6 = [(SWCollaborationOptionsGroup *)v9 identifier];
-    if (!v6)
+    identifier2 = [(SWCollaborationOptionsGroup *)groupCopy identifier];
+    if (!identifier2)
     {
       v31 = 0;
       goto LABEL_19;
     }
   }
 
-  v7 = v3;
-  v13 = [(SWCollaborationOptionsGroup *)self identifier];
-  v14 = [(SWCollaborationOptionsGroup *)v9 identifier];
-  if ([v13 isEqual:v14])
+  footer2 = v3;
+  identifier3 = [(SWCollaborationOptionsGroup *)self identifier];
+  identifier4 = [(SWCollaborationOptionsGroup *)groupCopy identifier];
+  if ([identifier3 isEqual:identifier4])
   {
-    v28 = v14;
-    v29 = v13;
+    v28 = identifier4;
+    v29 = identifier3;
     v31 = 1;
-    v3 = v7;
+    v3 = footer2;
 LABEL_19:
-    v15 = [(SWCollaborationOptionsGroup *)self footer];
-    if (v15 || ([(SWCollaborationOptionsGroup *)v9 footer], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
+    footer = [(SWCollaborationOptionsGroup *)self footer];
+    if (footer || ([(SWCollaborationOptionsGroup *)groupCopy footer], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v7 = [(SWCollaborationOptionsGroup *)self footer];
-      v30 = [(SWCollaborationOptionsGroup *)v9 footer];
-      if (![v7 isEqual:?])
+      footer2 = [(SWCollaborationOptionsGroup *)self footer];
+      footer3 = [(SWCollaborationOptionsGroup *)groupCopy footer];
+      if (![footer2 isEqual:?])
       {
         v11 = 0;
 LABEL_34:
 
 LABEL_35:
-        if (!v15)
+        if (!footer)
         {
         }
 
@@ -216,7 +216,7 @@ LABEL_35:
         {
         }
 
-        if (!v12)
+        if (!identifier)
         {
         }
 
@@ -228,43 +228,43 @@ LABEL_35:
         goto LABEL_42;
       }
 
-      v27 = v6;
+      v27 = identifier2;
       v26 = 1;
     }
 
     else
     {
-      v27 = v6;
+      v27 = identifier2;
       v23 = 0;
       v26 = 0;
     }
 
-    v16 = [(SWCollaborationOptionsGroup *)self options];
-    if (v16 || ([(SWCollaborationOptionsGroup *)v9 options], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+    options = [(SWCollaborationOptionsGroup *)self options];
+    if (options || ([(SWCollaborationOptionsGroup *)groupCopy options], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v24 = v7;
+      v24 = footer2;
       v25 = v3;
       v17 = [(SWCollaborationOptionsGroup *)self options:v21];
-      v18 = [(SWCollaborationOptionsGroup *)v9 options];
-      v11 = [v17 isEqual:v18];
+      options2 = [(SWCollaborationOptionsGroup *)groupCopy options];
+      v11 = [v17 isEqual:options2];
 
-      if (v16)
+      if (options)
       {
 
-        v7 = v24;
+        footer2 = v24;
         if (!v26)
         {
           v3 = v25;
-          v6 = v27;
+          identifier2 = v27;
           goto LABEL_35;
         }
 
         v3 = v25;
-        v6 = v27;
+        identifier2 = v27;
         goto LABEL_34;
       }
 
-      v7 = v24;
+      footer2 = v24;
       v3 = v25;
       v19 = v22;
     }
@@ -275,7 +275,7 @@ LABEL_35:
       v11 = 1;
     }
 
-    v6 = v27;
+    identifier2 = v27;
     if ((v26 & 1) == 0)
     {
       goto LABEL_35;
@@ -284,7 +284,7 @@ LABEL_35:
     goto LABEL_34;
   }
 
-  if (v12)
+  if (identifier)
   {
   }
 
@@ -293,14 +293,14 @@ LABEL_35:
   }
 
   v11 = 0;
-  v3 = v7;
+  v3 = footer2;
   if (v32)
   {
 LABEL_42:
   }
 
 LABEL_43:
-  if (!v10)
+  if (!title)
   {
   }
 
@@ -308,44 +308,44 @@ LABEL_46:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(SWCollaborationOptionsGroup *)self identifier];
-  v7 = [v6 copyWithZone:a3];
-  v8 = [(SWCollaborationOptionsGroup *)self options];
-  v9 = [v8 copyWithZone:a3];
+  identifier = [(SWCollaborationOptionsGroup *)self identifier];
+  v7 = [identifier copyWithZone:zone];
+  options = [(SWCollaborationOptionsGroup *)self options];
+  v9 = [options copyWithZone:zone];
   v10 = [v5 initWithIdentifier:v7 options:v9];
 
   if (v10)
   {
-    v11 = [(SWCollaborationOptionsGroup *)self title];
-    v12 = [v11 copyWithZone:a3];
+    title = [(SWCollaborationOptionsGroup *)self title];
+    v12 = [title copyWithZone:zone];
     [v10 setTitle:v12];
 
-    v13 = [(SWCollaborationOptionsGroup *)self footer];
-    v14 = [v13 copyWithZone:a3];
+    footer = [(SWCollaborationOptionsGroup *)self footer];
+    v14 = [footer copyWithZone:zone];
     [v10 setFooter:v14];
   }
 
   return v10;
 }
 
-- (SWCollaborationOptionsGroup)initWithCoder:(id)a3
+- (SWCollaborationOptionsGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SWCollaborationOptionsGroup *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"footer"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"footer"];
     footer = v5->_footer;
     v5->_footer = v10;
 
@@ -353,7 +353,7 @@ LABEL_46:
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v15 = [v12 setWithObjects:{v13, v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"options"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"options"];
     options = v5->_options;
     v5->_options = v16;
   }
@@ -361,20 +361,20 @@ LABEL_46:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SWCollaborationOptionsGroup *)self title];
-  [v4 encodeObject:v5 forKey:@"title"];
+  coderCopy = coder;
+  title = [(SWCollaborationOptionsGroup *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v6 = [(SWCollaborationOptionsGroup *)self identifier];
-  [v4 encodeObject:v6 forKey:@"identifier"];
+  identifier = [(SWCollaborationOptionsGroup *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v7 = [(SWCollaborationOptionsGroup *)self footer];
-  [v4 encodeObject:v7 forKey:@"footer"];
+  footer = [(SWCollaborationOptionsGroup *)self footer];
+  [coderCopy encodeObject:footer forKey:@"footer"];
 
-  v8 = [(SWCollaborationOptionsGroup *)self options];
-  [v4 encodeObject:v8 forKey:@"options"];
+  options = [(SWCollaborationOptionsGroup *)self options];
+  [coderCopy encodeObject:options forKey:@"options"];
 }
 
 @end

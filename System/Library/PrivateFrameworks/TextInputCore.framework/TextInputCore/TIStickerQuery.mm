@@ -1,8 +1,8 @@
 @interface TIStickerQuery
-+ (BOOL)_isStringStopWord:(id)a3;
++ (BOOL)_isStringStopWord:(id)word;
 - (BOOL)isStopWord;
 - (NSString)normalizedQueryString;
-- (TIStickerQuery)initWithQueryString:(id)a3;
+- (TIStickerQuery)initWithQueryString:(id)string;
 - (unint64_t)length;
 @end
 
@@ -10,8 +10,8 @@
 
 - (unint64_t)length
 {
-  v2 = [(TIStickerQuery *)self normalizedQueryString];
-  v3 = [v2 length];
+  normalizedQueryString = [(TIStickerQuery *)self normalizedQueryString];
+  v3 = [normalizedQueryString length];
 
   return v3;
 }
@@ -19,8 +19,8 @@
 - (BOOL)isStopWord
 {
   v3 = objc_opt_class();
-  v4 = [(TIStickerQuery *)self normalizedQueryString];
-  LOBYTE(v3) = [v3 _isStringStopWord:v4];
+  normalizedQueryString = [(TIStickerQuery *)self normalizedQueryString];
+  LOBYTE(v3) = [v3 _isStringStopWord:normalizedQueryString];
 
   return v3;
 }
@@ -30,11 +30,11 @@
   normalizedQueryString = self->_normalizedQueryString;
   if (!normalizedQueryString)
   {
-    v4 = [(TIStickerQuery *)self queryString];
-    v5 = [v4 lowercaseString];
-    v6 = [v5 decomposedStringWithCanonicalMapping];
+    queryString = [(TIStickerQuery *)self queryString];
+    lowercaseString = [queryString lowercaseString];
+    decomposedStringWithCanonicalMapping = [lowercaseString decomposedStringWithCanonicalMapping];
     v7 = self->_normalizedQueryString;
-    self->_normalizedQueryString = v6;
+    self->_normalizedQueryString = decomposedStringWithCanonicalMapping;
 
     normalizedQueryString = self->_normalizedQueryString;
   }
@@ -42,32 +42,32 @@
   return normalizedQueryString;
 }
 
-- (TIStickerQuery)initWithQueryString:(id)a3
+- (TIStickerQuery)initWithQueryString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = TIStickerQuery;
   v6 = [(TIStickerQuery *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queryString, a3);
+    objc_storeStrong(&v6->_queryString, string);
   }
 
   return v7;
 }
 
-+ (BOOL)_isStringStopWord:(id)a3
++ (BOOL)_isStringStopWord:(id)word
 {
-  v3 = a3;
-  if (v3)
+  wordCopy = word;
+  if (wordCopy)
   {
     if (_isStringStopWord__onceToken != -1)
     {
       dispatch_once(&_isStringStopWord__onceToken, &__block_literal_global_13011);
     }
 
-    v4 = [_isStringStopWord____stopwords containsObject:v3];
+    v4 = [_isStringStopWord____stopwords containsObject:wordCopy];
   }
 
   else

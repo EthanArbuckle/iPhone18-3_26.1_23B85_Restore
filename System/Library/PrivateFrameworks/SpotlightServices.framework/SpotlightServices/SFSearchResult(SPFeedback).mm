@@ -9,30 +9,30 @@
 - (void)setFeedbackPropertiesOnResultCopy:()SPFeedback
 {
   v14 = a3;
-  [a1 copyBasePropertiesOverToResult:v14];
-  v4 = [a1 compactCard];
-  v5 = [v4 copyForFeedback];
-  [v14 setCompactCard:v5];
+  [self copyBasePropertiesOverToResult:v14];
+  compactCard = [self compactCard];
+  copyForFeedback = [compactCard copyForFeedback];
+  [v14 setCompactCard:copyForFeedback];
 
-  v6 = [a1 inlineCard];
-  v7 = [v6 copyForFeedback];
-  [v14 setInlineCard:v7];
+  inlineCard = [self inlineCard];
+  copyForFeedback2 = [inlineCard copyForFeedback];
+  [v14 setInlineCard:copyForFeedback2];
 
-  v8 = [a1 tophitCard];
-  v9 = [v8 copyForFeedback];
-  [v14 setTophitCard:v9];
+  tophitCard = [self tophitCard];
+  copyForFeedback3 = [tophitCard copyForFeedback];
+  [v14 setTophitCard:copyForFeedback3];
 
-  v10 = [a1 mapsData];
+  mapsData = [self mapsData];
   v11 = GEOUsageSearchFoundationFeedbackDataForMapsData();
   [v14 setMapsData:v11];
 
-  v12 = [a1 sectionBundleIdentifier];
-  LOBYTE(v11) = [v12 isEqualToString:@"com.apple.DocumentsApp"];
+  sectionBundleIdentifier = [self sectionBundleIdentifier];
+  LOBYTE(v11) = [sectionBundleIdentifier isEqualToString:@"com.apple.DocumentsApp"];
 
   if ((v11 & 1) == 0)
   {
-    v13 = [a1 punchout];
-    [v14 setPunchout:v13];
+    punchout = [self punchout];
+    [v14 setPunchout:punchout];
   }
 }
 
@@ -77,105 +77,105 @@
 - (void)copyBasePropertiesOverToResult:()SPFeedback
 {
   v29 = a3;
-  v4 = [a1 action];
-  [v29 setAction:v4];
+  action = [self action];
+  [v29 setAction:action];
 
-  v5 = [a1 applicationBundleIdentifier];
-  [v29 setApplicationBundleIdentifier:v5];
+  applicationBundleIdentifier = [self applicationBundleIdentifier];
+  [v29 setApplicationBundleIdentifier:applicationBundleIdentifier];
 
-  [v29 setBlockId:{objc_msgSend(a1, "blockId")}];
-  v6 = [a1 calendarIdentifier];
-  [v29 setCalendarIdentifier:v6];
+  [v29 setBlockId:{objc_msgSend(self, "blockId")}];
+  calendarIdentifier = [self calendarIdentifier];
+  [v29 setCalendarIdentifier:calendarIdentifier];
 
-  v7 = [a1 completedQuery];
-  [v29 setCompletedQuery:v7];
+  completedQuery = [self completedQuery];
+  [v29 setCompletedQuery:completedQuery];
 
-  v8 = [a1 completion];
-  [v29 setCompletion:v8];
+  completion = [self completion];
+  [v29 setCompletion:completion];
 
-  v9 = [a1 contactIdentifier];
-  [v29 setContactIdentifier:v9];
+  contactIdentifier = [self contactIdentifier];
+  [v29 setContactIdentifier:contactIdentifier];
 
-  v10 = [a1 contentType];
-  [v29 setContentType:v10];
+  contentType = [self contentType];
+  [v29 setContentType:contentType];
 
-  v11 = [a1 correctedQuery];
-  [v29 setCorrectedQuery:v11];
+  correctedQuery = [self correctedQuery];
+  [v29 setCorrectedQuery:correctedQuery];
 
-  v12 = [a1 descriptions];
-  [v29 setDescriptions:v12];
+  descriptions = [self descriptions];
+  [v29 setDescriptions:descriptions];
 
-  v13 = [a1 fbr];
+  v13 = [self fbr];
   [v29 setFbr:v13];
 
-  v14 = [a1 footnote];
-  [v29 setFootnote:v14];
+  footnote = [self footnote];
+  [v29 setFootnote:footnote];
 
-  v15 = [a1 identifier];
-  [v29 setIdentifier:v15];
+  identifier = [self identifier];
+  [v29 setIdentifier:identifier];
 
-  v16 = [a1 intendedQuery];
-  [v29 setIntendedQuery:v16];
+  intendedQuery = [self intendedQuery];
+  [v29 setIntendedQuery:intendedQuery];
 
-  [v29 setIsFuzzyMatch:{objc_msgSend(a1, "isFuzzyMatch")}];
-  [v29 setIsLocalApplicationResult:{objc_msgSend(a1, "isLocalApplicationResult")}];
-  [v29 setIsStaticCorrection:{objc_msgSend(a1, "isStaticCorrection")}];
-  v17 = [a1 localFeatures];
-  [v29 setLocalFeatures:v17];
+  [v29 setIsFuzzyMatch:{objc_msgSend(self, "isFuzzyMatch")}];
+  [v29 setIsLocalApplicationResult:{objc_msgSend(self, "isLocalApplicationResult")}];
+  [v29 setIsStaticCorrection:{objc_msgSend(self, "isStaticCorrection")}];
+  localFeatures = [self localFeatures];
+  [v29 setLocalFeatures:localFeatures];
 
-  [v29 setNoGoTakeover:{objc_msgSend(a1, "noGoTakeover")}];
-  [v29 setPreferTopPlatter:{objc_msgSend(a1, "preferTopPlatter")}];
-  [v29 setPubliclyIndexable:{objc_msgSend(a1, "publiclyIndexable")}];
-  [v29 setQueryId:{objc_msgSend(a1, "queryId")}];
-  [a1 rankingScore];
+  [v29 setNoGoTakeover:{objc_msgSend(self, "noGoTakeover")}];
+  [v29 setPreferTopPlatter:{objc_msgSend(self, "preferTopPlatter")}];
+  [v29 setPubliclyIndexable:{objc_msgSend(self, "publiclyIndexable")}];
+  [v29 setQueryId:{objc_msgSend(self, "queryId")}];
+  [self rankingScore];
   [v29 setRankingScore:?];
-  v18 = [a1 resultBundleId];
-  [v29 setResultBundleId:v18];
+  resultBundleId = [self resultBundleId];
+  [v29 setResultBundleId:resultBundleId];
 
-  v19 = [a1 resultType];
-  [v29 setResultType:v19];
+  resultType = [self resultType];
+  [v29 setResultType:resultType];
 
-  v20 = [a1 secondaryTitle];
-  [v29 setSecondaryTitle:v20];
+  secondaryTitle = [self secondaryTitle];
+  [v29 setSecondaryTitle:secondaryTitle];
 
-  v21 = [a1 sectionBundleIdentifier];
-  [v29 setSectionBundleIdentifier:v21];
+  sectionBundleIdentifier = [self sectionBundleIdentifier];
+  [v29 setSectionBundleIdentifier:sectionBundleIdentifier];
 
-  [v29 setShouldUseCompactDisplay:{objc_msgSend(a1, "shouldUseCompactDisplay")}];
-  v22 = [a1 title];
-  [v29 setTitle:v22];
+  [v29 setShouldUseCompactDisplay:{objc_msgSend(self, "shouldUseCompactDisplay")}];
+  title = [self title];
+  [v29 setTitle:title];
 
-  [v29 setTopHit:{objc_msgSend(a1, "topHit")}];
-  [v29 setType:{objc_msgSend(a1, "type")}];
-  v23 = [a1 userInput];
-  [v29 setUserInput:v23];
+  [v29 setTopHit:{objc_msgSend(self, "topHit")}];
+  [v29 setType:{objc_msgSend(self, "type")}];
+  userInput = [self userInput];
+  [v29 setUserInput:userInput];
 
-  [v29 setUsesCompactDisplay:{objc_msgSend(a1, "usesCompactDisplay")}];
-  [v29 setUsesTopHitDisplay:{objc_msgSend(a1, "usesTopHitDisplay")}];
-  [v29 setRenderHorizontallyWithOtherResultsInCategory:{objc_msgSend(a1, "renderHorizontallyWithOtherResultsInCategory")}];
-  [v29 setContainsPersonalResult:{objc_msgSend(a1, "containsPersonalResult")}];
-  [v29 setDidRerankPersonalResult:{objc_msgSend(a1, "didRerankPersonalResult")}];
-  v24 = [a1 itemProviderDataTypes];
-  [v29 setItemProviderDataTypes:v24];
+  [v29 setUsesCompactDisplay:{objc_msgSend(self, "usesCompactDisplay")}];
+  [v29 setUsesTopHitDisplay:{objc_msgSend(self, "usesTopHitDisplay")}];
+  [v29 setRenderHorizontallyWithOtherResultsInCategory:{objc_msgSend(self, "renderHorizontallyWithOtherResultsInCategory")}];
+  [v29 setContainsPersonalResult:{objc_msgSend(self, "containsPersonalResult")}];
+  [v29 setDidRerankPersonalResult:{objc_msgSend(self, "didRerankPersonalResult")}];
+  itemProviderDataTypes = [self itemProviderDataTypes];
+  [v29 setItemProviderDataTypes:itemProviderDataTypes];
 
-  v25 = [a1 itemProviderFileTypes];
-  [v29 setItemProviderFileTypes:v25];
+  itemProviderFileTypes = [self itemProviderFileTypes];
+  [v29 setItemProviderFileTypes:itemProviderFileTypes];
 
-  [v29 setCoreSpotlightIndexUsed:{objc_msgSend(a1, "coreSpotlightIndexUsed")}];
-  [v29 setCoreSpotlightIndexUsedReason:{objc_msgSend(a1, "coreSpotlightIndexUsedReason")}];
-  v26 = [a1 coreSpotlightRankingSignals];
-  [v29 setCoreSpotlightRankingSignals:v26];
+  [v29 setCoreSpotlightIndexUsed:{objc_msgSend(self, "coreSpotlightIndexUsed")}];
+  [v29 setCoreSpotlightIndexUsedReason:{objc_msgSend(self, "coreSpotlightIndexUsedReason")}];
+  coreSpotlightRankingSignals = [self coreSpotlightRankingSignals];
+  [v29 setCoreSpotlightRankingSignals:coreSpotlightRankingSignals];
 
-  v27 = [a1 indexOfSectionWhenRanked];
-  [v29 setIndexOfSectionWhenRanked:v27];
+  indexOfSectionWhenRanked = [self indexOfSectionWhenRanked];
+  [v29 setIndexOfSectionWhenRanked:indexOfSectionWhenRanked];
 
-  v28 = [a1 indexOfResultInSectionWhenRanked];
-  [v29 setIndexOfResultInSectionWhenRanked:v28];
+  indexOfResultInSectionWhenRanked = [self indexOfResultInSectionWhenRanked];
+  [v29 setIndexOfResultInSectionWhenRanked:indexOfResultInSectionWhenRanked];
 
-  [v29 setHasAppTopHitShortcut:{objc_msgSend(a1, "hasAppTopHitShortcut")}];
+  [v29 setHasAppTopHitShortcut:{objc_msgSend(self, "hasAppTopHitShortcut")}];
   if ([objc_opt_class() instancesRespondToSelector:sel_serverFeatures] && objc_msgSend(objc_opt_class(), "instancesRespondToSelector:", sel_setServerFeatures_))
   {
-    [v29 performSelector:sel_setServerFeatures_ withObject:{objc_msgSend(a1, "performSelector:", sel_serverFeatures)}];
+    [v29 performSelector:sel_setServerFeatures_ withObject:{objc_msgSend(self, "performSelector:", sel_serverFeatures)}];
   }
 }
 

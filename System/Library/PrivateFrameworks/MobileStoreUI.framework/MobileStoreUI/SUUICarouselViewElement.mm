@@ -1,21 +1,21 @@
 @interface SUUICarouselViewElement
-- (SUUICarouselViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUICarouselViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SUUIProgressIndicatorViewElement)progressIndicatorElement;
-- (id)applyUpdatesWithElement:(id)a3;
-- (void)enumerateChildrenUsingBlock:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
+- (void)enumerateChildrenUsingBlock:(id)block;
 @end
 
 @implementation SUUICarouselViewElement
 
-- (SUUICarouselViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUICarouselViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v13.receiver = self;
   v13.super_class = SUUICarouselViewElement;
-  v9 = [(SUUIViewElement *)&v13 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v13 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"displayInterval"];
+    v10 = [elementCopy getAttribute:@"displayInterval"];
     if ([v10 length])
     {
       [v10 doubleValue];
@@ -32,33 +32,33 @@
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SUUICarouselViewElement;
-  v5 = [(SUUIViewElement *)&v9 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v9 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    [(SUUICarouselViewElement *)v4 displayInterval];
+    [(SUUICarouselViewElement *)elementCopy displayInterval];
     self->_displayInterval = v7;
   }
 
   return v6;
 }
 
-- (void)enumerateChildrenUsingBlock:(id)a3
+- (void)enumerateChildrenUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__SUUICarouselViewElement_enumerateChildrenUsingBlock___block_invoke;
   v7[3] = &unk_2798F6008;
-  v8 = v4;
+  v8 = blockCopy;
   v6.receiver = self;
   v6.super_class = SUUICarouselViewElement;
-  v5 = v4;
+  v5 = blockCopy;
   [(SUUIViewElement *)&v6 enumerateChildrenUsingBlock:v7];
 }
 
@@ -81,13 +81,13 @@ void __55__SUUICarouselViewElement_enumerateChildrenUsingBlock___block_invoke(ui
   v9 = __Block_byref_object_copy__96;
   v10 = __Block_byref_object_dispose__96;
   v11 = 0;
-  v2 = [(SUUICarouselViewElement *)self children];
+  children = [(SUUICarouselViewElement *)self children];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51__SUUICarouselViewElement_progressIndicatorElement__block_invoke;
   v5[3] = &unk_2798FDE00;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [children enumerateObjectsUsingBlock:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);

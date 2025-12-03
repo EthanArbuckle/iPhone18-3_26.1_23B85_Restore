@@ -1,22 +1,22 @@
 @interface SKUIContentUnavailableDocumentViewController
-- (SKUIContentUnavailableDocumentViewController)initWithTemplateElement:(id)a3;
+- (SKUIContentUnavailableDocumentViewController)initWithTemplateElement:(id)element;
 - (UIEdgeInsets)_contentInsets;
 - (id)_layoutContext;
-- (void)_reloadContentUnavailableView:(id)a3 width:(double)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
+- (void)_reloadContentUnavailableView:(id)view width:(double)width;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
 - (void)dealloc;
-- (void)documentDidUpdate:(id)a3;
-- (void)layoutCacheDidFinishBatch:(id)a3;
+- (void)documentDidUpdate:(id)update;
+- (void)layoutCacheDidFinishBatch:(id)batch;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SKUIContentUnavailableDocumentViewController
 
-- (SKUIContentUnavailableDocumentViewController)initWithTemplateElement:(id)a3
+- (SKUIContentUnavailableDocumentViewController)initWithTemplateElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIContentUnavailableDocumentViewController initWithTemplateElement:];
@@ -28,7 +28,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_templateElement, a3);
+    objc_storeStrong(&v6->_templateElement, element);
   }
 
   return v7;
@@ -44,28 +44,28 @@
   [(SKUIViewController *)&v3 dealloc];
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v4 = [a3 templateElement];
+  templateElement = [update templateElement];
   templateElement = self->_templateElement;
-  self->_templateElement = v4;
+  self->_templateElement = templateElement;
 
   if (self->_contentUnavailableView)
   {
-    v6 = [(SKUIContentUnavailableTemplateElement *)self->_templateElement style];
-    v7 = [v6 ikBackgroundColor];
-    v12 = [v7 color];
+    style = [(SKUIContentUnavailableTemplateElement *)self->_templateElement style];
+    ikBackgroundColor = [style ikBackgroundColor];
+    color = [ikBackgroundColor color];
 
     contentUnavailableView = self->_contentUnavailableView;
-    if (v12)
+    if (color)
     {
-      [(SKUIViewReuseView *)self->_contentUnavailableView setBackgroundColor:v12];
+      [(SKUIViewReuseView *)self->_contentUnavailableView setBackgroundColor:color];
     }
 
     else
     {
-      v9 = [MEMORY[0x277D75348] systemBackgroundColor];
-      [(SKUIViewReuseView *)contentUnavailableView setBackgroundColor:v9];
+      systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+      [(SKUIViewReuseView *)contentUnavailableView setBackgroundColor:systemBackgroundColor];
     }
 
     v10 = self->_contentUnavailableView;
@@ -82,35 +82,35 @@
   contentUnavailableView = self->_contentUnavailableView;
   if (!contentUnavailableView)
   {
-    v4 = [(SKUIContentUnavailableTemplateElement *)self->_templateElement style];
-    v5 = [v4 ikBackgroundColor];
-    v6 = [v5 color];
+    style = [(SKUIContentUnavailableTemplateElement *)self->_templateElement style];
+    ikBackgroundColor = [style ikBackgroundColor];
+    color = [ikBackgroundColor color];
 
     v7 = [SKUIContentUnavailableView alloc];
-    v8 = [(SKUIContentUnavailableDocumentViewController *)self view];
-    [v8 bounds];
+    view = [(SKUIContentUnavailableDocumentViewController *)self view];
+    [view bounds];
     v9 = [(SKUIViewReuseView *)v7 initWithFrame:?];
     v10 = self->_contentUnavailableView;
     self->_contentUnavailableView = v9;
 
     v11 = self->_contentUnavailableView;
-    if (v6)
+    if (color)
     {
-      [(SKUIViewReuseView *)self->_contentUnavailableView setBackgroundColor:v6];
+      [(SKUIViewReuseView *)self->_contentUnavailableView setBackgroundColor:color];
     }
 
     else
     {
-      v12 = [MEMORY[0x277D75348] systemBackgroundColor];
-      [(SKUIViewReuseView *)v11 setBackgroundColor:v12];
+      systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+      [(SKUIViewReuseView *)v11 setBackgroundColor:systemBackgroundColor];
     }
 
     contentUnavailableView = self->_contentUnavailableView;
   }
 
   [(SKUIContentUnavailableView *)contentUnavailableView setAutoresizingMask:18];
-  v13 = [(SKUIContentUnavailableDocumentViewController *)self view];
-  [v13 addSubview:self->_contentUnavailableView];
+  view2 = [(SKUIContentUnavailableDocumentViewController *)self view];
+  [view2 addSubview:self->_contentUnavailableView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -130,44 +130,44 @@
   [(SKUIContentUnavailableDocumentViewController *)&v6 viewWillLayoutSubviews];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   contentUnavailableView = self->_contentUnavailableView;
-  v8 = a4;
+  coordinatorCopy = coordinator;
   [(SKUIContentUnavailableDocumentViewController *)self _reloadContentUnavailableView:contentUnavailableView width:width];
   v9.receiver = self;
   v9.super_class = SKUIContentUnavailableDocumentViewController;
-  [(SKUIContentUnavailableDocumentViewController *)&v9 viewWillTransitionToSize:v8 withTransitionCoordinator:width, height];
+  [(SKUIContentUnavailableDocumentViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
   contentUnavailableView = self->_contentUnavailableView;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(SKUIContentUnavailableDocumentViewController *)self _layoutContext];
-  [(SKUIContentUnavailableView *)contentUnavailableView setImage:v7 forArtworkRequest:v8 context:v9];
+  imageCopy = image;
+  requestCopy = request;
+  _layoutContext = [(SKUIContentUnavailableDocumentViewController *)self _layoutContext];
+  [(SKUIContentUnavailableView *)contentUnavailableView setImage:imageCopy forArtworkRequest:requestCopy context:_layoutContext];
 }
 
-- (void)layoutCacheDidFinishBatch:(id)a3
+- (void)layoutCacheDidFinishBatch:(id)batch
 {
   contentUnavailableView = self->_contentUnavailableView;
   templateElement = self->_templateElement;
   [(SKUIContentUnavailableView *)contentUnavailableView bounds];
   v7 = v6;
-  v8 = [(SKUIContentUnavailableDocumentViewController *)self _layoutContext];
-  [(SKUIContentUnavailableView *)contentUnavailableView reloadWithViewElement:templateElement width:v8 context:v7];
+  _layoutContext = [(SKUIContentUnavailableDocumentViewController *)self _layoutContext];
+  [(SKUIContentUnavailableView *)contentUnavailableView reloadWithViewElement:templateElement width:_layoutContext context:v7];
 }
 
 - (UIEdgeInsets)_contentInsets
 {
-  v3 = [(SKUIContentUnavailableDocumentViewController *)self topLayoutGuide];
-  [v3 length];
+  topLayoutGuide = [(SKUIContentUnavailableDocumentViewController *)self topLayoutGuide];
+  [topLayoutGuide length];
   v5 = v4;
-  v6 = [(SKUIContentUnavailableDocumentViewController *)self bottomLayoutGuide];
-  [v6 length];
+  bottomLayoutGuide = [(SKUIContentUnavailableDocumentViewController *)self bottomLayoutGuide];
+  [bottomLayoutGuide length];
   v8 = v7;
 
   v9 = 15.0;
@@ -192,8 +192,8 @@
 
     [(SKUIViewElementLayoutContext *)self->_layoutContext setArtworkRequestDelegate:self];
     v6 = self->_layoutContext;
-    v7 = [(SKUIViewController *)self clientContext];
-    [(SKUIViewElementLayoutContext *)v6 setClientContext:v7];
+    clientContext = [(SKUIViewController *)self clientContext];
+    [(SKUIViewElementLayoutContext *)v6 setClientContext:clientContext];
 
     [(SKUIViewElementLayoutContext *)self->_layoutContext setContainerViewElementType:[(SKUIContentUnavailableTemplateElement *)self->_templateElement elementType]];
     [(SKUIViewElementLayoutContext *)self->_layoutContext setParentViewController:self];
@@ -205,9 +205,9 @@
     v10 = [[SKUIViewElementTextLayoutCache alloc] initWithLayoutCache:self->_textLayoutCache];
     [(SKUIViewElementLayoutContext *)self->_layoutContext setLabelLayoutCache:v10];
     v11 = [SKUIResourceLoader alloc];
-    v12 = [(SKUIViewController *)self operationQueue];
-    v13 = [(SKUIViewController *)self clientContext];
-    v14 = [(SKUIResourceLoader *)v11 initWithOperationQueue:v12 clientContext:v13];
+    operationQueue = [(SKUIViewController *)self operationQueue];
+    clientContext2 = [(SKUIViewController *)self clientContext];
+    v14 = [(SKUIResourceLoader *)v11 initWithOperationQueue:operationQueue clientContext:clientContext2];
 
     [(SKUIViewElementLayoutContext *)self->_layoutContext setResourceLoader:v14];
     layoutContext = self->_layoutContext;
@@ -216,23 +216,23 @@
   return layoutContext;
 }
 
-- (void)_reloadContentUnavailableView:(id)a3 width:(double)a4
+- (void)_reloadContentUnavailableView:(id)view width:(double)width
 {
-  if (a4 > 0.00000011920929)
+  if (width > 0.00000011920929)
   {
-    v6 = a3;
-    v10 = [(SKUIContentUnavailableDocumentViewController *)self _layoutContext];
-    v7 = [v6 tintColor];
-    [v10 setTintColor:v7];
+    viewCopy = view;
+    _layoutContext = [(SKUIContentUnavailableDocumentViewController *)self _layoutContext];
+    tintColor = [viewCopy tintColor];
+    [_layoutContext setTintColor:tintColor];
 
-    [objc_opt_class() prefetchResourcesForViewElement:self->_templateElement reason:1 context:v10];
-    v8 = a4 + -30.0;
+    [objc_opt_class() prefetchResourcesForViewElement:self->_templateElement reason:1 context:_layoutContext];
+    v8 = width + -30.0;
     v9 = floorf(v8);
-    [objc_opt_class() requestLayoutForViewElement:self->_templateElement width:v10 context:v9];
+    [objc_opt_class() requestLayoutForViewElement:self->_templateElement width:_layoutContext context:v9];
     [(SKUILayoutCache *)self->_textLayoutCache commitLayoutRequests];
-    [v6 reloadWithViewElement:self->_templateElement width:v10 context:v9];
+    [viewCopy reloadWithViewElement:self->_templateElement width:_layoutContext context:v9];
     [(SKUIContentUnavailableDocumentViewController *)self _contentInsets];
-    [v6 setContentInset:?];
+    [viewCopy setContentInset:?];
   }
 }
 

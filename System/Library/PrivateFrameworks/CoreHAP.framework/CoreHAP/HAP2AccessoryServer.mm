@@ -1,7 +1,7 @@
 @interface HAP2AccessoryServer
-+ (HAP2AccessoryServer)_accessoryServerWithMetadata:(void *)a3 browser:(void *)a4 controller:(void *)a5 operationQueue:(BOOL)a6 internallyPaired:;
++ (HAP2AccessoryServer)_accessoryServerWithMetadata:(void *)metadata browser:(void *)browser controller:(void *)controller operationQueue:(BOOL)queue internallyPaired:;
 + (id)new;
-+ (id)unpairedAccessoryServerWithMetadata:(id)a3 browser:(id)a4 controller:(id)a5 pairingDriver:(id)a6 operationQueue:(id)a7;
++ (id)unpairedAccessoryServerWithMetadata:(id)metadata browser:(id)browser controller:(id)controller pairingDriver:(id)driver operationQueue:(id)queue;
 - (BOOL)hasDiscoveryAdvertisement;
 - (BOOL)hasPairings;
 - (BOOL)isConfirming;
@@ -20,78 +20,78 @@
 - (NSString)reachabilityChangedReason;
 - (NSString)setupID;
 - (double)sessionCheckInterval;
-- (id)_delegateCancelableFor:(void *)a1;
-- (id)_findAccessoryAndCharacteristicForInstanceID:(void *)a3 characteristic:;
-- (id)_readValuesForCharacteristics:(uint64_t)a3 timeout:(void *)a4 options:(void *)a5 activity:(double)a6 completion:;
-- (id)addPairing:(id)a3 completion:(id)a4;
+- (id)_delegateCancelableFor:(void *)for;
+- (id)_findAccessoryAndCharacteristicForInstanceID:(void *)d characteristic:;
+- (id)_readValuesForCharacteristics:(uint64_t)characteristics timeout:(void *)timeout options:(void *)options activity:(double)activity completion:;
+- (id)addPairing:(id)pairing completion:(id)completion;
 - (id)currentMetadata;
-- (id)disableNotificationsForCharacteristics:(id)a3 completion:(id)a4;
-- (id)enableNotificationsForCharacteristics:(id)a3 completion:(id)a4;
-- (id)getPairingsWithCompletion:(id)a3;
-- (id)identifyWithCompletion:(id)a3;
+- (id)disableNotificationsForCharacteristics:(id)characteristics completion:(id)completion;
+- (id)enableNotificationsForCharacteristics:(id)characteristics completion:(id)completion;
+- (id)getPairingsWithCompletion:(id)completion;
+- (id)identifyWithCompletion:(id)completion;
 - (id)internalPairingDriver;
 - (id)outstandingUpdateAccessoriesRequest;
 - (id)pairDelegate;
-- (id)pairWithDelegate:(id)a3 pairingRequest:(id)a4;
+- (id)pairWithDelegate:(id)delegate pairingRequest:(id)request;
 - (id)pairedDelegate;
 - (id)privateAccessories;
 - (id)reachability;
 - (id)reachabilityProfile;
-- (id)removePairing:(id)a3 completion:(id)a4;
-- (id)unpairWithCompletion:(id)a3;
-- (id)updateAccessoriesWithReason:(id)a3;
-- (id)writeValuesForCharacteristics:(id)a3 timeout:(double)a4 completion:(id)a5;
+- (id)removePairing:(id)pairing completion:(id)completion;
+- (id)unpairWithCompletion:(id)completion;
+- (id)updateAccessoriesWithReason:(id)reason;
+- (id)writeValuesForCharacteristics:(id)characteristics timeout:(double)timeout completion:(id)completion;
 - (uint64_t)isInternallyPaired;
 - (uint64_t)setInternallyPaired:(uint64_t)result;
 - (unint64_t)category;
 - (unint64_t)connectionState;
 - (unsigned)configNumber;
 - (unsigned)stateNumber;
-- (void)_handleAccessoryOperationError:(void *)a1;
-- (void)_handleFailedAccessoryDiscovery:(void *)a1;
-- (void)_kickReachabilityAfterCharacteristicOperation:(void *)a3 withResponse:(char)a4 ignoreCachedCharacteristics:(void *)a5 error:;
-- (void)_performBackgroundPollWithCompletion:(id)a3;
-- (void)_pollAccessoryWithOptions:(void *)a1;
+- (void)_handleAccessoryOperationError:(void *)error;
+- (void)_handleFailedAccessoryDiscovery:(void *)discovery;
+- (void)_kickReachabilityAfterCharacteristicOperation:(void *)operation withResponse:(char)response ignoreCachedCharacteristics:(void *)characteristics error:;
+- (void)_performBackgroundPollWithCompletion:(id)completion;
+- (void)_pollAccessoryWithOptions:(void *)options;
 - (void)_stopConfirming;
-- (void)_updateConnectionState:(void *)a3 withError:;
-- (void)_updateServerMetadata:(void *)a3 controller:;
-- (void)becomePairedWithAccessoryServer:(id)a3;
-- (void)becomeUnpairedWithAccessoryServer:(id)a3;
+- (void)_updateConnectionState:(void *)state withError:;
+- (void)_updateServerMetadata:(void *)metadata controller:;
+- (void)becomePairedWithAccessoryServer:(id)server;
+- (void)becomeUnpairedWithAccessoryServer:(id)server;
 - (void)clearAccessories;
 - (void)closeSession;
 - (void)dealloc;
-- (void)handleEvents:(id)a3;
-- (void)handleLostDiscoveryAdvertisementWithWillSleep:(BOOL)a3;
+- (void)handleEvents:(id)events;
+- (void)handleLostDiscoveryAdvertisementWithWillSleep:(BOOL)sleep;
 - (void)handleNetworkChanged;
 - (void)handleReestablishedSession;
-- (void)handleUpdatedCharacteristicValues:(id)a3;
-- (void)mergeWithNewlyDiscoveredPairedAccessoryServer:(id)a3;
-- (void)mergeWithNewlyDiscoveredUnpairedAccessoryServer:(id)a3;
-- (void)pairingDriver:(id)a3 authenticateSoftwareAuthUUID:(id)a4 token:(id)a5 completion:(id)a6;
-- (void)pairingDriver:(id)a3 confirmSoftwareAuthUUID:(id)a4 token:(id)a5 completion:(id)a6;
-- (void)pairingDriver:(id)a3 didCompleteWithError:(id)a4;
-- (void)pairingDriver:(id)a3 didFinishAuthWithError:(id)a4;
-- (void)pairingDriver:(id)a3 didRejectSetupCodeForAccessory:(id)a4 backoffInterval:(double)a5 completion:(id)a6;
-- (void)pairingDriver:(id)a3 didRequestLocalPairingIdentityWithCompletion:(id)a4;
-- (void)pairingDriver:(id)a3 didSaveRemotePairingIdentity:(id)a4 completion:(id)a5;
-- (void)pairingDriver:(id)a3 doesRequirePermission:(unint64_t)a4 accessory:(id)a5 completion:(id)a6;
-- (void)pairingDriver:(id)a3 doesRequireSetupCodeForAccessory:(id)a4 completion:(id)a5;
-- (void)pairingDriver:(id)a3 validatePairingCert:(id)a4 model:(id)a5 completion:(id)a6;
-- (void)pairingDriver:(id)a3 validateSoftwareAuthUUID:(id)a4 token:(id)a5 model:(id)a6 completion:(id)a7;
+- (void)handleUpdatedCharacteristicValues:(id)values;
+- (void)mergeWithNewlyDiscoveredPairedAccessoryServer:(id)server;
+- (void)mergeWithNewlyDiscoveredUnpairedAccessoryServer:(id)server;
+- (void)pairingDriver:(id)driver authenticateSoftwareAuthUUID:(id)d token:(id)token completion:(id)completion;
+- (void)pairingDriver:(id)driver confirmSoftwareAuthUUID:(id)d token:(id)token completion:(id)completion;
+- (void)pairingDriver:(id)driver didCompleteWithError:(id)error;
+- (void)pairingDriver:(id)driver didFinishAuthWithError:(id)error;
+- (void)pairingDriver:(id)driver didRejectSetupCodeForAccessory:(id)accessory backoffInterval:(double)interval completion:(id)completion;
+- (void)pairingDriver:(id)driver didRequestLocalPairingIdentityWithCompletion:(id)completion;
+- (void)pairingDriver:(id)driver didSaveRemotePairingIdentity:(id)identity completion:(id)completion;
+- (void)pairingDriver:(id)driver doesRequirePermission:(unint64_t)permission accessory:(id)accessory completion:(id)completion;
+- (void)pairingDriver:(id)driver doesRequireSetupCodeForAccessory:(id)accessory completion:(id)completion;
+- (void)pairingDriver:(id)driver validatePairingCert:(id)cert model:(id)model completion:(id)completion;
+- (void)pairingDriver:(id)driver validateSoftwareAuthUUID:(id)d token:(id)token model:(id)model completion:(id)completion;
 - (void)pollAccessory;
-- (void)setBackgroundScheduler:(uint64_t)a1;
-- (void)setDelegate:(id)a3;
-- (void)setHasDiscoveryAdvertisement:(BOOL)a3;
-- (void)setInternalPairingDriver:(uint64_t)a1;
-- (void)setOutstandingUpdateAccessoriesRequest:(void *)a1;
-- (void)setPairDelegate:(void *)a1;
-- (void)setPairedName:(uint64_t)a1;
-- (void)setPairedProtocolVersion:(uint64_t)a1;
-- (void)setPrivateAccessories:(uint64_t)a1;
-- (void)setProductData:(id)a3;
-- (void)setReachabilityChangedReason:(id)a3;
-- (void)setReachabilityProfile:(id *)a1;
-- (void)setSetupID:(id)a3;
+- (void)setBackgroundScheduler:(uint64_t)scheduler;
+- (void)setDelegate:(id)delegate;
+- (void)setHasDiscoveryAdvertisement:(BOOL)advertisement;
+- (void)setInternalPairingDriver:(uint64_t)driver;
+- (void)setOutstandingUpdateAccessoriesRequest:(void *)request;
+- (void)setPairDelegate:(void *)delegate;
+- (void)setPairedName:(uint64_t)name;
+- (void)setPairedProtocolVersion:(uint64_t)version;
+- (void)setPrivateAccessories:(uint64_t)accessories;
+- (void)setProductData:(id)data;
+- (void)setReachabilityChangedReason:(id)reason;
+- (void)setReachabilityProfile:(id *)profile;
+- (void)setSetupID:(id)d;
 - (void)startConfirming;
 - (void)stopConfirming;
 - (void)updateReachability;
@@ -113,57 +113,57 @@
   v11.receiver = self;
   v11.super_class = HAP2AccessoryServer;
   v4 = [(HAP2LoggingObject *)&v11 description];
-  v5 = [(HAP2AccessoryServer *)self name];
-  v6 = [(HAP2AccessoryServer *)self deviceID];
-  v7 = [(HAP2AccessoryServer *)self isInternallyPaired];
+  name = [(HAP2AccessoryServer *)self name];
+  deviceID = [(HAP2AccessoryServer *)self deviceID];
+  isInternallyPaired = [(HAP2AccessoryServer *)self isInternallyPaired];
   v8 = @"Unpaired";
-  if (v7)
+  if (isInternallyPaired)
   {
     v8 = @"Paired";
   }
 
-  v9 = [v3 stringWithFormat:@"%@ [%@/%@] (%@)", v4, v5, v6, v8];
+  v9 = [v3 stringWithFormat:@"%@ [%@/%@] (%@)", v4, name, deviceID, v8];
 
   return v9;
 }
 
 - (uint64_t)isInternallyPaired
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
     v7 = 0x2020000000;
     v8 = 0;
-    v2 = *(a1 + 168);
+    v2 = *(self + 168);
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __41__HAP2AccessoryServer_isInternallyPaired__block_invoke;
     v4[3] = &unk_2786D6E60;
-    v4[4] = v1;
+    v4[4] = selfCopy;
     v4[5] = &v5;
     [v2 performReadingBlock:v4];
 
-    LOBYTE(v1) = *(v6 + 24);
+    LOBYTE(selfCopy) = *(v6 + 24);
     _Block_object_dispose(&v5, 8);
   }
 
-  return v1 & 1;
+  return selfCopy & 1;
 }
 
 - (NSData)setupHash
 {
-  v2 = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
-  v3 = [v2 setupHash];
+  currentMetadata = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
+  setupHash = [currentMetadata setupHash];
 
-  return v3;
+  return setupHash;
 }
 
 - (id)currentMetadata
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -171,52 +171,52 @@
     v8 = __Block_byref_object_copy__4322;
     v9 = __Block_byref_object_dispose__4323;
     v10 = 0;
-    v2 = a1[21];
+    v2 = self[21];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __38__HAP2AccessoryServer_currentMetadata__block_invoke;
     v4[3] = &unk_2786D6E60;
-    v4[4] = v1;
+    v4[4] = selfCopy;
     v4[5] = &v5;
     [v2 performReadingBlock:v4];
 
-    v1 = v6[5];
+    selfCopy = v6[5];
     _Block_object_dispose(&v5, 8);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (unsigned)configNumber
 {
-  v2 = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
-  v3 = [v2 configNumber];
+  currentMetadata = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
+  configNumber = [currentMetadata configNumber];
 
-  return v3;
+  return configNumber;
 }
 
 - (unsigned)stateNumber
 {
-  v2 = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
-  v3 = [v2 stateNumber];
+  currentMetadata = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
+  stateNumber = [currentMetadata stateNumber];
 
-  return v3;
+  return stateNumber;
 }
 
 - (unint64_t)category
 {
-  v2 = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
-  v3 = [v2 category];
+  currentMetadata = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
+  category = [currentMetadata category];
 
-  return v3;
+  return category;
 }
 
 - (NSString)model
 {
-  v2 = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
-  v3 = [v2 model];
+  currentMetadata = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
+  model = [currentMetadata model];
 
-  return v3;
+  return model;
 }
 
 - (NSString)name
@@ -246,17 +246,17 @@
   v7[5] = &v8;
   [(HAP2PropertyLock *)v3 performReadingBlock:v7];
 
-  v4 = v9[5];
+  name = v9[5];
   _Block_object_dispose(&v8, 8);
 
-  if (!v4)
+  if (!name)
   {
 LABEL_4:
-    v5 = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
-    v4 = [v5 name];
+    currentMetadata = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
+    name = [currentMetadata name];
   }
 
-  return v4;
+  return name;
 }
 
 - (HMFVersion)protocolVersion
@@ -286,40 +286,40 @@ LABEL_4:
   v7[5] = &v8;
   [(HAP2PropertyLock *)v3 performReadingBlock:v7];
 
-  v4 = v9[5];
+  protocolVersion = v9[5];
   _Block_object_dispose(&v8, 8);
 
-  if (!v4)
+  if (!protocolVersion)
   {
 LABEL_4:
-    v5 = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
-    v4 = [v5 protocolVersion];
+    currentMetadata = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
+    protocolVersion = [currentMetadata protocolVersion];
   }
 
-  return v4;
+  return protocolVersion;
 }
 
 - (BOOL)hasPairings
 {
-  v2 = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
-  v3 = [v2 hasPairings];
+  currentMetadata = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
+  hasPairings = [currentMetadata hasPairings];
 
-  return v3;
+  return hasPairings;
 }
 
 - (HAPDeviceID)deviceID
 {
-  v2 = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
-  v3 = [v2 deviceID];
+  currentMetadata = [(HAP2AccessoryServer *)&self->super.super.isa currentMetadata];
+  deviceID = [currentMetadata deviceID];
 
-  return v3;
+  return deviceID;
 }
 
-- (void)setSetupID:(id)a3
+- (void)setSetupID:(id)d
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServer *)self operationQueue];
-  [v5 assertCurrentQueue];
+  dCopy = d;
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
   if (self)
   {
@@ -336,8 +336,8 @@ LABEL_4:
   v8[2] = __34__HAP2AccessoryServer_setSetupID___block_invoke;
   v8[3] = &unk_2786D7050;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = dCopy;
+  v7 = dCopy;
   [(HAP2PropertyLock *)propertyLock performWritingBlock:v8];
 }
 
@@ -411,11 +411,11 @@ uint64_t __43__HAP2AccessoryServer_sessionCheckInterval__block_invoke(uint64_t a
   return result;
 }
 
-- (void)setReachabilityChangedReason:(id)a3
+- (void)setReachabilityChangedReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServer *)self operationQueue];
-  [v5 assertCurrentQueue];
+  reasonCopy = reason;
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
   if (self)
   {
@@ -432,8 +432,8 @@ uint64_t __43__HAP2AccessoryServer_sessionCheckInterval__block_invoke(uint64_t a
   v8[2] = __52__HAP2AccessoryServer_setReachabilityChangedReason___block_invoke;
   v8[3] = &unk_2786D7050;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = reasonCopy;
+  v7 = reasonCopy;
   [(HAP2PropertyLock *)propertyLock performWritingBlock:v8];
 }
 
@@ -470,10 +470,10 @@ uint64_t __43__HAP2AccessoryServer_sessionCheckInterval__block_invoke(uint64_t a
   return v5;
 }
 
-- (void)setHasDiscoveryAdvertisement:(BOOL)a3
+- (void)setHasDiscoveryAdvertisement:(BOOL)advertisement
 {
-  v5 = [(HAP2AccessoryServer *)self operationQueue];
-  [v5 assertCurrentQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
   if (self)
   {
@@ -490,7 +490,7 @@ uint64_t __43__HAP2AccessoryServer_sessionCheckInterval__block_invoke(uint64_t a
   v7[2] = __52__HAP2AccessoryServer_setHasDiscoveryAdvertisement___block_invoke;
   v7[3] = &unk_2786D6768;
   v7[4] = self;
-  v8 = a3;
+  advertisementCopy = advertisement;
   [(HAP2PropertyLock *)propertyLock performWritingBlock:v7];
 }
 
@@ -557,9 +557,9 @@ uint64_t __43__HAP2AccessoryServer_sessionCheckInterval__block_invoke(uint64_t a
   return v5;
 }
 
-- (void)setProductData:(id)a3
+- (void)setProductData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (self)
   {
     propertyLock = self->_propertyLock;
@@ -575,15 +575,15 @@ uint64_t __43__HAP2AccessoryServer_sessionCheckInterval__block_invoke(uint64_t a
   v7[2] = __38__HAP2AccessoryServer_setProductData___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   [(HAP2PropertyLock *)propertyLock performWritingBlock:v7];
 }
 
 - (HAP2AccessoryServerControllerPrivate)controller
 {
-  v3 = [(HAP2AccessoryServer *)self operationQueue];
-  [v3 assertCurrentQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
   controller = self->_controller;
 
@@ -620,9 +620,9 @@ uint64_t __43__HAP2AccessoryServer_sessionCheckInterval__block_invoke(uint64_t a
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   if (self)
   {
     propertyLock = self->_propertyLock;
@@ -638,8 +638,8 @@ uint64_t __43__HAP2AccessoryServer_sessionCheckInterval__block_invoke(uint64_t a
   v7[2] = __35__HAP2AccessoryServer_setDelegate___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   [(HAP2PropertyLock *)propertyLock performWritingBlock:v7];
 }
 
@@ -707,16 +707,16 @@ uint64_t __31__HAP2AccessoryServer_delegate__block_invoke(uint64_t a1)
   objc_exception_throw(v7);
 }
 
-+ (HAP2AccessoryServer)_accessoryServerWithMetadata:(void *)a3 browser:(void *)a4 controller:(void *)a5 operationQueue:(BOOL)a6 internallyPaired:
++ (HAP2AccessoryServer)_accessoryServerWithMetadata:(void *)metadata browser:(void *)browser controller:(void *)controller operationQueue:(BOOL)queue internallyPaired:
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  controllerCopy = controller;
+  browserCopy = browser;
+  metadataCopy = metadata;
   v13 = a2;
   objc_opt_self();
-  if ([v12 conformsToProtocol:&unk_283EC1D50])
+  if ([metadataCopy conformsToProtocol:&unk_283EC1D50])
   {
-    v14 = v12;
+    v14 = metadataCopy;
   }
 
   else
@@ -725,10 +725,10 @@ uint64_t __31__HAP2AccessoryServer_delegate__block_invoke(uint64_t a1)
   }
 
   v15 = v14;
-  v38 = v11;
-  if ([v11 conformsToProtocol:&unk_283ECA260])
+  v38 = browserCopy;
+  if ([browserCopy conformsToProtocol:&unk_283ECA260])
   {
-    v16 = v11;
+    v16 = browserCopy;
   }
 
   else
@@ -741,7 +741,7 @@ uint64_t __31__HAP2AccessoryServer_delegate__block_invoke(uint64_t a1)
   v19 = v13;
   v20 = v17;
   v21 = v15;
-  v22 = v10;
+  v22 = controllerCopy;
   if (v18)
   {
     v39.receiver = v18;
@@ -753,12 +753,12 @@ uint64_t __31__HAP2AccessoryServer_delegate__block_invoke(uint64_t a1)
       objc_storeStrong(&v23->_currentMetadata, a2);
       objc_storeStrong(&v18->_controller, v16);
       objc_storeWeak(&v18->_browser, v21);
-      objc_storeStrong(&v18->_operationQueue, a5);
+      objc_storeStrong(&v18->_operationQueue, controller);
       v24 = [HAP2PropertyLock lockWithName:@"HAP2AccessoryServer.propertyLock"];
       propertyLock = v18->_propertyLock;
       v18->_propertyLock = v24;
 
-      v18->_internallyPaired = a6;
+      v18->_internallyPaired = queue;
       privateAccessories = v18->_privateAccessories;
       v18->_privateAccessories = MEMORY[0x277CBEBF8];
 
@@ -773,10 +773,10 @@ uint64_t __31__HAP2AccessoryServer_delegate__block_invoke(uint64_t a1)
       v18->_reachabilityProfile = v28;
 
       v30 = [HAPAccessoryReachabilityClient alloc];
-      v31 = [(HAP2AccessoryServer *)v18 deviceID];
+      deviceID = [(HAP2AccessoryServer *)v18 deviceID];
       v32 = v18->_reachabilityProfile;
       v33 = objc_opt_new();
-      v34 = [(HAPAccessoryReachabilityClient *)v30 initWithIdentifier:v31 profile:v32 operationQueue:v33];
+      v34 = [(HAPAccessoryReachabilityClient *)v30 initWithIdentifier:deviceID profile:v32 operationQueue:v33];
 
       [(HAPAccessoryReachabilityClient *)v34 setDelegate:v18];
       reachability = v18->_reachability;
@@ -789,12 +789,12 @@ uint64_t __31__HAP2AccessoryServer_delegate__block_invoke(uint64_t a1)
   return v18;
 }
 
-+ (id)unpairedAccessoryServerWithMetadata:(id)a3 browser:(id)a4 controller:(id)a5 pairingDriver:(id)a6 operationQueue:(id)a7
++ (id)unpairedAccessoryServerWithMetadata:(id)metadata browser:(id)browser controller:(id)controller pairingDriver:(id)driver operationQueue:(id)queue
 {
-  v12 = a6;
-  v13 = [(HAP2AccessoryServer *)a1 _accessoryServerWithMetadata:a3 browser:a4 controller:a5 operationQueue:a7 internallyPaired:0];
+  driverCopy = driver;
+  v13 = [(HAP2AccessoryServer *)self _accessoryServerWithMetadata:metadata browser:browser controller:controller operationQueue:queue internallyPaired:0];
   v14 = v13[14];
-  v13[14] = v12;
+  v13[14] = driverCopy;
 
   return v13;
 }
@@ -831,8 +831,8 @@ uint64_t __31__HAP2AccessoryServer_delegate__block_invoke(uint64_t a1)
 
 - (id)privateAccessories
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -840,34 +840,34 @@ uint64_t __31__HAP2AccessoryServer_delegate__block_invoke(uint64_t a1)
     v8 = __Block_byref_object_copy__4322;
     v9 = __Block_byref_object_dispose__4323;
     v10 = 0;
-    v2 = a1[21];
+    v2 = self[21];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __41__HAP2AccessoryServer_privateAccessories__block_invoke;
     v4[3] = &unk_2786D6E60;
-    v4[4] = v1;
+    v4[4] = selfCopy;
     v4[5] = &v5;
     [v2 performReadingBlock:v4];
 
-    v1 = v6[5];
+    selfCopy = v6[5];
     _Block_object_dispose(&v5, 8);
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)setPrivateAccessories:(uint64_t)a1
+- (void)setPrivateAccessories:(uint64_t)accessories
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (accessories)
   {
-    v5 = *(a1 + 168);
+    v5 = *(accessories + 168);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __45__HAP2AccessoryServer_setPrivateAccessories___block_invoke;
     v6[3] = &unk_2786D7050;
-    v6[4] = a1;
+    v6[4] = accessories;
     v7 = v3;
     [v5 performWritingBlock:v6];
   }
@@ -883,18 +883,18 @@ uint64_t __45__HAP2AccessoryServer_setPrivateAccessories___block_invoke(uint64_t
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setPairedName:(uint64_t)a1
+- (void)setPairedName:(uint64_t)name
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (name)
   {
-    v5 = *(a1 + 168);
+    v5 = *(name + 168);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __37__HAP2AccessoryServer_setPairedName___block_invoke;
     v6[3] = &unk_2786D7050;
-    v6[4] = a1;
+    v6[4] = name;
     v7 = v3;
     [v5 performWritingBlock:v6];
   }
@@ -910,18 +910,18 @@ uint64_t __37__HAP2AccessoryServer_setPairedName___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setPairedProtocolVersion:(uint64_t)a1
+- (void)setPairedProtocolVersion:(uint64_t)version
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (version)
   {
-    v5 = *(a1 + 168);
+    v5 = *(version + 168);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __48__HAP2AccessoryServer_setPairedProtocolVersion___block_invoke;
     v6[3] = &unk_2786D7050;
-    v6[4] = a1;
+    v6[4] = version;
     v7 = v3;
     [v5 performWritingBlock:v6];
   }
@@ -929,8 +929,8 @@ uint64_t __37__HAP2AccessoryServer_setPairedName___block_invoke(uint64_t a1)
 
 - (id)outstandingUpdateAccessoriesRequest
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -938,36 +938,36 @@ uint64_t __37__HAP2AccessoryServer_setPairedName___block_invoke(uint64_t a1)
     v8 = __Block_byref_object_copy__4322;
     v9 = __Block_byref_object_dispose__4323;
     v10 = 0;
-    v2 = a1[21];
+    v2 = self[21];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __58__HAP2AccessoryServer_outstandingUpdateAccessoriesRequest__block_invoke;
     v4[3] = &unk_2786D6E60;
-    v4[4] = v1;
+    v4[4] = selfCopy;
     v4[5] = &v5;
     [v2 performReadingBlock:v4];
 
-    v1 = v6[5];
+    selfCopy = v6[5];
     _Block_object_dispose(&v5, 8);
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)setOutstandingUpdateAccessoriesRequest:(void *)a1
+- (void)setOutstandingUpdateAccessoriesRequest:(void *)request
 {
   v3 = a2;
-  if (a1)
+  if (request)
   {
-    v4 = [a1 operationQueue];
-    [v4 assertCurrentQueue];
+    operationQueue = [request operationQueue];
+    [operationQueue assertCurrentQueue];
 
-    v5 = a1[21];
+    v5 = request[21];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __62__HAP2AccessoryServer_setOutstandingUpdateAccessoriesRequest___block_invoke;
     v6[3] = &unk_2786D7050;
-    v6[4] = a1;
+    v6[4] = request;
     v7 = v3;
     [v5 performWritingBlock:v6];
   }
@@ -975,50 +975,50 @@ uint64_t __37__HAP2AccessoryServer_setPairedName___block_invoke(uint64_t a1)
 
 - (id)reachability
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = [a1 operationQueue];
-    [v3 assertCurrentQueue];
+    selfCopy = self;
+    operationQueue = [self operationQueue];
+    [operationQueue assertCurrentQueue];
 
-    a1 = v2[16];
+    self = selfCopy[16];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)reachabilityProfile
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = [a1 operationQueue];
-    [v3 assertCurrentQueue];
+    selfCopy = self;
+    operationQueue = [self operationQueue];
+    [operationQueue assertCurrentQueue];
 
-    a1 = v2[17];
+    self = selfCopy[17];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)setReachabilityProfile:(id *)a1
+- (void)setReachabilityProfile:(id *)profile
 {
   v5 = a2;
-  if (a1)
+  if (profile)
   {
-    v4 = [a1 operationQueue];
-    [v4 assertCurrentQueue];
+    operationQueue = [profile operationQueue];
+    [operationQueue assertCurrentQueue];
 
-    objc_storeStrong(a1 + 17, a2);
+    objc_storeStrong(profile + 17, a2);
   }
 }
 
 - (id)internalPairingDriver
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -1026,34 +1026,34 @@ uint64_t __37__HAP2AccessoryServer_setPairedName___block_invoke(uint64_t a1)
     v8 = __Block_byref_object_copy__4322;
     v9 = __Block_byref_object_dispose__4323;
     v10 = 0;
-    v2 = a1[21];
+    v2 = self[21];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __44__HAP2AccessoryServer_internalPairingDriver__block_invoke;
     v4[3] = &unk_2786D6E60;
-    v4[4] = v1;
+    v4[4] = selfCopy;
     v4[5] = &v5;
     [v2 performReadingBlock:v4];
 
-    v1 = v6[5];
+    selfCopy = v6[5];
     _Block_object_dispose(&v5, 8);
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)setInternalPairingDriver:(uint64_t)a1
+- (void)setInternalPairingDriver:(uint64_t)driver
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (driver)
   {
-    v5 = *(a1 + 168);
+    v5 = *(driver + 168);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __48__HAP2AccessoryServer_setInternalPairingDriver___block_invoke;
     v6[3] = &unk_2786D7050;
-    v6[4] = a1;
+    v6[4] = driver;
     v7 = v3;
     [v5 performWritingBlock:v6];
   }
@@ -1061,11 +1061,11 @@ uint64_t __37__HAP2AccessoryServer_setPairedName___block_invoke(uint64_t a1)
 
 - (id)pairDelegate
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 operationQueue];
-    [v2 assertCurrentQueue];
+    operationQueue = [self operationQueue];
+    [operationQueue assertCurrentQueue];
 
     v6 = 0;
     v7 = &v6;
@@ -1073,20 +1073,20 @@ uint64_t __37__HAP2AccessoryServer_setPairedName___block_invoke(uint64_t a1)
     v9 = __Block_byref_object_copy__4322;
     v10 = __Block_byref_object_dispose__4323;
     v11 = 0;
-    v3 = v1[21];
+    v3 = selfCopy[21];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __35__HAP2AccessoryServer_pairDelegate__block_invoke;
     v5[3] = &unk_2786D6E60;
-    v5[4] = v1;
+    v5[4] = selfCopy;
     v5[5] = &v6;
     [v3 performReadingBlock:v5];
 
-    v1 = v7[5];
+    selfCopy = v7[5];
     _Block_object_dispose(&v6, 8);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 uint64_t __35__HAP2AccessoryServer_pairDelegate__block_invoke(uint64_t a1)
@@ -1099,29 +1099,29 @@ uint64_t __35__HAP2AccessoryServer_pairDelegate__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setPairDelegate:(void *)a1
+- (void)setPairDelegate:(void *)delegate
 {
   v3 = a2;
-  if (a1)
+  if (delegate)
   {
-    v4 = [a1 operationQueue];
-    [v4 assertCurrentQueue];
+    operationQueue = [delegate operationQueue];
+    [operationQueue assertCurrentQueue];
 
-    v5 = a1[21];
+    v5 = delegate[21];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __39__HAP2AccessoryServer_setPairDelegate___block_invoke;
     v6[3] = &unk_2786D7050;
-    v6[4] = a1;
+    v6[4] = delegate;
     v7 = v3;
     [v5 performWritingBlock:v6];
   }
 }
 
-- (id)_delegateCancelableFor:(void *)a1
+- (id)_delegateCancelableFor:(void *)for
 {
   v3 = a2;
-  if (a1)
+  if (for)
   {
     v12[0] = 0;
     v12[1] = v12;
@@ -1129,30 +1129,30 @@ uint64_t __35__HAP2AccessoryServer_pairDelegate__block_invoke(uint64_t a1)
     v12[3] = __Block_byref_object_copy__4322;
     v12[4] = __Block_byref_object_dispose__4323;
     v13 = 0;
-    v4 = [a1 operationQueue];
+    operationQueue = [for operationQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __46__HAP2AccessoryServer__delegateCancelableFor___block_invoke;
     v9[3] = &unk_2786D3540;
     v11 = v12;
     v10 = v3;
-    [v4 addBlock:v9];
+    [operationQueue addBlock:v9];
 
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, for);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __46__HAP2AccessoryServer__delegateCancelableFor___block_invoke_2;
     v6[3] = &unk_2786D5FE8;
     objc_copyWeak(&v7, &location);
     v6[4] = v12;
-    a1 = [HAP2Cancelable cancelableWithBlock:v6];
+    for = [HAP2Cancelable cancelableWithBlock:v6];
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
 
     _Block_object_dispose(v12, 8);
   }
 
-  return a1;
+  return for;
 }
 
 uint64_t __46__HAP2AccessoryServer__delegateCancelableFor___block_invoke(uint64_t a1)
@@ -1183,30 +1183,30 @@ void __46__HAP2AccessoryServer__delegateCancelableFor___block_invoke_2(uint64_t 
   }
 }
 
-- (void)_updateServerMetadata:(void *)a3 controller:
+- (void)_updateServerMetadata:(void *)metadata controller:
 {
   v51 = *MEMORY[0x277D85DE8];
   v31 = a2;
-  v29 = a3;
-  if (a1)
+  metadataCopy = metadata;
+  if (self)
   {
-    v30 = a1;
-    v5 = [a1 operationQueue];
-    [v5 assertCurrentQueue];
+    selfCopy = self;
+    operationQueue = [self operationQueue];
+    [operationQueue assertCurrentQueue];
 
     v6 = [HAP2AccessoryServerMetadata alloc];
-    v7 = [v31 deviceID];
-    v8 = [v31 hasPairings];
-    v9 = [v31 protocolVersion];
-    v10 = [v31 name];
-    v11 = [v31 model];
-    v12 = [v31 category];
-    v13 = [v31 stateNumber];
-    LOWORD(v5) = [v31 configNumber];
-    v14 = [v31 setupHash];
-    WORD1(v28) = v5;
-    LOWORD(v28) = v13;
-    v15 = [(HAP2AccessoryServerMetadata *)v6 initWithDeviceID:v7 hasPairings:v8 protocolVersion:v9 name:v10 model:v11 category:v12 stateNumber:v28 configNumber:v14 setupHash:?];
+    deviceID = [v31 deviceID];
+    hasPairings = [v31 hasPairings];
+    protocolVersion = [v31 protocolVersion];
+    name = [v31 name];
+    model = [v31 model];
+    category = [v31 category];
+    stateNumber = [v31 stateNumber];
+    LOWORD(operationQueue) = [v31 configNumber];
+    setupHash = [v31 setupHash];
+    WORD1(v28) = operationQueue;
+    LOWORD(v28) = stateNumber;
+    v15 = [(HAP2AccessoryServerMetadata *)v6 initWithDeviceID:deviceID hasPairings:hasPairings protocolVersion:protocolVersion name:name model:model category:category stateNumber:v28 configNumber:setupHash setupHash:?];
 
     v43 = 0;
     v44 = &v43;
@@ -1220,16 +1220,16 @@ void __46__HAP2AccessoryServer__delegateCancelableFor___block_invoke_2(uint64_t 
     v40 = __Block_byref_object_copy__4322;
     v41 = __Block_byref_object_dispose__4323;
     v42 = 0;
-    v16 = v30[21];
+    v16 = selfCopy[21];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __56__HAP2AccessoryServer__updateServerMetadata_controller___block_invoke;
     v32[3] = &unk_2786D50A0;
     v35 = &v37;
-    v32[4] = v30;
+    v32[4] = selfCopy;
     v17 = v15;
     v33 = v17;
-    v18 = v29;
+    v18 = metadataCopy;
     v34 = v18;
     v36 = &v43;
     [v16 performWritingBlock:v32];
@@ -1248,34 +1248,34 @@ void __46__HAP2AccessoryServer__delegateCancelableFor___block_invoke_2(uint64_t 
       if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v50 = v30;
+        v50 = selfCopy;
         _os_log_impl(&dword_22AADC000, v20, OS_LOG_TYPE_INFO, "%@ Resetting controller on accessory server", buf, 0xCu);
       }
     }
 
-    v21 = [v30 controller];
-    [v21 handleUpdatedMetadataWithOldMetadata:v38[5]];
+    controller = [selfCopy controller];
+    [controller handleUpdatedMetadataWithOldMetadata:v38[5]];
 
-    v22 = [v30 delegate];
-    LODWORD(v21) = [v38[5] hasPairings];
-    if (v21 != [(HAP2AccessoryServerMetadata *)v17 hasPairings]&& (objc_opt_respondsToSelector() & 1) != 0)
+    delegate = [selfCopy delegate];
+    LODWORD(controller) = [v38[5] hasPairings];
+    if (controller != [(HAP2AccessoryServerMetadata *)v17 hasPairings]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v22 accessoryServerDidUpdateHasPairings:v30];
+      [delegate accessoryServerDidUpdateHasPairings:selfCopy];
     }
 
-    v23 = [v38[5] name];
-    v24 = [(HAP2AccessoryServerMetadata *)v17 name];
-    v25 = v23 == v24;
+    name2 = [v38[5] name];
+    name3 = [(HAP2AccessoryServerMetadata *)v17 name];
+    v25 = name2 == name3;
 
     if (!v25 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v22 accessoryServerDidUpdateName:v30];
+      [delegate accessoryServerDidUpdateName:selfCopy];
     }
 
-    v26 = [v38[5] category];
-    if (v26 != [(HAP2AccessoryServerMetadata *)v17 category]&& (objc_opt_respondsToSelector() & 1) != 0)
+    category2 = [v38[5] category];
+    if (category2 != [(HAP2AccessoryServerMetadata *)v17 category]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v22 accessoryServerDidUpdateCategory:v30];
+      [delegate accessoryServerDidUpdateCategory:selfCopy];
     }
 
     _Block_object_dispose(&v37, 8);
@@ -1300,33 +1300,33 @@ void __56__HAP2AccessoryServer__updateServerMetadata_controller___block_invoke(u
   }
 }
 
-- (void)_updateConnectionState:(void *)a3 withError:
+- (void)_updateConnectionState:(void *)state withError:
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a1)
+  stateCopy = state;
+  if (self)
   {
-    v6 = [a1 operationQueue];
-    [v6 assertCurrentQueue];
+    operationQueue = [self operationQueue];
+    [operationQueue assertCurrentQueue];
 
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
     v23 = a2;
-    v7 = [a1 delegate];
-    v8 = a1[21];
+    delegate = [self delegate];
+    v8 = self[21];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __56__HAP2AccessoryServer__updateConnectionState_withError___block_invoke;
     v19[3] = &unk_2786D5778;
     v19[5] = &v20;
     v19[6] = a2;
-    v19[4] = a1;
+    v19[4] = self;
     [v8 performWritingBlock:v19];
 
-    if (v5 && a2 <= 5 && ((1 << a2) & 0x31) != 0 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (stateCopy && a2 <= 5 && ((1 << a2) & 0x31) != 0 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v7 accessoryServerConnectionFailureReportWithError:v5];
+      [delegate accessoryServerConnectionFailureReportWithError:stateCopy];
     }
 
     if (v21[3] != a2)
@@ -1364,7 +1364,7 @@ void __56__HAP2AccessoryServer__updateServerMetadata_controller___block_invoke(u
 
         v15 = v14;
         *buf = 138412802;
-        v25 = a1;
+        selfCopy = self;
         v26 = 2112;
         v27 = v13;
         v28 = 2112;
@@ -1374,19 +1374,19 @@ void __56__HAP2AccessoryServer__updateServerMetadata_controller___block_invoke(u
 
       if (objc_opt_respondsToSelector())
       {
-        [v7 accessoryServerDidUpdateConnectionState:a1];
+        [delegate accessoryServerDidUpdateConnectionState:self];
       }
 
       if (a2 == 3 && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [v7 accessoryServerConnectedWithSecureSession];
+        [delegate accessoryServerConnectedWithSecureSession];
       }
 
-      v16 = [a1 browser];
-      v17 = v16;
-      if (v16)
+      browser = [self browser];
+      v17 = browser;
+      if (browser)
       {
-        [v16 accessoryServerDidUpdateConnectionState:a1];
+        [browser accessoryServerDidUpdateConnectionState:self];
       }
     }
 
@@ -1408,18 +1408,18 @@ void *__56__HAP2AccessoryServer__updateConnectionState_withError___block_invoke(
   return result;
 }
 
-- (void)setBackgroundScheduler:(uint64_t)a1
+- (void)setBackgroundScheduler:(uint64_t)scheduler
 {
-  if (a1)
+  if (scheduler)
   {
-    objc_storeStrong((a1 + 144), a2);
+    objc_storeStrong((scheduler + 144), a2);
   }
 }
 
-- (void)_performBackgroundPollWithCompletion:(id)a3
+- (void)_performBackgroundPollWithCompletion:(id)completion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (hap2LogInitialize_onceToken != -1)
   {
     dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
@@ -1429,12 +1429,12 @@ void *__56__HAP2AccessoryServer__updateConnectionState_withError___block_invoke(
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22AADC000, v5, OS_LOG_TYPE_DEFAULT, "%@ Background reachability poll is running", &v7, 0xCu);
   }
 
   [(HAP2AccessoryServer *)self verifyConnection];
-  v4[2](v4, 1);
+  completionCopy[2](completionCopy, 1);
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -1442,10 +1442,10 @@ void *__56__HAP2AccessoryServer__updateConnectionState_withError___block_invoke(
 - (void)pollAccessory
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(HAP2AccessoryServer *)self delegate];
-  v4 = [v3 onDemandConnectionsAreEnabled];
+  delegate = [(HAP2AccessoryServer *)self delegate];
+  onDemandConnectionsAreEnabled = [delegate onDemandConnectionsAreEnabled];
 
-  if (v4)
+  if (onDemandConnectionsAreEnabled)
   {
     if (hap2LogInitialize_onceToken != -1)
     {
@@ -1456,7 +1456,7 @@ void *__56__HAP2AccessoryServer__updateConnectionState_withError___block_invoke(
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22AADC000, v5, OS_LOG_TYPE_INFO, "%@ Ignoring poll requests only on demand connections are allowed", &v8, 0xCu);
     }
 
@@ -1471,10 +1471,10 @@ void *__56__HAP2AccessoryServer__updateConnectionState_withError___block_invoke(
   }
 }
 
-- (void)_pollAccessoryWithOptions:(void *)a1
+- (void)_pollAccessoryWithOptions:(void *)options
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (options)
   {
     if (hap2LogInitialize_onceToken != -1)
     {
@@ -1485,7 +1485,7 @@ void *__56__HAP2AccessoryServer__updateConnectionState_withError___block_invoke(
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v10 = a1;
+      optionsCopy = options;
       _os_log_impl(&dword_22AADC000, v4, OS_LOG_TYPE_INFO, "%@ Scheduling a poll", buf, 0xCu);
     }
 
@@ -1493,11 +1493,11 @@ void *__56__HAP2AccessoryServer__updateConnectionState_withError___block_invoke(
     v8[1] = 3221225472;
     v8[2] = __57__HAP2AccessoryServer_Paired___pollAccessoryWithOptions___block_invoke;
     v8[3] = &unk_2786D63C8;
-    v8[4] = a1;
+    v8[4] = options;
     v8[5] = a2;
     v5 = MEMORY[0x231885210](v8);
-    v6 = [a1 operationQueue];
-    [v6 addBlock:v5];
+    operationQueue = [options operationQueue];
+    [operationQueue addBlock:v5];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1767,13 +1767,13 @@ void __64__HAP2AccessoryServer_Paired___pollAccessoryOnQueueWithOptions___block_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_readValuesForCharacteristics:(uint64_t)a3 timeout:(void *)a4 options:(void *)a5 activity:(double)a6 completion:
+- (id)_readValuesForCharacteristics:(uint64_t)characteristics timeout:(void *)timeout options:(void *)options activity:(double)activity completion:
 {
   v42 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v12 = a4;
-  v13 = a5;
-  if (a1)
+  timeoutCopy = timeout;
+  optionsCopy = options;
+  if (self)
   {
     v14 = MEMORY[0x277CCACA8];
     v15 = objc_opt_class();
@@ -1781,9 +1781,9 @@ void __64__HAP2AccessoryServer_Paired___pollAccessoryOnQueueWithOptions___block_
     v17 = [v14 stringWithFormat:@"%@ Read", v16];
 
     v38 = 0;
-    if (v12)
+    if (timeoutCopy)
     {
-      v18 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:v17 parent:v12 options:0];
+      v18 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:v17 parent:timeoutCopy options:0];
       v19 = v38;
       v38 = v18;
     }
@@ -1794,10 +1794,10 @@ void __64__HAP2AccessoryServer_Paired___pollAccessoryOnQueueWithOptions___block_
       if (v20)
       {
         v21 = objc_alloc(MEMORY[0x277D0F770]);
-        v22 = [MEMORY[0x277CCAD78] UUID];
+        uUID = [MEMORY[0x277CCAD78] UUID];
         v39 = v20;
         v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
-        v24 = [v21 initWithIdentifier:v22 name:v17 parent:0 assertions:v23];
+        v24 = [v21 initWithIdentifier:uUID name:v17 parent:0 assertions:v23];
         v25 = v38;
         v38 = v24;
       }
@@ -1813,13 +1813,13 @@ void __64__HAP2AccessoryServer_Paired___pollAccessoryOnQueueWithOptions___block_
         if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v41 = a1;
+          selfCopy = self;
           _os_log_error_impl(&dword_22AADC000, v26, OS_LOG_TYPE_ERROR, "%@ Failed to create power assertion", buf, 0xCu);
         }
 
         v27 = objc_alloc(MEMORY[0x277D0F770]);
-        v22 = [MEMORY[0x277CCAD78] UUID];
-        v28 = [v27 initWithIdentifier:v22 name:v17 parent:0 options:0];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        v28 = [v27 initWithIdentifier:uUID name:v17 parent:0 options:0];
         v23 = v38;
         v38 = v28;
       }
@@ -1832,19 +1832,19 @@ void __64__HAP2AccessoryServer_Paired___pollAccessoryOnQueueWithOptions___block_
     v31[2] = __97__HAP2AccessoryServer_Paired___readValuesForCharacteristics_timeout_options_activity_completion___block_invoke;
     v31[3] = &unk_2786D6260;
     v32 = v18;
-    v33 = a1;
-    v35 = v13;
+    selfCopy2 = self;
+    v35 = optionsCopy;
     v34 = v11;
-    v36 = a6;
-    v37 = a3;
-    a1 = [(HAP2AccessoryServer *)a1 _delegateCancelableFor:v31];
+    activityCopy = activity;
+    characteristicsCopy = characteristics;
+    self = [(HAP2AccessoryServer *)self _delegateCancelableFor:v31];
 
     __HMFActivityScopeLeave();
   }
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
 id __97__HAP2AccessoryServer_Paired___readValuesForCharacteristics_timeout_options_activity_completion___block_invoke(uint64_t a1)
@@ -2014,34 +2014,34 @@ uint64_t __97__HAP2AccessoryServer_Paired___readValuesForCharacteristics_timeout
   return [v2 invalidate];
 }
 
-- (void)_kickReachabilityAfterCharacteristicOperation:(void *)a3 withResponse:(char)a4 ignoreCachedCharacteristics:(void *)a5 error:
+- (void)_kickReachabilityAfterCharacteristicOperation:(void *)operation withResponse:(char)response ignoreCachedCharacteristics:(void *)characteristics error:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
-  if (a1)
+  operationCopy = operation;
+  characteristicsCopy = characteristics;
+  if (self)
   {
-    v12 = [a1 operationQueue];
-    [v12 assertCurrentQueue];
+    operationQueue = [self operationQueue];
+    [operationQueue assertCurrentQueue];
 
-    if (!v11)
+    if (!characteristicsCopy)
     {
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __124__HAP2AccessoryServer_Paired___kickReachabilityAfterCharacteristicOperation_withResponse_ignoreCachedCharacteristics_error___block_invoke;
       v14[3] = &unk_2786D6448;
-      v15 = a4;
-      v14[4] = a1;
-      if ([v10 indexOfObjectPassingTest:v14] != 0x7FFFFFFFFFFFFFFFLL)
+      responseCopy = response;
+      v14[4] = self;
+      if ([operationCopy indexOfObjectPassingTest:v14] != 0x7FFFFFFFFFFFFFFFLL)
       {
-        if ([a1 connectionState] != 3)
+        if ([self connectionState] != 3)
         {
-          [a1 setReachabilityChangedReason:v9];
-          [(HAP2AccessoryServer *)a1 _updateConnectionState:0 withError:?];
+          [self setReachabilityChangedReason:v9];
+          [(HAP2AccessoryServer *)self _updateConnectionState:0 withError:?];
         }
 
-        v13 = [(HAP2AccessoryServer *)a1 reachability];
-        [v13 kick];
+        reachability = [(HAP2AccessoryServer *)self reachability];
+        [reachability kick];
       }
     }
   }
@@ -2096,14 +2096,14 @@ void __64__HAP2AccessoryServer_Paired___pollAccessoryOnQueueWithOptions___block_
   [v1 kick];
 }
 
-- (void)_handleAccessoryOperationError:(void *)a1
+- (void)_handleAccessoryOperationError:(void *)error
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    v4 = [a1 operationQueue];
-    [v4 assertCurrentQueue];
+    operationQueue = [error operationQueue];
+    [operationQueue assertCurrentQueue];
 
     if (hap2LogInitialize_onceToken != -1)
     {
@@ -2116,29 +2116,29 @@ void __64__HAP2AccessoryServer_Paired___pollAccessoryOnQueueWithOptions___block_
       v6 = v5;
       v7 = NSStringFromSelector(sel__handleAccessoryOperationError_);
       v13 = 138412546;
-      v14 = a1;
+      errorCopy = error;
       v15 = 2112;
       v16 = v7;
       _os_log_impl(&dword_22AADC000, v6, OS_LOG_TYPE_DEFAULT, "%@ %@", &v13, 0x16u);
     }
 
-    v8 = [v3 domain];
-    v9 = [v8 isEqualToString:@"HAPErrorDomain"];
+    domain = [v3 domain];
+    v9 = [domain isEqualToString:@"HAPErrorDomain"];
 
     if (v9 && [v3 code] == 17)
     {
       v10 = 4;
 LABEL_15:
-      [(HAP2AccessoryServer *)a1 _updateConnectionState:v10 withError:v3];
+      [(HAP2AccessoryServer *)error _updateConnectionState:v10 withError:v3];
       goto LABEL_16;
     }
 
-    v11 = [a1 connectionState];
-    if (v11)
+    connectionState = [error connectionState];
+    if (connectionState)
     {
-      if (v11 == 5)
+      if (connectionState == 5)
       {
-        if ([a1 hasDiscoveryAdvertisement])
+        if ([error hasDiscoveryAdvertisement])
         {
           v10 = 5;
         }
@@ -2166,10 +2166,10 @@ LABEL_16:
 - (void)verifyConnection
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(HAP2AccessoryServer *)self delegate];
-  v4 = [v3 onDemandConnectionsAreEnabled];
+  delegate = [(HAP2AccessoryServer *)self delegate];
+  onDemandConnectionsAreEnabled = [delegate onDemandConnectionsAreEnabled];
 
-  if (v4)
+  if (onDemandConnectionsAreEnabled)
   {
     if (hap2LogInitialize_onceToken != -1)
     {
@@ -2180,7 +2180,7 @@ LABEL_16:
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22AADC000, v5, OS_LOG_TYPE_INFO, "%@ Ignoring poll requests only on demand connections are allowed", &v8, 0xCu);
     }
 
@@ -2203,8 +2203,8 @@ LABEL_16:
   v5[3] = &unk_2786D6CA0;
   v5[4] = self;
   v3 = MEMORY[0x231885210](v5, a2);
-  v4 = [(HAP2AccessoryServer *)self operationQueue];
-  [v4 addBlock:v3];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
+  [operationQueue addBlock:v3];
 }
 
 void __43__HAP2AccessoryServer_Paired__closeSession__block_invoke(uint64_t a1)
@@ -2223,13 +2223,13 @@ void __43__HAP2AccessoryServer_Paired__closeSession__block_invoke(uint64_t a1)
 - (void)handleNetworkChanged
 {
   objc_initWeak(&location, self);
-  v3 = [(HAP2AccessoryServer *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51__HAP2AccessoryServer_Paired__handleNetworkChanged__block_invoke;
   v4[3] = &unk_2786D6FC8;
   objc_copyWeak(&v5, &location);
-  [v3 addBlock:v4];
+  [operationQueue addBlock:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -2283,23 +2283,23 @@ void __51__HAP2AccessoryServer_Paired__handleNetworkChanged__block_invoke(uint64
 - (void)updateReachability
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_16;
   }
 
-  v2 = [a1 delegate];
-  v3 = [v2 onDemandConnectionsAreEnabled];
+  delegate = [self delegate];
+  onDemandConnectionsAreEnabled = [delegate onDemandConnectionsAreEnabled];
 
-  if (v3)
+  if (onDemandConnectionsAreEnabled)
   {
-    if ([a1 hasDiscoveryAdvertisement])
+    if ([self hasDiscoveryAdvertisement])
     {
-      if ([a1 connectionState] == 5)
+      if ([self connectionState] == 5)
       {
         v4 = *MEMORY[0x277D85DE8];
 
-        [(HAP2AccessoryServer *)a1 _updateConnectionState:0 withError:?];
+        [(HAP2AccessoryServer *)self _updateConnectionState:0 withError:?];
         return;
       }
 
@@ -2312,7 +2312,7 @@ void __51__HAP2AccessoryServer_Paired__handleNetworkChanged__block_invoke(uint64
       if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
       {
         v8 = v6;
-        if ([a1 hasDiscoveryAdvertisement])
+        if ([self hasDiscoveryAdvertisement])
         {
           v9 = @"Found";
         }
@@ -2322,20 +2322,20 @@ void __51__HAP2AccessoryServer_Paired__handleNetworkChanged__block_invoke(uint64
           v9 = @"Lost";
         }
 
-        v10 = [a1 connectionState];
-        if (v10 > 5)
+        connectionState = [self connectionState];
+        if (connectionState > 5)
         {
           v11 = @"<unknown>";
         }
 
         else
         {
-          v11 = off_2786D3560[v10];
+          v11 = off_2786D3560[connectionState];
         }
 
         v12 = v11;
         *buf = 138412802;
-        v15 = a1;
+        selfCopy = self;
         v16 = 2112;
         v17 = v9;
         v18 = 2112;
@@ -2348,30 +2348,30 @@ LABEL_16:
       return;
     }
 
-    v13 = [MEMORY[0x277CCA9B8] hapHMErrorWithCode:4 description:@"No advertisement" reason:@"On demand connections are enabled and the accessory is marked as reachable but lacks an advertisement" suggestion:0 underlyingError:0 marker:1900];
-    [(HAP2AccessoryServer *)a1 _updateConnectionState:v13 withError:?];
+    reachability = [MEMORY[0x277CCA9B8] hapHMErrorWithCode:4 description:@"No advertisement" reason:@"On demand connections are enabled and the accessory is marked as reachable but lacks an advertisement" suggestion:0 underlyingError:0 marker:1900];
+    [(HAP2AccessoryServer *)self _updateConnectionState:reachability withError:?];
   }
 
   else
   {
-    v13 = [(HAP2AccessoryServer *)a1 reachability];
-    [v13 confirm];
+    reachability = [(HAP2AccessoryServer *)self reachability];
+    [reachability confirm];
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleLostDiscoveryAdvertisementWithWillSleep:(BOOL)a3
+- (void)handleLostDiscoveryAdvertisementWithWillSleep:(BOOL)sleep
 {
   objc_initWeak(&location, self);
-  v5 = [(HAP2AccessoryServer *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __77__HAP2AccessoryServer_Paired__handleLostDiscoveryAdvertisementWithWillSleep___block_invoke;
   v6[3] = &unk_2786D60D8;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
-  [v5 addBlock:v6];
+  sleepCopy = sleep;
+  [operationQueue addBlock:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -2464,8 +2464,8 @@ LABEL_18:
 - (void)handleReestablishedSession
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(HAP2AccessoryServer *)self operationQueue];
-  [v3 assertCurrentQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
   if (hap2LogInitialize_onceToken != -1)
   {
@@ -2476,21 +2476,21 @@ LABEL_18:
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
   {
     v11 = 138412290;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22AADC000, v4, OS_LOG_TYPE_INFO, "%@ We've re-established our session", &v11, 0xCu);
   }
 
   [(HAP2AccessoryServer *)&self->super.super.isa _updateConnectionState:0 withError:?];
-  v5 = [MEMORY[0x277D0F8C0] sharedPowerLogger];
-  v6 = [(HAP2AccessoryServer *)self deviceID];
-  v7 = [v6 deviceIDString];
+  mEMORY[0x277D0F8C0] = [MEMORY[0x277D0F8C0] sharedPowerLogger];
+  deviceID = [(HAP2AccessoryServer *)self deviceID];
+  deviceIDString = [deviceID deviceIDString];
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HAP2AccessoryServer category](self, "category")}];
-  [v5 reportConnection:v7 linkType:1 accessoryCategory:v8];
+  [mEMORY[0x277D0F8C0] reportConnection:deviceIDString linkType:1 accessoryCategory:v8];
 
-  v9 = [(HAP2AccessoryServer *)self pairedDelegate];
+  pairedDelegate = [(HAP2AccessoryServer *)self pairedDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 accessoryServerDidUpdateAccessories:self];
+    [pairedDelegate accessoryServerDidUpdateAccessories:self];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -2498,43 +2498,43 @@ LABEL_18:
 
 - (id)pairedDelegate
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 delegate];
-    if (v2)
+    delegate = [self delegate];
+    if (delegate)
     {
-      v3 = [v1 delegate];
-      if ([v3 conformsToProtocol:&unk_283EC33B8])
+      delegate2 = [selfCopy delegate];
+      if ([delegate2 conformsToProtocol:&unk_283EC33B8])
       {
-        v1 = [v1 delegate];
+        selfCopy = [selfCopy delegate];
       }
 
       else
       {
-        v1 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)handleUpdatedCharacteristicValues:(id)a3
+- (void)handleUpdatedCharacteristicValues:(id)values
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  valuesCopy = values;
+  if ([valuesCopy count])
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v5 instanceID];
+    v5 = [valuesCopy objectAtIndexedSubscript:0];
+    instanceID = [v5 instanceID];
 
-    v7 = [(HAP2AccessoryServer *)&self->super.super.isa _findAccessoryAndCharacteristicForInstanceID:v6 characteristic:0];
+    v7 = [(HAP2AccessoryServer *)&self->super.super.isa _findAccessoryAndCharacteristicForInstanceID:instanceID characteristic:0];
     v8 = v7;
     if (v7)
     {
@@ -2543,7 +2543,7 @@ LABEL_18:
       v13[2] = __65__HAP2AccessoryServer_Paired__handleUpdatedCharacteristicValues___block_invoke;
       v13[3] = &unk_2786D60B0;
       v14 = v7;
-      [v4 hmf_enumerateWithAutoreleasePoolUsingBlock:v13];
+      [valuesCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v13];
     }
 
     else
@@ -2557,9 +2557,9 @@ LABEL_18:
       if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
       {
         v11 = v9;
-        v12 = [v4 objectAtIndexedSubscript:0];
+        v12 = [valuesCopy objectAtIndexedSubscript:0];
         *buf = 138412546;
-        v16 = self;
+        selfCopy = self;
         v17 = 2112;
         v18 = v12;
         _os_log_error_impl(&dword_22AADC000, v11, OS_LOG_TYPE_ERROR, "%@ Ignoring update for characteristic that we cannot find: %@", buf, 0x16u);
@@ -2570,10 +2570,10 @@ LABEL_18:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_findAccessoryAndCharacteristicForInstanceID:(void *)a3 characteristic:
+- (id)_findAccessoryAndCharacteristicForInstanceID:(void *)d characteristic:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v19 = 0;
     v20 = &v19;
@@ -2587,7 +2587,7 @@ LABEL_18:
     v16 = __Block_byref_object_copy__20997;
     v17 = __Block_byref_object_dispose__20998;
     v18 = 0;
-    v6 = [(HAP2AccessoryServer *)a1 privateAccessories];
+    privateAccessories = [(HAP2AccessoryServer *)self privateAccessories];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __91__HAP2AccessoryServer_Paired___findAccessoryAndCharacteristicForInstanceID_characteristic___block_invoke;
@@ -2595,11 +2595,11 @@ LABEL_18:
     v10 = v5;
     v11 = &v19;
     v12 = &v13;
-    [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
+    [privateAccessories hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
 
-    if (a3)
+    if (d)
     {
-      *a3 = v14[5];
+      *d = v14[5];
     }
 
     v7 = v20[5];
@@ -2674,16 +2674,16 @@ void __91__HAP2AccessoryServer_Paired___findAccessoryAndCharacteristicForInstanc
   }
 }
 
-- (void)handleEvents:(id)a3
+- (void)handleEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __44__HAP2AccessoryServer_Paired__handleEvents___block_invoke;
   v11 = &unk_2786D7050;
-  v12 = self;
-  v13 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v13 = eventsCopy;
+  v5 = eventsCopy;
   v6 = MEMORY[0x231885210](&v8);
   v7 = [(HAP2AccessoryServer *)self operationQueue:v8];
   [v7 addBlock:v6];
@@ -2881,19 +2881,19 @@ LABEL_27:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)disableNotificationsForCharacteristics:(id)a3 completion:(id)a4
+- (id)disableNotificationsForCharacteristics:(id)characteristics completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  characteristicsCopy = characteristics;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __81__HAP2AccessoryServer_Paired__disableNotificationsForCharacteristics_completion___block_invoke;
   v12[3] = &unk_2786D6088;
-  v13 = v6;
-  v14 = v7;
+  v13 = characteristicsCopy;
+  v14 = completionCopy;
   v12[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = characteristicsCopy;
+  v9 = completionCopy;
   v10 = [(HAP2AccessoryServer *)self _delegateCancelableFor:v12];
 
   return v10;
@@ -2959,19 +2959,19 @@ void __81__HAP2AccessoryServer_Paired__disableNotificationsForCharacteristics_co
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)enableNotificationsForCharacteristics:(id)a3 completion:(id)a4
+- (id)enableNotificationsForCharacteristics:(id)characteristics completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  characteristicsCopy = characteristics;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __80__HAP2AccessoryServer_Paired__enableNotificationsForCharacteristics_completion___block_invoke;
   v12[3] = &unk_2786D6088;
-  v13 = v6;
-  v14 = v7;
+  v13 = characteristicsCopy;
+  v14 = completionCopy;
   v12[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = characteristicsCopy;
+  v9 = completionCopy;
   v10 = [(HAP2AccessoryServer *)self _delegateCancelableFor:v12];
 
   return v10;
@@ -3037,10 +3037,10 @@ void __80__HAP2AccessoryServer_Paired__enableNotificationsForCharacteristics_com
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)writeValuesForCharacteristics:(id)a3 timeout:(double)a4 completion:(id)a5
+- (id)writeValuesForCharacteristics:(id)characteristics timeout:(double)timeout completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  characteristicsCopy = characteristics;
+  completionCopy = completion;
   v10 = MEMORY[0x277CCACA8];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
@@ -3052,12 +3052,12 @@ void __80__HAP2AccessoryServer_Paired__enableNotificationsForCharacteristics_com
   v18[2] = __80__HAP2AccessoryServer_Paired__writeValuesForCharacteristics_timeout_completion___block_invoke;
   v18[3] = &unk_2786D6038;
   v19 = v24;
-  v20 = self;
-  v14 = v9;
+  selfCopy = self;
+  v14 = completionCopy;
   v22 = v14;
-  v15 = v8;
+  v15 = characteristicsCopy;
   v21 = v15;
-  v23 = a4;
+  timeoutCopy = timeout;
   v16 = [(HAP2AccessoryServer *)self _delegateCancelableFor:v18];
 
   __HMFActivityScopeLeave();
@@ -3144,19 +3144,19 @@ uint64_t __80__HAP2AccessoryServer_Paired__writeValuesForCharacteristics_timeout
   return [v2 invalidate];
 }
 
-- (void)mergeWithNewlyDiscoveredPairedAccessoryServer:(id)a3
+- (void)mergeWithNewlyDiscoveredPairedAccessoryServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   objc_initWeak(&location, self);
-  v5 = [(HAP2AccessoryServer *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__HAP2AccessoryServer_Paired__mergeWithNewlyDiscoveredPairedAccessoryServer___block_invoke;
   v7[3] = &unk_2786D6EB0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = serverCopy;
   v8 = v6;
-  [v5 addBlock:v7];
+  [operationQueue addBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -3252,10 +3252,10 @@ LABEL_14:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)becomeUnpairedWithAccessoryServer:(id)a3
+- (void)becomeUnpairedWithAccessoryServer:(id)server
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serverCopy = server;
   if (hap2LogInitialize_onceToken != -1)
   {
     dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
@@ -3265,7 +3265,7 @@ LABEL_14:
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22AADC000, v5, OS_LOG_TYPE_INFO, "%@ Accessory becoming unpaired", buf, 0xCu);
   }
 
@@ -3273,9 +3273,9 @@ LABEL_14:
   v11 = 3221225472;
   v12 = __65__HAP2AccessoryServer_Paired__becomeUnpairedWithAccessoryServer___block_invoke;
   v13 = &unk_2786D7050;
-  v14 = self;
-  v15 = v4;
-  v6 = v4;
+  selfCopy2 = self;
+  v15 = serverCopy;
+  v6 = serverCopy;
   v7 = MEMORY[0x231885210](&v10);
   v8 = [(HAP2AccessoryServer *)self operationQueue:v10];
   [v8 addBlock:v7];
@@ -3310,10 +3310,10 @@ void __65__HAP2AccessoryServer_Paired__becomeUnpairedWithAccessoryServer___block
 - (void)_stopConfirming
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 operationQueue];
-    [v2 assertCurrentQueue];
+    operationQueue = [self operationQueue];
+    [operationQueue assertCurrentQueue];
 
     if (hap2LogInitialize_onceToken != -1)
     {
@@ -3324,24 +3324,24 @@ void __65__HAP2AccessoryServer_Paired__becomeUnpairedWithAccessoryServer___block
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(v8) = 138412290;
-      *(&v8 + 4) = a1;
+      *(&v8 + 4) = self;
       _os_log_impl(&dword_22AADC000, v3, OS_LOG_TYPE_DEFAULT, "%@ Stopping reachability confirmations", &v8, 0xCu);
     }
 
-    v4 = a1[18];
+    v4 = self[18];
     [v4 invalidate];
 
-    objc_storeStrong(a1 + 18, 0);
-    v5 = [a1 operationQueue];
-    [v5 assertCurrentQueue];
+    objc_storeStrong(self + 18, 0);
+    operationQueue2 = [self operationQueue];
+    [operationQueue2 assertCurrentQueue];
 
-    v6 = [(HAP2AccessoryServer *)a1 reachability];
+    reachability = [(HAP2AccessoryServer *)self reachability];
     *&v8 = MEMORY[0x277D85DD0];
     *(&v8 + 1) = 3221225472;
     v9 = __54__HAP2AccessoryServer_Paired___stopReachabilityClient__block_invoke;
     v10 = &unk_2786D6CF0;
-    v11 = a1;
-    [v6 stopWithCompletionHandler:&v8];
+    selfCopy = self;
+    [reachability stopWithCompletionHandler:&v8];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -3394,8 +3394,8 @@ void __54__HAP2AccessoryServer_Paired___stopReachabilityClient__block_invoke(uin
     v7[3] = &unk_2786D6CA0;
     v7[4] = self;
     v3 = MEMORY[0x231885210](v7);
-    v4 = [(HAP2AccessoryServer *)self operationQueue];
-    [v4 addBlock:v3];
+    operationQueue = [(HAP2AccessoryServer *)self operationQueue];
+    [operationQueue addBlock:v3];
   }
 
   else
@@ -3409,7 +3409,7 @@ void __54__HAP2AccessoryServer_Paired___stopReachabilityClient__block_invoke(uin
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22AADC000, v5, OS_LOG_TYPE_DEFAULT, "%@ Server no longer paired, ignoring request to stop confirmations", buf, 0xCu);
     }
   }
@@ -3428,8 +3428,8 @@ void __54__HAP2AccessoryServer_Paired___stopReachabilityClient__block_invoke(uin
     v7[3] = &unk_2786D6CA0;
     v7[4] = self;
     v3 = MEMORY[0x231885210](v7);
-    v4 = [(HAP2AccessoryServer *)self operationQueue];
-    [v4 addBlock:v3];
+    operationQueue = [(HAP2AccessoryServer *)self operationQueue];
+    [operationQueue addBlock:v3];
   }
 
   else
@@ -3443,7 +3443,7 @@ void __54__HAP2AccessoryServer_Paired___stopReachabilityClient__block_invoke(uin
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22AADC000, v5, OS_LOG_TYPE_DEFAULT, "%@ Server no longer paired, ignoring request to start confirmations", buf, 0xCu);
     }
   }
@@ -3695,25 +3695,25 @@ void __57__HAP2AccessoryServer_Paired___scheduleBackgroundPolling__block_invoke(
 
 - (BOOL)isConfirming
 {
-  v2 = [(HAP2AccessoryServer *)&self->super.super.isa reachability];
-  v3 = [v2 isRunning];
+  reachability = [(HAP2AccessoryServer *)&self->super.super.isa reachability];
+  isRunning = [reachability isRunning];
 
-  return v3;
+  return isRunning;
 }
 
-- (id)updateAccessoriesWithReason:(id)a3
+- (id)updateAccessoriesWithReason:(id)reason
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
   v17[3] = __Block_byref_object_copy__20997;
   v17[4] = __Block_byref_object_dispose__20998;
   v18 = 0;
-  v5 = [(HAP2AccessoryServer *)&self->super.super.isa outstandingUpdateAccessoriesRequest];
+  outstandingUpdateAccessoriesRequest = [(HAP2AccessoryServer *)&self->super.super.isa outstandingUpdateAccessoriesRequest];
 
-  if (v5)
+  if (outstandingUpdateAccessoriesRequest)
   {
     if (hap2LogInitialize_onceToken != -1)
     {
@@ -3724,9 +3724,9 @@ void __57__HAP2AccessoryServer_Paired___scheduleBackgroundPolling__block_invoke(
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = v4;
+      v20 = reasonCopy;
       v21 = 2112;
-      v22 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22AADC000, v6, OS_LOG_TYPE_DEFAULT, "%@ Ignoring updateAccessories request with reason:%@ one already running", buf, 0x16u);
     }
 
@@ -3736,15 +3736,15 @@ void __57__HAP2AccessoryServer_Paired___scheduleBackgroundPolling__block_invoke(
   else
   {
     objc_initWeak(buf, self);
-    v8 = [(HAP2AccessoryServer *)self operationQueue];
+    operationQueue = [(HAP2AccessoryServer *)self operationQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __59__HAP2AccessoryServer_Paired__updateAccessoriesWithReason___block_invoke;
     v13[3] = &unk_2786D5FC0;
     objc_copyWeak(&v16, buf);
     v15 = v17;
-    v14 = v4;
-    [v8 addBlock:v13];
+    v14 = reasonCopy;
+    [operationQueue addBlock:v13];
 
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -3915,14 +3915,14 @@ void __59__HAP2AccessoryServer_Paired__updateAccessoriesWithReason___block_invok
   }
 }
 
-- (void)_handleFailedAccessoryDiscovery:(void *)a1
+- (void)_handleFailedAccessoryDiscovery:(void *)discovery
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (discovery)
   {
-    v4 = [a1 operationQueue];
-    [v4 assertCurrentQueue];
+    operationQueue = [discovery operationQueue];
+    [operationQueue assertCurrentQueue];
 
     if (hap2LogInitialize_onceToken != -1)
     {
@@ -3933,18 +3933,18 @@ void __59__HAP2AccessoryServer_Paired__updateAccessoriesWithReason___block_invok
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412546;
-      v9 = a1;
+      discoveryCopy = discovery;
       v10 = 2112;
       v11 = v3;
       _os_log_error_impl(&dword_22AADC000, v5, OS_LOG_TYPE_ERROR, "%@ Failed to discover accessories: %@", &v8, 0x16u);
     }
 
-    [a1 setReachabilityChangedReason:@"AttributeDatabaseRead"];
-    [(HAP2AccessoryServer *)a1 _handleAccessoryOperationError:v3];
-    v6 = [a1 delegate];
+    [discovery setReachabilityChangedReason:@"AttributeDatabaseRead"];
+    [(HAP2AccessoryServer *)discovery _handleAccessoryOperationError:v3];
+    delegate = [discovery delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v6 accessoryServer:a1 didFailToUpdateAccessoriesWithError:v3];
+      [delegate accessoryServer:discovery didFailToUpdateAccessoriesWithError:v3];
     }
   }
 
@@ -4878,16 +4878,16 @@ void __73__HAP2AccessoryServer_Paired___handleUpdatedAccessoryInformationService
   }
 }
 
-- (id)getPairingsWithCompletion:(id)a3
+- (id)getPairingsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__HAP2AccessoryServer_Paired__getPairingsWithCompletion___block_invoke;
   v8[3] = &unk_2786D6B90;
   objc_copyWeak(&v10, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v9 = v5;
   v6 = [(HAP2AccessoryServer *)self _delegateCancelableFor:v8];
 
@@ -4906,19 +4906,19 @@ id __57__HAP2AccessoryServer_Paired__getPairingsWithCompletion___block_invoke(ui
   return v4;
 }
 
-- (id)removePairing:(id)a3 completion:(id)a4
+- (id)removePairing:(id)pairing completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  pairingCopy = pairing;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __56__HAP2AccessoryServer_Paired__removePairing_completion___block_invoke;
   v12[3] = &unk_2786D5F98;
   objc_copyWeak(&v15, &location);
-  v8 = v7;
+  v8 = completionCopy;
   v14 = v8;
-  v9 = v6;
+  v9 = pairingCopy;
   v13 = v9;
   v10 = [(HAP2AccessoryServer *)self _delegateCancelableFor:v12];
 
@@ -5043,19 +5043,19 @@ void __56__HAP2AccessoryServer_Paired__removePairing_completion___block_invoke_7
   v2 = [v3 removePairing:*(a1 + 40) cleanupLocalData:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (id)addPairing:(id)a3 completion:(id)a4
+- (id)addPairing:(id)pairing completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  pairingCopy = pairing;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__HAP2AccessoryServer_Paired__addPairing_completion___block_invoke;
   v12[3] = &unk_2786D5F98;
   objc_copyWeak(&v15, &location);
-  v8 = v6;
+  v8 = pairingCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v14 = v9;
   v10 = [(HAP2AccessoryServer *)self _delegateCancelableFor:v12];
 
@@ -5074,10 +5074,10 @@ id __53__HAP2AccessoryServer_Paired__addPairing_completion___block_invoke(uint64
   return v4;
 }
 
-- (id)unpairWithCompletion:(id)a3
+- (id)unpairWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (hap2LogInitialize_onceToken != -1)
   {
     dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
@@ -5087,7 +5087,7 @@ id __53__HAP2AccessoryServer_Paired__addPairing_completion___block_invoke(uint64
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v14 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_22AADC000, v5, OS_LOG_TYPE_INFO, "%@ Unpairing with accessory server", buf, 0xCu);
   }
 
@@ -5098,7 +5098,7 @@ id __53__HAP2AccessoryServer_Paired__addPairing_completion___block_invoke(uint64
     v11[2] = __52__HAP2AccessoryServer_Paired__unpairWithCompletion___block_invoke;
     v11[3] = &unk_2786D5F48;
     v11[4] = self;
-    v12 = v4;
+    v12 = completionCopy;
     v6 = [(HAP2AccessoryServer *)self _delegateCancelableFor:v11];
   }
 
@@ -5113,12 +5113,12 @@ id __53__HAP2AccessoryServer_Paired__addPairing_completion___block_invoke(uint64
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_22AADC000, v7, OS_LOG_TYPE_ERROR, "%@ Trying to unpair an unpaired server", buf, 0xCu);
     }
 
     v8 = [MEMORY[0x277CCA9B8] hapErrorWithCode:1];
-    (*(v4 + 2))(v4, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
 
     v6 = +[HAP2Cancelable ignore];
   }
@@ -5286,35 +5286,35 @@ void __52__HAP2AccessoryServer_Paired__unpairWithCompletion___block_invoke_2(uin
 
 - (HAP2Accessory)primaryAccessory
 {
-  v2 = [(HAP2AccessoryServer *)&self->super.super.isa privateAccessories];
-  v3 = [v2 firstObject];
+  privateAccessories = [(HAP2AccessoryServer *)&self->super.super.isa privateAccessories];
+  firstObject = [privateAccessories firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (void)pairingDriver:(id)a3 validateSoftwareAuthUUID:(id)a4 token:(id)a5 model:(id)a6 completion:(id)a7
+- (void)pairingDriver:(id)driver validateSoftwareAuthUUID:(id)d token:(id)token model:(id)model completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  driverCopy = driver;
+  dCopy = d;
+  tokenCopy = token;
+  modelCopy = model;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v17 = [(HAP2AccessoryServer *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __95__HAP2AccessoryServer_Unpaired__pairingDriver_validateSoftwareAuthUUID_token_model_completion___block_invoke;
   v22[3] = &unk_2786D6C30;
   objc_copyWeak(&v27, &location);
-  v18 = v13;
+  v18 = dCopy;
   v23 = v18;
-  v19 = v14;
+  v19 = tokenCopy;
   v24 = v19;
-  v20 = v15;
+  v20 = modelCopy;
   v25 = v20;
-  v21 = v16;
+  v21 = completionCopy;
   v26 = v21;
-  [v17 addBlock:v22];
+  [operationQueue addBlock:v22];
 
   objc_destroyWeak(&v27);
   objc_destroyWeak(&location);
@@ -5331,26 +5331,26 @@ void __95__HAP2AccessoryServer_Unpaired__pairingDriver_validateSoftwareAuthUUID_
   }
 }
 
-- (void)pairingDriver:(id)a3 validatePairingCert:(id)a4 model:(id)a5 completion:(id)a6
+- (void)pairingDriver:(id)driver validatePairingCert:(id)cert model:(id)model completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  driverCopy = driver;
+  certCopy = cert;
+  modelCopy = model;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v14 = [(HAP2AccessoryServer *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __84__HAP2AccessoryServer_Unpaired__pairingDriver_validatePairingCert_model_completion___block_invoke;
   v18[3] = &unk_2786D6C08;
   objc_copyWeak(&v22, &location);
-  v15 = v11;
+  v15 = certCopy;
   v19 = v15;
-  v16 = v12;
+  v16 = modelCopy;
   v20 = v16;
-  v17 = v13;
+  v17 = completionCopy;
   v21 = v17;
-  [v14 addBlock:v18];
+  [operationQueue addBlock:v18];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
@@ -5367,20 +5367,20 @@ void __84__HAP2AccessoryServer_Unpaired__pairingDriver_validatePairingCert_model
   }
 }
 
-- (void)pairingDriver:(id)a3 didFinishAuthWithError:(id)a4
+- (void)pairingDriver:(id)driver didFinishAuthWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  driverCopy = driver;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  v8 = [(HAP2AccessoryServer *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__HAP2AccessoryServer_Unpaired__pairingDriver_didFinishAuthWithError___block_invoke;
   v10[3] = &unk_2786D6EB0;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = errorCopy;
   v11 = v9;
-  [v8 addBlock:v10];
+  [operationQueue addBlock:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -5397,26 +5397,26 @@ void __70__HAP2AccessoryServer_Unpaired__pairingDriver_didFinishAuthWithError___
   }
 }
 
-- (void)pairingDriver:(id)a3 confirmSoftwareAuthUUID:(id)a4 token:(id)a5 completion:(id)a6
+- (void)pairingDriver:(id)driver confirmSoftwareAuthUUID:(id)d token:(id)token completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  driverCopy = driver;
+  dCopy = d;
+  tokenCopy = token;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v14 = [(HAP2AccessoryServer *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __88__HAP2AccessoryServer_Unpaired__pairingDriver_confirmSoftwareAuthUUID_token_completion___block_invoke;
   v18[3] = &unk_2786D6C08;
   objc_copyWeak(&v22, &location);
-  v15 = v11;
+  v15 = dCopy;
   v19 = v15;
-  v16 = v12;
+  v16 = tokenCopy;
   v20 = v16;
-  v17 = v13;
+  v17 = completionCopy;
   v21 = v17;
-  [v14 addBlock:v18];
+  [operationQueue addBlock:v18];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
@@ -5433,26 +5433,26 @@ void __88__HAP2AccessoryServer_Unpaired__pairingDriver_confirmSoftwareAuthUUID_t
   }
 }
 
-- (void)pairingDriver:(id)a3 authenticateSoftwareAuthUUID:(id)a4 token:(id)a5 completion:(id)a6
+- (void)pairingDriver:(id)driver authenticateSoftwareAuthUUID:(id)d token:(id)token completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  driverCopy = driver;
+  dCopy = d;
+  tokenCopy = token;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v14 = [(HAP2AccessoryServer *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __93__HAP2AccessoryServer_Unpaired__pairingDriver_authenticateSoftwareAuthUUID_token_completion___block_invoke;
   v18[3] = &unk_2786D6C08;
   objc_copyWeak(&v22, &location);
-  v15 = v11;
+  v15 = dCopy;
   v19 = v15;
-  v16 = v12;
+  v16 = tokenCopy;
   v20 = v16;
-  v17 = v13;
+  v17 = completionCopy;
   v21 = v17;
-  [v14 addBlock:v18];
+  [operationQueue addBlock:v18];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
@@ -5469,21 +5469,21 @@ void __93__HAP2AccessoryServer_Unpaired__pairingDriver_authenticateSoftwareAuthU
   }
 }
 
-- (void)pairingDriver:(id)a3 doesRequireSetupCodeForAccessory:(id)a4 completion:(id)a5
+- (void)pairingDriver:(id)driver doesRequireSetupCodeForAccessory:(id)accessory completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  driverCopy = driver;
+  accessoryCopy = accessory;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v11 = [(HAP2AccessoryServer *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __91__HAP2AccessoryServer_Unpaired__pairingDriver_doesRequireSetupCodeForAccessory_completion___block_invoke;
   v13[3] = &unk_2786D6FA0;
   objc_copyWeak(&v15, &location);
-  v12 = v10;
+  v12 = completionCopy;
   v14 = v12;
-  [v11 addBlock:v13];
+  [operationQueue addBlock:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -5500,22 +5500,22 @@ void __91__HAP2AccessoryServer_Unpaired__pairingDriver_doesRequireSetupCodeForAc
   }
 }
 
-- (void)pairingDriver:(id)a3 doesRequirePermission:(unint64_t)a4 accessory:(id)a5 completion:(id)a6
+- (void)pairingDriver:(id)driver doesRequirePermission:(unint64_t)permission accessory:(id)accessory completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  driverCopy = driver;
+  accessoryCopy = accessory;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v13 = [(HAP2AccessoryServer *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __90__HAP2AccessoryServer_Unpaired__pairingDriver_doesRequirePermission_accessory_completion___block_invoke;
   v15[3] = &unk_2786D6BB8;
   objc_copyWeak(v17, &location);
-  v17[1] = a4;
-  v14 = v12;
+  v17[1] = permission;
+  v14 = completionCopy;
   v16 = v14;
-  [v13 addBlock:v15];
+  [operationQueue addBlock:v15];
 
   objc_destroyWeak(v17);
   objc_destroyWeak(&location);
@@ -5532,23 +5532,23 @@ void __90__HAP2AccessoryServer_Unpaired__pairingDriver_doesRequirePermission_acc
   }
 }
 
-- (void)pairingDriver:(id)a3 didSaveRemotePairingIdentity:(id)a4 completion:(id)a5
+- (void)pairingDriver:(id)driver didSaveRemotePairingIdentity:(id)identity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  driverCopy = driver;
+  identityCopy = identity;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v11 = [(HAP2AccessoryServer *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __87__HAP2AccessoryServer_Unpaired__pairingDriver_didSaveRemotePairingIdentity_completion___block_invoke;
   v14[3] = &unk_2786D6BE0;
   objc_copyWeak(&v17, &location);
-  v12 = v10;
+  v12 = completionCopy;
   v16 = v12;
-  v13 = v9;
+  v13 = identityCopy;
   v15 = v13;
-  [v11 addBlock:v14];
+  [operationQueue addBlock:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -5627,20 +5627,20 @@ void __87__HAP2AccessoryServer_Unpaired__pairingDriver_didSaveRemotePairingIdent
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pairingDriver:(id)a3 didRequestLocalPairingIdentityWithCompletion:(id)a4
+- (void)pairingDriver:(id)driver didRequestLocalPairingIdentityWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  driverCopy = driver;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(HAP2AccessoryServer *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __92__HAP2AccessoryServer_Unpaired__pairingDriver_didRequestLocalPairingIdentityWithCompletion___block_invoke;
   v10[3] = &unk_2786D6FA0;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = completionCopy;
   v11 = v9;
-  [v8 addBlock:v10];
+  [operationQueue addBlock:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -5677,22 +5677,22 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)pairingDriver:(id)a3 didRejectSetupCodeForAccessory:(id)a4 backoffInterval:(double)a5 completion:(id)a6
+- (void)pairingDriver:(id)driver didRejectSetupCodeForAccessory:(id)accessory backoffInterval:(double)interval completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  driverCopy = driver;
+  accessoryCopy = accessory;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v13 = [(HAP2AccessoryServer *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __105__HAP2AccessoryServer_Unpaired__pairingDriver_didRejectSetupCodeForAccessory_backoffInterval_completion___block_invoke;
   v15[3] = &unk_2786D6BB8;
   objc_copyWeak(v17, &location);
-  v17[1] = *&a5;
-  v14 = v12;
+  v17[1] = *&interval;
+  v14 = completionCopy;
   v16 = v14;
-  [v13 addBlock:v15];
+  [operationQueue addBlock:v15];
 
   objc_destroyWeak(v17);
   objc_destroyWeak(&location);
@@ -5709,20 +5709,20 @@ void __105__HAP2AccessoryServer_Unpaired__pairingDriver_didRejectSetupCodeForAcc
   }
 }
 
-- (void)pairingDriver:(id)a3 didCompleteWithError:(id)a4
+- (void)pairingDriver:(id)driver didCompleteWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  driverCopy = driver;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  v8 = [(HAP2AccessoryServer *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__HAP2AccessoryServer_Unpaired__pairingDriver_didCompleteWithError___block_invoke;
   v10[3] = &unk_2786D6EB0;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = errorCopy;
   v11 = v9;
-  [v8 addBlock:v10];
+  [operationQueue addBlock:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -5740,19 +5740,19 @@ void __68__HAP2AccessoryServer_Unpaired__pairingDriver_didCompleteWithError___bl
   }
 }
 
-- (void)mergeWithNewlyDiscoveredUnpairedAccessoryServer:(id)a3
+- (void)mergeWithNewlyDiscoveredUnpairedAccessoryServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   objc_initWeak(&location, self);
-  v5 = [(HAP2AccessoryServer *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__HAP2AccessoryServer_Unpaired__mergeWithNewlyDiscoveredUnpairedAccessoryServer___block_invoke;
   v7[3] = &unk_2786D6EB0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = serverCopy;
   v8 = v6;
-  [v5 addBlock:v7];
+  [operationQueue addBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -5764,10 +5764,10 @@ void __81__HAP2AccessoryServer_Unpaired__mergeWithNewlyDiscoveredUnpairedAccesso
   [(HAP2AccessoryServer *)WeakRetained _updateServerMetadata:0 controller:?];
 }
 
-- (void)becomePairedWithAccessoryServer:(id)a3
+- (void)becomePairedWithAccessoryServer:(id)server
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serverCopy = server;
   if (hap2LogInitialize_onceToken != -1)
   {
     dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
@@ -5777,22 +5777,22 @@ void __81__HAP2AccessoryServer_Unpaired__mergeWithNewlyDiscoveredUnpairedAccesso
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22AADC000, v5, OS_LOG_TYPE_DEFAULT, "%@ Accessory is now paired", buf, 0xCu);
   }
 
   [(HAP2AccessoryServer *)self setInternallyPaired:?];
   [(HAP2AccessoryServer *)self setInternalPairingDriver:?];
   objc_initWeak(buf, self);
-  v6 = [(HAP2AccessoryServer *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServer *)self operationQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __65__HAP2AccessoryServer_Unpaired__becomePairedWithAccessoryServer___block_invoke;
   v9[3] = &unk_2786D6EB0;
   objc_copyWeak(&v11, buf);
-  v7 = v4;
+  v7 = serverCopy;
   v10 = v7;
-  [v6 addBlock:v9];
+  [operationQueue addBlock:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(buf);
@@ -5808,16 +5808,16 @@ void __65__HAP2AccessoryServer_Unpaired__becomePairedWithAccessoryServer___block
   [(HAP2AccessoryServer *)WeakRetained _updateServerMetadata:v2 controller:v3];
 }
 
-- (id)identifyWithCompletion:(id)a3
+- (id)identifyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__HAP2AccessoryServer_Unpaired__identifyWithCompletion___block_invoke;
   v8[3] = &unk_2786D6B90;
   objc_copyWeak(&v10, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v9 = v5;
   v6 = [(HAP2AccessoryServer *)self _delegateCancelableFor:v8];
 
@@ -5848,22 +5848,22 @@ id __56__HAP2AccessoryServer_Unpaired__identifyWithCompletion___block_invoke(uin
   return v5;
 }
 
-- (id)pairWithDelegate:(id)a3 pairingRequest:(id)a4
+- (id)pairWithDelegate:(id)delegate pairingRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D0F770] currentActivity];
+  delegateCopy = delegate;
+  requestCopy = request;
+  currentActivity = [MEMORY[0x277D0F770] currentActivity];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __65__HAP2AccessoryServer_Unpaired__pairWithDelegate_pairingRequest___block_invoke;
   v14[3] = &unk_2786D6B68;
   v14[4] = self;
-  v15 = v6;
-  v16 = v8;
-  v17 = v7;
-  v9 = v7;
-  v10 = v8;
-  v11 = v6;
+  v15 = delegateCopy;
+  v16 = currentActivity;
+  v17 = requestCopy;
+  v9 = requestCopy;
+  v10 = currentActivity;
+  v11 = delegateCopy;
   v12 = [(HAP2AccessoryServer *)self _delegateCancelableFor:v14];
 
   return v12;

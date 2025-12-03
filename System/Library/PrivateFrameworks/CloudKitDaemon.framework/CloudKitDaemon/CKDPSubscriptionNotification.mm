@@ -1,40 +1,40 @@
 @interface CKDPSubscriptionNotification
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAdditionalFields:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasShouldSendContentAvailable:(BOOL)a3;
-- (void)setHasShouldSendMutableContent:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAdditionalFields:(id)fields;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasShouldSendContentAvailable:(BOOL)available;
+- (void)setHasShouldSendMutableContent:(BOOL)content;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPSubscriptionNotification
 
-- (void)addAdditionalFields:(id)a3
+- (void)addAdditionalFields:(id)fields
 {
-  v4 = a3;
+  fieldsCopy = fields;
   additionalFields = self->_additionalFields;
-  v8 = v4;
+  v8 = fieldsCopy;
   if (!additionalFields)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_additionalFields;
     self->_additionalFields = v6;
 
-    v4 = v8;
+    fieldsCopy = v8;
     additionalFields = self->_additionalFields;
   }
 
-  objc_msgSend_addObject_(additionalFields, v4, v4);
+  objc_msgSend_addObject_(additionalFields, fieldsCopy, fieldsCopy);
 }
 
-- (void)setHasShouldSendContentAvailable:(BOOL)a3
+- (void)setHasShouldSendContentAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 2;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasShouldSendMutableContent:(BOOL)a3
+- (void)setHasShouldSendMutableContent:(BOOL)content
 {
-  if (a3)
+  if (content)
   {
     v3 = 4;
   }
@@ -120,10 +120,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_alert)
   {
     PBDataWriterWriteSubmessage();
@@ -186,21 +186,21 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   alert = self->_alert;
-  v19 = v4;
+  v19 = toCopy;
   if (alert)
   {
-    objc_msgSend_setAlert_(v4, v5, alert);
-    v4 = v19;
+    objc_msgSend_setAlert_(toCopy, v5, alert);
+    toCopy = v19;
   }
 
   if (*&self->_has)
   {
-    v4[32] = self->_shouldBadge;
-    v4[36] |= 1u;
+    toCopy[32] = self->_shouldBadge;
+    toCopy[36] |= 1u;
   }
 
   if (objc_msgSend_additionalFieldsCount(self, v5, alert))
@@ -241,13 +241,13 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v34 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_alert, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_alert, v11, zone);
   v13 = *(v10 + 16);
   *(v10 + 16) = v12;
 
@@ -276,7 +276,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v21 = objc_msgSend_copyWithZone_(*(*(&v29 + 1) + 8 * i), v17, a3, v29);
+        v21 = objc_msgSend_copyWithZone_(*(*(&v29 + 1) + 8 * i), v17, zone, v29);
         objc_msgSend_addAdditionalFields_(v10, v22, v21);
       }
 
@@ -300,7 +300,7 @@
     *(v10 + 36) |= 4u;
   }
 
-  v25 = objc_msgSend_copyWithZone_(self->_collapseIdKey, v23, a3, v29);
+  v25 = objc_msgSend_copyWithZone_(self->_collapseIdKey, v23, zone, v29);
   v26 = *(v10 + 24);
   *(v10 + 24) = v25;
 
@@ -308,17 +308,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_33;
   }
 
   alert = self->_alert;
-  v9 = v4[2];
+  v9 = equalCopy[2];
   if (alert | v9)
   {
     if (!objc_msgSend_isEqual_(alert, v7, v9))
@@ -328,36 +328,36 @@
   }
 
   has = self->_has;
-  v11 = *(v4 + 36);
+  v11 = *(equalCopy + 36);
   if (has)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(equalCopy + 36) & 1) == 0)
     {
       goto LABEL_33;
     }
 
-    v17 = *(v4 + 32);
+    v17 = *(equalCopy + 32);
     if (self->_shouldBadge)
     {
-      if ((v4[4] & 1) == 0)
+      if ((equalCopy[4] & 1) == 0)
       {
         goto LABEL_33;
       }
     }
 
-    else if (v4[4])
+    else if (equalCopy[4])
     {
       goto LABEL_33;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_33;
   }
 
   additionalFields = self->_additionalFields;
-  v13 = v4[1];
+  v13 = equalCopy[1];
   if (additionalFields | v13)
   {
     if (!objc_msgSend_isEqual_(additionalFields, v7, v13))
@@ -366,7 +366,7 @@
     }
 
     has = self->_has;
-    v11 = *(v4 + 36);
+    v11 = *(equalCopy + 36);
   }
 
   if ((has & 2) != 0)
@@ -376,16 +376,16 @@
       goto LABEL_33;
     }
 
-    v18 = *(v4 + 33);
+    v18 = *(equalCopy + 33);
     if (self->_shouldSendContentAvailable)
     {
-      if ((*(v4 + 33) & 1) == 0)
+      if ((*(equalCopy + 33) & 1) == 0)
       {
         goto LABEL_33;
       }
     }
 
-    else if (*(v4 + 33))
+    else if (*(equalCopy + 33))
     {
       goto LABEL_33;
     }
@@ -413,23 +413,23 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  v19 = *(v4 + 34);
+  v19 = *(equalCopy + 34);
   if (self->_shouldSendMutableContent)
   {
-    if ((*(v4 + 34) & 1) == 0)
+    if ((*(equalCopy + 34) & 1) == 0)
     {
       goto LABEL_33;
     }
   }
 
-  else if (*(v4 + 34))
+  else if (*(equalCopy + 34))
   {
     goto LABEL_33;
   }
 
 LABEL_13:
   collapseIdKey = self->_collapseIdKey;
-  v15 = v4[3];
+  v15 = equalCopy[3];
   if (collapseIdKey | v15)
   {
     isEqual = objc_msgSend_isEqual_(collapseIdKey, v7, v15);
@@ -483,12 +483,12 @@ LABEL_6:
   return v7 ^ v6 ^ v8 ^ v11 ^ v12 ^ objc_msgSend_hash(self->_collapseIdKey, v9, v10);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fromCopy = from;
   alert = self->_alert;
-  v7 = *(v5 + 2);
+  v7 = *(fromCopy + 2);
   if (alert)
   {
     if (v7)
@@ -502,9 +502,9 @@ LABEL_6:
     objc_msgSend_setAlert_(self, v4, v7);
   }
 
-  if (*(v5 + 36))
+  if (*(fromCopy + 36))
   {
-    self->_shouldBadge = *(v5 + 32);
+    self->_shouldBadge = *(fromCopy + 32);
     *&self->_has |= 1u;
   }
 
@@ -512,7 +512,7 @@ LABEL_6:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = *(v5 + 1);
+  v8 = *(fromCopy + 1);
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v19, v23, 16);
   if (v10)
   {
@@ -536,21 +536,21 @@ LABEL_6:
     while (v12);
   }
 
-  v16 = *(v5 + 36);
+  v16 = *(fromCopy + 36);
   if ((v16 & 2) != 0)
   {
-    self->_shouldSendContentAvailable = *(v5 + 33);
+    self->_shouldSendContentAvailable = *(fromCopy + 33);
     *&self->_has |= 2u;
-    v16 = *(v5 + 36);
+    v16 = *(fromCopy + 36);
   }
 
   if ((v16 & 4) != 0)
   {
-    self->_shouldSendMutableContent = *(v5 + 34);
+    self->_shouldSendMutableContent = *(fromCopy + 34);
     *&self->_has |= 4u;
   }
 
-  v17 = *(v5 + 3);
+  v17 = *(fromCopy + 3);
   if (v17)
   {
     objc_msgSend_setCollapseIdKey_(self, v15, v17);

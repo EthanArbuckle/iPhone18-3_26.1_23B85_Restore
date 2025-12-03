@@ -1,18 +1,18 @@
 @interface NCSymbolButton
 + (id)button;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (id)_init;
 - (void)clearSymbol;
-- (void)setSymbolNamed:(id)a3 color:(id)a4 pointSize:(double)a5 backgroundDiameter:(double)a6;
+- (void)setSymbolNamed:(id)named color:(id)color pointSize:(double)size backgroundDiameter:(double)diameter;
 @end
 
 @implementation NCSymbolButton
 
 + (id)button
 {
-  v2 = [[NCSymbolButton alloc] _init];
+  _init = [[NCSymbolButton alloc] _init];
 
-  return v2;
+  return _init;
 }
 
 - (id)_init
@@ -42,36 +42,36 @@
     [(UIImageView *)v6->_symbolImageView setContentMode:4];
     [(NCSymbolButton *)v6 addSubview:v6->_symbolImageView];
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v12 = [(UIView *)v6->_backgroundView widthAnchor];
-    v13 = [v12 constraintEqualToConstant:0.0];
+    widthAnchor = [(UIView *)v6->_backgroundView widthAnchor];
+    v13 = [widthAnchor constraintEqualToConstant:0.0];
     backgroundWidthConstraint = v6->_backgroundWidthConstraint;
     v6->_backgroundWidthConstraint = v13;
 
-    v15 = [(UIView *)v6->_backgroundView heightAnchor];
-    v16 = [v15 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIView *)v6->_backgroundView heightAnchor];
+    v16 = [heightAnchor constraintEqualToConstant:0.0];
     backgroundHeightConstraint = v6->_backgroundHeightConstraint;
     v6->_backgroundHeightConstraint = v16;
 
     [v11 addObject:v6->_backgroundWidthConstraint];
     [v11 addObject:v6->_backgroundHeightConstraint];
-    v18 = [(UIView *)v6->_backgroundView centerXAnchor];
-    v19 = [(NCSymbolButton *)v6 centerXAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    centerXAnchor = [(UIView *)v6->_backgroundView centerXAnchor];
+    centerXAnchor2 = [(NCSymbolButton *)v6 centerXAnchor];
+    v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v11 addObject:v20];
 
-    v21 = [(UIView *)v6->_backgroundView centerYAnchor];
-    v22 = [(NCSymbolButton *)v6 centerYAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    centerYAnchor = [(UIView *)v6->_backgroundView centerYAnchor];
+    centerYAnchor2 = [(NCSymbolButton *)v6 centerYAnchor];
+    v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v11 addObject:v23];
 
-    v24 = [(UIImageView *)v6->_symbolImageView centerXAnchor];
-    v25 = [(UIView *)v6->_backgroundView centerXAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    centerXAnchor3 = [(UIImageView *)v6->_symbolImageView centerXAnchor];
+    centerXAnchor4 = [(UIView *)v6->_backgroundView centerXAnchor];
+    v26 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v11 addObject:v26];
 
-    v27 = [(UIImageView *)v6->_symbolImageView centerYAnchor];
-    v28 = [(UIView *)v6->_backgroundView centerYAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    centerYAnchor3 = [(UIImageView *)v6->_symbolImageView centerYAnchor];
+    centerYAnchor4 = [(UIView *)v6->_backgroundView centerYAnchor];
+    v29 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v11 addObject:v29];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v11];
@@ -80,26 +80,26 @@
   return v6;
 }
 
-- (void)setSymbolNamed:(id)a3 color:(id)a4 pointSize:(double)a5 backgroundDiameter:(double)a6
+- (void)setSymbolNamed:(id)named color:(id)color pointSize:(double)size backgroundDiameter:(double)diameter
 {
-  v10 = a6 * 0.5;
+  v10 = diameter * 0.5;
   backgroundView = self->_backgroundView;
-  v12 = a4;
-  v13 = a3;
+  colorCopy = color;
+  namedCopy = named;
   [(UIView *)backgroundView _setCornerRadius:v10];
-  [(NSLayoutConstraint *)self->_backgroundHeightConstraint setConstant:a6];
-  [(NSLayoutConstraint *)self->_backgroundWidthConstraint setConstant:a6];
+  [(NSLayoutConstraint *)self->_backgroundHeightConstraint setConstant:diameter];
+  [(NSLayoutConstraint *)self->_backgroundWidthConstraint setConstant:diameter];
   [(NCSymbolButton *)self setNeedsUpdateConstraints];
-  v17 = [MEMORY[0x277D755D0] configurationWithPointSize:7 weight:a5];
-  v14 = [MEMORY[0x277D755B8] systemImageNamed:v13 withConfiguration:v17];
+  v17 = [MEMORY[0x277D755D0] configurationWithPointSize:7 weight:size];
+  v14 = [MEMORY[0x277D755B8] systemImageNamed:namedCopy withConfiguration:v17];
 
   [(UIImageView *)self->_symbolImageView setImage:v14];
   [(UIImageView *)self->_symbolImageView setContentMode:4];
   symbolImageView = self->_symbolImageView;
-  v16 = [MEMORY[0x277D75348] systemWhiteColor];
-  [(UIImageView *)symbolImageView setTintColor:v16];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [(UIImageView *)symbolImageView setTintColor:systemWhiteColor];
 
-  [(UIView *)self->_backgroundView setBackgroundColor:v12];
+  [(UIView *)self->_backgroundView setBackgroundColor:colorCopy];
   [(NCSymbolButton *)self setNeedsLayout];
 }
 
@@ -113,19 +113,19 @@
   [(NCSymbolButton *)self setNeedsLayout];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 view];
-  if (v5 == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v4 numberOfTouchesRequired] != 1)
+  beginCopy = begin;
+  view = [beginCopy view];
+  if (view == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [beginCopy numberOfTouchesRequired] != 1)
   {
 
     goto LABEL_7;
   }
 
-  v6 = [v4 numberOfTapsRequired];
+  numberOfTapsRequired = [beginCopy numberOfTapsRequired];
 
-  if (v6 != 1)
+  if (numberOfTapsRequired != 1)
   {
 LABEL_7:
     v7 = 1;

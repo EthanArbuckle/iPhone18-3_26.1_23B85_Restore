@@ -1,28 +1,28 @@
 @interface ASAAggregateDevice
-- (ASAAggregateDevice)initWithDevices:(id)a3 usingMainDevice:(id)a4 andClockDevice:(id)a5 withName:(id)a6 withUID:(id)a7 isPrivate:(BOOL)a8 withIsolatedUseCaseID:(unsigned int)a9;
-- (ASAAggregateDevice)initWithDevices:(id)a3 usingMainDevice:(id)a4 andClockDeviceUID:(id)a5 withName:(id)a6 withUID:(id)a7 isPrivate:(BOOL)a8 withIsolatedUseCaseID:(unsigned int)a9;
+- (ASAAggregateDevice)initWithDevices:(id)devices usingMainDevice:(id)device andClockDevice:(id)clockDevice withName:(id)name withUID:(id)d isPrivate:(BOOL)private withIsolatedUseCaseID:(unsigned int)iD;
+- (ASAAggregateDevice)initWithDevices:(id)devices usingMainDevice:(id)device andClockDeviceUID:(id)d withName:(id)name withUID:(id)iD isPrivate:(BOOL)private withIsolatedUseCaseID:(unsigned int)caseID;
 - (void)dealloc;
 @end
 
 @implementation ASAAggregateDevice
 
-- (ASAAggregateDevice)initWithDevices:(id)a3 usingMainDevice:(id)a4 andClockDevice:(id)a5 withName:(id)a6 withUID:(id)a7 isPrivate:(BOOL)a8 withIsolatedUseCaseID:(unsigned int)a9
+- (ASAAggregateDevice)initWithDevices:(id)devices usingMainDevice:(id)device andClockDevice:(id)clockDevice withName:(id)name withUID:(id)d isPrivate:(BOOL)private withIsolatedUseCaseID:(unsigned int)iD
 {
-  v94 = a8;
+  privateCopy = private;
   v120 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  devicesCopy = devices;
+  deviceCopy = device;
+  clockDeviceCopy = clockDevice;
+  nameCopy = name;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v119 = v17;
+    v119 = nameCopy;
     _os_log_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "ASAAggregateDevice initWithDevices with ASAAudioDevice and Isolated usercase ID name = %@", buf, 0xCu);
   }
 
-  if (!v14 || ![v14 count])
+  if (!devicesCopy || ![devicesCopy count])
   {
     v27 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
     if (v27)
@@ -33,7 +33,7 @@
     goto LABEL_19;
   }
 
-  if (!v15)
+  if (!deviceCopy)
   {
     v46 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
     if (v46)
@@ -44,7 +44,7 @@
     goto LABEL_19;
   }
 
-  if (!v17 || ![(__CFDictionary *)v17 length])
+  if (!nameCopy || ![(__CFDictionary *)nameCopy length])
   {
     v38 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
     if (v38)
@@ -53,25 +53,25 @@
     }
 
 LABEL_19:
-    v35 = 0;
+    selfCopy2 = 0;
     goto LABEL_20;
   }
 
-  v93 = self;
-  v103 = [MEMORY[0x277CBEB18] array];
-  v97 = [MEMORY[0x277CCAB68] string];
-  v95 = [v14 firstObject];
+  selfCopy = self;
+  array = [MEMORY[0x277CBEB18] array];
+  string = [MEMORY[0x277CCAB68] string];
+  firstObject = [devicesCopy firstObject];
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
-  v92 = v14;
-  v19 = v14;
+  v92 = devicesCopy;
+  v19 = devicesCopy;
   v20 = [v19 countByEnumeratingWithState:&v108 objects:v117 count:16];
-  v91 = v15;
-  v99 = v16;
-  v96 = v17;
-  v102 = v18;
+  v91 = deviceCopy;
+  v99 = clockDeviceCopy;
+  v96 = nameCopy;
+  v102 = dCopy;
   if (v20)
   {
     v21 = v20;
@@ -86,8 +86,8 @@ LABEL_19:
         }
 
         v24 = *(*(&v108 + 1) + 8 * i);
-        v25 = [v95 clockDomain];
-        if (v25 != [v24 clockDomain])
+        clockDomain = [firstObject clockDomain];
+        if (clockDomain != [v24 clockDomain])
         {
           v26 = 0;
           goto LABEL_26;
@@ -142,16 +142,16 @@ LABEL_26:
 
         else
         {
-          v61 = [v99 deviceUID];
-          v62 = [v59 deviceUID];
-          v63 = [v61 isEqualToString:v62];
+          deviceUID = [v99 deviceUID];
+          deviceUID2 = [v59 deviceUID];
+          v63 = [deviceUID isEqualToString:deviceUID2];
 
           v60 = v63 ^ 1u;
         }
 
         v114[0] = @"uid";
-        v64 = [v59 deviceUID];
-        v115[0] = v64;
+        deviceUID3 = [v59 deviceUID];
+        v115[0] = deviceUID3;
         v114[1] = @"drift";
         v65 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v60];
         v115[1] = v65;
@@ -160,11 +160,11 @@ LABEL_26:
         v115[2] = v66;
         v67 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v115 forKeys:v114 count:3];
 
-        [v103 addObject:v67];
+        [array addObject:v67];
         if (!v102)
         {
-          v68 = [v59 deviceUID];
-          [v97 appendFormat:@"%@%@", v56, v68];
+          deviceUID4 = [v59 deviceUID];
+          [string appendFormat:@"%@%@", v56, deviceUID4];
         }
 
         v56 = @":";
@@ -177,12 +177,12 @@ LABEL_26:
   }
 
   v69 = MEMORY[0x277CCACA8];
-  v16 = v99;
-  v70 = [v99 deviceUID];
-  if (v70)
+  clockDeviceCopy = v99;
+  deviceUID5 = [v99 deviceUID];
+  if (deviceUID5)
   {
-    v71 = [v99 deviceUID];
-    v72 = [v69 stringWithFormat:@"%@", v71];
+    deviceUID6 = [v99 deviceUID];
+    v72 = [v69 stringWithFormat:@"%@", deviceUID6];
   }
 
   else
@@ -190,16 +190,16 @@ LABEL_26:
     v72 = [v69 stringWithFormat:@"%@", &stru_285341100];
   }
 
-  v15 = v91;
-  v18 = v102;
+  deviceCopy = v91;
+  dCopy = v102;
 
   v73 = MEMORY[0x277CCACA8];
-  v74 = [v91 deviceUID];
-  v17 = v96;
-  if (v74)
+  deviceUID7 = [v91 deviceUID];
+  nameCopy = v96;
+  if (deviceUID7)
   {
-    v75 = [v91 deviceUID];
-    v76 = [v73 stringWithFormat:@"%@", v75];
+    deviceUID8 = [v91 deviceUID];
+    v76 = [v73 stringWithFormat:@"%@", deviceUID8];
   }
 
   else
@@ -214,7 +214,7 @@ LABEL_26:
 
   else
   {
-    v77 = v97;
+    v77 = string;
   }
 
   v112[0] = @"name";
@@ -227,13 +227,13 @@ LABEL_26:
   v113[2] = v72;
   v113[3] = v76;
   v98 = v76;
-  v113[4] = v103;
+  v113[4] = array;
   v112[4] = @"subdevices";
   v112[5] = @"private";
-  v79 = [MEMORY[0x277CCABB0] numberWithBool:v94];
+  v79 = [MEMORY[0x277CCABB0] numberWithBool:privateCopy];
   v113[5] = v79;
   v112[6] = @"isolated use case";
-  v80 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a9];
+  v80 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:iD];
   v113[6] = v80;
   v81 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v113 forKeys:v112 count:7];
 
@@ -286,52 +286,52 @@ LABEL_26:
       v89 = v83;
     }
 
-    v87 = [(ASAAggregateDevice *)v93 initWithAudioObjectID:*buf];
+    v87 = [(ASAAggregateDevice *)selfCopy initWithAudioObjectID:*buf];
   }
 
   self = v87;
 
-  v35 = self;
-  v14 = v92;
+  selfCopy2 = self;
+  devicesCopy = v92;
 LABEL_20:
 
   v36 = *MEMORY[0x277D85DE8];
-  return v35;
+  return selfCopy2;
 }
 
-- (ASAAggregateDevice)initWithDevices:(id)a3 usingMainDevice:(id)a4 andClockDeviceUID:(id)a5 withName:(id)a6 withUID:(id)a7 isPrivate:(BOOL)a8 withIsolatedUseCaseID:(unsigned int)a9
+- (ASAAggregateDevice)initWithDevices:(id)devices usingMainDevice:(id)device andClockDeviceUID:(id)d withName:(id)name withUID:(id)iD isPrivate:(BOOL)private withIsolatedUseCaseID:(unsigned int)caseID
 {
-  v9 = a8;
+  privateCopy = private;
   v85 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
+  devicesCopy = devices;
+  deviceCopy = device;
+  dCopy = d;
+  nameCopy = name;
+  iDCopy = iD;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v84 = v18;
+    v84 = nameCopy;
     _os_log_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "ASAAggregateDevice initWithDevices with device UID and Isolated usercase ID name = %@", buf, 0xCu);
   }
 
-  if (v15 && [v15 count])
+  if (devicesCopy && [devicesCopy count])
   {
-    if (v16 && [v16 length])
+    if (deviceCopy && [deviceCopy length])
     {
-      if (v18 && [v18 length])
+      if (nameCopy && [nameCopy length])
       {
-        HIDWORD(v74) = v9;
-        v75 = v19;
-        v76 = v17;
-        v77 = self;
+        HIDWORD(v74) = privateCopy;
+        v75 = iDCopy;
+        v76 = dCopy;
+        selfCopy = self;
         v20 = +[ASACoreAudio sharedCoreAudioObject];
-        v21 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v78 = 0u;
         v79 = 0u;
         v80 = 0u;
         v81 = 0u;
-        v22 = v15;
+        v22 = devicesCopy;
         v23 = [v22 countByEnumeratingWithState:&v78 objects:v82 count:16];
         if (v23)
         {
@@ -349,7 +349,7 @@ LABEL_20:
               v27 = [v20 audioDeviceWithUID:*(*(&v78 + 1) + 8 * i)];
               if (v27)
               {
-                [v21 addObject:v27];
+                [array addObject:v27];
               }
             }
 
@@ -359,11 +359,11 @@ LABEL_20:
           while (v24);
         }
 
-        if ([v21 count])
+        if ([array count])
         {
-          v28 = [v20 audioDeviceWithUID:v16];
-          v17 = v76;
-          self = v77;
+          v28 = [v20 audioDeviceWithUID:deviceCopy];
+          dCopy = v76;
+          self = selfCopy;
           if (v28)
           {
             v29 = v28;
@@ -377,11 +377,11 @@ LABEL_20:
               v30 = 0;
             }
 
-            LODWORD(v74) = a9;
-            v19 = v75;
-            self = [(ASAAggregateDevice *)v77 initWithDevices:v21 usingMainDevice:v29 andClockDevice:v30 withName:v18 withUID:v75 isPrivate:HIDWORD(v74) withIsolatedUseCaseID:v74];
+            LODWORD(v74) = caseID;
+            iDCopy = v75;
+            self = [(ASAAggregateDevice *)selfCopy initWithDevices:array usingMainDevice:v29 andClockDevice:v30 withName:nameCopy withUID:v75 isPrivate:HIDWORD(v74) withIsolatedUseCaseID:v74];
 
-            v55 = self;
+            selfCopy2 = self;
             goto LABEL_37;
           }
 
@@ -395,16 +395,16 @@ LABEL_20:
         else
         {
           v58 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
-          v17 = v76;
-          self = v77;
+          dCopy = v76;
+          self = selfCopy;
           if (v58)
           {
             [(ASAAggregateDevice *)v58 initWithDevices:v59 usingMainDevice:v60 andClockDeviceUID:v61 withName:v62 withUID:v63 isPrivate:v64 withIsolatedUseCaseID:v65];
           }
         }
 
-        v55 = 0;
-        v19 = v75;
+        selfCopy2 = 0;
+        iDCopy = v75;
 LABEL_37:
 
         goto LABEL_29;
@@ -436,18 +436,18 @@ LABEL_37:
     }
   }
 
-  v55 = 0;
+  selfCopy2 = 0;
 LABEL_29:
 
   v56 = *MEMORY[0x277D85DE8];
-  return v55;
+  return selfCopy2;
 }
 
 - (void)dealloc
 {
   v7 = *MEMORY[0x277D85DE8];
   v4[0] = 67109376;
-  v4[1] = [a1 objectID];
+  v4[1] = [self objectID];
   v5 = 1024;
   v6 = a2;
   _os_log_error_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Failed to destroy aggregate device with object ID %d, error: 0x%x", v4, 0xEu);

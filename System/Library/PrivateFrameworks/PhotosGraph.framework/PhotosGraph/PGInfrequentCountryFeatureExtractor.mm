@@ -1,25 +1,25 @@
 @interface PGInfrequentCountryFeatureExtractor
-+ (id)_labelsForVersion:(int64_t)a3;
-+ (id)inferredUserLanguageCodesFromGraph:(id)a3;
-- (PGInfrequentCountryFeatureExtractor)initWithFrequentCountryLabels:(id)a3 version:(int64_t)a4 graph:(id)a5 error:(id *)a6;
-- (PGInfrequentCountryFeatureExtractor)initWithVersion:(int64_t)a3 graph:(id)a4 error:(id *)a5;
++ (id)_labelsForVersion:(int64_t)version;
++ (id)inferredUserLanguageCodesFromGraph:(id)graph;
+- (PGInfrequentCountryFeatureExtractor)initWithFrequentCountryLabels:(id)labels version:(int64_t)version graph:(id)graph error:(id *)error;
+- (PGInfrequentCountryFeatureExtractor)initWithVersion:(int64_t)version graph:(id)graph error:(id *)error;
 @end
 
 @implementation PGInfrequentCountryFeatureExtractor
 
-- (PGInfrequentCountryFeatureExtractor)initWithVersion:(int64_t)a3 graph:(id)a4 error:(id *)a5
+- (PGInfrequentCountryFeatureExtractor)initWithVersion:(int64_t)version graph:(id)graph error:(id *)error
 {
-  v8 = a4;
-  if (v8)
+  graphCopy = graph;
+  if (graphCopy)
   {
-    v9 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:v8];
-    v10 = [v9 addressNodes];
-    v11 = [v10 countryNodes];
-    v12 = [v11 names];
+    v9 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:graphCopy];
+    addressNodes = [v9 addressNodes];
+    countryNodes = [addressNodes countryNodes];
+    names = [countryNodes names];
 
-    if ([v12 count])
+    if ([names count])
     {
-      v13 = v12;
+      v13 = names;
     }
 
     else
@@ -27,7 +27,7 @@
       v13 = MEMORY[0x277CBEBF8];
     }
 
-    v14 = [PGInfrequentCountryFeatureExtractor inferredUserLanguageCodesFromGraph:v8];
+    v14 = [PGInfrequentCountryFeatureExtractor inferredUserLanguageCodesFromGraph:graphCopy];
     if ([v14 count])
     {
       v15 = [v13 arrayByAddingObjectsFromArray:v14];
@@ -42,16 +42,16 @@
   }
 
   v16 = [MEMORY[0x277CBEB98] setWithArray:v13];
-  v17 = [(PGInfrequentCountryFeatureExtractor *)self initWithFrequentCountryLabels:v16 version:a3 graph:v8 error:a5];
+  v17 = [(PGInfrequentCountryFeatureExtractor *)self initWithFrequentCountryLabels:v16 version:version graph:graphCopy error:error];
 
   return v17;
 }
 
-- (PGInfrequentCountryFeatureExtractor)initWithFrequentCountryLabels:(id)a3 version:(int64_t)a4 graph:(id)a5 error:(id *)a6
+- (PGInfrequentCountryFeatureExtractor)initWithFrequentCountryLabels:(id)labels version:(int64_t)version graph:(id)graph error:(id *)error
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [objc_opt_class() _labelsForVersion:a4];
+  labelsCopy = labels;
+  v9 = [objc_opt_class() _labelsForVersion:version];
   v10 = MEMORY[0x277D22C90];
   v11 = +[PGGraphMomentNode addressOfMoment];
   v22[0] = v11;
@@ -64,10 +64,10 @@
   v20[1] = 3221225472;
   v20[2] = __89__PGInfrequentCountryFeatureExtractor_initWithFrequentCountryLabels_version_graph_error___block_invoke;
   v20[3] = &unk_27887FF60;
-  v21 = v8;
+  v21 = labelsCopy;
   v19.receiver = self;
   v19.super_class = PGInfrequentCountryFeatureExtractor;
-  v15 = v8;
+  v15 = labelsCopy;
   v16 = [(PGGraphFeatureExtractor *)&v19 initWithName:@"Country" featureNames:v9 relation:v14 labelForTargetBlock:v20];
 
   v17 = *MEMORY[0x277D85DE8];
@@ -92,9 +92,9 @@ id __89__PGInfrequentCountryFeatureExtractor_initWithFrequentCountryLabels_versi
   return v6;
 }
 
-+ (id)_labelsForVersion:(int64_t)a3
++ (id)_labelsForVersion:(int64_t)version
 {
-  if (a3 == 1)
+  if (version == 1)
   {
     return &unk_284485628;
   }
@@ -105,17 +105,17 @@ id __89__PGInfrequentCountryFeatureExtractor_initWithFrequentCountryLabels_versi
   }
 }
 
-+ (id)inferredUserLanguageCodesFromGraph:(id)a3
++ (id)inferredUserLanguageCodesFromGraph:(id)graph
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  graphCopy = graph;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [v3 inferredUserLocales];
+  inferredUserLocales = [graphCopy inferredUserLocales];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [inferredUserLocales countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -126,15 +126,15 @@ id __89__PGInfrequentCountryFeatureExtractor_initWithFrequentCountryLabels_versi
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(inferredUserLocales);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) languageCode];
-        v11 = [v10 uppercaseString];
-        [v4 addObject:v11];
+        languageCode = [*(*(&v14 + 1) + 8 * i) languageCode];
+        uppercaseString = [languageCode uppercaseString];
+        [v4 addObject:uppercaseString];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [inferredUserLocales countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);

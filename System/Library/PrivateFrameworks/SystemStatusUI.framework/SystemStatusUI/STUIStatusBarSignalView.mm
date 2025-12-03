@@ -1,14 +1,14 @@
 @interface STUIStatusBarSignalView
-+ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)a3 iconSize:(int64_t)a4;
++ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)bars iconSize:(int64_t)size;
 - (void)_iconSizeDidChange;
 - (void)_updateBars;
-- (void)applyStyleAttributes:(id)a3;
-- (void)setActiveColor:(id)a3;
-- (void)setInactiveColor:(id)a3;
-- (void)setNumberOfActiveBars:(int64_t)a3;
-- (void)setNumberOfBars:(int64_t)a3;
-- (void)setSignalMode:(int64_t)a3;
-- (void)setSmallSize:(BOOL)a3;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)setActiveColor:(id)color;
+- (void)setInactiveColor:(id)color;
+- (void)setNumberOfActiveBars:(int64_t)bars;
+- (void)setNumberOfBars:(int64_t)bars;
+- (void)setSignalMode:(int64_t)mode;
+- (void)setSmallSize:(BOOL)size;
 @end
 
 @implementation STUIStatusBarSignalView
@@ -20,9 +20,9 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(STUIStatusBarSignalView *)self layer];
-  v3 = [v2 sublayers];
-  v4 = [v3 copy];
+  layer = [(STUIStatusBarSignalView *)self layer];
+  sublayers = [layer sublayers];
+  v4 = [sublayers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
@@ -58,11 +58,11 @@
   [(STUIStatusBarSignalView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setNumberOfBars:(int64_t)a3
+- (void)setNumberOfBars:(int64_t)bars
 {
-  if (self->_numberOfBars != a3)
+  if (self->_numberOfBars != bars)
   {
-    self->_numberOfBars = a3;
+    self->_numberOfBars = bars;
     [(STUIStatusBarSignalView *)self _updateBars];
     [(STUIStatusBarSignalView *)self setNeedsLayout];
 
@@ -70,14 +70,14 @@
   }
 }
 
-- (void)setNumberOfActiveBars:(int64_t)a3
+- (void)setNumberOfActiveBars:(int64_t)bars
 {
-  if (self->_numberOfActiveBars != a3)
+  if (self->_numberOfActiveBars != bars)
   {
     numberOfBars = self->_numberOfBars;
-    if (numberOfBars >= (a3 & ~(a3 >> 63)))
+    if (numberOfBars >= (bars & ~(bars >> 63)))
     {
-      numberOfBars = a3 & ~(a3 >> 63);
+      numberOfBars = bars & ~(bars >> 63);
     }
 
     self->_numberOfActiveBars = numberOfBars;
@@ -89,61 +89,61 @@
   }
 }
 
-- (void)setSignalMode:(int64_t)a3
+- (void)setSignalMode:(int64_t)mode
 {
   signalMode = self->_signalMode;
-  if (signalMode != a3)
+  if (signalMode != mode)
   {
-    self->_signalMode = a3;
+    self->_signalMode = mode;
     [(STUIStatusBarSignalView *)self _updateFromMode:signalMode];
   }
 }
 
-- (void)setSmallSize:(BOOL)a3
+- (void)setSmallSize:(BOOL)size
 {
-  if (self->_smallSize != a3)
+  if (self->_smallSize != size)
   {
-    self->_smallSize = a3;
+    self->_smallSize = size;
     [(STUIStatusBarSignalView *)self setNeedsLayout];
   }
 }
 
-- (void)setInactiveColor:(id)a3
+- (void)setInactiveColor:(id)color
 {
-  v5 = a3;
-  if (self->_inactiveColor != v5)
+  colorCopy = color;
+  if (self->_inactiveColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_inactiveColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_inactiveColor, color);
     [(STUIStatusBarSignalView *)self _colorsDidChange];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setActiveColor:(id)a3
+- (void)setActiveColor:(id)color
 {
-  v5 = a3;
-  if (self->_activeColor != v5)
+  colorCopy = color;
+  if (self->_activeColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_activeColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_activeColor, color);
     [(STUIStatusBarSignalView *)self _colorsDidChange];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 isRounded];
-  v6 = [v4 iconSize];
+  attributesCopy = attributes;
+  isRounded = [attributesCopy isRounded];
+  iconSize = [attributesCopy iconSize];
 
-  if (self->_iconSize == v6)
+  if (self->_iconSize == iconSize)
   {
     rounded = self->_rounded;
-    [(STUIStatusBarSignalView *)self setRounded:v5];
-    [(STUIStatusBarSignalView *)self setIconSize:v6];
-    if (rounded == v5)
+    [(STUIStatusBarSignalView *)self setRounded:isRounded];
+    [(STUIStatusBarSignalView *)self setIconSize:iconSize];
+    if (rounded == isRounded)
     {
       return;
     }
@@ -151,14 +151,14 @@
 
   else
   {
-    [(STUIStatusBarSignalView *)self setRounded:v5];
-    [(STUIStatusBarSignalView *)self setIconSize:v6];
+    [(STUIStatusBarSignalView *)self setRounded:isRounded];
+    [(STUIStatusBarSignalView *)self setIconSize:iconSize];
   }
 
   [(STUIStatusBarSignalView *)self _iconSizeDidChange];
 }
 
-+ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)a3 iconSize:(int64_t)a4
++ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)bars iconSize:(int64_t)size
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);

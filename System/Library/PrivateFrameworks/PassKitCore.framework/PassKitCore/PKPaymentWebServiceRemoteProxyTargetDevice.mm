@@ -1,107 +1,107 @@
 @interface PKPaymentWebServiceRemoteProxyTargetDevice
-- (PKPaymentWebServiceRemoteProxyTargetDevice)initWithWebService:(id)a3 connection:(id)a4;
-- (void)activeFPANCardsWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)addISO18013Blobs:(id)a3 cardType:(int64_t)a4 completion:(id)a5;
-- (void)addISO18013BlobsFromCredentials:(id)a3 cardType:(int64_t)a4 completion:(id)a5;
-- (void)addPassData:(id)a3 completion:(id)a4;
-- (void)addPendingProvisionings:(id)a3 completion:(id)a4;
-- (void)allPaymentApplicationUsageSummariesWithCompletion:(id)a3;
-- (void)appleAccountInformationWithCompletion:(id)a3;
-- (void)applePayTrustKeyForIdentifier:(id)a3 completion:(id)a4;
-- (void)archiveContext:(id)a3;
-- (void)availableHomeKeyPassesWithCompletionHandler:(id)a3;
-- (void)cachedFeatureApplicationsForProvisioningWithCompletion:(id)a3;
-- (void)canProvisionPaymentPassWithPrimaryAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)canSaveFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)checkFidoKeyPresenceForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 completion:(id)a6;
-- (void)claimSecureElementForCurrentUserWithCompletion:(id)a3;
-- (void)createApplePayTrustKeyWithRequest:(id)a3 completion:(id)a4;
-- (void)createFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 challenge:(id)a5 externalizedAuth:(id)a6 completion:(id)a7;
-- (void)credentialForFPANCard:(id)a3 authorization:(id)a4 options:(unint64_t)a5 merchantHost:(id)a6 completion:(id)a7;
-- (void)currentPasscodeMeetsUpgradedPasscodePolicy:(id)a3;
-- (void)currentSecureElementSnapshot:(id)a3;
+- (PKPaymentWebServiceRemoteProxyTargetDevice)initWithWebService:(id)service connection:(id)connection;
+- (void)activeFPANCardsWithOptions:(unint64_t)options completion:(id)completion;
+- (void)addISO18013Blobs:(id)blobs cardType:(int64_t)type completion:(id)completion;
+- (void)addISO18013BlobsFromCredentials:(id)credentials cardType:(int64_t)type completion:(id)completion;
+- (void)addPassData:(id)data completion:(id)completion;
+- (void)addPendingProvisionings:(id)provisionings completion:(id)completion;
+- (void)allPaymentApplicationUsageSummariesWithCompletion:(id)completion;
+- (void)appleAccountInformationWithCompletion:(id)completion;
+- (void)applePayTrustKeyForIdentifier:(id)identifier completion:(id)completion;
+- (void)archiveContext:(id)context;
+- (void)availableHomeKeyPassesWithCompletionHandler:(id)handler;
+- (void)cachedFeatureApplicationsForProvisioningWithCompletion:(id)completion;
+- (void)canProvisionPaymentPassWithPrimaryAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)canSaveFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion;
+- (void)checkFidoKeyPresenceForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash completion:(id)completion;
+- (void)claimSecureElementForCurrentUserWithCompletion:(id)completion;
+- (void)createApplePayTrustKeyWithRequest:(id)request completion:(id)completion;
+- (void)createFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge externalizedAuth:(id)auth completion:(id)completion;
+- (void)credentialForFPANCard:(id)card authorization:(id)authorization options:(unint64_t)options merchantHost:(id)host completion:(id)completion;
+- (void)currentPasscodeMeetsUpgradedPasscodePolicy:(id)policy;
+- (void)currentSecureElementSnapshot:(id)snapshot;
 - (void)dealloc;
-- (void)deleteApplePayTrustKeyWithIdentifier:(id)a3 completion:(id)a4;
-- (void)deleteApplicationWithAID:(id)a3;
-- (void)deleteFPANCardWithDescriptor:(id)a3 completion:(id)a4;
-- (void)deleteKeyMaterialForSubCredentialId:(id)a3;
-- (void)deleteReservation:(id)a3 completion:(id)a4;
-- (void)deviceMetadataWithFields:(unint64_t)a3 completion:(id)a4;
-- (void)didRegisterWithRegionMap:(id)a3 primaryRegionTopic:(id)a4;
+- (void)deleteApplePayTrustKeyWithIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteApplicationWithAID:(id)d;
+- (void)deleteFPANCardWithDescriptor:(id)descriptor completion:(id)completion;
+- (void)deleteKeyMaterialForSubCredentialId:(id)id;
+- (void)deleteReservation:(id)reservation completion:(id)completion;
+- (void)deviceMetadataWithFields:(unint64_t)fields completion:(id)completion;
+- (void)didRegisterWithRegionMap:(id)map primaryRegionTopic:(id)topic;
 - (void)downloadAllPaymentPasses;
 - (void)endRequiringUpgradedPasscodeIfNecessary;
-- (void)enforceUpgradedPasscodePolicyWithCompletion:(id)a3;
-- (void)familyMembersWithCompletion:(id)a3;
-- (void)featureApplicationsForProvisioningWithCompletion:(id)a3;
-- (void)fpanCredentialForPrimaryAccountIdentifier:(id)a3 passUniqueID:(id)a4 completion:(id)a5;
-- (void)fpanDescriptorAndCredentialForFPAN:(id)a3 completion:(id)a4;
-- (void)generateAuxiliaryCapabilitiesForRequirements:(id)a3 completion:(id)a4;
-- (void)generateISOEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4;
-- (void)generateSEEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4;
-- (void)generateTransactionKeyWithParameters:(id)a3 withCompletion:(id)a4;
-- (void)getConfigurationDataWithCompletion:(id)a3;
-- (void)getContextWithCompletion:(id)a3;
-- (void)getEncryptedServiceProviderDataForSecureElementPass:(id)a3 completion:(id)a4;
-- (void)getProvisioningDataIncludingDeviceMetadata:(BOOL)a3 withCompletion:(id)a4;
-- (void)getRegistrationDataWithCompletion:(id)a3;
-- (void)getTrustedDeviceEnrollmentInfoWithCompletion:(id)a3;
-- (void)handlePotentialExpressPass:(id)a3 withCompletion:(id)a4;
-- (void)hasPassesOfType:(unint64_t)a3 completion:(id)a4;
-- (void)identityPassesOfTypes:(id)a3 completion:(id)a4;
+- (void)enforceUpgradedPasscodePolicyWithCompletion:(id)completion;
+- (void)familyMembersWithCompletion:(id)completion;
+- (void)featureApplicationsForProvisioningWithCompletion:(id)completion;
+- (void)fpanCredentialForPrimaryAccountIdentifier:(id)identifier passUniqueID:(id)d completion:(id)completion;
+- (void)fpanDescriptorAndCredentialForFPAN:(id)n completion:(id)completion;
+- (void)generateAuxiliaryCapabilitiesForRequirements:(id)requirements completion:(id)completion;
+- (void)generateISOEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion;
+- (void)generateSEEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion;
+- (void)generateTransactionKeyWithParameters:(id)parameters withCompletion:(id)completion;
+- (void)getConfigurationDataWithCompletion:(id)completion;
+- (void)getContextWithCompletion:(id)completion;
+- (void)getEncryptedServiceProviderDataForSecureElementPass:(id)pass completion:(id)completion;
+- (void)getProvisioningDataIncludingDeviceMetadata:(BOOL)metadata withCompletion:(id)completion;
+- (void)getRegistrationDataWithCompletion:(id)completion;
+- (void)getTrustedDeviceEnrollmentInfoWithCompletion:(id)completion;
+- (void)handlePotentialExpressPass:(id)pass withCompletion:(id)completion;
+- (void)hasPassesOfType:(unint64_t)type completion:(id)completion;
+- (void)identityPassesOfTypes:(id)types completion:(id)completion;
 - (void)invalidateRemoteProxyTargetDevice;
-- (void)longTermPrivacyKeyForCredentialGroupIdentifier:(id)a3 reuseExisting:(BOOL)a4 completion:(id)a5;
-- (void)maximumPaymentCardsWithCompletion:(id)a3;
+- (void)longTermPrivacyKeyForCredentialGroupIdentifier:(id)identifier reuseExisting:(BOOL)existing completion:(id)completion;
+- (void)maximumPaymentCardsWithCompletion:(id)completion;
 - (void)notePasscodeUpgradeFlowDidEnd;
-- (void)notePasscodeUpgradeFlowWillBeginWithCompletion:(id)a3;
+- (void)notePasscodeUpgradeFlowWillBeginWithCompletion:(id)completion;
 - (void)noteProvisioningDidBegin;
 - (void)noteProvisioningDidEnd;
-- (void)passOwnershipTokenWithIdentifier:(id)a3 completion:(id)a4;
-- (void)passesOfCardType:(int64_t)a3 completion:(id)a4;
-- (void)passesOfType:(unint64_t)a3 completion:(id)a4;
-- (void)passesWithPrimaryPaymentApplicationStates:(id)a3 completion:(id)a4;
-- (void)passesWithReaderIdentifier:(id)a3 completion:(id)a4;
-- (void)paymentSupportedInCurrentRegion:(id)a3;
-- (void)performDeviceCheckInWithCompletion:(id)a3;
-- (void)performDeviceRegistrationReturningContextForReason:(id)a3 brokerURL:(id)a4 completion:(id)a5;
-- (void)prepareProvisioningTarget:(id)a3 checkFamilyCircle:(BOOL)a4 completion:(id)a5;
-- (void)provisionHomeKeyPassForSerialNumbers:(id)a3 completionHandler:(id)a4;
-- (void)queueConnectionToTrustedServiceManagerForPushTopic:(id)a3 withCompletion:(id)a4;
-- (void)registrationSupportedInCurrentRegionWithCompletion:(id)a3;
-- (void)removePass:(id)a3 completion:(id)a4;
-- (void)renewAppleAccountWithCompletionHandler:(id)a3;
-- (void)reserveStorageForAppletTypes:(id)a3 metadata:(id)a4 completion:(id)a5;
-- (void)secureElementIsAvailableWithCompletion:(id)a3;
-- (void)secureElementOwnershipStateForCurrentUserWithCompletion:(id)a3;
-- (void)setDefaultPaymentPassUniqueIdentifier:(id)a3;
-- (void)setNewAuthRandom:(id)a3;
-- (void)setNewAuthRandomIfNecessaryReturningPairingState:(id)a3;
-- (void)signData:(id)a3 signatureEntanglementMode:(unint64_t)a4 withCompletion:(id)a5;
-- (void)signWithFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 challenge:(id)a6 publicKeyIdentifier:(id)a7 externalizedAuth:(id)a8 completion:(id)a9;
-- (void)startRequiringUpgradedPasscodeWithCompletion:(id)a3;
-- (void)startRequiringUpgradedPasscodeWithPasscodeMeetsPolicy:(BOOL)a3;
-- (void)statusForShareableCredentials:(id)a3 completion:(id)a4;
-- (void)storePassOwnershipToken:(id)a3 withIdentifier:(id)a4;
-- (void)supportedFeatureIdentifiersForAccountProvisioningWithCompletion:(id)a3;
-- (void)supportedFeatureIdentifiersWithCompletion:(id)a3;
-- (void)supportsAccountsWithCompletion:(id)a3;
-- (void)supportsLowPowerExpressModeWithCompletion:(id)a3;
-- (void)supportsPeerPaymentRegistrationWithCompletion:(id)a3;
-- (void)triggerCloudStoreZoneCreationForAccount:(id)a3 withCompletion:(id)a4;
-- (void)updateFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)updatedAccountsForProvisioningWithCompletion:(id)a3;
-- (void)usingSynchronousProxy:(BOOL)a3 meetsProvisioningRequirements:(id)a4 completion:(id)a5;
-- (void)validateAddPreconditionsWithCompletion:(id)a3;
-- (void)validateTransferPreconditionsWithCompletion:(id)a3;
-- (void)willPassWithUniqueIdentifierAutomaticallyBecomeDefault:(id)a3 completion:(id)a4;
+- (void)passOwnershipTokenWithIdentifier:(id)identifier completion:(id)completion;
+- (void)passesOfCardType:(int64_t)type completion:(id)completion;
+- (void)passesOfType:(unint64_t)type completion:(id)completion;
+- (void)passesWithPrimaryPaymentApplicationStates:(id)states completion:(id)completion;
+- (void)passesWithReaderIdentifier:(id)identifier completion:(id)completion;
+- (void)paymentSupportedInCurrentRegion:(id)region;
+- (void)performDeviceCheckInWithCompletion:(id)completion;
+- (void)performDeviceRegistrationReturningContextForReason:(id)reason brokerURL:(id)l completion:(id)completion;
+- (void)prepareProvisioningTarget:(id)target checkFamilyCircle:(BOOL)circle completion:(id)completion;
+- (void)provisionHomeKeyPassForSerialNumbers:(id)numbers completionHandler:(id)handler;
+- (void)queueConnectionToTrustedServiceManagerForPushTopic:(id)topic withCompletion:(id)completion;
+- (void)registrationSupportedInCurrentRegionWithCompletion:(id)completion;
+- (void)removePass:(id)pass completion:(id)completion;
+- (void)renewAppleAccountWithCompletionHandler:(id)handler;
+- (void)reserveStorageForAppletTypes:(id)types metadata:(id)metadata completion:(id)completion;
+- (void)secureElementIsAvailableWithCompletion:(id)completion;
+- (void)secureElementOwnershipStateForCurrentUserWithCompletion:(id)completion;
+- (void)setDefaultPaymentPassUniqueIdentifier:(id)identifier;
+- (void)setNewAuthRandom:(id)random;
+- (void)setNewAuthRandomIfNecessaryReturningPairingState:(id)state;
+- (void)signData:(id)data signatureEntanglementMode:(unint64_t)mode withCompletion:(id)completion;
+- (void)signWithFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash challenge:(id)challenge publicKeyIdentifier:(id)identifier externalizedAuth:(id)auth completion:(id)completion;
+- (void)startRequiringUpgradedPasscodeWithCompletion:(id)completion;
+- (void)startRequiringUpgradedPasscodeWithPasscodeMeetsPolicy:(BOOL)policy;
+- (void)statusForShareableCredentials:(id)credentials completion:(id)completion;
+- (void)storePassOwnershipToken:(id)token withIdentifier:(id)identifier;
+- (void)supportedFeatureIdentifiersForAccountProvisioningWithCompletion:(id)completion;
+- (void)supportedFeatureIdentifiersWithCompletion:(id)completion;
+- (void)supportsAccountsWithCompletion:(id)completion;
+- (void)supportsLowPowerExpressModeWithCompletion:(id)completion;
+- (void)supportsPeerPaymentRegistrationWithCompletion:(id)completion;
+- (void)triggerCloudStoreZoneCreationForAccount:(id)account withCompletion:(id)completion;
+- (void)updateFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion;
+- (void)updatedAccountsForProvisioningWithCompletion:(id)completion;
+- (void)usingSynchronousProxy:(BOOL)proxy meetsProvisioningRequirements:(id)requirements completion:(id)completion;
+- (void)validateAddPreconditionsWithCompletion:(id)completion;
+- (void)validateTransferPreconditionsWithCompletion:(id)completion;
+- (void)willPassWithUniqueIdentifierAutomaticallyBecomeDefault:(id)default completion:(id)completion;
 @end
 
 @implementation PKPaymentWebServiceRemoteProxyTargetDevice
 
-- (PKPaymentWebServiceRemoteProxyTargetDevice)initWithWebService:(id)a3 connection:(id)a4
+- (PKPaymentWebServiceRemoteProxyTargetDevice)initWithWebService:(id)service connection:(id)connection
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  connectionCopy = connection;
   v39.receiver = self;
   v39.super_class = PKPaymentWebServiceRemoteProxyTargetDevice;
   v9 = [(PKPaymentWebServiceRemoteProxyTargetDevice *)&v39 init];
@@ -112,14 +112,14 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v10 = [[PKEntitlementWhitelist alloc] initWithConnection:v8];
+  v10 = [[PKEntitlementWhitelist alloc] initWithConnection:connectionCopy];
   if ([(PKEntitlementWhitelist *)v10 paymentAllAccess]|| [(PKEntitlementWhitelist *)v10 peerPaymentAllAccess])
   {
     v11 = dispatch_queue_create("com.apple.passkit.remoteTargetDeviceHandlerQueue", MEMORY[0x1E69E96A8]);
     handlerQueue = v9->_handlerQueue;
     v9->_handlerQueue = v11;
 
-    objc_storeStrong(&v9->_webService, a3);
+    objc_storeStrong(&v9->_webService, service);
     if (!v9->_webService)
     {
       v13 = +[PKPaymentWebService sharedService];
@@ -138,11 +138,11 @@ LABEL_15:
       }
     }
 
-    v17 = [v7 targetDevice];
+    targetDevice = [serviceCopy targetDevice];
     targetDevice = v9->_targetDevice;
-    v9->_targetDevice = v17;
+    v9->_targetDevice = targetDevice;
 
-    objc_storeStrong(&v9->_connection, a4);
+    objc_storeStrong(&v9->_connection, connection);
     connection = v9->_connection;
     if (!connection)
     {
@@ -161,22 +161,22 @@ LABEL_15:
     [(NSXPCConnection *)connection setExportedInterface:v21];
 
     [(NSXPCConnection *)v9->_connection setExportedObject:v9];
-    v22 = [(NSXPCConnection *)v9->_connection invalidationHandler];
+    invalidationHandler = [(NSXPCConnection *)v9->_connection invalidationHandler];
     v23 = v9->_connection;
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __76__PKPaymentWebServiceRemoteProxyTargetDevice_initWithWebService_connection___block_invoke;
     v37[3] = &unk_1E79C4428;
-    v24 = v22;
+    v24 = invalidationHandler;
     v38 = v24;
     [(NSXPCConnection *)v23 setInvalidationHandler:v37];
-    v25 = [(NSXPCConnection *)v9->_connection interruptionHandler];
+    interruptionHandler = [(NSXPCConnection *)v9->_connection interruptionHandler];
     v26 = v9->_connection;
     v32 = MEMORY[0x1E69E9820];
     v33 = 3221225472;
     v34 = __76__PKPaymentWebServiceRemoteProxyTargetDevice_initWithWebService_connection___block_invoke_643;
     v35 = &unk_1E79C4428;
-    v27 = v25;
+    v27 = interruptionHandler;
     v36 = v27;
     [(NSXPCConnection *)v26 setInterruptionHandler:&v32];
     [(NSXPCConnection *)v9->_connection resume:v32];
@@ -184,9 +184,9 @@ LABEL_15:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v41 = v7;
+      v41 = serviceCopy;
       v42 = 2112;
-      v43 = v8;
+      v43 = connectionCopy;
       _os_log_impl(&dword_1AD337000, v28, OS_LOG_TYPE_DEFAULT, "PKPaymentWebServiceRemoteProxyTargetDevice initialized with Web Service: %@ for XPC Connection: %@.", buf, 0x16u);
     }
 
@@ -264,17 +264,17 @@ uint64_t __76__PKPaymentWebServiceRemoteProxyTargetDevice_initWithWebService_con
   [(PKPaymentWebServiceRemoteProxyTargetDevice *)&v6 dealloc];
 }
 
-- (void)getContextWithCompletion:(id)a3
+- (void)getContextWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__PKPaymentWebServiceRemoteProxyTargetDevice_getContextWithCompletion___block_invoke;
   v7[3] = &unk_1E79C44A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
@@ -288,79 +288,79 @@ void __71__PKPaymentWebServiceRemoteProxyTargetDevice_getContextWithCompletion__
   }
 }
 
-- (void)queueConnectionToTrustedServiceManagerForPushTopic:(id)a3 withCompletion:(id)a4
+- (void)queueConnectionToTrustedServiceManagerForPushTopic:(id)topic withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  topicCopy = topic;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __112__PKPaymentWebServiceRemoteProxyTargetDevice_queueConnectionToTrustedServiceManagerForPushTopic_withCompletion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = topicCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = topicCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)getEncryptedServiceProviderDataForSecureElementPass:(id)a3 completion:(id)a4
+- (void)getEncryptedServiceProviderDataForSecureElementPass:(id)pass completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  passCopy = pass;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __109__PKPaymentWebServiceRemoteProxyTargetDevice_getEncryptedServiceProviderDataForSecureElementPass_completion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = passCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = passCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)getConfigurationDataWithCompletion:(id)a3
+- (void)getConfigurationDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __81__PKPaymentWebServiceRemoteProxyTargetDevice_getConfigurationDataWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)getRegistrationDataWithCompletion:(id)a3
+- (void)getRegistrationDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __80__PKPaymentWebServiceRemoteProxyTargetDevice_getRegistrationDataWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)getTrustedDeviceEnrollmentInfoWithCompletion:(id)a3
+- (void)getTrustedDeviceEnrollmentInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __91__PKPaymentWebServiceRemoteProxyTargetDevice_getTrustedDeviceEnrollmentInfoWithCompletion___block_invoke;
   v7[3] = &unk_1E79C44A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
@@ -374,35 +374,35 @@ void __91__PKPaymentWebServiceRemoteProxyTargetDevice_getTrustedDeviceEnrollment
   }
 }
 
-- (void)signData:(id)a3 signatureEntanglementMode:(unint64_t)a4 withCompletion:(id)a5
+- (void)signData:(id)data signatureEntanglementMode:(unint64_t)mode withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __96__PKPaymentWebServiceRemoteProxyTargetDevice_signData_signatureEntanglementMode_withCompletion___block_invoke;
   v13[3] = &unk_1E79C4D88;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = dataCopy;
+  v15 = completionCopy;
+  modeCopy = mode;
+  v11 = completionCopy;
+  v12 = dataCopy;
   dispatch_async(handlerQueue, v13);
 }
 
-- (void)supportsLowPowerExpressModeWithCompletion:(id)a3
+- (void)supportsLowPowerExpressModeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __88__PKPaymentWebServiceRemoteProxyTargetDevice_supportsLowPowerExpressModeWithCompletion___block_invoke;
   v7[3] = &unk_1E79C44A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
@@ -415,77 +415,77 @@ uint64_t __88__PKPaymentWebServiceRemoteProxyTargetDevice_supportsLowPowerExpres
   return v3(v1, v2);
 }
 
-- (void)getProvisioningDataIncludingDeviceMetadata:(BOOL)a3 withCompletion:(id)a4
+- (void)getProvisioningDataIncludingDeviceMetadata:(BOOL)metadata withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __104__PKPaymentWebServiceRemoteProxyTargetDevice_getProvisioningDataIncludingDeviceMetadata_withCompletion___block_invoke;
   block[3] = &unk_1E79C4DB0;
-  v11 = a3;
+  metadataCopy = metadata;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)deleteApplicationWithAID:(id)a3
+- (void)deleteApplicationWithAID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__PKPaymentWebServiceRemoteProxyTargetDevice_deleteApplicationWithAID___block_invoke;
   v7[3] = &unk_1E79C4DD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)deleteKeyMaterialForSubCredentialId:(id)a3
+- (void)deleteKeyMaterialForSubCredentialId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __82__PKPaymentWebServiceRemoteProxyTargetDevice_deleteKeyMaterialForSubCredentialId___block_invoke;
   v7[3] = &unk_1E79C4DD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)didRegisterWithRegionMap:(id)a3 primaryRegionTopic:(id)a4
+- (void)didRegisterWithRegionMap:(id)map primaryRegionTopic:(id)topic
 {
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  topicCopy = topic;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __90__PKPaymentWebServiceRemoteProxyTargetDevice_didRegisterWithRegionMap_primaryRegionTopic___block_invoke;
   block[3] = &unk_1E79C4E00;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = mapCopy;
+  v13 = topicCopy;
+  v9 = topicCopy;
+  v10 = mapCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)paymentSupportedInCurrentRegion:(id)a3
+- (void)paymentSupportedInCurrentRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__PKPaymentWebServiceRemoteProxyTargetDevice_paymentSupportedInCurrentRegion___block_invoke;
   v7[3] = &unk_1E79C44A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = regionCopy;
+  v6 = regionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
@@ -503,11 +503,11 @@ uint64_t __78__PKPaymentWebServiceRemoteProxyTargetDevice_paymentSupportedInCurr
   return result;
 }
 
-- (void)registrationSupportedInCurrentRegionWithCompletion:(id)a3
+- (void)registrationSupportedInCurrentRegionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     handlerQueue = self->_handlerQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -515,7 +515,7 @@ uint64_t __78__PKPaymentWebServiceRemoteProxyTargetDevice_paymentSupportedInCurr
     v7[2] = __97__PKPaymentWebServiceRemoteProxyTargetDevice_registrationSupportedInCurrentRegionWithCompletion___block_invoke;
     v7[3] = &unk_1E79C44A0;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(handlerQueue, v7);
   }
 }
@@ -551,46 +551,46 @@ uint64_t __97__PKPaymentWebServiceRemoteProxyTargetDevice_registrationSupportedI
   dispatch_async(handlerQueue, block);
 }
 
-- (void)setNewAuthRandomIfNecessaryReturningPairingState:(id)a3
+- (void)setNewAuthRandomIfNecessaryReturningPairingState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __95__PKPaymentWebServiceRemoteProxyTargetDevice_setNewAuthRandomIfNecessaryReturningPairingState___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)setNewAuthRandom:(id)a3
+- (void)setNewAuthRandom:(id)random
 {
-  v4 = a3;
+  randomCopy = random;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__PKPaymentWebServiceRemoteProxyTargetDevice_setNewAuthRandom___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = randomCopy;
+  v6 = randomCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)hasPassesOfType:(unint64_t)a3 completion:(id)a4
+- (void)hasPassesOfType:(unint64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__PKPaymentWebServiceRemoteProxyTargetDevice_hasPassesOfType_completion___block_invoke;
   block[3] = &unk_1E79C4658;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = completionCopy;
+  typeCopy = type;
+  v8 = completionCopy;
   dispatch_async(handlerQueue, block);
 }
 
@@ -608,11 +608,11 @@ void *__73__PKPaymentWebServiceRemoteProxyTargetDevice_hasPassesOfType_completio
   return result;
 }
 
-- (void)passesOfType:(unint64_t)a3 completion:(id)a4
+- (void)passesOfType:(unint64_t)type completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
     handlerQueue = self->_handlerQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -620,8 +620,8 @@ void *__73__PKPaymentWebServiceRemoteProxyTargetDevice_hasPassesOfType_completio
     block[2] = __70__PKPaymentWebServiceRemoteProxyTargetDevice_passesOfType_completion___block_invoke;
     block[3] = &unk_1E79C4658;
     block[4] = self;
-    v10 = v6;
-    v11 = a3;
+    v10 = completionCopy;
+    typeCopy = type;
     dispatch_async(handlerQueue, block);
   }
 }
@@ -633,11 +633,11 @@ void __70__PKPaymentWebServiceRemoteProxyTargetDevice_passesOfType_completion___
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)passesOfCardType:(int64_t)a3 completion:(id)a4
+- (void)passesOfCardType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
     handlerQueue = self->_handlerQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -645,8 +645,8 @@ void __70__PKPaymentWebServiceRemoteProxyTargetDevice_passesOfType_completion___
     block[2] = __74__PKPaymentWebServiceRemoteProxyTargetDevice_passesOfCardType_completion___block_invoke;
     block[3] = &unk_1E79C4658;
     block[4] = self;
-    v10 = v6;
-    v11 = a3;
+    v10 = completionCopy;
+    typeCopy = type;
     dispatch_async(handlerQueue, block);
   }
 }
@@ -658,21 +658,21 @@ void __74__PKPaymentWebServiceRemoteProxyTargetDevice_passesOfCardType_completio
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)identityPassesOfTypes:(id)a3 completion:(id)a4
+- (void)identityPassesOfTypes:(id)types completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  typesCopy = types;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     handlerQueue = self->_handlerQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __79__PKPaymentWebServiceRemoteProxyTargetDevice_identityPassesOfTypes_completion___block_invoke;
     block[3] = &unk_1E79C44F0;
-    v12 = v7;
+    v12 = completionCopy;
     block[4] = self;
-    v11 = v6;
+    v11 = typesCopy;
     dispatch_async(handlerQueue, block);
   }
 }
@@ -684,21 +684,21 @@ void __79__PKPaymentWebServiceRemoteProxyTargetDevice_identityPassesOfTypes_comp
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)passesWithReaderIdentifier:(id)a3 completion:(id)a4
+- (void)passesWithReaderIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     handlerQueue = self->_handlerQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __84__PKPaymentWebServiceRemoteProxyTargetDevice_passesWithReaderIdentifier_completion___block_invoke;
     block[3] = &unk_1E79C44F0;
-    v12 = v7;
+    v12 = completionCopy;
     block[4] = self;
-    v11 = v6;
+    v11 = identifierCopy;
     dispatch_async(handlerQueue, block);
   }
 }
@@ -710,21 +710,21 @@ void __84__PKPaymentWebServiceRemoteProxyTargetDevice_passesWithReaderIdentifier
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)passesWithPrimaryPaymentApplicationStates:(id)a3 completion:(id)a4
+- (void)passesWithPrimaryPaymentApplicationStates:(id)states completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  statesCopy = states;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     handlerQueue = self->_handlerQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __99__PKPaymentWebServiceRemoteProxyTargetDevice_passesWithPrimaryPaymentApplicationStates_completion___block_invoke;
     block[3] = &unk_1E79C44F0;
-    v12 = v7;
+    v12 = completionCopy;
     block[4] = self;
-    v11 = v6;
+    v11 = statesCopy;
     dispatch_async(handlerQueue, block);
   }
 }
@@ -736,20 +736,20 @@ void __99__PKPaymentWebServiceRemoteProxyTargetDevice_passesWithPrimaryPaymentAp
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)canProvisionPaymentPassWithPrimaryAccountIdentifier:(id)a3 completion:(id)a4
+- (void)canProvisionPaymentPassWithPrimaryAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __109__PKPaymentWebServiceRemoteProxyTargetDevice_canProvisionPaymentPassWithPrimaryAccountIdentifier_completion___block_invoke;
   block[3] = &unk_1E79C44F0;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = completionCopy;
   dispatch_async(handlerQueue, block);
 }
 
@@ -767,17 +767,17 @@ void *__109__PKPaymentWebServiceRemoteProxyTargetDevice_canProvisionPaymentPassW
   return result;
 }
 
-- (void)validateAddPreconditionsWithCompletion:(id)a3
+- (void)validateAddPreconditionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __85__PKPaymentWebServiceRemoteProxyTargetDevice_validateAddPreconditionsWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
@@ -816,31 +816,31 @@ uint64_t __85__PKPaymentWebServiceRemoteProxyTargetDevice_validateAddPreconditio
   dispatch_async(handlerQueue, block);
 }
 
-- (void)claimSecureElementForCurrentUserWithCompletion:(id)a3
+- (void)claimSecureElementForCurrentUserWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __93__PKPaymentWebServiceRemoteProxyTargetDevice_claimSecureElementForCurrentUserWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)secureElementOwnershipStateForCurrentUserWithCompletion:(id)a3
+- (void)secureElementOwnershipStateForCurrentUserWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __102__PKPaymentWebServiceRemoteProxyTargetDevice_secureElementOwnershipStateForCurrentUserWithCompletion___block_invoke;
   v7[3] = &unk_1E79C44A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
@@ -858,17 +858,17 @@ uint64_t __102__PKPaymentWebServiceRemoteProxyTargetDevice_secureElementOwnershi
   return result;
 }
 
-- (void)validateTransferPreconditionsWithCompletion:(id)a3
+- (void)validateTransferPreconditionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __90__PKPaymentWebServiceRemoteProxyTargetDevice_validateTransferPreconditionsWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
@@ -896,37 +896,37 @@ uint64_t __90__PKPaymentWebServiceRemoteProxyTargetDevice_validateTransferPrecon
   return result;
 }
 
-- (void)handlePotentialExpressPass:(id)a3 withCompletion:(id)a4
+- (void)handlePotentialExpressPass:(id)pass withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  passCopy = pass;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __88__PKPaymentWebServiceRemoteProxyTargetDevice_handlePotentialExpressPass_withCompletion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = passCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = passCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)addPassData:(id)a3 completion:(id)a4
+- (void)addPassData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__PKPaymentWebServiceRemoteProxyTargetDevice_addPassData_completion___block_invoke;
   block[3] = &unk_1E79C4D60;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = dataCopy;
   dispatch_async(handlerQueue, block);
 }
 
@@ -978,34 +978,34 @@ uint64_t __69__PKPaymentWebServiceRemoteProxyTargetDevice_addPassData_completion
   return result;
 }
 
-- (void)removePass:(id)a3 completion:(id)a4
+- (void)removePass:(id)pass completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  passCopy = pass;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__PKPaymentWebServiceRemoteProxyTargetDevice_removePass_completion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = passCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = passCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)supportsPeerPaymentRegistrationWithCompletion:(id)a3
+- (void)supportsPeerPaymentRegistrationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __92__PKPaymentWebServiceRemoteProxyTargetDevice_supportsPeerPaymentRegistrationWithCompletion___block_invoke;
   v7[3] = &unk_1E79C44A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
@@ -1023,17 +1023,17 @@ uint64_t __92__PKPaymentWebServiceRemoteProxyTargetDevice_supportsPeerPaymentReg
   return result;
 }
 
-- (void)supportsAccountsWithCompletion:(id)a3
+- (void)supportsAccountsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__PKPaymentWebServiceRemoteProxyTargetDevice_supportsAccountsWithCompletion___block_invoke;
   v7[3] = &unk_1E79C44A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
@@ -1051,17 +1051,17 @@ uint64_t __77__PKPaymentWebServiceRemoteProxyTargetDevice_supportsAccountsWithCo
   return result;
 }
 
-- (void)supportedFeatureIdentifiersWithCompletion:(id)a3
+- (void)supportedFeatureIdentifiersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __88__PKPaymentWebServiceRemoteProxyTargetDevice_supportedFeatureIdentifiersWithCompletion___block_invoke;
   v7[3] = &unk_1E79C44A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
@@ -1075,17 +1075,17 @@ void __88__PKPaymentWebServiceRemoteProxyTargetDevice_supportedFeatureIdentifier
   }
 }
 
-- (void)supportedFeatureIdentifiersForAccountProvisioningWithCompletion:(id)a3
+- (void)supportedFeatureIdentifiersForAccountProvisioningWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __110__PKPaymentWebServiceRemoteProxyTargetDevice_supportedFeatureIdentifiersForAccountProvisioningWithCompletion___block_invoke;
   v7[3] = &unk_1E79C44A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
@@ -1099,94 +1099,94 @@ void __110__PKPaymentWebServiceRemoteProxyTargetDevice_supportedFeatureIdentifie
   }
 }
 
-- (void)updatedAccountsForProvisioningWithCompletion:(id)a3
+- (void)updatedAccountsForProvisioningWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __91__PKPaymentWebServiceRemoteProxyTargetDevice_updatedAccountsForProvisioningWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)triggerCloudStoreZoneCreationForAccount:(id)a3 withCompletion:(id)a4
+- (void)triggerCloudStoreZoneCreationForAccount:(id)account withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __101__PKPaymentWebServiceRemoteProxyTargetDevice_triggerCloudStoreZoneCreationForAccount_withCompletion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = accountCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = accountCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)cachedFeatureApplicationsForProvisioningWithCompletion:(id)a3
+- (void)cachedFeatureApplicationsForProvisioningWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __101__PKPaymentWebServiceRemoteProxyTargetDevice_cachedFeatureApplicationsForProvisioningWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)featureApplicationsForProvisioningWithCompletion:(id)a3
+- (void)featureApplicationsForProvisioningWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __95__PKPaymentWebServiceRemoteProxyTargetDevice_featureApplicationsForProvisioningWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)deviceMetadataWithFields:(unint64_t)a3 completion:(id)a4
+- (void)deviceMetadataWithFields:(unint64_t)fields completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__PKPaymentWebServiceRemoteProxyTargetDevice_deviceMetadataWithFields_completion___block_invoke;
   block[3] = &unk_1E79C4EA0;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  fieldsCopy = fields;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)willPassWithUniqueIdentifierAutomaticallyBecomeDefault:(id)a3 completion:(id)a4
+- (void)willPassWithUniqueIdentifierAutomaticallyBecomeDefault:(id)default completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  defaultCopy = default;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __112__PKPaymentWebServiceRemoteProxyTargetDevice_willPassWithUniqueIdentifierAutomaticallyBecomeDefault_completion___block_invoke;
   block[3] = &unk_1E79C44F0;
-  v12 = v6;
-  v13 = v7;
+  v12 = defaultCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = defaultCopy;
+  v10 = completionCopy;
   dispatch_async(handlerQueue, block);
 }
 
@@ -1199,45 +1199,45 @@ uint64_t __112__PKPaymentWebServiceRemoteProxyTargetDevice_willPassWithUniqueIde
   return v3(v1, v2);
 }
 
-- (void)setDefaultPaymentPassUniqueIdentifier:(id)a3
+- (void)setDefaultPaymentPassUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __84__PKPaymentWebServiceRemoteProxyTargetDevice_setDefaultPaymentPassUniqueIdentifier___block_invoke;
   v7[3] = &unk_1E79C4DD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)renewAppleAccountWithCompletionHandler:(id)a3
+- (void)renewAppleAccountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __85__PKPaymentWebServiceRemoteProxyTargetDevice_renewAppleAccountWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)appleAccountInformationWithCompletion:(id)a3
+- (void)appleAccountInformationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __84__PKPaymentWebServiceRemoteProxyTargetDevice_appleAccountInformationWithCompletion___block_invoke;
   v7[3] = &unk_1E79C44A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
@@ -1248,17 +1248,17 @@ void __84__PKPaymentWebServiceRemoteProxyTargetDevice_appleAccountInformationWit
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)notePasscodeUpgradeFlowWillBeginWithCompletion:(id)a3
+- (void)notePasscodeUpgradeFlowWillBeginWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __93__PKPaymentWebServiceRemoteProxyTargetDevice_notePasscodeUpgradeFlowWillBeginWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
@@ -1273,35 +1273,35 @@ void __84__PKPaymentWebServiceRemoteProxyTargetDevice_appleAccountInformationWit
   dispatch_async(handlerQueue, block);
 }
 
-- (void)enforceUpgradedPasscodePolicyWithCompletion:(id)a3
+- (void)enforceUpgradedPasscodePolicyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __90__PKPaymentWebServiceRemoteProxyTargetDevice_enforceUpgradedPasscodePolicyWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)currentPasscodeMeetsUpgradedPasscodePolicy:(id)a3
+- (void)currentPasscodeMeetsUpgradedPasscodePolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __89__PKPaymentWebServiceRemoteProxyTargetDevice_currentPasscodeMeetsUpgradedPasscodePolicy___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = policyCopy;
+  v6 = policyCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)startRequiringUpgradedPasscodeWithPasscodeMeetsPolicy:(BOOL)a3
+- (void)startRequiringUpgradedPasscodeWithPasscodeMeetsPolicy:(BOOL)policy
 {
   handlerQueue = self->_handlerQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1309,21 +1309,21 @@ void __84__PKPaymentWebServiceRemoteProxyTargetDevice_appleAccountInformationWit
   v4[2] = __100__PKPaymentWebServiceRemoteProxyTargetDevice_startRequiringUpgradedPasscodeWithPasscodeMeetsPolicy___block_invoke;
   v4[3] = &unk_1E79C4EC8;
   v4[4] = self;
-  v5 = a3;
+  policyCopy = policy;
   dispatch_async(handlerQueue, v4);
 }
 
-- (void)startRequiringUpgradedPasscodeWithCompletion:(id)a3
+- (void)startRequiringUpgradedPasscodeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __91__PKPaymentWebServiceRemoteProxyTargetDevice_startRequiringUpgradedPasscodeWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
@@ -1338,369 +1338,369 @@ void __84__PKPaymentWebServiceRemoteProxyTargetDevice_appleAccountInformationWit
   dispatch_async(handlerQueue, block);
 }
 
-- (void)performDeviceCheckInWithCompletion:(id)a3
+- (void)performDeviceCheckInWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __81__PKPaymentWebServiceRemoteProxyTargetDevice_performDeviceCheckInWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)performDeviceRegistrationReturningContextForReason:(id)a3 brokerURL:(id)a4 completion:(id)a5
+- (void)performDeviceRegistrationReturningContextForReason:(id)reason brokerURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reasonCopy = reason;
+  lCopy = l;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __118__PKPaymentWebServiceRemoteProxyTargetDevice_performDeviceRegistrationReturningContextForReason_brokerURL_completion___block_invoke;
   v15[3] = &unk_1E79C4EF0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = reasonCopy;
+  v17 = lCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = lCopy;
+  v14 = reasonCopy;
   dispatch_async(handlerQueue, v15);
 }
 
-- (void)storePassOwnershipToken:(id)a3 withIdentifier:(id)a4
+- (void)storePassOwnershipToken:(id)token withIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  identifierCopy = identifier;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __85__PKPaymentWebServiceRemoteProxyTargetDevice_storePassOwnershipToken_withIdentifier___block_invoke;
   block[3] = &unk_1E79C4E00;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = tokenCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = tokenCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)passOwnershipTokenWithIdentifier:(id)a3 completion:(id)a4
+- (void)passOwnershipTokenWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __90__PKPaymentWebServiceRemoteProxyTargetDevice_passOwnershipTokenWithIdentifier_completion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)familyMembersWithCompletion:(id)a3
+- (void)familyMembersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__PKPaymentWebServiceRemoteProxyTargetDevice_familyMembersWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)generateTransactionKeyWithParameters:(id)a3 withCompletion:(id)a4
+- (void)generateTransactionKeyWithParameters:(id)parameters withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __98__PKPaymentWebServiceRemoteProxyTargetDevice_generateTransactionKeyWithParameters_withCompletion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = parametersCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = parametersCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)statusForShareableCredentials:(id)a3 completion:(id)a4
+- (void)statusForShareableCredentials:(id)credentials completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  credentialsCopy = credentials;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__PKPaymentWebServiceRemoteProxyTargetDevice_statusForShareableCredentials_completion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = credentialsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = credentialsCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)prepareProvisioningTarget:(id)a3 checkFamilyCircle:(BOOL)a4 completion:(id)a5
+- (void)prepareProvisioningTarget:(id)target checkFamilyCircle:(BOOL)circle completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  targetCopy = target;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __101__PKPaymentWebServiceRemoteProxyTargetDevice_prepareProvisioningTarget_checkFamilyCircle_completion___block_invoke;
   v13[3] = &unk_1E79C4F18;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = targetCopy;
+  circleCopy = circle;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = targetCopy;
   dispatch_async(handlerQueue, v13);
 }
 
-- (void)provisionHomeKeyPassForSerialNumbers:(id)a3 completionHandler:(id)a4
+- (void)provisionHomeKeyPassForSerialNumbers:(id)numbers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  numbersCopy = numbers;
+  handlerCopy = handler;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __101__PKPaymentWebServiceRemoteProxyTargetDevice_provisionHomeKeyPassForSerialNumbers_completionHandler___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = numbersCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = numbersCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)availableHomeKeyPassesWithCompletionHandler:(id)a3
+- (void)availableHomeKeyPassesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __90__PKPaymentWebServiceRemoteProxyTargetDevice_availableHomeKeyPassesWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)createFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 challenge:(id)a5 externalizedAuth:(id)a6 completion:(id)a7
+- (void)createFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge externalizedAuth:(id)auth completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  partyCopy = party;
+  hashCopy = hash;
+  challengeCopy = challenge;
+  authCopy = auth;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __137__PKPaymentWebServiceRemoteProxyTargetDevice_createFidoKeyForRelyingParty_relyingPartyAccountHash_challenge_externalizedAuth_completion___block_invoke;
   v23[3] = &unk_1E79C4F40;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = partyCopy;
+  v25 = hashCopy;
+  v26 = challengeCopy;
+  v27 = authCopy;
+  v28 = completionCopy;
+  v18 = completionCopy;
+  v19 = authCopy;
+  v20 = challengeCopy;
+  v21 = hashCopy;
+  v22 = partyCopy;
   dispatch_async(handlerQueue, v23);
 }
 
-- (void)checkFidoKeyPresenceForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 completion:(id)a6
+- (void)checkFidoKeyPresenceForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  partyCopy = party;
+  hashCopy = hash;
+  keyHashCopy = keyHash;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __129__PKPaymentWebServiceRemoteProxyTargetDevice_checkFidoKeyPresenceForRelyingParty_relyingPartyAccountHash_fidoKeyHash_completion___block_invoke;
   block[3] = &unk_1E79C4F68;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = partyCopy;
+  v21 = hashCopy;
+  v22 = keyHashCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = keyHashCopy;
+  v17 = hashCopy;
+  v18 = partyCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)signWithFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 challenge:(id)a6 publicKeyIdentifier:(id)a7 externalizedAuth:(id)a8 completion:(id)a9
+- (void)signWithFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash challenge:(id)challenge publicKeyIdentifier:(id)identifier externalizedAuth:(id)auth completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  partyCopy = party;
+  hashCopy = hash;
+  keyHashCopy = keyHash;
+  challengeCopy = challenge;
+  identifierCopy = identifier;
+  authCopy = auth;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __171__PKPaymentWebServiceRemoteProxyTargetDevice_signWithFidoKeyForRelyingParty_relyingPartyAccountHash_fidoKeyHash_challenge_publicKeyIdentifier_externalizedAuth_completion___block_invoke;
   v30[3] = &unk_1E79C4F90;
   v30[4] = self;
-  v31 = v15;
-  v32 = v16;
-  v33 = v17;
-  v34 = v18;
-  v35 = v19;
-  v36 = v20;
-  v37 = v21;
-  v23 = v21;
-  v24 = v20;
-  v25 = v19;
-  v26 = v18;
-  v27 = v17;
-  v28 = v16;
-  v29 = v15;
+  v31 = partyCopy;
+  v32 = hashCopy;
+  v33 = keyHashCopy;
+  v34 = challengeCopy;
+  v35 = identifierCopy;
+  v36 = authCopy;
+  v37 = completionCopy;
+  v23 = completionCopy;
+  v24 = authCopy;
+  v25 = identifierCopy;
+  v26 = challengeCopy;
+  v27 = keyHashCopy;
+  v28 = hashCopy;
+  v29 = partyCopy;
   dispatch_async(handlerQueue, v30);
 }
 
-- (void)generateSEEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4
+- (void)generateSEEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __107__PKPaymentWebServiceRemoteProxyTargetDevice_generateSEEncryptionCertificateForSubCredentialId_completion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = idCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = idCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)generateISOEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4
+- (void)generateISOEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __108__PKPaymentWebServiceRemoteProxyTargetDevice_generateISOEncryptionCertificateForSubCredentialId_completion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = idCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = idCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)addISO18013Blobs:(id)a3 cardType:(int64_t)a4 completion:(id)a5
+- (void)addISO18013Blobs:(id)blobs cardType:(int64_t)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  blobsCopy = blobs;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __83__PKPaymentWebServiceRemoteProxyTargetDevice_addISO18013Blobs_cardType_completion___block_invoke;
   v13[3] = &unk_1E79C4D88;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = blobsCopy;
+  v15 = completionCopy;
+  typeCopy = type;
+  v11 = completionCopy;
+  v12 = blobsCopy;
   dispatch_async(handlerQueue, v13);
 }
 
-- (void)addISO18013BlobsFromCredentials:(id)a3 cardType:(int64_t)a4 completion:(id)a5
+- (void)addISO18013BlobsFromCredentials:(id)credentials cardType:(int64_t)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  credentialsCopy = credentials;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __98__PKPaymentWebServiceRemoteProxyTargetDevice_addISO18013BlobsFromCredentials_cardType_completion___block_invoke;
   v13[3] = &unk_1E79C4D88;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = credentialsCopy;
+  v15 = completionCopy;
+  typeCopy = type;
+  v11 = completionCopy;
+  v12 = credentialsCopy;
   dispatch_async(handlerQueue, v13);
 }
 
-- (void)longTermPrivacyKeyForCredentialGroupIdentifier:(id)a3 reuseExisting:(BOOL)a4 completion:(id)a5
+- (void)longTermPrivacyKeyForCredentialGroupIdentifier:(id)identifier reuseExisting:(BOOL)existing completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __118__PKPaymentWebServiceRemoteProxyTargetDevice_longTermPrivacyKeyForCredentialGroupIdentifier_reuseExisting_completion___block_invoke;
   v13[3] = &unk_1E79C4F18;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = identifierCopy;
+  existingCopy = existing;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = identifierCopy;
   dispatch_async(handlerQueue, v13);
 }
 
-- (void)generateAuxiliaryCapabilitiesForRequirements:(id)a3 completion:(id)a4
+- (void)generateAuxiliaryCapabilitiesForRequirements:(id)requirements completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requirementsCopy = requirements;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __102__PKPaymentWebServiceRemoteProxyTargetDevice_generateAuxiliaryCapabilitiesForRequirements_completion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requirementsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = requirementsCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)usingSynchronousProxy:(BOOL)a3 meetsProvisioningRequirements:(id)a4 completion:(id)a5
+- (void)usingSynchronousProxy:(BOOL)proxy meetsProvisioningRequirements:(id)requirements completion:(id)completion
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v6)
+  proxyCopy = proxy;
+  requirementsCopy = requirements;
+  completionCopy = completion;
+  if (proxyCopy)
   {
     targetDevice = self->_targetDevice;
     v17 = 0;
-    v11 = [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice meetsProvisioningRequirements:v8 missingRequirements:&v17];
+    v11 = [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice meetsProvisioningRequirements:requirementsCopy missingRequirements:&v17];
     v12 = v17;
-    v9[2](v9, v11, v12);
+    completionCopy[2](completionCopy, v11, v12);
   }
 
   else
@@ -1711,245 +1711,245 @@ void __84__PKPaymentWebServiceRemoteProxyTargetDevice_appleAccountInformationWit
     v14[2] = __109__PKPaymentWebServiceRemoteProxyTargetDevice_usingSynchronousProxy_meetsProvisioningRequirements_completion___block_invoke;
     v14[3] = &unk_1E79C4D60;
     v14[4] = self;
-    v15 = v8;
-    v16 = v9;
+    v15 = requirementsCopy;
+    v16 = completionCopy;
     dispatch_async(handlerQueue, v14);
   }
 }
 
-- (void)currentSecureElementSnapshot:(id)a3
+- (void)currentSecureElementSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   handlerQueue = self->_handlerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__PKPaymentWebServiceRemoteProxyTargetDevice_currentSecureElementSnapshot___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = snapshotCopy;
+  v6 = snapshotCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)reserveStorageForAppletTypes:(id)a3 metadata:(id)a4 completion:(id)a5
+- (void)reserveStorageForAppletTypes:(id)types metadata:(id)metadata completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typesCopy = types;
+  metadataCopy = metadata;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __95__PKPaymentWebServiceRemoteProxyTargetDevice_reserveStorageForAppletTypes_metadata_completion___block_invoke;
   v15[3] = &unk_1E79C4EF0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = typesCopy;
+  v17 = metadataCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = metadataCopy;
+  v14 = typesCopy;
   dispatch_async(handlerQueue, v15);
 }
 
-- (void)deleteReservation:(id)a3 completion:(id)a4
+- (void)deleteReservation:(id)reservation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  reservationCopy = reservation;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__PKPaymentWebServiceRemoteProxyTargetDevice_deleteReservation_completion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = reservationCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = reservationCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)canSaveFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)canSaveFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptorCopy = descriptor;
+  credentialCopy = credential;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __98__PKPaymentWebServiceRemoteProxyTargetDevice_canSaveFPANCardWithDescriptor_credential_completion___block_invoke;
   v15[3] = &unk_1E79C4EF0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = descriptorCopy;
+  v17 = credentialCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = credentialCopy;
+  v14 = descriptorCopy;
   dispatch_async(handlerQueue, v15);
 }
 
-- (void)activeFPANCardsWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)activeFPANCardsWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__PKPaymentWebServiceRemoteProxyTargetDevice_activeFPANCardsWithOptions_completion___block_invoke;
   block[3] = &unk_1E79C4EA0;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  optionsCopy = options;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)credentialForFPANCard:(id)a3 authorization:(id)a4 options:(unint64_t)a5 merchantHost:(id)a6 completion:(id)a7
+- (void)credentialForFPANCard:(id)card authorization:(id)authorization options:(unint64_t)options merchantHost:(id)host completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  cardCopy = card;
+  authorizationCopy = authorization;
+  hostCopy = host;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __114__PKPaymentWebServiceRemoteProxyTargetDevice_credentialForFPANCard_authorization_options_merchantHost_completion___block_invoke;
   v21[3] = &unk_1E79C4FB8;
   v21[4] = self;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = v15;
-  v26 = a5;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v22 = cardCopy;
+  v23 = authorizationCopy;
+  v24 = hostCopy;
+  v25 = completionCopy;
+  optionsCopy = options;
+  v17 = completionCopy;
+  v18 = hostCopy;
+  v19 = authorizationCopy;
+  v20 = cardCopy;
   dispatch_async(handlerQueue, v21);
 }
 
-- (void)updateFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)updateFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptorCopy = descriptor;
+  credentialCopy = credential;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __97__PKPaymentWebServiceRemoteProxyTargetDevice_updateFPANCardWithDescriptor_credential_completion___block_invoke;
   v15[3] = &unk_1E79C4EF0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = descriptorCopy;
+  v17 = credentialCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = credentialCopy;
+  v14 = descriptorCopy;
   dispatch_async(handlerQueue, v15);
 }
 
-- (void)deleteFPANCardWithDescriptor:(id)a3 completion:(id)a4
+- (void)deleteFPANCardWithDescriptor:(id)descriptor completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__PKPaymentWebServiceRemoteProxyTargetDevice_deleteFPANCardWithDescriptor_completion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = descriptorCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = descriptorCopy;
   dispatch_async(handlerQueue, block);
 }
 
-- (void)fpanCredentialForPrimaryAccountIdentifier:(id)a3 passUniqueID:(id)a4 completion:(id)a5
+- (void)fpanCredentialForPrimaryAccountIdentifier:(id)identifier passUniqueID:(id)d completion:(id)completion
 {
   targetDevice = self->_targetDevice;
   v11 = 0;
   v12 = 0;
-  v8 = a5;
-  [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice fpanCredentialForPrimaryAccountIdentifier:a3 passUniqueID:a4 credential:&v12 error:&v11];
+  completionCopy = completion;
+  [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice fpanCredentialForPrimaryAccountIdentifier:identifier passUniqueID:d credential:&v12 error:&v11];
   v9 = v12;
   v10 = v11;
-  v8[2](v8, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 }
 
-- (void)fpanDescriptorAndCredentialForFPAN:(id)a3 completion:(id)a4
+- (void)fpanDescriptorAndCredentialForFPAN:(id)n completion:(id)completion
 {
   targetDevice = self->_targetDevice;
   v11 = 0;
   v12 = 0;
   v10 = 0;
-  v6 = a4;
-  [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice fpanDescriptorAndCredentialForFPAN:a3 descriptor:&v12 credential:&v11 error:&v10];
+  completionCopy = completion;
+  [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice fpanDescriptorAndCredentialForFPAN:n descriptor:&v12 credential:&v11 error:&v10];
   v7 = v12;
   v8 = v11;
   v9 = v10;
-  v6[2](v6, v7, v8, v9);
+  completionCopy[2](completionCopy, v7, v8, v9);
 }
 
-- (void)applePayTrustKeyForIdentifier:(id)a3 completion:(id)a4
+- (void)applePayTrustKeyForIdentifier:(id)identifier completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)createApplePayTrustKeyWithRequest:(id)a3 completion:(id)a4
+- (void)createApplePayTrustKeyWithRequest:(id)request completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0, 0);
+    (*(completion + 2))(completion, 0, 0);
   }
 }
 
-- (void)deleteApplePayTrustKeyWithIdentifier:(id)a3 completion:(id)a4
+- (void)deleteApplePayTrustKeyWithIdentifier:(id)identifier completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)maximumPaymentCardsWithCompletion:(id)a3
+- (void)maximumPaymentCardsWithCompletion:(id)completion
 {
   targetDevice = self->_targetDevice;
-  v5 = a3;
-  (*(a3 + 2))(v5, [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice maximumPaymentCards]);
+  completionCopy = completion;
+  (*(completion + 2))(completionCopy, [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice maximumPaymentCards]);
 }
 
-- (void)allPaymentApplicationUsageSummariesWithCompletion:(id)a3
+- (void)allPaymentApplicationUsageSummariesWithCompletion:(id)completion
 {
   targetDevice = self->_targetDevice;
-  v5 = a3;
-  v6 = [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice allPaymentApplicationUsageSummaries];
-  (*(a3 + 2))(v5, v6);
+  completionCopy = completion;
+  allPaymentApplicationUsageSummaries = [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice allPaymentApplicationUsageSummaries];
+  (*(completion + 2))(completionCopy, allPaymentApplicationUsageSummaries);
 }
 
-- (void)secureElementIsAvailableWithCompletion:(id)a3
+- (void)secureElementIsAvailableWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v4 = PKSecureElementIsAvailable() != 0;
-  (*(a3 + 2))(v5, v4);
+  (*(completion + 2))(completionCopy, v4);
 }
 
-- (void)addPendingProvisionings:(id)a3 completion:(id)a4
+- (void)addPendingProvisionings:(id)provisionings completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  provisioningsCopy = provisionings;
+  completionCopy = completion;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __81__PKPaymentWebServiceRemoteProxyTargetDevice_addPendingProvisionings_completion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = provisioningsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = provisioningsCopy;
   dispatch_async(handlerQueue, block);
 }
 
@@ -1976,16 +1976,16 @@ uint64_t __81__PKPaymentWebServiceRemoteProxyTargetDevice_addPendingProvisioning
   return result;
 }
 
-- (void)archiveContext:(id)a3
+- (void)archiveContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__PKPaymentWebServiceRemoteProxyTargetDevice_archiveContext___block_invoke;
   block[3] = &unk_1E79C4E28;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   dispatch_async(handlerQueue, block);
 }
 

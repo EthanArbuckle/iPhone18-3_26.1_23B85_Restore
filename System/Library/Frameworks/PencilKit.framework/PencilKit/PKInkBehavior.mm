@@ -1,35 +1,35 @@
 @interface PKInkBehavior
 + (double)inkRadiusOverride;
-+ (id)arrayFromVector:(uint64_t)a1;
-+ (id)loadInkV2WithURL:(id)a3;
-+ (void)outputFunctionFromInkFunction:(void *)a3;
++ (id)arrayFromVector:(uint64_t)vector;
++ (id)loadInkV2WithURL:(id)l;
++ (void)outputFunctionFromInkFunction:(void *)function;
 - (BOOL)isEraser;
 - (CGAffineTransform)inkTransform;
 - (NSArray)inkFunctions;
-- (PKInkBehavior)initWithRenderingDescriptor:(id)a3 blendAlpha:(double)a4 targetMultiple:(double)a5 baseAlpha:(double)a6 inkTransform:(CGAffineTransform *)a7 useUnclampedWeight:(BOOL)a8 smoothingDescriptor:(id)a9 featheringDescriptor:(id)a10 pencilFeatheringDescriptor:(id)a11 animationDescriptor:(id)a12 identifier:(id)a13 version:(unint64_t)a14 variant:(id)a15 uiWidths:(id)a16 defaultWidth:(double)a17 uiAzimuthControl:(BOOL)a18 showBrushIndicator:(BOOL)a19 supportsCombiningStrokes:(BOOL)a20 rulerOffsetScale:(double)a21 rulerOffsetConstant:(double)a22 weightFunction:(id)a23 inkFunctions:(id)a24;
-- (PKInkBehavior)initWithRenderingDescriptor:(id)a3 blendAlpha:(double)a4 targetMultiple:(double)a5 baseAlpha:(double)a6 inkTransform:(CGAffineTransform *)a7 useUnclampedWeight:(BOOL)a8 smoothingDescriptor:(id)a9 featheringDescriptor:(id)a10 pencilFeatheringDescriptor:(id)a11 animationDescriptor:(id)a12 identifier:(id)a13 version:(unint64_t)a14 variant:(id)a15 uiWidths:(id)a16 defaultWidth:(double)a17 uiAzimuthControl:(BOOL)a18 showBrushIndicator:(BOOL)a19 supportsCombiningStrokes:(BOOL)a20 rulerOffsetScale:(double)a21 rulerOffsetConstant:(double)a22 weightFunction:(void *)a23 radiusOutput:()vector<PKOutputFunction radius2Output:(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std::allocator<PKOutputFunction>> *)a31 allocator<PKOutputFunction>> *)a30 allocator<PKOutputFunction>> *)a29 allocator<PKOutputFunction>> *)a28 allocator<PKOutputFunction>> *)a27 allocator<PKOutputFunction>> *)a26 allocator<PKOutputFunction>> *)a25 allocator<PKOutputFunction>> *)a24 azimuthOutput:thresholdOutput:opacityOutput:edgeWidthOutput:aspectRatioOutput:brushOpacityOutput:;
-- (PKInkBehavior)initWithRenderingDescriptor:(id)a3 variant:(id)a4;
-- (double)alphaForStroke:(double *)a1;
-- (double)alphaForStrokeColor:(double *)a1;
-- (double)brushOpacityForPoint:(uint64_t)a3 context:;
-- (double)edgeWidthForPoint:(uint64_t)a3 context:;
+- (PKInkBehavior)initWithRenderingDescriptor:(id)descriptor blendAlpha:(double)alpha targetMultiple:(double)multiple baseAlpha:(double)baseAlpha inkTransform:(CGAffineTransform *)transform useUnclampedWeight:(BOOL)weight smoothingDescriptor:(id)smoothingDescriptor featheringDescriptor:(id)self0 pencilFeatheringDescriptor:(id)self1 animationDescriptor:(id)self2 identifier:(id)self3 version:(unint64_t)self4 variant:(id)self5 uiWidths:(id)self6 defaultWidth:(double)self7 uiAzimuthControl:(BOOL)self8 showBrushIndicator:(BOOL)self9 supportsCombiningStrokes:(BOOL)strokes rulerOffsetScale:(double)scale rulerOffsetConstant:(double)constant weightFunction:(id)function inkFunctions:(id)functions;
+- (PKInkBehavior)initWithRenderingDescriptor:(id)descriptor blendAlpha:(double)alpha targetMultiple:(double)multiple baseAlpha:(double)baseAlpha inkTransform:(CGAffineTransform *)transform useUnclampedWeight:(BOOL)weight smoothingDescriptor:(id)smoothingDescriptor featheringDescriptor:(id)self0 pencilFeatheringDescriptor:(id)self1 animationDescriptor:(id)self2 identifier:(id)self3 version:(unint64_t)self4 variant:(id)self5 uiWidths:(id)self6 defaultWidth:(double)self7 uiAzimuthControl:(BOOL)self8 showBrushIndicator:(BOOL)self9 supportsCombiningStrokes:(BOOL)strokes rulerOffsetScale:(double)scale rulerOffsetConstant:(double)constant weightFunction:(void *)function radiusOutput:()vector<PKOutputFunction radius2Output:(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std::allocator<PKOutputFunction>> *)descriptor1 allocator<PKOutputFunction>> *)descriptor0 allocator<PKOutputFunction>> *)a29 allocator<PKOutputFunction>> *)a28 allocator<PKOutputFunction>> *)a27 allocator<PKOutputFunction>> *)a26 allocator<PKOutputFunction>> *)a25 allocator<PKOutputFunction>> *)a24 azimuthOutput:thresholdOutput:opacityOutput:edgeWidthOutput:aspectRatioOutput:brushOpacityOutput:;
+- (PKInkBehavior)initWithRenderingDescriptor:(id)descriptor variant:(id)variant;
+- (double)alphaForStroke:(double *)stroke;
+- (double)alphaForStrokeColor:(double *)color;
+- (double)brushOpacityForPoint:(uint64_t)point context:;
+- (double)edgeWidthForPoint:(uint64_t)point context:;
 - (double)mutableDurationToEndOfStroke;
-- (double)solve:(uint64_t)a3 forPoint:(uint64_t)a4 context:(double)a5 weight:;
+- (double)solve:(uint64_t)solve forPoint:(uint64_t)point context:(double)context weight:;
 - (id).cxx_construct;
 - (id)description;
-- (id)inkFunctionsForProperty:(uint64_t)a1;
+- (id)inkFunctionsForProperty:(uint64_t)property;
 - (id)mutableCopy;
 - (id)particleTextureName;
-- (uint64_t)outputForPoint:(uint64_t)a3@<X2> context:(uint64_t)a4@<X8>;
+- (uint64_t)outputForPoint:(uint64_t)point@<X2> context:(uint64_t)context@<X8>;
 - (uint64_t)outputVectorForProperty:(uint64_t)result;
 - (void)_calculateUsesAzimuthOrAltitude;
-- (void)addNewInkFunction:(id)a3;
-- (void)functionsForProperty:(void *)a1;
-- (void)inkFunctionDidChange:(id)a3;
-- (void)outputFunctionFromInkFunction:(void *)a3;
-- (void)radiusForPoint:(uint64_t)a3 context:;
-- (void)removeInkFunction:(id)a3;
-- (void)setInkTransform:(CGAffineTransform *)a3;
+- (void)addNewInkFunction:(id)function;
+- (void)functionsForProperty:(void *)property;
+- (void)inkFunctionDidChange:(id)change;
+- (void)outputFunctionFromInkFunction:(void *)function;
+- (void)radiusForPoint:(uint64_t)point context:;
+- (void)removeInkFunction:(id)function;
+- (void)setInkTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation PKInkBehavior
@@ -91,7 +91,7 @@
   return self;
 }
 
-+ (id)loadInkV2WithURL:(id)a3
++ (id)loadInkV2WithURL:(id)l
 {
   v3 = type metadata accessor for URL();
   v4 = *(v3 - 8);
@@ -113,20 +113,20 @@
   return self;
 }
 
-+ (void)outputFunctionFromInkFunction:(void *)a3
++ (void)outputFunctionFromInkFunction:(void *)function
 {
-  v4 = a3;
+  functionCopy = function;
   objc_opt_self();
-  a1[5] = 0;
-  *a1 = [v4 inputMask];
-  a1[1] = [v4 deviceMask];
-  a1[2] = 3;
-  v5 = [v4 inkInput];
-  a1[3] = v5;
-  a1[4] = [v4 math];
-  if (v5 != 5)
+  self[5] = 0;
+  *self = [functionCopy inputMask];
+  self[1] = [functionCopy deviceMask];
+  self[2] = 3;
+  inkInput = [functionCopy inkInput];
+  self[3] = inkInput;
+  self[4] = [functionCopy math];
+  if (inkInput != 5)
   {
-    if ([v4 functionType] == 6)
+    if ([functionCopy functionType] == 6)
     {
       operator new();
     }
@@ -135,16 +135,16 @@
   }
 }
 
-- (PKInkBehavior)initWithRenderingDescriptor:(id)a3 blendAlpha:(double)a4 targetMultiple:(double)a5 baseAlpha:(double)a6 inkTransform:(CGAffineTransform *)a7 useUnclampedWeight:(BOOL)a8 smoothingDescriptor:(id)a9 featheringDescriptor:(id)a10 pencilFeatheringDescriptor:(id)a11 animationDescriptor:(id)a12 identifier:(id)a13 version:(unint64_t)a14 variant:(id)a15 uiWidths:(id)a16 defaultWidth:(double)a17 uiAzimuthControl:(BOOL)a18 showBrushIndicator:(BOOL)a19 supportsCombiningStrokes:(BOOL)a20 rulerOffsetScale:(double)a21 rulerOffsetConstant:(double)a22 weightFunction:(void *)a23 radiusOutput:()vector<PKOutputFunction radius2Output:(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std::allocator<PKOutputFunction>> *)a31 allocator<PKOutputFunction>> *)a30 allocator<PKOutputFunction>> *)a29 allocator<PKOutputFunction>> *)a28 allocator<PKOutputFunction>> *)a27 allocator<PKOutputFunction>> *)a26 allocator<PKOutputFunction>> *)a25 allocator<PKOutputFunction>> *)a24 azimuthOutput:thresholdOutput:opacityOutput:edgeWidthOutput:aspectRatioOutput:brushOpacityOutput:
+- (PKInkBehavior)initWithRenderingDescriptor:(id)descriptor blendAlpha:(double)alpha targetMultiple:(double)multiple baseAlpha:(double)baseAlpha inkTransform:(CGAffineTransform *)transform useUnclampedWeight:(BOOL)weight smoothingDescriptor:(id)smoothingDescriptor featheringDescriptor:(id)self0 pencilFeatheringDescriptor:(id)self1 animationDescriptor:(id)self2 identifier:(id)self3 version:(unint64_t)self4 variant:(id)self5 uiWidths:(id)self6 defaultWidth:(double)self7 uiAzimuthControl:(BOOL)self8 showBrushIndicator:(BOOL)self9 supportsCombiningStrokes:(BOOL)strokes rulerOffsetScale:(double)scale rulerOffsetConstant:(double)constant weightFunction:(void *)function radiusOutput:()vector<PKOutputFunction radius2Output:(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std:()vector<PKOutputFunction :(std::allocator<PKOutputFunction>> *)descriptor1 allocator<PKOutputFunction>> *)descriptor0 allocator<PKOutputFunction>> *)a29 allocator<PKOutputFunction>> *)a28 allocator<PKOutputFunction>> *)a27 allocator<PKOutputFunction>> *)a26 allocator<PKOutputFunction>> *)a25 allocator<PKOutputFunction>> *)a24 azimuthOutput:thresholdOutput:opacityOutput:edgeWidthOutput:aspectRatioOutput:brushOpacityOutput:
 {
-  v63 = a3;
-  v62 = a9;
-  v61 = a10;
-  v60 = a11;
-  v59 = a12;
-  v43 = a13;
-  v64 = a15;
-  v44 = a16;
+  descriptorCopy = descriptor;
+  smoothingDescriptorCopy = smoothingDescriptor;
+  featheringDescriptorCopy = featheringDescriptor;
+  pencilFeatheringDescriptorCopy = pencilFeatheringDescriptor;
+  animationDescriptorCopy = animationDescriptor;
+  identifierCopy = identifier;
+  variantCopy = variant;
+  widthsCopy = widths;
   v65.receiver = self;
   v65.super_class = PKInkBehavior;
   v45 = [(PKInkBehavior *)&v65 init];
@@ -152,41 +152,41 @@
   v47 = v45;
   if (v45)
   {
-    objc_storeStrong(&v45->_renderingDescriptor, a3);
-    objc_storeStrong(&v46[14].__cap_, a9);
-    objc_storeStrong(&v46[15].__begin_, a10);
-    objc_storeStrong(&v46[15].__end_, a11);
-    objc_storeStrong(&v46[15].__cap_, a12);
-    v47->_useUnclampedWeight = a8;
-    v47->_blendAlpha = a4;
-    v47->_targetMultiple = a5;
-    v47->_baseAlpha = a6;
-    v48 = *&a7->a;
-    v49 = *&a7->tx;
-    *&v47->_inkTransform.c = *&a7->c;
+    objc_storeStrong(&v45->_renderingDescriptor, descriptor);
+    objc_storeStrong(&v46[14].__cap_, smoothingDescriptor);
+    objc_storeStrong(&v46[15].__begin_, featheringDescriptor);
+    objc_storeStrong(&v46[15].__end_, pencilFeatheringDescriptor);
+    objc_storeStrong(&v46[15].__cap_, animationDescriptor);
+    v47->_useUnclampedWeight = weight;
+    v47->_blendAlpha = alpha;
+    v47->_targetMultiple = multiple;
+    v47->_baseAlpha = baseAlpha;
+    v48 = *&transform->a;
+    v49 = *&transform->tx;
+    *&v47->_inkTransform.c = *&transform->c;
     *&v47->_inkTransform.tx = v49;
     *&v47->_inkTransform.a = v48;
-    v50 = [v43 copy];
+    v50 = [identifierCopy copy];
     identifier = v47->_identifier;
     v47->_identifier = v50;
 
-    v52 = [v64 copy];
+    v52 = [variantCopy copy];
     variant = v47->_variant;
     v47->_variant = v52;
 
-    v54 = [v44 copy];
+    v54 = [widthsCopy copy];
     uiWidths = v47->_uiWidths;
     v47->_uiWidths = v54;
 
-    v47->_uiAzimuthControl = a18;
-    v47->_defaultWidth = a17;
-    v47->_version = a14;
-    v47->_showBrushIndicator = a19;
-    v47->_supportsCombiningStrokes = a20;
-    v47->_rulerOffsetScale = a21;
-    v47->_rulerOffsetConstant = a22;
+    v47->_uiAzimuthControl = control;
+    v47->_defaultWidth = width;
+    v47->_version = version;
+    v47->_showBrushIndicator = indicator;
+    v47->_supportsCombiningStrokes = strokes;
+    v47->_rulerOffsetScale = scale;
+    v47->_rulerOffsetConstant = constant;
     ptr = v47->_weightFunction.__ptr_;
-    v47->_weightFunction.__ptr_ = a23;
+    v47->_weightFunction.__ptr_ = function;
     if (ptr)
     {
       (*(*ptr + 40))(ptr);
@@ -238,19 +238,19 @@
   return v47;
 }
 
-- (PKInkBehavior)initWithRenderingDescriptor:(id)a3 blendAlpha:(double)a4 targetMultiple:(double)a5 baseAlpha:(double)a6 inkTransform:(CGAffineTransform *)a7 useUnclampedWeight:(BOOL)a8 smoothingDescriptor:(id)a9 featheringDescriptor:(id)a10 pencilFeatheringDescriptor:(id)a11 animationDescriptor:(id)a12 identifier:(id)a13 version:(unint64_t)a14 variant:(id)a15 uiWidths:(id)a16 defaultWidth:(double)a17 uiAzimuthControl:(BOOL)a18 showBrushIndicator:(BOOL)a19 supportsCombiningStrokes:(BOOL)a20 rulerOffsetScale:(double)a21 rulerOffsetConstant:(double)a22 weightFunction:(id)a23 inkFunctions:(id)a24
+- (PKInkBehavior)initWithRenderingDescriptor:(id)descriptor blendAlpha:(double)alpha targetMultiple:(double)multiple baseAlpha:(double)baseAlpha inkTransform:(CGAffineTransform *)transform useUnclampedWeight:(BOOL)weight smoothingDescriptor:(id)smoothingDescriptor featheringDescriptor:(id)self0 pencilFeatheringDescriptor:(id)self1 animationDescriptor:(id)self2 identifier:(id)self3 version:(unint64_t)self4 variant:(id)self5 uiWidths:(id)self6 defaultWidth:(double)self7 uiAzimuthControl:(BOOL)self8 showBrushIndicator:(BOOL)self9 supportsCombiningStrokes:(BOOL)strokes rulerOffsetScale:(double)scale rulerOffsetConstant:(double)constant weightFunction:(id)function inkFunctions:(id)functions
 {
   v74 = *MEMORY[0x1E69E9840];
-  v53 = a3;
-  v54 = a9;
-  v55 = a10;
-  v56 = a11;
-  v57 = a12;
-  v59 = a13;
-  v60 = a15;
-  v61 = a16;
-  v33 = a23;
-  v62 = a24;
+  descriptorCopy = descriptor;
+  smoothingDescriptorCopy = smoothingDescriptor;
+  featheringDescriptorCopy = featheringDescriptor;
+  pencilFeatheringDescriptorCopy = pencilFeatheringDescriptor;
+  animationDescriptorCopy = animationDescriptor;
+  identifierCopy = identifier;
+  variantCopy = variant;
+  widthsCopy = widths;
+  functionCopy = function;
+  functionsCopy = functions;
   v71.receiver = self;
   v71.super_class = PKInkBehavior;
   v34 = [(PKInkBehavior *)&v71 init];
@@ -260,40 +260,40 @@
     goto LABEL_13;
   }
 
-  objc_storeStrong(&v34->_renderingDescriptor, a3);
-  objc_storeStrong(&v35->_smoothingDescriptor, a9);
-  objc_storeStrong(&v35->_featheringDescriptor, a10);
-  objc_storeStrong(&v35->_pencilFeatheringDescriptor, a11);
-  objc_storeStrong(&v35->_animationDescriptor, a12);
-  v35->_useUnclampedWeight = a8;
-  v35->_blendAlpha = a4;
-  v35->_targetMultiple = a5;
-  v35->_baseAlpha = a6;
-  v36 = *&a7->a;
-  v37 = *&a7->tx;
-  *&v35->_inkTransform.c = *&a7->c;
+  objc_storeStrong(&v34->_renderingDescriptor, descriptor);
+  objc_storeStrong(&v35->_smoothingDescriptor, smoothingDescriptor);
+  objc_storeStrong(&v35->_featheringDescriptor, featheringDescriptor);
+  objc_storeStrong(&v35->_pencilFeatheringDescriptor, pencilFeatheringDescriptor);
+  objc_storeStrong(&v35->_animationDescriptor, animationDescriptor);
+  v35->_useUnclampedWeight = weight;
+  v35->_blendAlpha = alpha;
+  v35->_targetMultiple = multiple;
+  v35->_baseAlpha = baseAlpha;
+  v36 = *&transform->a;
+  v37 = *&transform->tx;
+  *&v35->_inkTransform.c = *&transform->c;
   *&v35->_inkTransform.tx = v37;
   *&v35->_inkTransform.a = v36;
-  v38 = [v59 copy];
+  v38 = [identifierCopy copy];
   identifier = v35->_identifier;
   v35->_identifier = v38;
 
-  v40 = [v60 copy];
+  v40 = [variantCopy copy];
   variant = v35->_variant;
   v35->_variant = v40;
 
-  v42 = [v61 copy];
+  v42 = [widthsCopy copy];
   uiWidths = v35->_uiWidths;
   v35->_uiWidths = v42;
 
-  v35->_uiAzimuthControl = a18;
-  v35->_defaultWidth = a17;
-  v35->_version = a14;
-  v35->_showBrushIndicator = a19;
-  v35->_supportsCombiningStrokes = a20;
-  v35->_rulerOffsetScale = a21;
-  v35->_rulerOffsetConstant = a22;
-  if (!v33)
+  v35->_uiAzimuthControl = control;
+  v35->_defaultWidth = width;
+  v35->_version = version;
+  v35->_showBrushIndicator = indicator;
+  v35->_supportsCombiningStrokes = strokes;
+  v35->_rulerOffsetScale = scale;
+  v35->_rulerOffsetConstant = constant;
+  if (!functionCopy)
   {
     ptr = v35->_weightFunction.__ptr_;
     v35->_weightFunction.__ptr_ = 0;
@@ -305,7 +305,7 @@
     goto LABEL_4;
   }
 
-  [(PKInkBehavior *)&v67 outputFunctionFromInkFunction:v33];
+  [(PKInkBehavior *)&v67 outputFunctionFromInkFunction:functionCopy];
   ptr = v35->_weightFunction.__ptr_;
   v35->_weightFunction.__ptr_ = v70;
   if (ptr)
@@ -391,7 +391,7 @@ LABEL_5:
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v45 = v62;
+  v45 = functionsCopy;
   v46 = [v45 countByEnumeratingWithState:&v63 objects:v73 count:16];
   if (v46)
   {
@@ -423,8 +423,8 @@ LABEL_13:
 - (id)mutableCopy
 {
   v25 = [PKInkBehavior alloc];
-  v36 = [(PKInkBehavior *)self renderingDescriptor];
-  v35 = [v36 mutableCopy];
+  renderingDescriptor = [(PKInkBehavior *)self renderingDescriptor];
+  v35 = [renderingDescriptor mutableCopy];
   [(PKInkBehavior *)self blendAlpha];
   v4 = v3;
   [(PKInkBehavior *)self targetMultiple];
@@ -432,22 +432,22 @@ LABEL_13:
   [(PKInkBehavior *)self baseAlpha];
   v8 = v7;
   [(PKInkBehavior *)self inkTransform];
-  v23 = [(PKInkBehavior *)self useUnclampedWeight];
-  v34 = [(PKInkBehavior *)self smoothingDescriptor];
-  v33 = [v34 mutableCopy];
-  v32 = [(PKInkBehavior *)self featheringDescriptor];
-  v31 = [v32 mutableCopy];
-  v30 = [(PKInkBehavior *)self pencilFeatheringDescriptor];
-  v29 = [v30 mutableCopy];
-  v28 = [(PKInkBehavior *)self animationDescriptor];
-  v27 = [v28 mutableCopy];
-  v26 = [(PKInkBehavior *)self identifier];
-  v22 = [(PKInkBehavior *)self version];
-  v24 = [(PKInkBehavior *)self variant];
-  v9 = [(PKInkBehavior *)self uiWidths];
+  useUnclampedWeight = [(PKInkBehavior *)self useUnclampedWeight];
+  smoothingDescriptor = [(PKInkBehavior *)self smoothingDescriptor];
+  v33 = [smoothingDescriptor mutableCopy];
+  featheringDescriptor = [(PKInkBehavior *)self featheringDescriptor];
+  v31 = [featheringDescriptor mutableCopy];
+  pencilFeatheringDescriptor = [(PKInkBehavior *)self pencilFeatheringDescriptor];
+  v29 = [pencilFeatheringDescriptor mutableCopy];
+  animationDescriptor = [(PKInkBehavior *)self animationDescriptor];
+  v27 = [animationDescriptor mutableCopy];
+  identifier = [(PKInkBehavior *)self identifier];
+  version = [(PKInkBehavior *)self version];
+  variant = [(PKInkBehavior *)self variant];
+  uiWidths = [(PKInkBehavior *)self uiWidths];
   [(PKInkBehavior *)self defaultWidth];
   v11 = v10;
-  v12 = [(PKInkBehavior *)self uiAzimuthControl];
+  uiAzimuthControl = [(PKInkBehavior *)self uiAzimuthControl];
   showBrushIndicator = self->_showBrushIndicator;
   supportsCombiningStrokes = self->_supportsCombiningStrokes;
   rulerOffsetScale = self->_rulerOffsetScale;
@@ -481,8 +481,8 @@ LABEL_13:
   std::vector<PKOutputFunction>::__init_with_size[abi:ne200100]<PKOutputFunction*,PKOutputFunction*>(v37, self->_brushOpacityOutput.__begin_, self->_brushOpacityOutput.__end_, 0xAAAAAAAAAAAAAAABLL * ((self->_brushOpacityOutput.__end_ - self->_brushOpacityOutput.__begin_) >> 4));
   BYTE2(v21) = supportsCombiningStrokes;
   BYTE1(v21) = showBrushIndicator;
-  LOBYTE(v21) = v12;
-  v19 = [PKInkBehavior initWithRenderingDescriptor:v25 blendAlpha:"initWithRenderingDescriptor:blendAlpha:targetMultiple:baseAlpha:inkTransform:useUnclampedWeight:smoothingDescriptor:featheringDescriptor:pencilFeatheringDescriptor:animationDescriptor:identifier:version:variant:uiWidths:defaultWidth:uiAzimuthControl:showBrushIndicator:supportsCombiningStrokes:rulerOffsetScale:rulerOffsetConstant:weightFunction:radiusOutput:radius2Output:azimuthOutput:thresholdOutput:opacityOutput:edgeWidthOutput:aspectRatioOutput:brushOpacityOutput:" targetMultiple:v35 baseAlpha:v45 inkTransform:v23 useUnclampedWeight:v33 smoothingDescriptor:v31 featheringDescriptor:v29 pencilFeatheringDescriptor:v4 animationDescriptor:v6 identifier:v8 version:v11 variant:rulerOffsetScale uiWidths:rulerOffsetConstant defaultWidth:v27 uiAzimuthControl:v26 showBrushIndicator:v22 supportsCombiningStrokes:v24 rulerOffsetScale:v9 rulerOffsetConstant:v21 weightFunction:v18 radiusOutput:v44 radius2Output:v43 azimuthOutput:v42 thresholdOutput:v41 opacityOutput:v40 edgeWidthOutput:v39 aspectRatioOutput:v38 brushOpacityOutput:v37];
+  LOBYTE(v21) = uiAzimuthControl;
+  v19 = [PKInkBehavior initWithRenderingDescriptor:v25 blendAlpha:"initWithRenderingDescriptor:blendAlpha:targetMultiple:baseAlpha:inkTransform:useUnclampedWeight:smoothingDescriptor:featheringDescriptor:pencilFeatheringDescriptor:animationDescriptor:identifier:version:variant:uiWidths:defaultWidth:uiAzimuthControl:showBrushIndicator:supportsCombiningStrokes:rulerOffsetScale:rulerOffsetConstant:weightFunction:radiusOutput:radius2Output:azimuthOutput:thresholdOutput:opacityOutput:edgeWidthOutput:aspectRatioOutput:brushOpacityOutput:" targetMultiple:v35 baseAlpha:v45 inkTransform:useUnclampedWeight useUnclampedWeight:v33 smoothingDescriptor:v31 featheringDescriptor:v29 pencilFeatheringDescriptor:v4 animationDescriptor:v6 identifier:v8 version:v11 variant:rulerOffsetScale uiWidths:rulerOffsetConstant defaultWidth:v27 uiAzimuthControl:identifier showBrushIndicator:version supportsCombiningStrokes:variant rulerOffsetScale:uiWidths rulerOffsetConstant:v21 weightFunction:v18 radiusOutput:v44 radius2Output:v43 azimuthOutput:v42 thresholdOutput:v41 opacityOutput:v40 edgeWidthOutput:v39 aspectRatioOutput:v38 brushOpacityOutput:v37];
   v45[0] = v37;
   std::vector<PKOutputFunction>::__destroy_vector::operator()[abi:ne200100](v45);
   v45[0] = v38;
@@ -503,18 +503,18 @@ LABEL_13:
   return v19;
 }
 
-- (PKInkBehavior)initWithRenderingDescriptor:(id)a3 variant:(id)a4
+- (PKInkBehavior)initWithRenderingDescriptor:(id)descriptor variant:(id)variant
 {
-  v7 = a3;
-  v8 = a4;
+  descriptorCopy = descriptor;
+  variantCopy = variant;
   v14.receiver = self;
   v14.super_class = PKInkBehavior;
   v9 = [(PKInkBehavior *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_renderingDescriptor, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_renderingDescriptor, descriptor);
+    v11 = [variantCopy copy];
     variant = v10->_variant;
     v10->_variant = v11;
   }
@@ -539,11 +539,11 @@ void __34__PKInkBehavior_inkRadiusOverride__block_invoke()
   _MergedGlobals_134 = v0;
 }
 
-- (void)setInkTransform:(CGAffineTransform *)a3
+- (void)setInkTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_inkTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_inkTransform.c = *&transform->c;
   *&self->_inkTransform.tx = v4;
   *&self->_inkTransform.a = v3;
 }
@@ -553,17 +553,17 @@ void __34__PKInkBehavior_inkRadiusOverride__block_invoke()
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PKInkBehavior *)self identifier];
-  v7 = [(PKInkBehavior *)self version];
-  v8 = [(PKInkBehavior *)self variant];
-  v9 = [v3 stringWithFormat:@"<%@ %p %@ %lu %@>", v5, self, v6, v7, v8];
+  identifier = [(PKInkBehavior *)self identifier];
+  version = [(PKInkBehavior *)self version];
+  variant = [(PKInkBehavior *)self variant];
+  v9 = [v3 stringWithFormat:@"<%@ %p %@ %lu %@>", v5, self, identifier, version, variant];
 
   return v9;
 }
 
 - (NSArray)inkFunctions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (!self->_cachedRadiusFunctions)
   {
     v4 = MEMORY[0x1E695DF70];
@@ -627,23 +627,23 @@ void __34__PKInkBehavior_inkRadiusOverride__block_invoke()
     self->_cachedAspectRatioFunctions = v30;
   }
 
-  [v3 addObjectsFromArray:self->_cachedRadiusFunctions];
-  [v3 addObjectsFromArray:self->_cachedRadius2Functions];
-  [v3 addObjectsFromArray:self->_cachedAzimuthFunctions];
-  [v3 addObjectsFromArray:self->_cachedOpacityFunctions];
-  [v3 addObjectsFromArray:self->_cachedEdgeWidthFunctions];
-  [v3 addObjectsFromArray:self->_cachedAspectRatioFunctions];
+  [array addObjectsFromArray:self->_cachedRadiusFunctions];
+  [array addObjectsFromArray:self->_cachedRadius2Functions];
+  [array addObjectsFromArray:self->_cachedAzimuthFunctions];
+  [array addObjectsFromArray:self->_cachedOpacityFunctions];
+  [array addObjectsFromArray:self->_cachedEdgeWidthFunctions];
+  [array addObjectsFromArray:self->_cachedAspectRatioFunctions];
 
-  return v3;
+  return array;
 }
 
-- (id)inkFunctionsForProperty:(uint64_t)a1
+- (id)inkFunctionsForProperty:(uint64_t)property
 {
   v64[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (property)
   {
-    v40 = [MEMORY[0x1E695DF70] array];
-    v3 = [(PKInkBehavior *)a1 outputVectorForProperty:a2];
+    array = [MEMORY[0x1E695DF70] array];
+    v3 = [(PKInkBehavior *)property outputVectorForProperty:a2];
     if (v3[1] != *v3)
     {
       v4 = v3;
@@ -656,16 +656,16 @@ void __34__PKInkBehavior_inkRadiusOverride__block_invoke()
         v44 = v6;
         objc_opt_self();
         v8 = *v4;
-        v9 = [*(v7 + 3952) array];
-        v10 = [*(v7 + 3952) array];
-        v11 = [*(v7 + 3952) array];
-        v12 = [*(v7 + 3952) array];
-        v13 = [*(v7 + 3952) array];
+        array2 = [*(v7 + 3952) array];
+        array3 = [*(v7 + 3952) array];
+        array4 = [*(v7 + 3952) array];
+        array5 = [*(v7 + 3952) array];
+        array6 = [*(v7 + 3952) array];
         v14 = v8 + v5;
         v43 = v8;
         if ((*(**(v8 + v5 + 40) + 16))(*(v8 + v5 + 40)) == 3)
         {
-          v45 = v13;
+          v45 = array6;
           v15 = *(v14 + 40);
           v60 = 0;
           v61 = 0;
@@ -719,7 +719,7 @@ void __34__PKInkBehavior_inkRadiusOverride__block_invoke()
           v49 = 0;
           v47 = 0;
           std::vector<double>::__init_with_size[abi:ne200100]<double *,double *>(&v47, v15[13], v15[14], (v15[14] - v15[13]) >> 3);
-          v13 = [PKInkBehavior arrayFromVector:?];
+          array6 = [PKInkBehavior arrayFromVector:?];
 
           if (v47)
           {
@@ -727,16 +727,16 @@ void __34__PKInkBehavior_inkRadiusOverride__block_invoke()
             operator delete(v47);
           }
 
-          v11 = v17;
-          v12 = v18;
-          v10 = v16;
-          v9 = v42;
+          array4 = v17;
+          array5 = v18;
+          array3 = v16;
+          array2 = v42;
           v8 = v43;
         }
 
         if ((*(**(v14 + 40) + 16))(*(v14 + 40)) == 1)
         {
-          v46 = v13;
+          v46 = array6;
           v19 = *(v14 + 40);
           [PKInkProperties rangeForInput:*(v8 + v5 + 24)];
           v21 = v20;
@@ -748,7 +748,7 @@ void __34__PKInkBehavior_inkRadiusOverride__block_invoke()
           v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:2];
           v26 = [v22 arrayWithArray:v25];
 
-          v9 = v26;
+          array2 = v26;
           v27 = MEMORY[0x1E695DF70];
           v28 = [MEMORY[0x1E696AD98] numberWithDouble:*(v19 + 64)];
           v63[0] = v28;
@@ -765,22 +765,22 @@ void __34__PKInkBehavior_inkRadiusOverride__block_invoke()
           v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:2];
           v36 = [v32 arrayWithArray:v35];
 
-          v13 = [MEMORY[0x1E695DF70] arrayWithArray:&unk_1F47C1A00];
+          array6 = [MEMORY[0x1E695DF70] arrayWithArray:&unk_1F47C1A00];
 
-          v10 = v9;
+          array3 = array2;
           v8 = v43;
         }
 
         else
         {
-          v31 = v11;
-          v36 = v12;
+          v31 = array4;
+          v36 = array5;
         }
 
-        v37 = [[PKInkFunction alloc] initWithProperty:a2 input:*(v8 + v5 + 24) math:*(v8 + v5 + 32) inputMask:*(v8 + v5) deviceMask:*(v8 + v5 + 8) inputPoints:v9 maxInputPoints:v10 minOutputPoints:v31 maxOutputPoints:v36 outputPoints:v31 controlPoints:0 functionType:0];
-        [(PKInkFunction *)v37 setControlPoints:v13];
+        v37 = [[PKInkFunction alloc] initWithProperty:a2 input:*(v8 + v5 + 24) math:*(v8 + v5 + 32) inputMask:*(v8 + v5) deviceMask:*(v8 + v5 + 8) inputPoints:array2 maxInputPoints:array3 minOutputPoints:v31 maxOutputPoints:v36 outputPoints:v31 controlPoints:0 functionType:0];
+        [(PKInkFunction *)v37 setControlPoints:array6];
 
-        [v40 addObject:v37];
+        [array addObject:v37];
         v4 = v39;
         v5 += 48;
         v7 = 0x1E695D000;
@@ -793,10 +793,10 @@ void __34__PKInkBehavior_inkRadiusOverride__block_invoke()
 
   else
   {
-    v40 = 0;
+    array = 0;
   }
 
-  return v40;
+  return array;
 }
 
 - (uint64_t)outputVectorForProperty:(uint64_t)result
@@ -864,10 +864,10 @@ void __34__PKInkBehavior_inkRadiusOverride__block_invoke()
   return result;
 }
 
-+ (id)arrayFromVector:(uint64_t)a1
++ (id)arrayFromVector:(uint64_t)vector
 {
   objc_opt_self();
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = *a2;
   if (a2[1] != *a2)
   {
@@ -875,7 +875,7 @@ void __34__PKInkBehavior_inkRadiusOverride__block_invoke()
     do
     {
       v6 = [MEMORY[0x1E696AD98] numberWithDouble:*(v4 + 8 * v5)];
-      [v3 addObject:v6];
+      [array addObject:v6];
 
       ++v5;
       v4 = *a2;
@@ -884,27 +884,27 @@ void __34__PKInkBehavior_inkRadiusOverride__block_invoke()
     while (v5 < (a2[1] - *a2) >> 3);
   }
 
-  return v3;
+  return array;
 }
 
-- (void)functionsForProperty:(void *)a1
+- (void)functionsForProperty:(void *)property
 {
-  if (a1)
+  if (property)
   {
     if (a2 <= 2)
     {
       switch(a2)
       {
         case 0:
-          v3 = a1[4];
+          v3 = property[4];
           goto LABEL_18;
         case 1:
-          v3 = a1[7];
+          v3 = property[7];
           goto LABEL_18;
         case 2:
-          v3 = a1[8];
+          v3 = property[8];
 LABEL_18:
-          a1 = v3;
+          property = v3;
           goto LABEL_19;
       }
     }
@@ -915,12 +915,12 @@ LABEL_18:
       {
         if (a2 == 3)
         {
-          v3 = a1[9];
+          v3 = property[9];
         }
 
         else
         {
-          v3 = a1[10];
+          v3 = property[10];
         }
 
         goto LABEL_18;
@@ -928,32 +928,32 @@ LABEL_18:
 
       if (a2 == 5)
       {
-        v3 = a1[5];
+        v3 = property[5];
         goto LABEL_18;
       }
 
       if (a2 == 6)
       {
-        v3 = a1[6];
+        v3 = property[6];
         goto LABEL_18;
       }
     }
 
-    a1 = [MEMORY[0x1E695DF70] array];
+    property = [MEMORY[0x1E695DF70] array];
 LABEL_19:
     v2 = vars8;
   }
 
-  return a1;
+  return property;
 }
 
-- (void)inkFunctionDidChange:(id)a3
+- (void)inkFunctionDidChange:(id)change
 {
-  v7 = a3;
-  v4 = -[PKInkBehavior functionsForProperty:](self, [v7 inkProperty]);
-  v5 = -[PKInkBehavior outputVectorForProperty:](self, [v7 inkProperty]);
-  v6 = [v4 indexOfObject:v7];
-  [(PKInkBehavior *)v8 outputFunctionFromInkFunction:v7];
+  changeCopy = change;
+  v4 = -[PKInkBehavior functionsForProperty:](self, [changeCopy inkProperty]);
+  v5 = -[PKInkBehavior outputVectorForProperty:](self, [changeCopy inkProperty]);
+  v6 = [v4 indexOfObject:changeCopy];
+  [(PKInkBehavior *)v8 outputFunctionFromInkFunction:changeCopy];
   PKOutputFunction::operator=(*v5 + 48 * v6, v8);
   if (v9)
   {
@@ -961,34 +961,34 @@ LABEL_19:
   }
 }
 
-- (void)outputFunctionFromInkFunction:(void *)a3
+- (void)outputFunctionFromInkFunction:(void *)function
 {
-  v5 = a3;
-  v6 = v5;
+  functionCopy = function;
+  v6 = functionCopy;
   if (a2)
   {
-    if ([v5 inkInput] == 2 || objc_msgSend(v6, "inkInput") == 3)
+    if ([functionCopy inkInput] == 2 || objc_msgSend(v6, "inkInput") == 3)
     {
       *(a2 + 8) = 1;
     }
 
-    [(PKInkBehavior *)a1 outputFunctionFromInkFunction:v6];
+    [(PKInkBehavior *)self outputFunctionFromInkFunction:v6];
   }
 
   else
   {
-    *(a1 + 16) = 0u;
-    *(a1 + 32) = 0u;
-    *a1 = 0u;
+    *(self + 16) = 0u;
+    *(self + 32) = 0u;
+    *self = 0u;
   }
 }
 
-- (void)removeInkFunction:(id)a3
+- (void)removeInkFunction:(id)function
 {
-  v4 = a3;
-  v5 = -[PKInkBehavior functionsForProperty:](self, [v4 inkProperty]);
-  v6 = -[PKInkBehavior outputVectorForProperty:](self, [v4 inkProperty]);
-  v7 = [v5 indexOfObject:v4];
+  functionCopy = function;
+  v5 = -[PKInkBehavior functionsForProperty:](self, [functionCopy inkProperty]);
+  v6 = -[PKInkBehavior outputVectorForProperty:](self, [functionCopy inkProperty]);
+  v7 = [v5 indexOfObject:functionCopy];
   [v5 removeObjectAtIndex:v7];
   v8 = v6[1];
   v9 = *v6 + 48 * v7;
@@ -1030,13 +1030,13 @@ LABEL_19:
   v6[1] = v9;
 }
 
-- (void)addNewInkFunction:(id)a3
+- (void)addNewInkFunction:(id)function
 {
-  v4 = a3;
-  [(PKInkBehavior *)v10 outputFunctionFromInkFunction:v4];
-  v5 = -[PKInkBehavior functionsForProperty:](self, [v4 inkProperty]);
-  v6 = -[PKInkBehavior outputVectorForProperty:](self, [v4 inkProperty]);
-  [v5 addObject:v4];
+  functionCopy = function;
+  [(PKInkBehavior *)v10 outputFunctionFromInkFunction:functionCopy];
+  v5 = -[PKInkBehavior functionsForProperty:](self, [functionCopy inkProperty]);
+  v6 = -[PKInkBehavior outputVectorForProperty:](self, [functionCopy inkProperty]);
+  [v5 addObject:functionCopy];
   v7 = *(v6 + 8);
   if (v7 >= *(v6 + 16))
   {
@@ -1060,36 +1060,36 @@ LABEL_19:
   }
 }
 
-- (double)brushOpacityForPoint:(uint64_t)a3 context:
+- (double)brushOpacityForPoint:(uint64_t)point context:
 {
   v3 = 0.0;
-  if (a1 && *(a1 + 272) != *(a1 + 264))
+  if (self && *(self + 272) != *(self + 264))
   {
-    v6 = [*(a3 + 160) ink];
+    v6 = [*(point + 160) ink];
     [v6 weight];
-    v3 = [(PKInkBehavior *)a1 solve:&v9 forPoint:a3 context:v7 weight:?];
+    v3 = [(PKInkBehavior *)self solve:&v9 forPoint:point context:v7 weight:?];
   }
 
   return v3;
 }
 
-- (double)solve:(uint64_t)a3 forPoint:(uint64_t)a4 context:(double)a5 weight:
+- (double)solve:(uint64_t)solve forPoint:(uint64_t)point context:(double)context weight:
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v11 = *(a4 + 128);
-  v10 = *(a4 + 136);
-  v12 = *(a4 + 144);
-  v59 = *(a4 + 120);
+  v11 = *(point + 128);
+  v10 = *(point + 136);
+  v12 = *(point + 144);
+  v59 = *(point + 120);
   if (v59 == 1)
   {
-    v13 = [*(a4 + 160) ink];
+    v13 = [*(point + 160) ink];
     if ([v13 _isEraserInk])
     {
-      v14 = *(a4 + 168);
+      v14 = *(point + 168);
 
       if ((v14 & 2) != 0)
       {
@@ -1109,7 +1109,7 @@ LABEL_19:
     }
   }
 
-  else if (*(a3 + 16) >= 0.0)
+  else if (*(solve + 16) >= 0.0)
   {
     v15 = 2;
   }
@@ -1119,7 +1119,7 @@ LABEL_19:
     v15 = 4;
   }
 
-  if (*(a4 + 96))
+  if (*(point + 96))
   {
     v16 = 1;
   }
@@ -1129,8 +1129,8 @@ LABEL_19:
     v16 = 2;
   }
 
-  v17 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v17 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
     v18 = 2;
   }
@@ -1169,7 +1169,7 @@ LABEL_19:
     while (1)
     {
       v25 = *v21;
-      if ((*v21 & v15) == 0 || (v21[2] & v16) == 0 || (v21[1] & v18) == 0 || (v25 & 8) != 0 && (*(a4 + 168) & 4) != 0 || (v25 & 0x10) != 0 && (*(a4 + 168) & 2) != 0)
+      if ((*v21 & v15) == 0 || (v21[2] & v16) == 0 || (v21[1] & v18) == 0 || (v25 & 8) != 0 && (*(point + 168) & 4) != 0 || (v25 & 0x10) != 0 && (*(point + 168) & 2) != 0)
       {
         goto LABEL_82;
       }
@@ -1185,26 +1185,26 @@ LABEL_19:
         if (v26 != 7)
         {
           v27 = v21[5];
-          v19.n128_f64[0] = *(a4 + 104) - *(a3 + 64);
+          v19.n128_f64[0] = *(point + 104) - *(solve + 64);
           goto LABEL_65;
         }
 
         v51 = v21[5];
-        v52 = *(a3 + 64);
-        [*(a4 + 160) timestamp];
+        v52 = *(solve + 64);
+        [*(point + 160) timestamp];
         v54.n128_f64[0] = v52 - v53;
-        (**v51)(v51, v54, a5);
+        (**v51)(v51, v54, context);
         goto LABEL_66;
       }
 
       switch(v26)
       {
         case 9:
-          v19.n128_f64[0] = (*(a4 + 112) - *(a3 + 96)) / *(a4 + 128);
+          v19.n128_f64[0] = (*(point + 112) - *(solve + 96)) / *(point + 128);
           goto LABEL_64;
         case 10:
           v56 = v21[5];
-          v57 = [*(a4 + 160) ink];
+          v57 = [*(point + 160) ink];
           [v57 _azimuth];
           v50 = (**v56)(v56);
 
@@ -1218,7 +1218,7 @@ LABEL_19:
           v33 = *v32;
           v34 = v28[4];
           v35 = *v34;
-          v36 = *(a3 + 16);
+          v36 = *(solve + 16);
           v37 = v31 - v30;
           v38 = v12 > v30 && v36 < v12;
           v39 = fmax(fmin((v36 - v30) / v37, 1.0), 0.0);
@@ -1247,7 +1247,7 @@ LABEL_19:
             v47 = v42;
           }
 
-          v50 = v47 + (v35 + v49 * (v48 - v35) - v47) * ((a5 + 1.0) * 0.5);
+          v50 = v47 + (v35 + v49 * (v48 - v35) - v47) * ((context + 1.0) * 0.5);
           break;
         default:
           goto LABEL_85;
@@ -1307,7 +1307,7 @@ LABEL_82:
       if (v26 == 1)
       {
         v27 = v21[5];
-        v19.n128_u64[0] = *(a3 + 40);
+        v19.n128_u64[0] = *(solve + 40);
       }
 
       else
@@ -1316,28 +1316,28 @@ LABEL_82:
         {
 LABEL_85:
           v19.n128_u64[0] = 0;
-          v19.n128_f64[0] = (**v21[5])(v19, a5);
+          v19.n128_f64[0] = (**v21[5])(v19, context);
           goto LABEL_66;
         }
 
-        if ([a1 useUnclampedWeight] && (*(a4 + 168) & 2) == 0)
+        if ([self useUnclampedWeight] && (*(point + 168) & 2) == 0)
         {
           goto LABEL_82;
         }
 
         v27 = v21[5];
-        v19.n128_u64[0] = *(a3 + 32);
+        v19.n128_u64[0] = *(solve + 32);
       }
     }
 
     else if (v26 == 4)
     {
-      if ([a1 useUnclampedWeight] && (*(a4 + 168) & 4) == 0)
+      if ([self useUnclampedWeight] && (*(point + 168) & 4) == 0)
       {
         goto LABEL_82;
       }
 
-      v19.n128_u64[0] = *(a3 + 16);
+      v19.n128_u64[0] = *(solve + 16);
       if (!v59)
       {
         v19.n128_f64[0] = v19.n128_f64[0] / v10;
@@ -1356,11 +1356,11 @@ LABEL_64:
       }
 
       v27 = v21[5];
-      v19.n128_u64[0] = *(a3 + 48);
+      v19.n128_u64[0] = *(solve + 48);
     }
 
 LABEL_65:
-    v19.n128_f64[0] = (**v27)(v19, a5);
+    v19.n128_f64[0] = (**v27)(v19, context);
 LABEL_66:
     v50 = v19.n128_f64[0];
     goto LABEL_67;
@@ -1369,15 +1369,15 @@ LABEL_66:
   return 1.0;
 }
 
-- (double)alphaForStroke:(double *)a1
+- (double)alphaForStroke:(double *)stroke
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (stroke)
   {
     v5 = [v3 ink];
-    v6 = [v5 sdrColor];
-    v7 = -[PKInkBehavior alphaForStrokeColor:](a1, [v6 CGColor]);
+    sdrColor = [v5 sdrColor];
+    v7 = -[PKInkBehavior alphaForStrokeColor:](stroke, [sdrColor CGColor]);
   }
 
   else
@@ -1388,20 +1388,20 @@ LABEL_66:
   return v7;
 }
 
-- (double)alphaForStrokeColor:(double *)a1
+- (double)alphaForStrokeColor:(double *)color
 {
-  if (a1)
+  if (color)
   {
     if (a2)
     {
-      v4 = [a1 renderingDescriptor];
-      if ([v4 type] == 1)
+      renderingDescriptor = [color renderingDescriptor];
+      if ([renderingDescriptor type] == 1)
       {
-        v5 = [a1 version];
+        version = [color version];
 
-        if (v5 <= 2)
+        if (version <= 2)
         {
-          return CGColorGetAlpha(a2) * a1[43];
+          return CGColorGetAlpha(a2) * color[43];
         }
       }
 
@@ -1409,43 +1409,43 @@ LABEL_66:
       {
       }
 
-      v6 = [a1 renderingDescriptor];
-      v7 = [v6 blendMode];
+      renderingDescriptor2 = [color renderingDescriptor];
+      blendMode = [renderingDescriptor2 blendMode];
 
-      if (!v7)
+      if (!blendMode)
       {
-        return CGColorGetAlpha(a2) * a1[43];
+        return CGColorGetAlpha(a2) * color[43];
       }
     }
 
-    return a1[43];
+    return color[43];
   }
 
   return 0.0;
 }
 
-- (void)radiusForPoint:(uint64_t)a3 context:
+- (void)radiusForPoint:(uint64_t)point context:
 {
-  if (a1)
+  if (self)
   {
-    v6 = [*(a3 + 160) ink];
+    v6 = [*(point + 160) ink];
     [v6 weight];
     v8 = v7;
 
-    v9 = a1[5].n128_u64[1];
+    v9 = self[5].n128_u64[1];
     if (v9)
     {
       v8 = (**v9)(v9, v8, v8);
     }
 
-    v10 = [(__n128 *)a1 particleDescriptor];
-    v11 = v10;
-    if (v10)
+    particleDescriptor = [(__n128 *)self particleDescriptor];
+    v11 = particleDescriptor;
+    if (particleDescriptor)
     {
-      [v10 particleSize];
+      [particleDescriptor particleSize];
     }
 
-    if (a1[6].n128_u64[1] != a1[6].n128_u64[0])
+    if (self[6].n128_u64[1] != self[6].n128_u64[0])
     {
       v12 = a2[7];
       v26 = a2[6];
@@ -1460,10 +1460,10 @@ LABEL_66:
       v15 = a2[1];
       v20 = *a2;
       v21 = v15;
-      [(PKInkBehavior *)a1 solve:&v20 forPoint:a3 context:v8 weight:?];
+      [(PKInkBehavior *)self solve:&v20 forPoint:point context:v8 weight:?];
     }
 
-    if (a1[15].n128_u64[1] != a1[15].n128_u64[0])
+    if (self[15].n128_u64[1] != self[15].n128_u64[0])
     {
       v16 = a2[7];
       v26 = a2[6];
@@ -1478,27 +1478,27 @@ LABEL_66:
       v19 = a2[1];
       v20 = *a2;
       v21 = v19;
-      [(PKInkBehavior *)a1 solve:&v20 forPoint:a3 context:v8 weight:?];
+      [(PKInkBehavior *)self solve:&v20 forPoint:point context:v8 weight:?];
     }
   }
 }
 
-- (double)edgeWidthForPoint:(uint64_t)a3 context:
+- (double)edgeWidthForPoint:(uint64_t)point context:
 {
   v3 = 0.0;
-  if (a1)
+  if (self)
   {
-    v7 = [*(a3 + 160) ink];
+    v7 = [*(point + 160) ink];
     [v7 weight];
     v9 = v8;
 
-    v10 = *(a1 + 88);
+    v10 = *(self + 88);
     if (v10)
     {
       v9 = (**v10)(v10, v9, v9);
     }
 
-    if (*(a1 + 224) != *(a1 + 216))
+    if (*(self + 224) != *(self + 216))
     {
       v11 = *(a2 + 112);
       v16[6] = *(a2 + 96);
@@ -1513,39 +1513,39 @@ LABEL_66:
       v14 = *(a2 + 16);
       v16[0] = *a2;
       v16[1] = v14;
-      return [(PKInkBehavior *)a1 solve:v16 forPoint:a3 context:v9 weight:?];
+      return [(PKInkBehavior *)self solve:v16 forPoint:point context:v9 weight:?];
     }
   }
 
   return v3;
 }
 
-- (uint64_t)outputForPoint:(uint64_t)a3@<X2> context:(uint64_t)a4@<X8>
+- (uint64_t)outputForPoint:(uint64_t)point@<X2> context:(uint64_t)context@<X8>
 {
   if (result)
   {
     v7 = result;
-    *a4 = *(a2 + 8);
-    *(a4 + 8) = *a2;
-    *(a4 + 48) = *(a2 + 2);
+    *context = *(a2 + 8);
+    *(context + 8) = *a2;
+    *(context + 48) = *(a2 + 2);
     v8 = *(a2 + 24);
-    *(a4 + 56) = v8;
-    *(a4 + 88) = 0;
+    *(context + 56) = v8;
+    *(context + 88) = 0;
     __asm { FMOV            V0.2D, #1.0 }
 
-    *(a4 + 72) = _Q0;
-    *(a4 + 40) = 0;
-    v14 = (a4 + 40);
-    *(a4 + 24) = _Q0;
-    v79 = *(a3 + 96);
-    if (v79 == 1 && *(a3 + 120) == 1)
+    *(context + 72) = _Q0;
+    *(context + 40) = 0;
+    v14 = (context + 40);
+    *(context + 24) = _Q0;
+    v79 = *(point + 96);
+    if (v79 == 1 && *(point + 120) == 1)
     {
-      *&v8 = *(a3 + 56);
+      *&v8 = *(point + 56);
       *(a2 + 3) = v8;
-      v15 = *(a3 + 64);
+      v15 = *(point + 64);
       *(a2 + 4) = v15;
-      *(a4 + 56) = v8;
-      *(a4 + 64) = v15;
+      *(context + 56) = v8;
+      *(context + 64) = v15;
       v78 = 1;
     }
 
@@ -1555,7 +1555,7 @@ LABEL_66:
     }
 
     v80 = *&v8;
-    v16 = [*(a3 + 160) ink];
+    v16 = [*(point + 160) ink];
     [v16 weight];
     v18 = v17;
 
@@ -1567,8 +1567,8 @@ LABEL_66:
 
     if ([v7 useUnclampedWeight])
     {
-      v20 = [*(v7 + 384) lastObject];
-      [v20 floatValue];
+      lastObject = [*(v7 + 384) lastObject];
+      [lastObject floatValue];
       v22 = v18 / v21 * 2.0 + -1.0;
 
       v23 = a2[7];
@@ -1584,8 +1584,8 @@ LABEL_66:
       v26 = a2[1];
       v81 = *a2;
       v82 = v26;
-      v27 = v18 * [(PKInkBehavior *)v7 solve:&v81 forPoint:a3 context:v22 weight:?];
-      *(a4 + 24) = v27;
+      v27 = v18 * [(PKInkBehavior *)v7 solve:&v81 forPoint:point context:v22 weight:?];
+      *(context + 24) = v27;
       if (*(v7 + 128) != *(v7 + 120))
       {
         v28 = a2[7];
@@ -1601,28 +1601,28 @@ LABEL_66:
         v31 = a2[1];
         v81 = *a2;
         v82 = v31;
-        *(a4 + 80) = v18 * [(PKInkBehavior *)v7 solve:&v81 forPoint:a3 context:v22 weight:?];
+        *(context + 80) = v18 * [(PKInkBehavior *)v7 solve:&v81 forPoint:point context:v22 weight:?];
       }
 
-      v32 = [v7 renderingDescriptor];
-      v33 = [v32 type];
+      renderingDescriptor = [v7 renderingDescriptor];
+      type = [renderingDescriptor type];
 
-      if (!v33)
+      if (!type)
       {
         v27 = v27 + 2.0;
-        *(a4 + 24) = v27;
+        *(context + 24) = v27;
       }
 
-      v34 = [v7 uiWidths];
-      v35 = [v34 objectAtIndexedSubscript:0];
+      uiWidths = [v7 uiWidths];
+      v35 = [uiWidths objectAtIndexedSubscript:0];
       [v35 doubleValue];
       v37 = v36;
-      v38 = [v7 uiWidths];
-      v39 = [v38 objectAtIndexedSubscript:4];
+      uiWidths2 = [v7 uiWidths];
+      v39 = [uiWidths2 objectAtIndexedSubscript:4];
       [v39 doubleValue];
       v41 = v40;
-      v42 = [v7 uiWidths];
-      v43 = [v42 objectAtIndexedSubscript:0];
+      uiWidths3 = [v7 uiWidths];
+      v43 = [uiWidths3 objectAtIndexedSubscript:0];
       [v43 doubleValue];
       v18 = fmax((v18 - v37 + v18 - v37) / (v41 - v44) + -1.0, 1.0);
 
@@ -1644,8 +1644,8 @@ LABEL_66:
       v48 = a2[1];
       v81 = *a2;
       v82 = v48;
-      v27 = [(PKInkBehavior *)v7 solve:&v81 forPoint:a3 context:v18 weight:?];
-      *(a4 + 24) = v27;
+      v27 = [(PKInkBehavior *)v7 solve:&v81 forPoint:point context:v18 weight:?];
+      *(context + 24) = v27;
       if (*(v7 + 128) != *(v7 + 120))
       {
         v49 = a2[7];
@@ -1661,7 +1661,7 @@ LABEL_66:
         v52 = a2[1];
         v81 = *a2;
         v82 = v52;
-        *(a4 + 80) = [(PKInkBehavior *)v7 solve:&v81 forPoint:a3 context:v18 weight:?];
+        *(context + 80) = [(PKInkBehavior *)v7 solve:&v81 forPoint:point context:v18 weight:?];
       }
     }
 
@@ -1680,8 +1680,8 @@ LABEL_66:
       v56 = a2[1];
       v81 = *a2;
       v82 = v56;
-      v80 = [(PKInkBehavior *)v7 solve:&v81 forPoint:a3 context:v18 weight:?];
-      *(a4 + 56) = v80;
+      v80 = [(PKInkBehavior *)v7 solve:&v81 forPoint:point context:v18 weight:?];
+      *(context + 56) = v80;
     }
 
     if (*(v7 + 152) != *(v7 + 144))
@@ -1699,7 +1699,7 @@ LABEL_66:
       v60 = a2[1];
       v81 = *a2;
       v82 = v60;
-      *(a4 + 88) = [(PKInkBehavior *)v7 solve:&v81 forPoint:a3 context:v18 weight:?];
+      *(context + 88) = [(PKInkBehavior *)v7 solve:&v81 forPoint:point context:v18 weight:?];
     }
 
     if (*(v7 + 224) != *(v7 + 216))
@@ -1717,7 +1717,7 @@ LABEL_66:
       v64 = a2[1];
       v81 = *a2;
       v82 = v64;
-      *v14 = [(PKInkBehavior *)v7 solve:&v81 forPoint:a3 context:v18 weight:?];
+      *v14 = [(PKInkBehavior *)v7 solve:&v81 forPoint:point context:v18 weight:?];
     }
 
     if (*(v7 + 248) != *(v7 + 240))
@@ -1735,7 +1735,7 @@ LABEL_66:
       v68 = a2[1];
       v81 = *a2;
       v82 = v68;
-      *(a4 + 32) = [(PKInkBehavior *)v7 solve:&v81 forPoint:a3 context:v18 weight:?];
+      *(context + 32) = [(PKInkBehavior *)v7 solve:&v81 forPoint:point context:v18 weight:?];
     }
 
     if (*(v7 + 200) != *(v7 + 192))
@@ -1753,18 +1753,18 @@ LABEL_66:
       v72 = a2[1];
       v81 = *a2;
       v82 = v72;
-      *(a4 + 72) = [(PKInkBehavior *)v7 solve:&v81 forPoint:a3 context:v18 weight:?];
+      *(context + 72) = [(PKInkBehavior *)v7 solve:&v81 forPoint:point context:v18 weight:?];
     }
 
-    v73 = [v7 particleDescriptor];
-    v74 = [v73 initialRandomRotation];
+    particleDescriptor = [v7 particleDescriptor];
+    initialRandomRotation = [particleDescriptor initialRandomRotation];
 
-    if (v74)
+    if (initialRandomRotation)
     {
-      *(a4 + 56) = v80 + [*(a3 + 160) randomSeed] * 6.28318531 / 4294967300.0;
+      *(context + 56) = v80 + [*(point + 160) randomSeed] * 6.28318531 / 4294967300.0;
     }
 
-    v75 = (a3 + 40);
+    v75 = (point + 40);
     if (!v79)
     {
       v75 = v14;
@@ -1773,13 +1773,13 @@ LABEL_66:
     *v14 = *v75;
     if (v79)
     {
-      v27 = fmax(*(a3 + 24), 2.0);
+      v27 = fmax(*(point + 24), 2.0);
     }
 
-    *(a4 + 24) = v27;
+    *(context + 24) = v27;
     if (v78)
     {
-      *(a4 + 32) = *(a3 + 32);
+      *(context + 32) = *(point + 32);
     }
 
     result = os_variant_has_internal_diagnostics();
@@ -1788,19 +1788,19 @@ LABEL_66:
       result = [objc_opt_class() inkRadiusOverride];
       if (v76 > 0.0)
       {
-        *(a4 + 24) = v76;
+        *(context + 24) = v76;
       }
     }
   }
 
   else
   {
-    *(a4 + 64) = 0u;
-    *(a4 + 80) = 0u;
-    *(a4 + 32) = 0u;
-    *(a4 + 48) = 0u;
-    *a4 = 0u;
-    *(a4 + 16) = 0u;
+    *(context + 64) = 0u;
+    *(context + 80) = 0u;
+    *(context + 32) = 0u;
+    *(context + 48) = 0u;
+    *context = 0u;
+    *(context + 16) = 0u;
   }
 
   return result;
@@ -1808,8 +1808,8 @@ LABEL_66:
 
 - (BOOL)isEraser
 {
-  v2 = [(PKInkBehavior *)self renderingDescriptor];
-  v3 = [v2 blendMode] == 2;
+  renderingDescriptor = [(PKInkBehavior *)self renderingDescriptor];
+  v3 = [renderingDescriptor blendMode] == 2;
 
   return v3;
 }
@@ -1817,25 +1817,25 @@ LABEL_66:
 - (double)mutableDurationToEndOfStroke
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
   memset(v10, 0, sizeof(v10));
-  std::vector<PKOutputFunction>::__init_with_size[abi:ne200100]<PKOutputFunction*,PKOutputFunction*>(v10, a1[12], a1[13], 0xAAAAAAAAAAAAAAABLL * ((a1[13] - a1[12]) >> 4));
+  std::vector<PKOutputFunction>::__init_with_size[abi:ne200100]<PKOutputFunction*,PKOutputFunction*>(v10, self[12], self[13], 0xAAAAAAAAAAAAAAABLL * ((self[13] - self[12]) >> 4));
   memset(v11, 0, sizeof(v11));
-  std::vector<PKOutputFunction>::__init_with_size[abi:ne200100]<PKOutputFunction*,PKOutputFunction*>(v11, a1[15], a1[16], 0xAAAAAAAAAAAAAAABLL * ((a1[16] - a1[15]) >> 4));
+  std::vector<PKOutputFunction>::__init_with_size[abi:ne200100]<PKOutputFunction*,PKOutputFunction*>(v11, self[15], self[16], 0xAAAAAAAAAAAAAAABLL * ((self[16] - self[15]) >> 4));
   memset(v12, 0, sizeof(v12));
-  std::vector<PKOutputFunction>::__init_with_size[abi:ne200100]<PKOutputFunction*,PKOutputFunction*>(v12, a1[24], a1[25], 0xAAAAAAAAAAAAAAABLL * ((a1[25] - a1[24]) >> 4));
+  std::vector<PKOutputFunction>::__init_with_size[abi:ne200100]<PKOutputFunction*,PKOutputFunction*>(v12, self[24], self[25], 0xAAAAAAAAAAAAAAABLL * ((self[25] - self[24]) >> 4));
   memset(v13, 0, sizeof(v13));
-  std::vector<PKOutputFunction>::__init_with_size[abi:ne200100]<PKOutputFunction*,PKOutputFunction*>(v13, a1[27], a1[28], 0xAAAAAAAAAAAAAAABLL * ((a1[28] - a1[27]) >> 4));
+  std::vector<PKOutputFunction>::__init_with_size[abi:ne200100]<PKOutputFunction*,PKOutputFunction*>(v13, self[27], self[28], 0xAAAAAAAAAAAAAAABLL * ((self[28] - self[27]) >> 4));
   memset(v14, 0, sizeof(v14));
-  std::vector<PKOutputFunction>::__init_with_size[abi:ne200100]<PKOutputFunction*,PKOutputFunction*>(v14, a1[30], a1[31], 0xAAAAAAAAAAAAAAABLL * ((a1[31] - a1[30]) >> 4));
+  std::vector<PKOutputFunction>::__init_with_size[abi:ne200100]<PKOutputFunction*,PKOutputFunction*>(v14, self[30], self[31], 0xAAAAAAAAAAAAAAABLL * ((self[31] - self[30]) >> 4));
   memset(v15, 0, sizeof(v15));
-  std::vector<PKOutputFunction>::__init_with_size[abi:ne200100]<PKOutputFunction*,PKOutputFunction*>(v15, a1[21], a1[22], 0xAAAAAAAAAAAAAAABLL * ((a1[22] - a1[21]) >> 4));
+  std::vector<PKOutputFunction>::__init_with_size[abi:ne200100]<PKOutputFunction*,PKOutputFunction*>(v15, self[21], self[22], 0xAAAAAAAAAAAAAAABLL * ((self[22] - self[21]) >> 4));
   memset(v16, 0, 24);
-  std::vector<PKOutputFunction>::__init_with_size[abi:ne200100]<PKOutputFunction*,PKOutputFunction*>(v16, a1[18], a1[19], 0xAAAAAAAAAAAAAAABLL * ((a1[19] - a1[18]) >> 4));
+  std::vector<PKOutputFunction>::__init_with_size[abi:ne200100]<PKOutputFunction*,PKOutputFunction*>(v16, self[18], self[19], 0xAAAAAAAAAAAAAAABLL * ((self[19] - self[18]) >> 4));
   v2 = 0;
   v3 = 0.0;
   do
@@ -1871,18 +1871,18 @@ LABEL_66:
 
 - (id)particleTextureName
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 particleDescriptor];
-    v2 = [v1 textureName];
+    particleDescriptor = [self particleDescriptor];
+    textureName = [particleDescriptor textureName];
   }
 
   else
   {
-    v2 = 0;
+    textureName = 0;
   }
 
-  return v2;
+  return textureName;
 }
 
 @end

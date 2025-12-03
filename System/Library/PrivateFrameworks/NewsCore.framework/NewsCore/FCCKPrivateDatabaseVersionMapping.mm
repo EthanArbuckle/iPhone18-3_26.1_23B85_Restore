@@ -1,43 +1,43 @@
 @interface FCCKPrivateDatabaseVersionMapping
-+ (FCCKPrivateDatabaseVersionMapping)mappingWithBaseValues:(id)a3 V2Changes:(id)a4 V3Changes:(id)a5 V4Changes:(id)a6;
-- (BOOL)containsValuePassingTest:(id)a3;
-- (FCCKPrivateDatabaseVersionMapping)initWithBaseValues:(id)a3 V2Changes:(id)a4 V3Changes:(id)a5 V4Changes:(id)a6;
-- (id)allValuesForVersion:(int64_t)a3;
-- (id)allValuesModifiedFromVersion:(int64_t)a3 toVersion:(int64_t)a4;
-- (id)mapValue:(id)a3 toVersion:(int64_t)a4;
-- (id)mappingByTransformingValuesWithBlock:(id)a3;
++ (FCCKPrivateDatabaseVersionMapping)mappingWithBaseValues:(id)values V2Changes:(id)changes V3Changes:(id)v3Changes V4Changes:(id)v4Changes;
+- (BOOL)containsValuePassingTest:(id)test;
+- (FCCKPrivateDatabaseVersionMapping)initWithBaseValues:(id)values V2Changes:(id)changes V3Changes:(id)v3Changes V4Changes:(id)v4Changes;
+- (id)allValuesForVersion:(int64_t)version;
+- (id)allValuesModifiedFromVersion:(int64_t)version toVersion:(int64_t)toVersion;
+- (id)mapValue:(id)value toVersion:(int64_t)version;
+- (id)mappingByTransformingValuesWithBlock:(id)block;
 @end
 
 @implementation FCCKPrivateDatabaseVersionMapping
 
-+ (FCCKPrivateDatabaseVersionMapping)mappingWithBaseValues:(id)a3 V2Changes:(id)a4 V3Changes:(id)a5 V4Changes:(id)a6
++ (FCCKPrivateDatabaseVersionMapping)mappingWithBaseValues:(id)values V2Changes:(id)changes V3Changes:(id)v3Changes V4Changes:(id)v4Changes
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[FCCKPrivateDatabaseVersionMapping alloc] initWithBaseValues:v12 V2Changes:v11 V3Changes:v10 V4Changes:v9];
+  v4ChangesCopy = v4Changes;
+  v3ChangesCopy = v3Changes;
+  changesCopy = changes;
+  valuesCopy = values;
+  v13 = [[FCCKPrivateDatabaseVersionMapping alloc] initWithBaseValues:valuesCopy V2Changes:changesCopy V3Changes:v3ChangesCopy V4Changes:v4ChangesCopy];
 
   return v13;
 }
 
-- (FCCKPrivateDatabaseVersionMapping)initWithBaseValues:(id)a3 V2Changes:(id)a4 V3Changes:(id)a5 V4Changes:(id)a6
+- (FCCKPrivateDatabaseVersionMapping)initWithBaseValues:(id)values V2Changes:(id)changes V3Changes:(id)v3Changes V4Changes:(id)v4Changes
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  valuesCopy = values;
+  changesCopy = changes;
+  v3ChangesCopy = v3Changes;
+  v4ChangesCopy = v4Changes;
   v63.receiver = self;
   v63.super_class = FCCKPrivateDatabaseVersionMapping;
   v15 = [(FCCKPrivateDatabaseVersionMapping *)&v63 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_baseValues, a3);
-    objc_storeStrong(&v16->_V2Changes, a4);
-    objc_storeStrong(&v16->_V3Changes, a5);
-    objc_storeStrong(&v16->_V4Changes, a6);
-    v17 = [MEMORY[0x1E695DFD8] setWithArray:v11];
+    objc_storeStrong(&v15->_baseValues, values);
+    objc_storeStrong(&v16->_V2Changes, changes);
+    objc_storeStrong(&v16->_V3Changes, v3Changes);
+    objc_storeStrong(&v16->_V4Changes, v4Changes);
+    v17 = [MEMORY[0x1E695DFD8] setWithArray:valuesCopy];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __86__FCCKPrivateDatabaseVersionMapping_initWithBaseValues_V2Changes_V3Changes_V4Changes___block_invoke;
@@ -45,17 +45,17 @@
     v62 = v17;
     v42 = v17;
     v41 = _Block_copy(aBlock);
-    [v12 enumerateKeysAndObjectsUsingBlock:v41];
-    [v13 enumerateKeysAndObjectsUsingBlock:v41];
-    [v14 enumerateKeysAndObjectsUsingBlock:v41];
+    [changesCopy enumerateKeysAndObjectsUsingBlock:v41];
+    [v3ChangesCopy enumerateKeysAndObjectsUsingBlock:v41];
+    [v4ChangesCopy enumerateKeysAndObjectsUsingBlock:v41];
     v18 = MEMORY[0x1E695DF90];
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
     v58[2] = __86__FCCKPrivateDatabaseVersionMapping_initWithBaseValues_V2Changes_V3Changes_V4Changes___block_invoke_6;
     v58[3] = &unk_1E7C37D00;
-    v19 = v11;
+    v19 = valuesCopy;
     v59 = v19;
-    v20 = v12;
+    v20 = changesCopy;
     v60 = v20;
     v21 = [v18 fc_dictionary:v58];
     forwardMapToV2 = v16->_forwardMapToV2;
@@ -70,13 +70,13 @@
     v55 = v24;
     v25 = v20;
     v56 = v25;
-    v26 = v13;
+    v26 = v3ChangesCopy;
     v57 = v26;
     v27 = [v23 fc_dictionary:v54];
     forwardMapToV3 = v16->_forwardMapToV3;
     v16->_forwardMapToV3 = v27;
 
-    v43 = v11;
+    v43 = valuesCopy;
     v29 = MEMORY[0x1E695DF90];
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
@@ -88,7 +88,7 @@
     v51 = v31;
     v32 = v26;
     v52 = v32;
-    v33 = v14;
+    v33 = v4ChangesCopy;
     v53 = v33;
     v34 = [v29 fc_dictionary:v49];
     forwardMapToV4 = v16->_forwardMapToV4;
@@ -104,7 +104,7 @@
     v47 = v31;
     v48 = v30;
     v37 = v36;
-    v11 = v43;
+    valuesCopy = v43;
     v38 = [v37 fc_dictionary:v44];
     reverseMap = v16->_reverseMap;
     v16->_reverseMap = v38;
@@ -215,44 +215,44 @@ void __86__FCCKPrivateDatabaseVersionMapping_initWithBaseValues_V2Changes_V3Chan
   [v10 enumerateObjectsUsingBlock:v12];
 }
 
-- (id)mapValue:(id)a3 toVersion:(int64_t)a4
+- (id)mapValue:(id)value toVersion:(int64_t)version
 {
-  v7 = a3;
-  v8 = [(FCCKPrivateDatabaseVersionMapping *)self reverseMap];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  valueCopy = value;
+  reverseMap = [(FCCKPrivateDatabaseVersionMapping *)self reverseMap];
+  v9 = [reverseMap objectForKeyedSubscript:valueCopy];
 
   if (!v9)
   {
-    v4 = v7;
+    v4 = valueCopy;
 
     goto LABEL_17;
   }
 
   v10 = v9;
   v11 = v10;
-  if (a4 > 1)
+  if (version > 1)
   {
-    if (a4 == 2)
+    if (version == 2)
     {
-      v12 = [(FCCKPrivateDatabaseVersionMapping *)self forwardMapToV3];
+      forwardMapToV3 = [(FCCKPrivateDatabaseVersionMapping *)self forwardMapToV3];
       goto LABEL_12;
     }
 
-    if (a4 == 3)
+    if (version == 3)
     {
-      v12 = [(FCCKPrivateDatabaseVersionMapping *)self forwardMapToV4];
+      forwardMapToV3 = [(FCCKPrivateDatabaseVersionMapping *)self forwardMapToV4];
       goto LABEL_12;
     }
   }
 
-  else if (a4)
+  else if (version)
   {
-    if (a4 == 1)
+    if (version == 1)
     {
-      v12 = [(FCCKPrivateDatabaseVersionMapping *)self forwardMapToV2];
+      forwardMapToV3 = [(FCCKPrivateDatabaseVersionMapping *)self forwardMapToV2];
 LABEL_12:
-      v13 = v12;
-      v14 = [v12 objectForKeyedSubscript:v11];
+      v13 = forwardMapToV3;
+      v14 = [forwardMapToV3 objectForKeyedSubscript:v11];
       v15 = v14;
       if (v14)
       {
@@ -261,7 +261,7 @@ LABEL_12:
 
       else
       {
-        v16 = v7;
+        v16 = valueCopy;
       }
 
       v4 = v16;
@@ -278,31 +278,31 @@ LABEL_17:
   return v4;
 }
 
-- (id)allValuesForVersion:(int64_t)a3
+- (id)allValuesForVersion:(int64_t)version
 {
-  v5 = [(FCCKPrivateDatabaseVersionMapping *)self baseValues];
+  baseValues = [(FCCKPrivateDatabaseVersionMapping *)self baseValues];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__FCCKPrivateDatabaseVersionMapping_allValuesForVersion___block_invoke;
   v8[3] = &unk_1E7C40518;
   v8[4] = self;
-  v8[5] = a3;
-  v6 = [v5 fc_arrayByTransformingWithBlock:v8];
+  v8[5] = version;
+  v6 = [baseValues fc_arrayByTransformingWithBlock:v8];
 
   return v6;
 }
 
-- (id)allValuesModifiedFromVersion:(int64_t)a3 toVersion:(int64_t)a4
+- (id)allValuesModifiedFromVersion:(int64_t)version toVersion:(int64_t)toVersion
 {
-  v7 = [(FCCKPrivateDatabaseVersionMapping *)self baseValues];
+  baseValues = [(FCCKPrivateDatabaseVersionMapping *)self baseValues];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __76__FCCKPrivateDatabaseVersionMapping_allValuesModifiedFromVersion_toVersion___block_invoke;
   v10[3] = &unk_1E7C44B98;
   v10[4] = self;
-  v10[5] = a3;
-  v10[6] = a4;
-  v8 = [v7 fc_setByTransformingWithBlock:v10];
+  v10[5] = version;
+  v10[6] = toVersion;
+  v8 = [baseValues fc_setByTransformingWithBlock:v10];
 
   return v8;
 }
@@ -328,38 +328,38 @@ id __76__FCCKPrivateDatabaseVersionMapping_allValuesModifiedFromVersion_toVersio
   return v8;
 }
 
-- (BOOL)containsValuePassingTest:(id)a3
+- (BOOL)containsValuePassingTest:(id)test
 {
-  v4 = a3;
-  v5 = [(FCCKPrivateDatabaseVersionMapping *)self baseValues];
-  if ([v5 fc_containsObjectPassingTest:v4])
+  testCopy = test;
+  baseValues = [(FCCKPrivateDatabaseVersionMapping *)self baseValues];
+  if ([baseValues fc_containsObjectPassingTest:testCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(FCCKPrivateDatabaseVersionMapping *)self V2Changes];
-    v8 = [v7 allValues];
-    if ([v8 fc_containsObjectPassingTest:v4])
+    v2Changes = [(FCCKPrivateDatabaseVersionMapping *)self V2Changes];
+    allValues = [v2Changes allValues];
+    if ([allValues fc_containsObjectPassingTest:testCopy])
     {
       v6 = 1;
     }
 
     else
     {
-      v9 = [(FCCKPrivateDatabaseVersionMapping *)self V3Changes];
-      v10 = [v9 allValues];
-      if ([v10 fc_containsObjectPassingTest:v4])
+      v3Changes = [(FCCKPrivateDatabaseVersionMapping *)self V3Changes];
+      allValues2 = [v3Changes allValues];
+      if ([allValues2 fc_containsObjectPassingTest:testCopy])
       {
         v6 = 1;
       }
 
       else
       {
-        v11 = [(FCCKPrivateDatabaseVersionMapping *)self V4Changes];
-        v12 = [v11 allValues];
-        v6 = [v12 fc_containsObjectPassingTest:v4];
+        v4Changes = [(FCCKPrivateDatabaseVersionMapping *)self V4Changes];
+        allValues3 = [v4Changes allValues];
+        v6 = [allValues3 fc_containsObjectPassingTest:testCopy];
       }
     }
   }
@@ -367,11 +367,11 @@ id __76__FCCKPrivateDatabaseVersionMapping_allValuesModifiedFromVersion_toVersio
   return v6;
 }
 
-- (id)mappingByTransformingValuesWithBlock:(id)a3
+- (id)mappingByTransformingValuesWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(FCCKPrivateDatabaseVersionMapping *)self baseValues];
-  v6 = [v5 fc_setByTransformingWithBlock:v4];
+  blockCopy = block;
+  baseValues = [(FCCKPrivateDatabaseVersionMapping *)self baseValues];
+  v6 = [baseValues fc_setByTransformingWithBlock:blockCopy];
 
   v7 = MEMORY[0x1E695DF20];
   v27[0] = MEMORY[0x1E69E9820];
@@ -379,7 +379,7 @@ id __76__FCCKPrivateDatabaseVersionMapping_allValuesModifiedFromVersion_toVersio
   v27[2] = __74__FCCKPrivateDatabaseVersionMapping_mappingByTransformingValuesWithBlock___block_invoke;
   v27[3] = &unk_1E7C3F430;
   v27[4] = self;
-  v8 = v4;
+  v8 = blockCopy;
   v28 = v8;
   v9 = [v7 fc_dictionary:v27];
   v10 = MEMORY[0x1E695DF20];
@@ -396,12 +396,12 @@ id __76__FCCKPrivateDatabaseVersionMapping_allValuesModifiedFromVersion_toVersio
   v20 = 3221225472;
   v21 = __74__FCCKPrivateDatabaseVersionMapping_mappingByTransformingValuesWithBlock___block_invoke_5;
   v22 = &unk_1E7C3F430;
-  v23 = self;
+  selfCopy = self;
   v24 = v11;
   v14 = v11;
   v15 = [v13 fc_dictionary:&v19];
-  v16 = [v6 allObjects];
-  v17 = [FCCKPrivateDatabaseVersionMapping mappingWithBaseValues:v16 V2Changes:v9 V3Changes:v12 V4Changes:v15];
+  allObjects = [v6 allObjects];
+  v17 = [FCCKPrivateDatabaseVersionMapping mappingWithBaseValues:allObjects V2Changes:v9 V3Changes:v12 V4Changes:v15];
 
   return v17;
 }

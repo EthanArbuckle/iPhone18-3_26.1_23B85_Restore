@@ -2,22 +2,22 @@
 - (BOOL)allowsCachedCardRequirements;
 - (NSString)description;
 - (PKPaymentSetupViewControllerDelegate)delegate;
-- (PKSetupAssistantContext)initWithSetupAssistant:(unint64_t)a3;
-- (PKSetupAssistantContext)initWithSetupAssistantAsFollowupAction:(unint64_t)a3;
-- (void)extendableDescription:(id)a3;
-- (void)prepareForFollowupQueryWithHandler:(id)a3;
+- (PKSetupAssistantContext)initWithSetupAssistant:(unint64_t)assistant;
+- (PKSetupAssistantContext)initWithSetupAssistantAsFollowupAction:(unint64_t)action;
+- (void)extendableDescription:(id)description;
+- (void)prepareForFollowupQueryWithHandler:(id)handler;
 @end
 
 @implementation PKSetupAssistantContext
 
-- (PKSetupAssistantContext)initWithSetupAssistant:(unint64_t)a3
+- (PKSetupAssistantContext)initWithSetupAssistant:(unint64_t)assistant
 {
   v6.receiver = self;
   v6.super_class = PKSetupAssistantContext;
   result = [(PKSetupAssistantContext *)&v6 init];
   if (result)
   {
-    if (a3 == 2)
+    if (assistant == 2)
     {
       v5 = 2;
     }
@@ -34,26 +34,26 @@
   return result;
 }
 
-- (PKSetupAssistantContext)initWithSetupAssistantAsFollowupAction:(unint64_t)a3
+- (PKSetupAssistantContext)initWithSetupAssistantAsFollowupAction:(unint64_t)action
 {
   v5.receiver = self;
   v5.super_class = PKSetupAssistantContext;
   result = [(PKSetupAssistantContext *)&v5 init];
   if (result)
   {
-    result->_setupAssistant = a3;
+    result->_setupAssistant = action;
     result->_isFollowupAction = 1;
   }
 
   return result;
 }
 
-- (void)prepareForFollowupQueryWithHandler:(id)a3
+- (void)prepareForFollowupQueryWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     self->_allowsCachedCardRequirements = 0;
-    (*(a3 + 2))(a3, a2);
+    (*(handler + 2))(handler, a2);
     self->_allowsCachedCardRequirements = 1;
   }
 }
@@ -80,11 +80,11 @@
   return v3;
 }
 
-- (void)extendableDescription:(id)a3
+- (void)extendableDescription:(id)description
 {
   setupAssistant = self->_setupAssistant;
-  v5 = a3;
-  [v5 appendFormat:@"setupAssistant: '%lu'; ", setupAssistant];
+  descriptionCopy = description;
+  [descriptionCopy appendFormat:@"setupAssistant: '%lu'; ", setupAssistant];
   if (self->_isFollowupAction)
   {
     v6 = @"YES";
@@ -95,7 +95,7 @@
     v6 = @"NO";
   }
 
-  [v5 appendFormat:@"isFollowupAction: '%@'; ", v6];
+  [descriptionCopy appendFormat:@"isFollowupAction: '%@'; ", v6];
   if (self->_allowsCachedCardRequirements)
   {
     v7 = @"YES";
@@ -106,7 +106,7 @@
     v7 = @"NO";
   }
 
-  [v5 appendFormat:@"allowsCachedCardRequirements: %@; ", v7];
+  [descriptionCopy appendFormat:@"allowsCachedCardRequirements: %@; ", v7];
   if (self->_externalizedContext)
   {
     v8 = @"YES";
@@ -117,9 +117,9 @@
     v8 = @"NO";
   }
 
-  [v5 appendFormat:@"hasExternalizedContext: '%@'; ", v8];
+  [descriptionCopy appendFormat:@"hasExternalizedContext: '%@'; ", v8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [v5 appendFormat:@"delegate: '%@'; ", WeakRetained];
+  [descriptionCopy appendFormat:@"delegate: '%@'; ", WeakRetained];
 }
 
 - (PKPaymentSetupViewControllerDelegate)delegate

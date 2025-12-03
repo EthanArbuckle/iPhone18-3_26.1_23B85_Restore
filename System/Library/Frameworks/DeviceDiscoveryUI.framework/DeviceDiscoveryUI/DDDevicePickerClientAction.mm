@@ -1,70 +1,70 @@
 @interface DDDevicePickerClientAction
-+ (id)actionForDevicePickerCreatedBonjourEndpoint:(id)a3;
-+ (id)actionForDevicePickerCreatedBrowserResultData:(id)a3;
-+ (id)actionForDevicePickerCreatedEndpoint:(id)a3;
-- (void)performActionForSceneController:(id)a3;
++ (id)actionForDevicePickerCreatedBonjourEndpoint:(id)endpoint;
++ (id)actionForDevicePickerCreatedBrowserResultData:(id)data;
++ (id)actionForDevicePickerCreatedEndpoint:(id)endpoint;
+- (void)performActionForSceneController:(id)controller;
 @end
 
 @implementation DDDevicePickerClientAction
 
-+ (id)actionForDevicePickerCreatedEndpoint:(id)a3
++ (id)actionForDevicePickerCreatedEndpoint:(id)endpoint
 {
   v4 = MEMORY[0x277CF0C80];
-  v5 = a3;
+  endpointCopy = endpoint;
   v6 = objc_alloc_init(v4);
   [v6 setObject:&unk_284AF6C68 forSetting:0];
   v7 = nw_endpoint_copy_dictionary();
 
   [v6 setObject:v7 forSetting:1];
-  v8 = [[a1 alloc] initWithInfo:v6 responder:0];
+  v8 = [[self alloc] initWithInfo:v6 responder:0];
 
   return v8;
 }
 
-+ (id)actionForDevicePickerCreatedBonjourEndpoint:(id)a3
++ (id)actionForDevicePickerCreatedBonjourEndpoint:(id)endpoint
 {
   v4 = MEMORY[0x277CF0C80];
-  v5 = a3;
+  endpointCopy = endpoint;
   v6 = objc_alloc_init(v4);
   [v6 setObject:&unk_284AF6C80 forSetting:0];
   v7 = nw_endpoint_copy_dictionary();
 
   [v6 setObject:v7 forSetting:2];
-  v8 = [[a1 alloc] initWithInfo:v6 responder:0];
+  v8 = [[self alloc] initWithInfo:v6 responder:0];
 
   return v8;
 }
 
-+ (id)actionForDevicePickerCreatedBrowserResultData:(id)a3
++ (id)actionForDevicePickerCreatedBrowserResultData:(id)data
 {
   v4 = MEMORY[0x277CF0C80];
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(v4);
   [v6 setObject:&unk_284AF6C98 forSetting:0];
-  [v6 setObject:v5 forSetting:3];
+  [v6 setObject:dataCopy forSetting:3];
 
-  v7 = [[a1 alloc] initWithInfo:v6 responder:0];
+  v7 = [[self alloc] initWithInfo:v6 responder:0];
 
   return v7;
 }
 
-- (void)performActionForSceneController:(id)a3
+- (void)performActionForSceneController:(id)controller
 {
-  v5 = [a3 delegate];
+  delegate = [controller delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    [(DDDevicePickerClientAction *)v5 performActionForSceneController:a2, self];
+    [(DDDevicePickerClientAction *)delegate performActionForSceneController:a2, self];
   }
 
-  v14 = v5;
-  v6 = [(DDDevicePickerClientAction *)self info];
-  v7 = [v6 objectForSetting:0];
-  v8 = [v7 integerValue];
+  v14 = delegate;
+  info = [(DDDevicePickerClientAction *)self info];
+  v7 = [info objectForSetting:0];
+  integerValue = [v7 integerValue];
 
-  if (!v8)
+  if (!integerValue)
   {
-    v13 = [(DDDevicePickerClientAction *)self info];
-    v10 = [v13 objectForSetting:1];
+    info2 = [(DDDevicePickerClientAction *)self info];
+    v10 = [info2 objectForSetting:1];
 
     v11 = nw_endpoint_create_from_dictionary();
     [v14 _devicePickerDidCreateApplicationServiceEndpoint:v11];
@@ -73,23 +73,23 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v8 != 2)
+  if (integerValue != 2)
   {
-    if (v8 != 1)
+    if (integerValue != 1)
     {
       goto LABEL_11;
     }
 
-    v9 = [(DDDevicePickerClientAction *)self info];
-    v10 = [v9 objectForSetting:2];
+    info3 = [(DDDevicePickerClientAction *)self info];
+    v10 = [info3 objectForSetting:2];
 
     v11 = nw_endpoint_create_from_dictionary();
     [v14 _devicePickerDidCreateBonjourEndpoint:v11];
     goto LABEL_9;
   }
 
-  v12 = [(DDDevicePickerClientAction *)self info];
-  v10 = [v12 objectForSetting:3];
+  info4 = [(DDDevicePickerClientAction *)self info];
+  v10 = [info4 objectForSetting:3];
 
   [v14 _devicePickerDidCreateBrowserResultData:v10];
 LABEL_10:

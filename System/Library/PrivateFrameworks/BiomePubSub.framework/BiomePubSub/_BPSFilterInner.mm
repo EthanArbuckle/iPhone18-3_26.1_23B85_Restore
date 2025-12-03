@@ -1,19 +1,19 @@
 @interface _BPSFilterInner
-- (_BPSFilterInner)initWithDownstream:(id)a3 isIncluded:(id)a4;
-- (id)receiveNewValue:(id)a3;
+- (_BPSFilterInner)initWithDownstream:(id)downstream isIncluded:(id)included;
+- (id)receiveNewValue:(id)value;
 @end
 
 @implementation _BPSFilterInner
 
-- (_BPSFilterInner)initWithDownstream:(id)a3 isIncluded:(id)a4
+- (_BPSFilterInner)initWithDownstream:(id)downstream isIncluded:(id)included
 {
-  v6 = a4;
+  includedCopy = included;
   v11.receiver = self;
   v11.super_class = _BPSFilterInner;
-  v7 = [(BPSFilterProducer *)&v11 initWithDownstream:a3];
+  v7 = [(BPSFilterProducer *)&v11 initWithDownstream:downstream];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [includedCopy copy];
     isIncluded = v7->_isIncluded;
     v7->_isIncluded = v8;
   }
@@ -21,15 +21,15 @@
   return v7;
 }
 
-- (id)receiveNewValue:(id)a3
+- (id)receiveNewValue:(id)value
 {
-  v4 = a3;
-  v5 = [(_BPSFilterInner *)self isIncluded];
-  v6 = (v5)[2](v5, v4);
+  valueCopy = value;
+  isIncluded = [(_BPSFilterInner *)self isIncluded];
+  v6 = (isIncluded)[2](isIncluded, valueCopy);
 
   if (v6)
   {
-    v7 = v4;
+    v7 = valueCopy;
   }
 
   else

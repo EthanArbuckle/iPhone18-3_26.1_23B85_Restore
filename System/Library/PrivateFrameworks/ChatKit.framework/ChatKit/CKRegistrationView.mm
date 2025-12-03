@@ -6,67 +6,67 @@
 - (UILabel)signingInLabel;
 - (UILabel)titleLabel;
 - (UILabel)verbiageLabel;
-- (void)_learnMorePressed:(id)a3;
+- (void)_learnMorePressed:(id)pressed;
 - (void)layoutSubviews;
-- (void)setAuthKitSignInView:(id)a3;
-- (void)setPrivacyLinkView:(id)a3;
-- (void)setSigningIn:(BOOL)a3;
+- (void)setAuthKitSignInView:(id)view;
+- (void)setPrivacyLinkView:(id)view;
+- (void)setSigningIn:(BOOL)in;
 @end
 
 @implementation CKRegistrationView
 
-- (void)setAuthKitSignInView:(id)a3
+- (void)setAuthKitSignInView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   authKitSignInView = self->_authKitSignInView;
-  if (authKitSignInView != v5)
+  if (authKitSignInView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     [(UIView *)authKitSignInView removeFromSuperview];
-    objc_storeStrong(&self->_authKitSignInView, a3);
+    objc_storeStrong(&self->_authKitSignInView, view);
     v7 = self->_authKitSignInView;
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v7 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v7 setBackgroundColor:clearColor];
 
     [(UIView *)self->_authKitSignInView setTranslatesAutoresizingMaskIntoConstraints:1];
     [(CKRegistrationView *)self addSubview:self->_authKitSignInView];
-    v5 = v9;
+    viewCopy = v9;
   }
 }
 
-- (void)setSigningIn:(BOOL)a3
+- (void)setSigningIn:(BOOL)in
 {
-  v3 = a3;
+  inCopy = in;
   [(UIView *)self->_authKitSignInView setHidden:?];
-  v5 = [(CKRegistrationView *)self signingInLabel];
-  v6 = !v3;
-  [v5 setHidden:v6];
+  signingInLabel = [(CKRegistrationView *)self signingInLabel];
+  v6 = !inCopy;
+  [signingInLabel setHidden:v6];
 
-  v7 = [(CKRegistrationView *)self signingInSpinner];
-  [v7 setHidden:v6];
+  signingInSpinner = [(CKRegistrationView *)self signingInSpinner];
+  [signingInSpinner setHidden:v6];
 
-  v8 = [(CKRegistrationView *)self signingInSpinner];
-  v9 = v8;
+  signingInSpinner2 = [(CKRegistrationView *)self signingInSpinner];
+  v9 = signingInSpinner2;
   if (v6)
   {
-    [v8 stopAnimating];
+    [signingInSpinner2 stopAnimating];
   }
 
   else
   {
-    [v8 startAnimating];
+    [signingInSpinner2 startAnimating];
   }
 
   [(CKRegistrationView *)self setNeedsDisplay];
 }
 
-- (void)setPrivacyLinkView:(id)a3
+- (void)setPrivacyLinkView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UIView *)self->_privacyLinkView removeFromSuperview];
   privacyLinkView = self->_privacyLinkView;
-  self->_privacyLinkView = v4;
-  v6 = v4;
+  self->_privacyLinkView = viewCopy;
+  v6 = viewCopy;
 
   [(UIView *)self->_privacyLinkView setTranslatesAutoresizingMaskIntoConstraints:1];
   [(CKRegistrationView *)self addSubview:self->_privacyLinkView];
@@ -79,8 +79,8 @@
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 signInAppIconImage];
-    v7 = [v4 initWithImage:v6];
+    signInAppIconImage = [v5 signInAppIconImage];
+    v7 = [v4 initWithImage:signInAppIconImage];
     v8 = self->_iconImageView;
     self->_iconImageView = v7;
 
@@ -123,17 +123,17 @@
     [(UILabel *)self->_titleLabel setText:v8];
 
     v9 = +[CKUIBehavior sharedBehaviors];
-    v10 = [v9 signInTitleFont];
-    [(UILabel *)self->_titleLabel setFont:v10];
+    signInTitleFont = [v9 signInTitleFont];
+    [(UILabel *)self->_titleLabel setFont:signInTitleFont];
 
     v11 = +[CKUIBehavior sharedBehaviors];
-    v12 = [v11 theme];
-    v13 = [v12 primaryLabelColor];
-    [(UILabel *)self->_titleLabel setTextColor:v13];
+    theme = [v11 theme];
+    primaryLabelColor = [theme primaryLabelColor];
+    [(UILabel *)self->_titleLabel setTextColor:primaryLabelColor];
 
     [(UILabel *)self->_titleLabel setTextAlignment:1];
-    v14 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)self->_titleLabel setBackgroundColor:v14];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)self->_titleLabel setBackgroundColor:clearColor];
 
     [(UILabel *)self->_titleLabel sizeToFit];
     [(CKRegistrationView *)self addSubview:self->_titleLabel];
@@ -175,15 +175,15 @@
     [(UILabel *)self->_verbiageLabel setFont:v13];
 
     v14 = +[CKUIBehavior sharedBehaviors];
-    v15 = [v14 theme];
-    v16 = [v15 primaryLabelColor];
-    [(UILabel *)self->_verbiageLabel setTextColor:v16];
+    theme = [v14 theme];
+    primaryLabelColor = [theme primaryLabelColor];
+    [(UILabel *)self->_verbiageLabel setTextColor:primaryLabelColor];
 
     [(UILabel *)self->_verbiageLabel setNumberOfLines:0];
     [(UILabel *)self->_verbiageLabel setLineBreakMode:0];
     [(UILabel *)self->_verbiageLabel setTextAlignment:1];
-    v17 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)self->_verbiageLabel setBackgroundColor:v17];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)self->_verbiageLabel setBackgroundColor:clearColor];
 
     [(UILabel *)self->_verbiageLabel setAutoresizingMask:18];
     [(UILabel *)self->_verbiageLabel sizeToFit];
@@ -214,15 +214,15 @@
     [(UILabel *)self->_signingInLabel setFont:v9];
 
     v10 = +[CKUIBehavior sharedBehaviors];
-    v11 = [v10 theme];
-    v12 = [v11 primaryLabelColor];
-    [(UILabel *)self->_signingInLabel setTextColor:v12];
+    theme = [v10 theme];
+    primaryLabelColor = [theme primaryLabelColor];
+    [(UILabel *)self->_signingInLabel setTextColor:primaryLabelColor];
 
     [(UILabel *)self->_signingInLabel setNumberOfLines:0];
     [(UILabel *)self->_signingInLabel setLineBreakMode:0];
     [(UILabel *)self->_signingInLabel setTextAlignment:1];
-    v13 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)self->_signingInLabel setBackgroundColor:v13];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)self->_signingInLabel setBackgroundColor:clearColor];
 
     [(UILabel *)self->_signingInLabel setAutoresizingMask:18];
     [(UILabel *)self->_signingInLabel setHidden:1];
@@ -267,16 +267,16 @@
     [(UIButton *)v6 setTitle:v8 forState:0];
 
     v9 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDCF8]];
-    v10 = [(UIButton *)self->_learnMoreButton titleLabel];
+    titleLabel = [(UIButton *)self->_learnMoreButton titleLabel];
     v11 = [MEMORY[0x1E69DB878] fontWithDescriptor:v9 size:0.0];
-    [v10 setFont:v11];
+    [titleLabel setFont:v11];
 
     v12 = +[CKUIBehavior sharedBehaviors];
-    v13 = [v12 signInTintColor];
+    signInTintColor = [v12 signInTintColor];
 
-    if (v13)
+    if (signInTintColor)
     {
-      [(UIButton *)self->_learnMoreButton setTitleColor:v13 forState:0];
+      [(UIButton *)self->_learnMoreButton setTitleColor:signInTintColor forState:0];
     }
 
     [(UIButton *)self->_learnMoreButton setAutoresizingMask:5];
@@ -297,8 +297,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v2 = [(UIView *)self->_authKitSignInView subviews];
-  v3 = [v2 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  subviews = [(UIView *)self->_authKitSignInView subviews];
+  v3 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v3)
   {
     v4 = v3;
@@ -312,7 +312,7 @@
       {
         if (*v19 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
@@ -342,7 +342,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v4 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v4);
@@ -376,8 +376,8 @@
   [v10 signInSplashImageTopPadding];
   v12 = v11;
 
-  v97 = [(CKRegistrationView *)self iconImageView];
-  [v97 bounds];
+  iconImageView = [(CKRegistrationView *)self iconImageView];
+  [iconImageView bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -392,7 +392,7 @@
   v103.size.width = v18;
   v103.size.height = v20;
   v22 = floor(MidX - CGRectGetWidth(v103) * 0.5);
-  [v97 setFrame:{v22, v12, v18, v20}];
+  [iconImageView setFrame:{v22, v12, v18, v20}];
   v104.origin.x = v22;
   v104.origin.y = v12;
   v104.size.width = v18;
@@ -402,8 +402,8 @@
   [v24 signInSplashImageBottomPadding];
   v26 = MaxY + v25;
 
-  v27 = [(CKRegistrationView *)self titleLabel];
-  [v27 frame];
+  titleLabel = [(CKRegistrationView *)self titleLabel];
+  [titleLabel frame];
   v29 = v28;
   v31 = v30;
   v105.origin.x = v98;
@@ -411,7 +411,7 @@
   v105.size.width = v96;
   v105.size.height = rect;
   v32 = floor(CGRectGetMidX(v105) - v29 * 0.5);
-  [v27 setFrame:{v32, v26, v29, v31}];
+  [titleLabel setFrame:{v32, v26, v29, v31}];
   v106.origin.x = v32;
   v106.origin.y = v26;
   v106.size.width = v29;
@@ -421,12 +421,12 @@
   [v34 signInTitleBottomPadding];
   v36 = v33 + v35;
 
-  v37 = [(CKRegistrationView *)self verbiageLabel];
+  verbiageLabel = [(CKRegistrationView *)self verbiageLabel];
   v107.origin.x = v98;
   v107.origin.y = v99;
   v107.size.width = v96;
   v107.size.height = rect;
-  [v37 sizeThatFits:{CGRectGetWidth(v107) + -20.0, 1.79769313e308}];
+  [verbiageLabel sizeThatFits:{CGRectGetWidth(v107) + -20.0, 1.79769313e308}];
   v39 = v38;
   v41 = v40;
   v108.origin.x = v98;
@@ -434,15 +434,15 @@
   v108.size.width = v96;
   v108.size.height = rect;
   v42 = floor(CGRectGetMidX(v108) - v39 * 0.5);
-  [v37 setFrame:{v42, v36, v39, v41}];
+  [verbiageLabel setFrame:{v42, v36, v39, v41}];
   v109.origin.x = v42;
   v109.origin.y = v36;
   v109.size.width = v39;
   v109.size.height = v41;
   v43 = CGRectGetMaxY(v109) + 0.0;
-  v44 = [(CKRegistrationView *)self learnMoreButton];
-  [v44 sizeToFit];
-  [v44 bounds];
+  learnMoreButton = [(CKRegistrationView *)self learnMoreButton];
+  [learnMoreButton sizeToFit];
+  [learnMoreButton bounds];
   v47 = v46;
   v49 = v48;
   v51 = v50;
@@ -466,7 +466,7 @@
   v111.size.width = v52;
   v111.size.height = v51;
   v54 = floor(v53 - CGRectGetWidth(v111) * 0.5);
-  [v44 setFrame:{v54, v43, v52, v51}];
+  [learnMoreButton setFrame:{v54, v43, v52, v51}];
   v112.origin.x = v54;
   v112.origin.y = v43;
   v112.size.width = v52;
@@ -498,50 +498,50 @@
   v113.size.height = v62;
   v69 = floor(v68 - CGRectGetWidth(v113) * 0.5);
   [(UIView *)self->_authKitSignInView setFrame:v69, v55, v64, v62];
-  v70 = [(CKRegistrationView *)self signingInLabel];
-  [v70 sizeToFit];
+  signingInLabel = [(CKRegistrationView *)self signingInLabel];
+  [signingInLabel sizeToFit];
 
-  v71 = [(CKRegistrationView *)self signingInLabel];
-  [v71 frame];
+  signingInLabel2 = [(CKRegistrationView *)self signingInLabel];
+  [signingInLabel2 frame];
   v73 = v72;
   v75 = v74;
 
   [(CKRegistrationView *)self frame];
   v77 = v76 * 0.5 - v73 * 0.5;
-  v78 = [(CKRegistrationView *)self signingInLabel];
-  [v78 setFrame:{v77, v55, v73, v75}];
+  signingInLabel3 = [(CKRegistrationView *)self signingInLabel];
+  [signingInLabel3 setFrame:{v77, v55, v73, v75}];
 
-  v79 = [(CKRegistrationView *)self signingInSpinner];
-  [v79 sizeToFit];
+  signingInSpinner = [(CKRegistrationView *)self signingInSpinner];
+  [signingInSpinner sizeToFit];
 
-  v80 = [(CKRegistrationView *)self signingInSpinner];
-  [v80 frame];
+  signingInSpinner2 = [(CKRegistrationView *)self signingInSpinner];
+  [signingInSpinner2 frame];
   v82 = v81;
   v84 = v83;
 
-  v85 = [(CKRegistrationView *)self signingInSpinner];
-  [v85 setFrame:{v77 - v82 + -6.0, v55, v82, v84}];
+  signingInSpinner3 = [(CKRegistrationView *)self signingInSpinner];
+  [signingInSpinner3 setFrame:{v77 - v82 + -6.0, v55, v82, v84}];
 
   v114.origin.x = v69;
   v114.origin.y = v55;
   v114.size.width = v64;
   v114.size.height = v62;
   v86 = ceil(CGRectGetMaxY(v114));
-  v87 = [(CKRegistrationView *)self privacyLinkView];
+  privacyLinkView = [(CKRegistrationView *)self privacyLinkView];
   v88 = +[CKUIBehavior sharedBehaviors];
   [v88 signInPrivacyWidthMultiplier];
   v90 = v96 * v89;
 
   LODWORD(v91) = 1112014848;
   LODWORD(v92) = 1132068864;
-  [v87 systemLayoutSizeFittingSize:v90 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v91, v92}];
+  [privacyLinkView systemLayoutSizeFittingSize:v90 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v91, v92}];
   v94 = v93;
   v115.origin.x = v98;
   v115.origin.y = v99;
   v115.size.width = v96;
   v115.size.height = rect;
   v95 = floor(CGRectGetMidX(v115) - v90 * 0.5);
-  [v87 setFrame:{v95, v86, v90, v94}];
+  [privacyLinkView setFrame:{v95, v86, v90, v94}];
   v116.origin.x = v95;
   v116.origin.y = v86;
   v116.size.width = v90;
@@ -549,9 +549,9 @@
   [(CKRegistrationView *)self setContentSize:v96, ceil(CGRectGetMaxY(v116) + 20.0)];
 }
 
-- (void)_learnMorePressed:(id)a3
+- (void)_learnMorePressed:(id)pressed
 {
-  v3 = MEMORY[0x193AF5ED0]("CNFRegSetStringTableForServiceType", @"CommunicationsSetupUI", a3);
+  v3 = MEMORY[0x193AF5ED0]("CNFRegSetStringTableForServiceType", @"CommunicationsSetupUI", pressed);
   v3(1);
   v4 = MEMORY[0x193AF5ED0]("CNFRegLocalizedSplashScreenURL", @"CommunicationsSetupUI");
   v5 = *MEMORY[0x1E69DDA98];

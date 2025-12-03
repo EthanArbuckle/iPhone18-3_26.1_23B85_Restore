@@ -1,60 +1,60 @@
 @interface DRPasteAnnouncement
-+ (BOOL)_canCoalesceEndpoint:(id)a3 withEndpoint:(id)a4;
-- (BOOL)canCoalesceWithAnnouncement:(id)a3;
-- (DRPasteAnnouncement)initWithCoder:(id)a3;
-- (DRPasteAnnouncement)initWithSource:(id)a3 destination:(id)a4 pasteboardUUID:(id)a5 timeout:(double)a6;
-- (id)_localizedTextRequiringAuthorization:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
++ (BOOL)_canCoalesceEndpoint:(id)endpoint withEndpoint:(id)withEndpoint;
+- (BOOL)canCoalesceWithAnnouncement:(id)announcement;
+- (DRPasteAnnouncement)initWithCoder:(id)coder;
+- (DRPasteAnnouncement)initWithSource:(id)source destination:(id)destination pasteboardUUID:(id)d timeout:(double)timeout;
+- (id)_localizedTextRequiringAuthorization:(BOOL)authorization;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DRPasteAnnouncement
 
-- (DRPasteAnnouncement)initWithSource:(id)a3 destination:(id)a4 pasteboardUUID:(id)a5 timeout:(double)a6
+- (DRPasteAnnouncement)initWithSource:(id)source destination:(id)destination pasteboardUUID:(id)d timeout:(double)timeout
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  sourceCopy = source;
+  destinationCopy = destination;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = DRPasteAnnouncement;
   v14 = [(DRPasteAnnouncement *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_source, a3);
-    objc_storeStrong(&v15->_destination, a4);
-    objc_storeStrong(&v15->_pasteboardUUID, a5);
-    v15->_timeout = a6;
+    objc_storeStrong(&v14->_source, source);
+    objc_storeStrong(&v15->_destination, destination);
+    objc_storeStrong(&v15->_pasteboardUUID, d);
+    v15->_timeout = timeout;
   }
 
   return v15;
 }
 
-- (DRPasteAnnouncement)initWithCoder:(id)a3
+- (DRPasteAnnouncement)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"source"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destination"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pasteboardUUID"];
-  [v4 decodeDoubleForKey:@"timeout"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"source"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destination"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pasteboardUUID"];
+  [coderCopy decodeDoubleForKey:@"timeout"];
   v9 = v8;
 
   v10 = [(DRPasteAnnouncement *)self initWithSource:v5 destination:v6 pasteboardUUID:v7 timeout:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   source = self->_source;
-  v5 = a3;
-  [v5 encodeObject:source forKey:@"source"];
-  [v5 encodeObject:self->_destination forKey:@"destination"];
-  [v5 encodeObject:self->_pasteboardUUID forKey:@"pasteboardUUID"];
-  [v5 encodeDouble:@"timeout" forKey:self->_timeout];
+  coderCopy = coder;
+  [coderCopy encodeObject:source forKey:@"source"];
+  [coderCopy encodeObject:self->_destination forKey:@"destination"];
+  [coderCopy encodeObject:self->_pasteboardUUID forKey:@"pasteboardUUID"];
+  [coderCopy encodeDouble:@"timeout" forKey:self->_timeout];
 }
 
-- (id)_localizedTextRequiringAuthorization:(BOOL)a3
+- (id)_localizedTextRequiringAuthorization:(BOOL)authorization
 {
-  v3 = a3;
+  authorizationCopy = authorization;
   if (_localizedTextRequiringAuthorization__onceToken != -1)
   {
     [DRPasteAnnouncement _localizedTextRequiringAuthorization:];
@@ -64,15 +64,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(DRPasteAnnouncementEndpoint *)self->_destination localizedName];
+    localizedName = [(DRPasteAnnouncementEndpoint *)self->_destination localizedName];
     source = self->_source;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v9 = self->_source;
     if (isKindOfClass)
     {
-      v10 = [(DRPasteAnnouncementEndpoint *)self->_source localizedName];
-      if (v3)
+      localizedName2 = [(DRPasteAnnouncementEndpoint *)self->_source localizedName];
+      if (authorizationCopy)
       {
         v11 = @"PASTE_AUTHORIZATION_REQUEST_SOURCE_AND_DESTINATION";
         v12 = @"%@ would like to paste from %@";
@@ -87,7 +87,7 @@
       v17 = [_localizedTextRequiringAuthorization__DRBundle localizedStringForKey:v11 value:v12 table:@"Localizable"];
       v26 = 0;
       v18 = &v26;
-      [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v17 validFormatSpecifiers:@"%@%@" error:&v26, v6, v10];
+      [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v17 validFormatSpecifiers:@"%@%@" error:&v26, localizedName, localizedName2];
     }
 
     else
@@ -100,10 +100,10 @@
         goto LABEL_24;
       }
 
-      v10 = [(DRPasteAnnouncementEndpoint *)self->_source deviceName];
-      if (v10)
+      localizedName2 = [(DRPasteAnnouncementEndpoint *)self->_source deviceName];
+      if (localizedName2)
       {
-        if (v3)
+        if (authorizationCopy)
         {
           v15 = @"PASTE_AUTHORIZATION_REQUEST_FROM_CONTINUITY_DEVICE";
           v16 = @"%@ would like to paste from %@";
@@ -118,12 +118,12 @@
         v17 = [_localizedTextRequiringAuthorization__DRBundle localizedStringForKey:v15 value:v16 table:@"Localizable"];
         v25 = 0;
         v18 = &v25;
-        [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v17 validFormatSpecifiers:@"%@%@" error:&v25, v6, v10];
+        [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v17 validFormatSpecifiers:@"%@%@" error:&v25, localizedName, localizedName2];
       }
 
       else
       {
-        if (v3)
+        if (authorizationCopy)
         {
           v19 = @"PASTE_AUTHORIZATION_REQUEST_FROM_UNKNOWN_CONTINUITY_DEVICE";
           v20 = @"%@ would like to paste from another device";
@@ -138,7 +138,7 @@
         v17 = [_localizedTextRequiringAuthorization__DRBundle localizedStringForKey:v19 value:v20 table:@"Localizable"];
         v24 = 0;
         v18 = &v24;
-        [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v17 validFormatSpecifiers:@"%@" error:&v24, v6, v23];
+        [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v17 validFormatSpecifiers:@"%@" error:&v24, localizedName, v23];
       }
     }
     v14 = ;
@@ -181,17 +181,17 @@ uint64_t __60__DRPasteAnnouncement__localizedTextRequiringAuthorization___block_
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)canCoalesceWithAnnouncement:(id)a3
+- (BOOL)canCoalesceWithAnnouncement:(id)announcement
 {
-  v4 = a3;
+  announcementCopy = announcement;
   pasteboardUUID = self->_pasteboardUUID;
-  v6 = [v4 pasteboardUUID];
-  LODWORD(pasteboardUUID) = [(NSUUID *)pasteboardUUID isEqual:v6];
+  pasteboardUUID = [announcementCopy pasteboardUUID];
+  LODWORD(pasteboardUUID) = [(NSUUID *)pasteboardUUID isEqual:pasteboardUUID];
 
-  if (pasteboardUUID && ([v4 source], v7 = objc_claimAutoreleasedReturnValue(), v8 = +[DRPasteAnnouncement _canCoalesceEndpoint:withEndpoint:](DRPasteAnnouncement, "_canCoalesceEndpoint:withEndpoint:", v7, self->_source), v7, v8))
+  if (pasteboardUUID && ([announcementCopy source], v7 = objc_claimAutoreleasedReturnValue(), v8 = +[DRPasteAnnouncement _canCoalesceEndpoint:withEndpoint:](DRPasteAnnouncement, "_canCoalesceEndpoint:withEndpoint:", v7, self->_source), v7, v8))
   {
-    v9 = [v4 destination];
-    v10 = [DRPasteAnnouncement _canCoalesceEndpoint:v9 withEndpoint:self->_destination];
+    destination = [announcementCopy destination];
+    v10 = [DRPasteAnnouncement _canCoalesceEndpoint:destination withEndpoint:self->_destination];
   }
 
   else
@@ -202,17 +202,17 @@ uint64_t __60__DRPasteAnnouncement__localizedTextRequiringAuthorization___block_
   return v10;
 }
 
-+ (BOOL)_canCoalesceEndpoint:(id)a3 withEndpoint:(id)a4
++ (BOOL)_canCoalesceEndpoint:(id)endpoint withEndpoint:(id)withEndpoint
 {
-  v5 = a3;
-  v6 = a4;
+  endpointCopy = endpoint;
+  withEndpointCopy = withEndpoint;
   v7 = objc_opt_class();
   if ([v7 isEqual:objc_opt_class()])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v6 isSimilarToApplicationEndpoint:v5];
+      v8 = [withEndpointCopy isSimilarToApplicationEndpoint:endpointCopy];
     }
 
     else
@@ -224,7 +224,7 @@ uint64_t __60__DRPasteAnnouncement__localizedTextRequiringAuthorization___block_
         goto LABEL_9;
       }
 
-      v8 = [v6 isSimilarToContinuityEndpoint:v5];
+      v8 = [withEndpointCopy isSimilarToContinuityEndpoint:endpointCopy];
     }
 
     v9 = v8;

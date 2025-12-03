@@ -1,6 +1,6 @@
 @interface PXFeedbackTapToRadarViewController
 - (PXFeedbackTapToRadarViewController)init;
-- (void)didSelectFileRadarButtonWithScreenshotAllowed:(BOOL)a3 attachDiagnose:(BOOL)a4 selectedRoute:(id)a5;
+- (void)didSelectFileRadarButtonWithScreenshotAllowed:(BOOL)allowed attachDiagnose:(BOOL)diagnose selectedRoute:(id)route;
 @end
 
 @implementation PXFeedbackTapToRadarViewController
@@ -11,13 +11,13 @@ void __54___PXFeedbackTapToRadarViewController_fileRadarButton__block_invoke(uin
   [WeakRetained _didSelectFileRadarButton];
 }
 
-- (void)didSelectFileRadarButtonWithScreenshotAllowed:(BOOL)a3 attachDiagnose:(BOOL)a4 selectedRoute:(id)a5
+- (void)didSelectFileRadarButtonWithScreenshotAllowed:(BOOL)allowed attachDiagnose:(BOOL)diagnose selectedRoute:(id)route
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [(PXFeedbackTapToRadarViewController *)self fileRadarHandler];
-  v9[2](v9, v6, v5, v8);
+  diagnoseCopy = diagnose;
+  allowedCopy = allowed;
+  routeCopy = route;
+  fileRadarHandler = [(PXFeedbackTapToRadarViewController *)self fileRadarHandler];
+  fileRadarHandler[2](fileRadarHandler, allowedCopy, diagnoseCopy, routeCopy);
 }
 
 - (PXFeedbackTapToRadarViewController)init

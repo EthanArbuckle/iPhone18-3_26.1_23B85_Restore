@@ -8,31 +8,31 @@
 
 - (id)publisherIconForIsNightMode:()MUPlaceCollectionPullQuoteViewModel
 {
-  v5 = [MEMORY[0x1E696F318] sharedInstance];
-  v6 = [a1 publisherName];
-  v7 = [a1 publisherAttribution];
-  v8 = [v7 iconIdentifier];
-  v9 = [MEMORY[0x1E696F3B8] sharedInstance];
-  [v9 screenScale];
-  v10 = [v5 iconForPublisherNamed:v6 usingId:v8 usingContentScale:1 usingSizeGroup:a3 isNightMode:?];
+  mEMORY[0x1E696F318] = [MEMORY[0x1E696F318] sharedInstance];
+  publisherName = [self publisherName];
+  publisherAttribution = [self publisherAttribution];
+  iconIdentifier = [publisherAttribution iconIdentifier];
+  mEMORY[0x1E696F3B8] = [MEMORY[0x1E696F3B8] sharedInstance];
+  [mEMORY[0x1E696F3B8] screenScale];
+  v10 = [mEMORY[0x1E696F318] iconForPublisherNamed:publisherName usingId:iconIdentifier usingContentScale:1 usingSizeGroup:a3 isNightMode:?];
 
   return v10;
 }
 
 - (id)plainTextDescription
 {
-  v1 = [a1 publisherBlockQuote];
-  v2 = [v1 plainTextDescription];
+  publisherBlockQuote = [self publisherBlockQuote];
+  plainTextDescription = [publisherBlockQuote plainTextDescription];
 
-  return v2;
+  return plainTextDescription;
 }
 
 - (id)publisherName
 {
-  v1 = [a1 publisherAttribution];
-  v2 = [v1 displayName];
+  publisherAttribution = [self publisherAttribution];
+  displayName = [publisherAttribution displayName];
 
-  return v2;
+  return displayName;
 }
 
 @end

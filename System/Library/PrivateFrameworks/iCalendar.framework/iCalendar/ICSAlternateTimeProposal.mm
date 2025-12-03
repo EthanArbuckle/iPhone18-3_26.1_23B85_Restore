@@ -1,24 +1,24 @@
 @interface ICSAlternateTimeProposal
-+ (id)ICSStringFromAlternateTimeProposalStatus:(int)a3;
-+ (id)_parseICSString:(id)a3;
-+ (id)alternateTimeProposalFromICSCString:(id)a3;
-+ (int)statusFromICSString:(id)a3;
++ (id)ICSStringFromAlternateTimeProposalStatus:(int)status;
++ (id)_parseICSString:(id)string;
++ (id)alternateTimeProposalFromICSCString:(id)string;
++ (int)statusFromICSString:(id)string;
 - (int)status;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
-- (void)setStatus:(int)a3;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
+- (void)setStatus:(int)status;
 @end
 
 @implementation ICSAlternateTimeProposal
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v6 = a4;
-  v11 = v6;
-  if ((a3 & 0x10) != 0)
+  stringCopy = string;
+  v11 = stringCopy;
+  if ((options & 0x10) != 0)
   {
     if ([(ICSProperty *)self shouldObscureValue])
     {
-      a3 |= 0x20uLL;
+      options |= 0x20uLL;
     }
 
     v7 = v11;
@@ -26,57 +26,57 @@
 
   else
   {
-    v7 = v6;
+    v7 = stringCopy;
   }
 
   [v7 appendString:@""];
-  v8 = [(ICSAlternateTimeProposal *)self startDate];
+  startDate = [(ICSAlternateTimeProposal *)self startDate];
 
-  if (v8)
+  if (startDate)
   {
     [v11 appendString:@"DTSTART"];
     [v11 appendString:@":"];
-    v9 = [(ICSAlternateTimeProposal *)self startDate];
-    [v9 _ICSStringWithOptions:a3 appendingToString:v11];
+    startDate2 = [(ICSAlternateTimeProposal *)self startDate];
+    [startDate2 _ICSStringWithOptions:options appendingToString:v11];
 
     [v11 appendString:@";"];
     [v11 appendString:@"STATUS"];
     [v11 appendString:@":"];
     v10 = [ICSAlternateTimeProposalStatusParameter statusParameterFromCode:[(ICSAlternateTimeProposal *)self status]];
-    [v10 _ICSStringWithOptions:a3 appendingToString:v11];
+    [v10 _ICSStringWithOptions:options appendingToString:v11];
     [v11 appendString:@";"];
   }
 
   [v11 appendString:@""];
 }
 
-+ (id)ICSStringFromAlternateTimeProposalStatus:(int)a3
++ (id)ICSStringFromAlternateTimeProposalStatus:(int)status
 {
-  if ((a3 - 1) > 2)
+  if ((status - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_27A64C2F8[a3 - 1];
+    return off_27A64C2F8[status - 1];
   }
 }
 
-+ (int)statusFromICSString:(id)a3
++ (int)statusFromICSString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NEEDS-ACTION"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"NEEDS-ACTION"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ACCEPTED"])
+  else if ([stringCopy isEqualToString:@"ACCEPTED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DECLINED"])
+  else if ([stringCopy isEqualToString:@"DECLINED"])
   {
     v4 = 3;
   }
@@ -89,9 +89,9 @@
   return v4;
 }
 
-- (void)setStatus:(int)a3
+- (void)setStatus:(int)status
 {
-  if (a3)
+  if (status)
   {
     v4 = [ICSAlternateTimeProposalStatusParameter statusParameterFromCode:?];
     [(ICSProperty *)self setParameterValue:v4 forName:@"STATUS"];
@@ -114,14 +114,14 @@
   }
 
   v4 = [(ICSProperty *)self parameterValueForName:@"STATUS"];
-  v5 = [v4 longValue];
+  longValue = [v4 longValue];
 
-  return v5;
+  return longValue;
 }
 
-+ (id)alternateTimeProposalFromICSCString:(id)a3
++ (id)alternateTimeProposalFromICSCString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v3 = [ICSAlternateTimeProposal _parseICSString:?];
     v4 = [v3 objectForKey:@"DTSTART"];
@@ -151,12 +151,12 @@
   return v6;
 }
 
-+ (id)_parseICSString:(id)a3
++ (id)_parseICSString:(id)string
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (string)
   {
-    v3 = [a3 componentsSeparatedByString:@""];;
+    v3 = [string componentsSeparatedByString:@""];;
     v4 = objc_opt_new();
     v16 = 0u;
     v17 = 0u;

@@ -1,10 +1,10 @@
 @interface FCMutableNotificationData
 - (FCMutableNotificationData)init;
-- (FCMutableNotificationData)initWithDictionary:(id)a3;
-- (void)setBaseURLString:(id)a3;
-- (void)setDeviceToken:(id)a3;
-- (void)setNotificationUserID:(id)a3;
-- (void)setStorefrontID:(id)a3;
+- (FCMutableNotificationData)initWithDictionary:(id)dictionary;
+- (void)setBaseURLString:(id)string;
+- (void)setDeviceToken:(id)token;
+- (void)setNotificationUserID:(id)d;
+- (void)setStorefrontID:(id)d;
 @end
 
 @implementation FCMutableNotificationData
@@ -35,11 +35,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCMutableNotificationData)initWithDictionary:(id)a3
+- (FCMutableNotificationData)initWithDictionary:(id)dictionary
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "dictionary"];
     *buf = 136315906;
@@ -55,38 +55,38 @@
 
   v9.receiver = self;
   v9.super_class = FCMutableNotificationData;
-  v5 = [(FCNotificationDropboxData *)&v9 initWithDictionary:v4];
+  v5 = [(FCNotificationDropboxData *)&v9 initWithDictionary:dictionaryCopy];
 
   v6 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (void)setBaseURLString:(id)a3
+- (void)setBaseURLString:(id)string
 {
-  v4 = a3;
-  v5 = [(FCNotificationDropboxData *)self dictionary];
-  [v5 fc_safelySetObjectAllowingNil:v4 forKey:@"FCNotificationDropboxDataBaseURLDictionaryKey"];
+  stringCopy = string;
+  dictionary = [(FCNotificationDropboxData *)self dictionary];
+  [dictionary fc_safelySetObjectAllowingNil:stringCopy forKey:@"FCNotificationDropboxDataBaseURLDictionaryKey"];
 }
 
-- (void)setNotificationUserID:(id)a3
+- (void)setNotificationUserID:(id)d
 {
-  v4 = a3;
-  v5 = [(FCNotificationDropboxData *)self dictionary];
-  [v5 fc_safelySetObjectAllowingNil:v4 forKey:@"FCNotificationDropboxDataNotificationUserIDDictionaryKey"];
+  dCopy = d;
+  dictionary = [(FCNotificationDropboxData *)self dictionary];
+  [dictionary fc_safelySetObjectAllowingNil:dCopy forKey:@"FCNotificationDropboxDataNotificationUserIDDictionaryKey"];
 }
 
-- (void)setDeviceToken:(id)a3
+- (void)setDeviceToken:(id)token
 {
-  v4 = a3;
-  v5 = [(FCNotificationDropboxData *)self dictionary];
-  [v5 fc_safelySetObjectAllowingNil:v4 forKey:@"FCNotificationDropboxDataDeviceTokenDictionaryKey"];
+  tokenCopy = token;
+  dictionary = [(FCNotificationDropboxData *)self dictionary];
+  [dictionary fc_safelySetObjectAllowingNil:tokenCopy forKey:@"FCNotificationDropboxDataDeviceTokenDictionaryKey"];
 }
 
-- (void)setStorefrontID:(id)a3
+- (void)setStorefrontID:(id)d
 {
-  v4 = a3;
-  v5 = [(FCNotificationDropboxData *)self dictionary];
-  [v5 fc_safelySetObjectAllowingNil:v4 forKey:@"FCNotificationDropboxDataStorefrontIDDictionaryKey"];
+  dCopy = d;
+  dictionary = [(FCNotificationDropboxData *)self dictionary];
+  [dictionary fc_safelySetObjectAllowingNil:dCopy forKey:@"FCNotificationDropboxDataStorefrontIDDictionaryKey"];
 }
 
 @end

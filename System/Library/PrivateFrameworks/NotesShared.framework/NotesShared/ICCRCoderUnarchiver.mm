@@ -1,58 +1,58 @@
 @interface ICCRCoderUnarchiver
-+ (id)decodedDocumentFromData:(id)a3 replica:(id)a4;
-- (BOOL)willModifySelfInInitForClass:(Class)a3;
-- (const)currentObjectIDForKey:(id)a3;
-- (double)decodeDoubleForKey:(id)a3;
-- (id)allocedObjectAtIndex:(unint64_t)a3 outNeedsInit:(BOOL *)a4;
-- (id)decodeDataForKey:(id)a3;
-- (id)decodeDocumentFromData:(id)a3 replica:(id)a4;
++ (id)decodedDocumentFromData:(id)data replica:(id)replica;
+- (BOOL)willModifySelfInInitForClass:(Class)class;
+- (const)currentObjectIDForKey:(id)key;
+- (double)decodeDoubleForKey:(id)key;
+- (id)allocedObjectAtIndex:(unint64_t)index outNeedsInit:(BOOL *)init;
+- (id)decodeDataForKey:(id)key;
+- (id)decodeDocumentFromData:(id)data replica:(id)replica;
 - (id)decodeKeys;
-- (id)decodeObjectForKey:(id)a3;
-- (id)decodeObjectForProtobufObjectID:(const void *)a3;
-- (id)decodeStringForKey:(id)a3;
-- (id)decodeUUIDForKey:(id)a3;
-- (id)decodeUUIDFromUUIDIndex:(unint64_t)a3;
-- (int)decodeInt32ForKey:(id)a3;
-- (int64_t)decodeInt64ForKey:(id)a3;
-- (unint64_t)decodeUInt64ForKey:(id)a3;
-- (unint64_t)indexForKey:(id)a3;
-- (unsigned)decodeUInt32ForKey:(id)a3;
-- (void)addDecoderCompletionHandler:(id)a3 dependency:(id)a4 for:(id)a5;
+- (id)decodeObjectForKey:(id)key;
+- (id)decodeObjectForProtobufObjectID:(const void *)d;
+- (id)decodeStringForKey:(id)key;
+- (id)decodeUUIDForKey:(id)key;
+- (id)decodeUUIDFromUUIDIndex:(unint64_t)index;
+- (int)decodeInt32ForKey:(id)key;
+- (int64_t)decodeInt64ForKey:(id)key;
+- (unint64_t)decodeUInt64ForKey:(id)key;
+- (unint64_t)indexForKey:(id)key;
+- (unsigned)decodeUInt32ForKey:(id)key;
+- (void)addDecoderCompletionHandler:(id)handler dependency:(id)dependency for:(id)for;
 - (void)sortCompletionHandlers;
 @end
 
 @implementation ICCRCoderUnarchiver
 
-+ (id)decodedDocumentFromData:(id)a3 replica:(id)a4
++ (id)decodedDocumentFromData:(id)data replica:(id)replica
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  replicaCopy = replica;
   v7 = objc_alloc_init(ICCRCoderUnarchiver);
-  v8 = [(ICCRCoderUnarchiver *)v7 decodeDocumentFromData:v5 replica:v6];
+  v8 = [(ICCRCoderUnarchiver *)v7 decodeDocumentFromData:dataCopy replica:replicaCopy];
 
   return v8;
 }
 
-- (BOOL)willModifySelfInInitForClass:(Class)a3
+- (BOOL)willModifySelfInInitForClass:(Class)class
 {
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
     return 1;
   }
 
   v5 = objc_opt_class();
 
-  return [(objc_class *)a3 isSubclassOfClass:v5];
+  return [(objc_class *)class isSubclassOfClass:v5];
 }
 
-- (id)allocedObjectAtIndex:(unint64_t)a3 outNeedsInit:(BOOL *)a4
+- (id)allocedObjectAtIndex:(unint64_t)index outNeedsInit:(BOOL *)init
 {
-  if (a4)
+  if (init)
   {
-    *a4 = 1;
+    *init = 1;
   }
 
-  if (*([(ICCRCoderUnarchiver *)self currentDocument]+ 64) <= a3)
+  if (*([(ICCRCoderUnarchiver *)self currentDocument]+ 64) <= index)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCRCoderUnarchiver allocedObjectAtIndex:outNeedsInit:]" simulateCrash:1 showAlert:0 format:@"Index out of bounds"];
 LABEL_7:
@@ -62,30 +62,30 @@ LABEL_7:
 
   while (1)
   {
-    v7 = [(ICCRCoderUnarchiver *)self allocedDocObjects];
-    v8 = [v7 count];
+    allocedDocObjects = [(ICCRCoderUnarchiver *)self allocedDocObjects];
+    v8 = [allocedDocObjects count];
 
-    v9 = [(ICCRCoderUnarchiver *)self allocedDocObjects];
-    v10 = v9;
-    if (v8 > a3)
+    allocedDocObjects2 = [(ICCRCoderUnarchiver *)self allocedDocObjects];
+    v10 = allocedDocObjects2;
+    if (v8 > index)
     {
       break;
     }
 
-    v11 = [MEMORY[0x277CBEB68] null];
-    [v10 addObject:v11];
+    null = [MEMORY[0x277CBEB68] null];
+    [v10 addObject:null];
   }
 
-  v12 = [v9 objectAtIndexedSubscript:a3];
+  v12 = [allocedDocObjects2 objectAtIndexedSubscript:index];
 
-  v13 = [MEMORY[0x277CBEB68] null];
+  null2 = [MEMORY[0x277CBEB68] null];
 
-  if (v12 != v13)
+  if (v12 != null2)
   {
     goto LABEL_45;
   }
 
-  v14 = google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<CRDT::Document_DocObject>::TypeHandler>(([(ICCRCoderUnarchiver *)self currentDocument]+ 56), a3);
+  v14 = google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<CRDT::Document_DocObject>::TypeHandler>(([(ICCRCoderUnarchiver *)self currentDocument]+ 56), index);
   v15 = off_278192AF0;
   switch(*(v14 + 48))
   {
@@ -116,9 +116,9 @@ LABEL_7:
       v15 = off_278192AD8;
       goto LABEL_33;
     case 0xA:
-      if (a4)
+      if (init)
       {
-        *a4 = 0;
+        *init = 0;
       }
 
       v23 = [[ICTTMergeableAttributedString alloc] initWithICCRCoder:self];
@@ -141,11 +141,11 @@ LABEL_7:
       }
 
       v17 = *(v16 + 64);
-      v18 = [(ICCRCoderUnarchiver *)self typeSetForDecoding];
-      v19 = [v18 objectAtIndex:v17];
+      typeSetForDecoding = [(ICCRCoderUnarchiver *)self typeSetForDecoding];
+      v19 = [typeSetForDecoding objectAtIndex:v17];
 
-      v20 = [(ICCRCoder *)self typeToClassDict];
-      v21 = [v20 objectForKeyedSubscript:v19];
+      typeToClassDict = [(ICCRCoder *)self typeToClassDict];
+      v21 = [typeToClassDict objectForKeyedSubscript:v19];
 
       if (!v21)
       {
@@ -160,9 +160,9 @@ LABEL_42:
         goto LABEL_43;
       }
 
-      if (a4)
+      if (init)
       {
-        *a4 = 0;
+        *init = 0;
       }
 
       v22 = [[v21 alloc] initWithICCRCoder:self];
@@ -172,15 +172,15 @@ LABEL_43:
       if (v12)
       {
 LABEL_35:
-        v24 = [(ICCRCoderUnarchiver *)self allocedDocObjects];
-        [v24 setObject:v12 atIndexedSubscript:a3];
+        allocedDocObjects3 = [(ICCRCoderUnarchiver *)self allocedDocObjects];
+        [allocedDocObjects3 setObject:v12 atIndexedSubscript:index];
       }
 
       else
       {
 LABEL_44:
         v12 = 0;
-        [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCRCoderUnarchiver allocedObjectAtIndex:outNeedsInit:]" simulateCrash:1 showAlert:0 format:{@"Failed to allocate memory at index %ld", a3}];
+        [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCRCoderUnarchiver allocedObjectAtIndex:outNeedsInit:]" simulateCrash:1 showAlert:0 format:{@"Failed to allocate memory at index %ld", index}];
       }
 
 LABEL_45:
@@ -227,23 +227,23 @@ LABEL_34:
   }
 }
 
-- (id)decodeDocumentFromData:(id)a3 replica:(id)a4
+- (id)decodeDocumentFromData:(id)data replica:(id)replica
 {
-  a3;
-  a4;
+  data;
+  replica;
   [(ICCRCoderUnarchiver *)self setReplica:?];
   operator new();
 }
 
-- (const)currentObjectIDForKey:(id)a3
+- (const)currentObjectIDForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (*([(ICCRCoderUnarchiver *)self currentDocObjectForDecodingPtr]+ 48) != 13)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"self.currentDocObjectForDecodingPtr->has_custom()" functionName:"-[ICCRCoderUnarchiver currentObjectIDForKey:]" simulateCrash:1 showAlert:0 format:@"Not a custom object"];
   }
 
-  if (*([(ICCRCoderUnarchiver *)self currentDocObjectForDecodingPtr]+ 48) != 13 || ((v5 = [(ICCRCoderUnarchiver *)self currentDocObjectForDecodingPtr], *(v5 + 12) != 13) ? (v6 = CRDT::Document_CustomObject::default_instance(v5)) : (v6 = v5[5]), (v7 = [(ICCRCoderUnarchiver *)self indexForKey:v4], v8 = v7, v7 == 0x7FFFFFFFFFFFFFFFLL) || *(v6 + 48) < 1))
+  if (*([(ICCRCoderUnarchiver *)self currentDocObjectForDecodingPtr]+ 48) != 13 || ((v5 = [(ICCRCoderUnarchiver *)self currentDocObjectForDecodingPtr], *(v5 + 12) != 13) ? (v6 = CRDT::Document_CustomObject::default_instance(v5)) : (v6 = v5[5]), (v7 = [(ICCRCoderUnarchiver *)self indexForKey:keyCopy], v8 = v7, v7 == 0x7FFFFFFFFFFFFFFFLL) || *(v6 + 48) < 1))
   {
 LABEL_15:
     v12 = 0;
@@ -285,16 +285,16 @@ LABEL_15:
 
   if (*([(ICCRCoderUnarchiver *)self currentDocObjectForDecodingPtr]+ 48) == 13)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
-    v4 = [(ICCRCoderUnarchiver *)self currentDocObjectForDecodingPtr];
-    if (*(v4 + 12) == 13)
+    array = [MEMORY[0x277CBEB18] array];
+    currentDocObjectForDecodingPtr = [(ICCRCoderUnarchiver *)self currentDocObjectForDecodingPtr];
+    if (*(currentDocObjectForDecodingPtr + 12) == 13)
     {
-      v5 = v4[5];
+      v5 = currentDocObjectForDecodingPtr[5];
     }
 
     else
     {
-      v5 = CRDT::Document_CustomObject::default_instance(v4);
+      v5 = CRDT::Document_CustomObject::default_instance(currentDocObjectForDecodingPtr);
     }
 
     if (*(v5 + 48) >= 1)
@@ -306,9 +306,9 @@ LABEL_15:
         if ((~*(v8 + 32) & 3) == 0)
         {
           v9 = *(v8 + 48);
-          v10 = [(ICCRCoderUnarchiver *)self keySet];
-          v11 = [v10 objectAtIndex:v9];
-          [v3 ic_addNonNilObject:v11];
+          keySet = [(ICCRCoderUnarchiver *)self keySet];
+          v11 = [keySet objectAtIndex:v9];
+          [array ic_addNonNilObject:v11];
         }
 
         ++v7;
@@ -317,7 +317,7 @@ LABEL_15:
       while (v7 < *(v5 + 48));
     }
 
-    v6 = [v3 copy];
+    v6 = [array copy];
   }
 
   else
@@ -328,10 +328,10 @@ LABEL_15:
   return v6;
 }
 
-- (id)decodeObjectForKey:(id)a3
+- (id)decodeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ICCRCoderUnarchiver *)self currentObjectIDForKey:v4];
+  keyCopy = key;
+  v5 = [(ICCRCoderUnarchiver *)self currentObjectIDForKey:keyCopy];
   if (v5)
   {
     v6 = [(ICCRCoderUnarchiver *)self decodeObjectForProtobufObjectID:v5];
@@ -345,11 +345,11 @@ LABEL_15:
   return v6;
 }
 
-- (id)decodeObjectForProtobufObjectID:(const void *)a3
+- (id)decodeObjectForProtobufObjectID:(const void *)d
 {
-  if (*(a3 + 12) == 6)
+  if (*(d + 12) == 6)
   {
-    v5 = [(ICCRCoderUnarchiver *)self allocedObjectAtIndex:*(a3 + 10) outNeedsInit:0, v3];
+    v5 = [(ICCRCoderUnarchiver *)self allocedObjectAtIndex:*(d + 10) outNeedsInit:0, v3];
   }
 
   else
@@ -360,10 +360,10 @@ LABEL_15:
   return v5;
 }
 
-- (id)decodeDataForKey:(id)a3
+- (id)decodeDataForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ICCRCoderUnarchiver *)self currentObjectIDForKey:v4];
+  keyCopy = key;
+  v5 = [(ICCRCoderUnarchiver *)self currentObjectIDForKey:keyCopy];
   if (*(v5 + 12) == 5)
   {
     v6 = v5[5];
@@ -379,17 +379,17 @@ LABEL_15:
 
   else
   {
-    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCRCoderUnarchiver decodeDataForKey:]" simulateCrash:1 showAlert:0 format:{@"Unable to find data for key: %@", v4}];
+    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCRCoderUnarchiver decodeDataForKey:]" simulateCrash:1 showAlert:0 format:{@"Unable to find data for key: %@", keyCopy}];
     v8 = 0;
   }
 
   return v8;
 }
 
-- (id)decodeStringForKey:(id)a3
+- (id)decodeStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ICCRCoderUnarchiver *)self currentObjectIDForKey:v4];
+  keyCopy = key;
+  v5 = [(ICCRCoderUnarchiver *)self currentObjectIDForKey:keyCopy];
   if (*(v5 + 12) == 4)
   {
     v6 = v5[5];
@@ -403,16 +403,16 @@ LABEL_15:
 
   else
   {
-    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCRCoderUnarchiver decodeStringForKey:]" simulateCrash:1 showAlert:0 format:{@"Unable to find string for key: %@", v4}];
+    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCRCoderUnarchiver decodeStringForKey:]" simulateCrash:1 showAlert:0 format:{@"Unable to find string for key: %@", keyCopy}];
     v7 = 0;
   }
 
   return v7;
 }
 
-- (id)decodeUUIDForKey:(id)a3
+- (id)decodeUUIDForKey:(id)key
 {
-  v3 = [(ICCRCoderUnarchiver *)self decodeStringForKey:a3];
+  v3 = [(ICCRCoderUnarchiver *)self decodeStringForKey:key];
   if ([v3 length])
   {
     v4 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v3];
@@ -426,10 +426,10 @@ LABEL_15:
   return v4;
 }
 
-- (double)decodeDoubleForKey:(id)a3
+- (double)decodeDoubleForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ICCRCoderUnarchiver *)self currentObjectIDForKey:v4];
+  keyCopy = key;
+  v5 = [(ICCRCoderUnarchiver *)self currentObjectIDForKey:keyCopy];
   if (*(v5 + 12) == 3)
   {
     v6 = v5[5];
@@ -438,16 +438,16 @@ LABEL_15:
   else
   {
     v6 = 0.0;
-    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCRCoderUnarchiver decodeDoubleForKey:]" simulateCrash:1 showAlert:0 format:{@"Unable to find double for key: %@", v4}];
+    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCRCoderUnarchiver decodeDoubleForKey:]" simulateCrash:1 showAlert:0 format:{@"Unable to find double for key: %@", keyCopy}];
   }
 
   return v6;
 }
 
-- (int)decodeInt32ForKey:(id)a3
+- (int)decodeInt32ForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ICCRCoderUnarchiver *)self currentObjectIDForKey:v4];
+  keyCopy = key;
+  v5 = [(ICCRCoderUnarchiver *)self currentObjectIDForKey:keyCopy];
   if (v5 && v5[12] == 1)
   {
     v6 = v5[10];
@@ -455,17 +455,17 @@ LABEL_15:
 
   else
   {
-    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCRCoderUnarchiver decodeInt32ForKey:]" simulateCrash:1 showAlert:0 format:{@"Unable to find integer for key: %@", v4}];
+    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCRCoderUnarchiver decodeInt32ForKey:]" simulateCrash:1 showAlert:0 format:{@"Unable to find integer for key: %@", keyCopy}];
     v6 = 0;
   }
 
   return v6;
 }
 
-- (int64_t)decodeInt64ForKey:(id)a3
+- (int64_t)decodeInt64ForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ICCRCoderUnarchiver *)self currentObjectIDForKey:v4];
+  keyCopy = key;
+  v5 = [(ICCRCoderUnarchiver *)self currentObjectIDForKey:keyCopy];
   if (v5 && *(v5 + 12) == 1)
   {
     v6 = v5[5];
@@ -473,17 +473,17 @@ LABEL_15:
 
   else
   {
-    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCRCoderUnarchiver decodeInt64ForKey:]" simulateCrash:1 showAlert:0 format:{@"Unable to find integer for key: %@", v4}];
+    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCRCoderUnarchiver decodeInt64ForKey:]" simulateCrash:1 showAlert:0 format:{@"Unable to find integer for key: %@", keyCopy}];
     v6 = 0;
   }
 
   return v6;
 }
 
-- (unsigned)decodeUInt32ForKey:(id)a3
+- (unsigned)decodeUInt32ForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ICCRCoderUnarchiver *)self currentObjectIDForKey:v4];
+  keyCopy = key;
+  v5 = [(ICCRCoderUnarchiver *)self currentObjectIDForKey:keyCopy];
   if (v5 && v5[12] == 2)
   {
     v6 = v5[10];
@@ -491,17 +491,17 @@ LABEL_15:
 
   else
   {
-    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCRCoderUnarchiver decodeUInt32ForKey:]" simulateCrash:1 showAlert:0 format:{@"Unable to find integer for key: %@", v4}];
+    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCRCoderUnarchiver decodeUInt32ForKey:]" simulateCrash:1 showAlert:0 format:{@"Unable to find integer for key: %@", keyCopy}];
     v6 = 0;
   }
 
   return v6;
 }
 
-- (unint64_t)decodeUInt64ForKey:(id)a3
+- (unint64_t)decodeUInt64ForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ICCRCoderUnarchiver *)self currentObjectIDForKey:v4];
+  keyCopy = key;
+  v5 = [(ICCRCoderUnarchiver *)self currentObjectIDForKey:keyCopy];
   if (v5 && *(v5 + 12) == 2)
   {
     v6 = v5[5];
@@ -509,53 +509,53 @@ LABEL_15:
 
   else
   {
-    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCRCoderUnarchiver decodeUInt64ForKey:]" simulateCrash:1 showAlert:0 format:{@"Unable to find integer for key: %@", v4}];
+    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCRCoderUnarchiver decodeUInt64ForKey:]" simulateCrash:1 showAlert:0 format:{@"Unable to find integer for key: %@", keyCopy}];
     v6 = 0;
   }
 
   return v6;
 }
 
-- (id)decodeUUIDFromUUIDIndex:(unint64_t)a3
+- (id)decodeUUIDFromUUIDIndex:(unint64_t)index
 {
-  v5 = [(ICCRCoderUnarchiver *)self uuidArray];
-  v6 = [v5 count];
+  uuidArray = [(ICCRCoderUnarchiver *)self uuidArray];
+  v6 = [uuidArray count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
-    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"index < self.uuidArray.count" functionName:"-[ICCRCoderUnarchiver decodeUUIDFromUUIDIndex:]" simulateCrash:1 showAlert:0 format:{@"Index %ld out of bounds", a3}];
+    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"index < self.uuidArray.count" functionName:"-[ICCRCoderUnarchiver decodeUUIDFromUUIDIndex:]" simulateCrash:1 showAlert:0 format:{@"Index %ld out of bounds", index}];
   }
 
-  v7 = [(ICCRCoderUnarchiver *)self uuidArray];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  uuidArray2 = [(ICCRCoderUnarchiver *)self uuidArray];
+  v8 = [uuidArray2 objectAtIndexedSubscript:index];
 
   return v8;
 }
 
-- (void)addDecoderCompletionHandler:(id)a3 dependency:(id)a4 for:(id)a5
+- (void)addDecoderCompletionHandler:(id)handler dependency:(id)dependency for:(id)for
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  handlerCopy = handler;
+  dependencyCopy = dependency;
+  forCopy = for;
   v10 = objc_alloc_init(ICCRCoderUnarchiverCompletionHandler);
-  [(ICCRCoderUnarchiverCompletionHandler *)v10 setBlock:v12];
-  [(ICCRCoderUnarchiverCompletionHandler *)v10 setDependency:v8];
-  [(ICCRCoderUnarchiverCompletionHandler *)v10 setValue:v9];
-  v11 = [(ICCRCoderUnarchiver *)self completionHandlers];
-  [v11 addObject:v10];
+  [(ICCRCoderUnarchiverCompletionHandler *)v10 setBlock:handlerCopy];
+  [(ICCRCoderUnarchiverCompletionHandler *)v10 setDependency:dependencyCopy];
+  [(ICCRCoderUnarchiverCompletionHandler *)v10 setValue:forCopy];
+  completionHandlers = [(ICCRCoderUnarchiver *)self completionHandlers];
+  [completionHandlers addObject:v10];
 }
 
 - (void)sortCompletionHandlers
 {
   v36 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
-  v4 = [(ICCRCoderUnarchiver *)self completionHandlers];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  completionHandlers = [(ICCRCoderUnarchiver *)self completionHandlers];
+  v5 = [v3 initWithCapacity:{objc_msgSend(completionHandlers, "count")}];
 
   while (1)
   {
-    v6 = [(ICCRCoderUnarchiver *)self completionHandlers];
-    v7 = [v6 count] == 0;
+    completionHandlers2 = [(ICCRCoderUnarchiver *)self completionHandlers];
+    v7 = [completionHandlers2 count] == 0;
 
     if (v7)
     {
@@ -566,8 +566,8 @@ LABEL_15:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v8 = [(ICCRCoderUnarchiver *)self completionHandlers];
-    v9 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    completionHandlers3 = [(ICCRCoderUnarchiver *)self completionHandlers];
+    v9 = [completionHandlers3 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (!v9)
     {
       goto LABEL_24;
@@ -580,12 +580,12 @@ LABEL_5:
     {
       if (*v31 != v10)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(completionHandlers3);
       }
 
       v12 = *(*(&v30 + 1) + 8 * v11);
-      v13 = [v12 dependency];
-      v14 = v13 == 0;
+      dependency = [v12 dependency];
+      v14 = dependency == 0;
 
       if (v14)
       {
@@ -594,7 +594,7 @@ LABEL_5:
 
       if (v9 == ++v11)
       {
-        v9 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v9 = [completionHandlers3 countByEnumeratingWithState:&v30 objects:v35 count:16];
         if (!v9)
         {
 LABEL_24:
@@ -616,15 +616,15 @@ LABEL_25:
     }
 
     [v5 addObject:v15];
-    v16 = [(ICCRCoderUnarchiver *)self completionHandlers];
-    [v16 removeObject:v15];
+    completionHandlers4 = [(ICCRCoderUnarchiver *)self completionHandlers];
+    [completionHandlers4 removeObject:v15];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v17 = [(ICCRCoderUnarchiver *)self completionHandlers];
-    v18 = [v17 countByEnumeratingWithState:&v26 objects:v34 count:16];
+    completionHandlers5 = [(ICCRCoderUnarchiver *)self completionHandlers];
+    v18 = [completionHandlers5 countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v18)
     {
       v19 = *v27;
@@ -634,13 +634,13 @@ LABEL_25:
         {
           if (*v27 != v19)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(completionHandlers5);
           }
 
           v21 = *(*(&v26 + 1) + 8 * i);
-          v22 = [v21 dependency];
-          v23 = [v15 value];
-          v24 = v22 == v23;
+          dependency2 = [v21 dependency];
+          value = [v15 value];
+          v24 = dependency2 == value;
 
           if (v24)
           {
@@ -648,7 +648,7 @@ LABEL_25:
           }
         }
 
-        v18 = [v17 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        v18 = [completionHandlers5 countByEnumeratingWithState:&v26 objects:v34 count:16];
       }
 
       while (v18);
@@ -658,18 +658,18 @@ LABEL_25:
   [(ICCRCoderUnarchiver *)self setCompletionHandlers:v5];
 }
 
-- (unint64_t)indexForKey:(id)a3
+- (unint64_t)indexForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ICCRCoderUnarchiver *)self keySet];
+  keyCopy = key;
+  keySet = [(ICCRCoderUnarchiver *)self keySet];
 
-  if (!v5)
+  if (!keySet)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"self.keySet" functionName:"-[ICCRCoderUnarchiver indexForKey:]" simulateCrash:1 showAlert:0 format:@"keySet should have been allocated"];
   }
 
-  v6 = [(ICCRCoderUnarchiver *)self keySet];
-  v7 = [v6 indexOfObject:v4];
+  keySet2 = [(ICCRCoderUnarchiver *)self keySet];
+  v7 = [keySet2 indexOfObject:keyCopy];
 
   return v7;
 }

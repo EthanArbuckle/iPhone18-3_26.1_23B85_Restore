@@ -9,16 +9,16 @@
 
 - (void)nc_bounds
 {
-  [a1 _referenceBounds];
+  [self _referenceBounds];
   v2 = v1;
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v9 = objc_opt_class();
-  v10 = [*MEMORY[0x277D76620] activeInterfaceOrientation];
+  activeInterfaceOrientation = [*MEMORY[0x277D76620] activeInterfaceOrientation];
   if (v9)
   {
-    [v9 nc_transformForInterfaceOrientation:v10];
+    [v9 nc_transformForInterfaceOrientation:activeInterfaceOrientation];
   }
 
   else
@@ -35,8 +35,8 @@
 
 + (CGAffineTransform)nc_transformForScreenOriginRotation:()NCAdditions
 {
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   v6 = v5;
   v8 = v7;
 
@@ -44,7 +44,7 @@
   CGAffineTransformMakeTranslation(&v10, v6 * 0.5, v8 * 0.5);
   CGAffineTransformRotate(&v11, &v10, a2);
   v10 = v11;
-  return CGAffineTransformTranslate(a1, &v10, v6 * -0.5, v8 * -0.5);
+  return CGAffineTransformTranslate(self, &v10, v6 * -0.5, v8 * -0.5);
 }
 
 + (uint64_t)nc_transformForInterfaceOrientation:()NCAdditions
@@ -70,21 +70,21 @@
       break;
   }
 
-  return [a1 nc_transformForScreenOriginRotation:v3];
+  return [self nc_transformForScreenOriginRotation:v3];
 }
 
 + (uint64_t)nc_counterTransformForActiveInterfaceOrientation
 {
-  v2 = [*MEMORY[0x277D76620] activeInterfaceOrientation];
+  activeInterfaceOrientation = [*MEMORY[0x277D76620] activeInterfaceOrientation];
   v3 = 3;
-  if (v2 != 4)
+  if (activeInterfaceOrientation != 4)
   {
     v3 = 4;
   }
 
-  if ((v2 - 3) >= 2)
+  if ((activeInterfaceOrientation - 3) >= 2)
   {
-    v4 = v2;
+    v4 = activeInterfaceOrientation;
   }
 
   else
@@ -92,7 +92,7 @@
     v4 = v3;
   }
 
-  return [a1 nc_transformForInterfaceOrientation:v4];
+  return [self nc_transformForInterfaceOrientation:v4];
 }
 
 @end

@@ -6,12 +6,12 @@
 
 - (uint64_t)re_actionIdentifierHashValue
 {
-  v2 = [a1 userTask];
-  v3 = [v2 re_actionIdentifierHashValue];
-  v4 = [a1 filters];
-  v5 = [v4 re_actionIdentifierHashValue];
+  userTask = [self userTask];
+  re_actionIdentifierHashValue = [userTask re_actionIdentifierHashValue];
+  filters = [self filters];
+  re_actionIdentifierHashValue2 = [filters re_actionIdentifierHashValue];
 
-  return v5 ^ v3;
+  return re_actionIdentifierHashValue2 ^ re_actionIdentifierHashValue;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface _3enrollments_quant_all_verifier_aaInput
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation _3enrollments_quant_all_verifier_aaInput
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = sub_27237782C();
   v5 = v4;

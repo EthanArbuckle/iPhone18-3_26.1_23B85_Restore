@@ -1,18 +1,18 @@
 @interface CDMDefaultAssetsManager
-+ (id)getAbsolutePathForAssetsRootFolderForAssetDirPath:(id)a3;
-+ (id)getAbsolutePathForLocalizedAssetsRootFolderForAssetDirPath:(id)a3 locale:(id)a4;
-- (id)getAbsolutePathForServiceAssetFolders:(id)a3 assetDirPath:(id)a4 locale:(id)a5;
++ (id)getAbsolutePathForAssetsRootFolderForAssetDirPath:(id)path;
++ (id)getAbsolutePathForLocalizedAssetsRootFolderForAssetDirPath:(id)path locale:(id)locale;
+- (id)getAbsolutePathForServiceAssetFolders:(id)folders assetDirPath:(id)path locale:(id)locale;
 - (id)initManager;
 @end
 
 @implementation CDMDefaultAssetsManager
 
-- (id)getAbsolutePathForServiceAssetFolders:(id)a3 assetDirPath:(id)a4 locale:(id)a5
+- (id)getAbsolutePathForServiceAssetFolders:(id)folders assetDirPath:(id)path locale:(id)locale
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [CDMDefaultAssetsManager getAbsolutePathForLocalizedAssetsRootFolderForAssetDirPath:a4 locale:a5];
-  v10 = [CDMAssetsUtils findExistFolderInAssetFolders:v8 underBasePath:v9 useFileManager:self->_fileManager];
+  foldersCopy = folders;
+  v9 = [CDMDefaultAssetsManager getAbsolutePathForLocalizedAssetsRootFolderForAssetDirPath:path locale:locale];
+  v10 = [CDMAssetsUtils findExistFolderInAssetFolders:foldersCopy underBasePath:v9 useFileManager:self->_fileManager];
 
   if (v10)
   {
@@ -65,26 +65,26 @@
   return v2;
 }
 
-+ (id)getAbsolutePathForLocalizedAssetsRootFolderForAssetDirPath:(id)a3 locale:(id)a4
++ (id)getAbsolutePathForLocalizedAssetsRootFolderForAssetDirPath:(id)path locale:(id)locale
 {
-  v5 = a4;
-  v6 = [CDMDefaultAssetsManager getAbsolutePathForAssetsRootFolderForAssetDirPath:a3];
+  localeCopy = locale;
+  v6 = [CDMDefaultAssetsManager getAbsolutePathForAssetsRootFolderForAssetDirPath:path];
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v5 localeIdentifier];
+  localeIdentifier = [localeCopy localeIdentifier];
 
-  v9 = [v7 stringWithFormat:@"%@%@", v8, @".loc"];
+  v9 = [v7 stringWithFormat:@"%@%@", localeIdentifier, @".loc"];
   v10 = [v6 stringByAppendingPathComponent:v9];
 
   return v10;
 }
 
-+ (id)getAbsolutePathForAssetsRootFolderForAssetDirPath:(id)a3
++ (id)getAbsolutePathForAssetsRootFolderForAssetDirPath:(id)path
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v3 = +[CDMUserDefaultsUtils readCustomAssetsRootPath];
+    pathCopy = +[CDMUserDefaultsUtils readCustomAssetsRootPath];
   }
 
   v4 = CDMOSLoggerForCategory(0);
@@ -93,11 +93,11 @@
     v8 = 136315394;
     v9 = "+[CDMDefaultAssetsManager getAbsolutePathForAssetsRootFolderForAssetDirPath:]";
     v10 = 2112;
-    v11 = v3;
+    v11 = pathCopy;
     _os_log_debug_impl(&dword_1DC287000, v4, OS_LOG_TYPE_DEBUG, "%s Asset dir path: %@.", &v8, 0x16u);
   }
 
-  v5 = [v3 stringByAppendingPathComponent:@"assets"];
+  v5 = [pathCopy stringByAppendingPathComponent:@"assets"];
 
   v6 = *MEMORY[0x1E69E9840];
 

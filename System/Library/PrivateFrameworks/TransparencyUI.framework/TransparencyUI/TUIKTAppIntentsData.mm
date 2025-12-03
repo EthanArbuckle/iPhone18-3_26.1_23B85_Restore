@@ -1,8 +1,8 @@
 @interface TUIKTAppIntentsData
 - (TUIKTAppIntentsData)init;
 - (void)init;
-- (void)publicVerificationCodeWithCompletion:(id)a3;
-- (void)statusWithCompletion:(id)a3;
+- (void)publicVerificationCodeWithCompletion:(id)completion;
+- (void)statusWithCompletion:(id)completion;
 @end
 
 @implementation TUIKTAppIntentsData
@@ -44,10 +44,10 @@ uint64_t __27__TUIKTAppIntentsData_init__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)statusWithCompletion:(id)a3
+- (void)statusWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_18 != -1)
   {
     [TUIKTAppIntentsData statusWithCompletion:];
@@ -69,7 +69,7 @@ uint64_t __27__TUIKTAppIntentsData_init__block_invoke()
     *buf = 136315394;
     v13 = "[TUIKTAppIntentsData statusWithCompletion:]";
     v14 = 2114;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26F50B000, v5, OS_LOG_TYPE_DEFAULT, "%s getting CKV status on %{public}@", buf, 0x16u);
   }
 
@@ -80,8 +80,8 @@ uint64_t __27__TUIKTAppIntentsData_init__block_invoke()
   v9[2] = __44__TUIKTAppIntentsData_statusWithCompletion___block_invoke_9;
   v9[3] = &unk_279DDAF50;
   objc_copyWeak(&v11, buf);
-  v10 = v4;
-  v7 = v4;
+  v10 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(v6, v9);
 
   objc_destroyWeak(&v11);
@@ -213,9 +213,9 @@ uint64_t __44__TUIKTAppIntentsData_statusWithCompletion___block_invoke_17()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)publicVerificationCodeWithCompletion:(id)a3
+- (void)publicVerificationCodeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_18 != -1)
   {
     [TUIKTAppIntentsData publicVerificationCodeWithCompletion:];
@@ -233,8 +233,8 @@ uint64_t __44__TUIKTAppIntentsData_statusWithCompletion___block_invoke_17()
   block[2] = __60__TUIKTAppIntentsData_publicVerificationCodeWithCompletion___block_invoke_35;
   block[3] = &unk_279DDAF50;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, block);
 
   objc_destroyWeak(&v9);

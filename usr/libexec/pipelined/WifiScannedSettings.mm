@@ -1,8 +1,8 @@
 @interface WifiScannedSettings
 - (WifiScannedSettings)init;
-- (WifiScannedSettings)initWithSettings:(id)a3 cached:(BOOL)a4 at:(duration<long)long initiatedAt:()std:(1000000000>>)a5 :(duration<long)long ratio<1;
+- (WifiScannedSettings)initWithSettings:(id)settings cached:(BOOL)cached at:(duration<long)long initiatedAt:()std:(1000000000>>)std :(duration<long)long ratio<1;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,30 +15,30 @@
   return 0;
 }
 
-- (WifiScannedSettings)initWithSettings:(id)a3 cached:(BOOL)a4 at:(duration<long)long initiatedAt:()std:(1000000000>>)a5 :(duration<long)long ratio<1
+- (WifiScannedSettings)initWithSettings:(id)settings cached:(BOOL)cached at:(duration<long)long initiatedAt:()std:(1000000000>>)std :(duration<long)long ratio<1
 {
-  v11 = a3;
+  settingsCopy = settings;
   v15.receiver = self;
   v15.super_class = WifiScannedSettings;
   v12 = [(WifiScannedSettings *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_settings, a3);
-    v13->_cachedScan = a4;
+    objc_storeStrong(&v12->_settings, settings);
+    v13->_cachedScan = cached;
     v13->_initiatedTimestamp = a6;
-    v13->_timestamp = a5;
+    v13->_timestamp = std;
     v13->_wifiError = 0;
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [WifiScannedSettings allocWithZone:a3];
-  v5 = [(WifiScannedSettings *)self settings];
-  v6 = [(WifiScannedSettings *)v4 initWithSettings:v5 cached:[(WifiScannedSettings *)self cachedScan] at:[(WifiScannedSettings *)self timestamp] initiatedAt:[(WifiScannedSettings *)self initiatedTimestamp]];
+  v4 = [WifiScannedSettings allocWithZone:zone];
+  settings = [(WifiScannedSettings *)self settings];
+  v6 = [(WifiScannedSettings *)v4 initWithSettings:settings cached:[(WifiScannedSettings *)self cachedScan] at:[(WifiScannedSettings *)self timestamp] initiatedAt:[(WifiScannedSettings *)self initiatedTimestamp]];
 
   return v6;
 }

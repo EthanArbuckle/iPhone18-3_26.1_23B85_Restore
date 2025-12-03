@@ -1,7 +1,7 @@
 @interface BLTSettingsSendSerializer
 - (BLTSettingsSendSerializer)init;
-- (void)handleFileURL:(id)a3;
-- (void)sendNowWithSent:(id)a3 withAcknowledgement:(id)a4 withTimeout:(id)a5;
+- (void)handleFileURL:(id)l;
+- (void)sendNowWithSent:(id)sent withAcknowledgement:(id)acknowledgement withTimeout:(id)timeout;
 @end
 
 @implementation BLTSettingsSendSerializer
@@ -23,13 +23,13 @@
     queue = v2->_queue;
     v2->_queue = v7;
 
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     completionHandlers = v2->_completionHandlers;
-    v2->_completionHandlers = v9;
+    v2->_completionHandlers = array;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     ackHandlers = v2->_ackHandlers;
-    v2->_ackHandlers = v11;
+    v2->_ackHandlers = dictionary;
 
     v13 = v2->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -78,12 +78,12 @@ LABEL_5:
   [*(*(a1 + 32) + 24) setSendFileURL:v4];
 }
 
-- (void)handleFileURL:(id)a3
+- (void)handleFileURL:(id)l
 {
   queueSerializer = self->_queueSerializer;
-  v5 = a3;
-  v6 = [(BLTSettingsSendSerializerPassthrough *)self delegate];
-  [(BLTSendQueueSerializer *)queueSerializer handleFileURL:v5 protobufHandler:v6];
+  lCopy = l;
+  delegate = [(BLTSettingsSendSerializerPassthrough *)self delegate];
+  [(BLTSendQueueSerializer *)queueSerializer handleFileURL:lCopy protobufHandler:delegate];
 }
 
 void __117__BLTSettingsSendSerializer_sendRequest_type_withTimeout_withDescription_onlyOneFor_didSend_andResponse_spoolToFile___block_invoke(uint64_t a1)
@@ -208,23 +208,23 @@ void __117__BLTSettingsSendSerializer_sendRequest_type_withTimeout_withDescripti
   }
 }
 
-- (void)sendNowWithSent:(id)a3 withAcknowledgement:(id)a4 withTimeout:(id)a5
+- (void)sendNowWithSent:(id)sent withAcknowledgement:(id)acknowledgement withTimeout:(id)timeout
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sentCopy = sent;
+  acknowledgementCopy = acknowledgement;
+  timeoutCopy = timeout;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __77__BLTSettingsSendSerializer_sendNowWithSent_withAcknowledgement_withTimeout___block_invoke;
   v15[3] = &unk_278D323A0;
-  v17 = v8;
-  v18 = v9;
+  v17 = sentCopy;
+  v18 = acknowledgementCopy;
   v15[4] = self;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = timeoutCopy;
+  v12 = timeoutCopy;
+  v13 = acknowledgementCopy;
+  v14 = sentCopy;
   dispatch_sync(queue, v15);
 }
 

@@ -1,7 +1,7 @@
 @interface STUsageSharingGroupSpecifierProvider
 - (STUsageSharingGroupSpecifierProvider)init;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
 @end
 
 @implementation STUsageSharingGroupSpecifierProvider
@@ -13,8 +13,8 @@
   v2 = [(STGroupSpecifierProvider *)&v11 init];
   v3 = MEMORY[0x277D3FAD8];
   v4 = objc_opt_new();
-  v5 = [v4 UUIDString];
-  v6 = [v3 groupSpecifierWithID:v5];
+  uUIDString = [v4 UUIDString];
+  v6 = [v3 groupSpecifierWithID:uUIDString];
 
   v7 = +[STScreenTimeSettingsUIBundle bundle];
   v8 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"AADC_ScreenTimeGroupSpecifierFooterText"];
@@ -25,28 +25,28 @@
   return v2;
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"viewModel.isSharingUsageData" context:@"KVOContextUsageSharingGroupSpecifierProvider"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.isSharingUsageData" context:@"KVOContextUsageSharingGroupSpecifierProvider"];
   v6.receiver = self;
   v6.super_class = STUsageSharingGroupSpecifierProvider;
-  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"viewModel.isSharingUsageData" options:5 context:@"KVOContextUsageSharingGroupSpecifierProvider"];
+  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.isSharingUsageData" options:5 context:@"KVOContextUsageSharingGroupSpecifierProvider"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  if (a6 == @"KVOContextUsageSharingGroupSpecifierProvider")
+  changeCopy = change;
+  if (context == @"KVOContextUsageSharingGroupSpecifierProvider")
   {
-    if ([a3 isEqualToString:@"viewModel.isSharingUsageData"])
+    if ([path isEqualToString:@"viewModel.isSharingUsageData"])
     {
-      v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v12 = [MEMORY[0x277CBEB68] null];
+      v11 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v11 == v12)
+      if (v11 == null)
       {
 
         v11 = 0;
@@ -60,7 +60,7 @@
   {
     v13.receiver = self;
     v13.super_class = STUsageSharingGroupSpecifierProvider;
-    [(STUsageSharingGroupSpecifierProvider *)&v13 observeValueForKeyPath:a3 ofObject:a4 change:v10 context:a6];
+    [(STUsageSharingGroupSpecifierProvider *)&v13 observeValueForKeyPath:path ofObject:object change:changeCopy context:context];
   }
 }
 

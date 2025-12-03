@@ -1,30 +1,30 @@
 @interface ATXAppInFocusStream
 + (id)currentAppInFocusStartEvent;
-- (ATXAppInFocusStream)initWithRemoteIDSIdentifier:(id)a3;
-- (BOOL)_shouldPairStartEvent:(id)a3 withEndEvent:(id)a4;
-- (id)_createAppInFocusSessionFromEvent:(id)a3 startTime:(id)a4 endTime:(id)a5;
-- (id)_fetchBMDeviceFromIDSIdentifier:(id)a3;
-- (id)_getAppLaunchEventFromBMAppInFocus:(id)a3;
-- (id)currentAppInFocusStartEventAtGivenTime:(id)a3;
-- (id)getFirstAppLaunchSessionBetweenStartDate:(id)a3 endDate:(id)a4;
-- (id)getFirstAppLaunchStartEventBetweenStartDate:(id)a3 endDate:(id)a4;
-- (id)getLastAppLaunchSessionBetweenStartDate:(id)a3 endDate:(id)a4;
-- (id)getLastAppLaunchStartEventBetweenStartDate:(id)a3 endDate:(id)a4;
-- (unint64_t)numberOfAppLaunchEventsBetweenStartDate:(id)a3 endDate:(id)a4;
-- (unint64_t)numberOfAppLaunchSessionsBetweenStartDate:(id)a3 endDate:(id)a4 forBundleID:(id)a5;
-- (void)enumerateAllAppLaunchSessionsFromStartDate:(id)a3 bundleIDFilter:(id)a4 block:(id)a5;
-- (void)enumerateAppLaunchEventsFromStartDate:(id)a3 bundleIDFilter:(id)a4 block:(id)a5;
+- (ATXAppInFocusStream)initWithRemoteIDSIdentifier:(id)identifier;
+- (BOOL)_shouldPairStartEvent:(id)event withEndEvent:(id)endEvent;
+- (id)_createAppInFocusSessionFromEvent:(id)event startTime:(id)time endTime:(id)endTime;
+- (id)_fetchBMDeviceFromIDSIdentifier:(id)identifier;
+- (id)_getAppLaunchEventFromBMAppInFocus:(id)focus;
+- (id)currentAppInFocusStartEventAtGivenTime:(id)time;
+- (id)getFirstAppLaunchSessionBetweenStartDate:(id)date endDate:(id)endDate;
+- (id)getFirstAppLaunchStartEventBetweenStartDate:(id)date endDate:(id)endDate;
+- (id)getLastAppLaunchSessionBetweenStartDate:(id)date endDate:(id)endDate;
+- (id)getLastAppLaunchStartEventBetweenStartDate:(id)date endDate:(id)endDate;
+- (unint64_t)numberOfAppLaunchEventsBetweenStartDate:(id)date endDate:(id)endDate;
+- (unint64_t)numberOfAppLaunchSessionsBetweenStartDate:(id)date endDate:(id)endDate forBundleID:(id)d;
+- (void)enumerateAllAppLaunchSessionsFromStartDate:(id)date bundleIDFilter:(id)filter block:(id)block;
+- (void)enumerateAppLaunchEventsFromStartDate:(id)date bundleIDFilter:(id)filter block:(id)block;
 @end
 
 @implementation ATXAppInFocusStream
 
-- (ATXAppInFocusStream)initWithRemoteIDSIdentifier:(id)a3
+- (ATXAppInFocusStream)initWithRemoteIDSIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = ATXAppInFocusStream;
   v5 = [(ATXAppInFocusStream *)&v10 init];
-  if (!v5 || (v6 = [v4 copy], remoteIDSIdentifier = v5->_remoteIDSIdentifier, v5->_remoteIDSIdentifier = v6, remoteIDSIdentifier, -[ATXAppInFocusStream _fetchBMDeviceFromIDSIdentifier:](v5, "_fetchBMDeviceFromIDSIdentifier:", v5->_remoteIDSIdentifier), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  if (!v5 || (v6 = [identifierCopy copy], remoteIDSIdentifier = v5->_remoteIDSIdentifier, v5->_remoteIDSIdentifier = v6, remoteIDSIdentifier, -[ATXAppInFocusStream _fetchBMDeviceFromIDSIdentifier:](v5, "_fetchBMDeviceFromIDSIdentifier:", v5->_remoteIDSIdentifier), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
     v8 = v5;
   }
@@ -44,14 +44,14 @@
   return v5;
 }
 
-- (void)enumerateAppLaunchEventsFromStartDate:(id)a3 bundleIDFilter:(id)a4 block:(id)a5
+- (void)enumerateAppLaunchEventsFromStartDate:(id)date bundleIDFilter:(id)filter block:(id)block
 {
   v8 = MEMORY[0x277CBEAA8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  blockCopy = block;
+  filterCopy = filter;
+  dateCopy = date;
   v12 = [v8 now];
-  [(ATXAppInFocusStream *)self enumerateAppLaunchEventsBetweenStartDate:v11 endDate:v12 shouldReverse:0 bundleIDFilter:v10 block:v9];
+  [(ATXAppInFocusStream *)self enumerateAppLaunchEventsBetweenStartDate:dateCopy endDate:v12 shouldReverse:0 bundleIDFilter:filterCopy block:blockCopy];
 }
 
 uint64_t __131__ATXAppInFocusStream_enumerateAppLaunchEventsBetweenStartDate_endDate_limit_shouldReverse_type_displayType_bundleIDsFilter_block___block_invoke(void *a1)
@@ -67,10 +67,10 @@ uint64_t __131__ATXAppInFocusStream_enumerateAppLaunchEventsBetweenStartDate_end
   }
 }
 
-- (id)getFirstAppLaunchStartEventBetweenStartDate:(id)a3 endDate:(id)a4
+- (id)getFirstAppLaunchStartEventBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -82,7 +82,7 @@ uint64_t __131__ATXAppInFocusStream_enumerateAppLaunchEventsBetweenStartDate_end
   v10[2] = __75__ATXAppInFocusStream_getFirstAppLaunchStartEventBetweenStartDate_endDate___block_invoke;
   v10[3] = &unk_2785906A0;
   v10[4] = &v11;
-  [(ATXAppInFocusStream *)self _enumerateAppLaunchEventsBetweenStartDate:v6 endDate:v7 shouldReverse:0 type:2 displayType:7 bundleIDsFilter:0 block:v10];
+  [(ATXAppInFocusStream *)self _enumerateAppLaunchEventsBetweenStartDate:dateCopy endDate:endDateCopy shouldReverse:0 type:2 displayType:7 bundleIDsFilter:0 block:v10];
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
 
@@ -106,10 +106,10 @@ uint64_t __75__ATXAppInFocusStream_getFirstAppLaunchStartEventBetweenStartDate_e
   return v5;
 }
 
-- (id)getLastAppLaunchStartEventBetweenStartDate:(id)a3 endDate:(id)a4
+- (id)getLastAppLaunchStartEventBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -121,7 +121,7 @@ uint64_t __75__ATXAppInFocusStream_getFirstAppLaunchStartEventBetweenStartDate_e
   v10[2] = __74__ATXAppInFocusStream_getLastAppLaunchStartEventBetweenStartDate_endDate___block_invoke;
   v10[3] = &unk_2785906A0;
   v10[4] = &v11;
-  [(ATXAppInFocusStream *)self _enumerateAppLaunchEventsBetweenStartDate:v6 endDate:v7 shouldReverse:1 type:2 displayType:7 bundleIDsFilter:0 block:v10];
+  [(ATXAppInFocusStream *)self _enumerateAppLaunchEventsBetweenStartDate:dateCopy endDate:endDateCopy shouldReverse:1 type:2 displayType:7 bundleIDsFilter:0 block:v10];
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
 
@@ -145,10 +145,10 @@ uint64_t __74__ATXAppInFocusStream_getLastAppLaunchStartEventBetweenStartDate_en
   return v5;
 }
 
-- (unint64_t)numberOfAppLaunchEventsBetweenStartDate:(id)a3 endDate:(id)a4
+- (unint64_t)numberOfAppLaunchEventsBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -158,7 +158,7 @@ uint64_t __74__ATXAppInFocusStream_getLastAppLaunchStartEventBetweenStartDate_en
   v10[2] = __71__ATXAppInFocusStream_numberOfAppLaunchEventsBetweenStartDate_endDate___block_invoke;
   v10[3] = &unk_2785906A0;
   v10[4] = &v11;
-  [(ATXAppInFocusStream *)self _enumerateAppLaunchEventsBetweenStartDate:v6 endDate:v7 shouldReverse:0 type:2 displayType:7 bundleIDsFilter:0 block:v10];
+  [(ATXAppInFocusStream *)self _enumerateAppLaunchEventsBetweenStartDate:dateCopy endDate:endDateCopy shouldReverse:0 type:2 displayType:7 bundleIDsFilter:0 block:v10];
   v8 = v12[3];
   _Block_object_dispose(&v11, 8);
 
@@ -175,10 +175,10 @@ uint64_t __71__ATXAppInFocusStream_numberOfAppLaunchEventsBetweenStartDate_endDa
   return 1;
 }
 
-- (id)currentAppInFocusStartEventAtGivenTime:(id)a3
+- (id)currentAppInFocusStartEventAtGivenTime:(id)time
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timeCopy = time;
   v5 = objc_autoreleasePoolPush();
   v19 = 0;
   v20 = &v19;
@@ -192,21 +192,21 @@ uint64_t __71__ATXAppInFocusStream_numberOfAppLaunchEventsBetweenStartDate_endDa
     *buf = 136315394;
     v26 = "[ATXAppInFocusStream currentAppInFocusStartEventAtGivenTime:]";
     v27 = 2112;
-    v28 = v4;
+    v28 = timeCopy;
     _os_log_impl(&dword_226368000, v6, OS_LOG_TYPE_DEFAULT, "%s: Getting the current app in focus at time: %@", buf, 0x16u);
   }
 
   v7 = BiomeLibrary();
   v8 = [v7 App];
-  v9 = [v8 InFocus];
-  v10 = [v9 atx_publisherWithStartDate:0 endDate:0 maxEvents:&unk_283988F00 lastN:&unk_283988F00 reversed:0];
+  inFocus = [v8 InFocus];
+  v10 = [inFocus atx_publisherWithStartDate:0 endDate:0 maxEvents:&unk_283988F00 lastN:&unk_283988F00 reversed:0];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __62__ATXAppInFocusStream_currentAppInFocusStartEventAtGivenTime___block_invoke_15;
   v16[3] = &unk_2785906C8;
   v16[4] = self;
   v18 = &v19;
-  v11 = v4;
+  v11 = timeCopy;
   v17 = v11;
   v12 = [v10 sinkWithCompletion:&__block_literal_global_14 shouldContinue:v16];
 
@@ -295,14 +295,14 @@ uint64_t __126__ATXAppInFocusStream__enumerateAppLaunchEventsBetweenStartDate_en
   return v8;
 }
 
-- (void)enumerateAllAppLaunchSessionsFromStartDate:(id)a3 bundleIDFilter:(id)a4 block:(id)a5
+- (void)enumerateAllAppLaunchSessionsFromStartDate:(id)date bundleIDFilter:(id)filter block:(id)block
 {
   v8 = MEMORY[0x277CBEAA8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  blockCopy = block;
+  filterCopy = filter;
+  dateCopy = date;
   v12 = [v8 now];
-  [(ATXAppInFocusStream *)self enumerateAppLaunchSessionsBetweenStartDate:v11 endDate:v12 shouldReverse:0 bundleIDFilter:v10 block:v9];
+  [(ATXAppInFocusStream *)self enumerateAppLaunchSessionsBetweenStartDate:dateCopy endDate:v12 shouldReverse:0 bundleIDFilter:filterCopy block:blockCopy];
 }
 
 uint64_t __133__ATXAppInFocusStream_enumerateAppLaunchSessionsBetweenStartDate_endDate_limit_shouldReverse_type_displayType_bundleIDsFilter_block___block_invoke(void *a1)
@@ -318,10 +318,10 @@ uint64_t __133__ATXAppInFocusStream_enumerateAppLaunchSessionsBetweenStartDate_e
   }
 }
 
-- (id)getFirstAppLaunchSessionBetweenStartDate:(id)a3 endDate:(id)a4
+- (id)getFirstAppLaunchSessionBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -333,7 +333,7 @@ uint64_t __133__ATXAppInFocusStream_enumerateAppLaunchSessionsBetweenStartDate_e
   v10[2] = __72__ATXAppInFocusStream_getFirstAppLaunchSessionBetweenStartDate_endDate___block_invoke;
   v10[3] = &unk_278590740;
   v10[4] = &v11;
-  [(ATXAppInFocusStream *)self _enumerateAppLaunchSessionsBetweenStartDate:v6 endDate:v7 shouldReverse:0 type:2 displayType:7 bundleIDsFilter:0 block:v10];
+  [(ATXAppInFocusStream *)self _enumerateAppLaunchSessionsBetweenStartDate:dateCopy endDate:endDateCopy shouldReverse:0 type:2 displayType:7 bundleIDsFilter:0 block:v10];
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
 
@@ -352,10 +352,10 @@ BOOL __72__ATXAppInFocusStream_getFirstAppLaunchSessionBetweenStartDate_endDate_
   return v5 != 1;
 }
 
-- (id)getLastAppLaunchSessionBetweenStartDate:(id)a3 endDate:(id)a4
+- (id)getLastAppLaunchSessionBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -367,7 +367,7 @@ BOOL __72__ATXAppInFocusStream_getFirstAppLaunchSessionBetweenStartDate_endDate_
   v10[2] = __71__ATXAppInFocusStream_getLastAppLaunchSessionBetweenStartDate_endDate___block_invoke;
   v10[3] = &unk_278590740;
   v10[4] = &v11;
-  [(ATXAppInFocusStream *)self _enumerateAppLaunchSessionsBetweenStartDate:v6 endDate:v7 shouldReverse:1 type:2 displayType:7 bundleIDsFilter:0 block:v10];
+  [(ATXAppInFocusStream *)self _enumerateAppLaunchSessionsBetweenStartDate:dateCopy endDate:endDateCopy shouldReverse:1 type:2 displayType:7 bundleIDsFilter:0 block:v10];
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
 
@@ -386,20 +386,20 @@ BOOL __71__ATXAppInFocusStream_getLastAppLaunchSessionBetweenStartDate_endDate__
   return v5 != 1;
 }
 
-- (unint64_t)numberOfAppLaunchSessionsBetweenStartDate:(id)a3 endDate:(id)a4 forBundleID:(id)a5
+- (unint64_t)numberOfAppLaunchSessionsBetweenStartDate:(id)date endDate:(id)endDate forBundleID:(id)d
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  dateCopy = date;
+  endDateCopy = endDate;
+  dCopy = d;
+  v11 = dCopy;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  if (v10)
+  if (dCopy)
   {
-    v21[0] = v10;
+    v21[0] = dCopy;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
   }
 
@@ -413,7 +413,7 @@ BOOL __71__ATXAppInFocusStream_getLastAppLaunchSessionBetweenStartDate_endDate__
   v16[2] = __85__ATXAppInFocusStream_numberOfAppLaunchSessionsBetweenStartDate_endDate_forBundleID___block_invoke;
   v16[3] = &unk_278590740;
   v16[4] = &v17;
-  [(ATXAppInFocusStream *)self _enumerateAppLaunchSessionsBetweenStartDate:v8 endDate:v9 shouldReverse:0 type:2 displayType:7 bundleIDsFilter:v12 block:v16];
+  [(ATXAppInFocusStream *)self _enumerateAppLaunchSessionsBetweenStartDate:dateCopy endDate:endDateCopy shouldReverse:0 type:2 displayType:7 bundleIDsFilter:v12 block:v16];
   if (v11)
   {
   }
@@ -555,9 +555,9 @@ LABEL_21:
   return v16;
 }
 
-- (id)_fetchBMDeviceFromIDSIdentifier:(id)a3
+- (id)_fetchBMDeviceFromIDSIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
   v18 = 0;
   v5 = [v4 remoteDevicesWithError:&v18];
@@ -566,7 +566,7 @@ LABEL_21:
   v14 = 3221225472;
   v15 = __55__ATXAppInFocusStream__fetchBMDeviceFromIDSIdentifier___block_invoke;
   v16 = &unk_278590790;
-  v7 = v3;
+  v7 = identifierCopy;
   v17 = v7;
   v8 = [v5 _pas_filteredArrayWithTest:&v13];
 
@@ -578,7 +578,7 @@ LABEL_21:
       [ATXAppInFocusStream _fetchBMDeviceFromIDSIdentifier:];
     }
 
-    v10 = 0;
+    firstObject = 0;
   }
 
   else
@@ -592,10 +592,10 @@ LABEL_21:
       }
     }
 
-    v10 = [v8 firstObject];
+    firstObject = [v8 firstObject];
   }
 
-  return v10;
+  return firstObject;
 }
 
 uint64_t __55__ATXAppInFocusStream__fetchBMDeviceFromIDSIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -606,28 +606,28 @@ uint64_t __55__ATXAppInFocusStream__fetchBMDeviceFromIDSIdentifier___block_invok
   return v4;
 }
 
-- (id)_getAppLaunchEventFromBMAppInFocus:(id)a3
+- (id)_getAppLaunchEventFromBMAppInFocus:(id)focus
 {
-  v4 = a3;
+  focusCopy = focus;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 eventBody];
-  v7 = v6;
-  if (v6)
+  eventBody = [focusCopy eventBody];
+  v7 = eventBody;
+  if (eventBody)
   {
-    v8 = [v6 bundleID];
-    v9 = v8;
-    if (v8 && [v8 length])
+    bundleID = [eventBody bundleID];
+    v9 = bundleID;
+    if (bundleID && [bundleID length])
     {
       v20 = -[ATXAppInFocusStream _atxAppInFocusEventTypeForBMAppInFocusType:](self, "_atxAppInFocusEventTypeForBMAppInFocusType:", [v7 type]);
       v10 = -[ATXAppInFocusStream _atxAppInFocusDisplayTypeForBMAppInFocusDisplayType:](self, "_atxAppInFocusDisplayTypeForBMAppInFocusDisplayType:", [v7 displayType]);
-      v11 = [v7 parentBundleID];
-      v12 = [v7 extensionHostID];
-      v13 = [v7 starting];
+      parentBundleID = [v7 parentBundleID];
+      extensionHostID = [v7 extensionHostID];
+      starting = [v7 starting];
       v14 = objc_alloc(MEMORY[0x277CBEAA8]);
-      [v4 timestamp];
+      [focusCopy timestamp];
       v15 = [v14 initWithTimeIntervalSinceReferenceDate:?];
-      v16 = [v7 launchReason];
-      v17 = [[ATXAppInFocusEvent alloc] initWithBundleId:v9 type:v20 displayType:v10 parentBundleID:v11 extensionHostID:v12 starting:v13 absoluteTimestamp:v15 launchReason:v16];
+      launchReason = [v7 launchReason];
+      v17 = [[ATXAppInFocusEvent alloc] initWithBundleId:v9 type:v20 displayType:v10 parentBundleID:parentBundleID extensionHostID:extensionHostID starting:starting absoluteTimestamp:v15 launchReason:launchReason];
 
       goto LABEL_11;
     }
@@ -656,30 +656,30 @@ LABEL_11:
   return v17;
 }
 
-- (BOOL)_shouldPairStartEvent:(id)a3 withEndEvent:(id)a4
+- (BOOL)_shouldPairStartEvent:(id)event withEndEvent:(id)endEvent
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 bundleID];
-  v8 = [v6 bundleID];
-  v9 = [v7 isEqualToString:v8];
+  eventCopy = event;
+  endEventCopy = endEvent;
+  bundleID = [eventCopy bundleID];
+  bundleID2 = [endEventCopy bundleID];
+  v9 = [bundleID isEqualToString:bundleID2];
 
   if (!v9)
   {
     goto LABEL_11;
   }
 
-  v10 = [v5 parentBundleID];
-  if (v10)
+  parentBundleID = [eventCopy parentBundleID];
+  if (parentBundleID)
   {
-    v11 = v10;
-    v12 = [v6 parentBundleID];
+    v11 = parentBundleID;
+    parentBundleID2 = [endEventCopy parentBundleID];
 
-    if (v12)
+    if (parentBundleID2)
     {
-      v13 = [v5 parentBundleID];
-      v14 = [v6 parentBundleID];
-      v15 = [v13 isEqualToString:v14];
+      parentBundleID3 = [eventCopy parentBundleID];
+      parentBundleID4 = [endEventCopy parentBundleID];
+      v15 = [parentBundleID3 isEqualToString:parentBundleID4];
 
       if (!v15)
       {
@@ -688,17 +688,17 @@ LABEL_11:
     }
   }
 
-  v16 = [v5 extensionHostID];
-  if (v16)
+  extensionHostID = [eventCopy extensionHostID];
+  if (extensionHostID)
   {
-    v17 = v16;
-    v18 = [v6 extensionHostID];
+    v17 = extensionHostID;
+    extensionHostID2 = [endEventCopy extensionHostID];
 
-    if (v18)
+    if (extensionHostID2)
     {
-      v19 = [v5 extensionHostID];
-      v20 = [v6 extensionHostID];
-      v21 = [v19 isEqualToString:v20];
+      extensionHostID3 = [eventCopy extensionHostID];
+      extensionHostID4 = [endEventCopy extensionHostID];
+      v21 = [extensionHostID3 isEqualToString:extensionHostID4];
 
       if (!v21)
       {
@@ -707,12 +707,12 @@ LABEL_11:
     }
   }
 
-  v22 = [v5 type];
-  if (v22 == [v6 type] && (v23 = objc_msgSend(v5, "displayType"), v23 == objc_msgSend(v6, "displayType")))
+  type = [eventCopy type];
+  if (type == [endEventCopy type] && (v23 = objc_msgSend(eventCopy, "displayType"), v23 == objc_msgSend(endEventCopy, "displayType")))
   {
-    v24 = [v5 absoluteTimestamp];
-    v25 = [v6 absoluteTimestamp];
-    v26 = [v24 compare:v25] == -1;
+    absoluteTimestamp = [eventCopy absoluteTimestamp];
+    absoluteTimestamp2 = [endEventCopy absoluteTimestamp];
+    v26 = [absoluteTimestamp compare:absoluteTimestamp2] == -1;
   }
 
   else
@@ -724,20 +724,20 @@ LABEL_11:
   return v26;
 }
 
-- (id)_createAppInFocusSessionFromEvent:(id)a3 startTime:(id)a4 endTime:(id)a5
+- (id)_createAppInFocusSessionFromEvent:(id)event startTime:(id)time endTime:(id)endTime
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  endTimeCopy = endTime;
+  timeCopy = time;
+  eventCopy = event;
   v10 = [ATXAppInFocusEventSession alloc];
-  v11 = [v9 bundleID];
-  v12 = [v9 type];
-  v13 = [v9 displayType];
-  v14 = [v9 parentBundleID];
-  v15 = [v9 extensionHostID];
-  v16 = [v9 launchReason];
+  bundleID = [eventCopy bundleID];
+  type = [eventCopy type];
+  displayType = [eventCopy displayType];
+  parentBundleID = [eventCopy parentBundleID];
+  extensionHostID = [eventCopy extensionHostID];
+  launchReason = [eventCopy launchReason];
 
-  v17 = [(ATXAppInFocusEventSession *)v10 initWithBundleId:v11 type:v12 displayType:v13 parentBundleID:v14 extensionHostID:v15 appSessionStartTime:v8 appSessionEndTime:v7 launchReason:v16];
+  v17 = [(ATXAppInFocusEventSession *)v10 initWithBundleId:bundleID type:type displayType:displayType parentBundleID:parentBundleID extensionHostID:extensionHostID appSessionStartTime:timeCopy appSessionEndTime:endTimeCopy launchReason:launchReason];
 
   return v17;
 }

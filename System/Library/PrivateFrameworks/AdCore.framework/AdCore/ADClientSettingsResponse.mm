@@ -1,52 +1,52 @@
 @interface ADClientSettingsResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSearchAdsSettingsParams:(id)a3;
-- (void)addSearchLandingAdsSettingsParams:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSearchAdsSettingsParams:(id)params;
+- (void)addSearchLandingAdsSettingsParams:(id)params;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ADClientSettingsResponse
 
-- (void)addSearchAdsSettingsParams:(id)a3
+- (void)addSearchAdsSettingsParams:(id)params
 {
-  v4 = a3;
+  paramsCopy = params;
   searchAdsSettingsParams = self->_searchAdsSettingsParams;
-  v8 = v4;
+  v8 = paramsCopy;
   if (!searchAdsSettingsParams)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_searchAdsSettingsParams;
     self->_searchAdsSettingsParams = v6;
 
-    v4 = v8;
+    paramsCopy = v8;
     searchAdsSettingsParams = self->_searchAdsSettingsParams;
   }
 
-  [(NSMutableArray *)searchAdsSettingsParams addObject:v4];
+  [(NSMutableArray *)searchAdsSettingsParams addObject:paramsCopy];
 }
 
-- (void)addSearchLandingAdsSettingsParams:(id)a3
+- (void)addSearchLandingAdsSettingsParams:(id)params
 {
-  v4 = a3;
+  paramsCopy = params;
   searchLandingAdsSettingsParams = self->_searchLandingAdsSettingsParams;
-  v8 = v4;
+  v8 = paramsCopy;
   if (!searchLandingAdsSettingsParams)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_searchLandingAdsSettingsParams;
     self->_searchLandingAdsSettingsParams = v6;
 
-    v4 = v8;
+    paramsCopy = v8;
     searchLandingAdsSettingsParams = self->_searchLandingAdsSettingsParams;
   }
 
-  [(NSMutableArray *)searchLandingAdsSettingsParams addObject:v4];
+  [(NSMutableArray *)searchLandingAdsSettingsParams addObject:paramsCopy];
 }
 
 - (id)description
@@ -55,8 +55,8 @@
   v8.receiver = self;
   v8.super_class = ADClientSettingsResponse;
   v4 = [(ADClientSettingsResponse *)&v8 description];
-  v5 = [(ADClientSettingsResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ADClientSettingsResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -64,11 +64,11 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithDouble:self->_expirationDate];
-    [v3 setObject:v4 forKey:@"expirationDate"];
+    [dictionary setObject:v4 forKey:@"expirationDate"];
   }
 
   if ([(NSMutableArray *)self->_searchAdsSettingsParams count])
@@ -93,8 +93,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -103,7 +103,7 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"searchAdsSettingsParams"];
+    [dictionary setObject:v5 forKey:@"searchAdsSettingsParams"];
   }
 
   if ([(NSMutableArray *)self->_searchLandingAdsSettingsParams count])
@@ -128,8 +128,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation2 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation2];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -138,18 +138,18 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKey:@"searchLandingAdsSettingsParams"];
+    [dictionary setObject:v12 forKey:@"searchLandingAdsSettingsParams"];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     expirationDate = self->_expirationDate;
@@ -223,23 +223,23 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_expirationDate;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = *&self->_expirationDate;
+    *(toCopy + 32) |= 1u;
   }
 
-  v13 = v4;
+  v13 = toCopy;
   if ([(ADClientSettingsResponse *)self searchAdsSettingsParamsCount])
   {
     [v13 clearSearchAdsSettingsParams];
-    v5 = [(ADClientSettingsResponse *)self searchAdsSettingsParamsCount];
-    if (v5)
+    searchAdsSettingsParamsCount = [(ADClientSettingsResponse *)self searchAdsSettingsParamsCount];
+    if (searchAdsSettingsParamsCount)
     {
-      v6 = v5;
+      v6 = searchAdsSettingsParamsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(ADClientSettingsResponse *)self searchAdsSettingsParamsAtIndex:i];
@@ -251,10 +251,10 @@
   if ([(ADClientSettingsResponse *)self searchLandingAdsSettingsParamsCount])
   {
     [v13 clearSearchLandingAdsSettingsParams];
-    v9 = [(ADClientSettingsResponse *)self searchLandingAdsSettingsParamsCount];
-    if (v9)
+    searchLandingAdsSettingsParamsCount = [(ADClientSettingsResponse *)self searchLandingAdsSettingsParamsCount];
+    if (searchLandingAdsSettingsParamsCount)
     {
-      v10 = v9;
+      v10 = searchLandingAdsSettingsParamsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(ADClientSettingsResponse *)self searchLandingAdsSettingsParamsAtIndex:j];
@@ -264,10 +264,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -295,7 +295,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v25 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v25 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addSearchAdsSettingsParams:v12];
 
         ++v11;
@@ -328,7 +328,7 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * v17) copyWithZone:{a3, v21}];
+        v18 = [*(*(&v21 + 1) + 8 * v17) copyWithZone:{zone, v21}];
         [v6 addSearchLandingAdsSettingsParams:v18];
 
         ++v17;
@@ -345,24 +345,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_expirationDate != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_expirationDate != *(equalCopy + 1))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v8 = 0;
@@ -370,13 +370,13 @@ LABEL_11:
   }
 
   searchAdsSettingsParams = self->_searchAdsSettingsParams;
-  if (searchAdsSettingsParams | *(v4 + 2) && ![(NSMutableArray *)searchAdsSettingsParams isEqual:?])
+  if (searchAdsSettingsParams | *(equalCopy + 2) && ![(NSMutableArray *)searchAdsSettingsParams isEqual:?])
   {
     goto LABEL_11;
   }
 
   searchLandingAdsSettingsParams = self->_searchLandingAdsSettingsParams;
-  if (searchLandingAdsSettingsParams | *(v4 + 3))
+  if (searchLandingAdsSettingsParams | *(equalCopy + 3))
   {
     v8 = [(NSMutableArray *)searchLandingAdsSettingsParams isEqual:?];
   }
@@ -430,14 +430,14 @@ LABEL_12:
   return v9 ^ [(NSMutableArray *)self->_searchLandingAdsSettingsParams hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 32))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 32))
   {
-    self->_expirationDate = *(v4 + 1);
+    self->_expirationDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -445,7 +445,7 @@ LABEL_12:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {

@@ -1,9 +1,9 @@
 @interface HKContactsLensSpecification
-- (BOOL)isEqual:(id)a3;
-- (HKContactsLensSpecification)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKContactsLensSpecification)initWithCoder:(id)coder;
 - (HKContactsLensSpecification)initWithSphere:(HKQuantity *)sphere cylinder:(HKQuantity *)cylinder axis:(HKQuantity *)axis addPower:(HKQuantity *)addPower baseCurve:(HKQuantity *)baseCurve diameter:(HKQuantity *)diameter;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKContactsLensSpecification
@@ -40,10 +40,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(diameter) = 1;
   }
@@ -53,22 +53,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(HKLensSpecification *)self sphere];
-      v9 = [(HKLensSpecification *)v7 sphere];
-      if (v8 != v9)
+      v7 = equalCopy;
+      sphere = [(HKLensSpecification *)self sphere];
+      sphere2 = [(HKLensSpecification *)v7 sphere];
+      if (sphere != sphere2)
       {
-        v52 = [(HKLensSpecification *)v7 sphere];
-        if (!v52)
+        sphere3 = [(HKLensSpecification *)v7 sphere];
+        if (!sphere3)
         {
           LOBYTE(diameter) = 0;
           goto LABEL_69;
         }
 
-        v3 = [(HKLensSpecification *)self sphere];
-        v10 = [(HKLensSpecification *)v7 sphere];
-        v51 = v3;
-        if (![v3 isEqual:v10])
+        sphere4 = [(HKLensSpecification *)self sphere];
+        sphere5 = [(HKLensSpecification *)v7 sphere];
+        v51 = sphere4;
+        if (![sphere4 isEqual:sphere5])
         {
           LOBYTE(diameter) = 0;
 LABEL_68:
@@ -76,12 +76,12 @@ LABEL_68:
           goto LABEL_69;
         }
 
-        v50 = v10;
+        v50 = sphere5;
       }
 
-      v11 = [(HKLensSpecification *)self cylinder];
-      v53 = [(HKLensSpecification *)v7 cylinder];
-      if (v11 != v53)
+      cylinder = [(HKLensSpecification *)self cylinder];
+      cylinder2 = [(HKLensSpecification *)v7 cylinder];
+      if (cylinder != cylinder2)
       {
         diameter = [(HKLensSpecification *)v7 cylinder];
         if (!diameter)
@@ -91,43 +91,43 @@ LABEL_66:
           goto LABEL_67;
         }
 
-        v3 = [(HKLensSpecification *)self cylinder];
-        v12 = [(HKLensSpecification *)v7 cylinder];
-        if (([v3 isEqual:v12] & 1) == 0)
+        sphere4 = [(HKLensSpecification *)self cylinder];
+        cylinder3 = [(HKLensSpecification *)v7 cylinder];
+        if (([sphere4 isEqual:cylinder3] & 1) == 0)
         {
 
           goto LABEL_35;
         }
 
-        v46 = v12;
-        v47 = v3;
+        v46 = cylinder3;
+        v47 = sphere4;
       }
 
-      v13 = [(HKLensSpecification *)self axis];
-      v49 = [(HKLensSpecification *)v7 axis];
-      if (v13 == v49)
+      axis = [(HKLensSpecification *)self axis];
+      axis2 = [(HKLensSpecification *)v7 axis];
+      if (axis == axis2)
       {
 LABEL_20:
-        v18 = [(HKLensSpecification *)self addPower];
-        v48 = [(HKLensSpecification *)v7 addPower];
-        if (v18 == v48)
+        addPower = [(HKLensSpecification *)self addPower];
+        addPower2 = [(HKLensSpecification *)v7 addPower];
+        if (addPower == addPower2)
         {
-          v43 = v3;
-          v44 = v11;
+          v43 = sphere4;
+          v44 = cylinder;
 LABEL_27:
           baseCurve = self->_baseCurve;
-          v41 = [(HKContactsLensSpecification *)v7 baseCurve];
+          baseCurve = [(HKContactsLensSpecification *)v7 baseCurve];
           v42 = diameter;
           v38 = baseCurve;
-          if (baseCurve == v41)
+          if (baseCurve == baseCurve)
           {
-            v37 = v18;
+            v37 = addPower;
           }
 
           else
           {
-            v23 = [(HKContactsLensSpecification *)v7 baseCurve];
-            if (!v23)
+            baseCurve2 = [(HKContactsLensSpecification *)v7 baseCurve];
+            if (!baseCurve2)
             {
               LOBYTE(diameter) = 0;
               v30 = v47;
@@ -135,7 +135,7 @@ LABEL_27:
               goto LABEL_52;
             }
 
-            v34 = v23;
+            v34 = baseCurve2;
             v24 = self->_baseCurve;
             baseCurve = [(HKContactsLensSpecification *)v7 baseCurve];
             if (![(HKQuantity *)v24 isEqual:baseCurve])
@@ -143,17 +143,17 @@ LABEL_27:
 
               LOBYTE(diameter) = 0;
 LABEL_60:
-              v25 = v49;
-              v3 = v43;
-              if (v18 == v48)
+              v25 = axis2;
+              sphere4 = v43;
+              if (addPower == addPower2)
               {
 
-                v11 = v44;
-                if (v13 == v49)
+                cylinder = v44;
+                if (axis == axis2)
                 {
 LABEL_64:
 
-                  if (v11 != v53)
+                  if (cylinder != cylinder2)
                   {
                   }
 
@@ -165,10 +165,10 @@ LABEL_63:
                 goto LABEL_64;
               }
 
-              v11 = v44;
+              cylinder = v44;
 LABEL_62:
 
-              if (v13 == v25)
+              if (axis == v25)
               {
                 goto LABEL_64;
               }
@@ -176,39 +176,39 @@ LABEL_62:
               goto LABEL_63;
             }
 
-            v37 = v18;
+            v37 = addPower;
           }
 
           diameter = self->_diameter;
-          v26 = [(HKContactsLensSpecification *)v7 diameter];
-          LOBYTE(diameter) = diameter == v26;
+          diameter = [(HKContactsLensSpecification *)v7 diameter];
+          LOBYTE(diameter) = diameter == diameter;
           if (!diameter)
           {
-            v27 = [(HKContactsLensSpecification *)v7 diameter];
-            if (v27)
+            diameter2 = [(HKContactsLensSpecification *)v7 diameter];
+            if (diameter2)
             {
               diameter = self->_diameter;
-              v28 = v27;
-              v29 = [(HKContactsLensSpecification *)v7 diameter];
-              LOBYTE(diameter) = [diameter isEqual:v29];
+              v28 = diameter2;
+              diameter3 = [(HKContactsLensSpecification *)v7 diameter];
+              LOBYTE(diameter) = [diameter isEqual:diameter3];
 
-              if (v38 != v41)
+              if (v38 != baseCurve)
               {
               }
 
-              v18 = v37;
+              addPower = v37;
               goto LABEL_60;
             }
           }
 
-          if (v38 == v41)
+          if (v38 == baseCurve)
           {
 
-            v18 = v37;
+            addPower = v37;
             v30 = v47;
-            v32 = v48;
+            v32 = addPower2;
             v31 = v43;
-            if (v37 == v48)
+            if (v37 == addPower2)
             {
               goto LABEL_54;
             }
@@ -218,25 +218,25 @@ LABEL_62:
 
           v30 = v47;
           v31 = v43;
-          v18 = v37;
+          addPower = v37;
 LABEL_52:
 
-          v32 = v48;
-          if (v18 == v48)
+          v32 = addPower2;
+          if (addPower == addPower2)
           {
 LABEL_54:
 
-            if (v13 != v49)
+            if (axis != axis2)
             {
             }
 
-            if (v44 != v53)
+            if (v44 != cylinder2)
             {
             }
 
 LABEL_67:
-            v10 = v50;
-            if (v8 != v9)
+            sphere5 = v50;
+            if (sphere != sphere2)
             {
               goto LABEL_68;
             }
@@ -248,36 +248,36 @@ LABEL_69:
 
 LABEL_53:
 
-          v32 = v48;
+          v32 = addPower2;
           goto LABEL_54;
         }
 
-        v19 = [(HKLensSpecification *)v7 addPower];
-        if (!v19)
+        addPower3 = [(HKLensSpecification *)v7 addPower];
+        if (!addPower3)
         {
           v42 = diameter;
           LOBYTE(diameter) = 0;
-          v25 = v49;
+          v25 = axis2;
           goto LABEL_62;
         }
 
-        v43 = v3;
-        v44 = v11;
-        v39 = v19;
-        v20 = [(HKLensSpecification *)self addPower];
-        v21 = [(HKLensSpecification *)v7 addPower];
-        if ([v20 isEqual:v21])
+        v43 = sphere4;
+        v44 = cylinder;
+        v39 = addPower3;
+        addPower4 = [(HKLensSpecification *)self addPower];
+        addPower5 = [(HKLensSpecification *)v7 addPower];
+        if ([addPower4 isEqual:addPower5])
         {
-          v35 = v20;
-          v36 = v21;
+          v35 = addPower4;
+          v36 = addPower5;
           goto LABEL_27;
         }
 
-        if (v13 != v49)
+        if (axis != axis2)
         {
         }
 
-        if (v44 != v53)
+        if (v44 != cylinder2)
         {
         }
 
@@ -286,18 +286,18 @@ LABEL_36:
         goto LABEL_67;
       }
 
-      v14 = [(HKLensSpecification *)v7 axis];
-      if (v14)
+      axis3 = [(HKLensSpecification *)v7 axis];
+      if (axis3)
       {
-        v15 = v13;
-        v45 = v14;
-        v16 = [(HKLensSpecification *)self axis];
-        v17 = [(HKLensSpecification *)v7 axis];
-        if ([v16 isEqual:v17])
+        v15 = axis;
+        v45 = axis3;
+        axis4 = [(HKLensSpecification *)self axis];
+        axis5 = [(HKLensSpecification *)v7 axis];
+        if ([axis4 isEqual:axis5])
         {
-          v40 = v16;
-          v3 = v17;
-          v13 = v15;
+          v40 = axis4;
+          sphere4 = axis5;
+          axis = v15;
           goto LABEL_20;
         }
       }
@@ -306,7 +306,7 @@ LABEL_36:
       {
       }
 
-      if (v11 != v53)
+      if (cylinder != cylinder2)
       {
       }
 
@@ -322,34 +322,34 @@ LABEL_70:
   return diameter;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(HKLensSpecification *)self sphere];
-  [v8 encodeObject:v4 forKey:@"Sphere"];
+  coderCopy = coder;
+  sphere = [(HKLensSpecification *)self sphere];
+  [coderCopy encodeObject:sphere forKey:@"Sphere"];
 
-  v5 = [(HKLensSpecification *)self cylinder];
-  [v8 encodeObject:v5 forKey:@"Cyclinder"];
+  cylinder = [(HKLensSpecification *)self cylinder];
+  [coderCopy encodeObject:cylinder forKey:@"Cyclinder"];
 
-  v6 = [(HKLensSpecification *)self axis];
-  [v8 encodeObject:v6 forKey:@"Axis"];
+  axis = [(HKLensSpecification *)self axis];
+  [coderCopy encodeObject:axis forKey:@"Axis"];
 
-  v7 = [(HKLensSpecification *)self addPower];
-  [v8 encodeObject:v7 forKey:@"AddPower"];
+  addPower = [(HKLensSpecification *)self addPower];
+  [coderCopy encodeObject:addPower forKey:@"AddPower"];
 
-  [v8 encodeObject:self->_baseCurve forKey:@"BaseCurve"];
-  [v8 encodeObject:self->_diameter forKey:@"Diameter"];
+  [coderCopy encodeObject:self->_baseCurve forKey:@"BaseCurve"];
+  [coderCopy encodeObject:self->_diameter forKey:@"Diameter"];
 }
 
-- (HKContactsLensSpecification)initWithCoder:(id)a3
+- (HKContactsLensSpecification)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Sphere"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Cyclinder"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Axis"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AddPower"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BaseCurve"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Diameter"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Sphere"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Cyclinder"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Axis"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AddPower"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BaseCurve"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Diameter"];
 
   v11 = [(HKContactsLensSpecification *)self initWithSphere:v5 cylinder:v6 axis:v7 addPower:v8 baseCurve:v9 diameter:v10];
   return v11;

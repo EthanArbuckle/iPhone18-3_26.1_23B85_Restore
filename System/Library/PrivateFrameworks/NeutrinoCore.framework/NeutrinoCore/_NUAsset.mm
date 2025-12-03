@@ -1,9 +1,9 @@
 @interface _NUAsset
-- (BOOL)loadWithOptions:(id)a3 error:(id *)a4;
+- (BOOL)loadWithOptions:(id)options error:(id *)error;
 - (NUAssetMedia)media;
 - (_NUAsset)init;
-- (_NUAsset)initWithIdentifier:(id)a3;
-- (id)_loadMediaWithOptions:(id)a3 error:(id *)a4;
+- (_NUAsset)initWithIdentifier:(id)identifier;
+- (id)_loadMediaWithOptions:(id)options error:(id *)error;
 - (int64_t)type;
 @end
 
@@ -34,8 +34,8 @@
         v11 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v12 = MEMORY[0x1E696AF00];
         v13 = v11;
-        v14 = [v12 callStackSymbols];
-        v15 = [v14 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v12 callStackSymbols];
+        v15 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v20 = 138543618;
         *&v20[4] = v11;
         v21 = 2114;
@@ -46,8 +46,8 @@
 
     else if (v8)
     {
-      v9 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v10 = [v9 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v10 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v20 = 138543362;
       *&v20[4] = v10;
       _os_log_error_impl(&dword_1C0184000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v20, 0xCu);
@@ -59,10 +59,10 @@
   return media;
 }
 
-- (id)_loadMediaWithOptions:(id)a3 error:(id *)a4
+- (id)_loadMediaWithOptions:(id)options error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_10855);
@@ -105,8 +105,8 @@ LABEL_8:
     {
       v13 = MEMORY[0x1E696AF00];
       v14 = v12;
-      v15 = [v13 callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v13 callStackSymbols];
+      v16 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v16;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -122,8 +122,8 @@ LABEL_8:
     v19 = MEMORY[0x1E696AF00];
     v20 = specific;
     v21 = v17;
-    v22 = [v19 callStackSymbols];
-    v23 = [v22 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v19 callStackSymbols];
+    v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v31 = specific;
     v32 = 2114;
@@ -137,9 +137,9 @@ LABEL_14:
   _NUAssertFailHandler("[_NUAsset _loadMediaWithOptions:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUAsset.m", 134, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v26, v27, v28, v29, v25);
 }
 
-- (BOOL)loadWithOptions:(id)a3 error:(id *)a4
+- (BOOL)loadWithOptions:(id)options error:(id *)error
 {
-  v5 = [(_NUAsset *)self _loadMediaWithOptions:a3 error:a4];
+  v5 = [(_NUAsset *)self _loadMediaWithOptions:options error:error];
   media = self->_media;
   self->_media = v5;
 
@@ -191,8 +191,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -208,8 +208,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -223,11 +223,11 @@ LABEL_14:
   _NUAssertFailHandler("[_NUAsset type]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUAsset.m", 125, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v23, v24, v25, v26, v22);
 }
 
-- (_NUAsset)initWithIdentifier:(id)a3
+- (_NUAsset)initWithIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v10 = NUAssertLogger_10839();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -248,8 +248,8 @@ LABEL_14:
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v17;
         v29 = 2114;
@@ -260,8 +260,8 @@ LABEL_14:
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -270,7 +270,7 @@ LABEL_14:
     _NUAssertFailHandler("[_NUAsset initWithIdentifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUAsset.m", 117, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "identifier != nil");
   }
 
-  v5 = v4;
+  v5 = identifierCopy;
   v26.receiver = self;
   v26.super_class = _NUAsset;
   v6 = [(_NUAsset *)&v26 init];
@@ -327,8 +327,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -344,8 +344,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

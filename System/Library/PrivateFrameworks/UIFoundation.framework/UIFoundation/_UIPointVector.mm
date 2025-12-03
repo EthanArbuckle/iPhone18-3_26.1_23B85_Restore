@@ -2,7 +2,7 @@
 - (_UIPointVector)init;
 - (void)addVector:(_UIPointVector *)self;
 - (void)dealloc;
-- (void)removeVectorAtIndex:(unint64_t)a3;
+- (void)removeVectorAtIndex:(unint64_t)index;
 - (void)reset;
 @end
 
@@ -30,33 +30,33 @@
   if (v4 >= [(_UIPointVector *)self capacity])
   {
     [(_UIPointVector *)self setCapacity:2 * [(_UIPointVector *)self capacity]];
-    v5 = [(_UIPointVector *)self capacity];
-    if (v5 <= 1)
+    capacity = [(_UIPointVector *)self capacity];
+    if (capacity <= 1)
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = v5;
+      v6 = capacity;
     }
 
     [(_UIPointVector *)self setCapacity:v6];
     [(_UIPointVector *)self setVectors:malloc_type_realloc([(_UIPointVector *)self vectors], 16 * [(_UIPointVector *)self capacity], 0x1000040451B5BE8uLL)];
   }
 
-  v7 = [(_UIPointVector *)self vectors];
-  *(v7 + 16 * [(_UIPointVector *)self count]) = v9;
+  vectors = [(_UIPointVector *)self vectors];
+  *(vectors + 16 * [(_UIPointVector *)self count]) = v9;
   v8 = [(_UIPointVector *)self count]+ 1;
 
   [(_UIPointVector *)self setCount:v8];
 }
 
-- (void)removeVectorAtIndex:(unint64_t)a3
+- (void)removeVectorAtIndex:(unint64_t)index
 {
-  if ([(_UIPointVector *)self count]> a3)
+  if ([(_UIPointVector *)self count]> index)
   {
-    memmove(([(_UIPointVector *)self vectors]+ 16 * a3), ([(_UIPointVector *)self vectors]+ 16 * a3 + 16), 16 * ([(_UIPointVector *)self count]+ ~a3));
+    memmove(([(_UIPointVector *)self vectors]+ 16 * index), ([(_UIPointVector *)self vectors]+ 16 * index + 16), 16 * ([(_UIPointVector *)self count]+ ~index));
     v5 = [(_UIPointVector *)self count]- 1;
 
     [(_UIPointVector *)self setCount:v5];

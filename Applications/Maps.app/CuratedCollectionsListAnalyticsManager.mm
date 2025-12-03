@@ -1,7 +1,7 @@
 @interface CuratedCollectionsListAnalyticsManager
 - (CuratedCollectionsListAnalyticsManager)init;
 - (void)cleanup;
-- (void)curatedCollectionTappedWithMuid:(unint64_t)a3 verticalIndex:(unint64_t)a4 isCollectionSaved:(BOOL)a5;
+- (void)curatedCollectionTappedWithMuid:(unint64_t)muid verticalIndex:(unint64_t)index isCollectionSaved:(BOOL)saved;
 @end
 
 @implementation CuratedCollectionsListAnalyticsManager
@@ -19,20 +19,20 @@
   self->_event.verticalIndex = 0;
 }
 
-- (void)curatedCollectionTappedWithMuid:(unint64_t)a3 verticalIndex:(unint64_t)a4 isCollectionSaved:(BOOL)a5
+- (void)curatedCollectionTappedWithMuid:(unint64_t)muid verticalIndex:(unint64_t)index isCollectionSaved:(BOOL)saved
 {
-  v5 = a5;
+  savedCopy = saved;
   [(CuratedCollectionsListAnalyticsManager *)self cleanup];
   self->_event.action = 2099;
-  v9 = [NSNumber numberWithUnsignedLongLong:a3];
+  v9 = [NSNumber numberWithUnsignedLongLong:muid];
   collectionId = self->_event.collectionId;
   self->_event.collectionId = v9;
 
-  v11 = [NSNumber numberWithBool:v5];
+  v11 = [NSNumber numberWithBool:savedCopy];
   collectionCurrentlySaved = self->_event.collectionCurrentlySaved;
   self->_event.collectionCurrentlySaved = v11;
 
-  v13 = [NSNumber numberWithUnsignedInteger:a4];
+  v13 = [NSNumber numberWithUnsignedInteger:index];
   verticalIndex = self->_event.verticalIndex;
   self->_event.verticalIndex = v13;
 

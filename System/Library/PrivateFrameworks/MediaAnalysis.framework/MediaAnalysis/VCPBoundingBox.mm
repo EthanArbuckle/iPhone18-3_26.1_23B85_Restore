@@ -1,17 +1,17 @@
 @interface VCPBoundingBox
-- (CGRect)getCGRectWithClipWidth:(float)a3 height:(float)a4;
-- (VCPBoundingBox)initWithCenterAndSize:(float)a3 y:(float)a4 width:(float)a5 height:(float)a6 confidence:(float)a7;
-- (VCPBoundingBox)initWithXYAndSize:(float)a3 y:(float)a4 width:(float)a5 height:(float)a6 confidence:(float)a7;
+- (CGRect)getCGRectWithClipWidth:(float)width height:(float)height;
+- (VCPBoundingBox)initWithCenterAndSize:(float)size y:(float)y width:(float)width height:(float)height confidence:(float)confidence;
+- (VCPBoundingBox)initWithXYAndSize:(float)size y:(float)y width:(float)width height:(float)height confidence:(float)confidence;
 - (float)area;
-- (float)computeIntersectionOverUnion:(id)a3;
-- (id)intersect:(id)a3;
-- (id)union:(id)a3;
-- (int)extendBoxBy:(float)a3 scaleX:(float)a4 scaleY:(float)a5;
+- (float)computeIntersectionOverUnion:(id)union;
+- (id)intersect:(id)intersect;
+- (id)union:(id)union;
+- (int)extendBoxBy:(float)by scaleX:(float)x scaleY:(float)y;
 @end
 
 @implementation VCPBoundingBox
 
-- (VCPBoundingBox)initWithXYAndSize:(float)a3 y:(float)a4 width:(float)a5 height:(float)a6 confidence:(float)a7
+- (VCPBoundingBox)initWithXYAndSize:(float)size y:(float)y width:(float)width height:(float)height confidence:(float)confidence
 {
   v21.receiver = self;
   v21.super_class = VCPBoundingBox;
@@ -19,15 +19,15 @@
   v14 = v12;
   if (v12)
   {
-    *&v13 = a3;
+    *&v13 = size;
     [(VCPBoundingBox *)v12 setMinX:v13];
-    *&v15 = a4;
+    *&v15 = y;
     [(VCPBoundingBox *)v14 setMinY:v15];
-    *&v16 = a3 + a5;
+    *&v16 = size + width;
     [(VCPBoundingBox *)v14 setMaxX:v16];
-    *&v17 = a4 + a6;
+    *&v17 = y + height;
     [(VCPBoundingBox *)v14 setMaxY:v17];
-    *&v18 = a7;
+    *&v18 = confidence;
     [(VCPBoundingBox *)v14 setConfidence:v18];
     [(VCPBoundingBox *)v14 setTrackID:0xFFFFFFFFLL];
     [(VCPBoundingBox *)v14 setGroupID:0xFFFFFFFFLL];
@@ -37,7 +37,7 @@
   return v14;
 }
 
-- (VCPBoundingBox)initWithCenterAndSize:(float)a3 y:(float)a4 width:(float)a5 height:(float)a6 confidence:(float)a7
+- (VCPBoundingBox)initWithCenterAndSize:(float)size y:(float)y width:(float)width height:(float)height confidence:(float)confidence
 {
   v25.receiver = self;
   v25.super_class = VCPBoundingBox;
@@ -45,23 +45,23 @@
   v13 = v12;
   if (v12)
   {
-    v14 = a3;
-    v15 = a5;
-    v16 = v14 + v15 * -0.5;
+    sizeCopy = size;
+    widthCopy = width;
+    v16 = sizeCopy + widthCopy * -0.5;
     *&v16 = v16;
     [(VCPBoundingBox *)v12 setMinX:v16];
-    v17 = a4;
-    v18 = a6;
-    v19 = v17 + v18 * -0.5;
+    yCopy = y;
+    heightCopy = height;
+    v19 = yCopy + heightCopy * -0.5;
     *&v19 = v19;
     [(VCPBoundingBox *)v13 setMinY:v19];
-    v20 = v14 + v15 * 0.5;
+    v20 = sizeCopy + widthCopy * 0.5;
     *&v20 = v20;
     [(VCPBoundingBox *)v13 setMaxX:v20];
-    v21 = v17 + v18 * 0.5;
+    v21 = yCopy + heightCopy * 0.5;
     *&v21 = v21;
     [(VCPBoundingBox *)v13 setMaxY:v21];
-    *&v22 = a7;
+    *&v22 = confidence;
     [(VCPBoundingBox *)v13 setConfidence:v22];
     [(VCPBoundingBox *)v13 setTrackID:0xFFFFFFFFLL];
     [(VCPBoundingBox *)v13 setGroupID:0xFFFFFFFFLL];
@@ -83,12 +83,12 @@
   return v6 * (v8 - v9);
 }
 
-- (id)intersect:(id)a3
+- (id)intersect:(id)intersect
 {
-  v4 = a3;
+  intersectCopy = intersect;
   [(VCPBoundingBox *)self minX];
   v6 = v5;
-  [v4 minX];
+  [intersectCopy minX];
   if (v6 < v7)
   {
     v6 = v7;
@@ -96,7 +96,7 @@
 
   [(VCPBoundingBox *)self minY];
   v9 = v8;
-  [v4 minY];
+  [intersectCopy minY];
   if (v9 < v10)
   {
     v9 = v10;
@@ -104,7 +104,7 @@
 
   [(VCPBoundingBox *)self maxX];
   v12 = v11;
-  [v4 maxX];
+  [intersectCopy maxX];
   if (v13 >= v12)
   {
     v14 = v12;
@@ -117,7 +117,7 @@
 
   [(VCPBoundingBox *)self maxY];
   v16 = v15;
-  [v4 maxY];
+  [intersectCopy maxY];
   if (v17 < v16)
   {
     v16 = v17;
@@ -141,12 +141,12 @@
   return v24;
 }
 
-- (id)union:(id)a3
+- (id)union:(id)union
 {
-  v4 = a3;
+  unionCopy = union;
   [(VCPBoundingBox *)self minX];
   v6 = v5;
-  [v4 minX];
+  [unionCopy minX];
   if (v7 < v6)
   {
     v6 = v7;
@@ -154,7 +154,7 @@
 
   [(VCPBoundingBox *)self minY];
   v9 = v8;
-  [v4 minY];
+  [unionCopy minY];
   if (v10 < v9)
   {
     v9 = v10;
@@ -162,7 +162,7 @@
 
   [(VCPBoundingBox *)self maxX];
   v12 = v11;
-  [v4 maxX];
+  [unionCopy maxX];
   if (v12 >= v13)
   {
     v14 = v12;
@@ -175,7 +175,7 @@
 
   [(VCPBoundingBox *)self maxY];
   v16 = v15;
-  [v4 maxY];
+  [unionCopy maxY];
   v18 = v17;
   v19 = [VCPBoundingBox alloc];
   if (v16 >= v18)
@@ -197,11 +197,11 @@
   return v24;
 }
 
-- (float)computeIntersectionOverUnion:(id)a3
+- (float)computeIntersectionOverUnion:(id)union
 {
-  v4 = a3;
-  v5 = [(VCPBoundingBox *)self intersect:v4];
-  v6 = [(VCPBoundingBox *)self union:v4];
+  unionCopy = union;
+  v5 = [(VCPBoundingBox *)self intersect:unionCopy];
+  v6 = [(VCPBoundingBox *)self union:unionCopy];
   v7 = 0.0;
   v8 = 0.0;
   if (v5)
@@ -229,17 +229,17 @@
   return v11;
 }
 
-- (CGRect)getCGRectWithClipWidth:(float)a3 height:(float)a4
+- (CGRect)getCGRectWithClipWidth:(float)width height:(float)height
 {
   [(VCPBoundingBox *)self minX];
-  if (v7 < a3)
+  if (v7 < width)
   {
-    v8 = v7;
+    widthCopy = v7;
   }
 
   else
   {
-    v8 = a3;
+    widthCopy = width;
   }
 
   if (v7 <= 0.0)
@@ -249,18 +249,18 @@
 
   else
   {
-    v9 = v8;
+    v9 = widthCopy;
   }
 
   [(VCPBoundingBox *)self minY];
-  if (v10 < a4)
+  if (v10 < height)
   {
-    v11 = v10;
+    heightCopy = v10;
   }
 
   else
   {
-    v11 = a4;
+    heightCopy = height;
   }
 
   if (v10 <= 0.0)
@@ -270,18 +270,18 @@
 
   else
   {
-    v12 = v11;
+    v12 = heightCopy;
   }
 
   [(VCPBoundingBox *)self maxX];
-  if (v13 < a3)
+  if (v13 < width)
   {
-    v14 = v13;
+    widthCopy2 = v13;
   }
 
   else
   {
-    v14 = a3;
+    widthCopy2 = width;
   }
 
   if (v13 <= 0.0)
@@ -291,18 +291,18 @@
 
   else
   {
-    v15 = v14;
+    v15 = widthCopy2;
   }
 
   [(VCPBoundingBox *)self maxY];
-  if (v16 < a4)
+  if (v16 < height)
   {
-    v17 = v16;
+    heightCopy2 = v16;
   }
 
   else
   {
-    v17 = a4;
+    heightCopy2 = height;
   }
 
   if (v16 <= 0.0)
@@ -312,13 +312,13 @@
 
   else
   {
-    v18 = v17;
+    v18 = heightCopy2;
   }
 
-  v19 = (v9 / a3);
-  v20 = (v12 / a4);
-  v21 = ((v15 - v9) / a3);
-  v22 = ((v18 - v12) / a4);
+  v19 = (v9 / width);
+  v20 = (v12 / height);
+  v21 = ((v15 - v9) / width);
+  v22 = ((v18 - v12) / height);
   result.size.height = v22;
   result.size.width = v21;
   result.origin.y = v20;
@@ -326,25 +326,25 @@
   return result;
 }
 
-- (int)extendBoxBy:(float)a3 scaleX:(float)a4 scaleY:(float)a5
+- (int)extendBoxBy:(float)by scaleX:(float)x scaleY:(float)y
 {
   result = -50;
-  if (a4 > 0.0 && a5 > 0.0)
+  if (x > 0.0 && y > 0.0)
   {
-    v9 = 1.0;
-    if (a3 < 1.0)
+    byCopy = 1.0;
+    if (by < 1.0)
     {
-      v9 = a3;
+      byCopy = by;
     }
 
-    if (a3 <= 0.0)
+    if (by <= 0.0)
     {
       v10 = 0.0;
     }
 
     else
     {
-      v10 = v9;
+      v10 = byCopy;
     }
 
     [(VCPBoundingBox *)self maxX];
@@ -371,28 +371,28 @@
 
     v24 = v10 * v14;
     v25 = v10 * v18;
-    *&v21 = ((v20 - v23) - v24) / a4;
+    *&v21 = ((v20 - v23) - v24) / x;
     if (*&v21 < 0.0)
     {
       *&v21 = 0.0;
     }
 
     [(VCPBoundingBox *)self setMinX:v21];
-    *&v26 = (v24 + (v20 + v23)) / a4;
+    *&v26 = (v24 + (v20 + v23)) / x;
     if (*&v26 > 1.0)
     {
       *&v26 = 1.0;
     }
 
     [(VCPBoundingBox *)self setMaxX:v26];
-    *&v27 = ((v22 - v23) - v25) / a5;
+    *&v27 = ((v22 - v23) - v25) / y;
     if (*&v27 < 0.0)
     {
       *&v27 = 0.0;
     }
 
     [(VCPBoundingBox *)self setMinY:v27];
-    *&v28 = (v25 + (v22 + v23)) / a5;
+    *&v28 = (v25 + (v22 + v23)) / y;
     if (*&v28 > 1.0)
     {
       *&v28 = 1.0;

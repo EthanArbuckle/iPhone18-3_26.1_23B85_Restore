@@ -1,106 +1,106 @@
 @interface MBFileID
-+ (MBFileID)fileIDWithData:(id)a3;
-+ (MBFileID)fileIDWithDomain:(id)a3 relativePath:(id)a4;
-+ (MBFileID)fileIDWithDomainName:(id)a3 relativePath:(id)a4;
-+ (MBFileID)fileIDWithString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MBFileID)initWithBytes:(const void *)a3;
-- (MBFileID)initWithData:(id)a3;
-- (MBFileID)initWithDecoder:(id)a3;
-- (MBFileID)initWithDomain:(id)a3 relativePath:(id)a4;
-- (MBFileID)initWithDomainName:(id)a3 relativePath:(id)a4;
-- (MBFileID)initWithString:(id)a3;
++ (MBFileID)fileIDWithData:(id)data;
++ (MBFileID)fileIDWithDomain:(id)domain relativePath:(id)path;
++ (MBFileID)fileIDWithDomainName:(id)name relativePath:(id)path;
++ (MBFileID)fileIDWithString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (MBFileID)initWithBytes:(const void *)bytes;
+- (MBFileID)initWithData:(id)data;
+- (MBFileID)initWithDecoder:(id)decoder;
+- (MBFileID)initWithDomain:(id)domain relativePath:(id)path;
+- (MBFileID)initWithDomainName:(id)name relativePath:(id)path;
+- (MBFileID)initWithString:(id)string;
 - (NSString)filenamePrefix;
 - (NSString)filenameWithPrefix;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation MBFileID
 
-+ (MBFileID)fileIDWithDomain:(id)a3 relativePath:(id)a4
++ (MBFileID)fileIDWithDomain:(id)domain relativePath:(id)path
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MBFileID alloc] initWithDomain:v6 relativePath:v5];
+  pathCopy = path;
+  domainCopy = domain;
+  v7 = [[MBFileID alloc] initWithDomain:domainCopy relativePath:pathCopy];
 
   return v7;
 }
 
-+ (MBFileID)fileIDWithDomainName:(id)a3 relativePath:(id)a4
++ (MBFileID)fileIDWithDomainName:(id)name relativePath:(id)path
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MBFileID alloc] initWithDomainName:v6 relativePath:v5];
+  pathCopy = path;
+  nameCopy = name;
+  v7 = [[MBFileID alloc] initWithDomainName:nameCopy relativePath:pathCopy];
 
   return v7;
 }
 
-+ (MBFileID)fileIDWithString:(id)a3
++ (MBFileID)fileIDWithString:(id)string
 {
-  v3 = a3;
-  v4 = [[MBFileID alloc] initWithString:v3];
+  stringCopy = string;
+  v4 = [[MBFileID alloc] initWithString:stringCopy];
 
   return v4;
 }
 
-+ (MBFileID)fileIDWithData:(id)a3
++ (MBFileID)fileIDWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[MBFileID alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[MBFileID alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-- (MBFileID)initWithBytes:(const void *)a3
+- (MBFileID)initWithBytes:(const void *)bytes
 {
   v6.receiver = self;
   v6.super_class = MBFileID;
   result = [(MBFileID *)&v6 init];
   if (result)
   {
-    v5 = *a3;
-    *&result->_bytes[16] = *(a3 + 4);
+    v5 = *bytes;
+    *&result->_bytes[16] = *(bytes + 4);
     *result->_bytes = v5;
   }
 
   return result;
 }
 
-- (MBFileID)initWithDecoder:(id)a3
+- (MBFileID)initWithDecoder:(id)decoder
 {
-  v4 = a3;
+  decoderCopy = decoder;
   v8.receiver = self;
   v8.super_class = MBFileID;
   v5 = [(MBFileID *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [v4 decodeBytes:v5->_bytes length:20];
+    [decoderCopy decodeBytes:v5->_bytes length:20];
   }
 
   return v6;
 }
 
-- (MBFileID)initWithDomain:(id)a3 relativePath:(id)a4
+- (MBFileID)initWithDomain:(id)domain relativePath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 name];
-  v8 = [(MBFileID *)self initWithDomainName:v7 relativePath:v6];
+  pathCopy = path;
+  name = [domain name];
+  v8 = [(MBFileID *)self initWithDomainName:name relativePath:pathCopy];
 
   return v8;
 }
 
-- (MBFileID)initWithDomainName:(id)a3 relativePath:(id)a4
+- (MBFileID)initWithDomainName:(id)name relativePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  nameCopy = name;
+  pathCopy = path;
+  if (!pathCopy)
   {
     [NSException raise:NSInvalidArgumentException format:@"Null relative path"];
   }
 
-  if ([v7 isEqualToString:&stru_1000FF270])
+  if ([pathCopy isEqualToString:&stru_1000FF270])
   {
     v13.receiver = self;
     v13.super_class = MBFileID;
@@ -115,7 +115,7 @@
 
   else
   {
-    v10 = [[NSString alloc] initWithUTF8String:{objc_msgSend(v7, "fileSystemRepresentation")}];
+    v10 = [[NSString alloc] initWithUTF8String:{objc_msgSend(pathCopy, "fileSystemRepresentation")}];
     v14.receiver = self;
     v14.super_class = MBFileID;
     v11 = [(MBFileID *)&v14 init];
@@ -130,9 +130,9 @@
   return v9;
 }
 
-- (MBFileID)initWithString:(id)a3
+- (MBFileID)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v8.receiver = self;
   v8.super_class = MBFileID;
   v5 = [(MBFileID *)&v8 init];
@@ -149,37 +149,37 @@
   return v6;
 }
 
-- (MBFileID)initWithData:(id)a3
+- (MBFileID)initWithData:(id)data
 {
-  v4 = a3;
-  if ([v4 length] == 20)
+  dataCopy = data;
+  if ([dataCopy length] == 20)
   {
-    self = -[MBFileID initWithBytes:](self, "initWithBytes:", [v4 bytes]);
-    v5 = self;
+    self = -[MBFileID initWithBytes:](self, "initWithBytes:", [dataCopy bytes]);
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [MBFileID allocWithZone:a3];
+  v4 = [MBFileID allocWithZone:zone];
 
   return [(MBFileID *)v4 initWithBytes:self->_bytes];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MBFileID *)self isEqualToFileID:v4];
+    v5 = [(MBFileID *)self isEqualToFileID:equalCopy];
   }
 
   else
@@ -203,17 +203,17 @@
 
 - (NSString)filenamePrefix
 {
-  v2 = [(MBFileID *)self filename];
-  v3 = [v2 substringToIndex:2];
+  filename = [(MBFileID *)self filename];
+  v3 = [filename substringToIndex:2];
 
   return v3;
 }
 
 - (NSString)filenameWithPrefix
 {
-  v3 = [(MBFileID *)self filenamePrefix];
-  v4 = [(MBFileID *)self filename];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  filenamePrefix = [(MBFileID *)self filenamePrefix];
+  filename = [(MBFileID *)self filename];
+  v5 = [filenamePrefix stringByAppendingPathComponent:filename];
 
   return v5;
 }

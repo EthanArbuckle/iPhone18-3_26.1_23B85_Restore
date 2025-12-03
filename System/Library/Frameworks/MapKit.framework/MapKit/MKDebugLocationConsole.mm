@@ -1,15 +1,15 @@
 @interface MKDebugLocationConsole
-- (CGRect)_debugViewFrameWithMapView:(id)a3;
-- (MKDebugLocationConsole)initWithMapView:(id)a3;
+- (CGRect)_debugViewFrameWithMapView:(id)view;
+- (MKDebugLocationConsole)initWithMapView:(id)view;
 - (id)timeStampFormatter;
 - (void)_showNextPage;
 - (void)_updateCustomText;
 - (void)_updateGPSInfo;
 - (void)_updateVehicleInfo;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 - (void)update;
-- (void)updateCustomText:(id)a3 textColor:(id)a4;
-- (void)updateFrameWithEdgeInsets:(UIEdgeInsets)a3;
+- (void)updateCustomText:(id)text textColor:(id)color;
+- (void)updateFrameWithEdgeInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation MKDebugLocationConsole
@@ -30,18 +30,18 @@
   return timeStampFormatter;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [(MKDebugLocationConsole *)self timeStampFormatter];
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v5 stringFromDate:v6];
+  textCopy = text;
+  timeStampFormatter = [(MKDebugLocationConsole *)self timeStampFormatter];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [timeStampFormatter stringFromDate:date];
 
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v7, v4];
+  textCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v7, textCopy];
 
   v9.receiver = self;
   v9.super_class = MKDebugLocationConsole;
-  [(MKDebugLocationConsole *)&v9 setText:v8];
+  [(MKDebugLocationConsole *)&v9 setText:textCopy];
 }
 
 - (void)_showNextPage
@@ -59,15 +59,15 @@
   }
 }
 
-- (CGRect)_debugViewFrameWithMapView:(id)a3
+- (CGRect)_debugViewFrameWithMapView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   if (*&_debugViewFrameWithMapView__height == 0.0)
   {
     v4 = +[MKSystemController sharedInstance];
-    v5 = [v4 userInterfaceIdiom];
+    userInterfaceIdiom = [v4 userInterfaceIdiom];
     v6 = 18.0;
-    if (!v5)
+    if (!userInterfaceIdiom)
     {
       v6 = 30.0;
     }
@@ -76,7 +76,7 @@
   }
 
   memset(&slice, 0, sizeof(slice));
-  [v3 bounds];
+  [viewCopy bounds];
   CGRectDivide(v13, &slice, &v11, *&_debugViewFrameWithMapView__height, CGRectMaxYEdge);
 
   x = slice.origin.x;
@@ -103,17 +103,17 @@
   else
   {
     [(MKDebugLocationConsole *)self setText:@"No custom text set"];
-    v4 = [MEMORY[0x1E69DC888] grayColor];
-    [(MKDebugLocationConsole *)self setTextColor:v4];
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
+    [(MKDebugLocationConsole *)self setTextColor:grayColor];
   }
 }
 
 - (void)_updateVehicleInfo
 {
-  v14 = [(MKMapView *)self->_parentMapView _locationManager];
-  [v14 currentVehicleHeading];
+  _locationManager = [(MKMapView *)self->_parentMapView _locationManager];
+  [_locationManager currentVehicleHeading];
   v4 = v3;
-  [v14 currentVehicleSpeed];
+  [_locationManager currentVehicleSpeed];
   v6 = v5;
   if (v4 == -1.0)
   {
@@ -147,34 +147,34 @@
     {
       [MEMORY[0x1E69DC888] redColor];
     }
-    v12 = ;
+    greenColor = ;
   }
 
   else
   {
-    v12 = [MEMORY[0x1E69DC888] greenColor];
+    greenColor = [MEMORY[0x1E69DC888] greenColor];
   }
 
-  v13 = v12;
+  v13 = greenColor;
   [(MKDebugLocationConsole *)self setText:v9];
   [(MKDebugLocationConsole *)self setTextColor:v13];
 }
 
 - (void)_updateGPSInfo
 {
-  v3 = [(MKMapView *)self->_parentMapView _locationManager];
-  v20 = [v3 lastLocation];
+  _locationManager = [(MKMapView *)self->_parentMapView _locationManager];
+  lastLocation = [_locationManager lastLocation];
 
-  if (v20)
+  if (lastLocation)
   {
     if ([(MKMapView *)self->_parentMapView ignoreLocationUpdates]|| [(MKMapView *)self->_parentMapView _isHandlingUserEvent])
     {
-      v4 = [MEMORY[0x1E69DC888] orangeColor];
+      orangeColor = [MEMORY[0x1E69DC888] orangeColor];
     }
 
     else
     {
-      if ([v20 referenceFrame] == 2)
+      if ([lastLocation referenceFrame] == 2)
       {
         [MEMORY[0x1E69DC888] redColor];
       }
@@ -183,23 +183,23 @@
       {
         [MEMORY[0x1E69DC888] greenColor];
       }
-      v4 = ;
+      orangeColor = ;
     }
 
-    v5 = v4;
+    grayColor = orangeColor;
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [MEMORY[0x1E6985C40] _navigation_stringWithType:{objc_msgSend(v20, "type")}];
-    v8 = [v20 shortDescription];
-    [v20 altitude];
+    v7 = [MEMORY[0x1E6985C40] _navigation_stringWithType:{objc_msgSend(lastLocation, "type")}];
+    shortDescription = [lastLocation shortDescription];
+    [lastLocation altitude];
     v10 = v9;
-    [v20 verticalAccuracy];
-    v12 = [v6 stringWithFormat:@"%@:%@ Alt:%.0fm ±%.0fm", v7, v8, v10, v11];
+    [lastLocation verticalAccuracy];
+    v12 = [v6 stringWithFormat:@"%@:%@ Alt:%.0fm ±%.0fm", v7, shortDescription, v10, v11];
 
-    v13 = [v20 floor];
-    v14 = v13;
-    if (v13)
+    floor = [lastLocation floor];
+    v14 = floor;
+    if (floor)
     {
-      v15 = -[__CFString stringByAppendingFormat:](v12, "stringByAppendingFormat:", @" Floor: %d", [v13 level]);
+      v15 = -[__CFString stringByAppendingFormat:](v12, "stringByAppendingFormat:", @" Floor: %d", [floor level]);
 
       v12 = v15;
     }
@@ -207,16 +207,16 @@
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] grayColor];
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
     v12 = @"No Location";
   }
 
-  v16 = [(MKMapView *)self->_parentMapView _debugConsoleAdditionalInfoProvider];
+  _debugConsoleAdditionalInfoProvider = [(MKMapView *)self->_parentMapView _debugConsoleAdditionalInfoProvider];
 
-  if (v16)
+  if (_debugConsoleAdditionalInfoProvider)
   {
-    v17 = [(MKMapView *)self->_parentMapView _debugConsoleAdditionalInfoProvider];
-    v18 = v17[2]();
+    _debugConsoleAdditionalInfoProvider2 = [(MKMapView *)self->_parentMapView _debugConsoleAdditionalInfoProvider];
+    v18 = _debugConsoleAdditionalInfoProvider2[2]();
 
     if (v18)
     {
@@ -227,19 +227,19 @@
   }
 
   [(MKDebugLocationConsole *)self setText:v12];
-  [(MKDebugLocationConsole *)self setTextColor:v5];
+  [(MKDebugLocationConsole *)self setTextColor:grayColor];
 }
 
-- (void)updateCustomText:(id)a3 textColor:(id)a4
+- (void)updateCustomText:(id)text textColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  colorCopy = color;
   customText = self->_customText;
-  self->_customText = v6;
-  v9 = v6;
+  self->_customText = textCopy;
+  v9 = textCopy;
 
   customTextColor = self->_customTextColor;
-  self->_customTextColor = v7;
+  self->_customTextColor = colorCopy;
 
   [(MKDebugLocationConsole *)self update];
 }
@@ -261,29 +261,29 @@
   }
 }
 
-- (void)updateFrameWithEdgeInsets:(UIEdgeInsets)a3
+- (void)updateFrameWithEdgeInsets:(UIEdgeInsets)insets
 {
-  [(MKDebugLocationConsole *)self _debugViewFrameWithMapView:self->_parentMapView, a3.top, a3.left, a3.bottom, a3.right];
+  [(MKDebugLocationConsole *)self _debugViewFrameWithMapView:self->_parentMapView, insets.top, insets.left, insets.bottom, insets.right];
 
   [(MKDebugLocationConsole *)self setFrame:?];
 }
 
-- (MKDebugLocationConsole)initWithMapView:(id)a3
+- (MKDebugLocationConsole)initWithMapView:(id)view
 {
-  v5 = a3;
-  [(MKDebugLocationConsole *)self _debugViewFrameWithMapView:v5];
+  viewCopy = view;
+  [(MKDebugLocationConsole *)self _debugViewFrameWithMapView:viewCopy];
   v16.receiver = self;
   v16.super_class = MKDebugLocationConsole;
   v6 = [(MKDebugLocationConsole *)&v16 initWithFrame:?];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_parentMapView, a3);
-    v8 = [MEMORY[0x1E69DC888] blackColor];
-    [(MKDebugLocationConsole *)v7 setBackgroundColor:v8];
+    objc_storeStrong(&v6->_parentMapView, view);
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(MKDebugLocationConsole *)v7 setBackgroundColor:blackColor];
 
-    v9 = [MEMORY[0x1E69DC888] greenColor];
-    [(MKDebugLocationConsole *)v7 setTextColor:v9];
+    greenColor = [MEMORY[0x1E69DC888] greenColor];
+    [(MKDebugLocationConsole *)v7 setTextColor:greenColor];
 
     [(MKDebugLocationConsole *)v7 setAlpha:0.800000012];
     [(MKDebugLocationConsole *)v7 setTextAlignment:1];

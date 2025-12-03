@@ -1,7 +1,7 @@
 @interface EKPersistentRecurrenceRule
 + (id)defaultPropertiesToLoad;
 + (id)relations;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -64,32 +64,32 @@ void __39__EKPersistentRecurrenceRule_relations__block_invoke()
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKPersistentRecurrenceRule *)self frequencyRaw];
-  v6 = [(EKPersistentRecurrenceRule *)self interval];
-  v7 = [(EKPersistentRecurrenceRule *)self firstDayOfTheWeekRaw];
-  v8 = [(EKPersistentRecurrenceRule *)self endDate];
+  frequencyRaw = [(EKPersistentRecurrenceRule *)self frequencyRaw];
+  interval = [(EKPersistentRecurrenceRule *)self interval];
+  firstDayOfTheWeekRaw = [(EKPersistentRecurrenceRule *)self firstDayOfTheWeekRaw];
+  endDate = [(EKPersistentRecurrenceRule *)self endDate];
   v9 = [(EKPersistentRecurrenceRule *)self count];
-  v10 = [(EKPersistentRecurrenceRule *)self specifier];
-  v11 = [v3 stringWithFormat:@"%@ <%p> {frequency = %ld interval = %ld; firstDayOfWeek = %ld; enddate = %@; count = %lu; specifier = %@}", v4, self, v5, v6, v7, v8, v9, v10];;
+  specifier = [(EKPersistentRecurrenceRule *)self specifier];
+  v11 = [v3 stringWithFormat:@"%@ <%p> {frequency = %ld interval = %ld; firstDayOfWeek = %ld; enddate = %@; count = %lu; specifier = %@}", v4, self, frequencyRaw, interval, firstDayOfTheWeekRaw, endDate, v9, specifier];;
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(EKPersistentRecurrenceRule);
-  v5 = [(EKPersistentRecurrenceRule *)self UUID];
-  v6 = [v5 copy];
+  uUID = [(EKPersistentRecurrenceRule *)self UUID];
+  v6 = [uUID copy];
   [(EKPersistentRecurrenceRule *)v4 setUUID:v6];
 
   [(EKPersistentRecurrenceRule *)v4 setFrequencyRaw:[(EKPersistentRecurrenceRule *)self frequencyRaw]];
   [(EKPersistentRecurrenceRule *)v4 setInterval:[(EKPersistentRecurrenceRule *)self interval]];
   [(EKPersistentRecurrenceRule *)v4 setFirstDayOfTheWeekRaw:[(EKPersistentRecurrenceRule *)self firstDayOfTheWeekRaw]];
-  v7 = [(EKPersistentRecurrenceRule *)self specifier];
-  [(EKPersistentRecurrenceRule *)v4 setSpecifier:v7];
+  specifier = [(EKPersistentRecurrenceRule *)self specifier];
+  [(EKPersistentRecurrenceRule *)v4 setSpecifier:specifier];
 
-  v8 = [(EKPersistentRecurrenceRule *)self endDate];
-  [(EKPersistentRecurrenceRule *)v4 setEndDate:v8];
+  endDate = [(EKPersistentRecurrenceRule *)self endDate];
+  [(EKPersistentRecurrenceRule *)v4 setEndDate:endDate];
 
   [(EKPersistentRecurrenceRule *)v4 setCount:[(EKPersistentRecurrenceRule *)self count]];
   return v4;

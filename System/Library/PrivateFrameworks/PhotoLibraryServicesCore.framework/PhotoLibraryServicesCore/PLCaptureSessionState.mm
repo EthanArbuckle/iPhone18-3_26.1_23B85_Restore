@@ -1,14 +1,14 @@
 @interface PLCaptureSessionState
-+ (id)lockedWithSessionIdentifier:(id)a3;
++ (id)lockedWithSessionIdentifier:(id)identifier;
 + (id)none;
 + (id)unknown;
-+ (id)unlockedWithSessionIdentifier:(id)a3;
-- (PLCaptureSessionState)initWithType:(unint64_t)a3;
++ (id)unlockedWithSessionIdentifier:(id)identifier;
+- (PLCaptureSessionState)initWithType:(unint64_t)type;
 @end
 
 @implementation PLCaptureSessionState
 
-- (PLCaptureSessionState)initWithType:(unint64_t)a3
+- (PLCaptureSessionState)initWithType:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = PLCaptureSessionState;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
+    v4->_type = type;
     v6 = v4;
   }
 
@@ -38,18 +38,18 @@ uint64_t __42__PLCaptureSessionState_Creation__unknown__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)unlockedWithSessionIdentifier:(id)a3
++ (id)unlockedWithSessionIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[PLCaptureSessionStateUnlocked alloc] initWithSessionIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[PLCaptureSessionStateUnlocked alloc] initWithSessionIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)lockedWithSessionIdentifier:(id)a3
++ (id)lockedWithSessionIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[PLCaptureSessionStateLocked alloc] initWithSessionIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[PLCaptureSessionStateLocked alloc] initWithSessionIdentifier:identifierCopy];
 
   return v4;
 }

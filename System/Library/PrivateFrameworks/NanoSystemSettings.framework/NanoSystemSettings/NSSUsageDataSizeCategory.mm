@@ -1,23 +1,23 @@
 @interface NSSUsageDataSizeCategory
-- (NSSUsageDataSizeCategory)initWithIdentifier:(id)a3 size:(id)a4 name:(id)a5;
+- (NSSUsageDataSizeCategory)initWithIdentifier:(id)identifier size:(id)size name:(id)name;
 @end
 
 @implementation NSSUsageDataSizeCategory
 
-- (NSSUsageDataSizeCategory)initWithIdentifier:(id)a3 size:(id)a4 name:(id)a5
+- (NSSUsageDataSizeCategory)initWithIdentifier:(id)identifier size:(id)size name:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  sizeCopy = size;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = NSSUsageDataSizeCategory;
   v12 = [(NSSUsageDataSizeCategory *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a5);
-    objc_storeStrong(&v13->_size, a4);
-    objc_storeStrong(&v13->_categoryIdentifier, a3);
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v13->_size, size);
+    objc_storeStrong(&v13->_categoryIdentifier, identifier);
   }
 
   return v13;

@@ -1,15 +1,15 @@
 @interface TIKeyboardBehaviors_Zhuyin_LiveConversion
-- (id)keyBehaviorsForState:(id)a3;
+- (id)keyBehaviorsForState:(id)state;
 @end
 
 @implementation TIKeyboardBehaviors_Zhuyin_LiveConversion
 
-- (id)keyBehaviorsForState:(id)a3
+- (id)keyBehaviorsForState:(id)state
 {
-  v3 = a3;
-  if ([v3 hasInput])
+  stateCopy = state;
+  if ([stateCopy hasInput])
   {
-    if ([v3 followsZhuyin])
+    if ([stateCopy followsZhuyin])
     {
       v4 = 100;
       v5 = 2;
@@ -18,7 +18,7 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if ([v3 hasCandidateSelected])
+    if ([stateCopy hasCandidateSelected])
     {
       v8 = 4;
     }
@@ -28,7 +28,7 @@ LABEL_17:
       v8 = 13;
     }
 
-    if ([v3 hasCandidateSelected])
+    if ([stateCopy hasCandidateSelected])
     {
       v7 = 4;
     }
@@ -43,13 +43,13 @@ LABEL_17:
 
   else
   {
-    if (![v3 hasCandidates])
+    if (![stateCopy hasCandidates])
     {
       v10 = 0;
       goto LABEL_19;
     }
 
-    if (![v3 hasCandidateSelected])
+    if (![stateCopy hasCandidateSelected])
     {
       v4 = 7;
       v5 = 9;

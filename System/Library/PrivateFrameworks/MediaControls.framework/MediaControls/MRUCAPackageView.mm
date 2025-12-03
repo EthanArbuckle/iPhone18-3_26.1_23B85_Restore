@@ -1,17 +1,17 @@
 @interface MRUCAPackageView
 - (CATransform3D)permanentTransform;
 - (CGSize)intrinsicContentSize;
-- (MRUCAPackageView)initWithFrame:(CGRect)a3;
+- (MRUCAPackageView)initWithFrame:(CGRect)frame;
 - (void)clear;
 - (void)layoutSubviews;
-- (void)mru_applyVisualStylingWithColor:(id)a3 alpha:(double)a4 blendMode:(int64_t)a5;
-- (void)mt_applyVisualStyling:(id)a3;
-- (void)setAsset:(id)a3;
-- (void)setGlyphState:(id)a3;
-- (void)setGlyphTintColor:(id)a3;
-- (void)setPackage:(id)a3;
-- (void)setPermanentTransform:(CATransform3D *)a3;
-- (void)setScale:(double)a3;
+- (void)mru_applyVisualStylingWithColor:(id)color alpha:(double)alpha blendMode:(int64_t)mode;
+- (void)mt_applyVisualStyling:(id)styling;
+- (void)setAsset:(id)asset;
+- (void)setGlyphState:(id)state;
+- (void)setGlyphTintColor:(id)color;
+- (void)setPackage:(id)package;
+- (void)setPermanentTransform:(CATransform3D *)transform;
+- (void)setScale:(double)scale;
 - (void)updateFilter;
 @end
 
@@ -53,24 +53,24 @@
   glyphTintColor = self->_glyphTintColor;
   if (glyphTintColor && self->_packageLayer)
   {
-    v4 = [(MRUCAPackageView *)self traitCollection];
-    v5 = [(UIColor *)glyphTintColor resolvedColorWithTraitCollection:v4];
+    traitCollection = [(MRUCAPackageView *)self traitCollection];
+    v5 = [(UIColor *)glyphTintColor resolvedColorWithTraitCollection:traitCollection];
 
     v6 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979888]];
     [v6 setValue:&unk_1F148B220 forKeyPath:*MEMORY[0x1E69799C8]];
     [v6 setValue:&unk_1F148B238 forKeyPath:*MEMORY[0x1E6979990]];
-    v7 = [v5 CGColor];
-    [v6 setValue:v7 forKeyPath:*MEMORY[0x1E6979AA0]];
+    cGColor = [v5 CGColor];
+    [v6 setValue:cGColor forKeyPath:*MEMORY[0x1E6979AA0]];
     v11[0] = v6;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    v9 = [(UIView *)self->_contentView layer];
-    [v9 setFilters:v8];
+    layer = [(UIView *)self->_contentView layer];
+    [layer setFilters:v8];
   }
 
   else
   {
-    v10 = [(UIView *)self->_contentView layer];
-    [v10 setFilters:0];
+    layer2 = [(UIView *)self->_contentView layer];
+    [layer2 setFilters:0];
   }
 }
 
@@ -94,30 +94,30 @@
   [(MRUCAPackageView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)mt_applyVisualStyling:(id)a3
+- (void)mt_applyVisualStyling:(id)styling
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __77__MRUCAPackageView_MRUVisualStylingProviderAdditions__mt_applyVisualStyling___block_invoke;
   v3[3] = &unk_1E76648D8;
   v3[4] = self;
-  [a3 applyToView:self withColorBlock:v3];
+  [styling applyToView:self withColorBlock:v3];
 }
 
-- (void)mru_applyVisualStylingWithColor:(id)a3 alpha:(double)a4 blendMode:(int64_t)a5
+- (void)mru_applyVisualStylingWithColor:(id)color alpha:(double)alpha blendMode:(int64_t)mode
 {
-  v8 = a3;
-  [(MRUCAPackageView *)self setAlpha:a4];
-  [(MRUCAPackageView *)self _setDrawsAsBackdropOverlayWithBlendMode:a5];
-  [(MRUCAPackageView *)self setGlyphTintColor:v8];
+  colorCopy = color;
+  [(MRUCAPackageView *)self setAlpha:alpha];
+  [(MRUCAPackageView *)self _setDrawsAsBackdropOverlayWithBlendMode:mode];
+  [(MRUCAPackageView *)self setGlyphTintColor:colorCopy];
 }
 
-- (MRUCAPackageView)initWithFrame:(CGRect)a3
+- (MRUCAPackageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v20[1] = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = MRUCAPackageView;
@@ -184,13 +184,13 @@
   return result;
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  assetCopy = asset;
+  v5 = assetCopy;
+  if (assetCopy)
   {
-    [(MRUCAPackageAsset *)v4 permanentTransform];
+    [(MRUCAPackageAsset *)assetCopy permanentTransform];
   }
 
   else
@@ -216,25 +216,25 @@
   [(MRUCAPackageView *)self setPermanentTransform:v10];
   if (![(MRUCAPackageAsset *)v5 isEqual:self->_asset])
   {
-    v6 = [(MRUCAPackageAsset *)v5 package];
-    [(MRUCAPackageView *)self setPackage:v6];
+    package = [(MRUCAPackageAsset *)v5 package];
+    [(MRUCAPackageView *)self setPackage:package];
   }
 
   asset = self->_asset;
   self->_asset = v5;
   v8 = v5;
 
-  v9 = [(MRUCAPackageAsset *)v8 glyphState];
+  glyphState = [(MRUCAPackageAsset *)v8 glyphState];
 
-  [(MRUCAPackageView *)self setGlyphState:v9];
+  [(MRUCAPackageView *)self setGlyphState:glyphState];
   [(MRUCAPackageView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setGlyphState:(id)a3
+- (void)setGlyphState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = 0.0;
-  if (![(NSString *)self->_glyphState isEqualToString:v4])
+  if (![(NSString *)self->_glyphState isEqualToString:stateCopy])
   {
     if ([MEMORY[0x1E69DD250] areAnimationsEnabled])
     {
@@ -248,37 +248,37 @@
   }
 
   glyphState = self->_glyphState;
-  self->_glyphState = v4;
-  v7 = v4;
+  self->_glyphState = stateCopy;
+  v7 = stateCopy;
 
   v9 = [(CALayer *)self->_packageLayer stateWithName:v7];
   *&v8 = v5;
   [(CAStateController *)self->_stateController setState:v9 ofLayer:self->_packageLayer transitionSpeed:v8];
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  if (self->_scale != a3)
+  if (self->_scale != scale)
   {
-    self->_scale = a3;
+    self->_scale = scale;
     [(MRUCAPackageView *)self setNeedsLayout];
   }
 }
 
-- (void)setPermanentTransform:(CATransform3D *)a3
+- (void)setPermanentTransform:(CATransform3D *)transform
 {
   p_permanentTransform = &self->_permanentTransform;
-  v6 = *&a3->m33;
-  *&a.m31 = *&a3->m31;
+  v6 = *&transform->m33;
+  *&a.m31 = *&transform->m31;
   *&a.m33 = v6;
-  v7 = *&a3->m43;
-  *&a.m41 = *&a3->m41;
+  v7 = *&transform->m43;
+  *&a.m41 = *&transform->m41;
   *&a.m43 = v7;
-  v8 = *&a3->m13;
-  *&a.m11 = *&a3->m11;
+  v8 = *&transform->m13;
+  *&a.m11 = *&transform->m11;
   *&a.m13 = v8;
-  v9 = *&a3->m23;
-  *&a.m21 = *&a3->m21;
+  v9 = *&transform->m23;
+  *&a.m21 = *&transform->m21;
   *&a.m23 = v9;
   v10 = *&self->_permanentTransform.m33;
   *&v20.m31 = *&self->_permanentTransform.m31;
@@ -294,17 +294,17 @@
   *&v20.m23 = v13;
   if (!CATransform3DEqualToTransform(&a, &v20))
   {
-    v14 = *&a3->m11;
-    v15 = *&a3->m13;
-    v16 = *&a3->m23;
-    *&p_permanentTransform->m21 = *&a3->m21;
+    v14 = *&transform->m11;
+    v15 = *&transform->m13;
+    v16 = *&transform->m23;
+    *&p_permanentTransform->m21 = *&transform->m21;
     *&p_permanentTransform->m23 = v16;
     *&p_permanentTransform->m11 = v14;
     *&p_permanentTransform->m13 = v15;
-    v17 = *&a3->m31;
-    v18 = *&a3->m33;
-    v19 = *&a3->m43;
-    *&p_permanentTransform->m41 = *&a3->m41;
+    v17 = *&transform->m31;
+    v18 = *&transform->m33;
+    v19 = *&transform->m43;
+    *&p_permanentTransform->m41 = *&transform->m41;
     *&p_permanentTransform->m43 = v19;
     *&p_permanentTransform->m31 = v17;
     *&p_permanentTransform->m33 = v18;
@@ -312,28 +312,28 @@
   }
 }
 
-- (void)setGlyphTintColor:(id)a3
+- (void)setGlyphTintColor:(id)color
 {
-  objc_storeStrong(&self->_glyphTintColor, a3);
+  objc_storeStrong(&self->_glyphTintColor, color);
 
   [(MRUCAPackageView *)self updateFilter];
 }
 
-- (void)setPackage:(id)a3
+- (void)setPackage:(id)package
 {
-  objc_storeStrong(&self->_package, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_package, package);
+  packageCopy = package;
   [(CALayer *)self->_packageLayer removeFromSuperlayer];
-  v6 = [v5 rootLayer];
+  rootLayer = [packageCopy rootLayer];
   packageLayer = self->_packageLayer;
-  self->_packageLayer = v6;
-  v8 = v6;
+  self->_packageLayer = rootLayer;
+  v8 = rootLayer;
 
   [(CALayer *)v8 bounds];
   [(MRUCAPackageView *)self setBounds:?];
   [(CALayer *)v8 setGeometryFlipped:[(CAPackage *)self->_package isGeometryFlipped]];
-  v9 = [(UIView *)self->_contentView layer];
-  [v9 addSublayer:v8];
+  layer = [(UIView *)self->_contentView layer];
+  [layer addSublayer:v8];
 
   [(CALayer *)v8 bounds];
   [(UIView *)self->_contentView setBounds:?];

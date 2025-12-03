@@ -1,11 +1,11 @@
 @interface RTBluetoothManager
-+ (BOOL)supportsNotificationName:(id)a3;
-+ (id)allocWithZone:(_NSZone *)a3;
-+ (id)carKitConnectionStateToString:(int64_t)a3;
-- (void)_fetchCarKitConnectedStateWithHandler:(id)a3;
-- (void)fetchCarKitConnectedStateWithHandler:(id)a3;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)internalRemoveObserver:(id)a3 name:(id)a4;
++ (BOOL)supportsNotificationName:(id)name;
++ (id)allocWithZone:(_NSZone *)zone;
++ (id)carKitConnectionStateToString:(int64_t)string;
+- (void)_fetchCarKitConnectedStateWithHandler:(id)handler;
+- (void)fetchCarKitConnectedStateWithHandler:(id)handler;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)internalRemoveObserver:(id)observer name:(id)name;
 @end
 
 @implementation RTBluetoothManager
@@ -175,59 +175,59 @@ void __56__RTBluetoothManager_BluetoothManager_updateConnections__block_invoke_1
   }
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [RTBluetoothManager_BluetoothManager allocWithZone:a3];
+    return [RTBluetoothManager_BluetoothManager allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___RTBluetoothManager;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  if (([objc_opt_class() supportsNotificationName:v4] & 1) == 0)
+  nameCopy = name;
+  if (([objc_opt_class() supportsNotificationName:nameCopy] & 1) == 0)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityBluetooth);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "unsupported notification, %@", &v6, 0xCu);
     }
   }
 }
 
-- (void)internalRemoveObserver:(id)a3 name:(id)a4
+- (void)internalRemoveObserver:(id)observer name:(id)name
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  if (([objc_opt_class() supportsNotificationName:v4] & 1) == 0)
+  nameCopy = name;
+  if (([objc_opt_class() supportsNotificationName:nameCopy] & 1) == 0)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityBluetooth);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "unsupported notification, %@", &v6, 0xCu);
     }
   }
 }
 
-+ (BOOL)supportsNotificationName:(id)a3
++ (BOOL)supportsNotificationName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[(RTNotification *)RTBluetoothManagerNotificationConnected];
-  if ([v3 isEqualToString:v4])
+  if ([nameCopy isEqualToString:v4])
   {
     v5 = 1;
   }
@@ -235,7 +235,7 @@ void __56__RTBluetoothManager_BluetoothManager_updateConnections__block_invoke_1
   else
   {
     v6 = +[(RTNotification *)RTBluetoothManagerNotificationDisconnected];
-    if ([v3 isEqualToString:v6])
+    if ([nameCopy isEqualToString:v6])
     {
       v5 = 1;
     }
@@ -243,53 +243,53 @@ void __56__RTBluetoothManager_BluetoothManager_updateConnections__block_invoke_1
     else
     {
       v7 = +[(RTNotification *)RTBluetoothManagerNotificationCarKitConnectionStateChanged];
-      v5 = [v3 isEqualToString:v7];
+      v5 = [nameCopy isEqualToString:v7];
     }
   }
 
   return v5;
 }
 
-- (void)fetchCarKitConnectedStateWithHandler:(id)a3
+- (void)fetchCarKitConnectedStateWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __59__RTBluetoothManager_fetchCarKitConnectedStateWithHandler___block_invoke;
     v6[3] = &unk_2788C4938;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = handlerCopy;
+    dispatch_async(queue, v6);
   }
 }
 
-- (void)_fetchCarKitConnectedStateWithHandler:(id)a3
+- (void)_fetchCarKitConnectedStateWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __60__RTBluetoothManager__fetchCarKitConnectedStateWithHandler___block_invoke;
     block[3] = &unk_2788C4758;
-    v7 = v4;
-    dispatch_async(v5, block);
+    v7 = handlerCopy;
+    dispatch_async(queue, block);
   }
 }
 
-+ (id)carKitConnectionStateToString:(int64_t)a3
++ (id)carKitConnectionStateToString:(int64_t)string
 {
   v3 = @"unknown";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"connected";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"disconnected";
   }

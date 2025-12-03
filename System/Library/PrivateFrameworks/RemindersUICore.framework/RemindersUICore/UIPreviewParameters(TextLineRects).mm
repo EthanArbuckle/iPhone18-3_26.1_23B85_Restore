@@ -8,15 +8,15 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 _textLineRects];
+    _textLineRects = [self _textLineRects];
   }
 
   else
   {
-    v2 = 0;
+    _textLineRects = 0;
   }
 
-  return v2;
+  return _textLineRects;
 }
 
 @end

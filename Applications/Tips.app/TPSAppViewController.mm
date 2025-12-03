@@ -1,21 +1,21 @@
 @interface TPSAppViewController
-- (TPSAppViewController)initWithAppController:(id)a3;
+- (TPSAppViewController)initWithAppController:(id)controller;
 - (TPSAppViewControllerViewCycleDelegate)viewCycleDelegate;
 - (unint64_t)supportedInterfaceOrientations;
 @end
 
 @implementation TPSAppViewController
 
-- (TPSAppViewController)initWithAppController:(id)a3
+- (TPSAppViewController)initWithAppController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = TPSAppViewController;
   v6 = [(TPSViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appController, a3);
+    objc_storeStrong(&v6->_appController, controller);
   }
 
   return v7;

@@ -1,17 +1,17 @@
 @interface CTSCalendarInterval
-- (CTSCalendarInterval)initWithToken:(unint64_t)a3 andEvent:(id)a4;
-- (void)parseComponent:(unint64_t)a3 inEvent:(id)a4;
+- (CTSCalendarInterval)initWithToken:(unint64_t)token andEvent:(id)event;
+- (void)parseComponent:(unint64_t)component inEvent:(id)event;
 - (void)resetFireDate;
 - (void)setEveryMinuteIfNothingElseSet;
 @end
 
 @implementation CTSCalendarInterval
 
-- (void)parseComponent:(unint64_t)a3 inEvent:(id)a4
+- (void)parseComponent:(unint64_t)component inEvent:(id)event
 {
-  v6 = &unk_109E8 + 24 * a3;
+  v6 = &unk_109E8 + 24 * component;
   v7 = *v6;
-  v8 = xpc_dictionary_get_value(a4, *v6);
+  v8 = xpc_dictionary_get_value(event, *v6);
   v9 = v8;
   if (v8 && xpc_get_type(v8) == &_xpc_type_int64)
   {
@@ -19,20 +19,20 @@
     v11 = *(v6 + 1);
     if (value >= v11 && (v12 = value, value <= *(v6 + 2)))
     {
-      if (a3 == 512)
+      if (component == 512)
       {
         v12 = value % 7 + 1;
         [(NSDateComponents *)self->_components setDay:0x7FFFFFFFFFFFFFFFLL];
         [(NSDateComponents *)self->_components setMonth:0x7FFFFFFFFFFFFFFFLL];
       }
 
-      [(NSDateComponents *)self->_components setValue:v12 forComponent:a3];
+      [(NSDateComponents *)self->_components setValue:v12 forComponent:component];
       if (![(NSDateComponents *)self->_components isValidDate])
       {
-        v15 = [(NSDateComponents *)self->_components month];
-        if (v15 != 0x7FFFFFFFFFFFFFFFLL)
+        month = [(NSDateComponents *)self->_components month];
+        if (month != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v16 = (v15 + 1) % 12;
+          v16 = (month + 1) % 12;
           [(NSDateComponents *)self->_components setDay:1];
           [(NSDateComponents *)self->_components setMonth:v16 + 1];
         }
@@ -69,16 +69,16 @@
 
 - (void)resetFireDate
 {
-  v6 = [(NSDateComponents *)self->_components calendar];
+  calendar = [(NSDateComponents *)self->_components calendar];
   v3 = +[NSDate date];
-  v4 = [v6 nextDateAfterDate:v3 matchingComponents:self->_components options:1024];
+  v4 = [calendar nextDateAfterDate:v3 matchingComponents:self->_components options:1024];
   fireDate = self->_fireDate;
   self->_fireDate = v4;
 }
 
-- (CTSCalendarInterval)initWithToken:(unint64_t)a3 andEvent:(id)a4
+- (CTSCalendarInterval)initWithToken:(unint64_t)token andEvent:(id)event
 {
-  v6 = a4;
+  eventCopy = event;
   v14.receiver = self;
   v14.super_class = CTSCalendarInterval;
   v7 = [(CTSCalendarInterval *)&v14 init];
@@ -94,7 +94,7 @@
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
-    v7->_token = a3;
+    v7->_token = token;
     v10 = objc_opt_new();
     components = v7->_components;
     v7->_components = v10;
@@ -106,11 +106,11 @@
     }
 
     [(NSDateComponents *)v12 setCalendar:qword_15488];
-    [(CTSCalendarInterval *)v7 parseComponent:64 inEvent:v6];
-    [(CTSCalendarInterval *)v7 parseComponent:32 inEvent:v6];
-    [(CTSCalendarInterval *)v7 parseComponent:16 inEvent:v6];
-    [(CTSCalendarInterval *)v7 parseComponent:8 inEvent:v6];
-    [(CTSCalendarInterval *)v7 parseComponent:512 inEvent:v6];
+    [(CTSCalendarInterval *)v7 parseComponent:64 inEvent:eventCopy];
+    [(CTSCalendarInterval *)v7 parseComponent:32 inEvent:eventCopy];
+    [(CTSCalendarInterval *)v7 parseComponent:16 inEvent:eventCopy];
+    [(CTSCalendarInterval *)v7 parseComponent:8 inEvent:eventCopy];
+    [(CTSCalendarInterval *)v7 parseComponent:512 inEvent:eventCopy];
     [(CTSCalendarInterval *)v7 setEveryMinuteIfNothingElseSet];
     [(CTSCalendarInterval *)v7 resetFireDate];
   }

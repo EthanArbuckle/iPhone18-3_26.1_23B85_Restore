@@ -1,15 +1,15 @@
 @interface VNPoint
 + (VNPoint)pointByApplyingVector:(VNVector *)vector toPoint:(VNPoint *)point;
 + (VNPoint)zeroPoint;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)location;
-- (VNPoint)initWithCoder:(id)a3;
+- (VNPoint)initWithCoder:(id)coder;
 - (VNPoint)initWithX:(double)x y:(double)y;
 - (double)distanceToPoint:(VNPoint *)point;
 - (id)description;
-- (id)transformedWith:(CGAffineTransform *)a3;
+- (id)transformedWith:(CGAffineTransform *)with;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNPoint
@@ -42,13 +42,13 @@
   return *&y ^ __ROR8__(*&x, 51);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(VNPoint *)self x];
     v7 = v6;
     [v5 x];
@@ -74,10 +74,10 @@
   return v9;
 }
 
-- (id)transformedWith:(CGAffineTransform *)a3
+- (id)transformedWith:(CGAffineTransform *)with
 {
   [(VNPoint *)self location];
-  v6 = [objc_alloc(objc_opt_class()) initWithLocation:{vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, v4), *&a3->a, v5))}];
+  v6 = [objc_alloc(objc_opt_class()) initWithLocation:{vaddq_f64(*&with->tx, vmlaq_n_f64(vmulq_n_f64(*&with->c, v4), *&with->a, v5))}];
 
   return v6;
 }
@@ -94,19 +94,19 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeDouble:@"x" forKey:self->_x];
-  [v4 encodeDouble:@"y" forKey:self->_y];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"x" forKey:self->_x];
+  [coderCopy encodeDouble:@"y" forKey:self->_y];
 }
 
-- (VNPoint)initWithCoder:(id)a3
+- (VNPoint)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"x"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"x"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"y"];
+  [coderCopy decodeDoubleForKey:@"y"];
   v8 = [(VNPoint *)self initWithX:v6 y:v7];
 
   return v8;

@@ -1,21 +1,21 @@
 @interface CardDAViCloudGetAccountPropertiesTaskGroup
-- (void)_setPropertiesFromParsedResponses:(id)a3;
+- (void)_setPropertiesFromParsedResponses:(id)responses;
 @end
 
 @implementation CardDAViCloudGetAccountPropertiesTaskGroup
 
-- (void)_setPropertiesFromParsedResponses:(id)a3
+- (void)_setPropertiesFromParsedResponses:(id)responses
 {
-  v4 = a3;
+  responsesCopy = responses;
   v75.receiver = self;
   v75.super_class = CardDAViCloudGetAccountPropertiesTaskGroup;
-  [(CardDAViCloudGetAccountPropertiesTaskGroup *)&v75 _setPropertiesFromParsedResponses:v4];
+  [(CardDAViCloudGetAccountPropertiesTaskGroup *)&v75 _setPropertiesFromParsedResponses:responsesCopy];
   v5 = *&self->CardDAVGetAccountPropertiesTaskGroup_opaque[OBJC_IVAR___CardDAVGetAccountPropertiesTaskGroup__addressBookHomes];
   v40 = OBJC_IVAR___CardDAVGetAccountPropertiesTaskGroup__addressBookHomes;
   *&self->CardDAVGetAccountPropertiesTaskGroup_opaque[OBJC_IVAR___CardDAVGetAccountPropertiesTaskGroup__addressBookHomes] = 0;
 
   v6 = *&self->CardDAVGetAccountPropertiesTaskGroup_opaque[OBJC_IVAR___CardDAVGetAccountPropertiesTaskGroup__directoryGatewayURLs];
-  v60 = self;
+  selfCopy = self;
   v39 = OBJC_IVAR___CardDAVGetAccountPropertiesTaskGroup__directoryGatewayURLs;
   *&self->CardDAVGetAccountPropertiesTaskGroup_opaque[OBJC_IVAR___CardDAVGetAccountPropertiesTaskGroup__directoryGatewayURLs] = 0;
 
@@ -23,7 +23,7 @@
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  obj = v4;
+  obj = responsesCopy;
   v41 = [obj countByEnumeratingWithState:&v71 objects:v78 count:16];
   if (v41)
   {
@@ -42,15 +42,15 @@
         }
 
         v44 = v7;
-        v46 = [*(*(&v71 + 1) + 8 * v7) successfulPropertiesToValues];
-        v43 = [v46 CDVObjectForKeyWithNameSpace:v45 andName:v37];
-        v8 = [v43 hrefsAsFullURLs];
-        v51 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+        successfulPropertiesToValues = [*(*(&v71 + 1) + 8 * v7) successfulPropertiesToValues];
+        v43 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:v45 andName:v37];
+        hrefsAsFullURLs = [v43 hrefsAsFullURLs];
+        v51 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(hrefsAsFullURLs, "count")}];
         v67 = 0u;
         v68 = 0u;
         v69 = 0u;
         v70 = 0u;
-        v48 = v8;
+        v48 = hrefsAsFullURLs;
         v54 = [v48 countByEnumeratingWithState:&v67 objects:v77 count:16];
         if (v54)
         {
@@ -66,16 +66,16 @@
 
               v10 = *(*(&v67 + 1) + 8 * i);
               v58 = [NSURL alloc];
-              v56 = [v10 scheme];
-              WeakRetained = objc_loadWeakRetained(&v60->CardDAVGetAccountPropertiesTaskGroup_opaque[OBJC_IVAR___CoreDAVTaskGroup__accountInfoProvider]);
-              v11 = [WeakRetained user];
-              v12 = [v10 password];
-              v13 = [v10 host];
-              v14 = [v10 port];
-              v15 = [v10 CDVRawPath];
-              v16 = [v10 query];
-              v17 = [v10 fragment];
-              v18 = [v58 initWithCDVScheme:v56 user:v11 password:v12 host:v13 port:v14 path:v15 query:v16 fragment:v17];
+              scheme = [v10 scheme];
+              WeakRetained = objc_loadWeakRetained(&selfCopy->CardDAVGetAccountPropertiesTaskGroup_opaque[OBJC_IVAR___CoreDAVTaskGroup__accountInfoProvider]);
+              user = [WeakRetained user];
+              password = [v10 password];
+              host = [v10 host];
+              port = [v10 port];
+              cDVRawPath = [v10 CDVRawPath];
+              query = [v10 query];
+              fragment = [v10 fragment];
+              v18 = [v58 initWithCDVScheme:scheme user:user password:password host:host port:port path:cDVRawPath query:query fragment:fragment];
 
               if (v18)
               {
@@ -106,15 +106,15 @@
           v20 = 0;
         }
 
-        objc_storeStrong(&v60->CardDAVGetAccountPropertiesTaskGroup_opaque[v40], v20);
-        v42 = [v46 CDVObjectForKeyWithNameSpace:v45 andName:v36];
-        v21 = [v42 hrefsAsFullURLs];
-        v50 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v21, "count")}];
+        objc_storeStrong(&selfCopy->CardDAVGetAccountPropertiesTaskGroup_opaque[v40], v20);
+        v42 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:v45 andName:v36];
+        hrefsAsFullURLs2 = [v42 hrefsAsFullURLs];
+        v50 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(hrefsAsFullURLs2, "count")}];
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
         v66 = 0u;
-        v47 = v21;
+        v47 = hrefsAsFullURLs2;
         v53 = [v47 countByEnumeratingWithState:&v63 objects:v76 count:16];
         if (v53)
         {
@@ -130,18 +130,18 @@
 
               v23 = *(*(&v63 + 1) + 8 * j);
               v57 = [NSURL alloc];
-              v62 = [v23 scheme];
-              v59 = objc_loadWeakRetained(&v60->CardDAVGetAccountPropertiesTaskGroup_opaque[OBJC_IVAR___CoreDAVTaskGroup__accountInfoProvider]);
-              v55 = [v59 user];
-              v24 = [v23 password];
-              v25 = [v23 host];
-              v26 = [v23 port];
-              v27 = [v23 CDVRawPath];
-              v28 = [v23 parameterString];
-              v29 = [v23 query];
-              v30 = [v23 fragment];
-              v31 = v26;
-              v32 = [v57 initWithCDVScheme:v62 user:v55 password:v24 host:v25 port:v26 path:v27 parameterString:v28 query:v29 fragment:v30];
+              scheme2 = [v23 scheme];
+              v59 = objc_loadWeakRetained(&selfCopy->CardDAVGetAccountPropertiesTaskGroup_opaque[OBJC_IVAR___CoreDAVTaskGroup__accountInfoProvider]);
+              user2 = [v59 user];
+              password2 = [v23 password];
+              host2 = [v23 host];
+              port2 = [v23 port];
+              cDVRawPath2 = [v23 CDVRawPath];
+              parameterString = [v23 parameterString];
+              query2 = [v23 query];
+              fragment2 = [v23 fragment];
+              v31 = port2;
+              v32 = [v57 initWithCDVScheme:scheme2 user:user2 password:password2 host:host2 port:port2 path:cDVRawPath2 parameterString:parameterString query:query2 fragment:fragment2];
 
               if (v32)
               {
@@ -172,7 +172,7 @@
           v34 = 0;
         }
 
-        objc_storeStrong(&v60->CardDAVGetAccountPropertiesTaskGroup_opaque[v39], v34);
+        objc_storeStrong(&selfCopy->CardDAVGetAccountPropertiesTaskGroup_opaque[v39], v34);
 
         v7 = v44 + 1;
       }

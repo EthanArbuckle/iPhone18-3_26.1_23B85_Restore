@@ -1,13 +1,13 @@
 @interface IDSConnection
 - (BOOL)isActive;
-- (BOOL)sendData:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8;
-- (BOOL)sendMessage:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8;
-- (BOOL)sendProtobuf:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8;
+- (BOOL)sendData:(id)data toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendMessage:(id)message toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendProtobuf:(id)protobuf toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
 - (IDSAccount)account;
 - (_IDSConnection)_internal;
-- (void)addDelegate:(id)a3 queue:(id)a4;
+- (void)addDelegate:(id)delegate queue:(id)queue;
 - (void)dealloc;
-- (void)removeDelegate:(id)a3;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation IDSConnection
@@ -15,12 +15,12 @@
 - (_IDSConnection)_internal
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2ABB8();
     }
@@ -96,41 +96,41 @@
   return self;
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v8 = +[IDSInternalQueueController sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195A523E4;
   v11[3] = &unk_1E743E620;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
   [v8 performBlock:v11 waitUntilDone:1];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_195A524A4;
   v6[3] = &unk_1E743F468;
   v6[4] = self;
-  v6[5] = v4;
+  v6[5] = delegateCopy;
   [v5 performBlock:v6 waitUntilDone:1];
 }
 
-- (BOOL)sendProtobuf:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8
+- (BOOL)sendProtobuf:(id)protobuf toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  protobufCopy = protobuf;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -142,28 +142,28 @@
   v22[3] = &unk_1E7440218;
   v26 = &v30;
   v22[4] = self;
-  v18 = v14;
+  v18 = protobufCopy;
   v23 = v18;
-  v19 = v15;
+  v19 = destinationsCopy;
   v24 = v19;
-  v27 = a5;
-  v20 = v16;
+  priorityCopy = priority;
+  v20 = optionsCopy;
   v25 = v20;
-  v28 = a7;
-  v29 = a8;
+  identifierCopy = identifier;
+  errorCopy = error;
   [v17 performBlock:v22 waitUntilDone:1];
 
-  LOBYTE(a8) = *(v31 + 24);
+  LOBYTE(error) = *(v31 + 24);
   _Block_object_dispose(&v30, 8);
 
-  return a8;
+  return error;
 }
 
-- (BOOL)sendMessage:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8
+- (BOOL)sendMessage:(id)message toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  messageCopy = message;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -175,28 +175,28 @@
   v22[3] = &unk_1E7440218;
   v26 = &v30;
   v22[4] = self;
-  v18 = v14;
+  v18 = messageCopy;
   v23 = v18;
-  v19 = v15;
+  v19 = destinationsCopy;
   v24 = v19;
-  v27 = a5;
-  v20 = v16;
+  priorityCopy = priority;
+  v20 = optionsCopy;
   v25 = v20;
-  v28 = a7;
-  v29 = a8;
+  identifierCopy = identifier;
+  errorCopy = error;
   [v17 performBlock:v22 waitUntilDone:1];
 
-  LOBYTE(a8) = *(v31 + 24);
+  LOBYTE(error) = *(v31 + 24);
   _Block_object_dispose(&v30, 8);
 
-  return a8;
+  return error;
 }
 
-- (BOOL)sendData:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8
+- (BOOL)sendData:(id)data toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  dataCopy = data;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -208,21 +208,21 @@
   v22[3] = &unk_1E7440218;
   v26 = &v30;
   v22[4] = self;
-  v18 = v14;
+  v18 = dataCopy;
   v23 = v18;
-  v19 = v15;
+  v19 = destinationsCopy;
   v24 = v19;
-  v27 = a5;
-  v20 = v16;
+  priorityCopy = priority;
+  v20 = optionsCopy;
   v25 = v20;
-  v28 = a7;
-  v29 = a8;
+  identifierCopy = identifier;
+  errorCopy = error;
   [v17 performBlock:v22 waitUntilDone:1];
 
-  LOBYTE(a8) = *(v31 + 24);
+  LOBYTE(error) = *(v31 + 24);
   _Block_object_dispose(&v30, 8);
 
-  return a8;
+  return error;
 }
 
 @end

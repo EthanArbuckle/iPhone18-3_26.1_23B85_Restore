@@ -2,17 +2,17 @@
 - (CGRect)presentedFrame;
 - (CGRect)sourceFrame;
 - (UIEdgeInsets)sourceInsets;
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation STSDetailTransitionAnimator
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  v3 = [(STSDetailTransitionAnimator *)self presenting];
+  presenting = [(STSDetailTransitionAnimator *)self presenting];
   result = 0.4;
-  if (!v3)
+  if (!presenting)
   {
     return 0.25;
   }
@@ -20,22 +20,22 @@
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x277D77230]];
-  v7 = [v6 view];
-  [v7 setUserInteractionEnabled:0];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77230]];
+  view = [v6 view];
+  [view setUserInteractionEnabled:0];
 
-  v8 = [v4 viewControllerForKey:*MEMORY[0x277D77240]];
-  v9 = [v8 view];
-  [v9 setUserInteractionEnabled:0];
+  v8 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77240]];
+  view2 = [v8 view];
+  [view2 setUserInteractionEnabled:0];
 
   if ([(STSDetailTransitionAnimator *)self presenting])
   {
-    v10 = [v6 view];
-    v11 = [v10 snapshotViewAfterScreenUpdates:1];
+    view3 = [v6 view];
+    v11 = [view3 snapshotViewAfterScreenUpdates:1];
 
     v12 = [MEMORY[0x277D75210] effectWithStyle:2];
     v13 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v12];
@@ -47,17 +47,17 @@
   else
   {
     v14 = objc_alloc(MEMORY[0x277D75D18]);
-    [v4 finalFrameForViewController:v8];
+    [transitionCopy finalFrameForViewController:v8];
     v11 = [v14 initWithFrame:?];
   }
 
-  [v5 addSubview:v11];
-  v15 = [(STSDetailTransitionAnimator *)self snapshotView];
-  [v5 addSubview:v15];
+  [containerView addSubview:v11];
+  snapshotView = [(STSDetailTransitionAnimator *)self snapshotView];
+  [containerView addSubview:snapshotView];
 
-  v16 = [(STSDetailTransitionAnimator *)self presenting];
-  v17 = [(STSDetailTransitionAnimator *)self snapshotView];
-  if (v16)
+  presenting = [(STSDetailTransitionAnimator *)self presenting];
+  snapshotView2 = [(STSDetailTransitionAnimator *)self snapshotView];
+  if (presenting)
   {
     [(STSDetailTransitionAnimator *)self sourceFrame];
     v19 = v18;
@@ -65,10 +65,10 @@
     v23 = v22;
     v25 = v24;
     [(STSDetailTransitionAnimator *)self sourceInsets];
-    [v17 setFrame:{v19 + v29, v21 + v26, v23 - (v29 + v27), v25 - (v26 + v28)}];
+    [snapshotView2 setFrame:{v19 + v29, v21 + v26, v23 - (v29 + v27), v25 - (v26 + v28)}];
 
     v30 = MEMORY[0x277D75D18];
-    [(STSDetailTransitionAnimator *)self transitionDuration:v4];
+    [(STSDetailTransitionAnimator *)self transitionDuration:transitionCopy];
     v32 = v31;
     v62[0] = MEMORY[0x277D85DD0];
     v62[1] = 3221225472;
@@ -81,11 +81,11 @@
     v55[3] = &unk_279B8ACB8;
     v56 = v6;
     v57 = v8;
-    v58 = v4;
-    v59 = v5;
-    v60 = self;
+    v58 = transitionCopy;
+    v59 = containerView;
+    selfCopy = self;
     v61 = v11;
-    v33 = v4;
+    v33 = transitionCopy;
     v34 = v8;
     v35 = v6;
     [v30 animateWithDuration:0 delay:v62 usingSpringWithDamping:v55 initialSpringVelocity:v32 options:0.0 animations:0.7 completion:0.0];
@@ -96,10 +96,10 @@
   else
   {
     [(STSDetailTransitionAnimator *)self presentedFrame];
-    [v17 setFrame:?];
+    [snapshotView2 setFrame:?];
 
     v37 = MEMORY[0x277D75D18];
-    [(STSDetailTransitionAnimator *)self transitionDuration:v4];
+    [(STSDetailTransitionAnimator *)self transitionDuration:transitionCopy];
     v39 = v38;
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
@@ -109,9 +109,9 @@
     v54 = v40;
     [v37 animateWithDuration:v53 animations:v39];
     v41 = MEMORY[0x277D75D18];
-    [(STSDetailTransitionAnimator *)self transitionDuration:v4];
+    [(STSDetailTransitionAnimator *)self transitionDuration:transitionCopy];
     v43 = v42;
-    v51 = self;
+    selfCopy2 = self;
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __49__STSDetailTransitionAnimator_animateTransition___block_invoke_4;
@@ -123,8 +123,8 @@
     v47[3] = &unk_279B8ACE0;
     v48 = v40;
     v49 = v8;
-    v50 = v4;
-    v44 = v4;
+    v50 = transitionCopy;
+    v44 = transitionCopy;
     v45 = v8;
     v46 = v40;
     [v41 animateWithDuration:v52 animations:v47 completion:v43];

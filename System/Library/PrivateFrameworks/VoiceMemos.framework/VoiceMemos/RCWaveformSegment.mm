@@ -1,77 +1,77 @@
 @interface RCWaveformSegment
-+ (id)_discontinuityRepairedSegmentsByGrowingToFillGapsInSegments:(id)a3;
-+ (id)_mergedSegmentByResamplingWithMergeableSegments:(id)a3 mergedLevelsDuration:(double)a4;
-+ (id)_segmentByMergingMergableSegments:(id)a3;
-+ (id)_segmentsByJoiningSegment:(id)a3 toSegmentIfNecessaryWithGreaterSegment:(id)a4 averagePowerLevelJoinLimit:(unint64_t)a5;
-+ (id)emptySegmentWithTimeRange:(id)a3;
-+ (id)segmentsByMergingSegments:(id)a3 preferredSegmentDuration:(double)a4;
-+ (id)segmentsByMergingSegments:(id)a3 preferredSegmentDuration:(double)a4 beforeTime:(double)a5 andThenUsePreferredSegmentDuration:(double)a6;
-+ (id)segmentsByReparingDiscontinuitiesInSegments:(id)a3;
-+ (id)segmentsByShiftingSegments:(id)a3 byTimeOffset:(double)a4;
++ (id)_discontinuityRepairedSegmentsByGrowingToFillGapsInSegments:(id)segments;
++ (id)_mergedSegmentByResamplingWithMergeableSegments:(id)segments mergedLevelsDuration:(double)duration;
++ (id)_segmentByMergingMergableSegments:(id)segments;
++ (id)_segmentsByJoiningSegment:(id)segment toSegmentIfNecessaryWithGreaterSegment:(id)greaterSegment averagePowerLevelJoinLimit:(unint64_t)limit;
++ (id)emptySegmentWithTimeRange:(id)range;
++ (id)segmentsByMergingSegments:(id)segments preferredSegmentDuration:(double)duration;
++ (id)segmentsByMergingSegments:(id)segments preferredSegmentDuration:(double)duration beforeTime:(double)time andThenUsePreferredSegmentDuration:(double)segmentDuration;
++ (id)segmentsByReparingDiscontinuitiesInSegments:(id)segments;
++ (id)segmentsByShiftingSegments:(id)segments byTimeOffset:(double)offset;
 + (void)initialize;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)timeRange;
-- (BOOL)hasUniformPowerLevel:(float)a3;
-- (BOOL)isWaveformDataAlmostEqualToDataInSegment:(id)a3;
-- (BOOL)isWaveformDataEqualToDataInSegment:(id)a3;
-- (RCWaveformSegment)initWithCoder:(id)a3;
-- (RCWaveformSegment)initWithTimeRange:(id)a3 averagePowerLevelData:(id)a4;
-- (RCWaveformSegment)initWithTimeRange:(id)a3 averagePowerLevelVector:(void *)a4;
-- (id)_initWithTimeRange:(id)a3 averagePowerLevelData:(id)a4;
-- (id)_segmentWithValuesInContainedTimeRange:(id)a3;
-- (id)_segmentsByJoiningIfNecessaryGreaterSegment:(id)a3 averagePowerLevelJoinLimit:(unint64_t)a4;
-- (id)copyWithAdjustedTimeRange:(id)a3;
-- (id)copyWithTimeRangeOffsetByTimeOffset:(double)a3;
-- (id)segmentByClippingToTimeRange:(id)a3;
-- (id)segmentsByJoiningIfSmallSegment:(id)a3;
-- (id)segmentsByJoiningIfSmallSegment:(id)a3 averagePowerLevelJoinLimit:(unint64_t)a4;
+- (BOOL)hasUniformPowerLevel:(float)level;
+- (BOOL)isWaveformDataAlmostEqualToDataInSegment:(id)segment;
+- (BOOL)isWaveformDataEqualToDataInSegment:(id)segment;
+- (RCWaveformSegment)initWithCoder:(id)coder;
+- (RCWaveformSegment)initWithTimeRange:(id)range averagePowerLevelData:(id)data;
+- (RCWaveformSegment)initWithTimeRange:(id)range averagePowerLevelVector:(void *)vector;
+- (id)_initWithTimeRange:(id)range averagePowerLevelData:(id)data;
+- (id)_segmentWithValuesInContainedTimeRange:(id)range;
+- (id)_segmentsByJoiningIfNecessaryGreaterSegment:(id)segment averagePowerLevelJoinLimit:(unint64_t)limit;
+- (id)copyWithAdjustedTimeRange:(id)range;
+- (id)copyWithTimeRangeOffsetByTimeOffset:(double)offset;
+- (id)segmentByClippingToTimeRange:(id)range;
+- (id)segmentsByJoiningIfSmallSegment:(id)segment;
+- (id)segmentsByJoiningIfSmallSegment:(id)segment averagePowerLevelJoinLimit:(unint64_t)limit;
 - (id)simpleDescription;
 - (id)verboseDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RCWaveformSegment
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     [RCWaveformSegment setVersion:1];
   }
 }
 
-+ (id)emptySegmentWithTimeRange:(id)a3
++ (id)emptySegmentWithTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = [a1 alloc];
-  v6 = [MEMORY[0x277CBEA90] data];
-  v7 = [v5 _initWithTimeRange:v6 averagePowerLevelData:{var0, var1}];
+  var1 = range.var1;
+  var0 = range.var0;
+  v5 = [self alloc];
+  data = [MEMORY[0x277CBEA90] data];
+  v7 = [v5 _initWithTimeRange:data averagePowerLevelData:{var0, var1}];
 
   return v7;
 }
 
-- (RCWaveformSegment)initWithTimeRange:(id)a3 averagePowerLevelData:(id)a4
+- (RCWaveformSegment)initWithTimeRange:(id)range averagePowerLevelData:(id)data
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v8 = a4;
-  if (!v8)
+  var1 = range.var1;
+  var0 = range.var0;
+  dataCopy = data;
+  if (!dataCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"RCWaveformSegment.mm" lineNumber:33 description:{@"invalid segment data.  if this segment really has no data, use +emptySegmentWithTimeRange:"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"RCWaveformSegment.mm" lineNumber:33 description:{@"invalid segment data.  if this segment really has no data, use +emptySegmentWithTimeRange:"}];
   }
 
-  v9 = [(RCWaveformSegment *)self _initWithTimeRange:v8 averagePowerLevelData:var0, var1];
+  var1 = [(RCWaveformSegment *)self _initWithTimeRange:dataCopy averagePowerLevelData:var0, var1];
 
-  return v9;
+  return var1;
 }
 
-- (id)_initWithTimeRange:(id)a3 averagePowerLevelData:(id)a4
+- (id)_initWithTimeRange:(id)range averagePowerLevelData:(id)data
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v8 = a4;
+  var1 = range.var1;
+  var0 = range.var0;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = RCWaveformSegment;
   v9 = [(RCWaveformSegment *)&v12 init];
@@ -80,34 +80,34 @@
   {
     v9->_timeRange.beginTime = var0;
     v9->_timeRange.endTime = var1;
-    objc_storeStrong(&v9->_averagePowerLevelData, a4);
+    objc_storeStrong(&v9->_averagePowerLevelData, data);
     v10->_isRendered = 0;
   }
 
   return v10;
 }
 
-- (RCWaveformSegment)initWithTimeRange:(id)a3 averagePowerLevelVector:(void *)a4
+- (RCWaveformSegment)initWithTimeRange:(id)range averagePowerLevelVector:(void *)vector
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  if (*(a4 + 1) == *a4)
+  var1 = range.var1;
+  var0 = range.var0;
+  if (*(vector + 1) == *vector)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [objc_alloc(MEMORY[0x277CBEB28]) initWithBytes:*a4 length:*(a4 + 1) - *a4];
-    memcpy([v8 mutableBytes], *a4, *(a4 + 1) - *a4);
+    v8 = [objc_alloc(MEMORY[0x277CBEB28]) initWithBytes:*vector length:*(vector + 1) - *vector];
+    memcpy([v8 mutableBytes], *vector, *(vector + 1) - *vector);
   }
 
-  v9 = [(RCWaveformSegment *)self initWithTimeRange:v8 averagePowerLevelData:var0, var1];
-  v10 = v9;
-  if (v9)
+  var1 = [(RCWaveformSegment *)self initWithTimeRange:v8 averagePowerLevelData:var0, var1];
+  v10 = var1;
+  if (var1)
   {
-    v9->_timeRange.beginTime = var0;
-    v9->_timeRange.endTime = var1;
+    var1->_timeRange.beginTime = var0;
+    var1->_timeRange.endTime = var1;
   }
 
   return v10;
@@ -115,24 +115,24 @@
 
 - (id)verboseDescription
 {
-  v3 = [(RCWaveformSegment *)self simpleDescription];
+  simpleDescription = [(RCWaveformSegment *)self simpleDescription];
   v4 = RCTimeRangeDeltaWithExactPrecision(self->_timeRange.beginTime, self->_timeRange.endTime);
-  v5 = [(RCWaveformSegment *)self averagePowerLevelsCount];
-  v6 = [MEMORY[0x277CBEB18] array];
+  averagePowerLevelsCount = [(RCWaveformSegment *)self averagePowerLevelsCount];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = 0;
-  v8 = v4 / v5;
+  v8 = v4 / averagePowerLevelsCount;
   while (v7 < [(RCWaveformSegment *)self averagePowerLevelsCount])
   {
-    v9 = [(RCWaveformSegment *)self averagePowerLevels];
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%.3fs] %.2f", v8 * v7, v9[v7]];
-    [v6 addObject:v10];
+    averagePowerLevels = [(RCWaveformSegment *)self averagePowerLevels];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%.3fs] %.2f", v8 * v7, averagePowerLevels[v7]];
+    [array addObject:v10];
 
     ++v7;
   }
 
   v11 = MEMORY[0x277CCACA8];
-  v12 = [v6 componentsJoinedByString:{@", "}];
-  v13 = [v11 stringWithFormat:@"%@ %@", v3, v12];
+  v12 = [array componentsJoinedByString:{@", "}];
+  v13 = [v11 stringWithFormat:@"%@ %@", simpleDescription, v12];
 
   return v13;
 }
@@ -149,26 +149,26 @@
   return v6;
 }
 
-- (RCWaveformSegment)initWithCoder:(id)a3
+- (RCWaveformSegment)initWithCoder:(id)coder
 {
-  v4 = a3;
-  self->_timeRange.beginTime = RCTimeRangeDecodeWithKey(v4, @"RCTimeRange");
+  coderCopy = coder;
+  self->_timeRange.beginTime = RCTimeRangeDecodeWithKey(coderCopy, @"RCTimeRange");
   self->_timeRange.endTime = v5;
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RCAveragePowerLevelVectorData"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RCAveragePowerLevelVectorData"];
   averagePowerLevelData = self->_averagePowerLevelData;
   self->_averagePowerLevelData = v6;
 
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  RCTimeRangeEncodeWithKey(v4, @"RCTimeRange", self->_timeRange.beginTime, self->_timeRange.endTime);
-  [v4 encodeObject:self->_averagePowerLevelData forKey:@"RCAveragePowerLevelVectorData"];
+  coderCopy = coder;
+  RCTimeRangeEncodeWithKey(coderCopy, @"RCTimeRange", self->_timeRange.beginTime, self->_timeRange.endTime);
+  [coderCopy encodeObject:self->_averagePowerLevelData forKey:@"RCAveragePowerLevelVectorData"];
 }
 
-- (BOOL)hasUniformPowerLevel:(float)a3
+- (BOOL)hasUniformPowerLevel:(float)level
 {
   if (![(RCWaveformSegment *)self averagePowerLevelsCount])
   {
@@ -184,8 +184,8 @@
   do
   {
     v6 = [(RCWaveformSegment *)self averagePowerLevels][4 * v5];
-    v7 = v6 == a3;
-    if (v6 != a3)
+    v7 = v6 == level;
+    if (v6 != level)
     {
       break;
     }
@@ -197,37 +197,37 @@
   return v7;
 }
 
-- (BOOL)isWaveformDataEqualToDataInSegment:(id)a3
+- (BOOL)isWaveformDataEqualToDataInSegment:(id)segment
 {
-  if (a3 == self)
+  if (segment == self)
   {
     return 1;
   }
 
   else
   {
-    return [(NSData *)self->_averagePowerLevelData isEqual:*(a3 + 1)];
+    return [(NSData *)self->_averagePowerLevelData isEqual:*(segment + 1)];
   }
 }
 
-- (BOOL)isWaveformDataAlmostEqualToDataInSegment:(id)a3
+- (BOOL)isWaveformDataAlmostEqualToDataInSegment:(id)segment
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  segmentCopy = segment;
+  v5 = segmentCopy;
+  if (segmentCopy == self)
   {
     goto LABEL_10;
   }
 
-  v6 = [(RCWaveformSegment *)v4 averagePowerLevelsCount];
-  if (v6 != [(RCWaveformSegment *)self averagePowerLevelsCount])
+  averagePowerLevelsCount = [(RCWaveformSegment *)segmentCopy averagePowerLevelsCount];
+  if (averagePowerLevelsCount != [(RCWaveformSegment *)self averagePowerLevelsCount])
   {
     v11 = 0;
     goto LABEL_12;
   }
 
-  v7 = [(RCWaveformSegment *)self averagePowerLevelsCount];
-  if (!v7)
+  averagePowerLevelsCount2 = [(RCWaveformSegment *)self averagePowerLevelsCount];
+  if (!averagePowerLevelsCount2)
   {
 LABEL_10:
     v11 = 1;
@@ -236,7 +236,7 @@ LABEL_10:
   else
   {
     v8 = 0;
-    v9 = v7 - 1;
+    v9 = averagePowerLevelsCount2 - 1;
     do
     {
       v10 = RCEqualFloatsWithTolerance([(RCWaveformSegment *)self averagePowerLevels][4 * v8], [(RCWaveformSegment *)v5 averagePowerLevels][4 * v8], 0.1);
@@ -251,45 +251,45 @@ LABEL_12:
   return v11;
 }
 
-- (id)copyWithTimeRangeOffsetByTimeOffset:(double)a3
+- (id)copyWithTimeRangeOffsetByTimeOffset:(double)offset
 {
-  v4 = self->_timeRange.beginTime + a3;
-  v5 = self->_timeRange.endTime + a3;
+  v4 = self->_timeRange.beginTime + offset;
+  v5 = self->_timeRange.endTime + offset;
   v6 = objc_alloc(objc_opt_class());
   averagePowerLevelData = self->_averagePowerLevelData;
 
   return [v6 initWithTimeRange:averagePowerLevelData averagePowerLevelData:{v4, v5}];
 }
 
-- (id)copyWithAdjustedTimeRange:(id)a3
+- (id)copyWithAdjustedTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v6 = objc_alloc(objc_opt_class());
   averagePowerLevelData = self->_averagePowerLevelData;
 
   return [v6 initWithTimeRange:averagePowerLevelData averagePowerLevelData:{var0, var1}];
 }
 
-+ (id)segmentsByReparingDiscontinuitiesInSegments:(id)a3
++ (id)segmentsByReparingDiscontinuitiesInSegments:(id)segments
 {
-  v3 = [a1 _discontinuityRepairedSegmentsByGrowingToFillGapsInSegments:a3];
+  v3 = [self _discontinuityRepairedSegmentsByGrowingToFillGapsInSegments:segments];
 
   return v3;
 }
 
-+ (id)segmentsByShiftingSegments:(id)a3 byTimeOffset:(double)a4
++ (id)segmentsByShiftingSegments:(id)segments byTimeOffset:(double)offset
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 count])
+  segmentsCopy = segments;
+  if ([segmentsCopy count])
   {
-    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(segmentsCopy, "count")}];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = v5;
+    v7 = segmentsCopy;
     v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
@@ -303,7 +303,7 @@ LABEL_12:
             objc_enumerationMutation(v7);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) copyWithTimeRangeOffsetByTimeOffset:{a4, v14}];
+          v11 = [*(*(&v14 + 1) + 8 * i) copyWithTimeRangeOffsetByTimeOffset:{offset, v14}];
           [v6 addObject:v11];
         }
 
@@ -316,7 +316,7 @@ LABEL_12:
 
   else
   {
-    v6 = [v5 mutableCopy];
+    v6 = [segmentsCopy mutableCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -324,25 +324,25 @@ LABEL_12:
   return v6;
 }
 
-+ (id)segmentsByMergingSegments:(id)a3 preferredSegmentDuration:(double)a4 beforeTime:(double)a5 andThenUsePreferredSegmentDuration:(double)a6
++ (id)segmentsByMergingSegments:(id)segments preferredSegmentDuration:(double)duration beforeTime:(double)time andThenUsePreferredSegmentDuration:(double)segmentDuration
 {
   v57 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  if ([v10 count] <= 1)
+  segmentsCopy = segments;
+  if ([segmentsCopy count] <= 1)
   {
-    v11 = v10;
+    array2 = segmentsCopy;
     goto LABEL_42;
   }
 
-  v45 = v10;
-  v46 = [v10 mutableCopy];
+  v45 = segmentsCopy;
+  v46 = [segmentsCopy mutableCopy];
   if (v46)
   {
     v12 = MEMORY[0x277CBEB18];
-    v13 = [MEMORY[0x277CBEB18] array];
-    v14 = [v12 arrayWithObject:v13];
+    array = [MEMORY[0x277CBEB18] array];
+    v14 = [v12 arrayWithObject:array];
 
-    v11 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
@@ -353,7 +353,7 @@ LABEL_12:
     {
       v17 = *v52;
       v18 = 0.0;
-      v19 = a4;
+      segmentDurationCopy = duration;
       do
       {
         for (i = 0; i != v16; ++i)
@@ -367,25 +367,25 @@ LABEL_12:
           [v21 timeRange];
           v23 = v22;
           v25 = v24;
-          if (v22 >= a5 && v19 == a4)
+          if (v22 >= time && segmentDurationCopy == duration)
           {
-            v27 = [MEMORY[0x277CBEB18] array];
-            [v14 addObject:v27];
+            array3 = [MEMORY[0x277CBEB18] array];
+            [v14 addObject:array3];
 
-            v19 = a6;
+            segmentDurationCopy = segmentDuration;
           }
 
-          v28 = [v14 lastObject];
-          if (![v28 count])
+          lastObject = [v14 lastObject];
+          if (![lastObject count])
           {
             v18 = v23;
           }
 
-          [v28 addObject:v21];
-          if (v25 - v18 >= v19)
+          [lastObject addObject:v21];
+          if (v25 - v18 >= segmentDurationCopy)
           {
-            v29 = [MEMORY[0x277CBEB18] array];
-            [v14 addObject:v29];
+            array4 = [MEMORY[0x277CBEB18] array];
+            [v14 addObject:array4];
           }
         }
 
@@ -416,8 +416,8 @@ LABEL_12:
           v34 = *(*(&v47 + 1) + 8 * j);
           if ([v34 count] == 1)
           {
-            v35 = [v34 objectAtIndexedSubscript:0];
-            [v11 addObject:v35];
+            firstObject = [v34 objectAtIndexedSubscript:0];
+            [array2 addObject:firstObject];
           }
 
           else
@@ -427,31 +427,31 @@ LABEL_12:
               continue;
             }
 
-            v35 = [v34 firstObject];
-            v36 = [v34 lastObject];
-            [v35 timeRange];
+            firstObject = [v34 firstObject];
+            lastObject2 = [v34 lastObject];
+            [firstObject timeRange];
             v38 = v37;
-            [v36 timeRange];
+            [lastObject2 timeRange];
             v40 = v39 - v38;
-            if (v38 >= a5)
+            if (v38 >= time)
             {
-              v41 = a6;
+              durationCopy2 = segmentDuration;
             }
 
             else
             {
-              v41 = a4;
+              durationCopy2 = duration;
             }
 
-            if (v40 >= v41)
+            if (v40 >= durationCopy2)
             {
-              v42 = [a1 _segmentByMergingMergableSegments:v34];
-              [v11 addObject:v42];
+              v42 = [self _segmentByMergingMergableSegments:v34];
+              [array2 addObject:v42];
             }
 
             else
             {
-              [v11 addObjectsFromArray:v34];
+              [array2 addObjectsFromArray:v34];
             }
           }
         }
@@ -465,67 +465,67 @@ LABEL_12:
 
   else
   {
-    v11 = v10;
+    array2 = segmentsCopy;
   }
 
-  v10 = v45;
+  segmentsCopy = v45;
 LABEL_42:
 
   v43 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return array2;
 }
 
-+ (id)segmentsByMergingSegments:(id)a3 preferredSegmentDuration:(double)a4
++ (id)segmentsByMergingSegments:(id)segments preferredSegmentDuration:(double)duration
 {
-  v4 = [a1 segmentsByMergingSegments:a3 preferredSegmentDuration:a4 beforeTime:1.79769313e308 andThenUsePreferredSegmentDuration:1.0];
+  v4 = [self segmentsByMergingSegments:segments preferredSegmentDuration:duration beforeTime:1.79769313e308 andThenUsePreferredSegmentDuration:1.0];
 
   return v4;
 }
 
-- (id)segmentsByJoiningIfSmallSegment:(id)a3
+- (id)segmentsByJoiningIfSmallSegment:(id)segment
 {
-  v3 = [(RCWaveformSegment *)self _segmentsByJoiningIfNecessaryGreaterSegment:a3 averagePowerLevelJoinLimit:8];
+  v3 = [(RCWaveformSegment *)self _segmentsByJoiningIfNecessaryGreaterSegment:segment averagePowerLevelJoinLimit:8];
 
   return v3;
 }
 
-- (id)segmentsByJoiningIfSmallSegment:(id)a3 averagePowerLevelJoinLimit:(unint64_t)a4
+- (id)segmentsByJoiningIfSmallSegment:(id)segment averagePowerLevelJoinLimit:(unint64_t)limit
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  segmentCopy = segment;
+  if (!segmentCopy)
   {
-    v21 = self;
-    v11 = &v21;
+    selfCopy = self;
+    v11 = &selfCopy;
     v12 = 1;
 LABEL_5:
-    v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:{v12, v19, v20, v21, v22}];
+    v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:{v12, selfCopy2, v20, selfCopy, v22}];
     goto LABEL_8;
   }
 
   [(RCWaveformSegment *)self timeRange];
   v8 = v7;
-  [v6 timeRange];
+  [segmentCopy timeRange];
   if (v8 == v9)
   {
-    v10 = [(RCWaveformSegment *)self _segmentsByJoiningIfNecessaryGreaterSegment:v6 averagePowerLevelJoinLimit:a4];
+    v10 = [(RCWaveformSegment *)self _segmentsByJoiningIfNecessaryGreaterSegment:segmentCopy averagePowerLevelJoinLimit:limit];
     goto LABEL_8;
   }
 
-  [v6 timeRange];
+  [segmentCopy timeRange];
   v14 = v13;
   [(RCWaveformSegment *)self timeRange];
   if (v14 != v15)
   {
-    v19 = self;
-    v20 = v6;
-    v11 = &v19;
+    selfCopy2 = self;
+    v20 = segmentCopy;
+    v11 = &selfCopy2;
     v12 = 2;
     goto LABEL_5;
   }
 
-  v10 = [v6 _segmentsByJoiningIfNecessaryGreaterSegment:self averagePowerLevelJoinLimit:a4];
+  v10 = [segmentCopy _segmentsByJoiningIfNecessaryGreaterSegment:self averagePowerLevelJoinLimit:limit];
 LABEL_8:
   v16 = v10;
 
@@ -534,14 +534,14 @@ LABEL_8:
   return v16;
 }
 
-- (id)segmentByClippingToTimeRange:(id)a3
+- (id)segmentByClippingToTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   [(RCWaveformSegment *)self timeRange];
   if (RCTimeRangeEqualToTimeRange(var0, var1, v6, v7) || ([(RCWaveformSegment *)self timeRange], RCTimeRangeContainsRange(var0, var1, v8, v9)) || ([(RCWaveformSegment *)self timeRange], RCTimeRangeContainsRange(var0, var1, v10, v11)))
   {
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -571,31 +571,31 @@ LABEL_8:
     if (var0 >= v17)
     {
 LABEL_16:
-      v12 = 0;
+      selfCopy = 0;
     }
 
     else
     {
       RCTimeRangeMake(var0, v17);
-      v12 = [(RCWaveformSegment *)self _segmentWithValuesInContainedTimeRange:?];
+      selfCopy = [(RCWaveformSegment *)self _segmentWithValuesInContainedTimeRange:?];
     }
   }
 
-  return v12;
+  return selfCopy;
 }
 
-+ (id)_discontinuityRepairedSegmentsByGrowingToFillGapsInSegments:(id)a3
++ (id)_discontinuityRepairedSegmentsByGrowingToFillGapsInSegments:(id)segments
 {
-  v3 = a3;
-  if ([v3 count] > 1)
+  segmentsCopy = segments;
+  if ([segmentsCopy count] > 1)
   {
-    v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
-    for (i = 1; i < [v3 count]; i = v8 + 1)
+    v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(segmentsCopy, "count")}];
+    for (i = 1; i < [segmentsCopy count]; i = v8 + 1)
     {
       v6 = i - 1;
-      v7 = [v3 objectAtIndexedSubscript:i - 1];
+      v7 = [segmentsCopy objectAtIndexedSubscript:i - 1];
       v8 = v6 + 1;
-      v9 = [v3 objectAtIndexedSubscript:v6 + 1];
+      v9 = [segmentsCopy objectAtIndexedSubscript:v6 + 1];
       [v9 timeRange];
       v11 = v10;
       [v7 timeRange];
@@ -610,31 +610,31 @@ LABEL_16:
       [v4 addObject:v7];
     }
 
-    v14 = [v3 lastObject];
-    [v4 addObject:v14];
+    lastObject = [segmentsCopy lastObject];
+    [v4 addObject:lastObject];
   }
 
   else
   {
-    v4 = v3;
+    v4 = segmentsCopy;
   }
 
   return v4;
 }
 
-- (id)_segmentWithValuesInContainedTimeRange:(id)a3
+- (id)_segmentWithValuesInContainedTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = [(RCWaveformSegment *)self averagePowerLevelsCount];
-  if (v7)
+  var1 = range.var1;
+  var0 = range.var0;
+  averagePowerLevelsCount = [(RCWaveformSegment *)self averagePowerLevelsCount];
+  if (averagePowerLevelsCount)
   {
-    v8 = v7;
+    v8 = averagePowerLevelsCount;
     [(RCWaveformSegment *)self timeRange];
     if (!RCTimeRangeContainsRange(v9, v10, var0, var1))
     {
-      v24 = [MEMORY[0x277CCA890] currentHandler];
-      [v24 handleFailureInMethod:a2 object:self file:@"RCWaveformSegment.mm" lineNumber:355 description:@"Invalid argment"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"RCWaveformSegment.mm" lineNumber:355 description:@"Invalid argment"];
     }
 
     v11 = RCTimeRangeDeltaWithExactPrecision(self->_timeRange.beginTime, self->_timeRange.endTime);
@@ -691,21 +691,21 @@ LABEL_16:
   return v19;
 }
 
-- (id)_segmentsByJoiningIfNecessaryGreaterSegment:(id)a3 averagePowerLevelJoinLimit:(unint64_t)a4
+- (id)_segmentsByJoiningIfNecessaryGreaterSegment:(id)segment averagePowerLevelJoinLimit:(unint64_t)limit
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  segmentCopy = segment;
+  if (segmentCopy)
   {
     v7 = objc_opt_class();
     v15[0] = self;
-    v15[1] = v6;
+    v15[1] = segmentCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
     v9 = [v7 _discontinuityRepairedSegmentsByGrowingToFillGapsInSegments:v8];
 
     v10 = [v9 objectAtIndexedSubscript:0];
     v11 = [v9 objectAtIndexedSubscript:1];
-    v12 = [RCWaveformSegment _segmentsByJoiningSegment:v10 toSegmentIfNecessaryWithGreaterSegment:v11 averagePowerLevelJoinLimit:a4];
+    v12 = [RCWaveformSegment _segmentsByJoiningSegment:v10 toSegmentIfNecessaryWithGreaterSegment:v11 averagePowerLevelJoinLimit:limit];
   }
 
   else
@@ -719,22 +719,22 @@ LABEL_16:
   return v12;
 }
 
-+ (id)_segmentsByJoiningSegment:(id)a3 toSegmentIfNecessaryWithGreaterSegment:(id)a4 averagePowerLevelJoinLimit:(unint64_t)a5
++ (id)_segmentsByJoiningSegment:(id)segment toSegmentIfNecessaryWithGreaterSegment:(id)greaterSegment averagePowerLevelJoinLimit:(unint64_t)limit
 {
   v60[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  [v7 timeRange];
+  segmentCopy = segment;
+  greaterSegmentCopy = greaterSegment;
+  [segmentCopy timeRange];
   v11 = RCTimeRangeDeltaWithExactPrecision(v9, v10);
-  [v8 timeRange];
+  [greaterSegmentCopy timeRange];
   v14 = RCTimeRangeDeltaWithExactPrecision(v12, v13);
-  if ([v7 averagePowerLevelsCount] <= 1)
+  if ([segmentCopy averagePowerLevelsCount] <= 1)
   {
-    [v7 timeRange];
+    [segmentCopy timeRange];
     v16 = v15;
-    [v8 timeRange];
+    [greaterSegmentCopy timeRange];
     RCTimeRangeMake(v16, v17);
-    v18 = [v8 copyWithAdjustedTimeRange:?];
+    v18 = [greaterSegmentCopy copyWithAdjustedTimeRange:?];
     v60[0] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:1];
 LABEL_5:
@@ -744,78 +744,78 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v8 averagePowerLevelsCount] <= 1)
+  if ([greaterSegmentCopy averagePowerLevelsCount] <= 1)
   {
-    [v7 timeRange];
+    [segmentCopy timeRange];
     v21 = v20;
-    [v8 timeRange];
+    [greaterSegmentCopy timeRange];
     RCTimeRangeMake(v21, v22);
-    v18 = [v7 copyWithAdjustedTimeRange:?];
+    v18 = [segmentCopy copyWithAdjustedTimeRange:?];
     v59 = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v59 count:1];
     goto LABEL_5;
   }
 
-  v26 = [v7 averagePowerLevelsCount];
-  if ([v8 averagePowerLevelsCount] + v26 < a5)
+  averagePowerLevelsCount = [segmentCopy averagePowerLevelsCount];
+  if ([greaterSegmentCopy averagePowerLevelsCount] + averagePowerLevelsCount < limit)
   {
     v27 = v11;
     v28 = v14;
     if ((v27 + v28) > 0.0)
     {
-      [v7 timeRange];
+      [segmentCopy timeRange];
       v30 = v29;
-      [v8 timeRange];
+      [greaterSegmentCopy timeRange];
       v32 = RCTimeRangeMake(v30, v31);
       v34 = v33;
-      [v7 timeRange];
+      [segmentCopy timeRange];
       v37 = RCTimeRangeDeltaWithExactPrecision(v35, v36);
-      v38 = [v7 averagePowerLevelsCount];
-      [v8 timeRange];
+      averagePowerLevelsCount2 = [segmentCopy averagePowerLevelsCount];
+      [greaterSegmentCopy timeRange];
       v41 = RCTimeRangeDeltaWithExactPrecision(v39, v40);
-      v42 = [v8 averagePowerLevelsCount];
+      averagePowerLevelsCount3 = [greaterSegmentCopy averagePowerLevelsCount];
       v43 = v37;
-      v44 = v43 / v38;
+      v44 = v43 / averagePowerLevelsCount2;
       v45 = v41;
-      v46 = v45 / v42;
+      v46 = v45 / averagePowerLevelsCount3;
       if (v44 > 0.0)
       {
         if (v46 <= 0.0)
         {
-          v46 = v43 / v38;
+          v46 = v43 / averagePowerLevelsCount2;
         }
 
         else if (v44 < v46)
         {
-          v46 = v43 / v38;
+          v46 = v43 / averagePowerLevelsCount2;
         }
       }
 
       v47 = (RCTimeRangeDeltaWithExactPrecision(v32, v34) / v46);
       v18 = [MEMORY[0x277CBEB28] dataWithLength:4 * v47];
-      v48 = [v18 mutableBytes];
+      mutableBytes = [v18 mutableBytes];
       if (v47)
       {
-        v49 = v48;
+        v49 = mutableBytes;
         for (i = 0; i != v47; ++i)
         {
-          [v7 timeRange];
+          [segmentCopy timeRange];
           v51 = v46 * i;
           if (v52 <= v51)
           {
-            v53 = [v8 averagePowerLevels];
+            averagePowerLevels = [greaterSegmentCopy averagePowerLevels];
             v54 = (v51 - v43);
             v55 = v45;
           }
 
           else
           {
-            v53 = [v7 averagePowerLevels];
+            averagePowerLevels = [segmentCopy averagePowerLevels];
             v54 = v51;
             v55 = v43;
           }
 
-          *(v49 + 4 * i) = *(v53 + 4 * (v54 / v55));
+          *(v49 + 4 * i) = *(averagePowerLevels + 4 * (v54 / v55));
         }
       }
 
@@ -827,8 +827,8 @@ LABEL_6:
     }
   }
 
-  v57[0] = v7;
-  v57[1] = v8;
+  v57[0] = segmentCopy;
+  v57[1] = greaterSegmentCopy;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:2];
 LABEL_7:
 
@@ -837,13 +837,13 @@ LABEL_7:
   return v23;
 }
 
-+ (id)_segmentByMergingMergableSegments:(id)a3
++ (id)_segmentByMergingMergableSegments:(id)segments
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 count])
+  segmentsCopy = segments;
+  if ([segmentsCopy count])
   {
-    if (v5)
+    if (segmentsCopy)
     {
       goto LABEL_3;
     }
@@ -853,18 +853,18 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:a1 file:@"RCWaveformSegment.mm" lineNumber:441 description:@"Invalid paremeter"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RCWaveformSegment.mm" lineNumber:441 description:@"Invalid paremeter"];
 
-  if (!v5)
+  if (!segmentsCopy)
   {
     goto LABEL_17;
   }
 
 LABEL_3:
-  if ([v5 count] == 1)
+  if ([segmentsCopy count] == 1)
   {
-    v6 = [v5 objectAtIndexedSubscript:0];
+    v6 = [segmentsCopy objectAtIndexedSubscript:0];
 LABEL_18:
     v17 = v6;
     goto LABEL_19;
@@ -874,7 +874,7 @@ LABEL_18:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = segmentsCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -907,10 +907,10 @@ LABEL_18:
   }
 
   v16 = v10 / [v7 count];
-  v17 = [a1 _mergedSegmentByFastMergingWithMergeableSegments:v7 mergedLevelsDuration:v16];
+  v17 = [self _mergedSegmentByFastMergingWithMergeableSegments:v7 mergedLevelsDuration:v16];
   if (!v17)
   {
-    v6 = [a1 _mergedSegmentByResamplingWithMergeableSegments:v7 mergedLevelsDuration:v16];
+    v6 = [self _mergedSegmentByResamplingWithMergeableSegments:v7 mergedLevelsDuration:v16];
     goto LABEL_18;
   }
 
@@ -921,78 +921,78 @@ LABEL_19:
   return v17;
 }
 
-+ (id)_mergedSegmentByResamplingWithMergeableSegments:(id)a3 mergedLevelsDuration:(double)a4
++ (id)_mergedSegmentByResamplingWithMergeableSegments:(id)segments mergedLevelsDuration:(double)duration
 {
-  v5 = a3;
-  v43 = [v5 firstObject];
-  v42 = [v5 lastObject];
-  [v43 timeRange];
+  segmentsCopy = segments;
+  firstObject = [segmentsCopy firstObject];
+  lastObject = [segmentsCopy lastObject];
+  [firstObject timeRange];
   v7 = v6;
-  [v42 timeRange];
+  [lastObject timeRange];
   v9 = RCTimeRangeMake(v7, v8);
   v11 = v10;
-  v12 = (RCTimeRangeDeltaWithExactPrecision(v9, v10) / a4);
+  v12 = (RCTimeRangeDeltaWithExactPrecision(v9, v10) / duration);
   v41 = [MEMORY[0x277CBEB28] dataWithLength:4 * v12];
-  v13 = [v41 mutableBytes];
+  mutableBytes = [v41 mutableBytes];
   if (v12)
   {
-    v14 = v13;
+    v14 = mutableBytes;
     v15 = 0;
     for (i = 0; i != v12; ++i)
     {
-      [v43 timeRange];
-      v18 = v17 + i * a4;
+      [firstObject timeRange];
+      v18 = v17 + i * duration;
       v19 = v15;
       do
       {
         v15 = v19;
-        if (v19 >= [v5 count])
+        if (v19 >= [segmentsCopy count])
         {
           break;
         }
 
-        v20 = [v5 objectAtIndexedSubscript:v19];
+        v20 = [segmentsCopy objectAtIndexedSubscript:v19];
         [v20 timeRange];
         v23 = RCTimeRangeContainsTime(v21, v22, v18);
         ++v19;
       }
 
       while (!v23);
-      if ([v5 count] == v15)
+      if ([segmentsCopy count] == v15)
       {
         break;
       }
 
-      v24 = [v5 objectAtIndexedSubscript:v15];
+      v24 = [segmentsCopy objectAtIndexedSubscript:v15];
       [v24 timeRange];
       v27 = RCTimeRangeDeltaWithExactPrecision(v25, v26);
-      v28 = [v24 averagePowerLevelsCount];
+      averagePowerLevelsCount = [v24 averagePowerLevelsCount];
       [v24 timeRange];
       v30 = v29;
-      v31 = [v24 averagePowerLevelsCount];
-      v32 = (v18 - v30) / (v27 / v28);
-      if (v31 - 1 >= v32)
+      averagePowerLevelsCount2 = [v24 averagePowerLevelsCount];
+      v32 = (v18 - v30) / (v27 / averagePowerLevelsCount);
+      if (averagePowerLevelsCount2 - 1 >= v32)
       {
         v33 = v32;
       }
 
       else
       {
-        v33 = v31 - 1;
+        v33 = averagePowerLevelsCount2 - 1;
       }
 
-      v34 = [v5 objectAtIndexedSubscript:v15];
+      v34 = [segmentsCopy objectAtIndexedSubscript:v15];
       v35 = v33 + 1;
       if (v33 + 1 >= ([v24 averagePowerLevelsCount] - 1))
       {
-        if (v15 + 1 >= [v5 count])
+        if (v15 + 1 >= [segmentsCopy count])
         {
           v35 = v33;
         }
 
         else
         {
-          v36 = [v5 objectAtIndexedSubscript:?];
+          v36 = [segmentsCopy objectAtIndexedSubscript:?];
 
           v35 = 0;
           v34 = v36;

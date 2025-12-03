@@ -1,20 +1,20 @@
 @interface HMIVideoTimeline
-- (HMIVideoTimeline)initWithMaxCapacity:(int64_t)a3;
-- (double)timeIntervalSinceDateAtTime:(id *)a3;
-- (id)dateAtTime:(id *)a3;
-- (void)addDate:(id)a3 atTime:(id *)a4;
+- (HMIVideoTimeline)initWithMaxCapacity:(int64_t)capacity;
+- (double)timeIntervalSinceDateAtTime:(id *)time;
+- (id)dateAtTime:(id *)time;
+- (void)addDate:(id)date atTime:(id *)time;
 @end
 
 @implementation HMIVideoTimeline
 
-- (HMIVideoTimeline)initWithMaxCapacity:(int64_t)a3
+- (HMIVideoTimeline)initWithMaxCapacity:(int64_t)capacity
 {
   v8.receiver = self;
   v8.super_class = HMIVideoTimeline;
   v4 = [(HMIVideoTimeline *)&v8 init];
   if (v4)
   {
-    v5 = [[HMIVideoEventBuffer alloc] initWithMaxCapacity:a3];
+    v5 = [[HMIVideoEventBuffer alloc] initWithMaxCapacity:capacity];
     buffer = v4->_buffer;
     v4->_buffer = v5;
   }
@@ -22,42 +22,42 @@
   return v4;
 }
 
-- (void)addDate:(id)a3 atTime:(id *)a4
+- (void)addDate:(id)date atTime:(id *)time
 {
   buffer = self->_buffer;
-  v6 = a3;
+  dateCopy = date;
   v7 = [HMIVideoTimelineEntry alloc];
-  v9 = *a4;
-  v8 = [(HMIVideoTimelineEntry *)v7 initWithTime:&v9 date:v6];
+  v9 = *time;
+  v8 = [(HMIVideoTimelineEntry *)v7 initWithTime:&v9 date:dateCopy];
 
   [(HMIVideoEventBuffer *)buffer addObject:v8];
 }
 
-- (id)dateAtTime:(id *)a3
+- (id)dateAtTime:(id *)time
 {
   v5 = [HMIVideoTimelineEntry alloc];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v12 = *a3;
-  v7 = [(HMIVideoTimelineEntry *)v5 initWithTime:&v12 date:v6];
+  date = [MEMORY[0x277CBEAA8] date];
+  v12 = *time;
+  v7 = [(HMIVideoTimelineEntry *)v5 initWithTime:&v12 date:date];
 
   v8 = [(HMIVideoEventBuffer *)self->_buffer neighborsOfObject:v7];
-  v9 = [v8 lastObject];
+  lastObject = [v8 lastObject];
 
-  if (v9)
+  if (lastObject)
   {
-    v10 = [v8 lastObject];
-    v9 = [v10 date];
+    lastObject2 = [v8 lastObject];
+    lastObject = [lastObject2 date];
   }
 
-  return v9;
+  return lastObject;
 }
 
-- (double)timeIntervalSinceDateAtTime:(id *)a3
+- (double)timeIntervalSinceDateAtTime:(id *)time
 {
-  v8 = *a3;
+  v8 = *time;
   v3 = [(HMIVideoTimeline *)self dateAtTime:&v8];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [v4 timeIntervalSinceDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:v3];
   v6 = v5;
 
   return v6;

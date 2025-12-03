@@ -9,7 +9,7 @@
 + (double)fakeValueForBasalCalories;
 + (double)fakeValueForBestCalories;
 + (double)fakeValueForBestDistance;
-+ (double)fakeValueForBestOfGoalType:(unint64_t)a3;
++ (double)fakeValueForBestOfGoalType:(unint64_t)type;
 + (double)fakeValueForBestTime;
 + (double)fakeValueForCurrentHeartRate;
 + (double)fakeValueForCurrentPace;
@@ -25,8 +25,8 @@
 + (double)fakeValueForMinimumHeartRate;
 + (double)fakeValueForRollingPace;
 + (id)fakeValueForGoal;
-+ (id)fakeValueForKey:(id)a3;
-+ (id)fakeValueForKey:(id)a3 defaultValue:(double)a4;
++ (id)fakeValueForKey:(id)key;
++ (id)fakeValueForKey:(id)key defaultValue:(double)value;
 + (unint64_t)fakeGoalType;
 @end
 
@@ -54,30 +54,30 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
   return result;
 }
 
-+ (id)fakeValueForKey:(id)a3
++ (id)fakeValueForKey:(id)key
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [v4 objectForKey:location[0]];
-  MEMORY[0x277D82BD8](v4);
+  objc_storeStrong(location, key);
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v5 = [standardUserDefaults objectForKey:location[0]];
+  MEMORY[0x277D82BD8](standardUserDefaults);
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-+ (id)fakeValueForKey:(id)a3 defaultValue:(double)a4
++ (id)fakeValueForKey:(id)key defaultValue:(double)value
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v8 = [v7 objectForKey:location[0]];
-  MEMORY[0x277D82BD8](v7);
+  objc_storeStrong(location, key);
+  valueCopy = value;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v8 = [standardUserDefaults objectForKey:location[0]];
+  MEMORY[0x277D82BD8](standardUserDefaults);
   if (v8)
   {
     v11 = MEMORY[0x277D82BE0](v8);
@@ -85,7 +85,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
   else
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
+    v11 = [MEMORY[0x277CCABB0] numberWithDouble:valueCopy];
   }
 
   objc_storeStrong(&v8, 0);
@@ -97,7 +97,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForCurrentHeartRate
 {
-  v4 = [a1 fakeValueForKey:@"currentHeartRate"];
+  v4 = [self fakeValueForKey:@"currentHeartRate"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -106,7 +106,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForAverageHeartRate
 {
-  v4 = [a1 fakeValueForKey:@"averageHeartRate"];
+  v4 = [self fakeValueForKey:@"averageHeartRate"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -115,7 +115,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForMinimumHeartRate
 {
-  v4 = [a1 fakeValueForKey:@"minimumHeartRate"];
+  v4 = [self fakeValueForKey:@"minimumHeartRate"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -124,7 +124,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForMaximumHeartRate
 {
-  v4 = [a1 fakeValueForKey:@"maximumHeartRate"];
+  v4 = [self fakeValueForKey:@"maximumHeartRate"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -133,7 +133,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForElevation
 {
-  v4 = [a1 fakeValueForKey:@"currentElevation"];
+  v4 = [self fakeValueForKey:@"currentElevation"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -142,7 +142,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForDistance
 {
-  v4 = [a1 fakeValueForKey:@"totalDistance"];
+  v4 = [self fakeValueForKey:@"totalDistance"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -151,7 +151,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForCurrentPace
 {
-  v4 = [a1 fakeValueForKey:@"currentPace"];
+  v4 = [self fakeValueForKey:@"currentPace"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -160,7 +160,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForAveragePace
 {
-  v4 = [a1 fakeValueForKey:@"averagePace"];
+  v4 = [self fakeValueForKey:@"averagePace"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -169,7 +169,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForFastestPace
 {
-  v4 = [a1 fakeValueForKey:@"fastestPace"];
+  v4 = [self fakeValueForKey:@"fastestPace"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -178,7 +178,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForRollingPace
 {
-  v4 = [a1 fakeValueForKey:@"rollingPace"];
+  v4 = [self fakeValueForKey:@"rollingPace"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -187,7 +187,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForActiveCalories
 {
-  v4 = [a1 fakeValueForKey:@"totalActiveCalories"];
+  v4 = [self fakeValueForKey:@"totalActiveCalories"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -196,7 +196,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForBasalCalories
 {
-  v4 = [a1 fakeValueForKey:@"totalBasalCalories"];
+  v4 = [self fakeValueForKey:@"totalBasalCalories"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -205,7 +205,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForFlightsClimbed
 {
-  v4 = [a1 fakeValueForKey:@"totalFlightsClimbed"];
+  v4 = [self fakeValueForKey:@"totalFlightsClimbed"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -214,7 +214,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForAveragePower
 {
-  v4 = [a1 fakeValueForKey:@"averagePower"];
+  v4 = [self fakeValueForKey:@"averagePower"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -223,7 +223,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForInstantaneousPower
 {
-  v4 = [a1 fakeValueForKey:@"instantaneousPower"];
+  v4 = [self fakeValueForKey:@"instantaneousPower"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -232,7 +232,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForAverageCadence
 {
-  v4 = [a1 fakeValueForKey:@"averageCadence"];
+  v4 = [self fakeValueForKey:@"averageCadence"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -241,7 +241,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForInstantaneousCadence
 {
-  v4 = [a1 fakeValueForKey:@"instantaneousCadence"];
+  v4 = [self fakeValueForKey:@"instantaneousCadence"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -250,7 +250,7 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (double)fakeValueForDuration
 {
-  v4 = [a1 fakeValueForKey:@"totalDuration"];
+  v4 = [self fakeValueForKey:@"totalDuration"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -259,15 +259,15 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (id)fakeValueForGoal
 {
-  v10 = a1;
+  selfCopy = self;
   v9 = a2;
-  v8 = [a1 fakeGoalType];
-  v4 = [v10 fakeValueForKey:@"goal"];
+  fakeGoalType = [self fakeGoalType];
+  v4 = [selfCopy fakeValueForKey:@"goal"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
   v7[1] = v5;
-  v7[0] = MEMORY[0x20F2E8560](v8, *&v5);
+  v7[0] = MEMORY[0x20F2E8560](fakeGoalType, *&v5);
   v6 = MEMORY[0x277D82BE0](v7[0]);
   objc_storeStrong(v7, 0);
 
@@ -276,9 +276,9 @@ double __54__NLSessionActivityFakeDataManager_shouldShowFakeData__block_invoke()
 
 + (unint64_t)fakeGoalType
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
-  location[0] = [a1 fakeValueForKey:@"goalType"];
+  location[0] = [self fakeValueForKey:@"goalType"];
   if ([location[0] isEqualToString:@"distance"])
   {
     v4 = 1;
@@ -325,21 +325,21 @@ double __55__NLSessionActivityFakeDataManager_shouldShowFakeBests__block_invoke(
   return result;
 }
 
-+ (double)fakeValueForBestOfGoalType:(unint64_t)a3
++ (double)fakeValueForBestOfGoalType:(unint64_t)type
 {
   v7 = 0.0;
-  if (a3)
+  if (type)
   {
-    switch(a3)
+    switch(type)
     {
       case 1uLL:
-        [a1 fakeValueForBestDistance];
+        [self fakeValueForBestDistance];
         return v4;
       case 2uLL:
-        [a1 fakeValueForBestTime];
+        [self fakeValueForBestTime];
         return v5;
       case 3uLL:
-        [a1 fakeValueForBestCalories];
+        [self fakeValueForBestCalories];
         return v3;
     }
   }
@@ -349,7 +349,7 @@ double __55__NLSessionActivityFakeDataManager_shouldShowFakeBests__block_invoke(
 
 + (double)fakeValueForBestCalories
 {
-  v4 = [a1 fakeValueForKey:@"fakeBestCalories"];
+  v4 = [self fakeValueForKey:@"fakeBestCalories"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -358,7 +358,7 @@ double __55__NLSessionActivityFakeDataManager_shouldShowFakeBests__block_invoke(
 
 + (double)fakeValueForBestDistance
 {
-  v4 = [a1 fakeValueForKey:@"fakeBestDistance"];
+  v4 = [self fakeValueForKey:@"fakeBestDistance"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -367,7 +367,7 @@ double __55__NLSessionActivityFakeDataManager_shouldShowFakeBests__block_invoke(
 
 + (double)fakeValueForBestTime
 {
-  v4 = [a1 fakeValueForKey:@"fakeBestTime"];
+  v4 = [self fakeValueForKey:@"fakeBestTime"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);
@@ -376,7 +376,7 @@ double __55__NLSessionActivityFakeDataManager_shouldShowFakeBests__block_invoke(
 
 + (double)fakeValueForDurationInPreviousIntervals
 {
-  v4 = [a1 fakeValueForKey:@"fakePreviousIntervalsTotalDuration"];
+  v4 = [self fakeValueForKey:@"fakePreviousIntervalsTotalDuration"];
   [v4 doubleValue];
   v5 = v2;
   MEMORY[0x277D82BD8](v4);

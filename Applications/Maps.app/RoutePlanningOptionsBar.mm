@@ -1,10 +1,10 @@
 @interface RoutePlanningOptionsBar
-- (RoutePlanningOptionsBar)initWithFrame:(CGRect)a3;
+- (RoutePlanningOptionsBar)initWithFrame:(CGRect)frame;
 - (void)_buttonTapped;
 - (void)_updateContent;
-- (void)setButtonTitle:(id)a3 actionHandler:(id)a4;
-- (void)setSummaryText:(id)a3;
-- (void)setVehicle:(id)a3;
+- (void)setButtonTitle:(id)title actionHandler:(id)handler;
+- (void)setSummaryText:(id)text;
+- (void)setVehicle:(id)vehicle;
 @end
 
 @implementation RoutePlanningOptionsBar
@@ -20,42 +20,42 @@
 
 - (void)_updateContent
 {
-  v3 = [(RoutePlanningOptionsBar *)self vehicle];
+  vehicle = [(RoutePlanningOptionsBar *)self vehicle];
 
-  if (v3)
+  if (vehicle)
   {
-    v4 = [(RoutePlanningOptionsBar *)self vehicle];
-    v5 = [v4 isPureElectricVehicle];
+    vehicle2 = [(RoutePlanningOptionsBar *)self vehicle];
+    isPureElectricVehicle = [vehicle2 isPureElectricVehicle];
 
-    v6 = [(RoutePlanningOptionsBar *)self vehicle];
-    v7 = v6;
-    if (v5)
+    vehicle3 = [(RoutePlanningOptionsBar *)self vehicle];
+    v7 = vehicle3;
+    if (isPureElectricVehicle)
     {
-      v18 = [v6 displayedBatteryPercentage];
+      displayedBatteryPercentage = [vehicle3 displayedBatteryPercentage];
 
-      v8 = [(RoutePlanningOptionsBar *)self vehicle];
-      v9 = [v8 combinedDisplayName];
+      vehicle4 = [(RoutePlanningOptionsBar *)self vehicle];
+      combinedDisplayName = [vehicle4 combinedDisplayName];
       v10 = +[NSBundle mainBundle];
       v11 = [v10 localizedStringForKey:@"%lu%%" value:@"localized string not found" table:0];
-      v12 = [NSString stringWithFormat:v11, v18];
-      v13 = [NSString stringWithFormat:@"%@: %@", v9, v12];
+      v12 = [NSString stringWithFormat:v11, displayedBatteryPercentage];
+      v13 = [NSString stringWithFormat:@"%@: %@", combinedDisplayName, v12];
       v14 = 16;
       [(UILabel *)self->_summaryLabel setText:v13];
 
       p_batteryView = &self->_batteryView;
-      [(BatteryIconView *)self->_batteryView setLevel:v18];
+      [(BatteryIconView *)self->_batteryView setLevel:displayedBatteryPercentage];
     }
 
     else
     {
-      v16 = [v6 combinedDisplayName];
+      combinedDisplayName2 = [vehicle3 combinedDisplayName];
       v14 = 16;
-      [(UILabel *)self->_summaryLabel setText:v16];
+      [(UILabel *)self->_summaryLabel setText:combinedDisplayName2];
 
       p_batteryView = &self->_batteryView;
     }
 
-    [(BatteryIconView *)*p_batteryView setHidden:v5 ^ 1];
+    [(BatteryIconView *)*p_batteryView setHidden:isPureElectricVehicle ^ 1];
   }
 
   else
@@ -67,47 +67,47 @@
 
   v17 = *(&self->super.super.super.isa + v14);
 
-  [v17 setHidden:v3 == 0];
+  [v17 setHidden:vehicle == 0];
 }
 
-- (void)setVehicle:(id)a3
+- (void)setVehicle:(id)vehicle
 {
-  v6 = a3;
-  objc_storeStrong(&self->_vehicle, a3);
-  v5 = [v6 isPureElectricVehicle];
-  [(NSLayoutConstraint *)self->_summaryToTrailingConstraint setActive:v5 ^ 1];
-  [(NSLayoutConstraint *)self->_summaryToBatteryConstraint setActive:v5];
-  [(NSLayoutConstraint *)self->_batteryToTrailingConstraint setActive:v5];
+  vehicleCopy = vehicle;
+  objc_storeStrong(&self->_vehicle, vehicle);
+  isPureElectricVehicle = [vehicleCopy isPureElectricVehicle];
+  [(NSLayoutConstraint *)self->_summaryToTrailingConstraint setActive:isPureElectricVehicle ^ 1];
+  [(NSLayoutConstraint *)self->_summaryToBatteryConstraint setActive:isPureElectricVehicle];
+  [(NSLayoutConstraint *)self->_batteryToTrailingConstraint setActive:isPureElectricVehicle];
   [(RoutePlanningOptionsBar *)self _updateContent];
 }
 
-- (void)setSummaryText:(id)a3
+- (void)setSummaryText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   summaryText = self->_summaryText;
   self->_summaryText = v4;
 
   [(RoutePlanningOptionsBar *)self _updateContent];
 }
 
-- (void)setButtonTitle:(id)a3 actionHandler:(id)a4
+- (void)setButtonTitle:(id)title actionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  titleCopy = title;
+  v7 = [handler copy];
   actionHandler = self->_actionHandler;
   self->_actionHandler = v7;
 
-  [(UIButton *)self->_button setTitle:v6 forState:0];
+  [(UIButton *)self->_button setTitle:titleCopy forState:0];
   button = self->_button;
 
-  [(UIButton *)button setHidden:v6 == 0];
+  [(UIButton *)button setHidden:titleCopy == 0];
 }
 
-- (RoutePlanningOptionsBar)initWithFrame:(CGRect)a3
+- (RoutePlanningOptionsBar)initWithFrame:(CGRect)frame
 {
   v58.receiver = self;
   v58.super_class = RoutePlanningOptionsBar;
-  v3 = [(RoutePlanningOptionsBar *)&v58 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RoutePlanningOptionsBar *)&v58 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();
@@ -120,8 +120,8 @@
 
     [(UIButton *)v3->_button setTranslatesAutoresizingMaskIntoConstraints:0];
     v8 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    v9 = [(UIButton *)v3->_button titleLabel];
-    [v9 setFont:v8];
+    titleLabel = [(UIButton *)v3->_button titleLabel];
+    [titleLabel setFont:v8];
 
     [(UIButton *)v3->_button setContentHorizontalAlignment:4];
     v57 = +[UIColor systemBlueColor];
@@ -161,52 +161,52 @@
     [(BatteryIconView *)v3->_batteryView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(BatteryIconView *)v3->_batteryView setAccessibilityIdentifier:@"RoutePlanningOptionsBarBatteryView"];
     [(RoutePlanningOptionsBar *)v3 addSubview:v3->_batteryView];
-    v22 = [(RoutePlanningOptionsBar *)v3 trailingAnchor];
-    v23 = [(UILabel *)v3->_summaryLabel trailingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    trailingAnchor = [(RoutePlanningOptionsBar *)v3 trailingAnchor];
+    trailingAnchor2 = [(UILabel *)v3->_summaryLabel trailingAnchor];
+    v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     summaryToTrailingConstraint = v3->_summaryToTrailingConstraint;
     v3->_summaryToTrailingConstraint = v24;
 
-    v26 = [(UILabel *)v3->_summaryLabel trailingAnchor];
-    v27 = [(BatteryIconView *)v3->_batteryView leadingAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27 constant:-4.0];
+    trailingAnchor3 = [(UILabel *)v3->_summaryLabel trailingAnchor];
+    leadingAnchor = [(BatteryIconView *)v3->_batteryView leadingAnchor];
+    v28 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor constant:-4.0];
     summaryToBatteryConstraint = v3->_summaryToBatteryConstraint;
     v3->_summaryToBatteryConstraint = v28;
 
-    v30 = [(BatteryIconView *)v3->_batteryView trailingAnchor];
-    v31 = [(RoutePlanningOptionsBar *)v3 trailingAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    trailingAnchor4 = [(BatteryIconView *)v3->_batteryView trailingAnchor];
+    trailingAnchor5 = [(RoutePlanningOptionsBar *)v3 trailingAnchor];
+    v32 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     batteryToTrailingConstraint = v3->_batteryToTrailingConstraint;
     v3->_batteryToTrailingConstraint = v32;
 
-    v56 = [(UIButton *)v3->_button leadingAnchor];
-    v55 = [(RoutePlanningOptionsBar *)v3 leadingAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55];
+    leadingAnchor2 = [(UIButton *)v3->_button leadingAnchor];
+    leadingAnchor3 = [(RoutePlanningOptionsBar *)v3 leadingAnchor];
+    v54 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
     v59[0] = v54;
-    v53 = [(UILabel *)v3->_summaryLabel leadingAnchor];
-    v52 = [(UIButton *)v3->_button trailingAnchor];
-    v51 = [v53 constraintGreaterThanOrEqualToAnchor:v52 constant:8.0];
+    leadingAnchor4 = [(UILabel *)v3->_summaryLabel leadingAnchor];
+    trailingAnchor6 = [(UIButton *)v3->_button trailingAnchor];
+    v51 = [leadingAnchor4 constraintGreaterThanOrEqualToAnchor:trailingAnchor6 constant:8.0];
     v59[1] = v51;
     v59[2] = v3->_summaryToTrailingConstraint;
-    v50 = [(UIButton *)v3->_button topAnchor];
-    v49 = [(RoutePlanningOptionsBar *)v3 topAnchor];
-    v48 = [v50 constraintEqualToAnchor:v49];
+    topAnchor = [(UIButton *)v3->_button topAnchor];
+    topAnchor2 = [(RoutePlanningOptionsBar *)v3 topAnchor];
+    v48 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v59[3] = v48;
-    v47 = [(UILabel *)v3->_summaryLabel topAnchor];
-    v46 = [(RoutePlanningOptionsBar *)v3 topAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46];
+    topAnchor3 = [(UILabel *)v3->_summaryLabel topAnchor];
+    topAnchor4 = [(RoutePlanningOptionsBar *)v3 topAnchor];
+    v45 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v59[4] = v45;
-    v44 = [(RoutePlanningOptionsBar *)v3 bottomAnchor];
-    v42 = [(UIButton *)v3->_button bottomAnchor];
-    v34 = [v44 constraintEqualToAnchor:v42];
+    bottomAnchor = [(RoutePlanningOptionsBar *)v3 bottomAnchor];
+    bottomAnchor2 = [(UIButton *)v3->_button bottomAnchor];
+    v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v59[5] = v34;
-    v35 = [(RoutePlanningOptionsBar *)v3 bottomAnchor];
-    v36 = [(UILabel *)v3->_summaryLabel bottomAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    bottomAnchor3 = [(RoutePlanningOptionsBar *)v3 bottomAnchor];
+    bottomAnchor4 = [(UILabel *)v3->_summaryLabel bottomAnchor];
+    v37 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v59[6] = v37;
-    v38 = [(BatteryIconView *)v3->_batteryView centerYAnchor];
-    v39 = [(UILabel *)v3->_summaryLabel centerYAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    centerYAnchor = [(BatteryIconView *)v3->_batteryView centerYAnchor];
+    centerYAnchor2 = [(UILabel *)v3->_summaryLabel centerYAnchor];
+    v40 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v59[7] = v40;
     v43 = [NSArray arrayWithObjects:v59 count:8];
 

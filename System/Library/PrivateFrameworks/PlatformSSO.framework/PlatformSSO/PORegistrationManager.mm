@@ -1,71 +1,71 @@
 @interface PORegistrationManager
-- (BOOL)createOrRepairDeviceConfigurationWithError:(id *)a3;
-- (BOOL)createOrRepairUserConfigurationWithError:(id *)a3;
+- (BOOL)createOrRepairDeviceConfigurationWithError:(id *)error;
+- (BOOL)createOrRepairUserConfigurationWithError:(id *)error;
 - (BOOL)handleUserAuthorizationForRegistration;
-- (BOOL)handleUserAuthorizationNeededForAccountDisplayName:(id)a3 bundleIdentifier:(id)a4;
+- (BOOL)handleUserAuthorizationNeededForAccountDisplayName:(id)name bundleIdentifier:(id)identifier;
 - (BOOL)reloadSSOExtensionIfNeeded;
 - (POAgentAuthenticationProcess)process;
 - (POAuthPluginProcess)systemAuthPluginProcess;
 - (POAuthPluginProcess)userAuthPluginProcess;
-- (PORegistrationManager)initWithAgentAuthenticationProcess:(id)a3 userNotificationCenter:(id)a4 configurationHost:(id)a5;
-- (id)createRegistrationNotificationWithAccountName:(id)a3;
-- (id)createRegistrationUpdateNotificationWithAccountName:(id)a3;
-- (id)loadSSOExtensionWithExtensionBundleIdentifier:(id)a3;
+- (PORegistrationManager)initWithAgentAuthenticationProcess:(id)process userNotificationCenter:(id)center configurationHost:(id)host;
+- (id)createRegistrationNotificationWithAccountName:(id)name;
+- (id)createRegistrationUpdateNotificationWithAccountName:(id)name;
+- (id)loadSSOExtensionWithExtensionBundleIdentifier:(id)identifier;
 - (id)retrieveProfilePicture;
-- (id)saveSSOTokens:(id)a3 toKeychainUsingContext:(id)a4 tokenId:(id)a5;
-- (int)ssoMethodToUse:(id)a3 profile:(id)a4;
+- (id)saveSSOTokens:(id)tokens toKeychainUsingContext:(id)context tokenId:(id)id;
+- (int)ssoMethodToUse:(id)use profile:(id)profile;
 - (int64_t)registrationState;
-- (unint64_t)requestSmartCardForBinding:(BOOL)a3 window:(id)a4 tokenId:(id *)a5 tokenHash:(id *)a6 wrapTokenHash:(id *)a7 pinContext:(id *)a8;
-- (void)_startDeviceRegistrationWithCompletionHandler:(id)a3;
-- (void)_startUserRegistrationWithCompletionHandler:(id)a3;
+- (unint64_t)requestSmartCardForBinding:(BOOL)binding window:(id)window tokenId:(id *)id tokenHash:(id *)hash wrapTokenHash:(id *)tokenHash pinContext:(id *)context;
+- (void)_startDeviceRegistrationWithCompletionHandler:(id)handler;
+- (void)_startUserRegistrationWithCompletionHandler:(id)handler;
 - (void)cleanupUserConfigAfterMigrationToShared;
 - (void)completeLegacyUserRegistration;
-- (void)continueDeviceRegistration:(id)a3;
-- (void)continueUserRegistration:(id)a3;
+- (void)continueDeviceRegistration:(id)registration;
+- (void)continueUserRegistration:(id)registration;
 - (void)createContextForUserCredential;
 - (void)createUserConfigurationForBuddyUser;
-- (void)exitDeviceRegistration:(id)a3;
-- (void)exitRegistration:(id)a3;
-- (void)exitUserRegistration:(id)a3;
+- (void)exitDeviceRegistration:(id)registration;
+- (void)exitRegistration:(id)registration;
+- (void)exitUserRegistration:(id)registration;
 - (void)failDeviceRegistrationBeforeAuthorization;
-- (void)failDeviceRegistrationPostRegistrationWithUserInteractionAllowed:(BOOL)a3;
+- (void)failDeviceRegistrationPostRegistrationWithUserInteractionAllowed:(BOOL)allowed;
 - (void)failUserRegistrationBeforeAuthorization;
 - (void)findExistingSmartCardBinding;
 - (void)finishRegistrationWithRetry;
 - (void)handleAuthorizationForNewUsers;
 - (void)handleDeviceRegistrationNotification;
-- (void)handleRegistrationViewControllerWithCompletion:(id)a3;
-- (void)handleRemovingRegistrationForExtension:(id)a3 alreadyDeleted:(BOOL)a4;
-- (void)handleUserCredentialNeededAtLogin:(BOOL)a3 smartCard:(BOOL)a4 accountDisplayName:(id)a5 bundleIdentifier:(id)a6 returningContext:(id *)a7;
+- (void)handleRegistrationViewControllerWithCompletion:(id)completion;
+- (void)handleRemovingRegistrationForExtension:(id)extension alreadyDeleted:(BOOL)deleted;
+- (void)handleUserCredentialNeededAtLogin:(BOOL)login smartCard:(BOOL)card accountDisplayName:(id)name bundleIdentifier:(id)identifier returningContext:(id *)context;
 - (void)handleUserRegistrationNotification;
 - (void)notifyDeviceRegistrationDidChange;
 - (void)notifyUserRegistrationDidChange;
 - (void)promptUserForRegistration;
-- (void)requestDidCompleteWithError:(id)a3;
-- (void)resetRegistrationWithCompletion:(id)a3;
+- (void)requestDidCompleteWithError:(id)error;
+- (void)resetRegistrationWithCompletion:(id)completion;
 - (void)retrieveProfilePicture;
 - (void)setupDeviceRegistrationOptions;
 - (void)setupUserRegistrationOptions;
-- (void)showAlertMessage:(id)a3 messageText:(id)a4 completion:(id)a5;
-- (void)showAlertWithError:(id)a3 completion:(id)a4;
+- (void)showAlertMessage:(id)message messageText:(id)text completion:(id)completion;
+- (void)showAlertWithError:(id)error completion:(id)completion;
 - (void)storeCredentialAndUpdatePasswordHint;
 - (void)windowDidClose;
 @end
 
 @implementation PORegistrationManager
 
-- (PORegistrationManager)initWithAgentAuthenticationProcess:(id)a3 userNotificationCenter:(id)a4 configurationHost:(id)a5
+- (PORegistrationManager)initWithAgentAuthenticationProcess:(id)process userNotificationCenter:(id)center configurationHost:(id)host
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  processCopy = process;
+  centerCopy = center;
+  hostCopy = host;
   v30.receiver = self;
   v30.super_class = PORegistrationManager;
   v11 = [(PORegistrationManager *)&v30 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_process, v8);
+    objc_storeWeak(&v11->_process, processCopy);
     v13 = +[POConfigurationManager sharedInstance];
     configurationManager = v12->_configurationManager;
     v12->_configurationManager = v13;
@@ -94,12 +94,12 @@
     keyWrap = v12->_keyWrap;
     v12->_keyWrap = v25;
 
-    objc_storeStrong(&v12->_userNotificationCenter, a4);
-    v27 = [MEMORY[0x277CEBEE8] sharedInstance];
+    objc_storeStrong(&v12->_userNotificationCenter, center);
+    mEMORY[0x277CEBEE8] = [MEMORY[0x277CEBEE8] sharedInstance];
     extensionManager = v12->_extensionManager;
-    v12->_extensionManager = v27;
+    v12->_extensionManager = mEMORY[0x277CEBEE8];
 
-    objc_storeStrong(&v12->_configurationHost, a5);
+    objc_storeStrong(&v12->_configurationHost, host);
   }
 
   return v12;
@@ -107,10 +107,10 @@
 
 - (int64_t)registrationState
 {
-  v2 = [(PORegistrationManager *)self registrationContext];
-  v3 = [v2 state];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  state = [registrationContext state];
 
-  return v3;
+  return state;
 }
 
 - (POAuthPluginProcess)userAuthPluginProcess
@@ -147,7 +147,7 @@
   return v6;
 }
 
-- (void)continueDeviceRegistration:(id)a3
+- (void)continueDeviceRegistration:(id)registration
 {
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -168,7 +168,7 @@ void __52__PORegistrationManager_continueDeviceRegistration___block_invoke(uint6
   _os_activity_initiate(&dword_25E831000, "PSSODeviceRegistration", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)continueUserRegistration:(id)a3
+- (void)continueUserRegistration:(id)registration
 {
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -189,37 +189,37 @@ void __50__PORegistrationManager_continueUserRegistration___block_invoke(uint64_
   _os_activity_initiate(&dword_25E831000, "PSSOUserRegistration", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)exitDeviceRegistration:(id)a3
+- (void)exitDeviceRegistration:(id)registration
 {
-  v4 = [(PORegistrationManager *)self registrationContext];
-  [v4 registrationUI];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  [registrationContext registrationUI];
 
   [(PORegistrationManager *)self failDeviceRegistrationBeforeAuthorization];
 
   [(PORegistrationManager *)self setRegistrationContext:0];
 }
 
-- (void)exitUserRegistration:(id)a3
+- (void)exitUserRegistration:(id)registration
 {
-  v4 = [(PORegistrationManager *)self registrationContext];
-  [v4 registrationUI];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  [registrationContext registrationUI];
 
   [(PORegistrationManager *)self failUserRegistrationBeforeAuthorization];
 
   [(PORegistrationManager *)self setRegistrationContext:0];
 }
 
-- (void)exitRegistration:(id)a3
+- (void)exitRegistration:(id)registration
 {
-  v4 = [(PORegistrationManager *)self registrationContext];
-  [v4 registrationUI];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  [registrationContext registrationUI];
 
   [(PORegistrationManager *)self notifyDeviceRegistrationDidChange];
 
   [(PORegistrationManager *)self setRegistrationContext:0];
 }
 
-- (void)handleUserCredentialNeededAtLogin:(BOOL)a3 smartCard:(BOOL)a4 accountDisplayName:(id)a5 bundleIdentifier:(id)a6 returningContext:(id *)a7
+- (void)handleUserCredentialNeededAtLogin:(BOOL)login smartCard:(BOOL)card accountDisplayName:(id)name bundleIdentifier:(id)identifier returningContext:(id *)context
 {
   v8 = PO_LOG_PORegistrationManager();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -227,13 +227,13 @@ void __50__PORegistrationManager_continueUserRegistration___block_invoke(uint64_
     [PORegistrationManager handleUserCredentialNeededAtLogin:smartCard:accountDisplayName:bundleIdentifier:returningContext:];
   }
 
-  if (a7)
+  if (context)
   {
-    *a7 = 0;
+    *context = 0;
   }
 }
 
-- (BOOL)handleUserAuthorizationNeededForAccountDisplayName:(id)a3 bundleIdentifier:(id)a4
+- (BOOL)handleUserAuthorizationNeededForAccountDisplayName:(id)name bundleIdentifier:(id)identifier
 {
   v4 = PO_LOG_PORegistrationManager();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -246,10 +246,10 @@ void __50__PORegistrationManager_continueUserRegistration___block_invoke(uint64_
 
 - (BOOL)handleUserAuthorizationForRegistration
 {
-  v3 = [(PORegistrationManager *)self registrationContext];
-  v4 = [v3 authorizationProvided];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  authorizationProvided = [registrationContext authorizationProvided];
 
-  if (v4)
+  if (authorizationProvided)
   {
     v5 = PO_LOG_PORegistrationManager();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -261,18 +261,18 @@ void __50__PORegistrationManager_continueUserRegistration___block_invoke(uint64_
     return 1;
   }
 
-  v8 = [(PORegistrationManager *)self registrationContext];
-  v9 = [v8 userIsPlatformSSOUser];
+  registrationContext2 = [(PORegistrationManager *)self registrationContext];
+  userIsPlatformSSOUser = [registrationContext2 userIsPlatformSSOUser];
 
-  v10 = [(PORegistrationManager *)self registrationContext];
-  v11 = v10;
-  if ((v9 & 1) == 0)
+  registrationContext3 = [(PORegistrationManager *)self registrationContext];
+  v11 = registrationContext3;
+  if ((userIsPlatformSSOUser & 1) == 0)
   {
-    v14 = [v10 profile];
-    v15 = [v14 accountDisplayName];
-    v16 = [(PORegistrationManager *)self registrationContext];
-    v17 = [v16 extensionIdentifier];
-    v18 = [(PORegistrationManager *)self handleUserAuthorizationNeededForAccountDisplayName:v15 bundleIdentifier:v17];
+    profile = [registrationContext3 profile];
+    accountDisplayName = [profile accountDisplayName];
+    registrationContext4 = [(PORegistrationManager *)self registrationContext];
+    extensionIdentifier = [registrationContext4 extensionIdentifier];
+    v18 = [(PORegistrationManager *)self handleUserAuthorizationNeededForAccountDisplayName:accountDisplayName bundleIdentifier:extensionIdentifier];
 
     if (!v18)
     {
@@ -291,48 +291,48 @@ LABEL_15:
     }
 
 LABEL_12:
-    v19 = [(PORegistrationManager *)self registrationContext];
+    registrationContext5 = [(PORegistrationManager *)self registrationContext];
     v6 = 1;
-    [v19 setAuthorizationProvided:1];
+    [registrationContext5 setAuthorizationProvided:1];
 
     return v6;
   }
 
-  v12 = [v10 credentialContext];
+  credentialContext = [registrationContext3 credentialContext];
 
-  if (!v12)
+  if (!credentialContext)
   {
-    v29 = [(PORegistrationManager *)self registrationContext];
-    v30 = [v29 authMethod];
+    registrationContext6 = [(PORegistrationManager *)self registrationContext];
+    authMethod = [registrationContext6 authMethod];
 
-    v31 = [(PORegistrationManager *)self registrationContext];
-    v32 = v31;
-    if (v30 == 1)
+    registrationContext7 = [(PORegistrationManager *)self registrationContext];
+    v32 = registrationContext7;
+    if (authMethod == 1)
     {
-      v33 = [v31 profile];
-      v34 = [v33 accountDisplayName];
-      v35 = [(PORegistrationManager *)self registrationContext];
-      v36 = [v35 extensionIdentifier];
+      profile2 = [registrationContext7 profile];
+      accountDisplayName2 = [profile2 accountDisplayName];
+      registrationContext8 = [(PORegistrationManager *)self registrationContext];
+      extensionIdentifier2 = [registrationContext8 extensionIdentifier];
       v48 = 0;
-      [(PORegistrationManager *)self handleUserCredentialNeededAtLogin:0 smartCard:0 accountDisplayName:v34 bundleIdentifier:v36 returningContext:&v48];
+      [(PORegistrationManager *)self handleUserCredentialNeededAtLogin:0 smartCard:0 accountDisplayName:accountDisplayName2 bundleIdentifier:extensionIdentifier2 returningContext:&v48];
       v37 = v48;
 
       v6 = v37 != 0;
       if (v37)
       {
 LABEL_23:
-        v38 = [(PORegistrationManager *)self registrationContext];
-        [v38 setCredentialContext:v37];
+        registrationContext9 = [(PORegistrationManager *)self registrationContext];
+        [registrationContext9 setCredentialContext:v37];
 
-        v39 = [(PORegistrationManager *)self registrationContext];
-        [v39 setAuthorizationProvided:1];
+        registrationContext10 = [(PORegistrationManager *)self registrationContext];
+        [registrationContext10 setAuthorizationProvided:1];
 LABEL_33:
 
         return v6;
       }
 
-      v39 = PO_LOG_PORegistrationManager();
-      if (!os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
+      registrationContext10 = PO_LOG_PORegistrationManager();
+      if (!os_log_type_enabled(registrationContext10, OS_LOG_TYPE_INFO))
       {
         goto LABEL_33;
       }
@@ -342,27 +342,27 @@ LABEL_33:
 
     else
     {
-      if ([v31 authMethod] != 3)
+      if ([registrationContext7 authMethod] != 3)
       {
 
         goto LABEL_9;
       }
 
-      v40 = [(PORegistrationManager *)self registrationContext];
-      v41 = [v40 smartCardTokenId];
+      registrationContext11 = [(PORegistrationManager *)self registrationContext];
+      smartCardTokenId = [registrationContext11 smartCardTokenId];
 
-      if (v41)
+      if (smartCardTokenId)
       {
         goto LABEL_9;
       }
 
-      v42 = [(PORegistrationManager *)self registrationContext];
-      v43 = [v42 profile];
-      v44 = [v43 accountDisplayName];
-      v45 = [(PORegistrationManager *)self registrationContext];
-      v46 = [v45 extensionIdentifier];
+      registrationContext12 = [(PORegistrationManager *)self registrationContext];
+      profile3 = [registrationContext12 profile];
+      accountDisplayName3 = [profile3 accountDisplayName];
+      registrationContext13 = [(PORegistrationManager *)self registrationContext];
+      extensionIdentifier3 = [registrationContext13 extensionIdentifier];
       v47 = 0;
-      [(PORegistrationManager *)self handleUserCredentialNeededAtLogin:0 smartCard:1 accountDisplayName:v44 bundleIdentifier:v46 returningContext:&v47];
+      [(PORegistrationManager *)self handleUserCredentialNeededAtLogin:0 smartCard:1 accountDisplayName:accountDisplayName3 bundleIdentifier:extensionIdentifier3 returningContext:&v47];
       v37 = v47;
 
       v6 = v37 != 0;
@@ -371,8 +371,8 @@ LABEL_33:
         goto LABEL_23;
       }
 
-      v39 = PO_LOG_PORegistrationManager();
-      if (!os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
+      registrationContext10 = PO_LOG_PORegistrationManager();
+      if (!os_log_type_enabled(registrationContext10, OS_LOG_TYPE_INFO))
       {
         goto LABEL_33;
       }
@@ -380,28 +380,28 @@ LABEL_33:
       *buf = 0;
     }
 
-    _os_log_impl(&dword_25E831000, v39, OS_LOG_TYPE_INFO, "Credential not provided, starting over.", buf, 2u);
+    _os_log_impl(&dword_25E831000, registrationContext10, OS_LOG_TYPE_INFO, "Credential not provided, starting over.", buf, 2u);
     goto LABEL_33;
   }
 
 LABEL_9:
-  v13 = [(PORegistrationManager *)self registrationContext];
-  if ([v13 authMethod] != 1)
+  registrationContext14 = [(PORegistrationManager *)self registrationContext];
+  if ([registrationContext14 authMethod] != 1)
   {
-    v21 = [(PORegistrationManager *)self registrationContext];
-    v22 = [v21 isNewPasswordUser];
+    registrationContext15 = [(PORegistrationManager *)self registrationContext];
+    isNewPasswordUser = [registrationContext15 isNewPasswordUser];
 
-    if (v22)
+    if (isNewPasswordUser)
     {
       return 1;
     }
 
-    v23 = [(PORegistrationManager *)self registrationContext];
-    v24 = [v23 profile];
-    v25 = [v24 accountDisplayName];
-    v26 = [(PORegistrationManager *)self registrationContext];
-    v27 = [v26 extensionIdentifier];
-    v28 = [(PORegistrationManager *)self handleUserAuthorizationNeededForAccountDisplayName:v25 bundleIdentifier:v27];
+    registrationContext16 = [(PORegistrationManager *)self registrationContext];
+    profile4 = [registrationContext16 profile];
+    accountDisplayName4 = [profile4 accountDisplayName];
+    registrationContext17 = [(PORegistrationManager *)self registrationContext];
+    extensionIdentifier4 = [registrationContext17 extensionIdentifier];
+    v28 = [(PORegistrationManager *)self handleUserAuthorizationNeededForAccountDisplayName:accountDisplayName4 bundleIdentifier:extensionIdentifier4];
 
     if (!v28)
     {
@@ -423,26 +423,26 @@ LABEL_9:
 
 - (BOOL)reloadSSOExtensionIfNeeded
 {
-  v3 = [(PORegistrationManager *)self registrationContext];
-  v4 = [v3 ssoExtension];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  ssoExtension = [registrationContext ssoExtension];
 
-  if (v4)
+  if (ssoExtension)
   {
     return 1;
   }
 
-  v5 = [(PORegistrationManager *)self registrationContext];
-  v6 = [v5 extensionIdentifier];
-  v7 = [(PORegistrationManager *)self loadSSOExtensionWithExtensionBundleIdentifier:v6];
+  registrationContext2 = [(PORegistrationManager *)self registrationContext];
+  extensionIdentifier = [registrationContext2 extensionIdentifier];
+  v7 = [(PORegistrationManager *)self loadSSOExtensionWithExtensionBundleIdentifier:extensionIdentifier];
 
   if (v7)
   {
-    v8 = [(PORegistrationManager *)self registrationContext];
-    [v8 setSsoExtension:v7];
+    registrationContext3 = [(PORegistrationManager *)self registrationContext];
+    [registrationContext3 setSsoExtension:v7];
 
-    v9 = [(PORegistrationManager *)self registrationContext];
-    v10 = [v9 ssoExtension];
-    [v10 setDelegate:self];
+    registrationContext4 = [(PORegistrationManager *)self registrationContext];
+    ssoExtension2 = [registrationContext4 ssoExtension];
+    [ssoExtension2 setDelegate:self];
 
     return 1;
   }
@@ -454,46 +454,46 @@ LABEL_9:
 
 - (void)findExistingSmartCardBinding
 {
-  v3 = [(PORegistrationManager *)self tokenHelper];
-  v4 = [(PORegistrationManager *)self registrationContext];
-  v5 = [v4 userName];
+  tokenHelper = [(PORegistrationManager *)self tokenHelper];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  userName = [registrationContext userName];
   v20 = 0;
-  v6 = [v3 findTokenIdForSmartCardBoundUser:v5 tokenHash:&v20];
+  v6 = [tokenHelper findTokenIdForSmartCardBoundUser:userName tokenHash:&v20];
   v7 = v20;
-  v8 = [(PORegistrationManager *)self registrationContext];
-  [v8 setSmartCardTokenId:v6];
+  registrationContext2 = [(PORegistrationManager *)self registrationContext];
+  [registrationContext2 setSmartCardTokenId:v6];
 
-  v9 = [(PORegistrationManager *)self registrationContext];
-  v10 = [v9 smartCardTokenId];
-  v11 = [v10 length];
+  registrationContext3 = [(PORegistrationManager *)self registrationContext];
+  smartCardTokenId = [registrationContext3 smartCardTokenId];
+  v11 = [smartCardTokenId length];
 
   if (!v11)
   {
-    v12 = [(PORegistrationManager *)self tokenHelper];
-    v13 = [(PORegistrationManager *)self registrationContext];
-    v14 = [v13 userName];
+    tokenHelper2 = [(PORegistrationManager *)self tokenHelper];
+    registrationContext4 = [(PORegistrationManager *)self registrationContext];
+    userName2 = [registrationContext4 userName];
     v19 = v7;
-    v15 = [v12 findTokenIdForSmartCardAMUser:v14 tokenHash:&v19];
+    v15 = [tokenHelper2 findTokenIdForSmartCardAMUser:userName2 tokenHash:&v19];
     v16 = v19;
 
-    v17 = [(PORegistrationManager *)self registrationContext];
-    [v17 setSmartCardTokenId:v15];
+    registrationContext5 = [(PORegistrationManager *)self registrationContext];
+    [registrationContext5 setSmartCardTokenId:v15];
 
     v7 = v16;
   }
 
-  v18 = [(PORegistrationManager *)self registrationContext];
-  [v18 setSmartCardHash:v7];
+  registrationContext6 = [(PORegistrationManager *)self registrationContext];
+  [registrationContext6 setSmartCardHash:v7];
 }
 
-- (BOOL)createOrRepairDeviceConfigurationWithError:(id *)a3
+- (BOOL)createOrRepairDeviceConfigurationWithError:(id *)error
 {
   v99 = *MEMORY[0x277D85DE8];
-  v4 = [(PORegistrationManager *)self configurationManager];
-  v5 = [v4 currentDeviceConfiguration];
-  v6 = [v5 deviceEncryptionKey];
+  configurationManager = [(PORegistrationManager *)self configurationManager];
+  currentDeviceConfiguration = [configurationManager currentDeviceConfiguration];
+  deviceEncryptionKey = [currentDeviceConfiguration deviceEncryptionKey];
 
-  if (v6)
+  if (deviceEncryptionKey)
   {
     v7 = PO_LOG_PORegistrationManager();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -503,9 +503,9 @@ LABEL_9:
     }
 
     v8 = MEMORY[0x277D3D230];
-    v9 = [(PORegistrationManager *)self configurationManager];
-    v10 = [v9 currentDeviceConfiguration];
-    LOBYTE(v8) = [v8 verifyKey:{objc_msgSend(v10, "deviceEncryptionKey")}];
+    configurationManager2 = [(PORegistrationManager *)self configurationManager];
+    currentDeviceConfiguration2 = [configurationManager2 currentDeviceConfiguration];
+    LOBYTE(v8) = [v8 verifyKey:{objc_msgSend(currentDeviceConfiguration2, "deviceEncryptionKey")}];
 
     v11 = v8 ^ 1;
   }
@@ -515,11 +515,11 @@ LABEL_9:
     v11 = 0;
   }
 
-  v12 = [(PORegistrationManager *)self configurationManager];
-  v13 = [v12 currentDeviceConfiguration];
-  v14 = [v13 deviceSigningKey];
+  configurationManager3 = [(PORegistrationManager *)self configurationManager];
+  currentDeviceConfiguration3 = [configurationManager3 currentDeviceConfiguration];
+  deviceSigningKey = [currentDeviceConfiguration3 deviceSigningKey];
 
-  if (v14)
+  if (deviceSigningKey)
   {
     v15 = PO_LOG_PORegistrationManager();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -529,9 +529,9 @@ LABEL_9:
     }
 
     v16 = MEMORY[0x277D3D230];
-    v17 = [(PORegistrationManager *)self configurationManager];
-    v18 = [v17 currentDeviceConfiguration];
-    LOBYTE(v16) = [v16 verifyKey:{objc_msgSend(v18, "deviceSigningKey")}];
+    configurationManager4 = [(PORegistrationManager *)self configurationManager];
+    currentDeviceConfiguration4 = [configurationManager4 currentDeviceConfiguration];
+    LOBYTE(v16) = [v16 verifyKey:{objc_msgSend(currentDeviceConfiguration4, "deviceSigningKey")}];
 
     v19 = v16 ^ 1;
   }
@@ -541,24 +541,24 @@ LABEL_9:
     v19 = 0;
   }
 
-  v20 = [(PORegistrationManager *)self registrationContext];
-  if (![v20 isRepair])
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  if (![registrationContext isRepair])
   {
     goto LABEL_16;
   }
 
-  v21 = [(PORegistrationManager *)self configurationManager];
-  v22 = [v21 currentDeviceConfiguration];
-  if (!v22)
+  configurationManager5 = [(PORegistrationManager *)self configurationManager];
+  currentDeviceConfiguration5 = [configurationManager5 currentDeviceConfiguration];
+  if (!currentDeviceConfiguration5)
   {
 
 LABEL_16:
     goto LABEL_17;
   }
 
-  v23 = v22;
-  v24 = [(PORegistrationManager *)self registrationContext];
-  v25 = [v24 deviceKeysShouldChange] | v11 | v19;
+  v23 = currentDeviceConfiguration5;
+  registrationContext2 = [(PORegistrationManager *)self registrationContext];
+  v25 = [registrationContext2 deviceKeysShouldChange] | v11 | v19;
 
   if ((v25 & 1) == 0)
   {
@@ -573,16 +573,16 @@ LABEL_17:
     *buf = 136315394;
     v96 = "[PORegistrationManager createOrRepairDeviceConfigurationWithError:]";
     v97 = 2112;
-    v98 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v27, OS_LOG_TYPE_DEFAULT, "%s creating new device configuration on %@", buf, 0x16u);
   }
 
-  v28 = [(PORegistrationManager *)self configurationManager];
-  v29 = [v28 currentDeviceConfiguration];
-  v30 = v29;
-  if (v29)
+  configurationManager6 = [(PORegistrationManager *)self configurationManager];
+  currentDeviceConfiguration6 = [configurationManager6 currentDeviceConfiguration];
+  v30 = currentDeviceConfiguration6;
+  if (currentDeviceConfiguration6)
   {
-    v31 = v29;
+    v31 = currentDeviceConfiguration6;
   }
 
   else
@@ -593,42 +593,42 @@ LABEL_17:
   v32 = v31;
 
   [v32 setRegistrationCompleted:0];
-  v33 = [(PORegistrationManager *)self registrationContext];
-  v34 = [v33 extensionIdentifier];
-  [v32 setExtensionIdentifier:v34];
+  registrationContext3 = [(PORegistrationManager *)self registrationContext];
+  extensionIdentifier = [registrationContext3 extensionIdentifier];
+  [v32 setExtensionIdentifier:extensionIdentifier];
 
-  v35 = [(PORegistrationManager *)self registrationContext];
-  [v32 setProtocolVersion:{objc_msgSend(v35, "protocolVersion")}];
+  registrationContext4 = [(PORegistrationManager *)self registrationContext];
+  [v32 setProtocolVersion:{objc_msgSend(registrationContext4, "protocolVersion")}];
 
-  v36 = [(PORegistrationManager *)self registrationContext];
-  v37 = [v36 ssoExtension];
-  v38 = [v37 sdkVersionString];
-  [v32 setSdkVersionString:v38];
+  registrationContext5 = [(PORegistrationManager *)self registrationContext];
+  ssoExtension = [registrationContext5 ssoExtension];
+  sdkVersionString = [ssoExtension sdkVersionString];
+  [v32 setSdkVersionString:sdkVersionString];
 
-  v39 = [(PORegistrationManager *)self registrationContext];
-  [v32 setLoginType:{objc_msgSend(v39, "authMethod")}];
+  registrationContext6 = [(PORegistrationManager *)self registrationContext];
+  [v32 setLoginType:{objc_msgSend(registrationContext6, "authMethod")}];
 
-  v40 = [MEMORY[0x277CBEAA8] date];
-  [v32 setAuthGracePeriodStart:v40];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v32 setAuthGracePeriodStart:date];
 
-  v41 = [(PORegistrationManager *)self registrationContext];
-  v42 = [v41 profile];
-  v43 = [v42 administratorGroups];
-  [v32 setAdministratorGroups:v43];
+  registrationContext7 = [(PORegistrationManager *)self registrationContext];
+  profile = [registrationContext7 profile];
+  administratorGroups = [profile administratorGroups];
+  [v32 setAdministratorGroups:administratorGroups];
 
-  v44 = [(PORegistrationManager *)self registrationContext];
-  v45 = [v44 profile];
-  v46 = [v45 authorizationGroups];
-  [v32 setAuthorizationGroups:v46];
+  registrationContext8 = [(PORegistrationManager *)self registrationContext];
+  profile2 = [registrationContext8 profile];
+  authorizationGroups = [profile2 authorizationGroups];
+  [v32 setAuthorizationGroups:authorizationGroups];
 
-  v47 = [(PORegistrationManager *)self registrationContext];
-  v48 = [v47 profile];
-  v49 = [v48 otherGroups];
-  [v32 setOtherGroups:v49];
+  registrationContext9 = [(PORegistrationManager *)self registrationContext];
+  profile3 = [registrationContext9 profile];
+  otherGroups = [profile3 otherGroups];
+  [v32 setOtherGroups:otherGroups];
 
-  v50 = [(PORegistrationManager *)self registrationContext];
-  v51 = [v50 profile];
-  [v32 updateWithProfile:v51];
+  registrationContext10 = [(PORegistrationManager *)self registrationContext];
+  profile4 = [registrationContext10 profile];
+  [v32 updateWithProfile:profile4];
 
   if (![v32 deviceSigningKey] || (-[PORegistrationManager registrationContext](self, "registrationContext"), v52 = objc_claimAutoreleasedReturnValue(), v53 = objc_msgSend(v52, "deviceKeysShouldChange") | v19, v52, (v53 & 1) != 0))
   {
@@ -639,28 +639,28 @@ LABEL_17:
       _os_log_impl(&dword_25E831000, v54, OS_LOG_TYPE_INFO, "Creating new signing key", buf, 2u);
     }
 
-    v55 = [(PORegistrationManager *)self registrationContext];
-    v56 = [v55 ssoExtension];
-    v57 = [POAlgorithmUtil deviceSigningAlgorithmToUse:v56 deviceConfiguration:v32];
-    v58 = [(PORegistrationManager *)self registrationContext];
-    [v58 setSigningAlgorithm:v57];
+    registrationContext11 = [(PORegistrationManager *)self registrationContext];
+    ssoExtension2 = [registrationContext11 ssoExtension];
+    v57 = [POAlgorithmUtil deviceSigningAlgorithmToUse:ssoExtension2 deviceConfiguration:v32];
+    registrationContext12 = [(PORegistrationManager *)self registrationContext];
+    [registrationContext12 setSigningAlgorithm:v57];
 
-    v59 = [(PORegistrationManager *)self keychainHelper];
-    v60 = [v32 extensionIdentifier];
-    [v59 _deleteCachedAttestationForExtensionIdentifier:v60 key:{objc_msgSend(v32, "deviceSigningKey")}];
+    keychainHelper = [(PORegistrationManager *)self keychainHelper];
+    extensionIdentifier2 = [v32 extensionIdentifier];
+    [keychainHelper _deleteCachedAttestationForExtensionIdentifier:extensionIdentifier2 key:{objc_msgSend(v32, "deviceSigningKey")}];
 
     v61 = MEMORY[0x277D3D230];
-    v62 = [(PORegistrationManager *)self registrationContext];
-    v63 = [v62 signingAlgorithm];
-    v64 = [(PORegistrationManager *)self registrationContext];
-    [v32 setDeviceSigningKey:{objc_msgSend(v61, "createSEPSigningKeyForAlgorithm:shared:", v63, objc_msgSend(v64, "useSharedDeviceKeys"))}];
+    registrationContext13 = [(PORegistrationManager *)self registrationContext];
+    signingAlgorithm = [registrationContext13 signingAlgorithm];
+    registrationContext14 = [(PORegistrationManager *)self registrationContext];
+    [v32 setDeviceSigningKey:{objc_msgSend(v61, "createSEPSigningKeyForAlgorithm:shared:", signingAlgorithm, objc_msgSend(registrationContext14, "useSharedDeviceKeys"))}];
 
-    v65 = [(PORegistrationManager *)self registrationContext];
-    [v32 setSharedDeviceKeys:{objc_msgSend(v65, "useSharedDeviceKeys")}];
+    registrationContext15 = [(PORegistrationManager *)self registrationContext];
+    [v32 setSharedDeviceKeys:{objc_msgSend(registrationContext15, "useSharedDeviceKeys")}];
 
-    v66 = [(PORegistrationManager *)self registrationContext];
-    v67 = [v66 signingAlgorithm];
-    [v32 setSigningAlgorithm:v67];
+    registrationContext16 = [(PORegistrationManager *)self registrationContext];
+    signingAlgorithm2 = [registrationContext16 signingAlgorithm];
+    [v32 setSigningAlgorithm:signingAlgorithm2];
 
     [v32 setPendingSigningAlgorithm:0];
   }
@@ -674,39 +674,39 @@ LABEL_17:
       _os_log_impl(&dword_25E831000, v70, OS_LOG_TYPE_INFO, "Creating new encryption key", buf, 2u);
     }
 
-    v71 = [(PORegistrationManager *)self registrationContext];
-    v72 = [v71 ssoExtension];
-    v73 = [POAlgorithmUtil deviceEncryptionAlgorithmToUse:v72 deviceConfiguration:v32];
-    v74 = [(PORegistrationManager *)self registrationContext];
-    [v74 setEncryptionAlgorithm:v73];
+    registrationContext17 = [(PORegistrationManager *)self registrationContext];
+    ssoExtension3 = [registrationContext17 ssoExtension];
+    v73 = [POAlgorithmUtil deviceEncryptionAlgorithmToUse:ssoExtension3 deviceConfiguration:v32];
+    registrationContext18 = [(PORegistrationManager *)self registrationContext];
+    [registrationContext18 setEncryptionAlgorithm:v73];
 
-    v75 = [(PORegistrationManager *)self keychainHelper];
-    v76 = [v32 extensionIdentifier];
-    [v75 _deleteCachedAttestationForExtensionIdentifier:v76 key:{objc_msgSend(v32, "deviceEncryptionKey")}];
+    keychainHelper2 = [(PORegistrationManager *)self keychainHelper];
+    extensionIdentifier3 = [v32 extensionIdentifier];
+    [keychainHelper2 _deleteCachedAttestationForExtensionIdentifier:extensionIdentifier3 key:{objc_msgSend(v32, "deviceEncryptionKey")}];
 
     v77 = MEMORY[0x277D3D230];
-    v78 = [(PORegistrationManager *)self registrationContext];
-    v79 = [v78 encryptionAlgorithm];
-    v80 = [(PORegistrationManager *)self registrationContext];
-    [v32 setDeviceEncryptionKey:{objc_msgSend(v77, "createSEPEncryptionKeyForAlgorithm:shared:", v79, objc_msgSend(v80, "useSharedDeviceKeys"))}];
+    registrationContext19 = [(PORegistrationManager *)self registrationContext];
+    encryptionAlgorithm = [registrationContext19 encryptionAlgorithm];
+    registrationContext20 = [(PORegistrationManager *)self registrationContext];
+    [v32 setDeviceEncryptionKey:{objc_msgSend(v77, "createSEPEncryptionKeyForAlgorithm:shared:", encryptionAlgorithm, objc_msgSend(registrationContext20, "useSharedDeviceKeys"))}];
 
-    v81 = [MEMORY[0x277CBEAA8] date];
-    [v32 setLastEncryptionKeyChange:v81];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [v32 setLastEncryptionKeyChange:date2];
 
-    v82 = [(PORegistrationManager *)self registrationContext];
-    [v32 setSharedDeviceKeys:{objc_msgSend(v82, "useSharedDeviceKeys")}];
+    registrationContext21 = [(PORegistrationManager *)self registrationContext];
+    [v32 setSharedDeviceKeys:{objc_msgSend(registrationContext21, "useSharedDeviceKeys")}];
 
-    v83 = [(PORegistrationManager *)self registrationContext];
-    v84 = [v83 encryptionAlgorithm];
-    [v32 setEncryptionAlgorithm:v84];
+    registrationContext22 = [(PORegistrationManager *)self registrationContext];
+    encryptionAlgorithm2 = [registrationContext22 encryptionAlgorithm];
+    [v32 setEncryptionAlgorithm:encryptionAlgorithm2];
 
     [v32 setPendingEncryptionAlgorithm:0];
   }
 
-  v85 = [(PORegistrationManager *)self registrationContext];
-  v86 = [v85 deviceKeysShouldChange];
+  registrationContext23 = [(PORegistrationManager *)self registrationContext];
+  deviceKeysShouldChange = [registrationContext23 deviceKeysShouldChange];
 
-  if (v86)
+  if (deviceKeysShouldChange)
   {
     v87 = PO_LOG_PORegistrationManager();
     if (os_log_type_enabled(v87, OS_LOG_TYPE_INFO))
@@ -715,23 +715,23 @@ LABEL_17:
       _os_log_impl(&dword_25E831000, v87, OS_LOG_TYPE_INFO, "Keys have changed", buf, 2u);
     }
 
-    v88 = [(PORegistrationManager *)self registrationContext];
-    [v88 setDeviceKeysShouldChange:0];
+    registrationContext24 = [(PORegistrationManager *)self registrationContext];
+    [registrationContext24 setDeviceKeysShouldChange:0];
   }
 
-  v89 = [(PORegistrationManager *)self configurationManager];
-  [v89 setSharedOnly:0];
+  configurationManager7 = [(PORegistrationManager *)self configurationManager];
+  [configurationManager7 setSharedOnly:0];
 
-  v90 = [(PORegistrationManager *)self configurationManager];
-  v26 = [v90 saveDeviceConfigurationSyncAllConfigToPreboot:v32];
+  configurationManager8 = [(PORegistrationManager *)self configurationManager];
+  v26 = [configurationManager8 saveDeviceConfigurationSyncAllConfigToPreboot:v32];
 
   if ((v26 & 1) == 0)
   {
     v91 = __68__PORegistrationManager_createOrRepairDeviceConfigurationWithError___block_invoke();
-    if (a3)
+    if (error)
     {
       v91 = v91;
-      *a3 = v91;
+      *error = v91;
     }
   }
 
@@ -754,10 +754,10 @@ id __68__PORegistrationManager_createOrRepairDeviceConfigurationWithError___bloc
 
 - (void)setupDeviceRegistrationOptions
 {
-  v3 = [(PORegistrationManager *)self registrationContext];
-  v4 = [v3 isRepair];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  isRepair = [registrationContext isRepair];
 
-  if (v4)
+  if (isRepair)
   {
     v5 = 2;
   }
@@ -767,26 +767,26 @@ id __68__PORegistrationManager_createOrRepairDeviceConfigurationWithError___bloc
     v5 = 0;
   }
 
-  v6 = [(PORegistrationManager *)self registrationContext];
-  v7 = [v6 useSharedDeviceKeys];
+  registrationContext2 = [(PORegistrationManager *)self registrationContext];
+  useSharedDeviceKeys = [registrationContext2 useSharedDeviceKeys];
 
-  if (v7)
+  if (useSharedDeviceKeys)
   {
     v5 |= 4uLL;
   }
 
-  v8 = [(PORegistrationManager *)self registrationContext];
-  v9 = [v8 migratingDeviceKeys];
+  registrationContext3 = [(PORegistrationManager *)self registrationContext];
+  migratingDeviceKeys = [registrationContext3 migratingDeviceKeys];
 
-  if (v9)
+  if (migratingDeviceKeys)
   {
     v5 |= 8uLL;
   }
 
-  v10 = [(PORegistrationManager *)self registrationContext];
-  v11 = [v10 isBuddyFlow];
+  registrationContext4 = [(PORegistrationManager *)self registrationContext];
+  isBuddyFlow = [registrationContext4 isBuddyFlow];
 
-  if (v11)
+  if (isBuddyFlow)
   {
     v12 = v5 | 0x40;
   }
@@ -796,8 +796,8 @@ id __68__PORegistrationManager_createOrRepairDeviceConfigurationWithError___bloc
     v12 = v5;
   }
 
-  v13 = [(PORegistrationManager *)self registrationContext];
-  [v13 setOptions:v12];
+  registrationContext5 = [(PORegistrationManager *)self registrationContext];
+  [registrationContext5 setOptions:v12];
 }
 
 - (void)failDeviceRegistrationBeforeAuthorization
@@ -809,23 +809,23 @@ id __68__PORegistrationManager_createOrRepairDeviceConfigurationWithError___bloc
     v10 = 136315394;
     v11 = "[PORegistrationManager failDeviceRegistrationBeforeAuthorization]";
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v10, 0x16u);
   }
 
-  v4 = [(PORegistrationManager *)self registrationContext];
-  [v4 setRetry:1];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  [registrationContext setRetry:1];
 
-  v5 = [(PORegistrationManager *)self registrationContext];
-  [v5 setState:5];
+  registrationContext2 = [(PORegistrationManager *)self registrationContext];
+  [registrationContext2 setState:5];
 
-  v6 = [(PORegistrationManager *)self registrationContext];
-  [v6 setAuthorizationProvided:0];
+  registrationContext3 = [(PORegistrationManager *)self registrationContext];
+  [registrationContext3 setAuthorizationProvided:0];
 
-  v7 = [(PORegistrationManager *)self registrationContext];
-  v8 = [v7 registrationUI];
+  registrationContext4 = [(PORegistrationManager *)self registrationContext];
+  registrationUI = [registrationContext4 registrationUI];
 
-  if (!v8)
+  if (!registrationUI)
   {
     [(PORegistrationManager *)self promptUserForRegistration];
   }
@@ -836,55 +836,55 @@ id __68__PORegistrationManager_createOrRepairDeviceConfigurationWithError___bloc
 
 - (void)notifyDeviceRegistrationDidChange
 {
-  v2 = [(PORegistrationManager *)self distributedNotificationCenter];
-  [v2 postNotificationName:@"com.apple.platformSSO.DeviceRegistrationStatusDidChange" object:0 userInfo:0 deliverImmediately:1];
+  distributedNotificationCenter = [(PORegistrationManager *)self distributedNotificationCenter];
+  [distributedNotificationCenter postNotificationName:@"com.apple.platformSSO.DeviceRegistrationStatusDidChange" object:0 userInfo:0 deliverImmediately:1];
 }
 
 - (void)notifyUserRegistrationDidChange
 {
-  v2 = [(PORegistrationManager *)self distributedNotificationCenter];
-  [v2 postNotificationName:@"com.apple.platformSSO.UserRegistrationStatusDidChange" object:0 userInfo:0 deliverImmediately:1];
+  distributedNotificationCenter = [(PORegistrationManager *)self distributedNotificationCenter];
+  [distributedNotificationCenter postNotificationName:@"com.apple.platformSSO.UserRegistrationStatusDidChange" object:0 userInfo:0 deliverImmediately:1];
 }
 
 - (void)handleAuthorizationForNewUsers
 {
-  v3 = [(PORegistrationManager *)self registrationContext];
-  if (([v3 isNewPasswordUser] & 1) == 0)
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  if (([registrationContext isNewPasswordUser] & 1) == 0)
   {
 
 LABEL_6:
-    v15 = [(PORegistrationManager *)self registrationContext];
-    v16 = [v15 isNewSmartCardUser];
+    registrationContext2 = [(PORegistrationManager *)self registrationContext];
+    isNewSmartCardUser = [registrationContext2 isNewSmartCardUser];
 
-    v17 = [(PORegistrationManager *)self registrationContext];
-    v19 = v17;
-    if (v16)
+    registrationContext3 = [(PORegistrationManager *)self registrationContext];
+    v19 = registrationContext3;
+    if (isNewSmartCardUser)
     {
-      [v17 setAuthorizationProvided:1];
+      [registrationContext3 setAuthorizationProvided:1];
     }
 
-    else if ([v17 isNewPasswordUser])
+    else if ([registrationContext3 isNewPasswordUser])
     {
-      v18 = [(PORegistrationManager *)self registrationContext];
-      [v18 authMethod];
+      registrationContext4 = [(PORegistrationManager *)self registrationContext];
+      [registrationContext4 authMethod];
     }
 
     goto LABEL_10;
   }
 
-  v4 = [(PORegistrationManager *)self registrationContext];
-  v5 = [v4 authMethod];
+  registrationContext5 = [(PORegistrationManager *)self registrationContext];
+  authMethod = [registrationContext5 authMethod];
 
-  if (v5 != 1)
+  if (authMethod != 1)
   {
     goto LABEL_6;
   }
 
-  v6 = [(PORegistrationManager *)self keyWrap];
-  v7 = [(PORegistrationManager *)self configurationManager];
-  v8 = [v7 currentUserConfiguration];
-  v9 = [v8 _credential];
-  v19 = [v6 unwrapBlob:v9];
+  keyWrap = [(PORegistrationManager *)self keyWrap];
+  configurationManager = [(PORegistrationManager *)self configurationManager];
+  currentUserConfiguration = [configurationManager currentUserConfiguration];
+  _credential = [currentUserConfiguration _credential];
+  v19 = [keyWrap unwrapBlob:_credential];
 
   v10 = v19;
   if (!v19)
@@ -896,11 +896,11 @@ LABEL_6:
   [v11 setCredential:v19 type:-9];
   v12 = v19;
   memset_s([v19 mutableBytes], objc_msgSend(v19, "length"), 0, objc_msgSend(v19, "length"));
-  v13 = [(PORegistrationManager *)self registrationContext];
-  [v13 setCredentialContext:v11];
+  registrationContext6 = [(PORegistrationManager *)self registrationContext];
+  [registrationContext6 setCredentialContext:v11];
 
-  v14 = [(PORegistrationManager *)self registrationContext];
-  [v14 setAuthorizationProvided:1];
+  registrationContext7 = [(PORegistrationManager *)self registrationContext];
+  [registrationContext7 setAuthorizationProvided:1];
 
 LABEL_10:
   v10 = v19;
@@ -909,46 +909,46 @@ LABEL_11:
 
 - (void)setupUserRegistrationOptions
 {
-  v3 = [(PORegistrationManager *)self registrationContext];
-  v4 = [v3 userNotified];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  userNotified = [registrationContext userNotified];
 
-  v5 = v4;
-  v6 = [(PORegistrationManager *)self registrationContext];
-  v7 = [v6 isRepair];
+  v5 = userNotified;
+  registrationContext2 = [(PORegistrationManager *)self registrationContext];
+  isRepair = [registrationContext2 isRepair];
 
-  if (v7)
+  if (isRepair)
   {
     v5 |= 2uLL;
   }
 
-  v8 = [(PORegistrationManager *)self registrationContext];
-  v9 = [v8 useSharedDeviceKeys];
+  registrationContext3 = [(PORegistrationManager *)self registrationContext];
+  useSharedDeviceKeys = [registrationContext3 useSharedDeviceKeys];
 
-  if (v9)
+  if (useSharedDeviceKeys)
   {
     v5 |= 4uLL;
   }
 
-  v10 = [(PORegistrationManager *)self registrationContext];
-  v11 = [v10 migratingDeviceKeys];
+  registrationContext4 = [(PORegistrationManager *)self registrationContext];
+  migratingDeviceKeys = [registrationContext4 migratingDeviceKeys];
 
-  if (v11)
+  if (migratingDeviceKeys)
   {
     v5 |= 8uLL;
   }
 
-  v12 = [(PORegistrationManager *)self registrationContext];
-  v13 = [v12 userSEPKeyInvalid];
+  registrationContext5 = [(PORegistrationManager *)self registrationContext];
+  userSEPKeyInvalid = [registrationContext5 userSEPKeyInvalid];
 
-  if (v13)
+  if (userSEPKeyInvalid)
   {
     v5 |= 0x20uLL;
   }
 
-  v14 = [(PORegistrationManager *)self registrationContext];
-  v15 = [v14 isBuddyFlow];
+  registrationContext6 = [(PORegistrationManager *)self registrationContext];
+  isBuddyFlow = [registrationContext6 isBuddyFlow];
 
-  if (v15)
+  if (isBuddyFlow)
   {
     v16 = v5 | 0x40;
   }
@@ -958,34 +958,34 @@ LABEL_11:
     v16 = v5;
   }
 
-  v17 = [(PORegistrationManager *)self registrationContext];
-  [v17 setOptions:v16];
+  registrationContext7 = [(PORegistrationManager *)self registrationContext];
+  [registrationContext7 setOptions:v16];
 }
 
-- (BOOL)createOrRepairUserConfigurationWithError:(id *)a3
+- (BOOL)createOrRepairUserConfigurationWithError:(id *)error
 {
   v88 = *MEMORY[0x277D85DE8];
-  v5 = [(PORegistrationManager *)self configurationManager];
-  v6 = [v5 currentUserConfiguration];
-  if (!v6)
+  configurationManager = [(PORegistrationManager *)self configurationManager];
+  currentUserConfiguration = [configurationManager currentUserConfiguration];
+  if (!currentUserConfiguration)
   {
     goto LABEL_10;
   }
 
-  v7 = v6;
-  v8 = [(PORegistrationManager *)self registrationContext];
-  if ([v8 authMethod] != 2)
+  v7 = currentUserConfiguration;
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  if ([registrationContext authMethod] != 2)
   {
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  v9 = [(PORegistrationManager *)self configurationManager];
-  v10 = [v9 currentUserConfiguration];
-  v11 = [v10 sepKey];
+  configurationManager2 = [(PORegistrationManager *)self configurationManager];
+  currentUserConfiguration2 = [configurationManager2 currentUserConfiguration];
+  sepKey = [currentUserConfiguration2 sepKey];
 
-  if (!v11)
+  if (!sepKey)
   {
 LABEL_11:
     v17 = 1;
@@ -1001,9 +1001,9 @@ LABEL_11:
 
   v13 = objc_alloc_init(MEMORY[0x277CD4790]);
   [v13 setInteractionNotAllowed:1];
-  v14 = [(PORegistrationManager *)self configurationManager];
-  v15 = [v14 currentUserConfiguration];
-  v16 = [v15 sepKeyWithContext:v13];
+  configurationManager3 = [(PORegistrationManager *)self configurationManager];
+  currentUserConfiguration3 = [configurationManager3 currentUserConfiguration];
+  v16 = [currentUserConfiguration3 sepKeyWithContext:v13];
 
   v17 = [MEMORY[0x277D3D230] verifyKey:v16];
   if (v16)
@@ -1012,18 +1012,18 @@ LABEL_11:
   }
 
 LABEL_12:
-  v18 = [(PORegistrationManager *)self registrationContext];
-  if (([v18 isBuddyFlow] & 1) == 0)
+  registrationContext2 = [(PORegistrationManager *)self registrationContext];
+  if (([registrationContext2 isBuddyFlow] & 1) == 0)
   {
-    v19 = [(PORegistrationManager *)self configurationManager];
-    v20 = [v19 currentUserConfiguration];
-    if (v20)
+    configurationManager4 = [(PORegistrationManager *)self configurationManager];
+    currentUserConfiguration4 = [configurationManager4 currentUserConfiguration];
+    if (currentUserConfiguration4)
     {
-      v21 = v20;
-      v22 = [(PORegistrationManager *)self configurationManager];
-      v23 = [v22 currentUserConfiguration];
-      v24 = [v23 _setupContext];
-      if (v24)
+      v21 = currentUserConfiguration4;
+      configurationManager5 = [(PORegistrationManager *)self configurationManager];
+      currentUserConfiguration5 = [configurationManager5 currentUserConfiguration];
+      _setupContext = [currentUserConfiguration5 _setupContext];
+      if (_setupContext)
       {
       }
 
@@ -1031,14 +1031,14 @@ LABEL_12:
       {
         [(PORegistrationManager *)self configurationManager];
         v83 = v17;
-        v26 = v25 = a3;
-        v27 = [v26 currentUserConfiguration];
-        v28 = [v27 _loginContext];
+        v26 = v25 = error;
+        currentUserConfiguration6 = [v26 currentUserConfiguration];
+        _loginContext = [currentUserConfiguration6 _loginContext];
 
-        a3 = v25;
+        error = v25;
         v17 = v83;
 
-        if (!v28)
+        if (!_loginContext)
         {
           goto LABEL_22;
         }
@@ -1051,20 +1051,20 @@ LABEL_12:
         _os_log_impl(&dword_25E831000, v29, OS_LOG_TYPE_INFO, "Cleaning up contexts", buf, 2u);
       }
 
-      v30 = [(PORegistrationManager *)self configurationManager];
-      v18 = [v30 currentUserConfiguration];
+      configurationManager6 = [(PORegistrationManager *)self configurationManager];
+      registrationContext2 = [configurationManager6 currentUserConfiguration];
 
-      [v18 set_setupContext:0];
-      [v18 set_loginContext:0];
-      v31 = [(PORegistrationManager *)self configurationManager];
-      v32 = [(PORegistrationManager *)self registrationContext];
-      v33 = [v32 userName];
-      v34 = [v31 saveUserConfiguration:v18 forUserName:v33 syncToPreboot:0];
+      [registrationContext2 set_setupContext:0];
+      [registrationContext2 set_loginContext:0];
+      configurationManager7 = [(PORegistrationManager *)self configurationManager];
+      registrationContext3 = [(PORegistrationManager *)self registrationContext];
+      userName = [registrationContext3 userName];
+      v34 = [configurationManager7 saveUserConfiguration:registrationContext2 forUserName:userName syncToPreboot:0];
 
       if ((v34 & 1) == 0)
       {
         v68 = __66__PORegistrationManager_createOrRepairUserConfigurationWithError___block_invoke();
-        if (!a3)
+        if (!error)
         {
           goto LABEL_54;
         }
@@ -1079,12 +1079,12 @@ LABEL_12:
   }
 
 LABEL_22:
-  v35 = [(PORegistrationManager *)self registrationContext];
-  if ([v35 authMethod] == 2)
+  registrationContext4 = [(PORegistrationManager *)self registrationContext];
+  if ([registrationContext4 authMethod] == 2)
   {
-    v36 = [(PORegistrationManager *)self configurationManager];
-    v37 = [v36 currentUserConfiguration];
-    v38 = [v37 sepKey] == 0;
+    configurationManager8 = [(PORegistrationManager *)self configurationManager];
+    currentUserConfiguration7 = [configurationManager8 currentUserConfiguration];
+    v38 = [currentUserConfiguration7 sepKey] == 0;
   }
 
   else
@@ -1092,8 +1092,8 @@ LABEL_22:
     v38 = 0;
   }
 
-  v39 = [(PORegistrationManager *)self registrationContext];
-  if (([v39 isRepair] & 1) == 0)
+  registrationContext5 = [(PORegistrationManager *)self registrationContext];
+  if (([registrationContext5 isRepair] & 1) == 0)
   {
 
 LABEL_29:
@@ -1103,16 +1103,16 @@ LABEL_29:
       *buf = 136315394;
       v85 = "[PORegistrationManager createOrRepairUserConfigurationWithError:]";
       v86 = 2112;
-      v87 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25E831000, v46, OS_LOG_TYPE_DEFAULT, "%s creating new user configuration on %@", buf, 0x16u);
     }
 
-    v47 = [(PORegistrationManager *)self configurationManager];
-    v48 = [v47 currentUserConfiguration];
-    v49 = v48;
-    if (v48)
+    configurationManager9 = [(PORegistrationManager *)self configurationManager];
+    currentUserConfiguration8 = [configurationManager9 currentUserConfiguration];
+    v49 = currentUserConfiguration8;
+    if (currentUserConfiguration8)
     {
-      v50 = v48;
+      v50 = currentUserConfiguration8;
     }
 
     else
@@ -1120,23 +1120,23 @@ LABEL_29:
       v50 = objc_alloc_init(MEMORY[0x277D3D240]);
     }
 
-    v18 = v50;
+    registrationContext2 = v50;
 
-    v51 = [(PORegistrationManager *)self registrationContext];
-    [v18 setLoginType:{objc_msgSend(v51, "authMethod")}];
+    registrationContext6 = [(PORegistrationManager *)self registrationContext];
+    [registrationContext2 setLoginType:{objc_msgSend(registrationContext6, "authMethod")}];
 
-    [v18 setState:2];
-    v52 = [(PORegistrationManager *)self registrationContext];
-    v53 = [v52 authMethod];
+    [registrationContext2 setState:2];
+    registrationContext7 = [(PORegistrationManager *)self registrationContext];
+    authMethod = [registrationContext7 authMethod];
 
-    if (v53 != 2)
+    if (authMethod != 2)
     {
 LABEL_51:
-      v77 = [(PORegistrationManager *)self configurationManager];
-      v78 = [(PORegistrationManager *)self registrationContext];
-      v79 = [v78 userName];
+      configurationManager10 = [(PORegistrationManager *)self configurationManager];
+      registrationContext8 = [(PORegistrationManager *)self registrationContext];
+      userName2 = [registrationContext8 userName];
       v45 = 1;
-      v80 = [v77 saveUserConfiguration:v18 forUserName:v79 syncToPreboot:1];
+      v80 = [configurationManager10 saveUserConfiguration:registrationContext2 forUserName:userName2 syncToPreboot:1];
 
       if (v80)
       {
@@ -1146,7 +1146,7 @@ LABEL_55:
       }
 
       v68 = __66__PORegistrationManager_createOrRepairUserConfigurationWithError___block_invoke_44();
-      if (!a3)
+      if (!error)
       {
 LABEL_54:
 
@@ -1156,27 +1156,27 @@ LABEL_54:
 
 LABEL_53:
       v68 = v68;
-      *a3 = v68;
+      *error = v68;
       goto LABEL_54;
     }
 
-    v54 = [(PORegistrationManager *)self registrationContext];
-    v55 = [v54 ssoExtension];
-    v56 = [POAlgorithmUtil userSigningAlgorithmToUse:v55 userConfiguration:v18];
-    v57 = [(PORegistrationManager *)self registrationContext];
-    [v57 setUserSigningAlgorithm:v56];
+    registrationContext9 = [(PORegistrationManager *)self registrationContext];
+    ssoExtension = [registrationContext9 ssoExtension];
+    v56 = [POAlgorithmUtil userSigningAlgorithmToUse:ssoExtension userConfiguration:registrationContext2];
+    registrationContext10 = [(PORegistrationManager *)self registrationContext];
+    [registrationContext10 setUserSigningAlgorithm:v56];
 
-    v58 = [(PORegistrationManager *)self configurationManager];
-    v59 = [v58 currentLoginConfiguration];
-    v60 = [v59 userSEPKeyBiometricPolicy];
+    configurationManager11 = [(PORegistrationManager *)self configurationManager];
+    currentLoginConfiguration = [configurationManager11 currentLoginConfiguration];
+    userSEPKeyBiometricPolicy = [currentLoginConfiguration userSEPKeyBiometricPolicy];
 
     v61 = PO_LOG_PORegistrationManager();
     if (os_log_type_enabled(v61, OS_LOG_TYPE_DEBUG))
     {
-      [(PORegistrationManager *)v60 createOrRepairUserConfigurationWithError:v61];
+      [(PORegistrationManager *)userSEPKeyBiometricPolicy createOrRepairUserConfigurationWithError:v61];
     }
 
-    if (!v60)
+    if (!userSEPKeyBiometricPolicy)
     {
       goto LABEL_41;
     }
@@ -1187,7 +1187,7 @@ LABEL_53:
     if ((v63 & 1) == 0)
     {
       v68 = __66__PORegistrationManager_createOrRepairUserConfigurationWithError___block_invoke_38();
-      if (!a3)
+      if (!error)
       {
         goto LABEL_54;
       }
@@ -1195,58 +1195,58 @@ LABEL_53:
       goto LABEL_53;
     }
 
-    if (v60)
+    if (userSEPKeyBiometricPolicy)
     {
       v69 = MEMORY[0x277D3D230];
-      v65 = [(PORegistrationManager *)self registrationContext];
-      v66 = [v65 userSigningAlgorithm];
+      registrationContext11 = [(PORegistrationManager *)self registrationContext];
+      userSigningAlgorithm = [registrationContext11 userSigningAlgorithm];
       v70 = v69;
-      v71 = v66;
+      v71 = userSigningAlgorithm;
       v72 = 1;
     }
 
     else
     {
-      if ((v60 & 2) == 0)
+      if ((userSEPKeyBiometricPolicy & 2) == 0)
       {
 LABEL_41:
         v64 = MEMORY[0x277D3D230];
-        v65 = [(PORegistrationManager *)self registrationContext];
-        v66 = [v65 userSigningAlgorithm];
-        v67 = [v64 createUserSEPSigningKeyForAlgorithm:v66];
+        registrationContext11 = [(PORegistrationManager *)self registrationContext];
+        userSigningAlgorithm = [registrationContext11 userSigningAlgorithm];
+        v67 = [v64 createUserSEPSigningKeyForAlgorithm:userSigningAlgorithm];
         goto LABEL_49;
       }
 
       v73 = MEMORY[0x277D3D230];
-      v65 = [(PORegistrationManager *)self registrationContext];
-      v66 = [v65 userSigningAlgorithm];
+      registrationContext11 = [(PORegistrationManager *)self registrationContext];
+      userSigningAlgorithm = [registrationContext11 userSigningAlgorithm];
       v70 = v73;
-      v71 = v66;
+      v71 = userSigningAlgorithm;
       v72 = 0;
     }
 
     v67 = [v70 createUserSEPSigningKeyForAlgorithm:v71 userPresence:1 currentSet:v72];
 LABEL_49:
-    [v18 setSepKey:v67];
+    [registrationContext2 setSepKey:v67];
 
-    v74 = [(PORegistrationManager *)self registrationContext];
-    v75 = [v74 userSigningAlgorithm];
-    [v18 setSigningAlgorithm:v75];
+    registrationContext12 = [(PORegistrationManager *)self registrationContext];
+    userSigningAlgorithm2 = [registrationContext12 userSigningAlgorithm];
+    [registrationContext2 setSigningAlgorithm:userSigningAlgorithm2];
 
-    [v18 setPendingSigningAlgorithm:0];
+    [registrationContext2 setPendingSigningAlgorithm:0];
     if ((v17 & 1) == 0)
     {
-      v76 = [(PORegistrationManager *)self registrationContext];
-      [v76 setOptions:{objc_msgSend(v76, "options") | 0x20}];
+      registrationContext13 = [(PORegistrationManager *)self registrationContext];
+      [registrationContext13 setOptions:{objc_msgSend(registrationContext13, "options") | 0x20}];
     }
 
     goto LABEL_51;
   }
 
-  v40 = [(PORegistrationManager *)self configurationManager];
-  v41 = [(PORegistrationManager *)self registrationContext];
-  v42 = [v41 userName];
-  v43 = [v40 userConfigurationForUserName:v42];
+  configurationManager12 = [(PORegistrationManager *)self configurationManager];
+  registrationContext14 = [(PORegistrationManager *)self registrationContext];
+  userName3 = [registrationContext14 userName];
+  v43 = [configurationManager12 userConfigurationForUserName:userName3];
   v44 = (v43 == 0) | ~v17 | v38;
 
   if (v44)
@@ -1306,14 +1306,14 @@ id __66__PORegistrationManager_createOrRepairUserConfigurationWithError___block_
   }
 
   v4 = objc_alloc_init(MEMORY[0x277D3D240]);
-  v5 = [(PORegistrationManager *)self registrationContext];
-  [v4 setLoginType:{objc_msgSend(v5, "authMethod")}];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  [v4 setLoginType:{objc_msgSend(registrationContext, "authMethod")}];
 
   [v4 setState:2];
-  v6 = [(PORegistrationManager *)self configurationManager];
-  LOBYTE(v5) = [v6 saveUserConfiguration:v4 forUserName:@"_mbsetupuser" syncToPreboot:0];
+  configurationManager = [(PORegistrationManager *)self configurationManager];
+  LOBYTE(registrationContext) = [configurationManager saveUserConfiguration:v4 forUserName:@"_mbsetupuser" syncToPreboot:0];
 
-  if ((v5 & 1) == 0)
+  if ((registrationContext & 1) == 0)
   {
     v7 = __60__PORegistrationManager_createUserConfigurationForBuddyUser__block_invoke();
   }
@@ -1333,23 +1333,23 @@ id __60__PORegistrationManager_createUserConfigurationForBuddyUser__block_invoke
 
 - (void)cleanupUserConfigAfterMigrationToShared
 {
-  v3 = [(PORegistrationManager *)self registrationContext];
-  v4 = [v3 options];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  options = [registrationContext options];
 
-  if ((v4 & 8) != 0)
+  if ((options & 8) != 0)
   {
-    v5 = [(PORegistrationManager *)self configurationManager];
-    v6 = [v5 removeUserDeviceConfiguration];
+    configurationManager = [(PORegistrationManager *)self configurationManager];
+    removeUserDeviceConfiguration = [configurationManager removeUserDeviceConfiguration];
 
-    if ((v6 & 1) == 0)
+    if ((removeUserDeviceConfiguration & 1) == 0)
     {
       v7 = __64__PORegistrationManager_cleanupUserConfigAfterMigrationToShared__block_invoke();
     }
 
-    v8 = [(PORegistrationManager *)self configurationManager];
-    v9 = [v8 removeUserLoginConfiguration];
+    configurationManager2 = [(PORegistrationManager *)self configurationManager];
+    removeUserLoginConfiguration = [configurationManager2 removeUserLoginConfiguration];
 
-    if ((v9 & 1) == 0)
+    if ((removeUserLoginConfiguration & 1) == 0)
     {
       v10 = __64__PORegistrationManager_cleanupUserConfigAfterMigrationToShared__block_invoke_63();
     }
@@ -1382,27 +1382,27 @@ id __64__PORegistrationManager_cleanupUserConfigAfterMigrationToShared__block_in
 
 - (void)storeCredentialAndUpdatePasswordHint
 {
-  v3 = [(PORegistrationManager *)self configurationManager];
-  v4 = [v3 currentUserConfiguration];
+  configurationManager = [(PORegistrationManager *)self configurationManager];
+  currentUserConfiguration = [configurationManager currentUserConfiguration];
 
   v5 = MEMORY[0x277D3D1E0];
-  v6 = [(PORegistrationManager *)self registrationContext];
-  v7 = [v6 credentialContext];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  credentialContext = [registrationContext credentialContext];
   v17 = 0;
-  v8 = [v5 passwordDataFromContext:v7 error:&v17];
+  v8 = [v5 passwordDataFromContext:credentialContext error:&v17];
   v9 = v17;
 
   if (v8)
   {
-    v10 = [(PORegistrationManager *)self keyWrap];
-    v11 = [v10 wrapBlob:v8];
-    [v4 set_credential:v11];
+    keyWrap = [(PORegistrationManager *)self keyWrap];
+    v11 = [keyWrap wrapBlob:v8];
+    [currentUserConfiguration set_credential:v11];
 
     memset_s([v8 mutableBytes], objc_msgSend(v8, "length"), 0, objc_msgSend(v8, "length"));
-    v12 = [(PORegistrationManager *)self configurationManager];
-    LOBYTE(v10) = [v12 saveCurrentUserConfigurationAndSyncToPreboot:0];
+    configurationManager2 = [(PORegistrationManager *)self configurationManager];
+    LOBYTE(keyWrap) = [configurationManager2 saveCurrentUserConfigurationAndSyncToPreboot:0];
 
-    if ((v10 & 1) == 0)
+    if ((keyWrap & 1) == 0)
     {
       v13 = __61__PORegistrationManager_storeCredentialAndUpdatePasswordHint__block_invoke_73();
     }
@@ -1446,18 +1446,18 @@ id __61__PORegistrationManager_storeCredentialAndUpdatePasswordHint__block_invok
 - (void)completeLegacyUserRegistration
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(PORegistrationManager *)self registrationContext];
-  if ([v3 isNewPasswordUser])
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  if ([registrationContext isNewPasswordUser])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(PORegistrationManager *)self registrationContext];
-    v6 = [v5 isNewSmartCardUser];
+    registrationContext2 = [(PORegistrationManager *)self registrationContext];
+    isNewSmartCardUser = [registrationContext2 isNewSmartCardUser];
 
-    v4 = v6 ^ 1u;
+    v4 = isNewSmartCardUser ^ 1u;
   }
 
   v7 = PO_LOG_PORegistrationManager();
@@ -1466,48 +1466,48 @@ id __61__PORegistrationManager_storeCredentialAndUpdatePasswordHint__block_invok
     *buf = 136315394;
     v23 = "[PORegistrationManager completeLegacyUserRegistration]";
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v7, OS_LOG_TYPE_DEFAULT, "%s calling registrationDidComplete on %@", buf, 0x16u);
   }
 
-  v8 = [(PORegistrationManager *)self registrationContext];
-  v9 = [v8 ssoExtension];
+  registrationContext3 = [(PORegistrationManager *)self registrationContext];
+  ssoExtension = [registrationContext3 ssoExtension];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __55__PORegistrationManager_completeLegacyUserRegistration__block_invoke;
   v21[3] = &unk_279A3A060;
   v21[4] = self;
-  [v9 registrationDidCompleteWithCompletion:v21];
+  [ssoExtension registrationDidCompleteWithCompletion:v21];
 
   [(PORegistrationManager *)self updateRegistrationState:1 failed:0];
   [(PORegistrationManager *)self notifyUserRegistrationDidChange];
-  v10 = [(PORegistrationManager *)self configurationManager];
-  v11 = [v10 currentUserConfiguration];
-  [v11 setState:v4];
+  configurationManager = [(PORegistrationManager *)self configurationManager];
+  currentUserConfiguration = [configurationManager currentUserConfiguration];
+  [currentUserConfiguration setState:v4];
 
-  v12 = [(PORegistrationManager *)self configurationManager];
-  LOBYTE(v10) = [v12 saveCurrentUserConfigurationAndSyncToPreboot:0];
+  configurationManager2 = [(PORegistrationManager *)self configurationManager];
+  LOBYTE(configurationManager) = [configurationManager2 saveCurrentUserConfigurationAndSyncToPreboot:0];
 
-  if ((v10 & 1) == 0)
+  if ((configurationManager & 1) == 0)
   {
     v13 = __55__PORegistrationManager_completeLegacyUserRegistration__block_invoke_2();
   }
 
-  v14 = [(PORegistrationManager *)self registrationContext];
-  v15 = [v14 isRepair];
+  registrationContext4 = [(PORegistrationManager *)self registrationContext];
+  isRepair = [registrationContext4 isRepair];
 
-  v16 = [(PORegistrationManager *)self process];
-  v17 = v16;
-  if (v15)
+  process = [(PORegistrationManager *)self process];
+  v17 = process;
+  if (isRepair)
   {
-    v18 = [(PORegistrationManager *)self registrationContext];
-    v19 = [v18 credentialContext];
-    [v17 performLoginForCurrentUserWithPasswordContext:v19];
+    registrationContext5 = [(PORegistrationManager *)self registrationContext];
+    credentialContext = [registrationContext5 credentialContext];
+    [v17 performLoginForCurrentUserWithPasswordContext:credentialContext];
   }
 
   else
   {
-    [v16 performLoginForCurrentUserWithPasswordContext:0];
+    [process performLoginForCurrentUserWithPasswordContext:0];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -1545,14 +1545,14 @@ id __55__PORegistrationManager_completeLegacyUserRegistration__block_invoke_2()
 - (void)createContextForUserCredential
 {
   v10 = objc_alloc_init(MEMORY[0x277CD4790]);
-  v3 = [(PORegistrationManager *)self registrationContext];
-  [v3 setCredentialContext:v10];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  [registrationContext setCredentialContext:v10];
 
-  v4 = [(PORegistrationManager *)self keyWrap];
-  v5 = [(PORegistrationManager *)self configurationManager];
-  v6 = [v5 currentUserConfiguration];
-  v7 = [v6 _credential];
-  v8 = [v4 unwrapBlob:v7];
+  keyWrap = [(PORegistrationManager *)self keyWrap];
+  configurationManager = [(PORegistrationManager *)self configurationManager];
+  currentUserConfiguration = [configurationManager currentUserConfiguration];
+  _credential = [currentUserConfiguration _credential];
+  v8 = [keyWrap unwrapBlob:_credential];
 
   if (v8)
   {
@@ -1588,23 +1588,23 @@ id __55__PORegistrationManager_createContextForUserCredential__block_invoke()
     v10 = 136315394;
     v11 = "[PORegistrationManager failUserRegistrationBeforeAuthorization]";
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v10, 0x16u);
   }
 
-  v4 = [(PORegistrationManager *)self registrationContext];
-  [v4 setRetry:1];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  [registrationContext setRetry:1];
 
-  v5 = [(PORegistrationManager *)self registrationContext];
-  [v5 setState:8];
+  registrationContext2 = [(PORegistrationManager *)self registrationContext];
+  [registrationContext2 setState:8];
 
-  v6 = [(PORegistrationManager *)self registrationContext];
-  [v6 setAuthorizationProvided:0];
+  registrationContext3 = [(PORegistrationManager *)self registrationContext];
+  [registrationContext3 setAuthorizationProvided:0];
 
-  v7 = [(PORegistrationManager *)self registrationContext];
-  v8 = [v7 registrationUI];
+  registrationContext4 = [(PORegistrationManager *)self registrationContext];
+  registrationUI = [registrationContext4 registrationUI];
 
-  if (!v8)
+  if (!registrationUI)
   {
     [(PORegistrationManager *)self promptUserForRegistration];
   }
@@ -1629,24 +1629,24 @@ void __62__PORegistrationManager_finishRegistrationWithStatus_message___block_in
     *buf = 136315394;
     v16 = "[PORegistrationManager finishRegistrationWithRetry]";
     v17 = 2112;
-    v18 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_25E831000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v4 = [(PORegistrationManager *)self registrationContext];
-  [v4 setRetry:1];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  [registrationContext setRetry:1];
 
-  v5 = [(PORegistrationManager *)self registrationContext];
-  [v5 setState:8];
+  registrationContext2 = [(PORegistrationManager *)self registrationContext];
+  [registrationContext2 setState:8];
 
-  v6 = [(PORegistrationManager *)self configurationManager];
-  v7 = [v6 currentUserConfiguration];
-  [v7 setState:2];
+  configurationManager = [(PORegistrationManager *)self configurationManager];
+  currentUserConfiguration = [configurationManager currentUserConfiguration];
+  [currentUserConfiguration setState:2];
 
-  v8 = [(PORegistrationManager *)self configurationManager];
-  LOBYTE(v7) = [v8 saveCurrentUserConfigurationAndSyncToPreboot:1];
+  configurationManager2 = [(PORegistrationManager *)self configurationManager];
+  LOBYTE(currentUserConfiguration) = [configurationManager2 saveCurrentUserConfigurationAndSyncToPreboot:1];
 
-  if ((v7 & 1) == 0)
+  if ((currentUserConfiguration & 1) == 0)
   {
     v9 = __52__PORegistrationManager_finishRegistrationWithRetry__block_invoke();
   }
@@ -1657,18 +1657,18 @@ void __62__PORegistrationManager_finishRegistrationWithStatus_message___block_in
     *buf = 136315394;
     v16 = "[PORegistrationManager finishRegistrationWithRetry]";
     v17 = 2112;
-    v18 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_25E831000, v10, OS_LOG_TYPE_DEFAULT, "%s calling registrationDidComplete on %@", buf, 0x16u);
   }
 
-  v11 = [(PORegistrationManager *)self registrationContext];
-  v12 = [v11 ssoExtension];
+  registrationContext3 = [(PORegistrationManager *)self registrationContext];
+  ssoExtension = [registrationContext3 ssoExtension];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __52__PORegistrationManager_finishRegistrationWithRetry__block_invoke_103;
   v14[3] = &unk_279A3A060;
   v14[4] = self;
-  [v12 registrationDidCompleteWithCompletion:v14];
+  [ssoExtension registrationDidCompleteWithCompletion:v14];
 
   [(PORegistrationManager *)self notifyUserRegistrationDidChange];
   v13 = *MEMORY[0x277D85DE8];
@@ -1803,67 +1803,67 @@ uint64_t __112__PORegistrationManager_handleUserRegistrationForUser_repair_newPa
 - (void)promptUserForRegistration
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v3 = [(PORegistrationManager *)self registrationContext];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
 
-  if (v3)
+  if (registrationContext)
   {
-    v4 = [(PORegistrationManager *)self configurationManager];
-    v5 = [v4 currentLoginConfiguration];
+    configurationManager = [(PORegistrationManager *)self configurationManager];
+    currentLoginConfiguration = [configurationManager currentLoginConfiguration];
 
-    v6 = [(PORegistrationManager *)self registrationContext];
-    if ([v6 isRepair])
+    registrationContext2 = [(PORegistrationManager *)self registrationContext];
+    if ([registrationContext2 isRepair])
     {
     }
 
     else
     {
-      v7 = [(PORegistrationManager *)self registrationContext];
-      v8 = [v7 migratingDeviceKeys];
+      registrationContext3 = [(PORegistrationManager *)self registrationContext];
+      migratingDeviceKeys = [registrationContext3 migratingDeviceKeys];
 
-      if (!v8)
+      if (!migratingDeviceKeys)
       {
-        v9 = [(PORegistrationManager *)self configurationManager];
-        v10 = [v9 currentDeviceConfiguration];
-        v11 = [v10 accountDisplayName];
-        v12 = v11;
-        if (!v11)
+        configurationManager2 = [(PORegistrationManager *)self configurationManager];
+        currentDeviceConfiguration = [configurationManager2 currentDeviceConfiguration];
+        accountDisplayName = [currentDeviceConfiguration accountDisplayName];
+        accountDisplayName2 = accountDisplayName;
+        if (!accountDisplayName)
         {
-          v12 = [v5 accountDisplayName];
+          accountDisplayName2 = [currentLoginConfiguration accountDisplayName];
         }
 
-        v13 = [(PORegistrationManager *)self createRegistrationNotificationWithAccountName:v12];
+        v13 = [(PORegistrationManager *)self createRegistrationNotificationWithAccountName:accountDisplayName2];
         goto LABEL_13;
       }
     }
 
-    v9 = [(PORegistrationManager *)self configurationManager];
-    v10 = [v9 currentDeviceConfiguration];
-    v11 = [v10 accountDisplayName];
-    v12 = v11;
-    if (!v11)
+    configurationManager2 = [(PORegistrationManager *)self configurationManager];
+    currentDeviceConfiguration = [configurationManager2 currentDeviceConfiguration];
+    accountDisplayName = [currentDeviceConfiguration accountDisplayName];
+    accountDisplayName2 = accountDisplayName;
+    if (!accountDisplayName)
     {
-      v12 = [v5 accountDisplayName];
+      accountDisplayName2 = [currentLoginConfiguration accountDisplayName];
     }
 
-    v13 = [(PORegistrationManager *)self createRegistrationUpdateNotificationWithAccountName:v12];
+    v13 = [(PORegistrationManager *)self createRegistrationUpdateNotificationWithAccountName:accountDisplayName2];
 LABEL_13:
     v14 = v13;
-    if (!v11)
+    if (!accountDisplayName)
     {
     }
 
-    v15 = [(PORegistrationManager *)self userNotificationCenter];
+    userNotificationCenter = [(PORegistrationManager *)self userNotificationCenter];
     v34[0] = @"com.apple.PlatformSSO.registration";
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
-    [v15 removeDeliveredNotificationsWithIdentifiers:v16];
+    [userNotificationCenter removeDeliveredNotificationsWithIdentifiers:v16];
 
-    v17 = [(PORegistrationManager *)self userNotificationCenter];
+    userNotificationCenter2 = [(PORegistrationManager *)self userNotificationCenter];
     v33 = @"com.apple.PlatformSSO.registration";
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v33 count:1];
-    [v17 removePendingNotificationRequestsWithIdentifiers:v18];
+    [userNotificationCenter2 removePendingNotificationRequestsWithIdentifiers:v18];
 
-    v19 = [(PORegistrationManager *)self registrationContext];
-    LODWORD(v18) = [v19 isRetry];
+    registrationContext4 = [(PORegistrationManager *)self registrationContext];
+    LODWORD(v18) = [registrationContext4 isRetry];
 
     if (v18)
     {
@@ -1886,25 +1886,25 @@ LABEL_13:
       _os_log_impl(&dword_25E831000, v24, OS_LOG_TYPE_INFO, "Sending registration notification", v32, 2u);
     }
 
-    v25 = [(PORegistrationManager *)self userNotificationCenter];
-    [v25 addNotificationRequest:v23 withCompletionHandler:&__block_literal_global_155];
+    userNotificationCenter3 = [(PORegistrationManager *)self userNotificationCenter];
+    [userNotificationCenter3 addNotificationRequest:v23 withCompletionHandler:&__block_literal_global_155];
 
-    v26 = [(PORegistrationManager *)self registrationContext];
-    v27 = [v26 ssoExtension];
-    [v27 close];
+    registrationContext5 = [(PORegistrationManager *)self registrationContext];
+    ssoExtension = [registrationContext5 ssoExtension];
+    [ssoExtension close];
 
-    v28 = [(PORegistrationManager *)self registrationContext];
-    v29 = [v28 ssoExtension];
-    [v29 unload];
+    registrationContext6 = [(PORegistrationManager *)self registrationContext];
+    ssoExtension2 = [registrationContext6 ssoExtension];
+    [ssoExtension2 unload];
 
-    v30 = [(PORegistrationManager *)self registrationContext];
-    [v30 setSsoExtension:0];
+    registrationContext7 = [(PORegistrationManager *)self registrationContext];
+    [registrationContext7 setSsoExtension:0];
 
     goto LABEL_21;
   }
 
-  v5 = PO_LOG_PORegistrationManager();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  currentLoginConfiguration = PO_LOG_PORegistrationManager();
+  if (os_log_type_enabled(currentLoginConfiguration, OS_LOG_TYPE_DEBUG))
   {
     [PORegistrationManager promptUserForRegistration];
   }
@@ -1941,54 +1941,54 @@ id __50__PORegistrationManager_promptUserForRegistration__block_invoke_2(uint64_
   return v1;
 }
 
-- (void)resetRegistrationWithCompletion:(id)a3
+- (void)resetRegistrationWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_PORegistrationManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v19 = "[PORegistrationManager resetRegistrationWithCompletion:]";
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v6 = [(PORegistrationManager *)self userNotificationCenter];
+  userNotificationCenter = [(PORegistrationManager *)self userNotificationCenter];
   v17 = @"com.apple.PlatformSSO.registration";
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
-  [v6 removeDeliveredNotificationsWithIdentifiers:v7];
+  [userNotificationCenter removeDeliveredNotificationsWithIdentifiers:v7];
 
-  v8 = [(PORegistrationManager *)self userNotificationCenter];
+  userNotificationCenter2 = [(PORegistrationManager *)self userNotificationCenter];
   v16 = @"com.apple.PlatformSSO.registration";
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
-  [v8 removePendingNotificationRequestsWithIdentifiers:v9];
+  [userNotificationCenter2 removePendingNotificationRequestsWithIdentifiers:v9];
 
   [(PORegistrationManager *)self updateRegistrationStateFailed:0];
-  v10 = [(PORegistrationManager *)self registrationContext];
-  v11 = [v10 ssoExtension];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  ssoExtension = [registrationContext ssoExtension];
 
-  v12 = [(PORegistrationManager *)self registrationContext];
-  [v12 registrationUI];
+  registrationContext2 = [(PORegistrationManager *)self registrationContext];
+  [registrationContext2 registrationUI];
 
   [(PORegistrationManager *)self setRegistrationContext:0];
-  if (v11)
+  if (ssoExtension)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __57__PORegistrationManager_resetRegistrationWithCompletion___block_invoke;
     v14[3] = &unk_279A3A0D0;
     v14[4] = self;
-    v15 = v4;
-    [v11 registrationDidCancelWithCompletion:v14];
+    v15 = completionCopy;
+    [ssoExtension registrationDidCancelWithCompletion:v14];
   }
 
   else
   {
     [(PORegistrationManager *)self notifyUserRegistrationDidChange];
     [(PORegistrationManager *)self notifyDeviceRegistrationDidChange];
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2004,12 +2004,12 @@ uint64_t __57__PORegistrationManager_resetRegistrationWithCompletion___block_inv
 
 - (void)handleDeviceRegistrationNotification
 {
-  v3 = [(PORegistrationManager *)self registrationContext];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
 
-  if (v3)
+  if (registrationContext)
   {
-    v4 = [(PORegistrationManager *)self registrationContext];
-    [v4 setUserNotified:1];
+    registrationContext2 = [(PORegistrationManager *)self registrationContext];
+    [registrationContext2 setUserNotified:1];
 
     activity_block[0] = MEMORY[0x277D85DD0];
     activity_block[1] = 3221225472;
@@ -2021,8 +2021,8 @@ uint64_t __57__PORegistrationManager_resetRegistrationWithCompletion___block_inv
 
   else
   {
-    v5 = [(PORegistrationManager *)self process];
-    [v5 handleConfigurationChanged:1];
+    process = [(PORegistrationManager *)self process];
+    [process handleConfigurationChanged:1];
   }
 }
 
@@ -2038,11 +2038,11 @@ uint64_t __61__PORegistrationManager_handleDeviceRegistrationNotification__block
 
 - (void)handleUserRegistrationNotification
 {
-  v3 = [(PORegistrationManager *)self registrationContext];
-  if (v3 && (v4 = v3, -[PORegistrationManager registrationContext](self, "registrationContext"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 state], v5, v4, v6 != 1))
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  if (registrationContext && (v4 = registrationContext, -[PORegistrationManager registrationContext](self, "registrationContext"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 state], v5, v4, v6 != 1))
   {
-    v7 = [(PORegistrationManager *)self registrationContext];
-    [v7 setUserNotified:1];
+    registrationContext2 = [(PORegistrationManager *)self registrationContext];
+    [registrationContext2 setUserNotified:1];
 
     activity_block[0] = MEMORY[0x277D85DD0];
     activity_block[1] = 3221225472;
@@ -2054,8 +2054,8 @@ uint64_t __61__PORegistrationManager_handleDeviceRegistrationNotification__block
 
   else
   {
-    v8 = [(PORegistrationManager *)self process];
-    [v8 handleConfigurationChanged:1];
+    process = [(PORegistrationManager *)self process];
+    [process handleConfigurationChanged:1];
   }
 }
 
@@ -2069,21 +2069,21 @@ uint64_t __59__PORegistrationManager_handleUserRegistrationNotification__block_i
   return [v3 showRegistrationUI];
 }
 
-- (int)ssoMethodToUse:(id)a3 profile:(id)a4
+- (int)ssoMethodToUse:(id)use profile:(id)profile
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = 1000;
-  if ([v6 authenticationMethod] != 1000)
+  useCopy = use;
+  profileCopy = profile;
+  authenticationMethod2 = 1000;
+  if ([profileCopy authenticationMethod] != 1000)
   {
-    v8 = [v5 supportedGrantTypes];
-    if (v8)
+    supportedGrantTypes = [useCopy supportedGrantTypes];
+    if (supportedGrantTypes)
     {
-      v9 = v8;
-      if (v8)
+      v9 = supportedGrantTypes;
+      if (supportedGrantTypes)
       {
-        v10 = [v6 authenticationMethod];
-        if (v10 == 1)
+        authenticationMethod = [profileCopy authenticationMethod];
+        if (authenticationMethod == 1)
         {
           goto LABEL_7;
         }
@@ -2091,82 +2091,82 @@ uint64_t __59__PORegistrationManager_handleUserRegistrationNotification__block_i
 
       if ((v9 & 2) != 0)
       {
-        v10 = [v6 authenticationMethod];
-        if (v10 == 2)
+        authenticationMethod = [profileCopy authenticationMethod];
+        if (authenticationMethod == 2)
         {
 LABEL_7:
-          v7 = v10;
+          authenticationMethod2 = authenticationMethod;
           goto LABEL_14;
         }
 
-        if ([v6 authenticationMethod] == 3)
+        if ([profileCopy authenticationMethod] == 3)
         {
-          v7 = 3;
+          authenticationMethod2 = 3;
         }
 
         else
         {
-          v7 = 1000;
+          authenticationMethod2 = 1000;
         }
       }
     }
 
     else
     {
-      v11 = [v5 authenticationMethods];
-      v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v6, "authenticationMethod")}];
-      v13 = [v11 containsObject:v12];
+      authenticationMethods = [useCopy authenticationMethods];
+      v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(profileCopy, "authenticationMethod")}];
+      v13 = [authenticationMethods containsObject:v12];
 
       if (v13)
       {
-        v7 = [v6 authenticationMethod];
+        authenticationMethod2 = [profileCopy authenticationMethod];
       }
     }
   }
 
 LABEL_14:
 
-  return v7;
+  return authenticationMethod2;
 }
 
-- (id)loadSSOExtensionWithExtensionBundleIdentifier:(id)a3
+- (id)loadSSOExtensionWithExtensionBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [POExtension alloc];
-  v6 = [(PORegistrationManager *)self extensionManager];
-  v7 = [(POExtension *)v5 initWithExtensionBundleIdentifier:v4 extensionManager:v6 delegate:self];
+  extensionManager = [(PORegistrationManager *)self extensionManager];
+  v7 = [(POExtension *)v5 initWithExtensionBundleIdentifier:identifierCopy extensionManager:extensionManager delegate:self];
 
   return v7;
 }
 
-- (void)handleRegistrationViewControllerWithCompletion:(id)a3
+- (void)handleRegistrationViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PORegistrationManager *)self registrationContext];
+  completionCopy = completion;
+  registrationContext = [(PORegistrationManager *)self registrationContext];
 
-  if (!v5)
+  if (!registrationContext)
   {
     v10 = __72__PORegistrationManager_handleRegistrationViewControllerWithCompletion___block_invoke();
     v11 = v10;
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, 0, v10);
+      completionCopy[2](completionCopy, 0, v10);
 
       goto LABEL_9;
     }
   }
 
-  v6 = [(PORegistrationManager *)self registrationContext];
-  v7 = [v6 options];
+  registrationContext2 = [(PORegistrationManager *)self registrationContext];
+  options = [registrationContext2 options];
 
-  if (v7)
+  if (options)
   {
 LABEL_8:
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __72__PORegistrationManager_handleRegistrationViewControllerWithCompletion___block_invoke_171;
     block[3] = &unk_279A3A0F8;
-    v13 = v4;
+    v13 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     goto LABEL_9;
@@ -2174,13 +2174,13 @@ LABEL_8:
 
   v8 = __72__PORegistrationManager_handleRegistrationViewControllerWithCompletion___block_invoke_165();
   v9 = v8;
-  if (!v4)
+  if (!completionCopy)
   {
 
     goto LABEL_8;
   }
 
-  v4[2](v4, 0, v8);
+  completionCopy[2](completionCopy, 0, v8);
 
 LABEL_9:
 }
@@ -2209,32 +2209,32 @@ id __72__PORegistrationManager_handleRegistrationViewControllerWithCompletion___
   return v0;
 }
 
-- (void)handleRemovingRegistrationForExtension:(id)a3 alreadyDeleted:(BOOL)a4
+- (void)handleRemovingRegistrationForExtension:(id)extension alreadyDeleted:(BOOL)deleted
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  extensionCopy = extension;
   v7 = PO_LOG_PORegistrationManager();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v40 = "[PORegistrationManager handleRemovingRegistrationForExtension:alreadyDeleted:]";
     v41 = 2112;
-    v42 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v7, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  if (!a4)
+  if (!deleted)
   {
-    v33 = v6;
+    v33 = extensionCopy;
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v8 = [(PORegistrationManager *)self configurationManager];
-    v9 = [v8 currentUserConfiguration];
-    v10 = [v9 kerberosStatus];
+    configurationManager = [(PORegistrationManager *)self configurationManager];
+    currentUserConfiguration = [configurationManager currentUserConfiguration];
+    kerberosStatus = [currentUserConfiguration kerberosStatus];
 
-    v11 = [v10 countByEnumeratingWithState:&v34 objects:v38 count:16];
+    v11 = [kerberosStatus countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v11)
     {
       v12 = v11;
@@ -2245,64 +2245,64 @@ id __72__PORegistrationManager_handleRegistrationViewControllerWithCompletion___
         {
           if (*v35 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(kerberosStatus);
           }
 
           v15 = *(*(&v34 + 1) + 8 * i);
           v16 = PO_LOG_PORegistrationManager();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
-            v17 = [v15 cacheName];
+            cacheName = [v15 cacheName];
             *buf = 138543362;
-            v40 = v17;
+            v40 = cacheName;
             _os_log_impl(&dword_25E831000, v16, OS_LOG_TYPE_INFO, "Removing kerberos tickets for cache: %{public}@", buf, 0xCu);
           }
 
-          v18 = [(PORegistrationManager *)self process];
-          v19 = [v18 kerberosHelper];
-          v20 = [v15 cacheName];
-          [v19 destroyCredentialForUUID:v20];
+          process = [(PORegistrationManager *)self process];
+          kerberosHelper = [process kerberosHelper];
+          cacheName2 = [v15 cacheName];
+          [kerberosHelper destroyCredentialForUUID:cacheName2];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v34 objects:v38 count:16];
+        v12 = [kerberosStatus countByEnumeratingWithState:&v34 objects:v38 count:16];
       }
 
       while (v12);
     }
 
-    v21 = [(PORegistrationManager *)self configurationManager];
-    v22 = [v21 resetStoredConfiguration];
+    configurationManager2 = [(PORegistrationManager *)self configurationManager];
+    resetStoredConfiguration = [configurationManager2 resetStoredConfiguration];
 
-    v6 = v33;
-    if ((v22 & 1) == 0)
+    extensionCopy = v33;
+    if ((resetStoredConfiguration & 1) == 0)
     {
       v23 = __79__PORegistrationManager_handleRemovingRegistrationForExtension_alreadyDeleted___block_invoke();
     }
   }
 
-  v24 = [(PORegistrationManager *)self configurationManager];
-  [v24 setTokens:0 extensionIdentifier:v6 returningError:0];
+  configurationManager3 = [(PORegistrationManager *)self configurationManager];
+  [configurationManager3 setTokens:0 extensionIdentifier:extensionCopy returningError:0];
 
-  v25 = [(PORegistrationManager *)self keychainHelper];
-  [v25 _deleteAllCachedAttestations];
+  keychainHelper = [(PORegistrationManager *)self keychainHelper];
+  [keychainHelper _deleteAllCachedAttestations];
 
-  v26 = [(PORegistrationManager *)self process];
-  [v26 setupTimerForAuthentication];
+  process2 = [(PORegistrationManager *)self process];
+  [process2 setupTimerForAuthentication];
 
-  v27 = [(PORegistrationManager *)self configurationManager];
-  [v27 setSharedOnly:0];
+  configurationManager4 = [(PORegistrationManager *)self configurationManager];
+  [configurationManager4 setSharedOnly:0];
 
-  v28 = [(PORegistrationManager *)self userNotificationCenter];
-  [v28 removeAllDeliveredNotifications];
+  userNotificationCenter = [(PORegistrationManager *)self userNotificationCenter];
+  [userNotificationCenter removeAllDeliveredNotifications];
 
-  v29 = [(PORegistrationManager *)self userNotificationCenter];
-  [v29 removeAllPendingNotificationRequests];
+  userNotificationCenter2 = [(PORegistrationManager *)self userNotificationCenter];
+  [userNotificationCenter2 removeAllPendingNotificationRequests];
 
-  v30 = [(PORegistrationManager *)self process];
-  [v30 setPlatformSSOActive:0];
+  process3 = [(PORegistrationManager *)self process];
+  [process3 setPlatformSSOActive:0];
 
-  v31 = [(PORegistrationManager *)self registrationContext];
-  [v31 registrationUI];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  [registrationContext registrationUI];
 
   [(PORegistrationManager *)self setRegistrationContext:0];
   [(PORegistrationManager *)self notifyDeviceRegistrationDidChange];
@@ -2323,7 +2323,7 @@ id __79__PORegistrationManager_handleRemovingRegistrationForExtension_alreadyDel
   return v0;
 }
 
-- (unint64_t)requestSmartCardForBinding:(BOOL)a3 window:(id)a4 tokenId:(id *)a5 tokenHash:(id *)a6 wrapTokenHash:(id *)a7 pinContext:(id *)a8
+- (unint64_t)requestSmartCardForBinding:(BOOL)binding window:(id)window tokenId:(id *)id tokenHash:(id *)hash wrapTokenHash:(id *)tokenHash pinContext:(id *)context
 {
   v8 = PO_LOG_PORegistrationManager();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -2334,11 +2334,11 @@ id __79__PORegistrationManager_handleRemovingRegistrationForExtension_alreadyDel
   return 0;
 }
 
-- (id)saveSSOTokens:(id)a3 toKeychainUsingContext:(id)a4 tokenId:(id)a5
+- (id)saveSSOTokens:(id)tokens toKeychainUsingContext:(id)context tokenId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  tokensCopy = tokens;
+  contextCopy = context;
+  idCopy = id;
   v10 = PO_LOG_PORegistrationManager();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -2349,13 +2349,13 @@ id __79__PORegistrationManager_handleRemovingRegistrationForExtension_alreadyDel
   v11 = +[POConfigurationManager sharedInstance];
   v12 = v11;
   v13 = MEMORY[0x277D3D1E0];
-  if (v9)
+  if (idCopy)
   {
-    v29 = v8;
-    v14 = [v11 currentDeviceConfiguration];
-    v15 = [v14 deviceEncryptionKey];
-    v16 = [v9 dataUsingEncoding:4];
-    v17 = [v13 decryptPendingSSOTokens:v7 UsingPrivateKey:v15 sharedData:v16];
+    v29 = contextCopy;
+    currentDeviceConfiguration = [v11 currentDeviceConfiguration];
+    deviceEncryptionKey = [currentDeviceConfiguration deviceEncryptionKey];
+    v16 = [idCopy dataUsingEncoding:4];
+    v17 = [v13 decryptPendingSSOTokens:tokensCopy UsingPrivateKey:deviceEncryptionKey sharedData:v16];
 
     v18 = 0;
   }
@@ -2363,30 +2363,30 @@ id __79__PORegistrationManager_handleRemovingRegistrationForExtension_alreadyDel
   else
   {
     v33 = 0;
-    v14 = [MEMORY[0x277D3D1E0] passwordDataFromContext:v8 error:&v33];
+    currentDeviceConfiguration = [MEMORY[0x277D3D1E0] passwordDataFromContext:contextCopy error:&v33];
     v18 = v33;
-    if (!v14)
+    if (!currentDeviceConfiguration)
     {
       v28 = __70__PORegistrationManager_saveSSOTokens_toKeychainUsingContext_tokenId___block_invoke();
       v17 = 0;
       goto LABEL_10;
     }
 
-    v29 = v8;
+    v29 = contextCopy;
     v19 = MEMORY[0x277D3D1E0];
-    v20 = [v12 currentDeviceConfiguration];
-    v17 = [v19 decryptPendingSSOTokens:v7 UsingPrivateKey:objc_msgSend(v20 sharedData:{"deviceEncryptionKey"), v14}];
+    currentDeviceConfiguration2 = [v12 currentDeviceConfiguration];
+    v17 = [v19 decryptPendingSSOTokens:tokensCopy UsingPrivateKey:objc_msgSend(currentDeviceConfiguration2 sharedData:{"deviceEncryptionKey"), currentDeviceConfiguration}];
 
-    memset_s([v14 mutableBytes], objc_msgSend(v14, "length"), 0, objc_msgSend(v14, "length"));
+    memset_s([currentDeviceConfiguration mutableBytes], objc_msgSend(currentDeviceConfiguration, "length"), 0, objc_msgSend(currentDeviceConfiguration, "length"));
   }
 
   v21 = v18;
 
   v22 = NSUserName();
-  v23 = [v12 currentDeviceConfiguration];
-  v24 = [v23 extensionIdentifier];
+  currentDeviceConfiguration3 = [v12 currentDeviceConfiguration];
+  extensionIdentifier = [currentDeviceConfiguration3 extensionIdentifier];
   v32 = v18;
-  v25 = [v12 setTokens:v17 user:v22 extensionIdentifier:v24 returningError:&v32];
+  v25 = [v12 setTokens:v17 user:v22 extensionIdentifier:extensionIdentifier returningError:&v32];
   v18 = v32;
 
   if ((v25 & 1) == 0)
@@ -2400,7 +2400,7 @@ id __79__PORegistrationManager_handleRemovingRegistrationForExtension_alreadyDel
     v26 = __70__PORegistrationManager_saveSSOTokens_toKeychainUsingContext_tokenId___block_invoke_182(v30);
   }
 
-  v8 = v29;
+  contextCopy = v29;
 LABEL_10:
 
   return v17;
@@ -2438,10 +2438,10 @@ id __70__PORegistrationManager_saveSSOTokens_toKeychainUsingContext_tokenId___bl
     [PORegistrationManager retrieveProfilePicture];
   }
 
-  v4 = [(PORegistrationManager *)self configurationManager];
-  v5 = [v4 currentDeviceConfiguration];
+  configurationManager = [(PORegistrationManager *)self configurationManager];
+  currentDeviceConfiguration = [configurationManager currentDeviceConfiguration];
 
-  if (!v5)
+  if (!currentDeviceConfiguration)
   {
     v19 = __47__PORegistrationManager_retrieveProfilePicture__block_invoke();
 LABEL_14:
@@ -2449,10 +2449,10 @@ LABEL_14:
     goto LABEL_19;
   }
 
-  v6 = [v5 synchronizeProfilePicture];
+  synchronizeProfilePicture = [currentDeviceConfiguration synchronizeProfilePicture];
   v7 = PO_LOG_PORegistrationManager();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-  if ((v6 & 1) == 0)
+  if ((synchronizeProfilePicture & 1) == 0)
   {
     if (v8)
     {
@@ -2467,15 +2467,15 @@ LABEL_14:
     [PORegistrationManager retrieveProfilePicture];
   }
 
-  v9 = [v5 extensionIdentifier];
-  v10 = [(PORegistrationManager *)self loadSSOExtensionWithExtensionBundleIdentifier:v9];
+  extensionIdentifier = [currentDeviceConfiguration extensionIdentifier];
+  v10 = [(PORegistrationManager *)self loadSSOExtensionWithExtensionBundleIdentifier:extensionIdentifier];
 
   if (v10)
   {
     v11 = [POProfile alloc];
-    v12 = [(PORegistrationManager *)self configurationHost];
-    v13 = [v12 platformSSOProfile];
-    v14 = [(POProfile *)v11 initWithProfile:v13];
+    configurationHost = [(PORegistrationManager *)self configurationHost];
+    platformSSOProfile = [configurationHost platformSSOProfile];
+    v14 = [(POProfile *)v11 initWithProfile:platformSSOProfile];
 
     if (v14)
     {
@@ -2491,14 +2491,14 @@ LABEL_14:
       v27 = __Block_byref_object_copy_;
       v28 = __Block_byref_object_dispose_;
       v29 = dispatch_semaphore_create(0);
-      v15 = [(POProfile *)v14 extensionData];
+      extensionData = [(POProfile *)v14 extensionData];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __47__PORegistrationManager_retrieveProfilePicture__block_invoke_203;
       v23[3] = &unk_279A3A120;
       v23[4] = &v24;
       v23[5] = &v30;
-      [v10 profilePictureForUserUsingExtensionData:v15 completion:v23];
+      [v10 profilePictureForUserUsingExtensionData:extensionData completion:v23];
 
       v16 = v25[5];
       v17 = dispatch_time(0, (60.0 * 1000000000.0));
@@ -2591,11 +2591,11 @@ void __47__PORegistrationManager_retrieveProfilePicture__block_invoke_203(uint64
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = MEMORY[0x277CCABB0];
-    v5 = [(PORegistrationManager *)self registrationContext];
-    v6 = [v4 numberWithInteger:{objc_msgSend(v5, "state")}];
+    registrationContext = [(PORegistrationManager *)self registrationContext];
+    v6 = [v4 numberWithInteger:{objc_msgSend(registrationContext, "state")}];
     v7 = MEMORY[0x277CCABB0];
-    v8 = [(PORegistrationManager *)self registrationContext];
-    v9 = [v7 numberWithInt:{objc_msgSend(v8, "failureCount")}];
+    registrationContext2 = [(PORegistrationManager *)self registrationContext];
+    v9 = [v7 numberWithInt:{objc_msgSend(registrationContext2, "failureCount")}];
     v12 = 136315906;
     v13 = "[PORegistrationManager windowDidClose]";
     v14 = 2114;
@@ -2603,29 +2603,29 @@ void __47__PORegistrationManager_retrieveProfilePicture__block_invoke_203(uint64
     v16 = 2114;
     v17 = v9;
     v18 = 2112;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v3, OS_LOG_TYPE_DEFAULT, "%s state = %{public}@, failureCount = %{public}@ on %@", &v12, 0x2Au);
   }
 
-  v10 = [(PORegistrationManager *)self registrationContext];
-  [v10 state];
+  registrationContext3 = [(PORegistrationManager *)self registrationContext];
+  [registrationContext3 state];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestDidCompleteWithError:(id)a3
+- (void)requestDidCompleteWithError:(id)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = PO_LOG_PORegistrationManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = MEMORY[0x277CCABB0];
-    v7 = [(PORegistrationManager *)self registrationContext];
-    v8 = [v6 numberWithInteger:{objc_msgSend(v7, "state")}];
+    registrationContext = [(PORegistrationManager *)self registrationContext];
+    v8 = [v6 numberWithInteger:{objc_msgSend(registrationContext, "state")}];
     v9 = MEMORY[0x277CCABB0];
-    v10 = [(PORegistrationManager *)self registrationContext];
-    v11 = [v9 numberWithInt:{objc_msgSend(v10, "failureCount")}];
+    registrationContext2 = [(PORegistrationManager *)self registrationContext];
+    v11 = [v9 numberWithInt:{objc_msgSend(registrationContext2, "failureCount")}];
     *buf = 136315906;
     v25 = "[PORegistrationManager requestDidCompleteWithError:]";
     v26 = 2114;
@@ -2633,47 +2633,47 @@ void __47__PORegistrationManager_retrieveProfilePicture__block_invoke_203(uint64
     v28 = 2114;
     v29 = v11;
     v30 = 2112;
-    v31 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v5, OS_LOG_TYPE_DEFAULT, "%s state = %{public}@, failureCount = %{public}@ on %@", buf, 0x2Au);
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  v13 = [(PORegistrationManager *)v12 registrationContext];
-  v14 = [v13 ssoExtension];
-  v15 = v14 == 0;
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  registrationContext3 = [(PORegistrationManager *)selfCopy2 registrationContext];
+  ssoExtension = [registrationContext3 ssoExtension];
+  v15 = ssoExtension == 0;
 
   if (v15)
   {
-    objc_sync_exit(v12);
+    objc_sync_exit(selfCopy2);
   }
 
   else
   {
-    v16 = [(PORegistrationManager *)v12 registrationContext];
-    v17 = [v16 ssoExtension];
-    [v17 unload];
+    registrationContext4 = [(PORegistrationManager *)selfCopy2 registrationContext];
+    ssoExtension2 = [registrationContext4 ssoExtension];
+    [ssoExtension2 unload];
 
-    v18 = [(PORegistrationManager *)v12 registrationContext];
-    [v18 setSsoExtension:0];
+    registrationContext5 = [(PORegistrationManager *)selfCopy2 registrationContext];
+    [registrationContext5 setSsoExtension:0];
 
-    objc_sync_exit(v12);
-    v19 = [(PORegistrationManager *)v12 registrationContext];
-    LOBYTE(v17) = [v19 state] == 1;
+    objc_sync_exit(selfCopy2);
+    registrationContext6 = [(PORegistrationManager *)selfCopy2 registrationContext];
+    LOBYTE(ssoExtension2) = [registrationContext6 state] == 1;
 
-    if ((v17 & 1) == 0)
+    if ((ssoExtension2 & 1) == 0)
     {
-      v20 = [(PORegistrationManager *)v12 registrationContext];
-      v21 = [v20 isBuddyFlow];
+      registrationContext7 = [(PORegistrationManager *)selfCopy2 registrationContext];
+      isBuddyFlow = [registrationContext7 isBuddyFlow];
 
-      if ((v21 & 1) == 0)
+      if ((isBuddyFlow & 1) == 0)
       {
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __53__PORegistrationManager_requestDidCompleteWithError___block_invoke;
         v23[3] = &unk_279A3A148;
-        v23[4] = v12;
-        [(PORegistrationManager *)v12 showAlertWithError:v4 completion:v23];
+        v23[4] = selfCopy2;
+        [(PORegistrationManager *)selfCopy2 showAlertWithError:errorCopy completion:v23];
       }
     }
   }
@@ -2907,67 +2907,67 @@ uint64_t __53__PORegistrationManager_requestDidCompleteWithError___block_invoke_
   }
 }
 
-- (void)showAlertMessage:(id)a3 messageText:(id)a4 completion:(id)a5
+- (void)showAlertMessage:(id)message messageText:(id)text completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = PO_LOG_PORegistrationManager();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [PORegistrationManager showAlertMessage:messageText:completion:];
   }
 
-  v5[2](v5, 3);
+  completionCopy[2](completionCopy, 3);
 }
 
-- (void)showAlertWithError:(id)a3 completion:(id)a4
+- (void)showAlertWithError:(id)error completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  errorCopy = error;
   v7 = PO_LOG_PORegistrationManager();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [PORegistrationManager showAlertWithError:completion:];
   }
 
-  v8 = [v6 code];
-  if (v8 != -3 || v5)
+  code = [errorCopy code];
+  if (code != -3 || completionCopy)
   {
-    v5[2](v5, 3);
+    completionCopy[2](completionCopy, 3);
   }
 }
 
-- (id)createRegistrationNotificationWithAccountName:(id)a3
+- (id)createRegistrationNotificationWithAccountName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(MEMORY[0x277CE1F60]);
   [v5 setShouldBackgroundDefaultAction:1];
   v6 = MEMORY[0x277CE1FB0];
-  v7 = [(PORegistrationManager *)self registrationContext];
-  v8 = [v7 containerAppBundleIdentifier];
-  v9 = [v6 iconForApplicationIdentifier:v8];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  containerAppBundleIdentifier = [registrationContext containerAppBundleIdentifier];
+  v9 = [v6 iconForApplicationIdentifier:containerAppBundleIdentifier];
   [v5 setIcon:v9];
 
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"NOTIFICATION_REGISTRATION_TITLE" value:&stru_287080C08 table:0];
   [v5 setTitle:v11];
 
-  v12 = [v4 length];
-  v13 = [(PORegistrationManager *)self registrationContext];
-  v14 = [v13 isNewPasswordUser];
+  v12 = [nameCopy length];
+  registrationContext2 = [(PORegistrationManager *)self registrationContext];
+  isNewPasswordUser = [registrationContext2 isNewPasswordUser];
 
   if (v12)
   {
-    if (v14)
+    if (isNewPasswordUser)
     {
       v15 = @"CUSTOM_NOTIFICATION_COMPLETE_REGISTRATION_BODY";
     }
 
     else
     {
-      v17 = [(PORegistrationManager *)self registrationContext];
-      v18 = [v17 authMethod];
+      registrationContext3 = [(PORegistrationManager *)self registrationContext];
+      authMethod = [registrationContext3 authMethod];
 
-      if (v18 == 1)
+      if (authMethod == 1)
       {
         v15 = @"CUSTOM_PASSWORD_NOTIFICATION_REGISTRATION_BODY";
       }
@@ -2981,23 +2981,23 @@ uint64_t __53__PORegistrationManager_requestDidCompleteWithError___block_invoke_
     v19 = MEMORY[0x277CCACA8];
     v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v21 = [v20 localizedStringForKey:v15 value:&stru_287080C08 table:0];
-    v22 = [v19 localizedStringWithFormat:v21, v4];
-    [v5 setBody:v22];
+    nameCopy = [v19 localizedStringWithFormat:v21, nameCopy];
+    [v5 setBody:nameCopy];
   }
 
   else
   {
-    if (v14)
+    if (isNewPasswordUser)
     {
       v16 = @"DEFAULT_NOTIFICATION_COMPLETE_REGISTRATION_BODY";
     }
 
     else
     {
-      v23 = [(PORegistrationManager *)self registrationContext];
-      v24 = [v23 authMethod];
+      registrationContext4 = [(PORegistrationManager *)self registrationContext];
+      authMethod2 = [registrationContext4 authMethod];
 
-      if (v24 == 1)
+      if (authMethod2 == 1)
       {
         v16 = @"DEFAULT_PASSWORD_NOTIFICATION_REGISTRATION_BODY";
       }
@@ -3013,8 +3013,8 @@ uint64_t __53__PORegistrationManager_requestDidCompleteWithError___block_invoke_
     [v5 setBody:v21];
   }
 
-  v25 = [(PORegistrationManager *)self registrationContext];
-  if ([v25 isUserNotification])
+  registrationContext5 = [(PORegistrationManager *)self registrationContext];
+  if ([registrationContext5 isUserNotification])
   {
     v26 = @"REGISTER_USER";
   }
@@ -3032,28 +3032,28 @@ uint64_t __53__PORegistrationManager_requestDidCompleteWithError___block_invoke_
   return v5;
 }
 
-- (id)createRegistrationUpdateNotificationWithAccountName:(id)a3
+- (id)createRegistrationUpdateNotificationWithAccountName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(MEMORY[0x277CE1F60]);
   [v5 setShouldBackgroundDefaultAction:1];
   v6 = MEMORY[0x277CE1FB0];
-  v7 = [(PORegistrationManager *)self registrationContext];
-  v8 = [v7 containerAppBundleIdentifier];
-  v9 = [v6 iconForApplicationIdentifier:v8];
+  registrationContext = [(PORegistrationManager *)self registrationContext];
+  containerAppBundleIdentifier = [registrationContext containerAppBundleIdentifier];
+  v9 = [v6 iconForApplicationIdentifier:containerAppBundleIdentifier];
   [v5 setIcon:v9];
 
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"NOTIFICATION_REGISTRATION_UPDATE_TITLE" value:&stru_287080C08 table:0];
   [v5 setTitle:v11];
 
-  if ([v4 length])
+  if ([nameCopy length])
   {
     v12 = MEMORY[0x277CCACA8];
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v14 = [v13 localizedStringForKey:@"CUSTOM_NOTIFICATION_REGISTRATION_UPDATE_BODY" value:&stru_287080C08 table:0];
-    v15 = [v12 localizedStringWithFormat:v14, v4];
-    [v5 setBody:v15];
+    nameCopy = [v12 localizedStringWithFormat:v14, nameCopy];
+    [v5 setBody:nameCopy];
   }
 
   else
@@ -3063,8 +3063,8 @@ uint64_t __53__PORegistrationManager_requestDidCompleteWithError___block_invoke_
     [v5 setBody:v14];
   }
 
-  v16 = [(PORegistrationManager *)self registrationContext];
-  if ([v16 isUserNotification])
+  registrationContext2 = [(PORegistrationManager *)self registrationContext];
+  if ([registrationContext2 isUserNotification])
   {
     v17 = @"REGISTER_USER";
   }
@@ -3089,12 +3089,12 @@ uint64_t __53__PORegistrationManager_requestDidCompleteWithError___block_invoke_
   return WeakRetained;
 }
 
-- (void)_startDeviceRegistrationWithCompletionHandler:(id)a3
+- (void)_startDeviceRegistrationWithCompletionHandler:(id)handler
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FD0ADB0, &qword_25E890748) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -3110,22 +3110,22 @@ uint64_t __53__PORegistrationManager_requestDidCompleteWithError___block_invoke_
   v12[3] = 0;
   v12[4] = &unk_25E890888;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_25E884D3C(0, 0, v7, &unk_25E890890, v12);
 }
 
-- (void)failDeviceRegistrationPostRegistrationWithUserInteractionAllowed:(BOOL)a3
+- (void)failDeviceRegistrationPostRegistrationWithUserInteractionAllowed:(BOOL)allowed
 {
-  v4 = self;
-  sub_25E8813F4(a3);
+  selfCopy = self;
+  sub_25E8813F4(allowed);
 }
 
-- (void)_startUserRegistrationWithCompletionHandler:(id)a3
+- (void)_startUserRegistrationWithCompletionHandler:(id)handler
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FD0ADB0, &qword_25E890748) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -3141,7 +3141,7 @@ uint64_t __53__PORegistrationManager_requestDidCompleteWithError___block_invoke_
   v12[3] = 0;
   v12[4] = &unk_25E890840;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_25E884D3C(0, 0, v7, &unk_25E890850, v12);
 }
 

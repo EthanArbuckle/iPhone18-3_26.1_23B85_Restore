@@ -1,8 +1,8 @@
 @interface CanvasElementResizeHandle
-- (BOOL)scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4;
-- (_TtC8PaperKit25CanvasElementResizeHandle)initWithCoder:(id)a3;
-- (_TtC8PaperKit25CanvasElementResizeHandle)initWithFrame:(CGRect)a3;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (BOOL)scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location;
+- (_TtC8PaperKit25CanvasElementResizeHandle)initWithCoder:(id)coder;
+- (_TtC8PaperKit25CanvasElementResizeHandle)initWithFrame:(CGRect)frame;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)didMoveToWindow;
 @end
 
@@ -10,11 +10,11 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   CanvasElementResizeHandle.didMoveToWindow()();
 }
 
-- (_TtC8PaperKit25CanvasElementResizeHandle)initWithCoder:(id)a3
+- (_TtC8PaperKit25CanvasElementResizeHandle)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC8PaperKit25CanvasElementResizeHandle_resizeViewCenter;
   *v3 = 0;
@@ -25,28 +25,28 @@
   return result;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = specialized CanvasElementResizeHandle.pointerInteraction(_:styleFor:)(v6);
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
+  v9 = specialized CanvasElementResizeHandle.pointerInteraction(_:styleFor:)(interactionCopy);
 
   return v9;
 }
 
-- (BOOL)scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4
+- (BOOL)scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = self;
+  y = location.y;
+  x = location.x;
+  selfCopy = self;
   CanvasElementResizeHandle.hitHandle(_:with:)(0, x, y);
   v8 = v7;
 
   return v8 & 1;
 }
 
-- (_TtC8PaperKit25CanvasElementResizeHandle)initWithFrame:(CGRect)a3
+- (_TtC8PaperKit25CanvasElementResizeHandle)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

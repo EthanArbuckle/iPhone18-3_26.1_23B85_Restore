@@ -1,7 +1,7 @@
 @interface TodayFeedAdsDisabledScrollTestCase
 - (NSString)testName;
 - (_TtC7NewsUI234TodayFeedAdsDisabledScrollTestCase)init;
-- (id)scrollViewWithContext:(id)a3;
+- (id)scrollViewWithContext:(id)context;
 @end
 
 @implementation TodayFeedAdsDisabledScrollTestCase
@@ -30,11 +30,11 @@
   return v2;
 }
 
-- (id)scrollViewWithContext:(id)a3
+- (id)scrollViewWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_218A42F20(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_218A42F20(contextCopy);
   v7 = v6;
 
   return v7;

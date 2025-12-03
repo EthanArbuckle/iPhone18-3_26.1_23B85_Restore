@@ -1,6 +1,6 @@
 @interface NBHashBucketer
 - (NBHashBucketer)init;
-- (unint64_t)bucketForHash:(id)a3 bucketCount:(unint64_t)a4;
+- (unint64_t)bucketForHash:(id)hash bucketCount:(unint64_t)count;
 @end
 
 @implementation NBHashBucketer
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (unint64_t)bucketForHash:(id)a3 bucketCount:(unint64_t)a4
+- (unint64_t)bucketForHash:(id)hash bucketCount:(unint64_t)count
 {
-  v6 = a3;
-  v7 = [(NBHashBucketer *)self bucketer];
-  v8 = [v7 bucketForHash:v6 bucketCount:a4];
+  hashCopy = hash;
+  bucketer = [(NBHashBucketer *)self bucketer];
+  v8 = [bucketer bucketForHash:hashCopy bucketCount:count];
 
   return v8;
 }

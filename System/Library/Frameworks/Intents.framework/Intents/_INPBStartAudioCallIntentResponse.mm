@@ -1,58 +1,58 @@
 @interface _INPBStartAudioCallIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBStartAudioCallIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBStartAudioCallIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsAudioRoute:(id)a3;
+- (int)StringAsAudioRoute:(id)route;
 - (unint64_t)hash;
-- (void)addTargetContacts:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAudioRoute:(int)a3;
-- (void)setStatus:(id)a3;
-- (void)setTargetContacts:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTargetContacts:(id)contacts;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAudioRoute:(int)route;
+- (void)setStatus:(id)status;
+- (void)setTargetContacts:(id)contacts;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBStartAudioCallIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBStartAudioCallIntentResponse *)self hasAudioRoute])
   {
-    v4 = [(_INPBStartAudioCallIntentResponse *)self audioRoute];
-    if ((v4 - 2) >= 3)
+    audioRoute = [(_INPBStartAudioCallIntentResponse *)self audioRoute];
+    if ((audioRoute - 2) >= 3)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", audioRoute];
     }
 
     else
     {
-      v5 = off_1E7281FA0[(v4 - 2)];
+      v5 = off_1E7281FA0[(audioRoute - 2)];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"audioRoute"];
+    [dictionary setObject:v5 forKeyedSubscript:@"audioRoute"];
   }
 
-  v6 = [(_INPBStartAudioCallIntentResponse *)self metrics];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"metrics"];
+  metrics = [(_INPBStartAudioCallIntentResponse *)self metrics];
+  dictionaryRepresentation = [metrics dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"metrics"];
 
   if (self->_status)
   {
-    v8 = [(_INPBStartAudioCallIntentResponse *)self status];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"status"];
+    status = [(_INPBStartAudioCallIntentResponse *)self status];
+    v9 = [status copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"status"];
   }
 
   if (self->_targetContacts)
   {
-    v10 = [(_INPBStartAudioCallIntentResponse *)self targetContacts];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"targetContacts"];
+    targetContacts = [(_INPBStartAudioCallIntentResponse *)self targetContacts];
+    v11 = [targetContacts copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"targetContacts"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -72,46 +72,46 @@
   return v4 ^ v5 ^ [(NSArray *)self->_targetContacts hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = [(_INPBStartAudioCallIntentResponse *)self hasAudioRoute];
-  if (v5 != [v4 hasAudioRoute])
+  hasAudioRoute = [(_INPBStartAudioCallIntentResponse *)self hasAudioRoute];
+  if (hasAudioRoute != [equalCopy hasAudioRoute])
   {
     goto LABEL_21;
   }
 
   if ([(_INPBStartAudioCallIntentResponse *)self hasAudioRoute])
   {
-    if ([v4 hasAudioRoute])
+    if ([equalCopy hasAudioRoute])
     {
       audioRoute = self->_audioRoute;
-      if (audioRoute != [v4 audioRoute])
+      if (audioRoute != [equalCopy audioRoute])
       {
         goto LABEL_21;
       }
     }
   }
 
-  v7 = [(_INPBStartAudioCallIntentResponse *)self metrics];
-  v8 = [v4 metrics];
-  if ((v7 != 0) == (v8 == 0))
+  metrics = [(_INPBStartAudioCallIntentResponse *)self metrics];
+  metrics2 = [equalCopy metrics];
+  if ((metrics != 0) == (metrics2 == 0))
   {
     goto LABEL_20;
   }
 
-  v9 = [(_INPBStartAudioCallIntentResponse *)self metrics];
-  if (v9)
+  metrics3 = [(_INPBStartAudioCallIntentResponse *)self metrics];
+  if (metrics3)
   {
-    v10 = v9;
-    v11 = [(_INPBStartAudioCallIntentResponse *)self metrics];
-    v12 = [v4 metrics];
-    v13 = [v11 isEqual:v12];
+    v10 = metrics3;
+    metrics4 = [(_INPBStartAudioCallIntentResponse *)self metrics];
+    metrics5 = [equalCopy metrics];
+    v13 = [metrics4 isEqual:metrics5];
 
     if (!v13)
     {
@@ -123,20 +123,20 @@
   {
   }
 
-  v7 = [(_INPBStartAudioCallIntentResponse *)self status];
-  v8 = [v4 status];
-  if ((v7 != 0) == (v8 == 0))
+  metrics = [(_INPBStartAudioCallIntentResponse *)self status];
+  metrics2 = [equalCopy status];
+  if ((metrics != 0) == (metrics2 == 0))
   {
     goto LABEL_20;
   }
 
-  v14 = [(_INPBStartAudioCallIntentResponse *)self status];
-  if (v14)
+  status = [(_INPBStartAudioCallIntentResponse *)self status];
+  if (status)
   {
-    v15 = v14;
-    v16 = [(_INPBStartAudioCallIntentResponse *)self status];
-    v17 = [v4 status];
-    v18 = [v16 isEqual:v17];
+    v15 = status;
+    status2 = [(_INPBStartAudioCallIntentResponse *)self status];
+    status3 = [equalCopy status];
+    v18 = [status2 isEqual:status3];
 
     if (!v18)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v7 = [(_INPBStartAudioCallIntentResponse *)self targetContacts];
-  v8 = [v4 targetContacts];
-  if ((v7 != 0) != (v8 == 0))
+  metrics = [(_INPBStartAudioCallIntentResponse *)self targetContacts];
+  metrics2 = [equalCopy targetContacts];
+  if ((metrics != 0) != (metrics2 == 0))
   {
-    v19 = [(_INPBStartAudioCallIntentResponse *)self targetContacts];
-    if (!v19)
+    targetContacts = [(_INPBStartAudioCallIntentResponse *)self targetContacts];
+    if (!targetContacts)
     {
 
 LABEL_24:
@@ -161,10 +161,10 @@ LABEL_24:
       goto LABEL_22;
     }
 
-    v20 = v19;
-    v21 = [(_INPBStartAudioCallIntentResponse *)self targetContacts];
-    v22 = [v4 targetContacts];
-    v23 = [v21 isEqual:v22];
+    v20 = targetContacts;
+    targetContacts2 = [(_INPBStartAudioCallIntentResponse *)self targetContacts];
+    targetContacts3 = [equalCopy targetContacts];
+    v23 = [targetContacts2 isEqual:targetContacts3];
 
     if (v23)
     {
@@ -184,7 +184,7 @@ LABEL_22:
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBStartAudioCallIntentResponse allocWithZone:](_INPBStartAudioCallIntentResponse init];
   if ([(_INPBStartAudioCallIntentResponse *)self hasAudioRoute])
@@ -192,63 +192,63 @@ LABEL_22:
     [(_INPBStartAudioCallIntentResponse *)v5 setAudioRoute:[(_INPBStartAudioCallIntentResponse *)self audioRoute]];
   }
 
-  v6 = [(_INPBCallMetrics *)self->_metrics copyWithZone:a3];
+  v6 = [(_INPBCallMetrics *)self->_metrics copyWithZone:zone];
   [(_INPBStartAudioCallIntentResponse *)v5 setMetrics:v6];
 
-  v7 = [(NSString *)self->_status copyWithZone:a3];
+  v7 = [(NSString *)self->_status copyWithZone:zone];
   [(_INPBStartAudioCallIntentResponse *)v5 setStatus:v7];
 
-  v8 = [(NSArray *)self->_targetContacts copyWithZone:a3];
+  v8 = [(NSArray *)self->_targetContacts copyWithZone:zone];
   [(_INPBStartAudioCallIntentResponse *)v5 setTargetContacts:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBStartAudioCallIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBStartAudioCallIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBStartAudioCallIntentResponse)initWithCoder:(id)a3
+- (_INPBStartAudioCallIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBStartAudioCallIntentResponse *)self initWithData:v6];
+    self = [(_INPBStartAudioCallIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_INPBStartAudioCallIntentResponse *)self hasAudioRoute])
   {
     audioRoute = self->_audioRoute;
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(_INPBStartAudioCallIntentResponse *)self metrics];
+  metrics = [(_INPBStartAudioCallIntentResponse *)self metrics];
 
-  if (v6)
+  if (metrics)
   {
-    v7 = [(_INPBStartAudioCallIntentResponse *)self metrics];
+    metrics2 = [(_INPBStartAudioCallIntentResponse *)self metrics];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBStartAudioCallIntentResponse *)self status];
+  status = [(_INPBStartAudioCallIntentResponse *)self status];
 
-  if (v8)
+  if (status)
   {
     status = self->_status;
     PBDataWriterWriteStringField();
@@ -289,56 +289,56 @@ LABEL_22:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addTargetContacts:(id)a3
+- (void)addTargetContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   targetContacts = self->_targetContacts;
-  v8 = v4;
+  v8 = contactsCopy;
   if (!targetContacts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_targetContacts;
-    self->_targetContacts = v6;
+    self->_targetContacts = array;
 
-    v4 = v8;
+    contactsCopy = v8;
     targetContacts = self->_targetContacts;
   }
 
-  [(NSArray *)targetContacts addObject:v4];
+  [(NSArray *)targetContacts addObject:contactsCopy];
 }
 
-- (void)setTargetContacts:(id)a3
+- (void)setTargetContacts:(id)contacts
 {
-  v4 = [a3 mutableCopy];
+  v4 = [contacts mutableCopy];
   targetContacts = self->_targetContacts;
   self->_targetContacts = v4;
 
   MEMORY[0x1EEE66BB8](v4, targetContacts);
 }
 
-- (void)setStatus:(id)a3
+- (void)setStatus:(id)status
 {
-  v4 = [a3 copy];
+  v4 = [status copy];
   status = self->_status;
   self->_status = v4;
 
   MEMORY[0x1EEE66BB8](v4, status);
 }
 
-- (int)StringAsAudioRoute:(id)a3
+- (int)StringAsAudioRoute:(id)route
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SPEAKERPHONE_AUDIO_ROUTE"])
+  routeCopy = route;
+  if ([routeCopy isEqualToString:@"SPEAKERPHONE_AUDIO_ROUTE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BLUETOOTH_AUDIO_ROUTE"])
+  else if ([routeCopy isEqualToString:@"BLUETOOTH_AUDIO_ROUTE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HEY_SIRI_AUDIO_ROUTE"])
+  else if ([routeCopy isEqualToString:@"HEY_SIRI_AUDIO_ROUTE"])
   {
     v4 = 4;
   }
@@ -351,10 +351,10 @@ LABEL_22:
   return v4;
 }
 
-- (void)setAudioRoute:(int)a3
+- (void)setAudioRoute:(int)route
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (route == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -362,7 +362,7 @@ LABEL_22:
   else
   {
     *&self->_has = has | 1;
-    self->_audioRoute = a3;
+    self->_audioRoute = route;
   }
 }
 

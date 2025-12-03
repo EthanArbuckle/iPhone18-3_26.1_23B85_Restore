@@ -1,19 +1,19 @@
 @interface GKAchievementSPI
-+ (void)loadAchievementWithId:(id)a3 forGame:(id)a4 playerIDs:(id)a5 withCompletionHandler:(id)a6;
++ (void)loadAchievementWithId:(id)id forGame:(id)game playerIDs:(id)ds withCompletionHandler:(id)handler;
 @end
 
 @implementation GKAchievementSPI
 
-+ (void)loadAchievementWithId:(id)a3 forGame:(id)a4 playerIDs:(id)a5 withCompletionHandler:(id)a6
++ (void)loadAchievementWithId:(id)id forGame:(id)game playerIDs:(id)ds withCompletionHandler:(id)handler
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __82__GKAchievementSPI_loadAchievementWithId_forGame_playerIDs_withCompletionHandler___block_invoke;
   v6[3] = &unk_2782369D0;
-  v6[5] = a4;
-  v6[6] = a6;
-  v6[4] = a3;
-  [off_278236570 loadPlayersForIdentifiers:a5 withCompletionHandler:v6];
+  v6[5] = game;
+  v6[6] = handler;
+  v6[4] = id;
+  [off_278236570 loadPlayersForIdentifiers:ds withCompletionHandler:v6];
 }
 
 uint64_t __82__GKAchievementSPI_loadAchievementWithId_forGame_playerIDs_withCompletionHandler___block_invoke(void *a1, uint64_t a2, uint64_t a3)

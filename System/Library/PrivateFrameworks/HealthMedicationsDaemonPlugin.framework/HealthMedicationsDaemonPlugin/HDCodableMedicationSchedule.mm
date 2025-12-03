@@ -1,22 +1,22 @@
 @interface HDCodableMedicationSchedule
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)decodedMedicationUUID;
 - (id)decodedUUID;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addIntervalData:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeleted:(BOOL)a3;
-- (void)setHasDisplayOptions:(BOOL)a3;
-- (void)setHasDuplicate:(BOOL)a3;
-- (void)setHasEndDateTime:(BOOL)a3;
-- (void)setHasFrequencyType:(BOOL)a3;
-- (void)setHasScheduleType:(BOOL)a3;
-- (void)setHasStartDateTime:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addIntervalData:(id)data;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeleted:(BOOL)deleted;
+- (void)setHasDisplayOptions:(BOOL)options;
+- (void)setHasDuplicate:(BOOL)duplicate;
+- (void)setHasEndDateTime:(BOOL)time;
+- (void)setHasFrequencyType:(BOOL)type;
+- (void)setHasScheduleType:(BOOL)type;
+- (void)setHasStartDateTime:(BOOL)time;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableMedicationSchedule
@@ -51,9 +51,9 @@
   return v3;
 }
 
-- (void)setHasStartDateTime:(BOOL)a3
+- (void)setHasStartDateTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 32;
   }
@@ -66,9 +66,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasEndDateTime:(BOOL)a3
+- (void)setHasEndDateTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 4;
   }
@@ -81,9 +81,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasFrequencyType:(BOOL)a3
+- (void)setHasFrequencyType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -96,9 +96,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDeleted:(BOOL)a3
+- (void)setHasDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
     v3 = 64;
   }
@@ -111,9 +111,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasScheduleType:(BOOL)a3
+- (void)setHasScheduleType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -126,9 +126,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasDisplayOptions:(BOOL)a3
+- (void)setHasDisplayOptions:(BOOL)options
 {
-  if (a3)
+  if (options)
   {
     v3 = 2;
   }
@@ -141,27 +141,27 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addIntervalData:(id)a3
+- (void)addIntervalData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   intervalDatas = self->_intervalDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!intervalDatas)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_intervalDatas;
     self->_intervalDatas = v6;
 
-    v4 = v8;
+    dataCopy = v8;
     intervalDatas = self->_intervalDatas;
   }
 
-  [(NSMutableArray *)intervalDatas addObject:v4];
+  [(NSMutableArray *)intervalDatas addObject:dataCopy];
 }
 
-- (void)setHasDuplicate:(BOOL)a3
+- (void)setHasDuplicate:(BOOL)duplicate
 {
-  if (a3)
+  if (duplicate)
   {
     v3 = 0x80;
   }
@@ -180,8 +180,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableMedicationSchedule;
   v4 = [(HDCodableMedicationSchedule *)&v8 description];
-  v5 = [(HDCodableMedicationSchedule *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableMedicationSchedule *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -189,12 +189,12 @@
 - (id)dictionaryRepresentation
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   medicationIdentifier = self->_medicationIdentifier;
@@ -233,8 +233,8 @@
   cycleStartDateComponents = self->_cycleStartDateComponents;
   if (cycleStartDateComponents)
   {
-    v13 = [(HDCodableDateComponents *)cycleStartDateComponents dictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"cycleStartDateComponents"];
+    dictionaryRepresentation = [(HDCodableDateComponents *)cycleStartDateComponents dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"cycleStartDateComponents"];
   }
 
   note = self->_note;
@@ -267,15 +267,15 @@
   syncIdentity = self->_syncIdentity;
   if (syncIdentity)
   {
-    v20 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
-    [v4 setObject:v20 forKey:@"syncIdentity"];
+    dictionaryRepresentation2 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"syncIdentity"];
   }
 
   compatibilityVersionRange = self->_compatibilityVersionRange;
   if (compatibilityVersionRange)
   {
-    v22 = [(HDCodableMedicationScheduleCompatibilityVersionRange *)compatibilityVersionRange dictionaryRepresentation];
-    [v4 setObject:v22 forKey:@"compatibilityVersionRange"];
+    dictionaryRepresentation3 = [(HDCodableMedicationScheduleCompatibilityVersionRange *)compatibilityVersionRange dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"compatibilityVersionRange"];
   }
 
   v23 = self->_has;
@@ -315,8 +315,8 @@
             objc_enumerationMutation(v27);
           }
 
-          v32 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
-          [v26 addObject:v32];
+          dictionaryRepresentation4 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
+          [v26 addObject:dictionaryRepresentation4];
         }
 
         v29 = [(NSMutableArray *)v27 countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -339,10 +339,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_uuid)
   {
     PBDataWriterWriteDataField();
@@ -469,113 +469,113 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v12;
+    [toCopy setUuid:?];
+    toCopy = v12;
   }
 
   if (self->_medicationIdentifier)
   {
     [v12 setMedicationIdentifier:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    *(v4 + 6) = *&self->_startDateTime;
-    v4[132] |= 0x20u;
+    *(toCopy + 6) = *&self->_startDateTime;
+    toCopy[132] |= 0x20u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = *&self->_endDateTime;
-    v4[132] |= 4u;
+    *(toCopy + 3) = *&self->_endDateTime;
+    toCopy[132] |= 4u;
   }
 
   if (self->_createdTimeZone)
   {
     [v12 setCreatedTimeZone:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 4) = *&self->_frequencyType;
-    v4[132] |= 8u;
+    *(toCopy + 4) = *&self->_frequencyType;
+    toCopy[132] |= 8u;
   }
 
   if (self->_cycleStartDateComponents)
   {
     [v12 setCycleStartDateComponents:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_note)
   {
     [v12 setNote:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_medicationUUID)
   {
     [v12 setMedicationUUID:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   v6 = self->_has;
   if (v6)
   {
-    *(v4 + 1) = *&self->_creationDate;
-    v4[132] |= 1u;
+    *(toCopy + 1) = *&self->_creationDate;
+    toCopy[132] |= 1u;
     v6 = self->_has;
   }
 
   if ((v6 & 0x40) != 0)
   {
-    v4[128] = self->_deleted;
-    v4[132] |= 0x40u;
+    toCopy[128] = self->_deleted;
+    toCopy[132] |= 0x40u;
   }
 
   if (self->_syncIdentity)
   {
     [v12 setSyncIdentity:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_compatibilityVersionRange)
   {
     [v12 setCompatibilityVersionRange:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   v7 = self->_has;
   if ((v7 & 0x10) != 0)
   {
-    *(v4 + 5) = self->_scheduleType;
-    v4[132] |= 0x10u;
+    *(toCopy + 5) = self->_scheduleType;
+    toCopy[132] |= 0x10u;
     v7 = self->_has;
   }
 
   if ((v7 & 2) != 0)
   {
-    *(v4 + 2) = self->_displayOptions;
-    v4[132] |= 2u;
+    *(toCopy + 2) = self->_displayOptions;
+    toCopy[132] |= 2u;
   }
 
   if ([(HDCodableMedicationSchedule *)self intervalDatasCount])
   {
     [v12 clearIntervalDatas];
-    v8 = [(HDCodableMedicationSchedule *)self intervalDatasCount];
-    if (v8)
+    intervalDatasCount = [(HDCodableMedicationSchedule *)self intervalDatasCount];
+    if (intervalDatasCount)
     {
-      v9 = v8;
+      v9 = intervalDatasCount;
       for (i = 0; i != v9; ++i)
       {
         v11 = [(HDCodableMedicationSchedule *)self intervalDataAtIndex:i];
@@ -591,15 +591,15 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_uuid copyWithZone:zone];
   v7 = *(v5 + 120);
   *(v5 + 120) = v6;
 
-  v8 = [(NSString *)self->_medicationIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_medicationIdentifier copyWithZone:zone];
   v9 = *(v5 + 88);
   *(v5 + 88) = v8;
 
@@ -617,7 +617,7 @@
     *(v5 + 132) |= 4u;
   }
 
-  v11 = [(NSString *)self->_createdTimeZone copyWithZone:a3];
+  v11 = [(NSString *)self->_createdTimeZone copyWithZone:zone];
   v12 = *(v5 + 64);
   *(v5 + 64) = v11;
 
@@ -627,15 +627,15 @@
     *(v5 + 132) |= 8u;
   }
 
-  v13 = [(HDCodableDateComponents *)self->_cycleStartDateComponents copyWithZone:a3];
+  v13 = [(HDCodableDateComponents *)self->_cycleStartDateComponents copyWithZone:zone];
   v14 = *(v5 + 72);
   *(v5 + 72) = v13;
 
-  v15 = [(NSString *)self->_note copyWithZone:a3];
+  v15 = [(NSString *)self->_note copyWithZone:zone];
   v16 = *(v5 + 104);
   *(v5 + 104) = v15;
 
-  v17 = [(NSData *)self->_medicationUUID copyWithZone:a3];
+  v17 = [(NSData *)self->_medicationUUID copyWithZone:zone];
   v18 = *(v5 + 96);
   *(v5 + 96) = v17;
 
@@ -653,11 +653,11 @@
     *(v5 + 132) |= 0x40u;
   }
 
-  v20 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:a3];
+  v20 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:zone];
   v21 = *(v5 + 112);
   *(v5 + 112) = v20;
 
-  v22 = [(HDCodableMedicationScheduleCompatibilityVersionRange *)self->_compatibilityVersionRange copyWithZone:a3];
+  v22 = [(HDCodableMedicationScheduleCompatibilityVersionRange *)self->_compatibilityVersionRange copyWithZone:zone];
   v23 = *(v5 + 56);
   *(v5 + 56) = v22;
 
@@ -694,7 +694,7 @@
           objc_enumerationMutation(v25);
         }
 
-        v30 = [*(*(&v33 + 1) + 8 * i) copyWithZone:{a3, v33}];
+        v30 = [*(*(&v33 + 1) + 8 * i) copyWithZone:{zone, v33}];
         [v5 addIntervalData:v30];
       }
 
@@ -714,16 +714,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_45;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 15))
+  if (uuid | *(equalCopy + 15))
   {
     if (![(NSData *)uuid isEqual:?])
     {
@@ -732,7 +732,7 @@
   }
 
   medicationIdentifier = self->_medicationIdentifier;
-  if (medicationIdentifier | *(v4 + 11))
+  if (medicationIdentifier | *(equalCopy + 11))
   {
     if (![(NSString *)medicationIdentifier isEqual:?])
     {
@@ -741,35 +741,35 @@
   }
 
   has = self->_has;
-  v8 = v4[132];
+  v8 = equalCopy[132];
   if ((has & 0x20) != 0)
   {
-    if ((v4[132] & 0x20) == 0 || self->_startDateTime != *(v4 + 6))
+    if ((equalCopy[132] & 0x20) == 0 || self->_startDateTime != *(equalCopy + 6))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((v4[132] & 0x20) != 0)
+  else if ((equalCopy[132] & 0x20) != 0)
   {
     goto LABEL_45;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((v4[132] & 4) == 0 || self->_endDateTime != *(v4 + 3))
+    if ((equalCopy[132] & 4) == 0 || self->_endDateTime != *(equalCopy + 3))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((v4[132] & 4) != 0)
+  else if ((equalCopy[132] & 4) != 0)
   {
     goto LABEL_45;
   }
 
   createdTimeZone = self->_createdTimeZone;
-  if (createdTimeZone | *(v4 + 8))
+  if (createdTimeZone | *(equalCopy + 8))
   {
     if (![(NSString *)createdTimeZone isEqual:?])
     {
@@ -779,28 +779,28 @@
     has = self->_has;
   }
 
-  v10 = v4[132];
+  v10 = equalCopy[132];
   if ((has & 8) != 0)
   {
-    if ((v4[132] & 8) == 0 || self->_frequencyType != *(v4 + 4))
+    if ((equalCopy[132] & 8) == 0 || self->_frequencyType != *(equalCopy + 4))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((v4[132] & 8) != 0)
+  else if ((equalCopy[132] & 8) != 0)
   {
     goto LABEL_45;
   }
 
   cycleStartDateComponents = self->_cycleStartDateComponents;
-  if (cycleStartDateComponents | *(v4 + 9) && ![(HDCodableDateComponents *)cycleStartDateComponents isEqual:?])
+  if (cycleStartDateComponents | *(equalCopy + 9) && ![(HDCodableDateComponents *)cycleStartDateComponents isEqual:?])
   {
     goto LABEL_45;
   }
 
   note = self->_note;
-  if (note | *(v4 + 13))
+  if (note | *(equalCopy + 13))
   {
     if (![(NSString *)note isEqual:?])
     {
@@ -809,7 +809,7 @@
   }
 
   medicationUUID = self->_medicationUUID;
-  if (medicationUUID | *(v4 + 12))
+  if (medicationUUID | *(equalCopy + 12))
   {
     if (![(NSData *)medicationUUID isEqual:?])
     {
@@ -817,55 +817,55 @@
     }
   }
 
-  v14 = v4[132];
+  v14 = equalCopy[132];
   if (*&self->_has)
   {
-    if ((v4[132] & 1) == 0 || self->_creationDate != *(v4 + 1))
+    if ((equalCopy[132] & 1) == 0 || self->_creationDate != *(equalCopy + 1))
     {
       goto LABEL_45;
     }
   }
 
-  else if (v4[132])
+  else if (equalCopy[132])
   {
     goto LABEL_45;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((v4[132] & 0x40) == 0)
+    if ((equalCopy[132] & 0x40) == 0)
     {
       goto LABEL_45;
     }
 
-    v21 = v4[128];
+    v21 = equalCopy[128];
     if (self->_deleted)
     {
-      if ((v4[128] & 1) == 0)
+      if ((equalCopy[128] & 1) == 0)
       {
         goto LABEL_45;
       }
     }
 
-    else if (v4[128])
+    else if (equalCopy[128])
     {
       goto LABEL_45;
     }
   }
 
-  else if ((v4[132] & 0x40) != 0)
+  else if ((equalCopy[132] & 0x40) != 0)
   {
     goto LABEL_45;
   }
 
   syncIdentity = self->_syncIdentity;
-  if (syncIdentity | *(v4 + 14) && ![(HDCodableSyncIdentity *)syncIdentity isEqual:?])
+  if (syncIdentity | *(equalCopy + 14) && ![(HDCodableSyncIdentity *)syncIdentity isEqual:?])
   {
     goto LABEL_45;
   }
 
   compatibilityVersionRange = self->_compatibilityVersionRange;
-  if (compatibilityVersionRange | *(v4 + 7))
+  if (compatibilityVersionRange | *(equalCopy + 7))
   {
     if (![(HDCodableMedicationScheduleCompatibilityVersionRange *)compatibilityVersionRange isEqual:?])
     {
@@ -874,35 +874,35 @@
   }
 
   v17 = self->_has;
-  v18 = v4[132];
+  v18 = equalCopy[132];
   if ((v17 & 0x10) != 0)
   {
-    if ((v4[132] & 0x10) == 0 || self->_scheduleType != *(v4 + 5))
+    if ((equalCopy[132] & 0x10) == 0 || self->_scheduleType != *(equalCopy + 5))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((v4[132] & 0x10) != 0)
+  else if ((equalCopy[132] & 0x10) != 0)
   {
     goto LABEL_45;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[132] & 2) == 0 || self->_displayOptions != *(v4 + 2))
+    if ((equalCopy[132] & 2) == 0 || self->_displayOptions != *(equalCopy + 2))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((v4[132] & 2) != 0)
+  else if ((equalCopy[132] & 2) != 0)
   {
     goto LABEL_45;
   }
 
   intervalDatas = self->_intervalDatas;
-  if (intervalDatas | *(v4 + 10))
+  if (intervalDatas | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)intervalDatas isEqual:?])
     {
@@ -912,7 +912,7 @@
     v17 = self->_has;
   }
 
-  v23 = v4[132];
+  v23 = equalCopy[132];
   if ((v17 & 0x80) == 0)
   {
     v19 = v23 >= 0;
@@ -923,13 +923,13 @@
   {
     if (self->_duplicate)
     {
-      if (v4[129])
+      if (equalCopy[129])
       {
         goto LABEL_69;
       }
     }
 
-    else if (!v4[129])
+    else if (!equalCopy[129])
     {
 LABEL_69:
       v19 = 1;
@@ -1135,47 +1135,47 @@ LABEL_41:
   return v40 ^ v41 ^ v39 ^ v38 ^ v37 ^ v15 ^ v36 ^ v35 ^ v34 ^ v21 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29 ^ v30 ^ v31;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 15))
+  fromCopy = from;
+  if (*(fromCopy + 15))
   {
     [(HDCodableMedicationSchedule *)self setUuid:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(HDCodableMedicationSchedule *)self setMedicationIdentifier:?];
   }
 
-  v5 = v4[132];
+  v5 = fromCopy[132];
   if ((v5 & 0x20) != 0)
   {
-    self->_startDateTime = *(v4 + 6);
+    self->_startDateTime = *(fromCopy + 6);
     *&self->_has |= 0x20u;
-    v5 = v4[132];
+    v5 = fromCopy[132];
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_endDateTime = *(v4 + 3);
+    self->_endDateTime = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(HDCodableMedicationSchedule *)self setCreatedTimeZone:?];
   }
 
-  if ((v4[132] & 8) != 0)
+  if ((fromCopy[132] & 8) != 0)
   {
-    self->_frequencyType = *(v4 + 4);
+    self->_frequencyType = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
   cycleStartDateComponents = self->_cycleStartDateComponents;
-  v7 = *(v4 + 9);
+  v7 = *(fromCopy + 9);
   if (cycleStartDateComponents)
   {
     if (v7)
@@ -1189,32 +1189,32 @@ LABEL_41:
     [(HDCodableMedicationSchedule *)self setCycleStartDateComponents:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(HDCodableMedicationSchedule *)self setNote:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(HDCodableMedicationSchedule *)self setMedicationUUID:?];
   }
 
-  v8 = v4[132];
+  v8 = fromCopy[132];
   if (v8)
   {
-    self->_creationDate = *(v4 + 1);
+    self->_creationDate = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v8 = v4[132];
+    v8 = fromCopy[132];
   }
 
   if ((v8 & 0x40) != 0)
   {
-    self->_deleted = v4[128];
+    self->_deleted = fromCopy[128];
     *&self->_has |= 0x40u;
   }
 
   syncIdentity = self->_syncIdentity;
-  v10 = *(v4 + 14);
+  v10 = *(fromCopy + 14);
   if (syncIdentity)
   {
     if (v10)
@@ -1229,7 +1229,7 @@ LABEL_41:
   }
 
   compatibilityVersionRange = self->_compatibilityVersionRange;
-  v12 = *(v4 + 7);
+  v12 = *(fromCopy + 7);
   if (compatibilityVersionRange)
   {
     if (v12)
@@ -1243,17 +1243,17 @@ LABEL_41:
     [(HDCodableMedicationSchedule *)self setCompatibilityVersionRange:?];
   }
 
-  v13 = v4[132];
+  v13 = fromCopy[132];
   if ((v13 & 0x10) != 0)
   {
-    self->_scheduleType = *(v4 + 5);
+    self->_scheduleType = *(fromCopy + 5);
     *&self->_has |= 0x10u;
-    v13 = v4[132];
+    v13 = fromCopy[132];
   }
 
   if ((v13 & 2) != 0)
   {
-    self->_displayOptions = *(v4 + 2);
+    self->_displayOptions = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
@@ -1261,7 +1261,7 @@ LABEL_41:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v14 = *(v4 + 10);
+  v14 = *(fromCopy + 10);
   v15 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v15)
   {
@@ -1285,9 +1285,9 @@ LABEL_41:
     while (v16);
   }
 
-  if (v4[132] < 0)
+  if (fromCopy[132] < 0)
   {
-    self->_duplicate = v4[129];
+    self->_duplicate = fromCopy[129];
     *&self->_has |= 0x80u;
   }
 

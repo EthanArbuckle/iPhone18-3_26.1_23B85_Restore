@@ -6,12 +6,12 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(AdaptiveSearchController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
-  v5 = [v4 interfaceOrientation];
+  view = [(AdaptiveSearchController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  return 1 << v5;
+  return 1 << interfaceOrientation;
 }
 
 @end

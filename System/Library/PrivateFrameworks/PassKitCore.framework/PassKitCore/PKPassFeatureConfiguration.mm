@@ -1,25 +1,25 @@
 @interface PKPassFeatureConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPassFeatureConfiguration:(id)a3;
-- (PKPassFeatureConfiguration)initWithCoder:(id)a3;
-- (PKPassFeatureConfiguration)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPassFeatureConfiguration:(id)configuration;
+- (PKPassFeatureConfiguration)initWithCoder:(id)coder;
+- (PKPassFeatureConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassFeatureConfiguration
 
-- (PKPassFeatureConfiguration)initWithDictionary:(id)a3
+- (PKPassFeatureConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = PKPassFeatureConfiguration;
   v5 = [(PKPassFeatureConfiguration *)&v10 init];
   if (v5)
   {
-    v5->_enabled = [v4 PKBoolForKey:@"enabled"];
-    v6 = [v4 PKDictionaryForKey:@"versionRange"];
+    v5->_enabled = [dictionaryCopy PKBoolForKey:@"enabled"];
+    v6 = [dictionaryCopy PKDictionaryForKey:@"versionRange"];
     if (v6)
     {
       v7 = [[PKOSVersionRequirementRange alloc] initWithDictionary:v6];
@@ -31,18 +31,18 @@
   return v5;
 }
 
-- (PKPassFeatureConfiguration)initWithCoder:(id)a3
+- (PKPassFeatureConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PKPassFeatureConfiguration;
   v5 = [(PKPassFeatureConfiguration *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"enabled"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enabled"];
     v5->_enabled = [v6 BOOLValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"versionRange"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"versionRange"];
     versionRange = v5->_versionRange;
     v5->_versionRange = v7;
   }
@@ -50,15 +50,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   enabled = self->_enabled;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithBool:enabled];
-  [v7 encodeObject:v6 forKey:@"enabled"];
+  [coderCopy encodeObject:v6 forKey:@"enabled"];
 
-  [v7 encodeObject:self->_versionRange forKey:@"versionRange"];
+  [coderCopy encodeObject:self->_versionRange forKey:@"versionRange"];
 }
 
 - (id)description
@@ -80,36 +80,36 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_versionRange];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_versionRange];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_enabled - v4 + 32 * v4;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassFeatureConfiguration *)self isEqualToPassFeatureConfiguration:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassFeatureConfiguration *)self isEqualToPassFeatureConfiguration:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPassFeatureConfiguration:(id)a3
+- (BOOL)isEqualToPassFeatureConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_enabled == *(v4 + 8))
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (configurationCopy && self->_enabled == *(configurationCopy + 8))
   {
     versionRange = self->_versionRange;
     v7 = v5[2];

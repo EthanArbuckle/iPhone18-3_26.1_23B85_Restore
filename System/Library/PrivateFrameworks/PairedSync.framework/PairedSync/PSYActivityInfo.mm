@@ -1,31 +1,31 @@
 @interface PSYActivityInfo
-+ (id)activityWithPlist:(id)a3;
-+ (unint64_t)buddyStageValueForString:(id)a3;
-- (PSYActivityInfo)initWithCoder:(id)a3;
++ (id)activityWithPlist:(id)plist;
++ (unint64_t)buddyStageValueForString:(id)string;
+- (PSYActivityInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSYActivityInfo
 
-+ (id)activityWithPlist:(id)a3
++ (id)activityWithPlist:(id)plist
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"Label"];
+  plistCopy = plist;
+  v5 = [plistCopy objectForKey:@"Label"];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v4 objectForKey:@"MachServiceName"];
+    v6 = [plistCopy objectForKey:@"MachServiceName"];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [v4 objectForKey:@"SessionTypes"];
+      v7 = [plistCopy objectForKey:@"SessionTypes"];
       v8 = 0x277CBE000uLL;
       v40 = v7;
       v41 = v6;
       if (v7)
       {
         v9 = v7;
-        v43 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
@@ -84,7 +84,7 @@ LABEL_26:
                 goto LABEL_45;
               }
 
-              [v43 addObject:v16];
+              [array addObject:v16];
               ++v13;
             }
 
@@ -102,12 +102,12 @@ LABEL_26:
 
       else
       {
-        v43 = 0;
+        array = 0;
       }
 
-      obj = [v4 objectForKey:@"BackboardPrelaunchBundleIdentifier"];
-      v19 = [v4 objectForKey:@"DependentServices"];
-      v20 = [v4 objectForKey:@"DependentBuddyStages"];
+      obj = [plistCopy objectForKey:@"BackboardPrelaunchBundleIdentifier"];
+      v19 = [plistCopy objectForKey:@"DependentServices"];
+      v20 = [plistCopy objectForKey:@"DependentBuddyStages"];
       v21 = MEMORY[0x277CBEB98];
       v53[0] = @"InstallAllAvailableAppsSelection";
       v53[1] = @"Activation";
@@ -122,7 +122,7 @@ LABEL_26:
       {
         v37 = v19;
         v38 = v5;
-        v39 = v4;
+        v39 = plistCopy;
         v46 = 0u;
         v47 = 0u;
         v44 = 0u;
@@ -158,24 +158,24 @@ LABEL_26:
         }
 
         v5 = v38;
-        v4 = v39;
+        plistCopy = v39;
         v6 = v41;
         v24 = v36;
         v19 = v37;
       }
 
-      v18 = objc_alloc_init(a1);
+      v18 = objc_alloc_init(self);
       [v18 setLabel:v5];
       [v18 setMachServiceName:v6];
       [v18 setBackboardPrelaunchBundleIdentifier:obj];
-      [v18 setSessionTypes:v43];
+      [v18 setSessionTypes:array];
       [v18 setDependentServices:v19];
       if ([v25 count])
       {
         [v18 setDependentBuddyStages:v25];
       }
 
-      v33 = [v4 objectForKey:{@"Timeout", v36, v37, v38, v39}];
+      v33 = [plistCopy objectForKey:{@"Timeout", v36, v37, v38, v39}];
       if (v33)
       {
         objc_opt_class();
@@ -204,25 +204,25 @@ LABEL_45:
   return v18;
 }
 
-+ (unint64_t)buddyStageValueForString:(id)a3
++ (unint64_t)buddyStageValueForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"InstallAllAvailableAppsSelection"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"InstallAllAvailableAppsSelection"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Activation"])
+  else if ([stringCopy isEqualToString:@"Activation"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AppleID"])
+  else if ([stringCopy isEqualToString:@"AppleID"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ApplePay"])
+  else if ([stringCopy isEqualToString:@"ApplePay"])
   {
     v4 = 4;
   }
@@ -235,60 +235,60 @@ LABEL_45:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PSYActivityInfo *)self label];
-  [v4 encodeObject:v5 forKey:@"Label"];
+  coderCopy = coder;
+  label = [(PSYActivityInfo *)self label];
+  [coderCopy encodeObject:label forKey:@"Label"];
 
-  v6 = [(PSYActivityInfo *)self machServiceName];
-  [v4 encodeObject:v6 forKey:@"MachServiceName"];
+  machServiceName = [(PSYActivityInfo *)self machServiceName];
+  [coderCopy encodeObject:machServiceName forKey:@"MachServiceName"];
 
-  v7 = [(PSYActivityInfo *)self priority];
-  [v4 encodeObject:v7 forKey:@"Priority"];
+  priority = [(PSYActivityInfo *)self priority];
+  [coderCopy encodeObject:priority forKey:@"Priority"];
 
-  v8 = [(PSYActivityInfo *)self backboardPrelaunchBundleIdentifier];
-  [v4 encodeObject:v8 forKey:@"BackboardPrelaunchBundleIdentifier"];
+  backboardPrelaunchBundleIdentifier = [(PSYActivityInfo *)self backboardPrelaunchBundleIdentifier];
+  [coderCopy encodeObject:backboardPrelaunchBundleIdentifier forKey:@"BackboardPrelaunchBundleIdentifier"];
 
-  v9 = [(PSYActivityInfo *)self timeoutSeconds];
-  [v4 encodeObject:v9 forKey:@"Timeout"];
+  timeoutSeconds = [(PSYActivityInfo *)self timeoutSeconds];
+  [coderCopy encodeObject:timeoutSeconds forKey:@"Timeout"];
 
-  v10 = [(PSYActivityInfo *)self sessionTypes];
-  [v4 encodeObject:v10 forKey:@"SessionTypes"];
+  sessionTypes = [(PSYActivityInfo *)self sessionTypes];
+  [coderCopy encodeObject:sessionTypes forKey:@"SessionTypes"];
 
-  v11 = [(PSYActivityInfo *)self dependentServices];
-  [v4 encodeObject:v11 forKey:@"DependentServices"];
+  dependentServices = [(PSYActivityInfo *)self dependentServices];
+  [coderCopy encodeObject:dependentServices forKey:@"DependentServices"];
 
-  v12 = [(PSYActivityInfo *)self dependentBuddyStages];
-  [v4 encodeObject:v12 forKey:@"DependentBuddyStages"];
+  dependentBuddyStages = [(PSYActivityInfo *)self dependentBuddyStages];
+  [coderCopy encodeObject:dependentBuddyStages forKey:@"DependentBuddyStages"];
 }
 
-- (PSYActivityInfo)initWithCoder:(id)a3
+- (PSYActivityInfo)initWithCoder:(id)coder
 {
   v36[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = PSYActivityInfo;
   v5 = [(PSYActivityInfo *)&v33 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Label"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Label"];
     label = v5->_label;
     v5->_label = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MachServiceName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MachServiceName"];
     machServiceName = v5->_machServiceName;
     v5->_machServiceName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Priority"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Priority"];
     priority = v5->_priority;
     v5->_priority = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BackboardPrelaunchBundleIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BackboardPrelaunchBundleIdentifier"];
     backboardPrelaunchBundleIdentifier = v5->_backboardPrelaunchBundleIdentifier;
     v5->_backboardPrelaunchBundleIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Timeout"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Timeout"];
     timeoutSeconds = v5->_timeoutSeconds;
     v5->_timeoutSeconds = v14;
 
@@ -297,7 +297,7 @@ LABEL_45:
     v36[1] = objc_opt_class();
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
     v18 = [v16 setWithArray:v17];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"SessionTypes"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"SessionTypes"];
     sessionTypes = v5->_sessionTypes;
     v5->_sessionTypes = v19;
 
@@ -306,7 +306,7 @@ LABEL_45:
     v35[1] = objc_opt_class();
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:2];
     v23 = [v21 setWithArray:v22];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"DependentServices"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"DependentServices"];
     dependentServices = v5->_dependentServices;
     v5->_dependentServices = v24;
 
@@ -315,7 +315,7 @@ LABEL_45:
     v34[1] = objc_opt_class();
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
     v28 = [v26 setWithArray:v27];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"DependentBuddyStages"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"DependentBuddyStages"];
     dependentBuddyStages = v5->_dependentBuddyStages;
     v5->_dependentBuddyStages = v29;
   }
@@ -329,9 +329,9 @@ LABEL_45:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PSYActivityInfo *)self label];
-  v7 = [(PSYActivityInfo *)self machServiceName];
-  v8 = [v3 stringWithFormat:@"<%@ %p label=%@; machServiceName=%@>", v5, self, v6, v7];;
+  label = [(PSYActivityInfo *)self label];
+  machServiceName = [(PSYActivityInfo *)self machServiceName];
+  v8 = [v3 stringWithFormat:@"<%@ %p label=%@; machServiceName=%@>", v5, self, label, machServiceName];;
 
   return v8;
 }

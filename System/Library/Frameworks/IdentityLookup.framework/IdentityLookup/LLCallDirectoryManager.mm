@@ -2,14 +2,14 @@
 + (LLCallDirectoryManager)sharedInstance;
 - (LLCallDirectoryManager)init;
 - (NSXPCConnection)defaultConnection;
-- (id)defaultConnectionRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)defaultConnectionRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
-- (void)getEnabledForExtensionWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)openSettingsWithCompletionHandler:(id)a3;
-- (void)refreshExtensionContextForLiveLookupExtensionWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)refreshPIRParametersForLiveLookupExtensionWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)resetExtensionWithIdentier:(id)a3 completionHandler:(id)a4;
-- (void)setEnabled:(BOOL)a3 forExtensionWithIdentifier:(id)a4 completionHandler:(id)a5;
+- (void)getEnabledForExtensionWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)openSettingsWithCompletionHandler:(id)handler;
+- (void)refreshExtensionContextForLiveLookupExtensionWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)refreshPIRParametersForLiveLookupExtensionWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)resetExtensionWithIdentier:(id)identier completionHandler:(id)handler;
+- (void)setEnabled:(BOOL)enabled forExtensionWithIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation LLCallDirectoryManager
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __40__LLCallDirectoryManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -71,8 +71,8 @@ uint64_t __40__LLCallDirectoryManager_sharedInstance__block_invoke(uint64_t a1)
     v5 = self->_defaultConnection;
     self->_defaultConnection = v4;
 
-    v6 = [(LLCallDirectoryManager *)self callDirectoryManagerDefaultHostInterface];
-    [(NSXPCConnection *)self->_defaultConnection setRemoteObjectInterface:v6];
+    callDirectoryManagerDefaultHostInterface = [(LLCallDirectoryManager *)self callDirectoryManagerDefaultHostInterface];
+    [(NSXPCConnection *)self->_defaultConnection setRemoteObjectInterface:callDirectoryManagerDefaultHostInterface];
 
     objc_initWeak(&location, self);
     v10[0] = MEMORY[0x277D85DD0];
@@ -160,36 +160,36 @@ void __43__LLCallDirectoryManager_defaultConnection__block_invoke_6(uint64_t a1)
   *(v1 + 16) = 0;
 }
 
-- (id)defaultConnectionRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)defaultConnectionRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(LLCallDirectoryManager *)self defaultConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  defaultConnection = [(LLCallDirectoryManager *)self defaultConnection];
+  v6 = [defaultConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (void)resetExtensionWithIdentier:(id)a3 completionHandler:(id)a4
+- (void)resetExtensionWithIdentier:(id)identier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  identierCopy = identier;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (identierCopy)
   {
-    v9 = [(LLCallDirectoryManager *)self queue];
+    queue = [(LLCallDirectoryManager *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __71__LLCallDirectoryManager_resetExtensionWithIdentier_completionHandler___block_invoke;
     block[3] = &unk_278A5E528;
     block[4] = self;
     v12 = v8;
-    v11 = v6;
-    dispatch_async(v9, block);
+    v11 = identierCopy;
+    dispatch_async(queue, block);
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -238,27 +238,27 @@ uint64_t __71__LLCallDirectoryManager_resetExtensionWithIdentier_completionHandl
   return result;
 }
 
-- (void)refreshPIRParametersForLiveLookupExtensionWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)refreshPIRParametersForLiveLookupExtensionWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (identifierCopy)
   {
-    v9 = [(LLCallDirectoryManager *)self queue];
+    queue = [(LLCallDirectoryManager *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __101__LLCallDirectoryManager_refreshPIRParametersForLiveLookupExtensionWithIdentifier_completionHandler___block_invoke;
     block[3] = &unk_278A5E528;
     block[4] = self;
     v12 = v8;
-    v11 = v6;
-    dispatch_async(v9, block);
+    v11 = identifierCopy;
+    dispatch_async(queue, block);
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -307,27 +307,27 @@ uint64_t __101__LLCallDirectoryManager_refreshPIRParametersForLiveLookupExtensio
   return result;
 }
 
-- (void)refreshExtensionContextForLiveLookupExtensionWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)refreshExtensionContextForLiveLookupExtensionWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (identifierCopy)
   {
-    v9 = [(LLCallDirectoryManager *)self queue];
+    queue = [(LLCallDirectoryManager *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __104__LLCallDirectoryManager_refreshExtensionContextForLiveLookupExtensionWithIdentifier_completionHandler___block_invoke;
     block[3] = &unk_278A5E528;
     block[4] = self;
     v12 = v8;
-    v11 = v6;
-    dispatch_async(v9, block);
+    v11 = identifierCopy;
+    dispatch_async(queue, block);
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -376,27 +376,27 @@ uint64_t __104__LLCallDirectoryManager_refreshExtensionContextForLiveLookupExten
   return result;
 }
 
-- (void)getEnabledForExtensionWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getEnabledForExtensionWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (identifierCopy)
   {
-    v9 = [(LLCallDirectoryManager *)self queue];
+    queue = [(LLCallDirectoryManager *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __81__LLCallDirectoryManager_getEnabledForExtensionWithIdentifier_completionHandler___block_invoke;
     block[3] = &unk_278A5E528;
     block[4] = self;
     v12 = v8;
-    v11 = v6;
-    dispatch_async(v9, block);
+    v11 = identifierCopy;
+    dispatch_async(queue, block);
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -445,18 +445,18 @@ uint64_t __81__LLCallDirectoryManager_getEnabledForExtensionWithIdentifier_compl
   return result;
 }
 
-- (void)openSettingsWithCompletionHandler:(id)a3
+- (void)openSettingsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(LLCallDirectoryManager *)self queue];
+  handlerCopy = handler;
+  queue = [(LLCallDirectoryManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__LLCallDirectoryManager_openSettingsWithCompletionHandler___block_invoke;
   v7[3] = &unk_278A5E578;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __60__LLCallDirectoryManager_openSettingsWithCompletionHandler___block_invoke(uint64_t a1)
@@ -487,28 +487,28 @@ void __60__LLCallDirectoryManager_openSettingsWithCompletionHandler___block_invo
   }
 }
 
-- (void)setEnabled:(BOOL)a3 forExtensionWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)setEnabled:(BOOL)enabled forExtensionWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (identifierCopy)
   {
-    v11 = [(LLCallDirectoryManager *)self queue];
+    queue = [(LLCallDirectoryManager *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __82__LLCallDirectoryManager_setEnabled_forExtensionWithIdentifier_completionHandler___block_invoke;
     v12[3] = &unk_278A5E5A0;
     v12[4] = self;
     v14 = v10;
-    v15 = a3;
-    v13 = v8;
-    dispatch_async(v11, v12);
+    enabledCopy = enabled;
+    v13 = identifierCopy;
+    dispatch_async(queue, v12);
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
-    (*(v9 + 2))(v9, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 

@@ -1,35 +1,35 @@
 @interface PKPaymentAddDebitCardViewController
-- (PKPaymentAddDebitCardViewController)initWithPeerPaymentSetupFlowController:(id)a3;
-- (void)_handleProvisioningError:(id)a3;
+- (PKPaymentAddDebitCardViewController)initWithPeerPaymentSetupFlowController:(id)controller;
+- (void)_handleProvisioningError:(id)error;
 - (void)_presentPaymentSetupController;
 - (void)_terminateSetupFlow;
-- (void)setBodyText:(id)a3;
-- (void)setShowDebitCardHeroView:(BOOL)a3;
-- (void)setTitleText:(id)a3;
+- (void)setBodyText:(id)text;
+- (void)setShowDebitCardHeroView:(BOOL)view;
+- (void)setTitleText:(id)text;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPaymentAddDebitCardViewController
 
-- (PKPaymentAddDebitCardViewController)initWithPeerPaymentSetupFlowController:(id)a3
+- (PKPaymentAddDebitCardViewController)initWithPeerPaymentSetupFlowController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v24.receiver = self;
   v24.super_class = PKPaymentAddDebitCardViewController;
-  v6 = -[PKExplanationViewController initWithContext:](&v24, sel_initWithContext_, [v5 context]);
+  v6 = -[PKExplanationViewController initWithContext:](&v24, sel_initWithContext_, [controllerCopy context]);
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_peerPaymentSetupFlowController, a3);
+    objc_storeStrong(&v6->_peerPaymentSetupFlowController, controller);
     [(PKPeerPaymentSetupFlowController *)v7->_peerPaymentSetupFlowController setParentViewController:v7];
-    v8 = [(PKPeerPaymentSetupFlowController *)v7->_peerPaymentSetupFlowController configuration];
-    v9 = [v8 peerPaymentSetupConfigurationType];
+    configuration = [(PKPeerPaymentSetupFlowController *)v7->_peerPaymentSetupFlowController configuration];
+    peerPaymentSetupConfigurationType = [configuration peerPaymentSetupConfigurationType];
 
-    if (!v9)
+    if (!peerPaymentSetupConfigurationType)
     {
-      v10 = [(PKPeerPaymentSetupFlowController *)v7->_peerPaymentSetupFlowController configuration];
-      v11 = [v10 setupDelegate];
-      objc_storeWeak(&v7->_setupDelegate, v11);
+      configuration2 = [(PKPeerPaymentSetupFlowController *)v7->_peerPaymentSetupFlowController configuration];
+      setupDelegate = [configuration2 setupDelegate];
+      objc_storeWeak(&v7->_setupDelegate, setupDelegate);
     }
 
     v12 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd.isa);
@@ -38,24 +38,24 @@
     v13 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_0.isa);
     [(PKPaymentAddDebitCardViewController *)v7 setBodyText:v13];
 
-    v14 = [(PKExplanationViewController *)v7 explanationView];
-    [v14 setShowPrivacyView:0];
-    [v14 setDelegate:v7];
-    v15 = [(PKExplanationViewController *)v7 explanationView];
-    v16 = [v15 dockView];
+    explanationView = [(PKExplanationViewController *)v7 explanationView];
+    [explanationView setShowPrivacyView:0];
+    [explanationView setDelegate:v7];
+    explanationView2 = [(PKExplanationViewController *)v7 explanationView];
+    dockView = [explanationView2 dockView];
 
-    v17 = [v16 primaryButton];
+    primaryButton = [dockView primaryButton];
     v18 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_1.isa);
-    [v17 setTitle:v18 forState:0];
+    [primaryButton setTitle:v18 forState:0];
 
-    [v14 setForceShowSetupLaterButton:1];
+    [explanationView setForceShowSetupLaterButton:1];
     [(PKExplanationViewController *)v7 context];
-    LODWORD(v17) = PKPaymentSetupContextIsSetupAssistant();
-    v19 = [v16 footerView];
-    v20 = [v19 setUpLaterButton];
-    v21 = PKDeviceSpecificLocalizedStringKeyForKey(@"PEER_PAYMENT_ADD_CARD_LATER_TITLE", v17);
+    LODWORD(primaryButton) = PKPaymentSetupContextIsSetupAssistant();
+    footerView = [dockView footerView];
+    setUpLaterButton = [footerView setUpLaterButton];
+    v21 = PKDeviceSpecificLocalizedStringKeyForKey(@"PEER_PAYMENT_ADD_CARD_LATER_TITLE", primaryButton);
     v22 = PKLocalizedPeerPaymentString(v21);
-    [v20 setTitle:v22 forState:0];
+    [setUpLaterButton setTitle:v22 forState:0];
 
     [(PKPaymentAddDebitCardViewController *)v7 setShowDebitCardHeroView:1];
   }
@@ -68,22 +68,22 @@
   v4.receiver = self;
   v4.super_class = PKPaymentAddDebitCardViewController;
   [(PKExplanationViewController *)&v4 viewDidLoad];
-  v3 = [(PKPaymentAddDebitCardViewController *)self navigationItem];
-  [v3 setLeftBarButtonItem:0];
-  [v3 setRightBarButtonItem:0];
-  [v3 setHidesBackButton:1 animated:0];
+  navigationItem = [(PKPaymentAddDebitCardViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
+  [navigationItem setRightBarButtonItem:0];
+  [navigationItem setHidesBackButton:1 animated:0];
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   titleText = self->_titleText;
-  v11 = v5;
+  v11 = textCopy;
   v7 = titleText;
   if (v7 == v11)
   {
 
-    v9 = v11;
+    view = v11;
 LABEL_9:
 
     goto LABEL_10;
@@ -100,28 +100,28 @@ LABEL_9:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_titleText, a3);
-    v10 = [(PKExplanationViewController *)self explanationView];
-    [v10 setTitleText:self->_titleText];
+    objc_storeStrong(&self->_titleText, text);
+    explanationView = [(PKExplanationViewController *)self explanationView];
+    [explanationView setTitleText:self->_titleText];
 
-    v9 = [(PKPaymentAddDebitCardViewController *)self view];
-    [v9 setNeedsLayout];
+    view = [(PKPaymentAddDebitCardViewController *)self view];
+    [view setNeedsLayout];
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)setBodyText:(id)a3
+- (void)setBodyText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   bodyText = self->_bodyText;
-  v11 = v5;
+  v11 = textCopy;
   v7 = bodyText;
   if (v7 == v11)
   {
 
-    v9 = v11;
+    view = v11;
 LABEL_9:
 
     goto LABEL_10;
@@ -138,48 +138,48 @@ LABEL_9:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_bodyText, a3);
-    v10 = [(PKExplanationViewController *)self explanationView];
-    [v10 setBodyText:self->_bodyText];
+    objc_storeStrong(&self->_bodyText, text);
+    explanationView = [(PKExplanationViewController *)self explanationView];
+    [explanationView setBodyText:self->_bodyText];
 
-    v9 = [(PKPaymentAddDebitCardViewController *)self view];
-    [v9 setNeedsLayout];
+    view = [(PKPaymentAddDebitCardViewController *)self view];
+    [view setNeedsLayout];
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)setShowDebitCardHeroView:(BOOL)a3
+- (void)setShowDebitCardHeroView:(BOOL)view
 {
-  if (self->_showDebitCardHeroView != a3)
+  if (self->_showDebitCardHeroView != view)
   {
-    self->_showDebitCardHeroView = a3;
-    if (a3)
+    self->_showDebitCardHeroView = view;
+    if (view)
     {
       v5 = [PKAddDebitCardHeroView alloc];
-      v6 = [(PKPeerPaymentSetupFlowController *)self->_peerPaymentSetupFlowController passSnapShot];
-      v7 = [(PKAddDebitCardHeroView *)v5 initWithPassSnapShot:v6];
+      passSnapShot = [(PKPeerPaymentSetupFlowController *)self->_peerPaymentSetupFlowController passSnapShot];
+      explanationView2 = [(PKAddDebitCardHeroView *)v5 initWithPassSnapShot:passSnapShot];
 
-      v8 = [(PKExplanationViewController *)self explanationView];
-      [v8 setHeroView:v7];
+      explanationView = [(PKExplanationViewController *)self explanationView];
+      [explanationView setHeroView:explanationView2];
     }
 
     else
     {
-      v7 = [(PKExplanationViewController *)self explanationView];
-      [(PKAddDebitCardHeroView *)v7 setHeroView:0];
+      explanationView2 = [(PKExplanationViewController *)self explanationView];
+      [(PKAddDebitCardHeroView *)explanationView2 setHeroView:0];
     }
 
-    v9 = [(PKPaymentAddDebitCardViewController *)self view];
-    [v9 setNeedsLayout];
+    view = [(PKPaymentAddDebitCardViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
 - (void)_presentPaymentSetupController
 {
-  v3 = [(PKPeerPaymentSetupFlowController *)self->_peerPaymentSetupFlowController provisioningController];
-  v4 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:-[PKExplanationViewController context](self provisioningController:"context") groupsController:{v3, 0}];
+  provisioningController = [(PKPeerPaymentSetupFlowController *)self->_peerPaymentSetupFlowController provisioningController];
+  v4 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:-[PKExplanationViewController context](self provisioningController:"context") groupsController:{provisioningController, 0}];
   [(PKExplanationViewController *)self context];
   if (PKPaymentSetupContextIsSetupAssistant())
   {
@@ -198,9 +198,9 @@ LABEL_10:
   else
   {
     [(PKExplanationViewController *)self showNavigationBarSpinner:1];
-    [v3 setAllowedCardTypes:&unk_1F3CC8348];
+    [provisioningController setAllowedCardTypes:&unk_1F3CC8348];
     v5 = objc_alloc_init(MEMORY[0x1E695DFD8]);
-    [v3 setAllowedFeatureIdentifiers:v5];
+    [provisioningController setAllowedFeatureIdentifiers:v5];
     objc_initWeak(&location, self);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -208,7 +208,7 @@ LABEL_10:
     v7[3] = &unk_1E8013B00;
     objc_copyWeak(&v9, &location);
     v8 = v4;
-    [v3 preflightWithCompletion:v7];
+    [provisioningController preflightWithCompletion:v7];
 
     v6 = &v9;
   }
@@ -319,9 +319,9 @@ uint64_t __69__PKPaymentAddDebitCardViewController__presentPaymentSetupControlle
   return [v2 _terminateSetupFlow];
 }
 
-- (void)_handleProvisioningError:(id)a3
+- (void)_handleProvisioningError:(id)error
 {
-  v4 = [PKPaymentSetupNavigationController viewControllerForPresentingPaymentError:a3];
+  v4 = [PKPaymentSetupNavigationController viewControllerForPresentingPaymentError:error];
   [(PKPaymentAddDebitCardViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
@@ -336,8 +336,8 @@ uint64_t __69__PKPaymentAddDebitCardViewController__presentPaymentSetupControlle
 
   else
   {
-    v4 = [(PKPaymentAddDebitCardViewController *)self presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKPaymentAddDebitCardViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 

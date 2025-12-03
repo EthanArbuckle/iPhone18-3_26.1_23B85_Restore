@@ -6,7 +6,7 @@
 
 - (void)switchTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA04C114();
 }
 

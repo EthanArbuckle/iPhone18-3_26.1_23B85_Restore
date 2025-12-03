@@ -1,12 +1,12 @@
 @interface PXStoryMockMovieHighlight
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)bestTimeRangeForTargetDuration:(SEL)a3;
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)bestTimeRangeForTargetDuration:(SEL)duration;
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRange;
 - (CGRect)bestPlaybackRect;
 - (PXStoryMockMovieHighlight)init;
-- (PXStoryMockMovieHighlight)initWithBestPlaybackRect:(CGRect)a3;
-- (PXStoryMockMovieHighlight)initWithTimeRange:(id *)a3 score:(float)a4 bestPlaybackRect:(CGRect)a5 normalizationData:(id)a6 audioScore:(float)a7;
-- (PXStoryMockMovieHighlight)initWithTimeRange:(id *)a3 score:(float)a4 bestPlaybackRect:(CGRect)a5 normalizationData:(id)a6 face:(BOOL)a7 voice:(BOOL)a8 music:(BOOL)a9 loudness:(float)a10 peak:(float)a11 audioScore:(float)a12;
-- (void)setTimeRange:(id *)a3;
+- (PXStoryMockMovieHighlight)initWithBestPlaybackRect:(CGRect)rect;
+- (PXStoryMockMovieHighlight)initWithTimeRange:(id *)range score:(float)score bestPlaybackRect:(CGRect)rect normalizationData:(id)data audioScore:(float)audioScore;
+- (PXStoryMockMovieHighlight)initWithTimeRange:(id *)range score:(float)score bestPlaybackRect:(CGRect)rect normalizationData:(id)data face:(BOOL)face voice:(BOOL)voice music:(BOOL)music loudness:(float)self0 peak:(float)self1 audioScore:(float)self2;
+- (void)setTimeRange:(id *)range;
 @end
 
 @implementation PXStoryMockMovieHighlight
@@ -24,11 +24,11 @@
   return result;
 }
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_timeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->_timeRange.duration.timescale = *&range->var1.var1;
   *&self->_timeRange.start.epoch = v4;
   *&self->_timeRange.start.value = v3;
 }
@@ -42,7 +42,7 @@
   return self;
 }
 
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)bestTimeRangeForTargetDuration:(SEL)a3
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)bestTimeRangeForTargetDuration:(SEL)duration
 {
   memset(v16, 0, sizeof(v16));
   v15 = 0u;
@@ -76,55 +76,55 @@
   return result;
 }
 
-- (PXStoryMockMovieHighlight)initWithTimeRange:(id *)a3 score:(float)a4 bestPlaybackRect:(CGRect)a5 normalizationData:(id)a6 face:(BOOL)a7 voice:(BOOL)a8 music:(BOOL)a9 loudness:(float)a10 peak:(float)a11 audioScore:(float)a12
+- (PXStoryMockMovieHighlight)initWithTimeRange:(id *)range score:(float)score bestPlaybackRect:(CGRect)rect normalizationData:(id)data face:(BOOL)face voice:(BOOL)voice music:(BOOL)music loudness:(float)self0 peak:(float)self1 audioScore:(float)self2
 {
-  v12 = a9;
-  v13 = a8;
-  v14 = a7;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  musicCopy = music;
+  voiceCopy = voice;
+  faceCopy = face;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v33.receiver = self;
   v33.super_class = PXStoryMockMovieHighlight;
-  v24 = a6;
+  dataCopy = data;
   v25 = [(PXStoryMockMovieHighlight *)&v33 init];
-  v26 = *&a3->var0.var3;
-  v32[0] = *&a3->var0.var0;
+  v26 = *&range->var0.var3;
+  v32[0] = *&range->var0.var0;
   v32[1] = v26;
-  v32[2] = *&a3->var1.var1;
+  v32[2] = *&range->var1.var1;
   [(PXStoryMockMovieHighlight *)v25 setTimeRange:v32];
-  *&v27 = a4;
+  *&v27 = score;
   [(PXStoryMockMovieHighlight *)v25 setQualityScore:v27];
-  [(PXStoryMockMovieHighlight *)v25 setNormalizationData:v24];
+  [(PXStoryMockMovieHighlight *)v25 setNormalizationData:dataCopy];
 
-  [(PXStoryMockMovieHighlight *)v25 setHasMusic:v12];
-  [(PXStoryMockMovieHighlight *)v25 setHasVoice:v13];
-  [(PXStoryMockMovieHighlight *)v25 setHasFace:v14];
-  *&v28 = a10;
+  [(PXStoryMockMovieHighlight *)v25 setHasMusic:musicCopy];
+  [(PXStoryMockMovieHighlight *)v25 setHasVoice:voiceCopy];
+  [(PXStoryMockMovieHighlight *)v25 setHasFace:faceCopy];
+  *&v28 = loudness;
   [(PXStoryMockMovieHighlight *)v25 setLoudness:v28];
-  *&v29 = a11;
+  *&v29 = peak;
   [(PXStoryMockMovieHighlight *)v25 setPeakVolume:v29];
   [(PXStoryMockMovieHighlight *)v25 setBestPlaybackRect:x, y, width, height];
-  *&v30 = a12;
+  *&v30 = audioScore;
   [(PXStoryMockMovieHighlight *)v25 setAudioQualityScore:v30];
   return v25;
 }
 
-- (PXStoryMockMovieHighlight)initWithBestPlaybackRect:(CGRect)a3
+- (PXStoryMockMovieHighlight)initWithBestPlaybackRect:(CGRect)rect
 {
   memset(v5, 0, sizeof(v5));
   LODWORD(v3) = 0.5;
-  return [(PXStoryMockMovieHighlight *)self initWithTimeRange:v5 score:0 bestPlaybackRect:0 normalizationData:0 face:0 voice:0.0 music:a3.origin.x loudness:a3.origin.y peak:a3.size.width audioScore:a3.size.height, 0.0, 0.0, v3];
+  return [(PXStoryMockMovieHighlight *)self initWithTimeRange:v5 score:0 bestPlaybackRect:0 normalizationData:0 face:0 voice:0.0 music:rect.origin.x loudness:rect.origin.y peak:rect.size.width audioScore:rect.size.height, 0.0, 0.0, v3];
 }
 
-- (PXStoryMockMovieHighlight)initWithTimeRange:(id *)a3 score:(float)a4 bestPlaybackRect:(CGRect)a5 normalizationData:(id)a6 audioScore:(float)a7
+- (PXStoryMockMovieHighlight)initWithTimeRange:(id *)range score:(float)score bestPlaybackRect:(CGRect)rect normalizationData:(id)data audioScore:(float)audioScore
 {
-  v7 = *&a3->var0.var3;
-  v9[0] = *&a3->var0.var0;
+  v7 = *&range->var0.var3;
+  v9[0] = *&range->var0.var0;
   v9[1] = v7;
-  v9[2] = *&a3->var1.var1;
-  return [PXStoryMockMovieHighlight initWithTimeRange:"initWithTimeRange:score:bestPlaybackRect:normalizationData:face:voice:music:loudness:peak:audioScore:" score:v9 bestPlaybackRect:a6 normalizationData:0 face:0 voice:0 music:? loudness:? peak:? audioScore:?];
+  v9[2] = *&range->var1.var1;
+  return [PXStoryMockMovieHighlight initWithTimeRange:"initWithTimeRange:score:bestPlaybackRect:normalizationData:face:voice:music:loudness:peak:audioScore:" score:v9 bestPlaybackRect:data normalizationData:0 face:0 voice:0 music:? loudness:? peak:? audioScore:?];
 }
 
 - (PXStoryMockMovieHighlight)init

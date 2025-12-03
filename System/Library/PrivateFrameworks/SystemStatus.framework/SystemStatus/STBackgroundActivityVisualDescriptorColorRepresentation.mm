@@ -1,26 +1,26 @@
 @interface STBackgroundActivityVisualDescriptorColorRepresentation
-- (BOOL)isEqual:(id)a3;
-- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithBSColor:(id)a3;
-- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithCoder:(id)a3;
-- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithPatternColorKitImageName:(id)a3;
-- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithPlistRepresentation:(id)a3;
-- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithSystemColorName:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithBSColor:(id)color;
+- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithCoder:(id)coder;
+- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithPatternColorKitImageName:(id)name;
+- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithPlistRepresentation:(id)representation;
+- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithSystemColorName:(id)name;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STBackgroundActivityVisualDescriptorColorRepresentation
 
-- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithPlistRepresentation:(id)a3
+- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithPlistRepresentation:(id)representation
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 bs_safeStringForKey:@"SystemColorName"];
-  v6 = [v4 bs_safeArrayForKey:@"RGBAColor"];
-  v7 = [v4 bs_safeStringForKey:@"_PatternColorKitImageName"];
+  representationCopy = representation;
+  v5 = [representationCopy bs_safeStringForKey:@"SystemColorName"];
+  v6 = [representationCopy bs_safeArrayForKey:@"RGBAColor"];
+  v7 = [representationCopy bs_safeStringForKey:@"_PatternColorKitImageName"];
 
   if (!v5)
   {
@@ -28,7 +28,7 @@
     {
       if (!v7)
       {
-        v9 = 0;
+        selfCopy2 = 0;
         goto LABEL_18;
       }
 
@@ -64,7 +64,7 @@
       if (v23)
       {
         self = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self initWithBSColor:v23];
-        v9 = self;
+        selfCopy2 = self;
 LABEL_17:
 
         goto LABEL_18;
@@ -84,29 +84,29 @@ LABEL_17:
     }
 
     v23 = 0;
-    v9 = 0;
+    selfCopy2 = 0;
     goto LABEL_17;
   }
 
   v8 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self initWithSystemColorName:v5];
 LABEL_3:
   self = v8;
-  v9 = self;
+  selfCopy2 = self;
 LABEL_18:
 
   v25 = *MEMORY[0x1E69E9840];
-  return v9;
+  return selfCopy2;
 }
 
-- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithSystemColorName:(id)a3
+- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithSystemColorName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = STBackgroundActivityVisualDescriptorColorRepresentation;
   v5 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     systemColorName = v5->_systemColorName;
     v5->_systemColorName = v6;
   }
@@ -114,30 +114,30 @@ LABEL_18:
   return v5;
 }
 
-- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithBSColor:(id)a3
+- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithBSColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v9.receiver = self;
   v9.super_class = STBackgroundActivityVisualDescriptorColorRepresentation;
   v6 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_BSColor, a3);
+    objc_storeStrong(&v6->_BSColor, color);
   }
 
   return v7;
 }
 
-- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithPatternColorKitImageName:(id)a3
+- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithPatternColorKitImageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = STBackgroundActivityVisualDescriptorColorRepresentation;
   v5 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     patternColorKitImageName = v5->_patternColorKitImageName;
     v5->_patternColorKitImageName = v6;
   }
@@ -145,100 +145,100 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self systemColorName];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  systemColorName = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self systemColorName];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __67__STBackgroundActivityVisualDescriptorColorRepresentation_isEqual___block_invoke;
   v20[3] = &unk_1E85DDD28;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
-  v8 = [v5 appendString:v6 counterpart:v20];
+  v8 = [v5 appendString:systemColorName counterpart:v20];
 
-  v9 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self BSColor];
+  bSColor = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self BSColor];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __67__STBackgroundActivityVisualDescriptorColorRepresentation_isEqual___block_invoke_2;
   v18[3] = &unk_1E85DDCD8;
   v10 = v7;
   v19 = v10;
-  v11 = [v5 appendObject:v9 counterpart:v18];
+  v11 = [v5 appendObject:bSColor counterpart:v18];
 
-  v12 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self patternColorKitImageName];
+  patternColorKitImageName = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self patternColorKitImageName];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __67__STBackgroundActivityVisualDescriptorColorRepresentation_isEqual___block_invoke_3;
   v16[3] = &unk_1E85DDD28;
   v17 = v10;
   v13 = v10;
-  v14 = [v5 appendString:v12 counterpart:v16];
+  v14 = [v5 appendString:patternColorKitImageName counterpart:v16];
 
-  LOBYTE(v12) = [v5 isEqual];
-  return v12;
+  LOBYTE(patternColorKitImageName) = [v5 isEqual];
+  return patternColorKitImageName;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self systemColorName];
-  v5 = [v3 appendString:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  systemColorName = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self systemColorName];
+  v5 = [builder appendString:systemColorName];
 
-  v6 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self BSColor];
-  v7 = [v3 appendObject:v6];
+  bSColor = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self BSColor];
+  v7 = [builder appendObject:bSColor];
 
-  v8 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self patternColorKitImageName];
-  v9 = [v3 appendString:v8];
+  patternColorKitImageName = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self patternColorKitImageName];
+  v9 = [builder appendString:patternColorKitImageName];
 
-  v10 = [v3 hash];
+  v10 = [builder hash];
   return v10;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self systemColorName];
-  [v4 encodeObject:v5 forKey:@"systemColorName"];
+  coderCopy = coder;
+  systemColorName = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self systemColorName];
+  [coderCopy encodeObject:systemColorName forKey:@"systemColorName"];
 
-  v6 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self BSColor];
-  [v4 encodeObject:v6 forKey:@"BSColor"];
+  bSColor = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self BSColor];
+  [coderCopy encodeObject:bSColor forKey:@"BSColor"];
 
-  v7 = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self patternColorKitImageName];
-  [v4 encodeObject:v7 forKey:@"patternColorKitImageName"];
+  patternColorKitImageName = [(STBackgroundActivityVisualDescriptorColorRepresentation *)self patternColorKitImageName];
+  [coderCopy encodeObject:patternColorKitImageName forKey:@"patternColorKitImageName"];
 }
 
-- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithCoder:(id)a3
+- (STBackgroundActivityVisualDescriptorColorRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemColorName"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BSColor"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"patternColorKitImageName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemColorName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BSColor"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"patternColorKitImageName"];
 
   if (v5)
   {
@@ -254,7 +254,7 @@ LABEL_18:
   {
     if (!v7)
     {
-      v9 = 0;
+      selfCopy = 0;
       goto LABEL_8;
     }
 
@@ -262,10 +262,10 @@ LABEL_18:
   }
 
   self = v8;
-  v9 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v9;
+  return selfCopy;
 }
 
 @end

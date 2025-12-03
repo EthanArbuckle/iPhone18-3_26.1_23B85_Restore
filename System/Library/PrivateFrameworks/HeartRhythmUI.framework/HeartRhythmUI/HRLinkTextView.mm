@@ -1,10 +1,10 @@
 @interface HRLinkTextView
-- (HRLinkTextView)initWithLinkRange:(_NSRange)a3 URLIdentifier:(int64_t)a4 delegate:(id)a5 userInterfaceStyleChanged:(id)a6;
+- (HRLinkTextView)initWithLinkRange:(_NSRange)range URLIdentifier:(int64_t)identifier delegate:(id)delegate userInterfaceStyleChanged:(id)changed;
 - (HRLinkTextViewDelegate)delegate;
 - (_NSRange)linkRange;
 - (id)firstBaselineAnchor;
 - (id)lastBaselineAnchor;
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5;
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action;
 - (void)_setUpConstraints;
 - (void)_setUpUI;
 - (void)_updateCurrentUserInterfaceStyleIfNeeded;
@@ -13,12 +13,12 @@
 
 @implementation HRLinkTextView
 
-- (HRLinkTextView)initWithLinkRange:(_NSRange)a3 URLIdentifier:(int64_t)a4 delegate:(id)a5 userInterfaceStyleChanged:(id)a6
+- (HRLinkTextView)initWithLinkRange:(_NSRange)range URLIdentifier:(int64_t)identifier delegate:(id)delegate userInterfaceStyleChanged:(id)changed
 {
-  length = a3.length;
-  location = a3.location;
-  v11 = a5;
-  v12 = a6;
+  length = range.length;
+  location = range.location;
+  delegateCopy = delegate;
+  changedCopy = changed;
   v18.receiver = self;
   v18.super_class = HRLinkTextView;
   v13 = [(HRLinkTextView *)&v18 init];
@@ -27,9 +27,9 @@
   {
     v13->_linkRange.location = location;
     v13->_linkRange.length = length;
-    v13->_URLIdentifier = a4;
-    objc_storeWeak(&v13->_delegate, v11);
-    v15 = MEMORY[0x25309CD70](v12);
+    v13->_URLIdentifier = identifier;
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    v15 = MEMORY[0x25309CD70](changedCopy);
     userInterfaceStyleChanged = v14->_userInterfaceStyleChanged;
     v14->_userInterfaceStyleChanged = v15;
 
@@ -50,36 +50,36 @@
 
 - (void)_updateCurrentUserInterfaceStyleIfNeeded
 {
-  v3 = [(HRLinkTextView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(HRLinkTextView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if ([(HRLinkTextView *)self currentUserInterfaceStyle]!= v4)
+  if ([(HRLinkTextView *)self currentUserInterfaceStyle]!= userInterfaceStyle)
   {
-    [(HRLinkTextView *)self setCurrentUserInterfaceStyle:v4];
-    v5 = [(HRLinkTextView *)self userInterfaceStyleChanged];
+    [(HRLinkTextView *)self setCurrentUserInterfaceStyle:userInterfaceStyle];
+    userInterfaceStyleChanged = [(HRLinkTextView *)self userInterfaceStyleChanged];
 
-    if (v5)
+    if (userInterfaceStyleChanged)
     {
-      v6 = [(HRLinkTextView *)self userInterfaceStyleChanged];
-      v6[2](v6, self, v4);
+      userInterfaceStyleChanged2 = [(HRLinkTextView *)self userInterfaceStyleChanged];
+      userInterfaceStyleChanged2[2](userInterfaceStyleChanged2, self, userInterfaceStyle);
     }
   }
 }
 
 - (id)firstBaselineAnchor
 {
-  v2 = [(HRLinkTextView *)self textView];
-  v3 = [v2 firstBaselineAnchor];
+  textView = [(HRLinkTextView *)self textView];
+  firstBaselineAnchor = [textView firstBaselineAnchor];
 
-  return v3;
+  return firstBaselineAnchor;
 }
 
 - (id)lastBaselineAnchor
 {
-  v2 = [(HRLinkTextView *)self textView];
-  v3 = [v2 lastBaselineAnchor];
+  textView = [(HRLinkTextView *)self textView];
+  lastBaselineAnchor = [textView lastBaselineAnchor];
 
-  return v3;
+  return lastBaselineAnchor;
 }
 
 - (void)_setUpUI
@@ -87,56 +87,56 @@
   v3 = objc_alloc_init(MEMORY[0x277D75C40]);
   [(HRLinkTextView *)self setTextView:v3];
 
-  v4 = [(HRLinkTextView *)self textView];
-  [v4 setScrollEnabled:0];
+  textView = [(HRLinkTextView *)self textView];
+  [textView setScrollEnabled:0];
 
-  v5 = [(HRLinkTextView *)self textView];
-  [v5 setUserInteractionEnabled:1];
+  textView2 = [(HRLinkTextView *)self textView];
+  [textView2 setUserInteractionEnabled:1];
 
-  v6 = [(HRLinkTextView *)self textView];
-  [v6 setSelectable:1];
+  textView3 = [(HRLinkTextView *)self textView];
+  [textView3 setSelectable:1];
 
-  v7 = [(HRLinkTextView *)self textView];
-  [v7 setEditable:0];
+  textView4 = [(HRLinkTextView *)self textView];
+  [textView4 setEditable:0];
 
   v8 = *MEMORY[0x277D768C8];
   v9 = *(MEMORY[0x277D768C8] + 8);
   v10 = *(MEMORY[0x277D768C8] + 16);
   v11 = *(MEMORY[0x277D768C8] + 24);
-  v12 = [(HRLinkTextView *)self textView];
-  [v12 setTextContainerInset:{v8, v9, v10, v11}];
+  textView5 = [(HRLinkTextView *)self textView];
+  [textView5 setTextContainerInset:{v8, v9, v10, v11}];
 
-  v13 = [(HRLinkTextView *)self textView];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textView6 = [(HRLinkTextView *)self textView];
+  [textView6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v14 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  v15 = [(HRLinkTextView *)self textView];
-  [v15 setFont:v14];
+  textView7 = [(HRLinkTextView *)self textView];
+  [textView7 setFont:v14];
 
-  v16 = [(HRLinkTextView *)self textView];
-  [v16 _setInteractiveTextSelectionDisabled:1];
+  textView8 = [(HRLinkTextView *)self textView];
+  [textView8 _setInteractiveTextSelectionDisabled:1];
 
-  v17 = [(HRLinkTextView *)self textView];
-  [v17 setDelegate:self];
+  textView9 = [(HRLinkTextView *)self textView];
+  [textView9 setDelegate:self];
 
-  v18 = [(HRLinkTextView *)self textView];
-  [(HRLinkTextView *)self addSubview:v18];
+  textView10 = [(HRLinkTextView *)self textView];
+  [(HRLinkTextView *)self addSubview:textView10];
 }
 
 - (void)_setUpConstraints
 {
-  v3 = [(HRLinkTextView *)self textView];
-  [v3 hk_alignConstraintsWithView:self];
+  textView = [(HRLinkTextView *)self textView];
+  [textView hk_alignConstraintsWithView:self];
 }
 
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action
 {
-  [(HRLinkTextView *)self linkRange:a3];
+  [(HRLinkTextView *)self linkRange:view];
   if (v6)
   {
-    v7 = [(HRLinkTextView *)self delegate];
-    v8 = [(HRLinkTextView *)self linkRange];
-    [v7 linkTextView:self didTapOnLinkInRange:{v8, v9}];
+    delegate = [(HRLinkTextView *)self delegate];
+    linkRange = [(HRLinkTextView *)self linkRange];
+    [delegate linkTextView:self didTapOnLinkInRange:{linkRange, v9}];
   }
 
   return 0;

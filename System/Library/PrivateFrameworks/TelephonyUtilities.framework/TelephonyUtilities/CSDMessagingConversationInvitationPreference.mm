@@ -1,34 +1,34 @@
 @interface CSDMessagingConversationInvitationPreference
-+ (id)invitationPreferenceWithTUConversationInvitationPreference:(id)a3;
-+ (int)messagingHandleTypeFor:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)invitationPreferenceWithTUConversationInvitationPreference:(id)preference;
++ (int)messagingHandleTypeFor:(int64_t)for;
+- (BOOL)isEqual:(id)equal;
 - (TUConversationInvitationPreference)tuInvitationPreference;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsHandleType:(id)a3;
+- (int)StringAsHandleType:(id)type;
 - (int)handleType;
 - (int64_t)tuHandleType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNotificationStyles:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNotificationStyles:(BOOL)styles;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingConversationInvitationPreference
 
-+ (id)invitationPreferenceWithTUConversationInvitationPreference:(id)a3
++ (id)invitationPreferenceWithTUConversationInvitationPreference:(id)preference
 {
-  if (a3)
+  if (preference)
   {
-    v4 = a3;
+    preferenceCopy = preference;
     v5 = objc_alloc_init(CSDMessagingConversationInvitationPreference);
-    -[CSDMessagingConversationInvitationPreference setHandleType:](v5, "setHandleType:", [a1 messagingHandleTypeFor:{objc_msgSend(v4, "handleType")}]);
-    v6 = [v4 notificationStyles];
+    -[CSDMessagingConversationInvitationPreference setHandleType:](v5, "setHandleType:", [self messagingHandleTypeFor:{objc_msgSend(preferenceCopy, "handleType")}]);
+    notificationStyles = [preferenceCopy notificationStyles];
 
-    [(CSDMessagingConversationInvitationPreference *)v5 setNotificationStyles:v6];
+    [(CSDMessagingConversationInvitationPreference *)v5 setNotificationStyles:notificationStyles];
   }
 
   else
@@ -39,11 +39,11 @@
   return v5;
 }
 
-+ (int)messagingHandleTypeFor:(int64_t)a3
++ (int)messagingHandleTypeFor:(int64_t)for
 {
-  if ((a3 - 1) < 3)
+  if ((for - 1) < 3)
   {
-    return a3;
+    return for;
   }
 
   else
@@ -69,21 +69,21 @@
 
 - (int64_t)tuHandleType
 {
-  v2 = [(CSDMessagingConversationInvitationPreference *)self handleType];
-  if (v2 > 3)
+  handleType = [(CSDMessagingConversationInvitationPreference *)self handleType];
+  if (handleType > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_100579ED0[v2];
+    return qword_100579ED0[handleType];
   }
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -109,25 +109,25 @@
   }
 }
 
-- (int)StringAsHandleType:(id)a3
+- (int)StringAsHandleType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Generic"])
+  else if ([typeCopy isEqualToString:@"Generic"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PhoneNumber"])
+  else if ([typeCopy isEqualToString:@"PhoneNumber"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"EmailAddress"])
+  else if ([typeCopy isEqualToString:@"EmailAddress"])
   {
     v4 = 3;
   }
@@ -140,9 +140,9 @@
   return v4;
 }
 
-- (void)setHasNotificationStyles:(BOOL)a3
+- (void)setHasNotificationStyles:(BOOL)styles
 {
-  if (a3)
+  if (styles)
   {
     v3 = 2;
   }
@@ -160,8 +160,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingConversationInvitationPreference;
   v3 = [(CSDMessagingConversationInvitationPreference *)&v7 description];
-  v4 = [(CSDMessagingConversationInvitationPreference *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingConversationInvitationPreference *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -220,16 +220,16 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 4) != 0)
   {
     version = self->_version;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -250,26 +250,26 @@ LABEL_3:
 
   handleType = self->_handleType;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
     notificationStyles = self->_notificationStyles;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[4] = self->_version;
-    *(v4 + 20) |= 4u;
+    toCopy[4] = self->_version;
+    *(toCopy + 20) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -288,21 +288,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = self->_handleType;
-  *(v4 + 20) |= 1u;
+  toCopy[2] = self->_handleType;
+  *(toCopy + 20) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    v4[3] = self->_notificationStyles;
-    *(v4 + 20) |= 2u;
+    toCopy[3] = self->_notificationStyles;
+    *(toCopy + 20) |= 2u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -339,23 +339,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 20) & 4) == 0 || self->_version != *(v4 + 4))
+    if ((*(equalCopy + 20) & 4) == 0 || self->_version != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 20) & 4) != 0)
+  else if ((*(equalCopy + 20) & 4) != 0)
   {
 LABEL_16:
     v5 = 0;
@@ -364,21 +364,21 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_handleType != *(v4 + 2))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_handleType != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 20) & 2) == 0;
+  v5 = (*(equalCopy + 20) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0 || self->_notificationStyles != *(v4 + 3))
+    if ((*(equalCopy + 20) & 2) == 0 || self->_notificationStyles != *(equalCopy + 3))
     {
       goto LABEL_16;
     }
@@ -431,15 +431,15 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 20);
+  fromCopy = from;
+  v5 = *(fromCopy + 20);
   if ((v5 & 4) != 0)
   {
-    self->_version = *(v4 + 4);
+    self->_version = *(fromCopy + 4);
     *&self->_has |= 4u;
-    v5 = *(v4 + 20);
+    v5 = *(fromCopy + 20);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -452,17 +452,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 20) & 1) == 0)
+  else if ((*(fromCopy + 20) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_handleType = *(v4 + 2);
+  self->_handleType = *(fromCopy + 2);
   *&self->_has |= 1u;
-  if ((*(v4 + 20) & 2) != 0)
+  if ((*(fromCopy + 20) & 2) != 0)
   {
 LABEL_4:
-    self->_notificationStyles = *(v4 + 3);
+    self->_notificationStyles = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 

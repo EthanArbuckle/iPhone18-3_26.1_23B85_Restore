@@ -14,14 +14,14 @@
     v5 = OBJC_IVAR____TtC20CommunicationsUICore25DarwinNotificationWrapper_token;
     swift_beginAccess();
     LODWORD(v5) = *(&self->super.isa + v5);
-    v6 = self;
+    selfCopy = self;
     notify_cancel(v5);
     *(&self->super.isa + v4) = 0;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;

@@ -1,26 +1,26 @@
 @interface CHTextInputGesture
-+ (BOOL)isDrawingCenterOnBlank:(id)a3 targetContentInfo:(id)a4 insertionLocation:(int64_t *)a5;
-+ (BOOL)isEditGestureForDrawing:(id)a3 targetContentInfo:(id)a4 tentativeResultType:(int64_t)a5;
-+ (BOOL)isVerticalBarShapeFromLineResult:(id)a3 originalDrawing:(id)a4 isDirectionDownward:(BOOL *)a5;
-+ (_NSRange)rangeOfTokenAtCharacterIndex:(int64_t)a3 inString:(id)a4 locale:(id)a5;
-+ (id)verticalBarGestureFromLineResult:(id)a3 currentGesture:(id)a4;
-- (CHTextInputGesture)initWithGestureType:(int64_t)a3 targetContentInfo:(id)a4 locale:(id)a5 normalizedDrawing:(id)a6 originalDrawing:(id)a7 lastStroke:(id)a8 preferCharacterLevel:(BOOL)a9;
-- (_NSRange)_affectedRangeByAdjustingForProtectedCharacters:(_NSRange)a3;
-- (void)getAffectedRange:(_NSRange *)a3 expandedToFullTokens:(BOOL *)a4;
++ (BOOL)isDrawingCenterOnBlank:(id)blank targetContentInfo:(id)info insertionLocation:(int64_t *)location;
++ (BOOL)isEditGestureForDrawing:(id)drawing targetContentInfo:(id)info tentativeResultType:(int64_t)type;
++ (BOOL)isVerticalBarShapeFromLineResult:(id)result originalDrawing:(id)drawing isDirectionDownward:(BOOL *)downward;
++ (_NSRange)rangeOfTokenAtCharacterIndex:(int64_t)index inString:(id)string locale:(id)locale;
++ (id)verticalBarGestureFromLineResult:(id)result currentGesture:(id)gesture;
+- (CHTextInputGesture)initWithGestureType:(int64_t)type targetContentInfo:(id)info locale:(id)locale normalizedDrawing:(id)drawing originalDrawing:(id)originalDrawing lastStroke:(id)stroke preferCharacterLevel:(BOOL)level;
+- (_NSRange)_affectedRangeByAdjustingForProtectedCharacters:(_NSRange)characters;
+- (void)getAffectedRange:(_NSRange *)range expandedToFullTokens:(BOOL *)tokens;
 @end
 
 @implementation CHTextInputGesture
 
-- (CHTextInputGesture)initWithGestureType:(int64_t)a3 targetContentInfo:(id)a4 locale:(id)a5 normalizedDrawing:(id)a6 originalDrawing:(id)a7 lastStroke:(id)a8 preferCharacterLevel:(BOOL)a9
+- (CHTextInputGesture)initWithGestureType:(int64_t)type targetContentInfo:(id)info locale:(id)locale normalizedDrawing:(id)drawing originalDrawing:(id)originalDrawing lastStroke:(id)stroke preferCharacterLevel:(BOOL)level
 {
-  v16 = a4;
-  v27 = a5;
-  v26 = a6;
-  v25 = a7;
-  v17 = a8;
-  if (a3 == 1)
+  infoCopy = info;
+  localeCopy = locale;
+  drawingCopy = drawing;
+  originalDrawingCopy = originalDrawing;
+  strokeCopy = stroke;
+  if (type == 1)
   {
-    v24 = v16;
+    v24 = infoCopy;
     if (qword_1EA84DC48 != -1)
     {
       dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -66,13 +66,13 @@ LABEL_10:
   v21 = v20;
   if (v20)
   {
-    v20->_gestureType = a3;
-    objc_storeStrong(&v20->_targetContentInfo, a4);
-    objc_storeStrong(&v21->_locale, a5);
-    objc_storeStrong(&v21->_normalizedDrawing, a6);
-    objc_storeStrong(&v21->_originalDrawing, a7);
-    objc_storeStrong(&v21->_lastStroke, a8);
-    v21->_preferCharacterLevel = a9;
+    v20->_gestureType = type;
+    objc_storeStrong(&v20->_targetContentInfo, info);
+    objc_storeStrong(&v21->_locale, locale);
+    objc_storeStrong(&v21->_normalizedDrawing, drawing);
+    objc_storeStrong(&v21->_originalDrawing, originalDrawing);
+    objc_storeStrong(&v21->_lastStroke, stroke);
+    v21->_preferCharacterLevel = level;
     textResult = v21->__textResult;
     v21->__textResult = 0;
 
@@ -82,10 +82,10 @@ LABEL_10:
   return v21;
 }
 
-- (void)getAffectedRange:(_NSRange *)a3 expandedToFullTokens:(BOOL *)a4
+- (void)getAffectedRange:(_NSRange *)range expandedToFullTokens:(BOOL *)tokens
 {
   v132 = *MEMORY[0x1E69E9840];
-  v9 = objc_msgSend_targetContentInfo(self, a2, a3, a4, v4, v5);
+  v9 = objc_msgSend_targetContentInfo(self, a2, range, tokens, v4, v5);
   location = objc_msgSend_strokeCoveredTextRange(v9, v10, v11, v12, v13, v14);
   length = v16;
 
@@ -207,35 +207,35 @@ LABEL_19:
     _os_log_impl(&dword_18366B000, v118, OS_LOG_TYPE_DEBUG, "Gesture recognized with type %ld, range  = %ld,%ld", buf, 0x20u);
   }
 
-  if (a3)
+  if (range)
   {
-    a3->location = location;
-    a3->length = length;
+    range->location = location;
+    range->length = length;
   }
 
-  if (a4)
+  if (tokens)
   {
-    *a4 = v125;
+    *tokens = v125;
   }
 }
 
-- (_NSRange)_affectedRangeByAdjustingForProtectedCharacters:(_NSRange)a3
+- (_NSRange)_affectedRangeByAdjustingForProtectedCharacters:(_NSRange)characters
 {
-  length = a3.length;
-  location = a3.location;
+  length = characters.length;
+  location = characters.location;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
-  v32 = a3.length;
+  v32 = characters.length;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
-  v28 = a3.location;
+  v28 = characters.location;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
   v24 = 0;
-  v7 = objc_msgSend_targetContentInfo(self, a2, a3.location, a3.length, v3, v4);
+  v7 = objc_msgSend_targetContentInfo(self, a2, characters.location, characters.length, v3, v4);
   v13 = objc_msgSend_protectedCharacterIndexes(v7, v8, v9, v10, v11, v12);
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
@@ -260,19 +260,19 @@ LABEL_19:
   return result;
 }
 
-+ (_NSRange)rangeOfTokenAtCharacterIndex:(int64_t)a3 inString:(id)a4 locale:(id)a5
++ (_NSRange)rangeOfTokenAtCharacterIndex:(int64_t)index inString:(id)string locale:(id)locale
 {
   v53 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  if (!objc_msgSend_length(v7, v9, v10, v11, v12, v13))
+  stringCopy = string;
+  localeCopy = locale;
+  if (!objc_msgSend_length(stringCopy, v9, v10, v11, v12, v13))
   {
     length = 0;
     location = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_24;
   }
 
-  if (a3 < 0 || objc_msgSend_length(v7, v14, v15, v16, v17, v18) <= a3)
+  if (index < 0 || objc_msgSend_length(stringCopy, v14, v15, v16, v17, v18) <= index)
   {
     if (qword_1EA84DC48 == -1)
     {
@@ -291,7 +291,7 @@ LABEL_19:
       {
 LABEL_7:
 
-        if (a3 < 0)
+        if (index < 0)
         {
           goto LABEL_9;
         }
@@ -301,15 +301,15 @@ LABEL_7:
     }
 
     *v50 = 134218240;
-    *&v50[4] = a3;
+    *&v50[4] = index;
     v51 = 2048;
-    v52 = objc_msgSend_length(v7, v25, v26, v27, v28, v29);
+    v52 = objc_msgSend_length(stringCopy, v25, v26, v27, v28, v29);
     _os_log_impl(&dword_18366B000, v24, OS_LOG_TYPE_ERROR, "Character index %lu beyond bounds for string length: %lu", v50, 0x16u);
     goto LABEL_7;
   }
 
 LABEL_8:
-  if (objc_msgSend_length(v7, v19, v20, v21, v22, v23) > a3)
+  if (objc_msgSend_length(stringCopy, v19, v20, v21, v22, v23) > index)
   {
     goto LABEL_13;
   }
@@ -331,9 +331,9 @@ LABEL_9:
   if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
   {
 LABEL_11:
-    v41 = objc_msgSend_length(v7, v36, v37, v38, v39, v40);
+    v41 = objc_msgSend_length(stringCopy, v36, v37, v38, v39, v40);
     *v50 = 134218240;
-    *&v50[4] = a3;
+    *&v50[4] = index;
     v51 = 2048;
     v52 = v41;
     _os_log_impl(&dword_18366B000, v35, OS_LOG_TYPE_FAULT, "Character index %lu beyond bounds for string length: %lu", v50, 0x16u);
@@ -342,17 +342,17 @@ LABEL_11:
 LABEL_12:
 
 LABEL_13:
-  v55.length = objc_msgSend_length(v7, v30, v31, v32, v33, v34);
+  v55.length = objc_msgSend_length(stringCopy, v30, v31, v32, v33, v34);
   v55.location = 0;
-  v42 = CFStringTokenizerCreate(0, v7, v55, 4uLL, v8);
+  v42 = CFStringTokenizerCreate(0, stringCopy, v55, 4uLL, localeCopy);
   *v50 = v42;
-  v43 = CFStringTokenizerGoToTokenAtIndex(v42, a3);
+  v43 = CFStringTokenizerGoToTokenAtIndex(v42, index);
   if (v43)
   {
     CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v42);
     location = CurrentTokenRange.location;
     length = CurrentTokenRange.length;
-    if (!(v43 | a3))
+    if (!(v43 | index))
     {
       goto LABEL_19;
     }
@@ -362,13 +362,13 @@ LABEL_13:
   {
     length = 0;
     location = 0x7FFFFFFFFFFFFFFFLL;
-    if (a3 == 0)
+    if (index == 0)
     {
 LABEL_19:
       if (CFStringTokenizerAdvanceToNextToken(v42))
       {
         v47 = CFStringTokenizerGetCurrentTokenRange(v42);
-        if (a3 >= v47.location && (a3 - v47.location) < v47.length)
+        if (index >= v47.location && (index - v47.location) < v47.length)
         {
           length = v47.length;
           location = v47.location;
@@ -379,7 +379,7 @@ LABEL_19:
     }
   }
 
-  if (location + length <= a3)
+  if (location + length <= index)
   {
     goto LABEL_19;
   }
@@ -399,23 +399,23 @@ LABEL_24:
   return result;
 }
 
-+ (id)verticalBarGestureFromLineResult:(id)a3 currentGesture:(id)a4
++ (id)verticalBarGestureFromLineResult:(id)result currentGesture:(id)gesture
 {
-  v6 = a3;
-  v7 = a4;
-  v13 = objc_msgSend_targetContentInfo(v7, v8, v9, v10, v11, v12);
-  v19 = objc_msgSend_originalDrawing(v7, v14, v15, v16, v17, v18);
-  LODWORD(a1) = objc_msgSend_isVerticalBarShapeFromLineResult_originalDrawing_isDirectionDownward_(a1, v20, v6, v19, 0, v21);
+  resultCopy = result;
+  gestureCopy = gesture;
+  v13 = objc_msgSend_targetContentInfo(gestureCopy, v8, v9, v10, v11, v12);
+  v19 = objc_msgSend_originalDrawing(gestureCopy, v14, v15, v16, v17, v18);
+  LODWORD(self) = objc_msgSend_isVerticalBarShapeFromLineResult_originalDrawing_isDirectionDownward_(self, v20, resultCopy, v19, 0, v21);
 
-  if (!a1)
+  if (!self)
   {
     v114 = 0;
     Stroke_preferCharacterLevel = 0;
     goto LABEL_37;
   }
 
-  v297 = v6;
-  v27 = objc_msgSend_originalDrawing(v7, v22, v23, v24, v25, v26);
+  v297 = resultCopy;
+  v27 = objc_msgSend_originalDrawing(gestureCopy, v22, v23, v24, v25, v26);
   objc_msgSend_bounds(v27, v28, v29, v30, v31, v32);
   v34 = v33;
   v36 = v35;
@@ -618,7 +618,7 @@ LABEL_48:
     v264 = objc_msgSend_absoluteLocationFromRelativeLocation_(v13, v259, v160, v261, v262, v263);
   }
 
-  v265 = objc_msgSend_locale(v7, v259, v260, v261, v262, v263);
+  v265 = objc_msgSend_locale(gestureCopy, v259, v260, v261, v262, v263);
   if (objc_msgSend_shouldUseFullWidthSpaceBasedOnContextForLocale_(CHRecognizerConfiguration, v266, v265, v267, v268, v269))
   {
     v270 = sub_1837A954C(v200);
@@ -642,7 +642,7 @@ LABEL_48:
 
   v296 = v264;
   v276 = objc_msgSend_indexSetWithIndex_(MEMORY[0x1E696AC90], v271, 0, v272, v273, v274);
-  v282 = objc_msgSend_normalizedDrawing(v7, v277, v278, v279, v280, v281);
+  v282 = objc_msgSend_normalizedDrawing(gestureCopy, v277, v278, v279, v280, v281);
   objc_msgSend_boundsForStrokeIndexes_(v282, v283, v276, v284, v285, v286);
   v288 = v287;
   v290 = v289;
@@ -654,10 +654,10 @@ LABEL_48:
   v298 = 0;
 LABEL_28:
   v216 = [CHTextInputGesture alloc];
-  v222 = objc_msgSend_locale(v7, v217, v218, v219, v220, v221);
-  v228 = objc_msgSend_normalizedDrawing(v7, v223, v224, v225, v226, v227);
-  v234 = objc_msgSend_originalDrawing(v7, v229, v230, v231, v232, v233);
-  v240 = objc_msgSend_lastStroke(v7, v235, v236, v237, v238, v239);
+  v222 = objc_msgSend_locale(gestureCopy, v217, v218, v219, v220, v221);
+  v228 = objc_msgSend_normalizedDrawing(gestureCopy, v223, v224, v225, v226, v227);
+  v234 = objc_msgSend_originalDrawing(gestureCopy, v229, v230, v231, v232, v233);
+  v240 = objc_msgSend_lastStroke(gestureCopy, v235, v236, v237, v238, v239);
   Stroke_preferCharacterLevel = objc_msgSend_initWithGestureType_targetContentInfo_locale_normalizedDrawing_originalDrawing_lastStroke_preferCharacterLevel_(v216, v241, 7, v13, v222, v228, v234, v240, 0);
 
   if (Stroke_preferCharacterLevel)
@@ -669,17 +669,17 @@ LABEL_28:
 
 LABEL_36:
 
-  v6 = v297;
+  resultCopy = v297;
 LABEL_37:
 
   return Stroke_preferCharacterLevel;
 }
 
-+ (BOOL)isEditGestureForDrawing:(id)a3 targetContentInfo:(id)a4 tentativeResultType:(int64_t)a5
++ (BOOL)isEditGestureForDrawing:(id)drawing targetContentInfo:(id)info tentativeResultType:(int64_t)type
 {
-  v7 = a3;
-  v8 = a4;
-  if (!objc_msgSend_pointCount(v7, v9, v10, v11, v12, v13))
+  drawingCopy = drawing;
+  infoCopy = info;
+  if (!objc_msgSend_pointCount(drawingCopy, v9, v10, v11, v12, v13))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -694,7 +694,7 @@ LABEL_37:
     }
   }
 
-  if (!objc_msgSend_pointCount(v7, v14, v15, v16, v17, v18))
+  if (!objc_msgSend_pointCount(drawingCopy, v14, v15, v16, v17, v18))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -709,11 +709,11 @@ LABEL_37:
     }
   }
 
-  v26 = objc_msgSend_strokeCoveredTextRange(v8, v20, v21, v22, v23, v24);
+  v26 = objc_msgSend_strokeCoveredTextRange(infoCopy, v20, v21, v22, v23, v24);
   v28 = v27;
-  v253 = objc_msgSend_referenceSubstringInRange_(v8, v27, v26, v27, v29, v30);
+  v253 = objc_msgSend_referenceSubstringInRange_(infoCopy, v27, v26, v27, v29, v30);
   objc_opt_self();
-  if ((a5 - 4) <= 2)
+  if ((type - 4) <= 2)
   {
     v36 = objc_msgSend_newlineCharacterSet(MEMORY[0x1E696AB08], v31, v32, v33, v34, v35);
     v41 = objc_msgSend_stringByTrimmingCharactersInSet_(v253, v37, v36, v38, v39, v40);
@@ -721,8 +721,8 @@ LABEL_37:
 
     if (v47 != v28)
     {
-      v48 = sub_1837DFE08(CHTextInputGesture, v26, v28, a5, v7, v8);
-      v52 = objc_msgSend_referenceSubstringInRange_(v8, v49, v48, v49, v50, v51);
+      v48 = sub_1837DFE08(CHTextInputGesture, v26, v28, type, drawingCopy, infoCopy);
+      v52 = objc_msgSend_referenceSubstringInRange_(infoCopy, v49, v48, v49, v50, v51);
 
       v253 = v52;
     }
@@ -737,19 +737,19 @@ LABEL_37:
     goto LABEL_20;
   }
 
-  objc_msgSend_bounds(v7, v65, v66, v67, v68, v69);
+  objc_msgSend_bounds(drawingCopy, v65, v66, v67, v68, v69);
   v71 = v70;
   v73 = v72;
   v75 = v74;
   v77 = v76;
-  objc_msgSend_unionCharacterRects(v8, v78, v79, v80, v81, v82);
+  objc_msgSend_unionCharacterRects(infoCopy, v78, v79, v80, v81, v82);
   x = v264.origin.x;
   y = v264.origin.y;
   width = v264.size.width;
   height = v264.size.height;
   if (CGRectIsNull(v264))
   {
-    v92 = objc_msgSend_textInputTarget(v8, v87, v88, v89, v90, v91);
+    v92 = objc_msgSend_textInputTarget(infoCopy, v87, v88, v89, v90, v91);
     objc_msgSend_frame(v92, v93, v94, v95, v96, v97);
     x = v98;
     y = v99;
@@ -770,13 +770,13 @@ LABEL_37:
   {
 LABEL_20:
     v103 = MEMORY[0x1E696AC90];
-    v104 = objc_msgSend_strokeCount(v7, v65, v66, v67, v68, v69);
+    v104 = objc_msgSend_strokeCount(drawingCopy, v65, v66, v67, v68, v69);
     v108 = objc_msgSend_indexSetWithIndexesInRange_(v103, v105, 0, v104, v106, v107);
-    objc_msgSend_centroidForStrokeIndexes_(v7, v109, v108, v110, v111, v112);
+    objc_msgSend_centroidForStrokeIndexes_(drawingCopy, v109, v108, v110, v111, v112);
     v250 = v113;
     v252 = v114;
 
-    objc_msgSend_bounds(v7, v115, v116, v117, v118, v119);
+    objc_msgSend_bounds(drawingCopy, v115, v116, v117, v118, v119);
     v120 = v267.origin.x;
     v121 = v267.origin.y;
     v122 = v267.size.width;
@@ -863,7 +863,7 @@ LABEL_20:
       v146 = v127;
     }
 
-    v147 = objc_msgSend_referenceSubstringRange(v8, v128, v129, v130, v131, v132);
+    v147 = objc_msgSend_referenceSubstringRange(infoCopy, v128, v129, v130, v131, v132);
     v153 = v147;
     v154 = v148;
     v155 = &v148[v147];
@@ -876,7 +876,7 @@ LABEL_20:
       v159 = v147;
       do
       {
-        objc_msgSend_characterRectForAbsoluteCharacterIndex_(v8, v148, v159, v150, v151, v152);
+        objc_msgSend_characterRectForAbsoluteCharacterIndex_(infoCopy, v148, v159, v150, v151, v152);
         v161 = v160;
         v163 = v162;
         v165 = v164;
@@ -895,17 +895,17 @@ LABEL_20:
       v156 = v157;
     }
 
-    v186 = objc_msgSend_referenceSubstring(v8, v148, v149, v150, v151, v152);
+    v186 = objc_msgSend_referenceSubstring(infoCopy, v148, v149, v150, v151, v152);
     v192 = objc_msgSend_length(v186, v187, v188, v189, v190, v191);
 
-    if (v192 && ((objc_msgSend_referenceSubstring(v8, v193, v194, v195, v196, v197), v198 = objc_claimAutoreleasedReturnValue(), v204 = objc_msgSend_length(v198, v199, v200, v201, v202, v203), objc_msgSend_characterRectForRelativeCharacterIndex_(v8, v205, v204 - 1, v206, v207, v208), v210 = v209, v198, v251 < v210) || v156 / (v251 * v249) * 100.0 > 0.01))
+    if (v192 && ((objc_msgSend_referenceSubstring(infoCopy, v193, v194, v195, v196, v197), v198 = objc_claimAutoreleasedReturnValue(), v204 = objc_msgSend_length(v198, v199, v200, v201, v202, v203), objc_msgSend_characterRectForRelativeCharacterIndex_(infoCopy, v205, v204 - 1, v206, v207, v208), v210 = v209, v198, v251 < v210) || v156 / (v251 * v249) * 100.0 > 0.01))
     {
       v211 = 1;
     }
 
     else
     {
-      v215 = objc_msgSend_pointCountForStrokeIndex_(v7, v193, 0, v195, v196, v197);
+      v215 = objc_msgSend_pointCountForStrokeIndex_(drawingCopy, v193, 0, v195, v196, v197);
       v216 = 0.0;
       if (v215 >= 1)
       {
@@ -917,7 +917,7 @@ LABEL_20:
           v220 = 0;
           v221 = 0;
           v222 = 0;
-          objc_msgSend_pointForStrokeIndex_pointIndex_(v7, v212, 0, 0, v213, v214);
+          objc_msgSend_pointForStrokeIndex_pointIndex_(drawingCopy, v212, 0, 0, v213, v214);
           while (1)
           {
             v257 = v228;
@@ -928,7 +928,7 @@ LABEL_20:
               v234 = v153;
               do
               {
-                objc_msgSend_characterRectForAbsoluteCharacterIndex_(v8, v223, v234, v224, v225, v226);
+                objc_msgSend_characterRectForAbsoluteCharacterIndex_(infoCopy, v223, v234, v224, v225, v226);
                 v263.y = v257;
                 v263.x = v260;
                 v235 = CGRectContainsPoint(v275, v263);
@@ -956,13 +956,13 @@ LABEL_53:
               }
             }
 
-            objc_msgSend_pointForStrokeIndex_pointIndex_(v7, v223, 0, v220, v225, v226);
+            objc_msgSend_pointForStrokeIndex_pointIndex_(drawingCopy, v223, 0, v220, v225, v226);
           }
         }
 
         v238 = 0;
         v221 = 0;
-        objc_msgSend_pointForStrokeIndex_pointIndex_(v7, v212, 0, 0, v213, v214);
+        objc_msgSend_pointForStrokeIndex_pointIndex_(drawingCopy, v212, 0, 0, v213, v214);
         while (1)
         {
           v244 = v219 == *v217 && v218 == v217[1];
@@ -985,7 +985,7 @@ LABEL_53:
             }
           }
 
-          objc_msgSend_pointForStrokeIndex_pointIndex_(v7, v239, 0, v238, v240, v241);
+          objc_msgSend_pointForStrokeIndex_pointIndex_(drawingCopy, v239, 0, v238, v240, v241);
         }
       }
 
@@ -1003,22 +1003,22 @@ LABEL_56:
   return v211;
 }
 
-+ (BOOL)isVerticalBarShapeFromLineResult:(id)a3 originalDrawing:(id)a4 isDirectionDownward:(BOOL *)a5
++ (BOOL)isVerticalBarShapeFromLineResult:(id)result originalDrawing:(id)drawing isDirectionDownward:(BOOL *)downward
 {
-  v7 = a3;
-  v8 = a4;
-  if (objc_msgSend_strokeCount(v8, v9, v10, v11, v12, v13) != 1 || objc_msgSend_pointCountForStrokeIndex_(v8, v14, 0, v15, v16, v17) <= 1)
+  resultCopy = result;
+  drawingCopy = drawing;
+  if (objc_msgSend_strokeCount(drawingCopy, v9, v10, v11, v12, v13) != 1 || objc_msgSend_pointCountForStrokeIndex_(drawingCopy, v14, 0, v15, v16, v17) <= 1)
   {
     v18 = 0;
-    if (a5)
+    if (downward)
     {
-      *a5 = 0;
+      *downward = 0;
     }
 
     goto LABEL_18;
   }
 
-  v19 = v7;
+  v19 = resultCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1066,35 +1066,35 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  objc_msgSend_pointForStrokeIndex_pointIndex_(v8, v67, 0, 0, v68, v69);
+  objc_msgSend_pointForStrokeIndex_pointIndex_(drawingCopy, v67, 0, 0, v68, v69);
   v73 = v72;
-  v78 = objc_msgSend_pointCountForStrokeIndex_(v8, v74, 0, v75, v76, v77);
-  objc_msgSend_pointForStrokeIndex_pointIndex_(v8, v79, 0, v78 - 1, v80, v81);
+  v78 = objc_msgSend_pointCountForStrokeIndex_(drawingCopy, v74, 0, v75, v76, v77);
+  objc_msgSend_pointForStrokeIndex_pointIndex_(drawingCopy, v79, 0, v78 - 1, v80, v81);
   v83 = v82 > v73;
   v18 = 1;
 LABEL_15:
-  if (a5)
+  if (downward)
   {
-    *a5 = v83;
+    *downward = v83;
   }
 
 LABEL_18:
   return v18;
 }
 
-+ (BOOL)isDrawingCenterOnBlank:(id)a3 targetContentInfo:(id)a4 insertionLocation:(int64_t *)a5
++ (BOOL)isDrawingCenterOnBlank:(id)blank targetContentInfo:(id)info insertionLocation:(int64_t *)location
 {
-  v7 = a3;
-  v8 = a4;
-  objc_msgSend_bounds(v7, v9, v10, v11, v12, v13);
+  blankCopy = blank;
+  infoCopy = info;
+  objc_msgSend_bounds(blankCopy, v9, v10, v11, v12, v13);
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v27 = objc_msgSend_referenceSubstringRange(v8, v22, v23, v24, v25, v26);
+  v27 = objc_msgSend_referenceSubstringRange(infoCopy, v22, v23, v24, v25, v26);
   v29 = v28;
-  v33 = objc_msgSend_relativeLocationFromAbsoluteLocation_(v8, v28, v27, v30, v31, v32);
-  if (objc_msgSend_textContentLength(v8, v34, v35, v36, v37, v38) <= 0)
+  v33 = objc_msgSend_relativeLocationFromAbsoluteLocation_(infoCopy, v28, v27, v30, v31, v32);
+  if (objc_msgSend_textContentLength(infoCopy, v34, v35, v36, v37, v38) <= 0)
   {
     v43 = 0;
   }
@@ -1109,7 +1109,7 @@ LABEL_18:
     goto LABEL_9;
   }
 
-  objc_msgSend_characterRectForRelativeCharacterIndex_(v8, v39, (v29 - 1), v40, v41, v42);
+  objc_msgSend_characterRectForRelativeCharacterIndex_(infoCopy, v39, (v29 - 1), v40, v41, v42);
   MaxY = CGRectGetMaxY(v86);
   v87.origin.x = v15;
   v87.origin.y = v17;
@@ -1121,7 +1121,7 @@ LABEL_18:
     goto LABEL_12;
   }
 
-  objc_msgSend_characterRectForRelativeCharacterIndex_(v8, v39, 0, v40, v41, v42);
+  objc_msgSend_characterRectForRelativeCharacterIndex_(infoCopy, v39, 0, v40, v41, v42);
   MinY = CGRectGetMinY(v88);
   v89.origin.x = v15;
   v89.origin.y = v17;
@@ -1132,7 +1132,7 @@ LABEL_18:
 LABEL_9:
     v43 = 0;
     v47 = 1;
-    if (a5)
+    if (location)
     {
       goto LABEL_16;
     }
@@ -1155,7 +1155,7 @@ LABEL_9:
 LABEL_12:
     if ((v43 - 1) <= 0x7FFFFFFFFFFFFFFDLL)
     {
-      v48 = objc_msgSend_referenceSubstring(v8, v39, v45, v40, v41, v42);
+      v48 = objc_msgSend_referenceSubstring(infoCopy, v39, v45, v40, v41, v42);
       v53 = objc_msgSend_characterAtIndex_(v48, v49, v43 - 1, v50, v51, v52);
 
       v59 = objc_msgSend_newlineCharacterSet(MEMORY[0x1E696AB08], v54, v55, v56, v57, v58);
@@ -1168,7 +1168,7 @@ LABEL_12:
     }
 
     v47 = 1;
-    if (a5)
+    if (location)
     {
       goto LABEL_16;
     }
@@ -1183,7 +1183,7 @@ LABEL_12:
   v80 = v19;
   while (1)
   {
-    objc_msgSend_characterRectForRelativeCharacterIndex_(v8, v39, v33, v40, v41, v42, *&v78);
+    objc_msgSend_characterRectForRelativeCharacterIndex_(infoCopy, v39, v33, v40, v41, v42, *&v78);
     x = v93.origin.x;
     y = v93.origin.y;
     width = v93.size.width;
@@ -1284,7 +1284,7 @@ LABEL_29:
   }
 
   v47 = 0;
-  if (!a5)
+  if (!location)
   {
     goto LABEL_22;
   }
@@ -1293,10 +1293,10 @@ LABEL_16:
   v64 = 0x7FFFFFFFFFFFFFFFLL;
   if (v43 != 0x7FFFFFFFFFFFFFFFLL && v47)
   {
-    v64 = objc_msgSend_absoluteLocationFromRelativeLocation_(v8, v39, v43, v40, v41, v42);
+    v64 = objc_msgSend_absoluteLocationFromRelativeLocation_(infoCopy, v39, v43, v40, v41, v42);
   }
 
-  *a5 = v64;
+  *location = v64;
 LABEL_22:
 
   return v47;

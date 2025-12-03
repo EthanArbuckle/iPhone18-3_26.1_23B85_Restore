@@ -1,10 +1,10 @@
 @interface KNTitlePlaceholderInfo
 + (id)mixableObjectClasses;
-- (KNTitlePlaceholderInfo)initWithKNPlaceholderInfo:(id)a3;
+- (KNTitlePlaceholderInfo)initWithKNPlaceholderInfo:(id)info;
 - (id)copyToInstantiateTemplatePlaceholder;
 - (id)defaultBuildChunkTitle;
 - (id)typeName;
-- (void)acceptVisitor:(id)a3;
+- (void)acceptVisitor:(id)visitor;
 @end
 
 @implementation KNTitlePlaceholderInfo
@@ -19,35 +19,35 @@
   return v3;
 }
 
-- (KNTitlePlaceholderInfo)initWithKNPlaceholderInfo:(id)a3
+- (KNTitlePlaceholderInfo)initWithKNPlaceholderInfo:(id)info
 {
-  v4 = a3;
-  v7 = objc_msgSend_textStorage(v4, v5, v6);
-  v10 = objc_msgSend_context(v4, v8, v9);
+  infoCopy = info;
+  v7 = objc_msgSend_textStorage(infoCopy, v5, v6);
+  v10 = objc_msgSend_context(infoCopy, v8, v9);
   v12 = objc_msgSend_copyWithContext_(v7, v11, v10);
 
-  v15 = objc_msgSend_context(v4, v13, v14);
-  v18 = objc_msgSend_geometry(v4, v16, v17);
-  v21 = objc_msgSend_shapeStyle(v4, v19, v20);
-  v24 = objc_msgSend_pathSource(v4, v22, v23);
+  v15 = objc_msgSend_context(infoCopy, v13, v14);
+  v18 = objc_msgSend_geometry(infoCopy, v16, v17);
+  v21 = objc_msgSend_shapeStyle(infoCopy, v19, v20);
+  v24 = objc_msgSend_pathSource(infoCopy, v22, v23);
   v47.receiver = self;
   v47.super_class = KNTitlePlaceholderInfo;
   v25 = [(KNTitlePlaceholderInfo *)&v47 initWithContext:v15 geometry:v18 style:v21 pathSource:v24 wpStorage:v12];
 
   if (v25)
   {
-    isLocked = objc_msgSend_isLocked(v4, v26, v27);
+    isLocked = objc_msgSend_isLocked(infoCopy, v26, v27);
     objc_msgSend_setLocked_(v25, v29, isLocked);
-    v32 = objc_msgSend_hyperlinkURL(v4, v30, v31);
+    v32 = objc_msgSend_hyperlinkURL(infoCopy, v30, v31);
     objc_msgSend_setHyperlinkURL_(v25, v33, v32);
 
-    v36 = objc_msgSend_comment(v4, v34, v35);
+    v36 = objc_msgSend_comment(infoCopy, v34, v35);
     objc_msgSend_setComment_(v25, v37, v36);
 
-    v40 = objc_msgSend_accessibilityDescription(v4, v38, v39);
+    v40 = objc_msgSend_accessibilityDescription(infoCopy, v38, v39);
     objc_msgSend_setAccessibilityDescription_(v25, v41, v40);
 
-    v44 = objc_msgSend_aspectRatioLocked(v4, v42, v43);
+    v44 = objc_msgSend_aspectRatioLocked(infoCopy, v42, v43);
     objc_msgSend_setAspectRatioLocked_(v25, v45, v44);
   }
 
@@ -58,13 +58,13 @@
 {
   v14.receiver = self;
   v14.super_class = KNTitlePlaceholderInfo;
-  v2 = [(KNTitlePlaceholderInfo *)&v14 copyToInstantiateTemplatePlaceholder];
-  v5 = objc_msgSend_textStorage(v2, v3, v4);
-  v8 = objc_msgSend_textStorage(v2, v6, v7);
+  copyToInstantiateTemplatePlaceholder = [(KNTitlePlaceholderInfo *)&v14 copyToInstantiateTemplatePlaceholder];
+  v5 = objc_msgSend_textStorage(copyToInstantiateTemplatePlaceholder, v3, v4);
+  v8 = objc_msgSend_textStorage(copyToInstantiateTemplatePlaceholder, v6, v7);
   v11 = objc_msgSend_range(v8, v9, v10);
   objc_msgSend_replaceCharactersInRange_withString_undoTransaction_(v5, v12, v11, v12, &stru_2884D8E20, 0);
 
-  return v2;
+  return copyToInstantiateTemplatePlaceholder;
 }
 
 - (id)typeName
@@ -83,9 +83,9 @@
   return v4;
 }
 
-- (void)acceptVisitor:(id)a3
+- (void)acceptVisitor:(id)visitor
 {
-  v4 = a3;
+  visitorCopy = visitor;
   v5 = TSUProtocolCast();
   v7 = v5;
   if (v5)
@@ -97,7 +97,7 @@
   {
     v8.receiver = self;
     v8.super_class = KNTitlePlaceholderInfo;
-    [(KNTitlePlaceholderInfo *)&v8 acceptVisitor:v4, &unk_2885462B0];
+    [(KNTitlePlaceholderInfo *)&v8 acceptVisitor:visitorCopy, &unk_2885462B0];
   }
 }
 

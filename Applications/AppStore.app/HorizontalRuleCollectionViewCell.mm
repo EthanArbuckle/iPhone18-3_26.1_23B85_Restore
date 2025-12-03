@@ -1,12 +1,12 @@
 @interface HorizontalRuleCollectionViewCell
-- (_TtC8AppStore32HorizontalRuleCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore32HorizontalRuleCollectionViewCell)initWithCoder:(id)coder;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)layoutSubviews;
 @end
 
 @implementation HorizontalRuleCollectionViewCell
 
-- (_TtC8AppStore32HorizontalRuleCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore32HorizontalRuleCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore32HorizontalRuleCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -27,13 +27,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10075D560();
 }
 
 - (void)_dynamicUserInterfaceTraitDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_10075D7A8();
 }
 

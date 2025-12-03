@@ -1,35 +1,35 @@
 @interface VUIActionUpdateUpNext
-- (VUIActionUpdateUpNext)initWithContextData:(id)a3;
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4;
+- (VUIActionUpdateUpNext)initWithContextData:(id)data;
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler;
 @end
 
 @implementation VUIActionUpdateUpNext
 
-- (VUIActionUpdateUpNext)initWithContextData:(id)a3
+- (VUIActionUpdateUpNext)initWithContextData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = VUIActionUpdateUpNext;
   v5 = [(VUIActionUpdateUpNext *)&v11 init];
   if (v5)
   {
-    v6 = [v4 vui_stringForKey:@"itemID"];
+    v6 = [dataCopy vui_stringForKey:@"itemID"];
     itemID = v5->_itemID;
     v5->_itemID = v6;
 
-    v8 = [v4 vui_stringForKey:@"state"];
+    v8 = [dataCopy vui_stringForKey:@"state"];
     state = v5->_state;
     v5->_state = v8;
 
-    v5->_confirmationShouldWaitCompletion = [v4 vui_BOOLForKey:@"confirmationShouldWaitCompletion" defaultValue:0];
+    v5->_confirmationShouldWaitCompletion = [dataCopy vui_BOOLForKey:@"confirmationShouldWaitCompletion" defaultValue:0];
   }
 
   return v5;
 }
 
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = [(NSString *)self->_state isEqualToString:@"added"];
   if (self->_itemID && self->_state)
   {
@@ -46,9 +46,9 @@
     }
   }
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   v8 = +[VUIAppReviewManager sharedInstance];

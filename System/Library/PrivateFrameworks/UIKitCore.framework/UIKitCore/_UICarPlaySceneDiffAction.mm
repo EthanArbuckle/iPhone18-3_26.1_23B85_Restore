@@ -1,6 +1,6 @@
 @interface _UICarPlaySceneDiffAction
 - (UIApplicationSceneSettingsDiffInspector)carPlayDiffInspector;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation _UICarPlaySceneDiffAction
@@ -22,18 +22,18 @@
   return carPlayDiffInspector;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v10 = a3;
+  sceneCopy = scene;
   v14 = 0;
-  v11 = a5;
-  v12 = [(_UICarPlaySceneDiffAction *)self carPlayDiffInspector];
-  [v12 inspectDiff:v11 withContext:&v14];
+  diffCopy = diff;
+  carPlayDiffInspector = [(_UICarPlaySceneDiffAction *)self carPlayDiffInspector];
+  [carPlayDiffInspector inspectDiff:diffCopy withContext:&v14];
 
   if ((v14 & 2) != 0)
   {
-    v13 = [v10 _carPlaySceneComponent];
-    [v13 _invalidateTraitOverrides];
+    _carPlaySceneComponent = [sceneCopy _carPlaySceneComponent];
+    [_carPlaySceneComponent _invalidateTraitOverrides];
   }
 }
 

@@ -1,25 +1,25 @@
 @interface WaypointPlaceholder
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
 - (NSString)description;
-- (WaypointPlaceholder)initWithName:(id)a3 displayableMarker:(id)a4;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
+- (WaypointPlaceholder)initWithName:(id)name displayableMarker:(id)marker;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
 @end
 
 @implementation WaypointPlaceholder
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, @"displayableMarker", self->_displayableMarker);
+  (*v4)(blockCopy, @"displayableMarker", self->_displayableMarker);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100CE4DCC;
@@ -27,8 +27,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(WaypointPlaceholder *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(WaypointPlaceholder *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -62,7 +62,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100CE501C;
@@ -70,8 +70,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(WaypointPlaceholder *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(WaypointPlaceholder *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -103,24 +103,24 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
-  else if ([(WaypointPlaceholder *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(WaypointPlaceholder *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(WaypointPlaceholder *)v5 name];
-    v7 = [(WaypointPlaceholder *)self name];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    name = [(WaypointPlaceholder *)v5 name];
+    name2 = [(WaypointPlaceholder *)self name];
+    if ([name isEqual:name2])
     {
       displayableMarker = self->_displayableMarker;
-      v9 = [(WaypointPlaceholder *)v5 displayableMarker];
-      v10 = [(SearchResult *)displayableMarker isEqualToSearchResult:v9 forPurpose:1];
+      displayableMarker = [(WaypointPlaceholder *)v5 displayableMarker];
+      v10 = [(SearchResult *)displayableMarker isEqualToSearchResult:displayableMarker forPurpose:1];
     }
 
     else
@@ -137,20 +137,20 @@ LABEL_9:
   return v10;
 }
 
-- (WaypointPlaceholder)initWithName:(id)a3 displayableMarker:(id)a4
+- (WaypointPlaceholder)initWithName:(id)name displayableMarker:(id)marker
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  markerCopy = marker;
   v14.receiver = self;
   v14.super_class = WaypointPlaceholder;
   v8 = [(WaypointPlaceholder *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v7 copy];
+    v11 = [markerCopy copy];
     displayableMarker = v8->_displayableMarker;
     v8->_displayableMarker = v11;
   }

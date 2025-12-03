@@ -1,83 +1,83 @@
 @interface SBHIconStylePickerControl
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (SBHIconStylePickerControl)initWithFrame:(CGRect)a3 URLForResource:(id)a4 extenstion:(id)a5 enabledState:(id)a6 disabledState:(id)a7;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (SBHIconStylePickerControl)initWithFrame:(CGRect)frame URLForResource:(id)resource extenstion:(id)extenstion enabledState:(id)state disabledState:(id)disabledState;
 - (UIView)referenceLayoutView;
 - (void)_updateFilters;
-- (void)_updatePackageView:(BOOL)a3;
+- (void)_updatePackageView:(BOOL)view;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setReferenceLayoutView:(id)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setReferenceLayoutView:(id)view;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation SBHIconStylePickerControl
 
-- (SBHIconStylePickerControl)initWithFrame:(CGRect)a3 URLForResource:(id)a4 extenstion:(id)a5 enabledState:(id)a6 disabledState:(id)a7
+- (SBHIconStylePickerControl)initWithFrame:(CGRect)frame URLForResource:(id)resource extenstion:(id)extenstion enabledState:(id)state disabledState:(id)disabledState
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v42[1] = *MEMORY[0x1E69E9840];
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  resourceCopy = resource;
+  extenstionCopy = extenstion;
+  stateCopy = state;
+  disabledStateCopy = disabledState;
   v41.receiver = self;
   v41.super_class = SBHIconStylePickerControl;
-  v19 = [(SBHIconStylePickerControl *)&v41 initWithFrame:x, y, width, height];
-  if (v19)
+  height = [(SBHIconStylePickerControl *)&v41 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v20 = [v17 copy];
-    enabledState = v19->_enabledState;
-    v19->_enabledState = v20;
+    v20 = [stateCopy copy];
+    enabledState = height->_enabledState;
+    height->_enabledState = v20;
 
-    v22 = [v18 copy];
-    disabledState = v19->_disabledState;
-    v19->_disabledState = v22;
+    v22 = [disabledStateCopy copy];
+    disabledState = height->_disabledState;
+    height->_disabledState = v22;
 
     v24 = objc_alloc_init(SBHTouchPassThroughView);
-    containerView = v19->_containerView;
-    v19->_containerView = &v24->super;
+    containerView = height->_containerView;
+    height->_containerView = &v24->super;
 
-    v26 = v19->_containerView;
-    [(SBHIconStylePickerControl *)v19 bounds];
+    v26 = height->_containerView;
+    [(SBHIconStylePickerControl *)height bounds];
     [(UIView *)v26 setFrame:?];
-    [(SBHIconStylePickerControl *)v19 addSubview:v19->_containerView];
-    v27 = [v15 copy];
-    URLForResource = v19->_URLForResource;
-    v19->_URLForResource = v27;
+    [(SBHIconStylePickerControl *)height addSubview:height->_containerView];
+    v27 = [resourceCopy copy];
+    URLForResource = height->_URLForResource;
+    height->_URLForResource = v27;
 
-    v29 = [v16 copy];
-    extension = v19->_extension;
-    v19->_extension = v29;
+    v29 = [extenstionCopy copy];
+    extension = height->_extension;
+    height->_extension = v29;
 
     v31 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v32 = [v31 URLForResource:v15 withExtension:v16];
+    v32 = [v31 URLForResource:resourceCopy withExtension:extenstionCopy];
 
     v33 = [objc_alloc(MEMORY[0x1E698E7D8]) initWithURL:v32];
-    packageView = v19->_packageView;
-    v19->_packageView = v33;
+    packageView = height->_packageView;
+    height->_packageView = v33;
 
-    v35 = v19->_packageView;
-    [(SBHIconStylePickerControl *)v19 bounds];
+    v35 = height->_packageView;
+    [(SBHIconStylePickerControl *)height bounds];
     [(BSUICAPackageView *)v35 setFrame:?];
-    [(BSUICAPackageView *)v19->_packageView setUserInteractionEnabled:0];
-    v36 = [(BSUICAPackageView *)v19->_packageView layer];
-    [v36 setAllowsGroupOpacity:1];
+    [(BSUICAPackageView *)height->_packageView setUserInteractionEnabled:0];
+    layer = [(BSUICAPackageView *)height->_packageView layer];
+    [layer setAllowsGroupOpacity:1];
 
-    [(UIView *)v19->_containerView addSubview:v19->_packageView];
-    [(SBHIconStylePickerControl *)v19 setPointerStyleProvider:&__block_literal_global_43];
-    [(SBHIconStylePickerControl *)v19 _updatePackageView:0];
-    [(SBHIconStylePickerControl *)v19 _updateFilters];
+    [(UIView *)height->_containerView addSubview:height->_packageView];
+    [(SBHIconStylePickerControl *)height setPointerStyleProvider:&__block_literal_global_43];
+    [(SBHIconStylePickerControl *)height _updatePackageView:0];
+    [(SBHIconStylePickerControl *)height _updateFilters];
     v37 = objc_opt_self();
     v42[0] = v37;
     v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:1];
-    v39 = [(SBHIconStylePickerControl *)v19 registerForTraitChanges:v38 withTarget:v19 action:sel__updateFilters];
+    v39 = [(SBHIconStylePickerControl *)height registerForTraitChanges:v38 withTarget:height action:sel__updateFilters];
   }
 
-  return v19;
+  return height;
 }
 
 id __96__SBHIconStylePickerControl_initWithFrame_URLForResource_extenstion_enabledState_disabledState___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -105,32 +105,32 @@ id __96__SBHIconStylePickerControl_initWithFrame_URLForResource_extenstion_enabl
   [(BSUICAPackageView *)self->_packageView setFrame:v4, v6, v8, v10];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(SBHIconStylePickerControl *)self isSelected]!= a3)
+  animatedCopy = animated;
+  selectedCopy = selected;
+  if ([(SBHIconStylePickerControl *)self isSelected]!= selected)
   {
     v7.receiver = self;
     v7.super_class = SBHIconStylePickerControl;
-    [(SBHIconStylePickerControl *)&v7 setSelected:v5];
+    [(SBHIconStylePickerControl *)&v7 setSelected:selectedCopy];
     [(SBHIconStylePickerControl *)self sendActionsForControlEvents:4096];
-    [(SBHIconStylePickerControl *)self _updatePackageView:v4];
+    [(SBHIconStylePickerControl *)self _updatePackageView:animatedCopy];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = SBHIconStylePickerControl;
   [(SBHIconStylePickerControl *)&v5 setHighlighted:?];
-  SBHUIViewAnimateHighlight(self->_packageView, v3);
+  SBHUIViewAnimateHighlight(self->_packageView, highlightedCopy);
 }
 
-- (void)setReferenceLayoutView:(id)a3
+- (void)setReferenceLayoutView:(id)view
 {
-  objc_storeWeak(&self->_referenceLayoutView, a3);
+  objc_storeWeak(&self->_referenceLayoutView, view);
   [(SBHIconStylePickerControl *)self invalidateIntrinsicContentSize];
 
   [(SBHIconStylePickerControl *)self setNeedsLayout];
@@ -158,10 +158,10 @@ id __96__SBHIconStylePickerControl_initWithFrame_URLForResource_extenstion_enabl
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   WeakRetained = objc_loadWeakRetained(&self->_referenceLayoutView);
   packageView = WeakRetained;
   if (!WeakRetained)
@@ -171,8 +171,8 @@ id __96__SBHIconStylePickerControl_initWithFrame_URLForResource_extenstion_enabl
 
   v12 = packageView;
 
-  *&v13 = a4;
-  *&v14 = a5;
+  *&v13 = priority;
+  *&v14 = fittingPriority;
   [(BSUICAPackageView *)v12 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v13, v14];
   v16 = v15;
   v18 = v17;
@@ -187,22 +187,22 @@ id __96__SBHIconStylePickerControl_initWithFrame_URLForResource_extenstion_enabl
 - (void)_updateFilters
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SBHIconStylePickerControl *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(SBHIconStylePickerControl *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v5 = MEMORY[0x1E6979CE8];
-  if (v4 != 1)
+  if (userInterfaceStyle != 1)
   {
     v5 = MEMORY[0x1E6979CF8];
   }
 
   v6 = [MEMORY[0x1E6979378] filterWithType:*v5];
-  v7 = [(UIView *)self->_containerView layer];
-  [v7 setCompositingFilter:v6];
+  layer = [(UIView *)self->_containerView layer];
+  [layer setCompositingFilter:v6];
 
-  v8 = [(SBHIconStylePickerControl *)self layer];
-  [v8 setAllowsGroupBlending:0];
+  layer2 = [(SBHIconStylePickerControl *)self layer];
+  [layer2 setAllowsGroupBlending:0];
 
-  if (v4 == 1)
+  if (userInterfaceStyle == 1)
   {
     [MEMORY[0x1E69DC888] blackColor];
   }
@@ -218,18 +218,18 @@ id __96__SBHIconStylePickerControl_initWithFrame_URLForResource_extenstion_enabl
   [v11 setValue:objc_msgSend(v10 forKey:{"CGColor"), @"inputColor"}];
   [v11 setValue:&unk_1F3DB2B18 forKey:@"inputBias"];
   [v11 setValue:&unk_1F3DB2B28 forKey:@"inputAmount"];
-  v12 = [(UIView *)self->_containerView layer];
+  layer3 = [(UIView *)self->_containerView layer];
   v14[0] = v11;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  [v12 setFilters:v13];
+  [layer3 setFilters:v13];
 }
 
-- (void)_updatePackageView:(BOOL)a3
+- (void)_updatePackageView:(BOOL)view
 {
-  v3 = a3;
-  v5 = [(SBHIconStylePickerControl *)self isSelected];
+  viewCopy = view;
+  isSelected = [(SBHIconStylePickerControl *)self isSelected];
   v6 = &OBJC_IVAR___SBHIconStylePickerControl__disabledState;
-  if (v5)
+  if (isSelected)
   {
     v6 = &OBJC_IVAR___SBHIconStylePickerControl__enabledState;
   }
@@ -237,7 +237,7 @@ id __96__SBHIconStylePickerControl_initWithFrame_URLForResource_extenstion_enabl
   v7 = MEMORY[0x1E6979518];
   v8 = *(&self->super.super.super.super.super.isa + *v6);
   [v7 begin];
-  [(BSUICAPackageView *)self->_packageView setState:v8 animated:v3];
+  [(BSUICAPackageView *)self->_packageView setState:v8 animated:viewCopy];
 
   [(SBHIconStylePickerControl *)self _updateFilters];
   v9 = MEMORY[0x1E6979518];

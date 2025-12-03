@@ -1,38 +1,38 @@
 @interface CKVCoalescedTask
-- (CKVCoalescedTask)initWithTaskId:(id)a3 eventId:(id)a4 date:(id)a5 taskBlock:(id)a6 completionQueue:(id)a7 completion:(id)a8;
-- (id)_runBlockForTask:(id)a3 completionQueue:(id)a4 completion:(id)a5;
+- (CKVCoalescedTask)initWithTaskId:(id)id eventId:(id)eventId date:(id)date taskBlock:(id)block completionQueue:(id)queue completion:(id)completion;
+- (id)_runBlockForTask:(id)task completionQueue:(id)queue completion:(id)completion;
 - (id)description;
-- (void)executeAfterDelay:(double)a3 onQueue:(id)a4;
+- (void)executeAfterDelay:(double)delay onQueue:(id)queue;
 @end
 
 @implementation CKVCoalescedTask
 
-- (void)executeAfterDelay:(double)a3 onQueue:(id)a4
+- (void)executeAfterDelay:(double)delay onQueue:(id)queue
 {
-  v5 = (a3 * 1000000000.0);
-  v6 = a4;
+  v5 = (delay * 1000000000.0);
+  queueCopy = queue;
   v7 = dispatch_time(0, v5);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__CKVCoalescedTask_executeAfterDelay_onQueue___block_invoke;
   block[3] = &unk_1E831E828;
   block[4] = self;
-  dispatch_after(v7, v6, block);
+  dispatch_after(v7, queueCopy, block);
 }
 
-- (id)_runBlockForTask:(id)a3 completionQueue:(id)a4 completion:(id)a5
+- (id)_runBlockForTask:(id)task completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  taskCopy = task;
+  completionCopy = completion;
+  queueCopy = queue;
   v11 = [(CKVCoalescedTask *)self description];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__CKVCoalescedTask__runBlockForTask_completionQueue_completion___block_invoke;
   block[3] = &unk_1E831E850;
   v21 = v11;
-  v22 = v8;
-  v12 = v8;
+  v22 = taskCopy;
+  v12 = taskCopy;
   v13 = v11;
   v14 = dispatch_block_create(0, block);
   v18[0] = MEMORY[0x1E69E9820];
@@ -40,9 +40,9 @@
   v18[2] = __64__CKVCoalescedTask__runBlockForTask_completionQueue_completion___block_invoke_2;
   v18[3] = &unk_1E831E850;
   v18[4] = self;
-  v19 = v9;
-  v15 = v9;
-  dispatch_block_notify(v14, v10, v18);
+  v19 = completionCopy;
+  v15 = completionCopy;
+  dispatch_block_notify(v14, queueCopy, v18);
 
   v16 = _Block_copy(v14);
 
@@ -92,30 +92,30 @@ uint64_t __64__CKVCoalescedTask__runBlockForTask_completionQueue_completion___bl
   v2 = MEMORY[0x1E696AEC0];
   taskId = self->_taskId;
   eventId = self->_eventId;
-  v5 = [(NSDate *)self->_date ISO8601String];
-  v6 = [v2 stringWithFormat:@"taskId: %@, eventId: %@, received: %@", taskId, eventId, v5];
+  iSO8601String = [(NSDate *)self->_date ISO8601String];
+  v6 = [v2 stringWithFormat:@"taskId: %@, eventId: %@, received: %@", taskId, eventId, iSO8601String];
 
   return v6;
 }
 
-- (CKVCoalescedTask)initWithTaskId:(id)a3 eventId:(id)a4 date:(id)a5 taskBlock:(id)a6 completionQueue:(id)a7 completion:(id)a8
+- (CKVCoalescedTask)initWithTaskId:(id)id eventId:(id)eventId date:(id)date taskBlock:(id)block completionQueue:(id)queue completion:(id)completion
 {
-  v25 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  idCopy = id;
+  eventIdCopy = eventId;
+  dateCopy = date;
+  blockCopy = block;
+  queueCopy = queue;
+  completionCopy = completion;
   v26.receiver = self;
   v26.super_class = CKVCoalescedTask;
   v20 = [(CKVCoalescedTask *)&v26 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_taskId, a3);
-    objc_storeStrong(&v21->_eventId, a4);
-    objc_storeStrong(&v21->_date, a5);
-    v22 = [(CKVCoalescedTask *)v21 _runBlockForTask:v17 completionQueue:v18 completion:v19];
+    objc_storeStrong(&v20->_taskId, id);
+    objc_storeStrong(&v21->_eventId, eventId);
+    objc_storeStrong(&v21->_date, date);
+    v22 = [(CKVCoalescedTask *)v21 _runBlockForTask:blockCopy completionQueue:queueCopy completion:completionCopy];
     runBlock = v21->_runBlock;
     v21->_runBlock = v22;
 

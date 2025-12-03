@@ -1,12 +1,12 @@
 @interface MultiselectTableViewCell
-- (_TtC16HealthMobilityUI24MultiselectTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC16HealthMobilityUI24MultiselectTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation MultiselectTableViewCell
 
-- (_TtC16HealthMobilityUI24MultiselectTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC16HealthMobilityUI24MultiselectTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = sub_2519AEE38();
   }

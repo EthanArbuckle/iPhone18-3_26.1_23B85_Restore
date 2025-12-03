@@ -1,39 +1,39 @@
 @interface AAUIMessagesInviteConfigurationController
 - (AAUIInviteControllerDelegate)delegate;
-- (AAUIMessagesInviteConfigurationController)initWithInviteContext:(id)a3 flow:(unint64_t)a4 presentingController:(id)a5;
-- (id)_bubbleImageForFlow:(unint64_t)a3;
+- (AAUIMessagesInviteConfigurationController)initWithInviteContext:(id)context flow:(unint64_t)flow presentingController:(id)controller;
+- (id)_bubbleImageForFlow:(unint64_t)flow;
 - (id)_messageComposeViewController;
 - (id)_messageComposeViewControllerUpsell;
-- (void)_presentInviteControllerWithCompletion:(id)a3;
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
-- (void)messageComposeViewController:(id)a3 shouldSendMessage:(id)a4 toRecipients:(id)a5 completion:(id)a6;
-- (void)presentWhenReadyWithCompletion:(id)a3;
+- (void)_presentInviteControllerWithCompletion:(id)completion;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
+- (void)messageComposeViewController:(id)controller shouldSendMessage:(id)message toRecipients:(id)recipients completion:(id)completion;
+- (void)presentWhenReadyWithCompletion:(id)completion;
 @end
 
 @implementation AAUIMessagesInviteConfigurationController
 
-- (AAUIMessagesInviteConfigurationController)initWithInviteContext:(id)a3 flow:(unint64_t)a4 presentingController:(id)a5
+- (AAUIMessagesInviteConfigurationController)initWithInviteContext:(id)context flow:(unint64_t)flow presentingController:(id)controller
 {
-  v9 = a3;
-  v10 = a5;
+  contextCopy = context;
+  controllerCopy = controller;
   v11 = [(AAUIMessagesInviteConfigurationController *)self init];
   v12 = v11;
   if (v11)
   {
-    v11->_flow = a4;
-    objc_storeStrong(&v11->_context, a3);
-    objc_storeStrong(&v12->_presentingViewController, a5);
+    v11->_flow = flow;
+    objc_storeStrong(&v11->_context, context);
+    objc_storeStrong(&v12->_presentingViewController, controller);
   }
 
   return v12;
 }
 
-- (void)presentWhenReadyWithCompletion:(id)a3
+- (void)presentWhenReadyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_linkMetadata)
   {
-    [(AAUIMessagesInviteConfigurationController *)self _presentInviteControllerWithCompletion:v4];
+    [(AAUIMessagesInviteConfigurationController *)self _presentInviteControllerWithCompletion:completionCopy];
   }
 
   else
@@ -45,7 +45,7 @@
     v7[2] = __76__AAUIMessagesInviteConfigurationController_presentWhenReadyWithCompletion___block_invoke;
     v7[3] = &unk_1E820C828;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [(AAUIInviteLinkMetadataProvider *)v5 loadMetadataWithImage:v6 completion:v7];
   }
 }
@@ -74,15 +74,15 @@ void __76__AAUIMessagesInviteConfigurationController_presentWhenReadyWithComplet
   }
 }
 
-- (id)_bubbleImageForFlow:(unint64_t)a3
+- (id)_bubbleImageForFlow:(unint64_t)flow
 {
-  if (!a3)
+  if (!flow)
   {
     v3 = @"custodian_message_bubble";
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (flow == 1)
   {
     v3 = @"beneficiary_message_bubble";
 LABEL_5:
@@ -110,18 +110,18 @@ LABEL_7:
 
     [(MFMessageComposeViewController *)self->_messageComposeViewController setMessageComposeDelegate:self];
     v6 = self->_messageComposeViewController;
-    v7 = [(LPLinkMetadata *)self->_linkMetadata dataRepresentation];
-    v8 = [(AAMessagesInviteContext *)self->_context inviteURL];
-    [(MFMessageComposeViewController *)v6 addRichLinkData:v7 withWebpageURL:v8];
+    dataRepresentation = [(LPLinkMetadata *)self->_linkMetadata dataRepresentation];
+    inviteURL = [(AAMessagesInviteContext *)self->_context inviteURL];
+    [(MFMessageComposeViewController *)v6 addRichLinkData:dataRepresentation withWebpageURL:inviteURL];
 
     v9 = self->_messageComposeViewController;
-    v10 = [(AAMessagesInviteContext *)self->_context recipients];
-    [(MFMessageComposeViewController *)v9 setRecipients:v10];
+    recipients = [(AAMessagesInviteContext *)self->_context recipients];
+    [(MFMessageComposeViewController *)v9 setRecipients:recipients];
 
     [(MFMessageComposeViewController *)self->_messageComposeViewController _setCanEditRecipients:0];
     v11 = self->_messageComposeViewController;
-    v12 = [(AAMessagesInviteContext *)self->_context messageBody];
-    [(MFMessageComposeViewController *)v11 setBody:v12];
+    messageBody = [(AAMessagesInviteContext *)self->_context messageBody];
+    [(MFMessageComposeViewController *)v11 setBody:messageBody];
 
     messageComposeViewController = self->_messageComposeViewController;
   }
@@ -219,16 +219,16 @@ LABEL_7:
     v18 = [v14 initWithSession:v17];
 
     [v18 setLayout:v11];
-    v19 = [(AAMessagesInviteContext *)self->_context messageURL];
-    [v18 setURL:v19];
+    messageURL = [(AAMessagesInviteContext *)self->_context messageURL];
+    [v18 setURL:messageURL];
 
-    v20 = [(LPLinkMetadata *)self->_linkMetadata title];
-    [v18 setSummaryText:v20];
+    title = [(LPLinkMetadata *)self->_linkMetadata title];
+    [v18 setSummaryText:title];
 
     [(MFMessageComposeViewController *)self->_messageComposeViewController setMessage:v18 withExtensionBundleIdentifier:@"com.apple.AppleAccountUI.CustodianInviteMessageExtension"];
     v21 = self->_messageComposeViewController;
-    v22 = [(AAMessagesInviteContext *)self->_context recipients];
-    [(MFMessageComposeViewController *)v21 setRecipients:v22];
+    recipients = [(AAMessagesInviteContext *)self->_context recipients];
+    [(MFMessageComposeViewController *)v21 setRecipients:recipients];
 
     [(MFMessageComposeViewController *)self->_messageComposeViewController _setCanEditRecipients:0];
     messageComposeViewController = self->_messageComposeViewController;
@@ -237,10 +237,10 @@ LABEL_7:
   return messageComposeViewController;
 }
 
-- (void)_presentInviteControllerWithCompletion:(id)a3
+- (void)_presentInviteControllerWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -255,8 +255,8 @@ LABEL_7:
   v8[2] = __84__AAUIMessagesInviteConfigurationController__presentInviteControllerWithCompletion___block_invoke;
   v8[3] = &unk_1E820B780;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = completionCopy;
+  v6 = completionCopy;
   v7 = MEMORY[0x1E69E96A0];
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 }
@@ -354,10 +354,10 @@ uint64_t __84__AAUIMessagesInviteConfigurationController__presentInviteControlle
   return result;
 }
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  controllerCopy = controller;
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -366,11 +366,11 @@ uint64_t __84__AAUIMessagesInviteConfigurationController__presentInviteControlle
     *buf = 138412546;
     v25 = v10;
     v26 = 2048;
-    v27 = a4;
+    resultCopy = result;
     _os_log_impl(&dword_1C5355000, v8, OS_LOG_TYPE_DEFAULT, "%@ MFMessageComposeVC delegate callback - didFinishWithResult:%ld", buf, 0x16u);
   }
 
-  objc_storeStrong(&self->_presentingViewController, a3);
+  objc_storeStrong(&self->_presentingViewController, controller);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v12 = objc_opt_respondsToSelector();
 
@@ -384,15 +384,15 @@ uint64_t __84__AAUIMessagesInviteConfigurationController__presentInviteControlle
       _os_log_impl(&dword_1C5355000, v14, OS_LOG_TYPE_DEFAULT, "Calling back to controller delegate", buf, 2u);
     }
 
-    if (a4 == 1)
+    if (result == 1)
     {
       v15 = @"0";
     }
 
-    else if (a4)
+    else if (result)
     {
       v15 = @"0";
-      a4 = 2;
+      result = 2;
     }
 
     else
@@ -409,17 +409,17 @@ uint64_t __84__AAUIMessagesInviteConfigurationController__presentInviteControlle
     v18[3] = &unk_1E820C850;
     v18[4] = self;
     v20 = v16;
-    v21 = a4;
-    v19 = v7;
+    resultCopy2 = result;
+    v19 = controllerCopy;
     v17 = v16;
     dispatch_async(MEMORY[0x1E69E96A0], v18);
   }
 
   else
   {
-    if (a4)
+    if (result)
     {
-      if (a4 == 1)
+      if (result == 1)
       {
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
@@ -439,7 +439,7 @@ uint64_t __84__AAUIMessagesInviteConfigurationController__presentInviteControlle
       [AAUIMessagesInviteConfigurationController messageComposeViewController:v14 didFinishWithResult:?];
     }
 
-    [v7 dismissViewControllerAnimated:1 completion:0];
+    [controllerCopy dismissViewControllerAnimated:1 completion:0];
   }
 }
 
@@ -449,11 +449,11 @@ void __94__AAUIMessagesInviteConfigurationController_messageComposeViewControlle
   [WeakRetained inviteController:a1[5] didFinishWithStatus:a1[7] recipients:*(a1[4] + 40) userInfo:a1[6] error:0];
 }
 
-- (void)messageComposeViewController:(id)a3 shouldSendMessage:(id)a4 toRecipients:(id)a5 completion:(id)a6
+- (void)messageComposeViewController:(id)controller shouldSendMessage:(id)message toRecipients:(id)recipients completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a6;
+  recipientsCopy = recipients;
+  completionCopy = completion;
   v10 = _AAUILogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -465,11 +465,11 @@ void __94__AAUIMessagesInviteConfigurationController_messageComposeViewControlle
   }
 
   recipientAddresses = self->_recipientAddresses;
-  self->_recipientAddresses = v8;
-  v14 = v8;
+  self->_recipientAddresses = recipientsCopy;
+  v14 = recipientsCopy;
 
   v15 = [(NSArray *)v14 count];
-  v9[2](v9, v15 != 0);
+  completionCopy[2](completionCopy, v15 != 0);
 }
 
 - (AAUIInviteControllerDelegate)delegate

@@ -1,10 +1,10 @@
 @interface OSDAnalyzer
-- (OSDAnalyzer)initWithConfigFile:(id)a3 sampleRate:(unint64_t)a4 context:(id)a5 queue:(id)a6 delegate:(id)a7;
+- (OSDAnalyzer)initWithConfigFile:(id)file sampleRate:(unint64_t)rate context:(id)context queue:(id)queue delegate:(id)delegate;
 - (OSDAnalyzerDelegate)delegate;
-- (void)addFaceTrackingData:(id)a3 atMachAbsTime:(unint64_t)a4;
-- (void)clientSilenceFeaturesAvailable:(id)a3;
-- (void)didUpdateVisualSpeechProbability:(double)a3 from:(unint64_t)a4 to:(unint64_t)a5;
-- (void)setupLipMovementVADWithModelPath:(id)a3;
+- (void)addFaceTrackingData:(id)data atMachAbsTime:(unint64_t)time;
+- (void)clientSilenceFeaturesAvailable:(id)available;
+- (void)didUpdateVisualSpeechProbability:(double)probability from:(unint64_t)from to:(unint64_t)to;
+- (void)setupLipMovementVADWithModelPath:(id)path;
 @end
 
 @implementation OSDAnalyzer
@@ -16,21 +16,21 @@
   return WeakRetained;
 }
 
-- (void)clientSilenceFeaturesAvailable:(id)a3
+- (void)clientSilenceFeaturesAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   v5 = [OSDFeatures alloc];
-  [v4 silenceFramesCountMs];
+  [availableCopy silenceFramesCountMs];
   v7 = v6;
-  [v4 silenceProbability];
+  [availableCopy silenceProbability];
   v9 = v8;
-  [v4 silenceDurationMs];
+  [availableCopy silenceDurationMs];
   v11 = v10;
-  [v4 processedAudioMs];
+  [availableCopy processedAudioMs];
   v13 = v12;
-  v14 = [v4 inferenceTime];
+  inferenceTime = [availableCopy inferenceTime];
 
-  v15 = [(OSDFeatures *)v5 initWithSilenceFramesCountMs:v14 silenceProbability:v7 silenceDurationMs:v9 processedAudioMs:v11 inferenceTime:v13];
+  v15 = [(OSDFeatures *)v5 initWithSilenceFramesCountMs:inferenceTime silenceProbability:v7 silenceDurationMs:v9 processedAudioMs:v11 inferenceTime:v13];
   osdFeatures = self->_osdFeatures;
   self->_osdFeatures = v15;
 
@@ -102,22 +102,22 @@
   }
 }
 
-- (void)addFaceTrackingData:(id)a3 atMachAbsTime:(unint64_t)a4
+- (void)addFaceTrackingData:(id)data atMachAbsTime:(unint64_t)time
 {
-  v6 = a3;
+  dataCopy = data;
   lipMovementQueue = self->_lipMovementQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__OSDAnalyzer_addFaceTrackingData_atMachAbsTime___block_invoke;
   block[3] = &unk_279CD90B8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = dataCopy;
+  timeCopy = time;
+  v8 = dataCopy;
   dispatch_async(lipMovementQueue, block);
 }
 
-- (void)didUpdateVisualSpeechProbability:(double)a3 from:(unint64_t)a4 to:(unint64_t)a5
+- (void)didUpdateVisualSpeechProbability:(double)probability from:(unint64_t)from to:(unint64_t)to
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -129,26 +129,26 @@
     if (v12)
     {
       v13 = objc_loadWeakRetained(&self->_delegate);
-      [v13 osdAnalyzer:self didUpdateVisualSpeechProbability:a4 from:a5 to:a3];
+      [v13 osdAnalyzer:self didUpdateVisualSpeechProbability:from from:to to:probability];
     }
   }
 }
 
-- (void)setupLipMovementVADWithModelPath:(id)a3
+- (void)setupLipMovementVADWithModelPath:(id)path
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v5 = SDLogContextFacilityLocalSRBridge;
   if (os_log_type_enabled(SDLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[OSDAnalyzer setupLipMovementVADWithModelPath:]";
     v11 = 2114;
-    v12 = v4;
+    v12 = pathCopy;
     _os_log_impl(&dword_26B2CF000, v5, OS_LOG_TYPE_DEFAULT, "%s Creating lipmovementvad with model path of: %{public}@", &v9, 0x16u);
   }
 
-  v6 = [[SDLipMovementVAD alloc] initWithModelFile:v4];
+  v6 = [[SDLipMovementVAD alloc] initWithModelFile:pathCopy];
   lipMovementVAD = self->_lipMovementVAD;
   self->_lipMovementVAD = v6;
 
@@ -156,12 +156,12 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (OSDAnalyzer)initWithConfigFile:(id)a3 sampleRate:(unint64_t)a4 context:(id)a5 queue:(id)a6 delegate:(id)a7
+- (OSDAnalyzer)initWithConfigFile:(id)file sampleRate:(unint64_t)rate context:(id)context queue:(id)queue delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  fileCopy = file;
+  contextCopy = context;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v30.receiver = self;
   v30.super_class = OSDAnalyzer;
   v16 = [(OSDAnalyzer *)&v30 init];
@@ -172,14 +172,14 @@
       dispatch_once(&SDLogInitIfNeeded_once, &__block_literal_global);
     }
 
-    objc_storeWeak(&v16->_delegate, v15);
-    v17 = [v13 copy];
+    objc_storeWeak(&v16->_delegate, delegateCopy);
+    v17 = [contextCopy copy];
     osdContext = v16->_osdContext;
     v16->_osdContext = v17;
 
-    if (v14)
+    if (queueCopy)
     {
-      v19 = v14;
+      v19 = queueCopy;
     }
 
     else
@@ -190,7 +190,7 @@
     queue = v16->_queue;
     v16->_queue = v19;
 
-    v21 = [objc_alloc(MEMORY[0x277D071E0]) initWithConfigFile:v12 samplingRate:a4 queue:v16->_queue];
+    v21 = [objc_alloc(MEMORY[0x277D071E0]) initWithConfigFile:fileCopy samplingRate:rate queue:v16->_queue];
     caesuraSPG = v16->_caesuraSPG;
     v16->_caesuraSPG = v21;
 

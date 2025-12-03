@@ -1,16 +1,16 @@
 @interface _UICollectionViewListCellVisualProvider
-- (_UICollectionViewListCellVisualProvider)initWithListCell:(id)a3;
+- (_UICollectionViewListCellVisualProvider)initWithListCell:(id)cell;
 @end
 
 @implementation _UICollectionViewListCellVisualProvider
 
-- (_UICollectionViewListCellVisualProvider)initWithListCell:(id)a3
+- (_UICollectionViewListCellVisualProvider)initWithListCell:(id)cell
 {
-  v5 = a3;
-  if (!v5)
+  cellCopy = cell;
+  if (!cellCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListCellVisualProvider.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"cell"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewListCellVisualProvider.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"cell"}];
   }
 
   v10.receiver = self;
@@ -19,7 +19,7 @@
   v7 = v6;
   if (v6)
   {
-    v6->_cell = v5;
+    v6->_cell = cellCopy;
   }
 
   return v7;

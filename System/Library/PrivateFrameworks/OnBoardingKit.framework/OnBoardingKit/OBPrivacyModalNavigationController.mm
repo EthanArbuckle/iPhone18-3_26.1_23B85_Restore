@@ -2,25 +2,25 @@
 - (int64_t)preferredUserInterfaceStyle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_doneButtonPressed;
-- (void)addDismissButtonWithPressedHandler:(id)a3;
+- (void)addDismissButtonWithPressedHandler:(id)handler;
 @end
 
 @implementation OBPrivacyModalNavigationController
 
-- (void)addDismissButtonWithPressedHandler:(id)a3
+- (void)addDismissButtonWithPressedHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(OBPrivacyModalNavigationController *)self viewControllers];
-  v6 = [v5 firstObject];
+  handlerCopy = handler;
+  viewControllers = [(OBPrivacyModalNavigationController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    [(OBPrivacyModalNavigationController *)self setDismissButtonPressedHandler:v4];
+    [(OBPrivacyModalNavigationController *)self setDismissButtonPressedHandler:handlerCopy];
     v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 target:self action:sel__doneButtonPressed];
-    v8 = [(OBPrivacyModalNavigationController *)self viewControllers];
-    v9 = [v8 firstObject];
-    v10 = [v9 navigationItem];
-    [v10 setLeftBarButtonItem:v7];
+    viewControllers2 = [(OBPrivacyModalNavigationController *)self viewControllers];
+    firstObject2 = [viewControllers2 firstObject];
+    navigationItem = [firstObject2 navigationItem];
+    [navigationItem setLeftBarButtonItem:v7];
   }
 
   else
@@ -36,12 +36,12 @@
 
 - (void)_doneButtonPressed
 {
-  v3 = [(OBPrivacyModalNavigationController *)self dismissButtonPressedHandler];
+  dismissButtonPressedHandler = [(OBPrivacyModalNavigationController *)self dismissButtonPressedHandler];
 
-  if (v3)
+  if (dismissButtonPressedHandler)
   {
-    v4 = [(OBPrivacyModalNavigationController *)self dismissButtonPressedHandler];
-    v4[2]();
+    dismissButtonPressedHandler2 = [(OBPrivacyModalNavigationController *)self dismissButtonPressedHandler];
+    dismissButtonPressedHandler2[2]();
 
     [(OBPrivacyModalNavigationController *)self setDismissButtonPressedHandler:0];
   }
@@ -70,14 +70,14 @@
     return [(OBNavigationController *)&v9 supportedInterfaceOrientations:v8.receiver];
   }
 
-  v5 = [(OBPrivacyModalNavigationController *)self presentingViewController];
+  presentingViewController = [(OBPrivacyModalNavigationController *)self presentingViewController];
 
-  if (v5)
+  if (presentingViewController)
   {
-    v6 = [(OBPrivacyModalNavigationController *)self presentingViewController];
-    v4 = [v6 supportedInterfaceOrientations];
+    presentingViewController2 = [(OBPrivacyModalNavigationController *)self presentingViewController];
+    supportedInterfaceOrientations = [presentingViewController2 supportedInterfaceOrientations];
 
-    return v4;
+    return supportedInterfaceOrientations;
   }
 
   return [(OBNavigationController *)&v8 supportedInterfaceOrientations:self];

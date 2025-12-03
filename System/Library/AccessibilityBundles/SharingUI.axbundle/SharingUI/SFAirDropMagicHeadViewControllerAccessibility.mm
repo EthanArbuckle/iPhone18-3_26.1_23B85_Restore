@@ -1,5 +1,5 @@
 @interface SFAirDropMagicHeadViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axWheelView;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
@@ -8,15 +8,15 @@
 
 @implementation SFAirDropMagicHeadViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFAirDropMagicHeadViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SFAirDropMagicHeadViewController" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFAirDropMagicHeadViewController" hasInstanceMethod:@"nameLabel2" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFAirDropMagicHeadViewController" hasInstanceMethod:@"secondLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFAirDropMagicHeadViewController" hasInstanceMethod:@"resetSecondLabel" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SFAirDropMagicHeadViewController" hasInstanceMethod:@"setSecondLabelText:withTextColor:animated:completion:" withFullSignature:{"v", "@", "@", "B", "@?", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFAirDropMagicHeadViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SFAirDropMagicHeadViewController" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFAirDropMagicHeadViewController" hasInstanceMethod:@"nameLabel2" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFAirDropMagicHeadViewController" hasInstanceMethod:@"secondLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFAirDropMagicHeadViewController" hasInstanceMethod:@"resetSecondLabel" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SFAirDropMagicHeadViewController" hasInstanceMethod:@"setSecondLabelText:withTextColor:animated:completion:" withFullSignature:{"v", "@", "@", "B", "@?", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -61,8 +61,8 @@ uint64_t __102__SFAirDropMagicHeadViewControllerAccessibility_setSecondLabelText
   v4.receiver = self;
   v4.super_class = SFAirDropMagicHeadViewControllerAccessibility;
   [(SFAirDropMagicHeadViewControllerAccessibility *)&v4 resetSecondLabel];
-  v3 = [(SFAirDropMagicHeadViewControllerAccessibility *)self _axWheelView];
-  [v3 _axSetStatusText:0];
+  _axWheelView = [(SFAirDropMagicHeadViewControllerAccessibility *)self _axWheelView];
+  [_axWheelView _axSetStatusText:0];
 }
 
 - (id)_axWheelView

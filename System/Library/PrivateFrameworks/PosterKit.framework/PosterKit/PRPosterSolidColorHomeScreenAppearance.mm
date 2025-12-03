@@ -1,32 +1,32 @@
 @interface PRPosterSolidColorHomeScreenAppearance
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PRPosterColor)effectiveColor;
 - (PRPosterSolidColorHomeScreenAppearance)init;
-- (PRPosterSolidColorHomeScreenAppearance)initWithBSXPCCoder:(id)a3;
-- (PRPosterSolidColorHomeScreenAppearance)initWithCoder:(id)a3;
-- (PRPosterSolidColorHomeScreenAppearance)initWithColor:(id)a3 colorPickerConfiguration:(id)a4;
+- (PRPosterSolidColorHomeScreenAppearance)initWithBSXPCCoder:(id)coder;
+- (PRPosterSolidColorHomeScreenAppearance)initWithCoder:(id)coder;
+- (PRPosterSolidColorHomeScreenAppearance)initWithColor:(id)color colorPickerConfiguration:(id)configuration;
 - (id)description;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterSolidColorHomeScreenAppearance
 
-- (PRPosterSolidColorHomeScreenAppearance)initWithColor:(id)a3 colorPickerConfiguration:(id)a4
+- (PRPosterSolidColorHomeScreenAppearance)initWithColor:(id)color colorPickerConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  colorCopy = color;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = PRPosterSolidColorHomeScreenAppearance;
   v8 = [(PRPosterSolidColorHomeScreenAppearance *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [colorCopy copy];
     color = v8->_color;
     v8->_color = v9;
 
-    v11 = v7;
+    v11 = configurationCopy;
     if (!v11)
     {
       v11 = objc_alloc_init(PREditorColorPickerConfiguration);
@@ -50,34 +50,34 @@
 
 - (PRPosterColor)effectiveColor
 {
-  v3 = [(PRPosterSolidColorHomeScreenAppearance *)self color];
-  if (v3)
+  color = [(PRPosterSolidColorHomeScreenAppearance *)self color];
+  if (color)
   {
-    v4 = v3;
+    selectedColor = color;
   }
 
   else
   {
-    v5 = [(PRPosterSolidColorHomeScreenAppearance *)self colorPickerConfiguration];
-    v4 = [v5 selectedColor];
+    colorPickerConfiguration = [(PRPosterSolidColorHomeScreenAppearance *)self colorPickerConfiguration];
+    selectedColor = [colorPickerConfiguration selectedColor];
 
-    if (!v4)
+    if (!selectedColor)
     {
       v6 = [PRPosterColor alloc];
       v7 = [MEMORY[0x1E69DC888] colorWithRed:0.984313725 green:0.921568627 blue:0.48627451 alpha:1.0];
-      v4 = [(PRPosterColor *)v6 initWithColor:v7];
+      selectedColor = [(PRPosterColor *)v6 initWithColor:v7];
     }
   }
 
-  v8 = [(PRPosterColor *)v4 copy];
+  v8 = [(PRPosterColor *)selectedColor copy];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -102,7 +102,7 @@
   v8 = 3221225472;
   v9 = __53__PRPosterSolidColorHomeScreenAppearance_description__block_invoke;
   v10 = &unk_1E7843070;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -111,24 +111,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PRPosterSolidColorHomeScreenAppearance *)self color];
-  [v4 encodeObject:v5 forKey:@"color"];
+  coderCopy = coder;
+  color = [(PRPosterSolidColorHomeScreenAppearance *)self color];
+  [coderCopy encodeObject:color forKey:@"color"];
 
-  v6 = [(PRPosterSolidColorHomeScreenAppearance *)self colorPickerConfiguration];
-  [v4 encodeObject:v6 forKey:@"colorPickerConfiguration"];
+  colorPickerConfiguration = [(PRPosterSolidColorHomeScreenAppearance *)self colorPickerConfiguration];
+  [coderCopy encodeObject:colorPickerConfiguration forKey:@"colorPickerConfiguration"];
 }
 
-- (PRPosterSolidColorHomeScreenAppearance)initWithCoder:(id)a3
+- (PRPosterSolidColorHomeScreenAppearance)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color"];
   if (!v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"color"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"color"];
 
     if (v7)
     {
@@ -142,30 +142,30 @@
   }
 
   v8 = objc_opt_self();
-  v9 = [v4 decodeObjectOfClass:v8 forKey:@"colorPickerConfiguration"];
+  v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"colorPickerConfiguration"];
 
   v10 = [(PRPosterSolidColorHomeScreenAppearance *)self initWithColor:v5 colorPickerConfiguration:v9];
   return v10;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PRPosterSolidColorHomeScreenAppearance *)self color];
-  [v4 encodeObject:v5 forKey:@"color"];
+  coderCopy = coder;
+  color = [(PRPosterSolidColorHomeScreenAppearance *)self color];
+  [coderCopy encodeObject:color forKey:@"color"];
 
-  v6 = [(PRPosterSolidColorHomeScreenAppearance *)self colorPickerConfiguration];
-  [v4 encodeObject:v6 forKey:@"colorPickerConfiguration"];
+  colorPickerConfiguration = [(PRPosterSolidColorHomeScreenAppearance *)self colorPickerConfiguration];
+  [coderCopy encodeObject:colorPickerConfiguration forKey:@"colorPickerConfiguration"];
 }
 
-- (PRPosterSolidColorHomeScreenAppearance)initWithBSXPCCoder:(id)a3
+- (PRPosterSolidColorHomeScreenAppearance)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color"];
   if (!v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"color"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"color"];
 
     if (v7)
     {
@@ -179,20 +179,20 @@
   }
 
   v8 = objc_opt_self();
-  v9 = [v4 decodeObjectOfClass:v8 forKey:@"colorPickerConfiguration"];
+  v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"colorPickerConfiguration"];
 
   v10 = [(PRPosterSolidColorHomeScreenAppearance *)self initWithColor:v5 colorPickerConfiguration:v9];
   return v10;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v8 = a3;
-  v4 = [(PRPosterSolidColorHomeScreenAppearance *)self color];
-  v5 = [v8 appendObject:v4 withName:@"color"];
+  formatterCopy = formatter;
+  color = [(PRPosterSolidColorHomeScreenAppearance *)self color];
+  v5 = [formatterCopy appendObject:color withName:@"color"];
 
-  v6 = [(PRPosterSolidColorHomeScreenAppearance *)self colorPickerConfiguration];
-  v7 = [v8 appendObject:v6 withName:@"colorPickerConfiguration"];
+  colorPickerConfiguration = [(PRPosterSolidColorHomeScreenAppearance *)self colorPickerConfiguration];
+  v7 = [formatterCopy appendObject:colorPickerConfiguration withName:@"colorPickerConfiguration"];
 }
 
 @end

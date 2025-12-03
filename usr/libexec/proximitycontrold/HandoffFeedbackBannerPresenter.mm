@@ -1,7 +1,7 @@
 @interface HandoffFeedbackBannerPresenter
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4;
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize;
 - (UIEdgeInsets)bannerContentOutsets;
-- (_TtC17proximitycontrold30HandoffFeedbackBannerPresenter)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC17proximitycontrold30HandoffFeedbackBannerPresenter)initWithNibName:(id)name bundle:(id)bundle;
 - (void)presentableDidAppearAsBanner:;
 - (void)presentableWillAppearAsBanner:;
 - (void)userInteractionDidEndForBannerForPresentable:;
@@ -17,11 +17,11 @@
   v5.super_class = type metadata accessor for HandoffFeedbackBannerPresenter();
   v2 = v5.receiver;
   [(HandoffFeedbackBannerPresenter *)&v5 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 addSubview:*&v2[OBJC_IVAR____TtC17proximitycontrold30HandoffFeedbackBannerPresenter_pillView]];
+    v4 = view;
+    [view addSubview:*&v2[OBJC_IVAR____TtC17proximitycontrold30HandoffFeedbackBannerPresenter_pillView]];
   }
 
   else
@@ -30,9 +30,9 @@
   }
 }
 
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize
 {
-  [*(self + OBJC_IVAR____TtC17proximitycontrold30HandoffFeedbackBannerPresenter_pillView) systemLayoutSizeFittingSize:{a3.width, a3.height, a4.width, a4.height}];
+  [*(self + OBJC_IVAR____TtC17proximitycontrold30HandoffFeedbackBannerPresenter_pillView) systemLayoutSizeFittingSize:{size.width, size.height, containerSize.width, containerSize.height}];
   result.height = v5;
   result.width = v4;
   return result;
@@ -48,7 +48,7 @@
   return result;
 }
 
-- (_TtC17proximitycontrold30HandoffFeedbackBannerPresenter)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17proximitycontrold30HandoffFeedbackBannerPresenter)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

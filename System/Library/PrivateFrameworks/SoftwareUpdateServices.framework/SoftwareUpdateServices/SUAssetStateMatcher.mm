@@ -1,30 +1,30 @@
 @interface SUAssetStateMatcher
-- (BOOL)_matchesFilterType:(id)a3;
-- (SUAssetStateMatcher)initWithType:(id)a3 interestedStates:(int)a4;
-- (id)_findMatchFromCandidates:(id)a3 error:(id *)a4;
-- (id)findMatchFromCandidates:(id)a3 error:(id *)a4;
+- (BOOL)_matchesFilterType:(id)type;
+- (SUAssetStateMatcher)initWithType:(id)type interestedStates:(int)states;
+- (id)_findMatchFromCandidates:(id)candidates error:(id *)error;
+- (id)findMatchFromCandidates:(id)candidates error:(id *)error;
 @end
 
 @implementation SUAssetStateMatcher
 
-- (SUAssetStateMatcher)initWithType:(id)a3 interestedStates:(int)a4
+- (SUAssetStateMatcher)initWithType:(id)type interestedStates:(int)states
 {
-  v7 = a3;
+  typeCopy = type;
   v13.receiver = self;
   v13.super_class = SUAssetStateMatcher;
   v8 = [(SUAssetStateMatcher *)&v13 init];
   if (v8)
   {
-    if (!v7)
+    if (!typeCopy)
     {
       [SUAssetStateMatcher initWithType:a2 interestedStates:v8];
     }
 
-    v9 = [v7 copy];
+    v9 = [typeCopy copy];
     assetType = v8->_assetType;
     v8->_assetType = v9;
 
-    v8->_interestedStates = a4;
+    v8->_interestedStates = states;
     matcherInfo = v8->_matcherInfo;
     v8->_matcherInfo = 0;
   }
@@ -32,11 +32,11 @@
   return v8;
 }
 
-- (id)findMatchFromCandidates:(id)a3 error:(id *)a4
+- (id)findMatchFromCandidates:(id)candidates error:(id *)error
 {
   interestedStates = self->_interestedStates;
   v7 = MEMORY[0x277CBEB18];
-  v8 = a3;
+  candidatesCopy = candidates;
   if (interestedStates)
   {
     v9 = objc_alloc_init(v7);
@@ -44,20 +44,20 @@
     v14 = 3221225472;
     v15 = __53__SUAssetStateMatcher_findMatchFromCandidates_error___block_invoke;
     v16 = &unk_279CAA830;
-    v17 = self;
+    selfCopy = self;
     v10 = v9;
     v18 = v10;
-    [v8 enumerateObjectsUsingBlock:&v13];
+    [candidatesCopy enumerateObjectsUsingBlock:&v13];
   }
 
   else
   {
-    v10 = [[v7 alloc] initWithArray:v8];
+    v10 = [[v7 alloc] initWithArray:candidatesCopy];
   }
 
-  v11 = [(SUAssetStateMatcher *)self _findMatchFromCandidates:v10 error:a4, v13, v14, v15, v16, v17];
+  selfCopy = [(SUAssetStateMatcher *)self _findMatchFromCandidates:v10 error:error, v13, v14, v15, v16, selfCopy];
 
-  return v11;
+  return selfCopy;
 }
 
 void __53__SUAssetStateMatcher_findMatchFromCandidates_error___block_invoke(uint64_t a1, void *a2)
@@ -69,12 +69,12 @@ void __53__SUAssetStateMatcher_findMatchFromCandidates_error___block_invoke(uint
   }
 }
 
-- (id)_findMatchFromCandidates:(id)a3 error:(id *)a4
+- (id)_findMatchFromCandidates:(id)candidates error:(id *)error
 {
-  v4 = a3;
-  if ([v4 count])
+  candidatesCopy = candidates;
+  if ([candidatesCopy count])
   {
-    v5 = [v4 objectAtIndex:0];
+    v5 = [candidatesCopy objectAtIndex:0];
   }
 
   else
@@ -85,14 +85,14 @@ void __53__SUAssetStateMatcher_findMatchFromCandidates_error___block_invoke(uint
   return v5;
 }
 
-- (BOOL)_matchesFilterType:(id)a3
+- (BOOL)_matchesFilterType:(id)type
 {
-  v4 = a3;
-  v5 = v4;
+  typeCopy = type;
+  v5 = typeCopy;
   if (self->_interestedStates)
   {
-    v6 = [v4 state];
-    v7 = (v6 - 1) <= 3 && (self->_interestedStates & dword_26ABF8E30[v6 - 1]) != 0;
+    state = [typeCopy state];
+    v7 = (state - 1) <= 3 && (self->_interestedStates & dword_26ABF8E30[state - 1]) != 0;
   }
 
   else

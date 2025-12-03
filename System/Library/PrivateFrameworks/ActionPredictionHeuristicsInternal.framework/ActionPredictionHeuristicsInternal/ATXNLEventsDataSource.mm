@@ -1,34 +1,34 @@
 @interface ATXNLEventsDataSource
-- (ATXNLEventsDataSource)initWithDevice:(id)a3;
-- (void)nlEventsWithCallback:(id)a3;
+- (ATXNLEventsDataSource)initWithDevice:(id)device;
+- (void)nlEventsWithCallback:(id)callback;
 @end
 
 @implementation ATXNLEventsDataSource
 
-- (ATXNLEventsDataSource)initWithDevice:(id)a3
+- (ATXNLEventsDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ATXNLEventsDataSource;
   v6 = [(ATXNLEventsDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (void)nlEventsWithCallback:(id)a3
+- (void)nlEventsWithCallback:(id)callback
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  callbackCopy = callback;
   if (ATXHeuristicCanLearnFromApp(&unk_2850BA3F8))
   {
-    v5 = [(ATXHeuristicDevice *)self->_device eventStore];
-    v6 = [v5 predicateForNaturalLanguageSuggestedEventsWithSearchString:0];
-    v7 = [v5 eventsMatchingPredicate:v6];
+    eventStore = [(ATXHeuristicDevice *)self->_device eventStore];
+    v6 = [eventStore predicateForNaturalLanguageSuggestedEventsWithSearchString:0];
+    v7 = [eventStore eventsMatchingPredicate:v6];
     v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_14];
     v9 = __atxlog_handle_heuristic();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -79,20 +79,20 @@
         while (v13);
       }
 
-      v4[2](v4, v10, 0);
+      callbackCopy[2](callbackCopy, v10, 0);
       v7 = v18;
       v6 = v19;
     }
 
     else
     {
-      v4[2](v4, MEMORY[0x277CBEBF8], 0);
+      callbackCopy[2](callbackCopy, MEMORY[0x277CBEBF8], 0);
     }
   }
 
   else
   {
-    v4[2](v4, MEMORY[0x277CBEBF8], 0);
+    callbackCopy[2](callbackCopy, MEMORY[0x277CBEBF8], 0);
   }
 
   v17 = *MEMORY[0x277D85DE8];

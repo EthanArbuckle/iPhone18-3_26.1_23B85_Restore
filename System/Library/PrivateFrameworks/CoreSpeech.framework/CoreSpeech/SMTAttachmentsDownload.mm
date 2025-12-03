@@ -1,26 +1,26 @@
 @interface SMTAttachmentsDownload
 + (void)initialize;
-- (SMTAttachmentsDownload)initWithQueue:(id)a3;
+- (SMTAttachmentsDownload)initWithQueue:(id)queue;
 - (void)cancel;
-- (void)downloadAttachments:(id)a3 completion:(id)a4;
+- (void)downloadAttachments:(id)attachments completion:(id)completion;
 @end
 
 @implementation SMTAttachmentsDownload
 
-- (void)downloadAttachments:(id)a3 completion:(id)a4
+- (void)downloadAttachments:(id)attachments completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  attachmentsCopy = attachments;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100003938;
   block[3] = &unk_100038F78;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = attachmentsCopy;
+  v9 = completionCopy;
+  v10 = attachmentsCopy;
   dispatch_async(queue, block);
 }
 
@@ -31,16 +31,16 @@
   self->_session = 0;
 }
 
-- (SMTAttachmentsDownload)initWithQueue:(id)a3
+- (SMTAttachmentsDownload)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = SMTAttachmentsDownload;
   v6 = [(SMTAttachmentsDownload *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = +[NSURLSessionConfiguration defaultSessionConfiguration];
     [v8 setAllowsCellularAccess:0];
     [v8 setNetworkServiceType:3];
@@ -56,7 +56,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10003FF10 = os_log_create("com.apple.speech.speechmodeltraining", "SMTAttachmentsDownload");
 

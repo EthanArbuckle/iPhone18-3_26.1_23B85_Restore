@@ -1,26 +1,26 @@
 @interface NetworkStateRelay
-- (NetworkStateRelay)initWithMonitoring:(NetworkingStateDelegate *)a3 withWiFiStateRelay:(id)a4 withTelephonyStateRelay:(id)a5;
+- (NetworkStateRelay)initWithMonitoring:(NetworkingStateDelegate *)monitoring withWiFiStateRelay:(id)relay withTelephonyStateRelay:(id)stateRelay;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)registerForNetworkChanges;
-- (void)updatePrimaryNetworkInterfaceType:(optional<NWInterfaceType>)a3;
+- (void)updatePrimaryNetworkInterfaceType:(optional<NWInterfaceType>)type;
 @end
 
 @implementation NetworkStateRelay
 
-- (NetworkStateRelay)initWithMonitoring:(NetworkingStateDelegate *)a3 withWiFiStateRelay:(id)a4 withTelephonyStateRelay:(id)a5
+- (NetworkStateRelay)initWithMonitoring:(NetworkingStateDelegate *)monitoring withWiFiStateRelay:(id)relay withTelephonyStateRelay:(id)stateRelay
 {
-  v9 = a4;
-  v10 = a5;
+  relayCopy = relay;
+  stateRelayCopy = stateRelay;
   v16.receiver = self;
   v16.super_class = NetworkStateRelay;
   v11 = [(NetworkStateRelay *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->delegate = a3;
-    objc_storeStrong(&v11->_wiFiStateRelay, a4);
-    objc_storeStrong(&v12->_telephonyStateRelay, a5);
+    v11->delegate = monitoring;
+    objc_storeStrong(&v11->_wiFiStateRelay, relay);
+    objc_storeStrong(&v12->_telephonyStateRelay, stateRelay);
     v13 = dispatch_queue_create("analyticsd.NetworkingStateResolver.NetworkStateRelay.myQueue", 0);
     fObj = v12->_stateRelayQueue.fObj.fObj;
     v12->_stateRelayQueue.fObj.fObj = v13;
@@ -64,9 +64,9 @@
   [(NWPathEvaluator *)self->_primaryPathEvaluator addObserver:self forKeyPath:@"path" options:5 context:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a4;
+  objectCopy = object;
   objc_initWeak(&location, self);
   v8 = sub_100006020(&self->_stateRelayQueue.fObj.fObj);
   v10[0] = _NSConcreteStackBlock;
@@ -74,18 +74,18 @@
   v10[2] = sub_1000C0004;
   v10[3] = &unk_100187E88;
   objc_copyWeak(&v12, &location);
-  v11 = v7;
-  v9 = v7;
+  v11 = objectCopy;
+  v9 = objectCopy;
   dispatch_async(v8, v10);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
 
-- (void)updatePrimaryNetworkInterfaceType:(optional<NWInterfaceType>)a3
+- (void)updatePrimaryNetworkInterfaceType:(optional<NWInterfaceType>)type
 {
-  var1 = a3.var1;
-  v4 = a3.var0.var1;
+  var1 = type.var1;
+  v4 = type.var0.var1;
   memset(&v11, 170, sizeof(v11));
   sub_10000459C(&v11, "<unknown>");
   if (!var1)

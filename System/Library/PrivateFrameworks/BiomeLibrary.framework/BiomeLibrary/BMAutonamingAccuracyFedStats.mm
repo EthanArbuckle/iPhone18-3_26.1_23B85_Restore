@@ -1,15 +1,15 @@
 @interface BMAutonamingAccuracyFedStats
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAutonamingAccuracyFedStats)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMAutonamingAccuracyFedStats)initWithModelVersion:(id)a3 inferenceOutputType:(int)a4 inferenceAccuracy:(int)a5 aggregatedInferenceContributingCount:(id)a6 aggregatedInferenceConfidence:(id)a7 aggregatedInferenceAccuracy:(int)a8;
-- (BOOL)isEqual:(id)a3;
+- (BMAutonamingAccuracyFedStats)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMAutonamingAccuracyFedStats)initWithModelVersion:(id)version inferenceOutputType:(int)type inferenceAccuracy:(int)accuracy aggregatedInferenceContributingCount:(id)count aggregatedInferenceConfidence:(id)confidence aggregatedInferenceAccuracy:(int)inferenceAccuracy;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAutonamingAccuracyFedStats
@@ -36,25 +36,25 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAutonamingAccuracyFedStats *)self modelVersion];
-    v7 = [v5 modelVersion];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    modelVersion = [(BMAutonamingAccuracyFedStats *)self modelVersion];
+    modelVersion2 = [v5 modelVersion];
+    v8 = modelVersion2;
+    if (modelVersion == modelVersion2)
     {
     }
 
     else
     {
-      v9 = [(BMAutonamingAccuracyFedStats *)self modelVersion];
-      v10 = [v5 modelVersion];
-      v11 = [v9 isEqual:v10];
+      modelVersion3 = [(BMAutonamingAccuracyFedStats *)self modelVersion];
+      modelVersion4 = [v5 modelVersion];
+      v11 = [modelVersion3 isEqual:modelVersion4];
 
       if (!v11)
       {
@@ -62,18 +62,18 @@
       }
     }
 
-    v13 = [(BMAutonamingAccuracyFedStats *)self inferenceOutputType];
-    if (v13 == [v5 inferenceOutputType])
+    inferenceOutputType = [(BMAutonamingAccuracyFedStats *)self inferenceOutputType];
+    if (inferenceOutputType == [v5 inferenceOutputType])
     {
-      v14 = [(BMAutonamingAccuracyFedStats *)self inferenceAccuracy];
-      if (v14 == [v5 inferenceAccuracy])
+      inferenceAccuracy = [(BMAutonamingAccuracyFedStats *)self inferenceAccuracy];
+      if (inferenceAccuracy == [v5 inferenceAccuracy])
       {
         if (!-[BMAutonamingAccuracyFedStats hasAggregatedInferenceContributingCount](self, "hasAggregatedInferenceContributingCount") && ![v5 hasAggregatedInferenceContributingCount] || -[BMAutonamingAccuracyFedStats hasAggregatedInferenceContributingCount](self, "hasAggregatedInferenceContributingCount") && objc_msgSend(v5, "hasAggregatedInferenceContributingCount") && (v15 = -[BMAutonamingAccuracyFedStats aggregatedInferenceContributingCount](self, "aggregatedInferenceContributingCount"), v15 == objc_msgSend(v5, "aggregatedInferenceContributingCount")))
         {
           if (!-[BMAutonamingAccuracyFedStats hasAggregatedInferenceConfidence](self, "hasAggregatedInferenceConfidence") && ![v5 hasAggregatedInferenceConfidence] || -[BMAutonamingAccuracyFedStats hasAggregatedInferenceConfidence](self, "hasAggregatedInferenceConfidence") && objc_msgSend(v5, "hasAggregatedInferenceConfidence") && (-[BMAutonamingAccuracyFedStats aggregatedInferenceConfidence](self, "aggregatedInferenceConfidence"), v17 = v16, objc_msgSend(v5, "aggregatedInferenceConfidence"), v17 == v18))
           {
-            v19 = [(BMAutonamingAccuracyFedStats *)self aggregatedInferenceAccuracy];
-            v12 = v19 == [v5 aggregatedInferenceAccuracy];
+            aggregatedInferenceAccuracy = [(BMAutonamingAccuracyFedStats *)self aggregatedInferenceAccuracy];
+            v12 = aggregatedInferenceAccuracy == [v5 aggregatedInferenceAccuracy];
 LABEL_21:
 
             goto LABEL_22;
@@ -96,7 +96,7 @@ LABEL_22:
 - (id)jsonDictionary
 {
   v26[6] = *MEMORY[0x1E69E9840];
-  v3 = [(BMAutonamingAccuracyFedStats *)self modelVersion];
+  modelVersion = [(BMAutonamingAccuracyFedStats *)self modelVersion];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMAutonamingAccuracyFedStats inferenceOutputType](self, "inferenceOutputType")}];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMAutonamingAccuracyFedStats inferenceAccuracy](self, "inferenceAccuracy")}];
   if ([(BMAutonamingAccuracyFedStats *)self hasAggregatedInferenceContributingCount])
@@ -124,57 +124,57 @@ LABEL_22:
 
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMAutonamingAccuracyFedStats aggregatedInferenceAccuracy](self, "aggregatedInferenceAccuracy")}];
   v25[0] = @"modelVersion";
-  v11 = v3;
-  if (!v3)
+  null = modelVersion;
+  if (!modelVersion)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v11;
-  v26[0] = v11;
+  v21 = null;
+  v26[0] = null;
   v25[1] = @"inferenceOutputType";
-  v12 = v4;
+  null2 = v4;
   v24 = v4;
   if (!v4)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[1] = v12;
+  v26[1] = null2;
   v25[2] = @"inferenceAccuracy";
-  v13 = v5;
+  null3 = v5;
   v23 = v5;
   if (!v5)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14 = v3;
-  v26[2] = v13;
+  v14 = modelVersion;
+  v26[2] = null3;
   v25[3] = @"aggregatedInferenceContributingCount";
-  v15 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[3] = v15;
+  v26[3] = null4;
   v25[4] = @"aggregatedInferenceConfidence";
-  v16 = v9;
+  null5 = v9;
   if (!v9)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v16;
+  v26[4] = null5;
   v25[5] = @"aggregatedInferenceAccuracy";
-  v17 = v10;
+  null6 = v10;
   if (!v10)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[5] = v17;
+  v26[5] = null6;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:{6, v21}];
   if (v10)
   {
@@ -234,21 +234,21 @@ LABEL_27:
   return v18;
 }
 
-- (BMAutonamingAccuracyFedStats)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAutonamingAccuracyFedStats)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v63[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"modelVersion"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v7 = 0;
         v19 = 0;
-        v18 = self;
+        selfCopy7 = self;
         goto LABEL_25;
       }
 
@@ -261,7 +261,7 @@ LABEL_27:
       v24 = [v22 initWithDomain:v23 code:2 userInfo:v9];
       v7 = 0;
       v19 = 0;
-      *a4 = v24;
+      *error = v24;
       goto LABEL_63;
     }
 
@@ -273,7 +273,7 @@ LABEL_27:
     v7 = 0;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"inferenceOutputType"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"inferenceOutputType"];
   v47 = v8;
   if (v8)
   {
@@ -288,7 +288,7 @@ LABEL_27:
         goto LABEL_7;
       }
 
-      v25 = a4;
+      errorCopy = error;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -296,7 +296,7 @@ LABEL_27:
         goto LABEL_7;
       }
 
-      if (a4)
+      if (error)
       {
         v33 = objc_alloc(MEMORY[0x1E696ABC0]);
         v34 = v7;
@@ -309,21 +309,21 @@ LABEL_27:
         v7 = v34;
         v49 = 0;
         v19 = 0;
-        *v25 = [v33 initWithDomain:v36 code:2 userInfo:v11];
+        *errorCopy = [v33 initWithDomain:v36 code:2 userInfo:v11];
         goto LABEL_65;
       }
 
       v49 = 0;
       v19 = 0;
 LABEL_63:
-      v18 = self;
+      selfCopy7 = self;
       goto LABEL_24;
     }
   }
 
   v10 = 0;
 LABEL_7:
-  v11 = [v5 objectForKeyedSubscript:@"inferenceAccuracy"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"inferenceAccuracy"];
   v46 = v6;
   v49 = v10;
   if (v11)
@@ -338,7 +338,7 @@ LABEL_7:
         goto LABEL_10;
       }
 
-      v26 = a4;
+      errorCopy2 = error;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -346,7 +346,7 @@ LABEL_7:
         goto LABEL_10;
       }
 
-      if (a4)
+      if (error)
       {
         v37 = objc_alloc(MEMORY[0x1E696ABC0]);
         v38 = v7;
@@ -359,33 +359,33 @@ LABEL_7:
         v7 = v38;
         v17 = 0;
         v19 = 0;
-        *v26 = [v37 initWithDomain:v40 code:2 userInfo:v12];
-        v18 = self;
+        *errorCopy2 = [v37 initWithDomain:v40 code:2 userInfo:v12];
+        selfCopy7 = self;
         goto LABEL_22;
       }
 
       v17 = 0;
       v19 = 0;
 LABEL_65:
-      v18 = self;
+      selfCopy7 = self;
       goto LABEL_23;
     }
   }
 
   v45 = 0;
 LABEL_10:
-  v12 = [v5 objectForKeyedSubscript:@"aggregatedInferenceContributingCount"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"aggregatedInferenceContributingCount"];
   v48 = v7;
   if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v50 = 0;
         v19 = 0;
-        v18 = self;
+        selfCopy7 = self;
         v17 = v45;
         goto LABEL_22;
       }
@@ -398,7 +398,7 @@ LABEL_10:
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
       v50 = 0;
       v19 = 0;
-      *a4 = [v27 initWithDomain:v28 code:2 userInfo:v13];
+      *error = [v27 initWithDomain:v28 code:2 userInfo:v13];
       goto LABEL_61;
     }
 
@@ -410,7 +410,7 @@ LABEL_10:
     v50 = 0;
   }
 
-  v13 = [v5 objectForKeyedSubscript:@"aggregatedInferenceConfidence"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"aggregatedInferenceConfidence"];
   if (v13)
   {
     objc_opt_class();
@@ -423,9 +423,9 @@ LABEL_10:
         goto LABEL_16;
       }
 
-      if (a4)
+      if (error)
       {
-        v29 = a4;
+        errorCopy3 = error;
         v30 = objc_alloc(MEMORY[0x1E696ABC0]);
         v31 = *MEMORY[0x1E698F240];
         v54 = *MEMORY[0x1E696A578];
@@ -435,14 +435,14 @@ LABEL_10:
         v32 = [v30 initWithDomain:v31 code:2 userInfo:v15];
         v14 = 0;
         v19 = 0;
-        *v29 = v32;
+        *errorCopy3 = v32;
         goto LABEL_59;
       }
 
       v14 = 0;
       v19 = 0;
 LABEL_61:
-      v18 = self;
+      selfCopy7 = self;
       v17 = v45;
       goto LABEL_21;
     }
@@ -450,7 +450,7 @@ LABEL_61:
 
   v14 = 0;
 LABEL_16:
-  v15 = [v5 objectForKeyedSubscript:@"aggregatedInferenceAccuracy"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"aggregatedInferenceAccuracy"];
   if (v15)
   {
     objc_opt_class();
@@ -470,7 +470,7 @@ LABEL_16:
         goto LABEL_19;
       }
 
-      if (a4)
+      if (error)
       {
         v41 = objc_alloc(MEMORY[0x1E696ABC0]);
         v44 = *MEMORY[0x1E698F240];
@@ -478,13 +478,13 @@ LABEL_16:
         v42 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"aggregatedInferenceAccuracy"];
         v53 = v42;
         v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
-        *a4 = [v41 initWithDomain:v44 code:2 userInfo:v43];
+        *error = [v41 initWithDomain:v44 code:2 userInfo:v43];
       }
 
       v16 = 0;
       v19 = 0;
 LABEL_59:
-      v18 = self;
+      selfCopy7 = self;
       v17 = v45;
       goto LABEL_20;
     }
@@ -493,8 +493,8 @@ LABEL_59:
   v16 = 0;
 LABEL_19:
   v17 = v45;
-  v18 = -[BMAutonamingAccuracyFedStats initWithModelVersion:inferenceOutputType:inferenceAccuracy:aggregatedInferenceContributingCount:aggregatedInferenceConfidence:aggregatedInferenceAccuracy:](self, "initWithModelVersion:inferenceOutputType:inferenceAccuracy:aggregatedInferenceContributingCount:aggregatedInferenceConfidence:aggregatedInferenceAccuracy:", v48, [v10 intValue], objc_msgSend(v45, "intValue"), v50, v14, objc_msgSend(v16, "intValue"));
-  v19 = v18;
+  selfCopy7 = -[BMAutonamingAccuracyFedStats initWithModelVersion:inferenceOutputType:inferenceAccuracy:aggregatedInferenceContributingCount:aggregatedInferenceConfidence:aggregatedInferenceAccuracy:](self, "initWithModelVersion:inferenceOutputType:inferenceAccuracy:aggregatedInferenceContributingCount:aggregatedInferenceConfidence:aggregatedInferenceAccuracy:", v48, [v10 intValue], objc_msgSend(v45, "intValue"), v50, v14, objc_msgSend(v16, "intValue"));
+  v19 = selfCopy7;
 LABEL_20:
 
 LABEL_21:
@@ -516,14 +516,14 @@ LABEL_25:
 {
   v3 = objc_opt_new();
   [(BMAutonamingAccuracyFedStats *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_modelVersion)
   {
     PBDataWriterWriteStringField();
@@ -549,9 +549,9 @@ LABEL_25:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v49.receiver = self;
   v49.super_class = BMAutonamingAccuracyFedStats;
   v5 = [(BMEventBase *)&v49 init];
@@ -560,12 +560,12 @@ LABEL_25:
     goto LABEL_89;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_87;
       }
@@ -576,18 +576,18 @@ LABEL_25:
       while (1)
       {
         LOBYTE(v50) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v50) & 0x7F) << v7;
@@ -605,9 +605,9 @@ LABEL_25:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_87;
       }
@@ -628,18 +628,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v50) = 0;
-            v39 = [v4 position] + 1;
-            if (v39 >= [v4 position] && (v40 = objc_msgSend(v4, "position") + 1, v40 <= objc_msgSend(v4, "length")))
+            v39 = [fromCopy position] + 1;
+            if (v39 >= [fromCopy position] && (v40 = objc_msgSend(fromCopy, "position") + 1, v40 <= objc_msgSend(fromCopy, "length")))
             {
-              v41 = [v4 data];
-              [v41 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (LOBYTE(v50) & 0x7F) << v37;
@@ -656,7 +656,7 @@ LABEL_16:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 4)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 4)
           {
 LABEL_81:
             LODWORD(v18) = 0;
@@ -678,18 +678,18 @@ LABEL_81:
           while (1)
           {
             LOBYTE(v50) = 0;
-            v19 = [v4 position] + 1;
-            if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+            v19 = [fromCopy position] + 1;
+            if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
             {
-              v21 = [v4 data];
-              [v21 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (LOBYTE(v50) & 0x7F) << v16;
@@ -706,7 +706,7 @@ LABEL_81:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 2)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 2)
           {
 LABEL_73:
             LODWORD(v18) = 0;
@@ -725,8 +725,8 @@ LABEL_83:
       v5->_modelVersion = v28;
 
 LABEL_86:
-      v46 = [v4 position];
-      if (v46 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_87;
       }
@@ -741,18 +741,18 @@ LABEL_86:
       while (1)
       {
         LOBYTE(v50) = 0;
-        v33 = [v4 position] + 1;
-        if (v33 >= [v4 position] && (v34 = objc_msgSend(v4, "position") + 1, v34 <= objc_msgSend(v4, "length")))
+        v33 = [fromCopy position] + 1;
+        if (v33 >= [fromCopy position] && (v34 = objc_msgSend(fromCopy, "position") + 1, v34 <= objc_msgSend(fromCopy, "length")))
         {
-          v35 = [v4 data];
-          [v35 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+          data4 = [fromCopy data];
+          [data4 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v32 |= (LOBYTE(v50) & 0x7F) << v30;
@@ -770,7 +770,7 @@ LABEL_86:
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v36 = 0;
       }
@@ -789,18 +789,18 @@ LABEL_70:
     {
       v5->_hasAggregatedInferenceConfidence = 1;
       v50 = 0.0;
-      v42 = [v4 position] + 4;
-      if (v42 >= [v4 position] && (v43 = objc_msgSend(v4, "position") + 4, v43 <= objc_msgSend(v4, "length")))
+      v42 = [fromCopy position] + 4;
+      if (v42 >= [fromCopy position] && (v43 = objc_msgSend(fromCopy, "position") + 4, v43 <= objc_msgSend(fromCopy, "length")))
       {
-        v45 = [v4 data];
-        [v45 getBytes:&v50 range:{objc_msgSend(v4, "position"), 4}];
+        data5 = [fromCopy data];
+        [data5 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v5->_aggregatedInferenceConfidence = v50;
@@ -824,18 +824,18 @@ LABEL_53:
     while (1)
     {
       LOBYTE(v50) = 0;
-      v25 = [v4 position] + 1;
-      if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 1, v26 <= objc_msgSend(v4, "length")))
+      v25 = [fromCopy position] + 1;
+      if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 1, v26 <= objc_msgSend(fromCopy, "length")))
       {
-        v27 = [v4 data];
-        [v27 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+        data6 = [fromCopy data];
+        [data6 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v18 |= (LOBYTE(v50) & 0x7F) << v23;
@@ -852,7 +852,7 @@ LABEL_53:
       }
     }
 
-    if (([v4 hasError] & 1) != 0 || v18 > 2)
+    if (([fromCopy hasError] & 1) != 0 || v18 > 2)
     {
 LABEL_77:
       LODWORD(v18) = 0;
@@ -863,7 +863,7 @@ LABEL_77:
   }
 
 LABEL_87:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_88:
     v47 = 0;
@@ -881,7 +881,7 @@ LABEL_89:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMAutonamingAccuracyFedStats *)self modelVersion];
+  modelVersion = [(BMAutonamingAccuracyFedStats *)self modelVersion];
   v5 = BMInferenceOutputTypeAsString([(BMAutonamingAccuracyFedStats *)self inferenceOutputType]);
   v6 = BMInferenceAccuracyAsString([(BMAutonamingAccuracyFedStats *)self inferenceAccuracy]);
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMAutonamingAccuracyFedStats aggregatedInferenceContributingCount](self, "aggregatedInferenceContributingCount")}];
@@ -889,42 +889,42 @@ LABEL_89:
   [(BMAutonamingAccuracyFedStats *)self aggregatedInferenceConfidence];
   v9 = [v8 numberWithDouble:?];
   v10 = BMInferenceAccuracyAsString([(BMAutonamingAccuracyFedStats *)self aggregatedInferenceAccuracy]);
-  v11 = [v3 initWithFormat:@"BMAutonamingAccuracyFedStats with modelVersion: %@, inferenceOutputType: %@, inferenceAccuracy: %@, aggregatedInferenceContributingCount: %@, aggregatedInferenceConfidence: %@, aggregatedInferenceAccuracy: %@", v4, v5, v6, v7, v9, v10];
+  v11 = [v3 initWithFormat:@"BMAutonamingAccuracyFedStats with modelVersion: %@, inferenceOutputType: %@, inferenceAccuracy: %@, aggregatedInferenceContributingCount: %@, aggregatedInferenceConfidence: %@, aggregatedInferenceAccuracy: %@", modelVersion, v5, v6, v7, v9, v10];
 
   return v11;
 }
 
-- (BMAutonamingAccuracyFedStats)initWithModelVersion:(id)a3 inferenceOutputType:(int)a4 inferenceAccuracy:(int)a5 aggregatedInferenceContributingCount:(id)a6 aggregatedInferenceConfidence:(id)a7 aggregatedInferenceAccuracy:(int)a8
+- (BMAutonamingAccuracyFedStats)initWithModelVersion:(id)version inferenceOutputType:(int)type inferenceAccuracy:(int)accuracy aggregatedInferenceContributingCount:(id)count aggregatedInferenceConfidence:(id)confidence aggregatedInferenceAccuracy:(int)inferenceAccuracy
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
+  versionCopy = version;
+  countCopy = count;
+  confidenceCopy = confidence;
   v23.receiver = self;
   v23.super_class = BMAutonamingAccuracyFedStats;
   v18 = [(BMEventBase *)&v23 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_modelVersion, a3);
-    v18->_inferenceOutputType = a4;
-    v18->_inferenceAccuracy = a5;
-    if (v16)
+    objc_storeStrong(&v18->_modelVersion, version);
+    v18->_inferenceOutputType = type;
+    v18->_inferenceAccuracy = accuracy;
+    if (countCopy)
     {
       v18->_hasAggregatedInferenceContributingCount = 1;
-      v19 = [v16 intValue];
+      intValue = [countCopy intValue];
     }
 
     else
     {
       v18->_hasAggregatedInferenceContributingCount = 0;
-      v19 = -1;
+      intValue = -1;
     }
 
-    v18->_aggregatedInferenceContributingCount = v19;
-    if (v17)
+    v18->_aggregatedInferenceContributingCount = intValue;
+    if (confidenceCopy)
     {
       v18->_hasAggregatedInferenceConfidence = 1;
-      [v17 floatValue];
+      [confidenceCopy floatValue];
       v21 = v20;
     }
 
@@ -935,7 +935,7 @@ LABEL_89:
     }
 
     v18->_aggregatedInferenceConfidence = v21;
-    v18->_aggregatedInferenceAccuracy = a8;
+    v18->_aggregatedInferenceAccuracy = inferenceAccuracy;
   }
 
   return v18;
@@ -963,9 +963,9 @@ LABEL_89:
   return v8;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -973,8 +973,8 @@ LABEL_89:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMAutonamingAccuracyFedStats alloc] initByReadFrom:v7];
     v4 = v8;

@@ -1,38 +1,38 @@
 @interface SOTimersPublisher
 - (SOTimersPublisher)init;
-- (void)_createNewSnapshotWithCompletion:(id)a3;
-- (void)_notifySubscribersOfEvent:(int64_t)a3;
+- (void)_createNewSnapshotWithCompletion:(id)completion;
+- (void)_notifySubscribersOfEvent:(int64_t)event;
 - (void)_startObserving;
-- (void)addSubscriber:(id)a3;
+- (void)addSubscriber:(id)subscriber;
 - (void)dealloc;
-- (void)getCurrentSnapshotWithCompletion:(id)a3;
-- (void)removeSubscriber:(id)a3;
+- (void)getCurrentSnapshotWithCompletion:(id)completion;
+- (void)removeSubscriber:(id)subscriber;
 @end
 
 @implementation SOTimersPublisher
 
-- (void)_createNewSnapshotWithCompletion:(id)a3
+- (void)_createNewSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_group_enter(self->_timersPublisherDispatchGroup);
-  v5 = [(MTTimerManager *)self->_timerManager timers];
-  if (v5)
+  timers = [(MTTimerManager *)self->_timerManager timers];
+  if (timers)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __54__SOTimersPublisher__createNewSnapshotWithCompletion___block_invoke;
     v11[3] = &unk_279C3D610;
     v11[4] = self;
-    v6 = v4;
+    v6 = completionCopy;
     v12 = v6;
-    v7 = [v5 addSuccessBlock:v11];
+    v7 = [timers addSuccessBlock:v11];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __54__SOTimersPublisher__createNewSnapshotWithCompletion___block_invoke_3;
     v9[3] = &unk_279C3D638;
     v9[4] = self;
     v10 = v6;
-    v8 = [v5 addFailureBlock:v9];
+    v8 = [timers addFailureBlock:v9];
   }
 }
 
@@ -137,8 +137,8 @@ void __54__SOTimersPublisher__createNewSnapshotWithCompletion___block_invoke_2(u
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SOTimersPublisher;
@@ -149,38 +149,38 @@ void __54__SOTimersPublisher__createNewSnapshotWithCompletion___block_invoke_2(u
 {
   if (self->_timerManager)
   {
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v3 = getMTTimerManagerTimersAdded();
-    [v10 addObserver:self selector:sel_timersAdded_ name:v3 object:self->_timerManager];
+    [defaultCenter addObserver:self selector:sel_timersAdded_ name:v3 object:self->_timerManager];
 
     v4 = getMTTimerManagerTimersUpdated();
-    [v10 addObserver:self selector:sel_timersUpdated_ name:v4 object:self->_timerManager];
+    [defaultCenter addObserver:self selector:sel_timersUpdated_ name:v4 object:self->_timerManager];
 
     v5 = getMTTimerManagerTimersRemoved();
-    [v10 addObserver:self selector:sel_timersRemoved_ name:v5 object:self->_timerManager];
+    [defaultCenter addObserver:self selector:sel_timersRemoved_ name:v5 object:self->_timerManager];
 
     v6 = getMTTimerManagerTimerFired();
-    [v10 addObserver:self selector:sel_timerFired_ name:v6 object:self->_timerManager];
+    [defaultCenter addObserver:self selector:sel_timerFired_ name:v6 object:self->_timerManager];
 
     v7 = getMTTimerManagerFiringTimerChanged();
-    [v10 addObserver:self selector:sel_firingTimerChanged_ name:v7 object:self->_timerManager];
+    [defaultCenter addObserver:self selector:sel_firingTimerChanged_ name:v7 object:self->_timerManager];
 
     v8 = getMTTimerManagerFiringTimerDismissed();
-    [v10 addObserver:self selector:sel_firingTimerDismissed_ name:v8 object:self->_timerManager];
+    [defaultCenter addObserver:self selector:sel_firingTimerDismissed_ name:v8 object:self->_timerManager];
 
     v9 = getMTTimerManagerStateReset();
-    [v10 addObserver:self selector:sel_stateReset_ name:v9 object:self->_timerManager];
+    [defaultCenter addObserver:self selector:sel_stateReset_ name:v9 object:self->_timerManager];
   }
 }
 
-- (void)_notifySubscribersOfEvent:(int64_t)a3
+- (void)_notifySubscribersOfEvent:(int64_t)event
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __47__SOTimersPublisher__notifySubscribersOfEvent___block_invoke;
   v3[3] = &unk_279C3D5C0;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = event;
   [(SOTimersPublisher *)self _createNewSnapshotWithCompletion:v3];
 }
 
@@ -224,11 +224,11 @@ void __47__SOTimersPublisher__notifySubscribersOfEvent___block_invoke(uint64_t a
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSubscriber:(id)a3
+- (void)removeSubscriber:(id)subscriber
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  subscriberCopy = subscriber;
+  v5 = subscriberCopy;
+  if (subscriberCopy)
   {
     timersPublisherQueue = self->_timersPublisherQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -236,23 +236,23 @@ void __47__SOTimersPublisher__notifySubscribersOfEvent___block_invoke(uint64_t a
     v7[2] = __38__SOTimersPublisher_removeSubscriber___block_invoke;
     v7[3] = &unk_279C3D598;
     v7[4] = self;
-    v8 = v4;
+    v8 = subscriberCopy;
     dispatch_async(timersPublisherQueue, v7);
   }
 }
 
-- (void)addSubscriber:(id)a3
+- (void)addSubscriber:(id)subscriber
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  subscriberCopy = subscriber;
+  v5 = subscriberCopy;
+  if (subscriberCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __35__SOTimersPublisher_addSubscriber___block_invoke;
     v6[3] = &unk_279C3D570;
     v6[4] = self;
-    v7 = v4;
+    v7 = subscriberCopy;
     [(SOTimersPublisher *)self getCurrentSnapshotWithCompletion:v6];
   }
 }
@@ -273,11 +273,11 @@ void __35__SOTimersPublisher_addSubscriber___block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (void)getCurrentSnapshotWithCompletion:(id)a3
+- (void)getCurrentSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     timersPublisherQueue = self->_timersPublisherQueue;
     timersPublisherDispatchGroup = self->_timersPublisherDispatchGroup;
@@ -286,7 +286,7 @@ void __35__SOTimersPublisher_addSubscriber___block_invoke(uint64_t a1, void *a2,
     v8[2] = __54__SOTimersPublisher_getCurrentSnapshotWithCompletion___block_invoke;
     v8[3] = &unk_279C3D548;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_group_notify(timersPublisherDispatchGroup, timersPublisherQueue, v8);
   }
 }

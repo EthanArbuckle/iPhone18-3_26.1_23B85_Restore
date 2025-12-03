@@ -1,15 +1,15 @@
 @interface FCIntroductoryOffer
-- (FCIntroductoryOffer)initWithOfferType:(int)a3 priceFormatted:(id)a4 recurringSubscriptionPeriod:(id)a5 numOfPeriods:(unint64_t)a6;
+- (FCIntroductoryOffer)initWithOfferType:(int)type priceFormatted:(id)formatted recurringSubscriptionPeriod:(id)period numOfPeriods:(unint64_t)periods;
 @end
 
 @implementation FCIntroductoryOffer
 
-- (FCIntroductoryOffer)initWithOfferType:(int)a3 priceFormatted:(id)a4 recurringSubscriptionPeriod:(id)a5 numOfPeriods:(unint64_t)a6
+- (FCIntroductoryOffer)initWithOfferType:(int)type priceFormatted:(id)formatted recurringSubscriptionPeriod:(id)period numOfPeriods:(unint64_t)periods
 {
   v29 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  if (!a3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  formattedCopy = formatted;
+  periodCopy = period;
+  if (!type && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Offer Type cannot be unknown. Must be a unsupported intro offer type."];
     *buf = 136315906;
@@ -22,13 +22,13 @@
     v28 = v17;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v11)
+    if (formattedCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v11)
+  else if (formattedCopy)
   {
     goto LABEL_6;
   }
@@ -48,7 +48,7 @@
   }
 
 LABEL_6:
-  if (!v12 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!periodCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"invalid nil value for '%s'", "recurringSubscriptionPeriod"];
     *buf = 136315906;
@@ -68,10 +68,10 @@ LABEL_6:
   v14 = v13;
   if (v13)
   {
-    v13->_offerType = a3;
-    objc_storeStrong(&v13->_priceFormatted, a4);
-    v14->_numOfPeriods = a6;
-    objc_storeStrong(&v14->_subscriptionPeriodInISO_8601, a5);
+    v13->_offerType = type;
+    objc_storeStrong(&v13->_priceFormatted, formatted);
+    v14->_numOfPeriods = periods;
+    objc_storeStrong(&v14->_subscriptionPeriodInISO_8601, period);
   }
 
   v15 = *MEMORY[0x1E69E9840];

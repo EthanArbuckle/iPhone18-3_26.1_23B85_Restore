@@ -1,22 +1,22 @@
 @interface CKPackageItem
-- (CKPackageItem)initWithDeviceID:(id)a3 fileID:(id)a4 generationID:(id)a5;
-- (CKPackageItem)initWithFileURL:(id)a3;
+- (CKPackageItem)initWithDeviceID:(id)d fileID:(id)iD generationID:(id)generationID;
+- (CKPackageItem)initWithFileURL:(id)l;
 - (id)description;
 - (unint64_t)packageIndex;
-- (void)setPackageIndex:(unint64_t)a3;
+- (void)setPackageIndex:(unint64_t)index;
 @end
 
 @implementation CKPackageItem
 
-- (CKPackageItem)initWithFileURL:(id)a3
+- (CKPackageItem)initWithFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = CKPackageItem;
   v7 = [(CKPackageItem *)&v12 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(lCopy, v5, v6);
     fileURL = v7->_fileURL;
     v7->_fileURL = v8;
 
@@ -28,14 +28,14 @@
   return v7;
 }
 
-- (CKPackageItem)initWithDeviceID:(id)a3 fileID:(id)a4 generationID:(id)a5
+- (CKPackageItem)initWithDeviceID:(id)d fileID:(id)iD generationID:(id)generationID
 {
-  v8 = a3;
-  v9 = a4;
-  v12 = a5;
-  if (v8)
+  dCopy = d;
+  iDCopy = iD;
+  generationIDCopy = generationID;
+  if (dCopy)
   {
-    if (v9)
+    if (iDCopy)
     {
       goto LABEL_3;
     }
@@ -44,7 +44,7 @@
   else
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v10, *MEMORY[0x1E695D940], @"Null deviceID");
-    if (v9)
+    if (iDCopy)
     {
       goto LABEL_3;
     }
@@ -52,23 +52,23 @@
 
   objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v10, *MEMORY[0x1E695D940], @"Null fileID");
 LABEL_3:
-  v13 = objc_msgSend_intValue(v8, v10, v11);
-  v16 = objc_msgSend_unsignedLongLongValue(v9, v14, v15);
+  v13 = objc_msgSend_intValue(dCopy, v10, v11);
+  v16 = objc_msgSend_unsignedLongLongValue(iDCopy, v14, v15);
   v18 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v17, @"/.vol/%u/%llu", v13, v16);
   v20 = objc_msgSend_fileURLWithPath_isDirectory_(MEMORY[0x1E695DFF8], v19, v18, 0);
   v22 = objc_msgSend_initWithFileURL_(self, v21, v20);
 
   if (v22)
   {
-    v25 = objc_msgSend_copy(v8, v23, v24);
+    v25 = objc_msgSend_copy(dCopy, v23, v24);
     deviceID = v22->_deviceID;
     v22->_deviceID = v25;
 
-    v29 = objc_msgSend_copy(v9, v27, v28);
+    v29 = objc_msgSend_copy(iDCopy, v27, v28);
     fileID = v22->_fileID;
     v22->_fileID = v29;
 
-    v33 = objc_msgSend_copy(v12, v31, v32);
+    v33 = objc_msgSend_copy(generationIDCopy, v31, v32);
     generationID = v22->_generationID;
     v22->_generationID = v33;
 
@@ -113,9 +113,9 @@ LABEL_3:
   return v5;
 }
 
-- (void)setPackageIndex:(unint64_t)a3
+- (void)setPackageIndex:(unint64_t)index
 {
-  if (a3 == -1)
+  if (index == -1)
   {
 
     objc_msgSend_setPackageItemID_(self, a2, 0);
@@ -123,7 +123,7 @@ LABEL_3:
 
   else
   {
-    v5 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x1E696AD98], a2, a3);
+    v5 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x1E696AD98], a2, index);
     objc_msgSend_setPackageItemID_(self, v4, v5);
   }
 }

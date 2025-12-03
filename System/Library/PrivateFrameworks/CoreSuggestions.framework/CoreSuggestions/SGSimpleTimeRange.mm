@@ -1,47 +1,47 @@
 @interface SGSimpleTimeRange
-+ (BOOL)hasYearMonthDayComponents:(id)a3;
-+ (SGUnixTimestamp_)fromFloatingTime:(SGUnixTimestamp_)a3;
-+ (SGUnixTimestamp_)toFloatingTime:(SGUnixTimestamp_)a3;
-+ (SGUnixTimestamp_)toFloatingTime:(SGUnixTimestamp_)a3 withDSTAmbiguityPreferences:(id)a4;
-+ (id)dateFromGregorianComponents:(id)a3;
-+ (id)floatingRangeWithLocalStart:(SGUnixTimestamp_)a3 end:(SGUnixTimestamp_)a4;
-+ (id)floatingRangeWithLocalStartDate:(id)a3 endDate:(id)a4;
-+ (id)floatingRangeWithUTCStart:(SGUnixTimestamp_)a3 end:(SGUnixTimestamp_)a4;
-+ (id)floatingRangeWithUTCStartDate:(id)a3 endDate:(id)a4;
-+ (id)rangeWithGregorianStartComponents:(id)a3 endComponents:(id)a4;
-+ (id)rangeWithStart:(SGUnixTimestamp_)a3 startTimeZone:(id)a4 end:(SGUnixTimestamp_)a5 endTimeZone:(id)a6;
-+ (id)rangeWithStartDate:(id)a3 startTimeZone:(id)a4 endDate:(id)a5 endTimeZone:(id)a6;
-+ (id)utcRangeWithStart:(SGUnixTimestamp_)a3 end:(SGUnixTimestamp_)a4;
++ (BOOL)hasYearMonthDayComponents:(id)components;
++ (SGUnixTimestamp_)fromFloatingTime:(SGUnixTimestamp_)time;
++ (SGUnixTimestamp_)toFloatingTime:(SGUnixTimestamp_)time;
++ (SGUnixTimestamp_)toFloatingTime:(SGUnixTimestamp_)time withDSTAmbiguityPreferences:(id)preferences;
++ (id)dateFromGregorianComponents:(id)components;
++ (id)floatingRangeWithLocalStart:(SGUnixTimestamp_)start end:(SGUnixTimestamp_)end;
++ (id)floatingRangeWithLocalStartDate:(id)date endDate:(id)endDate;
++ (id)floatingRangeWithUTCStart:(SGUnixTimestamp_)start end:(SGUnixTimestamp_)end;
++ (id)floatingRangeWithUTCStartDate:(id)date endDate:(id)endDate;
++ (id)rangeWithGregorianStartComponents:(id)components endComponents:(id)endComponents;
++ (id)rangeWithStart:(SGUnixTimestamp_)start startTimeZone:(id)zone end:(SGUnixTimestamp_)end endTimeZone:(id)timeZone;
++ (id)rangeWithStartDate:(id)date startTimeZone:(id)zone endDate:(id)endDate endTimeZone:(id)timeZone;
++ (id)utcRangeWithStart:(SGUnixTimestamp_)start end:(SGUnixTimestamp_)end;
 - (BOOL)isEndDatePast;
 - (BOOL)isEndDatePastOver365days;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSimpleTimeRange:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSimpleTimeRange:(id)range;
 - (BOOL)isValidAllDayRange;
 - (BOOL)startedMoreThan24HoursAgo;
 - (NSDate)endDate;
 - (NSDate)startDate;
 - (NSTimeZone)endTimeZone;
 - (NSTimeZone)startTimeZone;
-- (SGSimpleTimeRange)initWithCoder:(id)a3;
-- (SGSimpleTimeRange)initWithStart:(SGUnixTimestamp_)a3 startUTCOffsetSeconds:(int64_t)a4 end:(SGUnixTimestamp_)a5 endUTCOffsetSeconds:(int64_t)a6;
-- (id)_componentsForDate:(id)a3 timeZone:(id)a4;
+- (SGSimpleTimeRange)initWithCoder:(id)coder;
+- (SGSimpleTimeRange)initWithStart:(SGUnixTimestamp_)start startUTCOffsetSeconds:(int64_t)seconds end:(SGUnixTimestamp_)end endUTCOffsetSeconds:(int64_t)offsetSeconds;
+- (id)_componentsForDate:(id)date timeZone:(id)zone;
 - (id)absoluteRange;
 - (id)endDateComponents;
-- (id)initUTCFloatingWithStart:(SGUnixTimestamp_)a3 end:(SGUnixTimestamp_)a4;
+- (id)initUTCFloatingWithStart:(SGUnixTimestamp_)start end:(SGUnixTimestamp_)end;
 - (id)stableStringRepresentation;
 - (id)startDateComponents;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGSimpleTimeRange
 
 - (BOOL)isEndDatePastOver365days
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [v3 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v5 = v4;
-  v6 = [(SGSimpleTimeRange *)self absoluteRange];
-  [v6 end];
+  absoluteRange = [(SGSimpleTimeRange *)self absoluteRange];
+  [absoluteRange end];
   v8 = v5 - v7 > 31536000.0;
 
   return v8;
@@ -49,51 +49,51 @@
 
 - (BOOL)isEndDatePast
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [v3 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v5 = v4;
-  v6 = [(SGSimpleTimeRange *)self absoluteRange];
-  [v6 end];
+  absoluteRange = [(SGSimpleTimeRange *)self absoluteRange];
+  [absoluteRange end];
   v8 = v5 > v7;
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   secondsFromUnixEpoch = self->_start.secondsFromUnixEpoch;
-  v5 = a3;
-  [v5 encodeDouble:@"start" forKey:secondsFromUnixEpoch];
-  [v5 encodeDouble:@"end" forKey:self->_end.secondsFromUnixEpoch];
-  [v5 encodeInteger:self->_startUTCOffsetSeconds forKey:@"startUTCOffsetSeconds"];
-  [v5 encodeInteger:self->_endUTCOffsetSeconds forKey:@"endUTCOffsetSeconds"];
-  [v5 encodeBool:self->_floating forKey:@"floating"];
-  [v5 encodeObject:self->_startTimeZone forKey:@"startTimeZone"];
-  [v5 encodeObject:self->_endTimeZone forKey:@"endTimeZone"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"start" forKey:secondsFromUnixEpoch];
+  [coderCopy encodeDouble:@"end" forKey:self->_end.secondsFromUnixEpoch];
+  [coderCopy encodeInteger:self->_startUTCOffsetSeconds forKey:@"startUTCOffsetSeconds"];
+  [coderCopy encodeInteger:self->_endUTCOffsetSeconds forKey:@"endUTCOffsetSeconds"];
+  [coderCopy encodeBool:self->_floating forKey:@"floating"];
+  [coderCopy encodeObject:self->_startTimeZone forKey:@"startTimeZone"];
+  [coderCopy encodeObject:self->_endTimeZone forKey:@"endTimeZone"];
 }
 
-- (SGSimpleTimeRange)initWithCoder:(id)a3
+- (SGSimpleTimeRange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = SGSimpleTimeRange;
   v5 = [(SGSimpleTimeRange *)&v15 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"start"];
+    [coderCopy decodeDoubleForKey:@"start"];
     v5->_start.secondsFromUnixEpoch = v6;
-    [v4 decodeDoubleForKey:@"end"];
+    [coderCopy decodeDoubleForKey:@"end"];
     v5->_end.secondsFromUnixEpoch = v7;
-    v5->_startUTCOffsetSeconds = [v4 decodeIntegerForKey:@"startUTCOffsetSeconds"];
-    v5->_endUTCOffsetSeconds = [v4 decodeIntegerForKey:@"endUTCOffsetSeconds"];
-    v5->_floating = [v4 decodeBoolForKey:@"floating"];
+    v5->_startUTCOffsetSeconds = [coderCopy decodeIntegerForKey:@"startUTCOffsetSeconds"];
+    v5->_endUTCOffsetSeconds = [coderCopy decodeIntegerForKey:@"endUTCOffsetSeconds"];
+    v5->_floating = [coderCopy decodeBoolForKey:@"floating"];
     v8 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"startTimeZone"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"startTimeZone"];
     startTimeZone = v5->_startTimeZone;
     v5->_startTimeZone = v9;
 
     v11 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"endTimeZone"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"endTimeZone"];
     endTimeZone = v5->_endTimeZone;
     v5->_endTimeZone = v12;
   }
@@ -101,23 +101,23 @@
   return v5;
 }
 
-- (BOOL)isEqualToSimpleTimeRange:(id)a3
+- (BOOL)isEqualToSimpleTimeRange:(id)range
 {
-  v4 = a3;
-  [v4 start];
+  rangeCopy = range;
+  [rangeCopy start];
   if (self->_start.secondsFromUnixEpoch != v5)
   {
     goto LABEL_8;
   }
 
-  [v4 end];
+  [rangeCopy end];
   if (self->_end.secondsFromUnixEpoch != v6)
   {
     goto LABEL_8;
   }
 
   floating = self->_floating;
-  if (floating != [v4 isFloating])
+  if (floating != [rangeCopy isFloating])
   {
     goto LABEL_8;
   }
@@ -125,10 +125,10 @@
   if (!self->_floating)
   {
     startUTCOffsetSeconds = self->_startUTCOffsetSeconds;
-    if (startUTCOffsetSeconds == [v4 startUTCOffsetSeconds])
+    if (startUTCOffsetSeconds == [rangeCopy startUTCOffsetSeconds])
     {
       endUTCOffsetSeconds = self->_endUTCOffsetSeconds;
-      v8 = endUTCOffsetSeconds == [v4 endUTCOffsetSeconds];
+      v8 = endUTCOffsetSeconds == [rangeCopy endUTCOffsetSeconds];
       goto LABEL_9;
     }
 
@@ -143,18 +143,18 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGSimpleTimeRange *)self isEqualToSimpleTimeRange:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGSimpleTimeRange *)self isEqualToSimpleTimeRange:v5];
   }
 
   return v6;
@@ -162,12 +162,12 @@ LABEL_9:
 
 - (BOOL)startedMoreThan24HoursAgo
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [v3 dateByAddingTimeInterval:-86400.0];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [date dateByAddingTimeInterval:-86400.0];
   [v4 timeIntervalSince1970];
   v6 = v5;
-  v7 = [(SGSimpleTimeRange *)self absoluteRange];
-  [v7 start];
+  absoluteRange = [(SGSimpleTimeRange *)self absoluteRange];
+  [absoluteRange start];
   v9 = v6 > v8;
 
   return v9;
@@ -176,16 +176,16 @@ LABEL_9:
 - (BOOL)isValidAllDayRange
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(SGSimpleTimeRange *)self startDateComponents];
-  if ([v4 hour] || objc_msgSend(v4, "minute") || objc_msgSend(v4, "second"))
+  startDateComponents = [(SGSimpleTimeRange *)self startDateComponents];
+  if ([startDateComponents hour] || objc_msgSend(startDateComponents, "minute") || objc_msgSend(startDateComponents, "second"))
   {
     v5 = 0;
   }
 
   else
   {
-    v7 = [(SGSimpleTimeRange *)self endDateComponents];
-    v5 = ![v7 hour] && !objc_msgSend(v7, "minute") && !objc_msgSend(v7, "second") || objc_msgSend(v7, "hour") >= 23 && objc_msgSend(v7, "minute") >= 59 && objc_msgSend(v7, "second") >= 59;
+    endDateComponents = [(SGSimpleTimeRange *)self endDateComponents];
+    v5 = ![endDateComponents hour] && !objc_msgSend(endDateComponents, "minute") && !objc_msgSend(endDateComponents, "second") || objc_msgSend(endDateComponents, "hour") >= 23 && objc_msgSend(endDateComponents, "minute") >= 59 && objc_msgSend(endDateComponents, "second") >= 59;
   }
 
   objc_autoreleasePoolPop(v3);
@@ -194,32 +194,32 @@ LABEL_9:
 
 - (id)endDateComponents
 {
-  v3 = [(SGSimpleTimeRange *)self endDate];
-  v4 = [(SGSimpleTimeRange *)self endTimeZone];
-  v5 = [(SGSimpleTimeRange *)self _componentsForDate:v3 timeZone:v4];
+  endDate = [(SGSimpleTimeRange *)self endDate];
+  endTimeZone = [(SGSimpleTimeRange *)self endTimeZone];
+  v5 = [(SGSimpleTimeRange *)self _componentsForDate:endDate timeZone:endTimeZone];
 
   return v5;
 }
 
 - (id)startDateComponents
 {
-  v3 = [(SGSimpleTimeRange *)self startDate];
-  v4 = [(SGSimpleTimeRange *)self startTimeZone];
-  v5 = [(SGSimpleTimeRange *)self _componentsForDate:v3 timeZone:v4];
+  startDate = [(SGSimpleTimeRange *)self startDate];
+  startTimeZone = [(SGSimpleTimeRange *)self startTimeZone];
+  v5 = [(SGSimpleTimeRange *)self _componentsForDate:startDate timeZone:startTimeZone];
 
   return v5;
 }
 
-- (id)_componentsForDate:(id)a3 timeZone:(id)a4
+- (id)_componentsForDate:(id)date timeZone:(id)zone
 {
-  v5 = a3;
-  v6 = a4;
+  dateCopy = date;
+  zoneCopy = zone;
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v9 = v8;
-  if (v6)
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v9 = currentCalendar;
+  if (zoneCopy)
   {
-    [v8 setTimeZone:v6];
+    [currentCalendar setTimeZone:zoneCopy];
   }
 
   else
@@ -228,8 +228,8 @@ LABEL_9:
     [v9 setTimeZone:v10];
   }
 
-  v11 = [v9 components:1048828 fromDate:v5];
-  [v11 setTimeZone:v6];
+  v11 = [v9 components:1048828 fromDate:dateCopy];
+  [v11 setTimeZone:zoneCopy];
 
   objc_autoreleasePoolPop(v7);
 
@@ -253,9 +253,9 @@ LABEL_9:
 
     else
     {
-      v7 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-      v8 = [(SGSimpleTimeRange *)self endDate];
-      v9 = [v7 secondsFromGMTForDate:v8];
+      defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+      endDate = [(SGSimpleTimeRange *)self endDate];
+      v9 = [defaultTimeZone secondsFromGMTForDate:endDate];
 
       if (v9 == self->_endUTCOffsetSeconds)
       {
@@ -290,9 +290,9 @@ LABEL_9:
 
     else
     {
-      v7 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-      v8 = [(SGSimpleTimeRange *)self startDate];
-      v9 = [v7 secondsFromGMTForDate:v8];
+      defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+      startDate = [(SGSimpleTimeRange *)self startDate];
+      v9 = [defaultTimeZone secondsFromGMTForDate:startDate];
 
       if (v9 == self->_startUTCOffsetSeconds)
       {
@@ -350,63 +350,63 @@ LABEL_9:
     v4 = v3;
     [SGSimpleTimeRange fromFloatingTime:self->_end.secondsFromUnixEpoch];
     v6 = v5;
-    v7 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-    v8 = [SGSimpleTimeRange rangeWithStart:v7 end:v4 timeZone:v6];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    selfCopy = [SGSimpleTimeRange rangeWithStart:defaultTimeZone end:v4 timeZone:v6];
   }
 
   else
   {
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (SGSimpleTimeRange)initWithStart:(SGUnixTimestamp_)a3 startUTCOffsetSeconds:(int64_t)a4 end:(SGUnixTimestamp_)a5 endUTCOffsetSeconds:(int64_t)a6
+- (SGSimpleTimeRange)initWithStart:(SGUnixTimestamp_)start startUTCOffsetSeconds:(int64_t)seconds end:(SGUnixTimestamp_)end endUTCOffsetSeconds:(int64_t)offsetSeconds
 {
   v12.receiver = self;
   v12.super_class = SGSimpleTimeRange;
   result = [(SGSimpleTimeRange *)&v12 init];
   if (result)
   {
-    if (a5.secondsFromUnixEpoch >= a3.secondsFromUnixEpoch)
+    if (end.secondsFromUnixEpoch >= start.secondsFromUnixEpoch)
     {
-      secondsFromUnixEpoch = a5.secondsFromUnixEpoch;
+      secondsFromUnixEpoch = end.secondsFromUnixEpoch;
     }
 
     else
     {
-      secondsFromUnixEpoch = a3.secondsFromUnixEpoch;
+      secondsFromUnixEpoch = start.secondsFromUnixEpoch;
     }
 
-    result->_start.secondsFromUnixEpoch = a3.secondsFromUnixEpoch;
+    result->_start.secondsFromUnixEpoch = start.secondsFromUnixEpoch;
     result->_end.secondsFromUnixEpoch = secondsFromUnixEpoch;
-    result->_startUTCOffsetSeconds = a4;
-    result->_endUTCOffsetSeconds = a6;
+    result->_startUTCOffsetSeconds = seconds;
+    result->_endUTCOffsetSeconds = offsetSeconds;
     result->_floating = 0;
   }
 
   return result;
 }
 
-- (id)initUTCFloatingWithStart:(SGUnixTimestamp_)a3 end:(SGUnixTimestamp_)a4
+- (id)initUTCFloatingWithStart:(SGUnixTimestamp_)start end:(SGUnixTimestamp_)end
 {
   v8.receiver = self;
   v8.super_class = SGSimpleTimeRange;
   result = [(SGSimpleTimeRange *)&v8 init];
   if (result)
   {
-    if (a4.secondsFromUnixEpoch >= a3.secondsFromUnixEpoch)
+    if (end.secondsFromUnixEpoch >= start.secondsFromUnixEpoch)
     {
-      secondsFromUnixEpoch = a4.secondsFromUnixEpoch;
+      secondsFromUnixEpoch = end.secondsFromUnixEpoch;
     }
 
     else
     {
-      secondsFromUnixEpoch = a3.secondsFromUnixEpoch;
+      secondsFromUnixEpoch = start.secondsFromUnixEpoch;
     }
 
-    *(result + 1) = a3.secondsFromUnixEpoch;
+    *(result + 1) = start.secondsFromUnixEpoch;
     *(result + 2) = secondsFromUnixEpoch;
     *(result + 40) = 1;
   }
@@ -414,24 +414,24 @@ LABEL_9:
   return result;
 }
 
-+ (id)floatingRangeWithLocalStart:(SGUnixTimestamp_)a3 end:(SGUnixTimestamp_)a4
++ (id)floatingRangeWithLocalStart:(SGUnixTimestamp_)start end:(SGUnixTimestamp_)end
 {
   v6 = [SGSimpleTimeRange alloc];
-  [SGSimpleTimeRange toFloatingTime:a3.secondsFromUnixEpoch];
+  [SGSimpleTimeRange toFloatingTime:start.secondsFromUnixEpoch];
   v8 = v7;
-  [SGSimpleTimeRange toFloatingTime:a4.secondsFromUnixEpoch];
+  [SGSimpleTimeRange toFloatingTime:end.secondsFromUnixEpoch];
   v10 = [(SGSimpleTimeRange *)v6 initUTCFloatingWithStart:v8 end:v9];
 
   return v10;
 }
 
-+ (id)floatingRangeWithLocalStartDate:(id)a3 endDate:(id)a4
++ (id)floatingRangeWithLocalStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a4;
-  [a3 timeIntervalSince1970];
+  endDateCopy = endDate;
+  [date timeIntervalSince1970];
   [SGSimpleTimeRange toFloatingTime:?];
   v7 = v6;
-  [v5 timeIntervalSince1970];
+  [endDateCopy timeIntervalSince1970];
   v9 = v8;
 
   [SGSimpleTimeRange toFloatingTime:v9];
@@ -440,22 +440,22 @@ LABEL_9:
   return v11;
 }
 
-+ (id)floatingRangeWithUTCStart:(SGUnixTimestamp_)a3 end:(SGUnixTimestamp_)a4
++ (id)floatingRangeWithUTCStart:(SGUnixTimestamp_)start end:(SGUnixTimestamp_)end
 {
-  v4 = [[SGSimpleTimeRange alloc] initUTCFloatingWithStart:a3.secondsFromUnixEpoch end:a4.secondsFromUnixEpoch];
+  v4 = [[SGSimpleTimeRange alloc] initUTCFloatingWithStart:start.secondsFromUnixEpoch end:end.secondsFromUnixEpoch];
 
   return v4;
 }
 
-+ (id)floatingRangeWithUTCStartDate:(id)a3 endDate:(id)a4
++ (id)floatingRangeWithUTCStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a4;
-  v6 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v7 = [SGSimpleTimeRange alloc];
-  [v6 timeIntervalSince1970];
+  [dateCopy timeIntervalSince1970];
   v9 = v8;
 
-  [v5 timeIntervalSince1970];
+  [endDateCopy timeIntervalSince1970];
   v11 = v10;
 
   v12 = [(SGSimpleTimeRange *)v7 initUTCFloatingWithStart:v9 end:v11];
@@ -463,87 +463,87 @@ LABEL_9:
   return v12;
 }
 
-+ (id)utcRangeWithStart:(SGUnixTimestamp_)a3 end:(SGUnixTimestamp_)a4
++ (id)utcRangeWithStart:(SGUnixTimestamp_)start end:(SGUnixTimestamp_)end
 {
   v6 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
-  v7 = [SGSimpleTimeRange rangeWithStart:v6 end:a3.secondsFromUnixEpoch timeZone:a4.secondsFromUnixEpoch];
+  v7 = [SGSimpleTimeRange rangeWithStart:v6 end:start.secondsFromUnixEpoch timeZone:end.secondsFromUnixEpoch];
 
   return v7;
 }
 
-+ (id)rangeWithStartDate:(id)a3 startTimeZone:(id)a4 endDate:(id)a5 endTimeZone:(id)a6
++ (id)rangeWithStartDate:(id)date startTimeZone:(id)zone endDate:(id)endDate endTimeZone:(id)timeZone
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(NSTimeZone *)v9 secondsFromGMTForDate:v12];
-  v14 = [(NSTimeZone *)v10 secondsFromGMTForDate:v11];
+  zoneCopy = zone;
+  timeZoneCopy = timeZone;
+  endDateCopy = endDate;
+  dateCopy = date;
+  v13 = [(NSTimeZone *)zoneCopy secondsFromGMTForDate:dateCopy];
+  v14 = [(NSTimeZone *)timeZoneCopy secondsFromGMTForDate:endDateCopy];
   v15 = [SGSimpleTimeRange alloc];
-  [v12 timeIntervalSince1970];
+  [dateCopy timeIntervalSince1970];
   v17 = v16;
 
-  [v11 timeIntervalSince1970];
+  [endDateCopy timeIntervalSince1970];
   v19 = v18;
 
   v20 = [(SGSimpleTimeRange *)v15 initWithStart:v13 startUTCOffsetSeconds:v14 end:v17 endUTCOffsetSeconds:v19];
   startTimeZone = v20->_startTimeZone;
-  v20->_startTimeZone = v9;
-  v22 = v9;
+  v20->_startTimeZone = zoneCopy;
+  v22 = zoneCopy;
 
   endTimeZone = v20->_endTimeZone;
-  v20->_endTimeZone = v10;
+  v20->_endTimeZone = timeZoneCopy;
 
   return v20;
 }
 
-+ (id)rangeWithStart:(SGUnixTimestamp_)a3 startTimeZone:(id)a4 end:(SGUnixTimestamp_)a5 endTimeZone:(id)a6
++ (id)rangeWithStart:(SGUnixTimestamp_)start startTimeZone:(id)zone end:(SGUnixTimestamp_)end endTimeZone:(id)timeZone
 {
   v9 = MEMORY[0x1E695DF00];
-  v10 = a6;
-  v11 = a4;
-  v12 = [[v9 alloc] initWithTimeIntervalSince1970:a3.secondsFromUnixEpoch];
-  v13 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:a5.secondsFromUnixEpoch];
-  v14 = [SGSimpleTimeRange rangeWithStartDate:v12 startTimeZone:v11 endDate:v13 endTimeZone:v10];
+  timeZoneCopy = timeZone;
+  zoneCopy = zone;
+  v12 = [[v9 alloc] initWithTimeIntervalSince1970:start.secondsFromUnixEpoch];
+  v13 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:end.secondsFromUnixEpoch];
+  v14 = [SGSimpleTimeRange rangeWithStartDate:v12 startTimeZone:zoneCopy endDate:v13 endTimeZone:timeZoneCopy];
 
   return v14;
 }
 
-+ (id)rangeWithGregorianStartComponents:(id)a3 endComponents:(id)a4
++ (id)rangeWithGregorianStartComponents:(id)components endComponents:(id)endComponents
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  componentsCopy = components;
+  endComponentsCopy = endComponents;
+  if (!componentsCopy)
   {
     v9 = 0;
     v14 = 0;
     goto LABEL_23;
   }
 
-  if (![SGSimpleTimeRange hasYearMonthDayComponents:v7])
+  if (![SGSimpleTimeRange hasYearMonthDayComponents:componentsCopy])
   {
     v14 = 0;
-    v9 = v7;
+    v9 = componentsCopy;
     goto LABEL_23;
   }
 
-  v9 = [v7 copy];
+  v9 = [componentsCopy copy];
 
-  if (v8 && [SGSimpleTimeRange hasYearMonthDayComponents:v8])
+  if (endComponentsCopy && [SGSimpleTimeRange hasYearMonthDayComponents:endComponentsCopy])
   {
-    v10 = [v8 copy];
+    v10 = [endComponentsCopy copy];
 
-    v11 = [v9 timeZone];
-    v12 = [v10 timeZone];
-    v13 = v12 == 0;
+    timeZone = [v9 timeZone];
+    timeZone2 = [v10 timeZone];
+    v13 = timeZone2 == 0;
 
-    if ((v11 == 0) == v13)
+    if ((timeZone == 0) == v13)
     {
       goto LABEL_11;
     }
 
-    v8 = [v9 timeZone];
-    [v10 setTimeZone:v8];
+    endComponentsCopy = [v9 timeZone];
+    [v10 setTimeZone:endComponentsCopy];
   }
 
   else
@@ -552,31 +552,31 @@ LABEL_9:
   }
 
 LABEL_11:
-  v8 = v10;
+  endComponentsCopy = v10;
   v15 = [SGSimpleTimeRange isAllDayComponents:v9];
-  if (v15 != [SGSimpleTimeRange isAllDayComponents:v8])
+  if (v15 != [SGSimpleTimeRange isAllDayComponents:endComponentsCopy])
   {
-    [v8 setHour:{objc_msgSend(v9, "hour")}];
-    [v8 setMinute:{objc_msgSend(v9, "minute")}];
-    [v8 setSecond:{objc_msgSend(v9, "second")}];
-    [v8 setNanosecond:{objc_msgSend(v9, "nanosecond")}];
+    [endComponentsCopy setHour:{objc_msgSend(v9, "hour")}];
+    [endComponentsCopy setMinute:{objc_msgSend(v9, "minute")}];
+    [endComponentsCopy setSecond:{objc_msgSend(v9, "second")}];
+    [endComponentsCopy setNanosecond:{objc_msgSend(v9, "nanosecond")}];
   }
 
   if ([SGSimpleTimeRange isAllDayComponents:v9])
   {
-    [v8 setHour:24];
-    [v8 setMinute:0];
-    [v8 setSecond:0];
-    [v8 setNanosecond:0];
+    [endComponentsCopy setHour:24];
+    [endComponentsCopy setMinute:0];
+    [endComponentsCopy setSecond:0];
+    [endComponentsCopy setNanosecond:0];
   }
 
   v16 = [SGSimpleTimeRange dateFromGregorianComponents:v9];
-  v17 = [SGSimpleTimeRange dateFromGregorianComponents:v8];
+  v17 = [SGSimpleTimeRange dateFromGregorianComponents:endComponentsCopy];
   v18 = v17;
   if (!v16)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"SGSimpleTimeRange.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"startDate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGSimpleTimeRange.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"startDate"}];
 
     if (v18)
     {
@@ -584,8 +584,8 @@ LABEL_11:
     }
 
 LABEL_27:
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"SGSimpleTimeRange.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"endDate"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGSimpleTimeRange.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"endDate"}];
 
     goto LABEL_17;
   }
@@ -596,21 +596,21 @@ LABEL_27:
   }
 
 LABEL_17:
-  v19 = [v9 timeZone];
+  timeZone3 = [v9 timeZone];
 
-  if (v19)
+  if (timeZone3)
   {
-    v20 = [v8 timeZone];
+    timeZone4 = [endComponentsCopy timeZone];
 
-    if (!v20)
+    if (!timeZone4)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:a2 object:a1 file:@"SGSimpleTimeRange.m" lineNumber:184 description:{@"if the start has a timezone, then end should too"}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"SGSimpleTimeRange.m" lineNumber:184 description:{@"if the start has a timezone, then end should too"}];
     }
 
-    v21 = [v9 timeZone];
-    v22 = [v8 timeZone];
-    v14 = [SGSimpleTimeRange rangeWithStartDate:v16 startTimeZone:v21 endDate:v18 endTimeZone:v22];
+    timeZone5 = [v9 timeZone];
+    timeZone6 = [endComponentsCopy timeZone];
+    v14 = [SGSimpleTimeRange rangeWithStartDate:v16 startTimeZone:timeZone5 endDate:v18 endTimeZone:timeZone6];
   }
 
   else
@@ -623,29 +623,29 @@ LABEL_23:
   return v14;
 }
 
-+ (BOOL)hasYearMonthDayComponents:(id)a3
++ (BOOL)hasYearMonthDayComponents:(id)components
 {
-  v3 = a3;
-  v4 = [v3 year] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v3, "month") != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v3, "day") != 0x7FFFFFFFFFFFFFFFLL;
+  componentsCopy = components;
+  v4 = [componentsCopy year] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(componentsCopy, "month") != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(componentsCopy, "day") != 0x7FFFFFFFFFFFFFFFLL;
 
   return v4;
 }
 
-+ (id)dateFromGregorianComponents:(id)a3
++ (id)dateFromGregorianComponents:(id)components
 {
-  v5 = a3;
-  v6 = [v5 calendar];
-  if (v6)
+  componentsCopy = components;
+  calendar = [componentsCopy calendar];
+  if (calendar)
   {
-    v7 = v6;
-    v8 = [v5 calendar];
-    v9 = [v8 calendarIdentifier];
+    v7 = calendar;
+    calendar2 = [componentsCopy calendar];
+    calendarIdentifier = [calendar2 calendarIdentifier];
     v10 = *MEMORY[0x1E695D850];
 
-    if (v9 != v10)
+    if (calendarIdentifier != v10)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:a1 file:@"SGSimpleTimeRange.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"components.calendar == nil || components.calendar.calendarIdentifier == NSCalendarIdentifierGregorian"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SGSimpleTimeRange.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"components.calendar == nil || components.calendar.calendarIdentifier == NSCalendarIdentifierGregorian"}];
     }
   }
 
@@ -658,43 +658,43 @@ LABEL_23:
   v13 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
   [v12 setTimeZone:v13];
 
-  v14 = [v12 dateFromComponents:v5];
+  v14 = [v12 dateFromComponents:componentsCopy];
 
   return v14;
 }
 
-+ (SGUnixTimestamp_)fromFloatingTime:(SGUnixTimestamp_)a3
++ (SGUnixTimestamp_)fromFloatingTime:(SGUnixTimestamp_)time
 {
   [SGSimpleTimeRange toFloatingTime:?];
-  v5.secondsFromUnixEpoch = -(v4 - a3.secondsFromUnixEpoch * 2.0);
+  v5.secondsFromUnixEpoch = -(v4 - time.secondsFromUnixEpoch * 2.0);
   return v5;
 }
 
-+ (SGUnixTimestamp_)toFloatingTime:(SGUnixTimestamp_)a3 withDSTAmbiguityPreferences:(id)a4
++ (SGUnixTimestamp_)toFloatingTime:(SGUnixTimestamp_)time withDSTAmbiguityPreferences:(id)preferences
 {
-  v7 = a4;
+  preferencesCopy = preferences;
   v8 = objc_autoreleasePoolPush();
-  [SGSimpleTimeRange toFloatingTime:a3.secondsFromUnixEpoch];
+  [SGSimpleTimeRange toFloatingTime:time.secondsFromUnixEpoch];
   v10.secondsFromUnixEpoch = v9;
-  v11 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-  v12 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:a3.secondsFromUnixEpoch];
+  defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+  v12 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:time.secondsFromUnixEpoch];
   v13 = [v12 dateByAddingTimeInterval:-7200.0];
-  v14 = [v11 nextDaylightSavingTimeTransitionAfterDate:v13];
+  v14 = [defaultTimeZone nextDaylightSavingTimeTransitionAfterDate:v13];
   if (v14)
   {
     [v12 timeIntervalSinceDate:v14];
     if (v15 >= 0.0)
     {
       v16 = v15;
-      [v11 daylightSavingTimeOffsetForDate:v13];
+      [defaultTimeZone daylightSavingTimeOffsetForDate:v13];
       v18 = v17;
-      [v11 daylightSavingTimeOffsetForDate:v12];
+      [defaultTimeZone daylightSavingTimeOffsetForDate:v12];
       v20 = v19;
       if (v18 == v19)
       {
         [MEMORY[0x1E696AAA8] currentHandler];
         v39 = v42 = v8;
-        [v39 handleFailureInMethod:a2 object:a1 file:@"SGSimpleTimeRange.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"offsetBefore != offsetAfter"}];
+        [v39 handleFailureInMethod:a2 object:self file:@"SGSimpleTimeRange.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"offsetBefore != offsetAfter"}];
 
         v8 = v42;
       }
@@ -705,10 +705,10 @@ LABEL_23:
       {
         v24 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:v10.secondsFromUnixEpoch];
         v43 = [v24 dateByAddingTimeInterval:-v22];
-        v25 = [v7 calendar];
-        v26 = [v25 copy];
+        calendar = [preferencesCopy calendar];
+        v26 = [calendar copy];
         v27 = v26;
-        v46 = v7;
+        v46 = preferencesCopy;
         v41 = v8;
         if (v26)
         {
@@ -762,7 +762,7 @@ LABEL_23:
         v10.secondsFromUnixEpoch = v38;
 LABEL_18:
 
-        v7 = v46;
+        preferencesCopy = v46;
         v8 = v41;
       }
     }
@@ -772,10 +772,10 @@ LABEL_18:
   return v10;
 }
 
-+ (SGUnixTimestamp_)toFloatingTime:(SGUnixTimestamp_)a3
++ (SGUnixTimestamp_)toFloatingTime:(SGUnixTimestamp_)time
 {
   v4 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-  v5 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:a3.secondsFromUnixEpoch];
+  v5 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:time.secondsFromUnixEpoch];
   v6 = [v4 components:3145980 fromDate:v5];
 
   v7 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];

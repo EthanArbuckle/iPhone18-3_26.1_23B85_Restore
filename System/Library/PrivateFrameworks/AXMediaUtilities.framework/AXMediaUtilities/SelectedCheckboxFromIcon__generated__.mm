@@ -1,13 +1,13 @@
 @interface SelectedCheckboxFromIcon__generated__
 + (id)urlOfModelInThisBundle;
 - (SelectedCheckboxFromIcon__generated__)init;
-- (SelectedCheckboxFromIcon__generated__)initWithConfiguration:(id)a3 error:(id *)a4;
-- (SelectedCheckboxFromIcon__generated__)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (SelectedCheckboxFromIcon__generated__)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)predictionFromImage:(__CVBuffer *)a3 error:(id *)a4;
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5;
+- (SelectedCheckboxFromIcon__generated__)initWithConfiguration:(id)configuration error:(id *)error;
+- (SelectedCheckboxFromIcon__generated__)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error;
+- (SelectedCheckboxFromIcon__generated__)initWithContentsOfURL:(id)l error:(id *)error;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
+- (id)predictionFromImage:(__CVBuffer *)image error:(id *)error;
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error;
 @end
 
 @implementation SelectedCheckboxFromIcon__generated__
@@ -32,19 +32,19 @@
 
 - (SelectedCheckboxFromIcon__generated__)init
 {
-  v3 = [objc_opt_class() urlOfModelInThisBundle];
-  v4 = [(SelectedCheckboxFromIcon__generated__ *)self initWithContentsOfURL:v3 error:0];
+  urlOfModelInThisBundle = [objc_opt_class() urlOfModelInThisBundle];
+  v4 = [(SelectedCheckboxFromIcon__generated__ *)self initWithContentsOfURL:urlOfModelInThisBundle error:0];
 
   return v4;
 }
 
-- (SelectedCheckboxFromIcon__generated__)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (SelectedCheckboxFromIcon__generated__)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = SelectedCheckboxFromIcon__generated__;
   v7 = [(SelectedCheckboxFromIcon__generated__ *)&v12 init];
-  if (v7 && ([MEMORY[0x1E695FE90] modelWithContentsOfURL:v6 error:a4], v8 = objc_claimAutoreleasedReturnValue(), model = v7->_model, v7->_model = v8, model, v7->_model))
+  if (v7 && ([MEMORY[0x1E695FE90] modelWithContentsOfURL:lCopy error:error], v8 = objc_claimAutoreleasedReturnValue(), model = v7->_model, v7->_model = v8, model, v7->_model))
   {
     v10 = v7;
   }
@@ -57,23 +57,23 @@
   return v10;
 }
 
-- (SelectedCheckboxFromIcon__generated__)initWithConfiguration:(id)a3 error:(id *)a4
+- (SelectedCheckboxFromIcon__generated__)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() urlOfModelInThisBundle];
-  v8 = [(SelectedCheckboxFromIcon__generated__ *)self initWithContentsOfURL:v7 configuration:v6 error:a4];
+  configurationCopy = configuration;
+  urlOfModelInThisBundle = [objc_opt_class() urlOfModelInThisBundle];
+  v8 = [(SelectedCheckboxFromIcon__generated__ *)self initWithContentsOfURL:urlOfModelInThisBundle configuration:configurationCopy error:error];
 
   return v8;
 }
 
-- (SelectedCheckboxFromIcon__generated__)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5
+- (SelectedCheckboxFromIcon__generated__)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = SelectedCheckboxFromIcon__generated__;
   v10 = [(SelectedCheckboxFromIcon__generated__ *)&v15 init];
-  if (v10 && ([MEMORY[0x1E695FE90] modelWithContentsOfURL:v8 configuration:v9 error:a5], v11 = objc_claimAutoreleasedReturnValue(), model = v10->_model, v10->_model = v11, model, v10->_model))
+  if (v10 && ([MEMORY[0x1E695FE90] modelWithContentsOfURL:lCopy configuration:configurationCopy error:error], v11 = objc_claimAutoreleasedReturnValue(), model = v10->_model, v10->_model = v11, model, v10->_model))
   {
     v13 = v10;
   }
@@ -86,44 +86,44 @@
   return v13;
 }
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
   v6 = MEMORY[0x1E695FF08];
-  v7 = a3;
+  featuresCopy = features;
   v8 = objc_alloc_init(v6);
-  v9 = [(SelectedCheckboxFromIcon__generated__ *)self predictionFromFeatures:v7 options:v8 error:a4];
+  v9 = [(SelectedCheckboxFromIcon__generated__ *)self predictionFromFeatures:featuresCopy options:v8 error:error];
 
   return v9;
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
-  v5 = [(MLModel *)self->_model predictionFromFeatures:a3 options:a4 error:a5];
+  v5 = [(MLModel *)self->_model predictionFromFeatures:features options:options error:error];
   v6 = [SelectedCheckboxFromIcon__generated__Output alloc];
   v7 = [v5 featureValueForName:@"labelProbability"];
-  v8 = [v7 dictionaryValue];
+  dictionaryValue = [v7 dictionaryValue];
   v9 = [v5 featureValueForName:@"label"];
-  v10 = [v9 stringValue];
-  v11 = [(SelectedCheckboxFromIcon__generated__Output *)v6 initWithLabelProbability:v8 label:v10];
+  stringValue = [v9 stringValue];
+  v11 = [(SelectedCheckboxFromIcon__generated__Output *)v6 initWithLabelProbability:dictionaryValue label:stringValue];
 
   return v11;
 }
 
-- (id)predictionFromImage:(__CVBuffer *)a3 error:(id *)a4
+- (id)predictionFromImage:(__CVBuffer *)image error:(id *)error
 {
-  v6 = [[SelectedCheckboxFromIcon__generated__Input alloc] initWithImage:a3];
-  v7 = [(SelectedCheckboxFromIcon__generated__ *)self predictionFromFeatures:v6 error:a4];
+  v6 = [[SelectedCheckboxFromIcon__generated__Input alloc] initWithImage:image];
+  v7 = [(SelectedCheckboxFromIcon__generated__ *)self predictionFromFeatures:v6 error:error];
 
   return v7;
 }
 
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v22 = v7;
-  v20 = [objc_alloc(MEMORY[0x1E695FE30]) initWithFeatureProviderArray:v7];
-  v21 = v8;
+  inputsCopy = inputs;
+  optionsCopy = options;
+  v22 = inputsCopy;
+  v20 = [objc_alloc(MEMORY[0x1E695FE30]) initWithFeatureProviderArray:inputsCopy];
+  v21 = optionsCopy;
   v9 = [MLModel predictionsFromBatch:"predictionsFromBatch:options:error:" options:? error:?];
   v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
   if ([v9 count] >= 1)
@@ -134,10 +134,10 @@
       v12 = [v9 featuresAtIndex:v11];
       v13 = [SelectedCheckboxFromIcon__generated__Output alloc];
       v14 = [v12 featureValueForName:@"labelProbability"];
-      v15 = [v14 dictionaryValue];
+      dictionaryValue = [v14 dictionaryValue];
       v16 = [v12 featureValueForName:@"label"];
-      v17 = [v16 stringValue];
-      v18 = [(SelectedCheckboxFromIcon__generated__Output *)v13 initWithLabelProbability:v15 label:v17];
+      stringValue = [v16 stringValue];
+      v18 = [(SelectedCheckboxFromIcon__generated__Output *)v13 initWithLabelProbability:dictionaryValue label:stringValue];
 
       [v10 addObject:v18];
       ++v11;

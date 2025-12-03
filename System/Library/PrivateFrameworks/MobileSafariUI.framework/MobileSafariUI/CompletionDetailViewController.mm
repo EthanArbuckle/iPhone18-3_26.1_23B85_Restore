@@ -1,5 +1,5 @@
 @interface CompletionDetailViewController
-- (CompletionDetailViewController)initWithRootViewController:(id)a3;
+- (CompletionDetailViewController)initWithRootViewController:(id)controller;
 - (CompletionDetailViewControllerDelegate)completionDetailViewControllerDelegate;
 - (void)_didDismissCompletionDetailSheet;
 - (void)_dismissCompletionDetailSheet;
@@ -7,21 +7,21 @@
 
 @implementation CompletionDetailViewController
 
-- (CompletionDetailViewController)initWithRootViewController:(id)a3
+- (CompletionDetailViewController)initWithRootViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = CompletionDetailViewController;
-  v5 = [(CompletionDetailViewController *)&v12 initWithRootViewController:v4];
+  v5 = [(CompletionDetailViewController *)&v12 initWithRootViewController:controllerCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(CompletionDetailViewController *)v5 presentationController];
-    [v7 setDelegate:v6];
+    presentationController = [(CompletionDetailViewController *)v5 presentationController];
+    [presentationController setDelegate:v6];
 
     v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:v6 action:sel__dismissCompletionDetailSheet];
-    v9 = [v4 navigationItem];
-    [v9 sf_setPreferredDismissOrDoneButtonItem:v8];
+    navigationItem = [controllerCopy navigationItem];
+    [navigationItem sf_setPreferredDismissOrDoneButtonItem:v8];
 
     v10 = v6;
   }
@@ -59,9 +59,9 @@ void __63__CompletionDetailViewController__dismissCompletionDetailSheet__block_i
   [WeakRetained completionDetailViewControllerDidDismiss:self];
 
   v6 = +[UniversalSearchSession sharedSession];
-  v4 = [v6 feedbackDispatcher];
+  feedbackDispatcher = [v6 feedbackDispatcher];
   v5 = [objc_alloc(MEMORY[0x277D4C258]) initWithEvent:4];
-  [v4 postFeedback:v5 forQueryID:{objc_msgSend(MEMORY[0x277D49ED8], "currentQueryID")}];
+  [feedbackDispatcher postFeedback:v5 forQueryID:{objc_msgSend(MEMORY[0x277D49ED8], "currentQueryID")}];
 }
 
 - (CompletionDetailViewControllerDelegate)completionDetailViewControllerDelegate

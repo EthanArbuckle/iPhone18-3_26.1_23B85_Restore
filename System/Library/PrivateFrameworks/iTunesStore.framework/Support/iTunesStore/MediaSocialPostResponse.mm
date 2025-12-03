@@ -1,19 +1,19 @@
 @interface MediaSocialPostResponse
 + (id)_unrecoverableErrors;
-- (BOOL)_isUnrecoverable:(id)a3 statusCode:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setValuesWithResponseDictionary:(id)a3;
+- (BOOL)_isUnrecoverable:(id)unrecoverable statusCode:(int64_t)code;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setValuesWithResponseDictionary:(id)dictionary;
 @end
 
 @implementation MediaSocialPostResponse
 
-- (void)setValuesWithResponseDictionary:(id)a3
+- (void)setValuesWithResponseDictionary:(id)dictionary
 {
-  v16 = a3;
-  v4 = [v16 objectForKey:@"id"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"id"];
   if (!v4)
   {
-    v4 = [v16 objectForKey:@"activityId"];
+    v4 = [dictionaryCopy objectForKey:@"activityId"];
   }
 
   objc_opt_class();
@@ -22,21 +22,21 @@
     [(MediaSocialPostResponse *)self setActivityIdentifier:v4];
   }
 
-  v5 = [v16 objectForKey:@"pollInterval"];
+  v5 = [dictionaryCopy objectForKey:@"pollInterval"];
   if (objc_opt_respondsToSelector())
   {
     [v5 doubleValue];
     [(MediaSocialPostResponse *)self setPollingInterval:?];
   }
 
-  v6 = [v16 objectForKey:@"pollDuration"];
+  v6 = [dictionaryCopy objectForKey:@"pollDuration"];
   if (objc_opt_respondsToSelector())
   {
     [v6 doubleValue];
     [(MediaSocialPostResponse *)self setPollDuration:?];
   }
 
-  v7 = [v16 objectForKey:@"state"];
+  v7 = [dictionaryCopy objectForKey:@"state"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -54,7 +54,7 @@
 
   v8 = 0;
 LABEL_16:
-  v9 = [v16 objectForKey:@"status"];
+  v9 = [dictionaryCopy objectForKey:@"status"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -76,8 +76,8 @@ LABEL_16:
     else
     {
       [(MediaSocialPostResponse *)self setStatus:v9];
-      v11 = [v16 objectForKey:@"serviceErrorLabel"];
-      v12 = [v16 objectForKey:@"serviceErrorMessage"];
+      v11 = [dictionaryCopy objectForKey:@"serviceErrorLabel"];
+      v12 = [dictionaryCopy objectForKey:@"serviceErrorMessage"];
       if (v12)
       {
         [(MediaSocialPostResponse *)self setServiceErrorMessage:v12];
@@ -97,7 +97,7 @@ LABEL_16:
     }
   }
 
-  v14 = [v16 objectForKey:@"url"];
+  v14 = [dictionaryCopy objectForKey:@"url"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -106,9 +106,9 @@ LABEL_16:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setActivityIdentifier:self->_activityIdentifier];
   [v4 setActivityURL:self->_activityURL];
   [v4 setError:self->_error];
@@ -118,16 +118,16 @@ LABEL_16:
   return v4;
 }
 
-- (BOOL)_isUnrecoverable:(id)a3 statusCode:(int64_t)a4
+- (BOOL)_isUnrecoverable:(id)unrecoverable statusCode:(int64_t)code
 {
-  if (!a3)
+  if (!unrecoverable)
   {
     return 0;
   }
 
-  v4 = a3;
+  unrecoverableCopy = unrecoverable;
   v5 = +[MediaSocialPostResponse _unrecoverableErrors];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:unrecoverableCopy];
 
   return v6;
 }

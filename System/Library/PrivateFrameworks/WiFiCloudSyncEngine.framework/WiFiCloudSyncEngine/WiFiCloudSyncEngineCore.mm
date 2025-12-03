@@ -1,38 +1,38 @@
 @interface WiFiCloudSyncEngineCore
 - (id)readCompleteKVStore;
 - (uint64_t)queryKeychainSyncState;
-- (void)addToKVStore:(id)a3 synchronize:(BOOL)a4;
+- (void)addToKVStore:(id)store synchronize:(BOOL)synchronize;
 - (void)clearKVS;
 - (void)dealloc;
-- (void)dispatchUbiquitousKeyValueStoreDidChangeOnBackground:(id)a3;
-- (void)enableIcloudSyncing:(BOOL)a3 ForBundleId:(id)a4;
+- (void)dispatchUbiquitousKeyValueStoreDidChangeOnBackground:(id)background;
+- (void)enableIcloudSyncing:(BOOL)syncing ForBundleId:(id)id;
 - (void)printCompleteKVStore;
-- (void)pruneKVSStoreAndReply:(id)a3;
+- (void)pruneKVSStoreAndReply:(id)reply;
 - (void)queryKeychainSyncState;
-- (void)readStoreValueForKey:(id)a3;
-- (void)registerCallback:(void *)a3 context:(void *)a4;
-- (void)registerCallback:(void *)a3 queue:(id)a4 context:(void *)a5;
+- (void)readStoreValueForKey:(id)key;
+- (void)registerCallback:(void *)callback context:(void *)context;
+- (void)registerCallback:(void *)callback queue:(id)queue context:(void *)context;
 - (void)relayCloudCleanUpEvent;
-- (void)relayCloudEvent:(id)a3;
-- (void)relayKeychainSyncState:(id)a3;
-- (void)relayMergeNetworks:(id)a3;
-- (void)relayPruneKVSStore:(id)a3;
-- (void)relayReadStoreValueAction:(id)a3;
-- (void)removeFromKVStore:(id)a3;
-- (void)subscribeKVStoreNotficationsForBundleId:(id)a3;
-- (void)synchronizeAndCallMergeNetworksAndReply:(id)a3;
+- (void)relayCloudEvent:(id)event;
+- (void)relayKeychainSyncState:(id)state;
+- (void)relayMergeNetworks:(id)networks;
+- (void)relayPruneKVSStore:(id)store;
+- (void)relayReadStoreValueAction:(id)action;
+- (void)removeFromKVStore:(id)store;
+- (void)subscribeKVStoreNotficationsForBundleId:(id)id;
+- (void)synchronizeAndCallMergeNetworksAndReply:(id)reply;
 - (void)synchronizeKVS;
-- (void)ubiquitousKeyValueStoreDidChange:(id)a3;
+- (void)ubiquitousKeyValueStoreDidChange:(id)change;
 - (void)unSubscribeKVStoreNotfications;
 @end
 
 @implementation WiFiCloudSyncEngineCore
 
-- (void)registerCallback:(void *)a3 context:(void *)a4
+- (void)registerCallback:(void *)callback context:(void *)context
 {
   v7 = *MEMORY[0x277D85DE8];
-  [(WiFiCloudSyncEngineCore *)self setContext:a4];
-  [(WiFiCloudSyncEngineCore *)self setCallback:a3];
+  [(WiFiCloudSyncEngineCore *)self setContext:context];
+  [(WiFiCloudSyncEngineCore *)self setCallback:callback];
   -[WiFiCloudSyncEngineCore setClientThread:](self, "setClientThread:", [MEMORY[0x277CCACC8] currentThread]);
   [(WiFiCloudSyncEngineCore *)self setClientQueue:0];
   [(WiFiCloudSyncEngineCore *)self setICloudSyncingEnabled:0];
@@ -44,13 +44,13 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerCallback:(void *)a3 queue:(id)a4 context:(void *)a5
+- (void)registerCallback:(void *)callback queue:(id)queue context:(void *)context
 {
   v9 = *MEMORY[0x277D85DE8];
-  [(WiFiCloudSyncEngineCore *)self setContext:a5];
-  [(WiFiCloudSyncEngineCore *)self setCallback:a3];
+  [(WiFiCloudSyncEngineCore *)self setContext:context];
+  [(WiFiCloudSyncEngineCore *)self setCallback:callback];
   [(WiFiCloudSyncEngineCore *)self setClientThread:0];
-  [(WiFiCloudSyncEngineCore *)self setClientQueue:a4];
+  [(WiFiCloudSyncEngineCore *)self setClientQueue:queue];
   [(WiFiCloudSyncEngineCore *)self setICloudSyncingEnabled:0];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -71,9 +71,9 @@
 - (void)synchronizeKVS
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = [(NSUbiquitousKeyValueStore *)[(WiFiCloudSyncEngineCore *)self keyValueStore] synchronize];
+  synchronize = [(NSUbiquitousKeyValueStore *)[(WiFiCloudSyncEngineCore *)self keyValueStore] synchronize];
   v3 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
-  if (v2)
+  if (synchronize)
   {
     if (v3)
     {
@@ -90,31 +90,31 @@ LABEL_5:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addToKVStore:(id)a3 synchronize:(BOOL)a4
+- (void)addToKVStore:(id)store synchronize:(BOOL)synchronize
 {
   v72 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!store)
   {
     [WiFiCloudSyncEngineCore addToKVStore:synchronize:];
     goto LABEL_45;
   }
 
-  v4 = a4;
+  synchronizeCopy = synchronize;
   if (![(WiFiCloudSyncEngineCore *)self iCloudSyncingEnabled])
   {
     [WiFiCloudSyncEngineCore addToKVStore:synchronize:];
     goto LABEL_45;
   }
 
-  v7 = [a3 allKeys];
-  if (!v7 || (v8 = v7, ![v7 count]))
+  allKeys = [store allKeys];
+  if (!allKeys || (v8 = allKeys, ![allKeys count]))
   {
     [WiFiCloudSyncEngineCore addToKVStore:synchronize:];
     goto LABEL_45;
   }
 
   v9 = [v8 objectAtIndex:0];
-  v10 = [a3 objectForKey:v9];
+  v10 = [store objectForKey:v9];
   if (!v9 || (v11 = v10) == 0)
   {
     [WiFiCloudSyncEngineCore addToKVStore:synchronize:];
@@ -122,7 +122,7 @@ LABEL_5:
   }
 
   v12 = [v9 lengthOfBytesUsingEncoding:4];
-  v13 = [(NSUbiquitousKeyValueStore *)[(WiFiCloudSyncEngineCore *)self keyValueStore] maximumKeyLength];
+  maximumKeyLength = [(NSUbiquitousKeyValueStore *)[(WiFiCloudSyncEngineCore *)self keyValueStore] maximumKeyLength];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v60 = 136316418;
@@ -136,13 +136,13 @@ LABEL_5:
     v68 = 2048;
     v69 = v12;
     v70 = 2048;
-    v71 = v13;
+    v71 = maximumKeyLength;
     LODWORD(v50) = 58;
     v48 = &v60;
     _os_log_send_and_compose_impl();
   }
 
-  if (v12 >= v13 + 1)
+  if (v12 >= maximumKeyLength + 1)
   {
     [WiFiCloudSyncEngineCore addToKVStore:synchronize:];
     goto LABEL_45;
@@ -154,7 +154,7 @@ LABEL_5:
     v16 = [v15 mutableCopy];
     if ([(WiFiCloudSyncEngineCore *)self isKVSEncrypted])
     {
-      v57 = v4;
+      v57 = synchronizeCopy;
       v52 = [v15 objectForKeyedSubscript:@"addedAt"];
       v53 = [v15 objectForKeyedSubscript:@"lastJoinedByUserAt"];
       v54 = [v15 objectForKeyedSubscript:@"lastJoinedBySystemAtWeek"];
@@ -197,16 +197,16 @@ LABEL_5:
       if (v54 | v19)
       {
         v29 = MEMORY[0x277CCABB0];
-        v30 = [v54 unsignedIntegerValue];
-        v31 = [v19 unsignedIntegerValue];
-        if (v30 <= v31)
+        unsignedIntegerValue = [v54 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v19 unsignedIntegerValue];
+        if (unsignedIntegerValue <= unsignedIntegerValue2)
         {
-          v32 = v31;
+          v32 = unsignedIntegerValue2;
         }
 
         else
         {
-          v32 = v30;
+          v32 = unsignedIntegerValue;
         }
 
         [v16 setObject:objc_msgSend(v29 forKeyedSubscript:{"numberWithUnsignedInteger:", v32, v48, v50), @"lastJoinedBySystemAtWeek"}];
@@ -215,16 +215,16 @@ LABEL_5:
       if (v55 | v20)
       {
         v33 = MEMORY[0x277CCABB0];
-        v34 = [v55 unsignedIntegerValue];
-        v35 = [v20 unsignedIntegerValue];
-        if (v34 <= v35)
+        unsignedIntegerValue3 = [v55 unsignedIntegerValue];
+        unsignedIntegerValue4 = [v20 unsignedIntegerValue];
+        if (unsignedIntegerValue3 <= unsignedIntegerValue4)
         {
-          v36 = v35;
+          v36 = unsignedIntegerValue4;
         }
 
         else
         {
-          v36 = v34;
+          v36 = unsignedIntegerValue3;
         }
 
         [v16 setObject:objc_msgSend(v33 forKeyedSubscript:{"numberWithUnsignedInteger:", v36, v48, v50), @"was6GHzOnlyAtWeek"}];
@@ -283,7 +283,7 @@ LABEL_5:
         [(NSUbiquitousKeyValueStore *)[(WiFiCloudSyncEngineCore *)self keyValueStore:v49] setObject:v16 forKey:v9];
         if (v57)
         {
-          v42 = self;
+          selfCopy = self;
           global_queue = dispatch_get_global_queue(0, 0);
           v59[0] = MEMORY[0x277D85DD0];
           v59[1] = 3221225472;
@@ -333,9 +333,9 @@ LABEL_44:
   else
   {
     [(NSUbiquitousKeyValueStore *)[(WiFiCloudSyncEngineCore *)self keyValueStore:v48] setObject:v11 forKey:v9];
-    if (v4)
+    if (synchronizeCopy)
     {
-      v45 = self;
+      selfCopy2 = self;
       global_queue = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -363,14 +363,14 @@ void __52__WiFiCloudSyncEngineCore_addToKVStore_synchronize___block_invoke_62(ui
   v2 = *(a1 + 32);
 }
 
-- (void)removeFromKVStore:(id)a3
+- (void)removeFromKVStore:(id)store
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (store)
   {
-    v5 = [(WiFiCloudSyncEngineCore *)self iCloudSyncingEnabled];
+    iCloudSyncingEnabled = [(WiFiCloudSyncEngineCore *)self iCloudSyncingEnabled];
     v6 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (iCloudSyncingEnabled)
     {
       if (v6)
       {
@@ -381,14 +381,14 @@ void __52__WiFiCloudSyncEngineCore_addToKVStore_synchronize___block_invoke_62(ui
         v17 = 1024;
         v18 = 323;
         v19 = 2112;
-        v20 = a3;
+        storeCopy = store;
         LODWORD(v11) = 38;
         v10 = &v13;
         _os_log_send_and_compose_impl();
       }
 
-      [(NSUbiquitousKeyValueStore *)[(WiFiCloudSyncEngineCore *)self keyValueStore:v10] removeObjectForKey:a3];
-      v7 = self;
+      [(NSUbiquitousKeyValueStore *)[(WiFiCloudSyncEngineCore *)self keyValueStore:v10] removeObjectForKey:store];
+      selfCopy = self;
       global_queue = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -418,11 +418,11 @@ void __45__WiFiCloudSyncEngineCore_removeFromKVStore___block_invoke(uint64_t a1)
   v2 = *(a1 + 32);
 }
 
-- (void)readStoreValueForKey:(id)a3
+- (void)readStoreValueForKey:(id)key
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
-  if (!a3)
+  if (!key)
   {
     [WiFiCloudSyncEngineCore readStoreValueForKey:v5];
     goto LABEL_17;
@@ -437,13 +437,13 @@ void __45__WiFiCloudSyncEngineCore_removeFromKVStore___block_invoke(uint64_t a1)
     v18 = 1024;
     v19 = 345;
     v20 = 2112;
-    v21 = a3;
+    keyCopy = key;
     LODWORD(v11) = 38;
     v10 = &v14;
     _os_log_send_and_compose_impl();
   }
 
-  v6 = [(NSUbiquitousKeyValueStore *)[(WiFiCloudSyncEngineCore *)self keyValueStore:v10] objectForKey:a3];
+  v6 = [(NSUbiquitousKeyValueStore *)[(WiFiCloudSyncEngineCore *)self keyValueStore:v10] objectForKey:key];
   if ([(WiFiCloudSyncEngineCore *)self clientThread]|| [(WiFiCloudSyncEngineCore *)self clientQueue])
   {
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -455,7 +455,7 @@ void __45__WiFiCloudSyncEngineCore_removeFromKVStore___block_invoke(uint64_t a1)
 
       if ([(WiFiCloudSyncEngineCore *)self clientQueue])
       {
-        v7 = [(WiFiCloudSyncEngineCore *)self clientQueue];
+        clientQueue = [(WiFiCloudSyncEngineCore *)self clientQueue];
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
         v13[2] = __48__WiFiCloudSyncEngineCore_readStoreValueForKey___block_invoke;
@@ -464,7 +464,7 @@ void __45__WiFiCloudSyncEngineCore_removeFromKVStore___block_invoke(uint64_t a1)
         v13[5] = v6;
         v8 = v13;
 LABEL_16:
-        dispatch_sync(v7, v8);
+        dispatch_sync(clientQueue, v8);
       }
     }
 
@@ -472,18 +472,18 @@ LABEL_16:
     {
       if ([(WiFiCloudSyncEngineCore *)self clientThread])
       {
-        [(WiFiCloudSyncEngineCore *)self performSelector:sel_relayReadStoreValueAction_ onThread:[(WiFiCloudSyncEngineCore *)self clientThread] withObject:a3 waitUntilDone:1];
+        [(WiFiCloudSyncEngineCore *)self performSelector:sel_relayReadStoreValueAction_ onThread:[(WiFiCloudSyncEngineCore *)self clientThread] withObject:key waitUntilDone:1];
       }
 
       if ([(WiFiCloudSyncEngineCore *)self clientQueue])
       {
-        v7 = [(WiFiCloudSyncEngineCore *)self clientQueue];
+        clientQueue = [(WiFiCloudSyncEngineCore *)self clientQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __48__WiFiCloudSyncEngineCore_readStoreValueForKey___block_invoke_2;
         block[3] = &unk_279EBBAE0;
         block[4] = self;
-        block[5] = a3;
+        block[5] = key;
         v8 = block;
         goto LABEL_16;
       }
@@ -505,7 +505,7 @@ LABEL_17:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)relayReadStoreValueAction:(id)a3
+- (void)relayReadStoreValueAction:(id)action
 {
   v22 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -524,8 +524,8 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a3 objectForKeyedSubscript:@"removedAt"];
-    v6 = [a3 objectForKeyedSubscript:@"addedAt"];
+    v5 = [action objectForKeyedSubscript:@"removedAt"];
+    v6 = [action objectForKeyedSubscript:@"addedAt"];
     if (v5)
     {
       v7 = v6;
@@ -566,14 +566,14 @@ LABEL_11:
       _os_log_send_and_compose_impl();
     }
 
-    WiFiCloudSyncEngineAddNetworkToKnownNetworksList([(WiFiCloudSyncEngineCore *)self context:v12], self, a3);
+    WiFiCloudSyncEngineAddNetworkToKnownNetworksList([(WiFiCloudSyncEngineCore *)self context:v12], self, action);
   }
 
   else if (![(WiFiCloudSyncEngineCore *)self isKVSEncrypted])
   {
     v14 = @"SSID_STR";
-    v15 = a3;
-    a3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
+    actionCopy = action;
+    action = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&actionCopy forKeys:&v14 count:1];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v16 = 136315650;
@@ -588,7 +588,7 @@ LABEL_11:
     }
 
 LABEL_12:
-    WiFiCloudSyncEngineRemoveNetworkFromKnownNetworksList([(WiFiCloudSyncEngineCore *)self context:v12], self, a3);
+    WiFiCloudSyncEngineRemoveNetworkFromKnownNetworksList([(WiFiCloudSyncEngineCore *)self context:v12], self, action);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -618,9 +618,9 @@ LABEL_12:
 - (void)printCompleteKVStore
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(NSUbiquitousKeyValueStore *)[(WiFiCloudSyncEngineCore *)self keyValueStore] synchronize];
+  synchronize = [(NSUbiquitousKeyValueStore *)[(WiFiCloudSyncEngineCore *)self keyValueStore] synchronize];
   v4 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (synchronize)
   {
     if (!v4)
     {
@@ -656,7 +656,7 @@ LABEL_12:
 
   _os_log_send_and_compose_impl();
 LABEL_7:
-  v5 = [(NSUbiquitousKeyValueStore *)[(WiFiCloudSyncEngineCore *)self keyValueStore:v7] dictionaryRepresentation];
+  dictionaryRepresentation = [(NSUbiquitousKeyValueStore *)[(WiFiCloudSyncEngineCore *)self keyValueStore:v7] dictionaryRepresentation];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v9 = 136315906;
@@ -666,7 +666,7 @@ LABEL_7:
     *&v9[22] = 1024;
     *v10 = 435;
     *&v10[4] = 2112;
-    *&v10[6] = v5;
+    *&v10[6] = dictionaryRepresentation;
     _os_log_send_and_compose_impl();
   }
 
@@ -678,7 +678,7 @@ LABEL_7:
   v29 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [(WiFiCloudSyncEngineCore *)self isKVSEncrypted];
+    isKVSEncrypted = [(WiFiCloudSyncEngineCore *)self isKVSEncrypted];
     v4 = "";
     v22 = "[WiFiCloudSyncEngineCore clearKVS]";
     v24 = "WiFiCloudSyncEngineCore.m";
@@ -686,7 +686,7 @@ LABEL_7:
     v21 = 136315906;
     v26 = 443;
     v23 = 2080;
-    if (v3)
+    if (isKVSEncrypted)
     {
       v4 = "Encrypted ";
     }
@@ -702,8 +702,8 @@ LABEL_7:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [-[WiFiCloudSyncEngineCore readCompleteKVStore](self readCompleteKVStore];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  readCompleteKVStore = [-[WiFiCloudSyncEngineCore readCompleteKVStore](self readCompleteKVStore];
+  v6 = [readCompleteKVStore countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -715,20 +715,20 @@ LABEL_7:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(readCompleteKVStore);
         }
 
         [(NSUbiquitousKeyValueStore *)[(WiFiCloudSyncEngineCore *)self keyValueStore] removeObjectForKey:*(*(&v16 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [readCompleteKVStore countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
   }
 
-  v10 = self;
+  selfCopy = self;
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -745,7 +745,7 @@ void __35__WiFiCloudSyncEngineCore_clearKVS__block_invoke(uint64_t a1)
   v2 = *(a1 + 32);
 }
 
-- (void)dispatchUbiquitousKeyValueStoreDidChangeOnBackground:(id)a3
+- (void)dispatchUbiquitousKeyValueStoreDidChangeOnBackground:(id)background
 {
   v19 = *MEMORY[0x277D85DE8];
   if (![(WiFiCloudSyncEngineCore *)self clientThread]&& ![(WiFiCloudSyncEngineCore *)self clientQueue])
@@ -766,8 +766,8 @@ void __35__WiFiCloudSyncEngineCore_clearKVS__block_invoke(uint64_t a1)
 
   if ([(WiFiCloudSyncEngineCore *)self clientThread])
   {
-    v5 = [MEMORY[0x277CCACC8] currentThread];
-    if (v5 == [(WiFiCloudSyncEngineCore *)self clientThread])
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    if (currentThread == [(WiFiCloudSyncEngineCore *)self clientThread])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
@@ -786,7 +786,7 @@ void __35__WiFiCloudSyncEngineCore_clearKVS__block_invoke(uint64_t a1)
       v12[2] = __80__WiFiCloudSyncEngineCore_dispatchUbiquitousKeyValueStoreDidChangeOnBackground___block_invoke;
       v12[3] = &unk_279EBBAE0;
       v12[4] = self;
-      v12[5] = a3;
+      v12[5] = background;
       v9 = v12;
       goto LABEL_16;
     }
@@ -814,7 +814,7 @@ void __35__WiFiCloudSyncEngineCore_clearKVS__block_invoke(uint64_t a1)
       block[2] = __80__WiFiCloudSyncEngineCore_dispatchUbiquitousKeyValueStoreDidChangeOnBackground___block_invoke_70;
       block[3] = &unk_279EBBAE0;
       block[4] = self;
-      block[5] = a3;
+      block[5] = background;
       v9 = block;
 LABEL_16:
       dispatch_async(global_queue, v9);
@@ -826,15 +826,15 @@ LABEL_17:
 
   v7 = *MEMORY[0x277D85DE8];
 
-  [(WiFiCloudSyncEngineCore *)self ubiquitousKeyValueStoreDidChange:a3];
+  [(WiFiCloudSyncEngineCore *)self ubiquitousKeyValueStoreDidChange:background];
 }
 
-- (void)ubiquitousKeyValueStoreDidChange:(id)a3
+- (void)ubiquitousKeyValueStoreDidChange:(id)change
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [objc_msgSend(v4 objectForKey:{*MEMORY[0x277CCA7B0]), "intValue"}];
-  v6 = [v4 objectForKey:*MEMORY[0x277CCA7B8]];
+  userInfo = [change userInfo];
+  v5 = [objc_msgSend(userInfo objectForKey:{*MEMORY[0x277CCA7B0]), "intValue"}];
+  v6 = [userInfo objectForKey:*MEMORY[0x277CCA7B8]];
   if ([(WiFiCloudSyncEngineCore *)self clientThread]|| [(WiFiCloudSyncEngineCore *)self clientQueue])
   {
     if ([v6 indexOfObject:@"WiFiCloudSyncEngineNonSSIDKeyPrefix_cleaningKVS"] == 0x7FFFFFFFFFFFFFFFLL || !-[NSUbiquitousKeyValueStore objectForKey:](-[WiFiCloudSyncEngineCore keyValueStore](self, "keyValueStore"), "objectForKey:", @"WiFiCloudSyncEngineNonSSIDKeyPrefix_cleaningKVS"))
@@ -866,13 +866,13 @@ LABEL_17:
 
     if ([(WiFiCloudSyncEngineCore *)self clientQueue])
     {
-      v7 = [(WiFiCloudSyncEngineCore *)self clientQueue];
+      clientQueue = [(WiFiCloudSyncEngineCore *)self clientQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __60__WiFiCloudSyncEngineCore_ubiquitousKeyValueStoreDidChange___block_invoke;
       block[3] = &unk_279EBBAB8;
       block[4] = self;
-      dispatch_async(v7, block);
+      dispatch_async(clientQueue, block);
     }
 
     if (v5 >= 2)
@@ -887,14 +887,14 @@ LABEL_12:
 
       if ([(WiFiCloudSyncEngineCore *)self clientQueue])
       {
-        v10 = [(WiFiCloudSyncEngineCore *)self clientQueue];
+        clientQueue2 = [(WiFiCloudSyncEngineCore *)self clientQueue];
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __60__WiFiCloudSyncEngineCore_ubiquitousKeyValueStoreDidChange___block_invoke_2;
         v14[3] = &unk_279EBBAE0;
         v14[4] = self;
         v14[5] = v9;
-        dispatch_async(v10, v14);
+        dispatch_async(clientQueue2, v14);
       }
     }
   }
@@ -913,18 +913,18 @@ LABEL_12:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableIcloudSyncing:(BOOL)a3 ForBundleId:(id)a4
+- (void)enableIcloudSyncing:(BOOL)syncing ForBundleId:(id)id
 {
-  v5 = a3;
+  syncingCopy = syncing;
   v8 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     _os_log_send_and_compose_impl();
   }
 
-  if (v5)
+  if (syncingCopy)
   {
-    [(WiFiCloudSyncEngineCore *)self subscribeKVStoreNotficationsForBundleId:a4];
+    [(WiFiCloudSyncEngineCore *)self subscribeKVStoreNotficationsForBundleId:id];
     [(WiFiCloudSyncEngineCore *)self setICloudSyncingEnabled:1];
   }
 
@@ -936,12 +936,12 @@ LABEL_12:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscribeKVStoreNotficationsForBundleId:(id)a3
+- (void)subscribeKVStoreNotficationsForBundleId:(id)id
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [(WiFiCloudSyncEngineCore *)self isKVSEncrypted];
+  isKVSEncrypted = [(WiFiCloudSyncEngineCore *)self isKVSEncrypted];
   v6 = objc_alloc(MEMORY[0x277CCAD80]);
-  if (v5)
+  if (isKVSEncrypted)
   {
     self->keyValueStore = [v6 _initWithStoreIdentifier:@"com.apple.wifi.syncable-networks" usingEndToEndEncryption:1];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -953,7 +953,7 @@ LABEL_12:
       v16 = 1024;
       v17 = 559;
       v18 = 2112;
-      v19 = a3;
+      idCopy2 = id;
       v20 = 2112;
       v21 = @"com.apple.wifi.syncable-networks";
 LABEL_6:
@@ -963,7 +963,7 @@ LABEL_6:
 
   else
   {
-    self->keyValueStore = [v6 initWithBundleIdentifier:a3];
+    self->keyValueStore = [v6 initWithBundleIdentifier:id];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v12 = 136316162;
@@ -973,14 +973,14 @@ LABEL_6:
       v16 = 1024;
       v17 = 569;
       v18 = 2112;
-      v19 = a3;
+      idCopy2 = id;
       v20 = 2112;
       v21 = @"com.apple.wifid.known-networks";
       goto LABEL_6;
     }
   }
 
-  v7 = self;
+  selfCopy = self;
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -988,8 +988,8 @@ LABEL_6:
   block[3] = &unk_279EBBAB8;
   block[4] = self;
   dispatch_async(global_queue, block);
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 addObserver:self selector:sel_dispatchUbiquitousKeyValueStoreDidChangeOnBackground_ name:*MEMORY[0x277CCA7C0] object:{-[WiFiCloudSyncEngineCore keyValueStore](self, "keyValueStore")}];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_dispatchUbiquitousKeyValueStoreDidChangeOnBackground_ name:*MEMORY[0x277CCA7C0] object:{-[WiFiCloudSyncEngineCore keyValueStore](self, "keyValueStore")}];
   v10 = *MEMORY[0x277D85DE8];
 }
 
@@ -1022,7 +1022,7 @@ void __67__WiFiCloudSyncEngineCore_subscribeKVStoreNotficationsForBundleId___blo
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)relayPruneKVSStore:(id)a3
+- (void)relayPruneKVSStore:(id)store
 {
   v16 = *MEMORY[0x277D85DE8];
   if (!-[WiFiCloudSyncEngineCore clientThread](self, "clientThread") || (v5 = [MEMORY[0x277CCACC8] currentThread], v5 == -[WiFiCloudSyncEngineCore clientThread](self, "clientThread")))
@@ -1042,7 +1042,7 @@ void __67__WiFiCloudSyncEngineCore_subscribeKVStoreNotficationsForBundleId___blo
         _os_log_send_and_compose_impl();
       }
 
-      WiFiCloudSyncEnginePruneNetworksInCloud([(WiFiCloudSyncEngineCore *)self context:v8], self, a3);
+      WiFiCloudSyncEnginePruneNetworksInCloud([(WiFiCloudSyncEngineCore *)self context:v8], self, store);
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -1072,7 +1072,7 @@ LABEL_9:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pruneKVSStoreAndReply:(id)a3
+- (void)pruneKVSStoreAndReply:(id)reply
 {
   v19 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -1091,9 +1091,9 @@ LABEL_9:
   v5 = [(WiFiCloudSyncEngineCore *)self readCompleteKVStore:v10];
   if (!v5 || (v6 = v5, -[WiFiCloudSyncEngineCore removeFromKVStore:](self, "removeFromKVStore:", @"WiFiCloudSyncEngineNonSSIDKeyPrefix_KVSVersion"), (v7 = [objc_msgSend(v6 objectForKey:{@"WiFiCloudSyncEngineNonSSIDKeyPrefix_NonNetworkContainer", "objectForKey:", @"WiFiCloudSyncEngineNonSSIDKeyPrefix_KVSVersion"}]) != 0) && objc_msgSend(v7, "intValue") > 1)
   {
-    if (a3)
+    if (reply)
     {
-      (*(a3 + 2))(a3);
+      (*(reply + 2))(reply);
     }
   }
 
@@ -1106,7 +1106,7 @@ LABEL_9:
     block[3] = &unk_279EBBB08;
     block[4] = self;
     block[5] = v6;
-    block[6] = a3;
+    block[6] = reply;
     dispatch_async(global_queue, block);
   }
 
@@ -1140,13 +1140,13 @@ uint64_t __49__WiFiCloudSyncEngineCore_pruneKVSStoreAndReply___block_invoke(uint
   return result;
 }
 
-- (void)relayCloudEvent:(id)a3
+- (void)relayCloudEvent:(id)event
 {
   v11 = *MEMORY[0x277D85DE8];
   if ([(WiFiCloudSyncEngineCore *)self clientThread])
   {
-    v5 = [MEMORY[0x277CCACC8] currentThread];
-    if (v5 != [(WiFiCloudSyncEngineCore *)self clientThread])
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    if (currentThread != [(WiFiCloudSyncEngineCore *)self clientThread])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
@@ -1179,11 +1179,11 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v10 = [(WiFiCloudSyncEngineCore *)self callback];
-  v7 = [(WiFiCloudSyncEngineCore *)self context];
+  callback = [(WiFiCloudSyncEngineCore *)self callback];
+  context = [(WiFiCloudSyncEngineCore *)self context];
   v8 = *MEMORY[0x277D85DE8];
 
-  v10(self, a3, v7);
+  callback(self, event, context);
 }
 
 - (void)relayCloudCleanUpEvent
@@ -1191,8 +1191,8 @@ LABEL_13:
   v7 = *MEMORY[0x277D85DE8];
   if ([(WiFiCloudSyncEngineCore *)self clientThread])
   {
-    v3 = [MEMORY[0x277CCACC8] currentThread];
-    if (v3 != [(WiFiCloudSyncEngineCore *)self clientThread])
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    if (currentThread != [(WiFiCloudSyncEngineCore *)self clientThread])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
@@ -1225,7 +1225,7 @@ LABEL_9:
   [(WiFiCloudSyncEngineCore *)self removeFromKVStore:@"WiFiCloudSyncEngineNonSSIDKeyPrefix_cleaningKVS"];
 }
 
-- (void)relayMergeNetworks:(id)a3
+- (void)relayMergeNetworks:(id)networks
 {
   v16 = *MEMORY[0x277D85DE8];
   if (!-[WiFiCloudSyncEngineCore clientThread](self, "clientThread") || (v5 = [MEMORY[0x277CCACC8] currentThread], v5 == -[WiFiCloudSyncEngineCore clientThread](self, "clientThread")))
@@ -1245,7 +1245,7 @@ LABEL_9:
         _os_log_send_and_compose_impl();
       }
 
-      WiFiCloudSyncEngineMergeKnownNetworksToCloudWithKVS([(WiFiCloudSyncEngineCore *)self context:v8], self, a3);
+      WiFiCloudSyncEngineMergeKnownNetworksToCloudWithKVS([(WiFiCloudSyncEngineCore *)self context:v8], self, networks);
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -1275,7 +1275,7 @@ LABEL_9:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)synchronizeAndCallMergeNetworksAndReply:(id)a3
+- (void)synchronizeAndCallMergeNetworksAndReply:(id)reply
 {
   v17 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -1292,15 +1292,15 @@ LABEL_9:
   }
 
   [(WiFiCloudSyncEngineCore *)self synchronizeKVS:v8];
-  v5 = [(WiFiCloudSyncEngineCore *)self readCompleteKVStore];
+  readCompleteKVStore = [(WiFiCloudSyncEngineCore *)self readCompleteKVStore];
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__WiFiCloudSyncEngineCore_synchronizeAndCallMergeNetworksAndReply___block_invoke;
   block[3] = &unk_279EBBB08;
-  block[4] = v5;
+  block[4] = readCompleteKVStore;
   block[5] = self;
-  block[6] = a3;
+  block[6] = reply;
   dispatch_async(global_queue, block);
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -1347,14 +1347,14 @@ uint64_t __67__WiFiCloudSyncEngineCore_synchronizeAndCallMergeNetworksAndReply__
 
     if ([(WiFiCloudSyncEngineCore *)self clientQueue])
     {
-      v4 = [(WiFiCloudSyncEngineCore *)self clientQueue];
+      clientQueue = [(WiFiCloudSyncEngineCore *)self clientQueue];
       v5[0] = MEMORY[0x277D85DD0];
       v5[1] = 3221225472;
       v5[2] = __49__WiFiCloudSyncEngineCore_queryKeychainSyncState__block_invoke;
       v5[3] = &unk_279EBBAE0;
       v5[4] = self;
       v5[5] = v3;
-      dispatch_sync(v4, v5);
+      dispatch_sync(clientQueue, v5);
     }
   }
 
@@ -1364,13 +1364,13 @@ uint64_t __67__WiFiCloudSyncEngineCore_synchronizeAndCallMergeNetworksAndReply__
   }
 }
 
-- (void)relayKeychainSyncState:(id)a3
+- (void)relayKeychainSyncState:(id)state
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [(WiFiCloudSyncEngineCore *)self context];
-  if (a3)
+  context = [(WiFiCloudSyncEngineCore *)self context];
+  if (state)
   {
-    LODWORD(a3) = [a3 BOOLValue];
+    LODWORD(state) = [state BOOLValue];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -1382,7 +1382,7 @@ uint64_t __67__WiFiCloudSyncEngineCore_synchronizeAndCallMergeNetworksAndReply__
     v15 = 1024;
     v16 = 785;
     v17 = 1024;
-    v18 = a3;
+    stateCopy = state;
     LODWORD(v10) = 34;
     v9 = &v11;
     _os_log_send_and_compose_impl();
@@ -1392,14 +1392,14 @@ uint64_t __67__WiFiCloudSyncEngineCore_synchronizeAndCallMergeNetworksAndReply__
   {
     if (![(WiFiCloudSyncEngineCore *)self clientQueue]|| (current_queue = dispatch_get_current_queue(), current_queue == [(WiFiCloudSyncEngineCore *)self clientQueue]))
     {
-      if (a3)
+      if (state)
       {
-        WiFiCloudSyncEngineStartEngine(v5);
+        WiFiCloudSyncEngineStartEngine(context);
       }
 
       else
       {
-        WiFiCloudSyncEngineStopEngine(v5);
+        WiFiCloudSyncEngineStopEngine(context);
       }
     }
 

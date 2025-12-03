@@ -1,14 +1,14 @@
 @interface WLKContentPlayRequest
-- (WLKContentPlayRequest)initWithCanonicalID:(id)a3;
-- (void)makeRequestWithCompletion:(id)a3;
+- (WLKContentPlayRequest)initWithCanonicalID:(id)d;
+- (void)makeRequestWithCompletion:(id)completion;
 @end
 
 @implementation WLKContentPlayRequest
 
-- (WLKContentPlayRequest)initWithCanonicalID:(id)a3
+- (WLKContentPlayRequest)initWithCanonicalID:(id)d
 {
-  v5 = a3;
-  if ([v5 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v10.receiver = self;
     v10.super_class = WLKContentPlayRequest;
@@ -16,28 +16,28 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_canonicalID, a3);
+      objc_storeStrong(&v6->_canonicalID, d);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)makeRequestWithCompletion:(id)a3
+- (void)makeRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [WLKContentPlayRequestOperation alloc];
   canonicalID = self->_canonicalID;
-  v7 = [(WLKRequest *)self caller];
-  v8 = [(WLKContentPlayRequestOperation *)v5 initWithCanonicalID:canonicalID caller:v7];
+  caller = [(WLKRequest *)self caller];
+  v8 = [(WLKContentPlayRequestOperation *)v5 initWithCanonicalID:canonicalID caller:caller];
 
   objc_initWeak(&location, v8);
   v11[0] = MEMORY[0x277D85DD0];
@@ -45,11 +45,11 @@
   v11[2] = __51__WLKContentPlayRequest_makeRequestWithCompletion___block_invoke;
   v11[3] = &unk_279E5E660;
   objc_copyWeak(&v13, &location);
-  v9 = v4;
+  v9 = completionCopy;
   v12 = v9;
   [(WLKContentPlayRequestOperation *)v8 setCompletionBlock:v11];
-  v10 = [MEMORY[0x277CCABD8] wlkDefaultQueue];
-  [v10 addOperation:v8];
+  wlkDefaultQueue = [MEMORY[0x277CCABD8] wlkDefaultQueue];
+  [wlkDefaultQueue addOperation:v8];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);

@@ -2,11 +2,11 @@
 + (FCFeldsparIDProvider)sharedInstance;
 - (FCFeldsparIDProvider)init;
 - (NSString)feldsparID;
-- (void)_updateFeldsparID:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)registerUserInfo:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)userInfoDidChangeFeldsparID:(id)a3 fromCloud:(BOOL)a4;
+- (void)_updateFeldsparID:(id)d;
+- (void)addObserver:(id)observer;
+- (void)registerUserInfo:(id)info;
+- (void)removeObserver:(id)observer;
+- (void)userInfoDidChangeFeldsparID:(id)d fromCloud:(BOOL)cloud;
 @end
 
 @implementation FCFeldsparIDProvider
@@ -75,21 +75,21 @@ LABEL_6:
   return v5;
 }
 
-- (void)registerUserInfo:(id)a3
+- (void)registerUserInfo:(id)info
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  infoCopy = info;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v5)
+  if (infoCopy)
   {
     userInfo = self->_userInfo;
-    if (userInfo != v5)
+    if (userInfo != infoCopy)
     {
       [(FCUserInfo *)userInfo removeObserver:self];
-      [(FCUserInfo *)v5 addObserver:self];
-      objc_storeStrong(&self->_userInfo, a3);
-      v7 = [(FCUserInfo *)v5 feldsparID];
-      [(FCFeldsparIDProvider *)self _updateFeldsparID:v7];
+      [(FCUserInfo *)infoCopy addObserver:self];
+      objc_storeStrong(&self->_userInfo, info);
+      feldsparID = [(FCUserInfo *)infoCopy feldsparID];
+      [(FCFeldsparIDProvider *)self _updateFeldsparID:feldsparID];
     }
   }
 
@@ -110,15 +110,15 @@ LABEL_6:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  if (observerCopy)
   {
-    v5 = [(FCFeldsparIDProvider *)self observers];
-    [v5 addObject:v4];
+    observers = [(FCFeldsparIDProvider *)self observers];
+    [observers addObject:observerCopy];
   }
 
   else
@@ -128,7 +128,7 @@ LABEL_6:
       goto LABEL_5;
     }
 
-    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer"];
+    observers = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer"];
     *buf = 136315906;
     v8 = "[FCFeldsparIDProvider addObserver:]";
     v9 = 2080;
@@ -136,7 +136,7 @@ LABEL_6:
     v11 = 1024;
     v12 = 87;
     v13 = 2114;
-    v14 = v5;
+    v14 = observers;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
@@ -144,15 +144,15 @@ LABEL_5:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  if (observerCopy)
   {
-    v5 = [(FCFeldsparIDProvider *)self observers];
-    [v5 removeObject:v4];
+    observers = [(FCFeldsparIDProvider *)self observers];
+    [observers removeObject:observerCopy];
   }
 
   else
@@ -162,7 +162,7 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer"];
+    observers = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer"];
     *buf = 136315906;
     v8 = "[FCFeldsparIDProvider removeObserver:]";
     v9 = 2080;
@@ -170,7 +170,7 @@ LABEL_5:
     v11 = 1024;
     v12 = 98;
     v13 = 2114;
-    v14 = v5;
+    v14 = observers;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
@@ -178,41 +178,41 @@ LABEL_5:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)userInfoDidChangeFeldsparID:(id)a3 fromCloud:(BOOL)a4
+- (void)userInfoDidChangeFeldsparID:(id)d fromCloud:(BOOL)cloud
 {
-  v4 = a4;
-  v7 = a3;
-  v6 = [v7 feldsparID];
-  [(FCFeldsparIDProvider *)self _updateFeldsparID:v6];
+  cloudCopy = cloud;
+  dCopy = d;
+  feldsparID = [dCopy feldsparID];
+  [(FCFeldsparIDProvider *)self _updateFeldsparID:feldsparID];
 
-  if (v4)
+  if (cloudCopy)
   {
-    [v7 resetSportsID];
+    [dCopy resetSportsID];
   }
 }
 
-- (void)_updateFeldsparID:(id)a3
+- (void)_updateFeldsparID:(id)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   [MEMORY[0x1E696AF00] isMainThread];
-  if ([v4 length])
+  if ([dCopy length])
   {
-    v5 = [(FCFeldsparIDProvider *)self feldsparID];
-    v6 = [v5 isEqualToString:v4];
+    feldsparID = [(FCFeldsparIDProvider *)self feldsparID];
+    v6 = [feldsparID isEqualToString:dCopy];
 
     if ((v6 & 1) == 0)
     {
-      [(FCFeldsparIDProvider *)self setFeldsparID:v4];
+      [(FCFeldsparIDProvider *)self setFeldsparID:dCopy];
       v7 = NewsCoreSensitiveUserDefaults();
-      [v7 setValue:v4 forKey:@"provider_user_id"];
+      [v7 setValue:dCopy forKey:@"provider_user_id"];
 
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v8 = [(FCFeldsparIDProvider *)self observers];
-      v9 = [v8 copy];
+      observers = [(FCFeldsparIDProvider *)self observers];
+      v9 = [observers copy];
 
       v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)

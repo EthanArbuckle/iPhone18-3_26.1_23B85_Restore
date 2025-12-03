@@ -1,14 +1,14 @@
 @interface DeviceSourcesDataSource
-- (void)sourceListDataSourceDidUpdate:(id)a3;
+- (void)sourceListDataSourceDidUpdate:(id)update;
 @end
 
 @implementation DeviceSourcesDataSource
 
-- (void)sourceListDataSourceDidUpdate:(id)a3
+- (void)sourceListDataSourceDidUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
 
-  sub_1BA06A148(v3);
+  sub_1BA06A148(updateCopy);
 }
 
 @end

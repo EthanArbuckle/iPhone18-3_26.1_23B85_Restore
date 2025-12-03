@@ -5,15 +5,15 @@
 - (KNSlideCollectionSelection)slideTreeSelection;
 - (KNUIState)init;
 - (NSString)debugDescription;
-- (id)UIStateForChart:(id)a3;
-- (id)archivedUIStateInContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 context:(id)a5;
+- (id)UIStateForChart:(id)chart;
+- (id)archivedUIStateInContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver context:(id)context;
 - (void)resetForInitialViewing;
-- (void)setSelectionPath:(id)a3;
-- (void)setSlideTreeSelection:(id)a3 withDocumentRoot:(id)a4;
-- (void)setUIState:(id)a3 forChart:(id)a4;
-- (void)updateOutlineStateFromSlideTree:(id)a3;
+- (void)setSelectionPath:(id)path;
+- (void)setSlideTreeSelection:(id)selection withDocumentRoot:(id)root;
+- (void)setUIState:(id)state forChart:(id)chart;
+- (void)updateOutlineStateFromSlideTree:(id)tree;
 @end
 
 @implementation KNUIState
@@ -39,9 +39,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(KNUIState, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(KNUIState, a2, zone);
   v7 = objc_msgSend_init(v4, v5, v6);
   objc_storeStrong((v7 + 88), self->_selectionPath);
   *(v7 + 8) = self->_mobileCanvasViewScale;
@@ -100,16 +100,16 @@
   return v7;
 }
 
-- (void)setSelectionPath:(id)a3
+- (void)setSelectionPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   selectionPath = self->_selectionPath;
   p_selectionPath = &self->_selectionPath;
-  if (selectionPath != v5)
+  if (selectionPath != pathCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_selectionPath, a3);
-    v5 = v8;
+    v8 = pathCopy;
+    objc_storeStrong(p_selectionPath, path);
+    pathCopy = v8;
   }
 }
 
@@ -122,12 +122,12 @@
   return v6;
 }
 
-- (void)setSlideTreeSelection:(id)a3 withDocumentRoot:(id)a4
+- (void)setSlideTreeSelection:(id)selection withDocumentRoot:(id)root
 {
   v28[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v8 = a4;
-  if (!v6)
+  selectionCopy = selection;
+  rootCopy = root;
+  if (!selectionCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[KNUIState setSlideTreeSelection:withDocumentRoot:]");
@@ -138,10 +138,10 @@
   }
 
   v16 = objc_alloc(MEMORY[0x277D80670]);
-  v18 = objc_msgSend_initWithDocumentRoot_(v16, v17, v8);
+  v18 = objc_msgSend_initWithDocumentRoot_(v16, v17, rootCopy);
   v19 = MEMORY[0x277D806C8];
   v28[0] = v18;
-  v28[1] = v6;
+  v28[1] = selectionCopy;
   v22 = objc_msgSend_emptySelection(KNCanvasSelection, v20, v21);
   v28[2] = v22;
   v24 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v23, v28, 3);
@@ -159,26 +159,26 @@
   return result;
 }
 
-- (id)archivedUIStateInContext:(id)a3
+- (id)archivedUIStateInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [KNArchivedUIState alloc];
-  v7 = objc_msgSend_initWithUIState_context_(v5, v6, self, v4);
+  v7 = objc_msgSend_initWithUIState_context_(v5, v6, self, contextCopy);
 
   return v7;
 }
 
-- (void)updateOutlineStateFromSlideTree:(id)a3
+- (void)updateOutlineStateFromSlideTree:(id)tree
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  treeCopy = tree;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = objc_msgSend_slideNodes(v4, v7, v8, 0);
+  v9 = objc_msgSend_slideNodes(treeCopy, v7, v8, 0);
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v21, v25, 16);
   if (v13)
   {
@@ -368,17 +368,17 @@
   return v92;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 context:(id)a5
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver context:(id)context
 {
-  v8 = a4;
-  v23 = a5;
-  v9 = *(a3 + 16);
+  unarchiverCopy = unarchiver;
+  contextCopy = context;
+  v9 = *(archive + 16);
   if (v9 >= 1)
   {
     v10 = 8;
     do
     {
-      v11 = *(*(a3 + 9) + v10);
+      v11 = *(*(archive + 9) + v10);
       chartUIState = self->_chartUIState;
       if (chartUIState)
       {
@@ -403,7 +403,7 @@
       v24[4] = self;
       v19 = v17;
       v25 = v19;
-      v20 = v8;
+      v20 = unarchiverCopy;
       v22 = objc_opt_class();
       if (v18)
       {
@@ -455,20 +455,20 @@
   return result;
 }
 
-- (id)UIStateForChart:(id)a3
+- (id)UIStateForChart:(id)chart
 {
-  v4 = objc_msgSend_weakReferenceForObject_(MEMORY[0x277D80868], a2, a3);
+  v4 = objc_msgSend_weakReferenceForObject_(MEMORY[0x277D80868], a2, chart);
   v6 = objc_msgSend_objectForKey_(self->_chartUIState, v5, v4);
 
   return v6;
 }
 
-- (void)setUIState:(id)a3 forChart:(id)a4
+- (void)setUIState:(id)state forChart:(id)chart
 {
-  v12 = a3;
-  v7 = objc_msgSend_weakReferenceForObject_(MEMORY[0x277D80868], v6, a4);
+  stateCopy = state;
+  v7 = objc_msgSend_weakReferenceForObject_(MEMORY[0x277D80868], v6, chart);
   chartUIState = self->_chartUIState;
-  if (v12)
+  if (stateCopy)
   {
     if (chartUIState)
     {
@@ -483,7 +483,7 @@
     v10 = self->_chartUIState;
     self->_chartUIState = v9;
 
-    objc_msgSend_setObject_forKey_(self->_chartUIState, v11, v12, v7);
+    objc_msgSend_setObject_forKey_(self->_chartUIState, v11, stateCopy, v7);
   }
 
   else

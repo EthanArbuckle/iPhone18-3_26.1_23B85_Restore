@@ -1,28 +1,28 @@
 @interface WCContentIndex
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)index;
 - (NSString)description;
-- (WCContentIndex)initWithContainingFolder:(id)a3;
-- (id)addContentIdentifier:(id)a3;
+- (WCContentIndex)initWithContainingFolder:(id)folder;
+- (id)addContentIdentifier:(id)identifier;
 - (id)commit;
 - (unint64_t)hash;
 - (void)commit;
 - (void)invalidate;
 - (void)loadContentIfNecessary;
-- (void)removeContentIdentifier:(id)a3;
+- (void)removeContentIdentifier:(id)identifier;
 @end
 
 @implementation WCContentIndex
 
-- (WCContentIndex)initWithContainingFolder:(id)a3
+- (WCContentIndex)initWithContainingFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v11.receiver = self;
   v11.super_class = WCContentIndex;
   v5 = [(WCContentIndex *)&v11 init];
   if (v5)
   {
-    v6 = [v4 URLByAppendingPathComponent:@"contents.index" isDirectory:0];
+    v6 = [folderCopy URLByAppendingPathComponent:@"contents.index" isDirectory:0];
     itemURL = v5->_itemURL;
     v5->_itemURL = v6;
 
@@ -50,7 +50,7 @@
 - (void)loadContentIfNecessary
 {
   *a2 = 136446466;
-  OUTLINED_FUNCTION_0_0(a1, a2, "[WCContentIndex loadContentIfNecessary]");
+  OUTLINED_FUNCTION_0_0(self, a2, "[WCContentIndex loadContentIfNecessary]");
   OUTLINED_FUNCTION_1_0(&dword_23B2FA000, v3, v3, "%{public}s could not read in index file with error: %{public}@", v4);
 }
 
@@ -81,13 +81,13 @@ void __40__WCContentIndex_loadContentIfNecessary__block_invoke(uint64_t a1, uint
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v3 = [objc_alloc(MEMORY[0x277CCAA80]) initWithTarget:self selector:sel_loadContentIfNecessary object:0];
-  v4 = [(WCContentIndex *)self presentedItemOperationQueue];
+  presentedItemOperationQueue = [(WCContentIndex *)self presentedItemOperationQueue];
   v10[0] = v3;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-  [v4 addOperations:v5 waitUntilFinished:1];
+  [presentedItemOperationQueue addOperations:v5 waitUntilFinished:1];
 
-  v6 = [(WCContentIndex *)self cachedContentIndex];
-  v7 = [v6 copy];
+  cachedContentIndex = [(WCContentIndex *)self cachedContentIndex];
+  v7 = [cachedContentIndex copy];
 
   v8 = *MEMORY[0x277D85DE8];
 
@@ -99,19 +99,19 @@ void __40__WCContentIndex_loadContentIfNecessary__block_invoke(uint64_t a1, uint
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WCContentIndex *)self itemURL];
-  v7 = [v6 path];
-  v8 = [(WCContentIndex *)self cachedContentIndex];
-  v9 = WCCompactStringFromCollection(v8);
-  v10 = [v3 stringWithFormat:@"<%@: %p, file: %@, index: %@>", v5, self, v7, v9];
+  itemURL = [(WCContentIndex *)self itemURL];
+  path = [itemURL path];
+  cachedContentIndex = [(WCContentIndex *)self cachedContentIndex];
+  v9 = WCCompactStringFromCollection(cachedContentIndex);
+  v10 = [v3 stringWithFormat:@"<%@: %p, file: %@, index: %@>", v5, self, path, v9];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -121,11 +121,11 @@ void __40__WCContentIndex_loadContentIfNecessary__block_invoke(uint64_t a1, uint
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WCContentIndex *)self itemURL];
-      v7 = [(WCContentIndex *)v5 itemURL];
+      v5 = equalCopy;
+      itemURL = [(WCContentIndex *)self itemURL];
+      itemURL2 = [(WCContentIndex *)v5 itemURL];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [itemURL isEqual:itemURL2];
     }
 
     else
@@ -139,50 +139,50 @@ void __40__WCContentIndex_loadContentIfNecessary__block_invoke(uint64_t a1, uint
 
 - (unint64_t)hash
 {
-  v2 = [(WCContentIndex *)self itemURL];
-  v3 = [v2 hash];
+  itemURL = [(WCContentIndex *)self itemURL];
+  v3 = [itemURL hash];
 
   return v3;
 }
 
-- (id)addContentIdentifier:(id)a3
+- (id)addContentIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(WCContentIndex *)self cachedContentIndex];
-    [v5 addObject:v4];
+    cachedContentIndex = [(WCContentIndex *)self cachedContentIndex];
+    [cachedContentIndex addObject:identifierCopy];
 
-    v6 = [(WCContentIndex *)self commit];
-    if (v6)
+    commit = [(WCContentIndex *)self commit];
+    if (commit)
     {
-      v7 = [(WCContentIndex *)self cachedContentIndex];
-      [v7 removeObject:v4];
+      cachedContentIndex2 = [(WCContentIndex *)self cachedContentIndex];
+      [cachedContentIndex2 removeObject:identifierCopy];
     }
   }
 
   else
   {
-    v6 = 0;
+    commit = 0;
   }
 
-  return v6;
+  return commit;
 }
 
-- (void)removeContentIdentifier:(id)a3
+- (void)removeContentIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(WCContentIndex *)self cachedContentIndex];
-    v6 = [v5 containsObject:v4];
+    cachedContentIndex = [(WCContentIndex *)self cachedContentIndex];
+    v6 = [cachedContentIndex containsObject:identifierCopy];
 
     if (v6)
     {
-      v7 = [(WCContentIndex *)self cachedContentIndex];
-      [v7 removeObject:v4];
+      cachedContentIndex2 = [(WCContentIndex *)self cachedContentIndex];
+      [cachedContentIndex2 removeObject:identifierCopy];
 
-      v8 = [(WCContentIndex *)self commit];
+      commit = [(WCContentIndex *)self commit];
     }
 
     else
@@ -190,7 +190,7 @@ void __40__WCContentIndex_loadContentIfNecessary__block_invoke(uint64_t a1, uint
       v9 = wc_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [(WCContentIndex *)v4 removeContentIdentifier:v9, v10];
+        [(WCContentIndex *)identifierCopy removeContentIdentifier:v9, v10];
       }
     }
   }
@@ -199,8 +199,8 @@ void __40__WCContentIndex_loadContentIfNecessary__block_invoke(uint64_t a1, uint
 - (id)commit
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(WCContentIndex *)self cachedContentIndex];
-  v4 = [v3 count];
+  cachedContentIndex = [(WCContentIndex *)self cachedContentIndex];
+  v4 = [cachedContentIndex count];
 
   if (v4 < 0x1B59)
   {
@@ -211,7 +211,7 @@ void __40__WCContentIndex_loadContentIfNecessary__block_invoke(uint64_t a1, uint
     v29 = __Block_byref_object_dispose__0;
     v30 = 0;
     v14 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:self];
-    v15 = [(WCContentIndex *)self presentedItemURL];
+    presentedItemURL = [(WCContentIndex *)self presentedItemURL];
     v17 = (v26 + 5);
     v16 = v26[5];
     v23[0] = MEMORY[0x277D85DD0];
@@ -221,7 +221,7 @@ void __40__WCContentIndex_loadContentIfNecessary__block_invoke(uint64_t a1, uint
     v23[5] = &v25;
     obj = v16;
     v23[4] = self;
-    [v14 coordinateWritingItemAtURL:v15 options:8 error:&obj byAccessor:v23];
+    [v14 coordinateWritingItemAtURL:presentedItemURL options:8 error:&obj byAccessor:v23];
     objc_storeStrong(v17, obj);
 
     if (v26[5])
@@ -241,16 +241,16 @@ void __40__WCContentIndex_loadContentIfNecessary__block_invoke(uint64_t a1, uint
 
   else
   {
-    v5 = [(WCContentIndex *)self cachedContentIndex];
-    v6 = [v5 count];
+    cachedContentIndex2 = [(WCContentIndex *)self cachedContentIndex];
+    v6 = [cachedContentIndex2 count];
 
     if (v6 >= 0x1B63)
     {
-      v7 = [(WCContentIndex *)self cachedContentIndex];
-      v8 = [v7 count];
+      cachedContentIndex3 = [(WCContentIndex *)self cachedContentIndex];
+      v8 = [cachedContentIndex3 count];
 
-      v9 = [(WCContentIndex *)self cachedContentIndex];
-      v10 = [v9 subarrayWithRange:{v8 - 7000, 7000}];
+      cachedContentIndex4 = [(WCContentIndex *)self cachedContentIndex];
+      v10 = [cachedContentIndex4 subarrayWithRange:{v8 - 7000, 7000}];
       v11 = [v10 mutableCopy];
       [(WCContentIndex *)self setCachedContentIndex:v11];
     }
@@ -327,11 +327,11 @@ LABEL_10:
 - (void)commit
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [a1 cachedContentIndex];
+  cachedContentIndex = [self cachedContentIndex];
   v6 = 136446466;
   v7 = "[WCContentIndex commit]";
   v8 = 2050;
-  v9 = [v3 count];
+  v9 = [cachedContentIndex count];
   OUTLINED_FUNCTION_1_0(&dword_23B2FA000, a2, v4, "%{public}s could not write to index file because cache size limit was reached. Cache size: %{public}ld", &v6);
 
   v5 = *MEMORY[0x277D85DE8];

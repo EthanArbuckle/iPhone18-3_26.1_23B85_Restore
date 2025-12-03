@@ -1,37 +1,37 @@
 @interface _HKHorizontalSingleLineSeriesCoordinate
-- (_HKHorizontalSingleLineSeriesCoordinate)initWithXValue:(double)a3 yValue:(int64_t)a4 groupToPrevious:(BOOL)a5 markStyle:(int64_t)a6 userInfo:(id)a7;
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4;
+- (_HKHorizontalSingleLineSeriesCoordinate)initWithXValue:(double)value yValue:(int64_t)yValue groupToPrevious:(BOOL)previous markStyle:(int64_t)style userInfo:(id)info;
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale;
 @end
 
 @implementation _HKHorizontalSingleLineSeriesCoordinate
 
-- (_HKHorizontalSingleLineSeriesCoordinate)initWithXValue:(double)a3 yValue:(int64_t)a4 groupToPrevious:(BOOL)a5 markStyle:(int64_t)a6 userInfo:(id)a7
+- (_HKHorizontalSingleLineSeriesCoordinate)initWithXValue:(double)value yValue:(int64_t)yValue groupToPrevious:(BOOL)previous markStyle:(int64_t)style userInfo:(id)info
 {
-  v13 = a7;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = _HKHorizontalSingleLineSeriesCoordinate;
   v14 = [(_HKHorizontalSingleLineSeriesCoordinate *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_xValue = a3;
-    v14->_groupToPrevious = a5;
-    v14->_yValue = a4;
-    v14->_markStyle = a6;
-    objc_storeStrong(&v14->_userInfo, a7);
+    v14->_xValue = value;
+    v14->_groupToPrevious = previous;
+    v14->_yValue = yValue;
+    v14->_markStyle = style;
+    objc_storeStrong(&v14->_userInfo, info);
   }
 
   return v15;
 }
 
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale
 {
-  v4 = a4;
+  scaleCopy = scale;
   [(_HKHorizontalSingleLineSeriesCoordinate *)self xValue];
-  v8 = a3->tx + a3->c * 0.0 + a3->a * v7;
-  if (v4)
+  v8 = transform->tx + transform->c * 0.0 + transform->a * v7;
+  if (scaleCopy)
   {
-    v8 = HKUIFloorCGPointToScreenScale(v8, a3->ty + a3->d * 0.0 + a3->b * v7);
+    v8 = HKUIFloorCGPointToScreenScale(v8, transform->ty + transform->d * 0.0 + transform->b * v7);
   }
 
   v9 = objc_alloc(objc_opt_class());

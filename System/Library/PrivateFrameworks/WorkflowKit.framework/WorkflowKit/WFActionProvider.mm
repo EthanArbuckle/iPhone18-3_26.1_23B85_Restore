@@ -15,9 +15,9 @@
   if (self)
   {
     providerName = self->_providerName;
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (providerName == v5)
+    if (providerName == null)
     {
       v6 = 0;
     }
@@ -35,16 +35,16 @@
       v6 = v8;
       if (v8)
       {
-        v9 = v8;
+        null2 = v8;
       }
 
       else
       {
-        v9 = [MEMORY[0x1E695DFB0] null];
+        null2 = [MEMORY[0x1E695DFB0] null];
       }
 
       providerName = self->_providerName;
-      self->_providerName = v9;
+      self->_providerName = null2;
     }
   }
 
@@ -86,11 +86,11 @@
 
 - (id)createAllAvailableActions
 {
-  v3 = [(WFActionProvider *)self availableActionIdentifiers];
-  v4 = [v3 if_map:&__block_literal_global_57112];
+  availableActionIdentifiers = [(WFActionProvider *)self availableActionIdentifiers];
+  v4 = [availableActionIdentifiers if_map:&__block_literal_global_57112];
 
-  v5 = [v4 allObjects];
-  [(WFActionProvider *)self createActionsForRequests:v5];
+  allObjects = [v4 allObjects];
+  [(WFActionProvider *)self createActionsForRequests:allObjects];
 
   v6 = [v4 if_compactMap:&__block_literal_global_199_57113];
 

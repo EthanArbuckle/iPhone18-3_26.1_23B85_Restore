@@ -1,18 +1,18 @@
 @interface PXUserInterfaceElementEventTracker
 - (NSMutableDictionary)payload;
 - (PXUserInterfaceElementEventTracker)init;
-- (double)timeIntervalSinceTimestamp:(double)a3;
-- (id)finalPayloadWithPayload:(id)a3;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_applicationWillResignActive:(id)a3;
+- (double)timeIntervalSinceTimestamp:(double)timestamp;
+- (id)finalPayloadWithPayload:(id)payload;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_applicationWillResignActive:(id)active;
 - (void)_invalidateIsVisible;
 - (void)_updateIsVisible;
 - (void)didAppear;
 - (void)didDisappear;
 - (void)didPerformChanges;
-- (void)setHasAppeared:(BOOL)a3;
-- (void)setIsAppActive:(BOOL)a3;
-- (void)setIsVisible:(BOOL)a3;
+- (void)setHasAppeared:(BOOL)appeared;
+- (void)setIsAppActive:(BOOL)active;
+- (void)setIsVisible:(BOOL)visible;
 @end
 
 @implementation PXUserInterfaceElementEventTracker
@@ -39,8 +39,8 @@
 
     else
     {
-      v8 = [MEMORY[0x1E69DC668] sharedApplication];
-      v5 = [v8 applicationState] == 0;
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      v5 = [mEMORY[0x1E69DC668] applicationState] == 0;
 
       v6 = MEMORY[0x1E69DDAB0];
       v7 = MEMORY[0x1E69DDBC8];
@@ -65,9 +65,9 @@
       PXAssertGetLog();
     }
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v2 selector:sel__applicationWillResignActive_ name:v9 object:0];
-    [v13 addObserver:v2 selector:sel__applicationDidBecomeActive_ name:v11 object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__applicationWillResignActive_ name:v9 object:0];
+    [defaultCenter addObserver:v2 selector:sel__applicationDidBecomeActive_ name:v11 object:0];
   }
 
   return v2;
@@ -78,8 +78,8 @@
   v4.receiver = self;
   v4.super_class = PXUserInterfaceElementEventTracker;
   [(PXUserInterfaceElementEventTracker *)&v4 didPerformChanges];
-  v3 = [(PXUserInterfaceElementEventTracker *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXUserInterfaceElementEventTracker *)self updater];
+  [updater updateIfNeeded];
 }
 
 - (void)didAppear
@@ -94,26 +94,26 @@
 
 - (void)_invalidateIsVisible
 {
-  v2 = [(PXUserInterfaceElementEventTracker *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateIsVisible];
+  updater = [(PXUserInterfaceElementEventTracker *)self updater];
+  [updater setNeedsUpdateOf:sel__updateIsVisible];
 }
 
 - (void)_updateIsVisible
 {
   if ([(PXUserInterfaceElementEventTracker *)self isAppActive])
   {
-    v3 = [(PXUserInterfaceElementEventTracker *)self hasAppeared];
+    hasAppeared = [(PXUserInterfaceElementEventTracker *)self hasAppeared];
   }
 
   else
   {
-    v3 = 0;
+    hasAppeared = 0;
   }
 
-  [(PXUserInterfaceElementEventTracker *)self setIsVisible:v3];
+  [(PXUserInterfaceElementEventTracker *)self setIsVisible:hasAppeared];
 }
 
-- (void)_applicationWillResignActive:(id)a3
+- (void)_applicationWillResignActive:(id)active
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -123,7 +123,7 @@
   [(PXUserInterfaceElementEventTracker *)self performChanges:v3];
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -133,51 +133,51 @@
   [(PXUserInterfaceElementEventTracker *)self performChanges:v3];
 }
 
-- (double)timeIntervalSinceTimestamp:(double)a3
+- (double)timeIntervalSinceTimestamp:(double)timestamp
 {
   [(PXUserInterfaceElementEventTracker *)self currentTimestamp];
 
-  [(PXUserInterfaceElementEventTracker *)self timeIntervalBetweenTimestamp:a3 andTimestamp:v5];
+  [(PXUserInterfaceElementEventTracker *)self timeIntervalBetweenTimestamp:timestamp andTimestamp:v5];
   return result;
 }
 
-- (void)setIsAppActive:(BOOL)a3
+- (void)setIsAppActive:(BOOL)active
 {
-  if (self->_isAppActive != a3)
+  if (self->_isAppActive != active)
   {
-    self->_isAppActive = a3;
+    self->_isAppActive = active;
     [(PXUserInterfaceElementEventTracker *)self signalChange:4];
 
     [(PXUserInterfaceElementEventTracker *)self _invalidateIsVisible];
   }
 }
 
-- (void)setHasAppeared:(BOOL)a3
+- (void)setHasAppeared:(BOOL)appeared
 {
-  if (self->_hasAppeared != a3)
+  if (self->_hasAppeared != appeared)
   {
-    self->_hasAppeared = a3;
+    self->_hasAppeared = appeared;
     [(PXUserInterfaceElementEventTracker *)self signalChange:2];
 
     [(PXUserInterfaceElementEventTracker *)self _invalidateIsVisible];
   }
 }
 
-- (void)setIsVisible:(BOOL)a3
+- (void)setIsVisible:(BOOL)visible
 {
-  if (self->_isVisible != a3)
+  if (self->_isVisible != visible)
   {
-    self->_isVisible = a3;
+    self->_isVisible = visible;
     [(PXUserInterfaceElementEventTracker *)self signalChange:1];
   }
 }
 
-- (id)finalPayloadWithPayload:(id)a3
+- (id)finalPayloadWithPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   if (![(NSMutableDictionary *)self->_payload count])
   {
-    v9 = [v4 copy];
+    v9 = [payloadCopy copy];
     v7 = v9;
     v10 = MEMORY[0x1E695E0F8];
     if (v9)
@@ -189,12 +189,12 @@
     goto LABEL_7;
   }
 
-  v5 = [v4 count];
+  v5 = [payloadCopy count];
   payload = self->_payload;
   if (v5)
   {
     v7 = [(NSMutableDictionary *)payload mutableCopy];
-    [v7 addEntriesFromDictionary:v4];
+    [v7 addEntriesFromDictionary:payloadCopy];
     v8 = [v7 copy];
 LABEL_7:
     v11 = v8;
@@ -213,9 +213,9 @@ LABEL_9:
   payload = self->_payload;
   if (!payload)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = self->_payload;
-    self->_payload = v4;
+    self->_payload = dictionary;
 
     payload = self->_payload;
   }

@@ -1,10 +1,10 @@
 @interface ObjectAuthenticationObserver
-- (void)handleNotification:(id)a3;
+- (void)handleNotification:(id)notification;
 @end
 
 @implementation ObjectAuthenticationObserver
 
-- (void)handleNotification:(id)a3
+- (void)handleNotification:(id)notification
 {
   v3 = sub_1D4416E94();
   v4 = *(v3 - 8);

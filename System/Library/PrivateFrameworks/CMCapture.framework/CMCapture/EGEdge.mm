@@ -1,5 +1,5 @@
 @interface EGEdge
-- (EGEdge)initWithSource:(id)a3 destination:(id)a4;
+- (EGEdge)initWithSource:(id)source destination:(id)destination;
 - (void)dealloc;
 @end
 
@@ -12,12 +12,12 @@
   [(EGEdge *)&v2 dealloc];
 }
 
-- (EGEdge)initWithSource:(id)a3 destination:(id)a4
+- (EGEdge)initWithSource:(id)source destination:(id)destination
 {
-  if (!a3 || !a4)
+  if (!source || !destination)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Edge tried to init with source:%@ destination:%@! Forbidden", a3, a4];
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v7 userInfo:0]);
+    destination = [MEMORY[0x1E696AEC0] stringWithFormat:@"Edge tried to init with source:%@ destination:%@! Forbidden", source, destination];
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:destination userInfo:0]);
   }
 
   v8.receiver = self;
@@ -25,8 +25,8 @@
   result = [(EGEdge *)&v8 init];
   if (result)
   {
-    result->_sourcePort = a3;
-    result->_destinationPort = a4;
+    result->_sourcePort = source;
+    result->_destinationPort = destination;
   }
 
   return result;

@@ -1,13 +1,13 @@
 @interface MKDirections
 - (BOOL)isCalculating;
 - (MKDirections)initWithRequest:(MKDirectionsRequest *)request;
-- (void)_calculateDirectionsWithTraits:(id)a3 completionHandler:(id)a4;
-- (void)_calculateETAWithTraits:(id)a3 completionHandler:(id)a4;
+- (void)_calculateDirectionsWithTraits:(id)traits completionHandler:(id)handler;
+- (void)_calculateETAWithTraits:(id)traits completionHandler:(id)handler;
 - (void)_cleanupLocationOperation;
-- (void)_establishCurrentLocationAndThen:(id)a3;
-- (void)_issueDirectionsRequestForOrigin:(id)a3 destination:(id)a4 traits:(id)a5 completionHandler:(id)a6;
-- (void)_issueETARequestForOrigin:(id)a3 destination:(id)a4 completionHandler:(id)a5;
-- (void)_performWithValidCurrentLocationAndWaypointsForQuickETA:(BOOL)a3 traits:(id)a4 handler:(id)a5;
+- (void)_establishCurrentLocationAndThen:(id)then;
+- (void)_issueDirectionsRequestForOrigin:(id)origin destination:(id)destination traits:(id)traits completionHandler:(id)handler;
+- (void)_issueETARequestForOrigin:(id)origin destination:(id)destination completionHandler:(id)handler;
+- (void)_performWithValidCurrentLocationAndWaypointsForQuickETA:(BOOL)a traits:(id)traits handler:(id)handler;
 - (void)calculateDirectionsWithCompletionHandler:(MKDirectionsHandler)completionHandler;
 - (void)calculateETAWithCompletionHandler:(MKETAHandler)completionHandler;
 - (void)cancel;
@@ -100,23 +100,23 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)_issueETARequestForOrigin:(id)a3 destination:(id)a4 completionHandler:(id)a5
+- (void)_issueETARequestForOrigin:(id)origin destination:(id)destination completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  originCopy = origin;
+  destinationCopy = destination;
+  handlerCopy = handler;
   routeAttributes = self->_routeAttributes;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __72__MKDirections__issueETARequestForOrigin_destination_completionHandler___block_invoke;
   v15[3] = &unk_1E76CC9F8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = originCopy;
+  v17 = destinationCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = destinationCopy;
+  v14 = originCopy;
   [(GEORouteAttributes *)routeAttributes buildRouteAttributes:MEMORY[0x1E69E96A0] result:v15];
 }
 
@@ -214,19 +214,19 @@ void __72__MKDirections__issueETARequestForOrigin_destination_completionHandler_
   }
 }
 
-- (void)_calculateETAWithTraits:(id)a3 completionHandler:(id)a4
+- (void)_calculateETAWithTraits:(id)traits completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __58__MKDirections__calculateETAWithTraits_completionHandler___block_invoke;
     v8[3] = &unk_1E76CC9A8;
     v8[4] = self;
-    v9 = v6;
-    [(MKDirections *)self _performWithValidCurrentLocationAndWaypointsForQuickETA:1 traits:a3 handler:v8];
+    v9 = handlerCopy;
+    [(MKDirections *)self _performWithValidCurrentLocationAndWaypointsForQuickETA:1 traits:traits handler:v8];
   }
 }
 
@@ -264,26 +264,26 @@ void __58__MKDirections__calculateETAWithTraits_completionHandler___block_invoke
   }
 }
 
-- (void)_issueDirectionsRequestForOrigin:(id)a3 destination:(id)a4 traits:(id)a5 completionHandler:(id)a6
+- (void)_issueDirectionsRequestForOrigin:(id)origin destination:(id)destination traits:(id)traits completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  originCopy = origin;
+  destinationCopy = destination;
+  traitsCopy = traits;
+  handlerCopy = handler;
   routeAttributes = self->_routeAttributes;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __86__MKDirections__issueDirectionsRequestForOrigin_destination_traits_completionHandler___block_invoke;
   v19[3] = &unk_1E76CC980;
-  v22 = v12;
-  v23 = v13;
+  v22 = traitsCopy;
+  v23 = handlerCopy;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = v13;
+  v20 = originCopy;
+  v21 = destinationCopy;
+  v15 = traitsCopy;
+  v16 = destinationCopy;
+  v17 = originCopy;
+  v18 = handlerCopy;
   [(GEORouteAttributes *)routeAttributes buildRouteAttributes:MEMORY[0x1E69E96A0] result:v19];
 }
 
@@ -397,10 +397,10 @@ void __86__MKDirections__issueDirectionsRequestForOrigin_destination_traits_comp
   }
 }
 
-- (void)_calculateDirectionsWithTraits:(id)a3 completionHandler:(id)a4
+- (void)_calculateDirectionsWithTraits:(id)traits completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  traitsCopy = traits;
+  handlerCopy = handler;
   if ([(MKDirectionsRequest *)self->_request transportType]== 4)
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -408,8 +408,8 @@ void __86__MKDirections__issueDirectionsRequestForOrigin_destination_traits_comp
     block[2] = __65__MKDirections__calculateDirectionsWithTraits_completionHandler___block_invoke;
     block[3] = &unk_1E76CD4D0;
     v8 = &v15;
-    v15 = v7;
-    v9 = v7;
+    v15 = handlerCopy;
+    v9 = handlerCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
@@ -420,10 +420,10 @@ void __86__MKDirections__issueDirectionsRequestForOrigin_destination_traits_comp
     v11[2] = __65__MKDirections__calculateDirectionsWithTraits_completionHandler___block_invoke_2;
     v11[3] = &unk_1E76CC908;
     v8 = &v13;
-    v13 = v7;
+    v13 = handlerCopy;
     v11[4] = self;
-    v12 = v6;
-    v10 = v7;
+    v12 = traitsCopy;
+    v10 = handlerCopy;
     [(MKDirections *)self _performWithValidCurrentLocationAndWaypointsForQuickETA:0 traits:v12 handler:v11];
   }
 }
@@ -492,10 +492,10 @@ void __65__MKDirections__calculateDirectionsWithTraits_completionHandler___block
   [(MKDirections *)self _calculateDirectionsWithTraits:v6 completionHandler:v4];
 }
 
-- (void)_performWithValidCurrentLocationAndWaypointsForQuickETA:(BOOL)a3 traits:(id)a4 handler:(id)a5
+- (void)_performWithValidCurrentLocationAndWaypointsForQuickETA:(BOOL)a traits:(id)traits handler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  traitsCopy = traits;
+  handlerCopy = handler;
   if ([(MKDirections *)self isCalculating])
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -511,8 +511,8 @@ void __65__MKDirections__calculateDirectionsWithTraits_completionHandler___block
     block[2] = __87__MKDirections__performWithValidCurrentLocationAndWaypointsForQuickETA_traits_handler___block_invoke;
     block[3] = &unk_1E76CDA20;
     v19 = v11;
-    v20 = v9;
-    v12 = v9;
+    v20 = handlerCopy;
+    v12 = handlerCopy;
     v13 = v11;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
@@ -523,11 +523,11 @@ void __65__MKDirections__calculateDirectionsWithTraits_completionHandler___block
     v14[1] = 3221225472;
     v14[2] = __87__MKDirections__performWithValidCurrentLocationAndWaypointsForQuickETA_traits_handler___block_invoke_2;
     v14[3] = &unk_1E76CC8E0;
-    v16 = v9;
+    v16 = handlerCopy;
     v14[4] = self;
-    v17 = a3;
-    v15 = v8;
-    v13 = v9;
+    aCopy = a;
+    v15 = traitsCopy;
+    v13 = handlerCopy;
     [(MKDirections *)self _establishCurrentLocationAndThen:v14];
 
     v12 = v16;
@@ -667,16 +667,16 @@ void __87__MKDirections__performWithValidCurrentLocationAndWaypointsForQuickETA_
   (*(v4 + 16))(v4, v5, v7, v8);
 }
 
-- (void)_establishCurrentLocationAndThen:(id)a3
+- (void)_establishCurrentLocationAndThen:(id)then
 {
-  v4 = a3;
+  thenCopy = then;
   v7 = MEMORY[0x1E69E9820];
   v8 = __49__MKDirections__establishCurrentLocationAndThen___block_invoke;
   v9 = &unk_1E76CDA20;
-  v10 = self;
-  v11 = v4;
+  selfCopy = self;
+  v11 = thenCopy;
   v5 = MEMORY[0x1E696AF00];
-  v6 = v4;
+  v6 = thenCopy;
   if ([v5 isMainThread])
   {
     v8(&v7);
@@ -763,7 +763,7 @@ void __49__MKDirections__establishCurrentLocationAndThen___block_invoke_2(uint64
   block[1] = 3221225472;
   v3 = __22__MKDirections_cancel__block_invoke;
   v4 = &unk_1E76CDB38;
-  v5 = self;
+  selfCopy = self;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v3(block);

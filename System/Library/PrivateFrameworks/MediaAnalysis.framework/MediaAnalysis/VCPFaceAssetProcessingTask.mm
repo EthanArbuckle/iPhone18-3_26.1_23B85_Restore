@@ -1,37 +1,37 @@
 @interface VCPFaceAssetProcessingTask
-+ (id)taskWithAssets:(id)a3 andProgressHandler:(id)a4 andCompletionHandler:(id)a5;
-- (VCPFaceAssetProcessingTask)initWithAssets:(id)a3 andProgressHandler:(id)a4 andCompletionHandler:(id)a5;
++ (id)taskWithAssets:(id)assets andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (VCPFaceAssetProcessingTask)initWithAssets:(id)assets andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler;
 - (int)main;
 - (int)run;
 @end
 
 @implementation VCPFaceAssetProcessingTask
 
-- (VCPFaceAssetProcessingTask)initWithAssets:(id)a3 andProgressHandler:(id)a4 andCompletionHandler:(id)a5
+- (VCPFaceAssetProcessingTask)initWithAssets:(id)assets andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 count])
+  assetsCopy = assets;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if ([assetsCopy count])
   {
-    v12 = [(VCPFaceProcessingTask *)self photoLibrary];
-    v13 = [VCPPhotosFaceProcessingContext contextWithPhotoLibrary:v12];
+    photoLibrary = [(VCPFaceProcessingTask *)self photoLibrary];
+    v13 = [VCPPhotosFaceProcessingContext contextWithPhotoLibrary:photoLibrary];
 
-    v14 = [v9 firstObject];
-    v15 = [v14 photoLibrary];
+    firstObject = [assetsCopy firstObject];
+    photoLibrary2 = [firstObject photoLibrary];
     v24.receiver = self;
     v24.super_class = VCPFaceAssetProcessingTask;
-    v16 = [(VCPFaceProcessingTask *)&v24 initWithPhotoLibrary:v15 andContext:v13 andCancelBlock:&stru_100286600];
+    v16 = [(VCPFaceProcessingTask *)&v24 initWithPhotoLibrary:photoLibrary2 andContext:v13 andCancelBlock:&stru_100286600];
 
     if (v16)
     {
-      v17 = objc_retainBlock(v10);
+      v17 = objc_retainBlock(handlerCopy);
       progressHandler = v16->_progressHandler;
       v16->_progressHandler = v17;
 
-      if (v11)
+      if (completionHandlerCopy)
       {
-        v19 = v11;
+        v19 = completionHandlerCopy;
       }
 
       else
@@ -43,28 +43,28 @@
       completionHandler = v16->_completionHandler;
       v16->_completionHandler = v20;
 
-      objc_storeStrong(&v16->_assets, a3);
+      objc_storeStrong(&v16->_assets, assets);
     }
 
     self = v16;
 
-    v22 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v22 = 0;
+    selfCopy = 0;
   }
 
-  return v22;
+  return selfCopy;
 }
 
-+ (id)taskWithAssets:(id)a3 andProgressHandler:(id)a4 andCompletionHandler:(id)a5
++ (id)taskWithAssets:(id)assets andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_alloc(objc_opt_class()) initWithAssets:v7 andProgressHandler:v8 andCompletionHandler:v9];
+  assetsCopy = assets;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v10 = [objc_alloc(objc_opt_class()) initWithAssets:assetsCopy andProgressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
 
   return v10;
 }
@@ -86,9 +86,9 @@
     v19 = 0;
   }
 
-  v4 = [(NSArray *)self->_assets firstObject];
-  v5 = [v4 photoLibrary];
-  -[VCPFaceProcessingTask setAllowStreaming:](self, "setAllowStreaming:", [v5 vcp_allowsCloudLibraryResourceDownload]);
+  firstObject = [(NSArray *)self->_assets firstObject];
+  photoLibrary = [firstObject photoLibrary];
+  -[VCPFaceProcessingTask setAllowStreaming:](self, "setAllowStreaming:", [photoLibrary vcp_allowsCloudLibraryResourceDownload]);
 
   v6 = +[NSMutableSet set];
   v22 = 0u;
@@ -124,8 +124,8 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v14 = [v13 photoLibrary];
-      if ([v14 mad_pauseFCPeopleFurtherProcessing])
+      photoLibrary2 = [v13 photoLibrary];
+      if ([photoLibrary2 mad_pauseFCPeopleFurtherProcessing])
       {
         v15 = [v13 faceAnalysisVersion] == 14;
 
@@ -133,9 +133,9 @@ LABEL_29:
         {
           if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, v11))
           {
-            v16 = [v13 localIdentifier];
+            localIdentifier = [v13 localIdentifier];
             *buf = v18;
-            v25 = v16;
+            v25 = localIdentifier;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v11, "[%@] already with FC version; skip", buf, 0xCu);
           }
 
@@ -198,8 +198,8 @@ LABEL_30:
 
 - (int)run
 {
-  v3 = [(VCPFaceAssetProcessingTask *)self main];
-  v4 = [(VCPFaceProcessingTask *)self flush]| v3;
+  main = [(VCPFaceAssetProcessingTask *)self main];
+  v4 = [(VCPFaceProcessingTask *)self flush]| main;
   if (v4)
   {
     if (MediaAnalysisLogLevel() >= 4)

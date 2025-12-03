@@ -1,41 +1,41 @@
 @interface MUScrollableStackView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (MUScrollableStackView)initWithFrame:(CGRect)a3;
-- (MUScrollableStackView)initWithPrimaryAxisCentering:(BOOL)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (MUScrollableStackView)initWithFrame:(CGRect)frame;
+- (MUScrollableStackView)initWithPrimaryAxisCentering:(BOOL)centering;
 - (UIEdgeInsets)contentEdgeInsets;
-- (id)addArrangedCardShadowViewForView:(id)a3;
+- (id)addArrangedCardShadowViewForView:(id)view;
 - (void)_commonInit;
 - (void)_setupViews;
 - (void)_updateForHorizontalAxisIfNeeded;
-- (void)_updateOrientationWithNewAxis:(int64_t)a3;
+- (void)_updateOrientationWithNewAxis:(int64_t)axis;
 - (void)layoutSubviews;
-- (void)setContentSize:(CGSize)a3;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation MUScrollableStackView
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  [(MUStackView *)self->_stackView systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:?];
+  [(MUStackView *)self->_stackView systemLayoutSizeFittingSize:size.width withHorizontalFittingPriority:size.height verticalFittingPriority:?];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  [(MUStackView *)self->_stackView systemLayoutSizeFittingSize:a3.width, a3.height];
+  [(MUStackView *)self->_stackView systemLayoutSizeFittingSize:size.width, size.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(MUStackView *)self->_stackView sizeThatFits:a3.width, a3.height];
+  [(MUStackView *)self->_stackView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -59,10 +59,10 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (![(MUScrollableStackView *)self axis])
   {
     [(MUScrollableStackView *)self frame];
@@ -102,8 +102,8 @@
   v10.receiver = self;
   v10.super_class = MUScrollableStackView;
   [(MUScrollableStackView *)&v10 layoutSubviews];
-  v3 = [(MUScrollableStackView *)self axis];
-  if (v3 == 1)
+  axis = [(MUScrollableStackView *)self axis];
+  if (axis == 1)
   {
     if (!self->_primaryAxisCentering)
     {
@@ -119,7 +119,7 @@
     goto LABEL_7;
   }
 
-  if (!v3)
+  if (!axis)
   {
     [(MUScrollableStackView *)self _updateForHorizontalAxisIfNeeded];
     if (self->_primaryAxisCentering)
@@ -136,30 +136,30 @@ LABEL_7:
   }
 }
 
-- (void)_updateOrientationWithNewAxis:(int64_t)a3
+- (void)_updateOrientationWithNewAxis:(int64_t)axis
 {
-  [(MUStackView *)self->_stackView setAxis:a3];
+  [(MUStackView *)self->_stackView setAxis:axis];
   [(NSLayoutConstraint *)self->_axisConstraint setActive:0];
-  v4 = [(MUScrollableStackView *)self axis];
-  if (v4 == 1)
+  axis = [(MUScrollableStackView *)self axis];
+  if (axis == 1)
   {
-    v5 = [(MUStackView *)self->_stackView widthAnchor];
-    v6 = [(MUScrollableStackView *)self widthAnchor];
+    widthAnchor = [(MUStackView *)self->_stackView widthAnchor];
+    widthAnchor2 = [(MUScrollableStackView *)self widthAnchor];
   }
 
   else
   {
-    if (v4)
+    if (axis)
     {
       goto LABEL_6;
     }
 
-    v5 = [(MUStackView *)self->_stackView heightAnchor];
-    v6 = [(MUScrollableStackView *)self heightAnchor];
+    widthAnchor = [(MUStackView *)self->_stackView heightAnchor];
+    widthAnchor2 = [(MUScrollableStackView *)self heightAnchor];
   }
 
-  v7 = v6;
-  v8 = [v5 constraintEqualToAnchor:v6];
+  v7 = widthAnchor2;
+  v8 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   axisConstraint = self->_axisConstraint;
   self->_axisConstraint = v8;
 
@@ -182,21 +182,21 @@ LABEL_6:
   [(MUScrollableStackView *)self setScrollEnabled:1];
   [(MUScrollableStackView *)self setShowsHorizontalScrollIndicator:0];
   v16 = MEMORY[0x1E696ACD8];
-  v20 = [(MUStackView *)self->_stackView leadingAnchor];
-  v19 = [(MUScrollableStackView *)self leadingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  leadingAnchor = [(MUStackView *)self->_stackView leadingAnchor];
+  leadingAnchor2 = [(MUScrollableStackView *)self leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v21[0] = v18;
-  v17 = [(MUStackView *)self->_stackView trailingAnchor];
-  v6 = [(MUScrollableStackView *)self trailingAnchor];
-  v7 = [v17 constraintEqualToAnchor:v6];
+  trailingAnchor = [(MUStackView *)self->_stackView trailingAnchor];
+  trailingAnchor2 = [(MUScrollableStackView *)self trailingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v21[1] = v7;
-  v8 = [(MUStackView *)self->_stackView topAnchor];
-  v9 = [(MUScrollableStackView *)self topAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  topAnchor = [(MUStackView *)self->_stackView topAnchor];
+  topAnchor2 = [(MUScrollableStackView *)self topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v21[2] = v10;
-  v11 = [(MUStackView *)self->_stackView bottomAnchor];
-  v12 = [(MUScrollableStackView *)self bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  bottomAnchor = [(MUStackView *)self->_stackView bottomAnchor];
+  bottomAnchor2 = [(MUScrollableStackView *)self bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v21[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:4];
   [v16 activateConstraints:v14];
@@ -213,7 +213,7 @@ LABEL_6:
   [(MUScrollableStackView *)self setAccessibilityIdentifier:v4];
 }
 
-- (MUScrollableStackView)initWithPrimaryAxisCentering:(BOOL)a3
+- (MUScrollableStackView)initWithPrimaryAxisCentering:(BOOL)centering
 {
   v7.receiver = self;
   v7.super_class = MUScrollableStackView;
@@ -221,18 +221,18 @@ LABEL_6:
   v5 = v4;
   if (v4)
   {
-    v4->_primaryAxisCentering = a3;
+    v4->_primaryAxisCentering = centering;
     [(MUScrollableStackView *)v4 _commonInit];
   }
 
   return v5;
 }
 
-- (MUScrollableStackView)initWithFrame:(CGRect)a3
+- (MUScrollableStackView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUScrollableStackView;
-  v3 = [(MUScrollableStackView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUScrollableStackView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -242,10 +242,10 @@ LABEL_6:
   return v4;
 }
 
-- (id)addArrangedCardShadowViewForView:(id)a3
+- (id)addArrangedCardShadowViewForView:(id)view
 {
-  v4 = a3;
-  v5 = [[MUPlatterView alloc] initWithContentView:v4];
+  viewCopy = view;
+  v5 = [[MUPlatterView alloc] initWithContentView:viewCopy];
 
   [(MUScrollableStackView *)self addArrangedSubview:v5];
 

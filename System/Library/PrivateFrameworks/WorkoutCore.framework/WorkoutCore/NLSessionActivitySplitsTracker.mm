@@ -1,154 +1,154 @@
 @interface NLSessionActivitySplitsTracker
-- (BOOL)isUnitMetricFor:(id)a3;
-- (BOOL)shouldCreateMilestoneWithSplit:(id)a3;
-- (NLSessionActivitySplitsTracker)initWithActivityType:(id)a3 builder:(id)a4 distanceUnit:(id)a5 activityMoveMode:(int64_t)a6 multiSportLegStartDate:(id)a7;
+- (BOOL)isUnitMetricFor:(id)for;
+- (BOOL)shouldCreateMilestoneWithSplit:(id)split;
+- (NLSessionActivitySplitsTracker)initWithActivityType:(id)type builder:(id)builder distanceUnit:(id)unit activityMoveMode:(int64_t)mode multiSportLegStartDate:(id)date;
 - (NLWorkoutAlertDelegate)alertDelegate;
-- (double)milestoneDistanceForSplit:(id)a3;
-- (unint64_t)milestoneNumberForSplit:(id)a3;
-- (void)presentAlertIfNeededWithSplit:(id)a3;
-- (void)processSplitEvent:(id)a3;
-- (void)recoverStateFromWorkoutEvents:(id)a3;
-- (void)updateDistanceUnit:(id)a3;
-- (void)updateLastMilestoneWithSplit:(id)a3;
+- (double)milestoneDistanceForSplit:(id)split;
+- (unint64_t)milestoneNumberForSplit:(id)split;
+- (void)presentAlertIfNeededWithSplit:(id)split;
+- (void)processSplitEvent:(id)event;
+- (void)recoverStateFromWorkoutEvents:(id)events;
+- (void)updateDistanceUnit:(id)unit;
+- (void)updateLastMilestoneWithSplit:(id)split;
 @end
 
 @implementation NLSessionActivitySplitsTracker
 
-- (NLSessionActivitySplitsTracker)initWithActivityType:(id)a3 builder:(id)a4 distanceUnit:(id)a5 activityMoveMode:(int64_t)a6 multiSportLegStartDate:(id)a7
+- (NLSessionActivitySplitsTracker)initWithActivityType:(id)type builder:(id)builder distanceUnit:(id)unit activityMoveMode:(int64_t)mode multiSportLegStartDate:(id)date
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, builder);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
-  v18 = a6;
+  objc_storeStrong(&v19, unit);
+  modeCopy = mode;
   v17 = 0;
-  objc_storeStrong(&v17, a7);
-  v7 = v22;
-  v22 = 0;
+  objc_storeStrong(&v17, date);
+  v7 = selfCopy;
+  selfCopy = 0;
   v16.receiver = v7;
   v16.super_class = NLSessionActivitySplitsTracker;
   v11 = [(NLSessionActivitySplitsTracker *)&v16 init];
-  v22 = v11;
-  objc_storeStrong(&v22, v11);
+  selfCopy = v11;
+  objc_storeStrong(&selfCopy, v11);
   if (v11)
   {
-    objc_storeStrong(&v22->_activityType, location[0]);
-    objc_storeStrong(&v22->_builder, v20);
-    v22->_distanceType = FIUIDistanceTypeForActivityType();
-    objc_storeStrong(&v22->_distanceUnit, v19);
-    v8 = NLDistanceNotificationIntervalForDistanceType(v22->_distanceType);
-    v22->_splitsPerMilestone = v8;
-    v22->_activityMoveMode = v18;
-    objc_storeStrong(&v22->_multiSportLegStartDate, v17);
+    objc_storeStrong(&selfCopy->_activityType, location[0]);
+    objc_storeStrong(&selfCopy->_builder, v20);
+    selfCopy->_distanceType = FIUIDistanceTypeForActivityType();
+    objc_storeStrong(&selfCopy->_distanceUnit, v19);
+    v8 = NLDistanceNotificationIntervalForDistanceType(selfCopy->_distanceType);
+    selfCopy->_splitsPerMilestone = v8;
+    selfCopy->_activityMoveMode = modeCopy;
+    objc_storeStrong(&selfCopy->_multiSportLegStartDate, v17);
   }
 
-  v10 = MEMORY[0x277D82BE0](v22);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v22, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
-- (void)processSplitEvent:(id)a3
+- (void)processSplitEvent:(id)event
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(NLSessionActivitySplitsTracker *)v4 shouldCreateMilestoneWithSplit:location[0]])
+  objc_storeStrong(location, event);
+  if ([(NLSessionActivitySplitsTracker *)selfCopy shouldCreateMilestoneWithSplit:location[0]])
   {
-    [(NLSessionActivitySplitsTracker *)v4 presentAlertIfNeededWithSplit:location[0]];
-    [(NLSessionActivitySplitsTracker *)v4 updateLastMilestoneWithSplit:location[0]];
+    [(NLSessionActivitySplitsTracker *)selfCopy presentAlertIfNeededWithSplit:location[0]];
+    [(NLSessionActivitySplitsTracker *)selfCopy updateLastMilestoneWithSplit:location[0]];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)shouldCreateMilestoneWithSplit:(id)a3
+- (BOOL)shouldCreateMilestoneWithSplit:(id)split
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(NLSessionActivitySplitsTracker *)v8 isUnitMetricFor:location[0]])
+  objc_storeStrong(location, split);
+  if ([(NLSessionActivitySplitsTracker *)selfCopy isUnitMetricFor:location[0]])
   {
-    lastMetricMilestone = v8->_lastMetricMilestone;
+    lastMetricMilestone = selfCopy->_lastMetricMilestone;
   }
 
   else
   {
-    lastMetricMilestone = v8->_lastImperialMilestone;
+    lastMetricMilestone = selfCopy->_lastImperialMilestone;
   }
 
-  v5 = [(NLSessionActivitySplitsTracker *)v8 milestoneNumberForSplit:location[0], location]> lastMetricMilestone;
+  v5 = [(NLSessionActivitySplitsTracker *)selfCopy milestoneNumberForSplit:location[0], location]> lastMetricMilestone;
   objc_storeStrong(v4, 0);
   return v5;
 }
 
-- (BOOL)isUnitMetricFor:(id)a3
+- (BOOL)isUnitMetricFor:(id)for
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [location[0] metadata];
-  v4 = [v5 objectForKeyedSubscript:*MEMORY[0x277D0A768]];
+  objc_storeStrong(location, for);
+  metadata = [location[0] metadata];
+  v4 = [metadata objectForKeyedSubscript:*MEMORY[0x277D0A768]];
   v6 = [v4 integerValue] == 1;
   MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](metadata);
   objc_storeStrong(location, 0);
   return v6;
 }
 
-- (void)presentAlertIfNeededWithSplit:(id)a3
+- (void)presentAlertIfNeededWithSplit:(id)split
 {
   v49 = *MEMORY[0x277D85DE8];
-  v47 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v45 = [(HKUnit *)v47->_distanceUnit _isMetricDistance];
-  v44 = [(NLSessionActivitySplitsTracker *)v47 isUnitMetricFor:location[0]];
-  v27 = [location[0] metadata];
-  v26 = [v27 objectForKeyedSubscript:*MEMORY[0x277D0A708]];
-  v28 = [v26 BOOLValue];
+  objc_storeStrong(location, split);
+  _isMetricDistance = [(HKUnit *)selfCopy->_distanceUnit _isMetricDistance];
+  v44 = [(NLSessionActivitySplitsTracker *)selfCopy isUnitMetricFor:location[0]];
+  metadata = [location[0] metadata];
+  v26 = [metadata objectForKeyedSubscript:*MEMORY[0x277D0A708]];
+  bOOLValue = [v26 BOOLValue];
   MEMORY[0x277D82BD8](v26);
-  MEMORY[0x277D82BD8](v27);
-  v43 = v28;
-  if ((v45 & 1) == v44 && (v43 & 1) == 0)
+  MEMORY[0x277D82BD8](metadata);
+  v43 = bOOLValue;
+  if ((_isMetricDistance & 1) == v44 && (v43 & 1) == 0)
   {
-    activityType = v47->_activityType;
+    activityType = selfCopy->_activityType;
     v42 = FIUIDistanceTypeForActivityType();
     v41 = NLDistanceNotificationIntervalForDistanceType(v42);
-    v40 = [MEMORY[0x277CCD7E8] quantityWithUnit:v47->_distanceUnit doubleValue:v41];
+    v40 = [MEMORY[0x277CCD7E8] quantityWithUnit:selfCopy->_distanceUnit doubleValue:v41];
     if (v44)
     {
-      lastMetricMilestoneDuration = v47->_lastMetricMilestoneDuration;
+      lastMetricMilestoneDuration = selfCopy->_lastMetricMilestoneDuration;
     }
 
     else
     {
-      lastMetricMilestoneDuration = v47->_lastImperialMilestoneDuration;
+      lastMetricMilestoneDuration = selfCopy->_lastImperialMilestoneDuration;
     }
 
     v39 = lastMetricMilestoneDuration;
-    builder = v47->_builder;
-    v23 = [location[0] dateInterval];
-    v22 = [v23 endDate];
+    builder = selfCopy->_builder;
+    dateInterval = [location[0] dateInterval];
+    endDate = [dateInterval endDate];
     [(HKWorkoutBuilder *)builder elapsedTimeAtDate:?];
     v24 = v4;
-    MEMORY[0x277D82BD8](v22);
-    MEMORY[0x277D82BD8](v23);
+    MEMORY[0x277D82BD8](endDate);
+    MEMORY[0x277D82BD8](dateInterval);
     v38 = v24;
-    if (lastMetricMilestoneDuration == 0.0 && v47->_multiSportLegStartDate)
+    if (lastMetricMilestoneDuration == 0.0 && selfCopy->_multiSportLegStartDate)
     {
-      [(HKWorkoutBuilder *)v47->_builder elapsedTimeAtDate:v47->_multiSportLegStartDate, lastMetricMilestoneDuration];
+      [(HKWorkoutBuilder *)selfCopy->_builder elapsedTimeAtDate:selfCopy->_multiSportLegStartDate, lastMetricMilestoneDuration];
       v39 = v5;
     }
 
@@ -164,7 +164,7 @@
     }
 
     v37 = *&v20;
-    v36 = [(NLSessionActivitySplitsTracker *)v47 milestoneNumberForSplit:location[0]];
+    v36 = [(NLSessionActivitySplitsTracker *)selfCopy milestoneNumberForSplit:location[0]];
     v35 = objc_alloc_init(NLSessionActivitySegmentMarker);
     v34 = MEMORY[0x277D82BE0](v40);
     [v35 setSegmentIndex:v36];
@@ -178,10 +178,10 @@
 
     v33 = v19;
     v7 = [WOSegmentAlert alloc];
-    v32 = [(WOSegmentAlert *)v7 initWithWorkoutAlertType:6 segmentMarker:v35 activityType:v47->_activityType activityMoveMode:v47->_activityMoveMode gpsAvailable:1 shouldHideTime:v19];
-    v18 = [(NLSessionActivitySplitsTracker *)v47 alertDelegate];
-    [(NLWorkoutAlertDelegate *)v18 alertSource:v47 didTriggerAlert:v32];
-    MEMORY[0x277D82BD8](v18);
+    v32 = [(WOSegmentAlert *)v7 initWithWorkoutAlertType:6 segmentMarker:v35 activityType:selfCopy->_activityType activityMoveMode:selfCopy->_activityMoveMode gpsAvailable:1 shouldHideTime:v19];
+    alertDelegate = [(NLSessionActivitySplitsTracker *)selfCopy alertDelegate];
+    [(NLWorkoutAlertDelegate *)alertDelegate alertSource:selfCopy didTriggerAlert:v32];
+    MEMORY[0x277D82BD8](alertDelegate);
     _HKInitializeLogging();
     v31 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     v30 = OS_LOG_TYPE_DEFAULT;
@@ -189,21 +189,21 @@
     {
       log = v31;
       type = v30;
-      v17 = [location[0] metadata];
-      v16 = [v17 objectForKeyedSubscript:*MEMORY[0x277D0A768]];
+      metadata2 = [location[0] metadata];
+      v16 = [metadata2 objectForKeyedSubscript:*MEMORY[0x277D0A768]];
       v15 = MEMORY[0x20F2E8470]([v16 integerValue]);
       v10 = MEMORY[0x277D82BE0](v15);
       v29 = v10;
       v11 = v36;
       v9 = v34;
-      v14 = [MEMORY[0x277CCDAB0] meterUnit];
+      meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
       [v9 doubleValueForUnit:?];
       __os_log_helper_16_2_4_8_64_8_0_8_0_8_0(v48, v10, v11, v8, v37);
       _os_log_impl(&dword_20AEA4000, log, type, "[workoutmilestone] Presented workout distance milestone alert with measurementSystem=%@, milestoneNumber=%lu, distanceValue=%f, timeIntervalSinceLastAlert=%f", v48, 0x2Au);
-      MEMORY[0x277D82BD8](v14);
+      MEMORY[0x277D82BD8](meterUnit);
       MEMORY[0x277D82BD8](v15);
       MEMORY[0x277D82BD8](v16);
-      MEMORY[0x277D82BD8](v17);
+      MEMORY[0x277D82BD8](metadata2);
       objc_storeStrong(&v29, 0);
     }
 
@@ -218,48 +218,48 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (double)milestoneDistanceForSplit:(id)a3
+- (double)milestoneDistanceForSplit:(id)split
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [location[0] metadata];
-  v7 = [v8 objectForKeyedSubscript:*MEMORY[0x277D0A770]];
-  v6 = [MEMORY[0x277CCDAB0] meterUnit];
+  objc_storeStrong(location, split);
+  metadata = [location[0] metadata];
+  v7 = [metadata objectForKeyedSubscript:*MEMORY[0x277D0A770]];
+  meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
   [v7 doubleValueForUnit:?];
   v9 = v3;
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](meterUnit);
   MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
-  v12 = [location[0] metadata];
-  v11 = [v12 objectForKeyedSubscript:*MEMORY[0x277D0A760]];
-  v10 = [MEMORY[0x277CCDAB0] meterUnit];
+  MEMORY[0x277D82BD8](metadata);
+  metadata2 = [location[0] metadata];
+  v11 = [metadata2 objectForKeyedSubscript:*MEMORY[0x277D0A760]];
+  meterUnit2 = [MEMORY[0x277CCDAB0] meterUnit];
   [v11 doubleValueForUnit:?];
   v13 = v4;
-  MEMORY[0x277D82BD8](v10);
+  MEMORY[0x277D82BD8](meterUnit2);
   MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
+  MEMORY[0x277D82BD8](metadata2);
   objc_storeStrong(location, 0);
   return (v9 / v13) * v13;
 }
 
-- (unint64_t)milestoneNumberForSplit:(id)a3
+- (unint64_t)milestoneNumberForSplit:(id)split
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = [location[0] metadata];
-  v8 = [v9 objectForKeyedSubscript:*MEMORY[0x277D0A770]];
-  v7 = [MEMORY[0x277CCDAB0] meterUnit];
+  objc_storeStrong(location, split);
+  metadata = [location[0] metadata];
+  v8 = [metadata objectForKeyedSubscript:*MEMORY[0x277D0A770]];
+  meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
   [v8 doubleValueForUnit:?];
   v10 = v3;
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](meterUnit);
   MEMORY[0x277D82BD8](v8);
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](metadata);
   v17 = v10;
-  v16 = [(NLSessionActivitySplitsTracker *)v19 isUnitMetricFor:location[0]];
+  v16 = [(NLSessionActivitySplitsTracker *)selfCopy isUnitMetricFor:location[0]];
   v13 = 0;
   v11 = 0;
   if (v16)
@@ -271,15 +271,15 @@
 
   else
   {
-    v12 = [MEMORY[0x277CCDAB0] mileUnit];
+    mileUnit = [MEMORY[0x277CCDAB0] mileUnit];
     v11 = 1;
-    v4 = MEMORY[0x277D82BE0](v12);
+    v4 = MEMORY[0x277D82BE0](mileUnit);
   }
 
   v15 = v4;
   if (v11)
   {
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](mileUnit);
   }
 
   if (v13)
@@ -287,59 +287,59 @@
     MEMORY[0x277D82BD8](v14);
   }
 
-  v6 = NLMilestoneForDistance(v19->_activityType, v15, v17);
+  v6 = NLMilestoneForDistance(selfCopy->_activityType, v15, v17);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
   return v6;
 }
 
-- (void)updateLastMilestoneWithSplit:(id)a3
+- (void)updateLastMilestoneWithSplit:(id)split
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  builder = v11->_builder;
-  v8 = [location[0] dateInterval];
-  v7 = [v8 endDate];
+  objc_storeStrong(location, split);
+  builder = selfCopy->_builder;
+  dateInterval = [location[0] dateInterval];
+  endDate = [dateInterval endDate];
   [(HKWorkoutBuilder *)builder elapsedTimeAtDate:?];
   v9 = v3;
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
-  if ([(NLSessionActivitySplitsTracker *)v11 isUnitMetricFor:location[0]])
+  MEMORY[0x277D82BD8](endDate);
+  MEMORY[0x277D82BD8](dateInterval);
+  if ([(NLSessionActivitySplitsTracker *)selfCopy isUnitMetricFor:location[0]])
   {
-    v4 = [(NLSessionActivitySplitsTracker *)v11 milestoneNumberForSplit:location[0]];
-    v11->_lastMetricMilestone = v4;
-    v11->_lastMetricMilestoneDuration = v9;
+    v4 = [(NLSessionActivitySplitsTracker *)selfCopy milestoneNumberForSplit:location[0]];
+    selfCopy->_lastMetricMilestone = v4;
+    selfCopy->_lastMetricMilestoneDuration = v9;
   }
 
   else
   {
-    v5 = [(NLSessionActivitySplitsTracker *)v11 milestoneNumberForSplit:location[0]];
-    v11->_lastImperialMilestone = v5;
-    v11->_lastImperialMilestoneDuration = v9;
+    v5 = [(NLSessionActivitySplitsTracker *)selfCopy milestoneNumberForSplit:location[0]];
+    selfCopy->_lastImperialMilestone = v5;
+    selfCopy->_lastImperialMilestoneDuration = v9;
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)updateDistanceUnit:(id)a3
+- (void)updateDistanceUnit:(id)unit
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_distanceUnit, location[0]);
+  objc_storeStrong(location, unit);
+  objc_storeStrong(&selfCopy->_distanceUnit, location[0]);
   objc_storeStrong(location, 0);
 }
 
-- (void)recoverStateFromWorkoutEvents:(id)a3
+- (void)recoverStateFromWorkoutEvents:(id)events
 {
   v53 = *MEMORY[0x277D85DE8];
-  v46 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, events);
   _HKInitializeLogging();
   v44 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v43 = OS_LOG_TYPE_DEFAULT;
@@ -354,7 +354,7 @@
   objc_storeStrong(&v44, 0);
   v20 = MEMORY[0x20F2E8440](location[0], 1);
   v41 = [v20 mutableCopy];
-  if ([v41 count] >= v46->_splitsPerMilestone)
+  if ([v41 count] >= selfCopy->_splitsPerMilestone)
   {
     _HKInitializeLogging();
     v40 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -367,12 +367,12 @@
 
     objc_storeStrong(&v40, 0);
     [v41 sortUsingComparator:&__block_literal_global_8];
-    v17 = v46;
-    v18 = [v41 lastObject];
+    v17 = selfCopy;
+    lastObject = [v41 lastObject];
     v19 = [(NLSessionActivitySplitsTracker *)v17 milestoneNumberForSplit:?];
-    *&v3 = MEMORY[0x277D82BD8](v18).n128_u64[0];
+    *&v3 = MEMORY[0x277D82BD8](lastObject).n128_u64[0];
     v38 = v19;
-    v37 = v19 * v46->_splitsPerMilestone - 1;
+    v37 = v19 * selfCopy->_splitsPerMilestone - 1;
     if (v37 >= [v41 count])
     {
       _HKInitializeLogging();
@@ -400,21 +400,21 @@
       }
 
       objc_storeStrong(&oslog, 0);
-      v46->_lastMetricMilestone = v38;
-      builder = v46->_builder;
-      v16 = [v36 dateInterval];
-      v15 = [v16 endDate];
+      selfCopy->_lastMetricMilestone = v38;
+      builder = selfCopy->_builder;
+      dateInterval = [v36 dateInterval];
+      endDate = [dateInterval endDate];
       [(HKWorkoutBuilder *)builder elapsedTimeAtDate:?];
-      v46->_lastMetricMilestoneDuration = v4;
-      MEMORY[0x277D82BD8](v15);
-      MEMORY[0x277D82BD8](v16);
+      selfCopy->_lastMetricMilestoneDuration = v4;
+      MEMORY[0x277D82BD8](endDate);
+      MEMORY[0x277D82BD8](dateInterval);
       objc_storeStrong(&v36, 0);
     }
   }
 
   v13 = MEMORY[0x20F2E8440](location[0], 2);
   v31 = [v13 mutableCopy];
-  if ([v31 count] >= v46->_splitsPerMilestone)
+  if ([v31 count] >= selfCopy->_splitsPerMilestone)
   {
     _HKInitializeLogging();
     v30 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -427,12 +427,12 @@
 
     objc_storeStrong(&v30, 0);
     [v31 sortUsingComparator:&__block_literal_global_301];
-    v10 = v46;
-    v11 = [v31 lastObject];
+    v10 = selfCopy;
+    lastObject2 = [v31 lastObject];
     v12 = [(NLSessionActivitySplitsTracker *)v10 milestoneNumberForSplit:?];
-    *&v5 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+    *&v5 = MEMORY[0x277D82BD8](lastObject2).n128_u64[0];
     v28 = v12;
-    v27 = v12 * v46->_splitsPerMilestone - 1;
+    v27 = v12 * selfCopy->_splitsPerMilestone - 1;
     if (v27 >= [v31 count])
     {
       _HKInitializeLogging();
@@ -459,14 +459,14 @@
       }
 
       objc_storeStrong(&v25, 0);
-      v46->_lastImperialMilestone = v28;
-      v7 = v46->_builder;
-      v9 = [v26 dateInterval];
-      v8 = [v9 endDate];
+      selfCopy->_lastImperialMilestone = v28;
+      v7 = selfCopy->_builder;
+      dateInterval2 = [v26 dateInterval];
+      endDate2 = [dateInterval2 endDate];
       [(HKWorkoutBuilder *)v7 elapsedTimeAtDate:?];
-      v46->_lastImperialMilestoneDuration = v6;
-      MEMORY[0x277D82BD8](v8);
-      MEMORY[0x277D82BD8](v9);
+      selfCopy->_lastImperialMilestoneDuration = v6;
+      MEMORY[0x277D82BD8](endDate2);
+      MEMORY[0x277D82BD8](dateInterval2);
       objc_storeStrong(&v26, 0);
     }
   }

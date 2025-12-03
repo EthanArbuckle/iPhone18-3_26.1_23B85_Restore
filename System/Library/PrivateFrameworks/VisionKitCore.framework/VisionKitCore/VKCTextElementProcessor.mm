@@ -1,22 +1,22 @@
 @interface VKCTextElementProcessor
-+ (id)dataDetectorElementFromVNBarcodeObservation:(id)a3 loggingIndex:(int64_t)a4;
-+ (id)dataDetectorsFromCRDocumentOutputRegion:(id)a3 shouldFilter:(BOOL)a4;
-+ (id)textElementsFromCRDocumentOutputRegion:(id)a3;
-+ (void)addGroupingToDataDetectors:(id)a3 parentDocument:(id)a4;
++ (id)dataDetectorElementFromVNBarcodeObservation:(id)observation loggingIndex:(int64_t)index;
++ (id)dataDetectorsFromCRDocumentOutputRegion:(id)region shouldFilter:(BOOL)filter;
++ (id)textElementsFromCRDocumentOutputRegion:(id)region;
++ (void)addGroupingToDataDetectors:(id)detectors parentDocument:(id)document;
 @end
 
 @implementation VKCTextElementProcessor
 
-+ (id)textElementsFromCRDocumentOutputRegion:(id)a3
++ (id)textElementsFromCRDocumentOutputRegion:(id)region
 {
-  v3 = a3;
-  v4 = [v3 contentsWithTypes:8];
+  regionCopy = region;
+  v4 = [regionCopy contentsWithTypes:8];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__VKCTextElementProcessor_textElementsFromCRDocumentOutputRegion___block_invoke;
   v11[3] = &unk_1E7BE4AE0;
-  v12 = v3;
-  v5 = v3;
+  v12 = regionCopy;
+  v5 = regionCopy;
   v6 = [v4 vk_compactMap:v11];
   v7 = v6;
   if (v6)
@@ -34,9 +34,9 @@
   return v8;
 }
 
-+ (id)dataDetectorsFromCRDocumentOutputRegion:(id)a3 shouldFilter:(BOOL)a4
++ (id)dataDetectorsFromCRDocumentOutputRegion:(id)region shouldFilter:(BOOL)filter
 {
-  v6 = a3;
+  regionCopy = region;
   v7 = [MEMORY[0x1E695DF00] now];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v27 = 0;
@@ -61,18 +61,18 @@
   v18 = 3221225472;
   v19 = __80__VKCTextElementProcessor_dataDetectorsFromCRDocumentOutputRegion_shouldFilter___block_invoke;
   v20 = &unk_1E7BE4B08;
-  v25 = a4;
+  filterCopy = filter;
   v24 = v9;
   v21 = v7;
   v11 = v8;
   v22 = v11;
-  v12 = v6;
+  v12 = regionCopy;
   v23 = v12;
   v13 = v7;
   [v12 enumerateContentsWithTypes:2048 usingBlock:&v17];
   if (vk_supportsContextAwareDataDetectors())
   {
-    [a1 addGroupingToDataDetectors:v11 parentDocument:{v12, v17, v18, v19, v20, v21, v22}];
+    [self addGroupingToDataDetectors:v11 parentDocument:{v12, v17, v18, v19, v20, v21, v22}];
   }
 
   v14 = v23;
@@ -96,10 +96,10 @@ void __80__VKCTextElementProcessor_dataDetectorsFromCRDocumentOutputRegion_shoul
   }
 }
 
-+ (void)addGroupingToDataDetectors:(id)a3 parentDocument:(id)a4
++ (void)addGroupingToDataDetectors:(id)detectors parentDocument:(id)document
 {
-  v5 = a3;
-  v6 = a4;
+  detectorsCopy = detectors;
+  documentCopy = document;
   v7 = objc_alloc_init(MEMORY[0x1E696AD18]);
   v42 = 0;
   v43 = &v42;
@@ -216,12 +216,12 @@ LABEL_17:
   v31 = v10;
   v32 = v13;
   v33 = v16;
-  v34 = v6;
+  v34 = documentCopy;
   v35 = v19;
   v20 = v7;
   v36 = v20;
   v21 = v19;
-  v22 = v6;
+  v22 = documentCopy;
   v23 = v16;
   v24 = v13;
   v25 = v10;
@@ -232,7 +232,7 @@ LABEL_17:
   v28[3] = &unk_1E7BE4BA0;
   v29 = v20;
   v26 = v20;
-  [v5 enumerateObjectsUsingBlock:v28];
+  [detectorsCopy enumerateObjectsUsingBlock:v28];
 }
 
 void __69__VKCTextElementProcessor_addGroupingToDataDetectors_parentDocument___block_invoke(uint64_t a1, void *a2)
@@ -278,10 +278,10 @@ void __69__VKCTextElementProcessor_addGroupingToDataDetectors_parentDocument___b
   [v3 setGroupedElementData:v4];
 }
 
-+ (id)dataDetectorElementFromVNBarcodeObservation:(id)a3 loggingIndex:(int64_t)a4
++ (id)dataDetectorElementFromVNBarcodeObservation:(id)observation loggingIndex:(int64_t)index
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  observationCopy = observation;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2050000000;
@@ -300,7 +300,7 @@ void __69__VKCTextElementProcessor_addGroupingToDataDetectors_parentDocument___b
 
   v7 = v6;
   _Block_object_dispose(&v27, 8);
-  v8 = [v6 detectedCodeWithBarcodeObservation:v5];
+  v8 = [v6 detectedCodeWithBarcodeObservation:observationCopy];
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -315,12 +315,12 @@ void __69__VKCTextElementProcessor_addGroupingToDataDetectors_parentDocument___b
   v32 = 0;
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v10 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.processing");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v40 = a4;
+      indexCopy2 = index;
       _os_log_impl(&dword_1B4335000, v10, OS_LOG_TYPE_DEFAULT, "Beginning MRC Parsing of element %ld", buf, 0xCu);
     }
 
@@ -336,15 +336,15 @@ void __69__VKCTextElementProcessor_addGroupingToDataDetectors_parentDocument___b
     [v8 parseCodeWithCompletion:v23];
     v13 = dispatch_time(0, 3000000000);
     dispatch_semaphore_wait(v12, v13);
-    v14 = [MEMORY[0x1E695DF00] date];
-    [v14 timeIntervalSinceDate:v9];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSinceDate:date];
     v16 = v15;
 
     v17 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.processing");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v40 = a4;
+      indexCopy2 = index;
       v41 = 2048;
       v42 = v16;
       _os_log_impl(&dword_1B4335000, v17, OS_LOG_TYPE_DEFAULT, "Completed MRC Parsing of element %ld. Total Time: %f", buf, 0x16u);
@@ -362,8 +362,8 @@ void __69__VKCTextElementProcessor_addGroupingToDataDetectors_parentDocument___b
 
   else
   {
-    v9 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.processing");
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    date = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.processing");
+    if (os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
     {
       +[VKCTextElementProcessor dataDetectorElementFromVNBarcodeObservation:loggingIndex:];
     }
@@ -372,7 +372,7 @@ void __69__VKCTextElementProcessor_addGroupingToDataDetectors_parentDocument___b
   if (*(v34 + 40))
   {
     v19 = [VKCMRCDataDetectorElement alloc];
-    v20 = [(VKCMRCDataDetectorElement *)v19 initWithBarcodeObservation:v5 action:*(v34 + 40)];
+    v20 = [(VKCMRCDataDetectorElement *)v19 initWithBarcodeObservation:observationCopy action:*(v34 + 40)];
   }
 
   else

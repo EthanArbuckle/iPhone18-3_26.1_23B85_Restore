@@ -1,39 +1,39 @@
 @interface TDPhotoshopElementProduction
-+ (unsigned)sliceColumnsPerRendition:(int64_t)a3;
-+ (unsigned)sliceRowsPerRendition:(int64_t)a3;
-- (BOOL)generateRenditionsWithEntityName:(id)a3 document:(id)a4 errorDescription:(id *)a5;
-- (id)_layerMappingForPhotoshopLayer:(int64_t)a3 drawingLayer:(int64_t)a4;
-- (id)associatedFileURLWithDocument:(id)a3;
-- (id)auxiliary1MetricsMaskWithDocument:(id)a3;
-- (id)auxiliary2MetricsMaskWithDocument:(id)a3;
++ (unsigned)sliceColumnsPerRendition:(int64_t)rendition;
++ (unsigned)sliceRowsPerRendition:(int64_t)rendition;
+- (BOOL)generateRenditionsWithEntityName:(id)name document:(id)document errorDescription:(id *)description;
+- (id)_layerMappingForPhotoshopLayer:(int64_t)layer drawingLayer:(int64_t)drawingLayer;
+- (id)associatedFileURLWithDocument:(id)document;
+- (id)auxiliary1MetricsMaskWithDocument:(id)document;
+- (id)auxiliary2MetricsMaskWithDocument:(id)document;
 - (id)baseKeySpec;
-- (id)baselineMetricsMaskWithDocument:(id)a3;
+- (id)baselineMetricsMaskWithDocument:(id)document;
 - (id)columnCount;
 - (id)columnIterationType;
 - (id)copyDataFromAttributes;
 - (id)dataFromAttributes;
-- (id)edgeMetricsMaskWithDocument:(id)a3;
+- (id)edgeMetricsMaskWithDocument:(id)document;
 - (id)isActive;
 - (id)log;
-- (id)psdImageRefWithDocument:(id)a3;
+- (id)psdImageRefWithDocument:(id)document;
 - (id)relativePath;
 - (id)rowCount;
 - (id)rowIterationType;
-- (id)textMetricsMaskWithDocument:(id)a3;
-- (void)_loadMetricsMasksWithDocument:(id)a3;
-- (void)addDrawingLayerIndex:(id)a3 themeLayer:(id)a4 toIndices:(id)a5 layers:(id)a6 lowestIndex:(int64_t *)a7;
-- (void)appendToLog:(id)a3;
-- (void)copyAttributesInto:(id)a3;
+- (id)textMetricsMaskWithDocument:(id)document;
+- (void)_loadMetricsMasksWithDocument:(id)document;
+- (void)addDrawingLayerIndex:(id)index themeLayer:(id)layer toIndices:(id)indices layers:(id)layers lowestIndex:(int64_t *)lowestIndex;
+- (void)appendToLog:(id)log;
+- (void)copyAttributesInto:(id)into;
 - (void)dealloc;
-- (void)deleteRenditionsInDocument:(id)a3 shouldDeleteAssetFiles:(BOOL)a4;
-- (void)getDrawingLayerIndices:(id *)a3 themeLayers:(id *)a4 lowestIndex:(int64_t *)a5;
-- (void)setAttributesFromCopyData:(id)a3;
-- (void)setAttributesFromData:(id)a3;
-- (void)setColumnCount:(id)a3;
-- (void)setColumnIterationType:(id)a3;
-- (void)setIsActive:(id)a3;
-- (void)setRowCount:(id)a3;
-- (void)setRowIterationType:(id)a3;
+- (void)deleteRenditionsInDocument:(id)document shouldDeleteAssetFiles:(BOOL)files;
+- (void)getDrawingLayerIndices:(id *)indices themeLayers:(id *)layers lowestIndex:(int64_t *)index;
+- (void)setAttributesFromCopyData:(id)data;
+- (void)setAttributesFromData:(id)data;
+- (void)setColumnCount:(id)count;
+- (void)setColumnIterationType:(id)type;
+- (void)setIsActive:(id)active;
+- (void)setRowCount:(id)count;
+- (void)setRowIterationType:(id)type;
 @end
 
 @implementation TDPhotoshopElementProduction
@@ -63,10 +63,10 @@
   }
 }
 
-- (void)setRowCount:(id)a3
+- (void)setRowCount:(id)count
 {
   [(TDPhotoshopElementProduction *)self willChangeValueForKey:@"rowCount"];
-  [(TDPhotoshopElementProduction *)self setPrimitiveValue:a3 forKey:@"rowCount"];
+  [(TDPhotoshopElementProduction *)self setPrimitiveValue:count forKey:@"rowCount"];
 
   [(TDPhotoshopElementProduction *)self didChangeValueForKey:@"rowCount"];
 }
@@ -89,10 +89,10 @@
   }
 }
 
-- (void)setColumnCount:(id)a3
+- (void)setColumnCount:(id)count
 {
   [(TDPhotoshopElementProduction *)self willChangeValueForKey:@"columnCount"];
-  [(TDPhotoshopElementProduction *)self setPrimitiveValue:a3 forKey:@"columnCount"];
+  [(TDPhotoshopElementProduction *)self setPrimitiveValue:count forKey:@"columnCount"];
 
   [(TDPhotoshopElementProduction *)self didChangeValueForKey:@"columnCount"];
 }
@@ -129,103 +129,103 @@
   return v3;
 }
 
-- (void)setIsActive:(id)a3
+- (void)setIsActive:(id)active
 {
   [(TDPhotoshopElementProduction *)self willChangeValueForKey:@"isActive"];
-  [(TDPhotoshopElementProduction *)self setPrimitiveValue:a3 forKey:@"isActive"];
+  [(TDPhotoshopElementProduction *)self setPrimitiveValue:active forKey:@"isActive"];
 
   [(TDPhotoshopElementProduction *)self didChangeValueForKey:@"isActive"];
 }
 
-- (void)setColumnIterationType:(id)a3
+- (void)setColumnIterationType:(id)type
 {
   [(TDPhotoshopElementProduction *)self willChangeValueForKey:@"columnIterationType"];
-  [(TDPhotoshopElementProduction *)self setPrimitiveValue:a3 forKey:@"columnIterationType"];
+  [(TDPhotoshopElementProduction *)self setPrimitiveValue:type forKey:@"columnIterationType"];
 
   [(TDPhotoshopElementProduction *)self didChangeValueForKey:@"columnIterationType"];
 }
 
-- (void)setRowIterationType:(id)a3
+- (void)setRowIterationType:(id)type
 {
   [(TDPhotoshopElementProduction *)self willChangeValueForKey:@"rowIterationType"];
-  [(TDPhotoshopElementProduction *)self setPrimitiveValue:a3 forKey:@"rowIterationType"];
+  [(TDPhotoshopElementProduction *)self setPrimitiveValue:type forKey:@"rowIterationType"];
 
   [(TDPhotoshopElementProduction *)self didChangeValueForKey:@"rowIterationType"];
 }
 
 - (id)relativePath
 {
-  v2 = [(TDPhotoshopElementProduction *)self asset];
+  asset = [(TDPhotoshopElementProduction *)self asset];
 
-  return [v2 sourceRelativePath];
+  return [asset sourceRelativePath];
 }
 
-- (id)associatedFileURLWithDocument:(id)a3
+- (id)associatedFileURLWithDocument:(id)document
 {
-  v4 = [(TDPhotoshopElementProduction *)self asset];
+  asset = [(TDPhotoshopElementProduction *)self asset];
 
-  return [v4 fileURLWithDocument:a3];
+  return [asset fileURLWithDocument:document];
 }
 
-+ (unsigned)sliceRowsPerRendition:(int64_t)a3
++ (unsigned)sliceRowsPerRendition:(int64_t)rendition
 {
-  if (a3 > 3)
+  if (rendition > 3)
   {
     return -1;
   }
 
   else
   {
-    return dword_247A49330[a3];
+    return dword_247A49330[rendition];
   }
 }
 
-+ (unsigned)sliceColumnsPerRendition:(int64_t)a3
++ (unsigned)sliceColumnsPerRendition:(int64_t)rendition
 {
-  if (a3 > 3)
+  if (rendition > 3)
   {
     return -1;
   }
 
   else
   {
-    return dword_247A49340[a3];
+    return dword_247A49340[rendition];
   }
 }
 
-- (void)addDrawingLayerIndex:(id)a3 themeLayer:(id)a4 toIndices:(id)a5 layers:(id)a6 lowestIndex:(int64_t *)a7
+- (void)addDrawingLayerIndex:(id)index themeLayer:(id)layer toIndices:(id)indices layers:(id)layers lowestIndex:(int64_t *)lowestIndex
 {
-  if ([a3 integerValue] >= 1)
+  if ([index integerValue] >= 1)
   {
-    if ([a3 integerValue] < *a7)
+    if ([index integerValue] < *lowestIndex)
     {
-      *a7 = [a3 integerValue];
+      *lowestIndex = [index integerValue];
     }
 
-    if ([a5 containsObject:a3])
+    if ([indices containsObject:index])
     {
-      NSLog(&cfstr_ErrorPhotoshop.isa, a3, self);
+      NSLog(&cfstr_ErrorPhotoshop.isa, index, self);
     }
 
     else
     {
-      [a5 addObject:a3];
+      [indices addObject:index];
 
-      [a6 addObject:a4];
+      [layers addObject:layer];
     }
   }
 }
 
-- (void)getDrawingLayerIndices:(id *)a3 themeLayers:(id *)a4 lowestIndex:(int64_t *)a5
+- (void)getDrawingLayerIndices:(id *)indices themeLayers:(id *)layers lowestIndex:(int64_t *)index
 {
   v20 = *MEMORY[0x277D85DE8];
-  *a5 = 0x7FFFFFFFFFFFFFFFLL;
-  v9 = [(TDPhotoshopElementProduction *)self layerMappings];
+  *index = 0x7FFFFFFFFFFFFFFFLL;
+  layerMappings = [(TDPhotoshopElementProduction *)self layerMappings];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v10 = [layerMappings countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -237,15 +237,15 @@
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(layerMappings);
         }
 
-        -[TDPhotoshopElementProduction addDrawingLayerIndex:themeLayer:toIndices:layers:lowestIndex:](self, "addDrawingLayerIndex:themeLayer:toIndices:layers:lowestIndex:", [*(*(&v15 + 1) + 8 * v13) photoshopLayerIndex], objc_msgSend(*(*(&v15 + 1) + 8 * v13), "themeDrawingLayer"), *a3, *a4, a5);
+        -[TDPhotoshopElementProduction addDrawingLayerIndex:themeLayer:toIndices:layers:lowestIndex:](self, "addDrawingLayerIndex:themeLayer:toIndices:layers:lowestIndex:", [*(*(&v15 + 1) + 8 * v13) photoshopLayerIndex], objc_msgSend(*(*(&v15 + 1) + 8 * v13), "themeDrawingLayer"), *indices, *layers, index);
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [layerMappings countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
@@ -254,25 +254,25 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)psdImageRefWithDocument:(id)a3
+- (id)psdImageRefWithDocument:(id)document
 {
-  if (!self->psdImageRef || self->_cachedImageDate && [-[TDElementProduction associatedFileModificationDateWithDocument:](self associatedFileModificationDateWithDocument:{a3), "compare:", self->_cachedImageDate}] == 1)
+  if (!self->psdImageRef || self->_cachedImageDate && [-[TDElementProduction associatedFileModificationDateWithDocument:](self associatedFileModificationDateWithDocument:{document), "compare:", self->_cachedImageDate}] == 1)
   {
-    self->psdImageRef = [objc_alloc(MEMORY[0x277D026C0]) initWithPath:{objc_msgSend(objc_msgSend(-[TDPhotoshopElementProduction asset](self, "asset"), "fileURLWithDocument:", a3), "path")}];
+    self->psdImageRef = [objc_alloc(MEMORY[0x277D026C0]) initWithPath:{objc_msgSend(objc_msgSend(-[TDPhotoshopElementProduction asset](self, "asset"), "fileURLWithDocument:", document), "path")}];
     cachedImageDate = self->_cachedImageDate;
     if (cachedImageDate)
     {
     }
 
-    self->_cachedImageDate = [-[TDElementProduction associatedFileModificationDateWithDocument:](self associatedFileModificationDateWithDocument:{a3), "copy"}];
+    self->_cachedImageDate = [-[TDElementProduction associatedFileModificationDateWithDocument:](self associatedFileModificationDateWithDocument:{document), "copy"}];
   }
 
   return self->psdImageRef;
 }
 
-- (void)_loadMetricsMasksWithDocument:(id)a3
+- (void)_loadMetricsMasksWithDocument:(id)document
 {
-  v4 = [(TDPhotoshopElementProduction *)self psdImageRefWithDocument:a3];
+  v4 = [(TDPhotoshopElementProduction *)self psdImageRefWithDocument:document];
   if (!self->_edgeMetricsMask)
   {
     v5 = v4;
@@ -314,51 +314,51 @@
   self->_didCheckForMetricsMasks = 1;
 }
 
-- (id)edgeMetricsMaskWithDocument:(id)a3
+- (id)edgeMetricsMaskWithDocument:(id)document
 {
   if (!self->_didCheckForMetricsMasks)
   {
-    [(TDPhotoshopElementProduction *)self _loadMetricsMasksWithDocument:a3];
+    [(TDPhotoshopElementProduction *)self _loadMetricsMasksWithDocument:document];
   }
 
   return self->_edgeMetricsMask;
 }
 
-- (id)textMetricsMaskWithDocument:(id)a3
+- (id)textMetricsMaskWithDocument:(id)document
 {
   if (!self->_didCheckForMetricsMasks)
   {
-    [(TDPhotoshopElementProduction *)self _loadMetricsMasksWithDocument:a3];
+    [(TDPhotoshopElementProduction *)self _loadMetricsMasksWithDocument:document];
   }
 
   return self->_textMetricsMask;
 }
 
-- (id)baselineMetricsMaskWithDocument:(id)a3
+- (id)baselineMetricsMaskWithDocument:(id)document
 {
   if (!self->_didCheckForMetricsMasks)
   {
-    [(TDPhotoshopElementProduction *)self _loadMetricsMasksWithDocument:a3];
+    [(TDPhotoshopElementProduction *)self _loadMetricsMasksWithDocument:document];
   }
 
   return self->_baselineMetricsMask;
 }
 
-- (id)auxiliary1MetricsMaskWithDocument:(id)a3
+- (id)auxiliary1MetricsMaskWithDocument:(id)document
 {
   if (!self->_didCheckForMetricsMasks)
   {
-    [(TDPhotoshopElementProduction *)self _loadMetricsMasksWithDocument:a3];
+    [(TDPhotoshopElementProduction *)self _loadMetricsMasksWithDocument:document];
   }
 
   return self->_auxiliary1MetricsMask;
 }
 
-- (id)auxiliary2MetricsMaskWithDocument:(id)a3
+- (id)auxiliary2MetricsMaskWithDocument:(id)document
 {
   if (!self->_didCheckForMetricsMasks)
   {
-    [(TDPhotoshopElementProduction *)self _loadMetricsMasksWithDocument:a3];
+    [(TDPhotoshopElementProduction *)self _loadMetricsMasksWithDocument:document];
   }
 
   return self->_auxiliary2MetricsMask;
@@ -377,14 +377,14 @@
   return log;
 }
 
-- (void)appendToLog:(id)a3
+- (void)appendToLog:(id)log
 {
   if (!appendToLog__attributes)
   {
     appendToLog__attributes = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
   }
 
-  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:a3 locale:0 arguments:&v11];
+  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:log locale:0 arguments:&v11];
   v6 = appendToLog__messageIndex++;
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d - ", v6];
   v8 = objc_alloc(MEMORY[0x277CCAB48]);
@@ -395,11 +395,11 @@
   [(TDPhotoshopElementProduction *)self setValue:v9 forKey:@"log"];
 }
 
-- (BOOL)generateRenditionsWithEntityName:(id)a3 document:(id)a4 errorDescription:(id *)a5
+- (BOOL)generateRenditionsWithEntityName:(id)name document:(id)document errorDescription:(id *)description
 {
-  if (!a3)
+  if (!name)
   {
-    v15 = [&stru_28599CA78 stringByAppendingString:@"ERROR: Null entityName passed to generateRenditionsWithEntityName"];
+    name = [&stru_28599CA78 stringByAppendingString:@"ERROR: Null entityName passed to generateRenditionsWithEntityName"];
     goto LABEL_8;
   }
 
@@ -407,29 +407,29 @@
   v72 = NSClassFromString([v73 managedObjectClassName]);
   if (![(objc_class *)v72 isSubclassOfClass:objc_opt_class()])
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Entity %@ passed to TDPhotoshopElementProduction -generateRenditionsWithEntityName: is not TDPhotoshopRenditionSpec subclass", a3];
+    name = [MEMORY[0x277CCACA8] stringWithFormat:@"Entity %@ passed to TDPhotoshopElementProduction -generateRenditionsWithEntityName: is not TDPhotoshopRenditionSpec subclass", name];
 LABEL_8:
-    v16 = v15;
-    NSLog(&stru_28599C078.isa, v15);
-    if (a5)
+    v16 = name;
+    NSLog(&stru_28599C078.isa, name);
+    if (description)
     {
       result = 0;
-      *a5 = v16;
+      *description = v16;
       return result;
     }
 
     return 0;
   }
 
-  v8 = [(TDPhotoshopElementProduction *)self psdImageRefWithDocument:a4];
+  v8 = [(TDPhotoshopElementProduction *)self psdImageRefWithDocument:document];
   if (!v8)
   {
-    if (a5)
+    if (description)
     {
       result = 0;
       v18 = @"ERROR: Invalid Photoshop PSD file";
 LABEL_16:
-      *a5 = v18;
+      *description = v18;
       return result;
     }
 
@@ -456,10 +456,10 @@ LABEL_16:
 
   v64 = v11;
   v19 = v12;
-  v20 = [v9 numberOfSlices];
+  numberOfSlices = [v9 numberOfSlices];
   if (v19 > 8 || ((1 << v19) & 0x160) == 0)
   {
-    v27 = (v20 - 1);
+    v27 = (numberOfSlices - 1);
     v28 = v11 * v10 * [objc_opt_class() sliceRowsPerRendition:v19];
     v29 = v28 * [objc_opt_class() sliceColumnsPerRendition:v19];
     if (v27 != v29)
@@ -484,7 +484,7 @@ LABEL_16:
       v14 = [(__CFString *)v30 stringByAppendingString:v31];
 LABEL_14:
       v18 = v14;
-      if (a5)
+      if (description)
       {
         result = 0;
         goto LABEL_16;
@@ -498,42 +498,42 @@ LABEL_23:
 
   v62 = v10;
   v78[0] = [MEMORY[0x277CBEB18] array];
-  v77 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v76 = 0x7FFFFFFFFFFFFFFFLL;
-  [(TDPhotoshopElementProduction *)self getDrawingLayerIndices:v78 themeLayers:&v77 lowestIndex:&v76];
+  [(TDPhotoshopElementProduction *)self getDrawingLayerIndices:v78 themeLayers:&array lowestIndex:&v76];
   v71 = [-[TDPhotoshopElementProduction partDefinition](self "partDefinition")];
   v76 = [v71 count];
   v74 = [v78[0] count];
-  v21 = [v9 numberOfLayers];
-  v22 = v21;
+  numberOfLayers = [v9 numberOfLayers];
+  v22 = numberOfLayers;
   v23 = v76;
   v24 = v9;
   v66 = v19;
   if (v76 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v68 = 0;
-    v76 = v21;
+    layerNames = 0;
+    v76 = numberOfLayers;
     v25 = &stru_28599CA78;
-    v23 = v21;
+    v23 = numberOfLayers;
   }
 
-  else if (v76 >= v21)
+  else if (v76 >= numberOfLayers)
   {
-    v68 = 0;
+    layerNames = 0;
     v25 = &stru_28599CA78;
   }
 
   else
   {
-    v68 = 0;
+    layerNames = 0;
     v25 = &stru_28599CA78;
     do
     {
       if (([v78[0] containsObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", v23)}] & 1) == 0)
       {
-        if (!v68)
+        if (!layerNames)
         {
-          v68 = [v9 layerNames];
+          layerNames = [v9 layerNames];
         }
 
         if ([(__CFString *)v25 length])
@@ -541,11 +541,11 @@ LABEL_23:
           v25 = [(__CFString *)v25 stringByAppendingString:@"\n"];
         }
 
-        v26 = -[__CFString stringByAppendingString:](v25, "stringByAppendingString:", [MEMORY[0x277CCACA8] stringWithFormat:@"WARNING: Photoshop layer %@ (index %ld) is not assigned to a state or rendition layer", objc_msgSend(v68, "objectAtIndex:", v23), v23]);
+        v26 = -[__CFString stringByAppendingString:](v25, "stringByAppendingString:", [MEMORY[0x277CCACA8] stringWithFormat:@"WARNING: Photoshop layer %@ (index %ld) is not assigned to a state or rendition layer", objc_msgSend(layerNames, "objectAtIndex:", v23), v23]);
         v25 = v26;
-        if (a5)
+        if (description)
         {
-          *a5 = v26;
+          *description = v26;
         }
 
         else
@@ -570,9 +570,9 @@ LABEL_23:
 
     v33 = -[__CFString stringByAppendingString:](v25, "stringByAppendingString:", [MEMORY[0x277CCACA8] stringWithFormat:@"WARNING: State layer count %ld not equal to 1 or 5 or 6", v76]);
     v25 = v33;
-    if (a5)
+    if (description)
     {
-      *a5 = v33;
+      *description = v33;
     }
 
     else
@@ -593,9 +593,9 @@ LABEL_23:
       v42 = v35;
       if ((rint(v40) == 0.0 || rint(v35) == 0.0) && (v70 != i || v76 <= i))
       {
-        if (!v68)
+        if (!layerNames)
         {
-          v68 = [v9 layerNames];
+          layerNames = [v9 layerNames];
         }
 
         if ([(__CFString *)v25 length])
@@ -603,11 +603,11 @@ LABEL_23:
           v25 = [(__CFString *)v25 stringByAppendingString:@"\n"];
         }
 
-        v43 = -[__CFString stringByAppendingString:](v25, "stringByAppendingString:", [MEMORY[0x277CCACA8] stringWithFormat:@"WARNING: Layer %@ (index %ld) has no pixels. Layer bounds of {{%ld, %ld}, {%ld, %ld}}", objc_msgSend(v68, "objectAtIndex:", i), i, v37, v39, v41, v42]);
+        v43 = -[__CFString stringByAppendingString:](v25, "stringByAppendingString:", [MEMORY[0x277CCACA8] stringWithFormat:@"WARNING: Layer %@ (index %ld) has no pixels. Layer bounds of {{%ld, %ld}, {%ld, %ld}}", objc_msgSend(layerNames, "objectAtIndex:", i), i, v37, v39, v41, v42]);
         v25 = v43;
-        if (a5)
+        if (description)
         {
-          *a5 = v43;
+          *description = v43;
         }
 
         else
@@ -668,15 +668,15 @@ LABEL_23:
                   [(objc_class *)v57 setValue:self forKey:@"production"];
                   [-[TDPhotoshopElementProduction mutableSetValueForKey:](self mutableSetValueForKey:{@"renditions", "addObject:", v57}];
                   [(objc_class *)v57 resetToBaseKeySpec];
-                  [(TDPhotoshopElementProduction *)self fillIterationKeyAttribute:[(objc_class *)v57 keySpec] iteration:v44 rowOrColumn:v51 document:a4];
-                  [(TDPhotoshopElementProduction *)self fillIterationKeyAttribute:[(objc_class *)v57 keySpec] iteration:v45 rowOrColumn:v52 document:a4];
+                  [(TDPhotoshopElementProduction *)self fillIterationKeyAttribute:[(objc_class *)v57 keySpec] iteration:v44 rowOrColumn:v51 document:document];
+                  [(TDPhotoshopElementProduction *)self fillIterationKeyAttribute:[(objc_class *)v57 keySpec] iteration:v45 rowOrColumn:v52 document:document];
                   [-[objc_class keySpec](v57 "keySpec")];
                   -[objc_class setValue:forKey:](v57, "setValue:forKey:", [MEMORY[0x277CCABB0] numberWithInt:v51], @"row");
                   -[objc_class setValue:forKey:](v57, "setValue:forKey:", [MEMORY[0x277CCABB0] numberWithInt:v52], @"column");
-                  v58 = [(objc_class *)v57 keySpec];
+                  keySpec = [(objc_class *)v57 keySpec];
                   if (v56 == -1)
                   {
-                    if (![v58 layer])
+                    if (![keySpec layer])
                     {
                       [-[objc_class keySpec](v57 "keySpec")];
                     }
@@ -686,7 +686,7 @@ LABEL_23:
 
                   else
                   {
-                    [v58 setLayer:{objc_msgSend(v77, "objectAtIndex:", v56)}];
+                    [keySpec setLayer:{objc_msgSend(array, "objectAtIndex:", v56)}];
                     v59 = [v78[0] objectAtIndex:v56];
                   }
 
@@ -719,57 +719,57 @@ LABEL_23:
   return 1;
 }
 
-- (void)deleteRenditionsInDocument:(id)a3 shouldDeleteAssetFiles:(BOOL)a4
+- (void)deleteRenditionsInDocument:(id)document shouldDeleteAssetFiles:(BOOL)files
 {
-  v4 = a4;
-  [a3 deleteObjects:{objc_msgSend(-[TDPhotoshopElementProduction renditions](self, "renditions"), "allObjects")}];
-  v7 = [(TDPhotoshopElementProduction *)self asset];
-  v8 = v7;
-  if (v4)
+  filesCopy = files;
+  [document deleteObjects:{objc_msgSend(-[TDPhotoshopElementProduction renditions](self, "renditions"), "allObjects")}];
+  asset = [(TDPhotoshopElementProduction *)self asset];
+  v8 = asset;
+  if (filesCopy)
   {
-    v9 = [v7 fileURLWithDocument:a3];
+    v9 = [asset fileURLWithDocument:document];
     if ([v9 checkResourceIsReachableAndReturnError:0])
     {
-      [a3 assetManagementDelegate];
+      [document assetManagementDelegate];
       if (objc_opt_respondsToSelector())
       {
-        [objc_msgSend(a3 "assetManagementDelegate")];
+        [objc_msgSend(document "assetManagementDelegate")];
       }
 
       [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
-      [a3 assetManagementDelegate];
+      [document assetManagementDelegate];
       if (objc_opt_respondsToSelector())
       {
-        [objc_msgSend(a3 "assetManagementDelegate")];
+        [objc_msgSend(document "assetManagementDelegate")];
       }
     }
   }
 
-  [a3 deleteObject:v8];
+  [document deleteObject:v8];
 }
 
-- (void)copyAttributesInto:(id)a3
+- (void)copyAttributesInto:(id)into
 {
-  [a3 setRenditionType:{-[TDPhotoshopElementProduction renditionType](self, "renditionType")}];
-  [a3 setValue:-[TDPhotoshopElementProduction valueForKey:](self forKey:{"valueForKey:", @"isActive", @"isActive"}];
-  [a3 setValue:-[TDPhotoshopElementProduction valueForKey:](self forKey:{"valueForKey:", @"comment", @"comment"}];
-  [a3 setValue:-[TDPhotoshopElementProduction rowCount](self forKey:{"rowCount"), @"rowCount"}];
-  [a3 setValue:-[TDPhotoshopElementProduction columnCount](self forKey:{"columnCount"), @"columnCount"}];
-  [a3 setValue:-[TDPhotoshopElementProduction valueForKey:](self forKey:{"valueForKey:", @"rowIterationType", @"rowIterationType"}];
-  [a3 setValue:-[TDPhotoshopElementProduction valueForKey:](self forKey:{"valueForKey:", @"columnIterationType", @"columnIterationType"}];
+  [into setRenditionType:{-[TDPhotoshopElementProduction renditionType](self, "renditionType")}];
+  [into setValue:-[TDPhotoshopElementProduction valueForKey:](self forKey:{"valueForKey:", @"isActive", @"isActive"}];
+  [into setValue:-[TDPhotoshopElementProduction valueForKey:](self forKey:{"valueForKey:", @"comment", @"comment"}];
+  [into setValue:-[TDPhotoshopElementProduction rowCount](self forKey:{"rowCount"), @"rowCount"}];
+  [into setValue:-[TDPhotoshopElementProduction columnCount](self forKey:{"columnCount"), @"columnCount"}];
+  [into setValue:-[TDPhotoshopElementProduction valueForKey:](self forKey:{"valueForKey:", @"rowIterationType", @"rowIterationType"}];
+  [into setValue:-[TDPhotoshopElementProduction valueForKey:](self forKey:{"valueForKey:", @"columnIterationType", @"columnIterationType"}];
   v5 = [(TDPhotoshopElementProduction *)self valueForKey:@"layerMappings"];
 
-  [a3 setValue:v5 forKey:@"layerMappings"];
+  [into setValue:v5 forKey:@"layerMappings"];
 }
 
 - (id)dataFromAttributes
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:7];
-  v4 = [(TDPhotoshopElementProduction *)self renditionType];
-  if (v4)
+  renditionType = [(TDPhotoshopElementProduction *)self renditionType];
+  if (renditionType)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v4 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"renditionType"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(renditionType forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"renditionType"}];
   }
 
   [v3 setObject:-[TDPhotoshopElementProduction valueForKey:](self forKey:{"valueForKey:", @"rowCount", @"rowCount"}];
@@ -786,12 +786,12 @@ LABEL_23:
     [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v6 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"columnIterationType"}];
   }
 
-  v7 = [(TDPhotoshopElementProduction *)self layerMappings];
+  layerMappings = [(TDPhotoshopElementProduction *)self layerMappings];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [layerMappings countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -803,7 +803,7 @@ LABEL_23:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(layerMappings);
         }
 
         [v3 setObject:objc_msgSend(*(*(&v14 + 1) + 8 * v11) forKey:{"photoshopLayerIndex"), objc_msgSend(objc_msgSend(*(*(&v14 + 1) + 8 * v11), "themeDrawingLayer"), "constantName")}];
@@ -811,7 +811,7 @@ LABEL_23:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [layerMappings countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -823,36 +823,36 @@ LABEL_23:
   return result;
 }
 
-- (id)_layerMappingForPhotoshopLayer:(int64_t)a3 drawingLayer:(int64_t)a4
+- (id)_layerMappingForPhotoshopLayer:(int64_t)layer drawingLayer:(int64_t)drawingLayer
 {
-  v6 = [(TDPhotoshopElementProduction *)self managedObjectContext];
-  v7 = [MEMORY[0x277CBE408] entityForName:@"LayerMapping" inManagedObjectContext:v6];
+  managedObjectContext = [(TDPhotoshopElementProduction *)self managedObjectContext];
+  v7 = [MEMORY[0x277CBE408] entityForName:@"LayerMapping" inManagedObjectContext:managedObjectContext];
   v8 = objc_alloc_init(MEMORY[0x277CBE428]);
   [v8 setEntity:v7];
-  [v8 setPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"photoshopLayerIndex = %d AND themeDrawingLayer.identifier = %d", a3, a4)}];
+  [v8 setPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"photoshopLayerIndex = %d AND themeDrawingLayer.identifier = %d", layer, drawingLayer)}];
   v14 = 0;
-  v9 = [v6 executeFetchRequest:v8 error:&v14];
+  v9 = [managedObjectContext executeFetchRequest:v8 error:&v14];
 
   if ([v9 count])
   {
     return [v9 objectAtIndex:0];
   }
 
-  v10 = [[TDLayerMapping alloc] initWithEntity:v7 insertIntoManagedObjectContext:v6];
-  -[TDLayerMapping setValue:forKey:](v10, "setValue:forKey:", [MEMORY[0x277CCABB0] numberWithInteger:a3], @"photoshopLayerIndex");
+  v10 = [[TDLayerMapping alloc] initWithEntity:v7 insertIntoManagedObjectContext:managedObjectContext];
+  -[TDLayerMapping setValue:forKey:](v10, "setValue:forKey:", [MEMORY[0x277CCABB0] numberWithInteger:layer], @"photoshopLayerIndex");
   v11 = objc_alloc_init(MEMORY[0x277CBE428]);
-  [v11 setEntity:{objc_msgSend(MEMORY[0x277CBE408], "entityForName:inManagedObjectContext:", @"ThemeDrawingLayer", v6)}];
-  [v11 setPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"identifier = %d", a4)}];
-  v12 = [v6 executeFetchRequest:v11 error:&v14];
+  [v11 setEntity:{objc_msgSend(MEMORY[0x277CBE408], "entityForName:inManagedObjectContext:", @"ThemeDrawingLayer", managedObjectContext)}];
+  [v11 setPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"identifier = %d", drawingLayer)}];
+  v12 = [managedObjectContext executeFetchRequest:v11 error:&v14];
 
   -[TDLayerMapping setValue:forKey:](v10, "setValue:forKey:", [v12 objectAtIndex:0], @"themeDrawingLayer");
   return v10;
 }
 
-- (void)setAttributesFromData:(id)a3
+- (void)setAttributesFromData:(id)data
 {
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
-  v5 = [(TDPhotoshopElementProduction *)self managedObjectContext];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:0];
+  managedObjectContext = [(TDPhotoshopElementProduction *)self managedObjectContext];
   v6 = [v4 objectForKey:@"baseKeySpec"];
   if (v6)
   {
@@ -862,7 +862,7 @@ LABEL_23:
   v7 = [v4 objectForKey:@"renditionType"];
   if (v7)
   {
-    -[TDPhotoshopElementProduction setRenditionType:](self, "setRenditionType:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v7))}]);
+    -[TDPhotoshopElementProduction setRenditionType:](self, "setRenditionType:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v7))}]);
   }
 
   v8 = [v4 objectForKey:@"rowCount"];
@@ -880,13 +880,13 @@ LABEL_23:
   v10 = [v4 objectForKey:@"rowIterationType"];
   if (v10)
   {
-    -[TDPhotoshopElementProduction setValue:forKey:](self, "setValue:forKey:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v10))}], @"rowIterationType");
+    -[TDPhotoshopElementProduction setValue:forKey:](self, "setValue:forKey:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v10))}], @"rowIterationType");
   }
 
   v11 = [v4 objectForKey:@"columnIterationType"];
   if (v11)
   {
-    -[TDPhotoshopElementProduction setValue:forKey:](self, "setValue:forKey:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v11))}], @"columnIterationType");
+    -[TDPhotoshopElementProduction setValue:forKey:](self, "setValue:forKey:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v11))}], @"columnIterationType");
   }
 
   v12 = [v4 objectForKey:@"kCoreThemeLayerPulse"];
@@ -1032,10 +1032,10 @@ LABEL_23:
     [v3 setObject:objc_msgSend(v14 forKey:{"copyDataFromAttributes"), @"baseKeySpec"}];
   }
 
-  v15 = [(TDPhotoshopElementProduction *)self asset];
-  if (v15)
+  asset = [(TDPhotoshopElementProduction *)self asset];
+  if (asset)
   {
-    [v3 setObject:objc_msgSend(v15 forKey:{"copyDataFromAttributes"), @"asset"}];
+    [v3 setObject:objc_msgSend(asset forKey:{"copyDataFromAttributes"), @"asset"}];
   }
 
   v16 = [(TDPhotoshopElementProduction *)self mutableSetValueForKey:@"layerMappings"];
@@ -1046,8 +1046,8 @@ LABEL_23:
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v18 = [v16 allObjects];
-    v19 = [v18 countByEnumeratingWithState:&v36 objects:v41 count:16];
+    allObjects = [v16 allObjects];
+    v19 = [allObjects countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v19)
     {
       v20 = v19;
@@ -1059,14 +1059,14 @@ LABEL_23:
         {
           if (*v37 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(allObjects);
           }
 
           [v17 addObject:{objc_msgSend(*(*(&v36 + 1) + 8 * v22++), "copyDataFromAttributes")}];
         }
 
         while (v20 != v22);
-        v20 = [v18 countByEnumeratingWithState:&v36 objects:v41 count:16];
+        v20 = [allObjects countByEnumeratingWithState:&v36 objects:v41 count:16];
       }
 
       while (v20);
@@ -1083,8 +1083,8 @@ LABEL_23:
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v25 = [v23 allObjects];
-    v26 = [v25 countByEnumeratingWithState:&v32 objects:v40 count:16];
+    allObjects2 = [v23 allObjects];
+    v26 = [allObjects2 countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v26)
     {
       v27 = v26;
@@ -1096,14 +1096,14 @@ LABEL_23:
         {
           if (*v33 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(allObjects2);
           }
 
           [v24 addObject:{objc_msgSend(*(*(&v32 + 1) + 8 * v29++), "copyDataFromAttributes")}];
         }
 
         while (v27 != v29);
-        v27 = [v25 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        v27 = [allObjects2 countByEnumeratingWithState:&v32 objects:v40 count:16];
       }
 
       while (v27);
@@ -1117,9 +1117,9 @@ LABEL_23:
   return result;
 }
 
-- (void)setAttributesFromCopyData:(id)a3
+- (void)setAttributesFromCopyData:(id)data
 {
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:0];
   v5 = [v4 objectForKey:@"columnCount"];
   if (v5)
   {

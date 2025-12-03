@@ -1,32 +1,32 @@
 @interface CKReferencePackage
-- (CKReferencePackage)initWithCoder:(id)a3;
-- (CKReferencePackage)initWithPackageReference:(id)a3 uuid:(id)a4;
+- (CKReferencePackage)initWithCoder:(id)coder;
+- (CKReferencePackage)initWithPackageReference:(id)reference uuid:(id)uuid;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAssetTransferOptions:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAssetTransferOptions:(id)options;
 @end
 
 @implementation CKReferencePackage
 
-- (CKReferencePackage)initWithPackageReference:(id)a3 uuid:(id)a4
+- (CKReferencePackage)initWithPackageReference:(id)reference uuid:(id)uuid
 {
-  v7 = a3;
-  v8 = a4;
+  referenceCopy = reference;
+  uuidCopy = uuid;
   v15.receiver = self;
   v15.super_class = CKReferencePackage;
   v9 = [(CKReferencePackage *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_packageReference, a3);
-    v13 = v8;
-    if (!v8)
+    objc_storeStrong(&v9->_packageReference, reference);
+    v13 = uuidCopy;
+    if (!uuidCopy)
     {
       v13 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], v11, v12);
     }
 
     objc_storeStrong(&v10->_uuid, v13);
-    if (!v8)
+    if (!uuidCopy)
     {
     }
   }
@@ -34,44 +34,44 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CKReferencePackage;
-  [(CKPackage *)&v10 encodeWithCoder:v4];
-  objc_msgSend_encodeObject_forKey_(v4, v5, self->_packageReference, @"reference");
-  objc_msgSend_encodeObject_forKey_(v4, v6, self->_uuid, @"uuid");
+  [(CKPackage *)&v10 encodeWithCoder:coderCopy];
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, self->_packageReference, @"reference");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v6, self->_uuid, @"uuid");
   boundaryKey = self->_boundaryKey;
   if (boundaryKey)
   {
-    objc_msgSend_encodeObject_forKey_(v4, v7, boundaryKey, @"boundaryKey");
+    objc_msgSend_encodeObject_forKey_(coderCopy, v7, boundaryKey, @"boundaryKey");
   }
 
   assetTransferOptions = self->_assetTransferOptions;
   if (assetTransferOptions)
   {
-    objc_msgSend_encodeObject_forKey_(v4, v7, assetTransferOptions, @"assetTransferOptions");
+    objc_msgSend_encodeObject_forKey_(coderCopy, v7, assetTransferOptions, @"assetTransferOptions");
   }
 }
 
-- (CKReferencePackage)initWithCoder:(id)a3
+- (CKReferencePackage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v7 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"reference");
+  v7 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"reference");
   v8 = objc_opt_class();
-  v10 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v9, v8, @"uuid");
+  v10 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v9, v8, @"uuid");
   v12 = objc_msgSend_initWithPackageReference_uuid_(self, v11, v7, v10);
   if (v12)
   {
     v13 = objc_opt_class();
-    v15 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v14, v13, @"boundaryKey");
+    v15 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v14, v13, @"boundaryKey");
     boundaryKey = v12->_boundaryKey;
     v12->_boundaryKey = v15;
 
     v17 = objc_opt_class();
-    v19 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v18, v17, @"assetTransferOptions");
+    v19 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v18, v17, @"assetTransferOptions");
     assetTransferOptions = v12->_assetTransferOptions;
     v12->_assetTransferOptions = v19;
   }
@@ -91,9 +91,9 @@
   return v13;
 }
 
-- (void)setAssetTransferOptions:(id)a3
+- (void)setAssetTransferOptions:(id)options
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(options, a2, options);
   assetTransferOptions = self->_assetTransferOptions;
   self->_assetTransferOptions = v4;
 

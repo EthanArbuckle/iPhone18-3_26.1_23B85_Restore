@@ -1,30 +1,30 @@
 @interface VCPMADRichLabelClassificationTask
 + (id)allSupportedDomainTypes;
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
-+ (id)viDomainFromRichLabelDomain:(unint64_t)a3;
-+ (unint64_t)richLabelDomainFromVIDomain:(id)a3;
-- (VCPMADRichLabelClassificationTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
++ (id)viDomainFromRichLabelDomain:(unint64_t)domain;
++ (unint64_t)richLabelDomainFromVIDomain:(id)domain;
+- (VCPMADRichLabelClassificationTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
 - (int)run;
 - (void)cancel;
-- (void)storeResults:(id)a3;
+- (void)storeResults:(id)results;
 @end
 
 @implementation VCPMADRichLabelClassificationTask
 
-- (VCPMADRichLabelClassificationTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
+- (VCPMADRichLabelClassificationTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
   v17.receiver = self;
   v17.super_class = VCPMADRichLabelClassificationTask;
   v12 = [(VCPMADRichLabelClassificationTask *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_imageAsset, a4);
-    objc_storeStrong(&v13->_signpostPayload, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_imageAsset, asset);
+    objc_storeStrong(&v13->_signpostPayload, payload);
     v14 = dispatch_queue_create("VCPMADRichLabelClassificationTask", 0);
     cancelQueue = v13->_cancelQueue;
     v13->_cancelQueue = v14;
@@ -33,15 +33,15 @@
   return v13;
 }
 
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v11 = [[a1 alloc] initWithRequest:v8 imageAsset:v9 andSignpostPayload:v10];
+    v11 = [[self alloc] initWithRequest:requestCopy imageAsset:assetCopy andSignpostPayload:payloadCopy];
   }
 
   else
@@ -83,15 +83,15 @@ uint64_t __43__VCPMADRichLabelClassificationTask_cancel__block_invoke(uint64_t a
   return result;
 }
 
-+ (unint64_t)richLabelDomainFromVIDomain:(id)a3
++ (unint64_t)richLabelDomainFromVIDomain:(id)domain
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E69E0530]])
+  domainCopy = domain;
+  if ([domainCopy isEqualToString:*MEMORY[0x1E69E0530]])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E69E0538]])
+  else if ([domainCopy isEqualToString:*MEMORY[0x1E69E0538]])
   {
     v4 = 2;
   }
@@ -104,9 +104,9 @@ uint64_t __43__VCPMADRichLabelClassificationTask_cancel__block_invoke(uint64_t a
   return v4;
 }
 
-+ (id)viDomainFromRichLabelDomain:(unint64_t)a3
++ (id)viDomainFromRichLabelDomain:(unint64_t)domain
 {
-  if (a3 == 1)
+  if (domain == 1)
   {
     v4 = MEMORY[0x1E69E0530];
 LABEL_5:
@@ -115,7 +115,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 2)
+  if (domain == 2)
   {
     v4 = MEMORY[0x1E69E0538];
     goto LABEL_5;
@@ -150,20 +150,20 @@ uint64_t __60__VCPMADRichLabelClassificationTask_allSupportedDomainTypes__block_
   return [v2 addIndex:2];
 }
 
-- (void)storeResults:(id)a3
+- (void)storeResults:(id)results
 {
   v39 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v27 = [MEMORY[0x1E695DF70] array];
+  resultsCopy = results;
+  array = [MEMORY[0x1E695DF70] array];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v4 = [v22 visualUnderstanding];
-  v5 = [v4 imageRegions];
+  visualUnderstanding = [resultsCopy visualUnderstanding];
+  imageRegions = [visualUnderstanding imageRegions];
 
-  obj = v5;
-  v25 = [v5 countByEnumeratingWithState:&v32 objects:v38 count:16];
+  obj = imageRegions;
+  v25 = [imageRegions countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v25)
   {
     v24 = *v33;
@@ -181,8 +181,8 @@ uint64_t __60__VCPMADRichLabelClassificationTask_allSupportedDomainTypes__block_
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v7 = [v6 domainInfo];
-        v8 = [v7 countByEnumeratingWithState:&v28 objects:v37 count:16];
+        domainInfo = [v6 domainInfo];
+        v8 = [domainInfo countByEnumeratingWithState:&v28 objects:v37 count:16];
         if (v8)
         {
           v9 = *v29;
@@ -192,29 +192,29 @@ uint64_t __60__VCPMADRichLabelClassificationTask_allSupportedDomainTypes__block_
             {
               if (*v29 != v9)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(domainInfo);
               }
 
               v11 = *(*(&v28 + 1) + 8 * j);
-              v12 = [v11 domainKey];
-              v13 = [VCPMADRichLabelClassificationTask richLabelDomainFromVIDomain:v12];
+              domainKey = [v11 domainKey];
+              v13 = [VCPMADRichLabelClassificationTask richLabelDomainFromVIDomain:domainKey];
 
               if (v13)
               {
-                v14 = [(MADRichLabelClassificationRequest *)self->_request domains];
-                v15 = [v14 containsIndex:v13];
+                domains = [(MADRichLabelClassificationRequest *)self->_request domains];
+                v15 = [domains containsIndex:v13];
 
                 if (v15)
                 {
                   v16 = objc_alloc(MEMORY[0x1E69AE3D8]);
-                  v17 = [v11 displayLabel];
-                  v18 = [v16 initWithDomain:v13 displayLabel:v17];
-                  [v27 addObject:v18];
+                  displayLabel = [v11 displayLabel];
+                  v18 = [v16 initWithDomain:v13 displayLabel:displayLabel];
+                  [array addObject:v18];
                 }
               }
             }
 
-            v8 = [v7 countByEnumeratingWithState:&v28 objects:v37 count:16];
+            v8 = [domainInfo countByEnumeratingWithState:&v28 objects:v37 count:16];
           }
 
           while (v8);
@@ -228,7 +228,7 @@ uint64_t __60__VCPMADRichLabelClassificationTask_allSupportedDomainTypes__block_
   }
 
   request = self->_request;
-  v20 = [objc_alloc(MEMORY[0x1E69AE3D0]) initWithResultItems:v27];
+  v20 = [objc_alloc(MEMORY[0x1E69AE3D0]) initWithResultItems:array];
   v36 = v20;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
   [(MADRichLabelClassificationRequest *)request setResults:v21];
@@ -265,8 +265,8 @@ LABEL_9:
 
   if (VCPPhotosParseCachingEnabled() && [(VCPMADServiceImageAsset *)self->_imageAsset hasCachedParseData])
   {
-    v8 = [(VCPMADServiceImageAsset *)self->_imageAsset cachedParseData];
-    if (!v8)
+    cachedParseData = [(VCPMADServiceImageAsset *)self->_imageAsset cachedParseData];
+    if (!cachedParseData)
     {
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
@@ -287,7 +287,7 @@ LABEL_9:
 
   else
   {
-    v8 = 0;
+    cachedParseData = 0;
   }
 
   *buf = 0;
@@ -305,8 +305,8 @@ LABEL_9:
   [(VCPMADServiceImageAsset *)self->_imageAsset resolution];
   v32 = [v12 initWithImageLoader:v33 imageSize:?];
   v13 = [MEMORY[0x1E695DFA8] set];
-  v14 = [(MADRichLabelClassificationRequest *)self->_request domains];
-  v15 = [v14 count] == 0;
+  domains = [(MADRichLabelClassificationRequest *)self->_request domains];
+  v15 = [domains count] == 0;
 
   if (v15)
   {
@@ -314,14 +314,14 @@ LABEL_9:
     [(MADRichLabelClassificationRequest *)self->_request setDomains:v16];
   }
 
-  v17 = [(MADRichLabelClassificationRequest *)self->_request domains];
+  domains2 = [(MADRichLabelClassificationRequest *)self->_request domains];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __40__VCPMADRichLabelClassificationTask_run__block_invoke_349;
   v46[3] = &unk_1E834BE30;
   v18 = v13;
   v47 = v18;
-  [v17 enumerateIndexesUsingBlock:v46];
+  [domains2 enumerateIndexesUsingBlock:v46];
 
   v19 = [objc_alloc(MEMORY[0x1E69E04C8]) initWithImage:v32 annotation:0 normalizedRegionOfInterest:v18 domainsOfInterest:0 queryContext:{0.0, 0.0, 1.0, 1.0}];
   v20 = +[VCPMADVIVisualSearchResource sharedResource];
@@ -346,7 +346,7 @@ LABEL_9:
   v36 = v26;
   v27 = v19;
   v37 = v27;
-  v28 = v8;
+  v28 = cachedParseData;
   v38 = v28;
   v29 = v18;
   v39 = v29;

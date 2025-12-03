@@ -1,60 +1,60 @@
 @interface KTVerificationInfo
-- (BOOL)isEqual:(id)a3;
-- (KTVerificationInfo)initWithAccountKey:(id)a3 serverLoggableDatas:(id)a4;
-- (KTVerificationInfo)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (KTVerificationInfo)initWithAccountKey:(id)key serverLoggableDatas:(id)datas;
+- (KTVerificationInfo)initWithCoder:(id)coder;
 - (NSDictionary)diagnosticsJsonDictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KTVerificationInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  v4 = [(KTVerificationInfo *)self accountKey];
-  [v13 encodeObject:v4 forKey:@"accountKey"];
+  coderCopy = coder;
+  accountKey = [(KTVerificationInfo *)self accountKey];
+  [coderCopy encodeObject:accountKey forKey:@"accountKey"];
 
-  v5 = [(KTVerificationInfo *)self serverLoggableDatas];
-  [v13 encodeObject:v5 forKey:@"serverLoggableDatas"];
+  serverLoggableDatas = [(KTVerificationInfo *)self serverLoggableDatas];
+  [coderCopy encodeObject:serverLoggableDatas forKey:@"serverLoggableDatas"];
 
-  v6 = [(KTVerificationInfo *)self failure];
+  failure = [(KTVerificationInfo *)self failure];
 
-  if (v6)
+  if (failure)
   {
     v7 = MEMORY[0x1E697AAC0];
-    v8 = [(KTVerificationInfo *)self failure];
-    v9 = [v7 cleanseErrorForXPC:v8];
-    [v13 encodeObject:v9 forKey:@"failure"];
+    failure2 = [(KTVerificationInfo *)self failure];
+    v9 = [v7 cleanseErrorForXPC:failure2];
+    [coderCopy encodeObject:v9 forKey:@"failure"];
   }
 
-  v10 = [(KTVerificationInfo *)self idsResponseTime];
+  idsResponseTime = [(KTVerificationInfo *)self idsResponseTime];
 
-  if (v10)
+  if (idsResponseTime)
   {
-    v11 = [(KTVerificationInfo *)self idsResponseTime];
-    [v13 encodeObject:v11 forKey:@"idsResponseTime"];
+    idsResponseTime2 = [(KTVerificationInfo *)self idsResponseTime];
+    [coderCopy encodeObject:idsResponseTime2 forKey:@"idsResponseTime"];
   }
 
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[KTVerificationInfo optedIn](self, "optedIn")}];
-  [v13 encodeObject:v12 forKey:@"optedIn"];
+  [coderCopy encodeObject:v12 forKey:@"optedIn"];
 }
 
-- (KTVerificationInfo)initWithCoder:(id)a3
+- (KTVerificationInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountKey"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"serverLoggableDatas"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"serverLoggableDatas"];
   v10 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-  v11 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  v12 = [v10 setByAddingObjectsFromSet:v11];
+  safeErrorClasses = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  v12 = [v10 setByAddingObjectsFromSet:safeErrorClasses];
 
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"failure"];
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"idsResponseTime"];
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"optedIn"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"failure"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idsResponseTime"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"optedIn"];
 
   v16 = [[KTVerificationInfo alloc] initWithAccountKey:v5 serverLoggableDatas:v9];
   v17 = v16;
@@ -68,10 +68,10 @@
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -81,19 +81,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(KTVerificationInfo *)self accountKey];
-      v7 = [(KTVerificationInfo *)v5 accountKey];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      accountKey = [(KTVerificationInfo *)self accountKey];
+      accountKey2 = [(KTVerificationInfo *)v5 accountKey];
+      v8 = accountKey2;
+      if (accountKey == accountKey2)
       {
       }
 
       else
       {
-        v9 = [(KTVerificationInfo *)self accountKey];
-        v10 = [(KTVerificationInfo *)v5 accountKey];
-        v11 = [v9 isEqual:v10];
+        accountKey3 = [(KTVerificationInfo *)self accountKey];
+        accountKey4 = [(KTVerificationInfo *)v5 accountKey];
+        v11 = [accountKey3 isEqual:accountKey4];
 
         if (!v11)
         {
@@ -101,18 +101,18 @@
         }
       }
 
-      v13 = [(KTVerificationInfo *)self serverLoggableDatas];
-      v14 = [(KTVerificationInfo *)v5 serverLoggableDatas];
-      v15 = v14;
-      if (v13 == v14)
+      serverLoggableDatas = [(KTVerificationInfo *)self serverLoggableDatas];
+      serverLoggableDatas2 = [(KTVerificationInfo *)v5 serverLoggableDatas];
+      v15 = serverLoggableDatas2;
+      if (serverLoggableDatas == serverLoggableDatas2)
       {
       }
 
       else
       {
-        v16 = [(KTVerificationInfo *)self serverLoggableDatas];
-        v17 = [(KTVerificationInfo *)v5 serverLoggableDatas];
-        v18 = [v16 isEqual:v17];
+        serverLoggableDatas3 = [(KTVerificationInfo *)self serverLoggableDatas];
+        serverLoggableDatas4 = [(KTVerificationInfo *)v5 serverLoggableDatas];
+        v18 = [serverLoggableDatas3 isEqual:serverLoggableDatas4];
 
         if (!v18)
         {
@@ -120,21 +120,21 @@
         }
       }
 
-      v19 = [(KTVerificationInfo *)self failure];
-      v20 = [(KTVerificationInfo *)v5 failure];
-      v21 = v20;
-      if (v19 == v20)
+      failure = [(KTVerificationInfo *)self failure];
+      failure2 = [(KTVerificationInfo *)v5 failure];
+      v21 = failure2;
+      if (failure == failure2)
       {
       }
 
       else
       {
         v22 = MEMORY[0x1E697AAC0];
-        v23 = [(KTVerificationInfo *)self failure];
-        v24 = [v22 cleanseErrorForXPC:v23];
+        failure3 = [(KTVerificationInfo *)self failure];
+        v24 = [v22 cleanseErrorForXPC:failure3];
         v25 = MEMORY[0x1E697AAC0];
-        v26 = [(KTVerificationInfo *)v5 failure];
-        v27 = [v25 cleanseErrorForXPC:v26];
+        failure4 = [(KTVerificationInfo *)v5 failure];
+        v27 = [v25 cleanseErrorForXPC:failure4];
         v28 = [v24 isEqual:v27];
 
         if (!v28)
@@ -143,18 +143,18 @@
         }
       }
 
-      v29 = [(KTVerificationInfo *)self idsResponseTime];
-      v30 = [(KTVerificationInfo *)v5 idsResponseTime];
-      v31 = v30;
-      if (v29 == v30)
+      idsResponseTime = [(KTVerificationInfo *)self idsResponseTime];
+      idsResponseTime2 = [(KTVerificationInfo *)v5 idsResponseTime];
+      v31 = idsResponseTime2;
+      if (idsResponseTime == idsResponseTime2)
       {
       }
 
       else
       {
-        v32 = [(KTVerificationInfo *)self idsResponseTime];
-        v33 = [(KTVerificationInfo *)v5 idsResponseTime];
-        v34 = [v32 isEqual:v33];
+        idsResponseTime3 = [(KTVerificationInfo *)self idsResponseTime];
+        idsResponseTime4 = [(KTVerificationInfo *)v5 idsResponseTime];
+        v34 = [idsResponseTime3 isEqual:idsResponseTime4];
 
         if (!v34)
         {
@@ -162,8 +162,8 @@
         }
       }
 
-      v35 = [(KTVerificationInfo *)self optedIn];
-      if (v35 == [(KTVerificationInfo *)v5 optedIn])
+      optedIn = [(KTVerificationInfo *)self optedIn];
+      if (optedIn == [(KTVerificationInfo *)v5 optedIn])
       {
         v12 = 1;
 LABEL_24:
@@ -188,36 +188,36 @@ LABEL_25:
 {
   v27 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"KTVerificationInfo: "];
-  v4 = [(KTVerificationInfo *)self accountKey];
+  accountKey = [(KTVerificationInfo *)self accountKey];
 
-  if (v4)
+  if (accountKey)
   {
-    v5 = [(KTVerificationInfo *)self accountKey];
-    v6 = [v5 kt_hexString];
-    [v3 appendFormat:@"account key=%@\n", v6];
+    accountKey2 = [(KTVerificationInfo *)self accountKey];
+    kt_hexString = [accountKey2 kt_hexString];
+    [v3 appendFormat:@"account key=%@\n", kt_hexString];
   }
 
-  v7 = [(KTVerificationInfo *)self idsResponseTime];
+  idsResponseTime = [(KTVerificationInfo *)self idsResponseTime];
 
-  if (v7)
+  if (idsResponseTime)
   {
-    v8 = [(KTVerificationInfo *)self idsResponseTime];
-    v9 = [(KTVerificationInfo *)self idsResponseTime];
-    v10 = [v9 kt_toISO_8601_UTCString];
-    [v3 appendFormat:@"ids response time=%@ (%@)\n", v8, v10];
+    idsResponseTime2 = [(KTVerificationInfo *)self idsResponseTime];
+    idsResponseTime3 = [(KTVerificationInfo *)self idsResponseTime];
+    kt_toISO_8601_UTCString = [idsResponseTime3 kt_toISO_8601_UTCString];
+    [v3 appendFormat:@"ids response time=%@ (%@)\n", idsResponseTime2, kt_toISO_8601_UTCString];
   }
 
-  v11 = [(KTVerificationInfo *)self serverLoggableDatas];
+  serverLoggableDatas = [(KTVerificationInfo *)self serverLoggableDatas];
 
-  if (v11)
+  if (serverLoggableDatas)
   {
     [v3 appendFormat:@"[\n"];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [(KTVerificationInfo *)self serverLoggableDatas];
-    v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    serverLoggableDatas2 = [(KTVerificationInfo *)self serverLoggableDatas];
+    v13 = [serverLoggableDatas2 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v13)
     {
       v14 = v13;
@@ -228,14 +228,14 @@ LABEL_25:
         {
           if (*v23 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(serverLoggableDatas2);
           }
 
-          v17 = [*(*(&v22 + 1) + 8 * i) shortDescription];
-          [v3 appendFormat:@"%@, \n", v17];
+          shortDescription = [*(*(&v22 + 1) + 8 * i) shortDescription];
+          [v3 appendFormat:@"%@, \n", shortDescription];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v14 = [serverLoggableDatas2 countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v14);
@@ -244,12 +244,12 @@ LABEL_25:
     [v3 appendFormat:@"]\n"];
   }
 
-  v18 = [(KTVerificationInfo *)self failure];
+  failure = [(KTVerificationInfo *)self failure];
 
-  if (v18)
+  if (failure)
   {
-    v19 = [(KTVerificationInfo *)self failure];
-    [v3 appendFormat:@"error=%@\n", v19];
+    failure2 = [(KTVerificationInfo *)self failure];
+    [v3 appendFormat:@"error=%@\n", failure2];
   }
 
   [v3 appendFormat:@"opted in=%lu\n", -[KTVerificationInfo optedIn](self, "optedIn")];
@@ -261,26 +261,26 @@ LABEL_25:
 - (NSDictionary)diagnosticsJsonDictionary
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(KTVerificationInfo *)self accountKey];
-  v5 = [v4 kt_hexString];
-  [v3 setObject:v5 forKeyedSubscript:@"accountKey"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  accountKey = [(KTVerificationInfo *)self accountKey];
+  kt_hexString = [accountKey kt_hexString];
+  [dictionary setObject:kt_hexString forKeyedSubscript:@"accountKey"];
 
-  v6 = [(KTVerificationInfo *)self serverLoggableDatas];
-  v7 = [v6 count];
+  serverLoggableDatas = [(KTVerificationInfo *)self serverLoggableDatas];
+  v7 = [serverLoggableDatas count];
 
   if (v7)
   {
     v8 = MEMORY[0x1E695DF70];
-    v9 = [(KTVerificationInfo *)self serverLoggableDatas];
-    v10 = [v8 arrayWithCapacity:{objc_msgSend(v9, "count")}];
+    serverLoggableDatas2 = [(KTVerificationInfo *)self serverLoggableDatas];
+    v10 = [v8 arrayWithCapacity:{objc_msgSend(serverLoggableDatas2, "count")}];
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v11 = [(KTVerificationInfo *)self serverLoggableDatas];
-    v12 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    serverLoggableDatas3 = [(KTVerificationInfo *)self serverLoggableDatas];
+    v12 = [serverLoggableDatas3 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v12)
     {
       v13 = v12;
@@ -291,59 +291,59 @@ LABEL_25:
         {
           if (*v28 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(serverLoggableDatas3);
           }
 
-          v16 = [*(*(&v27 + 1) + 8 * i) diagnosticsJsonDictionary];
-          [v10 addObject:v16];
+          diagnosticsJsonDictionary = [*(*(&v27 + 1) + 8 * i) diagnosticsJsonDictionary];
+          [v10 addObject:diagnosticsJsonDictionary];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v13 = [serverLoggableDatas3 countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v13);
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"serverLoggableDatas"];
+    [dictionary setObject:v10 forKeyedSubscript:@"serverLoggableDatas"];
   }
 
-  v17 = [(KTVerificationInfo *)self failure];
-  v18 = [TransparencyError diagnosticError:v17];
-  [v3 setObject:v18 forKeyedSubscript:@"error"];
+  failure = [(KTVerificationInfo *)self failure];
+  v18 = [TransparencyError diagnosticError:failure];
+  [dictionary setObject:v18 forKeyedSubscript:@"error"];
 
-  v19 = [(KTVerificationInfo *)self idsResponseTime];
+  idsResponseTime = [(KTVerificationInfo *)self idsResponseTime];
 
-  if (v19)
+  if (idsResponseTime)
   {
-    v20 = [(KTVerificationInfo *)self idsResponseTime];
-    v21 = [v20 kt_dateToString];
-    [v3 setObject:v21 forKeyedSubscript:@"idsResponseTime"];
+    idsResponseTime2 = [(KTVerificationInfo *)self idsResponseTime];
+    kt_dateToString = [idsResponseTime2 kt_dateToString];
+    [dictionary setObject:kt_dateToString forKeyedSubscript:@"idsResponseTime"];
 
-    v22 = [(KTVerificationInfo *)self idsResponseTime];
-    v23 = [v22 kt_toISO_8601_UTCString];
-    [v3 setObject:v23 forKeyedSubscript:@"idsResponseTimeReadable"];
+    idsResponseTime3 = [(KTVerificationInfo *)self idsResponseTime];
+    kt_toISO_8601_UTCString = [idsResponseTime3 kt_toISO_8601_UTCString];
+    [dictionary setObject:kt_toISO_8601_UTCString forKeyedSubscript:@"idsResponseTimeReadable"];
   }
 
   v24 = KTOptInGetString([(KTVerificationInfo *)self optedIn]);
-  [v3 setObject:v24 forKeyedSubscript:@"optedIn"];
+  [dictionary setObject:v24 forKeyedSubscript:@"optedIn"];
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (KTVerificationInfo)initWithAccountKey:(id)a3 serverLoggableDatas:(id)a4
+- (KTVerificationInfo)initWithAccountKey:(id)key serverLoggableDatas:(id)datas
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  datasCopy = datas;
   v11.receiver = self;
   v11.super_class = KTVerificationInfo;
   v8 = [(KTVerificationInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(KTVerificationInfo *)v8 setAccountKey:v6];
-    [(KTVerificationInfo *)v9 setServerLoggableDatas:v7];
+    [(KTVerificationInfo *)v8 setAccountKey:keyCopy];
+    [(KTVerificationInfo *)v9 setServerLoggableDatas:datasCopy];
     [(KTVerificationInfo *)v9 setOptedIn:2];
   }
 

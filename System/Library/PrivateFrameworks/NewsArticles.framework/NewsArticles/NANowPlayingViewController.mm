@@ -1,6 +1,6 @@
 @interface NANowPlayingViewController
-- (CGSize)artworkSizeForViewWidth:(double)a3;
-- (NANowPlayingViewController)initWithBackground:(id)a3;
+- (CGSize)artworkSizeForViewWidth:(double)width;
+- (NANowPlayingViewController)initWithBackground:(id)background;
 - (NANowPlayingViewControllerDelegate)delegate;
 - (UIButton)ellipsisButton;
 - (double)nextTrackAndRewindButtonPointSize;
@@ -8,44 +8,44 @@
 - (double)publisherLogoBottomMargin;
 - (double)publisherLogoHeight;
 - (double)titleLabelFontSize;
-- (id)nowPlayingBottomControlsProvidePlaybackRateMenu:(id)a3;
+- (id)nowPlayingBottomControlsProvidePlaybackRateMenu:(id)menu;
 - (void)applicationWillEnterForeground;
-- (void)artworkTapped:(id)a3;
-- (void)dismissButtonTapped:(id)a3;
-- (void)nowPlayingPlaybackControlsDidTapNextTrack:(id)a3;
-- (void)nowPlayingPlaybackControlsDidTapPause:(id)a3;
-- (void)nowPlayingPlaybackControlsDidTapPlay:(id)a3;
-- (void)nowPlayingPlaybackControlsDidTapRewind:(id)a3;
-- (void)nowPlayingPlaybackControlsDidTapSkipForward:(id)a3;
-- (void)nowPlayingTitleViewDidTapEllipsis:(id)a3;
-- (void)seekToPosition:(double)a3;
-- (void)setArtwork:(id)a3 animated:(BOOL)a4;
-- (void)setCurrentTime:(double)a3 duration:(double)a4 rate:(double)a5 isWaiting:(BOOL)a6 animated:(BOOL)a7;
-- (void)setIsPlaying:(BOOL)a3 waiting:(BOOL)a4;
-- (void)setNextTrackButtonEnabled:(BOOL)a3;
-- (void)setPublisherImage:(id)a3 fallbackName:(id)a4;
-- (void)setRate:(double)a3;
-- (void)setSkipForwardButtonEnabled:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)titleViewTapped:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)artworkTapped:(id)tapped;
+- (void)dismissButtonTapped:(id)tapped;
+- (void)nowPlayingPlaybackControlsDidTapNextTrack:(id)track;
+- (void)nowPlayingPlaybackControlsDidTapPause:(id)pause;
+- (void)nowPlayingPlaybackControlsDidTapPlay:(id)play;
+- (void)nowPlayingPlaybackControlsDidTapRewind:(id)rewind;
+- (void)nowPlayingPlaybackControlsDidTapSkipForward:(id)forward;
+- (void)nowPlayingTitleViewDidTapEllipsis:(id)ellipsis;
+- (void)seekToPosition:(double)position;
+- (void)setArtwork:(id)artwork animated:(BOOL)animated;
+- (void)setCurrentTime:(double)time duration:(double)duration rate:(double)rate isWaiting:(BOOL)waiting animated:(BOOL)animated;
+- (void)setIsPlaying:(BOOL)playing waiting:(BOOL)waiting;
+- (void)setNextTrackButtonEnabled:(BOOL)enabled;
+- (void)setPublisherImage:(id)image fallbackName:(id)name;
+- (void)setRate:(double)rate;
+- (void)setSkipForwardButtonEnabled:(BOOL)enabled;
+- (void)setTitle:(id)title;
+- (void)titleViewTapped:(id)tapped;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation NANowPlayingViewController
 
-- (NANowPlayingViewController)initWithBackground:(id)a3
+- (NANowPlayingViewController)initWithBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   v53.receiver = self;
   v53.super_class = NANowPlayingViewController;
   v5 = [(NANowPlayingViewController *)&v53 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(NANowPlayingViewController *)v5 setView:v4];
+    [(NANowPlayingViewController *)v5 setView:backgroundCopy];
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
     v51[2] = __49__NANowPlayingViewController_initWithBackground___block_invoke;
@@ -292,8 +292,8 @@ id __49__NANowPlayingViewController_initWithBackground___block_invoke_10(uint64_
   v4.receiver = self;
   v4.super_class = NANowPlayingViewController;
   [(NANowPlayingViewController *)&v4 viewDidLoad];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_applicationWillEnterForeground name:*MEMORY[0x1E69DDBC0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_applicationWillEnterForeground name:*MEMORY[0x1E69DDBC0] object:0];
 }
 
 - (void)viewWillLayoutSubviews
@@ -301,257 +301,257 @@ id __49__NANowPlayingViewController_initWithBackground___block_invoke_10(uint64_
   v105.receiver = self;
   v105.super_class = NANowPlayingViewController;
   [(NANowPlayingViewController *)&v105 viewWillLayoutSubviews];
-  v3 = [(NANowPlayingViewController *)self view];
-  [v3 safeAreaInsets];
+  view = [(NANowPlayingViewController *)self view];
+  [view safeAreaInsets];
   v5 = v4;
 
   v6 = fmax(v5, 12.0);
-  v7 = [(NANowPlayingViewController *)self view];
-  [v7 bounds];
+  view2 = [(NANowPlayingViewController *)self view];
+  [view2 bounds];
   Width = CGRectGetWidth(v106);
-  v9 = [(NANowPlayingViewController *)self grabberView];
-  [v9 bounds];
+  grabberView = [(NANowPlayingViewController *)self grabberView];
+  [grabberView bounds];
   v10 = (Width - CGRectGetWidth(v107)) * 0.5;
-  v11 = [(NANowPlayingViewController *)self grabberView];
-  [v11 bounds];
+  grabberView2 = [(NANowPlayingViewController *)self grabberView];
+  [grabberView2 bounds];
   v12 = CGRectGetWidth(v108);
-  v13 = [(NANowPlayingViewController *)self grabberView];
-  [v13 bounds];
+  grabberView3 = [(NANowPlayingViewController *)self grabberView];
+  [grabberView3 bounds];
   Height = CGRectGetHeight(v109);
-  v15 = [(NANowPlayingViewController *)self grabberView];
-  [v15 setFrame:{v10, v6 + 7.0, v12, Height}];
+  grabberView4 = [(NANowPlayingViewController *)self grabberView];
+  [grabberView4 setFrame:{v10, v6 + 7.0, v12, Height}];
 
-  v16 = [(NANowPlayingViewController *)self view];
-  [v16 bounds];
+  view3 = [(NANowPlayingViewController *)self view];
+  [view3 bounds];
   v17 = CGRectGetWidth(v110);
-  v18 = [(NANowPlayingViewController *)self dismissButton];
-  [v18 setFrame:{0.0, 0.0, v17, v6 + 32.0}];
+  dismissButton = [(NANowPlayingViewController *)self dismissButton];
+  [dismissButton setFrame:{0.0, 0.0, v17, v6 + 32.0}];
 
-  v19 = [(NANowPlayingViewController *)self view];
-  [v19 bounds];
+  view4 = [(NANowPlayingViewController *)self view];
+  [view4 bounds];
   [(NANowPlayingViewController *)self artworkSizeForViewWidth:CGRectGetWidth(v111)];
   v21 = v20;
   v23 = v22;
 
-  v24 = [(NANowPlayingViewController *)self artworkView];
-  [v24 setFrame:{24.0, v6 + 44.0, v21, v23}];
+  artworkView = [(NANowPlayingViewController *)self artworkView];
+  [artworkView setFrame:{24.0, v6 + 44.0, v21, v23}];
 
-  v25 = [(NANowPlayingViewController *)self view];
-  [v25 bounds];
+  view5 = [(NANowPlayingViewController *)self view];
+  [view5 bounds];
   v27 = v26;
   v29 = v28;
   v31 = v30;
   v33 = v32;
-  v34 = [(NANowPlayingViewController *)self artworkView];
-  [v34 frame];
+  artworkView2 = [(NANowPlayingViewController *)self artworkView];
+  [artworkView2 frame];
   MaxY = CGRectGetMaxY(v112);
-  v36 = [(NANowPlayingViewController *)self view];
-  v37 = [v36 window];
-  [NANowPlayingLayoutSpec artworkBottomMarginInView:v37];
+  view6 = [(NANowPlayingViewController *)self view];
+  window = [view6 window];
+  [NANowPlayingLayoutSpec artworkBottomMarginInView:window];
   v39 = MaxY + v38;
-  v40 = [(NANowPlayingViewController *)self view];
-  [v40 safeAreaInsets];
+  view7 = [(NANowPlayingViewController *)self view];
+  [view7 safeAreaInsets];
   v42 = v33 - (v39 + v41 + 15.0);
-  v43 = [(NANowPlayingViewController *)self contentView];
-  [v43 setFrame:{v27 + 32.0, v29 + v39, v31 + -64.0, v42}];
+  contentView = [(NANowPlayingViewController *)self contentView];
+  [contentView setFrame:{v27 + 32.0, v29 + v39, v31 + -64.0, v42}];
 
-  v44 = [(NANowPlayingViewController *)self titleView];
-  [v44 sizeToFit];
+  titleView = [(NANowPlayingViewController *)self titleView];
+  [titleView sizeToFit];
 
-  v45 = [(NANowPlayingViewController *)self titleView];
-  [v45 bounds];
+  titleView2 = [(NANowPlayingViewController *)self titleView];
+  [titleView2 bounds];
   v46 = CGRectGetWidth(v113);
-  v47 = [(NANowPlayingViewController *)self titleView];
-  [v47 bounds];
+  titleView3 = [(NANowPlayingViewController *)self titleView];
+  [titleView3 bounds];
   v48 = CGRectGetHeight(v114);
-  v49 = [(NANowPlayingViewController *)self titleView];
-  [v49 setFrame:{0.0, 0.0, v46, v48}];
+  titleView4 = [(NANowPlayingViewController *)self titleView];
+  [titleView4 setFrame:{0.0, 0.0, v46, v48}];
 
-  v50 = [(NANowPlayingViewController *)self timeControl];
-  v51 = [(NANowPlayingViewController *)self contentView];
-  [v51 bounds];
-  [v50 systemLayoutSizeFittingSize:{v52, v53}];
+  timeControl = [(NANowPlayingViewController *)self timeControl];
+  contentView2 = [(NANowPlayingViewController *)self contentView];
+  [contentView2 bounds];
+  [timeControl systemLayoutSizeFittingSize:{v52, v53}];
   v55 = v54;
   v57 = v56;
 
-  v58 = [(NANowPlayingViewController *)self titleView];
-  [v58 frame];
+  titleView5 = [(NANowPlayingViewController *)self titleView];
+  [titleView5 frame];
   v59 = CGRectGetMaxY(v115);
-  v60 = [(NANowPlayingViewController *)self view];
-  v61 = [v60 window];
-  [NANowPlayingLayoutSpec titleViewBottomMarginInView:v61];
+  view8 = [(NANowPlayingViewController *)self view];
+  window2 = [view8 window];
+  [NANowPlayingLayoutSpec titleViewBottomMarginInView:window2];
   v63 = v59 + v62;
-  v64 = [(NANowPlayingViewController *)self timeControl];
-  [v64 setFrame:{0.0, v63, v55, v57}];
+  timeControl2 = [(NANowPlayingViewController *)self timeControl];
+  [timeControl2 setFrame:{0.0, v63, v55, v57}];
 
-  v65 = [(NANowPlayingViewController *)self bottomControls];
-  [v65 sizeToFit];
+  bottomControls = [(NANowPlayingViewController *)self bottomControls];
+  [bottomControls sizeToFit];
 
-  v66 = [(NANowPlayingViewController *)self bottomControls];
-  [v66 bounds];
+  bottomControls2 = [(NANowPlayingViewController *)self bottomControls];
+  [bottomControls2 bounds];
   v67 = CGRectGetHeight(v116) + -44.0;
 
-  v68 = [(NANowPlayingViewController *)self view];
-  [v68 bounds];
+  view9 = [(NANowPlayingViewController *)self view];
+  [view9 bounds];
   v69 = CGRectGetHeight(v117);
-  v70 = [(NANowPlayingViewController *)self contentView];
-  [v70 frame];
+  contentView3 = [(NANowPlayingViewController *)self contentView];
+  [contentView3 frame];
   v71 = CGRectGetMaxY(v118);
 
-  v72 = [(NANowPlayingViewController *)self contentView];
-  [v72 bounds];
+  contentView4 = [(NANowPlayingViewController *)self contentView];
+  [contentView4 bounds];
   v73 = CGRectGetHeight(v119) - (fmax(v67 + v71 - v69, 0.0) + 44.0);
-  v74 = [(NANowPlayingViewController *)self bottomControls];
-  [v74 bounds];
+  bottomControls3 = [(NANowPlayingViewController *)self bottomControls];
+  [bottomControls3 bounds];
   v75 = CGRectGetWidth(v120);
-  v76 = [(NANowPlayingViewController *)self bottomControls];
-  [v76 bounds];
+  bottomControls4 = [(NANowPlayingViewController *)self bottomControls];
+  [bottomControls4 bounds];
   v77 = CGRectGetHeight(v121);
-  v78 = [(NANowPlayingViewController *)self bottomControls];
-  [v78 setFrame:{0.0, v73, v75, v77}];
+  bottomControls5 = [(NANowPlayingViewController *)self bottomControls];
+  [bottomControls5 setFrame:{0.0, v73, v75, v77}];
 
-  v79 = [(NANowPlayingViewController *)self volumeControl];
-  v80 = [(NANowPlayingViewController *)self contentView];
-  [v80 bounds];
-  [v79 systemLayoutSizeFittingSize:{v81, v82}];
+  volumeControl = [(NANowPlayingViewController *)self volumeControl];
+  contentView5 = [(NANowPlayingViewController *)self contentView];
+  [contentView5 bounds];
+  [volumeControl systemLayoutSizeFittingSize:{v81, v82}];
   v84 = v83;
   v86 = v85;
 
-  v87 = [(NANowPlayingViewController *)self bottomControls];
-  [v87 frame];
+  bottomControls6 = [(NANowPlayingViewController *)self bottomControls];
+  [bottomControls6 frame];
   MinY = CGRectGetMinY(v122);
-  v89 = [(NANowPlayingViewController *)self view];
-  v90 = [v89 window];
-  [NANowPlayingLayoutSpec bottomControlsTopMarginInView:v90];
+  view10 = [(NANowPlayingViewController *)self view];
+  window3 = [view10 window];
+  [NANowPlayingLayoutSpec bottomControlsTopMarginInView:window3];
   v92 = MinY - v91;
-  v93 = [(NANowPlayingViewController *)self volumeControl];
-  [v93 bounds];
+  volumeControl2 = [(NANowPlayingViewController *)self volumeControl];
+  [volumeControl2 bounds];
   v94 = v92 - CGRectGetHeight(v123);
-  v95 = [(NANowPlayingViewController *)self volumeControl];
-  [v95 setFrame:{0.0, v94, v84, v86}];
+  volumeControl3 = [(NANowPlayingViewController *)self volumeControl];
+  [volumeControl3 setFrame:{0.0, v94, v84, v86}];
 
-  v96 = [(NANowPlayingViewController *)self timeControl];
-  [v96 frame];
+  timeControl3 = [(NANowPlayingViewController *)self timeControl];
+  [timeControl3 frame];
   v97 = CGRectGetMaxY(v124) + 2.0;
-  v98 = [(NANowPlayingViewController *)self playbackControls];
-  [v98 bounds];
+  playbackControls = [(NANowPlayingViewController *)self playbackControls];
+  [playbackControls bounds];
   v99 = CGRectGetWidth(v125);
-  v100 = [(NANowPlayingViewController *)self volumeControl];
-  [v100 frame];
+  volumeControl4 = [(NANowPlayingViewController *)self volumeControl];
+  [volumeControl4 frame];
   v101 = CGRectGetMinY(v126);
-  v102 = [(NANowPlayingViewController *)self timeControl];
-  [v102 frame];
+  timeControl4 = [(NANowPlayingViewController *)self timeControl];
+  [timeControl4 frame];
   v103 = v101 - CGRectGetMaxY(v127);
-  v104 = [(NANowPlayingViewController *)self playbackControls];
-  [v104 setFrame:{0.0, v97, v99, v103}];
+  playbackControls2 = [(NANowPlayingViewController *)self playbackControls];
+  [playbackControls2 setFrame:{0.0, v97, v99, v103}];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = NANowPlayingViewController;
-  [(NANowPlayingViewController *)&v6 viewWillDisappear:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"NANowPlayingViewControllerWillDisappearNotification" object:self];
+  [(NANowPlayingViewController *)&v6 viewWillDisappear:disappear];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"NANowPlayingViewControllerWillDisappearNotification" object:self];
 
-  v5 = [(NANowPlayingViewController *)self bottomControls];
-  [v5 dismissAirplayPicker];
+  bottomControls = [(NANowPlayingViewController *)self bottomControls];
+  [bottomControls dismissAirplayPicker];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = NANowPlayingViewController;
-  [(NANowPlayingViewController *)&v5 viewDidDisappear:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"NANowPlayingViewControllerDidDisappearNotification" object:self];
+  [(NANowPlayingViewController *)&v5 viewDidDisappear:disappear];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"NANowPlayingViewControllerDidDisappearNotification" object:self];
 }
 
-- (void)setCurrentTime:(double)a3 duration:(double)a4 rate:(double)a5 isWaiting:(BOOL)a6 animated:(BOOL)a7
+- (void)setCurrentTime:(double)time duration:(double)duration rate:(double)rate isWaiting:(BOOL)waiting animated:(BOOL)animated
 {
-  v7 = a7;
-  v8 = a6;
-  v12 = [(NANowPlayingViewController *)self timeControl];
-  [v12 setCurrentTime:v8 duration:v7 rate:a3 isWaiting:a4 animated:a5];
+  animatedCopy = animated;
+  waitingCopy = waiting;
+  timeControl = [(NANowPlayingViewController *)self timeControl];
+  [timeControl setCurrentTime:waitingCopy duration:animatedCopy rate:time isWaiting:duration animated:rate];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(NANowPlayingViewController *)self titleView];
-  [v5 setTitle:v4];
+  titleCopy = title;
+  titleView = [(NANowPlayingViewController *)self titleView];
+  [titleView setTitle:titleCopy];
 
-  v6 = [(NANowPlayingViewController *)self artworkView];
-  [v6 setAccessibilityLabel:v4];
+  artworkView = [(NANowPlayingViewController *)self artworkView];
+  [artworkView setAccessibilityLabel:titleCopy];
 }
 
-- (void)setPublisherImage:(id)a3 fallbackName:(id)a4
+- (void)setPublisherImage:(id)image fallbackName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NANowPlayingViewController *)self titleView];
-  [v8 setPublisherImage:v7 fallbackName:v6];
+  nameCopy = name;
+  imageCopy = image;
+  titleView = [(NANowPlayingViewController *)self titleView];
+  [titleView setPublisherImage:imageCopy fallbackName:nameCopy];
 }
 
-- (void)setArtwork:(id)a3 animated:(BOOL)a4
+- (void)setArtwork:(id)artwork animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NANowPlayingViewController *)self artworkView];
-  [v7 setTrackImage:v6 animated:v4];
+  animatedCopy = animated;
+  artworkCopy = artwork;
+  artworkView = [(NANowPlayingViewController *)self artworkView];
+  [artworkView setTrackImage:artworkCopy animated:animatedCopy];
 
-  v8 = [(NANowPlayingViewController *)self artworkView];
-  [v8 sizeToFit];
+  artworkView2 = [(NANowPlayingViewController *)self artworkView];
+  [artworkView2 sizeToFit];
 }
 
-- (void)setIsPlaying:(BOOL)a3 waiting:(BOOL)a4
+- (void)setIsPlaying:(BOOL)playing waiting:(BOOL)waiting
 {
-  v4 = a3;
-  v5 = [(NANowPlayingViewController *)self playbackControls:a3];
-  [v5 setIsPlaying:v4];
+  playingCopy = playing;
+  v5 = [(NANowPlayingViewController *)self playbackControls:playing];
+  [v5 setIsPlaying:playingCopy];
 }
 
-- (void)setRate:(double)a3
+- (void)setRate:(double)rate
 {
-  v4 = [(NANowPlayingViewController *)self bottomControls];
-  [v4 setRate:a3];
+  bottomControls = [(NANowPlayingViewController *)self bottomControls];
+  [bottomControls setRate:rate];
 }
 
 - (UIButton)ellipsisButton
 {
-  v2 = [(NANowPlayingViewController *)self titleView];
-  v3 = [v2 ellipsisButton];
+  titleView = [(NANowPlayingViewController *)self titleView];
+  ellipsisButton = [titleView ellipsisButton];
 
-  return v3;
+  return ellipsisButton;
 }
 
-- (void)setSkipForwardButtonEnabled:(BOOL)a3
+- (void)setSkipForwardButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(NANowPlayingViewController *)self playbackControls];
-  [v4 setSkipForwardButtonEnabled:v3];
+  enabledCopy = enabled;
+  playbackControls = [(NANowPlayingViewController *)self playbackControls];
+  [playbackControls setSkipForwardButtonEnabled:enabledCopy];
 }
 
-- (void)setNextTrackButtonEnabled:(BOOL)a3
+- (void)setNextTrackButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(NANowPlayingViewController *)self playbackControls];
-  [v4 setNextTrackButtonEnabled:v3];
+  enabledCopy = enabled;
+  playbackControls = [(NANowPlayingViewController *)self playbackControls];
+  [playbackControls setNextTrackButtonEnabled:enabledCopy];
 }
 
 - (double)publisherLogoHeight
 {
-  v2 = [(NANowPlayingViewController *)self titleView];
-  [v2 publisherLogoHeight];
+  titleView = [(NANowPlayingViewController *)self titleView];
+  [titleView publisherLogoHeight];
   v4 = v3;
 
   return v4;
 }
 
-- (CGSize)artworkSizeForViewWidth:(double)a3
+- (CGSize)artworkSizeForViewWidth:(double)width
 {
-  v4 = [(NANowPlayingViewController *)self artworkView];
-  [v4 artworkSizeForTitleViewWidth:a3 + -48.0];
+  artworkView = [(NANowPlayingViewController *)self artworkView];
+  [artworkView artworkSizeForTitleViewWidth:width + -48.0];
   v6 = v5;
   v8 = v7;
 
@@ -562,78 +562,78 @@ id __49__NANowPlayingViewController_initWithBackground___block_invoke_10(uint64_
   return result;
 }
 
-- (void)dismissButtonTapped:(id)a3
+- (void)dismissButtonTapped:(id)tapped
 {
-  v4 = [(NANowPlayingViewController *)self delegate];
-  [v4 nowPlayingViewControllerDidTapDismissButton:self];
+  delegate = [(NANowPlayingViewController *)self delegate];
+  [delegate nowPlayingViewControllerDidTapDismissButton:self];
 }
 
-- (void)artworkTapped:(id)a3
+- (void)artworkTapped:(id)tapped
 {
-  v4 = [(NANowPlayingViewController *)self delegate];
-  [v4 nowPlayingViewControllerDidRequestNavigateToArticle:self];
+  delegate = [(NANowPlayingViewController *)self delegate];
+  [delegate nowPlayingViewControllerDidRequestNavigateToArticle:self];
 }
 
-- (void)titleViewTapped:(id)a3
+- (void)titleViewTapped:(id)tapped
 {
-  v4 = [(NANowPlayingViewController *)self delegate];
-  [v4 nowPlayingViewControllerDidRequestNavigateToArticle:self];
+  delegate = [(NANowPlayingViewController *)self delegate];
+  [delegate nowPlayingViewControllerDidRequestNavigateToArticle:self];
 }
 
-- (void)nowPlayingTitleViewDidTapEllipsis:(id)a3
+- (void)nowPlayingTitleViewDidTapEllipsis:(id)ellipsis
 {
-  v4 = [(NANowPlayingViewController *)self delegate];
-  [v4 nowPlayingViewControllerDidTapEllipsis:self];
+  delegate = [(NANowPlayingViewController *)self delegate];
+  [delegate nowPlayingViewControllerDidTapEllipsis:self];
 }
 
-- (void)nowPlayingPlaybackControlsDidTapRewind:(id)a3
+- (void)nowPlayingPlaybackControlsDidTapRewind:(id)rewind
 {
-  v4 = [(NANowPlayingViewController *)self delegate];
-  [v4 nowPlayingViewControllerDidTapRewind:self];
+  delegate = [(NANowPlayingViewController *)self delegate];
+  [delegate nowPlayingViewControllerDidTapRewind:self];
 }
 
-- (void)nowPlayingPlaybackControlsDidTapSkipForward:(id)a3
+- (void)nowPlayingPlaybackControlsDidTapSkipForward:(id)forward
 {
-  v4 = [(NANowPlayingViewController *)self delegate];
-  [v4 nowPlayingViewControllerDidTapSkipForward:self];
+  delegate = [(NANowPlayingViewController *)self delegate];
+  [delegate nowPlayingViewControllerDidTapSkipForward:self];
 }
 
-- (void)nowPlayingPlaybackControlsDidTapPause:(id)a3
+- (void)nowPlayingPlaybackControlsDidTapPause:(id)pause
 {
-  v4 = [(NANowPlayingViewController *)self delegate];
-  [v4 nowPlayingViewControllerDidTapPause:self];
+  delegate = [(NANowPlayingViewController *)self delegate];
+  [delegate nowPlayingViewControllerDidTapPause:self];
 }
 
-- (void)nowPlayingPlaybackControlsDidTapPlay:(id)a3
+- (void)nowPlayingPlaybackControlsDidTapPlay:(id)play
 {
-  v4 = [(NANowPlayingViewController *)self delegate];
-  [v4 nowPlayingViewControllerDidTapPlay:self];
+  delegate = [(NANowPlayingViewController *)self delegate];
+  [delegate nowPlayingViewControllerDidTapPlay:self];
 }
 
-- (void)nowPlayingPlaybackControlsDidTapNextTrack:(id)a3
+- (void)nowPlayingPlaybackControlsDidTapNextTrack:(id)track
 {
-  v4 = [(NANowPlayingViewController *)self delegate];
-  [v4 nowPlayingViewControllerDidTapNextTrack:self];
+  delegate = [(NANowPlayingViewController *)self delegate];
+  [delegate nowPlayingViewControllerDidTapNextTrack:self];
 }
 
-- (void)seekToPosition:(double)a3
+- (void)seekToPosition:(double)position
 {
-  v5 = [(NANowPlayingViewController *)self delegate];
-  [v5 nowPlayingViewController:self seekToPosition:a3];
+  delegate = [(NANowPlayingViewController *)self delegate];
+  [delegate nowPlayingViewController:self seekToPosition:position];
 }
 
-- (id)nowPlayingBottomControlsProvidePlaybackRateMenu:(id)a3
+- (id)nowPlayingBottomControlsProvidePlaybackRateMenu:(id)menu
 {
-  v4 = [(NANowPlayingViewController *)self delegate];
-  v5 = [v4 nowPlayingViewControllerProvidePlaybackRateMenu:self];
+  delegate = [(NANowPlayingViewController *)self delegate];
+  v5 = [delegate nowPlayingViewControllerProvidePlaybackRateMenu:self];
 
   return v5;
 }
 
 - (void)applicationWillEnterForeground
 {
-  v2 = [(NANowPlayingViewController *)self titleView];
-  [v2 setMarqueeRunning:1];
+  titleView = [(NANowPlayingViewController *)self titleView];
+  [titleView setMarqueeRunning:1];
 }
 
 - (NANowPlayingViewControllerDelegate)delegate
@@ -645,9 +645,9 @@ id __49__NANowPlayingViewController_initWithBackground___block_invoke_10(uint64_
 
 - (double)playPausePointSize
 {
-  v2 = [(NANowPlayingViewController *)self view];
-  v3 = [v2 window];
-  [NANowPlayingLayoutSpec playPausePointSizeInView:v3];
+  view = [(NANowPlayingViewController *)self view];
+  window = [view window];
+  [NANowPlayingLayoutSpec playPausePointSizeInView:window];
   v5 = v4;
 
   return v5;
@@ -655,9 +655,9 @@ id __49__NANowPlayingViewController_initWithBackground___block_invoke_10(uint64_
 
 - (double)nextTrackAndRewindButtonPointSize
 {
-  v2 = [(NANowPlayingViewController *)self view];
-  v3 = [v2 window];
-  [NANowPlayingLayoutSpec nextTrackAndRewindButtonPointSizeInView:v3];
+  view = [(NANowPlayingViewController *)self view];
+  window = [view window];
+  [NANowPlayingLayoutSpec nextTrackAndRewindButtonPointSizeInView:window];
   v5 = v4;
 
   return v5;
@@ -665,9 +665,9 @@ id __49__NANowPlayingViewController_initWithBackground___block_invoke_10(uint64_
 
 - (double)titleLabelFontSize
 {
-  v2 = [(NANowPlayingViewController *)self view];
-  v3 = [v2 window];
-  [NANowPlayingLayoutSpec titleLabelFontSizeInView:v3];
+  view = [(NANowPlayingViewController *)self view];
+  window = [view window];
+  [NANowPlayingLayoutSpec titleLabelFontSizeInView:window];
   v5 = v4;
 
   return v5;
@@ -675,9 +675,9 @@ id __49__NANowPlayingViewController_initWithBackground___block_invoke_10(uint64_
 
 - (double)publisherLogoBottomMargin
 {
-  v2 = [(NANowPlayingViewController *)self view];
-  v3 = [v2 window];
-  [NANowPlayingLayoutSpec publisherLogoBottomMarginInView:v3];
+  view = [(NANowPlayingViewController *)self view];
+  window = [view window];
+  [NANowPlayingLayoutSpec publisherLogoBottomMarginInView:window];
   v5 = v4;
 
   return v5;

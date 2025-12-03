@@ -1,21 +1,21 @@
 @interface BMDKEventStream
-+ (id)dkStreamName:(id)a3;
-+ (id)eventStreamPropertiesForBiomeStreamName:(id)a3;
-+ (id)streamNameFromDKStreamName:(id)a3;
++ (id)dkStreamName:(id)name;
++ (id)eventStreamPropertiesForBiomeStreamName:(id)name;
++ (id)streamNameFromDKStreamName:(id)name;
 - (BMDKEventStream)init;
-- (BMDKEventStream)initWithDKStreamIdentifier:(id)a3;
-- (BMDKEventStream)initWithStreamIdentifier:(id)a3 contentProtection:(unint64_t)a4 pruningPolicy:(id)a5 domain:(unint64_t)a6;
+- (BMDKEventStream)initWithDKStreamIdentifier:(id)identifier;
+- (BMDKEventStream)initWithStreamIdentifier:(id)identifier contentProtection:(unint64_t)protection pruningPolicy:(id)policy domain:(unint64_t)domain;
 - (id)publisher;
 @end
 
 @implementation BMDKEventStream
 
-+ (id)streamNameFromDKStreamName:(id)a3
++ (id)streamNameFromDKStreamName:(id)name
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@"/"];
-  v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:{objc_msgSend(v3, "length")}];
+  nameCopy = name;
+  v4 = [nameCopy componentsSeparatedByString:@"/"];
+  v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:{objc_msgSend(nameCopy, "length")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -66,13 +66,13 @@
   return v15;
 }
 
-+ (id)dkStreamName:(id)a3
++ (id)dkStreamName:(id)name
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 hasPrefix:@"_DKEvent."])
+  nameCopy = name;
+  if ([nameCopy hasPrefix:@"_DKEvent."])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"_DKEvent", "length")}];
+    v4 = [nameCopy substringFromIndex:{objc_msgSend(@"_DKEvent", "length")}];
 
     bzero(v13, 0x400uLL);
     if ([v4 getCString:v13 maxLength:1024 encoding:4])
@@ -128,7 +128,7 @@
   else
   {
     v10 = 0;
-    v4 = v3;
+    v4 = nameCopy;
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -136,9 +136,9 @@
   return v10;
 }
 
-+ (id)eventStreamPropertiesForBiomeStreamName:(id)a3
++ (id)eventStreamPropertiesForBiomeStreamName:(id)name
 {
-  v3 = [a1 dkStreamName:a3];
+  v3 = [self dkStreamName:name];
   v4 = [get_CDEventStreamsClass() eventStreamPropertiesForKBName:v3];
 
   return v4;
@@ -151,15 +151,15 @@
   return result;
 }
 
-- (BMDKEventStream)initWithDKStreamIdentifier:(id)a3
+- (BMDKEventStream)initWithDKStreamIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [get_CDEventStreamsClass() eventStreamPropertiesForKBName:v4];
+  identifierCopy = identifier;
+  v5 = [get_CDEventStreamsClass() eventStreamPropertiesForKBName:identifierCopy];
   v6 = objc_alloc(MEMORY[0x1E698F120]);
   [v5 timeToLive];
   v7 = [v6 initPruneOnAccess:0 filterByAgeOnRead:0 maxAge:52428800 maxStreamSize:?];
-  v8 = [BMDKEventStream streamNameFromDKStreamName:v4];
+  v8 = [BMDKEventStream streamNameFromDKStreamName:identifierCopy];
 
   v9 = BMServiceDomainForStream();
   v10 = __biome_log_for_category();
@@ -178,11 +178,11 @@
   return v12;
 }
 
-- (BMDKEventStream)initWithStreamIdentifier:(id)a3 contentProtection:(unint64_t)a4 pruningPolicy:(id)a5 domain:(unint64_t)a6
+- (BMDKEventStream)initWithStreamIdentifier:(id)identifier contentProtection:(unint64_t)protection pruningPolicy:(id)policy domain:(unint64_t)domain
 {
-  v12 = a3;
-  v13 = a5;
-  if (!v12)
+  identifierCopy = identifier;
+  policyCopy = policy;
+  if (!identifierCopy)
   {
     [BMDKEventStream initWithStreamIdentifier:a2 contentProtection:self pruningPolicy:? domain:?];
   }
@@ -193,11 +193,11 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_identifier, a3);
-    v16 = [MEMORY[0x1E698F130] newRestrictedStreamWithSegmentSize:0x100000 protectionClass:a4 domain:a6];
-    [v16 setPruningPolicy:v13];
+    objc_storeStrong(&v14->_identifier, identifier);
+    v16 = [MEMORY[0x1E698F130] newRestrictedStreamWithSegmentSize:0x100000 protectionClass:protection domain:domain];
+    [v16 setPruningPolicy:policyCopy];
     v17 = [BMStoreStream alloc];
-    v18 = [(BMStoreStream *)v17 initWithStreamIdentifier:v12 storeConfig:v16 streamType:2 eventDataClass:objc_opt_class() useCase:*MEMORY[0x1E698E918]];
+    v18 = [(BMStoreStream *)v17 initWithStreamIdentifier:identifierCopy storeConfig:v16 streamType:2 eventDataClass:objc_opt_class() useCase:*MEMORY[0x1E698E918]];
     storeStream = v15->_storeStream;
     v15->_storeStream = v18;
   }
@@ -208,8 +208,8 @@
 - (id)publisher
 {
   v3 = [BMDSLStreamPublisher alloc];
-  v4 = [(BMDKEventStream *)self identifier];
-  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:v4 streamType:2];
+  identifier = [(BMDKEventStream *)self identifier];
+  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:identifier streamType:2];
 
   return v5;
 }

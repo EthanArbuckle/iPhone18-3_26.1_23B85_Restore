@@ -1,28 +1,28 @@
 @interface _STKUSSDResponseProvider
-- (_STKUSSDResponseProvider)initWithQueue:(id)a3 telephonyClient:(id)a4 options:(id)a5 logger:(id)a6;
+- (_STKUSSDResponseProvider)initWithQueue:(id)queue telephonyClient:(id)client options:(id)options logger:(id)logger;
 - (void)dealloc;
-- (void)sendResponse:(int64_t)a3;
-- (void)sendResponse:(int64_t)a3 withStringResult:(id)a4;
+- (void)sendResponse:(int64_t)response;
+- (void)sendResponse:(int64_t)response withStringResult:(id)result;
 @end
 
 @implementation _STKUSSDResponseProvider
 
-- (_STKUSSDResponseProvider)initWithQueue:(id)a3 telephonyClient:(id)a4 options:(id)a5 logger:(id)a6
+- (_STKUSSDResponseProvider)initWithQueue:(id)queue telephonyClient:(id)client options:(id)options logger:(id)logger
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  queueCopy = queue;
+  clientCopy = client;
+  optionsCopy = options;
+  loggerCopy = logger;
+  if (queueCopy)
   {
-    if (v13)
+    if (clientCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [_STKUSSDResponseProvider initWithQueue:a2 telephonyClient:self options:? logger:?];
-    if (v14)
+    if (optionsCopy)
     {
       goto LABEL_4;
     }
@@ -31,13 +31,13 @@ LABEL_8:
   }
 
   [_STKUSSDResponseProvider initWithQueue:a2 telephonyClient:self options:? logger:?];
-  if (!v13)
+  if (!clientCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v14)
+  if (optionsCopy)
   {
     goto LABEL_4;
   }
@@ -51,13 +51,13 @@ LABEL_4:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_telephonyClient, a4);
-    objc_storeStrong(&v17->_queue, a3);
-    v18 = [v14 copy];
+    objc_storeStrong(&v16->_telephonyClient, client);
+    objc_storeStrong(&v17->_queue, queue);
+    v18 = [optionsCopy copy];
     options = v17->_options;
     v17->_options = v18;
 
-    objc_storeStrong(&v17->_logger, a6);
+    objc_storeStrong(&v17->_logger, logger);
   }
 
   return v17;
@@ -70,7 +70,7 @@ LABEL_4:
   [(_STKUSSDResponseProvider *)&v2 dealloc];
 }
 
-- (void)sendResponse:(int64_t)a3
+- (void)sendResponse:(int64_t)response
 {
   self->_hasSentResponse = 1;
   queue = self->_queue;
@@ -79,23 +79,23 @@ LABEL_4:
   v4[2] = __41___STKUSSDResponseProvider_sendResponse___block_invoke;
   v4[3] = &unk_279B4C390;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = response;
   dispatch_async(queue, v4);
 }
 
-- (void)sendResponse:(int64_t)a3 withStringResult:(id)a4
+- (void)sendResponse:(int64_t)response withStringResult:(id)result
 {
-  v6 = a4;
+  resultCopy = result;
   self->_hasSentResponse = 1;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58___STKUSSDResponseProvider_sendResponse_withStringResult___block_invoke;
   block[3] = &unk_279B4C3B8;
-  v10 = v6;
-  v11 = a3;
+  v10 = resultCopy;
+  responseCopy = response;
   block[4] = self;
-  v8 = v6;
+  v8 = resultCopy;
   dispatch_async(queue, block);
 }
 

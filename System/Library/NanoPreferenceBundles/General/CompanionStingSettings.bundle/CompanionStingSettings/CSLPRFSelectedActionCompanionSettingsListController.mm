@@ -1,10 +1,10 @@
 @interface CSLPRFSelectedActionCompanionSettingsListController
 - (CSLPRFSelectedActionCompanionSettingsListController)init;
-- (id)_makeListItemSpecifier:(id)a3 label:(id)a4 systemImageName:(id)a5 value:(unint64_t)a6;
+- (id)_makeListItemSpecifier:(id)specifier label:(id)label systemImageName:(id)name value:(unint64_t)value;
 - (id)_settingsModel;
 - (id)specifiers;
 - (void)reloadSpecifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -51,14 +51,14 @@
     [(PSSpecifier *)self->_selectedActionGroupSpecifier setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
     v7 = v4;
     [v4 addObject:self->_selectedActionGroupSpecifier];
-    v8 = [(CSLPRFSelectedActionCompanionSettingsListController *)self _settingsModel];
-    v9 = [v8 quickActionItems];
+    _settingsModel = [(CSLPRFSelectedActionCompanionSettingsListController *)self _settingsModel];
+    quickActionItems = [_settingsModel quickActionItems];
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    obj = v9;
+    obj = quickActionItems;
     v10 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v10)
     {
@@ -75,13 +75,13 @@
           }
 
           v14 = *(*(&v31 + 1) + 8 * i);
-          v15 = [v14 actionType];
-          [v15 unsignedIntegerValue];
+          actionType = [v14 actionType];
+          [actionType unsignedIntegerValue];
           v16 = CSLActionTypeToSettingsActionType();
 
-          v17 = [v14 title];
-          v18 = [v14 assetName];
-          v19 = [(CSLPRFSelectedActionCompanionSettingsListController *)self _makeListItemSpecifier:@"StingSystemSettingsSelectedActionTypeItem" label:v17 systemImageName:v18 value:v16];
+          title = [v14 title];
+          assetName = [v14 assetName];
+          v19 = [(CSLPRFSelectedActionCompanionSettingsListController *)self _makeListItemSpecifier:@"StingSystemSettingsSelectedActionTypeItem" label:title systemImageName:assetName value:v16];
 
           [v7 addObject:v19];
           if (v30 == v16)
@@ -132,8 +132,8 @@
   model = self->_model;
   if (!model)
   {
-    v4 = [(CSLPRFSelectedActionCompanionSettingsListController *)self specifier];
-    v5 = [v4 propertyForKey:@"StingSettingsModel"];
+    specifier = [(CSLPRFSelectedActionCompanionSettingsListController *)self specifier];
+    v5 = [specifier propertyForKey:@"StingSettingsModel"];
     v6 = self->_model;
     self->_model = v5;
 
@@ -143,14 +143,14 @@
   return model;
 }
 
-- (id)_makeListItemSpecifier:(id)a3 label:(id)a4 systemImageName:(id)a5 value:(unint64_t)a6
+- (id)_makeListItemSpecifier:(id)specifier label:(id)label systemImageName:(id)name value:(unint64_t)value
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [PSSpecifier preferenceSpecifierNamed:a4 target:self set:0 get:0 detail:0 cell:3 edit:0];
-  if (v11)
+  specifierCopy = specifier;
+  nameCopy = name;
+  v12 = [PSSpecifier preferenceSpecifierNamed:label target:self set:0 get:0 detail:0 cell:3 edit:0];
+  if (nameCopy)
   {
-    v13 = [UIImage _systemImageNamed:v11];
+    v13 = [UIImage _systemImageNamed:nameCopy];
     v14 = +[UIColor systemWhiteColor];
     v15 = [v13 imageWithTintColor:v14 renderingMode:1];
 
@@ -160,18 +160,18 @@
     }
   }
 
-  [v12 setIdentifier:v10];
-  v16 = [NSNumber numberWithUnsignedInteger:a6];
+  [v12 setIdentifier:specifierCopy];
+  v16 = [NSNumber numberWithUnsignedInteger:value];
   [v12 setProperty:v16 forKey:PSValueKey];
 
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSLPRFSelectedActionCompanionSettingsListController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(CSLPRFSelectedActionCompanionSettingsListController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
   v10 = [v9 propertyForKey:PSValueKey];
   [v10 integerValue];
@@ -183,7 +183,7 @@
     [(CSLPRFStingConfiguration *)self->_stingConfiguration setExpectedConfigurationForAction:v11 source:1];
     v12.receiver = self;
     v12.super_class = CSLPRFSelectedActionCompanionSettingsListController;
-    [(CSLPRFSelectedActionCompanionSettingsListController *)&v12 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(CSLPRFSelectedActionCompanionSettingsListController *)&v12 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 

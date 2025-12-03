@@ -1,17 +1,17 @@
 @interface HMDNotificationRegistryCoreDataCharacteristicsRequestResult
-- (BOOL)isEqual:(id)a3;
-- (HMDNotificationRegistryCoreDataCharacteristicsRequestResult)initWithCoreDataRequest:(id)a3 didSucceed:(BOOL)a4 didModify:(BOOL)a5 didModifyThresholdOnly:(BOOL)a6 modifiedCharacteristics:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (HMDNotificationRegistryCoreDataCharacteristicsRequestResult)initWithCoreDataRequest:(id)request didSucceed:(BOOL)succeed didModify:(BOOL)modify didModifyThresholdOnly:(BOOL)only modifiedCharacteristics:(id)characteristics;
 @end
 
 @implementation HMDNotificationRegistryCoreDataCharacteristicsRequestResult
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -24,8 +24,8 @@
   if (v6)
   {
     coreDataRequest = self->_coreDataRequest;
-    v9 = [v6 coreDataRequest];
-    v10 = [(HMDNotificationRegistryCoreDataCharacteristicsRequest *)coreDataRequest isEqual:v9];
+    coreDataRequest = [v6 coreDataRequest];
+    v10 = [(HMDNotificationRegistryCoreDataCharacteristicsRequest *)coreDataRequest isEqual:coreDataRequest];
   }
 
   else
@@ -36,21 +36,21 @@
   return v10;
 }
 
-- (HMDNotificationRegistryCoreDataCharacteristicsRequestResult)initWithCoreDataRequest:(id)a3 didSucceed:(BOOL)a4 didModify:(BOOL)a5 didModifyThresholdOnly:(BOOL)a6 modifiedCharacteristics:(id)a7
+- (HMDNotificationRegistryCoreDataCharacteristicsRequestResult)initWithCoreDataRequest:(id)request didSucceed:(BOOL)succeed didModify:(BOOL)modify didModifyThresholdOnly:(BOOL)only modifiedCharacteristics:(id)characteristics
 {
-  v13 = a3;
-  v14 = a7;
+  requestCopy = request;
+  characteristicsCopy = characteristics;
   v18.receiver = self;
   v18.super_class = HMDNotificationRegistryCoreDataCharacteristicsRequestResult;
   v15 = [(HMDNotificationRegistryCoreDataCharacteristicsRequestResult *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_coreDataRequest, a3);
-    v16->_didSucceed = a4;
-    v16->_didModify = a5;
-    objc_storeStrong(&v16->_modifiedCharacteristics, a7);
-    v16->_didModifyThresholdOnly = a6;
+    objc_storeStrong(&v15->_coreDataRequest, request);
+    v16->_didSucceed = succeed;
+    v16->_didModify = modify;
+    objc_storeStrong(&v16->_modifiedCharacteristics, characteristics);
+    v16->_didModifyThresholdOnly = only;
   }
 
   return v16;

@@ -6,13 +6,13 @@
 
 - (uint64_t)daySpan
 {
-  v2 = [a1 startCalendarDate];
-  v3 = [v2 calendarDateForDay];
+  startCalendarDate = [self startCalendarDate];
+  calendarDateForDay = [startCalendarDate calendarDateForDay];
 
-  v4 = [a1 endCalendarDate];
-  v5 = [v4 calendarDateForDay];
+  endCalendarDate = [self endCalendarDate];
+  calendarDateForDay2 = [endCalendarDate calendarDateForDay];
 
-  v6 = [v5 differenceInDays:v3];
+  v6 = [calendarDateForDay2 differenceInDays:calendarDateForDay];
   return v6 + 1;
 }
 

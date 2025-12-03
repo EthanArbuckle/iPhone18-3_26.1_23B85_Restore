@@ -1,14 +1,14 @@
 @interface _CDDevice
 + (id)localDevice;
-+ (unint64_t)identifierForDeviceID:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesDeviceTypes:(unint64_t)a3;
-- (_CDDevice)initWithCoder:(id)a3;
-- (_CDDevice)initWithName:(id)a3 deviceID:(id)a4 deviceClass:(int64_t)a5 model:(id)a6 companion:(BOOL)a7;
-- (_CDDevice)initWithName:(id)a3 identifier:(unint64_t)a4 deviceClass:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (unint64_t)identifierForDeviceID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesDeviceTypes:(unint64_t)types;
+- (_CDDevice)initWithCoder:(id)coder;
+- (_CDDevice)initWithName:(id)name deviceID:(id)d deviceClass:(int64_t)class model:(id)model companion:(BOOL)companion;
+- (_CDDevice)initWithName:(id)name identifier:(unint64_t)identifier deviceClass:(int64_t)class;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CDDevice
@@ -25,12 +25,12 @@
   return v3;
 }
 
-+ (unint64_t)identifierForDeviceID:(id)a3
++ (unint64_t)identifierForDeviceID:(id)d
 {
-  result = a3;
-  if (a3)
+  result = d;
+  if (d)
   {
-    strlen([a3 UTF8String]);
+    strlen([d UTF8String]);
     __memcpy_chk();
     return 0;
   }
@@ -38,45 +38,45 @@
   return result;
 }
 
-- (_CDDevice)initWithName:(id)a3 deviceID:(id)a4 deviceClass:(int64_t)a5 model:(id)a6 companion:(BOOL)a7
+- (_CDDevice)initWithName:(id)name deviceID:(id)d deviceClass:(int64_t)class model:(id)model companion:(BOOL)companion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
+  nameCopy = name;
+  dCopy = d;
+  modelCopy = model;
   v16 = [(_CDDevice *)self init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_name, a3);
-    objc_storeStrong(&v17->_deviceID, a4);
-    v17->_identifier = [_CDDevice identifierForDeviceID:v14];
-    v17->_deviceClass = a5;
-    objc_storeStrong(&v17->_model, a6);
-    v17->_companion = a7;
+    objc_storeStrong(&v16->_name, name);
+    objc_storeStrong(&v17->_deviceID, d);
+    v17->_identifier = [_CDDevice identifierForDeviceID:dCopy];
+    v17->_deviceClass = class;
+    objc_storeStrong(&v17->_model, model);
+    v17->_companion = companion;
   }
 
   return v17;
 }
 
-- (_CDDevice)initWithName:(id)a3 identifier:(unint64_t)a4 deviceClass:(int64_t)a5
+- (_CDDevice)initWithName:(id)name identifier:(unint64_t)identifier deviceClass:(int64_t)class
 {
-  v9 = a3;
+  nameCopy = name;
   v10 = [(_CDDevice *)self init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_name, a3);
-    v11->_identifier = a4;
-    v11->_deviceClass = a5;
+    objc_storeStrong(&v10->_name, name);
+    v11->_identifier = identifier;
+    v11->_deviceClass = class;
   }
 
   return v11;
 }
 
-- (BOOL)matchesDeviceTypes:(unint64_t)a3
+- (BOOL)matchesDeviceTypes:(unint64_t)types
 {
-  v3 = a3;
-  if (a3 == 0x1000000)
+  typesCopy = types;
+  if (types == 0x1000000)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
@@ -97,7 +97,7 @@
       {
         if (deviceClass == 6)
         {
-          v5 = (a3 >> 6) & 1;
+          v5 = (types >> 6) & 1;
         }
 
         else
@@ -107,18 +107,18 @@
             return v5 & 1;
           }
 
-          v5 = (a3 >> 7) & 1;
+          v5 = (types >> 7) & 1;
         }
       }
 
       else if (deviceClass == 4)
       {
-        v5 = (a3 >> 4) & 1;
+        v5 = (types >> 4) & 1;
       }
 
       else
       {
-        v5 = (a3 >> 5) & 1;
+        v5 = (types >> 5) & 1;
       }
     }
 
@@ -126,12 +126,12 @@
     {
       if (deviceClass == 2)
       {
-        v5 = (a3 >> 2) & 1;
+        v5 = (types >> 2) & 1;
       }
 
       else
       {
-        v5 = (a3 >> 3) & 1;
+        v5 = (types >> 3) & 1;
       }
     }
 
@@ -142,16 +142,16 @@
         return v5 & 1;
       }
 
-      v5 = (a3 >> 1) & 1;
+      v5 = (types >> 1) & 1;
     }
 
     else
     {
-      LOBYTE(v5) = a3;
+      LOBYTE(v5) = types;
     }
   }
 
-  if (v3 & 0x1000000) != 0 && (v5)
+  if (typesCopy & 0x1000000) != 0 && (v5)
   {
     LOBYTE(v5) = self->_companion;
   }
@@ -159,36 +159,36 @@
   return v5 & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v6 = a3;
-  [v6 encodeObject:name forKey:@"name"];
-  [v6 encodeObject:self->_deviceID forKey:@"deviceID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_deviceID forKey:@"deviceID"];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:self->_deviceClass];
-  [v6 encodeObject:v5 forKey:@"deviceClass"];
+  [coderCopy encodeObject:v5 forKey:@"deviceClass"];
 
-  [v6 encodeObject:self->_model forKey:@"model"];
-  [v6 encodeBool:self->_companion forKey:@"companion"];
+  [coderCopy encodeObject:self->_model forKey:@"model"];
+  [coderCopy encodeBool:self->_companion forKey:@"companion"];
 }
 
-- (_CDDevice)initWithCoder:(id)a3
+- (_CDDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceClass"];
-  v8 = [v7 integerValue];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"model"];
-  v10 = [v4 decodeBoolForKey:@"companion"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceClass"];
+  integerValue = [v7 integerValue];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"model"];
+  v10 = [coderCopy decodeBoolForKey:@"companion"];
 
-  v11 = [objc_alloc(objc_opt_class()) initWithName:v5 deviceID:v6 deviceClass:v8 model:v9 companion:v10];
+  v11 = [objc_alloc(objc_opt_class()) initWithName:v5 deviceID:v6 deviceClass:integerValue model:v9 companion:v10];
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_CDDevice allocWithZone:a3];
+  v4 = [_CDDevice allocWithZone:zone];
   deviceID = self->_deviceID;
   name = self->_name;
   deviceClass = self->_deviceClass;
@@ -198,10 +198,10 @@
   return [(_CDDevice *)v4 initWithName:name deviceID:deviceID deviceClass:deviceClass model:model companion:companion];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -212,8 +212,8 @@
     if (objc_opt_isKindOfClass())
     {
       deviceID = self->_deviceID;
-      v6 = [(_CDDevice *)v4 deviceID];
-      v7 = [(NSString *)deviceID isEqualToString:v6];
+      deviceID = [(_CDDevice *)equalCopy deviceID];
+      v7 = [(NSString *)deviceID isEqualToString:deviceID];
     }
 
     else
@@ -227,15 +227,15 @@
 
 - (id)description
 {
-  v3 = [(_CDDevice *)self deviceClass];
-  if (v3 > 7)
+  deviceClass = [(_CDDevice *)self deviceClass];
+  if (deviceClass > 7)
   {
     v4 = @"??";
   }
 
   else
   {
-    v4 = off_1E78864C0[v3];
+    v4 = off_1E78864C0[deviceClass];
   }
 
   if (self->_companion)

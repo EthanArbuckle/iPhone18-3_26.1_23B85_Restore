@@ -1,27 +1,27 @@
 @interface GCSControllersCollection
 - (BOOL)storeVersionIsCompatible;
-- (GCSControllersCollection)initWithSettingsStore:(id)a3 userDefaults:(id)a4;
+- (GCSControllersCollection)initWithSettingsStore:(id)store userDefaults:(id)defaults;
 - (GCSSettingsStoreService)settingsStore;
-- (id)controllerForPersistentIdentifier:(id)a3;
+- (id)controllerForPersistentIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)updateControllers:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)updateControllers:(id)controllers;
 @end
 
 @implementation GCSControllersCollection
 
-- (GCSControllersCollection)initWithSettingsStore:(id)a3 userDefaults:(id)a4
+- (GCSControllersCollection)initWithSettingsStore:(id)store userDefaults:(id)defaults
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  defaultsCopy = defaults;
   v14.receiver = self;
   v14.super_class = GCSControllersCollection;
   v8 = [(GCSControllersCollection *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_settingsStore, v6);
-    objc_storeStrong(&v9->_userDefaults, a4);
+    objc_storeWeak(&v8->_settingsStore, storeCopy);
+    objc_storeStrong(&v9->_userDefaults, defaults);
     [(GCUserDefaults *)v9->_userDefaults addObserver:v9 forKeyPath:@"controllers" options:5 context:0];
     WeakRetained = objc_loadWeakRetained(&v9->_settingsStore);
     objc_opt_class();
@@ -45,10 +45,10 @@
   return v3;
 }
 
-- (id)controllerForPersistentIdentifier:(id)a3
+- (id)controllerForPersistentIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -68,8 +68,8 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 persistentIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        persistentIdentifier = [v9 persistentIdentifier];
+        v11 = [persistentIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -95,14 +95,14 @@ LABEL_11:
   return v6;
 }
 
-- (void)updateControllers:(id)a3
+- (void)updateControllers:(id)controllers
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllersCopy = controllers;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [(GCSControllersCollection *)self storeVersionIsCompatible])
   {
-    v5 = [v4 objectForKeyedSubscript:@"data"];
+    v5 = [controllersCopy objectForKeyedSubscript:@"data"];
     if (v5)
     {
       v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSObject count](v5, "count")}];
@@ -145,9 +145,9 @@ LABEL_11:
       v14 = getGCSLogger();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [(GCSControllersCollection *)self values];
+        values = [(GCSControllersCollection *)self values];
         *buf = 138412290;
-        v24 = v15;
+        v24 = values;
         _os_log_impl(&dword_24E4FA000, v14, OS_LOG_TYPE_INFO, "GCSControllersCollection.values = %@", buf, 0xCu);
       }
     }
@@ -159,9 +159,9 @@ LABEL_11:
     v5 = getGCSLogger();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v16 = [(GCSControllersCollection *)self values];
+      values2 = [(GCSControllersCollection *)self values];
       *buf = 138412290;
-      v24 = v16;
+      v24 = values2;
       _os_log_impl(&dword_24E4FA000, v5, OS_LOG_TYPE_INFO, "GCSControllersCollection.values = %@", buf, 0xCu);
     }
   }
@@ -169,23 +169,23 @@ LABEL_11:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"controllers"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"controllers"])
   {
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
   }
 
   else
   {
-    if (![v10 isEqualToString:@"settingsVersion"])
+    if (![pathCopy isEqualToString:@"settingsVersion"])
     {
       v15.receiver = self;
       v15.super_class = GCSControllersCollection;
-      [(GCSControllersCollection *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(GCSControllersCollection *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
       goto LABEL_7;
     }
 

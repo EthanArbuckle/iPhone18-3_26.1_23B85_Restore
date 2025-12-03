@@ -1,18 +1,18 @@
 @interface _UIPortalViewInvertColorsAccessibility
-- (void)setSourceView:(id)a3;
+- (void)setSourceView:(id)view;
 @end
 
 @implementation _UIPortalViewInvertColorsAccessibility
 
-- (void)setSourceView:(id)a3
+- (void)setSourceView:(id)view
 {
   v6.receiver = self;
   v6.super_class = _UIPortalViewInvertColorsAccessibility;
-  v4 = a3;
-  [(_UIPortalViewInvertColorsAccessibility *)&v6 setSourceView:v4];
-  v5 = [v4 accessibilityIgnoresInvertColors];
+  viewCopy = view;
+  [(_UIPortalViewInvertColorsAccessibility *)&v6 setSourceView:viewCopy];
+  accessibilityIgnoresInvertColors = [viewCopy accessibilityIgnoresInvertColors];
 
-  [(_UIPortalViewInvertColorsAccessibility *)self setAccessibilityIgnoresInvertColors:v5];
+  [(_UIPortalViewInvertColorsAccessibility *)self setAccessibilityIgnoresInvertColors:accessibilityIgnoresInvertColors];
 }
 
 @end

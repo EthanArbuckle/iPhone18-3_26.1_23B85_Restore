@@ -1,38 +1,38 @@
 @interface BMLocationMicroLocationVisitProbabilityPerLocation
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMLocationMicroLocationVisitProbabilityPerLocation)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMLocationMicroLocationVisitProbabilityPerLocation)initWithMicroLocationIdentifier:(id)a3 probability:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMLocationMicroLocationVisitProbabilityPerLocation)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMLocationMicroLocationVisitProbabilityPerLocation)initWithMicroLocationIdentifier:(id)identifier probability:(id)probability;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMLocationMicroLocationVisitProbabilityPerLocation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMLocationMicroLocationVisitProbabilityPerLocation *)self microLocationIdentifier];
-    v7 = [v5 microLocationIdentifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    microLocationIdentifier = [(BMLocationMicroLocationVisitProbabilityPerLocation *)self microLocationIdentifier];
+    microLocationIdentifier2 = [v5 microLocationIdentifier];
+    v8 = microLocationIdentifier2;
+    if (microLocationIdentifier == microLocationIdentifier2)
     {
     }
 
     else
     {
-      v9 = [(BMLocationMicroLocationVisitProbabilityPerLocation *)self microLocationIdentifier];
-      v10 = [v5 microLocationIdentifier];
-      v11 = [v9 isEqual:v10];
+      microLocationIdentifier3 = [(BMLocationMicroLocationVisitProbabilityPerLocation *)self microLocationIdentifier];
+      microLocationIdentifier4 = [v5 microLocationIdentifier];
+      v11 = [microLocationIdentifier3 isEqual:microLocationIdentifier4];
 
       if (!v11)
       {
@@ -71,7 +71,7 @@ LABEL_14:
 - (id)jsonDictionary
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v3 = [(BMLocationMicroLocationVisitProbabilityPerLocation *)self microLocationIdentifier];
+  microLocationIdentifier = [(BMLocationMicroLocationVisitProbabilityPerLocation *)self microLocationIdentifier];
   if (![(BMLocationMicroLocationVisitProbabilityPerLocation *)self hasProbability]|| ([(BMLocationMicroLocationVisitProbabilityPerLocation *)self probability], fabs(v4) == INFINITY))
   {
     v6 = 0;
@@ -86,25 +86,25 @@ LABEL_14:
   }
 
   v12[0] = @"microLocationIdentifier";
-  v7 = v3;
-  if (!v3)
+  null = microLocationIdentifier;
+  if (!microLocationIdentifier)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v12[1] = @"probability";
-  v13[0] = v7;
-  v8 = v6;
+  v13[0] = null;
+  null2 = v6;
   if (!v6)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v8;
+  v13[1] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
   if (v6)
   {
-    if (v3)
+    if (microLocationIdentifier)
     {
       goto LABEL_11;
     }
@@ -113,7 +113,7 @@ LABEL_14:
   else
   {
 
-    if (v3)
+    if (microLocationIdentifier)
     {
       goto LABEL_11;
     }
@@ -125,20 +125,20 @@ LABEL_11:
   return v9;
 }
 
-- (BMLocationMicroLocationVisitProbabilityPerLocation)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMLocationMicroLocationVisitProbabilityPerLocation)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"microLocationIdentifier"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"microLocationIdentifier"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v8 = 0;
-        v11 = 0;
+        selfCopy = 0;
         goto LABEL_9;
       }
 
@@ -150,8 +150,8 @@ LABEL_11:
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
       v16 = [v14 initWithDomain:v15 code:2 userInfo:v9];
       v8 = 0;
-      v11 = 0;
-      *a4 = v16;
+      selfCopy = 0;
+      *error = v16;
       goto LABEL_8;
     }
 
@@ -163,13 +163,13 @@ LABEL_11:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"probability"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"probability"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v17 = objc_alloc(MEMORY[0x1E696ABC0]);
         v18 = *MEMORY[0x1E698F240];
@@ -177,11 +177,11 @@ LABEL_11:
         v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"probability"];
         v22 = v19;
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-        *a4 = [v17 initWithDomain:v18 code:2 userInfo:v20];
+        *error = [v17 initWithDomain:v18 code:2 userInfo:v20];
       }
 
       v10 = 0;
-      v11 = 0;
+      selfCopy = 0;
       goto LABEL_8;
     }
 
@@ -194,44 +194,44 @@ LABEL_11:
   }
 
   self = [(BMLocationMicroLocationVisitProbabilityPerLocation *)self initWithMicroLocationIdentifier:v8 probability:v10];
-  v11 = self;
+  selfCopy = self;
 LABEL_8:
 
 LABEL_9:
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMLocationMicroLocationVisitProbabilityPerLocation *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_microLocationIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_hasProbability)
   {
     probability = self->_probability;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v23.receiver = self;
   v23.super_class = BMLocationMicroLocationVisitProbabilityPerLocation;
   v5 = [(BMEventBase *)&v23 init];
@@ -240,12 +240,12 @@ LABEL_9:
     goto LABEL_31;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -256,18 +256,18 @@ LABEL_9:
       while (1)
       {
         LOBYTE(v24) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v24 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v24 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v24) & 0x7F) << v7;
@@ -284,9 +284,9 @@ LABEL_9:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -295,18 +295,18 @@ LABEL_16:
       {
         v5->_hasProbability = 1;
         v24 = 0.0;
-        v17 = [v4 position] + 8;
-        if (v17 >= [v4 position] && (v18 = objc_msgSend(v4, "position") + 8, v18 <= objc_msgSend(v4, "length")))
+        v17 = [fromCopy position] + 8;
+        if (v17 >= [fromCopy position] && (v18 = objc_msgSend(fromCopy, "position") + 8, v18 <= objc_msgSend(fromCopy, "length")))
         {
-          v19 = [v4 data];
-          [v19 getBytes:&v24 range:{objc_msgSend(v4, "position"), 8}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v24 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_probability = v24;
@@ -324,13 +324,13 @@ LABEL_16:
         goto LABEL_30;
       }
 
-      v20 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v20 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_30:
     v21 = 0;
@@ -348,30 +348,30 @@ LABEL_31:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMLocationMicroLocationVisitProbabilityPerLocation *)self microLocationIdentifier];
+  microLocationIdentifier = [(BMLocationMicroLocationVisitProbabilityPerLocation *)self microLocationIdentifier];
   v5 = MEMORY[0x1E696AD98];
   [(BMLocationMicroLocationVisitProbabilityPerLocation *)self probability];
   v6 = [v5 numberWithDouble:?];
-  v7 = [v3 initWithFormat:@"BMLocationMicroLocationVisitProbabilityPerLocation with microLocationIdentifier: %@, probability: %@", v4, v6];
+  v7 = [v3 initWithFormat:@"BMLocationMicroLocationVisitProbabilityPerLocation with microLocationIdentifier: %@, probability: %@", microLocationIdentifier, v6];
 
   return v7;
 }
 
-- (BMLocationMicroLocationVisitProbabilityPerLocation)initWithMicroLocationIdentifier:(id)a3 probability:(id)a4
+- (BMLocationMicroLocationVisitProbabilityPerLocation)initWithMicroLocationIdentifier:(id)identifier probability:(id)probability
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  probabilityCopy = probability;
   v12.receiver = self;
   v12.super_class = BMLocationMicroLocationVisitProbabilityPerLocation;
   v9 = [(BMEventBase *)&v12 init];
   if (v9)
   {
     v9->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v9->_microLocationIdentifier, a3);
-    if (v8)
+    objc_storeStrong(&v9->_microLocationIdentifier, identifier);
+    if (probabilityCopy)
     {
       v9->_hasProbability = 1;
-      [v8 doubleValue];
+      [probabilityCopy doubleValue];
     }
 
     else
@@ -414,9 +414,9 @@ LABEL_31:
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -424,8 +424,8 @@ LABEL_31:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMLocationMicroLocationVisitProbabilityPerLocation alloc] initByReadFrom:v7];
     v4 = v8;

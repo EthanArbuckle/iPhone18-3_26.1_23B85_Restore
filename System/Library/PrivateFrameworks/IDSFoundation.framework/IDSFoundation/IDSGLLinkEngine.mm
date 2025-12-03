@@ -1,41 +1,41 @@
 @interface IDSGLLinkEngine
 - (BOOL)allowOngoingTasks;
 - (BOOL)isH2Enabled;
-- (BOOL)isLinkConnecting:(id)a3;
+- (BOOL)isLinkConnecting:(id)connecting;
 - (BOOL)isQUICAndH2Enabled;
 - (BOOL)shouldFallbackToTCPFirst;
 - (BOOL)shouldPreferIPv6;
 - (IDSGLLinkEngine)init;
-- (IDSGLLinkEngine)initWithLinkConnector:(id)a3 allocateType:(int64_t)a4 isInitiator:(BOOL)a5 useLinkSelection:(BOOL)a6 recordExpensiveQualityMetrics:(BOOL)a7 linkSelectionStrategy:(id)a8 serverBag:(id)a9 timeFn:(id)a10;
+- (IDSGLLinkEngine)initWithLinkConnector:(id)connector allocateType:(int64_t)type isInitiator:(BOOL)initiator useLinkSelection:(BOOL)selection recordExpensiveQualityMetrics:(BOOL)metrics linkSelectionStrategy:(id)strategy serverBag:(id)bag timeFn:(id)self0;
 - (IDSLinkSelectorPrimarySecondary)idsPrimarySecondaryLinkSelector;
 - (IDSRelayLinkProvider)relayLinkProvider;
 - (NSString)idsSessionID;
 - (NSString)qrSessionID;
 - (NSString)tag;
-- (id)addLinkForCandidatePair:(id)a3;
+- (id)addLinkForCandidatePair:(id)pair;
 - (id)compactLinkQualityEvents;
-- (id)packetQualityHandlerForLinkWithUniqueName:(id)a3;
+- (id)packetQualityHandlerForLinkWithUniqueName:(id)name;
 - (int64_t)allocateType;
 - (int64_t)relayConnectionBehavior;
-- (void)addRemotePushToken:(id)a3;
-- (void)addTwoWayAllocation:(id)a3 localAffinity:(int)a4 remoteAffinity:(int)a5 resolvedCandidates:(id)a6;
-- (void)didReceiveStatsTestPacketWithPayload:(NSData *)a3 linkName:(NSString *)a4 completionHandler:(id)a5;
-- (void)importQualityDelta:(id)a3 source:(id)a4;
+- (void)addRemotePushToken:(id)token;
+- (void)addTwoWayAllocation:(id)allocation localAffinity:(int)affinity remoteAffinity:(int)remoteAffinity resolvedCandidates:(id)candidates;
+- (void)didReceiveStatsTestPacketWithPayload:(NSData *)payload linkName:(NSString *)name completionHandler:(id)handler;
+- (void)importQualityDelta:(id)delta source:(id)source;
 - (void)invalidate;
-- (void)linkDidFail:(id)a3 errorCode:(int64_t)a4 isRecoverable:(BOOL)a5 shouldReconnect:(BOOL)a6;
+- (void)linkDidFail:(id)fail errorCode:(int64_t)code isRecoverable:(BOOL)recoverable shouldReconnect:(BOOL)reconnect;
 - (void)registerEngine;
 - (void)scheduleUpdate;
-- (void)setAllowOngoingTasks:(BOOL)a3;
-- (void)setAvailableInterfaceTypesWithLocalTypes:(int)a3 remoteTypes:(int)a4;
-- (void)setIDSLinkID:(char)a3 forLinkWithUniqueID:(id)a4;
-- (void)setIdsSessionID:(id)a3;
-- (void)setQrSessionID:(id)a3;
-- (void)setRelayConnectionBehavior:(int64_t)a3;
-- (void)setRemoteRATForLink:(id)a3 rat:(unsigned int)a4;
-- (void)setShouldFallbackToTCPFirst:(BOOL)a3;
-- (void)setShouldPreferIPv6:(BOOL)a3;
-- (void)setTag:(id)a3;
-- (void)setTestableLink:(id)a3 forLinkWithUniqueID:(id)a4;
+- (void)setAllowOngoingTasks:(BOOL)tasks;
+- (void)setAvailableInterfaceTypesWithLocalTypes:(int)types remoteTypes:(int)remoteTypes;
+- (void)setIDSLinkID:(char)d forLinkWithUniqueID:(id)iD;
+- (void)setIdsSessionID:(id)d;
+- (void)setQrSessionID:(id)d;
+- (void)setRelayConnectionBehavior:(int64_t)behavior;
+- (void)setRemoteRATForLink:(id)link rat:(unsigned int)rat;
+- (void)setShouldFallbackToTCPFirst:(BOOL)first;
+- (void)setShouldPreferIPv6:(BOOL)pv6;
+- (void)setTag:(id)tag;
+- (void)setTestableLink:(id)link forLinkWithUniqueID:(id)d;
 - (void)unregisterEngine;
 @end
 
@@ -55,20 +55,20 @@
 
 - (int64_t)relayConnectionBehavior
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A7DE2884();
   v4 = v3;
 
   return v4;
 }
 
-- (void)setRelayConnectionBehavior:(int64_t)a3
+- (void)setRelayConnectionBehavior:(int64_t)behavior
 {
   if (*(&self->super.isa + OBJC_IVAR___IDSGLLinkEngine_linkEngine))
   {
-    v4 = self;
+    selfCopy = self;
 
-    sub_1A7DE150C(a3);
+    sub_1A7DE150C(behavior);
   }
 
   else
@@ -83,7 +83,7 @@
   if (v2)
   {
     v3 = *(v2 + 16);
-    v4 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock((v3 + 32));
     v5 = *(v3 + 36);
@@ -100,16 +100,16 @@
   return self;
 }
 
-- (void)setAllowOngoingTasks:(BOOL)a3
+- (void)setAllowOngoingTasks:(BOOL)tasks
 {
   v3 = *(&self->super.isa + OBJC_IVAR___IDSGLLinkEngine_linkEngine);
   if (v3)
   {
     v5 = *(v3 + 16);
-    v6 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock((v5 + 32));
-    *(v5 + 36) = a3;
+    *(v5 + 36) = tasks;
     os_unfair_lock_unlock((v5 + 32));
     LinkEngine.scheduleUpdate()();
   }
@@ -125,7 +125,7 @@
   v2 = *(&self->super.isa + OBJC_IVAR___IDSGLLinkEngine_linkEngine);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock((v2 + 72));
     v4 = *(v2 + 80);
@@ -147,7 +147,7 @@
   v2 = *(&self->super.isa + OBJC_IVAR___IDSGLLinkEngine_linkEngine);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock((v2 + 72));
     v4 = *(v2 + 81);
@@ -170,7 +170,7 @@
   if (v2)
   {
     v3 = *(v2 + 16);
-    v4 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock(v3 + 30);
 
@@ -189,7 +189,7 @@
   return self;
 }
 
-- (void)setTag:(id)a3
+- (void)setTag:(id)tag
 {
   v4 = sub_1A7E22290();
   v6 = *(&self->super.isa + OBJC_IVAR___IDSGLLinkEngine_linkEngine);
@@ -198,7 +198,7 @@
     v7 = v4;
     v8 = v5;
     v9 = *(v6 + 16);
-    v10 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock((v9 + 120));
 
@@ -218,7 +218,7 @@
   v2 = *(self + OBJC_IVAR___IDSGLLinkEngine_linkEngine);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock((v2 + 72));
     v4 = *(v2 + 96);
@@ -246,9 +246,9 @@
   return self;
 }
 
-- (void)setIdsSessionID:(id)a3
+- (void)setIdsSessionID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = sub_1A7E22290();
     v6 = v5;
@@ -263,7 +263,7 @@
   v7 = *(&self->super.isa + OBJC_IVAR___IDSGLLinkEngine_linkEngine);
   if (v7)
   {
-    v8 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock((v7 + 72));
     *(v7 + 88) = v4;
@@ -283,7 +283,7 @@
   v2 = *(self + OBJC_IVAR___IDSGLLinkEngine_linkEngine);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock((v2 + 72));
     v4 = *(v2 + 112);
@@ -311,9 +311,9 @@
   return self;
 }
 
-- (void)setQrSessionID:(id)a3
+- (void)setQrSessionID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = sub_1A7E22290();
     v6 = v5;
@@ -328,7 +328,7 @@
   v7 = *(&self->super.isa + OBJC_IVAR___IDSGLLinkEngine_linkEngine);
   if (v7)
   {
-    v8 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock((v7 + 72));
     *(v7 + 104) = v4;
@@ -361,7 +361,7 @@
   if (v2)
   {
     v3 = *(v2 + 56);
-    v4 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock((v3 + 208));
     v5 = *(v3 + 213);
@@ -378,16 +378,16 @@
   return self;
 }
 
-- (void)setShouldPreferIPv6:(BOOL)a3
+- (void)setShouldPreferIPv6:(BOOL)pv6
 {
   v3 = *(&self->super.isa + OBJC_IVAR___IDSGLLinkEngine_linkEngine);
   if (v3)
   {
     v5 = *(v3 + 56);
-    v6 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock((v5 + 208));
-    *(v5 + 213) = a3;
+    *(v5 + 213) = pv6;
     os_unfair_lock_unlock((v5 + 208));
   }
 
@@ -403,7 +403,7 @@
   if (v2)
   {
     v3 = *(v2 + 56);
-    v4 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock((v3 + 208));
     v5 = *(v3 + 212);
@@ -420,16 +420,16 @@
   return self;
 }
 
-- (void)setShouldFallbackToTCPFirst:(BOOL)a3
+- (void)setShouldFallbackToTCPFirst:(BOOL)first
 {
   v3 = *(&self->super.isa + OBJC_IVAR___IDSGLLinkEngine_linkEngine);
   if (v3)
   {
     v5 = *(v3 + 56);
-    v6 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock((v5 + 208));
-    *(v5 + 212) = a3;
+    *(v5 + 212) = first;
     os_unfair_lock_unlock((v5 + 208));
   }
 
@@ -443,7 +443,7 @@
 {
   if (*(&self->super.isa + OBJC_IVAR___IDSGLLinkEngine_linkEngine))
   {
-    v2 = self;
+    selfCopy = self;
 
     v4 = j___s13IDSFoundation10LinkEngineC03idsB24SelectorPrimarySecondarySo07IDSLinkefG0CSgvg(v3);
 
@@ -458,15 +458,15 @@
   return self;
 }
 
-- (IDSGLLinkEngine)initWithLinkConnector:(id)a3 allocateType:(int64_t)a4 isInitiator:(BOOL)a5 useLinkSelection:(BOOL)a6 recordExpensiveQualityMetrics:(BOOL)a7 linkSelectionStrategy:(id)a8 serverBag:(id)a9 timeFn:(id)a10
+- (IDSGLLinkEngine)initWithLinkConnector:(id)connector allocateType:(int64_t)type isInitiator:(BOOL)initiator useLinkSelection:(BOOL)selection recordExpensiveQualityMetrics:(BOOL)metrics linkSelectionStrategy:(id)strategy serverBag:(id)bag timeFn:(id)self0
 {
-  v16 = _Block_copy(a10);
+  v16 = _Block_copy(fn);
   v17 = swift_allocObject();
   *(v17 + 16) = v16;
   swift_unknownObjectRetain();
-  v18 = a8;
-  v19 = a9;
-  v20 = sub_1A7DE8114(a3, a4, a5, a6, a7, a8, v19, sub_1A7DE8758, v17);
+  strategyCopy = strategy;
+  bagCopy = bag;
+  v20 = sub_1A7DE8114(connector, type, initiator, selection, metrics, strategy, bagCopy, sub_1A7DE8758, v17);
   swift_unknownObjectRelease();
 
   return v20;
@@ -478,7 +478,7 @@
   if (v2)
   {
     swift_retain_n();
-    v4 = self;
+    selfCopy = self;
     idsGLRunInTaskWithInferredTaskPriority(_:)(&unk_1A7E54028, v2);
   }
 
@@ -488,19 +488,19 @@
   }
 }
 
-- (void)linkDidFail:(id)a3 errorCode:(int64_t)a4 isRecoverable:(BOOL)a5 shouldReconnect:(BOOL)a6
+- (void)linkDidFail:(id)fail errorCode:(int64_t)code isRecoverable:(BOOL)recoverable shouldReconnect:(BOOL)reconnect
 {
-  if (a3)
+  if (fail)
   {
-    v7 = a5;
+    recoverableCopy = recoverable;
     v10 = sub_1A7E22290();
     if (*(&self->super.isa + OBJC_IVAR___IDSGLLinkEngine_linkEngine))
     {
       v12 = v10;
       v13 = v11;
-      v14 = self;
+      selfCopy = self;
 
-      sub_1A7DE07A4(v12, v13, a4, v7, a6, &unk_1A7E54010);
+      sub_1A7DE07A4(v12, v13, code, recoverableCopy, reconnect, &unk_1A7E54010);
     }
 
     else
@@ -510,9 +510,9 @@
   }
 }
 
-- (BOOL)isLinkConnecting:(id)a3
+- (BOOL)isLinkConnecting:(id)connecting
 {
-  if (a3)
+  if (connecting)
   {
     v4 = sub_1A7E22290();
     if (!*(&self->super.isa + OBJC_IVAR___IDSGLLinkEngine_linkEngine))
@@ -523,7 +523,7 @@
 
     v6 = v4;
     v7 = v5;
-    v8 = self;
+    selfCopy = self;
 
     v9 = sub_1A7DE0B9C(v6, v7);
   }
@@ -537,23 +537,23 @@
   return v4;
 }
 
-- (void)addTwoWayAllocation:(id)a3 localAffinity:(int)a4 remoteAffinity:(int)a5 resolvedCandidates:(id)a6
+- (void)addTwoWayAllocation:(id)allocation localAffinity:(int)affinity remoteAffinity:(int)remoteAffinity resolvedCandidates:(id)candidates
 {
-  v6 = a5;
-  v7 = a4;
+  remoteAffinityCopy = remoteAffinity;
+  affinityCopy = affinity;
   v9 = sub_1A7E22290();
   v11 = v10;
   sub_1A7CC79C8(0, &qword_1EB2B28F0);
   v12 = sub_1A7E22530();
-  v13 = self;
-  sub_1A7DE36B8(v9, v11, v7, v6, v12);
+  selfCopy = self;
+  sub_1A7DE36B8(v9, v11, affinityCopy, remoteAffinityCopy, v12);
 }
 
-- (void)addRemotePushToken:(id)a3
+- (void)addRemotePushToken:(id)token
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A7DE3C8C(v4);
+  tokenCopy = token;
+  selfCopy = self;
+  sub_1A7DE3C8C(tokenCopy);
 }
 
 - (void)invalidate
@@ -562,7 +562,7 @@
   if (v2)
   {
     v3 = *(v2 + 16);
-    v4 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock((v3 + 32));
     *(v3 + 36) = 0;
@@ -577,17 +577,17 @@
   }
 }
 
-- (void)setAvailableInterfaceTypesWithLocalTypes:(int)a3 remoteTypes:(int)a4
+- (void)setAvailableInterfaceTypesWithLocalTypes:(int)types remoteTypes:(int)remoteTypes
 {
   if (*(&self->super.isa + OBJC_IVAR___IDSGLLinkEngine_linkEngine))
   {
-    v4 = a4;
-    v5 = a3;
-    v6 = (a3 >> 1) & 1;
-    v7 = (a4 >> 1) & 1;
-    v8 = self;
+    remoteTypesCopy = remoteTypes;
+    typesCopy = types;
+    v6 = (types >> 1) & 1;
+    v7 = (remoteTypes >> 1) & 1;
+    selfCopy = self;
 
-    sub_1A7DE19FC(v5 & 1, v6, v4 & 1, v7);
+    sub_1A7DE19FC(typesCopy & 1, v6, remoteTypesCopy & 1, v7);
   }
 
   else
@@ -596,16 +596,16 @@
   }
 }
 
-- (void)setRemoteRATForLink:(id)a3 rat:(unsigned int)a4
+- (void)setRemoteRATForLink:(id)link rat:(unsigned int)rat
 {
   v6 = sub_1A7E22290();
   if (*(&self->super.isa + OBJC_IVAR___IDSGLLinkEngine_linkEngine))
   {
     v8 = v6;
     v9 = v7;
-    v10 = self;
+    selfCopy = self;
 
-    sub_1A7DDFE28(v8, v9, a4);
+    sub_1A7DDFE28(v8, v9, rat);
   }
 
   else
@@ -614,21 +614,21 @@
   }
 }
 
-- (void)importQualityDelta:(id)a3 source:(id)a4
+- (void)importQualityDelta:(id)delta source:(id)source
 {
   v6 = sub_1A7E22290();
   if (*(&self->super.isa + OBJC_IVAR___IDSGLLinkEngine_linkEngine))
   {
     v8 = v6;
     v9 = v7;
-    v10 = (a3 + OBJC_IVAR___IDSLinksQualityReportDeltaObject_delta);
+    v10 = (delta + OBJC_IVAR___IDSLinksQualityReportDeltaObject_delta);
     swift_beginAccess();
     v11 = *v10;
     if (*v10)
     {
       v12 = v10[1];
-      v13 = a3;
-      v14 = self;
+      deltaCopy = delta;
+      selfCopy = self;
 
       sub_1A7CD3B24(v11);
       sub_1A7DE0D40(v11, v12, v8, v9);
@@ -646,24 +646,24 @@
   __break(1u);
 }
 
-- (void)setTestableLink:(id)a3 forLinkWithUniqueID:(id)a4
+- (void)setTestableLink:(id)link forLinkWithUniqueID:(id)d
 {
   v6 = sub_1A7E22290();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  sub_1A7DE4058(v9, v6, v8);
+  linkCopy = link;
+  selfCopy = self;
+  sub_1A7DE4058(linkCopy, v6, v8);
 }
 
-- (void)didReceiveStatsTestPacketWithPayload:(NSData *)a3 linkName:(NSString *)a4 completionHandler:(id)a5
+- (void)didReceiveStatsTestPacketWithPayload:(NSData *)payload linkName:(NSString *)name completionHandler:(id)handler
 {
   v9 = sub_1A7CC7FFC(&unk_1EB2B61C0);
   MEMORY[0x1EEE9AC00](v9 - 8, v10);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = payload;
+  v14[3] = name;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_1A7E226D0();
@@ -678,15 +678,15 @@
   v17[3] = 0;
   v17[4] = &unk_1A7E48E60;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  payloadCopy = payload;
+  nameCopy = name;
+  selfCopy = self;
   sub_1A7DE5274(0, 0, v12, &unk_1A7E45700, v17);
 }
 
 - (id)compactLinkQualityEvents
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A7DE46E8();
 
   sub_1A7CC7FFC(&unk_1EB2B66C0);
@@ -695,15 +695,15 @@
   return v3;
 }
 
-- (id)addLinkForCandidatePair:(id)a3
+- (id)addLinkForCandidatePair:(id)pair
 {
   if (*(self + OBJC_IVAR___IDSGLLinkEngine_linkEngine))
   {
-    v3 = self;
-    v4 = a3;
-    v5 = v3;
+    selfCopy = self;
+    pairCopy = pair;
+    v5 = selfCopy;
 
-    sub_1A7CE5188(v4);
+    sub_1A7CE5188(pairCopy);
     v7 = v6;
 
     if (v7)
@@ -729,32 +729,32 @@
 
 - (void)registerEngine
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A7DE48A4();
 }
 
 - (void)unregisterEngine
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A7DE49E4();
 }
 
-- (id)packetQualityHandlerForLinkWithUniqueName:(id)a3
+- (id)packetQualityHandlerForLinkWithUniqueName:(id)name
 {
   v4 = sub_1A7E22290();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1A7DE4B50(v4, v6);
 
   return v8;
 }
 
-- (void)setIDSLinkID:(char)a3 forLinkWithUniqueID:(id)a4
+- (void)setIDSLinkID:(char)d forLinkWithUniqueID:(id)iD
 {
   v6 = sub_1A7E22290();
   v8 = v7;
-  v9 = self;
-  sub_1A7DE4CB8(a3, v6, v8);
+  selfCopy = self;
+  sub_1A7DE4CB8(d, v6, v8);
 }
 
 - (IDSGLLinkEngine)init

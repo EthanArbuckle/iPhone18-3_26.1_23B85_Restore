@@ -1,16 +1,16 @@
 @interface VerificationFinishedViewController
-- (_TtC28HealthExposureNotificationUI34VerificationFinishedViewController)initWithRegionDisplayName:(id)a3;
-- (_TtC28HealthExposureNotificationUI34VerificationFinishedViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC28HealthExposureNotificationUI34VerificationFinishedViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC28HealthExposureNotificationUI34VerificationFinishedViewController)initWithRegionDisplayName:(id)name;
+- (_TtC28HealthExposureNotificationUI34VerificationFinishedViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC28HealthExposureNotificationUI34VerificationFinishedViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)didTapPrimaryButton;
 - (void)viewDidLoad;
 @end
 
 @implementation VerificationFinishedViewController
 
-- (_TtC28HealthExposureNotificationUI34VerificationFinishedViewController)initWithRegionDisplayName:(id)a3
+- (_TtC28HealthExposureNotificationUI34VerificationFinishedViewController)initWithRegionDisplayName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_251703164();
   }
@@ -31,8 +31,8 @@
   v2 = v4.receiver;
   [(OBBaseWelcomeController *)&v4 viewDidLoad];
   sub_2516D98C8();
-  v3 = [v2 navigationItem];
-  [v3 setHidesBackButton_];
+  navigationItem = [v2 navigationItem];
+  [navigationItem setHidesBackButton_];
 }
 
 - (void)didTapPrimaryButton
@@ -43,9 +43,9 @@
     v4 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC28HealthExposureNotificationUI34VerificationFinishedViewController_flow);
     ObjectType = swift_getObjectType();
     v6 = *(v3 + 120);
-    v7 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
-    v6(v7, &protocol witness table for VerificationFinishedViewController, ObjectType, v3);
+    v6(selfCopy, &protocol witness table for VerificationFinishedViewController, ObjectType, v3);
     swift_unknownObjectRelease();
   }
 
@@ -56,14 +56,14 @@
   }
 }
 
-- (_TtC28HealthExposureNotificationUI34VerificationFinishedViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC28HealthExposureNotificationUI34VerificationFinishedViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC28HealthExposureNotificationUI34VerificationFinishedViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC28HealthExposureNotificationUI34VerificationFinishedViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

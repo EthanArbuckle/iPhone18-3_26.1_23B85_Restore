@@ -1,19 +1,19 @@
 @interface BWInferenceFusionTrackerMeanPixelCalculator
-- (BWInferenceFusionTrackerMeanPixelCalculator)initWithCommandQueue:(id)a3;
-- (void)asyncMeanPixelForBuffer:(__CVBuffer *)a3 completionHandler:(id)a4;
+- (BWInferenceFusionTrackerMeanPixelCalculator)initWithCommandQueue:(id)queue;
+- (void)asyncMeanPixelForBuffer:(__CVBuffer *)buffer completionHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation BWInferenceFusionTrackerMeanPixelCalculator
 
-- (BWInferenceFusionTrackerMeanPixelCalculator)initWithCommandQueue:(id)a3
+- (BWInferenceFusionTrackerMeanPixelCalculator)initWithCommandQueue:(id)queue
 {
   v7.receiver = self;
   v7.super_class = BWInferenceFusionTrackerMeanPixelCalculator;
   v4 = [(BWInferenceFusionTrackerMeanPixelCalculator *)&v7 init];
   if (v4)
   {
-    v4->_commandQueue = a3;
+    v4->_commandQueue = queue;
     v9 = 0;
     v10 = &v9;
     v11 = 0x3052000000;
@@ -40,23 +40,23 @@
   return v4;
 }
 
-- (void)asyncMeanPixelForBuffer:(__CVBuffer *)a3 completionHandler:(id)a4
+- (void)asyncMeanPixelForBuffer:(__CVBuffer *)buffer completionHandler:(id)handler
 {
   v7 = MEMORY[0x1E69741C0];
-  Width = CVPixelBufferGetWidth(a3);
-  v9 = [v7 texture2DDescriptorWithPixelFormat:80 width:Width height:CVPixelBufferGetHeight(a3) mipmapped:0];
+  Width = CVPixelBufferGetWidth(buffer);
+  v9 = [v7 texture2DDescriptorWithPixelFormat:80 width:Width height:CVPixelBufferGetHeight(buffer) mipmapped:0];
   [v9 setUsage:1];
   v10 = [-[MTLCommandQueue device](self->_commandQueue "device")];
-  v11 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [(MPSImageStatisticsMean *)self->_meanFilter encodeToCommandBuffer:v11 sourceTexture:v10 destinationTexture:self->_meanTexture];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [(MPSImageStatisticsMean *)self->_meanFilter encodeToCommandBuffer:commandBuffer sourceTexture:v10 destinationTexture:self->_meanTexture];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __89__BWInferenceFusionTrackerMeanPixelCalculator_asyncMeanPixelForBuffer_completionHandler___block_invoke;
   v12[3] = &unk_1E7991E70;
   v12[4] = self;
-  v12[5] = a4;
-  [v11 addCompletedHandler:v12];
-  [v11 commit];
+  v12[5] = handler;
+  [commandBuffer addCompletedHandler:v12];
+  [commandBuffer commit];
 }
 
 uint64_t __89__BWInferenceFusionTrackerMeanPixelCalculator_asyncMeanPixelForBuffer_completionHandler___block_invoke(uint64_t a1)

@@ -1,25 +1,25 @@
 @interface NETSchemaNETError
-- (BOOL)isEqual:(id)a3;
-- (NETSchemaNETError)initWithDictionary:(id)a3;
-- (NETSchemaNETError)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NETSchemaNETError)initWithDictionary:(id)dictionary;
+- (NETSchemaNETError)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NETSchemaNETError
 
-- (NETSchemaNETError)initWithDictionary:(id)a3
+- (NETSchemaNETError)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = NETSchemaNETError;
   v5 = [(NETSchemaNETError *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"domain"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(NETSchemaNETError *)v5 setDomain:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"description"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"description"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(NETSchemaNETError *)v5 setDescription:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"errorCode"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (NETSchemaNETError)initWithJSON:(id)a3
+- (NETSchemaNETError)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NETSchemaNETError *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NETSchemaNETError *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NETSchemaNETError *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,30 +84,30 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_description)
   {
     v4 = [(NETSchemaNETError *)self description];
     v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"description"];
+    [dictionary setObject:v5 forKeyedSubscript:@"description"];
   }
 
   if (self->_domain)
   {
-    v6 = [(NETSchemaNETError *)self domain];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"domain"];
+    domain = [(NETSchemaNETError *)self domain];
+    v7 = [domain copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"domain"];
   }
 
   if (*&self->_has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[NETSchemaNETError errorCode](self, "errorCode")}];
-    [v3 setObject:v8 forKeyedSubscript:@"errorCode"];
+    [dictionary setObject:v8 forKeyedSubscript:@"errorCode"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -127,28 +127,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(NETSchemaNETError *)self domain];
-  v6 = [v4 domain];
-  if ((v5 != 0) == (v6 == 0))
+  domain = [(NETSchemaNETError *)self domain];
+  domain2 = [equalCopy domain];
+  if ((domain != 0) == (domain2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(NETSchemaNETError *)self domain];
-  if (v7)
+  domain3 = [(NETSchemaNETError *)self domain];
+  if (domain3)
   {
-    v8 = v7;
-    v9 = [(NETSchemaNETError *)self domain];
-    v10 = [v4 domain];
-    v11 = [v9 isEqual:v10];
+    v8 = domain3;
+    domain4 = [(NETSchemaNETError *)self domain];
+    domain5 = [equalCopy domain];
+    v11 = [domain4 isEqual:domain5];
 
     if (!v11)
     {
@@ -160,9 +160,9 @@
   {
   }
 
-  v5 = [(NETSchemaNETError *)self description];
-  v6 = [v4 description];
-  if ((v5 != 0) == (v6 == 0))
+  domain = [(NETSchemaNETError *)self description];
+  domain2 = [equalCopy description];
+  if ((domain != 0) == (domain2 == 0))
   {
 LABEL_11:
 
@@ -174,7 +174,7 @@ LABEL_11:
   {
     v13 = v12;
     v14 = [(NETSchemaNETError *)self description];
-    v15 = [v4 description];
+    v15 = [equalCopy description];
     v16 = [v14 isEqual:v15];
 
     if (!v16)
@@ -187,9 +187,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[32] & 1))
+  if ((*&self->_has & 1) == (equalCopy[32] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (errorCode = self->_errorCode, errorCode == [v4 errorCode]))
+    if ((*&self->_has & 1) == 0 || (errorCode = self->_errorCode, errorCode == [equalCopy errorCode]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -203,12 +203,12 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(NETSchemaNETError *)self domain];
+  toCopy = to;
+  domain = [(NETSchemaNETError *)self domain];
 
-  if (v4)
+  if (domain)
   {
     PBDataWriterWriteStringField();
   }
@@ -220,11 +220,11 @@ LABEL_13:
     PBDataWriterWriteStringField();
   }
 
-  v6 = v7;
+  v6 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 

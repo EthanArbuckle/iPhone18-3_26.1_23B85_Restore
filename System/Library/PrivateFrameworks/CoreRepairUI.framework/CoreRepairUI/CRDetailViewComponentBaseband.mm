@@ -40,33 +40,33 @@
   if (v2)
   {
     v4 = MEMORY[0x277CBEBC0];
-    v5 = [(CRUDetailViewComponent *)v2 locale];
-    v6 = [v5 localizedStringWithKey:@"BASEBAND_KB_URL" defaultString:@"BASEBAND_KB_URL"];
+    locale = [(CRUDetailViewComponent *)v2 locale];
+    v6 = [locale localizedStringWithKey:@"BASEBAND_KB_URL" defaultString:@"BASEBAND_KB_URL"];
     v7 = [v4 URLWithString:v6];
     [(CRUDetailViewComponent *)v3 setKbArticleURL:v7];
 
-    v8 = [(CRUDetailViewComponent *)v3 locale];
-    v9 = [v8 localizedStringWithKey:@"BASEBAND_SETTINGS_TITLE" defaultString:@"BASEBAND_SETTINGS_TITLE"];
+    locale2 = [(CRUDetailViewComponent *)v3 locale];
+    v9 = [locale2 localizedStringWithKey:@"BASEBAND_SETTINGS_TITLE" defaultString:@"BASEBAND_SETTINGS_TITLE"];
     [(CRUDetailViewComponent *)v3 setTitleText:v9];
 
-    v10 = [(CRUDetailViewComponent *)v3 locale];
-    v11 = [v10 localizedStringWithKey:@"BASEBAND_DESC" defaultString:@"BASEBAND_DESC"];
+    locale3 = [(CRUDetailViewComponent *)v3 locale];
+    v11 = [locale3 localizedStringWithKey:@"BASEBAND_DESC" defaultString:@"BASEBAND_DESC"];
     [(CRUDetailViewComponent *)v3 setInformativeText:v11];
 
-    v12 = [(CRUDetailViewComponent *)v3 locale];
-    v13 = [v12 localizedStringWithKey:@"LEARN_MORE_UNKNWON_PART" defaultString:@"LEARN_MORE_UNKNWON_PART"];
+    locale4 = [(CRUDetailViewComponent *)v3 locale];
+    v13 = [locale4 localizedStringWithKey:@"LEARN_MORE_UNKNWON_PART" defaultString:@"LEARN_MORE_UNKNWON_PART"];
     [(CRUDetailViewComponent *)v3 setFooterText:v13];
 
     if ([(CRUDetailViewComponent *)v3 deviceClass]== 3)
     {
       v14 = MEMORY[0x277CBEBC0];
-      v15 = [(CRUDetailViewComponent *)v3 locale];
-      v16 = [v15 localizedStringWithKey:@"BASEBAND_KB_URL_IPAD" defaultString:@"BASEBAND_KB_URL_IPAD"];
+      locale5 = [(CRUDetailViewComponent *)v3 locale];
+      v16 = [locale5 localizedStringWithKey:@"BASEBAND_KB_URL_IPAD" defaultString:@"BASEBAND_KB_URL_IPAD"];
       v17 = [v14 URLWithString:v16];
       [(CRUDetailViewComponent *)v3 setKbArticleURL:v17];
 
-      v18 = [(CRUDetailViewComponent *)v3 locale];
-      v19 = [v18 localizedStringWithKey:@"BASEBAND_DESC_IPAD" defaultString:@"BASEBAND_DESC_IPAD"];
+      locale6 = [(CRUDetailViewComponent *)v3 locale];
+      v19 = [locale6 localizedStringWithKey:@"BASEBAND_DESC_IPAD" defaultString:@"BASEBAND_DESC_IPAD"];
       [(CRUDetailViewComponent *)v3 setInformativeText:v19];
     }
   }

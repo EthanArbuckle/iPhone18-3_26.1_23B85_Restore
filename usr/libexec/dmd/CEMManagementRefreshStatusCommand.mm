@@ -1,16 +1,16 @@
 @interface CEMManagementRefreshStatusCommand
-- (id)dmf_executeOperationWithContext:(id)a3 error:(id *)a4;
+- (id)dmf_executeOperationWithContext:(id)context error:(id *)error;
 @end
 
 @implementation CEMManagementRefreshStatusCommand
 
-- (id)dmf_executeOperationWithContext:(id)a3 error:(id *)a4
+- (id)dmf_executeOperationWithContext:(id)context error:(id *)error
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_opt_new();
-  v6 = [v4 organizationIdentifier];
+  organizationIdentifier = [contextCopy organizationIdentifier];
 
-  [v5 setOrganizationIdentifier:v6];
+  [v5 setOrganizationIdentifier:organizationIdentifier];
 
   return v5;
 }

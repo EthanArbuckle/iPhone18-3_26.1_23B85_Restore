@@ -1,6 +1,6 @@
 @interface MTRPluginServiceAreaMetric
 + (id)commandPaths;
-+ (id)transformInvokeCommandExpectationMetric:(id)a3;
++ (id)transformInvokeCommandExpectationMetric:(id)metric;
 - (id)additionalCoreAnalyticsEventDictionary;
 @end
 
@@ -20,43 +20,43 @@
   return v4;
 }
 
-+ (id)transformInvokeCommandExpectationMetric:(id)a3
++ (id)transformInvokeCommandExpectationMetric:(id)metric
 {
-  v3 = a3;
+  metricCopy = metric;
   v4 = [MTRPluginServiceAreaMetric alloc];
-  v5 = [v3 invokeCommandMetric];
-  v6 = [(MTRPluginMetric *)v4 initMetricWithName:@"com.apple.matter.serviceAreaEvent" sourceMetric:v5];
+  invokeCommandMetric = [metricCopy invokeCommandMetric];
+  v6 = [(MTRPluginMetric *)v4 initMetricWithName:@"com.apple.matter.serviceAreaEvent" sourceMetric:invokeCommandMetric];
 
-  v7 = [v3 invokeCommandMetric];
-  [v6 setInvokeCommandMetric:v7];
+  invokeCommandMetric2 = [metricCopy invokeCommandMetric];
+  [v6 setInvokeCommandMetric:invokeCommandMetric2];
 
-  v8 = [v3 error];
+  error = [metricCopy error];
 
-  [v6 setError:v8];
+  [v6 setError:error];
 
   return v6;
 }
 
 - (id)additionalCoreAnalyticsEventDictionary
 {
-  v2 = self;
+  selfCopy = self;
   v49 = *MEMORY[0x277D85DE8];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v3 = [(MTRPluginServiceAreaMetric *)self invokeCommandMetric];
-  v4 = [v3 expectedValues];
+  invokeCommandMetric = [(MTRPluginServiceAreaMetric *)self invokeCommandMetric];
+  expectedValues = [invokeCommandMetric expectedValues];
 
-  obj = v4;
-  v43 = [v4 countByEnumeratingWithState:&v44 objects:v48 count:16];
+  obj = expectedValues;
+  v43 = [expectedValues countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (!v43)
   {
     v23 = @"allAreasSelected";
     goto LABEL_31;
   }
 
-  v36 = v2;
+  v36 = selfCopy;
   v38 = 0;
   v42 = *v45;
   v5 = *MEMORY[0x277CD50B8];
@@ -113,14 +113,14 @@
           v15 = 0;
         }
 
-        v16 = [v13 cluster];
-        if ([v16 unsignedIntValue] == 336)
+        cluster = [v13 cluster];
+        if ([cluster unsignedIntValue] == 336)
         {
           v17 = v5;
-          v18 = [v13 attribute];
-          v19 = [v18 unsignedIntValue];
+          attribute = [v13 attribute];
+          unsignedIntValue = [attribute unsignedIntValue];
 
-          if (v19 == 2)
+          if (unsignedIntValue == 2)
           {
             v20 = [v15 objectForKeyedSubscript:v40];
             v21 = [v20 isEqual:v39];
@@ -128,7 +128,7 @@
             v5 = v17;
             if (v21)
             {
-              v16 = [v15 objectForKeyedSubscript:v37];
+              cluster = [v15 objectForKeyedSubscript:v37];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
@@ -170,29 +170,29 @@ LABEL_23:
     v23 = @"areasSelected";
   }
 
-  v2 = v36;
+  selfCopy = v36;
 LABEL_31:
 
   v24 = MEMORY[0x277CBEB38];
-  v25 = [(MTRPluginServiceAreaMetric *)v2 invokeCommandMetric];
-  v26 = [v25 additionalCoreAnalyticsEventDictionary];
-  v27 = [v24 dictionaryWithDictionary:v26];
+  invokeCommandMetric2 = [(MTRPluginServiceAreaMetric *)selfCopy invokeCommandMetric];
+  additionalCoreAnalyticsEventDictionary = [invokeCommandMetric2 additionalCoreAnalyticsEventDictionary];
+  v27 = [v24 dictionaryWithDictionary:additionalCoreAnalyticsEventDictionary];
 
-  v28 = [(MTRPluginServiceAreaMetric *)v2 invokeCommandMetric];
-  v29 = [v28 commandID];
-  v30 = [v29 unsignedIntValue];
+  invokeCommandMetric3 = [(MTRPluginServiceAreaMetric *)selfCopy invokeCommandMetric];
+  commandID = [invokeCommandMetric3 commandID];
+  unsignedIntValue2 = [commandID unsignedIntValue];
 
-  if (v30 == 2)
+  if (unsignedIntValue2 == 2)
   {
     v23 = @"areaSkipped";
     goto LABEL_34;
   }
 
-  v31 = [(MTRPluginServiceAreaMetric *)v2 invokeCommandMetric];
-  v32 = [v31 commandID];
-  v33 = [v32 unsignedIntValue];
+  invokeCommandMetric4 = [(MTRPluginServiceAreaMetric *)selfCopy invokeCommandMetric];
+  commandID2 = [invokeCommandMetric4 commandID];
+  unsignedIntValue3 = [commandID2 unsignedIntValue];
 
-  if (!v33)
+  if (!unsignedIntValue3)
   {
 LABEL_34:
     [v27 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:{v23, v36}];

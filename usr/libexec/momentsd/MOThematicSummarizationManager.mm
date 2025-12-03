@@ -1,33 +1,33 @@
 @interface MOThematicSummarizationManager
-- (MOThematicSummarizationManager)initWithUniverse:(id)a3;
-- (void)generateThematicSummarizationBundles:(id)a3 withEmbeddings:(id)a4 handler:(id)a5;
-- (void)generateThematicSummarizationBundlesForType:(unint64_t)a3 withEventBundles:(id)a4 andEmbeddings:(id)a5 handler:(id)a6;
-- (void)updateSuggestionIDsForNewThematicSummarizationBundles:(id)a3 withExistingThematicSummarizationBundles:(id)a4;
+- (MOThematicSummarizationManager)initWithUniverse:(id)universe;
+- (void)generateThematicSummarizationBundles:(id)bundles withEmbeddings:(id)embeddings handler:(id)handler;
+- (void)generateThematicSummarizationBundlesForType:(unint64_t)type withEventBundles:(id)bundles andEmbeddings:(id)embeddings handler:(id)handler;
+- (void)updateSuggestionIDsForNewThematicSummarizationBundles:(id)bundles withExistingThematicSummarizationBundles:(id)summarizationBundles;
 @end
 
 @implementation MOThematicSummarizationManager
 
-- (MOThematicSummarizationManager)initWithUniverse:(id)a3
+- (MOThematicSummarizationManager)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v21.receiver = self;
   v21.super_class = MOThematicSummarizationManager;
-  v5 = [(MOBundleClusteringManager *)&v21 initWithUniverse:v4];
+  v5 = [(MOBundleClusteringManager *)&v21 initWithUniverse:universeCopy];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v4 getService:v7];
+  v8 = [universeCopy getService:v7];
 
   if (v5)
   {
-    v9 = [[MOThematicSummarizationUtility alloc] initWithUniverse:v4];
+    v9 = [[MOThematicSummarizationUtility alloc] initWithUniverse:universeCopy];
     thematicSummarizationUtility = v5->_thematicSummarizationUtility;
     v5->_thematicSummarizationUtility = v9;
 
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v15 = dispatch_queue_create(v13, v14);
+    v15 = dispatch_queue_create(uTF8String, v14);
     queue = v5->_queue;
     v5->_queue = v15;
 
@@ -44,11 +44,11 @@
   return v5;
 }
 
-- (void)generateThematicSummarizationBundles:(id)a3 withEmbeddings:(id)a4 handler:(id)a5
+- (void)generateThematicSummarizationBundles:(id)bundles withEmbeddings:(id)embeddings handler:(id)handler
 {
-  v31 = a3;
-  v34 = a4;
-  v30 = a5;
+  bundlesCopy = bundles;
+  embeddingsCopy = embeddings;
+  handlerCopy = handler;
   v32 = objc_opt_new();
   v36 = objc_opt_new();
   v48 = 0;
@@ -75,9 +75,9 @@
           objc_enumerationMutation(&off_10036DA70);
         }
 
-        v10 = [*(*(&v44 + 1) + 8 * i) intValue];
-        v11 = v10;
-        v12 = [(MOThematicSummarizationUtility *)self->_thematicSummarizationUtility thematicSummarizationStringKeyFor:v10];
+        intValue = [*(*(&v44 + 1) + 8 * i) intValue];
+        v11 = intValue;
+        v12 = [(MOThematicSummarizationUtility *)self->_thematicSummarizationUtility thematicSummarizationStringKeyFor:intValue];
         v13 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
@@ -86,8 +86,8 @@
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[generateThematicSummarizationBundles] Current thematic summary type: %@ ", buf, 0xCu);
         }
 
-        v14 = [(MOThematicSummarizationManager *)self thematicSummarizationUtility];
-        v15 = [v14 clusteringParamsFor:v10];
+        thematicSummarizationUtility = [(MOThematicSummarizationManager *)self thematicSummarizationUtility];
+        v15 = [thematicSummarizationUtility clusteringParamsFor:intValue];
 
         v16 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -97,8 +97,8 @@
           _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "[generateThematicSummarizationBundles] Current clustering params: %@ ", buf, 0xCu);
         }
 
-        v17 = v34;
-        if (v10 != 1)
+        v17 = embeddingsCopy;
+        if (intValue != 1)
         {
           v42[0] = _NSConcreteStackBlock;
           v42[1] = 3221225472;
@@ -137,11 +137,11 @@
           if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
           {
             v26 = [v17 count];
-            v27 = [v15 minPoints];
+            minPoints = [v15 minPoints];
             *buf = 134218240;
             v55 = v26;
             v56 = 2048;
-            v57 = v27;
+            v57 = minPoints;
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "[generateThematicSummarizationBundles] Filtered embedding count (%lu) is less than required sample size (%lu). Skip thematic summary generation", buf, 0x16u);
           }
         }
@@ -170,7 +170,7 @@
           v41 = &v48;
           v39 = v36;
           v40 = v32;
-          [(MOThematicSummarizationManager *)self generateThematicSummarizationBundlesForType:v11 withEventBundles:v31 andEmbeddings:v17 handler:v37];
+          [(MOThematicSummarizationManager *)self generateThematicSummarizationBundlesForType:v11 withEventBundles:bundlesCopy andEmbeddings:v17 handler:v37];
 
           v25 = v38;
         }
@@ -194,7 +194,7 @@ LABEL_24:
   }
 
   [v32 enumerateObjectsUsingBlock:&__block_literal_global_8];
-  v30[2](v30, v32, v49[5]);
+  handlerCopy[2](handlerCopy, v32, v49[5]);
   _Block_object_dispose(&v48, 8);
 }
 
@@ -349,13 +349,13 @@ void __94__MOThematicSummarizationManager_generateThematicSummarizationBundles_w
   }
 }
 
-- (void)generateThematicSummarizationBundlesForType:(unint64_t)a3 withEventBundles:(id)a4 andEmbeddings:(id)a5 handler:(id)a6
+- (void)generateThematicSummarizationBundlesForType:(unint64_t)type withEventBundles:(id)bundles andEmbeddings:(id)embeddings handler:(id)handler
 {
-  v251 = a4;
-  v255 = a5;
-  v234 = a6;
-  v250 = self;
-  v235 = [(MOThematicSummarizationUtility *)self->_thematicSummarizationUtility thematicSummarizationStringKeyFor:a3];
+  bundlesCopy = bundles;
+  embeddingsCopy = embeddings;
+  handlerCopy = handler;
+  selfCopy = self;
+  v235 = [(MOThematicSummarizationUtility *)self->_thematicSummarizationUtility thematicSummarizationStringKeyFor:type];
   v10 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -364,8 +364,8 @@ void __94__MOThematicSummarizationManager_generateThematicSummarizationBundles_w
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[generateThematicSummarizationBundlesForType] summary type %@", buf, 0xCu);
   }
 
-  v11 = [(MOBundleClusteringManager *)self getClusterLabels];
-  if (![v11 count])
+  getClusterLabels = [(MOBundleClusteringManager *)self getClusterLabels];
+  if (![getClusterLabels count])
   {
     v227 = [NSError alloc];
     v284 = NSLocalizedDescriptionKey;
@@ -377,13 +377,13 @@ LABEL_149:
     v14 = [v227 initWithDomain:@"MOThematicSummarizationManager" code:0 userInfo:v230];
 
     v231 = objc_opt_new();
-    v221 = v234;
-    (*(v234 + 2))(v234, v231, v14);
+    v221 = handlerCopy;
+    (*(handlerCopy + 2))(handlerCopy, v231, v14);
     goto LABEL_155;
   }
 
-  v12 = [v11 count];
-  if (v12 != [v255 count])
+  v12 = [getClusterLabels count];
+  if (v12 != [embeddingsCopy count])
   {
     v227 = [NSError alloc];
     v282 = NSLocalizedDescriptionKey;
@@ -393,7 +393,7 @@ LABEL_149:
     goto LABEL_149;
   }
 
-  v13 = [NSCountedSet setWithArray:v11];
+  v13 = [NSCountedSet setWithArray:getClusterLabels];
   v238 = objc_opt_new();
   v248 = +[NSDate date];
   v269 = 0u;
@@ -410,8 +410,8 @@ LABEL_149:
   v16 = v15;
   v264 = *v270;
   v246 = v14;
-  v247 = v11;
-  v257 = a3;
+  v247 = getClusterLabels;
+  typeCopy = type;
   do
   {
     v17 = 0;
@@ -432,8 +432,8 @@ LABEL_149:
         v268[2] = __117__MOThematicSummarizationManager_generateThematicSummarizationBundlesForType_withEventBundles_andEmbeddings_handler___block_invoke;
         v268[3] = &unk_100337600;
         v268[4] = v18;
-        v263 = [v11 indexesOfObjectsPassingTest:v268];
-        v19 = [v255 objectsAtIndexes:?];
+        v263 = [getClusterLabels indexesOfObjectsPassingTest:v268];
+        v19 = [embeddingsCopy objectsAtIndexes:?];
         v20 = objc_opt_new();
         v266[0] = _NSConcreteStackBlock;
         v266[1] = 3221225472;
@@ -443,37 +443,37 @@ LABEL_149:
         v267 = v21;
         [v19 enumerateObjectsUsingBlock:v266];
         v261 = v21;
-        v22 = [v21 allObjects];
-        v23 = [NSPredicate predicateWithFormat:@"bundleIdentifier in %@", v22];
+        allObjects = [v21 allObjects];
+        v23 = [NSPredicate predicateWithFormat:@"bundleIdentifier in %@", allObjects];
 
         v260 = v23;
-        v259 = [v251 filteredArrayUsingPredicate:v23];
+        v259 = [bundlesCopy filteredArrayUsingPredicate:v23];
         v262 = v19;
-        v24 = [MOBundleClusteringManager generateClusterBundleFrom:v250 withEmbeddings:"generateClusterBundleFrom:withEmbeddings:andCreationDate:excludeResourceTypes:" andCreationDate:? excludeResourceTypes:?];
+        v24 = [MOBundleClusteringManager generateClusterBundleFrom:selfCopy withEmbeddings:"generateClusterBundleFrom:withEmbeddings:andCreationDate:excludeResourceTypes:" andCreationDate:? excludeResourceTypes:?];
         [v24 setInterfaceType:16];
         [v24 setBundleSuperType:10];
-        [v24 setBundleSubType:{-[MOThematicSummarizationUtility bundleSubtypeFor:](v250->_thematicSummarizationUtility, "bundleSubtypeFor:", a3)}];
+        [v24 setBundleSubType:{-[MOThematicSummarizationUtility bundleSubtypeFor:](selfCopy->_thematicSummarizationUtility, "bundleSubtypeFor:", type)}];
         v25 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
-          v26 = [v24 bundleSubType];
-          v27 = [v24 clusterMetadata];
-          v28 = [v27 phenotype];
-          v29 = [v24 startDate];
-          v30 = [v24 endDate];
+          bundleSubType = [v24 bundleSubType];
+          clusterMetadata = [v24 clusterMetadata];
+          phenotype = [clusterMetadata phenotype];
+          startDate = [v24 startDate];
+          endDate = [v24 endDate];
           *buf = 134218755;
-          v274 = v26;
+          v274 = bundleSubType;
           v275 = 2113;
-          v276 = v28;
+          v276 = phenotype;
           v277 = 2112;
-          *v278 = v29;
+          *v278 = startDate;
           *&v278[8] = 2112;
-          *&v278[10] = v30;
+          *&v278[10] = endDate;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Evaluating current pattern summary bundle: type:%lu phenotypes=%{private}@, dateRange=%@-%@", buf, 0x2Au);
         }
 
-        v31 = [v24 subSuggestionIDs];
-        v32 = [v31 count];
+        subSuggestionIDs = [v24 subSuggestionIDs];
+        v32 = [subSuggestionIDs count];
 
         if (!v32)
         {
@@ -481,61 +481,61 @@ LABEL_149:
           v258 = v46;
           if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
           {
-            v39 = [v24 subSuggestionIDs];
-            v47 = [v39 count];
-            v48 = [v24 clusterMetadata];
-            v49 = [v48 phenotype];
-            v50 = [v24 startDate];
-            v51 = [v24 endDate];
+            subSuggestionIDs2 = [v24 subSuggestionIDs];
+            v47 = [subSuggestionIDs2 count];
+            clusterMetadata2 = [v24 clusterMetadata];
+            phenotype2 = [clusterMetadata2 phenotype];
+            startDate2 = [v24 startDate];
+            endDate2 = [v24 endDate];
             *buf = 134218755;
             v274 = v47;
             v275 = 2113;
-            v276 = v49;
+            v276 = phenotype2;
             v277 = 2112;
-            *v278 = v50;
+            *v278 = startDate2;
             *&v278[8] = 2112;
-            *&v278[10] = v51;
+            *&v278[10] = endDate2;
             _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_INFO, "Skipping current pattern summary bundle: no subsuggestions (subSuggestionCount=%lu, phenotypes=%{private}@, dateRange=%@-%@)", buf, 0x2Au);
 
             goto LABEL_20;
           }
 
 LABEL_71:
-          a3 = v257;
+          type = typeCopy;
           v17 = v265;
           goto LABEL_72;
         }
 
         v33 = +[NSCalendar currentCalendar];
-        v34 = [v24 startDate];
-        v35 = [v24 endDate];
+        startDate3 = [v24 startDate];
+        endDate3 = [v24 endDate];
         v258 = v33;
-        if (([v33 isDate:v34 inSameDayAsDate:v35]& 1) != 0)
+        if (([v33 isDate:startDate3 inSameDayAsDate:endDate3]& 1) != 0)
         {
-          v36 = [v24 clusterMetadata];
-          v37 = [v36 phenotype];
-          v38 = [v37 objectForKeyedSubscript:@"holiday"];
+          clusterMetadata3 = [v24 clusterMetadata];
+          phenotype3 = [clusterMetadata3 phenotype];
+          v38 = [phenotype3 objectForKeyedSubscript:@"holiday"];
 
           if (!v38)
           {
-            v39 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
-            if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
+            subSuggestionIDs2 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
+            if (os_log_type_enabled(subSuggestionIDs2, OS_LOG_TYPE_INFO))
             {
-              v40 = [v24 subSuggestionIDs];
-              v41 = [v40 count];
-              v42 = [v24 clusterMetadata];
-              v43 = [v42 phenotype];
-              v44 = [v24 startDate];
-              v45 = [v24 endDate];
+              subSuggestionIDs3 = [v24 subSuggestionIDs];
+              v41 = [subSuggestionIDs3 count];
+              clusterMetadata4 = [v24 clusterMetadata];
+              phenotype4 = [clusterMetadata4 phenotype];
+              startDate4 = [v24 startDate];
+              endDate4 = [v24 endDate];
               *buf = 134218755;
               v274 = v41;
               v275 = 2113;
-              v276 = v43;
+              v276 = phenotype4;
               v277 = 2112;
-              *v278 = v44;
+              *v278 = startDate4;
               *&v278[8] = 2112;
-              *&v278[10] = v45;
-              _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "Skipping current pattern summary bundle:start and end dates are on the same date and it was not holiday summary (subSuggestionCount=%lu, phenotypes=%{private}@, dateRange=%@-%@)", buf, 0x2Au);
+              *&v278[10] = endDate4;
+              _os_log_impl(&_mh_execute_header, subSuggestionIDs2, OS_LOG_TYPE_INFO, "Skipping current pattern summary bundle:start and end dates are on the same date and it was not holiday summary (subSuggestionCount=%lu, phenotypes=%{private}@, dateRange=%@-%@)", buf, 0x2Au);
             }
 
 LABEL_20:
@@ -548,9 +548,9 @@ LABEL_20:
         {
         }
 
-        v52 = [v24 clusterMetadata];
-        v53 = [v52 phenotype];
-        v54 = [v53 objectForKeyedSubscript:@"topLevelActivityType"];
+        clusterMetadata5 = [v24 clusterMetadata];
+        phenotype5 = [clusterMetadata5 phenotype];
+        v54 = [phenotype5 objectForKeyedSubscript:@"topLevelActivityType"];
         if (v54)
         {
           v249 = 1;
@@ -558,9 +558,9 @@ LABEL_20:
 
         else
         {
-          v55 = [v24 clusterMetadata];
-          v56 = [v55 phenotype];
-          v57 = [v56 objectForKeyedSubscript:@"secondLevelActivityType"];
+          clusterMetadata6 = [v24 clusterMetadata];
+          phenotype6 = [clusterMetadata6 phenotype];
+          v57 = [phenotype6 objectForKeyedSubscript:@"secondLevelActivityType"];
           if (v57)
           {
             v249 = 1;
@@ -568,16 +568,16 @@ LABEL_20:
 
           else
           {
-            v58 = [v24 clusterMetadata];
-            v59 = [v58 phenotype];
-            v60 = [v59 objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
+            clusterMetadata7 = [v24 clusterMetadata];
+            phenotype7 = [clusterMetadata7 phenotype];
+            v60 = [phenotype7 objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
             v249 = v60 != 0;
           }
         }
 
-        v61 = [v24 clusterMetadata];
-        v62 = [v61 phenotype];
-        v63 = [v62 objectForKeyedSubscript:@"placeName"];
+        clusterMetadata8 = [v24 clusterMetadata];
+        phenotype8 = [clusterMetadata8 phenotype];
+        v63 = [phenotype8 objectForKeyedSubscript:@"placeName"];
         if (v63)
         {
           v252 = 1;
@@ -585,9 +585,9 @@ LABEL_20:
 
         else
         {
-          v64 = [v24 clusterMetadata];
-          v65 = [v64 phenotype];
-          v66 = [v65 objectForKeyedSubscript:@"combinedPlaceType"];
+          clusterMetadata9 = [v24 clusterMetadata];
+          phenotype9 = [clusterMetadata9 phenotype];
+          v66 = [phenotype9 objectForKeyedSubscript:@"combinedPlaceType"];
           if (v66)
           {
             v252 = 1;
@@ -595,9 +595,9 @@ LABEL_20:
 
           else
           {
-            v244 = [v24 clusterMetadata];
-            v67 = [v244 phenotype];
-            v68 = [v67 objectForKeyedSubscript:@"enclosingAreaName"];
+            clusterMetadata10 = [v24 clusterMetadata];
+            phenotype10 = [clusterMetadata10 phenotype];
+            v68 = [phenotype10 objectForKeyedSubscript:@"enclosingAreaName"];
             if (v68)
             {
               v252 = 1;
@@ -605,17 +605,17 @@ LABEL_20:
 
             else
             {
-              v241 = [v24 clusterMetadata];
-              v239 = [v241 phenotype];
-              v69 = [v239 objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
+              clusterMetadata11 = [v24 clusterMetadata];
+              phenotype11 = [clusterMetadata11 phenotype];
+              v69 = [phenotype11 objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
               v252 = v69 != 0;
             }
           }
         }
 
-        v70 = [v24 clusterMetadata];
-        v71 = [v70 phenotype];
-        v72 = [v71 objectForKeyedSubscript:@"placeName"];
+        clusterMetadata12 = [v24 clusterMetadata];
+        phenotype12 = [clusterMetadata12 phenotype];
+        v72 = [phenotype12 objectForKeyedSubscript:@"placeName"];
         if (v72)
         {
           v245 = 0;
@@ -623,9 +623,9 @@ LABEL_20:
 
         else
         {
-          v73 = [v24 clusterMetadata];
-          v74 = [v73 phenotype];
-          v75 = [v74 objectForKeyedSubscript:@"combinedPlaceType"];
+          clusterMetadata13 = [v24 clusterMetadata];
+          phenotype13 = [clusterMetadata13 phenotype];
+          v75 = [phenotype13 objectForKeyedSubscript:@"combinedPlaceType"];
           if (v75)
           {
             v245 = 0;
@@ -633,16 +633,16 @@ LABEL_20:
 
           else
           {
-            v76 = [v24 clusterMetadata];
-            v77 = [v76 phenotype];
-            v78 = [v77 objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
+            clusterMetadata14 = [v24 clusterMetadata];
+            phenotype14 = [clusterMetadata14 phenotype];
+            v78 = [phenotype14 objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
             v245 = v78 == 0;
           }
         }
 
-        v79 = [v24 clusterMetadata];
-        v80 = [v79 phenotype];
-        v81 = [v80 objectForKeyedSubscript:@"persons"];
+        clusterMetadata15 = [v24 clusterMetadata];
+        phenotype15 = [clusterMetadata15 phenotype];
+        v81 = [phenotype15 objectForKeyedSubscript:@"persons"];
         if (v81)
         {
           v82 = 1;
@@ -650,9 +650,9 @@ LABEL_20:
 
         else
         {
-          v83 = [v24 clusterMetadata];
-          v84 = [v83 phenotype];
-          v85 = [v84 objectForKeyedSubscript:@"withChild"];
+          clusterMetadata16 = [v24 clusterMetadata];
+          phenotype16 = [clusterMetadata16 phenotype];
+          v85 = [phenotype16 objectForKeyedSubscript:@"withChild"];
           if (v85)
           {
             v86 = 1;
@@ -660,9 +660,9 @@ LABEL_20:
 
           else
           {
-            v242 = [v24 clusterMetadata];
-            v240 = [v242 phenotype];
-            v87 = [v240 objectForKeyedSubscript:@"withMyPet"];
+            clusterMetadata17 = [v24 clusterMetadata];
+            phenotype17 = [clusterMetadata17 phenotype];
+            v87 = [phenotype17 objectForKeyedSubscript:@"withMyPet"];
             if (v87)
             {
               v86 = 1;
@@ -670,9 +670,9 @@ LABEL_20:
 
             else
             {
-              v237 = [v24 clusterMetadata];
-              v236 = [v237 phenotype];
-              v88 = [v236 objectForKeyedSubscript:@"withFamily"];
+              clusterMetadata18 = [v24 clusterMetadata];
+              phenotype18 = [clusterMetadata18 phenotype];
+              v88 = [phenotype18 objectForKeyedSubscript:@"withFamily"];
               if (v88)
               {
                 v86 = 1;
@@ -680,9 +680,9 @@ LABEL_20:
 
               else
               {
-                v233 = [v24 clusterMetadata];
-                v232 = [v233 phenotype];
-                v89 = [v232 objectForKeyedSubscript:@"withCoworker"];
+                clusterMetadata19 = [v24 clusterMetadata];
+                phenotype19 = [clusterMetadata19 phenotype];
+                v89 = [phenotype19 objectForKeyedSubscript:@"withCoworker"];
                 v86 = v89 != 0;
 
                 v88 = 0;
@@ -693,9 +693,9 @@ LABEL_20:
           v82 = v86;
         }
 
-        v90 = [v24 clusterMetadata];
-        v91 = [v90 phenotype];
-        v92 = [v91 objectForKeyedSubscript:@"holiday"];
+        clusterMetadata20 = [v24 clusterMetadata];
+        phenotype20 = [clusterMetadata20 phenotype];
+        v92 = [phenotype20 objectForKeyedSubscript:@"holiday"];
         if (v92)
         {
           v93 = 1;
@@ -703,73 +703,73 @@ LABEL_20:
 
         else
         {
-          v94 = [v24 clusterMetadata];
-          v95 = [v94 phenotype];
-          v96 = [v95 objectForKeyedSubscript:@"celebration"];
+          clusterMetadata21 = [v24 clusterMetadata];
+          phenotype21 = [clusterMetadata21 phenotype];
+          v96 = [phenotype21 objectForKeyedSubscript:@"celebration"];
           v93 = v96 != 0;
         }
 
-        v97 = [v24 clusterMetadata];
-        v98 = [v97 phenotype];
-        v99 = [v98 objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
+        clusterMetadata22 = [v24 clusterMetadata];
+        phenotype22 = [clusterMetadata22 phenotype];
+        v99 = [phenotype22 objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
 
         if ((((v249 || v252) | v82) & 1) == 0 && !v93 && !v99)
         {
           v100 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
           if (os_log_type_enabled(v100, OS_LOG_TYPE_INFO))
           {
-            v101 = [v24 subSuggestionIDs];
-            v102 = [v101 count];
-            v103 = [v24 clusterMetadata];
-            v104 = [v103 phenotype];
-            v105 = [v24 startDate];
-            v106 = [v24 endDate];
+            subSuggestionIDs4 = [v24 subSuggestionIDs];
+            v102 = [subSuggestionIDs4 count];
+            clusterMetadata23 = [v24 clusterMetadata];
+            phenotype23 = [clusterMetadata23 phenotype];
+            startDate5 = [v24 startDate];
+            endDate5 = [v24 endDate];
             *buf = 134218755;
             v274 = v102;
             v275 = 2113;
-            v276 = v104;
+            v276 = phenotype23;
             v277 = 2112;
-            *v278 = v105;
+            *v278 = startDate5;
             *&v278[8] = 2112;
-            *&v278[10] = v106;
+            *&v278[10] = endDate5;
             _os_log_impl(&_mh_execute_header, v100, OS_LOG_TYPE_INFO, "Skipping current pattern summary bundle: Summarized by only time context but nothing else. (subSuggestionCount=%lu, phenotypes=%{private}@, dateRange=%@-%@)", buf, 0x2Au);
           }
 
           goto LABEL_70;
         }
 
-        v107 = [v24 clusterMetadata];
-        v108 = [v107 phenotype];
-        v109 = [v108 objectForKeyedSubscript:@"combinedPlaceType"];
+        clusterMetadata24 = [v24 clusterMetadata];
+        phenotype24 = [clusterMetadata24 phenotype];
+        v109 = [phenotype24 objectForKeyedSubscript:@"combinedPlaceType"];
 
         if (v109)
         {
-          v110 = [v24 clusterMetadata];
-          v111 = [v110 phenotype];
-          v112 = [v111 objectForKeyedSubscript:@"combinedPlaceType"];
+          clusterMetadata25 = [v24 clusterMetadata];
+          phenotype25 = [clusterMetadata25 phenotype];
+          clusterMetadata27 = [phenotype25 objectForKeyedSubscript:@"combinedPlaceType"];
 
-          v113 = [v112 lowercaseString];
-          LODWORD(v111) = [v113 isEqualToString:@"work"];
+          lowercaseString = [clusterMetadata27 lowercaseString];
+          LODWORD(phenotype25) = [lowercaseString isEqualToString:@"work"];
 
-          if (v111)
+          if (phenotype25)
           {
             v114 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
             if (os_log_type_enabled(v114, OS_LOG_TYPE_INFO))
             {
-              v115 = [v24 subSuggestionIDs];
-              v116 = [v115 count];
-              v117 = [v24 clusterMetadata];
-              v118 = [v117 phenotype];
-              v119 = [v24 startDate];
-              v120 = [v24 endDate];
+              subSuggestionIDs5 = [v24 subSuggestionIDs];
+              v116 = [subSuggestionIDs5 count];
+              clusterMetadata26 = [v24 clusterMetadata];
+              phenotype26 = [clusterMetadata26 phenotype];
+              startDate6 = [v24 startDate];
+              endDate6 = [v24 endDate];
               *buf = 134218755;
               v274 = v116;
               v275 = 2113;
-              v276 = v118;
+              v276 = phenotype26;
               v277 = 2112;
-              *v278 = v119;
+              *v278 = startDate6;
               *&v278[8] = 2112;
-              *&v278[10] = v120;
+              *&v278[10] = endDate6;
               v121 = v114;
               v122 = "Skipping current pattern summary bundle: summarized by work location. (subSuggestionCount=%lu, phenotypes=%{private}@, dateRange=%@-%@)";
               goto LABEL_68;
@@ -779,9 +779,9 @@ LABEL_20:
           }
         }
 
-        v112 = [v24 clusterMetadata];
-        v125 = [v112 phenotype];
-        v126 = [v125 objectForKeyedSubscript:@"combinedPlaceType"];
+        clusterMetadata27 = [v24 clusterMetadata];
+        phenotype27 = [clusterMetadata27 phenotype];
+        v126 = [phenotype27 objectForKeyedSubscript:@"combinedPlaceType"];
         v243 = v82;
         if (!v126)
         {
@@ -791,44 +791,44 @@ LABEL_80:
         }
 
         v127 = v126;
-        v128 = [v24 clusterMetadata];
-        v129 = [v128 phenotype];
-        v130 = [v129 objectForKeyedSubscript:@"placeName"];
+        clusterMetadata28 = [v24 clusterMetadata];
+        phenotype28 = [clusterMetadata28 phenotype];
+        v130 = [phenotype28 objectForKeyedSubscript:@"placeName"];
 
         if (!v130)
         {
-          v131 = [v24 clusterMetadata];
-          v132 = [v131 phenotype];
-          v112 = [v132 objectForKeyedSubscript:@"combinedPlaceType"];
+          clusterMetadata29 = [v24 clusterMetadata];
+          phenotype29 = [clusterMetadata29 phenotype];
+          clusterMetadata27 = [phenotype29 objectForKeyedSubscript:@"combinedPlaceType"];
 
-          v125 = +[MOThematicSummarizationUtility userPlaceTypeStringEligibleForThematicSummary];
-          if ([v125 containsObject:v112])
+          phenotype27 = +[MOThematicSummarizationUtility userPlaceTypeStringEligibleForThematicSummary];
+          if ([phenotype27 containsObject:clusterMetadata27])
           {
             goto LABEL_80;
           }
 
           v166 = +[MOThematicSummarizationUtility POICategoriesEligibleForThematicSummary];
-          v167 = [v166 containsObject:v112];
+          v167 = [v166 containsObject:clusterMetadata27];
 
           if ((v167 & 1) == 0)
           {
             v114 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
             if (os_log_type_enabled(v114, OS_LOG_TYPE_INFO))
             {
-              v115 = [v24 subSuggestionIDs];
-              v168 = [v115 count];
-              v117 = [v24 clusterMetadata];
-              v118 = [v117 phenotype];
-              v119 = [v24 startDate];
-              v120 = [v24 endDate];
+              subSuggestionIDs5 = [v24 subSuggestionIDs];
+              v168 = [subSuggestionIDs5 count];
+              clusterMetadata26 = [v24 clusterMetadata];
+              phenotype26 = [clusterMetadata26 phenotype];
+              startDate6 = [v24 startDate];
+              endDate6 = [v24 endDate];
               *buf = 134218755;
               v274 = v168;
               v275 = 2113;
-              v276 = v118;
+              v276 = phenotype26;
               v277 = 2112;
-              *v278 = v119;
+              *v278 = startDate6;
               *&v278[8] = 2112;
-              *&v278[10] = v120;
+              *&v278[10] = endDate6;
               v121 = v114;
               v122 = "Skipping current pattern summary bundle: Contains unsupported POI phenotype with no placeName phenotype. (subSuggestionCount=%lu, phenotypes=%{private}@, dateRange=%@-%@)";
 LABEL_68:
@@ -839,23 +839,23 @@ LABEL_69:
 
 LABEL_70:
             v14 = v246;
-            v11 = v247;
+            getClusterLabels = v247;
             goto LABEL_71;
           }
 
 LABEL_81:
         }
 
-        v133 = [v24 clusterMetadata];
-        v134 = [v133 phenotype];
-        v135 = [v134 objectForKeyedSubscript:@"secondLevelActivityType"];
+        clusterMetadata30 = [v24 clusterMetadata];
+        phenotype30 = [clusterMetadata30 phenotype];
+        v135 = [phenotype30 objectForKeyedSubscript:@"secondLevelActivityType"];
 
-        v136 = [v24 clusterMetadata];
-        v137 = [v136 phenotype];
-        v138 = v137;
+        clusterMetadata31 = [v24 clusterMetadata];
+        phenotype31 = [clusterMetadata31 phenotype];
+        v138 = phenotype31;
         if (v135)
         {
-          v139 = [v137 objectForKeyedSubscript:@"secondLevelActivityType"];
+          v139 = [phenotype31 objectForKeyedSubscript:@"secondLevelActivityType"];
 
           v140 = +[MOThematicSummarizationUtility HKWorkoutActivityTypesNotEligibleForThematicSummary];
           v141 = [v140 containsObject:v139];
@@ -865,19 +865,19 @@ LABEL_81:
             v142 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
             if (os_log_type_enabled(v142, OS_LOG_TYPE_INFO))
             {
-              v143 = [v24 subSuggestionIDs];
-              v144 = [v143 count];
-              v145 = [v24 clusterMetadata];
-              v146 = [v145 phenotype];
-              v147 = [v24 startDate];
+              subSuggestionIDs6 = [v24 subSuggestionIDs];
+              v144 = [subSuggestionIDs6 count];
+              clusterMetadata32 = [v24 clusterMetadata];
+              phenotype32 = [clusterMetadata32 phenotype];
+              startDate7 = [v24 startDate];
               [v24 endDate];
               v149 = v148 = v139;
               *buf = 134218755;
               v274 = v144;
               v275 = 2113;
-              v276 = v146;
+              v276 = phenotype32;
               v277 = 2112;
-              *v278 = v147;
+              *v278 = startDate7;
               *&v278[8] = 2112;
               *&v278[10] = v149;
               _os_log_impl(&_mh_execute_header, v142, OS_LOG_TYPE_INFO, "Skipping current pattern summary bundle: Contains unsupported HK type phenotype. (subSuggestionCount=%lu, phenotypes=%{private}@, dateRange=%@-%@)", buf, 0x2Au);
@@ -886,9 +886,9 @@ LABEL_81:
             }
 
             v14 = v246;
-            v11 = v247;
+            getClusterLabels = v247;
 LABEL_87:
-            a3 = v257;
+            type = typeCopy;
             v17 = v265;
 LABEL_96:
             v124 = v261;
@@ -906,19 +906,19 @@ LABEL_73:
             v142 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
             if (os_log_type_enabled(v142, OS_LOG_TYPE_INFO))
             {
-              v157 = [v24 subSuggestionIDs];
-              v158 = [v157 count];
-              v159 = [v24 clusterMetadata];
-              v160 = [v159 phenotype];
-              v161 = [v24 startDate];
+              subSuggestionIDs7 = [v24 subSuggestionIDs];
+              v158 = [subSuggestionIDs7 count];
+              clusterMetadata33 = [v24 clusterMetadata];
+              phenotype33 = [clusterMetadata33 phenotype];
+              startDate8 = [v24 startDate];
               [v24 endDate];
               v163 = v162 = v139;
               *buf = 134218755;
               v274 = v158;
               v275 = 2113;
-              v276 = v160;
+              v276 = phenotype33;
               v277 = 2112;
-              *v278 = v161;
+              *v278 = startDate8;
               *&v278[8] = 2112;
               *&v278[10] = v163;
               _os_log_impl(&_mh_execute_header, v142, OS_LOG_TYPE_INFO, "Skipping current pattern summary bundle: Summary with flight action phenotype. (subSuggestionCount=%lu, phenotypes=%{private}@, dateRange=%@-%@)", buf, 0x2Au);
@@ -928,21 +928,21 @@ LABEL_73:
             }
 
             v14 = v246;
-            v11 = v247;
-            a3 = v257;
+            getClusterLabels = v247;
+            type = typeCopy;
             goto LABEL_96;
           }
 
-          v153 = [v139 lowercaseString];
-          v154 = [@"visit" lowercaseString];
-          if (![v153 isEqualToString:v154])
+          lowercaseString2 = [v139 lowercaseString];
+          lowercaseString3 = [@"visit" lowercaseString];
+          if (![lowercaseString2 isEqualToString:lowercaseString3])
           {
             goto LABEL_101;
           }
 
-          v156 = [v24 clusterMetadata];
-          v164 = [v156 phenotype];
-          v165 = [v164 objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
+          clusterMetadata34 = [v24 clusterMetadata];
+          phenotype34 = [clusterMetadata34 phenotype];
+          v165 = [phenotype34 objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
           if ((v165 != 0) | v243 & 1)
           {
 
@@ -952,14 +952,14 @@ LABEL_101:
 
 LABEL_112:
 LABEL_113:
-            a3 = v257;
-            if (v257 == 1)
+            type = typeCopy;
+            if (typeCopy == 1)
             {
-              v200 = [v24 clusterMetadata];
-              v201 = [v200 phenotype];
-              v202 = [v201 objectForKeyedSubscript:@"holiday"];
+              clusterMetadata35 = [v24 clusterMetadata];
+              phenotype35 = [clusterMetadata35 phenotype];
+              v202 = [phenotype35 objectForKeyedSubscript:@"holiday"];
               v14 = v246;
-              v11 = v247;
+              getClusterLabels = v247;
               if (v202)
               {
 
@@ -967,9 +967,9 @@ LABEL_113:
                 goto LABEL_125;
               }
 
-              v203 = [v24 clusterMetadata];
-              v204 = [v203 phenotype];
-              v205 = [v204 objectForKeyedSubscript:@"celebration"];
+              clusterMetadata36 = [v24 clusterMetadata];
+              phenotype36 = [clusterMetadata36 phenotype];
+              v205 = [phenotype36 objectForKeyedSubscript:@"celebration"];
 
               v17 = v265;
               if (v205)
@@ -978,32 +978,32 @@ LABEL_125:
                 v206 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
                 if (os_log_type_enabled(v206, OS_LOG_TYPE_INFO))
                 {
-                  v254 = [v24 subBundleIDs];
-                  v207 = [v254 count];
-                  v208 = [v24 clusterMetadata];
-                  v209 = [v208 isFiltered];
-                  v210 = [v24 clusterMetadata];
-                  v211 = [v210 phenotype];
-                  v212 = [v24 startDate];
-                  v213 = [v24 endDate];
+                  subBundleIDs = [v24 subBundleIDs];
+                  v207 = [subBundleIDs count];
+                  clusterMetadata37 = [v24 clusterMetadata];
+                  isFiltered = [clusterMetadata37 isFiltered];
+                  clusterMetadata38 = [v24 clusterMetadata];
+                  phenotype37 = [clusterMetadata38 phenotype];
+                  startDate9 = [v24 startDate];
+                  endDate7 = [v24 endDate];
                   *buf = 138413571;
                   v274 = v18;
                   v275 = 2048;
                   v276 = v207;
                   v277 = 1024;
-                  *v278 = v209;
+                  *v278 = isFiltered;
                   *&v278[4] = 2113;
-                  *&v278[6] = v211;
+                  *&v278[6] = phenotype37;
                   *&v278[14] = 2112;
-                  *&v278[16] = v212;
+                  *&v278[16] = startDate9;
                   v279 = 2112;
-                  v280 = v213;
+                  v280 = endDate7;
                   _os_log_impl(&_mh_execute_header, v206, OS_LOG_TYPE_INFO, "Created a thematic bundle: LabelNo=%@,bundleCount=%lu,isFiltered=%d,phenotypes=%{private}@, dateRange=%@-%@", buf, 0x3Au);
 
                   v17 = v265;
                   v14 = v246;
 
-                  v11 = v247;
+                  getClusterLabels = v247;
                 }
 
                 [v238 addObject:v24];
@@ -1014,20 +1014,20 @@ LABEL_125:
                 v184 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
                 if (os_log_type_enabled(v184, OS_LOG_TYPE_INFO))
                 {
-                  v185 = [v24 subSuggestionIDs];
-                  v218 = [v185 count];
-                  v187 = [v24 clusterMetadata];
-                  v188 = [v187 phenotype];
-                  v189 = [v24 startDate];
-                  v190 = [v24 endDate];
+                  subSuggestionIDs8 = [v24 subSuggestionIDs];
+                  v218 = [subSuggestionIDs8 count];
+                  clusterMetadata39 = [v24 clusterMetadata];
+                  phenotype38 = [clusterMetadata39 phenotype];
+                  startDate10 = [v24 startDate];
+                  endDate8 = [v24 endDate];
                   *buf = 134218755;
                   v274 = v218;
                   v275 = 2113;
-                  v276 = v188;
+                  v276 = phenotype38;
                   v277 = 2112;
-                  *v278 = v189;
+                  *v278 = startDate10;
                   *&v278[8] = 2112;
-                  *&v278[10] = v190;
+                  *&v278[10] = endDate8;
                   v191 = v184;
                   v192 = "Skipped the current holiday summary bundle: holiday/celebration thematic summary should have holiday/celebration phenotype (subSuggestionCount=%lu, phenotypes=%{private}@, dateRange=%@-%@)";
 LABEL_135:
@@ -1039,20 +1039,20 @@ LABEL_135:
 LABEL_136:
               }
 
-              a3 = v257;
+              type = typeCopy;
             }
 
             else
             {
               v14 = v246;
-              v11 = v247;
-              if (v257 != 6)
+              getClusterLabels = v247;
+              if (typeCopy != 6)
               {
-                if (v257 == 5)
+                if (typeCopy == 5)
                 {
-                  v181 = [v24 clusterMetadata];
-                  v182 = [v181 phenotype];
-                  v183 = [v182 objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
+                  clusterMetadata40 = [v24 clusterMetadata];
+                  phenotype39 = [clusterMetadata40 phenotype];
+                  v183 = [phenotype39 objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
 
                   v17 = v265;
                   if (!v183)
@@ -1060,20 +1060,20 @@ LABEL_136:
                     v184 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
                     if (os_log_type_enabled(v184, OS_LOG_TYPE_INFO))
                     {
-                      v185 = [v24 subSuggestionIDs];
-                      v186 = [v185 count];
-                      v187 = [v24 clusterMetadata];
-                      v188 = [v187 phenotype];
-                      v189 = [v24 startDate];
-                      v190 = [v24 endDate];
+                      subSuggestionIDs8 = [v24 subSuggestionIDs];
+                      v186 = [subSuggestionIDs8 count];
+                      clusterMetadata39 = [v24 clusterMetadata];
+                      phenotype38 = [clusterMetadata39 phenotype];
+                      startDate10 = [v24 startDate];
+                      endDate8 = [v24 endDate];
                       *buf = 134218755;
                       v274 = v186;
                       v275 = 2113;
-                      v276 = v188;
+                      v276 = phenotype38;
                       v277 = 2112;
-                      *v278 = v189;
+                      *v278 = startDate10;
                       *&v278[8] = 2112;
-                      *&v278[10] = v190;
+                      *&v278[10] = endDate8;
                       v191 = v184;
                       v192 = "Skipped the current photo subject summary bundle: notable photo trait thematic summary should have photo trait phenotype (subSuggestionCount=%lu, phenotypes=%{private}@, dateRange=%@-%@)";
                       goto LABEL_135;
@@ -1089,21 +1089,21 @@ LABEL_136:
               v193 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
               if (os_log_type_enabled(v193, OS_LOG_TYPE_INFO))
               {
-                v194 = [v24 subSuggestionIDs];
-                v195 = [v194 count];
-                v196 = [v24 clusterMetadata];
-                v197 = [v196 phenotype];
-                v198 = [v24 startDate];
-                v199 = [v24 endDate];
+                subSuggestionIDs9 = [v24 subSuggestionIDs];
+                v195 = [subSuggestionIDs9 count];
+                clusterMetadata41 = [v24 clusterMetadata];
+                phenotype40 = [clusterMetadata41 phenotype];
+                startDate11 = [v24 startDate];
+                endDate9 = [v24 endDate];
                 *buf = 134218755;
                 v274 = v195;
-                a3 = 6;
+                type = 6;
                 v275 = 2113;
-                v276 = v197;
+                v276 = phenotype40;
                 v277 = 2112;
-                *v278 = v198;
+                *v278 = startDate11;
                 *&v278[8] = 2112;
-                *&v278[10] = v199;
+                *&v278[10] = endDate9;
                 _os_log_impl(&_mh_execute_header, v193, OS_LOG_TYPE_INFO, "State of mind summary is not supported yet. Skipping bundle generation (subSuggestionCount=%lu, phenotypes=%{private}@, dateRange=%@-%@)", buf, 0x2Au);
 
                 v17 = v265;
@@ -1125,9 +1125,9 @@ LABEL_111:
 
           if (v252)
           {
-            v214 = [v24 clusterMetadata];
-            v215 = [v214 phenotype];
-            v216 = [v215 objectForKeyedSubscript:@"enclosingAreaName"];
+            clusterMetadata42 = [v24 clusterMetadata];
+            phenotype41 = [clusterMetadata42 phenotype];
+            v216 = [phenotype41 objectForKeyedSubscript:@"enclosingAreaName"];
             v217 = v216 != 0 && v245;
 
             if (v217 != 1)
@@ -1137,7 +1137,7 @@ LABEL_111:
 
             v142 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
             v14 = v246;
-            v11 = v247;
+            getClusterLabels = v247;
             if (!os_log_type_enabled(v142, OS_LOG_TYPE_INFO))
             {
               goto LABEL_87;
@@ -1148,26 +1148,26 @@ LABEL_111:
 
           v142 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
           v14 = v246;
-          v11 = v247;
+          getClusterLabels = v247;
           if (!os_log_type_enabled(v142, OS_LOG_TYPE_INFO))
           {
             goto LABEL_87;
           }
 
 LABEL_140:
-          v253 = [v24 subSuggestionIDs];
-          v219 = [v253 count];
-          v174 = [v24 clusterMetadata];
-          v175 = [v174 phenotype];
-          v176 = [v24 startDate];
+          subSuggestionIDs10 = [v24 subSuggestionIDs];
+          v219 = [subSuggestionIDs10 count];
+          clusterMetadata43 = [v24 clusterMetadata];
+          phenotype42 = [clusterMetadata43 phenotype];
+          startDate12 = [v24 startDate];
           [v24 endDate];
           v178 = v177 = v139;
           *buf = 134218755;
           v274 = v219;
           v275 = 2113;
-          v276 = v175;
+          v276 = phenotype42;
           v277 = 2112;
-          *v278 = v176;
+          *v278 = startDate12;
           *&v278[8] = 2112;
           *&v278[10] = v178;
           v179 = v142;
@@ -1176,7 +1176,7 @@ LABEL_140:
 
         else
         {
-          v150 = [v137 objectForKeyedSubscript:@"topLevelActivityType"];
+          v150 = [phenotype31 objectForKeyedSubscript:@"topLevelActivityType"];
 
           v17 = v265;
           if (!v150)
@@ -1184,21 +1184,21 @@ LABEL_140:
             goto LABEL_113;
           }
 
-          v151 = [v24 clusterMetadata];
-          v152 = [v151 phenotype];
-          v139 = [v152 objectForKeyedSubscript:@"topLevelActivityType"];
+          clusterMetadata44 = [v24 clusterMetadata];
+          phenotype43 = [clusterMetadata44 phenotype];
+          v139 = [phenotype43 objectForKeyedSubscript:@"topLevelActivityType"];
 
           if (![v139 isEqualToString:@"outing"])
           {
             goto LABEL_111;
           }
 
-          v153 = [v24 clusterMetadata];
-          v154 = [v153 phenotype];
-          v155 = [v154 objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
+          lowercaseString2 = [v24 clusterMetadata];
+          lowercaseString3 = [lowercaseString2 phenotype];
+          v155 = [lowercaseString3 objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
           if ((v155 != 0) | v243 & 1)
           {
-            v156 = v155;
+            clusterMetadata34 = v155;
             goto LABEL_100;
           }
 
@@ -1208,7 +1208,7 @@ LABEL_140:
           }
 
           v14 = v246;
-          v11 = v247;
+          getClusterLabels = v247;
           if (!v252)
           {
             v142 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
@@ -1220,9 +1220,9 @@ LABEL_140:
             goto LABEL_140;
           }
 
-          v169 = [v24 clusterMetadata];
-          v170 = [v169 phenotype];
-          v171 = [v170 objectForKeyedSubscript:@"enclosingAreaName"];
+          clusterMetadata45 = [v24 clusterMetadata];
+          phenotype44 = [clusterMetadata45 phenotype];
+          v171 = [phenotype44 objectForKeyedSubscript:@"enclosingAreaName"];
           v172 = v171 != 0 && v245;
 
           if (v172 != 1)
@@ -1237,19 +1237,19 @@ LABEL_140:
           }
 
 LABEL_109:
-          v253 = [v24 subSuggestionIDs];
-          v173 = [v253 count];
-          v174 = [v24 clusterMetadata];
-          v175 = [v174 phenotype];
-          v176 = [v24 startDate];
+          subSuggestionIDs10 = [v24 subSuggestionIDs];
+          v173 = [subSuggestionIDs10 count];
+          clusterMetadata43 = [v24 clusterMetadata];
+          phenotype42 = [clusterMetadata43 phenotype];
+          startDate12 = [v24 startDate];
           [v24 endDate];
           v178 = v177 = v139;
           *buf = 134218755;
           v274 = v173;
           v275 = 2113;
-          v276 = v175;
+          v276 = phenotype42;
           v277 = 2112;
-          *v278 = v176;
+          *v278 = startDate12;
           *&v278[8] = 2112;
           *&v278[10] = v178;
           v179 = v142;
@@ -1274,8 +1274,8 @@ LABEL_74:
   while (v220);
 LABEL_143:
 
-  v221 = v234;
-  if (v234)
+  v221 = handlerCopy;
+  if (handlerCopy)
   {
     v222 = [v238 count];
     v223 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
@@ -1304,8 +1304,8 @@ LABEL_143:
       v225 = 0;
     }
 
-    v221 = v234;
-    (*(v234 + 2))(v234, v225, 0);
+    v221 = handlerCopy;
+    (*(handlerCopy + 2))(handlerCopy, v225, 0);
   }
 
   v231 = v238;
@@ -1325,17 +1325,17 @@ void __117__MOThematicSummarizationManager_generateThematicSummarizationBundlesF
   }
 }
 
-- (void)updateSuggestionIDsForNewThematicSummarizationBundles:(id)a3 withExistingThematicSummarizationBundles:(id)a4
+- (void)updateSuggestionIDsForNewThematicSummarizationBundles:(id)bundles withExistingThematicSummarizationBundles:(id)summarizationBundles
 {
-  v5 = a3;
-  v66 = a4;
+  bundlesCopy = bundles;
+  summarizationBundlesCopy = summarizationBundles;
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v86 = [v5 count];
+    v86 = [bundlesCopy count];
     v87 = 2048;
-    v88 = [v66 count];
+    v88 = [summarizationBundlesCopy count];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "updateSuggestionIDsForNewThematicSummarizationBundles. new summary count=%lu, existing summary count=%lu", buf, 0x16u);
   }
 
@@ -1344,7 +1344,7 @@ void __117__MOThematicSummarizationManager_generateThematicSummarizationBundlesF
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
-  obj = v5;
+  obj = bundlesCopy;
   v67 = [obj countByEnumeratingWithState:&v81 objects:v96 count:16];
   if (v67)
   {
@@ -1366,15 +1366,15 @@ void __117__MOThematicSummarizationManager_generateThematicSummarizationBundlesF
         v11 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [v10 suggestionID];
-          v13 = [v10 clusterMetadata];
-          v14 = [v13 phenotype];
-          v15 = [v10 subBundleIDs];
-          v16 = [v15 count];
+          suggestionID = [v10 suggestionID];
+          clusterMetadata = [v10 clusterMetadata];
+          phenotype = [clusterMetadata phenotype];
+          subBundleIDs = [v10 subBundleIDs];
+          v16 = [subBundleIDs count];
           *buf = 138412803;
-          v86 = v12;
+          v86 = suggestionID;
           v87 = 2113;
-          v88 = v14;
+          v88 = phenotype;
           v89 = 2048;
           v90 = v16;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Searching for matching summary bundle from the DB for the current summary: suggestionID=%@, phenotype=%{private}@, subSuggestionIDCount=%lu", buf, 0x20u);
@@ -1384,7 +1384,7 @@ void __117__MOThematicSummarizationManager_generateThematicSummarizationBundlesF
         v80 = 0u;
         v77 = 0u;
         v78 = 0u;
-        v76 = v66;
+        v76 = summarizationBundlesCopy;
         v17 = [v76 countByEnumeratingWithState:&v77 objects:v95 count:16];
         if (v17)
         {
@@ -1403,19 +1403,19 @@ void __117__MOThematicSummarizationManager_generateThematicSummarizationBundlesF
               }
 
               v21 = *(*(&v77 + 1) + 8 * v20);
-              v22 = [v21 suggestionID];
-              v23 = [v22 UUIDString];
-              v24 = [v7 containsObject:v23];
+              suggestionID2 = [v21 suggestionID];
+              uUIDString = [suggestionID2 UUIDString];
+              v24 = [v7 containsObject:uUIDString];
 
               if (v24)
               {
                 v25 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
                 if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
                 {
-                  v26 = [v21 suggestionID];
-                  v27 = [v26 UUIDString];
+                  suggestionID3 = [v21 suggestionID];
+                  uUIDString2 = [suggestionID3 UUIDString];
                   *buf = 138412290;
-                  v86 = v27;
+                  v86 = uUIDString2;
                   _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Current suggestionID (%@) was already transferred to another newly created summary.", buf, 0xCu);
                 }
               }
@@ -1423,11 +1423,11 @@ void __117__MOThematicSummarizationManager_generateThematicSummarizationBundlesF
               else
               {
                 v28 = v10;
-                v29 = [v10 subBundleIDs];
-                v25 = [NSSet setWithArray:v29];
+                subBundleIDs2 = [v10 subBundleIDs];
+                v25 = [NSSet setWithArray:subBundleIDs2];
 
-                v30 = [v21 subBundleIDs];
-                v31 = [NSSet setWithArray:v30];
+                subBundleIDs3 = [v21 subBundleIDs];
+                v31 = [NSSet setWithArray:subBundleIDs3];
 
                 v32 = [v25 mutableCopy];
                 [v32 intersectSet:v31];
@@ -1465,19 +1465,19 @@ void __117__MOThematicSummarizationManager_generateThematicSummarizationBundlesF
                   _os_log_debug_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEBUG, "NewSubSuggestionIDCount=%lu,ExistingSubSuggestionIDCount=%lu, overlappingSubSuggestionIDCount=%lu, overlappingSubBundleProportionFromNew=%.3f,overlappingSubBundleProportionFromExisting=%.3f ", buf, 0x34u);
                 }
 
-                v39 = [v28 clusterMetadata];
-                v40 = [v39 phenotype];
+                clusterMetadata2 = [v28 clusterMetadata];
+                phenotype2 = [clusterMetadata2 phenotype];
 
-                v41 = [v21 clusterMetadata];
-                v42 = [v41 phenotype];
+                clusterMetadata3 = [v21 clusterMetadata];
+                phenotype3 = [clusterMetadata3 phenotype];
 
-                if ([v40 isEqualToDictionary:v42] && objc_msgSend(v32, "count"))
+                if ([phenotype2 isEqualToDictionary:phenotype3] && objc_msgSend(v32, "count"))
                 {
                   v47 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
                   if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
                   {
-                    v72 = [v21 clusterMetadata];
-                    logb = [v72 phenotype];
+                    clusterMetadata4 = [v21 clusterMetadata];
+                    logb = [clusterMetadata4 phenotype];
                     v61 = [v31 count];
                     v59 = [v32 count];
                     v64 = v28;
@@ -1524,8 +1524,8 @@ LABEL_39:
                   v47 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
                   if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
                   {
-                    v71 = [v21 clusterMetadata];
-                    [v71 phenotype];
+                    clusterMetadata5 = [v21 clusterMetadata];
+                    [clusterMetadata5 phenotype];
                     v48 = loga = v47;
                     v60 = [v31 count];
                     v58 = [v32 count];
@@ -1552,12 +1552,12 @@ LABEL_39:
                     v47 = loga;
 LABEL_40:
 
-                    v54 = [v21 suggestionID];
-                    [v51 setSuggestionID:v54];
+                    suggestionID4 = [v21 suggestionID];
+                    [v51 setSuggestionID:suggestionID4];
 
-                    v55 = [v21 suggestionID];
-                    v56 = [v55 UUIDString];
-                    [v7 addObject:v56];
+                    suggestionID5 = [v21 suggestionID];
+                    uUIDString3 = [suggestionID5 UUIDString];
+                    [v7 addObject:uUIDString3];
 
                     goto LABEL_41;
                   }

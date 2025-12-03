@@ -1,11 +1,11 @@
 @interface BSUIReadingGoalsGaugeHostingControllerFactory
-+ (id)createWith:(CGSize)a3;
++ (id)createWith:(CGSize)with;
 - (BSUIReadingGoalsGaugeHostingControllerFactory)init;
 @end
 
 @implementation BSUIReadingGoalsGaugeHostingControllerFactory
 
-+ (id)createWith:(CGSize)a3
++ (id)createWith:(CGSize)with
 {
   v3 = objc_allocWithZone(type metadata accessor for ReadingGoalsGaugeHostingController(0));
   v4 = sub_1B4CF0();

@@ -1,37 +1,37 @@
 @interface PurchaseAuthenticateOperation
 - (NSString)clientIdentifierHeader;
-- (PurchaseAuthenticateOperation)initWithPurchases:(id)a3;
-- (id)_clientIdentifierForPurchases:(id)a3;
-- (id)_userAgentForPurchases:(id)a3;
+- (PurchaseAuthenticateOperation)initWithPurchases:(id)purchases;
+- (id)_clientIdentifierForPurchases:(id)purchases;
+- (id)_userAgentForPurchases:(id)purchases;
 - (id)authenticationBlock;
 - (void)dealloc;
 - (void)run;
-- (void)setAuthenticationBlock:(id)a3;
-- (void)setClientIdentifierHeader:(id)a3;
+- (void)setAuthenticationBlock:(id)block;
+- (void)setClientIdentifierHeader:(id)header;
 @end
 
 @implementation PurchaseAuthenticateOperation
 
-- (PurchaseAuthenticateOperation)initWithPurchases:(id)a3
+- (PurchaseAuthenticateOperation)initWithPurchases:(id)purchases
 {
   v11.receiver = self;
   v11.super_class = PurchaseAuthenticateOperation;
   v4 = [(PurchaseAuthenticateOperation *)&v11 init];
   if (v4)
   {
-    v5 = [a3 objectAtIndex:0];
+    v5 = [purchases objectAtIndex:0];
     v6 = [[SSMutableAuthenticationContext alloc] initWithAccountIdentifier:{objc_msgSend(v5, "accountIdentifier")}];
     v4->_authenticationContext = v6;
     [(SSMutableAuthenticationContext *)v6 setPromptStyle:1];
-    [(SSMutableAuthenticationContext *)v4->_authenticationContext setPreferredITunesStoreClient:[(PurchaseAuthenticateOperation *)v4 _clientIdentifierForPurchases:a3]];
-    v7 = [(SSMutableAuthenticationContext *)v4->_authenticationContext HTTPHeaders];
+    [(SSMutableAuthenticationContext *)v4->_authenticationContext setPreferredITunesStoreClient:[(PurchaseAuthenticateOperation *)v4 _clientIdentifierForPurchases:purchases]];
+    hTTPHeaders = [(SSMutableAuthenticationContext *)v4->_authenticationContext HTTPHeaders];
     v8 = SSHTTPHeaderUserAgent;
-    if (![v7 objectForKey:SSHTTPHeaderUserAgent])
+    if (![hTTPHeaders objectForKey:SSHTTPHeaderUserAgent])
     {
-      [(SSMutableAuthenticationContext *)v4->_authenticationContext setValue:[(PurchaseAuthenticateOperation *)v4 _userAgentForPurchases:a3] forHTTPHeaderField:v8];
+      [(SSMutableAuthenticationContext *)v4->_authenticationContext setValue:[(PurchaseAuthenticateOperation *)v4 _userAgentForPurchases:purchases] forHTTPHeaderField:v8];
     }
 
-    if ([a3 count] == 1 && objc_msgSend(v5, "buyParameters"))
+    if ([purchases count] == 1 && objc_msgSend(v5, "buyParameters"))
     {
       v9 = [[NSDictionary alloc] initWithObjectsAndKeys:{objc_msgSend(v5, "buyParameters"), @"product", 0}];
       [(SSMutableAuthenticationContext *)v4->_authenticationContext setSignupRequestParameters:v9];
@@ -59,28 +59,28 @@
 - (NSString)clientIdentifierHeader
 {
   [(PurchaseAuthenticateOperation *)self lock];
-  v3 = [(SSMutableAuthenticationContext *)self->_authenticationContext clientIdentifierHeader];
+  clientIdentifierHeader = [(SSMutableAuthenticationContext *)self->_authenticationContext clientIdentifierHeader];
   [(PurchaseAuthenticateOperation *)self unlock];
-  return v3;
+  return clientIdentifierHeader;
 }
 
-- (void)setAuthenticationBlock:(id)a3
+- (void)setAuthenticationBlock:(id)block
 {
   [(PurchaseAuthenticateOperation *)self lock];
   authenticationBlock = self->_authenticationBlock;
-  if (authenticationBlock != a3)
+  if (authenticationBlock != block)
   {
 
-    self->_authenticationBlock = [a3 copy];
+    self->_authenticationBlock = [block copy];
   }
 
   [(PurchaseAuthenticateOperation *)self unlock];
 }
 
-- (void)setClientIdentifierHeader:(id)a3
+- (void)setClientIdentifierHeader:(id)header
 {
   [(PurchaseAuthenticateOperation *)self lock];
-  [(SSMutableAuthenticationContext *)self->_authenticationContext setClientIdentifierHeader:a3];
+  [(SSMutableAuthenticationContext *)self->_authenticationContext setClientIdentifierHeader:header];
 
   [(PurchaseAuthenticateOperation *)self unlock];
 }
@@ -95,15 +95,15 @@
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
   if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_INFO))
@@ -129,23 +129,23 @@
   }
 
   v9 = [(PurchaseAuthenticateOperation *)self copyAccountID:&v14 credentialSource:0 byAuthenticatingWithContext:self->_authenticationContext returningError:&v13, v11];
-  v10 = [(PurchaseAuthenticateOperation *)self authenticationBlock];
-  if (v10)
+  authenticationBlock = [(PurchaseAuthenticateOperation *)self authenticationBlock];
+  if (authenticationBlock)
   {
-    v10[2](v10, v14, v13);
+    authenticationBlock[2](authenticationBlock, v14, v13);
   }
 
   [(PurchaseAuthenticateOperation *)self setError:v13];
   [(PurchaseAuthenticateOperation *)self setSuccess:v9];
 }
 
-- (id)_clientIdentifierForPurchases:(id)a3
+- (id)_clientIdentifierForPurchases:(id)purchases
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [purchases countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v4)
   {
     return 0;
@@ -161,7 +161,7 @@
     {
       if (*v13 != v7)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(purchases);
       }
 
       [*(*(&v12 + 1) + 8 * i) valueForDownloadProperty:v8];
@@ -180,20 +180,20 @@
       }
     }
 
-    v5 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v5 = [purchases countByEnumeratingWithState:&v12 objects:v16 count:16];
   }
 
   while (v5);
   return v6;
 }
 
-- (id)_userAgentForPurchases:(id)a3
+- (id)_userAgentForPurchases:(id)purchases
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [purchases countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v4)
   {
     return 0;
@@ -209,7 +209,7 @@
     {
       if (*v13 != v7)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(purchases);
       }
 
       v10 = [objc_msgSend(objc_msgSend(*(*(&v12 + 1) + 8 * i) "requestProperties")];
@@ -227,7 +227,7 @@
       }
     }
 
-    v5 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v5 = [purchases countByEnumeratingWithState:&v12 objects:v16 count:16];
   }
 
   while (v5);

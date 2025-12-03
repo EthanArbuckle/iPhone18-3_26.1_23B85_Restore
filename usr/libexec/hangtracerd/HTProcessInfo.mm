@@ -2,29 +2,29 @@
 + (BOOL)isAnyThirdPartyDeveloperProcessForeground;
 + (BOOL)shouldSaveFenceHangLogs;
 + (id)displayStateArray;
-+ (id)processForPid:(int)a3;
++ (id)processForPid:(int)pid;
 + (id)recentAppsDict;
-+ (unint64_t)getEarliestPendingHangStartTime:(unint64_t)a3;
-+ (void)addDisplayStateChangeEvent:(DisplayStateChangeEvent)a3;
-+ (void)checkForHUDTimeouts:(unint64_t)a3;
-+ (void)checkForHangTimeouts:(unint64_t)a3;
++ (unint64_t)getEarliestPendingHangStartTime:(unint64_t)time;
++ (void)addDisplayStateChangeEvent:(DisplayStateChangeEvent)event;
++ (void)checkForHUDTimeouts:(unint64_t)timeouts;
++ (void)checkForHangTimeouts:(unint64_t)timeouts;
 + (void)initialize;
-+ (void)recordFenceHang:(id)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5 reportedTime:(unint64_t)a6 blownFenceId:(unint64_t)a7 saveTailspin:(BOOL)a8 subtype:(int64_t)a9 isThirdPartyDevSupportModeHang:(BOOL)a10 captureMicroHang:(BOOL)a11;
++ (void)recordFenceHang:(id)hang startTime:(unint64_t)time endTime:(unint64_t)endTime reportedTime:(unint64_t)reportedTime blownFenceId:(unint64_t)id saveTailspin:(BOOL)tailspin subtype:(int64_t)subtype isThirdPartyDevSupportModeHang:(BOOL)self0 captureMicroHang:(BOOL)self1;
 + (void)stopWatchingAllPids;
-+ (void)stopWatchingPid:(int)a3;
++ (void)stopWatchingPid:(int)pid;
 - (BOOL)checkShouldSaveHangLogs;
 - (BOOL)isDeveloperApp;
 - (BOOL)isInForeground;
 - (BOOL)isThirdPartyDevSupportModeHang;
 - (BOOL)shouldDisplayNonFenceHangToHUD;
-- (BOOL)startTimeWithinMS:(unint64_t)a3 ofCurrentTime:(unint64_t)a4;
-- (HTProcessInfo)initWithPid:(int)a3 sharedMem:(void *)a4 length:(unint64_t)a5 bundleID:(const char *)a6;
-- (id)checkEventsForTimeouts:(unint64_t)a3 withType:(int64_t)a4;
-- (id)getApplicationByBundleId:(id)a3;
-- (unint64_t)getHangStartTime:(unint64_t)a3;
-- (void)checkEventsForHUDUpdate:(unint64_t)a3;
+- (BOOL)startTimeWithinMS:(unint64_t)s ofCurrentTime:(unint64_t)time;
+- (HTProcessInfo)initWithPid:(int)pid sharedMem:(void *)mem length:(unint64_t)length bundleID:(const char *)d;
+- (id)checkEventsForTimeouts:(unint64_t)timeouts withType:(int64_t)type;
+- (id)getApplicationByBundleId:(id)id;
+- (unint64_t)getHangStartTime:(unint64_t)time;
+- (void)checkEventsForHUDUpdate:(unint64_t)update;
 - (void)dealloc;
-- (void)recordHang:(id)a3 threadID:(unint64_t)a4 startTime:(unint64_t)a5 endTime:(unint64_t)a6 saveTailspin:(BOOL)a7 subtype:(int64_t)a8 userActionData:(id)a9 isThirdPartyDevSupportModeHang:(BOOL)a10 captureMicroHang:(BOOL)a11 recentStateInfo:(id)a12;
+- (void)recordHang:(id)hang threadID:(unint64_t)d startTime:(unint64_t)time endTime:(unint64_t)endTime saveTailspin:(BOOL)tailspin subtype:(int64_t)subtype userActionData:(id)data isThirdPartyDevSupportModeHang:(BOOL)self0 captureMicroHang:(BOOL)self1 recentStateInfo:(id)self2;
 @end
 
 @implementation HTProcessInfo
@@ -34,32 +34,32 @@
   v3 = +[HTPrefs sharedPrefs];
   if ([v3 thirdPartyDevHangHUDEnabled])
   {
-    v4 = [(HTProcessInfo *)self isDeveloperApp];
+    isDeveloperApp = [(HTProcessInfo *)self isDeveloperApp];
   }
 
   else
   {
-    v4 = 0;
+    isDeveloperApp = 0;
   }
 
-  return v4;
+  return isDeveloperApp;
 }
 
 - (BOOL)checkShouldSaveHangLogs
 {
   if (self->shouldDisableProcess)
   {
-    LOBYTE(v2) = 0;
+    LOBYTE(hangtracerDaemonEnabled) = 0;
   }
 
   else
   {
     v4 = +[HTPrefs sharedPrefs];
-    v5 = [v4 isInternal];
+    isInternal = [v4 isInternal];
 
-    if (v5)
+    if (isInternal)
     {
-      LOBYTE(v2) = 1;
+      LOBYTE(hangtracerDaemonEnabled) = 1;
     }
 
     else
@@ -73,32 +73,32 @@
       {
         if ([v8 isEqualToString:@"HTThirdPartyDevSupport"] && !-[HTProcessInfo isDeveloperApp](self, "isDeveloperApp"))
         {
-          LOBYTE(v2) = 0;
+          LOBYTE(hangtracerDaemonEnabled) = 0;
         }
 
         else
         {
-          LOBYTE(v2) = [v7 BOOLValue];
+          LOBYTE(hangtracerDaemonEnabled) = [v7 BOOLValue];
         }
       }
 
       else
       {
         v9 = +[HTPrefs sharedPrefs];
-        v2 = [v9 hangtracerDaemonEnabled];
+        hangtracerDaemonEnabled = [v9 hangtracerDaemonEnabled];
 
         v10 = sub_100003824();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109120;
-          v14 = v2;
+          v14 = hangtracerDaemonEnabled;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "No overriden settings found to be enabling or disabling hangtracing. Using default of %{BOOL}d.", buf, 8u);
         }
       }
     }
   }
 
-  return v2;
+  return hangtracerDaemonEnabled;
 }
 
 + (void)initialize
@@ -108,14 +108,14 @@
   _objc_release_x1();
 }
 
-+ (void)addDisplayStateChangeEvent:(DisplayStateChangeEvent)a3
++ (void)addDisplayStateChangeEvent:(DisplayStateChangeEvent)event
 {
   v3 = dword_100067B48;
-  *(&unk_100067AA8 + dword_100067B48) = a3;
+  *(&unk_100067AA8 + dword_100067B48) = event;
   dword_100067B48 = (v3 + 1) % 0xAu;
 }
 
-+ (void)checkForHangTimeouts:(unint64_t)a3
++ (void)checkForHangTimeouts:(unint64_t)timeouts
 {
   os_unfair_lock_lock(&stru_100067B4C);
   v15 = 0u;
@@ -138,7 +138,7 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * v8) checkEventsForTimeouts:a3 withType:{2, v13}];
+        v9 = [*(*(&v13 + 1) + 8 * v8) checkEventsForTimeouts:timeouts withType:{2, v13}];
         if (v9)
         {
           v10 = v9;
@@ -168,9 +168,9 @@ LABEL_11:
     v11 = sub_100003824();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [v10 serviceName];
+      serviceName = [v10 serviceName];
       *buf = 138412290;
-      v18 = v12;
+      v18 = serviceName;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Hang for service name %@ timed out, recording", buf, 0xCu);
     }
 
@@ -178,7 +178,7 @@ LABEL_11:
   }
 }
 
-- (unint64_t)getHangStartTime:(unint64_t)a3
+- (unint64_t)getHangStartTime:(unint64_t)time
 {
   shmem_region = self->shmem_region;
   if (!shmem_region->var1)
@@ -194,7 +194,7 @@ LABEL_11:
     if (!atomic_load((shmem_region + v8 - 348)) && (*(&shmem_region->var0 + v8) & 1) == 0)
     {
       v10 = *(shmem_region + v8 - 372);
-      if (a3 > v10 && sub_1000024F8(a3 - v10) > 250.0)
+      if (time > v10 && sub_1000024F8(time - v10) > 250.0)
       {
         v11 = sub_10001AB1C(self->pid);
         if (v10 >= v7)
@@ -223,7 +223,7 @@ LABEL_11:
   return v7;
 }
 
-+ (unint64_t)getEarliestPendingHangStartTime:(unint64_t)a3
++ (unint64_t)getEarliestPendingHangStartTime:(unint64_t)time
 {
   os_unfair_lock_lock(&stru_100067B4C);
   v22 = 0u;
@@ -248,12 +248,12 @@ LABEL_11:
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 getHangStartTime:a3];
+        v12 = [v11 getHangStartTime:time];
         if (v12 < v9)
         {
           v13 = v12;
           v14 = v11[3];
-          v15 = sub_1000024F8(a3 - v12);
+          v15 = sub_1000024F8(time - v12);
           v16 = [NSString stringWithFormat:@"detected pending hang in %@, duration %.2f ms", v14, *&v15, v20];
 
           v7 = v16;
@@ -298,7 +298,7 @@ LABEL_11:
   return v18;
 }
 
-+ (void)checkForHUDTimeouts:(unint64_t)a3
++ (void)checkForHUDTimeouts:(unint64_t)timeouts
 {
   os_unfair_lock_lock(&stru_100067B4C);
   v11 = 0u;
@@ -321,7 +321,7 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) checkEventsForHUDUpdate:{a3, v9}];
+        [*(*(&v9 + 1) + 8 * v8) checkEventsForHUDUpdate:{timeouts, v9}];
         v8 = v8 + 1;
       }
 
@@ -335,7 +335,7 @@ LABEL_11:
   os_unfair_lock_unlock(&stru_100067B4C);
 }
 
-+ (void)stopWatchingPid:(int)a3
++ (void)stopWatchingPid:(int)pid
 {
   os_unfair_lock_lock(&stru_100067B4C);
   v11 = 0u;
@@ -357,7 +357,7 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        if (*(*(*(&v9 + 1) + 8 * i) + 56) == a3)
+        if (*(*(*(&v9 + 1) + 8 * i) + 56) == pid)
         {
           [qword_100067AA0 removeObject:v9];
           goto LABEL_11;
@@ -387,7 +387,7 @@ LABEL_11:
   os_unfair_lock_unlock(&stru_100067B4C);
 }
 
-+ (id)processForPid:(int)a3
++ (id)processForPid:(int)pid
 {
   os_unfair_lock_lock(&stru_100067B4C);
   v14 = 0u;
@@ -410,7 +410,7 @@ LABEL_11:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if (v9[14] == a3)
+        if (v9[14] == pid)
         {
           v10 = v9;
           goto LABEL_11;
@@ -438,9 +438,9 @@ LABEL_11:
 + (BOOL)shouldSaveFenceHangLogs
 {
   v2 = +[HTPrefs sharedPrefs];
-  v3 = [v2 isInternal];
+  isInternal = [v2 isInternal];
 
-  if (v3)
+  if (isInternal)
   {
     LOBYTE(v4) = 1;
   }
@@ -539,10 +539,10 @@ LABEL_12:
 
 - (BOOL)isInForeground
 {
-  v3 = [(NSString *)self->processBundleID UTF8String];
-  if (v3)
+  uTF8String = [(NSString *)self->processBundleID UTF8String];
+  if (uTF8String)
   {
-    v4 = v3;
+    v4 = uTF8String;
     v5 = [(NSString *)self->processBundleID lengthOfBytesUsingEncoding:4];
     shmem_region = self->shmem_region;
     var1 = shmem_region->var1;
@@ -554,8 +554,8 @@ LABEL_12:
         if (!strncmp(v4, shmem_region->var2[0].var12, v8))
         {
           v10 = atomic_load(&shmem_region->var2[0].var3);
-          LOBYTE(v3) = v10 == 0;
-          return v3;
+          LOBYTE(uTF8String) = v10 == 0;
+          return uTF8String;
         }
 
         shmem_region = (shmem_region + 584);
@@ -574,13 +574,13 @@ LABEL_12:
     }
 
 LABEL_11:
-    LOBYTE(v3) = 0;
+    LOBYTE(uTF8String) = 0;
   }
 
-  return v3;
+  return uTF8String;
 }
 
-- (HTProcessInfo)initWithPid:(int)a3 sharedMem:(void *)a4 length:(unint64_t)a5 bundleID:(const char *)a6
+- (HTProcessInfo)initWithPid:(int)pid sharedMem:(void *)mem length:(unint64_t)length bundleID:(const char *)d
 {
   v11 = sub_10000450C();
   if (!v11)
@@ -589,20 +589,20 @@ LABEL_11:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v39) = a3;
+      LODWORD(lengthCopy) = pid;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Unable to identify process name of pid %d", buf, 8u);
     }
 
     goto LABEL_25;
   }
 
-  if (a5 >> 7 <= 0x2C)
+  if (length >> 7 <= 0x2C)
   {
     v12 = sub_100003824();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v39 = a5;
+      lengthCopy = length;
       v40 = 2048;
       v41 = 5760;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Shared memory region smaller than expected: %zu < %zu", buf, 0x16u);
@@ -610,18 +610,18 @@ LABEL_11:
 
 LABEL_24:
 
-    munmap(a4, a5);
+    munmap(mem, length);
 LABEL_25:
-    v25 = 0;
+    selfCopy = 0;
     goto LABEL_26;
   }
 
-  if (*a4 != 7)
+  if (*mem != 7)
   {
     v12 = sub_100003824();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_100033334(a4, v12);
+      sub_100033334(mem, v12);
     }
 
     goto LABEL_24;
@@ -633,15 +633,15 @@ LABEL_25:
   v15 = v14;
   if (v14)
   {
-    v14->pid = a3;
-    v14->shmem_length = a5;
-    v14->shmem_region = a4;
+    v14->pid = pid;
+    v14->shmem_length = length;
+    v14->shmem_region = mem;
     objc_storeStrong(&v14->processPath, v11);
-    v16 = [(NSString *)v15->processPath lastPathComponent];
-    v17 = v16;
-    if (v16)
+    lastPathComponent = [(NSString *)v15->processPath lastPathComponent];
+    v17 = lastPathComponent;
+    if (lastPathComponent)
     {
-      v18 = v16;
+      v18 = lastPathComponent;
     }
 
     else
@@ -651,7 +651,7 @@ LABEL_25:
 
     objc_storeStrong(&v15->processName, v18);
 
-    v19 = [NSString stringWithUTF8String:a6];
+    v19 = [NSString stringWithUTF8String:d];
     processBundleID = v15->processBundleID;
     v15->processBundleID = v19;
 
@@ -680,7 +680,7 @@ LABEL_25:
 
     v15->shouldDisableProcess = v27;
     v15->shouldSaveHangLogs = [(HTProcessInfo *)v15 checkShouldSaveHangLogs];
-    v28 = dispatch_source_create(&_dispatch_source_type_proc, a3, 0x80000000uLL, qword_100067D60);
+    v28 = dispatch_source_create(&_dispatch_source_type_proc, pid, 0x80000000uLL, qword_100067D60);
     appExitSource = v15->appExitSource;
     v15->appExitSource = v28;
 
@@ -691,7 +691,7 @@ LABEL_25:
       v35[1] = 3221225472;
       v35[2] = sub_10001C244;
       v35[3] = &unk_100055C40;
-      v36 = a3;
+      pidCopy = pid;
       v35[4] = v15;
       dispatch_source_set_event_handler(v30, v35);
       dispatch_resume(v15->appExitSource);
@@ -702,7 +702,7 @@ LABEL_25:
       v31 = sub_100003824();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
-        sub_1000333B0(a3, v31);
+        sub_1000333B0(pid, v31);
       }
     }
 
@@ -712,7 +712,7 @@ LABEL_25:
       processPath = v15->processPath;
       pid = v15->pid;
       *buf = 138543618;
-      v39 = processPath;
+      lengthCopy = processPath;
       v40 = 1024;
       LODWORD(v41) = pid;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "New proc: %{public}@(%u)", buf, 0x12u);
@@ -720,13 +720,13 @@ LABEL_25:
   }
 
   self = v15;
-  v25 = self;
+  selfCopy = self;
 LABEL_26:
 
-  return v25;
+  return selfCopy;
 }
 
-- (id)checkEventsForTimeouts:(unint64_t)a3 withType:(int64_t)a4
+- (id)checkEventsForTimeouts:(unint64_t)timeouts withType:(int64_t)type
 {
   shmem_region = self->shmem_region;
   if (!shmem_region->var1)
@@ -735,37 +735,37 @@ LABEL_26:
   }
 
   v8 = 0;
-  v9 = a3;
+  timeoutsCopy = timeouts;
   v10 = 424;
   while (1)
   {
     if (!atomic_load((shmem_region + v10 - 392)))
     {
       v12 = *(shmem_region + v10 - 416);
-      if (v12 != -1 && v12 > a3)
+      if (v12 != -1 && v12 > timeouts)
       {
         goto LABEL_15;
       }
 
-      v14 = sub_1000024F8((v9 - v12));
+      v14 = sub_1000024F8((timeoutsCopy - v12));
       v15 = v14;
-      if (a4 == 2)
+      if (type == 2)
       {
         v16 = +[HTPrefs sharedPrefs];
-        v17 = [v16 runloopHangTimeoutDurationMSec];
+        runloopHangTimeoutDurationMSec = [v16 runloopHangTimeoutDurationMSec];
 
-        if (v15 <= v17)
+        if (v15 <= runloopHangTimeoutDurationMSec)
         {
           goto LABEL_14;
         }
       }
 
-      else if (a4 != 8 || v14 <= 250.0)
+      else if (type != 8 || v14 <= 250.0)
       {
         goto LABEL_14;
       }
 
-      if ((sub_10002AA48(v12, a3, self->shmem_region->var3, 0) & 1) == 0)
+      if ((sub_10002AA48(v12, timeouts, self->shmem_region->var3, 0) & 1) == 0)
       {
         break;
       }
@@ -805,7 +805,7 @@ LABEL_14:
       v24 = sub_100003824();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
-        v25 = sub_1000043DC(a4);
+        v25 = sub_1000043DC(type);
         processBundleID = self->processBundleID;
         *buf = 138543874;
         v62 = v25;
@@ -828,25 +828,25 @@ LABEL_14:
       {
         if (v29)
         {
-          sub_100033490(a4);
+          sub_100033490(type);
         }
 
         AnalyticsSendEventLazy();
-        v30 = sub_1000043DC(a4);
+        v30 = sub_1000043DC(type);
         v31 = self->processBundleID;
         v32 = sub_10001A92C();
-        sub_10001A9B4(v30, v31, v12, a3, v32);
+        sub_10001A9B4(v30, v31, v12, timeouts, v32);
 
         goto LABEL_15;
       }
 
       if (v29)
       {
-        sub_100033544(a4);
+        sub_100033544(type);
       }
     }
 
-    if (a4 == 2)
+    if (type == 2)
     {
       v33 = shmem_region + v10;
       v34 = (shmem_region + v10 - 376);
@@ -854,7 +854,7 @@ LABEL_14:
       kdebug_trace();
       v36 = self->processBundleID;
       v37 = sub_10001A92C();
-      sub_10001A9B4(@"Timed Out Runloop Hang", v36, v12, a3, v37);
+      sub_10001A9B4(@"Timed Out Runloop Hang", v36, v12, timeouts, v37);
 
       AnalyticsSendEventLazy();
       v38 = sub_100003824();
@@ -867,11 +867,11 @@ LABEL_14:
       v40 = [NSString stringWithUTF8String:v22];
       v41 = *v34;
       v42 = *(v33 - 388) != 0;
-      v43 = [(HTProcessInfo *)self isThirdPartyDevSupportModeHang];
+      isThirdPartyDevSupportModeHang = [(HTProcessInfo *)self isThirdPartyDevSupportModeHang];
       v44 = sub_100027494(v33);
       LOBYTE(v60) = 0;
-      LOBYTE(v59) = v43;
-      v18 = [(HTTimeoutHangInfo *)v39 initWithServiceName:v40 threadID:v41 startTime:v12 endTime:a3 saveTailspin:v42 subType:2 userActionData:0 isThirdPartyDevSupportModeHang:v59 processInfo:self captureMicroHang:v60 recentStateInfo:v44];
+      LOBYTE(v59) = isThirdPartyDevSupportModeHang;
+      v18 = [(HTTimeoutHangInfo *)v39 initWithServiceName:v40 threadID:v41 startTime:v12 endTime:timeouts saveTailspin:v42 subType:2 userActionData:0 isThirdPartyDevSupportModeHang:v59 processInfo:self captureMicroHang:v60 recentStateInfo:v44];
 
 LABEL_54:
       goto LABEL_16;
@@ -880,7 +880,7 @@ LABEL_54:
     v45 = sub_1000043DC(8uLL);
     v46 = self->processBundleID;
     v47 = sub_10001A92C();
-    sub_10001A9B4(v45, v46, v12, a3, v47);
+    sub_10001A9B4(v45, v46, v12, timeouts, v47);
 
     v48 = shmem_region + v10 - 386;
     v49 = *v48;
@@ -905,11 +905,11 @@ LABEL_51:
       v54 = shmem_region + v10;
       v55 = *(shmem_region + v10 - 376);
       v56 = *(shmem_region + v10 - 388) != 0;
-      v57 = [(HTProcessInfo *)self isThirdPartyDevSupportModeHang];
+      isThirdPartyDevSupportModeHang2 = [(HTProcessInfo *)self isThirdPartyDevSupportModeHang];
       v58 = sub_100027494(v54);
       LOBYTE(v60) = 0;
-      LOBYTE(v59) = v57;
-      v18 = [(HTTimeoutHangInfo *)v53 initWithServiceName:v40 threadID:v55 startTime:v12 endTime:a3 saveTailspin:v56 subType:8 userActionData:0 isThirdPartyDevSupportModeHang:v59 processInfo:self captureMicroHang:v60 recentStateInfo:v58];
+      LOBYTE(v59) = isThirdPartyDevSupportModeHang2;
+      v18 = [(HTTimeoutHangInfo *)v53 initWithServiceName:v40 threadID:v55 startTime:v12 endTime:timeouts saveTailspin:v56 subType:8 userActionData:0 isThirdPartyDevSupportModeHang:v59 processInfo:self captureMicroHang:v60 recentStateInfo:v58];
 
       goto LABEL_54;
     }
@@ -922,13 +922,13 @@ LABEL_51:
     {
 LABEL_48:
       v50 = +[HTPrefs sharedPrefs];
-      v51 = [v50 runloopHangThirdPartyDurationThresholdMSec];
+      runloopHangThirdPartyDurationThresholdMSec = [v50 runloopHangThirdPartyDurationThresholdMSec];
 
       if (v49)
       {
       }
 
-      if (v15 > v51)
+      if (v15 > runloopHangThirdPartyDurationThresholdMSec)
       {
         goto LABEL_51;
       }
@@ -954,7 +954,7 @@ LABEL_16:
   return v18;
 }
 
-- (void)checkEventsForHUDUpdate:(unint64_t)a3
+- (void)checkEventsForHUDUpdate:(unint64_t)update
 {
   if (![(HTProcessInfo *)self shouldDisplayNonFenceHangToHUD])
   {
@@ -972,7 +972,7 @@ LABEL_16:
   {
     v8 = shmem_region + i;
     v12 = 0.0;
-    if (sub_10001AFD4(a3, shmem_region + i - 371, &v12))
+    if (sub_10001AFD4(update, shmem_region + i - 371, &v12))
     {
       break;
     }
@@ -990,7 +990,7 @@ LABEL_7:
   v9 = (v8 - 255);
   if (!v10)
   {
-    sub_1000251D8(v9, a3, *(shmem_region + i - 371), 0x7FFFFFFFFFFFFFFFLL, 0, 0, v12);
+    sub_1000251D8(v9, update, *(shmem_region + i - 371), 0x7FFFFFFFFFFFFFFFLL, 0, 0, v12);
     goto LABEL_7;
   }
 
@@ -1102,7 +1102,7 @@ LABEL_7:
   return v3;
 }
 
-- (BOOL)startTimeWithinMS:(unint64_t)a3 ofCurrentTime:(unint64_t)a4
+- (BOOL)startTimeWithinMS:(unint64_t)s ofCurrentTime:(unint64_t)time
 {
   shmem_region = self->shmem_region;
   if (!shmem_region->var1)
@@ -1112,12 +1112,12 @@ LABEL_7:
 
   v7 = 0;
   v8 = 0;
-  v9 = a3;
+  sCopy = s;
   v10 = 380;
   do
   {
     v11 = *(shmem_region + v10 - 372);
-    if (a4 < v11 && (*(&shmem_region->var0 + v10) & 1) == 0 && sub_1000024F8(a4 - v11) < v9)
+    if (time < v11 && (*(&shmem_region->var0 + v10) & 1) == 0 && sub_1000024F8(time - v11) < sCopy)
     {
       v8 = 1;
     }
@@ -1131,13 +1131,13 @@ LABEL_7:
   return v8;
 }
 
-- (void)recordHang:(id)a3 threadID:(unint64_t)a4 startTime:(unint64_t)a5 endTime:(unint64_t)a6 saveTailspin:(BOOL)a7 subtype:(int64_t)a8 userActionData:(id)a9 isThirdPartyDevSupportModeHang:(BOOL)a10 captureMicroHang:(BOOL)a11 recentStateInfo:(id)a12
+- (void)recordHang:(id)hang threadID:(unint64_t)d startTime:(unint64_t)time endTime:(unint64_t)endTime saveTailspin:(BOOL)tailspin subtype:(int64_t)subtype userActionData:(id)data isThirdPartyDevSupportModeHang:(BOOL)self0 captureMicroHang:(BOOL)self1 recentStateInfo:(id)self2
 {
-  v14 = a7;
-  v71 = a3;
-  v70 = a9;
-  v69 = a12;
-  v18 = sub_1000024F8(a6 - a5);
+  tailspinCopy = tailspin;
+  hangCopy = hang;
+  dataCopy = data;
+  infoCopy = info;
+  v18 = sub_1000024F8(endTime - time);
   isFirstPartyApp = self->isFirstPartyApp;
   if (isFirstPartyApp)
   {
@@ -1166,12 +1166,12 @@ LABEL_7:
   }
 
 LABEL_8:
-  if (a8 == 9 || !v20 && !a11)
+  if (subtype == 9 || !v20 && !microHang)
   {
     v40 = +[HTHangInfo allHangs];
     v41 = [v40 count];
 
-    v42 = v69;
+    v42 = infoCopy;
     if (v41)
     {
       +[HTHangInfo getHangWaitTimeout];
@@ -1190,14 +1190,14 @@ LABEL_8:
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
     {
       processName = self->processName;
-      v46 = sub_1000043DC(a8);
+      v46 = sub_1000043DC(subtype);
       v47 = +[HTPrefs sharedPrefs];
       *buf = 138544386;
-      v73 = processName;
+      endTimeCopy = processName;
       v74 = 2048;
       v75 = v18 / 1000.0;
       v76 = 2114;
-      v77 = v71;
+      v77 = hangCopy;
       v78 = 2114;
       v79 = v46;
       v80 = 2048;
@@ -1205,7 +1205,7 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "%{public}@: Hang detected %.2fs (%{public}@, %{public}@) duration < capture threshold %.2fs after accounting for assertion overlaps, not capturing tailspin for it", buf, 0x34u);
     }
 
-    v48 = v70;
+    v48 = dataCopy;
   }
 
   else
@@ -1214,14 +1214,14 @@ LABEL_8:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v23 = self->processName;
-      v24 = sub_1000043DC(a8);
+      v24 = sub_1000043DC(subtype);
       v25 = +[HTPrefs sharedPrefs];
       *buf = 138544386;
-      v73 = v23;
+      endTimeCopy = v23;
       v74 = 2048;
       v75 = v18 / 1000.0;
       v76 = 2114;
-      v77 = v71;
+      v77 = hangCopy;
       v78 = 2114;
       v79 = v24;
       v80 = 2048;
@@ -1229,14 +1229,14 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: Hang detected %.2fs (%{public}@, %{public}@) duration > capture threshold %.2fs after accounting for assertion overlaps", buf, 0x34u);
     }
 
-    if (a8 == 10)
+    if (subtype == 10)
     {
       v26 = sub_100003824();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         v27 = sub_1000043DC(0xAuLL);
         *buf = 134218242;
-        v73 = a6;
+        endTimeCopy = endTime;
         v74 = 2114;
         v75 = *&v27;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "hang endTime  %llu for hangsubType %{public}@", buf, 0x16u);
@@ -1244,21 +1244,21 @@ LABEL_8:
     }
 
     AnalyticsSendEventLazy();
-    if (a8 != 8)
+    if (subtype != 8)
     {
-      v28 = sub_1000043DC(a8);
+      v28 = sub_1000043DC(subtype);
       processBundleID = self->processBundleID;
       v30 = sub_10001A8A4();
-      sub_10001A9B4(v28, processBundleID, a5, a6, v30);
+      sub_10001A9B4(v28, processBundleID, time, endTime, v30);
     }
 
-    v31 = [(HTProcessInfo *)self shouldDisplayNonFenceHangToHUD];
-    if (v14)
+    shouldDisplayNonFenceHangToHUD = [(HTProcessInfo *)self shouldDisplayNonFenceHangToHUD];
+    if (tailspinCopy)
     {
       v32 = +[HTPrefs sharedPrefs];
-      v33 = [v32 htTailspinEnabled];
+      htTailspinEnabled = [v32 htTailspinEnabled];
 
-      if (v33)
+      if (htTailspinEnabled)
       {
         if (self->shouldSaveHangLogs)
         {
@@ -1271,11 +1271,11 @@ LABEL_8:
               {
                 v35 = self->processName;
                 v36 = +[HTPrefs sharedPrefs];
-                v37 = [v36 runLoopHangPerPeriodLogLimit];
+                runLoopHangPerPeriodLogLimit = [v36 runLoopHangPerPeriodLogLimit];
                 *buf = 138543618;
-                v73 = v35;
+                endTimeCopy = v35;
                 v74 = 1024;
-                LODWORD(v75) = v37;
+                LODWORD(v75) = runLoopHangPerPeriodLogLimit;
                 _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%{public}@ hit its Generated Log limit of %u for this reporting period. Not saving a report!", buf, 0x12u);
               }
 
@@ -1307,7 +1307,7 @@ LABEL_8:
             {
               v54 = self->processName;
               *buf = 138543362;
-              v73 = v54;
+              endTimeCopy = v54;
               _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "%{public}@: Tried to save tailspin, but tailspin support is not present on this device!", buf, 0xCu);
             }
 
@@ -1323,7 +1323,7 @@ LABEL_8:
           {
             v52 = self->processName;
             *buf = 138543362;
-            v73 = v52;
+            endTimeCopy = v52;
             _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "%{public}@: Tried to save tailspin, but shouldSaveHangLogs said NO", buf, 0xCu);
           }
 
@@ -1339,7 +1339,7 @@ LABEL_8:
         {
           v50 = self->processName;
           *buf = 138543362;
-          v73 = v50;
+          endTimeCopy = v50;
           _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "%{public}@: HangTracer tailspin support is disabled, not saving a report!", buf, 0xCu);
         }
 
@@ -1354,33 +1354,33 @@ LABEL_8:
       v39 = 11;
     }
 
-    v56 = v31 ^ 1;
-    if (a8 == 10)
+    v56 = shouldDisplayNonFenceHangToHUD ^ 1;
+    if (subtype == 10)
     {
       v56 = 1;
     }
 
     if ((v56 & 1) == 0)
     {
-      v57 = [(NSString *)self->processBundleID UTF8String];
+      uTF8String = [(NSString *)self->processBundleID UTF8String];
       v58 = mach_absolute_time();
-      sub_1000251D8(v57, v58, a5, a6, v38, a8 == 2, v18);
+      sub_1000251D8(uTF8String, v58, time, endTime, v38, subtype == 2, v18);
     }
 
     if (v38)
     {
-      v59 = [NSString stringWithFormat:@"%@-%@: timeout %.0fms", v71, self->processName, *&v18];
+      v59 = [NSString stringWithFormat:@"%@-%@: timeout %.0fms", hangCopy, self->processName, *&v18];
       v60 = [HTHangInfo alloc];
       pid = self->pid;
       v62 = self->isFirstPartyApp;
       v63 = self->processName;
       processPath = self->processPath;
-      v42 = v69;
-      v48 = v70;
-      BYTE2(v67) = v31;
-      BYTE1(v67) = a10;
+      v42 = infoCopy;
+      v48 = dataCopy;
+      BYTE2(v67) = shouldDisplayNonFenceHangToHUD;
+      BYTE1(v67) = modeHang;
       LOBYTE(v67) = v62;
-      v65 = [HTHangInfo initWithPid:v60 threadID:"initWithPid:threadID:startTime:endTime:reportedTime:blownFenceID:hangSubtype:isFirstPartyApp:isThirdPartyDevSupportModeHang:displayedInHUD:serviceName:reason:processName:processPath:userActionData:recentStateInfo:" startTime:pid endTime:a4 reportedTime:a5 blownFenceID:a6 hangSubtype:a6 isFirstPartyApp:0 isThirdPartyDevSupportModeHang:a8 displayedInHUD:v67 serviceName:v71 reason:v59 processName:v63 processPath:processPath userActionData:v70 recentStateInfo:v69];
+      v65 = [HTHangInfo initWithPid:v60 threadID:"initWithPid:threadID:startTime:endTime:reportedTime:blownFenceID:hangSubtype:isFirstPartyApp:isThirdPartyDevSupportModeHang:displayedInHUD:serviceName:reason:processName:processPath:userActionData:recentStateInfo:" startTime:pid endTime:d reportedTime:time blownFenceID:endTime hangSubtype:endTime isFirstPartyApp:0 isThirdPartyDevSupportModeHang:subtype displayedInHUD:v67 serviceName:hangCopy reason:v59 processName:v63 processPath:processPath userActionData:dataCopy recentStateInfo:infoCopy];
       [HTHangInfo addHang:v65];
       +[HTHangInfo getHangWaitTimeout];
       if (v66 <= 0.0)
@@ -1396,21 +1396,21 @@ LABEL_8:
 
     else
     {
-      [HTTailspin notifyHTTailSpinResult:0 failReason:v39 hangSubType:a8 htBugType:sub_10001AE00(self->isFirstPartyApp, a10, v18)];
-      v42 = v69;
-      v48 = v70;
+      [HTTailspin notifyHTTailSpinResult:0 failReason:v39 hangSubType:subtype htBugType:sub_10001AE00(self->isFirstPartyApp, modeHang, v18)];
+      v42 = infoCopy;
+      v48 = dataCopy;
     }
   }
 }
 
-+ (void)recordFenceHang:(id)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5 reportedTime:(unint64_t)a6 blownFenceId:(unint64_t)a7 saveTailspin:(BOOL)a8 subtype:(int64_t)a9 isThirdPartyDevSupportModeHang:(BOOL)a10 captureMicroHang:(BOOL)a11
++ (void)recordFenceHang:(id)hang startTime:(unint64_t)time endTime:(unint64_t)endTime reportedTime:(unint64_t)reportedTime blownFenceId:(unint64_t)id saveTailspin:(BOOL)tailspin subtype:(int64_t)subtype isThirdPartyDevSupportModeHang:(BOOL)self0 captureMicroHang:(BOOL)self1
 {
-  v15 = a3;
-  v16 = sub_1000024F8(a5 - a4);
+  hangCopy = hang;
+  v16 = sub_1000024F8(endTime - time);
   v17 = +[HTPrefs sharedPrefs];
-  v18 = [v17 runloopHangDurationThresholdMSec];
+  runloopHangDurationThresholdMSec = [v17 runloopHangDurationThresholdMSec];
 
-  if (a9 != 9 && (v16 > v18 || a11))
+  if (subtype != 9 && (v16 > runloopHangDurationThresholdMSec || microHang))
   {
     v22 = sub_100003824();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -1418,24 +1418,24 @@ LABEL_8:
       *buf = 134218242;
       v36 = v16 / 1000.0;
       v37 = 2114;
-      v38 = v15;
+      v38 = hangCopy;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Fence-hang: Hang detected %.2fs (%{public}@) > capture threshold", buf, 0x16u);
     }
 
     v23 = +[HTPrefs sharedPrefs];
-    v24 = [v23 shouldDisplayFenceHangToHUD];
+    shouldDisplayFenceHangToHUD = [v23 shouldDisplayFenceHangToHUD];
 
-    if (v24)
+    if (shouldDisplayFenceHangToHUD)
     {
-      v25 = sub_1000024F8(a5 - a4 - 24000000);
+      v25 = sub_1000024F8(endTime - time - 24000000);
       v26 = mach_absolute_time();
-      sub_1000251D8("Fence Hang", v26, a4 + 12000000, a5 - 12000000, 1, a9 == 2, v25);
+      sub_1000251D8("Fence Hang", v26, time + 12000000, endTime - 12000000, 1, subtype == 2, v25);
     }
 
     v27 = +[HTPrefs sharedPrefs];
-    v28 = [v27 htTailspinEnabled];
+    htTailspinEnabled = [v27 htTailspinEnabled];
 
-    if (v28)
+    if (htTailspinEnabled)
     {
       if (+[HTProcessInfo shouldSaveFenceHangLogs])
       {
@@ -1443,11 +1443,11 @@ LABEL_8:
         {
           if (!+[HTTailspin hasExceededDailyFenceLogLimit])
           {
-            v31 = [NSString stringWithFormat:@"%@-%@: timeout %.0fms", v15, @"AppTBD", *&v16];
-            BYTE2(v34) = v24;
-            BYTE1(v34) = a10;
+            v31 = [NSString stringWithFormat:@"%@-%@: timeout %.0fms", hangCopy, @"AppTBD", *&v16];
+            BYTE2(v34) = shouldDisplayFenceHangToHUD;
+            BYTE1(v34) = modeHang;
             LOBYTE(v34) = 0;
-            v32 = [HTHangInfo initWithPid:"initWithPid:threadID:startTime:endTime:reportedTime:blownFenceID:hangSubtype:isFirstPartyApp:isThirdPartyDevSupportModeHang:displayedInHUD:serviceName:reason:processName:processPath:userActionData:recentStateInfo:" threadID:0 startTime:0 endTime:a4 reportedTime:a5 blownFenceID:a6 hangSubtype:a7 isFirstPartyApp:a9 isThirdPartyDevSupportModeHang:v34 displayedInHUD:v15 serviceName:v31 reason:@"AppTBD" processName:&stru_100057080 processPath:0 userActionData:0 recentStateInfo:?];
+            v32 = [HTHangInfo initWithPid:"initWithPid:threadID:startTime:endTime:reportedTime:blownFenceID:hangSubtype:isFirstPartyApp:isThirdPartyDevSupportModeHang:displayedInHUD:serviceName:reason:processName:processPath:userActionData:recentStateInfo:" threadID:0 startTime:0 endTime:time reportedTime:endTime blownFenceID:reportedTime hangSubtype:id isFirstPartyApp:subtype isThirdPartyDevSupportModeHang:v34 displayedInHUD:hangCopy serviceName:v31 reason:@"AppTBD" processName:&stru_100057080 processPath:0 userActionData:0 recentStateInfo:?];
             [HTHangInfo addHang:v32];
             +[HTHangInfo getHangWaitTimeout];
             if (v33 <= 0.0)
@@ -1483,7 +1483,7 @@ LABEL_8:
       v29 = 5;
     }
 
-    [HTTailspin notifyHTTailSpinResult:0 failReason:v29 hangSubType:a9 htBugType:0];
+    [HTTailspin notifyHTTailSpinResult:0 failReason:v29 hangSubType:subtype htBugType:0];
     goto LABEL_24;
   }
 
@@ -1510,7 +1510,7 @@ LABEL_8:
     *buf = 134218242;
     v36 = v16 / 1000.0;
     v37 = 2114;
-    v38 = v15;
+    v38 = hangCopy;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Fence-hang: Hang detected %.2fs (%{public}@), duration < capture threshold after accounting for assertion overlaps, not capturing tailspin for it", buf, 0x16u);
   }
 
@@ -1543,7 +1543,7 @@ LABEL_24:
   [(HTProcessInfo *)&v6 dealloc];
 }
 
-- (id)getApplicationByBundleId:(id)a3
+- (id)getApplicationByBundleId:(id)id
 {
   appInfo = self->appInfo;
   if (!appInfo)
@@ -1588,17 +1588,17 @@ LABEL_24:
   }
 
   v4 = +[HTPrefs sharedPrefs];
-  v5 = [v4 thirdPartyIncludeNonDevelopmentApps];
+  thirdPartyIncludeNonDevelopmentApps = [v4 thirdPartyIncludeNonDevelopmentApps];
 
-  if (v5)
+  if (thirdPartyIncludeNonDevelopmentApps)
   {
     return 1;
   }
 
   v6 = [(HTProcessInfo *)self getApplicationByBundleId:self->processBundleID];
-  v7 = [v6 isProfileValidated];
+  isProfileValidated = [v6 isProfileValidated];
 
-  return v7;
+  return isProfileValidated;
 }
 
 - (BOOL)shouldDisplayNonFenceHangToHUD
@@ -1607,9 +1607,9 @@ LABEL_24:
   if ([v3 isInternal])
   {
     v4 = +[HTPrefs sharedPrefs];
-    v5 = [v4 hudEnabled];
+    hudEnabled = [v4 hudEnabled];
 
-    if (v5)
+    if (hudEnabled)
     {
       return !self->shouldDisableProcess;
     }
@@ -1620,9 +1620,9 @@ LABEL_24:
   }
 
   v7 = +[HTPrefs sharedPrefs];
-  v8 = [v7 thirdPartyDevHangHUDEnabled];
+  thirdPartyDevHangHUDEnabled = [v7 thirdPartyDevHangHUDEnabled];
 
-  return v8 && [(HTProcessInfo *)self isDeveloperApp];
+  return thirdPartyDevHangHUDEnabled && [(HTProcessInfo *)self isDeveloperApp];
 }
 
 @end

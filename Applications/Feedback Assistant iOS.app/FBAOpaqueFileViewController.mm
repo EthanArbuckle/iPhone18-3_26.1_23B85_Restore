@@ -1,5 +1,5 @@
 @interface FBAOpaqueFileViewController
-+ (BOOL)shouldDisplayItem:(id)a3;
++ (BOOL)shouldDisplayItem:(id)item;
 - (BOOL)showsItem;
 - (UIImageView)icon;
 - (UILabel)debugLabel;
@@ -16,74 +16,74 @@
   v23.receiver = self;
   v23.super_class = FBAOpaqueFileViewController;
   [(FBAOpaqueFileViewController *)&v23 viewDidLoad];
-  v3 = [(FBAOpaqueFileViewController *)self navigationItem];
-  [v3 setLargeTitleDisplayMode:2];
+  navigationItem = [(FBAOpaqueFileViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
-  v4 = [(FBAOpaqueFileViewController *)self item];
+  item = [(FBAOpaqueFileViewController *)self item];
 
-  if (v4)
+  if (item)
   {
-    v5 = [(FBAOpaqueFileViewController *)self item];
-    v6 = [v5 displayName];
-    v7 = [(FBAOpaqueFileViewController *)self fileNameLabel];
-    [v7 setText:v6];
+    item2 = [(FBAOpaqueFileViewController *)self item];
+    displayName = [item2 displayName];
+    fileNameLabel = [(FBAOpaqueFileViewController *)self fileNameLabel];
+    [fileNameLabel setText:displayName];
 
-    v8 = [(FBAOpaqueFileViewController *)self fileNameLabel];
-    [v8 setNumberOfLines:0];
+    fileNameLabel2 = [(FBAOpaqueFileViewController *)self fileNameLabel];
+    [fileNameLabel2 setNumberOfLines:0];
 
-    v9 = [(FBAOpaqueFileViewController *)self item];
-    v10 = [v9 fileSize];
-    v11 = [v10 unsignedLongLongValue];
+    item3 = [(FBAOpaqueFileViewController *)self item];
+    fileSize = [item3 fileSize];
+    unsignedLongLongValue = [fileSize unsignedLongLongValue];
 
-    v12 = [NSByteCountFormatter stringFromByteCount:v11 countStyle:0];
-    v13 = [(FBAOpaqueFileViewController *)self fileSizeLabel];
-    [v13 setText:v12];
+    fileNameLabel4 = [NSByteCountFormatter stringFromByteCount:unsignedLongLongValue countStyle:0];
+    fileSizeLabel = [(FBAOpaqueFileViewController *)self fileSizeLabel];
+    [fileSizeLabel setText:fileNameLabel4];
 
     if (FBKIsInternalInstall() && [(FBAOpaqueFileViewController *)self showsItem])
     {
-      v14 = [(FBAOpaqueFileViewController *)self item];
-      v15 = [v14 description];
+      item4 = [(FBAOpaqueFileViewController *)self item];
+      v15 = [item4 description];
       v16 = [NSString stringWithFormat:@"(INTERNAL)\n\n%@", v15];
-      v17 = [(FBAOpaqueFileViewController *)self debugLabel];
-      [v17 setText:v16];
+      debugLabel = [(FBAOpaqueFileViewController *)self debugLabel];
+      [debugLabel setText:v16];
 
       v18 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"didTapView"];
-      v19 = [(FBAOpaqueFileViewController *)self view];
-      [v19 addGestureRecognizer:v18];
+      view = [(FBAOpaqueFileViewController *)self view];
+      [view addGestureRecognizer:v18];
 
-      v20 = [(FBAOpaqueFileViewController *)self debugLabel];
-      [v20 setAlpha:0.0];
+      debugLabel2 = [(FBAOpaqueFileViewController *)self debugLabel];
+      [debugLabel2 setAlpha:0.0];
 
-      v21 = [(FBAOpaqueFileViewController *)self debugLabel];
-      [v21 setHidden:0];
+      debugLabel3 = [(FBAOpaqueFileViewController *)self debugLabel];
+      [debugLabel3 setHidden:0];
     }
   }
 
   else
   {
-    v22 = [(FBAOpaqueFileViewController *)self fileNameLabel];
-    [v22 setText:&stru_1000E2210];
+    fileNameLabel3 = [(FBAOpaqueFileViewController *)self fileNameLabel];
+    [fileNameLabel3 setText:&stru_1000E2210];
 
-    v12 = [(FBAOpaqueFileViewController *)self fileNameLabel];
-    [v12 setText:&stru_1000E2210];
+    fileNameLabel4 = [(FBAOpaqueFileViewController *)self fileNameLabel];
+    [fileNameLabel4 setText:&stru_1000E2210];
   }
 }
 
-+ (BOOL)shouldDisplayItem:(id)a3
++ (BOOL)shouldDisplayItem:(id)item
 {
-  v3 = a3;
-  if ([v3 pointsToReachableDir])
+  itemCopy = item;
+  if ([itemCopy pointsToReachableDir])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 attachedPath];
-    if ([v3 isLocal] && objc_msgSend(v5, "checkResourceIsReachableAndReturnError:", 0) && +[FBKFileManager humansCanReadFile:](FBKFileManager, "humansCanReadFile:", v5))
+    attachedPath = [itemCopy attachedPath];
+    if ([itemCopy isLocal] && objc_msgSend(attachedPath, "checkResourceIsReachableAndReturnError:", 0) && +[FBKFileManager humansCanReadFile:](FBKFileManager, "humansCanReadFile:", attachedPath))
     {
-      v6 = [v3 fileSize];
-      v4 = [v6 intValue] == 0;
+      fileSize = [itemCopy fileSize];
+      v4 = [fileSize intValue] == 0;
     }
 
     else
@@ -105,8 +105,8 @@
 
 - (void)didTapView
 {
-  v3 = [(FBAOpaqueFileViewController *)self debugLabel];
-  [v3 alpha];
+  debugLabel = [(FBAOpaqueFileViewController *)self debugLabel];
+  [debugLabel alpha];
   v5 = v4 == 0.0;
 
   v6[0] = _NSConcreteStackBlock;

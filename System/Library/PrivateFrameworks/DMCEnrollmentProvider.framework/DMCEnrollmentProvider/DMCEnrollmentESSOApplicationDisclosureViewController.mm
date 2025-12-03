@@ -1,19 +1,19 @@
 @interface DMCEnrollmentESSOApplicationDisclosureViewController
-- (DMCEnrollmentESSOApplicationDisclosureViewController)initWithDelegate:(id)a3 lockupRequest:(id)a4 lockupViewGroup:(id)a5 requiredEntitlements:(id)a6;
+- (DMCEnrollmentESSOApplicationDisclosureViewController)initWithDelegate:(id)delegate lockupRequest:(id)request lockupViewGroup:(id)group requiredEntitlements:(id)entitlements;
 - (DMCEnrollmentESSOApplicationDisclosureViewControllerDelegate)delegate;
-- (void)leftBarButtonTapped:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)leftBarButtonTapped:(id)tapped;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DMCEnrollmentESSOApplicationDisclosureViewController
 
-- (DMCEnrollmentESSOApplicationDisclosureViewController)initWithDelegate:(id)a3 lockupRequest:(id)a4 lockupViewGroup:(id)a5 requiredEntitlements:(id)a6
+- (DMCEnrollmentESSOApplicationDisclosureViewController)initWithDelegate:(id)delegate lockupRequest:(id)request lockupViewGroup:(id)group requiredEntitlements:(id)entitlements
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  delegateCopy = delegate;
+  requestCopy = request;
+  groupCopy = group;
+  entitlementsCopy = entitlements;
   v14 = DMCLocalizedString();
   v31.receiver = self;
   v31.super_class = DMCEnrollmentESSOApplicationDisclosureViewController;
@@ -21,8 +21,8 @@
 
   if (v15)
   {
-    objc_storeWeak(&v15->_delegate, v10);
-    v16 = [v13 copy];
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    v16 = [entitlementsCopy copy];
     requiredEntitlements = v15->_requiredEntitlements;
     v15->_requiredEntitlements = v16;
 
@@ -30,7 +30,7 @@
     v19 = DMCLocalizedString();
     v20 = [(DMCEnrollmentTableViewTextCell *)v18 initWithText:v19 bold:0];
     v32[0] = v20;
-    v21 = [[DMCEnrollmentTableViewAppLockupCell alloc] initWithLockupRequest:v11 lockupViewGroup:v12 presentingViewController:v15];
+    v21 = [[DMCEnrollmentTableViewAppLockupCell alloc] initWithLockupRequest:requestCopy lockupViewGroup:groupCopy presentingViewController:v15];
     v32[1] = v21;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
     [(DMCEnrollmentTemplateTableViewController *)v15 addCellData:v22 animated:0];
@@ -47,7 +47,7 @@
     v27[3] = &unk_278EE74C0;
     v24 = v30;
     v28 = v24;
-    v25 = [(DMCEnrollmentInstallAppButtonView *)v23 initWithLockupRequest:v11 lockupViewGroup:v12 beginInstallationHandler:v29 completionHandler:v27];
+    v25 = [(DMCEnrollmentInstallAppButtonView *)v23 initWithLockupRequest:requestCopy lockupViewGroup:groupCopy beginInstallationHandler:v29 completionHandler:v27];
     [(DMCEnrollmentTemplateTableViewController *)v24 addBottomView:v25];
   }
 
@@ -89,11 +89,11 @@ void __124__DMCEnrollmentESSOApplicationDisclosureViewController_initWithDelegat
   [v3 essoApplicationDisclosureViewController:*(a1 + 32) didReceiveUserAction:1 error:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = DMCEnrollmentESSOApplicationDisclosureViewController;
-  [(DMCEnrollmentTemplateTableViewController *)&v4 viewWillAppear:a3];
+  [(DMCEnrollmentTemplateTableViewController *)&v4 viewWillAppear:appear];
   if (([(DMCEnrollmentESSOApplicationDisclosureViewController *)self isBeingPresented]& 1) != 0 || [(DMCEnrollmentESSOApplicationDisclosureViewController *)self isMovingToParentViewController])
   {
     [(DMCEnrollmentESSOApplicationDisclosureViewController *)self _setupNavigationBar];
@@ -102,10 +102,10 @@ void __124__DMCEnrollmentESSOApplicationDisclosureViewController_initWithDelegat
   [(DMCEnrollmentESSOApplicationDisclosureViewController *)self setModalInPresentation:1];
 }
 
-- (void)leftBarButtonTapped:(id)a3
+- (void)leftBarButtonTapped:(id)tapped
 {
-  v4 = [(DMCEnrollmentESSOApplicationDisclosureViewController *)self delegate];
-  [v4 essoApplicationDisclosureViewController:self didReceiveUserAction:0 error:0];
+  delegate = [(DMCEnrollmentESSOApplicationDisclosureViewController *)self delegate];
+  [delegate essoApplicationDisclosureViewController:self didReceiveUserAction:0 error:0];
 }
 
 - (DMCEnrollmentESSOApplicationDisclosureViewControllerDelegate)delegate

@@ -3,46 +3,46 @@
 - (CGSize)imageBoundingSize;
 - (NSOperationQueue)operationQueue;
 - (SUUIItemGridDelegate)delegate;
-- (SUUIItemGridViewController)initWithRowHeight:(double)a3;
-- (_NSRange)itemCollectionController:(id)a3 itemPageRangeForOffset:(CGPoint)a4;
-- (_NSRange)visibleItemRangeForItemCollectionController:(id)a3;
+- (SUUIItemGridViewController)initWithRowHeight:(double)height;
+- (_NSRange)itemCollectionController:(id)controller itemPageRangeForOffset:(CGPoint)offset;
+- (_NSRange)visibleItemRangeForItemCollectionController:(id)controller;
 - (id)_collectionView;
 - (id)_itemCollectionController;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)itemCollectionController:(id)a3 cellLayoutForItemIndex:(int64_t)a4;
-- (id)popIconImageViewForItemAtIndex:(int64_t)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)itemCollectionController:(id)controller cellLayoutForItemIndex:(int64_t)index;
+- (id)popIconImageViewForItemAtIndex:(int64_t)index;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)_reloadLayout;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)itemCollectionView:(id)a3 didConfirmItemOfferForCell:(id)a4;
-- (void)itemCollectionView:(id)a3 didPerformEditActionForCell:(id)a4;
-- (void)loadNextPageOfArtworkWithReason:(int64_t)a3;
+- (void)itemCollectionView:(id)view didConfirmItemOfferForCell:(id)cell;
+- (void)itemCollectionView:(id)view didPerformEditActionForCell:(id)cell;
+- (void)loadNextPageOfArtworkWithReason:(int64_t)reason;
 - (void)loadView;
-- (void)removeItemsAtIndexes:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setArtworkContext:(id)a3;
-- (void)setIconDataConsumer:(id)a3;
-- (void)setItemCellClass:(Class)a3;
-- (void)setItems:(id)a3;
+- (void)removeItemsAtIndexes:(id)indexes;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setArtworkContext:(id)context;
+- (void)setIconDataConsumer:(id)consumer;
+- (void)setItemCellClass:(Class)class;
+- (void)setItems:(id)items;
 - (void)unhideIcons;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation SUUIItemGridViewController
 
-- (SUUIItemGridViewController)initWithRowHeight:(double)a3
+- (SUUIItemGridViewController)initWithRowHeight:(double)height
 {
   v5.receiver = self;
   v5.super_class = SUUIItemGridViewController;
   result = [(SUUIItemGridViewController *)&v5 init];
   if (result)
   {
-    result->_rowHeight = a3;
+    result->_rowHeight = height;
   }
 
   return result;
@@ -77,10 +77,10 @@
   return result;
 }
 
-- (void)loadNextPageOfArtworkWithReason:(int64_t)a3
+- (void)loadNextPageOfArtworkWithReason:(int64_t)reason
 {
-  v4 = [(SUUIItemGridViewController *)self _itemCollectionController];
-  [v4 loadNextPageOfArtworkWithReason:a3];
+  _itemCollectionController = [(SUUIItemGridViewController *)self _itemCollectionController];
+  [_itemCollectionController loadNextPageOfArtworkWithReason:reason];
 }
 
 - (NSOperationQueue)operationQueue
@@ -99,31 +99,31 @@
   return operationQueue;
 }
 
-- (id)popIconImageViewForItemAtIndex:(int64_t)a3
+- (id)popIconImageViewForItemAtIndex:(int64_t)index
 {
   collectionView = self->_collectionView;
-  v6 = [MEMORY[0x277CCAA70] indexPathForItem:a3 inSection:0];
+  v6 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:0];
   v7 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v6];
 
-  v8 = [v7 layout];
-  v9 = [v8 iconImage];
+  layout = [v7 layout];
+  iconImage = [layout iconImage];
 
-  if (v9)
+  if (iconImage)
   {
-    v10 = [v8 iconImageView];
-    [v10 frame];
+    iconImageView = [layout iconImageView];
+    [iconImageView frame];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
 
     v19 = objc_alloc(MEMORY[0x277D755E8]);
-    v20 = [v8 iconImage];
-    v9 = [v19 initWithImage:v20];
+    iconImage2 = [layout iconImage];
+    iconImage = [v19 initWithImage:iconImage2];
 
-    v21 = [(SUUIItemGridViewController *)self view];
-    [v21 convertRect:v7 fromView:{v12, v14, v16, v18}];
-    [v9 setFrame:?];
+    view = [(SUUIItemGridViewController *)self view];
+    [view convertRect:v7 fromView:{v12, v14, v16, v18}];
+    [iconImage setFrame:?];
 
     hiddenIconIndexSet = self->_hiddenIconIndexSet;
     if (!hiddenIconIndexSet)
@@ -135,47 +135,47 @@
       hiddenIconIndexSet = self->_hiddenIconIndexSet;
     }
 
-    [(NSMutableIndexSet *)hiddenIconIndexSet addIndex:a3];
-    [v8 setIconImageHidden:1];
+    [(NSMutableIndexSet *)hiddenIconIndexSet addIndex:index];
+    [layout setIconImageHidden:1];
   }
 
-  return v9;
+  return iconImage;
 }
 
-- (void)removeItemsAtIndexes:(id)a3
+- (void)removeItemsAtIndexes:(id)indexes
 {
-  [(NSMutableArray *)self->_items removeObjectsAtIndexes:a3];
+  [(NSMutableArray *)self->_items removeObjectsAtIndexes:indexes];
   [(SUUIItemCollectionController *)self->_itemCollectionController setItems:self->_items];
   collectionView = self->_collectionView;
 
   [(UICollectionView *)collectionView reloadData];
 }
 
-- (void)setArtworkContext:(id)a3
+- (void)setArtworkContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SUUIItemGridViewController *)self _itemCollectionController];
-  [v5 setArtworkContext:v4];
+  contextCopy = context;
+  _itemCollectionController = [(SUUIItemGridViewController *)self _itemCollectionController];
+  [_itemCollectionController setArtworkContext:contextCopy];
 }
 
-- (void)setIconDataConsumer:(id)a3
+- (void)setIconDataConsumer:(id)consumer
 {
-  v4 = a3;
-  v5 = [(SUUIItemGridViewController *)self _itemCollectionController];
-  [v5 setIconDataConsumer:v4];
+  consumerCopy = consumer;
+  _itemCollectionController = [(SUUIItemGridViewController *)self _itemCollectionController];
+  [_itemCollectionController setIconDataConsumer:consumerCopy];
 }
 
-- (void)setItemCellClass:(Class)a3
+- (void)setItemCellClass:(Class)class
 {
-  v4 = [(SUUIItemGridViewController *)self _collectionView];
-  [v4 registerClass:a3 forCellWithReuseIdentifier:@"ItemCellReuseIdentifier"];
+  _collectionView = [(SUUIItemGridViewController *)self _collectionView];
+  [_collectionView registerClass:class forCellWithReuseIdentifier:@"ItemCellReuseIdentifier"];
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  if (self->_items != a3)
+  if (self->_items != items)
   {
-    v4 = [a3 mutableCopy];
+    v4 = [items mutableCopy];
     items = self->_items;
     self->_items = v4;
 
@@ -215,33 +215,33 @@ void __41__SUUIItemGridViewController_unhideIcons__block_invoke(uint64_t a1, uin
 - (void)loadView
 {
   v5 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v3 = [(SUUIItemGridViewController *)self _collectionView];
-  [v3 reloadData];
-  [v5 addSubview:v3];
-  v4 = [v3 backgroundColor];
-  [v5 setBackgroundColor:v4];
+  _collectionView = [(SUUIItemGridViewController *)self _collectionView];
+  [_collectionView reloadData];
+  [v5 addSubview:_collectionView];
+  backgroundColor = [_collectionView backgroundColor];
+  [v5 setBackgroundColor:backgroundColor];
 
   [(SUUIItemGridViewController *)self setView:v5];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SUUIItemCollectionController *)self->_itemCollectionController enterForeground];
-  v5 = [(SUUIItemGridViewController *)self _itemCollectionController];
+  _itemCollectionController = [(SUUIItemGridViewController *)self _itemCollectionController];
   [(UICollectionView *)self->_collectionView contentOffset];
-  [v5 precacheNextPageArtworkForOffset:? direction:?];
+  [_itemCollectionController precacheNextPageArtworkForOffset:? direction:?];
 
   v6.receiver = self;
   v6.super_class = SUUIItemGridViewController;
-  [(SUUIItemGridViewController *)&v6 viewDidAppear:v3];
+  [(SUUIItemGridViewController *)&v6 viewDidAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SUUIItemGridViewController;
-  [(SUUIItemGridViewController *)&v4 viewDidDisappear:a3];
+  [(SUUIItemGridViewController *)&v4 viewDidDisappear:disappear];
   [(SUUIItemCollectionController *)self->_itemCollectionController enterBackground];
 }
 
@@ -253,26 +253,26 @@ void __41__SUUIItemGridViewController_unhideIcons__block_invoke(uint64_t a1, uin
   [(SUUIItemGridViewController *)&v3 viewDidLayoutSubviews];
 }
 
-- (id)itemCollectionController:(id)a3 cellLayoutForItemIndex:(int64_t)a4
+- (id)itemCollectionController:(id)controller cellLayoutForItemIndex:(int64_t)index
 {
   collectionView = self->_collectionView;
-  v5 = [MEMORY[0x277CCAA70] indexPathForItem:a4 inSection:0];
+  v5 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:0];
   v6 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v5];
 
-  v7 = [v6 layout];
+  layout = [v6 layout];
 
-  return v7;
+  return layout;
 }
 
-- (_NSRange)itemCollectionController:(id)a3 itemPageRangeForOffset:(CGPoint)a4
+- (_NSRange)itemCollectionController:(id)controller itemPageRangeForOffset:(CGPoint)offset
 {
-  v4 = SUUIItemCollectionItemPageRangeForCollectionView(self->_collectionView, a4.x, a4.y);
+  v4 = SUUIItemCollectionItemPageRangeForCollectionView(self->_collectionView, offset.x, offset.y);
   result.length = v5;
   result.location = v4;
   return result;
 }
 
-- (_NSRange)visibleItemRangeForItemCollectionController:(id)a3
+- (_NSRange)visibleItemRangeForItemCollectionController:(id)controller
 {
   v3 = SUUIItemCollectionVisibleItemRangeForCollectionView(self->_collectionView);
   result.length = v4;
@@ -280,55 +280,55 @@ void __41__SUUIItemGridViewController_unhideIcons__block_invoke(uint64_t a1, uin
   return result;
 }
 
-- (void)itemCollectionView:(id)a3 didConfirmItemOfferForCell:(id)a4
+- (void)itemCollectionView:(id)view didConfirmItemOfferForCell:(id)cell
 {
-  v9 = a4;
-  v6 = [a3 indexPathForCell:?];
+  cellCopy = cell;
+  v6 = [view indexPathForCell:?];
   v7 = -[SUUIItemCollectionController performActionForItemAtIndex:](self->_itemCollectionController, "performActionForItemAtIndex:", [v6 item]);
   if (v7)
   {
-    v8 = [v9 layout];
-    [v8 setItemState:v7 animated:1];
+    layout = [cellCopy layout];
+    [layout setItemState:v7 animated:1];
   }
 }
 
-- (void)itemCollectionView:(id)a3 didPerformEditActionForCell:(id)a4
+- (void)itemCollectionView:(id)view didPerformEditActionForCell:(id)cell
 {
-  v5 = [a3 indexPathForCell:a4];
+  v5 = [view indexPathForCell:cell];
   if (v5)
   {
     v9 = v5;
-    v6 = [(SUUIItemGridViewController *)self delegate];
+    delegate = [(SUUIItemGridViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v9 item];
-      v8 = [(NSMutableArray *)self->_items objectAtIndex:v7];
-      [v6 itemGrid:self didPerformEditActionForItem:v8 atIndex:v7];
+      item = [v9 item];
+      v8 = [(NSMutableArray *)self->_items objectAtIndex:item];
+      [delegate itemGrid:self didPerformEditActionForItem:v8 atIndex:item];
     }
 
     v5 = v9;
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithReuseIdentifier:@"ItemCellReuseIdentifier" forIndexPath:a4];
+  v5 = [view dequeueReusableCellWithReuseIdentifier:@"ItemCellReuseIdentifier" forIndexPath:path];
   [v5 setSeparatorStyle:1];
-  v6 = [v5 layout];
-  [v6 setClientContext:self->_clientContext];
+  layout = [v5 layout];
+  [layout setClientContext:self->_clientContext];
 
   return v5;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(NSMutableArray *)self->_items count:a3];
-  v6 = [(SUUIItemGridViewController *)self _collectionViewLayout];
-  v7 = [v6 numberOfColumns];
+  v5 = [(NSMutableArray *)self->_items count:view];
+  _collectionViewLayout = [(SUUIItemGridViewController *)self _collectionViewLayout];
+  numberOfColumns = [_collectionViewLayout numberOfColumns];
 
-  if (v5 % v7)
+  if (v5 % numberOfColumns)
   {
-    return v7 + v5 - v5 % v7;
+    return numberOfColumns + v5 - v5 % numberOfColumns;
   }
 
   else
@@ -337,71 +337,71 @@ void __41__SUUIItemGridViewController_unhideIcons__block_invoke(uint64_t a1, uin
   }
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v14 = a4;
-  v7 = a5;
-  v8 = [v14 layout];
-  v9 = [(SUUIUber *)self->_uber colorScheme];
-  v10 = [v9 primaryTextColor];
-  [v14 setSeparatorColor:v10];
+  cellCopy = cell;
+  pathCopy = path;
+  layout = [cellCopy layout];
+  colorScheme = [(SUUIUber *)self->_uber colorScheme];
+  primaryTextColor = [colorScheme primaryTextColor];
+  [cellCopy setSeparatorColor:primaryTextColor];
 
-  v11 = [v7 item];
-  if (v11 >= [(NSMutableArray *)self->_items count])
+  item = [pathCopy item];
+  if (item >= [(NSMutableArray *)self->_items count])
   {
-    [v14 configureForItem:0 clientContext:self->_clientContext];
-    [v8 resetLayout];
+    [cellCopy configureForItem:0 clientContext:self->_clientContext];
+    [layout resetLayout];
   }
 
   else
   {
-    v12 = [(NSMutableArray *)self->_items objectAtIndex:v11];
-    [v14 configureForItem:v12 clientContext:self->_clientContext];
-    [(SUUIItemCollectionController *)self->_itemCollectionController configureCellLayout:v8 forIndex:v11];
-    [v8 setIconImageHidden:{-[NSMutableIndexSet containsIndex:](self->_hiddenIconIndexSet, "containsIndex:", v11)}];
-    [v8 setSelected:{-[NSMutableIndexSet containsIndex:](self->_selectedItemIndexSet, "containsIndex:", v11)}];
-    v13 = [(SUUIUber *)self->_uber colorScheme];
-    [v8 setColoringWithColorScheme:v13];
+    v12 = [(NSMutableArray *)self->_items objectAtIndex:item];
+    [cellCopy configureForItem:v12 clientContext:self->_clientContext];
+    [(SUUIItemCollectionController *)self->_itemCollectionController configureCellLayout:layout forIndex:item];
+    [layout setIconImageHidden:{-[NSMutableIndexSet containsIndex:](self->_hiddenIconIndexSet, "containsIndex:", item)}];
+    [layout setSelected:{-[NSMutableIndexSet containsIndex:](self->_selectedItemIndexSet, "containsIndex:", item)}];
+    colorScheme2 = [(SUUIUber *)self->_uber colorScheme];
+    [layout setColoringWithColorScheme:colorScheme2];
 
     if (self->_imageBoundingSize.width != *MEMORY[0x277CBF3A8] || self->_imageBoundingSize.height != *(MEMORY[0x277CBF3A8] + 8))
     {
-      [v8 setImageBoundingSize:?];
+      [layout setImageBoundingSize:?];
     }
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v6 = [a5 item];
-  if (v6 < [(NSMutableArray *)self->_items count])
+  item = [path item];
+  if (item < [(NSMutableArray *)self->_items count])
   {
     itemCollectionController = self->_itemCollectionController;
 
-    [(SUUIItemCollectionController *)itemCollectionController didEndDisplayingItemAtIndex:v6];
+    [(SUUIItemCollectionController *)itemCollectionController didEndDisplayingItemAtIndex:item];
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v10 = a4;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [v10 item];
-    if (v7 < [(NSMutableArray *)self->_items count])
+    item = [pathCopy item];
+    if (item < [(NSMutableArray *)self->_items count])
     {
-      v8 = [(NSMutableArray *)self->_items objectAtIndex:v7];
+      v8 = [(NSMutableArray *)self->_items objectAtIndex:item];
       v9 = objc_loadWeakRetained(&self->_delegate);
-      [v9 itemGrid:self didSelectItem:v8 atIndex:v7];
+      [v9 itemGrid:self didSelectItem:v8 atIndex:item];
     }
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v7 = a3;
+  draggingCopy = dragging;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
@@ -411,7 +411,7 @@ void __41__SUUIItemGridViewController_unhideIcons__block_invoke(uint64_t a1, uin
     [v6 itemGridWillBeginDragging:self];
   }
 
-  [(SUUIItemCollectionController *)self->_itemCollectionController scrollViewWillBeginDragging:v7];
+  [(SUUIItemCollectionController *)self->_itemCollectionController scrollViewWillBeginDragging:draggingCopy];
 }
 
 - (id)_collectionView
@@ -430,8 +430,8 @@ void __41__SUUIItemGridViewController_unhideIcons__block_invoke(uint64_t a1, uin
     [(UICollectionView *)self->_collectionView setAlwaysBounceVertical:1];
     [(UICollectionView *)self->_collectionView setAutoresizingMask:18];
     v8 = self->_collectionView;
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    [(UICollectionView *)v8 setBackgroundColor:v9];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UICollectionView *)v8 setBackgroundColor:whiteColor];
 
     [(UICollectionView *)self->_collectionView setSemanticContentAttribute:storeSemanticContentAttribute()];
     [(UICollectionView *)self->_collectionView setDataSource:self];
@@ -446,14 +446,14 @@ void __41__SUUIItemGridViewController_unhideIcons__block_invoke(uint64_t a1, uin
 
 - (void)_reloadLayout
 {
-  v3 = [(SUUIItemGridViewController *)self view];
-  [v3 frame];
+  view = [(SUUIItemGridViewController *)self view];
+  [view frame];
   v5 = v4;
 
   if (v5 > 0.00000011920929)
   {
-    v6 = [(SUUIItemGridViewController *)self _collectionViewLayout];
-    v9 = v6;
+    _collectionViewLayout = [(SUUIItemGridViewController *)self _collectionViewLayout];
+    v9 = _collectionViewLayout;
     if (v5 <= 1000.0)
     {
       v7 = 2;
@@ -464,7 +464,7 @@ void __41__SUUIItemGridViewController_unhideIcons__block_invoke(uint64_t a1, uin
       v7 = 3;
     }
 
-    [v6 setNumberOfColumns:v7];
+    [_collectionViewLayout setNumberOfColumns:v7];
     v8 = v5 / v7;
     [v9 setItemSize:{floorf(v8), self->_rowHeight}];
     [v9 invalidateLayout];

@@ -1,19 +1,19 @@
 @interface PencilEducationElementTextField
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (CGRect)editingRectForBounds:(CGRect)a3;
-- (CGRect)textRectForBounds:(CGRect)a3;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)insertText:(id)a3 alternatives:(id)a4 style:(int64_t)a5;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (CGRect)editingRectForBounds:(CGRect)bounds;
+- (CGRect)textRectForBounds:(CGRect)bounds;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)insertText:(id)text alternatives:(id)alternatives style:(int64_t)style;
 @end
 
 @implementation PencilEducationElementTextField
 
-- (CGRect)textRectForBounds:(CGRect)a3
+- (CGRect)textRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v13.receiver = self;
   v13.super_class = PencilEducationElementTextField;
   [(PencilEducationElementTextField *)&v13 textRectForBounds:?];
@@ -31,12 +31,12 @@
   return result;
 }
 
-- (CGRect)editingRectForBounds:(CGRect)a3
+- (CGRect)editingRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v13.receiver = self;
   v13.super_class = PencilEducationElementTextField;
   [(PencilEducationElementTextField *)&v13 editingRectForBounds:?];
@@ -54,39 +54,39 @@
   return result;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v7.receiver = self;
   v7.super_class = PencilEducationElementTextField;
-  [(PencilEducationElementTextField *)&v7 buildMenuWithBuilder:v4];
-  v5 = [v4 system];
-  v6 = [MEMORY[0x277D75730] contextSystem];
+  [(PencilEducationElementTextField *)&v7 buildMenuWithBuilder:builderCopy];
+  system = [builderCopy system];
+  contextSystem = [MEMORY[0x277D75730] contextSystem];
 
-  if (v5 == v6)
+  if (system == contextSystem)
   {
-    [v4 removeMenuForIdentifier:*MEMORY[0x277D76D08]];
+    [builderCopy removeMenuForIdentifier:*MEMORY[0x277D76D08]];
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v5 = [(PencilEducationElementTextField *)self allowedCalloutActions:a3];
-  v6 = NSStringFromSelector(a3);
+  v5 = [(PencilEducationElementTextField *)self allowedCalloutActions:action];
+  v6 = NSStringFromSelector(action);
   v7 = [v5 containsObject:v6];
 
   return v7;
 }
 
-- (void)insertText:(id)a3 alternatives:(id)a4 style:(int64_t)a5
+- (void)insertText:(id)text alternatives:(id)alternatives style:(int64_t)style
 {
-  v8 = a3;
-  v9 = a4;
+  textCopy = text;
+  alternativesCopy = alternatives;
   if (![(PencilEducationElementTextField *)self ignoreScribbleInsertText])
   {
     v10.receiver = self;
     v10.super_class = PencilEducationElementTextField;
-    [(PencilEducationElementTextField *)&v10 insertText:v8 alternatives:v9 style:a5];
+    [(PencilEducationElementTextField *)&v10 insertText:textCopy alternatives:alternativesCopy style:style];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface CNCalculatesMultiValueDiff
-+ (id)diffMultiValue:(id)a3 toMultiValue:(id)a4;
-- (CNCalculatesMultiValueDiff)initWithMultiValue1:(id)a3 multiValue2:(id)a4;
++ (id)diffMultiValue:(id)value toMultiValue:(id)multiValue;
+- (CNCalculatesMultiValueDiff)initWithMultiValue1:(id)value1 multiValue2:(id)value2;
 - (void)appendAddUpdates;
 - (void)appendRemoveUpdates;
 - (void)appendReorderUpdates;
@@ -16,23 +16,23 @@
 
 @implementation CNCalculatesMultiValueDiff
 
-+ (id)diffMultiValue:(id)a3 toMultiValue:(id)a4
++ (id)diffMultiValue:(id)value toMultiValue:(id)multiValue
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqual:v6])
+  valueCopy = value;
+  multiValueCopy = multiValue;
+  if ([valueCopy isEqual:multiValueCopy])
   {
-    v7 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
   else
   {
-    v9 = v5;
-    v10 = v6;
-    v7 = CNResultWithAutoreleasePool();
+    v9 = valueCopy;
+    v10 = multiValueCopy;
+    array = CNResultWithAutoreleasePool();
   }
 
-  return v7;
+  return array;
 }
 
 id __58__CNCalculatesMultiValueDiff_diffMultiValue_toMultiValue___block_invoke(uint64_t a1)
@@ -44,18 +44,18 @@ id __58__CNCalculatesMultiValueDiff_diffMultiValue_toMultiValue___block_invoke(u
   return v2;
 }
 
-- (CNCalculatesMultiValueDiff)initWithMultiValue1:(id)a3 multiValue2:(id)a4
+- (CNCalculatesMultiValueDiff)initWithMultiValue1:(id)value1 multiValue2:(id)value2
 {
-  v7 = a3;
-  v8 = a4;
+  value1Copy = value1;
+  value2Copy = value2;
   v15.receiver = self;
   v15.super_class = CNCalculatesMultiValueDiff;
   v9 = [(CNCalculatesMultiValueDiff *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_multiValue1, a3);
-    objc_storeStrong(&v10->_multiValue2, a4);
+    objc_storeStrong(&v9->_multiValue1, value1);
+    objc_storeStrong(&v10->_multiValue2, value2);
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     updates = v10->_updates;
     v10->_updates = v11;
@@ -271,14 +271,14 @@ BOOL __51__CNCalculatesMultiValueDiff_setupFinalIdentifiers__block_invoke(uint64
   if (([(NSMutableOrderedSet *)self->_calculatedFinalIdentifiers isEqual:self->_finalIdentifiers]& 1) == 0)
   {
     v3 = self->_multiValue2;
-    v4 = [(NSOrderedSet *)self->_finalIdentifiers array];
+    array = [(NSOrderedSet *)self->_finalIdentifiers array];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __50__CNCalculatesMultiValueDiff_appendReorderUpdates__block_invoke;
     v8[3] = &unk_1E7412D30;
     v9 = v3;
     v5 = v3;
-    v6 = [v4 _cn_map:v8];
+    v6 = [array _cn_map:v8];
 
     v7 = [CNMultiValueUpdate reorderValues:v6];
     [(NSMutableArray *)self->_updates addObject:v7];

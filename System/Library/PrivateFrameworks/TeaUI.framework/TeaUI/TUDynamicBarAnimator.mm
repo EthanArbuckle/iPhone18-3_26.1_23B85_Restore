@@ -1,21 +1,21 @@
 @interface TUDynamicBarAnimator
-- (BOOL)canTransitionToState:(int64_t)a3;
+- (BOOL)canTransitionToState:(int64_t)state;
 - (TUDynamicBarAnimator)init;
 - (TUDynamicBarAnimatorDelegate)delegate;
-- (double)_bottomBarOffsetForTopBarHeight:(double)a3;
-- (void)_displayLinkFired:(id)a3;
-- (void)_moveBarsWithDelta:(double)a3;
-- (void)_setInSteadyState:(BOOL)a3;
+- (double)_bottomBarOffsetForTopBarHeight:(double)height;
+- (void)_displayLinkFired:(id)fired;
+- (void)_moveBarsWithDelta:(double)delta;
+- (void)_setInSteadyState:(BOOL)state;
 - (void)_transitionToSteadyState;
 - (void)_updateDisplayLink;
 - (void)_updateOutputs;
-- (void)attemptTransitionToState:(int64_t)a3 animated:(BOOL)a4;
-- (void)beginScrollingWithOffset:(double)a3;
-- (void)endScrollingWithTargetOffset:(double)a3 velocity:(double)a4;
-- (void)setBottomBarOffset:(double)a3 forState:(int64_t)a4;
-- (void)setMaximumBottomBarOffset:(double)a3;
-- (void)setTopBarHeight:(double)a3 forState:(int64_t)a4;
-- (void)updateScrollingWithOffset:(double)a3;
+- (void)attemptTransitionToState:(int64_t)state animated:(BOOL)animated;
+- (void)beginScrollingWithOffset:(double)offset;
+- (void)endScrollingWithTargetOffset:(double)offset velocity:(double)velocity;
+- (void)setBottomBarOffset:(double)offset forState:(int64_t)state;
+- (void)setMaximumBottomBarOffset:(double)offset;
+- (void)setTopBarHeight:(double)height forState:(int64_t)state;
+- (void)updateScrollingWithOffset:(double)offset;
 @end
 
 @implementation TUDynamicBarAnimator
@@ -36,37 +36,37 @@
   return v3;
 }
 
-- (void)_moveBarsWithDelta:(double)a3
+- (void)_moveBarsWithDelta:(double)delta
 {
   unroundedTopBarHeight = self->_unroundedTopBarHeight;
-  v6 = self->_targetTopBarHeight - a3;
+  v6 = self->_targetTopBarHeight - delta;
   self->_targetTopBarHeight = v6;
   v7 = self->_topBarHeightForState[1] - self->_topBarHeightForState[0];
   v8 = vabdd_f64(unroundedTopBarHeight, v6);
-  self->_unroundedTopBarHeight = unroundedTopBarHeight - exp(-(v8 * 3.0 / v7 * (v8 * 3.0 / v7))) * a3;
+  self->_unroundedTopBarHeight = unroundedTopBarHeight - exp(-(v8 * 3.0 / v7 * (v8 * 3.0 / v7))) * delta;
 
   [(TUDynamicBarAnimator *)self _updateOutputs];
 }
 
-- (void)attemptTransitionToState:(int64_t)a3 animated:(BOOL)a4
+- (void)attemptTransitionToState:(int64_t)state animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if (![(TUDynamicBarAnimator *)self canTransitionToState:?])
   {
     return;
   }
 
   self->_didHideOrShowBarsExplicitly = 1;
-  v7 = self->_topBarHeightForState[a3];
+  v7 = self->_topBarHeightForState[state];
   self->_targetTopBarHeight = v7;
-  if (!v4)
+  if (!animatedCopy)
   {
     goto LABEL_5;
   }
 
   if (([MEMORY[0x1E69DD250] areAnimationsEnabled] & 1) == 0)
   {
-    v7 = self->_topBarHeightForState[a3];
+    v7 = self->_topBarHeightForState[state];
 LABEL_5:
     self->_unroundedTopBarHeight = v7;
   }
@@ -84,10 +84,10 @@ LABEL_5:
   [(TUDynamicBarAnimator *)self attemptTransitionToState:v4 animated:1];
 }
 
-- (double)_bottomBarOffsetForTopBarHeight:(double)a3
+- (double)_bottomBarOffsetForTopBarHeight:(double)height
 {
   v3 = self->_topBarHeightForState[0];
-  v4 = a3 - v3;
+  v4 = height - v3;
   v5 = self->_topBarHeightForState[1] - v3;
   v6 = v5 == 0.0 && v4 == 0.0;
   v7 = v4 / v5;
@@ -138,15 +138,15 @@ LABEL_5:
   }
 }
 
-- (void)_setInSteadyState:(BOOL)a3
+- (void)_setInSteadyState:(BOOL)state
 {
-  if (self->_inSteadyState == !a3)
+  if (self->_inSteadyState == !state)
   {
-    v4 = a3;
-    self->_inSteadyState = a3;
+    stateCopy = state;
+    self->_inSteadyState = state;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v7 = WeakRetained;
-    if (v4)
+    if (stateCopy)
     {
       [WeakRetained dynamicBarAnimatorWillEnterSteadyState:self];
     }
@@ -158,16 +158,16 @@ LABEL_5:
   }
 }
 
-- (BOOL)canTransitionToState:(int64_t)a3
+- (BOOL)canTransitionToState:(int64_t)state
 {
-  v3 = (&self->super.isa + a3);
+  v3 = (&self->super.isa + state);
   [(TUDynamicBarAnimator *)self _constrainTopBarHeight:v3[1]];
   return v4 == v3[1];
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
-  [a3 duration];
+  [fired duration];
   unroundedTopBarHeight = self->_unroundedTopBarHeight;
   self->_unroundedTopBarHeight = unroundedTopBarHeight - ((self->_lastUnroundedTopBarHeight - unroundedTopBarHeight) / v5 + ((self->_lastUnroundedTopBarHeight - unroundedTopBarHeight) / v5 * -50.0 + (unroundedTopBarHeight - self->_targetTopBarHeight) * 900.0) * v5) * v5;
   self->_lastUnroundedTopBarHeight = unroundedTopBarHeight;
@@ -186,8 +186,8 @@ LABEL_5:
       self->_displayLink = v6;
 
       v8 = self->_displayLink;
-      v9 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [(CADisplayLink *)v8 addToRunLoop:v9 forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [(CADisplayLink *)v8 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
       self->_lastUnroundedTopBarHeight = self->_unroundedTopBarHeight;
     }
@@ -212,18 +212,18 @@ LABEL_5:
   }
 }
 
-- (void)beginScrollingWithOffset:(double)a3
+- (void)beginScrollingWithOffset:(double)offset
 {
   self->_dragging = 1;
   *&self->_didHideBarsByMoving = 0;
-  self->_lastOffset = a3;
+  self->_lastOffset = offset;
 }
 
-- (void)updateScrollingWithOffset:(double)a3
+- (void)updateScrollingWithOffset:(double)offset
 {
   if (!self->_didHideOrShowBarsExplicitly)
   {
-    v5 = a3 - self->_lastOffset;
+    v5 = offset - self->_lastOffset;
     v6 = fmax(self->_topBarHeight - self->_topBarHeightForState[0] - v5, 0.0);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v8 = [WeakRetained dynamicBarAnimator:self canHideBarsByDraggingWithOffset:v6];
@@ -238,31 +238,31 @@ LABEL_5:
     }
   }
 
-  self->_lastOffset = a3;
+  self->_lastOffset = offset;
 }
 
-- (void)endScrollingWithTargetOffset:(double)a3 velocity:(double)a4
+- (void)endScrollingWithTargetOffset:(double)offset velocity:(double)velocity
 {
   self->_dragging = 0;
   if (self->_didHideOrShowBarsExplicitly)
   {
-    if (![(TUDynamicBarAnimator *)self targetState:a3]&& [(TUDynamicBarAnimator *)self canTransitionToState:0])
+    if (![(TUDynamicBarAnimator *)self targetState:offset]&& [(TUDynamicBarAnimator *)self canTransitionToState:0])
     {
-      v5 = self;
+      selfCopy2 = self;
       v6 = 0;
 LABEL_7:
 
-      [(TUDynamicBarAnimator *)v5 attemptTransitionToState:v6 animated:1];
+      [(TUDynamicBarAnimator *)selfCopy2 attemptTransitionToState:v6 animated:1];
       return;
     }
 
 LABEL_6:
-    v5 = self;
+    selfCopy2 = self;
     v6 = 1;
     goto LABEL_7;
   }
 
-  if (a4 < -250.0)
+  if (velocity < -250.0)
   {
     goto LABEL_6;
   }
@@ -270,36 +270,36 @@ LABEL_6:
   [(TUDynamicBarAnimator *)self _transitionToSteadyState];
 }
 
-- (void)setTopBarHeight:(double)a3 forState:(int64_t)a4
+- (void)setTopBarHeight:(double)height forState:(int64_t)state
 {
-  if (self->_topBarHeightForState[a4] != a3)
+  if (self->_topBarHeightForState[state] != height)
   {
-    self->_topBarHeightForState[a4] = a3;
-    if (self->_state == a4)
+    self->_topBarHeightForState[state] = height;
+    if (self->_state == state)
     {
-      self->_targetTopBarHeight = a3;
-      self->_unroundedTopBarHeight = a3;
+      self->_targetTopBarHeight = height;
+      self->_unroundedTopBarHeight = height;
     }
   }
 }
 
-- (void)setBottomBarOffset:(double)a3 forState:(int64_t)a4
+- (void)setBottomBarOffset:(double)offset forState:(int64_t)state
 {
-  if (self->_bottomBarOffsetForState[a4] != a3)
+  if (self->_bottomBarOffsetForState[state] != offset)
   {
-    self->_bottomBarOffsetForState[a4] = a3;
-    if (self->_state == a4)
+    self->_bottomBarOffsetForState[state] = offset;
+    if (self->_state == state)
     {
       [(TUDynamicBarAnimator *)self _updateOutputs];
     }
   }
 }
 
-- (void)setMaximumBottomBarOffset:(double)a3
+- (void)setMaximumBottomBarOffset:(double)offset
 {
-  if (self->_maximumBottomBarOffset != a3)
+  if (self->_maximumBottomBarOffset != offset)
   {
-    self->_maximumBottomBarOffset = a3;
+    self->_maximumBottomBarOffset = offset;
     [(TUDynamicBarAnimator *)self _updateOutputs];
   }
 }

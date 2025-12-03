@@ -1,15 +1,15 @@
 @interface ICMusicSubscriptionStatusResponse
-+ (BOOL)isValidSubscriptionStatusPropertyListRepresentation:(id)a3 error:(id *)a4;
-+ (BOOL)isValidSubscriptionStatusResponseDictionary:(id)a3 error:(id *)a4;
++ (BOOL)isValidSubscriptionStatusPropertyListRepresentation:(id)representation error:(id *)error;
++ (BOOL)isValidSubscriptionStatusResponseDictionary:(id)dictionary error:(id *)error;
 - (BOOL)isExpired;
-- (ICMusicSubscriptionStatusResponse)initWithCoder:(id)a3;
-- (ICMusicSubscriptionStatusResponse)initWithPropertyListRepresentation:(id)a3;
-- (ICMusicSubscriptionStatusResponse)initWithResponseDictionary:(id)a3 expirationDate:(id)a4;
+- (ICMusicSubscriptionStatusResponse)initWithCoder:(id)coder;
+- (ICMusicSubscriptionStatusResponse)initWithPropertyListRepresentation:(id)representation;
+- (ICMusicSubscriptionStatusResponse)initWithResponseDictionary:(id)dictionary expirationDate:(id)date;
 - (NSDictionary)propertyListRepresentation;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICMusicSubscriptionStatusResponse
@@ -85,41 +85,41 @@
   subscriptionStatus = self->_subscriptionStatus;
   if (subscriptionStatus)
   {
-    v9 = [(ICMusicSubscriptionStatus *)subscriptionStatus dictionaryRepresentation];
-    if (v9)
+    dictionaryRepresentation = [(ICMusicSubscriptionStatus *)subscriptionStatus dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v9 forKey:@"status"];
+      [v3 setObject:dictionaryRepresentation forKey:@"status"];
     }
   }
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   expirationDate = self->_expirationDate;
-  v5 = a3;
-  [v5 encodeObject:expirationDate forKey:@"expirationDate"];
-  [v5 encodeBool:self->_finalResponse forKey:@"isFinalResponse"];
-  [v5 encodeBool:self->_needsReload forKey:@"needsReload"];
-  [v5 encodeObject:self->_subscriptionStatus forKey:@"subscriptionStatus"];
+  coderCopy = coder;
+  [coderCopy encodeObject:expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeBool:self->_finalResponse forKey:@"isFinalResponse"];
+  [coderCopy encodeBool:self->_needsReload forKey:@"needsReload"];
+  [coderCopy encodeObject:self->_subscriptionStatus forKey:@"subscriptionStatus"];
 }
 
-- (ICMusicSubscriptionStatusResponse)initWithCoder:(id)a3
+- (ICMusicSubscriptionStatusResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ICMusicSubscriptionStatusResponse;
   v5 = [(ICMusicSubscriptionStatusResponse *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v6;
 
-    v5->_finalResponse = [v4 decodeBoolForKey:@"isFinalResponse"];
-    v5->_needsReload = [v4 decodeBoolForKey:@"needsReload"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subscriptionStatus"];
+    v5->_finalResponse = [coderCopy decodeBoolForKey:@"isFinalResponse"];
+    v5->_needsReload = [coderCopy decodeBoolForKey:@"needsReload"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subscriptionStatus"];
     subscriptionStatus = v5->_subscriptionStatus;
     v5->_subscriptionStatus = v8;
   }
@@ -127,35 +127,35 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [[ICMusicSubscriptionStatusResponse alloc] _init];
-  if (v4)
+  _init = [[ICMusicSubscriptionStatusResponse alloc] _init];
+  if (_init)
   {
     v5 = [(NSDate *)self->_expirationDate copy];
-    v6 = v4[3];
-    v4[3] = v5;
+    v6 = _init[3];
+    _init[3] = v5;
 
-    *(v4 + 8) = self->_finalResponse;
-    *(v4 + 9) = self->_needsReload;
+    *(_init + 8) = self->_finalResponse;
+    *(_init + 9) = self->_needsReload;
     v7 = [(ICMusicSubscriptionStatus *)self->_subscriptionStatus copy];
-    v8 = v4[2];
-    v4[2] = v7;
+    v8 = _init[2];
+    _init[2] = v7;
   }
 
-  return v4;
+  return _init;
 }
 
-- (ICMusicSubscriptionStatusResponse)initWithResponseDictionary:(id)a3 expirationDate:(id)a4
+- (ICMusicSubscriptionStatusResponse)initWithResponseDictionary:(id)dictionary expirationDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICMusicSubscriptionStatusResponse *)self _init];
-  if (v8)
+  dictionaryCopy = dictionary;
+  dateCopy = date;
+  _init = [(ICMusicSubscriptionStatusResponse *)self _init];
+  if (_init)
   {
-    if (v6)
+    if (dictionaryCopy)
     {
-      v9 = [[ICMusicSubscriptionStatus alloc] initWithResponseDictionary:v6];
+      v9 = [[ICMusicSubscriptionStatus alloc] initWithResponseDictionary:dictionaryCopy];
     }
 
     else
@@ -163,24 +163,24 @@
       v9 = 0;
     }
 
-    subscriptionStatus = v8->_subscriptionStatus;
-    v8->_subscriptionStatus = v9;
+    subscriptionStatus = _init->_subscriptionStatus;
+    _init->_subscriptionStatus = v9;
 
-    v11 = [v7 copy];
-    expirationDate = v8->_expirationDate;
-    v8->_expirationDate = v11;
+    v11 = [dateCopy copy];
+    expirationDate = _init->_expirationDate;
+    _init->_expirationDate = v11;
   }
 
-  return v8;
+  return _init;
 }
 
-- (ICMusicSubscriptionStatusResponse)initWithPropertyListRepresentation:(id)a3
+- (ICMusicSubscriptionStatusResponse)initWithPropertyListRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [(ICMusicSubscriptionStatusResponse *)self _init];
-  if (v5)
+  representationCopy = representation;
+  _init = [(ICMusicSubscriptionStatusResponse *)self _init];
+  if (_init)
   {
-    v6 = [v4 objectForKey:@"status"];
+    v6 = [representationCopy objectForKey:@"status"];
     if (_NSIsNSDictionary())
     {
       v7 = [[ICMusicSubscriptionStatus alloc] initWithResponseDictionary:v6];
@@ -191,37 +191,37 @@
       v7 = 0;
     }
 
-    subscriptionStatus = v5->_subscriptionStatus;
-    v5->_subscriptionStatus = v7;
+    subscriptionStatus = _init->_subscriptionStatus;
+    _init->_subscriptionStatus = v7;
 
-    v9 = [v4 objectForKey:@"expiration"];
+    v9 = [representationCopy objectForKey:@"expiration"];
     if (objc_opt_respondsToSelector())
     {
       v10 = MEMORY[0x1E695DF00];
       [v9 doubleValue];
       v11 = [v10 dateWithTimeIntervalSinceReferenceDate:?];
-      expirationDate = v5->_expirationDate;
-      v5->_expirationDate = v11;
+      expirationDate = _init->_expirationDate;
+      _init->_expirationDate = v11;
     }
 
-    v13 = [v4 objectForKey:@"valid"];
+    v13 = [representationCopy objectForKey:@"valid"];
     if (objc_opt_respondsToSelector())
     {
-      v5->_needsReload = [v13 BOOLValue] ^ 1;
+      _init->_needsReload = [v13 BOOLValue] ^ 1;
     }
 
-    v5->_finalResponse = 1;
+    _init->_finalResponse = 1;
   }
 
-  return v5;
+  return _init;
 }
 
-+ (BOOL)isValidSubscriptionStatusResponseDictionary:(id)a3 error:(id *)a4
++ (BOOL)isValidSubscriptionStatusResponseDictionary:(id)dictionary error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 objectForKey:@"status"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKey:@"status"];
   v7 = (objc_opt_respondsToSelector() & 1) != 0 && [v6 integerValue] != 0;
-  v8 = [v5 objectForKey:@"errorMessage"];
+  v8 = [dictionaryCopy objectForKey:@"errorMessage"];
   if (_NSIsNSString())
   {
     v9 = v8;
@@ -234,7 +234,7 @@
     if ((v10 & 1) == 0)
     {
       v11 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"ICError" code:-7102 debugDescription:{@"Subscription status error: %@", v9}];
-      if (!a4)
+      if (!error)
       {
         goto LABEL_13;
       }
@@ -249,11 +249,11 @@
   }
 
   v11 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_12:
     v12 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_13:
@@ -261,15 +261,15 @@ LABEL_13:
   return v11 == 0;
 }
 
-+ (BOOL)isValidSubscriptionStatusPropertyListRepresentation:(id)a3 error:(id *)a4
++ (BOOL)isValidSubscriptionStatusPropertyListRepresentation:(id)representation error:(id *)error
 {
-  v6 = [a3 objectForKey:@"status"];
+  v6 = [representation objectForKey:@"status"];
   if (_NSIsNSDictionary())
   {
     v11 = 0;
-    v7 = [a1 isValidSubscriptionStatusResponseDictionary:v6 error:&v11];
+    v7 = [self isValidSubscriptionStatusResponseDictionary:v6 error:&v11];
     v8 = v11;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -279,11 +279,11 @@ LABEL_13:
 
   v8 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"ICError" code:-7102 debugDescription:{@"Invalid subscription status value: %@", v6}];
   v7 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_5:
     v9 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_6:

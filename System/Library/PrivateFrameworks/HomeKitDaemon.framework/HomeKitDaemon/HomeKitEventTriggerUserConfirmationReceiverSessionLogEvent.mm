@@ -1,12 +1,12 @@
 @interface HomeKitEventTriggerUserConfirmationReceiverSessionLogEvent
-- (HomeKitEventTriggerUserConfirmationReceiverSessionLogEvent)initWithSessionID:(id)a3;
+- (HomeKitEventTriggerUserConfirmationReceiverSessionLogEvent)initWithSessionID:(id)d;
 @end
 
 @implementation HomeKitEventTriggerUserConfirmationReceiverSessionLogEvent
 
-- (HomeKitEventTriggerUserConfirmationReceiverSessionLogEvent)initWithSessionID:(id)a3
+- (HomeKitEventTriggerUserConfirmationReceiverSessionLogEvent)initWithSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = HomeKitEventTriggerUserConfirmationReceiverSessionLogEvent;
   v5 = [(HMMLogEvent *)&v9 init];
@@ -17,7 +17,7 @@
     v5->_analyticsData = v6;
 
     [(HMDAnalyticsEventTriggerUserConfirmationReceiverSessionData *)v5->_analyticsData setTimestamp:0];
-    [(HMDAnalyticsEventTriggerUserConfirmationReceiverSessionData *)v5->_analyticsData setSessionID:v4];
+    [(HMDAnalyticsEventTriggerUserConfirmationReceiverSessionData *)v5->_analyticsData setSessionID:dCopy];
   }
 
   return v5;

@@ -1,13 +1,13 @@
 @interface AMSUIDynamicImpressionMetricsIdentifier
-- (AMSUIDynamicImpressionMetricsIdentifier)initWithParent:(id)a3 element:(id)a4 index:(int64_t)a5;
+- (AMSUIDynamicImpressionMetricsIdentifier)initWithParent:(id)parent element:(id)element index:(int64_t)index;
 @end
 
 @implementation AMSUIDynamicImpressionMetricsIdentifier
 
-- (AMSUIDynamicImpressionMetricsIdentifier)initWithParent:(id)a3 element:(id)a4 index:(int64_t)a5
+- (AMSUIDynamicImpressionMetricsIdentifier)initWithParent:(id)parent element:(id)element index:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
+  parentCopy = parent;
+  elementCopy = element;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -26,7 +26,7 @@
 
   v11 = v10;
   _Block_object_dispose(&v15, 8);
-  v12 = [[v10 alloc] initWithParent:v8 element:v9 index:a5];
+  v12 = [[v10 alloc] initWithParent:parentCopy element:elementCopy index:index];
 
   return v12;
 }

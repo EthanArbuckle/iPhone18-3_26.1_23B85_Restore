@@ -1,7 +1,7 @@
 @interface CAMetalDisplayLink
 - (CAFrameRateRange)preferredFrameRateRange;
 - (CAMetalDisplayLink)initWithMetalLayer:(CAMetalLayer *)layer;
-- (id)_initWithMetalLinkItem:(void *)a3;
+- (id)_initWithMetalLinkItem:(void *)item;
 - (void)addToRunLoop:(NSRunLoop *)runloop forMode:(NSRunLoopMode)mode;
 - (void)dealloc;
 - (void)removeFromRunLoop:(NSRunLoop *)runloop forMode:(NSRunLoopMode)mode;
@@ -30,8 +30,8 @@
   minimum = preferredFrameRateRange.minimum;
   if (!CAFrameRateRangeIsValid(preferredFrameRateRange.minimum, preferredFrameRateRange.maximum, preferredFrameRateRange.preferred))
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid range (minimum: %.2f maximum: %.2f preferred: %.2f)", minimum, maximum, preferred];
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v11 userInfo:0]);
+    preferred = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid range (minimum: %.2f maximum: %.2f preferred: %.2f)", minimum, maximum, preferred];
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:preferred userInfo:0]);
   }
 
   impl = self->_impl;
@@ -64,17 +64,17 @@
 - (void)removeFromRunLoop:(NSRunLoop *)runloop forMode:(NSRunLoopMode)mode
 {
   impl = self->_impl;
-  v6 = [(NSRunLoop *)runloop getCFRunLoop];
+  getCFRunLoop = [(NSRunLoop *)runloop getCFRunLoop];
 
-  CA::Display::DisplayLinkItem::unschedule(impl, v6, mode);
+  CA::Display::DisplayLinkItem::unschedule(impl, getCFRunLoop, mode);
 }
 
 - (void)addToRunLoop:(NSRunLoop *)runloop forMode:(NSRunLoopMode)mode
 {
   impl = self->_impl;
-  v6 = [(NSRunLoop *)runloop getCFRunLoop];
+  getCFRunLoop = [(NSRunLoop *)runloop getCFRunLoop];
 
-  CA::Display::DisplayLinkItem::schedule(impl, v6, mode);
+  CA::Display::DisplayLinkItem::schedule(impl, getCFRunLoop, mode);
 }
 
 - (void)dealloc
@@ -112,7 +112,7 @@
   return 0;
 }
 
-- (id)_initWithMetalLinkItem:(void *)a3
+- (id)_initWithMetalLinkItem:(void *)item
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -121,13 +121,13 @@
   v5 = v4;
   if (v4)
   {
-    v4->_impl = a3;
-    *(a3 + 32) = v4;
+    v4->_impl = item;
+    *(item + 32) = v4;
   }
 
-  else if (a3)
+  else if (item)
   {
-    (*(*a3 + 8))(a3);
+    (*(*item + 8))(item);
   }
 
   return v5;

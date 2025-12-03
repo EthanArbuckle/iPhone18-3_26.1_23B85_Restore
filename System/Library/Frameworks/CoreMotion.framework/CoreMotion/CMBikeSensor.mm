@@ -2,7 +2,7 @@
 + (BOOL)isAvailable;
 - (CMBikeSensor)init;
 - (void)dealloc;
-- (void)feedBikeSensorData:(id)a3;
+- (void)feedBikeSensorData:(id)data;
 @end
 
 @implementation CMBikeSensor
@@ -46,7 +46,7 @@
   return 0;
 }
 
-- (void)feedBikeSensorData:(id)a3
+- (void)feedBikeSensorData:(id)data
 {
   v25 = *MEMORY[0x1E69E9840];
   if (qword_1ED71D418 != -1)
@@ -59,10 +59,10 @@
     goto LABEL_21;
   }
 
-  objc_msgSend_instantaneousPower(a3, a2, a3);
+  objc_msgSend_instantaneousPower(data, a2, data);
   if (v7 >= 1.79769313e308)
   {
-    objc_msgSend_instantaneousCadence(a3, v5, v6);
+    objc_msgSend_instantaneousCadence(data, v5, v6);
     if (v8 >= 1.79769313e308)
     {
       if (qword_1EAFE2808 != -1)
@@ -73,7 +73,7 @@
       v14 = qword_1EAFE2830;
       if (os_log_type_enabled(qword_1EAFE2830, OS_LOG_TYPE_DEFAULT))
       {
-        objc_msgSend_instantaneousPower(a3, v15, v16);
+        objc_msgSend_instantaneousPower(data, v15, v16);
         *buf = 134217984;
         v24 = v17;
         _os_log_impl(&dword_19B41C000, v14, OS_LOG_TYPE_DEFAULT, "CMBikeSensor::feedBikeSensorData the input variable is beyond the limit and was rejected: %f", buf, 0xCu);
@@ -88,7 +88,7 @@
           dispatch_once(&qword_1EAFE2808, &unk_1F0E27F40);
         }
 
-        objc_msgSend_instantaneousPower(a3, v19, v20);
+        objc_msgSend_instantaneousPower(data, v19, v20);
         v21 = _os_log_send_and_compose_impl();
         sub_19B6BB7CC("Generic", 1, 0, 2, "[CMBikeSensor feedBikeSensorData:]", "CoreLocation: %s\n", v21);
         if (v21 != buf)
@@ -103,7 +103,7 @@ LABEL_21:
     }
   }
 
-  v9 = objc_msgSend_newFitnessMachineDataFromBikeSensorData(a3, v5, v6);
+  v9 = objc_msgSend_newFitnessMachineDataFromBikeSensorData(data, v5, v6);
   v12 = objc_msgSend__internal(self, v10, v11);
   v13 = *MEMORY[0x1E69E9840];
 

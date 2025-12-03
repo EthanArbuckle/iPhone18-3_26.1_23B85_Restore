@@ -1,5 +1,5 @@
 @interface AXAggregateHeaderView
-- (AXAggregateHeaderView)initWithAccessibilityContainer:(id)a3 iconButtons:(id)a4 dateLabel:(id)a5 titleLabel:(id)a6;
+- (AXAggregateHeaderView)initWithAccessibilityContainer:(id)container iconButtons:(id)buttons dateLabel:(id)label titleLabel:(id)titleLabel;
 - (BOOL)_axIsHeaderViewActionable;
 - (BOOL)accessibilityActivate;
 - (CGPoint)accessibilityActivationPoint;
@@ -11,27 +11,27 @@
 
 @implementation AXAggregateHeaderView
 
-- (AXAggregateHeaderView)initWithAccessibilityContainer:(id)a3 iconButtons:(id)a4 dateLabel:(id)a5 titleLabel:(id)a6
+- (AXAggregateHeaderView)initWithAccessibilityContainer:(id)container iconButtons:(id)buttons dateLabel:(id)label titleLabel:(id)titleLabel
 {
   v31 = *MEMORY[0x29EDCA608];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x29EDB8DE8] array];
-  [v14 axSafelyAddObjectsFromArray:v11];
-  [v14 axSafelyAddObject:v13];
-  [v14 axSafelyAddObject:v12];
+  containerCopy = container;
+  buttonsCopy = buttons;
+  labelCopy = label;
+  titleLabelCopy = titleLabel;
+  array = [MEMORY[0x29EDB8DE8] array];
+  [array axSafelyAddObjectsFromArray:buttonsCopy];
+  [array axSafelyAddObject:titleLabelCopy];
+  [array axSafelyAddObject:labelCopy];
   v29.receiver = self;
   v29.super_class = AXAggregateHeaderView;
-  v15 = [(UIAccessibilityAggregateElement *)&v29 initWithAccessibilityContainer:v10 representedElements:v14];
+  v15 = [(UIAccessibilityAggregateElement *)&v29 initWithAccessibilityContainer:containerCopy representedElements:array];
   v16 = v15;
   if (v15)
   {
-    v24 = v10;
-    objc_storeStrong(&v15->_iconButtons, a4);
-    objc_storeStrong(&v16->_titleLabel, a6);
-    objc_storeStrong(&v16->_dateLabel, a5);
+    v24 = containerCopy;
+    objc_storeStrong(&v15->_iconButtons, buttons);
+    objc_storeStrong(&v16->_titleLabel, titleLabel);
+    objc_storeStrong(&v16->_dateLabel, label);
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
@@ -62,7 +62,7 @@
       while (v19);
     }
 
-    v10 = v24;
+    containerCopy = v24;
   }
 
   v22 = *MEMORY[0x29EDCA608];
@@ -71,9 +71,9 @@
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = [(AXAggregateHeaderView *)self iconButtons];
-  v3 = [v2 firstObject];
-  [v3 accessibilityActivationPoint];
+  iconButtons = [(AXAggregateHeaderView *)self iconButtons];
+  firstObject = [iconButtons firstObject];
+  [firstObject accessibilityActivationPoint];
   v5 = v4;
   v7 = v6;
 
@@ -86,35 +86,35 @@
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(AXAggregateHeaderView *)self iconButtons];
-  v4 = [v3 count];
+  iconButtons = [(AXAggregateHeaderView *)self iconButtons];
+  v4 = [iconButtons count];
 
   if (v4 >= 2)
   {
-    v10 = self;
+    selfCopy = self;
     _AXAssert();
   }
 
-  v5 = [(AXAggregateHeaderView *)self _axIsHeaderViewActionable];
-  if (v5)
+  _axIsHeaderViewActionable = [(AXAggregateHeaderView *)self _axIsHeaderViewActionable];
+  if (_axIsHeaderViewActionable)
   {
     objc_opt_class();
-    v6 = [(AXAggregateHeaderView *)self iconButtons];
-    v7 = [v6 firstObject];
+    iconButtons2 = [(AXAggregateHeaderView *)self iconButtons];
+    firstObject = [iconButtons2 firstObject];
     v8 = __UIAccessibilityCastAsClass();
 
     [v8 sendActionsForControlEvents:64];
   }
 
-  return v5;
+  return _axIsHeaderViewActionable;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(AXAggregateHeaderView *)self titleLabel];
-  v4 = [v3 accessibilityLabel];
-  v5 = [(AXAggregateHeaderView *)self dateLabel];
-  v8 = [v5 accessibilityLabel];
+  titleLabel = [(AXAggregateHeaderView *)self titleLabel];
+  accessibilityLabel = [titleLabel accessibilityLabel];
+  dateLabel = [(AXAggregateHeaderView *)self dateLabel];
+  accessibilityLabel2 = [dateLabel accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;
@@ -126,9 +126,9 @@
   {
     v3 = MEMORY[0x29EDBA0F8];
     v4 = accessibilityLocalizedString(@"notification.icon.button.hint");
-    v5 = [(AXAggregateHeaderView *)self titleLabel];
-    v6 = [v5 accessibilityLabel];
-    v7 = [v3 stringWithFormat:v4, v6];
+    titleLabel = [(AXAggregateHeaderView *)self titleLabel];
+    accessibilityLabel = [titleLabel accessibilityLabel];
+    v7 = [v3 stringWithFormat:v4, accessibilityLabel];
   }
 
   else
@@ -141,9 +141,9 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(AXAggregateHeaderView *)self _axIsHeaderViewActionable];
+  _axIsHeaderViewActionable = [(AXAggregateHeaderView *)self _axIsHeaderViewActionable];
   v3 = *MEMORY[0x29EDC7F70];
-  if (!v2)
+  if (!_axIsHeaderViewActionable)
   {
     v3 = 0;
   }
@@ -153,40 +153,40 @@
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [(AXAggregateHeaderView *)self iconButtons];
-  v4 = [v3 count];
+  iconButtons = [(AXAggregateHeaderView *)self iconButtons];
+  v4 = [iconButtons count];
 
   if (v4 < 2)
   {
     v9.receiver = self;
     v9.super_class = AXAggregateHeaderView;
-    v7 = [(AXAggregateHeaderView *)&v9 _accessibilitySupplementaryFooterViews];
+    _accessibilitySupplementaryFooterViews = [(AXAggregateHeaderView *)&v9 _accessibilitySupplementaryFooterViews];
   }
 
   else
   {
-    v5 = [(AXAggregateHeaderView *)self iconButtons];
-    v6 = [(AXAggregateHeaderView *)self iconButtons];
-    v7 = [v5 subarrayWithRange:{1, objc_msgSend(v6, "count") - 1}];
+    iconButtons2 = [(AXAggregateHeaderView *)self iconButtons];
+    iconButtons3 = [(AXAggregateHeaderView *)self iconButtons];
+    _accessibilitySupplementaryFooterViews = [iconButtons2 subarrayWithRange:{1, objc_msgSend(iconButtons3, "count") - 1}];
   }
 
-  return v7;
+  return _accessibilitySupplementaryFooterViews;
 }
 
 - (BOOL)_axIsHeaderViewActionable
 {
-  v3 = [(AXAggregateHeaderView *)self titleLabel];
-  v4 = [v3 accessibilityLabel];
-  if ([v4 length])
+  titleLabel = [(AXAggregateHeaderView *)self titleLabel];
+  accessibilityLabel = [titleLabel accessibilityLabel];
+  if ([accessibilityLabel length])
   {
-    v5 = [(AXAggregateHeaderView *)self iconButtons];
-    v6 = [v5 firstObject];
-    if ([v6 _accessibilityViewIsVisible])
+    iconButtons = [(AXAggregateHeaderView *)self iconButtons];
+    firstObject = [iconButtons firstObject];
+    if ([firstObject _accessibilityViewIsVisible])
     {
-      v7 = [(AXAggregateHeaderView *)self iconButtons];
-      v8 = [v7 firstObject];
-      v9 = [v8 allTargets];
-      v10 = [v9 count] != 0;
+      iconButtons2 = [(AXAggregateHeaderView *)self iconButtons];
+      firstObject2 = [iconButtons2 firstObject];
+      allTargets = [firstObject2 allTargets];
+      v10 = [allTargets count] != 0;
     }
 
     else

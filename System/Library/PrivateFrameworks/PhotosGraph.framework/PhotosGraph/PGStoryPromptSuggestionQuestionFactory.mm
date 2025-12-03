@@ -1,16 +1,16 @@
 @interface PGStoryPromptSuggestionQuestionFactory
 - (PGStoryPromptSuggestionQuestionFactory)init;
-- (id)generateQuestionsWithLimit:(int64_t)a3 progressBlock:(id)a4;
+- (id)generateQuestionsWithLimit:(int64_t)limit progressBlock:(id)block;
 @end
 
 @implementation PGStoryPromptSuggestionQuestionFactory
 
-- (id)generateQuestionsWithLimit:(int64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(int64_t)limit progressBlock:(id)block
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(block);
   _Block_copy(v6);
-  v7 = self;
-  sub_22F11FA78(a3, v7, v6);
+  selfCopy = self;
+  sub_22F11FA78(limit, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 

@@ -1,45 +1,45 @@
 @interface REElementOpenAction
-- (BOOL)isEqual:(id)a3;
-- (REElementOpenAction)initWithCoder:(id)a3;
-- (REElementOpenAction)initWithURL:(id)a3 applicationID:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REElementOpenAction)initWithCoder:(id)coder;
+- (REElementOpenAction)initWithURL:(id)l applicationID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_performWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_performWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REElementOpenAction
 
-- (REElementOpenAction)initWithURL:(id)a3 applicationID:(id)a4
+- (REElementOpenAction)initWithURL:(id)l applicationID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = REElementOpenAction;
   v9 = [(REElementOpenAction *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_url, a3);
-    objc_storeStrong(&v10->_applicationID, a4);
+    objc_storeStrong(&v9->_url, l);
+    objc_storeStrong(&v10->_applicationID, d);
   }
 
   return v10;
 }
 
-- (REElementOpenAction)initWithCoder:(id)a3
+- (REElementOpenAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = REElementOpenAction;
-  v5 = [(REElementAction *)&v11 initWithCoder:v4];
+  v5 = [(REElementAction *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"url"];
+    v6 = [coderCopy decodeObjectForKey:@"url"];
     url = v5->_url;
     v5->_url = v6;
 
-    v8 = [v4 decodeObjectForKey:@"applicationID"];
+    v8 = [coderCopy decodeObjectForKey:@"applicationID"];
     applicationID = v5->_applicationID;
     v5->_applicationID = v8;
   }
@@ -47,17 +47,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = REElementOpenAction;
-  v4 = a3;
-  [(REElementAction *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_url forKey:{@"url", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_applicationID forKey:@"applicationID"];
+  coderCopy = coder;
+  [(REElementAction *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_url forKey:{@"url", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_applicationID forKey:@"applicationID"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = REElementOpenAction;
@@ -67,24 +67,24 @@
   return v4;
 }
 
-- (void)_performWithContext:(id)a3
+- (void)_performWithContext:(id)context
 {
   v4 = [(REElementOpenAction *)self url];
   if (v4)
   {
     v5 = v4;
-    v6 = [(REElementOpenAction *)self applicationID];
+    applicationID = [(REElementOpenAction *)self applicationID];
 
-    if (v6)
+    if (applicationID)
     {
       v7 = [(REElementOpenAction *)self url];
-      v8 = [(REElementOpenAction *)self applicationID];
+      applicationID2 = [(REElementOpenAction *)self applicationID];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __43__REElementOpenAction__performWithContext___block_invoke;
       v9[3] = &unk_2785F9FF0;
       v9[4] = self;
-      RELaunchApp(v7, v8, v9);
+      RELaunchApp(v7, applicationID2, v9);
     }
   }
 }
@@ -100,13 +100,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[3];
     v7 = self->_url;
     v8 = v7;

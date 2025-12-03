@@ -1,21 +1,21 @@
 @interface SEApplet
 - (NSString)description;
 - (_TtC9SEService8SEApplet)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SEApplet
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SEApplet.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SEApplet.encode(with:)(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   SEApplet.description.getter();
 
   v3 = sub_1C7C7D2E4();

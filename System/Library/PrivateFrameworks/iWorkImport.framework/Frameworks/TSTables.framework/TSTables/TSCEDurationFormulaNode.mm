@@ -1,16 +1,16 @@
 @interface TSCEDurationFormulaNode
-- (TSCEDurationFormulaNode)initWithDuration:(TSCEDurationData *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6;
+- (TSCEDurationFormulaNode)initWithDuration:(TSCEDurationData *)duration;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine;
 - (void)dealloc;
-- (void)setValue:(TSCEDurationData *)a3;
+- (void)setValue:(TSCEDurationData *)value;
 @end
 
 @implementation TSCEDurationFormulaNode
 
-- (void)setValue:(TSCEDurationData *)a3
+- (void)setValue:(TSCEDurationData *)value
 {
-  if (a3)
+  if (value)
   {
     value = self->_value;
     if (value)
@@ -31,9 +31,9 @@
   objc_msgSend_logBacktraceThrottled(v17, v13, v14, v15, v16);
 }
 
-- (TSCEDurationFormulaNode)initWithDuration:(TSCEDurationData *)a3
+- (TSCEDurationFormulaNode)initWithDuration:(TSCEDurationData *)duration
 {
-  if (!a3)
+  if (!duration)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEDurationFormulaNode initWithDuration:]", v3, v4);
@@ -50,7 +50,7 @@
   if (v18)
   {
     v18->_value = 0;
-    objc_msgSend_setValue_(v18, v19, a3, v20, v21);
+    objc_msgSend_setValue_(v18, v19, duration, v20, v21);
   }
 
   return v22;
@@ -70,7 +70,7 @@
   [(TSCEDurationFormulaNode *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (!self->_value)
   {
@@ -88,18 +88,18 @@
   operator new();
 }
 
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine
 {
-  v33 = a6;
+  engineCopy = engine;
   value = self->_value;
   if (value)
   {
-    TSCEASTDurationElement::appendDurationElement(a3, value->var1, &value->var2, v9, v10, value->var0);
+    TSCEASTDurationElement::appendDurationElement(array, value->var1, &value->var2, v9, v10, value->var0);
     v16 = objc_msgSend_whitespaceBefore(self, v12, v13, v14, v15);
-    TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 31, v16);
+    TSCEASTWhitespaceElement::appendWhitespaceElement(array, 31, v16);
 
     v21 = objc_msgSend_whitespaceAfter(self, v17, v18, v19, v20);
-    TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 32, v21);
+    TSCEASTWhitespaceElement::appendWhitespaceElement(array, 32, v21);
   }
 
   else

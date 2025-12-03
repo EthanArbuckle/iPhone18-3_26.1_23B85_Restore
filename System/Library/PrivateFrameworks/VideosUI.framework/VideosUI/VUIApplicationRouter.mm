@@ -1,49 +1,49 @@
 @interface VUIApplicationRouter
-+ (BOOL)_handleEvent:(id)a3 targetResponder:(id)a4 appContext:(id)a5 eventDataSource:(id)a6 documentOptions:(id)a7 extraInfo:(id *)a8;
-+ (BOOL)handleAccountSettingsEventWithUrl:(id)a3 amsBagKey:(id)a4 useAMSWebView:(BOOL)a5;
-+ (BOOL)handleDocumentDataSource:(id)a3 targetResponder:(id)a4 appContext:(id)a5 documentOptions:(id)a6 completion:(id)a7;
-+ (BOOL)handleEvent:(id)a3 targetResponder:(id)a4 appContext:(id)a5 routerDataSource:(id)a6 supplementaryData:(id)a7 extraInfo:(id *)a8;
-+ (id)_viewControllerWithIdentifier:(id)a3;
++ (BOOL)_handleEvent:(id)event targetResponder:(id)responder appContext:(id)context eventDataSource:(id)source documentOptions:(id)options extraInfo:(id *)info;
++ (BOOL)handleAccountSettingsEventWithUrl:(id)url amsBagKey:(id)key useAMSWebView:(BOOL)view;
++ (BOOL)handleDocumentDataSource:(id)source targetResponder:(id)responder appContext:(id)context documentOptions:(id)options completion:(id)completion;
++ (BOOL)handleEvent:(id)event targetResponder:(id)responder appContext:(id)context routerDataSource:(id)source supplementaryData:(id)data extraInfo:(id *)info;
++ (id)_viewControllerWithIdentifier:(id)identifier;
 + (id)currentNavigationController;
-+ (id)eventDataSourceForEvent:(id)a3 routerDataSource:(id)a4;
++ (id)eventDataSourceForEvent:(id)event routerDataSource:(id)source;
 + (id)topMostVisibleViewController;
 + (id)topPresentedViewController;
-+ (void)_amsBagURLForKey:(id)a3 withCompletion:(id)a4;
-+ (void)_dismissPresentedViewControllerWithCompletion:(id)a3;
-+ (void)_handleAccountSettingsEventWithUrl:(id)a3 amsBagKey:(id)a4 useAMSWebView:(BOOL)a5 isModalPresentation:(BOOL)a6 originalNavigationController:(id)a7;
-+ (void)_navigateAccountSettingsWithDestinationViewController:(id)a3 shouldEmbedInNavController:(BOOL)a4 isModalPresentation:(BOOL)a5 originalNavigationController:(id)a6;
-+ (void)_performForType:(int64_t)a3 targetResponder:(id)a4 appContext:(id)a5 eventDataSource:(id)a6 documentOptions:(id)a7;
-+ (void)dismissOrPopLastViewControllerWithCompletion:(id)a3;
-+ (void)dismissOrPopViewControllerWithId:(id)a3 completion:(id)a4;
-+ (void)invokeAction:(id)a3 primaryAction:(id)a4 targetResponder:(id)a5 completion:(id)a6;
-+ (void)invokeAction:(id)a3 targetResponder:(id)a4 documentOptions:(id)a5 completion:(id)a6;
++ (void)_amsBagURLForKey:(id)key withCompletion:(id)completion;
++ (void)_dismissPresentedViewControllerWithCompletion:(id)completion;
++ (void)_handleAccountSettingsEventWithUrl:(id)url amsBagKey:(id)key useAMSWebView:(BOOL)view isModalPresentation:(BOOL)presentation originalNavigationController:(id)controller;
++ (void)_navigateAccountSettingsWithDestinationViewController:(id)controller shouldEmbedInNavController:(BOOL)navController isModalPresentation:(BOOL)presentation originalNavigationController:(id)navigationController;
++ (void)_performForType:(int64_t)type targetResponder:(id)responder appContext:(id)context eventDataSource:(id)source documentOptions:(id)options;
++ (void)dismissOrPopLastViewControllerWithCompletion:(id)completion;
++ (void)dismissOrPopViewControllerWithId:(id)id completion:(id)completion;
++ (void)invokeAction:(id)action primaryAction:(id)primaryAction targetResponder:(id)responder completion:(id)completion;
++ (void)invokeAction:(id)action targetResponder:(id)responder documentOptions:(id)options completion:(id)completion;
 @end
 
 @implementation VUIApplicationRouter
 
-+ (id)eventDataSourceForEvent:(id)a3 routerDataSource:(id)a4
++ (id)eventDataSourceForEvent:(id)event routerDataSource:(id)source
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  eventCopy = event;
+  sourceCopy = source;
+  if (sourceCopy)
   {
-    if (([v5 isEqualToString:@"play"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"autoPlay"))
+    if (([eventCopy isEqualToString:@"play"] & 1) != 0 || objc_msgSend(eventCopy, "isEqualToString:", @"autoPlay"))
     {
-      v7 = [v6 playEventDataSource];
+      playEventDataSource = [sourceCopy playEventDataSource];
 LABEL_5:
-      v8 = v7;
+      v8 = playEventDataSource;
       goto LABEL_11;
     }
 
-    if ([v5 isEqualToString:@"select"])
+    if ([eventCopy isEqualToString:@"select"])
     {
-      v7 = [v6 selectEventDataSource];
+      playEventDataSource = [sourceCopy selectEventDataSource];
       goto LABEL_5;
     }
 
-    if ([v5 isEqualToString:@"contextmenu"])
+    if ([eventCopy isEqualToString:@"contextmenu"])
     {
-      v7 = [v6 contextMenuEventDataSource];
+      playEventDataSource = [sourceCopy contextMenuEventDataSource];
       goto LABEL_5;
     }
   }
@@ -54,51 +54,51 @@ LABEL_11:
   return v8;
 }
 
-+ (BOOL)handleAccountSettingsEventWithUrl:(id)a3 amsBagKey:(id)a4 useAMSWebView:(BOOL)a5
++ (BOOL)handleAccountSettingsEventWithUrl:(id)url amsBagKey:(id)key useAMSWebView:(BOOL)view
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  urlCopy = url;
+  keyCopy = key;
   if (+[VUIUtilities isSUIEnabled])
   {
     v9 = +[VUIInterfaceFactory sharedInstance];
-    v10 = [v9 controllerPresenter];
+    controllerPresenter = [v9 controllerPresenter];
 
-    [v10 handleAccountSettingsEventWithUrl:v7 amsBagKey:v8 useAMSWebView:v5];
+    [controllerPresenter handleAccountSettingsEventWithUrl:urlCopy amsBagKey:keyCopy useAMSWebView:viewCopy];
   }
 
   else
   {
-    [VUIApplicationRouter _handleAccountSettingsEventWithUrl:v7 amsBagKey:v8 useAMSWebView:v5 isModalPresentation:1 originalNavigationController:0];
+    [VUIApplicationRouter _handleAccountSettingsEventWithUrl:urlCopy amsBagKey:keyCopy useAMSWebView:viewCopy isModalPresentation:1 originalNavigationController:0];
   }
 
   return 0;
 }
 
-+ (BOOL)_handleEvent:(id)a3 targetResponder:(id)a4 appContext:(id)a5 eventDataSource:(id)a6 documentOptions:(id)a7 extraInfo:(id *)a8
++ (BOOL)_handleEvent:(id)event targetResponder:(id)responder appContext:(id)context eventDataSource:(id)source documentOptions:(id)options extraInfo:(id *)info
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [MEMORY[0x1E695DF00] date];
-  [v16 timeIntervalSince1970];
+  responderCopy = responder;
+  contextCopy = context;
+  sourceCopy = source;
+  optionsCopy = options;
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v18 = v17;
 
-  if (v14)
+  if (sourceCopy)
   {
-    [objc_opt_class() _performForType:0 targetResponder:v12 appContext:v13 eventDataSource:v14 documentOptions:v15];
-    if (a8)
+    [objc_opt_class() _performForType:0 targetResponder:responderCopy appContext:contextCopy eventDataSource:sourceCopy documentOptions:optionsCopy];
+    if (info)
     {
-      if (*a8)
+      if (*info)
       {
         v19 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:?];
         [v19 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"isHandled"];
         v20 = [MEMORY[0x1E696AD98] numberWithLong:(v18 * 1000.0)];
         [v19 setObject:v20 forKeyedSubscript:@"eventTimeStamp"];
 
-        *a8 = [v19 copy];
+        *info = [v19 copy];
       }
 
       else
@@ -108,7 +108,7 @@ LABEL_11:
         v24[0] = MEMORY[0x1E695E118];
         v21 = [MEMORY[0x1E696AD98] numberWithLong:(v18 * 1000.0)];
         v24[1] = v21;
-        *a8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
+        *info = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
       }
     }
   }
@@ -116,22 +116,22 @@ LABEL_11:
   return 0;
 }
 
-+ (void)_performForType:(int64_t)a3 targetResponder:(id)a4 appContext:(id)a5 eventDataSource:(id)a6 documentOptions:(id)a7
++ (void)_performForType:(int64_t)type targetResponder:(id)responder appContext:(id)context eventDataSource:(id)source documentOptions:(id)options
 {
   v60 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  responderCopy = responder;
+  contextCopy = context;
+  sourceCopy = source;
+  optionsCopy = options;
   v16 = 3;
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v17 = [v14 postActionDocumentDataSource];
-      v18 = [v14 postAction];
+      postActionDocumentDataSource = [sourceCopy postActionDocumentDataSource];
+      postAction = [sourceCopy postAction];
       v16 = 3;
-      if (!v17)
+      if (!postActionDocumentDataSource)
       {
         goto LABEL_14;
       }
@@ -139,7 +139,7 @@ LABEL_11:
       goto LABEL_10;
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
       goto LABEL_29;
     }
@@ -148,14 +148,14 @@ LABEL_23:
     v34 = VUIDefaultLogObject();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3 > 2)
+      if (type > 2)
       {
         v35 = @"unknown";
       }
 
       else
       {
-        v35 = off_1E872E490[a3];
+        v35 = off_1E872E490[type];
       }
 
       *buf = 138412546;
@@ -165,16 +165,16 @@ LABEL_23:
       _os_log_impl(&dword_1E323F000, v34, OS_LOG_TYPE_DEFAULT, "VUIApplicationRouter - VUIApplicationRouter::skipping empty event [%@] with %@", buf, 0x16u);
     }
 
-    [objc_opt_class() _performForType:v16 targetResponder:v12 appContext:v13 eventDataSource:v14 documentOptions:v15];
+    [objc_opt_class() _performForType:v16 targetResponder:responderCopy appContext:contextCopy eventDataSource:sourceCopy documentOptions:optionsCopy];
     goto LABEL_29;
   }
 
-  if (!a3)
+  if (!type)
   {
-    v17 = [v14 preActionDocumentDataSource];
-    v18 = [v14 preAction];
+    postActionDocumentDataSource = [sourceCopy preActionDocumentDataSource];
+    postAction = [sourceCopy preAction];
     v16 = 1;
-    if (!v17)
+    if (!postActionDocumentDataSource)
     {
       goto LABEL_14;
     }
@@ -182,62 +182,62 @@ LABEL_23:
     goto LABEL_10;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     goto LABEL_23;
   }
 
-  v17 = [v14 documentDataSource];
-  v18 = [v14 action];
+  postActionDocumentDataSource = [sourceCopy documentDataSource];
+  postAction = [sourceCopy action];
   v16 = 2;
-  if (!v17)
+  if (!postActionDocumentDataSource)
   {
 LABEL_14:
-    if (v18)
+    if (postAction)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v27 = [v15 objectForKeyedSubscript:@"playlistCollectionViewModel"];
-        [v18 setCollectionViewModel:v27];
+        v27 = [optionsCopy objectForKeyedSubscript:@"playlistCollectionViewModel"];
+        [postAction setCollectionViewModel:v27];
       }
 
-      [v18 setDocumentOptions:v15];
+      [postAction setDocumentOptions:optionsCopy];
       v28 = VUIDefaultLogObject();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = off_1E872E490[a3];
+        v29 = off_1E872E490[type];
         *buf = 138412546;
         v55 = v29;
         v56 = 2112;
-        v57 = v18;
+        v57 = postAction;
         _os_log_impl(&dword_1E323F000, v28, OS_LOG_TYPE_DEFAULT, "VUIApplicationRouter - VUIApplicationRouter::performing event [%@] with %@", buf, 0x16u);
       }
 
-      v30 = [v14 action];
-      v31 = v30;
+      action = [sourceCopy action];
+      v31 = action;
       v38[0] = MEMORY[0x1E69E9820];
       v38[1] = 3221225472;
       v38[2] = __99__VUIApplicationRouter__performForType_targetResponder_appContext_eventDataSource_documentOptions___block_invoke_67;
       v38[3] = &unk_1E872E380;
-      if (v30)
+      if (action)
       {
-        v32 = v30;
+        v32 = action;
       }
 
       else
       {
-        v32 = v18;
+        v32 = postAction;
       }
 
-      v39 = v18;
-      v44 = a1;
+      v39 = postAction;
+      selfCopy = self;
       v45 = v16;
-      v40 = v12;
-      v41 = v13;
-      v42 = v14;
-      v43 = v15;
-      v33 = v18;
+      v40 = responderCopy;
+      v41 = contextCopy;
+      v42 = sourceCopy;
+      v43 = optionsCopy;
+      v33 = postAction;
       [VUIApplicationRouter invokeAction:v33 primaryAction:v32 targetResponder:v40 completion:v38];
 
       goto LABEL_29;
@@ -247,22 +247,22 @@ LABEL_14:
   }
 
 LABEL_10:
-  v36 = v18;
-  v37 = v12;
+  v36 = postAction;
+  v37 = responderCopy;
   v19 = VUIDefaultLogObject();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = v15;
-    v21 = v13;
-    v22 = off_1E872E490[a3];
-    v23 = [v17 uiConfiguration];
-    v24 = NSStringFromVUIPresentationType([v23 type]);
+    v20 = optionsCopy;
+    v21 = contextCopy;
+    v22 = off_1E872E490[type];
+    uiConfiguration = [postActionDocumentDataSource uiConfiguration];
+    v24 = NSStringFromVUIPresentationType([uiConfiguration type]);
     *buf = 138412802;
     v55 = v22;
-    v13 = v21;
-    v15 = v20;
+    contextCopy = v21;
+    optionsCopy = v20;
     v56 = 2112;
-    v57 = v17;
+    v57 = postActionDocumentDataSource;
     v58 = 2112;
     v59 = v24;
     _os_log_impl(&dword_1E323F000, v19, OS_LOG_TYPE_DEFAULT, "VUIApplicationRouter - VUIApplicationRouter::performing event [%@] with %@ (%@)", buf, 0x20u);
@@ -273,15 +273,15 @@ LABEL_10:
   v46[1] = 3221225472;
   v46[2] = __99__VUIApplicationRouter__performForType_targetResponder_appContext_eventDataSource_documentOptions___block_invoke;
   v46[3] = &unk_1E872E380;
-  v47 = v17;
-  v52 = a1;
+  v47 = postActionDocumentDataSource;
+  selfCopy2 = self;
   v53 = v16;
-  v12 = v37;
+  responderCopy = v37;
   v48 = v37;
-  v49 = v13;
-  v50 = v14;
-  v51 = v15;
-  v26 = v17;
+  v49 = contextCopy;
+  v50 = sourceCopy;
+  v51 = optionsCopy;
+  v26 = postActionDocumentDataSource;
   [v25 handleDocumentDataSource:v26 targetResponder:v48 appContext:v49 documentOptions:v51 completion:v46];
 
 LABEL_29:
@@ -386,38 +386,38 @@ uint64_t __99__VUIApplicationRouter__performForType_targetResponder_appContext_e
   return [v2 _performForType:v3 targetResponder:v4 appContext:v5 eventDataSource:v6 documentOptions:v7];
 }
 
-+ (void)invokeAction:(id)a3 targetResponder:(id)a4 documentOptions:(id)a5 completion:(id)a6
++ (void)invokeAction:(id)action targetResponder:(id)responder documentOptions:(id)options completion:(id)completion
 {
-  v11 = a3;
-  v9 = a4;
-  v10 = a6;
-  if (a5)
+  actionCopy = action;
+  responderCopy = responder;
+  completionCopy = completion;
+  if (options)
   {
-    [v11 setDocumentOptions:a5];
+    [actionCopy setDocumentOptions:options];
   }
 
-  [VUIApplicationRouter invokeAction:v11 primaryAction:v11 targetResponder:v9 completion:v10];
+  [VUIApplicationRouter invokeAction:actionCopy primaryAction:actionCopy targetResponder:responderCopy completion:completionCopy];
 }
 
-+ (void)invokeAction:(id)a3 primaryAction:(id)a4 targetResponder:(id)a5 completion:(id)a6
++ (void)invokeAction:(id)action primaryAction:(id)primaryAction targetResponder:(id)responder completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  objc_initWeak(&location, v9);
-  if ([v9 isAccountRequired] && !+[VUIAuthenticationManager userHasActiveAccount](VUIAuthenticationManager, "userHasActiveAccount") && +[VUIAuthenticationManager allowsAccountModification](VUIAuthenticationManager, "allowsAccountModification"))
+  actionCopy = action;
+  primaryActionCopy = primaryAction;
+  responderCopy = responder;
+  completionCopy = completion;
+  objc_initWeak(&location, actionCopy);
+  if ([actionCopy isAccountRequired] && !+[VUIAuthenticationManager userHasActiveAccount](VUIAuthenticationManager, "userHasActiveAccount") && +[VUIAuthenticationManager allowsAccountModification](VUIAuthenticationManager, "allowsAccountModification"))
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __78__VUIApplicationRouter_invokeAction_primaryAction_targetResponder_completion___block_invoke_2;
     v15[3] = &unk_1E872E3A8;
-    v16 = v9;
-    v17 = v11;
+    v16 = actionCopy;
+    v17 = responderCopy;
     objc_copyWeak(&v20, &location);
-    v19 = v12;
-    v13 = v10;
+    v19 = completionCopy;
+    v13 = primaryActionCopy;
     v18 = v13;
     [VUIAuthenticationManager requestAuthenticationAlwaysPrompt:1 withCompletionHandler:v15];
     v14 = VUIDefaultLogObject();
@@ -438,8 +438,8 @@ uint64_t __99__VUIApplicationRouter__performForType_targetResponder_appContext_e
     v21[2] = __78__VUIApplicationRouter_invokeAction_primaryAction_targetResponder_completion___block_invoke;
     v21[3] = &unk_1E872DE58;
     objc_copyWeak(&v23, &location);
-    v22 = v12;
-    [v9 performWithTargetResponder:v11 completionHandler:v21];
+    v22 = completionCopy;
+    [actionCopy performWithTargetResponder:responderCopy completionHandler:v21];
 
     objc_destroyWeak(&v23);
   }
@@ -506,16 +506,16 @@ void __78__VUIApplicationRouter_invokeAction_primaryAction_targetResponder_compl
   }
 }
 
-+ (void)_navigateAccountSettingsWithDestinationViewController:(id)a3 shouldEmbedInNavController:(BOOL)a4 isModalPresentation:(BOOL)a5 originalNavigationController:(id)a6
++ (void)_navigateAccountSettingsWithDestinationViewController:(id)controller shouldEmbedInNavController:(BOOL)navController isModalPresentation:(BOOL)presentation originalNavigationController:(id)navigationController
 {
-  v8 = a4;
-  v10 = a3;
-  v14 = v10;
-  if (!a6 || a5)
+  navControllerCopy = navController;
+  controllerCopy = controller;
+  v14 = controllerCopy;
+  if (!navigationController || presentation)
   {
-    v11 = [a1 currentNavigationController];
-    v12 = v11;
-    if (v8)
+    currentNavigationController = [self currentNavigationController];
+    v12 = currentNavigationController;
+    if (navControllerCopy)
     {
       v13 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v14];
       [v13 setModalPresentationStyle:2];
@@ -524,66 +524,66 @@ void __78__VUIApplicationRouter_invokeAction_primaryAction_targetResponder_compl
 
     else
     {
-      [v11 setModalPresentationStyle:2];
+      [currentNavigationController setModalPresentationStyle:2];
       [v12 presentViewController:v14 animated:1 completion:0];
     }
   }
 
   else
   {
-    [a6 pushViewController:v10 animated:1];
+    [navigationController pushViewController:controllerCopy animated:1];
   }
 }
 
-+ (void)_amsBagURLForKey:(id)a3 withCompletion:(id)a4
++ (void)_amsBagURLForKey:(id)key withCompletion:(id)completion
 {
-  v9 = a4;
+  completionCopy = completion;
   v5 = MEMORY[0x1E69D5928];
-  v6 = a3;
+  keyCopy = key;
   v7 = [v5 app];
-  v8 = [v7 urlForKey:v6];
+  v8 = [v7 urlForKey:keyCopy];
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, v8);
+    completionCopy[2](completionCopy, v8);
   }
 }
 
-+ (void)_handleAccountSettingsEventWithUrl:(id)a3 amsBagKey:(id)a4 useAMSWebView:(BOOL)a5 isModalPresentation:(BOOL)a6 originalNavigationController:(id)a7
++ (void)_handleAccountSettingsEventWithUrl:(id)url amsBagKey:(id)key useAMSWebView:(BOOL)view isModalPresentation:(BOOL)presentation originalNavigationController:(id)controller
 {
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (v12)
+  presentationCopy = presentation;
+  viewCopy = view;
+  urlCopy = url;
+  keyCopy = key;
+  controllerCopy = controller;
+  if (urlCopy)
   {
-    if (!v9)
+    if (!viewCopy)
     {
-      v15 = [objc_alloc(MEMORY[0x1E697BA60]) initWithAccountURL:v12];
+      vui_defaultBag = [objc_alloc(MEMORY[0x1E697BA60]) initWithAccountURL:urlCopy];
       v23 = +[VUIInterfaceFactory sharedInstance];
-      v24 = [v23 openURLHandler];
-      v25 = [v24 isRedeemURL:v12];
+      openURLHandler = [v23 openURLHandler];
+      v25 = [openURLHandler isRedeemURL:urlCopy];
 
       if (v25)
       {
         v26 = +[SKAccountPageHandler sharedInstance];
-        [v15 setDelegate:v26];
+        [vui_defaultBag setDelegate:v26];
       }
 
-      [a1 _navigateAccountSettingsWithDestinationViewController:v15 shouldEmbedInNavController:0 isModalPresentation:v8 originalNavigationController:v14];
+      [self _navigateAccountSettingsWithDestinationViewController:vui_defaultBag shouldEmbedInNavController:0 isModalPresentation:presentationCopy originalNavigationController:controllerCopy];
       goto LABEL_11;
     }
 
-    v15 = [MEMORY[0x1E698C7D8] vui_defaultBag];
-    v16 = [MEMORY[0x1E69D5920] activeAccount];
-    v17 = [objc_alloc(MEMORY[0x1E698CD40]) initWithBag:v15 account:v16 clientInfo:0];
+    vui_defaultBag = [MEMORY[0x1E698C7D8] vui_defaultBag];
+    activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+    v17 = [objc_alloc(MEMORY[0x1E698CD40]) initWithBag:vui_defaultBag account:activeAccount clientInfo:0];
     v18 = +[VUIMetricsController sharedInstance];
-    v19 = [v18 getMetricsOverlayForWebContainer];
+    getMetricsOverlayForWebContainer = [v18 getMetricsOverlayForWebContainer];
 
-    [v17 setMetricsOverlay:v19];
-    v20 = [v17 loadURL:v12];
-    [a1 _navigateAccountSettingsWithDestinationViewController:v17 shouldEmbedInNavController:1 isModalPresentation:v8 originalNavigationController:v14];
+    [v17 setMetricsOverlay:getMetricsOverlayForWebContainer];
+    v20 = [v17 loadURL:urlCopy];
+    [self _navigateAccountSettingsWithDestinationViewController:v17 shouldEmbedInNavController:1 isModalPresentation:presentationCopy originalNavigationController:controllerCopy];
 
 LABEL_7:
 LABEL_11:
@@ -591,29 +591,29 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v13 length])
+  if ([keyCopy length])
   {
-    if (!v9)
+    if (!viewCopy)
     {
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __132__VUIApplicationRouter__handleAccountSettingsEventWithUrl_amsBagKey_useAMSWebView_isModalPresentation_originalNavigationController___block_invoke;
       v27[3] = &unk_1E872E3F8;
-      v29 = a1;
-      v30 = v8;
-      v28 = v14;
-      [a1 _amsBagURLForKey:v13 withCompletion:v27];
+      selfCopy = self;
+      v30 = presentationCopy;
+      v28 = controllerCopy;
+      [self _amsBagURLForKey:keyCopy withCompletion:v27];
 
       goto LABEL_12;
     }
 
-    v15 = [MEMORY[0x1E698C7D8] vui_defaultBag];
-    v16 = [MEMORY[0x1E69D5920] activeAccount];
-    v17 = [objc_alloc(MEMORY[0x1E698CD40]) initWithBag:v15 account:v16 clientInfo:0];
-    v21 = [v15 URLForKey:v13];
+    vui_defaultBag = [MEMORY[0x1E698C7D8] vui_defaultBag];
+    activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+    v17 = [objc_alloc(MEMORY[0x1E698CD40]) initWithBag:vui_defaultBag account:activeAccount clientInfo:0];
+    v21 = [vui_defaultBag URLForKey:keyCopy];
     v22 = [v17 loadBagValue:v21];
 
-    [a1 _navigateAccountSettingsWithDestinationViewController:v17 shouldEmbedInNavController:1 isModalPresentation:v8 originalNavigationController:v14];
+    [self _navigateAccountSettingsWithDestinationViewController:v17 shouldEmbedInNavController:1 isModalPresentation:presentationCopy originalNavigationController:controllerCopy];
     goto LABEL_7;
   }
 
@@ -642,136 +642,136 @@ void __132__VUIApplicationRouter__handleAccountSettingsEventWithUrl_amsBagKey_us
   [*(a1 + 48) _navigateAccountSettingsWithDestinationViewController:v2 shouldEmbedInNavController:0 isModalPresentation:*(a1 + 56) originalNavigationController:*(a1 + 40)];
 }
 
-+ (BOOL)handleDocumentDataSource:(id)a3 targetResponder:(id)a4 appContext:(id)a5 documentOptions:(id)a6 completion:(id)a7
++ (BOOL)handleDocumentDataSource:(id)source targetResponder:(id)responder appContext:(id)context documentOptions:(id)options completion:(id)completion
 {
-  v11 = a3;
-  v80 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  sourceCopy = source;
+  responderCopy = responder;
+  contextCopy = context;
+  optionsCopy = options;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __103__VUIApplicationRouter_handleDocumentDataSource_targetResponder_appContext_documentOptions_completion___block_invoke;
   aBlock[3] = &unk_1E872D7E0;
-  v15 = v14;
+  v15 = completionCopy;
   v89 = v15;
   v16 = _Block_copy(aBlock);
-  v17 = [objc_opt_class() topPresentedViewController];
+  topPresentedViewController = [objc_opt_class() topPresentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v17 dismissViewControllerAnimated:1 completion:0];
-    v18 = [objc_opt_class() topPresentedViewController];
+    [topPresentedViewController dismissViewControllerAnimated:1 completion:0];
+    topPresentedViewController2 = [objc_opt_class() topPresentedViewController];
 
-    v17 = v18;
+    topPresentedViewController = topPresentedViewController2;
   }
 
-  v19 = [v11 uiConfiguration];
+  uiConfiguration = [sourceCopy uiConfiguration];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v78 = v11;
+    v78 = sourceCopy;
     v76 = v15;
-    if ([v19 type] == 6 || objc_msgSend(v19, "type") == 8 || objc_msgSend(v19, "type") == 7 || objc_msgSend(v19, "type") == 10 || objc_msgSend(v19, "type") == 16 || objc_msgSend(v19, "type") == 12)
+    if ([uiConfiguration type] == 6 || objc_msgSend(uiConfiguration, "type") == 8 || objc_msgSend(uiConfiguration, "type") == 7 || objc_msgSend(uiConfiguration, "type") == 10 || objc_msgSend(uiConfiguration, "type") == 16 || objc_msgSend(uiConfiguration, "type") == 12)
     {
-      v21 = v12;
-      v22 = [v17 vuiPresentedViewController];
-      if (v22)
+      v21 = contextCopy;
+      vuiPresentedViewController = [topPresentedViewController vuiPresentedViewController];
+      if (vuiPresentedViewController)
       {
-        v23 = v22;
-        v24 = [v17 vuiPresentedViewController];
+        v23 = vuiPresentedViewController;
+        vuiPresentedViewController2 = [topPresentedViewController vuiPresentedViewController];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v26 = [v17 vuiPresentedViewController];
+          vuiPresentedViewController3 = [topPresentedViewController vuiPresentedViewController];
 
-          v17 = v26;
+          topPresentedViewController = vuiPresentedViewController3;
         }
       }
 
       v27 = v21;
-      v28 = [v19 viewControllerIdentifier];
-      if (v28)
+      viewControllerIdentifier = [uiConfiguration viewControllerIdentifier];
+      if (viewControllerIdentifier)
       {
-        v29 = v28;
+        v29 = viewControllerIdentifier;
         v30 = v16;
-        v31 = v13;
-        v32 = [v19 viewControllerIdentifier];
-        v33 = [v32 length];
+        v31 = optionsCopy;
+        viewControllerIdentifier2 = [uiConfiguration viewControllerIdentifier];
+        v33 = [viewControllerIdentifier2 length];
 
         if (v33)
         {
           v34 = objc_opt_class();
-          v35 = [v19 viewControllerIdentifier];
-          v36 = [v34 _viewControllerWithIdentifier:v35];
+          viewControllerIdentifier3 = [uiConfiguration viewControllerIdentifier];
+          v36 = [v34 _viewControllerWithIdentifier:viewControllerIdentifier3];
 
-          v17 = v36;
+          topPresentedViewController = v36;
         }
 
-        v13 = v31;
+        optionsCopy = v31;
         v16 = v30;
       }
 
       v15 = v76;
-      if (v17)
+      if (topPresentedViewController)
       {
-        if ([v19 type] == 8)
+        if ([uiConfiguration type] == 8)
         {
-          [VUIPresenterController popOrDismissViewController:v17 completion:v16];
+          [VUIPresenterController popOrDismissViewController:topPresentedViewController completion:v16];
 LABEL_22:
           v37 = 1;
 LABEL_41:
-          v11 = v78;
+          sourceCopy = v78;
           goto LABEL_45;
         }
 
-        if ([v19 type] == 12 || objc_msgSend(v19, "type") == 16)
+        if ([uiConfiguration type] == 12 || objc_msgSend(uiConfiguration, "type") == 16)
         {
           v81[0] = MEMORY[0x1E69E9820];
           v81[1] = 3221225472;
           v81[2] = __103__VUIApplicationRouter_handleDocumentDataSource_targetResponder_appContext_documentOptions_completion___block_invoke_2;
           v81[3] = &unk_1E872E420;
-          v82 = v19;
-          v11 = v78;
+          v82 = uiConfiguration;
+          sourceCopy = v78;
           v83 = v78;
           v84 = v21;
-          v85 = v13;
-          v17 = v17;
-          v86 = v17;
+          v85 = optionsCopy;
+          topPresentedViewController = topPresentedViewController;
+          v86 = topPresentedViewController;
           v87 = v16;
-          [VUIPresenterController popOrDismissViewController:v17 completion:v81];
+          [VUIPresenterController popOrDismissViewController:topPresentedViewController completion:v81];
 
           v37 = 1;
           goto LABEL_45;
         }
 
-        if ([v19 type] == 6)
+        if ([uiConfiguration type] == 6)
         {
-          [VUIPresenterController popViewController:v17 completion:v16];
+          [VUIPresenterController popViewController:topPresentedViewController completion:v16];
           goto LABEL_22;
         }
 
-        if ([v19 type] == 7)
+        if ([uiConfiguration type] == 7)
         {
-          v74 = v13;
+          v74 = optionsCopy;
           v53 = +[VUIPlaybackManager sharedInstance];
-          v54 = [v53 isShowingExtras];
+          isShowingExtras = [v53 isShowingExtras];
 
-          if (v54 && (+[VUIPlaybackManager sharedInstance](VUIPlaybackManager, "sharedInstance"), v55 = objc_claimAutoreleasedReturnValue(), [v55 extrasNavigationController], v56 = objc_claimAutoreleasedReturnValue(), v55, objc_msgSend(v56, "topViewController"), v57 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v57, "presentedViewController"), v58 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v58, "presentedViewController"), v59 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v59, "presentedViewController"), v60 = objc_claimAutoreleasedReturnValue(), v60, v59, v58, v57, v56, !v60))
+          if (isShowingExtras && (+[VUIPlaybackManager sharedInstance](VUIPlaybackManager, "sharedInstance"), v55 = objc_claimAutoreleasedReturnValue(), [v55 extrasNavigationController], v56 = objc_claimAutoreleasedReturnValue(), v55, objc_msgSend(v56, "topViewController"), v57 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v57, "presentedViewController"), v58 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v58, "presentedViewController"), v59 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v59, "presentedViewController"), v60 = objc_claimAutoreleasedReturnValue(), v60, v59, v58, v57, v56, !v60))
           {
             v16[2](v16);
           }
 
           else
           {
-            [VUIPresenterController dismissViewController:v17 completion:v16];
+            [VUIPresenterController dismissViewController:topPresentedViewController completion:v16];
           }
 
           v37 = 1;
           v27 = v21;
-          v13 = v74;
+          optionsCopy = v74;
 LABEL_64:
           v15 = v76;
           goto LABEL_41;
@@ -787,16 +787,16 @@ LABEL_64:
       goto LABEL_41;
     }
 
-    v75 = [v19 type];
-    if (v75 == 15)
+    type = [uiConfiguration type];
+    if (type == 15)
     {
-      [v11 setShouldUseZoomTransition:1];
+      [sourceCopy setShouldUseZoomTransition:1];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v61 = v17;
+      v61 = topPresentedViewController;
     }
 
     else
@@ -805,20 +805,20 @@ LABEL_64:
     }
 
     v72 = v61;
-    v62 = [v72 viewControllers];
-    v63 = [v62 count] == 1;
+    viewControllers = [v72 viewControllers];
+    v63 = [viewControllers count] == 1;
 
-    v64 = [v11 uiConfiguration];
-    [v64 setIsComingFromRoot:v63];
+    uiConfiguration2 = [sourceCopy uiConfiguration];
+    [uiConfiguration2 setIsComingFromRoot:v63];
 
     v65 = +[VUIInterfaceFactory sharedInstance];
-    v73 = v12;
-    v66 = [v65 viewControllerWithDocumentDataSource:v11 appContext:v12 documentOptions:v13];
+    v73 = contextCopy;
+    v66 = [v65 viewControllerWithDocumentDataSource:sourceCopy appContext:contextCopy documentOptions:optionsCopy];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v67 = v80;
+      v67 = responderCopy;
     }
 
     else
@@ -827,16 +827,16 @@ LABEL_64:
     }
 
     v68 = v67;
-    v69 = [v78 contextData];
-    v70 = [v69 contextDataDict];
+    contextData = [v78 contextData];
+    contextDataDict = [contextData contextDataDict];
 
-    v71 = [v70 objectForKeyedSubscript:@"presentationSourceID"];
+    v71 = [contextDataDict objectForKeyedSubscript:@"presentationSourceID"];
     if (!v71)
     {
-      v71 = [v13 objectForKeyedSubscript:@"hostingViewSourceId"];
+      v71 = [optionsCopy objectForKeyedSubscript:@"hostingViewSourceId"];
     }
 
-    +[VUIPresenterController pushViewController:fromViewController:withZoomTransition:sourceView:presentationSourceID:isAnimated:completion:](VUIPresenterController, "pushViewController:fromViewController:withZoomTransition:sourceView:presentationSourceID:isAnimated:completion:", v66, v72, v75 == 15, v68, v71, [v19 isAnimated], v16);
+    +[VUIPresenterController pushViewController:fromViewController:withZoomTransition:sourceView:presentationSourceID:isAnimated:completion:](VUIPresenterController, "pushViewController:fromViewController:withZoomTransition:sourceView:presentationSourceID:isAnimated:completion:", v66, v72, type == 15, v68, v71, [uiConfiguration isAnimated], v16);
 
     v37 = 1;
     v27 = v73;
@@ -844,59 +844,59 @@ LABEL_64:
   }
 
   v77 = v16;
-  if (v13)
+  if (optionsCopy)
   {
-    v20 = [v13 mutableCopy];
+    dictionary = [optionsCopy mutableCopy];
   }
 
   else
   {
-    v20 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v38 = v20;
-  v39 = v13;
-  if (v80)
+  v38 = dictionary;
+  v39 = optionsCopy;
+  if (responderCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v38 setObject:v80 forKey:@"sourceView"];
+      [v38 setObject:responderCopy forKey:@"sourceView"];
     }
   }
 
   v40 = +[VUIInterfaceFactory sharedInstance];
   v41 = [v38 copy];
-  v42 = v12;
-  v43 = [v40 viewControllerWithDocumentDataSource:v11 appContext:v12 documentOptions:v41];
+  v42 = contextCopy;
+  v43 = [v40 viewControllerWithDocumentDataSource:sourceCopy appContext:contextCopy documentOptions:v41];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v79 = v11;
+    v79 = sourceCopy;
     v44 = v15;
-    v45 = [v17 vuiPresentedViewController];
-    if (v45)
+    vuiPresentedViewController4 = [topPresentedViewController vuiPresentedViewController];
+    if (vuiPresentedViewController4)
     {
-      v46 = v45;
-      v47 = [v17 vuiPresentedViewController];
+      v46 = vuiPresentedViewController4;
+      vuiPresentedViewController5 = [topPresentedViewController vuiPresentedViewController];
       objc_opt_class();
       v48 = objc_opt_isKindOfClass();
 
       if (v48)
       {
-        v49 = [v17 vuiPresentedViewController];
+        vuiPresentedViewController6 = [topPresentedViewController vuiPresentedViewController];
 
-        v17 = v49;
+        topPresentedViewController = vuiPresentedViewController6;
       }
     }
 
-    v13 = v39;
-    v50 = v19;
+    optionsCopy = v39;
+    v50 = uiConfiguration;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v51 = v80;
+      v51 = responderCopy;
     }
 
     else
@@ -907,18 +907,18 @@ LABEL_64:
     [v50 setSourceView:v51];
 
     v15 = v44;
-    v11 = v79;
+    sourceCopy = v79;
   }
 
   else
   {
-    v13 = v39;
+    optionsCopy = v39;
   }
 
   v16 = v77;
   if (v43)
   {
-    [VUIPresenterController presentViewController:v43 fromViewController:v17 WithConfiguration:v19 completion:v15];
+    [VUIPresenterController presentViewController:v43 fromViewController:topPresentedViewController WithConfiguration:uiConfiguration completion:v15];
   }
 
   v37 = 1;
@@ -975,17 +975,17 @@ void __103__VUIApplicationRouter_handleDocumentDataSource_targetResponder_appCon
   }
 }
 
-+ (void)dismissOrPopViewControllerWithId:(id)a3 completion:(id)a4
++ (void)dismissOrPopViewControllerWithId:(id)id completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  idCopy = id;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__VUIApplicationRouter_dismissOrPopViewControllerWithId_completion___block_invoke;
   aBlock[3] = &unk_1E872E448;
-  v7 = v5;
+  v7 = idCopy;
   v14 = v7;
-  v8 = v6;
+  v8 = completionCopy;
   v15 = v8;
   v9 = _Block_copy(aBlock);
   if (!+[VUIUtilities isSUIEnabled]|| (v9[2](v9) & 1) == 0)
@@ -1037,35 +1037,35 @@ uint64_t __68__VUIApplicationRouter_dismissOrPopViewControllerWithId_completion_
   return result;
 }
 
-+ (void)dismissOrPopLastViewControllerWithCompletion:(id)a3
++ (void)dismissOrPopLastViewControllerWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [objc_opt_class() topPresentedViewController];
-  [VUIPresenterController popOrDismissViewController:v4 completion:v3];
+  completionCopy = completion;
+  topPresentedViewController = [objc_opt_class() topPresentedViewController];
+  [VUIPresenterController popOrDismissViewController:topPresentedViewController completion:completionCopy];
 }
 
-+ (void)_dismissPresentedViewControllerWithCompletion:(id)a3
++ (void)_dismissPresentedViewControllerWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[VUITVAppLauncher sharedInstance];
-  v5 = [v4 appController];
+  appController = [v4 appController];
 
-  v6 = [v5 navigationController];
-  v7 = [v6 vuiPresentedViewController];
+  navigationController = [appController navigationController];
+  vuiPresentedViewController = [navigationController vuiPresentedViewController];
 
-  if (v7)
+  if (vuiPresentedViewController)
   {
-    v8 = [v6 vuiPresentedViewController];
+    vuiPresentedViewController2 = [navigationController vuiPresentedViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v10 = [v6 vuiPresentedViewController];
-    v11 = v10;
+    vuiPresentedViewController3 = [navigationController vuiPresentedViewController];
+    v11 = vuiPresentedViewController3;
     if (isKindOfClass)
     {
-      v12 = [v10 topViewController];
+      topViewController = [vuiPresentedViewController3 topViewController];
 
-      v11 = v12;
+      v11 = topViewController;
     }
 
     if (v11)
@@ -1073,14 +1073,14 @@ uint64_t __68__VUIApplicationRouter_dismissOrPopViewControllerWithId_completion_
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [MEMORY[0x1E69DF750] sharedInstance];
+        mEMORY[0x1E69DF750] = [MEMORY[0x1E69DF750] sharedInstance];
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = __70__VUIApplicationRouter__dismissPresentedViewControllerWithCompletion___block_invoke;
         v17[3] = &unk_1E872E470;
         v14 = &v18;
-        v18 = v3;
-        [v13 dismissViewController:v11 animated:1 completion:v17];
+        v18 = completionCopy;
+        [mEMORY[0x1E69DF750] dismissViewController:v11 animated:1 completion:v17];
       }
 
       else
@@ -1090,15 +1090,15 @@ uint64_t __68__VUIApplicationRouter_dismissOrPopViewControllerWithId_completion_
         v15[2] = __70__VUIApplicationRouter__dismissPresentedViewControllerWithCompletion___block_invoke_2;
         v15[3] = &unk_1E872D7E0;
         v14 = &v16;
-        v16 = v3;
-        [v6 vui_dismissViewControllerAnimated:1 completion:v15];
+        v16 = completionCopy;
+        [navigationController vui_dismissViewControllerAnimated:1 completion:v15];
       }
     }
   }
 
-  else if (v3)
+  else if (completionCopy)
   {
-    v3[2](v3);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1127,72 +1127,72 @@ uint64_t __70__VUIApplicationRouter__dismissPresentedViewControllerWithCompletio
 + (id)currentNavigationController
 {
   v2 = +[VUITVAppLauncher sharedInstance];
-  v3 = [v2 appController];
+  appController = [v2 appController];
 
-  v4 = [v3 navigationController];
+  navigationController = [appController navigationController];
 
-  if (v4)
+  if (navigationController)
   {
-    v5 = [v3 navigationController];
+    navigationController2 = [appController navigationController];
     goto LABEL_10;
   }
 
   v6 = +[VUICurrentSiriNavControllerContainer sharedInstance];
-  v7 = [v6 currentSiriNavController];
+  currentSiriNavController = [v6 currentSiriNavController];
 
-  if (v7)
+  if (currentSiriNavController)
   {
-    v8 = +[VUICurrentSiriNavControllerContainer sharedInstance];
-    v9 = [v8 currentSiriNavController];
+    rootViewController = +[VUICurrentSiriNavControllerContainer sharedInstance];
+    currentSiriNavController2 = [rootViewController currentSiriNavController];
   }
 
   else
   {
     v10 = +[VUITVExtension sharedInstance];
-    v11 = [v10 currentNavigationController];
+    currentNavigationController = [v10 currentNavigationController];
 
-    if (v11)
+    if (currentNavigationController)
     {
       v12 = +[VUITVExtension sharedInstance];
-      v8 = v12;
+      rootViewController = v12;
     }
 
     else
     {
       v14 = +[VUITVAppLauncher sharedInstance];
-      v8 = [v14 rootViewController];
+      rootViewController = [v14 rootViewController];
 
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || ![v8 conformsToProtocol:&unk_1F5E7E650])
+      if ((objc_opt_isKindOfClass() & 1) == 0 || ![rootViewController conformsToProtocol:&unk_1F5E7E650])
       {
-        v5 = 0;
+        navigationController2 = 0;
         goto LABEL_9;
       }
 
-      v12 = v8;
+      v12 = rootViewController;
     }
 
-    v9 = [v12 currentNavigationController];
+    currentSiriNavController2 = [v12 currentNavigationController];
   }
 
-  v5 = v9;
+  navigationController2 = currentSiriNavController2;
 LABEL_9:
 
 LABEL_10:
 
-  return v5;
+  return navigationController2;
 }
 
 + (id)topPresentedViewController
 {
-  v2 = [objc_opt_class() currentNavigationController];
-  v3 = [v2 vuiPresentedViewController];
-  if (v3)
+  currentNavigationController = [objc_opt_class() currentNavigationController];
+  vuiPresentedViewController = [currentNavigationController vuiPresentedViewController];
+  if (vuiPresentedViewController)
   {
-    v4 = v3;
+    v7VuiPresentedViewController = vuiPresentedViewController;
     while (1)
     {
-      v5 = [v2 vuiPresentedViewController];
+      vuiPresentedViewController2 = [currentNavigationController vuiPresentedViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1201,43 +1201,43 @@ LABEL_10:
         break;
       }
 
-      v7 = [v2 vuiPresentedViewController];
+      vuiPresentedViewController3 = [currentNavigationController vuiPresentedViewController];
 
-      v4 = [v7 vuiPresentedViewController];
-      v2 = v7;
-      if (!v4)
+      v7VuiPresentedViewController = [vuiPresentedViewController3 vuiPresentedViewController];
+      currentNavigationController = vuiPresentedViewController3;
+      if (!v7VuiPresentedViewController)
       {
         goto LABEL_7;
       }
     }
   }
 
-  v7 = v2;
+  vuiPresentedViewController3 = currentNavigationController;
 LABEL_7:
 
-  return v7;
+  return vuiPresentedViewController3;
 }
 
 + (id)topMostVisibleViewController
 {
   if (+[VUIUtilities isSUIEnabled])
   {
-    v2 = +[VUIInterfaceFactory sharedInstance];
-    v3 = [v2 rootPresentingViewController];
-    v4 = __52__VUIApplicationRouter_topMostVisibleViewController__block_invoke(v3, v3);
+    topPresentedViewController = +[VUIInterfaceFactory sharedInstance];
+    rootPresentingViewController = [topPresentedViewController rootPresentingViewController];
+    v4 = __52__VUIApplicationRouter_topMostVisibleViewController__block_invoke(rootPresentingViewController, rootPresentingViewController);
   }
 
   else
   {
-    v2 = [objc_opt_class() topPresentedViewController];
-    v4 = __52__VUIApplicationRouter_topMostVisibleViewController__block_invoke(v2, v2);
+    topPresentedViewController = [objc_opt_class() topPresentedViewController];
+    v4 = __52__VUIApplicationRouter_topMostVisibleViewController__block_invoke(topPresentedViewController, topPresentedViewController);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 vuiSelectedViewController];
-    v6 = __52__VUIApplicationRouter_topMostVisibleViewController__block_invoke(v5, v5);
+    vuiSelectedViewController = [v4 vuiSelectedViewController];
+    v6 = __52__VUIApplicationRouter_topMostVisibleViewController__block_invoke(vuiSelectedViewController, vuiSelectedViewController);
 
     v4 = v6;
   }
@@ -1280,34 +1280,34 @@ id __52__VUIApplicationRouter_topMostVisibleViewController__block_invoke(uint64_
   return v4;
 }
 
-+ (id)_viewControllerWithIdentifier:(id)a3
++ (id)_viewControllerWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[VUIApplicationRouter topPresentedViewController];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 childViewControllers];
-    v7 = [v6 firstObject];
+    childViewControllers = [v4 childViewControllers];
+    firstObject = [childViewControllers firstObject];
 
-    if (v7)
+    if (firstObject)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v7 topViewController];
-        if (v8)
+        topViewController = [firstObject topViewController];
+        if (topViewController)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v9 = [v8 vuiViewControllerIdentifier];
-            if ([v9 isEqualToString:v3])
+            vuiViewControllerIdentifier = [topViewController vuiViewControllerIdentifier];
+            if ([vuiViewControllerIdentifier isEqualToString:identifierCopy])
             {
               v10 = +[VUIApplicationRouter topPresentedViewController];
 LABEL_29:
 
-              v14 = v7;
+              vuiPresentedViewController = firstObject;
               goto LABEL_30;
             }
           }
@@ -1316,23 +1316,23 @@ LABEL_29:
     }
   }
 
-  v11 = [objc_opt_class() currentNavigationController];
-  if (v11)
+  currentNavigationController = [objc_opt_class() currentNavigationController];
+  if (currentNavigationController)
   {
-    v7 = v11;
+    firstObject = currentNavigationController;
     while (1)
     {
-      v8 = [v7 vuiChildViewControllers];
-      if ([v8 count])
+      topViewController = [firstObject vuiChildViewControllers];
+      if ([topViewController count])
       {
         break;
       }
 
 LABEL_21:
-      v14 = [v7 vuiPresentedViewController];
+      vuiPresentedViewController = [firstObject vuiPresentedViewController];
 
-      v7 = v14;
-      if (!v14)
+      firstObject = vuiPresentedViewController;
+      if (!vuiPresentedViewController)
       {
         goto LABEL_26;
       }
@@ -1341,32 +1341,32 @@ LABEL_21:
     v12 = 0;
     while (1)
     {
-      v9 = [v8 objectAtIndex:v12];
+      vuiViewControllerIdentifier = [topViewController objectAtIndex:v12];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [v9 vuiViewControllerIdentifier];
+        v9VuiViewControllerIdentifier = [vuiViewControllerIdentifier vuiViewControllerIdentifier];
       }
 
       else
       {
-        v13 = 0;
+        v9VuiViewControllerIdentifier = 0;
       }
 
-      if ([v13 length] && objc_msgSend(v13, "isEqualToString:", v3))
+      if ([v9VuiViewControllerIdentifier length] && objc_msgSend(v9VuiViewControllerIdentifier, "isEqualToString:", identifierCopy))
       {
         break;
       }
 
-      if (++v12 >= [v8 count])
+      if (++v12 >= [topViewController count])
       {
         goto LABEL_21;
       }
     }
 
-    if ([v8 indexOfObject:v9] || (objc_msgSend(v7, "vuiPresentingViewController"), v16 = objc_claimAutoreleasedReturnValue(), v16, v15 = v7, !v16))
+    if ([topViewController indexOfObject:vuiViewControllerIdentifier] || (objc_msgSend(firstObject, "vuiPresentingViewController"), v16 = objc_claimAutoreleasedReturnValue(), v16, v15 = firstObject, !v16))
     {
-      v15 = v9;
+      v15 = vuiViewControllerIdentifier;
     }
 
     v10 = v15;
@@ -1374,7 +1374,7 @@ LABEL_21:
     goto LABEL_29;
   }
 
-  v14 = 0;
+  vuiPresentedViewController = 0;
 LABEL_26:
   v10 = 0;
 LABEL_30:
@@ -1382,17 +1382,17 @@ LABEL_30:
   return v10;
 }
 
-+ (BOOL)handleEvent:(id)a3 targetResponder:(id)a4 appContext:(id)a5 routerDataSource:(id)a6 supplementaryData:(id)a7 extraInfo:(id *)a8
++ (BOOL)handleEvent:(id)event targetResponder:(id)responder appContext:(id)context routerDataSource:(id)source supplementaryData:(id)data extraInfo:(id *)info
 {
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [objc_opt_class() eventDataSourceForEvent:v17 routerDataSource:v14];
+  dataCopy = data;
+  sourceCopy = source;
+  contextCopy = context;
+  responderCopy = responder;
+  eventCopy = event;
+  v18 = [objc_opt_class() eventDataSourceForEvent:eventCopy routerDataSource:sourceCopy];
 
-  LOBYTE(a8) = [objc_opt_class() _handleEvent:v17 targetResponder:v16 appContext:v15 eventDataSource:v18 documentOptions:v13 extraInfo:a8];
-  return a8;
+  LOBYTE(info) = [objc_opt_class() _handleEvent:eventCopy targetResponder:responderCopy appContext:contextCopy eventDataSource:v18 documentOptions:dataCopy extraInfo:info];
+  return info;
 }
 
 @end

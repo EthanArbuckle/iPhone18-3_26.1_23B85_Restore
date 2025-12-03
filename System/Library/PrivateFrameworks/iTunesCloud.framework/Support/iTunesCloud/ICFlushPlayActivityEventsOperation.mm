@@ -1,6 +1,6 @@
 @interface ICFlushPlayActivityEventsOperation
 - (ICFlushPlayActivityEventsOperation)init;
-- (ICFlushPlayActivityEventsOperation)initWithPlayActivityTable:(id)a3;
+- (ICFlushPlayActivityEventsOperation)initWithPlayActivityTable:(id)table;
 - (void)execute;
 @end
 
@@ -32,7 +32,7 @@
     v28[3] = &unk_1001DB5A0;
     v3 = dispatch_queue_create("com.apple.iTunesCloud.ICFlushPlayActivityEventsOperation.serialQueue", 0);
     v29 = v3;
-    v30 = self;
+    selfCopy = self;
     v31 = v33;
     v32 = v35;
     v4 = objc_retainBlock(v28);
@@ -73,7 +73,7 @@
       v11 = v6;
       v12 = v3;
       p_buf = &buf;
-      v13 = self;
+      selfCopy2 = self;
       v14 = v4;
       [v8 enumerateObjectsUsingBlock:v10];
 
@@ -101,10 +101,10 @@
   }
 }
 
-- (ICFlushPlayActivityEventsOperation)initWithPlayActivityTable:(id)a3
+- (ICFlushPlayActivityEventsOperation)initWithPlayActivityTable:(id)table
 {
-  v6 = a3;
-  if (!v6)
+  tableCopy = table;
+  if (!tableCopy)
   {
     v10 = +[NSAssertionHandler currentHandler];
     [v10 handleFailureInMethod:a2 object:self file:@"ICFlushPlayActivityEventsOperation.m" lineNumber:29 description:@"initWithPlayActivityController called with nil playActivityTable"];
@@ -116,7 +116,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_table, a3);
+    objc_storeStrong(&v7->_table, table);
   }
 
   return v8;

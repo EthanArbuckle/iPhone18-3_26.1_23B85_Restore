@@ -8,11 +8,11 @@
 - (float)sampleRate;
 - (float)sustainLevel;
 - (void)addSupportedParameters;
-- (void)setAttackLevel:(float)a3;
-- (void)setAttackTime:(float)a3;
-- (void)setDecayTime:(float)a3;
-- (void)setReleaseTime:(float)a3;
-- (void)setSustainLevel:(float)a3;
+- (void)setAttackLevel:(float)level;
+- (void)setAttackTime:(float)time;
+- (void)setDecayTime:(float)time;
+- (void)setReleaseTime:(float)time;
+- (void)setSustainLevel:(float)level;
 @end
 
 @implementation AXMSynthEnvelopeParameters
@@ -26,8 +26,8 @@
   v5[3] = @"kSynthParameterEnvelopeSustainLevel";
   v5[4] = @"kSynthParameterEnvelopeReleaseTime";
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:5];
-  v4 = [(AXMSynthObservableParameters *)self supportedParameters];
-  [v4 addObjectsFromArray:v3];
+  supportedParameters = [(AXMSynthObservableParameters *)self supportedParameters];
+  [supportedParameters addObjectsFromArray:v3];
 }
 
 + (id)defaultParameters
@@ -44,8 +44,8 @@
 
 - (float)sampleRate
 {
-  v2 = [(AXMSynthEnvelopeParameters *)self mainParameters];
-  [v2 sampleRate];
+  mainParameters = [(AXMSynthEnvelopeParameters *)self mainParameters];
+  [mainParameters sampleRate];
   v4 = v3;
 
   return v4;
@@ -60,7 +60,7 @@
   return v4;
 }
 
-- (void)setAttackTime:(float)a3
+- (void)setAttackTime:(float)time
 {
   v4 = [MEMORY[0x1E696AD98] numberWithFloat:?];
   [AXMSynthObservableParameters setValue:"setValue:forParameter:" forParameter:?];
@@ -75,7 +75,7 @@
   return v4;
 }
 
-- (void)setAttackLevel:(float)a3
+- (void)setAttackLevel:(float)level
 {
   v4 = [MEMORY[0x1E696AD98] numberWithFloat:?];
   [AXMSynthObservableParameters setValue:"setValue:forParameter:" forParameter:?];
@@ -90,7 +90,7 @@
   return v4;
 }
 
-- (void)setDecayTime:(float)a3
+- (void)setDecayTime:(float)time
 {
   v4 = [MEMORY[0x1E696AD98] numberWithFloat:?];
   [AXMSynthObservableParameters setValue:"setValue:forParameter:" forParameter:?];
@@ -105,7 +105,7 @@
   return v4;
 }
 
-- (void)setSustainLevel:(float)a3
+- (void)setSustainLevel:(float)level
 {
   v4 = [MEMORY[0x1E696AD98] numberWithFloat:?];
   [AXMSynthObservableParameters setValue:"setValue:forParameter:" forParameter:?];
@@ -120,7 +120,7 @@
   return v4;
 }
 
-- (void)setReleaseTime:(float)a3
+- (void)setReleaseTime:(float)time
 {
   v4 = [MEMORY[0x1E696AD98] numberWithFloat:?];
   [AXMSynthObservableParameters setValue:"setValue:forParameter:" forParameter:?];

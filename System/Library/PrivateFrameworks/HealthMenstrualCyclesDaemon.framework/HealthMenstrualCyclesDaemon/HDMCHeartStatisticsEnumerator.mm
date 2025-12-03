@@ -1,44 +1,44 @@
 @interface HDMCHeartStatisticsEnumerator
-- (BOOL)enumerateWithError:(id *)a3 handler:(id)a4;
-- (HDMCHeartStatisticsEnumerator)initWithProfile:(id)a3 calendarCache:(id)a4 dayIndexRange:(id)a5 databaseAccessibilityAssertion:(id)a6;
-- (id)_asleepSleepAnalysisDateIntervalTreeOnDayIndex:(int64_t)a3 calendar:(id)a4 error:(id *)a5;
-- (id)_cachingSessionWithCalendar:(id)a3 error:(id *)a4;
-- (id)_heartStatisticsForDayIndex:(int64_t)a3 calendar:(id)a4 errorOut:(id *)a5;
+- (BOOL)enumerateWithError:(id *)error handler:(id)handler;
+- (HDMCHeartStatisticsEnumerator)initWithProfile:(id)profile calendarCache:(id)cache dayIndexRange:(id)range databaseAccessibilityAssertion:(id)assertion;
+- (id)_asleepSleepAnalysisDateIntervalTreeOnDayIndex:(int64_t)index calendar:(id)calendar error:(id *)error;
+- (id)_cachingSessionWithCalendar:(id)calendar error:(id *)error;
+- (id)_heartStatisticsForDayIndex:(int64_t)index calendar:(id)calendar errorOut:(id *)out;
 @end
 
 @implementation HDMCHeartStatisticsEnumerator
 
-- (HDMCHeartStatisticsEnumerator)initWithProfile:(id)a3 calendarCache:(id)a4 dayIndexRange:(id)a5 databaseAccessibilityAssertion:(id)a6
+- (HDMCHeartStatisticsEnumerator)initWithProfile:(id)profile calendarCache:(id)cache dayIndexRange:(id)range databaseAccessibilityAssertion:(id)assertion
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  var1 = range.var1;
+  var0 = range.var0;
+  profileCopy = profile;
+  cacheCopy = cache;
+  assertionCopy = assertion;
   v17.receiver = self;
   v17.super_class = HDMCHeartStatisticsEnumerator;
   v14 = [(HDMCHeartStatisticsEnumerator *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_profile, v11);
-    objc_storeStrong(&v15->_calendarCache, a4);
+    objc_storeWeak(&v14->_profile, profileCopy);
+    objc_storeStrong(&v15->_calendarCache, cache);
     v15->_dayIndexRange.start = var0;
     v15->_dayIndexRange.duration = var1;
-    objc_storeStrong(&v15->_databaseAccessibilityAssertion, a6);
+    objc_storeStrong(&v15->_databaseAccessibilityAssertion, assertion);
   }
 
   return v15;
 }
 
-- (id)_asleepSleepAnalysisDateIntervalTreeOnDayIndex:(int64_t)a3 calendar:(id)a4 error:(id *)a5
+- (id)_asleepSleepAnalysisDateIntervalTreeOnDayIndex:(int64_t)index calendar:(id)calendar error:(id *)error
 {
   v30[2] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCD0C0];
   v9 = *MEMORY[0x277CCBAB8];
-  v10 = a4;
+  calendarCopy = calendar;
   v11 = [v8 categoryTypeForIdentifier:v9];
-  v12 = [MEMORY[0x277CCA970] hk_sleepDayIntervalForMorningIndex:a3 calendar:v10];
+  v12 = [MEMORY[0x277CCA970] hk_sleepDayIntervalForMorningIndex:index calendar:calendarCopy];
 
   v13 = HDSampleEntityPredicateForDateInterval();
 
@@ -64,7 +64,7 @@
   v28[3] = &unk_27865ABD0;
   v29 = v22;
   v23 = v22;
-  if ([v21 enumerateWithError:a5 handler:v28])
+  if ([v21 enumerateWithError:error handler:v28])
   {
     v24 = v23;
   }
@@ -100,12 +100,12 @@ BOOL __95__HDMCHeartStatisticsEnumerator__asleepSleepAnalysisDateIntervalTreeOnD
   return v5 != 0;
 }
 
-- (id)_heartStatisticsForDayIndex:(int64_t)a3 calendar:(id)a4 errorOut:(id *)a5
+- (id)_heartStatisticsForDayIndex:(int64_t)index calendar:(id)calendar errorOut:(id *)out
 {
   v100[3] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCC2E8];
   v9 = *MEMORY[0x277CCC2E8];
-  v10 = a4;
+  calendarCopy = calendar;
   v11 = _HKLogSignpostIDGenerate();
   _HKInitializeLogging();
   v12 = *v8;
@@ -115,7 +115,7 @@ BOOL __95__HDMCHeartStatisticsEnumerator__asleepSleepAnalysisDateIntervalTreeOnD
     v14 = v13;
     if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
     {
-      v15 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v15 = [MEMORY[0x277CCABB0] numberWithInteger:index];
       *buf = 138412290;
       v97 = v15;
       _os_signpost_emit_with_name_impl(&dword_2293D1000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v11, "menstrual-cycles-heartStatisticsForDayIndex", "dayIndex=%@", buf, 0xCu);
@@ -123,27 +123,27 @@ BOOL __95__HDMCHeartStatisticsEnumerator__asleepSleepAnalysisDateIntervalTreeOnD
   }
 
   spid = v11;
-  v80 = a5;
-  v16 = [MEMORY[0x277CCD830] heartRateType];
+  outCopy = out;
+  heartRateType = [MEMORY[0x277CCD830] heartRateType];
   v94 = 0;
-  v17 = [(HDMCHeartStatisticsEnumerator *)self _asleepSleepAnalysisDateIntervalTreeOnDayIndex:a3 calendar:v10 error:&v94];
+  v17 = [(HDMCHeartStatisticsEnumerator *)self _asleepSleepAnalysisDateIntervalTreeOnDayIndex:index calendar:calendarCopy error:&v94];
   v81 = v94;
-  v18 = [MEMORY[0x277D10890] hdmc_tenthPercentileCalculator];
-  v79 = a3;
-  v19 = [MEMORY[0x277CCA970] hk_sleepDayIntervalForMorningIndex:a3 calendar:v10];
+  hdmc_tenthPercentileCalculator = [MEMORY[0x277D10890] hdmc_tenthPercentileCalculator];
+  indexCopy = index;
+  v19 = [MEMORY[0x277CCA970] hk_sleepDayIntervalForMorningIndex:index calendar:calendarCopy];
 
   v20 = HDSampleEntityPredicateForDateInterval();
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v22 = [WeakRetained metadataManager];
+  metadataManager = [WeakRetained metadataManager];
   v23 = *MEMORY[0x277CCE030];
   v24 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_283CC3228, 0}];
-  v25 = [v22 predicateWithMetadataKey:v23 allowedValues:v24];
+  v25 = [metadataManager predicateWithMetadataKey:v23 allowedValues:v24];
 
-  v26 = [v17 mergedIntervals];
-  v27 = [v26 count];
+  mergedIntervals = [v17 mergedIntervals];
+  v27 = [mergedIntervals count];
 
-  v83 = v18;
+  v83 = hdmc_tenthPercentileCalculator;
   if (!v27)
   {
     v56 = MEMORY[0x277D10B20];
@@ -156,12 +156,12 @@ BOOL __95__HDMCHeartStatisticsEnumerator__asleepSleepAnalysisDateIntervalTreeOnD
 
     v60 = objc_loadWeakRetained(&self->_profile);
     v93 = v81;
-    v61 = [v18 hdmc_heartRateStatisticsWithProfile:v60 predicate:v59 errorOut:&v93];
+    v61 = [hdmc_tenthPercentileCalculator hdmc_heartRateStatisticsWithProfile:v60 predicate:v59 errorOut:&v93];
     v45 = v93;
 
     if (!v45)
     {
-      v51 = [MEMORY[0x277D11980] dailyHeartStatisticsWithDayIndex:v79 asleepStatistics:0 awakeStatistics:v61];
+      v51 = [MEMORY[0x277D11980] dailyHeartStatisticsWithDayIndex:indexCopy asleepStatistics:0 awakeStatistics:v61];
       _HKInitializeLogging();
       v65 = *MEMORY[0x277CCC2E8];
       if (os_signpost_enabled(*MEMORY[0x277CCC2E8]))
@@ -170,7 +170,7 @@ BOOL __95__HDMCHeartStatisticsEnumerator__asleepSleepAnalysisDateIntervalTreeOnD
         v67 = v66;
         if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v66))
         {
-          v68 = [MEMORY[0x277CCABB0] numberWithInteger:v79];
+          v68 = [MEMORY[0x277CCABB0] numberWithInteger:indexCopy];
           *buf = 138412546;
           v97 = v68;
           v98 = 2112;
@@ -183,10 +183,10 @@ BOOL __95__HDMCHeartStatisticsEnumerator__asleepSleepAnalysisDateIntervalTreeOnD
       goto LABEL_40;
     }
 
-    if (v80)
+    if (outCopy)
     {
       v62 = v45;
-      *v80 = v45;
+      *outCopy = v45;
     }
 
     else
@@ -203,9 +203,9 @@ LABEL_38:
 
   v77 = v25;
   v28 = objc_loadWeakRetained(&self->_profile);
-  v29 = [v28 metadataManager];
+  metadataManager2 = [v28 metadataManager];
   v30 = MEMORY[0x22AACC010]();
-  v31 = [v29 predicateWithMetadataKey:v23 allowedValues:v30];
+  v31 = [metadataManager2 predicateWithMetadataKey:v23 allowedValues:v30];
 
   v32 = MEMORY[0x277D10B20];
   v33 = HDSampleEntityPredicateForDataType();
@@ -219,8 +219,8 @@ LABEL_38:
   v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v95 count:4];
   v36 = [v32 predicateMatchingAllPredicates:v35];
 
-  v37 = [MEMORY[0x277D10890] hdmc_tenthPercentileCalculator];
-  v38 = [MEMORY[0x277D10890] hdmc_tenthPercentileCalculator];
+  hdmc_tenthPercentileCalculator2 = [MEMORY[0x277D10890] hdmc_tenthPercentileCalculator];
+  hdmc_tenthPercentileCalculator3 = [MEMORY[0x277D10890] hdmc_tenthPercentileCalculator];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__HDMCHeartStatisticsEnumerator__heartStatisticsForDayIndex_calendar_errorOut___block_invoke;
@@ -229,9 +229,9 @@ LABEL_38:
   v39 = v36;
   v89 = v39;
   v90 = v17;
-  v40 = v38;
+  v40 = hdmc_tenthPercentileCalculator3;
   v91 = v40;
-  v41 = v37;
+  v41 = hdmc_tenthPercentileCalculator2;
   v92 = v41;
   v42 = _Block_copy(aBlock);
   v85[0] = MEMORY[0x277D85DD0];
@@ -253,9 +253,9 @@ LABEL_38:
     v74 = v39;
     v47 = v17;
     v48 = MEMORY[0x277D11980];
-    v49 = [v43 currentStatistics];
-    v50 = [v41 currentStatistics];
-    v51 = [v48 dailyHeartStatisticsWithDayIndex:v79 asleepStatistics:v49 awakeStatistics:v50];
+    currentStatistics = [v43 currentStatistics];
+    currentStatistics2 = [v41 currentStatistics];
+    v51 = [v48 dailyHeartStatisticsWithDayIndex:indexCopy asleepStatistics:currentStatistics awakeStatistics:currentStatistics2];
 
     _HKInitializeLogging();
     v52 = *MEMORY[0x277CCC2E8];
@@ -278,7 +278,7 @@ LABEL_38:
       v46 = v47;
       if (os_signpost_enabled(v53))
       {
-        v55 = [MEMORY[0x277CCABB0] numberWithInteger:v79];
+        v55 = [MEMORY[0x277CCABB0] numberWithInteger:indexCopy];
         *buf = 138412546;
         v97 = v55;
         v98 = 2112;
@@ -296,11 +296,11 @@ LABEL_38:
     v54 = v63;
     if (v63)
     {
-      if (v80)
+      if (outCopy)
       {
         v64 = v63;
         v51 = 0;
-        *v80 = v54;
+        *outCopy = v54;
       }
 
       else
@@ -341,11 +341,11 @@ LABEL_40:
 
   v25 = v77;
   v20 = v78;
-  if (v80)
+  if (outCopy)
   {
     v71 = v45;
     v70 = 0;
-    *v80 = v45;
+    *outCopy = v45;
   }
 
   else
@@ -497,16 +497,16 @@ LABEL_9:
   return v31;
 }
 
-- (BOOL)enumerateWithError:(id *)a3 handler:(id)a4
+- (BOOL)enumerateWithError:(id *)error handler:(id)handler
 {
   v95 = *MEMORY[0x277D85DE8];
-  v74 = a4;
-  v6 = [(HKCalendarCache *)self->_calendarCache currentCalendar];
+  handlerCopy = handler;
+  currentCalendar = [(HKCalendarCache *)self->_calendarCache currentCalendar];
   v7 = MEMORY[0x277D10848];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v9 = [WeakRetained database];
+  database = [WeakRetained database];
   v88 = 0;
-  v10 = [v7 maxRowIDForPredicate:0 healthDatabase:v9 error:&v88];
+  v10 = [v7 maxRowIDForPredicate:0 healthDatabase:database error:&v88];
   v11 = v88;
 
   if (!v10)
@@ -514,11 +514,11 @@ LABEL_9:
     v12 = v11;
     if (v12)
     {
-      if (a3)
+      if (error)
       {
         v16 = v12;
         v14 = 0;
-        *a3 = v12;
+        *error = v12;
 LABEL_18:
         v15 = v12;
         goto LABEL_58;
@@ -532,7 +532,7 @@ LABEL_18:
   }
 
   v87 = v11;
-  v12 = [(HDMCHeartStatisticsEnumerator *)self _cachingSessionWithCalendar:v6 error:&v87];
+  v12 = [(HDMCHeartStatisticsEnumerator *)self _cachingSessionWithCalendar:currentCalendar error:&v87];
   v13 = v87;
 
   if (!v12 && v13)
@@ -549,7 +549,7 @@ LABEL_18:
   if (v17 == 2)
   {
     v57 = v15;
-    v58 = a3;
+    errorCopy = error;
     v73 = v10;
     _HKInitializeLogging();
     v30 = MEMORY[0x277CCC2E8];
@@ -566,12 +566,12 @@ LABEL_18:
 
     v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
     start = self->_dayIndexRange.start;
-    v59 = v6;
+    v59 = currentCalendar;
     while (1)
     {
       v36 = objc_autoreleasePoolPush();
       v85 = 0;
-      v37 = [(HDMCHeartStatisticsEnumerator *)self _heartStatisticsForDayIndex:start calendar:v6 errorOut:&v85];
+      v37 = [(HDMCHeartStatisticsEnumerator *)self _heartStatisticsForDayIndex:start calendar:currentCalendar errorOut:&v85];
       v38 = v85;
       if (v37)
       {
@@ -614,11 +614,11 @@ LABEL_18:
               v61 = objc_opt_class();
               v43 = MEMORY[0x277CCABB0];
               v70 = v61;
-              v67 = [v29 firstObject];
-              v60 = [v43 numberWithInteger:{-[NSObject dayIndex](v67, "dayIndex")}];
+              firstObject = [v29 firstObject];
+              v60 = [v43 numberWithInteger:{-[NSObject dayIndex](firstObject, "dayIndex")}];
               v44 = MEMORY[0x277CCABB0];
-              v45 = [v29 lastObject];
-              v46 = [v44 numberWithInteger:{objc_msgSend(v45, "dayIndex")}];
+              lastObject = [v29 lastObject];
+              v46 = [v44 numberWithInteger:{objc_msgSend(lastObject, "dayIndex")}];
               *buf = 138543874;
               v90 = v61;
               v91 = 2112;
@@ -627,7 +627,7 @@ LABEL_18:
               v94 = v46;
               _os_log_impl(&dword_2293D1000, logb, OS_LOG_TYPE_DEFAULT, "[%{public}@] Statistics saved from dayIndex:%@ to dayIndex: %@", buf, 0x20u);
 
-              v6 = v59;
+              currentCalendar = v59;
             }
 
             v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -635,7 +635,7 @@ LABEL_18:
             v30 = MEMORY[0x277CCC2E8];
           }
 
-          v74[2](v74, v37);
+          handlerCopy[2](handlerCopy, v37);
         }
       }
 
@@ -679,15 +679,15 @@ LABEL_18:
         [v12 insertCaches:v29 anchor:v73 completion:v83];
         v28 = 1;
         v15 = v57;
-        a3 = v58;
+        error = errorCopy;
         goto LABEL_47;
       }
     }
 
-    if (v58)
+    if (errorCopy)
     {
       v51 = v38;
-      *v58 = v38;
+      *errorCopy = v38;
     }
 
     else
@@ -725,8 +725,8 @@ LABEL_18:
       v77[2] = __60__HDMCHeartStatisticsEnumerator_enumerateWithError_handler___block_invoke_325;
       v77[3] = &unk_27865AD70;
       v77[4] = self;
-      v81 = v74;
-      v78 = v6;
+      v81 = handlerCopy;
+      v78 = currentCalendar;
       v79 = v15;
       v26 = v25;
       v80 = v26;
@@ -773,10 +773,10 @@ LABEL_47:
         v15 = v15;
         if (v15)
         {
-          if (a3)
+          if (error)
           {
             v19 = v15;
-            *a3 = v15;
+            *error = v15;
           }
 
           else
@@ -804,10 +804,10 @@ LABEL_47:
       v53 = v15;
       if (v15)
       {
-        if (a3)
+        if (error)
         {
           v54 = v53;
-          *a3 = v53;
+          *error = v53;
         }
 
         else
@@ -995,24 +995,24 @@ void __60__HDMCHeartStatisticsEnumerator_enumerateWithError_handler___block_invo
   }
 }
 
-- (id)_cachingSessionWithCalendar:(id)a3 error:(id *)a4
+- (id)_cachingSessionWithCalendar:(id)calendar error:(id *)error
 {
   v62[2] = *MEMORY[0x277D85DE8];
-  v53 = a3;
+  calendarCopy = calendar;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [WeakRetained sourceManager];
+  sourceManager = [WeakRetained sourceManager];
   v56 = 0;
-  v8 = [v7 localDeviceSourceWithError:&v56];
+  v8 = [sourceManager localDeviceSourceWithError:&v56];
   v9 = v56;
 
   v52 = v8;
   if (v8)
   {
     v10 = objc_loadWeakRetained(&self->_profile);
-    v11 = [v10 metadataManager];
+    metadataManager = [v10 metadataManager];
     v12 = *MEMORY[0x277CCE030];
     v13 = MEMORY[0x22AACC010]();
-    v50 = [v11 predicateWithMetadataKey:v12 allowedValues:v13];
+    v50 = [metadataManager predicateWithMetadataKey:v12 allowedValues:v13];
 
     v14 = MEMORY[0x277D10B20];
     v15 = HDDataEntityPredicateForObjectsFromAppleWatchSources();
@@ -1038,30 +1038,30 @@ void __60__HDMCHeartStatisticsEnumerator_enumerateWithError_handler___block_invo
 
     v24 = objc_alloc(MEMORY[0x277D10820]);
     v25 = MEMORY[0x277CBEB98];
-    v26 = [MEMORY[0x277CCD830] heartRateType];
-    v58 = v26;
+    heartRateType = [MEMORY[0x277CCD830] heartRateType];
+    v58 = heartRateType;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v58 count:1];
     v28 = [v25 setWithArray:v27];
     v45 = [v24 initWithSampleTypes:v28 encodingOptions:v18 restrictedSourceEntities:0 authorizationFilter:0 samplePredicate:v48];
 
-    v46 = [MEMORY[0x277CBEBB0] localTimeZone];
+    localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
     v29 = MEMORY[0x277CCACA8];
-    v30 = [v46 name];
-    v31 = [v29 stringWithFormat:@"%@_%@", @"menstrualCycles", v30];
+    name = [localTimeZone name];
+    v31 = [v29 stringWithFormat:@"%@_%@", @"menstrualCycles", name];
 
-    v32 = [MEMORY[0x277CCA970] hk_sleepDayIntervalForMorningIndexRange:self->_dayIndexRange.start calendar:{self->_dayIndexRange.duration, v53}];
+    v32 = [MEMORY[0x277CCA970] hk_sleepDayIntervalForMorningIndexRange:self->_dayIndexRange.start calendar:{self->_dayIndexRange.duration, calendarCopy}];
     v33 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [v33 setDay:1];
     v34 = objc_alloc(MEMORY[0x277D10840]);
     v35 = objc_loadWeakRetained(&self->_profile);
     v36 = objc_opt_class();
-    v37 = [v32 startDate];
+    startDate = [v32 startDate];
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __67__HDMCHeartStatisticsEnumerator__cachingSessionWithCalendar_error___block_invoke;
     v54[3] = &unk_27865AD98;
-    v55 = v53;
-    v38 = [v34 initWithProfile:v35 cachingIdentifier:v31 sourceEntity:v52 queryDescriptor:v45 cachedClass:v36 queryInterval:v32 anchorDate:v37 intervalComponents:v33 timeIntervalToBucketIndex:v54];
+    v55 = calendarCopy;
+    v38 = [v34 initWithProfile:v35 cachingIdentifier:v31 sourceEntity:v52 queryDescriptor:v45 cachedClass:v36 queryInterval:v32 anchorDate:startDate intervalComponents:v33 timeIntervalToBucketIndex:v54];
 
     v57 = v47;
     v39 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
@@ -1076,10 +1076,10 @@ void __60__HDMCHeartStatisticsEnumerator_enumerateWithError_handler___block_invo
     v40 = v9;
     if (v40)
     {
-      if (a4)
+      if (error)
       {
         v41 = v40;
-        *a4 = v40;
+        *error = v40;
       }
 
       else

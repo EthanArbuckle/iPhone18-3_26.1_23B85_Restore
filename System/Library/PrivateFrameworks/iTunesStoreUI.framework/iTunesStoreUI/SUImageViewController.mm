@@ -1,9 +1,9 @@
 @interface SUImageViewController
 - (id)_imageView;
-- (void)_backstopAction:(id)a3;
+- (void)_backstopAction:(id)action;
 - (void)dealloc;
 - (void)loadView;
-- (void)reloadWithStorePage:(id)a3 forURL:(id)a4;
+- (void)reloadWithStorePage:(id)page forURL:(id)l;
 @end
 
 @implementation SUImageViewController
@@ -32,7 +32,7 @@
   [(SUImageViewController *)self setView:backstopView];
 }
 
-- (void)reloadWithStorePage:(id)a3 forURL:(id)a4
+- (void)reloadWithStorePage:(id)page forURL:(id)l
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -40,16 +40,16 @@
     [SUImageViewController reloadWithStorePage:a2 forURL:self];
   }
 
-  v7 = [(SUImageViewController *)self _imageView];
+  _imageView = [(SUImageViewController *)self _imageView];
 
-  [v7 setImage:a3];
+  [_imageView setImage:page];
 }
 
-- (void)_backstopAction:(id)a3
+- (void)_backstopAction:(id)action
 {
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
 
-  [v4 sendAction:sel_imagePageViewTapped_ to:0 from:self forEvent:0];
+  [mEMORY[0x1E69DC668] sendAction:sel_imagePageViewTapped_ to:0 from:self forEvent:0];
 }
 
 - (id)_imageView

@@ -1,10 +1,10 @@
 @interface HKHeartbeatSeriesQuery
 - (HKHeartbeatSeriesQuery)initWithHeartbeatSeries:(HKHeartbeatSeriesSample *)heartbeatSeries dataHandler:(void *)dataHandler;
-- (HKHeartbeatSeriesQuery)initWithHeartbeatSeries:(id)a3 bufferHandler:(id)a4;
-- (void)_enumerateHeartbeatData:(id)a3 final:(BOOL)a4 handler:(id)a5;
+- (HKHeartbeatSeriesQuery)initWithHeartbeatSeries:(id)series bufferHandler:(id)handler;
+- (void)_enumerateHeartbeatData:(id)data final:(BOOL)final handler:(id)handler;
 - (void)client_deliverHeartbeats;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (void)queue_deliverError:(id)error;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 @end
 
 @implementation HKHeartbeatSeriesQuery
@@ -74,14 +74,14 @@ void __62__HKHeartbeatSeriesQuery_initWithHeartbeatSeries_dataHandler___block_in
   }
 }
 
-- (HKHeartbeatSeriesQuery)initWithHeartbeatSeries:(id)a3 bufferHandler:(id)a4
+- (HKHeartbeatSeriesQuery)initWithHeartbeatSeries:(id)series bufferHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  seriesCopy = series;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (seriesCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -109,7 +109,7 @@ LABEL_3:
     bufferHandler = v11->_bufferHandler;
     v11->_bufferHandler = v12;
 
-    objc_storeStrong(&v11->_heartbeatSeries, a3);
+    objc_storeStrong(&v11->_heartbeatSeries, series);
   }
 
   return v11;
@@ -117,13 +117,13 @@ LABEL_3:
 
 - (void)client_deliverHeartbeats
 {
-  v3 = [(HKQuery *)self queue];
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__HKHeartbeatSeriesQuery_client_deliverHeartbeats__block_invoke;
   block[3] = &unk_1E7376780;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 void __50__HKHeartbeatSeriesQuery_client_deliverHeartbeats__block_invoke(uint64_t a1)
@@ -152,17 +152,17 @@ void __50__HKHeartbeatSeriesQuery_client_deliverHeartbeats__block_invoke_2(uint6
   (*(v1 + 16))(v1, v2, v3, 1, 0);
 }
 
-- (void)_enumerateHeartbeatData:(id)a3 final:(BOOL)a4 handler:(id)a5
+- (void)_enumerateHeartbeatData:(id)data final:(BOOL)final handler:(id)handler
 {
-  v6 = a4;
+  finalCopy = final;
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 length];
-  v11 = [(HKQuery *)self deactivateCallCount];
+  dataCopy = data;
+  handlerCopy = handler;
+  v10 = [dataCopy length];
+  deactivateCallCount = [(HKQuery *)self deactivateCallCount];
   if (v10 >= 0x10)
   {
-    v12 = v11;
+    v12 = deactivateCallCount;
     v13 = 0;
     v14 = v10 >> 4;
     do
@@ -172,10 +172,10 @@ void __50__HKHeartbeatSeriesQuery_client_deliverHeartbeats__block_invoke_2(uint6
         break;
       }
 
-      [v8 getBytes:&v18 range:{v13, 16}];
+      [dataCopy getBytes:&v18 range:{v13, 16}];
       v15.n128_u64[0] = v18;
-      v16 = !--v14 && v6;
-      v9[2](v9, self, v19 != 0, v16, 0, v15);
+      v16 = !--v14 && finalCopy;
+      handlerCopy[2](handlerCopy, self, v19 != 0, v16, 0, v15);
       v13 += 16;
     }
 
@@ -185,29 +185,29 @@ void __50__HKHeartbeatSeriesQuery_client_deliverHeartbeats__block_invoke_2(uint6
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _Block_copy(self->_bufferHandler);
   if (v5)
   {
-    v6 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __45__HKHeartbeatSeriesQuery_queue_deliverError___block_invoke;
     block[3] = &unk_1E7376618;
     v9 = v5;
     block[4] = self;
-    v8 = v4;
-    dispatch_async(v6, block);
+    v8 = errorCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKHeartbeatSeriesQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   bufferHandler = self->_bufferHandler;
   self->_bufferHandler = 0;
 }

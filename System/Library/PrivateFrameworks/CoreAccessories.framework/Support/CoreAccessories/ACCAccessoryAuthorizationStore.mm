@@ -1,8 +1,8 @@
 @interface ACCAccessoryAuthorizationStore
-+ (BOOL)removeAccessory:(id)a3;
-+ (BOOL)storeAccessory:(id)a3;
-+ (id)authorizationEntryForCertSerial:(id)a3;
-+ (id)authorizationEntryForCertSerial:(id)a3 withAccessoryDict:(id)a4;
++ (BOOL)removeAccessory:(id)accessory;
++ (BOOL)storeAccessory:(id)accessory;
++ (id)authorizationEntryForCertSerial:(id)serial;
++ (id)authorizationEntryForCertSerial:(id)serial withAccessoryDict:(id)dict;
 + (id)sharedStore;
 + (id)storedAccessories;
 + (id)storedCertSerialStrings;
@@ -42,7 +42,7 @@
   block[1] = 3221225472;
   block[2] = __45__ACCAccessoryAuthorizationStore_sharedStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedStore_once != -1)
   {
     dispatch_once(&sharedStore_once, block);
@@ -189,17 +189,17 @@ uint64_t __45__ACCAccessoryAuthorizationStore_sharedStore__block_invoke(uint64_t
   return v11;
 }
 
-+ (BOOL)storeAccessory:(id)a3
++ (BOOL)storeAccessory:(id)accessory
 {
-  v3 = a3;
+  accessoryCopy = accessory;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 certSerialString], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, v5))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([accessoryCopy certSerialString], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, v5))
   {
     v20[0] = @"displayName";
-    v6 = [v3 displayName];
-    v21[0] = v6;
+    displayName = [accessoryCopy displayName];
+    v21[0] = displayName;
     v20[1] = @"authorized";
-    v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 authorized]);
+    v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [accessoryCopy authorized]);
     v21[1] = v7;
     v20[2] = @"modified";
     v8 = [NSNumber numberWithLongLong:systemInfo_getCurrentUnixTime()];
@@ -211,8 +211,8 @@ uint64_t __45__ACCAccessoryAuthorizationStore_sharedStore__block_invoke(uint64_t
     v12 = [v11 dictionaryForKey:@"KnownAccessories"];
     v13 = [v10 initWithDictionary:v12];
 
-    v14 = [v3 certSerialString];
-    [v13 setObject:v9 forKey:v14];
+    certSerialString = [accessoryCopy certSerialString];
+    [v13 setObject:v9 forKey:certSerialString];
 
     v15 = +[ACCUserDefaults sharedDefaults];
     [v15 setObject:v13 forKey:@"KnownAccessories"];
@@ -221,28 +221,28 @@ uint64_t __45__ACCAccessoryAuthorizationStore_sharedStore__block_invoke(uint64_t
     [v16 postNotificationName:@"ACCKnownAccessoriesDidChangeNotification" object:@"com.apple.CoreAccessories"];
 
     v17 = +[ACCUserDefaults sharedDefaults];
-    v18 = [v17 synchronize];
+    synchronize = [v17 synchronize];
   }
 
   else
   {
-    v18 = 0;
+    synchronize = 0;
   }
 
-  return v18;
+  return synchronize;
 }
 
-+ (BOOL)removeAccessory:(id)a3
++ (BOOL)removeAccessory:(id)accessory
 {
-  v3 = a3;
+  accessoryCopy = accessory;
   v4 = [NSMutableDictionary alloc];
   v5 = +[ACCUserDefaults sharedDefaults];
   v6 = [v5 objectForKey:@"KnownAccessories"];
   v7 = [v4 initWithDictionary:v6];
 
-  v8 = [v3 certSerialString];
+  certSerialString = [accessoryCopy certSerialString];
 
-  [v7 removeObjectForKey:v8];
+  [v7 removeObjectForKey:certSerialString];
   v9 = +[ACCUserDefaults sharedDefaults];
   [v9 setObject:v7 forKey:@"KnownAccessories"];
 
@@ -250,22 +250,22 @@ uint64_t __45__ACCAccessoryAuthorizationStore_sharedStore__block_invoke(uint64_t
   [v10 postNotificationName:@"ACCKnownAccessoriesDidChangeNotification" object:@"com.apple.CoreAccessories"];
 
   v11 = +[ACCUserDefaults sharedDefaults];
-  LOBYTE(v8) = [v11 synchronize];
+  LOBYTE(certSerialString) = [v11 synchronize];
 
-  return v8;
+  return certSerialString;
 }
 
-+ (id)authorizationEntryForCertSerial:(id)a3
++ (id)authorizationEntryForCertSerial:(id)serial
 {
-  v3 = a3;
+  serialCopy = serial;
   v4 = +[ACCUserDefaults sharedDefaults];
   v5 = [v4 dictionaryForKey:@"KnownAccessories"];
 
-  v6 = [v5 objectForKey:v3];
+  v6 = [v5 objectForKey:serialCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [ACCAccessoryAuthorizationStore authorizationEntryForCertSerial:v3 withAccessoryDict:v6];
+    v7 = [ACCAccessoryAuthorizationStore authorizationEntryForCertSerial:serialCopy withAccessoryDict:v6];
   }
 
   else
@@ -276,21 +276,21 @@ uint64_t __45__ACCAccessoryAuthorizationStore_sharedStore__block_invoke(uint64_t
   return v7;
 }
 
-+ (id)authorizationEntryForCertSerial:(id)a3 withAccessoryDict:(id)a4
++ (id)authorizationEntryForCertSerial:(id)serial withAccessoryDict:(id)dict
 {
-  v5 = a4;
-  v6 = a3;
+  dictCopy = dict;
+  serialCopy = serial;
   v7 = objc_alloc_init(ACCAccessoryAuthorizationEntry);
-  [(ACCAccessoryAuthorizationEntry *)v7 setCertSerialString:v6];
+  [(ACCAccessoryAuthorizationEntry *)v7 setCertSerialString:serialCopy];
 
-  v8 = [v5 objectForKey:@"displayName"];
+  v8 = [dictCopy objectForKey:@"displayName"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(ACCAccessoryAuthorizationEntry *)v7 setDisplayName:v8];
   }
 
-  v9 = [v5 objectForKey:@"authorized"];
+  v9 = [dictCopy objectForKey:@"authorized"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

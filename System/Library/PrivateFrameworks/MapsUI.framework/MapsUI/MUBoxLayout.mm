@@ -1,23 +1,23 @@
 @interface MUBoxLayout
-- (MUBoxLayout)initWithContainer:(id)a3;
+- (MUBoxLayout)initWithContainer:(id)container;
 - (NSDirectionalEdgeInsets)insets;
-- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)a3;
-- (UIOffset)offsetForArrangedLayoutItem:(id)a3;
+- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)item;
+- (UIOffset)offsetForArrangedLayoutItem:(id)item;
 @end
 
 @implementation MUBoxLayout
 
-- (UIOffset)offsetForArrangedLayoutItem:(id)a3
+- (UIOffset)offsetForArrangedLayoutItem:(id)item
 {
-  [(MUBoxLayoutInternal *)self->_internal offsetForArrangedLayoutItem:a3];
+  [(MUBoxLayoutInternal *)self->_internal offsetForArrangedLayoutItem:item];
   result.vertical = v4;
   result.horizontal = v3;
   return result;
 }
 
-- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)a3
+- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)item
 {
-  [(MUBoxLayoutInternal *)self->_internal paddingForArrangedLayoutItem:a3];
+  [(MUBoxLayoutInternal *)self->_internal paddingForArrangedLayoutItem:item];
   result.trailing = v6;
   result.bottom = v5;
   result.leading = v4;
@@ -35,10 +35,10 @@
   return result;
 }
 
-- (MUBoxLayout)initWithContainer:(id)a3
+- (MUBoxLayout)initWithContainer:(id)container
 {
-  v4 = a3;
-  v5 = [[MUBoxLayoutInternal alloc] initWithContainer:v4];
+  containerCopy = container;
+  v5 = [[MUBoxLayoutInternal alloc] initWithContainer:containerCopy];
 
   v9.receiver = self;
   v9.super_class = MUBoxLayout;

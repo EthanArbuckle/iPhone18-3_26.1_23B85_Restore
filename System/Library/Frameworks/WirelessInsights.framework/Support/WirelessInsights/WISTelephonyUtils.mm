@@ -1,37 +1,37 @@
 @interface WISTelephonyUtils
-+ (BOOL)isRegistrationDisplayStatusInService:(id)a3;
-+ (BOOL)isRegistrationDisplayStatusOutOfService:(id)a3;
-+ (BOOL)isValidContext:(id)a3;
-+ (id)extractCellInfoValue:(id)a3 key:(id)a4 expectedClass:(Class)a5 error:(id *)a6;
-+ (id)getArfcnFromCellInfo:(id)a3 error:(id *)a4;
-+ (id)getBandFromCellInfo:(id)a3 error:(id *)a4;
-+ (id)getBandwidthFromCellInfo:(id)a3 error:(id *)a4;
-+ (id)getCellMonitorRATFromEnumValue:(int64_t)a3;
-+ (id)getGciFromCellInfo:(id)a3 error:(id *)a4;
-+ (id)getLacOrTacFromCellInfo:(id)a3 error:(id *)a4;
-+ (id)getMAVNRNSANeighborCellInfo:(id)a3;
-+ (id)getNSString:(const char *)a3;
-+ (id)getPLMNFromMCC:(id)a3 AndMNC:(id)a4;
-+ (id)getPciFromCellInfo:(id)a3 error:(id *)a4;
-+ (id)getRATFromCellInfo:(id)a3 error:(id *)a4;
-+ (id)getRATFromCellMonitorString:(id)a3;
-+ (id)getServingCellInfo:(id)a3;
-+ (id)getServingCellInfoFromArray:(id)a3;
-+ (id)getShortenedRegistrationStateString:(id)a3;
-+ (id)sanitizedSubscriptions:(id)a3;
-+ (int)insightRATFromBasebandSysMode:(id)a3;
-+ (void)setError:(id *)a3 code:(int64_t)a4 message:(id)a5;
++ (BOOL)isRegistrationDisplayStatusInService:(id)service;
++ (BOOL)isRegistrationDisplayStatusOutOfService:(id)service;
++ (BOOL)isValidContext:(id)context;
++ (id)extractCellInfoValue:(id)value key:(id)key expectedClass:(Class)class error:(id *)error;
++ (id)getArfcnFromCellInfo:(id)info error:(id *)error;
++ (id)getBandFromCellInfo:(id)info error:(id *)error;
++ (id)getBandwidthFromCellInfo:(id)info error:(id *)error;
++ (id)getCellMonitorRATFromEnumValue:(int64_t)value;
++ (id)getGciFromCellInfo:(id)info error:(id *)error;
++ (id)getLacOrTacFromCellInfo:(id)info error:(id *)error;
++ (id)getMAVNRNSANeighborCellInfo:(id)info;
++ (id)getNSString:(const char *)string;
++ (id)getPLMNFromMCC:(id)c AndMNC:(id)nC;
++ (id)getPciFromCellInfo:(id)info error:(id *)error;
++ (id)getRATFromCellInfo:(id)info error:(id *)error;
++ (id)getRATFromCellMonitorString:(id)string;
++ (id)getServingCellInfo:(id)info;
++ (id)getServingCellInfoFromArray:(id)array;
++ (id)getShortenedRegistrationStateString:(id)string;
++ (id)sanitizedSubscriptions:(id)subscriptions;
++ (int)insightRATFromBasebandSysMode:(id)mode;
++ (void)setError:(id *)error code:(int64_t)code message:(id)message;
 @end
 
 @implementation WISTelephonyUtils
 
-+ (BOOL)isValidContext:(id)a3
++ (BOOL)isValidContext:(id)context
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  contextCopy = context;
+  v4 = contextCopy;
+  if (contextCopy)
   {
-    v5 = [v3 slotID] != 0;
+    v5 = [contextCopy slotID] != 0;
   }
 
   else
@@ -42,15 +42,15 @@
   return v5;
 }
 
-+ (id)sanitizedSubscriptions:(id)a3
++ (id)sanitizedSubscriptions:(id)subscriptions
 {
-  v3 = a3;
+  subscriptionsCopy = subscriptions;
   v4 = objc_alloc_init(NSMutableArray);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v3;
+  v5 = subscriptionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -82,12 +82,12 @@
   return v10;
 }
 
-+ (id)getServingCellInfo:(id)a3
++ (id)getServingCellInfo:(id)info
 {
-  v3 = [a3 legacyInfo];
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  legacyInfo = [info legacyInfo];
+  if (legacyInfo && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [WISTelephonyUtils getServingCellInfoFromArray:v3];
+    v4 = [WISTelephonyUtils getServingCellInfoFromArray:legacyInfo];
   }
 
   else
@@ -98,7 +98,7 @@
   return v4;
 }
 
-+ (id)getServingCellInfoFromArray:(id)a3
++ (id)getServingCellInfoFromArray:(id)array
 {
   v6 = 0;
   v7 = &v6;
@@ -111,37 +111,37 @@
   v5[2] = sub_10010D988;
   v5[3] = &unk_1002B2858;
   v5[4] = &v6;
-  [a3 enumerateObjectsUsingBlock:v5];
+  [array enumerateObjectsUsingBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
   return v3;
 }
 
-+ (id)extractCellInfoValue:(id)a3 key:(id)a4 expectedClass:(Class)a5 error:(id *)a6
++ (id)extractCellInfoValue:(id)value key:(id)key expectedClass:(Class)class error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  valueCopy = value;
+  keyCopy = key;
+  if (valueCopy)
   {
-    v10 = [v8 objectForKey:v9];
-    if (v10)
+    keyCopy2 = [valueCopy objectForKey:keyCopy];
+    if (keyCopy2)
     {
       if (objc_opt_isKindOfClass())
       {
-        v10 = v10;
-        v11 = v10;
+        keyCopy2 = keyCopy2;
+        v11 = keyCopy2;
         goto LABEL_9;
       }
 
-      v12 = [NSString stringWithFormat:@"Value for key %@ is not of expected class", v9];
-      [WISTelephonyUtils setError:a6 code:0 message:v12];
+      keyCopy = [NSString stringWithFormat:@"Value for key %@ is not of expected class", keyCopy];
+      [WISTelephonyUtils setError:error code:0 message:keyCopy];
     }
 
     else
     {
-      v12 = [NSString stringWithFormat:@"Value for key %@ is null", v9];
-      [WISTelephonyUtils setError:a6 code:0 message:v12];
+      keyCopy = [NSString stringWithFormat:@"Value for key %@ is null", keyCopy];
+      [WISTelephonyUtils setError:error code:0 message:keyCopy];
     }
 
     v11 = 0;
@@ -149,9 +149,9 @@
 
   else
   {
-    v10 = [NSString stringWithFormat:@"Cannot extract key %@, cell info is null", v9];
+    keyCopy2 = [NSString stringWithFormat:@"Cannot extract key %@, cell info is null", keyCopy];
     v11 = 0;
-    [WISTelephonyUtils setError:a6 code:0 message:v10];
+    [WISTelephonyUtils setError:error code:0 message:keyCopy2];
   }
 
 LABEL_9:
@@ -159,31 +159,31 @@ LABEL_9:
   return v11;
 }
 
-+ (id)getLacOrTacFromCellInfo:(id)a3 error:(id *)a4
++ (id)getLacOrTacFromCellInfo:(id)info error:(id *)error
 {
-  v5 = a3;
-  v6 = [WISTelephonyUtils extractCellInfoValue:v5 key:kCTCellMonitorCellRadioAccessTechnology expectedClass:objc_opt_class() error:a4];
-  if (*a4)
+  infoCopy = info;
+  v6 = [WISTelephonyUtils extractCellInfoValue:infoCopy key:kCTCellMonitorCellRadioAccessTechnology expectedClass:objc_opt_class() error:error];
+  if (*error)
   {
     goto LABEL_2;
   }
 
   if ([WISTelephonyUtils isLteRat:v6]|| [WISTelephonyUtils isNrRat:v6])
   {
-    v8 = [WISTelephonyUtils extractCellInfoValue:v5 key:kCTCellMonitorTAC expectedClass:objc_opt_class() error:a4];
+    v8 = [WISTelephonyUtils extractCellInfoValue:infoCopy key:kCTCellMonitorTAC expectedClass:objc_opt_class() error:error];
   }
 
   else
   {
     if (![WISTelephonyUtils isGSMRat:v6]&& ![WISTelephonyUtils isUMTSRat:v6])
     {
-      [WISTelephonyUtils setError:a4 code:0 message:@"Cannot extract LAC/TAC: RAT is neither GSM, UMTS, LTE, nor NR"];
+      [WISTelephonyUtils setError:error code:0 message:@"Cannot extract LAC/TAC: RAT is neither GSM, UMTS, LTE, nor NR"];
 LABEL_2:
       v7 = 0;
       goto LABEL_7;
     }
 
-    v8 = [WISTelephonyUtils extractCellInfoValue:v5 key:kCTCellMonitorLAC expectedClass:objc_opt_class() error:a4];
+    v8 = [WISTelephonyUtils extractCellInfoValue:infoCopy key:kCTCellMonitorLAC expectedClass:objc_opt_class() error:error];
   }
 
   v7 = v8;
@@ -192,19 +192,19 @@ LABEL_7:
   return v7;
 }
 
-+ (id)getBandFromCellInfo:(id)a3 error:(id *)a4
++ (id)getBandFromCellInfo:(id)info error:(id *)error
 {
-  v5 = a3;
-  v6 = [WISTelephonyUtils extractCellInfoValue:v5 key:kCTCellMonitorBandInfo expectedClass:objc_opt_class() error:a4];
+  infoCopy = info;
+  v6 = [WISTelephonyUtils extractCellInfoValue:infoCopy key:kCTCellMonitorBandInfo expectedClass:objc_opt_class() error:error];
   v7 = v6;
-  if (*a4)
+  if (*error)
   {
     goto LABEL_2;
   }
 
   if ([v6 compare:&off_1002BF228] == -1)
   {
-    [WISTelephonyUtils setError:a4 code:0 message:@"Band info is less than zero"];
+    [WISTelephonyUtils setError:error code:0 message:@"Band info is less than zero"];
 LABEL_2:
     v8 = 0;
     goto LABEL_5;
@@ -216,11 +216,11 @@ LABEL_5:
   return v8;
 }
 
-+ (id)getBandwidthFromCellInfo:(id)a3 error:(id *)a4
++ (id)getBandwidthFromCellInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  v7 = [WISTelephonyUtils extractCellInfoValue:v6 key:kCTCellMonitorCellRadioAccessTechnology expectedClass:objc_opt_class() error:a4];
-  if (*a4)
+  infoCopy = info;
+  v7 = [WISTelephonyUtils extractCellInfoValue:infoCopy key:kCTCellMonitorCellRadioAccessTechnology expectedClass:objc_opt_class() error:error];
+  if (*error)
   {
     v8 = 0;
     goto LABEL_25;
@@ -232,9 +232,9 @@ LABEL_5:
     goto LABEL_25;
   }
 
-  v9 = [WISTelephonyUtils extractCellInfoValue:v6 key:kCTCellMonitorBandwidth expectedClass:objc_opt_class() error:a4];
+  v9 = [WISTelephonyUtils extractCellInfoValue:infoCopy key:kCTCellMonitorBandwidth expectedClass:objc_opt_class() error:error];
   v10 = v9;
-  if (*a4)
+  if (*error)
   {
     goto LABEL_23;
   }
@@ -243,7 +243,7 @@ LABEL_5:
   {
     v12 = @"Reported bandwidth is less than zero";
 LABEL_22:
-    [a1 setError:a4 code:0 message:v12];
+    [self setError:error code:0 message:v12];
 LABEL_23:
     v8 = 0;
     goto LABEL_24;
@@ -253,8 +253,8 @@ LABEL_23:
   {
     if ([WISTelephonyUtils isNrRat:v7])
     {
-      v13 = [WISTelephonyUtils extractCellInfoValue:v6 key:kCTCellMonitorCellType expectedClass:objc_opt_class() error:a4];
-      if (*a4)
+      v13 = [WISTelephonyUtils extractCellInfoValue:infoCopy key:kCTCellMonitorCellType expectedClass:objc_opt_class() error:error];
+      if (*error)
       {
         v8 = 0;
 LABEL_19:
@@ -302,11 +302,11 @@ LABEL_25:
   return v8;
 }
 
-+ (id)getArfcnFromCellInfo:(id)a3 error:(id *)a4
++ (id)getArfcnFromCellInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  v7 = [WISTelephonyUtils extractCellInfoValue:v6 key:kCTCellMonitorCellRadioAccessTechnology expectedClass:objc_opt_class() error:a4];
-  if (*a4)
+  infoCopy = info;
+  v7 = [WISTelephonyUtils extractCellInfoValue:infoCopy key:kCTCellMonitorCellRadioAccessTechnology expectedClass:objc_opt_class() error:error];
+  if (*error)
   {
     v8 = 0;
     goto LABEL_17;
@@ -328,7 +328,7 @@ LABEL_25:
   {
     if (![WISTelephonyUtils isGSMRat:v7])
     {
-      [a1 setError:a4 code:0 message:{@"Can only extract ARFCN for GSM, UMTS, LTE and NR cells"}];
+      [self setError:error code:0 message:{@"Can only extract ARFCN for GSM, UMTS, LTE and NR cells"}];
       v8 = 0;
       v12 = 0;
       goto LABEL_16;
@@ -338,9 +338,9 @@ LABEL_25:
     v10 = &kCTCellMonitorARFCN;
   }
 
-  v11 = [WISTelephonyUtils extractCellInfoValue:v6 key:*v10 expectedClass:v9 error:a4];
+  v11 = [WISTelephonyUtils extractCellInfoValue:infoCopy key:*v10 expectedClass:v9 error:error];
   v12 = v11;
-  if (!*a4)
+  if (!*error)
   {
     if ([v11 compare:&off_1002BF228] != -1)
     {
@@ -349,7 +349,7 @@ LABEL_25:
       goto LABEL_16;
     }
 
-    [a1 setError:a4 code:0 message:@"Reported ARFCN is less than zero"];
+    [self setError:error code:0 message:@"Reported ARFCN is less than zero"];
   }
 
   v8 = 0;
@@ -360,13 +360,13 @@ LABEL_17:
   return v8;
 }
 
-+ (id)getGciFromCellInfo:(id)a3 error:(id *)a4
++ (id)getGciFromCellInfo:(id)info error:(id *)error
 {
-  v5 = a3;
-  v6 = [WISTelephonyUtils extractCellInfoValue:v5 key:kCTCellMonitorMCC expectedClass:objc_opt_class() error:a4];
-  v7 = [WISTelephonyUtils extractCellInfoValue:v5 key:kCTCellMonitorMNC expectedClass:objc_opt_class() error:a4];
-  v8 = [WISTelephonyUtils extractCellInfoValue:v5 key:kCTCellMonitorCellId expectedClass:objc_opt_class() error:a4];
-  v9 = [WISTelephonyUtils getLacOrTacFromCellInfo:v5 error:a4];
+  infoCopy = info;
+  v6 = [WISTelephonyUtils extractCellInfoValue:infoCopy key:kCTCellMonitorMCC expectedClass:objc_opt_class() error:error];
+  v7 = [WISTelephonyUtils extractCellInfoValue:infoCopy key:kCTCellMonitorMNC expectedClass:objc_opt_class() error:error];
+  v8 = [WISTelephonyUtils extractCellInfoValue:infoCopy key:kCTCellMonitorCellId expectedClass:objc_opt_class() error:error];
+  v9 = [WISTelephonyUtils getLacOrTacFromCellInfo:infoCopy error:error];
   v10 = v9;
   if (v6)
   {
@@ -385,36 +385,36 @@ LABEL_17:
 
   else
   {
-    v14 = [v6 stringValue];
-    v15 = [v7 stringValue];
-    v16 = [v10 stringValue];
-    v17 = [v8 stringValue];
-    v18 = [NSString stringWithFormat:@"%@.%@.%@.%@", v14, v15, v16, v17];
+    stringValue = [v6 stringValue];
+    stringValue2 = [v7 stringValue];
+    stringValue3 = [v10 stringValue];
+    stringValue4 = [v8 stringValue];
+    v18 = [NSString stringWithFormat:@"%@.%@.%@.%@", stringValue, stringValue2, stringValue3, stringValue4];
   }
 
   return v18;
 }
 
-+ (id)getPciFromCellInfo:(id)a3 error:(id *)a4
++ (id)getPciFromCellInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  v7 = [WISTelephonyUtils extractCellInfoValue:v6 key:kCTCellMonitorCellRadioAccessTechnology expectedClass:objc_opt_class() error:a4];
-  if (*a4)
+  infoCopy = info;
+  v7 = [WISTelephonyUtils extractCellInfoValue:infoCopy key:kCTCellMonitorCellRadioAccessTechnology expectedClass:objc_opt_class() error:error];
+  if (*error)
   {
     goto LABEL_2;
   }
 
   if (![WISTelephonyUtils isLteRat:v7]&& ![WISTelephonyUtils isNrRat:v7])
   {
-    [WISTelephonyUtils setError:a4 code:0 message:@"Cannot extract PCI: RAT is neither LTE nor NR"];
+    [WISTelephonyUtils setError:error code:0 message:@"Cannot extract PCI: RAT is neither LTE nor NR"];
 LABEL_2:
     v8 = 0;
     goto LABEL_10;
   }
 
-  v9 = [WISTelephonyUtils extractCellInfoValue:v6 key:kCTCellMonitorPCI expectedClass:objc_opt_class() error:a4];
+  v9 = [WISTelephonyUtils extractCellInfoValue:infoCopy key:kCTCellMonitorPCI expectedClass:objc_opt_class() error:error];
   v10 = v9;
-  if (!*a4)
+  if (!*error)
   {
     if ([v9 compare:&off_1002BF228] != -1)
     {
@@ -422,7 +422,7 @@ LABEL_2:
       goto LABEL_9;
     }
 
-    [a1 setError:a4 code:0 message:@"Reported PCI is less than zero"];
+    [self setError:error code:0 message:@"Reported PCI is less than zero"];
   }
 
   v8 = 0;
@@ -433,10 +433,10 @@ LABEL_10:
   return v8;
 }
 
-+ (id)getMAVNRNSANeighborCellInfo:(id)a3
++ (id)getMAVNRNSANeighborCellInfo:(id)info
 {
-  v3 = [a3 legacyInfo];
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  legacyInfo = [info legacyInfo];
+  if (legacyInfo && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
     v8 = &v7;
@@ -449,7 +449,7 @@ LABEL_10:
     v6[2] = sub_10010E99C;
     v6[3] = &unk_1002B2858;
     v6[4] = &v7;
-    [v3 enumerateObjectsUsingBlock:v6];
+    [legacyInfo enumerateObjectsUsingBlock:v6];
     v4 = v8[5];
     _Block_object_dispose(&v7, 8);
   }
@@ -462,40 +462,40 @@ LABEL_10:
   return v4;
 }
 
-+ (id)getRATFromCellMonitorString:(id)a3
++ (id)getRATFromCellMonitorString:(id)string
 {
-  v4 = a3;
-  if ([v4 isEqualToString:kCTCellMonitorRadioAccessTechnologyGSM])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:kCTCellMonitorRadioAccessTechnologyGSM])
   {
     v5 = "GSM";
   }
 
-  else if ([v4 isEqualToString:kCTCellMonitorRadioAccessTechnologyUMTS] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", kCTCellMonitorRadioAccessTechnologyUTRAN))
+  else if ([stringCopy isEqualToString:kCTCellMonitorRadioAccessTechnologyUMTS] & 1) != 0 || (objc_msgSend(stringCopy, "isEqualToString:", kCTCellMonitorRadioAccessTechnologyUTRAN))
   {
     v5 = "WCDMA";
   }
 
-  else if ([v4 isEqualToString:kCTCellMonitorRadioAccessTechnologyCDMA1x] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", kCTCellMonitorRadioAccessTechnologyCDMAEVDO))
+  else if ([stringCopy isEqualToString:kCTCellMonitorRadioAccessTechnologyCDMA1x] & 1) != 0 || (objc_msgSend(stringCopy, "isEqualToString:", kCTCellMonitorRadioAccessTechnologyCDMAEVDO))
   {
     v5 = "CDMA";
   }
 
-  else if ([v4 isEqualToString:kCTCellMonitorRadioAccessTechnologyCDMAHybrid])
+  else if ([stringCopy isEqualToString:kCTCellMonitorRadioAccessTechnologyCDMAHybrid])
   {
     v5 = "HYBRID";
   }
 
-  else if ([v4 isEqualToString:kCTCellMonitorRadioAccessTechnologyLTE])
+  else if ([stringCopy isEqualToString:kCTCellMonitorRadioAccessTechnologyLTE])
   {
     v5 = "LTE";
   }
 
-  else if ([v4 isEqualToString:kCTCellMonitorRadioAccessTechnologyUTRAN2])
+  else if ([stringCopy isEqualToString:kCTCellMonitorRadioAccessTechnologyUTRAN2])
   {
     v5 = "TDSCDMA";
   }
 
-  else if ([v4 isEqualToString:kCTCellMonitorRadioAccessTechnologyNR])
+  else if ([stringCopy isEqualToString:kCTCellMonitorRadioAccessTechnologyNR])
   {
     v5 = "NR_SA";
   }
@@ -505,22 +505,22 @@ LABEL_10:
     v5 = "Unknown";
   }
 
-  v6 = [a1 getNSString:v5];
+  v6 = [self getNSString:v5];
 
   return v6;
 }
 
-+ (id)getShortenedRegistrationStateString:(id)a3
++ (id)getShortenedRegistrationStateString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stringCopy = string;
+  v5 = stringCopy;
+  if (stringCopy)
   {
-    if ([v4 isEqualToString:kCTRegistrationStatusUnknown])
+    if ([stringCopy isEqualToString:kCTRegistrationStatusUnknown])
     {
       v6 = "Unknown";
 LABEL_16:
-      v7 = [a1 getNSString:v6];
+      v7 = [self getNSString:v6];
       goto LABEL_18;
     }
 
@@ -567,58 +567,58 @@ LABEL_18:
   return v7;
 }
 
-+ (BOOL)isRegistrationDisplayStatusInService:(id)a3
++ (BOOL)isRegistrationDisplayStatusInService:(id)service
 {
-  v3 = a3;
-  if ([v3 isEqualToString:kCTRegistrationStatusRegisteredHome] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", kCTRegistrationStatusRegisteredRoaming))
+  serviceCopy = service;
+  if ([serviceCopy isEqualToString:kCTRegistrationStatusRegisteredHome] & 1) != 0 || (objc_msgSend(serviceCopy, "isEqualToString:", kCTRegistrationStatusRegisteredRoaming))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:kCTRegistrationStatusEmergencyOnly];
+    v4 = [serviceCopy isEqualToString:kCTRegistrationStatusEmergencyOnly];
   }
 
   return v4;
 }
 
-+ (BOOL)isRegistrationDisplayStatusOutOfService:(id)a3
++ (BOOL)isRegistrationDisplayStatusOutOfService:(id)service
 {
-  v3 = a3;
-  if ([v3 isEqualToString:kCTRegistrationStatusNotRegistered])
+  serviceCopy = service;
+  if ([serviceCopy isEqualToString:kCTRegistrationStatusNotRegistered])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:kCTRegistrationStatusSearching];
+    v4 = [serviceCopy isEqualToString:kCTRegistrationStatusSearching];
   }
 
   return v4;
 }
 
-+ (id)getPLMNFromMCC:(id)a3 AndMNC:(id)a4
++ (id)getPLMNFromMCC:(id)c AndMNC:(id)nC
 {
-  v5 = a3;
-  v6 = a4;
+  cCopy = c;
+  nCCopy = nC;
   v7 = objc_alloc_init(NSNumberFormatter);
   [v7 setMinimumIntegerDigits:3];
-  v8 = [v7 stringFromNumber:v5];
-  v9 = [v7 stringFromNumber:v6];
+  v8 = [v7 stringFromNumber:cCopy];
+  v9 = [v7 stringFromNumber:nCCopy];
   v10 = [NSString stringWithFormat:@"%@%@", v8, v9];
 
   return v10;
 }
 
-+ (id)getRATFromCellInfo:(id)a3 error:(id *)a4
++ (id)getRATFromCellInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  v7 = [WISTelephonyUtils extractCellInfoValue:v6 key:kCTCellMonitorCellRadioAccessTechnology expectedClass:objc_opt_class() error:a4];
+  infoCopy = info;
+  v7 = [WISTelephonyUtils extractCellInfoValue:infoCopy key:kCTCellMonitorCellRadioAccessTechnology expectedClass:objc_opt_class() error:error];
   v8 = v7;
   v9 = 0;
-  if (!*a4)
+  if (!*error)
   {
     if (v7)
     {
@@ -626,11 +626,11 @@ LABEL_18:
       if ([WISTelephonyUtils isLteRat:v8])
       {
         v14 = 0;
-        v10 = [WISTelephonyUtils extractCellInfoValue:v6 key:kCTCellMonitorDeploymentType expectedClass:objc_opt_class() error:&v14];
+        v10 = [WISTelephonyUtils extractCellInfoValue:infoCopy key:kCTCellMonitorDeploymentType expectedClass:objc_opt_class() error:&v14];
         v11 = v14;
         if (!v11 && v10 && ([v10 isEqualToNumber:&off_1002BF228] & 1) == 0 && (objc_msgSend(v10, "isEqualToNumber:", &off_1002BF330) & 1) == 0)
         {
-          v12 = [a1 getNSString:"NR_NSA"];
+          v12 = [self getNSString:"NR_NSA"];
 
           v9 = v12;
         }
@@ -641,64 +641,64 @@ LABEL_18:
   return v9;
 }
 
-+ (int)insightRATFromBasebandSysMode:(id)a3
++ (int)insightRATFromBasebandSysMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_MODE_LTE"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"SYS_MODE_LTE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_NR5G"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_NR5G"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_CDMA"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"SYS_MODE_UMTS"))
+  else if ([modeCopy isEqualToString:@"SYS_MODE_CDMA"] & 1) != 0 || (objc_msgSend(modeCopy, "isEqualToString:", @"SYS_MODE_UMTS"))
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GSM"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_GSM"])
   {
     v4 = 6;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"SYS_MODE_WCDMA"];
+    v4 = [modeCopy isEqualToString:@"SYS_MODE_WCDMA"];
   }
 
   return v4;
 }
 
-+ (id)getCellMonitorRATFromEnumValue:(int64_t)a3
++ (id)getCellMonitorRATFromEnumValue:(int64_t)value
 {
-  if ((a3 - 1) > 7)
+  if ((value - 1) > 7)
   {
     v3 = &kCTCellMonitorRadioAccessTechnologyUnknown;
   }
 
   else
   {
-    v3 = *(&off_1002B2878 + a3 - 1);
+    v3 = *(&off_1002B2878 + value - 1);
   }
 
   return *v3;
 }
 
-+ (void)setError:(id *)a3 code:(int64_t)a4 message:(id)a5
++ (void)setError:(id *)error code:(int64_t)code message:(id)message
 {
-  v9 = a5;
+  messageCopy = message;
   v7 = +[NSMutableDictionary dictionary];
-  [v7 setValue:v9 forKey:NSLocalizedDescriptionKey];
+  [v7 setValue:messageCopy forKey:NSLocalizedDescriptionKey];
   v8 = [NSString stringWithUTF8String:"WISTelephonyUtils"];
-  *a3 = [NSError errorWithDomain:v8 code:a4 userInfo:v7];
+  *error = [NSError errorWithDomain:v8 code:code userInfo:v7];
 }
 
-+ (id)getNSString:(const char *)a3
++ (id)getNSString:(const char *)string
 {
-  v3 = [NSString stringWithUTF8String:a3];
+  v3 = [NSString stringWithUTF8String:string];
   v4 = v3;
   if (v3)
   {

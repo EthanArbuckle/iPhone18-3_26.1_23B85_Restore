@@ -1,59 +1,59 @@
 @interface OverrideCardViewCell
-- (OverrideCardViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)setSeparatorStyle:(int64_t)a3;
+- (OverrideCardViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)setSeparatorStyle:(int64_t)style;
 @end
 
 @implementation OverrideCardViewCell
 
-- (OverrideCardViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (OverrideCardViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v41.receiver = self;
   v41.super_class = OverrideCardViewCell;
-  v9 = [(OverrideCardViewCell *)&v41 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(OverrideCardViewCell *)&v41 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"OverrideCardViewCellSubTitleKey"];
-    v11 = [v8 objectForKeyedSubscript:@"OverrideCardViewCellActionTitleKey"];
-    v12 = [v8 objectForKeyedSubscript:@"OverrideCardViewCellActionKey"];
+    v10 = [specifierCopy objectForKeyedSubscript:@"OverrideCardViewCellSubTitleKey"];
+    v11 = [specifierCopy objectForKeyedSubscript:@"OverrideCardViewCellActionTitleKey"];
+    v12 = [specifierCopy objectForKeyedSubscript:@"OverrideCardViewCellActionKey"];
     v13 = [_TtC14BatteryUsageUI26OverrideCardViewController createWithSubtitle:v10 actionTitle:v11 action:v12];
 
-    v14 = [v13 view];
-    [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [v13 view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v15 = [(OverrideCardViewCell *)v9 contentView];
-    v16 = [v13 view];
-    [v15 addSubview:v16];
+    contentView = [(OverrideCardViewCell *)v9 contentView];
+    view2 = [v13 view];
+    [contentView addSubview:view2];
 
-    v40 = [v13 view];
-    v38 = [v40 topAnchor];
-    v39 = [(OverrideCardViewCell *)v9 contentView];
-    v37 = [v39 topAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37];
+    view3 = [v13 view];
+    topAnchor = [view3 topAnchor];
+    contentView2 = [(OverrideCardViewCell *)v9 contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v36 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v42[0] = v36;
-    v35 = [v13 view];
-    v32 = [v35 leadingAnchor];
-    v33 = [(OverrideCardViewCell *)v9 contentView];
-    v31 = [v33 leadingAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31];
+    view4 = [v13 view];
+    leadingAnchor = [view4 leadingAnchor];
+    contentView3 = [(OverrideCardViewCell *)v9 contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v42[1] = v30;
     v34 = v13;
-    v29 = [v13 view];
-    v27 = [v29 trailingAnchor];
-    v17 = [(OverrideCardViewCell *)v9 contentView];
-    v18 = [v17 trailingAnchor];
-    v19 = [v27 constraintEqualToAnchor:v18];
+    view5 = [v13 view];
+    trailingAnchor = [view5 trailingAnchor];
+    contentView4 = [(OverrideCardViewCell *)v9 contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v42[2] = v19;
-    v20 = [v13 view];
-    [v20 bottomAnchor];
-    v22 = v21 = v8;
-    v23 = [(OverrideCardViewCell *)v9 contentView];
-    v24 = [v23 bottomAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24];
+    view6 = [v13 view];
+    [view6 bottomAnchor];
+    v22 = v21 = specifierCopy;
+    contentView5 = [(OverrideCardViewCell *)v9 contentView];
+    bottomAnchor = [contentView5 bottomAnchor];
+    v25 = [v22 constraintEqualToAnchor:bottomAnchor];
     v42[3] = v25;
     v28 = [NSArray arrayWithObjects:v42 count:4];
 
-    v8 = v21;
+    specifierCopy = v21;
     [NSLayoutConstraint activateConstraints:v28];
     [(OverrideCardViewCell *)v9 setNeedsLayout];
   }
@@ -61,7 +61,7 @@
   return v9;
 }
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
   v3.receiver = self;
   v3.super_class = OverrideCardViewCell;

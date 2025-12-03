@@ -1,24 +1,24 @@
 @interface UIView
-+ (id)fr_adjacentSiblingViewsFromViews:(id)a3;
-+ (void)fr_animateWithDuration:(double)a3 delay:(double)a4 timingFunction:(id)a5 options:(unint64_t)a6 animations:(id)a7 completion:(id)a8;
-- (BOOL)fr_hasAncestorOfType:(Class)a3;
++ (id)fr_adjacentSiblingViewsFromViews:(id)views;
++ (void)fr_animateWithDuration:(double)duration delay:(double)delay timingFunction:(id)function options:(unint64_t)options animations:(id)animations completion:(id)completion;
+- (BOOL)fr_hasAncestorOfType:(Class)type;
 - (BOOL)visible;
-- (CGRect)fr_adjustedWidthAndXOriginFromFrame:(CGRect)a3;
+- (CGRect)fr_adjustedWidthAndXOriginFromFrame:(CGRect)frame;
 - (double)fr_height;
 - (double)fr_width;
-- (id)fr_firstAncestorOfType:(Class)a3;
-- (id)fr_selfOrFirstAncestorOfType:(Class)a3;
-- (id)fr_subviewsOfType:(Class)a3;
+- (id)fr_firstAncestorOfType:(Class)type;
+- (id)fr_selfOrFirstAncestorOfType:(Class)type;
+- (id)fr_subviewsOfType:(Class)type;
 - (void)fr_accessibilityWorkaroundFor20458918ByClearingParentTableCellsChildCache;
-- (void)fr_recolorLabelSubviewsWithColor:(id)a3;
-- (void)fr_setBlurred:(BOOL)a3 radius:(double)a4 animated:(BOOL)a5 duration:(double)a6;
-- (void)fr_setHeight:(double)a3;
-- (void)fr_setMaxX:(double)a3;
-- (void)fr_setMaxY:(double)a3;
-- (void)fr_setMinX:(double)a3;
-- (void)fr_setMinY:(double)a3;
+- (void)fr_recolorLabelSubviewsWithColor:(id)color;
+- (void)fr_setBlurred:(BOOL)blurred radius:(double)radius animated:(BOOL)animated duration:(double)duration;
+- (void)fr_setHeight:(double)height;
+- (void)fr_setMaxX:(double)x;
+- (void)fr_setMaxY:(double)y;
+- (void)fr_setMinX:(double)x;
+- (void)fr_setMinY:(double)y;
 - (void)roundOrigin;
-- (void)setFr_width:(double)a3;
+- (void)setFr_width:(double)fr_width;
 @end
 
 @implementation UIView
@@ -32,28 +32,28 @@
   [(UIView *)self setFrame:v4, v6];
 }
 
-- (void)fr_setMinX:(double)a3
+- (void)fr_setMinX:(double)x
 {
   [(UIView *)self frame];
 
-  [(UIView *)self setFrame:a3];
+  [(UIView *)self setFrame:x];
 }
 
-- (void)fr_setMaxX:(double)a3
+- (void)fr_setMaxX:(double)x
 {
   [(UIView *)self frame];
 
-  [(UIView *)self setFrame:a3 - v5];
+  [(UIView *)self setFrame:x - v5];
 }
 
-- (void)fr_setMinY:(double)a3
+- (void)fr_setMinY:(double)y
 {
   [(UIView *)self frame];
 
   [(UIView *)self setFrame:?];
 }
 
-- (void)fr_setMaxY:(double)a3
+- (void)fr_setMaxY:(double)y
 {
   [(UIView *)self frame];
 
@@ -67,7 +67,7 @@
   return CGRectGetWidth(*&v2);
 }
 
-- (void)setFr_width:(double)a3
+- (void)setFr_width:(double)fr_width
 {
   [(UIView *)self frame];
 
@@ -81,7 +81,7 @@
   return CGRectGetHeight(*&v2);
 }
 
-- (void)fr_setHeight:(double)a3
+- (void)fr_setHeight:(double)height
 {
   [(UIView *)self frame];
 
@@ -98,26 +98,26 @@
   }
 }
 
-- (BOOL)fr_hasAncestorOfType:(Class)a3
+- (BOOL)fr_hasAncestorOfType:(Class)type
 {
-  v3 = [(UIView *)self fr_firstAncestorOfType:a3];
+  v3 = [(UIView *)self fr_firstAncestorOfType:type];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)fr_firstAncestorOfType:(Class)a3
+- (id)fr_firstAncestorOfType:(Class)type
 {
-  v3 = [(UIView *)self superview];
-  if (v3)
+  superview = [(UIView *)self superview];
+  if (superview)
   {
-    v4 = v3;
+    v4 = superview;
     while ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = [v4 superview];
+      superview2 = [v4 superview];
 
-      v4 = v5;
-      if (!v5)
+      v4 = superview2;
+      if (!superview2)
       {
         goto LABEL_5;
       }
@@ -135,18 +135,18 @@ LABEL_5:
   return v6;
 }
 
-- (id)fr_selfOrFirstAncestorOfType:(Class)a3
+- (id)fr_selfOrFirstAncestorOfType:(Class)type
 {
-  v3 = self;
-  if (v3)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v4 = v3;
+    v4 = selfCopy;
     while ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = [v4 superview];
+      superview = [v4 superview];
 
-      v4 = v5;
-      if (!v5)
+      v4 = superview;
+      if (!superview)
       {
         goto LABEL_5;
       }
@@ -164,15 +164,15 @@ LABEL_5:
   return v6;
 }
 
-- (id)fr_subviewsOfType:(Class)a3
+- (id)fr_subviewsOfType:(Class)type
 {
   v4 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(UIView *)self subviews];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subviews = [(UIView *)self subviews];
+  v6 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -183,7 +183,7 @@ LABEL_5:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -193,7 +193,7 @@ LABEL_5:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -204,11 +204,11 @@ LABEL_5:
   return v11;
 }
 
-- (CGRect)fr_adjustedWidthAndXOriginFromFrame:(CGRect)a3
+- (CGRect)fr_adjustedWidthAndXOriginFromFrame:(CGRect)frame
 {
-  width = a3.size.width;
-  x = a3.origin.x;
-  [(UIView *)self frame:a3.origin.x];
+  width = frame.size.width;
+  x = frame.origin.x;
+  [(UIView *)self frame:frame.origin.x];
   v7 = x;
   v8 = width;
   result.size.height = v6;
@@ -218,83 +218,83 @@ LABEL_5:
   return result;
 }
 
-+ (void)fr_animateWithDuration:(double)a3 delay:(double)a4 timingFunction:(id)a5 options:(unint64_t)a6 animations:(id)a7 completion:(id)a8
++ (void)fr_animateWithDuration:(double)duration delay:(double)delay timingFunction:(id)function options:(unint64_t)options animations:(id)animations completion:(id)completion
 {
-  v15 = a7;
-  v13 = a8;
-  if (a5)
+  animationsCopy = animations;
+  completionCopy = completion;
+  if (function)
   {
-    v14 = a5;
-    a5 = objc_alloc_init(FRCustomAnimationCurveFactory);
-    [a5 setTimingFunction:v14];
+    functionCopy = function;
+    function = objc_alloc_init(FRCustomAnimationCurveFactory);
+    [function setTimingFunction:functionCopy];
 
-    a6 |= 0x60000uLL;
+    options |= 0x60000uLL;
   }
 
-  [UIView _animateWithDuration:a6 delay:a5 options:v15 factory:v13 animations:a3 completion:a4];
+  [UIView _animateWithDuration:options delay:function options:animationsCopy factory:completionCopy animations:duration completion:delay];
 }
 
-- (void)fr_setBlurred:(BOOL)a3 radius:(double)a4 animated:(BOOL)a5 duration:(double)a6
+- (void)fr_setBlurred:(BOOL)blurred radius:(double)radius animated:(BOOL)animated duration:(double)duration
 {
-  v7 = a5;
-  v9 = a3;
+  animatedCopy = animated;
+  blurredCopy = blurred;
   if (!UIAccessibilityIsReduceTransparencyEnabled())
   {
     v12 = +[UIScreen mainScreen];
     [v12 scale];
     v14 = v13;
 
-    v15 = [NSNumber numberWithDouble:a4];
+    v15 = [NSNumber numberWithDouble:radius];
     v16 = v15;
-    if (v9)
+    if (blurredCopy)
     {
-      if (v7)
+      if (animatedCopy)
       {
         v17 = v15;
         v16 = &off_1000CB600;
         v18 = 0.7;
         v19 = v14;
 LABEL_10:
-        v20 = [(UIView *)self layer];
-        [v20 setShouldRasterize:1];
+        layer = [(UIView *)self layer];
+        [layer setShouldRasterize:1];
 
-        v21 = [(UIView *)self layer];
-        [v21 setRasterizationScale:v18];
+        layer2 = [(UIView *)self layer];
+        [layer2 setRasterizationScale:v18];
 
         +[CATransaction begin];
-        [CATransaction setAnimationDuration:a6];
+        [CATransaction setAnimationDuration:duration];
         v42 = _NSConcreteStackBlock;
         v43 = 3221225472;
         v44 = sub_100065B6C;
         v45 = &unk_1000C6508;
-        v46 = self;
+        selfCopy = self;
         v22 = v17;
         v47 = v22;
         v48 = @"filters.gaussianBlur.inputRadius";
-        v51 = v9;
+        v51 = blurredCopy;
         v49 = 0x3FE6666666666666;
         v50 = v14;
         [CATransaction setCompletionBlock:&v42];
-        v23 = [CAFilter filterWithType:kCAFilterGaussianBlur, v42, v43, v44, v45, v46];
-        [v23 setName:@"gaussianBlur"];
-        [v23 setCachesInputImage:0];
-        [v23 setValue:v16 forKey:@"inputRadius"];
-        [v23 setValue:@"low" forKey:@"inputQuality"];
-        v24 = [(UIView *)self layer];
-        v54 = v23;
+        selfCopy = [CAFilter filterWithType:kCAFilterGaussianBlur, v42, v43, v44, v45, selfCopy];
+        [selfCopy setName:@"gaussianBlur"];
+        [selfCopy setCachesInputImage:0];
+        [selfCopy setValue:v16 forKey:@"inputRadius"];
+        [selfCopy setValue:@"low" forKey:@"inputQuality"];
+        layer3 = [(UIView *)self layer];
+        v54 = selfCopy;
         v25 = [NSArray arrayWithObjects:&v54 count:1];
-        [v24 setFilters:v25];
+        [layer3 setFilters:v25];
 
         v26 = [CABasicAnimation animationWithKeyPath:@"filters.gaussianBlur.inputRadius"];
         [v26 setRemovedOnCompletion:0];
         [v26 setFillMode:kCAFillModeForwards];
         [v26 setFromValue:v16];
         [v26 setToValue:v22];
-        v27 = [(UIView *)self layer];
-        [v27 addAnimation:v26 forKey:@"filters.gaussianBlur.inputRadius"];
+        layer4 = [(UIView *)self layer];
+        [layer4 addAnimation:v26 forKey:@"filters.gaussianBlur.inputRadius"];
 
         +[CATransaction begin];
-        [CATransaction setAnimationDuration:a6 * 0.1];
+        [CATransaction setAnimationDuration:duration * 0.1];
         v28 = [CABasicAnimation animationWithKeyPath:@"rasterizationScale"];
         [v28 setRemovedOnCompletion:1];
         v29 = [NSNumber numberWithDouble:v19];
@@ -304,15 +304,15 @@ LABEL_10:
         [v28 setToValue:v30];
 
         [v28 setFillMode:kCAFillModeBackwards];
-        if (!v9)
+        if (!blurredCopy)
         {
-          v31 = [(UIView *)self layer];
-          [v31 convertTime:0 fromLayer:CACurrentMediaTime()];
-          [v28 setBeginTime:v32 + a6 - a6 * 0.1];
+          layer5 = [(UIView *)self layer];
+          [layer5 convertTime:0 fromLayer:CACurrentMediaTime()];
+          [v28 setBeginTime:v32 + duration - duration * 0.1];
         }
 
-        v33 = [(UIView *)self layer];
-        [v33 addAnimation:v28 forKey:@"rasterizationScale"];
+        layer6 = [(UIView *)self layer];
+        [layer6 addAnimation:v28 forKey:@"rasterizationScale"];
 
         +[CATransaction commit];
         +[CATransaction commit];
@@ -321,20 +321,20 @@ LABEL_10:
       }
 
       v34 = [CAFilter filterWithType:kCAFilterGaussianBlur];
-      v35 = [(UIView *)self layer];
-      [v35 setShouldRasterize:1];
+      layer7 = [(UIView *)self layer];
+      [layer7 setShouldRasterize:1];
 
-      v36 = [(UIView *)self layer];
-      [v36 setRasterizationScale:0.7];
+      layer8 = [(UIView *)self layer];
+      [layer8 setRasterizationScale:0.7];
 
       [v34 setName:@"gaussianBlur"];
       [v34 setCachesInputImage:0];
       [v34 setValue:v16 forKey:@"inputRadius"];
       [v34 setValue:@"low" forKey:@"inputQuality"];
-      v37 = [(UIView *)self layer];
+      layer9 = [(UIView *)self layer];
       v53 = v34;
       v38 = [NSArray arrayWithObjects:&v53 count:1];
-      [v37 setFilters:v38];
+      [layer9 setFilters:v38];
 
       v22 = v16;
       v16 = &off_1000CB600;
@@ -342,7 +342,7 @@ LABEL_10:
 
     else
     {
-      if (v7)
+      if (animatedCopy)
       {
         v17 = &off_1000CB600;
         v19 = 0.7;
@@ -350,14 +350,14 @@ LABEL_10:
         goto LABEL_10;
       }
 
-      v39 = [(UIView *)self layer];
-      [v39 setFilters:&__NSArray0__struct];
+      layer10 = [(UIView *)self layer];
+      [layer10 setFilters:&__NSArray0__struct];
 
-      v40 = [(UIView *)self layer];
-      [v40 setShouldRasterize:0];
+      layer11 = [(UIView *)self layer];
+      [layer11 setShouldRasterize:0];
 
-      v41 = [(UIView *)self layer];
-      [v41 setRasterizationScale:1.0];
+      layer12 = [(UIView *)self layer];
+      [layer12 setRasterizationScale:1.0];
 
       v22 = &off_1000CB600;
     }
@@ -372,19 +372,19 @@ LABEL_15:
   v52[0] = _NSConcreteStackBlock;
   v52[2] = sub_100065B60;
   v52[3] = &unk_1000C5A18;
-  if (v9)
+  if (blurredCopy)
   {
     v11 = 0.0;
   }
 
   v52[4] = self;
   *&v52[5] = v11;
-  [UIView fr_animateWithDuration:0 delay:0 timingFunction:v52 options:0 animations:a6 completion:?];
+  [UIView fr_animateWithDuration:0 delay:0 timingFunction:v52 options:0 animations:duration completion:?];
 }
 
-+ (id)fr_adjacentSiblingViewsFromViews:(id)a3
++ (id)fr_adjacentSiblingViewsFromViews:(id)views
 {
-  v3 = a3;
+  viewsCopy = views;
   v4 = +[NSMutableArray array];
   v5 = [NSHashTable hashTableWithOptions:512];
   v6 = [NSHashTable hashTableWithOptions:512];
@@ -392,7 +392,7 @@ LABEL_15:
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v7 = v3;
+  v7 = viewsCopy;
   v8 = [v7 countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v8)
   {
@@ -439,16 +439,16 @@ LABEL_15:
           objc_enumerationMutation(obj);
         }
 
-        v16 = [*(*(&v35 + 1) + 8 * v15) superview];
-        if (([v6 containsObject:v16] & 1) == 0)
+        superview = [*(*(&v35 + 1) + 8 * v15) superview];
+        if (([v6 containsObject:superview] & 1) == 0)
         {
           v17 = +[NSMutableArray array];
           v31 = 0u;
           v32 = 0u;
           v33 = 0u;
           v34 = 0u;
-          v18 = [v16 subviews];
-          v19 = [v18 countByEnumeratingWithState:&v31 objects:v43 count:16];
+          subviews = [superview subviews];
+          v19 = [subviews countByEnumeratingWithState:&v31 objects:v43 count:16];
           if (v19)
           {
             v20 = v19;
@@ -459,7 +459,7 @@ LABEL_15:
               {
                 if (*v32 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(subviews);
                 }
 
                 v23 = *(*(&v31 + 1) + 8 * j);
@@ -477,7 +477,7 @@ LABEL_15:
                 }
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v31 objects:v43 count:16];
+              v20 = [subviews countByEnumeratingWithState:&v31 objects:v43 count:16];
             }
 
             while (v20);
@@ -490,7 +490,7 @@ LABEL_15:
           }
 
           v6 = v28;
-          [v28 addObject:v16];
+          [v28 addObject:superview];
 
           v14 = v27;
           v13 = v29;
@@ -509,15 +509,15 @@ LABEL_15:
   return v4;
 }
 
-- (void)fr_recolorLabelSubviewsWithColor:(id)a3
+- (void)fr_recolorLabelSubviewsWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(UIView *)self subviews];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  subviews = [(UIView *)self subviews];
+  v6 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -529,26 +529,26 @@ LABEL_15:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v10 setTextColor:v4];
+          [v10 setTextColor:colorCopy];
         }
 
         else
         {
-          [v10 fr_recolorLabelSubviewsWithColor:v4];
+          [v10 fr_recolorLabelSubviewsWithColor:colorCopy];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);

@@ -1,17 +1,17 @@
 @interface IMCoreRecentsMetadataBuilder
-+ (id)deprecatedReferenceURLsForMessageGUID:(id)a3;
-+ (id)metadataDictionaryForMessageID:(id)a3 senderID:(id)a4 date:(id)a5;
++ (id)deprecatedReferenceURLsForMessageGUID:(id)d;
++ (id)metadataDictionaryForMessageID:(id)d senderID:(id)iD date:(id)date;
 @end
 
 @implementation IMCoreRecentsMetadataBuilder
 
-+ (id)deprecatedReferenceURLsForMessageGUID:(id)a3
++ (id)deprecatedReferenceURLsForMessageGUID:(id)d
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [v3 stringWithFormat:@"sms://open?message-guid=%@", v4];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"sms:/open?message-guid=%@", v4, v5];
+  dCopy = d;
+  dCopy = [v3 stringWithFormat:@"sms://open?message-guid=%@", dCopy];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"sms:/open?message-guid=%@", dCopy, dCopy];
 
   v9[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
@@ -19,12 +19,12 @@
   return v7;
 }
 
-+ (id)metadataDictionaryForMessageID:(id)a3 senderID:(id)a4 date:(id)a5
++ (id)metadataDictionaryForMessageID:(id)d senderID:(id)iD date:(id)date
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  dateCopy = date;
   if (qword_1EB30AF28 != -1)
   {
     sub_1A88C25C0();
@@ -60,9 +60,9 @@
     sub_1A88C2638();
   }
 
-  if (v9)
+  if (iDCopy)
   {
-    if (v10)
+    if (dateCopy)
     {
       goto LABEL_28;
     }
@@ -79,8 +79,8 @@
     }
   }
 
-  v9 = &stru_1F1BB91F0;
-  if (!v10)
+  iDCopy = &stru_1F1BB91F0;
+  if (!dateCopy)
   {
 LABEL_23:
     if (IMOSLoggingEnabled())
@@ -92,20 +92,20 @@ LABEL_23:
       }
     }
 
-    v10 = [MEMORY[0x1E695DF00] now];
+    dateCopy = [MEMORY[0x1E695DF00] now];
   }
 
 LABEL_28:
-  v13 = [(__CFString *)v9 _appearsToBePhoneNumber];
+  _appearsToBePhoneNumber = [(__CFString *)iDCopy _appearsToBePhoneNumber];
   v14 = IMNormalizeFormattedString();
   v15 = &unk_1EB30AF40;
-  if (!v13)
+  if (!_appearsToBePhoneNumber)
   {
     v15 = &unk_1EB30AF30;
   }
 
   v16 = *v15;
-  v17 = [a1 referenceURLForMessageGUID:v8];
+  v17 = [self referenceURLForMessageGUID:dCopy];
   if (v14)
   {
     if (v16)
@@ -149,12 +149,12 @@ LABEL_43:
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
   v24[0] = qword_1EB30AF50;
   v24[1] = qword_1EB30AF90;
-  v25[0] = v10;
+  v25[0] = dateCopy;
   v25[1] = v20;
   v24[2] = qword_1EB30AF60;
   v24[3] = @"messages:message-guid";
   v25[2] = v17;
-  v25[3] = v8;
+  v25[3] = dCopy;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:4];
 
   return v21;

@@ -5,49 +5,49 @@
 + (BOOL)processRecentHighlights;
 + (BOOL)processUnprocessedMomentLocations;
 + (BOOL)updateHighlightTitles;
-+ (Class)propertySetClassForPropertySet:(id)a3;
-+ (id)_choosePrivateOrSharedRelationshipForHighlight:(id)a3 givenFilter:(unsigned __int16)a4 privateHandler:(id)a5 sharedHandler:(id)a6;
-+ (id)_fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs:(id)a3 photoLibrary:(id)a4;
-+ (id)_fetchTripHighlightUUIDByAssetUUIDForAssetUUIDs:(id)a3 photoLibrary:(id)a4;
-+ (id)collageAssetsInverseRelationshipPredicateForDayHighlight:(id)a3 forHighlightFilter:(unsigned __int16)a4;
++ (Class)propertySetClassForPropertySet:(id)set;
++ (id)_choosePrivateOrSharedRelationshipForHighlight:(id)highlight givenFilter:(unsigned __int16)filter privateHandler:(id)handler sharedHandler:(id)sharedHandler;
++ (id)_fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs:(id)ds photoLibrary:(id)library;
++ (id)_fetchTripHighlightUUIDByAssetUUIDForAssetUUIDs:(id)ds photoLibrary:(id)library;
++ (id)collageAssetsInverseRelationshipPredicateForDayHighlight:(id)highlight forHighlightFilter:(unsigned __int16)filter;
 + (id)dateRangeTitleGenerator;
 + (id)entityKeyMap;
-+ (id)fetchAllSharedLibrarySharingSuggestionHighlightsWithOptions:(id)a3;
-+ (id)fetchChildDayGroupHighlightsForHighlight:(id)a3 options:(id)a4;
-+ (id)fetchChildHighlightsForHighlight:(id)a3 options:(id)a4;
-+ (id)fetchHighlightsInSharedLibrarySharingSuggestions:(id)a3;
-+ (id)fetchParentDayGroupHighlightForHighlight:(id)a3 options:(id)a4;
-+ (id)fetchParentHighlightForHighlight:(id)a3 options:(id)a4;
-+ (id)fetchParentHighlightsForHighlights:(id)a3 options:(id)a4;
-+ (id)fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs:(id)a3 options:(id)a4;
-+ (id)fetchPhotosHighlightUUIDByAssetUUIDForAssets:(id)a3 options:(id)a4;
-+ (id)fetchPhotosHighlightUUIDByMomentUUIDForMomentUUIDs:(id)a3 options:(id)a4;
-+ (id)fetchPredicateForSharingFilter:(unsigned __int16)a3;
-+ (id)fetchPredicateFromComparisonPredicate:(id)a3 options:(id)a4;
-+ (id)fetchSharedLibrarySharingSuggestionsWithOptions:(id)a3;
-+ (id)fetchTripHighlightUUIDByAssetUUIDForAssetUUIDs:(id)a3 options:(id)a4;
-+ (id)keyAssetInverseRelationshipPredicateForHighlight:(id)a3 forHighlightFilter:(unsigned __int16)a4;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
++ (id)fetchAllSharedLibrarySharingSuggestionHighlightsWithOptions:(id)options;
++ (id)fetchChildDayGroupHighlightsForHighlight:(id)highlight options:(id)options;
++ (id)fetchChildHighlightsForHighlight:(id)highlight options:(id)options;
++ (id)fetchHighlightsInSharedLibrarySharingSuggestions:(id)suggestions;
++ (id)fetchParentDayGroupHighlightForHighlight:(id)highlight options:(id)options;
++ (id)fetchParentHighlightForHighlight:(id)highlight options:(id)options;
++ (id)fetchParentHighlightsForHighlights:(id)highlights options:(id)options;
++ (id)fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs:(id)ds options:(id)options;
++ (id)fetchPhotosHighlightUUIDByAssetUUIDForAssets:(id)assets options:(id)options;
++ (id)fetchPhotosHighlightUUIDByMomentUUIDForMomentUUIDs:(id)ds options:(id)options;
++ (id)fetchPredicateForSharingFilter:(unsigned __int16)filter;
++ (id)fetchPredicateFromComparisonPredicate:(id)predicate options:(id)options;
++ (id)fetchSharedLibrarySharingSuggestionsWithOptions:(id)options;
++ (id)fetchTripHighlightUUIDByAssetUUIDForAssetUUIDs:(id)ds options:(id)options;
++ (id)keyAssetInverseRelationshipPredicateForHighlight:(id)highlight forHighlightFilter:(unsigned __int16)filter;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
 + (id)propertySetAccessorsByPropertySet;
-+ (id)propertySetsForPropertyFetchHints:(unint64_t)a3;
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4;
-+ (unint64_t)propertyFetchHintsForPropertySets:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)propertySetsForPropertyFetchHints:(unint64_t)hints;
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path;
++ (unint64_t)propertyFetchHintsForPropertySets:(id)sets;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)localEndDate;
 - (NSDate)localStartDate;
 - (NSString)shortDateDescription;
 - (NSString)subtitle;
 - (NSString)verboseSmartDescription;
-- (PHPhotosHighlight)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
-- (id)dateDescriptionWithOptions:(unint64_t)a3;
+- (PHPhotosHighlight)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
+- (id)dateDescriptionWithOptions:(unint64_t)options;
 - (id)description;
-- (id)keyAssetObjectIDForKindWithFilter:(unsigned __int16)a3;
+- (id)keyAssetObjectIDForKindWithFilter:(unsigned __int16)filter;
 - (id)localizedSubtitle;
 - (id)localizedTitle;
 - (id)title;
 - (int64_t)assetCollectionSubtype;
 - (unint64_t)assetsCount;
-- (unint64_t)countForCurationType:(unsigned __int16)a3;
+- (unint64_t)countForCurationType:(unsigned __int16)type;
 - (unint64_t)estimatedPhotosCount;
 - (unint64_t)estimatedVideosCount;
 - (unint64_t)extendedCount;
@@ -71,23 +71,23 @@
   v15.receiver = self;
   v15.super_class = PHPhotosHighlight;
   v3 = [(PHAssetCollection *)&v15 description];
-  v4 = [(PHPhotosHighlight *)self dateDescription];
-  v5 = [(PHPhotosHighlight *)self smartDescription];
-  v6 = [(PHPhotosHighlight *)self verboseSmartDescription];
-  v7 = [(PHAssetCollection *)self startDate];
-  v8 = [(PHAssetCollection *)self endDate];
+  dateDescription = [(PHPhotosHighlight *)self dateDescription];
+  smartDescription = [(PHPhotosHighlight *)self smartDescription];
+  verboseSmartDescription = [(PHPhotosHighlight *)self verboseSmartDescription];
+  startDate = [(PHAssetCollection *)self startDate];
+  endDate = [(PHAssetCollection *)self endDate];
   [(PHPhotosHighlight *)self kind];
   v9 = PLDescriptionForPhotosHighlightKind();
   [(PHPhotosHighlight *)self type];
   v10 = PLDescriptionForPhotosHighlightType();
-  v11 = [(PHPhotosHighlight *)self isRecent];
+  isRecent = [(PHPhotosHighlight *)self isRecent];
   v12 = @"NO";
-  if (v11)
+  if (isRecent)
   {
     v12 = @"YES";
   }
 
-  v13 = [v3 stringByAppendingFormat:@"%@ - %@, verboseSmartDescription: %@, [%@ - %@], kind: %@, type: %@, isRecent: %@", v4, v5, v6, v7, v8, v9, v10, v12];
+  v13 = [v3 stringByAppendingFormat:@"%@ - %@, verboseSmartDescription: %@, [%@ - %@], kind: %@, type: %@, isRecent: %@", dateDescription, smartDescription, verboseSmartDescription, startDate, endDate, v9, v10, v12];
 
   return v13;
 }
@@ -115,12 +115,12 @@
   }
 }
 
-- (id)keyAssetObjectIDForKindWithFilter:(unsigned __int16)a3
+- (id)keyAssetObjectIDForKindWithFilter:(unsigned __int16)filter
 {
-  v3 = a3;
+  filterCopy = filter;
   v5 = objc_opt_class();
 
-  return [v5 _keyAssetObjectIDForHighlight:self filter:v3];
+  return [v5 _keyAssetObjectIDForHighlight:self filter:filterCopy];
 }
 
 - (NSDate)localEndDate
@@ -153,29 +153,29 @@
   return localStartDate;
 }
 
-- (id)dateDescriptionWithOptions:(unint64_t)a3
+- (id)dateDescriptionWithOptions:(unint64_t)options
 {
-  v3 = a3;
-  v5 = [(PHPhotosHighlight *)self localStartDate];
-  v6 = [(PHPhotosHighlight *)self localEndDate];
+  optionsCopy = options;
+  localStartDate = [(PHPhotosHighlight *)self localStartDate];
+  localEndDate = [(PHPhotosHighlight *)self localEndDate];
   if ([(PHPhotosHighlight *)self kind]== 1)
   {
-    [v6 timeIntervalSinceDate:v5];
-    v8 = [v5 dateByAddingTimeInterval:v7 * 0.5];
+    [localEndDate timeIntervalSinceDate:localStartDate];
+    v8 = [localStartDate dateByAddingTimeInterval:v7 * 0.5];
 
-    v6 = v8;
-    v5 = v8;
+    localEndDate = v8;
+    localStartDate = v8;
   }
 
-  v9 = [objc_opt_class() dateRangeTitleGenerator];
-  v10 = [v9 dateRangeTitleWithStartDate:v5 endDate:v6 category:-[PHPhotosHighlight category](self kind:"category") type:-[PHPhotosHighlight kind](self options:{"kind"), -[PHPhotosHighlight type](self, "type"), 2 * (v3 & 3)}];
+  dateRangeTitleGenerator = [objc_opt_class() dateRangeTitleGenerator];
+  v10 = [dateRangeTitleGenerator dateRangeTitleWithStartDate:localStartDate endDate:localEndDate category:-[PHPhotosHighlight category](self kind:"category") type:-[PHPhotosHighlight kind](self options:{"kind"), -[PHPhotosHighlight type](self, "type"), 2 * (optionsCopy & 3)}];
 
   return v10;
 }
 
 - (id)title
 {
-  v3 = [(PHPhotosHighlight *)self category];
+  category = [(PHPhotosHighlight *)self category];
   if ([(PHPhotosHighlight *)self kind]&& [(PHPhotosHighlight *)self kind]!= 3)
   {
     v8 = 0;
@@ -183,8 +183,8 @@
 
   else
   {
-    v4 = [(PHAssetCollection *)self startDate];
-    [v4 timeIntervalSinceNow];
+    startDate = [(PHAssetCollection *)self startDate];
+    [startDate timeIntervalSinceNow];
     v6 = v5;
 
     v7 = -v6;
@@ -196,7 +196,7 @@
     v8 = v7 < 604800.0;
   }
 
-  if (v3 == 1 || v8)
+  if (category == 1 || v8)
   {
     if (_os_feature_enabled_impl())
     {
@@ -208,25 +208,25 @@
       v10 = 0;
     }
 
-    v11 = [objc_opt_class() dateRangeTitleGenerator];
-    v12 = [(PHPhotosHighlight *)self localStartDate];
-    v13 = [(PHPhotosHighlight *)self localEndDate];
-    v9 = [v11 dateRangeTitleWithStartDate:v12 endDate:v13 category:-[PHPhotosHighlight category](self kind:"category") type:-[PHPhotosHighlight kind](self options:{"kind"), -[PHPhotosHighlight type](self, "type"), v10}];
+    dateRangeTitleGenerator = [objc_opt_class() dateRangeTitleGenerator];
+    localStartDate = [(PHPhotosHighlight *)self localStartDate];
+    localEndDate = [(PHPhotosHighlight *)self localEndDate];
+    localizedTitle = [dateRangeTitleGenerator dateRangeTitleWithStartDate:localStartDate endDate:localEndDate category:-[PHPhotosHighlight category](self kind:"category") type:-[PHPhotosHighlight kind](self options:{"kind"), -[PHPhotosHighlight type](self, "type"), v10}];
   }
 
   else
   {
-    v9 = [(PHPhotosHighlight *)self localizedTitle];
+    localizedTitle = [(PHPhotosHighlight *)self localizedTitle];
   }
 
-  return v9;
+  return localizedTitle;
 }
 
 - (NSString)subtitle
 {
-  v3 = [(PHPhotosHighlight *)self verboseSmartDescriptionUserEdited];
-  subtitle = v3;
-  if (!v3)
+  verboseSmartDescriptionUserEdited = [(PHPhotosHighlight *)self verboseSmartDescriptionUserEdited];
+  subtitle = verboseSmartDescriptionUserEdited;
+  if (!verboseSmartDescriptionUserEdited)
   {
     subtitle = self->_subtitle;
   }
@@ -238,8 +238,8 @@
 
 - (NSString)shortDateDescription
 {
-  v3 = [(PHPhotosHighlight *)self kind];
-  if (v3 != 3 && v3)
+  kind = [(PHPhotosHighlight *)self kind];
+  if (kind != 3 && kind)
   {
     v5 = &OBJC_IVAR___PHPhotosHighlight__shortDateDescriptionPrivate;
   }
@@ -273,14 +273,14 @@
   return v7;
 }
 
-- (unint64_t)countForCurationType:(unsigned __int16)a3
+- (unint64_t)countForCurationType:(unsigned __int16)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return [(PHPhotosHighlight *)self extendedCount];
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return [(PHPhotosHighlight *)self summaryCount];
   }
@@ -486,16 +486,16 @@ LABEL_15:
   result = [(PHPhotosHighlight *)self isSharingSuggestion];
   if (result)
   {
-    v4 = [(PHPhotosHighlight *)self photoAssetsSuggestedByPhotosCount];
-    v5 = [(PHPhotosHighlight *)self videoAssetsSuggestedByPhotosCount];
-    if (v5 == 0x7FFFFFFFFFFFFFFFLL || v4 == 0x7FFFFFFFFFFFFFFFLL)
+    photoAssetsSuggestedByPhotosCount = [(PHPhotosHighlight *)self photoAssetsSuggestedByPhotosCount];
+    videoAssetsSuggestedByPhotosCount = [(PHPhotosHighlight *)self videoAssetsSuggestedByPhotosCount];
+    if (videoAssetsSuggestedByPhotosCount == 0x7FFFFFFFFFFFFFFFLL || photoAssetsSuggestedByPhotosCount == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      return v5 + v4;
+      return videoAssetsSuggestedByPhotosCount + photoAssetsSuggestedByPhotosCount;
     }
   }
 
@@ -660,8 +660,8 @@ LABEL_9:
 
 - (id)localizedSubtitle
 {
-  v3 = [(PHPhotosHighlight *)self kind];
-  if (v3 != 3 && v3)
+  kind = [(PHPhotosHighlight *)self kind];
+  if (kind != 3 && kind)
   {
     v5 = &OBJC_IVAR___PHPhotosHighlight__subtitle;
   }
@@ -697,8 +697,8 @@ LABEL_9:
 
 - (id)localizedTitle
 {
-  v3 = [(PHPhotosHighlight *)self kind];
-  if (v3 != 3 && v3)
+  kind = [(PHPhotosHighlight *)self kind];
+  if (kind != 3 && kind)
   {
     v5 = &OBJC_IVAR___PHAssetCollection__localizedTitle;
   }
@@ -734,10 +734,10 @@ LABEL_9:
 
 - (int64_t)assetCollectionSubtype
 {
-  v3 = [(PHPhotosHighlight *)self kind];
-  if (v3 < 4)
+  kind = [(PHPhotosHighlight *)self kind];
+  if (kind < 4)
   {
-    return v3 + 1000000301;
+    return kind + 1000000301;
   }
 
   v5.receiver = self;
@@ -745,15 +745,15 @@ LABEL_9:
   return [(PHAssetCollection *)&v5 assetCollectionSubtype];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = PHPhotosHighlight;
-  if ([(PHObject *)&v8 isEqual:v4])
+  if ([(PHObject *)&v8 isEqual:equalCopy])
   {
-    v5 = [v4 isSharingSuggestion];
-    v6 = v5 ^ [(PHPhotosHighlight *)self isSharingSuggestion]^ 1;
+    isSharingSuggestion = [equalCopy isSharingSuggestion];
+    v6 = isSharingSuggestion ^ [(PHPhotosHighlight *)self isSharingSuggestion]^ 1;
   }
 
   else
@@ -764,198 +764,198 @@ LABEL_9:
   return v6;
 }
 
-- (PHPhotosHighlight)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHPhotosHighlight)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v9 = a3;
+  dictionaryCopy = dictionary;
   v101.receiver = self;
   v101.super_class = PHPhotosHighlight;
-  v10 = [(PHAssetCollection *)&v101 initWithFetchDictionary:v9 propertyHint:a4 photoLibrary:a5];
+  v10 = [(PHAssetCollection *)&v101 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v10)
   {
-    v11 = [v9 objectForKeyedSubscript:@"startDate"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"startDate"];
     startDate = v10->super._startDate;
     v10->super._startDate = v11;
 
-    v13 = [v9 objectForKeyedSubscript:@"endDate"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"endDate"];
     endDate = v10->super._endDate;
     v10->super._endDate = v13;
 
-    v15 = [v9 objectForKeyedSubscript:@"subtitle"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"subtitle"];
     subtitle = v10->_subtitle;
     v10->_subtitle = v15;
 
-    v17 = [v9 objectForKeyedSubscript:@"verboseSmartDescription"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"verboseSmartDescription"];
     verboseSmartDescription = v10->_verboseSmartDescription;
     v10->_verboseSmartDescription = v17;
 
     v10->super._assetCollectionType = 6;
-    v19 = [v9 objectForKeyedSubscript:@"visibilityState"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"visibilityState"];
     v10->_visibilityState = [v19 unsignedShortValue];
 
-    v20 = [v9 objectForKeyedSubscript:@"kind"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"kind"];
     v10->_kind = [v20 integerValue];
 
-    v21 = [v9 objectForKeyedSubscript:@"type"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     v10->_type = [v21 integerValue];
 
-    v22 = [v9 objectForKeyedSubscript:@"category"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"category"];
     v10->_category = [v22 integerValue];
 
-    v23 = [v9 objectForKeyedSubscript:@"promotionScore"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"promotionScore"];
     [v23 doubleValue];
     v10->_promotionScore = v24;
 
-    v25 = [v9 objectForKeyedSubscript:@"startTimeZoneOffset"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"startTimeZoneOffset"];
     v10->_startTimeZoneOffset = [v25 integerValue];
 
-    v26 = [v9 objectForKeyedSubscript:@"endTimeZoneOffset"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"endTimeZoneOffset"];
     v10->_endTimeZoneOffset = [v26 integerValue];
 
-    v27 = [v9 objectForKeyedSubscript:@"category"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"category"];
     LOWORD(v26) = [v27 integerValue];
 
     v10->_recent = v26 == 1;
-    v28 = [v9 objectForKeyedSubscript:@"enrichmentState"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"enrichmentState"];
     v10->_enrichmentState = [v28 shortValue];
 
-    v29 = [v9 objectForKeyedSubscript:@"lastEnrichmentDate"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"lastEnrichmentDate"];
     lastEnrichmentDate = v10->_lastEnrichmentDate;
     v10->_lastEnrichmentDate = v29;
 
     v10->_enriched = v10->_enrichmentState != 0;
-    v31 = [v9 objectForKeyedSubscript:@"mood"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"mood"];
     v10->_mood = [v31 integerValue];
 
-    v32 = [v9 objectForKeyedSubscript:@"assetsCount"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"assetsCount"];
     v10->_assetsCount = [v32 integerValue];
 
-    v33 = [v9 objectForKeyedSubscript:@"dayGroupAssetsCount"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"dayGroupAssetsCount"];
     v10->_dayGroupAssetsCount = [v33 integerValue];
 
-    v34 = [v9 objectForKeyedSubscript:@"dayGroupExtendedAssetsCount"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"dayGroupExtendedAssetsCount"];
     v10->_dayGroupExtendedAssetsCount = [v34 integerValue];
 
-    v35 = [v9 objectForKeyedSubscript:@"dayGroupSummaryAssetsCount"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"dayGroupSummaryAssetsCount"];
     v10->_dayGroupSummaryAssetsCount = [v35 integerValue];
 
-    v36 = [v9 objectForKeyedSubscript:@"extendedCount"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"extendedCount"];
     v10->_extendedCount = [v36 integerValue];
 
-    v37 = [v9 objectForKeyedSubscript:@"summaryCount"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"summaryCount"];
     v10->_summaryCount = [v37 integerValue];
 
-    v38 = [v9 objectForKeyedSubscript:@"highlightVersion"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"highlightVersion"];
     v10->_highlightVersion = [v38 intValue];
 
-    v39 = [v9 objectForKeyedSubscript:@"enrichmentVersion"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"enrichmentVersion"];
     v10->_enrichmentVersion = [v39 intValue];
 
-    v40 = [v9 objectForKeyedSubscript:@"keyAssetPrivate"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"keyAssetPrivate"];
     keyAssetPrivate = v10->_keyAssetPrivate;
     v10->_keyAssetPrivate = v40;
 
-    v42 = [v9 objectForKeyedSubscript:@"dayGroupKeyAssetPrivate"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"dayGroupKeyAssetPrivate"];
     dayGroupKeyAssetPrivate = v10->_dayGroupKeyAssetPrivate;
     v10->_dayGroupKeyAssetPrivate = v42;
 
-    v44 = [v9 objectForKeyedSubscript:@"monthKeyAssetPrivate"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"monthKeyAssetPrivate"];
     monthKeyAssetPrivate = v10->_monthKeyAssetPrivate;
     v10->_monthKeyAssetPrivate = v44;
 
-    v46 = [v9 objectForKeyedSubscript:@"yearKeyAssetPrivate"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"yearKeyAssetPrivate"];
     yearKeyAssetPrivate = v10->_yearKeyAssetPrivate;
     v10->_yearKeyAssetPrivate = v46;
 
-    v48 = [v9 objectForKeyedSubscript:@"parentPhotosHighlight"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"parentPhotosHighlight"];
     parentPhotosHighlight = v10->_parentPhotosHighlight;
     v10->_parentPhotosHighlight = v48;
 
-    if (a4 & 0x1C) < 0x14 && ((0x17u >> ((a4 & 0x1C) >> 2)))
+    if (hint & 0x1C) < 0x14 && ((0x17u >> ((hint & 0x1C) >> 2)))
     {
-      v50 = word_19CB29740[(a4 >> 2) & 7];
+      v50 = word_19CB29740[(hint >> 2) & 7];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v51 handleFailureInMethod:a2 object:v10 file:@"PHPhotosHighlight.m" lineNumber:557 description:{@"Private/Shared property hints are mutually exclusive %lu", a4 & 0x1C}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"PHPhotosHighlight.m" lineNumber:557 description:{@"Private/Shared property hints are mutually exclusive %lu", hint & 0x1C}];
 
       v50 = 0;
     }
 
     v10->_sharingFilter = v50;
-    v10->_isSharingSuggestion = (a4 & 0x20) != 0;
-    v52 = [v9 objectForKeyedSubscript:@"subtitleShared"];
+    v10->_isSharingSuggestion = (hint & 0x20) != 0;
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"subtitleShared"];
     subtitleShared = v10->_subtitleShared;
     v10->_subtitleShared = v52;
 
-    v54 = [v9 objectForKeyedSubscript:@"subtitleMixed"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"subtitleMixed"];
     subtitleMixed = v10->_subtitleMixed;
     v10->_subtitleMixed = v54;
 
-    v56 = [v9 objectForKeyedSubscript:@"verboseSmartDescriptionShared"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"verboseSmartDescriptionShared"];
     verboseSmartDescriptionShared = v10->_verboseSmartDescriptionShared;
     v10->_verboseSmartDescriptionShared = v56;
 
-    v58 = [v9 objectForKeyedSubscript:@"verboseSmartDescriptionMixed"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"verboseSmartDescriptionMixed"];
     verboseSmartDescriptionMixed = v10->_verboseSmartDescriptionMixed;
     v10->_verboseSmartDescriptionMixed = v58;
 
-    v60 = [v9 objectForKeyedSubscript:@"keyAssetShared"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"keyAssetShared"];
     keyAssetShared = v10->_keyAssetShared;
     v10->_keyAssetShared = v60;
 
-    v62 = [v9 objectForKeyedSubscript:@"monthKeyAssetShared"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"monthKeyAssetShared"];
     monthKeyAssetShared = v10->_monthKeyAssetShared;
     v10->_monthKeyAssetShared = v62;
 
-    v64 = [v9 objectForKeyedSubscript:@"yearKeyAssetShared"];
+    v64 = [dictionaryCopy objectForKeyedSubscript:@"yearKeyAssetShared"];
     yearKeyAssetShared = v10->_yearKeyAssetShared;
     v10->_yearKeyAssetShared = v64;
 
-    v66 = [v9 objectForKeyedSubscript:@"dayGroupKeyAssetShared"];
+    v66 = [dictionaryCopy objectForKeyedSubscript:@"dayGroupKeyAssetShared"];
     dayGroupKeyAssetShared = v10->_dayGroupKeyAssetShared;
     v10->_dayGroupKeyAssetShared = v66;
 
-    v68 = [v9 objectForKeyedSubscript:@"sharingComposition"];
+    v68 = [dictionaryCopy objectForKeyedSubscript:@"sharingComposition"];
     v10->_sharingComposition = [v68 integerValue];
 
-    v69 = [v9 objectForKeyedSubscript:@"mixedSharingCompositionKeyAssetRelationship"];
+    v69 = [dictionaryCopy objectForKeyedSubscript:@"mixedSharingCompositionKeyAssetRelationship"];
     v10->_mixedSharingCompositionKeyAssetRelationship = [v69 unsignedShortValue];
 
-    v70 = [v9 objectForKeyedSubscript:@"assetsCountShared"];
+    v70 = [dictionaryCopy objectForKeyedSubscript:@"assetsCountShared"];
     v10->_assetsCountShared = [v70 integerValue];
 
-    v71 = [v9 objectForKeyedSubscript:@"extendedCountShared"];
+    v71 = [dictionaryCopy objectForKeyedSubscript:@"extendedCountShared"];
     v10->_extendedCountShared = [v71 integerValue];
 
-    v72 = [v9 objectForKeyedSubscript:@"summaryCountShared"];
+    v72 = [dictionaryCopy objectForKeyedSubscript:@"summaryCountShared"];
     v10->_summaryCountShared = [v72 integerValue];
 
-    v73 = [v9 objectForKeyedSubscript:@"dayGroupAssetsCountShared"];
+    v73 = [dictionaryCopy objectForKeyedSubscript:@"dayGroupAssetsCountShared"];
     v10->_dayGroupAssetsCountShared = [v73 integerValue];
 
-    v74 = [v9 objectForKeyedSubscript:@"dayGroupExtendedAssetsCountShared"];
+    v74 = [dictionaryCopy objectForKeyedSubscript:@"dayGroupExtendedAssetsCountShared"];
     v10->_dayGroupExtendedAssetsCountShared = [v74 integerValue];
 
-    v75 = [v9 objectForKeyedSubscript:@"dayGroupSummaryAssetsCountShared"];
+    v75 = [dictionaryCopy objectForKeyedSubscript:@"dayGroupSummaryAssetsCountShared"];
     v10->_dayGroupSummaryAssetsCountShared = [v75 integerValue];
 
-    v76 = [v9 objectForKeyedSubscript:@"visibilityStateShared"];
+    v76 = [dictionaryCopy objectForKeyedSubscript:@"visibilityStateShared"];
     v10->_visibilityStateShared = [v76 unsignedShortValue];
 
-    v77 = [v9 objectForKeyedSubscript:@"visibilityStateMixed"];
+    v77 = [dictionaryCopy objectForKeyedSubscript:@"visibilityStateMixed"];
     v10->_visibilityStateMixed = [v77 unsignedShortValue];
 
-    v78 = [v9 objectForKeyedSubscript:@"photoAssetsSuggestedByPhotosCount"];
+    v78 = [dictionaryCopy objectForKeyedSubscript:@"photoAssetsSuggestedByPhotosCount"];
     v10->_photoAssetsSuggestedByPhotosCount = [v78 integerValue];
 
-    v79 = [v9 objectForKeyedSubscript:@"videoAssetsSuggestedByPhotosCount"];
+    v79 = [dictionaryCopy objectForKeyedSubscript:@"videoAssetsSuggestedByPhotosCount"];
     v10->_videoAssetsSuggestedByPhotosCount = [v79 integerValue];
 
-    v80 = [v9 objectForKeyedSubscript:@"title"];
-    v81 = [v9 objectForKeyedSubscript:@"titleShared"];
-    v82 = [v9 objectForKeyedSubscript:@"titleMixed"];
+    v80 = [dictionaryCopy objectForKeyedSubscript:@"title"];
+    v81 = [dictionaryCopy objectForKeyedSubscript:@"titleShared"];
+    v82 = [dictionaryCopy objectForKeyedSubscript:@"titleMixed"];
     if (_os_feature_enabled_impl() && PLPhotosHighlightTypeIsConsideredTrip())
     {
       v83 = *MEMORY[0x1E69BECD0];
@@ -1022,12 +1022,12 @@ LABEL_9:
 {
   v13 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69BE688];
-  v3 = [MEMORY[0x1E69BF2A0] systemLibraryURL];
-  v4 = [v2 sharedAssetsdClientForPhotoLibraryURL:v3];
+  systemLibraryURL = [MEMORY[0x1E69BF2A0] systemLibraryURL];
+  v4 = [v2 sharedAssetsdClientForPhotoLibraryURL:systemLibraryURL];
 
-  v5 = [v4 debugClient];
+  debugClient = [v4 debugClient];
   v10 = 0;
-  v6 = [v5 locationOfInterestUpdateWithError:&v10];
+  v6 = [debugClient locationOfInterestUpdateWithError:&v10];
   v7 = v10;
 
   if (v7)
@@ -1048,12 +1048,12 @@ LABEL_9:
 {
   v13 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69BE688];
-  v3 = [MEMORY[0x1E69BF2A0] systemLibraryURL];
-  v4 = [v2 sharedAssetsdClientForPhotoLibraryURL:v3];
+  systemLibraryURL = [MEMORY[0x1E69BF2A0] systemLibraryURL];
+  v4 = [v2 sharedAssetsdClientForPhotoLibraryURL:systemLibraryURL];
 
-  v5 = [v4 debugClient];
+  debugClient = [v4 debugClient];
   v10 = 0;
-  v6 = [v5 invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithError:&v10];
+  v6 = [debugClient invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithError:&v10];
   v7 = v10;
 
   if (v7)
@@ -1074,12 +1074,12 @@ LABEL_9:
 {
   v13 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69BE688];
-  v3 = [MEMORY[0x1E69BF2A0] systemLibraryURL];
-  v4 = [v2 sharedAssetsdClientForPhotoLibraryURL:v3];
+  systemLibraryURL = [MEMORY[0x1E69BF2A0] systemLibraryURL];
+  v4 = [v2 sharedAssetsdClientForPhotoLibraryURL:systemLibraryURL];
 
-  v5 = [v4 debugClient];
+  debugClient = [v4 debugClient];
   v10 = 0;
-  v6 = [v5 cleanupEmptyHighlightsWithError:&v10];
+  v6 = [debugClient cleanupEmptyHighlightsWithError:&v10];
   v7 = v10;
 
   if (v7)
@@ -1100,12 +1100,12 @@ LABEL_9:
 {
   v13 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69BE688];
-  v3 = [MEMORY[0x1E69BF2A0] systemLibraryURL];
-  v4 = [v2 sharedAssetsdClientForPhotoLibraryURL:v3];
+  systemLibraryURL = [MEMORY[0x1E69BF2A0] systemLibraryURL];
+  v4 = [v2 sharedAssetsdClientForPhotoLibraryURL:systemLibraryURL];
 
-  v5 = [v4 debugClient];
+  debugClient = [v4 debugClient];
   v10 = 0;
-  v6 = [v5 updateHighlightTitlesWithError:&v10];
+  v6 = [debugClient updateHighlightTitlesWithError:&v10];
   v7 = v10;
 
   if (v7)
@@ -1126,12 +1126,12 @@ LABEL_9:
 {
   v13 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69BE688];
-  v3 = [MEMORY[0x1E69BF2A0] systemLibraryURL];
-  v4 = [v2 sharedAssetsdClientForPhotoLibraryURL:v3];
+  systemLibraryURL = [MEMORY[0x1E69BF2A0] systemLibraryURL];
+  v4 = [v2 sharedAssetsdClientForPhotoLibraryURL:systemLibraryURL];
 
-  v5 = [v4 debugClient];
+  debugClient = [v4 debugClient];
   v10 = 0;
-  v6 = [v5 processUnprocessedMomentLocationsWithError:&v10];
+  v6 = [debugClient processUnprocessedMomentLocationsWithError:&v10];
   v7 = v10;
 
   if (v7)
@@ -1152,12 +1152,12 @@ LABEL_9:
 {
   v13 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69BE688];
-  v3 = [MEMORY[0x1E69BF2A0] systemLibraryURL];
-  v4 = [v2 sharedAssetsdClientForPhotoLibraryURL:v3];
+  systemLibraryURL = [MEMORY[0x1E69BF2A0] systemLibraryURL];
+  v4 = [v2 sharedAssetsdClientForPhotoLibraryURL:systemLibraryURL];
 
-  v5 = [v4 debugClient];
+  debugClient = [v4 debugClient];
   v10 = 0;
-  v6 = [v5 processRecentHighlightsWithError:&v10];
+  v6 = [debugClient processRecentHighlightsWithError:&v10];
   v7 = v10;
 
   if (v7)
@@ -1174,18 +1174,18 @@ LABEL_9:
   return v6;
 }
 
-+ (id)fetchAllSharedLibrarySharingSuggestionHighlightsWithOptions:(id)a3
++ (id)fetchAllSharedLibrarySharingSuggestionHighlightsWithOptions:(id)options
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v3 object:0];
-  v5 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v3 photoLibrary:v4];
+  optionsCopy = options;
+  v4 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v5 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:v4];
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind == %d", 0];
-  [v6 addObject:v7];
+  [array addObject:v7];
 
-  v8 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v6];
+  v8 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > 0 || %K > 0", @"photoAssetsSuggestedByPhotosCount", @"videoAssetsSuggestedByPhotosCount"];
   v10 = MEMORY[0x1E696AB28];
   v21[0] = v8;
@@ -1211,29 +1211,29 @@ LABEL_9:
   return v17;
 }
 
-+ (id)fetchHighlightsInSharedLibrarySharingSuggestions:(id)a3
++ (id)fetchHighlightsInSharedLibrarySharingSuggestions:(id)suggestions
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  suggestionsCopy = suggestions;
+  if (!suggestionsCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"PHPhotosHighlight.m" lineNumber:1208 description:{@"Invalid parameter not satisfying: %@", @"sharingSuggestions != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotosHighlight.m" lineNumber:1208 description:{@"Invalid parameter not satisfying: %@", @"sharingSuggestions != nil"}];
   }
 
-  v6 = [v5 firstObject];
-  v24 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:0 object:v6];
+  firstObject = [suggestionsCopy firstObject];
+  v24 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:0 object:firstObject];
 
   v7 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:0 photoLibrary:v24];
-  v8 = [v5 valueForKeyPath:@"objectID"];
-  v9 = [MEMORY[0x1E695DF70] array];
+  v8 = [suggestionsCopy valueForKeyPath:@"objectID"];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"parentPhotosHighlight IN (%@)", v8];
-  [v9 addObject:v10];
+  [array addObject:v10];
 
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind == %d", 0];
-  [v9 addObject:v11];
+  [array addObject:v11];
 
-  v12 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v9];
+  v12 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
   v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > 0 || %K > 0", @"photoAssetsSuggestedByPhotosCount", @"videoAssetsSuggestedByPhotosCount"];
   v14 = MEMORY[0x1E696AB28];
   v27[0] = v12;
@@ -1259,31 +1259,31 @@ LABEL_9:
   return v21;
 }
 
-+ (id)fetchSharedLibrarySharingSuggestionsWithOptions:(id)a3
++ (id)fetchSharedLibrarySharingSuggestionsWithOptions:(id)options
 {
   v24[5] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v22 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v3 object:0];
-  v4 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v3 photoLibrary:?];
+  optionsCopy = options;
+  v22 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v4 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:?];
 
   v21 = v4;
   v5 = [v4 copy];
   [v5 setSharingFilter:0];
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [v5 internalPredicate];
+  array = [MEMORY[0x1E695DF70] array];
+  internalPredicate = [v5 internalPredicate];
 
-  if (v7)
+  if (internalPredicate)
   {
-    v8 = [v5 internalPredicate];
-    [v6 addObject:v8];
+    internalPredicate2 = [v5 internalPredicate];
+    [array addObject:internalPredicate2];
   }
 
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind == %d", 1];
-  [v6 addObject:v9];
+  [array addObject:v9];
 
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > 0 || %K > 0", @"photoAssetsSuggestedByPhotosCount", @"videoAssetsSuggestedByPhotosCount"];
-  [v6 addObject:v10];
-  v11 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v6];
+  [array addObject:v10];
+  v11 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
   [v5 setInternalPredicate:v11];
 
   v12 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"startDate" ascending:0];
@@ -1308,13 +1308,13 @@ LABEL_9:
   return v19;
 }
 
-+ (id)fetchPhotosHighlightUUIDByMomentUUIDForMomentUUIDs:(id)a3 options:(id)a4
++ (id)fetchPhotosHighlightUUIDByMomentUUIDForMomentUUIDs:(id)ds options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 photoLibrary];
-  v8 = v7;
-  if (v7)
+  dsCopy = ds;
+  optionsCopy = options;
+  photoLibrary = [optionsCopy photoLibrary];
+  v8 = photoLibrary;
+  if (photoLibrary)
   {
     *buf = 0;
     v18 = buf;
@@ -1322,15 +1322,15 @@ LABEL_9:
     v20 = __Block_byref_object_copy__11159;
     v21 = __Block_byref_object_dispose__11160;
     v22 = 0;
-    v9 = [v7 photoLibraryForCurrentQueueQoS];
+    photoLibraryForCurrentQueueQoS = [photoLibrary photoLibraryForCurrentQueueQoS];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __80__PHPhotosHighlight_fetchPhotosHighlightUUIDByMomentUUIDForMomentUUIDs_options___block_invoke;
     v13[3] = &unk_1E75AA3F8;
-    v14 = v5;
+    v14 = dsCopy;
     v15 = v8;
     v16 = buf;
-    [v9 performBlockAndWait:v13];
+    [photoLibraryForCurrentQueueQoS performBlockAndWait:v13];
     v10 = *(v18 + 5);
 
     _Block_object_dispose(buf, 8);
@@ -1381,12 +1381,12 @@ void __80__PHPhotosHighlight_fetchPhotosHighlightUUIDByMomentUUIDForMomentUUIDs_
   }
 }
 
-+ (id)_fetchTripHighlightUUIDByAssetUUIDForAssetUUIDs:(id)a3 photoLibrary:(id)a4
++ (id)_fetchTripHighlightUUIDByAssetUUIDForAssetUUIDs:(id)ds photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  dsCopy = ds;
+  libraryCopy = library;
+  v7 = libraryCopy;
+  if (libraryCopy)
   {
     *buf = 0;
     v18 = buf;
@@ -1394,13 +1394,13 @@ void __80__PHPhotosHighlight_fetchPhotosHighlightUUIDByMomentUUIDForMomentUUIDs_
     v20 = __Block_byref_object_copy__11159;
     v21 = __Block_byref_object_dispose__11160;
     v22 = 0;
-    v8 = [v6 photoLibraryForCurrentQueueQoS];
+    photoLibraryForCurrentQueueQoS = [libraryCopy photoLibraryForCurrentQueueQoS];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __82__PHPhotosHighlight__fetchTripHighlightUUIDByAssetUUIDForAssetUUIDs_photoLibrary___block_invoke;
     v13[3] = &unk_1E75AA3F8;
-    v14 = v5;
-    v9 = v8;
+    v14 = dsCopy;
+    v9 = photoLibraryForCurrentQueueQoS;
     v15 = v9;
     v16 = buf;
     [v9 performBlockAndWait:v13];
@@ -1452,21 +1452,21 @@ void __82__PHPhotosHighlight__fetchTripHighlightUUIDByAssetUUIDForAssetUUIDs_pho
   }
 }
 
-+ (id)fetchTripHighlightUUIDByAssetUUIDForAssetUUIDs:(id)a3 options:(id)a4
++ (id)fetchTripHighlightUUIDByAssetUUIDForAssetUUIDs:(id)ds options:(id)options
 {
-  v6 = a3;
-  v7 = [a4 photoLibrary];
-  v8 = [a1 _fetchTripHighlightUUIDByAssetUUIDForAssetUUIDs:v6 photoLibrary:v7];
+  dsCopy = ds;
+  photoLibrary = [options photoLibrary];
+  v8 = [self _fetchTripHighlightUUIDByAssetUUIDForAssetUUIDs:dsCopy photoLibrary:photoLibrary];
 
   return v8;
 }
 
-+ (id)_fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs:(id)a3 photoLibrary:(id)a4
++ (id)_fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs:(id)ds photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  dsCopy = ds;
+  libraryCopy = library;
+  v7 = libraryCopy;
+  if (libraryCopy)
   {
     *buf = 0;
     v17 = buf;
@@ -1474,15 +1474,15 @@ void __82__PHPhotosHighlight__fetchTripHighlightUUIDByAssetUUIDForAssetUUIDs_pho
     v19 = __Block_byref_object_copy__11159;
     v20 = __Block_byref_object_dispose__11160;
     v21 = 0;
-    v8 = [v6 photoLibraryForCurrentQueueQoS];
+    photoLibraryForCurrentQueueQoS = [libraryCopy photoLibraryForCurrentQueueQoS];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __84__PHPhotosHighlight__fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs_photoLibrary___block_invoke;
     v12[3] = &unk_1E75AA3F8;
-    v13 = v5;
+    v13 = dsCopy;
     v14 = v7;
     v15 = buf;
-    [v8 performBlockAndWait:v12];
+    [photoLibraryForCurrentQueueQoS performBlockAndWait:v12];
     v9 = *(v17 + 5);
 
     _Block_object_dispose(buf, 8);
@@ -1533,27 +1533,27 @@ void __84__PHPhotosHighlight__fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs_p
   }
 }
 
-+ (id)fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs:(id)a3 options:(id)a4
++ (id)fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs:(id)ds options:(id)options
 {
-  v6 = a3;
-  v7 = [a4 photoLibrary];
-  v8 = [a1 _fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs:v6 photoLibrary:v7];
+  dsCopy = ds;
+  photoLibrary = [options photoLibrary];
+  v8 = [self _fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs:dsCopy photoLibrary:photoLibrary];
 
   return v8;
 }
 
-+ (id)fetchPhotosHighlightUUIDByAssetUUIDForAssets:(id)a3 options:(id)a4
++ (id)fetchPhotosHighlightUUIDByAssetUUIDForAssets:(id)assets options:(id)options
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 photoLibrary];
-  v9 = [MEMORY[0x1E695DF70] array];
+  assetsCopy = assets;
+  optionsCopy = options;
+  photoLibrary = [optionsCopy photoLibrary];
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v6;
+  v10 = assetsCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -1569,12 +1569,12 @@ void __84__PHPhotosHighlight__fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs_p
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        v16 = [v15 uuid];
-        [v9 addObject:v16];
+        uuid = [v15 uuid];
+        [array addObject:uuid];
 
-        if (!v8)
+        if (!photoLibrary)
         {
-          v8 = [v15 photoLibrary];
+          photoLibrary = [v15 photoLibrary];
         }
       }
 
@@ -1584,9 +1584,9 @@ void __84__PHPhotosHighlight__fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs_p
     while (v12);
   }
 
-  if (v8)
+  if (photoLibrary)
   {
-    v17 = [a1 _fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs:v9 photoLibrary:v8];
+    v17 = [self _fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs:array photoLibrary:photoLibrary];
   }
 
   else
@@ -1597,16 +1597,16 @@ void __84__PHPhotosHighlight__fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs_p
   return v17;
 }
 
-+ (id)fetchChildDayGroupHighlightsForHighlight:(id)a3 options:(id)a4
++ (id)fetchChildDayGroupHighlightsForHighlight:(id)highlight options:(id)options
 {
-  v5 = a3;
+  highlightCopy = highlight;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__PHPhotosHighlight_fetchChildDayGroupHighlightsForHighlight_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = highlightCopy;
+  v6 = highlightCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -1619,16 +1619,16 @@ id __70__PHPhotosHighlight_fetchChildDayGroupHighlightsForHighlight_options___bl
   return v3;
 }
 
-+ (id)fetchParentDayGroupHighlightForHighlight:(id)a3 options:(id)a4
++ (id)fetchParentDayGroupHighlightForHighlight:(id)highlight options:(id)options
 {
-  v5 = a3;
+  highlightCopy = highlight;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__PHPhotosHighlight_fetchParentDayGroupHighlightForHighlight_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = highlightCopy;
+  v6 = highlightCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -1641,16 +1641,16 @@ id __70__PHPhotosHighlight_fetchParentDayGroupHighlightForHighlight_options___bl
   return v3;
 }
 
-+ (id)fetchChildHighlightsForHighlight:(id)a3 options:(id)a4
++ (id)fetchChildHighlightsForHighlight:(id)highlight options:(id)options
 {
-  v5 = a3;
+  highlightCopy = highlight;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__PHPhotosHighlight_fetchChildHighlightsForHighlight_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = highlightCopy;
+  v6 = highlightCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -1663,16 +1663,16 @@ id __62__PHPhotosHighlight_fetchChildHighlightsForHighlight_options___block_invo
   return v3;
 }
 
-+ (id)fetchParentHighlightsForHighlights:(id)a3 options:(id)a4
++ (id)fetchParentHighlightsForHighlights:(id)highlights options:(id)options
 {
-  v5 = a3;
+  highlightsCopy = highlights;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__PHPhotosHighlight_fetchParentHighlightsForHighlights_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = highlightsCopy;
+  v6 = highlightsCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -1685,16 +1685,16 @@ id __64__PHPhotosHighlight_fetchParentHighlightsForHighlights_options___block_in
   return v3;
 }
 
-+ (id)fetchParentHighlightForHighlight:(id)a3 options:(id)a4
++ (id)fetchParentHighlightForHighlight:(id)highlight options:(id)options
 {
-  v5 = a3;
+  highlightCopy = highlight;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__PHPhotosHighlight_fetchParentHighlightForHighlight_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = highlightCopy;
+  v6 = highlightCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -1707,25 +1707,25 @@ id __62__PHPhotosHighlight_fetchParentHighlightForHighlight_options___block_invo
   return v3;
 }
 
-+ (id)collageAssetsInverseRelationshipPredicateForDayHighlight:(id)a3 forHighlightFilter:(unsigned __int16)a4
++ (id)collageAssetsInverseRelationshipPredicateForDayHighlight:(id)highlight forHighlightFilter:(unsigned __int16)filter
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v5 <= 2)
+  filterCopy = filter;
+  highlightCopy = highlight;
+  v7 = highlightCopy;
+  if (filterCopy <= 2)
   {
-    v8 = off_1E75A4FC8[v5];
+    v8 = off_1E75A4FC8[filterCopy];
     v9 = MEMORY[0x1E696AE18];
-    v10 = [v6 objectID];
-    v4 = [v9 predicateWithFormat:@"%K = %@", v8, v10];
+    objectID = [highlightCopy objectID];
+    v4 = [v9 predicateWithFormat:@"%K = %@", v8, objectID];
   }
 
   return v4;
 }
 
-+ (id)keyAssetInverseRelationshipPredicateForHighlight:(id)a3 forHighlightFilter:(unsigned __int16)a4
++ (id)keyAssetInverseRelationshipPredicateForHighlight:(id)highlight forHighlightFilter:(unsigned __int16)filter
 {
-  v4 = [a1 _choosePrivateOrSharedRelationshipForHighlight:a3 givenFilter:a4 privateHandler:&__block_literal_global_285 sharedHandler:&__block_literal_global_303];
+  v4 = [self _choosePrivateOrSharedRelationshipForHighlight:highlight givenFilter:filter privateHandler:&__block_literal_global_285 sharedHandler:&__block_literal_global_303];
   if (!v4)
   {
     v4 = [MEMORY[0x1E696AE18] predicateWithValue:0];
@@ -1877,30 +1877,30 @@ uint64_t __44__PHPhotosHighlight_dateRangeTitleGenerator__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)fetchPredicateFromComparisonPredicate:(id)a3 options:(id)a4
++ (id)fetchPredicateFromComparisonPredicate:(id)predicate options:(id)options
 {
-  v6 = a3;
-  v14.receiver = a1;
+  predicateCopy = predicate;
+  v14.receiver = self;
   v14.super_class = &OBJC_METACLASS___PHPhotosHighlight;
-  v7 = objc_msgSendSuper2(&v14, sel_fetchPredicateFromComparisonPredicate_options_, v6, a4);
+  v7 = objc_msgSendSuper2(&v14, sel_fetchPredicateFromComparisonPredicate_options_, predicateCopy, options);
   if (!v7)
   {
-    v8 = [v6 leftExpression];
-    v9 = [v6 rightExpression];
-    if ([v8 expressionType] == 3)
+    leftExpression = [predicateCopy leftExpression];
+    rightExpression = [predicateCopy rightExpression];
+    if ([leftExpression expressionType] == 3)
     {
-      v10 = [v8 keyPath];
+      keyPath = [leftExpression keyPath];
     }
 
     else
     {
-      v10 = 0;
+      keyPath = 0;
     }
 
-    if ([v10 isEqualToString:@"enriched"] && !objc_msgSend(v9, "expressionType"))
+    if ([keyPath isEqualToString:@"enriched"] && !objc_msgSend(rightExpression, "expressionType"))
     {
-      v12 = [v9 constantValue];
-      if ([v12 BOOLValue])
+      constantValue = [rightExpression constantValue];
+      if ([constantValue BOOLValue])
       {
         v13 = @"enrichmentState > %d";
       }
@@ -1922,23 +1922,23 @@ uint64_t __44__PHPhotosHighlight_dateRangeTitleGenerator__block_invoke()
   return v7;
 }
 
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  expressionCopy = expression;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__PHPhotosHighlight_transformValueExpression_forKeyPath___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transformValueExpression_forKeyPath__onceToken_11207 != -1)
   {
     dispatch_once(&transformValueExpression_forKeyPath__onceToken_11207, block);
   }
 
-  if ([transformValueExpression_forKeyPath___passThroughSet_11208 containsObject:v7])
+  if ([transformValueExpression_forKeyPath___passThroughSet_11208 containsObject:pathCopy])
   {
-    v8 = v6;
+    v8 = expressionCopy;
   }
 
   else
@@ -2232,9 +2232,9 @@ void __33__PHPhotosHighlight_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_15_11235 = v10;
 }
 
-+ (id)fetchPredicateForSharingFilter:(unsigned __int16)a3
++ (id)fetchPredicateForSharingFilter:(unsigned __int16)filter
 {
-  if (!a3)
+  if (!filter)
   {
     v5 = 1;
 LABEL_5:
@@ -2243,7 +2243,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 1)
+  if (filter == 1)
   {
     v5 = 0;
     goto LABEL_5;
@@ -2254,13 +2254,13 @@ LABEL_5:
   return v6;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__PHPhotosHighlight_propertiesToFetchWithHint___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (propertiesToFetchWithHint__onceToken_11249 != -1)
   {
     dispatch_once(&propertiesToFetchWithHint__onceToken_11249, block);
@@ -2338,42 +2338,42 @@ void __47__PHPhotosHighlight_propertiesToFetchWithHint___block_invoke()
   propertiesToFetchWithHint__array_11250 = v2;
 }
 
-+ (id)propertySetsForPropertyFetchHints:(unint64_t)a3
++ (id)propertySetsForPropertyFetchHints:(unint64_t)hints
 {
-  v3 = a3;
+  hintsCopy = hints;
   v4 = [MEMORY[0x1E695DFA8] set];
   v5 = [@"PHPhotosHighlightPropertySetIdentifier" length];
-  if ((v3 & 1) != 0 && v5)
+  if ((hintsCopy & 1) != 0 && v5)
   {
     [v4 addObject:@"PHPhotosHighlightPropertySetIdentifier"];
   }
 
   v6 = [@"PHPhotosHighlightPropertySetCore" length];
-  if ((v3 & 2) != 0 && v6)
+  if ((hintsCopy & 2) != 0 && v6)
   {
     [v4 addObject:@"PHPhotosHighlightPropertySetCore"];
   }
 
   v7 = [@"PHPhotosHighlightPropertySetOnlyPrivate" length];
-  if ((v3 & 4) != 0 && v7)
+  if ((hintsCopy & 4) != 0 && v7)
   {
     [v4 addObject:@"PHPhotosHighlightPropertySetOnlyPrivate"];
   }
 
   v8 = [@"PHPhotosHighlightPropertySetOnlyShared" length];
-  if ((v3 & 8) != 0 && v8)
+  if ((hintsCopy & 8) != 0 && v8)
   {
     [v4 addObject:@"PHPhotosHighlightPropertySetOnlyShared"];
   }
 
   v9 = [@"PHPhotosHighlightPropertySetPrivateOrShared" length];
-  if ((v3 & 0x10) != 0 && v9)
+  if ((hintsCopy & 0x10) != 0 && v9)
   {
     [v4 addObject:@"PHPhotosHighlightPropertySetPrivateOrShared"];
   }
 
   v10 = [@"PHPhotosHighlightPropertySetSharingSuggestions" length];
-  if ((v3 & 0x20) != 0 && v10)
+  if ((hintsCopy & 0x20) != 0 && v10)
   {
     [v4 addObject:@"PHPhotosHighlightPropertySetSharingSuggestions"];
   }
@@ -2383,12 +2383,12 @@ void __47__PHPhotosHighlight_propertiesToFetchWithHint___block_invoke()
   return v11;
 }
 
-+ (unint64_t)propertyFetchHintsForPropertySets:(id)a3
++ (unint64_t)propertyFetchHintsForPropertySets:(id)sets
 {
-  v3 = a3;
+  setsCopy = sets;
   if ([@"PHPhotosHighlightPropertySetIdentifier" length])
   {
-    v4 = [v3 containsObject:@"PHPhotosHighlightPropertySetIdentifier"];
+    v4 = [setsCopy containsObject:@"PHPhotosHighlightPropertySetIdentifier"];
   }
 
   else
@@ -2396,32 +2396,32 @@ void __47__PHPhotosHighlight_propertiesToFetchWithHint___block_invoke()
     v4 = 0;
   }
 
-  if ([@"PHPhotosHighlightPropertySetCore" length] && objc_msgSend(v3, "containsObject:", @"PHPhotosHighlightPropertySetCore"))
+  if ([@"PHPhotosHighlightPropertySetCore" length] && objc_msgSend(setsCopy, "containsObject:", @"PHPhotosHighlightPropertySetCore"))
   {
     v4 |= 2uLL;
   }
 
-  if ([@"PHPhotosHighlightPropertySetOnlyPrivate" length] && objc_msgSend(v3, "containsObject:", @"PHPhotosHighlightPropertySetOnlyPrivate"))
+  if ([@"PHPhotosHighlightPropertySetOnlyPrivate" length] && objc_msgSend(setsCopy, "containsObject:", @"PHPhotosHighlightPropertySetOnlyPrivate"))
   {
     v4 |= 4uLL;
   }
 
-  if ([@"PHPhotosHighlightPropertySetOnlyShared" length] && objc_msgSend(v3, "containsObject:", @"PHPhotosHighlightPropertySetOnlyShared"))
+  if ([@"PHPhotosHighlightPropertySetOnlyShared" length] && objc_msgSend(setsCopy, "containsObject:", @"PHPhotosHighlightPropertySetOnlyShared"))
   {
     v4 |= 8uLL;
   }
 
-  if ([@"PHPhotosHighlightPropertySetPrivateOrShared" length] && objc_msgSend(v3, "containsObject:", @"PHPhotosHighlightPropertySetPrivateOrShared"))
+  if ([@"PHPhotosHighlightPropertySetPrivateOrShared" length] && objc_msgSend(setsCopy, "containsObject:", @"PHPhotosHighlightPropertySetPrivateOrShared"))
   {
     v4 |= 0x10uLL;
   }
 
-  if ([@"PHPhotosHighlightPropertySetSharingSuggestions" length] && objc_msgSend(v3, "containsObject:", @"PHPhotosHighlightPropertySetSharingSuggestions"))
+  if ([@"PHPhotosHighlightPropertySetSharingSuggestions" length] && objc_msgSend(setsCopy, "containsObject:", @"PHPhotosHighlightPropertySetSharingSuggestions"))
   {
     v4 |= 0x20uLL;
   }
 
-  if (![v3 containsObject:@"PHPhotosHighlightPropertySetIdentifier"])
+  if (![setsCopy containsObject:@"PHPhotosHighlightPropertySetIdentifier"])
   {
     v4 |= 2uLL;
   }
@@ -2453,16 +2453,16 @@ void __54__PHPhotosHighlight_propertySetAccessorsByPropertySet__block_invoke()
   propertySetAccessorsByPropertySet_accessorByPropertySetName = v0;
 }
 
-+ (Class)propertySetClassForPropertySet:(id)a3
++ (Class)propertySetClassForPropertySet:(id)set
 {
   v3 = propertySetClassForPropertySet__onceToken;
-  v4 = a3;
+  setCopy = set;
   if (v3 != -1)
   {
     dispatch_once(&propertySetClassForPropertySet__onceToken, &__block_literal_global_48);
   }
 
-  v5 = [propertySetClassForPropertySet__propertySetClassByPropertySetName objectForKey:v4];
+  v5 = [propertySetClassForPropertySet__propertySetClassByPropertySetName objectForKey:setCopy];
 
   return v5;
 }
@@ -2565,37 +2565,37 @@ LABEL_11:
   return v2;
 }
 
-+ (id)_choosePrivateOrSharedRelationshipForHighlight:(id)a3 givenFilter:(unsigned __int16)a4 privateHandler:(id)a5 sharedHandler:(id)a6
++ (id)_choosePrivateOrSharedRelationshipForHighlight:(id)highlight givenFilter:(unsigned __int16)filter privateHandler:(id)handler sharedHandler:(id)sharedHandler
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v9 sharingComposition];
-  if (v12 == 2)
+  filterCopy = filter;
+  highlightCopy = highlight;
+  handlerCopy = handler;
+  sharedHandlerCopy = sharedHandler;
+  sharingComposition = [highlightCopy sharingComposition];
+  if (sharingComposition == 2)
   {
-    v13 = v10;
-    if (v8)
+    v13 = handlerCopy;
+    if (filterCopy)
     {
-      if (v8 == 2)
+      if (filterCopy == 2)
       {
-        v15 = [v9 mixedSharingCompositionKeyAssetRelationship];
-        v13 = v10;
-        if (v15 >= 2)
+        mixedSharingCompositionKeyAssetRelationship = [highlightCopy mixedSharingCompositionKeyAssetRelationship];
+        v13 = handlerCopy;
+        if (mixedSharingCompositionKeyAssetRelationship >= 2)
         {
-          if (v15 != 2)
+          if (mixedSharingCompositionKeyAssetRelationship != 2)
           {
             goto LABEL_11;
           }
 
-          v13 = v11;
+          v13 = sharedHandlerCopy;
         }
       }
 
       else
       {
-        v13 = v11;
-        if (v8 != 1)
+        v13 = sharedHandlerCopy;
+        if (filterCopy != 1)
         {
           goto LABEL_11;
         }
@@ -2605,12 +2605,12 @@ LABEL_11:
 
   else
   {
-    if (v12 != 1)
+    if (sharingComposition != 1)
     {
-      if (!v12)
+      if (!sharingComposition)
       {
-        v13 = v10;
-        if ((v8 & 0xFFFFFFFD) == 0)
+        v13 = handlerCopy;
+        if ((filterCopy & 0xFFFFFFFD) == 0)
         {
           goto LABEL_15;
         }
@@ -2621,15 +2621,15 @@ LABEL_11:
       goto LABEL_16;
     }
 
-    v13 = v11;
-    if ((v8 - 1) >= 2)
+    v13 = sharedHandlerCopy;
+    if ((filterCopy - 1) >= 2)
     {
       goto LABEL_11;
     }
   }
 
 LABEL_15:
-  v14 = v13[2](v13, v9);
+  v14 = v13[2](v13, highlightCopy);
 LABEL_16:
 
   return v14;

@@ -14,30 +14,30 @@
   kdebug_trace();
   if (MGGetBoolAnswer())
   {
-    v2 = 1;
+    supportsTelephonyCalls = 1;
   }
 
   else
   {
-    v2 = [getTUCallCapabilitiesClass() supportsTelephonyCalls];
+    supportsTelephonyCalls = [getTUCallCapabilitiesClass() supportsTelephonyCalls];
   }
 
   kdebug_trace();
-  return v2;
+  return supportsTelephonyCalls;
 }
 
 - (BOOL)isiMessageSupported
 {
   kdebug_trace();
-  v2 = 1;
+  iMessageSupported = 1;
   if ((_mergedCarrierBundleValue(@"AllowiMessage", 1) & 1) == 0)
   {
-    v3 = [(objc_class *)getFTiMessageStatusClass() sharedInstance];
-    v2 = [v3 iMessageSupported];
+    sharedInstance = [(objc_class *)getFTiMessageStatusClass() sharedInstance];
+    iMessageSupported = [sharedInstance iMessageSupported];
   }
 
   kdebug_trace();
-  return v2;
+  return iMessageSupported;
 }
 
 - (BOOL)isFaceTimeVideoSupported
@@ -45,16 +45,16 @@
   kdebug_trace();
   if (MGGetBoolAnswer())
   {
-    v2 = 1;
+    supportsDisplayingFaceTimeVideoCalls = 1;
   }
 
   else
   {
-    v2 = [getTUCallCapabilitiesClass() supportsDisplayingFaceTimeVideoCalls];
+    supportsDisplayingFaceTimeVideoCalls = [getTUCallCapabilitiesClass() supportsDisplayingFaceTimeVideoCalls];
   }
 
   kdebug_trace();
-  return v2;
+  return supportsDisplayingFaceTimeVideoCalls;
 }
 
 - (BOOL)isFaceTimeAudioSupported
@@ -63,23 +63,23 @@
   v2 = _mergedCarrierBundleValue(@"AllowsFaceTimeAudio", 0);
   v3 = MGGetBoolAnswer();
   v4 = MGGetBoolAnswer();
-  v5 = 0;
+  supportsDisplayingFaceTimeAudioCalls = 0;
   if ((v3 & 1) == 0)
   {
     if (v4 & v2)
     {
-      v5 = 1;
+      supportsDisplayingFaceTimeAudioCalls = 1;
     }
 
     else
     {
-      v5 = [getTUCallCapabilitiesClass() supportsDisplayingFaceTimeAudioCalls];
+      supportsDisplayingFaceTimeAudioCalls = [getTUCallCapabilitiesClass() supportsDisplayingFaceTimeAudioCalls];
     }
 
     kdebug_trace();
   }
 
-  return v5;
+  return supportsDisplayingFaceTimeAudioCalls;
 }
 
 + (BOOL)shouldUseLegacyMessages
@@ -108,8 +108,8 @@ uint64_t __41__CNCapabilities_shouldUseLegacyMessages__block_invoke()
     return 0;
   }
 
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 0;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 0;
 
   return v3;
 }

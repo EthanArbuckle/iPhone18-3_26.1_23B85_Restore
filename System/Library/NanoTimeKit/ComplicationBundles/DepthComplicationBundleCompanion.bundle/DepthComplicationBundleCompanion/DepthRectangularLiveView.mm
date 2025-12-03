@@ -1,5 +1,5 @@
 @interface DepthRectangularLiveView
-- (_TtC32DepthComplicationBundleCompanion24DepthRectangularLiveView)initWithFrame:(CGRect)a3;
+- (_TtC32DepthComplicationBundleCompanion24DepthRectangularLiveView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
 @end
@@ -9,7 +9,7 @@
 - (void)dealloc
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC32DepthComplicationBundleCompanion24DepthRectangularLiveView_updateTimer);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     [v3 invalidate];
@@ -22,11 +22,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_172A4();
 }
 
-- (_TtC32DepthComplicationBundleCompanion24DepthRectangularLiveView)initWithFrame:(CGRect)a3
+- (_TtC32DepthComplicationBundleCompanion24DepthRectangularLiveView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,19 +1,19 @@
 @interface _MTLMessageNotifier
-- (id)init:(id)a3 filter:(id)a4;
+- (id)init:(id)init filter:(id)filter;
 - (void)dealloc;
 @end
 
 @implementation _MTLMessageNotifier
 
-- (id)init:(id)a3 filter:(id)a4
+- (id)init:(id)init filter:(id)filter
 {
   v9.receiver = self;
   v9.super_class = _MTLMessageNotifier;
   v6 = [(_MTLMessageNotifier *)&v9 init];
   if (v6)
   {
-    v7 = _Block_copy(a3);
-    v6->_filter = a4;
+    v7 = _Block_copy(init);
+    v6->_filter = filter;
     v6->_handler = v7;
     if (!v7)
     {

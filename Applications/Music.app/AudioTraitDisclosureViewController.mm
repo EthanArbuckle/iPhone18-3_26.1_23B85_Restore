@@ -1,12 +1,12 @@
 @interface AudioTraitDisclosureViewController
-- (_TtC5Music34AudioTraitDisclosureViewController)initWithCoder:(id)a3;
-- (_TtC5Music34AudioTraitDisclosureViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewWillDisappear:(BOOL)a3;
+- (_TtC5Music34AudioTraitDisclosureViewController)initWithCoder:(id)coder;
+- (_TtC5Music34AudioTraitDisclosureViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AudioTraitDisclosureViewController
 
-- (_TtC5Music34AudioTraitDisclosureViewController)initWithCoder:(id)a3
+- (_TtC5Music34AudioTraitDisclosureViewController)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC5Music34AudioTraitDisclosureViewController_dismissHandler);
   *v3 = 0;
@@ -16,13 +16,13 @@
   return result;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(AudioTraitDisclosureViewController *)&v7 viewWillDisappear:v3];
+  [(AudioTraitDisclosureViewController *)&v7 viewWillDisappear:disappearCopy];
   v5 = *&v4[OBJC_IVAR____TtC5Music34AudioTraitDisclosureViewController_dismissHandler];
   if (v5)
   {
@@ -37,7 +37,7 @@
   }
 }
 
-- (_TtC5Music34AudioTraitDisclosureViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Music34AudioTraitDisclosureViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

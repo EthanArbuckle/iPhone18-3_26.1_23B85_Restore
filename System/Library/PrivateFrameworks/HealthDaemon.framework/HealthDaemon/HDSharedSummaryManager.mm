@@ -1,44 +1,44 @@
 @interface HDSharedSummaryManager
-- (BOOL)addMetadata:(id)a3 transactionEntity:(id)a4 error:(id *)a5;
-- (BOOL)addOrReuseReceivedSharedSummaries:(id)a3 transactionEntity:(id)a4 error:(id *)a5;
-- (BOOL)addSharedSummaries:(id)a3 transactionEntity:(id)a4 error:(id *)a5;
-- (BOOL)deleteAllTransactionsWithError:(id *)a3;
-- (BOOL)deleteTransactions:(id)a3 error:(id *)a4;
-- (BOOL)discardTransactionEntity:(id)a3 error:(id *)a4;
-- (BOOL)enumerateCommittedTransactionsWithError:(id *)a3 handler:(id)a4;
-- (BOOL)enumerateNonCommittedTransactionsWithError:(id *)a3 handler:(id)a4;
-- (BOOL)enumerateSummariesInTransaction:(id)a3 package:(id)a4 names:(id)a5 includedObjectTypes:(id)a6 error:(id *)a7 handler:(id)a8;
-- (BOOL)enumerateSummariesInTransactionEntity:(id)a3 package:(id)a4 names:(id)a5 error:(id *)a6 handler:(id)a7;
-- (BOOL)prepareAndCommitTransactionWithUUID:(id)a3 sourceDeviceIdentifier:(id)a4 metadata:(id)a5 sharedSummaries:(id)a6 error:(id *)a7;
-- (BOOL)removeSummariesWithPackage:(id)a3 names:(id)a4 transactionEntity:(id)a5 error:(id *)a6;
-- (BOOL)removeSummariesWithUUIDs:(id)a3 transactionEntity:(id)a4 error:(id *)a5;
-- (BOOL)reuseSharedSummariesWithPackage:(id)a3 names:(id)a4 transactionEntity:(id)a5 error:(id *)a6;
-- (BOOL)reuseSharedSummariesWithUUIDs:(id)a3 transactionEntity:(id)a4 error:(id *)a5;
-- (HDSharedSummaryManager)initWithProfile:(id)a3;
-- (id)_createTransactionWithUUID:(void *)a3 sourceDeviceIdentifier:(void *)a4 metadata:(void *)a5 error:;
-- (id)_transactionForEntity:(void *)a3 databaseTransaction:(void *)a4 error:;
-- (id)commitTransactionEntity:(id)a3 error:(id *)a4;
-- (id)createNewTransactionWithUUID:(id)a3 error:(id *)a4;
-- (id)deviceIdentifierWithError:(id *)a3;
-- (id)fetchAllTransactionsWithError:(id *)a3;
-- (id)mostRecentTransactionCreationDateWithError:(id *)a3;
-- (id)transactionWithUUID:(id)a3 requireUncommitted:(BOOL)a4 error:(id *)a5;
+- (BOOL)addMetadata:(id)metadata transactionEntity:(id)entity error:(id *)error;
+- (BOOL)addOrReuseReceivedSharedSummaries:(id)summaries transactionEntity:(id)entity error:(id *)error;
+- (BOOL)addSharedSummaries:(id)summaries transactionEntity:(id)entity error:(id *)error;
+- (BOOL)deleteAllTransactionsWithError:(id *)error;
+- (BOOL)deleteTransactions:(id)transactions error:(id *)error;
+- (BOOL)discardTransactionEntity:(id)entity error:(id *)error;
+- (BOOL)enumerateCommittedTransactionsWithError:(id *)error handler:(id)handler;
+- (BOOL)enumerateNonCommittedTransactionsWithError:(id *)error handler:(id)handler;
+- (BOOL)enumerateSummariesInTransaction:(id)transaction package:(id)package names:(id)names includedObjectTypes:(id)types error:(id *)error handler:(id)handler;
+- (BOOL)enumerateSummariesInTransactionEntity:(id)entity package:(id)package names:(id)names error:(id *)error handler:(id)handler;
+- (BOOL)prepareAndCommitTransactionWithUUID:(id)d sourceDeviceIdentifier:(id)identifier metadata:(id)metadata sharedSummaries:(id)summaries error:(id *)error;
+- (BOOL)removeSummariesWithPackage:(id)package names:(id)names transactionEntity:(id)entity error:(id *)error;
+- (BOOL)removeSummariesWithUUIDs:(id)ds transactionEntity:(id)entity error:(id *)error;
+- (BOOL)reuseSharedSummariesWithPackage:(id)package names:(id)names transactionEntity:(id)entity error:(id *)error;
+- (BOOL)reuseSharedSummariesWithUUIDs:(id)ds transactionEntity:(id)entity error:(id *)error;
+- (HDSharedSummaryManager)initWithProfile:(id)profile;
+- (id)_createTransactionWithUUID:(void *)d sourceDeviceIdentifier:(void *)identifier metadata:(void *)metadata error:;
+- (id)_transactionForEntity:(void *)entity databaseTransaction:(void *)transaction error:;
+- (id)commitTransactionEntity:(id)entity error:(id *)error;
+- (id)createNewTransactionWithUUID:(id)d error:(id *)error;
+- (id)deviceIdentifierWithError:(id *)error;
+- (id)fetchAllTransactionsWithError:(id *)error;
+- (id)mostRecentTransactionCreationDateWithError:(id *)error;
+- (id)transactionWithUUID:(id)d requireUncommitted:(BOOL)uncommitted error:(id *)error;
 - (uint64_t)_notifyObserversOfTransactionChange;
-- (uint64_t)performDatabaseTransactionForWriting:(void *)a3 entity:(void *)a4 error:(void *)a5 block:;
+- (uint64_t)performDatabaseTransactionForWriting:(void *)writing entity:(void *)entity error:(void *)error block:;
 @end
 
 @implementation HDSharedSummaryManager
 
-- (HDSharedSummaryManager)initWithProfile:(id)a3
+- (HDSharedSummaryManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v12.receiver = self;
   v12.super_class = HDSharedSummaryManager;
   v5 = [(HDSharedSummaryManager *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = objc_alloc(MEMORY[0x277CCDA88]);
     v8 = HKLogSharing();
     v9 = [v7 initWithName:@"shared-summary-manager-observers" loggingCategory:v8];
@@ -49,21 +49,21 @@
   return v6;
 }
 
-- (uint64_t)performDatabaseTransactionForWriting:(void *)a3 entity:(void *)a4 error:(void *)a5 block:
+- (uint64_t)performDatabaseTransactionForWriting:(void *)writing entity:(void *)entity error:(void *)error block:
 {
-  v9 = a5;
-  if (!a1)
+  errorCopy = error;
+  if (!self)
   {
-    v11 = 0;
+    database = 0;
     goto LABEL_22;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
-  v11 = [WeakRetained database];
+  WeakRetained = objc_loadWeakRetained((self + 8));
+  database = [WeakRetained database];
 
-  if (v11)
+  if (database)
   {
-    if ([a3 protectionClass] == 2)
+    if ([writing protectionClass] == 2)
     {
       if (a2)
       {
@@ -88,12 +88,12 @@
     v12 = ;
     v13 = v12;
     v14 = [v12 mutableCopy];
-    v11 = 1;
+    database = 1;
     [v14 setCacheScope:1];
-    v15 = objc_loadWeakRetained((a1 + 8));
-    v16 = [v15 database];
+    v15 = objc_loadWeakRetained((self + 8));
+    database2 = [v15 database];
     v23 = 0;
-    v17 = [v16 performTransactionWithContext:v14 error:&v23 block:v9 inaccessibilityHandler:0];
+    v17 = [database2 performTransactionWithContext:v14 error:&v23 block:errorCopy inaccessibilityHandler:0];
     v18 = v23;
 
     if (v17)
@@ -103,9 +103,9 @@
 
     if ([v18 hk_isDatabaseTransactionError])
     {
-      v19 = objc_loadWeakRetained((a1 + 8));
-      v20 = [v19 database];
-      v11 = [v20 performTransactionWithContext:v13 error:a4 block:v9 inaccessibilityHandler:0];
+      v19 = objc_loadWeakRetained((self + 8));
+      database3 = [v19 database];
+      database = [database3 performTransactionWithContext:v13 error:entity block:errorCopy inaccessibilityHandler:0];
 
 LABEL_20:
 LABEL_21:
@@ -116,37 +116,37 @@ LABEL_21:
     v19 = v18;
     if (v19)
     {
-      if (a4)
+      if (entity)
       {
         v21 = v19;
-        v11 = 0;
-        *a4 = v19;
+        database = 0;
+        *entity = v19;
         goto LABEL_20;
       }
 
       _HKLogDroppedError();
     }
 
-    v11 = 0;
+    database = 0;
     goto LABEL_20;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a4 code:1500 description:@"Nil healthDatabase"];
+  [MEMORY[0x277CCA9B8] hk_assignError:entity code:1500 description:@"Nil healthDatabase"];
 LABEL_22:
 
-  return v11;
+  return database;
 }
 
-- (id)createNewTransactionWithUUID:(id)a3 error:(id *)a4
+- (id)createNewTransactionWithUUID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v14 = 0;
   v7 = [(HDSharedSummaryManager *)self deviceIdentifierWithError:&v14];
   v8 = v14;
   v9 = v8;
   if (v7)
   {
-    v10 = [(HDSharedSummaryManager *)self _createTransactionWithUUID:v6 sourceDeviceIdentifier:self->_deviceIdentifier metadata:0 error:a4];
+    v10 = [(HDSharedSummaryManager *)self _createTransactionWithUUID:dCopy sourceDeviceIdentifier:self->_deviceIdentifier metadata:0 error:error];
   }
 
   else
@@ -154,10 +154,10 @@ LABEL_22:
     v11 = v8;
     if (v11)
     {
-      if (a4)
+      if (error)
       {
         v12 = v11;
-        *a4 = v11;
+        *error = v11;
       }
 
       else
@@ -172,13 +172,13 @@ LABEL_22:
   return v10;
 }
 
-- (id)_createTransactionWithUUID:(void *)a3 sourceDeviceIdentifier:(void *)a4 metadata:(void *)a5 error:
+- (id)_createTransactionWithUUID:(void *)d sourceDeviceIdentifier:(void *)identifier metadata:(void *)metadata error:
 {
   v27 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  dCopy = d;
+  identifierCopy = identifier;
+  if (self)
   {
     _HKInitializeLogging();
     v12 = HKLogSharing();
@@ -205,12 +205,12 @@ LABEL_22:
     v19[3] = &unk_278614288;
     v22 = buf;
     v20 = v9;
-    v21 = v10;
-    [(HDSharedSummaryManager *)a1 performDatabaseTransactionForWriting:v14 entity:a5 error:v19 block:?];
+    v21 = dCopy;
+    [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v14 entity:metadata error:v19 block:?];
     v15 = *(*&buf[8] + 40);
-    if (v11 && v15)
+    if (identifierCopy && v15)
     {
-      if (![a1 addMetadata:v11 transactionEntity:v15 error:a5])
+      if (![self addMetadata:identifierCopy transactionEntity:v15 error:metadata])
       {
         v16 = 0;
         goto LABEL_10;
@@ -234,9 +234,9 @@ LABEL_11:
   return v16;
 }
 
-- (id)transactionWithUUID:(id)a3 requireUncommitted:(BOOL)a4 error:(id *)a5
+- (id)transactionWithUUID:(id)d requireUncommitted:(BOOL)uncommitted error:(id *)error
 {
-  v9 = a3;
+  dCopy = d;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -249,12 +249,12 @@ LABEL_11:
   v15[2] = __71__HDSharedSummaryManager_transactionWithUUID_requireUncommitted_error___block_invoke;
   v15[3] = &unk_278618458;
   v18 = &v21;
-  v11 = v9;
-  v20 = a4;
+  v11 = dCopy;
+  uncommittedCopy = uncommitted;
   v16 = v11;
-  v17 = self;
+  selfCopy = self;
   v19 = a2;
-  if ([(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v10 entity:a5 error:v15 block:?])
+  if ([(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v10 entity:error error:v15 block:?])
   {
     v12 = v22[5];
   }
@@ -346,23 +346,23 @@ LABEL_13:
   return v20;
 }
 
-- (BOOL)addSharedSummaries:(id)a3 transactionEntity:(id)a4 error:(id *)a5
+- (BOOL)addSharedSummaries:(id)summaries transactionEntity:(id)entity error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  summariesCopy = summaries;
+  entityCopy = entity;
   v10 = objc_opt_class();
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__HDSharedSummaryManager_addSharedSummaries_transactionEntity_error___block_invoke;
   v14[3] = &unk_278615D40;
-  v15 = v8;
-  v16 = self;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  LOBYTE(a5) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v10 entity:a5 error:v14 block:?];
+  v15 = summariesCopy;
+  selfCopy = self;
+  v17 = entityCopy;
+  v11 = entityCopy;
+  v12 = summariesCopy;
+  LOBYTE(error) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v10 entity:error error:v14 block:?];
 
-  return a5;
+  return error;
 }
 
 uint64_t __69__HDSharedSummaryManager_addSharedSummaries_transactionEntity_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -570,22 +570,22 @@ LABEL_39:
   return (v4 | v45) & 1;
 }
 
-- (BOOL)addMetadata:(id)a3 transactionEntity:(id)a4 error:(id *)a5
+- (BOOL)addMetadata:(id)metadata transactionEntity:(id)entity error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  metadataCopy = metadata;
+  entityCopy = entity;
   v10 = objc_opt_class();
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __62__HDSharedSummaryManager_addMetadata_transactionEntity_error___block_invoke;
   v14[3] = &unk_278613218;
-  v15 = v9;
-  v16 = v8;
-  v11 = v8;
-  v12 = v9;
-  LOBYTE(a5) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v10 entity:a5 error:v14 block:?];
+  v15 = entityCopy;
+  v16 = metadataCopy;
+  v11 = metadataCopy;
+  v12 = entityCopy;
+  LOBYTE(error) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v10 entity:error error:v14 block:?];
 
-  return a5;
+  return error;
 }
 
 BOOL __62__HDSharedSummaryManager_addMetadata_transactionEntity_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -597,22 +597,22 @@ BOOL __62__HDSharedSummaryManager_addMetadata_transactionEntity_error___block_in
   return v7 != 0;
 }
 
-- (BOOL)reuseSharedSummariesWithUUIDs:(id)a3 transactionEntity:(id)a4 error:(id *)a5
+- (BOOL)reuseSharedSummariesWithUUIDs:(id)ds transactionEntity:(id)entity error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dsCopy = ds;
+  entityCopy = entity;
   v10 = objc_opt_class();
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __80__HDSharedSummaryManager_reuseSharedSummariesWithUUIDs_transactionEntity_error___block_invoke;
   v14[3] = &unk_278613218;
-  v15 = v8;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
-  LOBYTE(a5) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v10 entity:a5 error:v14 block:?];
+  v15 = dsCopy;
+  v16 = entityCopy;
+  v11 = entityCopy;
+  v12 = dsCopy;
+  LOBYTE(error) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v10 entity:error error:v14 block:?];
 
-  return a5;
+  return error;
 }
 
 uint64_t __80__HDSharedSummaryManager_reuseSharedSummariesWithUUIDs_transactionEntity_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -712,25 +712,25 @@ LABEL_20:
   return (v15 | a3) & 1;
 }
 
-- (BOOL)reuseSharedSummariesWithPackage:(id)a3 names:(id)a4 transactionEntity:(id)a5 error:(id *)a6
+- (BOOL)reuseSharedSummariesWithPackage:(id)package names:(id)names transactionEntity:(id)entity error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  packageCopy = package;
+  namesCopy = names;
+  entityCopy = entity;
   v13 = objc_opt_class();
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __88__HDSharedSummaryManager_reuseSharedSummariesWithPackage_names_transactionEntity_error___block_invoke;
   v18[3] = &unk_278615D40;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  LOBYTE(a6) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v13 entity:a6 error:v18 block:?];
+  v19 = packageCopy;
+  v20 = namesCopy;
+  v21 = entityCopy;
+  v14 = entityCopy;
+  v15 = namesCopy;
+  v16 = packageCopy;
+  LOBYTE(error) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v13 entity:error error:v18 block:?];
 
-  return a6;
+  return error;
 }
 
 BOOL __88__HDSharedSummaryManager_reuseSharedSummariesWithPackage_names_transactionEntity_error___block_invoke(id *a1, void *a2, void *a3)
@@ -891,24 +891,24 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)removeSummariesWithUUIDs:(id)a3 transactionEntity:(id)a4 error:(id *)a5
+- (BOOL)removeSummariesWithUUIDs:(id)ds transactionEntity:(id)entity error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  dsCopy = ds;
+  entityCopy = entity;
   v11 = objc_opt_class();
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75__HDSharedSummaryManager_removeSummariesWithUUIDs_transactionEntity_error___block_invoke;
   v15[3] = &unk_278613550;
-  v16 = v9;
-  v17 = v10;
-  v18 = self;
+  v16 = dsCopy;
+  v17 = entityCopy;
+  selfCopy = self;
   v19 = a2;
-  v12 = v10;
-  v13 = v9;
-  LOBYTE(a5) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v11 entity:a5 error:v15 block:?];
+  v12 = entityCopy;
+  v13 = dsCopy;
+  LOBYTE(error) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v11 entity:error error:v15 block:?];
 
-  return a5;
+  return error;
 }
 
 uint64_t __75__HDSharedSummaryManager_removeSummariesWithUUIDs_transactionEntity_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1106,25 +1106,25 @@ LABEL_43:
   return (v18 | a3) & 1;
 }
 
-- (BOOL)removeSummariesWithPackage:(id)a3 names:(id)a4 transactionEntity:(id)a5 error:(id *)a6
+- (BOOL)removeSummariesWithPackage:(id)package names:(id)names transactionEntity:(id)entity error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  packageCopy = package;
+  namesCopy = names;
+  entityCopy = entity;
   v13 = objc_opt_class();
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __83__HDSharedSummaryManager_removeSummariesWithPackage_names_transactionEntity_error___block_invoke;
   v18[3] = &unk_278615D40;
-  v19 = v12;
-  v20 = v10;
-  v21 = v11;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
-  LOBYTE(a6) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v13 entity:a6 error:v18 block:?];
+  v19 = entityCopy;
+  v20 = packageCopy;
+  v21 = namesCopy;
+  v14 = namesCopy;
+  v15 = packageCopy;
+  v16 = entityCopy;
+  LOBYTE(error) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v13 entity:error error:v18 block:?];
 
-  return a6;
+  return error;
 }
 
 BOOL __83__HDSharedSummaryManager_removeSummariesWithPackage_names_transactionEntity_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1236,10 +1236,10 @@ LABEL_19:
   return v22;
 }
 
-- (id)commitTransactionEntity:(id)a3 error:(id *)a4
+- (id)commitTransactionEntity:(id)entity error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  entityCopy = entity;
   _HKInitializeLogging();
   v7 = HKLogSharing();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1265,12 +1265,12 @@ LABEL_19:
   v21 = 3221225472;
   v22 = __56__HDSharedSummaryManager_commitTransactionEntity_error___block_invoke;
   v23 = &unk_2786184F8;
-  v10 = v6;
+  v10 = entityCopy;
   v24 = v10;
-  v25 = self;
+  selfCopy = self;
   v26 = &v28;
   p_buf = &buf;
-  if ([(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v9 entity:a4 error:&v20 block:?])
+  if ([(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v9 entity:error error:&v20 block:?])
   {
     _HKInitializeLogging();
     v11 = HKLogSharing();
@@ -1294,22 +1294,22 @@ LABEL_19:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v15 = objc_opt_class();
-      if (a4)
+      if (error)
       {
-        v16 = [*a4 localizedDescription];
+        localizedDescription = [*error localizedDescription];
       }
 
       else
       {
-        v16 = @"<lost>";
+        localizedDescription = @"<lost>";
       }
 
       *v32 = 138543618;
       v33 = v15;
       v34 = 2114;
-      v35 = v16;
+      v35 = localizedDescription;
       _os_log_impl(&dword_228986000, v11, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Failed to commit transaction - %{public}@", v32, 0x16u);
-      if (a4)
+      if (error)
       {
       }
     }
@@ -1572,10 +1572,10 @@ LABEL_27:
   return result;
 }
 
-- (BOOL)discardTransactionEntity:(id)a3 error:(id *)a4
+- (BOOL)discardTransactionEntity:(id)entity error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  entityCopy = entity;
   _HKInitializeLogging();
   v7 = HKLogSharing();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1591,10 +1591,10 @@ LABEL_27:
   v14[1] = 3221225472;
   v14[2] = __57__HDSharedSummaryManager_discardTransactionEntity_error___block_invoke;
   v14[3] = &unk_278613218;
-  v15 = v6;
-  v16 = self;
-  v10 = v6;
-  v11 = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v9 entity:a4 error:v14 block:?];
+  v15 = entityCopy;
+  selfCopy = self;
+  v10 = entityCopy;
+  v11 = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v9 entity:error error:v14 block:?];
 
   v12 = *MEMORY[0x277D85DE8];
   return v11;
@@ -1635,7 +1635,7 @@ BOOL __57__HDSharedSummaryManager_discardTransactionEntity_error___block_invoke(
   return v9;
 }
 
-- (id)fetchAllTransactionsWithError:(id *)a3
+- (id)fetchAllTransactionsWithError:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v9[0] = MEMORY[0x277D85DD0];
@@ -1644,7 +1644,7 @@ BOOL __57__HDSharedSummaryManager_discardTransactionEntity_error___block_invoke(
   v9[3] = &unk_278618520;
   v6 = v5;
   v10 = v6;
-  if ([(HDSharedSummaryManager *)self enumerateCommittedTransactionsWithError:a3 handler:v9])
+  if ([(HDSharedSummaryManager *)self enumerateCommittedTransactionsWithError:error handler:v9])
   {
     v7 = [v6 copy];
   }
@@ -1657,20 +1657,20 @@ BOOL __57__HDSharedSummaryManager_discardTransactionEntity_error___block_invoke(
   return v7;
 }
 
-- (BOOL)enumerateCommittedTransactionsWithError:(id *)a3 handler:(id)a4
+- (BOOL)enumerateCommittedTransactionsWithError:(id *)error handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = objc_opt_class();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __74__HDSharedSummaryManager_enumerateCommittedTransactionsWithError_handler___block_invoke;
   v10[3] = &unk_278618368;
   v10[4] = self;
-  v11 = v6;
-  v8 = v6;
-  LOBYTE(a3) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v7 entity:a3 error:v10 block:?];
+  v11 = handlerCopy;
+  v8 = handlerCopy;
+  LOBYTE(error) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v7 entity:error error:v10 block:?];
 
-  return a3;
+  return error;
 }
 
 BOOL __74__HDSharedSummaryManager_enumerateCommittedTransactionsWithError_handler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1701,14 +1701,14 @@ uint64_t __74__HDSharedSummaryManager_enumerateCommittedTransactionsWithError_ha
   return 1;
 }
 
-- (id)_transactionForEntity:(void *)a3 databaseTransaction:(void *)a4 error:
+- (id)_transactionForEntity:(void *)entity databaseTransaction:(void *)transaction error:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  entityCopy = entity;
+  if (self)
   {
     v23 = 0;
-    v9 = [v7 uuidInDatabaseTransaction:v8 error:&v23];
+    v9 = [v7 uuidInDatabaseTransaction:entityCopy error:&v23];
     v10 = v23;
     v11 = v10;
     if (!v9)
@@ -1716,11 +1716,11 @@ uint64_t __74__HDSharedSummaryManager_enumerateCommittedTransactionsWithError_ha
       v12 = v10;
       if (v12)
       {
-        if (a4)
+        if (transaction)
         {
           v17 = v12;
           v16 = 0;
-          *a4 = v12;
+          *transaction = v12;
         }
 
         else
@@ -1742,13 +1742,13 @@ uint64_t __74__HDSharedSummaryManager_enumerateCommittedTransactionsWithError_ha
     }
 
     v22 = v10;
-    v12 = [v7 sourceDeviceIdentiferInDatabaseTransaction:v8 error:&v22];
+    v12 = [v7 sourceDeviceIdentiferInDatabaseTransaction:entityCopy error:&v22];
     v13 = v22;
 
     if (v12)
     {
       v21 = v13;
-      v14 = +[HDSharedSummaryTransactionMetadataEntity metadataForTransactionID:databaseTransaction:error:](HDSharedSummaryTransactionMetadataEntity, "metadataForTransactionID:databaseTransaction:error:", [v7 persistentID], v8, &v21);
+      v14 = +[HDSharedSummaryTransactionMetadataEntity metadataForTransactionID:databaseTransaction:error:](HDSharedSummaryTransactionMetadataEntity, "metadataForTransactionID:databaseTransaction:error:", [v7 persistentID], entityCopy, &v21);
       v15 = v21;
 
       if (v14)
@@ -1763,10 +1763,10 @@ LABEL_25:
       v15 = v15;
       if (v15)
       {
-        if (a4)
+        if (transaction)
         {
           v19 = v15;
-          *a4 = v15;
+          *transaction = v15;
         }
 
         else
@@ -1783,11 +1783,11 @@ LABEL_25:
       v14 = v13;
       if (v14)
       {
-        if (a4)
+        if (transaction)
         {
           v18 = v14;
           v16 = 0;
-          *a4 = v14;
+          *transaction = v14;
         }
 
         else
@@ -1813,20 +1813,20 @@ LABEL_26:
   return v16;
 }
 
-- (BOOL)enumerateNonCommittedTransactionsWithError:(id *)a3 handler:(id)a4
+- (BOOL)enumerateNonCommittedTransactionsWithError:(id *)error handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = objc_opt_class();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __77__HDSharedSummaryManager_enumerateNonCommittedTransactionsWithError_handler___block_invoke;
   v10[3] = &unk_278618368;
   v10[4] = self;
-  v11 = v6;
-  v8 = v6;
-  LOBYTE(a3) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v7 entity:a3 error:v10 block:?];
+  v11 = handlerCopy;
+  v8 = handlerCopy;
+  LOBYTE(error) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v7 entity:error error:v10 block:?];
 
-  return a3;
+  return error;
 }
 
 BOOL __77__HDSharedSummaryManager_enumerateNonCommittedTransactionsWithError_handler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1946,31 +1946,31 @@ LABEL_21:
   return v11;
 }
 
-- (BOOL)enumerateSummariesInTransaction:(id)a3 package:(id)a4 names:(id)a5 includedObjectTypes:(id)a6 error:(id *)a7 handler:(id)a8
+- (BOOL)enumerateSummariesInTransaction:(id)transaction package:(id)package names:(id)names includedObjectTypes:(id)types error:(id *)error handler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  transactionCopy = transaction;
+  packageCopy = package;
+  namesCopy = names;
+  typesCopy = types;
+  handlerCopy = handler;
   v19 = objc_opt_class();
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __106__HDSharedSummaryManager_enumerateSummariesInTransaction_package_names_includedObjectTypes_error_handler___block_invoke;
   v26[3] = &unk_278618598;
-  v27 = v14;
-  v28 = v15;
-  v29 = v16;
-  v30 = v17;
-  v31 = v18;
-  v20 = v18;
-  v21 = v17;
-  v22 = v16;
-  v23 = v15;
-  v24 = v14;
-  LOBYTE(a7) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v19 entity:a7 error:v26 block:?];
+  v27 = transactionCopy;
+  v28 = packageCopy;
+  v29 = namesCopy;
+  v30 = typesCopy;
+  v31 = handlerCopy;
+  v20 = handlerCopy;
+  v21 = typesCopy;
+  v22 = namesCopy;
+  v23 = packageCopy;
+  v24 = transactionCopy;
+  LOBYTE(error) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v19 entity:error error:v26 block:?];
 
-  return a7;
+  return error;
 }
 
 BOOL __106__HDSharedSummaryManager_enumerateSummariesInTransaction_package_names_includedObjectTypes_error_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2078,28 +2078,28 @@ uint64_t __106__HDSharedSummaryManager_enumerateSummariesInTransaction_package_n
   return 1;
 }
 
-- (BOOL)enumerateSummariesInTransactionEntity:(id)a3 package:(id)a4 names:(id)a5 error:(id *)a6 handler:(id)a7
+- (BOOL)enumerateSummariesInTransactionEntity:(id)entity package:(id)package names:(id)names error:(id *)error handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  entityCopy = entity;
+  packageCopy = package;
+  namesCopy = names;
+  handlerCopy = handler;
   v16 = objc_opt_class();
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __92__HDSharedSummaryManager_enumerateSummariesInTransactionEntity_package_names_error_handler___block_invoke;
   v22[3] = &unk_2786185E8;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v26 = v15;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  LOBYTE(a6) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v16 entity:a6 error:v22 block:?];
+  v23 = entityCopy;
+  v24 = packageCopy;
+  v25 = namesCopy;
+  v26 = handlerCopy;
+  v17 = handlerCopy;
+  v18 = namesCopy;
+  v19 = packageCopy;
+  v20 = entityCopy;
+  LOBYTE(error) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v16 entity:error error:v22 block:?];
 
-  return a6;
+  return error;
 }
 
 BOOL __92__HDSharedSummaryManager_enumerateSummariesInTransactionEntity_package_names_error_handler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -2119,7 +2119,7 @@ BOOL __92__HDSharedSummaryManager_enumerateSummariesInTransactionEntity_package_
   return v10;
 }
 
-- (id)mostRecentTransactionCreationDateWithError:(id *)a3
+- (id)mostRecentTransactionCreationDateWithError:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -2133,7 +2133,7 @@ BOOL __92__HDSharedSummaryManager_enumerateSummariesInTransactionEntity_package_
   v8[2] = __69__HDSharedSummaryManager_mostRecentTransactionCreationDateWithError___block_invoke;
   v8[3] = &unk_278618610;
   v8[4] = &v9;
-  if (([(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v5 entity:a3 error:v8 block:?]& 1) != 0)
+  if (([(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v5 entity:error error:v8 block:?]& 1) != 0)
   {
     v6 = v10[5];
   }
@@ -2185,11 +2185,11 @@ uint64_t __69__HDSharedSummaryManager_mostRecentTransactionCreationDateWithError
   return v10;
 }
 
-- (BOOL)prepareAndCommitTransactionWithUUID:(id)a3 sourceDeviceIdentifier:(id)a4 metadata:(id)a5 sharedSummaries:(id)a6 error:(id *)a7
+- (BOOL)prepareAndCommitTransactionWithUUID:(id)d sourceDeviceIdentifier:(id)identifier metadata:(id)metadata sharedSummaries:(id)summaries error:(id *)error
 {
-  v12 = a6;
+  summariesCopy = summaries;
   v26 = 0;
-  v13 = [(HDSharedSummaryManager *)self createReceivedTransactionWithUUID:a3 sourceDeviceIdentifier:a4 metadata:a5 error:&v26];
+  v13 = [(HDSharedSummaryManager *)self createReceivedTransactionWithUUID:d sourceDeviceIdentifier:identifier metadata:metadata error:&v26];
   v14 = v26;
   v15 = v14;
   if (!v13)
@@ -2197,7 +2197,7 @@ uint64_t __69__HDSharedSummaryManager_mostRecentTransactionCreationDateWithError
     v18 = v14;
     if (v18)
     {
-      if (!a7)
+      if (!error)
       {
 LABEL_12:
         _HKLogDroppedError();
@@ -2208,7 +2208,7 @@ LABEL_12:
 LABEL_9:
       v22 = v18;
       v20 = 0;
-      *a7 = v18;
+      *error = v18;
 LABEL_13:
       v19 = v18;
       goto LABEL_18;
@@ -2220,7 +2220,7 @@ LABEL_14:
   }
 
   v25 = v14;
-  v16 = [(HDSharedSummaryManager *)self addOrReuseReceivedSharedSummaries:v12 transactionEntity:v13 error:&v25];
+  v16 = [(HDSharedSummaryManager *)self addOrReuseReceivedSharedSummaries:summariesCopy transactionEntity:v13 error:&v25];
   v17 = v25;
 
   if (!v16)
@@ -2228,7 +2228,7 @@ LABEL_14:
     v18 = v17;
     if (v18)
     {
-      if (!a7)
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -2254,10 +2254,10 @@ LABEL_15:
   v20 = v19 == 0;
   if (v19)
   {
-    if (a7)
+    if (error)
     {
       v21 = v19;
-      *a7 = v19;
+      *error = v19;
     }
 
     else
@@ -2272,23 +2272,23 @@ LABEL_18:
   return v20;
 }
 
-- (BOOL)addOrReuseReceivedSharedSummaries:(id)a3 transactionEntity:(id)a4 error:(id *)a5
+- (BOOL)addOrReuseReceivedSharedSummaries:(id)summaries transactionEntity:(id)entity error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  summariesCopy = summaries;
+  entityCopy = entity;
   v10 = objc_opt_class();
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __84__HDSharedSummaryManager_addOrReuseReceivedSharedSummaries_transactionEntity_error___block_invoke;
   v14[3] = &unk_278615D40;
-  v15 = v8;
-  v16 = self;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  LOBYTE(a5) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v10 entity:a5 error:v14 block:?];
+  v15 = summariesCopy;
+  selfCopy = self;
+  v17 = entityCopy;
+  v11 = entityCopy;
+  v12 = summariesCopy;
+  LOBYTE(error) = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v10 entity:error error:v14 block:?];
 
-  return a5;
+  return error;
 }
 
 uint64_t __84__HDSharedSummaryManager_addOrReuseReceivedSharedSummaries_transactionEntity_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2510,7 +2510,7 @@ BOOL __91__HDSharedSummaryManager__createTransactionWithUUID_sourceDeviceIdentif
   return v11;
 }
 
-- (BOOL)deleteAllTransactionsWithError:(id *)a3
+- (BOOL)deleteAllTransactionsWithError:(id *)error
 {
   v12 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -2524,7 +2524,7 @@ BOOL __91__HDSharedSummaryManager__createTransactionWithUUID_sourceDeviceIdentif
   }
 
   v7 = objc_opt_class();
-  result = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v7 entity:a3 error:&__block_literal_global_38 block:?];
+  result = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v7 entity:error error:&__block_literal_global_38 block:?];
   v9 = *MEMORY[0x277D85DE8];
   return result;
 }
@@ -2589,10 +2589,10 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)deleteTransactions:(id)a3 error:(id *)a4
+- (BOOL)deleteTransactions:(id)transactions error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  transactionsCopy = transactions;
   _HKInitializeLogging();
   v7 = HKLogSharing();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -2602,7 +2602,7 @@ LABEL_12:
     *buf = 138543618;
     v19 = v8;
     v20 = 2048;
-    v21 = [v6 count];
+    v21 = [transactionsCopy count];
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Deleting %ld transactions", buf, 0x16u);
   }
 
@@ -2611,10 +2611,10 @@ LABEL_12:
   v15[1] = 3221225472;
   v15[2] = __51__HDSharedSummaryManager_deleteTransactions_error___block_invoke;
   v15[3] = &unk_278613218;
-  v16 = v6;
-  v17 = self;
-  v11 = v6;
-  v12 = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v10 entity:a4 error:v15 block:?];
+  v16 = transactionsCopy;
+  selfCopy = self;
+  v11 = transactionsCopy;
+  v12 = [(HDSharedSummaryManager *)self performDatabaseTransactionForWriting:v10 entity:error error:v15 block:?];
 
   v13 = *MEMORY[0x277D85DE8];
   return v12;
@@ -2704,7 +2704,7 @@ LABEL_17:
   return v14;
 }
 
-- (id)deviceIdentifierWithError:(id *)a3
+- (id)deviceIdentifierWithError:(id *)error
 {
   deviceIdentifier = self->_deviceIdentifier;
   if (deviceIdentifier)
@@ -2714,9 +2714,9 @@ LABEL_17:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained sourceManager];
+  sourceManager = [WeakRetained sourceManager];
   v20 = 0;
-  v9 = [v8 localDeviceSourceWithError:&v20];
+  v9 = [sourceManager localDeviceSourceWithError:&v20];
   v10 = v20;
 
   if (!v9)
@@ -2724,11 +2724,11 @@ LABEL_17:
     v12 = v10;
     if (v12)
     {
-      if (a3)
+      if (error)
       {
         v16 = v12;
         v4 = 0;
-        *a3 = v12;
+        *error = v12;
       }
 
       else
@@ -2755,10 +2755,10 @@ LABEL_17:
     v13 = v13;
     if (v13)
     {
-      if (a3)
+      if (error)
       {
         v17 = v13;
-        *a3 = v13;
+        *error = v13;
       }
 
       else
@@ -2773,9 +2773,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v14 = [v12 bundleIdentifier];
+  bundleIdentifier = [v12 bundleIdentifier];
   v15 = self->_deviceIdentifier;
-  self->_deviceIdentifier = v14;
+  self->_deviceIdentifier = bundleIdentifier;
 
   v4 = self->_deviceIdentifier;
 LABEL_18:

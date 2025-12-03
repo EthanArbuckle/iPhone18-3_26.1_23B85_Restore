@@ -1,43 +1,43 @@
 @interface PXLinkPresentationActivityItemProvider
-- (PXLinkPresentationActivityItemProvider)initWithConfiguration:(id)a3;
-- (id)_linkMetadataForConfiguration:(id)a3;
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3;
+- (PXLinkPresentationActivityItemProvider)initWithConfiguration:(id)configuration;
+- (id)_linkMetadataForConfiguration:(id)configuration;
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata;
 @end
 
 @implementation PXLinkPresentationActivityItemProvider
 
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata
 {
-  v4 = [(PXLinkPresentationActivityItemProvider *)self configuration];
-  v5 = [(PXLinkPresentationActivityItemProvider *)self _linkMetadataForConfiguration:v4];
+  configuration = [(PXLinkPresentationActivityItemProvider *)self configuration];
+  v5 = [(PXLinkPresentationActivityItemProvider *)self _linkMetadataForConfiguration:configuration];
 
   return v5;
 }
 
-- (id)_linkMetadataForConfiguration:(id)a3
+- (id)_linkMetadataForConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = objc_alloc_init(MEMORY[0x1E696EC18]);
-  [v4 setPhotoCount:{objc_msgSend(v3, "photoCount")}];
-  [v4 setVideoCount:{objc_msgSend(v3, "videoCount")}];
-  [v4 setOtherItemCount:{objc_msgSend(v3, "otherItemCount")}];
-  v5 = [v3 expirationDate];
-  if (v5)
+  [v4 setPhotoCount:{objc_msgSend(configurationCopy, "photoCount")}];
+  [v4 setVideoCount:{objc_msgSend(configurationCopy, "videoCount")}];
+  [v4 setOtherItemCount:{objc_msgSend(configurationCopy, "otherItemCount")}];
+  expirationDate = [configurationCopy expirationDate];
+  if (expirationDate)
   {
-    [v4 setExpirationDate:v5];
+    [v4 setExpirationDate:expirationDate];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DF00] distantFuture];
-    [v4 setExpirationDate:v6];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    [v4 setExpirationDate:distantFuture];
   }
 
-  v7 = [v3 earliestAssetDate];
-  [v4 setEarliestAssetDate:v7];
+  earliestAssetDate = [configurationCopy earliestAssetDate];
+  [v4 setEarliestAssetDate:earliestAssetDate];
 
-  v8 = [v3 latestAssetDate];
-  [v4 setLatestAssetDate:v8];
+  latestAssetDate = [configurationCopy latestAssetDate];
+  [v4 setLatestAssetDate:latestAssetDate];
 
   v9 = objc_alloc_init(MEMORY[0x1E696ECA0]);
   [v9 setSpecialization:v4];
@@ -47,13 +47,13 @@
   v17[1] = 3221225472;
   v17[2] = __72__PXLinkPresentationActivityItemProvider__linkMetadataForConfiguration___block_invoke;
   v17[3] = &unk_1E77470F0;
-  v12 = v3;
+  v12 = configurationCopy;
   v18 = v12;
   [v10 registerObjectOfClass:v11 visibility:0 loadHandler:v17];
-  v13 = [v12 placeholderImage];
-  if (v13)
+  placeholderImage = [v12 placeholderImage];
+  if (placeholderImage)
   {
-    v14 = [objc_alloc(MEMORY[0x1E696EC68]) initWithPlatformImage:v13];
+    v14 = [objc_alloc(MEMORY[0x1E696EC68]) initWithPlatformImage:placeholderImage];
   }
 
   else
@@ -99,13 +99,13 @@ void __72__PXLinkPresentationActivityItemProvider__linkMetadataForConfiguration_
   }
 }
 
-- (PXLinkPresentationActivityItemProvider)initWithConfiguration:(id)a3
+- (PXLinkPresentationActivityItemProvider)initWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  if (!v6)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXLinkPresentationActivityItemProvider.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLinkPresentationActivityItemProvider.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
   }
 
   v11.receiver = self;
@@ -114,7 +114,7 @@ void __72__PXLinkPresentationActivityItemProvider__linkMetadataForConfiguration_
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_configuration, a3);
+    objc_storeStrong(&v7->_configuration, configuration);
   }
 
   return v8;

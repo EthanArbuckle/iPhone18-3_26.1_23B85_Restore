@@ -41,8 +41,8 @@
 + (id)hu_navigationBarGlyphHouse
 {
   v2 = [MEMORY[0x277D755B8] systemImageNamed:@"house"];
-  v3 = [a1 hu_navigationBarGlyphSize];
-  v4 = [v2 imageWithConfiguration:v3];
+  hu_navigationBarGlyphSize = [self hu_navigationBarGlyphSize];
+  v4 = [v2 imageWithConfiguration:hu_navigationBarGlyphSize];
 
   return v4;
 }
@@ -124,8 +124,8 @@
   v1 = [MEMORY[0x277D755D0] configurationWithPointSize:7 weight:32.0];
   v2 = [v0 imageWithConfiguration:v1];
 
-  v3 = [MEMORY[0x277D75348] systemWhiteColor];
-  v4 = [v2 imageWithTintColor:v3 renderingMode:1];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  v4 = [v2 imageWithTintColor:systemWhiteColor renderingMode:1];
 
   return v4;
 }
@@ -136,8 +136,8 @@
   v1 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76918] scale:-1];
   v2 = [v0 imageWithConfiguration:v1];
 
-  v3 = [MEMORY[0x277D75348] systemWhiteColor];
-  v4 = [v2 imageWithTintColor:v3 renderingMode:1];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  v4 = [v2 imageWithTintColor:systemWhiteColor renderingMode:1];
 
   return v4;
 }
@@ -148,32 +148,32 @@
   v1 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76918] scale:-1];
   v2 = [v0 imageWithConfiguration:v1];
 
-  v3 = [MEMORY[0x277D75348] systemWhiteColor];
-  v4 = [v2 imageWithTintColor:v3 renderingMode:1];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  v4 = [v2 imageWithTintColor:systemWhiteColor renderingMode:1];
 
   return v4;
 }
 
 + (id)hu_recordingButtonMicOnImage
 {
-  v0 = [MEMORY[0x277D755B8] hu_standardSymbolConfiguration];
+  hu_standardSymbolConfiguration = [MEMORY[0x277D755B8] hu_standardSymbolConfiguration];
   v1 = [MEMORY[0x277D755B8] _systemImageNamed:@"mic.slash.fill"];
-  v2 = [v1 imageWithConfiguration:v0];
+  v2 = [v1 imageWithConfiguration:hu_standardSymbolConfiguration];
 
-  v3 = [MEMORY[0x277D75348] systemBlackColor];
-  v4 = [v2 imageWithTintColor:v3 renderingMode:1];
+  systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+  v4 = [v2 imageWithTintColor:systemBlackColor renderingMode:1];
 
   return v4;
 }
 
 + (id)hu_recordingButtonMicOffImage
 {
-  v0 = [MEMORY[0x277D755B8] hu_standardSymbolConfiguration];
+  hu_standardSymbolConfiguration = [MEMORY[0x277D755B8] hu_standardSymbolConfiguration];
   v1 = [MEMORY[0x277D755B8] _systemImageNamed:@"mic.fill"];
-  v2 = [v1 imageWithConfiguration:v0];
+  v2 = [v1 imageWithConfiguration:hu_standardSymbolConfiguration];
 
-  v3 = [MEMORY[0x277D75348] systemBlackColor];
-  v4 = [v2 imageWithTintColor:v3 renderingMode:1];
+  systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+  v4 = [v2 imageWithTintColor:systemBlackColor renderingMode:1];
 
   return v4;
 }
@@ -195,8 +195,8 @@
   v3 = [MEMORY[0x277D755B8] _systemImageNamed:@"checkmark"];
   v4 = [v3 imageWithConfiguration:v2];
 
-  v5 = [MEMORY[0x277D75348] systemGreenColor];
-  v6 = [v4 imageWithTintColor:v5 renderingMode:1];
+  systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+  v6 = [v4 imageWithTintColor:systemGreenColor renderingMode:1];
 
   return v6;
 }
@@ -204,8 +204,8 @@
 + (id)hu_fastForwardButtonImage
 {
   v0 = [MEMORY[0x277D755B8] _systemImageNamed:@"forward.fill"];
-  v1 = [MEMORY[0x277D75348] labelColor];
-  v2 = [v0 imageWithTintColor:v1 renderingMode:1];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v2 = [v0 imageWithTintColor:labelColor renderingMode:1];
 
   return v2;
 }
@@ -216,8 +216,8 @@
   v1 = [MEMORY[0x277D755B8] systemImageNamed:@"hifispeaker.fill"];
   v2 = [v1 imageWithConfiguration:v0];
 
-  v3 = [MEMORY[0x277D75348] systemGrayColor];
-  v4 = [v2 imageWithTintColor:v3 renderingMode:1];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  v4 = [v2 imageWithTintColor:systemGrayColor renderingMode:1];
 
   return v4;
 }
@@ -228,8 +228,8 @@
   v1 = [MEMORY[0x277D755D0] configurationWithPointSize:7 weight:18.0];
   v2 = [v0 imageWithConfiguration:v1];
 
-  v3 = [MEMORY[0x277D75348] systemWhiteColor];
-  v4 = [v2 imageWithTintColor:v3 renderingMode:1];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  v4 = [v2 imageWithTintColor:systemWhiteColor renderingMode:1];
 
   return v4;
 }
@@ -255,9 +255,9 @@
 + (id)hu_stopButtonImage
 {
   v0 = objc_alloc(MEMORY[0x277D755B8]);
-  v1 = [MEMORY[0x277D75348] blackColor];
-  v2 = [MEMORY[0x277D75348] systemLightGrayColor];
-  v3 = [v0 _initWithFilledSystemImageNamed:@"stop.circle.fill" fillColor:v1 symbolColor:v2];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
+  v3 = [v0 _initWithFilledSystemImageNamed:@"stop.circle.fill" fillColor:blackColor symbolColor:systemLightGrayColor];
   v4 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D769A8] scale:3];
   v5 = [v3 imageWithConfiguration:v4];
 
@@ -267,9 +267,9 @@
 + (id)hu_playButtonImageForAnnouncementPlaybackButton
 {
   v0 = objc_alloc(MEMORY[0x277D755B8]);
-  v1 = [MEMORY[0x277D75348] blackColor];
-  v2 = [MEMORY[0x277D75348] systemLightGrayColor];
-  v3 = [v0 _initWithFilledSystemImageNamed:@"play.circle.fill" fillColor:v1 symbolColor:v2];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
+  v3 = [v0 _initWithFilledSystemImageNamed:@"play.circle.fill" fillColor:blackColor symbolColor:systemLightGrayColor];
   v4 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D769A8] scale:3];
   v5 = [v3 imageWithConfiguration:v4];
 
@@ -316,12 +316,12 @@
   v5 = [MEMORY[0x277D755B8] _systemImageNamed:@"gear"];
   if (a3)
   {
-    [a1 hu_standardSymbolConfiguration];
+    [self hu_standardSymbolConfiguration];
   }
 
   else
   {
-    [a1 hu_largeSymbolConfiguration];
+    [self hu_largeSymbolConfiguration];
   }
   v6 = ;
   v7 = [v5 imageWithConfiguration:v6];
@@ -353,8 +353,8 @@
     v3 = [MEMORY[0x277D755B8] systemImageNamed:@"gear.badge"];
     if (([MEMORY[0x277D14CE8] isAMac] & 1) == 0)
     {
-      v4 = [MEMORY[0x277D755D0] configurationPreferringMulticolor];
-      v5 = [v3 imageByApplyingSymbolConfiguration:v4];
+      configurationPreferringMulticolor = [MEMORY[0x277D755D0] configurationPreferringMulticolor];
+      v5 = [v3 imageByApplyingSymbolConfiguration:configurationPreferringMulticolor];
 
       v3 = v5;
     }
@@ -376,12 +376,12 @@
   v12 = [v9 _systemImageNamed:a4];
   v13 = [v12 imageWithSymbolConfiguration:v11];
 
-  v27.width = a1;
-  v27.height = a1;
+  v27.width = self;
+  v27.height = self;
   UIGraphicsBeginImageContextWithOptions(v27, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSetBlendMode(CurrentContext, kCGBlendModeCopy);
-  v15 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:0.0 cornerRadius:{0.0, a1, a1, a1 * 0.5}];
+  v15 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:0.0 cornerRadius:{0.0, self, self, self * 0.5}];
   [v10 set];
 
   [v15 setLineWidth:1.0];
@@ -394,7 +394,7 @@
   [v13 size];
   v21 = v20;
   [v13 size];
-  [v13 drawInRect:0 blendMode:(a1 - v19) * 0.5 alpha:{(a1 - (v21 + v22 * 0.5)) * 0.5, v19, v21 + v22 * 0.5, 1.0}];
+  [v13 drawInRect:0 blendMode:(self - v19) * 0.5 alpha:{(self - (v21 + v22 * 0.5)) * 0.5, v19, v21 + v22 * 0.5, 1.0}];
   v23 = UIGraphicsGetCurrentContext();
   CGContextSetBlendMode(v23, kCGBlendModeCopy);
   [v15 stroke];
@@ -406,12 +406,12 @@
 
 + (id)hu_circleImageWithDiameter:()HUAdditions
 {
-  UIGraphicsBeginImageContextWithOptions(*&a1, 0, 0.0);
+  UIGraphicsBeginImageContextWithOptions(*&self, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSetBlendMode(CurrentContext, kCGBlendModeCopy);
-  v4 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:0.0 cornerRadius:{0.0, a1, a1, a1 * 0.5}];
-  v5 = [MEMORY[0x277D75348] whiteColor];
-  [v5 set];
+  v4 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:0.0 cornerRadius:{0.0, self, self, self * 0.5}];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [whiteColor set];
 
   [v4 setLineWidth:1.0];
   [v4 addClip];
@@ -521,7 +521,7 @@
 {
   v6 = objc_opt_class();
 
-  return [v6 hu_homeAppIconWithSize:0 scale:a1 userInterfaceStyle:{a2, a3}];
+  return [v6 hu_homeAppIconWithSize:0 scale:self userInterfaceStyle:{a2, a3}];
 }
 
 + (id)hu_homeAppIconWithSize:()HUAdditions scale:userInterfaceStyle:
@@ -530,7 +530,7 @@
   v8[1] = 3221225472;
   v8[2] = __72__UIImage_HUAdditions__hu_homeAppIconWithSize_scale_userInterfaceStyle___block_invoke;
   v8[3] = &__block_descriptor_64_e19_v16__0__NAPromise_8l;
-  *&v8[4] = a1;
+  *&v8[4] = self;
   *&v8[5] = a2;
   *&v8[6] = a3;
   v8[7] = a6;

@@ -1,34 +1,34 @@
 @interface AEPolicyBundle
-- (AEPolicyBundle)initWithPolicyStore:(id)a3 performancePrimitives:(id)a4 activations:(id)a5 queue:(id)a6;
-- (id)activationErrorWithErrors:(uint64_t)a1;
+- (AEPolicyBundle)initWithPolicyStore:(id)store performancePrimitives:(id)primitives activations:(id)activations queue:(id)queue;
+- (id)activationErrorWithErrors:(uint64_t)errors;
 - (id)recoverySession;
-- (void)activateSessionWithCompletion:(id)a3;
-- (void)recoverWithError:(void *)a3 deactivations:(void *)a4 finalCompletion:;
-- (void)runWithRemainingActivations:(void *)a3 remainingDeactivations:(void *)a4 invalidationHandler:(uint64_t)a5 currentEvent:(void *)a6 completion:;
-- (void)validateProducedPersistentDeactivations:(uint64_t)a1 currentEvent:;
+- (void)activateSessionWithCompletion:(id)completion;
+- (void)recoverWithError:(void *)error deactivations:(void *)deactivations finalCompletion:;
+- (void)runWithRemainingActivations:(void *)activations remainingDeactivations:(void *)deactivations invalidationHandler:(uint64_t)handler currentEvent:(void *)event completion:;
+- (void)validateProducedPersistentDeactivations:(uint64_t)deactivations currentEvent:;
 @end
 
 @implementation AEPolicyBundle
 
-- (AEPolicyBundle)initWithPolicyStore:(id)a3 performancePrimitives:(id)a4 activations:(id)a5 queue:(id)a6
+- (AEPolicyBundle)initWithPolicyStore:(id)store performancePrimitives:(id)primitives activations:(id)activations queue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  storeCopy = store;
+  primitivesCopy = primitives;
+  activationsCopy = activations;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = AEPolicyBundle;
   v15 = [(AEPolicyBundle *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_policyStore, a3);
-    objc_storeStrong(&v16->_performancePrimitives, a4);
-    v17 = [v13 copy];
+    objc_storeStrong(&v15->_policyStore, store);
+    objc_storeStrong(&v16->_performancePrimitives, primitives);
+    v17 = [activationsCopy copy];
     activations = v16->_activations;
     v16->_activations = v17;
 
-    objc_storeStrong(&v16->_queue, a6);
+    objc_storeStrong(&v16->_queue, queue);
   }
 
   return v16;
@@ -161,9 +161,9 @@ BOOL __71__AEPolicyBundle_validateProducedPersistentDeactivations_currentEvent__
   return v4;
 }
 
-- (void)activateSessionWithCompletion:(id)a3
+- (void)activateSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [AEInvalidationRouter alloc];
   if (self)
   {
@@ -201,7 +201,7 @@ BOOL __71__AEPolicyBundle_validateProducedPersistentDeactivations_currentEvent__
   }
 
   v12 = activations;
-  v13 = [(AEInvalidationRouter *)v7 invalidationHandler];
+  invalidationHandler = [(AEInvalidationRouter *)v7 invalidationHandler];
   OUTLINED_FUNCTION_1();
   v15[1] = 3221225472;
   v15[2] = __48__AEPolicyBundle_activateSessionWithCompletion___block_invoke;
@@ -209,15 +209,15 @@ BOOL __71__AEPolicyBundle_validateProducedPersistentDeactivations_currentEvent__
   v15[4] = v10;
   v15[5] = self;
   v15[6] = v7;
-  v16 = v4;
-  v14 = v4;
-  [(AEPolicyBundle *)self runWithRemainingActivations:v12 remainingDeactivations:MEMORY[0x277CBEBF8] invalidationHandler:v13 currentEvent:0 completion:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [(AEPolicyBundle *)self runWithRemainingActivations:v12 remainingDeactivations:MEMORY[0x277CBEBF8] invalidationHandler:invalidationHandler currentEvent:0 completion:v15];
 }
 
-- (id)activationErrorWithErrors:(uint64_t)a1
+- (id)activationErrorWithErrors:(uint64_t)errors
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (errors)
   {
     v2 = *MEMORY[0x277CCA578];
     v9[0] = AEPolicySessionFailedToActivateSubsystemsKey;
@@ -241,60 +241,60 @@ BOOL __71__AEPolicyBundle_validateProducedPersistentDeactivations_currentEvent__
   return v6;
 }
 
-- (void)recoverWithError:(void *)a3 deactivations:(void *)a4 finalCompletion:
+- (void)recoverWithError:(void *)error deactivations:(void *)deactivations finalCompletion:
 {
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  deactivationsCopy = deactivations;
+  if (self)
   {
-    v9 = a3;
+    errorCopy = error;
     v10 = [AERecoveryPolicySession alloc];
-    v11 = *(a1 + 32);
-    v14 = a1 + 8;
-    v12 = *(a1 + 8);
+    v11 = *(self + 32);
+    v14 = self + 8;
+    v12 = *(self + 8);
     v13 = *(v14 + 8);
     v15 = v11;
     v16 = v13;
-    v17 = [(AERecoveryPolicySession *)&v10->super.isa initWithPolicyStore:v16 performancePrimitives:v15 persistentDeactivations:v9 queue:v12];
+    v17 = [(AERecoveryPolicySession *)&v10->super.isa initWithPolicyStore:v16 performancePrimitives:v15 persistentDeactivations:errorCopy queue:v12];
 
     OUTLINED_FUNCTION_1();
     v18[1] = 3221225472;
     v18[2] = __65__AEPolicyBundle_recoverWithError_deactivations_finalCompletion___block_invoke;
     v18[3] = &unk_278BB6CC8;
-    v20 = v8;
+    v20 = deactivationsCopy;
     v19 = v7;
     [v17 deactivateWithCompletion:v18];
   }
 }
 
-- (void)runWithRemainingActivations:(void *)a3 remainingDeactivations:(void *)a4 invalidationHandler:(uint64_t)a5 currentEvent:(void *)a6 completion:
+- (void)runWithRemainingActivations:(void *)activations remainingDeactivations:(void *)deactivations invalidationHandler:(uint64_t)handler currentEvent:(void *)event completion:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  if (a1)
+  activationsCopy = activations;
+  deactivationsCopy = deactivations;
+  eventCopy = event;
+  if (self)
   {
     if ([v11 count])
     {
-      if (a5 >= 3)
+      if (handler >= 3)
       {
 LABEL_8:
-        v14[2](v14, v11, v12, MEMORY[0x277CBEBF8]);
+        eventCopy[2](eventCopy, v11, activationsCopy, MEMORY[0x277CBEBF8]);
         goto LABEL_9;
       }
     }
 
     else
     {
-      v15 = [v12 count];
-      if (a5 > 2 || !v15)
+      v15 = [activationsCopy count];
+      if (handler > 2 || !v15)
       {
         goto LABEL_8;
       }
     }
 
-    v47[4] = a5;
+    v47[4] = handler;
     v48[0] = 0;
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
@@ -307,44 +307,44 @@ LABEL_8:
     v45[1] = 3221225472;
     v45[2] = __113__AEPolicyBundle_runWithRemainingActivations_remainingDeactivations_invalidationHandler_currentEvent_completion___block_invoke_2;
     v45[3] = &__block_descriptor_40_e34_B16__0__AEPersistentDeactivation_8l;
-    v45[4] = a5;
-    v32 = [v12 ae_split:&v46 includeBlock:v45];
+    v45[4] = handler;
+    v32 = [activationsCopy ae_split:&v46 includeBlock:v45];
     v31 = v46;
     v16 = [AEActivationPool alloc];
-    v36 = v14;
-    v17 = v13;
-    v19 = *(a1 + 8);
-    v18 = *(a1 + 16);
+    v36 = eventCopy;
+    v17 = deactivationsCopy;
+    v19 = *(self + 8);
+    v18 = *(self + 16);
     v35 = v11;
-    v20 = v12;
-    v21 = *(a1 + 32);
+    v20 = activationsCopy;
+    v21 = *(self + 32);
     v22 = v18;
     v23 = [(AEActivationPool *)&v16->super.isa initWithPolicyStore:v22 performancePrimitives:v21 invalidationHandler:v17 activations:v33 queue:v19];
 
     v24 = [AEDeactivationPool alloc];
-    v26 = *(a1 + 8);
-    v25 = *(a1 + 16);
-    v27 = *(a1 + 32);
+    v26 = *(self + 8);
+    v25 = *(self + 16);
+    v27 = *(self + 32);
     v28 = v25;
     v29 = v26;
-    v12 = v20;
+    activationsCopy = v20;
     v11 = v35;
     v30 = [(AEDeactivationPool *)&v24->super.isa initWithPolicyStore:v28 performancePrimitives:v27 persistentDeactivations:v31 queue:v29];
 
-    v13 = v17;
-    v14 = v36;
+    deactivationsCopy = v17;
+    eventCopy = v36;
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __113__AEPolicyBundle_runWithRemainingActivations_remainingDeactivations_invalidationHandler_currentEvent_completion___block_invoke_3;
     v37[3] = &unk_278BB6CA0;
-    v37[4] = a1;
-    v44 = a5;
-    v38 = v12;
+    v37[4] = self;
+    handlerCopy = handler;
+    v38 = activationsCopy;
     v39 = v30;
     v40 = v32;
     v41 = v34;
     v42 = v36;
-    v43 = v13;
+    v43 = deactivationsCopy;
     [(AEActivationPool *)v23 activateWithCompletion:v37];
   }
 
@@ -353,7 +353,7 @@ LABEL_9:
 
 - (id)recoverySession
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_policyStore;
@@ -361,23 +361,23 @@ LABEL_9:
 
   if (([(AEPolicyBundle *)self exists]& 1) != 0)
   {
-    if (v2)
+    if (selfCopy)
     {
-      activations = v2->_activations;
+      activations = selfCopy->_activations;
     }
 
     OUTLINED_FUNCTION_0();
     v14 = 3221225472;
     v15 = __33__AEPolicyBundle_recoverySession__block_invoke;
     v16 = &unk_278BB6BE8;
-    v17 = v2;
+    v17 = selfCopy;
     v5 = [v4 ae_map:v13];
     v6 = [AERecoveryPolicySession alloc];
-    if (v2)
+    if (selfCopy)
     {
-      v7 = v2->_policyStore;
-      v8 = v2->_performancePrimitives;
-      queue = v2->_queue;
+      v7 = selfCopy->_policyStore;
+      v8 = selfCopy->_performancePrimitives;
+      queue = selfCopy->_queue;
     }
 
     else
@@ -477,9 +477,9 @@ id *__33__AEPolicyBundle_recoverySession__block_invoke(uint64_t a1, void *a2)
   return v27;
 }
 
-- (void)validateProducedPersistentDeactivations:(uint64_t)a1 currentEvent:
+- (void)validateProducedPersistentDeactivations:(uint64_t)deactivations currentEvent:
 {
-  if (a1)
+  if (deactivations)
   {
     OUTLINED_FUNCTION_0();
     v7 = 3221225472;
@@ -489,8 +489,8 @@ id *__33__AEPolicyBundle_recoverySession__block_invoke(uint64_t a1, void *a2)
     v4 = [v3 ae_filter:v6];
     if ([v4 count])
     {
-      v5 = [MEMORY[0x277CCA890] currentHandler];
-      [v5 handleFailureInMethod:sel_validateProducedPersistentDeactivations_currentEvent_ object:a1 file:@"AEPolicyBundle.m" lineNumber:217 description:{@"Produced deactivations that will not run: %@", v4}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel_validateProducedPersistentDeactivations_currentEvent_ object:deactivations file:@"AEPolicyBundle.m" lineNumber:217 description:{@"Produced deactivations that will not run: %@", v4}];
     }
   }
 }

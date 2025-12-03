@@ -1,6 +1,6 @@
 @interface CSDPauseDigits
 - (CSDPauseDigits)init;
-- (CSDPauseDigits)initWithDigits:(id)a3 isHardPause:(BOOL)a4;
+- (CSDPauseDigits)initWithDigits:(id)digits isHardPause:(BOOL)pause;
 - (id)description;
 @end
 
@@ -14,17 +14,17 @@
   return 0;
 }
 
-- (CSDPauseDigits)initWithDigits:(id)a3 isHardPause:(BOOL)a4
+- (CSDPauseDigits)initWithDigits:(id)digits isHardPause:(BOOL)pause
 {
-  v7 = a3;
+  digitsCopy = digits;
   v11.receiver = self;
   v11.super_class = CSDPauseDigits;
   v8 = [(CSDPauseDigits *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_digits, a3);
-    v9->_hardPause = a4;
+    objc_storeStrong(&v8->_digits, digits);
+    v9->_hardPause = pause;
   }
 
   return v9;
@@ -33,8 +33,8 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(CSDPauseDigits *)self digits];
-  v5 = [NSString stringWithFormat:@"<%@ %p digits=%@ isHardPause=%d>", v3, self, v4, [(CSDPauseDigits *)self isHardPause]];
+  digits = [(CSDPauseDigits *)self digits];
+  v5 = [NSString stringWithFormat:@"<%@ %p digits=%@ isHardPause=%d>", v3, self, digits, [(CSDPauseDigits *)self isHardPause]];
 
   return v5;
 }

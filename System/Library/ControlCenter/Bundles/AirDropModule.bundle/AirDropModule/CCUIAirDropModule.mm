@@ -1,10 +1,10 @@
 @interface CCUIAirDropModule
-- (id)contentViewControllerForContext:(id)a3;
+- (id)contentViewControllerForContext:(id)context;
 @end
 
 @implementation CCUIAirDropModule
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
   v3 = objc_alloc_init(CCUIAirDropModuleViewController);
 

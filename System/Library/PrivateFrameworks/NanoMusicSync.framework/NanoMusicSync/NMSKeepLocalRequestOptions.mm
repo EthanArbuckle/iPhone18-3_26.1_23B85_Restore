@@ -1,8 +1,8 @@
 @interface NMSKeepLocalRequestOptions
 - (NMSKeepLocalRequestOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (unint64_t)resolvedConstraints:(unint64_t)a3;
+- (unint64_t)resolvedConstraints:(unint64_t)constraints;
 @end
 
 @implementation NMSKeepLocalRequestOptions
@@ -33,39 +33,39 @@
   return v5;
 }
 
-- (unint64_t)resolvedConstraints:(unint64_t)a3
+- (unint64_t)resolvedConstraints:(unint64_t)constraints
 {
   if ([(NMSKeepLocalRequestOptions *)self powerPolicy]== 1)
   {
-    a3 &= 0xFFFFFFFFFFFFFFF9;
+    constraints &= 0xFFFFFFFFFFFFFFF9;
   }
 
   else if ([(NMSKeepLocalRequestOptions *)self powerPolicy]== 2)
   {
-    a3 |= 4uLL;
+    constraints |= 4uLL;
   }
 
   if ([(NMSKeepLocalRequestOptions *)self cellularPolicy]== 1)
   {
-    a3 &= ~2uLL;
+    constraints &= ~2uLL;
   }
 
   else if ([(NMSKeepLocalRequestOptions *)self cellularPolicy]== 2)
   {
-    a3 |= 2uLL;
+    constraints |= 2uLL;
   }
 
   else if (![(NMSKeepLocalRequestOptions *)self cellularPolicy]&& [(NMSKeepLocalRequestOptions *)self powerPolicy]== 2)
   {
-    a3 &= ~2uLL;
+    constraints &= ~2uLL;
   }
 
-  return a3;
+  return constraints;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {

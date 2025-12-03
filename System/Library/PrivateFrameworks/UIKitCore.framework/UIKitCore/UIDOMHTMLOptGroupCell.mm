@@ -1,28 +1,28 @@
 @interface UIDOMHTMLOptGroupCell
-- (UIDOMHTMLOptGroupCell)initWithHTMLOptGroupNode:(id)a3;
-- (double)labelWidthForBounds:(CGRect)a3;
+- (UIDOMHTMLOptGroupCell)initWithHTMLOptGroupNode:(id)node;
+- (double)labelWidthForBounds:(CGRect)bounds;
 - (void)layoutSubviews;
 @end
 
 @implementation UIDOMHTMLOptGroupCell
 
-- (UIDOMHTMLOptGroupCell)initWithHTMLOptGroupNode:(id)a3
+- (UIDOMHTMLOptGroupCell)initWithHTMLOptGroupNode:(id)node
 {
-  v4 = [(UIDOMHTMLOptionPickerCell *)self initCommon];
-  if (v4)
+  initCommon = [(UIDOMHTMLOptionPickerCell *)self initCommon];
+  if (initCommon)
   {
-    -[UILabel setText:](-[UIPickerContentView titleLabel](v4, "titleLabel"), "setText:", [a3 itemTitle]);
-    [(UIPickerContentView *)v4 setChecked:0];
-    [(UILabel *)[(UIPickerContentView *)v4 titleLabel] setTextColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
-    [(UIDOMHTMLOptionPickerCell *)v4 setDisabled:1];
+    -[UILabel setText:](-[UIPickerContentView titleLabel](initCommon, "titleLabel"), "setText:", [node itemTitle]);
+    [(UIPickerContentView *)initCommon setChecked:0];
+    [(UILabel *)[(UIPickerContentView *)initCommon titleLabel] setTextColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+    [(UIDOMHTMLOptionPickerCell *)initCommon setDisabled:1];
   }
 
-  return v4;
+  return initCommon;
 }
 
-- (double)labelWidthForBounds:(CGRect)a3
+- (double)labelWidthForBounds:(CGRect)bounds
 {
-  Width = CGRectGetWidth(a3);
+  Width = CGRectGetWidth(bounds);
   +[UIPickerContentView _checkmarkOffset];
   return Width - v4;
 }
@@ -50,9 +50,9 @@
     v20.size.width = v8;
     v20.size.height = v10;
     Height = CGRectGetHeight(v20);
-    v17 = [(UIPickerContentView *)self titleLabel];
+    titleLabel = [(UIPickerContentView *)self titleLabel];
 
-    [(UILabel *)v17 setFrame:v12, 0.0, v15, Height];
+    [(UILabel *)titleLabel setFrame:v12, 0.0, v15, Height];
   }
 }
 

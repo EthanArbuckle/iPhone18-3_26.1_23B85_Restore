@@ -1,29 +1,29 @@
 @interface CKMentionsControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)setShowMentionSuggestions:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)setShowMentionSuggestions:(BOOL)suggestions animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation CKMentionsControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKMentionsController" hasInstanceMethod:@"setShowMentionSuggestions:animated:completion:" withFullSignature:{"v", "B", "B", "@?", 0}];
-  [v3 validateClass:@"CKMentionsController" hasInstanceMethod:@"paddleOverlayView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMentionsController" hasInstanceMethod:@"currentMentionSuggestions" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMentionsController" hasInstanceMethod:@"mentionSuggestionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMentionSuggestionView" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMentionsController" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKMentionsController" hasInstanceMethod:@"setShowMentionSuggestions:animated:completion:" withFullSignature:{"v", "B", "B", "@?", 0}];
+  [validationsCopy validateClass:@"CKMentionsController" hasInstanceMethod:@"paddleOverlayView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMentionsController" hasInstanceMethod:@"currentMentionSuggestions" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMentionsController" hasInstanceMethod:@"mentionSuggestionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMentionSuggestionView" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMentionsController" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
 }
 
-- (void)setShowMentionSuggestions:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setShowMentionSuggestions:(BOOL)suggestions animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  suggestionsCopy = suggestions;
+  completionCopy = completion;
   v20.receiver = self;
   v20.super_class = CKMentionsControllerAccessibility;
-  [(CKMentionsControllerAccessibility *)&v20 setShowMentionSuggestions:v6 animated:v5 completion:v8];
+  [(CKMentionsControllerAccessibility *)&v20 setShowMentionSuggestions:suggestionsCopy animated:animatedCopy completion:completionCopy];
   v9 = [(CKMentionsControllerAccessibility *)self safeArrayForKey:@"currentMentionSuggestions"];
   if ([v9 count])
   {
@@ -44,7 +44,7 @@
 
   v15 = [(CKMentionsControllerAccessibility *)self safeUIViewForKey:@"textView"];
   v16 = v15;
-  if (v6)
+  if (suggestionsCopy)
   {
     objc_initWeak(&location, self);
     v17[0] = MEMORY[0x29EDCA5F8];

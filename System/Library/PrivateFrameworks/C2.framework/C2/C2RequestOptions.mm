@@ -1,22 +1,22 @@
 @interface C2RequestOptions
-+ (id)stringForDiscretionaryNetworkBehavior:(unint64_t)a3;
-+ (id)stringForDuetPreClearedMode:(unint64_t)a3;
-+ (id)stringForQualityOfService:(unsigned int)a3;
++ (id)stringForDiscretionaryNetworkBehavior:(unint64_t)behavior;
++ (id)stringForDuetPreClearedMode:(unint64_t)mode;
++ (id)stringForQualityOfService:(unsigned int)service;
 + (void)initialize;
 - (BOOL)allowsCellularAccess;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)outOfProcess;
 - (C2NetworkingDelegate)networkingDelegate;
 - (C2RequestOptions)init;
-- (C2RequestOptions)initWithCoder:(id)a3;
-- (id)copyAndDecorateRequest:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)decorateTask:(id)a3;
-- (id)defaultSessionConfigurationWithName:(id)a3;
-- (id)sessionConfigurationNameWithRouteHost:(id)a3;
-- (id)sessionConfigurationWithName:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleCallbackForSessionTask:(id)a3 dataTask:(id)a4 callback:(id)a5;
+- (C2RequestOptions)initWithCoder:(id)coder;
+- (id)copyAndDecorateRequest:(id)request;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)decorateTask:(id)task;
+- (id)defaultSessionConfigurationWithName:(id)name;
+- (id)sessionConfigurationNameWithRouteHost:(id)host;
+- (id)sessionConfigurationWithName:(id)name;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleCallbackForSessionTask:(id)task dataTask:(id)dataTask callback:(id)callback;
 @end
 
 @implementation C2RequestOptions
@@ -59,10 +59,10 @@
     *&v3->_tlsPinning = 0;
     v3->_discretionaryNetworkBehavior = 0;
     v3->_duetPreClearedMode = 0;
-    v16 = [MEMORY[0x277CCAD78] UUID];
-    v17 = [v16 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v3->_identifier;
-    v3->_identifier = v17;
+    v3->_identifier = uUIDString;
 
     metricOptions = v3->_metricOptions;
     v3->_metricOptions = 0;
@@ -93,20 +93,20 @@
 
 - (BOOL)outOfProcess
 {
-  v3 = [(C2RequestOptions *)self discretionaryNetworkBehavior];
-  v4 = [(C2RequestOptions *)self duetPreClearedMode];
-  v5 = [(C2RequestOptions *)self _allowsRetryForBackgroundDataTasks];
-  if (v4)
+  discretionaryNetworkBehavior = [(C2RequestOptions *)self discretionaryNetworkBehavior];
+  duetPreClearedMode = [(C2RequestOptions *)self duetPreClearedMode];
+  _allowsRetryForBackgroundDataTasks = [(C2RequestOptions *)self _allowsRetryForBackgroundDataTasks];
+  if (duetPreClearedMode)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v5;
+    v6 = _allowsRetryForBackgroundDataTasks;
   }
 
-  return v3 || v6;
+  return discretionaryNetworkBehavior || v6;
 }
 
 - (BOOL)allowsCellularAccess
@@ -120,18 +120,18 @@
   return *(&self->super.isa + v2);
 }
 
-+ (id)stringForQualityOfService:(unsigned int)a3
++ (id)stringForQualityOfService:(unsigned int)service
 {
-  if (a3 <= 16)
+  if (service <= 16)
   {
-    if (!a3)
+    if (!service)
     {
       return @"unspecified";
     }
 
-    if (a3 != 5)
+    if (service != 5)
     {
-      if (a3 == 9)
+      if (service == 9)
       {
         return @"background";
       }
@@ -142,11 +142,11 @@
     return @"maintenance";
   }
 
-  else if (a3 > 24)
+  else if (service > 24)
   {
-    if (a3 != 33)
+    if (service != 33)
     {
-      if (a3 == 25)
+      if (service == 25)
       {
         return @"userInitiated";
       }
@@ -159,9 +159,9 @@
 
   else
   {
-    if (a3 != 17)
+    if (service != 17)
     {
-      if (a3 == 21)
+      if (service == 21)
       {
         return @"default";
       }
@@ -173,29 +173,29 @@
   }
 }
 
-+ (id)stringForDiscretionaryNetworkBehavior:(unint64_t)a3
++ (id)stringForDiscretionaryNetworkBehavior:(unint64_t)behavior
 {
-  if (a3 > 2)
+  if (behavior > 2)
   {
     return @"?";
   }
 
   else
   {
-    return off_278D40720[a3];
+    return off_278D40720[behavior];
   }
 }
 
-+ (id)stringForDuetPreClearedMode:(unint64_t)a3
++ (id)stringForDuetPreClearedMode:(unint64_t)mode
 {
-  if (a3 > 2)
+  if (mode > 2)
   {
     return @"?";
   }
 
   else
   {
-    return off_278D40738[a3];
+    return off_278D40738[mode];
   }
 }
 
@@ -203,16 +203,16 @@
 {
   if ((hasTriesteMetricsEnabled & 1) == 0)
   {
-    v2 = [MEMORY[0x277CBEBD0] c2DefaultsDomain];
-    triesteMetricsEnabled = [v2 BOOLForKey:@"C2_triesteMetricsEnabled"];
+    c2DefaultsDomain = [MEMORY[0x277CBEBD0] c2DefaultsDomain];
+    triesteMetricsEnabled = [c2DefaultsDomain BOOLForKey:@"C2_triesteMetricsEnabled"];
 
     hasTriesteMetricsEnabled = 1;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [C2RequestOptions allocWithZone:a3];
+  v4 = [C2RequestOptions allocWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -255,14 +255,14 @@
   return v5;
 }
 
-- (id)sessionConfigurationNameWithRouteHost:(id)a3
+- (id)sessionConfigurationNameWithRouteHost:(id)host
 {
-  if (a3)
+  if (host)
   {
     v4 = MEMORY[0x277CCAB68];
-    v5 = a3;
+    hostCopy = host;
     v6 = objc_alloc_init(v4);
-    [v6 appendFormat:@"route=%@", v5];
+    [v6 appendFormat:@"route=%@", hostCopy];
 
     if ([(C2RequestOptions *)self outOfProcess])
     {
@@ -286,25 +286,25 @@
     }
 
     [v6 appendFormat:@":powerNap=%@", v8];
-    v9 = [(C2RequestOptions *)self _sourceApplicationBundleIdentifier];
+    _sourceApplicationBundleIdentifier = [(C2RequestOptions *)self _sourceApplicationBundleIdentifier];
 
-    if (v9)
+    if (_sourceApplicationBundleIdentifier)
     {
-      v10 = [(C2RequestOptions *)self _sourceApplicationBundleIdentifier];
-      [v6 appendFormat:@":app=%@", v10];
+      _sourceApplicationBundleIdentifier2 = [(C2RequestOptions *)self _sourceApplicationBundleIdentifier];
+      [v6 appendFormat:@":app=%@", _sourceApplicationBundleIdentifier2];
     }
 
-    v11 = [(C2RequestOptions *)self _sourceApplicationSecondaryIdentifier];
+    _sourceApplicationSecondaryIdentifier = [(C2RequestOptions *)self _sourceApplicationSecondaryIdentifier];
 
-    if (v11)
+    if (_sourceApplicationSecondaryIdentifier)
     {
-      v12 = [(C2RequestOptions *)self _sourceApplicationSecondaryIdentifier];
-      [v6 appendFormat:@":2app=%@", v12];
+      _sourceApplicationSecondaryIdentifier2 = [(C2RequestOptions *)self _sourceApplicationSecondaryIdentifier];
+      [v6 appendFormat:@":2app=%@", _sourceApplicationSecondaryIdentifier2];
     }
 
-    v13 = [(C2RequestOptions *)self _sourceApplicationAuditTokenData];
+    _sourceApplicationAuditTokenData = [(C2RequestOptions *)self _sourceApplicationAuditTokenData];
 
-    if (v13)
+    if (_sourceApplicationAuditTokenData)
     {
       [v6 appendString:@":auditToken=Y"];
     }
@@ -319,21 +319,21 @@
 
       v16 = [(C2RequestOptions *)self _allowsRetryForBackgroundDataTasks]? @"T" : @"F";
       [v6 appendFormat:@":retry=%@", v16];
-      v17 = [(C2RequestOptions *)self outOfProcessPoolName];
+      outOfProcessPoolName = [(C2RequestOptions *)self outOfProcessPoolName];
 
-      if (v17)
+      if (outOfProcessPoolName)
       {
-        v18 = [(C2RequestOptions *)self outOfProcessPoolName];
-        [v6 appendFormat:@":pool=%@", v18];
+        outOfProcessPoolName2 = [(C2RequestOptions *)self outOfProcessPoolName];
+        [v6 appendFormat:@":pool=%@", outOfProcessPoolName2];
       }
     }
 
-    v19 = [(C2RequestOptions *)self useNWLoaderOverride];
+    useNWLoaderOverride = [(C2RequestOptions *)self useNWLoaderOverride];
 
-    if (v19)
+    if (useNWLoaderOverride)
     {
-      v20 = [(C2RequestOptions *)self useNWLoaderOverride];
-      if ([v20 BOOLValue])
+      useNWLoaderOverride2 = [(C2RequestOptions *)self useNWLoaderOverride];
+      if ([useNWLoaderOverride2 BOOLValue])
       {
         v21 = @"T";
       }
@@ -346,12 +346,12 @@
       [v6 appendFormat:@":useNWLoaderOverride=%@", v21];
     }
 
-    v22 = [(C2RequestOptions *)self networkingDelegate];
+    networkingDelegate = [(C2RequestOptions *)self networkingDelegate];
 
-    if (v22)
+    if (networkingDelegate)
     {
-      v23 = [(C2RequestOptions *)self networkingDelegate];
-      [v6 appendFormat:@":networkingDelegate=%@", v23];
+      networkingDelegate2 = [(C2RequestOptions *)self networkingDelegate];
+      [v6 appendFormat:@":networkingDelegate=%@", networkingDelegate2];
     }
   }
 
@@ -363,18 +363,18 @@
   return v6;
 }
 
-- (id)defaultSessionConfigurationWithName:(id)a3
+- (id)defaultSessionConfigurationWithName:(id)name
 {
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     goto LABEL_5;
   }
 
   if (![(C2RequestOptions *)self outOfProcess])
   {
-    v8 = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
-    [v8 set_preventsIdleSleepOnceConnected:1];
+    ephemeralSessionConfiguration = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
+    [ephemeralSessionConfiguration set_preventsIdleSleepOnceConnected:1];
     if (+[C2DeviceInfo whitelistedForDisableAPWakeOnIdleConnections]|| [(C2RequestOptions *)self _optIntoDisableAPWakeOnIdleConnections])
     {
       if (C2_DEFAULT_LOG_BLOCK_5 != -1)
@@ -389,34 +389,34 @@
         _os_log_impl(&dword_242158000, v9, OS_LOG_TYPE_DEBUG, "set_disableAPWakeOnIdleConnections.", buf, 2u);
       }
 
-      [v8 set_disableAPWakeOnIdleConnections:1];
+      [ephemeralSessionConfiguration set_disableAPWakeOnIdleConnections:1];
     }
 
     goto LABEL_13;
   }
 
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [v5 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  if (!v6)
+  if (!uUIDString)
   {
 LABEL_5:
-    v8 = 0;
+    ephemeralSessionConfiguration = 0;
     goto LABEL_14;
   }
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:uuid:%@", v4, v6];
-  v8 = [MEMORY[0x277CCAD38] backgroundSessionConfigurationWithIdentifier:v7];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:uuid:%@", nameCopy, uUIDString];
+  ephemeralSessionConfiguration = [MEMORY[0x277CCAD38] backgroundSessionConfigurationWithIdentifier:v7];
 
 LABEL_13:
-  [v8 setURLCredentialStorage:0];
-  [v8 setHTTPCookieStorage:0];
-  [v8 setURLCache:0];
-  [v8 setRequestCachePolicy:1];
-  [v8 set_timingDataOptions:85];
+  [ephemeralSessionConfiguration setURLCredentialStorage:0];
+  [ephemeralSessionConfiguration setHTTPCookieStorage:0];
+  [ephemeralSessionConfiguration setURLCache:0];
+  [ephemeralSessionConfiguration setRequestCachePolicy:1];
+  [ephemeralSessionConfiguration set_timingDataOptions:85];
 LABEL_14:
 
-  return v8;
+  return ephemeralSessionConfiguration;
 }
 
 uint64_t __56__C2RequestOptions_defaultSessionConfigurationWithName___block_invoke()
@@ -426,71 +426,71 @@ uint64_t __56__C2RequestOptions_defaultSessionConfigurationWithName___block_invo
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)sessionConfigurationWithName:(id)a3
+- (id)sessionConfigurationWithName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = [(C2RequestOptions *)self defaultSessionConfigurationWithName:?];
     if (v4)
     {
       [v4 set_allowsPowerNapScheduling:{-[C2RequestOptions _allowsPowerNapScheduling](self, "_allowsPowerNapScheduling")}];
-      v5 = [(C2RequestOptions *)self _sourceApplicationBundleIdentifier];
-      if (v5)
+      _sourceApplicationBundleIdentifier = [(C2RequestOptions *)self _sourceApplicationBundleIdentifier];
+      if (_sourceApplicationBundleIdentifier)
       {
-        v6 = v5;
-        v7 = [(C2RequestOptions *)self _sourceApplicationBundleIdentifier];
-        v8 = [v7 length];
+        v6 = _sourceApplicationBundleIdentifier;
+        _sourceApplicationBundleIdentifier2 = [(C2RequestOptions *)self _sourceApplicationBundleIdentifier];
+        v8 = [_sourceApplicationBundleIdentifier2 length];
 
         if (v8)
         {
-          v9 = [(C2RequestOptions *)self _sourceApplicationBundleIdentifier];
-          [v4 set_sourceApplicationBundleIdentifier:v9];
+          _sourceApplicationBundleIdentifier3 = [(C2RequestOptions *)self _sourceApplicationBundleIdentifier];
+          [v4 set_sourceApplicationBundleIdentifier:_sourceApplicationBundleIdentifier3];
         }
       }
 
-      v10 = [(C2RequestOptions *)self _sourceApplicationSecondaryIdentifier];
-      if (v10)
+      _sourceApplicationSecondaryIdentifier = [(C2RequestOptions *)self _sourceApplicationSecondaryIdentifier];
+      if (_sourceApplicationSecondaryIdentifier)
       {
-        v11 = v10;
-        v12 = [(C2RequestOptions *)self _sourceApplicationSecondaryIdentifier];
-        v13 = [v12 length];
+        v11 = _sourceApplicationSecondaryIdentifier;
+        _sourceApplicationSecondaryIdentifier2 = [(C2RequestOptions *)self _sourceApplicationSecondaryIdentifier];
+        v13 = [_sourceApplicationSecondaryIdentifier2 length];
 
         if (v13)
         {
-          v14 = [(C2RequestOptions *)self _sourceApplicationSecondaryIdentifier];
-          [v4 set_sourceApplicationSecondaryIdentifier:v14];
+          _sourceApplicationSecondaryIdentifier3 = [(C2RequestOptions *)self _sourceApplicationSecondaryIdentifier];
+          [v4 set_sourceApplicationSecondaryIdentifier:_sourceApplicationSecondaryIdentifier3];
         }
       }
 
-      v15 = [(C2RequestOptions *)self _sourceApplicationAuditTokenData];
+      _sourceApplicationAuditTokenData = [(C2RequestOptions *)self _sourceApplicationAuditTokenData];
 
-      if (v15)
+      if (_sourceApplicationAuditTokenData)
       {
-        v16 = [(C2RequestOptions *)self _sourceApplicationAuditTokenData];
-        [v4 set_sourceApplicationAuditTokenData:v16];
+        _sourceApplicationAuditTokenData2 = [(C2RequestOptions *)self _sourceApplicationAuditTokenData];
+        [v4 set_sourceApplicationAuditTokenData:_sourceApplicationAuditTokenData2];
       }
 
       if (![(C2RequestOptions *)self outOfProcess])
       {
-        v17 = [(C2RequestOptions *)self _sourceApplicationBundleIdentifier];
-        if (v17)
+        _sourceApplicationBundleIdentifier4 = [(C2RequestOptions *)self _sourceApplicationBundleIdentifier];
+        if (_sourceApplicationBundleIdentifier4)
         {
-          v18 = v17;
-          v19 = [(C2RequestOptions *)self _sourceApplicationSecondaryIdentifier];
+          v18 = _sourceApplicationBundleIdentifier4;
+          _sourceApplicationSecondaryIdentifier4 = [(C2RequestOptions *)self _sourceApplicationSecondaryIdentifier];
 
-          if (v19)
+          if (_sourceApplicationSecondaryIdentifier4)
           {
             BRContainersMonitorClass = getBRContainersMonitorClass();
-            v21 = [(C2RequestOptions *)self _sourceApplicationBundleIdentifier];
-            v22 = [(C2RequestOptions *)self _sourceApplicationSecondaryIdentifier];
-            v23 = [BRContainersMonitorClass containerIDFromPrimaryIdentifier:v21 secondaryIdentifier:v22];
+            _sourceApplicationBundleIdentifier5 = [(C2RequestOptions *)self _sourceApplicationBundleIdentifier];
+            _sourceApplicationSecondaryIdentifier5 = [(C2RequestOptions *)self _sourceApplicationSecondaryIdentifier];
+            v23 = [BRContainersMonitorClass containerIDFromPrimaryIdentifier:_sourceApplicationBundleIdentifier5 secondaryIdentifier:_sourceApplicationSecondaryIdentifier5];
 
             if (v23)
             {
               v24 = getBRContainersMonitorClass();
-              v25 = [(C2RequestOptions *)self _sourceApplicationBundleIdentifier];
-              v26 = [(C2RequestOptions *)self _sourceApplicationSecondaryIdentifier];
-              v27 = [v24 bundleIDFromPrimaryIdentifier:v25 secondaryIdentifier:v26];
+              _sourceApplicationBundleIdentifier6 = [(C2RequestOptions *)self _sourceApplicationBundleIdentifier];
+              _sourceApplicationSecondaryIdentifier6 = [(C2RequestOptions *)self _sourceApplicationSecondaryIdentifier];
+              v27 = [v24 bundleIDFromPrimaryIdentifier:_sourceApplicationBundleIdentifier6 secondaryIdentifier:_sourceApplicationSecondaryIdentifier6];
 
               if (v27)
               {
@@ -512,8 +512,8 @@ uint64_t __56__C2RequestOptions_defaultSessionConfigurationWithName___block_invo
       {
         [v4 setDiscretionary:{-[C2RequestOptions discretionaryNetworkBehavior](self, "discretionaryNetworkBehavior") == 2}];
         [v4 set_infersDiscretionaryFromOriginatingClient:{-[C2RequestOptions discretionaryNetworkBehavior](self, "discretionaryNetworkBehavior") == 1}];
-        v29 = [(C2RequestOptions *)self outOfProcessPoolName];
-        [v4 set_connectionPoolName:v29];
+        outOfProcessPoolName = [(C2RequestOptions *)self outOfProcessPoolName];
+        [v4 set_connectionPoolName:outOfProcessPoolName];
 
         [v4 set_allowsRetryForBackgroundDataTasks:{-[C2RequestOptions _allowsRetryForBackgroundDataTasks](self, "_allowsRetryForBackgroundDataTasks")}];
         if ([(C2RequestOptions *)self duetPreClearedMode]== 1)
@@ -575,12 +575,12 @@ uint64_t __56__C2RequestOptions_defaultSessionConfigurationWithName___block_invo
         [v4 set_expiredDNSBehavior:1];
       }
 
-      v32 = [(C2RequestOptions *)self useNWLoaderOverride];
+      useNWLoaderOverride = [(C2RequestOptions *)self useNWLoaderOverride];
 
-      if (v32)
+      if (useNWLoaderOverride)
       {
-        v33 = [(C2RequestOptions *)self useNWLoaderOverride];
-        [v4 setUsesClassicLoadingMode:{objc_msgSend(v33, "BOOLValue") ^ 1}];
+        useNWLoaderOverride2 = [(C2RequestOptions *)self useNWLoaderOverride];
+        [v4 setUsesClassicLoadingMode:{objc_msgSend(useNWLoaderOverride2, "BOOLValue") ^ 1}];
       }
 
       if ([(C2RequestOptions *)self allowsUCA])
@@ -614,9 +614,9 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)copyAndDecorateRequest:(id)a3
+- (id)copyAndDecorateRequest:(id)request
 {
-  v4 = [a3 mutableCopy];
+  v4 = [request mutableCopy];
   if (v4)
   {
     if ([(C2RequestOptions *)self hasAllowsCellularAccess])
@@ -625,12 +625,12 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
     }
 
     [v4 setAllowsExpensiveNetworkAccess:{-[C2RequestOptions _allowsExpensiveAccess](self, "_allowsExpensiveAccess")}];
-    v5 = [(C2RequestOptions *)self privacyProxyFailClosedOverride];
+    privacyProxyFailClosedOverride = [(C2RequestOptions *)self privacyProxyFailClosedOverride];
 
-    if (v5)
+    if (privacyProxyFailClosedOverride)
     {
-      v6 = [(C2RequestOptions *)self privacyProxyFailClosedOverride];
-      [v4 _setPrivacyProxyFailClosed:{objc_msgSend(v6, "BOOLValue")}];
+      privacyProxyFailClosedOverride2 = [(C2RequestOptions *)self privacyProxyFailClosedOverride];
+      [v4 _setPrivacyProxyFailClosed:{objc_msgSend(privacyProxyFailClosedOverride2, "BOOLValue")}];
     }
 
     [(C2RequestOptions *)self _timeoutIntervalForRequest];
@@ -640,16 +640,16 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
       [v4 setTimeoutInterval:?];
     }
 
-    v8 = [(C2RequestOptions *)self metricOptions];
-    if (v8)
+    metricOptions = [(C2RequestOptions *)self metricOptions];
+    if (metricOptions)
     {
-      v9 = v8;
-      v10 = [(C2RequestOptions *)self allowRouting];
+      v9 = metricOptions;
+      allowRouting = [(C2RequestOptions *)self allowRouting];
 
-      if (v10)
+      if (allowRouting)
       {
-        v11 = [(C2MetricOptions *)self->_metricOptions headerValueForTriggers];
-        [v4 addValue:v11 forHTTPHeaderField:@"x-apple-c2-metric-triggers"];
+        headerValueForTriggers = [(C2MetricOptions *)self->_metricOptions headerValueForTriggers];
+        [v4 addValue:headerValueForTriggers forHTTPHeaderField:@"x-apple-c2-metric-triggers"];
       }
     }
 
@@ -659,22 +659,22 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
   return v4;
 }
 
-- (id)decorateTask:(id)a3
+- (id)decorateTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   [(C2RequestOptions *)self _timeoutIntervalForResource];
   if (v5 > 0.0)
   {
     [(C2RequestOptions *)self _timeoutIntervalForResource];
-    [v4 set_timeoutIntervalForResource:?];
+    [taskCopy set_timeoutIntervalForResource:?];
   }
 
-  v6 = [(C2RequestOptions *)self _appleIDContextSessionIdentifier];
-  if (v6)
+  _appleIDContextSessionIdentifier = [(C2RequestOptions *)self _appleIDContextSessionIdentifier];
+  if (_appleIDContextSessionIdentifier)
   {
-    v7 = v6;
-    v8 = [(C2RequestOptions *)self _appleIDContextSessionIdentifier];
-    v9 = [v8 length];
+    v7 = _appleIDContextSessionIdentifier;
+    _appleIDContextSessionIdentifier2 = [(C2RequestOptions *)self _appleIDContextSessionIdentifier];
+    v9 = [_appleIDContextSessionIdentifier2 length];
 
     if (v9)
     {
@@ -697,38 +697,38 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
       v11 = v10;
       _Block_object_dispose(&v17, 8);
       v12 = [v10 alloc];
-      v13 = [(C2RequestOptions *)self _appleIDContextSessionIdentifier];
-      v14 = [v12 initWithIdentifier:v13];
-      [v4 _setAppleIDContext:v14];
+      _appleIDContextSessionIdentifier3 = [(C2RequestOptions *)self _appleIDContextSessionIdentifier];
+      v14 = [v12 initWithIdentifier:_appleIDContextSessionIdentifier3];
+      [taskCopy _setAppleIDContext:v14];
     }
   }
 
-  return v4;
+  return taskCopy;
 }
 
-- (void)handleCallbackForSessionTask:(id)a3 dataTask:(id)a4 callback:(id)a5
+- (void)handleCallbackForSessionTask:(id)task dataTask:(id)dataTask callback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(C2RequestOptions *)self containerType];
+  taskCopy = task;
+  dataTaskCopy = dataTask;
+  callbackCopy = callback;
+  containerType = [(C2RequestOptions *)self containerType];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __67__C2RequestOptions_handleCallbackForSessionTask_dataTask_callback___block_invoke;
   v15[3] = &unk_278D404D0;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  [C2CallstackAnnotations annotateCallstackForContainerType:v11 block:v15];
+  v16 = taskCopy;
+  v17 = dataTaskCopy;
+  v18 = callbackCopy;
+  v12 = callbackCopy;
+  v13 = dataTaskCopy;
+  v14 = taskCopy;
+  [C2CallstackAnnotations annotateCallstackForContainerType:containerType block:v15];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -738,11 +738,11 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       outOfProcessPoolName = self->_outOfProcessPoolName;
-      v7 = [(C2RequestOptions *)v5 outOfProcessPoolName];
-      v8 = v7;
-      if (outOfProcessPoolName == v7)
+      outOfProcessPoolName = [(C2RequestOptions *)v5 outOfProcessPoolName];
+      v8 = outOfProcessPoolName;
+      if (outOfProcessPoolName == outOfProcessPoolName)
       {
       }
 
@@ -754,8 +754,8 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
           goto LABEL_71;
         }
 
-        v10 = [(C2RequestOptions *)v5 outOfProcessPoolName];
-        v11 = [(NSString *)v9 isEqual:v10];
+        outOfProcessPoolName2 = [(C2RequestOptions *)v5 outOfProcessPoolName];
+        v11 = [(NSString *)v9 isEqual:outOfProcessPoolName2];
 
         if (!v11)
         {
@@ -802,9 +802,9 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
       }
 
       sourceApplicationBundleIdentifier = self->__sourceApplicationBundleIdentifier;
-      v22 = [(C2RequestOptions *)v5 _sourceApplicationBundleIdentifier];
-      v8 = v22;
-      if (sourceApplicationBundleIdentifier == v22)
+      _sourceApplicationBundleIdentifier = [(C2RequestOptions *)v5 _sourceApplicationBundleIdentifier];
+      v8 = _sourceApplicationBundleIdentifier;
+      if (sourceApplicationBundleIdentifier == _sourceApplicationBundleIdentifier)
       {
       }
 
@@ -816,8 +816,8 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
           goto LABEL_71;
         }
 
-        v24 = [(C2RequestOptions *)v5 _sourceApplicationBundleIdentifier];
-        v25 = [(NSString *)v23 isEqual:v24];
+        _sourceApplicationBundleIdentifier2 = [(C2RequestOptions *)v5 _sourceApplicationBundleIdentifier];
+        v25 = [(NSString *)v23 isEqual:_sourceApplicationBundleIdentifier2];
 
         if (!v25)
         {
@@ -826,9 +826,9 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
       }
 
       sourceApplicationSecondaryIdentifier = self->__sourceApplicationSecondaryIdentifier;
-      v27 = [(C2RequestOptions *)v5 _sourceApplicationSecondaryIdentifier];
-      v8 = v27;
-      if (sourceApplicationSecondaryIdentifier == v27)
+      _sourceApplicationSecondaryIdentifier = [(C2RequestOptions *)v5 _sourceApplicationSecondaryIdentifier];
+      v8 = _sourceApplicationSecondaryIdentifier;
+      if (sourceApplicationSecondaryIdentifier == _sourceApplicationSecondaryIdentifier)
       {
       }
 
@@ -840,8 +840,8 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
           goto LABEL_71;
         }
 
-        v29 = [(C2RequestOptions *)v5 _sourceApplicationSecondaryIdentifier];
-        v30 = [(NSString *)v28 isEqual:v29];
+        _sourceApplicationSecondaryIdentifier2 = [(C2RequestOptions *)v5 _sourceApplicationSecondaryIdentifier];
+        v30 = [(NSString *)v28 isEqual:_sourceApplicationSecondaryIdentifier2];
 
         if (!v30)
         {
@@ -850,9 +850,9 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
       }
 
       sourceApplicationAuditTokenData = self->__sourceApplicationAuditTokenData;
-      v32 = [(C2RequestOptions *)v5 _sourceApplicationAuditTokenData];
-      v8 = v32;
-      if (sourceApplicationAuditTokenData == v32)
+      _sourceApplicationAuditTokenData = [(C2RequestOptions *)v5 _sourceApplicationAuditTokenData];
+      v8 = _sourceApplicationAuditTokenData;
+      if (sourceApplicationAuditTokenData == _sourceApplicationAuditTokenData)
       {
       }
 
@@ -864,8 +864,8 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
           goto LABEL_71;
         }
 
-        v34 = [(C2RequestOptions *)v5 _sourceApplicationAuditTokenData];
-        v35 = [(NSData *)v33 isEqual:v34];
+        _sourceApplicationAuditTokenData2 = [(C2RequestOptions *)v5 _sourceApplicationAuditTokenData];
+        v35 = [(NSData *)v33 isEqual:_sourceApplicationAuditTokenData2];
 
         if (!v35)
         {
@@ -874,9 +874,9 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
       }
 
       appleIDContextSessionIdentifier = self->__appleIDContextSessionIdentifier;
-      v37 = [(C2RequestOptions *)v5 _appleIDContextSessionIdentifier];
-      v8 = v37;
-      if (appleIDContextSessionIdentifier == v37)
+      _appleIDContextSessionIdentifier = [(C2RequestOptions *)v5 _appleIDContextSessionIdentifier];
+      v8 = _appleIDContextSessionIdentifier;
+      if (appleIDContextSessionIdentifier == _appleIDContextSessionIdentifier)
       {
       }
 
@@ -888,8 +888,8 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
           goto LABEL_71;
         }
 
-        v39 = [(C2RequestOptions *)v5 _appleIDContextSessionIdentifier];
-        v40 = [(NSString *)v38 isEqual:v39];
+        _appleIDContextSessionIdentifier2 = [(C2RequestOptions *)v5 _appleIDContextSessionIdentifier];
+        v40 = [(NSString *)v38 isEqual:_appleIDContextSessionIdentifier2];
 
         if (!v40)
         {
@@ -934,9 +934,9 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
       }
 
       privacyProxyFailClosedOverride = self->_privacyProxyFailClosedOverride;
-      v48 = [(C2RequestOptions *)v5 privacyProxyFailClosedOverride];
-      v8 = v48;
-      if (privacyProxyFailClosedOverride == v48)
+      privacyProxyFailClosedOverride = [(C2RequestOptions *)v5 privacyProxyFailClosedOverride];
+      v8 = privacyProxyFailClosedOverride;
+      if (privacyProxyFailClosedOverride == privacyProxyFailClosedOverride)
       {
       }
 
@@ -948,8 +948,8 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
           goto LABEL_71;
         }
 
-        v50 = [(C2RequestOptions *)v5 privacyProxyFailClosedOverride];
-        v51 = [(NSNumber *)v49 isEqual:v50];
+        privacyProxyFailClosedOverride2 = [(C2RequestOptions *)v5 privacyProxyFailClosedOverride];
+        v51 = [(NSNumber *)v49 isEqual:privacyProxyFailClosedOverride2];
 
         if (!v51)
         {
@@ -958,9 +958,9 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
       }
 
       identifier = self->_identifier;
-      v53 = [(C2RequestOptions *)v5 identifier];
-      v8 = v53;
-      if (identifier == v53)
+      identifier = [(C2RequestOptions *)v5 identifier];
+      v8 = identifier;
+      if (identifier == identifier)
       {
       }
 
@@ -972,8 +972,8 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
           goto LABEL_71;
         }
 
-        v55 = [(C2RequestOptions *)v5 identifier];
-        v56 = [(NSString *)v54 isEqual:v55];
+        identifier2 = [(C2RequestOptions *)v5 identifier];
+        v56 = [(NSString *)v54 isEqual:identifier2];
 
         if (!v56)
         {
@@ -982,9 +982,9 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
       }
 
       metricOptions = self->_metricOptions;
-      v58 = [(C2RequestOptions *)v5 metricOptions];
-      v8 = v58;
-      if (metricOptions == v58)
+      metricOptions = [(C2RequestOptions *)v5 metricOptions];
+      v8 = metricOptions;
+      if (metricOptions == metricOptions)
       {
       }
 
@@ -996,8 +996,8 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
           goto LABEL_71;
         }
 
-        v60 = [(C2RequestOptions *)v5 metricOptions];
-        v61 = [(C2MetricOptions *)v59 isEqual:v60];
+        metricOptions2 = [(C2RequestOptions *)v5 metricOptions];
+        v61 = [(C2MetricOptions *)v59 isEqual:metricOptions2];
 
         if (!v61)
         {
@@ -1030,9 +1030,9 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
       }
 
       originalHost = self->_originalHost;
-      v67 = [(C2RequestOptions *)v5 originalHost];
-      v8 = v67;
-      if (originalHost == v67)
+      originalHost = [(C2RequestOptions *)v5 originalHost];
+      v8 = originalHost;
+      if (originalHost == originalHost)
       {
       }
 
@@ -1044,8 +1044,8 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
           goto LABEL_71;
         }
 
-        v69 = [(C2RequestOptions *)v5 originalHost];
-        v70 = [(NSString *)v68 isEqual:v69];
+        originalHost2 = [(C2RequestOptions *)v5 originalHost];
+        v70 = [(NSString *)v68 isEqual:originalHost2];
 
         if (!v70)
         {
@@ -1060,9 +1060,9 @@ uint64_t __49__C2RequestOptions_sessionConfigurationWithName___block_invoke_185(
       }
 
       invokedURL = self->_invokedURL;
-      v73 = [(C2RequestOptions *)v5 invokedURL];
-      v8 = v73;
-      if (invokedURL == v73)
+      invokedURL = [(C2RequestOptions *)v5 invokedURL];
+      v8 = invokedURL;
+      if (invokedURL == invokedURL)
       {
 
 LABEL_76:
@@ -1073,8 +1073,8 @@ LABEL_76:
       v74 = self->_invokedURL;
       if (v74)
       {
-        v75 = [(C2RequestOptions *)v5 invokedURL];
-        v76 = [(NSURL *)v74 isEqual:v75];
+        invokedURL2 = [(C2RequestOptions *)v5 invokedURL];
+        v76 = [(NSURL *)v74 isEqual:invokedURL2];
 
         if (v76)
         {
@@ -1101,96 +1101,96 @@ LABEL_74:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_outOfProcessPoolName forKey:@"outOfProcessPoolName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_outOfProcessPoolName forKey:@"outOfProcessPoolName"];
   if ([(C2RequestOptions *)self hasAllowsCellularAccess])
   {
-    [v4 encodeBool:self->_allowsCellularAccess forKey:@"allowsCellularAccess"];
+    [coderCopy encodeBool:self->_allowsCellularAccess forKey:@"allowsCellularAccess"];
   }
 
-  [v4 encodeBool:self->__allowsExpensiveAccess forKey:@"allowsExpensiveAccess"];
-  [v4 encodeBool:self->__allowsPowerNapScheduling forKey:@"allowsPowerNapScheduling"];
-  [v4 encodeDouble:@"timeoutIntervalForRequestDouble" forKey:self->__timeoutIntervalForRequest];
-  [v4 encodeDouble:@"timeoutIntervalForResourceDouble" forKey:self->__timeoutIntervalForResource];
-  [v4 encodeObject:self->__sourceApplicationBundleIdentifier forKey:@"sourceApplicationBundleIdentifier"];
-  [v4 encodeObject:self->__sourceApplicationSecondaryIdentifier forKey:@"sourceApplicationSecondaryIdentifier"];
-  [v4 encodeObject:self->__sourceApplicationAuditTokenData forKey:@"sourceApplicationAuditTokenData"];
-  [v4 encodeObject:self->__appleIDContextSessionIdentifier forKey:@"appleIDContextSessionIdentifier"];
-  [v4 encodeBool:self->_tlsPinning forKey:@"tlsPinning"];
-  [v4 encodeBool:self->_allowRouting forKey:@"allowRouting"];
-  [v4 encodeBool:self->_allowExpiredDNSBehavior forKey:@"allowExpiredDNSBehavior"];
-  [v4 encodeInt64:self->_discretionaryNetworkBehavior forKey:@"discretionaryNetworkBehavior"];
-  [v4 encodeInt64:self->_duetPreClearedMode forKey:@"duetPreClearedMode"];
-  [v4 encodeBool:self->__allowsRetryForBackgroundDataTasks forKey:@"allowsRetryForBackgroundDataTasks"];
-  [v4 encodeObject:self->_privacyProxyFailClosedOverride forKey:@"privacyProxyFailClosedOverride"];
-  [v4 encodeObject:self->_useNWLoaderOverride forKey:@"useNWLoaderOverride"];
-  [v4 encodeObject:self->_identifier forKey:@"identifier"];
-  [v4 encodeObject:self->_metricOptions forKey:@"metricOptions"];
-  [v4 encodeBool:self->_redactRemoteEndpointFromNetworkMetrics forKey:@"redactRemoteEndpointFromNetworkMetrics"];
-  [v4 encodeBool:self->_redactUniformResourceIdentifierFromNetworkMetrics forKey:@"redactUniformResourceIdentifierFromNetworkMetrics"];
-  [v4 encodeInteger:self->_containerType forKey:@"containerType"];
-  [v4 encodeBool:self->__optIntoDisableAPWakeOnIdleConnections forKey:@"optIntoDisableAPWakeOnIdleConnections"];
-  [v4 encodeObject:self->_originalHost forKey:@"originalHost"];
-  [v4 encodeBool:self->_metricRequest forKey:@"metricRequest"];
-  [v4 encodeObject:self->_invokedURL forKey:@"invokedURL"];
+  [coderCopy encodeBool:self->__allowsExpensiveAccess forKey:@"allowsExpensiveAccess"];
+  [coderCopy encodeBool:self->__allowsPowerNapScheduling forKey:@"allowsPowerNapScheduling"];
+  [coderCopy encodeDouble:@"timeoutIntervalForRequestDouble" forKey:self->__timeoutIntervalForRequest];
+  [coderCopy encodeDouble:@"timeoutIntervalForResourceDouble" forKey:self->__timeoutIntervalForResource];
+  [coderCopy encodeObject:self->__sourceApplicationBundleIdentifier forKey:@"sourceApplicationBundleIdentifier"];
+  [coderCopy encodeObject:self->__sourceApplicationSecondaryIdentifier forKey:@"sourceApplicationSecondaryIdentifier"];
+  [coderCopy encodeObject:self->__sourceApplicationAuditTokenData forKey:@"sourceApplicationAuditTokenData"];
+  [coderCopy encodeObject:self->__appleIDContextSessionIdentifier forKey:@"appleIDContextSessionIdentifier"];
+  [coderCopy encodeBool:self->_tlsPinning forKey:@"tlsPinning"];
+  [coderCopy encodeBool:self->_allowRouting forKey:@"allowRouting"];
+  [coderCopy encodeBool:self->_allowExpiredDNSBehavior forKey:@"allowExpiredDNSBehavior"];
+  [coderCopy encodeInt64:self->_discretionaryNetworkBehavior forKey:@"discretionaryNetworkBehavior"];
+  [coderCopy encodeInt64:self->_duetPreClearedMode forKey:@"duetPreClearedMode"];
+  [coderCopy encodeBool:self->__allowsRetryForBackgroundDataTasks forKey:@"allowsRetryForBackgroundDataTasks"];
+  [coderCopy encodeObject:self->_privacyProxyFailClosedOverride forKey:@"privacyProxyFailClosedOverride"];
+  [coderCopy encodeObject:self->_useNWLoaderOverride forKey:@"useNWLoaderOverride"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_metricOptions forKey:@"metricOptions"];
+  [coderCopy encodeBool:self->_redactRemoteEndpointFromNetworkMetrics forKey:@"redactRemoteEndpointFromNetworkMetrics"];
+  [coderCopy encodeBool:self->_redactUniformResourceIdentifierFromNetworkMetrics forKey:@"redactUniformResourceIdentifierFromNetworkMetrics"];
+  [coderCopy encodeInteger:self->_containerType forKey:@"containerType"];
+  [coderCopy encodeBool:self->__optIntoDisableAPWakeOnIdleConnections forKey:@"optIntoDisableAPWakeOnIdleConnections"];
+  [coderCopy encodeObject:self->_originalHost forKey:@"originalHost"];
+  [coderCopy encodeBool:self->_metricRequest forKey:@"metricRequest"];
+  [coderCopy encodeObject:self->_invokedURL forKey:@"invokedURL"];
 }
 
-- (C2RequestOptions)initWithCoder:(id)a3
+- (C2RequestOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v38.receiver = self;
   v38.super_class = C2RequestOptions;
   v5 = [(C2RequestOptions *)&v38 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"outOfProcessPoolName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"outOfProcessPoolName"];
     outOfProcessPoolName = v5->_outOfProcessPoolName;
     v5->_outOfProcessPoolName = v6;
 
-    if ([v4 containsValueForKey:@"allowsCellularAccess"])
+    if ([coderCopy containsValueForKey:@"allowsCellularAccess"])
     {
-      -[C2RequestOptions setAllowsCellularAccess:](v5, "setAllowsCellularAccess:", [v4 decodeBoolForKey:@"allowsCellularAccess"]);
+      -[C2RequestOptions setAllowsCellularAccess:](v5, "setAllowsCellularAccess:", [coderCopy decodeBoolForKey:@"allowsCellularAccess"]);
     }
 
-    v5->__allowsExpensiveAccess = [v4 decodeBoolForKey:@"allowsExpensiveAccess"];
-    v5->__allowsPowerNapScheduling = [v4 decodeBoolForKey:@"allowsPowerNapScheduling"];
-    [v4 decodeDoubleForKey:@"timeoutIntervalForRequestDouble"];
+    v5->__allowsExpensiveAccess = [coderCopy decodeBoolForKey:@"allowsExpensiveAccess"];
+    v5->__allowsPowerNapScheduling = [coderCopy decodeBoolForKey:@"allowsPowerNapScheduling"];
+    [coderCopy decodeDoubleForKey:@"timeoutIntervalForRequestDouble"];
     v5->__timeoutIntervalForRequest = v8;
-    [v4 decodeDoubleForKey:@"timeoutIntervalForResourceDouble"];
+    [coderCopy decodeDoubleForKey:@"timeoutIntervalForResourceDouble"];
     v5->__timeoutIntervalForResource = v9;
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceApplicationBundleIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceApplicationBundleIdentifier"];
     sourceApplicationBundleIdentifier = v5->__sourceApplicationBundleIdentifier;
     v5->__sourceApplicationBundleIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceApplicationSecondaryIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceApplicationSecondaryIdentifier"];
     sourceApplicationSecondaryIdentifier = v5->__sourceApplicationSecondaryIdentifier;
     v5->__sourceApplicationSecondaryIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceApplicationAuditTokenData"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceApplicationAuditTokenData"];
     sourceApplicationAuditTokenData = v5->__sourceApplicationAuditTokenData;
     v5->__sourceApplicationAuditTokenData = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appleIDContextSessionIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appleIDContextSessionIdentifier"];
     appleIDContextSessionIdentifier = v5->__appleIDContextSessionIdentifier;
     v5->__appleIDContextSessionIdentifier = v16;
 
-    v5->_tlsPinning = [v4 decodeBoolForKey:@"tlsPinning"];
-    v5->_allowRouting = [v4 decodeBoolForKey:@"allowRouting"];
-    v5->_allowExpiredDNSBehavior = [v4 decodeBoolForKey:@"allowExpiredDNSBehavior"];
-    v5->_discretionaryNetworkBehavior = [v4 decodeInt64ForKey:@"discretionaryNetworkBehavior"];
-    v5->_duetPreClearedMode = [v4 decodeInt64ForKey:@"duetPreClearedMode"];
-    v5->__allowsRetryForBackgroundDataTasks = [v4 decodeBoolForKey:@"allowsRetryForBackgroundDataTasks"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"privacyProxyFailClosedOverride"];
+    v5->_tlsPinning = [coderCopy decodeBoolForKey:@"tlsPinning"];
+    v5->_allowRouting = [coderCopy decodeBoolForKey:@"allowRouting"];
+    v5->_allowExpiredDNSBehavior = [coderCopy decodeBoolForKey:@"allowExpiredDNSBehavior"];
+    v5->_discretionaryNetworkBehavior = [coderCopy decodeInt64ForKey:@"discretionaryNetworkBehavior"];
+    v5->_duetPreClearedMode = [coderCopy decodeInt64ForKey:@"duetPreClearedMode"];
+    v5->__allowsRetryForBackgroundDataTasks = [coderCopy decodeBoolForKey:@"allowsRetryForBackgroundDataTasks"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"privacyProxyFailClosedOverride"];
     privacyProxyFailClosedOverride = v5->_privacyProxyFailClosedOverride;
     v5->_privacyProxyFailClosedOverride = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"useNWLoaderOverride"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"useNWLoaderOverride"];
     useNWLoaderOverride = v5->_useNWLoaderOverride;
     v5->_useNWLoaderOverride = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     v23 = v22;
     if (v22)
     {
@@ -1202,20 +1202,20 @@ LABEL_74:
     else
     {
       identifier = [MEMORY[0x277CCAD78] UUID];
-      v26 = [identifier UUIDString];
+      uUIDString = [identifier UUIDString];
       v27 = v5->_identifier;
-      v5->_identifier = v26;
+      v5->_identifier = uUIDString;
     }
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metricOptions"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metricOptions"];
     metricOptions = v5->_metricOptions;
     v5->_metricOptions = v28;
 
-    v5->_redactRemoteEndpointFromNetworkMetrics = [v4 decodeBoolForKey:@"redactRemoteEndpointFromNetworkMetrics"];
-    v5->_redactUniformResourceIdentifierFromNetworkMetrics = [v4 decodeBoolForKey:@"redactUniformResourceIdentifierFromNetworkMetrics"];
-    if ([v4 containsValueForKey:@"containerType"])
+    v5->_redactRemoteEndpointFromNetworkMetrics = [coderCopy decodeBoolForKey:@"redactRemoteEndpointFromNetworkMetrics"];
+    v5->_redactUniformResourceIdentifierFromNetworkMetrics = [coderCopy decodeBoolForKey:@"redactUniformResourceIdentifierFromNetworkMetrics"];
+    if ([coderCopy containsValueForKey:@"containerType"])
     {
-      v30 = [v4 decodeIntegerForKey:@"containerType"];
+      v30 = [coderCopy decodeIntegerForKey:@"containerType"];
     }
 
     else
@@ -1224,19 +1224,19 @@ LABEL_74:
     }
 
     v5->_containerType = v30;
-    v31 = [v4 containsValueForKey:@"optIntoDisableAPWakeOnIdleConnections"];
+    v31 = [coderCopy containsValueForKey:@"optIntoDisableAPWakeOnIdleConnections"];
     if (v31)
     {
-      LOBYTE(v31) = [v4 decodeBoolForKey:@"optIntoDisableAPWakeOnIdleConnections"];
+      LOBYTE(v31) = [coderCopy decodeBoolForKey:@"optIntoDisableAPWakeOnIdleConnections"];
     }
 
     v5->__optIntoDisableAPWakeOnIdleConnections = v31;
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalHost"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalHost"];
     originalHost = v5->_originalHost;
     v5->_originalHost = v32;
 
-    v5->_metricRequest = [v4 decodeBoolForKey:@"metricRequest"];
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"invokedURL"];
+    v5->_metricRequest = [coderCopy decodeBoolForKey:@"metricRequest"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"invokedURL"];
     invokedURL = v5->_invokedURL;
     v5->_invokedURL = v34;
 

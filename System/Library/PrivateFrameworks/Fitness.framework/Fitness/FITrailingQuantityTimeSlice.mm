@@ -1,70 +1,70 @@
 @interface FITrailingQuantityTimeSlice
-- (FITrailingQuantityTimeSlice)initWithQuantityType:(id)a3 startDate:(id)a4;
-- (FITrailingQuantityTimeSlice)initWithQuantityType:(id)a3 startDate:(id)a4 endDate:(id)a5;
-- (FITrailingQuantityTimeSlice)initWithQuantityType:(id)a3 startDate:(id)a4 endDate:(id)a5 committedSamples:(id)a6 uncommittedSamples:(id)a7 lastCommitDate:(id)a8 committedTotal:(id)a9 finalized:(BOOL)a10;
+- (FITrailingQuantityTimeSlice)initWithQuantityType:(id)type startDate:(id)date;
+- (FITrailingQuantityTimeSlice)initWithQuantityType:(id)type startDate:(id)date endDate:(id)endDate;
+- (FITrailingQuantityTimeSlice)initWithQuantityType:(id)type startDate:(id)date endDate:(id)endDate committedSamples:(id)samples uncommittedSamples:(id)uncommittedSamples lastCommitDate:(id)commitDate committedTotal:(id)total finalized:(BOOL)self0;
 - (HKQuantity)committedAndAddedTotal;
-- (double)activeDurationUntilDate:(id)a3;
-- (id)_commitingSamples:(id)a3 toPreviousCommittedTotal:(id)a4 toPreviousCommittedSamples:(id)a5 untilDate:(id)a6 startDate:(id)a7 endDate:(id)a8;
-- (id)_totalByCommittingSample:(id)a3 toPreviousTotal:(id)a4 startDate:(id)a5 endDate:(id)a6;
-- (id)addingSample:(id)a3 error:(id *)a4;
-- (id)addingSamples:(id)a3 error:(id *)a4;
-- (id)autoCommitDateForSamples:(id)a3;
+- (double)activeDurationUntilDate:(id)date;
+- (id)_commitingSamples:(id)samples toPreviousCommittedTotal:(id)total toPreviousCommittedSamples:(id)committedSamples untilDate:(id)date startDate:(id)startDate endDate:(id)endDate;
+- (id)_totalByCommittingSample:(id)sample toPreviousTotal:(id)total startDate:(id)date endDate:(id)endDate;
+- (id)addingSample:(id)sample error:(id *)error;
+- (id)addingSamples:(id)samples error:(id *)error;
+- (id)autoCommitDateForSamples:(id)samples;
 - (id)description;
-- (id)settingEndDate:(id)a3;
-- (id)settingStartDate:(id)a3;
-- (id)settingTotalQuantityLimit:(id)a3;
+- (id)settingEndDate:(id)date;
+- (id)settingStartDate:(id)date;
+- (id)settingTotalQuantityLimit:(id)limit;
 @end
 
 @implementation FITrailingQuantityTimeSlice
 
-- (FITrailingQuantityTimeSlice)initWithQuantityType:(id)a3 startDate:(id)a4
+- (FITrailingQuantityTimeSlice)initWithQuantityType:(id)type startDate:(id)date
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 distantFuture];
-  v10 = [(FITrailingQuantityTimeSlice *)self initWithQuantityType:v8 startDate:v7 endDate:v9];
+  dateCopy = date;
+  typeCopy = type;
+  distantFuture = [v6 distantFuture];
+  v10 = [(FITrailingQuantityTimeSlice *)self initWithQuantityType:typeCopy startDate:dateCopy endDate:distantFuture];
 
   return v10;
 }
 
-- (FITrailingQuantityTimeSlice)initWithQuantityType:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (FITrailingQuantityTimeSlice)initWithQuantityType:(id)type startDate:(id)date endDate:(id)endDate
 {
   v8 = MEMORY[0x277CCD7E8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 canonicalUnit];
-  v13 = [v8 quantityWithUnit:v12 doubleValue:0.0];
+  endDateCopy = endDate;
+  dateCopy = date;
+  typeCopy = type;
+  canonicalUnit = [typeCopy canonicalUnit];
+  v13 = [v8 quantityWithUnit:canonicalUnit doubleValue:0.0];
   LOBYTE(v16) = 0;
-  v14 = [(FITrailingQuantityTimeSlice *)self initWithQuantityType:v11 startDate:v10 endDate:v9 committedSamples:MEMORY[0x277CBEBF8] uncommittedSamples:MEMORY[0x277CBEBF8] lastCommitDate:v10 committedTotal:v13 finalized:v16];
+  v14 = [(FITrailingQuantityTimeSlice *)self initWithQuantityType:typeCopy startDate:dateCopy endDate:endDateCopy committedSamples:MEMORY[0x277CBEBF8] uncommittedSamples:MEMORY[0x277CBEBF8] lastCommitDate:dateCopy committedTotal:v13 finalized:v16];
 
   return v14;
 }
 
-- (FITrailingQuantityTimeSlice)initWithQuantityType:(id)a3 startDate:(id)a4 endDate:(id)a5 committedSamples:(id)a6 uncommittedSamples:(id)a7 lastCommitDate:(id)a8 committedTotal:(id)a9 finalized:(BOOL)a10
+- (FITrailingQuantityTimeSlice)initWithQuantityType:(id)type startDate:(id)date endDate:(id)endDate committedSamples:(id)samples uncommittedSamples:(id)uncommittedSamples lastCommitDate:(id)commitDate committedTotal:(id)total finalized:(BOOL)self0
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v17 = a8;
-  v18 = a9;
+  typeCopy = type;
+  dateCopy = date;
+  endDateCopy = endDate;
+  samplesCopy = samples;
+  uncommittedSamplesCopy = uncommittedSamples;
+  commitDateCopy = commitDate;
+  totalCopy = total;
   v27.receiver = self;
   v27.super_class = FITrailingQuantityTimeSlice;
   v19 = [(FITrailingQuantityTimeSlice *)&v27 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_quantityType, a3);
-    objc_storeStrong(&v20->_startDate, a4);
-    objc_storeStrong(&v20->_endDate, a5);
-    objc_storeStrong(&v20->_committedSamples, a6);
-    objc_storeStrong(&v20->_uncommittedSamples, a7);
-    objc_storeStrong(&v20->_lastCommitDate, a8);
-    objc_storeStrong(&v20->_committedTotal, a9);
-    v20->_finalized = a10;
+    objc_storeStrong(&v19->_quantityType, type);
+    objc_storeStrong(&v20->_startDate, date);
+    objc_storeStrong(&v20->_endDate, endDate);
+    objc_storeStrong(&v20->_committedSamples, samples);
+    objc_storeStrong(&v20->_uncommittedSamples, uncommittedSamples);
+    objc_storeStrong(&v20->_lastCommitDate, commitDate);
+    objc_storeStrong(&v20->_committedTotal, total);
+    v20->_finalized = finalized;
   }
 
   return v20;
@@ -118,55 +118,55 @@
   return v3;
 }
 
-- (double)activeDurationUntilDate:(id)a3
+- (double)activeDurationUntilDate:(id)date
 {
-  v4 = a3;
-  v5 = [(FITrailingQuantityTimeSlice *)self endDate];
-  v6 = [v5 hk_isAfterDate:v4];
+  dateCopy = date;
+  endDate = [(FITrailingQuantityTimeSlice *)self endDate];
+  v6 = [endDate hk_isAfterDate:dateCopy];
 
   if (v6)
   {
-    [v4 timeIntervalSinceDate:self->_startDate];
+    [dateCopy timeIntervalSinceDate:self->_startDate];
     v8 = v7;
   }
 
   else
   {
-    v9 = [(FITrailingQuantityTimeSlice *)self endDate];
-    [v9 timeIntervalSinceDate:self->_startDate];
+    endDate2 = [(FITrailingQuantityTimeSlice *)self endDate];
+    [endDate2 timeIntervalSinceDate:self->_startDate];
     v8 = v10;
   }
 
   return v8;
 }
 
-- (id)addingSample:(id)a3 error:(id *)a4
+- (id)addingSample:(id)sample error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (_ValidateSample(v6, self->_startDate, self->_endDate, a4))
+  sampleCopy = sample;
+  if (_ValidateSample(sampleCopy, self->_startDate, self->_endDate, error))
   {
-    v13[0] = v6;
+    v13[0] = sampleCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
     v8 = [(FITrailingQuantityTimeSlice *)self autoCommitDateForSamples:v7];
 
-    v9 = [(NSArray *)self->_uncommittedSamples arrayByAddingObject:v6];
-    v10 = [(FITrailingQuantityTimeSlice *)self _commitingSamples:v9 toPreviousCommittedTotal:self->_committedTotal toPreviousCommittedSamples:self->_committedSamples untilDate:v8 startDate:self->_startDate endDate:self->_endDate];
+    v9 = [(NSArray *)self->_uncommittedSamples arrayByAddingObject:sampleCopy];
+    selfCopy = [(FITrailingQuantityTimeSlice *)self _commitingSamples:v9 toPreviousCommittedTotal:self->_committedTotal toPreviousCommittedSamples:self->_committedSamples untilDate:v8 startDate:self->_startDate endDate:self->_endDate];
   }
 
   else
   {
-    v10 = self;
+    selfCopy = self;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)addingSamples:(id)a3 error:(id *)a4
+- (id)addingSamples:(id)samples error:(id *)error
 {
-  v5 = a3;
+  samplesCopy = samples;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
@@ -178,7 +178,7 @@
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy_;
   v15 = __Block_byref_object_dispose_;
-  v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(samplesCopy, "count")}];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __51__FITrailingQuantityTimeSlice_addingSamples_error___block_invoke;
@@ -186,24 +186,24 @@
   v10[4] = self;
   v10[5] = v17;
   v10[6] = &v11;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [samplesCopy enumerateObjectsUsingBlock:v10];
   if ([v12[5] count])
   {
     v6 = [(FITrailingQuantityTimeSlice *)self autoCommitDateForSamples:v12[5]];
     v7 = [(NSArray *)self->_uncommittedSamples arrayByAddingObjectsFromArray:v12[5]];
-    v8 = [(FITrailingQuantityTimeSlice *)self _commitingSamples:v7 toPreviousCommittedTotal:self->_committedTotal toPreviousCommittedSamples:self->_committedSamples untilDate:v6 startDate:self->_startDate endDate:self->_endDate];
+    selfCopy = [(FITrailingQuantityTimeSlice *)self _commitingSamples:v7 toPreviousCommittedTotal:self->_committedTotal toPreviousCommittedSamples:self->_committedSamples untilDate:v6 startDate:self->_startDate endDate:self->_endDate];
   }
 
   else
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   _Block_object_dispose(&v11, 8);
 
   _Block_object_dispose(v17, 8);
 
-  return v8;
+  return selfCopy;
 }
 
 void __51__FITrailingQuantityTimeSlice_addingSamples_error___block_invoke(void *a1, void *a2)
@@ -222,18 +222,18 @@ void __51__FITrailingQuantityTimeSlice_addingSamples_error___block_invoke(void *
   }
 }
 
-- (id)autoCommitDateForSamples:(id)a3
+- (id)autoCommitDateForSamples:(id)samples
 {
-  v4 = FISortSamplesByDate(a3);
-  v5 = [v4 lastObject];
-  v6 = [v5 endDate];
-  v7 = [v6 hk_isAfterDate:self->_lastCommitDate];
+  v4 = FISortSamplesByDate(samples);
+  lastObject = [v4 lastObject];
+  endDate = [lastObject endDate];
+  v7 = [endDate hk_isAfterDate:self->_lastCommitDate];
 
   if (v7)
   {
-    v8 = [v4 lastObject];
-    v9 = [v8 endDate];
-    v10 = [v9 earlierDate:self->_endDate];
+    lastObject2 = [v4 lastObject];
+    endDate2 = [lastObject2 endDate];
+    v10 = [endDate2 earlierDate:self->_endDate];
   }
 
   else
@@ -244,50 +244,50 @@ void __51__FITrailingQuantityTimeSlice_addingSamples_error___block_invoke(void *
   return v10;
 }
 
-- (id)settingEndDate:(id)a3
+- (id)settingEndDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [FITrailingQuantityTimeSlice alloc];
   quantityType = self->_quantityType;
   startDate = self->_startDate;
   v8 = [(NSArray *)self->_committedSamples arrayByAddingObjectsFromArray:self->_uncommittedSamples];
-  v9 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v10 = MEMORY[0x277CCD7E8];
-  v11 = [(HKQuantityType *)self->_quantityType canonicalUnit];
-  v12 = [v10 quantityWithUnit:v11 doubleValue:0.0];
+  canonicalUnit = [(HKQuantityType *)self->_quantityType canonicalUnit];
+  v12 = [v10 quantityWithUnit:canonicalUnit doubleValue:0.0];
   LOBYTE(v16) = self->_finalized;
-  v13 = [(FITrailingQuantityTimeSlice *)v5 initWithQuantityType:quantityType startDate:startDate endDate:v4 committedSamples:MEMORY[0x277CBEBF8] uncommittedSamples:v8 lastCommitDate:v9 committedTotal:v12 finalized:v16];
+  v13 = [(FITrailingQuantityTimeSlice *)v5 initWithQuantityType:quantityType startDate:startDate endDate:dateCopy committedSamples:MEMORY[0x277CBEBF8] uncommittedSamples:v8 lastCommitDate:distantPast committedTotal:v12 finalized:v16];
 
-  v14 = [(FITrailingQuantityTimeSlice *)v13 committingUntilDate:v4];
+  v14 = [(FITrailingQuantityTimeSlice *)v13 committingUntilDate:dateCopy];
 
   return v14;
 }
 
-- (id)settingStartDate:(id)a3
+- (id)settingStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [FITrailingQuantityTimeSlice alloc];
   quantityType = self->_quantityType;
   endDate = self->_endDate;
   v8 = [(NSArray *)self->_committedSamples arrayByAddingObjectsFromArray:self->_uncommittedSamples];
-  v9 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v10 = MEMORY[0x277CCD7E8];
-  v11 = [(HKQuantityType *)self->_quantityType canonicalUnit];
-  v12 = [v10 quantityWithUnit:v11 doubleValue:0.0];
+  canonicalUnit = [(HKQuantityType *)self->_quantityType canonicalUnit];
+  v12 = [v10 quantityWithUnit:canonicalUnit doubleValue:0.0];
   LOBYTE(v16) = self->_finalized;
-  v13 = [(FITrailingQuantityTimeSlice *)v5 initWithQuantityType:quantityType startDate:v4 endDate:endDate committedSamples:MEMORY[0x277CBEBF8] uncommittedSamples:v8 lastCommitDate:v9 committedTotal:v12 finalized:v16];
+  v13 = [(FITrailingQuantityTimeSlice *)v5 initWithQuantityType:quantityType startDate:dateCopy endDate:endDate committedSamples:MEMORY[0x277CBEBF8] uncommittedSamples:v8 lastCommitDate:distantPast committedTotal:v12 finalized:v16];
 
   v14 = [(FITrailingQuantityTimeSlice *)v13 committingUntilDate:self->_lastCommitDate];
 
   return v14;
 }
 
-- (id)settingTotalQuantityLimit:(id)a3
+- (id)settingTotalQuantityLimit:(id)limit
 {
-  v4 = a3;
-  if ([v4 hk_isGreaterThanQuantity:self->_committedTotal])
+  limitCopy = limit;
+  if ([limitCopy hk_isGreaterThanQuantity:self->_committedTotal])
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
@@ -298,9 +298,9 @@ void __51__FITrailingQuantityTimeSlice_addingSamples_error___block_invoke(void *
     v25[3] = __Block_byref_object_copy_;
     v25[4] = __Block_byref_object_dispose_;
     v6 = MEMORY[0x277CCD7E8];
-    v7 = [(FITrailingQuantityTimeSlice *)self quantityType];
-    v8 = [v7 canonicalUnit];
-    v26 = [v6 quantityWithUnit:v8 doubleValue:0.0];
+    quantityType = [(FITrailingQuantityTimeSlice *)self quantityType];
+    canonicalUnit = [quantityType canonicalUnit];
+    v26 = [v6 quantityWithUnit:canonicalUnit doubleValue:0.0];
 
     v19 = 0;
     v20 = &v19;
@@ -313,18 +313,18 @@ void __51__FITrailingQuantityTimeSlice_addingSamples_error___block_invoke(void *
     v12 = 3221225472;
     v13 = __57__FITrailingQuantityTimeSlice_settingTotalQuantityLimit___block_invoke;
     v14 = &unk_2790047F0;
-    v15 = self;
+    selfCopy2 = self;
     v17 = v25;
-    v16 = v4;
+    v16 = limitCopy;
     v18 = &v19;
     [(NSArray *)committedSamples enumerateObjectsWithOptions:2 usingBlock:&v11];
-    v5 = [(FITrailingQuantityTimeSlice *)self settingStartDate:v20[5], v11, v12, v13, v14, v15];
+    selfCopy = [(FITrailingQuantityTimeSlice *)self settingStartDate:v20[5], v11, v12, v13, v14, selfCopy2];
 
     _Block_object_dispose(&v19, 8);
     _Block_object_dispose(v25, 8);
   }
 
-  return v5;
+  return selfCopy;
 }
 
 void __57__FITrailingQuantityTimeSlice_settingTotalQuantityLimit___block_invoke(void *a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -364,31 +364,31 @@ void __57__FITrailingQuantityTimeSlice_settingTotalQuantityLimit___block_invoke(
 LABEL_6:
 }
 
-- (id)_totalByCommittingSample:(id)a3 toPreviousTotal:(id)a4 startDate:(id)a5 endDate:(id)a6
+- (id)_totalByCommittingSample:(id)sample toPreviousTotal:(id)total startDate:(id)date endDate:(id)endDate
 {
   v9 = MEMORY[0x277CCA970];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[v9 alloc] initWithStartDate:v11 endDate:v10];
+  endDateCopy = endDate;
+  dateCopy = date;
+  totalCopy = total;
+  sampleCopy = sample;
+  v14 = [[v9 alloc] initWithStartDate:dateCopy endDate:endDateCopy];
 
   v18 = 0;
-  v15 = FISampleQuantityInsideDateInterval(v13, v14, &v18);
+  v15 = FISampleQuantityInsideDateInterval(sampleCopy, v14, &v18);
 
-  v16 = [v12 _quantityByAddingQuantity:v15];
+  v16 = [totalCopy _quantityByAddingQuantity:v15];
 
   return v16;
 }
 
-- (id)_commitingSamples:(id)a3 toPreviousCommittedTotal:(id)a4 toPreviousCommittedSamples:(id)a5 untilDate:(id)a6 startDate:(id)a7 endDate:(id)a8
+- (id)_commitingSamples:(id)samples toPreviousCommittedTotal:(id)total toPreviousCommittedSamples:(id)committedSamples untilDate:(id)date startDate:(id)startDate endDate:(id)endDate
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  samplesCopy = samples;
+  totalCopy = total;
+  committedSamplesCopy = committedSamples;
+  dateCopy = date;
+  startDateCopy = startDate;
+  endDateCopy = endDate;
   v65 = 0;
   v66 = &v65;
   v67 = 0x2020000000;
@@ -398,7 +398,7 @@ LABEL_6:
   v61 = 0x3032000000;
   v62 = __Block_byref_object_copy_;
   v63 = __Block_byref_object_dispose_;
-  v34 = v15;
+  v34 = totalCopy;
   v64 = v34;
   v55 = 0;
   v56 = &v55;
@@ -413,7 +413,7 @@ LABEL_6:
   v47 = 0x3032000000;
   v48 = __Block_byref_object_copy_;
   v49 = __Block_byref_object_dispose_;
-  v20 = v16;
+  v20 = committedSamplesCopy;
   v50 = v20;
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
@@ -421,20 +421,20 @@ LABEL_6:
   v35[3] = &unk_279004818;
   v40 = &v45;
   v41 = &v51;
-  v21 = v17;
+  v21 = dateCopy;
   v36 = v21;
-  v22 = v18;
+  v22 = startDateCopy;
   v37 = v22;
-  v23 = v19;
+  v23 = endDateCopy;
   v38 = v23;
-  v39 = self;
+  selfCopy = self;
   v42 = &v59;
   v43 = &v65;
   v44 = &v55;
-  [v14 enumerateObjectsUsingBlock:v35];
+  [samplesCopy enumerateObjectsUsingBlock:v35];
   v24 = v66[3];
-  v25 = [v14 count];
-  v26 = [v14 subarrayWithRange:{v24, v25 - v66[3]}];
+  v25 = [samplesCopy count];
+  v26 = [samplesCopy subarrayWithRange:{v24, v25 - v66[3]}];
   if (*(v52 + 24) == 1)
   {
     v27 = FISortSamplesByDate(v46[5]);
@@ -443,9 +443,9 @@ LABEL_6:
   }
 
   v29 = [FITrailingQuantityTimeSlice alloc];
-  v30 = [(FITrailingQuantityTimeSlice *)self quantityType];
+  quantityType = [(FITrailingQuantityTimeSlice *)self quantityType];
   LOBYTE(v33) = *(v56 + 24);
-  v31 = [(FITrailingQuantityTimeSlice *)v29 initWithQuantityType:v30 startDate:v22 endDate:v23 committedSamples:v46[5] uncommittedSamples:v26 lastCommitDate:v21 committedTotal:v60[5] finalized:v33];
+  v31 = [(FITrailingQuantityTimeSlice *)v29 initWithQuantityType:quantityType startDate:v22 endDate:v23 committedSamples:v46[5] uncommittedSamples:v26 lastCommitDate:v21 committedTotal:v60[5] finalized:v33];
 
   _Block_object_dispose(&v45, 8);
   _Block_object_dispose(&v51, 8);
@@ -538,15 +538,15 @@ LABEL_7:
     v4 = @"NO";
   }
 
-  v5 = [(FITrailingQuantityTimeSlice *)self quantityType];
-  v6 = [(FITrailingQuantityTimeSlice *)self startDate];
-  v7 = [(FITrailingQuantityTimeSlice *)self endDate];
+  quantityType = [(FITrailingQuantityTimeSlice *)self quantityType];
+  startDate = [(FITrailingQuantityTimeSlice *)self startDate];
+  endDate = [(FITrailingQuantityTimeSlice *)self endDate];
   v8 = [(NSArray *)self->_committedSamples count];
   v9 = [(NSArray *)self->_uncommittedSamples count];
   lastCommitDate = self->_lastCommitDate;
   committedTotal = self->_committedTotal;
   [(FITrailingQuantityTimeSlice *)self committedDuration];
-  v13 = [v15 stringWithFormat:@"<%@:%p, finalized:%@, quantityType:%@, startDate:%@, endDate:%@, numCommittedSamples:%lu, numUncommittedSamples:%lu, lastCommitDate:%@, commitedTotal:%@ committedDuration:%lu>", v3, self, v4, v5, v6, v7, v8, v9, lastCommitDate, committedTotal, v12];
+  v13 = [v15 stringWithFormat:@"<%@:%p, finalized:%@, quantityType:%@, startDate:%@, endDate:%@, numCommittedSamples:%lu, numUncommittedSamples:%lu, lastCommitDate:%@, commitedTotal:%@ committedDuration:%lu>", v3, self, v4, quantityType, startDate, endDate, v8, v9, lastCommitDate, committedTotal, v12];
 
   return v13;
 }

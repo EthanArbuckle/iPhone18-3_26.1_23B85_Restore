@@ -1,10 +1,10 @@
 @interface ExtensionsSettingsPane
 + (OS_os_log)log;
 - (PSListController)parentListController;
-- (id)_valueOfExtensionSpecifier:(id)a3;
+- (id)_valueOfExtensionSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)_handleExtensionsAdded:(id)a3;
-- (void)_handleExtensionsRemoved:(id)a3;
+- (void)_handleExtensionsAdded:(id)added;
+- (void)_handleExtensionsRemoved:(id)removed;
 - (void)_registerForExtensionsIfNeeded;
 @end
 
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_6384;
   block[3] = &unk_3CD10;
-  block[4] = a1;
+  block[4] = self;
   if (qword_448D8 != -1)
   {
     dispatch_once(&qword_448D8, block);
@@ -34,7 +34,7 @@
   if (!v3)
   {
     v28 = OBJC_IVAR___PSListController__specifiers;
-    v34 = self;
+    selfCopy = self;
     v4 = objc_alloc_init(NSMutableArray);
     v5 = *&self->PSListController_opaque[v28];
     v33 = v4;
@@ -50,13 +50,13 @@
     [v29 setProperty:v9 forKey:PSFooterTextGroupKey];
 
     [v33 addObject:v29];
-    if ([(NSMutableArray *)v34->_remoteExtensions count])
+    if ([(NSMutableArray *)selfCopy->_remoteExtensions count])
     {
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      obj = v34->_remoteExtensions;
+      obj = selfCopy->_remoteExtensions;
       v10 = [(NSMutableArray *)obj countByEnumeratingWithState:&v35 objects:v41 count:16];
       if (v10)
       {
@@ -74,17 +74,17 @@
             }
 
             v14 = *(*(&v35 + 1) + 8 * i);
-            v15 = [v14 displayName];
-            v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:v34 set:0 get:"_valueOfExtensionSpecifier:" detail:objc_opt_class() cell:2 edit:0];
+            displayName = [v14 displayName];
+            v16 = [PSSpecifier preferenceSpecifierNamed:displayName target:selfCopy set:0 get:"_valueOfExtensionSpecifier:" detail:objc_opt_class() cell:2 edit:0];
 
-            v17 = [v14 menuIcon];
-            [v16 setProperty:v17 forKey:v31];
+            menuIcon = [v14 menuIcon];
+            [v16 setProperty:menuIcon forKey:v31];
 
             [v16 setProperty:&__kCFBooleanTrue forKey:v11];
             [v16 setProperty:&__kCFBooleanTrue forKey:v12];
             v39 = @"EXTENSION_IDENIFIER";
-            v18 = [v14 extensionID];
-            v40 = v18;
+            extensionID = [v14 extensionID];
+            v40 = extensionID;
             v19 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
             [v16 setUserInfo:v19];
 
@@ -110,21 +110,21 @@
     v23 = [PSSpecifier alloc];
     v24 = [NSBundle bundleForClass:objc_opt_class()];
     v25 = [v24 localizedStringForKey:@"MORE_EXTENSIONS" value:&stru_3D2B0 table:@"Preferences"];
-    v26 = [v23 initWithName:v25 target:v34 set:0 get:0 detail:0 cell:13 edit:0];
+    v26 = [v23 initWithName:v25 target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
 
     [v26 setButtonAction:"_moreExtensionsButtonTapped:"];
     [v33 addObject:v26];
 
-    v3 = *&v34->PSListController_opaque[v28];
+    v3 = *&selfCopy->PSListController_opaque[v28];
   }
 
   return v3;
 }
 
-- (id)_valueOfExtensionSpecifier:(id)a3
+- (id)_valueOfExtensionSpecifier:(id)specifier
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"EXTENSION_IDENIFIER"];
+  userInfo = [specifier userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"EXTENSION_IDENIFIER"];
   v5 = +[MEAppExtensionsController sharedInstance];
   v6 = [v5 extensionForIdentifier:v4];
 
@@ -171,20 +171,20 @@
   }
 }
 
-- (void)_handleExtensionsAdded:(id)a3
+- (void)_handleExtensionsAdded:(id)added
 {
-  v6 = self;
-  v3 = a3;
-  v7 = v3;
+  selfCopy = self;
+  addedCopy = added;
+  v7 = addedCopy;
   v4 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v4 performSyncBlock:&v5];
 }
 
-- (void)_handleExtensionsRemoved:(id)a3
+- (void)_handleExtensionsRemoved:(id)removed
 {
-  v6 = self;
-  v3 = a3;
-  v7 = v3;
+  selfCopy = self;
+  removedCopy = removed;
+  v7 = removedCopy;
   v4 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v4 performSyncBlock:&v5];
 }

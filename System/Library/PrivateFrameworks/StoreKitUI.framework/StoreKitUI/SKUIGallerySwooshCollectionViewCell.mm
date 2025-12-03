@@ -1,16 +1,16 @@
 @interface SKUIGallerySwooshCollectionViewCell
 - (NSString)title;
 - (void)layoutSubviews;
-- (void)setColoringWithColorScheme:(id)a3;
-- (void)setContentChildView:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setColoringWithColorScheme:(id)scheme;
+- (void)setContentChildView:(id)view;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SKUIGallerySwooshCollectionViewCell
 
-- (void)setColoringWithColorScheme:(id)a3
+- (void)setColoringWithColorScheme:(id)scheme
 {
-  v4 = a3;
+  schemeCopy = scheme;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -23,11 +23,11 @@
     }
   }
 
-  v13 = [v4 primaryTextColor];
+  primaryTextColor = [schemeCopy primaryTextColor];
   titleColor = self->_titleColor;
-  if (titleColor != v13 && ([(UIColor *)titleColor isEqual:v13]& 1) == 0)
+  if (titleColor != primaryTextColor && ([(UIColor *)titleColor isEqual:primaryTextColor]& 1) == 0)
   {
-    objc_storeStrong(&self->_titleColor, v13);
+    objc_storeStrong(&self->_titleColor, primaryTextColor);
     titleLabel = self->_titleLabel;
     if (self->_titleColor)
     {
@@ -42,9 +42,9 @@
   }
 }
 
-- (void)setContentChildView:(id)a3
+- (void)setContentChildView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -58,29 +58,29 @@
   }
 
   contentChildView = self->_contentChildView;
-  if (contentChildView != v5)
+  if (contentChildView != viewCopy)
   {
     if ([(UIView *)contentChildView isDescendantOfView:self])
     {
       [(UIView *)self->_contentChildView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_contentChildView, a3);
+    objc_storeStrong(&self->_contentChildView, view);
     [(SKUIGallerySwooshCollectionViewCell *)self setNeedsLayout];
     contentChildView = self->_contentChildView;
   }
 
   if (contentChildView && ![(UIView *)contentChildView isDescendantOfView:self])
   {
-    v15 = [(SKUIGallerySwooshCollectionViewCell *)self contentView];
-    [v15 addSubview:self->_contentChildView];
+    contentView = [(SKUIGallerySwooshCollectionViewCell *)self contentView];
+    [contentView addSubview:self->_contentChildView];
     [(SKUIGallerySwooshCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -93,12 +93,12 @@
     }
   }
 
-  v13 = [(UILabel *)self->_titleLabel text];
-  v14 = v13;
-  if (v13 != v4 && ([v13 isEqualToString:v4] & 1) == 0)
+  text = [(UILabel *)self->_titleLabel text];
+  v14 = text;
+  if (text != titleCopy && ([text isEqualToString:titleCopy] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (v4)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -107,8 +107,8 @@
         self->_titleLabel = v16;
 
         v18 = self->_titleLabel;
-        v19 = [(SKUIGallerySwooshCollectionViewCell *)self backgroundColor];
-        [(UILabel *)v18 setBackgroundColor:v19];
+        backgroundColor = [(SKUIGallerySwooshCollectionViewCell *)self backgroundColor];
+        [(UILabel *)v18 setBackgroundColor:backgroundColor];
 
         v20 = self->_titleLabel;
         v21 = [MEMORY[0x277D74300] boldSystemFontOfSize:17.0];
@@ -126,13 +126,13 @@
           [(UILabel *)v22 setTextColor:v24];
         }
 
-        v25 = [(SKUIGallerySwooshCollectionViewCell *)self contentView];
-        [v25 addSubview:self->_titleLabel];
+        contentView = [(SKUIGallerySwooshCollectionViewCell *)self contentView];
+        [contentView addSubview:self->_titleLabel];
 
         titleLabel = self->_titleLabel;
       }
 
-      [(UILabel *)titleLabel setText:v4];
+      [(UILabel *)titleLabel setText:titleCopy];
       [(UILabel *)self->_titleLabel sizeToFit];
     }
 
@@ -161,9 +161,9 @@
     }
   }
 
-  v11 = [(UILabel *)self->_titleLabel text];
+  text = [(UILabel *)self->_titleLabel text];
 
-  return v11;
+  return text;
 }
 
 - (void)layoutSubviews
@@ -183,8 +183,8 @@
   v27.receiver = self;
   v27.super_class = SKUIGallerySwooshCollectionViewCell;
   [(SKUIGallerySwooshCollectionViewCell *)&v27 layoutSubviews];
-  v11 = [(SKUIGallerySwooshCollectionViewCell *)self contentView];
-  [v11 bounds];
+  contentView = [(SKUIGallerySwooshCollectionViewCell *)self contentView];
+  [contentView bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;

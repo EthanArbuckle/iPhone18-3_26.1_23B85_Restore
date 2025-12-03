@@ -1,21 +1,21 @@
 @interface NSMetadataItem
 - (NSArray)attributes;
 - (NSDictionary)valuesForAttributes:(NSArray *)keys;
-- (id)_init:(id)a3;
+- (id)_init:(id)_init;
 - (id)valueForAttribute:(NSString *)key;
-- (id)valueForKey:(id)a3;
+- (id)valueForKey:(id)key;
 - (void)dealloc;
 @end
 
 @implementation NSMetadataItem
 
-- (id)_init:(id)a3
+- (id)_init:(id)_init
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = NSMetadataItem;
   v4 = [(NSMetadataItem *)&v6 init];
-  v4->_item = a3;
+  v4->_item = _init;
   v4->_reserved = objc_alloc_init(_NSMetadataItemPrivateIvars);
   return v4;
 }
@@ -29,21 +29,21 @@
   [(NSMetadataItem *)&v3 dealloc];
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (key)
   {
-    if ([a3 isEqualToString:@"attributes"])
+    if ([key isEqualToString:@"attributes"])
     {
 
       return [(NSMetadataItem *)self attributes];
     }
 
-    else if ([@"kMDItemPath" isEqualToString:a3] || (v6 = *(self->_reserved + 1), objc_msgSend(v6, "_isMDQuery")) && (objc_msgSend(objc_msgSend(v6, "_allAttributes"), "containsObject:", a3) & 1) != 0 || -[NSArray containsObject:](-[NSMetadataItem attributes](self, "attributes"), "containsObject:", a3))
+    else if ([@"kMDItemPath" isEqualToString:key] || (v6 = *(self->_reserved + 1), objc_msgSend(v6, "_isMDQuery")) && (objc_msgSend(objc_msgSend(v6, "_allAttributes"), "containsObject:", key) & 1) != 0 || -[NSArray containsObject:](-[NSMetadataItem attributes](self, "attributes"), "containsObject:", key))
     {
 
-      return [(NSMetadataItem *)self valueForAttribute:a3];
+      return [(NSMetadataItem *)self valueForAttribute:key];
     }
 
     else
@@ -84,7 +84,7 @@
     return [objc_msgSend(self->_item attributesForNames:{keys), "copy"}];
   }
 
-  v6 = [v5 _allAttributes];
+  _allAttributes = [v5 _allAttributes];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -103,7 +103,7 @@ LABEL_4:
         objc_enumerationMutation(keys);
       }
 
-      if (![v6 containsObject:*(*(&v25 + 1) + 8 * v10)])
+      if (![_allAttributes containsObject:*(*(&v25 + 1) + 8 * v10)])
       {
         return [objc_msgSend(self->_item attributesForNames:{keys), "copy"}];
       }
@@ -128,7 +128,7 @@ LABEL_4:
   }
 
   v12 = v11;
-  v13 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -147,7 +147,7 @@ LABEL_4:
           objc_enumerationMutation(keys);
         }
 
-        -[NSDictionary setObject:forKey:](v13, "setObject:forKey:", [v5 valueOfAttribute:*(*(&v20 + 1) + 8 * i) forResultAtIndex:v12], *(*(&v20 + 1) + 8 * i));
+        -[NSDictionary setObject:forKey:](dictionary, "setObject:forKey:", [v5 valueOfAttribute:*(*(&v20 + 1) + 8 * i) forResultAtIndex:v12], *(*(&v20 + 1) + 8 * i));
       }
 
       v15 = [(NSArray *)keys countByEnumeratingWithState:&v20 objects:v19 count:16];
@@ -156,12 +156,12 @@ LABEL_4:
     while (v15);
   }
 
-  if (!v13)
+  if (!dictionary)
   {
     return [objc_msgSend(self->_item attributesForNames:{keys), "copy"}];
   }
 
-  return v13;
+  return dictionary;
 }
 
 - (NSArray)attributes

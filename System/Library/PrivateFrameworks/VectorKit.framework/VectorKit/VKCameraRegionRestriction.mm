@@ -1,22 +1,22 @@
 @interface VKCameraRegionRestriction
-- ($F24F406B2B787EFB06265DBA3D28CBD5)clampedCoordinate:(id)a3;
-- (BOOL)containsCoordinate:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)clampedCoordinate:(id)coordinate;
+- (BOOL)containsCoordinate:(id)coordinate;
+- (BOOL)isEqual:(id)equal;
 - (Matrix<double,)clampedPosition:()Matrix<double;
 - (Matrix<double,)clampedPositionForOrigin:()Matrix<double delta:()2;
-- (VKCameraRegionRestriction)initWithCoder:(id)a3;
-- (VKCameraRegionRestriction)initWithMapRegion:(id)a3;
-- (void)clampedPosition:(double)a3 usingSingleRestriction:(double)a4 westOfDatelineRestriction:(double)a5 eastOfDatelineRestriction:(double)a6 wrapRange:(double)a7;
-- (void)encodeWithCoder:(id)a3;
-- (void)radianSingleRect:(void *)a3 westOfDatelineRect:(void *)a4 eastOfDatelineRect:(void *)a5;
+- (VKCameraRegionRestriction)initWithCoder:(id)coder;
+- (VKCameraRegionRestriction)initWithMapRegion:(id)region;
+- (void)clampedPosition:(double)position usingSingleRestriction:(double)restriction westOfDatelineRestriction:(double)datelineRestriction eastOfDatelineRestriction:(double)ofDatelineRestriction wrapRange:(double)range;
+- (void)encodeWithCoder:(id)coder;
+- (void)radianSingleRect:(void *)rect westOfDatelineRect:(void *)datelineRect eastOfDatelineRect:(void *)ofDatelineRect;
 @end
 
 @implementation VKCameraRegionRestriction
 
-- (VKCameraRegionRestriction)initWithCoder:(id)a3
+- (VKCameraRegionRestriction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"VKCameraRegionRestrictionMapRegion"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"VKCameraRegionRestrictionMapRegion"];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E69A2200]) initWithData:v5];
@@ -32,20 +32,20 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   mapRegion = self->_mapRegion;
   if (mapRegion)
   {
-    v5 = [(GEOMapRegion *)mapRegion data];
-    [v6 encodeObject:v5 forKey:@"VKCameraRegionRestrictionMapRegion"];
+    data = [(GEOMapRegion *)mapRegion data];
+    [coderCopy encodeObject:data forKey:@"VKCameraRegionRestrictionMapRegion"];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -53,8 +53,8 @@
     v7 = mapRegion;
     if (!mapRegion)
     {
-      v3 = [v5 mapRegion];
-      if (!v3)
+      mapRegion = [equalCopy mapRegion];
+      if (!mapRegion)
       {
         v9 = 1;
 LABEL_9:
@@ -65,8 +65,8 @@ LABEL_9:
       v7 = self->_mapRegion;
     }
 
-    v8 = [v5 mapRegion];
-    v9 = [(GEOMapRegion *)v7 isEqual:v8];
+    mapRegion2 = [equalCopy mapRegion];
+    v9 = [(GEOMapRegion *)v7 isEqual:mapRegion2];
 
     if (!mapRegion)
     {
@@ -84,33 +84,33 @@ LABEL_10:
   return v9;
 }
 
-- (void)radianSingleRect:(void *)a3 westOfDatelineRect:(void *)a4 eastOfDatelineRect:(void *)a5
+- (void)radianSingleRect:(void *)rect westOfDatelineRect:(void *)datelineRect eastOfDatelineRect:(void *)ofDatelineRect
 {
-  if (a3)
+  if (rect)
   {
     v5 = vdupq_n_s64(0x3F91DF46A2529D39uLL);
     v6 = vmulq_f64(self->_singleRestrictionCoord._minimum, v5);
     v7 = vmulq_f64(self->_singleRestrictionCoord._maximum, v5);
-    *a3 = v6;
-    *(a3 + 1) = v7;
+    *rect = v6;
+    *(rect + 1) = v7;
   }
 
-  if (a4)
+  if (datelineRect)
   {
     v8 = vdupq_n_s64(0x3F91DF46A2529D39uLL);
     v9 = vmulq_f64(self->_westOfDatelineCoord._minimum, v8);
     v10 = vmulq_f64(self->_westOfDatelineCoord._maximum, v8);
-    *a4 = v9;
-    *(a4 + 1) = v10;
+    *datelineRect = v9;
+    *(datelineRect + 1) = v10;
   }
 
-  if (a5)
+  if (ofDatelineRect)
   {
     v11 = vdupq_n_s64(0x3F91DF46A2529D39uLL);
     v12 = vmulq_f64(self->_eastOfDatelineCoord._minimum, v11);
     v13 = vmulq_f64(self->_eastOfDatelineCoord._maximum, v11);
-    *a5 = v12;
-    *(a5 + 1) = v13;
+    *ofDatelineRect = v12;
+    *(ofDatelineRect + 1) = v13;
   }
 }
 
@@ -302,15 +302,15 @@ LABEL_15:
   return result;
 }
 
-- (void)clampedPosition:(double)a3 usingSingleRestriction:(double)a4 westOfDatelineRestriction:(double)a5 eastOfDatelineRestriction:(double)a6 wrapRange:(double)a7
+- (void)clampedPosition:(double)position usingSingleRestriction:(double)restriction westOfDatelineRestriction:(double)datelineRestriction eastOfDatelineRestriction:(double)ofDatelineRestriction wrapRange:(double)range
 {
   v25 = 0;
   v26 = 0;
-  v27 = &v74;
-  v74 = a3;
-  v75 = a4;
-  *v76 = a5;
-  *&v76[1] = a6;
+  v27 = &positionCopy;
+  positionCopy = position;
+  restrictionCopy = restriction;
+  *v76 = datelineRestriction;
+  *&v76[1] = ofDatelineRestriction;
   v71 = a17;
   v72 = a18;
   v73[0] = a19;
@@ -329,7 +329,7 @@ LABEL_15:
     }
 
     v25 = 1;
-    v27 = &v75;
+    v27 = &restrictionCopy;
     v26 = 1;
   }
 
@@ -387,28 +387,28 @@ LABEL_9:
     v46 = 0.0;
     v47 = &v71;
     v48 = 1;
-    v49 = a1;
+    selfCopy = self;
     v50 = 1;
     while (1)
     {
       v51 = v48;
       v52 = *&v73[v45];
-      if (v49 > v52)
+      if (selfCopy > v52)
       {
         break;
       }
 
-      if (v49 < *v47)
+      if (selfCopy < *v47)
       {
         v50 = 0;
-        v53 = *v47 - v49;
+        v53 = *v47 - selfCopy;
         goto LABEL_22;
       }
 
 LABEL_23:
       v48 = 0;
       v47 = &v72;
-      v49 = a2;
+      selfCopy = a2;
       v45 = 1;
       if ((v51 & 1) == 0)
       {
@@ -421,27 +421,27 @@ LABEL_23:
         v55 = 0.0;
         v56 = &v68;
         v57 = 1;
-        v58 = a1;
+        selfCopy2 = self;
         while (2)
         {
           v59 = v57;
           v60 = *&v70[v54];
-          if (v58 > v60)
+          if (selfCopy2 > v60)
           {
-            v61 = v58 - v60;
+            v61 = selfCopy2 - v60;
             goto LABEL_30;
           }
 
-          if (v58 < *v56)
+          if (selfCopy2 < *v56)
           {
-            v61 = *v56 - v58;
+            v61 = *v56 - selfCopy2;
 LABEL_30:
             v55 = v55 + v61 * v61;
           }
 
           v57 = 0;
           v56 = &v69;
-          v58 = a2;
+          selfCopy2 = a2;
           v54 = 1;
           if ((v59 & 1) == 0)
           {
@@ -454,22 +454,22 @@ LABEL_30:
     }
 
     v50 = 0;
-    v53 = v49 - v52;
+    v53 = selfCopy - v52;
 LABEL_22:
     v46 = v46 + v53 * v53;
     goto LABEL_23;
   }
 
   v30 = 0;
-  v31 = &v74;
+  v31 = &positionCopy;
   v32 = 1;
-  v33 = a1;
-  while (v33 >= *v31 && v33 < *&v76[v30])
+  selfCopy3 = self;
+  while (selfCopy3 >= *v31 && selfCopy3 < *&v76[v30])
   {
     v34 = v32;
     v32 = 0;
-    v31 = &v75;
-    v33 = a2;
+    v31 = &restrictionCopy;
+    selfCopy3 = a2;
     v30 = 1;
     if ((v34 & 1) == 0)
     {
@@ -477,14 +477,14 @@ LABEL_22:
     }
   }
 
-  if (a1 < a3 || a1 > a5)
+  if (self < position || self > datelineRestriction)
   {
     v63 = a25 + (a26 + a25) * -0.5;
-    v64 = v63 + a1;
+    v64 = v63 + self;
     v65 = a26 - a25;
-    v66 = fmod(a3 - (v63 + a1), a26 - a25);
+    v66 = fmod(position - (v63 + self), a26 - a25);
     fabs(fmod(v66 + v65, v65) + v63);
-    v67 = fmod(a5 - v64, a26 - a25);
+    v67 = fmod(datelineRestriction - v64, a26 - a25);
     fmod(v67 + v65, v65);
   }
 }
@@ -513,10 +513,10 @@ LABEL_22:
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)clampedCoordinate:(id)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)clampedCoordinate:(id)coordinate
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   if (![(VKCameraRegionRestriction *)self isEmpty])
   {
     [(VKCameraRegionRestriction *)self clampedPosition:var1 usingSingleRestriction:var0 westOfDatelineRestriction:self->_singleRestrictionCoord._minimum._e[0] eastOfDatelineRestriction:self->_singleRestrictionCoord._minimum._e[1] wrapRange:self->_singleRestrictionCoord._maximum._e[0], self->_singleRestrictionCoord._maximum._e[1], *&self->_westOfDatelineCoord._minimum._e[0], *&self->_westOfDatelineCoord._minimum._e[1], *&self->_westOfDatelineCoord._maximum._e[0], *&self->_westOfDatelineCoord._maximum._e[1], *&self->_eastOfDatelineCoord._minimum._e[0], *&self->_eastOfDatelineCoord._minimum._e[1], *&self->_eastOfDatelineCoord._maximum._e[0], *&self->_eastOfDatelineCoord._maximum._e[1], 0xC066800000000000, 0x4066800000000000];
@@ -531,10 +531,10 @@ LABEL_22:
   return result;
 }
 
-- (BOOL)containsCoordinate:(id)a3
+- (BOOL)containsCoordinate:(id)coordinate
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   if ([(VKCameraRegionRestriction *)self isEmpty])
   {
     LOBYTE(v6) = 1;
@@ -621,21 +621,21 @@ LABEL_19:
   return v6;
 }
 
-- (VKCameraRegionRestriction)initWithMapRegion:(id)a3
+- (VKCameraRegionRestriction)initWithMapRegion:(id)region
 {
-  v5 = a3;
+  regionCopy = region;
   v83.receiver = self;
   v83.super_class = VKCameraRegionRestriction;
   v6 = [(VKCameraRegionRestriction *)&v83 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapRegion, a3);
-    if (v5)
+    objc_storeStrong(&v6->_mapRegion, region);
+    if (regionCopy)
     {
-      [v5 westLng];
+      [regionCopy westLng];
       v9 = v8;
-      [v5 eastLng];
+      [regionCopy eastLng];
       if (v9 > v10)
       {
         v11 = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
@@ -644,11 +644,11 @@ LABEL_19:
         v7->_singleRestrictionMercator._maximum = v12;
         v7->_singleRestrictionCoord._minimum = v11;
         v7->_singleRestrictionCoord._maximum = v12;
-        [v5 southLat];
+        [regionCopy southLat];
         v14 = v13;
-        [v5 westLng];
+        [regionCopy westLng];
         v16 = v15;
-        [v5 northLat];
+        [regionCopy northLat];
         v18 = v17;
         v19 = tan(v14 * 0.00872664626 + 0.785398163);
         v20 = log(v19) * 0.159154943 + 0.5;
@@ -658,12 +658,12 @@ LABEL_19:
         v7->_westOfDatelineMercator._minimum._e[1] = v20;
         v7->_westOfDatelineMercator._maximum._e[0] = 1.0;
         v7->_westOfDatelineMercator._maximum._e[1] = v22 * 0.159154943 + 0.5;
-        [v5 southLat];
+        [regionCopy southLat];
         v24 = tan(v23 * 0.00872664626 + 0.785398163);
         v25 = log(v24);
-        [v5 northLat];
+        [regionCopy northLat];
         v27 = v26;
-        [v5 eastLng];
+        [regionCopy eastLng];
         v81 = v28;
         v29 = tan(v27 * 0.00872664626 + 0.785398163);
         v30 = log(v29);
@@ -674,20 +674,20 @@ LABEL_19:
         __asm { FMOV            V1.2D, #0.5 }
 
         v7->_eastOfDatelineMercator._maximum = vmlaq_f64(_Q1, xmmword_1B33B0700, v31);
-        [v5 westLng];
+        [regionCopy westLng];
         v38 = v37;
-        [v5 southLat];
+        [regionCopy southLat];
         v40 = v39;
-        [v5 northLat];
+        [regionCopy northLat];
         v7->_westOfDatelineCoord._minimum._e[0] = v38;
         v7->_westOfDatelineCoord._minimum._e[1] = v40;
         v7->_westOfDatelineCoord._maximum._e[0] = 180.0;
         v7->_westOfDatelineCoord._maximum._e[1] = v41;
-        [v5 southLat];
+        [regionCopy southLat];
         v43 = v42;
-        [v5 eastLng];
+        [regionCopy eastLng];
         v45 = v44;
-        [v5 northLat];
+        [regionCopy northLat];
         v47 = 0xC066800000000000;
 LABEL_8:
         *&v7->_eastOfDatelineCoord._minimum._e[0] = v47;
@@ -697,15 +697,15 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      [v5 southLat];
+      [regionCopy southLat];
       v65 = v64;
-      [v5 westLng];
+      [regionCopy westLng];
       v67 = v66;
       v68 = tan(v65 * 0.00872664626 + 0.785398163);
       v69 = log(v68);
-      [v5 northLat];
+      [regionCopy northLat];
       v71 = v70;
-      [v5 eastLng];
+      [regionCopy eastLng];
       v82 = v72;
       v73 = tan(v71 * 0.00872664626 + 0.785398163);
       v74 = log(v73);
@@ -716,13 +716,13 @@ LABEL_8:
       __asm { FMOV            V1.2D, #0.5 }
 
       v7->_singleRestrictionMercator._maximum = vmlaq_f64(_Q1, xmmword_1B33B0700, v75);
-      [v5 westLng];
+      [regionCopy westLng];
       v60 = v77;
-      [v5 southLat];
+      [regionCopy southLat];
       v62 = v78;
-      [v5 eastLng];
+      [regionCopy eastLng];
       v57 = v79;
-      [v5 northLat];
+      [regionCopy northLat];
       v48 = 96;
       v49 = 88;
       v50 = 80;

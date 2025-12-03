@@ -1,12 +1,12 @@
 @interface _MRLyricsItemProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRLyricsItemProtobuf
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = _MRLyricsItemProtobuf;
   v4 = [(_MRLyricsItemProtobuf *)&v8 description];
-  v5 = [(_MRLyricsItemProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRLyricsItemProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   lyrics = self->_lyrics;
   if (lyrics)
   {
-    [v3 setObject:lyrics forKey:@"lyrics"];
+    [dictionary setObject:lyrics forKey:@"lyrics"];
   }
 
   if (*&self->_has)
@@ -42,64 +42,64 @@
   token = self->_token;
   if (token)
   {
-    v8 = [(_MRLyricsTokenProtobuf *)token dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"token"];
+    dictionaryRepresentation = [(_MRLyricsTokenProtobuf *)token dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"token"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_lyrics)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     userProvided = self->_userProvided;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_token)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_lyrics)
   {
-    [v4 setLyrics:?];
-    v4 = v5;
+    [toCopy setLyrics:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[24] = self->_userProvided;
-    v4[28] |= 1u;
+    toCopy[24] = self->_userProvided;
+    toCopy[28] |= 1u;
   }
 
   if (self->_token)
   {
     [v5 setToken:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_lyrics copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_lyrics copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -109,23 +109,23 @@
     *(v5 + 28) |= 1u;
   }
 
-  v8 = [(_MRLyricsTokenProtobuf *)self->_token copyWithZone:a3];
+  v8 = [(_MRLyricsTokenProtobuf *)self->_token copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   lyrics = self->_lyrics;
-  if (lyrics | *(v4 + 1))
+  if (lyrics | *(equalCopy + 1))
   {
     if (![(NSString *)lyrics isEqual:?])
     {
@@ -133,18 +133,18 @@
     }
   }
 
-  v6 = *(v4 + 28);
+  v6 = *(equalCopy + 28);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  if ((*(v4 + 28) & 1) == 0)
+  if ((*(equalCopy + 28) & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if (!self->_userProvided)
   {
 LABEL_5:
@@ -158,14 +158,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ((*(v4 + 24) & 1) == 0)
+  if ((*(equalCopy + 24) & 1) == 0)
   {
     goto LABEL_9;
   }
 
 LABEL_6:
   token = self->_token;
-  if (token | *(v4 + 2))
+  if (token | *(equalCopy + 2))
   {
     v8 = [(_MRLyricsTokenProtobuf *)token isEqual:?];
   }
@@ -196,24 +196,24 @@ LABEL_10:
   return v4 ^ v3 ^ [(_MRLyricsTokenProtobuf *)self->_token hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(_MRLyricsItemProtobuf *)self setLyrics:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (v4[28])
+  if (fromCopy[28])
   {
-    self->_userProvided = v4[24];
+    self->_userProvided = fromCopy[24];
     *&self->_has |= 1u;
   }
 
   token = self->_token;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (token)
   {
     if (!v6)
@@ -234,7 +234,7 @@ LABEL_10:
     [(_MRLyricsItemProtobuf *)self setToken:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_11:
 }
 

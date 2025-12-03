@@ -1,43 +1,43 @@
 @interface _UIStatusBarSensorActivityView
 - (CGSize)intrinsicContentSize;
-- (void)applyStyleAttributes:(id)a3;
-- (void)configurePortalViewIfNeededForTargetScreen:(id)a3;
-- (void)configureSensorViewWithoutPortalIfNeededForTargetScreen:(id)a3;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)configurePortalViewIfNeededForTargetScreen:(id)screen;
+- (void)configureSensorViewWithoutPortalIfNeededForTargetScreen:(id)screen;
 - (void)layoutSubviews;
 @end
 
 @implementation _UIStatusBarSensorActivityView
 
-- (void)configureSensorViewWithoutPortalIfNeededForTargetScreen:(id)a3
+- (void)configureSensorViewWithoutPortalIfNeededForTargetScreen:(id)screen
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v4 = [_UIStatusBar sensorActivityIndicatorForScreen:a3];
-  v5 = [(_UIStatusBarSensorActivityView *)self sensorActivityView];
-  v6 = v5;
+  v4 = [_UIStatusBar sensorActivityIndicatorForScreen:screen];
+  sensorActivityView = [(_UIStatusBarSensorActivityView *)self sensorActivityView];
+  v6 = sensorActivityView;
   if (v4)
   {
 
     if (v6 != v4)
     {
-      v7 = [(_UIStatusBarSensorActivityView *)self sensorActivityView];
-      [v7 removeFromSuperview];
+      sensorActivityView2 = [(_UIStatusBarSensorActivityView *)self sensorActivityView];
+      [sensorActivityView2 removeFromSuperview];
     }
 
     [(_UIStatusBarSensorActivityView *)self setSensorActivityView:v4];
-    v8 = [(_UIStatusBarSensorActivityView *)self sensorActivityView];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+    sensorActivityView3 = [(_UIStatusBarSensorActivityView *)self sensorActivityView];
+    [sensorActivityView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     [(UIView *)self addSubview:v4];
     v18 = MEMORY[0x1E69977A0];
-    v19 = [(_UIStatusBarSensorActivityView *)self sensorActivityView];
-    v9 = [v19 centerXAnchor];
-    v10 = [(UIView *)self centerXAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    sensorActivityView4 = [(_UIStatusBarSensorActivityView *)self sensorActivityView];
+    centerXAnchor = [sensorActivityView4 centerXAnchor];
+    centerXAnchor2 = [(UIView *)self centerXAnchor];
+    v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v20[0] = v11;
-    v12 = [(_UIStatusBarSensorActivityView *)self sensorActivityView];
-    v13 = [v12 centerYAnchor];
-    v14 = [(UIView *)self centerYAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    sensorActivityView5 = [(_UIStatusBarSensorActivityView *)self sensorActivityView];
+    centerYAnchor = [sensorActivityView5 centerYAnchor];
+    centerYAnchor2 = [(UIView *)self centerYAnchor];
+    v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v20[1] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     [v18 activateConstraints:v16];
@@ -50,8 +50,8 @@
 
     if (v6)
     {
-      v17 = [(_UIStatusBarSensorActivityView *)self sensorActivityView];
-      [v17 removeFromSuperview];
+      sensorActivityView6 = [(_UIStatusBarSensorActivityView *)self sensorActivityView];
+      [sensorActivityView6 removeFromSuperview];
 
       [(_UIStatusBarSensorActivityView *)self setSensorActivityView:0];
     }
@@ -60,11 +60,11 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(UIView *)self _screen];
-  v4 = v3;
+  _screen = [(UIView *)self _screen];
+  v4 = _screen;
   if (self->_portalView)
   {
-    v5 = v3 == 0;
+    v5 = _screen == 0;
   }
 
   else
@@ -74,8 +74,8 @@
 
   if (!v5)
   {
-    v15 = v3;
-    v6 = [_UIStatusBar sensorActivityIndicatorForScreen:v3];
+    v15 = _screen;
+    v6 = [_UIStatusBar sensorActivityIndicatorForScreen:_screen];
     v7 = v6;
     if (v6)
     {
@@ -97,9 +97,9 @@
   }
 }
 
-- (void)configurePortalViewIfNeededForTargetScreen:(id)a3
+- (void)configurePortalViewIfNeededForTargetScreen:(id)screen
 {
-  v4 = [_UIStatusBar sensorActivityIndicatorForScreen:a3];
+  v4 = [_UIStatusBar sensorActivityIndicatorForScreen:screen];
   portalView = self->_portalView;
   if (v4)
   {
@@ -142,14 +142,14 @@
 LABEL_9:
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v4 = [a3 iconSize];
+  iconSize = [attributes iconSize];
   iconSize = self->_iconSize;
-  [(_UIStatusBarSensorActivityView *)self setIconSize:v4];
+  [(_UIStatusBarSensorActivityView *)self setIconSize:iconSize];
   if (self->_portalView)
   {
-    v6 = iconSize == v4;
+    v6 = iconSize == iconSize;
   }
 
   else

@@ -1,19 +1,19 @@
 @interface _EARSpeechMessagesContext
-- (_EARSpeechMessagesContext)initWithSender:(id)a3 messages:(id)a4;
+- (_EARSpeechMessagesContext)initWithSender:(id)sender messages:(id)messages;
 @end
 
 @implementation _EARSpeechMessagesContext
 
-- (_EARSpeechMessagesContext)initWithSender:(id)a3 messages:(id)a4
+- (_EARSpeechMessagesContext)initWithSender:(id)sender messages:(id)messages
 {
-  v6 = a3;
-  v7 = a4;
+  senderCopy = sender;
+  messagesCopy = messages;
   sender = self->_sender;
-  self->_sender = v6;
-  v9 = v6;
+  self->_sender = senderCopy;
+  v9 = senderCopy;
 
   messages = self->_messages;
-  self->_messages = v7;
+  self->_messages = messagesCopy;
 
   return self;
 }

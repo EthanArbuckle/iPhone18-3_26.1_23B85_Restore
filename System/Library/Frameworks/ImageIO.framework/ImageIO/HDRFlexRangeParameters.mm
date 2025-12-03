@@ -1,9 +1,9 @@
 @interface HDRFlexRangeParameters
-+ (id)flexRangeParametersFromDictionary:(id)a3;
-+ (id)flexRangeParametersFromMetadata:(CGImageMetadata *)a3;
++ (id)flexRangeParametersFromDictionary:(id)dictionary;
++ (id)flexRangeParametersFromMetadata:(CGImageMetadata *)metadata;
 - (CGImageMetadata)createFlexRangeMetadata;
 - (HDRFlexRangeParameters)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createFlexRangeDictionary;
 - (id)description;
 @end
@@ -29,9 +29,9 @@
   return result;
 }
 
-+ (id)flexRangeParametersFromDictionary:(id)a3
++ (id)flexRangeParametersFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__HDRFlexRangeParameters_flexRangeParametersFromDictionary___block_invoke_2;
@@ -45,10 +45,10 @@
   v15 = &__block_literal_global;
   v5 = _Block_copy(v14);
   v6 = objc_alloc_init(HDRFlexRangeParameters);
-  *&v7 = __60__HDRFlexRangeParameters_flexRangeParametersFromDictionary___block_invoke(v6, v3);
-  *&v8 = __60__HDRFlexRangeParameters_flexRangeParametersFromDictionary___block_invoke([(HDRFlexRangeParameters *)v6 setBaseHeadroom:v7], v3);
+  *&v7 = __60__HDRFlexRangeParameters_flexRangeParametersFromDictionary___block_invoke(v6, dictionaryCopy);
+  *&v8 = __60__HDRFlexRangeParameters_flexRangeParametersFromDictionary___block_invoke([(HDRFlexRangeParameters *)v6 setBaseHeadroom:v7], dictionaryCopy);
   [(HDRFlexRangeParameters *)v6 setAlternateHeadroom:v8];
-  v9 = [v3 objectForKeyedSubscript:*gIIO_kCMPhotoMetadata_TonemapChannelMetadataKeys];
+  v9 = [dictionaryCopy objectForKeyedSubscript:*gIIO_kCMPhotoMetadata_TonemapChannelMetadataKeys];
   if ([v9 count] == 1)
   {
     [(HDRFlexRangeParameters *)v6 setIsMono:1];
@@ -86,7 +86,7 @@
     [(HDRFlexRangeParameters *)v6 setChannelAlternateOffsetRGB:?];
   }
 
-  v10 = [v3 objectForKeyedSubscript:*gIIO_kCMPhotoMetadata_TonemapBaseColorIsWorkingColor];
+  v10 = [dictionaryCopy objectForKeyedSubscript:*gIIO_kCMPhotoMetadata_TonemapBaseColorIsWorkingColor];
   v11 = v10;
   if (!v10)
   {
@@ -181,11 +181,11 @@ __n128 __60__HDRFlexRangeParameters_flexRangeParametersFromDictionary___block_in
   v4 = _Block_copy(v29);
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v6 = *gIIO_kCMPhotoMetadata_TonemapBaseHDRHeadroom;
-  v7 = [(HDRFlexRangeParameters *)self baseHeadroom];
-  __51__HDRFlexRangeParameters_createFlexRangeDictionary__block_invoke(v8, v7, v5, v6);
+  baseHeadroom = [(HDRFlexRangeParameters *)self baseHeadroom];
+  __51__HDRFlexRangeParameters_createFlexRangeDictionary__block_invoke(v8, baseHeadroom, v5, v6);
   v9 = *gIIO_kCMPhotoMetadata_TonemapAlternateHDRHeadroom;
-  v10 = [(HDRFlexRangeParameters *)self alternateHeadroom];
-  __51__HDRFlexRangeParameters_createFlexRangeDictionary__block_invoke(v11, v10, v5, v9);
+  alternateHeadroom = [(HDRFlexRangeParameters *)self alternateHeadroom];
+  __51__HDRFlexRangeParameters_createFlexRangeDictionary__block_invoke(v11, alternateHeadroom, v5, v9);
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([(HDRFlexRangeParameters *)self isMono])
   {
@@ -333,13 +333,13 @@ void __51__HDRFlexRangeParameters_createFlexRangeDictionary__block_invoke_3(uint
   (*(v11 + 16))(v11, v12, v6, a4.n128_f32[2]);
 }
 
-+ (id)flexRangeParametersFromMetadata:(CGImageMetadata *)a3
++ (id)flexRangeParametersFromMetadata:(CGImageMetadata *)metadata
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__HDRFlexRangeParameters_flexRangeParametersFromMetadata___block_invoke;
   aBlock[3] = &__block_descriptor_40_e18__16__0__NSString_8l;
-  aBlock[4] = a3;
+  aBlock[4] = metadata;
   v3 = _Block_copy(aBlock);
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
@@ -377,16 +377,16 @@ void __51__HDRFlexRangeParameters_createFlexRangeDictionary__block_invoke_3(uint
   v21 = v12;
   v13 = _Block_copy(v20);
   v14 = (*(v8 + 2))(v8, @"Version");
-  v15 = [v14 integerValue];
+  integerValue = [v14 integerValue];
 
-  if (!v15)
+  if (!integerValue)
   {
     v18 = 0;
     goto LABEL_10;
   }
 
   v16 = objc_alloc_init(HDRFlexRangeParameters);
-  [(HDRFlexRangeParameters *)v16 setVersion:v15];
+  [(HDRFlexRangeParameters *)v16 setVersion:integerValue];
   (*(v10 + 2))(v10, @"BaseHeadroom");
   [(HDRFlexRangeParameters *)v16 setBaseHeadroom:?];
   (*(v10 + 2))(v10, @"AlternateHeadroom");
@@ -691,9 +691,9 @@ void __49__HDRFlexRangeParameters_createFlexRangeMetadata__block_invoke_6(uint64
   (*(*(a1 + 32) + 16))(a3.n128_f32[2]);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_opt_class() allocWithZone:a3];
+  result = [objc_opt_class() allocWithZone:zone];
   *(result + 3) = self->_version;
   *(result + 3) = LODWORD(self->_baseHeadroom);
   *(result + 4) = LODWORD(self->_alternateHeadroom);
@@ -712,7 +712,7 @@ void __49__HDRFlexRangeParameters_createFlexRangeMetadata__block_invoke_6(uint64
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
-  v6 = [(HDRFlexRangeParameters *)self version];
+  version = [(HDRFlexRangeParameters *)self version];
   [(HDRFlexRangeParameters *)self baseHeadroom];
   v8 = v7;
   [(HDRFlexRangeParameters *)self baseHeadroom];
@@ -771,8 +771,8 @@ void __49__HDRFlexRangeParameters_createFlexRangeMetadata__block_invoke_6(uint64
   v39 = v30;
   [(HDRFlexRangeParameters *)self channelAlternateOffsetRGB];
   v38 = v31;
-  v32 = [(HDRFlexRangeParameters *)self alternateColorSpace];
-  if (v32)
+  alternateColorSpace = [(HDRFlexRangeParameters *)self alternateColorSpace];
+  if (alternateColorSpace)
   {
     v33 = CGColorSpaceCopyName([(HDRFlexRangeParameters *)self alternateColorSpace]);
     if (v33)
@@ -796,12 +796,12 @@ void __49__HDRFlexRangeParameters_createFlexRangeMetadata__block_invoke_6(uint64
     v35 = @"n/a";
   }
 
-  v36 = [v4 stringWithFormat:@"<%@:%p version:%ld base:%0.2f(%0.2f) alt:%0.2f(%0.2f) mono:%@ color:%@ min=(%0.3f, %0.3f, %0.3f) max=(%0.3f, %0.3f, %0.3f) g=(%0.3f, %0.3f, %0.3f) kB=(%0.3f, %0.3f, %0.3f) kA=(%0.3f, %0.3f, %0.3f) alt space: %@>", v5, self, v6, v8, v10, v12, v14, v15, v16, v52, v51, v50, v49, v48, v47, v46, v45, v44, v43, v42, v41, v40, v39, v38, v35];
+  v36 = [v4 stringWithFormat:@"<%@:%p version:%ld base:%0.2f(%0.2f) alt:%0.2f(%0.2f) mono:%@ color:%@ min=(%0.3f, %0.3f, %0.3f) max=(%0.3f, %0.3f, %0.3f) g=(%0.3f, %0.3f, %0.3f) kB=(%0.3f, %0.3f, %0.3f) kA=(%0.3f, %0.3f, %0.3f) alt space: %@>", v5, self, version, v8, v10, v12, v14, v15, v16, v52, v51, v50, v49, v48, v47, v46, v45, v44, v43, v42, v41, v40, v39, v38, v35];
   if (v34)
   {
   }
 
-  if (v32)
+  if (alternateColorSpace)
   {
   }
 

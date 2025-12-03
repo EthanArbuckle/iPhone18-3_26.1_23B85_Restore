@@ -1,7 +1,7 @@
 @interface _NSThreadPerformInfo
 - (int)wait;
 - (void)dealloc;
-- (void)signal:(int)a3;
+- (void)signal:(int)signal;
 @end
 
 @implementation _NSThreadPerformInfo
@@ -15,10 +15,10 @@
   [(_NSThreadPerformInfo *)&v3 dealloc];
 }
 
-- (void)signal:(int)a3
+- (void)signal:(int)signal
 {
   [(NSCondition *)self->_waiter lock];
-  self->_state = a3;
+  self->_state = signal;
   [(NSCondition *)self->_waiter signal];
   waiter = self->_waiter;
 

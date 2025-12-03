@@ -1,14 +1,14 @@
 @interface SVXAFSiriTetherFactory
-- (id)createWithInstanceContext:(id)a3;
+- (id)createWithInstanceContext:(id)context;
 @end
 
 @implementation SVXAFSiriTetherFactory
 
-- (id)createWithInstanceContext:(id)a3
+- (id)createWithInstanceContext:(id)context
 {
   v3 = MEMORY[0x277CEF408];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithInstanceContext:v4];
+  contextCopy = context;
+  v5 = [[v3 alloc] initWithInstanceContext:contextCopy];
 
   return v5;
 }

@@ -1,10 +1,10 @@
 @interface CRLSyncDriver
-- (void)handleDataStoreDidSaveSyncableData:(id)a3;
+- (void)handleDataStoreDidSaveSyncableData:(id)data;
 @end
 
 @implementation CRLSyncDriver
 
-- (void)handleDataStoreDidSaveSyncableData:(id)a3
+- (void)handleDataStoreDidSaveSyncableData:(id)data
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

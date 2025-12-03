@@ -7,25 +7,25 @@
 - (CAFWiFiStatus)wiFiStatusService;
 - (NSArray)deepLinkStatusItemServices;
 - (NSArray)statusItemServices;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFStatusIndicators
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFStatusIndicators;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABD38])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABD38])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -38,12 +38,12 @@
   [(CAFAccessory *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABD38])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABD38])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -59,11 +59,11 @@
 - (NSArray)statusItemServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000016100001"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000016100001"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000016100001"];
@@ -83,11 +83,11 @@
 - (NSArray)deepLinkStatusItemServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000016100002"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000016100002"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000016100002"];
@@ -107,18 +107,18 @@
 - (CAFWiFiStatus)wiFiStatusService
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000016100003"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000016100003"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000016100003"];
-  v9 = [v8 firstObject];
-  if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v8 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v10 = v9;
+    v10 = firstObject;
   }
 
   else
@@ -132,18 +132,18 @@
 - (CAFBluetoothStatus)bluetoothStatusService
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000016100004"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000016100004"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000016100004"];
-  v9 = [v8 firstObject];
-  if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v8 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v10 = v9;
+    v10 = firstObject;
   }
 
   else
@@ -157,18 +157,18 @@
 - (CAFCellularStatus)cellularStatusService
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000016100005"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000016100005"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000016100005"];
-  v9 = [v8 firstObject];
-  if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v8 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v10 = v9;
+    v10 = firstObject;
   }
 
   else
@@ -182,18 +182,18 @@
 - (CAFCurrentUserStatus)currentUserStatusService
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000016100006"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000016100006"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000016100006"];
-  v9 = [v8 firstObject];
-  if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v8 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v10 = v9;
+    v10 = firstObject;
   }
 
   else
@@ -207,18 +207,18 @@
 - (CAFActivityIndicator)activityIndicatorService
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000016100007"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000016100007"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000016100007"];
-  v9 = [v8 firstObject];
-  if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v8 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v10 = v9;
+    v10 = firstObject;
   }
 
   else

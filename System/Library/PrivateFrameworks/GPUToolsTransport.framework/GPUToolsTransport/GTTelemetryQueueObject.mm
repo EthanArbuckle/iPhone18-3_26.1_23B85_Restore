@@ -1,22 +1,22 @@
 @interface GTTelemetryQueueObject
-- (GTTelemetryQueueObject)initWithCoder:(id)a3;
+- (GTTelemetryQueueObject)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTTelemetryQueueObject
 
-- (GTTelemetryQueueObject)initWithCoder:(id)a3
+- (GTTelemetryQueueObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = GTTelemetryQueueObject;
   v5 = [(GTTelemetryQueueObject *)&v9 init];
   if (v5)
   {
-    v5->_streamRef = [v4 decodeInt64ForKey:@"streamRef"];
-    v5->_commits = [v4 decodeInt64ForKey:@"commits"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gpuTime"];
+    v5->_streamRef = [coderCopy decodeInt64ForKey:@"streamRef"];
+    v5->_commits = [coderCopy decodeInt64ForKey:@"commits"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gpuTime"];
     gpuTime = v5->_gpuTime;
     v5->_gpuTime = v6;
   }
@@ -24,13 +24,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   streamRef = self->_streamRef;
-  v5 = a3;
-  [v5 encodeInt64:streamRef forKey:@"streamRef"];
-  [v5 encodeInt64:self->_commits forKey:@"commits"];
-  [v5 encodeObject:self->_gpuTime forKey:@"gpuTime"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:streamRef forKey:@"streamRef"];
+  [coderCopy encodeInt64:self->_commits forKey:@"commits"];
+  [coderCopy encodeObject:self->_gpuTime forKey:@"gpuTime"];
 }
 
 - (id)description

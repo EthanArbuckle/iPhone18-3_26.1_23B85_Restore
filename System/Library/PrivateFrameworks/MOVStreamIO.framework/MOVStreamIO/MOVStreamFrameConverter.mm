@@ -1,9 +1,9 @@
 @interface MOVStreamFrameConverter
 - (MOVStreamFrameConverter)init;
-- (MOVStreamFrameConverter)initWithTargetWidth:(unint64_t)a3 height:(unint64_t)a4 format:(unsigned int)a5 bytesPerRow:(unint64_t)a6 bufferCacheMode:(int)a7;
-- (MOVStreamFrameConverter)initWithTargetWidth:(unint64_t)a3 height:(unint64_t)a4 format:(unsigned int)a5 bytesPerRows:(id)a6 bufferCacheMode:(int)a7;
-- (MOVStreamFrameConverter)initWithTargetWidth:(unint64_t)a3 height:(unint64_t)a4 format:(unsigned int)a5 extendedPixelsPerRow:(unint64_t)a6 bufferCacheMode:(int)a7;
-- (__CVBuffer)convertPixelBuffer:(__CVBuffer *)a3;
+- (MOVStreamFrameConverter)initWithTargetWidth:(unint64_t)width height:(unint64_t)height format:(unsigned int)format bytesPerRow:(unint64_t)row bufferCacheMode:(int)mode;
+- (MOVStreamFrameConverter)initWithTargetWidth:(unint64_t)width height:(unint64_t)height format:(unsigned int)format bytesPerRows:(id)rows bufferCacheMode:(int)mode;
+- (MOVStreamFrameConverter)initWithTargetWidth:(unint64_t)width height:(unint64_t)height format:(unsigned int)format extendedPixelsPerRow:(unint64_t)row bufferCacheMode:(int)mode;
+- (__CVBuffer)convertPixelBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
 @end
 
@@ -28,14 +28,14 @@
   return v3;
 }
 
-- (MOVStreamFrameConverter)initWithTargetWidth:(unint64_t)a3 height:(unint64_t)a4 format:(unsigned int)a5 extendedPixelsPerRow:(unint64_t)a6 bufferCacheMode:(int)a7
+- (MOVStreamFrameConverter)initWithTargetWidth:(unint64_t)width height:(unint64_t)height format:(unsigned int)format extendedPixelsPerRow:(unint64_t)row bufferCacheMode:(int)mode
 {
-  v7 = *&a7;
-  v9 = *&a5;
+  v7 = *&mode;
+  v9 = *&format;
   v12 = [(MOVStreamFrameConverter *)self init];
   if (v12)
   {
-    v13 = [MIOPixelBufferPool createMIOPixelBufferPoolWithWidth:a3 height:a4 pixelFormat:v9 extendedPixelsPerRow:a6 minBufferCount:1 bufferCacheMode:v7];
+    v13 = [MIOPixelBufferPool createMIOPixelBufferPoolWithWidth:width height:height pixelFormat:v9 extendedPixelsPerRow:row minBufferCount:1 bufferCacheMode:v7];
     pool = v12->_pool;
     v12->_pool = v13;
 
@@ -49,14 +49,14 @@
   return v12;
 }
 
-- (MOVStreamFrameConverter)initWithTargetWidth:(unint64_t)a3 height:(unint64_t)a4 format:(unsigned int)a5 bytesPerRow:(unint64_t)a6 bufferCacheMode:(int)a7
+- (MOVStreamFrameConverter)initWithTargetWidth:(unint64_t)width height:(unint64_t)height format:(unsigned int)format bytesPerRow:(unint64_t)row bufferCacheMode:(int)mode
 {
-  v7 = *&a7;
-  v9 = *&a5;
+  v7 = *&mode;
+  v9 = *&format;
   v12 = [(MOVStreamFrameConverter *)self init];
   if (v12)
   {
-    v13 = [MIOPixelBufferPool createMIOPixelBufferPoolWithWidth:a3 height:a4 pixelFormat:v9 exactBytesPerRow:a6 minBufferCount:1 bufferCacheMode:v7];
+    v13 = [MIOPixelBufferPool createMIOPixelBufferPoolWithWidth:width height:height pixelFormat:v9 exactBytesPerRow:row minBufferCount:1 bufferCacheMode:v7];
     pool = v12->_pool;
     v12->_pool = v13;
 
@@ -70,15 +70,15 @@
   return v12;
 }
 
-- (MOVStreamFrameConverter)initWithTargetWidth:(unint64_t)a3 height:(unint64_t)a4 format:(unsigned int)a5 bytesPerRows:(id)a6 bufferCacheMode:(int)a7
+- (MOVStreamFrameConverter)initWithTargetWidth:(unint64_t)width height:(unint64_t)height format:(unsigned int)format bytesPerRows:(id)rows bufferCacheMode:(int)mode
 {
-  v7 = *&a7;
-  v8 = *&a5;
-  v12 = a6;
+  v7 = *&mode;
+  v8 = *&format;
+  rowsCopy = rows;
   v13 = [(MOVStreamFrameConverter *)self init];
   if (v13)
   {
-    v14 = [MIOPixelBufferPool createMIOPixelBufferPoolWithWidth:a3 height:a4 pixelFormat:v8 exactBytesPerRows:v12 minBufferCount:1 bufferCacheMode:v7];
+    v14 = [MIOPixelBufferPool createMIOPixelBufferPoolWithWidth:width height:height pixelFormat:v8 exactBytesPerRows:rowsCopy minBufferCount:1 bufferCacheMode:v7];
     pool = v13->_pool;
     v13->_pool = v14;
 
@@ -106,10 +106,10 @@
   [(MOVStreamFrameConverter *)&v4 dealloc];
 }
 
-- (__CVBuffer)convertPixelBuffer:(__CVBuffer *)a3
+- (__CVBuffer)convertPixelBuffer:(__CVBuffer *)buffer
 {
-  v5 = [(MIOPixelBufferPool *)self->_pool getPixelBuffer];
-  if (!v5)
+  getPixelBuffer = [(MIOPixelBufferPool *)self->_pool getPixelBuffer];
+  if (!getPixelBuffer)
   {
     v7 = MEMORY[0x277CBEAD8];
     v8 = *MEMORY[0x277CBE648];
@@ -117,10 +117,10 @@
     goto LABEL_11;
   }
 
-  v6 = v5;
+  v6 = getPixelBuffer;
   if (!self->_transferSessionUsageDisabled)
   {
-    if (!VTPixelTransferSessionTransferImage(self->_transferSession, a3, v5))
+    if (!VTPixelTransferSessionTransferImage(self->_transferSession, buffer, getPixelBuffer))
     {
       goto LABEL_6;
     }
@@ -134,7 +134,7 @@ LABEL_11:
     objc_exception_throw(v12);
   }
 
-  if (![MIOPixelBufferUtility copyPixelBuffer:a3 toPixelBuffer:v5])
+  if (![MIOPixelBufferUtility copyPixelBuffer:buffer toPixelBuffer:getPixelBuffer])
   {
     CVPixelBufferRelease(v6);
     v7 = MEMORY[0x277CBEAD8];
@@ -144,7 +144,7 @@ LABEL_11:
   }
 
 LABEL_6:
-  v10 = CVBufferCopyAttachments(a3, kCVAttachmentMode_ShouldPropagate);
+  v10 = CVBufferCopyAttachments(buffer, kCVAttachmentMode_ShouldPropagate);
   CVBufferSetAttachments(v6, v10, kCVAttachmentMode_ShouldPropagate);
   if (v10)
   {

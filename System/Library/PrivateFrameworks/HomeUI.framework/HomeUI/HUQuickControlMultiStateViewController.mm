@@ -7,14 +7,14 @@
 - (id)createViewProfile;
 - (id)overrideStatusText;
 - (void)modelValueDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HUQuickControlMultiStateViewController
 
 - (BOOL)_useOverrideStatusText
 {
-  v2 = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  viewProfile = [(HUQuickControlSingleControlViewController *)self viewProfile];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -25,15 +25,15 @@
 {
   if ([(HUQuickControlMultiStateViewController *)self _useOverrideStatusText])
   {
-    v3 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    v4 = [v3 possibleValueSet];
+    controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+    possibleValueSet = [controlItem possibleValueSet];
 
-    v5 = [(HUQuickControlSingleControlViewController *)self modelValue];
+    modelValue = [(HUQuickControlSingleControlViewController *)self modelValue];
 
-    if (v5)
+    if (modelValue)
     {
-      v6 = [(HUQuickControlSingleControlViewController *)self modelValue];
-      v7 = [v4 displayResultsForValue:v6];
+      modelValue2 = [(HUQuickControlSingleControlViewController *)self modelValue];
+      v7 = [possibleValueSet displayResultsForValue:modelValue2];
       v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
     }
 
@@ -58,23 +58,23 @@
   [(HUQuickControlSingleControlViewController *)&v4 modelValueDidChange];
   if ([(HUQuickControlMultiStateViewController *)self _useOverrideStatusText])
   {
-    v3 = [(HUQuickControlViewController *)self delegate];
-    [v3 quickControlViewControllerDidUpdateStatusOverrides:self];
+    delegate = [(HUQuickControlViewController *)self delegate];
+    [delegate quickControlViewControllerDidUpdateStatusOverrides:self];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = HUQuickControlMultiStateViewController;
-  [(HUQuickControlSingleControlViewController *)&v13 viewWillAppear:a3];
+  [(HUQuickControlSingleControlViewController *)&v13 viewWillAppear:appear];
   if (![(HUQuickControlSingleControlViewController *)self hasSetControlSize])
   {
-    v4 = [(HUQuickControlMultiStateViewController *)self view];
-    [v4 frame];
+    view = [(HUQuickControlMultiStateViewController *)self view];
+    [view frame];
     v7 = HUViewSizeSubclassForViewSize(v5, v6);
 
-    v8 = [(HUQuickControlSingleControlViewController *)self viewProfile];
+    viewProfile = [(HUQuickControlSingleControlViewController *)self viewProfile];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -85,7 +85,7 @@
 
     else
     {
-      v11 = [(HUQuickControlSingleControlViewController *)self viewProfile];
+      viewProfile2 = [(HUQuickControlSingleControlViewController *)self viewProfile];
       objc_opt_class();
       v12 = objc_opt_isKindOfClass();
 
@@ -103,7 +103,7 @@
 
 - (id)createInteractionCoordinator
 {
-  v4 = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  viewProfile = [(HUQuickControlSingleControlViewController *)self viewProfile];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -112,16 +112,16 @@
     v6 = HUQuickControlStepperView;
 LABEL_7:
     v11 = [v6 alloc];
-    v12 = [(HUQuickControlSingleControlViewController *)self viewProfile];
-    v13 = [v11 initWithProfile:v12];
+    viewProfile2 = [(HUQuickControlSingleControlViewController *)self viewProfile];
+    currentHandler = [v11 initWithProfile:viewProfile2];
 
     v14 = HUQuickControlSimpleInteractionCoordinator;
 LABEL_8:
-    v15 = [[v14 alloc] initWithControlView:v13 delegate:self];
+    v15 = [[v14 alloc] initWithControlView:currentHandler delegate:self];
     goto LABEL_9;
   }
 
-  v7 = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  viewProfile3 = [(HUQuickControlSingleControlViewController *)self viewProfile];
   objc_opt_class();
   v8 = objc_opt_isKindOfClass();
 
@@ -131,7 +131,7 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v9 = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  viewProfile4 = [(HUQuickControlSingleControlViewController *)self viewProfile];
   objc_opt_class();
   v10 = objc_opt_isKindOfClass();
 
@@ -141,23 +141,23 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v17 = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  viewProfile5 = [(HUQuickControlSingleControlViewController *)self viewProfile];
   objc_opt_class();
   v18 = objc_opt_isKindOfClass();
 
   if (v18)
   {
     v19 = [HUQuickControlSwitchView alloc];
-    v20 = [(HUQuickControlSingleControlViewController *)self viewProfile];
-    v13 = [(HUQuickControlSwitchView *)v19 initWithProfile:v20];
+    viewProfile6 = [(HUQuickControlSingleControlViewController *)self viewProfile];
+    currentHandler = [(HUQuickControlSwitchView *)v19 initWithProfile:viewProfile6];
 
     v14 = HUQuickControlElasticSliderInteractionCoordinator;
     goto LABEL_8;
   }
 
-  v13 = [MEMORY[0x277CCA890] currentHandler];
-  v21 = [(HUQuickControlSingleControlViewController *)self viewProfile];
-  [(HUQuickControlSwitchView *)v13 handleFailureInMethod:a2 object:self file:@"HUQuickControlMultiStateViewController.m" lineNumber:91 description:@"Unknown view profile class %@", v21];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  viewProfile7 = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  [(HUQuickControlSwitchView *)currentHandler handleFailureInMethod:a2 object:self file:@"HUQuickControlMultiStateViewController.m" lineNumber:91 description:@"Unknown view profile class %@", viewProfile7];
 
   v15 = 0;
 LABEL_9:
@@ -167,16 +167,16 @@ LABEL_9:
 
 - (id)createViewProfile
 {
-  v3 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v4 = [v3 possibleValueSet];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  possibleValueSet = [controlItem possibleValueSet];
 
-  v5 = [v4 allValues];
-  v6 = [v5 count];
+  allValues = [possibleValueSet allValues];
+  v6 = [allValues count];
 
   if (v6 == 2)
   {
-    v7 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    v8 = [HUQuickControlUtilities shouldDisplayQuickControlAsPushButton:v7 preferredControl:[(HUQuickControlViewController *)self preferredControl]];
+    controlItem2 = [(HUQuickControlSingleControlViewController *)self controlItem];
+    v8 = [HUQuickControlUtilities shouldDisplayQuickControlAsPushButton:controlItem2 preferredControl:[(HUQuickControlViewController *)self preferredControl]];
 
     if (v8)
     {
@@ -200,17 +200,17 @@ LABEL_9:
   {
     v9 = objc_alloc_init(HUQuickControlStepperViewProfile);
     [(HUQuickControlPushButtonViewProfile *)v9 setStepperBehavior:0];
-    v10 = [v4 allValues];
-    -[HUQuickControlPushButtonViewProfile setNumberOfSegments:](v9, "setNumberOfSegments:", [v10 count]);
+    allValues2 = [possibleValueSet allValues];
+    -[HUQuickControlPushButtonViewProfile setNumberOfSegments:](v9, "setNumberOfSegments:", [allValues2 count]);
 
     [(HUQuickControlPushButtonViewProfile *)v9 setShowSegmentTitles:1];
-    v11 = [v4 sortedValues];
+    sortedValues = [possibleValueSet sortedValues];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __59__HUQuickControlMultiStateViewController_createViewProfile__block_invoke;
     v14[3] = &unk_277DC4E98;
-    v15 = v4;
-    v12 = [v11 na_map:v14];
+    v15 = possibleValueSet;
+    v12 = [sortedValues na_map:v14];
     [(HUQuickControlPushButtonViewProfile *)v9 setSegmentTitles:v12];
 
     [(HUQuickControlPushButtonViewProfile *)v9 setStepperStyle:0];
@@ -230,20 +230,20 @@ id __59__HUQuickControlMultiStateViewController_createViewProfile__block_invoke(
 
 - (BOOL)_isCharacteristicTypeRotationDirection
 {
-  v2 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v3 = [v2 characteristicOptions];
-  v4 = [v3 characteristicTypesForUsage:0];
-  v5 = [v4 allObjects];
-  v6 = [v5 firstObject];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  characteristicOptions = [controlItem characteristicOptions];
+  v4 = [characteristicOptions characteristicTypesForUsage:0];
+  allObjects = [v4 allObjects];
+  firstObject = [allObjects firstObject];
 
-  LOBYTE(v2) = [v6 isEqualToString:*MEMORY[0x277CCFA18]];
-  return v2;
+  LOBYTE(controlItem) = [firstObject isEqualToString:*MEMORY[0x277CCFA18]];
+  return controlItem;
 }
 
 - (id)controlToViewValueTransformer
 {
-  v3 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v4 = [v3 possibleValueSet];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  possibleValueSet = [controlItem possibleValueSet];
 
   v5 = MEMORY[0x277D14CF0];
   v6 = objc_opt_class();
@@ -251,8 +251,8 @@ id __59__HUQuickControlMultiStateViewController_createViewProfile__block_invoke(
   v12[1] = 3221225472;
   v12[2] = __71__HUQuickControlMultiStateViewController_controlToViewValueTransformer__block_invoke;
   v12[3] = &unk_277DC4EC0;
-  v13 = v4;
-  v14 = self;
+  v13 = possibleValueSet;
+  selfCopy = self;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71__HUQuickControlMultiStateViewController_controlToViewValueTransformer__block_invoke_2;
@@ -394,17 +394,17 @@ LABEL_8:
 
 - (BOOL)_shouldUseWheelPickerView
 {
-  v2 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v3 = [v2 multiStateCharacteristicType];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  multiStateCharacteristicType = [controlItem multiStateCharacteristicType];
 
-  if ([v3 isEqualToString:*MEMORY[0x277CCFB20]])
+  if ([multiStateCharacteristicType isEqualToString:*MEMORY[0x277CCFB20]])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x277CCFB18]];
+    v4 = [multiStateCharacteristicType isEqualToString:*MEMORY[0x277CCFB18]];
   }
 
   return v4;

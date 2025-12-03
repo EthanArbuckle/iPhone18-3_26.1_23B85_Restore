@@ -1,13 +1,13 @@
 @interface _MLCGPUUpsample
-- (_MLCGPUUpsample)initWithDevice:(id)a3 scaleFactorX:(float)a4 scaleFactorY:(float)a5 sampleMode:(int)a6 alignCorners:(BOOL)a7;
+- (_MLCGPUUpsample)initWithDevice:(id)device scaleFactorX:(float)x scaleFactorY:(float)y sampleMode:(int)mode alignCorners:(BOOL)corners;
 @end
 
 @implementation _MLCGPUUpsample
 
-- (_MLCGPUUpsample)initWithDevice:(id)a3 scaleFactorX:(float)a4 scaleFactorY:(float)a5 sampleMode:(int)a6 alignCorners:(BOOL)a7
+- (_MLCGPUUpsample)initWithDevice:(id)device scaleFactorX:(float)x scaleFactorY:(float)y sampleMode:(int)mode alignCorners:(BOOL)corners
 {
-  v42 = a7;
-  v11 = a3;
+  cornersCopy = corners;
+  deviceCopy = device;
   v46.receiver = self;
   v46.super_class = _MLCGPUUpsample;
   v12 = [(_MLCGPUUpsample *)&v46 init];
@@ -15,21 +15,21 @@
   if (v12)
   {
     v40 = v12;
-    v14 = [v11 deviceList];
-    v15 = [v14 count];
+    deviceList = [deviceCopy deviceList];
+    v15 = [deviceList count];
 
     v43 = [MEMORY[0x277CBEBF8] mutableCopy];
     if (v15)
     {
       v16 = 0;
       v17 = @"resize_nearest_forward";
-      if (a4 == 2.0 && a5 == 2.0)
+      if (x == 2.0 && y == 2.0)
       {
         v17 = @"resize_nearest2x2_forward";
       }
 
-      v41 = a6 == 0;
-      if (a6)
+      v41 = mode == 0;
+      if (mode)
       {
         v18 = @"resize_bilinear_forward";
       }
@@ -39,7 +39,7 @@
         v18 = v17;
       }
 
-      if (a6)
+      if (mode)
       {
         v19 = @"resize_bilinear_gradient";
       }
@@ -49,18 +49,18 @@
         v19 = @"resize_nearest_gradient";
       }
 
-      v44 = v11;
+      v44 = deviceCopy;
       do
       {
-        v20 = [v11 deviceList];
-        v21 = [v20 objectAtIndexedSubscript:v16];
+        deviceList2 = [deviceCopy deviceList];
+        v21 = [deviceList2 objectAtIndexedSubscript:v16];
 
-        v22 = [v11 gpuLibrary];
-        v23 = [v22 objectAtIndexedSubscript:v16];
+        gpuLibrary = [deviceCopy gpuLibrary];
+        v23 = [gpuLibrary objectAtIndexedSubscript:v16];
         v24 = [v23 newFunctionWithName:v18];
 
-        v25 = [v11 gpuLibrary];
-        v26 = [v25 objectAtIndexedSubscript:v16];
+        gpuLibrary2 = [deviceCopy gpuLibrary];
+        v26 = [gpuLibrary2 objectAtIndexedSubscript:v16];
         v27 = [v26 newFunctionWithName:v19];
 
         v28 = [v21 newComputePipelineStateWithFunction:v24 error:0];
@@ -77,12 +77,12 @@
           {
             [v34 setIsMPSKernel:0];
             [v35 setMetalKernelType:10];
-            *&v36 = a4;
+            *&v36 = x;
             [v35 setScaleFactorX:v36];
-            *&v37 = a5;
+            *&v37 = y;
             [v35 setScaleFactorY:v37];
-            [v35 setAlignCorners:v42];
-            [v35 setIsSpecialCasedNearestForwardKernel:v41 & (a4 == 2.0 && a5 == 2.0)];
+            [v35 setAlignCorners:cornersCopy];
+            [v35 setIsSpecialCasedNearestForwardKernel:v41 & (x == 2.0 && y == 2.0)];
             [v35 setSourceOfForwardNeededForGradient:0];
             [v35 setResultOfForwardNeededForGradient:0];
             [v43 addObject:v35];
@@ -91,7 +91,7 @@
           v15 = v33;
           v18 = v32;
           v19 = v31;
-          v11 = v44;
+          deviceCopy = v44;
         }
 
         ++v16;

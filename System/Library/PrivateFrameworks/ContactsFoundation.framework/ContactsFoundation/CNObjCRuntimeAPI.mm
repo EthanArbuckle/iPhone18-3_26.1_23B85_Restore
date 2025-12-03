@@ -1,16 +1,16 @@
 @interface CNObjCRuntimeAPI
-+ (void)enumerateMethodsOfClass:(Class)a3 withBlock:(id)a4;
++ (void)enumerateMethodsOfClass:(Class)class withBlock:(id)block;
 @end
 
 @implementation CNObjCRuntimeAPI
 
-+ (void)enumerateMethodsOfClass:(Class)a3 withBlock:(id)a4
++ (void)enumerateMethodsOfClass:(Class)class withBlock:(id)block
 {
-  v5 = a4;
-  if (a3)
+  blockCopy = block;
+  if (class)
   {
     outCount = 0;
-    v6 = class_copyMethodList(a3, &outCount);
+    v6 = class_copyMethodList(class, &outCount);
     if (outCount)
     {
         ;

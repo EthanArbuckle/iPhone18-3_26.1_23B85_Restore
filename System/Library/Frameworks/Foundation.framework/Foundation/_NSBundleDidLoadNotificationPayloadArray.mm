@@ -1,6 +1,6 @@
 @interface _NSBundleDidLoadNotificationPayloadArray
-- (_NSBundleDidLoadNotificationPayloadArray)initWithHeader:(const mach_header *)a3;
-- (id)objectAtIndex:(unint64_t)a3;
+- (_NSBundleDidLoadNotificationPayloadArray)initWithHeader:(const mach_header *)header;
+- (id)objectAtIndex:(unint64_t)index;
 - (unint64_t)count;
 - (void)_generateStorageLocked;
 - (void)dealloc;
@@ -8,14 +8,14 @@
 
 @implementation _NSBundleDidLoadNotificationPayloadArray
 
-- (_NSBundleDidLoadNotificationPayloadArray)initWithHeader:(const mach_header *)a3
+- (_NSBundleDidLoadNotificationPayloadArray)initWithHeader:(const mach_header *)header
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = _NSBundleDidLoadNotificationPayloadArray;
   result = [(_NSBundleDidLoadNotificationPayloadArray *)&v5 init];
   result->_lock._os_unfair_lock_opaque = 0;
-  result->_libraryHeader = a3;
+  result->_libraryHeader = header;
   return result;
 }
 
@@ -51,7 +51,7 @@
   return v4;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   os_unfair_lock_lock(&self->_lock);
   storage = self->_storage;
@@ -61,7 +61,7 @@
     storage = self->_storage;
   }
 
-  v6 = [(NSArray *)storage objectAtIndex:a3];
+  v6 = [(NSArray *)storage objectAtIndex:index];
   os_unfair_lock_unlock(&self->_lock);
   return v6;
 }

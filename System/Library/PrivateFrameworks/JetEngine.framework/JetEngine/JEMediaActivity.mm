@@ -1,14 +1,14 @@
 @interface JEMediaActivity
 - (JEMediaActivity)init;
-- (JEMediaActivity)initWithType:(int64_t)a3 playlistItem:(id)a4 pipeline:(id)a5 topic:(id)a6;
+- (JEMediaActivity)initWithType:(int64_t)type playlistItem:(id)item pipeline:(id)pipeline topic:(id)topic;
 - (JEMediaPlaylistItem)playlistItem;
 - (id)eventDataForTransitioningEvents;
 - (id)startMetricsFields;
 - (id)stopMetricsFields;
 - (int64_t)type;
-- (unint64_t)positionWithOverallPosition:(unint64_t)a3;
-- (void)setPlaylistItem:(id)a3;
-- (void)setType:(int64_t)a3;
+- (unint64_t)positionWithOverallPosition:(unint64_t)position;
+- (void)setPlaylistItem:(id)item;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation JEMediaActivity
@@ -20,11 +20,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   v5 = OBJC_IVAR___JEMediaActivity_type;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = type;
 }
 
 - (JEMediaPlaylistItem)playlistItem
@@ -35,37 +35,37 @@
   return v2;
 }
 
-- (void)setPlaylistItem:(id)a3
+- (void)setPlaylistItem:(id)item
 {
   v5 = OBJC_IVAR___JEMediaActivity_playlistItem;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = item;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
-- (JEMediaActivity)initWithType:(int64_t)a3 playlistItem:(id)a4 pipeline:(id)a5 topic:(id)a6
+- (JEMediaActivity)initWithType:(int64_t)type playlistItem:(id)item pipeline:(id)pipeline topic:(id)topic
 {
   v10 = sub_1AB460544();
   v12 = v11;
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v13 = a5;
+  pipelineCopy = pipeline;
 
-  return sub_1AB2D56A4(a3, a4, v13, v10, v12, self);
+  return sub_1AB2D56A4(type, item, pipelineCopy, v10, v12, self);
 }
 
-- (unint64_t)positionWithOverallPosition:(unint64_t)a3
+- (unint64_t)positionWithOverallPosition:(unint64_t)position
 {
-  v4 = self;
-  v5 = sub_1AB2D3B88(a3);
+  selfCopy = self;
+  v5 = sub_1AB2D3B88(position);
 
   return v5;
 }
 
 - (id)eventDataForTransitioningEvents
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AB2D464C(v11);
 
   v3 = v12;

@@ -9,11 +9,11 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC18ActivityUIServices28ActivityCancelTouchAssertion_isInvalidated);
-  v3 = self;
-  v4 = v3;
+  selfCopy = self;
+  v4 = selfCopy;
   if ((v2 & 1) == 0)
   {
-    [(ActivityCancelTouchAssertion *)v3 invalidate];
+    [(ActivityCancelTouchAssertion *)selfCopy invalidate];
   }
 
   v5.receiver = v4;
@@ -30,7 +30,7 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_18E628780();
 }
 

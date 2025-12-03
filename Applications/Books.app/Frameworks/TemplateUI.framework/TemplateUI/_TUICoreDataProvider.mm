@@ -1,86 +1,86 @@
 @interface _TUICoreDataProvider
 - (TUIDynamicArray)limitedArray;
 - (TUIMutableDynamicArray)rootArray;
-- (_TUICoreDataProvider)initWithFetchRequest:(id)a3 managedObjectContext:(id)a4;
+- (_TUICoreDataProvider)initWithFetchRequest:(id)request managedObjectContext:(id)context;
 - (id)_startObserving;
-- (void)_contextDidMergeChanges:(id)a3;
-- (void)_contextDidSave:(id)a3;
-- (void)_updatePredicate:(id)a3;
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
-- (void)controllerWillChangeContent:(id)a3;
-- (void)fetchDataForIndexes:(id)a3 generation:(id)a4 block:(id)a5;
-- (void)fetchDataForRange:(_NSRange)a3 generation:(id)a4 block:(id)a5;
+- (void)_contextDidMergeChanges:(id)changes;
+- (void)_contextDidSave:(id)save;
+- (void)_updatePredicate:(id)predicate;
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
+- (void)controllerWillChangeContent:(id)content;
+- (void)fetchDataForIndexes:(id)indexes generation:(id)generation block:(id)block;
+- (void)fetchDataForRange:(_NSRange)range generation:(id)generation block:(id)block;
 @end
 
 @implementation _TUICoreDataProvider
 
-- (_TUICoreDataProvider)initWithFetchRequest:(id)a3 managedObjectContext:(id)a4
+- (_TUICoreDataProvider)initWithFetchRequest:(id)request managedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = _TUICoreDataProvider;
   v8 = [(_TUICoreDataProvider *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [requestCopy copy];
 
-    v10 = [v9 fetchLimit];
-    v8->_fetchLimit = v10;
-    if (v10)
+    fetchLimit = [v9 fetchLimit];
+    v8->_fetchLimit = fetchLimit;
+    if (fetchLimit)
     {
       [v9 setFetchLimit:0];
       [v9 setFetchBatchSize:v8->_fetchLimit];
     }
 
-    v11 = [[NSFetchedResultsController alloc] initWithFetchRequest:v9 managedObjectContext:v7 sectionNameKeyPath:0 cacheName:0];
+    v11 = [[NSFetchedResultsController alloc] initWithFetchRequest:v9 managedObjectContext:contextCopy sectionNameKeyPath:0 cacheName:0];
     controller = v8->_controller;
     v8->_controller = v11;
 
     [(NSFetchedResultsController *)v8->_controller setDelegate:v8];
     v13 = +[NSNotificationCenter defaultCenter];
-    v14 = [(NSFetchedResultsController *)v8->_controller managedObjectContext];
-    [v13 addObserver:v8 selector:"_contextDidSave:" name:NSManagedObjectContextDidSaveNotification object:v14];
+    managedObjectContext = [(NSFetchedResultsController *)v8->_controller managedObjectContext];
+    [v13 addObserver:v8 selector:"_contextDidSave:" name:NSManagedObjectContextDidSaveNotification object:managedObjectContext];
 
     v15 = +[NSNotificationCenter defaultCenter];
-    v16 = [(NSFetchedResultsController *)v8->_controller managedObjectContext];
-    [v15 addObserver:v8 selector:"_contextDidMergeChanges:" name:NSManagedObjectContextDidMergeChangesObjectIDsNotification object:v16];
+    managedObjectContext2 = [(NSFetchedResultsController *)v8->_controller managedObjectContext];
+    [v15 addObserver:v8 selector:"_contextDidMergeChanges:" name:NSManagedObjectContextDidMergeChangesObjectIDsNotification object:managedObjectContext2];
   }
 
   else
   {
-    v9 = v6;
+    v9 = requestCopy;
   }
 
   return v8;
 }
 
-- (void)fetchDataForRange:(_NSRange)a3 generation:(id)a4 block:(id)a5
+- (void)fetchDataForRange:(_NSRange)range generation:(id)generation block:(id)block
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_32A04;
   v9[3] = &unk_25EAC8;
-  v10 = a5;
+  blockCopy = block;
   v11 = location;
   v12 = length;
-  v8 = v10;
-  [a4 performBlockAndWait:v9];
+  v8 = blockCopy;
+  [generation performBlockAndWait:v9];
 }
 
-- (void)fetchDataForIndexes:(id)a3 generation:(id)a4 block:(id)a5
+- (void)fetchDataForIndexes:(id)indexes generation:(id)generation block:(id)block
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_32BF8;
   v9[3] = &unk_25EAF0;
-  v10 = a3;
-  v11 = a5;
-  v7 = v10;
-  v8 = v11;
-  [a4 performBlockAndWait:v9];
+  indexesCopy = indexes;
+  blockCopy = block;
+  v7 = indexesCopy;
+  v8 = blockCopy;
+  [generation performBlockAndWait:v9];
 }
 
 - (id)_startObserving
@@ -107,18 +107,18 @@
   return v4;
 }
 
-- (void)_updatePredicate:(id)a3
+- (void)_updatePredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [(NSFetchedResultsController *)self->_controller fetchRequest];
-  v6 = [v5 copy];
+  predicateCopy = predicate;
+  fetchRequest = [(NSFetchedResultsController *)self->_controller fetchRequest];
+  v6 = [fetchRequest copy];
 
   [v6 setFetchBatchSize:0];
   [v6 setFetchLimit:self->_fetchLimit];
   [v6 setResultType:1];
   v7 = [v6 copy];
-  [v7 setPredicate:v4];
-  v8 = [(NSFetchedResultsController *)self->_controller managedObjectContext];
+  [v7 setPredicate:predicateCopy];
+  managedObjectContext = [(NSFetchedResultsController *)self->_controller managedObjectContext];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_33120;
@@ -126,19 +126,19 @@
   v12[4] = self;
   v13 = v6;
   v14 = v7;
-  v15 = v4;
-  v9 = v4;
+  v15 = predicateCopy;
+  v9 = predicateCopy;
   v10 = v7;
   v11 = v6;
-  [v8 performBlockAndWait:v12];
+  [managedObjectContext performBlockAndWait:v12];
 }
 
-- (void)controllerWillChangeContent:(id)a3
+- (void)controllerWillChangeContent:(id)content
 {
   v4 = [_TUICoreDataGeneration alloc];
-  v5 = [(NSFetchedResultsController *)self->_controller managedObjectContext];
-  v6 = [(NSFetchedResultsController *)self->_controller fetchRequest];
-  v7 = [(_TUICoreDataGeneration *)v4 initWithContext:v5 fetchRequest:v6];
+  managedObjectContext = [(NSFetchedResultsController *)self->_controller managedObjectContext];
+  fetchRequest = [(NSFetchedResultsController *)self->_controller fetchRequest];
+  v7 = [(_TUICoreDataGeneration *)v4 initWithContext:managedObjectContext fetchRequest:fetchRequest];
   captureGeneration = self->_captureGeneration;
   self->_captureGeneration = v7;
 
@@ -151,17 +151,17 @@
   [WeakRetained _beginBatchUpdatesWithTransaction:self->_transaction generation:self->_captureGeneration];
 }
 
-- (void)_contextDidSave:(id)a3
+- (void)_contextDidSave:(id)save
 {
   captureGeneration = self->_captureGeneration;
   if (captureGeneration)
   {
-    v5 = [(NSFetchedResultsController *)self->_controller fetchedObjects];
-    -[_TUICoreDataGeneration updateCount:](captureGeneration, "updateCount:", [v5 count]);
+    fetchedObjects = [(NSFetchedResultsController *)self->_controller fetchedObjects];
+    -[_TUICoreDataGeneration updateCount:](captureGeneration, "updateCount:", [fetchedObjects count]);
 
     v6 = self->_captureGeneration;
-    v7 = [(NSFetchedResultsController *)self->_controller managedObjectContext];
-    [(_TUICoreDataGeneration *)v6 captureTokenFromContext:v7];
+    managedObjectContext = [(NSFetchedResultsController *)self->_controller managedObjectContext];
+    [(_TUICoreDataGeneration *)v6 captureTokenFromContext:managedObjectContext];
 
     v8 = self->_captureGeneration;
     self->_captureGeneration = 0;
@@ -175,17 +175,17 @@
   }
 }
 
-- (void)_contextDidMergeChanges:(id)a3
+- (void)_contextDidMergeChanges:(id)changes
 {
   captureGeneration = self->_captureGeneration;
   if (captureGeneration)
   {
-    v5 = [(NSFetchedResultsController *)self->_controller fetchedObjects];
-    -[_TUICoreDataGeneration updateCount:](captureGeneration, "updateCount:", [v5 count]);
+    fetchedObjects = [(NSFetchedResultsController *)self->_controller fetchedObjects];
+    -[_TUICoreDataGeneration updateCount:](captureGeneration, "updateCount:", [fetchedObjects count]);
 
     v6 = self->_captureGeneration;
-    v7 = [(NSFetchedResultsController *)self->_controller managedObjectContext];
-    [(_TUICoreDataGeneration *)v6 captureTokenFromContext:v7];
+    managedObjectContext = [(NSFetchedResultsController *)self->_controller managedObjectContext];
+    [(_TUICoreDataGeneration *)v6 captureTokenFromContext:managedObjectContext];
 
     v8 = self->_captureGeneration;
     self->_captureGeneration = 0;
@@ -199,47 +199,47 @@
   }
 }
 
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v16 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (a6 > 2)
+  controllerCopy = controller;
+  objectCopy = object;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  if (type > 2)
   {
-    if (a6 == 3)
+    if (type == 3)
     {
       WeakRetained = objc_loadWeakRetained(&self->_rootArray);
-      [WeakRetained moveItemFromIndex:objc_msgSend(v13 toIndex:{"tui_row"), objc_msgSend(v14, "tui_row")}];
+      [WeakRetained moveItemFromIndex:objc_msgSend(pathCopy toIndex:{"tui_row"), objc_msgSend(indexPathCopy, "tui_row")}];
     }
 
     else
     {
-      if (a6 != 4)
+      if (type != 4)
       {
         goto LABEL_11;
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_rootArray);
-      [WeakRetained updateItemAtIndex:{objc_msgSend(v13, "tui_row")}];
+      [WeakRetained updateItemAtIndex:{objc_msgSend(pathCopy, "tui_row")}];
     }
   }
 
-  else if (a6 == 1)
+  else if (type == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_rootArray);
-    [WeakRetained insertItemAtIndex:{objc_msgSend(v14, "tui_row")}];
+    [WeakRetained insertItemAtIndex:{objc_msgSend(indexPathCopy, "tui_row")}];
   }
 
   else
   {
-    if (a6 != 2)
+    if (type != 2)
     {
       goto LABEL_11;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_rootArray);
-    [WeakRetained deleteItemAtIndex:{objc_msgSend(v13, "tui_row")}];
+    [WeakRetained deleteItemAtIndex:{objc_msgSend(pathCopy, "tui_row")}];
   }
 
 LABEL_11:

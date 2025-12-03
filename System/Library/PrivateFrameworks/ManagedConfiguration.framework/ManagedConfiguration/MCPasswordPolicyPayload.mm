@@ -1,6 +1,6 @@
 @interface MCPasswordPolicyPayload
-- (MCPasswordPolicyPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
-- (id)filterForUserEnrollmentOutError:(id *)a3;
+- (MCPasswordPolicyPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
+- (id)filterForUserEnrollmentOutError:(id *)error;
 - (id)payloadDescriptionKeyValueSections;
 - (id)restrictions;
 - (id)stubDictionary;
@@ -10,20 +10,20 @@
 
 @implementation MCPasswordPolicyPayload
 
-- (MCPasswordPolicyPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCPasswordPolicyPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v90 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v85.receiver = self;
   v85.super_class = MCPasswordPolicyPayload;
-  v9 = [(MCPayload *)&v85 initWithDictionary:v8 profile:a4 outError:a5];
+  v9 = [(MCPayload *)&v85 initWithDictionary:dictionaryCopy profile:profile outError:error];
   if (!v9)
   {
     goto LABEL_54;
   }
 
   v84 = 0;
-  v10 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"allowSimple" isRequired:0 outError:&v84];
+  v10 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"allowSimple" isRequired:0 outError:&v84];
   v11 = v84;
   isSimplePasscodeAllowed = v9->_isSimplePasscodeAllowed;
   v9->_isSimplePasscodeAllowed = v10;
@@ -34,7 +34,7 @@
   }
 
   v83 = 0;
-  v13 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"forcePIN" isRequired:0 outError:&v83];
+  v13 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"forcePIN" isRequired:0 outError:&v83];
   v11 = v83;
   isPasscodeRequired = v9->_isPasscodeRequired;
   v9->_isPasscodeRequired = v13;
@@ -45,7 +45,7 @@
   }
 
   v82 = 0;
-  v15 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"requireAlphanumeric" isRequired:0 outError:&v82];
+  v15 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"requireAlphanumeric" isRequired:0 outError:&v82];
   v11 = v82;
   isAlphanumericPasscodeRequired = v9->_isAlphanumericPasscodeRequired;
   v9->_isAlphanumericPasscodeRequired = v15;
@@ -56,7 +56,7 @@
   }
 
   v81 = 0;
-  v17 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"manualFetchingWhenRoaming" isRequired:0 outError:&v81];
+  v17 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"manualFetchingWhenRoaming" isRequired:0 outError:&v81];
   v11 = v81;
   isManualFetchingWhenRoaming = v9->_isManualFetchingWhenRoaming;
   v9->_isManualFetchingWhenRoaming = v17;
@@ -67,7 +67,7 @@
   }
 
   v80 = 0;
-  v19 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"minLength" isRequired:0 outError:&v80];
+  v19 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"minLength" isRequired:0 outError:&v80];
   v11 = v80;
   minLength = v9->_minLength;
   v9->_minLength = v19;
@@ -80,9 +80,9 @@
   v21 = v9->_minLength;
   if (v21)
   {
-    v22 = [(NSNumber *)v21 intValue];
+    intValue = [(NSNumber *)v21 intValue];
     v23 = v9->_minLength;
-    if (v22 < 0)
+    if (intValue < 0)
     {
       v24 = &unk_1F1AA54D0;
     }
@@ -103,7 +103,7 @@
 
 LABEL_13:
   v79 = 0;
-  v25 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"maxFailedAttempts" isRequired:0 outError:&v79];
+  v25 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"maxFailedAttempts" isRequired:0 outError:&v79];
   v11 = v79;
   maxFailedAttempts = v9->_maxFailedAttempts;
   v9->_maxFailedAttempts = v25;
@@ -113,10 +113,10 @@ LABEL_13:
 LABEL_49:
     v57 = [(MCPayload *)v9 malformedPayloadErrorWithError:v11];
     v58 = v57;
-    if (a5)
+    if (error)
     {
       v59 = v57;
-      *a5 = v58;
+      *error = v58;
     }
 
     v60 = _MCLogObjects;
@@ -125,11 +125,11 @@ LABEL_49:
       v61 = v60;
       v62 = objc_opt_class();
       v63 = v62;
-      v64 = [v58 MCVerboseDescription];
+      mCVerboseDescription = [v58 MCVerboseDescription];
       *buf = 138543618;
       v87 = v62;
       v88 = 2114;
-      v89 = v64;
+      v89 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v61, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
     }
 
@@ -140,9 +140,9 @@ LABEL_49:
   v27 = v9->_maxFailedAttempts;
   if (v27)
   {
-    v28 = [(NSNumber *)v27 intValue];
+    intValue2 = [(NSNumber *)v27 intValue];
     v29 = v9->_maxFailedAttempts;
-    if (v28 >= 2)
+    if (intValue2 >= 2)
     {
       if ([(NSNumber *)v29 intValue]< 12)
       {
@@ -163,7 +163,7 @@ LABEL_49:
 
 LABEL_20:
   v78 = 0;
-  v31 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"maxGracePeriod" isRequired:0 outError:&v78];
+  v31 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"maxGracePeriod" isRequired:0 outError:&v78];
   v11 = v78;
   maxGracePeriodMinutes = v9->_maxGracePeriodMinutes;
   v9->_maxGracePeriodMinutes = v31;
@@ -179,9 +179,9 @@ LABEL_20:
     goto LABEL_27;
   }
 
-  v34 = [(NSNumber *)v33 intValue];
+  intValue3 = [(NSNumber *)v33 intValue];
   v35 = v9->_maxGracePeriodMinutes;
-  if (v34 < 0)
+  if (intValue3 < 0)
   {
     v36 = &unk_1F1AA54D0;
   }
@@ -201,7 +201,7 @@ LABEL_20:
 
 LABEL_27:
   v77 = 0;
-  v37 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"maxInactivity" isRequired:0 outError:&v77];
+  v37 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"maxInactivity" isRequired:0 outError:&v77];
   v11 = v77;
   maxInactivityMinutes = v9->_maxInactivityMinutes;
   v9->_maxInactivityMinutes = v37;
@@ -217,9 +217,9 @@ LABEL_27:
     goto LABEL_34;
   }
 
-  v40 = [(NSNumber *)v39 intValue];
+  intValue4 = [(NSNumber *)v39 intValue];
   v41 = v9->_maxInactivityMinutes;
-  if (v40 < 0)
+  if (intValue4 < 0)
   {
     v42 = &unk_1F1AA54D0;
   }
@@ -239,7 +239,7 @@ LABEL_27:
 
 LABEL_34:
   v76 = 0;
-  v43 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"maxPINAgeInDays" isRequired:0 outError:&v76];
+  v43 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"maxPINAgeInDays" isRequired:0 outError:&v76];
   v11 = v76;
   maxPasscodeAgeDays = v9->_maxPasscodeAgeDays;
   v9->_maxPasscodeAgeDays = v43;
@@ -255,9 +255,9 @@ LABEL_34:
     goto LABEL_41;
   }
 
-  v46 = [(NSNumber *)v45 intValue];
+  intValue5 = [(NSNumber *)v45 intValue];
   v47 = v9->_maxPasscodeAgeDays;
-  if (v46 < 1)
+  if (intValue5 < 1)
   {
     v48 = &unk_1F1AA5560;
   }
@@ -277,7 +277,7 @@ LABEL_34:
 
 LABEL_41:
   v75 = 0;
-  v49 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"pinHistory" isRequired:0 outError:&v75];
+  v49 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"pinHistory" isRequired:0 outError:&v75];
   v11 = v75;
   passcodeHistoryCount = v9->_passcodeHistoryCount;
   v9->_passcodeHistoryCount = v49;
@@ -293,9 +293,9 @@ LABEL_41:
     goto LABEL_48;
   }
 
-  v52 = [(NSNumber *)v51 intValue];
+  intValue6 = [(NSNumber *)v51 intValue];
   v53 = v9->_passcodeHistoryCount;
-  if (v52 < 1)
+  if (intValue6 < 1)
   {
     v54 = &unk_1F1AA5560;
   }
@@ -315,7 +315,7 @@ LABEL_41:
 
 LABEL_48:
   v74 = 0;
-  v55 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"minComplexChars" isRequired:0 outError:&v74];
+  v55 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"minComplexChars" isRequired:0 outError:&v74];
   v11 = v74;
   minComplexCharacters = v9->_minComplexCharacters;
   v9->_minComplexCharacters = v55;
@@ -328,9 +328,9 @@ LABEL_48:
   v67 = v9->_minComplexCharacters;
   if (v67)
   {
-    v68 = [(NSNumber *)v67 intValue];
+    intValue7 = [(NSNumber *)v67 intValue];
     v69 = v9->_minComplexCharacters;
-    if (v68 < 0)
+    if (intValue7 < 0)
     {
       v70 = &unk_1F1AA54D0;
       goto LABEL_60;
@@ -345,17 +345,17 @@ LABEL_60:
     }
   }
 
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v71 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v72 = v71;
-      v73 = [(MCPayload *)v9 friendlyName];
+      friendlyName = [(MCPayload *)v9 friendlyName];
       *buf = 138543618;
-      v87 = v73;
+      v87 = friendlyName;
       v88 = 2114;
-      v89 = v8;
+      v89 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v72, OS_LOG_TYPE_INFO, "Payload “%{public}@” has fields that we are ignoring. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -370,20 +370,20 @@ LABEL_54:
 {
   v5.receiver = self;
   v5.super_class = MCPasswordPolicyPayload;
-  v3 = [(MCPayload *)&v5 stubDictionary];
-  [v3 MCSetObjectIfNotNil:self->_isSimplePasscodeAllowed forKey:@"allowSimple"];
-  [v3 MCSetObjectIfNotNil:self->_isPasscodeRequired forKey:@"forcePIN"];
-  [v3 MCSetObjectIfNotNil:self->_isAlphanumericPasscodeRequired forKey:@"requireAlphanumeric"];
-  [v3 MCSetObjectIfNotNil:self->_isManualFetchingWhenRoaming forKey:@"manualFetchingWhenRoaming"];
-  [v3 MCSetObjectIfNotNil:self->_minLength forKey:@"minLength"];
-  [v3 MCSetObjectIfNotNil:self->_maxFailedAttempts forKey:@"maxFailedAttempts"];
-  [v3 MCSetObjectIfNotNil:self->_maxGracePeriodMinutes forKey:@"maxGracePeriod"];
-  [v3 MCSetObjectIfNotNil:self->_maxInactivityMinutes forKey:@"maxInactivity"];
-  [v3 MCSetObjectIfNotNil:self->_maxPasscodeAgeDays forKey:@"maxPINAgeInDays"];
-  [v3 MCSetObjectIfNotNil:self->_passcodeHistoryCount forKey:@"pinHistory"];
-  [v3 MCSetObjectIfNotNil:self->_minComplexCharacters forKey:@"minComplexChars"];
+  stubDictionary = [(MCPayload *)&v5 stubDictionary];
+  [stubDictionary MCSetObjectIfNotNil:self->_isSimplePasscodeAllowed forKey:@"allowSimple"];
+  [stubDictionary MCSetObjectIfNotNil:self->_isPasscodeRequired forKey:@"forcePIN"];
+  [stubDictionary MCSetObjectIfNotNil:self->_isAlphanumericPasscodeRequired forKey:@"requireAlphanumeric"];
+  [stubDictionary MCSetObjectIfNotNil:self->_isManualFetchingWhenRoaming forKey:@"manualFetchingWhenRoaming"];
+  [stubDictionary MCSetObjectIfNotNil:self->_minLength forKey:@"minLength"];
+  [stubDictionary MCSetObjectIfNotNil:self->_maxFailedAttempts forKey:@"maxFailedAttempts"];
+  [stubDictionary MCSetObjectIfNotNil:self->_maxGracePeriodMinutes forKey:@"maxGracePeriod"];
+  [stubDictionary MCSetObjectIfNotNil:self->_maxInactivityMinutes forKey:@"maxInactivity"];
+  [stubDictionary MCSetObjectIfNotNil:self->_maxPasscodeAgeDays forKey:@"maxPINAgeInDays"];
+  [stubDictionary MCSetObjectIfNotNil:self->_passcodeHistoryCount forKey:@"pinHistory"];
+  [stubDictionary MCSetObjectIfNotNil:self->_minComplexCharacters forKey:@"minComplexChars"];
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)verboseDescription
@@ -391,8 +391,8 @@ LABEL_54:
   v3 = MEMORY[0x1E696AD60];
   v14.receiver = self;
   v14.super_class = MCPasswordPolicyPayload;
-  v4 = [(MCPayload *)&v14 verboseDescription];
-  v5 = [v3 stringWithString:v4];
+  verboseDescription = [(MCPayload *)&v14 verboseDescription];
+  v5 = [v3 stringWithString:verboseDescription];
 
   if ([(NSNumber *)self->_isPasscodeRequired BOOLValue])
   {
@@ -461,8 +461,8 @@ LABEL_54:
 
 - (id)subtitle1Description
 {
-  v2 = [(MCPasswordPolicyPayload *)self restrictions];
-  v3 = [MCPasscodeManager localizedDescriptionOfPasscodePolicyFromRestrictions:v2];
+  restrictions = [(MCPasswordPolicyPayload *)self restrictions];
+  v3 = [MCPasscodeManager localizedDescriptionOfPasscodePolicyFromRestrictions:restrictions];
 
   return v3;
 }
@@ -470,10 +470,10 @@ LABEL_54:
 - (id)payloadDescriptionKeyValueSections
 {
   v80[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MCPasswordPolicyPayload *)self restrictions];
+  restrictions = [(MCPasswordPolicyPayload *)self restrictions];
   v4 = +[MCRestrictionManager sharedManager];
-  v5 = [v4 defaultRestrictions];
-  v6 = [MCRestrictionManager filterRestrictionDictionary:v3 toIncludeOnlyRestrictionsThatDifferFromRestrictions:v5];
+  defaultRestrictions = [v4 defaultRestrictions];
+  v6 = [MCRestrictionManager filterRestrictionDictionary:restrictions toIncludeOnlyRestrictionsThatDifferFromRestrictions:defaultRestrictions];
 
   v7 = objc_opt_new();
   if ([MCRestrictionManager restrictedBoolForFeature:@"forcePIN" withRestrictionsDictionary:v6]== 1)
@@ -504,13 +504,13 @@ LABEL_54:
     [v7 addObject:v20];
   }
 
-  v21 = [(MCPasswordPolicyPayload *)self isManualFetchingWhenRoaming];
+  isManualFetchingWhenRoaming = [(MCPasswordPolicyPayload *)self isManualFetchingWhenRoaming];
 
-  if (v21)
+  if (isManualFetchingWhenRoaming)
   {
     v22 = [MCKeyValue alloc];
-    v23 = [(MCPasswordPolicyPayload *)self isManualFetchingWhenRoaming];
-    v24 = MCLocalizedStringForBool([v23 BOOLValue]);
+    isManualFetchingWhenRoaming2 = [(MCPasswordPolicyPayload *)self isManualFetchingWhenRoaming];
+    v24 = MCLocalizedStringForBool([isManualFetchingWhenRoaming2 BOOLValue]);
     v25 = MCLocalizedString(@"MANUAL_FETCHING_WHEN_ROAMING");
     v26 = [(MCKeyValue *)v22 initWithLocalizedString:v24 localizedKey:v25];
 
@@ -561,10 +561,10 @@ LABEL_54:
     v46 = +[MCHacks sharedHacks];
     v47 = [v46 quantizedGracePeriodInSeconds:v45];
 
-    v48 = [v47 unsignedIntegerValue];
-    if (v48)
+    unsignedIntegerValue = [v47 unsignedIntegerValue];
+    if (unsignedIntegerValue)
     {
-      MCFormattedStringForTimeInterval(v48);
+      MCFormattedStringForTimeInterval(unsignedIntegerValue);
     }
 
     else
@@ -590,13 +590,13 @@ LABEL_54:
     v54 = +[MCHacks sharedHacks];
     v55 = [v54 quantizedAutoLockInSeconds:v53];
 
-    v56 = [v55 unsignedIntegerValue];
-    if (v56 < 60.0)
+    unsignedIntegerValue2 = [v55 unsignedIntegerValue];
+    if (unsignedIntegerValue2 < 60.0)
     {
-      v56 = 60.0;
+      unsignedIntegerValue2 = 60.0;
     }
 
-    v57 = MCFormattedStringForTimeInterval(v56);
+    v57 = MCFormattedStringForTimeInterval(unsignedIntegerValue2);
 
     v58 = [MCKeyValue alloc];
     v59 = MCLocalizedString(@"MAXIMUM_PASSCODE_INACTIVITY");
@@ -645,230 +645,230 @@ LABEL_54:
 
 - (id)restrictions
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(MCPasswordPolicyPayload *)self isSimplePasscodeAllowed];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  isSimplePasscodeAllowed = [(MCPasswordPolicyPayload *)self isSimplePasscodeAllowed];
 
-  if (v4)
+  if (isSimplePasscodeAllowed)
   {
-    v5 = [(MCPasswordPolicyPayload *)self isSimplePasscodeAllowed];
-    [v3 MCSetBoolRestriction:@"allowSimple" value:{objc_msgSend(v5, "BOOLValue")}];
+    isSimplePasscodeAllowed2 = [(MCPasswordPolicyPayload *)self isSimplePasscodeAllowed];
+    [dictionary MCSetBoolRestriction:@"allowSimple" value:{objc_msgSend(isSimplePasscodeAllowed2, "BOOLValue")}];
   }
 
-  v6 = [(MCPasswordPolicyPayload *)self isPasscodeRequired];
+  isPasscodeRequired = [(MCPasswordPolicyPayload *)self isPasscodeRequired];
 
-  if (v6)
+  if (isPasscodeRequired)
   {
-    v7 = [(MCPasswordPolicyPayload *)self isPasscodeRequired];
-    [v3 MCSetBoolRestriction:@"forcePIN" value:{objc_msgSend(v7, "BOOLValue")}];
+    isPasscodeRequired2 = [(MCPasswordPolicyPayload *)self isPasscodeRequired];
+    [dictionary MCSetBoolRestriction:@"forcePIN" value:{objc_msgSend(isPasscodeRequired2, "BOOLValue")}];
   }
 
-  v8 = [(MCPasswordPolicyPayload *)self isAlphanumericPasscodeRequired];
+  isAlphanumericPasscodeRequired = [(MCPasswordPolicyPayload *)self isAlphanumericPasscodeRequired];
 
-  if (v8)
+  if (isAlphanumericPasscodeRequired)
   {
-    v9 = [(MCPasswordPolicyPayload *)self isAlphanumericPasscodeRequired];
-    [v3 MCSetBoolRestriction:@"requireAlphanumeric" value:{objc_msgSend(v9, "BOOLValue")}];
+    isAlphanumericPasscodeRequired2 = [(MCPasswordPolicyPayload *)self isAlphanumericPasscodeRequired];
+    [dictionary MCSetBoolRestriction:@"requireAlphanumeric" value:{objc_msgSend(isAlphanumericPasscodeRequired2, "BOOLValue")}];
   }
 
-  v10 = [(MCPasswordPolicyPayload *)self minLength];
-  if (v10)
+  minLength = [(MCPasswordPolicyPayload *)self minLength];
+  if (minLength)
   {
-    v11 = v10;
-    v12 = [(MCPasswordPolicyPayload *)self minLength];
-    if (([v12 intValue] & 0x80000000) != 0)
+    minLength4 = minLength;
+    minLength2 = [(MCPasswordPolicyPayload *)self minLength];
+    if (([minLength2 intValue] & 0x80000000) != 0)
     {
     }
 
     else
     {
-      v13 = [(MCPasswordPolicyPayload *)self minLength];
-      v14 = [v13 intValue];
+      minLength3 = [(MCPasswordPolicyPayload *)self minLength];
+      intValue = [minLength3 intValue];
 
-      if (v14 > 16)
+      if (intValue > 16)
       {
         goto LABEL_13;
       }
 
-      v11 = [(MCPasswordPolicyPayload *)self minLength];
-      [v3 MCSetValueRestriction:@"minLength" value:v11];
+      minLength4 = [(MCPasswordPolicyPayload *)self minLength];
+      [dictionary MCSetValueRestriction:@"minLength" value:minLength4];
     }
   }
 
 LABEL_13:
-  v15 = [(MCPasswordPolicyPayload *)self maxFailedAttempts];
-  if (!v15)
+  maxFailedAttempts = [(MCPasswordPolicyPayload *)self maxFailedAttempts];
+  if (!maxFailedAttempts)
   {
     goto LABEL_19;
   }
 
-  v16 = v15;
-  v17 = [(MCPasswordPolicyPayload *)self maxFailedAttempts];
-  if ([v17 intValue] <= 1)
+  maxFailedAttempts4 = maxFailedAttempts;
+  maxFailedAttempts2 = [(MCPasswordPolicyPayload *)self maxFailedAttempts];
+  if ([maxFailedAttempts2 intValue] <= 1)
   {
   }
 
   else
   {
-    v18 = [(MCPasswordPolicyPayload *)self maxFailedAttempts];
-    v19 = [v18 intValue];
+    maxFailedAttempts3 = [(MCPasswordPolicyPayload *)self maxFailedAttempts];
+    intValue2 = [maxFailedAttempts3 intValue];
 
-    if (v19 > 11)
+    if (intValue2 > 11)
     {
       goto LABEL_19;
     }
 
-    v16 = [(MCPasswordPolicyPayload *)self maxFailedAttempts];
-    [v3 MCSetValueRestriction:@"maxFailedAttempts" value:v16];
+    maxFailedAttempts4 = [(MCPasswordPolicyPayload *)self maxFailedAttempts];
+    [dictionary MCSetValueRestriction:@"maxFailedAttempts" value:maxFailedAttempts4];
   }
 
 LABEL_19:
-  v20 = [(MCPasswordPolicyPayload *)self maxGracePeriodMinutes];
-  if (!v20)
+  maxGracePeriodMinutes = [(MCPasswordPolicyPayload *)self maxGracePeriodMinutes];
+  if (!maxGracePeriodMinutes)
   {
     goto LABEL_24;
   }
 
-  v21 = v20;
-  v22 = [(MCPasswordPolicyPayload *)self maxGracePeriodMinutes];
-  if (([v22 intValue] & 0x80000000) == 0)
+  maxGracePeriodMinutes4 = maxGracePeriodMinutes;
+  maxGracePeriodMinutes2 = [(MCPasswordPolicyPayload *)self maxGracePeriodMinutes];
+  if (([maxGracePeriodMinutes2 intValue] & 0x80000000) == 0)
   {
-    v23 = [(MCPasswordPolicyPayload *)self maxGracePeriodMinutes];
-    v24 = [v23 intValue];
+    maxGracePeriodMinutes3 = [(MCPasswordPolicyPayload *)self maxGracePeriodMinutes];
+    intValue3 = [maxGracePeriodMinutes3 intValue];
 
-    if (v24 > 240)
+    if (intValue3 > 240)
     {
       goto LABEL_24;
     }
 
     v25 = MEMORY[0x1E696AD98];
-    v21 = [(MCPasswordPolicyPayload *)self maxGracePeriodMinutes];
-    v22 = [v25 numberWithInt:{60 * objc_msgSend(v21, "intValue")}];
-    [v3 MCSetValueRestriction:@"maxGracePeriod" value:v22];
+    maxGracePeriodMinutes4 = [(MCPasswordPolicyPayload *)self maxGracePeriodMinutes];
+    maxGracePeriodMinutes2 = [v25 numberWithInt:{60 * objc_msgSend(maxGracePeriodMinutes4, "intValue")}];
+    [dictionary MCSetValueRestriction:@"maxGracePeriod" value:maxGracePeriodMinutes2];
   }
 
 LABEL_24:
-  v26 = [(MCPasswordPolicyPayload *)self maxInactivityMinutes];
-  if (!v26)
+  maxInactivityMinutes = [(MCPasswordPolicyPayload *)self maxInactivityMinutes];
+  if (!maxInactivityMinutes)
   {
     goto LABEL_29;
   }
 
-  v27 = v26;
-  v28 = [(MCPasswordPolicyPayload *)self maxInactivityMinutes];
-  if (([v28 intValue] & 0x80000000) == 0)
+  maxInactivityMinutes4 = maxInactivityMinutes;
+  maxInactivityMinutes2 = [(MCPasswordPolicyPayload *)self maxInactivityMinutes];
+  if (([maxInactivityMinutes2 intValue] & 0x80000000) == 0)
   {
-    v29 = [(MCPasswordPolicyPayload *)self maxInactivityMinutes];
-    v30 = [v29 intValue];
+    maxInactivityMinutes3 = [(MCPasswordPolicyPayload *)self maxInactivityMinutes];
+    intValue4 = [maxInactivityMinutes3 intValue];
 
-    if (v30 > 15)
+    if (intValue4 > 15)
     {
       goto LABEL_29;
     }
 
     v31 = MEMORY[0x1E696AD98];
-    v27 = [(MCPasswordPolicyPayload *)self maxInactivityMinutes];
-    v28 = [v31 numberWithInt:{60 * objc_msgSend(v27, "intValue")}];
-    [v3 MCSetValueRestriction:@"maxInactivity" value:v28];
+    maxInactivityMinutes4 = [(MCPasswordPolicyPayload *)self maxInactivityMinutes];
+    maxInactivityMinutes2 = [v31 numberWithInt:{60 * objc_msgSend(maxInactivityMinutes4, "intValue")}];
+    [dictionary MCSetValueRestriction:@"maxInactivity" value:maxInactivityMinutes2];
   }
 
 LABEL_29:
-  v32 = [(MCPasswordPolicyPayload *)self maxPasscodeAgeDays];
-  if (!v32)
+  maxPasscodeAgeDays = [(MCPasswordPolicyPayload *)self maxPasscodeAgeDays];
+  if (!maxPasscodeAgeDays)
   {
     goto LABEL_35;
   }
 
-  v33 = v32;
-  v34 = [(MCPasswordPolicyPayload *)self maxPasscodeAgeDays];
-  if ([v34 intValue] <= 0)
+  maxPasscodeAgeDays4 = maxPasscodeAgeDays;
+  maxPasscodeAgeDays2 = [(MCPasswordPolicyPayload *)self maxPasscodeAgeDays];
+  if ([maxPasscodeAgeDays2 intValue] <= 0)
   {
   }
 
   else
   {
-    v35 = [(MCPasswordPolicyPayload *)self maxPasscodeAgeDays];
-    v36 = [v35 intValue];
+    maxPasscodeAgeDays3 = [(MCPasswordPolicyPayload *)self maxPasscodeAgeDays];
+    intValue5 = [maxPasscodeAgeDays3 intValue];
 
-    if (v36 > 730)
+    if (intValue5 > 730)
     {
       goto LABEL_35;
     }
 
-    v33 = [(MCPasswordPolicyPayload *)self maxPasscodeAgeDays];
-    [v3 MCSetValueRestriction:@"maxPINAgeInDays" value:v33];
+    maxPasscodeAgeDays4 = [(MCPasswordPolicyPayload *)self maxPasscodeAgeDays];
+    [dictionary MCSetValueRestriction:@"maxPINAgeInDays" value:maxPasscodeAgeDays4];
   }
 
 LABEL_35:
-  v37 = [(MCPasswordPolicyPayload *)self passcodeHistoryCount];
-  if (!v37)
+  passcodeHistoryCount = [(MCPasswordPolicyPayload *)self passcodeHistoryCount];
+  if (!passcodeHistoryCount)
   {
     goto LABEL_41;
   }
 
-  v38 = v37;
-  v39 = [(MCPasswordPolicyPayload *)self passcodeHistoryCount];
-  if ([v39 intValue] <= 0)
+  passcodeHistoryCount4 = passcodeHistoryCount;
+  passcodeHistoryCount2 = [(MCPasswordPolicyPayload *)self passcodeHistoryCount];
+  if ([passcodeHistoryCount2 intValue] <= 0)
   {
   }
 
   else
   {
-    v40 = [(MCPasswordPolicyPayload *)self passcodeHistoryCount];
-    v41 = [v40 intValue];
+    passcodeHistoryCount3 = [(MCPasswordPolicyPayload *)self passcodeHistoryCount];
+    intValue6 = [passcodeHistoryCount3 intValue];
 
-    if (v41 > 50)
+    if (intValue6 > 50)
     {
       goto LABEL_41;
     }
 
-    v38 = [(MCPasswordPolicyPayload *)self passcodeHistoryCount];
-    [v3 MCSetValueRestriction:@"pinHistory" value:v38];
+    passcodeHistoryCount4 = [(MCPasswordPolicyPayload *)self passcodeHistoryCount];
+    [dictionary MCSetValueRestriction:@"pinHistory" value:passcodeHistoryCount4];
   }
 
 LABEL_41:
-  v42 = [(MCPasswordPolicyPayload *)self minComplexCharacters];
-  if (!v42)
+  minComplexCharacters = [(MCPasswordPolicyPayload *)self minComplexCharacters];
+  if (!minComplexCharacters)
   {
     goto LABEL_47;
   }
 
-  v43 = v42;
-  v44 = [(MCPasswordPolicyPayload *)self minComplexCharacters];
-  if (([v44 intValue] & 0x80000000) != 0)
+  minComplexCharacters4 = minComplexCharacters;
+  minComplexCharacters2 = [(MCPasswordPolicyPayload *)self minComplexCharacters];
+  if (([minComplexCharacters2 intValue] & 0x80000000) != 0)
   {
   }
 
   else
   {
-    v45 = [(MCPasswordPolicyPayload *)self minComplexCharacters];
-    v46 = [v45 intValue];
+    minComplexCharacters3 = [(MCPasswordPolicyPayload *)self minComplexCharacters];
+    intValue7 = [minComplexCharacters3 intValue];
 
-    if (v46 > 4)
+    if (intValue7 > 4)
     {
       goto LABEL_47;
     }
 
-    v43 = [(MCPasswordPolicyPayload *)self minComplexCharacters];
-    [v3 MCSetValueRestriction:@"minComplexChars" value:v43];
+    minComplexCharacters4 = [(MCPasswordPolicyPayload *)self minComplexCharacters];
+    [dictionary MCSetValueRestriction:@"minComplexChars" value:minComplexCharacters4];
   }
 
 LABEL_47:
-  v47 = [v3 copy];
+  v47 = [dictionary copy];
 
   return v47;
 }
 
-- (id)filterForUserEnrollmentOutError:(id *)a3
+- (id)filterForUserEnrollmentOutError:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(MCPasswordPolicyPayload *)self stubDictionary];
-  v4 = [MEMORY[0x1E695DF70] array];
+  stubDictionary = [(MCPasswordPolicyPayload *)self stubDictionary];
+  array = [MEMORY[0x1E695DF70] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [v3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  allKeys = [stubDictionary allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v6)
   {
     v7 = v6;
@@ -879,47 +879,47 @@ LABEL_47:
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
         if (([v10 hasPrefix:@"Payload"] & 1) == 0 && (objc_msgSend(v10, "isEqualToString:", @"PersistentResourceID") & 1) == 0 && (objc_msgSend(v10, "isEqualToString:", @"maxInactivity") & 1) == 0)
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v7);
   }
 
-  [v3 removeObjectsForKeys:v4];
+  [stubDictionary removeObjectsForKeys:array];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:0];
-  [v3 setObject:v11 forKeyedSubscript:@"allowSimple"];
+  [stubDictionary setObject:v11 forKeyedSubscript:@"allowSimple"];
 
-  [v3 setObject:&unk_1F1AA55C0 forKeyedSubscript:@"minLength"];
-  v12 = [v3 objectForKeyedSubscript:@"maxInactivity"];
+  [stubDictionary setObject:&unk_1F1AA55C0 forKeyedSubscript:@"minLength"];
+  v12 = [stubDictionary objectForKeyedSubscript:@"maxInactivity"];
 
   if (v12)
   {
-    [v3 setObject:&unk_1F1AA5548 forKeyedSubscript:@"maxInactivity"];
+    [stubDictionary setObject:&unk_1F1AA5548 forKeyedSubscript:@"maxInactivity"];
   }
 
   v13 = [MCPasswordPolicyPayload alloc];
-  v14 = [(MCPayload *)self profile];
+  profile = [(MCPayload *)self profile];
   v26 = 0;
-  v15 = [(MCPasswordPolicyPayload *)v13 initWithDictionary:v3 profile:v14 outError:&v26];
+  v15 = [(MCPasswordPolicyPayload *)v13 initWithDictionary:stubDictionary profile:profile outError:&v26];
   v16 = v26;
 
   if (v16)
   {
-    if (a3)
+    if (error)
     {
       v17 = v16;
       v18 = 0;
-      *a3 = v16;
+      *error = v16;
     }
 
     else
@@ -930,18 +930,18 @@ LABEL_47:
 
   else
   {
-    if ([v4 count])
+    if ([array count])
     {
-      [v4 sortUsingComparator:&__block_literal_global_13];
+      [array sortUsingComparator:&__block_literal_global_13];
       v19 = _MCLogObjects;
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
       {
         v20 = v19;
-        v21 = [(MCPayload *)self friendlyName];
+        friendlyName = [(MCPayload *)self friendlyName];
         *buf = 138543618;
-        v32 = v21;
+        v32 = friendlyName;
         v33 = 2114;
-        v34 = v4;
+        v34 = array;
         _os_log_impl(&dword_1A795B000, v20, OS_LOG_TYPE_INFO, "Payload “%{public}@” has keys that we are ignoring. They are: %{public}@", buf, 0x16u);
       }
     }

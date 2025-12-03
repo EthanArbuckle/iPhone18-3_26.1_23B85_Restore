@@ -1,6 +1,6 @@
 @interface BBObjectCache
 - (BBObjectCache)init;
-- (id)cacheObject:(id)a3;
+- (id)cacheObject:(id)object;
 @end
 
 @implementation BBObjectCache
@@ -20,20 +20,20 @@
   return v2;
 }
 
-- (id)cacheObject:(id)a3
+- (id)cacheObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = self->_cache;
   objc_sync_enter(v5);
-  v6 = [(NSHashTable *)self->_cache member:v4];
+  v6 = [(NSHashTable *)self->_cache member:objectCopy];
   objc_initWeak(&location, v6);
 
   v7 = objc_loadWeakRetained(&location);
   if (!v7)
   {
-    [(NSHashTable *)self->_cache removeObject:v4];
-    [(NSHashTable *)self->_cache addObject:v4];
-    v7 = v4;
+    [(NSHashTable *)self->_cache removeObject:objectCopy];
+    [(NSHashTable *)self->_cache addObject:objectCopy];
+    v7 = objectCopy;
   }
 
   objc_destroyWeak(&location);

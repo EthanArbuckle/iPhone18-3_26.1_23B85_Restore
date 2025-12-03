@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (_HFItemManagerDebugStateDumpController)init;
 - (id)_performStateDump;
-- (void)registerItemManager:(id)a3;
+- (void)registerItemManager:(id)manager;
 @end
 
 @implementation _HFItemManagerDebugStateDumpController
@@ -26,8 +26,8 @@
   v2 = [(_HFItemManagerDebugStateDumpController *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(_HFItemManagerDebugStateDumpController *)v2 setItemManagers:v3];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(_HFItemManagerDebugStateDumpController *)v2 setItemManagers:weakObjectsHashTable];
 
     v4 = +[HFDebugStateDumpManager sharedInstance];
     v7[0] = MEMORY[0x277D85DD0];
@@ -41,18 +41,18 @@
   return v2;
 }
 
-- (void)registerItemManager:(id)a3
+- (void)registerItemManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(_HFItemManagerDebugStateDumpController *)self itemManagers];
-  [v5 addObject:v4];
+  managerCopy = manager;
+  itemManagers = [(_HFItemManagerDebugStateDumpController *)self itemManagers];
+  [itemManagers addObject:managerCopy];
 }
 
 - (id)_performStateDump
 {
-  v2 = [(_HFItemManagerDebugStateDumpController *)self itemManagers];
-  v3 = [v2 allObjects];
-  v4 = [v3 na_map:&__block_literal_global_80];
+  itemManagers = [(_HFItemManagerDebugStateDumpController *)self itemManagers];
+  allObjects = [itemManagers allObjects];
+  v4 = [allObjects na_map:&__block_literal_global_80];
 
   return v4;
 }

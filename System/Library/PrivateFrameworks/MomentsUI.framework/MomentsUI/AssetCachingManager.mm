@@ -1,10 +1,10 @@
 @interface AssetCachingManager
-- (void)cache:(id)a3 willEvictObject:(id)a4;
+- (void)cache:(id)cache willEvictObject:(id)object;
 @end
 
 @implementation AssetCachingManager
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   MEMORY[0x28223BE20](v4 - 8);

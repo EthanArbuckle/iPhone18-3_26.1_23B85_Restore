@@ -1,18 +1,18 @@
 @interface SearchUICardViewController
-+ (void)_loadAndEnrichCardSectionsFromCard:(id)a3 withCompletionHandler:(id)a4;
++ (void)_loadAndEnrichCardSectionsFromCard:(id)card withCompletionHandler:(id)handler;
 - (BOOL)hasCustomViewControllersForCardSections;
-- (BOOL)hasFocusableElementsInSnapshot:(id)a3;
+- (BOOL)hasFocusableElementsInSnapshot:(id)snapshot;
 - (BOOL)isInPreviewPlatter;
 - (BOOL)rowSelectionAppearanceEnabled;
 - (BOOL)scrollEnabled;
-- (BOOL)shouldForceEnableThreeDTouch:(id)a3;
+- (BOOL)shouldForceEnableThreeDTouch:(id)touch;
 - (BOOL)shouldUseInsetRoundedSections;
 - (BOOL)threeDTouchEnabled;
 - (BOOL)topRowWillFillBackgroundWithContent;
 - (CGSize)preferredContentSize;
 - (SFCard)card;
 - (SFFeedbackListener)feedbackListener;
-- (SearchUICardViewController)initWithCard:(id)a3 feedbackListener:(id)a4;
+- (SearchUICardViewController)initWithCard:(id)card feedbackListener:(id)listener;
 - (SearchUICardViewDelegate)delegate;
 - (SearchUICommandDelegate)commandDelegate;
 - (UITextField)textField;
@@ -21,36 +21,36 @@
 - (id)searchUIBackgroundColor;
 - (id)viewContainingContent;
 - (void)cardViewDidAppear;
-- (void)contentSizeDidChange:(CGSize)a3 animated:(BOOL)a4;
-- (void)displayLoadingViewAfterDelay:(double)a3;
+- (void)contentSizeDidChange:(CGSize)change animated:(BOOL)animated;
+- (void)displayLoadingViewAfterDelay:(double)delay;
 - (void)prepareLoadingView;
 - (void)scrollAndSelectLastSelectedIndexPath;
-- (void)setCard:(id)a3;
-- (void)setCommandDelegate:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDisableLoadingView:(BOOL)a3;
-- (void)setFeedbackListener:(id)a3;
-- (void)setFooterView:(id)a3;
-- (void)setInPreviewPlatter:(BOOL)a3;
-- (void)setLoadingViewAlpha:(double)a3;
-- (void)setRestorationContext:(id)a3;
-- (void)setRowSelectionAppearanceEnabled:(BOOL)a3;
-- (void)setScrollEnabled:(BOOL)a3;
-- (void)setShouldDrawBackgroundColor:(BOOL)a3;
-- (void)setShouldUseInsetRoundedSections:(BOOL)a3;
-- (void)setTextField:(id)a3;
-- (void)setThreeDTouchEnabled:(BOOL)a3;
+- (void)setCard:(id)card;
+- (void)setCommandDelegate:(id)delegate;
+- (void)setDelegate:(id)delegate;
+- (void)setDisableLoadingView:(BOOL)view;
+- (void)setFeedbackListener:(id)listener;
+- (void)setFooterView:(id)view;
+- (void)setInPreviewPlatter:(BOOL)platter;
+- (void)setLoadingViewAlpha:(double)alpha;
+- (void)setRestorationContext:(id)context;
+- (void)setRowSelectionAppearanceEnabled:(BOOL)enabled;
+- (void)setScrollEnabled:(BOOL)enabled;
+- (void)setShouldDrawBackgroundColor:(BOOL)color;
+- (void)setShouldUseInsetRoundedSections:(BOOL)sections;
+- (void)setTextField:(id)field;
+- (void)setThreeDTouchEnabled:(BOOL)enabled;
 - (void)updateBackgroundColor;
-- (void)updateTimerAndCardSections:(id)a3;
-- (void)updateWithCardSections:(id)a3;
+- (void)updateTimerAndCardSections:(id)sections;
+- (void)updateWithCardSections:(id)sections;
 @end
 
 @implementation SearchUICardViewController
 
-- (SearchUICardViewController)initWithCard:(id)a3 feedbackListener:(id)a4
+- (SearchUICardViewController)initWithCard:(id)card feedbackListener:(id)listener
 {
-  v6 = a3;
-  v7 = a4;
+  cardCopy = card;
+  listenerCopy = listener;
   v26.receiver = self;
   v26.super_class = SearchUICardViewController;
   v8 = [(SearchUICardViewController *)&v26 init];
@@ -64,33 +64,33 @@
     v11 = objc_opt_new();
     [(SearchUICardViewController *)v9 setTableViewController:v11];
 
-    v12 = [(SearchUICardViewController *)v9 view];
-    v13 = [(SearchUICardViewController *)v9 tableViewController];
-    v14 = [v13 view];
-    [v12 addSubview:v14];
+    view = [(SearchUICardViewController *)v9 view];
+    tableViewController = [(SearchUICardViewController *)v9 tableViewController];
+    view2 = [tableViewController view];
+    [view addSubview:view2];
 
-    v15 = [(SearchUICardViewController *)v9 tableViewController];
-    v16 = [v15 view];
-    [SearchUIAutoLayout constrainViewToContainer:v16];
+    tableViewController2 = [(SearchUICardViewController *)v9 tableViewController];
+    view3 = [tableViewController2 view];
+    [SearchUIAutoLayout constrainViewToContainer:view3];
 
-    v17 = [(SearchUICardViewController *)v9 tableViewController];
-    [(SearchUICardViewController *)v9 addChildViewController:v17];
+    tableViewController3 = [(SearchUICardViewController *)v9 tableViewController];
+    [(SearchUICardViewController *)v9 addChildViewController:tableViewController3];
 
     v9->_shouldDrawBackgroundColor = 1;
-    [(SearchUICardViewController *)v9 setCard:v6];
-    [(SearchUICardViewController *)v9 setFeedbackListener:v7];
+    [(SearchUICardViewController *)v9 setCard:cardCopy];
+    [(SearchUICardViewController *)v9 setFeedbackListener:listenerCopy];
     v18 = objc_alloc(MEMORY[0x1E69DC708]);
     v19 = [SearchUIUtilities localizedStringForKey:@"BACK_BUTTON_TITLE"];
     v20 = [v18 initWithTitle:v19 style:0 target:0 action:0];
-    v21 = [(SearchUICardViewController *)v9 navigationItem];
-    [v21 setBackBarButtonItem:v20];
+    navigationItem = [(SearchUICardViewController *)v9 navigationItem];
+    [navigationItem setBackBarButtonItem:v20];
 
-    v22 = [(SearchUICardViewController *)v9 tableViewController];
-    [v22 setSizingDelegate:v9];
+    tableViewController4 = [(SearchUICardViewController *)v9 tableViewController];
+    [tableViewController4 setSizingDelegate:v9];
 
-    v23 = [(SearchUICardViewController *)v9 tableViewController];
-    v24 = [v23 scrollViewForSizing];
-    [(SearchUICardViewController *)v9 setContentScrollView:v24 forEdge:15];
+    tableViewController5 = [(SearchUICardViewController *)v9 tableViewController];
+    scrollViewForSizing = [tableViewController5 scrollViewForSizing];
+    [(SearchUICardViewController *)v9 setContentScrollView:scrollViewForSizing forEdge:15];
   }
 
   return v9;
@@ -98,120 +98,120 @@
 
 - (BOOL)shouldUseInsetRoundedSections
 {
-  v2 = [(SearchUICardViewController *)self view];
-  v3 = [v2 shouldUseInsetRoundedSections];
+  view = [(SearchUICardViewController *)self view];
+  shouldUseInsetRoundedSections = [view shouldUseInsetRoundedSections];
 
-  return v3;
+  return shouldUseInsetRoundedSections;
 }
 
-- (void)setShouldUseInsetRoundedSections:(BOOL)a3
+- (void)setShouldUseInsetRoundedSections:(BOOL)sections
 {
-  v3 = a3;
-  v5 = [(SearchUICardViewController *)self view];
-  [v5 setShouldUseInsetRoundedSections:v3];
+  sectionsCopy = sections;
+  view = [(SearchUICardViewController *)self view];
+  [view setShouldUseInsetRoundedSections:sectionsCopy];
 
-  v6 = [(SearchUICardViewController *)self tableViewController];
-  [v6 setShouldUseInsetRoundedSections:v3];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  [tableViewController setShouldUseInsetRoundedSections:sectionsCopy];
 }
 
 - (BOOL)rowSelectionAppearanceEnabled
 {
-  v2 = [(SearchUICardViewController *)self tableViewController];
-  v3 = [v2 rowSelectionAppearanceEnabled];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  rowSelectionAppearanceEnabled = [tableViewController rowSelectionAppearanceEnabled];
 
-  return v3;
+  return rowSelectionAppearanceEnabled;
 }
 
-- (void)setRowSelectionAppearanceEnabled:(BOOL)a3
+- (void)setRowSelectionAppearanceEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(SearchUICardViewController *)self tableViewController];
-  [v4 setRowSelectionAppearanceEnabled:v3];
+  enabledCopy = enabled;
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  [tableViewController setRowSelectionAppearanceEnabled:enabledCopy];
 }
 
 - (BOOL)isInPreviewPlatter
 {
-  v2 = [(SearchUICardViewController *)self view];
-  v3 = [v2 isInPreviewPlatter];
+  view = [(SearchUICardViewController *)self view];
+  isInPreviewPlatter = [view isInPreviewPlatter];
 
-  return v3;
+  return isInPreviewPlatter;
 }
 
-- (void)setInPreviewPlatter:(BOOL)a3
+- (void)setInPreviewPlatter:(BOOL)platter
 {
-  v3 = a3;
-  v5 = [(SearchUICardViewController *)self view];
-  [v5 setInPreviewPlatter:v3];
+  platterCopy = platter;
+  view = [(SearchUICardViewController *)self view];
+  [view setInPreviewPlatter:platterCopy];
 
-  v6 = [(SearchUICardViewController *)self tableViewController];
-  [v6 setInPreviewPlatter:v3];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  [tableViewController setInPreviewPlatter:platterCopy];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SearchUICardViewController *)self tableViewController];
-  [v5 setCardViewDelegate:v4];
+  delegateCopy = delegate;
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  [tableViewController setCardViewDelegate:delegateCopy];
 
-  if (v4)
+  if (delegateCopy)
   {
-    v8 = [(SearchUICardViewController *)self delegate];
+    delegate = [(SearchUICardViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(SearchUICardViewController *)self tableViewController];
-      v7 = [v6 tableModel];
+      tableViewController2 = [(SearchUICardViewController *)self tableViewController];
+      tableModel = [tableViewController2 tableModel];
 
-      if (!v7)
+      if (!tableModel)
       {
         return;
       }
 
-      v8 = [(SearchUICardViewController *)self tableViewController];
-      [v8 reloadViews];
+      delegate = [(SearchUICardViewController *)self tableViewController];
+      [delegate reloadViews];
     }
   }
 }
 
 - (SearchUICardViewDelegate)delegate
 {
-  v2 = [(SearchUICardViewController *)self tableViewController];
-  v3 = [v2 cardViewDelegate];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  cardViewDelegate = [tableViewController cardViewDelegate];
 
-  return v3;
+  return cardViewDelegate;
 }
 
-- (void)setFeedbackListener:(id)a3
+- (void)setFeedbackListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(SearchUICardViewController *)self tableViewController];
-  [v5 setFeedbackListener:v4];
+  listenerCopy = listener;
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  [tableViewController setFeedbackListener:listenerCopy];
 }
 
 - (SFFeedbackListener)feedbackListener
 {
-  v2 = [(SearchUICardViewController *)self tableViewController];
-  v3 = [v2 feedbackListener];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  feedbackListener = [tableViewController feedbackListener];
 
-  return v3;
+  return feedbackListener;
 }
 
-- (void)setDisableLoadingView:(BOOL)a3
+- (void)setDisableLoadingView:(BOOL)view
 {
-  self->_disableLoadingView = a3;
-  if (a3)
+  self->_disableLoadingView = view;
+  if (view)
   {
     [(SearchUICardViewController *)self setLoadingViewAlpha:0.0];
   }
 }
 
-- (void)displayLoadingViewAfterDelay:(double)a3
+- (void)displayLoadingViewAfterDelay:(double)delay
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __59__SearchUICardViewController_displayLoadingViewAfterDelay___block_invoke;
   v5[3] = &unk_1E85B4768;
   v5[4] = self;
-  v4 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:0 repeats:v5 block:a3];
+  v4 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:0 repeats:v5 block:delay];
   [(SearchUICardViewController *)self setLoadingScreenTimer:v4];
 }
 
@@ -231,125 +231,125 @@ uint64_t __59__SearchUICardViewController_displayLoadingViewAfterDelay___block_i
 {
   if (![(SearchUICardViewController *)self disableLoadingView])
   {
-    v3 = [(SearchUICardViewController *)self loadingView];
+    loadingView = [(SearchUICardViewController *)self loadingView];
 
-    if (!v3)
+    if (!loadingView)
     {
       v4 = objc_opt_new();
       [(SearchUICardViewController *)self setLoadingView:v4];
 
-      v5 = [(SearchUICardViewController *)self view];
-      v6 = [(SearchUICardViewController *)self loadingView];
-      [v5 addSubview:v6];
+      view = [(SearchUICardViewController *)self view];
+      loadingView2 = [(SearchUICardViewController *)self loadingView];
+      [view addSubview:loadingView2];
 
-      v7 = [(SearchUICardViewController *)self loadingView];
-      [SearchUIAutoLayout fillContainerWithView:v7];
+      loadingView3 = [(SearchUICardViewController *)self loadingView];
+      [SearchUIAutoLayout fillContainerWithView:loadingView3];
     }
 
     [(SearchUICardViewController *)self setLoadingViewAlpha:0.0];
-    v8 = [(SearchUICardViewController *)self loadingView];
-    [v8 setHidden:0];
+    loadingView4 = [(SearchUICardViewController *)self loadingView];
+    [loadingView4 setHidden:0];
 
-    v9 = [(SearchUICardViewController *)self loadingView];
-    [v9 setLoadingState:0];
+    loadingView5 = [(SearchUICardViewController *)self loadingView];
+    [loadingView5 setLoadingState:0];
   }
 }
 
 - (void)cardViewDidAppear
 {
-  v3 = [(SearchUICardViewController *)self feedbackListener];
+  feedbackListener = [(SearchUICardViewController *)self feedbackListener];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E69C9F20]);
-    v6 = [(SearchUICardViewController *)self card];
-    v8 = [v5 initWithCard:v6];
+    card = [(SearchUICardViewController *)self card];
+    v8 = [v5 initWithCard:card];
 
     [v8 setLevel:{-[SearchUICardViewController level](self, "level")}];
-    v7 = [(SearchUICardViewController *)self feedbackListener];
-    [v7 cardViewDidAppear:v8];
+    feedbackListener2 = [(SearchUICardViewController *)self feedbackListener];
+    [feedbackListener2 cardViewDidAppear:v8];
   }
 }
 
 - (id)searchUIBackgroundColor
 {
-  v2 = [(SearchUICardViewController *)self card];
-  v3 = [v2 backgroundColor];
+  card = [(SearchUICardViewController *)self card];
+  backgroundColor = [card backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)setShouldDrawBackgroundColor:(BOOL)a3
+- (void)setShouldDrawBackgroundColor:(BOOL)color
 {
-  if (self->_shouldDrawBackgroundColor != a3)
+  if (self->_shouldDrawBackgroundColor != color)
   {
-    self->_shouldDrawBackgroundColor = a3;
+    self->_shouldDrawBackgroundColor = color;
     [(SearchUICardViewController *)self updateBackgroundColor];
   }
 }
 
 - (void)updateBackgroundColor
 {
-  v3 = [(SearchUICardViewController *)self shouldDrawBackgroundColor];
-  if (v3)
+  shouldDrawBackgroundColor = [(SearchUICardViewController *)self shouldDrawBackgroundColor];
+  if (shouldDrawBackgroundColor)
   {
-    v4 = [(SearchUICardViewController *)self searchUIBackgroundColor];
-    if (v4)
+    searchUIBackgroundColor = [(SearchUICardViewController *)self searchUIBackgroundColor];
+    if (searchUIBackgroundColor)
     {
-      v5 = [(SearchUICardViewController *)self colorView];
+      colorView = [(SearchUICardViewController *)self colorView];
 
-      if (!v5)
+      if (!colorView)
       {
         v6 = objc_opt_new();
         [(SearchUICardViewController *)self setColorView:v6];
 
-        v7 = [(SearchUICardViewController *)self colorView];
-        [v7 setDelegate:self];
+        colorView2 = [(SearchUICardViewController *)self colorView];
+        [colorView2 setDelegate:self];
 
-        v8 = [(SearchUICardViewController *)self colorView];
-        [v8 setShowsPlaceholderPlatterView:0];
+        colorView3 = [(SearchUICardViewController *)self colorView];
+        [colorView3 setShowsPlaceholderPlatterView:0];
 
-        v9 = [(SearchUICardViewController *)self view];
-        v10 = [(SearchUICardViewController *)self colorView];
-        [v9 insertSubview:v10 atIndex:0];
+        view = [(SearchUICardViewController *)self view];
+        colorView4 = [(SearchUICardViewController *)self colorView];
+        [view insertSubview:colorView4 atIndex:0];
 
-        v11 = [(SearchUICardViewController *)self colorView];
-        [SearchUIAutoLayout fillContainerWithView:v11];
+        colorView5 = [(SearchUICardViewController *)self colorView];
+        [SearchUIAutoLayout fillContainerWithView:colorView5];
       }
     }
 
-    v12 = [(SearchUICardViewController *)self colorView];
-    [v12 setColor:v4];
+    colorView6 = [(SearchUICardViewController *)self colorView];
+    [colorView6 setColor:searchUIBackgroundColor];
 
-    v13 = [(SearchUICardViewController *)self card];
-    v14 = [v13 backgroundImage];
-    v15 = [(SearchUICardViewController *)self colorView];
-    [v15 setBackgroundImage:v14];
+    card = [(SearchUICardViewController *)self card];
+    backgroundImage = [card backgroundImage];
+    colorView7 = [(SearchUICardViewController *)self colorView];
+    [colorView7 setBackgroundImage:backgroundImage];
   }
 
-  v16 = [(SearchUICardViewController *)self colorView];
-  [v16 setHidden:!v3];
+  colorView8 = [(SearchUICardViewController *)self colorView];
+  [colorView8 setHidden:!shouldDrawBackgroundColor];
 }
 
 - (id)viewContainingContent
 {
-  v2 = [(SearchUICardViewController *)self tableViewController];
-  v3 = [v2 view];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  view = [tableViewController view];
 
-  return v3;
+  return view;
 }
 
-+ (void)_loadAndEnrichCardSectionsFromCard:(id)a3 withCompletionHandler:(id)a4
++ (void)_loadAndEnrichCardSectionsFromCard:(id)card withCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __87__SearchUICardViewController__loadAndEnrichCardSectionsFromCard_withCompletionHandler___block_invoke;
   v7[3] = &unk_1E85B47B8;
-  v8 = v5;
-  v6 = v5;
-  [a3 loadCardSectionsWithCompletionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [card loadCardSectionsWithCompletionHandler:v7];
 }
 
 void __87__SearchUICardViewController__loadAndEnrichCardSectionsFromCard_withCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -384,29 +384,29 @@ void __87__SearchUICardViewController__loadAndEnrichCardSectionsFromCard_withCom
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)setCard:(id)a3
+- (void)setCard:(id)card
 {
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  cardCopy = card;
+  title = [cardCopy title];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v7 = [title stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   [(SearchUICardViewController *)self setTitle:v7];
 
-  v8 = [(SearchUICardViewController *)self tableViewController];
-  [v8 setTableModel:0];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  [tableViewController setTableModel:0];
 
-  v9 = [(SearchUICardViewController *)self tableViewController];
-  [v9 setCard:v4];
+  tableViewController2 = [(SearchUICardViewController *)self tableViewController];
+  [tableViewController2 setCard:cardCopy];
 
-  v10 = [(SearchUICardViewController *)self tableViewController];
-  v11 = [v10 view];
-  [v11 setAlpha:0.0];
+  tableViewController3 = [(SearchUICardViewController *)self tableViewController];
+  view = [tableViewController3 view];
+  [view setAlpha:0.0];
 
   [(SearchUICardViewController *)self setLoadingViewAlpha:0.0];
-  v12 = [(SearchUICardViewController *)self colorView];
-  [v12 setHidden:1];
+  colorView = [(SearchUICardViewController *)self colorView];
+  [colorView setHidden:1];
 
-  if (v4)
+  if (cardCopy)
   {
     [(SearchUICardViewController *)self displayLoadingViewAfterDelay:0.7];
     v13 = objc_opt_class();
@@ -414,8 +414,8 @@ void __87__SearchUICardViewController__loadAndEnrichCardSectionsFromCard_withCom
     v14[1] = 3221225472;
     v14[2] = __38__SearchUICardViewController_setCard___block_invoke;
     v14[3] = &unk_1E85B29E8;
-    v15 = v4;
-    v16 = self;
+    v15 = cardCopy;
+    selfCopy = self;
     [v13 _loadAndEnrichCardSectionsFromCard:v15 withCompletionHandler:v14];
   }
 
@@ -459,19 +459,19 @@ void __38__SearchUICardViewController_setCard___block_invoke_2(uint64_t a1)
 
 - (SFCard)card
 {
-  v2 = [(SearchUICardViewController *)self tableViewController];
-  v3 = [v2 card];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  card = [tableViewController card];
 
-  return v3;
+  return card;
 }
 
-- (void)updateTimerAndCardSections:(id)a3
+- (void)updateTimerAndCardSections:(id)sections
 {
-  v7 = a3;
-  v4 = [(SearchUICardViewController *)self loadingScreenTimer];
-  if ([v4 isValid])
+  sectionsCopy = sections;
+  loadingScreenTimer = [(SearchUICardViewController *)self loadingScreenTimer];
+  if ([loadingScreenTimer isValid])
   {
-    v5 = [v7 count];
+    v5 = [sectionsCopy count];
 
     if (!v5)
     {
@@ -483,31 +483,31 @@ void __38__SearchUICardViewController_setCard___block_invoke_2(uint64_t a1)
   {
   }
 
-  v6 = [(SearchUICardViewController *)self loadingScreenTimer];
-  [v6 invalidate];
+  loadingScreenTimer2 = [(SearchUICardViewController *)self loadingScreenTimer];
+  [loadingScreenTimer2 invalidate];
 
   [(SearchUICardViewController *)self setLoadingScreenTimer:0];
-  [(SearchUICardViewController *)self updateWithCardSections:v7];
+  [(SearchUICardViewController *)self updateWithCardSections:sectionsCopy];
 }
 
 - (BOOL)hasCustomViewControllersForCardSections
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(SearchUICardViewController *)self delegate];
+  delegate = [(SearchUICardViewController *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
-    v3 = 0;
+    delegate = 0;
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(SearchUICardViewController *)self card];
-  v5 = [v4 cardSections];
+  card = [(SearchUICardViewController *)self card];
+  cardSections = [card cardSections];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [cardSections countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -517,11 +517,11 @@ void __38__SearchUICardViewController_setCard___block_invoke_2(uint64_t a1)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(cardSections);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v3 customViewControllerForCardSection:v9];
+        v10 = [delegate customViewControllerForCardSection:v9];
         if (v10)
         {
 
@@ -536,7 +536,7 @@ LABEL_15:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [cardSections countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -551,43 +551,43 @@ LABEL_16:
   return v6;
 }
 
-- (void)updateWithCardSections:(id)a3
+- (void)updateWithCardSections:(id)sections
 {
-  v4 = a3;
-  v5 = [(SearchUICardViewController *)self card];
-  v6 = +[SearchUITableModel tableModelWithCardSections:result:isInline:queryId:shouldCombine:](SearchUITableModel, "tableModelWithCardSections:result:isInline:queryId:shouldCombine:", v4, 0, 0, [v5 queryId], -[SearchUICardViewController hasCustomViewControllersForCardSections](self, "hasCustomViewControllersForCardSections") ^ 1);
+  sectionsCopy = sections;
+  card = [(SearchUICardViewController *)self card];
+  v6 = +[SearchUITableModel tableModelWithCardSections:result:isInline:queryId:shouldCombine:](SearchUITableModel, "tableModelWithCardSections:result:isInline:queryId:shouldCombine:", sectionsCopy, 0, 0, [card queryId], -[SearchUICardViewController hasCustomViewControllersForCardSections](self, "hasCustomViewControllersForCardSections") ^ 1);
 
-  v7 = [(SearchUICardViewController *)self loadingView];
-  [v7 setLoadingState:1];
+  loadingView = [(SearchUICardViewController *)self loadingView];
+  [loadingView setLoadingState:1];
 
-  v8 = [v4 count];
+  v8 = [sectionsCopy count];
   if (v8)
   {
-    v9 = [(SearchUICardViewController *)self tableViewController];
-    [v9 setTableModel:v6];
+    tableViewController = [(SearchUICardViewController *)self tableViewController];
+    [tableViewController setTableModel:v6];
 
     v30 = MEMORY[0x1E69E9820];
     v31 = 3221225472;
     v32 = __53__SearchUICardViewController_updateWithCardSections___block_invoke;
     v33 = &unk_1E85B24C8;
-    v34 = self;
+    selfCopy = self;
     v25 = MEMORY[0x1E69E9820];
     v26 = 3221225472;
     v27 = __53__SearchUICardViewController_updateWithCardSections___block_invoke_2;
     v28 = &unk_1E85B24C8;
-    v29 = self;
+    selfCopy2 = self;
     v10 = &v30;
     v11 = &v25;
   }
 
   else
   {
-    v19 = self;
+    selfCopy3 = self;
     v20 = MEMORY[0x1E69E9820];
     v21 = 3221225472;
     v22 = __53__SearchUICardViewController_updateWithCardSections___block_invoke_3;
     v23 = &unk_1E85B24C8;
-    v24 = self;
+    selfCopy4 = self;
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __53__SearchUICardViewController_updateWithCardSections___block_invoke_4;
@@ -596,11 +596,11 @@ LABEL_16:
     v11 = &v15;
   }
 
-  [SearchUIUtilities performAnimatableChanges:v10 animated:1 completion:v11, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34];
-  v12 = [(SearchUICardViewController *)self tableViewController];
-  v13 = [v12 dataSource];
-  v14 = [v13 snapshot];
-  [(SearchUICardViewController *)self setHasFocusableElements:[(SearchUICardViewController *)self hasFocusableElementsInSnapshot:v14]];
+  [SearchUIUtilities performAnimatableChanges:v10 animated:1 completion:v11, v15, v16, v17, v18, selfCopy3, v20, v21, v22, v23, selfCopy4, v25, v26, v27, v28, selfCopy2, v30, v31, v32, v33, selfCopy];
+  tableViewController2 = [(SearchUICardViewController *)self tableViewController];
+  dataSource = [tableViewController2 dataSource];
+  snapshot = [dataSource snapshot];
+  [(SearchUICardViewController *)self setHasFocusableElements:[(SearchUICardViewController *)self hasFocusableElementsInSnapshot:snapshot]];
 }
 
 void __53__SearchUICardViewController_updateWithCardSections___block_invoke(uint64_t a1)
@@ -634,26 +634,26 @@ uint64_t __53__SearchUICardViewController_updateWithCardSections___block_invoke_
   return [SearchUIUtilities performAnimatableChanges:v4];
 }
 
-- (void)setLoadingViewAlpha:(double)a3
+- (void)setLoadingViewAlpha:(double)alpha
 {
   if ([(SearchUICardViewController *)self disableLoadingView])
   {
-    a3 = 0.0;
+    alpha = 0.0;
   }
 
-  v5 = [(SearchUICardViewController *)self loadingView];
-  [v5 setAlpha:a3];
+  loadingView = [(SearchUICardViewController *)self loadingView];
+  [loadingView setAlpha:alpha];
 }
 
-- (BOOL)hasFocusableElementsInSnapshot:(id)a3
+- (BOOL)hasFocusableElementsInSnapshot:(id)snapshot
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [a3 itemIdentifiers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  itemIdentifiers = [snapshot itemIdentifiers];
+  v4 = [itemIdentifiers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -663,7 +663,7 @@ uint64_t __53__SearchUICardViewController_updateWithCardSections___block_invoke_
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemIdentifiers);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) isFocusable])
@@ -673,7 +673,7 @@ uint64_t __53__SearchUICardViewController_updateWithCardSections___block_invoke_
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [itemIdentifiers countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -690,87 +690,87 @@ LABEL_11:
 
 - (BOOL)topRowWillFillBackgroundWithContent
 {
-  v2 = [(SearchUICardViewController *)self tableViewController];
-  v3 = [v2 tableModel];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  tableModel = [tableViewController tableModel];
   v4 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
-  v5 = [v3 rowWillFillBackgroundWithContentAtIndexPath:v4];
+  v5 = [tableModel rowWillFillBackgroundWithContentAtIndexPath:v4];
 
   return v5;
 }
 
-- (void)setCommandDelegate:(id)a3
+- (void)setCommandDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SearchUICardViewController *)self tableViewController];
-  [v5 setCommandDelegate:v4];
+  delegateCopy = delegate;
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  [tableViewController setCommandDelegate:delegateCopy];
 }
 
 - (SearchUICommandDelegate)commandDelegate
 {
-  v2 = [(SearchUICardViewController *)self tableViewController];
-  v3 = [v2 commandDelegate];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  commandDelegate = [tableViewController commandDelegate];
 
-  return v3;
+  return commandDelegate;
 }
 
-- (void)setTextField:(id)a3
+- (void)setTextField:(id)field
 {
-  v4 = a3;
-  v5 = [(SearchUICardViewController *)self tableViewController];
-  [v5 setTextField:v4];
+  fieldCopy = field;
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  [tableViewController setTextField:fieldCopy];
 }
 
 - (UITextField)textField
 {
-  v2 = [(SearchUICardViewController *)self tableViewController];
-  v3 = [v2 textField];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  textField = [tableViewController textField];
 
-  return v3;
+  return textField;
 }
 
-- (void)setScrollEnabled:(BOOL)a3
+- (void)setScrollEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(SearchUICardViewController *)self tableViewController];
-  v6 = [v5 scrollViewForSizing];
-  [v6 setScrollEnabled:v3];
+  enabledCopy = enabled;
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  scrollViewForSizing = [tableViewController scrollViewForSizing];
+  [scrollViewForSizing setScrollEnabled:enabledCopy];
 
-  v8 = [(SearchUICardViewController *)self tableViewController];
-  v7 = [v8 scrollViewForSizing];
-  [v7 _setSafeAreaInsetsFrozen:v3 ^ 1];
+  tableViewController2 = [(SearchUICardViewController *)self tableViewController];
+  scrollViewForSizing2 = [tableViewController2 scrollViewForSizing];
+  [scrollViewForSizing2 _setSafeAreaInsetsFrozen:enabledCopy ^ 1];
 }
 
 - (BOOL)scrollEnabled
 {
-  v2 = [(SearchUICardViewController *)self tableViewController];
-  v3 = [v2 scrollViewForSizing];
-  v4 = [v3 isScrollEnabled];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  scrollViewForSizing = [tableViewController scrollViewForSizing];
+  isScrollEnabled = [scrollViewForSizing isScrollEnabled];
 
-  return v4;
+  return isScrollEnabled;
 }
 
 - (BOOL)threeDTouchEnabled
 {
-  v2 = [(SearchUICardViewController *)self tableViewController];
-  v3 = [v2 threeDTouchEnabled];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  threeDTouchEnabled = [tableViewController threeDTouchEnabled];
 
-  return v3;
+  return threeDTouchEnabled;
 }
 
-- (void)setThreeDTouchEnabled:(BOOL)a3
+- (void)setThreeDTouchEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v7 = [(SearchUICardViewController *)self card];
-  v5 = [(SearchUICardViewController *)self shouldForceEnableThreeDTouch:v7];
-  v6 = [(SearchUICardViewController *)self tableViewController];
-  [v6 setThreeDTouchEnabled:v5 | v3];
+  enabledCopy = enabled;
+  card = [(SearchUICardViewController *)self card];
+  v5 = [(SearchUICardViewController *)self shouldForceEnableThreeDTouch:card];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  [tableViewController setThreeDTouchEnabled:v5 | enabledCopy];
 }
 
-- (void)contentSizeDidChange:(CGSize)a3 animated:(BOOL)a4
+- (void)contentSizeDidChange:(CGSize)change animated:(BOOL)animated
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [(SearchUICardViewController *)self delegate];
+  height = change.height;
+  width = change.width;
+  delegate = [(SearchUICardViewController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if ((v9 & 1) != 0 && height != 0.0)
@@ -782,7 +782,7 @@ LABEL_11:
     block[4] = self;
     *&block[5] = width;
     *&block[6] = height;
-    v12 = a4;
+    animatedCopy = animated;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
@@ -840,20 +840,20 @@ uint64_t __60__SearchUICardViewController_contentSizeDidChange_animated___block_
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(SearchUICardViewController *)self tableViewController];
-  [v3 collectionViewContentSize];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  [tableViewController collectionViewContentSize];
   if (v5 == *MEMORY[0x1E695F060] && v4 == *(MEMORY[0x1E695F060] + 8))
   {
-    v12 = [(SearchUICardViewController *)self view];
-    [v12 frame];
+    view = [(SearchUICardViewController *)self view];
+    [view frame];
     v9 = v13;
     v11 = 44.0;
   }
 
   else
   {
-    v7 = [(SearchUICardViewController *)self tableViewController];
-    [v7 collectionViewContentSize];
+    tableViewController2 = [(SearchUICardViewController *)self tableViewController];
+    [tableViewController2 collectionViewContentSize];
     v9 = v8;
     v11 = v10;
 
@@ -879,70 +879,70 @@ uint64_t __60__SearchUICardViewController_contentSizeDidChange_animated___block_
   return result;
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v7 = a3;
-  v4 = [(SearchUICardViewController *)self tableViewController];
+  viewCopy = view;
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(SearchUICardViewController *)self tableViewController];
-    [v6 setFooterView:v7];
+    tableViewController2 = [(SearchUICardViewController *)self tableViewController];
+    [tableViewController2 setFooterView:viewCopy];
   }
 }
 
 - (void)scrollAndSelectLastSelectedIndexPath
 {
-  v2 = [(SearchUICardViewController *)self tableViewController];
-  [v2 scrollAndSelectLastSelectedIndexPath];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  [tableViewController scrollAndSelectLastSelectedIndexPath];
 }
 
-- (void)setRestorationContext:(id)a3
+- (void)setRestorationContext:(id)context
 {
-  v8 = a3;
-  v4 = [(SearchUICardViewController *)self tableViewController];
-  [v4 setRestorationContext:v8];
+  contextCopy = context;
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  [tableViewController setRestorationContext:contextCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v8 card];
-    [(SearchUICardViewController *)self setCard:v5];
+    card = [contextCopy card];
+    [(SearchUICardViewController *)self setCard:card];
 
-    -[SearchUICardViewController setLevel:](self, "setLevel:", [v8 level]);
-    v6 = [v8 card];
+    -[SearchUICardViewController setLevel:](self, "setLevel:", [contextCopy level]);
+    card2 = [contextCopy card];
 
-    if (v6)
+    if (card2)
     {
-      v7 = [(SearchUICardViewController *)self loadingView];
-      [v7 removeFromSuperview];
+      loadingView = [(SearchUICardViewController *)self loadingView];
+      [loadingView removeFromSuperview];
     }
   }
 }
 
 - (id)restorationContext
 {
-  v3 = [(SearchUICardViewController *)self tableViewController];
-  v4 = [v3 restorationContext];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  restorationContext = [tableViewController restorationContext];
 
-  [v4 setLevel:{-[SearchUICardViewController level](self, "level")}];
-  v5 = [(SearchUICardViewController *)self card];
-  [v4 setCard:v5];
+  [restorationContext setLevel:{-[SearchUICardViewController level](self, "level")}];
+  card = [(SearchUICardViewController *)self card];
+  [restorationContext setCard:card];
 
-  return v4;
+  return restorationContext;
 }
 
-- (BOOL)shouldForceEnableThreeDTouch:(id)a3
+- (BOOL)shouldForceEnableThreeDTouch:(id)touch
 {
   v27 = *MEMORY[0x1E69E9840];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [a3 cardSections];
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  cardSections = [touch cardSections];
+  v4 = [cardSections countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -953,7 +953,7 @@ uint64_t __60__SearchUICardViewController_contentSizeDidChange_animated___block_
       {
         if (*v22 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(cardSections);
         }
 
         v8 = *(*(&v21 + 1) + 8 * i);
@@ -972,8 +972,8 @@ LABEL_21:
           v18 = 0u;
           v19 = 0u;
           v20 = 0u;
-          v10 = [v9 cardSections];
-          v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+          cardSections2 = [v9 cardSections];
+          v11 = [cardSections2 countByEnumeratingWithState:&v17 objects:v25 count:16];
           if (v11)
           {
             v12 = v11;
@@ -984,7 +984,7 @@ LABEL_21:
               {
                 if (*v18 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(cardSections2);
                 }
 
                 if ([*(*(&v17 + 1) + 8 * j) forceEnable3DTouch])
@@ -994,7 +994,7 @@ LABEL_21:
                 }
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+              v12 = [cardSections2 countByEnumeratingWithState:&v17 objects:v25 count:16];
               if (v12)
               {
                 continue;
@@ -1006,7 +1006,7 @@ LABEL_21:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v5 = [cardSections countByEnumeratingWithState:&v21 objects:v26 count:16];
       v15 = 0;
       if (v5)
       {
@@ -1029,10 +1029,10 @@ LABEL_23:
 
 - (id)scrollViewForPocketInteraction
 {
-  v2 = [(SearchUICardViewController *)self tableViewController];
-  v3 = [v2 scrollViewForPocketInteraction];
+  tableViewController = [(SearchUICardViewController *)self tableViewController];
+  scrollViewForPocketInteraction = [tableViewController scrollViewForPocketInteraction];
 
-  return v3;
+  return scrollViewForPocketInteraction;
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface SBSystemActionPreviewBannerAuthority
-- (int64_t)shouldNewTierBeAddedToTopForPresentable:(id)a3 withPresentable:(id)a4;
-- (int64_t)shouldOverlapPresentable:(id)a3 withPresentable:(id)a4;
+- (int64_t)shouldNewTierBeAddedToTopForPresentable:(id)presentable withPresentable:(id)withPresentable;
+- (int64_t)shouldOverlapPresentable:(id)presentable withPresentable:(id)withPresentable;
 @end
 
 @implementation SBSystemActionPreviewBannerAuthority
 
-- (int64_t)shouldOverlapPresentable:(id)a3 withPresentable:(id)a4
+- (int64_t)shouldOverlapPresentable:(id)presentable withPresentable:(id)withPresentable
 {
-  v6 = a3;
-  v7 = a4;
+  presentableCopy = presentable;
+  withPresentableCopy = withPresentable;
   v8 = +[SBSystemActionSimplePreviewPresentableViewController requesterIdentifier];
-  v9 = [v6 requesterIdentifier];
-  v10 = [v9 isEqual:v8];
-  if ((v10 & 1) != 0 || ([v7 requesterIdentifier], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "isEqual:", v8)))
+  requesterIdentifier = [presentableCopy requesterIdentifier];
+  v10 = [requesterIdentifier isEqual:v8];
+  if ((v10 & 1) != 0 || ([withPresentableCopy requesterIdentifier], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "isEqual:", v8)))
   {
-    v11 = [v6 requesterIdentifier];
-    v12 = [v7 requesterIdentifier];
-    v13 = [v11 isEqual:v12] ^ 1;
+    requesterIdentifier2 = [presentableCopy requesterIdentifier];
+    requesterIdentifier3 = [withPresentableCopy requesterIdentifier];
+    v13 = [requesterIdentifier2 isEqual:requesterIdentifier3] ^ 1;
 
     if (v10)
     {
@@ -33,12 +33,12 @@ LABEL_7:
   return v13 << 63 >> 63;
 }
 
-- (int64_t)shouldNewTierBeAddedToTopForPresentable:(id)a3 withPresentable:(id)a4
+- (int64_t)shouldNewTierBeAddedToTopForPresentable:(id)presentable withPresentable:(id)withPresentable
 {
-  v5 = a4;
-  v6 = [a3 requesterIdentifier];
+  withPresentableCopy = withPresentable;
+  requesterIdentifier = [presentable requesterIdentifier];
   v7 = +[SBSystemActionSimplePreviewPresentableViewController requesterIdentifier];
-  if (![v6 isEqual:v7])
+  if (![requesterIdentifier isEqual:v7])
   {
 
     goto LABEL_5;
@@ -50,9 +50,9 @@ LABEL_7:
   if ((isKindOfClass & 1) == 0)
   {
 LABEL_5:
-    v10 = [v5 requesterIdentifier];
+    requesterIdentifier2 = [withPresentableCopy requesterIdentifier];
     v11 = +[SBSystemActionSimplePreviewPresentableViewController requesterIdentifier];
-    v12 = [v10 isEqual:v11];
+    v12 = [requesterIdentifier2 isEqual:v11];
 
     v9 = v12 << 63 >> 63;
     goto LABEL_6;

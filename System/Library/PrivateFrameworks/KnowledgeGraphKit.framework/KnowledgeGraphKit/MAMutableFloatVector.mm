@@ -1,135 +1,135 @@
 @interface MAMutableFloatVector
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addScalar:(float)a3;
-- (void)addVector:(id)a3;
-- (void)appendArray:(id)a3;
-- (void)appendDoubles:(const double *)a3 count:(int64_t)a4;
-- (void)appendFloat:(float)a3;
-- (void)appendFloats:(const float *)a3 count:(int64_t)a4;
-- (void)appendVector:(id)a3;
-- (void)divideByScalar:(float)a3;
-- (void)elementwiseMultiplyByVector:(id)a3;
-- (void)elementwiseRaiseToExponent:(float)a3;
-- (void)multiplyByScalar:(float)a3;
-- (void)setFloat:(float)a3 atIndex:(int64_t)a4;
-- (void)subtractScalar:(float)a3;
-- (void)subtractVector:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addScalar:(float)scalar;
+- (void)addVector:(id)vector;
+- (void)appendArray:(id)array;
+- (void)appendDoubles:(const double *)doubles count:(int64_t)count;
+- (void)appendFloat:(float)float;
+- (void)appendFloats:(const float *)floats count:(int64_t)count;
+- (void)appendVector:(id)vector;
+- (void)divideByScalar:(float)scalar;
+- (void)elementwiseMultiplyByVector:(id)vector;
+- (void)elementwiseRaiseToExponent:(float)exponent;
+- (void)multiplyByScalar:(float)scalar;
+- (void)setFloat:(float)float atIndex:(int64_t)index;
+- (void)subtractScalar:(float)scalar;
+- (void)subtractVector:(id)vector;
 @end
 
 @implementation MAMutableFloatVector
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [MAFloatVector allocWithZone:a3];
-  v5 = [(MAFloatVector *)self wrapper];
-  v6 = [v5 copy];
+  v4 = [MAFloatVector allocWithZone:zone];
+  wrapper = [(MAFloatVector *)self wrapper];
+  v6 = [wrapper copy];
   v7 = [(MAFloatVector *)v4 initWithWrapper:v6];
 
   return v7;
 }
 
-- (void)elementwiseRaiseToExponent:(float)a3
+- (void)elementwiseRaiseToExponent:(float)exponent
 {
-  v5 = [(MAFloatVector *)self wrapper];
-  *&v4 = a3;
-  [v5 elementwiseRaiseToExponent:v4];
+  wrapper = [(MAFloatVector *)self wrapper];
+  *&v4 = exponent;
+  [wrapper elementwiseRaiseToExponent:v4];
 }
 
-- (void)elementwiseMultiplyByVector:(id)a3
+- (void)elementwiseMultiplyByVector:(id)vector
 {
-  v4 = a3;
-  v6 = [(MAFloatVector *)self wrapper];
-  v5 = [v4 wrapper];
+  vectorCopy = vector;
+  wrapper = [(MAFloatVector *)self wrapper];
+  wrapper2 = [vectorCopy wrapper];
 
-  [v6 elementwiseMultiplyByWrapper:v5];
+  [wrapper elementwiseMultiplyByWrapper:wrapper2];
 }
 
-- (void)divideByScalar:(float)a3
+- (void)divideByScalar:(float)scalar
 {
-  v5 = [(MAFloatVector *)self wrapper];
-  *&v4 = a3;
-  [v5 divideByScalar:v4];
+  wrapper = [(MAFloatVector *)self wrapper];
+  *&v4 = scalar;
+  [wrapper divideByScalar:v4];
 }
 
-- (void)multiplyByScalar:(float)a3
+- (void)multiplyByScalar:(float)scalar
 {
-  v5 = [(MAFloatVector *)self wrapper];
-  *&v4 = a3;
-  [v5 multiplyByScalar:v4];
+  wrapper = [(MAFloatVector *)self wrapper];
+  *&v4 = scalar;
+  [wrapper multiplyByScalar:v4];
 }
 
-- (void)addScalar:(float)a3
+- (void)addScalar:(float)scalar
 {
-  v5 = [(MAFloatVector *)self wrapper];
-  *&v4 = a3;
-  [v5 addScalar:v4];
+  wrapper = [(MAFloatVector *)self wrapper];
+  *&v4 = scalar;
+  [wrapper addScalar:v4];
 }
 
-- (void)subtractScalar:(float)a3
+- (void)subtractScalar:(float)scalar
 {
-  v5 = [(MAFloatVector *)self wrapper];
-  *&v4 = a3;
-  [v5 subtractScalar:v4];
+  wrapper = [(MAFloatVector *)self wrapper];
+  *&v4 = scalar;
+  [wrapper subtractScalar:v4];
 }
 
-- (void)addVector:(id)a3
+- (void)addVector:(id)vector
 {
-  v4 = a3;
-  v6 = [(MAFloatVector *)self wrapper];
-  v5 = [v4 wrapper];
+  vectorCopy = vector;
+  wrapper = [(MAFloatVector *)self wrapper];
+  wrapper2 = [vectorCopy wrapper];
 
-  [v6 addVector:v5];
+  [wrapper addVector:wrapper2];
 }
 
-- (void)subtractVector:(id)a3
+- (void)subtractVector:(id)vector
 {
-  v4 = a3;
-  v6 = [(MAFloatVector *)self wrapper];
-  v5 = [v4 wrapper];
+  vectorCopy = vector;
+  wrapper = [(MAFloatVector *)self wrapper];
+  wrapper2 = [vectorCopy wrapper];
 
-  [v6 subtractVector:v5];
+  [wrapper subtractVector:wrapper2];
 }
 
-- (void)setFloat:(float)a3 atIndex:(int64_t)a4
+- (void)setFloat:(float)float atIndex:(int64_t)index
 {
-  v7 = [(MAFloatVector *)self wrapper];
-  *&v6 = a3;
-  [v7 setFloat:a4 atIndex:v6];
+  wrapper = [(MAFloatVector *)self wrapper];
+  *&v6 = float;
+  [wrapper setFloat:index atIndex:v6];
 }
 
-- (void)appendArray:(id)a3
+- (void)appendArray:(id)array
 {
-  v4 = a3;
-  v5 = [(MAFloatVector *)self wrapper];
-  [v5 appendArray:v4];
+  arrayCopy = array;
+  wrapper = [(MAFloatVector *)self wrapper];
+  [wrapper appendArray:arrayCopy];
 }
 
-- (void)appendVector:(id)a3
+- (void)appendVector:(id)vector
 {
-  v4 = a3;
-  v6 = [(MAFloatVector *)self wrapper];
-  v5 = [v4 wrapper];
+  vectorCopy = vector;
+  wrapper = [(MAFloatVector *)self wrapper];
+  wrapper2 = [vectorCopy wrapper];
 
-  [v6 appendVector:v5];
+  [wrapper appendVector:wrapper2];
 }
 
-- (void)appendDoubles:(const double *)a3 count:(int64_t)a4
+- (void)appendDoubles:(const double *)doubles count:(int64_t)count
 {
-  v6 = [(MAFloatVector *)self wrapper];
-  [v6 appendDoubles:a3 count:a4];
+  wrapper = [(MAFloatVector *)self wrapper];
+  [wrapper appendDoubles:doubles count:count];
 }
 
-- (void)appendFloats:(const float *)a3 count:(int64_t)a4
+- (void)appendFloats:(const float *)floats count:(int64_t)count
 {
-  v6 = [(MAFloatVector *)self wrapper];
-  [v6 appendFloats:a3 count:a4];
+  wrapper = [(MAFloatVector *)self wrapper];
+  [wrapper appendFloats:floats count:count];
 }
 
-- (void)appendFloat:(float)a3
+- (void)appendFloat:(float)float
 {
-  v5 = [(MAFloatVector *)self wrapper];
-  *&v4 = a3;
-  [v5 appendFloat:v4];
+  wrapper = [(MAFloatVector *)self wrapper];
+  *&v4 = float;
+  [wrapper appendFloat:v4];
 }
 
 @end

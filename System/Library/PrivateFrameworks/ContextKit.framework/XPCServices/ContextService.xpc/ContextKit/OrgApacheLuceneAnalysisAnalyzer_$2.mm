@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneAnalysisAnalyzer_$2
-- (id)getReusableComponentsWithOrgApacheLuceneAnalysisAnalyzer:(id)a3 withNSString:(id)a4;
-- (void)setReusableComponentsWithOrgApacheLuceneAnalysisAnalyzer:(id)a3 withNSString:(id)a4 withOrgApacheLuceneAnalysisAnalyzer_TokenStreamComponents:(id)a5;
+- (id)getReusableComponentsWithOrgApacheLuceneAnalysisAnalyzer:(id)analyzer withNSString:(id)string;
+- (void)setReusableComponentsWithOrgApacheLuceneAnalysisAnalyzer:(id)analyzer withNSString:(id)string withOrgApacheLuceneAnalysisAnalyzer_TokenStreamComponents:(id)components;
 @end
 
 @implementation OrgApacheLuceneAnalysisAnalyzer_$2
 
-- (id)getReusableComponentsWithOrgApacheLuceneAnalysisAnalyzer:(id)a3 withNSString:(id)a4
+- (id)getReusableComponentsWithOrgApacheLuceneAnalysisAnalyzer:(id)analyzer withNSString:(id)string
 {
-  v5 = sub_100010948(a3);
+  v5 = sub_100010948(analyzer);
   v6 = JavaUtilMap_class_();
   if (!v5)
   {
@@ -19,12 +19,12 @@
     JreThrowClassCastException();
   }
 
-  return [v5 getWithId:a4];
+  return [v5 getWithId:string];
 }
 
-- (void)setReusableComponentsWithOrgApacheLuceneAnalysisAnalyzer:(id)a3 withNSString:(id)a4 withOrgApacheLuceneAnalysisAnalyzer_TokenStreamComponents:(id)a5
+- (void)setReusableComponentsWithOrgApacheLuceneAnalysisAnalyzer:(id)analyzer withNSString:(id)string withOrgApacheLuceneAnalysisAnalyzer_TokenStreamComponents:(id)components
 {
-  v8 = sub_100010948(a3);
+  v8 = sub_100010948(analyzer);
   v9 = JavaUtilMap_class_();
   if (v8)
   {
@@ -37,14 +37,14 @@
   else
   {
     v8 = new_JavaUtilHashMap_init();
-    sub_10001099C(a3, v8);
+    sub_10001099C(analyzer, v8);
     if (!v8)
     {
       JreThrowNullPointerException();
     }
   }
 
-  [(JavaUtilHashMap *)v8 putWithId:a4 withId:a5];
+  [(JavaUtilHashMap *)v8 putWithId:string withId:components];
 }
 
 @end

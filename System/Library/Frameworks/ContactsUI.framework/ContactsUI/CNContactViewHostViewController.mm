@@ -1,32 +1,32 @@
 @interface CNContactViewHostViewController
-+ (BOOL)getViewController:(id)a3;
++ (BOOL)getViewController:(id)controller;
 + (id)contactViewExtension;
-+ (id)contextForIdentifier:(id)a3;
-- (BOOL)shouldPerformDefaultActionForContact:(id)a3 propertyKey:(id)a4 propertyIdentifier:(id)a5;
++ (id)contextForIdentifier:(id)identifier;
+- (BOOL)shouldPerformDefaultActionForContact:(id)contact propertyKey:(id)key propertyIdentifier:(id)identifier;
 - (CNContactViewControllerPPTDelegate)pptDelegate;
 - (CNContactViewHostProtocol)delegate;
 - (id)protocolContext;
-- (void)didChangePreferredContentSize:(CGSize)a3;
-- (void)didChangeToEditMode:(BOOL)a3;
-- (void)didChangeToShowTitle:(BOOL)a3;
-- (void)didCompleteWithContact:(id)a3;
-- (void)didDeleteContact:(id)a3;
+- (void)didChangePreferredContentSize:(CGSize)size;
+- (void)didChangeToEditMode:(BOOL)mode;
+- (void)didChangeToShowTitle:(BOOL)title;
+- (void)didCompleteWithContact:(id)contact;
+- (void)didDeleteContact:(id)contact;
 - (void)didExecuteClearRecentsDataAction;
 - (void)didExecuteDeleteFromDowntimeWhitelistAction;
 - (void)editCancel;
 - (void)invalidate;
-- (void)isPresentingEditingController:(BOOL)a3;
-- (void)isPresentingFullscreen:(BOOL)a3;
+- (void)isPresentingEditingController:(BOOL)controller;
+- (void)isPresentingFullscreen:(BOOL)fullscreen;
 - (void)performConfirmedCancel;
 - (void)presentCancelConfirmationAlert;
-- (void)setupWithOptions:(id)a3 readyBlock:(id)a4;
+- (void)setupWithOptions:(id)options readyBlock:(id)block;
 - (void)toggleEditing;
-- (void)updateEditing:(BOOL)a3 doneButtonEnabled:(BOOL)a4 doneButtonText:(id)a5;
+- (void)updateEditing:(BOOL)editing doneButtonEnabled:(BOOL)enabled doneButtonText:(id)text;
 - (void)viewDidAppear;
 - (void)viewServiceDidTerminate;
-- (void)viewServiceDidTerminateWithError:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CNContactViewHostViewController
@@ -47,153 +47,153 @@
 
 - (void)viewServiceDidTerminate
 {
-  v3 = [(CNContactViewHostViewController *)self delegate];
+  delegate = [(CNContactViewHostViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CNContactViewHostViewController *)self delegate];
-    [v5 viewServiceDidTerminate];
+    delegate2 = [(CNContactViewHostViewController *)self delegate];
+    [delegate2 viewServiceDidTerminate];
   }
 }
 
 - (void)presentCancelConfirmationAlert
 {
-  v2 = [(CNContactViewHostViewController *)self delegate];
-  [v2 presentCancelConfirmationAlert];
+  delegate = [(CNContactViewHostViewController *)self delegate];
+  [delegate presentCancelConfirmationAlert];
 }
 
 - (void)didExecuteDeleteFromDowntimeWhitelistAction
 {
-  v2 = [(CNContactViewHostViewController *)self delegate];
-  [v2 didExecuteClearRecentsDataAction];
+  delegate = [(CNContactViewHostViewController *)self delegate];
+  [delegate didExecuteClearRecentsDataAction];
 }
 
 - (void)didExecuteClearRecentsDataAction
 {
-  v2 = [(CNContactViewHostViewController *)self delegate];
-  [v2 didExecuteClearRecentsDataAction];
+  delegate = [(CNContactViewHostViewController *)self delegate];
+  [delegate didExecuteClearRecentsDataAction];
 }
 
 - (void)viewDidAppear
 {
-  v3 = [(CNContactViewHostViewController *)self pptDelegate];
-  [v3 viewDidAppearForContactViewController:self];
+  pptDelegate = [(CNContactViewHostViewController *)self pptDelegate];
+  [pptDelegate viewDidAppearForContactViewController:self];
 }
 
-- (void)didChangePreferredContentSize:(CGSize)a3
+- (void)didChangePreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CNContactViewHostViewController *)self delegate];
-  [v5 didChangePreferredContentSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  delegate = [(CNContactViewHostViewController *)self delegate];
+  [delegate didChangePreferredContentSize:{width, height}];
 }
 
-- (void)isPresentingEditingController:(BOOL)a3
+- (void)isPresentingEditingController:(BOOL)controller
 {
-  v3 = a3;
-  v4 = [(CNContactViewHostViewController *)self delegate];
-  [v4 isPresentingEditingController:v3];
+  controllerCopy = controller;
+  delegate = [(CNContactViewHostViewController *)self delegate];
+  [delegate isPresentingEditingController:controllerCopy];
 }
 
-- (void)isPresentingFullscreen:(BOOL)a3
+- (void)isPresentingFullscreen:(BOOL)fullscreen
 {
-  v3 = a3;
-  v4 = [(CNContactViewHostViewController *)self delegate];
-  [v4 isPresentingFullscreen:v3];
+  fullscreenCopy = fullscreen;
+  delegate = [(CNContactViewHostViewController *)self delegate];
+  [delegate isPresentingFullscreen:fullscreenCopy];
 }
 
-- (void)didDeleteContact:(id)a3
+- (void)didDeleteContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNContactViewHostViewController *)self delegate];
-  [v5 didDeleteContact:v4];
+  contactCopy = contact;
+  delegate = [(CNContactViewHostViewController *)self delegate];
+  [delegate didDeleteContact:contactCopy];
 }
 
-- (void)didCompleteWithContact:(id)a3
+- (void)didCompleteWithContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNContactViewHostViewController *)self delegate];
-  [v5 didCompleteWithContact:v4];
+  contactCopy = contact;
+  delegate = [(CNContactViewHostViewController *)self delegate];
+  [delegate didCompleteWithContact:contactCopy];
 }
 
-- (void)updateEditing:(BOOL)a3 doneButtonEnabled:(BOOL)a4 doneButtonText:(id)a5
+- (void)updateEditing:(BOOL)editing doneButtonEnabled:(BOOL)enabled doneButtonText:(id)text
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [(CNContactViewHostViewController *)self delegate];
-  [v9 updateEditing:v6 doneButtonEnabled:v5 doneButtonText:v8];
+  enabledCopy = enabled;
+  editingCopy = editing;
+  textCopy = text;
+  delegate = [(CNContactViewHostViewController *)self delegate];
+  [delegate updateEditing:editingCopy doneButtonEnabled:enabledCopy doneButtonText:textCopy];
 }
 
-- (BOOL)shouldPerformDefaultActionForContact:(id)a3 propertyKey:(id)a4 propertyIdentifier:(id)a5
+- (BOOL)shouldPerformDefaultActionForContact:(id)contact propertyKey:(id)key propertyIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CNContactViewHostViewController *)self delegate];
-  v12 = [v11 shouldPerformDefaultActionForContact:v10 propertyKey:v9 propertyIdentifier:v8];
+  identifierCopy = identifier;
+  keyCopy = key;
+  contactCopy = contact;
+  delegate = [(CNContactViewHostViewController *)self delegate];
+  v12 = [delegate shouldPerformDefaultActionForContact:contactCopy propertyKey:keyCopy propertyIdentifier:identifierCopy];
 
   return v12;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = CNContactViewHostViewController;
-  [(_UIRemoteViewController *)&v3 viewWillDisappear:a3];
+  [(_UIRemoteViewController *)&v3 viewWillDisappear:disappear];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = CNContactViewHostViewController;
-  [(_UIRemoteViewController *)&v3 viewWillAppear:a3];
+  [(_UIRemoteViewController *)&v3 viewWillAppear:appear];
 }
 
 - (void)performConfirmedCancel
 {
-  v2 = [(CNContactViewHostViewController *)self protocolContext];
-  [v2 performConfirmedCancel];
+  protocolContext = [(CNContactViewHostViewController *)self protocolContext];
+  [protocolContext performConfirmedCancel];
 }
 
 - (void)toggleEditing
 {
-  v2 = [(CNContactViewHostViewController *)self protocolContext];
-  [v2 toggleEditing];
+  protocolContext = [(CNContactViewHostViewController *)self protocolContext];
+  [protocolContext toggleEditing];
 }
 
 - (void)editCancel
 {
-  v2 = [(CNContactViewHostViewController *)self protocolContext];
-  [v2 editCancel];
+  protocolContext = [(CNContactViewHostViewController *)self protocolContext];
+  [protocolContext editCancel];
 }
 
-- (void)didChangeToShowTitle:(BOOL)a3
+- (void)didChangeToShowTitle:(BOOL)title
 {
-  v3 = a3;
-  v4 = [(CNContactViewHostViewController *)self protocolContext];
-  [v4 didChangeToShowTitle:v3];
+  titleCopy = title;
+  protocolContext = [(CNContactViewHostViewController *)self protocolContext];
+  [protocolContext didChangeToShowTitle:titleCopy];
 }
 
-- (void)didChangeToEditMode:(BOOL)a3
+- (void)didChangeToEditMode:(BOOL)mode
 {
-  v3 = a3;
-  v4 = [(CNContactViewHostViewController *)self protocolContext];
-  [v4 didChangeToEditMode:v3];
+  modeCopy = mode;
+  protocolContext = [(CNContactViewHostViewController *)self protocolContext];
+  [protocolContext didChangeToEditMode:modeCopy];
 }
 
-- (void)setupWithOptions:(id)a3 readyBlock:(id)a4
+- (void)setupWithOptions:(id)options readyBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNContactViewHostViewController *)self protocolContext];
-  [v8 setupWithOptions:v7 readyBlock:v6];
+  blockCopy = block;
+  optionsCopy = options;
+  protocolContext = [(CNContactViewHostViewController *)self protocolContext];
+  [protocolContext setupWithOptions:optionsCopy readyBlock:blockCopy];
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactViewHostViewController.m", 122, 7, @"view service did terminate with error: %@", v3, v4, v5, v6, a3);
+  _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactViewHostViewController.m", 122, 7, @"view service did terminate with error: %@", v3, v4, v5, v6, error);
 
   [(CNContactViewHostViewController *)self viewServiceDidTerminate];
 }
@@ -201,38 +201,38 @@
 - (id)protocolContext
 {
   v3 = objc_opt_class();
-  v4 = [(CNContactViewHostViewController *)self currentRequestIdentifier];
-  v5 = [v3 contextForIdentifier:v4];
+  currentRequestIdentifier = [(CNContactViewHostViewController *)self currentRequestIdentifier];
+  v5 = [v3 contextForIdentifier:currentRequestIdentifier];
 
   return v5;
 }
 
 - (void)invalidate
 {
-  v3 = [(CNContactViewHostViewController *)self extension];
-  v9 = [(CNContactViewHostViewController *)self currentRequestIdentifier];
-  _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactViewHostViewController.m", 109, 7, @"Invalidate extension %@ identifier %@", v4, v5, v6, v7, v3);
+  extension = [(CNContactViewHostViewController *)self extension];
+  currentRequestIdentifier = [(CNContactViewHostViewController *)self currentRequestIdentifier];
+  _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactViewHostViewController.m", 109, 7, @"Invalidate extension %@ identifier %@", v4, v5, v6, v7, extension);
 
-  v10 = [(CNContactViewHostViewController *)self extension];
-  v8 = [(CNContactViewHostViewController *)self currentRequestIdentifier];
-  [v10 cancelExtensionRequestWithIdentifier:v8];
+  extension2 = [(CNContactViewHostViewController *)self extension];
+  currentRequestIdentifier2 = [(CNContactViewHostViewController *)self currentRequestIdentifier];
+  [extension2 cancelExtensionRequestWithIdentifier:currentRequestIdentifier2];
 }
 
-+ (BOOL)getViewController:(id)a3
++ (BOOL)getViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [a1 contactViewExtension];
-  v10 = v5;
-  if (v5)
+  controllerCopy = controller;
+  contactViewExtension = [self contactViewExtension];
+  v10 = contactViewExtension;
+  if (contactViewExtension)
   {
-    _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactViewHostViewController.m", 78, 7, @"Instantiate view controller from extension %@", v6, v7, v8, v9, v5);
+    _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactViewHostViewController.m", 78, 7, @"Instantiate view controller from extension %@", v6, v7, v8, v9, contactViewExtension);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __53__CNContactViewHostViewController_getViewController___block_invoke;
     v12[3] = &unk_1E74E4DE8;
-    v14 = v4;
+    v14 = controllerCopy;
     v13 = v10;
-    v15 = a1;
+    selfCopy = self;
     [v13 instantiateViewControllerWithInputItems:MEMORY[0x1E695E0F0] listenerEndpoint:0 connectionHandler:v12];
   }
 
@@ -270,11 +270,11 @@ void __53__CNContactViewHostViewController_getViewController___block_invoke(uint
   }
 }
 
-+ (id)contextForIdentifier:(id)a3
++ (id)contextForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 contactViewExtension];
-  v6 = [v5 _extensionContextForUUID:v4];
+  identifierCopy = identifier;
+  contactViewExtension = [self contactViewExtension];
+  v6 = [contactViewExtension _extensionContextForUUID:identifierCopy];
 
   return v6;
 }

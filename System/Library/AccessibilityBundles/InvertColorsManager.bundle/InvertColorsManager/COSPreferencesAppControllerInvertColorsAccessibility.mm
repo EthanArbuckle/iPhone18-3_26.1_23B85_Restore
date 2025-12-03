@@ -1,15 +1,15 @@
 @interface COSPreferencesAppControllerInvertColorsAccessibility
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (void)_accessibilityLoadInvertColors;
 @end
 
 @implementation COSPreferencesAppControllerInvertColorsAccessibility
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   v7.receiver = self;
   v7.super_class = COSPreferencesAppControllerInvertColorsAccessibility;
-  v5 = [(COSPreferencesAppControllerInvertColorsAccessibility *)&v7 application:a3 didFinishLaunchingWithOptions:a4];
+  v5 = [(COSPreferencesAppControllerInvertColorsAccessibility *)&v7 application:application didFinishLaunchingWithOptions:options];
   [(COSPreferencesAppControllerInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
   return v5;
 }

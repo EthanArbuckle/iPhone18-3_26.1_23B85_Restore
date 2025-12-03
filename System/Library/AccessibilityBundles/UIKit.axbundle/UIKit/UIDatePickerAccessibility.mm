@@ -1,5 +1,5 @@
 @interface UIDatePickerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (BOOL)canBecomeFocused;
 - (int64_t)accessibilityContainerType;
@@ -7,14 +7,14 @@
 
 @implementation UIDatePickerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"UIDatePicker";
   v3 = @"UIControl";
   [location[0] validateClass:? isKindOfClass:?];
@@ -28,16 +28,16 @@
   v4[2] = self;
   v4[1] = a2;
   v4[0] = [(UIDatePickerAccessibility *)self safeValueForKey:@"_pickerView"];
-  v3 = [v4[0] accessibilityPerformEscape];
+  accessibilityPerformEscape = [v4[0] accessibilityPerformEscape];
   objc_storeStrong(v4, 0);
-  return v3;
+  return accessibilityPerformEscape;
 }
 
 - (int64_t)accessibilityContainerType
 {
-  v3 = [(UIDatePickerAccessibility *)self accessibilityLabel];
-  v4 = [v3 length];
-  MEMORY[0x29EDC9740](v3);
+  accessibilityLabel = [(UIDatePickerAccessibility *)self accessibilityLabel];
+  v4 = [accessibilityLabel length];
+  MEMORY[0x29EDC9740](accessibilityLabel);
   if (v4)
   {
     return 4;
@@ -51,17 +51,17 @@
 
 - (BOOL)canBecomeFocused
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v3.receiver = self;
   v3.super_class = UIDatePickerAccessibility;
-  v4 = [(UIDatePickerAccessibility *)&v3 canBecomeFocused];
-  if (([(UIDatePickerAccessibility *)v6 _accessibilityIsFKARunningForFocusItem]& 1) != 0)
+  canBecomeFocused = [(UIDatePickerAccessibility *)&v3 canBecomeFocused];
+  if (([(UIDatePickerAccessibility *)selfCopy _accessibilityIsFKARunningForFocusItem]& 1) != 0)
   {
-    v4 = 0;
+    canBecomeFocused = 0;
   }
 
-  return v4 & 1;
+  return canBecomeFocused & 1;
 }
 
 @end

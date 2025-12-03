@@ -1,15 +1,15 @@
 @interface TPSlidingButton
 - (CGSize)intrinsicContentSize;
-- (TPSlidingButton)initWithSlidingButtonType:(int)a3;
-- (void)actionSlider:(id)a3 didUpdateSlideWithValue:(double)a4;
-- (void)actionSliderDidCompleteSlide:(id)a3;
+- (TPSlidingButton)initWithSlidingButtonType:(int)type;
+- (void)actionSlider:(id)slider didUpdateSlideWithValue:(double)value;
+- (void)actionSliderDidCompleteSlide:(id)slide;
 - (void)dealloc;
 - (void)layoutSubviews;
 @end
 
 @implementation TPSlidingButton
 
-- (TPSlidingButton)initWithSlidingButtonType:(int)a3
+- (TPSlidingButton)initWithSlidingButtonType:(int)type
 {
   v46.receiver = self;
   v46.super_class = TPSlidingButton;
@@ -21,12 +21,12 @@
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
+    v8->_type = type;
     v10 = MEMORY[0x1E69DD7F0];
-    v11 = [MEMORY[0x1E69DC888] blueColor];
+    blueColor = [MEMORY[0x1E69DC888] blueColor];
     v12 = 1;
     v13 = [MEMORY[0x1E69DD5B8] sharedInstanceForStyle:1];
-    v14 = [v10 vibrantSettingsWithReferenceColor:v11 referenceContrast:v13 legibilitySettings:0.3];
+    v14 = [v10 vibrantSettingsWithReferenceColor:blueColor referenceContrast:v13 legibilitySettings:0.3];
 
     v15 = [objc_alloc(MEMORY[0x1E69DD338]) initWithFrame:v14 vibrantSettings:{v4, v5, v6, v7}];
     acceptButton = v9->_acceptButton;
@@ -38,19 +38,19 @@
     v20 = [v19 imageWithRenderingMode:2];
     [(_UIActionSlider *)v9->_acceptButton setKnobImage:v20];
 
-    v21 = [MEMORY[0x1E69DC888] systemGreenColor];
-    [(_UIActionSlider *)v9->_acceptButton setTintColor:v21];
+    systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+    [(_UIActionSlider *)v9->_acceptButton setTintColor:systemGreenColor];
 
     [(_UIActionSlider *)v9->_acceptButton setDelegate:v9];
-    if (a3 > 6 || ((1 << a3) & 0x46) == 0)
+    if (type > 6 || ((1 << type) & 0x46) == 0)
     {
-      v12 = a3 == 3;
+      v12 = type == 3;
     }
 
     [(_UIActionSlider *)v9->_acceptButton setStyle:v12];
-    v22 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v23 = [v22 currentMode];
-    [v23 size];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    currentMode = [mainScreen currentMode];
+    [currentMode size];
     v25 = v24;
 
     if (v25 >= 2208.0)
@@ -61,7 +61,7 @@
 
     v26 = TelephonyUIBundle();
     v27 = v26;
-    if ((a3 - 5) >= 2)
+    if ((type - 5) >= 2)
     {
       v28 = @"SLIDE_TO_ANSWER";
     }
@@ -78,8 +78,8 @@
     v31 = MEMORY[0x1E69DCAB8];
     v32 = TelephonyUIBundle();
     v33 = [v31 imageNamed:@"phone_dial" inBundle:v32];
-    v34 = [MEMORY[0x1E69DC888] systemGreenColor];
-    v35 = [v33 _flatImageWithColor:v34];
+    systemGreenColor2 = [MEMORY[0x1E69DC888] systemGreenColor];
+    v35 = [v33 _flatImageWithColor:systemGreenColor2];
     v36 = [v30 initWithImage:v35];
     dialImageView = v9->_dialImageView;
     v9->_dialImageView = v36;
@@ -89,13 +89,13 @@
     v9->_sideButtonRight = v38;
 
     v40 = v9->_sideButtonRight;
-    v41 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIButton *)v40 setBackgroundColor:v41];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIButton *)v40 setBackgroundColor:whiteColor];
 
     +[TPButton defaultWidthForSideButton];
     v43 = v42 * 0.5;
-    v44 = [(UIButton *)v9->_sideButtonRight layer];
-    [v44 setCornerRadius:v43];
+    layer = [(UIButton *)v9->_sideButtonRight layer];
+    [layer setCornerRadius:v43];
 
     [(UIButton *)v9->_sideButtonRight setUserInteractionEnabled:0];
     [(UIImageView *)v9->_dialImageView setClipsToBounds:0];
@@ -126,8 +126,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(TPSlidingButton *)self acceptButton];
-  [v2 trackSize];
+  acceptButton = [(TPSlidingButton *)self acceptButton];
+  [acceptButton trackSize];
   v4 = v3;
   v6 = v5;
 
@@ -138,36 +138,36 @@
   return result;
 }
 
-- (void)actionSlider:(id)a3 didUpdateSlideWithValue:(double)a4
+- (void)actionSlider:(id)slider didUpdateSlideWithValue:(double)value
 {
-  v6 = [(TPSlidingButton *)self delegate];
-  if (v6)
+  delegate = [(TPSlidingButton *)self delegate];
+  if (delegate)
   {
-    v7 = v6;
-    v8 = [(TPSlidingButton *)self delegate];
+    v7 = delegate;
+    delegate2 = [(TPSlidingButton *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(TPSlidingButton *)self delegate];
-      [v10 slidingButton:self didSlideToProportion:a4];
+      delegate3 = [(TPSlidingButton *)self delegate];
+      [delegate3 slidingButton:self didSlideToProportion:value];
     }
   }
 }
 
-- (void)actionSliderDidCompleteSlide:(id)a3
+- (void)actionSliderDidCompleteSlide:(id)slide
 {
-  v4 = [(TPSlidingButton *)self delegate];
-  if (v4)
+  delegate = [(TPSlidingButton *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(TPSlidingButton *)self delegate];
+    v5 = delegate;
+    delegate2 = [(TPSlidingButton *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(TPSlidingButton *)self delegate];
-      [v8 slidingButtonWillFinishSlide];
+      delegate3 = [(TPSlidingButton *)self delegate];
+      [delegate3 slidingButtonWillFinishSlide];
     }
   }
 
@@ -205,17 +205,17 @@
     v82 = v10;
     [v10 setRemovedOnCompletion:0];
     v12 = MEMORY[0x1E696AD98];
-    v13 = [(TPSlidingButton *)self acceptButton];
-    v14 = [v13 layer];
-    [v14 position];
+    acceptButton = [(TPSlidingButton *)self acceptButton];
+    layer = [acceptButton layer];
+    [layer position];
     v15 = [v12 numberWithDouble:?];
 
     v16 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"position.x"];
     v17 = self->_acceptButton;
     if (self->_type == 3)
     {
-      v18 = [(_UIActionSlider *)v17 layer];
-      [v18 position];
+      layer2 = [(_UIActionSlider *)v17 layer];
+      [layer2 position];
       v20 = v19 + -3.0;
     }
 
@@ -270,18 +270,18 @@
       v32 = v33 * 0.5;
     }
 
-    v34 = [(TPSlidingButton *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(TPSlidingButton *)self _shouldReverseLayoutDirection];
     v35 = -1.0;
-    if (v34)
+    if (_shouldReverseLayoutDirection)
     {
       v35 = 1.0;
     }
 
     v36 = v32 + v35;
     v37 = MEMORY[0x1E696AD98];
-    v38 = [(TPSlidingButton *)self sideButtonRight];
-    v39 = [v38 layer];
-    [v39 position];
+    sideButtonRight = [(TPSlidingButton *)self sideButtonRight];
+    layer3 = [sideButtonRight layer];
+    [layer3 position];
     v78 = [v37 numberWithDouble:?];
 
     v76 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"position.x"];
@@ -296,9 +296,9 @@
     [v76 setFillMode:v11];
     [v76 setRemovedOnCompletion:0];
     v41 = MEMORY[0x1E696AD98];
-    v42 = [(TPSlidingButton *)self dialImageView];
-    v43 = [v42 layer];
-    [v43 position];
+    dialImageView = [(TPSlidingButton *)self dialImageView];
+    layer4 = [dialImageView layer];
+    [layer4 position];
     v77 = [v41 numberWithDouble:?];
 
     v44 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"position.x"];
@@ -326,23 +326,23 @@
     [v75 setRemovedOnCompletion:0];
     +[TPSuperBottomBarButton defaultHeight];
     v52 = v51 * 0.5;
-    v53 = [(UIButton *)self->_sideButtonRight layer];
-    [v53 setCornerRadius:v52];
+    layer5 = [(UIButton *)self->_sideButtonRight layer];
+    [layer5 setCornerRadius:v52];
 
     v54 = [MEMORY[0x1E6979318] animationWithKeyPath:@"backgroundColor"];
     [v54 setDuration:0.144999996];
-    v55 = [MEMORY[0x1E69DC888] whiteColor];
-    [v54 setFromValue:{objc_msgSend(v55, "CGColor")}];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v54 setFromValue:{objc_msgSend(whiteColor, "CGColor")}];
 
-    v56 = [MEMORY[0x1E69DC888] systemRedColor];
-    [v54 setToValue:{objc_msgSend(v56, "CGColor")}];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+    [v54 setToValue:{objc_msgSend(systemRedColor, "CGColor")}];
 
     [v54 setFillMode:v11];
     [v54 setRemovedOnCompletion:0];
-    v57 = [MEMORY[0x1E6979538] animation];
-    [v57 setType:*MEMORY[0x1E697A030]];
-    v74 = v57;
-    [v57 setDuration:0.115000002];
+    animation = [MEMORY[0x1E6979538] animation];
+    [animation setType:*MEMORY[0x1E697A030]];
+    v74 = animation;
+    [animation setDuration:0.115000002];
     [MEMORY[0x1E6979518] begin];
     v83[0] = MEMORY[0x1E69E9820];
     v83[1] = 3221225472;
@@ -350,38 +350,38 @@
     v83[3] = &unk_1E7C0C368;
     v83[4] = self;
     [MEMORY[0x1E6979518] setCompletionBlock:v83];
-    v58 = [(UIImageView *)self->_dialImageView layer];
-    [v58 addAnimation:v57 forKey:*MEMORY[0x1E697A028]];
+    layer6 = [(UIImageView *)self->_dialImageView layer];
+    [layer6 addAnimation:animation forKey:*MEMORY[0x1E697A028]];
 
     v59 = MEMORY[0x1E69DCAB8];
     v60 = TelephonyUIBundle();
     v61 = [v59 imageNamed:@"phone_dial" inBundle:v60];
-    v62 = [MEMORY[0x1E69DC888] whiteColor];
-    v63 = [v61 _flatImageWithColor:v62];
-    v64 = [v63 CGImage];
-    v65 = [(UIImageView *)self->_dialImageView layer];
-    [v65 setContents:v64];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    v63 = [v61 _flatImageWithColor:whiteColor2];
+    cGImage = [v63 CGImage];
+    layer7 = [(UIImageView *)self->_dialImageView layer];
+    [layer7 setContents:cGImage];
 
-    v66 = [(UIButton *)self->_sideButtonRight layer];
-    [v66 addAnimation:v54 forKey:@"backgroundColor"];
+    layer8 = [(UIButton *)self->_sideButtonRight layer];
+    [layer8 addAnimation:v54 forKey:@"backgroundColor"];
 
-    v67 = [(UIButton *)self->_sideButtonRight layer];
-    [v67 addAnimation:v75 forKey:@"bounds"];
+    layer9 = [(UIButton *)self->_sideButtonRight layer];
+    [layer9 addAnimation:v75 forKey:@"bounds"];
 
-    v68 = [(UIButton *)self->_sideButtonRight layer];
-    [v68 addAnimation:v76 forKey:@"position"];
+    layer10 = [(UIButton *)self->_sideButtonRight layer];
+    [layer10 addAnimation:v76 forKey:@"position"];
 
-    v69 = [(UIImageView *)self->_dialImageView layer];
-    [v69 addAnimation:v79 forKey:@"transform"];
+    layer11 = [(UIImageView *)self->_dialImageView layer];
+    [layer11 addAnimation:v79 forKey:@"transform"];
 
-    v70 = [(_UIActionSlider *)self->_acceptButton layer];
-    [v70 addAnimation:v82 forKey:@"opacity"];
+    layer12 = [(_UIActionSlider *)self->_acceptButton layer];
+    [layer12 addAnimation:v82 forKey:@"opacity"];
 
-    v71 = [(_UIActionSlider *)self->_acceptButton layer];
-    [v71 addAnimation:v80 forKey:@"position"];
+    layer13 = [(_UIActionSlider *)self->_acceptButton layer];
+    [layer13 addAnimation:v80 forKey:@"position"];
 
-    v72 = [(UIImageView *)self->_dialImageView layer];
-    [v72 addAnimation:v73 forKey:@"position"];
+    layer14 = [(UIImageView *)self->_dialImageView layer];
+    [layer14 addAnimation:v73 forKey:@"position"];
 
     [MEMORY[0x1E6979518] commit];
   }

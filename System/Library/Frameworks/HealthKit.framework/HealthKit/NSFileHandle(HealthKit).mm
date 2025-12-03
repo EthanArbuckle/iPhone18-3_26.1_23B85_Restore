@@ -10,7 +10,7 @@
   v5[1] = 3221225472;
   v5[2] = __62__NSFileHandle_HealthKit__hk_enumerateLinesWithError_handler___block_invoke;
   v5[3] = &unk_1E7380530;
-  v5[4] = a1;
+  v5[4] = self;
   return [HKLineEnumerator enumerateUTF8LinesWithError:a3 dataProvider:v5 lineHandler:a4];
 }
 

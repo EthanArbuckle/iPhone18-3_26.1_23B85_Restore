@@ -1,25 +1,25 @@
 @interface PHCallDirectorySettingsController
 - (BOOL)canEditExtensions;
 - (BOOL)hasExtensions;
-- (PHCallDirectorySettingsController)initWithParent:(id)a3;
-- (id)_localizedExtensionTitleForExtension:(id)a3;
-- (id)callDirectoryExtensionForSpecifier:(id)a3;
+- (PHCallDirectorySettingsController)initWithParent:(id)parent;
+- (id)_localizedExtensionTitleForExtension:(id)extension;
+- (id)callDirectoryExtensionForSpecifier:(id)specifier;
 - (id)createExtensionsGroupSpecifiers;
-- (id)readPreferenceValue:(id)a3;
+- (id)readPreferenceValue:(id)value;
 - (id)specifiers;
 - (void)_updateExtensions;
-- (void)extensionsChangedForCallDirectoryExtensionManager:(id)a3;
-- (void)presentError:(id)a3 fromSettingEnabled:(BOOL)a4 forExtension:(id)a5;
+- (void)extensionsChangedForCallDirectoryExtensionManager:(id)manager;
+- (void)presentError:(id)error fromSettingEnabled:(BOOL)enabled forExtension:(id)extension;
 - (void)refreshView;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 @end
 
 @implementation PHCallDirectorySettingsController
 
-- (PHCallDirectorySettingsController)initWithParent:(id)a3
+- (PHCallDirectorySettingsController)initWithParent:(id)parent
 {
-  v5 = a3;
+  parentCopy = parent;
   v10.receiver = self;
   v10.super_class = PHCallDirectorySettingsController;
   v6 = [(PHCallDirectorySettingsController *)&v10 init];
@@ -31,27 +31,27 @@
 
     [(CXCallDirectoryExtensionManager *)v6->_extensionManager setDelegate:v6 queue:0];
     [(CXCallDirectoryExtensionManager *)v6->_extensionManager beginObservingExtensions];
-    objc_storeStrong(&v6->_parent, a3);
+    objc_storeStrong(&v6->_parent, parent);
     [(PHCallDirectorySettingsController *)v6 _updateExtensions];
   }
 
   return v6;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 section];
-  if (v9 == [v8 section])
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  section = [pathCopy section];
+  if (section == [indexPathCopy section])
   {
-    v10 = [(PHCallDirectorySettingsController *)self extensions];
-    v11 = [v10 mutableCopy];
+    extensions = [(PHCallDirectorySettingsController *)self extensions];
+    v11 = [extensions mutableCopy];
 
-    v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
-    [v11 removeObjectAtIndex:{objc_msgSend(v7, "row")}];
-    [v11 insertObject:v12 atIndex:{objc_msgSend(v8, "row")}];
+    v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+    [v11 removeObjectAtIndex:{objc_msgSend(pathCopy, "row")}];
+    [v11 insertObject:v12 atIndex:{objc_msgSend(indexPathCopy, "row")}];
     [(PHCallDirectorySettingsController *)self setExtensions:v11];
     v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v11, "count")}];
     v25 = 0u;
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v25 + 1) + 8 * v18) identifier];
-          [v13 addObject:v19];
+          identifier = [*(*(&v25 + 1) + 8 * v18) identifier];
+          [v13 addObject:identifier];
 
           ++v18;
         }
@@ -87,14 +87,14 @@
       while (v16);
     }
 
-    v20 = [(PHCallDirectorySettingsController *)self extensionManager];
+    extensionManager = [(PHCallDirectorySettingsController *)self extensionManager];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __78__PHCallDirectorySettingsController_tableView_moveRowAtIndexPath_toIndexPath___block_invoke;
     v23[3] = &unk_2782E3A48;
     v24 = v13;
     v21 = v13;
-    [v20 setPrioritizedExtensionIdentifiers:v21 completionHandler:v23];
+    [extensionManager setPrioritizedExtensionIdentifiers:v21 completionHandler:v23];
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -116,31 +116,31 @@ void __78__PHCallDirectorySettingsController_tableView_moveRowAtIndexPath_toInde
 - (id)specifiers
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(PHCallDirectorySettingsController *)self extensions];
-  v5 = [v4 count];
+  extensions = [(PHCallDirectorySettingsController *)self extensions];
+  v5 = [extensions count];
 
   if (v5)
   {
-    v6 = [(PHCallDirectorySettingsController *)self createExtensionsGroupSpecifiers];
-    [v3 addObjectsFromArray:v6];
+    createExtensionsGroupSpecifiers = [(PHCallDirectorySettingsController *)self createExtensionsGroupSpecifiers];
+    [v3 addObjectsFromArray:createExtensionsGroupSpecifiers];
   }
 
   return v3;
 }
 
-- (id)readPreferenceValue:(id)a3
+- (id)readPreferenceValue:(id)value
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(PHCallDirectorySettingsController *)self callDirectoryExtensionForSpecifier:a3];
+  v3 = [(PHCallDirectorySettingsController *)self callDirectoryExtensionForSpecifier:value];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 state];
+    state = [v3 state];
     v6 = TPSLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = @"DISABLED";
-      if (v5 == 4)
+      if (state == 4)
       {
         v7 = @"ENABLED";
       }
@@ -152,7 +152,7 @@ void __78__PHCallDirectorySettingsController_tableView_moveRowAtIndexPath_toInde
       _os_log_impl(&dword_21B8E9000, v6, OS_LOG_TYPE_DEFAULT, "Getting extension enabled (%@) as %@", &v11, 0x16u);
     }
 
-    v8 = [MEMORY[0x277CCABB0] numberWithBool:v5 == 4];
+    v8 = [MEMORY[0x277CCABB0] numberWithBool:state == 4];
   }
 
   else
@@ -165,30 +165,30 @@ void __78__PHCallDirectorySettingsController_tableView_moveRowAtIndexPath_toInde
   return v8;
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHCallDirectorySettingsController *)self callDirectoryExtensionForSpecifier:v7];
+  valueCopy = value;
+  specifierCopy = specifier;
+  v8 = [(PHCallDirectorySettingsController *)self callDirectoryExtensionForSpecifier:specifierCopy];
   if (v8)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v6 BOOLValue];
+      bOOLValue = [valueCopy BOOLValue];
     }
 
     else
     {
-      v9 = 0;
+      bOOLValue = 0;
     }
 
     v10 = TPSLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = @"DISABLED";
-      if (v9)
+      if (bOOLValue)
       {
         v11 = @"ENABLED";
       }
@@ -201,22 +201,22 @@ void __78__PHCallDirectorySettingsController_tableView_moveRowAtIndexPath_toInde
     }
 
     objc_initWeak(buf, self);
-    v12 = [(PHCallDirectorySettingsController *)self extensionManager];
+    extensionManager = [(PHCallDirectorySettingsController *)self extensionManager];
     v20 = MEMORY[0x277D85DD0];
     v21 = 3221225472;
     v22 = __66__PHCallDirectorySettingsController_setPreferenceValue_specifier___block_invoke;
     v23 = &unk_2782E3A20;
     objc_copyWeak(&v26, buf);
-    v27 = v9;
+    v27 = bOOLValue;
     v13 = v8;
     v24 = v13;
-    v14 = v7;
+    v14 = specifierCopy;
     v25 = v14;
-    [v12 setEnabled:v9 forExtension:v13 completion:&v20];
+    [extensionManager setEnabled:bOOLValue forExtension:v13 completion:&v20];
 
-    v15 = [v13 state];
-    v16 = [v13 state];
-    if (v16 == 4)
+    state = [v13 state];
+    state2 = [v13 state];
+    if (state2 == 4)
     {
       v17 = 2;
     }
@@ -226,14 +226,14 @@ void __78__PHCallDirectorySettingsController_tableView_moveRowAtIndexPath_toInde
       v17 = 4;
     }
 
-    if (v15 == 1 && v16 != 4)
+    if (state == 1 && state2 != 4)
     {
       [v14 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FEA8]];
     }
 
     [v13 setState:v17];
-    v18 = [(PHCallDirectorySettingsController *)self parent];
-    [v18 reloadSpecifier:v14 animated:1];
+    parent = [(PHCallDirectorySettingsController *)self parent];
+    [parent reloadSpecifier:v14 animated:1];
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(buf);
@@ -283,12 +283,12 @@ void __66__PHCallDirectorySettingsController_setPreferenceValue_specifier___bloc
   }
 }
 
-- (id)callDirectoryExtensionForSpecifier:(id)a3
+- (id)callDirectoryExtensionForSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [v3 propertyForKey:v5];
+  v6 = [specifierCopy propertyForKey:v5];
 
   if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
   {
@@ -303,7 +303,7 @@ void __66__PHCallDirectorySettingsController_setPreferenceValue_specifier___bloc
   return v7;
 }
 
-- (void)extensionsChangedForCallDirectoryExtensionManager:(id)a3
+- (void)extensionsChangedForCallDirectoryExtensionManager:(id)manager
 {
   v4 = TPSLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -318,13 +318,13 @@ void __66__PHCallDirectorySettingsController_setPreferenceValue_specifier___bloc
 - (void)_updateExtensions
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(PHCallDirectorySettingsController *)self extensionManager];
+  extensionManager = [(PHCallDirectorySettingsController *)self extensionManager];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __54__PHCallDirectorySettingsController__updateExtensions__block_invoke;
   v4[3] = &unk_2782E38B0;
   v4[4] = self;
-  [v3 extensionsWithCompletionHandler:v4];
+  [extensionManager extensionsWithCompletionHandler:v4];
 }
 
 void __54__PHCallDirectorySettingsController__updateExtensions__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -419,7 +419,7 @@ void __54__PHCallDirectorySettingsController__updateExtensions__block_invoke_2(u
 - (id)createExtensionsGroupSpecifiers
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = MEMORY[0x277D3FAD8];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"CALL_DIRECTORY_EXTENSIONS_LIST_HEADER" value:&stru_282D54710 table:@"CallDirectorySettings"];
@@ -429,7 +429,7 @@ void __54__PHCallDirectorySettingsController__updateExtensions__block_invoke_2(u
   v9 = [v8 localizedStringForKey:@"CALL_DIRECTORY_EXTENSIONS_LIST_FOOTER" value:&stru_282D54710 table:@"CallDirectorySettings"];
   [v7 setProperty:v9 forKey:*MEMORY[0x277D3FF88]];
 
-  [v3 insertObject:v7 atIndex:0];
+  [array insertObject:v7 atIndex:0];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -455,8 +455,8 @@ void __54__PHCallDirectorySettingsController__updateExtensions__block_invoke_2(u
         v14 = [(PHCallDirectorySettingsController *)self _localizedExtensionTitleForExtension:v13];
         v15 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v14 target:self set:sel_setPreferenceValue_specifier_ get:sel_readPreferenceValue_ detail:0 cell:6 edit:0];
         v16 = MEMORY[0x277D755B8];
-        v17 = [v13 plugInKitProxy];
-        v18 = [v16 _iconForResourceProxy:v17 format:0];
+        plugInKitProxy = [v13 plugInKitProxy];
+        v18 = [v16 _iconForResourceProxy:plugInKitProxy format:0];
 
         [v15 setProperty:v18 forKey:v28];
         v19 = [v13 state] == 3;
@@ -467,7 +467,7 @@ void __54__PHCallDirectorySettingsController__updateExtensions__block_invoke_2(u
         v22 = NSStringFromClass(v21);
         [v15 setProperty:v13 forKey:v22];
 
-        [v3 addObject:v15];
+        [array addObject:v15];
       }
 
       v11 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -476,18 +476,18 @@ void __54__PHCallDirectorySettingsController__updateExtensions__block_invoke_2(u
     while (v11);
   }
 
-  v23 = [v3 copy];
+  v23 = [array copy];
   v24 = *MEMORY[0x277D85DE8];
 
   return v23;
 }
 
-- (id)_localizedExtensionTitleForExtension:(id)a3
+- (id)_localizedExtensionTitleForExtension:(id)extension
 {
-  v3 = a3;
-  if ([v3 isOnlyExtensionInContainingApp])
+  extensionCopy = extension;
+  if ([extensionCopy isOnlyExtensionInContainingApp])
   {
-    v4 = [v3 localizedContainingAppName];
+    localizedContainingAppName = [extensionCopy localizedContainingAppName];
   }
 
   else
@@ -495,26 +495,26 @@ void __54__PHCallDirectorySettingsController__updateExtensions__block_invoke_2(u
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"CALL_DIRECTORY_APP_%@_EXTENSION_%@" value:&stru_282D54710 table:@"CallDirectorySettings"];
-    v8 = [v3 localizedContainingAppName];
-    v9 = [v3 localizedName];
-    v4 = [v5 stringWithFormat:v7, v8, v9];
+    localizedContainingAppName2 = [extensionCopy localizedContainingAppName];
+    localizedName = [extensionCopy localizedName];
+    localizedContainingAppName = [v5 stringWithFormat:v7, localizedContainingAppName2, localizedName];
   }
 
-  return v4;
+  return localizedContainingAppName;
 }
 
 - (BOOL)hasExtensions
 {
-  v2 = [(PHCallDirectorySettingsController *)self extensions];
-  v3 = [v2 count] != 0;
+  extensions = [(PHCallDirectorySettingsController *)self extensions];
+  v3 = [extensions count] != 0;
 
   return v3;
 }
 
 - (BOOL)canEditExtensions
 {
-  v2 = [(PHCallDirectorySettingsController *)self extensions];
-  v3 = [v2 count] > 1;
+  extensions = [(PHCallDirectorySettingsController *)self extensions];
+  v3 = [extensions count] > 1;
 
   return v3;
 }
@@ -528,32 +528,32 @@ void __54__PHCallDirectorySettingsController__updateExtensions__block_invoke_2(u
     _os_log_impl(&dword_21B8E9000, v3, OS_LOG_TYPE_DEFAULT, "Call Directory refreshView", v5, 2u);
   }
 
-  v4 = [(PHCallDirectorySettingsController *)self parent];
-  [v4 reloadSpecifiers];
+  parent = [(PHCallDirectorySettingsController *)self parent];
+  [parent reloadSpecifiers];
 }
 
-- (void)presentError:(id)a3 fromSettingEnabled:(BOOL)a4 forExtension:(id)a5
+- (void)presentError:(id)error fromSettingEnabled:(BOOL)enabled forExtension:(id)extension
 {
-  v6 = a4;
-  v31 = a3;
-  v8 = a5;
-  v9 = [v31 domain];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CBAF30]];
+  enabledCopy = enabled;
+  errorCopy = error;
+  extensionCopy = extension;
+  domain = [errorCopy domain];
+  v10 = [domain isEqualToString:*MEMORY[0x277CBAF30]];
 
   if (!v10)
   {
     goto LABEL_6;
   }
 
-  v11 = [v31 code];
-  if ((v11 - 3) < 3)
+  code = [errorCopy code];
+  if ((code - 3) < 3)
   {
     v12 = @"CALL_DIRECTORY_ENABLE_EXTENSION_ALERT_DATA_INVALID_%@";
 LABEL_9:
     v30 = v12;
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v15 = v14;
-    if (v6)
+    if (enabledCopy)
     {
       v16 = @"CALL_DIRECTORY_ENABLE_EXTENSION_ALERT_TITLE";
     }
@@ -568,8 +568,8 @@ LABEL_9:
     v18 = MEMORY[0x277CCACA8];
     v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v20 = [v19 localizedStringForKey:v12 value:&stru_282D54710 table:@"CallDirectorySettings"];
-    [(PHCallDirectorySettingsController *)self _localizedExtensionTitleForExtension:v8];
-    v22 = v21 = v8;
+    [(PHCallDirectorySettingsController *)self _localizedExtensionTitleForExtension:extensionCopy];
+    v22 = v21 = extensionCopy;
     v23 = [v18 stringWithFormat:v20, v22];
 
     v24 = [MEMORY[0x277D75110] alertControllerWithTitle:v17 message:v23 preferredStyle:1];
@@ -578,25 +578,25 @@ LABEL_9:
     v27 = [v26 localizedStringForKey:@"OK" value:&stru_282D54710 table:@"CallDirectorySettings"];
     v28 = [v25 actionWithTitle:v27 style:0 handler:0];
 
-    v8 = v21;
+    extensionCopy = v21;
     [v24 addAction:v28];
-    v29 = [(PHCallDirectorySettingsController *)self parent];
-    [v29 presentViewController:v24 animated:1 completion:0];
+    parent = [(PHCallDirectorySettingsController *)self parent];
+    [parent presentViewController:v24 animated:1 completion:0];
 
     goto LABEL_13;
   }
 
-  if (v11 == 2)
+  if (code == 2)
   {
     v12 = @"CALL_DIRECTORY_ENABLE_EXTENSION_ALERT_CONNECTION_INTERRUPTED_%@";
     goto LABEL_9;
   }
 
-  if (!v11)
+  if (!code)
   {
 LABEL_6:
     v13 = @"CALL_DIRECTORY_DISABLE_EXTENSION_ALERT_UNKNOWN_%@";
-    if (v6)
+    if (enabledCopy)
     {
       v13 = @"CALL_DIRECTORY_ENABLE_EXTENSION_ALERT_UNKNOWN_%@";
     }

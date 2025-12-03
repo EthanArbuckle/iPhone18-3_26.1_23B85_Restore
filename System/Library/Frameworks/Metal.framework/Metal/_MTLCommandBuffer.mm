@@ -1,43 +1,43 @@
 @interface _MTLCommandBuffer
 + (void)initialize;
 - (BOOL)commitAndWaitUntilSubmitted;
-- (BOOL)commitAndWaitUntilSubmittedWithDeadline:(unint64_t)a3;
+- (BOOL)commitAndWaitUntilSubmittedWithDeadline:(unint64_t)deadline;
 - (NSArray)logs;
 - (NSDictionary)profilingResults;
 - (NSError)error;
 - (NSMutableDictionary)userDictionary;
 - (id)accelerationStructureCommandEncoder;
-- (id)accelerationStructureCommandEncoderWithDescriptor:(id)a3;
-- (id)computeCommandEncoderWithDescriptor:(id)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)accelerationStructureCommandEncoderWithDescriptor:(id)descriptor;
+- (id)computeCommandEncoderWithDescriptor:(id)descriptor;
+- (id)formattedDescription:(unint64_t)description;
 - (id)progressTrackingBlitCommandEncoder;
 - (id)progressTrackingComputeCommandEncoder;
 - (id)progressTrackingRenderCommandEncoder;
 - (unint64_t)getAndIncrementNumEncoders;
-- (void)__waitUntilCompletedAsync:(id)a3;
-- (void)__waitUntilScheduledAsync:(id)a3;
-- (void)_addRetainedObject:(id)a3;
-- (void)addCompletedHandler:(id)a3;
-- (void)addScheduledHandler:(id)a3;
-- (void)addSynchronizationNotification:(id)a3;
+- (void)__waitUntilCompletedAsync:(id)async;
+- (void)__waitUntilScheduledAsync:(id)async;
+- (void)_addRetainedObject:(id)object;
+- (void)addCompletedHandler:(id)handler;
+- (void)addScheduledHandler:(id)handler;
+- (void)addSynchronizationNotification:(id)notification;
 - (void)commit;
 - (void)commitAndReset;
-- (void)configWithCommandBufferDescriptor:(id)a3;
+- (void)configWithCommandBufferDescriptor:(id)descriptor;
 - (void)dealloc;
-- (void)debugBufferContentsWithLength:(unint64_t *)a3;
-- (void)didCompleteWithStartTime:(unint64_t)a3 endTime:(unint64_t)a4 error:(id)a5;
-- (void)didScheduleWithStartTime:(unint64_t)a3 endTime:(unint64_t)a4 error:(id)a5;
+- (void)debugBufferContentsWithLength:(unint64_t *)length;
+- (void)didCompleteWithStartTime:(unint64_t)time endTime:(unint64_t)endTime error:(id)error;
+- (void)didScheduleWithStartTime:(unint64_t)time endTime:(unint64_t)endTime error:(id)error;
 - (void)enqueue;
-- (void)executeSynchronizationNotifications:(int)a3;
-- (void)executeSynchronizationNotifications:(int)a3 scope:(unint64_t)a4 resources:(const void *)a5 count:(unint64_t)a6;
+- (void)executeSynchronizationNotifications:(int)notifications;
+- (void)executeSynchronizationNotifications:(int)notifications scope:(unint64_t)scope resources:(const void *)resources count:(unint64_t)count;
 - (void)initProgressTracking;
-- (void)presentDrawable:(id)a3;
-- (void)presentDrawable:(id)a3 afterMinimumDuration:(double)a4;
-- (void)presentDrawable:(id)a3 atTime:(double)a4;
-- (void)presentDrawable:(id)a3 options:(id)a4;
+- (void)presentDrawable:(id)drawable;
+- (void)presentDrawable:(id)drawable afterMinimumDuration:(double)duration;
+- (void)presentDrawable:(id)drawable atTime:(double)time;
+- (void)presentDrawable:(id)drawable options:(id)options;
 - (void)processEncoderInfos;
-- (void)pushDebugGroup:(id)a3;
-- (void)setLogs:(id)a3;
+- (void)pushDebugGroup:(id)group;
+- (void)setLogs:(id)logs;
 - (void)signalCommandBufferAvailable;
 - (void)waitUntilCompleted;
 - (void)waitUntilScheduled;
@@ -307,10 +307,10 @@
           v4 = [(NSMutableArray *)self->_encoderInfos objectAtIndexedSubscript:v3 >> 1];
           [v4 setErrorState:3];
           v5 = *([(MTLBuffer *)self->_progressBuffer contents]+ 4 * v3);
-          v6 = [(MTLBuffer *)self->_progressBuffer contents];
+          contents = [(MTLBuffer *)self->_progressBuffer contents];
           if (v5 == -1)
           {
-            v7 = *(v6 + 4 * (v3 + 1));
+            v7 = *(contents + 4 * (v3 + 1));
             [v4 setErrorState:2];
             if (v7 == -1)
             {
@@ -333,11 +333,11 @@
   }
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v16[12] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  v6 = [(_MTLObjectWithLabel *)self retainedLabel];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  retainedLabel = [(_MTLObjectWithLabel *)self retainedLabel];
   v7 = MEMORY[0x1E696AEC0];
   v15.receiver = self;
   v15.super_class = _MTLCommandBuffer;
@@ -345,9 +345,9 @@
   v16[0] = v5;
   v16[1] = @"label =";
   v9 = @"<none>";
-  if (v6)
+  if (retainedLabel)
   {
-    v9 = v6;
+    v9 = retainedLabel;
   }
 
   v16[2] = v9;
@@ -365,7 +365,7 @@
   v16[7] = @"commandQueue =";
   if (self->_queue)
   {
-    v11 = [(MTLCommandQueue *)self->_queue formattedDescription:a3 + 4];
+    v11 = [(MTLCommandQueue *)self->_queue formattedDescription:description + 4];
   }
 
   v16[8] = v11;
@@ -438,23 +438,23 @@
   }
 }
 
-- (void)addScheduledHandler:(id)a3
+- (void)addScheduledHandler:(id)handler
 {
   if (self->_status >= 2)
   {
-    [(_MTLCommandBuffer *)self addScheduledHandler:a2, a3, v3, v4, v5, v6, v7, v10];
+    [(_MTLCommandBuffer *)self addScheduledHandler:a2, handler, v3, v4, v5, v6, v7, v10];
   }
 
-  MTLDispatchListAppendBlock(&self->_scheduledDispatchList, &self->_scheduledDispatchListTail, a3);
+  MTLDispatchListAppendBlock(&self->_scheduledDispatchList, &self->_scheduledDispatchListTail, handler);
 }
 
-- (void)presentDrawable:(id)a3 options:(id)a4
+- (void)presentDrawable:(id)drawable options:(id)options
 {
-  if (a3)
+  if (drawable)
   {
     if (MTLFailureTypeGetEnabled(1uLL))
     {
-      [(_MTLCommandBuffer *)a3 presentDrawable:v11 options:v12, v13, v14, v15, v16, v17, v29];
+      [(_MTLCommandBuffer *)drawable presentDrawable:v11 options:v12, v13, v14, v15, v16, v17, v29];
     }
 
     v18 = objc_opt_respondsToSelector();
@@ -466,37 +466,37 @@
 
   else
   {
-    [(_MTLCommandBuffer *)self presentDrawable:a2 options:0, a4, v4, v5, v6, v7, v29];
+    [(_MTLCommandBuffer *)self presentDrawable:a2 options:0, options, v4, v5, v6, v7, v29];
   }
 
-  if (!a4)
+  if (!options)
   {
     [(_MTLCommandBuffer *)v18 presentDrawable:v19 options:v20, v21, v22, v23, v24, v25, v29];
   }
 
-  v26 = [a4 copy];
+  v26 = [options copy];
   v27 = [v26 objectForKeyedSubscript:@"enableFIFO"];
   if (objc_opt_respondsToSelector())
   {
-    v28 = [v27 BOOLValue];
+    bOOLValue = [v27 BOOLValue];
   }
 
   else
   {
-    v28 = 0;
+    bOOLValue = 0;
   }
 
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __45___MTLCommandBuffer_presentDrawable_options___block_invoke;
   v31[3] = &unk_1E6EED3E0;
-  v31[4] = a3;
+  v31[4] = drawable;
   v31[5] = v26;
-  v32 = v28;
+  v32 = bOOLValue;
   v31[6] = self;
   [(_MTLCommandBuffer *)self addScheduledHandler:v31];
   self->_hasPresent = 1;
-  if ((v28 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     ++self->_numPresentWaits;
     v30[0] = MEMORY[0x1E69E9820];
@@ -504,11 +504,11 @@
     v30[2] = __45___MTLCommandBuffer_presentDrawable_options___block_invoke_2;
     v30[3] = &unk_1E6EED408;
     v30[4] = self;
-    [a3 addPresentScheduledHandler:v30];
+    [drawable addPresentScheduledHandler:v30];
   }
 }
 
-- (void)presentDrawable:(id)a3
+- (void)presentDrawable:(id)drawable
 {
   v24[3] = *MEMORY[0x1E69E9840];
   v5 = _MTLShouldRemapPresent();
@@ -520,16 +520,16 @@
     v24[1] = &unk_1EF4CFD80;
     v23[2] = @"presentTimeInterval";
     v24[2] = &unk_1EF4CFDF8;
-    -[_MTLCommandBuffer presentDrawable:options:](self, "presentDrawable:options:", a3, [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:3]);
+    -[_MTLCommandBuffer presentDrawable:options:](self, "presentDrawable:options:", drawable, [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:3]);
   }
 
   else
   {
-    if (a3)
+    if (drawable)
     {
       if (MTLFailureTypeGetEnabled(1uLL))
       {
-        [(_MTLCommandBuffer *)a3 presentDrawable:v13, v14, v15, v16, v17, v18, v19, v21[0]];
+        [(_MTLCommandBuffer *)drawable presentDrawable:v13, v14, v15, v16, v17, v18, v19, v21[0]];
       }
     }
 
@@ -542,7 +542,7 @@
     v22[1] = 3221225472;
     v22[2] = __37___MTLCommandBuffer_presentDrawable___block_invoke;
     v22[3] = &unk_1E6EEB9C0;
-    v22[4] = a3;
+    v22[4] = drawable;
     v22[5] = self;
     [(_MTLCommandBuffer *)self addScheduledHandler:v22];
     self->_hasPresent = 1;
@@ -552,13 +552,13 @@
     v21[2] = __37___MTLCommandBuffer_presentDrawable___block_invoke_2;
     v21[3] = &unk_1E6EED408;
     v21[4] = self;
-    [a3 addPresentScheduledHandler:v21];
+    [drawable addPresentScheduledHandler:v21];
   }
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)presentDrawable:(id)a3 atTime:(double)a4
+- (void)presentDrawable:(id)drawable atTime:(double)time
 {
   v27[3] = *MEMORY[0x1E69E9840];
   v7 = _MTLShouldRemapPresent();
@@ -569,17 +569,17 @@
     v27[0] = MEMORY[0x1E695E118];
     v27[1] = &unk_1EF4CFD98;
     v26[2] = @"presentTimeInterval";
-    v27[2] = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-    -[_MTLCommandBuffer presentDrawable:options:](self, "presentDrawable:options:", a3, [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:3]);
+    v27[2] = [MEMORY[0x1E696AD98] numberWithDouble:time];
+    -[_MTLCommandBuffer presentDrawable:options:](self, "presentDrawable:options:", drawable, [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:3]);
   }
 
   else
   {
-    if (a3)
+    if (drawable)
     {
       if (MTLFailureTypeGetEnabled(1uLL))
       {
-        [(_MTLCommandBuffer *)a3 presentDrawable:v15 atTime:v16, v17, v18, v19, v20, v21, v23];
+        [(_MTLCommandBuffer *)drawable presentDrawable:v15 atTime:v16, v17, v18, v19, v20, v21, v23];
       }
     }
 
@@ -592,8 +592,8 @@
     v25[1] = 3221225472;
     v25[2] = __44___MTLCommandBuffer_presentDrawable_atTime___block_invoke;
     v25[3] = &unk_1E6EED430;
-    *&v25[6] = a4;
-    v25[4] = a3;
+    *&v25[6] = time;
+    v25[4] = drawable;
     v25[5] = self;
     [(_MTLCommandBuffer *)self addScheduledHandler:v25];
     self->_hasPresent = 1;
@@ -603,13 +603,13 @@
     v24[2] = __44___MTLCommandBuffer_presentDrawable_atTime___block_invoke_2;
     v24[3] = &unk_1E6EED408;
     v24[4] = self;
-    [a3 addPresentScheduledHandler:v24];
+    [drawable addPresentScheduledHandler:v24];
   }
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)presentDrawable:(id)a3 afterMinimumDuration:(double)a4
+- (void)presentDrawable:(id)drawable afterMinimumDuration:(double)duration
 {
   v27[3] = *MEMORY[0x1E69E9840];
   v7 = _MTLShouldRemapPresent();
@@ -620,17 +620,17 @@
     v27[0] = MEMORY[0x1E695E118];
     v27[1] = &unk_1EF4CFDB0;
     v26[2] = @"presentTimeInterval";
-    v27[2] = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-    -[_MTLCommandBuffer presentDrawable:options:](self, "presentDrawable:options:", a3, [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:3]);
+    v27[2] = [MEMORY[0x1E696AD98] numberWithDouble:duration];
+    -[_MTLCommandBuffer presentDrawable:options:](self, "presentDrawable:options:", drawable, [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:3]);
   }
 
   else
   {
-    if (a3)
+    if (drawable)
     {
       if (MTLFailureTypeGetEnabled(1uLL))
       {
-        [(_MTLCommandBuffer *)a3 presentDrawable:v15 afterMinimumDuration:v16, v17, v18, v19, v20, v21, v23];
+        [(_MTLCommandBuffer *)drawable presentDrawable:v15 afterMinimumDuration:v16, v17, v18, v19, v20, v21, v23];
       }
     }
 
@@ -643,8 +643,8 @@
     v25[1] = 3221225472;
     v25[2] = __58___MTLCommandBuffer_presentDrawable_afterMinimumDuration___block_invoke;
     v25[3] = &unk_1E6EED430;
-    *&v25[6] = a4;
-    v25[4] = a3;
+    *&v25[6] = duration;
+    v25[4] = drawable;
     v25[5] = self;
     [(_MTLCommandBuffer *)self addScheduledHandler:v25];
     self->_hasPresent = 1;
@@ -654,72 +654,72 @@
     v24[2] = __58___MTLCommandBuffer_presentDrawable_afterMinimumDuration___block_invoke_2;
     v24[3] = &unk_1E6EED408;
     v24[4] = self;
-    [a3 addPresentScheduledHandler:v24];
+    [drawable addPresentScheduledHandler:v24];
   }
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__waitUntilScheduledAsync:(id)a3
+- (void)__waitUntilScheduledAsync:(id)async
 {
   pthread_mutex_lock(&self->_mutex);
   if (self->_scheduledCallbacksDone)
   {
     pthread_mutex_unlock(&self->_mutex);
-    v5 = *(a3 + 2);
+    v5 = *(async + 2);
 
-    v5(a3, self);
+    v5(async, self);
   }
 
   else
   {
-    MTLDispatchListAppendBlock(&self->_swiftConcurrencyScheduledWaiters, &self->_swiftConcurrencyScheduledWaitersTail, a3);
+    MTLDispatchListAppendBlock(&self->_swiftConcurrencyScheduledWaiters, &self->_swiftConcurrencyScheduledWaitersTail, async);
 
     pthread_mutex_unlock(&self->_mutex);
   }
 }
 
-- (void)addCompletedHandler:(id)a3
+- (void)addCompletedHandler:(id)handler
 {
   if (self->_status >= 2)
   {
-    [(_MTLCommandBuffer *)self addCompletedHandler:a2, a3, v3, v4, v5, v6, v7, v10];
+    [(_MTLCommandBuffer *)self addCompletedHandler:a2, handler, v3, v4, v5, v6, v7, v10];
   }
 
-  MTLDispatchListAppendBlock(&self->_completedDispatchList, &self->_completedDispatchListTail, a3);
+  MTLDispatchListAppendBlock(&self->_completedDispatchList, &self->_completedDispatchListTail, handler);
 }
 
-- (void)__waitUntilCompletedAsync:(id)a3
+- (void)__waitUntilCompletedAsync:(id)async
 {
   pthread_mutex_lock(&self->_mutex);
   if (self->_completedCallbacksDone)
   {
     pthread_mutex_unlock(&self->_mutex);
-    v5 = *(a3 + 2);
+    v5 = *(async + 2);
 
-    v5(a3, self);
+    v5(async, self);
   }
 
   else
   {
-    MTLDispatchListAppendBlock(&self->_swiftConcurrencyCompletedWaiters, &self->_swiftConcurrencyCompletedWaitersTail, a3);
+    MTLDispatchListAppendBlock(&self->_swiftConcurrencyCompletedWaiters, &self->_swiftConcurrencyCompletedWaitersTail, async);
 
     pthread_mutex_unlock(&self->_mutex);
   }
 }
 
-- (void)didScheduleWithStartTime:(unint64_t)a3 endTime:(unint64_t)a4 error:(id)a5
+- (void)didScheduleWithStartTime:(unint64_t)time endTime:(unint64_t)endTime error:(id)error
 {
-  [(_MTLCommandBuffer *)self didSchedule:a3 error:a5];
-  self->_kernelStartTime = a3;
-  self->_kernelEndTime = a4;
-  if (a5)
+  [(_MTLCommandBuffer *)self didSchedule:time error:error];
+  self->_kernelStartTime = time;
+  self->_kernelEndTime = endTime;
+  if (error)
   {
-    self->_error = a5;
+    self->_error = error;
     __dmb(0xBu);
     self->_status = 5;
-    v9 = [(NSError *)self->_error localizedDescription];
-    MTLReportFailure(4, "[_MTLCommandBuffer didScheduleWithStartTime:endTime:error:]", 1070, @"Execution of the command buffer was aborted due to an error during execution. %@", v10, v11, v12, v13, v9);
+    localizedDescription = [(NSError *)self->_error localizedDescription];
+    MTLReportFailure(4, "[_MTLCommandBuffer didScheduleWithStartTime:endTime:error:]", 1070, @"Execution of the command buffer was aborted due to an error during execution. %@", v10, v11, v12, v13, localizedDescription);
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       [_MTLCommandBuffer didScheduleWithStartTime:? endTime:? error:?];
@@ -764,37 +764,37 @@
   pthread_mutex_unlock(&self->_mutex);
 }
 
-- (void)didCompleteWithStartTime:(unint64_t)a3 endTime:(unint64_t)a4 error:(id)a5
+- (void)didCompleteWithStartTime:(unint64_t)time endTime:(unint64_t)endTime error:(id)error
 {
   if (self->_profilingEnabled)
   {
     self->_completionHandlerExecutionTime = mach_absolute_time();
   }
 
-  self->_gpuStartTime = a3;
-  self->_gpuEndTime = a4;
+  self->_gpuStartTime = time;
+  self->_gpuEndTime = endTime;
   if (!self->_error)
   {
-    if (a5)
+    if (error)
     {
       if (self->_errorOptions)
       {
         [(_MTLCommandBuffer *)self processEncoderInfos];
-        v9 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(a5, "userInfo")}];
+        v9 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(error, "userInfo")}];
         [v9 setObject:self->_encoderInfos forKeyedSubscript:@"MTLCommandBufferEncoderInfoErrorKey"];
-        v10 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:objc_msgSend(a5 code:"domain") userInfo:{objc_msgSend(a5, "code"), v9}];
+        errorCopy = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:objc_msgSend(error code:"domain") userInfo:{objc_msgSend(error, "code"), v9}];
       }
 
       else
       {
-        v10 = a5;
+        errorCopy = error;
       }
 
-      self->_error = v10;
+      self->_error = errorCopy;
       __dmb(0xBu);
       self->_status = 5;
-      v11 = [(NSError *)self->_error localizedDescription];
-      MTLReportFailure(4, "[_MTLCommandBuffer didCompleteWithStartTime:endTime:error:]", 1210, @"Execution of the command buffer was aborted due to an error during execution. %@", v12, v13, v14, v15, v11);
+      localizedDescription = [(NSError *)self->_error localizedDescription];
+      MTLReportFailure(4, "[_MTLCommandBuffer didCompleteWithStartTime:endTime:error:]", 1210, @"Execution of the command buffer was aborted due to an error during execution. %@", v12, v13, v14, v15, localizedDescription);
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         [_MTLCommandBuffer didScheduleWithStartTime:? endTime:? error:?];
@@ -865,7 +865,7 @@
   pthread_mutex_unlock(&self->_mutex);
 }
 
-- (void)_addRetainedObject:(id)a3
+- (void)_addRetainedObject:(id)object
 {
   retainedObjects = self->_retainedObjects;
   if (!retainedObjects)
@@ -874,7 +874,7 @@
     self->_retainedObjects = retainedObjects;
   }
 
-  [(NSMutableArray *)retainedObjects addObject:a3];
+  [(NSMutableArray *)retainedObjects addObject:object];
 }
 
 - (NSDictionary)profilingResults
@@ -923,9 +923,9 @@
   return numEncoders;
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
-  if (a3)
+  if (group)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -941,10 +941,10 @@
   }
 }
 
-- (void)addSynchronizationNotification:(id)a3
+- (void)addSynchronizationNotification:(id)notification
 {
   v5 = malloc_type_malloc(0x10uLL, 0xA0040AFF93C70uLL);
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(notification);
   v5->var0 = 0;
   v5->var1 = v6;
   p_syncDispatchListTail = &self->_syncDispatchListTail;
@@ -963,40 +963,40 @@
   *p_syncDispatchListTail = v5;
 }
 
-- (void)executeSynchronizationNotifications:(int)a3
+- (void)executeSynchronizationNotifications:(int)notifications
 {
   memset(v3, 0, sizeof(v3));
-  LODWORD(v3[0]) = a3;
+  LODWORD(v3[0]) = notifications;
   if (self->_syncDispatchList)
   {
     _doMTLSyncDispatch(self, &self->_syncDispatchList, &self->_syncDispatchListTail, v3);
   }
 }
 
-- (void)executeSynchronizationNotifications:(int)a3 scope:(unint64_t)a4 resources:(const void *)a5 count:(unint64_t)a6
+- (void)executeSynchronizationNotifications:(int)notifications scope:(unint64_t)scope resources:(const void *)resources count:(unint64_t)count
 {
-  v6[1] = a4;
-  v6[0] = a3;
-  v6[2] = a5;
-  v6[3] = a6;
+  v6[1] = scope;
+  v6[0] = notifications;
+  v6[2] = resources;
+  v6[3] = count;
   if (self->_syncDispatchList)
   {
     _doMTLSyncDispatch(self, &self->_syncDispatchList, &self->_syncDispatchListTail, v6);
   }
 }
 
-- (id)computeCommandEncoderWithDescriptor:(id)a3
+- (id)computeCommandEncoderWithDescriptor:(id)descriptor
 {
-  v4 = [a3 dispatchType];
+  dispatchType = [descriptor dispatchType];
 
-  return [(_MTLCommandBuffer *)self computeCommandEncoderWithDispatchType:v4];
+  return [(_MTLCommandBuffer *)self computeCommandEncoderWithDispatchType:dispatchType];
 }
 
-- (void)debugBufferContentsWithLength:(unint64_t *)a3
+- (void)debugBufferContentsWithLength:(unint64_t *)length
 {
-  if (a3)
+  if (length)
   {
-    *a3 = 0;
+    *length = 0;
   }
 
   return 0;
@@ -1018,11 +1018,11 @@
   }
 }
 
-- (id)accelerationStructureCommandEncoderWithDescriptor:(id)a3
+- (id)accelerationStructureCommandEncoderWithDescriptor:(id)descriptor
 {
   if ([-[_MTLCommandBuffer device](self "device")])
   {
-    v6 = [[_MTLSWRaytracingAccelerationStructureCommandEncoder alloc] initWithCommandBuffer:self descriptor:a3];
+    v6 = [[_MTLSWRaytracingAccelerationStructureCommandEncoder alloc] initWithCommandBuffer:self descriptor:descriptor];
 
     return v6;
   }
@@ -1034,10 +1034,10 @@
   }
 }
 
-- (BOOL)commitAndWaitUntilSubmittedWithDeadline:(unint64_t)a3
+- (BOOL)commitAndWaitUntilSubmittedWithDeadline:(unint64_t)deadline
 {
   self->_wakeOnCommit = 0;
-  [(_MTLCommandBuffer *)self commitWithDeadline:a3];
+  [(_MTLCommandBuffer *)self commitWithDeadline:deadline];
   queue = self->_queue;
 
   return [(MTLCommandQueue *)queue submitCommandBuffer:self];
@@ -1056,16 +1056,16 @@
   }
 }
 
-- (void)setLogs:(id)a3
+- (void)setLogs:(id)logs
 {
-  v5 = a3;
+  logsCopy = logs;
 
-  self->_logs = a3;
+  self->_logs = logs;
 }
 
-- (void)configWithCommandBufferDescriptor:(id)a3
+- (void)configWithCommandBufferDescriptor:(id)descriptor
 {
-  if ([a3 logState])
+  if ([descriptor logState])
   {
     logState = self->_logState;
     if (!logState)
@@ -1074,9 +1074,9 @@
       logState = self->_logState;
     }
 
-    v6 = [a3 logState];
-    self->_logState = v6;
-    self->_requiresBindingLogState = v6 != 0;
+    logState = [descriptor logState];
+    self->_logState = logState;
+    self->_requiresBindingLogState = logState != 0;
   }
 }
 

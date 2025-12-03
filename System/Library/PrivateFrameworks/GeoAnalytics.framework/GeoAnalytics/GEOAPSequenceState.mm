@@ -1,6 +1,6 @@
 @interface GEOAPSequenceState
-- (GEOAPSequenceState)initWithName:(id)a3;
-- (unint64_t)processUserAction:(int)a3 target:(int)a4 atTime:(double)a5;
+- (GEOAPSequenceState)initWithName:(id)name;
+- (unint64_t)processUserAction:(int)action target:(int)target atTime:(double)time;
 - (void)reset;
 @end
 
@@ -23,7 +23,7 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)processUserAction:(int)a3 target:(int)a4 atTime:(double)a5
+- (unint64_t)processUserAction:(int)action target:(int)target atTime:(double)time
 {
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
   {
@@ -34,15 +34,15 @@
   return 3;
 }
 
-- (GEOAPSequenceState)initWithName:(id)a3
+- (GEOAPSequenceState)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = GEOAPSequenceState;
   v5 = [(GEOAPSequenceState *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
 

@@ -1,5 +1,5 @@
 @interface HKMedicationNotificationMetric
-- (HKMedicationNotificationMetric)initWithType:(int64_t)a3 areHealthNotificationsAuthorized:(id)a4 dataSource:(id)a5;
+- (HKMedicationNotificationMetric)initWithType:(int64_t)type areHealthNotificationsAuthorized:(id)authorized dataSource:(id)source;
 - (NSDictionary)eventPayload;
 - (id)description;
 - (id)interactionTypeValue;
@@ -8,20 +8,20 @@
 
 @implementation HKMedicationNotificationMetric
 
-- (HKMedicationNotificationMetric)initWithType:(int64_t)a3 areHealthNotificationsAuthorized:(id)a4 dataSource:(id)a5
+- (HKMedicationNotificationMetric)initWithType:(int64_t)type areHealthNotificationsAuthorized:(id)authorized dataSource:(id)source
 {
-  v9 = a4;
-  v10 = a5;
+  authorizedCopy = authorized;
+  sourceCopy = source;
   v16.receiver = self;
   v16.super_class = HKMedicationNotificationMetric;
   v11 = [(HKMedicationNotificationMetric *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_type = a3;
-    objc_storeStrong(&v11->_areHealthNotificationsAuthorized, a4);
+    v11->_type = type;
+    objc_storeStrong(&v11->_areHealthNotificationsAuthorized, authorized);
     v12->_interactionType = 0;
-    v13 = [[HKMedicationAnalyticsGenericFieldsProvider alloc] initWithDataSource:v10];
+    v13 = [[HKMedicationAnalyticsGenericFieldsProvider alloc] initWithDataSource:sourceCopy];
     genericDataProvider = v12->_genericDataProvider;
     v12->_genericDataProvider = v13;
   }
@@ -50,8 +50,8 @@
     return qword_2796CAD40[interactionType];
   }
 
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"HKMedicationNotificationMetric.m" lineNumber:63 description:{@"Unexpected Interaction Type %ld", self->_interactionType}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicationNotificationMetric.m" lineNumber:63 description:{@"Unexpected Interaction Type %ld", self->_interactionType}];
 
   return 0;
 }
@@ -59,40 +59,40 @@
 - (NSDictionary)eventPayload
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(HKMedicationNotificationMetric *)self typeValue];
-  [v3 setObject:v4 forKeyedSubscript:@"type"];
+  typeValue = [(HKMedicationNotificationMetric *)self typeValue];
+  [v3 setObject:typeValue forKeyedSubscript:@"type"];
 
-  v5 = [(HKMedicationNotificationMetric *)self areHealthNotificationsAuthorized];
+  areHealthNotificationsAuthorized = [(HKMedicationNotificationMetric *)self areHealthNotificationsAuthorized];
 
-  if (v5)
+  if (areHealthNotificationsAuthorized)
   {
-    v6 = [(HKMedicationNotificationMetric *)self areHealthNotificationsAuthorized];
-    [v3 setObject:v6 forKeyedSubscript:@"areHealthNotificationsAuthorized"];
+    areHealthNotificationsAuthorized2 = [(HKMedicationNotificationMetric *)self areHealthNotificationsAuthorized];
+    [v3 setObject:areHealthNotificationsAuthorized2 forKeyedSubscript:@"areHealthNotificationsAuthorized"];
   }
 
-  v7 = [(HKMedicationAnalyticsGenericFieldsProvider *)self->_genericDataProvider biologicalSex];
-  v8 = [(HKMedicationAnalyticsGenericFieldsProvider *)self->_genericDataProvider activePairedWatchProductType];
-  if (v7)
+  biologicalSex = [(HKMedicationAnalyticsGenericFieldsProvider *)self->_genericDataProvider biologicalSex];
+  activePairedWatchProductType = [(HKMedicationAnalyticsGenericFieldsProvider *)self->_genericDataProvider activePairedWatchProductType];
+  if (biologicalSex)
   {
-    [v3 setObject:v7 forKeyedSubscript:@"biologicalSex"];
+    [v3 setObject:biologicalSex forKeyedSubscript:@"biologicalSex"];
   }
 
   genericDataProvider = self->_genericDataProvider;
-  v10 = [MEMORY[0x277CBEAA8] date];
-  v11 = [(HKMedicationAnalyticsGenericFieldsProvider *)genericDataProvider bucketedUserAgeForCurrentDate:v10];
+  date = [MEMORY[0x277CBEAA8] date];
+  v11 = [(HKMedicationAnalyticsGenericFieldsProvider *)genericDataProvider bucketedUserAgeForCurrentDate:date];
   [v3 setObject:v11 forKeyedSubscript:@"age"];
 
-  if (v8)
+  if (activePairedWatchProductType)
   {
-    [v3 setObject:v8 forKeyedSubscript:@"activePairedWatchProductType"];
+    [v3 setObject:activePairedWatchProductType forKeyedSubscript:@"activePairedWatchProductType"];
   }
 
-  v12 = [(HKMedicationNotificationMetric *)self interactionTypeValue];
+  interactionTypeValue = [(HKMedicationNotificationMetric *)self interactionTypeValue];
 
-  if (v12)
+  if (interactionTypeValue)
   {
-    v13 = [(HKMedicationNotificationMetric *)self interactionTypeValue];
-    [v3 setObject:v13 forKeyedSubscript:@"action"];
+    interactionTypeValue2 = [(HKMedicationNotificationMetric *)self interactionTypeValue];
+    [v3 setObject:interactionTypeValue2 forKeyedSubscript:@"action"];
   }
 
   v14 = [v3 copy];
@@ -104,8 +104,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HKMedicationNotificationMetric *)self eventPayload];
-  v6 = [v3 stringWithFormat:@"%@:%p payload: %@", v4, self, v5];
+  eventPayload = [(HKMedicationNotificationMetric *)self eventPayload];
+  v6 = [v3 stringWithFormat:@"%@:%p payload: %@", v4, self, eventPayload];
 
   return v6;
 }

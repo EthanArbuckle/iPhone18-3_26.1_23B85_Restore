@@ -1,47 +1,47 @@
 @interface PerformPurchaseTask
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5;
-- (void)handleAuthenticateRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6;
-- (void)handleDialogRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6;
-- (void)handleEngagementRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6;
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)handleAuthenticateRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion;
+- (void)handleDialogRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion;
+- (void)handleEngagementRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation PerformPurchaseTask
 
-- (void)handleAuthenticateRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6
+- (void)handleAuthenticateRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  requestCopy = request;
+  purchaseCopy = purchase;
+  completionCopy = completion;
   v12 = *(&self->_presenters + 2);
-  v13 = [v10 uniqueIdentifier];
-  v14 = [v12 objectForKeyedSubscript:v13];
+  uniqueIdentifier = [purchaseCopy uniqueIdentifier];
+  v14 = [v12 objectForKeyedSubscript:uniqueIdentifier];
 
   if ((+[AMSDevice deviceIsAppleWatch](AMSDevice, "deviceIsAppleWatch") & 1) != 0 || ([v14 useLocalAuthAndSystemDialogs] & 1) != 0 || objc_msgSend(v14, "useLocalAuthAndInteractiveDialogs"))
   {
     v15 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v10 logUUID];
+      logUUID = [purchaseCopy logUUID];
       *buf = 138543362;
-      v38 = v16;
+      v38 = logUUID;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Sending authentication request", buf, 0xCu);
     }
 
     v17 = [AMSAuthenticateTask alloc];
     v18 = [v14 bag];
-    v19 = [v18 amsBag];
-    v20 = [v17 initWithRequest:v9 bag:v19];
+    amsBag = [v18 amsBag];
+    v20 = [v17 initWithRequest:requestCopy bag:amsBag];
 
     [v20 setDelegate:self];
-    v21 = [v20 performAuthentication];
+    performAuthentication = [v20 performAuthentication];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_1002E353C;
     v34[3] = &unk_10051E040;
-    v35 = v10;
-    v36 = v11;
-    [v21 resultWithCompletion:v34];
+    v35 = purchaseCopy;
+    v36 = completionCopy;
+    [performAuthentication resultWithCompletion:v34];
 
     v22 = v35;
   }
@@ -49,19 +49,19 @@
   else
   {
     v23 = sub_1002820B4(*(&self->super._finished + 1));
-    v24 = [v23 notificationClient];
+    notificationClient = [v23 notificationClient];
 
     v25 = ASDLogHandleForCategory();
     v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
-    if (v24)
+    if (notificationClient)
     {
       if (v26)
       {
-        v27 = [v14 logKey];
+        logKey = [v14 logKey];
         *buf = 138412546;
-        v38 = v27;
+        v38 = logKey;
         v39 = 2114;
-        v40 = v24;
+        v40 = notificationClient;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "[%@] Sending authentication request to client %{public}@", buf, 0x16u);
       }
 
@@ -69,12 +69,12 @@
       v29[1] = 3221225472;
       v29[2] = sub_1002E3650;
       v29[3] = &unk_100521EC8;
-      v30 = v10;
+      v30 = purchaseCopy;
       v31 = v14;
-      v20 = v24;
+      v20 = notificationClient;
       v32 = v20;
-      v33 = v11;
-      [v20 deliverAuthenticateRequest:v9 withResultHandler:v29];
+      v33 = completionCopy;
+      [v20 deliverAuthenticateRequest:requestCopy withResultHandler:v29];
 
       v22 = v30;
     }
@@ -83,32 +83,32 @@
     {
       if (v26)
       {
-        v28 = [v14 logKey];
+        logKey2 = [v14 logKey];
         *buf = 138412290;
-        v38 = v28;
+        v38 = logKey2;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "[%@] No client available to handle authentication request", buf, 0xCu);
       }
 
       v22 = ASDErrorWithDescription();
-      (*(v11 + 2))(v11, 0, v22);
+      (*(completionCopy + 2))(completionCopy, 0, v22);
       v20 = 0;
     }
   }
 }
 
-- (void)handleDialogRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6
+- (void)handleDialogRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  requestCopy = request;
+  purchaseCopy = purchase;
+  completionCopy = completion;
   v12 = *(&self->_presenters + 2);
-  v13 = [v10 uniqueIdentifier];
-  v14 = [v12 objectForKeyedSubscript:v13];
+  uniqueIdentifier = [purchaseCopy uniqueIdentifier];
+  v14 = [v12 objectForKeyedSubscript:uniqueIdentifier];
 
-  v15 = [v14 useLocalAuthAndSystemDialogs];
+  useLocalAuthAndSystemDialogs = [v14 useLocalAuthAndSystemDialogs];
   if (+[AMSDevice deviceIsMac])
   {
-    v16 = v15 == 0;
+    v16 = useLocalAuthAndSystemDialogs == 0;
   }
 
   else
@@ -121,35 +121,35 @@
     v17 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v30 = [v14 logKey];
+      logKey = [v14 logKey];
       *buf = 138412290;
-      v42 = v30;
+      v42 = logKey;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "[%@] System Dialogs are not supports on macOS. Using remote dialog requests", buf, 0xCu);
     }
 
-    v15 = 0;
+    useLocalAuthAndSystemDialogs = 0;
   }
 
-  if ((+[AMSDevice deviceIsAppleWatch]& 1) != 0 || v15)
+  if ((+[AMSDevice deviceIsAppleWatch]& 1) != 0 || useLocalAuthAndSystemDialogs)
   {
     v23 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [v14 logKey];
+      logKey2 = [v14 logKey];
       *buf = 138412290;
-      v42 = v24;
+      v42 = logKey2;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "[%@] Sending dialog request", buf, 0xCu);
     }
 
-    v19 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v9];
-    v25 = [v19 present];
+    notificationClient = [[AMSSystemAlertDialogTask alloc] initWithRequest:requestCopy];
+    present = [notificationClient present];
     v38[0] = _NSConcreteStackBlock;
     v38[1] = 3221225472;
     v38[2] = sub_1002E3E08;
     v38[3] = &unk_10051E068;
     v39 = v14;
-    v40 = v11;
-    [v25 resultWithCompletion:v38];
+    v40 = completionCopy;
+    [present resultWithCompletion:v38];
 
     v22 = v39;
   }
@@ -157,42 +157,42 @@
   else
   {
     v18 = sub_1002820B4(*(&self->super._finished + 1));
-    v19 = [v18 notificationClient];
+    notificationClient = [v18 notificationClient];
 
     if ([v14 useLocalAuthAndInteractiveDialogs])
     {
       v20 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v14 logKey];
+        logKey3 = [v14 logKey];
         *buf = 138412290;
-        v42 = v21;
+        v42 = logKey3;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[%@] Sending interactive dialog request", buf, 0xCu);
       }
 
-      v22 = sub_1002E2F9C(self, v10);
+      v22 = sub_1002E2F9C(self, purchaseCopy);
       v35[0] = _NSConcreteStackBlock;
       v35[1] = 3221225472;
       v35[2] = sub_1002E3F1C;
       v35[3] = &unk_10051E068;
-      v36 = v10;
-      v37 = v11;
-      [v22 presentDialogRequest:v9 resultHandler:v35];
+      v36 = purchaseCopy;
+      v37 = completionCopy;
+      [v22 presentDialogRequest:requestCopy resultHandler:v35];
     }
 
     else
     {
       v26 = ASDLogHandleForCategory();
       v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
-      if (v19)
+      if (notificationClient)
       {
         if (v27)
         {
-          v28 = [v14 logKey];
+          logKey4 = [v14 logKey];
           *buf = 138412546;
-          v42 = v28;
+          v42 = logKey4;
           v43 = 2114;
-          v44 = v19;
+          v44 = notificationClient;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "[%@] Sending dialog request to client %{public}@", buf, 0x16u);
         }
 
@@ -201,10 +201,10 @@
         v31[2] = sub_1002E4030;
         v31[3] = &unk_100521EF0;
         v32 = v14;
-        v19 = v19;
-        v33 = v19;
-        v34 = v11;
-        [v19 deliverDialogRequest:v9 withResultHandler:v31];
+        notificationClient = notificationClient;
+        v33 = notificationClient;
+        v34 = completionCopy;
+        [notificationClient deliverDialogRequest:requestCopy withResultHandler:v31];
 
         v22 = v32;
       }
@@ -213,67 +213,67 @@
       {
         if (v27)
         {
-          v29 = [v14 logKey];
+          logKey5 = [v14 logKey];
           *buf = 138412290;
-          v42 = v29;
+          v42 = logKey5;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "[%@] No client available to handle dialog request", buf, 0xCu);
         }
 
         v22 = ASDErrorWithDescription();
-        (*(v11 + 2))(v11, 0, v22);
-        v19 = 0;
+        (*(completionCopy + 2))(completionCopy, 0, v22);
+        notificationClient = 0;
       }
     }
   }
 }
 
-- (void)handleEngagementRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6
+- (void)handleEngagementRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  requestCopy = request;
+  purchaseCopy = purchase;
+  completionCopy = completion;
   v12 = *(&self->_presenters + 2);
-  v13 = [v10 uniqueIdentifier];
-  v14 = [v12 objectForKeyedSubscript:v13];
+  uniqueIdentifier = [purchaseCopy uniqueIdentifier];
+  v14 = [v12 objectForKeyedSubscript:uniqueIdentifier];
 
   v15 = sub_1002820B4(*(&self->super._finished + 1));
-  v16 = [v15 notificationClient];
+  notificationClient = [v15 notificationClient];
 
   if ([v14 useLocalAuthAndInteractiveDialogs])
   {
     v17 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v14 logKey];
+      logKey = [v14 logKey];
       *buf = 138412290;
-      v33 = v18;
+      v33 = logKey;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[%@] Sending interactive engagement request", buf, 0xCu);
     }
 
-    v19 = sub_1002E2F9C(self, v10);
-    v20 = [v14 clientInfo];
+    v19 = sub_1002E2F9C(self, purchaseCopy);
+    clientInfo = [v14 clientInfo];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_1002E44F4;
     v29[3] = &unk_10051F1C8;
-    v30 = v10;
-    v31 = v11;
-    [v19 presentEngagementRequest:v9 withClientInfo:v20 resultHandler:v29];
+    v30 = purchaseCopy;
+    v31 = completionCopy;
+    [v19 presentEngagementRequest:requestCopy withClientInfo:clientInfo resultHandler:v29];
   }
 
   else
   {
     v21 = ASDLogHandleForCategory();
     v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-    if (v16)
+    if (notificationClient)
     {
       if (v22)
       {
-        v23 = [v10 logUUID];
+        logUUID = [purchaseCopy logUUID];
         *buf = 138543618;
-        v33 = v23;
+        v33 = logUUID;
         v34 = 2114;
-        v35 = v16;
+        v35 = notificationClient;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@] Sending engagement request to client %{public}@", buf, 0x16u);
       }
 
@@ -281,10 +281,10 @@
       v25[1] = 3221225472;
       v25[2] = sub_1002E4608;
       v25[3] = &unk_100521F18;
-      v26 = v10;
-      v27 = v16;
-      v28 = v11;
-      [v27 deliverEngagementRequest:v9 withResultHandler:v25];
+      v26 = purchaseCopy;
+      v27 = notificationClient;
+      v28 = completionCopy;
+      [v27 deliverEngagementRequest:requestCopy withResultHandler:v25];
 
       v19 = v26;
     }
@@ -293,21 +293,21 @@
     {
       if (v22)
       {
-        v24 = [v10 logUUID];
+        logUUID2 = [purchaseCopy logUUID];
         *buf = 138543362;
-        v33 = v24;
+        v33 = logUUID2;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@] No client available to handle engagement request", buf, 0xCu);
       }
 
       v19 = ASDErrorWithDescription();
-      (*(v11 + 2))(v11, 0, v19);
+      (*(completionCopy + 2))(completionCopy, 0, v19);
     }
   }
 }
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v120 = a3;
+  handlerCopy = handler;
   v123 = +[NSMutableArray array];
   v138 = 0u;
   v139 = 0u;
@@ -331,11 +331,11 @@
         }
 
         v5 = *(*(&v136 + 1) + 8 * v4);
-        v6 = [v5 itemResponse];
-        v8 = v6;
-        if (v6)
+        itemResponse = [v5 itemResponse];
+        v8 = itemResponse;
+        if (itemResponse)
         {
-          Property = objc_getProperty(v6, v7, 56, 1);
+          Property = objc_getProperty(itemResponse, v7, 56, 1);
         }
 
         else
@@ -348,29 +348,29 @@
 
         if (v11)
         {
-          v20 = [v5 account];
-          v12 = [v20 ams_DSID];
+          account = [v5 account];
+          ams_DSID = [account ams_DSID];
 
-          v21 = [v5 account];
-          v22 = [v21 username];
+          account2 = [v5 account];
+          username = [account2 username];
 
           if (v3)
           {
             goto LABEL_14;
           }
 
-          v27 = [v5 appCapabilities];
-          v28 = v27 == 0;
+          appCapabilities = [v5 appCapabilities];
+          v28 = appCapabilities == 0;
 
           if (!v28)
           {
             v29 = [v5 updateType] != 0;
             v30 = +[_TtC9appstored22AppCapabilitiesService defaultService];
-            v31 = [v5 bundleID];
-            v32 = [v5 appCapabilities];
-            v33 = [v5 logKey];
+            bundleID = [v5 bundleID];
+            appCapabilities2 = [v5 appCapabilities];
+            logKey = [v5 logKey];
             v135 = 0;
-            v34 = [v30 validateAction:v29 bundleID:v31 capabilities:v32 logKey:v33 error:&v135];
+            v34 = [v30 validateAction:v29 bundleID:bundleID capabilities:appCapabilities2 logKey:logKey error:&v135];
             v35 = v135;
 
             if (v34)
@@ -392,17 +392,17 @@ LABEL_14:
               v23 = ASDLogHandleForCategory();
               if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
               {
-                v45 = [v5 logKey];
+                logKey2 = [v5 logKey];
                 *buf = 138412546;
-                *&buf[4] = v45;
+                *&buf[4] = logKey2;
                 *&buf[12] = 2114;
                 *&buf[14] = v3;
                 _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "[%@] Failing purchase due to batch error: %{public}@", buf, 0x16u);
               }
 
-              v24 = [v5 account];
-              v25 = [v24 ams_DSID];
-              v26 = sub_1003BF384(StoreItemResponse, v3, v25);
+              account3 = [v5 account];
+              ams_DSID2 = [account3 ams_DSID];
+              v26 = sub_1003BF384(StoreItemResponse, v3, ams_DSID2);
               [v5 setItemResponse:v26];
 
               goto LABEL_54;
@@ -418,13 +418,13 @@ LABEL_24:
 
             if (v39)
             {
-              v40 = [v39 lowercaseString];
-              v41 = [v40 isEqualToString:@"application/x-apple-plist"];
+              lowercaseString = [v39 lowercaseString];
+              v41 = [lowercaseString isEqualToString:@"application/x-apple-plist"];
 
               if ((v41 & 1) == 0)
               {
-                v42 = [v39 lowercaseString];
-                v43 = [v42 isEqualToString:@"application/json"];
+                lowercaseString2 = [v39 lowercaseString];
+                v43 = [lowercaseString2 isEqualToString:@"application/json"];
 
                 if (v43)
                 {
@@ -435,9 +435,9 @@ LABEL_24:
                 v46 = ASDLogHandleForCategory();
                 if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
                 {
-                  v47 = [v37 logKey];
+                  logKey3 = [v37 logKey];
                   *buf = 138412290;
-                  *&buf[4] = v47;
+                  *&buf[4] = logKey3;
                   _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "[%@] Encountered unrecognized content type for updateProduct call from bag", buf, 0xCu);
                 }
               }
@@ -455,13 +455,13 @@ LABEL_35:
           [v37 setUseJSONContentType:v44];
           if ([v37 purchaseType] == 2)
           {
-            v48 = ASDLogHandleForCategory();
-            if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
+            ams_activeiTunesAccount = ASDLogHandleForCategory();
+            if (os_log_type_enabled(ams_activeiTunesAccount, OS_LOG_TYPE_DEFAULT))
             {
-              v49 = [v37 logKey];
+              logKey4 = [v37 logKey];
               *buf = 138412290;
-              *&buf[4] = v49;
-              _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "[%@] No account required for AMSPurchaseTypeDownloadProduct", buf, 0xCu);
+              *&buf[4] = logKey4;
+              _os_log_impl(&_mh_execute_header, ams_activeiTunesAccount, OS_LOG_TYPE_DEFAULT, "[%@] No account required for AMSPurchaseTypeDownloadProduct", buf, 0xCu);
             }
 
             goto LABEL_51;
@@ -469,48 +469,48 @@ LABEL_35:
 
           if ([v37 isMachineBased])
           {
-            v48 = ASDLogHandleForCategory();
-            if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
+            ams_activeiTunesAccount = ASDLogHandleForCategory();
+            if (os_log_type_enabled(ams_activeiTunesAccount, OS_LOG_TYPE_DEFAULT))
             {
-              v50 = [v37 logKey];
+              logKey5 = [v37 logKey];
               *buf = 138412290;
-              *&buf[4] = v50;
-              _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "[%@] No account required for machine based purchase", buf, 0xCu);
+              *&buf[4] = logKey5;
+              _os_log_impl(&_mh_execute_header, ams_activeiTunesAccount, OS_LOG_TYPE_DEFAULT, "[%@] No account required for machine based purchase", buf, 0xCu);
             }
 
             goto LABEL_51;
           }
 
-          if (v12)
+          if (ams_DSID)
           {
             v51 = +[ACAccountStore ams_sharedAccountStore];
-            v48 = [v51 ams_iTunesAccountWithDSID:v12];
+            ams_activeiTunesAccount = [v51 ams_iTunesAccountWithDSID:ams_DSID];
 
-            if (v48)
+            if (ams_activeiTunesAccount)
             {
-              [v37 setAccount:v48];
+              [v37 setAccount:ams_activeiTunesAccount];
               goto LABEL_51;
             }
 
             v63 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
             {
-              v64 = [v37 logKey];
+              logKey6 = [v37 logKey];
               *buf = 138412290;
-              *&buf[4] = v64;
+              *&buf[4] = logKey6;
               _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "[%@] Account provided but we couldn't find it on this device", buf, 0xCu);
             }
 
             if (![v37 isDiscretionary])
             {
-              if (![v22 length])
+              if (![username length])
               {
                 v65 = ASDLogHandleForCategory();
                 if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
                 {
-                  v107 = [v37 logKey];
+                  logKey7 = [v37 logKey];
                   *buf = 138412290;
-                  *&buf[4] = v107;
+                  *&buf[4] = logKey7;
                   _os_log_error_impl(&_mh_execute_header, v65, OS_LOG_TYPE_ERROR, "[%@] Purchase has a dsID but no username to authenticate", buf, 0xCu);
                 }
 
@@ -521,46 +521,46 @@ LABEL_70:
               v69 = ASDLogHandleForCategory();
               if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
               {
-                v70 = [v37 logKey];
+                logKey8 = [v37 logKey];
                 *buf = 138412290;
-                *&buf[4] = v70;
+                *&buf[4] = logKey8;
                 _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEFAULT, "[%@] Prompting for account", buf, 0xCu);
               }
 
               v71 = [PromptForAccountTask alloc];
-              v72 = [v37 logKey];
-              v24 = sub_1002C0310(v71, v22, v72);
+              logKey9 = [v37 logKey];
+              account3 = sub_1002C0310(v71, username, logKey9);
 
-              v73 = [v37 buyParams];
-              v25 = [v73 parameterForKey:v121];
+              buyParams = [v37 buyParams];
+              ams_DSID2 = [buyParams parameterForKey:v121];
 
-              if (v25)
+              if (ams_DSID2)
               {
-                v74 = [v25 isEqualToString:@"GAMEPRE"];
-                v75 = v24 ? v74 : 0;
+                v74 = [ams_DSID2 isEqualToString:@"GAMEPRE"];
+                v75 = account3 ? v74 : 0;
                 if (v75 == 1)
                 {
-                  v24[50] = 1;
+                  account3[50] = 1;
                 }
               }
 
-              v77 = [v37 requestToken];
-              if (v24)
+              requestToken = [v37 requestToken];
+              if (account3)
               {
-                objc_setProperty_atomic(v24, v76, v77, 74);
+                objc_setProperty_atomic(account3, v76, requestToken, 74);
               }
 
               v78 = sub_100284B90();
-              v144 = v24;
+              v144 = account3;
               v79 = [NSArray arrayWithObjects:&v144 count:1];
               if (v78)
               {
                 [v78[1] addOperations:v79 waitUntilFinished:1];
               }
 
-              if (v24)
+              if (account3)
               {
-                v81 = objc_getProperty(v24, v80, 58, 1);
+                v81 = objc_getProperty(account3, v80, 58, 1);
               }
 
               else
@@ -569,13 +569,13 @@ LABEL_70:
               }
 
               v82 = v81;
-              v83 = [v82 account];
+              account4 = [v82 account];
 
-              if (v83)
+              if (account4)
               {
-                if (v24)
+                if (account3)
                 {
-                  v85 = objc_getProperty(v24, v84, 58, 1);
+                  v85 = objc_getProperty(account3, v84, 58, 1);
                 }
 
                 else
@@ -584,29 +584,29 @@ LABEL_70:
                 }
 
                 v86 = v85;
-                v87 = [v86 account];
-                [v37 setAccount:v87];
+                account5 = [v86 account];
+                [v37 setAccount:account5];
 
-                v88 = [v37 buyParams];
-                [v88 setParameter:&__kCFBooleanTrue forKey:@"hasBeenAuthedForBuy"];
+                buyParams2 = [v37 buyParams];
+                [buyParams2 setParameter:&__kCFBooleanTrue forKey:@"hasBeenAuthedForBuy"];
 
                 v122 = sub_1003C5100(AMSPurchase, v37);
                 v89 = *(&self->_presenters + 2);
-                v90 = [v122 uniqueIdentifier];
-                [v89 setObject:v37 forKeyedSubscript:v90];
+                uniqueIdentifier = [v122 uniqueIdentifier];
+                [v89 setObject:v37 forKeyedSubscript:uniqueIdentifier];
 
                 [v123 addObject:v122];
-                v91 = ASDLogHandleForCategory();
-                if (os_log_type_enabled(v91, OS_LOG_TYPE_DEFAULT))
+                account6 = ASDLogHandleForCategory();
+                if (os_log_type_enabled(account6, OS_LOG_TYPE_DEFAULT))
                 {
-                  v92 = [v37 logKey];
-                  v93 = [v37 buyParams];
-                  v94 = [v93 stringValue];
+                  logKey10 = [v37 logKey];
+                  buyParams3 = [v37 buyParams];
+                  stringValue = [buyParams3 stringValue];
                   *buf = 138412546;
-                  *&buf[4] = v92;
+                  *&buf[4] = logKey10;
                   *&buf[12] = 2114;
-                  *&buf[14] = v94;
-                  _os_log_impl(&_mh_execute_header, v91, OS_LOG_TYPE_DEFAULT, "[%@] Purchasing with parameters: %{public}@", buf, 0x16u);
+                  *&buf[14] = stringValue;
+                  _os_log_impl(&_mh_execute_header, account6, OS_LOG_TYPE_DEFAULT, "[%@] Purchasing with parameters: %{public}@", buf, 0x16u);
                 }
 
                 v3 = 0;
@@ -617,9 +617,9 @@ LABEL_70:
                 v95 = *(&self->super._finished + 1);
                 if (v95 && *(v95 + 24) == 1)
                 {
-                  if (v24)
+                  if (account3)
                   {
-                    v96 = objc_getProperty(v24, v84, 32, 1);
+                    v96 = objc_getProperty(account3, v84, 32, 1);
                   }
 
                   else
@@ -638,10 +638,10 @@ LABEL_70:
                 v97 = ASDLogHandleForCategory();
                 if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
                 {
-                  v104 = [v37 logKey];
-                  if (v24)
+                  logKey11 = [v37 logKey];
+                  if (account3)
                   {
-                    v105 = objc_getProperty(v24, v103, 32, 1);
+                    v105 = objc_getProperty(account3, v103, 32, 1);
                   }
 
                   else
@@ -651,15 +651,15 @@ LABEL_70:
 
                   v106 = v105;
                   *buf = 138412546;
-                  *&buf[4] = v104;
+                  *&buf[4] = logKey11;
                   *&buf[12] = 2114;
                   *&buf[14] = v106;
                   _os_log_error_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "[%@] No account for purchase: %{public}@", buf, 0x16u);
                 }
 
-                if (v24)
+                if (account3)
                 {
-                  v99 = objc_getProperty(v24, v98, 32, 1);
+                  v99 = objc_getProperty(account3, v98, 32, 1);
                 }
 
                 else
@@ -668,9 +668,9 @@ LABEL_70:
                 }
 
                 v122 = v99;
-                v91 = [v37 account];
-                v100 = [v91 ams_DSID];
-                v101 = sub_1003BF384(StoreItemResponse, v122, v100);
+                account6 = [v37 account];
+                ams_DSID3 = [account6 ams_DSID];
+                v101 = sub_1003BF384(StoreItemResponse, v122, ams_DSID3);
                 [v37 setItemResponse:v101];
               }
 
@@ -682,18 +682,18 @@ LABEL_67:
             v65 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
             {
-              v102 = [v37 logKey];
+              logKey12 = [v37 logKey];
               *buf = 138412290;
-              *&buf[4] = v102;
+              *&buf[4] = logKey12;
               _os_log_error_impl(&_mh_execute_header, v65, OS_LOG_TYPE_ERROR, "[%@] No account for discretionary purchase", buf, 0xCu);
             }
 
 LABEL_63:
 
-            v24 = ASDErrorWithDescription();
-            v25 = [v37 account];
-            v66 = [v25 ams_DSID];
-            v67 = sub_1003BF384(StoreItemResponse, v24, v66);
+            account3 = ASDErrorWithDescription();
+            ams_DSID2 = [v37 account];
+            v25Ams_DSID = [ams_DSID2 ams_DSID];
+            v67 = sub_1003BF384(StoreItemResponse, account3, v25Ams_DSID);
             [v37 setItemResponse:v67];
           }
 
@@ -702,24 +702,24 @@ LABEL_63:
             v52 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
             {
-              v53 = [v37 logKey];
+              logKey13 = [v37 logKey];
               *buf = 138412290;
-              *&buf[4] = v53;
+              *&buf[4] = logKey13;
               _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "[%@] No account provided", buf, 0xCu);
             }
 
             v54 = +[ACAccountStore ams_sharedAccountStore];
-            v48 = [v54 ams_activeiTunesAccount];
+            ams_activeiTunesAccount = [v54 ams_activeiTunesAccount];
 
             v55 = ASDLogHandleForCategory();
             v56 = os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT);
-            if (!v48)
+            if (!ams_activeiTunesAccount)
             {
               if (v56)
               {
-                v68 = [v37 logKey];
+                logKey14 = [v37 logKey];
                 *buf = 138412290;
-                *&buf[4] = v68;
+                *&buf[4] = logKey14;
                 _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "[%@] No active iTunes account found", buf, 0xCu);
               }
 
@@ -733,32 +733,32 @@ LABEL_63:
 
             if (v56)
             {
-              v57 = [v37 logKey];
+              logKey15 = [v37 logKey];
               *buf = 138412290;
-              *&buf[4] = v57;
+              *&buf[4] = logKey15;
               _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "[%@] Active iTunes account found, using that", buf, 0xCu);
             }
 
-            [v37 setAccount:v48];
+            [v37 setAccount:ams_activeiTunesAccount];
 LABEL_51:
 
-            v24 = sub_1003C5100(AMSPurchase, v37);
+            account3 = sub_1003C5100(AMSPurchase, v37);
             v58 = *(&self->_presenters + 2);
-            v59 = [v24 uniqueIdentifier];
-            [v58 setObject:v37 forKeyedSubscript:v59];
+            uniqueIdentifier2 = [account3 uniqueIdentifier];
+            [v58 setObject:v37 forKeyedSubscript:uniqueIdentifier2];
 
-            [v123 addObject:v24];
-            v25 = ASDLogHandleForCategory();
-            if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+            [v123 addObject:account3];
+            ams_DSID2 = ASDLogHandleForCategory();
+            if (os_log_type_enabled(ams_DSID2, OS_LOG_TYPE_DEFAULT))
             {
-              v60 = [v37 logKey];
-              v61 = [v37 buyParams];
-              v62 = [v61 stringValue];
+              logKey16 = [v37 logKey];
+              buyParams4 = [v37 buyParams];
+              stringValue2 = [buyParams4 stringValue];
               *buf = 138412546;
-              *&buf[4] = v60;
+              *&buf[4] = logKey16;
               *&buf[12] = 2114;
-              *&buf[14] = v62;
-              _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "[%@] Purchasing with parameters: %{public}@", buf, 0x16u);
+              *&buf[14] = stringValue2;
+              _os_log_impl(&_mh_execute_header, ams_DSID2, OS_LOG_TYPE_DEFAULT, "[%@] Purchasing with parameters: %{public}@", buf, 0x16u);
             }
           }
 
@@ -766,16 +766,16 @@ LABEL_51:
           goto LABEL_54;
         }
 
-        v12 = ASDLogHandleForCategory();
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+        ams_DSID = ASDLogHandleForCategory();
+        if (os_log_type_enabled(ams_DSID, OS_LOG_TYPE_ERROR))
         {
-          v13 = [v5 logKey];
-          v14 = [v5 bundleID];
-          v15 = [v5 itemResponse];
-          v17 = v15;
-          if (v15)
+          logKey17 = [v5 logKey];
+          bundleID2 = [v5 bundleID];
+          itemResponse2 = [v5 itemResponse];
+          v17 = itemResponse2;
+          if (itemResponse2)
           {
-            v18 = objc_getProperty(v15, v16, 56, 1);
+            v18 = objc_getProperty(itemResponse2, v16, 56, 1);
           }
 
           else
@@ -785,12 +785,12 @@ LABEL_51:
 
           v19 = v18;
           *buf = 138412802;
-          *&buf[4] = v13;
+          *&buf[4] = logKey17;
           *&buf[12] = 2114;
-          *&buf[14] = v14;
+          *&buf[14] = bundleID2;
           *&buf[22] = 2114;
           v141 = v19;
-          _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "[%@] Failing purchase %{public}@ due to error: %{public}@.", buf, 0x20u);
+          _os_log_error_impl(&_mh_execute_header, ams_DSID, OS_LOG_TYPE_ERROR, "[%@] Failing purchase %{public}@ due to error: %{public}@.", buf, 0x20u);
         }
 
 LABEL_55:
@@ -815,10 +815,10 @@ LABEL_114:
   {
     v109 = [AMSPurchaseQueueConfiguration alloc];
     v110 = sub_100282080(*(&self->super._finished + 1));
-    v111 = [v110 nextObject];
-    v112 = [v111 bag];
-    v113 = [v112 amsBag];
-    v114 = [v109 initWithBag:v113];
+    nextObject = [v110 nextObject];
+    v112 = [nextObject bag];
+    amsBag = [v112 amsBag];
+    v114 = [v109 initWithBag:amsBag];
 
     [v114 setDelegate:self];
     v115 = [[AMSPurchaseQueue alloc] initWithConfiguration:v114];
@@ -852,7 +852,7 @@ LABEL_114:
     v128[1] = 3221225472;
     v128[2] = sub_1002E65C8;
     v128[3] = &unk_100521F68;
-    v129 = v120;
+    v129 = handlerCopy;
     [v117 addFinishBlock:v128];
 
     _Block_object_dispose(buf, 8);
@@ -860,32 +860,32 @@ LABEL_114:
 
   else
   {
-    (*(v120 + 2))(v120, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  requestCopy = request;
   v9 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting dialog task", buf, 0xCu);
   }
 
-  v10 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v8];
-  v11 = [v10 present];
+  v10 = [[AMSSystemAlertDialogTask alloc] initWithRequest:requestCopy];
+  present = [v10 present];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1002E6788;
   v13[3] = &unk_10051E068;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
-  [v11 addFinishBlock:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [present addFinishBlock:v13];
 }
 
 @end

@@ -1,75 +1,75 @@
 @interface MSPSharedTripContact
-+ (BOOL)isHandleBlocked:(id)a3;
-+ (BOOL)isVirtualReceiver:(id)a3;
++ (BOOL)isHandleBlocked:(id)blocked;
++ (BOOL)isVirtualReceiver:(id)receiver;
 + (id)_propertiesForFetching;
-+ (id)capabilityVersionsForVirtualReceiver:(id)a3;
-+ (id)contactsFromCNContact:(id)a3;
-+ (id)contactsFromCNContact:(id)a3 matchingHandles:(id)a4;
-+ (id)contactsFromHandles:(id)a3;
-+ (id)contactsFromIDSHandles:(id)a3;
-+ (id)contactsFromVirtualReceiverHandles:(id)a3;
-+ (id)iMessageVirtualReceiverWithName:(id)a3;
-+ (id)mapsVirtualReceiverWithName:(id)a3 receiverCapabilityVersion:(id)a4;
-+ (id)rcsVirtualReceiverWithName:(id)a3;
-+ (id)smsVirtualReceiverWithName:(id)a3;
-+ (id)virtualReceiverWithHandle:(id)a3;
-+ (unint64_t)capabilityTypeForVirtualReceiver:(id)a3;
-+ (void)setAdditionalKeyDescriptorsForContactFetching:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)capabilityVersionsForVirtualReceiver:(id)receiver;
++ (id)contactsFromCNContact:(id)contact;
++ (id)contactsFromCNContact:(id)contact matchingHandles:(id)handles;
++ (id)contactsFromHandles:(id)handles;
++ (id)contactsFromIDSHandles:(id)handles;
++ (id)contactsFromVirtualReceiverHandles:(id)handles;
++ (id)iMessageVirtualReceiverWithName:(id)name;
++ (id)mapsVirtualReceiverWithName:(id)name receiverCapabilityVersion:(id)version;
++ (id)rcsVirtualReceiverWithName:(id)name;
++ (id)smsVirtualReceiverWithName:(id)name;
++ (id)virtualReceiverWithHandle:(id)handle;
++ (unint64_t)capabilityTypeForVirtualReceiver:(id)receiver;
++ (void)setAdditionalKeyDescriptorsForContactFetching:(id)fetching;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHandleBlocked;
 - (BOOL)isPhoneNumber;
-- (MSPSharedTripContact)initWithCoder:(id)a3;
-- (MSPSharedTripContact)initWithContact:(id)a3 handle:(id)a4;
-- (MSPSharedTripContact)initWithContact:(id)a3 labeledValue:(id)a4;
-- (MSPSharedTripContact)initWithContactHandle:(id)a3;
+- (MSPSharedTripContact)initWithCoder:(id)coder;
+- (MSPSharedTripContact)initWithContact:(id)contact handle:(id)handle;
+- (MSPSharedTripContact)initWithContact:(id)contact labeledValue:(id)value;
+- (MSPSharedTripContact)initWithContactHandle:(id)handle;
 - (NSString)displayName;
 - (NSString)handleForIDS;
 - (id)_stringValue;
 - (id)description;
-- (id)handleForDeviceVersion:(unint64_t)a3;
+- (id)handleForDeviceVersion:(unint64_t)version;
 - (unint64_t)hash;
-- (void)_populateFromContactUsingHandle:(id)a3;
-- (void)startLiveUpdatesForCapabilityVersion:(unint64_t)a3;
-- (void)stopLiveUpdatesForCapabilityVersion:(unint64_t)a3;
+- (void)_populateFromContactUsingHandle:(id)handle;
+- (void)startLiveUpdatesForCapabilityVersion:(unint64_t)version;
+- (void)stopLiveUpdatesForCapabilityVersion:(unint64_t)version;
 @end
 
 @implementation MSPSharedTripContact
 
-- (MSPSharedTripContact)initWithCoder:(id)a3
+- (MSPSharedTripContact)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeObjectForKey:@"contactHandle"];
+  v4 = [coder decodeObjectForKey:@"contactHandle"];
   if (v4)
   {
     self = [(MSPSharedTripContact *)self initWithContactHandle:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && [v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (equalCopy && [equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [v5 stringValue];
-    v7 = [(MSPSharedTripContact *)self stringValue];
-    if (v6 == v7)
+    v5 = equalCopy;
+    stringValue = [v5 stringValue];
+    stringValue2 = [(MSPSharedTripContact *)self stringValue];
+    if (stringValue == stringValue2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [v5 stringValue];
-      v9 = [(MSPSharedTripContact *)self stringValue];
-      v10 = [v8 isEqualToString:v9];
+      stringValue3 = [v5 stringValue];
+      stringValue4 = [(MSPSharedTripContact *)self stringValue];
+      v10 = [stringValue3 isEqualToString:stringValue4];
     }
   }
 
@@ -83,8 +83,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MSPSharedTripContact *)self stringValue];
-  v3 = [v2 hash];
+  stringValue = [(MSPSharedTripContact *)self stringValue];
+  v3 = [stringValue hash];
 
   return v3;
 }
@@ -98,8 +98,8 @@
     v11.super_class = MSPSharedTripContact;
     v4 = [(MSPSharedTripContact *)&v11 description];
     displayName = self->_displayName;
-    v6 = [(MSPSharedTripContact *)self stringValue];
-    [v3 stringWithFormat:@"%@ %@ (%@)", v4, displayName, v6];
+    stringValue = [(MSPSharedTripContact *)self stringValue];
+    [v3 stringWithFormat:@"%@ %@ (%@)", v4, displayName, stringValue];
   }
 
   else
@@ -107,8 +107,8 @@
     v10.receiver = self;
     v10.super_class = MSPSharedTripContact;
     v4 = [(MSPSharedTripContact *)&v10 description];
-    v6 = [(MSPSharedTripContact *)self stringValue];
-    [v3 stringWithFormat:@"%@ (%@)", v4, v6, v9];
+    stringValue = [(MSPSharedTripContact *)self stringValue];
+    [v3 stringWithFormat:@"%@ (%@)", v4, stringValue, v9];
   }
   v7 = ;
 
@@ -123,9 +123,9 @@
   {
     v3 = [MEMORY[0x277CBDA78] descriptorForRequiredKeysForStyle:0];
     v23[0] = v3;
-    v4 = [MEMORY[0x277CBDAC8] descriptorForRequiredKeys];
+    descriptorForRequiredKeys = [MEMORY[0x277CBDAC8] descriptorForRequiredKeys];
     v5 = *MEMORY[0x277CBD068];
-    v23[1] = v4;
+    v23[1] = descriptorForRequiredKeys;
     v23[2] = v5;
     v6 = *MEMORY[0x277CBD058];
     v23[3] = *MEMORY[0x277CBD000];
@@ -177,14 +177,14 @@
   return v2;
 }
 
-- (void)_populateFromContactUsingHandle:(id)a3
+- (void)_populateFromContactUsingHandle:(id)handle
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  handleCopy = handle;
+  v5 = handleCopy;
   if (self->_contact)
   {
-    v6 = v4;
+    v6 = handleCopy;
     if (v6)
     {
       v28 = v5;
@@ -193,8 +193,8 @@
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v8 = [(CNContact *)self->_contact phoneNumbers];
-      v9 = [v8 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      phoneNumbers = [(CNContact *)self->_contact phoneNumbers];
+      v9 = [phoneNumbers countByEnumeratingWithState:&v33 objects:v38 count:16];
       if (v9)
       {
         v10 = v9;
@@ -205,12 +205,12 @@ LABEL_5:
         {
           if (*v34 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(phoneNumbers);
           }
 
           v13 = *(*(&v33 + 1) + 8 * v12);
-          v14 = [v13 value];
-          v15 = [v14 isLikePhoneNumber:v7];
+          value = [v13 value];
+          v15 = [value isLikePhoneNumber:v7];
 
           if (v15)
           {
@@ -219,7 +219,7 @@ LABEL_5:
 
           if (v10 == ++v12)
           {
-            v10 = [v8 countByEnumeratingWithState:&v33 objects:v38 count:16];
+            v10 = [phoneNumbers countByEnumeratingWithState:&v33 objects:v38 count:16];
             if (v10)
             {
               goto LABEL_5;
@@ -246,8 +246,8 @@ LABEL_11:
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v17 = [(CNContact *)self->_contact emailAddresses];
-      v16 = [v17 countByEnumeratingWithState:&v29 objects:v37 count:16];
+      emailAddresses = [(CNContact *)self->_contact emailAddresses];
+      v16 = [emailAddresses countByEnumeratingWithState:&v29 objects:v37 count:16];
       if (v16)
       {
         v18 = *v30;
@@ -257,12 +257,12 @@ LABEL_11:
           {
             if (*v30 != v18)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(emailAddresses);
             }
 
             v20 = *(*(&v29 + 1) + 8 * i);
-            v21 = [v20 value];
-            v22 = [v21 isEqualToString:v6];
+            value2 = [v20 value];
+            v22 = [value2 isEqualToString:v6];
 
             if (v22)
             {
@@ -271,7 +271,7 @@ LABEL_11:
             }
           }
 
-          v16 = [v17 countByEnumeratingWithState:&v29 objects:v37 count:16];
+          v16 = [emailAddresses countByEnumeratingWithState:&v29 objects:v37 count:16];
           if (v16)
           {
             continue;
@@ -304,21 +304,21 @@ LABEL_25:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (MSPSharedTripContact)initWithContactHandle:(id)a3
+- (MSPSharedTripContact)initWithContactHandle:(id)handle
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handleCopy = handle;
+  if (handleCopy)
   {
     if ([MEMORY[0x277CBDAB8] _maps_isAuthorized])
     {
       v5 = objc_alloc_init(MEMORY[0x277CBDAB8]);
       v6 = objc_alloc(MEMORY[0x277CBDA70]);
-      v7 = [objc_opt_class() _propertiesForFetching];
-      v8 = [v6 initWithKeysToFetch:v7];
+      _propertiesForFetching = [objc_opt_class() _propertiesForFetching];
+      v8 = [v6 initWithKeysToFetch:_propertiesForFetching];
 
       v9 = MEMORY[0x277CBDA58];
-      v24[0] = v4;
+      v24[0] = handleCopy;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
       v11 = [v9 predicateForContactsMatchingHandleStrings:v10];
       [v8 setPredicate:v11];
@@ -338,10 +338,10 @@ LABEL_25:
       v16[3] = &unk_279866268;
       [v5 enumerateContactsWithFetchRequest:v8 error:&v17 usingBlock:v16];
       v12 = v17;
-      self = [(MSPSharedTripContact *)self initWithContact:*(v19 + 5) handle:v4];
+      self = [(MSPSharedTripContact *)self initWithContact:*(v19 + 5) handle:handleCopy];
       _Block_object_dispose(buf, 8);
 
-      v13 = self;
+      selfCopy = self;
     }
 
     else
@@ -353,23 +353,23 @@ LABEL_25:
         _os_log_impl(&dword_25813A000, v5, OS_LOG_TYPE_ERROR, "[Contact] Asked to resolve handle to contact, but Maps is not authorised for Contacts", buf, 2u);
       }
 
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v13;
+  return selfCopy;
 }
 
-- (MSPSharedTripContact)initWithContact:(id)a3 handle:(id)a4
+- (MSPSharedTripContact)initWithContact:(id)contact handle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  handleCopy = handle;
   v15.receiver = self;
   v15.super_class = MSPSharedTripContact;
   v8 = [(MSPSharedTripContact *)&v15 init];
@@ -378,14 +378,14 @@ LABEL_25:
     goto LABEL_5;
   }
 
-  v9 = [objc_opt_class() _propertiesForFetching];
-  if (([v6 areKeysAvailable:v9] & 1) == 0)
+  _propertiesForFetching = [objc_opt_class() _propertiesForFetching];
+  if (([contactCopy areKeysAvailable:_propertiesForFetching] & 1) == 0)
   {
     v10 = objc_alloc_init(MEMORY[0x277CBDAB8]);
-    v11 = [v6 identifier];
-    v12 = [v10 unifiedContactWithIdentifier:v11 keysToFetch:v9 error:0];
+    identifier = [contactCopy identifier];
+    v12 = [v10 unifiedContactWithIdentifier:identifier keysToFetch:_propertiesForFetching error:0];
 
-    v6 = v12;
+    contactCopy = v12;
     if (!v12)
     {
 
@@ -394,9 +394,9 @@ LABEL_25:
     }
   }
 
-  objc_storeStrong(&v8->_contact, v6);
-  objc_storeStrong(&v8->_originalHandle, a4);
-  [(MSPSharedTripContact *)v8 _populateFromContactUsingHandle:v7];
+  objc_storeStrong(&v8->_contact, contactCopy);
+  objc_storeStrong(&v8->_originalHandle, handle);
+  [(MSPSharedTripContact *)v8 _populateFromContactUsingHandle:handleCopy];
   labeledValue = v8->_labeledValue;
 
   if (labeledValue)
@@ -410,25 +410,25 @@ LABEL_6:
   return labeledValue;
 }
 
-- (MSPSharedTripContact)initWithContact:(id)a3 labeledValue:(id)a4
+- (MSPSharedTripContact)initWithContact:(id)contact labeledValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  contactCopy = contact;
+  valueCopy = value;
   v16.receiver = self;
   v16.super_class = MSPSharedTripContact;
   v9 = [(MSPSharedTripContact *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contact, a3);
+    objc_storeStrong(&v9->_contact, contact);
     v11 = [MEMORY[0x277CBDA78] stringFromContact:v10->_contact style:1000];
     displayName = v10->_displayName;
     v10->_displayName = v11;
 
-    objc_storeStrong(&v10->_labeledValue, a4);
-    v13 = [(MSPSharedTripContact *)v10 _stringValue];
+    objc_storeStrong(&v10->_labeledValue, value);
+    _stringValue = [(MSPSharedTripContact *)v10 _stringValue];
     originalHandle = v10->_originalHandle;
-    v10->_originalHandle = v13;
+    v10->_originalHandle = _stringValue;
   }
 
   return v10;
@@ -436,27 +436,27 @@ LABEL_6:
 
 - (id)_stringValue
 {
-  v3 = [(MSPSharedTripContact *)self labeledValue];
-  v4 = [v3 value];
+  labeledValue = [(MSPSharedTripContact *)self labeledValue];
+  value = [labeledValue value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(MSPSharedTripContact *)self labeledValue];
-    v7 = [v6 value];
+    labeledValue2 = [(MSPSharedTripContact *)self labeledValue];
+    value2 = [labeledValue2 value];
 LABEL_5:
-    v9 = v7;
+    v9 = value2;
 
     goto LABEL_7;
   }
 
   if ([(MSPSharedTripContact *)self isPhoneNumber])
   {
-    v8 = [(MSPSharedTripContact *)self labeledValue];
-    v6 = [v8 value];
+    labeledValue3 = [(MSPSharedTripContact *)self labeledValue];
+    labeledValue2 = [labeledValue3 value];
 
-    v7 = [v6 unformattedInternationalStringValue];
+    value2 = [labeledValue2 unformattedInternationalStringValue];
     goto LABEL_5;
   }
 
@@ -468,14 +468,14 @@ LABEL_7:
 
 - (NSString)handleForIDS
 {
-  v3 = [(MSPSharedTripContact *)self labeledValue];
-  v4 = [v3 value];
+  labeledValue = [(MSPSharedTripContact *)self labeledValue];
+  value = [labeledValue value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(MSPSharedTripContact *)self stringValue];
+    stringValue = [(MSPSharedTripContact *)self stringValue];
     v7 = MEMORY[0x259C7A620]();
 LABEL_5:
     v8 = v7;
@@ -485,7 +485,7 @@ LABEL_5:
 
   if ([(MSPSharedTripContact *)self isPhoneNumber])
   {
-    v6 = [(MSPSharedTripContact *)self stringValue];
+    stringValue = [(MSPSharedTripContact *)self stringValue];
     v7 = IDSCopyIDForPhoneNumber();
     goto LABEL_5;
   }
@@ -498,8 +498,8 @@ LABEL_7:
 
 - (BOOL)isPhoneNumber
 {
-  v2 = [(MSPSharedTripContact *)self labeledValue];
-  v3 = [v2 value];
+  labeledValue = [(MSPSharedTripContact *)self labeledValue];
+  value = [labeledValue value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -511,44 +511,44 @@ LABEL_7:
   displayName = self->_displayName;
   if (displayName)
   {
-    v3 = displayName;
+    stringValue = displayName;
   }
 
   else
   {
-    v3 = [(MSPSharedTripContact *)self stringValue];
+    stringValue = [(MSPSharedTripContact *)self stringValue];
   }
 
-  return v3;
+  return stringValue;
 }
 
-+ (id)contactsFromCNContact:(id)a3 matchingHandles:(id)a4
++ (id)contactsFromCNContact:(id)contact matchingHandles:(id)handles
 {
   v67 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v39 = a4;
-  if ([v39 count])
+  contactCopy = contact;
+  handlesCopy = handles;
+  if ([handlesCopy count])
   {
     v6 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v39 count];
-      v8 = [v5 identifier];
+      v7 = [handlesCopy count];
+      identifier = [contactCopy identifier];
       *buf = 134218499;
       v62 = v7;
       v63 = 2113;
-      v64 = v8;
+      v64 = identifier;
       v65 = 2113;
-      v66 = v39;
+      v66 = handlesCopy;
       _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_INFO, "Will attempt to match %lu handles for contact %{private}@ (%{private}@)", buf, 0x20u);
     }
 
-    v40 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    obj = [v5 phoneNumbers];
+    obj = [contactCopy phoneNumbers];
     v35 = [obj countByEnumeratingWithState:&v53 objects:v60 count:16];
     if (v35)
     {
@@ -565,12 +565,12 @@ LABEL_7:
 
           v37 = v9;
           v10 = *(*(&v53 + 1) + 8 * v9);
-          v11 = [v10 value];
+          value = [v10 value];
           v49 = 0u;
           v50 = 0u;
           v51 = 0u;
           v52 = 0u;
-          v12 = v39;
+          v12 = handlesCopy;
           v13 = [v12 countByEnumeratingWithState:&v49 objects:v59 count:16];
           if (v13)
           {
@@ -586,12 +586,12 @@ LABEL_7:
                 }
 
                 v17 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:*(*(&v49 + 1) + 8 * i) countryCode:0];
-                if ([v11 isLikePhoneNumber:v17])
+                if ([value isLikePhoneNumber:v17])
                 {
-                  v18 = [[MSPSharedTripContact alloc] initWithContact:v5 labeledValue:v10];
+                  v18 = [[MSPSharedTripContact alloc] initWithContact:contactCopy labeledValue:v10];
                   if (v18)
                   {
-                    [v40 addObject:v18];
+                    [array addObject:v18];
                   }
                 }
               }
@@ -616,8 +616,8 @@ LABEL_7:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v36 = [v5 emailAddresses];
-    v19 = [v36 countByEnumeratingWithState:&v45 objects:v58 count:16];
+    emailAddresses = [contactCopy emailAddresses];
+    v19 = [emailAddresses countByEnumeratingWithState:&v45 objects:v58 count:16];
     if (v19)
     {
       v20 = v19;
@@ -628,16 +628,16 @@ LABEL_7:
         {
           if (*v46 != v38)
           {
-            objc_enumerationMutation(v36);
+            objc_enumerationMutation(emailAddresses);
           }
 
           v22 = *(*(&v45 + 1) + 8 * j);
-          v23 = [v22 value];
+          value2 = [v22 value];
           v41 = 0u;
           v42 = 0u;
           v43 = 0u;
           v44 = 0u;
-          v24 = v39;
+          v24 = handlesCopy;
           v25 = [v24 countByEnumeratingWithState:&v41 objects:v57 count:16];
           if (v25)
           {
@@ -652,12 +652,12 @@ LABEL_7:
                   objc_enumerationMutation(v24);
                 }
 
-                if ([v23 isEqualToString:*(*(&v41 + 1) + 8 * k)])
+                if ([value2 isEqualToString:*(*(&v41 + 1) + 8 * k)])
                 {
-                  v29 = [[MSPSharedTripContact alloc] initWithContact:v5 labeledValue:v22];
+                  v29 = [[MSPSharedTripContact alloc] initWithContact:contactCopy labeledValue:v22];
                   if (v29)
                   {
-                    [v40 addObject:v29];
+                    [array addObject:v29];
                   }
                 }
               }
@@ -669,13 +669,13 @@ LABEL_7:
           }
         }
 
-        v20 = [v36 countByEnumeratingWithState:&v45 objects:v58 count:16];
+        v20 = [emailAddresses countByEnumeratingWithState:&v45 objects:v58 count:16];
       }
 
       while (v20);
     }
 
-    v30 = [v40 copy];
+    v30 = [array copy];
   }
 
   else
@@ -688,26 +688,26 @@ LABEL_7:
   return v30;
 }
 
-+ (id)contactsFromCNContact:(id)a3
++ (id)contactsFromCNContact:(id)contact
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contactCopy = contact;
   v4 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [v3 identifier];
+    identifier = [contactCopy identifier];
     *buf = 138477827;
-    v33 = v5;
+    v33 = identifier;
     _os_log_impl(&dword_25813A000, v4, OS_LOG_TYPE_INFO, "Will prepare contact values for contact %{private}@", buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [v3 phoneNumbers];
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  phoneNumbers = [contactCopy phoneNumbers];
+  v8 = [phoneNumbers countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v8)
   {
     v9 = v8;
@@ -718,17 +718,17 @@ LABEL_7:
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(phoneNumbers);
         }
 
-        v12 = [[MSPSharedTripContact alloc] initWithContact:v3 labeledValue:*(*(&v26 + 1) + 8 * i)];
+        v12 = [[MSPSharedTripContact alloc] initWithContact:contactCopy labeledValue:*(*(&v26 + 1) + 8 * i)];
         if (v12)
         {
-          [v6 addObject:v12];
+          [array addObject:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v9 = [phoneNumbers countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v9);
@@ -738,8 +738,8 @@ LABEL_7:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v13 = [v3 emailAddresses];
-  v14 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  emailAddresses = [contactCopy emailAddresses];
+  v14 = [emailAddresses countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v14)
   {
     v15 = v14;
@@ -750,54 +750,54 @@ LABEL_7:
       {
         if (*v23 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(emailAddresses);
         }
 
-        v18 = [[MSPSharedTripContact alloc] initWithContact:v3 labeledValue:*(*(&v22 + 1) + 8 * j)];
+        v18 = [[MSPSharedTripContact alloc] initWithContact:contactCopy labeledValue:*(*(&v22 + 1) + 8 * j)];
         if (v18)
         {
-          [v6 addObject:v18];
+          [array addObject:v18];
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v15 = [emailAddresses countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v15);
   }
 
-  v19 = [v6 copy];
+  v19 = [array copy];
   v20 = *MEMORY[0x277D85DE8];
 
   return v19;
 }
 
-+ (id)contactsFromHandles:(id)a3
++ (id)contactsFromHandles:(id)handles
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  handlesCopy = handles;
+  if ([handlesCopy count])
   {
-    v4 = [MEMORY[0x277CBDAB8] _maps_isAuthorized];
+    _maps_isAuthorized = [MEMORY[0x277CBDAB8] _maps_isAuthorized];
     v5 = MSPGetSharedTripLog();
     v6 = v5;
-    if (v4)
+    if (_maps_isAuthorized)
     {
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         *buf = 134218243;
-        v22 = [v3 count];
+        v22 = [handlesCopy count];
         v23 = 2113;
-        v24 = v3;
+        v24 = handlesCopy;
         _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_INFO, "Will attempt to fetch contacts for %lu handles (%{private}@)", buf, 0x16u);
       }
 
       v6 = objc_alloc_init(MEMORY[0x277CBDAB8]);
       v7 = objc_alloc(MEMORY[0x277CBDA70]);
-      v8 = [objc_opt_class() _propertiesForFetching];
-      v9 = [v7 initWithKeysToFetch:v8];
+      _propertiesForFetching = [objc_opt_class() _propertiesForFetching];
+      v9 = [v7 initWithKeysToFetch:_propertiesForFetching];
 
-      v10 = [MEMORY[0x277CBDA58] predicateForContactsMatchingHandleStrings:v3];
+      v10 = [MEMORY[0x277CBDA58] predicateForContactsMatchingHandleStrings:handlesCopy];
       [v9 setPredicate:v10];
 
       [v9 setSortOrder:1];
@@ -807,12 +807,12 @@ LABEL_7:
       v17[1] = 3221225472;
       v17[2] = __44__MSPSharedTripContact_contactsFromHandles___block_invoke;
       v17[3] = &unk_279866290;
-      v18 = v3;
+      v18 = handlesCopy;
       v19 = v11;
       v12 = v11;
       [v6 enumerateContactsWithFetchRequest:v9 error:&v20 usingBlock:v17];
       v13 = v20;
-      v14 = [v12 array];
+      array = [v12 array];
     }
 
     else
@@ -823,18 +823,18 @@ LABEL_7:
         _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_ERROR, "[Contact] Asked to resolve handles to contacts, but Maps is not authorised for Contacts", buf, 2u);
       }
 
-      v14 = MEMORY[0x277CBEBF8];
+      array = MEMORY[0x277CBEBF8];
     }
   }
 
   else
   {
-    v14 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return array;
 }
 
 void __44__MSPSharedTripContact_contactsFromHandles___block_invoke(uint64_t a1, uint64_t a2)
@@ -843,10 +843,10 @@ void __44__MSPSharedTripContact_contactsFromHandles___block_invoke(uint64_t a1, 
   [*(a1 + 40) addObjectsFromArray:v3];
 }
 
-+ (id)contactsFromIDSHandles:(id)a3
++ (id)contactsFromIDSHandles:(id)handles
 {
-  v4 = MapsMap(a3, &__block_literal_global_4);
-  v5 = [a1 contactsFromHandles:v4];
+  v4 = MapsMap(handles, &__block_literal_global_4);
+  v5 = [self contactsFromHandles:v4];
 
   return v5;
 }
@@ -858,21 +858,21 @@ id __47__MSPSharedTripContact_contactsFromIDSHandles___block_invoke()
   return v0;
 }
 
-+ (void)setAdditionalKeyDescriptorsForContactFetching:(id)a3
++ (void)setAdditionalKeyDescriptorsForContactFetching:(id)fetching
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  fetchingCopy = fetching;
   v4 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138477827;
-    v10 = v3;
+    v10 = fetchingCopy;
     _os_log_impl(&dword_25813A000, v4, OS_LOG_TYPE_DEBUG, "[Contact] Setting additional keys for contact fetching: %{private}@", &v9, 0xCu);
   }
 
   v5 = additionalKeyDescriptors;
-  additionalKeyDescriptors = v3;
-  v6 = v3;
+  additionalKeyDescriptors = fetchingCopy;
+  v6 = fetchingCopy;
 
   v7 = keyDescriptorsForFetching;
   keyDescriptorsForFetching = 0;
@@ -880,7 +880,7 @@ id __47__MSPSharedTripContact_contactsFromIDSHandles___block_invoke()
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)isHandleBlocked:(id)a3
++ (BOOL)isHandleBlocked:(id)blocked
 {
   CMFItemFromString = CreateCMFItemFromString();
   v4 = CMFBlockListIsItemBlocked() != 0;
@@ -904,9 +904,9 @@ id __47__MSPSharedTripContact_contactsFromIDSHandles___block_invoke()
     v7 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [(MSPSharedTripContact *)self stringValue];
+      stringValue = [(MSPSharedTripContact *)self stringValue];
       *buf = 138477827;
-      v26 = v8;
+      v26 = stringValue;
       _os_log_impl(&dword_25813A000, v7, OS_LOG_TYPE_DEBUG, "[Contact] Checking if %{private}@ is blocked", buf, 0xCu);
     }
 
@@ -918,10 +918,10 @@ id __47__MSPSharedTripContact_contactsFromIDSHandles___block_invoke()
       [v9 addObject:?];
     }
 
-    v11 = [(MSPSharedTripContact *)self stringValue];
-    if (v11)
+    stringValue2 = [(MSPSharedTripContact *)self stringValue];
+    if (stringValue2)
     {
-      [v10 addObject:v11];
+      [v10 addObject:stringValue2];
     }
 
     v22 = 0u;
@@ -970,22 +970,22 @@ LABEL_22:
   return isBlocked;
 }
 
-+ (BOOL)isVirtualReceiver:(id)a3
++ (BOOL)isVirtualReceiver:(id)receiver
 {
-  v3 = a3;
+  receiverCopy = receiver;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-+ (unint64_t)capabilityTypeForVirtualReceiver:(id)a3
++ (unint64_t)capabilityTypeForVirtualReceiver:(id)receiver
 {
-  v4 = a3;
-  if ([a1 isVirtualReceiver:v4])
+  receiverCopy = receiver;
+  if ([self isVirtualReceiver:receiverCopy])
   {
-    v5 = [v4 handleForIDS];
-    CapabilityType = MSPSharedTripVirtualReceiverHandleGetCapabilityType(v5);
+    handleForIDS = [receiverCopy handleForIDS];
+    CapabilityType = MSPSharedTripVirtualReceiverHandleGetCapabilityType(handleForIDS);
   }
 
   else
@@ -996,13 +996,13 @@ LABEL_22:
   return CapabilityType;
 }
 
-+ (id)capabilityVersionsForVirtualReceiver:(id)a3
++ (id)capabilityVersionsForVirtualReceiver:(id)receiver
 {
-  v4 = a3;
-  if ([a1 isVirtualReceiver:v4])
+  receiverCopy = receiver;
+  if ([self isVirtualReceiver:receiverCopy])
   {
-    v5 = [v4 handleForIDS];
-    v6 = MSPSharedTripVirtualReceiverHandleGetReceiverCapabilityVersions(v5);
+    handleForIDS = [receiverCopy handleForIDS];
+    v6 = MSPSharedTripVirtualReceiverHandleGetReceiverCapabilityVersions(handleForIDS);
   }
 
   else
@@ -1013,12 +1013,12 @@ LABEL_22:
   return v6;
 }
 
-+ (id)virtualReceiverWithHandle:(id)a3
++ (id)virtualReceiverWithHandle:(id)handle
 {
-  v3 = a3;
-  if (MSPSharedTripVirtualReceiverIsValid(v3))
+  handleCopy = handle;
+  if (MSPSharedTripVirtualReceiverIsValid(handleCopy))
   {
-    v4 = [[MSPSharedTripVirtualContact alloc] initWithVirtualReceiverHandle:v3];
+    v4 = [[MSPSharedTripVirtualContact alloc] initWithVirtualReceiverHandle:handleCopy];
   }
 
   else
@@ -1029,55 +1029,55 @@ LABEL_22:
   return v4;
 }
 
-+ (id)contactsFromVirtualReceiverHandles:(id)a3
++ (id)contactsFromVirtualReceiverHandles:(id)handles
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __77__MSPSharedTripContact_VirtualReceivers__contactsFromVirtualReceiverHandles___block_invoke;
   v5[3] = &__block_descriptor_40_e43___MSPSharedTripContact_24__0__NSString_8Q16l;
-  v5[4] = a1;
-  v3 = MapsMap(a3, v5);
+  v5[4] = self;
+  v3 = MapsMap(handles, v5);
 
   return v3;
 }
 
-+ (id)mapsVirtualReceiverWithName:(id)a3 receiverCapabilityVersion:(id)a4
++ (id)mapsVirtualReceiverWithName:(id)name receiverCapabilityVersion:(id)version
 {
-  v5 = MSPSharedTripVirtualReceiverHandleMake(a3, 4, 0, a4);
-  v6 = [a1 virtualReceiverWithHandle:v5];
+  v5 = MSPSharedTripVirtualReceiverHandleMake(name, 4, 0, version);
+  v6 = [self virtualReceiverWithHandle:v5];
 
   return v6;
 }
 
-+ (id)iMessageVirtualReceiverWithName:(id)a3
++ (id)iMessageVirtualReceiverWithName:(id)name
 {
-  v4 = MSPSharedTripVirtualReceiverHandleMake(a3, 3, 0, 0);
-  v5 = [a1 virtualReceiverWithHandle:v4];
+  v4 = MSPSharedTripVirtualReceiverHandleMake(name, 3, 0, 0);
+  v5 = [self virtualReceiverWithHandle:v4];
 
   return v5;
 }
 
-+ (id)smsVirtualReceiverWithName:(id)a3
++ (id)smsVirtualReceiverWithName:(id)name
 {
-  v4 = MSPSharedTripVirtualReceiverHandleMake(a3, 2, @"SMS", 0);
-  v5 = [a1 virtualReceiverWithHandle:v4];
+  v4 = MSPSharedTripVirtualReceiverHandleMake(name, 2, @"SMS", 0);
+  v5 = [self virtualReceiverWithHandle:v4];
 
   return v5;
 }
 
-+ (id)rcsVirtualReceiverWithName:(id)a3
++ (id)rcsVirtualReceiverWithName:(id)name
 {
-  v4 = MSPSharedTripVirtualReceiverHandleMake(a3, 2, @"RCS", 0);
-  v5 = [a1 virtualReceiverWithHandle:v4];
+  v4 = MSPSharedTripVirtualReceiverHandleMake(name, 2, @"RCS", 0);
+  v5 = [self virtualReceiverWithHandle:v4];
 
   return v5;
 }
 
-- (id)handleForDeviceVersion:(unint64_t)a3
+- (id)handleForDeviceVersion:(unint64_t)version
 {
   if ([objc_opt_class() isVirtualReceiver:self])
   {
-    v5 = [(MSPSharedTripContact *)self _deviceHandleForVersion:a3];
+    v5 = [(MSPSharedTripContact *)self _deviceHandleForVersion:version];
   }
 
   else
@@ -1088,27 +1088,27 @@ LABEL_22:
   return v5;
 }
 
-- (void)startLiveUpdatesForCapabilityVersion:(unint64_t)a3
+- (void)startLiveUpdatesForCapabilityVersion:(unint64_t)version
 {
-  v3 = [(MSPSharedTripContact *)self handleForDeviceVersion:a3];
+  v3 = [(MSPSharedTripContact *)self handleForDeviceVersion:version];
   if (v3)
   {
     v5 = v3;
-    v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v4 postNotificationName:@"MSPSharedTripVirtualReceiverStartLiveUpdates" object:v5];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter postNotificationName:@"MSPSharedTripVirtualReceiverStartLiveUpdates" object:v5];
 
     v3 = v5;
   }
 }
 
-- (void)stopLiveUpdatesForCapabilityVersion:(unint64_t)a3
+- (void)stopLiveUpdatesForCapabilityVersion:(unint64_t)version
 {
-  v3 = [(MSPSharedTripContact *)self handleForDeviceVersion:a3];
+  v3 = [(MSPSharedTripContact *)self handleForDeviceVersion:version];
   if (v3)
   {
     v5 = v3;
-    v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v4 postNotificationName:@"MSPSharedTripVirtualReceiverStopLiveUpdates" object:v5];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter postNotificationName:@"MSPSharedTripVirtualReceiverStopLiveUpdates" object:v5];
 
     v3 = v5;
   }

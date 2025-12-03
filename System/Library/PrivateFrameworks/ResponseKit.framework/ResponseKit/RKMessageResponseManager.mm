@@ -1,39 +1,39 @@
 @interface RKMessageResponseManager
-+ (BOOL)_isMirroredResponseValidForResponse:(id)a3;
-+ (BOOL)_needsMirroredAnalysisForMessage:(id)a3 forChronologicalConversationHistory:(id)a4;
-+ (BOOL)_responseLooksLikeIncomingCheckInResponse:(id)a3;
-+ (BOOL)_responseLooksLikeOutgoingCheckInResponse:(id)a3;
-+ (BOOL)_responseTypeIsSunsetted:(id)a3;
-+ (id)_mostRecentTextFromChronologicalConversationHistory:(id)a3;
++ (BOOL)_isMirroredResponseValidForResponse:(id)response;
++ (BOOL)_needsMirroredAnalysisForMessage:(id)message forChronologicalConversationHistory:(id)history;
++ (BOOL)_responseLooksLikeIncomingCheckInResponse:(id)response;
++ (BOOL)_responseLooksLikeOutgoingCheckInResponse:(id)response;
++ (BOOL)_responseTypeIsSunsetted:(id)sunsetted;
++ (id)_mostRecentTextFromChronologicalConversationHistory:(id)history;
 + (id)sharedManager;
 - (BOOL)usePersonalizedRanking;
-- (RKMessageResponseManager)initWithAssetPlistURL:(id)a3;
-- (RKMessageResponseManager)initWithDynamicDataURL:(id)a3;
-- (RKMessageResponseManager)initWithDynamicDataURL:(id)a3 displayStringsProvider:(id)a4;
-- (RKMessageResponseManager)initWithDynamicDataURL:(id)a3 withBundleURL:(id)a4;
-- (id)categoryForMessage:(id)a3 langID:(id)a4;
-- (id)categoryForMessageWithoutQueue:(id)a3 langID:(id)a4;
+- (RKMessageResponseManager)initWithAssetPlistURL:(id)l;
+- (RKMessageResponseManager)initWithDynamicDataURL:(id)l;
+- (RKMessageResponseManager)initWithDynamicDataURL:(id)l displayStringsProvider:(id)provider;
+- (RKMessageResponseManager)initWithDynamicDataURL:(id)l withBundleURL:(id)rL;
+- (id)categoryForMessage:(id)message langID:(id)d;
+- (id)categoryForMessageWithoutQueue:(id)queue langID:(id)d;
 - (id)dispatchQueue;
 - (id)getRankLearner;
-- (id)responseWithAttributesMatchingProactiveGrammarForMessage:(id)a3 languageID:(id)a4 kbdInputModes:(id)a5;
-- (id)responseWithAttributesMatchingProactiveGrammarForMessageImp:(id)a3 languageID:(id *)a4 kbdInputModes:(id)a5;
-- (id)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forContext:(id)a5 withLanguage:(id)a6 options:(unint64_t)a7;
-- (id)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 withLanguage:(id)a6 inputModes:(id)a7 options:(unint64_t)a8;
-- (id)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 withLanguage:(id)a6 options:(unint64_t)a7;
-- (id)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 recipientID:(id)a5 forConversationHistory:(id)a6 withLanguage:(id)a7 options:(unint64_t)a8;
-- (id)responsesForMessageImp:(id)a3 maximumResponses:(unint64_t)a4 forRecipientID:(id)a5 forConversationHistory:(id)a6 forContext:(id)a7 withLanguage:(id)a8 options:(unint64_t)a9;
-- (id)responsesForMessageWithLanguageDetection:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 forContext:(id)a6 withLanguage:(id *)a7 options:(unint64_t)a8;
-- (id)responsesForMessageWithLanguageDetectionImp:(id)a3 maximumResponses:(unint64_t)a4 forRecipientID:(id)a5 forConversationHistory:(id)a6 forContext:(id)a7 withLanguage:(id *)a8 inputModes:(id)a9 options:(unint64_t)a10;
+- (id)responseWithAttributesMatchingProactiveGrammarForMessage:(id)message languageID:(id)d kbdInputModes:(id)modes;
+- (id)responseWithAttributesMatchingProactiveGrammarForMessageImp:(id)imp languageID:(id *)d kbdInputModes:(id)modes;
+- (id)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forContext:(id)context withLanguage:(id)language options:(unint64_t)options;
+- (id)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history withLanguage:(id)language inputModes:(id)modes options:(unint64_t)options;
+- (id)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history withLanguage:(id)language options:(unint64_t)options;
+- (id)responsesForMessage:(id)message maximumResponses:(unint64_t)responses recipientID:(id)d forConversationHistory:(id)history withLanguage:(id)language options:(unint64_t)options;
+- (id)responsesForMessageImp:(id)imp maximumResponses:(unint64_t)responses forRecipientID:(id)d forConversationHistory:(id)history forContext:(id)context withLanguage:(id)language options:(unint64_t)options;
+- (id)responsesForMessageWithLanguageDetection:(id)detection maximumResponses:(unint64_t)responses forConversationHistory:(id)history forContext:(id)context withLanguage:(id *)language options:(unint64_t)options;
+- (id)responsesForMessageWithLanguageDetectionImp:(id)imp maximumResponses:(unint64_t)responses forRecipientID:(id)d forConversationHistory:(id)history forContext:(id)context withLanguage:(id *)language inputModes:(id)modes options:(unint64_t)self0;
 - (void)flushDynamicData;
-- (void)prunePersonalizedUserDatabase:(id)a3;
-- (void)registerResponse:(id)a3 forMessage:(id)a4 forContext:(id)a5 withEffectiveDate:(id)a6 withLanguage:(id)a7;
-- (void)registerResponse:(id)a3 forMessage:(id)a4 metadata:(id)a5 withLanguage:(id)a6;
+- (void)prunePersonalizedUserDatabase:(id)database;
+- (void)registerResponse:(id)response forMessage:(id)message forContext:(id)context withEffectiveDate:(id)date withLanguage:(id)language;
+- (void)registerResponse:(id)response forMessage:(id)message metadata:(id)metadata withLanguage:(id)language;
 - (void)resetRegisteredResponses;
-- (void)responseWithAttributesMatchingProactiveGrammarForMessage:(id)a3 languageID:(id)a4 kbdInputModes:(id)a5 completionBlock:(id)a6;
-- (void)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forContext:(id)a5 withLanguage:(id)a6 options:(unint64_t)a7 completionBlock:(id)a8;
-- (void)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 withLanguage:(id)a6 options:(unint64_t)a7 completionBlock:(id)a8;
-- (void)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 recipientID:(id)a5 forConversationHistory:(id)a6 withLanguage:(id)a7 options:(unint64_t)a8 completionBlock:(id)a9;
-- (void)responsesForMessageWithLanguageDetection:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 forContext:(id)a6 withLanguage:(id *)a7 options:(unint64_t)a8 completionBlock:(id)a9;
+- (void)responseWithAttributesMatchingProactiveGrammarForMessage:(id)message languageID:(id)d kbdInputModes:(id)modes completionBlock:(id)block;
+- (void)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forContext:(id)context withLanguage:(id)language options:(unint64_t)options completionBlock:(id)block;
+- (void)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history withLanguage:(id)language options:(unint64_t)options completionBlock:(id)block;
+- (void)responsesForMessage:(id)message maximumResponses:(unint64_t)responses recipientID:(id)d forConversationHistory:(id)history withLanguage:(id)language options:(unint64_t)options completionBlock:(id)block;
+- (void)responsesForMessageWithLanguageDetection:(id)detection maximumResponses:(unint64_t)responses forConversationHistory:(id)history forContext:(id)context withLanguage:(id *)language options:(unint64_t)options completionBlock:(id)block;
 @end
 
 @implementation RKMessageResponseManager
@@ -44,7 +44,7 @@
   block[1] = 3221225472;
   block[2] = __41__RKMessageResponseManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -84,48 +84,48 @@ void __41__RKMessageResponseManager_dispatchQueue__block_invoke()
   dispatchQueue_queue = v1;
 }
 
-- (RKMessageResponseManager)initWithDynamicDataURL:(id)a3
+- (RKMessageResponseManager)initWithDynamicDataURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [RKBundleDataProvider alloc];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [(RKBundleDataProvider *)v5 initWithBundle:v6];
-  v8 = [(RKMessageResponseManager *)self initWithDynamicDataURL:v4 displayStringsProvider:v7];
+  v8 = [(RKMessageResponseManager *)self initWithDynamicDataURL:lCopy displayStringsProvider:v7];
 
   return v8;
 }
 
-- (RKMessageResponseManager)initWithDynamicDataURL:(id)a3 withBundleURL:(id)a4
+- (RKMessageResponseManager)initWithDynamicDataURL:(id)l withBundleURL:(id)rL
 {
-  v6 = a4;
-  v7 = a3;
+  rLCopy = rL;
+  lCopy = l;
   v8 = [RKBundleDataProvider alloc];
-  v9 = [MEMORY[0x277CCA8D8] bundleWithURL:v6];
+  v9 = [MEMORY[0x277CCA8D8] bundleWithURL:rLCopy];
 
   v10 = [(RKBundleDataProvider *)v8 initWithBundle:v9];
-  v11 = [(RKMessageResponseManager *)self initWithDynamicDataURL:v7 displayStringsProvider:v10];
+  v11 = [(RKMessageResponseManager *)self initWithDynamicDataURL:lCopy displayStringsProvider:v10];
 
   return v11;
 }
 
-- (RKMessageResponseManager)initWithAssetPlistURL:(id)a3
+- (RKMessageResponseManager)initWithAssetPlistURL:(id)l
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v25.receiver = self;
   v25.super_class = RKMessageResponseManager;
   v5 = [(RKMessageResponseManager *)&v25 init];
-  v6 = [(RKMessageResponseManager *)v5 dispatchQueue];
+  dispatchQueue = [(RKMessageResponseManager *)v5 dispatchQueue];
   dispatchQueue = v5->_dispatchQueue;
-  v5->_dispatchQueue = v6;
+  v5->_dispatchQueue = dispatchQueue;
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  v10 = [preferredLanguages countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v10)
   {
     v11 = v10;
@@ -137,7 +137,7 @@ void __41__RKMessageResponseManager_dispatchQueue__block_invoke()
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(preferredLanguages);
         }
 
         v14 = [RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:*(*(&v21 + 1) + 8 * v13)];
@@ -147,7 +147,7 @@ void __41__RKMessageResponseManager_dispatchQueue__block_invoke()
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v11 = [preferredLanguages countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v11);
@@ -157,7 +157,7 @@ void __41__RKMessageResponseManager_dispatchQueue__block_invoke()
   if (v5)
   {
     v15 = [RKResponseCollection alloc];
-    v16 = [[RKBundleDataProvider alloc] initWithAssetPlist:v4];
+    v16 = [[RKBundleDataProvider alloc] initWithAssetPlist:lCopy];
     v17 = [(RKResponseCollection *)v15 initWithDynamicDataURL:0 displayStringsProvider:v16];
     collection = v5->_collection;
     v5->_collection = v17;
@@ -167,24 +167,24 @@ void __41__RKMessageResponseManager_dispatchQueue__block_invoke()
   return v5;
 }
 
-- (RKMessageResponseManager)initWithDynamicDataURL:(id)a3 displayStringsProvider:(id)a4
+- (RKMessageResponseManager)initWithDynamicDataURL:(id)l displayStringsProvider:(id)provider
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = RKMessageResponseManager;
   v6 = [(RKMessageResponseManager *)&v24 init];
-  v7 = [(RKMessageResponseManager *)v6 dispatchQueue];
+  dispatchQueue = [(RKMessageResponseManager *)v6 dispatchQueue];
   dispatchQueue = v6->_dispatchQueue;
-  v6->_dispatchQueue = v7;
+  v6->_dispatchQueue = dispatchQueue;
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  v11 = [preferredLanguages countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -196,7 +196,7 @@ void __41__RKMessageResponseManager_dispatchQueue__block_invoke()
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(preferredLanguages);
         }
 
         v15 = [RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:*(*(&v20 + 1) + 8 * v14)];
@@ -209,7 +209,7 @@ void __41__RKMessageResponseManager_dispatchQueue__block_invoke()
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v12 = [preferredLanguages countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v12);
@@ -218,7 +218,7 @@ void __41__RKMessageResponseManager_dispatchQueue__block_invoke()
   [(RKMessageResponseManager *)v6 setPreferredLanguages:v9];
   if (v6)
   {
-    v16 = [[RKResponseCollection alloc] initWithDynamicDataURL:0 displayStringsProvider:v5];
+    v16 = [[RKResponseCollection alloc] initWithDynamicDataURL:0 displayStringsProvider:providerCopy];
     collection = v6->_collection;
     v6->_collection = v16;
   }
@@ -227,12 +227,12 @@ void __41__RKMessageResponseManager_dispatchQueue__block_invoke()
   return v6;
 }
 
-- (void)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forContext:(id)a5 withLanguage:(id)a6 options:(unint64_t)a7 completionBlock:(id)a8
+- (void)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forContext:(id)context withLanguage:(id)language options:(unint64_t)options completionBlock:(id)block
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  messageCopy = message;
+  contextCopy = context;
+  languageCopy = language;
+  blockCopy = block;
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x3032000000;
@@ -245,17 +245,17 @@ void __41__RKMessageResponseManager_dispatchQueue__block_invoke()
   v23[2] = __113__RKMessageResponseManager_responsesForMessage_maximumResponses_forContext_withLanguage_options_completionBlock___block_invoke;
   v23[3] = &unk_279B10778;
   v23[4] = self;
-  v24 = v14;
-  v25 = v15;
-  v26 = v16;
-  v29 = a4;
-  v30 = a7;
-  v27 = v17;
+  v24 = messageCopy;
+  v25 = contextCopy;
+  v26 = languageCopy;
+  responsesCopy = responses;
+  optionsCopy = options;
+  v27 = blockCopy;
   v28 = v31;
-  v19 = v17;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
+  v19 = blockCopy;
+  v20 = languageCopy;
+  v21 = contextCopy;
+  v22 = messageCopy;
   dispatch_async(dispatchQueue, v23);
 
   _Block_object_dispose(v31, 8);
@@ -267,28 +267,28 @@ void __113__RKMessageResponseManager_responsesForMessage_maximumResponses_forCon
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 withLanguage:(id)a6 options:(unint64_t)a7 completionBlock:(id)a8
+- (void)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history withLanguage:(id)language options:(unint64_t)options completionBlock:(id)block
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  messageCopy = message;
+  historyCopy = history;
+  languageCopy = language;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __125__RKMessageResponseManager_responsesForMessage_maximumResponses_forConversationHistory_withLanguage_options_completionBlock___block_invoke;
   block[3] = &unk_279B107A0;
   block[4] = self;
-  v24 = v14;
-  v25 = v15;
-  v26 = v16;
-  v28 = a4;
-  v29 = a7;
-  v27 = v17;
-  v19 = v17;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
+  v24 = messageCopy;
+  v25 = historyCopy;
+  v26 = languageCopy;
+  responsesCopy = responses;
+  optionsCopy = options;
+  v27 = blockCopy;
+  v19 = blockCopy;
+  v20 = languageCopy;
+  v21 = historyCopy;
+  v22 = messageCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -298,31 +298,31 @@ void __125__RKMessageResponseManager_responsesForMessage_maximumResponses_forCon
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 recipientID:(id)a5 forConversationHistory:(id)a6 withLanguage:(id)a7 options:(unint64_t)a8 completionBlock:(id)a9
+- (void)responsesForMessage:(id)message maximumResponses:(unint64_t)responses recipientID:(id)d forConversationHistory:(id)history withLanguage:(id)language options:(unint64_t)options completionBlock:(id)block
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
+  messageCopy = message;
+  dCopy = d;
+  historyCopy = history;
+  languageCopy = language;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __137__RKMessageResponseManager_responsesForMessage_maximumResponses_recipientID_forConversationHistory_withLanguage_options_completionBlock___block_invoke;
   v26[3] = &unk_279B107C8;
   v26[4] = self;
-  v27 = v15;
-  v28 = v16;
-  v29 = v17;
-  v32 = a4;
-  v33 = a8;
-  v30 = v18;
-  v31 = v19;
-  v21 = v19;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  v25 = v15;
+  v27 = messageCopy;
+  v28 = dCopy;
+  v29 = historyCopy;
+  responsesCopy = responses;
+  optionsCopy = options;
+  v30 = languageCopy;
+  v31 = blockCopy;
+  v21 = blockCopy;
+  v22 = languageCopy;
+  v23 = historyCopy;
+  v24 = dCopy;
+  v25 = messageCopy;
   dispatch_async(dispatchQueue, v26);
 }
 
@@ -332,12 +332,12 @@ void __137__RKMessageResponseManager_responsesForMessage_maximumResponses_recipi
   (*(*(a1 + 72) + 16))();
 }
 
-- (id)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 recipientID:(id)a5 forConversationHistory:(id)a6 withLanguage:(id)a7 options:(unint64_t)a8
+- (id)responsesForMessage:(id)message maximumResponses:(unint64_t)responses recipientID:(id)d forConversationHistory:(id)history withLanguage:(id)language options:(unint64_t)options
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  messageCopy = message;
+  dCopy = d;
+  historyCopy = history;
+  languageCopy = language;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -350,17 +350,17 @@ void __137__RKMessageResponseManager_responsesForMessage_maximumResponses_recipi
   v25[2] = __121__RKMessageResponseManager_responsesForMessage_maximumResponses_recipientID_forConversationHistory_withLanguage_options___block_invoke;
   v25[3] = &unk_279B107F0;
   v25[4] = self;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v29 = v17;
+  v26 = messageCopy;
+  v27 = dCopy;
+  v28 = historyCopy;
+  v29 = languageCopy;
   v30 = &v33;
-  v31 = a4;
-  v32 = a8;
-  v19 = v17;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
+  responsesCopy = responses;
+  optionsCopy = options;
+  v19 = languageCopy;
+  v20 = historyCopy;
+  v21 = dCopy;
+  v22 = messageCopy;
   dispatch_sync(dispatchQueue, v25);
   v23 = v34[5];
 
@@ -379,35 +379,35 @@ uint64_t __121__RKMessageResponseManager_responsesForMessage_maximumResponses_re
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)responsesForMessageWithLanguageDetection:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 forContext:(id)a6 withLanguage:(id *)a7 options:(unint64_t)a8 completionBlock:(id)a9
+- (void)responsesForMessageWithLanguageDetection:(id)detection maximumResponses:(unint64_t)responses forConversationHistory:(id)history forContext:(id)context withLanguage:(id *)language options:(unint64_t)options completionBlock:(id)block
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a9;
+  detectionCopy = detection;
+  historyCopy = history;
+  contextCopy = context;
+  blockCopy = block;
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x3032000000;
   v32[3] = __Block_byref_object_copy__2;
   v32[4] = __Block_byref_object_dispose__2;
-  v33 = *a7;
+  v33 = *language;
   dispatchQueue = self->_dispatchQueue;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __157__RKMessageResponseManager_responsesForMessageWithLanguageDetection_maximumResponses_forConversationHistory_forContext_withLanguage_options_completionBlock___block_invoke;
   v24[3] = &unk_279B10818;
   v24[4] = self;
-  v25 = v15;
-  v26 = v16;
-  v27 = v17;
-  v30 = a4;
-  v31 = a8;
-  v28 = v18;
+  v25 = detectionCopy;
+  v26 = historyCopy;
+  v27 = contextCopy;
+  responsesCopy = responses;
+  optionsCopy = options;
+  v28 = blockCopy;
   v29 = v32;
-  v20 = v18;
-  v21 = v17;
-  v22 = v16;
-  v23 = v15;
+  v20 = blockCopy;
+  v21 = contextCopy;
+  v22 = historyCopy;
+  v23 = detectionCopy;
   dispatch_async(dispatchQueue, v24);
 
   _Block_object_dispose(v32, 8);
@@ -428,11 +428,11 @@ void __157__RKMessageResponseManager_responsesForMessageWithLanguageDetection_ma
   (*(a1[8] + 16))();
 }
 
-- (id)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forContext:(id)a5 withLanguage:(id)a6 options:(unint64_t)a7
+- (id)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forContext:(id)context withLanguage:(id)language options:(unint64_t)options
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  messageCopy = message;
+  contextCopy = context;
+  languageCopy = language;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -444,7 +444,7 @@ void __157__RKMessageResponseManager_responsesForMessageWithLanguageDetection_ma
   v31[2] = 0x3032000000;
   v31[3] = __Block_byref_object_copy__2;
   v31[4] = __Block_byref_object_dispose__2;
-  v32 = v14;
+  v32 = languageCopy;
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x3032000000;
@@ -457,16 +457,16 @@ void __157__RKMessageResponseManager_responsesForMessageWithLanguageDetection_ma
   v21[2] = __97__RKMessageResponseManager_responsesForMessage_maximumResponses_forContext_withLanguage_options___block_invoke;
   v21[3] = &unk_279B10840;
   v21[4] = self;
-  v22 = v12;
-  v23 = v13;
+  v22 = messageCopy;
+  v23 = contextCopy;
   v24 = &v33;
   v25 = v29;
   v26 = v31;
-  v27 = a4;
-  v28 = a7;
-  v16 = v13;
-  v17 = v12;
-  v18 = v14;
+  responsesCopy = responses;
+  optionsCopy = options;
+  v16 = contextCopy;
+  v17 = messageCopy;
+  v18 = languageCopy;
   dispatch_sync(dispatchQueue, v21);
   v19 = v34[5];
 
@@ -493,11 +493,11 @@ void __97__RKMessageResponseManager_responsesForMessage_maximumResponses_forCont
   *(v8 + 40) = v7;
 }
 
-- (id)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 withLanguage:(id)a6 options:(unint64_t)a7
+- (id)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history withLanguage:(id)language options:(unint64_t)options
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  messageCopy = message;
+  historyCopy = history;
+  languageCopy = language;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -509,22 +509,22 @@ void __97__RKMessageResponseManager_responsesForMessage_maximumResponses_forCont
   v28[2] = 0x3032000000;
   v28[3] = __Block_byref_object_copy__2;
   v28[4] = __Block_byref_object_dispose__2;
-  v29 = v14;
+  v29 = languageCopy;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __109__RKMessageResponseManager_responsesForMessage_maximumResponses_forConversationHistory_withLanguage_options___block_invoke;
   block[3] = &unk_279B10868;
   block[4] = self;
-  v22 = v12;
-  v23 = v13;
+  v22 = messageCopy;
+  v23 = historyCopy;
   v24 = &v30;
   v25 = v28;
-  v26 = a4;
-  v27 = a7;
-  v16 = v13;
-  v17 = v12;
-  v18 = v14;
+  responsesCopy = responses;
+  optionsCopy = options;
+  v16 = historyCopy;
+  v17 = messageCopy;
+  v18 = languageCopy;
   dispatch_sync(dispatchQueue, block);
   v19 = v31[5];
 
@@ -549,12 +549,12 @@ void __109__RKMessageResponseManager_responsesForMessage_maximumResponses_forCon
   *(v8 + 40) = v7;
 }
 
-- (id)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 withLanguage:(id)a6 inputModes:(id)a7 options:(unint64_t)a8
+- (id)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history withLanguage:(id)language inputModes:(id)modes options:(unint64_t)options
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  messageCopy = message;
+  historyCopy = history;
+  languageCopy = language;
+  modesCopy = modes;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -566,24 +566,24 @@ void __109__RKMessageResponseManager_responsesForMessage_maximumResponses_forCon
   v33[2] = 0x3032000000;
   v33[3] = __Block_byref_object_copy__2;
   v33[4] = __Block_byref_object_dispose__2;
-  v34 = v16;
+  v34 = languageCopy;
   dispatchQueue = self->_dispatchQueue;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __120__RKMessageResponseManager_responsesForMessage_maximumResponses_forConversationHistory_withLanguage_inputModes_options___block_invoke;
   v25[3] = &unk_279B10890;
   v25[4] = self;
-  v26 = v14;
+  v26 = messageCopy;
   v29 = &v35;
   v30 = v33;
-  v27 = v15;
-  v28 = v17;
-  v31 = a4;
-  v32 = a8;
-  v19 = v17;
-  v20 = v15;
-  v21 = v14;
-  v22 = v16;
+  v27 = historyCopy;
+  v28 = modesCopy;
+  responsesCopy = responses;
+  optionsCopy = options;
+  v19 = modesCopy;
+  v20 = historyCopy;
+  v21 = messageCopy;
+  v22 = languageCopy;
   dispatch_sync(dispatchQueue, v25);
   v23 = v36[5];
 
@@ -608,11 +608,11 @@ void __120__RKMessageResponseManager_responsesForMessage_maximumResponses_forCon
   *(v8 + 40) = v7;
 }
 
-- (id)responsesForMessageWithLanguageDetection:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 forContext:(id)a6 withLanguage:(id *)a7 options:(unint64_t)a8
+- (id)responsesForMessageWithLanguageDetection:(id)detection maximumResponses:(unint64_t)responses forConversationHistory:(id)history forContext:(id)context withLanguage:(id *)language options:(unint64_t)options
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
+  detectionCopy = detection;
+  historyCopy = history;
+  contextCopy = context;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -625,16 +625,16 @@ void __120__RKMessageResponseManager_responsesForMessage_maximumResponses_forCon
   v23[2] = __141__RKMessageResponseManager_responsesForMessageWithLanguageDetection_maximumResponses_forConversationHistory_forContext_withLanguage_options___block_invoke;
   v23[3] = &unk_279B108B8;
   v23[4] = self;
-  v24 = v14;
+  v24 = detectionCopy;
   v27 = &v31;
-  v28 = a4;
-  v25 = v15;
-  v26 = v16;
-  v29 = a7;
-  v30 = a8;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
+  responsesCopy = responses;
+  v25 = historyCopy;
+  v26 = contextCopy;
+  languageCopy = language;
+  optionsCopy = options;
+  v18 = contextCopy;
+  v19 = historyCopy;
+  v20 = detectionCopy;
   dispatch_sync(dispatchQueue, v23);
   v21 = v32[5];
 
@@ -653,22 +653,22 @@ uint64_t __141__RKMessageResponseManager_responsesForMessageWithLanguageDetectio
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)responsesForMessageImp:(id)a3 maximumResponses:(unint64_t)a4 forRecipientID:(id)a5 forConversationHistory:(id)a6 forContext:(id)a7 withLanguage:(id)a8 options:(unint64_t)a9
+- (id)responsesForMessageImp:(id)imp maximumResponses:(unint64_t)responses forRecipientID:(id)d forConversationHistory:(id)history forContext:(id)context withLanguage:(id)language options:(unint64_t)options
 {
-  v20 = a8;
-  v15 = RKMessageResponseDontOverrideLanguageID | a9;
-  v16 = a8;
-  v17 = [(RKMessageResponseManager *)self responsesForMessageWithLanguageDetectionImp:a3 maximumResponses:a4 forRecipientID:a5 forConversationHistory:a6 forContext:a7 withLanguage:&v20 inputModes:0 options:v15];
-  v18 = v20;
+  languageCopy = language;
+  v15 = RKMessageResponseDontOverrideLanguageID | options;
+  languageCopy2 = language;
+  v17 = [(RKMessageResponseManager *)self responsesForMessageWithLanguageDetectionImp:imp maximumResponses:responses forRecipientID:d forConversationHistory:history forContext:context withLanguage:&languageCopy inputModes:0 options:v15];
+  v18 = languageCopy;
 
   return v17;
 }
 
-- (id)responseWithAttributesMatchingProactiveGrammarForMessage:(id)a3 languageID:(id)a4 kbdInputModes:(id)a5
+- (id)responseWithAttributesMatchingProactiveGrammarForMessage:(id)message languageID:(id)d kbdInputModes:(id)modes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  dCopy = d;
+  modesCopy = modes;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -680,20 +680,20 @@ uint64_t __141__RKMessageResponseManager_responsesForMessageWithLanguageDetectio
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__2;
   v22[4] = __Block_byref_object_dispose__2;
-  v23 = v9;
+  v23 = dCopy;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __110__RKMessageResponseManager_responseWithAttributesMatchingProactiveGrammarForMessage_languageID_kbdInputModes___block_invoke;
   block[3] = &unk_279B108E0;
   block[4] = self;
-  v18 = v8;
+  v18 = messageCopy;
   v20 = &v24;
   v21 = v22;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v19 = modesCopy;
+  v12 = modesCopy;
+  v13 = messageCopy;
+  v14 = dCopy;
   dispatch_sync(dispatchQueue, block);
   v15 = v25[5];
 
@@ -717,32 +717,32 @@ void __110__RKMessageResponseManager_responseWithAttributesMatchingProactiveGram
   *(v7 + 40) = v6;
 }
 
-- (void)responseWithAttributesMatchingProactiveGrammarForMessage:(id)a3 languageID:(id)a4 kbdInputModes:(id)a5 completionBlock:(id)a6
+- (void)responseWithAttributesMatchingProactiveGrammarForMessage:(id)message languageID:(id)d kbdInputModes:(id)modes completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  dCopy = d;
+  modesCopy = modes;
+  blockCopy = block;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
   v24[3] = __Block_byref_object_copy__2;
   v24[4] = __Block_byref_object_dispose__2;
-  v25 = v11;
+  v25 = dCopy;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __126__RKMessageResponseManager_responseWithAttributesMatchingProactiveGrammarForMessage_languageID_kbdInputModes_completionBlock___block_invoke;
   block[3] = &unk_279B10908;
   block[4] = self;
-  v20 = v10;
-  v22 = v13;
+  v20 = messageCopy;
+  v22 = blockCopy;
   v23 = v24;
-  v21 = v12;
-  v15 = v13;
-  v16 = v12;
-  v17 = v10;
-  v18 = v11;
+  v21 = modesCopy;
+  v15 = blockCopy;
+  v16 = modesCopy;
+  v17 = messageCopy;
+  v18 = dCopy;
   dispatch_async(dispatchQueue, block);
 
   _Block_object_dispose(v24, 8);
@@ -760,26 +760,26 @@ void __126__RKMessageResponseManager_responseWithAttributesMatchingProactiveGram
   (*(a1[7] + 16))();
 }
 
-- (id)responseWithAttributesMatchingProactiveGrammarForMessageImp:(id)a3 languageID:(id *)a4 kbdInputModes:(id)a5
+- (id)responseWithAttributesMatchingProactiveGrammarForMessageImp:(id)imp languageID:(id *)d kbdInputModes:(id)modes
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  modesCopy = modes;
   v8 = MEMORY[0x277CCA900];
-  v9 = a3;
-  v10 = [v8 whitespaceCharacterSet];
-  v11 = [v9 stringByTrimmingCharactersInSet:v10];
+  impCopy = imp;
+  whitespaceCharacterSet = [v8 whitespaceCharacterSet];
+  v11 = [impCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if ([v11 length] && objc_msgSend(v11, "length") <= 0x800 && !+[RKUtilities RKRepairStringNeeded:](RKUtilities, "RKRepairStringNeeded:", v11))
   {
     v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v16 = [RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:*a4];
+    v16 = [RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:*d];
     [v15 addObject:v16];
 
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v17 = v7;
+    v17 = modesCopy;
     v18 = [v17 countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v18)
     {
@@ -861,54 +861,54 @@ LABEL_27:
   return v12;
 }
 
-- (id)responsesForMessageWithLanguageDetectionImp:(id)a3 maximumResponses:(unint64_t)a4 forRecipientID:(id)a5 forConversationHistory:(id)a6 forContext:(id)a7 withLanguage:(id *)a8 inputModes:(id)a9 options:(unint64_t)a10
+- (id)responsesForMessageWithLanguageDetectionImp:(id)imp maximumResponses:(unint64_t)responses forRecipientID:(id)d forConversationHistory:(id)history forContext:(id)context withLanguage:(id *)language inputModes:(id)modes options:(unint64_t)self0
 {
   v219[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v172 = a5;
-  v16 = a6;
-  v17 = a7;
-  v173 = a9;
-  v174 = v16;
-  v18 = [objc_opt_class() _chronologicalConversationHistory:v16];
-  v180 = [objc_opt_class() _needsMirroredAnalysisForMessage:v15 forChronologicalConversationHistory:v18];
-  v170 = self;
-  if (![v15 length])
+  impCopy = imp;
+  dCopy = d;
+  historyCopy = history;
+  contextCopy = context;
+  modesCopy = modes;
+  v174 = historyCopy;
+  v18 = [objc_opt_class() _chronologicalConversationHistory:historyCopy];
+  v180 = [objc_opt_class() _needsMirroredAnalysisForMessage:impCopy forChronologicalConversationHistory:v18];
+  selfCopy = self;
+  if (![impCopy length])
   {
     [objc_opt_class() _mostRecentTextFromChronologicalConversationHistory:v18];
-    v20 = v19 = v17;
+    v20 = v19 = contextCopy;
 
-    v15 = v20;
-    v17 = v19;
+    impCopy = v20;
+    contextCopy = v19;
   }
 
   v171 = v18;
-  if ([RKUtilities RKRepairStringNeeded:v15])
+  if ([RKUtilities RKRepairStringNeeded:impCopy])
   {
     v21 = 0;
     goto LABEL_156;
   }
 
-  v168 = v17;
-  v22 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v23 = [v15 stringByTrimmingCharactersInSet:v22];
+  v168 = contextCopy;
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v23 = [impCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v24 = [v23 stringByReplacingOccurrencesOfString:@"‘" withString:&stru_2874A9C90];
 
   v25 = [v24 stringByReplacingOccurrencesOfString:@"’" withString:&stru_2874A9C90];
 
-  v15 = [v25 stringByReplacingOccurrencesOfString:@"'" withString:&stru_2874A9C90];
+  impCopy = [v25 stringByReplacingOccurrencesOfString:@"'" withString:&stru_2874A9C90];
 
-  if ([v15 length] > 0x800)
+  if ([impCopy length] > 0x800)
   {
     v21 = 0;
-    v17 = v168;
+    contextCopy = v168;
     goto LABEL_156;
   }
 
-  if (!a4)
+  if (!responses)
   {
-    a4 = 0x7FFFFFFFLL;
+    responses = 0x7FFFFFFFLL;
   }
 
   v26 = [v174 mutableCopy];
@@ -917,14 +917,14 @@ LABEL_27:
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v219 count:1];
   [v26 sortUsingDescriptors:v27];
 
-  v28 = [(RKMessageResponseManager *)self preferredLanguages];
-  [RKMessageClassifier setPreferredLanguages:v28];
+  preferredLanguages = [(RKMessageResponseManager *)self preferredLanguages];
+  [RKMessageClassifier setPreferredLanguages:preferredLanguages];
 
   v167 = v26;
-  v29 = [RKMessageClassifier messageClassification:v15 withLanguageIdentifier:*a8 conversationTurns:v26];
-  v30 = [v29 language];
+  v29 = [RKMessageClassifier messageClassification:impCopy withLanguageIdentifier:*language conversationTurns:v26];
+  language = [v29 language];
 
-  if (!v30)
+  if (!language)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -932,98 +932,98 @@ LABEL_27:
     }
 
     v21 = 0;
-    v17 = v168;
+    contextCopy = v168;
     v39 = v29;
     goto LABEL_155;
   }
 
   v176 = RKLinguisticCategoryToPreferenceKey([v29 sentenceType]);
   v179 = v29;
-  v31 = [v29 language];
-  [RKCoreAnalytics sendCoreAnalyticsEvent:0 forAction:@"triggered" withLanguageID:v31];
+  language2 = [v29 language];
+  [RKCoreAnalytics sendCoreAnalyticsEvent:0 forAction:@"triggered" withLanguageID:language2];
 
-  if ((RKMessageResponseDontOverrideLanguageID & a10) == 0)
+  if ((RKMessageResponseDontOverrideLanguageID & options) == 0)
   {
-    *a8 = [v179 language];
+    *language = [v179 language];
   }
 
-  if ((a10 & 0x200) == 0)
+  if ((options & 0x200) == 0)
   {
 LABEL_20:
-    v41 = [MEMORY[0x277CBEB18] array];
-    if ((a10 & 1) == 0)
+    array = [MEMORY[0x277CBEB18] array];
+    if ((options & 1) == 0)
     {
-      v42 = [v179 customResponses];
-      v43 = [v42 count];
+      customResponses = [v179 customResponses];
+      v43 = [customResponses count];
 
       if (v43)
       {
-        if ([v179 sentenceType] != 6 || (objc_msgSend(v179, "customResponses"), v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v44, "count"), v44, v45 <= a4))
+        if ([v179 sentenceType] != 6 || (objc_msgSend(v179, "customResponses"), v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v44, "count"), v44, v45 <= responses))
         {
-          v46 = [v179 customResponses];
-          [v41 addObjectsFromArray:v46];
+          customResponses2 = [v179 customResponses];
+          [array addObjectsFromArray:customResponses2];
 
-          if ([v41 count] > a4)
+          if ([array count] > responses)
           {
-            v47 = [v41 subarrayWithRange:{0, a4}];
+            v47 = [array subarrayWithRange:{0, responses}];
             v48 = [v47 mutableCopy];
 
-            v41 = v48;
+            array = v48;
           }
 
-          a4 -= [v41 count];
+          responses -= [array count];
         }
       }
     }
 
     v49 = MEMORY[0x277CBEAF8];
-    if (*a8)
+    if (*language)
     {
-      v50 = [MEMORY[0x277CBEAF8] canonicalLanguageIdentifierFromString:?];
-      v166 = v50;
+      currentLocale = [MEMORY[0x277CBEAF8] canonicalLanguageIdentifierFromString:?];
+      v166 = currentLocale;
     }
 
     else
     {
-      v50 = [MEMORY[0x277CBEAF8] currentLocale];
-      v51 = [v50 localeIdentifier];
-      v166 = [v49 canonicalLanguageIdentifierFromString:v51];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      localeIdentifier = [currentLocale localeIdentifier];
+      v166 = [v49 canonicalLanguageIdentifierFromString:localeIdentifier];
     }
 
-    v52 = [v179 language];
-    if (v52 && (v53 = v52, [v179 language], v54 = objc_claimAutoreleasedReturnValue(), v55 = objc_msgSend(v54, "isEqualToString:", @"und"), v54, v53, (v55 & 1) == 0))
+    language3 = [v179 language];
+    if (language3 && (v53 = language3, [v179 language], v54 = objc_claimAutoreleasedReturnValue(), v55 = objc_msgSend(v54, "isEqualToString:", @"und"), v54, v53, (v55 & 1) == 0))
     {
-      v61 = [v179 language];
-      v62 = [RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:v61];
+      language4 = [v179 language];
+      v62 = [RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:language4];
 
       v63 = [RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:v166];
       if (([v62 isEqualToString:v63] & 1) == 0)
       {
-        v64 = [v179 language];
+        language5 = [v179 language];
 
-        v166 = v64;
+        v166 = language5;
       }
 
       v39 = v179;
 
-      if (a4)
+      if (responses)
       {
 LABEL_33:
         if ([(RKMessageResponseManager *)self usePersonalizedRanking])
         {
-          v56 = [(RKMessageResponseManager *)self getRankLearner];
+          getRankLearner = [(RKMessageResponseManager *)self getRankLearner];
           rankLearner = self->_rankLearner;
-          self->_rankLearner = v56;
+          self->_rankLearner = getRankLearner;
 
           if ([v39 sentenceType] == 1)
           {
             [v39 setSentenceType:2];
           }
 
-          v58 = [(RKMessageResponseManager *)self rankLearner];
+          rankLearner = [(RKMessageResponseManager *)self rankLearner];
           v59 = RKLinguisticCategoryToPreferenceKey([v39 sentenceType]);
-          v60 = [v39 language];
-          v164 = [v58 getRankedResponses:v59 forRecipientID:v172 withLanguageID:v60];
+          language6 = [v39 language];
+          v164 = [rankLearner getRankedResponses:v59 forRecipientID:dCopy withLanguageID:language6];
         }
 
         else
@@ -1033,7 +1033,7 @@ LABEL_33:
 
         if ([v39 sentenceType] == 6)
         {
-          if ((a10 & 0x40) == 0)
+          if ((options & 0x40) == 0)
           {
             goto LABEL_46;
           }
@@ -1041,14 +1041,14 @@ LABEL_33:
 
         else
         {
-          v88 = [(RKMessageResponseManager *)self collection];
-          v89 = [v88 responsesForCategory:objc_msgSend(v39 gender:"sentenceType") maximumResponses:objc_msgSend(v39 withLanguage:"gender") context:a4 options:{v166, v168, a10}];
-          [v41 addObjectsFromArray:v89];
+          collection = [(RKMessageResponseManager *)self collection];
+          v89 = [collection responsesForCategory:objc_msgSend(v39 gender:"sentenceType") maximumResponses:objc_msgSend(v39 withLanguage:"gender") context:responses options:{v166, v168, options}];
+          [array addObjectsFromArray:v89];
 
-          if ((a10 & 0x40) == 0)
+          if ((options & 0x40) == 0)
           {
 LABEL_46:
-            if ((a10 & 0x80) != 0)
+            if ((options & 0x80) != 0)
             {
               goto LABEL_48;
             }
@@ -1062,10 +1062,10 @@ LABEL_41:
         v206[1] = 3221225472;
         v206[2] = __170__RKMessageResponseManager_responsesForMessageWithLanguageDetectionImp_maximumResponses_forRecipientID_forConversationHistory_forContext_withLanguage_inputModes_options___block_invoke;
         v206[3] = &unk_279B100A0;
-        v207 = v41;
+        v207 = array;
         [v207 enumerateObjectsUsingBlock:v206];
 
-        if ((a10 & 0x80) != 0)
+        if ((options & 0x80) != 0)
         {
 LABEL_48:
           if ([v39 sentenceType] == 6)
@@ -1079,40 +1079,40 @@ LABEL_48:
             v202[1] = 3221225472;
             v202[2] = __170__RKMessageResponseManager_responsesForMessageWithLanguageDetectionImp_maximumResponses_forRecipientID_forConversationHistory_forContext_withLanguage_inputModes_options___block_invoke_6;
             v202[3] = &unk_279B100A0;
-            v203 = v41;
+            v203 = array;
             [v203 enumerateObjectsUsingBlock:v202];
           }
 
-          if ((a10 & 0x20) == 0)
+          if ((options & 0x20) == 0)
           {
             v200[0] = MEMORY[0x277D85DD0];
             v200[1] = 3221225472;
             v200[2] = __170__RKMessageResponseManager_responsesForMessageWithLanguageDetectionImp_maximumResponses_forRecipientID_forConversationHistory_forContext_withLanguage_inputModes_options___block_invoke_8;
             v200[3] = &unk_279B100A0;
-            v201 = v41;
+            v201 = array;
             [v201 enumerateObjectsUsingBlock:v200];
           }
 
           if ([v39 isSensitive])
           {
 
-            v41 = 0;
+            array = 0;
           }
 
-          v65 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-          [v65 synchronize];
-          v163 = v65;
-          if ([v65 BOOLForKey:@"RKSuppressGeneralStatementResponse"] && (!objc_msgSend(v39, "sentenceType") || objc_msgSend(v39, "sentenceType") == 31))
+          standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+          [standardUserDefaults synchronize];
+          v163 = standardUserDefaults;
+          if ([standardUserDefaults BOOLForKey:@"RKSuppressGeneralStatementResponse"] && (!objc_msgSend(v39, "sentenceType") || objc_msgSend(v39, "sentenceType") == 31))
           {
 
-            v41 = 0;
+            array = 0;
           }
 
-          v66 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-          v67 = [v15 stringByTrimmingCharactersInSet:v66];
+          whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+          v67 = [impCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
 
-          v68 = [(RKMessageResponseManager *)v170 collection];
-          v69 = [v68 responsesForCategory:objc_msgSend(v39 gender:"sentenceType") maximumResponses:objc_msgSend(v39 withLanguage:"gender") context:a4 options:{v166, v168, a10 & 0xFFFFFFFFFFFFFFE0 | 0xF}];
+          collection2 = [(RKMessageResponseManager *)selfCopy collection];
+          v69 = [collection2 responsesForCategory:objc_msgSend(v39 gender:"sentenceType") maximumResponses:objc_msgSend(v39 withLanguage:"gender") context:responses options:{v166, v168, options & 0xFFFFFFFFFFFFFFE0 | 0xF}];
 
           v70 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF CONTAINS[c] %@", v67];
           v161 = v69;
@@ -1123,19 +1123,19 @@ LABEL_48:
           if (v72)
           {
             v73 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (SELF CONTAINS[c] %@)", v67];
-            v74 = [v41 filteredArrayUsingPredicate:v73];
+            v74 = [array filteredArrayUsingPredicate:v73];
             v75 = [v74 mutableCopy];
 
-            v41 = v75;
+            array = v75;
           }
 
           v76 = v180;
-          v77 = [MEMORY[0x277CBEB18] array];
+          array2 = [MEMORY[0x277CBEB18] array];
           v196 = 0u;
           v197 = 0u;
           v198 = 0u;
           v199 = 0u;
-          v78 = v41;
+          v78 = array;
           v79 = [v78 countByEnumeratingWithState:&v196 objects:v218 count:16];
           if (v79)
           {
@@ -1151,9 +1151,9 @@ LABEL_48:
                 }
 
                 v83 = *(*(&v196 + 1) + 8 * i);
-                if (([v77 containsObject:v83] & 1) == 0)
+                if (([array2 containsObject:v83] & 1) == 0)
                 {
-                  [v77 addObject:v83];
+                  [array2 addObject:v83];
                 }
               }
 
@@ -1163,7 +1163,7 @@ LABEL_48:
             while (v80);
           }
 
-          v84 = [v77 copy];
+          v84 = [array2 copy];
           if (![v84 count])
           {
 
@@ -1181,19 +1181,19 @@ LABEL_48:
             }
 
             obj = 0;
-            v87 = 0;
+            array3 = 0;
             v84 = 0;
-            if ((a10 & 0x200) != 0)
+            if ((options & 0x200) != 0)
             {
               goto LABEL_92;
             }
           }
 
-          else if ((a10 & 0x200) != 0)
+          else if ((options & 0x200) != 0)
           {
             if (v84)
             {
-              v87 = [MEMORY[0x277CBEB18] array];
+              array3 = [MEMORY[0x277CBEB18] array];
               v192 = 0u;
               v193 = 0u;
               v194 = 0u;
@@ -1214,7 +1214,7 @@ LABEL_48:
                     }
 
                     v94 = [[RKResponse alloc] initWithString:*(*(&v192 + 1) + 8 * j) attributes:0 category:v176];
-                    [v87 addObject:v94];
+                    [array3 addObject:v94];
                   }
 
                   v91 = [obj countByEnumeratingWithState:&v192 objects:v217 count:16];
@@ -1227,7 +1227,7 @@ LABEL_48:
             else
             {
               obj = 0;
-              v87 = 0;
+              array3 = 0;
             }
 
 LABEL_92:
@@ -1235,30 +1235,30 @@ LABEL_92:
             v160 = RKLinguisticCategoryToPreferenceKey([v39 sentenceType]);
             [v95 setObject:? forKey:?];
             v96 = +[RKMessageIntentRecognizer sharedManager];
-            v97 = [v39 language];
+            language7 = [v39 language];
             v158 = v96;
             v159 = v95;
-            v98 = [v96 copyAttributedTokensForMessage:v15 conversationTurns:v167 metadata:v95 languageID:v97];
+            v98 = [v96 copyAttributedTokensForMessage:impCopy conversationTurns:v167 metadata:v95 languageID:language7];
 
-            if ([v98 count] && !v87)
+            if ([v98 count] && !array3)
             {
-              v87 = objc_opt_new();
+              array3 = objc_opt_new();
             }
 
-            v178 = v87;
+            v178 = array3;
             v190 = 0u;
             v191 = 0u;
             v188 = 0u;
             v189 = 0u;
             v185 = v98;
             v99 = [v185 countByEnumeratingWithState:&v188 objects:v216 count:16];
-            v184 = v77;
+            v184 = array2;
             if (v99)
             {
               v100 = v99;
               v101 = 0;
               v102 = *v189;
-              v177 = v15;
+              v177 = impCopy;
               v182 = *v189;
               do
               {
@@ -1281,25 +1281,25 @@ LABEL_92:
                     v111 = [v106 objectForKey:*MEMORY[0x277D2B838]];
                     v112 = [v111 componentsSeparatedByString:{@", "}];
                     [v110 setObject:v112 forKey:@"keywords"];
-                    v113 = [RKMessageIntentRecognizer getRangesOfKeywords:v112 forMessage:v15];
+                    v113 = [RKMessageIntentRecognizer getRangesOfKeywords:v112 forMessage:impCopy];
                     if ([v113 count])
                     {
                       [v110 setObject:v113 forKey:@"keywordranges"];
-                      [v110 setObject:v15 forKey:@"message"];
+                      [v110 setObject:impCopy forKey:@"message"];
                       v114 = RKLinguisticCategoryToPreferenceKey(45);
                       v186 = [[RKResponse alloc] initWithString:0 attributes:v110 category:v114];
-                      v115 = [v179 language];
-                      [RKCoreAnalytics sendCoreAnalyticsEvent:v114 forAction:@"triggered" withLanguageID:v115];
+                      language8 = [v179 language];
+                      [RKCoreAnalytics sendCoreAnalyticsEvent:v114 forAction:@"triggered" withLanguageID:language8];
 
                       [v178 insertObject:v186 atIndex:0];
                       v76 = v180;
 
-                      v15 = v177;
+                      impCopy = v177;
                       v101 = 1;
                     }
 
                     v102 = v182;
-                    v77 = v184;
+                    array2 = v184;
                   }
                 }
 
@@ -1315,24 +1315,24 @@ LABEL_92:
             }
 
             v187 = +[RKPaymentIdentifier sharedManager];
-            v116 = [v187 copyAttributedTokensForText:v15];
+            v116 = [v187 copyAttributedTokensForText:impCopy];
             v183 = v116;
             if (v116)
             {
               v117 = v116;
-              v118 = RKLinguisticCategoryToPreferenceKey(44);
-              v119 = [[RKResponse alloc] initWithString:0 attributes:v117 category:v118];
+              language10 = RKLinguisticCategoryToPreferenceKey(44);
+              v119 = [[RKResponse alloc] initWithString:0 attributes:v117 category:language10];
               v39 = v179;
-              v120 = v178;
+              array4 = v178;
               if (!v178)
               {
-                v120 = [MEMORY[0x277CBEB18] array];
+                array4 = [MEMORY[0x277CBEB18] array];
               }
 
-              v121 = [v179 language];
-              [RKCoreAnalytics sendCoreAnalyticsEvent:v118 forAction:@"triggered" withLanguageID:v121];
+              language9 = [v179 language];
+              [RKCoreAnalytics sendCoreAnalyticsEvent:language10 forAction:@"triggered" withLanguageID:language9];
 
-              [v120 insertObject:v119 atIndex:0];
+              [array4 insertObject:v119 atIndex:0];
             }
 
             else
@@ -1340,17 +1340,17 @@ LABEL_92:
               v39 = v179;
               if (v101)
               {
-                v120 = v178;
+                array4 = v178;
                 goto LABEL_122;
               }
 
-              v118 = [v179 language];
-              [RKCoreAnalytics sendCoreAnalyticsEvent:v160 forAction:@"triggered" withLanguageID:v118];
-              v120 = v178;
+              language10 = [v179 language];
+              [RKCoreAnalytics sendCoreAnalyticsEvent:v160 forAction:@"triggered" withLanguageID:language10];
+              array4 = v178;
             }
 
 LABEL_122:
-            v122 = [(RKMessageResponseManager *)v170 responseWithAttributesMatchingProactiveGrammarForMessageImp:v15 languageID:a8 kbdInputModes:v173];
+            v122 = [(RKMessageResponseManager *)selfCopy responseWithAttributesMatchingProactiveGrammarForMessageImp:impCopy languageID:language kbdInputModes:modesCopy];
             if ([objc_opt_class() _responseLooksLikeIncomingCheckInResponse:v122])
             {
               if (v76)
@@ -1381,44 +1381,44 @@ LABEL_140:
                   {
                     v152 = MEMORY[0x277D86220];
                     v153 = MEMORY[0x277D86220];
-                    v40 = v163;
+                    language11 = v163;
                     if (os_log_type_enabled(v152, OS_LOG_TYPE_INFO))
                     {
-                      v154 = [v122 attributes];
-                      v155 = [v154 objectForKeyedSubscript:@"type"];
+                      attributes = [v122 attributes];
+                      v155 = [attributes objectForKeyedSubscript:@"type"];
                       *buf = 138412290;
                       v209 = v155;
                       _os_log_impl(&dword_2620A2000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Responses of this type (%@) have been sunsetted", buf, 0xCu);
                     }
 
-                    v17 = v168;
-                    v77 = v184;
+                    contextCopy = v168;
+                    array2 = v184;
                     goto LABEL_152;
                   }
 
-                  v17 = v168;
-                  v40 = v163;
-                  v77 = v184;
+                  contextCopy = v168;
+                  language11 = v163;
+                  array2 = v184;
                   if (!v122)
                   {
 LABEL_152:
-                    v21 = v120;
+                    v21 = array4;
 
                     goto LABEL_153;
                   }
 
 LABEL_149:
-                  if (!v120)
+                  if (!array4)
                   {
-                    v120 = [MEMORY[0x277CBEB18] array];
+                    array4 = [MEMORY[0x277CBEB18] array];
                   }
 
-                  [v120 insertObject:v122 atIndex:0];
+                  [array4 insertObject:v122 atIndex:0];
                   goto LABEL_152;
                 }
 
-                v132 = [v122 attributes];
-                v128 = [v132 copy];
+                attributes2 = [v122 attributes];
+                v128 = [attributes2 copy];
 
                 v133 = [objc_opt_class() _isMirroredResponseValidForResponse:v122];
                 v134 = MEMORY[0x277D86220];
@@ -1446,7 +1446,7 @@ LABEL_149:
                   _os_log_impl(&dword_2620A2000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Response with type: %@, subtype: %@, field: %@ is valid for mirroring: %@", buf, 0x2Au);
                 }
 
-                v40 = v163;
+                language11 = v163;
                 if (v133)
                 {
                   v131 = [v128 mutableCopy];
@@ -1458,13 +1458,13 @@ LABEL_149:
                   v143 = MEMORY[0x277D86220];
                   if (os_log_type_enabled(v142, OS_LOG_TYPE_INFO))
                   {
-                    v181 = [v122 attributes];
-                    v144 = [v181 objectForKeyedSubscript:@"type"];
-                    v145 = [v122 attributes];
-                    v146 = [v145 objectForKeyedSubscript:@"subtype"];
-                    v147 = [v122 attributes];
-                    [v147 objectForKeyedSubscript:@"field"];
-                    v149 = v148 = v15;
+                    attributes3 = [v122 attributes];
+                    v144 = [attributes3 objectForKeyedSubscript:@"type"];
+                    attributes4 = [v122 attributes];
+                    v146 = [attributes4 objectForKeyedSubscript:@"subtype"];
+                    attributes5 = [v122 attributes];
+                    [attributes5 objectForKeyedSubscript:@"field"];
+                    v149 = v148 = impCopy;
                     *buf = 138412802;
                     v209 = v144;
                     v210 = 2112;
@@ -1473,10 +1473,10 @@ LABEL_149:
                     v213 = v149;
                     _os_log_impl(&dword_2620A2000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Response after mirroring has type: %@, subtype: %@, field: %@", buf, 0x20u);
 
-                    v15 = v148;
+                    impCopy = v148;
                     v39 = v179;
 
-                    v40 = v163;
+                    language11 = v163;
                   }
                 }
 
@@ -1486,10 +1486,10 @@ LABEL_149:
                   v122 = 0;
                 }
 
-                v77 = v184;
+                array2 = v184;
 LABEL_148:
 
-                v17 = v168;
+                contextCopy = v168;
                 if (!v122)
                 {
                   goto LABEL_152;
@@ -1512,14 +1512,14 @@ LABEL_148:
 
 LABEL_141:
 
-                v17 = v168;
-                v40 = v163;
+                contextCopy = v168;
+                language11 = v163;
                 goto LABEL_152;
               }
             }
 
-            v127 = [v122 attributes];
-            v128 = [v127 mutableCopy];
+            attributes6 = [v122 attributes];
+            v128 = [attributes6 mutableCopy];
 
             v129 = [@"event" copy];
             [v128 setObject:v129 forKeyedSubscript:@"type"];
@@ -1530,14 +1530,14 @@ LABEL_141:
             [v128 setObject:0 forKeyedSubscript:@"request"];
             v131 = [v128 copy];
             [v122 setAttributes:v131];
-            v40 = v163;
+            language11 = v163;
             goto LABEL_148;
           }
 
           v21 = v84;
           obj = v21;
-          v17 = v168;
-          v40 = v163;
+          contextCopy = v168;
+          language11 = v163;
 LABEL_153:
 
           v32 = obj;
@@ -1549,7 +1549,7 @@ LABEL_47:
         v204[1] = 3221225472;
         v204[2] = __170__RKMessageResponseManager_responsesForMessageWithLanguageDetectionImp_maximumResponses_forRecipientID_forConversationHistory_forContext_withLanguage_inputModes_options___block_invoke_2;
         v204[3] = &unk_279B100A0;
-        v205 = v41;
+        v205 = array;
         [v205 enumerateObjectsUsingBlock:v204];
 
         goto LABEL_48;
@@ -1559,14 +1559,14 @@ LABEL_47:
     else
     {
       v39 = v179;
-      if (a4)
+      if (responses)
       {
         goto LABEL_33;
       }
     }
 
     v164 = 0;
-    if ((a10 & 0x40) == 0)
+    if ((options & 0x40) == 0)
     {
       goto LABEL_46;
     }
@@ -1574,7 +1574,7 @@ LABEL_47:
     goto LABEL_41;
   }
 
-  v32 = [RKResponseCollection responsesForFullScreenMoments:v15];
+  v32 = [RKResponseCollection responsesForFullScreenMoments:impCopy];
   v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (!v32 || ![v32 count])
   {
@@ -1593,10 +1593,10 @@ LABEL_47:
   v164 = v38;
   [v21 insertObject:v38 atIndex:0];
   v39 = v179;
-  v40 = [v179 language];
+  language11 = [v179 language];
   v166 = v35;
-  [RKCoreAnalytics sendCoreAnalyticsEvent:v35 forAction:@"triggered" withLanguageID:v40];
-  v17 = v168;
+  [RKCoreAnalytics sendCoreAnalyticsEvent:v35 forAction:@"triggered" withLanguageID:language11];
+  contextCopy = v168;
 LABEL_154:
 
 LABEL_155:
@@ -1702,27 +1702,27 @@ void __170__RKMessageResponseManager_responsesForMessageWithLanguageDetectionImp
   }
 }
 
-- (id)categoryForMessage:(id)a3 langID:(id)a4
+- (id)categoryForMessage:(id)message langID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  dCopy = d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__2;
   v21 = __Block_byref_object_dispose__2;
   v22 = 0;
-  v8 = [(RKMessageResponseManager *)self dispatchQueue];
+  dispatchQueue = [(RKMessageResponseManager *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__RKMessageResponseManager_categoryForMessage_langID___block_invoke;
   block[3] = &unk_279B10978;
-  v14 = v6;
-  v15 = v7;
+  v14 = messageCopy;
+  v15 = dCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v9 = dCopy;
+  v10 = messageCopy;
+  dispatch_sync(dispatchQueue, block);
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -1749,12 +1749,12 @@ void __54__RKMessageResponseManager_categoryForMessage_langID___block_invoke(voi
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)categoryForMessageWithoutQueue:(id)a3 langID:(id)a4
+- (id)categoryForMessageWithoutQueue:(id)queue langID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  dCopy = d;
   v7 = objc_autoreleasePoolPush();
-  v8 = [RKMessageClassifier messageClassification:v5 withLanguageIdentifier:v6];
+  v8 = [RKMessageClassifier messageClassification:queueCopy withLanguageIdentifier:dCopy];
   v9 = RKLinguisticCategoryToPreferenceKey([v8 sentenceType]);
   if ([(__CFString *)v9 isEqualToString:@"QueryGeneral"])
   {
@@ -1767,30 +1767,30 @@ void __54__RKMessageResponseManager_categoryForMessage_langID___block_invoke(voi
   return v9;
 }
 
-- (void)registerResponse:(id)a3 forMessage:(id)a4 forContext:(id)a5 withEffectiveDate:(id)a6 withLanguage:(id)a7
+- (void)registerResponse:(id)response forMessage:(id)message forContext:(id)context withEffectiveDate:(id)date withLanguage:(id)language
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(RKMessageResponseManager *)self dispatchQueue];
+  responseCopy = response;
+  messageCopy = message;
+  contextCopy = context;
+  dateCopy = date;
+  languageCopy = language;
+  dispatchQueue = [(RKMessageResponseManager *)self dispatchQueue];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __98__RKMessageResponseManager_registerResponse_forMessage_forContext_withEffectiveDate_withLanguage___block_invoke;
   v23[3] = &unk_279B109A0;
-  v24 = v12;
-  v25 = v13;
-  v26 = self;
-  v27 = v16;
-  v28 = v14;
-  v29 = v15;
-  v18 = v15;
-  v19 = v14;
-  v20 = v16;
-  v21 = v13;
-  v22 = v12;
-  dispatch_sync(v17, v23);
+  v24 = responseCopy;
+  v25 = messageCopy;
+  selfCopy = self;
+  v27 = languageCopy;
+  v28 = contextCopy;
+  v29 = dateCopy;
+  v18 = dateCopy;
+  v19 = contextCopy;
+  v20 = languageCopy;
+  v21 = messageCopy;
+  v22 = responseCopy;
+  dispatch_sync(dispatchQueue, v23);
 }
 
 void __98__RKMessageResponseManager_registerResponse_forMessage_forContext_withEffectiveDate_withLanguage___block_invoke(uint64_t a1)
@@ -1815,27 +1815,27 @@ void __98__RKMessageResponseManager_registerResponse_forMessage_forContext_withE
   }
 }
 
-- (void)registerResponse:(id)a3 forMessage:(id)a4 metadata:(id)a5 withLanguage:(id)a6
+- (void)registerResponse:(id)response forMessage:(id)message metadata:(id)metadata withLanguage:(id)language
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(RKMessageResponseManager *)self dispatchQueue];
+  responseCopy = response;
+  messageCopy = message;
+  metadataCopy = metadata;
+  languageCopy = language;
+  dispatchQueue = [(RKMessageResponseManager *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__RKMessageResponseManager_registerResponse_forMessage_metadata_withLanguage___block_invoke;
   block[3] = &unk_279B109C8;
-  v20 = v11;
-  v21 = v10;
-  v22 = self;
-  v23 = v13;
-  v24 = v12;
-  v15 = v12;
-  v16 = v13;
-  v17 = v10;
-  v18 = v11;
-  dispatch_async(v14, block);
+  v20 = messageCopy;
+  v21 = responseCopy;
+  selfCopy = self;
+  v23 = languageCopy;
+  v24 = metadataCopy;
+  v15 = metadataCopy;
+  v16 = languageCopy;
+  v17 = responseCopy;
+  v18 = messageCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
 void __78__RKMessageResponseManager_registerResponse_forMessage_metadata_withLanguage___block_invoke(uint64_t a1)
@@ -1975,26 +1975,26 @@ uint64_t __42__RKMessageResponseManager_getRankLearner__block_invoke(uint64_t a1
   return 0;
 }
 
-- (void)prunePersonalizedUserDatabase:(id)a3
+- (void)prunePersonalizedUserDatabase:(id)database
 {
-  v6 = a3;
+  databaseCopy = database;
   if ([(RKMessageResponseManager *)self usePersonalizedRanking])
   {
     v4 = objc_alloc_init(RKRankLearner);
-    v5 = [(RKRankLearner *)v4 getDBManager:v6];
+    v5 = [(RKRankLearner *)v4 getDBManager:databaseCopy];
     [v5 pruneUserDatabase];
   }
 }
 
 - (void)resetRegisteredResponses
 {
-  v3 = [(RKMessageResponseManager *)self dispatchQueue];
+  dispatchQueue = [(RKMessageResponseManager *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__RKMessageResponseManager_resetRegisteredResponses__block_invoke;
   block[3] = &unk_279B10270;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(dispatchQueue, block);
 }
 
 void __52__RKMessageResponseManager_resetRegisteredResponses__block_invoke(uint64_t a1)
@@ -2005,13 +2005,13 @@ void __52__RKMessageResponseManager_resetRegisteredResponses__block_invoke(uint6
 
 - (void)flushDynamicData
 {
-  v3 = [(RKMessageResponseManager *)self dispatchQueue];
+  dispatchQueue = [(RKMessageResponseManager *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__RKMessageResponseManager_flushDynamicData__block_invoke;
   block[3] = &unk_279B10270;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(dispatchQueue, block);
 }
 
 void __44__RKMessageResponseManager_flushDynamicData__block_invoke(uint64_t a1)
@@ -2020,32 +2020,32 @@ void __44__RKMessageResponseManager_flushDynamicData__block_invoke(uint64_t a1)
   [v1 flushDynamicData];
 }
 
-+ (BOOL)_needsMirroredAnalysisForMessage:(id)a3 forChronologicalConversationHistory:(id)a4
++ (BOOL)_needsMirroredAnalysisForMessage:(id)message forChronologicalConversationHistory:(id)history
 {
-  v6 = a4;
-  if ([a3 length] || !objc_msgSend(v6, "count"))
+  historyCopy = history;
+  if ([message length] || !objc_msgSend(historyCopy, "count"))
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [a1 _mostRecentTextFromChronologicalConversationHistory:v6];
+    v8 = [self _mostRecentTextFromChronologicalConversationHistory:historyCopy];
     v7 = [v8 length] != 0;
   }
 
   return v7;
 }
 
-+ (BOOL)_responseTypeIsSunsetted:(id)a3
++ (BOOL)_responseTypeIsSunsetted:(id)sunsetted
 {
-  if (!a3)
+  if (!sunsetted)
   {
     return 0;
   }
 
-  v3 = [a3 attributes];
-  v4 = [v3 objectForKeyedSubscript:@"type"];
+  attributes = [sunsetted attributes];
+  v4 = [attributes objectForKeyedSubscript:@"type"];
 
   if ([v4 isEqualToString:@"event"])
   {
@@ -2060,40 +2060,40 @@ void __44__RKMessageResponseManager_flushDynamicData__block_invoke(uint64_t a1)
   return v5;
 }
 
-+ (BOOL)_responseLooksLikeIncomingCheckInResponse:(id)a3
++ (BOOL)_responseLooksLikeIncomingCheckInResponse:(id)response
 {
-  if (!a3)
+  if (!response)
   {
     return 0;
   }
 
-  v3 = [a3 attributes];
-  v4 = [v3 objectForKeyedSubscript:@"request"];
+  attributes = [response attributes];
+  v4 = [attributes objectForKeyedSubscript:@"request"];
 
-  LOBYTE(v3) = [v4 containsString:@"xCHECKININCOMINGx"];
-  return v3;
+  LOBYTE(attributes) = [v4 containsString:@"xCHECKININCOMINGx"];
+  return attributes;
 }
 
-+ (BOOL)_responseLooksLikeOutgoingCheckInResponse:(id)a3
++ (BOOL)_responseLooksLikeOutgoingCheckInResponse:(id)response
 {
-  if (!a3)
+  if (!response)
   {
     return 0;
   }
 
-  v3 = [a3 attributes];
-  v4 = [v3 objectForKeyedSubscript:@"request"];
+  attributes = [response attributes];
+  v4 = [attributes objectForKeyedSubscript:@"request"];
 
-  LOBYTE(v3) = [v4 containsString:@"xCHECKINOUTGOINGx"];
-  return v3;
+  LOBYTE(attributes) = [v4 containsString:@"xCHECKINOUTGOINGx"];
+  return attributes;
 }
 
-+ (BOOL)_isMirroredResponseValidForResponse:(id)a3
++ (BOOL)_isMirroredResponseValidForResponse:(id)response
 {
-  v3 = [a3 attributes];
-  v4 = [v3 objectForKeyedSubscript:@"type"];
-  v5 = [v3 objectForKeyedSubscript:@"subtype"];
-  v6 = [v3 objectForKeyedSubscript:@"field"];
+  attributes = [response attributes];
+  v4 = [attributes objectForKeyedSubscript:@"type"];
+  v5 = [attributes objectForKeyedSubscript:@"subtype"];
+  v6 = [attributes objectForKeyedSubscript:@"field"];
   if ([v6 length] || !objc_msgSend(v4, "containsString:", @"location"))
   {
     v7 = 0;
@@ -2107,22 +2107,22 @@ void __44__RKMessageResponseManager_flushDynamicData__block_invoke(uint64_t a1)
   return v7;
 }
 
-+ (id)_mostRecentTextFromChronologicalConversationHistory:(id)a3
++ (id)_mostRecentTextFromChronologicalConversationHistory:(id)history
 {
-  v3 = a3;
-  if ([v3 count])
+  historyCopy = history;
+  if ([historyCopy count])
   {
-    v4 = [objc_opt_class() _chronologicalConversationHistory:v3];
-    v5 = [v4 lastObject];
-    v6 = [v5 text];
+    v4 = [objc_opt_class() _chronologicalConversationHistory:historyCopy];
+    lastObject = [v4 lastObject];
+    text = [lastObject text];
   }
 
   else
   {
-    v6 = 0;
+    text = 0;
   }
 
-  return v6;
+  return text;
 }
 
 uint64_t __62__RKMessageResponseManager__chronologicalConversationHistory___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,24 +1,24 @@
 @interface PLAWDAudio
 + (id)entryAggregateDefinitionAwdAudio;
 + (id)entryAggregateDefinitions;
-+ (id)getSharedObjWithOperator:(id)a3;
-- (BOOL)submitDataToAWDServer:(id)a3 withAwdConn:(id)a4;
++ (id)getSharedObjWithOperator:(id)operator;
+- (BOOL)submitDataToAWDServer:(id)server withAwdConn:(id)conn;
 - (void)finalizeAudioTable;
-- (void)handleAudioRailCallback:(id)a3;
+- (void)handleAudioRailCallback:(id)callback;
 - (void)resetAudioTable;
-- (void)startMetricCollection:(id)a3;
-- (void)stopMetricCollection:(id)a3;
+- (void)startMetricCollection:(id)collection;
+- (void)stopMetricCollection:(id)collection;
 @end
 
 @implementation PLAWDAudio
 
-+ (id)getSharedObjWithOperator:(id)a3
++ (id)getSharedObjWithOperator:(id)operator
 {
   v3 = plAwdAudio;
   if (!plAwdAudio)
   {
-    v4 = a3;
-    v5 = [(PLAWDAuxMetrics *)[PLAWDAudio alloc] initWithOperator:v4];
+    operatorCopy = operator;
+    v5 = [(PLAWDAuxMetrics *)[PLAWDAudio alloc] initWithOperator:operatorCopy];
 
     v6 = plAwdAudio;
     plAwdAudio = v5;
@@ -33,8 +33,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"AudioMetrics";
-  v2 = [a1 entryAggregateDefinitionAwdAudio];
-  v7[0] = v2;
+  entryAggregateDefinitionAwdAudio = [self entryAggregateDefinitionAwdAudio];
+  v7[0] = entryAggregateDefinitionAwdAudio;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -55,21 +55,21 @@
   v29[0] = v18;
   v28[1] = *MEMORY[0x277D3F540];
   v24[0] = @"AudioRouting";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v25[0] = v16;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v25[0] = commonTypeDict_IntegerFormat;
   v24[1] = @"AudioVolume";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v15 commonTypeDict_IntegerFormat];
-  v25[1] = v3;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v25[1] = commonTypeDict_IntegerFormat2;
   v24[2] = @"AudioPower";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_RealFormat_aggregateFunction_sum];
-  v25[2] = v5;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat_aggregateFunction_sum = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat_aggregateFunction_sum];
+  v25[2] = commonTypeDict_RealFormat_aggregateFunction_sum;
   v24[3] = @"AudioTime";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_RealFormat_aggregateFunction_sum];
-  v25[3] = v7;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat_aggregateFunction_sum2 = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat_aggregateFunction_sum];
+  v25[3] = commonTypeDict_RealFormat_aggregateFunction_sum2;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:4];
   v29[1] = v8;
   v28[2] = *MEMORY[0x277D3F478];
@@ -92,33 +92,33 @@
   return v12;
 }
 
-- (void)startMetricCollection:(id)a3
+- (void)startMetricCollection:(id)collection
 {
-  v4 = a3;
-  if ([v4 longValue] == 2031626)
+  collectionCopy = collection;
+  if ([collectionCopy longValue] == 2031626)
   {
     [(PLAWDAudio *)self resetAudioTable];
-    v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [(PLAWDAudio *)self setStartTime:v5];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [(PLAWDAudio *)self setStartTime:monotonicDate];
   }
 
-  v6 = [(PLAWDAuxMetrics *)self runningMetrics];
-  [v6 addObject:v4];
+  runningMetrics = [(PLAWDAuxMetrics *)self runningMetrics];
+  [runningMetrics addObject:collectionCopy];
 }
 
-- (void)stopMetricCollection:(id)a3
+- (void)stopMetricCollection:(id)collection
 {
-  v4 = a3;
-  if ([v4 longValue] == 2031626)
+  collectionCopy = collection;
+  if ([collectionCopy longValue] == 2031626)
   {
     [(PLAWDAudio *)self setAudioRailCallback:0];
   }
 
-  v5 = [(PLAWDAuxMetrics *)self runningMetrics];
-  [v5 removeObject:v4];
+  runningMetrics = [(PLAWDAuxMetrics *)self runningMetrics];
+  [runningMetrics removeObject:collectionCopy];
 
-  v6 = [(PLAWDAuxMetrics *)self runningMetrics];
-  v7 = [v6 count];
+  runningMetrics2 = [(PLAWDAuxMetrics *)self runningMetrics];
+  v7 = [runningMetrics2 count];
 
   if (!v7)
   {
@@ -129,29 +129,29 @@
   }
 }
 
-- (BOOL)submitDataToAWDServer:(id)a3 withAwdConn:(id)a4
+- (BOOL)submitDataToAWDServer:(id)server withAwdConn:(id)conn
 {
   v75 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 newMetricContainerWithIdentifier:{objc_msgSend(v6, "unsignedIntValue")}];
+  serverCopy = server;
+  connCopy = conn;
+  v8 = [connCopy newMetricContainerWithIdentifier:{objc_msgSend(serverCopy, "unsignedIntValue")}];
   if (v8)
   {
     v9 = [MEMORY[0x277CBEAA8] monotonicDateWithTimeIntervalSinceNow:-86400.0];
-    v10 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     [v9 timeIntervalSince1970];
     v12 = v11;
-    [v10 timeIntervalSince1970];
+    [monotonicDate timeIntervalSince1970];
     v14 = v13;
 
-    if ([v6 longValue] == 2031626)
+    if ([serverCopy longValue] == 2031626)
     {
       [(PLAWDAudio *)self finalizeAudioTable];
       v15 = [(PLOperator *)PLAWDMetricsService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"AudioMetrics"];
-      v16 = [(PLAWDAuxMetrics *)self operator];
-      v17 = [v16 storage];
+      operator = [(PLAWDAuxMetrics *)self operator];
+      storage = [operator storage];
       v59 = v15;
-      v18 = [v17 aggregateEntriesForKey:v15 withBucketLength:86400.0 inTimeIntervalRange:{v12, v14 - v12}];
+      v18 = [storage aggregateEntriesForKey:v15 withBucketLength:86400.0 inTimeIntervalRange:{v12, v14 - v12}];
 
       v64 = v18;
       v19 = [MEMORY[0x277D3F190] summarizeAggregateEntries:v18];
@@ -175,9 +175,9 @@
           v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"results=%@\naggregatedResults=%@", v18, v19];
           v23 = MEMORY[0x277D3F178];
           v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDAudio.m"];
-          v25 = [v24 lastPathComponent];
+          lastPathComponent = [v24 lastPathComponent];
           v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDAudio submitDataToAWDServer:withAwdConn:]"];
-          [v23 logMessage:v22 fromFile:v25 fromFunction:v26 fromLineNumber:131];
+          [v23 logMessage:v22 fromFile:lastPathComponent fromFunction:v26 fromLineNumber:131];
 
           v27 = PLLogCommon();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -190,12 +190,12 @@
       }
 
       v60 = v8;
-      v61 = self;
-      v62 = v7;
+      selfCopy = self;
+      v62 = connCopy;
       v73[0] = 0;
       v73[1] = 0;
       v74 = 0;
-      [v20 setTimestamp:{objc_msgSend(v7, "getAWDTimestamp")}];
+      [v20 setTimestamp:{objc_msgSend(connCopy, "getAWDTimestamp")}];
       v69 = 0u;
       v70 = 0u;
       v67 = 0u;
@@ -288,8 +288,8 @@ LABEL_25:
           v8 = v60;
           [v60 setMetric:v63];
 
-          v7 = v62;
-          self = v61;
+          connCopy = v62;
+          self = selfCopy;
           goto LABEL_26;
         }
       }
@@ -302,10 +302,10 @@ LABEL_25:
   {
 LABEL_26:
     [(PLAWDAudio *)self resetAudioTable];
-    v56 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [(PLAWDAudio *)self setStartTime:v56];
+    monotonicDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
+    [(PLAWDAudio *)self setStartTime:monotonicDate2];
 
-    v55 = [v7 submitMetric:v8];
+    v55 = [connCopy submitMetric:v8];
   }
 
   v57 = *MEMORY[0x277D85DE8];
@@ -323,34 +323,34 @@ uint64_t __48__PLAWDAudio_submitDataToAWDServer_withAwdConn___block_invoke(uint6
 {
   v3 = *MEMORY[0x277D3F5D0];
   v36 = [MEMORY[0x277D3F678] entryKeyForType:*MEMORY[0x277D3F5D0] andName:*MEMORY[0x277D3F738]];
-  v4 = [(PLAWDAuxMetrics *)self operator];
-  v5 = [v4 storage];
-  v6 = [v5 lastEntryForKey:v36];
+  operator = [(PLAWDAuxMetrics *)self operator];
+  storage = [operator storage];
+  v6 = [storage lastEntryForKey:v36];
 
   v7 = [v6 objectForKeyedSubscript:@"Active"];
-  LODWORD(v5) = [v7 BOOLValue];
+  LODWORD(storage) = [v7 BOOLValue];
 
-  if (v5)
+  if (storage)
   {
     v8 = [MEMORY[0x277D3F678] entryKeyForType:v3 andName:*MEMORY[0x277D3F730]];
-    v9 = [(PLAWDAuxMetrics *)self operator];
-    v10 = [v9 storage];
+    operator2 = [(PLAWDAuxMetrics *)self operator];
+    storage2 = [operator2 storage];
     v35 = v8;
-    v34 = [v10 lastEntryForKey:v8];
+    v34 = [storage2 lastEntryForKey:v8];
 
     v11 = [MEMORY[0x277D3F678] entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"Audio"];
-    v12 = [(PLAWDAuxMetrics *)self operator];
-    v13 = [v12 storage];
+    operator3 = [(PLAWDAuxMetrics *)self operator];
+    storage3 = [operator3 storage];
     v33 = v11;
-    v14 = [v13 lastEntryForKey:v11];
+    v14 = [storage3 lastEntryForKey:v11];
 
-    v15 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     v16 = [(PLOperator *)PLAWDMetricsService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"AudioMetrics"];
     v17 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v16];
-    [v15 timeIntervalSince1970];
+    [monotonicDate timeIntervalSince1970];
     v19 = v18;
-    v20 = [v14 entryDate];
-    [v20 timeIntervalSince1970];
+    entryDate = [v14 entryDate];
+    [entryDate timeIntervalSince1970];
     v22 = v19 - v21;
 
     v23 = [v6 objectForKeyedSubscript:@"HeadphonesConnected"];
@@ -381,24 +381,24 @@ uint64_t __48__PLAWDAudio_submitDataToAWDServer_withAwdConn___block_invoke(uint6
     v31 = [MEMORY[0x277CCABB0] numberWithDouble:v22];
     [v17 setObject:v31 forKeyedSubscript:@"AudioTime"];
 
-    v32 = [(PLAWDAuxMetrics *)self operator];
-    [v32 logEntry:v17];
+    operator4 = [(PLAWDAuxMetrics *)self operator];
+    [operator4 logEntry:v17];
   }
 }
 
-- (void)handleAudioRailCallback:(id)a3
+- (void)handleAudioRailCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v5 = *MEMORY[0x277D3F5D0];
   v6 = [MEMORY[0x277D3F678] entryKeyForType:*MEMORY[0x277D3F5D0] andName:*MEMORY[0x277D3F738]];
-  v7 = [(PLAWDAuxMetrics *)self operator];
-  v8 = [v7 storage];
-  v9 = [v8 lastEntriesForKey:v6 count:2 withFilters:0];
+  operator = [(PLAWDAuxMetrics *)self operator];
+  storage = [operator storage];
+  v9 = [storage lastEntriesForKey:v6 count:2 withFilters:0];
 
   v10 = [MEMORY[0x277D3F678] entryKeyForType:v5 andName:*MEMORY[0x277D3F730]];
-  v11 = [(PLAWDAuxMetrics *)self operator];
-  v12 = [v11 storage];
-  v13 = [v12 lastEntriesForKey:v10 count:2 withFilters:0];
+  operator2 = [(PLAWDAuxMetrics *)self operator];
+  storage2 = [operator2 storage];
+  v13 = [storage2 lastEntriesForKey:v10 count:2 withFilters:0];
 
   if ([v9 count] < 2 || objc_msgSend(v13, "count") < 2)
   {
@@ -407,13 +407,13 @@ uint64_t __48__PLAWDAudio_submitDataToAWDServer_withAwdConn___block_invoke(uint6
 
   v77 = v10;
   v78 = v6;
-  v79 = v4;
-  v14 = [v4 objectForKey:@"entry"];
-  v15 = [(PLAWDAuxMetrics *)self operator];
-  v16 = [v15 storage];
-  v17 = [v14 entryKey];
+  v79 = callbackCopy;
+  v14 = [callbackCopy objectForKey:@"entry"];
+  operator3 = [(PLAWDAuxMetrics *)self operator];
+  storage3 = [operator3 storage];
+  entryKey = [v14 entryKey];
   v84 = v14;
-  v18 = [v16 entryForKey:v17 withID:{objc_msgSend(v14, "entryID") - 1}];
+  v18 = [storage3 entryForKey:entryKey withID:{objc_msgSend(v14, "entryID") - 1}];
 
   v19 = [v9 objectAtIndexedSubscript:0];
   v20 = [v9 objectAtIndexedSubscript:1];
@@ -422,11 +422,11 @@ uint64_t __48__PLAWDAudio_submitDataToAWDServer_withAwdConn___block_invoke(uint6
   v76 = [(PLOperator *)PLAWDMetricsService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"AudioMetrics"];
   v82 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v76];
   v83 = v18;
-  v23 = [v18 entryDate];
-  [v23 timeIntervalSince1970];
+  entryDate = [v18 entryDate];
+  [entryDate timeIntervalSince1970];
   v25 = v24;
-  v26 = [v19 entryDate];
-  [v26 timeIntervalSince1970];
+  entryDate2 = [v19 entryDate];
+  [entryDate2 timeIntervalSince1970];
   v28 = v27;
 
   v80 = v19;
@@ -460,9 +460,9 @@ uint64_t __48__PLAWDAudio_submitDataToAWDServer_withAwdConn___block_invoke(uint6
     v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"Output changed"];
     v38 = MEMORY[0x277D3F178];
     v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDAudio.m"];
-    v40 = [v39 lastPathComponent];
+    lastPathComponent = [v39 lastPathComponent];
     v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDAudio handleAudioRailCallback:]"];
-    [v38 logMessage:v31 fromFile:v40 fromFunction:v41 fromLineNumber:238];
+    [v38 logMessage:v31 fromFile:lastPathComponent fromFunction:v41 fromLineNumber:238];
 
     v35 = PLLogCommon();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -501,9 +501,9 @@ LABEL_18:
     v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"Routing changed"];
     v73 = MEMORY[0x277D3F178];
     v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDAudio.m"];
-    v33 = [v32 lastPathComponent];
+    lastPathComponent2 = [v32 lastPathComponent];
     v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDAudio handleAudioRailCallback:]"];
-    [v73 logMessage:v31 fromFile:v33 fromFunction:v34 fromLineNumber:234];
+    [v73 logMessage:v31 fromFile:lastPathComponent2 fromFunction:v34 fromLineNumber:234];
 
     v35 = PLLogCommon();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -515,19 +515,19 @@ LABEL_18:
   }
 
 LABEL_19:
-  v42 = [v84 entryDate];
-  [v42 timeIntervalSince1970];
+  entryDate3 = [v84 entryDate];
+  [entryDate3 timeIntervalSince1970];
   v44 = v43;
-  v45 = [v83 entryDate];
-  v46 = [(PLAWDAudio *)self startTime];
-  v47 = [v45 laterDate:v46];
+  entryDate4 = [v83 entryDate];
+  startTime = [(PLAWDAudio *)self startTime];
+  v47 = [entryDate4 laterDate:startTime];
   [v47 timeIntervalSince1970];
   v49 = v48;
 
   v50 = [v36 objectForKeyedSubscript:@"HeadphonesConnected"];
-  LOBYTE(v45) = [v50 BOOLValue];
+  LOBYTE(entryDate4) = [v50 BOOLValue];
 
-  if (v45)
+  if (entryDate4)
   {
     v51 = 1;
   }
@@ -542,10 +542,10 @@ LABEL_19:
 
   v53 = v36;
   v54 = [v36 objectForKeyedSubscript:@"Active"];
-  v55 = [v54 BOOLValue];
+  bOOLValue = [v54 BOOLValue];
 
   v56 = v80;
-  if (v55)
+  if (bOOLValue)
   {
     v57 = [MEMORY[0x277CCABB0] numberWithInt:v51];
     [v82 setObject:v57 forKeyedSubscript:@"AudioRouting"];
@@ -559,8 +559,8 @@ LABEL_19:
     v62 = [MEMORY[0x277CCABB0] numberWithDouble:v44 - v49];
     [v82 setObject:v62 forKeyedSubscript:@"AudioTime"];
 
-    v63 = [(PLAWDAuxMetrics *)self operator];
-    [v63 logEntry:v82];
+    operator4 = [(PLAWDAuxMetrics *)self operator];
+    [operator4 logEntry:v82];
   }
 
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -584,9 +584,9 @@ LABEL_19:
 
       v68 = MEMORY[0x277D3F178];
       v69 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDAudio.m"];
-      v70 = [v69 lastPathComponent];
+      lastPathComponent3 = [v69 lastPathComponent];
       v71 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDAudio handleAudioRailCallback:]"];
-      [v68 logMessage:v67 fromFile:v70 fromFunction:v71 fromLineNumber:258];
+      [v68 logMessage:v67 fromFile:lastPathComponent3 fromFunction:v71 fromLineNumber:258];
 
       v72 = PLLogCommon();
       if (os_log_type_enabled(v72, OS_LOG_TYPE_DEBUG))
@@ -599,7 +599,7 @@ LABEL_19:
   }
 
   v6 = v78;
-  v4 = v79;
+  callbackCopy = v79;
   v10 = v77;
 LABEL_32:
 }

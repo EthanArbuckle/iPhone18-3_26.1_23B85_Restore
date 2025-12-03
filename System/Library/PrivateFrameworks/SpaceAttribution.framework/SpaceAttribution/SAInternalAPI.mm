@@ -1,19 +1,19 @@
 @interface SAInternalAPI
-+ (void)addAppSizerHandler:(id)a3 reply:(id)a4;
-+ (void)adjustDenomAgeBy:(unint64_t)a3 reply:(id)a4;
-+ (void)clearLastTelemetryData:(id)a3;
-+ (void)disableAppSizerResultsFilteringWithReply:(id)a3;
-+ (void)getAppPathsWithReplyBlock:(id)a3;
-+ (void)getLastTelemetryData:(id)a3;
-+ (void)getPurgeableInfo:(id)a3 options:(unint64_t)a4 reply:(id)a5;
-+ (void)importFromPlist:(id)a3 reply:(id)a4;
-+ (void)removeAppSizerHandler:(id)a3 reply:(id)a4;
-+ (void)runAppSizerWithReplyBlock:(id)a3;
-+ (void)setAppPathListPathOnDisk:(id)a3 reply:(id)a4;
-+ (void)setAppPathListPathOnDisktoDefaultWithReply:(id)a3;
-+ (void)setAppSizerFilteringOptionsToDefaultWithReply:(id)a3;
-+ (void)setForceSDAAbort:(id)a3;
-+ (void)setForceTelemetry:(id)a3;
++ (void)addAppSizerHandler:(id)handler reply:(id)reply;
++ (void)adjustDenomAgeBy:(unint64_t)by reply:(id)reply;
++ (void)clearLastTelemetryData:(id)data;
++ (void)disableAppSizerResultsFilteringWithReply:(id)reply;
++ (void)getAppPathsWithReplyBlock:(id)block;
++ (void)getLastTelemetryData:(id)data;
++ (void)getPurgeableInfo:(id)info options:(unint64_t)options reply:(id)reply;
++ (void)importFromPlist:(id)plist reply:(id)reply;
++ (void)removeAppSizerHandler:(id)handler reply:(id)reply;
++ (void)runAppSizerWithReplyBlock:(id)block;
++ (void)setAppPathListPathOnDisk:(id)disk reply:(id)reply;
++ (void)setAppPathListPathOnDisktoDefaultWithReply:(id)reply;
++ (void)setAppSizerFilteringOptionsToDefaultWithReply:(id)reply;
++ (void)setForceSDAAbort:(id)abort;
++ (void)setForceTelemetry:(id)telemetry;
 @end
 
 @implementation SAInternalAPI
@@ -54,9 +54,9 @@ uint64_t __43__SAInternalAPI_getAppPaths_options_reply___block_invoke_3(uint64_t
   return [v2 invalidate];
 }
 
-+ (void)getAppPathsWithReplyBlock:(id)a3
++ (void)getAppPathsWithReplyBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -67,7 +67,7 @@ uint64_t __43__SAInternalAPI_getAppPaths_options_reply___block_invoke_3(uint64_t
   v17[1] = 3221225472;
   v17[2] = __43__SAInternalAPI_getAppPathsWithReplyBlock___block_invoke;
   v17[3] = &unk_279CD6EA8;
-  v4 = v3;
+  v4 = blockCopy;
   v18 = v4;
   v19 = &v20;
   v5 = [SADaemonXPC newWithInvalidationHandler:v17];
@@ -164,9 +164,9 @@ void __43__SAInternalAPI_getAppPathsWithReplyBlock___block_invoke_3(uint64_t a1,
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)runAppSizerWithReplyBlock:(id)a3
++ (void)runAppSizerWithReplyBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x2020000000;
@@ -181,7 +181,7 @@ void __43__SAInternalAPI_getAppPathsWithReplyBlock___block_invoke_3(uint64_t a1,
   v16[2] = __43__SAInternalAPI_runAppSizerWithReplyBlock___block_invoke;
   v16[3] = &unk_279CD6F48;
   v18 = v25;
-  v4 = v3;
+  v4 = blockCopy;
   v17 = v4;
   v24 = [SADaemonXPC newWithInvalidationHandler:v16];
   v5 = v20[5];
@@ -243,10 +243,10 @@ uint64_t __43__SAInternalAPI_runAppSizerWithReplyBlock___block_invoke_3(uint64_t
   return [v2 invalidate];
 }
 
-+ (void)getPurgeableInfo:(id)a3 options:(unint64_t)a4 reply:(id)a5
++ (void)getPurgeableInfo:(id)info options:(unint64_t)options reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  infoCopy = info;
+  replyCopy = reply;
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x2020000000;
@@ -261,7 +261,7 @@ uint64_t __43__SAInternalAPI_runAppSizerWithReplyBlock___block_invoke_3(uint64_t
   v21[2] = __48__SAInternalAPI_getPurgeableInfo_options_reply___block_invoke;
   v21[3] = &unk_279CD6F48;
   v23 = v30;
-  v9 = v8;
+  v9 = replyCopy;
   v22 = v9;
   v29 = [SADaemonXPC newWithInvalidationHandler:v21];
   v10 = v25[5];
@@ -281,7 +281,7 @@ uint64_t __43__SAInternalAPI_runAppSizerWithReplyBlock___block_invoke_3(uint64_t
   v13 = v11;
   v15 = v13;
   v16 = &v24;
-  [v12 getPurgeableInfo:v7 options:a4 reply:v14];
+  [v12 getPurgeableInfo:infoCopy options:options reply:v14];
 
   _Block_object_dispose(&v24, 8);
   _Block_object_dispose(v30, 8);
@@ -323,23 +323,23 @@ uint64_t __48__SAInternalAPI_getPurgeableInfo_options_reply___block_invoke_3(uin
   return [v2 invalidate];
 }
 
-+ (void)addAppSizerHandler:(id)a3 reply:(id)a4
++ (void)addAppSizerHandler:(id)handler reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  handlerCopy = handler;
+  replyCopy = reply;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x2020000000;
   v22 = 0;
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  [v8 setAppSizerUpdateHandler:v5];
+  [v8 setAppSizerUpdateHandler:handlerCopy];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __42__SAInternalAPI_addAppSizerHandler_reply___block_invoke;
   v17[3] = &unk_279CD6FE8;
   v20 = v21;
-  v9 = v6;
+  v9 = replyCopy;
   v19 = v9;
   v10 = v7;
   v18 = v10;
@@ -381,10 +381,10 @@ void __42__SAInternalAPI_addAppSizerHandler_reply___block_invoke_2(uint64_t a1, 
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)removeAppSizerHandler:(id)a3 reply:(id)a4
++ (void)removeAppSizerHandler:(id)handler reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  handlerCopy = handler;
+  replyCopy = reply;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x2020000000;
@@ -395,12 +395,12 @@ void __42__SAInternalAPI_addAppSizerHandler_reply___block_invoke_2(uint64_t a1, 
   v11[2] = __45__SAInternalAPI_removeAppSizerHandler_reply___block_invoke;
   v11[3] = &unk_279CD6FE8;
   v14 = v15;
-  v8 = v6;
+  v8 = replyCopy;
   v13 = v8;
   v9 = v7;
   v12 = v9;
   v10 = [v9 remoteObjectProxyWithErrorHandler:v11];
-  [v10 removeAppSizerHandler:v5];
+  [v10 removeAppSizerHandler:handlerCopy];
   (*(v8 + 2))(v8, 0);
 
   _Block_object_dispose(v15, 8);
@@ -422,21 +422,21 @@ uint64_t __45__SAInternalAPI_removeAppSizerHandler_reply___block_invoke(uint64_t
   return result;
 }
 
-+ (void)disableAppSizerResultsFilteringWithReply:(id)a3
++ (void)disableAppSizerResultsFilteringWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__3;
   v18 = __Block_byref_object_dispose__3;
-  v19 = [SADaemonXPC newWithInvalidationHandler:v3];
+  v19 = [SADaemonXPC newWithInvalidationHandler:replyCopy];
   v4 = v15[5];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__SAInternalAPI_disableAppSizerResultsFilteringWithReply___block_invoke;
   v11[3] = &unk_279CD6EA8;
-  v5 = v3;
+  v5 = replyCopy;
   v12 = v5;
   v13 = &v14;
   v6 = [v4 remoteObjectProxyWithErrorHandler:v11];
@@ -468,9 +468,9 @@ uint64_t __58__SAInternalAPI_disableAppSizerResultsFilteringWithReply___block_in
   return [v2 invalidate];
 }
 
-+ (void)setAppSizerFilteringOptionsToDefaultWithReply:(id)a3
++ (void)setAppSizerFilteringOptionsToDefaultWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -480,7 +480,7 @@ uint64_t __58__SAInternalAPI_disableAppSizerResultsFilteringWithReply___block_in
   v15[1] = 3221225472;
   v15[2] = __63__SAInternalAPI_setAppSizerFilteringOptionsToDefaultWithReply___block_invoke;
   v15[3] = &unk_279CD6E10;
-  v4 = v3;
+  v4 = replyCopy;
   v16 = v4;
   v22 = [SADaemonXPC newWithInvalidationHandler:v15];
   v5 = v18[5];
@@ -520,9 +520,9 @@ uint64_t __63__SAInternalAPI_setAppSizerFilteringOptionsToDefaultWithReply___blo
   return [v2 invalidate];
 }
 
-+ (void)setForceTelemetry:(id)a3
++ (void)setForceTelemetry:(id)telemetry
 {
-  v3 = a3;
+  telemetryCopy = telemetry;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -532,7 +532,7 @@ uint64_t __63__SAInternalAPI_setAppSizerFilteringOptionsToDefaultWithReply___blo
   v15[1] = 3221225472;
   v15[2] = __35__SAInternalAPI_setForceTelemetry___block_invoke;
   v15[3] = &unk_279CD6E10;
-  v4 = v3;
+  v4 = telemetryCopy;
   v16 = v4;
   v22 = [SADaemonXPC newWithInvalidationHandler:v15];
   v5 = v18[5];
@@ -572,9 +572,9 @@ uint64_t __35__SAInternalAPI_setForceTelemetry___block_invoke_3(uint64_t a1)
   return [v2 invalidate];
 }
 
-+ (void)setForceSDAAbort:(id)a3
++ (void)setForceSDAAbort:(id)abort
 {
-  v3 = a3;
+  abortCopy = abort;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -584,7 +584,7 @@ uint64_t __35__SAInternalAPI_setForceTelemetry___block_invoke_3(uint64_t a1)
   v15[1] = 3221225472;
   v15[2] = __34__SAInternalAPI_setForceSDAAbort___block_invoke;
   v15[3] = &unk_279CD6E10;
-  v4 = v3;
+  v4 = abortCopy;
   v16 = v4;
   v22 = [SADaemonXPC newWithInvalidationHandler:v15];
   v5 = v18[5];
@@ -624,9 +624,9 @@ uint64_t __34__SAInternalAPI_setForceSDAAbort___block_invoke_3(uint64_t a1)
   return [v2 invalidate];
 }
 
-+ (void)adjustDenomAgeBy:(unint64_t)a3 reply:(id)a4
++ (void)adjustDenomAgeBy:(unint64_t)by reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -636,7 +636,7 @@ uint64_t __34__SAInternalAPI_setForceSDAAbort___block_invoke_3(uint64_t a1)
   v17[1] = 3221225472;
   v17[2] = __40__SAInternalAPI_adjustDenomAgeBy_reply___block_invoke;
   v17[3] = &unk_279CD6E10;
-  v6 = v5;
+  v6 = replyCopy;
   v18 = v6;
   v24 = [SADaemonXPC newWithInvalidationHandler:v17];
   v7 = v20[5];
@@ -655,7 +655,7 @@ uint64_t __34__SAInternalAPI_setForceSDAAbort___block_invoke_3(uint64_t a1)
   v10 = v8;
   v12 = v10;
   v13 = &v19;
-  [v9 adjustDenomAgeBy:a3 reply:v11];
+  [v9 adjustDenomAgeBy:by reply:v11];
 
   _Block_object_dispose(&v19, 8);
 }
@@ -724,9 +724,9 @@ uint64_t __50__SAInternalAPI_setAppSizerMaxRerunTimeout_reply___block_invoke_2(u
   return [v2 invalidate];
 }
 
-+ (void)getLastTelemetryData:(id)a3
++ (void)getLastTelemetryData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -736,7 +736,7 @@ uint64_t __50__SAInternalAPI_setAppSizerMaxRerunTimeout_reply___block_invoke_2(u
   v15[1] = 3221225472;
   v15[2] = __38__SAInternalAPI_getLastTelemetryData___block_invoke;
   v15[3] = &unk_279CD6E10;
-  v4 = v3;
+  v4 = dataCopy;
   v16 = v4;
   v22 = [SADaemonXPC newWithInvalidationHandler:v15];
   v5 = v18[5];
@@ -776,10 +776,10 @@ uint64_t __38__SAInternalAPI_getLastTelemetryData___block_invoke_3(uint64_t a1)
   return [v2 invalidate];
 }
 
-+ (void)importFromPlist:(id)a3 reply:(id)a4
++ (void)importFromPlist:(id)plist reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  plistCopy = plist;
+  replyCopy = reply;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -789,7 +789,7 @@ uint64_t __38__SAInternalAPI_getLastTelemetryData___block_invoke_3(uint64_t a1)
   v18[1] = 3221225472;
   v18[2] = __39__SAInternalAPI_importFromPlist_reply___block_invoke;
   v18[3] = &unk_279CD6E10;
-  v7 = v6;
+  v7 = replyCopy;
   v19 = v7;
   v25 = [SADaemonXPC newWithInvalidationHandler:v18];
   v8 = v21[5];
@@ -808,7 +808,7 @@ uint64_t __38__SAInternalAPI_getLastTelemetryData___block_invoke_3(uint64_t a1)
   v11 = v9;
   v13 = v11;
   v14 = &v20;
-  [v10 importFromPlist:v5 reply:v12];
+  [v10 importFromPlist:plistCopy reply:v12];
 
   _Block_object_dispose(&v20, 8);
 }
@@ -829,21 +829,21 @@ uint64_t __39__SAInternalAPI_importFromPlist_reply___block_invoke_3(uint64_t a1)
   return [v2 invalidate];
 }
 
-+ (void)clearLastTelemetryData:(id)a3
++ (void)clearLastTelemetryData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__3;
   v18 = __Block_byref_object_dispose__3;
-  v19 = [SADaemonXPC newWithInvalidationHandler:v3];
+  v19 = [SADaemonXPC newWithInvalidationHandler:dataCopy];
   v4 = v15[5];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __40__SAInternalAPI_clearLastTelemetryData___block_invoke;
   v11[3] = &unk_279CD6EA8;
-  v5 = v3;
+  v5 = dataCopy;
   v12 = v5;
   v13 = &v14;
   v6 = [v4 remoteObjectProxyWithErrorHandler:v11];
@@ -875,22 +875,22 @@ uint64_t __40__SAInternalAPI_clearLastTelemetryData___block_invoke_2(uint64_t a1
   return [v2 invalidate];
 }
 
-+ (void)setAppPathListPathOnDisk:(id)a3 reply:(id)a4
++ (void)setAppPathListPathOnDisk:(id)disk reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  diskCopy = disk;
+  replyCopy = reply;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__3;
   v21 = __Block_byref_object_dispose__3;
-  v22 = [SADaemonXPC newWithInvalidationHandler:v6];
+  v22 = [SADaemonXPC newWithInvalidationHandler:replyCopy];
   v7 = v18[5];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __48__SAInternalAPI_setAppPathListPathOnDisk_reply___block_invoke;
   v14[3] = &unk_279CD6EA8;
-  v8 = v6;
+  v8 = replyCopy;
   v15 = v8;
   v16 = &v17;
   v9 = [v7 remoteObjectProxyWithErrorHandler:v14];
@@ -901,7 +901,7 @@ uint64_t __40__SAInternalAPI_clearLastTelemetryData___block_invoke_2(uint64_t a1
   v10 = v8;
   v12 = v10;
   v13 = &v17;
-  [v9 setAppPathListPathOnDisk:v5 reply:v11];
+  [v9 setAppPathListPathOnDisk:diskCopy reply:v11];
 
   _Block_object_dispose(&v17, 8);
 }
@@ -922,21 +922,21 @@ uint64_t __48__SAInternalAPI_setAppPathListPathOnDisk_reply___block_invoke_2(uin
   return [v2 invalidate];
 }
 
-+ (void)setAppPathListPathOnDisktoDefaultWithReply:(id)a3
++ (void)setAppPathListPathOnDisktoDefaultWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__3;
   v18 = __Block_byref_object_dispose__3;
-  v19 = [SADaemonXPC newWithInvalidationHandler:v3];
+  v19 = [SADaemonXPC newWithInvalidationHandler:replyCopy];
   v4 = v15[5];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__SAInternalAPI_setAppPathListPathOnDisktoDefaultWithReply___block_invoke;
   v11[3] = &unk_279CD6EA8;
-  v5 = v3;
+  v5 = replyCopy;
   v12 = v5;
   v13 = &v14;
   v6 = [v4 remoteObjectProxyWithErrorHandler:v11];

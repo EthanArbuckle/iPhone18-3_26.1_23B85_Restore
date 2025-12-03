@@ -1,19 +1,19 @@
 @interface MontaraDirectActionSource
 - (_TtC20VisualIntelligenceUI25MontaraDirectActionSource)init;
-- (_TtC20VisualIntelligenceUI25MontaraDirectActionSource)initWithDelegate:(id)a3;
-- (void)activeChangedTo:(id)a3;
+- (_TtC20VisualIntelligenceUI25MontaraDirectActionSource)initWithDelegate:(id)delegate;
+- (void)activeChangedTo:(id)to;
 @end
 
 @implementation MontaraDirectActionSource
 
-- (void)activeChangedTo:(id)a3
+- (void)activeChangedTo:(id)to
 {
-  v4 = a3;
-  v5 = self;
-  sub_21E0BC498(v4);
+  toCopy = to;
+  selfCopy = self;
+  sub_21E0BC498(toCopy);
 }
 
-- (_TtC20VisualIntelligenceUI25MontaraDirectActionSource)initWithDelegate:(id)a3
+- (_TtC20VisualIntelligenceUI25MontaraDirectActionSource)initWithDelegate:(id)delegate
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,16 +1,16 @@
 @interface MXMSample
-- (MXMSample)initWithCoder:(id)a3;
-- (MXMSample)initWithTag:(id)a3 attributes:(id)a4 doubleValue:(double)a5 unit:(id)a6 timestamp:(unint64_t)a7;
+- (MXMSample)initWithCoder:(id)coder;
+- (MXMSample)initWithTag:(id)tag attributes:(id)attributes doubleValue:(double)value unit:(id)unit timestamp:(unint64_t)timestamp;
 - (NSMeasurement)asMeasurementValue;
 - (NSNumber)asNumberValue;
 - (NSString)shortDesc;
 - (double)floatValue;
-- (id)attributeWithName:(id)a3;
-- (id)convertToUnit:(id)a3;
+- (id)attributeWithName:(id)name;
+- (id)convertToUnit:(id)unit;
 - (id)description;
 - (int64_t)integerValue;
 - (unint64_t)unsignedValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXMSample
@@ -18,29 +18,29 @@
 - (NSMeasurement)asMeasurementValue
 {
   v3 = objc_alloc(MEMORY[0x277CCAB10]);
-  v4 = [(MXMSample *)self asNumberValue];
-  [v4 doubleValue];
+  asNumberValue = [(MXMSample *)self asNumberValue];
+  [asNumberValue doubleValue];
   v6 = v5;
-  v7 = [(MXMSample *)self unit];
-  v8 = [v3 initWithDoubleValue:v7 unit:v6];
+  unit = [(MXMSample *)self unit];
+  v8 = [v3 initWithDoubleValue:unit unit:v6];
 
   return v8;
 }
 
 - (NSNumber)asNumberValue
 {
-  v3 = [(MXMSample *)self valueType];
-  if (v3 == 2)
+  valueType = [(MXMSample *)self valueType];
+  if (valueType == 2)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MXMSample unsignedValue](self, "unsignedValue")}];
   }
 
-  else if (v3 == 1)
+  else if (valueType == 1)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[MXMSample integerValue](self, "integerValue")}];
   }
 
-  else if (v3)
+  else if (valueType)
   {
     v5 = 0;
   }
@@ -60,9 +60,9 @@
   [(MXMSample *)self floatValue];
   v4 = v3;
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(MXMSample *)self unit];
-  v7 = [v6 symbol];
-  v8 = [v5 stringWithFormat:@"%0.3f %@", v4, v7];
+  unit = [(MXMSample *)self unit];
+  symbol = [unit symbol];
+  v8 = [v5 stringWithFormat:@"%0.3f %@", v4, symbol];
 
   return v8;
 }
@@ -104,10 +104,10 @@
   }
 }
 
-- (id)attributeWithName:(id)a3
+- (id)attributeWithName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -127,8 +127,8 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v4];
+        name = [v9 name];
+        v11 = [name isEqualToString:nameCopy];
 
         if (v11)
         {
@@ -154,60 +154,60 @@ LABEL_11:
   return v6;
 }
 
-- (MXMSample)initWithTag:(id)a3 attributes:(id)a4 doubleValue:(double)a5 unit:(id)a6 timestamp:(unint64_t)a7
+- (MXMSample)initWithTag:(id)tag attributes:(id)attributes doubleValue:(double)value unit:(id)unit timestamp:(unint64_t)timestamp
 {
-  v13 = a3;
-  v14 = a4;
-  v22 = a5;
-  v15 = a6;
+  tagCopy = tag;
+  attributesCopy = attributes;
+  valueCopy = value;
+  unitCopy = unit;
   v21.receiver = self;
   v21.super_class = MXMSample;
   v16 = [(MXMSample *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_unit, a6);
-    objc_storeStrong(&v17->_tag, a3);
-    objc_storeStrong(&v17->_attributes, a4);
+    objc_storeStrong(&v16->_unit, unit);
+    objc_storeStrong(&v17->_tag, tag);
+    objc_storeStrong(&v17->_attributes, attributes);
     v17->_underlyingValueLength = 8;
-    v18 = [MEMORY[0x277CBEA90] dataWithBytes:&v22 length:8];
+    v18 = [MEMORY[0x277CBEA90] dataWithBytes:&valueCopy length:8];
     underlyingValue = v17->_underlyingValue;
     v17->_underlyingValue = v18;
 
-    v17->_timestamp = a7;
+    v17->_timestamp = timestamp;
   }
 
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   tag = self->_tag;
-  v5 = a3;
-  [v5 encodeObject:tag forKey:@"tag"];
-  [v5 encodeObject:self->_unit forKey:@"unit"];
-  [v5 encodeBytes:-[NSData bytes](self->_underlyingValue length:"bytes") forKey:{self->_underlyingValueLength, @"underlyingValue"}];
+  coderCopy = coder;
+  [coderCopy encodeObject:tag forKey:@"tag"];
+  [coderCopy encodeObject:self->_unit forKey:@"unit"];
+  [coderCopy encodeBytes:-[NSData bytes](self->_underlyingValue length:"bytes") forKey:{self->_underlyingValueLength, @"underlyingValue"}];
 }
 
-- (MXMSample)initWithCoder:(id)a3
+- (MXMSample)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = MXMSample;
   v5 = [(MXMSample *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tag"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tag"];
     tag = v5->_tag;
     v5->_tag = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unit"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unit"];
     unit = v5->_unit;
     v5->_unit = v8;
 
     v15 = 0;
     v10 = MEMORY[0x277CBEA90];
-    v11 = [v4 decodeBytesForKey:@"underlyingValue" returnedLength:&v15];
+    v11 = [coderCopy decodeBytesForKey:@"underlyingValue" returnedLength:&v15];
     v12 = [v10 dataWithBytes:v11 length:v15];
     underlyingValue = v5->_underlyingValue;
     v5->_underlyingValue = v12;
@@ -223,29 +223,29 @@ LABEL_11:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MXMSampleTag *)self->_tag domainNameString];
+  domainNameString = [(MXMSampleTag *)self->_tag domainNameString];
   [(MXMSample *)self floatValue];
   v8 = v7;
-  v9 = [(NSUnit *)self->_unit symbol];
-  v10 = [v3 stringWithFormat:@"<%@: %p '%@' %f %@>", v5, self, v6, v8, v9];
+  symbol = [(NSUnit *)self->_unit symbol];
+  v10 = [v3 stringWithFormat:@"<%@: %p '%@' %f %@>", v5, self, domainNameString, v8, symbol];
 
   return v10;
 }
 
-- (id)convertToUnit:(id)a3
+- (id)convertToUnit:(id)unit
 {
-  v4 = a3;
-  v5 = [(MXMSample *)self unit];
+  unitCopy = unit;
+  unit = [(MXMSample *)self unit];
 
-  if (v5)
+  if (unit)
   {
-    v6 = [(MXMSample *)self asMeasurementValue];
-    v7 = [v6 measurementByConvertingToUnit:v4];
+    asMeasurementValue = [(MXMSample *)self asMeasurementValue];
+    v7 = [asMeasurementValue measurementByConvertingToUnit:unitCopy];
     v8 = [MXMSample alloc];
     v9 = [(MXMSample *)self tag];
-    v10 = [(MXMSample *)self attributes];
+    attributes = [(MXMSample *)self attributes];
     [v7 doubleValue];
-    v11 = [(MXMSample *)v8 initWithTag:v9 attributes:v10 doubleValue:v4 unit:?];
+    v11 = [(MXMSample *)v8 initWithTag:v9 attributes:attributes doubleValue:unitCopy unit:?];
   }
 
   else

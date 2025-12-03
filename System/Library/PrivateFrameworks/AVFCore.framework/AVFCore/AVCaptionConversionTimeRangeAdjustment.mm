@@ -1,5 +1,5 @@
 @interface AVCaptionConversionTimeRangeAdjustment
-+ (AVCaptionConversionTimeRangeAdjustment)captionConversionTimeRangeAdjustmentWithFigDictionary:(__CFDictionary *)a3;
++ (AVCaptionConversionTimeRangeAdjustment)captionConversionTimeRangeAdjustmentWithFigDictionary:(__CFDictionary *)dictionary;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)durationAdjustment;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)startAdjustment;
 - (CMTime)durationOffset;
@@ -10,9 +10,9 @@
 
 @implementation AVCaptionConversionTimeRangeAdjustment
 
-+ (AVCaptionConversionTimeRangeAdjustment)captionConversionTimeRangeAdjustmentWithFigDictionary:(__CFDictionary *)a3
++ (AVCaptionConversionTimeRangeAdjustment)captionConversionTimeRangeAdjustmentWithFigDictionary:(__CFDictionary *)dictionary
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithFigDictionary:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithFigDictionary:dictionary];
 
   return v3;
 }

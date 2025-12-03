@@ -1,28 +1,28 @@
 @interface DKInkViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
-- (void)_axInvalidateTimerAndReschedule:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)_axInvalidateTimerAndReschedule:(BOOL)reschedule;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation DKInkViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DKInkView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"superview" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DKInkView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"superview" withFullSignature:{"@", 0}];
 }
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(DKInkViewAccessibility *)self superview];
-  [v2 accessibilityFrame];
+  superview = [(DKInkViewAccessibility *)self superview];
+  [superview accessibilityFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -73,15 +73,15 @@
 {
   v7.receiver = self;
   v7.super_class = DKInkViewAccessibility;
-  v3 = [(DKInkViewAccessibility *)&v7 accessibilityTraits];
-  v4 = [(DKInkViewAccessibility *)self _axIsDirectTouchable];
+  accessibilityTraits = [(DKInkViewAccessibility *)&v7 accessibilityTraits];
+  _axIsDirectTouchable = [(DKInkViewAccessibility *)self _axIsDirectTouchable];
   v5 = *MEMORY[0x29EDC7F68];
-  if (!v4)
+  if (!_axIsDirectTouchable)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 - (BOOL)accessibilityActivate
@@ -106,29 +106,29 @@
   return v3;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = DKInkViewAccessibility;
-  [(DKInkViewAccessibility *)&v5 touchesBegan:a3 withEvent:a4];
+  [(DKInkViewAccessibility *)&v5 touchesBegan:began withEvent:event];
   [(DKInkViewAccessibility *)self _axInvalidateTimerAndReschedule:0];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = DKInkViewAccessibility;
-  [(DKInkViewAccessibility *)&v5 touchesEnded:a3 withEvent:a4];
+  [(DKInkViewAccessibility *)&v5 touchesEnded:ended withEvent:event];
   [(DKInkViewAccessibility *)self _axInvalidateTimerAndReschedule:1];
 }
 
-- (void)_axInvalidateTimerAndReschedule:(BOOL)a3
+- (void)_axInvalidateTimerAndReschedule:(BOOL)reschedule
 {
-  v3 = a3;
-  v5 = [(DKInkViewAccessibility *)self _axDirectTouchTimer];
-  [v5 invalidate];
+  rescheduleCopy = reschedule;
+  _axDirectTouchTimer = [(DKInkViewAccessibility *)self _axDirectTouchTimer];
+  [_axDirectTouchTimer invalidate];
 
-  if (v3)
+  if (rescheduleCopy)
   {
     v7[0] = MEMORY[0x29EDCA5F8];
     v7[1] = 3221225472;

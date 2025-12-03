@@ -1,21 +1,21 @@
 @interface SBPIPContentContext
-- (SBPIPContentContext)initWithWindowScene:(id)a3 containerViewController:(id)a4;
+- (SBPIPContentContext)initWithWindowScene:(id)scene containerViewController:(id)controller;
 @end
 
 @implementation SBPIPContentContext
 
-- (SBPIPContentContext)initWithWindowScene:(id)a3 containerViewController:(id)a4
+- (SBPIPContentContext)initWithWindowScene:(id)scene containerViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  sceneCopy = scene;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = SBPIPContentContext;
   v9 = [(SBPIPContentContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_containerViewController, a4);
-    objc_storeStrong(&v10->_windowScene, a3);
+    objc_storeStrong(&v9->_containerViewController, controller);
+    objc_storeStrong(&v10->_windowScene, scene);
   }
 
   return v10;

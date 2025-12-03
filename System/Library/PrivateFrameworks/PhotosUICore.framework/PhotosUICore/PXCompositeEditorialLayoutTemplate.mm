@@ -1,20 +1,20 @@
 @interface PXCompositeEditorialLayoutTemplate
 - (PXCompositeEditorialLayoutTemplate)init;
-- (PXCompositeEditorialLayoutTemplate)initWithDescriptorDictionary:(id)a3;
-- (double)costForFittingLayoutItemInputs:(id)a3 inRange:(_NSRange)a4 ofTotalItemCount:(int64_t)a5 normalizedWeights:(double *)a6 useSaliency:(BOOL)a7;
-- (void)_enumerateRectsUsingBlock:(id)a3;
-- (void)_initRectsStorageWithDescriptors:(id)a3;
+- (PXCompositeEditorialLayoutTemplate)initWithDescriptorDictionary:(id)dictionary;
+- (double)costForFittingLayoutItemInputs:(id)inputs inRange:(_NSRange)range ofTotalItemCount:(int64_t)count normalizedWeights:(double *)weights useSaliency:(BOOL)saliency;
+- (void)_enumerateRectsUsingBlock:(id)block;
+- (void)_initRectsStorageWithDescriptors:(id)descriptors;
 - (void)dealloc;
-- (void)getComputedRects:(CGRect *)a3 contentSize:(CGSize *)a4 forReferenceSize:(CGSize)a5 interTileSpacing:(double)a6;
+- (void)getComputedRects:(CGRect *)rects contentSize:(CGSize *)size forReferenceSize:(CGSize)referenceSize interTileSpacing:(double)spacing;
 @end
 
 @implementation PXCompositeEditorialLayoutTemplate
 
-- (double)costForFittingLayoutItemInputs:(id)a3 inRange:(_NSRange)a4 ofTotalItemCount:(int64_t)a5 normalizedWeights:(double *)a6 useSaliency:(BOOL)a7
+- (double)costForFittingLayoutItemInputs:(id)inputs inRange:(_NSRange)range ofTotalItemCount:(int64_t)count normalizedWeights:(double *)weights useSaliency:(BOOL)saliency
 {
-  length = a4.length;
-  location = a4.location;
-  v13 = a3;
+  length = range.length;
+  location = range.location;
+  inputsCopy = inputs;
   v45 = 0;
   v46 = &v45;
   v47 = 0x2020000000;
@@ -27,29 +27,29 @@
   v38 = &v37;
   v39 = 0x2020000000;
   v40 = 0;
-  v14 = [(PXCompositeEditorialLayoutTemplate *)self numberOfRects];
-  v15 = [(PXCompositeEditorialLayoutTemplate *)self numberOfColumns];
+  numberOfRects = [(PXCompositeEditorialLayoutTemplate *)self numberOfRects];
+  numberOfColumns = [(PXCompositeEditorialLayoutTemplate *)self numberOfColumns];
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __124__PXCompositeEditorialLayoutTemplate_costForFittingLayoutItemInputs_inRange_ofTotalItemCount_normalizedWeights_useSaliency___block_invoke;
   v24 = &unk_1E7743450;
-  v16 = v13;
+  v16 = inputsCopy;
   v25 = v16;
-  v26 = self;
+  selfCopy = self;
   v31 = length;
-  v32 = v14;
-  v33 = a5;
-  v34 = v15;
-  v36 = a7;
+  v32 = numberOfRects;
+  countCopy = count;
+  v34 = numberOfColumns;
+  saliencyCopy = saliency;
   v27 = &v37;
   v28 = &v45;
-  v35 = a6;
+  weightsCopy = weights;
   v29 = &v41;
   v30 = location;
   [(PXCompositeEditorialLayoutTemplate *)self _enumerateRectsUsingBlock:&v21];
   v17 = [(PXCompositeEditorialLayoutTemplate *)self numberOfRects:v21];
   v18 = 100.000001;
-  if (v17 + location != a5 - 1)
+  if (v17 + location != count - 1)
   {
     v18 = 0.0;
   }
@@ -191,14 +191,14 @@ LABEL_29:
 LABEL_30:
 }
 
-- (void)getComputedRects:(CGRect *)a3 contentSize:(CGSize *)a4 forReferenceSize:(CGSize)a5 interTileSpacing:(double)a6
+- (void)getComputedRects:(CGRect *)rects contentSize:(CGSize *)size forReferenceSize:(CGSize)referenceSize interTileSpacing:(double)spacing
 {
-  if (a3)
+  if (rects)
   {
-    width = a5.width;
-    v11 = [(PXCompositeEditorialLayoutTemplate *)self numberOfColumns:a5.width];
+    width = referenceSize.width;
+    v11 = [(PXCompositeEditorialLayoutTemplate *)self numberOfColumns:referenceSize.width];
     [(PXCompositeEditorialLayoutTemplate *)self tileAspectRatio];
-    v12 = (width - a6 * (v11 - 1)) / v11;
+    v12 = (width - spacing * (v11 - 1)) / v11;
     v18 = 0;
     v19 = &v18;
     v20 = 0x4010000000;
@@ -212,16 +212,16 @@ LABEL_30:
     v17[3] = &unk_1E7743428;
     v17[4] = &v18;
     *&v17[5] = v12;
-    *&v17[6] = a6;
+    *&v17[6] = spacing;
     v15 = v12 / v14;
     *&v17[7] = v12 / v14;
-    v17[8] = a3;
+    v17[8] = rects;
     [(PXCompositeEditorialLayoutTemplate *)self _enumerateRectsUsingBlock:v17];
-    if (a4)
+    if (size)
     {
-      v16 = v19[7] * (v15 + a6) - a6;
-      a4->width = v19[6] * (v12 + a6) - a6;
-      a4->height = v16;
+      v16 = v19[7] * (v15 + spacing) - spacing;
+      size->width = v19[6] * (v12 + spacing) - spacing;
+      size->height = v16;
     }
 
     _Block_object_dispose(&v18, 8);
@@ -248,7 +248,7 @@ double __101__PXCompositeEditorialLayoutTemplate_getComputedRects_contentSize_fo
   return result;
 }
 
-- (void)_enumerateRectsUsingBlock:(id)a3
+- (void)_enumerateRectsUsingBlock:(id)block
 {
   if (self->_numberOfRects >= 1)
   {
@@ -259,7 +259,7 @@ double __101__PXCompositeEditorialLayoutTemplate_getComputedRects_contentSize_fo
     do
     {
       v9 = 0;
-      (*(a3 + 2))(a3, v8, &v9, self->_rects[v7].origin.x, self->_rects[v7].origin.y, self->_rects[v7].size.width, self->_rects[v7].size.height, self->_rectWeights[v8]);
+      (*(block + 2))(block, v8, &v9, self->_rects[v7].origin.x, self->_rects[v7].origin.y, self->_rects[v7].size.width, self->_rects[v7].size.height, self->_rectWeights[v8]);
       if (v9 == 1)
       {
         break;
@@ -282,10 +282,10 @@ double __101__PXCompositeEditorialLayoutTemplate_getComputedRects_contentSize_fo
   [(PXCompositeEditorialLayoutTemplate *)&v3 dealloc];
 }
 
-- (void)_initRectsStorageWithDescriptors:(id)a3
+- (void)_initRectsStorageWithDescriptors:(id)descriptors
 {
-  v4 = a3;
-  v5 = [v4 count];
+  descriptorsCopy = descriptors;
+  v5 = [descriptorsCopy count];
   self->_numberOfRects = v5;
   self->_rects = malloc_type_malloc(32 * v5, 0x1000040E0EAB150uLL);
   self->_rectWeights = malloc_type_malloc(8 * self->_numberOfRects, 0x100004000313F17uLL);
@@ -304,7 +304,7 @@ double __101__PXCompositeEditorialLayoutTemplate_getComputedRects_contentSize_fo
   v6[4] = self;
   v6[5] = v8;
   v6[6] = v7;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [descriptorsCopy enumerateObjectsUsingBlock:v6];
   PXFloatApproximatelyEqualToFloat();
 }
 
@@ -333,25 +333,25 @@ void __71__PXCompositeEditorialLayoutTemplate__initRectsStorageWithDescriptors__
   PXRectArea();
 }
 
-- (PXCompositeEditorialLayoutTemplate)initWithDescriptorDictionary:(id)a3
+- (PXCompositeEditorialLayoutTemplate)initWithDescriptorDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PXCompositeEditorialLayoutTemplate;
   v5 = [(PXCompositeEditorialLayoutTemplate *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"numberOfColumns"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"numberOfColumns"];
     v5->_numberOfColumns = [v6 integerValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"aspectRatio"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"aspectRatio"];
     [v7 floatValue];
     v5->_tileAspectRatio = v8;
 
-    v9 = [v4 objectForKeyedSubscript:@"id"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"id"];
     v5->_identifier = [v9 integerValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"rects"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"rects"];
     [(PXCompositeEditorialLayoutTemplate *)v5 _initRectsStorageWithDescriptors:v10];
   }
 
@@ -360,8 +360,8 @@ void __71__PXCompositeEditorialLayoutTemplate__initRectsStorageWithDescriptors__
 
 - (PXCompositeEditorialLayoutTemplate)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCompositeEditorialLayoutTemplate.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PXCompositeEditorialLayoutTemplate init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCompositeEditorialLayoutTemplate.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PXCompositeEditorialLayoutTemplate init]"}];
 
   abort();
 }

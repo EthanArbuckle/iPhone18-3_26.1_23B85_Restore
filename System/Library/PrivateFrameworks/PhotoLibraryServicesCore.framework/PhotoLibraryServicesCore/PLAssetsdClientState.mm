@@ -1,5 +1,5 @@
 @interface PLAssetsdClientState
-- (BOOL)consumeSandboxExtensions:(id)a3;
+- (BOOL)consumeSandboxExtensions:(id)extensions;
 - (PLAssetsdClientState)init;
 @end
 
@@ -22,9 +22,9 @@
   return v2;
 }
 
-- (BOOL)consumeSandboxExtensions:(id)a3
+- (BOOL)consumeSandboxExtensions:(id)extensions
 {
-  atomic_store([(PLAssetsdClientSandboxExtensions *)self->_sandboxExtensions consumeSandboxExtensions:a3], &self->_isOpen);
+  atomic_store([(PLAssetsdClientSandboxExtensions *)self->_sandboxExtensions consumeSandboxExtensions:extensions], &self->_isOpen);
   v4 = atomic_load(&self->_isOpen);
   return v4 & 1;
 }

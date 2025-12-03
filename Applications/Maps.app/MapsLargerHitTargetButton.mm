@@ -1,5 +1,5 @@
 @interface MapsLargerHitTargetButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (UIEdgeInsets)touchInsets;
 - (void)_debugVisualizeTouchInsets;
 - (void)layoutSubviews;
@@ -48,12 +48,12 @@
     [(UIView *)self->_debugInsetsView setUserInteractionEnabled:0];
     v6 = +[UIColor redColor];
     v7 = [v6 colorWithAlphaComponent:0.600000024];
-    v8 = [v7 CGColor];
-    v9 = [(UIView *)self->_debugInsetsView layer];
-    [v9 setBorderColor:v8];
+    cGColor = [v7 CGColor];
+    layer = [(UIView *)self->_debugInsetsView layer];
+    [layer setBorderColor:cGColor];
 
-    v10 = [(UIView *)self->_debugInsetsView layer];
-    [v10 setBorderWidth:1.0];
+    layer2 = [(UIView *)self->_debugInsetsView layer];
+    [layer2 setBorderWidth:1.0];
 
     [(MapsLargerHitTargetButton *)self addSubview:self->_debugInsetsView];
     v11 = [UIView alloc];
@@ -74,10 +74,10 @@
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(MapsLargerHitTargetButton *)self bounds];
   top = self->_touchInsets.top;
   left = self->_touchInsets.left;

@@ -1,17 +1,17 @@
 @interface AACInitialHistoricalRunStatus
-- (AACInitialHistoricalRunStatus)initWithIsComplete:(BOOL)a3;
+- (AACInitialHistoricalRunStatus)initWithIsComplete:(BOOL)complete;
 @end
 
 @implementation AACInitialHistoricalRunStatus
 
-- (AACInitialHistoricalRunStatus)initWithIsComplete:(BOOL)a3
+- (AACInitialHistoricalRunStatus)initWithIsComplete:(BOOL)complete
 {
   v5.receiver = self;
   v5.super_class = AACInitialHistoricalRunStatus;
   result = [(AACInitialHistoricalRunStatus *)&v5 init];
   if (result)
   {
-    result->_isComplete = a3;
+    result->_isComplete = complete;
   }
 
   return result;

@@ -1,7 +1,7 @@
 @interface PKPaymentMoreInformationViewController
 - (BOOL)_shouldShowBusinessChatButton;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (PKPaymentMoreInformationViewController)initWithContext:(int64_t)a3;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (PKPaymentMoreInformationViewController)initWithContext:(int64_t)context;
 - (PKPaymentMoreInformationViewControllerDelegate)delegate;
 - (void)_businessChatButtonTapped;
 - (void)doneButtonTapped;
@@ -17,14 +17,14 @@
 
 @implementation PKPaymentMoreInformationViewController
 
-- (PKPaymentMoreInformationViewController)initWithContext:(int64_t)a3
+- (PKPaymentMoreInformationViewController)initWithContext:(int64_t)context
 {
   v5.receiver = self;
   v5.super_class = PKPaymentMoreInformationViewController;
   result = [(PKPaymentMoreInformationViewController *)&v5 init];
   if (result)
   {
-    result->_context = a3;
+    result->_context = context;
   }
 
   return result;
@@ -47,30 +47,30 @@
   v8.receiver = self;
   v8.super_class = PKPaymentMoreInformationViewController;
   [(PKPaymentMoreInformationViewController *)&v8 viewDidLoad];
-  v3 = [(PKPaymentMoreInformationViewController *)self navigationController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 count];
+  navigationController = [(PKPaymentMoreInformationViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v5 = [viewControllers count];
 
   if (v5 == 1)
   {
     v6 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_doneButtonTapped];
-    v7 = [(PKPaymentMoreInformationViewController *)self navigationItem];
-    [v7 setRightBarButtonItem:v6];
+    navigationItem = [(PKPaymentMoreInformationViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v6];
   }
 }
 
 - (void)setupViewAndScrollView
 {
-  v7 = [(PKPaymentMoreInformationViewController *)self view];
+  view = [(PKPaymentMoreInformationViewController *)self view];
   v3 = PKProvisioningBackgroundColor();
-  [v7 setBackgroundColor:v3];
+  [view setBackgroundColor:v3];
 
   v4 = objc_alloc(MEMORY[0x1E69DCEF8]);
   v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   scrollView = self->_scrollView;
   self->_scrollView = v5;
 
-  [v7 addSubview:self->_scrollView];
+  [view addSubview:self->_scrollView];
 }
 
 - (void)setupTitleLabel
@@ -197,8 +197,8 @@ void __65__PKPaymentMoreInformationViewController_setupBusinessChatButton__block
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(PKPaymentMoreInformationViewController *)self view];
-  [v3 bounds];
+  view = [(PKPaymentMoreInformationViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
@@ -331,9 +331,9 @@ void __67__PKPaymentMoreInformationViewController__businessChatButtonTapped__blo
   return +[PKBusinessChatController deviceSupportsBusinessChat];
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  v7 = a4;
+  lCopy = l;
   IsSetupAssistant = PKPaymentSetupContextIsSetupAssistant();
   if ((IsSetupAssistant & 1) == 0)
   {
@@ -343,7 +343,7 @@ void __67__PKPaymentMoreInformationViewController__businessChatButtonTapped__blo
     if (v10)
     {
       v11 = objc_loadWeakRetained(&self->_delegate);
-      [v11 moreInformationViewController:self didInteractWithURL:v7];
+      [v11 moreInformationViewController:self didInteractWithURL:lCopy];
     }
   }
 

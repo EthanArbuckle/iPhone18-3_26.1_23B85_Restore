@@ -1,11 +1,11 @@
 @interface UIPasteboard
 + (UISPasteSharingToken)pasteSharingTokenFromOpenURL;
-+ (id)_pasteboardWithName:(id)a3 create:(BOOL)a4;
-+ (void)_performAsDataOwner:(int64_t)a3 block:(id)a4;
-+ (void)_performAsDataOwnerForAction:(SEL)a3 responder:(id)a4 block:(id)a5;
-+ (void)setPasteSharingTokenFromOpenURL:(id)a3;
-- (id)_detectedPasteboardTypesForTypes:(id)a3;
-- (void)_requestSecurePasteAuthenticationMessageWithContext:(unint64_t)a3 forClientVersionedPID:(int64_t)a4 completionBlock:(id)a5;
++ (id)_pasteboardWithName:(id)name create:(BOOL)create;
++ (void)_performAsDataOwner:(int64_t)owner block:(id)block;
++ (void)_performAsDataOwnerForAction:(SEL)action responder:(id)responder block:(id)block;
++ (void)setPasteSharingTokenFromOpenURL:(id)l;
+- (id)_detectedPasteboardTypesForTypes:(id)types;
+- (void)_requestSecurePasteAuthenticationMessageWithContext:(unint64_t)context forClientVersionedPID:(int64_t)d completionBlock:(id)block;
 @end
 
 @implementation UIPasteboard
@@ -19,11 +19,11 @@
   return v2;
 }
 
-+ (void)setPasteSharingTokenFromOpenURL:(id)a3
++ (void)setPasteSharingTokenFromOpenURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&_MergedGlobals_1233);
-  v4 = [v3 copy];
+  v4 = [lCopy copy];
 
   v5 = qword_1ED49FC10;
   qword_1ED49FC10 = v4;
@@ -31,18 +31,18 @@
   os_unfair_lock_unlock(&_MergedGlobals_1233);
 }
 
-+ (id)_pasteboardWithName:(id)a3 create:(BOOL)a4
++ (id)_pasteboardWithName:(id)name create:(BOOL)create
 {
-  v4 = a4;
-  v5 = a3;
-  if (([v5 isEqualToString:@"com.apple.UIKit.pboard.find"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"com.apple.UIKit.pboard.print"))
+  createCopy = create;
+  nameCopy = name;
+  if (([nameCopy isEqualToString:@"com.apple.UIKit.pboard.find"] & 1) != 0 || objc_msgSend(nameCopy, "isEqualToString:", @"com.apple.UIKit.pboard.print"))
   {
     v6 = objc_alloc_init(UIPasteboard);
   }
 
   else
   {
-    v6 = [_UIConcretePasteboard _pasteboardWithName:v5 create:v4];
+    v6 = [_UIConcretePasteboard _pasteboardWithName:nameCopy create:createCopy];
   }
 
   v7 = v6;
@@ -50,56 +50,56 @@
   return v7;
 }
 
-- (id)_detectedPasteboardTypesForTypes:(id)a3
+- (id)_detectedPasteboardTypesForTypes:(id)types
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFD8]);
 
   return v3;
 }
 
-+ (void)_performAsDataOwner:(int64_t)a3 block:(id)a4
++ (void)_performAsDataOwner:(int64_t)owner block:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   pthread_once(&_dataOwnerKeyOnce, _createDataOwnerKey);
   v6 = pthread_getspecific(_dataOwnerKey);
-  pthread_setspecific(_dataOwnerKey, a3);
-  v5[2](v5);
+  pthread_setspecific(_dataOwnerKey, owner);
+  blockCopy[2](blockCopy);
 
   v7 = _dataOwnerKey;
 
   pthread_setspecific(v7, v6);
 }
 
-+ (void)_performAsDataOwnerForAction:(SEL)a3 responder:(id)a4 block:(id)a5
++ (void)_performAsDataOwnerForAction:(SEL)action responder:(id)responder block:(id)block
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [MEMORY[0x1E69DEC00] variantForSelector:a3];
+  responderCopy = responder;
+  blockCopy = block;
+  v8 = [MEMORY[0x1E69DEC00] variantForSelector:action];
 
   if (v8)
   {
-    v9 = [v11 _dataOwnerForPaste];
+    _dataOwnerForPaste = [responderCopy _dataOwnerForPaste];
   }
 
   else
   {
-    if (sel_copy_ != a3 && sel_cut_ != a3)
+    if (sel_copy_ != action && sel_cut_ != action)
     {
-      v7[2](v7);
+      blockCopy[2](blockCopy);
       goto LABEL_10;
     }
 
-    v9 = [v11 _dataOwnerForCopy];
+    _dataOwnerForPaste = [responderCopy _dataOwnerForCopy];
   }
 
-  [UIPasteboard _performAsDataOwner:v9 block:v7];
+  [UIPasteboard _performAsDataOwner:_dataOwnerForPaste block:blockCopy];
 LABEL_10:
 }
 
-- (void)_requestSecurePasteAuthenticationMessageWithContext:(unint64_t)a3 forClientVersionedPID:(int64_t)a4 completionBlock:(id)a5
+- (void)_requestSecurePasteAuthenticationMessageWithContext:(unint64_t)context forClientVersionedPID:(int64_t)d completionBlock:(id)block
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"UIPasteboard.m" lineNumber:338 description:{@"-_requestSecurePasteAuthenticationMessageWithContext:forClientVersionedPID:completionBlock: was called on UIPasteboard, when it should be called on _UIConcretePasteboard"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIPasteboard.m" lineNumber:338 description:{@"-_requestSecurePasteAuthenticationMessageWithContext:forClientVersionedPID:completionBlock: was called on UIPasteboard, when it should be called on _UIConcretePasteboard"}];
 }
 
 @end

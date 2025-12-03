@@ -1,20 +1,20 @@
 @interface CNExternalModificationTagDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNExternalModificationTagDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 externalModificationTag];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  externalModificationTag = [contactCopy externalModificationTag];
+  if (!externalModificationTag)
   {
-    v4 = [v7 externalModificationTag];
-    if (!v4)
+    externalModificationTag2 = [otherCopy externalModificationTag];
+    if (!externalModificationTag2)
     {
       v11 = 1;
 LABEL_6:
@@ -23,11 +23,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 externalModificationTag];
-  v10 = [v7 externalModificationTag];
-  v11 = [v9 isEqual:v10];
+  externalModificationTag3 = [contactCopy externalModificationTag];
+  externalModificationTag4 = [otherCopy externalModificationTag];
+  v11 = [externalModificationTag3 isEqual:externalModificationTag4];
 
-  if (!v8)
+  if (!externalModificationTag)
   {
     goto LABEL_6;
   }
@@ -37,25 +37,25 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_externalModificationTag"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_externalModificationTag"];
 
   v7 = [v9 copy];
-  v8 = v5[60];
-  v5[60] = v7;
+  v8 = contactCopy[60];
+  contactCopy[60] = v7;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A350];
+    *d = *MEMORY[0x1E698A350];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

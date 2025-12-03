@@ -1,47 +1,47 @@
 @interface HKRPWatchAppInstaller
 - (HKRPWatchAppInstaller)init;
-- (HKRPWatchAppInstaller)initWithDevice:(id)a3 watchAppAvailability:(id)a4 installAppsProviding:(id)a5;
-- (void)checkIfAppCanBeInstalledWithCompletion:(id)a3;
-- (void)installAppWithCompletion:(id)a3;
+- (HKRPWatchAppInstaller)initWithDevice:(id)device watchAppAvailability:(id)availability installAppsProviding:(id)providing;
+- (void)checkIfAppCanBeInstalledWithCompletion:(id)completion;
+- (void)installAppWithCompletion:(id)completion;
 @end
 
 @implementation HKRPWatchAppInstaller
 
 - (HKRPWatchAppInstaller)init
 {
-  v3 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v4 = [v3 getActivePairedDevice];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
   v5 = [objc_alloc(MEMORY[0x277CCDBD8]) initWithBundleID:@"com.apple.NanoOxygenSaturation.watchkitapp"];
   v6 = objc_alloc_init(_HKRPDefaultWatchAppsInstallProvider);
-  v7 = [(HKRPWatchAppInstaller *)self initWithDevice:v4 watchAppAvailability:v5 installAppsProviding:v6];
+  v7 = [(HKRPWatchAppInstaller *)self initWithDevice:getActivePairedDevice watchAppAvailability:v5 installAppsProviding:v6];
 
   return v7;
 }
 
-- (HKRPWatchAppInstaller)initWithDevice:(id)a3 watchAppAvailability:(id)a4 installAppsProviding:(id)a5
+- (HKRPWatchAppInstaller)initWithDevice:(id)device watchAppAvailability:(id)availability installAppsProviding:(id)providing
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  deviceCopy = device;
+  availabilityCopy = availability;
+  providingCopy = providing;
   v15.receiver = self;
   v15.super_class = HKRPWatchAppInstaller;
   v12 = [(HKRPWatchAppInstaller *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_device, a3);
-    objc_storeStrong(&v13->_watchAppAvailability, a4);
-    objc_storeStrong(&v13->_installAppsProviding, a5);
+    objc_storeStrong(&v12->_device, device);
+    objc_storeStrong(&v13->_watchAppAvailability, availability);
+    objc_storeStrong(&v13->_installAppsProviding, providing);
   }
 
   return v13;
 }
 
-- (void)checkIfAppCanBeInstalledWithCompletion:(id)a3
+- (void)checkIfAppCanBeInstalledWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   device = self->_device;
   if (device)
   {
@@ -51,7 +51,7 @@
     v11[2] = __64__HKRPWatchAppInstaller_checkIfAppCanBeInstalledWithCompletion___block_invoke;
     v11[3] = &unk_279B0F0E8;
     v11[4] = self;
-    v12 = v4;
+    v12 = completionCopy;
     [(HKWatchAppAvailability *)watchAppAvailability appInstallStateOnWatch:device completion:v11];
   }
 
@@ -155,9 +155,9 @@ LABEL_17:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)installAppWithCompletion:(id)a3
+- (void)installAppWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [objc_alloc(MEMORY[0x277CEC4B0]) initWithBundleID:@"com.apple.NanoOxygenSaturation.watchkitapp"];
   installAppsProviding = self->_installAppsProviding;
   device = self->_device;
@@ -166,8 +166,8 @@ LABEL_17:
   v9[2] = __50__HKRPWatchAppInstaller_installAppWithCompletion___block_invoke;
   v9[3] = &unk_279B0F110;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(HKRPWatchInstallAppsProviding *)installAppsProviding installApp:v5 onPairedDevice:device withCompletionHandler:v9];
 }
 

@@ -1,43 +1,43 @@
 @interface AppDelegate
 - (BOOL)_touchIDDidTimeout;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application openURL:(id)l options:(id)options;
 - (id)newLAContext;
-- (int64_t)splitViewController:(id)a3 topColumnForCollapsingToProposedTopColumn:(int64_t)a4;
+- (int64_t)splitViewController:(id)controller topColumnForCollapsingToProposedTopColumn:(int64_t)column;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_invalidateWatchDogTimer;
 - (void)_logOutForBiometricsAuthFailure;
-- (void)_performBiometricsEvaluationWithContext:(id)a3;
-- (void)_performInteractiveLoginWithManager:(id)a3;
+- (void)_performBiometricsEvaluationWithContext:(id)context;
+- (void)_performInteractiveLoginWithManager:(id)manager;
 - (void)_startBiometricsTimer;
 - (void)addBlurView;
-- (void)application:(id)a3 didFailToRegisterForRemoteNotificationsWithError:(id)a4;
-- (void)application:(id)a3 didRegisterForRemoteNotificationsWithDeviceToken:(id)a4;
-- (void)application:(id)a3 handleEventsForBackgroundURLSession:(id)a4 completionHandler:(id)a5;
-- (void)application:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
-- (void)applicationWillTerminate:(id)a3;
-- (void)blockLandscapeOrientations:(BOOL)a3;
-- (void)handleInteractiveLoginResultWithLoginManager:(id)a3 pendingUI:(unint64_t)a4 startupFailures:(unint64_t)a5 skipBiometrics:(BOOL)a6;
-- (void)handleLaunchAction:(id)a3 completion:(id)a4;
+- (void)application:(id)application didFailToRegisterForRemoteNotificationsWithError:(id)error;
+- (void)application:(id)application didRegisterForRemoteNotificationsWithDeviceToken:(id)token;
+- (void)application:(id)application handleEventsForBackgroundURLSession:(id)session completionHandler:(id)handler;
+- (void)application:(id)application performActionForShortcutItem:(id)item completionHandler:(id)handler;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationWillEnterForeground:(id)foreground;
+- (void)applicationWillResignActive:(id)active;
+- (void)applicationWillTerminate:(id)terminate;
+- (void)blockLandscapeOrientations:(BOOL)orientations;
+- (void)handleInteractiveLoginResultWithLoginManager:(id)manager pendingUI:(unint64_t)i startupFailures:(unint64_t)failures skipBiometrics:(BOOL)biometrics;
+- (void)handleLaunchAction:(id)action completion:(id)completion;
 - (void)performBiometricAuthenticationIfNeeded;
 - (void)removeBlurView;
 - (void)saveBiometricsDate;
-- (void)setBiometricsState:(unint64_t)a3;
-- (void)showSimpleAlertWithErrorTitle:(id)a3 message:(id)a4;
-- (void)updateHomeScreenVisibilityFromLaunchAction:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)setBiometricsState:(unint64_t)state;
+- (void)showSimpleAlertWithErrorTitle:(id)title message:(id)message;
+- (void)updateHomeScreenVisibilityFromLaunchAction:(id)action;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation AppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  optionsCopy = options;
   v8 = &selRef_tableView_willDisplayContextMenuWithConfiguration_animator_;
   v9 = +[FBALog appHandle];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -46,16 +46,16 @@
   }
 
   v10 = +[NSProcessInfo processInfo];
-  v11 = [v10 environment];
-  v12 = [v11 objectForKeyedSubscript:@"FBK_UNIT_TEST"];
+  environment = [v10 environment];
+  v12 = [environment objectForKeyedSubscript:@"FBK_UNIT_TEST"];
 
   if (!v12)
   {
     v13 = +[NSBundle mainBundle];
     v14 = [v13 localizedStringForKey:@"Feedback Assistant" value:&stru_1000E2210 table:0];
-    v15 = [(AppDelegate *)self window];
-    v16 = [v15 windowScene];
-    [v16 setTitle:v14];
+    window = [(AppDelegate *)self window];
+    windowScene = [window windowScene];
+    [windowScene setTitle:v14];
 
     +[_TtC18Feedback_Assistant23FBAUserDefaultsMigrator run];
     _FBKResetDefaultsIfNeeded();
@@ -64,28 +64,28 @@
     v18 = +[FBKDeviceManager sharedInstance];
     v19 = objc_alloc_init(FBATestSupport);
     v20 = +[NSProcessInfo processInfo];
-    v21 = [v20 arguments];
-    [(FBATestSupport *)v19 processLaunchArgumentsWithArgs:v21];
+    arguments = [v20 arguments];
+    [(FBATestSupport *)v19 processLaunchArgumentsWithArgs:arguments];
 
-    v22 = [(AppDelegate *)self window];
-    v23 = [v22 rootViewController];
+    window2 = [(AppDelegate *)self window];
+    rootViewController = [window2 rootViewController];
 
-    [v23 setDelegate:self];
+    [rootViewController setDelegate:self];
     v24 = [UIVisualEffectView alloc];
     v25 = [UIBlurEffect effectWithStyle:4];
     v26 = [v24 initWithEffect:v25];
     [(AppDelegate *)self setBlurView:v26];
 
-    v27 = [(AppDelegate *)self window];
-    v28 = [v27 rootViewController];
-    v29 = [v28 view];
-    [v29 bounds];
+    window3 = [(AppDelegate *)self window];
+    rootViewController2 = [window3 rootViewController];
+    view = [rootViewController2 view];
+    [view bounds];
     Height = CGRectGetHeight(v62);
 
-    v31 = [(AppDelegate *)self window];
-    v32 = [v31 rootViewController];
-    v33 = [v32 view];
-    [v33 bounds];
+    window4 = [(AppDelegate *)self window];
+    rootViewController3 = [window4 rootViewController];
+    view2 = [rootViewController3 view];
+    [view2 bounds];
     Width = CGRectGetWidth(v63);
 
     if (Height <= Width)
@@ -93,31 +93,31 @@
       Height = Width;
     }
 
-    v35 = [(AppDelegate *)self blurView];
-    [v35 setFrame:{0.0, 0.0, Height, Height}];
+    blurView = [(AppDelegate *)self blurView];
+    [blurView setFrame:{0.0, 0.0, Height, Height}];
 
     v36 = +[UIApplication sharedApplication];
-    v59 = [v36 applicationState];
+    applicationState = [v36 applicationState];
 
     v37 = +[FBKData sharedInstance];
-    v38 = [v37 loginManager];
+    loginManager = [v37 loginManager];
 
     v39 = +[NSUserDefaults standardUserDefaults];
     v40 = [v39 BOOLForKey:FBKPushNotificationsEnabled];
 
     if (v40)
     {
-      [v6 registerForRemoteNotifications];
+      [applicationCopy registerForRemoteNotifications];
     }
 
     v41 = +[UNUserNotificationCenter currentNotificationCenter];
     [v41 setDelegate:self];
 
     v42 = +[iFBAConstants tintColor];
-    v43 = [(AppDelegate *)self window];
-    [v43 setTintColor:v42];
+    window5 = [(AppDelegate *)self window];
+    [window5 setTintColor:v42];
 
-    v44 = [v7 objectForKeyedSubscript:UIApplicationLaunchOptionsURLKey];
+    v44 = [optionsCopy objectForKeyedSubscript:UIApplicationLaunchOptionsURLKey];
     if (FBKIsInternalInstall())
     {
       v58 = v17;
@@ -137,7 +137,7 @@
         goto LABEL_14;
       }
 
-      v57 = v23;
+      v57 = rootViewController;
       v48 = +[FBALog appHandle];
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
       {
@@ -157,7 +157,7 @@
 
       v44 = v53;
       v8 = &selRef_tableView_willDisplayContextMenuWithConfiguration_animator_;
-      v23 = v57;
+      rootViewController = v57;
       v17 = v58;
     }
 
@@ -169,25 +169,25 @@
 LABEL_14:
     if ([v44 fbkHandlesLogin])
     {
-      v55 = [v8 + 511 appHandle];
-      if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
+      appHandle = [v8 + 511 appHandle];
+      if (os_log_type_enabled(appHandle, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "Anon url action found. Skipping interactive login sequence", buf, 2u);
+        _os_log_impl(&_mh_execute_header, appHandle, OS_LOG_TYPE_DEFAULT, "Anon url action found. Skipping interactive login sequence", buf, 2u);
       }
 
       goto LABEL_22;
     }
 
 LABEL_19:
-    if (v59 == 2)
+    if (applicationState == 2)
     {
-      [v38 backgroundStartupWithCompletion:&stru_1000DE910];
+      [loginManager backgroundStartupWithCompletion:&stru_1000DE910];
     }
 
     else
     {
-      [(AppDelegate *)self _performInteractiveLoginWithManager:v38];
+      [(AppDelegate *)self _performInteractiveLoginWithManager:loginManager];
     }
 
 LABEL_22:
@@ -201,11 +201,11 @@ LABEL_22:
   return 1;
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
   v4 = +[NSProcessInfo processInfo];
-  v5 = [v4 environment];
-  v6 = [v5 objectForKeyedSubscript:@"FBK_UNIT_TEST"];
+  environment = [v4 environment];
+  v6 = [environment objectForKeyedSubscript:@"FBK_UNIT_TEST"];
 
   if (!v6)
   {
@@ -217,19 +217,19 @@ LABEL_22:
     }
 
     v8 = +[FBKData sharedInstance];
-    v9 = [v8 loginManager];
+    loginManager = [v8 loginManager];
 
-    [(AppDelegate *)self _performInteractiveLoginWithManager:v9];
+    [(AppDelegate *)self _performInteractiveLoginWithManager:loginManager];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10000F360;
     v10[3] = &unk_1000DE938;
     v10[4] = self;
-    [v9 runAfterLogin:v10];
+    [loginManager runAfterLogin:v10];
   }
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
   v3 = +[FBALog appHandle];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -239,11 +239,11 @@ LABEL_22:
   }
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
   v4 = +[NSProcessInfo processInfo];
-  v5 = [v4 environment];
-  v6 = [v5 objectForKeyedSubscript:@"FBK_UNIT_TEST"];
+  environment = [v4 environment];
+  v6 = [environment objectForKeyedSubscript:@"FBK_UNIT_TEST"];
 
   if (!v6)
   {
@@ -259,12 +259,12 @@ LABEL_22:
     [v8 saveToStore:&v11];
     if (!v11)
     {
-      v9 = [v8 currentUser];
+      currentUser = [v8 currentUser];
 
-      if (v9)
+      if (currentUser)
       {
-        v10 = [v8 currentUser];
-        [v8 reduceToFault:v10];
+        currentUser2 = [v8 currentUser];
+        [v8 reduceToFault:currentUser2];
       }
     }
 
@@ -273,7 +273,7 @@ LABEL_22:
   }
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   v4 = +[FBALog appHandle];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -283,9 +283,9 @@ LABEL_22:
   }
 
   v5 = +[FBKData sharedInstance];
-  v6 = [v5 loginManager];
+  loginManager = [v5 loginManager];
 
-  if ([v6 loginState] != 1)
+  if ([loginManager loginState] != 1)
   {
     v9 = sub_10000F530();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -293,17 +293,17 @@ LABEL_22:
       sub_100092930();
     }
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = 1;
     goto LABEL_9;
   }
 
   if ([(AppDelegate *)self biometricsState]== 3)
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = 5;
 LABEL_9:
-    [(AppDelegate *)v7 setBiometricsState:v8];
+    [(AppDelegate *)selfCopy2 setBiometricsState:v8];
     goto LABEL_13;
   }
 
@@ -318,7 +318,7 @@ LABEL_9:
 LABEL_13:
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
   v4 = +[FBALog appHandle];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -331,18 +331,18 @@ LABEL_13:
   [v5 stop];
 
   v6 = +[FBKData sharedInstance];
-  v7 = [v6 loginManager];
+  loginManager = [v6 loginManager];
 
-  if ([v7 loginState] == 1)
+  if ([loginManager loginState] == 1)
   {
-    v8 = [(AppDelegate *)self launchAction];
-    if (v8)
+    launchAction = [(AppDelegate *)self launchAction];
+    if (launchAction)
     {
-      v9 = v8;
-      v10 = [(AppDelegate *)self launchAction];
-      v11 = [v10 isCaptive];
+      v9 = launchAction;
+      launchAction2 = [(AppDelegate *)self launchAction];
+      isCaptive = [launchAction2 isCaptive];
 
-      if (v11)
+      if (isCaptive)
       {
         v12 = +[FBALog appHandle];
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -351,9 +351,9 @@ LABEL_13:
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "App was force quit in restricted mode, logging out.", v15, 2u);
         }
 
-        [v7 logOut];
-        v13 = [(AppDelegate *)self launchAction];
-        if ([v13 shouldMakeFBAVisible])
+        [loginManager logOut];
+        launchAction3 = [(AppDelegate *)self launchAction];
+        if ([launchAction3 shouldMakeFBAVisible])
         {
           v14 = +[iFBKUtils wasFBAVisibleAtFirstLaunch];
 
@@ -373,31 +373,31 @@ LABEL_13:
   }
 }
 
-- (void)application:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)application:(id)application performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v13 = a5;
-  v7 = [a4 type];
-  v8 = [v7 componentsSeparatedByString:@"."];
-  v9 = [v8 lastObject];
-  v10 = [v9 isEqualToString:@"compose"];
+  handlerCopy = handler;
+  type = [item type];
+  v8 = [type componentsSeparatedByString:@"."];
+  lastObject = [v8 lastObject];
+  v10 = [lastObject isEqualToString:@"compose"];
 
   if (v10)
   {
     v11 = [NSURL URLWithString:@"applefeedback://new"];
     v12 = [FBKLaunchAction actionWithURL:v11];
 
-    [(AppDelegate *)self handleLaunchAction:v12 completion:v13];
+    [(AppDelegate *)self handleLaunchAction:v12 completion:handlerCopy];
   }
 
   else
   {
-    v13[2](v13, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5
+- (BOOL)application:(id)application openURL:(id)l options:(id)options
 {
-  v6 = a4;
+  lCopy = l;
   v7 = +[FBALog appHandle];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -406,55 +406,55 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}s]", &v10, 0xCu);
   }
 
-  v8 = [FBKLaunchAction actionWithURL:v6];
+  v8 = [FBKLaunchAction actionWithURL:lCopy];
 
   [(AppDelegate *)self handleLaunchAction:v8 completion:0];
   return 1;
 }
 
-- (void)handleLaunchAction:(id)a3 completion:(id)a4
+- (void)handleLaunchAction:(id)action completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  completionCopy = completion;
   v8 = +[FBALog appHandle];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v29 = v6;
+    v29 = actionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Handling Launch Action [%{public}@]", buf, 0xCu);
   }
 
-  [(AppDelegate *)self setLaunchAction:v6];
-  if ([v6 launchesInbox])
+  [(AppDelegate *)self setLaunchAction:actionCopy];
+  if ([actionCopy launchesInbox])
   {
-    v9 = 1;
+    isShowContentItemAction = 1;
   }
 
   else
   {
-    v9 = [v6 isShowContentItemAction];
+    isShowContentItemAction = [actionCopy isShowContentItemAction];
   }
 
   v10 = +[FBADraftManager sharedInstance];
-  [v10 setInboxLiteMode:v9];
+  [v10 setInboxLiteMode:isShowContentItemAction];
 
   v11 = +[FBKData sharedInstance];
-  v12 = [v11 loginManager];
-  if ([v6 fbkHandlesLogin])
+  loginManager = [v11 loginManager];
+  if ([actionCopy fbkHandlesLogin])
   {
-    [v12 clearLoginTaskQueue];
+    [loginManager clearLoginTaskQueue];
     v13 = +[FBALog newURLActionActivity];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10000FE94;
     block[3] = &unk_1000DE988;
     v14 = &v24;
-    v24 = v12;
-    v25 = v6;
-    v26 = self;
-    v27 = v7;
-    v15 = v6;
-    v16 = v7;
+    v24 = loginManager;
+    v25 = actionCopy;
+    selfCopy = self;
+    v27 = completionCopy;
+    v15 = actionCopy;
+    v16 = completionCopy;
     os_activity_apply(v13, block);
 
     v17 = v25;
@@ -462,59 +462,59 @@ LABEL_13:
 
   else
   {
-    [(AppDelegate *)self updateHomeScreenVisibilityFromLaunchAction:v6];
+    [(AppDelegate *)self updateHomeScreenVisibilityFromLaunchAction:actionCopy];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_10001011C;
     v20[3] = &unk_1000DE9D8;
     v14 = &v22;
-    v21 = v6;
-    v22 = v7;
+    v21 = actionCopy;
+    v22 = completionCopy;
     v20[4] = self;
-    v18 = v6;
-    v19 = v7;
-    [v12 runAfterLogin:v20];
+    v18 = actionCopy;
+    v19 = completionCopy;
+    [loginManager runAfterLogin:v20];
     v17 = v21;
   }
 }
 
-- (void)updateHomeScreenVisibilityFromLaunchAction:(id)a3
+- (void)updateHomeScreenVisibilityFromLaunchAction:(id)action
 {
-  v3 = a3;
-  if ([v3 shouldMakeFBAVisible])
+  actionCopy = action;
+  if ([actionCopy shouldMakeFBAVisible])
   {
     +[iFBKUtils addToHomeScreen];
   }
 
-  else if ([v3 shouldUndoMakeFBAVisible])
+  else if ([actionCopy shouldUndoMakeFBAVisible])
   {
     +[iFBKUtils removeFromHomeScreen];
   }
 }
 
-- (void)handleInteractiveLoginResultWithLoginManager:(id)a3 pendingUI:(unint64_t)a4 startupFailures:(unint64_t)a5 skipBiometrics:(BOOL)a6
+- (void)handleInteractiveLoginResultWithLoginManager:(id)manager pendingUI:(unint64_t)i startupFailures:(unint64_t)failures skipBiometrics:(BOOL)biometrics
 {
-  v12 = a3;
-  v10 = [(AppDelegate *)self window];
-  v11 = [v10 rootViewController];
+  managerCopy = manager;
+  window = [(AppDelegate *)self window];
+  rootViewController = [window rootViewController];
 
-  if (a5)
+  if (failures)
   {
-    [v11 presentConnectionErrorUI];
+    [rootViewController presentConnectionErrorUI];
     goto LABEL_9;
   }
 
-  if ((a5 & 2) != 0)
+  if ((failures & 2) != 0)
   {
-    [v11 presentVersionOutdatedUI];
+    [rootViewController presentVersionOutdatedUI];
     goto LABEL_9;
   }
 
-  if ((a5 & 4) != 0)
+  if ((failures & 4) != 0)
   {
-    [v11 displayNonParticipant];
+    [rootViewController displayNonParticipant];
 LABEL_9:
-    if (a4)
+    if (i)
     {
       goto LABEL_13;
     }
@@ -522,19 +522,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (a4)
+  if (i)
   {
-    [v11 presentStartupUI:a4];
+    [rootViewController presentStartupUI:i];
     goto LABEL_13;
   }
 
-  if (!a5)
+  if (!failures)
   {
-    [v11 clearBlockingUI];
+    [rootViewController clearBlockingUI];
   }
 
 LABEL_10:
-  if ([v12 loginState] == 1 && !a6)
+  if ([managerCopy loginState] == 1 && !biometrics)
   {
     [(AppDelegate *)self performBiometricAuthenticationIfNeeded];
   }
@@ -542,23 +542,23 @@ LABEL_10:
 LABEL_13:
 }
 
-- (void)_performInteractiveLoginWithManager:(id)a3
+- (void)_performInteractiveLoginWithManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x3032000000;
   v8[3] = sub_10001052C;
   v8[4] = sub_10001053C;
-  v9 = self;
-  if ([v4 loginState] != 3 && objc_msgSend(v4, "loginState") != 4 && objc_msgSend(v4, "loginState") != 1)
+  selfCopy = self;
+  if ([managerCopy loginState] != 3 && objc_msgSend(managerCopy, "loginState") != 4 && objc_msgSend(managerCopy, "loginState") != 1)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_100010544;
     v5[3] = &unk_1000DEA00;
     v7 = v8;
-    v6 = v4;
+    v6 = managerCopy;
     [v6 interactiveStartupWithCompletion:v5];
   }
 
@@ -575,10 +575,10 @@ LABEL_13:
       sub_10009296C();
     }
 
-    v4 = [(AppDelegate *)self blurView];
-    v5 = [v4 superview];
+    blurView = [(AppDelegate *)self blurView];
+    superview = [blurView superview];
 
-    if (!v5)
+    if (!superview)
     {
       v6 = +[FBALog appHandle];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -587,9 +587,9 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Did add blur view", v9, 2u);
       }
 
-      v7 = [(AppDelegate *)self window];
-      v8 = [(AppDelegate *)self blurView];
-      [v7 addSubview:v8];
+      window = [(AppDelegate *)self window];
+      blurView2 = [(AppDelegate *)self blurView];
+      [window addSubview:blurView2];
     }
   }
 }
@@ -602,10 +602,10 @@ LABEL_13:
     sub_1000929A8();
   }
 
-  v4 = [(AppDelegate *)self blurView];
-  v5 = [v4 superview];
+  blurView = [(AppDelegate *)self blurView];
+  superview = [blurView superview];
 
-  if (v5)
+  if (superview)
   {
     v6 = +[FBALog appHandle];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -614,8 +614,8 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "did remove blur view", v8, 2u);
     }
 
-    v7 = [(AppDelegate *)self blurView];
-    [v7 removeFromSuperview];
+    blurView2 = [(AppDelegate *)self blurView];
+    [blurView2 removeFromSuperview];
   }
 }
 
@@ -634,12 +634,12 @@ LABEL_13:
   return v5;
 }
 
-- (void)setBiometricsState:(unint64_t)a3
+- (void)setBiometricsState:(unint64_t)state
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v4->_biometricsState = a3;
-  switch(a3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_biometricsState = state;
+  switch(state)
   {
     case 0uLL:
       v17 = sub_10000F530();
@@ -660,17 +660,17 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Biometric evaluation pending. Will perform evaluation", &v20, 2u);
       }
 
-      [(AppDelegate *)v4 addBlurView];
-      v10 = [(AppDelegate *)v4 lastUsedLAContext];
-      [(AppDelegate *)v4 _performBiometricsEvaluationWithContext:v10];
+      [(AppDelegate *)selfCopy addBlurView];
+      lastUsedLAContext = [(AppDelegate *)selfCopy lastUsedLAContext];
+      [(AppDelegate *)selfCopy _performBiometricsEvaluationWithContext:lastUsedLAContext];
       goto LABEL_17;
     case 3uLL:
       v12 = sub_10000F530();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v16 = [(AppDelegate *)v4 lastUsedLAContext];
+        lastUsedLAContext2 = [(AppDelegate *)selfCopy lastUsedLAContext];
         v20 = 138412290;
-        v21 = v16;
+        v21 = lastUsedLAContext2;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Biometric evaluation began with context [%@]", &v20, 0xCu);
       }
 
@@ -696,8 +696,8 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Biometrics evaluation happened while app was in background - Retrying", &v20, 2u);
       }
 
-      [(AppDelegate *)v4 addBlurView];
-      [(AppDelegate *)v4 performBiometricAuthenticationIfNeeded];
+      [(AppDelegate *)selfCopy addBlurView];
+      [(AppDelegate *)selfCopy performBiometricAuthenticationIfNeeded];
       goto LABEL_39;
     case 6uLL:
       v12 = sub_10000F530();
@@ -729,9 +729,9 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Biometric unlock cancelled by user - likely that user pressed Cancel (suspending).", &v20, 2u);
       }
 
-      [(AppDelegate *)v4 addBlurView];
-      v10 = +[UIApplication sharedApplication];
-      [v10 suspendReturningToLastApp:1];
+      [(AppDelegate *)selfCopy addBlurView];
+      lastUsedLAContext = +[UIApplication sharedApplication];
+      [lastUsedLAContext suspendReturningToLastApp:1];
 LABEL_17:
 
       goto LABEL_39;
@@ -751,7 +751,7 @@ LABEL_37:
       _os_log_impl(&_mh_execute_header, v14, v15, v13, &v20, 2u);
 LABEL_38:
 
-      [(AppDelegate *)v4 addBlurView];
+      [(AppDelegate *)selfCopy addBlurView];
       goto LABEL_39;
     case 0xBuLL:
       v5 = sub_10000F530();
@@ -779,9 +779,9 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v7, v8, v6, &v20, 2u);
 LABEL_10:
 
-      [(AppDelegate *)v4 _logOutForBiometricsAuthFailure];
+      [(AppDelegate *)selfCopy _logOutForBiometricsAuthFailure];
 LABEL_39:
-      objc_sync_exit(v4);
+      objc_sync_exit(selfCopy);
 
       return;
     case 0xDuLL:
@@ -792,10 +792,10 @@ LABEL_39:
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Biometric unlock succeeded", &v20, 2u);
       }
 
-      [(AppDelegate *)v4 _invalidateWatchDogTimer];
-      [(AppDelegate *)v4 saveBiometricsDate];
+      [(AppDelegate *)selfCopy _invalidateWatchDogTimer];
+      [(AppDelegate *)selfCopy saveBiometricsDate];
 LABEL_28:
-      [(AppDelegate *)v4 removeBlurView];
+      [(AppDelegate *)selfCopy removeBlurView];
       goto LABEL_39;
     default:
       goto LABEL_39;
@@ -804,12 +804,12 @@ LABEL_28:
 
 - (void)_invalidateWatchDogTimer
 {
-  v3 = [(AppDelegate *)self biometricsWatchDog];
+  biometricsWatchDog = [(AppDelegate *)self biometricsWatchDog];
 
-  if (v3)
+  if (biometricsWatchDog)
   {
-    v4 = [(AppDelegate *)self biometricsWatchDog];
-    [v4 invalidate];
+    biometricsWatchDog2 = [(AppDelegate *)self biometricsWatchDog];
+    [biometricsWatchDog2 invalidate];
 
     [(AppDelegate *)self setBiometricsWatchDog:0];
   }
@@ -833,12 +833,12 @@ LABEL_28:
 {
   [(AppDelegate *)self addBlurView];
   v3 = +[FBKData sharedInstance];
-  v4 = [v3 loginManager];
-  [v4 logOut];
+  loginManager = [v3 loginManager];
+  [loginManager logOut];
 
-  v6 = [(AppDelegate *)self window];
-  v5 = [v6 rootViewController];
-  [v5 dismissViewControllerAnimated:0 completion:0];
+  window = [(AppDelegate *)self window];
+  rootViewController = [window rootViewController];
+  [rootViewController dismissViewControllerAnimated:0 completion:0];
 }
 
 - (void)saveBiometricsDate
@@ -861,10 +861,10 @@ LABEL_28:
 
   else
   {
-    v7 = [(AppDelegate *)self biometricsState];
+    biometricsState = [(AppDelegate *)self biometricsState];
     v8 = sub_10000F530();
     v3 = v8;
-    if (v7)
+    if (biometricsState)
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
@@ -920,9 +920,9 @@ LABEL_28:
 
     if ([(AppDelegate *)self _touchIDDidTimeout])
     {
-      v7 = [(AppDelegate *)self newLAContext];
+      newLAContext = [(AppDelegate *)self newLAContext];
       v13 = 0;
-      v8 = [v7 canEvaluatePolicy:-[AppDelegate _evaluationPolicy](self error:{"_evaluationPolicy"), &v13}];
+      v8 = [newLAContext canEvaluatePolicy:-[AppDelegate _evaluationPolicy](self error:{"_evaluationPolicy"), &v13}];
       v9 = v13;
       v10 = v9;
       if (v8)
@@ -964,9 +964,9 @@ LABEL_13:
   }
 }
 
-- (void)_performBiometricsEvaluationWithContext:(id)a3
+- (void)_performBiometricsEvaluationWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"TOUCH_ID_PROMPT" value:&stru_1000E2210 table:0];
 
@@ -979,82 +979,82 @@ LABEL_13:
   }
 
   [(AppDelegate *)self setBiometricsState:3];
-  v9 = [(AppDelegate *)self _evaluationPolicy];
+  _evaluationPolicy = [(AppDelegate *)self _evaluationPolicy];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000115B4;
   v11[3] = &unk_1000DEA78;
-  v12 = v4;
-  v13 = self;
-  v10 = v4;
-  [v10 evaluatePolicy:v9 localizedReason:v6 reply:v11];
+  v12 = contextCopy;
+  selfCopy = self;
+  v10 = contextCopy;
+  [v10 evaluatePolicy:_evaluationPolicy localizedReason:v6 reply:v11];
 }
 
-- (void)application:(id)a3 didRegisterForRemoteNotificationsWithDeviceToken:(id)a4
+- (void)application:(id)application didRegisterForRemoteNotificationsWithDeviceToken:(id)token
 {
-  v4 = a4;
+  tokenCopy = token;
   v5 = +[_TtC18Feedback_Assistant22FBANotificationManager sharedManager];
-  [v5 saveToken:v4];
+  [v5 saveToken:tokenCopy];
 }
 
-- (void)application:(id)a3 didFailToRegisterForRemoteNotificationsWithError:(id)a4
+- (void)application:(id)application didFailToRegisterForRemoteNotificationsWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = +[FBALog appHandle];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    sub_100092C6C(v4);
+    sub_100092C6C(errorCopy);
   }
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   v9 = +[FBALog appHandle];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     sub_100092CF4();
   }
 
-  v10 = [v7 notification];
-  v11 = [v10 request];
-  v12 = [v11 content];
-  v13 = [v12 userInfo];
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
 
   v14 = +[FBALog appHandle];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v58 = v13;
+    v58 = userInfo;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "user info: %@", buf, 0xCu);
   }
 
-  v15 = [v13 objectForKeyedSubscript:FBKPushItemTypeKey];
-  v16 = [v13 objectForKeyedSubscript:FBKPushItemIDKey];
+  v15 = [userInfo objectForKeyedSubscript:FBKPushItemTypeKey];
+  v16 = [userInfo objectForKeyedSubscript:FBKPushItemIDKey];
   if (v16 && v15)
   {
-    v47 = v7;
-    v17 = [(AppDelegate *)self window];
-    v18 = [v17 rootViewController];
+    v47 = responseCopy;
+    window = [(AppDelegate *)self window];
+    rootViewController = [window rootViewController];
 
     v19 = +[FBKData sharedInstance];
-    v20 = [v18 viewControllers];
-    v21 = [v20 lastObject];
+    viewControllers = [rootViewController viewControllers];
+    lastObject = [viewControllers lastObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v23 = [v18 viewControllers];
-      v24 = [v23 lastObject];
+      viewControllers2 = [rootViewController viewControllers];
+      lastObject2 = [viewControllers2 lastObject];
 
-      v25 = [v24 topViewController];
+      topViewController = [lastObject2 topViewController];
     }
 
     else
     {
-      v25 = 0;
+      topViewController = 0;
     }
 
     v26 = [UIStoryboard storyboardWithName:@"Main" bundle:0];
@@ -1063,25 +1063,25 @@ LABEL_13:
     v48[2] = sub_100011EC4;
     v48[3] = &unk_1000DEB70;
     v49 = v15;
-    v27 = v25;
+    v27 = topViewController;
     v50 = v27;
     v28 = v26;
     v51 = v28;
     v29 = v19;
     v52 = v29;
     v53 = v16;
-    v30 = v18;
+    v30 = rootViewController;
     v54 = v30;
     v55 = &stru_1000DEAB8;
-    v46 = v8;
-    v56 = v8;
+    v46 = handlerCopy;
+    v56 = handlerCopy;
     v45 = objc_retainBlock(v48);
     if (([v29 isReloadingContentAndFormItems] & 1) != 0 || (objc_msgSend(v29, "loginManager"), v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "loginState"), v31, !v32))
     {
-      v34 = [v29 notificationCenter];
+      notificationCenter = [v29 notificationCenter];
       v35 = FBKDidRefreshContentItemsNotification;
       +[NSOperationQueue mainQueue];
-      v36 = v13;
+      v36 = userInfo;
       v37 = v16;
       v38 = v15;
       v39 = v30;
@@ -1089,14 +1089,14 @@ LABEL_13:
       v42 = v41 = v27;
       v43 = v35;
       v33 = v45;
-      v44 = [v34 addObserverForName:v43 object:v29 queue:v42 usingBlock:v45];
+      v44 = [notificationCenter addObserverForName:v43 object:v29 queue:v42 usingBlock:v45];
 
       v27 = v41;
       v28 = v40;
       v30 = v39;
       v15 = v38;
       v16 = v37;
-      v13 = v36;
+      userInfo = v36;
     }
 
     else
@@ -1105,13 +1105,13 @@ LABEL_13:
       (v45[2])(v45, 0);
     }
 
-    v8 = v46;
-    v7 = v47;
+    handlerCopy = v46;
+    responseCopy = v47;
   }
 
   else
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -1125,36 +1125,36 @@ LABEL_13:
   return qword_10010AF90;
 }
 
-- (void)blockLandscapeOrientations:(BOOL)a3
+- (void)blockLandscapeOrientations:(BOOL)orientations
 {
-  v3 = a3;
-  if (a3)
+  orientationsCopy = orientations;
+  if (orientations)
   {
-    v5 = 6;
+    supportedInterfaceOrientations = 6;
   }
 
   else
   {
-    v5 = [(AppDelegate *)self supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [(AppDelegate *)self supportedInterfaceOrientations];
   }
 
-  [(AppDelegate *)self setOrientationMask:v5];
+  [(AppDelegate *)self setOrientationMask:supportedInterfaceOrientations];
   v6 = +[FBALog appHandle];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = 136446722;
     v8 = "[AppDelegate blockLandscapeOrientations:]";
     v9 = 1024;
-    v10 = v3;
+    v10 = orientationsCopy;
     v11 = 2048;
-    v12 = [(AppDelegate *)self orientationMask];
+    orientationMask = [(AppDelegate *)self orientationMask];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}s shouldBlock? [%i] mask [%lu]", &v7, 0x1Cu);
   }
 }
 
-- (void)application:(id)a3 handleEventsForBackgroundURLSession:(id)a4 completionHandler:(id)a5
+- (void)application:(id)application handleEventsForBackgroundURLSession:(id)session completionHandler:(id)handler
 {
-  v5 = [FBALog appHandle:a3];
+  v5 = [FBALog appHandle:application];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *v8 = 0;
@@ -1162,26 +1162,26 @@ LABEL_13:
   }
 
   v6 = +[FBKData sharedInstance];
-  v7 = [v6 loginManager];
-  [v7 backgroundStartupWithCompletion:&stru_1000DEBB0];
+  loginManager = [v6 loginManager];
+  [loginManager backgroundStartupWithCompletion:&stru_1000DEBB0];
 }
 
-- (void)showSimpleAlertWithErrorTitle:(id)a3 message:(id)a4
+- (void)showSimpleAlertWithErrorTitle:(id)title message:(id)message
 {
-  v10 = [UIAlertController alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  v10 = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:1];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"OK" value:&stru_1000E2210 table:0];
   v7 = [UIAlertAction actionWithTitle:v6 style:1 handler:0];
   [v10 addAction:v7];
 
-  v8 = [(AppDelegate *)self window];
-  v9 = [v8 rootViewController];
-  [v9 presentViewController:v10 animated:1 completion:0];
+  window = [(AppDelegate *)self window];
+  rootViewController = [window rootViewController];
+  [rootViewController presentViewController:v10 animated:1 completion:0];
 }
 
-- (int64_t)splitViewController:(id)a3 topColumnForCollapsingToProposedTopColumn:(int64_t)a4
+- (int64_t)splitViewController:(id)controller topColumnForCollapsingToProposedTopColumn:(int64_t)column
 {
-  v4 = [a3 viewControllerForColumn:a4];
+  v4 = [controller viewControllerForColumn:column];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v4 topViewController], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass))
   {

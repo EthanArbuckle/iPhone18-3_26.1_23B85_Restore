@@ -1,7 +1,7 @@
 @interface CSLWatchKitAppWithNotificationsController
-- (id)mirrorState:(id)a3;
+- (id)mirrorState:(id)state;
 - (id)specifiers;
-- (void)setMirrorState:(id)a3 specifier:(id)a4;
+- (void)setMirrorState:(id)state specifier:(id)specifier;
 @end
 
 @implementation CSLWatchKitAppWithNotificationsController
@@ -27,15 +27,15 @@
   return v4;
 }
 
-- (void)setMirrorState:(id)a3 specifier:(id)a4
+- (void)setMirrorState:(id)state specifier:(id)specifier
 {
-  v5 = a3;
+  stateCopy = state;
   v7 = +[CSLNotificationsDataSource sharedInstance];
   v6 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"SpecifierID"];
-  [v7 _setShowOnGizmoState:v5 forBundleID:v6];
+  [v7 _setShowOnGizmoState:stateCopy forBundleID:v6];
 }
 
-- (id)mirrorState:(id)a3
+- (id)mirrorState:(id)state
 {
   v4 = +[CSLNotificationsDataSource sharedInstance];
   v5 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"SpecifierID"];

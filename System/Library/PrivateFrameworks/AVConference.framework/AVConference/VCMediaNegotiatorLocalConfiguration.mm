@@ -1,26 +1,26 @@
 @interface VCMediaNegotiatorLocalConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualBandwidthConfigurations:(id)a3;
-- (BOOL)isEqualFaceTimeSettings:(id)a3;
-- (BOOL)isEqualMediaRecorderImageTypes:(id)a3;
-- (BOOL)isEqualMediaRecorderVideoCodecs:(id)a3;
-- (BOOL)isEqualMultiwayAudioStreamSet:(id)a3;
-- (BOOL)isEqualMultiwayVideoStreamSet:(id)a3;
-- (BOOL)isEqualStreamGroupConfigs:(id)a3;
-- (BOOL)setupBandwidthConfigurationsWithArbiter:(id)a3;
-- (BOOL)setupBandwidthExtensionConfiguration:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualBandwidthConfigurations:(id)configurations;
+- (BOOL)isEqualFaceTimeSettings:(id)settings;
+- (BOOL)isEqualMediaRecorderImageTypes:(id)types;
+- (BOOL)isEqualMediaRecorderVideoCodecs:(id)codecs;
+- (BOOL)isEqualMultiwayAudioStreamSet:(id)set;
+- (BOOL)isEqualMultiwayVideoStreamSet:(id)set;
+- (BOOL)isEqualStreamGroupConfigs:(id)configs;
+- (BOOL)setupBandwidthConfigurationsWithArbiter:(id)arbiter;
+- (BOOL)setupBandwidthExtensionConfiguration:(id)configuration;
 - (CGSize)aspectRatioLandscape;
 - (CGSize)aspectRatioPortrait;
 - (CGSize)orientationMismatchAspectRatioLandscape;
 - (CGSize)orientationMismatchFullScreenAspectRatioLandscape;
 - (CGSize)screenSize;
 - (VCMediaNegotiatorLocalConfiguration)init;
-- (VCMediaNegotiatorLocalConfiguration)initWithBitrateArbiter:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mediaConfigurationForMediaType:(unsigned __int8)a3;
+- (VCMediaNegotiatorLocalConfiguration)initWithBitrateArbiter:(id)arbiter;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mediaConfigurationForMediaType:(unsigned __int8)type;
 - (void)dealloc;
 - (void)init;
-- (void)setMediaConfiguration:(id)a3 forMediaType:(unsigned __int8)a4;
+- (void)setMediaConfiguration:(id)configuration forMediaType:(unsigned __int8)type;
 @end
 
 @implementation VCMediaNegotiatorLocalConfiguration
@@ -145,11 +145,11 @@ LABEL_22:
   return v2;
 }
 
-- (VCMediaNegotiatorLocalConfiguration)initWithBitrateArbiter:(id)a3
+- (VCMediaNegotiatorLocalConfiguration)initWithBitrateArbiter:(id)arbiter
 {
   v4 = [(VCMediaNegotiatorLocalConfiguration *)self init];
   v5 = v4;
-  if (v4 && ![(VCMediaNegotiatorLocalConfiguration *)v4 setupBandwidthConfigurationsWithArbiter:a3])
+  if (v4 && ![(VCMediaNegotiatorLocalConfiguration *)v4 setupBandwidthConfigurationsWithArbiter:arbiter])
   {
 
     return 0;
@@ -167,22 +167,22 @@ LABEL_22:
   [(VCMediaNegotiatorLocalConfiguration *)&v3 dealloc];
 }
 
-- (void)setMediaConfiguration:(id)a3 forMediaType:(unsigned __int8)a4
+- (void)setMediaConfiguration:(id)configuration forMediaType:(unsigned __int8)type
 {
   u1StreamConfigurations = self->_u1StreamConfigurations;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:type];
 
-  [(NSMutableDictionary *)u1StreamConfigurations setObject:a3 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)u1StreamConfigurations setObject:configuration forKeyedSubscript:v6];
 }
 
-- (id)mediaConfigurationForMediaType:(unsigned __int8)a3
+- (id)mediaConfigurationForMediaType:(unsigned __int8)type
 {
-  v3 = -[NSMutableDictionary objectForKeyedSubscript:](self->_u1StreamConfigurations, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedChar:a3]);
+  v3 = -[NSMutableDictionary objectForKeyedSubscript:](self->_u1StreamConfigurations, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedChar:type]);
 
   return v3;
 }
 
-- (BOOL)setupBandwidthConfigurationsWithArbiter:(id)a3
+- (BOOL)setupBandwidthConfigurationsWithArbiter:(id)arbiter
 {
   v30 = *MEMORY[0x1E69E9840];
   v26 = 0u;
@@ -204,7 +204,7 @@ LABEL_22:
         }
 
         v19 = v5;
-        v6 = [*(*(&v26 + 1) + 8 * v5) intValue];
+        intValue = [*(*(&v26 + 1) + 8 * v5) intValue];
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
@@ -224,8 +224,8 @@ LABEL_22:
                 objc_enumerationMutation(&unk_1F579CF60);
               }
 
-              v11 = [*(*(&v21 + 1) + 8 * v10) intValue];
-              v12 = -[VCMediaNegotiatorBandwidthConfiguration initWithArbiterMode:connectionType:maxBandwidth:]([VCMediaNegotiatorBandwidthConfiguration alloc], "initWithArbiterMode:connectionType:maxBandwidth:", v11, v6, [a3 maxAllowedBitrateForConnectionType:v6 arbiterMode:v11]);
+              intValue2 = [*(*(&v21 + 1) + 8 * v10) intValue];
+              v12 = -[VCMediaNegotiatorBandwidthConfiguration initWithArbiterMode:connectionType:maxBandwidth:]([VCMediaNegotiatorBandwidthConfiguration alloc], "initWithArbiterMode:connectionType:maxBandwidth:", intValue2, intValue, [arbiter maxAllowedBitrateForConnectionType:intValue arbiterMode:intValue2]);
               if (!v12)
               {
                 [VCMediaNegotiatorLocalConfiguration setupBandwidthConfigurationsWithArbiter:];
@@ -249,7 +249,7 @@ LABEL_22:
           }
         }
 
-        v14 = -[VCMediaNegotiatorBandwidthConfiguration initWithConnectionType:maxBandwidth:]([VCMediaNegotiatorBandwidthConfiguration alloc], "initWithConnectionType:maxBandwidth:", v6, [a3 maxAllowedBitrateForConnectionType:v6 arbiterMode:2]);
+        v14 = -[VCMediaNegotiatorBandwidthConfiguration initWithConnectionType:maxBandwidth:]([VCMediaNegotiatorBandwidthConfiguration alloc], "initWithConnectionType:maxBandwidth:", intValue, [arbiter maxAllowedBitrateForConnectionType:intValue arbiterMode:2]);
         if (!v14)
         {
           [VCMediaNegotiatorLocalConfiguration setupBandwidthConfigurationsWithArbiter:];
@@ -273,7 +273,7 @@ LABEL_22:
     }
   }
 
-  if ([(VCMediaNegotiatorLocalConfiguration *)self setupBandwidthExtensionConfiguration:a3])
+  if ([(VCMediaNegotiatorLocalConfiguration *)self setupBandwidthExtensionConfiguration:arbiter])
   {
     return 1;
   }
@@ -284,7 +284,7 @@ LABEL_20:
   return 0;
 }
 
-- (BOOL)setupBandwidthExtensionConfiguration:(id)a3
+- (BOOL)setupBandwidthExtensionConfiguration:(id)configuration
 {
   v55 = *MEMORY[0x1E69E9840];
   v51 = 0u;
@@ -306,7 +306,7 @@ LABEL_20:
         }
 
         v33 = v5;
-        v6 = [*(*(&v51 + 1) + 8 * v5) intValue];
+        intValue = [*(*(&v51 + 1) + 8 * v5) intValue];
         v46 = 0u;
         v47 = 0u;
         v48 = 0u;
@@ -326,11 +326,11 @@ LABEL_20:
                 objc_enumerationMutation(&unk_1F579CF90);
               }
 
-              v11 = [*(*(&v46 + 1) + 8 * v10) intValue];
-              v12 = -[VCMediaNegotiatorBandwidthConfiguration initWithArbiterMode:connectionType:maxBandwidth:]([VCMediaNegotiatorBandwidthConfiguration alloc], "initWithArbiterMode:connectionType:maxBandwidth:", v11, v6, [a3 maxAllowedBitrateForConnectionType:v6 arbiterMode:v11]);
+              intValue2 = [*(*(&v46 + 1) + 8 * v10) intValue];
+              v12 = -[VCMediaNegotiatorBandwidthConfiguration initWithArbiterMode:connectionType:maxBandwidth:]([VCMediaNegotiatorBandwidthConfiguration alloc], "initWithArbiterMode:connectionType:maxBandwidth:", intValue2, intValue, [configuration maxAllowedBitrateForConnectionType:intValue arbiterMode:intValue2]);
               if (!v12)
               {
-                [(VCMediaNegotiatorLocalConfiguration *)v11 setupBandwidthExtensionConfiguration:v6];
+                [(VCMediaNegotiatorLocalConfiguration *)intValue2 setupBandwidthExtensionConfiguration:intValue];
                 return v34;
               }
 
@@ -361,7 +361,7 @@ LABEL_20:
     while (v31);
   }
 
-  v14 = -[VCMediaNegotiatorBandwidthConfiguration initWithArbiterMode:connectionType:maxBandwidth:]([VCMediaNegotiatorBandwidthConfiguration alloc], "initWithArbiterMode:connectionType:maxBandwidth:", 1, 6, [a3 maxAllowedBitrateForConnectionType:6 arbiterMode:1]);
+  v14 = -[VCMediaNegotiatorBandwidthConfiguration initWithArbiterMode:connectionType:maxBandwidth:]([VCMediaNegotiatorBandwidthConfiguration alloc], "initWithArbiterMode:connectionType:maxBandwidth:", 1, 6, [configuration maxAllowedBitrateForConnectionType:6 arbiterMode:1]);
   if (v14)
   {
     v15 = v14;
@@ -386,8 +386,8 @@ LABEL_20:
             objc_enumerationMutation(&unk_1F579CFA8);
           }
 
-          v20 = [*(*(&v41 + 1) + 8 * v19) intValue];
-          v21 = -[VCMediaNegotiatorBandwidthConfiguration initWithArbiterMode:connectionType:maxBandwidth:]([VCMediaNegotiatorBandwidthConfiguration alloc], "initWithArbiterMode:connectionType:maxBandwidth:", v20, 3, [a3 maxAllowedBitrateForConnectionType:3 arbiterMode:v20]);
+          intValue3 = [*(*(&v41 + 1) + 8 * v19) intValue];
+          v21 = -[VCMediaNegotiatorBandwidthConfiguration initWithArbiterMode:connectionType:maxBandwidth:]([VCMediaNegotiatorBandwidthConfiguration alloc], "initWithArbiterMode:connectionType:maxBandwidth:", intValue3, 3, [configuration maxAllowedBitrateForConnectionType:3 arbiterMode:intValue3]);
           if (!v21)
           {
             [VCMediaNegotiatorLocalConfiguration setupBandwidthExtensionConfiguration:];
@@ -430,8 +430,8 @@ LABEL_20:
             objc_enumerationMutation(&unk_1F579CFC0);
           }
 
-          v27 = [*(*(&v36 + 1) + 8 * v26) intValue];
-          v28 = -[VCMediaNegotiatorBandwidthConfiguration initWithArbiterMode:connectionType:maxBandwidth:]([VCMediaNegotiatorBandwidthConfiguration alloc], "initWithArbiterMode:connectionType:maxBandwidth:", v27, 7, [a3 maxAllowedBitrateForConnectionType:7 arbiterMode:v27]);
+          intValue4 = [*(*(&v36 + 1) + 8 * v26) intValue];
+          v28 = -[VCMediaNegotiatorBandwidthConfiguration initWithArbiterMode:connectionType:maxBandwidth:]([VCMediaNegotiatorBandwidthConfiguration alloc], "initWithArbiterMode:connectionType:maxBandwidth:", intValue4, 7, [configuration maxAllowedBitrateForConnectionType:7 arbiterMode:intValue4]);
           if (!v28)
           {
             [VCMediaNegotiatorLocalConfiguration setupBandwidthExtensionConfiguration:];
@@ -465,13 +465,13 @@ LABEL_20:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(NSMutableDictionary *)self->_u1StreamConfigurations mutableCopyWithZone:a3];
+    v6 = [(NSMutableDictionary *)self->_u1StreamConfigurations mutableCopyWithZone:zone];
     [v5 setU1StreamConfigurations:v6];
 
     [v5 setPreferredAudioCodec:self->_preferredAudioCodec];
@@ -547,7 +547,7 @@ LABEL_20:
   return v5;
 }
 
-- (BOOL)isEqualBandwidthConfigurations:(id)a3
+- (BOOL)isEqualBandwidthConfigurations:(id)configurations
 {
   v25 = *MEMORY[0x1E69E9840];
   v21 = 0u;
@@ -574,7 +574,7 @@ LABEL_4:
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v10 = [a3 countByEnumeratingWithState:&v16 objects:v15 count:16];
+      v10 = [configurations countByEnumeratingWithState:&v16 objects:v15 count:16];
       if (!v10)
       {
         break;
@@ -588,7 +588,7 @@ LABEL_8:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(configurations);
         }
 
         if ([v9 isEqual:*(*(&v16 + 1) + 8 * v13)])
@@ -598,7 +598,7 @@ LABEL_8:
 
         if (v11 == ++v13)
         {
-          v10 = [a3 countByEnumeratingWithState:&v16 objects:v15 count:16];
+          v10 = [configurations countByEnumeratingWithState:&v16 objects:v15 count:16];
           v11 = v10;
           if (v10)
           {
@@ -629,11 +629,11 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)isEqualMultiwayAudioStreamSet:(id)a3
+- (BOOL)isEqualMultiwayAudioStreamSet:(id)set
 {
   v27 = *MEMORY[0x1E69E9840];
   v5 = [(NSMutableOrderedSet *)self->_multiwayAudioStreams count];
-  if (v5 == [a3 count])
+  if (v5 == [set count])
   {
     v25 = 0u;
     v26 = 0u;
@@ -659,7 +659,7 @@ LABEL_5:
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v12 = [a3 countByEnumeratingWithState:&v18 objects:v17 count:16];
+        v12 = [set countByEnumeratingWithState:&v18 objects:v17 count:16];
         if (!v12)
         {
           break;
@@ -673,7 +673,7 @@ LABEL_9:
         {
           if (*v19 != v14)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(set);
           }
 
           if ([v11 isEqual:*(*(&v18 + 1) + 8 * v15)])
@@ -683,7 +683,7 @@ LABEL_9:
 
           if (v13 == ++v15)
           {
-            v12 = [a3 countByEnumeratingWithState:&v18 objects:v17 count:16];
+            v12 = [set countByEnumeratingWithState:&v18 objects:v17 count:16];
             v13 = v12;
             if (v12)
             {
@@ -720,11 +720,11 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)isEqualMultiwayVideoStreamSet:(id)a3
+- (BOOL)isEqualMultiwayVideoStreamSet:(id)set
 {
   v27 = *MEMORY[0x1E69E9840];
   v5 = [(NSMutableOrderedSet *)self->_multiwayVideoStreams count];
-  if (v5 == [a3 count])
+  if (v5 == [set count])
   {
     v25 = 0u;
     v26 = 0u;
@@ -750,7 +750,7 @@ LABEL_5:
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v12 = [a3 countByEnumeratingWithState:&v18 objects:v17 count:16];
+        v12 = [set countByEnumeratingWithState:&v18 objects:v17 count:16];
         if (!v12)
         {
           break;
@@ -764,7 +764,7 @@ LABEL_9:
         {
           if (*v19 != v14)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(set);
           }
 
           if ([v11 isEqual:*(*(&v18 + 1) + 8 * v15)])
@@ -774,7 +774,7 @@ LABEL_9:
 
           if (v13 == ++v15)
           {
-            v12 = [a3 countByEnumeratingWithState:&v18 objects:v17 count:16];
+            v12 = [set countByEnumeratingWithState:&v18 objects:v17 count:16];
             v13 = v12;
             if (v12)
             {
@@ -811,11 +811,11 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)isEqualStreamGroupConfigs:(id)a3
+- (BOOL)isEqualStreamGroupConfigs:(id)configs
 {
   v27 = *MEMORY[0x1E69E9840];
   v5 = [(NSMutableSet *)self->_streamGroupConfigs count];
-  if (v5 == [a3 count])
+  if (v5 == [configs count])
   {
     v25 = 0u;
     v26 = 0u;
@@ -841,7 +841,7 @@ LABEL_5:
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v12 = [a3 countByEnumeratingWithState:&v18 objects:v17 count:16];
+        v12 = [configs countByEnumeratingWithState:&v18 objects:v17 count:16];
         if (!v12)
         {
           break;
@@ -855,7 +855,7 @@ LABEL_9:
         {
           if (*v19 != v14)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(configs);
           }
 
           if ([v11 isEqual:*(*(&v18 + 1) + 8 * v15)])
@@ -865,7 +865,7 @@ LABEL_9:
 
           if (v13 == ++v15)
           {
-            v12 = [a3 countByEnumeratingWithState:&v18 objects:v17 count:16];
+            v12 = [configs countByEnumeratingWithState:&v18 objects:v17 count:16];
             v13 = v12;
             if (v12)
             {
@@ -902,18 +902,18 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)isEqualMediaRecorderImageTypes:(id)a3
+- (BOOL)isEqualMediaRecorderImageTypes:(id)types
 {
   v18 = *MEMORY[0x1E69E9840];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[NSSet count](self->_mediaRecorderImageTypes, "count"), v5 == [objc_msgSend(a3 "mediaRecorderImageTypes")]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[NSSet count](self->_mediaRecorderImageTypes, "count"), v5 == [objc_msgSend(types "mediaRecorderImageTypes")]))
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [a3 mediaRecorderImageTypes];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v13 count:16];
+    mediaRecorderImageTypes = [types mediaRecorderImageTypes];
+    v7 = [mediaRecorderImageTypes countByEnumeratingWithState:&v14 objects:v13 count:16];
     if (v7)
     {
       v8 = v7;
@@ -924,7 +924,7 @@ LABEL_5:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(mediaRecorderImageTypes);
         }
 
         v11 = [(NSSet *)self->_mediaRecorderImageTypes containsObject:*(*(&v14 + 1) + 8 * v10)];
@@ -935,7 +935,7 @@ LABEL_5:
 
         if (v8 == ++v10)
         {
-          v8 = [v6 countByEnumeratingWithState:&v14 objects:v13 count:16];
+          v8 = [mediaRecorderImageTypes countByEnumeratingWithState:&v14 objects:v13 count:16];
           LOBYTE(v11) = 1;
           if (v8)
           {
@@ -961,18 +961,18 @@ LABEL_5:
   return v11;
 }
 
-- (BOOL)isEqualMediaRecorderVideoCodecs:(id)a3
+- (BOOL)isEqualMediaRecorderVideoCodecs:(id)codecs
 {
   v18 = *MEMORY[0x1E69E9840];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[NSSet count](self->_mediaRecorderVideoCodecs, "count"), v5 == [objc_msgSend(a3 "mediaRecorderVideoCodecs")]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[NSSet count](self->_mediaRecorderVideoCodecs, "count"), v5 == [objc_msgSend(codecs "mediaRecorderVideoCodecs")]))
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [a3 mediaRecorderVideoCodecs];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v13 count:16];
+    mediaRecorderVideoCodecs = [codecs mediaRecorderVideoCodecs];
+    v7 = [mediaRecorderVideoCodecs countByEnumeratingWithState:&v14 objects:v13 count:16];
     if (v7)
     {
       v8 = v7;
@@ -983,7 +983,7 @@ LABEL_5:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(mediaRecorderVideoCodecs);
         }
 
         v11 = [(NSSet *)self->_mediaRecorderVideoCodecs containsObject:*(*(&v14 + 1) + 8 * v10)];
@@ -994,7 +994,7 @@ LABEL_5:
 
         if (v8 == ++v10)
         {
-          v8 = [v6 countByEnumeratingWithState:&v14 objects:v13 count:16];
+          v8 = [mediaRecorderVideoCodecs countByEnumeratingWithState:&v14 objects:v13 count:16];
           LOBYTE(v11) = 1;
           if (v8)
           {
@@ -1020,7 +1020,7 @@ LABEL_5:
   return v11;
 }
 
-- (BOOL)isEqualFaceTimeSettings:(id)a3
+- (BOOL)isEqualFaceTimeSettings:(id)settings
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1029,40 +1029,40 @@ LABEL_5:
   }
 
   SIPDisabled = self->_SIPDisabled;
-  if (SIPDisabled != [a3 SIPDisabled])
+  if (SIPDisabled != [settings SIPDisabled])
   {
     return 0;
   }
 
   secureMessagingRequired = self->_secureMessagingRequired;
-  if (secureMessagingRequired != [a3 secureMessagingRequired])
+  if (secureMessagingRequired != [settings secureMessagingRequired])
   {
     return 0;
   }
 
   faceTimeSwitches = self->_faceTimeSwitches;
-  if (faceTimeSwitches != [a3 faceTimeSwitches])
+  if (faceTimeSwitches != [settings faceTimeSwitches])
   {
     return 0;
   }
 
   oneToOneModeSupported = self->_oneToOneModeSupported;
-  if (oneToOneModeSupported != [a3 oneToOneModeSupported])
+  if (oneToOneModeSupported != [settings oneToOneModeSupported])
   {
     return 0;
   }
 
   mediaControlInfoFECFeedbackVersion = self->_mediaControlInfoFECFeedbackVersion;
-  if (mediaControlInfoFECFeedbackVersion != [a3 mediaControlInfoFECFeedbackVersion])
+  if (mediaControlInfoFECFeedbackVersion != [settings mediaControlInfoFECFeedbackVersion])
   {
     return 0;
   }
 
   linkProbingCapabilityVersion = self->_linkProbingCapabilityVersion;
-  return linkProbingCapabilityVersion == [a3 linkProbingCapabilityVersion];
+  return linkProbingCapabilityVersion == [settings linkProbingCapabilityVersion];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1070,126 +1070,126 @@ LABEL_5:
     return 0;
   }
 
-  if (![objc_msgSend(a3 "u1StreamConfigurations")])
+  if (![objc_msgSend(equal "u1StreamConfigurations")])
   {
     return 0;
   }
 
-  if ([a3 preferredAudioCodec] != self->_preferredAudioCodec)
+  if ([equal preferredAudioCodec] != self->_preferredAudioCodec)
   {
     return 0;
   }
 
-  if ([a3 deviceRole] != self->_deviceRole)
+  if ([equal deviceRole] != self->_deviceRole)
   {
     return 0;
   }
 
-  if ([a3 creationTime] != self->_creationTime.wide)
+  if ([equal creationTime] != self->_creationTime.wide)
   {
     return 0;
   }
 
-  if ([a3 mediaControlInfoVersion] != self->_mediaControlInfoVersion)
+  if ([equal mediaControlInfoVersion] != self->_mediaControlInfoVersion)
   {
     return 0;
   }
 
-  if ([a3 basebandCodec] != self->_basebandCodec)
+  if ([equal basebandCodec] != self->_basebandCodec)
   {
     return 0;
   }
 
-  if ([a3 basebandCodecSampleRate] != self->_basebandCodecSampleRate)
+  if ([equal basebandCodecSampleRate] != self->_basebandCodecSampleRate)
   {
     return 0;
   }
 
-  v5 = [objc_msgSend(a3 "bandwidthConfigurations")];
+  v5 = [objc_msgSend(equal "bandwidthConfigurations")];
   if (v5 != [(NSMutableSet *)self->_bandwidthConfigurations count])
   {
     return 0;
   }
 
-  if (self->_allowRTCPFB != [a3 allowRTCPFB])
+  if (self->_allowRTCPFB != [equal allowRTCPFB])
   {
     return 0;
   }
 
-  if (self->_isCaller != [a3 isCaller])
+  if (self->_isCaller != [equal isCaller])
   {
     return 0;
   }
 
-  if ([a3 accessNetworkType] != self->_accessNetworkType)
+  if ([equal accessNetworkType] != self->_accessNetworkType)
   {
     return 0;
   }
 
-  if (self->_fecEnabled != [a3 fecEnabled])
+  if (self->_fecEnabled != [equal fecEnabled])
   {
     return 0;
   }
 
-  if (self->_rtxEnabled != [a3 rtxEnabled])
+  if (self->_rtxEnabled != [equal rtxEnabled])
   {
     return 0;
   }
 
-  if (self->_oneToOneAuthTagEnabled != [a3 isOneToOneAuthTagEnabled])
+  if (self->_oneToOneAuthTagEnabled != [equal isOneToOneAuthTagEnabled])
   {
     return 0;
   }
 
-  if (self->_blackFrameOnClearScreenEnabled != [a3 blackFrameOnClearScreenEnabled])
+  if (self->_blackFrameOnClearScreenEnabled != [equal blackFrameOnClearScreenEnabled])
   {
     return 0;
   }
 
-  if ([a3 videoFrameMetadataSupportedVersion] != self->_videoFrameMetadataSupportedVersion)
+  if ([equal videoFrameMetadataSupportedVersion] != self->_videoFrameMetadataSupportedVersion)
   {
     return 0;
   }
 
-  if (self->_frontCameraFullScreenSupported != [a3 frontCameraFullScreenSupported])
+  if (self->_frontCameraFullScreenSupported != [equal frontCameraFullScreenSupported])
   {
     return 0;
   }
 
-  if (self->_backCameraFullScreenSupported != [a3 backCameraFullScreenSupported])
+  if (self->_backCameraFullScreenSupported != [equal backCameraFullScreenSupported])
   {
     return 0;
   }
 
-  if ([a3 deviceInitialOrientation] != self->_deviceInitialOrientation)
+  if ([equal deviceInitialOrientation] != self->_deviceInitialOrientation)
   {
     return 0;
   }
 
-  if (self->_enableInterleavedEncoding != [a3 enableInterleavedEncoding])
+  if (self->_enableInterleavedEncoding != [equal enableInterleavedEncoding])
   {
     return 0;
   }
 
-  if (self->_enableACC24ForU1 != [a3 enableACC24ForU1])
+  if (self->_enableACC24ForU1 != [equal enableACC24ForU1])
   {
     return 0;
   }
 
-  if (self->_enableACC24ForGFT != [a3 enableACC24ForGFT])
+  if (self->_enableACC24ForGFT != [equal enableACC24ForGFT])
   {
     return 0;
   }
 
-  [a3 orientationMismatchFullScreenAspectRatioLandscape];
-  if (v7 != self->_orientationMismatchFullScreenAspectRatioLandscape.width || v6 != self->_orientationMismatchFullScreenAspectRatioLandscape.height || !-[VCMediaNegotiatorLocalConfiguration isEqualBandwidthConfigurations:](self, "isEqualBandwidthConfigurations:", [a3 bandwidthConfigurations]) || !-[VCMediaNegotiatorLocalConfiguration isEqualMultiwayAudioStreamSet:](self, "isEqualMultiwayAudioStreamSet:", objc_msgSend(a3, "multiwayAudioStreams")) || !-[VCMediaNegotiatorLocalConfiguration isEqualMultiwayVideoStreamSet:](self, "isEqualMultiwayVideoStreamSet:", objc_msgSend(a3, "multiwayVideoStreams")) || !-[VCMediaNegotiatorLocalConfiguration isEqualMediaRecorderImageTypes:](self, "isEqualMediaRecorderImageTypes:", a3) || !-[VCMediaNegotiatorLocalConfiguration isEqualMediaRecorderVideoCodecs:](self, "isEqualMediaRecorderVideoCodecs:", a3) || !-[VCMediaNegotiatorLocalConfiguration isEqualFaceTimeSettings:](self, "isEqualFaceTimeSettings:", a3))
+  [equal orientationMismatchFullScreenAspectRatioLandscape];
+  if (v7 != self->_orientationMismatchFullScreenAspectRatioLandscape.width || v6 != self->_orientationMismatchFullScreenAspectRatioLandscape.height || !-[VCMediaNegotiatorLocalConfiguration isEqualBandwidthConfigurations:](self, "isEqualBandwidthConfigurations:", [equal bandwidthConfigurations]) || !-[VCMediaNegotiatorLocalConfiguration isEqualMultiwayAudioStreamSet:](self, "isEqualMultiwayAudioStreamSet:", objc_msgSend(equal, "multiwayAudioStreams")) || !-[VCMediaNegotiatorLocalConfiguration isEqualMultiwayVideoStreamSet:](self, "isEqualMultiwayVideoStreamSet:", objc_msgSend(equal, "multiwayVideoStreams")) || !-[VCMediaNegotiatorLocalConfiguration isEqualMediaRecorderImageTypes:](self, "isEqualMediaRecorderImageTypes:", equal) || !-[VCMediaNegotiatorLocalConfiguration isEqualMediaRecorderVideoCodecs:](self, "isEqualMediaRecorderVideoCodecs:", equal) || !-[VCMediaNegotiatorLocalConfiguration isEqualFaceTimeSettings:](self, "isEqualFaceTimeSettings:", equal))
   {
     return 0;
   }
 
-  v8 = [a3 streamGroupConfigs];
+  streamGroupConfigs = [equal streamGroupConfigs];
 
-  return [(VCMediaNegotiatorLocalConfiguration *)self isEqualStreamGroupConfigs:v8];
+  return [(VCMediaNegotiatorLocalConfiguration *)self isEqualStreamGroupConfigs:streamGroupConfigs];
 }
 
 - (CGSize)screenSize

@@ -1,21 +1,21 @@
 @interface PDFPage
-- (id)_imageWithBox:(int64_t)a3 resolution:(CGSize)a4 offset:(CGPoint)a5 wantThumbnail:(BOOL)a6;
+- (id)_imageWithBox:(int64_t)box resolution:(CGSize)resolution offset:(CGPoint)offset wantThumbnail:(BOOL)thumbnail;
 @end
 
 @implementation PDFPage
 
-- (id)_imageWithBox:(int64_t)a3 resolution:(CGSize)a4 offset:(CGPoint)a5 wantThumbnail:(BOOL)a6
+- (id)_imageWithBox:(int64_t)box resolution:(CGSize)resolution offset:(CGPoint)offset wantThumbnail:(BOOL)thumbnail
 {
-  v6 = a6;
-  y = a5.y;
-  x = a5.x;
-  v11 = a4.width / 72.0;
-  v12 = a4.height / 72.0;
+  thumbnailCopy = thumbnail;
+  y = offset.y;
+  x = offset.x;
+  v11 = resolution.width / 72.0;
+  v12 = resolution.height / 72.0;
   [(PDFPage *)self boundsForBox:0x3FF0000000000000, 0x3FF0000000000000, 0x3FF0000000000000, unk_10008F4D0];
   v16 = floor(v15 + v11 * v13) - ceil(v15);
   v18 = floor(v17 + v12 * v14) - ceil(v17);
-  v19 = [(PDFPage *)self rotation];
-  if (v19 == 180)
+  rotation = [(PDFPage *)self rotation];
+  if (rotation == 180)
   {
     v20 = v18;
   }
@@ -25,7 +25,7 @@
     v20 = v16;
   }
 
-  if (v19 == 180)
+  if (rotation == 180)
   {
     v21 = v16;
   }
@@ -35,7 +35,7 @@
     v21 = v18;
   }
 
-  if (v19)
+  if (rotation)
   {
     v18 = v20;
     v16 = v21;
@@ -66,7 +66,7 @@
       CGContextSetShouldAntialias(v26, 1);
       CGContextSetShouldSubpixelPositionFonts(v26, 1);
       CGContextSetShouldSubpixelQuantizeFonts(v26, 1);
-      [(PDFPage *)self drawWithBox:a3 inContext:v26 isThumbnail:v6];
+      [(PDFPage *)self drawWithBox:box inContext:v26 isThumbnail:thumbnailCopy];
       Image = CGBitmapContextCreateImage(v26);
       CGContextRelease(v26);
     }

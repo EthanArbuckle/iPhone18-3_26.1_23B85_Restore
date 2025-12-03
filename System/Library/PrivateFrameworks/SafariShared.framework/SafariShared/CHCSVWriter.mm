@@ -1,40 +1,40 @@
 @interface CHCSVWriter
-- (CHCSVWriter)initWithOutputStream:(id)a3 encoding:(unint64_t)a4 delimiter:(unsigned __int16)a5;
-- (id)initForWritingToCSVFile:(id)a3;
+- (CHCSVWriter)initWithOutputStream:(id)stream encoding:(unint64_t)encoding delimiter:(unsigned __int16)delimiter;
+- (id)initForWritingToCSVFile:(id)file;
 - (void)_finishLineIfNecessary;
-- (void)_writeData:(id)a3;
-- (void)_writeString:(id)a3;
+- (void)_writeData:(id)data;
+- (void)_writeString:(id)string;
 - (void)closeStream;
 - (void)dealloc;
 - (void)finishLine;
-- (void)writeComment:(id)a3;
-- (void)writeField:(id)a3;
-- (void)writeLineOfFields:(id)a3;
-- (void)writeLineWithDictionary:(id)a3;
+- (void)writeComment:(id)comment;
+- (void)writeField:(id)field;
+- (void)writeLineOfFields:(id)fields;
+- (void)writeLineWithDictionary:(id)dictionary;
 @end
 
 @implementation CHCSVWriter
 
-- (id)initForWritingToCSVFile:(id)a3
+- (id)initForWritingToCSVFile:(id)file
 {
-  v4 = [MEMORY[0x1E695DFC0] outputStreamToFileAtPath:a3 append:0];
+  v4 = [MEMORY[0x1E695DFC0] outputStreamToFileAtPath:file append:0];
   v5 = [(CHCSVWriter *)self initWithOutputStream:v4 encoding:4 delimiter:44];
 
   return v5;
 }
 
-- (CHCSVWriter)initWithOutputStream:(id)a3 encoding:(unint64_t)a4 delimiter:(unsigned __int16)a5
+- (CHCSVWriter)initWithOutputStream:(id)stream encoding:(unint64_t)encoding delimiter:(unsigned __int16)delimiter
 {
-  v5 = a5;
-  v9 = a3;
+  delimiterCopy = delimiter;
+  streamCopy = stream;
   v28.receiver = self;
   v28.super_class = CHCSVWriter;
   v10 = [(CHCSVWriter *)&v28 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_stream, a3);
-    v11->_streamEncoding = a4;
+    objc_storeStrong(&v10->_stream, stream);
+    v11->_streamEncoding = encoding;
     if (![(NSOutputStream *)v11->_stream streamStatus])
     {
       [(NSOutputStream *)v11->_stream open];
@@ -52,8 +52,8 @@
       [(CHCSVWriter *)v11 _writeData:v11->_bom];
     }
 
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%C", v5];
-    v18 = [v17 dataUsingEncoding:v11->_streamEncoding];
+    delimiterCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%C", delimiterCopy];
+    v18 = [delimiterCopy dataUsingEncoding:v11->_streamEncoding];
     if ([(NSData *)v11->_bom length])
     {
       v19 = [v18 subdataWithRange:{-[NSData length](v11->_bom, "length"), objc_msgSend(v18, "length") - -[NSData length](v11->_bom, "length")}];
@@ -67,18 +67,18 @@
     delimiter = v11->_delimiter;
     v11->_delimiter = v19;
 
-    v21 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-    v22 = [v21 mutableCopy];
+    newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+    v22 = [newlineCharacterSet mutableCopy];
 
-    [v22 addCharactersInString:v17];
+    [v22 addCharactersInString:delimiterCopy];
     [v22 addCharactersInString:@""];
     v23 = [v22 copy];
     illegalCharacters = v11->_illegalCharacters;
     v11->_illegalCharacters = v23;
 
-    v25 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     firstLineKeys = v11->_firstLineKeys;
-    v11->_firstLineKeys = v25;
+    v11->_firstLineKeys = array;
   }
 
   return v11;
@@ -92,19 +92,19 @@
   [(CHCSVWriter *)&v3 dealloc];
 }
 
-- (void)_writeData:(id)a3
+- (void)_writeData:(id)data
 {
-  v5 = a3;
-  if ([v5 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
-    v4 = v5;
-    -[NSOutputStream write:maxLength:](self->_stream, "write:maxLength:", [v5 bytes], objc_msgSend(v5, "length"));
+    v4 = dataCopy;
+    -[NSOutputStream write:maxLength:](self->_stream, "write:maxLength:", [dataCopy bytes], objc_msgSend(dataCopy, "length"));
   }
 }
 
-- (void)_writeString:(id)a3
+- (void)_writeString:(id)string
 {
-  v6 = [a3 dataUsingEncoding:self->_streamEncoding];
+  v6 = [string dataUsingEncoding:self->_streamEncoding];
   if ([(NSData *)self->_bom length])
   {
     v4 = [v6 subdataWithRange:{-[NSData length](self->_bom, "length"), objc_msgSend(v6, "length") - -[NSData length](self->_bom, "length")}];
@@ -121,22 +121,22 @@
   [(CHCSVWriter *)self _writeData:v5];
 }
 
-- (void)writeField:(id)a3
+- (void)writeField:(id)field
 {
-  v4 = a3;
-  v7 = v4;
+  fieldCopy = field;
+  v7 = fieldCopy;
   if (self->_currentField)
   {
     [(CHCSVWriter *)self _writeDelimiter];
-    v4 = v7;
+    fieldCopy = v7;
   }
 
   if (self->_currentLine)
   {
-    if (v4)
+    if (fieldCopy)
     {
 LABEL_5:
-      v5 = [v4 description];
+      v5 = [fieldCopy description];
       goto LABEL_8;
     }
   }
@@ -144,7 +144,7 @@ LABEL_5:
   else
   {
     [(NSMutableArray *)self->_firstLineKeys addObject:v7];
-    v4 = v7;
+    fieldCopy = v7;
     if (v7)
     {
       goto LABEL_5;
@@ -179,16 +179,16 @@ LABEL_8:
   }
 }
 
-- (void)writeLineOfFields:(id)a3
+- (void)writeLineOfFields:(id)fields
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fieldsCopy = fields;
   [(CHCSVWriter *)self _finishLineIfNecessary];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = v4;
+  v5 = fieldsCopy;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -217,10 +217,10 @@ LABEL_8:
   [(CHCSVWriter *)self finishLine];
 }
 
-- (void)writeLineWithDictionary:(id)a3
+- (void)writeLineWithDictionary:(id)dictionary
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (!self->_currentLine)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Cannot write a dictionary unless a line of keys has already been given"];
@@ -247,7 +247,7 @@ LABEL_8:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [v4 objectForKey:{*(*(&v11 + 1) + 8 * v9), v11}];
+        v10 = [dictionaryCopy objectForKey:{*(*(&v11 + 1) + 8 * v9), v11}];
         [(CHCSVWriter *)self writeField:v10];
 
         ++v9;
@@ -263,13 +263,13 @@ LABEL_8:
   [(CHCSVWriter *)self finishLine];
 }
 
-- (void)writeComment:(id)a3
+- (void)writeComment:(id)comment
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  commentCopy = comment;
   [(CHCSVWriter *)self _finishLineIfNecessary];
-  v5 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v6 = [commentCopy componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
   v15 = 0u;
   v16 = 0u;

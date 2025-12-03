@@ -11,7 +11,7 @@
   v5[2] = __45__NSArray_HREAdditions__hre_filteredToClass___block_invoke;
   v5[3] = &__block_descriptor_40_e8_B16__0_8lu32l8;
   v5[4] = a3;
-  v3 = [a1 na_filter:v5];
+  v3 = [self na_filter:v5];
 
   return v3;
 }

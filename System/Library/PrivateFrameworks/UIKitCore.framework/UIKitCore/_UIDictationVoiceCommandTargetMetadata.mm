@@ -1,26 +1,26 @@
 @interface _UIDictationVoiceCommandTargetMetadata
-- (_UIDictationVoiceCommandTargetMetadata)initWithTarget:(id)a3 targetStartIndex:(int)a4 targetLength:(int)a5 targetOffset:(int)a6 payload:(id)a7;
+- (_UIDictationVoiceCommandTargetMetadata)initWithTarget:(id)target targetStartIndex:(int)index targetLength:(int)length targetOffset:(int)offset payload:(id)payload;
 @end
 
 @implementation _UIDictationVoiceCommandTargetMetadata
 
-- (_UIDictationVoiceCommandTargetMetadata)initWithTarget:(id)a3 targetStartIndex:(int)a4 targetLength:(int)a5 targetOffset:(int)a6 payload:(id)a7
+- (_UIDictationVoiceCommandTargetMetadata)initWithTarget:(id)target targetStartIndex:(int)index targetLength:(int)length targetOffset:(int)offset payload:(id)payload
 {
-  v12 = a3;
-  v13 = a7;
+  targetCopy = target;
+  payloadCopy = payload;
   v20.receiver = self;
   v20.super_class = _UIDictationVoiceCommandTargetMetadata;
   v14 = [(_UIDictationVoiceCommandTargetMetadata *)&v20 init];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [targetCopy copy];
     target = v14->_target;
     v14->_target = v15;
 
-    v14->_targetStartIndex = a4;
-    v14->_targetLength = a5;
-    v14->_targetOffset = a6;
-    v17 = [v13 copy];
+    v14->_targetStartIndex = index;
+    v14->_targetLength = length;
+    v14->_targetOffset = offset;
+    v17 = [payloadCopy copy];
     payload = v14->_payload;
     v14->_payload = v17;
   }

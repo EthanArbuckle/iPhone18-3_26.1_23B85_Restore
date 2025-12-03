@@ -1,33 +1,33 @@
 @interface _SFPBInvokeSiriCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBInvokeSiriCommand)initWithDictionary:(id)a3;
-- (_SFPBInvokeSiriCommand)initWithFacade:(id)a3;
-- (_SFPBInvokeSiriCommand)initWithJSON:(id)a3;
+- (_SFPBInvokeSiriCommand)initWithDictionary:(id)dictionary;
+- (_SFPBInvokeSiriCommand)initWithFacade:(id)facade;
+- (_SFPBInvokeSiriCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setUtteranceText:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setUtteranceText:(id)text;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBInvokeSiriCommand
 
-- (_SFPBInvokeSiriCommand)initWithFacade:(id)a3
+- (_SFPBInvokeSiriCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBInvokeSiriCommand *)self init];
   if (v5)
   {
-    v6 = [v4 utteranceText];
+    utteranceText = [facadeCopy utteranceText];
 
-    if (v6)
+    if (utteranceText)
     {
-      v7 = [v4 utteranceText];
-      [(_SFPBInvokeSiriCommand *)v5 setUtteranceText:v7];
+      utteranceText2 = [facadeCopy utteranceText];
+      [(_SFPBInvokeSiriCommand *)v5 setUtteranceText:utteranceText2];
     }
 
-    if ([v4 hasServiceProvider])
+    if ([facadeCopy hasServiceProvider])
     {
-      -[_SFPBInvokeSiriCommand setServiceProvider:](v5, "setServiceProvider:", [v4 serviceProvider]);
+      -[_SFPBInvokeSiriCommand setServiceProvider:](v5, "setServiceProvider:", [facadeCopy serviceProvider]);
     }
 
     v8 = v5;
@@ -36,15 +36,15 @@
   return v5;
 }
 
-- (_SFPBInvokeSiriCommand)initWithDictionary:(id)a3
+- (_SFPBInvokeSiriCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBInvokeSiriCommand;
   v5 = [(_SFPBInvokeSiriCommand *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"utteranceText"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"utteranceText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(_SFPBInvokeSiriCommand *)v5 setUtteranceText:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"serviceProvider"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"serviceProvider"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (_SFPBInvokeSiriCommand)initWithJSON:(id)a3
+- (_SFPBInvokeSiriCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBInvokeSiriCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBInvokeSiriCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBInvokeSiriCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,20 +101,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_serviceProvider)
   {
-    v4 = [(_SFPBInvokeSiriCommand *)self serviceProvider];
-    if (v4)
+    serviceProvider = [(_SFPBInvokeSiriCommand *)self serviceProvider];
+    if (serviceProvider)
     {
-      if (v4 == 1)
+      if (serviceProvider == 1)
       {
         v5 = @"1";
       }
 
       else
       {
-        v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+        v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", serviceProvider];
       }
     }
 
@@ -123,43 +123,43 @@
       v5 = @"0";
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"serviceProvider"];
+    [dictionary setObject:v5 forKeyedSubscript:@"serviceProvider"];
   }
 
   if (self->_utteranceText)
   {
-    v6 = [(_SFPBInvokeSiriCommand *)self utteranceText];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"utteranceText"];
+    utteranceText = [(_SFPBInvokeSiriCommand *)self utteranceText];
+    v7 = [utteranceText copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"utteranceText"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBInvokeSiriCommand *)self utteranceText];
-    v6 = [v4 utteranceText];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    utteranceText = [(_SFPBInvokeSiriCommand *)self utteranceText];
+    utteranceText2 = [equalCopy utteranceText];
+    v7 = utteranceText2;
+    if ((utteranceText != 0) != (utteranceText2 == 0))
     {
-      v8 = [(_SFPBInvokeSiriCommand *)self utteranceText];
-      if (!v8)
+      utteranceText3 = [(_SFPBInvokeSiriCommand *)self utteranceText];
+      if (!utteranceText3)
       {
 
 LABEL_10:
         serviceProvider = self->_serviceProvider;
-        v13 = serviceProvider == [v4 serviceProvider];
+        v13 = serviceProvider == [equalCopy serviceProvider];
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBInvokeSiriCommand *)self utteranceText];
-      v11 = [v4 utteranceText];
-      v12 = [v10 isEqual:v11];
+      v9 = utteranceText3;
+      utteranceText4 = [(_SFPBInvokeSiriCommand *)self utteranceText];
+      utteranceText5 = [equalCopy utteranceText];
+      v12 = [utteranceText4 isEqual:utteranceText5];
 
       if (v12)
       {
@@ -178,11 +178,11 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBInvokeSiriCommand *)self utteranceText];
-  if (v4)
+  toCopy = to;
+  utteranceText = [(_SFPBInvokeSiriCommand *)self utteranceText];
+  if (utteranceText)
   {
     PBDataWriterWriteStringField();
   }
@@ -193,9 +193,9 @@ LABEL_8:
   }
 }
 
-- (void)setUtteranceText:(id)a3
+- (void)setUtteranceText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   utteranceText = self->_utteranceText;
   self->_utteranceText = v4;
 

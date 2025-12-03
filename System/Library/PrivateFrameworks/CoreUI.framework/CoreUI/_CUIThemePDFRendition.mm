@@ -1,6 +1,6 @@
 @interface _CUIThemePDFRendition
-- (CGImage)createImageFromPDFRenditionWithScale:(double)a3;
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
+- (CGImage)createImageFromPDFRenditionWithScale:(double)scale;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
 - (void)dealloc;
 @end
 
@@ -14,18 +14,18 @@
   [(CUIThemeRendition *)&v3 dealloc];
 }
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
   v18.receiver = self;
   v18.super_class = _CUIThemePDFRendition;
-  v6 = [(CUIThemeRendition *)&v18 _initWithCSIHeader:a3 version:*&a4];
+  v6 = [(CUIThemeRendition *)&v18 _initWithCSIHeader:header version:*&version];
   v7 = v6;
-  if (a3->var6 != 1346651680)
+  if (header->var6 != 1346651680)
   {
     [_CUIThemePDFRendition _initWithCSIHeader:v6 version:a2];
   }
 
-  v8 = &a3->var0 + 4 * a3->var11.var0 + a3->var10;
+  v8 = &header->var0 + 4 * header->var11.var0 + header->var10;
   v9 = v8 + 180;
   if (*(v8 + 46))
   {
@@ -60,15 +60,15 @@
   return v7;
 }
 
-- (CGImage)createImageFromPDFRenditionWithScale:(double)a3
+- (CGImage)createImageFromPDFRenditionWithScale:(double)scale
 {
-  v5 = [(_CUIThemePDFRendition *)self pdfDocument];
-  if (!v5)
+  pdfDocument = [(_CUIThemePDFRendition *)self pdfDocument];
+  if (!pdfDocument)
   {
     return 0;
   }
 
-  Page = CGPDFDocumentGetPage(v5, 1uLL);
+  Page = CGPDFDocumentGetPage(pdfDocument, 1uLL);
   v7 = CGPDFPageRetain(Page);
   Image = v7;
   if (v7)
@@ -82,8 +82,8 @@
       v11 = 1.0;
     }
 
-    v12 = vcvtad_u64_f64(width * a3 / v11);
-    v13 = vcvtad_u64_f64(height * a3 / v11);
+    v12 = vcvtad_u64_f64(width * scale / v11);
+    v13 = vcvtad_u64_f64(height * scale / v11);
     SRGB = _CUIColorSpaceGetSRGB();
     v17 = CUICGBitmapContextCreate(v12, v13, 8uLL, 4 * (v12 & 0x7FFFFFFFFFFFFFFLL), SRGB, 8194, v15, v16);
     if (v17)
@@ -95,7 +95,7 @@
       v28.size.height = height;
       CGPDFPageGetDrawingTransform(&transform, Image, kCGPDFCropBox, v28, 0, 1);
       CGContextConcatCTM(v24, &transform);
-      CGContextScaleCTM(v24, a3, a3);
+      CGContextScaleCTM(v24, scale, scale);
       CGContextDrawPDFPage(v24, Image);
       CGPDFPageRelease(Image);
       Image = CGBitmapContextCreateImage(v24);

@@ -1,21 +1,21 @@
 @interface TransportRestrictedModeService
-- (TransportRestrictedModeService)initWithNotificationQueue:(id)a3;
+- (TransportRestrictedModeService)initWithNotificationQueue:(id)queue;
 - (int)entryPoint_onDaemonStarted;
 - (int)entryPoint_onDaemonStarted_inBaseSystem;
-- (int)entryPoint_onXPCEventWithName:(id)a3;
-- (int)fetchFromKextAndSaveToFileWithKey:(unsigned int)a3;
-- (int)loadFromFileAndPushToKextWithKey:(unsigned int)a3;
+- (int)entryPoint_onXPCEventWithName:(id)name;
+- (int)fetchFromKextAndSaveToFileWithKey:(unsigned int)key;
+- (int)loadFromFileAndPushToKextWithKey:(unsigned int)key;
 - (int)onDeviceLostStatusChanged;
-- (int)onKextNotificationArrivedWithPropertyName:(id)a3;
+- (int)onKextNotificationArrivedWithPropertyName:(id)name;
 - (int)onManagedConfigurationChanged;
-- (int)onSaveData:(id *)a3;
-- (int)onScheduleWakeup:(id *)a3;
+- (int)onSaveData:(id *)data;
+- (int)onScheduleWakeup:(id *)wakeup;
 - (int)prepareDataDir;
 - (int)purgeLegacyFiles;
-- (int)sendNotificationACKWithPropertyName:(id)a3;
+- (int)sendNotificationACKWithPropertyName:(id)name;
 - (void)cancelAlarm;
 - (void)entryPoint_onAlarm;
-- (void)setAlarm:(double)a3;
+- (void)setAlarm:(double)alarm;
 - (void)start;
 @end
 
@@ -35,21 +35,21 @@
   xpc_set_event();
 }
 
-- (TransportRestrictedModeService)initWithNotificationQueue:(id)a3
+- (TransportRestrictedModeService)initWithNotificationQueue:(id)queue
 {
   v9.receiver = self;
   v9.super_class = TransportRestrictedModeService;
-  v3 = [(DaemonService *)&v9 initWithNotificationQueue:a3];
+  v3 = [(DaemonService *)&v9 initWithNotificationQueue:queue];
   v4 = v3;
   if (v3)
   {
-    v5 = [(DaemonService *)v3 notificationQueue];
+    notificationQueue = [(DaemonService *)v3 notificationQueue];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100003310;
     handler[3] = &unk_10001C368;
     v8 = v4;
-    xpc_set_event_stream_handler("com.apple.alarm", v5, handler);
+    xpc_set_event_stream_handler("com.apple.alarm", notificationQueue, handler);
   }
 
   return v4;
@@ -179,10 +179,10 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%s: %s: called, .\n", buf, 0x16u);
   }
 
-  v3 = [(TransportRestrictedModeService *)self prepareDataDir];
-  if (v3 || (v3 = [(TransportRestrictedModeService *)self purgeLegacyFiles]) != 0 || (v3 = [(TransportRestrictedModeService *)self loadFromFileAndPushToKextWithKey:1]) != 0 || (v3 = [(TransportRestrictedModeService *)self loadFromFileAndPushToKextWithKey:2]) != 0 || (v3 = [(TransportRestrictedModeService *)self loadFromFileAndPushToKextWithKey:3]) != 0 || (v3 = [(TransportRestrictedModeService *)self loadFromFileAndPushToKextWithKey:4]) != 0)
+  prepareDataDir = [(TransportRestrictedModeService *)self prepareDataDir];
+  if (prepareDataDir || (prepareDataDir = [(TransportRestrictedModeService *)self purgeLegacyFiles]) != 0 || (prepareDataDir = [(TransportRestrictedModeService *)self loadFromFileAndPushToKextWithKey:1]) != 0 || (prepareDataDir = [(TransportRestrictedModeService *)self loadFromFileAndPushToKextWithKey:2]) != 0 || (prepareDataDir = [(TransportRestrictedModeService *)self loadFromFileAndPushToKextWithKey:3]) != 0 || (prepareDataDir = [(TransportRestrictedModeService *)self loadFromFileAndPushToKextWithKey:4]) != 0)
   {
-    v10 = v3;
+    v10 = prepareDataDir;
 LABEL_20:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
@@ -253,9 +253,9 @@ LABEL_20:
   return v10;
 }
 
-- (int)entryPoint_onXPCEventWithName:(id)a3
+- (int)entryPoint_onXPCEventWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v8 = 136315650;
@@ -263,18 +263,18 @@ LABEL_20:
     v10 = 2080;
     v11 = "[TransportRestrictedModeService entryPoint_onXPCEventWithName:]";
     v12 = 2080;
-    v13 = [v4 UTF8String];
+    uTF8String = [nameCopy UTF8String];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%s: %s: called, eventName=%s.\n", &v8, 0x20u);
   }
 
-  if ([v4 isEqualToString:@"ACMTRMEvent_ScheduleWakeup"])
+  if ([nameCopy isEqualToString:@"ACMTRMEvent_ScheduleWakeup"])
   {
 LABEL_8:
-    v6 = [(TransportRestrictedModeService *)self onKextNotificationArrivedWithPropertyName:v4];
+    onManagedConfigurationChanged = [(TransportRestrictedModeService *)self onKextNotificationArrivedWithPropertyName:nameCopy];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"ACMTRMEvent_SaveData"] || objc_msgSend(v4, "isEqualToString:", @"ACMTRMEvent_CheckAppleSetup"))
+  if ([nameCopy isEqualToString:@"ACMTRMEvent_SaveData"] || objc_msgSend(nameCopy, "isEqualToString:", @"ACMTRMEvent_CheckAppleSetup"))
   {
     if (sub_100001230())
     {
@@ -286,46 +286,46 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"AppleSetupCookieChanged"])
+  if ([nameCopy isEqualToString:@"AppleSetupCookieChanged"])
   {
     if (sub_100001230())
     {
       goto LABEL_7;
     }
 
-    v6 = sub_100003DAC("cookie");
+    onManagedConfigurationChanged = sub_100003DAC("cookie");
   }
 
-  else if ([v4 isEqualToString:@"com.apple.managedconfiguration.effectivesettingschanged"])
+  else if ([nameCopy isEqualToString:@"com.apple.managedconfiguration.effectivesettingschanged"])
   {
     if (sub_100001230())
     {
       goto LABEL_7;
     }
 
-    v6 = [(TransportRestrictedModeService *)self onManagedConfigurationChanged];
+    onManagedConfigurationChanged = [(TransportRestrictedModeService *)self onManagedConfigurationChanged];
   }
 
   else
   {
-    if (![v4 isEqualToString:kLostModeChangedRestrictedNotification] || !objc_opt_class())
+    if (![nameCopy isEqualToString:kLostModeChangedRestrictedNotification] || !objc_opt_class())
     {
       goto LABEL_7;
     }
 
-    v6 = [(TransportRestrictedModeService *)self onDeviceLostStatusChanged];
+    onManagedConfigurationChanged = [(TransportRestrictedModeService *)self onDeviceLostStatusChanged];
   }
 
 LABEL_9:
-  v5 = v6;
-  if (v6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
+  v5 = onManagedConfigurationChanged;
+  if (onManagedConfigurationChanged && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v8 = 136315650;
     v9 = "ACMTRM-D";
     v10 = 2080;
     v11 = "[TransportRestrictedModeService entryPoint_onXPCEventWithName:]";
     v12 = 2048;
-    v13 = v5;
+    uTF8String = v5;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%s: %s: returning, err = %ld.\n", &v8, 0x20u);
   }
 
@@ -334,9 +334,9 @@ LABEL_12:
   return v5;
 }
 
-- (int)sendNotificationACKWithPropertyName:(id)a3
+- (int)sendNotificationACKWithPropertyName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
@@ -344,12 +344,12 @@ LABEL_12:
     v9 = 2080;
     v10 = "[TransportRestrictedModeService sendNotificationACKWithPropertyName:]";
     v11 = 2080;
-    v12 = [v3 UTF8String];
+    uTF8String = [nameCopy UTF8String];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%s: %s: [COM] SENDING ACK %s.\n", buf, 0x20u);
   }
 
   v13 = 0;
-  strncpy(buf, [v3 UTF8String], 0x3FuLL);
+  strncpy(buf, [nameCopy UTF8String], 0x3FuLL);
   v4 = 0;
   if (ACMKernelControl(7))
   {
@@ -360,10 +360,10 @@ LABEL_12:
   return v4;
 }
 
-- (int)onKextNotificationArrivedWithPropertyName:(id)a3
+- (int)onKextNotificationArrivedWithPropertyName:(id)name
 {
-  v4 = a3;
-  v5 = sub_1000012D8(v4);
+  nameCopy = name;
+  v5 = sub_1000012D8(nameCopy);
   if (![v5 length])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
@@ -373,7 +373,7 @@ LABEL_12:
       v13 = 2080;
       v14 = "[TransportRestrictedModeService onKextNotificationArrivedWithPropertyName:]";
       v15 = 2080;
-      v16 = [v4 UTF8String];
+      uTF8String = [nameCopy UTF8String];
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%s: %s: [COM] IGNORING EMPTY %s.\n", &v11, 0x20u);
     }
 
@@ -386,7 +386,7 @@ LABEL_12:
     goto LABEL_19;
   }
 
-  v6 = [v5 bytes];
+  bytes = [v5 bytes];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v11 = 136315650;
@@ -394,12 +394,12 @@ LABEL_12:
     v13 = 2080;
     v14 = "[TransportRestrictedModeService onKextNotificationArrivedWithPropertyName:]";
     v15 = 2080;
-    v16 = [v4 UTF8String];
+    uTF8String = [nameCopy UTF8String];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%s: %s: [COM] PROCESSING %s.\n", &v11, 0x20u);
   }
 
-  v7 = *v6;
-  if (*v6 == 3)
+  v7 = *bytes;
+  if (*bytes == 3)
   {
     v8 = sub_100003DAC("kext");
     if (!v8)
@@ -412,11 +412,11 @@ LABEL_12:
 
   if (v7 == 2)
   {
-    v8 = [(TransportRestrictedModeService *)self onSaveData:v6];
+    v8 = [(TransportRestrictedModeService *)self onSaveData:bytes];
     if (!v8)
     {
 LABEL_13:
-      [(TransportRestrictedModeService *)self sendNotificationACKWithPropertyName:v4];
+      [(TransportRestrictedModeService *)self sendNotificationACKWithPropertyName:nameCopy];
 LABEL_14:
       v9 = 0;
       goto LABEL_15;
@@ -429,7 +429,7 @@ LABEL_17:
 
   if (v7 == 1)
   {
-    v8 = [(TransportRestrictedModeService *)self onScheduleWakeup:v6];
+    v8 = [(TransportRestrictedModeService *)self onScheduleWakeup:bytes];
     if (v8)
     {
       goto LABEL_17;
@@ -447,7 +447,7 @@ LABEL_19:
     v13 = 2080;
     v14 = "[TransportRestrictedModeService onKextNotificationArrivedWithPropertyName:]";
     v15 = 2048;
-    v16 = v9;
+    uTF8String = v9;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%s: %s: returning, err = %ld.\n", &v11, 0x20u);
   }
 
@@ -524,7 +524,7 @@ LABEL_15:
 - (int)onDeviceLostStatusChanged
 {
   v2 = +[FMDFMIPManager sharedInstance];
-  v3 = [v2 lockdownShouldDisableDevicePairing];
+  lockdownShouldDisableDevicePairing = [v2 lockdownShouldDisableDevicePairing];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
@@ -533,7 +533,7 @@ LABEL_15:
     v7 = "ACMTRM-D";
     v9 = "[TransportRestrictedModeService onDeviceLostStatusChanged]";
     v8 = 2080;
-    if (v3)
+    if (lockdownShouldDisableDevicePairing)
     {
       v4 = "YES";
     }
@@ -543,7 +543,7 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%s: %s: lostModeIsActive = %s.\n", &v6, 0x20u);
   }
 
-  if (!v3)
+  if (!lockdownShouldDisableDevicePairing)
   {
     return 0;
   }
@@ -559,9 +559,9 @@ LABEL_15:
   return result;
 }
 
-- (int)onScheduleWakeup:(id *)a3
+- (int)onScheduleWakeup:(id *)wakeup
 {
-  v3 = *(&a3->var0 + 1);
+  v3 = *(&wakeup->var0 + 1);
   if (v3)
   {
     [(TransportRestrictedModeService *)self setAlarm:v3];
@@ -575,7 +575,7 @@ LABEL_15:
   return 0;
 }
 
-- (int)loadFromFileAndPushToKextWithKey:(unsigned int)a3
+- (int)loadFromFileAndPushToKextWithKey:(unsigned int)key
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
@@ -584,12 +584,12 @@ LABEL_15:
     v17 = 2080;
     v18 = "[TransportRestrictedModeService loadFromFileAndPushToKextWithKey:]";
     v19 = 1024;
-    LODWORD(v20) = a3;
+    LODWORD(v20) = key;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%s: %s: called, key=%u.\n", &v15, 0x1Cu);
   }
 
-  v4 = a3 - 1;
-  if (a3 - 1 <= 3)
+  v4 = key - 1;
+  if (key - 1 <= 3)
   {
     v5 = (&off_10001C3F8)[v4];
     v6 = (&off_10001C3D8)[v4];
@@ -656,7 +656,7 @@ LABEL_11:
   return -5;
 }
 
-- (int)fetchFromKextAndSaveToFileWithKey:(unsigned int)a3
+- (int)fetchFromKextAndSaveToFileWithKey:(unsigned int)key
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
@@ -665,12 +665,12 @@ LABEL_11:
     v14 = 2080;
     v15 = "[TransportRestrictedModeService fetchFromKextAndSaveToFileWithKey:]";
     v16 = 1024;
-    LODWORD(v17) = a3;
+    LODWORD(v17) = key;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%s: %s: called, key=%u.\n", &v12, 0x1Cu);
   }
 
-  v4 = a3 - 1;
-  if (a3 - 1 > 3)
+  v4 = key - 1;
+  if (key - 1 > 3)
   {
     v10 = -5;
   }
@@ -725,11 +725,11 @@ LABEL_9:
   return v10;
 }
 
-- (int)onSaveData:(id *)a3
+- (int)onSaveData:(id *)data
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
-    var1 = a3->var1;
+    var1 = data->var1;
     v9 = 136315650;
     v10 = "ACMTRM-D";
     v11 = 2080;
@@ -768,9 +768,9 @@ LABEL_9:
   return v7;
 }
 
-- (void)setAlarm:(double)a3
+- (void)setAlarm:(double)alarm
 {
-  v4 = a3;
+  alarmCopy = alarm;
   v5 = sub_1000029F8();
   v6 = v5 + 30;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
@@ -780,13 +780,13 @@ LABEL_9:
     v10 = "ACMTRM-D";
     v11 = 2080;
     v12 = "[TransportRestrictedModeService setAlarm:]";
-    if (v6 < v4)
+    if (v6 < alarmCopy)
     {
       v7 = "YES";
     }
 
     v13 = 2048;
-    v14 = v4;
+    v14 = alarmCopy;
     v15 = 2080;
     v16 = v7;
     v17 = 2048;
@@ -796,10 +796,10 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%s: %s: requestedAlarmTime=%llu willSchedule=%s (now=%llu threshold=%llus).\n", &v9, 0x3Eu);
   }
 
-  if (v6 < v4)
+  if (v6 < alarmCopy)
   {
     v8 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_date(v8, "Date", (a3 * 1000000000.0));
+    xpc_dictionary_set_date(v8, "Date", (alarm * 1000000000.0));
     xpc_set_event();
   }
 }

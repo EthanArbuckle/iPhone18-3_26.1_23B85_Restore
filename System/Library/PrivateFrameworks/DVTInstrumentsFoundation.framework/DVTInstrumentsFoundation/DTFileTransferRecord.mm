@@ -19,8 +19,8 @@
 - (void)dealloc
 {
   [(DTFileTransferRecord *)self closeFileTransfer];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  [v3 removeItemAtURL:self->_destinationDirectoryURLToRemoveOnDealloc error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager removeItemAtURL:self->_destinationDirectoryURLToRemoveOnDealloc error:0];
 
   v4.receiver = self;
   v4.super_class = DTFileTransferRecord;

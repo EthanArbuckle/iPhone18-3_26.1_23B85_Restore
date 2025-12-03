@@ -1,17 +1,17 @@
 @interface GEOAPSequenceWaitState
-- (GEOAPSequenceWaitState)initWithName:(id)a3 waitTime:(double)a4;
+- (GEOAPSequenceWaitState)initWithName:(id)name waitTime:(double)time;
 @end
 
 @implementation GEOAPSequenceWaitState
 
-- (GEOAPSequenceWaitState)initWithName:(id)a3 waitTime:(double)a4
+- (GEOAPSequenceWaitState)initWithName:(id)name waitTime:(double)time
 {
   v6.receiver = self;
   v6.super_class = GEOAPSequenceWaitState;
-  result = [(GEOAPSequenceState *)&v6 initWithName:a3];
+  result = [(GEOAPSequenceState *)&v6 initWithName:name];
   if (result)
   {
-    result->_waitTime = a4;
+    result->_waitTime = time;
   }
 
   return result;

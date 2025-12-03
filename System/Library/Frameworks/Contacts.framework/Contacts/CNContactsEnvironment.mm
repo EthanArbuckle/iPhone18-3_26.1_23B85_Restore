@@ -1,20 +1,20 @@
 @interface CNContactsEnvironment
-+ (id)baseURLWithDataLocationName:(id)a3;
++ (id)baseURLWithDataLocationName:(id)name;
 + (id)currentEnvironment;
 + (id)inMemoryURL;
 + (id)unitTestingEnvironment;
-+ (id)unitTestingEnvironmentWithDataLocationName:(id)a3;
-+ (id)unitTestingEnvironmentWithDataLocationName:(id)a3 schedulerProvider:(id)a4;
-+ (id)unitTestingEnvironmentWithDataLocationName:(id)a3 schedulerProvider:(id)a4 loggerProvider:(id)a5;
-+ (id)unitTestingEnvironmentWithSchedulerProvider:(id)a3 loggerProvider:(id)a4;
++ (id)unitTestingEnvironmentWithDataLocationName:(id)name;
++ (id)unitTestingEnvironmentWithDataLocationName:(id)name schedulerProvider:(id)provider;
++ (id)unitTestingEnvironmentWithDataLocationName:(id)name schedulerProvider:(id)provider loggerProvider:(id)loggerProvider;
++ (id)unitTestingEnvironmentWithSchedulerProvider:(id)provider loggerProvider:(id)loggerProvider;
 - (BOOL)useInMemoryStores;
 - (CNContactPosterDataStore)posterDataStore;
 - (CNContactsEnvironment)init;
-- (CNContactsEnvironment)initWithCoder:(id)a3;
-- (CNContactsEnvironment)initWithSchedulerProvider:(id)a3 loggerProvider:(id)a4 posterDataStore:(id)a5;
+- (CNContactsEnvironment)initWithCoder:(id)coder;
+- (CNContactsEnvironment)initWithSchedulerProvider:(id)provider loggerProvider:(id)loggerProvider posterDataStore:(id)store;
 - (CNiOSAddressBook)addressBook;
-- (id)copyWithDelegateInfos:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithDelegateInfos:(id)infos;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)posterDataStoreSpy;
 - (void)makeCurrentEnvironment;
 @end
@@ -42,9 +42,9 @@ uint64_t __43__CNContactsEnvironment_currentEnvironment__block_invoke()
 
 - (CNContactsEnvironment)init
 {
-  v3 = [MEMORY[0x1E6996820] defaultProvider];
+  defaultProvider = [MEMORY[0x1E6996820] defaultProvider];
   v4 = +[CNContactsLoggerProvider defaultProvider];
-  v5 = [(CNContactsEnvironment *)self initWithSchedulerProvider:v3 loggerProvider:v4];
+  v5 = [(CNContactsEnvironment *)self initWithSchedulerProvider:defaultProvider loggerProvider:v4];
 
   return v5;
 }
@@ -67,9 +67,9 @@ id __36__CNContactsEnvironment_addressBook__block_invoke(uint64_t a1)
 
 - (BOOL)useInMemoryStores
 {
-  v2 = [(CNContactsEnvironment *)self baseURL];
-  v3 = [objc_opt_class() inMemoryURL];
-  v4 = [v2 isEqual:v3];
+  baseURL = [(CNContactsEnvironment *)self baseURL];
+  inMemoryURL = [objc_opt_class() inMemoryURL];
+  v4 = [baseURL isEqual:inMemoryURL];
 
   return v4;
 }
@@ -123,85 +123,85 @@ void __36__CNContactsEnvironment_inMemoryURL__block_invoke()
 
 + (id)unitTestingEnvironment
 {
-  v3 = [MEMORY[0x1E6996820] defaultProvider];
+  defaultProvider = [MEMORY[0x1E6996820] defaultProvider];
   v4 = +[CNMockLoggerProvider loggerProvider];
-  v5 = [a1 unitTestingEnvironmentWithSchedulerProvider:v3 loggerProvider:v4];
+  v5 = [self unitTestingEnvironmentWithSchedulerProvider:defaultProvider loggerProvider:v4];
 
   return v5;
 }
 
-+ (id)unitTestingEnvironmentWithSchedulerProvider:(id)a3 loggerProvider:(id)a4
++ (id)unitTestingEnvironmentWithSchedulerProvider:(id)provider loggerProvider:(id)loggerProvider
 {
-  v6 = a4;
-  v7 = a3;
+  loggerProviderCopy = loggerProvider;
+  providerCopy = provider;
   v8 = [_CNContactPosterDataStoreSpy alloc];
   v9 = +[CNContactPosterDataStore inMemoryStore];
   v10 = [(_CNContactPosterDataStoreSpy *)v8 initWithStore:v9];
 
-  v11 = [[CNContactsEnvironment alloc] initWithSchedulerProvider:v7 loggerProvider:v6 posterDataStore:v10];
-  v12 = [a1 inMemoryURL];
-  [(CNContactsEnvironment *)v11 setBaseURL:v12];
+  v11 = [[CNContactsEnvironment alloc] initWithSchedulerProvider:providerCopy loggerProvider:loggerProviderCopy posterDataStore:v10];
+  inMemoryURL = [self inMemoryURL];
+  [(CNContactsEnvironment *)v11 setBaseURL:inMemoryURL];
 
   return v11;
 }
 
-+ (id)unitTestingEnvironmentWithDataLocationName:(id)a3
++ (id)unitTestingEnvironmentWithDataLocationName:(id)name
 {
   v4 = MEMORY[0x1E6996820];
-  v5 = a3;
-  v6 = [v4 defaultProvider];
+  nameCopy = name;
+  defaultProvider = [v4 defaultProvider];
   v7 = +[CNMockLoggerProvider loggerProvider];
-  v8 = [a1 unitTestingEnvironmentWithDataLocationName:v5 schedulerProvider:v6 loggerProvider:v7];
+  v8 = [self unitTestingEnvironmentWithDataLocationName:nameCopy schedulerProvider:defaultProvider loggerProvider:v7];
 
   return v8;
 }
 
-+ (id)unitTestingEnvironmentWithDataLocationName:(id)a3 schedulerProvider:(id)a4
++ (id)unitTestingEnvironmentWithDataLocationName:(id)name schedulerProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  nameCopy = name;
   v8 = +[CNMockLoggerProvider loggerProvider];
-  v9 = [a1 unitTestingEnvironmentWithDataLocationName:v7 schedulerProvider:v6 loggerProvider:v8];
+  v9 = [self unitTestingEnvironmentWithDataLocationName:nameCopy schedulerProvider:providerCopy loggerProvider:v8];
 
   return v9;
 }
 
-+ (id)unitTestingEnvironmentWithDataLocationName:(id)a3 schedulerProvider:(id)a4 loggerProvider:(id)a5
++ (id)unitTestingEnvironmentWithDataLocationName:(id)name schedulerProvider:(id)provider loggerProvider:(id)loggerProvider
 {
-  v8 = a3;
-  v9 = [a1 unitTestingEnvironmentWithSchedulerProvider:a4 loggerProvider:a5];
-  v10 = [a1 baseURLWithDataLocationName:v8];
+  nameCopy = name;
+  v9 = [self unitTestingEnvironmentWithSchedulerProvider:provider loggerProvider:loggerProvider];
+  v10 = [self baseURLWithDataLocationName:nameCopy];
 
   [v9 setBaseURL:v10];
 
   return v9;
 }
 
-- (CNContactsEnvironment)initWithSchedulerProvider:(id)a3 loggerProvider:(id)a4 posterDataStore:(id)a5
+- (CNContactsEnvironment)initWithSchedulerProvider:(id)provider loggerProvider:(id)loggerProvider posterDataStore:(id)store
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  loggerProviderCopy = loggerProvider;
+  storeCopy = store;
   v18.receiver = self;
   v18.super_class = CNContactsEnvironment;
   v12 = [(CNContactsEnvironment *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_schedulerProvider, a3);
-    objc_storeStrong(&v13->_loggerProvider, a4);
+    objc_storeStrong(&v12->_schedulerProvider, provider);
+    objc_storeStrong(&v13->_loggerProvider, loggerProvider);
     v14 = objc_alloc_init(CNiOSABPredicateRunner);
     abPredicateRunner = v13->_abPredicateRunner;
     v13->_abPredicateRunner = v14;
 
-    objc_storeStrong(&v13->_posterDataStore, a5);
+    objc_storeStrong(&v13->_posterDataStore, store);
     v16 = v13;
   }
 
   return v13;
 }
 
-- (CNContactsEnvironment)initWithCoder:(id)a3
+- (CNContactsEnvironment)initWithCoder:(id)coder
 {
   v3 = [(CNContactsEnvironment *)self init];
   v4 = v3;
@@ -213,20 +213,20 @@ void __36__CNContactsEnvironment_inMemoryURL__block_invoke()
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CNContactsEnvironment alloc] initWithSchedulerProvider:self->_schedulerProvider loggerProvider:self->_loggerProvider];
-  v5 = [(CNContactsEnvironment *)self baseURL];
-  [(CNContactsEnvironment *)v4 setBaseURL:v5];
+  baseURL = [(CNContactsEnvironment *)self baseURL];
+  [(CNContactsEnvironment *)v4 setBaseURL:baseURL];
 
   objc_storeStrong(&v4->_addressBook, self->_addressBook);
   objc_storeStrong(&v4->_abPredicateRunner, self->_abPredicateRunner);
   return v4;
 }
 
-+ (id)baseURLWithDataLocationName:(id)a3
++ (id)baseURLWithDataLocationName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   if ((*(*MEMORY[0x1E6996568] + 16))())
   {
     v4 = 0;
@@ -234,22 +234,22 @@ void __36__CNContactsEnvironment_inMemoryURL__block_invoke()
 
   else
   {
-    v5 = [MEMORY[0x1E6996700] sharedInstance];
-    v6 = [v5 cachesFolderURL];
+    mEMORY[0x1E6996700] = [MEMORY[0x1E6996700] sharedInstance];
+    cachesFolderURL = [mEMORY[0x1E6996700] cachesFolderURL];
 
-    v7 = [v6 URLByAppendingPathComponent:@"ContactsTests"];
+    v7 = [cachesFolderURL URLByAppendingPathComponent:@"ContactsTests"];
 
-    v4 = [v7 URLByAppendingPathComponent:v3 isDirectory:1];
+    v4 = [v7 URLByAppendingPathComponent:nameCopy isDirectory:1];
   }
 
   return v4;
 }
 
-- (id)copyWithDelegateInfos:(id)a3
+- (id)copyWithDelegateInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v5 = [(CNContactsEnvironment *)self copy];
-  [v5 setDelegateInfos:v4];
+  [v5 setDelegateInfos:infosCopy];
 
   [v5 setAddressBook:0];
   return v5;
@@ -258,10 +258,10 @@ void __36__CNContactsEnvironment_inMemoryURL__block_invoke()
 - (id)posterDataStoreSpy
 {
   objc_opt_class();
-  v3 = [(CNContactsEnvironment *)self posterDataStore];
+  posterDataStore = [(CNContactsEnvironment *)self posterDataStore];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = posterDataStore;
   }
 
   else

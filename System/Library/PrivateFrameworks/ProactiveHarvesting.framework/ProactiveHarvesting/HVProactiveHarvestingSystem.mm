@@ -1,12 +1,12 @@
 @interface HVProactiveHarvestingSystem
-+ (void)startWithConfigurationAsset:(id)a3;
++ (void)startWithConfigurationAsset:(id)asset;
 @end
 
 @implementation HVProactiveHarvestingSystem
 
-+ (void)startWithConfigurationAsset:(id)a3
++ (void)startWithConfigurationAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = hv_default_log_handle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -14,9 +14,9 @@
     _os_log_impl(&dword_2321EC000, v4, OS_LOG_TYPE_DEFAULT, "HVProactiveHarvestingSystem: start", v6, 2u);
   }
 
-  if (v3)
+  if (assetCopy)
   {
-    [HVContentAdmission registerConfigurationAsset:v3];
+    [HVContentAdmission registerConfigurationAsset:assetCopy];
   }
 
   +[HVScheduledTasks registerScheduledTasks];

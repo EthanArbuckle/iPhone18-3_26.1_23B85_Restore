@@ -1,32 +1,32 @@
 @interface CAMExpandingControlTextMenuItem
-+ (id)menuItemWithState:(id)a3 titleText:(id)a4 subtitle:(id)a5 selectedSubtitle:(id)a6 configuration:(id)a7;
-- (BOOL)isEqualToItem:(id)a3;
++ (id)menuItemWithState:(id)state titleText:(id)text subtitle:(id)subtitle selectedSubtitle:(id)selectedSubtitle configuration:(id)configuration;
+- (BOOL)isEqualToItem:(id)item;
 @end
 
 @implementation CAMExpandingControlTextMenuItem
 
-+ (id)menuItemWithState:(id)a3 titleText:(id)a4 subtitle:(id)a5 selectedSubtitle:(id)a6 configuration:(id)a7
++ (id)menuItemWithState:(id)state titleText:(id)text subtitle:(id)subtitle selectedSubtitle:(id)selectedSubtitle configuration:(id)configuration
 {
-  v12 = a4;
-  v16.receiver = a1;
+  textCopy = text;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS___CAMExpandingControlTextMenuItem;
-  v13 = objc_msgSendSuper2(&v16, sel__menuItemWithState_subtitle_selectedSubtitle_configuration_, a3, a5, a6, a7);
+  v13 = objc_msgSendSuper2(&v16, sel__menuItemWithState_subtitle_selectedSubtitle_configuration_, state, subtitle, selectedSubtitle, configuration);
   v14 = v13[5];
-  v13[5] = v12;
+  v13[5] = textCopy;
 
   return v13;
 }
 
-- (BOOL)isEqualToItem:(id)a3
+- (BOOL)isEqualToItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = CAMExpandingControlTextMenuItem;
-  if ([(CAMExpandingControlMenuItem *)&v9 isEqualToItem:v4])
+  if ([(CAMExpandingControlMenuItem *)&v9 isEqualToItem:itemCopy])
   {
-    v5 = [(CAMExpandingControlTextMenuItem *)self titleText];
-    v6 = [v4 titleText];
-    v7 = [v5 isEqualToString:v6];
+    titleText = [(CAMExpandingControlTextMenuItem *)self titleText];
+    titleText2 = [itemCopy titleText];
+    v7 = [titleText isEqualToString:titleText2];
   }
 
   else

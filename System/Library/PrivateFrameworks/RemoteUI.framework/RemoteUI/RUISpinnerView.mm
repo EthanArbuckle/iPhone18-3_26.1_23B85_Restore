@@ -1,21 +1,21 @@
 @interface RUISpinnerView
 - (RUIObjectModel)objectModel;
 - (id)spinnerView;
-- (void)setSpinnerColor:(id)a3;
+- (void)setSpinnerColor:(id)color;
 - (void)viewDidLayout;
 @end
 
 @implementation RUISpinnerView
 
-- (void)setSpinnerColor:(id)a3
+- (void)setSpinnerColor:(id)color
 {
-  v5 = a3;
-  if (self->_spinnerColor != v5)
+  colorCopy = color;
+  if (self->_spinnerColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_spinnerColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_spinnerColor, color);
     [(UIActivityIndicatorView *)self->_spinner setColor:self->_spinnerColor];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
@@ -34,16 +34,16 @@
     self->_spinner = v7;
 
     v9 = self->_spinner;
-    v10 = [(RUISpinnerView *)self spinnerColor];
-    if (v10)
+    spinnerColor = [(RUISpinnerView *)self spinnerColor];
+    if (spinnerColor)
     {
-      [(UIActivityIndicatorView *)v9 setColor:v10];
+      [(UIActivityIndicatorView *)v9 setColor:spinnerColor];
     }
 
     else
     {
-      v11 = [MEMORY[0x277D75348] _labelColor];
-      [(UIActivityIndicatorView *)v9 setColor:v11];
+      _labelColor = [MEMORY[0x277D75348] _labelColor];
+      [(UIActivityIndicatorView *)v9 setColor:_labelColor];
     }
 
     [(UIView *)self->_view addSubview:self->_spinner];
@@ -56,13 +56,13 @@
 - (void)viewDidLayout
 {
   v69[2] = *MEMORY[0x277D85DE8];
-  v3 = [(UIView *)self->_view superview];
+  superview = [(UIView *)self->_view superview];
   [(UIView *)self->_view frame];
-  if (v3)
+  if (superview)
   {
     v8 = v4;
     v9 = v5;
-    [v3 bounds];
+    [superview bounds];
     v11 = v10;
     v13 = v12;
     [(UIView *)self->_view setFrame:v8, v9];
@@ -76,8 +76,8 @@
 
   [(UIView *)self->_view center];
   [(UIActivityIndicatorView *)self->_spinner setCenter:?];
-  v14 = [(RUIElement *)self attributes];
-  v15 = [v14 objectForKeyedSubscript:@"label"];
+  attributes = [(RUIElement *)self attributes];
+  v15 = [attributes objectForKeyedSubscript:@"label"];
 
   if ([v15 length])
   {
@@ -93,8 +93,8 @@
       [(UIView *)self->_view addSubview:self->_label];
     }
 
-    v19 = [MEMORY[0x277D74248] defaultParagraphStyle];
-    v20 = [v19 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+    v20 = [defaultParagraphStyle mutableCopy];
 
     [v20 setLineBreakMode:0];
     v68[0] = *MEMORY[0x277D740A8];
@@ -138,8 +138,8 @@ LABEL_12:
     if (!self->_headerView)
     {
       v41 = [RUIHeaderView alloc];
-      v42 = [(RUIElement *)self->_header attributes];
-      v43 = [(RUIHeaderView *)v41 initWithAttributes:v42];
+      attributes2 = [(RUIElement *)self->_header attributes];
+      v43 = [(RUIHeaderView *)v41 initWithAttributes:attributes2];
       headerView = self->_headerView;
       self->_headerView = v43;
 
@@ -168,8 +168,8 @@ LABEL_15:
   if (!*(&self->super.super.isa + v45))
   {
     v46 = [RemoteUISectionFooter alloc];
-    v47 = [(RUIElement *)self->_footer attributes];
-    v48 = [(RemoteUISectionFooter *)v46 initWithAttributes:v47];
+    attributes3 = [(RUIElement *)self->_footer attributes];
+    v48 = [(RemoteUISectionFooter *)v46 initWithAttributes:attributes3];
     v49 = *(&self->super.super.isa + v45);
     *(&self->super.super.isa + v45) = v48;
 
@@ -187,9 +187,9 @@ LABEL_17:
     v53 = v52;
     v55 = v54;
     v56 = *(&self->super.super.isa + v50);
-    [v3 bounds];
-    [v56 headerHeightForWidth:v3 inView:v57];
-    [v3 bounds];
+    [superview bounds];
+    [v56 headerHeightForWidth:superview inView:v57];
+    [superview bounds];
     [*(&self->super.super.isa + v50) setFrame:{v53, v55}];
   }
 
@@ -201,9 +201,9 @@ LABEL_17:
     v61 = v60;
     v63 = v62;
     v64 = *(&self->super.super.isa + v58);
-    [v3 bounds];
-    [v64 footerHeightForWidth:v3 inView:v65];
-    [v3 bounds];
+    [superview bounds];
+    [v64 footerHeightForWidth:superview inView:v65];
+    [superview bounds];
     [*(&self->super.super.isa + v58) setFrame:{v61, v63}];
   }
 

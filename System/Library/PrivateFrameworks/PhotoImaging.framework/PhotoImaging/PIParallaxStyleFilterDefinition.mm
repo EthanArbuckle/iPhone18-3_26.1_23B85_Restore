@@ -1,10 +1,10 @@
 @interface PIParallaxStyleFilterDefinition
-- (BOOL)isEqualToParallaxStyleDefinition:(id)a3;
-- (BOOL)isEqualToParallaxStyleFilterDefinition:(id)a3;
+- (BOOL)isEqualToParallaxStyleDefinition:(id)definition;
+- (BOOL)isEqualToParallaxStyleFilterDefinition:(id)definition;
 - (PIParallaxStyleFilterDefinition)init;
-- (PIParallaxStyleFilterDefinition)initWithFilterName:(id)a3 parameters:(id)a4;
+- (PIParallaxStyleFilterDefinition)initWithFilterName:(id)name parameters:(id)parameters;
 - (id)description;
-- (id)evaluateWithContext:(id)a3 error:(id *)a4;
+- (id)evaluateWithContext:(id)context error:(id *)error;
 @end
 
 @implementation PIParallaxStyleFilterDefinition
@@ -13,18 +13,18 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PIParallaxStyleFilterDefinition *)self filterName];
-  v6 = [(PIParallaxStyleFilterDefinition *)self parameters];
-  v7 = [v3 stringWithFormat:@"<%@:%p filter:%@ parameters: %@>", v4, self, v5, v6];
+  filterName = [(PIParallaxStyleFilterDefinition *)self filterName];
+  parameters = [(PIParallaxStyleFilterDefinition *)self parameters];
+  v7 = [v3 stringWithFormat:@"<%@:%p filter:%@ parameters: %@>", v4, self, filterName, parameters];
 
   return v7;
 }
 
-- (id)evaluateWithContext:(id)a3 error:(id *)a4
+- (id)evaluateWithContext:(id)context error:(id *)error
 {
   v95 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  contextCopy = context;
+  if (!contextCopy)
   {
     v64 = NUAssertLogger_15312();
     if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
@@ -46,8 +46,8 @@
         v77 = dispatch_get_specific(*v66);
         v78 = MEMORY[0x1E696AF00];
         v79 = v77;
-        v80 = [v78 callStackSymbols];
-        v81 = [v80 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v78 callStackSymbols];
+        v81 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v77;
         *&buf[12] = 2114;
@@ -59,8 +59,8 @@
     else if (v69)
     {
 LABEL_48:
-      v75 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v76 = [v75 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v76 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v76;
       _os_log_error_impl(&dword_1C7694000, v68, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -72,7 +72,7 @@ LABEL_54:
     __break(1u);
   }
 
-  if (!a4)
+  if (!error)
   {
     v70 = NUAssertLogger_15312();
     if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
@@ -102,8 +102,8 @@ LABEL_54:
       v82 = dispatch_get_specific(*v72);
       v83 = MEMORY[0x1E696AF00];
       v84 = v82;
-      v85 = [v83 callStackSymbols];
-      v86 = [v85 componentsJoinedByString:@"\n"];
+      callStackSymbols3 = [v83 callStackSymbols];
+      v86 = [callStackSymbols3 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       *&buf[4] = v82;
       *&buf[12] = 2114;
@@ -114,16 +114,16 @@ LABEL_54:
     goto LABEL_54;
   }
 
-  v7 = v6;
+  v7 = contextCopy;
   v8 = MEMORY[0x1E695F648];
-  v9 = [(PIParallaxStyleFilterDefinition *)self filterName];
-  v10 = [v8 filterWithName:v9];
+  filterName = [(PIParallaxStyleFilterDefinition *)self filterName];
+  v10 = [v8 filterWithName:filterName];
 
   if (!v10)
   {
     v17 = MEMORY[0x1E69B3A48];
-    v18 = [(PIParallaxStyleFilterDefinition *)self filterName];
-    *a4 = [v17 invalidError:@"Unknown filter" object:v18];
+    filterName2 = [(PIParallaxStyleFilterDefinition *)self filterName];
+    *error = [v17 invalidError:@"Unknown filter" object:filterName2];
 
     v19 = 0;
     goto LABEL_30;
@@ -135,7 +135,7 @@ LABEL_54:
   v92 = __Block_byref_object_copy__15325;
   v93 = __Block_byref_object_dispose__15326;
   v94 = 0;
-  v11 = [(PIParallaxStyleFilterDefinition *)self parameters];
+  parameters = [(PIParallaxStyleFilterDefinition *)self parameters];
   v87[0] = MEMORY[0x1E69E9820];
   v87[1] = 3221225472;
   v87[2] = __61__PIParallaxStyleFilterDefinition_evaluateWithContext_error___block_invoke;
@@ -145,141 +145,141 @@ LABEL_54:
   v13 = v7;
   v89 = v13;
   v90 = buf;
-  [v11 enumerateKeysAndObjectsUsingBlock:v87];
+  [parameters enumerateKeysAndObjectsUsingBlock:v87];
 
   if (*(*&buf[8] + 40))
   {
     v14 = MEMORY[0x1E69B3A48];
-    v15 = [(PIParallaxStyleFilterDefinition *)self parameters];
-    v16 = [v14 errorWithCode:1 reason:@"Failed to evaluate filter parameters" object:v15 underlyingError:*(*&buf[8] + 40)];
+    parameters2 = [(PIParallaxStyleFilterDefinition *)self parameters];
+    v16 = [v14 errorWithCode:1 reason:@"Failed to evaluate filter parameters" object:parameters2 underlyingError:*(*&buf[8] + 40)];
   }
 
   else
   {
-    v20 = [v12 name];
-    v21 = [v20 containsString:@"Local"];
+    name = [v12 name];
+    v21 = [name containsString:@"Local"];
 
-    v22 = [v12 inputKeys];
+    inputKeys = [v12 inputKeys];
     v23 = *MEMORY[0x1E695FAB0];
-    v24 = [v22 containsObject:*MEMORY[0x1E695FAB0]];
+    v24 = [inputKeys containsObject:*MEMORY[0x1E695FAB0]];
 
     if (v24)
     {
-      v25 = [v13 outputImage];
+      outputImage = [v13 outputImage];
       if (v21)
       {
-        v26 = [v13 inputImage];
-        [v26 extent];
-        v27 = [v25 imageByCroppingToRect:?];
+        inputImage = [v13 inputImage];
+        [inputImage extent];
+        v27 = [outputImage imageByCroppingToRect:?];
 
-        v25 = v27;
+        outputImage = v27;
       }
 
-      [v12 setValue:v25 forKey:v23];
+      [v12 setValue:outputImage forKey:v23];
     }
 
-    v28 = [v12 inputKeys];
+    inputKeys2 = [v12 inputKeys];
     v29 = *MEMORY[0x1E695FA48];
-    v30 = [v28 containsObject:*MEMORY[0x1E695FA48]];
+    v30 = [inputKeys2 containsObject:*MEMORY[0x1E695FA48]];
 
     if (v30)
     {
-      v31 = [v13 inputImage];
-      [v12 setValue:v31 forKey:v29];
+      inputImage2 = [v13 inputImage];
+      [v12 setValue:inputImage2 forKey:v29];
     }
 
-    v32 = [v12 inputKeys];
+    inputKeys3 = [v12 inputKeys];
     v33 = *MEMORY[0x1E695FB28];
-    v34 = [v32 containsObject:*MEMORY[0x1E695FB28]];
+    v34 = [inputKeys3 containsObject:*MEMORY[0x1E695FB28]];
 
     if (v34)
     {
-      v35 = [v13 guideImage];
-      [v12 setValue:v35 forKey:v33];
+      guideImage = [v13 guideImage];
+      [v12 setValue:guideImage forKey:v33];
     }
 
-    v36 = [v12 inputKeys];
+    inputKeys4 = [v12 inputKeys];
     v37 = *MEMORY[0x1E695FAA8];
-    v38 = [v36 containsObject:*MEMORY[0x1E695FAA8]];
+    v38 = [inputKeys4 containsObject:*MEMORY[0x1E695FAA8]];
 
     if (v38)
     {
       v39 = MEMORY[0x1E695F688];
-      v40 = [v13 inputImage];
-      [v40 extent];
+      inputImage3 = [v13 inputImage];
+      [inputImage3 extent];
       v41 = [v39 vectorWithCGRect:?];
       [v12 setValue:v41 forKey:v37];
     }
 
-    v42 = [v12 inputKeys];
+    inputKeys5 = [v12 inputKeys];
     v43 = *MEMORY[0x1E695FAD0];
-    v44 = [v42 containsObject:*MEMORY[0x1E695FAD0]];
+    v44 = [inputKeys5 containsObject:*MEMORY[0x1E695FAD0]];
 
     if (v44)
     {
-      v45 = [v13 matteImage];
-      [v12 setValue:v45 forKey:v43];
+      matteImage = [v13 matteImage];
+      [v12 setValue:matteImage forKey:v43];
     }
 
-    v46 = [v12 inputKeys];
+    inputKeys6 = [v12 inputKeys];
     v47 = *MEMORY[0x1E695FAC8];
-    v48 = [v46 containsObject:*MEMORY[0x1E695FAC8]];
+    v48 = [inputKeys6 containsObject:*MEMORY[0x1E695FAC8]];
 
     if (v48)
     {
-      v49 = [v13 matteImage];
-      [v12 setValue:v49 forKey:v47];
+      matteImage2 = [v13 matteImage];
+      [v12 setValue:matteImage2 forKey:v47];
     }
 
-    v50 = [v12 inputKeys];
-    v51 = [v50 containsObject:@"inputLightMapImage"];
+    inputKeys7 = [v12 inputKeys];
+    v51 = [inputKeys7 containsObject:@"inputLightMapImage"];
 
     if (v51)
     {
-      v52 = [v13 lightMapImage];
-      [v12 setValue:v52 forKey:@"inputLightMapImage"];
+      lightMapImage = [v13 lightMapImage];
+      [v12 setValue:lightMapImage forKey:@"inputLightMapImage"];
     }
 
-    v53 = [v12 inputKeys];
-    v54 = [v53 containsObject:@"inputTargetBackgroundImage"];
+    inputKeys8 = [v12 inputKeys];
+    v54 = [inputKeys8 containsObject:@"inputTargetBackgroundImage"];
 
     if (v54)
     {
-      v55 = [v13 backgroundImage];
-      [v12 setValue:v55 forKey:@"inputTargetBackgroundImage"];
+      backgroundImage = [v13 backgroundImage];
+      [v12 setValue:backgroundImage forKey:@"inputTargetBackgroundImage"];
     }
 
-    v56 = [v12 outputImage];
-    v15 = v56;
-    if (v56)
+    outputImage2 = [v12 outputImage];
+    parameters2 = outputImage2;
+    if (outputImage2)
     {
-      [v56 extent];
+      [outputImage2 extent];
       if (!CGRectIsEmpty(v97))
       {
         if (v21)
         {
-          v58 = [v13 cache];
-          if (v58)
+          cache = [v13 cache];
+          if (cache)
           {
-            v59 = [v12 name];
-            v60 = [v59 isEqualToString:@"CILocalContrast"];
+            name2 = [v12 name];
+            v60 = [name2 isEqualToString:@"CILocalContrast"];
 
             if (v60)
             {
-              v61 = [v13 cache];
-              v62 = [v61 cachedImage:v15 forKey:@"LocalContrast"];
+              cache2 = [v13 cache];
+              v62 = [cache2 cachedImage:parameters2 forKey:@"LocalContrast"];
 
-              v15 = v62;
+              parameters2 = v62;
             }
           }
 
-          v63 = [v15 imageByClampingToExtent];
+          imageByClampingToExtent = [parameters2 imageByClampingToExtent];
 
-          v15 = v63;
+          parameters2 = imageByClampingToExtent;
         }
 
-        v15 = v15;
-        v19 = v15;
+        parameters2 = parameters2;
+        v19 = parameters2;
         goto LABEL_29;
       }
     }
@@ -288,7 +288,7 @@ LABEL_54:
   }
 
   v19 = 0;
-  *a4 = v16;
+  *error = v16;
 LABEL_29:
 
   _Block_object_dispose(buf, 8);
@@ -333,18 +333,18 @@ void __61__PIParallaxStyleFilterDefinition_evaluateWithContext_error___block_inv
   }
 }
 
-- (BOOL)isEqualToParallaxStyleFilterDefinition:(id)a3
+- (BOOL)isEqualToParallaxStyleFilterDefinition:(id)definition
 {
-  v4 = a3;
-  v5 = [(PIParallaxStyleFilterDefinition *)self filterName];
-  v6 = [v4 filterName];
-  v7 = [v5 isEqualToString:v6];
+  definitionCopy = definition;
+  filterName = [(PIParallaxStyleFilterDefinition *)self filterName];
+  filterName2 = [definitionCopy filterName];
+  v7 = [filterName isEqualToString:filterName2];
 
   if (v7)
   {
-    v8 = [(PIParallaxStyleFilterDefinition *)self parameters];
-    v9 = [v4 parameters];
-    v10 = [v8 isEqualToDictionary:v9];
+    parameters = [(PIParallaxStyleFilterDefinition *)self parameters];
+    parameters2 = [definitionCopy parameters];
+    v10 = [parameters isEqualToDictionary:parameters2];
   }
 
   else
@@ -355,15 +355,15 @@ void __61__PIParallaxStyleFilterDefinition_evaluateWithContext_error___block_inv
   return v10;
 }
 
-- (BOOL)isEqualToParallaxStyleDefinition:(id)a3
+- (BOOL)isEqualToParallaxStyleDefinition:(id)definition
 {
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v5 isEqualToString:@"filter"];
+  definitionCopy = definition;
+  type = [definitionCopy type];
+  v6 = [type isEqualToString:@"filter"];
 
   if (v6)
   {
-    v7 = [(PIParallaxStyleFilterDefinition *)self isEqualToParallaxStyleFilterDefinition:v4];
+    v7 = [(PIParallaxStyleFilterDefinition *)self isEqualToParallaxStyleFilterDefinition:definitionCopy];
   }
 
   else
@@ -374,19 +374,19 @@ void __61__PIParallaxStyleFilterDefinition_evaluateWithContext_error___block_inv
   return v7;
 }
 
-- (PIParallaxStyleFilterDefinition)initWithFilterName:(id)a3 parameters:(id)a4
+- (PIParallaxStyleFilterDefinition)initWithFilterName:(id)name parameters:(id)parameters
 {
   v13.receiver = self;
   v13.super_class = PIParallaxStyleFilterDefinition;
-  v5 = a4;
-  v6 = a3;
+  parametersCopy = parameters;
+  nameCopy = name;
   v7 = [(PIParallaxStyleFilterDefinition *)&v13 init];
-  v8 = [v6 copy];
+  v8 = [nameCopy copy];
 
   filterName = v7->_filterName;
   v7->_filterName = v8;
 
-  v10 = [v5 copy];
+  v10 = [parametersCopy copy];
   parameters = v7->_parameters;
   v7->_parameters = v10;
 
@@ -434,8 +434,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -462,8 +462,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

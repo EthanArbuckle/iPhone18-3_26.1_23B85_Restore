@@ -1,31 +1,31 @@
 @interface WOMFMessageComposeViewController
-- (_TtC9WorkoutUI32WOMFMessageComposeViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC9WorkoutUI32WOMFMessageComposeViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC9WorkoutUI32WOMFMessageComposeViewController)initWithRootViewController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC9WorkoutUI32WOMFMessageComposeViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC9WorkoutUI32WOMFMessageComposeViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC9WorkoutUI32WOMFMessageComposeViewController)initWithRootViewController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation WOMFMessageComposeViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  WOMFMessageComposeViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  WOMFMessageComposeViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  WOMFMessageComposeViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  WOMFMessageComposeViewController.viewDidDisappear(_:)(disappear);
 }
 
-- (_TtC9WorkoutUI32WOMFMessageComposeViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC9WorkoutUI32WOMFMessageComposeViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
-  if (!a3)
+  if (!class)
   {
     ObjCClassMetadata = 0;
-    if (a4)
+    if (toolbarClass)
     {
       goto LABEL_3;
     }
@@ -36,7 +36,7 @@ LABEL_5:
   }
 
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  if (!a4)
+  if (!toolbarClass)
   {
     goto LABEL_5;
   }
@@ -46,7 +46,7 @@ LABEL_3:
   return WOMFMessageComposeViewController.init(navigationBarClass:toolbarClass:)(ObjCClassMetadata, v6);
 }
 
-- (_TtC9WorkoutUI32WOMFMessageComposeViewController)initWithRootViewController:(id)a3
+- (_TtC9WorkoutUI32WOMFMessageComposeViewController)initWithRootViewController:(id)controller
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9WorkoutUI32WOMFMessageComposeViewController_messageComposeTimeoutEnabled) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9WorkoutUI32WOMFMessageComposeViewController_workoutActivityType) = 3000;
@@ -55,12 +55,12 @@ LABEL_3:
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9WorkoutUI32WOMFMessageComposeViewController_messageComposeTimer) = 0;
   v5.receiver = self;
   v5.super_class = type metadata accessor for WOMFMessageComposeViewController();
-  return [(WOMFMessageComposeViewController *)&v5 initWithRootViewController:a3];
+  return [(WOMFMessageComposeViewController *)&v5 initWithRootViewController:controller];
 }
 
-- (_TtC9WorkoutUI32WOMFMessageComposeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9WorkoutUI32WOMFMessageComposeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -72,8 +72,8 @@ LABEL_3:
     v7 = 0;
   }
 
-  v8 = a4;
-  return WOMFMessageComposeViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return WOMFMessageComposeViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

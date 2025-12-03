@@ -1,6 +1,6 @@
 @interface BKLibraryCollectionTitleView
-- (BKLibraryCollectionTitleView)initWithCoder:(id)a3;
-- (BKLibraryCollectionTitleView)initWithFrame:(CGRect)a3;
+- (BKLibraryCollectionTitleView)initWithCoder:(id)coder;
+- (BKLibraryCollectionTitleView)initWithFrame:(CGRect)frame;
 - (BKLibraryCollectionTitleViewDelegate)delegate;
 - (void)contentDidChange;
 @end
@@ -16,16 +16,16 @@
 
 - (void)contentDidChange
 {
-  v2 = self;
+  selfCopy = self;
   LibraryCollectionTitleView.contentDidChange()();
 }
 
-- (BKLibraryCollectionTitleView)initWithFrame:(CGRect)a3
+- (BKLibraryCollectionTitleView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(self + OBJC_IVAR___BKLibraryCollectionTitleView_minHeightThatCountsAsVisible) = 0x4034000000000000;
   swift_unknownObjectWeakInit();
   v9.receiver = self;
@@ -33,14 +33,14 @@
   return [(BKLibraryCollectionTitleView *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (BKLibraryCollectionTitleView)initWithCoder:(id)a3
+- (BKLibraryCollectionTitleView)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR___BKLibraryCollectionTitleView_minHeightThatCountsAsVisible) = 0x4034000000000000;
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = type metadata accessor for LibraryCollectionTitleView();
-  v5 = a3;
-  v6 = [(BKLibraryCollectionTitleView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(BKLibraryCollectionTitleView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

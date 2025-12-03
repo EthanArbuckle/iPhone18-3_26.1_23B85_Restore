@@ -6,7 +6,7 @@
 - (UIEdgeInsets)layoutMargins;
 - (UIEdgeInsets)safeAreaInsets;
 - (unsigned)thumbnailImageFormat;
-- (void)configureCollectionViewGridLayout:(id)a3 forWidth:(double)a4 safeAreaInsets:(UIEdgeInsets)a5;
+- (void)configureCollectionViewGridLayout:(id)layout forWidth:(double)width safeAreaInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation PUPhotosGridViewControllerSpec
@@ -59,21 +59,21 @@
   return result;
 }
 
-- (void)configureCollectionViewGridLayout:(id)a3 forWidth:(double)a4 safeAreaInsets:(UIEdgeInsets)a5
+- (void)configureCollectionViewGridLayout:(id)layout forWidth:(double)width safeAreaInsets:(UIEdgeInsets)insets
 {
-  v10 = a3;
+  layoutCopy = layout;
   PXEdgeInsetsForEdges();
   self->_safeAreaInsets.top = v6;
   self->_safeAreaInsets.left = v7;
   self->_safeAreaInsets.bottom = v8;
   self->_safeAreaInsets.right = v9;
-  [v10 setUsesAspectItems:{-[PUPhotosGridViewControllerSpec shouldUseAspectItems](self, "shouldUseAspectItems")}];
+  [layoutCopy setUsesAspectItems:{-[PUPhotosGridViewControllerSpec shouldUseAspectItems](self, "shouldUseAspectItems")}];
 }
 
 - (unsigned)thumbnailImageFormat
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUPhotosGridViewControllerSpec.m" lineNumber:53 description:@"Required override not found"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotosGridViewControllerSpec.m" lineNumber:53 description:@"Required override not found"];
 
   return 0;
 }
@@ -94,8 +94,8 @@
   v2 = [(PUPhotosGridViewControllerSpec *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-    [v3 bounds];
+    px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+    [px_mainScreen bounds];
     v5 = v4;
     v7 = v6;
 

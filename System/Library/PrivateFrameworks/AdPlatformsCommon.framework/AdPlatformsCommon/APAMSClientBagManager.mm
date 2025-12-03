@@ -3,8 +3,8 @@
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
 + (id)adprivacydBag;
-+ (void)isDisabledAdsPrefetch:(id)a3 withCompletionHandler:(id)a4;
-+ (void)isSubsequentAdsFetchDisabled:(id)a3 withCompletionHandler:(id)a4;
++ (void)isDisabledAdsPrefetch:(id)prefetch withCompletionHandler:(id)handler;
++ (void)isSubsequentAdsFetchDisabled:(id)disabled withCompletionHandler:(id)handler;
 @end
 
 @implementation APAMSClientBagManager
@@ -46,7 +46,7 @@
 + (BOOL)isSubsequentAdsFetchDisabled
 {
   v51 = *MEMORY[0x1E69E9840];
-  v8 = objc_msgSend_adprivacydBag(a1, a2, v2, v3, v4, v5, v6);
+  v8 = objc_msgSend_adprivacydBag(self, a2, v2, v3, v4, v5, v6);
   v9 = dispatch_semaphore_create(0);
   v45 = 0;
   v46 = &v45;
@@ -60,7 +60,7 @@
   v41[2] = sub_1BAFD3884;
   v41[3] = &unk_1E7F20EB8;
   v43 = &v45;
-  v44 = a1;
+  selfCopy = self;
   v22 = v9;
   v42 = v22;
   objc_msgSend_addFinishBlock_(v21, v23, v41, v24, v25, v26, v27);
@@ -88,42 +88,42 @@
   return v38 & 1;
 }
 
-+ (void)isSubsequentAdsFetchDisabled:(id)a3 withCompletionHandler:(id)a4
++ (void)isSubsequentAdsFetchDisabled:(id)disabled withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v11 = a4;
-  if (!v6)
+  disabledCopy = disabled;
+  handlerCopy = handler;
+  if (!disabledCopy)
   {
-    v6 = objc_msgSend_adprivacydBag(a1, v7, v8, v9, v10, v12, v13);
+    disabledCopy = objc_msgSend_adprivacydBag(self, v7, v8, v9, v10, v12, v13);
   }
 
-  v14 = objc_msgSend_BOOLForKey_(v6, v7, @"disablePromotedContentDaemonSubsequentAdsFetch", v9, v10, v12, v13);
+  v14 = objc_msgSend_BOOLForKey_(disabledCopy, v7, @"disablePromotedContentDaemonSubsequentAdsFetch", v9, v10, v12, v13);
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = sub_1BAFD3A68;
   v21[3] = &unk_1E7F20EE0;
-  v22 = v11;
-  v23 = a1;
-  v15 = v11;
+  v22 = handlerCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
   objc_msgSend_valueWithCompletion_(v14, v16, v21, v17, v18, v19, v20);
 }
 
-+ (void)isDisabledAdsPrefetch:(id)a3 withCompletionHandler:(id)a4
++ (void)isDisabledAdsPrefetch:(id)prefetch withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v11 = a4;
-  if (!v6)
+  prefetchCopy = prefetch;
+  handlerCopy = handler;
+  if (!prefetchCopy)
   {
-    v6 = objc_msgSend_adprivacydBag(a1, v7, v8, v9, v10, v12, v13);
+    prefetchCopy = objc_msgSend_adprivacydBag(self, v7, v8, v9, v10, v12, v13);
   }
 
-  v14 = objc_msgSend_BOOLForKey_(v6, v7, @"disableAdsPreFetch7006", v9, v10, v12, v13);
+  v14 = objc_msgSend_BOOLForKey_(prefetchCopy, v7, @"disableAdsPreFetch7006", v9, v10, v12, v13);
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = sub_1BAFD3C58;
   v21[3] = &unk_1E7F20F08;
-  v22 = v11;
-  v15 = v11;
+  v22 = handlerCopy;
+  v15 = handlerCopy;
   objc_msgSend_valueWithCompletion_(v14, v16, v21, v17, v18, v19, v20);
 }
 

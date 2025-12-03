@@ -9,14 +9,14 @@
 - (id)strRepForFloatData
 {
   v2 = [MEMORY[0x277CCAB68] stringWithFormat:@"[ "];
-  v3 = [a1 bytes];
-  v4 = [a1 length];
+  bytes = [self bytes];
+  v4 = [self length];
   if (v4 >= 4)
   {
     v5 = v4 >> 2;
     do
     {
-      v6 = *v3++;
+      v6 = *bytes++;
       [v2 appendFormat:@"%f ", v6];
       --v5;
     }
@@ -36,7 +36,7 @@
   v7 = v5 * a3 * +[NviConstants inputRecordingSampleByteDepth];
   v8 = v6 * a3 * +[NviConstants inputRecordingSampleByteDepth];
 
-  return [a1 subdataWithRange:{v7, v8}];
+  return [self subdataWithRange:{v7, v8}];
 }
 
 - (void)splitAudioDataToReachSampleCount:()Nvi currSampleCount:numBytesPerSample:completionHandler:
@@ -63,7 +63,7 @@
 
   else
   {
-    v12 = [a1 length];
+    v12 = [self length];
     v13 = v12 / a5;
     if (v12 / a5 >= v11)
     {
@@ -78,17 +78,17 @@
     v15 = v13 - v14;
     if (v13 <= v11)
     {
-      v16 = a1;
+      selfCopy = self;
       v17 = 0;
     }
 
     else
     {
-      v16 = [a1 subdataWithRange:{0, v14 * a5}];
-      v17 = [a1 subdataWithRange:{v14 * a5, v15 * a5}];
+      selfCopy = [self subdataWithRange:{0, v14 * a5}];
+      v17 = [self subdataWithRange:{v14 * a5, v15 * a5}];
     }
 
-    (*(v10 + 2))(v10, v16, v14, v17, v15, v14 + a4 >= a3);
+    (*(v10 + 2))(v10, selfCopy, v14, v17, v15, v14 + a4 >= a3);
   }
 
   v19 = *MEMORY[0x277D85DE8];

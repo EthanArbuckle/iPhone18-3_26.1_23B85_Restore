@@ -1,20 +1,20 @@
 @interface PLBatteryBreakdownService
-+ (BOOL)canSetQualifier:(int64_t)a3 forBundleID:(id)a4;
-+ (id)appNameForBundleID:(id)a3;
-+ (id)combineQualifiers:(id)a3;
++ (BOOL)canSetQualifier:(int64_t)qualifier forBundleID:(id)d;
++ (id)appNameForBundleID:(id)d;
++ (id)combineQualifiers:(id)qualifiers;
 + (id)installedPlugins;
-+ (id)pluginEntryFromRecord:(id)a3;
++ (id)pluginEntryFromRecord:(id)record;
 + (void)load;
 - (BOOL)checkHomeKitEvents;
 - (BOOL)inDemoMode;
-- (BOOL)isBackgroundLocationUsageAlwaysEnabled:(id)a3 withLocationDict:(id)a4;
-- (BOOL)isBackgroundRefreshEnabled:(id)a3;
-- (BOOL)shouldShowBatteryBreakdownWithTotalSumEnergy:(double)a3 withtotalSumEnergyRatioCutOff:(double)a4;
-- (BOOL)shouldSuggestAutoBrightnessWithEnergyEntries:(id)a3 andSavedEnergyPercent:(double *)a4;
-- (BOOL)shouldSuggestAutoLockWithEnergyEntries:(id)a3 andSavedEnergyPercent:(double *)a4;
-- (BOOL)shouldSuggestReduceBrightnessWithEnergyEntries:(id)a3 andSavedEnergyPercent:(double *)a4;
+- (BOOL)isBackgroundLocationUsageAlwaysEnabled:(id)enabled withLocationDict:(id)dict;
+- (BOOL)isBackgroundRefreshEnabled:(id)enabled;
+- (BOOL)shouldShowBatteryBreakdownWithTotalSumEnergy:(double)energy withtotalSumEnergyRatioCutOff:(double)off;
+- (BOOL)shouldSuggestAutoBrightnessWithEnergyEntries:(id)entries andSavedEnergyPercent:(double *)percent;
+- (BOOL)shouldSuggestAutoLockWithEnergyEntries:(id)entries andSavedEnergyPercent:(double *)percent;
+- (BOOL)shouldSuggestReduceBrightnessWithEnergyEntries:(id)entries andSavedEnergyPercent:(double *)percent;
 - (BOOL)showRootNodesInInternal;
-- (BOOL)wasGizmoConnectedInRange:(_PLTimeIntervalRange)a3;
+- (BOOL)wasGizmoConnectedInRange:(_PLTimeIntervalRange)range;
 - (NSDictionary)givenNameToMappedName;
 - (NSDictionary)gizmoDaemonToAppBundleID;
 - (NSDictionary)gizmoIDSTopicToAppBundleID;
@@ -28,47 +28,47 @@
 - (NSSet)nonAppNames;
 - (NSSet)rootNodeNames;
 - (NSSet)webAppNames;
-- (double)computeTotalBackgroundDuration:(id)a3;
-- (double)computeTotalForegroundDuration:(id)a3;
+- (double)computeTotalBackgroundDuration:(id)duration;
+- (double)computeTotalForegroundDuration:(id)duration;
 - (double)getLastUpgradeTimestamp;
 - (double)getfirstEntryTimestampFromDb;
-- (double)nonAppRuntimeWithEventForwardTableName:(id)a3 withRange:(_PLTimeIntervalRange)a4 andIdentificationKey:(id)a5;
-- (id)addForegroundAndBackgroundDurations:(id)a3 withRange:(_PLTimeIntervalRange)a4 withQueryType:(int)a5;
-- (id)addNotificationValues:(id)a3 withRange:(_PLTimeIntervalRange)a4 withQueryType:(int)a5;
-- (id)adjustBackgroundTimesWithEnergyEntries:(id)a3;
-- (id)adjustExtensionBackgroundTimeWithEnergyEntries:(id)a3;
-- (id)adjustFGBGTimeForNonAppEnergyEntry:(id)a3;
-- (id)adjustForegroundTimesWithEnergyEntries:(id)a3;
-- (id)applyDynamicNameTransformationsWithEnergyEntries:(id)a3;
-- (id)applyStaticNameTransformationsWithEnergyEntries:(id)a3;
-- (id)bundleIDsForMappedName:(id)a3;
-- (id)combineDuplicatesWithEnergyEntries:(id)a3;
-- (id)determineDisplayNamesWithEnergyEntries:(id)a3;
-- (id)energyEntriesWithRange:(_PLTimeIntervalRange)a3 withEntryTimeInterval:(double)a4 withQueryType:(int)a5;
-- (id)filterEnergyEntriesBasedOnTime:(id)a3 withQueryType:(int)a4;
-- (id)filterWithEnergyEntries:(id)a3 withQueryType:(int)a4;
-- (id)getUpgradeDataWithLastUpgradeTimestamp:(double)a3 withFirstEntryTimestampFromDB:(double)a4 withNow:(id)a5 withBeforeUpgrade:(BOOL)a6 withRange:(_PLTimeIntervalRange)a7;
-- (id)getUsageDataWithStartTime:(double)a3 withMidTime:(double)a4 withEndTime:(id)a5;
-- (id)mapCloudDocsToAppsWithEnergyEntries:(id)a3;
-- (id)mapDeletedAppsWithEnergyEntries:(id)a3;
-- (id)mapGizmoToAppsWithEnergyEntries:(id)a3;
-- (id)mapPluginsToAppsWithEnergyEntries:(id)a3;
-- (id)nonAppsRuntimesWithRange:(_PLTimeIntervalRange)a3;
-- (id)nonNullValue:(id)a3 withKey:(id)a4;
-- (id)pluginBundleIDsforBundleID:(id)a3;
-- (id)populateBLDKeysWithEnergyEntries:(id)a3;
-- (id)populateEnergyBucketKeysWithEntries:(id)a3;
-- (id)populateRootNodeEnergyKeysWithEnergyEntries:(id)a3;
-- (id)qualifiersWithEnergyEntry:(id)a3 bucketSize:(double)a4 andTotalEnergy:(double)a5;
-- (id)reaccountBackupRestoreWithEnergyEntries:(id)a3;
-- (id)reaccountExchangeEntriesWithEnergyEntries:(id)a3;
-- (id)removeNodesNotToShowInInternalUI:(id)a3 withQueryType:(int)a4;
-- (id)shouldSuggestBackgroundCPUWithEnergyEntries:(id)a3;
-- (id)shouldSuggestBackgroundLocationWithEnergyEntries:(id)a3;
-- (id)suggestionsWithEnergyEntries:(id)a3;
-- (int)appTypeForName:(id)a3;
-- (int)minimumRequiredQueryTypeForAppType:(int)a3;
-- (signed)energyMetricBucketForRootNodeID:(id)a3;
+- (double)nonAppRuntimeWithEventForwardTableName:(id)name withRange:(_PLTimeIntervalRange)range andIdentificationKey:(id)key;
+- (id)addForegroundAndBackgroundDurations:(id)durations withRange:(_PLTimeIntervalRange)range withQueryType:(int)type;
+- (id)addNotificationValues:(id)values withRange:(_PLTimeIntervalRange)range withQueryType:(int)type;
+- (id)adjustBackgroundTimesWithEnergyEntries:(id)entries;
+- (id)adjustExtensionBackgroundTimeWithEnergyEntries:(id)entries;
+- (id)adjustFGBGTimeForNonAppEnergyEntry:(id)entry;
+- (id)adjustForegroundTimesWithEnergyEntries:(id)entries;
+- (id)applyDynamicNameTransformationsWithEnergyEntries:(id)entries;
+- (id)applyStaticNameTransformationsWithEnergyEntries:(id)entries;
+- (id)bundleIDsForMappedName:(id)name;
+- (id)combineDuplicatesWithEnergyEntries:(id)entries;
+- (id)determineDisplayNamesWithEnergyEntries:(id)entries;
+- (id)energyEntriesWithRange:(_PLTimeIntervalRange)range withEntryTimeInterval:(double)interval withQueryType:(int)type;
+- (id)filterEnergyEntriesBasedOnTime:(id)time withQueryType:(int)type;
+- (id)filterWithEnergyEntries:(id)entries withQueryType:(int)type;
+- (id)getUpgradeDataWithLastUpgradeTimestamp:(double)timestamp withFirstEntryTimestampFromDB:(double)b withNow:(id)now withBeforeUpgrade:(BOOL)upgrade withRange:(_PLTimeIntervalRange)range;
+- (id)getUsageDataWithStartTime:(double)time withMidTime:(double)midTime withEndTime:(id)endTime;
+- (id)mapCloudDocsToAppsWithEnergyEntries:(id)entries;
+- (id)mapDeletedAppsWithEnergyEntries:(id)entries;
+- (id)mapGizmoToAppsWithEnergyEntries:(id)entries;
+- (id)mapPluginsToAppsWithEnergyEntries:(id)entries;
+- (id)nonAppsRuntimesWithRange:(_PLTimeIntervalRange)range;
+- (id)nonNullValue:(id)value withKey:(id)key;
+- (id)pluginBundleIDsforBundleID:(id)d;
+- (id)populateBLDKeysWithEnergyEntries:(id)entries;
+- (id)populateEnergyBucketKeysWithEntries:(id)entries;
+- (id)populateRootNodeEnergyKeysWithEnergyEntries:(id)entries;
+- (id)qualifiersWithEnergyEntry:(id)entry bucketSize:(double)size andTotalEnergy:(double)energy;
+- (id)reaccountBackupRestoreWithEnergyEntries:(id)entries;
+- (id)reaccountExchangeEntriesWithEnergyEntries:(id)entries;
+- (id)removeNodesNotToShowInInternalUI:(id)i withQueryType:(int)type;
+- (id)shouldSuggestBackgroundCPUWithEnergyEntries:(id)entries;
+- (id)shouldSuggestBackgroundLocationWithEnergyEntries:(id)entries;
+- (id)suggestionsWithEnergyEntries:(id)entries;
+- (int)appTypeForName:(id)name;
+- (int)minimumRequiredQueryTypeForAppType:(int)type;
+- (signed)energyMetricBucketForRootNodeID:(id)d;
 - (void)clearState;
 @end
 
@@ -76,7 +76,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLBatteryBreakdownService;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -146,19 +146,19 @@
 
 - (NSSet)deletedAppNames
 {
-  v2 = self;
+  selfCopy = self;
   v55[1] = *MEMORY[0x277D85DE8];
   deletedAppNames = self->_deletedAppNames;
   if (!deletedAppNames)
   {
     v4 = [(PLOperator *)PLApplicationAgent entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"AllApps"];
     v5 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"AppDeletedDate" withValue:&unk_282C12B88 withComparisonOperation:1];
-    v6 = [(PLOperator *)v2 storage];
+    storage = [(PLOperator *)selfCopy storage];
     v38 = v5;
     v55[0] = v5;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:1];
     v39 = v4;
-    v8 = [v6 entriesForKey:v4 withComparisons:v7];
+    v8 = [storage entriesForKey:v4 withComparisons:v7];
 
     v9 = PLLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -187,9 +187,9 @@
         v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"deletedAppEntries=%@", v8];
         v13 = MEMORY[0x277D3F178];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-        v15 = [v14 lastPathComponent];
+        lastPathComponent = [v14 lastPathComponent];
         v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService deletedAppNames]"];
-        [v13 logMessage:v12 fromFile:v15 fromFunction:v16 fromLineNumber:240];
+        [v13 logMessage:v12 fromFile:lastPathComponent fromFunction:v16 fromLineNumber:240];
 
         v17 = PLLogCommon();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -241,13 +241,13 @@
             if (byte_2811F6409 == 1)
             {
               v24 = v10;
-              v25 = v2;
+              v25 = selfCopy;
               v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundleID=%@", v21];
               v27 = MEMORY[0x277D3F178];
               v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-              v29 = [v28 lastPathComponent];
+              lastPathComponent2 = [v28 lastPathComponent];
               v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService deletedAppNames]"];
-              [v27 logMessage:v26 fromFile:v29 fromFunction:v30 fromLineNumber:246];
+              [v27 logMessage:v26 fromFile:lastPathComponent2 fromFunction:v30 fromLineNumber:246];
 
               v31 = PLLogCommon();
               if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -257,7 +257,7 @@
                 _os_log_debug_impl(&dword_21A4C6000, v31, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
               }
 
-              v2 = v25;
+              selfCopy = v25;
               v10 = v24;
               v18 = v40;
             }
@@ -266,11 +266,11 @@
           v32 = PLLogCommon();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
           {
-            v33 = [v22 intValue];
+            intValue = [v22 intValue];
             *buf = 138412546;
             v51 = v21;
             v52 = 1024;
-            v53 = v33;
+            v53 = intValue;
             _os_log_impl(&dword_21A4C6000, v32, OS_LOG_TYPE_DEFAULT, "bundleID=%@, appIsClip=%d", buf, 0x12u);
           }
 
@@ -289,17 +289,17 @@
       while (v43);
     }
 
-    objc_storeStrong(&v2->_deletedAppNames, obj);
+    objc_storeStrong(&selfCopy->_deletedAppNames, obj);
     v34 = PLLogCommon();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = v2->_deletedAppNames;
+      v35 = selfCopy->_deletedAppNames;
       *buf = 138412290;
       v51 = v35;
       _os_log_impl(&dword_21A4C6000, v34, OS_LOG_TYPE_DEFAULT, "DeletedAppNames = %@", buf, 0xCu);
     }
 
-    deletedAppNames = v2->_deletedAppNames;
+    deletedAppNames = selfCopy->_deletedAppNames;
   }
 
   v36 = *MEMORY[0x277D85DE8];
@@ -323,19 +323,19 @@ uint64_t __44__PLBatteryBreakdownService_deletedAppNames__block_invoke_295(uint6
 
 - (NSSet)deletedAppClipNames
 {
-  v2 = self;
+  selfCopy = self;
   v47[1] = *MEMORY[0x277D85DE8];
   deletedAppClipNames = self->_deletedAppClipNames;
   if (!deletedAppClipNames)
   {
     v4 = [(PLOperator *)PLApplicationAgent entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"AllApps"];
     v5 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"AppDeletedDate" withValue:&unk_282C12B88 withComparisonOperation:1];
-    v6 = [(PLOperator *)v2 storage];
+    storage = [(PLOperator *)selfCopy storage];
     v32 = v5;
     v47[0] = v5;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:1];
     v33 = v4;
-    v8 = [v6 entriesForKey:v4 withComparisons:v7];
+    v8 = [storage entriesForKey:v4 withComparisons:v7];
 
     v9 = PLLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -386,13 +386,13 @@ uint64_t __44__PLBatteryBreakdownService_deletedAppNames__block_invoke_295(uint6
             if (byte_2811F640A == 1)
             {
               v18 = v10;
-              v19 = v2;
+              v19 = selfCopy;
               v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundleID=%@", v15];
               v21 = MEMORY[0x277D3F178];
               v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-              v23 = [v22 lastPathComponent];
+              lastPathComponent = [v22 lastPathComponent];
               v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService deletedAppClipNames]"];
-              [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:273];
+              [v21 logMessage:v20 fromFile:lastPathComponent fromFunction:v24 fromLineNumber:273];
 
               v25 = PLLogCommon();
               if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -402,7 +402,7 @@ uint64_t __44__PLBatteryBreakdownService_deletedAppNames__block_invoke_295(uint6
                 _os_log_debug_impl(&dword_21A4C6000, v25, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
               }
 
-              v2 = v19;
+              selfCopy = v19;
               v10 = v18;
               v12 = v34;
             }
@@ -411,11 +411,11 @@ uint64_t __44__PLBatteryBreakdownService_deletedAppNames__block_invoke_295(uint6
           v26 = PLLogCommon();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
-            v27 = [v16 intValue];
+            intValue = [v16 intValue];
             *buf = 138412546;
             v43 = v15;
             v44 = 1024;
-            v45 = v27;
+            v45 = intValue;
             _os_log_impl(&dword_21A4C6000, v26, OS_LOG_TYPE_DEFAULT, "bundleID=%@, appIsClip=%d", buf, 0x12u);
           }
 
@@ -434,17 +434,17 @@ uint64_t __44__PLBatteryBreakdownService_deletedAppNames__block_invoke_295(uint6
       while (v12);
     }
 
-    objc_storeStrong(&v2->_deletedAppClipNames, obj);
+    objc_storeStrong(&selfCopy->_deletedAppClipNames, obj);
     v28 = PLLogCommon();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      deletedAppNames = v2->_deletedAppNames;
+      deletedAppNames = selfCopy->_deletedAppNames;
       *buf = 138412290;
       v43 = deletedAppNames;
       _os_log_impl(&dword_21A4C6000, v28, OS_LOG_TYPE_DEFAULT, "DeletedAppNames = %@", buf, 0xCu);
     }
 
-    deletedAppClipNames = v2->_deletedAppClipNames;
+    deletedAppClipNames = selfCopy->_deletedAppClipNames;
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -466,8 +466,8 @@ uint64_t __48__PLBatteryBreakdownService_deletedAppClipNames__block_invoke(uint6
   if (!webAppNames)
   {
     v4 = [MEMORY[0x277D3F1A0] entryKeyForOperatorName:@"PLXPCAgent" withType:*MEMORY[0x277D3F5D0] withName:@"WebApp"];
-    v5 = [(PLOperator *)self storage];
-    v6 = [v5 entriesForKey:v4];
+    storage = [(PLOperator *)self storage];
+    v6 = [storage entriesForKey:v4];
 
     v7 = [MEMORY[0x277CBEB58] set];
     v17 = 0u;
@@ -523,17 +523,17 @@ uint64_t __48__PLBatteryBreakdownService_deletedAppClipNames__block_invoke(uint6
   nodeIDToNodeName = self->_nodeIDToNodeName;
   if (!nodeIDToNodeName)
   {
-    v4 = [(PLOperator *)self storage];
-    v5 = [MEMORY[0x277D3F0C8] entryKey];
+    storage = [(PLOperator *)self storage];
+    entryKey = [MEMORY[0x277D3F0C8] entryKey];
     v28 = @"where";
-    v6 = [objc_opt_class() whereValidName];
-    v27 = v6;
+    whereValidName = [objc_opt_class() whereValidName];
+    v27 = whereValidName;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
     v29[0] = v7;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-    v9 = [v4 entriesForKey:v5 withProperties:v8];
+    v9 = [storage entriesForKey:entryKey withProperties:v8];
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -554,9 +554,9 @@ uint64_t __48__PLBatteryBreakdownService_deletedAppClipNames__block_invoke(uint6
           }
 
           v16 = *(*(&v22 + 1) + 8 * i);
-          v17 = [v16 name];
+          name = [v16 name];
           v18 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v16, "entryID")}];
-          [(NSDictionary *)v10 setObject:v17 forKeyedSubscript:v18];
+          [(NSDictionary *)dictionary setObject:name forKeyedSubscript:v18];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -566,7 +566,7 @@ uint64_t __48__PLBatteryBreakdownService_deletedAppClipNames__block_invoke(uint6
     }
 
     v19 = self->_nodeIDToNodeName;
-    self->_nodeIDToNodeName = v10;
+    self->_nodeIDToNodeName = dictionary;
 
     nodeIDToNodeName = self->_nodeIDToNodeName;
   }
@@ -578,22 +578,22 @@ uint64_t __48__PLBatteryBreakdownService_deletedAppClipNames__block_invoke(uint6
 
 - (NSDictionary)installedBundleIDToDisplayName
 {
-  v2 = self;
+  selfCopy = self;
   v81[1] = *MEMORY[0x277D85DE8];
   installedBundleIDToDisplayName = self->_installedBundleIDToDisplayName;
   if (!installedBundleIDToDisplayName)
   {
     v4 = [(PLOperator *)PLApplicationAgent entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"AllApps"];
     v5 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"AppDeletedDate" withValue:&unk_282C12B88 withComparisonOperation:0];
-    v6 = [(PLOperator *)v2 storage];
+    storage = [(PLOperator *)selfCopy storage];
     v59 = v5;
     v81[0] = v5;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v81 count:1];
     v60 = v4;
-    v8 = [v6 entriesForKey:v4 withComparisons:v7];
+    v8 = [storage entriesForKey:v4 withComparisons:v7];
 
     v9 = 0x277D3F000uLL;
-    v62 = v2;
+    v62 = selfCopy;
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
       v10 = objc_opt_class();
@@ -612,9 +612,9 @@ uint64_t __48__PLBatteryBreakdownService_deletedAppClipNames__block_invoke(uint6
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"installedAppEntries=%@", v8];
         v12 = MEMORY[0x277D3F178];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-        v14 = [v13 lastPathComponent];
+        lastPathComponent = [v13 lastPathComponent];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService installedBundleIDToDisplayName]"];
-        [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:323];
+        [v12 logMessage:v11 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:323];
 
         v16 = PLLogCommon();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -624,7 +624,7 @@ uint64_t __48__PLBatteryBreakdownService_deletedAppClipNames__block_invoke(uint6
           _os_log_debug_impl(&dword_21A4C6000, v16, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
         }
 
-        v2 = v62;
+        selfCopy = v62;
       }
     }
 
@@ -636,7 +636,7 @@ uint64_t __48__PLBatteryBreakdownService_deletedAppClipNames__block_invoke(uint6
       _os_log_debug_impl(&dword_21A4C6000, v17, OS_LOG_TYPE_DEBUG, "installedAppEntries=%@", buf, 0xCu);
     }
 
-    v65 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
@@ -662,9 +662,9 @@ uint64_t __48__PLBatteryBreakdownService_deletedAppClipNames__block_invoke(uint6
 
           v24 = *(*(&v72 + 1) + 8 * v23);
           v25 = [v24 objectForKeyedSubscript:v22];
-          v26 = [v25 intValue];
+          intValue = [v25 intValue];
 
-          if (v26 == 101)
+          if (intValue == 101)
           {
             v27 = v22;
             v28 = [v24 objectForKeyedSubscript:@"AppBundleId"];
@@ -687,9 +687,9 @@ uint64_t __48__PLBatteryBreakdownService_deletedAppClipNames__block_invoke(uint6
                 v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundleID=%@, displayName=%@", v28, v29];
                 v32 = MEMORY[0x277D3F178];
                 v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-                v34 = [v33 lastPathComponent];
+                lastPathComponent2 = [v33 lastPathComponent];
                 v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService installedBundleIDToDisplayName]"];
-                [v32 logMessage:v31 fromFile:v34 fromFunction:v35 fromLineNumber:333];
+                [v32 logMessage:v31 fromFile:lastPathComponent2 fromFunction:v35 fromLineNumber:333];
 
                 v36 = PLLogCommon();
                 if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
@@ -700,12 +700,12 @@ uint64_t __48__PLBatteryBreakdownService_deletedAppClipNames__block_invoke(uint6
                 }
 
                 v18 = v61;
-                v2 = v62;
+                selfCopy = v62;
                 v9 = 0x277D3F000;
               }
             }
 
-            [(NSDictionary *)v65 setObject:v29 forKeyedSubscript:v28];
+            [(NSDictionary *)dictionary setObject:v29 forKeyedSubscript:v28];
 
             v22 = v27;
             v20 = v64;
@@ -762,12 +762,12 @@ uint64_t __48__PLBatteryBreakdownService_deletedAppClipNames__block_invoke(uint6
               goto LABEL_48;
             }
 
-            v45 = [v44 bundleIdentifier];
-            v46 = [(NSDictionary *)v65 objectForKeyedSubscript:v45];
+            bundleIdentifier = [v44 bundleIdentifier];
+            v46 = [(NSDictionary *)dictionary objectForKeyedSubscript:bundleIdentifier];
 
             if (!v46)
             {
-              v47 = [v44 localizedName];
+              localizedName = [v44 localizedName];
               if ([MEMORY[0x277D3F180] debugEnabled])
               {
                 v48 = objc_opt_class();
@@ -783,12 +783,12 @@ uint64_t __48__PLBatteryBreakdownService_deletedAppClipNames__block_invoke(uint6
 
                 if (byte_2811F640D == 1)
                 {
-                  v49 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundleID=%@, displayName=%@", v45, v47];
+                  v49 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundleID=%@, displayName=%@", bundleIdentifier, localizedName];
                   v63 = MEMORY[0x277D3F178];
                   v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-                  v51 = [v50 lastPathComponent];
+                  lastPathComponent3 = [v50 lastPathComponent];
                   v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService installedBundleIDToDisplayName]"];
-                  [v63 logMessage:v49 fromFile:v51 fromFunction:v52 fromLineNumber:351];
+                  [v63 logMessage:v49 fromFile:lastPathComponent3 fromFunction:v52 fromLineNumber:351];
 
                   v53 = v49;
                   v54 = PLLogCommon();
@@ -799,24 +799,24 @@ uint64_t __48__PLBatteryBreakdownService_deletedAppClipNames__block_invoke(uint6
                     _os_log_debug_impl(&dword_21A4C6000, v54, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
                   }
 
-                  v2 = v62;
+                  selfCopy = v62;
                   v40 = 0x278257000;
                 }
               }
 
-              [(NSDictionary *)v65 setObject:v47 forKeyedSubscript:v45];
+              [(NSDictionary *)dictionary setObject:localizedName forKeyedSubscript:bundleIdentifier];
             }
           }
 
           else
           {
-            v45 = PLLogCommon();
-            if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
+            bundleIdentifier = PLLogCommon();
+            if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_DEBUG))
             {
-              v55 = [v44 bundleIdentifier];
+              bundleIdentifier2 = [v44 bundleIdentifier];
               *buf = 138412290;
-              v80 = v55;
-              _os_log_debug_impl(&dword_21A4C6000, v45, OS_LOG_TYPE_DEBUG, "LSApplicationRecord Skipping non system / non user bundleID=%@", buf, 0xCu);
+              v80 = bundleIdentifier2;
+              _os_log_debug_impl(&dword_21A4C6000, bundleIdentifier, OS_LOG_TYPE_DEBUG, "LSApplicationRecord Skipping non system / non user bundleID=%@", buf, 0xCu);
             }
           }
 
@@ -831,10 +831,10 @@ LABEL_48:
       while (v41);
     }
 
-    v56 = v2->_installedBundleIDToDisplayName;
-    v2->_installedBundleIDToDisplayName = v65;
+    v56 = selfCopy->_installedBundleIDToDisplayName;
+    selfCopy->_installedBundleIDToDisplayName = dictionary;
 
-    installedBundleIDToDisplayName = v2->_installedBundleIDToDisplayName;
+    installedBundleIDToDisplayName = selfCopy->_installedBundleIDToDisplayName;
   }
 
   v57 = *MEMORY[0x277D85DE8];
@@ -865,19 +865,19 @@ uint64_t __59__PLBatteryBreakdownService_installedBundleIDToDisplayName__block_i
 
 - (NSDictionary)installedPluginBundleIDToPluginEntry
 {
-  v2 = self;
+  selfCopy = self;
   v74[1] = *MEMORY[0x277D85DE8];
   installedPluginBundleIDToPluginEntry = self->_installedPluginBundleIDToPluginEntry;
   if (!installedPluginBundleIDToPluginEntry)
   {
     v4 = [(PLOperator *)PLApplicationAgent entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"AllPlugins"];
     v5 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"PluginDeletedDate" withValue:&unk_282C12B88 withComparisonOperation:0];
-    v6 = [(PLOperator *)v2 storage];
+    storage = [(PLOperator *)selfCopy storage];
     v51 = v5;
     v74[0] = v5;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v74 count:1];
     v52 = v4;
-    v8 = [v6 entriesForKey:v4 withComparisons:v7];
+    v8 = [storage entriesForKey:v4 withComparisons:v7];
 
     v9 = 0x277D3F000uLL;
     if ([MEMORY[0x277D3F180] debugEnabled])
@@ -898,9 +898,9 @@ uint64_t __59__PLBatteryBreakdownService_installedBundleIDToDisplayName__block_i
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"installedPluginEntries=%@", v8];
         v12 = MEMORY[0x277D3F178];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-        v14 = [v13 lastPathComponent];
+        lastPathComponent = [v13 lastPathComponent];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService installedPluginBundleIDToPluginEntry]"];
-        [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:373];
+        [v12 logMessage:v11 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:373];
 
         v16 = PLLogCommon();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -914,7 +914,7 @@ uint64_t __59__PLBatteryBreakdownService_installedBundleIDToDisplayName__block_i
       }
     }
 
-    v58 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
@@ -922,7 +922,7 @@ uint64_t __59__PLBatteryBreakdownService_installedBundleIDToDisplayName__block_i
     v17 = v8;
     v18 = [v17 countByEnumeratingWithState:&v65 objects:v71 count:16];
     v54 = v17;
-    v55 = v2;
+    v55 = selfCopy;
     if (v18)
     {
       v19 = v18;
@@ -957,9 +957,9 @@ uint64_t __59__PLBatteryBreakdownService_installedBundleIDToDisplayName__block_i
               v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"pluginBundleID=%@", v23];
               v26 = MEMORY[0x277D3F178];
               v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-              v28 = [v27 lastPathComponent];
+              lastPathComponent2 = [v27 lastPathComponent];
               v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService installedPluginBundleIDToPluginEntry]"];
-              [v26 logMessage:v25 fromFile:v28 fromFunction:v29 fromLineNumber:378];
+              [v26 logMessage:v25 fromFile:lastPathComponent2 fromFunction:v29 fromLineNumber:378];
 
               v30 = PLLogCommon();
               if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -970,12 +970,12 @@ uint64_t __59__PLBatteryBreakdownService_installedBundleIDToDisplayName__block_i
               }
 
               v17 = v54;
-              v2 = v55;
+              selfCopy = v55;
               v9 = 0x277D3F000uLL;
             }
           }
 
-          [(NSDictionary *)v58 setObject:v22 forKeyedSubscript:v23];
+          [(NSDictionary *)dictionary setObject:v22 forKeyedSubscript:v23];
 
           ++v21;
         }
@@ -992,7 +992,7 @@ uint64_t __59__PLBatteryBreakdownService_installedBundleIDToDisplayName__block_i
     v60 = 0u;
     v61 = 0u;
     v31 = +[PLBatteryBreakdownService installedPlugins];
-    v32 = v58;
+    v32 = dictionary;
     v57 = [v31 countByEnumeratingWithState:&v60 objects:v70 count:16];
     if (v57)
     {
@@ -1037,9 +1037,9 @@ uint64_t __59__PLBatteryBreakdownService_installedBundleIDToDisplayName__block_i
 
                 v43 = MEMORY[0x277D3F178];
                 v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-                v45 = [v44 lastPathComponent];
+                lastPathComponent3 = [v44 lastPathComponent];
                 v46 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService installedPluginBundleIDToPluginEntry]"];
-                [v43 logMessage:v42 fromFile:v45 fromFunction:v46 fromLineNumber:389];
+                [v43 logMessage:v42 fromFile:lastPathComponent3 fromFunction:v46 fromLineNumber:389];
 
                 v47 = PLLogCommon();
                 if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
@@ -1049,9 +1049,9 @@ uint64_t __59__PLBatteryBreakdownService_installedBundleIDToDisplayName__block_i
                   _os_log_debug_impl(&dword_21A4C6000, v47, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
                 }
 
-                v2 = v55;
+                selfCopy = v55;
                 v9 = 0x277D3F000;
-                v32 = v58;
+                v32 = dictionary;
                 v31 = v53;
               }
             }
@@ -1069,10 +1069,10 @@ uint64_t __59__PLBatteryBreakdownService_installedBundleIDToDisplayName__block_i
       while (v57);
     }
 
-    v48 = v2->_installedPluginBundleIDToPluginEntry;
-    v2->_installedPluginBundleIDToPluginEntry = v32;
+    v48 = selfCopy->_installedPluginBundleIDToPluginEntry;
+    selfCopy->_installedPluginBundleIDToPluginEntry = v32;
 
-    installedPluginBundleIDToPluginEntry = v2->_installedPluginBundleIDToPluginEntry;
+    installedPluginBundleIDToPluginEntry = selfCopy->_installedPluginBundleIDToPluginEntry;
   }
 
   v49 = *MEMORY[0x277D85DE8];
@@ -1101,21 +1101,21 @@ uint64_t __65__PLBatteryBreakdownService_installedPluginBundleIDToPluginEntry__b
   return result;
 }
 
-- (id)pluginBundleIDsforBundleID:(id)a3
+- (id)pluginBundleIDsforBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(PLBatteryBreakdownService *)self installedPluginBundleIDToPluginEntry];
+  dCopy = d;
+  installedPluginBundleIDToPluginEntry = [(PLBatteryBreakdownService *)self installedPluginBundleIDToPluginEntry];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__PLBatteryBreakdownService_pluginBundleIDsforBundleID___block_invoke;
   v10[3] = &unk_2782617F0;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 keysOfEntriesPassingTest:v10];
+  v11 = dCopy;
+  v6 = dCopy;
+  v7 = [installedPluginBundleIDToPluginEntry keysOfEntriesPassingTest:v10];
 
-  v8 = [v7 allObjects];
+  allObjects = [v7 allObjects];
 
-  return v8;
+  return allObjects;
 }
 
 uint64_t __56__PLBatteryBreakdownService_pluginBundleIDsforBundleID___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1126,7 +1126,7 @@ uint64_t __56__PLBatteryBreakdownService_pluginBundleIDsforBundleID___block_invo
   return v5;
 }
 
-+ (id)appNameForBundleID:(id)a3
++ (id)appNameForBundleID:(id)d
 {
   v3 = SBSCopyLocalizedApplicationNameForDisplayIdentifier();
 
@@ -1137,7 +1137,7 @@ uint64_t __56__PLBatteryBreakdownService_pluginBundleIDsforBundleID___block_invo
 {
   v17 = *MEMORY[0x277D85DE8];
   v2 = objc_autoreleasePoolPush();
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1160,7 +1160,7 @@ uint64_t __56__PLBatteryBreakdownService_pluginBundleIDsforBundleID___block_invo
         v9 = [PLBatteryBreakdownService pluginEntryFromRecord:*(*(&v12 + 1) + 8 * i)];
         if (v9)
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
@@ -1173,46 +1173,46 @@ uint64_t __56__PLBatteryBreakdownService_pluginBundleIDsforBundleID___block_invo
   objc_autoreleasePoolPop(v2);
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
-+ (id)pluginEntryFromRecord:(id)a3
++ (id)pluginEntryFromRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = [(PLOperator *)PLApplicationAgent entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"AllPlugins"];
-  v5 = [v3 bundleIdentifier];
-  if (v5)
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  if (bundleIdentifier)
   {
-    v6 = [v3 containingBundleRecord];
-    if (v6)
+    containingBundleRecord = [recordCopy containingBundleRecord];
+    if (containingBundleRecord)
     {
-      v7 = v6;
-      v8 = [v3 containingBundleRecord];
-      v9 = [v8 bundleIdentifier];
-      if (v9)
+      v7 = containingBundleRecord;
+      containingBundleRecord2 = [recordCopy containingBundleRecord];
+      bundleIdentifier2 = [containingBundleRecord2 bundleIdentifier];
+      if (bundleIdentifier2)
       {
-        v10 = v9;
-        v11 = [v3 executableURL];
+        v10 = bundleIdentifier2;
+        executableURL = [recordCopy executableURL];
 
-        if (v11)
+        if (executableURL)
         {
-          v5 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v4];
-          v12 = [v3 bundleIdentifier];
-          [v5 setObject:v12 forKeyedSubscript:@"PluginId"];
+          bundleIdentifier = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v4];
+          bundleIdentifier3 = [recordCopy bundleIdentifier];
+          [bundleIdentifier setObject:bundleIdentifier3 forKeyedSubscript:@"PluginId"];
 
-          v13 = [v3 containingBundleRecord];
-          v14 = [v13 bundleIdentifier];
-          [v5 setObject:v14 forKeyedSubscript:@"PluginParentApp"];
+          containingBundleRecord3 = [recordCopy containingBundleRecord];
+          bundleIdentifier4 = [containingBundleRecord3 bundleIdentifier];
+          [bundleIdentifier setObject:bundleIdentifier4 forKeyedSubscript:@"PluginParentApp"];
 
-          v15 = [v3 extensionPointRecord];
-          v16 = [v15 identifier];
-          [v5 setObject:v16 forKeyedSubscript:@"PluginType"];
+          extensionPointRecord = [recordCopy extensionPointRecord];
+          identifier = [extensionPointRecord identifier];
+          [bundleIdentifier setObject:identifier forKeyedSubscript:@"PluginType"];
 
-          v17 = [v3 executableURL];
-          v18 = [v17 path];
-          [v5 setObject:v18 forKeyedSubscript:@"PluginExecutableName"];
+          executableURL2 = [recordCopy executableURL];
+          path = [executableURL2 path];
+          [bundleIdentifier setObject:path forKeyedSubscript:@"PluginExecutableName"];
 
-          [v5 setObject:&unk_282C12B88 forKeyedSubscript:@"PluginDeletedDate"];
+          [bundleIdentifier setObject:&unk_282C12B88 forKeyedSubscript:@"PluginDeletedDate"];
           goto LABEL_9;
         }
 
@@ -1221,12 +1221,12 @@ uint64_t __56__PLBatteryBreakdownService_pluginBundleIDsforBundleID___block_invo
     }
 
 LABEL_8:
-    v5 = 0;
+    bundleIdentifier = 0;
   }
 
 LABEL_9:
 
-  return v5;
+  return bundleIdentifier;
 }
 
 - (NSDictionary)gizmoDaemonToAppBundleID
@@ -1603,15 +1603,15 @@ uint64_t __139__PLBatteryBreakdownService_batteryBreakdownWithTimeRange_withData
   return result;
 }
 
-- (id)nonNullValue:(id)a3 withKey:(id)a4
+- (id)nonNullValue:(id)value withKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:v6];
+  valueCopy = value;
+  keyCopy = key;
+  v7 = [valueCopy objectForKeyedSubscript:keyCopy];
 
   if (v7)
   {
-    v8 = [v5 objectForKeyedSubscript:v6];
+    v8 = [valueCopy objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -1622,15 +1622,15 @@ uint64_t __139__PLBatteryBreakdownService_batteryBreakdownWithTimeRange_withData
   return v8;
 }
 
-- (id)suggestionsWithEnergyEntries:(id)a3
+- (id)suggestionsWithEnergyEntries:(id)entries
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  entriesCopy = entries;
+  array = [MEMORY[0x277CBEB18] array];
   v6 = objc_opt_new();
   v52 = 0.0;
   v7 = 0x277CBE000;
-  if ([(PLBatteryBreakdownService *)self shouldSuggestAutoLockWithEnergyEntries:v4 andSavedEnergyPercent:&v52])
+  if ([(PLBatteryBreakdownService *)self shouldSuggestAutoLockWithEnergyEntries:entriesCopy andSavedEnergyPercent:&v52])
   {
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -1650,9 +1650,9 @@ uint64_t __139__PLBatteryBreakdownService_batteryBreakdownWithTimeRange_withData
         v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"suggesting autolock"];
         v10 = MEMORY[0x277D3F178];
         v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-        v12 = [v11 lastPathComponent];
+        lastPathComponent = [v11 lastPathComponent];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService suggestionsWithEnergyEntries:]"];
-        [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:934];
+        [v10 logMessage:v9 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:934];
 
         v14 = PLLogCommon();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1672,7 +1672,7 @@ uint64_t __139__PLBatteryBreakdownService_batteryBreakdownWithTimeRange_withData
     v15 = [MEMORY[0x277CCABB0] numberWithDouble:v52];
     v58[1] = v15;
     v16 = [*(v7 + 2752) dictionaryWithObjects:v58 forKeys:v57 count:2];
-    [v5 addObject:v16];
+    [array addObject:v16];
 
     ADClientSetValueForScalarKey();
     [v6 setObject:@"suggestion" forKeyedSubscript:@"category"];
@@ -1685,7 +1685,7 @@ uint64_t __139__PLBatteryBreakdownService_batteryBreakdownWithTimeRange_withData
     AnalyticsSendEventLazy();
   }
 
-  if ([(PLBatteryBreakdownService *)self shouldSuggestAutoBrightnessWithEnergyEntries:v4 andSavedEnergyPercent:&v52])
+  if ([(PLBatteryBreakdownService *)self shouldSuggestAutoBrightnessWithEnergyEntries:entriesCopy andSavedEnergyPercent:&v52])
   {
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -1705,9 +1705,9 @@ uint64_t __139__PLBatteryBreakdownService_batteryBreakdownWithTimeRange_withData
         v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"suggesting autobrightness"];
         v19 = MEMORY[0x277D3F178];
         v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-        v21 = [v20 lastPathComponent];
+        lastPathComponent2 = [v20 lastPathComponent];
         v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService suggestionsWithEnergyEntries:]"];
-        [v19 logMessage:v18 fromFile:v21 fromFunction:v22 fromLineNumber:947];
+        [v19 logMessage:v18 fromFile:lastPathComponent2 fromFunction:v22 fromLineNumber:947];
 
         v23 = PLLogCommon();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -1727,7 +1727,7 @@ uint64_t __139__PLBatteryBreakdownService_batteryBreakdownWithTimeRange_withData
     v24 = [MEMORY[0x277CCABB0] numberWithDouble:v52];
     v56[1] = v24;
     v25 = [*(v7 + 2752) dictionaryWithObjects:v56 forKeys:v55 count:2];
-    [v5 addObject:v25];
+    [array addObject:v25];
 
     ADClientSetValueForScalarKey();
     [v6 setObject:@"suggestion" forKeyedSubscript:@"category"];
@@ -1740,7 +1740,7 @@ uint64_t __139__PLBatteryBreakdownService_batteryBreakdownWithTimeRange_withData
     AnalyticsSendEventLazy();
   }
 
-  if ([(PLBatteryBreakdownService *)self shouldSuggestReduceBrightnessWithEnergyEntries:v4 andSavedEnergyPercent:&v52])
+  if ([(PLBatteryBreakdownService *)self shouldSuggestReduceBrightnessWithEnergyEntries:entriesCopy andSavedEnergyPercent:&v52])
   {
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -1760,9 +1760,9 @@ uint64_t __139__PLBatteryBreakdownService_batteryBreakdownWithTimeRange_withData
         v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"suggesting reduce brightness"];
         v28 = MEMORY[0x277D3F178];
         v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-        v30 = [v29 lastPathComponent];
+        lastPathComponent3 = [v29 lastPathComponent];
         v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService suggestionsWithEnergyEntries:]"];
-        [v28 logMessage:v27 fromFile:v30 fromFunction:v31 fromLineNumber:960];
+        [v28 logMessage:v27 fromFile:lastPathComponent3 fromFunction:v31 fromLineNumber:960];
 
         v32 = PLLogCommon();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -1782,7 +1782,7 @@ uint64_t __139__PLBatteryBreakdownService_batteryBreakdownWithTimeRange_withData
     v33 = [MEMORY[0x277CCABB0] numberWithDouble:v52];
     v54[1] = v33;
     v34 = [*(v7 + 2752) dictionaryWithObjects:v54 forKeys:v53 count:2];
-    [v5 addObject:v34];
+    [array addObject:v34];
 
     ADClientSetValueForScalarKey();
     [v6 setObject:@"suggestion" forKeyedSubscript:@"category"];
@@ -1815,9 +1815,9 @@ uint64_t __139__PLBatteryBreakdownService_batteryBreakdownWithTimeRange_withData
         v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"suggesting high activity after upgrade"];
         v37 = MEMORY[0x277D3F178];
         v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-        v39 = [v38 lastPathComponent];
+        lastPathComponent4 = [v38 lastPathComponent];
         v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService suggestionsWithEnergyEntries:]"];
-        [v37 logMessage:v36 fromFile:v39 fromFunction:v40 fromLineNumber:1037];
+        [v37 logMessage:v36 fromFile:lastPathComponent4 fromFunction:v40 fromLineNumber:1037];
 
         v41 = PLLogCommon();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
@@ -1834,12 +1834,12 @@ uint64_t __139__PLBatteryBreakdownService_batteryBreakdownWithTimeRange_withData
     [v6 setObject:@"upgradeUsage" forKeyedSubscript:@"type"];
     v44 = v6;
     AnalyticsSendEventLazy();
-    [v5 addObject:&unk_282C192F0];
+    [array addObject:&unk_282C192F0];
   }
 
   v42 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
 uint64_t __58__PLBatteryBreakdownService_suggestionsWithEnergyEntries___block_invoke(uint64_t a1)
@@ -1870,48 +1870,48 @@ uint64_t __58__PLBatteryBreakdownService_suggestionsWithEnergyEntries___block_in
   return result;
 }
 
-- (BOOL)isBackgroundRefreshEnabled:(id)a3
+- (BOOL)isBackgroundRefreshEnabled:(id)enabled
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAC38] processInfo];
-  v5 = [v4 isLowPowerModeEnabled];
+  enabledCopy = enabled;
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-  if (v5)
+  if (isLowPowerModeEnabled)
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
     v7 = CFPreferencesCopyAppValue(@"KeepAppsUpToDateAppList", @"com.apple.mt");
-    v8 = [v7 objectForKey:v3];
+    v8 = [v7 objectForKey:enabledCopy];
     v9 = v8;
     if (v8)
     {
-      v6 = [v8 BOOLValue];
+      bOOLValue = [v8 BOOLValue];
     }
 
     else
     {
-      v6 = 1;
+      bOOLValue = 1;
     }
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (BOOL)isBackgroundLocationUsageAlwaysEnabled:(id)a3 withLocationDict:(id)a4
+- (BOOL)isBackgroundLocationUsageAlwaysEnabled:(id)enabled withLocationDict:(id)dict
 {
-  v4 = [a4 objectForKeyedSubscript:a3];
+  v4 = [dict objectForKeyedSubscript:enabled];
   v5 = [MEMORY[0x277CBFC10] entityAuthorizationForLocationDictionary:v4] == 4;
 
   return v5;
 }
 
-- (id)shouldSuggestBackgroundCPUWithEnergyEntries:(id)a3
+- (id)shouldSuggestBackgroundCPUWithEnergyEntries:(id)entries
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entriesCopy = entries;
   v5 = 160;
   if (self->_totalEnergyDay == 0.0)
   {
@@ -1926,13 +1926,13 @@ uint64_t __58__PLBatteryBreakdownService_suggestionsWithEnergyEntries___block_in
     v10 = [v7 rootNodeQualificationNameWithQualificationName:v8 withRootNodeName:v9];
 
     v11 = v10;
-    v35 = v4;
+    v35 = entriesCopy;
     v36 = objc_opt_new();
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v12 = v4;
+    v12 = entriesCopy;
     v13 = [v12 countByEnumeratingWithState:&v38 objects:v44 count:16];
     if (v13)
     {
@@ -2003,7 +2003,7 @@ uint64_t __58__PLBatteryBreakdownService_suggestionsWithEnergyEntries___block_in
       v6 = 0;
     }
 
-    v4 = v35;
+    entriesCopy = v35;
   }
 
   v33 = *MEMORY[0x277D85DE8];
@@ -2011,10 +2011,10 @@ uint64_t __58__PLBatteryBreakdownService_suggestionsWithEnergyEntries___block_in
   return v6;
 }
 
-- (id)shouldSuggestBackgroundLocationWithEnergyEntries:(id)a3
+- (id)shouldSuggestBackgroundLocationWithEnergyEntries:(id)entries
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entriesCopy = entries;
   if (self->_totalEnergyDay == 0.0)
   {
     v5 = 0;
@@ -2028,7 +2028,7 @@ uint64_t __58__PLBatteryBreakdownService_suggestionsWithEnergyEntries___block_in
     v8 = [&unk_282C15960 objectAtIndexedSubscript:48];
     v56 = [v6 rootNodeQualificationNameWithQualificationName:v7 withRootNodeName:v8];
 
-    v9 = self;
+    selfCopy = self;
     v10 = objc_opt_class();
     v11 = [&unk_282C15978 objectAtIndexedSubscript:2];
     v12 = [&unk_282C15990 objectAtIndexedSubscript:12];
@@ -2039,13 +2039,13 @@ uint64_t __58__PLBatteryBreakdownService_suggestionsWithEnergyEntries___block_in
     v15 = [&unk_282C159C0 objectAtIndexedSubscript:13];
     v54 = [v13 rootNodeQualificationNameWithQualificationName:v14 withRootNodeName:v15];
 
-    v51 = v4;
+    v51 = entriesCopy;
     v52 = objc_opt_new();
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v16 = v4;
+    v16 = entriesCopy;
     v17 = [v16 countByEnumeratingWithState:&v57 objects:v63 count:16];
     if (v17)
     {
@@ -2098,7 +2098,7 @@ uint64_t __58__PLBatteryBreakdownService_suggestionsWithEnergyEntries___block_in
 
             if (v43 / v33 * 100.0 > 33.0)
             {
-              v44 = v43 / v9->_totalEnergyDay * 100.0;
+              v44 = v43 / selfCopy->_totalEnergyDay * 100.0;
               if (v44 > 5.0)
               {
                 v61[0] = @"PLBatteryUISuggestionEnergyKey";
@@ -2111,7 +2111,7 @@ uint64_t __58__PLBatteryBreakdownService_suggestionsWithEnergyEntries___block_in
                 v48 = [v21 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
                 [v52 setObject:v47 forKeyedSubscript:v48];
 
-                v9 = v53;
+                selfCopy = v53;
               }
             }
           }
@@ -2133,7 +2133,7 @@ uint64_t __58__PLBatteryBreakdownService_suggestionsWithEnergyEntries___block_in
       v5 = 0;
     }
 
-    v4 = v51;
+    entriesCopy = v51;
   }
 
   v49 = *MEMORY[0x277D85DE8];
@@ -2141,12 +2141,12 @@ uint64_t __58__PLBatteryBreakdownService_suggestionsWithEnergyEntries___block_in
   return v5;
 }
 
-- (BOOL)shouldSuggestAutoLockWithEnergyEntries:(id)a3 andSavedEnergyPercent:(double *)a4
+- (BOOL)shouldSuggestAutoLockWithEnergyEntries:(id)entries andSavedEnergyPercent:(double *)percent
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277D26298] sharedConnection];
-  v7 = [v6 effectiveValueForSetting:*MEMORY[0x277D25D70]];
+  entriesCopy = entries;
+  mEMORY[0x277D26298] = [MEMORY[0x277D26298] sharedConnection];
+  v7 = [mEMORY[0x277D26298] effectiveValueForSetting:*MEMORY[0x277D25D70]];
 
   if ([v7 intValue] == 0x7FFFFFFF)
   {
@@ -2164,9 +2164,9 @@ uint64_t __58__PLBatteryBreakdownService_suggestionsWithEnergyEntries___block_in
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v16 = v5;
+    v16 = entriesCopy;
     v17 = [v16 countByEnumeratingWithState:&v34 objects:v38 count:16];
-    v33 = a4;
+    percentCopy = percent;
     if (v17)
     {
       v18 = v17;
@@ -2202,7 +2202,7 @@ uint64_t __58__PLBatteryBreakdownService_suggestionsWithEnergyEntries___block_in
     }
 
     [MEMORY[0x277D3F258] defaultBatteryEnergyCapacity];
-    *v33 = v20 * 100.0 / v29;
+    *percentCopy = v20 * 100.0 / v29;
     [MEMORY[0x277D3F258] defaultBatteryEnergyCapacity];
     v28 = v20 > v30 * 0.01;
   }
@@ -2216,7 +2216,7 @@ uint64_t __58__PLBatteryBreakdownService_suggestionsWithEnergyEntries___block_in
   return v28;
 }
 
-- (BOOL)shouldSuggestAutoBrightnessWithEnergyEntries:(id)a3 andSavedEnergyPercent:(double *)a4
+- (BOOL)shouldSuggestAutoBrightnessWithEnergyEntries:(id)entries andSavedEnergyPercent:(double *)percent
 {
   v46 = *MEMORY[0x277D85DE8];
   if (+[PLDisplayAgent shouldLogALSPowerSaved])
@@ -2232,8 +2232,8 @@ LABEL_21:
     }
 
     v9 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"ALSPowerSaved"];
-    v10 = [(PLOperator *)self storage];
-    v11 = [v10 entriesForKey:v9];
+    storage = [(PLOperator *)self storage];
+    v11 = [storage entriesForKey:v9];
 
     v43 = 0u;
     v44 = 0u;
@@ -2245,7 +2245,7 @@ LABEL_21:
     {
       v14 = v13;
       v39 = v9;
-      v40 = a4;
+      percentCopy = percent;
       v15 = 0;
       v16 = *v42;
       v17 = 0.0;
@@ -2267,9 +2267,9 @@ LABEL_21:
             [v21 doubleValue];
             v23 = v22;
 
-            v24 = [v20 entryDate];
-            v25 = [v19 entryDate];
-            [v24 timeIntervalSinceDate:v25];
+            entryDate = [v20 entryDate];
+            entryDate2 = [v19 entryDate];
+            [entryDate timeIntervalSinceDate:entryDate2];
             v27 = v26;
 
             v17 = v17 + v23 * (v27 / 3600.0);
@@ -2290,7 +2290,7 @@ LABEL_21:
       if (!v15)
       {
         v9 = v39;
-        a4 = v40;
+        percent = percentCopy;
         goto LABEL_20;
       }
 
@@ -2298,14 +2298,14 @@ LABEL_21:
       [v28 doubleValue];
       v30 = v29;
 
-      v31 = [MEMORY[0x277CBEAA8] monotonicDate];
-      v32 = [v15 entryDate];
-      [v31 timeIntervalSinceDate:v32];
+      monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+      entryDate3 = [v15 entryDate];
+      [monotonicDate timeIntervalSinceDate:entryDate3];
       v34 = v33;
 
       v17 = v17 + v30 * (v34 / 3600.0);
       v9 = v39;
-      a4 = v40;
+      percent = percentCopy;
     }
 
     else
@@ -2316,7 +2316,7 @@ LABEL_21:
 
 LABEL_20:
     [MEMORY[0x277D3F258] defaultBatteryEnergyCapacity];
-    *a4 = v17 * 100.0 / v35;
+    *percent = v17 * 100.0 / v35;
     [MEMORY[0x277D3F258] defaultBatteryEnergyCapacity];
     v8 = v17 > v36 * 0.01;
 
@@ -2329,18 +2329,18 @@ LABEL_22:
   return v8;
 }
 
-- (BOOL)shouldSuggestReduceBrightnessWithEnergyEntries:(id)a3 andSavedEnergyPercent:(double *)a4
+- (BOOL)shouldSuggestReduceBrightnessWithEnergyEntries:(id)entries andSavedEnergyPercent:(double *)percent
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  entriesCopy = entries;
   if ([MEMORY[0x277D3F258] isALSCurveHigherThanDefault])
   {
-    v22 = a4;
+    percentCopy = percent;
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = v5;
+    v6 = entriesCopy;
     v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v7)
     {
@@ -2378,7 +2378,7 @@ LABEL_22:
     }
 
     [MEMORY[0x277D3F258] defaultBatteryEnergyCapacity];
-    *v22 = v10 * 100.0 / v18;
+    *percentCopy = v10 * 100.0 / v18;
     [MEMORY[0x277D3F258] defaultBatteryEnergyCapacity];
     v17 = v10 > v19 * 0.05;
   }
@@ -2416,14 +2416,14 @@ LABEL_22:
   v4 = [(PLOperator *)PLAppTimeService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"AppRunTime"];
   v5 = [MEMORY[0x277D3F128] entryKeyForType:v3 andName:*MEMORY[0x277D3F318]];
   v6 = [MEMORY[0x277D3F128] entryKeyForType:v3 andName:*MEMORY[0x277D3F2F0]];
-  v7 = [(PLOperator *)self storage];
-  v8 = [v7 entryForKey:v4 withID:1];
+  storage = [(PLOperator *)self storage];
+  v8 = [storage entryForKey:v4 withID:1];
 
-  v9 = [(PLOperator *)self storage];
-  v10 = [v9 entryForKey:v5 withID:1];
+  storage2 = [(PLOperator *)self storage];
+  v10 = [storage2 entryForKey:v5 withID:1];
 
-  v11 = [(PLOperator *)self storage];
-  v12 = [v11 entryForKey:v6 withID:1];
+  storage3 = [(PLOperator *)self storage];
+  v12 = [storage3 entryForKey:v6 withID:1];
 
   if (v8)
   {
@@ -2456,17 +2456,17 @@ LABEL_22:
   return v23;
 }
 
-- (id)getUsageDataWithStartTime:(double)a3 withMidTime:(double)a4 withEndTime:(id)a5
+- (id)getUsageDataWithStartTime:(double)time withMidTime:(double)midTime withEndTime:(id)endTime
 {
   v66 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  endTimeCopy = endTime;
   v9 = COERCE_DOUBLE(objc_alloc_init(MEMORY[0x277CBEB38]));
-  [v8 timeIntervalSince1970];
+  [endTimeCopy timeIntervalSince1970];
   v56 = v10;
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  [v8 timeIntervalSince1970];
-  v14 = v13 - a4;
+  [endTimeCopy timeIntervalSince1970];
+  v14 = v13 - midTime;
   v15 = *MEMORY[0x277CBF040];
   v16 = *MEMORY[0x277CBF030];
   [MEMORY[0x277D3F258] containerPath];
@@ -2483,22 +2483,22 @@ LABEL_22:
     v20 = 86400.0;
   }
 
-  v57 = a4;
+  midTimeCopy = midTime;
   if (v14 <= v20)
   {
-    [v8 timeIntervalSince1970];
+    [endTimeCopy timeIntervalSince1970];
     v38 = v37;
-    v39 = a4 + -86400.0;
+    v39 = midTime + -86400.0;
     v21 = 0.0;
-    v40 = a3;
-    v41 = v39 <= a3;
+    timeCopy = time;
+    v41 = v39 <= time;
     v30 = 0.0;
     v27 = 0.0;
     v36 = 0.0;
     v33 = 0.0;
     if (!v41)
     {
-      v42 = v40;
+      v42 = timeCopy;
       do
       {
         v38 = v38 + -86400.0;
@@ -2523,10 +2523,10 @@ LABEL_22:
 
   else
   {
-    v21 = a4 - a3;
-    [v8 timeIntervalSince1970];
-    v23 = [(PLBatteryBreakdownService *)self batteryBreakdownWithTimeRange:0 withDataRange:a4 withEntryTimeInterval:v22 - a4 withQueryType:0.0, 0.0, 3600.0];
-    v24 = [(PLBatteryBreakdownService *)self batteryBreakdownWithTimeRange:0 withDataRange:a3 withEntryTimeInterval:a4 - a3 withQueryType:0.0, 0.0, 3600.0];
+    v21 = midTime - time;
+    [endTimeCopy timeIntervalSince1970];
+    v23 = [(PLBatteryBreakdownService *)self batteryBreakdownWithTimeRange:0 withDataRange:midTime withEntryTimeInterval:v22 - midTime withQueryType:0.0, 0.0, 3600.0];
+    v24 = [(PLBatteryBreakdownService *)self batteryBreakdownWithTimeRange:0 withDataRange:time withEntryTimeInterval:midTime - time withQueryType:0.0, 0.0, 3600.0];
     v25 = [v23 objectForKeyedSubscript:@"PLBatteryUITotalEnergyKey"];
     [v25 doubleValue];
     v27 = v26;
@@ -2558,7 +2558,7 @@ LABEL_22:
   }
 
   v48 = v30;
-  v49 = v56 - v57;
+  v49 = v56 - midTimeCopy;
   if (v21 == 0.0)
   {
     [v11 setObject:0 forKeyedSubscript:@"AvgPower"];
@@ -2603,20 +2603,20 @@ LABEL_22:
   return *&v9;
 }
 
-- (id)getUpgradeDataWithLastUpgradeTimestamp:(double)a3 withFirstEntryTimestampFromDB:(double)a4 withNow:(id)a5 withBeforeUpgrade:(BOOL)a6 withRange:(_PLTimeIntervalRange)a7
+- (id)getUpgradeDataWithLastUpgradeTimestamp:(double)timestamp withFirstEntryTimestampFromDB:(double)b withNow:(id)now withBeforeUpgrade:(BOOL)upgrade withRange:(_PLTimeIntervalRange)range
 {
-  var1 = a7.var1;
-  var0 = a7.var0;
-  v9 = a6;
-  v13 = a5;
+  var1 = range.var1;
+  var0 = range.var0;
+  upgradeCopy = upgrade;
+  nowCopy = now;
   v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if (!v9)
+  if (!upgradeCopy)
   {
     goto LABEL_6;
   }
 
-  [v13 timeIntervalSince1970];
-  v16 = v15 - a3;
+  [nowCopy timeIntervalSince1970];
+  v16 = v15 - timestamp;
   v17 = *MEMORY[0x277CBF040];
   v18 = *MEMORY[0x277CBF030];
   [MEMORY[0x277D3F258] containerPath];
@@ -2635,11 +2635,11 @@ LABEL_22:
 
   if (v16 <= v22)
   {
-    [v13 timeIntervalSince1970];
-    v34 = a3 + -86400.0;
+    [nowCopy timeIntervalSince1970];
+    v34 = timestamp + -86400.0;
     v29 = 0.0;
     v26 = 0.0;
-    if (v34 > a4)
+    if (v34 > b)
     {
       v35 = v33;
       do
@@ -2657,7 +2657,7 @@ LABEL_22:
         v34 = v34 + -86400.0;
       }
 
-      while (v34 > a4);
+      while (v34 > b);
     }
   }
 
@@ -2683,10 +2683,10 @@ LABEL_6:
   return v14;
 }
 
-- (id)energyEntriesWithRange:(_PLTimeIntervalRange)a3 withEntryTimeInterval:(double)a4 withQueryType:(int)a5
+- (id)energyEntriesWithRange:(_PLTimeIntervalRange)range withEntryTimeInterval:(double)interval withQueryType:(int)type
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v196 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -2704,12 +2704,12 @@ LABEL_6:
 
     if (byte_2811F6424 == 1)
     {
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"entryTimeInterval=%f", *&a4];
+      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"entryTimeInterval=%f", *&interval];
       v11 = MEMORY[0x277D3F178];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-      v13 = [v12 lastPathComponent];
+      lastPathComponent = [v12 lastPathComponent];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService energyEntriesWithRange:withEntryTimeInterval:withQueryType:]"];
-      [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:1476];
+      [v11 logMessage:v10 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:1476];
 
       v15 = PLLogCommon();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -2726,13 +2726,13 @@ LABEL_6:
   v18 = [MEMORY[0x277D3F128] entryKeyForType:v16 andName:*MEMORY[0x277D3F2F0]];
   v19 = MEMORY[0x277CCACA8];
   v20 = *MEMORY[0x277D3F300];
-  v21 = [MEMORY[0x277D3F0C8] entryKey];
-  v22 = [objc_opt_class() whereValidName];
-  v23 = [v19 stringWithFormat:@"%@ IN (SELECT ID FROM '%@' WHERE %@)", v20, v21, v22];
+  entryKey = [MEMORY[0x277D3F0C8] entryKey];
+  whereValidName = [objc_opt_class() whereValidName];
+  v23 = [v19 stringWithFormat:@"%@ IN (SELECT ID FROM '%@' WHERE %@)", v20, entryKey, whereValidName];
 
   v24 = var0 + var1;
   v163 = v23;
-  v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"timestamp>%f AND timestamp<%f AND timeInterval=%f AND (%@)", *&var0, *&v24, *&a4, v23];
+  v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"timestamp>%f AND timestamp<%f AND timeInterval=%f AND (%@)", *&var0, *&v24, *&interval, v23];
   v178 = v17;
   v165 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT * FROM '%@' WHERE (%@)", v17, v25];;
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -2750,25 +2750,25 @@ LABEL_6:
 
     if (byte_2811F6425 == 1)
     {
-      v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"aggregateRootNodeEnergyQuery=%@", v165];
+      v165 = [MEMORY[0x277CCACA8] stringWithFormat:@"aggregateRootNodeEnergyQuery=%@", v165];
       v28 = MEMORY[0x277D3F178];
       v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-      v30 = [v29 lastPathComponent];
+      lastPathComponent2 = [v29 lastPathComponent];
       v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService energyEntriesWithRange:withEntryTimeInterval:withQueryType:]"];
-      [v28 logMessage:v27 fromFile:v30 fromFunction:v31 fromLineNumber:1489];
+      [v28 logMessage:v165 fromFile:lastPathComponent2 fromFunction:v31 fromLineNumber:1489];
 
       v32 = PLLogCommon();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        *v194 = v27;
+        *v194 = v165;
         _os_log_debug_impl(&dword_21A4C6000, v32, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
   }
 
-  v33 = [(PLOperator *)self storage];
-  v164 = [v33 entriesForKey:v178 withQuery:v165];
+  storage = [(PLOperator *)self storage];
+  v164 = [storage entriesForKey:v178 withQuery:v165];
 
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -2785,27 +2785,27 @@ LABEL_6:
 
     if (byte_2811F6426 == 1)
     {
-      v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"aggregateRootNodeEnergyEntries=%@", v164];
+      v164 = [MEMORY[0x277CCACA8] stringWithFormat:@"aggregateRootNodeEnergyEntries=%@", v164];
       v36 = MEMORY[0x277D3F178];
       v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-      v38 = [v37 lastPathComponent];
+      lastPathComponent3 = [v37 lastPathComponent];
       v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService energyEntriesWithRange:withEntryTimeInterval:withQueryType:]"];
-      [v36 logMessage:v35 fromFile:v38 fromFunction:v39 fromLineNumber:1493];
+      [v36 logMessage:v164 fromFile:lastPathComponent3 fromFunction:v39 fromLineNumber:1493];
 
       v40 = PLLogCommon();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        *v194 = v35;
+        *v194 = v164;
         _os_log_debug_impl(&dword_21A4C6000, v40, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
   }
 
-  v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"timestamp>%f AND timestamp<%f AND timeInterval=%f AND (%@)", *&var0, *&v24, *&a4, v163];
+  v163 = [MEMORY[0x277CCACA8] stringWithFormat:@"timestamp>%f AND timestamp<%f AND timeInterval=%f AND (%@)", *&var0, *&v24, *&interval, v163];
 
-  v158 = v41;
-  v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT * FROM '%@' WHERE (%@)", v18, v41];;
+  v158 = v163;
+  v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT * FROM '%@' WHERE (%@)", v18, v163];;
   v162 = v42;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -2825,9 +2825,9 @@ LABEL_6:
       v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"aggregateQualificationEnergyQuery=%@", v42];
       v45 = MEMORY[0x277D3F178];
       v46 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-      v47 = [v46 lastPathComponent];
+      lastPathComponent4 = [v46 lastPathComponent];
       v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService energyEntriesWithRange:withEntryTimeInterval:withQueryType:]"];
-      [v45 logMessage:v44 fromFile:v47 fromFunction:v48 fromLineNumber:1498];
+      [v45 logMessage:v44 fromFile:lastPathComponent4 fromFunction:v48 fromLineNumber:1498];
 
       v49 = PLLogCommon();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
@@ -2841,8 +2841,8 @@ LABEL_6:
     }
   }
 
-  v50 = [(PLOperator *)self storage];
-  v51 = [v50 entriesForKey:v18 withQuery:v42];
+  storage2 = [(PLOperator *)self storage];
+  v51 = [storage2 entriesForKey:v18 withQuery:v42];
 
   v161 = v51;
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -2863,9 +2863,9 @@ LABEL_6:
       v53 = [MEMORY[0x277CCACA8] stringWithFormat:@"aggregateQualificationEnergyEntries=%@", v51];
       v54 = MEMORY[0x277D3F178];
       v55 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-      v56 = [v55 lastPathComponent];
+      lastPathComponent5 = [v55 lastPathComponent];
       v57 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService energyEntriesWithRange:withEntryTimeInterval:withQueryType:]"];
-      [v54 logMessage:v53 fromFile:v56 fromFunction:v57 fromLineNumber:1502];
+      [v54 logMessage:v53 fromFile:lastPathComponent5 fromFunction:v57 fromLineNumber:1502];
 
       v58 = PLLogCommon();
       if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
@@ -2880,7 +2880,7 @@ LABEL_6:
   }
 
   v159 = v18;
-  v179 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v184 = 0u;
   v185 = 0u;
   v186 = 0u;
@@ -2896,7 +2896,7 @@ LABEL_6:
     v168 = *MEMORY[0x277D3F2F8];
     v175 = *MEMORY[0x277D3F330];
     v172 = *MEMORY[0x277D3F320];
-    v169 = self;
+    selfCopy = self;
     do
     {
       v59 = 0;
@@ -2927,9 +2927,9 @@ LABEL_6:
             v63 = [MEMORY[0x277CCACA8] stringWithFormat:@"aggregateEnergyEntry=%@", v61];
             v64 = MEMORY[0x277D3F178];
             v65 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-            v66 = [v65 lastPathComponent];
+            lastPathComponent6 = [v65 lastPathComponent];
             v67 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService energyEntriesWithRange:withEntryTimeInterval:withQueryType:]"];
-            [v64 logMessage:v63 fromFile:v66 fromFunction:v67 fromLineNumber:1507];
+            [v64 logMessage:v63 fromFile:lastPathComponent6 fromFunction:v67 fromLineNumber:1507];
 
             v68 = PLLogCommon();
             if (os_log_type_enabled(v68, OS_LOG_TYPE_DEBUG))
@@ -2944,18 +2944,18 @@ LABEL_6:
         v69 = [v61 objectForKeyedSubscript:v180];
         if (v69)
         {
-          v70 = [v179 objectForKeyedSubscript:v69];
+          v70 = [dictionary objectForKeyedSubscript:v69];
           if (v70)
           {
             goto LABEL_52;
           }
 
-          v71 = [MEMORY[0x277CBEB38] dictionary];
-          [v179 setObject:v71 forKeyedSubscript:v69];
+          dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+          [dictionary setObject:dictionary2 forKeyedSubscript:v69];
 
-          v70 = [v179 objectForKeyedSubscript:v69];
-          v72 = [(PLBatteryBreakdownService *)self nodeIDToNodeName];
-          v73 = [v72 objectForKeyedSubscript:v69];
+          v70 = [dictionary objectForKeyedSubscript:v69];
+          nodeIDToNodeName = [(PLBatteryBreakdownService *)self nodeIDToNodeName];
+          v73 = [nodeIDToNodeName objectForKeyedSubscript:v69];
 
           if (!v73)
           {
@@ -2965,14 +2965,14 @@ LABEL_6:
           [v70 setObject:v73 forKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
 
 LABEL_52:
-          v74 = [v61 entryKey];
-          v75 = [v74 isEqualToString:v178];
+          entryKey2 = [v61 entryKey];
+          v75 = [entryKey2 isEqualToString:v178];
 
           if (v75)
           {
             v76 = [v61 objectForKeyedSubscript:v175];
-            v77 = [v76 intValue];
-            if ([&unk_282C15A98 count] > v77)
+            intValue = [v76 intValue];
+            if ([&unk_282C15A98 count] > intValue)
             {
               v78 = [&unk_282C15AC8 objectAtIndexedSubscript:{objc_msgSend(v76, "intValue")}];
               v79 = [v61 objectForKeyedSubscript:v172];
@@ -2981,10 +2981,10 @@ LABEL_52:
                 v80 = PLLogCommon();
                 if (os_log_type_enabled(v80, OS_LOG_TYPE_DEBUG))
                 {
-                  v146 = [v76 intValue];
+                  intValue2 = [v76 intValue];
                   [v79 doubleValue];
                   *buf = 67109376;
-                  *v194 = v146;
+                  *v194 = intValue2;
                   *&v194[4] = 2048;
                   *&v194[6] = v147;
                   _os_log_debug_impl(&dword_21A4C6000, v80, OS_LOG_TYPE_DEBUG, "before clamping for rootNodeID=%d, rootNodeEnergy=%f", buf, 0x12u);
@@ -3008,10 +3008,10 @@ LABEL_52:
                 v119 = PLLogCommon();
                 if (os_log_type_enabled(v119, OS_LOG_TYPE_DEBUG))
                 {
-                  v150 = [v76 intValue];
+                  intValue3 = [v76 intValue];
                   [v79 doubleValue];
                   *buf = 67109376;
-                  *v194 = v150;
+                  *v194 = intValue3;
                   *&v194[4] = 2048;
                   *&v194[6] = v151;
                   _os_log_debug_impl(&dword_21A4C6000, v119, OS_LOG_TYPE_DEBUG, "before clamping for rootNodeID=%d, rootNodeEnergy=%f", buf, 0x12u);
@@ -3025,24 +3025,24 @@ LABEL_52:
                 if (os_log_type_enabled(v84, OS_LOG_TYPE_DEBUG))
                 {
 LABEL_93:
-                  v152 = [v76 intValue];
+                  intValue4 = [v76 intValue];
                   [v83 doubleValue];
                   *buf = 67109376;
-                  *v194 = v152;
+                  *v194 = intValue4;
                   *&v194[4] = 2048;
                   *&v194[6] = v153;
                   _os_log_debug_impl(&dword_21A4C6000, v84, OS_LOG_TYPE_DEBUG, "after clamping for rootNodeID=%d, rootNodeEnergy=%f", buf, 0x12u);
                 }
 
 LABEL_78:
-                v122 = self;
+                selfCopy3 = self;
 
                 v79 = v83;
               }
 
               else
               {
-                v122 = self;
+                selfCopy3 = self;
               }
 
               v123 = MEMORY[0x277CCABB0];
@@ -3061,28 +3061,28 @@ LABEL_78:
               v134 = [v129 numberWithDouble:v132 + v133 / 1000.0];
               [v70 setObject:v134 forKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
 
-              self = v122;
+              self = selfCopy3;
               v60 = 0x277D3F000;
-              if (a5 == 4)
+              if (type == 4)
               {
                 v135 = [(PLBatteryBreakdownService *)self energyMetricBucketForRootNodeID:v76];
                 v136 = MEMORY[0x277CCACA8];
                 v137 = [MEMORY[0x277CCABB0] numberWithShort:v135];
-                v138 = [v136 stringWithFormat:@"%@", v137];
+                v137 = [v136 stringWithFormat:@"%@", v137];
 
-                if (v138)
+                if (v137)
                 {
-                  v139 = [v79 intValue];
-                  if (v139 >= 1)
+                  intValue5 = [v79 intValue];
+                  if (intValue5 >= 1)
                   {
-                    v140 = v139;
+                    v140 = intValue5;
                     v141 = MEMORY[0x277CCABB0];
-                    v142 = [v70 objectForKeyedSubscript:v138];
+                    v142 = [v70 objectForKeyedSubscript:v137];
                     v143 = [v142 intValue] + v140;
                     v144 = v141;
-                    self = v169;
+                    self = selfCopy;
                     v145 = [v144 numberWithInt:v143];
-                    [v70 setObject:v145 forKeyedSubscript:v138];
+                    [v70 setObject:v145 forKeyedSubscript:v137];
 
                     v60 = 0x277D3F000;
                   }
@@ -3101,10 +3101,10 @@ LABEL_90:
               goto LABEL_89;
             }
 
-            v114 = [v76 intValue];
+            intValue6 = [v76 intValue];
             v115 = [&unk_282C15AB0 count];
             *buf = 67109376;
-            *v194 = v114;
+            *v194 = intValue6;
             *&v194[4] = 2048;
             *&v194[6] = v115;
             v116 = v78;
@@ -3113,21 +3113,21 @@ LABEL_90:
           else
           {
             v76 = [v61 objectForKeyedSubscript:v176];
-            v85 = [v76 intValue];
-            if ([&unk_282C15AE0 count] > v85)
+            intValue7 = [v76 intValue];
+            if ([&unk_282C15AE0 count] > intValue7)
             {
               v78 = [&unk_282C15B10 objectAtIndexedSubscript:{objc_msgSend(v76, "intValue")}];
               v86 = [v61 objectForKeyedSubscript:v173];
-              v87 = [v86 intValue];
-              if ([&unk_282C15B28 count] <= v87)
+              intValue8 = [v86 intValue];
+              if ([&unk_282C15B28 count] <= intValue8)
               {
                 v88 = PLLogCommon();
                 if (os_log_type_enabled(v88, OS_LOG_TYPE_ERROR))
                 {
-                  v148 = [v86 intValue];
+                  intValue9 = [v86 intValue];
                   v149 = [&unk_282C15B40 count];
                   *buf = 67109376;
-                  *v194 = v148;
+                  *v194 = intValue9;
                   *&v194[4] = 2048;
                   *&v194[6] = v149;
                   _os_log_error_impl(&dword_21A4C6000, v88, OS_LOG_TYPE_ERROR, "qualificationID=%d out of bounds=%lu", buf, 0x12u);
@@ -3160,32 +3160,32 @@ LABEL_90:
                 v104 = [v99 numberWithDouble:v102 + v103 / 1000.0];
                 [v70 setObject:v104 forKeyedSubscript:v88];
 
-                if (a5 == 4 && [v89 intValue] == 2)
+                if (type == 4 && [v89 intValue] == 2)
                 {
-                  v105 = [(PLBatteryBreakdownService *)v169 energyMetricBucketForRootNodeID:v76];
+                  v105 = [(PLBatteryBreakdownService *)selfCopy energyMetricBucketForRootNodeID:v76];
                   v106 = MEMORY[0x277CCACA8];
                   v107 = [MEMORY[0x277CCABB0] numberWithShort:v105];
-                  v108 = [v106 stringWithFormat:@"%@", v107];
+                  v107 = [v106 stringWithFormat:@"%@", v107];
 
-                  if (v108)
+                  if (v107)
                   {
-                    v109 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"fg", v108];
-                    v110 = [v91 intValue];
-                    if (v110 >= 1)
+                    v108 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"fg", v107];
+                    intValue10 = [v91 intValue];
+                    if (intValue10 >= 1)
                     {
                       v166 = MEMORY[0x277CCABB0];
-                      v111 = v110;
-                      [v70 objectForKeyedSubscript:v109];
-                      v112 = v167 = v109;
+                      v111 = intValue10;
+                      [v70 objectForKeyedSubscript:v108];
+                      v112 = v167 = v108;
                       v113 = [v166 numberWithInt:{objc_msgSend(v112, "intValue") + v111}];
                       [v70 setObject:v113 forKeyedSubscript:v167];
 
-                      v109 = v167;
+                      v108 = v167;
                     }
                   }
                 }
 
-                self = v169;
+                self = selfCopy;
                 v78 = v170;
                 v60 = 0x277D3F000;
               }
@@ -3199,10 +3199,10 @@ LABEL_90:
               goto LABEL_89;
             }
 
-            v117 = [v76 intValue];
+            intValue11 = [v76 intValue];
             v118 = [&unk_282C15AF8 count];
             *buf = 67109376;
-            *v194 = v117;
+            *v194 = intValue11;
             *&v194[4] = 2048;
             *&v194[6] = v118;
             v116 = v78;
@@ -3225,12 +3225,12 @@ LABEL_91:
     while (v154);
   }
 
-  v155 = [v179 allValues];
+  allValues = [dictionary allValues];
 
   objc_autoreleasePoolPop(context);
   v156 = *MEMORY[0x277D85DE8];
 
-  return v155;
+  return allValues;
 }
 
 uint64_t __88__PLBatteryBreakdownService_energyEntriesWithRange_withEntryTimeInterval_withQueryType___block_invoke(uint64_t a1)
@@ -3275,9 +3275,9 @@ uint64_t __88__PLBatteryBreakdownService_energyEntriesWithRange_withEntryTimeInt
   return result;
 }
 
-- (signed)energyMetricBucketForRootNodeID:(id)a3
+- (signed)energyMetricBucketForRootNodeID:(id)d
 {
-  v3 = [a3 intValue] - 2;
+  v3 = [d intValue] - 2;
   if (v3 > 0x3C)
   {
     return 0;
@@ -3289,14 +3289,14 @@ uint64_t __88__PLBatteryBreakdownService_energyEntriesWithRange_withEntryTimeInt
   }
 }
 
-- (id)populateEnergyBucketKeysWithEntries:(id)a3
+- (id)populateEnergyBucketKeysWithEntries:(id)entries
 {
   v52 = *MEMORY[0x277D85DE8];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = a3;
+  obj = entries;
   v33 = [obj countByEnumeratingWithState:&v37 objects:v51 count:16];
   if (v33)
   {
@@ -3323,24 +3323,24 @@ uint64_t __88__PLBatteryBreakdownService_energyEntriesWithRange_withEntryTimeInt
           v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"fg", v8];
           v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"bg", v8];
           v11 = [v4 objectForKeyedSubscript:v8];
-          v12 = [v11 intValue];
+          intValue = [v11 intValue];
 
           v13 = [v4 objectForKeyedSubscript:v9];
-          v14 = [v13 intValue];
+          intValue2 = [v13 intValue];
 
           if ([(PLBatteryBreakdownService *)self isForegroundOnlyBucket:v5])
           {
-            v14 = v12;
-            if (v12 >= 1)
+            intValue2 = intValue;
+            if (intValue >= 1)
             {
-              v15 = [MEMORY[0x277CCABB0] numberWithInt:v12];
+              v15 = [MEMORY[0x277CCABB0] numberWithInt:intValue];
               [v4 setObject:v15 forKeyedSubscript:v9];
 
-              v14 = v12;
+              intValue2 = intValue;
             }
           }
 
-          v16 = (v12 - v14);
+          v16 = (intValue - intValue2);
           if (v16 >= 1)
           {
             v17 = [v4 objectForKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
@@ -3352,13 +3352,13 @@ uint64_t __88__PLBatteryBreakdownService_energyEntriesWithRange_withEntryTimeInt
             v22 = v21;
 
             v23 = v19 + v22;
-            if (v19 + v22 <= 0.0 || ((v23 = v19 / v23 * v12, v24 = v23, v16 >= v23) ? (v16 = v24) : (v16 = v16), v24 >= 1))
+            if (v19 + v22 <= 0.0 || ((v23 = v19 / v23 * intValue, v24 = v23, v16 >= v23) ? (v16 = v24) : (v16 = v16), v24 >= 1))
             {
               v25 = [MEMORY[0x277CCABB0] numberWithInt:{v16, v23}];
               [v4 setObject:v25 forKeyedSubscript:v10];
 
-              v14 = v12 - v16;
-              v26 = [MEMORY[0x277CCABB0] numberWithInt:(v12 - v16)];
+              intValue2 = intValue - v16;
+              v26 = [MEMORY[0x277CCABB0] numberWithInt:(intValue - v16)];
               [v4 setObject:v26 forKeyedSubscript:v9];
             }
           }
@@ -3372,9 +3372,9 @@ uint64_t __88__PLBatteryBreakdownService_energyEntriesWithRange_withEntryTimeInt
             v43 = 2112;
             v44 = v8;
             v45 = 1024;
-            v46 = v12;
+            v46 = intValue;
             v47 = 1024;
-            v48 = v14;
+            v48 = intValue2;
             v49 = 1024;
             v50 = v16;
             _os_log_debug_impl(&dword_21A4C6000, v27, OS_LOG_TYPE_DEBUG, "%@: %@ total:%d fg:%d bg:%d", buf, 0x28u);
@@ -3399,21 +3399,21 @@ uint64_t __88__PLBatteryBreakdownService_energyEntriesWithRange_withEntryTimeInt
   return obj;
 }
 
-- (id)populateRootNodeEnergyKeysWithEnergyEntries:(id)a3
+- (id)populateRootNodeEnergyKeysWithEnergyEntries:(id)entries
 {
   v62 = *MEMORY[0x277D85DE8];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = a3;
+  obj = entries;
   v41 = [obj countByEnumeratingWithState:&v54 objects:v61 count:16];
   if (v41)
   {
     v38 = v53;
     v40 = *v55;
     v4 = 0x277D3F000uLL;
-    v43 = self;
+    selfCopy = self;
     do
     {
       v5 = 0;
@@ -3444,9 +3444,9 @@ uint64_t __88__PLBatteryBreakdownService_energyEntriesWithRange_withEntryTimeInt
             v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEntry=%@", v6, v38];
             v9 = MEMORY[0x277D3F178];
             v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-            v11 = [v10 lastPathComponent];
+            lastPathComponent = [v10 lastPathComponent];
             v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService populateRootNodeEnergyKeysWithEnergyEntries:]"];
-            [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:1741];
+            [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:1741];
 
             v13 = PLLogCommon();
             if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -3462,8 +3462,8 @@ uint64_t __88__PLBatteryBreakdownService_energyEntriesWithRange_withEntryTimeInt
         v51 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v44 = [(PLBatteryBreakdownService *)self rootNodeNameToRootNodeEnergyKey];
-        v14 = [v44 countByEnumeratingWithState:&v48 objects:v58 count:16];
+        rootNodeNameToRootNodeEnergyKey = [(PLBatteryBreakdownService *)self rootNodeNameToRootNodeEnergyKey];
+        v14 = [rootNodeNameToRootNodeEnergyKey countByEnumeratingWithState:&v48 objects:v58 count:16];
         if (v14)
         {
           v15 = v14;
@@ -3475,7 +3475,7 @@ uint64_t __88__PLBatteryBreakdownService_energyEntriesWithRange_withEntryTimeInt
             {
               if (*v49 != v45)
               {
-                objc_enumerationMutation(v44);
+                objc_enumerationMutation(rootNodeNameToRootNodeEnergyKey);
               }
 
               v17 = *(*(&v48 + 1) + 8 * v16);
@@ -3497,9 +3497,9 @@ uint64_t __88__PLBatteryBreakdownService_energyEntriesWithRange_withEntryTimeInt
                   v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"rootNodeName=%@", v17];
                   v20 = MEMORY[0x277D3F178];
                   v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-                  v22 = [v21 lastPathComponent];
+                  lastPathComponent2 = [v21 lastPathComponent];
                   v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService populateRootNodeEnergyKeysWithEnergyEntries:]"];
-                  [v20 logMessage:v19 fromFile:v22 fromFunction:v23 fromLineNumber:1743];
+                  [v20 logMessage:v19 fromFile:lastPathComponent2 fromFunction:v23 fromLineNumber:1743];
 
                   v24 = PLLogCommon();
                   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -3509,13 +3509,13 @@ uint64_t __88__PLBatteryBreakdownService_energyEntriesWithRange_withEntryTimeInt
                     _os_log_debug_impl(&dword_21A4C6000, v24, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
                   }
 
-                  self = v43;
+                  self = selfCopy;
                   v4 = 0x277D3F000uLL;
                 }
               }
 
-              v25 = [(PLBatteryBreakdownService *)self rootNodeNameToRootNodeEnergyKey];
-              v26 = [v25 objectForKeyedSubscript:v17];
+              rootNodeNameToRootNodeEnergyKey2 = [(PLBatteryBreakdownService *)self rootNodeNameToRootNodeEnergyKey];
+              v26 = [rootNodeNameToRootNodeEnergyKey2 objectForKeyedSubscript:v17];
 
               if ([*(v4 + 384) debugEnabled])
               {
@@ -3535,9 +3535,9 @@ uint64_t __88__PLBatteryBreakdownService_energyEntriesWithRange_withEntryTimeInt
                   v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"rootNodeEnergyKey=%@", v26];
                   v29 = MEMORY[0x277D3F178];
                   v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-                  v31 = [v30 lastPathComponent];
+                  lastPathComponent3 = [v30 lastPathComponent];
                   v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService populateRootNodeEnergyKeysWithEnergyEntries:]"];
-                  [v29 logMessage:v28 fromFile:v31 fromFunction:v32 fromLineNumber:1746];
+                  [v29 logMessage:v28 fromFile:lastPathComponent3 fromFunction:v32 fromLineNumber:1746];
 
                   v33 = PLLogCommon();
                   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -3547,7 +3547,7 @@ uint64_t __88__PLBatteryBreakdownService_energyEntriesWithRange_withEntryTimeInt
                     _os_log_debug_impl(&dword_21A4C6000, v33, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
                   }
 
-                  self = v43;
+                  self = selfCopy;
                   v4 = 0x277D3F000;
                 }
               }
@@ -3569,7 +3569,7 @@ uint64_t __88__PLBatteryBreakdownService_energyEntriesWithRange_withEntryTimeInt
             }
 
             while (v15 != v16);
-            v15 = [v44 countByEnumeratingWithState:&v48 objects:v58 count:16];
+            v15 = [rootNodeNameToRootNodeEnergyKey countByEnumeratingWithState:&v48 objects:v58 count:16];
           }
 
           while (v15);
@@ -3611,14 +3611,14 @@ uint64_t __73__PLBatteryBreakdownService_populateRootNodeEnergyKeysWithEnergyEnt
   return result;
 }
 
-- (id)populateBLDKeysWithEnergyEntries:(id)a3
+- (id)populateBLDKeysWithEnergyEntries:(id)entries
 {
   v77 = *MEMORY[0x277D85DE8];
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  obj = a3;
+  obj = entries;
   v63 = [obj countByEnumeratingWithState:&v72 objects:v76 count:16];
   if (v63)
   {
@@ -3841,45 +3841,45 @@ uint64_t __73__PLBatteryBreakdownService_populateRootNodeEnergyKeysWithEnergyEnt
   return obj;
 }
 
-- (id)addForegroundAndBackgroundDurations:(id)a3 withRange:(_PLTimeIntervalRange)a4 withQueryType:(int)a5
+- (id)addForegroundAndBackgroundDurations:(id)durations withRange:(_PLTimeIntervalRange)range withQueryType:(int)type
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v169 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  durationsCopy = durations;
   v10 = [(PLOperator *)PLAppTimeService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"AppRunTime"];
-  v143 = [MEMORY[0x277CBEB38] dictionary];
-  v142 = [MEMORY[0x277CBEB38] dictionary];
-  v141 = [MEMORY[0x277CBEB38] dictionary];
-  v140 = [MEMORY[0x277CBEB38] dictionary];
-  v139 = a5;
-  v124 = v9;
-  if (a5 == 4)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary4 = [MEMORY[0x277CBEB38] dictionary];
+  typeCopy = type;
+  v124 = durationsCopy;
+  if (type == 4)
   {
-    v138 = [MEMORY[0x277CBEB38] dictionary];
-    v137 = [MEMORY[0x277CBEB38] dictionary];
-    v136 = [MEMORY[0x277CBEB38] dictionary];
-    v135 = [MEMORY[0x277CBEB38] dictionary];
-    v134 = [MEMORY[0x277CBEB38] dictionary];
-    v133 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary10 = [MEMORY[0x277CBEB38] dictionary];
   }
 
   else
   {
-    v133 = 0;
-    v134 = 0;
-    v135 = 0;
-    v136 = 0;
-    v137 = 0;
-    v138 = 0;
+    dictionary10 = 0;
+    dictionary9 = 0;
+    dictionary8 = 0;
+    dictionary7 = 0;
+    dictionary6 = 0;
+    dictionary5 = 0;
   }
 
-  v123 = self;
-  v11 = [(PLOperator *)self storage];
+  selfCopy = self;
+  storage = [(PLOperator *)self storage];
   v127 = v10;
-  v12 = [v11 aggregateEntriesForKey:v10 withBucketLength:3600.0 inTimeIntervalRange:{var0, var1}];
+  v12 = [storage aggregateEntriesForKey:v10 withBucketLength:3600.0 inTimeIntervalRange:{var0, var1}];
 
-  v13 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v160 = 0u;
   v161 = 0u;
   v162 = 0u;
@@ -3900,16 +3900,16 @@ uint64_t __73__PLBatteryBreakdownService_populateRootNodeEnergyKeysWithEnergyEnt
         }
 
         v19 = *(*(&v160 + 1) + 8 * i);
-        v20 = [v19 entryDate];
-        if (v20)
+        entryDate = [v19 entryDate];
+        if (entryDate)
         {
-          v21 = v20;
-          [v20 timeIntervalSince1970];
+          v21 = entryDate;
+          [entryDate timeIntervalSince1970];
           v23 = v22;
 
           if (var0 <= v23 && v23 < var0 + var1)
           {
-            [v13 addObject:v19];
+            [array addObject:v19];
           }
         }
       }
@@ -3922,8 +3922,8 @@ uint64_t __73__PLBatteryBreakdownService_populateRootNodeEnergyKeysWithEnergyEnt
 
   v125 = v14;
 
-  v126 = v13;
-  v25 = [MEMORY[0x277D3F190] summarizeAggregateEntries:v13];
+  v126 = array;
+  v25 = [MEMORY[0x277D3F190] summarizeAggregateEntries:array];
   v26 = [MEMORY[0x277CBEB58] set];
   v156 = 0u;
   v157 = 0u;
@@ -3948,36 +3948,36 @@ uint64_t __73__PLBatteryBreakdownService_populateRootNodeEnergyKeysWithEnergyEnt
         v31 = [v30 objectForKeyedSubscript:@"BundleID"];
         [v26 addObject:v31];
         v32 = [v30 objectForKeyedSubscript:@"ScreenOnTime"];
-        [v143 setObject:v32 forKeyedSubscript:v31];
+        [dictionary setObject:v32 forKeyedSubscript:v31];
 
         v33 = [v30 objectForKeyedSubscript:@"BackgroundTime"];
-        [v142 setObject:v33 forKeyedSubscript:v31];
+        [dictionary2 setObject:v33 forKeyedSubscript:v31];
 
         v34 = [v30 objectForKeyedSubscript:@"ScreenOnPluggedInTime"];
-        [v141 setObject:v34 forKeyedSubscript:v31];
+        [dictionary3 setObject:v34 forKeyedSubscript:v31];
 
         v35 = [v30 objectForKeyedSubscript:@"BackgroundPluggedInTime"];
-        [v140 setObject:v35 forKeyedSubscript:v31];
+        [dictionary4 setObject:v35 forKeyedSubscript:v31];
 
-        if (v139 == 4)
+        if (typeCopy == 4)
         {
           v36 = [v30 objectForKeyedSubscript:@"BackgroundLocationTime"];
-          [v138 setObject:v36 forKeyedSubscript:v31];
+          [dictionary5 setObject:v36 forKeyedSubscript:v31];
 
           v37 = [v30 objectForKeyedSubscript:@"BackgroundLocationPluggedInTime"];
-          [v137 setObject:v37 forKeyedSubscript:v31];
+          [dictionary6 setObject:v37 forKeyedSubscript:v31];
 
           v38 = [v30 objectForKeyedSubscript:@"BackgroundAudioPlayingTime"];
-          [v136 setObject:v38 forKeyedSubscript:v31];
+          [dictionary7 setObject:v38 forKeyedSubscript:v31];
 
           v39 = [v30 objectForKeyedSubscript:@"BackgroundAudioPlayingTimePluggedIn"];
-          [v135 setObject:v39 forKeyedSubscript:v31];
+          [dictionary8 setObject:v39 forKeyedSubscript:v31];
 
           v40 = [v30 objectForKeyedSubscript:@"BackgroundLocationAudioTime"];
-          [v134 setObject:v40 forKeyedSubscript:v31];
+          [dictionary9 setObject:v40 forKeyedSubscript:v31];
 
           v41 = [v30 objectForKeyedSubscript:@"BackgroundLocationAudioPluggedInTime"];
-          [v133 setObject:v41 forKeyedSubscript:v31];
+          [dictionary10 setObject:v41 forKeyedSubscript:v31];
         }
       }
 
@@ -3991,8 +3991,8 @@ uint64_t __73__PLBatteryBreakdownService_populateRootNodeEnergyKeysWithEnergyEnt
   v155 = 0u;
   v152 = 0u;
   v153 = 0u;
-  v131 = [(PLBatteryBreakdownService *)v123 nonAppsRuntimesWithRange:var0, var1];
-  v42 = [v131 countByEnumeratingWithState:&v152 objects:v166 count:16];
+  var1 = [(PLBatteryBreakdownService *)selfCopy nonAppsRuntimesWithRange:var0, var1];
+  v42 = [var1 countByEnumeratingWithState:&v152 objects:v166 count:16];
   if (v42)
   {
     v43 = v42;
@@ -4003,7 +4003,7 @@ uint64_t __73__PLBatteryBreakdownService_populateRootNodeEnergyKeysWithEnergyEnt
       {
         if (*v153 != v44)
         {
-          objc_enumerationMutation(v131);
+          objc_enumerationMutation(var1);
         }
 
         v46 = *(*(&v152 + 1) + 8 * k);
@@ -4012,14 +4012,14 @@ uint64_t __73__PLBatteryBreakdownService_populateRootNodeEnergyKeysWithEnergyEnt
 
         v48 = [v46 objectForKeyedSubscript:@"ScreenOnTime"];
         v49 = [v46 objectForKeyedSubscript:@"BundleID"];
-        [v143 setObject:v48 forKeyedSubscript:v49];
+        [dictionary setObject:v48 forKeyedSubscript:v49];
 
         v50 = [v46 objectForKeyedSubscript:@"BackgroundTime"];
         v51 = [v46 objectForKeyedSubscript:@"BundleID"];
-        [v142 setObject:v50 forKeyedSubscript:v51];
+        [dictionary2 setObject:v50 forKeyedSubscript:v51];
       }
 
-      v43 = [v131 countByEnumeratingWithState:&v152 objects:v166 count:16];
+      v43 = [var1 countByEnumeratingWithState:&v152 objects:v166 count:16];
     }
 
     while (v43);
@@ -4056,63 +4056,63 @@ uint64_t __73__PLBatteryBreakdownService_populateRootNodeEnergyKeysWithEnergyEnt
 
         v60 = [v56 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
         v61 = MEMORY[0x277CCABB0];
-        v62 = [v143 objectForKeyedSubscript:v60];
+        v62 = [dictionary objectForKeyedSubscript:v60];
         [v62 doubleValue];
         v63 = [v61 numberWithDouble:?];
         [v56 setObject:v63 forKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
 
         v64 = MEMORY[0x277CCABB0];
-        v65 = [v142 objectForKeyedSubscript:v60];
+        v65 = [dictionary2 objectForKeyedSubscript:v60];
         [v65 doubleValue];
         v66 = [v64 numberWithDouble:?];
         [v56 setObject:v66 forKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
 
         v67 = MEMORY[0x277CCABB0];
-        v68 = [v141 objectForKeyedSubscript:v60];
+        v68 = [dictionary3 objectForKeyedSubscript:v60];
         [v68 doubleValue];
         v69 = [v67 numberWithDouble:?];
         [v56 setObject:v69 forKeyedSubscript:@"PLBatteryUIAppForegroundPluggedInRuntimeKey"];
 
         v70 = MEMORY[0x277CCABB0];
-        v71 = [v140 objectForKeyedSubscript:v60];
+        v71 = [dictionary4 objectForKeyedSubscript:v60];
         [v71 doubleValue];
         v72 = [v70 numberWithDouble:?];
         [v56 setObject:v72 forKeyedSubscript:@"PLBatteryUIAppBackgroundPluggedInRuntimeKey"];
 
-        if (v139 == 4)
+        if (typeCopy == 4)
         {
           v73 = MEMORY[0x277CCABB0];
-          v74 = [v138 objectForKeyedSubscript:v60];
+          v74 = [dictionary5 objectForKeyedSubscript:v60];
           [v74 doubleValue];
           v75 = [v73 numberWithDouble:?];
           [v56 setObject:v75 forKeyedSubscript:@"PLBatteryUIAppBackgroundLocationRuntimeKey"];
 
           v76 = MEMORY[0x277CCABB0];
-          v77 = [v137 objectForKeyedSubscript:v60];
+          v77 = [dictionary6 objectForKeyedSubscript:v60];
           [v77 doubleValue];
           v78 = [v76 numberWithDouble:?];
           [v56 setObject:v78 forKeyedSubscript:@"PLBatteryUIAppBackgroundLocationPluggedInRuntimeKey"];
 
           v79 = MEMORY[0x277CCABB0];
-          v80 = [v136 objectForKeyedSubscript:v60];
+          v80 = [dictionary7 objectForKeyedSubscript:v60];
           [v80 doubleValue];
           v81 = [v79 numberWithDouble:?];
           [v56 setObject:v81 forKeyedSubscript:@"PLBatteryUIAppBackgroundAudioRuntimeKey"];
 
           v82 = MEMORY[0x277CCABB0];
-          v83 = [v135 objectForKeyedSubscript:v60];
+          v83 = [dictionary8 objectForKeyedSubscript:v60];
           [v83 doubleValue];
           v84 = [v82 numberWithDouble:?];
           [v56 setObject:v84 forKeyedSubscript:@"PLBatteryUIAppBackgroundAudioPluggedInRuntimeKey"];
 
           v85 = MEMORY[0x277CCABB0];
-          v86 = [v134 objectForKeyedSubscript:v60];
+          v86 = [dictionary9 objectForKeyedSubscript:v60];
           [v86 doubleValue];
           v87 = [v85 numberWithDouble:?];
           [v56 setObject:v87 forKeyedSubscript:@"PLBatteryUIAppBackgroundLocationAudioRuntimeKey"];
 
           v88 = MEMORY[0x277CCABB0];
-          v89 = [v133 objectForKeyedSubscript:v60];
+          v89 = [dictionary10 objectForKeyedSubscript:v60];
           [v89 doubleValue];
           v90 = [v88 numberWithDouble:?];
           [v56 setObject:v90 forKeyedSubscript:@"PLBatteryUIAppBackgroundLocationAudioPluggedInRuntimeKey"];
@@ -4147,63 +4147,63 @@ uint64_t __73__PLBatteryBreakdownService_populateRootNodeEnergyKeysWithEnergyEnt
         }
 
         v97 = *(*(&v144 + 1) + 8 * n);
-        v98 = [*(v93 + 2872) dictionary];
-        [v98 setObject:v97 forKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-        [v98 setObject:&unk_282C12B88 forKeyedSubscript:@"PLBatteryUIAppTypeKey"];
-        v99 = [v143 objectForKeyedSubscript:v97];
-        [v98 setObject:v99 forKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
+        dictionary11 = [*(v93 + 2872) dictionary];
+        [dictionary11 setObject:v97 forKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
+        [dictionary11 setObject:&unk_282C12B88 forKeyedSubscript:@"PLBatteryUIAppTypeKey"];
+        v99 = [dictionary objectForKeyedSubscript:v97];
+        [dictionary11 setObject:v99 forKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
 
-        v100 = [v142 objectForKeyedSubscript:v97];
-        [v98 setObject:v100 forKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
+        v100 = [dictionary2 objectForKeyedSubscript:v97];
+        [dictionary11 setObject:v100 forKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
 
-        v101 = [v141 objectForKeyedSubscript:v97];
-        [v98 setObject:v101 forKeyedSubscript:@"PLBatteryUIAppForegroundPluggedInRuntimeKey"];
+        v101 = [dictionary3 objectForKeyedSubscript:v97];
+        [dictionary11 setObject:v101 forKeyedSubscript:@"PLBatteryUIAppForegroundPluggedInRuntimeKey"];
 
-        v102 = [v140 objectForKeyedSubscript:v97];
-        [v98 setObject:v102 forKeyedSubscript:@"PLBatteryUIAppBackgroundPluggedInRuntimeKey"];
+        v102 = [dictionary4 objectForKeyedSubscript:v97];
+        [dictionary11 setObject:v102 forKeyedSubscript:@"PLBatteryUIAppBackgroundPluggedInRuntimeKey"];
 
-        if (v139 == 4)
+        if (typeCopy == 4)
         {
           v103 = MEMORY[0x277CCABB0];
-          v104 = [v138 objectForKeyedSubscript:v97];
+          v104 = [dictionary5 objectForKeyedSubscript:v97];
           [v104 doubleValue];
           v105 = [v103 numberWithDouble:?];
-          [v98 setObject:v105 forKeyedSubscript:@"PLBatteryUIAppBackgroundLocationRuntimeKey"];
+          [dictionary11 setObject:v105 forKeyedSubscript:@"PLBatteryUIAppBackgroundLocationRuntimeKey"];
 
           v106 = MEMORY[0x277CCABB0];
-          v107 = [v137 objectForKeyedSubscript:v97];
+          v107 = [dictionary6 objectForKeyedSubscript:v97];
           [v107 doubleValue];
           v108 = [v106 numberWithDouble:?];
-          [v98 setObject:v108 forKeyedSubscript:@"PLBatteryUIAppBackgroundLocationPluggedInRuntimeKey"];
+          [dictionary11 setObject:v108 forKeyedSubscript:@"PLBatteryUIAppBackgroundLocationPluggedInRuntimeKey"];
 
           v109 = MEMORY[0x277CCABB0];
-          v110 = [v136 objectForKeyedSubscript:v97];
+          v110 = [dictionary7 objectForKeyedSubscript:v97];
           [v110 doubleValue];
           v111 = [v109 numberWithDouble:?];
-          [v98 setObject:v111 forKeyedSubscript:@"PLBatteryUIAppBackgroundAudioRuntimeKey"];
+          [dictionary11 setObject:v111 forKeyedSubscript:@"PLBatteryUIAppBackgroundAudioRuntimeKey"];
 
           v112 = MEMORY[0x277CCABB0];
-          v113 = [v135 objectForKeyedSubscript:v97];
+          v113 = [dictionary8 objectForKeyedSubscript:v97];
           [v113 doubleValue];
           v114 = [v112 numberWithDouble:?];
-          [v98 setObject:v114 forKeyedSubscript:@"PLBatteryUIAppBackgroundAudioPluggedInRuntimeKey"];
+          [dictionary11 setObject:v114 forKeyedSubscript:@"PLBatteryUIAppBackgroundAudioPluggedInRuntimeKey"];
 
           v115 = MEMORY[0x277CCABB0];
-          v116 = [v134 objectForKeyedSubscript:v97];
+          v116 = [dictionary9 objectForKeyedSubscript:v97];
           [v116 doubleValue];
           v117 = [v115 numberWithDouble:?];
-          [v98 setObject:v117 forKeyedSubscript:@"PLBatteryUIAppBackgroundLocationAudioRuntimeKey"];
+          [dictionary11 setObject:v117 forKeyedSubscript:@"PLBatteryUIAppBackgroundLocationAudioRuntimeKey"];
 
           v93 = 0x277CBE000;
           v118 = MEMORY[0x277CCABB0];
-          v119 = [v133 objectForKeyedSubscript:v97];
+          v119 = [dictionary10 objectForKeyedSubscript:v97];
           [v119 doubleValue];
           v120 = [v118 numberWithDouble:?];
-          [v98 setObject:v120 forKeyedSubscript:@"PLBatteryUIAppBackgroundLocationAudioPluggedInRuntimeKey"];
+          [dictionary11 setObject:v120 forKeyedSubscript:@"PLBatteryUIAppBackgroundLocationAudioPluggedInRuntimeKey"];
         }
 
-        [v98 setObject:&unk_282C12B88 forKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
-        [v91 addObject:v98];
+        [dictionary11 setObject:&unk_282C12B88 forKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
+        [v91 addObject:dictionary11];
       }
 
       v94 = [v129 countByEnumeratingWithState:&v144 objects:v164 count:16];
@@ -4217,13 +4217,13 @@ uint64_t __73__PLBatteryBreakdownService_populateRootNodeEnergyKeysWithEnergyEnt
   return v91;
 }
 
-- (id)addNotificationValues:(id)a3 withRange:(_PLTimeIntervalRange)a4 withQueryType:(int)a5
+- (id)addNotificationValues:(id)values withRange:(_PLTimeIntervalRange)range withQueryType:(int)type
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v8 = a3;
-  v9 = [(PLOperator *)self storage];
-  v10 = [v9 aggregateEntriesForKey:@"PLSpringBoardAgent_Aggregate_SBNotifications_Aggregate" withBucketLength:3600.0 inTimeIntervalRange:{var0, var1}];
+  var1 = range.var1;
+  var0 = range.var0;
+  valuesCopy = values;
+  storage = [(PLOperator *)self storage];
+  v10 = [storage aggregateEntriesForKey:@"PLSpringBoardAgent_Aggregate_SBNotifications_Aggregate" withBucketLength:3600.0 inTimeIntervalRange:{var0, var1}];
 
   v11 = objc_opt_new();
   v22[0] = MEMORY[0x277D85DD0];
@@ -4236,12 +4236,12 @@ uint64_t __73__PLBatteryBreakdownService_populateRootNodeEnergyKeysWithEnergyEnt
   v12 = v11;
   [v10 enumerateObjectsUsingBlock:v22];
   v13 = [MEMORY[0x277D3F190] summarizeAggregateEntries:v12 withPrimaryKeys:&unk_282C15CA8];
-  v14 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __75__PLBatteryBreakdownService_addNotificationValues_withRange_withQueryType___block_invoke_2;
   v20[3] = &unk_278261860;
-  v15 = v14;
+  v15 = dictionary;
   v21 = v15;
   [v13 enumerateObjectsUsingBlock:v20];
   v18[0] = MEMORY[0x277D85DD0];
@@ -4250,9 +4250,9 @@ uint64_t __73__PLBatteryBreakdownService_populateRootNodeEnergyKeysWithEnergyEnt
   v18[3] = &unk_278261888;
   v19 = v15;
   v16 = v15;
-  [v8 enumerateObjectsUsingBlock:v18];
+  [valuesCopy enumerateObjectsUsingBlock:v18];
 
-  return v8;
+  return valuesCopy;
 }
 
 void __75__PLBatteryBreakdownService_addNotificationValues_withRange_withQueryType___block_invoke(uint64_t a1, void *a2)
@@ -4387,12 +4387,12 @@ void __75__PLBatteryBreakdownService_addNotificationValues_withRange_withQueryTy
   }
 }
 
-- (id)nonAppsRuntimesWithRange:(_PLTimeIntervalRange)a3
+- (id)nonAppsRuntimesWithRange:(_PLTimeIntervalRange)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v13[3] = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = [(PLOperator *)PLCameraAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"Torch"];
   [(PLBatteryBreakdownService *)self nonAppRuntimeWithEventForwardTableName:v7 withRange:@"Level" andIdentificationKey:var0, var1];
   v12[0] = @"BundleID";
@@ -4404,35 +4404,35 @@ void __75__PLBatteryBreakdownService_addNotificationValues_withRange_withQueryTy
   v13[2] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
 
-  [v6 addObject:v9];
+  [array addObject:v9];
   v10 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return array;
 }
 
-- (double)nonAppRuntimeWithEventForwardTableName:(id)a3 withRange:(_PLTimeIntervalRange)a4 andIdentificationKey:(id)a5
+- (double)nonAppRuntimeWithEventForwardTableName:(id)name withRange:(_PLTimeIntervalRange)range andIdentificationKey:(id)key
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v46[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  nameCopy = name;
+  keyCopy = key;
   v11 = objc_alloc(MEMORY[0x277D3F260]);
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:var0];
   v13 = [v11 initWithKey:@"timestamp" withValue:v12 withComparisonOperation:5];
 
-  v14 = [(PLOperator *)self storage];
+  storage = [(PLOperator *)self storage];
   v39 = v13;
   v46[0] = v13;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:1];
-  v16 = [v14 lastEntryForKey:v9 withComparisons:v15 isSingleton:0];
+  v16 = [storage lastEntryForKey:nameCopy withComparisons:v15 isSingleton:0];
 
   if (v16)
   {
-    v17 = [v16 objectForKeyedSubscript:v10];
-    v18 = [v17 BOOLValue];
+    v17 = [v16 objectForKeyedSubscript:keyCopy];
+    bOOLValue = [v17 BOOLValue];
 
-    if (v18)
+    if (bOOLValue)
     {
       v19 = var0;
     }
@@ -4448,16 +4448,16 @@ void __75__PLBatteryBreakdownService_addNotificationValues_withRange_withQueryTy
     v19 = -1.0;
   }
 
-  v20 = [(PLOperator *)self storage];
-  v40 = v9;
-  v21 = [v20 entriesForKey:v9 inTimeRange:0 withFilters:{var0, var1}];
+  storage2 = [(PLOperator *)self storage];
+  v40 = nameCopy;
+  v21 = [storage2 entriesForKey:nameCopy inTimeRange:0 withFilters:{var0, var1}];
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v22 = [v21 reverseObjectEnumerator];
-  v23 = [v22 countByEnumeratingWithState:&v41 objects:v45 count:16];
+  reverseObjectEnumerator = [v21 reverseObjectEnumerator];
+  v23 = [reverseObjectEnumerator countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v23)
   {
     v24 = v23;
@@ -4469,19 +4469,19 @@ void __75__PLBatteryBreakdownService_addNotificationValues_withRange_withQueryTy
       {
         if (*v42 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v28 = *(*(&v41 + 1) + 8 * i);
-        v29 = [v28 objectForKeyedSubscript:v10];
-        v30 = [v29 BOOLValue];
+        v29 = [v28 objectForKeyedSubscript:keyCopy];
+        bOOLValue2 = [v29 BOOLValue];
 
-        if (v30)
+        if (bOOLValue2)
         {
           if (v19 == -1.0)
           {
-            v31 = [v28 entryDate];
-            [v31 timeIntervalSince1970];
+            entryDate = [v28 entryDate];
+            [entryDate timeIntervalSince1970];
             v19 = v32;
           }
         }
@@ -4490,8 +4490,8 @@ void __75__PLBatteryBreakdownService_addNotificationValues_withRange_withQueryTy
         {
           if (v19 != -1.0)
           {
-            v33 = [v28 entryDate];
-            [v33 timeIntervalSince1970];
+            entryDate2 = [v28 entryDate];
+            [entryDate2 timeIntervalSince1970];
             v35 = v34 - v19;
 
             v26 = v26 + v35;
@@ -4501,7 +4501,7 @@ void __75__PLBatteryBreakdownService_addNotificationValues_withRange_withQueryTy
         }
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v41 objects:v45 count:16];
+      v24 = [reverseObjectEnumerator countByEnumeratingWithState:&v41 objects:v45 count:16];
     }
 
     while (v24);
@@ -4526,19 +4526,19 @@ void __75__PLBatteryBreakdownService_addNotificationValues_withRange_withQueryTy
   return v36;
 }
 
-- (id)removeNodesNotToShowInInternalUI:(id)a3 withQueryType:(int)a4
+- (id)removeNodesNotToShowInInternalUI:(id)i withQueryType:(int)type
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4 == 2 && ![(PLBatteryBreakdownService *)self showRootNodesInInternal])
+  iCopy = i;
+  if (type == 2 && ![(PLBatteryBreakdownService *)self showRootNodesInInternal])
   {
-    v20 = v6;
+    v20 = iCopy;
     v21 = objc_opt_new();
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = v6;
+    v7 = iCopy;
     v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v8)
     {
@@ -4555,13 +4555,13 @@ void __75__PLBatteryBreakdownService_addNotificationValues_withRange_withQueryTy
 
           v12 = *(*(&v22 + 1) + 8 * i);
           v13 = [v12 objectForKeyedSubscript:{@"PLBatteryUIAppTypeKey", v20}];
-          v14 = [v13 intValue];
+          intValue = [v13 intValue];
 
-          if (v14 != 5)
+          if (intValue != 5)
           {
             v15 = [v12 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-            v16 = [(PLBatteryBreakdownService *)self intermediateRootNodes];
-            v17 = [v16 containsObject:v15];
+            intermediateRootNodes = [(PLBatteryBreakdownService *)self intermediateRootNodes];
+            v17 = [intermediateRootNodes containsObject:v15];
 
             if ((v17 & 1) == 0 && [v15 rangeOfString:@"AssertionPID"] == 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -4576,12 +4576,12 @@ void __75__PLBatteryBreakdownService_addNotificationValues_withRange_withQueryTy
       while (v9);
     }
 
-    v6 = v20;
+    iCopy = v20;
   }
 
   else
   {
-    v21 = v6;
+    v21 = iCopy;
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -4589,15 +4589,15 @@ void __75__PLBatteryBreakdownService_addNotificationValues_withRange_withQueryTy
   return v21;
 }
 
-- (id)filterEnergyEntriesBasedOnTime:(id)a3 withQueryType:(int)a4
+- (id)filterEnergyEntriesBasedOnTime:(id)time withQueryType:(int)type
 {
   v84 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  v69 = a4;
-  if (a4 == 4)
+  timeCopy = time;
+  v7 = timeCopy;
+  typeCopy = type;
+  if (type == 4)
   {
-    v71 = v6;
+    v71 = timeCopy;
     goto LABEL_62;
   }
 
@@ -4648,9 +4648,9 @@ void __75__PLBatteryBreakdownService_addNotificationValues_withRange_withQueryTy
           v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Entry: %@ ========= %@", v14, v13];
           v17 = MEMORY[0x277D3F178];
           v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-          v19 = [v18 lastPathComponent];
+          lastPathComponent = [v18 lastPathComponent];
           v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService filterEnergyEntriesBasedOnTime:withQueryType:]"];
-          [v17 logMessage:v16 fromFile:v19 fromFunction:v20 fromLineNumber:2090];
+          [v17 logMessage:v16 fromFile:lastPathComponent fromFunction:v20 fromLineNumber:2090];
 
           v21 = PLLogCommon();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -4688,9 +4688,9 @@ void __75__PLBatteryBreakdownService_addNotificationValues_withRange_withQueryTy
             v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Adding: NON APP"];
             v25 = MEMORY[0x277D3F178];
             v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-            v27 = [v26 lastPathComponent];
+            lastPathComponent2 = [v26 lastPathComponent];
             v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService filterEnergyEntriesBasedOnTime:withQueryType:]"];
-            [v25 logMessage:v24 fromFile:v27 fromFunction:v28 fromLineNumber:2096];
+            [v25 logMessage:v24 fromFile:lastPathComponent2 fromFunction:v28 fromLineNumber:2096];
 
             v29 = PLLogCommon();
             if (!os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -4721,7 +4721,7 @@ LABEL_58:
         [v33 doubleValue];
         v35 = v34;
 
-        if (v69 > 1 || (v32 == 0.0 ? (v36 = v35 < 60.0) : (v36 = 0), !v36))
+        if (typeCopy > 1 || (v32 == 0.0 ? (v36 = v35 < 60.0) : (v36 = 0), !v36))
         {
           if (v32 > 0.0 && v32 < 60.0)
           {
@@ -4751,9 +4751,9 @@ LABEL_58:
                 v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"Adding with Corrected FGTime"];
                 v60 = MEMORY[0x277D3F178];
                 v61 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-                v62 = [v61 lastPathComponent];
+                lastPathComponent3 = [v61 lastPathComponent];
                 v63 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService filterEnergyEntriesBasedOnTime:withQueryType:]"];
-                [v60 logMessage:v44 fromFile:v62 fromFunction:v63 fromLineNumber:2128];
+                [v60 logMessage:v44 fromFile:lastPathComponent3 fromFunction:v63 fromLineNumber:2128];
 
                 v49 = PLLogCommon();
                 if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
@@ -4784,9 +4784,9 @@ LABEL_58:
               v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"Adding without any changes"];
               v45 = MEMORY[0x277D3F178];
               v46 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-              v47 = [v46 lastPathComponent];
+              lastPathComponent4 = [v46 lastPathComponent];
               v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService filterEnergyEntriesBasedOnTime:withQueryType:]"];
-              [v45 logMessage:v44 fromFile:v47 fromFunction:v48 fromLineNumber:2130];
+              [v45 logMessage:v44 fromFile:lastPathComponent4 fromFunction:v48 fromLineNumber:2130];
 
               v49 = PLLogCommon();
               if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
@@ -4851,9 +4851,9 @@ LABEL_46:
               v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Dropping: Low FG BG Time"];
               v51 = MEMORY[0x277D3F178];
               v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-              v53 = [v52 lastPathComponent];
+              lastPathComponent5 = [v52 lastPathComponent];
               v54 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService filterEnergyEntriesBasedOnTime:withQueryType:]"];
-              [v51 logMessage:v24 fromFile:v53 fromFunction:v54 fromLineNumber:2112];
+              [v51 logMessage:v24 fromFile:lastPathComponent5 fromFunction:v54 fromLineNumber:2112];
 
               v29 = PLLogCommon();
               if (!os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -4923,10 +4923,10 @@ uint64_t __74__PLBatteryBreakdownService_filterEnergyEntriesBasedOnTime_withQuer
   return result;
 }
 
-- (id)adjustFGBGTimeForNonAppEnergyEntry:(id)a3
+- (id)adjustFGBGTimeForNonAppEnergyEntry:(id)entry
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
+  entryCopy = entry;
+  v4 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
   if (([v4 isEqualToString:@"HLS"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"Siri") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"DeletedApp") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"DeletedAppClip") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"DeletedAppAndAppClip"))
   {
     v5 = @"PLBatteryUIAppForegroundRuntimeKey";
@@ -4942,29 +4942,29 @@ uint64_t __74__PLBatteryBreakdownService_filterEnergyEntriesBasedOnTime_withQuer
     v5 = @"PLBatteryUIAppBackgroundRuntimeKey";
   }
 
-  v6 = [v3 objectForKeyedSubscript:v5];
+  v6 = [entryCopy objectForKeyedSubscript:v5];
   [v6 doubleValue];
   v8 = v7;
 
   if (v8 < 60.0 && v8 > 0.0)
   {
-    [v3 setObject:&unk_282C12C30 forKeyedSubscript:v5];
+    [entryCopy setObject:&unk_282C12C30 forKeyedSubscript:v5];
   }
 
 LABEL_10:
 
-  return v3;
+  return entryCopy;
 }
 
-- (double)computeTotalForegroundDuration:(id)a3
+- (double)computeTotalForegroundDuration:(id)duration
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  durationCopy = duration;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [durationCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4976,7 +4976,7 @@ LABEL_10:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(durationCopy);
         }
 
         v9 = [*(*(&v13 + 1) + 8 * i) objectForKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
@@ -4984,7 +4984,7 @@ LABEL_10:
         v7 = v7 + v10;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [durationCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -4999,15 +4999,15 @@ LABEL_10:
   return v7;
 }
 
-- (double)computeTotalBackgroundDuration:(id)a3
+- (double)computeTotalBackgroundDuration:(id)duration
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  durationCopy = duration;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [durationCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -5019,7 +5019,7 @@ LABEL_10:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(durationCopy);
         }
 
         v9 = [*(*(&v13 + 1) + 8 * i) objectForKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
@@ -5027,7 +5027,7 @@ LABEL_10:
         v7 = v7 + v10;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [durationCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -5046,8 +5046,8 @@ LABEL_10:
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277D3F1A0] entryKeyForOperatorName:@"PLHomeKitAgent" withType:*MEMORY[0x277D3F5E8] withName:@"HomeKitEvents"];
-  v4 = [(PLOperator *)self storage];
-  v5 = [v4 countOfEntriesForKey:v3];
+  storage = [(PLOperator *)self storage];
+  v5 = [storage countOfEntriesForKey:v3];
 
   v6 = PLLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -5061,10 +5061,10 @@ LABEL_10:
   return v5 > 0;
 }
 
-- (id)applyStaticNameTransformationsWithEnergyEntries:(id)a3
+- (id)applyStaticNameTransformationsWithEnergyEntries:(id)entries
 {
   v68 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entriesCopy = entries;
   if (![(PLBatteryBreakdownService *)self hasHomeKitActivity])
   {
     [(PLBatteryBreakdownService *)self setHasHomeKitActivity:[(PLBatteryBreakdownService *)self checkHomeKitEvents]];
@@ -5074,7 +5074,7 @@ LABEL_10:
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v5 = v4;
+  v5 = entriesCopy;
   v56 = [v5 countByEnumeratingWithState:&v61 objects:v67 count:16];
   if (v56)
   {
@@ -5111,9 +5111,9 @@ LABEL_10:
             v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"givenName=%@", v9];
             v12 = MEMORY[0x277D3F178];
             v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-            v14 = [v13 lastPathComponent];
+            lastPathComponent = [v13 lastPathComponent];
             v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService applyStaticNameTransformationsWithEnergyEntries:]"];
-            [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:2199];
+            [v12 logMessage:v11 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:2199];
 
             v16 = PLLogCommon();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -5151,9 +5151,9 @@ LABEL_10:
                 v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error lockscreen-navigation background time not zero"];
                 v20 = MEMORY[0x277D3F178];
                 v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-                v22 = [v21 lastPathComponent];
+                lastPathComponent2 = [v21 lastPathComponent];
                 v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService applyStaticNameTransformationsWithEnergyEntries:]"];
-                [v20 logMessage:v19 fromFile:v22 fromFunction:v23 fromLineNumber:2203];
+                [v20 logMessage:v19 fromFile:lastPathComponent2 fromFunction:v23 fromLineNumber:2203];
 
                 v24 = PLLogCommon();
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -5185,9 +5185,9 @@ LABEL_10:
                 v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"lockscreen-navigation energyEntry = %@", v8];
                 v27 = MEMORY[0x277D3F178];
                 v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-                v29 = [v28 lastPathComponent];
+                lastPathComponent3 = [v28 lastPathComponent];
                 v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService applyStaticNameTransformationsWithEnergyEntries:]"];
-                [v27 logMessage:v26 fromFile:v29 fromFunction:v30 fromLineNumber:2204];
+                [v27 logMessage:v26 fromFile:lastPathComponent3 fromFunction:v30 fromLineNumber:2204];
 
                 v31 = PLLogCommon();
                 if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -5214,8 +5214,8 @@ LABEL_10:
           [v8 setObject:&unk_282C1CA18 forKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
         }
 
-        v36 = [(PLBatteryBreakdownService *)self givenNameToMappedName];
-        v37 = [v36 objectForKeyedSubscript:v9];
+        givenNameToMappedName = [(PLBatteryBreakdownService *)self givenNameToMappedName];
+        v37 = [givenNameToMappedName objectForKeyedSubscript:v9];
 
         if ([*(v6 + 384) debugEnabled])
         {
@@ -5235,9 +5235,9 @@ LABEL_10:
             v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"mappedName=%@", v37];
             v40 = MEMORY[0x277D3F178];
             v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-            v42 = [v41 lastPathComponent];
+            lastPathComponent4 = [v41 lastPathComponent];
             v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService applyStaticNameTransformationsWithEnergyEntries:]"];
-            [v40 logMessage:v39 fromFile:v42 fromFunction:v43 fromLineNumber:2214];
+            [v40 logMessage:v39 fromFile:lastPathComponent4 fromFunction:v43 fromLineNumber:2214];
 
             v44 = PLLogCommon();
             if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
@@ -5271,8 +5271,8 @@ LABEL_10:
               _os_log_debug_impl(&dword_21A4C6000, v47, OS_LOG_TYPE_DEBUG, "Energy Entry before mapping: %@", buf, 0xCu);
             }
 
-            v48 = [(PLBatteryBreakdownService *)self installedBundleIDToDisplayName];
-            v49 = [v48 objectForKeyedSubscript:@"com.apple.Home"];
+            installedBundleIDToDisplayName = [(PLBatteryBreakdownService *)self installedBundleIDToDisplayName];
+            v49 = [installedBundleIDToDisplayName objectForKeyedSubscript:@"com.apple.Home"];
 
             if (v49)
             {
@@ -5336,32 +5336,32 @@ uint64_t __77__PLBatteryBreakdownService_applyStaticNameTransformationsWithEnerg
   return result;
 }
 
-- (id)bundleIDsForMappedName:(id)a3
+- (id)bundleIDsForMappedName:(id)name
 {
-  v4 = a3;
-  v5 = [(PLBatteryBreakdownService *)self givenNameToMappedName];
+  nameCopy = name;
+  givenNameToMappedName = [(PLBatteryBreakdownService *)self givenNameToMappedName];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __52__PLBatteryBreakdownService_bundleIDsForMappedName___block_invoke;
   v10[3] = &unk_2782618B0;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 keysOfEntriesPassingTest:v10];
+  v11 = nameCopy;
+  v6 = nameCopy;
+  v7 = [givenNameToMappedName keysOfEntriesPassingTest:v10];
 
-  v8 = [v7 allObjects];
+  allObjects = [v7 allObjects];
 
-  return v8;
+  return allObjects;
 }
 
-- (id)adjustExtensionBackgroundTimeWithEnergyEntries:(id)a3
+- (id)adjustExtensionBackgroundTimeWithEnergyEntries:(id)entries
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  entriesCopy = entries;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [entriesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -5372,7 +5372,7 @@ uint64_t __77__PLBatteryBreakdownService_applyStaticNameTransformationsWithEnerg
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(entriesCopy);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -5384,7 +5384,7 @@ uint64_t __77__PLBatteryBreakdownService_applyStaticNameTransformationsWithEnerg
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [entriesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -5392,12 +5392,12 @@ uint64_t __77__PLBatteryBreakdownService_applyStaticNameTransformationsWithEnerg
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return entriesCopy;
 }
 
-- (id)applyDynamicNameTransformationsWithEnergyEntries:(id)a3
+- (id)applyDynamicNameTransformationsWithEnergyEntries:(id)entries
 {
-  v4 = [(PLBatteryBreakdownService *)self mapDeletedAppsWithEnergyEntries:a3];
+  v4 = [(PLBatteryBreakdownService *)self mapDeletedAppsWithEnergyEntries:entries];
   v5 = [(PLBatteryBreakdownService *)self mapPluginsToAppsWithEnergyEntries:v4];
 
   v6 = [(PLBatteryBreakdownService *)self mapGizmoToAppsWithEnergyEntries:v5];
@@ -5411,19 +5411,19 @@ uint64_t __77__PLBatteryBreakdownService_applyStaticNameTransformationsWithEnerg
   return v9;
 }
 
-- (id)mapDeletedAppsWithEnergyEntries:(id)a3
+- (id)mapDeletedAppsWithEnergyEntries:(id)entries
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PLBatteryBreakdownService *)self deletedAppNames];
-  if ([v5 count])
+  entriesCopy = entries;
+  deletedAppNames = [(PLBatteryBreakdownService *)self deletedAppNames];
+  if ([deletedAppNames count])
   {
   }
 
   else
   {
-    v6 = [(PLBatteryBreakdownService *)self deletedAppClipNames];
-    v7 = [v6 count];
+    deletedAppClipNames = [(PLBatteryBreakdownService *)self deletedAppClipNames];
+    v7 = [deletedAppClipNames count];
 
     if (!v7)
     {
@@ -5431,13 +5431,13 @@ uint64_t __77__PLBatteryBreakdownService_applyStaticNameTransformationsWithEnerg
     }
   }
 
-  v8 = [(PLBatteryBreakdownService *)self deletedAppClipNames];
-  if (![v8 count])
+  deletedAppClipNames2 = [(PLBatteryBreakdownService *)self deletedAppClipNames];
+  if (![deletedAppClipNames2 count])
   {
 
 LABEL_8:
-    v12 = [(PLBatteryBreakdownService *)self deletedAppNames];
-    v13 = [v12 count];
+    deletedAppNames2 = [(PLBatteryBreakdownService *)self deletedAppNames];
+    v13 = [deletedAppNames2 count];
 
     if (v13)
     {
@@ -5446,8 +5446,8 @@ LABEL_8:
 
     else
     {
-      v14 = [(PLBatteryBreakdownService *)self deletedAppClipNames];
-      v15 = [v14 count];
+      deletedAppClipNames3 = [(PLBatteryBreakdownService *)self deletedAppClipNames];
+      v15 = [deletedAppClipNames3 count];
 
       v11 = @"DeletedAppClip";
       if (!v15)
@@ -5459,8 +5459,8 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v9 = [(PLBatteryBreakdownService *)self deletedAppNames];
-  v10 = [v9 count];
+  deletedAppNames3 = [(PLBatteryBreakdownService *)self deletedAppNames];
+  v10 = [deletedAppNames3 count];
 
   if (!v10)
   {
@@ -5482,8 +5482,8 @@ LABEL_12:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v46 = v4;
-  obj = v4;
+  v46 = entriesCopy;
+  obj = entriesCopy;
   v17 = [obj countByEnumeratingWithState:&v52 objects:v56 count:16];
   if (v17)
   {
@@ -5518,9 +5518,9 @@ LABEL_12:
             v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEntry=%@", v20];
             v23 = MEMORY[0x277D3F178];
             v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-            v25 = [v24 lastPathComponent];
+            lastPathComponent = [v24 lastPathComponent];
             v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService mapDeletedAppsWithEnergyEntries:]"];
-            [v23 logMessage:v22 fromFile:v25 fromFunction:v26 fromLineNumber:2279];
+            [v23 logMessage:v22 fromFile:lastPathComponent fromFunction:v26 fromLineNumber:2279];
 
             v27 = PLLogCommon();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -5532,17 +5532,17 @@ LABEL_12:
           }
         }
 
-        v28 = [(PLBatteryBreakdownService *)self deletedAppNames];
+        deletedAppNames4 = [(PLBatteryBreakdownService *)self deletedAppNames];
         v29 = [v20 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-        if ([v28 containsObject:v29])
+        if ([deletedAppNames4 containsObject:v29])
         {
         }
 
         else
         {
-          v30 = [(PLBatteryBreakdownService *)self deletedAppClipNames];
+          deletedAppClipNames4 = [(PLBatteryBreakdownService *)self deletedAppClipNames];
           v31 = [v20 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-          v32 = [v30 containsObject:v31];
+          v32 = [deletedAppClipNames4 containsObject:v31];
 
           if (!v32)
           {
@@ -5568,9 +5568,9 @@ LABEL_12:
             v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"this is a deleted app"];
             v35 = MEMORY[0x277D3F178];
             v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-            v37 = [v36 lastPathComponent];
+            lastPathComponent2 = [v36 lastPathComponent];
             v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService mapDeletedAppsWithEnergyEntries:]"];
-            [v35 logMessage:v34 fromFile:v37 fromFunction:v38 fromLineNumber:2282];
+            [v35 logMessage:v34 fromFile:lastPathComponent2 fromFunction:v38 fromLineNumber:2282];
 
             v39 = PLLogCommon();
             if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
@@ -5616,11 +5616,11 @@ LABEL_39:
     while (v18);
   }
 
-  v4 = v46;
+  entriesCopy = v46;
 LABEL_46:
   v44 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return entriesCopy;
 }
 
 uint64_t __61__PLBatteryBreakdownService_mapDeletedAppsWithEnergyEntries___block_invoke(uint64_t a1)
@@ -5637,14 +5637,14 @@ uint64_t __61__PLBatteryBreakdownService_mapDeletedAppsWithEnergyEntries___block
   return result;
 }
 
-- (id)mapPluginsToAppsWithEnergyEntries:(id)a3
+- (id)mapPluginsToAppsWithEnergyEntries:(id)entries
 {
   v55 = *MEMORY[0x277D85DE8];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = a3;
+  obj = entries;
   v43 = [obj countByEnumeratingWithState:&v46 objects:v54 count:16];
   if (v43)
   {
@@ -5682,9 +5682,9 @@ uint64_t __61__PLBatteryBreakdownService_mapDeletedAppsWithEnergyEntries___block
             v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEntry=%@", v9];
             v12 = MEMORY[0x277D3F178];
             v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-            v14 = [v13 lastPathComponent];
+            lastPathComponent = [v13 lastPathComponent];
             v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService mapPluginsToAppsWithEnergyEntries:]"];
-            [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:2305];
+            [v12 logMessage:v11 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:2305];
 
             v16 = PLLogCommon();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -5699,9 +5699,9 @@ uint64_t __61__PLBatteryBreakdownService_mapDeletedAppsWithEnergyEntries___block
           }
         }
 
-        v17 = [(PLBatteryBreakdownService *)self installedPluginBundleIDToPluginEntry];
+        installedPluginBundleIDToPluginEntry = [(PLBatteryBreakdownService *)self installedPluginBundleIDToPluginEntry];
         v18 = [v9 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-        v19 = [v17 objectForKeyedSubscript:v18];
+        v19 = [installedPluginBundleIDToPluginEntry objectForKeyedSubscript:v18];
 
         v6 = v8;
         if (v19)
@@ -5724,9 +5724,9 @@ uint64_t __61__PLBatteryBreakdownService_mapDeletedAppsWithEnergyEntries___block
               v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"this is a plugin"];
               v22 = MEMORY[0x277D3F178];
               v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-              v24 = [v23 lastPathComponent];
+              lastPathComponent2 = [v23 lastPathComponent];
               v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService mapPluginsToAppsWithEnergyEntries:]"];
-              [v22 logMessage:v21 fromFile:v24 fromFunction:v25 fromLineNumber:2310];
+              [v22 logMessage:v21 fromFile:lastPathComponent2 fromFunction:v25 fromLineNumber:2310];
 
               v26 = PLLogCommon();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -5821,15 +5821,15 @@ uint64_t __63__PLBatteryBreakdownService_mapPluginsToAppsWithEnergyEntries___blo
   return result;
 }
 
-- (id)mapGizmoToAppsWithEnergyEntries:(id)a3
+- (id)mapGizmoToAppsWithEnergyEntries:(id)entries
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entriesCopy = entries;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v56 objects:v63 count:16];
+  v5 = [entriesCopy countByEnumeratingWithState:&v56 objects:v63 count:16];
   if (v5)
   {
     v6 = v5;
@@ -5840,13 +5840,13 @@ uint64_t __63__PLBatteryBreakdownService_mapPluginsToAppsWithEnergyEntries___blo
       {
         if (*v57 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(entriesCopy);
         }
 
         v9 = *(*(&v56 + 1) + 8 * i);
-        v10 = [(PLBatteryBreakdownService *)self gizmoDaemonToAppBundleID];
+        gizmoDaemonToAppBundleID = [(PLBatteryBreakdownService *)self gizmoDaemonToAppBundleID];
         v11 = [v9 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-        v12 = [v10 objectForKeyedSubscript:v11];
+        v12 = [gizmoDaemonToAppBundleID objectForKeyedSubscript:v11];
 
         if (v12)
         {
@@ -5856,7 +5856,7 @@ uint64_t __63__PLBatteryBreakdownService_mapPluginsToAppsWithEnergyEntries___blo
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v56 objects:v63 count:16];
+      v6 = [entriesCopy countByEnumeratingWithState:&v56 objects:v63 count:16];
     }
 
     while (v6);
@@ -5866,7 +5866,7 @@ uint64_t __63__PLBatteryBreakdownService_mapPluginsToAppsWithEnergyEntries___blo
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v14 = v4;
+  v14 = entriesCopy;
   v15 = [v14 countByEnumeratingWithState:&v52 objects:v62 count:16];
   if (v15)
   {
@@ -5956,9 +5956,9 @@ uint64_t __63__PLBatteryBreakdownService_mapPluginsToAppsWithEnergyEntries___blo
         }
 
         v37 = *(*(&v44 + 1) + 8 * m);
-        v38 = [(PLBatteryBreakdownService *)self gizmoIDSTopicToAppBundleID];
+        gizmoIDSTopicToAppBundleID = [(PLBatteryBreakdownService *)self gizmoIDSTopicToAppBundleID];
         v39 = [v37 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-        v40 = [v38 objectForKeyedSubscript:v39];
+        v40 = [gizmoIDSTopicToAppBundleID objectForKeyedSubscript:v39];
 
         if (v40)
         {
@@ -5979,15 +5979,15 @@ uint64_t __63__PLBatteryBreakdownService_mapPluginsToAppsWithEnergyEntries___blo
   return v32;
 }
 
-- (id)mapCloudDocsToAppsWithEnergyEntries:(id)a3
+- (id)mapCloudDocsToAppsWithEnergyEntries:(id)entries
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  entriesCopy = entries;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v4 = [entriesCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -6002,7 +6002,7 @@ uint64_t __63__PLBatteryBreakdownService_mapPluginsToAppsWithEnergyEntries___blo
       {
         if (*v24 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(entriesCopy);
         }
 
         v10 = *(*(&v23 + 1) + 8 * v9);
@@ -6015,7 +6015,7 @@ uint64_t __63__PLBatteryBreakdownService_mapPluginsToAppsWithEnergyEntries___blo
           {
             v15 = v6;
             v16 = v7;
-            v17 = v3;
+            v17 = entriesCopy;
             v18 = v8;
             v19 = [v12 substringFromIndex:v13 + v14];
             if (v19)
@@ -6024,7 +6024,7 @@ uint64_t __63__PLBatteryBreakdownService_mapPluginsToAppsWithEnergyEntries___blo
             }
 
             v8 = v18;
-            v3 = v17;
+            entriesCopy = v17;
             v7 = v16;
             v6 = v15;
             v5 = v22;
@@ -6035,7 +6035,7 @@ uint64_t __63__PLBatteryBreakdownService_mapPluginsToAppsWithEnergyEntries___blo
       }
 
       while (v5 != v9);
-      v5 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v5 = [entriesCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v5);
@@ -6043,17 +6043,17 @@ uint64_t __63__PLBatteryBreakdownService_mapPluginsToAppsWithEnergyEntries___blo
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return entriesCopy;
 }
 
-- (id)reaccountExchangeEntriesWithEnergyEntries:(id)a3
+- (id)reaccountExchangeEntriesWithEnergyEntries:(id)entries
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  entriesCopy = entries;
+  v4 = entriesCopy;
+  if (entriesCopy && [entriesCopy count])
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
@@ -6079,7 +6079,7 @@ uint64_t __63__PLBatteryBreakdownService_mapPluginsToAppsWithEnergyEntries___blo
           if (v12)
           {
             v13 = [v11 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-            [v5 setObject:v11 forKeyedSubscript:v13];
+            [dictionary setObject:v11 forKeyedSubscript:v13];
           }
         }
 
@@ -6089,7 +6089,7 @@ uint64_t __63__PLBatteryBreakdownService_mapPluginsToAppsWithEnergyEntries___blo
       while (v8);
     }
 
-    v14 = [v5 objectForKeyedSubscript:@"com.apple.activesync"];
+    v14 = [dictionary objectForKeyedSubscript:@"com.apple.activesync"];
     v15 = v14;
     if (v14 && ([v14 objectForKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "doubleValue"), v18 = v17, v16, v18 != 0.0))
     {
@@ -6114,7 +6114,7 @@ uint64_t __63__PLBatteryBreakdownService_mapPluginsToAppsWithEnergyEntries___blo
               objc_enumerationMutation(&unk_282C15CD8);
             }
 
-            v25 = [v5 objectForKeyedSubscript:*(*(&v49 + 1) + 8 * j)];
+            v25 = [dictionary objectForKeyedSubscript:*(*(&v49 + 1) + 8 * j)];
             v26 = v25;
             if (v25)
             {
@@ -6165,7 +6165,7 @@ uint64_t __63__PLBatteryBreakdownService_mapPluginsToAppsWithEnergyEntries___blo
               objc_enumerationMutation(&unk_282C15CD8);
             }
 
-            v35 = [v5 objectForKeyedSubscript:*(*(&v45 + 1) + 8 * k)];
+            v35 = [dictionary objectForKeyedSubscript:*(*(&v45 + 1) + 8 * k)];
             v36 = v35;
             if (v35)
             {
@@ -6222,14 +6222,14 @@ void __71__PLBatteryBreakdownService_reaccountExchangeEntriesWithEnergyEntries__
   }
 }
 
-- (id)reaccountBackupRestoreWithEnergyEntries:(id)a3
+- (id)reaccountBackupRestoreWithEnergyEntries:(id)entries
 {
   v49 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  entriesCopy = entries;
+  v4 = entriesCopy;
+  if (entriesCopy && [entriesCopy count])
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
@@ -6255,7 +6255,7 @@ void __71__PLBatteryBreakdownService_reaccountExchangeEntriesWithEnergyEntries__
           if (v12)
           {
             v13 = [v11 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-            [v5 setObject:v11 forKeyedSubscript:v13];
+            [dictionary setObject:v11 forKeyedSubscript:v13];
           }
         }
 
@@ -6265,8 +6265,8 @@ void __71__PLBatteryBreakdownService_reaccountExchangeEntriesWithEnergyEntries__
       while (v8);
     }
 
-    v14 = [v5 objectForKeyedSubscript:@"Backup"];
-    v15 = [v5 objectForKeyedSubscript:@"Restore"];
+    v14 = [dictionary objectForKeyedSubscript:@"Backup"];
+    v15 = [dictionary objectForKeyedSubscript:@"Restore"];
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
       v16 = objc_opt_class();
@@ -6286,9 +6286,9 @@ void __71__PLBatteryBreakdownService_reaccountExchangeEntriesWithEnergyEntries__
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"backupEnergyEntry=%@, restoreEnergyEntry=%@", v14, v15];
         v18 = MEMORY[0x277D3F178];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-        v20 = [v19 lastPathComponent];
+        lastPathComponent = [v19 lastPathComponent];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService reaccountBackupRestoreWithEnergyEntries:]"];
-        [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:2473];
+        [v18 logMessage:v17 fromFile:lastPathComponent fromFunction:v21 fromLineNumber:2473];
 
         v22 = PLLogCommon();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -6333,9 +6333,9 @@ void __71__PLBatteryBreakdownService_reaccountExchangeEntriesWithEnergyEntries__
           v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"combined backupEnergyEntry=%@", v23];
           v36 = MEMORY[0x277D3F178];
           v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-          v28 = [v27 lastPathComponent];
+          lastPathComponent2 = [v27 lastPathComponent];
           v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService reaccountBackupRestoreWithEnergyEntries:]"];
-          [v36 logMessage:v26 fromFile:v28 fromFunction:v29 fromLineNumber:2485];
+          [v36 logMessage:v26 fromFile:lastPathComponent2 fromFunction:v29 fromLineNumber:2485];
 
           v30 = v26;
           v31 = PLLogCommon();
@@ -6399,21 +6399,21 @@ uint64_t __69__PLBatteryBreakdownService_reaccountBackupRestoreWithEnergyEntries
   return result;
 }
 
-- (id)combineDuplicatesWithEnergyEntries:(id)a3
+- (id)combineDuplicatesWithEnergyEntries:(id)entries
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  entriesCopy = entries;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v3;
+  obj = entriesCopy;
   v38 = [obj countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v38)
   {
     v37 = *v45;
-    v35 = v4;
+    v35 = dictionary;
     do
     {
       v5 = 0;
@@ -6444,9 +6444,9 @@ uint64_t __69__PLBatteryBreakdownService_reaccountBackupRestoreWithEnergyEntries
             v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"name=%@", v7];
             v10 = MEMORY[0x277D3F178];
             v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-            v12 = [v11 lastPathComponent];
+            lastPathComponent = [v11 lastPathComponent];
             v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService combineDuplicatesWithEnergyEntries:]"];
-            [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:2496];
+            [v10 logMessage:v9 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:2496];
 
             v14 = PLLogCommon();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -6456,13 +6456,13 @@ uint64_t __69__PLBatteryBreakdownService_reaccountBackupRestoreWithEnergyEntries
               _os_log_debug_impl(&dword_21A4C6000, v14, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
             }
 
-            v4 = v35;
+            dictionary = v35;
           }
         }
 
         if (v7)
         {
-          v15 = [v4 objectForKeyedSubscript:v7];
+          v15 = [dictionary objectForKeyedSubscript:v7];
           if ([MEMORY[0x277D3F180] debugEnabled])
           {
             v16 = objc_opt_class();
@@ -6481,9 +6481,9 @@ uint64_t __69__PLBatteryBreakdownService_reaccountBackupRestoreWithEnergyEntries
               v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"storedEnergyEntry=%@", v15];
               v18 = MEMORY[0x277D3F178];
               v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-              v20 = [v19 lastPathComponent];
+              lastPathComponent2 = [v19 lastPathComponent];
               v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService combineDuplicatesWithEnergyEntries:]"];
-              [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:2500];
+              [v18 logMessage:v17 fromFile:lastPathComponent2 fromFunction:v21 fromLineNumber:2500];
 
               v22 = PLLogCommon();
               if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -6493,7 +6493,7 @@ uint64_t __69__PLBatteryBreakdownService_reaccountBackupRestoreWithEnergyEntries
                 _os_log_debug_impl(&dword_21A4C6000, v22, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
               }
 
-              v4 = v35;
+              dictionary = v35;
             }
           }
 
@@ -6509,7 +6509,7 @@ uint64_t __69__PLBatteryBreakdownService_reaccountBackupRestoreWithEnergyEntries
 
           else
           {
-            [v4 setObject:v6 forKeyedSubscript:v7];
+            [dictionary setObject:v6 forKeyedSubscript:v7];
           }
 
           if ([MEMORY[0x277D3F180] debugEnabled])
@@ -6528,14 +6528,14 @@ uint64_t __69__PLBatteryBreakdownService_reaccountBackupRestoreWithEnergyEntries
             if (byte_2811F643E == 1)
             {
               v24 = MEMORY[0x277CCACA8];
-              v25 = [v4 objectForKeyedSubscript:v7];
+              v25 = [dictionary objectForKeyedSubscript:v7];
               v26 = [v24 stringWithFormat:@"nameToEnergyEntry[name]=%@", v25];
 
               v27 = MEMORY[0x277D3F178];
               v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-              v29 = [v28 lastPathComponent];
+              lastPathComponent3 = [v28 lastPathComponent];
               v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService combineDuplicatesWithEnergyEntries:]"];
-              [v27 logMessage:v26 fromFile:v29 fromFunction:v30 fromLineNumber:2528];
+              [v27 logMessage:v26 fromFile:lastPathComponent3 fromFunction:v30 fromLineNumber:2528];
 
               v31 = PLLogCommon();
               if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -6558,11 +6558,11 @@ uint64_t __69__PLBatteryBreakdownService_reaccountBackupRestoreWithEnergyEntries
     while (v38);
   }
 
-  v32 = [v4 allValues];
+  allValues = [dictionary allValues];
 
   v33 = *MEMORY[0x277D85DE8];
 
-  return v32;
+  return allValues;
 }
 
 uint64_t __64__PLBatteryBreakdownService_combineDuplicatesWithEnergyEntries___block_invoke(uint64_t a1)
@@ -6622,21 +6622,21 @@ uint64_t __64__PLBatteryBreakdownService_combineDuplicatesWithEnergyEntries___bl
   return result;
 }
 
-- (id)determineDisplayNamesWithEnergyEntries:(id)a3
+- (id)determineDisplayNamesWithEnergyEntries:(id)entries
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entriesCopy = entries;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v36 objects:v42 count:16];
+  v5 = [entriesCopy countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v37;
     v32 = *v37;
-    v31 = self;
+    selfCopy = self;
     do
     {
       v8 = 0;
@@ -6645,7 +6645,7 @@ uint64_t __64__PLBatteryBreakdownService_combineDuplicatesWithEnergyEntries___bl
       {
         if (*v37 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(entriesCopy);
         }
 
         v9 = *(*(&v36 + 1) + 8 * v8);
@@ -6668,9 +6668,9 @@ uint64_t __64__PLBatteryBreakdownService_combineDuplicatesWithEnergyEntries___bl
             v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundleID=%@", v10];
             v13 = MEMORY[0x277D3F178];
             v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-            v15 = [v14 lastPathComponent];
+            lastPathComponent = [v14 lastPathComponent];
             v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService determineDisplayNamesWithEnergyEntries:]"];
-            [v13 logMessage:v12 fromFile:v15 fromFunction:v16 fromLineNumber:2536];
+            [v13 logMessage:v12 fromFile:lastPathComponent fromFunction:v16 fromLineNumber:2536];
 
             v17 = PLLogCommon();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -6685,8 +6685,8 @@ uint64_t __64__PLBatteryBreakdownService_combineDuplicatesWithEnergyEntries___bl
           }
         }
 
-        v18 = [(PLBatteryBreakdownService *)self installedBundleIDToDisplayName];
-        v19 = [v18 objectForKeyedSubscript:v10];
+        installedBundleIDToDisplayName = [(PLBatteryBreakdownService *)self installedBundleIDToDisplayName];
+        v19 = [installedBundleIDToDisplayName objectForKeyedSubscript:v10];
 
         if ([(__CFString *)v10 isEqualToString:@"com.apple.Bridge"])
         {
@@ -6709,13 +6709,13 @@ uint64_t __64__PLBatteryBreakdownService_combineDuplicatesWithEnergyEntries___bl
 
           if (byte_2811F6440 == 1)
           {
-            v21 = v4;
+            v21 = entriesCopy;
             v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"displayName=%@", v19];
             v23 = MEMORY[0x277D3F178];
             v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-            v25 = [v24 lastPathComponent];
+            lastPathComponent2 = [v24 lastPathComponent];
             v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService determineDisplayNamesWithEnergyEntries:]"];
-            [v23 logMessage:v22 fromFile:v25 fromFunction:v26 fromLineNumber:2542];
+            [v23 logMessage:v22 fromFile:lastPathComponent2 fromFunction:v26 fromLineNumber:2542];
 
             v27 = PLLogCommon();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -6725,8 +6725,8 @@ uint64_t __64__PLBatteryBreakdownService_combineDuplicatesWithEnergyEntries___bl
               _os_log_debug_impl(&dword_21A4C6000, v27, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
             }
 
-            v4 = v21;
-            self = v31;
+            entriesCopy = v21;
+            self = selfCopy;
             v6 = v33;
             v7 = v32;
           }
@@ -6748,7 +6748,7 @@ uint64_t __64__PLBatteryBreakdownService_combineDuplicatesWithEnergyEntries___bl
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v36 objects:v42 count:16];
+      v6 = [entriesCopy countByEnumeratingWithState:&v36 objects:v42 count:16];
     }
 
     while (v6);
@@ -6756,7 +6756,7 @@ uint64_t __64__PLBatteryBreakdownService_combineDuplicatesWithEnergyEntries___bl
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return entriesCopy;
 }
 
 uint64_t __68__PLBatteryBreakdownService_determineDisplayNamesWithEnergyEntries___block_invoke(uint64_t a1)
@@ -6773,23 +6773,23 @@ uint64_t __68__PLBatteryBreakdownService_determineDisplayNamesWithEnergyEntries_
   return result;
 }
 
-- (id)filterWithEnergyEntries:(id)a3 withQueryType:(int)a4
+- (id)filterWithEnergyEntries:(id)entries withQueryType:(int)type
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v45 = [MEMORY[0x277CBEB18] array];
+  entriesCopy = entries;
+  array = [MEMORY[0x277CBEB18] array];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v6;
+  obj = entriesCopy;
   v49 = [obj countByEnumeratingWithState:&v54 objects:v60 count:16];
   if (v49)
   {
     v48 = *v55;
     v7 = 0x277D3F000uLL;
-    v44 = a4;
-    v47 = self;
+    typeCopy = type;
+    selfCopy = self;
     do
     {
       v8 = 0;
@@ -6819,9 +6819,9 @@ uint64_t __68__PLBatteryBreakdownService_determineDisplayNamesWithEnergyEntries_
             v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEntry=%@", v9];
             v12 = MEMORY[0x277D3F178];
             v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-            v14 = [v13 lastPathComponent];
+            lastPathComponent = [v13 lastPathComponent];
             v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService filterWithEnergyEntries:withQueryType:]"];
-            [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:2552];
+            [v12 logMessage:v11 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:2552];
 
             v16 = PLLogCommon();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -6853,9 +6853,9 @@ uint64_t __68__PLBatteryBreakdownService_determineDisplayNamesWithEnergyEntries_
             v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"appType=%i", v18];
             v21 = MEMORY[0x277D3F178];
             v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-            v23 = [v22 lastPathComponent];
+            lastPathComponent2 = [v22 lastPathComponent];
             v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService filterWithEnergyEntries:withQueryType:]"];
-            [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:2558];
+            [v21 logMessage:v20 fromFile:lastPathComponent2 fromFunction:v24 fromLineNumber:2558];
 
             v25 = PLLogCommon();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -6865,7 +6865,7 @@ uint64_t __68__PLBatteryBreakdownService_determineDisplayNamesWithEnergyEntries_
               _os_log_debug_impl(&dword_21A4C6000, v25, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
             }
 
-            self = v47;
+            self = selfCopy;
             v7 = 0x277D3F000uLL;
           }
         }
@@ -6892,9 +6892,9 @@ uint64_t __68__PLBatteryBreakdownService_determineDisplayNamesWithEnergyEntries_
             v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"minimumRequiredQueryType=%i", v27];
             v30 = MEMORY[0x277D3F178];
             v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-            v32 = [v31 lastPathComponent];
+            lastPathComponent3 = [v31 lastPathComponent];
             v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService filterWithEnergyEntries:withQueryType:]"];
-            [v30 logMessage:v29 fromFile:v32 fromFunction:v33 fromLineNumber:2564];
+            [v30 logMessage:v29 fromFile:lastPathComponent3 fromFunction:v33 fromLineNumber:2564];
 
             v34 = PLLogCommon();
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
@@ -6904,13 +6904,13 @@ uint64_t __68__PLBatteryBreakdownService_determineDisplayNamesWithEnergyEntries_
               _os_log_debug_impl(&dword_21A4C6000, v34, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
             }
 
-            a4 = v44;
-            self = v47;
+            type = typeCopy;
+            self = selfCopy;
             v7 = 0x277D3F000uLL;
           }
         }
 
-        if (a4 == 4)
+        if (type == 4)
         {
           if ((v18 & 0xFFFFFFFB) != 0)
           {
@@ -6920,7 +6920,7 @@ uint64_t __68__PLBatteryBreakdownService_determineDisplayNamesWithEnergyEntries_
 
         else
         {
-          if (v27 > a4)
+          if (v27 > type)
           {
             goto LABEL_39;
           }
@@ -6943,9 +6943,9 @@ uint64_t __68__PLBatteryBreakdownService_determineDisplayNamesWithEnergyEntries_
               v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"adding entry"];
               v37 = MEMORY[0x277D3F178];
               v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-              v39 = [v38 lastPathComponent];
+              lastPathComponent4 = [v38 lastPathComponent];
               v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService filterWithEnergyEntries:withQueryType:]"];
-              [v37 logMessage:v36 fromFile:v39 fromFunction:v40 fromLineNumber:2575];
+              [v37 logMessage:v36 fromFile:lastPathComponent4 fromFunction:v40 fromLineNumber:2575];
 
               v41 = PLLogCommon();
               if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
@@ -6955,14 +6955,14 @@ uint64_t __68__PLBatteryBreakdownService_determineDisplayNamesWithEnergyEntries_
                 _os_log_debug_impl(&dword_21A4C6000, v41, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
               }
 
-              a4 = v44;
-              self = v47;
+              type = typeCopy;
+              self = selfCopy;
               v7 = 0x277D3F000;
             }
           }
         }
 
-        [v45 addObject:v9];
+        [array addObject:v9];
 LABEL_39:
 
         ++v8;
@@ -6977,7 +6977,7 @@ LABEL_39:
 
   v42 = *MEMORY[0x277D85DE8];
 
-  return v45;
+  return array;
 }
 
 uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType___block_invoke(uint64_t a1)
@@ -7008,11 +7008,11 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
   return result;
 }
 
-- (int)appTypeForName:(id)a3
+- (int)appTypeForName:(id)name
 {
-  v4 = a3;
-  v5 = [(PLBatteryBreakdownService *)self rootNodeNames];
-  v6 = [v5 containsObject:v4];
+  nameCopy = name;
+  rootNodeNames = [(PLBatteryBreakdownService *)self rootNodeNames];
+  v6 = [rootNodeNames containsObject:nameCopy];
 
   if (v6)
   {
@@ -7021,8 +7021,8 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
 
   else
   {
-    v8 = [(PLBatteryBreakdownService *)self nonAppNames];
-    v9 = [v8 containsObject:v4];
+    nonAppNames = [(PLBatteryBreakdownService *)self nonAppNames];
+    v9 = [nonAppNames containsObject:nameCopy];
 
     if (v9)
     {
@@ -7031,8 +7031,8 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
 
     else
     {
-      v10 = [(PLBatteryBreakdownService *)self webAppNames];
-      v11 = [v10 containsObject:v4];
+      webAppNames = [(PLBatteryBreakdownService *)self webAppNames];
+      v11 = [webAppNames containsObject:nameCopy];
 
       if (v11)
       {
@@ -7041,8 +7041,8 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
 
       else
       {
-        v12 = [(PLBatteryBreakdownService *)self installedBundleIDToDisplayName];
-        v13 = [v12 objectForKeyedSubscript:v4];
+        installedBundleIDToDisplayName = [(PLBatteryBreakdownService *)self installedBundleIDToDisplayName];
+        v13 = [installedBundleIDToDisplayName objectForKeyedSubscript:nameCopy];
         v14 = v13 == 0;
 
         v7 = 2 * v14;
@@ -7053,28 +7053,28 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
   return v7;
 }
 
-- (int)minimumRequiredQueryTypeForAppType:(int)a3
+- (int)minimumRequiredQueryTypeForAppType:(int)type
 {
-  if (a3 == 5)
+  if (type == 5)
   {
     return 3;
   }
 
   else
   {
-    return 2 * (a3 == 2);
+    return 2 * (type == 2);
   }
 }
 
-- (id)adjustForegroundTimesWithEnergyEntries:(id)a3
+- (id)adjustForegroundTimesWithEnergyEntries:(id)entries
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  entriesCopy = entries;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [entriesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -7085,7 +7085,7 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(entriesCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -7097,7 +7097,7 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [entriesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -7105,18 +7105,18 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return entriesCopy;
 }
 
-- (id)adjustBackgroundTimesWithEnergyEntries:(id)a3
+- (id)adjustBackgroundTimesWithEnergyEntries:(id)entries
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  entriesCopy = entries;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [entriesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -7127,7 +7127,7 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(entriesCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -7139,7 +7139,7 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [entriesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -7147,13 +7147,13 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return entriesCopy;
 }
 
-- (id)qualifiersWithEnergyEntry:(id)a3 bucketSize:(double)a4 andTotalEnergy:(double)a5
+- (id)qualifiersWithEnergyEntry:(id)entry bucketSize:(double)size andTotalEnergy:(double)energy
 {
   v231 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  entryCopy = entry;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -7170,50 +7170,50 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
 
     if (byte_2811F6445 == 1)
     {
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEntry=%@", v7];
+      entryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEntry=%@", entryCopy];
       v11 = MEMORY[0x277D3F178];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-      v13 = [v12 lastPathComponent];
+      lastPathComponent = [v12 lastPathComponent];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService qualifiersWithEnergyEntry:bucketSize:andTotalEnergy:]"];
-      [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:2702];
+      [v11 logMessage:entryCopy fromFile:lastPathComponent fromFunction:v14 fromLineNumber:2702];
 
       v15 = PLLogCommon();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v224 = v10;
+        v224 = entryCopy;
         _os_log_debug_impl(&dword_21A4C6000, v15, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
   }
 
-  if (v7)
+  if (entryCopy)
   {
-    v16 = [MEMORY[0x277CBEB18] array];
-    v17 = [v7 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-    v18 = [v7 objectForKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
+    array = [MEMORY[0x277CBEB18] array];
+    v17 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
+    v18 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
     [v18 doubleValue];
     v20 = v19;
 
-    v21 = [v7 objectForKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
+    v21 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
     [v21 doubleValue];
     v23 = v22;
 
-    v24 = [v7 objectForKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
+    v24 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
     [v24 doubleValue];
     v26 = v25;
 
-    v27 = [v7 objectForKeyedSubscript:@"PLBatteryUIAppForegroundPluggedInRuntimeKey"];
+    v27 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppForegroundPluggedInRuntimeKey"];
     [v27 doubleValue];
     v29 = v28;
 
-    v30 = [v7 objectForKeyedSubscript:@"PLBatteryUIAppBackgroundPluggedInRuntimeKey"];
+    v30 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppBackgroundPluggedInRuntimeKey"];
     [v30 doubleValue];
     v32 = v31;
 
     v33 = v23 + v26;
     [MEMORY[0x277D3F058] defaultBatteryEnergyCapacity];
-    v35 = v34 > 0.0 && v20 / v34 > dbl_21AA22260[a4 > 3600.0];
+    v35 = v34 > 0.0 && v20 / v34 > dbl_21AA22260[size > 3600.0];
     if (v33 > 0.0)
     {
       v37 = *MEMORY[0x277CBF040];
@@ -7260,9 +7260,9 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
 
             v52 = MEMORY[0x277D3F178];
             v53 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-            v54 = [v53 lastPathComponent];
+            lastPathComponent2 = [v53 lastPathComponent];
             v55 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService qualifiersWithEnergyEntry:bucketSize:andTotalEnergy:]"];
-            [v52 logMessage:v51 fromFile:v54 fromFunction:v55 fromLineNumber:2732];
+            [v52 logMessage:v51 fromFile:lastPathComponent2 fromFunction:v55 fromLineNumber:2732];
 
             v56 = PLLogCommon();
             if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
@@ -7274,30 +7274,30 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
           }
         }
 
-        [v16 addObject:&unk_282C12C48];
+        [array addObject:&unk_282C12C48];
       }
     }
 
     if (v20 == 0.0)
     {
-      v36 = v16;
+      v36 = array;
     }
 
     else
     {
       v57 = [&unk_282C15CF0 objectAtIndexedSubscript:1];
-      v58 = [v7 objectForKeyedSubscript:v57];
+      v58 = [entryCopy objectForKeyedSubscript:v57];
       [v58 doubleValue];
       v60 = v59;
 
       v61 = v60 / v20;
       if (v60 / v20 > 0.33 && [objc_opt_class() canSetQualifier:1 forBundleID:v17])
       {
-        [v16 addObject:&unk_282C12C60];
+        [array addObject:&unk_282C12C60];
       }
 
       v62 = [&unk_282C15D08 objectAtIndexedSubscript:{2, v61}];
-      v63 = [v7 objectForKeyedSubscript:v62];
+      v63 = [entryCopy objectForKeyedSubscript:v62];
       [v63 doubleValue];
       v65 = v64;
 
@@ -7305,10 +7305,10 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
       v67 = v66 / v20;
       if (v66 / v20 > 0.5 && [objc_opt_class() canSetQualifier:2 forBundleID:v17])
       {
-        v68 = [MEMORY[0x277D3F180] debugEnabled];
+        debugEnabled = [MEMORY[0x277D3F180] debugEnabled];
         if (v23 < 300.0 || (v69 = v23 / v26, v23 / v26 < 0.33))
         {
-          if (v68)
+          if (debugEnabled)
           {
             v81 = objc_opt_class();
             v219[0] = MEMORY[0x277D85DD0];
@@ -7331,9 +7331,9 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
 
               v87 = MEMORY[0x277D3F178];
               v88 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-              v89 = [v88 lastPathComponent];
+              lastPathComponent3 = [v88 lastPathComponent];
               v90 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService qualifiersWithEnergyEntry:bucketSize:andTotalEnergy:]"];
-              [v87 logMessage:v86 fromFile:v89 fromFunction:v90 fromLineNumber:2754];
+              [v87 logMessage:v86 fromFile:lastPathComponent3 fromFunction:v90 fromLineNumber:2754];
 
               v91 = PLLogCommon();
               if (os_log_type_enabled(v91, OS_LOG_TYPE_DEBUG))
@@ -7348,7 +7348,7 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
 
         else
         {
-          if (v68)
+          if (debugEnabled)
           {
             v70 = objc_opt_class();
             v220[0] = MEMORY[0x277D85DD0];
@@ -7371,9 +7371,9 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
 
               v76 = MEMORY[0x277D3F178];
               v77 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-              v78 = [v77 lastPathComponent];
+              lastPathComponent4 = [v77 lastPathComponent];
               v79 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService qualifiersWithEnergyEntry:bucketSize:andTotalEnergy:]"];
-              [v76 logMessage:v75 fromFile:v78 fromFunction:v79 fromLineNumber:2751];
+              [v76 logMessage:v75 fromFile:lastPathComponent4 fromFunction:v79 fromLineNumber:2751];
 
               v80 = PLLogCommon();
               if (os_log_type_enabled(v80, OS_LOG_TYPE_DEBUG))
@@ -7385,7 +7385,7 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
             }
           }
 
-          [v16 addObject:{&unk_282C12C78, v69}];
+          [array addObject:{&unk_282C12C78, v69}];
         }
       }
 
@@ -7397,20 +7397,20 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
         v95 = v94;
 
         v96 = [&unk_282C15D20 objectAtIndexedSubscript:59];
-        v97 = [v7 objectForKeyedSubscript:v96];
+        v97 = [entryCopy objectForKeyedSubscript:v96];
         [v97 doubleValue];
         v99 = v98;
 
-        if (v99 / v20 > v95 && ([v16 containsObject:{&unk_282C12C78, v99 / v20}] & 1) == 0)
+        if (v99 / v20 > v95 && ([array containsObject:{&unk_282C12C78, v99 / v20}] & 1) == 0)
         {
-          [v16 addObject:&unk_282C12C78];
+          [array addObject:&unk_282C12C78];
         }
 
         v100 = PLLogCommon();
         if (os_log_type_enabled(v100, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v224 = v16;
+          v224 = array;
           _os_log_debug_impl(&dword_21A4C6000, v100, OS_LOG_TYPE_DEBUG, "IT Qualifier: %@", buf, 0xCu);
         }
       }
@@ -7428,17 +7428,17 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
 
       v102 = *&qword_2811F6660;
       v103 = [&unk_282C15D38 objectAtIndexedSubscript:48];
-      v104 = [v7 objectForKeyedSubscript:v103];
+      v104 = [entryCopy objectForKeyedSubscript:v103];
       [v104 doubleValue];
       v106 = v105;
 
       v107 = [&unk_282C15D50 objectAtIndexedSubscript:12];
-      v108 = [v7 objectForKeyedSubscript:v107];
+      v108 = [entryCopy objectForKeyedSubscript:v107];
       [v108 doubleValue];
       v110 = v106 + v109;
 
       v111 = [&unk_282C15D68 objectAtIndexedSubscript:13];
-      v112 = [v7 objectForKeyedSubscript:v111];
+      v112 = [entryCopy objectForKeyedSubscript:v111];
       [v112 doubleValue];
       v114 = v110 + v113;
 
@@ -7446,7 +7446,7 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
       v116 = [&unk_282C15D98 objectAtIndexedSubscript:2];
       v117 = [PLBatteryBreakdownService rootNodeQualificationNameWithQualificationName:v115 withRootNodeName:v116];
 
-      v118 = [v7 objectForKeyedSubscript:v117];
+      v118 = [entryCopy objectForKeyedSubscript:v117];
       [v118 doubleValue];
       v120 = v114 + v119;
 
@@ -7454,7 +7454,7 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
       v122 = [&unk_282C15DC8 objectAtIndexedSubscript:7];
       v123 = [PLBatteryBreakdownService rootNodeQualificationNameWithQualificationName:v121 withRootNodeName:v122];
 
-      v124 = [v7 objectForKeyedSubscript:v123];
+      v124 = [entryCopy objectForKeyedSubscript:v123];
       [v124 doubleValue];
       v126 = v120 + v125;
 
@@ -7462,7 +7462,7 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
       v128 = [&unk_282C15DF8 objectAtIndexedSubscript:9];
       v129 = [PLBatteryBreakdownService rootNodeQualificationNameWithQualificationName:v127 withRootNodeName:v128];
 
-      v130 = [v7 objectForKeyedSubscript:v129];
+      v130 = [entryCopy objectForKeyedSubscript:v129];
       [v130 doubleValue];
       v132 = v126 + v131;
 
@@ -7470,7 +7470,7 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
       v134 = [&unk_282C15E28 objectAtIndexedSubscript:52];
       v135 = [PLBatteryBreakdownService rootNodeQualificationNameWithQualificationName:v133 withRootNodeName:v134];
 
-      v136 = [v7 objectForKeyedSubscript:v135];
+      v136 = [entryCopy objectForKeyedSubscript:v135];
       [v136 doubleValue];
       v138 = v132 + v137;
 
@@ -7478,7 +7478,7 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
       v140 = [&unk_282C15E58 objectAtIndexedSubscript:54];
       v141 = [PLBatteryBreakdownService rootNodeQualificationNameWithQualificationName:v139 withRootNodeName:v140];
 
-      v142 = [v7 objectForKeyedSubscript:v141];
+      v142 = [entryCopy objectForKeyedSubscript:v141];
       [v142 doubleValue];
       v144 = v138 + v143;
 
@@ -7507,7 +7507,7 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
 
         v147 = *&qword_2811F6670;
         v148 = [&unk_282C15E70 objectAtIndexedSubscript:15];
-        v149 = [v7 objectForKeyedSubscript:v148];
+        v149 = [entryCopy objectForKeyedSubscript:v148];
         [v149 doubleValue];
         v151 = v150;
 
@@ -7521,9 +7521,9 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
           _os_log_debug_impl(&dword_21A4C6000, v152, OS_LOG_TYPE_DEBUG, "%@ bgLocEnergy: %.3f", buf, 0x16u);
         }
 
-        if (v151 / v66 > v147 && [v16 containsObject:{&unk_282C12C78, v151 / v66}])
+        if (v151 / v66 > v147 && [array containsObject:{&unk_282C12C78, v151 / v66}])
         {
-          [v16 removeObject:&unk_282C12C78];
+          [array removeObject:&unk_282C12C78];
           v153 = &unk_282C12C90;
         }
 
@@ -7532,7 +7532,7 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
           v153 = &unk_282C12CA8;
         }
 
-        [v16 addObject:v153];
+        [array addObject:v153];
       }
 
       v216[0] = MEMORY[0x277D85DD0];
@@ -7559,11 +7559,11 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
       }
 
       v157 = *&qword_2811F6690;
-      v158 = [v7 objectForKeyedSubscript:@"NotificationInfo"];
+      v158 = [entryCopy objectForKeyedSubscript:@"NotificationInfo"];
 
       if (v158 && [objc_opt_class() canSetQualifier:9 forBundleID:v17])
       {
-        v159 = [v7 objectForKeyedSubscript:@"NotificationInfo"];
+        v159 = [entryCopy objectForKeyedSubscript:@"NotificationInfo"];
         [v159 notificationEnergy];
         v161 = v160;
         [MEMORY[0x277D3F258] defaultBatteryEnergyCapacity];
@@ -7584,53 +7584,53 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
 
         if (v161 / v20 > v155 || v163 > v157)
         {
-          [v16 addObject:{&unk_282C12CC0, v161 / v20}];
+          [array addObject:{&unk_282C12CC0, v161 / v20}];
         }
       }
 
       v165 = [&unk_282C15E88 objectAtIndexedSubscript:3];
-      v166 = [v7 objectForKeyedSubscript:v165];
+      v166 = [entryCopy objectForKeyedSubscript:v165];
       [v166 doubleValue];
       v168 = v167;
 
       v169 = v168 / v20;
       if (v168 / v20 > 0.33 && [objc_opt_class() canSetQualifier:4 forBundleID:v17])
       {
-        [v16 addObject:&unk_282C12CD8];
+        [array addObject:&unk_282C12CD8];
       }
 
       v170 = [&unk_282C15EA0 objectAtIndexedSubscript:{4, v169}];
-      v171 = [v7 objectForKeyedSubscript:v170];
+      v171 = [entryCopy objectForKeyedSubscript:v170];
       [v171 doubleValue];
       v173 = v172;
 
       v174 = v173 / v20;
       if (v173 / v20 > 0.33 && [objc_opt_class() canSetQualifier:5 forBundleID:v17])
       {
-        [v16 addObject:&unk_282C12CF0];
+        [array addObject:&unk_282C12CF0];
       }
 
       v175 = [&unk_282C15EB8 objectAtIndexedSubscript:{14, v174}];
-      v176 = [v7 objectForKeyedSubscript:v175];
+      v176 = [entryCopy objectForKeyedSubscript:v175];
       [v176 doubleValue];
       v178 = v177;
 
       v179 = [&unk_282C15ED0 objectAtIndexedSubscript:15];
-      v180 = [v7 objectForKeyedSubscript:v179];
+      v180 = [entryCopy objectForKeyedSubscript:v179];
       [v180 doubleValue];
       v182 = v181;
 
       v183 = [&unk_282C15EE8 objectAtIndexedSubscript:55];
-      v184 = [v7 objectForKeyedSubscript:v183];
+      v184 = [entryCopy objectForKeyedSubscript:v183];
       [v184 doubleValue];
       v186 = v185;
 
       if ((v178 + v182 + v186) / v20 > 0.03 && [objc_opt_class() canSetQualifier:7 forBundleID:v17])
       {
-        [v16 addObject:&unk_282C12D08];
+        [array addObject:&unk_282C12D08];
       }
 
-      v187 = [v7 objectForKeyedSubscript:@"WatchEnergy"];
+      v187 = [entryCopy objectForKeyedSubscript:@"WatchEnergy"];
       [v187 doubleValue];
       v189 = v188;
 
@@ -7641,38 +7641,38 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
         {
           if ([objc_opt_class() canSetQualifier:10 forBundleID:v17])
           {
-            [v16 addObject:&unk_282C12D20];
+            [array addObject:&unk_282C12D20];
           }
         }
       }
 
-      v191 = [v7 objectForKeyedSubscript:{@"ChronoWidgetEnergy", v190}];
+      v191 = [entryCopy objectForKeyedSubscript:{@"ChronoWidgetEnergy", v190}];
       [v191 doubleValue];
       v193 = v192;
 
       v194 = v193 / v20;
       if (v193 / v20 > 0.33 && [objc_opt_class() canSetQualifier:12 forBundleID:v17])
       {
-        [v16 addObject:&unk_282C12D38];
+        [array addObject:&unk_282C12D38];
       }
 
       v195 = [&unk_282C15F00 objectAtIndexedSubscript:{10, v194}];
-      v196 = [v7 objectForKeyedSubscript:v195];
+      v196 = [entryCopy objectForKeyedSubscript:v195];
       [v196 doubleValue];
       v198 = v197;
 
       v199 = v198 / v20;
       if (v198 / v20 > 0.33 && [objc_opt_class() canSetQualifier:9 forBundleID:v17])
       {
-        [v16 addObject:&unk_282C12CC0];
+        [array addObject:&unk_282C12CC0];
       }
 
-      v200 = [v7 objectForKeyedSubscript:{@"PLBatteryUIAppBundleIDKey", v199}];
+      v200 = [entryCopy objectForKeyedSubscript:{@"PLBatteryUIAppBundleIDKey", v199}];
       v201 = [v200 isEqualToString:@"com.apple.Home"];
 
       if (v201)
       {
-        v202 = [v7 objectForKeyedSubscript:@"HomeKitEnergy"];
+        v202 = [entryCopy objectForKeyedSubscript:@"HomeKitEnergy"];
         [v202 doubleValue];
         v204 = v203;
 
@@ -7680,15 +7680,15 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
         {
           if ([objc_opt_class() canSetQualifier:13 forBundleID:v17])
           {
-            [v16 addObject:&unk_282C12D50];
+            [array addObject:&unk_282C12D50];
           }
         }
       }
 
-      v205 = [objc_opt_class() combineQualifiers:v16];
-      if ([v16 containsObject:&unk_282C12D08])
+      v205 = [objc_opt_class() combineQualifiers:array];
+      if ([array containsObject:&unk_282C12D08])
       {
-        v206 = [v16 containsObject:&unk_282C12C78];
+        v206 = [array containsObject:&unk_282C12C78];
         if (v67 > 0.5 && v206 && ([v205 containsObject:&unk_282C12C48] & 1) == 0)
         {
           v207 = [v205 arrayByAddingObject:&unk_282C12C78];
@@ -7697,10 +7697,10 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
         }
       }
 
-      v208 = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       if ([v205 containsObject:&unk_282C12C48])
       {
-        [v208 addObject:&unk_282C12C48];
+        [array2 addObject:&unk_282C12C48];
       }
 
       if ([v205 count])
@@ -7709,15 +7709,15 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
         do
         {
           v210 = [v205 objectAtIndexedSubscript:v209];
-          v211 = [v210 intValue];
+          intValue = [v210 intValue];
 
-          if (v211 != 11)
+          if (intValue != 11)
           {
             v212 = [v205 objectAtIndexedSubscript:v209];
-            [v208 addObject:v212];
+            [array2 addObject:v212];
           }
 
-          if ([v208 count] == 2)
+          if ([array2 count] == 2)
           {
             break;
           }
@@ -7728,7 +7728,7 @@ uint64_t __67__PLBatteryBreakdownService_filterWithEnergyEntries_withQueryType__
         while ([v205 count] > v209);
       }
 
-      v36 = v208;
+      v36 = array2;
     }
   }
 
@@ -7798,52 +7798,52 @@ uint64_t __81__PLBatteryBreakdownService_qualifiersWithEnergyEntry_bucketSize_an
   return result;
 }
 
-+ (BOOL)canSetQualifier:(int64_t)a3 forBundleID:(id)a4
++ (BOOL)canSetQualifier:(int64_t)qualifier forBundleID:(id)d
 {
-  v5 = a4;
-  v6 = [v5 isEqualToString:@"com.apple.mobilephone"];
-  if (a3 == 2 && (v6 & 1) != 0)
+  dCopy = d;
+  v6 = [dCopy isEqualToString:@"com.apple.mobilephone"];
+  if (qualifier == 2 && (v6 & 1) != 0)
   {
     goto LABEL_9;
   }
 
-  v7 = [v5 isEqualToString:@"com.apple.facetime"];
-  if (a3 == 2 && (v7 & 1) != 0)
+  v7 = [dCopy isEqualToString:@"com.apple.facetime"];
+  if (qualifier == 2 && (v7 & 1) != 0)
   {
     goto LABEL_9;
   }
 
-  v8 = [v5 isEqualToString:@"HLS"];
-  if (a3 == 2 && (v8 & 1) != 0)
+  v8 = [dCopy isEqualToString:@"HLS"];
+  if (qualifier == 2 && (v8 & 1) != 0)
   {
     goto LABEL_9;
   }
 
-  v9 = [v5 isEqualToString:@"Flashlight"];
-  if (a3 == 2 && (v9 & 1) != 0)
+  v9 = [dCopy isEqualToString:@"Flashlight"];
+  if (qualifier == 2 && (v9 & 1) != 0)
   {
     goto LABEL_9;
   }
 
-  if (([v5 isEqualToString:@"Backup & Restore"] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"Backup") & 1) == 0 && !objc_msgSend(v5, "isEqualToString:", @"Restore"))
+  if (([dCopy isEqualToString:@"Backup & Restore"] & 1) == 0 && (objc_msgSend(dCopy, "isEqualToString:", @"Backup") & 1) == 0 && !objc_msgSend(dCopy, "isEqualToString:", @"Restore"))
   {
-    v13 = [v5 isEqualToString:@"com.apple.mobilesafari"];
-    if (a3 != 2 || (v13 & 1) == 0)
+    v13 = [dCopy isEqualToString:@"com.apple.mobilesafari"];
+    if (qualifier != 2 || (v13 & 1) == 0)
     {
-      v14 = [v5 isEqualToString:@"Hotspot"];
-      if (a3 != 2 || (v14 & 1) == 0)
+      v14 = [dCopy isEqualToString:@"Hotspot"];
+      if (qualifier != 2 || (v14 & 1) == 0)
       {
-        v15 = [v5 isEqualToString:@"com.apple.Maps"];
-        if (a3 != 2 || (v15 & 1) == 0)
+        v15 = [dCopy isEqualToString:@"com.apple.Maps"];
+        if (qualifier != 2 || (v15 & 1) == 0)
         {
-          v16 = [v5 isEqualToString:@"Siri"];
-          if ((a3 != 2 || (v16 & 1) == 0) && ([v5 isEqualToString:@"Flashlight"] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"PowerOutAccessories") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"DeletedApp") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"DeletedAppClip") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"DeletedAppAndAppClip") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"EN") & 1) == 0)
+          v16 = [dCopy isEqualToString:@"Siri"];
+          if ((qualifier != 2 || (v16 & 1) == 0) && ([dCopy isEqualToString:@"Flashlight"] & 1) == 0 && (objc_msgSend(dCopy, "isEqualToString:", @"PowerOutAccessories") & 1) == 0 && (objc_msgSend(dCopy, "isEqualToString:", @"DeletedApp") & 1) == 0 && (objc_msgSend(dCopy, "isEqualToString:", @"DeletedAppClip") & 1) == 0 && (objc_msgSend(dCopy, "isEqualToString:", @"DeletedAppAndAppClip") & 1) == 0 && (objc_msgSend(dCopy, "isEqualToString:", @"EN") & 1) == 0)
           {
-            if ([v5 isEqualToString:@"com.apple.Bridge"])
+            if ([dCopy isEqualToString:@"com.apple.Bridge"])
             {
-              if (a3 < 0xB)
+              if (qualifier < 0xB)
               {
-                v10 = 0x2FBu >> a3;
+                v10 = 0x2FBu >> qualifier;
                 goto LABEL_10;
               }
 
@@ -7852,8 +7852,8 @@ LABEL_41:
               goto LABEL_10;
             }
 
-            v17 = [v5 isEqualToString:@"com.apple.camera"];
-            if ((a3 != 10 || (v17 & 1) == 0) && ([v5 isEqualToString:@"PoorCellCondition"] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"com.apple.Preferences") & 1) == 0)
+            v17 = [dCopy isEqualToString:@"com.apple.camera"];
+            if ((qualifier != 10 || (v17 & 1) == 0) && ([dCopy isEqualToString:@"PoorCellCondition"] & 1) == 0 && (objc_msgSend(dCopy, "isEqualToString:", @"com.apple.Preferences") & 1) == 0)
             {
               goto LABEL_41;
             }
@@ -7867,17 +7867,17 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  LOBYTE(v10) = a3 != 7 && a3 != 2;
+  LOBYTE(v10) = qualifier != 7 && qualifier != 2;
 LABEL_10:
 
   return v10 & 1;
 }
 
-+ (id)combineQualifiers:(id)a3
++ (id)combineQualifiers:(id)qualifiers
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  qualifiersCopy = qualifiers;
+  v4 = qualifiersCopy;
+  if (qualifiersCopy && [qualifiersCopy count])
   {
     v5 = [MEMORY[0x277CBEB58] setWithArray:v4];
     if ([v5 containsObject:&unk_282C12C78] && objc_msgSend(v5, "containsObject:", &unk_282C12D08))
@@ -7930,22 +7930,22 @@ LABEL_10:
       [v5 removeObject:&unk_282C12C78];
     }
 
-    v6 = [v5 allObjects];
+    allObjects = [v5 allObjects];
   }
 
   else
   {
-    v6 = MEMORY[0x277CBEBF8];
+    allObjects = MEMORY[0x277CBEBF8];
   }
 
-  return v6;
+  return allObjects;
 }
 
-- (BOOL)shouldShowBatteryBreakdownWithTotalSumEnergy:(double)a3 withtotalSumEnergyRatioCutOff:(double)a4
+- (BOOL)shouldShowBatteryBreakdownWithTotalSumEnergy:(double)energy withtotalSumEnergyRatioCutOff:(double)off
 {
   v7 = [MEMORY[0x277D3F1A0] entryKeyForOperatorName:@"PLBatteryAgent" withType:*MEMORY[0x277D3F5C8] withName:@"Battery"];
-  v8 = [(PLOperator *)self storage];
-  v9 = [v8 lastEntryForKey:v7];
+  storage = [(PLOperator *)self storage];
+  v9 = [storage lastEntryForKey:v7];
 
   if (v9)
   {
@@ -7957,7 +7957,7 @@ LABEL_10:
     [v13 doubleValue];
     v15 = v14 / 1000.0;
 
-    v16 = v12 * v15 * a4 < a3;
+    v16 = v12 * v15 * off < energy;
   }
 
   else
@@ -7968,16 +7968,16 @@ LABEL_10:
   return v16;
 }
 
-- (BOOL)wasGizmoConnectedInRange:(_PLTimeIntervalRange)a3
+- (BOOL)wasGizmoConnectedInRange:(_PLTimeIntervalRange)range
 {
-  var0 = a3.var0;
+  var0 = range.var0;
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3.var0 + a3.var1;
+  v4 = range.var0 + range.var1;
   v5 = [MEMORY[0x277D3F1A0] entryKeyForOperatorName:@"PLIdentityServicesAgent" withType:*MEMORY[0x277D3F5D0] withName:@"LocalLinkType"];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"select * from %@ where linkType=1 and timestamp>=%f and timestamp<=%f limit 1", v5, *&var0, *&v4];
-  v7 = [MEMORY[0x277D3F2A0] sharedCore];
-  v8 = [v7 storage];
-  v9 = [v8 entriesForKey:v5 withQuery:v6];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v9 = [storage entriesForKey:v5 withQuery:v6];
 
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -7997,9 +7997,9 @@ LABEL_10:
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Query Result %@", v9];
       v12 = MEMORY[0x277D3F178];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryBreakdownService.m"];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent = [v13 lastPathComponent];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryBreakdownService wasGizmoConnectedInRange:]"];
-      [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:3064];
+      [v12 logMessage:v11 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:3064];
 
       v16 = PLLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))

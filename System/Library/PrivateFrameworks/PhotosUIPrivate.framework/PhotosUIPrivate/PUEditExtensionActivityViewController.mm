@@ -1,6 +1,6 @@
 @interface PUEditExtensionActivityViewController
 - (PUEditExtensionActivityViewControllerDelegate)editExtensionActivityViewControllerDelegate;
-- (void)_performActivity:(id)a3;
+- (void)_performActivity:(id)activity;
 @end
 
 @implementation PUEditExtensionActivityViewController
@@ -12,21 +12,21 @@
   return WeakRetained;
 }
 
-- (void)_performActivity:(id)a3
+- (void)_performActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PUEditExtensionActivityViewController *)self editExtensionActivityViewControllerDelegate];
-    [v5 editExtensionActivityViewController:self didSelectActivity:v4];
+    editExtensionActivityViewControllerDelegate = [(PUEditExtensionActivityViewController *)self editExtensionActivityViewControllerDelegate];
+    [editExtensionActivityViewControllerDelegate editExtensionActivityViewController:self didSelectActivity:activityCopy];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = PUEditExtensionActivityViewController;
-    [(PUEditExtensionActivityViewController *)&v6 _performActivity:v4];
+    [(PUEditExtensionActivityViewController *)&v6 _performActivity:activityCopy];
   }
 }
 

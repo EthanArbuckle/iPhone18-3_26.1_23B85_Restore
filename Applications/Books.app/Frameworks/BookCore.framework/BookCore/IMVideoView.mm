@@ -2,14 +2,14 @@
 - (BOOL)smallAirplayBackground;
 - (IMAVPlayer)player;
 - (void)dealloc;
-- (void)layout:(BOOL)a3;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)layout:(BOOL)layout;
+- (void)layoutSublayersOfLayer:(id)layer;
 - (void)layoutSubviews;
-- (void)setAirplayActive:(BOOL)a3;
-- (void)setAirplayRouteName:(id)a3;
-- (void)setVideoLayer:(id)a3;
+- (void)setAirplayActive:(BOOL)active;
+- (void)setAirplayRouteName:(id)name;
+- (void)setVideoLayer:(id)layer;
 - (void)updateAirplayNoContentView;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation IMVideoView
@@ -24,37 +24,37 @@
   [(IMVideoView *)&v3 dealloc];
 }
 
-- (void)setAirplayActive:(BOOL)a3
+- (void)setAirplayActive:(BOOL)active
 {
-  if (self->_airplayActive != a3)
+  if (self->_airplayActive != active)
   {
-    self->_airplayActive = a3;
+    self->_airplayActive = active;
     [(IMVideoView *)self updateAirplayNoContentView];
   }
 }
 
-- (void)setVideoLayer:(id)a3
+- (void)setVideoLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   videoLayer = self->_videoLayer;
-  if (videoLayer != v5)
+  if (videoLayer != layerCopy)
   {
     [(AVPlayerLayer *)videoLayer removeFromSuperlayer];
-    objc_storeStrong(&self->_videoLayer, a3);
-    v7 = [(IMVideoView *)self layer];
-    [v7 addSublayer:self->_videoLayer];
+    objc_storeStrong(&self->_videoLayer, layer);
+    layer = [(IMVideoView *)self layer];
+    [layer addSublayer:self->_videoLayer];
   }
 
   _objc_release_x1(videoLayer);
 }
 
-- (void)setAirplayRouteName:(id)a3
+- (void)setAirplayRouteName:(id)name
 {
-  obj = a3;
+  obj = name;
   WeakRetained = objc_loadWeakRetained(&self->_player);
-  v5 = [WeakRetained airplayVideoActive];
+  airplayVideoActive = [WeakRetained airplayVideoActive];
 
-  if (v5)
+  if (airplayVideoActive)
   {
     v6 = @"AirPlay";
   }
@@ -107,16 +107,16 @@ LABEL_6:
   return v4 < 768.0 || v3;
 }
 
-- (void)layout:(BOOL)a3
+- (void)layout:(BOOL)layout
 {
   if (self->_airplayBackground)
   {
     [(IMVideoView *)self bounds];
     [(UIView *)self->_airplayBackground setFrame:?];
     airplayLabel = self->_airplayLabel;
-    v6 = [(IMVideoView *)self smallAirplayBackground];
+    smallAirplayBackground = [(IMVideoView *)self smallAirplayBackground];
     v7 = 24.0;
-    if (v6)
+    if (smallAirplayBackground)
     {
       v7 = 17.0;
     }
@@ -125,9 +125,9 @@ LABEL_6:
     [(UILabel *)airplayLabel setFont:v8];
 
     airplayRouteLabel = self->_airplayRouteLabel;
-    v10 = [(IMVideoView *)self smallAirplayBackground];
+    smallAirplayBackground2 = [(IMVideoView *)self smallAirplayBackground];
     v11 = 12.0;
-    if (!v10)
+    if (!smallAirplayBackground2)
     {
       v11 = 17.0;
     }
@@ -137,7 +137,7 @@ LABEL_6:
 
     [(UIView *)self->_airplayBackground frame];
     v14 = v13;
-    if (a3)
+    if (layout)
     {
       v15 = 0.8;
     }
@@ -164,45 +164,45 @@ LABEL_6:
       v18 = 1.0;
     }
 
-    v19 = [(UIImageView *)self->_airplayTVImage image];
-    [v19 size];
+    image = [(UIImageView *)self->_airplayTVImage image];
+    [image size];
     v21 = v18 * v20;
 
     v22 = 0.0;
     [(UIImageView *)self->_airplayTVImage setFrame:0.0, v17 + 44.0 - v21 * 0.5, v14, v21];
-    LODWORD(v19) = [(IMVideoView *)self smallAirplayBackground];
+    LODWORD(image) = [(IMVideoView *)self smallAirplayBackground];
     [(UIImageView *)self->_airplayTVImage frame];
     MaxY = CGRectGetMaxY(v31);
-    if (!v19)
+    if (!image)
     {
       v22 = 15.0;
     }
 
     v24 = v22 + MaxY;
-    v25 = [(UILabel *)self->_airplayLabel font];
-    [v25 lineHeight];
+    font = [(UILabel *)self->_airplayLabel font];
+    [font lineHeight];
     [(UILabel *)self->_airplayLabel setFrame:0.0, v24, v14, v26];
 
     [(UILabel *)self->_airplayLabel frame];
     v27 = v22 + CGRectGetMaxY(v32);
-    v29 = [(UILabel *)self->_airplayRouteLabel font];
-    [v29 lineHeight];
+    font2 = [(UILabel *)self->_airplayRouteLabel font];
+    [font2 lineHeight];
     [(UILabel *)self->_airplayRouteLabel setFrame:0.0, v27, v14, v28];
   }
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   v17.receiver = self;
   v17.super_class = IMVideoView;
-  v4 = a3;
-  [(IMVideoView *)&v17 layoutSublayersOfLayer:v4];
+  layerCopy = layer;
+  [(IMVideoView *)&v17 layoutSublayersOfLayer:layerCopy];
   v5 = [(IMVideoView *)self layer:v17.receiver];
 
-  if (v5 == v4)
+  if (v5 == layerCopy)
   {
-    v6 = [(IMVideoView *)self videoLayer];
-    [v6 bounds];
+    videoLayer = [(IMVideoView *)self videoLayer];
+    [videoLayer bounds];
     IsEmpty = CGRectIsEmpty(v18);
 
     if (IsEmpty)
@@ -216,8 +216,8 @@ LABEL_6:
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(IMVideoView *)self videoLayer];
-    [v16 setFrame:{v9, v11, v13, v15}];
+    videoLayer2 = [(IMVideoView *)self videoLayer];
+    [videoLayer2 setFrame:{v9, v11, v13, v15}];
 
     if (IsEmpty)
     {
@@ -226,9 +226,9 @@ LABEL_6:
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  if (a3)
+  if (window)
   {
     WeakRetained = objc_loadWeakRetained(&self->_player);
     [WeakRetained updateVideoLayer];

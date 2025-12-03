@@ -1,13 +1,13 @@
 @interface SUScriptObjectInvocationBatch
 - (SUScriptObject)rootObject;
 - (SUScriptObjectInvocationBatch)init;
-- (id)batchProxyForObject:(id)a3;
-- (id)copyQueuedInvocationsForObject:(id)a3;
-- (void)checkOutBatchTarget:(id)a3;
+- (id)batchProxyForObject:(id)object;
+- (id)copyQueuedInvocationsForObject:(id)object;
+- (void)checkOutBatchTarget:(id)target;
 - (void)dealloc;
 - (void)dequeueInvocations;
-- (void)enqueueInvocation:(id)a3;
-- (void)setRootObject:(id)a3;
+- (void)enqueueInvocation:(id)invocation;
+- (void)setRootObject:(id)object;
 @end
 
 @implementation SUScriptObjectInvocationBatch
@@ -47,9 +47,9 @@
   [(SUScriptObjectInvocationBatch *)&v6 dealloc];
 }
 
-- (id)batchProxyForObject:(id)a3
+- (id)batchProxyForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(NSLock *)self->_lock lock];
   proxies = self->_proxies;
   if (!proxies)
@@ -58,13 +58,13 @@
     self->_proxies = proxies;
   }
 
-  v6 = CFDictionaryGetValue(proxies, v4);
+  v6 = CFDictionaryGetValue(proxies, objectCopy);
   if (!v6)
   {
     v6 = objc_alloc_init(SUScriptObjectBatchProxy);
     [(SUScriptObjectBatchProxy *)v6 setInvocationBatch:self];
-    [(SUScriptObjectBatchProxy *)v6 setTarget:v4];
-    CFDictionarySetValue(self->_proxies, v4, v6);
+    [(SUScriptObjectBatchProxy *)v6 setTarget:objectCopy];
+    CFDictionarySetValue(self->_proxies, objectCopy, v6);
   }
 
   [(NSLock *)self->_lock unlock];
@@ -72,9 +72,9 @@
   return v6;
 }
 
-- (void)checkOutBatchTarget:(id)a3
+- (void)checkOutBatchTarget:(id)target
 {
-  key = a3;
+  key = target;
   [(NSLock *)self->_lock lock];
   proxies = self->_proxies;
   if (proxies)
@@ -91,10 +91,10 @@
   [(NSLock *)self->_lock unlock];
 }
 
-- (id)copyQueuedInvocationsForObject:(id)a3
+- (id)copyQueuedInvocationsForObject:(id)object
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [(NSLock *)self->_lock lock];
   v16 = 0u;
@@ -117,9 +117,9 @@
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 target];
+        target = [v11 target];
 
-        if (v12 == v4)
+        if (target == objectCopy)
         {
           [v5 addObject:v11];
         }
@@ -145,17 +145,17 @@
   [(NSLock *)self->_lock unlock];
   if ([v5 count])
   {
-    v4 = [(SUScriptObjectInvocationBatch *)self rootObject];
-    [v4 willPerformBatchedInvocations];
+    rootObject = [(SUScriptObjectInvocationBatch *)self rootObject];
+    [rootObject willPerformBatchedInvocations];
     [v5 makeObjectsPerformSelector:sel_invoke];
-    [v4 didPerformBatchedInvocations];
+    [rootObject didPerformBatchedInvocations];
   }
 }
 
-- (void)enqueueInvocation:(id)a3
+- (void)enqueueInvocation:(id)invocation
 {
   lock = self->_lock;
-  v5 = a3;
+  invocationCopy = invocation;
   [(NSLock *)lock lock];
   if (!self->_invocationQueue)
   {
@@ -164,8 +164,8 @@
     self->_invocationQueue = v6;
   }
 
-  [v5 retainArguments];
-  [(NSMutableArray *)self->_invocationQueue addObject:v5];
+  [invocationCopy retainArguments];
+  [(NSMutableArray *)self->_invocationQueue addObject:invocationCopy];
 
   [(NSLock *)self->_lock unlock];
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__delayedDequeueInvocations object:0];
@@ -182,13 +182,13 @@
   return v3;
 }
 
-- (void)setRootObject:(id)a3
+- (void)setRootObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(NSLock *)self->_lock lock];
   rootObject = self->_rootObject;
-  self->_rootObject = v4;
-  v6 = v4;
+  self->_rootObject = objectCopy;
+  v6 = objectCopy;
 
   [(NSLock *)self->_lock unlock];
 }

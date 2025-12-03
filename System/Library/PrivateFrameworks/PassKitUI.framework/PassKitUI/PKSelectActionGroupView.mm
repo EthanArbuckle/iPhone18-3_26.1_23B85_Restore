@@ -1,30 +1,30 @@
 @interface PKSelectActionGroupView
-- (PKSelectActionGroupView)initWithPass:(id)a3 actionGroups:(id)a4;
+- (PKSelectActionGroupView)initWithPass:(id)pass actionGroups:(id)groups;
 - (PKSelectActionGroupViewDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_addSubviews;
 - (void)layoutSubviews;
-- (void)setDelegate:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setDelegate:(id)delegate;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation PKSelectActionGroupView
 
-- (PKSelectActionGroupView)initWithPass:(id)a3 actionGroups:(id)a4
+- (PKSelectActionGroupView)initWithPass:(id)pass actionGroups:(id)groups
 {
-  v7 = a3;
-  v8 = a4;
+  passCopy = pass;
+  groupsCopy = groups;
   v17.receiver = self;
   v17.super_class = PKSelectActionGroupView;
   v9 = [(PKSelectActionGroupView *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pass, a3);
+    objc_storeStrong(&v9->_pass, pass);
     selectedActionGroup = v10->_selectedActionGroup;
     v10->_selectedActionGroup = 0;
 
-    v12 = [v8 copy];
+    v12 = [groupsCopy copy];
     actionGroups = v10->_actionGroups;
     v10->_actionGroups = v12;
 
@@ -48,40 +48,40 @@
   [(UITableView *)tableView setFrame:?];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
-  v4 = objc_storeWeak(&self->_delegate, v5);
-  [v5 setRightBarButtonEnabled:self->_selectedActionGroup != 0];
+  delegateCopy = delegate;
+  v4 = objc_storeWeak(&self->_delegate, delegateCopy);
+  [delegateCopy setRightBarButtonEnabled:self->_selectedActionGroup != 0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PKSelectActionGroupCellIdentifier"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PKSelectActionGroupCellIdentifier"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:@"PKSelectActionGroupCellIdentifier"];
   }
 
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_actionGroups, "objectAtIndexedSubscript:", [v6 row]);
-  v9 = [(PKPaymentPassActionGroup *)v8 title];
-  v10 = [(PKPaymentPassActionGroup *)v8 actionGroupDescription];
-  v11 = [v7 textLabel];
-  [v11 setText:v9];
-  v12 = [MEMORY[0x1E69DC888] labelColor];
-  [v11 setTextColor:v12];
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_actionGroups, "objectAtIndexedSubscript:", [pathCopy row]);
+  title = [(PKPaymentPassActionGroup *)v8 title];
+  actionGroupDescription = [(PKPaymentPassActionGroup *)v8 actionGroupDescription];
+  textLabel = [v7 textLabel];
+  [textLabel setText:title];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [textLabel setTextColor:labelColor];
 
   v13 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  [v11 setFont:v13];
+  [textLabel setFont:v13];
 
-  v14 = [v7 detailTextLabel];
-  [v14 setText:v10];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setText:actionGroupDescription];
   v15 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
-  [v14 setFont:v15];
+  [detailTextLabel setFont:v15];
 
-  v16 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v14 setTextColor:v16];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [detailTextLabel setTextColor:secondaryLabelColor];
 
   [v7 setSelectionStyle:0];
   selectedActionGroup = self->_selectedActionGroup;
@@ -102,14 +102,14 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   v8 = self->_selectedActionGroup;
-  v9 = -[NSArray objectAtIndex:](self->_actionGroups, "objectAtIndex:", [v7 row]);
+  v9 = -[NSArray objectAtIndex:](self->_actionGroups, "objectAtIndex:", [pathCopy row]);
   if (v8 != v9)
   {
     objc_storeStrong(&self->_selectedActionGroup, v9);
@@ -126,11 +126,11 @@
     }
 
     v14 = [(NSArray *)self->_actionGroups indexOfObject:v8];
-    v15 = [MEMORY[0x1E696AC88] indexPathForRow:v14 inSection:{objc_msgSend(v7, "section")}];
+    v15 = [MEMORY[0x1E696AC88] indexPathForRow:v14 inSection:{objc_msgSend(pathCopy, "section")}];
     v17[0] = v15;
-    v17[1] = v7;
+    v17[1] = pathCopy;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-    [v6 reloadRowsAtIndexPaths:v16 withRowAnimation:5];
+    [viewCopy reloadRowsAtIndexPaths:v16 withRowAnimation:5];
   }
 }
 

@@ -1,30 +1,30 @@
 @interface CellularNrBeamSwitch
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsMotionState:(id)a3;
+- (int)StringAsMotionState:(id)state;
 - (int)motionState;
 - (unint64_t)hash;
-- (void)addNewBeamInfo:(id)a3;
-- (void)addOldBeamInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBandInd:(BOOL)a3;
-- (void)setHasDopplerEstimate:(BOOL)a3;
-- (void)setHasDurationBeforeSwitch:(BOOL)a3;
-- (void)setHasMotionState:(BOOL)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addNewBeamInfo:(id)info;
+- (void)addOldBeamInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBandInd:(BOOL)ind;
+- (void)setHasDopplerEstimate:(BOOL)estimate;
+- (void)setHasDurationBeforeSwitch:(BOOL)switch;
+- (void)setHasMotionState:(BOOL)state;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularNrBeamSwitch
 
-- (void)setHasDurationBeforeSwitch:(BOOL)a3
+- (void)setHasDurationBeforeSwitch:(BOOL)switch
 {
-  if (a3)
+  if (switch)
   {
     v3 = 8;
   }
@@ -37,40 +37,40 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addOldBeamInfo:(id)a3
+- (void)addOldBeamInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   oldBeamInfos = self->_oldBeamInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!oldBeamInfos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_oldBeamInfos;
     self->_oldBeamInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     oldBeamInfos = self->_oldBeamInfos;
   }
 
-  [(NSMutableArray *)oldBeamInfos addObject:v4];
+  [(NSMutableArray *)oldBeamInfos addObject:infoCopy];
 }
 
-- (void)addNewBeamInfo:(id)a3
+- (void)addNewBeamInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   thenewBeamInfos = self->_thenewBeamInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!thenewBeamInfos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_thenewBeamInfos;
     self->_thenewBeamInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     thenewBeamInfos = self->_thenewBeamInfos;
   }
 
-  [(NSMutableArray *)thenewBeamInfos addObject:v4];
+  [(NSMutableArray *)thenewBeamInfos addObject:infoCopy];
 }
 
 - (int)motionState
@@ -86,9 +86,9 @@
   }
 }
 
-- (void)setHasMotionState:(BOOL)a3
+- (void)setHasMotionState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 16;
   }
@@ -101,30 +101,30 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsMotionState:(id)a3
+- (int)StringAsMotionState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"MOTION_ST_STATIONARY"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"MOTION_ST_STATIONARY"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MOTION_ST_MOVING"])
+  else if ([stateCopy isEqualToString:@"MOTION_ST_MOVING"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MOTION_ST_PEDESTRIAN"])
+  else if ([stateCopy isEqualToString:@"MOTION_ST_PEDESTRIAN"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MOTION_ST_DRIVING"])
+  else if ([stateCopy isEqualToString:@"MOTION_ST_DRIVING"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MOTION_ST_SEMISTATIONARY"])
+  else if ([stateCopy isEqualToString:@"MOTION_ST_SEMISTATIONARY"])
   {
     v4 = 4;
   }
@@ -137,9 +137,9 @@
   return v4;
 }
 
-- (void)setHasDopplerEstimate:(BOOL)a3
+- (void)setHasDopplerEstimate:(BOOL)estimate
 {
-  if (a3)
+  if (estimate)
   {
     v3 = 4;
   }
@@ -152,9 +152,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasBandInd:(BOOL)a3
+- (void)setHasBandInd:(BOOL)ind
 {
-  if (a3)
+  if (ind)
   {
     v3 = 2;
   }
@@ -167,9 +167,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 0x80;
   }
@@ -182,9 +182,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 32;
   }
@@ -197,9 +197,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 64;
   }
@@ -217,8 +217,8 @@
   v7.receiver = self;
   v7.super_class = CellularNrBeamSwitch;
   v3 = [(CellularNrBeamSwitch *)&v7 description];
-  v4 = [(CellularNrBeamSwitch *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularNrBeamSwitch *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -263,8 +263,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -298,8 +298,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v31 + 1) + 8 * j) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation2 = [*(*(&v31 + 1) + 8 * j) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation2];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v31 objects:v39 count:16];
@@ -413,9 +413,9 @@ LABEL_30:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -563,31 +563,31 @@ LABEL_25:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 72) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 72) |= 1u;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    *(v4 + 6) = self->_durationBeforeSwitch;
-    *(v4 + 72) |= 8u;
+    *(toCopy + 6) = self->_durationBeforeSwitch;
+    *(toCopy + 72) |= 8u;
   }
 
-  v16 = v4;
+  v16 = toCopy;
   if ([(CellularNrBeamSwitch *)self oldBeamInfosCount])
   {
     [v16 clearOldBeamInfos];
-    v6 = [(CellularNrBeamSwitch *)self oldBeamInfosCount];
-    if (v6)
+    oldBeamInfosCount = [(CellularNrBeamSwitch *)self oldBeamInfosCount];
+    if (oldBeamInfosCount)
     {
-      v7 = v6;
+      v7 = oldBeamInfosCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(CellularNrBeamSwitch *)self oldBeamInfoAtIndex:i];
@@ -599,10 +599,10 @@ LABEL_25:
   if ([(CellularNrBeamSwitch *)self newBeamInfosCount])
   {
     [v16 clearNewBeamInfos];
-    v10 = [(CellularNrBeamSwitch *)self newBeamInfosCount];
-    if (v10)
+    newBeamInfosCount = [(CellularNrBeamSwitch *)self newBeamInfosCount];
+    if (newBeamInfosCount)
     {
-      v11 = v10;
+      v11 = newBeamInfosCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(CellularNrBeamSwitch *)self newBeamInfoAtIndex:j];
@@ -688,9 +688,9 @@ LABEL_19:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -725,7 +725,7 @@ LABEL_19:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v28 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v28 + 1) + 8 * i) copyWithZone:zone];
         [v6 addOldBeamInfo:v13];
       }
 
@@ -754,7 +754,7 @@ LABEL_19:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v24 + 1) + 8 * j) copyWithZone:{a3, v24}];
+        v19 = [*(*(&v24 + 1) + 8 * j) copyWithZone:{zone, v24}];
         [v6 addNewBeamInfo:v19];
       }
 
@@ -827,7 +827,7 @@ LABEL_24:
   }
 
 LABEL_25:
-  v21 = [(NSData *)self->_plmn copyWithZone:a3, v24];
+  v21 = [(NSData *)self->_plmn copyWithZone:zone, v24];
   v22 = *(v6 + 7);
   *(v6 + 7) = v21;
 
@@ -840,49 +840,49 @@ LABEL_25:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_49;
   }
 
-  v5 = v4[72];
+  v5 = equalCopy[72];
   if (*&self->_has)
   {
-    if ((v4[72] & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((equalCopy[72] & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_49;
     }
   }
 
-  else if (v4[72])
+  else if (equalCopy[72])
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((v4[72] & 8) == 0 || self->_durationBeforeSwitch != *(v4 + 6))
+    if ((equalCopy[72] & 8) == 0 || self->_durationBeforeSwitch != *(equalCopy + 6))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((v4[72] & 8) != 0)
+  else if ((equalCopy[72] & 8) != 0)
   {
     goto LABEL_49;
   }
 
   oldBeamInfos = self->_oldBeamInfos;
-  if (oldBeamInfos | *(v4 + 6) && ![(NSMutableArray *)oldBeamInfos isEqual:?])
+  if (oldBeamInfos | *(equalCopy + 6) && ![(NSMutableArray *)oldBeamInfos isEqual:?])
   {
     goto LABEL_49;
   }
 
   thenewBeamInfos = self->_thenewBeamInfos;
-  if (thenewBeamInfos | *(v4 + 4))
+  if (thenewBeamInfos | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)thenewBeamInfos isEqual:?])
     {
@@ -891,74 +891,74 @@ LABEL_25:
   }
 
   has = self->_has;
-  v9 = v4[72];
+  v9 = equalCopy[72];
   if ((has & 0x10) != 0)
   {
-    if ((v4[72] & 0x10) == 0 || self->_motionState != *(v4 + 7))
+    if ((equalCopy[72] & 0x10) == 0 || self->_motionState != *(equalCopy + 7))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((v4[72] & 0x10) != 0)
+  else if ((equalCopy[72] & 0x10) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((v4[72] & 4) == 0 || self->_dopplerEstimate != *(v4 + 5))
+    if ((equalCopy[72] & 4) == 0 || self->_dopplerEstimate != *(equalCopy + 5))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((v4[72] & 4) != 0)
+  else if ((equalCopy[72] & 4) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[72] & 2) == 0 || self->_bandInd != *(v4 + 4))
+    if ((equalCopy[72] & 2) == 0 || self->_bandInd != *(equalCopy + 4))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((v4[72] & 2) != 0)
+  else if ((equalCopy[72] & 2) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((v4[72] & 0x20) == 0 || self->_numSubs != *(v4 + 10))
+    if ((equalCopy[72] & 0x20) == 0 || self->_numSubs != *(equalCopy + 10))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((v4[72] & 0x20) != 0)
+  else if ((equalCopy[72] & 0x20) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((v4[72] & 0x40) == 0 || self->_psPref != *(v4 + 16))
+    if ((equalCopy[72] & 0x40) == 0 || self->_psPref != *(equalCopy + 16))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((v4[72] & 0x40) != 0)
+  else if ((equalCopy[72] & 0x40) != 0)
   {
     goto LABEL_49;
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 7))
+  if (plmn | *(equalCopy + 7))
   {
     if (![(NSData *)plmn isEqual:?])
     {
@@ -970,10 +970,10 @@ LABEL_49:
     has = self->_has;
   }
 
-  v11 = v4[72];
+  v11 = equalCopy[72];
   if (has < 0)
   {
-    if ((v11 & 0x80000000) == 0 || self->_subsId != *(v4 + 17))
+    if ((v11 & 0x80000000) == 0 || self->_subsId != *(equalCopy + 17))
     {
       goto LABEL_49;
     }
@@ -1095,21 +1095,21 @@ LABEL_17:
   return v14 ^ v15 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = v4[72];
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = fromCopy[72];
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = v4[72];
+    v6 = fromCopy[72];
   }
 
   if ((v6 & 8) != 0)
   {
-    self->_durationBeforeSwitch = *(v4 + 6);
+    self->_durationBeforeSwitch = *(fromCopy + 6);
     *&self->_has |= 8u;
   }
 
@@ -1117,7 +1117,7 @@ LABEL_17:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = *(v4 + 6);
+  v7 = *(fromCopy + 6);
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {

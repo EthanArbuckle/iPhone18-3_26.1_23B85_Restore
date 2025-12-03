@@ -1,29 +1,29 @@
 @interface CMDrawingContext
 - (CGAffineTransform)currentTransform;
-- (CGRect)_transformRect:(CGRect)a3 withTransform:(id)a4;
+- (CGRect)_transformRect:(CGRect)rect withTransform:(id)transform;
 - (CGRect)frame;
-- (CGRect)transformRectToGroup:(CGRect)a3;
-- (CGRect)transformRectToPage:(CGRect)a3;
+- (CGRect)transformRectToGroup:(CGRect)group;
+- (CGRect)transformRectToPage:(CGRect)page;
 - (CMDrawableMapper)mapper;
-- (CMDrawingContext)initWithFrame:(CGRect)a3;
+- (CMDrawingContext)initWithFrame:(CGRect)frame;
 - (float)currentScaleFactor;
 - (id)copyPDF;
-- (void)_addTransform:(id)a3;
-- (void)_applyTransform:(id)a3;
+- (void)_addTransform:(id)transform;
+- (void)_applyTransform:(id)transform;
 - (void)_closeContext;
 - (void)_copyCGContext;
 - (void)_playbackActions;
 - (void)_restoreLastTransform;
-- (void)addDebugPath:(CGPath *)a3;
-- (void)addPath:(CGPath *)a3;
-- (void)addTransform:(id)a3;
+- (void)addDebugPath:(CGPath *)path;
+- (void)addPath:(CGPath *)path;
+- (void)addTransform:(id)transform;
 - (void)dealloc;
 - (void)restoreLastTransform;
-- (void)setFillColor:(CGColor *)a3;
-- (void)setFillImage:(CGImage *)a3;
-- (void)setLineDash:(id)a3;
-- (void)setLineWidth:(float)a3;
-- (void)setStrokeColor:(CGColor *)a3;
+- (void)setFillColor:(CGColor *)color;
+- (void)setFillImage:(CGImage *)image;
+- (void)setLineDash:(id)dash;
+- (void)setLineWidth:(float)width;
+- (void)setStrokeColor:(CGColor *)color;
 @end
 
 @implementation CMDrawingContext
@@ -37,9 +37,9 @@
     transforms = self->_transforms;
     self->_transforms = v4;
 
-    v6 = [MEMORY[0x277CCA878] transform];
+    transform = [MEMORY[0x277CCA878] transform];
     currentTransform = self->_currentTransform;
-    self->_currentTransform = v6;
+    self->_currentTransform = transform;
 
     [(CMDrawingContext *)self _copyCGContext];
     [(CMDrawingContext *)self _playbackActions];
@@ -160,30 +160,30 @@
     for (i = 0; i != v4; ++i)
     {
       v6 = [(NSMutableArray *)self->_actions objectAtIndex:i];
-      v7 = [v6 type];
-      if (v7 <= 3)
+      type = [v6 type];
+      if (type <= 3)
       {
-        if (v7 > 1)
+        if (type > 1)
         {
           cgContext = self->_cgContext;
-          if (v7 == 2)
+          if (type == 2)
           {
-            v15 = [v6 value];
-            CGContextSetStrokeColorWithColor(cgContext, v15);
+            value = [v6 value];
+            CGContextSetStrokeColorWithColor(cgContext, value);
           }
 
           else
           {
-            v15 = [v6 value];
-            CGContextSetFillColorWithColor(cgContext, v15);
+            value = [v6 value];
+            CGContextSetFillColorWithColor(cgContext, value);
           }
         }
 
         else
         {
-          if (v7)
+          if (type)
           {
-            if (v7 == 1)
+            if (type == 1)
             {
               [(CMDrawingContext *)self _restoreLastTransform];
             }
@@ -191,14 +191,14 @@
             goto LABEL_30;
           }
 
-          v15 = [v6 value];
-          [(CMDrawingContext *)self _addTransform:v15];
+          value = [v6 value];
+          [(CMDrawingContext *)self _addTransform:value];
         }
       }
 
-      else if (v7 <= 5)
+      else if (type <= 5)
       {
-        if (v7 == 4)
+        if (type == 4)
         {
           self->_fillImage = [v6 value];
         }
@@ -211,7 +211,7 @@
 
       else
       {
-        switch(v7)
+        switch(type)
         {
           case 6:
             v16 = self->_cgContext;
@@ -219,16 +219,16 @@
             CGContextSetLineWidth(v16, v17);
             break;
           case 7:
-            v18 = [v6 value];
-            v19 = [v18 count];
+            value2 = [v6 value];
+            v19 = [value2 count];
 
             if (v19)
             {
               v20 = smalloc_typed(v19, 8uLL, 0x100004000313F17uLL);
               for (j = 0; j != v19; ++j)
               {
-                v22 = [v6 value];
-                v23 = [v22 objectAtIndex:j];
+                value3 = [v6 value];
+                v23 = [value3 objectAtIndex:j];
                 [v23 floatValue];
                 v20[j] = v24;
               }
@@ -247,13 +247,13 @@
             if (self->_fillImage)
             {
               CGContextSaveGState(self->_cgContext);
-              v9 = [v6 value];
-              BoundingBox = CGPathGetBoundingBox(v9);
+              value4 = [v6 value];
+              BoundingBox = CGPathGetBoundingBox(value4);
               x = BoundingBox.origin.x;
               y = BoundingBox.origin.y;
               width = BoundingBox.size.width;
               height = BoundingBox.size.height;
-              CGContextAddPath(self->_cgContext, v9);
+              CGContextAddPath(self->_cgContext, value4);
               CGContextClip(self->_cgContext);
               CGContextScaleCTM(self->_cgContext, 1.0, -1.0);
               v27.origin.y = -height - y;
@@ -266,8 +266,8 @@
 
             else
             {
-              v25 = [v6 value];
-              CGContextAddPath(v8, v25);
+              value5 = [v6 value];
+              CGContextAddPath(v8, value5);
 
               CGContextDrawPath(self->_cgContext, kCGPathFillStroke);
             }
@@ -312,9 +312,9 @@ LABEL_30:
 
 - (void)_restoreLastTransform
 {
-  v3 = [(NSMutableArray *)self->_transforms lastObject];
+  lastObject = [(NSMutableArray *)self->_transforms lastObject];
   currentTransform = self->_currentTransform;
-  self->_currentTransform = v3;
+  self->_currentTransform = lastObject;
 
   transforms = self->_transforms;
 
@@ -328,12 +328,12 @@ LABEL_30:
   return WeakRetained;
 }
 
-- (CMDrawingContext)initWithFrame:(CGRect)a3
+- (CMDrawingContext)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v17.receiver = self;
   v17.super_class = CMDrawingContext;
   v7 = [(CMDrawingContext *)&v17 init];
@@ -355,9 +355,9 @@ LABEL_30:
     v13 = *(v7 + 15);
     *(v7 + 15) = v12;
 
-    v14 = [MEMORY[0x277CCA878] transform];
+    transform = [MEMORY[0x277CCA878] transform];
     v15 = *(v7 + 14);
-    *(v7 + 14) = v14;
+    *(v7 + 14) = transform;
   }
 
   return v7;
@@ -387,32 +387,32 @@ LABEL_30:
   return sqrt(0.0 * 0.0 + 0.0 * 0.0);
 }
 
-- (void)addTransform:(id)a3
+- (void)addTransform:(id)transform
 {
-  v5 = a3;
+  transformCopy = transform;
   [(CMDrawingContext *)self _addTransform:?];
-  v4 = [[CMDrawingAction alloc] initWithType:0 andValue:v5];
+  v4 = [[CMDrawingAction alloc] initWithType:0 andValue:transformCopy];
   [(NSMutableArray *)self->_actions addObject:v4];
 }
 
-- (void)setStrokeColor:(CGColor *)a3
+- (void)setStrokeColor:(CGColor *)color
 {
-  v4 = [[CMDrawingAction alloc] initWithType:2 andValue:a3];
+  v4 = [[CMDrawingAction alloc] initWithType:2 andValue:color];
   [(NSMutableArray *)self->_actions addObject:?];
 }
 
-- (void)setFillColor:(CGColor *)a3
+- (void)setFillColor:(CGColor *)color
 {
-  v4 = [[CMDrawingAction alloc] initWithType:3 andValue:a3];
+  v4 = [[CMDrawingAction alloc] initWithType:3 andValue:color];
   [(NSMutableArray *)self->_actions addObject:?];
 }
 
-- (void)setFillImage:(CGImage *)a3
+- (void)setFillImage:(CGImage *)image
 {
   v5 = [CMDrawingAction alloc];
-  if (a3)
+  if (image)
   {
-    v6 = [(CMDrawingAction *)v5 initWithType:4 andValue:a3];
+    v6 = [(CMDrawingAction *)v5 initWithType:4 andValue:image];
   }
 
   else
@@ -423,24 +423,24 @@ LABEL_30:
   [(NSMutableArray *)self->_actions addObject:?];
 }
 
-- (void)setLineWidth:(float)a3
+- (void)setLineWidth:(float)width
 {
   v5 = [CMDrawingAction alloc];
-  *&v6 = a3;
+  *&v6 = width;
   v7 = [(CMDrawingAction *)v5 initWithType:6 andFloatValue:v6];
   [(NSMutableArray *)self->_actions addObject:?];
 }
 
-- (void)setLineDash:(id)a3
+- (void)setLineDash:(id)dash
 {
-  v5 = a3;
-  v4 = [[CMDrawingAction alloc] initWithType:7 andValue:v5];
+  dashCopy = dash;
+  v4 = [[CMDrawingAction alloc] initWithType:7 andValue:dashCopy];
   [(NSMutableArray *)self->_actions addObject:v4];
 }
 
-- (void)addDebugPath:(CGPath *)a3
+- (void)addDebugPath:(CGPath *)path
 {
-  BoundingBox = CGPathGetBoundingBox(a3);
+  BoundingBox = CGPathGetBoundingBox(path);
   if (BoundingBox.size.width == 0.0)
   {
     BoundingBox.size.width = 1.0;
@@ -473,13 +473,13 @@ LABEL_30:
   self->_finalFrame.origin.y = y;
   self->_finalFrame.size.width = width;
   self->_finalFrame.size.height = height;
-  v13 = [[CMDrawingAction alloc] initWithType:8 andValue:a3];
+  v13 = [[CMDrawingAction alloc] initWithType:8 andValue:path];
   [(NSMutableArray *)self->_actions addObject:?];
 }
 
-- (void)addPath:(CGPath *)a3
+- (void)addPath:(CGPath *)path
 {
-  BoundingBox = CGPathGetBoundingBox(a3);
+  BoundingBox = CGPathGetBoundingBox(path);
   x = BoundingBox.origin.x;
   y = BoundingBox.origin.y;
   if (BoundingBox.size.width == 0.0)
@@ -519,29 +519,29 @@ LABEL_30:
   self->_finalFrame.origin.y = y;
   self->_finalFrame.size.width = width;
   self->_finalFrame.size.height = height;
-  v9 = [[CMDrawingAction alloc] initWithType:8 andValue:a3];
+  v9 = [[CMDrawingAction alloc] initWithType:8 andValue:path];
   [(NSMutableArray *)self->_actions addObject:?];
 }
 
-- (CGRect)_transformRect:(CGRect)a3 withTransform:(id)a4
+- (CGRect)_transformRect:(CGRect)rect withTransform:(id)transform
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  [v8 transformPoint:{x, y}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  transformCopy = transform;
+  [transformCopy transformPoint:{x, y}];
   v10 = v9;
   v12 = v11;
   v13 = x + width;
   v14 = y + height;
-  [v8 transformPoint:{x + width, y + height}];
+  [transformCopy transformPoint:{x + width, y + height}];
   v16 = v15;
   v18 = v17;
-  [v8 transformPoint:{v13, y}];
+  [transformCopy transformPoint:{v13, y}];
   v20 = v19;
   v22 = v21;
-  [v8 transformPoint:{x, v14}];
+  [transformCopy transformPoint:{x, v14}];
   if (v16 <= v10)
   {
     v25 = v10;
@@ -646,9 +646,9 @@ LABEL_30:
   return result;
 }
 
-- (CGRect)transformRectToPage:(CGRect)a3
+- (CGRect)transformRectToPage:(CGRect)page
 {
-  [(CMDrawingContext *)self _transformRect:self->_currentTransform withTransform:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CMDrawingContext *)self _transformRect:self->_currentTransform withTransform:page.origin.x, page.origin.y, page.size.width, page.size.height];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -656,9 +656,9 @@ LABEL_30:
   return result;
 }
 
-- (CGRect)transformRectToGroup:(CGRect)a3
+- (CGRect)transformRectToGroup:(CGRect)group
 {
-  [(CMDrawingContext *)self _transformRect:self->_currentTransform withTransform:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CMDrawingContext *)self _transformRect:self->_currentTransform withTransform:group.origin.x, group.origin.y, group.size.width, group.size.height];
   v7 = v6 - self->_frame.origin.x;
   v9 = v8 - self->_frame.origin.y;
   result.size.height = v5;
@@ -668,16 +668,16 @@ LABEL_30:
   return result;
 }
 
-- (void)_applyTransform:(id)a3
+- (void)_applyTransform:(id)transform
 {
-  v4 = a3;
-  v5 = v4;
+  transformCopy = transform;
+  v5 = transformCopy;
   v13 = 0u;
   v14 = 0u;
   v12 = 0u;
-  if (v4)
+  if (transformCopy)
   {
-    [v4 transformStruct];
+    [transformCopy transformStruct];
     v9 = v13;
     v10 = v12;
     v6 = *(&v14 + 1);
@@ -701,12 +701,12 @@ LABEL_30:
   CGContextConcatCTM(cgContext, &transform);
 }
 
-- (void)_addTransform:(id)a3
+- (void)_addTransform:(id)transform
 {
-  v5 = a3;
+  transformCopy = transform;
   v4 = [(NSAffineTransform *)self->_currentTransform copy];
   [(NSMutableArray *)self->_transforms addObject:v4];
-  [(NSAffineTransform *)self->_currentTransform prependTransform:v5];
+  [(NSAffineTransform *)self->_currentTransform prependTransform:transformCopy];
 }
 
 @end

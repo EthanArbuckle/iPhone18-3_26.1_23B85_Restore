@@ -5,7 +5,7 @@
 - (void)_endStreams;
 - (void)_streamClosed;
 - (void)dealloc;
-- (void)setOpenCompleted:(BOOL)a3;
+- (void)setOpenCompleted:(BOOL)completed;
 @end
 
 @implementation EASession
@@ -42,14 +42,14 @@
       if ([(EAAccessory *)v7->_accessory createdByCoreAccessories])
       {
         v10 = +[EAAccessoryManager sharedAccessoryManager];
-        v11 = [(EAAccessory *)v7->_accessory coreAccessoriesPrimaryUUID];
+        coreAccessoriesPrimaryUUID = [(EAAccessory *)v7->_accessory coreAccessoriesPrimaryUUID];
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
         v25[2] = __43__EASession_initWithAccessory_forProtocol___block_invoke;
         v25[3] = &unk_278A4E3E8;
         v25[4] = v7;
         v25[5] = &v27;
-        [(EAAccessoryManager *)v10 createEASessionForProtocol:protocolString accessoryUUID:v11 withReply:v25];
+        [(EAAccessoryManager *)v10 createEASessionForProtocol:protocolString accessoryUUID:coreAccessoriesPrimaryUUID withReply:v25];
       }
 
       else
@@ -265,16 +265,16 @@ void __43__EASession_initWithAccessory_forProtocol___block_invoke(uint64_t a1, u
   [(NSOutputStream *)outputStream endStream];
 }
 
-- (void)setOpenCompleted:(BOOL)a3
+- (void)setOpenCompleted:(BOOL)completed
 {
-  if (a3)
+  if (completed)
   {
     self->_openCompleted = 1;
     [(NSInputStream *)self->_inputStream openCompleted];
     [(NSOutputStream *)self->_outputStream openCompleted];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v4 postNotificationName:@"EASessionOpenCompletedNotification" object:self];
+    [defaultCenter postNotificationName:@"EASessionOpenCompletedNotification" object:self];
   }
 }
 

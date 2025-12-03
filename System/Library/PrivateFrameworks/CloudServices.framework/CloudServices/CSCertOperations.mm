@@ -1,17 +1,17 @@
 @interface CSCertOperations
-+ (BOOL)verifyCertData:(id)a3 withCert:(__SecCertificate *)a4 withPubKey:(__SecKey *)a5 stingray:(BOOL)a6 enroll:(BOOL)a7 altDSID:(id)a8 env:(id)a9 duplicate:(BOOL)a10 sigVerification:(BOOL)a11 error:(id *)a12;
-+ (id)certVersion:(__SecCertificate *)a3;
++ (BOOL)verifyCertData:(id)data withCert:(__SecCertificate *)cert withPubKey:(__SecKey *)key stingray:(BOOL)stingray enroll:(BOOL)enroll altDSID:(id)d env:(id)env duplicate:(BOOL)self0 sigVerification:(BOOL)self1 error:(id *)self2;
++ (id)certVersion:(__SecCertificate *)version;
 + (id)knownICDPFederations;
-+ (id)moveToFederationAllowed:(id)a3 altDSID:(id)a4;
-+ (id)rootBaseVersionsForRootType:(unsigned int)a3 altDSID:(id)a4 inEnvironment:(id)a5 duplicate:(BOOL)a6;
-+ (id)rootTrustedVersionsForRootType:(unsigned int)a3 altDSID:(id)a4 inEnvironment:(id)a5 duplicate:(BOOL)a6;
-+ (void)fetchTermsWithAltDSID:(id)a3 reply:(id)a4;
-+ (void)storeTerms:(id)a3 withAltDSID:(id)a4 reply:(id)a5;
++ (id)moveToFederationAllowed:(id)allowed altDSID:(id)d;
++ (id)rootBaseVersionsForRootType:(unsigned int)type altDSID:(id)d inEnvironment:(id)environment duplicate:(BOOL)duplicate;
++ (id)rootTrustedVersionsForRootType:(unsigned int)type altDSID:(id)d inEnvironment:(id)environment duplicate:(BOOL)duplicate;
++ (void)fetchTermsWithAltDSID:(id)d reply:(id)reply;
++ (void)storeTerms:(id)terms withAltDSID:(id)d reply:(id)reply;
 @end
 
 @implementation CSCertOperations
 
-+ (id)certVersion:(__SecCertificate *)a3
++ (id)certVersion:(__SecCertificate *)version
 {
   v48 = *MEMORY[0x277D85DE8];
   v42 = 0u;
@@ -130,14 +130,14 @@ LABEL_27:
   return v9;
 }
 
-+ (id)rootBaseVersionsForRootType:(unsigned int)a3 altDSID:(id)a4 inEnvironment:(id)a5 duplicate:(BOOL)a6
++ (id)rootBaseVersionsForRootType:(unsigned int)type altDSID:(id)d inEnvironment:(id)environment duplicate:(BOOL)duplicate
 {
-  v6 = a6;
+  duplicateCopy = duplicate;
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  environmentCopy = environment;
   v14 = objc_msgSend_set(MEMORY[0x277CBEB58], v12, v13);
-  v15 = sub_22E9ED680(a3, v10, v11, v6);
+  v15 = sub_22E9ED680(type, dCopy, environmentCopy, duplicateCopy);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -156,7 +156,7 @@ LABEL_27:
           objc_enumerationMutation(v15);
         }
 
-        v23 = objc_msgSend_certVersion_(a1, v18, *(*(&v28 + 1) + 8 * i));
+        v23 = objc_msgSend_certVersion_(self, v18, *(*(&v28 + 1) + 8 * i));
         objc_msgSend_addObject_(v14, v24, v23);
       }
 
@@ -173,14 +173,14 @@ LABEL_27:
   return v25;
 }
 
-+ (id)rootTrustedVersionsForRootType:(unsigned int)a3 altDSID:(id)a4 inEnvironment:(id)a5 duplicate:(BOOL)a6
++ (id)rootTrustedVersionsForRootType:(unsigned int)type altDSID:(id)d inEnvironment:(id)environment duplicate:(BOOL)duplicate
 {
-  v6 = a6;
+  duplicateCopy = duplicate;
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  environmentCopy = environment;
   v14 = objc_msgSend_set(MEMORY[0x277CBEB58], v12, v13);
-  v15 = sub_22E9ED680(a3, v10, v11, v6);
+  v15 = sub_22E9ED680(type, dCopy, environmentCopy, duplicateCopy);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -199,7 +199,7 @@ LABEL_27:
           objc_enumerationMutation(v15);
         }
 
-        v23 = objc_msgSend_certVersion_(a1, v18, *(*(&v28 + 1) + 8 * i));
+        v23 = objc_msgSend_certVersion_(self, v18, *(*(&v28 + 1) + 8 * i));
         objc_msgSend_addObject_(v14, v24, v23);
       }
 
@@ -216,16 +216,16 @@ LABEL_27:
   return v25;
 }
 
-+ (BOOL)verifyCertData:(id)a3 withCert:(__SecCertificate *)a4 withPubKey:(__SecKey *)a5 stingray:(BOOL)a6 enroll:(BOOL)a7 altDSID:(id)a8 env:(id)a9 duplicate:(BOOL)a10 sigVerification:(BOOL)a11 error:(id *)a12
++ (BOOL)verifyCertData:(id)data withCert:(__SecCertificate *)cert withPubKey:(__SecKey *)key stingray:(BOOL)stingray enroll:(BOOL)enroll altDSID:(id)d env:(id)env duplicate:(BOOL)self0 sigVerification:(BOOL)self1 error:(id *)self2
 {
-  v12 = a7;
-  v13 = a6;
+  enrollCopy = enroll;
+  stingrayCopy = stingray;
   v65 = *MEMORY[0x277D85DE8];
-  v17 = a8;
-  v18 = a9;
+  dCopy = d;
+  envCopy = env;
   error = 0;
   trust = 0;
-  if (v12)
+  if (enrollCopy)
   {
     v19 = 7;
   }
@@ -235,7 +235,7 @@ LABEL_27:
     v19 = 5;
   }
 
-  if (a11)
+  if (verification)
   {
     v20 = 5;
   }
@@ -245,7 +245,7 @@ LABEL_27:
     v20 = v19;
   }
 
-  if (v13)
+  if (stingrayCopy)
   {
     v21 = 3;
   }
@@ -255,16 +255,16 @@ LABEL_27:
     v21 = v20;
   }
 
-  v22 = SecCertificateCreateWithData(*MEMORY[0x277CBECE8], a3);
+  v22 = SecCertificateCreateWithData(*MEMORY[0x277CBECE8], data);
   v24 = v22;
   if (!v22)
   {
-    v35 = objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v23, @"EscrowServiceErrorDomain", 112, @"Error creating SecCertificateRef");
+    errorCopy = objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v23, @"EscrowServiceErrorDomain", 112, @"Error creating SecCertificateRef");
     v41 = CloudServicesLog();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v64 = v35;
+      errorCopy2 = errorCopy;
       _os_log_impl(&dword_22E9CA000, v41, OS_LOG_TYPE_DEFAULT, "Unable to create SecCertificateRef from response data: %@", buf, 0xCu);
     }
 
@@ -272,7 +272,7 @@ LABEL_27:
     v31 = 0;
     v42 = 0;
     v28 = 0;
-    if (a12)
+    if (error)
     {
       goto LABEL_31;
     }
@@ -281,7 +281,7 @@ LABEL_27:
   }
 
   v25 = *MEMORY[0x277CDC4B8];
-  if (v13)
+  if (stingrayCopy)
   {
     v26 = *MEMORY[0x277CDC4B0];
   }
@@ -292,7 +292,7 @@ LABEL_27:
     v26 = *MEMORY[0x277CDC4A0];
   }
 
-  if (a11)
+  if (verification)
   {
     v27 = v25;
   }
@@ -312,7 +312,7 @@ LABEL_27:
     if (v32)
     {
       v34 = v32;
-      v35 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v33, *MEMORY[0x277CCA590], v32, 0);
+      errorCopy = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v33, *MEMORY[0x277CCA590], v32, 0);
       v36 = CloudServicesLog();
       if (!os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
@@ -323,7 +323,7 @@ LABEL_22:
       }
 
       *buf = 134217984;
-      v64 = v34;
+      errorCopy2 = v34;
       v37 = "SecTrustCreateWithCertificates failed: %ld";
       v38 = v36;
       v39 = 12;
@@ -332,10 +332,10 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v47 = sub_22E9ED680(v21, v17, v18, a10);
+    v47 = sub_22E9ED680(v21, dCopy, envCopy, duplicate);
     if (!v47)
     {
-      v35 = objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v48, @"EscrowServiceErrorDomain", 114, @"Error copying root cert array");
+      errorCopy = objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v48, @"EscrowServiceErrorDomain", 114, @"Error copying root cert array");
       v36 = CloudServicesLog();
       if (!os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
@@ -354,7 +354,7 @@ LABEL_21:
     if (v49)
     {
       v58 = v49;
-      v35 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v50, *MEMORY[0x277CCA590]);
+      errorCopy = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v50, *MEMORY[0x277CCA590]);
       v51 = CloudServicesLog();
       if (!os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
       {
@@ -362,7 +362,7 @@ LABEL_21:
       }
 
       *buf = 134217984;
-      v64 = v58;
+      errorCopy2 = v58;
       v52 = "SecTrustSetAnchorCertificates failed: %ld";
     }
 
@@ -379,24 +379,24 @@ LABEL_21:
         }
 
         *buf = 136315138;
-        v64 = v54;
+        errorCopy2 = v54;
         _os_log_impl(&dword_22E9CA000, v53, OS_LOG_TYPE_DEFAULT, "SecTrustEvaluateWithError() trust result = %s", buf, 0xCu);
       }
 
       if (v59)
       {
-        if (a5)
+        if (key)
         {
           v55 = SecTrustCopyKey(trust);
           if (v55)
           {
-            v35 = 0;
-            *a5 = v55;
+            errorCopy = 0;
+            *key = v55;
           }
 
           else
           {
-            v35 = objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v56, @"EscrowServiceErrorDomain", 115, @"Unable to extract public key");
+            errorCopy = objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v56, @"EscrowServiceErrorDomain", 115, @"Unable to extract public key");
             v57 = CloudServicesLog();
             if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
             {
@@ -408,11 +408,11 @@ LABEL_21:
 
         else
         {
-          v35 = 0;
+          errorCopy = 0;
         }
 
         v40 = 1;
-        if (a12)
+        if (error)
         {
           goto LABEL_31;
         }
@@ -420,14 +420,14 @@ LABEL_21:
         goto LABEL_32;
       }
 
-      v35 = error;
+      errorCopy = error;
       v51 = CloudServicesLog();
       if (!os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_59:
 
         v40 = 0;
-        if (!a12)
+        if (!error)
         {
           goto LABEL_32;
         }
@@ -436,7 +436,7 @@ LABEL_59:
       }
 
       *buf = 138412290;
-      v64 = error;
+      errorCopy2 = error;
       v52 = "SecTrustEvaluate failed: %@";
     }
 
@@ -444,7 +444,7 @@ LABEL_59:
     goto LABEL_59;
   }
 
-  v35 = objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v30, @"EscrowServiceErrorDomain", 113, @"Error copying escrow trust policy");
+  errorCopy = objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v30, @"EscrowServiceErrorDomain", 113, @"Error copying escrow trust policy");
   v43 = CloudServicesLog();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
   {
@@ -456,17 +456,17 @@ LABEL_59:
   v31 = 0;
 LABEL_30:
   v42 = 0;
-  if (a12)
+  if (error)
   {
 LABEL_31:
-    v44 = v35;
-    *a12 = v35;
+    v44 = errorCopy;
+    *error = errorCopy;
   }
 
 LABEL_32:
-  if (a4 && v24)
+  if (cert && v24)
   {
-    *a4 = v24;
+    *cert = v24;
   }
 
   else if (v24)
@@ -489,14 +489,14 @@ LABEL_32:
   return v40;
 }
 
-+ (void)storeTerms:(id)a3 withAltDSID:(id)a4 reply:(id)a5
++ (void)storeTerms:(id)terms withAltDSID:(id)d reply:(id)reply
 {
   v49[6] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v12 = objc_msgSend_altDSID(v7, v10, v11);
-  isEqualToString = objc_msgSend_isEqualToString_(v8, v13, v12);
+  termsCopy = terms;
+  dCopy = d;
+  replyCopy = reply;
+  v12 = objc_msgSend_altDSID(termsCopy, v10, v11);
+  isEqualToString = objc_msgSend_isEqualToString_(dCopy, v13, v12);
 
   if ((isEqualToString & 1) == 0)
   {
@@ -505,7 +505,7 @@ LABEL_32:
 
   v15 = objc_alloc_init(StoredTermsInfo);
   objc_msgSend_setStorageVersion_(v15, v16, 1);
-  objc_msgSend_setTermsInfo_(v15, v17, v7);
+  objc_msgSend_setTermsInfo_(v15, v17, termsCopy);
   v18 = *MEMORY[0x277CDC238];
   v19 = *MEMORY[0x277CDC140];
   v48[0] = *MEMORY[0x277CDC228];
@@ -523,7 +523,7 @@ LABEL_32:
   v48[4] = *MEMORY[0x277CDC120];
   v48[5] = v23;
   v49[4] = @"SecureBackupTerms";
-  v49[5] = v8;
+  v49[5] = dCopy;
   v25 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v24, v49, v48, 6);
   v46 = *MEMORY[0x277CDC5E8];
   v28 = objc_msgSend_data(v15, v26, v27);
@@ -569,16 +569,16 @@ LABEL_10:
     v32 = v35;
   }
 
-  v9[2](v9, v32);
+  replyCopy[2](replyCopy, v32);
 
   v40 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)fetchTermsWithAltDSID:(id)a3 reply:(id)a4
++ (void)fetchTermsWithAltDSID:(id)d reply:(id)reply
 {
   v44[7] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v7 = *MEMORY[0x277CDC238];
   v8 = *MEMORY[0x277CDC140];
   v43[0] = *MEMORY[0x277CDC228];
@@ -601,9 +601,9 @@ LABEL_10:
   v13 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v12, v44, v43, 7);
   v16 = objc_msgSend_mutableCopy(v13, v14, v15);
 
-  if (v5)
+  if (dCopy)
   {
-    objc_msgSend_setObject_forKeyedSubscript_(v16, v17, v5, *MEMORY[0x277CDBF20]);
+    objc_msgSend_setObject_forKeyedSubscript_(v16, v17, dCopy, *MEMORY[0x277CDBF20]);
   }
 
   theArray = 0;
@@ -651,21 +651,21 @@ LABEL_10:
     }
   }
 
-  v6[2](v6, v26, v25);
+  replyCopy[2](replyCopy, v26, v25);
 
   v39 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)moveToFederationAllowed:(id)a3 altDSID:(id)a4
++ (id)moveToFederationAllowed:(id)allowed altDSID:(id)d
 {
-  v5 = a3;
-  v8 = a4;
+  allowedCopy = allowed;
+  dCopy = d;
   v9 = &qword_27885A060;
   v10 = 5;
   while (1)
   {
     v11 = *(v9 - 2);
-    if (v11 == objc_msgSend_intValue(v5, v6, v7))
+    if (v11 == objc_msgSend_intValue(allowedCopy, v6, v7))
     {
       break;
     }
@@ -673,18 +673,18 @@ LABEL_10:
     v9 += 2;
     if (!--v10)
     {
-      objc_msgSend_errorWithCode_format_(CloudServicesError, v6, 600, @"Unknown federation %@", v5);
+      objc_msgSend_errorWithCode_format_(CloudServicesError, v6, 600, @"Unknown federation %@", allowedCopy);
       goto LABEL_9;
     }
   }
 
-  if (!*v9 || (sub_22E9EEAE4(v8) & 1) != 0)
+  if (!*v9 || (sub_22E9EEAE4(dCopy) & 1) != 0)
   {
     v13 = 0;
     goto LABEL_10;
   }
 
-  objc_msgSend_errorWithCode_format_(CloudServicesError, v12, 601, @"secure terms needed for %@", v5);
+  objc_msgSend_errorWithCode_format_(CloudServicesError, v12, 601, @"secure terms needed for %@", allowedCopy);
   v13 = LABEL_9:;
 LABEL_10:
 

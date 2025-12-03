@@ -1,30 +1,30 @@
 @interface _SFPBNewsCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBNewsCardSection)initWithDictionary:(id)a3;
-- (_SFPBNewsCardSection)initWithFacade:(id)a3;
-- (_SFPBNewsCardSection)initWithJSON:(id)a3;
+- (_SFPBNewsCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBNewsCardSection)initWithFacade:(id)facade;
+- (_SFPBNewsCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPunchoutOptions:(id)a3;
-- (void)setPunchoutOptions:(id)a3;
-- (void)setPunchoutPickerDismissText:(id)a3;
-- (void)setPunchoutPickerTitle:(id)a3;
-- (void)setType:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPunchoutOptions:(id)options;
+- (void)setPunchoutOptions:(id)options;
+- (void)setPunchoutPickerDismissText:(id)text;
+- (void)setPunchoutPickerTitle:(id)title;
+- (void)setType:(id)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBNewsCardSection
 
-- (_SFPBNewsCardSection)initWithFacade:(id)a3
+- (_SFPBNewsCardSection)initWithFacade:(id)facade
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBNewsCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 punchoutOptions];
-    if (v6)
+    punchoutOptions = [facadeCopy punchoutOptions];
+    if (punchoutOptions)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -38,8 +38,8 @@
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v8 = [v4 punchoutOptions];
-    v9 = [v8 countByEnumeratingWithState:&v47 objects:v51 count:16];
+    punchoutOptions2 = [facadeCopy punchoutOptions];
+    v9 = [punchoutOptions2 countByEnumeratingWithState:&v47 objects:v51 count:16];
     if (v9)
     {
       v10 = v9;
@@ -50,7 +50,7 @@
         {
           if (*v48 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(punchoutOptions2);
           }
 
           v13 = [[_SFPBPunchout alloc] initWithFacade:*(*(&v47 + 1) + 8 * i)];
@@ -60,120 +60,120 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v47 objects:v51 count:16];
+        v10 = [punchoutOptions2 countByEnumeratingWithState:&v47 objects:v51 count:16];
       }
 
       while (v10);
     }
 
     [(_SFPBNewsCardSection *)v5 setPunchoutOptions:v7];
-    v14 = [v4 punchoutPickerTitle];
+    punchoutPickerTitle = [facadeCopy punchoutPickerTitle];
 
-    if (v14)
+    if (punchoutPickerTitle)
     {
-      v15 = [v4 punchoutPickerTitle];
-      [(_SFPBNewsCardSection *)v5 setPunchoutPickerTitle:v15];
+      punchoutPickerTitle2 = [facadeCopy punchoutPickerTitle];
+      [(_SFPBNewsCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
     }
 
-    v16 = [v4 punchoutPickerDismissText];
+    punchoutPickerDismissText = [facadeCopy punchoutPickerDismissText];
 
-    if (v16)
+    if (punchoutPickerDismissText)
     {
-      v17 = [v4 punchoutPickerDismissText];
-      [(_SFPBNewsCardSection *)v5 setPunchoutPickerDismissText:v17];
+      punchoutPickerDismissText2 = [facadeCopy punchoutPickerDismissText];
+      [(_SFPBNewsCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
     }
 
-    if ([v4 hasCanBeHidden])
+    if ([facadeCopy hasCanBeHidden])
     {
-      -[_SFPBNewsCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v4 canBeHidden]);
+      -[_SFPBNewsCardSection setCanBeHidden:](v5, "setCanBeHidden:", [facadeCopy canBeHidden]);
     }
 
-    if ([v4 hasHasTopPadding])
+    if ([facadeCopy hasHasTopPadding])
     {
-      -[_SFPBNewsCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v4 hasTopPadding]);
+      -[_SFPBNewsCardSection setHasTopPadding:](v5, "setHasTopPadding:", [facadeCopy hasTopPadding]);
     }
 
-    if ([v4 hasHasBottomPadding])
+    if ([facadeCopy hasHasBottomPadding])
     {
-      -[_SFPBNewsCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v4 hasBottomPadding]);
+      -[_SFPBNewsCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [facadeCopy hasBottomPadding]);
     }
 
-    v18 = [v4 type];
+    type = [facadeCopy type];
 
-    if (v18)
+    if (type)
     {
-      v19 = [v4 type];
-      [(_SFPBNewsCardSection *)v5 setType:v19];
+      type2 = [facadeCopy type];
+      [(_SFPBNewsCardSection *)v5 setType:type2];
     }
 
-    if ([v4 hasSeparatorStyle])
+    if ([facadeCopy hasSeparatorStyle])
     {
-      -[_SFPBNewsCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v4 separatorStyle]);
+      -[_SFPBNewsCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [facadeCopy separatorStyle]);
     }
 
-    v20 = [v4 backgroundColor];
+    backgroundColor = [facadeCopy backgroundColor];
 
-    if (v20)
+    if (backgroundColor)
     {
       v21 = [_SFPBColor alloc];
-      v22 = [v4 backgroundColor];
-      v23 = [(_SFPBColor *)v21 initWithFacade:v22];
+      backgroundColor2 = [facadeCopy backgroundColor];
+      v23 = [(_SFPBColor *)v21 initWithFacade:backgroundColor2];
       [(_SFPBNewsCardSection *)v5 setBackgroundColor:v23];
     }
 
-    v24 = [v4 title];
+    title = [facadeCopy title];
 
-    if (v24)
+    if (title)
     {
       v25 = [_SFPBRichText alloc];
-      v26 = [v4 title];
-      v27 = [(_SFPBRichText *)v25 initWithFacade:v26];
+      title2 = [facadeCopy title];
+      v27 = [(_SFPBRichText *)v25 initWithFacade:title2];
       [(_SFPBNewsCardSection *)v5 setTitle:v27];
     }
 
-    v28 = [v4 subtitle];
+    subtitle = [facadeCopy subtitle];
 
-    if (v28)
+    if (subtitle)
     {
       v29 = [_SFPBRichText alloc];
-      v30 = [v4 subtitle];
-      v31 = [(_SFPBRichText *)v29 initWithFacade:v30];
+      subtitle2 = [facadeCopy subtitle];
+      v31 = [(_SFPBRichText *)v29 initWithFacade:subtitle2];
       [(_SFPBNewsCardSection *)v5 setSubtitle:v31];
     }
 
-    v32 = [v4 thumbnail];
+    thumbnail = [facadeCopy thumbnail];
 
-    if (v32)
+    if (thumbnail)
     {
       v33 = [_SFPBImage alloc];
-      v34 = [v4 thumbnail];
-      v35 = [(_SFPBImage *)v33 initWithFacade:v34];
+      thumbnail2 = [facadeCopy thumbnail];
+      v35 = [(_SFPBImage *)v33 initWithFacade:thumbnail2];
       [(_SFPBNewsCardSection *)v5 setThumbnail:v35];
     }
 
-    v36 = [v4 providerImage];
+    providerImage = [facadeCopy providerImage];
 
-    if (v36)
+    if (providerImage)
     {
       v37 = [_SFPBImage alloc];
-      v38 = [v4 providerImage];
-      v39 = [(_SFPBImage *)v37 initWithFacade:v38];
+      providerImage2 = [facadeCopy providerImage];
+      v39 = [(_SFPBImage *)v37 initWithFacade:providerImage2];
       [(_SFPBNewsCardSection *)v5 setProviderImage:v39];
     }
 
-    v40 = [v4 providerTitle];
+    providerTitle = [facadeCopy providerTitle];
 
-    if (v40)
+    if (providerTitle)
     {
       v41 = [_SFPBRichText alloc];
-      v42 = [v4 providerTitle];
-      v43 = [(_SFPBRichText *)v41 initWithFacade:v42];
+      providerTitle2 = [facadeCopy providerTitle];
+      v43 = [(_SFPBRichText *)v41 initWithFacade:providerTitle2];
       [(_SFPBNewsCardSection *)v5 setProviderTitle:v43];
     }
 
-    if ([v4 hasOverlayTextInImage])
+    if ([facadeCopy hasOverlayTextInImage])
     {
-      -[_SFPBNewsCardSection setOverlayTextInImage:](v5, "setOverlayTextInImage:", [v4 overlayTextInImage]);
+      -[_SFPBNewsCardSection setOverlayTextInImage:](v5, "setOverlayTextInImage:", [facadeCopy overlayTextInImage]);
     }
 
     v44 = v5;
@@ -183,16 +183,16 @@
   return v5;
 }
 
-- (_SFPBNewsCardSection)initWithDictionary:(id)a3
+- (_SFPBNewsCardSection)initWithDictionary:(id)dictionary
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v51.receiver = self;
   v51.super_class = _SFPBNewsCardSection;
   v5 = [(_SFPBNewsCardSection *)&v51 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"punchoutOptions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"punchoutOptions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -235,7 +235,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"punchoutPickerTitle"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"punchoutPickerTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -243,7 +243,7 @@
       [(_SFPBNewsCardSection *)v5 setPunchoutPickerTitle:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"punchoutPickerDismissText"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"punchoutPickerDismissText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -251,21 +251,21 @@
       [(_SFPBNewsCardSection *)v5 setPunchoutPickerDismissText:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"canBeHidden"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"canBeHidden"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBNewsCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v18 BOOLValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"hasTopPadding"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"hasTopPadding"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBNewsCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v19 BOOLValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"hasBottomPadding"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"hasBottomPadding"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -274,7 +274,7 @@
 
     v43 = v18;
     v46 = v6;
-    v21 = [v4 objectForKeyedSubscript:@"type"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -283,7 +283,7 @@
     }
 
     v40 = v21;
-    v23 = [v4 objectForKeyedSubscript:@"separatorStyle"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"separatorStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -291,7 +291,7 @@
     }
 
     v45 = v14;
-    v24 = [v4 objectForKeyedSubscript:@"backgroundColor"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"backgroundColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -300,7 +300,7 @@
     }
 
     v44 = v16;
-    v26 = [v4 objectForKeyedSubscript:@"title"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -309,7 +309,7 @@
     }
 
     v42 = v19;
-    v28 = [v4 objectForKeyedSubscript:@"subtitle"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"subtitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -318,7 +318,7 @@
     }
 
     v41 = v20;
-    v30 = [v4 objectForKeyedSubscript:@"thumbnail"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"thumbnail"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -326,7 +326,7 @@
       [(_SFPBNewsCardSection *)v5 setThumbnail:v31];
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"providerImage"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"providerImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -334,7 +334,7 @@
       [(_SFPBNewsCardSection *)v5 setProviderImage:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"providerTitle"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"providerTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -342,7 +342,7 @@
       [(_SFPBNewsCardSection *)v5 setProviderTitle:v35];
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"overlayTextInImage"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"overlayTextInImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -356,30 +356,30 @@
   return v5;
 }
 
-- (_SFPBNewsCardSection)initWithJSON:(id)a3
+- (_SFPBNewsCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBNewsCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBNewsCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBNewsCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -393,82 +393,82 @@
 - (id)dictionaryRepresentation
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_backgroundColor)
   {
-    v4 = [(_SFPBNewsCardSection *)self backgroundColor];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    backgroundColor = [(_SFPBNewsCardSection *)self backgroundColor];
+    dictionaryRepresentation = [backgroundColor dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"backgroundColor"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"backgroundColor"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"backgroundColor"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"backgroundColor"];
     }
   }
 
   if (self->_canBeHidden)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBNewsCardSection canBeHidden](self, "canBeHidden")}];
-    [v3 setObject:v7 forKeyedSubscript:@"canBeHidden"];
+    [dictionary setObject:v7 forKeyedSubscript:@"canBeHidden"];
   }
 
   if (self->_hasBottomPadding)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBNewsCardSection hasBottomPadding](self, "hasBottomPadding")}];
-    [v3 setObject:v8 forKeyedSubscript:@"hasBottomPadding"];
+    [dictionary setObject:v8 forKeyedSubscript:@"hasBottomPadding"];
   }
 
   if (self->_hasTopPadding)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBNewsCardSection hasTopPadding](self, "hasTopPadding")}];
-    [v3 setObject:v9 forKeyedSubscript:@"hasTopPadding"];
+    [dictionary setObject:v9 forKeyedSubscript:@"hasTopPadding"];
   }
 
   if (self->_overlayTextInImage)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBNewsCardSection overlayTextInImage](self, "overlayTextInImage")}];
-    [v3 setObject:v10 forKeyedSubscript:@"overlayTextInImage"];
+    [dictionary setObject:v10 forKeyedSubscript:@"overlayTextInImage"];
   }
 
   if (self->_providerImage)
   {
-    v11 = [(_SFPBNewsCardSection *)self providerImage];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    providerImage = [(_SFPBNewsCardSection *)self providerImage];
+    dictionaryRepresentation2 = [providerImage dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"providerImage"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"providerImage"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"providerImage"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"providerImage"];
     }
   }
 
   if (self->_providerTitle)
   {
-    v14 = [(_SFPBNewsCardSection *)self providerTitle];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    providerTitle = [(_SFPBNewsCardSection *)self providerTitle];
+    dictionaryRepresentation3 = [providerTitle dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"providerTitle"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"providerTitle"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"providerTitle"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"providerTitle"];
     }
   }
 
   if ([(NSArray *)self->_punchoutOptions count])
   {
-    v17 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
@@ -488,16 +488,16 @@
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v44 + 1) + 8 * i) dictionaryRepresentation];
-          if (v23)
+          dictionaryRepresentation4 = [*(*(&v44 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation4)
           {
-            [v17 addObject:v23];
+            [array addObject:dictionaryRepresentation4];
           }
 
           else
           {
-            v24 = [MEMORY[0x1E695DFB0] null];
-            [v17 addObject:v24];
+            null4 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null4];
           }
         }
 
@@ -507,97 +507,97 @@
       while (v20);
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"punchoutOptions"];
+    [dictionary setObject:array forKeyedSubscript:@"punchoutOptions"];
   }
 
   if (self->_punchoutPickerDismissText)
   {
-    v25 = [(_SFPBNewsCardSection *)self punchoutPickerDismissText];
-    v26 = [v25 copy];
-    [v3 setObject:v26 forKeyedSubscript:@"punchoutPickerDismissText"];
+    punchoutPickerDismissText = [(_SFPBNewsCardSection *)self punchoutPickerDismissText];
+    v26 = [punchoutPickerDismissText copy];
+    [dictionary setObject:v26 forKeyedSubscript:@"punchoutPickerDismissText"];
   }
 
   if (self->_punchoutPickerTitle)
   {
-    v27 = [(_SFPBNewsCardSection *)self punchoutPickerTitle];
-    v28 = [v27 copy];
-    [v3 setObject:v28 forKeyedSubscript:@"punchoutPickerTitle"];
+    punchoutPickerTitle = [(_SFPBNewsCardSection *)self punchoutPickerTitle];
+    v28 = [punchoutPickerTitle copy];
+    [dictionary setObject:v28 forKeyedSubscript:@"punchoutPickerTitle"];
   }
 
   if (self->_separatorStyle)
   {
-    v29 = [(_SFPBNewsCardSection *)self separatorStyle];
-    if (v29 >= 6)
+    separatorStyle = [(_SFPBNewsCardSection *)self separatorStyle];
+    if (separatorStyle >= 6)
     {
-      v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v29];
+      v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", separatorStyle];
     }
 
     else
     {
-      v30 = off_1E7ACE580[v29];
+      v30 = off_1E7ACE580[separatorStyle];
     }
 
-    [v3 setObject:v30 forKeyedSubscript:@"separatorStyle"];
+    [dictionary setObject:v30 forKeyedSubscript:@"separatorStyle"];
   }
 
   if (self->_subtitle)
   {
-    v31 = [(_SFPBNewsCardSection *)self subtitle];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    subtitle = [(_SFPBNewsCardSection *)self subtitle];
+    dictionaryRepresentation5 = [subtitle dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"subtitle"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"subtitle"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"subtitle"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"subtitle"];
     }
   }
 
   if (self->_thumbnail)
   {
-    v34 = [(_SFPBNewsCardSection *)self thumbnail];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    thumbnail = [(_SFPBNewsCardSection *)self thumbnail];
+    dictionaryRepresentation6 = [thumbnail dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"thumbnail"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"thumbnail"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"thumbnail"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"thumbnail"];
     }
   }
 
   if (self->_title)
   {
-    v37 = [(_SFPBNewsCardSection *)self title];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    title = [(_SFPBNewsCardSection *)self title];
+    dictionaryRepresentation7 = [title dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"title"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"title"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"title"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"title"];
     }
   }
 
   if (self->_type)
   {
-    v40 = [(_SFPBNewsCardSection *)self type];
-    v41 = [v40 copy];
-    [v3 setObject:v41 forKeyedSubscript:@"type"];
+    type = [(_SFPBNewsCardSection *)self type];
+    v41 = [type copy];
+    [dictionary setObject:v41 forKeyedSubscript:@"type"];
   }
 
   v42 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -659,28 +659,28 @@
   return v20 ^ v21 ^ v19 ^ v18 ^ v17 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_56;
   }
 
-  v5 = [(_SFPBNewsCardSection *)self punchoutOptions];
-  v6 = [v4 punchoutOptions];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBNewsCardSection *)self punchoutOptions];
+  punchoutOptions2 = [equalCopy punchoutOptions];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_55;
   }
 
-  v7 = [(_SFPBNewsCardSection *)self punchoutOptions];
-  if (v7)
+  punchoutOptions3 = [(_SFPBNewsCardSection *)self punchoutOptions];
+  if (punchoutOptions3)
   {
-    v8 = v7;
-    v9 = [(_SFPBNewsCardSection *)self punchoutOptions];
-    v10 = [v4 punchoutOptions];
-    v11 = [v9 isEqual:v10];
+    v8 = punchoutOptions3;
+    punchoutOptions4 = [(_SFPBNewsCardSection *)self punchoutOptions];
+    punchoutOptions5 = [equalCopy punchoutOptions];
+    v11 = [punchoutOptions4 isEqual:punchoutOptions5];
 
     if (!v11)
     {
@@ -692,20 +692,20 @@
   {
   }
 
-  v5 = [(_SFPBNewsCardSection *)self punchoutPickerTitle];
-  v6 = [v4 punchoutPickerTitle];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBNewsCardSection *)self punchoutPickerTitle];
+  punchoutOptions2 = [equalCopy punchoutPickerTitle];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_55;
   }
 
-  v12 = [(_SFPBNewsCardSection *)self punchoutPickerTitle];
-  if (v12)
+  punchoutPickerTitle = [(_SFPBNewsCardSection *)self punchoutPickerTitle];
+  if (punchoutPickerTitle)
   {
-    v13 = v12;
-    v14 = [(_SFPBNewsCardSection *)self punchoutPickerTitle];
-    v15 = [v4 punchoutPickerTitle];
-    v16 = [v14 isEqual:v15];
+    v13 = punchoutPickerTitle;
+    punchoutPickerTitle2 = [(_SFPBNewsCardSection *)self punchoutPickerTitle];
+    punchoutPickerTitle3 = [equalCopy punchoutPickerTitle];
+    v16 = [punchoutPickerTitle2 isEqual:punchoutPickerTitle3];
 
     if (!v16)
     {
@@ -717,20 +717,20 @@
   {
   }
 
-  v5 = [(_SFPBNewsCardSection *)self punchoutPickerDismissText];
-  v6 = [v4 punchoutPickerDismissText];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBNewsCardSection *)self punchoutPickerDismissText];
+  punchoutOptions2 = [equalCopy punchoutPickerDismissText];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_55;
   }
 
-  v17 = [(_SFPBNewsCardSection *)self punchoutPickerDismissText];
-  if (v17)
+  punchoutPickerDismissText = [(_SFPBNewsCardSection *)self punchoutPickerDismissText];
+  if (punchoutPickerDismissText)
   {
-    v18 = v17;
-    v19 = [(_SFPBNewsCardSection *)self punchoutPickerDismissText];
-    v20 = [v4 punchoutPickerDismissText];
-    v21 = [v19 isEqual:v20];
+    v18 = punchoutPickerDismissText;
+    punchoutPickerDismissText2 = [(_SFPBNewsCardSection *)self punchoutPickerDismissText];
+    punchoutPickerDismissText3 = [equalCopy punchoutPickerDismissText];
+    v21 = [punchoutPickerDismissText2 isEqual:punchoutPickerDismissText3];
 
     if (!v21)
     {
@@ -743,37 +743,37 @@
   }
 
   canBeHidden = self->_canBeHidden;
-  if (canBeHidden != [v4 canBeHidden])
+  if (canBeHidden != [equalCopy canBeHidden])
   {
     goto LABEL_56;
   }
 
   hasTopPadding = self->_hasTopPadding;
-  if (hasTopPadding != [v4 hasTopPadding])
+  if (hasTopPadding != [equalCopy hasTopPadding])
   {
     goto LABEL_56;
   }
 
   hasBottomPadding = self->_hasBottomPadding;
-  if (hasBottomPadding != [v4 hasBottomPadding])
+  if (hasBottomPadding != [equalCopy hasBottomPadding])
   {
     goto LABEL_56;
   }
 
-  v5 = [(_SFPBNewsCardSection *)self type];
-  v6 = [v4 type];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBNewsCardSection *)self type];
+  punchoutOptions2 = [equalCopy type];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_55;
   }
 
-  v25 = [(_SFPBNewsCardSection *)self type];
-  if (v25)
+  type = [(_SFPBNewsCardSection *)self type];
+  if (type)
   {
-    v26 = v25;
-    v27 = [(_SFPBNewsCardSection *)self type];
-    v28 = [v4 type];
-    v29 = [v27 isEqual:v28];
+    v26 = type;
+    type2 = [(_SFPBNewsCardSection *)self type];
+    type3 = [equalCopy type];
+    v29 = [type2 isEqual:type3];
 
     if (!v29)
     {
@@ -786,25 +786,25 @@
   }
 
   separatorStyle = self->_separatorStyle;
-  if (separatorStyle != [v4 separatorStyle])
+  if (separatorStyle != [equalCopy separatorStyle])
   {
     goto LABEL_56;
   }
 
-  v5 = [(_SFPBNewsCardSection *)self backgroundColor];
-  v6 = [v4 backgroundColor];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBNewsCardSection *)self backgroundColor];
+  punchoutOptions2 = [equalCopy backgroundColor];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_55;
   }
 
-  v31 = [(_SFPBNewsCardSection *)self backgroundColor];
-  if (v31)
+  backgroundColor = [(_SFPBNewsCardSection *)self backgroundColor];
+  if (backgroundColor)
   {
-    v32 = v31;
-    v33 = [(_SFPBNewsCardSection *)self backgroundColor];
-    v34 = [v4 backgroundColor];
-    v35 = [v33 isEqual:v34];
+    v32 = backgroundColor;
+    backgroundColor2 = [(_SFPBNewsCardSection *)self backgroundColor];
+    backgroundColor3 = [equalCopy backgroundColor];
+    v35 = [backgroundColor2 isEqual:backgroundColor3];
 
     if (!v35)
     {
@@ -816,20 +816,20 @@
   {
   }
 
-  v5 = [(_SFPBNewsCardSection *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBNewsCardSection *)self title];
+  punchoutOptions2 = [equalCopy title];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_55;
   }
 
-  v36 = [(_SFPBNewsCardSection *)self title];
-  if (v36)
+  title = [(_SFPBNewsCardSection *)self title];
+  if (title)
   {
-    v37 = v36;
-    v38 = [(_SFPBNewsCardSection *)self title];
-    v39 = [v4 title];
-    v40 = [v38 isEqual:v39];
+    v37 = title;
+    title2 = [(_SFPBNewsCardSection *)self title];
+    title3 = [equalCopy title];
+    v40 = [title2 isEqual:title3];
 
     if (!v40)
     {
@@ -841,20 +841,20 @@
   {
   }
 
-  v5 = [(_SFPBNewsCardSection *)self subtitle];
-  v6 = [v4 subtitle];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBNewsCardSection *)self subtitle];
+  punchoutOptions2 = [equalCopy subtitle];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_55;
   }
 
-  v41 = [(_SFPBNewsCardSection *)self subtitle];
-  if (v41)
+  subtitle = [(_SFPBNewsCardSection *)self subtitle];
+  if (subtitle)
   {
-    v42 = v41;
-    v43 = [(_SFPBNewsCardSection *)self subtitle];
-    v44 = [v4 subtitle];
-    v45 = [v43 isEqual:v44];
+    v42 = subtitle;
+    subtitle2 = [(_SFPBNewsCardSection *)self subtitle];
+    subtitle3 = [equalCopy subtitle];
+    v45 = [subtitle2 isEqual:subtitle3];
 
     if (!v45)
     {
@@ -866,20 +866,20 @@
   {
   }
 
-  v5 = [(_SFPBNewsCardSection *)self thumbnail];
-  v6 = [v4 thumbnail];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBNewsCardSection *)self thumbnail];
+  punchoutOptions2 = [equalCopy thumbnail];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_55;
   }
 
-  v46 = [(_SFPBNewsCardSection *)self thumbnail];
-  if (v46)
+  thumbnail = [(_SFPBNewsCardSection *)self thumbnail];
+  if (thumbnail)
   {
-    v47 = v46;
-    v48 = [(_SFPBNewsCardSection *)self thumbnail];
-    v49 = [v4 thumbnail];
-    v50 = [v48 isEqual:v49];
+    v47 = thumbnail;
+    thumbnail2 = [(_SFPBNewsCardSection *)self thumbnail];
+    thumbnail3 = [equalCopy thumbnail];
+    v50 = [thumbnail2 isEqual:thumbnail3];
 
     if (!v50)
     {
@@ -891,20 +891,20 @@
   {
   }
 
-  v5 = [(_SFPBNewsCardSection *)self providerImage];
-  v6 = [v4 providerImage];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBNewsCardSection *)self providerImage];
+  punchoutOptions2 = [equalCopy providerImage];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_55;
   }
 
-  v51 = [(_SFPBNewsCardSection *)self providerImage];
-  if (v51)
+  providerImage = [(_SFPBNewsCardSection *)self providerImage];
+  if (providerImage)
   {
-    v52 = v51;
-    v53 = [(_SFPBNewsCardSection *)self providerImage];
-    v54 = [v4 providerImage];
-    v55 = [v53 isEqual:v54];
+    v52 = providerImage;
+    providerImage2 = [(_SFPBNewsCardSection *)self providerImage];
+    providerImage3 = [equalCopy providerImage];
+    v55 = [providerImage2 isEqual:providerImage3];
 
     if (!v55)
     {
@@ -916,29 +916,29 @@
   {
   }
 
-  v5 = [(_SFPBNewsCardSection *)self providerTitle];
-  v6 = [v4 providerTitle];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBNewsCardSection *)self providerTitle];
+  punchoutOptions2 = [equalCopy providerTitle];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
 LABEL_55:
 
     goto LABEL_56;
   }
 
-  v56 = [(_SFPBNewsCardSection *)self providerTitle];
-  if (!v56)
+  providerTitle = [(_SFPBNewsCardSection *)self providerTitle];
+  if (!providerTitle)
   {
 
 LABEL_59:
     overlayTextInImage = self->_overlayTextInImage;
-    v61 = overlayTextInImage == [v4 overlayTextInImage];
+    v61 = overlayTextInImage == [equalCopy overlayTextInImage];
     goto LABEL_57;
   }
 
-  v57 = v56;
-  v58 = [(_SFPBNewsCardSection *)self providerTitle];
-  v59 = [v4 providerTitle];
-  v60 = [v58 isEqual:v59];
+  v57 = providerTitle;
+  providerTitle2 = [(_SFPBNewsCardSection *)self providerTitle];
+  providerTitle3 = [equalCopy providerTitle];
+  v60 = [providerTitle2 isEqual:providerTitle3];
 
   if (v60)
   {
@@ -952,16 +952,16 @@ LABEL_57:
   return v61;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBNewsCardSection *)self punchoutOptions];
+  toCopy = to;
+  punchoutOptions = [(_SFPBNewsCardSection *)self punchoutOptions];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v6 = [punchoutOptions countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -973,7 +973,7 @@ LABEL_57:
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(punchoutOptions);
         }
 
         v10 = *(*(&v21 + 1) + 8 * v9);
@@ -982,20 +982,20 @@ LABEL_57:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v7 = [punchoutOptions countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(_SFPBNewsCardSection *)self punchoutPickerTitle];
-  if (v11)
+  punchoutPickerTitle = [(_SFPBNewsCardSection *)self punchoutPickerTitle];
+  if (punchoutPickerTitle)
   {
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(_SFPBNewsCardSection *)self punchoutPickerDismissText];
-  if (v12)
+  punchoutPickerDismissText = [(_SFPBNewsCardSection *)self punchoutPickerDismissText];
+  if (punchoutPickerDismissText)
   {
     PBDataWriterWriteStringField();
   }
@@ -1015,8 +1015,8 @@ LABEL_57:
     PBDataWriterWriteBOOLField();
   }
 
-  v13 = [(_SFPBNewsCardSection *)self type];
-  if (v13)
+  type = [(_SFPBNewsCardSection *)self type];
+  if (type)
   {
     PBDataWriterWriteStringField();
   }
@@ -1026,38 +1026,38 @@ LABEL_57:
     PBDataWriterWriteInt32Field();
   }
 
-  v14 = [(_SFPBNewsCardSection *)self backgroundColor];
-  if (v14)
+  backgroundColor = [(_SFPBNewsCardSection *)self backgroundColor];
+  if (backgroundColor)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_SFPBNewsCardSection *)self title];
-  if (v15)
+  title = [(_SFPBNewsCardSection *)self title];
+  if (title)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(_SFPBNewsCardSection *)self subtitle];
-  if (v16)
+  subtitle = [(_SFPBNewsCardSection *)self subtitle];
+  if (subtitle)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(_SFPBNewsCardSection *)self thumbnail];
-  if (v17)
+  thumbnail = [(_SFPBNewsCardSection *)self thumbnail];
+  if (thumbnail)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(_SFPBNewsCardSection *)self providerImage];
-  if (v18)
+  providerImage = [(_SFPBNewsCardSection *)self providerImage];
+  if (providerImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v19 = [(_SFPBNewsCardSection *)self providerTitle];
-  if (v19)
+  providerTitle = [(_SFPBNewsCardSection *)self providerTitle];
+  if (providerTitle)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -1070,54 +1070,54 @@ LABEL_57:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   type = self->_type;
   self->_type = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPunchoutPickerDismissText:(id)a3
+- (void)setPunchoutPickerDismissText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   punchoutPickerDismissText = self->_punchoutPickerDismissText;
   self->_punchoutPickerDismissText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPunchoutPickerTitle:(id)a3
+- (void)setPunchoutPickerTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   punchoutPickerTitle = self->_punchoutPickerTitle;
   self->_punchoutPickerTitle = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addPunchoutOptions:(id)a3
+- (void)addPunchoutOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   punchoutOptions = self->_punchoutOptions;
-  v8 = v4;
+  v8 = optionsCopy;
   if (!punchoutOptions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_punchoutOptions;
-    self->_punchoutOptions = v6;
+    self->_punchoutOptions = array;
 
-    v4 = v8;
+    optionsCopy = v8;
     punchoutOptions = self->_punchoutOptions;
   }
 
-  [(NSArray *)punchoutOptions addObject:v4];
+  [(NSArray *)punchoutOptions addObject:optionsCopy];
 }
 
-- (void)setPunchoutOptions:(id)a3
+- (void)setPunchoutOptions:(id)options
 {
-  v4 = [a3 copy];
+  v4 = [options copy];
   punchoutOptions = self->_punchoutOptions;
   self->_punchoutOptions = v4;
 

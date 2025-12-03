@@ -1,11 +1,11 @@
 @interface QLBadgeView
 - (NSString)text;
-- (QLBadgeView)initWithCoder:(id)a3;
-- (QLBadgeView)initWithFrame:(CGRect)a3;
+- (QLBadgeView)initWithCoder:(id)coder;
+- (QLBadgeView)initWithFrame:(CGRect)frame;
 - (UIImage)image;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
-- (void)setText:(id)a3;
+- (void)setImage:(id)image;
+- (void)setText:(id)text;
 - (void)setupAppearance;
 - (void)setupLayout;
 - (void)setupSubviews;
@@ -15,11 +15,11 @@
 
 @implementation QLBadgeView
 
-- (QLBadgeView)initWithFrame:(CGRect)a3
+- (QLBadgeView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = QLBadgeView;
-  v3 = [(QLBadgeView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(QLBadgeView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -29,11 +29,11 @@
   return v4;
 }
 
-- (QLBadgeView)initWithCoder:(id)a3
+- (QLBadgeView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = QLBadgeView;
-  v3 = [(QLBadgeView *)&v6 initWithCoder:a3];
+  v3 = [(QLBadgeView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -45,52 +45,52 @@
 
 - (NSString)text
 {
-  v2 = [(QLBadgeView *)self label];
-  v3 = [v2 text];
+  label = [(QLBadgeView *)self label];
+  text = [label text];
 
-  return v3;
+  return text;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [(QLBadgeView *)self label];
-  [v5 setText:v4];
+  textCopy = text;
+  label = [(QLBadgeView *)self label];
+  [label setText:textCopy];
 }
 
 - (UIImage)image
 {
-  v2 = [(QLBadgeView *)self imageView];
-  v3 = [v2 image];
+  imageView = [(QLBadgeView *)self imageView];
+  image = [imageView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v12 = a3;
-  if (v12)
+  imageCopy = image;
+  if (imageCopy)
   {
     v4 = MEMORY[0x277D755D0];
-    v5 = [(QLBadgeView *)self label];
-    v6 = [v5 font];
-    v7 = [v4 configurationWithFont:v6];
+    label = [(QLBadgeView *)self label];
+    font = [label font];
+    imageView4 = [v4 configurationWithFont:font];
 
-    v8 = [v12 imageWithConfiguration:v7];
-    v9 = [(QLBadgeView *)self imageView];
-    [v9 setImage:v8];
+    v8 = [imageCopy imageWithConfiguration:imageView4];
+    imageView = [(QLBadgeView *)self imageView];
+    [imageView setImage:v8];
 
-    v10 = [(QLBadgeView *)self imageView];
-    [v10 setHidden:0];
+    imageView2 = [(QLBadgeView *)self imageView];
+    [imageView2 setHidden:0];
   }
 
   else
   {
-    v11 = [(QLBadgeView *)self imageView];
-    [v11 setImage:0];
+    imageView3 = [(QLBadgeView *)self imageView];
+    [imageView3 setImage:0];
 
-    v7 = [(QLBadgeView *)self imageView];
-    [v7 setHidden:1];
+    imageView4 = [(QLBadgeView *)self imageView];
+    [imageView4 setHidden:1];
   }
 
   [(QLBadgeView *)self updateStackViewConstraints];
@@ -109,51 +109,51 @@
   v3 = objc_alloc_init(MEMORY[0x277D75A68]);
   [(QLBadgeView *)self setStackView:v3];
 
-  v4 = [(QLBadgeView *)self stackView];
-  [v4 setAxis:0];
+  stackView = [(QLBadgeView *)self stackView];
+  [stackView setAxis:0];
 
-  v5 = [(QLBadgeView *)self stackView];
-  [v5 setAlignment:3];
+  stackView2 = [(QLBadgeView *)self stackView];
+  [stackView2 setAlignment:3];
 
-  v6 = [(QLBadgeView *)self stackView];
-  [v6 setSpacing:2.0];
+  stackView3 = [(QLBadgeView *)self stackView];
+  [stackView3 setSpacing:2.0];
 
-  v7 = [(QLBadgeView *)self stackView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackView4 = [(QLBadgeView *)self stackView];
+  [stackView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v8 = objc_alloc_init(MEMORY[0x277D755E8]);
   [(QLBadgeView *)self setImageView:v8];
 
-  v9 = [(QLBadgeView *)self imageView];
-  [v9 setContentMode:1];
+  imageView = [(QLBadgeView *)self imageView];
+  [imageView setContentMode:1];
 
-  v10 = [(QLBadgeView *)self imageView];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  imageView2 = [(QLBadgeView *)self imageView];
+  [imageView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v11 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(QLBadgeView *)self setLabel:v11];
 
   v12 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76940]];
   v13 = [v12 fontWithSize:12.0];
-  v14 = [(QLBadgeView *)self label];
-  [v14 setFont:v13];
+  label = [(QLBadgeView *)self label];
+  [label setFont:v13];
 
-  v15 = [(QLBadgeView *)self label];
-  [v15 setTextAlignment:1];
+  label2 = [(QLBadgeView *)self label];
+  [label2 setTextAlignment:1];
 
-  v16 = [(QLBadgeView *)self label];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  label3 = [(QLBadgeView *)self label];
+  [label3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v17 = [(QLBadgeView *)self stackView];
-  [(QLBadgeView *)self addSubview:v17];
+  stackView5 = [(QLBadgeView *)self stackView];
+  [(QLBadgeView *)self addSubview:stackView5];
 
-  v18 = [(QLBadgeView *)self stackView];
-  v19 = [(QLBadgeView *)self imageView];
-  [v18 addArrangedSubview:v19];
+  stackView6 = [(QLBadgeView *)self stackView];
+  imageView3 = [(QLBadgeView *)self imageView];
+  [stackView6 addArrangedSubview:imageView3];
 
-  v21 = [(QLBadgeView *)self stackView];
-  v20 = [(QLBadgeView *)self label];
-  [v21 addArrangedSubview:v20];
+  stackView7 = [(QLBadgeView *)self stackView];
+  label4 = [(QLBadgeView *)self label];
+  [stackView7 addArrangedSubview:label4];
 }
 
 - (void)setupAppearance
@@ -164,44 +164,44 @@
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(QLBadgeView *)self insertSubview:v3 atIndex:0];
   v22 = MEMORY[0x277CCAAD0];
-  v27 = [v3 topAnchor];
-  v26 = [(QLBadgeView *)self topAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  topAnchor = [v3 topAnchor];
+  topAnchor2 = [(QLBadgeView *)self topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v29[0] = v25;
-  v24 = [v3 leadingAnchor];
-  v23 = [(QLBadgeView *)self leadingAnchor];
-  v4 = [v24 constraintEqualToAnchor:v23];
+  leadingAnchor = [v3 leadingAnchor];
+  leadingAnchor2 = [(QLBadgeView *)self leadingAnchor];
+  v4 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v29[1] = v4;
-  v5 = [v3 trailingAnchor];
-  v6 = [(QLBadgeView *)self trailingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  trailingAnchor = [v3 trailingAnchor];
+  trailingAnchor2 = [(QLBadgeView *)self trailingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v29[2] = v7;
-  v8 = [v3 bottomAnchor];
-  v9 = [(QLBadgeView *)self bottomAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  bottomAnchor = [v3 bottomAnchor];
+  bottomAnchor2 = [(QLBadgeView *)self bottomAnchor];
+  v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v29[3] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:4];
   [v22 activateConstraints:v11];
 
   [(QLBadgeView *)self setClipsToBounds:1];
-  v12 = [MEMORY[0x277D75348] quaternaryLabelColor];
-  v13 = [v12 CGColor];
-  v14 = [(QLBadgeView *)self layer];
-  [v14 setBorderColor:v13];
+  quaternaryLabelColor = [MEMORY[0x277D75348] quaternaryLabelColor];
+  cGColor = [quaternaryLabelColor CGColor];
+  layer = [(QLBadgeView *)self layer];
+  [layer setBorderColor:cGColor];
 
-  v15 = [(QLBadgeView *)self layer];
-  [v15 setBorderWidth:1.0];
+  layer2 = [(QLBadgeView *)self layer];
+  [layer2 setBorderWidth:1.0];
 
-  v16 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v17 = [(QLBadgeView *)self imageView];
-  [v17 setTintColor:v16];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  imageView = [(QLBadgeView *)self imageView];
+  [imageView setTintColor:secondaryLabelColor];
 
-  v18 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v19 = [(QLBadgeView *)self label];
-  [v19 setTextColor:v18];
+  secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+  label = [(QLBadgeView *)self label];
+  [label setTextColor:secondaryLabelColor2];
 
-  v20 = [(QLBadgeView *)self imageView];
-  [v20 setHidden:1];
+  imageView2 = [(QLBadgeView *)self imageView];
+  [imageView2 setHidden:1];
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -209,29 +209,29 @@
 - (void)setupLayout
 {
   v23[4] = *MEMORY[0x277D85DE8];
-  v3 = [(QLBadgeView *)self stackView];
-  v4 = [v3 leadingAnchor];
-  v5 = [(QLBadgeView *)self leadingAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5 constant:0.0];
+  stackView = [(QLBadgeView *)self stackView];
+  leadingAnchor = [stackView leadingAnchor];
+  leadingAnchor2 = [(QLBadgeView *)self leadingAnchor];
+  v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
   [(QLBadgeView *)self setStackViewLeadingConstraint:v6];
 
   v17 = MEMORY[0x277CCAAD0];
-  v22 = [(QLBadgeView *)self stackViewLeadingConstraint];
-  v23[0] = v22;
-  v21 = [(QLBadgeView *)self stackView];
-  v20 = [v21 trailingAnchor];
-  v19 = [(QLBadgeView *)self trailingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19 constant:-6.0];
+  stackViewLeadingConstraint = [(QLBadgeView *)self stackViewLeadingConstraint];
+  v23[0] = stackViewLeadingConstraint;
+  stackView2 = [(QLBadgeView *)self stackView];
+  trailingAnchor = [stackView2 trailingAnchor];
+  trailingAnchor2 = [(QLBadgeView *)self trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-6.0];
   v23[1] = v18;
-  v7 = [(QLBadgeView *)self stackView];
-  v8 = [v7 topAnchor];
-  v9 = [(QLBadgeView *)self topAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9 constant:3.0];
+  stackView3 = [(QLBadgeView *)self stackView];
+  topAnchor = [stackView3 topAnchor];
+  topAnchor2 = [(QLBadgeView *)self topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:3.0];
   v23[2] = v10;
-  v11 = [(QLBadgeView *)self stackView];
-  v12 = [v11 bottomAnchor];
-  v13 = [(QLBadgeView *)self bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:-3.0];
+  stackView4 = [(QLBadgeView *)self stackView];
+  bottomAnchor = [stackView4 bottomAnchor];
+  bottomAnchor2 = [(QLBadgeView *)self bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-3.0];
   v23[3] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:4];
   [v17 activateConstraints:v15];
@@ -242,17 +242,17 @@
 
 - (void)updateStackViewConstraints
 {
-  v3 = [(QLBadgeView *)self image];
+  image = [(QLBadgeView *)self image];
 
-  v4 = [(QLBadgeView *)self stackViewLeadingConstraint];
-  v6 = v4;
+  stackViewLeadingConstraint = [(QLBadgeView *)self stackViewLeadingConstraint];
+  v6 = stackViewLeadingConstraint;
   v5 = 4.0;
-  if (!v3)
+  if (!image)
   {
     v5 = 6.0;
   }
 
-  [v4 setConstant:v5];
+  [stackViewLeadingConstraint setConstant:v5];
 }
 
 - (void)layoutSubviews
@@ -262,8 +262,8 @@
   [(QLBadgeView *)&v6 layoutSubviews];
   [(QLBadgeView *)self bounds];
   v4 = v3 * 0.5;
-  v5 = [(QLBadgeView *)self layer];
-  [v5 setCornerRadius:v4];
+  layer = [(QLBadgeView *)self layer];
+  [layer setCornerRadius:v4];
 }
 
 @end

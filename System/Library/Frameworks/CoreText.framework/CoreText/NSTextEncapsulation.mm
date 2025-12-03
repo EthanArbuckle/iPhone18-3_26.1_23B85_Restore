@@ -1,10 +1,10 @@
 @interface NSTextEncapsulation
 - (NSTextEncapsulation)init;
-- (NSTextEncapsulation)initWithCoder:(id)a3;
-- (NSTextEncapsulation)initWithShape:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSTextEncapsulation)initWithCoder:(id)coder;
+- (NSTextEncapsulation)initWithShape:(unint64_t)shape;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSTextEncapsulation
@@ -16,7 +16,7 @@
   return [(NSTextEncapsulation *)&v3 init];
 }
 
-- (NSTextEncapsulation)initWithShape:(unint64_t)a3
+- (NSTextEncapsulation)initWithShape:(unint64_t)shape
 {
   v7.receiver = self;
   v7.super_class = NSTextEncapsulation;
@@ -24,13 +24,13 @@
   v5 = v4;
   if (v4)
   {
-    [(NSTextEncapsulation *)v4 setShape:a3];
+    [(NSTextEncapsulation *)v4 setShape:shape];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSTextEncapsulation allocWithZone:?], "initWithShape:", self->shape];
   [(NSTextEncapsulation *)v4 setScale:self->scale];
@@ -42,27 +42,27 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeInteger:self->scale forKey:@"Scale"];
-  [a3 encodeInteger:self->platterSize forKey:@"PlatterSize"];
-  [a3 encodeInteger:self->shape forKey:@"Shape"];
-  [a3 encodeInteger:self->style forKey:@"Style"];
-  [a3 encodeDouble:@"LineWeight" forKey:self->lineWeight];
-  [a3 encodeDouble:@"MinimumWidth" forKey:self->minimumWidth];
+  [coder encodeInteger:self->scale forKey:@"Scale"];
+  [coder encodeInteger:self->platterSize forKey:@"PlatterSize"];
+  [coder encodeInteger:self->shape forKey:@"Shape"];
+  [coder encodeInteger:self->style forKey:@"Style"];
+  [coder encodeDouble:@"LineWeight" forKey:self->lineWeight];
+  [coder encodeDouble:@"MinimumWidth" forKey:self->minimumWidth];
   color = self->color;
 
-  [a3 encodeObject:color forKey:@"Color"];
+  [coder encodeObject:color forKey:@"Color"];
 }
 
-- (NSTextEncapsulation)initWithCoder:(id)a3
+- (NSTextEncapsulation)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
@@ -77,15 +77,15 @@
   v6 = [(NSTextEncapsulation *)&v8 init];
   if (v6)
   {
-    -[NSTextEncapsulation setScale:](v6, "setScale:", [a3 decodeIntegerForKey:@"Scale"]);
-    -[NSTextEncapsulation setPlatterSize:](v6, "setPlatterSize:", [a3 decodeIntegerForKey:@"PlatterSize"]);
-    -[NSTextEncapsulation setShape:](v6, "setShape:", [a3 decodeIntegerForKey:@"Shape"]);
-    -[NSTextEncapsulation setStyle:](v6, "setStyle:", [a3 decodeIntegerForKey:@"Style"]);
-    [a3 decodeDoubleForKey:@"LineWeight"];
+    -[NSTextEncapsulation setScale:](v6, "setScale:", [coder decodeIntegerForKey:@"Scale"]);
+    -[NSTextEncapsulation setPlatterSize:](v6, "setPlatterSize:", [coder decodeIntegerForKey:@"PlatterSize"]);
+    -[NSTextEncapsulation setShape:](v6, "setShape:", [coder decodeIntegerForKey:@"Shape"]);
+    -[NSTextEncapsulation setStyle:](v6, "setStyle:", [coder decodeIntegerForKey:@"Style"]);
+    [coder decodeDoubleForKey:@"LineWeight"];
     [(NSTextEncapsulation *)v6 setLineWeight:?];
-    [a3 decodeDoubleForKey:@"MinimumWidth"];
+    [coder decodeDoubleForKey:@"MinimumWidth"];
     [(NSTextEncapsulation *)v6 setMinimumWidth:?];
-    -[NSTextEncapsulation setColor:](v6, "setColor:", [a3 decodeObjectOfClass:qword_1ED568278 forKey:@"Color"]);
+    -[NSTextEncapsulation setColor:](v6, "setColor:", [coder decodeObjectOfClass:qword_1ED568278 forKey:@"Color"]);
   }
 
   return v6;

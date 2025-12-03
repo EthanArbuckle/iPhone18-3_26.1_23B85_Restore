@@ -1,30 +1,30 @@
 @interface PKMentionItem
-+ (id)mentionItemWithQueryItem:(id)a3 sessionManager:(id)a4;
++ (id)mentionItemWithQueryItem:(id)item sessionManager:(id)manager;
 - (BOOL)active;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)mentionResult;
-- (id)_actionNameForActivation:(BOOL)a3;
+- (id)_actionNameForActivation:(BOOL)activation;
 - (id)_baselinePath;
 - (id)description;
-- (id)setActive:(BOOL)a3;
+- (id)setActive:(BOOL)active;
 - (unint64_t)hash;
-- (void)clearActiveInDrawing:(id)a3;
+- (void)clearActiveInDrawing:(id)drawing;
 @end
 
 @implementation PKMentionItem
 
-+ (id)mentionItemWithQueryItem:(id)a3 sessionManager:(id)a4
++ (id)mentionItemWithQueryItem:(id)item sessionManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 strokeIdentifiers];
-  v8 = [(PKRecognitionSessionManager *)v6 drawing];
-  valid = HasValidInkForDetectionItem(v7, v8);
+  itemCopy = item;
+  managerCopy = manager;
+  strokeIdentifiers = [itemCopy strokeIdentifiers];
+  drawing = [(PKRecognitionSessionManager *)managerCopy drawing];
+  valid = HasValidInkForDetectionItem(strokeIdentifiers, drawing);
 
   if (valid)
   {
-    v10 = [(PKDetectionItem *)[PKMentionItem alloc] initWithSessionManager:v6];
-    [(PKDetectionItem *)v10 setQueryItem:v5];
+    v10 = [(PKDetectionItem *)[PKMentionItem alloc] initWithSessionManager:managerCopy];
+    [(PKDetectionItem *)v10 setQueryItem:itemCopy];
   }
 
   else
@@ -37,26 +37,26 @@
 
 - (id)_baselinePath
 {
-  v2 = [(PKDetectionItem *)self queryItem];
-  v3 = [v2 baselinePath];
+  queryItem = [(PKDetectionItem *)self queryItem];
+  baselinePath = [queryItem baselinePath];
 
-  return v3;
+  return baselinePath;
 }
 
 - (NSString)mentionResult
 {
-  v2 = [(PKDetectionItem *)self queryItem];
-  v3 = [v2 mentionResult];
+  queryItem = [(PKDetectionItem *)self queryItem];
+  mentionResult = [queryItem mentionResult];
 
-  return v3;
+  return mentionResult;
 }
 
-- (id)setActive:(BOOL)a3
+- (id)setActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    v5 = [(PKDetectionItem *)self setUUID:v4];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v5 = [(PKDetectionItem *)self setUUID:uUID];
   }
 
   else
@@ -69,34 +69,34 @@
 
 - (BOOL)active
 {
-  v2 = [(PKDetectionItem *)self UUID];
-  v3 = v2 != 0;
+  uUID = [(PKDetectionItem *)self UUID];
+  v3 = uUID != 0;
 
   return v3;
 }
 
-- (void)clearActiveInDrawing:(id)a3
+- (void)clearActiveInDrawing:(id)drawing
 {
-  v8 = a3;
-  v4 = [(PKDetectionItem *)self queryItem];
-  v5 = [v4 strokeIdentifiers];
-  v6 = [v5 allObjects];
-  v7 = [v8 strokesForCHStrokeIdentifiers:v6];
-  [v8 setStrokes:v7 groupID:0];
+  drawingCopy = drawing;
+  queryItem = [(PKDetectionItem *)self queryItem];
+  strokeIdentifiers = [queryItem strokeIdentifiers];
+  allObjects = [strokeIdentifiers allObjects];
+  v7 = [drawingCopy strokesForCHStrokeIdentifiers:allObjects];
+  [drawingCopy setStrokes:v7 groupID:0];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PKDetectionItem *)self queryItem];
-  v3 = [v2 hash];
+  queryItem = [(PKDetectionItem *)self queryItem];
+  v3 = [queryItem hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -106,9 +106,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PKDetectionItem *)self queryItem];
-      v6 = [(PKDetectionItem *)v4 queryItem];
-      v7 = [v5 isEqual:v6];
+      queryItem = [(PKDetectionItem *)self queryItem];
+      queryItem2 = [(PKDetectionItem *)equalCopy queryItem];
+      v7 = [queryItem isEqual:queryItem2];
     }
 
     else
@@ -120,12 +120,12 @@
   return v7;
 }
 
-- (id)_actionNameForActivation:(BOOL)a3
+- (id)_actionNameForActivation:(BOOL)activation
 {
-  v3 = a3;
+  activationCopy = activation;
   v4 = _PencilKitBundle();
   v5 = v4;
-  if (v3)
+  if (activationCopy)
   {
     [v4 localizedStringForKey:@"Activate Mention" value:@"Activate Mention" table:@"Localizable"];
   }
@@ -143,11 +143,11 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PKMentionItem *)self mentionResult];
-  v6 = [(PKMentionItem *)self mentionUUID];
-  v7 = [(PKDetectionItem *)self queryItem];
-  v8 = [v7 strokeIdentifiers];
-  v9 = [v3 stringWithFormat:@"%@:%p, %@, %@, strokes:%lu", v4, self, v5, v6, objc_msgSend(v8, "count")];
+  mentionResult = [(PKMentionItem *)self mentionResult];
+  mentionUUID = [(PKMentionItem *)self mentionUUID];
+  queryItem = [(PKDetectionItem *)self queryItem];
+  strokeIdentifiers = [queryItem strokeIdentifiers];
+  v9 = [v3 stringWithFormat:@"%@:%p, %@, %@, strokes:%lu", v4, self, mentionResult, mentionUUID, objc_msgSend(strokeIdentifiers, "count")];
 
   return v9;
 }

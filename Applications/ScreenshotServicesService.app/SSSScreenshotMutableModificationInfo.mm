@@ -1,78 +1,78 @@
 @interface SSSScreenshotMutableModificationInfo
 - (SSSScreenshotMutableModificationInfoChangeObserver)changeObserver;
-- (void)setAnnotationNSDatas:(id)a3;
-- (void)setCropInfo:(SSSCropInfo *)a3;
-- (void)setImageDescription:(id)a3;
-- (void)setPaperKitChangeCounter:(unint64_t)a3;
-- (void)setVellumOpacity:(double)a3;
-- (void)takeValueFromModificationInfo:(id)a3 forKey:(unint64_t)a4;
+- (void)setAnnotationNSDatas:(id)datas;
+- (void)setCropInfo:(SSSCropInfo *)info;
+- (void)setImageDescription:(id)description;
+- (void)setPaperKitChangeCounter:(unint64_t)counter;
+- (void)setVellumOpacity:(double)opacity;
+- (void)takeValueFromModificationInfo:(id)info forKey:(unint64_t)key;
 @end
 
 @implementation SSSScreenshotMutableModificationInfo
 
-- (void)setCropInfo:(SSSCropInfo *)a3
+- (void)setCropInfo:(SSSCropInfo *)info
 {
-  totalSize = a3->totalSize;
-  size = a3->currentRect.size;
-  self->super._cropInfo.currentRect.origin = a3->currentRect.origin;
+  totalSize = info->totalSize;
+  size = info->currentRect.size;
+  self->super._cropInfo.currentRect.origin = info->currentRect.origin;
   self->super._cropInfo.currentRect.size = size;
   self->super._cropInfo.totalSize = totalSize;
-  v6 = [(SSSScreenshotMutableModificationInfo *)self changeObserver];
-  [v6 screenshotMutableModificationInfo:self valueChangedForKey:0];
+  changeObserver = [(SSSScreenshotMutableModificationInfo *)self changeObserver];
+  [changeObserver screenshotMutableModificationInfo:self valueChangedForKey:0];
 }
 
-- (void)setAnnotationNSDatas:(id)a3
+- (void)setAnnotationNSDatas:(id)datas
 {
-  objc_storeStrong(&self->super._annotationNSDatas, a3);
-  v4 = [(SSSScreenshotMutableModificationInfo *)self changeObserver];
-  [v4 screenshotMutableModificationInfo:self valueChangedForKey:1];
+  objc_storeStrong(&self->super._annotationNSDatas, datas);
+  changeObserver = [(SSSScreenshotMutableModificationInfo *)self changeObserver];
+  [changeObserver screenshotMutableModificationInfo:self valueChangedForKey:1];
 }
 
-- (void)setVellumOpacity:(double)a3
+- (void)setVellumOpacity:(double)opacity
 {
-  self->super._vellumOpacity = a3;
-  v4 = [(SSSScreenshotMutableModificationInfo *)self changeObserver];
-  [v4 screenshotMutableModificationInfo:self valueChangedForKey:3];
+  self->super._vellumOpacity = opacity;
+  changeObserver = [(SSSScreenshotMutableModificationInfo *)self changeObserver];
+  [changeObserver screenshotMutableModificationInfo:self valueChangedForKey:3];
 }
 
-- (void)setImageDescription:(id)a3
+- (void)setImageDescription:(id)description
 {
-  objc_storeStrong(&self->super._imageDescription, a3);
-  v4 = [(SSSScreenshotMutableModificationInfo *)self changeObserver];
-  [v4 screenshotMutableModificationInfo:self valueChangedForKey:4];
+  objc_storeStrong(&self->super._imageDescription, description);
+  changeObserver = [(SSSScreenshotMutableModificationInfo *)self changeObserver];
+  [changeObserver screenshotMutableModificationInfo:self valueChangedForKey:4];
 }
 
-- (void)setPaperKitChangeCounter:(unint64_t)a3
+- (void)setPaperKitChangeCounter:(unint64_t)counter
 {
-  self->super._paperKitChangeCounter = a3;
-  v4 = [(SSSScreenshotMutableModificationInfo *)self changeObserver];
-  [v4 screenshotMutableModificationInfo:self valueChangedForKey:2];
+  self->super._paperKitChangeCounter = counter;
+  changeObserver = [(SSSScreenshotMutableModificationInfo *)self changeObserver];
+  [changeObserver screenshotMutableModificationInfo:self valueChangedForKey:2];
 }
 
-- (void)takeValueFromModificationInfo:(id)a3 forKey:(unint64_t)a4
+- (void)takeValueFromModificationInfo:(id)info forKey:(unint64_t)key
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 <= 1)
+  infoCopy = info;
+  v7 = infoCopy;
+  if (key <= 1)
   {
-    if (a4)
+    if (key)
     {
-      if (a4 == 1)
+      if (key == 1)
       {
-        v9 = [v6 annotationNSDatas];
-        [(SSSScreenshotMutableModificationInfo *)self setAnnotationNSDatas:v9];
+        annotationNSDatas = [infoCopy annotationNSDatas];
+        [(SSSScreenshotMutableModificationInfo *)self setAnnotationNSDatas:annotationNSDatas];
 
-        v8 = [v7 originalAnnotations];
-        [(SSSScreenshotMutableModificationInfo *)self setOriginalAnnotations:v8];
+        originalAnnotations = [v7 originalAnnotations];
+        [(SSSScreenshotMutableModificationInfo *)self setOriginalAnnotations:originalAnnotations];
         goto LABEL_9;
       }
     }
 
     else
     {
-      if (v6)
+      if (infoCopy)
       {
-        [v6 cropInfo];
+        [infoCopy cropInfo];
       }
 
       else
@@ -86,18 +86,18 @@
 
   else
   {
-    switch(a4)
+    switch(key)
     {
       case 2uLL:
-        -[SSSScreenshotMutableModificationInfo setPaperKitChangeCounter:](self, "setPaperKitChangeCounter:", [v6 paperKitChangeCounter]);
+        -[SSSScreenshotMutableModificationInfo setPaperKitChangeCounter:](self, "setPaperKitChangeCounter:", [infoCopy paperKitChangeCounter]);
         break;
       case 3uLL:
-        [v6 vellumOpacity];
+        [infoCopy vellumOpacity];
         [(SSSScreenshotMutableModificationInfo *)self setVellumOpacity:?];
         break;
       case 4uLL:
-        v8 = [v6 imageDescription];
-        [(SSSScreenshotMutableModificationInfo *)self setImageDescription:v8];
+        originalAnnotations = [infoCopy imageDescription];
+        [(SSSScreenshotMutableModificationInfo *)self setImageDescription:originalAnnotations];
 LABEL_9:
 
         break;

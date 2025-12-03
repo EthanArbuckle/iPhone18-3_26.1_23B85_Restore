@@ -1,21 +1,21 @@
 @interface PRLikenessCache
-+ (BOOL)_ensureExistenceOfDirectory:(id)a3;
-+ (BOOL)_purgeOldCacheFilesInDirectory:(id)a3;
-+ (BOOL)_removeImageAtURL:(id)a3;
-+ (BOOL)_writeImage:(id)a3 toURL:(id)a4;
++ (BOOL)_ensureExistenceOfDirectory:(id)directory;
++ (BOOL)_purgeOldCacheFilesInDirectory:(id)directory;
++ (BOOL)_removeImageAtURL:(id)l;
++ (BOOL)_writeImage:(id)image toURL:(id)l;
 + (id)_applicationCacheDirectory;
-+ (id)_imageAtURL:(id)a3;
-+ (id)_propertyValueForURL:(id)a3 forKey:(id)a4;
++ (id)_imageAtURL:(id)l;
++ (id)_propertyValueForURL:(id)l forKey:(id)key;
 + (id)_staticRepresentationCacheURL;
 + (id)sharedInstance;
 - (PRLikenessCache)init;
-- (id)_cacheKeyForLikeness:(id)a3 context:(id)a4;
-- (id)_cacheURLForLikeness:(id)a3 context:(id)a4;
-- (void)_fetchFromFilesystem:(id)a3 context:(id)a4 renderBlock:(id)a5 completion:(id)a6;
-- (void)_fetchFromMemory:(id)a3 context:(id)a4 renderBlock:(id)a5 completion:(id)a6;
-- (void)_fetchWithReadBlock:(id)a3 writeBlock:(id)a4 renderBlock:(id)a5 completion:(id)a6;
-- (void)_renderImageForLikeness:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)imageForLikeness:(id)a3 context:(id)a4 completion:(id)a5;
+- (id)_cacheKeyForLikeness:(id)likeness context:(id)context;
+- (id)_cacheURLForLikeness:(id)likeness context:(id)context;
+- (void)_fetchFromFilesystem:(id)filesystem context:(id)context renderBlock:(id)block completion:(id)completion;
+- (void)_fetchFromMemory:(id)memory context:(id)context renderBlock:(id)block completion:(id)completion;
+- (void)_fetchWithReadBlock:(id)block writeBlock:(id)writeBlock renderBlock:(id)renderBlock completion:(id)completion;
+- (void)_renderImageForLikeness:(id)likeness context:(id)context completion:(id)completion;
+- (void)imageForLikeness:(id)likeness context:(id)context completion:(id)completion;
 @end
 
 @implementation PRLikenessCache
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __33__PRLikenessCache_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -47,11 +47,11 @@ uint64_t __33__PRLikenessCache_sharedInstance__block_invoke(uint64_t a1)
 + (id)_applicationCacheDirectory
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 bundleIdentifier];
-  v6 = [v3 stringByAppendingPathComponent:v5];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v6 = [lastObject stringByAppendingPathComponent:bundleIdentifier];
 
   return v6;
 }
@@ -59,22 +59,22 @@ uint64_t __33__PRLikenessCache_sharedInstance__block_invoke(uint64_t a1)
 + (id)_staticRepresentationCacheURL
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [a1 _applicationCacheDirectory];
-  v4 = [v2 fileURLWithPath:v3 isDirectory:1];
+  _applicationCacheDirectory = [self _applicationCacheDirectory];
+  v4 = [v2 fileURLWithPath:_applicationCacheDirectory isDirectory:1];
 
   v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:@".persona" isDirectory:1 relativeToURL:v4];
 
   return v5;
 }
 
-+ (BOOL)_ensureExistenceOfDirectory:(id)a3
++ (BOOL)_ensureExistenceOfDirectory:(id)directory
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
+  directoryCopy = directory;
+  defaultManager = [v3 defaultManager];
   v11 = 0;
-  v6 = [v5 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:&v11];
+  v6 = [defaultManager createDirectoryAtURL:directoryCopy withIntermediateDirectories:1 attributes:0 error:&v11];
 
   v7 = v11;
   v8 = (v7 == 0) & v6;
@@ -109,9 +109,9 @@ uint64_t __33__PRLikenessCache_sharedInstance__block_invoke(uint64_t a1)
 
     [(NSCache *)v2->_inMemoryCache setName:@"com.apple.persona.cache"];
     [(NSCache *)v2->_inMemoryCache setTotalCostLimit:2621440];
-    v5 = [objc_opt_class() _staticRepresentationCacheURL];
+    _staticRepresentationCacheURL = [objc_opt_class() _staticRepresentationCacheURL];
     cacheDirectory = v2->_cacheDirectory;
-    v2->_cacheDirectory = v5;
+    v2->_cacheDirectory = _staticRepresentationCacheURL;
 
     [PRLikenessCache _ensureExistenceOfDirectory:v2->_cacheDirectory];
     v7 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
@@ -133,61 +133,61 @@ uint64_t __33__PRLikenessCache_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)_cacheKeyForLikeness:(id)a3 context:(id)a4
+- (id)_cacheKeyForLikeness:(id)likeness context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v6 recipe];
+  contextCopy = context;
+  likenessCopy = likeness;
+  uniqueIdentifier = [likenessCopy uniqueIdentifier];
+  recipe = [likenessCopy recipe];
 
-  v9 = [v8 _cn_SHA1String];
+  _cn_SHA1String = [recipe _cn_SHA1String];
 
-  v10 = NSStringFromPRLikenessCacheSize([v5 cacheSize]);
-  v11 = [v5 circular];
+  v10 = NSStringFromPRLikenessCacheSize([contextCopy cacheSize]);
+  circular = [contextCopy circular];
 
   v12 = @"sqr";
-  if (v11)
+  if (circular)
   {
     v12 = @"cir";
   }
 
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@_%@_%@", v7, v9, v10, v12];
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@_%@_%@", uniqueIdentifier, _cn_SHA1String, v10, v12];
 
   return v13;
 }
 
-- (id)_cacheURLForLikeness:(id)a3 context:(id)a4
+- (id)_cacheURLForLikeness:(id)likeness context:(id)context
 {
-  v5 = [(PRLikenessCache *)self _cacheKeyForLikeness:a3 context:a4];
+  v5 = [(PRLikenessCache *)self _cacheKeyForLikeness:likeness context:context];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v5, @"png"];
   v7 = [(NSURL *)self->_cacheDirectory URLByAppendingPathComponent:v6];
 
   return v7;
 }
 
-- (void)imageForLikeness:(id)a3 context:(id)a4 completion:(id)a5
+- (void)imageForLikeness:(id)likeness context:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  likenessCopy = likeness;
+  contextCopy = context;
+  completionCopy = completion;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __55__PRLikenessCache_imageForLikeness_context_completion___block_invoke;
   v18[3] = &unk_279A1C170;
-  v11 = v10;
+  v11 = completionCopy;
   v19 = v11;
   v12 = MEMORY[0x25F8B3050](v18);
-  v13 = [v8 uniqueIdentifier];
+  uniqueIdentifier = [likenessCopy uniqueIdentifier];
 
-  if (v13)
+  if (uniqueIdentifier)
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __55__PRLikenessCache_imageForLikeness_context_completion___block_invoke_2;
     v15[3] = &unk_279A1C198;
     v15[4] = self;
-    v16 = v8;
-    v17 = v9;
+    v16 = likenessCopy;
+    v17 = contextCopy;
     [(PRLikenessCache *)self _fetchFromMemory:v16 context:v17 renderBlock:v15 completion:v12];
   }
 
@@ -265,15 +265,15 @@ void __55__PRLikenessCache_imageForLikeness_context_completion___block_invoke_5(
   dispatch_async(v7, block);
 }
 
-- (void)_fetchFromMemory:(id)a3 context:(id)a4 renderBlock:(id)a5 completion:(id)a6
+- (void)_fetchFromMemory:(id)memory context:(id)context renderBlock:(id)block completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  memoryCopy = memory;
+  contextCopy = context;
+  blockCopy = block;
+  completionCopy = completion;
   if ([(PRLikenessCache *)self useMemory])
   {
-    v14 = [(PRLikenessCache *)self _cacheKeyForLikeness:v10 context:v11];
+    v14 = [(PRLikenessCache *)self _cacheKeyForLikeness:memoryCopy context:contextCopy];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __67__PRLikenessCache__fetchFromMemory_context_renderBlock_completion___block_invoke;
@@ -284,16 +284,16 @@ void __55__PRLikenessCache_imageForLikeness_context_completion___block_invoke_5(
     v16[1] = 3221225472;
     v16[2] = __67__PRLikenessCache__fetchFromMemory_context_renderBlock_completion___block_invoke_2;
     v16[3] = &unk_279A1C238;
-    v17 = v11;
-    v18 = self;
+    v17 = contextCopy;
+    selfCopy = self;
     v19 = v21;
     v15 = v21;
-    [(PRLikenessCache *)self _fetchWithReadBlock:v20 writeBlock:v16 renderBlock:v12 completion:v13];
+    [(PRLikenessCache *)self _fetchWithReadBlock:v20 writeBlock:v16 renderBlock:blockCopy completion:completionCopy];
   }
 
   else
   {
-    v12[2](v12, v13);
+    blockCopy[2](blockCopy, completionCopy);
   }
 }
 
@@ -304,15 +304,15 @@ void __67__PRLikenessCache__fetchFromMemory_context_renderBlock_completion___blo
   [*(a1[5] + 8) setObject:v4 forKey:a1[6] cost:{PRLikenessCacheSizeGetCost(objc_msgSend(v3, "cacheSize"))}];
 }
 
-- (void)_fetchFromFilesystem:(id)a3 context:(id)a4 renderBlock:(id)a5 completion:(id)a6
+- (void)_fetchFromFilesystem:(id)filesystem context:(id)context renderBlock:(id)block completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  filesystemCopy = filesystem;
+  contextCopy = context;
+  blockCopy = block;
+  completionCopy = completion;
   if ([(PRLikenessCache *)self useFilesystem])
   {
-    v14 = [(PRLikenessCache *)self _cacheURLForLikeness:v10 context:v11];
+    v14 = [(PRLikenessCache *)self _cacheURLForLikeness:filesystemCopy context:contextCopy];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __71__PRLikenessCache__fetchFromFilesystem_context_renderBlock_completion___block_invoke;
@@ -324,81 +324,81 @@ void __67__PRLikenessCache__fetchFromMemory_context_renderBlock_completion___blo
     v16[3] = &unk_279A1C288;
     v17 = v19;
     v15 = v19;
-    [(PRLikenessCache *)self _fetchWithReadBlock:v18 writeBlock:v16 renderBlock:v12 completion:v13];
+    [(PRLikenessCache *)self _fetchWithReadBlock:v18 writeBlock:v16 renderBlock:blockCopy completion:completionCopy];
   }
 
   else
   {
-    v12[2](v12, v13);
+    blockCopy[2](blockCopy, completionCopy);
   }
 }
 
-- (void)_renderImageForLikeness:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_renderImageForLikeness:(id)likeness context:(id)context completion:(id)completion
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  likenessCopy = likeness;
+  contextCopy = context;
+  completionCopy = completion;
   if ([(PRLikenessCache *)self renderIfNeeded])
   {
-    v11 = CGSizeFromPRLikenessCacheSize([v9 cacheSize]);
+    v11 = CGSizeFromPRLikenessCacheSize([contextCopy cacheSize]);
     v13 = v12;
-    [v9 scale];
+    [contextCopy scale];
     v15 = v14;
     v22[0] = @"PRLikenessSnapshotOptionCircular";
-    v16 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v9, "circular")}];
+    v16 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(contextCopy, "circular")}];
     v23[0] = v16;
     v22[1] = @"PRLikenessSnapshotOptionForceDecode";
-    v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v9, "forceDecode")}];
+    v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(contextCopy, "forceDecode")}];
     v23[1] = v17;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
-    v19 = [v8 snapshotWithSize:v18 scale:v11 options:{v13, v15}];
+    v19 = [likenessCopy snapshotWithSize:v18 scale:v11 options:{v13, v15}];
 
     if (v19)
     {
-      v10[2](v10, v19, 0);
+      completionCopy[2](completionCopy, v19, 0);
     }
 
     else
     {
       v21 = [MEMORY[0x277CCA9B8] pr_errorWithCode:-9010];
-      (v10)[2](v10, 0, v21);
+      (completionCopy)[2](completionCopy, 0, v21);
     }
   }
 
   else
   {
     v20 = [MEMORY[0x277CCA9B8] pr_errorWithCode:-9018];
-    (v10)[2](v10, 0, v20);
+    (completionCopy)[2](completionCopy, 0, v20);
   }
 }
 
-- (void)_fetchWithReadBlock:(id)a3 writeBlock:(id)a4 renderBlock:(id)a5 completion:(id)a6
+- (void)_fetchWithReadBlock:(id)block writeBlock:(id)writeBlock renderBlock:(id)renderBlock completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = (*(a3 + 2))(a3);
+  writeBlockCopy = writeBlock;
+  renderBlockCopy = renderBlock;
+  completionCopy = completion;
+  v12 = (*(block + 2))(block);
   if (v12)
   {
-    v11[2](v11, v12, 0);
+    completionCopy[2](completionCopy, v12, 0);
   }
 
-  else if (v10)
+  else if (renderBlockCopy)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __73__PRLikenessCache__fetchWithReadBlock_writeBlock_renderBlock_completion___block_invoke;
     v14[3] = &unk_279A1C2B0;
-    v15 = v9;
-    v16 = v11;
-    v10[2](v10, v14);
+    v15 = writeBlockCopy;
+    v16 = completionCopy;
+    renderBlockCopy[2](renderBlockCopy, v14);
   }
 
   else
   {
     v13 = [MEMORY[0x277CCA9B8] pr_errorWithCode:-9018];
-    (v11)[2](v11, 0, v13);
+    (completionCopy)[2](completionCopy, 0, v13);
   }
 }
 
@@ -418,10 +418,10 @@ void __73__PRLikenessCache__fetchWithReadBlock_writeBlock_renderBlock_completion
   (*(*(a1 + 40) + 16))();
 }
 
-+ (id)_imageAtURL:(id)a3
++ (id)_imageAtURL:(id)l
 {
   keys[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lCopy = l;
   v4 = *MEMORY[0x277CD3668];
   keys[0] = *MEMORY[0x277CD3618];
   keys[1] = v4;
@@ -432,7 +432,7 @@ void __73__PRLikenessCache__fetchWithReadBlock_writeBlock_renderBlock_completion
   if (v6)
   {
     v7 = v6;
-    v8 = CGImageSourceCreateWithURL(v3, v6);
+    v8 = CGImageSourceCreateWithURL(lCopy, v6);
     if (v8)
     {
       v9 = v8;
@@ -468,12 +468,12 @@ void __73__PRLikenessCache__fetchWithReadBlock_writeBlock_renderBlock_completion
   return v12;
 }
 
-+ (BOOL)_writeImage:(id)a3 toURL:(id)a4
++ (BOOL)_writeImage:(id)image toURL:(id)l
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 pr_imageRef];
-  if (!v6)
+  lCopy = l;
+  pr_imageRef = [image pr_imageRef];
+  if (!pr_imageRef)
   {
     v12 = _PRGetLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -493,8 +493,8 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v7 = v6;
-  v8 = CGImageDestinationCreateWithURL(v5, *MEMORY[0x277CC2120], 0, 0);
+  v7 = pr_imageRef;
+  v8 = CGImageDestinationCreateWithURL(lCopy, *MEMORY[0x277CC2120], 0, 0);
   if (!v8)
   {
     v12 = _PRGetLogSystem();
@@ -533,14 +533,14 @@ LABEL_14:
   return v10;
 }
 
-+ (BOOL)_removeImageAtURL:(id)a3
++ (BOOL)_removeImageAtURL:(id)l
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
+  lCopy = l;
+  defaultManager = [v3 defaultManager];
   v11 = 0;
-  v6 = [v5 removeItemAtURL:v4 error:&v11];
+  v6 = [defaultManager removeItemAtURL:lCopy error:&v11];
 
   v7 = v11;
   v8 = (v7 == 0) & v6;
@@ -562,21 +562,21 @@ LABEL_14:
   return v8;
 }
 
-+ (BOOL)_purgeOldCacheFilesInDirectory:(id)a3
++ (BOOL)_purgeOldCacheFilesInDirectory:(id)directory
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v6 = *MEMORY[0x277CBE7A8];
   v38[0] = *MEMORY[0x277CBE7A8];
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
   v30 = 0;
-  v8 = [v5 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:v7 options:1 error:&v30];
+  v8 = [defaultManager contentsOfDirectoryAtURL:directoryCopy includingPropertiesForKeys:v7 options:1 error:&v30];
   v9 = v30;
 
   if (!v9)
   {
-    v25 = v4;
+    v25 = directoryCopy;
     v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-259200.0];
     v26 = 0u;
     v27 = 0u;
@@ -604,7 +604,7 @@ LABEL_14:
         }
 
         v17 = *(*(&v26 + 1) + 8 * i);
-        v18 = [a1 _propertyValueForURL:v17 forKey:v6];
+        v18 = [self _propertyValueForURL:v17 forKey:v6];
         v19 = v18;
         if (!v18)
         {
@@ -629,7 +629,7 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        if ([v18 compare:v10] == -1 && (objc_msgSend(a1, "_removeImageAtURL:", v17) & 1) == 0)
+        if ([v18 compare:v10] == -1 && (objc_msgSend(self, "_removeImageAtURL:", v17) & 1) == 0)
         {
           v20 = _PRGetLogSystem();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -657,7 +657,7 @@ LABEL_19:
 LABEL_23:
 
         v8 = v24;
-        v4 = v25;
+        directoryCopy = v25;
         v9 = 0;
         goto LABEL_24;
       }
@@ -682,12 +682,12 @@ LABEL_24:
   return v11 & 1;
 }
 
-+ (id)_propertyValueForURL:(id)a3 forKey:(id)a4
++ (id)_propertyValueForURL:(id)l forKey:(id)key
 {
   v16 = *MEMORY[0x277D85DE8];
   v8 = 0;
   v9 = 0;
-  [a3 getResourceValue:&v9 forKey:a4 error:&v8];
+  [l getResourceValue:&v9 forKey:key error:&v8];
   v4 = v9;
   v5 = v8;
   if (v5)

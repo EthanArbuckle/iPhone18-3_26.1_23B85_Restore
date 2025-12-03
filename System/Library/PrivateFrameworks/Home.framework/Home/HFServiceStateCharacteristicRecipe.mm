@@ -1,70 +1,70 @@
 @interface HFServiceStateCharacteristicRecipe
 + (NAIdentity)na_identity;
-+ (id)recipesForRootServiceCharacteristicTypes:(id)a3 required:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (HFServiceStateCharacteristicRecipe)initWithCharacteristicType:(id)a3 servicePredicate:(id)a4 required:(BOOL)a5;
++ (id)recipesForRootServiceCharacteristicTypes:(id)types required:(BOOL)required;
+- (BOOL)isEqual:(id)equal;
+- (HFServiceStateCharacteristicRecipe)initWithCharacteristicType:(id)type servicePredicate:(id)predicate required:(BOOL)required;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)matchResultForServices:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)matchResultForServices:(id)services;
 - (unint64_t)hash;
 @end
 
 @implementation HFServiceStateCharacteristicRecipe
 
-+ (id)recipesForRootServiceCharacteristicTypes:(id)a3 required:(BOOL)a4
++ (id)recipesForRootServiceCharacteristicTypes:(id)types required:(BOOL)required
 {
   v4 = MEMORY[0x277CBEB98];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __88__HFServiceStateCharacteristicRecipe_recipesForRootServiceCharacteristicTypes_required___block_invoke;
   v8[3] = &__block_descriptor_41_e54___HFServiceStateCharacteristicRecipe_16__0__NSString_8l;
-  v8[4] = a1;
-  v9 = a4;
-  v5 = [a3 na_map:v8];
+  v8[4] = self;
+  requiredCopy = required;
+  v5 = [types na_map:v8];
   v6 = [v4 setWithArray:v5];
 
   return v6;
 }
 
-- (HFServiceStateCharacteristicRecipe)initWithCharacteristicType:(id)a3 servicePredicate:(id)a4 required:(BOOL)a5
+- (HFServiceStateCharacteristicRecipe)initWithCharacteristicType:(id)type servicePredicate:(id)predicate required:(BOOL)required
 {
-  v9 = a3;
-  v10 = a4;
+  typeCopy = type;
+  predicateCopy = predicate;
   v14.receiver = self;
   v14.super_class = HFServiceStateCharacteristicRecipe;
   v11 = [(HFServiceStateCharacteristicRecipe *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_characteristicType, a3);
-    objc_storeStrong(&v12->_servicePredicate, a4);
-    v12->_required = a5;
+    objc_storeStrong(&v11->_characteristicType, type);
+    objc_storeStrong(&v12->_servicePredicate, predicate);
+    v12->_required = required;
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFServiceStateCharacteristicRecipe *)self characteristicType];
-  v6 = [(HFServiceStateCharacteristicRecipe *)self servicePredicate];
-  v7 = [v4 initWithCharacteristicType:v5 servicePredicate:v6 required:{-[HFServiceStateCharacteristicRecipe isRequired](self, "isRequired")}];
+  characteristicType = [(HFServiceStateCharacteristicRecipe *)self characteristicType];
+  servicePredicate = [(HFServiceStateCharacteristicRecipe *)self servicePredicate];
+  v7 = [v4 initWithCharacteristicType:characteristicType servicePredicate:servicePredicate required:{-[HFServiceStateCharacteristicRecipe isRequired](self, "isRequired")}];
 
   return v7;
 }
 
-- (id)matchResultForServices:(id)a3
+- (id)matchResultForServices:(id)services
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  servicesCopy = services;
   v24 = [MEMORY[0x277CBEB58] set];
   v5 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v4;
+  obj = servicesCopy;
   v26 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v26)
   {
@@ -79,8 +79,8 @@
         }
 
         v7 = *(*(&v33 + 1) + 8 * i);
-        v8 = [(HFServiceStateCharacteristicRecipe *)self servicePredicate];
-        v9 = [v8 matchingServicesForRootService:v7];
+        servicePredicate = [(HFServiceStateCharacteristicRecipe *)self servicePredicate];
+        v9 = [servicePredicate matchingServicesForRootService:v7];
 
         if ([v9 count])
         {
@@ -107,13 +107,13 @@
                 }
 
                 v15 = *(*(&v29 + 1) + 8 * j);
-                v16 = [(HFServiceStateCharacteristicRecipe *)self characteristicType];
-                v17 = [v15 hf_characteristicOfType:v16];
+                characteristicType = [(HFServiceStateCharacteristicRecipe *)self characteristicType];
+                v17 = [v15 hf_characteristicOfType:characteristicType];
 
                 if (v17)
                 {
-                  v18 = [v15 uniqueIdentifier];
-                  v19 = [v5 na_objectForKey:v18 withDefaultValue:&__block_literal_global_205];
+                  uniqueIdentifier = [v15 uniqueIdentifier];
+                  v19 = [v5 na_objectForKey:uniqueIdentifier withDefaultValue:&__block_literal_global_205];
                   [v19 addObject:v17];
                 }
               }
@@ -145,17 +145,17 @@
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
   v4 = MEMORY[0x277CD1970];
-  v5 = [(HFServiceStateCharacteristicRecipe *)self characteristicType];
-  v6 = [v4 localizedDescriptionForCharacteristicType:v5];
+  characteristicType = [(HFServiceStateCharacteristicRecipe *)self characteristicType];
+  v6 = [v4 localizedDescriptionForCharacteristicType:characteristicType];
   [v3 appendString:v6 withName:@"characteristicType"];
 
-  v7 = [(HFServiceStateCharacteristicRecipe *)self servicePredicate];
-  v8 = [v3 appendObject:v7 withName:@"servicePredicate"];
+  servicePredicate = [(HFServiceStateCharacteristicRecipe *)self servicePredicate];
+  v8 = [v3 appendObject:servicePredicate withName:@"servicePredicate"];
 
   v9 = [v3 appendBool:-[HFServiceStateCharacteristicRecipe isRequired](self withName:{"isRequired"), @"required"}];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 + (NAIdentity)na_identity
@@ -190,19 +190,19 @@ uint64_t __49__HFServiceStateCharacteristicRecipe_na_identity__block_invoke_6(ui
   return [v2 numberWithBool:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

@@ -1,18 +1,18 @@
 @interface VUIGDPRPresentationManager
 + (BOOL)shouldShowWelcomeScreen;
-+ (BOOL)showGDPRWelcomeScreen:(id)a3;
++ (BOOL)showGDPRWelcomeScreen:(id)screen;
 + (id)_sharedInstance;
 + (void)_performRequestsIfNeeded;
-+ (void)acceptGDPRAndSyncWithServers:(id)a3;
-+ (void)checkGDPRConsentAndPerformRequests:(id)a3;
++ (void)acceptGDPRAndSyncWithServers:(id)servers;
++ (void)checkGDPRConsentAndPerformRequests:(id)requests;
 + (void)showOfflineGDPRWelcomeScreen;
 - (BOOL)isShowing;
 - (VUIAppContext)appContext;
 - (VUIGDPRPresentationManager)init;
-- (void)_dismissAllModalsIfPresent:(id)a3;
-- (void)_handleContinueButton:(id)a3;
-- (void)_handleOfflineContinueButton:(id)a3;
-- (void)_showIOSWelcomeControllerWithAppContext:(id)a3 offline:(BOOL)a4;
+- (void)_dismissAllModalsIfPresent:(id)present;
+- (void)_handleContinueButton:(id)button;
+- (void)_handleOfflineContinueButton:(id)button;
+- (void)_showIOSWelcomeControllerWithAppContext:(id)context offline:(BOOL)offline;
 @end
 
 @implementation VUIGDPRPresentationManager
@@ -27,25 +27,25 @@
     _os_signpost_emit_with_name_impl(&dword_1E323F000, v2, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "Launch.ShouldShowWelcomeScreen", "", &v17, 2u);
   }
 
-  v3 = [MEMORY[0x1E69DF6E0] sharedInstance];
-  if ([v3 gdprFirstTimeFlowEnabled])
+  mEMORY[0x1E69DF6E0] = [MEMORY[0x1E69DF6E0] sharedInstance];
+  if ([mEMORY[0x1E69DF6E0] gdprFirstTimeFlowEnabled])
   {
 
     goto LABEL_6;
   }
 
-  v4 = [MEMORY[0x1E69DF6E0] sharedInstance];
-  v5 = [v4 gdprWhatsNewFlowEnabled];
+  mEMORY[0x1E69DF6E0]2 = [MEMORY[0x1E69DF6E0] sharedInstance];
+  gdprWhatsNewFlowEnabled = [mEMORY[0x1E69DF6E0]2 gdprWhatsNewFlowEnabled];
 
-  if (v5)
+  if (gdprWhatsNewFlowEnabled)
   {
 LABEL_6:
-    v6 = [objc_opt_class() _sharedInstance];
-    v7 = [v6 hasShownWelcome];
+    _sharedInstance = [objc_opt_class() _sharedInstance];
+    hasShownWelcome = [_sharedInstance hasShownWelcome];
 
     v8 = VUIDefaultLogObject();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-    if (v7)
+    if (hasShownWelcome)
     {
       if (v9)
       {
@@ -63,13 +63,13 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    v11 = [objc_opt_class() _sharedInstance];
-    v12 = [v11 hasShownWelcome] ^ 1;
+    _sharedInstance2 = [objc_opt_class() _sharedInstance];
+    v12 = [_sharedInstance2 hasShownWelcome] ^ 1;
     goto LABEL_18;
   }
 
-  v11 = [MEMORY[0x1E69D5920] activeOrLocalAccount];
-  LOBYTE(v12) = [MEMORY[0x1E698C790] acknowledgementNeededForPrivacyIdentifier:@"com.apple.onboarding.tvapp" account:v11];
+  _sharedInstance2 = [MEMORY[0x1E69D5920] activeOrLocalAccount];
+  LOBYTE(v12) = [MEMORY[0x1E698C790] acknowledgementNeededForPrivacyIdentifier:@"com.apple.onboarding.tvapp" account:_sharedInstance2];
   v13 = VUIDefaultLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -90,15 +90,15 @@ LABEL_18:
   return v12;
 }
 
-+ (BOOL)showGDPRWelcomeScreen:(id)a3
++ (BOOL)showGDPRWelcomeScreen:(id)screen
 {
-  v3 = a3;
-  v4 = [objc_opt_class() shouldShowWelcomeScreen];
-  if (v4)
+  screenCopy = screen;
+  shouldShowWelcomeScreen = [objc_opt_class() shouldShowWelcomeScreen];
+  if (shouldShowWelcomeScreen)
   {
     v5 = +[_TtC8VideosUI38VUINetworkReachabilityMonitorObjCProxy isNetworkReachable];
-    v6 = [objc_opt_class() _sharedInstance];
-    [v6 _showIOSWelcomeControllerWithAppContext:v3 offline:!v5];
+    _sharedInstance = [objc_opt_class() _sharedInstance];
+    [_sharedInstance _showIOSWelcomeControllerWithAppContext:screenCopy offline:!v5];
   }
 
   else if (([MEMORY[0x1E69E1570] isOptedIn] & 1) == 0)
@@ -113,7 +113,7 @@ LABEL_18:
     [MEMORY[0x1E69E1570] optInUserIfNeededAndRefreshConfig:&__block_literal_global_161];
   }
 
-  return v4;
+  return shouldShowWelcomeScreen;
 }
 
 void __52__VUIGDPRPresentationManager_showGDPRWelcomeScreen___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -149,32 +149,32 @@ void __52__VUIGDPRPresentationManager_showGDPRWelcomeScreen___block_invoke(uint6
 {
   if ([objc_opt_class() shouldShowWelcomeScreen])
   {
-    v2 = [objc_opt_class() _sharedInstance];
-    [v2 _showIOSWelcomeControllerWithAppContext:0 offline:1];
+    _sharedInstance = [objc_opt_class() _sharedInstance];
+    [_sharedInstance _showIOSWelcomeControllerWithAppContext:0 offline:1];
   }
 }
 
-+ (void)acceptGDPRAndSyncWithServers:(id)a3
++ (void)acceptGDPRAndSyncWithServers:(id)servers
 {
-  v3 = a3;
+  serversCopy = servers;
   +[VUIOfferUtilities registerDeviceForCommerceOffers];
-  v4 = [MEMORY[0x1E69D5920] activeOrLocalAccount];
-  v5 = [objc_alloc(MEMORY[0x1E698C790]) initWithPrivacyIdentifier:@"com.apple.onboarding.tvapp" account:v4];
-  v6 = [v5 acknowledgePrivacy];
+  activeOrLocalAccount = [MEMORY[0x1E69D5920] activeOrLocalAccount];
+  v5 = [objc_alloc(MEMORY[0x1E698C790]) initWithPrivacyIdentifier:@"com.apple.onboarding.tvapp" account:activeOrLocalAccount];
+  acknowledgePrivacy = [v5 acknowledgePrivacy];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__VUIGDPRPresentationManager_acceptGDPRAndSyncWithServers___block_invoke;
   v11[3] = &unk_1E8732000;
-  v7 = v3;
+  v7 = serversCopy;
   v12 = v7;
-  [v6 addErrorBlock:v11];
+  [acknowledgePrivacy addErrorBlock:v11];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__VUIGDPRPresentationManager_acceptGDPRAndSyncWithServers___block_invoke_13;
   v9[3] = &unk_1E872D7E0;
   v10 = v7;
   v8 = v7;
-  [v6 addSuccessBlock:v9];
+  [acknowledgePrivacy addSuccessBlock:v9];
 }
 
 void __59__VUIGDPRPresentationManager_acceptGDPRAndSyncWithServers___block_invoke(uint64_t a1, void *a2)
@@ -237,28 +237,28 @@ void __59__VUIGDPRPresentationManager_acceptGDPRAndSyncWithServers___block_invok
   v8();
 }
 
-+ (void)checkGDPRConsentAndPerformRequests:(id)a3
++ (void)checkGDPRConsentAndPerformRequests:(id)requests
 {
-  v7 = a3;
+  requestsCopy = requests;
   if (+[VUIGDPRPresentationManager shouldShowWelcomeScreen])
   {
     v3 = requestBlocks;
     if (!requestBlocks)
     {
-      v4 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v5 = requestBlocks;
-      requestBlocks = v4;
+      requestBlocks = array;
 
       v3 = requestBlocks;
     }
 
-    v6 = [v7 copy];
+    v6 = [requestsCopy copy];
     [v3 addObject:v6];
   }
 
   else
   {
-    v7[2]();
+    requestsCopy[2]();
   }
 }
 
@@ -283,37 +283,37 @@ void __45__VUIGDPRPresentationManager__sharedInstance__block_invoke()
 
 - (BOOL)isShowing
 {
-  v3 = [(VUIGDPRPresentationManager *)self navigationController];
-  v4 = [v3 presentingViewController];
+  navigationController = [(VUIGDPRPresentationManager *)self navigationController];
+  presentingViewController = [navigationController presentingViewController];
 
-  v5 = [(VUIGDPRPresentationManager *)self navigationController];
-  v6 = [v5 isBeingPresented];
-  if (v4)
+  navigationController2 = [(VUIGDPRPresentationManager *)self navigationController];
+  isBeingPresented = [navigationController2 isBeingPresented];
+  if (presentingViewController)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = v6;
+    v7 = isBeingPresented;
   }
 
   return v7;
 }
 
-- (void)_showIOSWelcomeControllerWithAppContext:(id)a3 offline:(BOOL)a4
+- (void)_showIOSWelcomeControllerWithAppContext:(id)context offline:(BOOL)offline
 {
-  v4 = a4;
-  v6 = a3;
-  [(VUIGDPRPresentationManager *)self setAppContext:v6];
+  offlineCopy = offline;
+  contextCopy = context;
+  [(VUIGDPRPresentationManager *)self setAppContext:contextCopy];
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__VUIGDPRPresentationManager__showIOSWelcomeControllerWithAppContext_offline___block_invoke;
   v7[3] = &unk_1E87374A8;
   objc_copyWeak(&v8, &location);
-  v9 = v4;
-  [VUIGDPRViewControllerFactory createViewController:v4 completion:v7];
+  v9 = offlineCopy;
+  [VUIGDPRViewControllerFactory createViewController:offlineCopy completion:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
@@ -456,27 +456,27 @@ void __78__VUIGDPRPresentationManager__showIOSWelcomeControllerWithAppContext_of
   [WeakRetained setHasShownWelcome:1];
 }
 
-- (void)_dismissAllModalsIfPresent:(id)a3
+- (void)_dismissAllModalsIfPresent:(id)present
 {
-  v6 = a3;
-  v3 = [v6 conformsToProtocol:&unk_1F5E7E650];
-  v4 = v6;
+  presentCopy = present;
+  v3 = [presentCopy conformsToProtocol:&unk_1F5E7E650];
+  v4 = presentCopy;
   if (v3)
   {
-    v5 = [v6 currentNavigationController];
+    currentNavigationController = [presentCopy currentNavigationController];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && v5)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && currentNavigationController)
     {
-      [v5 dismissAllModals:&__block_literal_global_85];
+      [currentNavigationController dismissAllModals:&__block_literal_global_85];
     }
 
-    v4 = v6;
+    v4 = presentCopy;
   }
 }
 
-- (void)_handleContinueButton:(id)a3
+- (void)_handleContinueButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v5 = +[VUIMetricsController sharedInstance];
   [v5 forceGDPRConsentStatus:1];
 
@@ -484,10 +484,10 @@ void __78__VUIGDPRPresentationManager__showIOSWelcomeControllerWithAppContext_of
   block[1] = 3221225472;
   v11 = __52__VUIGDPRPresentationManager__handleContinueButton___block_invoke;
   v12 = &unk_1E872D990;
-  v13 = v4;
-  v14 = self;
+  v13 = buttonCopy;
+  selfCopy = self;
   v6 = MEMORY[0x1E696AF00];
-  v7 = v4;
+  v7 = buttonCopy;
   if ([v6 isMainThread])
   {
     v11(block);
@@ -574,20 +574,20 @@ uint64_t __52__VUIGDPRPresentationManager__handleContinueButton___block_invoke_4
   return +[VUIGDPRPresentationManager _performRequestsIfNeeded];
 }
 
-- (void)_handleOfflineContinueButton:(id)a3
+- (void)_handleOfflineContinueButton:(id)button
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69D5920] activeOrLocalAccount];
-  v6 = [objc_alloc(MEMORY[0x1E698C790]) initWithPrivacyIdentifier:@"com.apple.onboarding.tvapp" account:v5];
-  v7 = [v6 acknowledgePrivacy];
+  buttonCopy = button;
+  activeOrLocalAccount = [MEMORY[0x1E69D5920] activeOrLocalAccount];
+  v6 = [objc_alloc(MEMORY[0x1E698C790]) initWithPrivacyIdentifier:@"com.apple.onboarding.tvapp" account:activeOrLocalAccount];
+  acknowledgePrivacy = [v6 acknowledgePrivacy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__VUIGDPRPresentationManager__handleOfflineContinueButton___block_invoke;
   v9[3] = &unk_1E87374D0;
-  v10 = v4;
-  v11 = self;
-  v8 = v4;
-  [v7 addFinishBlock:v9];
+  v10 = buttonCopy;
+  selfCopy = self;
+  v8 = buttonCopy;
+  [acknowledgePrivacy addFinishBlock:v9];
 }
 
 void __59__VUIGDPRPresentationManager__handleOfflineContinueButton___block_invoke(uint64_t a1, char a2, void *a3)

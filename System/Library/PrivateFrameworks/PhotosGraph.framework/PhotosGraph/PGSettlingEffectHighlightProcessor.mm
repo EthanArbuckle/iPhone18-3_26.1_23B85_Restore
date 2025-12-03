@@ -1,9 +1,9 @@
 @interface PGSettlingEffectHighlightProcessor
-+ (BOOL)candidate:(id)a3 passesFilteringWithStatistics:(id *)a4;
++ (BOOL)candidate:(id)candidate passesFilteringWithStatistics:(id *)statistics;
 - ($C310A9A4ADCE7DE5CA50D45CD0B5CDBE)statistics;
-- (PGSettlingEffectHighlightProcessor)initWithPhotoLibrary:(id)a3;
-- (id)fetchHighlightCandidatesWithProgressReporter:(id)a3;
-- (void)logStatistics:(id *)a3;
+- (PGSettlingEffectHighlightProcessor)initWithPhotoLibrary:(id)library;
+- (id)fetchHighlightCandidatesWithProgressReporter:(id)reporter;
+- (void)logStatistics:(id *)statistics;
 @end
 
 @implementation PGSettlingEffectHighlightProcessor
@@ -17,13 +17,13 @@
   return self;
 }
 
-- (void)logStatistics:(id *)a3
+- (void)logStatistics:(id *)statistics
 {
   v11 = *MEMORY[0x277D85DE8];
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
-    var2 = a3->var2;
+    var2 = statistics->var2;
     v9 = 67109120;
     v10 = var2;
     _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGSettlingEffectHighlightProcessor] %d on-demand settling effect score requested", &v9, 8u);
@@ -32,7 +32,7 @@
 
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
-    var1 = a3->var1;
+    var1 = statistics->var1;
     v9 = 67109120;
     v10 = var1;
     _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGSettlingEffectHighlightProcessor] Filtered out %d for settlingEffectScore", &v9, 8u);
@@ -41,11 +41,11 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchHighlightCandidatesWithProgressReporter:(id)a3
+- (id)fetchHighlightCandidatesWithProgressReporter:(id)reporter
 {
   v68 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isCancelledWithProgress:0.0])
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -76,14 +76,14 @@
     info = 0;
     mach_timebase_info(&info);
     v10 = mach_absolute_time();
-    v11 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
     v12 = [PGWallpaperSuggestionUtilities assetFetchPropertySetsIncludingGating:1];
-    [v11 setFetchPropertySets:v12];
+    [librarySpecificFetchOptions setFetchPropertySets:v12];
 
-    v13 = [MEMORY[0x277D3C810] settlingEffectAssetInternalSortDescriptors];
-    [v11 setInternalSortDescriptors:v13];
+    settlingEffectAssetInternalSortDescriptors = [MEMORY[0x277D3C810] settlingEffectAssetInternalSortDescriptors];
+    [librarySpecificFetchOptions setInternalSortDescriptors:settlingEffectAssetInternalSortDescriptors];
 
-    v14 = [MEMORY[0x277D3C810] fetchLivePhotoTabHighlightCandidateAssetsWithOptions:v11 excludeExistingWallpapers:1 statistics:buf | 0xC];
+    v14 = [MEMORY[0x277D3C810] fetchLivePhotoTabHighlightCandidateAssetsWithOptions:librarySpecificFetchOptions excludeExistingWallpapers:1 statistics:buf | 0xC];
     loggingConnection = self->_loggingConnection;
     if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
@@ -94,7 +94,7 @@
       _os_log_impl(&dword_22F0FC000, v16, OS_LOG_TYPE_INFO, "[PGSettlingEffectHighlightProcessor] Found %d highlight candidate assets", v63, 8u);
     }
 
-    if ([v4 isCancelledWithProgress:0.2])
+    if ([reporterCopy isCancelledWithProgress:0.2])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -112,7 +112,7 @@
     {
       v50 = v7 - 1;
       spid = v7;
-      v52 = v11;
+      v52 = librarySpecificFetchOptions;
       v53 = v9;
       v57 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v18 = [v14 count];
@@ -154,7 +154,7 @@
                 [v57 addObject:v31];
               }
 
-              if ([v4 isCancelledWithProgress:v21 * v19 + 0.2])
+              if ([reporterCopy isCancelledWithProgress:v21 * v19 + 0.2])
               {
                 if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
                 {
@@ -167,7 +167,7 @@
 
                 objc_autoreleasePoolPop(v30);
                 v5 = MEMORY[0x277CBEBF8];
-                v11 = v52;
+                librarySpecificFetchOptions = v52;
                 v9 = v53;
                 v14 = v55;
                 goto LABEL_32;
@@ -192,12 +192,12 @@
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
         {
           v33 = v32;
-          v34 = [v56 firstIndex];
-          v35 = [v56 lastIndex];
+          firstIndex = [v56 firstIndex];
+          lastIndex = [v56 lastIndex];
           *v63 = 134218240;
-          *&v63[4] = v34;
+          *&v63[4] = firstIndex;
           *&v63[12] = 2048;
-          *&v63[14] = v35;
+          *&v63[14] = lastIndex;
           _os_log_debug_impl(&dword_22F0FC000, v33, OS_LOG_TYPE_DEBUG, "[PGSettlingEffectHighlightProcessor] processed candidates from %lu to %lu", v63, 0x16u);
         }
 
@@ -227,7 +227,7 @@
       v9 = v53;
       v46 = v53;
       v47 = v46;
-      v11 = v52;
+      librarySpecificFetchOptions = v52;
       if (v50 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v46))
       {
         *v63 = 0;
@@ -260,16 +260,16 @@ LABEL_32:
   return v5;
 }
 
-- (PGSettlingEffectHighlightProcessor)initWithPhotoLibrary:(id)a3
+- (PGSettlingEffectHighlightProcessor)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v11.receiver = self;
   v11.super_class = PGSettlingEffectHighlightProcessor;
   v6 = [(PGSettlingEffectHighlightProcessor *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
+    objc_storeStrong(&v6->_photoLibrary, library);
     v8 = os_log_create("com.apple.PhotosGraph", "suggestions");
     loggingConnection = v7->_loggingConnection;
     v7->_loggingConnection = v8;
@@ -278,24 +278,24 @@ LABEL_32:
   return v7;
 }
 
-+ (BOOL)candidate:(id)a3 passesFilteringWithStatistics:(id *)a4
++ (BOOL)candidate:(id)candidate passesFilteringWithStatistics:(id *)statistics
 {
-  v5 = [a3 asset];
+  asset = [candidate asset];
   v12 = 0;
-  [PGSettlingEffectScoreHelper analyzedSettlingEffectScoreForAsset:v5 requestedOnDemand:&v12];
+  [PGSettlingEffectScoreHelper analyzedSettlingEffectScoreForAsset:asset requestedOnDemand:&v12];
   v7 = v6;
   if (v12 == 1)
   {
-    ++a4->var2;
+    ++statistics->var2;
   }
 
-  v8 = [v5 mediaAnalysisProperties];
-  +[PGSettlingEffectWallpaperSuggesterFilteringContext minimumSettlingEffectScoreForSuggestionSubtype:mediaAnalysisVersion:](PGSettlingEffectWallpaperSuggesterFilteringContext, "minimumSettlingEffectScoreForSuggestionSubtype:mediaAnalysisVersion:", 0, [v8 mediaAnalysisVersion]);
+  mediaAnalysisProperties = [asset mediaAnalysisProperties];
+  +[PGSettlingEffectWallpaperSuggesterFilteringContext minimumSettlingEffectScoreForSuggestionSubtype:mediaAnalysisVersion:](PGSettlingEffectWallpaperSuggesterFilteringContext, "minimumSettlingEffectScoreForSuggestionSubtype:mediaAnalysisVersion:", 0, [mediaAnalysisProperties mediaAnalysisVersion]);
   v10 = v9;
 
   if (v10 > v7)
   {
-    ++a4->var1;
+    ++statistics->var1;
   }
 
   return v10 <= v7;

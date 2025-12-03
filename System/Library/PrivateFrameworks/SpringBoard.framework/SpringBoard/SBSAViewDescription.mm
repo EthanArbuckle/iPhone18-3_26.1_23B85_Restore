@@ -1,15 +1,15 @@
 @interface SBSAViewDescription
-+ (id)instanceWithBlock:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)instanceWithBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)center;
 - (CGRect)bounds;
 - (CGRect)boundsVelocity;
 - (CGSize)scale;
 - (NSString)description;
-- (SBSAViewDescription)initWithViewDescription:(id)a3;
-- (id)copyByPixelAligningGeometryWithScale:(double)a3;
-- (id)copyWithBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBSAViewDescription)initWithViewDescription:(id)description;
+- (id)copyByPixelAligningGeometryWithScale:(double)scale;
+- (id)copyWithBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -59,39 +59,39 @@
   return result;
 }
 
-- (SBSAViewDescription)initWithViewDescription:(id)a3
+- (SBSAViewDescription)initWithViewDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v26.receiver = self;
   v26.super_class = SBSAViewDescription;
   v5 = [(SBSAViewDescription *)&v26 init];
   if (v5)
   {
-    v6 = [v4 interfaceElementIdentifier];
+    interfaceElementIdentifier = [descriptionCopy interfaceElementIdentifier];
     interfaceElementIdentifier = v5->_interfaceElementIdentifier;
-    v5->_interfaceElementIdentifier = v6;
+    v5->_interfaceElementIdentifier = interfaceElementIdentifier;
 
-    [v4 center];
+    [descriptionCopy center];
     v5->_center.x = v8;
     v5->_center.y = v9;
-    [v4 bounds];
+    [descriptionCopy bounds];
     v5->_bounds.origin.x = v10;
     v5->_bounds.origin.y = v11;
     v5->_bounds.size.width = v12;
     v5->_bounds.size.height = v13;
-    [v4 cornerRadius];
+    [descriptionCopy cornerRadius];
     v5->_cornerRadius = v14;
-    [v4 alpha];
+    [descriptionCopy alpha];
     v5->_alpha = v15;
-    [v4 scale];
+    [descriptionCopy scale];
     v5->_scale.width = v16;
     v5->_scale.height = v17;
-    v18 = [v4 backgroundColor];
-    v19 = [v18 copy];
+    backgroundColor = [descriptionCopy backgroundColor];
+    v19 = [backgroundColor copy];
     backgroundColor = v5->_backgroundColor;
     v5->_backgroundColor = v19;
 
-    [v4 boundsVelocity];
+    [descriptionCopy boundsVelocity];
     v5->_boundsVelocity.origin.x = v21;
     v5->_boundsVelocity.origin.y = v22;
     v5->_boundsVelocity.size.width = v23;
@@ -101,7 +101,7 @@
   return v5;
 }
 
-- (id)copyByPixelAligningGeometryWithScale:(double)a3
+- (id)copyByPixelAligningGeometryWithScale:(double)scale
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -109,7 +109,7 @@
   v4[3] = &unk_2783ACD90;
   v4[4] = self;
   v4[5] = a2;
-  *&v4[6] = a3;
+  *&v4[6] = scale;
   return [(SBSAViewDescription *)self copyWithBlock:v4];
 }
 
@@ -161,16 +161,16 @@ void __60__SBSAViewDescription_copyByPixelAligningGeometryWithScale___block_invo
   [v6 setCenter:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   interfaceElementIdentifier = self->_interfaceElementIdentifier;
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __31__SBSAViewDescription_isEqual___block_invoke;
   v43[3] = &unk_2783ACDB8;
-  v7 = v4;
+  v7 = equalCopy;
   v44 = v7;
   v8 = [v5 appendObject:interfaceElementIdentifier counterpart:v43];
   v41[0] = MEMORY[0x277D85DD0];
@@ -228,8 +228,8 @@ void __60__SBSAViewDescription_copyByPixelAligningGeometryWithScale___block_invo
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_interfaceElementIdentifier];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_interfaceElementIdentifier];
   v5 = [v4 appendCGPoint:{self->_center.x, self->_center.y}];
   v6 = [v5 appendCGRect:{self->_bounds.origin.x, self->_bounds.origin.y, self->_bounds.size.width, self->_bounds.size.height}];
   v7 = [v6 appendCGFloat:self->_cornerRadius];
@@ -256,30 +256,30 @@ void __60__SBSAViewDescription_copyByPixelAligningGeometryWithScale___block_invo
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithViewDescription:self];
 }
 
-+ (id)instanceWithBlock:(id)a3
++ (id)instanceWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v4 copyWithBlock:v3];
+  v5 = [v4 copyWithBlock:blockCopy];
 
   return v5;
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(SBSAViewDescription *)self copy];
-  if (v4)
+  if (blockCopy)
   {
     v6 = [objc_alloc(objc_msgSend(objc_opt_class() "mutatorClass"))];
-    v4[2](v4, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   return v5;

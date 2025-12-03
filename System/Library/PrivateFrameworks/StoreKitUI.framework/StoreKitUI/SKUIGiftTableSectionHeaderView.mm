@@ -1,11 +1,11 @@
 @interface SKUIGiftTableSectionHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)label;
 - (UIEdgeInsets)contentInsets;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContentInsets:(UIEdgeInsets)a3;
-- (void)setLabel:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setContentInsets:(UIEdgeInsets)insets;
+- (void)setLabel:(id)label;
 @end
 
 @implementation SKUIGiftTableSectionHeaderView
@@ -24,17 +24,17 @@
     }
   }
 
-  v11 = [(UILabel *)self->_label text];
+  text = [(UILabel *)self->_label text];
 
-  return v11;
+  return text;
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  left = a3.left;
-  bottom = a3.bottom;
-  top = a3.top;
+  right = insets.right;
+  left = insets.left;
+  bottom = insets.bottom;
+  top = insets.top;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -61,9 +61,9 @@
   }
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -76,11 +76,11 @@
     }
   }
 
-  v13 = [(SKUIGiftTableSectionHeaderView *)self label];
-  if (v13 != v4 && ([v4 isEqualToString:v13] & 1) == 0)
+  label = [(SKUIGiftTableSectionHeaderView *)self label];
+  if (label != labelCopy && ([labelCopy isEqualToString:label] & 1) == 0)
   {
     label = self->_label;
-    if (v4)
+    if (labelCopy)
     {
       if (!label)
       {
@@ -89,23 +89,23 @@
         self->_label = v15;
 
         v17 = self->_label;
-        v18 = [(SKUIGiftTableSectionHeaderView *)self backgroundColor];
-        [(UILabel *)v17 setBackgroundColor:v18];
+        backgroundColor = [(SKUIGiftTableSectionHeaderView *)self backgroundColor];
+        [(UILabel *)v17 setBackgroundColor:backgroundColor];
 
         v19 = self->_label;
         v20 = [MEMORY[0x277D74300] boldSystemFontOfSize:15.0];
         [(UILabel *)v19 setFont:v20];
 
         v21 = self->_label;
-        v22 = [MEMORY[0x277D75348] _secondaryLabelColor];
-        [(UILabel *)v21 setTextColor:v22];
+        _secondaryLabelColor = [MEMORY[0x277D75348] _secondaryLabelColor];
+        [(UILabel *)v21 setTextColor:_secondaryLabelColor];
 
         [(UILabel *)self->_label setTextAlignment:4];
         [(SKUIGiftTableSectionHeaderView *)self addSubview:self->_label];
         label = self->_label;
       }
 
-      [(UILabel *)label setText:v4];
+      [(UILabel *)label setText:labelCopy];
       [(UILabel *)self->_label sizeToFit];
     }
 
@@ -140,9 +140,9 @@
   [(UILabel *)self->_label setFrame:self->_contentInsets.left + 15.0, self->_contentInsets.top + 0.0, v12 + -15.0 - self->_contentInsets.right - (self->_contentInsets.left + 15.0)];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -155,15 +155,15 @@
     }
   }
 
-  [(UILabel *)self->_label setBackgroundColor:v4];
+  [(UILabel *)self->_label setBackgroundColor:colorCopy];
   v13.receiver = self;
   v13.super_class = SKUIGiftTableSectionHeaderView;
-  [(SKUIGiftTableSectionHeaderView *)&v13 setBackgroundColor:v4];
+  [(SKUIGiftTableSectionHeaderView *)&v13 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -176,11 +176,11 @@
     }
   }
 
-  v13 = [MEMORY[0x277D75418] currentDevice];
-  v14 = [v13 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v15 = 22.0;
-  if ((v14 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v15 = 24.0;
   }

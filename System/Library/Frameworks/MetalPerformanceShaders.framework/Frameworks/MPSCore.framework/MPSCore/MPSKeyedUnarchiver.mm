@@ -27,7 +27,7 @@
   v17 = cls;
   v10 = objc_alloc(MEMORY[0x277CBEB98]);
   v13 = objc_msgSend_initWithObjects_count_(v10, v11, &v17, 1, v12);
-  v15 = objc_msgSend_unarchivedObjectOfClasses_fromData_device_error_(a1, v14, v13, data, device, error);
+  v15 = objc_msgSend_unarchivedObjectOfClasses_fromData_device_error_(self, v14, v13, data, device, error);
 
   return v15;
 }

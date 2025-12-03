@@ -6,8 +6,8 @@
 
 - (BOOL)ba_isAppClip
 {
-  v2 = [(LSApplicationRecord *)self appClipMetadata];
-  v3 = v2 != 0;
+  appClipMetadata = [(LSApplicationRecord *)self appClipMetadata];
+  v3 = appClipMetadata != 0;
 
   return v3;
 }

@@ -1,7 +1,7 @@
 @interface SPRMeta
 + (SPRMeta)current;
 - (NSDate)buildDate;
-- (SPRMeta)initWithBundle:(id)a3 timestamp:(id)a4;
+- (SPRMeta)initWithBundle:(id)bundle timestamp:(id)timestamp;
 - (id)description;
 @end
 
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_26A94406C;
   block[3] = &unk_279CA5718;
-  block[4] = a1;
+  block[4] = self;
   if (qword_2810B9C00 != -1)
   {
     dispatch_once(&qword_2810B9C00, block);
@@ -44,16 +44,16 @@
   return v21;
 }
 
-- (SPRMeta)initWithBundle:(id)a3 timestamp:(id)a4
+- (SPRMeta)initWithBundle:(id)bundle timestamp:(id)timestamp
 {
-  v6 = a3;
-  v7 = a4;
+  bundleCopy = bundle;
+  timestampCopy = timestamp;
   bundle = self->_bundle;
-  self->_bundle = v6;
-  v9 = v6;
+  self->_bundle = bundleCopy;
+  v9 = bundleCopy;
 
   timestamp = self->_timestamp;
-  self->_timestamp = v7;
+  self->_timestamp = timestampCopy;
 
   return self;
 }

@@ -1,39 +1,39 @@
 @interface KNBuildWipe
-- (void)animationWillBeginWithContext:(id)a3;
-- (void)metalAnimationWillBeginWithContext:(id)a3;
-- (void)metalPrepareAnimationWithContext:(id)a3;
-- (void)renderFrameWithContext:(id)a3;
+- (void)animationWillBeginWithContext:(id)context;
+- (void)metalAnimationWillBeginWithContext:(id)context;
+- (void)metalPrepareAnimationWithContext:(id)context;
+- (void)renderFrameWithContext:(id)context;
 @end
 
 @implementation KNBuildWipe
 
-- (void)animationWillBeginWithContext:(id)a3
+- (void)animationWillBeginWithContext:(id)context
 {
-  self->super._isBuildOut = [objc_msgSend(a3 "animatedBuild")] ^ 1;
+  self->super._isBuildOut = [objc_msgSend(context "animatedBuild")] ^ 1;
   v5.receiver = self;
   v5.super_class = KNBuildWipe;
-  [(KNWipeBase *)&v5 animationWillBeginWithContext:a3];
+  [(KNWipeBase *)&v5 animationWillBeginWithContext:context];
 }
 
-- (void)renderFrameWithContext:(id)a3
+- (void)renderFrameWithContext:(id)context
 {
   v3.receiver = self;
   v3.super_class = KNBuildWipe;
-  [(KNWipeBase *)&v3 renderFrameWithContext:a3];
+  [(KNWipeBase *)&v3 renderFrameWithContext:context];
 }
 
-- (void)metalPrepareAnimationWithContext:(id)a3
+- (void)metalPrepareAnimationWithContext:(id)context
 {
-  self->super._isBuildOut = [objc_msgSend(a3 "animatedBuild")] ^ 1;
+  self->super._isBuildOut = [objc_msgSend(context "animatedBuild")] ^ 1;
 
-  [(KNBuildWipe *)self animationWillBeginWithContext:a3];
+  [(KNBuildWipe *)self animationWillBeginWithContext:context];
 }
 
-- (void)metalAnimationWillBeginWithContext:(id)a3
+- (void)metalAnimationWillBeginWithContext:(id)context
 {
   if (self)
   {
-    [(KNAnimationEffect *)self mvpMatrixWithContext:a3];
+    [(KNAnimationEffect *)self mvpMatrixWithContext:context];
   }
 
   else

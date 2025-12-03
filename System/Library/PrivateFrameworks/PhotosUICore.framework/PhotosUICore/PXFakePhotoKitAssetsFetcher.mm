@@ -1,8 +1,8 @@
 @interface PXFakePhotoKitAssetsFetcher
 + (PXFakePhotoKitAssetsFetcher)defaultFetcher;
-+ (void)fillLibraryWithFakeAssets:(id)a3 completion:(id)a4;
++ (void)fillLibraryWithFakeAssets:(id)assets completion:(id)completion;
 - (PXFakePhotoKitAssetsFetcher)init;
-- (id)fetchAssetsInContainer:(id)a3 curationKind:(int64_t)a4;
+- (id)fetchAssetsInContainer:(id)container curationKind:(int64_t)kind;
 @end
 
 @implementation PXFakePhotoKitAssetsFetcher
@@ -19,18 +19,18 @@
   return v3;
 }
 
-- (id)fetchAssetsInContainer:(id)a3 curationKind:(int64_t)a4
+- (id)fetchAssetsInContainer:(id)container curationKind:(int64_t)kind
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1A47892B8(v6, a4);
+  containerCopy = container;
+  selfCopy = self;
+  v8 = sub_1A47892B8(containerCopy, kind);
 
   return v8;
 }
 
-+ (void)fillLibraryWithFakeAssets:(id)a3 completion:(id)a4
++ (void)fillLibraryWithFakeAssets:(id)assets completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   if (v5)
   {
     v6 = swift_allocObject();
@@ -44,8 +44,8 @@
   }
 
   swift_getObjCClassMetadata();
-  v7 = a3;
-  sub_1A4788530(v7, v5, v6);
+  assetsCopy = assets;
+  sub_1A4788530(assetsCopy, v5, v6);
   sub_1A3C784D4(v5, v6);
 }
 

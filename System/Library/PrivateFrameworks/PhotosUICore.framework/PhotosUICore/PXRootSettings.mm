@@ -6,10 +6,10 @@
 - (BOOL)hideWIPAlerts;
 - (void)createChildren;
 - (void)restoreDefaultValues;
-- (void)setCanShowInternalUI:(BOOL)a3;
+- (void)setCanShowInternalUI:(BOOL)i;
 - (void)setDefaultValues;
-- (void)setHideWIPAlerts:(BOOL)a3;
-- (void)setShowLibraryFilterTip:(BOOL)a3;
+- (void)setHideWIPAlerts:(BOOL)alerts;
+- (void)setShowLibraryFilterTip:(BOOL)tip;
 @end
 
 @implementation PXRootSettings
@@ -19,9 +19,9 @@
   os_unfair_lock_lock(&PXSettingsSharedInstanceLock);
   if (!sharedInstance_sharedInstance_80424)
   {
-    v3 = [a1 createSharedInstance];
+    createSharedInstance = [self createSharedInstance];
     v4 = sharedInstance_sharedInstance_80424;
-    sharedInstance_sharedInstance_80424 = v3;
+    sharedInstance_sharedInstance_80424 = createSharedInstance;
   }
 
   os_unfair_lock_unlock(&PXSettingsSharedInstanceLock);
@@ -32,233 +32,233 @@
 
 - (void)createChildren
 {
-  v3 = [(PTSettings *)[PXCPLStatusSettings alloc] initWithDefaultValues];
+  initWithDefaultValues = [(PTSettings *)[PXCPLStatusSettings alloc] initWithDefaultValues];
   cplStatusSettings = self->_cplStatusSettings;
-  self->_cplStatusSettings = v3;
+  self->_cplStatusSettings = initWithDefaultValues;
 
-  v5 = [(PTSettings *)[PXDuplicatesSettings alloc] initWithDefaultValues];
+  initWithDefaultValues2 = [(PTSettings *)[PXDuplicatesSettings alloc] initWithDefaultValues];
   duplicatesSettings = self->_duplicatesSettings;
-  self->_duplicatesSettings = v5;
+  self->_duplicatesSettings = initWithDefaultValues2;
 
-  v7 = [(PTSettings *)[PXAssetsRecoverySettings alloc] initWithDefaultValues];
+  initWithDefaultValues3 = [(PTSettings *)[PXAssetsRecoverySettings alloc] initWithDefaultValues];
   assetsRecoverySettings = self->_assetsRecoverySettings;
-  self->_assetsRecoverySettings = v7;
+  self->_assetsRecoverySettings = initWithDefaultValues3;
 
-  v9 = [(PTSettings *)[PXDocumentMenuSettings alloc] initWithDefaultValues];
+  initWithDefaultValues4 = [(PTSettings *)[PXDocumentMenuSettings alloc] initWithDefaultValues];
   documentMenuSettings = self->_documentMenuSettings;
-  self->_documentMenuSettings = v9;
+  self->_documentMenuSettings = initWithDefaultValues4;
 
-  v11 = [(PTSettings *)[PXMacSyncedAlbumsSettings alloc] initWithDefaultValues];
+  initWithDefaultValues5 = [(PTSettings *)[PXMacSyncedAlbumsSettings alloc] initWithDefaultValues];
   macSyncedAlbumsSettings = self->_macSyncedAlbumsSettings;
-  self->_macSyncedAlbumsSettings = v11;
+  self->_macSyncedAlbumsSettings = initWithDefaultValues5;
 
-  v13 = [(PTSettings *)[PXImageModulationSettings alloc] initWithDefaultValues];
+  initWithDefaultValues6 = [(PTSettings *)[PXImageModulationSettings alloc] initWithDefaultValues];
   imageModulationSettings = self->_imageModulationSettings;
-  self->_imageModulationSettings = v13;
+  self->_imageModulationSettings = initWithDefaultValues6;
 
-  v15 = [(PTSettings *)[PXSharedLibrarySettings alloc] initWithDefaultValues];
+  initWithDefaultValues7 = [(PTSettings *)[PXSharedLibrarySettings alloc] initWithDefaultValues];
   sharedLibrarySettings = self->_sharedLibrarySettings;
-  self->_sharedLibrarySettings = v15;
+  self->_sharedLibrarySettings = initWithDefaultValues7;
 
-  v17 = [(PTSettings *)[PXAlbumsDebugUISettings alloc] initWithDefaultValues];
+  initWithDefaultValues8 = [(PTSettings *)[PXAlbumsDebugUISettings alloc] initWithDefaultValues];
   albumsDebugUISettings = self->_albumsDebugUISettings;
-  self->_albumsDebugUISettings = v17;
+  self->_albumsDebugUISettings = initWithDefaultValues8;
 
-  v19 = [(PTSettings *)[PXDragAndDropSettings alloc] initWithDefaultValues];
+  initWithDefaultValues9 = [(PTSettings *)[PXDragAndDropSettings alloc] initWithDefaultValues];
   dragAndDrop = self->_dragAndDrop;
-  self->_dragAndDrop = v19;
+  self->_dragAndDrop = initWithDefaultValues9;
 
-  v21 = [(PTSettings *)[PXForYouSettings alloc] initWithDefaultValues];
+  initWithDefaultValues10 = [(PTSettings *)[PXForYouSettings alloc] initWithDefaultValues];
   forYou = self->_forYou;
-  self->_forYou = v21;
+  self->_forYou = initWithDefaultValues10;
 
-  v23 = [(PTSettings *)[PXPeopleDetailSettings alloc] initWithDefaultValues];
+  initWithDefaultValues11 = [(PTSettings *)[PXPeopleDetailSettings alloc] initWithDefaultValues];
   peopleDetail = self->_peopleDetail;
-  self->_peopleDetail = v23;
+  self->_peopleDetail = initWithDefaultValues11;
 
-  v25 = [(PTSettings *)[PXPhotosDetailsHeaderTileSettings alloc] initWithDefaultValues];
+  initWithDefaultValues12 = [(PTSettings *)[PXPhotosDetailsHeaderTileSettings alloc] initWithDefaultValues];
   photosDetailsHeaderTile = self->_photosDetailsHeaderTile;
-  self->_photosDetailsHeaderTile = v25;
+  self->_photosDetailsHeaderTile = initWithDefaultValues12;
 
-  v27 = [(PTSettings *)[PXImportSettings alloc] initWithDefaultValues];
+  initWithDefaultValues13 = [(PTSettings *)[PXImportSettings alloc] initWithDefaultValues];
   importSettings = self->_importSettings;
-  self->_importSettings = v27;
+  self->_importSettings = initWithDefaultValues13;
 
-  v29 = [(PTSettings *)[PXDiagnosticsSettings alloc] initWithDefaultValues];
+  initWithDefaultValues14 = [(PTSettings *)[PXDiagnosticsSettings alloc] initWithDefaultValues];
   diagnostics = self->_diagnostics;
-  self->_diagnostics = v29;
+  self->_diagnostics = initWithDefaultValues14;
 
-  v31 = [(PTSettings *)[PXInlineVideoStabilizationSettings alloc] initWithDefaultValues];
+  initWithDefaultValues15 = [(PTSettings *)[PXInlineVideoStabilizationSettings alloc] initWithDefaultValues];
   inlineVideoStabilizationSettings = self->_inlineVideoStabilizationSettings;
-  self->_inlineVideoStabilizationSettings = v31;
+  self->_inlineVideoStabilizationSettings = initWithDefaultValues15;
 
-  v33 = [(PTSettings *)[PXPhotosDetailsNavigationSettings alloc] initWithDefaultValues];
+  initWithDefaultValues16 = [(PTSettings *)[PXPhotosDetailsNavigationSettings alloc] initWithDefaultValues];
   detailsNavigationSettings = self->_detailsNavigationSettings;
-  self->_detailsNavigationSettings = v33;
+  self->_detailsNavigationSettings = initWithDefaultValues16;
 
-  v35 = [(PTSettings *)[PXPeopleUISettings alloc] initWithDefaultValues];
+  initWithDefaultValues17 = [(PTSettings *)[PXPeopleUISettings alloc] initWithDefaultValues];
   peopleUISettings = self->_peopleUISettings;
-  self->_peopleUISettings = v35;
+  self->_peopleUISettings = initWithDefaultValues17;
 
-  v37 = [(PTSettings *)[PXApplicationSettings alloc] initWithDefaultValues];
+  initWithDefaultValues18 = [(PTSettings *)[PXApplicationSettings alloc] initWithDefaultValues];
   applicationSettings = self->_applicationSettings;
-  self->_applicationSettings = v37;
+  self->_applicationSettings = initWithDefaultValues18;
 
-  v39 = [(PTSettings *)[PXAudioSettings alloc] initWithDefaultValues];
+  initWithDefaultValues19 = [(PTSettings *)[PXAudioSettings alloc] initWithDefaultValues];
   audioSettings = self->_audioSettings;
-  self->_audioSettings = v39;
+  self->_audioSettings = initWithDefaultValues19;
 
-  v41 = [(PTSettings *)[PXStorySettings alloc] initWithDefaultValues];
+  initWithDefaultValues20 = [(PTSettings *)[PXStorySettings alloc] initWithDefaultValues];
   storySettings = self->_storySettings;
-  self->_storySettings = v41;
+  self->_storySettings = initWithDefaultValues20;
 
-  v43 = [(PTSettings *)[PXVideoPlaybackSettings alloc] initWithDefaultValues];
+  initWithDefaultValues21 = [(PTSettings *)[PXVideoPlaybackSettings alloc] initWithDefaultValues];
   videoPlaybackSettings = self->_videoPlaybackSettings;
-  self->_videoPlaybackSettings = v43;
+  self->_videoPlaybackSettings = initWithDefaultValues21;
 
-  v45 = [(PTSettings *)[PXAssetsSceneSettings alloc] initWithDefaultValues];
+  initWithDefaultValues22 = [(PTSettings *)[PXAssetsSceneSettings alloc] initWithDefaultValues];
   assetsScene = self->_assetsScene;
-  self->_assetsScene = v45;
+  self->_assetsScene = initWithDefaultValues22;
 
-  v47 = [(PTSettings *)[PXCompleteMyMomentSettings alloc] initWithDefaultValues];
+  initWithDefaultValues23 = [(PTSettings *)[PXCompleteMyMomentSettings alloc] initWithDefaultValues];
   completeMyMoment = self->_completeMyMoment;
-  self->_completeMyMoment = v47;
+  self->_completeMyMoment = initWithDefaultValues23;
 
-  v49 = [(PTSettings *)[PXCuratedLibrarySettings alloc] initWithDefaultValues];
+  initWithDefaultValues24 = [(PTSettings *)[PXCuratedLibrarySettings alloc] initWithDefaultValues];
   curatedLibrarySettings = self->_curatedLibrarySettings;
-  self->_curatedLibrarySettings = v49;
+  self->_curatedLibrarySettings = initWithDefaultValues24;
 
-  v51 = [(PTSettings *)[PXCursorInteractionSettings alloc] initWithDefaultValues];
+  initWithDefaultValues25 = [(PTSettings *)[PXCursorInteractionSettings alloc] initWithDefaultValues];
   cursorInteractionSettings = self->_cursorInteractionSettings;
-  self->_cursorInteractionSettings = v51;
+  self->_cursorInteractionSettings = initWithDefaultValues25;
 
-  v53 = [(PTSettings *)[PXPasteboardAssetSettings alloc] initWithDefaultValues];
+  initWithDefaultValues26 = [(PTSettings *)[PXPasteboardAssetSettings alloc] initWithDefaultValues];
   dragDropSettings = self->_dragDropSettings;
-  self->_dragDropSettings = v53;
+  self->_dragDropSettings = initWithDefaultValues26;
 
-  v55 = [(PTSettings *)[PXFooterSettings alloc] initWithDefaultValues];
+  initWithDefaultValues27 = [(PTSettings *)[PXFooterSettings alloc] initWithDefaultValues];
   footerSettings = self->_footerSettings;
-  self->_footerSettings = v55;
+  self->_footerSettings = initWithDefaultValues27;
 
-  v57 = [(PTSettings *)[PXGridSettings alloc] initWithDefaultValues];
+  initWithDefaultValues28 = [(PTSettings *)[PXGridSettings alloc] initWithDefaultValues];
   grid = self->_grid;
-  self->_grid = v57;
+  self->_grid = initWithDefaultValues28;
 
-  v59 = [[PXGPPTSettings alloc] initWithDefaultValues];
+  initWithDefaultValues29 = [[PXGPPTSettings alloc] initWithDefaultValues];
   tungstenPPTSettings = self->_tungstenPPTSettings;
-  self->_tungstenPPTSettings = v59;
+  self->_tungstenPPTSettings = initWithDefaultValues29;
 
-  v61 = [(PTSettings *)[PXKeyboardSettings alloc] initWithDefaultValues];
+  initWithDefaultValues30 = [(PTSettings *)[PXKeyboardSettings alloc] initWithDefaultValues];
   keyboardSettings = self->_keyboardSettings;
-  self->_keyboardSettings = v61;
+  self->_keyboardSettings = initWithDefaultValues30;
 
-  v63 = [(PTSettings *)[PXKitSettings alloc] initWithDefaultValues];
+  initWithDefaultValues31 = [(PTSettings *)[PXKitSettings alloc] initWithDefaultValues];
   kit = self->_kit;
-  self->_kit = v63;
+  self->_kit = initWithDefaultValues31;
 
-  v65 = [(PTSettings *)[PXWorkaroundSettings alloc] initWithDefaultValues];
+  initWithDefaultValues32 = [(PTSettings *)[PXWorkaroundSettings alloc] initWithDefaultValues];
   workaroundSettings = self->_workaroundSettings;
-  self->_workaroundSettings = v65;
+  self->_workaroundSettings = initWithDefaultValues32;
 
-  v67 = [(PTSettings *)[PXMemoriesRelatedSettings alloc] initWithDefaultValues];
+  initWithDefaultValues33 = [(PTSettings *)[PXMemoriesRelatedSettings alloc] initWithDefaultValues];
   memoriesRelated = self->_memoriesRelated;
-  self->_memoriesRelated = v67;
+  self->_memoriesRelated = initWithDefaultValues33;
 
-  v69 = [(PTSettings *)[PXUpNextSettings alloc] initWithDefaultValues];
+  initWithDefaultValues34 = [(PTSettings *)[PXUpNextSettings alloc] initWithDefaultValues];
   upNextSettings = self->_upNextSettings;
-  self->_upNextSettings = v69;
+  self->_upNextSettings = initWithDefaultValues34;
 
-  v71 = [(PTSettings *)[PXMemoriesFeedSettings alloc] initWithDefaultValues];
+  initWithDefaultValues35 = [(PTSettings *)[PXMemoriesFeedSettings alloc] initWithDefaultValues];
   memoryFeed = self->_memoryFeed;
-  self->_memoryFeed = v71;
+  self->_memoryFeed = initWithDefaultValues35;
 
-  v73 = [(PTSettings *)[PXContentPrivacySettings alloc] initWithDefaultValues];
+  initWithDefaultValues36 = [(PTSettings *)[PXContentPrivacySettings alloc] initWithDefaultValues];
   contentPrivacySettings = self->_contentPrivacySettings;
-  self->_contentPrivacySettings = v73;
+  self->_contentPrivacySettings = initWithDefaultValues36;
 
-  v75 = [(PTSettings *)[PXContentSyndicationSettings alloc] initWithDefaultValues];
+  initWithDefaultValues37 = [(PTSettings *)[PXContentSyndicationSettings alloc] initWithDefaultValues];
   contentSyndicationSettings = self->_contentSyndicationSettings;
-  self->_contentSyndicationSettings = v75;
+  self->_contentSyndicationSettings = initWithDefaultValues37;
 
-  v77 = [(PTSettings *)[PXMessagesUISettings alloc] initWithDefaultValues];
+  initWithDefaultValues38 = [(PTSettings *)[PXMessagesUISettings alloc] initWithDefaultValues];
   messagesUISettings = self->_messagesUISettings;
-  self->_messagesUISettings = v77;
+  self->_messagesUISettings = initWithDefaultValues38;
 
-  v79 = [(PTSettings *)[PXModelSettings alloc] initWithDefaultValues];
+  initWithDefaultValues39 = [(PTSettings *)[PXModelSettings alloc] initWithDefaultValues];
   model = self->_model;
-  self->_model = v79;
+  self->_model = initWithDefaultValues39;
 
-  v81 = [(PTSettings *)[PXOneUpSettings alloc] initWithDefaultValues];
+  initWithDefaultValues40 = [(PTSettings *)[PXOneUpSettings alloc] initWithDefaultValues];
   oneUpSettings = self->_oneUpSettings;
-  self->_oneUpSettings = v81;
+  self->_oneUpSettings = initWithDefaultValues40;
 
-  v83 = [(PTSettings *)[PXPhotosDataSourceSettings alloc] initWithDefaultValues];
+  initWithDefaultValues41 = [(PTSettings *)[PXPhotosDataSourceSettings alloc] initWithDefaultValues];
   photosDataSource = self->_photosDataSource;
-  self->_photosDataSource = v83;
+  self->_photosDataSource = initWithDefaultValues41;
 
-  v85 = [(PTSettings *)[PXPhotosDetailsSettings alloc] initWithDefaultValues];
+  initWithDefaultValues42 = [(PTSettings *)[PXPhotosDetailsSettings alloc] initWithDefaultValues];
   photosDetails = self->_photosDetails;
-  self->_photosDetails = v85;
+  self->_photosDetails = initWithDefaultValues42;
 
-  v87 = [(PTSettings *)[PXSearchSettings alloc] initWithDefaultValues];
+  initWithDefaultValues43 = [(PTSettings *)[PXSearchSettings alloc] initWithDefaultValues];
   searchSettings = self->_searchSettings;
-  self->_searchSettings = v87;
+  self->_searchSettings = initWithDefaultValues43;
 
-  v89 = [(PTSettings *)[PXSharingSettings alloc] initWithDefaultValues];
+  initWithDefaultValues44 = [(PTSettings *)[PXSharingSettings alloc] initWithDefaultValues];
   sharingSettings = self->_sharingSettings;
-  self->_sharingSettings = v89;
+  self->_sharingSettings = initWithDefaultValues44;
 
-  v91 = [(PTSettings *)[PXSharedAlbumsSettings alloc] initWithDefaultValues];
+  initWithDefaultValues45 = [(PTSettings *)[PXSharedAlbumsSettings alloc] initWithDefaultValues];
   sharedAlbumsSettings = self->_sharedAlbumsSettings;
-  self->_sharedAlbumsSettings = v91;
+  self->_sharedAlbumsSettings = initWithDefaultValues45;
 
-  v93 = [(PTSettings *)[PXSharedCollectionsSettings alloc] initWithDefaultValues];
+  initWithDefaultValues46 = [(PTSettings *)[PXSharedCollectionsSettings alloc] initWithDefaultValues];
   sharedCollectionsSettings = self->_sharedCollectionsSettings;
-  self->_sharedCollectionsSettings = v93;
+  self->_sharedCollectionsSettings = initWithDefaultValues46;
 
-  v95 = [(PTSettings *)[PXGenerativeStorySettings alloc] initWithDefaultValues];
+  initWithDefaultValues47 = [(PTSettings *)[PXGenerativeStorySettings alloc] initWithDefaultValues];
   generativeStorySettings = self->_generativeStorySettings;
-  self->_generativeStorySettings = v95;
+  self->_generativeStorySettings = initWithDefaultValues47;
 
-  v97 = [(PTSettings *)[PXStickersSettings alloc] initWithDefaultValues];
+  initWithDefaultValues48 = [(PTSettings *)[PXStickersSettings alloc] initWithDefaultValues];
   stickersSettings = self->_stickersSettings;
-  self->_stickersSettings = v97;
+  self->_stickersSettings = initWithDefaultValues48;
 
-  v99 = [(PTSettings *)[PXTilingSettings alloc] initWithDefaultValues];
+  initWithDefaultValues49 = [(PTSettings *)[PXTilingSettings alloc] initWithDefaultValues];
   tiling = self->_tiling;
-  self->_tiling = v99;
+  self->_tiling = initWithDefaultValues49;
 
-  v101 = [(PTSettings *)[PXAssetVariationsSettings alloc] initWithDefaultValues];
+  initWithDefaultValues50 = [(PTSettings *)[PXAssetVariationsSettings alloc] initWithDefaultValues];
   variationsSettings = self->_variationsSettings;
-  self->_variationsSettings = v101;
+  self->_variationsSettings = initWithDefaultValues50;
 
-  v103 = [(PTSettings *)[PXSwipeDownSettings alloc] initWithDefaultValues];
+  initWithDefaultValues51 = [(PTSettings *)[PXSwipeDownSettings alloc] initWithDefaultValues];
   swipeDownSettings = self->_swipeDownSettings;
-  self->_swipeDownSettings = v103;
+  self->_swipeDownSettings = initWithDefaultValues51;
 
-  v105 = [(PTSettings *)[PXMediaProviderSettings alloc] initWithDefaultValues];
+  initWithDefaultValues52 = [(PTSettings *)[PXMediaProviderSettings alloc] initWithDefaultValues];
   mediaProviderSettings = self->_mediaProviderSettings;
-  self->_mediaProviderSettings = v105;
+  self->_mediaProviderSettings = initWithDefaultValues52;
 
-  v107 = [(PTSettings *)[PXDisplayAssetViewDemoSettings alloc] initWithDefaultValues];
+  initWithDefaultValues53 = [(PTSettings *)[PXDisplayAssetViewDemoSettings alloc] initWithDefaultValues];
   assetViewDemoSettings = self->_assetViewDemoSettings;
-  self->_assetViewDemoSettings = v107;
+  self->_assetViewDemoSettings = initWithDefaultValues53;
 
-  v109 = [(PTSettings *)[PXSystemNavigationSettings alloc] initWithDefaultValues];
+  initWithDefaultValues54 = [(PTSettings *)[PXSystemNavigationSettings alloc] initWithDefaultValues];
   systemNavigationSettings = self->_systemNavigationSettings;
-  self->_systemNavigationSettings = v109;
+  self->_systemNavigationSettings = initWithDefaultValues54;
 
-  v111 = [(PTSettings *)[PXLemonadeSettings alloc] initWithDefaultValues];
+  initWithDefaultValues55 = [(PTSettings *)[PXLemonadeSettings alloc] initWithDefaultValues];
   lemonadeSettings = self->_lemonadeSettings;
-  self->_lemonadeSettings = v111;
+  self->_lemonadeSettings = initWithDefaultValues55;
 
-  v113 = [(PTSettings *)[PXSolariumSettings alloc] initWithDefaultValues];
+  initWithDefaultValues56 = [(PTSettings *)[PXSolariumSettings alloc] initWithDefaultValues];
   solariumSettings = self->_solariumSettings;
-  self->_solariumSettings = v113;
+  self->_solariumSettings = initWithDefaultValues56;
 
-  v115 = [(PTSettings *)[PXMapSettings alloc] initWithDefaultValues];
+  initWithDefaultValues57 = [(PTSettings *)[PXMapSettings alloc] initWithDefaultValues];
   mapSettings = self->_mapSettings;
-  self->_mapSettings = v115;
+  self->_mapSettings = initWithDefaultValues57;
 }
 
 - (void)setDefaultValues
@@ -277,12 +277,12 @@
   [(PXRootSettings *)self setCanShowInternalUI:1];
 }
 
-- (void)setShowLibraryFilterTip:(BOOL)a3
+- (void)setShowLibraryFilterTip:(BOOL)tip
 {
-  if (self->_showLibraryFilterTip != a3)
+  if (self->_showLibraryFilterTip != tip)
   {
-    self->_showLibraryFilterTip = a3;
-    if (a3)
+    self->_showLibraryFilterTip = tip;
+    if (tip)
     {
       v4 = @"PhotosLibraryTipContextMock";
     }
@@ -292,31 +292,31 @@
       v4 = 0;
     }
 
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v5 setValue:v4 forKey:@"TipKitOverrideAlwaysDisplayContentForContext"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults setValue:v4 forKey:@"TipKitOverrideAlwaysDisplayContentForContext"];
   }
 }
 
 - (BOOL)hideWIPAlerts
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PXRootSettingsHideWIPAlerts"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PXRootSettingsHideWIPAlerts"];
 
   return v3;
 }
 
-- (void)setHideWIPAlerts:(BOOL)a3
+- (void)setHideWIPAlerts:(BOOL)alerts
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PXRootSettingsHideWIPAlerts"];
+  alertsCopy = alerts;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:alertsCopy forKey:@"PXRootSettingsHideWIPAlerts"];
 }
 
-- (void)setCanShowInternalUI:(BOOL)a3
+- (void)setCanShowInternalUI:(BOOL)i
 {
-  v3 = a3;
-  v4 = [off_1E7721948 standardUserDefaults];
-  [v4 setInternalUIDisabled:!v3];
+  iCopy = i;
+  standardUserDefaults = [off_1E7721948 standardUserDefaults];
+  [standardUserDefaults setInternalUIDisabled:!iCopy];
 }
 
 + (id)transientProperties
@@ -325,7 +325,7 @@
   block[1] = 3221225472;
   block[2] = __37__PXRootSettings_transientProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transientProperties_onceToken_80421 != -1)
   {
     dispatch_once(&transientProperties_onceToken_80421, block);
@@ -353,7 +353,7 @@ void __37__PXRootSettings_transientProperties__block_invoke(uint64_t a1)
   v3[1] = 3221225472;
   v3[2] = __51__PXRootSettings_UI___manageHomeScreenQuickActions__block_invoke;
   v3[3] = &__block_descriptor_40_e30_v16__0__PXAlertConfiguration_8l;
-  v3[4] = a1;
+  v3[4] = self;
   v2 = [off_1E7721438 show:v3];
 }
 
@@ -387,7 +387,7 @@ void __51__PXRootSettings_UI___manageHomeScreenQuickActions__block_invoke(uint64
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v124 count:1];
   v118 = [v2 sectionWithRows:v6];
 
-  v119 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7 = MEMORY[0x1E69C6610];
   v115 = NSStringFromSelector(sel_lemonadeSettings);
   v113 = [v7 rowWithTitle:@"Lemonade" childSettingsKeyPath:v115];
@@ -527,7 +527,7 @@ void __51__PXRootSettings_UI___manageHomeScreenQuickActions__block_invoke(uint64
   v33 = [v31 rowWithTitle:@"Shared Library" childSettingsKeyPath:v32];
   v123[49] = v33;
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v123 count:50];
-  [v119 addObjectsFromArray:v34];
+  [array addObjectsFromArray:v34];
 
   v35 = MEMORY[0x1E69C6610];
   v116 = NSStringFromSelector(sel_cplStatusSettings);
@@ -550,19 +550,19 @@ void __51__PXRootSettings_UI___manageHomeScreenQuickActions__block_invoke(uint64
   v120[1] = 3221225472;
   v120[2] = __46__PXRootSettings_UI__settingsControllerModule__block_invoke;
   v120[3] = &__block_descriptor_40_e11_B24__0_8_16l;
-  v120[4] = a1;
+  v120[4] = self;
   v45 = [MEMORY[0x1E69C6658] actionWithHandler:v120];
   v46 = [v44 rowWithTitle:@"Home Screen Quick Actions" action:v45];
   v122[5] = v46;
   v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:v122 count:6];
-  [v119 addObjectsFromArray:v47];
+  [array addObjectsFromArray:v47];
 
-  v48 = [MEMORY[0x1E69C6638] sectionWithRows:v119];
-  v49 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  v48 = [MEMORY[0x1E69C6638] sectionWithRows:array];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v50 = MEMORY[0x1E69C6638];
   v121[0] = v118;
   v121[1] = v48;
-  v121[2] = v49;
+  v121[2] = px_restoreDefaultsSection;
   v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v121 count:3];
   v52 = [v50 moduleWithTitle:@"PhotosUICore" contents:v51];
 

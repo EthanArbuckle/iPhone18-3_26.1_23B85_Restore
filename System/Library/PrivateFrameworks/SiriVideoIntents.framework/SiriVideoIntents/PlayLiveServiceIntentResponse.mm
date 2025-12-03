@@ -1,12 +1,12 @@
 @interface PlayLiveServiceIntentResponse
-- (PlayLiveServiceIntentResponse)initWithPropertiesByName:(id)a3;
+- (PlayLiveServiceIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation PlayLiveServiceIntentResponse
 
-- (PlayLiveServiceIntentResponse)initWithPropertiesByName:(id)a3
+- (PlayLiveServiceIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_2698549E4();
   }

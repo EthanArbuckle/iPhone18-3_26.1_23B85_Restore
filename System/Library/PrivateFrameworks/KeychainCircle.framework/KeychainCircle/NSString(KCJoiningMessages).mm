@@ -15,8 +15,8 @@
     goto LABEL_4;
   }
 
-  v8 = [v5 bytes];
-  if (v6 != v8 + [v5 length])
+  bytes = [v5 bytes];
+  if (v6 != bytes + [v5 length])
   {
     KCJoiningErrorCreate(1, a4, @"extra data in string", v9, v10, v11, v12, v13, v16);
 LABEL_4:

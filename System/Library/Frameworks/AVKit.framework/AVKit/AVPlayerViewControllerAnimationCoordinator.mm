@@ -1,17 +1,17 @@
 @interface AVPlayerViewControllerAnimationCoordinator
 - (AVPlayerViewControllerAnimationCoordinator)init;
-- (void)addCoordinatedAnimations:(id)a3 completion:(id)a4;
-- (void)didFinishAnimations:(BOOL)a3;
+- (void)addCoordinatedAnimations:(id)animations completion:(id)completion;
+- (void)didFinishAnimations:(BOOL)animations;
 - (void)performCoordinatedAnimations;
 @end
 
 @implementation AVPlayerViewControllerAnimationCoordinator
 
-- (void)didFinishAnimations:(BOOL)a3
+- (void)didFinishAnimations:(BOOL)animations
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(AVPlayerViewControllerAnimationCoordinator *)self completions];
-  v5 = [v4 copy];
+  completions = [(AVPlayerViewControllerAnimationCoordinator *)self completions];
+  v5 = [completions copy];
 
   completions = self->_completions;
   self->_completions = 0;
@@ -47,15 +47,15 @@
     while (v9);
   }
 
-  v12 = [(AVPlayerViewControllerAnimationCoordinator *)self completions];
-  [v12 removeAllObjects];
+  completions2 = [(AVPlayerViewControllerAnimationCoordinator *)self completions];
+  [completions2 removeAllObjects];
 }
 
 - (void)performCoordinatedAnimations
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(AVPlayerViewControllerAnimationCoordinator *)self animations];
-  v4 = [v3 copy];
+  animations = [(AVPlayerViewControllerAnimationCoordinator *)self animations];
+  v4 = [animations copy];
 
   animations = self->_animations;
   self->_animations = 0;
@@ -91,30 +91,30 @@
     while (v8);
   }
 
-  v11 = [(AVPlayerViewControllerAnimationCoordinator *)self animations];
-  [v11 removeAllObjects];
+  animations2 = [(AVPlayerViewControllerAnimationCoordinator *)self animations];
+  [animations2 removeAllObjects];
 }
 
-- (void)addCoordinatedAnimations:(id)a3 completion:(id)a4
+- (void)addCoordinatedAnimations:(id)animations completion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(AVPlayerViewControllerAnimationCoordinator *)self animations];
+  animationsCopy = animations;
+  completionCopy = completion;
+  animations = [(AVPlayerViewControllerAnimationCoordinator *)self animations];
 
-  if (v7)
+  if (animations)
   {
-    if (v12)
+    if (animationsCopy)
     {
-      v8 = [(AVPlayerViewControllerAnimationCoordinator *)self animations];
-      v9 = [v12 copy];
-      [v8 addObject:v9];
+      animations2 = [(AVPlayerViewControllerAnimationCoordinator *)self animations];
+      v9 = [animationsCopy copy];
+      [animations2 addObject:v9];
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v10 = [(AVPlayerViewControllerAnimationCoordinator *)self completions];
-      v11 = [v6 copy];
-      [v10 addObject:v11];
+      completions = [(AVPlayerViewControllerAnimationCoordinator *)self completions];
+      v11 = [completionCopy copy];
+      [completions addObject:v11];
     }
   }
 
@@ -131,13 +131,13 @@
   v2 = [(AVPlayerViewControllerAnimationCoordinator *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     animations = v2->_animations;
-    v2->_animations = v3;
+    v2->_animations = array;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     completions = v2->_completions;
-    v2->_completions = v5;
+    v2->_completions = array2;
   }
 
   return v2;

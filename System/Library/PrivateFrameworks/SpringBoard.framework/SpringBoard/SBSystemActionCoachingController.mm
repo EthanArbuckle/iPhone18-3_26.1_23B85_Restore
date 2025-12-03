@@ -1,101 +1,101 @@
 @interface SBSystemActionCoachingController
-- (id)initWithHUDController:(void *)a3 ringerControl:(void *)a4 activityManager:(void *)a5 applicationController:(void *)a6 doNotDisturbStateMonitor:(void *)a7 flashlightActivityManager:(void *)a8 bannerManager:;
-- (id)viewForSystemGestureRecognizer:(id)a3;
-- (uint64_t)_canPresentCoachingForAction:(uint64_t)a1;
+- (id)initWithHUDController:(void *)controller ringerControl:(void *)control activityManager:(void *)manager applicationController:(void *)applicationController doNotDisturbStateMonitor:(void *)monitor flashlightActivityManager:(void *)activityManager bannerManager:;
+- (id)viewForSystemGestureRecognizer:(id)recognizer;
+- (uint64_t)_canPresentCoachingForAction:(uint64_t)action;
 - (void)_acquireBannerWindowLevelAssertion;
-- (void)_backlightLevelChanged:(id)a3;
+- (void)_backlightLevelChanged:(id)changed;
 - (void)_dismissCoaching;
-- (void)_gestureRecognizerFailed:(id)a3;
+- (void)_gestureRecognizerFailed:(id)failed;
 - (void)_invalidateBannerWindowLevelAssertion;
 - (void)_startObservingSignalsToDismissIfNeeded;
 - (void)_stopObservingSignalsToDismissIfNeeded;
-- (void)_systemApertureLayoutChanged:(id)a3;
+- (void)_systemApertureLayoutChanged:(id)changed;
 - (void)dealloc;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)systemActionCoachingHUDViewController:(id)a3 didBeginTransitionToState:(int64_t)a4;
-- (void)systemActionPreviewCoordinator:(id)a3 didBeginPreview:(id)a4 forAction:(id)a5;
-- (void)systemActionPreviewCoordinator:(id)a3 didEndPreview:(id)a4 forAction:(id)a5 withResult:(unint64_t)a6;
-- (void)systemActionPreviewCoordinator:(id)a3 didInvalidateExpansionOfPreview:(id)a4 forAction:(id)a5 withResult:(unint64_t)a6;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)systemActionCoachingHUDViewController:(id)controller didBeginTransitionToState:(int64_t)state;
+- (void)systemActionPreviewCoordinator:(id)coordinator didBeginPreview:(id)preview forAction:(id)action;
+- (void)systemActionPreviewCoordinator:(id)coordinator didEndPreview:(id)preview forAction:(id)action withResult:(unint64_t)result;
+- (void)systemActionPreviewCoordinator:(id)coordinator didInvalidateExpansionOfPreview:(id)preview forAction:(id)action withResult:(unint64_t)result;
 @end
 
 @implementation SBSystemActionCoachingController
 
-- (id)initWithHUDController:(void *)a3 ringerControl:(void *)a4 activityManager:(void *)a5 applicationController:(void *)a6 doNotDisturbStateMonitor:(void *)a7 flashlightActivityManager:(void *)a8 bannerManager:
+- (id)initWithHUDController:(void *)controller ringerControl:(void *)control activityManager:(void *)manager applicationController:(void *)applicationController doNotDisturbStateMonitor:(void *)monitor flashlightActivityManager:(void *)activityManager bannerManager:
 {
   v16 = a2;
-  v31 = a3;
-  v30 = a4;
-  v29 = a5;
-  v28 = a6;
-  v27 = a7;
-  v17 = a8;
-  if (a1)
+  controllerCopy = controller;
+  controlCopy = control;
+  managerCopy = manager;
+  applicationControllerCopy = applicationController;
+  monitorCopy = monitor;
+  activityManagerCopy = activityManager;
+  if (self)
   {
     if (!v16)
     {
       [SBSystemActionCoachingController initWithHUDController:? ringerControl:? activityManager:? applicationController:? doNotDisturbStateMonitor:? flashlightActivityManager:? bannerManager:?];
     }
 
-    if (!v31)
+    if (!controllerCopy)
     {
       [SBSystemActionCoachingController initWithHUDController:? ringerControl:? activityManager:? applicationController:? doNotDisturbStateMonitor:? flashlightActivityManager:? bannerManager:?];
     }
 
-    if (!v30)
+    if (!controlCopy)
     {
       [SBSystemActionCoachingController initWithHUDController:? ringerControl:? activityManager:? applicationController:? doNotDisturbStateMonitor:? flashlightActivityManager:? bannerManager:?];
     }
 
-    if (!v29)
+    if (!managerCopy)
     {
       [SBSystemActionCoachingController initWithHUDController:? ringerControl:? activityManager:? applicationController:? doNotDisturbStateMonitor:? flashlightActivityManager:? bannerManager:?];
     }
 
-    if (!v28)
+    if (!applicationControllerCopy)
     {
       [SBSystemActionCoachingController initWithHUDController:? ringerControl:? activityManager:? applicationController:? doNotDisturbStateMonitor:? flashlightActivityManager:? bannerManager:?];
     }
 
-    if (!v27)
+    if (!monitorCopy)
     {
       [SBSystemActionCoachingController initWithHUDController:? ringerControl:? activityManager:? applicationController:? doNotDisturbStateMonitor:? flashlightActivityManager:? bannerManager:?];
     }
 
-    if (!v17)
+    if (!activityManagerCopy)
     {
       [SBSystemActionCoachingController initWithHUDController:? ringerControl:? activityManager:? applicationController:? doNotDisturbStateMonitor:? flashlightActivityManager:? bannerManager:?];
     }
 
-    v32.receiver = a1;
+    v32.receiver = self;
     v32.super_class = SBSystemActionCoachingController;
     v18 = objc_msgSendSuper2(&v32, sel_init);
-    a1 = v18;
+    self = v18;
     if (v18)
     {
       objc_storeStrong(v18 + 2, a2);
-      objc_storeStrong(a1 + 3, a3);
-      objc_storeStrong(a1 + 4, a4);
-      objc_storeStrong(a1 + 5, a5);
-      objc_storeStrong(a1 + 6, a6);
-      objc_storeStrong(a1 + 7, a7);
-      objc_storeStrong(a1 + 8, a8);
+      objc_storeStrong(self + 3, controller);
+      objc_storeStrong(self + 4, control);
+      objc_storeStrong(self + 5, manager);
+      objc_storeStrong(self + 6, applicationController);
+      objc_storeStrong(self + 7, monitor);
+      objc_storeStrong(self + 8, activityManager);
       v19 = +[SBSystemActionDomain rootSettings];
-      v20 = [v19 coachingSettings];
-      v21 = a1[9];
-      a1[9] = v20;
+      coachingSettings = [v19 coachingSettings];
+      v21 = self[9];
+      self[9] = coachingSettings;
 
-      [a1[9] addKeyObserver:a1];
-      v22 = [a1[9] policyClassName];
-      v23 = objc_alloc_init(NSClassFromString(v22));
-      v24 = a1[10];
-      a1[10] = v23;
+      [self[9] addKeyObserver:self];
+      policyClassName = [self[9] policyClassName];
+      v23 = objc_alloc_init(NSClassFromString(policyClassName));
+      v24 = self[10];
+      self[10] = v23;
 
-      v25 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v25 addObserver:a1 selector:sel__systemApertureLayoutChanged_ name:@"SBSystemApertureLayoutDidChangeNotification" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__systemApertureLayoutChanged_ name:@"SBSystemApertureLayoutDidChangeNotification" object:0];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)dealloc
@@ -107,60 +107,60 @@
   [(SBSystemActionCoachingController *)&v3 dealloc];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_settings == a3 && [a4 isEqualToString:@"policyClassName"])
+  if (self->_settings == settings && [key isEqualToString:@"policyClassName"])
   {
-    v7 = [(SBSystemActionCoachingSettings *)self->_settings policyClassName];
-    v5 = objc_alloc_init(NSClassFromString(v7));
+    policyClassName = [(SBSystemActionCoachingSettings *)self->_settings policyClassName];
+    v5 = objc_alloc_init(NSClassFromString(policyClassName));
     policy = self->_policy;
     self->_policy = v5;
   }
 }
 
-- (void)systemActionCoachingHUDViewController:(id)a3 didBeginTransitionToState:(int64_t)a4
+- (void)systemActionCoachingHUDViewController:(id)controller didBeginTransitionToState:(int64_t)state
 {
-  v6 = a3;
-  if ((a4 - 1) < 2)
+  controllerCopy = controller;
+  if ((state - 1) < 2)
   {
-    v7 = v6;
+    v7 = controllerCopy;
     [(SBSystemActionCoachingController *)self _startObservingSignalsToDismissIfNeeded];
     [(SBSystemActionCoachingController *)self _acquireBannerWindowLevelAssertion];
   }
 
   else
   {
-    if (a4)
+    if (state)
     {
       goto LABEL_3;
     }
 
-    v7 = v6;
+    v7 = controllerCopy;
     [(SBSystemActionCoachingController *)self _stopObservingSignalsToDismissIfNeeded];
     [(SBSystemActionCoachingController *)self _invalidateBannerWindowLevelAssertion];
   }
 
-  v6 = v7;
+  controllerCopy = v7;
 LABEL_3:
 }
 
-- (void)systemActionPreviewCoordinator:(id)a3 didBeginPreview:(id)a4 forAction:(id)a5
+- (void)systemActionPreviewCoordinator:(id)coordinator didBeginPreview:(id)preview forAction:(id)action
 {
-  [(SBSystemActionCoachingPolicy *)self->_policy noteDidBeginPreview:a4 forAction:a5];
+  [(SBSystemActionCoachingPolicy *)self->_policy noteDidBeginPreview:preview forAction:action];
   v7 = [(SBHUDController *)self->_HUDController knownHUDControllerForIdentifier:*MEMORY[0x277D67188]];
-  v6 = [v7 HUDViewController];
-  if ([(SBSystemActionCoachingHUDViewController *)v6 state]== 1)
+  hUDViewController = [v7 HUDViewController];
+  if ([(SBSystemActionCoachingHUDViewController *)hUDViewController state]== 1)
   {
-    [(SBSystemActionCoachingHUDViewController *)v6 transitionToState:1 animated:0 completion:?];
+    [(SBSystemActionCoachingHUDViewController *)hUDViewController transitionToState:1 animated:0 completion:?];
   }
 }
 
-- (void)systemActionPreviewCoordinator:(id)a3 didInvalidateExpansionOfPreview:(id)a4 forAction:(id)a5 withResult:(unint64_t)a6
+- (void)systemActionPreviewCoordinator:(id)coordinator didInvalidateExpansionOfPreview:(id)preview forAction:(id)action withResult:(unint64_t)result
 {
   v19 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  [(SBSystemActionCoachingPolicy *)self->_policy noteDidInvalidateExpansionOfPreview:a4 forAction:v9 withResult:a6];
-  if (!a6)
+  actionCopy = action;
+  [(SBSystemActionCoachingPolicy *)self->_policy noteDidInvalidateExpansionOfPreview:preview forAction:actionCopy withResult:result];
+  if (!result)
   {
     [(SBSystemActionCoachingController *)self _dismissCoaching];
     goto LABEL_6;
@@ -168,18 +168,18 @@ LABEL_3:
 
   v10 = *MEMORY[0x277D67188];
   v11 = [(SBHUDController *)self->_HUDController knownHUDControllerForIdentifier:*MEMORY[0x277D67188]];
-  v12 = [v11 HUDViewController];
-  if ([(SBSystemActionCoachingPolicy *)self->_policy wantsCoachingPresentedForAction:v9])
+  hUDViewController = [v11 HUDViewController];
+  if ([(SBSystemActionCoachingPolicy *)self->_policy wantsCoachingPresentedForAction:actionCopy])
   {
-    if (([(SBSystemActionCoachingController *)self _canPresentCoachingForAction:v9]& 1) == 0)
+    if (([(SBSystemActionCoachingController *)self _canPresentCoachingForAction:actionCopy]& 1) == 0)
     {
       v14 = SBLogSystemActionCoaching();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138543618;
-        v16 = self;
+        selfCopy = self;
         v17 = 2114;
-        v18 = v9;
+        v18 = actionCopy;
         _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "(%{public}@) Delegate denied presentation of coaching for action %{public}@", &v15, 0x16u);
       }
 
@@ -193,18 +193,18 @@ LABEL_3:
       [(SBSystemActionCoachingHUDViewController *)v13 setDelegate:?];
       [(SBSystemActionCoachingHUDViewController *)v13 setSystemApertureFrames:?];
       v11 = [(SBHUDController *)self->_HUDController HUDSessionForViewController:v13 identifier:v10];
-      v12 = v13;
+      hUDViewController = v13;
     }
 
-    [(SBSystemActionCoachingHUDViewController *)v12 setAction:v9];
+    [(SBSystemActionCoachingHUDViewController *)hUDViewController setAction:actionCopy];
     [v11 presentWithDismissalInterval:0 animated:60.0];
     goto LABEL_4;
   }
 
-  if ([(SBSystemActionCoachingHUDViewController *)v12 state]== 2)
+  if ([(SBSystemActionCoachingHUDViewController *)hUDViewController state]== 2)
   {
 LABEL_4:
-    [(SBSystemActionCoachingHUDViewController *)v12 transitionToState:1 animated:0 completion:?];
+    [(SBSystemActionCoachingHUDViewController *)hUDViewController transitionToState:1 animated:0 completion:?];
   }
 
 LABEL_5:
@@ -212,40 +212,40 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)systemActionPreviewCoordinator:(id)a3 didEndPreview:(id)a4 forAction:(id)a5 withResult:(unint64_t)a6
+- (void)systemActionPreviewCoordinator:(id)coordinator didEndPreview:(id)preview forAction:(id)action withResult:(unint64_t)result
 {
   policy = self->_policy;
-  v9 = a5;
-  [(SBSystemActionCoachingPolicy *)policy noteDidEndPreview:a4 forAction:v9];
-  LODWORD(a4) = [(SBSystemActionCoachingPolicy *)self->_policy wantsCoachingDismissedForAction:v9];
+  actionCopy = action;
+  [(SBSystemActionCoachingPolicy *)policy noteDidEndPreview:preview forAction:actionCopy];
+  LODWORD(preview) = [(SBSystemActionCoachingPolicy *)self->_policy wantsCoachingDismissedForAction:actionCopy];
 
-  if (a4)
+  if (preview)
   {
 
     [(SBSystemActionCoachingController *)self _dismissCoaching];
   }
 }
 
-- (id)viewForSystemGestureRecognizer:(id)a3
+- (id)viewForSystemGestureRecognizer:(id)recognizer
 {
-  if (self->_dismissGestureRecognizer == a3)
+  if (self->_dismissGestureRecognizer == recognizer)
   {
     v4 = [(SBHUDController *)self->_HUDController knownHUDControllerForIdentifier:*MEMORY[0x277D67188]];
-    v5 = [v4 HUDViewController];
-    v3 = [v5 view];
+    hUDViewController = [v4 HUDViewController];
+    view = [hUDViewController view];
   }
 
   else
   {
-    v3 = 0;
+    view = 0;
   }
 
-  return v3;
+  return view;
 }
 
-- (void)_gestureRecognizerFailed:(id)a3
+- (void)_gestureRecognizerFailed:(id)failed
 {
-  if (self->_dismissGestureRecognizer == a3)
+  if (self->_dismissGestureRecognizer == failed)
   {
     [(SBSystemActionCoachingController *)self _dismissCoaching];
   }
@@ -261,30 +261,30 @@ uint64_t __52__SBSystemActionCoachingController__dismissCoaching__block_invoke(u
   return result;
 }
 
-- (void)_backlightLevelChanged:(id)a3
+- (void)_backlightLevelChanged:(id)changed
 {
-  v13 = [a3 userInfo];
-  v4 = [v13 objectForKey:*MEMORY[0x277D67A10]];
-  v5 = [v4 integerValue];
+  userInfo = [changed userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x277D67A10]];
+  integerValue = [v4 integerValue];
 
-  v6 = [v13 objectForKey:*MEMORY[0x277D67A30]];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D67A30]];
   [v6 floatValue];
   v8 = v7;
 
-  v9 = [v13 objectForKey:*MEMORY[0x277D67A28]];
+  v9 = [userInfo objectForKey:*MEMORY[0x277D67A28]];
   [v9 floatValue];
   v11 = v10;
 
-  if (v5 == 3 && v11 > v8)
+  if (integerValue == 3 && v11 > v8)
   {
     [(SBSystemActionCoachingController *)self _dismissCoaching];
   }
 }
 
-- (void)_systemApertureLayoutChanged:(id)a3
+- (void)_systemApertureLayoutChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"SBSystemApertureFrames"];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:@"SBSystemApertureFrames"];
   obj = [v5 copy];
 
   objc_storeStrong(&self->_systemApertureFrames, obj);
@@ -292,110 +292,110 @@ uint64_t __52__SBSystemActionCoachingController__dismissCoaching__block_invoke(u
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 HUDViewController];
-    [(SBSystemActionCoachingHUDViewController *)v8 setSystemApertureFrames:?];
+    hUDViewController = [v6 HUDViewController];
+    [(SBSystemActionCoachingHUDViewController *)hUDViewController setSystemApertureFrames:?];
   }
 }
 
 - (void)_stopObservingSignalsToDismissIfNeeded
 {
-  if (a1 && *(a1 + 96))
+  if (self && *(self + 96))
   {
-    v2 = [*(a1 + 16) windowScene];
-    v3 = [v2 systemGestureManager];
-    [v3 removeGestureRecognizer:*(a1 + 96)];
+    windowScene = [*(self + 16) windowScene];
+    systemGestureManager = [windowScene systemGestureManager];
+    [systemGestureManager removeGestureRecognizer:*(self + 96)];
 
-    v4 = *(a1 + 96);
-    *(a1 + 96) = 0;
+    v4 = *(self + 96);
+    *(self + 96) = 0;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 removeObserver:a1 name:*MEMORY[0x277D67A20] object:0];
-    [v5 removeObserver:a1 name:*MEMORY[0x277D67AF0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D67A20] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D67AF0] object:0];
   }
 }
 
 - (void)_invalidateBannerWindowLevelAssertion
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 104);
+    v2 = *(self + 104);
     if (v2)
     {
       [v2 invalidate];
-      v3 = *(a1 + 104);
-      *(a1 + 104) = 0;
+      v3 = *(self + 104);
+      *(self + 104) = 0;
     }
   }
 }
 
 - (void)_startObservingSignalsToDismissIfNeeded
 {
-  if (a1 && !*(a1 + 96))
+  if (self && !*(self + 96))
   {
     v2 = objc_alloc_init(SBFailingSystemGestureRecognizer);
-    [(SBFailingSystemGestureRecognizer *)v2 setDelegate:a1];
-    v3 = *(a1 + 96);
-    *(a1 + 96) = v2;
+    [(SBFailingSystemGestureRecognizer *)v2 setDelegate:self];
+    v3 = *(self + 96);
+    *(self + 96) = v2;
     v4 = v2;
 
-    v5 = [*(a1 + 16) windowScene];
-    v6 = [v5 systemGestureManager];
-    [v6 addGestureRecognizer:*(a1 + 96) withType:138];
+    windowScene = [*(self + 16) windowScene];
+    systemGestureManager = [windowScene systemGestureManager];
+    [systemGestureManager addGestureRecognizer:*(self + 96) withType:138];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:a1 selector:sel__backlightLevelChanged_ name:*MEMORY[0x277D67A20] object:0];
-    [v7 addObserver:a1 selector:sel__volumeButtonPressed_ name:*MEMORY[0x277D67AF0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__backlightLevelChanged_ name:*MEMORY[0x277D67A20] object:0];
+    [defaultCenter addObserver:self selector:sel__volumeButtonPressed_ name:*MEMORY[0x277D67AF0] object:0];
   }
 }
 
 - (void)_acquireBannerWindowLevelAssertion
 {
-  if (a1 && !*(a1 + 104))
+  if (self && !*(self + 104))
   {
-    v2 = *(a1 + 64);
+    v2 = *(self + 64);
     v3 = *MEMORY[0x277D76A38] + 1.0;
-    v6 = [*(a1 + 16) windowScene];
-    v4 = [v2 acquireWindowLevelAssertionWithPriority:1 windowLevel:v6 windowScene:@"Coaching HUD Presentation" reason:v3];
-    v5 = *(a1 + 104);
-    *(a1 + 104) = v4;
+    windowScene = [*(self + 16) windowScene];
+    v4 = [v2 acquireWindowLevelAssertionWithPriority:1 windowLevel:windowScene windowScene:@"Coaching HUD Presentation" reason:v3];
+    v5 = *(self + 104);
+    *(self + 104) = v4;
   }
 }
 
 - (void)_dismissCoaching
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 16) knownHUDControllerForIdentifier:*MEMORY[0x277D67188]];
-    v2 = [v1 HUDViewController];
+    v1 = [*(self + 16) knownHUDControllerForIdentifier:*MEMORY[0x277D67188]];
+    hUDViewController = [v1 HUDViewController];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __52__SBSystemActionCoachingController__dismissCoaching__block_invoke;
     v4[3] = &unk_2783A9398;
     v5 = v1;
     v3 = v1;
-    [(SBSystemActionCoachingHUDViewController *)v2 transitionToState:1 animated:v4 completion:?];
+    [(SBSystemActionCoachingHUDViewController *)hUDViewController transitionToState:1 animated:v4 completion:?];
   }
 }
 
-- (uint64_t)_canPresentCoachingForAction:(uint64_t)a1
+- (uint64_t)_canPresentCoachingForAction:(uint64_t)action
 {
   v3 = a2;
-  if (a1)
+  if (action)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    WeakRetained = objc_loadWeakRetained((action + 8));
     v5 = WeakRetained;
     if (WeakRetained)
     {
-      a1 = [WeakRetained systemActionCoachingController:a1 canPresentCoachingForAction:v3];
+      action = [WeakRetained systemActionCoachingController:action canPresentCoachingForAction:v3];
     }
 
     else
     {
-      a1 = 1;
+      action = 1;
     }
   }
 
-  return a1;
+  return action;
 }
 
 - (void)initWithHUDController:(char *)a1 ringerControl:activityManager:applicationController:doNotDisturbStateMonitor:flashlightActivityManager:bannerManager:.cold.1(char *a1)

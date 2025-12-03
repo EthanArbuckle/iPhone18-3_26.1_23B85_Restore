@@ -1,20 +1,20 @@
 @interface CSLPRFPerApplicationSettingsModel
 - (CSLPRFPerApplicationSettingsCustomizationDelegate)customizationDelegate;
-- (CSLPRFPerApplicationSettingsModel)initWithApplicationLibrary:(id)a3 perApplicationSettingsClass:(Class)a4;
+- (CSLPRFPerApplicationSettingsModel)initWithApplicationLibrary:(id)library perApplicationSettingsClass:(Class)class;
 - (NSArray)allApplicationSettings;
-- (id)_globalSettingsForCustomizedSettings:(id)a3;
-- (id)_lock_customizedSettingsForBundleIdentifier:(id)a3;
+- (id)_globalSettingsForCustomizedSettings:(id)settings;
+- (id)_lock_customizedSettingsForBundleIdentifier:(id)identifier;
 - (id)bundleIdentifiersWithSettings;
 - (id)globalSettings;
-- (id)resolvedSettingsForApplication:(id)a3;
-- (id)resolvedSettingsForBundleIdentifier:(id)a3;
-- (id)settingsForApplication:(id)a3;
-- (id)settingsForBundleIdentifier:(id)a3;
-- (id)settingsObjectForBundleId:(id)a3 customizedSettings:(id)a4 existingSettings:(id)a5;
-- (void)_processAddedOrUpdatedApplications:(id)a3;
-- (void)applicationLibrary:(id)a3 didRemoveApplications:(id)a4;
-- (void)didUpdateSettings:(id)a3;
-- (void)twoWaySyncSettingDidUpdate:(id)a3;
+- (id)resolvedSettingsForApplication:(id)application;
+- (id)resolvedSettingsForBundleIdentifier:(id)identifier;
+- (id)settingsForApplication:(id)application;
+- (id)settingsForBundleIdentifier:(id)identifier;
+- (id)settingsObjectForBundleId:(id)id customizedSettings:(id)settings existingSettings:(id)existingSettings;
+- (void)_processAddedOrUpdatedApplications:(id)applications;
+- (void)applicationLibrary:(id)library didRemoveApplications:(id)applications;
+- (void)didUpdateSettings:(id)settings;
+- (void)twoWaySyncSettingDidUpdate:(id)update;
 @end
 
 @implementation CSLPRFPerApplicationSettingsModel
@@ -26,10 +26,10 @@
   return WeakRetained;
 }
 
-- (void)didUpdateSettings:(id)a3
+- (void)didUpdateSettings:(id)settings
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = [(CSLPRFTwoWaySyncSetting *)self->_syncedSettings safeValueOfType:objc_opt_class()];
   v6 = v5;
   v7 = MEMORY[0x277CBEC10];
@@ -40,37 +40,37 @@
 
   v8 = v7;
 
-  v9 = [v4 identifier];
-  v10 = [v8 bs_safeObjectForKey:v9 ofType:{-[objc_class serializationClass](self->_perApplicationSettingsClass, "serializationClass")}];
-  if ([v4 hasCustomSetting])
+  identifier = [settingsCopy identifier];
+  v10 = [v8 bs_safeObjectForKey:identifier ofType:{-[objc_class serializationClass](self->_perApplicationSettingsClass, "serializationClass")}];
+  if ([settingsCopy hasCustomSetting])
   {
-    v11 = [v4 serialize];
+    serialize = [settingsCopy serialize];
   }
 
   else
   {
-    v11 = 0;
+    serialize = 0;
   }
 
   if ((BSEqualObjects() & 1) == 0)
   {
     v12 = [v8 mutableCopy];
     v13 = v12;
-    if (v11)
+    if (serialize)
     {
-      [v12 setValue:v11 forKey:v9];
+      [v12 setValue:serialize forKey:identifier];
     }
 
     else
     {
-      [v12 removeObjectForKey:v9];
+      [v12 removeObjectForKey:identifier];
     }
 
     syncedSettings = self->_syncedSettings;
     v15 = [v13 copy];
     [(CSLPRFTwoWaySyncSetting *)syncedSettings setValue:v15];
 
-    if ([v4 isGlobalDefault])
+    if ([settingsCopy isGlobalDefault])
     {
       observationHelper = self->_observationHelper;
       v23[0] = MEMORY[0x277D85DD0];
@@ -78,13 +78,13 @@
       v23[2] = __55__CSLPRFPerApplicationSettingsModel_didUpdateSettings___block_invoke;
       v23[3] = &unk_278744D08;
       v23[4] = self;
-      v24 = v4;
+      v24 = settingsCopy;
       [(CSLPRFObservationHelper *)observationHelper notifyObserversWithBlock:v23];
     }
 
     else
     {
-      v25[0] = v4;
+      v25[0] = settingsCopy;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
       v18 = self->_observationHelper;
       v21[0] = MEMORY[0x277D85DD0];
@@ -101,19 +101,19 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_globalSettingsForCustomizedSettings:(id)a3
+- (id)_globalSettingsForCustomizedSettings:(id)settings
 {
   perApplicationSettingsClass = self->_perApplicationSettingsClass;
-  v5 = a3;
-  v6 = [(objc_class *)perApplicationSettingsClass globalDefaultIdentifer];
-  v7 = [v5 bs_safeObjectForKey:v6 ofType:{-[objc_class serializationClass](self->_perApplicationSettingsClass, "serializationClass")}];
+  settingsCopy = settings;
+  globalDefaultIdentifer = [(objc_class *)perApplicationSettingsClass globalDefaultIdentifer];
+  v7 = [settingsCopy bs_safeObjectForKey:globalDefaultIdentifer ofType:{-[objc_class serializationClass](self->_perApplicationSettingsClass, "serializationClass")}];
 
   v8 = [(objc_class *)self->_perApplicationSettingsClass globalSettingsWithSerialization:v7 delegate:self];
 
   return v8;
 }
 
-- (void)twoWaySyncSettingDidUpdate:(id)a3
+- (void)twoWaySyncSettingDidUpdate:(id)update
 {
   v52 = *MEMORY[0x277D85DE8];
   v4 = [(CSLPRFTwoWaySyncSetting *)self->_syncedSettings safeValueOfType:objc_opt_class()];
@@ -123,8 +123,8 @@
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v46 objects:v51 count:16];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (v6)
   {
     v7 = v6;
@@ -135,12 +135,12 @@
       {
         if (*v47 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v46 + 1) + 8 * i);
-        v11 = [(objc_class *)self->_perApplicationSettingsClass globalDefaultIdentifer];
-        v12 = [v10 isEqualToString:v11];
+        globalDefaultIdentifer = [(objc_class *)self->_perApplicationSettingsClass globalDefaultIdentifer];
+        v12 = [v10 isEqualToString:globalDefaultIdentifer];
 
         if ((v12 & 1) == 0)
         {
@@ -154,20 +154,20 @@
             }
 
             lock_settings = self->_lock_settings;
-            v16 = [v14 identifier];
-            [(NSMutableDictionary *)lock_settings setObject:v14 forKey:v16];
+            identifier = [v14 identifier];
+            [(NSMutableDictionary *)lock_settings setObject:v14 forKey:identifier];
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v46 objects:v51 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v46 objects:v51 count:16];
     }
 
     while (v7);
   }
 
-  v17 = [(NSMutableDictionary *)self->_lock_settings allValues];
-  v18 = [v17 copy];
+  allValues = [(NSMutableDictionary *)self->_lock_settings allValues];
+  v18 = [allValues copy];
 
   v44 = 0u;
   v45 = 0u;
@@ -189,12 +189,12 @@
         }
 
         v24 = *(*(&v42 + 1) + 8 * j);
-        v25 = [v24 identifier];
-        v26 = [v4 bs_safeObjectForKey:v25 ofType:{-[objc_class serializationClass](self->_perApplicationSettingsClass, "serializationClass")}];
+        identifier2 = [v24 identifier];
+        v26 = [v4 bs_safeObjectForKey:identifier2 ofType:{-[objc_class serializationClass](self->_perApplicationSettingsClass, "serializationClass")}];
 
         perApplicationSettingsClass = self->_perApplicationSettingsClass;
-        v28 = [v24 application];
-        v29 = [(objc_class *)perApplicationSettingsClass settingsForApplication:v28 withSerialization:v26 delegate:self];
+        application = [v24 application];
+        v29 = [(objc_class *)perApplicationSettingsClass settingsForApplication:application withSerialization:v26 delegate:self];
 
         if (([v29 isEqual:v24] & 1) == 0)
         {
@@ -202,8 +202,8 @@
         }
 
         v30 = self->_lock_settings;
-        v31 = [v29 identifier];
-        [(NSMutableDictionary *)v30 setObject:v29 forKey:v31];
+        identifier3 = [v29 identifier];
+        [(NSMutableDictionary *)v30 setObject:v29 forKey:identifier3];
       }
 
       v21 = [v19 countByEnumeratingWithState:&v42 objects:v50 count:16];
@@ -243,33 +243,33 @@
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (id)settingsObjectForBundleId:(id)a3 customizedSettings:(id)a4 existingSettings:(id)a5
+- (id)settingsObjectForBundleId:(id)id customizedSettings:(id)settings existingSettings:(id)existingSettings
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a5 application];
-  if (!v10)
+  idCopy = id;
+  settingsCopy = settings;
+  application = [existingSettings application];
+  if (!application)
   {
-    v10 = [CSLPRFPerApplicationSettings fakeApplicationWithIdentifier:v8];
+    application = [CSLPRFPerApplicationSettings fakeApplicationWithIdentifier:idCopy];
   }
 
-  v11 = [v9 bs_safeObjectForKey:v8 ofType:{-[objc_class serializationClass](self->_perApplicationSettingsClass, "serializationClass")}];
+  v11 = [settingsCopy bs_safeObjectForKey:idCopy ofType:{-[objc_class serializationClass](self->_perApplicationSettingsClass, "serializationClass")}];
 
-  v12 = [(objc_class *)self->_perApplicationSettingsClass settingsForApplication:v10 withSerialization:v11 delegate:self];
+  v12 = [(objc_class *)self->_perApplicationSettingsClass settingsForApplication:application withSerialization:v11 delegate:self];
 
   return v12;
 }
 
-- (void)applicationLibrary:(id)a3 didRemoveApplications:(id)a4
+- (void)applicationLibrary:(id)library didRemoveApplications:(id)applications
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  applicationsCopy = applications;
   os_unfair_lock_lock(&self->_lock);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v5;
+  v6 = applicationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -309,10 +309,10 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processAddedOrUpdatedApplications:(id)a3
+- (void)_processAddedOrUpdatedApplications:(id)applications
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  applicationsCopy = applications;
   v5 = [(CSLPRFTwoWaySyncSetting *)self->_syncedSettings safeValueOfType:objc_opt_class()];
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
@@ -320,9 +320,9 @@
   v52[3] = &unk_278744CE0;
   v6 = v5;
   v53 = v6;
-  v54 = self;
-  v38 = v4;
-  v7 = [v4 bs_mapNoNulls:v52];
+  selfCopy = self;
+  v38 = applicationsCopy;
+  v7 = [applicationsCopy bs_mapNoNulls:v52];
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
   v36 = v7;
   v37 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
@@ -332,8 +332,8 @@
   v48 = 0u;
   v49 = 0u;
   v39 = v6;
-  v9 = [v6 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v48 objects:v56 count:16];
+  allKeys = [v6 allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v10)
   {
     v11 = v10;
@@ -344,25 +344,25 @@
       {
         if (*v49 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v48 + 1) + 8 * i);
         v15 = [(NSMutableDictionary *)self->_lock_settings objectForKey:v14];
-        v16 = [(objc_class *)self->_perApplicationSettingsClass globalDefaultIdentifer];
-        v17 = [v14 isEqualToString:v16];
+        globalDefaultIdentifer = [(objc_class *)self->_perApplicationSettingsClass globalDefaultIdentifer];
+        v17 = [v14 isEqualToString:globalDefaultIdentifer];
 
         if ((v17 & 1) == 0 && !v15)
         {
           v18 = [(CSLPRFPerApplicationSettingsModel *)self settingsObjectForBundleId:v14 customizedSettings:v39 existingSettings:0];
           [v8 addObject:v18];
           lock_settings = self->_lock_settings;
-          v20 = [v18 identifier];
-          [(NSMutableDictionary *)lock_settings setObject:v18 forKey:v20];
+          identifier = [v18 identifier];
+          [(NSMutableDictionary *)lock_settings setObject:v18 forKey:identifier];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v48 objects:v56 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v48 objects:v56 count:16];
     }
 
     while (v11);
@@ -389,8 +389,8 @@
 
         v26 = *(*(&v44 + 1) + 8 * j);
         v27 = self->_lock_settings;
-        v28 = [v26 identifier];
-        v29 = [(NSMutableDictionary *)v27 objectForKey:v28];
+        identifier2 = [v26 identifier];
+        v29 = [(NSMutableDictionary *)v27 objectForKey:identifier2];
 
         if (v29)
         {
@@ -404,8 +404,8 @@
 
         [v30 addObject:v26];
         v31 = self->_lock_settings;
-        v32 = [v26 identifier];
-        [(NSMutableDictionary *)v31 setObject:v26 forKey:v32];
+        identifier3 = [v26 identifier];
+        [(NSMutableDictionary *)v31 setObject:v26 forKey:identifier3];
       }
 
       v23 = [v21 countByEnumeratingWithState:&v44 objects:v55 count:16];
@@ -457,19 +457,19 @@ id __72__CSLPRFPerApplicationSettingsModel__processAddedOrUpdatedApplications___
 - (id)bundleIdentifiersWithSettings
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_lock_settings allKeys];
+  allKeys = [(NSMutableDictionary *)self->_lock_settings allKeys];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allKeys;
 }
 
-- (id)settingsForBundleIdentifier:(id)a3
+- (id)settingsForBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
+    identifierCopy = identifier;
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(CSLPRFPerApplicationSettingsModel *)self _lock_customizedSettingsForBundleIdentifier:v4];
+    v5 = [(CSLPRFPerApplicationSettingsModel *)self _lock_customizedSettingsForBundleIdentifier:identifierCopy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -500,7 +500,7 @@ id __72__CSLPRFPerApplicationSettingsModel__processAddedOrUpdatedApplications___
       v14 = 2114;
       v15 = v11;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"CSLPRFPerApplicationSettingsModel.m";
       v20 = 1024;
@@ -523,19 +523,19 @@ id __72__CSLPRFPerApplicationSettingsModel__processAddedOrUpdatedApplications___
   return v5;
 }
 
-- (id)settingsForApplication:(id)a3
+- (id)settingsForApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 bundleIdentifier];
-  v6 = [(CSLPRFPerApplicationSettingsModel *)self _lock_customizedSettingsForBundleIdentifier:v5];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  v6 = [(CSLPRFPerApplicationSettingsModel *)self _lock_customizedSettingsForBundleIdentifier:bundleIdentifier];
 
   if (!v6)
   {
-    v6 = [(objc_class *)self->_perApplicationSettingsClass settingsForApplication:v4 withSerialization:0 delegate:self];
+    v6 = [(objc_class *)self->_perApplicationSettingsClass settingsForApplication:applicationCopy withSerialization:0 delegate:self];
     lock_settings = self->_lock_settings;
-    v8 = [v6 identifier];
-    [(NSMutableDictionary *)lock_settings setObject:v6 forKey:v8];
+    identifier = [v6 identifier];
+    [(NSMutableDictionary *)lock_settings setObject:v6 forKey:identifier];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -543,15 +543,15 @@ id __72__CSLPRFPerApplicationSettingsModel__processAddedOrUpdatedApplications___
   return v6;
 }
 
-- (id)_lock_customizedSettingsForBundleIdentifier:(id)a3
+- (id)_lock_customizedSettingsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_customizationDelegate);
 
-  if (!WeakRetained || (v6 = objc_loadWeakRetained(&self->_customizationDelegate), v7 = -[NSMutableDictionary copy](self->_lock_settings, "copy"), [v6 settingsForBundleIdentifier:v4 fromAllSettings:v7 handled:&v10], WeakRetained = objc_claimAutoreleasedReturnValue(), v7, v6, (v10 & 1) == 0))
+  if (!WeakRetained || (v6 = objc_loadWeakRetained(&self->_customizationDelegate), v7 = -[NSMutableDictionary copy](self->_lock_settings, "copy"), [v6 settingsForBundleIdentifier:identifierCopy fromAllSettings:v7 handled:&v10], WeakRetained = objc_claimAutoreleasedReturnValue(), v7, v6, (v10 & 1) == 0))
   {
-    v8 = [(NSMutableDictionary *)self->_lock_settings objectForKey:v4];
+    v8 = [(NSMutableDictionary *)self->_lock_settings objectForKey:identifierCopy];
 
     WeakRetained = v8;
   }
@@ -559,46 +559,46 @@ id __72__CSLPRFPerApplicationSettingsModel__processAddedOrUpdatedApplications___
   return WeakRetained;
 }
 
-- (id)resolvedSettingsForBundleIdentifier:(id)a3
+- (id)resolvedSettingsForBundleIdentifier:(id)identifier
 {
-  v4 = [(CSLPRFPerApplicationSettingsModel *)self settingsForBundleIdentifier:a3];
-  v5 = [(CSLPRFPerApplicationSettingsModel *)self globalSettings];
+  v4 = [(CSLPRFPerApplicationSettingsModel *)self settingsForBundleIdentifier:identifier];
+  globalSettings = [(CSLPRFPerApplicationSettingsModel *)self globalSettings];
   if (v4)
   {
-    v6 = [v4 resolvedSettingWithGlobalSettings:v5];
+    v6 = [v4 resolvedSettingWithGlobalSettings:globalSettings];
 
-    v5 = v6;
+    globalSettings = v6;
   }
 
-  return v5;
+  return globalSettings;
 }
 
-- (id)resolvedSettingsForApplication:(id)a3
+- (id)resolvedSettingsForApplication:(id)application
 {
-  v4 = [(CSLPRFPerApplicationSettingsModel *)self settingsForApplication:a3];
-  v5 = [(CSLPRFPerApplicationSettingsModel *)self globalSettings];
+  v4 = [(CSLPRFPerApplicationSettingsModel *)self settingsForApplication:application];
+  globalSettings = [(CSLPRFPerApplicationSettingsModel *)self globalSettings];
   if (v4)
   {
-    v6 = [v4 resolvedSettingWithGlobalSettings:v5];
+    v6 = [v4 resolvedSettingWithGlobalSettings:globalSettings];
 
-    v5 = v6;
+    globalSettings = v6;
   }
 
-  return v5;
+  return globalSettings;
 }
 
 - (NSArray)allApplicationSettings
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_lock_settings allValues];
+  allValues = [(NSMutableDictionary *)self->_lock_settings allValues];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allValues;
 }
 
-- (CSLPRFPerApplicationSettingsModel)initWithApplicationLibrary:(id)a3 perApplicationSettingsClass:(Class)a4
+- (CSLPRFPerApplicationSettingsModel)initWithApplicationLibrary:(id)library perApplicationSettingsClass:(Class)class
 {
-  v7 = a3;
+  libraryCopy = library;
   v22.receiver = self;
   v22.super_class = CSLPRFPerApplicationSettingsModel;
   v8 = [(CSLPRFPerApplicationSettingsModel *)&v22 init];
@@ -606,19 +606,19 @@ id __72__CSLPRFPerApplicationSettingsModel__processAddedOrUpdatedApplications___
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     lock_settings = v9->_lock_settings;
-    v9->_lock_settings = v10;
+    v9->_lock_settings = dictionary;
 
-    objc_storeStrong(&v9->_applicationLibrary, a3);
-    v9->_perApplicationSettingsClass = a4;
+    objc_storeStrong(&v9->_applicationLibrary, library);
+    v9->_perApplicationSettingsClass = class;
     v12 = objc_alloc_init(CSLPRFObservationHelper);
     observationHelper = v9->_observationHelper;
     v9->_observationHelper = v12;
 
     v14 = [CSLPRFTwoWaySyncSetting alloc];
-    v15 = [(objc_class *)a4 settingsKey];
-    v16 = [(CSLPRFTwoWaySyncSetting *)v14 initWithKey:v15 defaultValue:0 notification:[(objc_class *)a4 notificationName]];
+    settingsKey = [(objc_class *)class settingsKey];
+    v16 = [(CSLPRFTwoWaySyncSetting *)v14 initWithKey:settingsKey defaultValue:0 notification:[(objc_class *)class notificationName]];
     syncedSettings = v9->_syncedSettings;
     v9->_syncedSettings = v16;
 

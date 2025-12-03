@@ -1,22 +1,22 @@
 @interface SLDImageSymbolConfiguration
-+ (id)configurationWithName:(id)a3 coreUISize:(int64_t)a4 weight:(int64_t)a5 pointSize:(double)a6;
-- (BOOL)isEqual:(id)a3;
-- (CGSize)minViableSizeWithDisplayScale:(double)a3 RTL:(BOOL)a4 darkMode:(BOOL)a5;
-- (CGSize)minViableSizeWithStyle:(id)a3;
++ (id)configurationWithName:(id)name coreUISize:(int64_t)size weight:(int64_t)weight pointSize:(double)pointSize;
+- (BOOL)isEqual:(id)equal;
+- (CGSize)minViableSizeWithDisplayScale:(double)scale RTL:(BOOL)l darkMode:(BOOL)mode;
+- (CGSize)minViableSizeWithStyle:(id)style;
 - (SLDImageSymbolConfiguration)init;
-- (SLDImageSymbolConfiguration)initWithCoder:(id)a3;
-- (SLDImageSymbolConfiguration)initWithName:(id)a3 coreUISize:(int64_t)a4 weight:(int64_t)a5 pointSize:(double)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SLDImageSymbolConfiguration)initWithCoder:(id)coder;
+- (SLDImageSymbolConfiguration)initWithName:(id)name coreUISize:(int64_t)size weight:(int64_t)weight pointSize:(double)pointSize;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SLDImageSymbolConfiguration
 
-+ (id)configurationWithName:(id)a3 coreUISize:(int64_t)a4 weight:(int64_t)a5 pointSize:(double)a6
++ (id)configurationWithName:(id)name coreUISize:(int64_t)size weight:(int64_t)weight pointSize:(double)pointSize
 {
-  v9 = a3;
-  v10 = [[SLDImageSymbolConfiguration alloc] initWithName:v9 coreUISize:a4 weight:a5 pointSize:a6];
+  nameCopy = name;
+  v10 = [[SLDImageSymbolConfiguration alloc] initWithName:nameCopy coreUISize:size weight:weight pointSize:pointSize];
 
   return v10;
 }
@@ -42,20 +42,20 @@
   return v3;
 }
 
-- (SLDImageSymbolConfiguration)initWithName:(id)a3 coreUISize:(int64_t)a4 weight:(int64_t)a5 pointSize:(double)a6
+- (SLDImageSymbolConfiguration)initWithName:(id)name coreUISize:(int64_t)size weight:(int64_t)weight pointSize:(double)pointSize
 {
-  v11 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = SLDImageSymbolConfiguration;
   v12 = [(SLDImageSymbolConfiguration *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a3);
-    v13->_coreUISize = a4;
-    v13->_weight = a5;
-    v13->_pointSize = a6;
-    v14 = [MEMORY[0x277CCABB0] numberWithDouble:a6];
+    objc_storeStrong(&v12->_name, name);
+    v13->_coreUISize = size;
+    v13->_weight = weight;
+    v13->_pointSize = pointSize;
+    v14 = [MEMORY[0x277CCABB0] numberWithDouble:pointSize];
     pointSizeNumber = v13->_pointSizeNumber;
     v13->_pointSizeNumber = v14;
   }
@@ -63,11 +63,11 @@
   return v13;
 }
 
-- (CGSize)minViableSizeWithStyle:(id)a3
+- (CGSize)minViableSizeWithStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(SLDImageSymbolConfiguration *)self coreUISize];
-  v6 = [(SLDImageSymbolConfiguration *)self weight];
+  styleCopy = style;
+  coreUISize = [(SLDImageSymbolConfiguration *)self coreUISize];
+  weight = [(SLDImageSymbolConfiguration *)self weight];
   [(SLDImageSymbolConfiguration *)self pointSize];
   v7 = 10.0;
   if (v8 > 0.0)
@@ -76,16 +76,16 @@
     v7 = v9;
   }
 
-  if (!v6)
+  if (!weight)
   {
-    v6 = 4;
+    weight = 4;
   }
 
-  v10 = [(SLDImageSymbolConfiguration *)self name];
-  v11 = SLDSystemVectorGlyphWithSlotStyle(v4, v10, v5, v6, v7);
+  name = [(SLDImageSymbolConfiguration *)self name];
+  v11 = SLDSystemVectorGlyphWithSlotStyle(styleCopy, name, coreUISize, weight, v7);
 
-  LODWORD(v10) = [v4 displayScale];
-  v12 = SLDVectorGlyphMinimumViableSize(v11, v10);
+  LODWORD(name) = [styleCopy displayScale];
+  v12 = SLDVectorGlyphMinimumViableSize(v11, name);
   v14 = v13;
 
   v15 = v12;
@@ -95,12 +95,12 @@
   return result;
 }
 
-- (CGSize)minViableSizeWithDisplayScale:(double)a3 RTL:(BOOL)a4 darkMode:(BOOL)a5
+- (CGSize)minViableSizeWithDisplayScale:(double)scale RTL:(BOOL)l darkMode:(BOOL)mode
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = [(SLDImageSymbolConfiguration *)self coreUISize];
-  v10 = [(SLDImageSymbolConfiguration *)self weight];
+  modeCopy = mode;
+  lCopy = l;
+  coreUISize = [(SLDImageSymbolConfiguration *)self coreUISize];
+  weight = [(SLDImageSymbolConfiguration *)self weight];
   [(SLDImageSymbolConfiguration *)self pointSize];
   v11 = 10.0;
   if (v12 > 0.0)
@@ -109,15 +109,15 @@
     v11 = v13;
   }
 
-  if (!v10)
+  if (!weight)
   {
-    v10 = 4;
+    weight = 4;
   }
 
-  v14 = [(SLDImageSymbolConfiguration *)self name];
-  v15 = SLDSystemVectorGlyph(v14, v6, v9, v10, v5, a3, v11);
+  name = [(SLDImageSymbolConfiguration *)self name];
+  v15 = SLDSystemVectorGlyph(name, lCopy, coreUISize, weight, modeCopy, scale, v11);
 
-  v16 = SLDVectorGlyphMinimumViableSize(v15, a3);
+  v16 = SLDVectorGlyphMinimumViableSize(v15, scale);
   v18 = v17;
 
   v19 = v16;
@@ -127,37 +127,37 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SLDImageSymbolConfiguration *)self name];
-  [v4 encodeObject:v5 forKey:@"symbolName"];
+  coderCopy = coder;
+  name = [(SLDImageSymbolConfiguration *)self name];
+  [coderCopy encodeObject:name forKey:@"symbolName"];
 
-  [v4 encodeInteger:-[SLDImageSymbolConfiguration coreUISize](self forKey:{"coreUISize"), @"coreUISize"}];
-  [v4 encodeInteger:-[SLDImageSymbolConfiguration weight](self forKey:{"weight"), @"weight"}];
+  [coderCopy encodeInteger:-[SLDImageSymbolConfiguration coreUISize](self forKey:{"coreUISize"), @"coreUISize"}];
+  [coderCopy encodeInteger:-[SLDImageSymbolConfiguration weight](self forKey:{"weight"), @"weight"}];
   [(SLDImageSymbolConfiguration *)self pointSize];
-  [v4 encodeDouble:@"ptSize" forKey:?];
-  v6 = [(SLDImageSymbolConfiguration *)self pointSizeNumber];
-  [v4 encodeObject:v6 forKey:@"ptSizeNumber"];
+  [coderCopy encodeDouble:@"ptSize" forKey:?];
+  pointSizeNumber = [(SLDImageSymbolConfiguration *)self pointSizeNumber];
+  [coderCopy encodeObject:pointSizeNumber forKey:@"ptSizeNumber"];
 }
 
-- (SLDImageSymbolConfiguration)initWithCoder:(id)a3
+- (SLDImageSymbolConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = SLDImageSymbolConfiguration;
   v5 = [(SLDImageSymbolConfiguration *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
     name = v5->_name;
     v5->_name = v6;
 
-    v5->_coreUISize = [v4 decodeIntegerForKey:@"coreUISize"];
-    v5->_weight = [v4 decodeIntegerForKey:@"weight"];
-    [v4 decodeDoubleForKey:@"ptSize"];
+    v5->_coreUISize = [coderCopy decodeIntegerForKey:@"coreUISize"];
+    v5->_weight = [coderCopy decodeIntegerForKey:@"weight"];
+    [coderCopy decodeDoubleForKey:@"ptSize"];
     v5->_pointSize = v8;
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ptSizeNumber"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ptSizeNumber"];
     pointSizeNumber = v5->_pointSizeNumber;
     v5->_pointSizeNumber = v9;
   }
@@ -165,13 +165,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = equalCopy;
     v7 = v6;
     if (v6 == self)
     {
@@ -180,14 +180,14 @@
 
     else
     {
-      v8 = [(SLDImageSymbolConfiguration *)v6 name];
-      if (v8 || ([(SLDImageSymbolConfiguration *)self name], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      name = [(SLDImageSymbolConfiguration *)v6 name];
+      if (name || ([(SLDImageSymbolConfiguration *)self name], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v9 = [(SLDImageSymbolConfiguration *)v7 name];
-        v10 = [(SLDImageSymbolConfiguration *)self name];
-        v11 = [v9 isEqual:v10];
+        name2 = [(SLDImageSymbolConfiguration *)v7 name];
+        name3 = [(SLDImageSymbolConfiguration *)self name];
+        v11 = [name2 isEqual:name3];
 
-        if (v8)
+        if (name)
         {
 
           if (!v11)
@@ -208,14 +208,14 @@ LABEL_15:
         }
       }
 
-      v13 = [(SLDImageSymbolConfiguration *)v7 coreUISize];
-      if (v13 != [(SLDImageSymbolConfiguration *)self coreUISize])
+      coreUISize = [(SLDImageSymbolConfiguration *)v7 coreUISize];
+      if (coreUISize != [(SLDImageSymbolConfiguration *)self coreUISize])
       {
         goto LABEL_15;
       }
 
-      v14 = [(SLDImageSymbolConfiguration *)v7 weight];
-      if (v14 != [(SLDImageSymbolConfiguration *)self weight])
+      weight = [(SLDImageSymbolConfiguration *)v7 weight];
+      if (weight != [(SLDImageSymbolConfiguration *)self weight])
       {
         goto LABEL_15;
       }
@@ -228,9 +228,9 @@ LABEL_15:
         goto LABEL_15;
       }
 
-      v18 = [(SLDImageSymbolConfiguration *)v7 pointSizeNumber];
-      v19 = [(SLDImageSymbolConfiguration *)self pointSizeNumber];
-      v12 = [v18 isEqualToNumber:v19];
+      pointSizeNumber = [(SLDImageSymbolConfiguration *)v7 pointSizeNumber];
+      pointSizeNumber2 = [(SLDImageSymbolConfiguration *)self pointSizeNumber];
+      v12 = [pointSizeNumber isEqualToNumber:pointSizeNumber2];
     }
 
 LABEL_16:
@@ -246,28 +246,28 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v3 = [(SLDImageSymbolConfiguration *)self coreUISize];
-  v4 = [(SLDImageSymbolConfiguration *)self name];
-  v5 = [v4 hash];
-  v6 = v5 ^ v3 ^ [(SLDImageSymbolConfiguration *)self weight];
-  v7 = [(SLDImageSymbolConfiguration *)self pointSizeNumber];
-  v8 = [v7 hash];
+  coreUISize = [(SLDImageSymbolConfiguration *)self coreUISize];
+  name = [(SLDImageSymbolConfiguration *)self name];
+  v5 = [name hash];
+  v6 = v5 ^ coreUISize ^ [(SLDImageSymbolConfiguration *)self weight];
+  pointSizeNumber = [(SLDImageSymbolConfiguration *)self pointSizeNumber];
+  v8 = [pointSizeNumber hash];
 
   return v6 ^ v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(SLDImageSymbolConfiguration *)self name];
-  [v4 setName:v5];
+  name = [(SLDImageSymbolConfiguration *)self name];
+  [v4 setName:name];
 
   [v4 setCoreUISize:{-[SLDImageSymbolConfiguration coreUISize](self, "coreUISize")}];
   [v4 setWeight:{-[SLDImageSymbolConfiguration weight](self, "weight")}];
   [(SLDImageSymbolConfiguration *)self pointSize];
   [v4 setPointSize:?];
-  v6 = [(SLDImageSymbolConfiguration *)self pointSizeNumber];
-  [v4 setPointSizeNumber:v6];
+  pointSizeNumber = [(SLDImageSymbolConfiguration *)self pointSizeNumber];
+  [v4 setPointSizeNumber:pointSizeNumber];
 
   return v4;
 }

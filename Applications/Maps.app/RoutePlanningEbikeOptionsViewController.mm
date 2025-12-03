@@ -1,12 +1,12 @@
 @interface RoutePlanningEbikeOptionsViewController
-- (id)_titleForTransportType:(int64_t)a3;
+- (id)_titleForTransportType:(int64_t)type;
 @end
 
 @implementation RoutePlanningEbikeOptionsViewController
 
-- (id)_titleForTransportType:(int64_t)a3
+- (id)_titleForTransportType:(int64_t)type
 {
-  if (a3 == 5)
+  if (type == 5)
   {
     v3 = +[NSBundle mainBundle];
     v4 = [v3 localizedStringForKey:@"[Route Planning value:Cycle] E-Bike options card header" table:{@"localized string not found", 0}];

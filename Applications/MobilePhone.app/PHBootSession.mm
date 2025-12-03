@@ -37,30 +37,30 @@ void __35__PHBootSession_getBootSessionUUID__block_invoke(id a1)
   v3 = v2;
   if (v2)
   {
-    v4 = v2;
+    uUIDString = v2;
   }
 
   else
   {
     v5 = objc_opt_new();
-    v4 = [v5 UUIDString];
+    uUIDString = [v5 UUIDString];
   }
 
-  return v4;
+  return uUIDString;
 }
 
 - (BOOL)isInDifferentBootSession
 {
-  v3 = [(PHBootSession *)self lastKnownBootSessionID];
-  v4 = [(PHBootSession *)self getBootSessionUUID];
-  v5 = [v3 isEqualToString:v4];
+  lastKnownBootSessionID = [(PHBootSession *)self lastKnownBootSessionID];
+  getBootSessionUUID = [(PHBootSession *)self getBootSessionUUID];
+  v5 = [lastKnownBootSessionID isEqualToString:getBootSessionUUID];
 
   return v5 ^ 1;
 }
 
 - (void)persistBootSessionID
 {
-  v2 = [(PHBootSession *)self getBootSessionUUID];
+  getBootSessionUUID = [(PHBootSession *)self getBootSessionUUID];
   PHPreferencesSetValueInDomain();
 }
 

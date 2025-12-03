@@ -1,40 +1,40 @@
 @interface TRIFBFactorMetadataKeyValueChanges
-- (void)replaceKey:(id)a3;
-- (void)replaceVal:(id)a3;
+- (void)replaceKey:(id)key;
+- (void)replaceVal:(id)val;
 @end
 
 @implementation TRIFBFactorMetadataKeyValueChanges
 
-- (void)replaceKey:(id)a3
+- (void)replaceKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   self->_changeTypeKey = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = keyCopy;
+  if (!keyCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3005 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3005 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    keyCopy = 0;
   }
 
-  self->_replacementKey = [v5 unsignedIntValue];
+  self->_replacementKey = [keyCopy unsignedIntValue];
 }
 
-- (void)replaceVal:(id)a3
+- (void)replaceVal:(id)val
 {
-  v5 = a3;
+  valCopy = val;
   self->_changeTypeVal = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = valCopy;
+  if (!valCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3024 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3024 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    valCopy = 0;
   }
 
-  self->_replacementVal = [v5 unsignedIntValue];
+  self->_replacementVal = [valCopy unsignedIntValue];
 }
 
 @end

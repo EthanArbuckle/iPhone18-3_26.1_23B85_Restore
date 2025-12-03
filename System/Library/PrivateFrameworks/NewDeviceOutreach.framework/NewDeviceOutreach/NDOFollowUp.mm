@@ -1,26 +1,26 @@
 @interface NDOFollowUp
 + (id)allPossibleFollowUpTargetBundleIdentifiers;
-+ (id)followUpTargetBundleIDsForDevice:(id)a3;
-+ (id)possibleUniqueIdentifiersForSerialNumber:(id)a3;
-+ (id)uniqueFollowUpIdentifiersForDevice:(id)a3;
-+ (id)uniqueIdentfierForSerialNumber:(id)a3 bundleId:(id)a4;
-- (BOOL)_checkConversionEligibilityForDevice:(id)a3;
-- (BOOL)_postFollowUpWithDevicesInfo:(id)a3 repostAllowed:(BOOL)a4;
++ (id)followUpTargetBundleIDsForDevice:(id)device;
++ (id)possibleUniqueIdentifiersForSerialNumber:(id)number;
++ (id)uniqueFollowUpIdentifiersForDevice:(id)device;
++ (id)uniqueIdentfierForSerialNumber:(id)number bundleId:(id)id;
+- (BOOL)_checkConversionEligibilityForDevice:(id)device;
+- (BOOL)_postFollowUpWithDevicesInfo:(id)info repostAllowed:(BOOL)allowed;
 - (NDOFollowUp)init;
-- (NDOFollowUp)initWithFollowUpProvider:(id)a3;
-- (id)_pendingFollowUpItemsForSerialNumber:(id)a3;
-- (id)_setupFollowUpNotificationWithDeviceInfo:(id)a3;
-- (id)followUpItemsForDeviceInfo:(id)a3;
-- (id)followUpSaleFlowSourceForBundleId:(id)a3 device:(id)a4;
-- (id)refreshFollowupWithDeviceInfos:(id)a3 clearUntrackedDeviceFollowups:(BOOL)a4 andForcePostFollowup:(BOOL)a5;
+- (NDOFollowUp)initWithFollowUpProvider:(id)provider;
+- (id)_pendingFollowUpItemsForSerialNumber:(id)number;
+- (id)_setupFollowUpNotificationWithDeviceInfo:(id)info;
+- (id)followUpItemsForDeviceInfo:(id)info;
+- (id)followUpSaleFlowSourceForBundleId:(id)id device:(id)device;
+- (id)refreshFollowupWithDeviceInfos:(id)infos clearUntrackedDeviceFollowups:(BOOL)followups andForcePostFollowup:(BOOL)followup;
 - (unint64_t)pendingFollowUpCount;
-- (void)_clearFollowUpForSerialNumber:(id)a3;
-- (void)_clearFollowUpWithDevices:(id)a3;
-- (void)_setupFollowUpItem:(id)a3 withDeviceInfo:(id)a4;
-- (void)dismissFollowUpForSerialNumber:(id)a3;
-- (void)dismissNotificationForSerialNumber:(id)a3;
-- (void)migrateLegacyFollowUpIfNeededWithDeviceInfo:(id)a3;
-- (void)postFollowUpWithDeviceInfo:(id)a3;
+- (void)_clearFollowUpForSerialNumber:(id)number;
+- (void)_clearFollowUpWithDevices:(id)devices;
+- (void)_setupFollowUpItem:(id)item withDeviceInfo:(id)info;
+- (void)dismissFollowUpForSerialNumber:(id)number;
+- (void)dismissNotificationForSerialNumber:(id)number;
+- (void)migrateLegacyFollowUpIfNeededWithDeviceInfo:(id)info;
+- (void)postFollowUpWithDeviceInfo:(id)info;
 @end
 
 @implementation NDOFollowUp
@@ -33,29 +33,29 @@
   return v4;
 }
 
-- (NDOFollowUp)initWithFollowUpProvider:(id)a3
+- (NDOFollowUp)initWithFollowUpProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = NDOFollowUp;
   v5 = [(NDOFollowUp *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(NDOFollowUp *)v5 setFollowUpProvider:v4];
+    [(NDOFollowUp *)v5 setFollowUpProvider:providerCopy];
   }
 
   return v6;
 }
 
-+ (id)uniqueIdentfierForSerialNumber:(id)a3 bundleId:(id)a4
++ (id)uniqueIdentfierForSerialNumber:(id)number bundleId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
-  if ([NDOTypeChecking isNotEmptyString:v5]&& [NDOTypeChecking isNotEmptyString:v6]&& [NDOTypeChecking isNotEmptyString:@"com.apple.NewDeviceOutreach"])
+  numberCopy = number;
+  idCopy = id;
+  if ([NDOTypeChecking isNotEmptyString:numberCopy]&& [NDOTypeChecking isNotEmptyString:idCopy]&& [NDOTypeChecking isNotEmptyString:@"com.apple.NewDeviceOutreach"])
   {
-    v7 = [v5 sha256Hash];
-    v8 = [@"com.apple.NewDeviceOutreach" stringByAppendingFormat:@".%@.%@", v6, v7];
+    sha256Hash = [numberCopy sha256Hash];
+    v8 = [@"com.apple.NewDeviceOutreach" stringByAppendingFormat:@".%@.%@", idCopy, sha256Hash];
   }
 
   else
@@ -72,20 +72,20 @@
   return v8;
 }
 
-- (BOOL)_postFollowUpWithDevicesInfo:(id)a3 repostAllowed:(BOOL)a4
+- (BOOL)_postFollowUpWithDevicesInfo:(id)info repostAllowed:(BOOL)allowed
 {
   v6 = MEMORY[0x277CBEB18];
-  v7 = a3;
-  v8 = [v6 array];
+  infoCopy = info;
+  array = [v6 array];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__NDOFollowUp__postFollowUpWithDevicesInfo_repostAllowed___block_invoke;
   v12[3] = &unk_279975CA8;
-  v14 = a4;
+  allowedCopy = allowed;
   v12[4] = self;
-  v13 = v8;
-  v9 = v8;
-  [v7 enumerateObjectsUsingBlock:v12];
+  v13 = array;
+  v9 = array;
+  [infoCopy enumerateObjectsUsingBlock:v12];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -269,20 +269,20 @@ LABEL_31:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)followUpTargetBundleIDsForDevice:(id)a3
++ (id)followUpTargetBundleIDsForDevice:(id)device
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 deviceType];
+  deviceCopy = device;
+  deviceType = [deviceCopy deviceType];
   v5 = objc_opt_new();
   v6 = v5;
-  switch(v4)
+  switch(deviceType)
   {
     case 3:
       goto LABEL_4;
     case 1:
       [v5 addObject:*MEMORY[0x277CFE3F8]];
-      if ([v3 isActiveWatch])
+      if ([deviceCopy isActiveWatch])
       {
         v7 = MEMORY[0x277CFE3D8];
         goto LABEL_5;
@@ -308,7 +308,7 @@ LABEL_5:
   v9 = _NDOLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:deviceType];
     v14 = 136446722;
     v15 = "+[NDOFollowUp followUpTargetBundleIDsForDevice:]";
     v16 = 2112;
@@ -324,20 +324,20 @@ LABEL_5:
   return v11;
 }
 
-- (id)followUpItemsForDeviceInfo:(id)a3
+- (id)followUpItemsForDeviceInfo:(id)info
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 warranty];
-  v5 = [v3 device];
-  v6 = [v5 serialNumber];
+  infoCopy = info;
+  warranty = [infoCopy warranty];
+  device = [infoCopy device];
+  serialNumber = [device serialNumber];
 
-  if (v4 && [v4 acOfferDisplay] && v6)
+  if (warranty && [warranty acOfferDisplay] && serialNumber)
   {
-    v23 = v6;
-    v24 = v4;
-    v7 = [v3 device];
-    v8 = [NDOFollowUp followUpTargetBundleIDsForDevice:v7];
+    v23 = serialNumber;
+    v24 = warranty;
+    device2 = [infoCopy device];
+    v8 = [NDOFollowUp followUpTargetBundleIDsForDevice:device2];
 
     v26 = objc_opt_new();
     v28 = 0u;
@@ -363,15 +363,15 @@ LABEL_5:
 
           v15 = *(*(&v28 + 1) + 8 * i);
           v16 = objc_alloc_init(MEMORY[0x277CFE508]);
-          v17 = [v3 device];
-          v18 = [v17 serialNumber];
-          v19 = [NDOFollowUp uniqueIdentfierForSerialNumber:v18 bundleId:v15];
+          device3 = [infoCopy device];
+          serialNumber2 = [device3 serialNumber];
+          v19 = [NDOFollowUp uniqueIdentfierForSerialNumber:serialNumber2 bundleId:v15];
 
           [v16 setUniqueIdentifier:v19];
           [v16 setGroupIdentifier:v13];
           [v16 setExtensionIdentifier:@"com.apple.NewDeviceOutreach.Extension"];
           [v16 setTargetBundleIdentifier:v15];
-          [(NDOFollowUp *)self _setupFollowUpItem:v16 withDeviceInfo:v3];
+          [(NDOFollowUp *)self _setupFollowUpItem:v16 withDeviceInfo:infoCopy];
           [v26 addObject:v16];
         }
 
@@ -383,8 +383,8 @@ LABEL_5:
     }
 
     v20 = [v26 copy];
-    v6 = v23;
-    v4 = v24;
+    serialNumber = v23;
+    warranty = v24;
   }
 
   else
@@ -403,17 +403,17 @@ LABEL_5:
   return v20;
 }
 
-- (void)postFollowUpWithDeviceInfo:(id)a3
+- (void)postFollowUpWithDeviceInfo:(id)info
 {
   v86 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 warranty];
-  v61 = v4;
-  v6 = [v4 device];
-  v7 = [v6 serialNumber];
+  infoCopy = info;
+  warranty = [infoCopy warranty];
+  v61 = infoCopy;
+  device = [infoCopy device];
+  serialNumber = [device serialNumber];
 
-  v64 = v5;
-  if (v5 && [v5 acOfferDisplay] && v7)
+  v64 = warranty;
+  if (warranty && [warranty acOfferDisplay] && serialNumber)
   {
     [(NDOFollowUp *)self followUpItemsForDeviceInfo:v61];
     v73 = 0u;
@@ -428,8 +428,8 @@ LABEL_5:
       v12 = 0x277CBE000uLL;
       *&v9 = 136446722;
       v57 = v9;
-      v58 = v7;
-      v59 = self;
+      v58 = serialNumber;
+      selfCopy = self;
       v60 = *v74;
       do
       {
@@ -443,9 +443,9 @@ LABEL_5:
           }
 
           v14 = *(*(&v73 + 1) + 8 * v13);
-          v15 = [(NDOFollowUp *)self followUpProvider];
+          followUpProvider = [(NDOFollowUp *)self followUpProvider];
           v72 = 0;
-          v16 = [v15 postFollowUpItem:v14 error:&v72];
+          v16 = [followUpProvider postFollowUpItem:v14 error:&v72];
           v17 = v72;
 
           v18 = _NDOLogSystem();
@@ -458,7 +458,7 @@ LABEL_5:
               v19 = v17;
             }
 
-            v78 = v7;
+            v78 = serialNumber;
             v79 = 2112;
             v80 = v19;
             _os_log_impl(&dword_25BD52000, v18, OS_LOG_TYPE_DEFAULT, "Posted follow-up: serialNumber:%@ -> %@", buf, 0x16u);
@@ -467,8 +467,8 @@ LABEL_5:
           if (v16)
           {
             v20 = MEMORY[0x277CBEB18];
-            v21 = [*(v12 + 3024) standardUserDefaults];
-            v22 = [v21 objectForKey:@"FollowupPostedSerialNumberHashes"];
+            standardUserDefaults = [*(v12 + 3024) standardUserDefaults];
+            v22 = [standardUserDefaults objectForKey:@"FollowupPostedSerialNumberHashes"];
             v23 = v22;
             if (v22)
             {
@@ -482,21 +482,21 @@ LABEL_5:
 
             v25 = [v20 arrayWithArray:v24];
 
-            v26 = [v7 sha256Hash];
-            v27 = [v25 containsObject:v26];
+            sha256Hash = [serialNumber sha256Hash];
+            v27 = [v25 containsObject:sha256Hash];
 
             if ((v27 & 1) == 0)
             {
-              v28 = [v7 sha256Hash];
-              [v25 addObject:v28];
+              sha256Hash2 = [serialNumber sha256Hash];
+              [v25 addObject:sha256Hash2];
 
-              v29 = [*(v12 + 3024) standardUserDefaults];
-              [v29 setObject:v25 forKey:@"FollowupPostedSerialNumberHashes"];
+              standardUserDefaults2 = [*(v12 + 3024) standardUserDefaults];
+              [standardUserDefaults2 setObject:v25 forKey:@"FollowupPostedSerialNumberHashes"];
 
               v83 = @"devicetype";
-              v30 = [v61 device];
-              v31 = [v30 deviceTypeString];
-              v84 = v31;
+              device2 = [v61 device];
+              deviceTypeString = [device2 deviceTypeString];
+              v84 = deviceTypeString;
               v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v84 forKeys:&v83 count:1];
 
               v67 = MEMORY[0x277D85DD0];
@@ -508,20 +508,20 @@ LABEL_5:
               AnalyticsSendEventLazy();
             }
 
-            v34 = [*(v12 + 3024) standardUserDefaults];
-            v35 = [v34 dictionaryForKey:@"FollowupDisplayedSerialNumberHashesWithEvents"];
+            standardUserDefaults3 = [*(v12 + 3024) standardUserDefaults];
+            v35 = [standardUserDefaults3 dictionaryForKey:@"FollowupDisplayedSerialNumberHashesWithEvents"];
             v36 = [v35 mutableCopy];
 
             if (v36)
             {
-              v37 = [v36 allKeys];
-              v38 = [v37 count];
+              allKeys = [v36 allKeys];
+              v38 = [allKeys count];
 
               if (v38)
               {
                 v39 = MEMORY[0x277CBEB58];
-                v40 = [v7 sha256Hash];
-                v41 = [v36 objectForKeyedSubscript:v40];
+                sha256Hash3 = [serialNumber sha256Hash];
+                v41 = [v36 objectForKeyedSubscript:sha256Hash3];
                 v42 = v41;
                 if (v41)
                 {
@@ -535,45 +535,45 @@ LABEL_5:
 
                 v44 = [v39 setWithArray:v43];
 
-                self = v59;
+                self = selfCopy;
                 if (!v44)
                 {
 LABEL_27:
                   v44 = [MEMORY[0x277CBEB58] set];
                 }
 
-                v46 = [v64 eligibilityEventId];
-                v47 = [NDOTypeChecking isNotEmptyString:v46];
+                eligibilityEventId = [v64 eligibilityEventId];
+                v47 = [NDOTypeChecking isNotEmptyString:eligibilityEventId];
 
                 if (v47)
                 {
-                  v48 = [v64 eligibilityEventId];
-                  [v44 addObject:v48];
+                  eligibilityEventId2 = [v64 eligibilityEventId];
+                  [v44 addObject:eligibilityEventId2];
 
-                  v49 = [v44 allObjects];
-                  v50 = [v61 device];
-                  v51 = [v50 serialNumber];
-                  v52 = [v51 sha256Hash];
-                  [v36 setObject:v49 forKeyedSubscript:v52];
+                  allObjects = [v44 allObjects];
+                  device3 = [v61 device];
+                  serialNumber2 = [device3 serialNumber];
+                  sha256Hash4 = [serialNumber2 sha256Hash];
+                  [v36 setObject:allObjects forKeyedSubscript:sha256Hash4];
 
-                  v53 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-                  [v53 setObject:v36 forKey:@"FollowupDisplayedSerialNumberHashesWithEvents"];
+                  standardUserDefaults4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+                  [standardUserDefaults4 setObject:v36 forKey:@"FollowupDisplayedSerialNumberHashesWithEvents"];
 
                   v54 = _NDOLogSystem();
                   if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
                   {
-                    v55 = [v64 eligibilityEventId];
+                    eligibilityEventId3 = [v64 eligibilityEventId];
                     *buf = v57;
                     v78 = "[NDOFollowUp postFollowUpWithDeviceInfo:]";
                     v79 = 2112;
-                    v80 = v55;
+                    v80 = eligibilityEventId3;
                     v81 = 2112;
                     v82 = v44;
                     _os_log_debug_impl(&dword_25BD52000, v54, OS_LOG_TYPE_DEBUG, "%{public}s: saving for event: %@ with events: %@", buf, 0x20u);
                   }
 
-                  v7 = v58;
-                  self = v59;
+                  serialNumber = v58;
+                  self = selfCopy;
                   v10 = v62;
                 }
 
@@ -644,42 +644,42 @@ id __42__NDOFollowUp_postFollowUpWithDeviceInfo___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (BOOL)_checkConversionEligibilityForDevice:(id)a3
+- (BOOL)_checkConversionEligibilityForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 device];
-  v5 = [v4 serialNumber];
-  v6 = [v5 sha256Hash];
-  v7 = [v6 stringByAppendingString:@".dismissed"];
+  deviceCopy = device;
+  device = [deviceCopy device];
+  serialNumber = [device serialNumber];
+  sha256Hash = [serialNumber sha256Hash];
+  v7 = [sha256Hash stringByAppendingString:@".dismissed"];
 
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v9 = [v8 objectForKey:v7];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v9 = [standardUserDefaults objectForKey:v7];
 
-  if (!v9 || ([v3 warranty], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "acOfferFollowupDisplayDate"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
+  if (!v9 || ([deviceCopy warranty], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "acOfferFollowupDisplayDate"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
   {
 LABEL_7:
     v16 = 0;
     goto LABEL_8;
   }
 
-  v12 = [v3 warranty];
-  v13 = [v12 acOfferFollowupDisplayDate];
-  v14 = [v9 compare:v13];
+  warranty = [deviceCopy warranty];
+  acOfferFollowupDisplayDate = [warranty acOfferFollowupDisplayDate];
+  v14 = [v9 compare:acOfferFollowupDisplayDate];
 
   if (v14 != -1)
   {
     v15 = _NDOLogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      [(NDOFollowUp *)v3 _checkConversionEligibilityForDevice:v9, v15];
+      [(NDOFollowUp *)deviceCopy _checkConversionEligibilityForDevice:v9, v15];
     }
 
     goto LABEL_7;
   }
 
   v18 = MEMORY[0x277CBEB18];
-  v19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v20 = [v19 objectForKey:@"FollowupPostedSerialNumberHashes"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v20 = [standardUserDefaults2 objectForKey:@"FollowupPostedSerialNumberHashes"];
   v21 = v20;
   if (v20)
   {
@@ -693,20 +693,20 @@ LABEL_7:
 
   v23 = [v18 arrayWithArray:v22];
 
-  v24 = [v3 device];
-  v25 = [v24 serialNumber];
-  v26 = [v25 sha256Hash];
-  v27 = [v23 containsObject:v26];
+  device2 = [deviceCopy device];
+  serialNumber2 = [device2 serialNumber];
+  sha256Hash2 = [serialNumber2 sha256Hash];
+  v27 = [v23 containsObject:sha256Hash2];
 
   if (v27)
   {
-    v28 = [v3 device];
-    v29 = [v28 serialNumber];
-    v30 = [v29 sha256Hash];
-    [v23 removeObject:v30];
+    device3 = [deviceCopy device];
+    serialNumber3 = [device3 serialNumber];
+    sha256Hash3 = [serialNumber3 sha256Hash];
+    [v23 removeObject:sha256Hash3];
 
-    v31 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v31 setObject:v23 forKey:@"FollowupPostedSerialNumberHashes"];
+    standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults3 setObject:v23 forKey:@"FollowupPostedSerialNumberHashes"];
   }
 
   v16 = 1;
@@ -715,16 +715,16 @@ LABEL_8:
   return v16;
 }
 
-+ (id)uniqueFollowUpIdentifiersForDevice:(id)a3
++ (id)uniqueFollowUpIdentifiersForDevice:(id)device
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 serialNumber];
+  deviceCopy = device;
+  serialNumber = [deviceCopy serialNumber];
 
-  if (v4)
+  if (serialNumber)
   {
     v5 = objc_opt_new();
-    v6 = [NDOFollowUp followUpTargetBundleIDsForDevice:v3];
+    v6 = [NDOFollowUp followUpTargetBundleIDsForDevice:deviceCopy];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -746,8 +746,8 @@ LABEL_8:
           v11 = *(*(&v17 + 1) + 8 * i);
           if ([NDOTypeChecking isNotEmptyString:v11])
           {
-            v12 = [v3 serialNumber];
-            v13 = [NDOFollowUp uniqueIdentfierForSerialNumber:v12 bundleId:v11];
+            serialNumber2 = [deviceCopy serialNumber];
+            v13 = [NDOFollowUp uniqueIdentfierForSerialNumber:serialNumber2 bundleId:v11];
             [v5 addObject:v13];
           }
         }
@@ -789,19 +789,19 @@ LABEL_8:
   return v3;
 }
 
-+ (id)possibleUniqueIdentifiersForSerialNumber:(id)a3
++ (id)possibleUniqueIdentifiersForSerialNumber:(id)number
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([NDOTypeChecking isNotEmptyString:v4])
+  numberCopy = number;
+  if ([NDOTypeChecking isNotEmptyString:numberCopy])
   {
     v5 = objc_opt_new();
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [a1 allPossibleFollowUpTargetBundleIdentifiers];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    allPossibleFollowUpTargetBundleIdentifiers = [self allPossibleFollowUpTargetBundleIdentifiers];
+    v7 = [allPossibleFollowUpTargetBundleIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -812,14 +812,14 @@ LABEL_8:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allPossibleFollowUpTargetBundleIdentifiers);
           }
 
-          v11 = [a1 uniqueIdentfierForSerialNumber:v4 bundleId:*(*(&v15 + 1) + 8 * i)];
+          v11 = [self uniqueIdentfierForSerialNumber:numberCopy bundleId:*(*(&v15 + 1) + 8 * i)];
           [v5 addObject:v11];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [allPossibleFollowUpTargetBundleIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -844,16 +844,16 @@ LABEL_8:
   return v12;
 }
 
-- (void)_clearFollowUpWithDevices:(id)a3
+- (void)_clearFollowUpWithDevices:(id)devices
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  devicesCopy = devices;
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = devicesCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v7)
   {
@@ -870,7 +870,7 @@ LABEL_8:
         }
 
         v11 = [NDOFollowUp uniqueFollowUpIdentifiersForDevice:*(*(&v19 + 1) + 8 * v10)];
-        [v5 addObjectsFromArray:v11];
+        [array addObjectsFromArray:v11];
 
         ++v10;
       }
@@ -882,9 +882,9 @@ LABEL_8:
     while (v8);
   }
 
-  v12 = [(NDOFollowUp *)self followUpProvider];
+  followUpProvider = [(NDOFollowUp *)self followUpProvider];
   v18 = 0;
-  v13 = [v12 clearPendingFollowUpItemsWithUniqueIdentifiers:v5 error:&v18];
+  v13 = [followUpProvider clearPendingFollowUpItemsWithUniqueIdentifiers:array error:&v18];
   v14 = v18;
 
   v15 = _NDOLogSystem();
@@ -904,12 +904,12 @@ LABEL_8:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_pendingFollowUpItemsForSerialNumber:(id)a3
+- (id)_pendingFollowUpItemsForSerialNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(NDOFollowUp *)self followUpProvider];
+  numberCopy = number;
+  followUpProvider = [(NDOFollowUp *)self followUpProvider];
   v18 = 0;
-  v6 = [v5 pendingFollowUpItems:&v18];
+  v6 = [followUpProvider pendingFollowUpItems:&v18];
   v7 = v18;
 
   if (v7)
@@ -930,7 +930,7 @@ LABEL_8:
     v14 = 3221225472;
     v15 = __52__NDOFollowUp__pendingFollowUpItemsForSerialNumber___block_invoke;
     v16 = &unk_279975D20;
-    v17 = v4;
+    v17 = numberCopy;
     v11 = [v10 predicateWithBlock:&v13];
     v9 = [v6 filteredArrayUsingPredicate:{v11, v13, v14, v15, v16}];
 
@@ -957,17 +957,17 @@ uint64_t __52__NDOFollowUp__pendingFollowUpItemsForSerialNumber___block_invoke(u
   return v5;
 }
 
-- (void)_clearFollowUpForSerialNumber:(id)a3
+- (void)_clearFollowUpForSerialNumber:(id)number
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  numberCopy = number;
   v5 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v22 = v4;
-  v6 = [(NDOFollowUp *)self _pendingFollowUpItemsForSerialNumber:v4];
+  v22 = numberCopy;
+  v6 = [(NDOFollowUp *)self _pendingFollowUpItemsForSerialNumber:numberCopy];
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v7)
   {
@@ -983,13 +983,13 @@ uint64_t __52__NDOFollowUp__pendingFollowUpItemsForSerialNumber___block_invoke(u
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v11 uniqueIdentifier];
-        v13 = [NDOTypeChecking isNotEmptyString:v12];
+        uniqueIdentifier = [v11 uniqueIdentifier];
+        v13 = [NDOTypeChecking isNotEmptyString:uniqueIdentifier];
 
         if (v13)
         {
-          v14 = [v11 uniqueIdentifier];
-          [v5 addObject:v14];
+          uniqueIdentifier2 = [v11 uniqueIdentifier];
+          [v5 addObject:uniqueIdentifier2];
         }
       }
 
@@ -999,10 +999,10 @@ uint64_t __52__NDOFollowUp__pendingFollowUpItemsForSerialNumber___block_invoke(u
     while (v8);
   }
 
-  v15 = [(NDOFollowUp *)self followUpProvider];
+  followUpProvider = [(NDOFollowUp *)self followUpProvider];
   v16 = [v5 copy];
   v23 = 0;
-  v17 = [v15 clearPendingFollowUpItemsWithUniqueIdentifiers:v16 error:&v23];
+  v17 = [followUpProvider clearPendingFollowUpItemsWithUniqueIdentifiers:v16 error:&v23];
   v18 = v23;
 
   v19 = _NDOLogSystem();
@@ -1022,15 +1022,15 @@ uint64_t __52__NDOFollowUp__pendingFollowUpItemsForSerialNumber___block_invoke(u
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dismissFollowUpForSerialNumber:(id)a3
+- (void)dismissFollowUpForSerialNumber:(id)number
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NDOFollowUp *)self followUpProvider];
-  v6 = [NDOFollowUp possibleUniqueIdentifiersForSerialNumber:v4];
+  numberCopy = number;
+  followUpProvider = [(NDOFollowUp *)self followUpProvider];
+  v6 = [NDOFollowUp possibleUniqueIdentifiersForSerialNumber:numberCopy];
 
   v12 = 0;
-  v7 = [v5 clearPendingFollowUpItemsWithUniqueIdentifiers:v6 error:&v12];
+  v7 = [followUpProvider clearPendingFollowUpItemsWithUniqueIdentifiers:v6 error:&v12];
   v8 = v12;
 
   v9 = _NDOLogSystem();
@@ -1050,14 +1050,14 @@ uint64_t __52__NDOFollowUp__pendingFollowUpItemsForSerialNumber___block_invoke(u
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dismissNotificationForSerialNumber:(id)a3
+- (void)dismissNotificationForSerialNumber:(id)number
 {
   v28 = *MEMORY[0x277D85DE8];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(NDOFollowUp *)self _pendingFollowUpItemsForSerialNumber:a3];
+  v4 = [(NDOFollowUp *)self _pendingFollowUpItemsForSerialNumber:number];
   v5 = [v4 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v5)
   {
@@ -1076,9 +1076,9 @@ uint64_t __52__NDOFollowUp__pendingFollowUpItemsForSerialNumber___block_invoke(u
         }
 
         v10 = *(*(&v19 + 1) + 8 * v9);
-        v11 = [(NDOFollowUp *)self followUpProvider];
+        followUpProvider = [(NDOFollowUp *)self followUpProvider];
         v18 = 0;
-        v12 = [v11 clearNotificationForItem:v10 error:&v18];
+        v12 = [followUpProvider clearNotificationForItem:v10 error:&v18];
         v13 = v18;
 
         v14 = _NDOLogSystem();
@@ -1110,15 +1110,15 @@ uint64_t __52__NDOFollowUp__pendingFollowUpItemsForSerialNumber___block_invoke(u
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)refreshFollowupWithDeviceInfos:(id)a3 clearUntrackedDeviceFollowups:(BOOL)a4 andForcePostFollowup:(BOOL)a5
+- (id)refreshFollowupWithDeviceInfos:(id)infos clearUntrackedDeviceFollowups:(BOOL)followups andForcePostFollowup:(BOOL)followup
 {
-  v5 = a4;
+  followupsCopy = followups;
   v72 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v45 = self;
-  v8 = [(NDOFollowUp *)self followUpProvider];
+  infosCopy = infos;
+  selfCopy = self;
+  followUpProvider = [(NDOFollowUp *)self followUpProvider];
   v67 = 0;
-  v9 = [v8 pendingFollowUpItems:&v67];
+  v9 = [followUpProvider pendingFollowUpItems:&v67];
   v10 = v67;
 
   if (v10)
@@ -1151,8 +1151,8 @@ uint64_t __52__NDOFollowUp__pendingFollowUpItemsForSerialNumber___block_invoke(u
           objc_enumerationMutation(obj);
         }
 
-        v17 = [*(*(&v63 + 1) + 8 * i) userInfo];
-        v18 = [v17 objectForKeyedSubscript:@"FollowupSerialNumber"];
+        userInfo = [*(*(&v63 + 1) + 8 * i) userInfo];
+        v18 = [userInfo objectForKeyedSubscript:@"FollowupSerialNumber"];
 
         if (v18)
         {
@@ -1166,10 +1166,10 @@ uint64_t __52__NDOFollowUp__pendingFollowUpItemsForSerialNumber___block_invoke(u
     while (v14);
   }
 
-  v19 = [MEMORY[0x277CBEB18] array];
-  v20 = [MEMORY[0x277CBEB18] array];
-  v21 = [MEMORY[0x277CBEB18] array];
-  if (v5)
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  if (followupsCopy)
   {
     v22 = [MEMORY[0x277CBEB58] setWithSet:v12];
   }
@@ -1187,14 +1187,14 @@ uint64_t __52__NDOFollowUp__pendingFollowUpItemsForSerialNumber___block_invoke(u
   v58 = v23;
   v44 = v12;
   v59 = v44;
-  v43 = v19;
+  v43 = array;
   v60 = v43;
-  v41 = v20;
+  v41 = array2;
   v61 = v41;
-  v24 = v21;
+  v24 = array3;
   v62 = v24;
-  v47 = v7;
-  [v7 enumerateObjectsUsingBlock:v57];
+  v47 = infosCopy;
+  [infosCopy enumerateObjectsUsingBlock:v57];
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
@@ -1234,23 +1234,23 @@ uint64_t __52__NDOFollowUp__pendingFollowUpItemsForSerialNumber___block_invoke(u
 
   if (v24 && [v24 count])
   {
-    [(NDOFollowUp *)v45 _clearFollowUpWithDevices:v24];
+    [(NDOFollowUp *)selfCopy _clearFollowUpWithDevices:v24];
   }
 
-  v32 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
   v49[2] = __97__NDOFollowUp_refreshFollowupWithDeviceInfos_clearUntrackedDeviceFollowups_andForcePostFollowup___block_invoke_116;
   v49[3] = &unk_279975D70;
   v50 = obj;
-  v51 = v45;
-  v33 = v32;
+  v51 = selfCopy;
+  v33 = array4;
   v52 = v33;
   v34 = obj;
   [v43 enumerateObjectsUsingBlock:v49];
   if (v42 && [v42 count])
   {
-    v35 = [(NDOFollowUp *)v45 _postFollowUpWithDevicesInfo:v42 repostAllowed:1];
+    v35 = [(NDOFollowUp *)selfCopy _postFollowUpWithDevicesInfo:v42 repostAllowed:1];
     v36 = _NDOLogSystem();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
@@ -1579,9 +1579,9 @@ LABEL_15:
 
 - (unint64_t)pendingFollowUpCount
 {
-  v2 = [(NDOFollowUp *)self followUpProvider];
+  followUpProvider = [(NDOFollowUp *)self followUpProvider];
   v8 = 0;
-  v3 = [v2 pendingFollowUpItems:&v8];
+  v3 = [followUpProvider pendingFollowUpItems:&v8];
   v4 = v8;
   v5 = [v3 count];
 
@@ -1597,13 +1597,13 @@ LABEL_15:
   return v5;
 }
 
-- (id)followUpSaleFlowSourceForBundleId:(id)a3 device:(id)a4
+- (id)followUpSaleFlowSourceForBundleId:(id)id device:(id)device
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6 && [v5 isEqualToString:*MEMORY[0x277CFE3F8]])
+  idCopy = id;
+  deviceCopy = device;
+  if (deviceCopy && [idCopy isEqualToString:*MEMORY[0x277CFE3F8]])
   {
-    if ([v6 deviceType] == 1)
+    if ([deviceCopy deviceType] == 1)
     {
       v7 = @"WATCH_SETTINGS_FOLLOWUP";
     }
@@ -1611,8 +1611,8 @@ LABEL_15:
     else
     {
       v9 = MEMORY[0x277CCACA8];
-      v10 = [v6 sourceFromDeviceType];
-      v7 = [v9 stringWithFormat:@"%@%@", v10, @"_FOLLOWUP"];
+      sourceFromDeviceType = [deviceCopy sourceFromDeviceType];
+      v7 = [v9 stringWithFormat:@"%@%@", sourceFromDeviceType, @"_FOLLOWUP"];
     }
   }
 
@@ -1624,44 +1624,44 @@ LABEL_15:
   return v7;
 }
 
-- (void)_setupFollowUpItem:(id)a3 withDeviceInfo:(id)a4
+- (void)_setupFollowUpItem:(id)item withDeviceInfo:(id)info
 {
   v96 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  infoCopy = info;
   v7 = _NDOLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446467;
     v93 = "[NDOFollowUp _setupFollowUpItem:withDeviceInfo:]";
     v94 = 2113;
-    v95 = v6;
+    v95 = infoCopy;
     _os_log_impl(&dword_25BD52000, v7, OS_LOG_TYPE_DEFAULT, "%{public}s: %{private}@", buf, 0x16u);
   }
 
-  v8 = [v6 warranty];
-  v9 = [v8 acOfferEligibleUntil];
-  v10 = [v9 dateByAddingTimeInterval:-0.001];
-  [v5 setExpirationDate:v10];
+  warranty = [infoCopy warranty];
+  acOfferEligibleUntil = [warranty acOfferEligibleUntil];
+  v10 = [acOfferEligibleUntil dateByAddingTimeInterval:-0.001];
+  [itemCopy setExpirationDate:v10];
 
-  v11 = [v6 warranty];
-  LODWORD(v9) = [v11 acOfferSettingsRowBadge];
+  warranty2 = [infoCopy warranty];
+  LODWORD(acOfferEligibleUntil) = [warranty2 acOfferSettingsRowBadge];
 
-  if (v9)
+  if (acOfferEligibleUntil)
   {
-    v12 = [v6 warranty];
-    v13 = [v12 acOfferEligibleUntil];
-    v14 = [v6 warranty];
-    [v14 acOfferBadgeDurationBeforeEndDate];
-    v16 = [v13 dateByAddingTimeInterval:-v15];
+    warranty3 = [infoCopy warranty];
+    acOfferEligibleUntil2 = [warranty3 acOfferEligibleUntil];
+    warranty4 = [infoCopy warranty];
+    [warranty4 acOfferBadgeDurationBeforeEndDate];
+    v16 = [acOfferEligibleUntil2 dateByAddingTimeInterval:-v15];
 
-    v17 = [MEMORY[0x277CBEAA8] date];
-    if ([v16 compare:v17] == -1)
+    date = [MEMORY[0x277CBEAA8] date];
+    if ([v16 compare:date] == -1)
     {
-      v19 = [v6 warranty];
-      v20 = [v19 acOfferEligibleUntil];
-      v21 = [MEMORY[0x277CBEAA8] date];
-      v18 = [v20 compare:v21] == 1;
+      warranty5 = [infoCopy warranty];
+      acOfferEligibleUntil3 = [warranty5 acOfferEligibleUntil];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      v18 = [acOfferEligibleUntil3 compare:date2] == 1;
     }
 
     else
@@ -1695,25 +1695,25 @@ LABEL_15:
     v23 = 18;
   }
 
-  v88 = v5;
-  [v5 setDisplayStyle:v23];
+  v88 = itemCopy;
+  [itemCopy setDisplayStyle:v23];
   v24 = objc_alloc(MEMORY[0x277CBEB38]);
   v90[0] = @"FollowupWarranty";
-  v25 = [v6 warranty];
-  v26 = [v25 dictionaryRepresentation];
-  v27 = v26;
-  if (!v26)
+  warranty6 = [infoCopy warranty];
+  dictionaryRepresentation = [warranty6 dictionaryRepresentation];
+  v27 = dictionaryRepresentation;
+  if (!dictionaryRepresentation)
   {
     v27 = objc_opt_new();
   }
 
   v91[0] = v27;
   v90[1] = @"FollowupSerialNumber";
-  v28 = [v6 device];
-  v29 = [v28 serialNumber];
+  device = [infoCopy device];
+  serialNumber = [device serialNumber];
   v30 = *MEMORY[0x277CFE3F0];
   v31 = *MEMORY[0x277CFE3E8];
-  v91[1] = v29;
+  v91[1] = serialNumber;
   v91[2] = v31;
   v32 = *MEMORY[0x277CFE4D0];
   v90[2] = v30;
@@ -1722,75 +1722,75 @@ LABEL_15:
   v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v91 forKeys:v90 count:4];
   v34 = [v24 initWithDictionary:v33];
 
-  if (!v26)
+  if (!dictionaryRepresentation)
   {
   }
 
-  v35 = v5;
-  v36 = [v5 targetBundleIdentifier];
-  v37 = [v6 device];
-  v38 = [(NDOFollowUp *)self followUpSaleFlowSourceForBundleId:v36 device:v37];
+  v35 = itemCopy;
+  targetBundleIdentifier = [itemCopy targetBundleIdentifier];
+  device2 = [infoCopy device];
+  v38 = [(NDOFollowUp *)self followUpSaleFlowSourceForBundleId:targetBundleIdentifier device:device2];
 
   if ([NDOTypeChecking isNotEmptyString:v38])
   {
     [v34 setObject:v38 forKey:@"com.applecare.followup.saleflowsource"];
   }
 
-  v39 = [v6 warranty];
-  v40 = [v39 eligibilityEventId];
-  v41 = [NDOTypeChecking isNotEmptyString:v40];
+  warranty7 = [infoCopy warranty];
+  eligibilityEventId = [warranty7 eligibilityEventId];
+  v41 = [NDOTypeChecking isNotEmptyString:eligibilityEventId];
 
   if (v41)
   {
-    v42 = [v6 warranty];
-    v43 = [v42 eligibilityEventId];
-    [v34 setObject:v43 forKey:@"FollowupEligibilityEventId"];
+    warranty8 = [infoCopy warranty];
+    eligibilityEventId2 = [warranty8 eligibilityEventId];
+    [v34 setObject:eligibilityEventId2 forKey:@"FollowupEligibilityEventId"];
   }
 
-  v44 = [v6 warranty];
-  v45 = [v44 acLocalizedOfferSingularDesc];
+  warranty9 = [infoCopy warranty];
+  acLocalizedOfferSingularDesc = [warranty9 acLocalizedOfferSingularDesc];
 
-  if (v45)
+  if (acLocalizedOfferSingularDesc)
   {
-    v46 = [v6 warranty];
-    v47 = [v46 acLocalizedOfferSingularDesc];
-    [v34 setObject:v47 forKey:*MEMORY[0x277CFE4E0]];
+    warranty10 = [infoCopy warranty];
+    acLocalizedOfferSingularDesc2 = [warranty10 acLocalizedOfferSingularDesc];
+    [v34 setObject:acLocalizedOfferSingularDesc2 forKey:*MEMORY[0x277CFE4E0]];
   }
 
   else
   {
-    v46 = _NDOLogSystem();
-    if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
+    warranty10 = _NDOLogSystem();
+    if (os_log_type_enabled(warranty10, OS_LOG_TYPE_ERROR))
     {
       [NDOFollowUp _setupFollowUpItem:withDeviceInfo:];
     }
   }
 
-  v48 = [v6 warranty];
-  v49 = [v48 acLocalizedOfferPluralDescFormat];
+  warranty11 = [infoCopy warranty];
+  acLocalizedOfferPluralDescFormat = [warranty11 acLocalizedOfferPluralDescFormat];
 
-  if (v49)
+  if (acLocalizedOfferPluralDescFormat)
   {
-    v50 = [v6 warranty];
-    v51 = [v50 acLocalizedOfferPluralDescFormat];
-    [v34 setObject:v51 forKey:*MEMORY[0x277CFE4D8]];
+    warranty12 = [infoCopy warranty];
+    acLocalizedOfferPluralDescFormat2 = [warranty12 acLocalizedOfferPluralDescFormat];
+    [v34 setObject:acLocalizedOfferPluralDescFormat2 forKey:*MEMORY[0x277CFE4D8]];
   }
 
   else
   {
-    v50 = _NDOLogSystem();
-    if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
+    warranty12 = _NDOLogSystem();
+    if (os_log_type_enabled(warranty12, OS_LOG_TYPE_ERROR))
     {
       [NDOFollowUp _setupFollowUpItem:withDeviceInfo:];
     }
   }
 
-  v52 = [v6 warranty];
-  v53 = [v52 acLocalizedGroupedOfferFooterLabel];
-  v54 = v53;
-  if (v53)
+  warranty13 = [infoCopy warranty];
+  acLocalizedGroupedOfferFooterLabel = [warranty13 acLocalizedGroupedOfferFooterLabel];
+  v54 = acLocalizedGroupedOfferFooterLabel;
+  if (acLocalizedGroupedOfferFooterLabel)
   {
-    v55 = v53;
+    v55 = acLocalizedGroupedOfferFooterLabel;
   }
 
   else
@@ -1800,81 +1800,81 @@ LABEL_15:
 
   [v34 setObject:v55 forKey:*MEMORY[0x277CFE4B0]];
 
-  v56 = [v6 device];
-  v57 = [v56 name];
+  device3 = [infoCopy device];
+  name = [device3 name];
 
-  if (v57)
+  if (name)
   {
     goto LABEL_34;
   }
 
-  v61 = [v6 warranty];
-  v62 = [v61 acLocalizedOfferLongLabel];
+  warranty14 = [infoCopy warranty];
+  acLocalizedOfferLongLabel = [warranty14 acLocalizedOfferLongLabel];
 
-  if (v62)
+  if (acLocalizedOfferLongLabel)
   {
-    v63 = [v6 warranty];
-    v57 = [v63 acLocalizedOfferLongLabel];
+    warranty15 = [infoCopy warranty];
+    name = [warranty15 acLocalizedOfferLongLabel];
 
-    if (v57)
+    if (name)
     {
 LABEL_34:
-      [v34 setObject:v57 forKey:*MEMORY[0x277CFE4B8]];
+      [v34 setObject:name forKey:*MEMORY[0x277CFE4B8]];
     }
   }
 
-  [v5 setUserInfo:v34];
-  v58 = [v6 warranty];
-  v59 = [v58 acLocalizedGroupedOfferCTA];
-  if (v59)
+  [itemCopy setUserInfo:v34];
+  warranty16 = [infoCopy warranty];
+  acLocalizedGroupedOfferCTA = [warranty16 acLocalizedGroupedOfferCTA];
+  if (acLocalizedGroupedOfferCTA)
   {
     goto LABEL_36;
   }
 
-  v64 = [v6 warranty];
-  v60 = [v64 acLocalizedOfferCTA];
+  warranty17 = [infoCopy warranty];
+  acLocalizedOfferCTA = [warranty17 acLocalizedOfferCTA];
 
-  if (!v60)
+  if (!acLocalizedOfferCTA)
   {
-    v58 = [MEMORY[0x277CCA8D8] bundleWithPath:@"/System/Library/PrivateFrameworks/NewDeviceOutreachUI.framework"];
-    v59 = [v58 localizedStringForKey:@"FUP_ACTION_LABEL" value:&stru_286D686B8 table:@"Localizable"];
+    warranty16 = [MEMORY[0x277CCA8D8] bundleWithPath:@"/System/Library/PrivateFrameworks/NewDeviceOutreachUI.framework"];
+    acLocalizedGroupedOfferCTA = [warranty16 localizedStringForKey:@"FUP_ACTION_LABEL" value:&stru_286D686B8 table:@"Localizable"];
 LABEL_36:
-    v60 = v59;
+    acLocalizedOfferCTA = acLocalizedGroupedOfferCTA;
   }
 
-  v65 = [MEMORY[0x277CFE4F8] actionWithLabel:v60 url:0];
+  v65 = [MEMORY[0x277CFE4F8] actionWithLabel:acLocalizedOfferCTA url:0];
   [v65 setIdentifier:@"com.followup.ndo_followup_open_action"];
-  v66 = [v6 warranty];
-  v67 = [v66 acLocalizedOfferLabel];
-  [v5 setTitle:v67];
+  warranty18 = [infoCopy warranty];
+  acLocalizedOfferLabel = [warranty18 acLocalizedOfferLabel];
+  [itemCopy setTitle:acLocalizedOfferLabel];
 
-  v68 = [v6 warranty];
-  v69 = [v68 acLocalizedOfferDesc];
-  [v5 setInformativeFooterText:v69];
+  warranty19 = [infoCopy warranty];
+  acLocalizedOfferDesc = [warranty19 acLocalizedOfferDesc];
+  [itemCopy setInformativeFooterText:acLocalizedOfferDesc];
 
   v89 = v65;
   v70 = [MEMORY[0x277CBEA60] arrayWithObjects:&v89 count:1];
-  [v5 setActions:v70];
+  [itemCopy setActions:v70];
 
-  v71 = [v6 warranty];
-  LODWORD(v69) = [v71 showNotificationToggle];
+  warranty20 = [infoCopy warranty];
+  LODWORD(acLocalizedOfferDesc) = [warranty20 showNotificationToggle];
 
-  if (v69)
+  if (acLocalizedOfferDesc)
   {
     v86 = v38;
-    v72 = [v6 warranty];
-    v73 = [v72 acOfferEligibleUntil];
-    v74 = [v6 warranty];
-    [v74 showNotificationBeforeEndDate];
-    v76 = [v73 dateByAddingTimeInterval:-v75];
+    warranty21 = [infoCopy warranty];
+    acOfferEligibleUntil4 = [warranty21 acOfferEligibleUntil];
+    warranty22 = [infoCopy warranty];
+    [warranty22 showNotificationBeforeEndDate];
+    v76 = [acOfferEligibleUntil4 dateByAddingTimeInterval:-v75];
 
-    v77 = [MEMORY[0x277CBEAA8] date];
-    if ([v76 compare:v77] == -1)
+    date3 = [MEMORY[0x277CBEAA8] date];
+    if ([v76 compare:date3] == -1)
     {
-      v79 = [v6 warranty];
-      v80 = [v79 acOfferEligibleUntil];
-      v81 = [MEMORY[0x277CBEAA8] date];
-      v78 = [v80 compare:v81] == 1;
+      warranty23 = [infoCopy warranty];
+      acOfferEligibleUntil5 = [warranty23 acOfferEligibleUntil];
+      date4 = [MEMORY[0x277CBEAA8] date];
+      v78 = [acOfferEligibleUntil5 compare:date4] == 1;
     }
 
     else
@@ -1896,7 +1896,7 @@ LABEL_36:
 
     if (v78)
     {
-      v83 = [(NDOFollowUp *)self _setupFollowUpNotificationWithDeviceInfo:v6];
+      v83 = [(NDOFollowUp *)self _setupFollowUpNotificationWithDeviceInfo:infoCopy];
       [v88 setNotification:v83];
 
       v78 = 1;
@@ -1921,46 +1921,46 @@ LABEL_36:
   v85 = *MEMORY[0x277D85DE8];
 }
 
-- (void)migrateLegacyFollowUpIfNeededWithDeviceInfo:(id)a3
+- (void)migrateLegacyFollowUpIfNeededWithDeviceInfo:(id)info
 {
-  v6 = a3;
-  v4 = [v6 device];
-  v5 = [v4 serialNumber];
-  [(NDOFollowUp *)self dismissFollowUpForSerialNumber:v5];
+  infoCopy = info;
+  device = [infoCopy device];
+  serialNumber = [device serialNumber];
+  [(NDOFollowUp *)self dismissFollowUpForSerialNumber:serialNumber];
 
-  [(NDOFollowUp *)self postFollowUpWithDeviceInfo:v6];
+  [(NDOFollowUp *)self postFollowUpWithDeviceInfo:infoCopy];
 }
 
-- (id)_setupFollowUpNotificationWithDeviceInfo:(id)a3
+- (id)_setupFollowUpNotificationWithDeviceInfo:(id)info
 {
   v31[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_alloc_init(MEMORY[0x277CFE510]);
-  v5 = [v3 warranty];
-  v6 = [v5 acNotificationLocalizedOfferLabel];
+  warranty = [infoCopy warranty];
+  acNotificationLocalizedOfferLabel = [warranty acNotificationLocalizedOfferLabel];
 
-  v7 = [v3 warranty];
-  v8 = v7;
-  if (v6)
+  warranty2 = [infoCopy warranty];
+  v8 = warranty2;
+  if (acNotificationLocalizedOfferLabel)
   {
-    [v7 acNotificationLocalizedOfferLabel];
+    [warranty2 acNotificationLocalizedOfferLabel];
   }
 
   else
   {
-    [v7 acLocalizedOfferLabel];
+    [warranty2 acLocalizedOfferLabel];
   }
   v9 = ;
   [v4 setTitle:v9];
 
-  v10 = [v3 warranty];
-  v11 = [v10 acLocalizedNotificationOfferDesc];
+  warranty3 = [infoCopy warranty];
+  acLocalizedNotificationOfferDesc = [warranty3 acLocalizedNotificationOfferDesc];
 
-  if (v11)
+  if (acLocalizedNotificationOfferDesc)
   {
-    v12 = [v3 warranty];
-    v13 = [v12 acLocalizedNotificationOfferDesc];
-    [v4 setInformativeText:v13];
+    warranty4 = [infoCopy warranty];
+    acLocalizedNotificationOfferDesc2 = [warranty4 acLocalizedNotificationOfferDesc];
+    [v4 setInformativeText:acLocalizedNotificationOfferDesc2];
   }
 
   v14 = objc_alloc_init(MEMORY[0x277CFE4F8]);
@@ -2006,7 +2006,7 @@ LABEL_36:
   }
 
   [v4 setFrequency:0.0];
-  v24 = [v4 options];
+  options = [v4 options];
   v25 = *MEMORY[0x277CFE4A0];
   v31[0] = *MEMORY[0x277CFE498];
   v31[1] = v25;
@@ -2014,7 +2014,7 @@ LABEL_36:
   v31[2] = *MEMORY[0x277CFE478];
   v31[3] = v26;
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:4];
-  v28 = [v24 setByAddingObjectsFromArray:v27];
+  v28 = [options setByAddingObjectsFromArray:v27];
   [v4 setOptions:v28];
 
   v29 = *MEMORY[0x277D85DE8];

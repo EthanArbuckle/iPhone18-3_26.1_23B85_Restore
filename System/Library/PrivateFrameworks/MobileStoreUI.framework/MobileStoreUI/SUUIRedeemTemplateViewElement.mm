@@ -1,19 +1,19 @@
 @interface SUUIRedeemTemplateViewElement
-- (SUUIRedeemTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUIRedeemTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIRedeemTemplateViewElement
 
-- (SUUIRedeemTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIRedeemTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v13.receiver = self;
   v13.super_class = SUUIRedeemTemplateViewElement;
-  v9 = [(SUUIViewElement *)&v13 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v13 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"code"];
+    v10 = [elementCopy getAttribute:@"code"];
     initialCode = v9->_initialCode;
     v9->_initialCode = v10;
   }
@@ -21,18 +21,18 @@
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SUUIRedeemTemplateViewElement;
-  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    v7 = [(SUUIRedeemTemplateViewElement *)v4 initialCode];
+    initialCode = [(SUUIRedeemTemplateViewElement *)elementCopy initialCode];
     initialCode = self->_initialCode;
-    self->_initialCode = v7;
+    self->_initialCode = initialCode;
   }
 
   return v6;

@@ -1,24 +1,24 @@
 @interface WebOpenPanelResultListener
-- (WebOpenPanelResultListener)initWithChooser:(void *)a3;
+- (WebOpenPanelResultListener)initWithChooser:(void *)chooser;
 - (void)cancel;
-- (void)chooseFilename:(id)a3;
-- (void)chooseFilename:(id)a3 displayString:(id)a4 iconImage:(CGImage *)a5;
-- (void)chooseFilenames:(id)a3;
-- (void)chooseFilenames:(id)a3 displayString:(id)a4 iconImage:(CGImage *)a5;
+- (void)chooseFilename:(id)filename;
+- (void)chooseFilename:(id)filename displayString:(id)string iconImage:(CGImage *)image;
+- (void)chooseFilenames:(id)filenames;
+- (void)chooseFilenames:(id)filenames displayString:(id)string iconImage:(CGImage *)image;
 @end
 
 @implementation WebOpenPanelResultListener
 
-- (WebOpenPanelResultListener)initWithChooser:(void *)a3
+- (WebOpenPanelResultListener)initWithChooser:(void *)chooser
 {
   v9.receiver = self;
   v9.super_class = WebOpenPanelResultListener;
   result = [(WebOpenPanelResultListener *)&v9 init];
   if (result)
   {
-    ++*a3;
+    ++*chooser;
     m_ptr = result->_chooser.m_ptr;
-    result->_chooser.m_ptr = a3;
+    result->_chooser.m_ptr = chooser;
     if (m_ptr)
     {
       if (*m_ptr == 1)
@@ -59,12 +59,12 @@
   }
 }
 
-- (void)chooseFilename:(id)a3
+- (void)chooseFilename:(id)filename
 {
   m_ptr = self->_chooser.m_ptr;
   if (m_ptr)
   {
-    MEMORY[0x1CCA63A40](&v10, a3);
+    MEMORY[0x1CCA63A40](&v10, filename);
     WebCore::FileChooser::chooseFile(m_ptr, &v10);
     v6 = v10;
     v10 = 0;
@@ -91,17 +91,17 @@
   }
 }
 
-- (void)chooseFilenames:(id)a3
+- (void)chooseFilenames:(id)filenames
 {
   if (self->_chooser.m_ptr)
   {
-    v14 = a3;
-    v19 = &v14;
-    WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v16, [a3 count], &v19, 0);
-    v14 = 0;
+    filenamesCopy = filenames;
+    v19 = &filenamesCopy;
+    WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v16, [filenames count], &v19, 0);
+    filenamesCopy = 0;
     v15 = 0;
     WebCore::FileChooser::chooseFiles();
-    v5 = v14;
+    v5 = filenamesCopy;
     if (HIDWORD(v15))
     {
       v6 = 8 * HIDWORD(v15);
@@ -119,12 +119,12 @@
       }
 
       while (v6);
-      v5 = v14;
+      v5 = filenamesCopy;
     }
 
     if (v5)
     {
-      v14 = 0;
+      filenamesCopy = 0;
       LODWORD(v15) = 0;
       WTF::fastFree(v5, v4);
     }
@@ -175,27 +175,27 @@
   }
 }
 
-- (void)chooseFilename:(id)a3 displayString:(id)a4 iconImage:(CGImage *)a5
+- (void)chooseFilename:(id)filename displayString:(id)string iconImage:(CGImage *)image
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v5[0] = a3;
-  -[WebOpenPanelResultListener chooseFilenames:displayString:iconImage:](self, "chooseFilenames:displayString:iconImage:", [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1], a4, a5);
+  v5[0] = filename;
+  -[WebOpenPanelResultListener chooseFilenames:displayString:iconImage:](self, "chooseFilenames:displayString:iconImage:", [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1], string, image);
 }
 
-- (void)chooseFilenames:(id)a3 displayString:(id)a4 iconImage:(CGImage *)a5
+- (void)chooseFilenames:(id)filenames displayString:(id)string iconImage:(CGImage *)image
 {
   if (!self->_chooser.m_ptr)
   {
     return;
   }
 
-  v24 = a3;
-  v23 = &v24;
-  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v20, [a3 count], &v23, 0);
-  MEMORY[0x1CCA63A40](&v24, a4);
-  if (a5)
+  filenamesCopy = filenames;
+  v23 = &filenamesCopy;
+  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v20, [filenames count], &v23, 0);
+  MEMORY[0x1CCA63A40](&filenamesCopy, string);
+  if (image)
   {
-    CFRetain(a5);
+    CFRetain(image);
   }
 
   WebCore::Icon::create();
@@ -205,8 +205,8 @@
   if (!v9)
   {
 LABEL_7:
-    v10 = a5;
-    if (!a5)
+    imageCopy2 = image;
+    if (!image)
     {
       goto LABEL_9;
     }
@@ -222,16 +222,16 @@ LABEL_7:
 
   WebCore::Icon::~Icon(v9);
   WTF::fastFree(v16, v17);
-  v10 = a5;
-  if (a5)
+  imageCopy2 = image;
+  if (image)
   {
 LABEL_8:
-    CFRelease(v10);
+    CFRelease(imageCopy2);
   }
 
 LABEL_9:
-  v11 = v24;
-  v24 = 0;
+  v11 = filenamesCopy;
+  filenamesCopy = 0;
   if (v11 && atomic_fetch_add_explicit(v11, 0xFFFFFFFE, memory_order_relaxed) == 2)
   {
     WTF::StringImpl::destroy(v11, v8);

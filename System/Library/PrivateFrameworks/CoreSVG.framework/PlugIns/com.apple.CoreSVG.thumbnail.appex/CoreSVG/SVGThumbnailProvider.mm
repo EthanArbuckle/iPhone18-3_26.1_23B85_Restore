@@ -1,14 +1,14 @@
 @interface SVGThumbnailProvider
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4;
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation SVGThumbnailProvider
 
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 fileURL];
+  requestCopy = request;
+  handlerCopy = handler;
+  fileURL = [requestCopy fileURL];
   v8 = CGSVGDocumentCreateFromURL();
 
   if (v8)
@@ -16,9 +16,9 @@
     CGSVGDocumentGetCanvasSize();
     v10 = v9;
     v12 = v11;
-    [v5 maximumSize];
+    [requestCopy maximumSize];
     v14 = v13 / v10;
-    [v5 maximumSize];
+    [requestCopy maximumSize];
     if (v14 >= v15 / v12)
     {
       v16 = v15 / v12;
@@ -37,13 +37,13 @@
     *&v18[5] = v12;
     v18[6] = v8;
     v17 = [QLThumbnailReply replyWithContextSize:v18 drawingBlock:v10 * v16, v12 * v16];
-    v6[2](v6, v17, 0);
+    handlerCopy[2](handlerCopy, v17, 0);
   }
 
   else
   {
     v17 = [NSError errorWithDomain:NSCocoaErrorDomain code:4 userInfo:0];
-    (v6)[2](v6, 0, v17);
+    (handlerCopy)[2](handlerCopy, 0, v17);
   }
 }
 

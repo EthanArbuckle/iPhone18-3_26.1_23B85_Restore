@@ -1,5 +1,5 @@
 @interface JavaUtilConcurrentCopyOnWriteArrayList_CowIterator
-- (JavaUtilConcurrentCopyOnWriteArrayList_CowIterator)initWithNSObjectArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
+- (JavaUtilConcurrentCopyOnWriteArrayList_CowIterator)initWithNSObjectArray:(id)array withInt:(int)int withInt:(int)withInt;
 - (id)next;
 - (id)previous;
 - (void)dealloc;
@@ -7,13 +7,13 @@
 
 @implementation JavaUtilConcurrentCopyOnWriteArrayList_CowIterator
 
-- (JavaUtilConcurrentCopyOnWriteArrayList_CowIterator)initWithNSObjectArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (JavaUtilConcurrentCopyOnWriteArrayList_CowIterator)initWithNSObjectArray:(id)array withInt:(int)int withInt:(int)withInt
 {
   self->index_ = 0;
-  JreStrongAssign(&self->snapshot_, a3);
-  self->from_ = a4;
-  self->to_ = a5;
-  self->index_ = a4;
+  JreStrongAssign(&self->snapshot_, array);
+  self->from_ = int;
+  self->to_ = withInt;
+  self->index_ = int;
   return self;
 }
 

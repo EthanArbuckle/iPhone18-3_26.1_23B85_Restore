@@ -1,19 +1,19 @@
 @interface TUISingleContentBoxBuilder
-- (unint64_t)checkContents:(id)a3;
+- (unint64_t)checkContents:(id)contents;
 @end
 
 @implementation TUISingleContentBoxBuilder
 
-- (unint64_t)checkContents:(id)a3
+- (unint64_t)checkContents:(id)contents
 {
-  v3 = a3;
+  contentsCopy = contents;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_38708;
   v19[3] = &unk_25DF80;
   v4 = objc_opt_new();
   v20 = v4;
-  [v3 enumerateObjectsUsingBlock:v19];
+  [contentsCopy enumerateObjectsUsingBlock:v19];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;

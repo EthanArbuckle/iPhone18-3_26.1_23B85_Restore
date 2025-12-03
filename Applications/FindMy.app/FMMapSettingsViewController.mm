@@ -1,34 +1,34 @@
 @interface FMMapSettingsViewController
 - (void)attributionPressed;
 - (void)selectSatelliteOption;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FMMapSettingsViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(FMMapSettingsViewController *)&v5 viewWillAppear:v3];
+  [(FMMapSettingsViewController *)&v5 viewWillAppear:appearCopy];
   sub_10010DCC4();
   sub_10010DE9C();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10010C5F4(a3);
+  selfCopy = self;
+  sub_10010C5F4(disappear);
 }
 
 - (void)selectSatelliteOption
 {
   v2 = (*(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy27FMBaseContentViewController_mediator))[7];
   v3 = qword_1006AEB58;
-  v7 = self;
+  selfCopy = self;
 
   if (v3 != -1)
   {
@@ -48,7 +48,7 @@
 
 - (void)attributionPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_10010E248();
 }
 

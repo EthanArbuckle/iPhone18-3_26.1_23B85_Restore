@@ -1,5 +1,5 @@
 @interface ISFallbackIconFill
-- (ISFallbackIconFill)initWithImage:(CGImage *)a3 foregroundAndLightingEffectsImage:(CGImage *)a4 feedback:(id)a5;
+- (ISFallbackIconFill)initWithImage:(CGImage *)image foregroundAndLightingEffectsImage:(CGImage *)effectsImage feedback:(id)feedback;
 - (void)dealloc;
 @end
 
@@ -14,17 +14,17 @@
   [(ISFallbackIconFill *)&v3 dealloc];
 }
 
-- (ISFallbackIconFill)initWithImage:(CGImage *)a3 foregroundAndLightingEffectsImage:(CGImage *)a4 feedback:(id)a5
+- (ISFallbackIconFill)initWithImage:(CGImage *)image foregroundAndLightingEffectsImage:(CGImage *)effectsImage feedback:(id)feedback
 {
-  v9 = a5;
+  feedbackCopy = feedback;
   v12.receiver = self;
   v12.super_class = ISFallbackIconFill;
   v10 = [(ISFallbackIconFill *)&v12 init];
   if (v10)
   {
-    v10->_image = CGImageRetain(a3);
-    v10->_foregroundAndLightingEffectsImage = CGImageRetain(a4);
-    objc_storeStrong(&v10->_feedback, a5);
+    v10->_image = CGImageRetain(image);
+    v10->_foregroundAndLightingEffectsImage = CGImageRetain(effectsImage);
+    objc_storeStrong(&v10->_feedback, feedback);
   }
 
   return v10;

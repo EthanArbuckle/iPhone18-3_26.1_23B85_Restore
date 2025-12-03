@@ -11,10 +11,10 @@
 - (int64_t)accessibilityGroupID;
 - (void)_adjustButtonFooterViewLocationForViewContentHeight;
 - (void)_setUpButtonFooterView;
-- (void)setTextAlignment:(int64_t)a3;
+- (void)setTextAlignment:(int64_t)alignment;
 - (void)setUpConstraints;
 - (void)setUpUI;
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4;
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -44,91 +44,91 @@
   v39.super_class = HROnboardingHeroExplanationViewController;
   [(HROnboardingHeroExplanationViewController *)&v39 setUpUI];
   v3 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:-[HROnboardingHeroExplanationViewController accessibilityGroupID](self suffix:{"accessibilityGroupID"), @"Onboarding.HowItWorks.EntireView"}];
-  v4 = [(HROnboardingHeroExplanationViewController *)self scrollView];
-  [v4 setAccessibilityIdentifier:v3];
+  scrollView = [(HROnboardingHeroExplanationViewController *)self scrollView];
+  [scrollView setAccessibilityIdentifier:v3];
 
-  v5 = [(HROnboardingHeroExplanationViewController *)self createHeroView];
-  [(HROnboardingHeroExplanationViewController *)self setHeroView:v5];
+  createHeroView = [(HROnboardingHeroExplanationViewController *)self createHeroView];
+  [(HROnboardingHeroExplanationViewController *)self setHeroView:createHeroView];
 
-  v6 = [(HROnboardingHeroExplanationViewController *)self heroView];
+  heroView = [(HROnboardingHeroExplanationViewController *)self heroView];
 
-  if (v6)
+  if (heroView)
   {
-    v7 = [(HROnboardingHeroExplanationViewController *)self heroView];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    heroView2 = [(HROnboardingHeroExplanationViewController *)self heroView];
+    [heroView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v8 = [(HROnboardingHeroExplanationViewController *)self contentView];
-    v9 = [(HROnboardingHeroExplanationViewController *)self heroView];
-    [v8 addSubview:v9];
+    contentView = [(HROnboardingHeroExplanationViewController *)self contentView];
+    heroView3 = [(HROnboardingHeroExplanationViewController *)self heroView];
+    [contentView addSubview:heroView3];
   }
 
   v10 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HROnboardingHeroExplanationViewController *)self setTitleLabel:v10];
 
-  v11 = [(HROnboardingHeroExplanationViewController *)self titleString];
-  v12 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
-  [v12 setText:v11];
+  titleString = [(HROnboardingHeroExplanationViewController *)self titleString];
+  titleLabel = [(HROnboardingHeroExplanationViewController *)self titleLabel];
+  [titleLabel setText:titleString];
 
-  v13 = [(HROnboardingHeroExplanationViewController *)self _titleFont];
-  v14 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
-  [v14 setFont:v13];
+  _titleFont = [(HROnboardingHeroExplanationViewController *)self _titleFont];
+  titleLabel2 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
+  [titleLabel2 setFont:_titleFont];
 
-  v15 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel3 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
+  [titleLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
-  [v16 setNumberOfLines:0];
+  titleLabel4 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
+  [titleLabel4 setNumberOfLines:0];
 
   v17 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:-[HROnboardingHeroExplanationViewController accessibilityGroupID](self suffix:{"accessibilityGroupID"), @"Onboarding.PageTitle"}];
-  v18 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
-  [v18 setAccessibilityIdentifier:v17];
+  titleLabel5 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
+  [titleLabel5 setAccessibilityIdentifier:v17];
 
-  v19 = [(HROnboardingHeroExplanationViewController *)self contentView];
-  v20 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
-  [v19 addSubview:v20];
+  contentView2 = [(HROnboardingHeroExplanationViewController *)self contentView];
+  titleLabel6 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
+  [contentView2 addSubview:titleLabel6];
 
   v21 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HROnboardingHeroExplanationViewController *)self setBodyLabel:v21];
 
-  v22 = [(HROnboardingHeroExplanationViewController *)self bodyString];
-  v23 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
-  [v23 setText:v22];
+  bodyString = [(HROnboardingHeroExplanationViewController *)self bodyString];
+  bodyLabel = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
+  [bodyLabel setText:bodyString];
 
-  v24 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v25 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
-  [v25 setTextColor:v24];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  bodyLabel2 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
+  [bodyLabel2 setTextColor:secondaryLabelColor];
 
-  v26 = [(HROnboardingHeroExplanationViewController *)self _bodyFont];
-  v27 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
-  [v27 setFont:v26];
+  _bodyFont = [(HROnboardingHeroExplanationViewController *)self _bodyFont];
+  bodyLabel3 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
+  [bodyLabel3 setFont:_bodyFont];
 
-  v28 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
-  [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bodyLabel4 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
+  [bodyLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v29 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
-  [v29 setNumberOfLines:0];
+  bodyLabel5 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
+  [bodyLabel5 setNumberOfLines:0];
 
   v30 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:-[HROnboardingHeroExplanationViewController accessibilityGroupID](self suffix:{"accessibilityGroupID"), @"Onboarding.HowItWorksDescription"}];
-  v31 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
-  [v31 setAccessibilityIdentifier:v30];
+  bodyLabel6 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
+  [bodyLabel6 setAccessibilityIdentifier:v30];
 
-  v32 = [(HROnboardingHeroExplanationViewController *)self contentView];
-  v33 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
-  [v32 addSubview:v33];
+  contentView3 = [(HROnboardingHeroExplanationViewController *)self contentView];
+  bodyLabel7 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
+  [contentView3 addSubview:bodyLabel7];
 
   if ([(HROnboardingHeroExplanationViewController *)self isOnboarding])
   {
-    v34 = [(HROnboardingHeroExplanationViewController *)self buttonTitleString];
-    v40[0] = v34;
+    buttonTitleString = [(HROnboardingHeroExplanationViewController *)self buttonTitleString];
+    v40[0] = buttonTitleString;
     v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
     v36 = [HRStackedButtonView buddyStackedButtonViewWithTitles:v35 footerText:0 boldFooterText:0 delegate:self];
     [(HROnboardingHeroExplanationViewController *)self setStackedButtonView:v36];
 
-    v37 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
-    [v37 setFixedBottomButtonSpacing:1];
+    stackedButtonView = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
+    [stackedButtonView setFixedBottomButtonSpacing:1];
 
-    v38 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
-    [v38 setTranslatesAutoresizingMaskIntoConstraints:0];
+    stackedButtonView2 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
+    [stackedButtonView2 setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 }
 
@@ -137,84 +137,84 @@
   v32.receiver = self;
   v32.super_class = HROnboardingHeroExplanationViewController;
   [(HROnboardingHeroExplanationViewController *)&v32 setUpConstraints];
-  v3 = [(HROnboardingHeroExplanationViewController *)self heroView];
+  heroView = [(HROnboardingHeroExplanationViewController *)self heroView];
 
-  if (v3)
+  if (heroView)
   {
-    v4 = [(HROnboardingHeroExplanationViewController *)self heroView];
-    v5 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
-    [v4 hk_alignHorizontalConstraintsWithView:v5 margin:0.0];
+    heroView2 = [(HROnboardingHeroExplanationViewController *)self heroView];
+    titleLabel = [(HROnboardingHeroExplanationViewController *)self titleLabel];
+    [heroView2 hk_alignHorizontalConstraintsWithView:titleLabel margin:0.0];
 
-    v6 = [(HROnboardingHeroExplanationViewController *)self heroView];
-    v7 = [v6 topAnchor];
-    v8 = [(HROnboardingHeroExplanationViewController *)self contentView];
-    v9 = [v8 topAnchor];
-    v10 = [v7 constraintEqualToAnchor:v9 constant:29.0];
+    heroView3 = [(HROnboardingHeroExplanationViewController *)self heroView];
+    topAnchor = [heroView3 topAnchor];
+    contentView = [(HROnboardingHeroExplanationViewController *)self contentView];
+    topAnchor2 = [contentView topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:29.0];
     [v10 setActive:1];
 
-    v11 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
-    v12 = [v11 topAnchor];
-    v13 = [(HROnboardingHeroExplanationViewController *)self heroView];
-    v14 = [v13 bottomAnchor];
+    titleLabel2 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
+    topAnchor3 = [titleLabel2 topAnchor];
+    heroView4 = [(HROnboardingHeroExplanationViewController *)self heroView];
+    bottomAnchor = [heroView4 bottomAnchor];
     v15 = 29.0;
   }
 
   else
   {
-    v11 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
-    v12 = [v11 topAnchor];
-    v13 = [(HROnboardingHeroExplanationViewController *)self contentView];
-    v14 = [v13 topAnchor];
+    titleLabel2 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
+    topAnchor3 = [titleLabel2 topAnchor];
+    heroView4 = [(HROnboardingHeroExplanationViewController *)self contentView];
+    bottomAnchor = [heroView4 topAnchor];
     [(HROnboardingHeroExplanationViewController *)self contentTop];
   }
 
-  v16 = [v12 constraintEqualToAnchor:v14 constant:v15];
+  v16 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:v15];
   [v16 setActive:1];
 
-  v17 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
-  v18 = [(HROnboardingHeroExplanationViewController *)self contentView];
+  titleLabel3 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
+  contentView2 = [(HROnboardingHeroExplanationViewController *)self contentView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [v17 hrui_alignHorizontalConstraintsWithView:v18 insets:?];
+  [titleLabel3 hrui_alignHorizontalConstraintsWithView:contentView2 insets:?];
 
-  v19 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
-  v20 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
-  [v19 hk_alignHorizontalConstraintsWithView:v20 margin:0.0];
+  bodyLabel = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
+  titleLabel4 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
+  [bodyLabel hk_alignHorizontalConstraintsWithView:titleLabel4 margin:0.0];
 
-  v21 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
-  v22 = [v21 topAnchor];
-  v23 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
-  v24 = [v23 lastBaselineAnchor];
+  bodyLabel2 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
+  topAnchor4 = [bodyLabel2 topAnchor];
+  titleLabel5 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
+  lastBaselineAnchor = [titleLabel5 lastBaselineAnchor];
   [(HROnboardingHeroExplanationViewController *)self _titleLastBaselineToBodyTop];
-  v25 = [v22 constraintEqualToAnchor:v24 constant:?];
+  v25 = [topAnchor4 constraintEqualToAnchor:lastBaselineAnchor constant:?];
   [v25 setActive:1];
 
-  v26 = [(HROnboardingHeroExplanationViewController *)self contentView];
-  v27 = [v26 bottomAnchor];
-  v28 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
-  v29 = [v28 bottomAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29 constant:*MEMORY[0x277D12778]];
+  contentView3 = [(HROnboardingHeroExplanationViewController *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  bodyLabel3 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
+  bottomAnchor3 = [bodyLabel3 bottomAnchor];
+  v30 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:*MEMORY[0x277D12778]];
   [(HROnboardingHeroExplanationViewController *)self setContentViewBottomConstraint:v30];
 
-  v31 = [(HROnboardingHeroExplanationViewController *)self contentViewBottomConstraint];
-  [v31 setActive:1];
+  contentViewBottomConstraint = [(HROnboardingHeroExplanationViewController *)self contentViewBottomConstraint];
+  [contentViewBottomConstraint setActive:1];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  self->_textAlignment = a3;
-  v5 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
-  [v5 setTextAlignment:a3];
+  self->_textAlignment = alignment;
+  titleLabel = [(HROnboardingHeroExplanationViewController *)self titleLabel];
+  [titleLabel setTextAlignment:alignment];
 
-  v6 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
-  [v6 setTextAlignment:a3];
+  bodyLabel = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
+  [bodyLabel setTextAlignment:alignment];
 }
 
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index
 {
-  if (!a4)
+  if (!index)
   {
-    v5 = [(HROnboardingHeroExplanationViewController *)self delegate];
-    [v5 stepForward];
+    delegate = [(HROnboardingHeroExplanationViewController *)self delegate];
+    [delegate stepForward];
   }
 }
 
@@ -222,20 +222,20 @@
 {
   if ([(HROnboardingHeroExplanationViewController *)self isOnboarding])
   {
-    v3 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
+    stackedButtonView = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
     HKHealthUIBuddyDirectionalEdgeInsets();
-    [(HROnboardingHeroExplanationViewController *)self setFooterView:v3 insets:?];
+    [(HROnboardingHeroExplanationViewController *)self setFooterView:stackedButtonView insets:?];
 
-    v4 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
-    v5 = [(HROnboardingHeroExplanationViewController *)self view];
-    [v4 alignBlurViewHorizontalConstraintsWithView:v5];
+    stackedButtonView2 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
+    view = [(HROnboardingHeroExplanationViewController *)self view];
+    [stackedButtonView2 alignBlurViewHorizontalConstraintsWithView:view];
 
-    v6 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
-    [v6 setBlurHidden:0];
+    stackedButtonView3 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
+    [stackedButtonView3 setBlurHidden:0];
 
-    v7 = [(HROnboardingHeroExplanationViewController *)self stackedButtonViewLastButtonMode];
-    v8 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
-    [v8 setLastButtonMode:v7];
+    stackedButtonViewLastButtonMode = [(HROnboardingHeroExplanationViewController *)self stackedButtonViewLastButtonMode];
+    stackedButtonView4 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
+    [stackedButtonView4 setLastButtonMode:stackedButtonViewLastButtonMode];
   }
 }
 
@@ -244,66 +244,66 @@
   v44[1] = *MEMORY[0x277D85DE8];
   if ([(HROnboardingHeroExplanationViewController *)self isOnboarding])
   {
-    v3 = [(HROnboardingHeroExplanationViewController *)self view];
-    [v3 layoutIfNeeded];
+    view = [(HROnboardingHeroExplanationViewController *)self view];
+    [view layoutIfNeeded];
 
-    v4 = [(HROnboardingHeroExplanationViewController *)self view];
-    v5 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
-    v6 = [v5 buttons];
-    v7 = [v6 firstObject];
-    [v7 frame];
+    view2 = [(HROnboardingHeroExplanationViewController *)self view];
+    stackedButtonView = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
+    buttons = [stackedButtonView buttons];
+    firstObject = [buttons firstObject];
+    [firstObject frame];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
-    [v4 convertRect:v16 fromView:{v9, v11, v13, v15}];
+    stackedButtonView2 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
+    [view2 convertRect:stackedButtonView2 fromView:{v9, v11, v13, v15}];
     v18 = v17;
 
-    v19 = [(HROnboardingHeroExplanationViewController *)self contentView];
-    [v19 frame];
+    contentView = [(HROnboardingHeroExplanationViewController *)self contentView];
+    [contentView frame];
     v21 = v20;
-    v22 = [(HROnboardingHeroExplanationViewController *)self view];
-    [v22 safeAreaInsets];
+    view3 = [(HROnboardingHeroExplanationViewController *)self view];
+    [view3 safeAreaInsets];
     v24 = v18 - v23;
 
     if (v21 > v24)
     {
       [(HROnboardingHeroExplanationViewController *)self removeFooterView];
-      v25 = [(HROnboardingHeroExplanationViewController *)self contentView];
-      v26 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
-      [v25 addSubview:v26];
+      contentView2 = [(HROnboardingHeroExplanationViewController *)self contentView];
+      stackedButtonView3 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
+      [contentView2 addSubview:stackedButtonView3];
 
-      v27 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
-      [v27 setBlurHidden:1];
+      stackedButtonView4 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
+      [stackedButtonView4 setBlurHidden:1];
 
-      v28 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
-      v29 = [(HROnboardingHeroExplanationViewController *)self titleLabel];
-      [v28 hk_alignHorizontalConstraintsWithView:v29 margin:0.0];
+      stackedButtonView5 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
+      titleLabel = [(HROnboardingHeroExplanationViewController *)self titleLabel];
+      [stackedButtonView5 hk_alignHorizontalConstraintsWithView:titleLabel margin:0.0];
 
-      v30 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
-      v31 = [v30 topAnchor];
-      v32 = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
-      v33 = [v32 bottomAnchor];
-      v34 = [v31 constraintEqualToAnchor:v33];
+      stackedButtonView6 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
+      topAnchor = [stackedButtonView6 topAnchor];
+      bodyLabel = [(HROnboardingHeroExplanationViewController *)self bodyLabel];
+      bottomAnchor = [bodyLabel bottomAnchor];
+      v34 = [topAnchor constraintEqualToAnchor:bottomAnchor];
       [v34 setActive:1];
 
       v35 = MEMORY[0x277CCAAD0];
-      v36 = [(HROnboardingHeroExplanationViewController *)self contentViewBottomConstraint];
-      v44[0] = v36;
+      contentViewBottomConstraint = [(HROnboardingHeroExplanationViewController *)self contentViewBottomConstraint];
+      v44[0] = contentViewBottomConstraint;
       v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:1];
       [v35 deactivateConstraints:v37];
 
       [(HROnboardingHeroExplanationViewController *)self setContentViewBottomConstraint:0];
-      v38 = [(HROnboardingHeroExplanationViewController *)self contentView];
-      v39 = [v38 bottomAnchor];
-      v40 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
-      v41 = [v40 bottomAnchor];
-      v42 = [v39 constraintEqualToAnchor:v41];
+      contentView3 = [(HROnboardingHeroExplanationViewController *)self contentView];
+      bottomAnchor2 = [contentView3 bottomAnchor];
+      stackedButtonView7 = [(HROnboardingHeroExplanationViewController *)self stackedButtonView];
+      bottomAnchor3 = [stackedButtonView7 bottomAnchor];
+      v42 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
       [(HROnboardingHeroExplanationViewController *)self setContentViewBottomConstraint:v42];
 
-      v43 = [(HROnboardingHeroExplanationViewController *)self contentViewBottomConstraint];
-      [v43 setActive:1];
+      contentViewBottomConstraint2 = [(HROnboardingHeroExplanationViewController *)self contentViewBottomConstraint];
+      [contentViewBottomConstraint2 setActive:1];
     }
   }
 }
@@ -311,17 +311,17 @@
 - (id)_titleFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HROnboardingHeroExplanationViewController *)self _titleFontTextStyle];
-  v4 = [v2 hk_scalableFontForTextStyle:v3 symbolicTraits:2];
+  _titleFontTextStyle = [(HROnboardingHeroExplanationViewController *)self _titleFontTextStyle];
+  v4 = [v2 hk_scalableFontForTextStyle:_titleFontTextStyle symbolicTraits:2];
 
   return v4;
 }
 
 - (double)_titleTopToFirstBaselineLeading
 {
-  v2 = [MEMORY[0x277D759A0] hrui_currentDeviceHas5Point8InchScreen];
+  hrui_currentDeviceHas5Point8InchScreen = [MEMORY[0x277D759A0] hrui_currentDeviceHas5Point8InchScreen];
   result = 36.0;
-  if (v2)
+  if (hrui_currentDeviceHas5Point8InchScreen)
   {
     return 44.0;
   }
@@ -331,9 +331,9 @@
 
 - (double)_titleTopToFirstBaseline
 {
-  v3 = [(HROnboardingHeroExplanationViewController *)self _titleFont];
+  _titleFont = [(HROnboardingHeroExplanationViewController *)self _titleFont];
   [(HROnboardingHeroExplanationViewController *)self _titleTopToFirstBaselineLeading];
-  [v3 _scaledValueForValue:?];
+  [_titleFont _scaledValueForValue:?];
   v5 = v4;
 
   return v5;
@@ -341,8 +341,8 @@
 
 - (double)_titleLastBaselineToBodyTop
 {
-  v2 = [(HROnboardingHeroExplanationViewController *)self _titleFont];
-  [v2 _scaledValueForValue:24.0];
+  _titleFont = [(HROnboardingHeroExplanationViewController *)self _titleFont];
+  [_titleFont _scaledValueForValue:24.0];
   v4 = v3;
 
   return v4;
@@ -351,8 +351,8 @@
 - (id)_bodyFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HROnboardingHeroExplanationViewController *)self _bodyFontTextStyle];
-  v4 = [v2 preferredFontForTextStyle:v3];
+  _bodyFontTextStyle = [(HROnboardingHeroExplanationViewController *)self _bodyFontTextStyle];
+  v4 = [v2 preferredFontForTextStyle:_bodyFontTextStyle];
 
   return v4;
 }

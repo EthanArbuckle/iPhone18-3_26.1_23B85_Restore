@@ -1,27 +1,27 @@
 @interface W5PeerDiscoveryRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPeerDiscoveryRequest:(id)a3;
-- (W5PeerDiscoveryRequest)initWithConfiguration:(id)a3 uuid:(id)a4 handler:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPeerDiscoveryRequest:(id)request;
+- (W5PeerDiscoveryRequest)initWithConfiguration:(id)configuration uuid:(id)uuid handler:(id)handler;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation W5PeerDiscoveryRequest
 
-- (W5PeerDiscoveryRequest)initWithConfiguration:(id)a3 uuid:(id)a4 handler:(id)a5
+- (W5PeerDiscoveryRequest)initWithConfiguration:(id)configuration uuid:(id)uuid handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configurationCopy = configuration;
+  uuidCopy = uuid;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = W5PeerDiscoveryRequest;
   v12 = [(W5PeerDiscoveryRequest *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_configuration, a3);
-    objc_storeStrong(&v13->_uuid, a4);
-    v14 = objc_retainBlock(v11);
+    objc_storeStrong(&v12->_configuration, configuration);
+    objc_storeStrong(&v13->_uuid, uuid);
+    v14 = objc_retainBlock(handlerCopy);
     handler = v13->_handler;
     v13->_handler = v14;
   }
@@ -36,12 +36,12 @@
   v5 = NSStringFromClass(v4);
   [v3 appendFormat:@"<%@ : %p ", v5, self];
 
-  v6 = [(W5PeerDiscoveryRequest *)self uuid];
-  v7 = [v6 UUIDString];
-  [v3 appendFormat:@"UUID='%@' ", v7];
+  uuid = [(W5PeerDiscoveryRequest *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [v3 appendFormat:@"UUID='%@' ", uUIDString];
 
-  v8 = [(W5PeerDiscoveryRequest *)self configuration];
-  [v3 appendFormat:@"configuration='%@'", v8];
+  configuration = [(W5PeerDiscoveryRequest *)self configuration];
+  [v3 appendFormat:@"configuration='%@'", configuration];
 
   [v3 appendString:@">"];
   v9 = [v3 copy];
@@ -49,16 +49,16 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(W5PeerDiscoveryRequest *)self isEqualToPeerDiscoveryRequest:v5];
   }
@@ -71,20 +71,20 @@
   return v6;
 }
 
-- (BOOL)isEqualToPeerDiscoveryRequest:(id)a3
+- (BOOL)isEqualToPeerDiscoveryRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(W5PeerDiscoveryRequest *)self uuid];
-  v6 = [v4 uuid];
+  requestCopy = request;
+  uuid = [(W5PeerDiscoveryRequest *)self uuid];
+  uuid2 = [requestCopy uuid];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(requestCopy) = [uuid isEqual:uuid2];
+  return requestCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(W5PeerDiscoveryRequest *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(W5PeerDiscoveryRequest *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }

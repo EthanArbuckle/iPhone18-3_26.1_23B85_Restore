@@ -1,5 +1,5 @@
 @interface SpeakerCC
-- (SpeakerCC)initWithParams:(__CFDictionary *)a3;
+- (SpeakerCC)initWithParams:(__CFDictionary *)params;
 - (int)numberOfFields;
 - (void)defaultAction;
 - (void)refreshTGraphTelemetry;
@@ -7,7 +7,7 @@
 
 @implementation SpeakerCC
 
-- (SpeakerCC)initWithParams:(__CFDictionary *)a3
+- (SpeakerCC)initWithParams:(__CFDictionary *)params
 {
   v11.receiver = self;
   v11.super_class = SpeakerCC;
@@ -18,7 +18,7 @@
     *&v4->super.allowLIOverride = 100;
     v4->super.super.nameofComponent = CFStringCreateWithFormat(0, 0, @"%d Speaker ", 12);
     v5->super.previousValue = v5->super.currentLoadingIndex;
-    sub_100002A20(a3, @"speakerGainFloor", kCFNumberFloatType, &v5->_currentSpeakerGain);
+    sub_100002A20(params, @"speakerGainFloor", kCFNumberFloatType, &v5->_currentSpeakerGain);
     currentSpeakerGain = v5->_currentSpeakerGain;
     if (currentSpeakerGain < 0.0 || currentSpeakerGain > 1.0)
     {
@@ -42,8 +42,8 @@
       }
     }
 
-    [(ComponentControl *)v5 updatePowerParameters:a3];
-    if (sub_100031D64(a3, @"expectsCPMSSupport", 0))
+    [(ComponentControl *)v5 updatePowerParameters:params];
+    if (sub_100031D64(params, @"expectsCPMSSupport", 0))
     {
       [(ComponentControl *)v5 setCPMSMitigationState:1];
     }

@@ -1,6 +1,6 @@
 @interface QPXPCECRClient
 + (id)sharedClient;
-- (BOOL)warmUpECRClientSyncWithError:(id *)a3;
+- (BOOL)warmUpECRClientSyncWithError:(id *)error;
 - (QPXPCECRClient)init;
 @end
 
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __30__QPXPCECRClient_sharedClient__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedClient_onceToken_118 != -1)
   {
     dispatch_once(&sharedClient_onceToken_118, block);
@@ -57,16 +57,16 @@ void __30__QPXPCECRClient_sharedClient__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)warmUpECRClientSyncWithError:(id *)a3
+- (BOOL)warmUpECRClientSyncWithError:(id *)error
 {
   client = self->_client;
   v8 = 0;
   [(GDEntityResolutionTextClient *)client warmupForMode:3 error:&v8];
   v5 = v8;
-  if (a3)
+  if (error)
   {
     v5 = v5;
-    *a3 = v5;
+    *error = v5;
   }
 
   v6 = v5 == 0;

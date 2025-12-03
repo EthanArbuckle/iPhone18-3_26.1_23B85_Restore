@@ -1,20 +1,20 @@
 @interface SMDeviceConfigurationChecker
-+ (id)convertLowPowerModeWarningStateToString:(int64_t)a3;
++ (id)convertLowPowerModeWarningStateToString:(int64_t)string;
 - (BOOL)isEffectivePairedDeviceNearby;
-- (SMDeviceConfigurationChecker)initWithQueue:(id)a3;
-- (SMDeviceConfigurationChecker)initWithQueue:(id)a3 messagingService:(id)a4;
+- (SMDeviceConfigurationChecker)initWithQueue:(id)queue;
+- (SMDeviceConfigurationChecker)initWithQueue:(id)queue messagingService:(id)service;
 - (id)effectivePairedDevice;
 - (int64_t)getDeviceConfigurationLowPowerModeWarningState;
-- (int64_t)getDeviceConfigurationLowPowerModeWarningStateWithPairedDeviceNearby:(BOOL)a3;
-- (void)fetchDeviceConfigurationLowPowerModeWarningStateWithHandler:(id)a3;
+- (int64_t)getDeviceConfigurationLowPowerModeWarningStateWithPairedDeviceNearby:(BOOL)nearby;
+- (void)fetchDeviceConfigurationLowPowerModeWarningStateWithHandler:(id)handler;
 @end
 
 @implementation SMDeviceConfigurationChecker
 
-- (SMDeviceConfigurationChecker)initWithQueue:(id)a3
+- (SMDeviceConfigurationChecker)initWithQueue:(id)queue
 {
-  v5 = a3;
-  if (v5)
+  queueCopy = queue;
+  if (queueCopy)
   {
     v12.receiver = self;
     v12.super_class = SMDeviceConfigurationChecker;
@@ -22,7 +22,7 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_queue, a3);
+      objc_storeStrong(&v6->_queue, queue);
       v8 = [objc_alloc(MEMORY[0x277D18778]) initWithService:@"com.apple.private.alloy.safetymonitor.ownaccount"];
       ownAccountIDSService = v7->_ownAccountIDSService;
       v7->_ownAccountIDSService = v8;
@@ -31,24 +31,24 @@
     }
 
     self = v7;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (SMDeviceConfigurationChecker)initWithQueue:(id)a3 messagingService:(id)a4
+- (SMDeviceConfigurationChecker)initWithQueue:(id)queue messagingService:(id)service
 {
   v10.receiver = self;
   v10.super_class = SMDeviceConfigurationChecker;
   v6 = [(SMDeviceConfigurationChecker *)&v10 init];
   v7 = v6;
-  if (!v6 || (v8 = 0, a3) && a4)
+  if (!v6 || (v8 = 0, queue) && service)
   {
     v8 = v6;
   }
@@ -62,14 +62,14 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(SMDeviceConfigurationChecker *)self queue];
+  queue = [(SMDeviceConfigurationChecker *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __78__SMDeviceConfigurationChecker_getDeviceConfigurationLowPowerModeWarningState__block_invoke;
   v6[3] = &unk_279B64BD8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -83,21 +83,21 @@ uint64_t __78__SMDeviceConfigurationChecker_getDeviceConfigurationLowPowerModeWa
   return result;
 }
 
-- (int64_t)getDeviceConfigurationLowPowerModeWarningStateWithPairedDeviceNearby:(BOOL)a3
+- (int64_t)getDeviceConfigurationLowPowerModeWarningStateWithPairedDeviceNearby:(BOOL)nearby
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v5 = [(SMDeviceConfigurationChecker *)self queue];
+  queue = [(SMDeviceConfigurationChecker *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __101__SMDeviceConfigurationChecker_getDeviceConfigurationLowPowerModeWarningStateWithPairedDeviceNearby___block_invoke;
   block[3] = &unk_279B64C00;
   block[4] = self;
   block[5] = &v10;
-  v9 = a3;
-  dispatch_sync(v5, block);
+  nearbyCopy = nearby;
+  dispatch_sync(queue, block);
 
   v6 = v11[3];
   _Block_object_dispose(&v10, 8);
@@ -111,18 +111,18 @@ uint64_t __101__SMDeviceConfigurationChecker_getDeviceConfigurationLowPowerModeW
   return result;
 }
 
-- (void)fetchDeviceConfigurationLowPowerModeWarningStateWithHandler:(id)a3
+- (void)fetchDeviceConfigurationLowPowerModeWarningStateWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SMDeviceConfigurationChecker *)self queue];
+  handlerCopy = handler;
+  queue = [(SMDeviceConfigurationChecker *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __92__SMDeviceConfigurationChecker_fetchDeviceConfigurationLowPowerModeWarningStateWithHandler___block_invoke;
   v7[3] = &unk_279B64C28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 - (id)effectivePairedDevice
@@ -132,10 +132,10 @@ uint64_t __101__SMDeviceConfigurationChecker_getDeviceConfigurationLowPowerModeW
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(SMDeviceConfigurationChecker *)self ownAccountIDSService];
-  v3 = [v2 devices];
+  ownAccountIDSService = [(SMDeviceConfigurationChecker *)self ownAccountIDSService];
+  devices = [ownAccountIDSService devices];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [devices countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -145,7 +145,7 @@ uint64_t __101__SMDeviceConfigurationChecker_getDeviceConfigurationLowPowerModeW
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -156,7 +156,7 @@ uint64_t __101__SMDeviceConfigurationChecker_getDeviceConfigurationLowPowerModeW
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [devices countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -175,21 +175,21 @@ LABEL_12:
 
 - (BOOL)isEffectivePairedDeviceNearby
 {
-  v2 = [(SMDeviceConfigurationChecker *)self effectivePairedDevice];
-  v3 = [v2 isNearby];
+  effectivePairedDevice = [(SMDeviceConfigurationChecker *)self effectivePairedDevice];
+  isNearby = [effectivePairedDevice isNearby];
 
-  return v3;
+  return isNearby;
 }
 
-+ (id)convertLowPowerModeWarningStateToString:(int64_t)a3
++ (id)convertLowPowerModeWarningStateToString:(int64_t)string
 {
   v3 = @"LowPowerModeWarningStateEnabled";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"LowPowerModeStateWarningDisabled";
   }
 
-  if (a3)
+  if (string)
   {
     return v3;
   }

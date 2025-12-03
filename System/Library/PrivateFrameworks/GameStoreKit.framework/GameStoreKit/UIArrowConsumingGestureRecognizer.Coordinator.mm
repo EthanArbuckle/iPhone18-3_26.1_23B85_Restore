@@ -1,5 +1,5 @@
 @interface UIArrowConsumingGestureRecognizer.Coordinator
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
 - (_TtCV12GameStoreKit33UIArrowConsumingGestureRecognizer11Coordinator)init;
 - (void)handleGesture;
 @end
@@ -9,16 +9,16 @@
 - (void)handleGesture
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtCV12GameStoreKit33UIArrowConsumingGestureRecognizer11Coordinator_action);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_24EFDD0EC(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_24EFDD0EC(recognizerCopy, gestureRecognizerCopy);
 
   return v9 & 1;
 }

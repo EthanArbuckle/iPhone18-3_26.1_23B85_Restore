@@ -1,25 +1,25 @@
 @interface NLXSchemaCDMSystemReportedSuccess
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMSystemReportedSuccess)initWithDictionary:(id)a3;
-- (NLXSchemaCDMSystemReportedSuccess)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMSystemReportedSuccess)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMSystemReportedSuccess)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMSystemReportedSuccess
 
-- (NLXSchemaCDMSystemReportedSuccess)initWithDictionary:(id)a3
+- (NLXSchemaCDMSystemReportedSuccess)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = NLXSchemaCDMSystemReportedSuccess;
   v5 = [(NLXSchemaCDMSystemReportedSuccess *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"taskId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"taskId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(NLXSchemaCDMSystemReportedSuccess *)v5 setTaskId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"task"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"task"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMSystemReportedSuccess)initWithJSON:(id)a3
+- (NLXSchemaCDMSystemReportedSuccess)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMSystemReportedSuccess *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMSystemReportedSuccess *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMSystemReportedSuccess *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_task)
   {
-    v4 = [(NLXSchemaCDMSystemReportedSuccess *)self task];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    task = [(NLXSchemaCDMSystemReportedSuccess *)self task];
+    dictionaryRepresentation = [task dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"task"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"task"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"task"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"task"];
     }
   }
 
   if (self->_taskId)
   {
-    v7 = [(NLXSchemaCDMSystemReportedSuccess *)self taskId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    taskId = [(NLXSchemaCDMSystemReportedSuccess *)self taskId];
+    dictionaryRepresentation2 = [taskId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"taskId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"taskId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"taskId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"taskId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(NLXSchemaCDMSystemReportedSuccess *)self taskId];
-  v6 = [v4 taskId];
-  if ((v5 != 0) == (v6 == 0))
+  taskId = [(NLXSchemaCDMSystemReportedSuccess *)self taskId];
+  taskId2 = [equalCopy taskId];
+  if ((taskId != 0) == (taskId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(NLXSchemaCDMSystemReportedSuccess *)self taskId];
-  if (v7)
+  taskId3 = [(NLXSchemaCDMSystemReportedSuccess *)self taskId];
+  if (taskId3)
   {
-    v8 = v7;
-    v9 = [(NLXSchemaCDMSystemReportedSuccess *)self taskId];
-    v10 = [v4 taskId];
-    v11 = [v9 isEqual:v10];
+    v8 = taskId3;
+    taskId4 = [(NLXSchemaCDMSystemReportedSuccess *)self taskId];
+    taskId5 = [equalCopy taskId];
+    v11 = [taskId4 isEqual:taskId5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMSystemReportedSuccess *)self task];
-  v6 = [v4 task];
-  if ((v5 != 0) != (v6 == 0))
+  taskId = [(NLXSchemaCDMSystemReportedSuccess *)self task];
+  taskId2 = [equalCopy task];
+  if ((taskId != 0) != (taskId2 == 0))
   {
-    v12 = [(NLXSchemaCDMSystemReportedSuccess *)self task];
-    if (!v12)
+    task = [(NLXSchemaCDMSystemReportedSuccess *)self task];
+    if (!task)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(NLXSchemaCDMSystemReportedSuccess *)self task];
-    v15 = [v4 task];
-    v16 = [v14 isEqual:v15];
+    v13 = task;
+    task2 = [(NLXSchemaCDMSystemReportedSuccess *)self task];
+    task3 = [equalCopy task];
+    v16 = [task2 isEqual:task3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(NLXSchemaCDMSystemReportedSuccess *)self taskId];
+  toCopy = to;
+  taskId = [(NLXSchemaCDMSystemReportedSuccess *)self taskId];
 
-  if (v4)
+  if (taskId)
   {
-    v5 = [(NLXSchemaCDMSystemReportedSuccess *)self taskId];
+    taskId2 = [(NLXSchemaCDMSystemReportedSuccess *)self taskId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(NLXSchemaCDMSystemReportedSuccess *)self task];
+  task = [(NLXSchemaCDMSystemReportedSuccess *)self task];
 
-  if (v6)
+  if (task)
   {
-    v7 = [(NLXSchemaCDMSystemReportedSuccess *)self task];
+    task2 = [(NLXSchemaCDMSystemReportedSuccess *)self task];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = NLXSchemaCDMSystemReportedSuccess;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(NLXSchemaCDMSystemReportedSuccess *)self taskId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  taskId = [(NLXSchemaCDMSystemReportedSuccess *)self taskId];
+  v7 = [taskId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(NLXSchemaCDMSystemReportedSuccess *)self deleteTaskId];
   }
 
-  v9 = [(NLXSchemaCDMSystemReportedSuccess *)self task];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  task = [(NLXSchemaCDMSystemReportedSuccess *)self task];
+  v10 = [task applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(NLXSchemaCDMSystemReportedSuccess *)self deleteTask];
   }

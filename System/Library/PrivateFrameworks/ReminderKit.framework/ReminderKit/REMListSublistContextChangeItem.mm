@@ -1,144 +1,144 @@
 @interface REMListSublistContextChangeItem
-- (REMListSublistContextChangeItem)initWithListChangeItem:(id)a3;
+- (REMListSublistContextChangeItem)initWithListChangeItem:(id)item;
 - (id)_accountChangeItem;
-- (void)addMergeableOrderingNode:(id)a3;
-- (void)addSmartListChangeItem:(id)a3;
-- (void)insertMergeableOrderingNode:(id)a3 afterMergeableOrderingNode:(id)a4;
-- (void)insertMergeableOrderingNode:(id)a3 beforeMergeableOrderingNode:(id)a4;
-- (void)insertSmartListChangeItem:(id)a3 afterSmartListChangeItem:(id)a4;
-- (void)insertSmartListChangeItem:(id)a3 beforeSmartListChangeItem:(id)a4;
-- (void)undeleteChildListWithID:(id)a3 usingUndo:(id)a4;
-- (void)undeleteChildSmartListWithID:(id)a3 usingUndo:(id)a4;
+- (void)addMergeableOrderingNode:(id)node;
+- (void)addSmartListChangeItem:(id)item;
+- (void)insertMergeableOrderingNode:(id)node afterMergeableOrderingNode:(id)orderingNode;
+- (void)insertMergeableOrderingNode:(id)node beforeMergeableOrderingNode:(id)orderingNode;
+- (void)insertSmartListChangeItem:(id)item afterSmartListChangeItem:(id)changeItem;
+- (void)insertSmartListChangeItem:(id)item beforeSmartListChangeItem:(id)changeItem;
+- (void)undeleteChildListWithID:(id)d usingUndo:(id)undo;
+- (void)undeleteChildSmartListWithID:(id)d usingUndo:(id)undo;
 @end
 
 @implementation REMListSublistContextChangeItem
 
-- (REMListSublistContextChangeItem)initWithListChangeItem:(id)a3
+- (REMListSublistContextChangeItem)initWithListChangeItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = REMListSublistContextChangeItem;
   v6 = [(REMListSublistContextChangeItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listChangeItem, a3);
+    objc_storeStrong(&v6->_listChangeItem, item);
   }
 
   return v7;
 }
 
-- (void)addSmartListChangeItem:(id)a3
+- (void)addSmartListChangeItem:(id)item
 {
-  v4 = a3;
-  [v4 assertIsCustomSmartListWithAction:@"-[REMListSublistContextChangeItem addSmartListChangeItem:]"];
-  [(REMListSublistContextChangeItem *)self _insertMergeableOrderingNode:v4 adjacentToMergeableOrderingNode:0 isAfter:0];
+  itemCopy = item;
+  [itemCopy assertIsCustomSmartListWithAction:@"-[REMListSublistContextChangeItem addSmartListChangeItem:]"];
+  [(REMListSublistContextChangeItem *)self _insertMergeableOrderingNode:itemCopy adjacentToMergeableOrderingNode:0 isAfter:0];
 }
 
-- (void)insertSmartListChangeItem:(id)a3 beforeSmartListChangeItem:(id)a4
+- (void)insertSmartListChangeItem:(id)item beforeSmartListChangeItem:(id)changeItem
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 assertIsCustomSmartListWithAction:@"-[REMListSublistContextChangeItem insertSmartListChangeItem:beforeSmartListChangeItem:]"];
-  [v6 assertIsCustomSmartListWithAction:@"-[REMListSublistContextChangeItem insertSmartListChangeItem:beforeSmartListChangeItem:] (sibling)"];
-  [(REMListSublistContextChangeItem *)self _insertMergeableOrderingNode:v7 adjacentToMergeableOrderingNode:v6 isAfter:0];
+  changeItemCopy = changeItem;
+  itemCopy = item;
+  [itemCopy assertIsCustomSmartListWithAction:@"-[REMListSublistContextChangeItem insertSmartListChangeItem:beforeSmartListChangeItem:]"];
+  [changeItemCopy assertIsCustomSmartListWithAction:@"-[REMListSublistContextChangeItem insertSmartListChangeItem:beforeSmartListChangeItem:] (sibling)"];
+  [(REMListSublistContextChangeItem *)self _insertMergeableOrderingNode:itemCopy adjacentToMergeableOrderingNode:changeItemCopy isAfter:0];
 }
 
-- (void)insertSmartListChangeItem:(id)a3 afterSmartListChangeItem:(id)a4
+- (void)insertSmartListChangeItem:(id)item afterSmartListChangeItem:(id)changeItem
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 assertIsCustomSmartListWithAction:@"-[REMListSublistContextChangeItem insertSmartListChangeItem:afterSmartListChangeItem:]"];
-  [v6 assertIsCustomSmartListWithAction:@"-[REMListSublistContextChangeItem insertSmartListChangeItem:afterSmartListChangeItem:] (sibling)"];
-  [(REMListSublistContextChangeItem *)self _insertMergeableOrderingNode:v7 adjacentToMergeableOrderingNode:v6 isAfter:1];
+  changeItemCopy = changeItem;
+  itemCopy = item;
+  [itemCopy assertIsCustomSmartListWithAction:@"-[REMListSublistContextChangeItem insertSmartListChangeItem:afterSmartListChangeItem:]"];
+  [changeItemCopy assertIsCustomSmartListWithAction:@"-[REMListSublistContextChangeItem insertSmartListChangeItem:afterSmartListChangeItem:] (sibling)"];
+  [(REMListSublistContextChangeItem *)self _insertMergeableOrderingNode:itemCopy adjacentToMergeableOrderingNode:changeItemCopy isAfter:1];
 }
 
-- (void)addMergeableOrderingNode:(id)a3
+- (void)addMergeableOrderingNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 assertIsCustomSmartListWithAction:@"-[REMListSublistContextChangeItem addMergeableOrderingNode:]"];
+    [nodeCopy assertIsCustomSmartListWithAction:@"-[REMListSublistContextChangeItem addMergeableOrderingNode:]"];
   }
 
-  [(REMListSublistContextChangeItem *)self _insertMergeableOrderingNode:v4 adjacentToMergeableOrderingNode:0 isAfter:0];
+  [(REMListSublistContextChangeItem *)self _insertMergeableOrderingNode:nodeCopy adjacentToMergeableOrderingNode:0 isAfter:0];
 }
 
-- (void)insertMergeableOrderingNode:(id)a3 beforeMergeableOrderingNode:(id)a4
+- (void)insertMergeableOrderingNode:(id)node beforeMergeableOrderingNode:(id)orderingNode
 {
-  v7 = a3;
-  v6 = a4;
+  nodeCopy = node;
+  orderingNodeCopy = orderingNode;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 assertIsCustomSmartListWithAction:@"-[REMListSublistContextChangeItem insertMergeableOrderingNode:beforeMergeableOrderingNode:]"];
-  }
-
-  objc_opt_class();
-  if (objc_opt_isKindOfClass())
-  {
-    [v6 assertIsCustomSmartListWithAction:@"-[REMListSublistContextChangeItem insertMergeableOrderingNode:beforeMergeableOrderingNode:] (sibling)"];
-  }
-
-  [(REMListSublistContextChangeItem *)self _insertMergeableOrderingNode:v7 adjacentToMergeableOrderingNode:v6 isAfter:0];
-}
-
-- (void)insertMergeableOrderingNode:(id)a3 afterMergeableOrderingNode:(id)a4
-{
-  v7 = a3;
-  v6 = a4;
-  objc_opt_class();
-  if (objc_opt_isKindOfClass())
-  {
-    [v7 assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertMergeableOrderingNode:afterMergeableOrderingNode:]"];
+    [nodeCopy assertIsCustomSmartListWithAction:@"-[REMListSublistContextChangeItem insertMergeableOrderingNode:beforeMergeableOrderingNode:]"];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertMergeableOrderingNode:afterMergeableOrderingNode:] (sibling)"];
+    [orderingNodeCopy assertIsCustomSmartListWithAction:@"-[REMListSublistContextChangeItem insertMergeableOrderingNode:beforeMergeableOrderingNode:] (sibling)"];
   }
 
-  [(REMListSublistContextChangeItem *)self _insertMergeableOrderingNode:v7 adjacentToMergeableOrderingNode:v6 isAfter:1];
+  [(REMListSublistContextChangeItem *)self _insertMergeableOrderingNode:nodeCopy adjacentToMergeableOrderingNode:orderingNodeCopy isAfter:0];
 }
 
-- (void)undeleteChildListWithID:(id)a3 usingUndo:(id)a4
+- (void)insertMergeableOrderingNode:(id)node afterMergeableOrderingNode:(id)orderingNode
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REMListSublistContextChangeItem *)self _accountChangeItem];
-  [v8 undeleteListWithID:v7 usingUndo:v6];
+  nodeCopy = node;
+  orderingNodeCopy = orderingNode;
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    [nodeCopy assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertMergeableOrderingNode:afterMergeableOrderingNode:]"];
+  }
 
-  v12 = [(REMListSublistContextChangeItem *)self listChangeItem];
-  v9 = [v12 childListIDsToUndelete];
-  v10 = [v9 setByAddingObject:v7];
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    [orderingNodeCopy assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertMergeableOrderingNode:afterMergeableOrderingNode:] (sibling)"];
+  }
 
-  v11 = [(REMListSublistContextChangeItem *)self listChangeItem];
-  [v11 setChildListIDsToUndelete:v10];
+  [(REMListSublistContextChangeItem *)self _insertMergeableOrderingNode:nodeCopy adjacentToMergeableOrderingNode:orderingNodeCopy isAfter:1];
 }
 
-- (void)undeleteChildSmartListWithID:(id)a3 usingUndo:(id)a4
+- (void)undeleteChildListWithID:(id)d usingUndo:(id)undo
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REMListSublistContextChangeItem *)self _accountChangeItem];
-  [v8 undeleteSmartListWithID:v7 usingUndo:v6];
+  undoCopy = undo;
+  dCopy = d;
+  _accountChangeItem = [(REMListSublistContextChangeItem *)self _accountChangeItem];
+  [_accountChangeItem undeleteListWithID:dCopy usingUndo:undoCopy];
 
-  v12 = [(REMListSublistContextChangeItem *)self listChangeItem];
-  v9 = [v12 childSmartListIDsToUndelete];
-  v10 = [v9 setByAddingObject:v7];
+  listChangeItem = [(REMListSublistContextChangeItem *)self listChangeItem];
+  childListIDsToUndelete = [listChangeItem childListIDsToUndelete];
+  v10 = [childListIDsToUndelete setByAddingObject:dCopy];
 
-  v11 = [(REMListSublistContextChangeItem *)self listChangeItem];
-  [v11 setChildSmartListIDsToUndelete:v10];
+  listChangeItem2 = [(REMListSublistContextChangeItem *)self listChangeItem];
+  [listChangeItem2 setChildListIDsToUndelete:v10];
+}
+
+- (void)undeleteChildSmartListWithID:(id)d usingUndo:(id)undo
+{
+  undoCopy = undo;
+  dCopy = d;
+  _accountChangeItem = [(REMListSublistContextChangeItem *)self _accountChangeItem];
+  [_accountChangeItem undeleteSmartListWithID:dCopy usingUndo:undoCopy];
+
+  listChangeItem = [(REMListSublistContextChangeItem *)self listChangeItem];
+  childSmartListIDsToUndelete = [listChangeItem childSmartListIDsToUndelete];
+  v10 = [childSmartListIDsToUndelete setByAddingObject:dCopy];
+
+  listChangeItem2 = [(REMListSublistContextChangeItem *)self listChangeItem];
+  [listChangeItem2 setChildSmartListIDsToUndelete:v10];
 }
 
 - (id)_accountChangeItem
 {
-  v3 = [(REMListSublistContextChangeItem *)self listChangeItem];
-  v4 = [v3 saveRequest];
-  v5 = [(REMListSublistContextChangeItem *)self listChangeItem];
-  v6 = [v4 _updateAccountWithListChangeItem:v5];
+  listChangeItem = [(REMListSublistContextChangeItem *)self listChangeItem];
+  saveRequest = [listChangeItem saveRequest];
+  listChangeItem2 = [(REMListSublistContextChangeItem *)self listChangeItem];
+  v6 = [saveRequest _updateAccountWithListChangeItem:listChangeItem2];
 
   return v6;
 }

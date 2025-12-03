@@ -1,32 +1,32 @@
 @interface PDSharingChannelHandle_Server
-- (PDSharingChannelHandle_Server)initWithConnection:(id)a3 queue:(id)a4 delegate:(id)a5 dataSource:(id)a6;
+- (PDSharingChannelHandle_Server)initWithConnection:(id)connection queue:(id)queue delegate:(id)delegate dataSource:(id)source;
 - (id)_remoteObjectProxy;
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (void)configureHandleWithDescriptor:(id)a3 completion:(id)a4;
-- (void)didReceiveMessages:(id)a3;
-- (void)didReceiveUpdatedTransportIdentifier:(id)a3 reply:(id)a4;
-- (void)invalidateWithRemoteWithCompletion:(id)a3;
-- (void)transportIdentifierWithCompletion:(id)a3;
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (void)configureHandleWithDescriptor:(id)descriptor completion:(id)completion;
+- (void)didReceiveMessages:(id)messages;
+- (void)didReceiveUpdatedTransportIdentifier:(id)identifier reply:(id)reply;
+- (void)invalidateWithRemoteWithCompletion:(id)completion;
+- (void)transportIdentifierWithCompletion:(id)completion;
 @end
 
 @implementation PDSharingChannelHandle_Server
 
-- (PDSharingChannelHandle_Server)initWithConnection:(id)a3 queue:(id)a4 delegate:(id)a5 dataSource:(id)a6
+- (PDSharingChannelHandle_Server)initWithConnection:(id)connection queue:(id)queue delegate:(id)delegate dataSource:(id)source
 {
-  v10 = a3;
-  v11 = [(PDSharingChannelHandle *)self _initWithQueue:a4 delegate:a5 dataSource:a6];
+  connectionCopy = connection;
+  v11 = [(PDSharingChannelHandle *)self _initWithQueue:queue delegate:delegate dataSource:source];
   v12 = v11;
   if (v11)
   {
-    v13 = objc_storeWeak(v11 + 4, v10);
+    v13 = objc_storeWeak(v11 + 4, connectionCopy);
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10019BA3C;
     v19[3] = &unk_10083C470;
     v14 = v12;
     v20 = v14;
-    [v10 setInvalidationHandler:v19];
+    [connectionCopy setInvalidationHandler:v19];
 
     WeakRetained = objc_loadWeakRetained(&v12->_connection);
     v17[0] = _NSConcreteStackBlock;
@@ -40,98 +40,98 @@
   return v12;
 }
 
-- (void)invalidateWithRemoteWithCompletion:(id)a3
+- (void)invalidateWithRemoteWithCompletion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10019BB6C;
   v9[3] = &unk_100845A78;
-  v4 = a3;
-  v10 = v4;
+  completionCopy = completion;
+  v10 = completionCopy;
   v5 = [(PDSharingChannelHandle_Server *)self _remoteObjectProxyWithErrorHandler:v9];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10019BB84;
   v7[3] = &unk_10083D648;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 invalidateFromRemoteWithReply:v7];
 }
 
-- (void)configureHandleWithDescriptor:(id)a3 completion:(id)a4
+- (void)configureHandleWithDescriptor:(id)descriptor completion:(id)completion
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(PDSharingChannelHandle *)self delegate];
-  LOBYTE(self) = [v7 configureHandle:self forDescriptor:v6];
+  completionCopy = completion;
+  descriptorCopy = descriptor;
+  delegate = [(PDSharingChannelHandle *)self delegate];
+  LOBYTE(self) = [delegate configureHandle:self forDescriptor:descriptorCopy];
 
   if (self)
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
     v8 = PDBasicError();
-    (v9)[2](v9, v8);
+    (completionCopy)[2](completionCopy, v8);
   }
 }
 
-- (void)transportIdentifierWithCompletion:(id)a3
+- (void)transportIdentifierWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = [(PDSharingChannelHandle *)self transportIdentifier];
-  (*(a3 + 2))(v5, v6);
+  completionCopy = completion;
+  transportIdentifier = [(PDSharingChannelHandle *)self transportIdentifier];
+  (*(completion + 2))(completionCopy, transportIdentifier);
 }
 
-- (void)didReceiveMessages:(id)a3
+- (void)didReceiveMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   v5 = [(PDSharingChannelHandle_Server *)self _synchronousRemoteObjectProxyWithErrorHandler:0];
-  [v5 didReceiveMessages:v4 reply:&stru_10084AEB0];
+  [v5 didReceiveMessages:messagesCopy reply:&stru_10084AEB0];
 }
 
-- (void)didReceiveUpdatedTransportIdentifier:(id)a3 reply:(id)a4
+- (void)didReceiveUpdatedTransportIdentifier:(id)identifier reply:(id)reply
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10019BE7C;
   v12[3] = &unk_100845A78;
-  v6 = a4;
-  v13 = v6;
-  v7 = a3;
+  replyCopy = reply;
+  v13 = replyCopy;
+  identifierCopy = identifier;
   v8 = [(PDSharingChannelHandle_Server *)self _remoteObjectProxyWithErrorHandler:v12];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10019BE94;
   v10[3] = &unk_10083D648;
-  v11 = v6;
-  v9 = v6;
-  [v8 didReceiveUpdatedTransportIdentifier:v7 reply:v10];
+  v11 = replyCopy;
+  v9 = replyCopy;
+  [v8 didReceiveUpdatedTransportIdentifier:identifierCopy reply:v10];
 }
 
 - (id)_remoteObjectProxy
 {
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v3 = [WeakRetained remoteObjectProxy];
+  remoteObjectProxy = [WeakRetained remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v6 = [WeakRetained remoteObjectProxyWithErrorHandler:v4];
+  v6 = [WeakRetained remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v6 = [WeakRetained synchronousRemoteObjectProxyWithErrorHandler:v4];
+  v6 = [WeakRetained synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }

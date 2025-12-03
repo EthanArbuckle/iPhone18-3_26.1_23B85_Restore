@@ -2,18 +2,18 @@
 + (id)singleton;
 - (WCM_AriCoexCommandDriver)init;
 - (void)connectBaseband;
-- (void)createCommandHandlerForAriVersion:(unsigned int)a3;
-- (void)handleEvent:(id)a3;
-- (void)setAntennaBlockingPolicyForPlatformId:(unint64_t)a3 activeSubId:(unint64_t)a4 AntBlockPowerLimitPlist:(id)a5;
-- (void)setCellularController:(id)a3;
+- (void)createCommandHandlerForAriVersion:(unsigned int)version;
+- (void)handleEvent:(id)event;
+- (void)setAntennaBlockingPolicyForPlatformId:(unint64_t)id activeSubId:(unint64_t)subId AntBlockPowerLimitPlist:(id)plist;
+- (void)setCellularController:(id)controller;
 @end
 
 @implementation WCM_AriCoexCommandDriver
 
 + (id)singleton
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = dlopen("/usr/lib/libARI.dylib", 1);
   v4 = dlopen("/usr/lib/libICEClient.dylib", 1);
   v5 = 0;
@@ -23,7 +23,7 @@
     block[1] = 3221225472;
     block[2] = sub_1000BA29C;
     block[3] = &unk_10023DD00;
-    block[4] = v2;
+    block[4] = selfCopy;
     if (qword_1002B7EF8 != -1)
     {
       dispatch_once(&qword_1002B7EF8, block);
@@ -32,7 +32,7 @@
     v5 = qword_1002B7EF0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -55,16 +55,16 @@
   return v3;
 }
 
-- (void)createCommandHandlerForAriVersion:(unsigned int)a3
+- (void)createCommandHandlerForAriVersion:(unsigned int)version
 {
-  if (a3 == 1)
+  if (version == 1)
   {
     v4 = off_10023D268;
   }
 
   else
   {
-    if (a3 != 2)
+    if (version != 2)
     {
       v5 = 0;
       goto LABEL_7;
@@ -86,14 +86,14 @@ LABEL_7:
   }
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   mAriCoexCommandHandler = self->mAriCoexCommandHandler;
-  v6 = v4;
+  v6 = eventCopy;
   if (mAriCoexCommandHandler)
   {
-    [(WCM_AriCoexCommandHandler *)mAriCoexCommandHandler handleEvent:v4];
+    [(WCM_AriCoexCommandHandler *)mAriCoexCommandHandler handleEvent:eventCopy];
   }
 
   else
@@ -102,14 +102,14 @@ LABEL_7:
   }
 }
 
-- (void)setCellularController:(id)a3
+- (void)setCellularController:(id)controller
 {
-  v6 = a3;
-  objc_storeStrong(&self->mCellularController, a3);
+  controllerCopy = controller;
+  objc_storeStrong(&self->mCellularController, controller);
   mAriCoexCommandHandler = self->mAriCoexCommandHandler;
   if (mAriCoexCommandHandler)
   {
-    [(WCM_AriCoexCommandHandler *)mAriCoexCommandHandler setCellularController:v6];
+    [(WCM_AriCoexCommandHandler *)mAriCoexCommandHandler setCellularController:controllerCopy];
   }
 
   else
@@ -132,14 +132,14 @@ LABEL_7:
   }
 }
 
-- (void)setAntennaBlockingPolicyForPlatformId:(unint64_t)a3 activeSubId:(unint64_t)a4 AntBlockPowerLimitPlist:(id)a5
+- (void)setAntennaBlockingPolicyForPlatformId:(unint64_t)id activeSubId:(unint64_t)subId AntBlockPowerLimitPlist:(id)plist
 {
-  v8 = a5;
+  plistCopy = plist;
   mAriCoexCommandHandler = self->mAriCoexCommandHandler;
-  v10 = v8;
+  v10 = plistCopy;
   if (mAriCoexCommandHandler)
   {
-    [(WCM_AriCoexCommandHandler *)mAriCoexCommandHandler setAntennaBlockingPolicyForPlatformId:a3 activeSubId:a4 AntBlockPowerLimitPlist:v8];
+    [(WCM_AriCoexCommandHandler *)mAriCoexCommandHandler setAntennaBlockingPolicyForPlatformId:id activeSubId:subId AntBlockPowerLimitPlist:plistCopy];
   }
 
   else

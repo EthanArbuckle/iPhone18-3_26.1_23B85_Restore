@@ -1,32 +1,32 @@
 @interface HDCloudSyncCodableSharedSummaryAuthorizationRecord
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addAuthorizationCategories:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAuthorizationCategories:(id)categories;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCloudSyncCodableSharedSummaryAuthorizationRecord
 
-- (void)addAuthorizationCategories:(id)a3
+- (void)addAuthorizationCategories:(id)categories
 {
-  v4 = a3;
+  categoriesCopy = categories;
   authorizationCategories = self->_authorizationCategories;
-  v8 = v4;
+  v8 = categoriesCopy;
   if (!authorizationCategories)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_authorizationCategories;
     self->_authorizationCategories = v6;
 
-    v4 = v8;
+    categoriesCopy = v8;
     authorizationCategories = self->_authorizationCategories;
   }
 
-  [(NSMutableArray *)authorizationCategories addObject:v4];
+  [(NSMutableArray *)authorizationCategories addObject:categoriesCopy];
 }
 
 - (id)description
@@ -35,20 +35,20 @@
   v8.receiver = self;
   v8.super_class = HDCloudSyncCodableSharedSummaryAuthorizationRecord;
   v4 = [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)&v8 description];
-  v5 = [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   authorizationCategories = self->_authorizationCategories;
@@ -60,10 +60,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
@@ -104,35 +104,35 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_uuid)
   {
-    [v8 setUuid:?];
+    [toCopy setUuid:?];
   }
 
   if ([(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)self authorizationCategoriesCount])
   {
-    [v8 clearAuthorizationCategories];
-    v4 = [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)self authorizationCategoriesCount];
-    if (v4)
+    [toCopy clearAuthorizationCategories];
+    authorizationCategoriesCount = [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)self authorizationCategoriesCount];
+    if (authorizationCategoriesCount)
     {
-      v5 = v4;
+      v5 = authorizationCategoriesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)self authorizationCategoriesAtIndex:i];
-        [v8 addAuthorizationCategories:v7];
+        [toCopy addAuthorizationCategories:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuid copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -156,7 +156,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addAuthorizationCategories:v13];
 
         ++v12;
@@ -173,13 +173,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((uuid = self->_uuid, !(uuid | v4[2])) || -[NSString isEqual:](uuid, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((uuid = self->_uuid, !(uuid | equalCopy[2])) || -[NSString isEqual:](uuid, "isEqual:")))
   {
     authorizationCategories = self->_authorizationCategories;
-    if (authorizationCategories | v4[1])
+    if (authorizationCategories | equalCopy[1])
     {
       v7 = [(NSMutableArray *)authorizationCategories isEqual:?];
     }
@@ -198,11 +198,11 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)self setUuid:?];
   }
@@ -211,7 +211,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

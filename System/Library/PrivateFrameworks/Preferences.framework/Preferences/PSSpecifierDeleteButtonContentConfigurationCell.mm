@@ -1,18 +1,18 @@
 @interface PSSpecifierDeleteButtonContentConfigurationCell
-- (_TtC11Preferences47PSSpecifierDeleteButtonContentConfigurationCell)initWithCoder:(id)a3;
-- (_TtC11Preferences47PSSpecifierDeleteButtonContentConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC11Preferences47PSSpecifierDeleteButtonContentConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (_TtC11Preferences47PSSpecifierDeleteButtonContentConfigurationCell)initWithCoder:(id)coder;
+- (_TtC11Preferences47PSSpecifierDeleteButtonContentConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC11Preferences47PSSpecifierDeleteButtonContentConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PSSpecifierDeleteButtonContentConfigurationCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = self;
-  sub_18B0E6F00(a3);
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_18B0E6F00(specifier);
 }
 
 - (void)prepareForReuse
@@ -25,9 +25,9 @@
   *&v2[OBJC_IVAR____TtC11Preferences47PSSpecifierDeleteButtonContentConfigurationCell_buttonContentViewModel] = 0;
 }
 
-- (_TtC11Preferences47PSSpecifierDeleteButtonContentConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC11Preferences47PSSpecifierDeleteButtonContentConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_18B0F51B0();
     v9 = v8;
@@ -39,13 +39,13 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  return PSSpecifierDeleteButtonContentConfigurationCell.init(style:reuseIdentifier:specifier:)(a3, v7, v9, a5);
+  specifierCopy = specifier;
+  return PSSpecifierDeleteButtonContentConfigurationCell.init(style:reuseIdentifier:specifier:)(style, v7, v9, specifier);
 }
 
-- (_TtC11Preferences47PSSpecifierDeleteButtonContentConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC11Preferences47PSSpecifierDeleteButtonContentConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_18B0F51B0();
     *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC11Preferences47PSSpecifierDeleteButtonContentConfigurationCell_buttonContentViewModel) = 0;
@@ -60,18 +60,18 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for PSSpecifierDeleteButtonContentConfigurationCell();
-  v7 = [(PSTableCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(PSTableCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }
 
-- (_TtC11Preferences47PSSpecifierDeleteButtonContentConfigurationCell)initWithCoder:(id)a3
+- (_TtC11Preferences47PSSpecifierDeleteButtonContentConfigurationCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC11Preferences47PSSpecifierDeleteButtonContentConfigurationCell_buttonContentViewModel) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for PSSpecifierDeleteButtonContentConfigurationCell();
-  v4 = a3;
-  v5 = [(PSSpecifierDeleteButtonContentConfigurationCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PSSpecifierDeleteButtonContentConfigurationCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

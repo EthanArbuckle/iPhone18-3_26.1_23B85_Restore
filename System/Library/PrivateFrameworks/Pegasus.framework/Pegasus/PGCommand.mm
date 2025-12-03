@@ -1,35 +1,35 @@
 @interface PGCommand
-+ (id)commandForFaceTimeAction:(int64_t)a3;
-+ (id)commandForFaceTimeAction:(int64_t)a3 associatedBoolValue:(BOOL)a4;
-+ (id)commandForFaceTimeAction:(int64_t)a3 associatedIntegerValue:(int64_t)a4;
-+ (id)commandForPlaybackAction:(int64_t)a3;
-+ (id)commandForPlaybackAction:(int64_t)a3 associatedBoolValue:(BOOL)a4;
-+ (id)commandForPlaybackAction:(int64_t)a3 associatedDoubleValue:(double)a4;
-+ (id)commandForSystemAction:(int64_t)a3;
-+ (id)commandForTestingAction:(int64_t)a3;
++ (id)commandForFaceTimeAction:(int64_t)action;
++ (id)commandForFaceTimeAction:(int64_t)action associatedBoolValue:(BOOL)value;
++ (id)commandForFaceTimeAction:(int64_t)action associatedIntegerValue:(int64_t)value;
++ (id)commandForPlaybackAction:(int64_t)action;
++ (id)commandForPlaybackAction:(int64_t)action associatedBoolValue:(BOOL)value;
++ (id)commandForPlaybackAction:(int64_t)action associatedDoubleValue:(double)value;
++ (id)commandForSystemAction:(int64_t)action;
++ (id)commandForTestingAction:(int64_t)action;
 - (BOOL)associatedBoolValue;
-- (BOOL)isEqual:(id)a3;
-- (PGCommand)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PGCommand)initWithDictionary:(id)dictionary;
 - (double)associatedDoubleValue;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (int64_t)associatedIntegerValue;
 - (int64_t)faceTimeAction;
 - (int64_t)playbackAction;
 - (int64_t)systemAction;
 - (int64_t)testingAction;
-- (void)appendDescriptionForKey:(int64_t)a3 value:(id)a4 toBuilder:(id)a5;
+- (void)appendDescriptionForKey:(int64_t)key value:(id)value toBuilder:(id)builder;
 @end
 
 @implementation PGCommand
 
-+ (id)commandForPlaybackAction:(int64_t)a3
++ (id)commandForPlaybackAction:(int64_t)action
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   v9 = &unk_1F3958E28;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:action];
   v10[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v7 = [v4 initWithDictionary:v6];
@@ -37,16 +37,16 @@
   return v7;
 }
 
-+ (id)commandForPlaybackAction:(int64_t)a3 associatedBoolValue:(BOOL)a4
++ (id)commandForPlaybackAction:(int64_t)action associatedBoolValue:(BOOL)value
 {
-  v4 = a4;
+  valueCopy = value;
   v13[2] = *MEMORY[0x1E69E9840];
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v12[0] = &unk_1F3958E28;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:action];
   v12[1] = &unk_1F3958E40;
   v13[0] = v7;
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:valueCopy];
   v13[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v10 = [v6 initWithDictionary:v9];
@@ -54,15 +54,15 @@
   return v10;
 }
 
-+ (id)commandForPlaybackAction:(int64_t)a3 associatedDoubleValue:(double)a4
++ (id)commandForPlaybackAction:(int64_t)action associatedDoubleValue:(double)value
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v12[0] = &unk_1F3958E28;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:action];
   v12[1] = &unk_1F3958E58;
   v13[0] = v7;
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:value];
   v13[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v10 = [v6 initWithDictionary:v9];
@@ -70,17 +70,17 @@
   return v10;
 }
 
-+ (id)commandForSystemAction:(int64_t)a3
++ (id)commandForSystemAction:(int64_t)action
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!action)
   {
-    [(PGCommand *)a2 commandForSystemAction:a1];
+    [(PGCommand *)a2 commandForSystemAction:self];
   }
 
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v10 = &unk_1F3958E70;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:action];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [v5 initWithDictionary:v7];
@@ -88,17 +88,17 @@
   return v8;
 }
 
-+ (id)commandForTestingAction:(int64_t)a3
++ (id)commandForTestingAction:(int64_t)action
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!action)
   {
-    [(PGCommand *)a2 commandForTestingAction:a1];
+    [(PGCommand *)a2 commandForTestingAction:self];
   }
 
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v10 = &unk_1F3958E88;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:action];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [v5 initWithDictionary:v7];
@@ -106,12 +106,12 @@
   return v8;
 }
 
-+ (id)commandForFaceTimeAction:(int64_t)a3
++ (id)commandForFaceTimeAction:(int64_t)action
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   v9 = &unk_1F3958EA0;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:action];
   v10[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v7 = [v4 initWithDictionary:v6];
@@ -119,16 +119,16 @@
   return v7;
 }
 
-+ (id)commandForFaceTimeAction:(int64_t)a3 associatedBoolValue:(BOOL)a4
++ (id)commandForFaceTimeAction:(int64_t)action associatedBoolValue:(BOOL)value
 {
-  v4 = a4;
+  valueCopy = value;
   v13[2] = *MEMORY[0x1E69E9840];
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v12[0] = &unk_1F3958EA0;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:action];
   v12[1] = &unk_1F3958E40;
   v13[0] = v7;
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:valueCopy];
   v13[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v10 = [v6 initWithDictionary:v9];
@@ -136,15 +136,15 @@
   return v10;
 }
 
-+ (id)commandForFaceTimeAction:(int64_t)a3 associatedIntegerValue:(int64_t)a4
++ (id)commandForFaceTimeAction:(int64_t)action associatedIntegerValue:(int64_t)value
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v12[0] = &unk_1F3958EA0;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:action];
   v12[1] = &unk_1F3958EB8;
   v13[0] = v7;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:value];
   v13[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v10 = [v6 initWithDictionary:v9];
@@ -152,15 +152,15 @@
   return v10;
 }
 
-- (PGCommand)initWithDictionary:(id)a3
+- (PGCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PGCommand;
   v5 = [(PGCommand *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     dictionaryRepresentation = v5->_dictionaryRepresentation;
     v5->_dictionaryRepresentation = v6;
   }
@@ -168,15 +168,15 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 dictionaryRepresentation];
-    v6 = [(PGCommand *)self dictionaryRepresentation];
-    v7 = [v5 isEqual:v6];
+    dictionaryRepresentation = [equalCopy dictionaryRepresentation];
+    dictionaryRepresentation2 = [(PGCommand *)self dictionaryRepresentation];
+    v7 = [dictionaryRepresentation isEqual:dictionaryRepresentation2];
   }
 
   else
@@ -190,49 +190,49 @@
 - (int64_t)playbackAction
 {
   v2 = [(NSDictionary *)self->_dictionaryRepresentation objectForKeyedSubscript:&unk_1F3958E28];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)systemAction
 {
   v2 = [(NSDictionary *)self->_dictionaryRepresentation objectForKeyedSubscript:&unk_1F3958E70];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)faceTimeAction
 {
   v2 = [(NSDictionary *)self->_dictionaryRepresentation objectForKeyedSubscript:&unk_1F3958EA0];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)testingAction
 {
   v2 = [(NSDictionary *)self->_dictionaryRepresentation objectForKeyedSubscript:&unk_1F3958E88];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)associatedBoolValue
 {
   v2 = [(NSDictionary *)self->_dictionaryRepresentation objectForKeyedSubscript:&unk_1F3958E40];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)associatedIntegerValue
 {
   v2 = [(NSDictionary *)self->_dictionaryRepresentation objectForKeyedSubscript:&unk_1F3958EB8];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (double)associatedDoubleValue
@@ -246,30 +246,30 @@
 
 - (id)succinctDescription
 {
-  v2 = [(PGCommand *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PGCommand *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PGCommand *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PGCommand *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (void)appendDescriptionForKey:(int64_t)a3 value:(id)a4 toBuilder:(id)a5
+- (void)appendDescriptionForKey:(int64_t)key value:(id)value toBuilder:(id)builder
 {
-  v16 = a4;
-  v7 = a5;
-  if (a3 <= 3)
+  valueCopy = value;
+  builderCopy = builder;
+  if (key <= 3)
   {
-    switch(a3)
+    switch(key)
     {
       case 1:
-        v12 = [v16 integerValue] - 1;
+        v12 = [valueCopy integerValue] - 1;
         if (v12 >= 9)
         {
           v10 = @"invalid";
@@ -283,7 +283,7 @@
         v13 = @"playbackAction";
         break;
       case 2:
-        v15 = [v16 integerValue] - 1;
+        v15 = [valueCopy integerValue] - 1;
         if (v15 >= 5)
         {
           v10 = @"invalid";
@@ -297,15 +297,15 @@
         v13 = @"faceTimeAction";
         break;
       case 3:
-        v9 = [v16 integerValue];
-        if (v9 >= 8)
+        integerValue = [valueCopy integerValue];
+        if (integerValue >= 8)
         {
           v10 = @"invalid";
         }
 
         else
         {
-          v10 = off_1E7F32720[v9];
+          v10 = off_1E7F32720[integerValue];
         }
 
         v13 = @"systemAction";
@@ -317,15 +317,15 @@
     goto LABEL_28;
   }
 
-  if (a3 <= 5)
+  if (key <= 5)
   {
-    if (a3 != 4)
+    if (key != 4)
     {
-      v8 = [v7 appendBool:objc_msgSend(v16 withName:{"BOOLValue"), @"associatedBoolValue"}];
+      v8 = [builderCopy appendBool:objc_msgSend(valueCopy withName:{"BOOLValue"), @"associatedBoolValue"}];
       goto LABEL_29;
     }
 
-    if ([v16 integerValue] == 1)
+    if ([valueCopy integerValue] == 1)
     {
       v10 = @"startPIP";
     }
@@ -337,28 +337,28 @@
 
     v13 = @"testingAction";
 LABEL_28:
-    [v7 appendString:v10 withName:v13];
+    [builderCopy appendString:v10 withName:v13];
     goto LABEL_29;
   }
 
-  if (a3 == 6)
+  if (key == 6)
   {
-    [v16 doubleValue];
-    v14 = [v7 appendDouble:@"associatedDoubleValue" withName:2 decimalPrecision:?];
+    [valueCopy doubleValue];
+    v14 = [builderCopy appendDouble:@"associatedDoubleValue" withName:2 decimalPrecision:?];
   }
 
-  else if (a3 == 7)
+  else if (key == 7)
   {
-    v11 = [v7 appendInteger:objc_msgSend(v16 withName:{"integerValue"), @"associatedIntegerValue"}];
+    v11 = [builderCopy appendInteger:objc_msgSend(valueCopy withName:{"integerValue"), @"associatedIntegerValue"}];
   }
 
 LABEL_29:
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(PGCommand *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(PGCommand *)self succinctDescriptionBuilder];
   v13.receiver = self;
   v13.super_class = PGCommand;
   v6 = [(PGCommand *)&v13 description];
@@ -367,9 +367,9 @@ LABEL_29:
   v11[2] = __51__PGCommand_descriptionBuilderWithMultilinePrefix___block_invoke;
   v11[3] = &unk_1E7F32508;
   v11[4] = self;
-  v7 = v5;
+  v7 = succinctDescriptionBuilder;
   v12 = v7;
-  [v7 appendBodySectionWithName:v6 multilinePrefix:v4 block:v11];
+  [v7 appendBodySectionWithName:v6 multilinePrefix:prefixCopy block:v11];
 
   v8 = v12;
   v9 = v7;

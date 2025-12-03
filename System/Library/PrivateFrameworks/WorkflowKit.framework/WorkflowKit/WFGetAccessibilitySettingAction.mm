@@ -1,7 +1,7 @@
 @interface WFGetAccessibilitySettingAction
 - (NSString)iconBackgroundColorName;
 - (NSString)iconSymbolName;
-- (id)localizedNameWithContext:(id)a3;
+- (id)localizedNameWithContext:(id)context;
 @end
 
 @implementation WFGetAccessibilitySettingAction
@@ -20,10 +20,10 @@
   return v2;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_1CA5F5AD4();
 
   v6 = sub_1CA94C368();

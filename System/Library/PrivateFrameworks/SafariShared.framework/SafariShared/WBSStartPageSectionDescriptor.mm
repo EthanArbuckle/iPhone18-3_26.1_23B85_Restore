@@ -1,35 +1,35 @@
 @interface WBSStartPageSectionDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dictionaryRepresentation;
-- (WBSStartPageSectionDescriptor)initWithCoder:(id)a3;
-- (WBSStartPageSectionDescriptor)initWithDictionaryRepresentation:(id)a3;
-- (WBSStartPageSectionDescriptor)initWithIdentifier:(id)a3 enabled:(BOOL)a4;
+- (WBSStartPageSectionDescriptor)initWithCoder:(id)coder;
+- (WBSStartPageSectionDescriptor)initWithDictionaryRepresentation:(id)representation;
+- (WBSStartPageSectionDescriptor)initWithIdentifier:(id)identifier enabled:(BOOL)enabled;
 - (id)description;
-- (id)sectionWithEnabled:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)sectionWithEnabled:(BOOL)enabled;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSStartPageSectionDescriptor
 
-- (WBSStartPageSectionDescriptor)initWithIdentifier:(id)a3 enabled:(BOOL)a4
+- (WBSStartPageSectionDescriptor)initWithIdentifier:(id)identifier enabled:(BOOL)enabled
 {
   v10.receiver = self;
   v10.super_class = WBSStartPageSectionDescriptor;
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(WBSStartPageSectionDescriptor *)&v10 init];
-  v7 = [v5 copy];
+  v7 = [identifierCopy copy];
 
   identifier = v6->_identifier;
   v6->_identifier = v7;
 
-  v6->_enabled = a4;
+  v6->_enabled = enabled;
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -39,7 +39,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(NSString *)self->_identifier isEqualToString:v5->_identifier])
       {
         v6 = self->_enabled == v5->_enabled;
@@ -77,65 +77,65 @@
   return [v3 stringWithFormat:@"<%@: %p; identifier = %@; enabled = %@>", v4, self, self->_identifier, v5];
 }
 
-- (id)sectionWithEnabled:(BOOL)a3
+- (id)sectionWithEnabled:(BOOL)enabled
 {
-  if (self->_enabled == a3)
+  if (self->_enabled == enabled)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [objc_alloc(objc_opt_class()) initWithIdentifier:self->_identifier enabled:a3];
+    selfCopy = [objc_alloc(objc_opt_class()) initWithIdentifier:self->_identifier enabled:enabled];
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (WBSStartPageSectionDescriptor)initWithCoder:(id)a3
+- (WBSStartPageSectionDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
-  v6 = [v4 decodeBoolForKey:@"IsEnabled"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+  v6 = [coderCopy decodeBoolForKey:@"IsEnabled"];
 
   if ([v5 length])
   {
     self = [(WBSStartPageSectionDescriptor *)self initWithIdentifier:v5 enabled:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"Identifier"];
-  [v5 encodeBool:self->_enabled forKey:@"IsEnabled"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"Identifier"];
+  [coderCopy encodeBool:self->_enabled forKey:@"IsEnabled"];
 }
 
-- (WBSStartPageSectionDescriptor)initWithDictionaryRepresentation:(id)a3
+- (WBSStartPageSectionDescriptor)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 safari_stringForKey:@"Identifier"];
+  representationCopy = representation;
+  v5 = [representationCopy safari_stringForKey:@"Identifier"];
   if ([v5 length])
   {
-    self = -[WBSStartPageSectionDescriptor initWithIdentifier:enabled:](self, "initWithIdentifier:enabled:", v5, [v4 safari_BOOLForKey:@"IsEnabled"]);
-    v6 = self;
+    self = -[WBSStartPageSectionDescriptor initWithIdentifier:enabled:](self, "initWithIdentifier:enabled:", v5, [representationCopy safari_BOOLForKey:@"IsEnabled"]);
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (NSDictionary)dictionaryRepresentation

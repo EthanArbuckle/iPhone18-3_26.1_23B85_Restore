@@ -1,59 +1,59 @@
 @interface NSFileAccessNode
-- (BOOL)_mayContainCriticalDebuggingInformationExcludingReactors:(BOOL)a3;
+- (BOOL)_mayContainCriticalDebuggingInformationExcludingReactors:(BOOL)reactors;
 - (BOOL)itemIsFilePackage;
-- (BOOL)itemIsInItemAtLocation:(id)a3;
-- (BOOL)itemIsItemAtLocation:(id)a3;
+- (BOOL)itemIsInItemAtLocation:(id)location;
+- (BOOL)itemIsItemAtLocation:(id)location;
 - (BOOL)itemIsSubarbitrable;
-- (BOOL)setProvider:(id)a3;
-- (NSFileAccessNode)initWithParent:(id)a3 name:(id)a4 normalizedName:(id)a5;
-- (id)_childrenExcludingExcessNodes:(BOOL)a3 excludingReactors:(BOOL)a4;
+- (BOOL)setProvider:(id)provider;
+- (NSFileAccessNode)initWithParent:(id)parent name:(id)name normalizedName:(id)normalizedName;
+- (id)_childrenExcludingExcessNodes:(BOOL)nodes excludingReactors:(BOOL)reactors;
 - (id)biggestFilePackageLocation;
-- (id)childForRange:(_NSRange)a3 ofPath:(id)a4;
-- (id)descendantAtPath:(id)a3 componentRange:(_NSRange)a4 forAddingLeafNode:(id)a5 create:(BOOL)a6;
-- (id)descendantForFileURL:(id)a3;
-- (id)descriptionWithIndenting:(id)a3 excludingExcessNodes:(BOOL)a4 excludingReactors:(BOOL)a5;
+- (id)childForRange:(_NSRange)range ofPath:(id)path;
+- (id)descendantAtPath:(id)path componentRange:(_NSRange)range forAddingLeafNode:(id)node create:(BOOL)create;
+- (id)descendantForFileURL:(id)l;
+- (id)descriptionWithIndenting:(id)indenting excludingExcessNodes:(BOOL)nodes excludingReactors:(BOOL)reactors;
 - (id)itemProvider;
 - (id)pathExceptPrivate;
-- (id)pathFromAncestor:(id)a3;
-- (id)pathToDescendantForFileURL:(id)a3 componentRange:(_NSRange *)a4;
+- (id)pathFromAncestor:(id)ancestor;
+- (id)pathToDescendantForFileURL:(id)l componentRange:(_NSRange *)range;
 - (id)standardizedURL;
 - (id)url;
-- (id)urlOfSubitemAtPath:(id)a3 plusPath:(id)a4;
-- (void)_forEachRelevantAccessClaimExcludingClaimsFromSuperarbiter:(BOOL)a3 performProcedure:(id)a4;
-- (void)_setLinkDestination:(id)a3;
-- (void)addAccessClaim:(id)a3;
-- (void)addPresenter:(id)a3;
-- (void)addProgressPublisher:(id)a3;
-- (void)addProgressSubscriber:(id)a3;
+- (id)urlOfSubitemAtPath:(id)path plusPath:(id)plusPath;
+- (void)_forEachRelevantAccessClaimExcludingClaimsFromSuperarbiter:(BOOL)superarbiter performProcedure:(id)procedure;
+- (void)_setLinkDestination:(id)destination;
+- (void)addAccessClaim:(id)claim;
+- (void)addPresenter:(id)presenter;
+- (void)addProgressPublisher:(id)publisher;
+- (void)addProgressSubscriber:(id)subscriber;
 - (void)assertDead;
 - (void)assertDescendantsLive;
 - (void)assertLive;
 - (void)dealloc;
-- (void)forEachAccessClaimOnItemOrContainedItemPerformProcedure:(id)a3;
-- (void)forEachAccessClaimOnItemPerformProcedure:(id)a3;
-- (void)forEachDescendantPerformProcedure:(id)a3;
-- (void)forEachPresenterOfContainedItemPerformProcedure:(id)a3;
-- (void)forEachPresenterOfContainingFilePackagePerformProcedure:(id)a3;
-- (void)forEachPresenterOfContainingItemPerformProcedure:(id)a3;
-- (void)forEachPresenterOfItemOrContainedItemPerformProcedure:(id)a3;
-- (void)forEachPresenterOfItemOrContainingItemPerformProcedure:(id)a3;
-- (void)forEachPresenterOfItemPerformProcedure:(id)a3;
-- (void)forEachProgressPublisherOfItemOrContainedItemPerformProcedure:(id)a3;
-- (void)forEachProgressPublisherOfItemPerformProcedure:(id)a3;
-- (void)forEachProgressSubscriberOfItemOrContainingItemPerformProcedure:(id)a3;
-- (void)forEachProgressSubscriberOfItemPerformProcedure:(id)a3;
-- (void)forEachProgressThingOfItemOrContainedItemPerformProcedure:(id)a3;
-- (void)forEachReactorToItemOrContainedItemPerformProcedure:(id)a3;
-- (void)forEachRelevantAccessClaimForEvaluatingAgainstClaim:(id)a3 performProcedure:(id)a4;
-- (void)removeAccessClaim:(id)a3;
-- (void)removeChildForNormalizedName:(id)a3;
-- (void)removePresenter:(id)a3;
-- (void)removeProgressPublisher:(id)a3;
-- (void)removeProgressSubscriber:(id)a3;
-- (void)removeProvider:(id)a3;
+- (void)forEachAccessClaimOnItemOrContainedItemPerformProcedure:(id)procedure;
+- (void)forEachAccessClaimOnItemPerformProcedure:(id)procedure;
+- (void)forEachDescendantPerformProcedure:(id)procedure;
+- (void)forEachPresenterOfContainedItemPerformProcedure:(id)procedure;
+- (void)forEachPresenterOfContainingFilePackagePerformProcedure:(id)procedure;
+- (void)forEachPresenterOfContainingItemPerformProcedure:(id)procedure;
+- (void)forEachPresenterOfItemOrContainedItemPerformProcedure:(id)procedure;
+- (void)forEachPresenterOfItemOrContainingItemPerformProcedure:(id)procedure;
+- (void)forEachPresenterOfItemPerformProcedure:(id)procedure;
+- (void)forEachProgressPublisherOfItemOrContainedItemPerformProcedure:(id)procedure;
+- (void)forEachProgressPublisherOfItemPerformProcedure:(id)procedure;
+- (void)forEachProgressSubscriberOfItemOrContainingItemPerformProcedure:(id)procedure;
+- (void)forEachProgressSubscriberOfItemPerformProcedure:(id)procedure;
+- (void)forEachProgressThingOfItemOrContainedItemPerformProcedure:(id)procedure;
+- (void)forEachReactorToItemOrContainedItemPerformProcedure:(id)procedure;
+- (void)forEachRelevantAccessClaimForEvaluatingAgainstClaim:(id)claim performProcedure:(id)procedure;
+- (void)removeAccessClaim:(id)claim;
+- (void)removeChildForNormalizedName:(id)name;
+- (void)removePresenter:(id)presenter;
+- (void)removeProgressPublisher:(id)publisher;
+- (void)removeProgressSubscriber:(id)subscriber;
+- (void)removeProvider:(id)provider;
 - (void)removeSelfIfUseless;
-- (void)setChild:(id)a3 forName:(id)a4 normalizedName:(id)a5;
-- (void)setParent:(id)a3 name:(id)a4;
+- (void)setChild:(id)child forName:(id)name normalizedName:(id)normalizedName;
+- (void)setParent:(id)parent name:(id)name;
 @end
 
 @implementation NSFileAccessNode
@@ -99,19 +99,19 @@
     return 0;
   }
 
-  v2 = self;
+  selfCopy = self;
   v3 = 0;
   do
   {
-    if ([(NSFileAccessNode *)v2 itemIsFilePackage])
+    if ([(NSFileAccessNode *)selfCopy itemIsFilePackage])
     {
-      v3 = v2;
+      v3 = selfCopy;
     }
 
-    v2 = v2->_parent;
+    selfCopy = selfCopy->_parent;
   }
 
-  while (v2);
+  while (selfCopy);
   return v3;
 }
 
@@ -119,21 +119,21 @@
 {
   if (!self->_isFilePackageIsFigured)
   {
-    v3 = [(NSString *)self->_name pathExtension];
-    if ([(NSString *)v3 rangeOfString:@"weakpkg" options:1]== 0x7FFFFFFFFFFFFFFFLL)
+    pathExtension = [(NSString *)self->_name pathExtension];
+    if ([(NSString *)pathExtension rangeOfString:@"weakpkg" options:1]== 0x7FFFFFFFFFFFFFFFLL)
     {
       self->_isFilePackage = 0;
       parent = self->_parent;
       if (!parent || ![(NSString *)parent->_normalizedName isEqualToString:@"volumes"]|| (v5 = self->_parent->_parent) == 0 || ![(NSString *)v5->_normalizedName isEqualToString:@"/"])
       {
-        if ([(NSString *)v3 length])
+        if ([(NSString *)pathExtension length])
         {
           if (qword_1ED4401D0 != -1)
           {
             dispatch_once(&qword_1ED4401D0, &__block_literal_global_79);
           }
 
-          v6 = _MergedGlobals_148(qword_1ED4401C0, v3, 0);
+          v6 = _MergedGlobals_148(qword_1ED4401C0, pathExtension, 0);
           if (v6)
           {
             v7 = v6;
@@ -184,7 +184,7 @@
   return v3;
 }
 
-- (NSFileAccessNode)initWithParent:(id)a3 name:(id)a4 normalizedName:(id)a5
+- (NSFileAccessNode)initWithParent:(id)parent name:(id)name normalizedName:(id)normalizedName
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -193,18 +193,18 @@
   v9 = v8;
   if (v8)
   {
-    v8->_parent = a3;
-    v8->_name = [a4 copy];
-    v9->_normalizedName = [a5 copy];
+    v8->_parent = parent;
+    v8->_name = [name copy];
+    v9->_normalizedName = [normalizedName copy];
   }
 
   return v9;
 }
 
-- (void)_setLinkDestination:(id)a3
+- (void)_setLinkDestination:(id)destination
 {
   symbolicLinkDestination = self->_symbolicLinkDestination;
-  if (symbolicLinkDestination != a3)
+  if (symbolicLinkDestination != destination)
   {
     if (symbolicLinkDestination)
     {
@@ -212,11 +212,11 @@
     }
 
     v6 = symbolicLinkDestination;
-    if (a3)
+    if (destination)
     {
-      v5 = a3;
-      self->_symbolicLinkDestination = v5;
-      ++v5->_symbolicLinkReferenceCount;
+      destinationCopy = destination;
+      self->_symbolicLinkDestination = destinationCopy;
+      ++destinationCopy->_symbolicLinkReferenceCount;
     }
 
     else
@@ -229,7 +229,7 @@
   }
 }
 
-- (id)pathToDescendantForFileURL:(id)a3 componentRange:(_NSRange *)a4
+- (id)pathToDescendantForFileURL:(id)l componentRange:(_NSRange *)range
 {
   v16 = *MEMORY[0x1E69E9840];
   if (![(NSString *)self->_normalizedName isEqualToString:@"/"])
@@ -244,13 +244,13 @@
     return 0;
   }
 
-  if (![a3 isFileURL])
+  if (![l isFileURL])
   {
     v11 = _NSFCLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138477827;
-      v15 = a3;
+      lCopy3 = l;
       v12 = "NSFileCoordinator only handles URLs that use the file: scheme. This one does not:\n%{private}@";
 LABEL_15:
       _os_log_impl(&dword_18075C000, v11, OS_LOG_TYPE_DEFAULT, v12, &v14, 0xCu);
@@ -259,14 +259,14 @@ LABEL_15:
     return 0;
   }
 
-  v6 = [objc_msgSend(a3 "path")];
+  v6 = [objc_msgSend(l "path")];
   if (!v6)
   {
     v11 = _NSFCLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138477827;
-      v15 = a3;
+      lCopy3 = l;
       v12 = "NSFileCoordinator does not handle NSURLs that return nil when sent -path, like this one:\n%{private}@";
       goto LABEL_15;
     }
@@ -282,7 +282,7 @@ LABEL_15:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138477827;
-      v15 = a3;
+      lCopy3 = l;
       v12 = "NSFileCoordinator does not handle NSURLs that return relative paths when sent -path, like this one:\n%{private}@";
       goto LABEL_15;
     }
@@ -290,20 +290,20 @@ LABEL_15:
     return 0;
   }
 
-  a4->location = 1;
-  a4->length = v9 - 1;
+  range->location = 1;
+  range->length = v9 - 1;
   return v7;
 }
 
-- (void)setChild:(id)a3 forName:(id)a4 normalizedName:(id)a5
+- (void)setChild:(id)child forName:(id)name normalizedName:(id)normalizedName
 {
   childrenByNormalizedName = self->_childrenByNormalizedName;
   if (childrenByNormalizedName)
   {
-    v9 = [(NSMutableDictionary *)childrenByNormalizedName objectForKey:a5, a4];
-    if (v9)
+    name = [(NSMutableDictionary *)childrenByNormalizedName objectForKey:normalizedName, name];
+    if (name)
     {
-      v10 = v9 == a3;
+      v10 = name == child;
     }
 
     else
@@ -313,7 +313,7 @@ LABEL_15:
 
     if (!v10)
     {
-      v9[1] = 0;
+      name[1] = 0;
     }
   }
 
@@ -322,13 +322,13 @@ LABEL_15:
     self->_childrenByNormalizedName = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  [(NSMutableDictionary *)self->_childrenByNormalizedName setObject:a3 forKey:a5];
+  [(NSMutableDictionary *)self->_childrenByNormalizedName setObject:child forKey:normalizedName];
 
   self->_lastRequestedChildName = 0;
   self->_lastRequestedChild = 0;
 }
 
-- (void)removeChildForNormalizedName:(id)a3
+- (void)removeChildForNormalizedName:(id)name
 {
   v5 = [(NSMutableDictionary *)self->_childrenByNormalizedName objectForKey:?];
   if (v5)
@@ -338,7 +338,7 @@ LABEL_15:
       *(v5 + 8) = 0;
     }
 
-    [(NSMutableDictionary *)self->_childrenByNormalizedName removeObjectForKey:a3];
+    [(NSMutableDictionary *)self->_childrenByNormalizedName removeObjectForKey:name];
   }
 
   self->_lastRequestedChildName = 0;
@@ -347,17 +347,17 @@ LABEL_15:
   [(NSFileAccessNode *)self removeSelfIfUseless];
 }
 
-- (id)descendantAtPath:(id)a3 componentRange:(_NSRange)a4 forAddingLeafNode:(id)a5 create:(BOOL)a6
+- (id)descendantAtPath:(id)path componentRange:(_NSRange)range forAddingLeafNode:(id)node create:(BOOL)create
 {
-  if (!a4.length)
+  if (!range.length)
   {
     goto LABEL_13;
   }
 
-  v7 = a6;
-  length = a4.length;
-  location = a4.location;
-  v12 = _canonicalStringRepresentation([a3 objectAtIndex:a4.location]);
+  createCopy = create;
+  length = range.length;
+  location = range.location;
+  v12 = _canonicalStringRepresentation([path objectAtIndex:range.location]);
   v13 = [(NSFileAccessNode *)self normalizationOfChildName:v12];
   v14 = [(NSMutableDictionary *)self->_childrenByNormalizedName objectForKey:v13];
   if (v14)
@@ -372,7 +372,7 @@ LABEL_15:
       v15 = v14;
     }
 
-    if (v15 != a5)
+    if (v15 != node)
     {
       goto LABEL_9;
     }
@@ -382,48 +382,48 @@ LABEL_15:
 
   v15 = 0;
 LABEL_9:
-  if (!v15 && v7)
+  if (!v15 && createCopy)
   {
     v15 = [[NSFileAccessNode alloc] initWithParent:self name:v12 normalizedName:v13];
     [(NSFileAccessNode *)self setChild:v15 forName:v12 normalizedName:v15->_normalizedName];
   }
 
-  self = [(NSFileAccessNode *)v15 descendantAtPath:a3 componentRange:location + 1 forAddingLeafNode:length - 1 create:a5, v7];
+  self = [(NSFileAccessNode *)v15 descendantAtPath:path componentRange:location + 1 forAddingLeafNode:length - 1 create:node, createCopy];
 LABEL_13:
   if (self && self->_symbolicLinkIsFirmlink)
   {
     self = self->_symbolicLinkDestination;
   }
 
-  v17 = self;
+  selfCopy = self;
 
-  return v17;
+  return selfCopy;
 }
 
-- (id)childForRange:(_NSRange)a3 ofPath:(id)a4
+- (id)childForRange:(_NSRange)range ofPath:(id)path
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.length == 2)
+  length = range.length;
+  location = range.location;
+  if (range.length == 2)
   {
-    if ([a4 characterAtIndex:a3.location] == 46 && objc_msgSend(a4, "characterAtIndex:", location + 1) == 46)
+    if ([path characterAtIndex:range.location] == 46 && objc_msgSend(path, "characterAtIndex:", location + 1) == 46)
     {
       return self->_parent;
     }
   }
 
-  else if (a3.length == 1 && [a4 characterAtIndex:a3.location] == 46)
+  else if (range.length == 1 && [path characterAtIndex:range.location] == 46)
   {
     return self;
   }
 
   lastRequestedChildName = self->_lastRequestedChildName;
-  if (lastRequestedChildName && ![a4 compare:lastRequestedChildName options:2 range:{location, length}])
+  if (lastRequestedChildName && ![path compare:lastRequestedChildName options:2 range:{location, length}])
   {
     return self->_lastRequestedChild;
   }
 
-  v9 = [a4 substringWithRange:{location, length}];
+  v9 = [path substringWithRange:{location, length}];
   v10 = [(NSFileAccessNode *)self normalizationOfChildName:v9];
   v11 = [(NSMutableDictionary *)self->_childrenByNormalizedName objectForKey:v10];
   if (!v11)
@@ -437,9 +437,9 @@ LABEL_13:
   return v11;
 }
 
-- (id)descendantForFileURL:(id)a3
+- (id)descendantForFileURL:(id)l
 {
-  v4 = self;
+  selfCopy = self;
   v21 = *MEMORY[0x1E69E9840];
   if (![(NSString *)self->_normalizedName isEqualToString:@"/"])
   {
@@ -447,13 +447,13 @@ LABEL_13:
     return 0;
   }
 
-  if (![a3 isFileURL])
+  if (![l isFileURL])
   {
     v16 = _NSFCLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138477827;
-      v20 = a3;
+      lCopy3 = l;
       v17 = "NSFileCoordinator only handles URLs that use the file: scheme. This one does not:\n%{private}@";
 LABEL_27:
       _os_log_impl(&dword_18075C000, v16, OS_LOG_TYPE_DEFAULT, v17, &v19, 0xCu);
@@ -462,14 +462,14 @@ LABEL_27:
     return 0;
   }
 
-  v5 = _canonicalStringRepresentation([a3 path]);
+  v5 = _canonicalStringRepresentation([l path]);
   if (!v5)
   {
     v16 = _NSFCLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138477827;
-      v20 = a3;
+      lCopy3 = l;
       v17 = "NSFileCoordinator does not handle NSURLs that return nil when sent -path, like this one:\n%{private}@";
       goto LABEL_27;
     }
@@ -485,7 +485,7 @@ LABEL_27:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138477827;
-      v20 = a3;
+      lCopy3 = l;
       v17 = "NSFileCoordinator does not handle NSURLs that return relative or empty paths when sent -path, like this one:\n%{private}@";
       goto LABEL_27;
     }
@@ -499,9 +499,9 @@ LABEL_27:
     v10 = 1;
     while (1)
     {
-      if (v4->_symbolicLinkDestination)
+      if (selfCopy->_symbolicLinkDestination)
       {
-        v4 = v4->_symbolicLinkDestination;
+        selfCopy = selfCopy->_symbolicLinkDestination;
       }
 
       v11 = [v6 rangeOfString:@"/" options:0 range:{v10, v9}];
@@ -514,12 +514,12 @@ LABEL_27:
       v14 = v12;
       if (v11 != v10)
       {
-        v4 = [(NSFileAccessNode *)v4 childForRange:v10 ofPath:v11 - v10, v6];
+        selfCopy = [(NSFileAccessNode *)selfCopy childForRange:v10 ofPath:v11 - v10, v6];
       }
 
       v10 = v13 + v14;
       v9 = v8 - (v13 + v14);
-      if (v4)
+      if (selfCopy)
       {
         v15 = v8 == v13 + v14;
       }
@@ -531,34 +531,34 @@ LABEL_27:
 
       if (v15)
       {
-        if (v4)
+        if (selfCopy)
         {
           goto LABEL_31;
         }
 
-        return v4;
+        return selfCopy;
       }
     }
 
-    v4 = [(NSFileAccessNode *)v4 childForRange:v10 ofPath:v9, v6];
-    if (!v4)
+    selfCopy = [(NSFileAccessNode *)selfCopy childForRange:v10 ofPath:v9, v6];
+    if (!selfCopy)
     {
-      return v4;
+      return selfCopy;
     }
   }
 
 LABEL_31:
-  if (v4->_symbolicLinkIsFirmlink)
+  if (selfCopy->_symbolicLinkIsFirmlink)
   {
-    return v4->_symbolicLinkDestination;
+    return selfCopy->_symbolicLinkDestination;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)pathFromAncestor:(id)a3
+- (id)pathFromAncestor:(id)ancestor
 {
-  if (self == a3)
+  if (self == ancestor)
   {
     v8 = MEMORY[0x1E695DEC8];
 
@@ -586,21 +586,21 @@ LABEL_31:
   }
 }
 
-- (void)setParent:(id)a3 name:(id)a4
+- (void)setParent:(id)parent name:(id)name
 {
-  v7 = [(NSFileAccessNode *)self normalizationOfChildName:a4];
-  [a3 setChild:self forName:a4 normalizedName:v7];
+  v7 = [(NSFileAccessNode *)self normalizationOfChildName:name];
+  [parent setChild:self forName:name normalizedName:v7];
   [(NSFileAccessNode *)self->_parent removeChildForNormalizedName:self->_normalizedName];
   name = self->_name;
-  if (name != a4)
+  if (name != name)
   {
 
-    self->_name = [a4 copy];
+    self->_name = [name copy];
     self->_normalizedName = v7;
     self->_isFilePackageIsFigured = 0;
   }
 
-  self->_parent = a3;
+  self->_parent = parent;
 }
 
 void __37__NSFileAccessNode_itemIsFilePackage__block_invoke()
@@ -631,7 +631,7 @@ void __37__NSFileAccessNode_itemIsFilePackage__block_invoke()
   }
 }
 
-- (void)forEachDescendantPerformProcedure:(id)a3
+- (void)forEachDescendantPerformProcedure:(id)procedure
 {
   v16 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -654,8 +654,8 @@ void __37__NSFileAccessNode_itemIsFilePackage__block_invoke()
         }
 
         v10 = [(NSMutableDictionary *)self->_childrenByNormalizedName objectForKey:*(*(&v12 + 1) + 8 * i)];
-        (*(a3 + 2))(a3, v10);
-        [v10 forEachDescendantPerformProcedure:a3];
+        (*(procedure + 2))(procedure, v10);
+        [v10 forEachDescendantPerformProcedure:procedure];
       }
 
       v7 = [(NSMutableDictionary *)childrenByNormalizedName countByEnumeratingWithState:&v12 objects:v11 count:16];
@@ -665,7 +665,7 @@ void __37__NSFileAccessNode_itemIsFilePackage__block_invoke()
   }
 }
 
-- (void)forEachAccessClaimOnItemPerformProcedure:(id)a3
+- (void)forEachAccessClaimOnItemPerformProcedure:(id)procedure
 {
   v16 = *MEMORY[0x1E69E9840];
   if (_NSIsNSSet())
@@ -689,7 +689,7 @@ void __37__NSFileAccessNode_itemIsFilePackage__block_invoke()
             objc_enumerationMutation(accessClaimOrClaims);
           }
 
-          (*(a3 + 2))(a3, *(*(&v12 + 1) + 8 * i));
+          (*(procedure + 2))(procedure, *(*(&v12 + 1) + 8 * i));
         }
 
         v7 = [accessClaimOrClaims countByEnumeratingWithState:&v12 objects:v11 count:16];
@@ -701,23 +701,23 @@ void __37__NSFileAccessNode_itemIsFilePackage__block_invoke()
 
   else if (self->_accessClaimOrClaims)
   {
-    v10 = *(a3 + 2);
+    v10 = *(procedure + 2);
 
-    v10(a3);
+    v10(procedure);
   }
 }
 
-- (void)_forEachRelevantAccessClaimExcludingClaimsFromSuperarbiter:(BOOL)a3 performProcedure:(id)a4
+- (void)_forEachRelevantAccessClaimExcludingClaimsFromSuperarbiter:(BOOL)superarbiter performProcedure:(id)procedure
 {
-  v6 = self;
+  selfCopy = self;
   v14 = *MEMORY[0x1E69E9840];
-  v7 = [(NSFileAccessNode *)self->_parent biggestFilePackageLocation];
-  if (v7)
+  biggestFilePackageLocation = [(NSFileAccessNode *)self->_parent biggestFilePackageLocation];
+  if (biggestFilePackageLocation)
   {
-    v6 = v7;
+    selfCopy = biggestFilePackageLocation;
   }
 
-  parent = v6->_parent;
+  parent = selfCopy->_parent;
   if (parent)
   {
     v9 = MEMORY[0x1E69E9820];
@@ -727,8 +727,8 @@ void __37__NSFileAccessNode_itemIsFilePackage__block_invoke()
       v12[1] = 3221225472;
       v12[2] = __96__NSFileAccessNode__forEachRelevantAccessClaimExcludingClaimsFromSuperarbiter_performProcedure___block_invoke;
       v12[3] = &unk_1E69F99E8;
-      v13 = a3;
-      v12[4] = a4;
+      superarbiterCopy = superarbiter;
+      v12[4] = procedure;
       [(NSFileAccessNode *)parent forEachAccessClaimOnItemPerformProcedure:v12];
       parent = parent->_parent;
     }
@@ -740,9 +740,9 @@ void __37__NSFileAccessNode_itemIsFilePackage__block_invoke()
   v10[1] = 3221225472;
   v10[2] = __96__NSFileAccessNode__forEachRelevantAccessClaimExcludingClaimsFromSuperarbiter_performProcedure___block_invoke_2;
   v10[3] = &unk_1E69F9A10;
-  v11 = a3;
-  v10[4] = a4;
-  [(NSFileAccessNode *)v6 forEachAccessClaimOnItemOrContainedItemPerformProcedure:v10];
+  superarbiterCopy2 = superarbiter;
+  v10[4] = procedure;
+  [(NSFileAccessNode *)selfCopy forEachAccessClaimOnItemOrContainedItemPerformProcedure:v10];
 }
 
 uint64_t __96__NSFileAccessNode__forEachRelevantAccessClaimExcludingClaimsFromSuperarbiter_performProcedure___block_invoke(uint64_t a1, void *a2)
@@ -769,27 +769,27 @@ uint64_t __96__NSFileAccessNode__forEachRelevantAccessClaimExcludingClaimsFromSu
   return result;
 }
 
-- (void)forEachRelevantAccessClaimForEvaluatingAgainstClaim:(id)a3 performProcedure:(id)a4
+- (void)forEachRelevantAccessClaimForEvaluatingAgainstClaim:(id)claim performProcedure:(id)procedure
 {
-  v6 = [a3 cameFromSuperarbiter];
+  cameFromSuperarbiter = [claim cameFromSuperarbiter];
 
-  [(NSFileAccessNode *)self _forEachRelevantAccessClaimExcludingClaimsFromSuperarbiter:v6 performProcedure:a4];
+  [(NSFileAccessNode *)self _forEachRelevantAccessClaimExcludingClaimsFromSuperarbiter:cameFromSuperarbiter performProcedure:procedure];
 }
 
-- (void)forEachReactorToItemOrContainedItemPerformProcedure:(id)a3
+- (void)forEachReactorToItemOrContainedItemPerformProcedure:(id)procedure
 {
   v5[5] = *MEMORY[0x1E69E9840];
   if (self->_provider)
   {
-    (*(a3 + 2))(a3);
+    (*(procedure + 2))(procedure);
   }
 
-  [(NSFileAccessNode *)self forEachPresenterOfItemPerformProcedure:a3];
+  [(NSFileAccessNode *)self forEachPresenterOfItemPerformProcedure:procedure];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __72__NSFileAccessNode_forEachReactorToItemOrContainedItemPerformProcedure___block_invoke;
   v5[3] = &unk_1E69F9A38;
-  v5[4] = a3;
+  v5[4] = procedure;
   [(NSFileAccessNode *)self forEachDescendantPerformProcedure:v5];
 }
 
@@ -805,7 +805,7 @@ uint64_t __72__NSFileAccessNode_forEachReactorToItemOrContainedItemPerformProced
   return [a2 forEachPresenterOfItemPerformProcedure:v4];
 }
 
-- (void)forEachPresenterOfContainingFilePackagePerformProcedure:(id)a3
+- (void)forEachPresenterOfContainingFilePackagePerformProcedure:(id)procedure
 {
   v5[6] = *MEMORY[0x1E69E9840];
   for (i = self->_parent; i; i = i->_parent)
@@ -817,13 +817,13 @@ uint64_t __72__NSFileAccessNode_forEachReactorToItemOrContainedItemPerformProced
       v5[2] = __76__NSFileAccessNode_forEachPresenterOfContainingFilePackagePerformProcedure___block_invoke;
       v5[3] = &unk_1E69F9A60;
       v5[4] = i;
-      v5[5] = a3;
+      v5[5] = procedure;
       [(NSFileAccessNode *)i forEachPresenterOfItemPerformProcedure:v5];
     }
   }
 }
 
-- (void)forEachPresenterOfItemPerformProcedure:(id)a3
+- (void)forEachPresenterOfItemPerformProcedure:(id)procedure
 {
   v16 = *MEMORY[0x1E69E9840];
   if (_NSIsNSSet())
@@ -847,7 +847,7 @@ uint64_t __72__NSFileAccessNode_forEachReactorToItemOrContainedItemPerformProced
             objc_enumerationMutation(presenterOrPresenters);
           }
 
-          (*(a3 + 2))(a3, *(*(&v12 + 1) + 8 * i));
+          (*(procedure + 2))(procedure, *(*(&v12 + 1) + 8 * i));
         }
 
         v7 = [presenterOrPresenters countByEnumeratingWithState:&v12 objects:v11 count:16];
@@ -859,20 +859,20 @@ uint64_t __72__NSFileAccessNode_forEachReactorToItemOrContainedItemPerformProced
 
   else if (self->_presenterOrPresenters)
   {
-    v10 = *(a3 + 2);
+    v10 = *(procedure + 2);
 
-    v10(a3);
+    v10(procedure);
   }
 }
 
-- (void)forEachPresenterOfContainedItemPerformProcedure:(id)a3
+- (void)forEachPresenterOfContainedItemPerformProcedure:(id)procedure
 {
   v3[5] = *MEMORY[0x1E69E9840];
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __68__NSFileAccessNode_forEachPresenterOfContainedItemPerformProcedure___block_invoke;
   v3[3] = &unk_1E69F9A38;
-  v3[4] = a3;
+  v3[4] = procedure;
   [(NSFileAccessNode *)self forEachDescendantPerformProcedure:v3];
 }
 
@@ -887,19 +887,19 @@ uint64_t __68__NSFileAccessNode_forEachPresenterOfContainedItemPerformProcedure_
   return [a2 forEachPresenterOfItemPerformProcedure:v3];
 }
 
-- (void)forEachPresenterOfItemOrContainedItemPerformProcedure:(id)a3
+- (void)forEachPresenterOfItemOrContainedItemPerformProcedure:(id)procedure
 {
   [(NSFileAccessNode *)self forEachPresenterOfItemPerformProcedure:?];
 
-  [(NSFileAccessNode *)self forEachPresenterOfContainedItemPerformProcedure:a3];
+  [(NSFileAccessNode *)self forEachPresenterOfContainedItemPerformProcedure:procedure];
 }
 
-- (void)forEachPresenterOfItemOrContainingItemPerformProcedure:(id)a3
+- (void)forEachPresenterOfItemOrContainingItemPerformProcedure:(id)procedure
 {
   v6[6] = *MEMORY[0x1E69E9840];
   if (self)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = MEMORY[0x1E69E9820];
     do
     {
@@ -907,17 +907,17 @@ uint64_t __68__NSFileAccessNode_forEachPresenterOfContainedItemPerformProcedure_
       v6[1] = 3221225472;
       v6[2] = __75__NSFileAccessNode_forEachPresenterOfItemOrContainingItemPerformProcedure___block_invoke;
       v6[3] = &unk_1E69F9A60;
-      v6[4] = v4;
-      v6[5] = a3;
-      [(NSFileAccessNode *)v4 forEachPresenterOfItemPerformProcedure:v6];
-      v4 = v4->_parent;
+      v6[4] = selfCopy;
+      v6[5] = procedure;
+      [(NSFileAccessNode *)selfCopy forEachPresenterOfItemPerformProcedure:v6];
+      selfCopy = selfCopy->_parent;
     }
 
-    while (v4);
+    while (selfCopy);
   }
 }
 
-- (void)forEachPresenterOfContainingItemPerformProcedure:(id)a3
+- (void)forEachPresenterOfContainingItemPerformProcedure:(id)procedure
 {
   v6[5] = *MEMORY[0x1E69E9840];
   parent = self->_parent;
@@ -930,7 +930,7 @@ uint64_t __68__NSFileAccessNode_forEachPresenterOfContainedItemPerformProcedure_
       v6[1] = 3221225472;
       v6[2] = __69__NSFileAccessNode_forEachPresenterOfContainingItemPerformProcedure___block_invoke;
       v6[3] = &unk_1E69F82B0;
-      v6[4] = a3;
+      v6[4] = procedure;
       [(NSFileAccessNode *)parent forEachPresenterOfItemPerformProcedure:v6];
       parent = parent->_parent;
     }
@@ -939,7 +939,7 @@ uint64_t __68__NSFileAccessNode_forEachPresenterOfContainedItemPerformProcedure_
   }
 }
 
-- (void)forEachAccessClaimOnItemOrContainedItemPerformProcedure:(id)a3
+- (void)forEachAccessClaimOnItemOrContainedItemPerformProcedure:(id)procedure
 {
   v6[6] = *MEMORY[0x1E69E9840];
   v6[0] = MEMORY[0x1E69E9820];
@@ -947,13 +947,13 @@ uint64_t __68__NSFileAccessNode_forEachPresenterOfContainedItemPerformProcedure_
   v6[2] = __76__NSFileAccessNode_forEachAccessClaimOnItemOrContainedItemPerformProcedure___block_invoke;
   v6[3] = &unk_1E69F9A88;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = procedure;
   [(NSFileAccessNode *)self forEachAccessClaimOnItemPerformProcedure:v6];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __76__NSFileAccessNode_forEachAccessClaimOnItemOrContainedItemPerformProcedure___block_invoke_2;
   v5[3] = &unk_1E69F9A38;
-  v5[4] = a3;
+  v5[4] = procedure;
   [(NSFileAccessNode *)self forEachDescendantPerformProcedure:v5];
 }
 
@@ -974,60 +974,60 @@ uint64_t __76__NSFileAccessNode_forEachAccessClaimOnItemOrContainedItemPerformPr
 {
   if (self)
   {
-    v2 = self;
+    selfCopy = self;
     do
     {
-      LOBYTE(self) = v2->_isArbitrationBoundary;
+      LOBYTE(self) = selfCopy->_isArbitrationBoundary;
       if (self)
       {
         break;
       }
 
-      v2 = v2->_parent;
+      selfCopy = selfCopy->_parent;
     }
 
-    while (v2);
+    while (selfCopy);
   }
 
   return self;
 }
 
-- (BOOL)itemIsItemAtLocation:(id)a3
+- (BOOL)itemIsItemAtLocation:(id)location
 {
-  if (a3 == self)
+  if (location == self)
   {
     goto LABEL_7;
   }
 
-  v4 = [(NSFileAccessNode *)self biggestFilePackageLocation];
-  if (!v4)
+  biggestFilePackageLocation = [(NSFileAccessNode *)self biggestFilePackageLocation];
+  if (!biggestFilePackageLocation)
   {
-    return v4;
+    return biggestFilePackageLocation;
   }
 
-  if (v4 == a3)
+  if (biggestFilePackageLocation == location)
   {
 LABEL_7:
-    LOBYTE(v4) = 1;
-    return v4;
+    LOBYTE(biggestFilePackageLocation) = 1;
+    return biggestFilePackageLocation;
   }
 
-  LOBYTE(v4) = [a3 itemIsInItemAtLocation:v4];
-  return v4;
+  LOBYTE(biggestFilePackageLocation) = [location itemIsInItemAtLocation:biggestFilePackageLocation];
+  return biggestFilePackageLocation;
 }
 
-- (BOOL)itemIsInItemAtLocation:(id)a3
+- (BOOL)itemIsInItemAtLocation:(id)location
 {
   do
   {
     self = self->_parent;
   }
 
-  while (self != a3 && self != 0);
+  while (self != location && self != 0);
   return self != 0;
 }
 
-- (void)addPresenter:(id)a3
+- (void)addPresenter:(id)presenter
 {
   if (self->_presenterOrPresenters)
   {
@@ -1035,33 +1035,33 @@ LABEL_7:
     {
       presenterOrPresenters = self->_presenterOrPresenters;
 
-      [presenterOrPresenters addObject:a3];
+      [presenterOrPresenters addObject:presenter];
     }
 
     else
     {
       v6 = self->_presenterOrPresenters;
-      self->_presenterOrPresenters = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v6, a3, 0}];
+      self->_presenterOrPresenters = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v6, presenter, 0}];
     }
   }
 
   else
   {
-    self->_presenterOrPresenters = a3;
+    self->_presenterOrPresenters = presenter;
   }
 }
 
-- (void)removePresenter:(id)a3
+- (void)removePresenter:(id)presenter
 {
   presenterOrPresenters = self->_presenterOrPresenters;
-  if (presenterOrPresenters == a3)
+  if (presenterOrPresenters == presenter)
   {
     goto LABEL_5;
   }
 
   if (_NSIsNSSet())
   {
-    [self->_presenterOrPresenters removeObject:a3];
+    [self->_presenterOrPresenters removeObject:presenter];
     if (![self->_presenterOrPresenters count])
     {
       presenterOrPresenters = self->_presenterOrPresenters;
@@ -1074,27 +1074,27 @@ LABEL_5:
   [(NSFileAccessNode *)self removeSelfIfUseless];
 }
 
-- (BOOL)setProvider:(id)a3
+- (BOOL)setProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v15 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!provider)
   {
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSFileAccessNode.m" description:881, @"Invalid parameter not satisfying: %@", @"inProvider != nil"];
     goto LABEL_12;
   }
 
   provider = self->_provider;
-  if (provider == a3)
+  if (provider == provider)
   {
     goto LABEL_11;
   }
 
   if (provider)
   {
-    v6 = [(NSFileProviderProxy *)provider secureID];
-    v7 = [v3 secureID];
-    if (([v7 isEqualToString:v6] & 1) == 0 && (!v7 || v6) && _NSFCIP != 1)
+    secureID = [(NSFileProviderProxy *)provider secureID];
+    secureID2 = [providerCopy secureID];
+    if (([secureID2 isEqualToString:secureID] & 1) == 0 && (!secureID2 || secureID) && _NSFCIP != 1)
     {
       v8 = _NSFCProviderLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1103,36 +1103,36 @@ LABEL_5:
         *buf = 67109376;
         v12 = v9;
         v13 = 1024;
-        v14 = [objc_msgSend(v3 "client")];
+        v14 = [objc_msgSend(providerCopy "client")];
         _os_log_impl(&dword_18075C000, v8, OS_LOG_TYPE_DEFAULT, "[NSFileAccessNode setProvider:] was invoked for a node that already has a provider (pid %d). Ignoring the new one (pid %d).", buf, 0xEu);
       }
 
 LABEL_11:
-      LOBYTE(v3) = 0;
+      LOBYTE(providerCopy) = 0;
       goto LABEL_12;
     }
   }
 
   [(NSFileProviderProxy *)self->_provider setItemLocation:0];
 
-  self->_provider = v3;
-  LOBYTE(v3) = 1;
+  self->_provider = providerCopy;
+  LOBYTE(providerCopy) = 1;
 LABEL_12:
   [(NSFileAccessNode *)self removeSelfIfUseless];
-  return v3;
+  return providerCopy;
 }
 
-- (void)removeProvider:(id)a3
+- (void)removeProvider:(id)provider
 {
   provider = self->_provider;
-  if (provider == a3)
+  if (provider == provider)
   {
 
     self->_provider = 0;
   }
 }
 
-- (void)addAccessClaim:(id)a3
+- (void)addAccessClaim:(id)claim
 {
   if (self->_accessClaimOrClaims)
   {
@@ -1140,33 +1140,33 @@ LABEL_12:
     {
       accessClaimOrClaims = self->_accessClaimOrClaims;
 
-      [accessClaimOrClaims addObject:a3];
+      [accessClaimOrClaims addObject:claim];
     }
 
     else
     {
       v6 = self->_accessClaimOrClaims;
-      self->_accessClaimOrClaims = [[NSCountedSet alloc] initWithObjects:v6, a3, 0];
+      self->_accessClaimOrClaims = [[NSCountedSet alloc] initWithObjects:v6, claim, 0];
     }
   }
 
   else
   {
-    self->_accessClaimOrClaims = a3;
+    self->_accessClaimOrClaims = claim;
   }
 }
 
-- (void)removeAccessClaim:(id)a3
+- (void)removeAccessClaim:(id)claim
 {
   accessClaimOrClaims = self->_accessClaimOrClaims;
-  if (accessClaimOrClaims == a3)
+  if (accessClaimOrClaims == claim)
   {
     goto LABEL_5;
   }
 
   if (_NSIsNSSet())
   {
-    [self->_accessClaimOrClaims removeObject:a3];
+    [self->_accessClaimOrClaims removeObject:claim];
     if (![self->_accessClaimOrClaims count])
     {
       accessClaimOrClaims = self->_accessClaimOrClaims;
@@ -1188,10 +1188,10 @@ LABEL_5:
     v5 = !v3 || parent == 0;
     if (v5 || parent->_parent)
     {
-      v6 = [(NSFileAccessNode *)parent pathExceptPrivate];
+      pathExceptPrivate = [(NSFileAccessNode *)parent pathExceptPrivate];
       name = self->_name;
 
-      return [v6 arrayByAddingObject:name];
+      return [pathExceptPrivate arrayByAddingObject:name];
     }
 
     else
@@ -1228,19 +1228,19 @@ LABEL_5:
   return v3;
 }
 
-- (id)urlOfSubitemAtPath:(id)a3 plusPath:(id)a4
+- (id)urlOfSubitemAtPath:(id)path plusPath:(id)plusPath
 {
   v13 = *MEMORY[0x1E69E9840];
   v6 = [(NSFileAccessNode *)self pathFromAncestor:0];
   v7 = v6;
-  if (a3)
+  if (path)
   {
-    v7 = [v6 arrayByAddingObjectsFromArray:a3];
+    v7 = [v6 arrayByAddingObjectsFromArray:path];
   }
 
-  if (a4)
+  if (plusPath)
   {
-    v7 = [v7 arrayByAddingObjectsFromArray:a4];
+    v7 = [v7 arrayByAddingObjectsFromArray:plusPath];
   }
 
   v8 = [NSString pathWithComponents:v7];
@@ -1258,7 +1258,7 @@ LABEL_5:
   return v9;
 }
 
-- (void)addProgressPublisher:(id)a3
+- (void)addProgressPublisher:(id)publisher
 {
   if (self->_progressPublisherOrPublishers)
   {
@@ -1266,33 +1266,33 @@ LABEL_5:
     {
       progressPublisherOrPublishers = self->_progressPublisherOrPublishers;
 
-      [progressPublisherOrPublishers addObject:a3];
+      [progressPublisherOrPublishers addObject:publisher];
     }
 
     else
     {
       v6 = self->_progressPublisherOrPublishers;
-      self->_progressPublisherOrPublishers = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v6, a3, 0}];
+      self->_progressPublisherOrPublishers = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v6, publisher, 0}];
     }
   }
 
   else
   {
-    self->_progressPublisherOrPublishers = a3;
+    self->_progressPublisherOrPublishers = publisher;
   }
 }
 
-- (void)removeProgressPublisher:(id)a3
+- (void)removeProgressPublisher:(id)publisher
 {
   progressPublisherOrPublishers = self->_progressPublisherOrPublishers;
-  if (progressPublisherOrPublishers == a3)
+  if (progressPublisherOrPublishers == publisher)
   {
     goto LABEL_5;
   }
 
   if (_NSIsNSSet())
   {
-    [self->_progressPublisherOrPublishers removeObject:a3];
+    [self->_progressPublisherOrPublishers removeObject:publisher];
     if (![self->_progressPublisherOrPublishers count])
     {
       progressPublisherOrPublishers = self->_progressPublisherOrPublishers;
@@ -1305,7 +1305,7 @@ LABEL_5:
   [(NSFileAccessNode *)self removeSelfIfUseless];
 }
 
-- (void)addProgressSubscriber:(id)a3
+- (void)addProgressSubscriber:(id)subscriber
 {
   if (self->_progressSubscriberOrSubscribers)
   {
@@ -1313,33 +1313,33 @@ LABEL_5:
     {
       progressSubscriberOrSubscribers = self->_progressSubscriberOrSubscribers;
 
-      [progressSubscriberOrSubscribers addObject:a3];
+      [progressSubscriberOrSubscribers addObject:subscriber];
     }
 
     else
     {
       v6 = self->_progressSubscriberOrSubscribers;
-      self->_progressSubscriberOrSubscribers = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v6, a3, 0}];
+      self->_progressSubscriberOrSubscribers = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v6, subscriber, 0}];
     }
   }
 
   else
   {
-    self->_progressSubscriberOrSubscribers = a3;
+    self->_progressSubscriberOrSubscribers = subscriber;
   }
 }
 
-- (void)removeProgressSubscriber:(id)a3
+- (void)removeProgressSubscriber:(id)subscriber
 {
   progressSubscriberOrSubscribers = self->_progressSubscriberOrSubscribers;
-  if (progressSubscriberOrSubscribers == a3)
+  if (progressSubscriberOrSubscribers == subscriber)
   {
     goto LABEL_5;
   }
 
   if (_NSIsNSSet())
   {
-    [self->_progressSubscriberOrSubscribers removeObject:a3];
+    [self->_progressSubscriberOrSubscribers removeObject:subscriber];
     if (![self->_progressSubscriberOrSubscribers count])
     {
       progressSubscriberOrSubscribers = self->_progressSubscriberOrSubscribers;
@@ -1352,7 +1352,7 @@ LABEL_5:
   [(NSFileAccessNode *)self removeSelfIfUseless];
 }
 
-- (void)forEachProgressPublisherOfItemPerformProcedure:(id)a3
+- (void)forEachProgressPublisherOfItemPerformProcedure:(id)procedure
 {
   v16 = *MEMORY[0x1E69E9840];
   if (_NSIsNSSet())
@@ -1376,7 +1376,7 @@ LABEL_5:
             objc_enumerationMutation(progressPublisherOrPublishers);
           }
 
-          (*(a3 + 2))(a3, *(*(&v12 + 1) + 8 * i));
+          (*(procedure + 2))(procedure, *(*(&v12 + 1) + 8 * i));
         }
 
         v7 = [progressPublisherOrPublishers countByEnumeratingWithState:&v12 objects:v11 count:16];
@@ -1388,13 +1388,13 @@ LABEL_5:
 
   else if (self->_progressPublisherOrPublishers)
   {
-    v10 = *(a3 + 2);
+    v10 = *(procedure + 2);
 
-    v10(a3);
+    v10(procedure);
   }
 }
 
-- (void)forEachProgressPublisherOfItemOrContainedItemPerformProcedure:(id)a3
+- (void)forEachProgressPublisherOfItemOrContainedItemPerformProcedure:(id)procedure
 {
   v15 = *MEMORY[0x1E69E9840];
   [(NSFileAccessNode *)self forEachProgressPublisherOfItemPerformProcedure:?];
@@ -1417,7 +1417,7 @@ LABEL_5:
           objc_enumerationMutation(childrenByNormalizedName);
         }
 
-        [-[NSMutableDictionary objectForKey:](self->_childrenByNormalizedName objectForKey:{*(*(&v11 + 1) + 8 * i)), "forEachProgressPublisherOfItemPerformProcedure:", a3}];
+        [-[NSMutableDictionary objectForKey:](self->_childrenByNormalizedName objectForKey:{*(*(&v11 + 1) + 8 * i)), "forEachProgressPublisherOfItemPerformProcedure:", procedure}];
       }
 
       v7 = [(NSMutableDictionary *)childrenByNormalizedName countByEnumeratingWithState:&v11 objects:v10 count:16];
@@ -1427,7 +1427,7 @@ LABEL_5:
   }
 }
 
-- (void)forEachProgressSubscriberOfItemPerformProcedure:(id)a3
+- (void)forEachProgressSubscriberOfItemPerformProcedure:(id)procedure
 {
   v16 = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
@@ -1452,7 +1452,7 @@ LABEL_5:
             objc_enumerationMutation(progressSubscriberOrSubscribers);
           }
 
-          (*(a3 + 2))(a3, *(*(&v12 + 1) + 8 * i));
+          (*(procedure + 2))(procedure, *(*(&v12 + 1) + 8 * i));
         }
 
         v8 = [progressSubscriberOrSubscribers countByEnumeratingWithState:&v12 objects:v11 count:16];
@@ -1464,31 +1464,31 @@ LABEL_5:
 
   else if (self->_progressSubscriberOrSubscribers)
   {
-    (*(a3 + 2))(a3);
+    (*(procedure + 2))(procedure);
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)forEachProgressSubscriberOfItemOrContainingItemPerformProcedure:(id)a3
+- (void)forEachProgressSubscriberOfItemOrContainingItemPerformProcedure:(id)procedure
 {
   v7[5] = *MEMORY[0x1E69E9840];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __84__NSFileAccessNode_forEachProgressSubscriberOfItemOrContainingItemPerformProcedure___block_invoke;
   v7[3] = &unk_1E69F9AB0;
-  v7[4] = a3;
+  v7[4] = procedure;
   [(NSFileAccessNode *)self forEachProgressSubscriberOfItemPerformProcedure:v7];
   parent = self->_parent;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __84__NSFileAccessNode_forEachProgressSubscriberOfItemOrContainingItemPerformProcedure___block_invoke_2;
   v6[3] = &unk_1E69F9AB0;
-  v6[4] = a3;
+  v6[4] = procedure;
   [(NSFileAccessNode *)parent forEachProgressSubscriberOfItemPerformProcedure:v6];
 }
 
-- (void)forEachProgressThingOfItemOrContainedItemPerformProcedure:(id)a3
+- (void)forEachProgressThingOfItemOrContainedItemPerformProcedure:(id)procedure
 {
   v7[6] = *MEMORY[0x1E69E9840];
   v7[0] = MEMORY[0x1E69E9820];
@@ -1496,20 +1496,20 @@ LABEL_5:
   v7[2] = __78__NSFileAccessNode_forEachProgressThingOfItemOrContainedItemPerformProcedure___block_invoke;
   v7[3] = &unk_1E69F9AD8;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = procedure;
   [(NSFileAccessNode *)self forEachProgressPublisherOfItemPerformProcedure:v7];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __78__NSFileAccessNode_forEachProgressThingOfItemOrContainedItemPerformProcedure___block_invoke_2;
   v6[3] = &unk_1E69F9B00;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = procedure;
   [(NSFileAccessNode *)self forEachProgressSubscriberOfItemPerformProcedure:v6];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __78__NSFileAccessNode_forEachProgressThingOfItemOrContainedItemPerformProcedure___block_invoke_3;
   v5[3] = &unk_1E69F9A38;
-  v5[4] = a3;
+  v5[4] = procedure;
   [(NSFileAccessNode *)self forEachDescendantPerformProcedure:v5];
 }
 
@@ -1539,15 +1539,15 @@ uint64_t __78__NSFileAccessNode_forEachProgressThingOfItemOrContainedItemPerform
   v6 = *MEMORY[0x1E69E9840];
   if (self)
   {
-    v2 = self;
+    selfCopy = self;
     v3 = 0;
     do
     {
-      v3 |= [(NSString *)v2->_normalizedName isEqualToString:@"/"];
-      v2 = v2->_parent;
+      v3 |= [(NSString *)selfCopy->_normalizedName isEqualToString:@"/"];
+      selfCopy = selfCopy->_parent;
     }
 
-    while (v2);
+    while (selfCopy);
     if (v3)
     {
       v4 = _NSFCLog();
@@ -1568,15 +1568,15 @@ uint64_t __78__NSFileAccessNode_forEachProgressThingOfItemOrContainedItemPerform
     goto LABEL_5;
   }
 
-  v2 = self;
+  selfCopy = self;
   v3 = 0;
   do
   {
-    v3 |= [(NSString *)v2->_normalizedName isEqualToString:@"/"];
-    v2 = v2->_parent;
+    v3 |= [(NSString *)selfCopy->_normalizedName isEqualToString:@"/"];
+    selfCopy = selfCopy->_parent;
   }
 
-  while (v2);
+  while (selfCopy);
   if ((v3 & 1) == 0)
   {
 LABEL_5:
@@ -1603,7 +1603,7 @@ uint64_t __41__NSFileAccessNode_assertDescendantsLive__block_invoke(uint64_t a1,
   return [a2 assertLive];
 }
 
-- (BOOL)_mayContainCriticalDebuggingInformationExcludingReactors:(BOOL)a3
+- (BOOL)_mayContainCriticalDebuggingInformationExcludingReactors:(BOOL)reactors
 {
   if (self->_accessClaimOrClaims)
   {
@@ -1618,9 +1618,9 @@ LABEL_7:
     return v3 & 1;
   }
 
-  v6 = [(NSFileAccessNode *)self itemIsFilePackage];
-  v3 = !a3 || v6;
-  if (!a3 && !v6)
+  itemIsFilePackage = [(NSFileAccessNode *)self itemIsFilePackage];
+  v3 = !reactors || itemIsFilePackage;
+  if (!reactors && !itemIsFilePackage)
   {
     if (!self->_presenterOrPresenters)
     {
@@ -1634,12 +1634,12 @@ LABEL_7:
   return v3 & 1;
 }
 
-- (id)_childrenExcludingExcessNodes:(BOOL)a3 excludingReactors:(BOOL)a4
+- (id)_childrenExcludingExcessNodes:(BOOL)nodes excludingReactors:(BOOL)reactors
 {
-  v4 = a4;
-  v5 = a3;
+  reactorsCopy = reactors;
+  nodesCopy = nodes;
   v21 = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1661,14 +1661,14 @@ LABEL_7:
 
         v13 = [(NSMutableDictionary *)self->_childrenByNormalizedName objectForKey:*(*(&v17 + 1) + 8 * i)];
         v14 = v13;
-        if (v5 && ![v13 _mayContainCriticalDebuggingInformationExcludingReactors:v4])
+        if (nodesCopy && ![v13 _mayContainCriticalDebuggingInformationExcludingReactors:reactorsCopy])
         {
-          [v7 addObjectsFromArray:{objc_msgSend(v14, "_childrenExcludingExcessNodes:excludingReactors:", 1, v4)}];
+          [array addObjectsFromArray:{objc_msgSend(v14, "_childrenExcludingExcessNodes:excludingReactors:", 1, reactorsCopy)}];
         }
 
         else
         {
-          [v7 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -1678,17 +1678,17 @@ LABEL_7:
     while (v10);
   }
 
-  return v7;
+  return array;
 }
 
-- (id)descriptionWithIndenting:(id)a3 excludingExcessNodes:(BOOL)a4 excludingReactors:(BOOL)a5
+- (id)descriptionWithIndenting:(id)indenting excludingExcessNodes:(BOOL)nodes excludingReactors:(BOOL)reactors
 {
-  v5 = a5;
-  v37 = a4;
+  reactorsCopy = reactors;
+  nodesCopy = nodes;
   v63 = *MEMORY[0x1E69E9840];
-  v8 = [a3 stringByAppendingString:@"    "];
+  v8 = [indenting stringByAppendingString:@"    "];
   v9 = +[(NSString *)NSMutableString];
-  [(NSString *)v9 appendFormat:@"%@<%@ %p> parent: %p, name: %@", a3, objc_opt_class(), self, self->_parent, self->_name];
+  [(NSString *)v9 appendFormat:@"%@<%@ %p> parent: %p, name: %@", indenting, objc_opt_class(), self, self->_parent, self->_name];
   if (self->_symbolicLinkDestination)
   {
     [(NSString *)v9 appendFormat:@" (link target to node %p)", self->_symbolicLinkDestination];
@@ -1704,15 +1704,15 @@ LABEL_7:
     [(NSString *)v9 appendString:@" - an arbitration boundary"];
   }
 
-  if (self->_provider && !v5)
+  if (self->_provider && !reactorsCopy)
   {
-    [(NSString *)v9 appendFormat:@"\n%@provider:", a3];
+    [(NSString *)v9 appendFormat:@"\n%@provider:", indenting];
     [(NSString *)v9 appendFormat:@"\n%@", [(NSFileReactorProxy *)self->_provider descriptionWithIndenting:v8]];
   }
 
-  if (self->_presenterOrPresenters && !v5)
+  if (self->_presenterOrPresenters && !reactorsCopy)
   {
-    [(NSString *)v9 appendFormat:@"\n%@presenters:", a3];
+    [(NSString *)v9 appendFormat:@"\n%@presenters:", indenting];
     if (_NSIsNSSet())
     {
       v61 = 0u;
@@ -1752,7 +1752,7 @@ LABEL_7:
 
   if (self->_accessClaimOrClaims)
   {
-    [(NSString *)v9 appendFormat:@"\n%@access claims:", a3];
+    [(NSString *)v9 appendFormat:@"\n%@access claims:", indenting];
     if (_NSIsNSSet())
     {
       v56 = 0u;
@@ -1792,7 +1792,7 @@ LABEL_7:
 
   if (self->_progressSubscriberOrSubscribers)
   {
-    [(NSString *)v9 appendFormat:@"\n%@progress subscribers:", a3];
+    [(NSString *)v9 appendFormat:@"\n%@progress subscribers:", indenting];
     if (_NSIsNSSet())
     {
       v51 = 0u;
@@ -1832,7 +1832,7 @@ LABEL_7:
 
   if (self->_progressPublisherOrPublishers)
   {
-    [(NSString *)v9 appendFormat:@"\n%@progress publishers:", a3];
+    [(NSString *)v9 appendFormat:@"\n%@progress publishers:", indenting];
     if (_NSIsNSSet())
     {
       v46 = 0u;
@@ -1870,10 +1870,10 @@ LABEL_7:
     }
   }
 
-  v30 = [(NSFileAccessNode *)self _childrenExcludingExcessNodes:v37 excludingReactors:v5];
+  v30 = [(NSFileAccessNode *)self _childrenExcludingExcessNodes:nodesCopy excludingReactors:reactorsCopy];
   if ([v30 count])
   {
-    [(NSString *)v9 appendFormat:@"\n%@children:", a3];
+    [(NSString *)v9 appendFormat:@"\n%@children:", indenting];
     v31 = [v8 stringByAppendingString:@"    "];
     v39 = 0u;
     v40 = 0u;
@@ -1893,7 +1893,7 @@ LABEL_7:
             objc_enumerationMutation(v30);
           }
 
-          -[NSString appendFormat:](v9, "appendFormat:", @"\n%@%@\n%@", v8, *(*(*(&v39 + 1) + 8 * n) + 24), [*(*(&v39 + 1) + 8 * n) descriptionWithIndenting:v31 excludingExcessNodes:v37 excludingReactors:v5]);
+          -[NSString appendFormat:](v9, "appendFormat:", @"\n%@%@\n%@", v8, *(*(*(&v39 + 1) + 8 * n) + 24), [*(*(&v39 + 1) + 8 * n) descriptionWithIndenting:v31 excludingExcessNodes:nodesCopy excludingReactors:reactorsCopy]);
         }
 
         v33 = [v30 countByEnumeratingWithState:&v39 objects:v38 count:16];

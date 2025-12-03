@@ -3,9 +3,9 @@
 + (BOOL)isAppRemovalRestricted;
 + (BOOL)isFingerprintModificationRestricted;
 + (BOOL)isPasscodeModificationRestricted;
-+ (BOOL)isPermissionRestricted:(id)a3;
++ (BOOL)isPermissionRestricted:(id)restricted;
 + (BOOL)isPrivateRelayRestricted;
-+ (BOOL)isSourceRestricted:(id)a3;
++ (BOOL)isSourceRestricted:(id)restricted;
 + (void)initialize;
 @end
 
@@ -13,7 +13,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     DSLog_1 = os_log_create("com.apple.DigitalSeparation", "DSRestrictionStore");
 
@@ -23,27 +23,27 @@
 
 + (BOOL)isAppRemovalRestricted
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isAppRemovalAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isAppRemovalAllowed = [mEMORY[0x277D262A0] isAppRemovalAllowed];
 
-  return v3 ^ 1;
+  return isAppRemovalAllowed ^ 1;
 }
 
-+ (BOOL)isPermissionRestricted:(id)a3
++ (BOOL)isPermissionRestricted:(id)restricted
 {
-  v3 = a3;
+  restrictedCopy = restricted;
   v4 = CFPreferencesCopyAppValue(@"SBParentalControlsCapabilities", @"com.apple.springboard");
-  if (([(__CFString *)v3 isEqualToString:@"DSLocationAlways"]& 1) != 0 || [(__CFString *)v3 isEqualToString:@"DSLocationWhenInUse"])
+  if (([(__CFString *)restrictedCopy isEqualToString:@"DSLocationAlways"]& 1) != 0 || [(__CFString *)restrictedCopy isEqualToString:@"DSLocationWhenInUse"])
   {
     v5 = @"location";
   }
 
   else
   {
-    if (![(__CFString *)v3 isEqualToString:@"DSContacts"])
+    if (![(__CFString *)restrictedCopy isEqualToString:@"DSContacts"])
     {
       v6 = v4;
-      v5 = v3;
+      v5 = restrictedCopy;
       goto LABEL_5;
     }
 
@@ -57,26 +57,26 @@ LABEL_5:
   return v7;
 }
 
-+ (BOOL)isSourceRestricted:(id)a3
++ (BOOL)isSourceRestricted:(id)restricted
 {
-  v3 = a3;
-  if (@"com.apple.DigitalSeparation.Photos" == v3 && ([MEMORY[0x277D262A0] sharedConnection], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "effectiveBoolValueForSetting:", *MEMORY[0x277D26058]), v4, v5 == 2))
+  restrictedCopy = restricted;
+  if (@"com.apple.DigitalSeparation.Photos" == restrictedCopy && ([MEMORY[0x277D262A0] sharedConnection], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "effectiveBoolValueForSetting:", *MEMORY[0x277D26058]), v4, v5 == 2))
   {
     v6 = 1;
   }
 
-  else if (@"com.apple.DigitalSeparation.FindMy" == v3)
+  else if (@"com.apple.DigitalSeparation.FindMy" == restrictedCopy)
   {
-    v7 = [MEMORY[0x277D262A0] sharedConnection];
-    if ([v7 effectiveBoolValueForSetting:*MEMORY[0x277D25EA0]] == 2)
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    if ([mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25EA0]] == 2)
     {
       v6 = 1;
     }
 
     else
     {
-      v8 = [MEMORY[0x277D262A0] sharedConnection];
-      v6 = [v8 effectiveBoolValueForSetting:*MEMORY[0x277D25EA8]] == 2;
+      mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+      v6 = [mEMORY[0x277D262A0]2 effectiveBoolValueForSetting:*MEMORY[0x277D25EA8]] == 2;
     }
   }
 
@@ -90,31 +90,31 @@ LABEL_5:
 
 + (BOOL)isPasscodeModificationRestricted
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isPasscodeModificationAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isPasscodeModificationAllowed = [mEMORY[0x277D262A0] isPasscodeModificationAllowed];
 
-  return v3 ^ 1;
+  return isPasscodeModificationAllowed ^ 1;
 }
 
 + (BOOL)isFingerprintModificationRestricted
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isFingerprintModificationAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isFingerprintModificationAllowed = [mEMORY[0x277D262A0] isFingerprintModificationAllowed];
 
-  return v3 ^ 1;
+  return isFingerprintModificationAllowed ^ 1;
 }
 
 + (BOOL)isPrivateRelayRestricted
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isCloudPrivateRelayAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isCloudPrivateRelayAllowed = [mEMORY[0x277D262A0] isCloudPrivateRelayAllowed];
 
-  return v3 ^ 1;
+  return isCloudPrivateRelayAllowed ^ 1;
 }
 
 + (BOOL)hasRestriction
 {
-  if (([a1 isSourceRestricted:@"com.apple.DigitalSeparation.FindMy"] & 1) != 0 || +[DSRestrictionStore isSourceRestricted:](DSRestrictionStore, "isSourceRestricted:", @"com.apple.DigitalSeparation.Photos") || +[DSRestrictionStore isPermissionRestricted:](DSRestrictionStore, "isPermissionRestricted:", @"location") || +[DSRestrictionStore isPermissionRestricted:](DSRestrictionStore, "isPermissionRestricted:", *MEMORY[0x277D6C100]) || +[DSRestrictionStore isPermissionRestricted:](DSRestrictionStore, "isPermissionRestricted:", *MEMORY[0x277D6C118]) || +[DSRestrictionStore isPermissionRestricted:](DSRestrictionStore, "isPermissionRestricted:", *MEMORY[0x277D6C1E0]) || +[DSRestrictionStore isPermissionRestricted:](DSRestrictionStore, "isPermissionRestricted:", *MEMORY[0x277D6C1D0]) || +[DSRestrictionStore isPermissionRestricted:](DSRestrictionStore, "isPermissionRestricted:", *MEMORY[0x277D6C110]) || +[DSRestrictionStore isPermissionRestricted:](DSRestrictionStore, "isPermissionRestricted:", *MEMORY[0x277D6C1A8]) || +[DSRestrictionStore isPermissionRestricted:](DSRestrictionStore, "isPermissionRestricted:", *MEMORY[0x277D6C1A0]) || +[DSRestrictionStore isPasscodeModificationRestricted](DSRestrictionStore, "isPasscodeModificationRestricted") || +[DSRestrictionStore isFingerprintModificationRestricted](DSRestrictionStore, "isFingerprintModificationRestricted") || +[DSRestrictionStore isAppRemovalRestricted](DSRestrictionStore, "isAppRemovalRestricted"))
+  if (([self isSourceRestricted:@"com.apple.DigitalSeparation.FindMy"] & 1) != 0 || +[DSRestrictionStore isSourceRestricted:](DSRestrictionStore, "isSourceRestricted:", @"com.apple.DigitalSeparation.Photos") || +[DSRestrictionStore isPermissionRestricted:](DSRestrictionStore, "isPermissionRestricted:", @"location") || +[DSRestrictionStore isPermissionRestricted:](DSRestrictionStore, "isPermissionRestricted:", *MEMORY[0x277D6C100]) || +[DSRestrictionStore isPermissionRestricted:](DSRestrictionStore, "isPermissionRestricted:", *MEMORY[0x277D6C118]) || +[DSRestrictionStore isPermissionRestricted:](DSRestrictionStore, "isPermissionRestricted:", *MEMORY[0x277D6C1E0]) || +[DSRestrictionStore isPermissionRestricted:](DSRestrictionStore, "isPermissionRestricted:", *MEMORY[0x277D6C1D0]) || +[DSRestrictionStore isPermissionRestricted:](DSRestrictionStore, "isPermissionRestricted:", *MEMORY[0x277D6C110]) || +[DSRestrictionStore isPermissionRestricted:](DSRestrictionStore, "isPermissionRestricted:", *MEMORY[0x277D6C1A8]) || +[DSRestrictionStore isPermissionRestricted:](DSRestrictionStore, "isPermissionRestricted:", *MEMORY[0x277D6C1A0]) || +[DSRestrictionStore isPasscodeModificationRestricted](DSRestrictionStore, "isPasscodeModificationRestricted") || +[DSRestrictionStore isFingerprintModificationRestricted](DSRestrictionStore, "isFingerprintModificationRestricted") || +[DSRestrictionStore isAppRemovalRestricted](DSRestrictionStore, "isAppRemovalRestricted"))
   {
     return 1;
   }

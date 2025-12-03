@@ -16,7 +16,7 @@
   v18 = v11;
   v12 = v11;
   v13 = v10;
-  v14 = [a1 px_rowWithTitle:a3 presentationStyle:a6 viewControllerFactory:v16];
+  v14 = [self px_rowWithTitle:a3 presentationStyle:a6 viewControllerFactory:v16];
 
   return v14;
 }

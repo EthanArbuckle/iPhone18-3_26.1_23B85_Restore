@@ -6,17 +6,17 @@
 
 - (_BYTE)makeParameters
 {
-  v43.receiver = a1;
+  v43.receiver = self;
   v43.super_class = &off_1F4EAA8B0;
   v3 = objc_msgSendSuper2(&v43, sel_makeParameters);
-  v4 = [a1 xySources];
-  v7 = v4;
-  if (v4)
+  xySources = [self xySources];
+  v7 = xySources;
+  if (xySources)
   {
     [OUTLINED_FUNCTION_16_1() xySources];
     objc_claimAutoreleasedReturnValue();
-    v4 = [OUTLINED_FUNCTION_5_4() setWithArray:?];
-    v8 = v4;
+    xySources = [OUTLINED_FUNCTION_5_4() setWithArray:?];
+    v8 = xySources;
     if (!v3)
     {
       goto LABEL_4;
@@ -29,7 +29,7 @@
   if (v3)
   {
 LABEL_3:
-    OUTLINED_FUNCTION_21_0(v4, v5, v6, 48);
+    OUTLINED_FUNCTION_21_0(xySources, v5, v6, 48);
   }
 
 LABEL_4:
@@ -37,14 +37,14 @@ LABEL_4:
   {
   }
 
-  v9 = [a1 xSources];
-  v12 = v9;
-  if (v9)
+  xSources = [self xSources];
+  v12 = xSources;
+  if (xSources)
   {
     [OUTLINED_FUNCTION_16_1() xSources];
     objc_claimAutoreleasedReturnValue();
-    v9 = [OUTLINED_FUNCTION_5_4() setWithArray:?];
-    v13 = v9;
+    xSources = [OUTLINED_FUNCTION_5_4() setWithArray:?];
+    v13 = xSources;
     if (!v3)
     {
       goto LABEL_9;
@@ -57,7 +57,7 @@ LABEL_4:
   if (v3)
   {
 LABEL_8:
-    OUTLINED_FUNCTION_21_0(v9, v10, v11, 56);
+    OUTLINED_FUNCTION_21_0(xSources, v10, v11, 56);
   }
 
 LABEL_9:
@@ -65,14 +65,14 @@ LABEL_9:
   {
   }
 
-  v14 = [a1 ySources];
-  v17 = v14;
-  if (v14)
+  ySources = [self ySources];
+  v17 = ySources;
+  if (ySources)
   {
     [OUTLINED_FUNCTION_16_1() ySources];
     objc_claimAutoreleasedReturnValue();
-    v14 = [OUTLINED_FUNCTION_5_4() setWithArray:?];
-    v18 = v14;
+    ySources = [OUTLINED_FUNCTION_5_4() setWithArray:?];
+    v18 = ySources;
     if (!v3)
     {
       goto LABEL_14;
@@ -85,7 +85,7 @@ LABEL_9:
   if (v3)
   {
 LABEL_13:
-    OUTLINED_FUNCTION_21_0(v14, v15, v16, 64);
+    OUTLINED_FUNCTION_21_0(ySources, v15, v16, 64);
   }
 
 LABEL_14:
@@ -93,14 +93,14 @@ LABEL_14:
   {
   }
 
-  v19 = [a1 upSources];
-  v22 = v19;
-  if (v19)
+  upSources = [self upSources];
+  v22 = upSources;
+  if (upSources)
   {
     [OUTLINED_FUNCTION_16_1() upSources];
     objc_claimAutoreleasedReturnValue();
-    v19 = [OUTLINED_FUNCTION_5_4() setWithArray:?];
-    v23 = v19;
+    upSources = [OUTLINED_FUNCTION_5_4() setWithArray:?];
+    v23 = upSources;
     if (!v3)
     {
       goto LABEL_19;
@@ -113,7 +113,7 @@ LABEL_14:
   if (v3)
   {
 LABEL_18:
-    OUTLINED_FUNCTION_21_0(v19, v20, v21, 72);
+    OUTLINED_FUNCTION_21_0(upSources, v20, v21, 72);
   }
 
 LABEL_19:
@@ -121,14 +121,14 @@ LABEL_19:
   {
   }
 
-  v24 = [a1 rightSources];
-  v27 = v24;
-  if (v24)
+  rightSources = [self rightSources];
+  v27 = rightSources;
+  if (rightSources)
   {
     [OUTLINED_FUNCTION_16_1() rightSources];
     objc_claimAutoreleasedReturnValue();
-    v24 = [OUTLINED_FUNCTION_5_4() setWithArray:?];
-    v28 = v24;
+    rightSources = [OUTLINED_FUNCTION_5_4() setWithArray:?];
+    v28 = rightSources;
     if (!v3)
     {
       goto LABEL_24;
@@ -141,7 +141,7 @@ LABEL_19:
   if (v3)
   {
 LABEL_23:
-    OUTLINED_FUNCTION_21_0(v24, v25, v26, 96);
+    OUTLINED_FUNCTION_21_0(rightSources, v25, v26, 96);
   }
 
 LABEL_24:
@@ -149,14 +149,14 @@ LABEL_24:
   {
   }
 
-  v29 = [a1 downSources];
-  v32 = v29;
-  if (v29)
+  downSources = [self downSources];
+  v32 = downSources;
+  if (downSources)
   {
     [OUTLINED_FUNCTION_16_1() downSources];
     objc_claimAutoreleasedReturnValue();
-    v29 = [OUTLINED_FUNCTION_5_4() setWithArray:?];
-    v33 = v29;
+    downSources = [OUTLINED_FUNCTION_5_4() setWithArray:?];
+    v33 = downSources;
     if (!v3)
     {
       goto LABEL_29;
@@ -169,7 +169,7 @@ LABEL_24:
   if (v3)
   {
 LABEL_28:
-    OUTLINED_FUNCTION_21_0(v29, v30, v31, 88);
+    OUTLINED_FUNCTION_21_0(downSources, v30, v31, 88);
   }
 
 LABEL_29:
@@ -177,14 +177,14 @@ LABEL_29:
   {
   }
 
-  v34 = [a1 leftSources];
-  v37 = v34;
-  if (v34)
+  leftSources = [self leftSources];
+  v37 = leftSources;
+  if (leftSources)
   {
     [OUTLINED_FUNCTION_16_1() leftSources];
     objc_claimAutoreleasedReturnValue();
-    v34 = [OUTLINED_FUNCTION_5_4() setWithArray:?];
-    v38 = v34;
+    leftSources = [OUTLINED_FUNCTION_5_4() setWithArray:?];
+    v38 = leftSources;
     if (!v3)
     {
       goto LABEL_34;
@@ -197,7 +197,7 @@ LABEL_29:
   if (v3)
   {
 LABEL_33:
-    OUTLINED_FUNCTION_21_0(v34, v35, v36, 80);
+    OUTLINED_FUNCTION_21_0(leftSources, v35, v36, 80);
   }
 
 LABEL_34:
@@ -205,21 +205,21 @@ LABEL_34:
   {
   }
 
-  v39 = [a1 isAnalog];
+  isAnalog = [self isAnalog];
   if (v3)
   {
-    v3[40] = v39;
-    v40 = [OUTLINED_FUNCTION_29(objc_msgSend(a1 "eventUpValueField")];
+    v3[40] = isAnalog;
+    v40 = [OUTLINED_FUNCTION_29(objc_msgSend(self "eventUpValueField")];
     v41 = [OUTLINED_FUNCTION_29(v40 128)];
     *(v3 + 15) = [OUTLINED_FUNCTION_29(v41 112)];
   }
 
   else
   {
-    [a1 eventUpValueField];
-    [a1 eventRightValueField];
-    [a1 eventDownValueField];
-    [a1 eventLeftValueField];
+    [self eventUpValueField];
+    [self eventRightValueField];
+    [self eventDownValueField];
+    [self eventLeftValueField];
   }
 
   return v3;

@@ -1,6 +1,6 @@
 @interface PXGMetalRecordingMetalSpriteTextureSerializable
 - (CGSize)size;
-- (PXGMetalRecordingMetalSpriteTextureSerializable)initWithSerializableObject:(id)a3;
+- (PXGMetalRecordingMetalSpriteTextureSerializable)initWithSerializableObject:(id)object;
 - (id)createSerializableObject;
 @end
 
@@ -19,8 +19,8 @@
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v16[0] = @"texture";
-  v3 = [(PXGMetalRecordingMetalSpriteTextureSerializable *)self texture];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v3];
+  texture = [(PXGMetalRecordingMetalSpriteTextureSerializable *)self texture];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:texture];
   v17[0] = v4;
   v16[1] = @"size";
   [(PXGMetalRecordingMetalSpriteTextureSerializable *)self size];
@@ -33,31 +33,31 @@
 
   v17[1] = v9;
   v16[2] = @"isAtlas";
-  v10 = [(PXGMetalRecordingMetalSpriteTextureSerializable *)self isAtlas];
-  v11 = [MEMORY[0x277CCABB0] numberWithBool:v10];
+  isAtlas = [(PXGMetalRecordingMetalSpriteTextureSerializable *)self isAtlas];
+  v11 = [MEMORY[0x277CCABB0] numberWithBool:isAtlas];
   v17[2] = v11;
   v16[3] = @"pixelFormat";
-  v12 = [(PXGMetalRecordingMetalSpriteTextureSerializable *)self pixelFormat];
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
+  pixelFormat = [(PXGMetalRecordingMetalSpriteTextureSerializable *)self pixelFormat];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:pixelFormat];
   v17[3] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:4];
 
   return v14;
 }
 
-- (PXGMetalRecordingMetalSpriteTextureSerializable)initWithSerializableObject:(id)a3
+- (PXGMetalRecordingMetalSpriteTextureSerializable)initWithSerializableObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v22.receiver = self;
   v22.super_class = PXGMetalRecordingMetalSpriteTextureSerializable;
   v5 = [(PXGMetalRecordingMetalSpriteTextureSerializable *)&v22 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = objectCopy;
     v7 = [v6 objectForKeyedSubscript:@"texture"];
-    v8 = [v7 unsignedIntValue];
+    unsignedIntValue = [v7 unsignedIntValue];
 
-    [(PXGMetalRecordingMetalSpriteTextureSerializable *)v5 setTexture:v8];
+    [(PXGMetalRecordingMetalSpriteTextureSerializable *)v5 setTexture:unsignedIntValue];
     v9 = [v6 objectForKeyedSubscript:@"size"];
     v10 = [v9 objectAtIndexedSubscript:0];
     [v10 floatValue];
@@ -68,15 +68,15 @@
 
     [(PXGMetalRecordingMetalSpriteTextureSerializable *)v5 setSize:v12, v15];
     v16 = [v6 objectForKeyedSubscript:@"isAtlas"];
-    v17 = [v16 BOOLValue];
+    bOOLValue = [v16 BOOLValue];
 
-    [(PXGMetalRecordingMetalSpriteTextureSerializable *)v5 setIsAtlas:v17];
+    [(PXGMetalRecordingMetalSpriteTextureSerializable *)v5 setIsAtlas:bOOLValue];
     v18 = [v6 objectForKeyedSubscript:@"pixelFormat"];
 
     v19 = v18;
-    v20 = [v19 intValue];
+    intValue = [v19 intValue];
 
-    [(PXGMetalRecordingMetalSpriteTextureSerializable *)v5 setPixelFormat:v20];
+    [(PXGMetalRecordingMetalSpriteTextureSerializable *)v5 setPixelFormat:intValue];
   }
 
   return v5;

@@ -6,13 +6,13 @@
 
 - (BOOL)readyForProcessing
 {
-  v3 = [(BWStillImageProcessorControllerInput *)[(BWStillImageProcessorControllerRequest *)self input] referenceSbuf];
-  if (v3)
+  referenceSbuf = [(BWStillImageProcessorControllerInput *)[(BWStillImageProcessorControllerRequest *)self input] referenceSbuf];
+  if (referenceSbuf)
   {
-    LOBYTE(v3) = [(BWStillImageProcessorControllerInput *)[(BWStillImageProcessorControllerRequest *)self input] auxiliarySbuf]!= 0;
+    LOBYTE(referenceSbuf) = [(BWStillImageProcessorControllerInput *)[(BWStillImageProcessorControllerRequest *)self input] auxiliarySbuf]!= 0;
   }
 
-  return v3;
+  return referenceSbuf;
 }
 
 @end

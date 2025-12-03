@@ -1,34 +1,34 @@
 @interface UIPreviewItemController
 - (BOOL)_isMobileSafariRestricted;
 - (BOOL)_shouldCancelPreviewWithNegativeFeedback;
-- (UIPreviewItemController)initWithView:(id)a3;
+- (UIPreviewItemController)initWithView:(id)view;
 - (UIPreviewItemDelegate)delegate;
 - (UIView)view;
-- (id)previewInteractionController:(id)a3 viewControllerForPreviewingAtPosition:(CGPoint)a4 inView:(id)a5 presentingViewController:(id *)a6;
-- (id)previewViewControllerForPosition:(CGPoint)a3 inSourceView:(id)a4 documentProperties:(id)a5;
+- (id)previewInteractionController:(id)controller viewControllerForPreviewingAtPosition:(CGPoint)position inView:(id)view presentingViewController:(id *)viewController;
+- (id)previewViewControllerForPosition:(CGPoint)position inSourceView:(id)view documentProperties:(id)properties;
 - (void)clearPreviewIndicator;
 - (void)dealloc;
-- (void)interactionProgress:(id)a3 didEnd:(BOOL)a4;
-- (void)interactionProgressDidUpdate:(id)a3;
-- (void)preparePreviewIndicatorViewInSourceView:(id)a3 updateScreen:(BOOL)a4;
-- (void)previewInteractionController:(id)a3 didDismissViewController:(id)a4 committing:(BOOL)a5;
-- (void)previewInteractionController:(id)a3 interactionProgress:(id)a4 forRevealAtLocation:(CGPoint)a5 inSourceView:(id)a6 containerView:(id)a7;
-- (void)previewInteractionController:(id)a3 performCommitForPreviewViewController:(id)a4 committedViewController:(id)a5;
-- (void)previewInteractionController:(id)a3 performCustomCommitForPreviewViewController:(id)a4 completion:(id)a5;
-- (void)previewInteractionController:(id)a3 willPresentViewController:(id)a4 forPosition:(CGPoint)a5 inSourceView:(id)a6;
-- (void)setupPreviewIndicatorInSourceView:(id)a3;
+- (void)interactionProgress:(id)progress didEnd:(BOOL)end;
+- (void)interactionProgressDidUpdate:(id)update;
+- (void)preparePreviewIndicatorViewInSourceView:(id)view updateScreen:(BOOL)screen;
+- (void)previewInteractionController:(id)controller didDismissViewController:(id)viewController committing:(BOOL)committing;
+- (void)previewInteractionController:(id)controller interactionProgress:(id)progress forRevealAtLocation:(CGPoint)location inSourceView:(id)view containerView:(id)containerView;
+- (void)previewInteractionController:(id)controller performCommitForPreviewViewController:(id)viewController committedViewController:(id)committedViewController;
+- (void)previewInteractionController:(id)controller performCustomCommitForPreviewViewController:(id)viewController completion:(id)completion;
+- (void)previewInteractionController:(id)controller willPresentViewController:(id)viewController forPosition:(CGPoint)position inSourceView:(id)view;
+- (void)setupPreviewIndicatorInSourceView:(id)view;
 - (void)startInteraction;
 - (void)stopInteraction;
-- (void)updatePreviewIndicatorAnimation:(id)a3;
+- (void)updatePreviewIndicatorAnimation:(id)animation;
 @end
 
 @implementation UIPreviewItemController
 
-- (UIPreviewItemController)initWithView:(id)a3
+- (UIPreviewItemController)initWithView:(id)view
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
     v21.receiver = self;
     v21.super_class = UIPreviewItemController;
@@ -36,7 +36,7 @@
     v6 = v5;
     if (v5)
     {
-      objc_storeWeak(&v5->_view, v4);
+      objc_storeWeak(&v5->_view, viewCopy);
       v6->_type = 0;
       v6->_contentManagedByClient = 0;
       v7 = objc_alloc_init(UIPreviewInteractionController);
@@ -48,8 +48,8 @@
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v9 = [(UIPreviewInteractionController *)v6->_previewInteractionController gestureRecognizers];
-      v10 = [v9 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      gestureRecognizers = [(UIPreviewInteractionController *)v6->_previewInteractionController gestureRecognizers];
+      v10 = [gestureRecognizers countByEnumeratingWithState:&v17 objects:v22 count:16];
       if (v10)
       {
         v11 = v10;
@@ -60,22 +60,22 @@
           {
             if (*v18 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(gestureRecognizers);
             }
 
-            [v4 addGestureRecognizer:*(*(&v17 + 1) + 8 * i)];
+            [viewCopy addGestureRecognizer:*(*(&v17 + 1) + 8 * i)];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v17 objects:v22 count:16];
+          v11 = [gestureRecognizers countByEnumeratingWithState:&v17 objects:v22 count:16];
         }
 
         while (v11);
       }
 
-      v14 = [(UIPreviewInteractionController *)v6->_previewInteractionController presentationGestureRecognizer];
-      if ([v14 _isGestureType:1] && (objc_opt_respondsToSelector() & 1) != 0)
+      presentationGestureRecognizer = [(UIPreviewInteractionController *)v6->_previewInteractionController presentationGestureRecognizer];
+      if ([presentationGestureRecognizer _isGestureType:1] && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [v14 setDelay:0.13];
+        [presentationGestureRecognizer setDelay:0.13];
       }
 
       else
@@ -85,15 +85,15 @@
     }
 
     self = v6;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -103,8 +103,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(UIPreviewInteractionController *)self->_previewInteractionController gestureRecognizers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  gestureRecognizers = [(UIPreviewInteractionController *)self->_previewInteractionController gestureRecognizers];
+  v4 = [gestureRecognizers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -116,7 +116,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
@@ -127,7 +127,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [gestureRecognizers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -143,17 +143,17 @@
   if (self->_type == 2)
   {
     v3 = [(NSDictionary *)self->_previewData objectForKeyedSubscript:UIPreviewDataLink[0]];
-    v4 = [v3 scheme];
-    v5 = [v4 lowercaseString];
-    if ([v5 isEqualToString:@"http"])
+    scheme = [v3 scheme];
+    lowercaseString = [scheme lowercaseString];
+    if ([lowercaseString isEqualToString:@"http"])
     {
     }
 
     else
     {
-      v7 = [v3 scheme];
-      v8 = [v7 lowercaseString];
-      v9 = [v8 isEqualToString:@"https"];
+      scheme2 = [v3 scheme];
+      lowercaseString2 = [scheme2 lowercaseString];
+      v9 = [lowercaseString2 isEqualToString:@"https"];
 
       if (!v9)
       {
@@ -174,8 +174,8 @@
       }
 
       v13 = +[UIDevice currentDevice];
-      v14 = [v13 _tapticEngine];
-      [v14 actuateFeedback:2];
+      _tapticEngine = [v13 _tapticEngine];
+      [_tapticEngine actuateFeedback:2];
 
       v6 = 1;
       goto LABEL_12;
@@ -194,22 +194,22 @@ LABEL_12:
 - (BOOL)_isMobileSafariRestricted
 {
   v2 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:@"com.apple.mobilesafari"];
-  v3 = [v2 appState];
-  v4 = [v3 isRestricted];
+  appState = [v2 appState];
+  isRestricted = [appState isRestricted];
 
-  return v4;
+  return isRestricted;
 }
 
-- (id)previewViewControllerForPosition:(CGPoint)a3 inSourceView:(id)a4 documentProperties:(id)a5
+- (id)previewViewControllerForPosition:(CGPoint)position inSourceView:(id)view documentProperties:(id)properties
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v45[3] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  propertiesCopy = properties;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ((objc_opt_respondsToSelector() & 1) != 0 && ![WeakRetained _interactionShouldBeginFromPreviewItemController:self forPosition:{x, y}])
   {
-    v15 = 0;
+    viewControllerToPresent = 0;
     goto LABEL_41;
   }
 
@@ -235,7 +235,7 @@ LABEL_12:
 LABEL_7:
     self->_previewData = 0;
 
-    v15 = 0;
+    viewControllerToPresent = 0;
 LABEL_8:
     self->_type = 0;
     goto LABEL_41;
@@ -246,7 +246,7 @@ LABEL_8:
     v16 = [WeakRetained _presentedViewControllerForPreviewItemController:self];
     if (v16)
     {
-      v15 = v16;
+      viewControllerToPresent = v16;
       self->_contentManagedByClient = 1;
       goto LABEL_41;
     }
@@ -341,34 +341,34 @@ LABEL_29:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v8 addEntriesFromDictionary:v40];
+        [propertiesCopy addEntriesFromDictionary:v40];
       }
     }
 
-    [(MLULookupItem *)self->_lookupItem setDocumentProperties:v8];
+    [(MLULookupItem *)self->_lookupItem setDocumentProperties:propertiesCopy];
     if ([(MLULookupItem *)self->_lookupItem resolve])
     {
-      v15 = [(MLULookupItem *)self->_lookupItem viewControllerToPresent];
+      viewControllerToPresent = [(MLULookupItem *)self->_lookupItem viewControllerToPresent];
     }
 
     else
     {
-      v15 = 0;
+      viewControllerToPresent = 0;
     }
   }
 
   else
   {
-    v15 = 0;
+    viewControllerToPresent = 0;
   }
 
   if (*p_type == 5)
   {
     v41 = [(NSDictionary *)self->_previewData objectForKeyedSubscript:@"UIPreviewDataAttachmentListIsContentManaged"];
-    _UIShimSetIsContentManaged(v15, [v41 BOOLValue]);
+    _UIShimSetIsContentManaged(viewControllerToPresent, [v41 BOOLValue]);
   }
 
-  if (!v15)
+  if (!viewControllerToPresent)
   {
     v43 = self->_lookupItem;
     self->_lookupItem = 0;
@@ -381,20 +381,20 @@ LABEL_29:
 
 LABEL_41:
 
-  return v15;
+  return viewControllerToPresent;
 }
 
-- (void)previewInteractionController:(id)a3 performCommitForPreviewViewController:(id)a4 committedViewController:(id)a5
+- (void)previewInteractionController:(id)controller performCommitForPreviewViewController:(id)viewController committedViewController:(id)committedViewController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  committedViewControllerCopy = committedViewController;
   if (self->_contentManagedByClient)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained _previewItemController:self commitPreview:v10];
+      [WeakRetained _previewItemController:self commitPreview:committedViewControllerCopy];
     }
 
     [(UIPreviewItemController *)self stopInteraction];
@@ -405,10 +405,10 @@ LABEL_41:
     lookupItem = self->_lookupItem;
     if (lookupItem)
     {
-      v13 = [(MLULookupItem *)lookupItem commitType];
-      if (v13 != 4)
+      commitType = [(MLULookupItem *)lookupItem commitType];
+      if (commitType != 4)
       {
-        if (v13 == 2)
+        if (commitType == 2)
         {
           presentingViewController = self->_presentingViewController;
           v15[0] = MEMORY[0x1E69E9820];
@@ -416,7 +416,7 @@ LABEL_41:
           v15[2] = __118__UIPreviewItemController_previewInteractionController_performCommitForPreviewViewController_committedViewController___block_invoke;
           v15[3] = &unk_1E70F3590;
           v15[4] = self;
-          [(UIViewController *)presentingViewController presentViewController:v10 animated:0 completion:v15];
+          [(UIViewController *)presentingViewController presentViewController:committedViewControllerCopy animated:0 completion:v15];
         }
 
         else
@@ -436,15 +436,15 @@ uint64_t __118__UIPreviewItemController_previewInteractionController_performComm
   return [v2 stopInteraction];
 }
 
-- (id)previewInteractionController:(id)a3 viewControllerForPreviewingAtPosition:(CGPoint)a4 inView:(id)a5 presentingViewController:(id *)a6
+- (id)previewInteractionController:(id)controller viewControllerForPreviewingAtPosition:(CGPoint)position inView:(id)view presentingViewController:(id *)viewController
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a5;
-  v11 = [(UIPreviewItemController *)self presentingViewController];
-  if (!v11)
+  y = position.y;
+  x = position.x;
+  viewCopy = view;
+  presentingViewController = [(UIPreviewItemController *)self presentingViewController];
+  if (!presentingViewController)
   {
-    v12 = v10;
+    v12 = viewCopy;
     if (v12)
     {
       v13 = v12;
@@ -453,58 +453,58 @@ uint64_t __118__UIPreviewItemController_previewInteractionController_performComm
       {
         if (v14)
         {
-          v15 = [v14 parentViewController];
+          parentViewController = [v14 parentViewController];
 
-          if (!v15)
+          if (!parentViewController)
           {
             break;
           }
         }
 
-        v11 = [UIViewController viewControllerForView:v13];
+        presentingViewController = [UIViewController viewControllerForView:v13];
 
-        v16 = [v13 superview];
+        superview = [v13 superview];
 
-        v14 = v11;
-        v13 = v16;
-        if (!v16)
+        v14 = presentingViewController;
+        v13 = superview;
+        if (!superview)
         {
           goto LABEL_10;
         }
       }
 
-      v11 = v14;
+      presentingViewController = v14;
 LABEL_10:
     }
 
     else
     {
-      v11 = 0;
+      presentingViewController = 0;
     }
   }
 
-  v17 = [v11 presentedViewController];
+  presentedViewController = [presentingViewController presentedViewController];
 
-  if (v17)
+  if (presentedViewController)
   {
 
-    v11 = 0;
+    presentingViewController = 0;
   }
 
-  if (a6)
+  if (viewController)
   {
-    v18 = v11;
-    *a6 = v11;
+    v18 = presentingViewController;
+    *viewController = presentingViewController;
   }
 
-  if (v11)
+  if (presentingViewController)
   {
     v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v19 setObject:v11 forKeyedSubscript:@"Presenter"];
-    v20 = [(UIPreviewItemController *)self presentationGestureRecognizer];
-    [v19 setObject:v20 forKeyedSubscript:@"Gesture"];
+    [v19 setObject:presentingViewController forKeyedSubscript:@"Presenter"];
+    presentationGestureRecognizer = [(UIPreviewItemController *)self presentationGestureRecognizer];
+    [v19 setObject:presentationGestureRecognizer forKeyedSubscript:@"Gesture"];
 
-    v21 = [(UIPreviewItemController *)self previewViewControllerForPosition:v10 inSourceView:v19 documentProperties:x, y];
+    v21 = [(UIPreviewItemController *)self previewViewControllerForPosition:viewCopy inSourceView:v19 documentProperties:x, y];
     presentedViewController = self->_presentedViewController;
     self->_presentedViewController = v21;
 
@@ -512,7 +512,7 @@ LABEL_10:
     [v19 setObject:0 forKeyedSubscript:@"Presenter"];
     if (self->_presentedViewController)
     {
-      objc_storeStrong(&self->_presentingViewController, v11);
+      objc_storeStrong(&self->_presentingViewController, presentingViewController);
     }
   }
 
@@ -522,20 +522,20 @@ LABEL_10:
   return v23;
 }
 
-- (void)previewInteractionController:(id)a3 performCustomCommitForPreviewViewController:(id)a4 completion:(id)a5
+- (void)previewInteractionController:(id)controller performCustomCommitForPreviewViewController:(id)viewController completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   lookupItem = self->_lookupItem;
-  v9 = a4;
-  v10 = [(UIPreviewItemController *)self presentingViewController];
+  viewControllerCopy = viewController;
+  presentingViewController = [(UIPreviewItemController *)self presentingViewController];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __111__UIPreviewItemController_previewInteractionController_performCustomCommitForPreviewViewController_completion___block_invoke;
   v12[3] = &unk_1E70F4A50;
   v12[4] = self;
-  v13 = v7;
-  v11 = v7;
-  [(MLULookupItem *)lookupItem commitWithTransitionForPreviewViewController:v9 inViewController:v10 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(MLULookupItem *)lookupItem commitWithTransitionForPreviewViewController:viewControllerCopy inViewController:presentingViewController completion:v12];
 }
 
 uint64_t __111__UIPreviewItemController_previewInteractionController_performCustomCommitForPreviewViewController_completion___block_invoke(uint64_t a1)
@@ -551,24 +551,24 @@ uint64_t __111__UIPreviewItemController_previewInteractionController_performCust
   return [v3 stopInteraction];
 }
 
-- (void)previewInteractionController:(id)a3 interactionProgress:(id)a4 forRevealAtLocation:(CGPoint)a5 inSourceView:(id)a6 containerView:(id)a7
+- (void)previewInteractionController:(id)controller interactionProgress:(id)progress forRevealAtLocation:(CGPoint)location inSourceView:(id)view containerView:(id)containerView
 {
-  v11 = a4;
-  v9 = a7;
+  progressCopy = progress;
+  containerViewCopy = containerView;
   if (!self->_previewIndicatorUsesStandardAnimation && self->_previewIndicatorView)
   {
     [(UIView *)self->_previewIndicatorImageView setAlpha:0.0];
     WeakRetained = objc_loadWeakRetained(&self->_view);
     [(UIPreviewItemController *)self preparePreviewIndicatorViewInSourceView:WeakRetained updateScreen:0];
 
-    [v9 addSubview:self->_previewIndicatorView];
-    [v11 addProgressObserver:self];
+    [containerViewCopy addSubview:self->_previewIndicatorView];
+    [progressCopy addProgressObserver:self];
   }
 }
 
-- (void)interactionProgressDidUpdate:(id)a3
+- (void)interactionProgressDidUpdate:(id)update
 {
-  [a3 percentComplete];
+  [update percentComplete];
   v5 = v4 <= 0.2;
   v6 = 0.0;
   if (!v5)
@@ -584,21 +584,21 @@ uint64_t __111__UIPreviewItemController_previewInteractionController_performCust
     self->_previewIndicatorDisplayLink = v7;
 
     v9 = self->_previewIndicatorDisplayLink;
-    v10 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v9 addToRunLoop:v10 forMode:*MEMORY[0x1E695D918]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v9 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695D918]];
 
     self->_lastPreviewIndicatorAnimationTimestamp = CACurrentMediaTime();
   }
 }
 
-- (void)interactionProgress:(id)a3 didEnd:(BOOL)a4
+- (void)interactionProgress:(id)progress didEnd:(BOOL)end
 {
-  [(CADisplayLink *)self->_previewIndicatorDisplayLink invalidate:a3];
+  [(CADisplayLink *)self->_previewIndicatorDisplayLink invalidate:progress];
   previewIndicatorDisplayLink = self->_previewIndicatorDisplayLink;
   self->_previewIndicatorDisplayLink = 0;
 }
 
-- (void)updatePreviewIndicatorAnimation:(id)a3
+- (void)updatePreviewIndicatorAnimation:(id)animation
 {
   [(UIView *)self->_previewIndicatorImageView alpha];
   previewIndicatorDisplayLink = self->_previewIndicatorDisplayLink;
@@ -638,58 +638,58 @@ uint64_t __111__UIPreviewItemController_previewInteractionController_performCust
   }
 }
 
-- (void)previewInteractionController:(id)a3 willPresentViewController:(id)a4 forPosition:(CGPoint)a5 inSourceView:(id)a6
+- (void)previewInteractionController:(id)controller willPresentViewController:(id)viewController forPosition:(CGPoint)position inSourceView:(id)view
 {
-  y = a5.y;
-  x = a5.x;
-  v20 = a4;
-  v10 = a6;
+  y = position.y;
+  x = position.x;
+  viewControllerCopy = viewController;
+  viewCopy = view;
   [(UIPreviewItemController *)self startInteraction];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (self->_contentManagedByClient && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained _previewItemController:self willPresentPreview:v20 forPosition:v10 inSourceView:{x, y}];
+    [WeakRetained _previewItemController:self willPresentPreview:viewControllerCopy forPosition:viewCopy inSourceView:{x, y}];
   }
 
   objc_opt_class();
   self->_previewIndicatorUsesStandardAnimation = objc_opt_isKindOfClass() & 1;
-  [(UIPreviewItemController *)self setupPreviewIndicatorInSourceView:v10];
+  [(UIPreviewItemController *)self setupPreviewIndicatorInSourceView:viewCopy];
   if (self->_previewIndicatorUsesStandardAnimation)
   {
     [(UIView *)self->_previewIndicatorView setFrame:self->_previewIndicatorBoundingRect.origin.x, self->_previewIndicatorBoundingRect.origin.y, self->_previewIndicatorBoundingRect.size.width, self->_previewIndicatorBoundingRect.size.height];
     v12 = objc_loadWeakRetained(&self->_view);
     [(UIPreviewItemController *)self preparePreviewIndicatorViewInSourceView:v12 updateScreen:1];
 
-    [v10 addSubview:self->_previewIndicatorView];
-    v13 = [v20 presentationController];
-    [v13 setSourceView:self->_previewIndicatorView];
+    [viewCopy addSubview:self->_previewIndicatorView];
+    presentationController = [viewControllerCopy presentationController];
+    [presentationController setSourceView:self->_previewIndicatorView];
 
-    v14 = [v20 presentationController];
+    presentationController2 = [viewControllerCopy presentationController];
     [(UIView *)self->_previewIndicatorView bounds];
-    v19 = v14;
+    presentationController3 = presentationController2;
   }
 
   else
   {
-    v19 = [v20 presentationController];
-    v14 = v19;
+    presentationController3 = [viewControllerCopy presentationController];
+    presentationController2 = presentationController3;
     v15 = self->_previewIndicatorBoundingRect.origin.x;
     v16 = self->_previewIndicatorBoundingRect.origin.y;
     width = self->_previewIndicatorBoundingRect.size.width;
     height = self->_previewIndicatorBoundingRect.size.height;
   }
 
-  [v19 setSourceRect:{v15, v16, width, height}];
+  [presentationController3 setSourceRect:{v15, v16, width, height}];
 }
 
-- (void)previewInteractionController:(id)a3 didDismissViewController:(id)a4 committing:(BOOL)a5
+- (void)previewInteractionController:(id)controller didDismissViewController:(id)viewController committing:(BOOL)committing
 {
-  v5 = a5;
-  v8 = a4;
+  committingCopy = committing;
+  viewControllerCopy = viewController;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (self->_contentManagedByClient && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained _previewItemController:self didDismissPreview:v8 committing:v5];
+    [WeakRetained _previewItemController:self didDismissPreview:viewControllerCopy committing:committingCopy];
   }
 
   [(UIPreviewItemController *)self stopInteraction];
@@ -715,19 +715,19 @@ uint64_t __111__UIPreviewItemController_previewInteractionController_performCust
   self->_previewIndicatorBoundingRect.size = v6;
 }
 
-- (void)preparePreviewIndicatorViewInSourceView:(id)a3 updateScreen:(BOOL)a4
+- (void)preparePreviewIndicatorViewInSourceView:(id)view updateScreen:(BOOL)screen
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 window];
-  v8 = [v6 window];
-  [v6 convertRect:v8 toView:{self->_previewIndicatorBoundingRect.origin.x, self->_previewIndicatorBoundingRect.origin.y, self->_previewIndicatorBoundingRect.size.width, self->_previewIndicatorBoundingRect.size.height}];
+  screenCopy = screen;
+  viewCopy = view;
+  window = [viewCopy window];
+  window2 = [viewCopy window];
+  [viewCopy convertRect:window2 toView:{self->_previewIndicatorBoundingRect.origin.x, self->_previewIndicatorBoundingRect.origin.y, self->_previewIndicatorBoundingRect.size.width, self->_previewIndicatorBoundingRect.size.height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = _UISnapshotViewRectAfterCommit(v7, v4, v10, v12, v14, v16);
+  v17 = _UISnapshotViewRectAfterCommit(window, screenCopy, v10, v12, v14, v16);
   previewIndicatorSnapshotView = self->_previewIndicatorSnapshotView;
   self->_previewIndicatorSnapshotView = v17;
 
@@ -738,10 +738,10 @@ uint64_t __111__UIPreviewItemController_previewInteractionController_performCust
   [(UIView *)v19 setFrame:?];
 }
 
-- (void)setupPreviewIndicatorInSourceView:(id)a3
+- (void)setupPreviewIndicatorInSourceView:(id)view
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   [(UIPreviewItemController *)self clearPreviewIndicator];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -819,19 +819,19 @@ uint64_t __111__UIPreviewItemController_previewInteractionController_performCust
       }
     }
 
-    v23 = [v4 window];
-    if (v23)
+    window = [viewCopy window];
+    if (window)
     {
-      v24 = [v4 window];
-      v25 = [v24 screen];
-      [v25 scale];
+      window2 = [viewCopy window];
+      screen = [window2 screen];
+      [screen scale];
       v27 = v26;
     }
 
     else
     {
-      v24 = [objc_opt_self() mainScreen];
-      [v24 scale];
+      window2 = [objc_opt_self() mainScreen];
+      [window2 scale];
       v27 = v28;
     }
 
@@ -848,7 +848,7 @@ uint64_t __111__UIPreviewItemController_previewInteractionController_performCust
     v34 = 1.0;
     if (!self->_previewIndicatorUsesStandardAnimation)
     {
-      [v4 convertRect:0 toView:{self->_previewIndicatorBoundingRect.origin.x, self->_previewIndicatorBoundingRect.origin.y, self->_previewIndicatorBoundingRect.size.width, self->_previewIndicatorBoundingRect.size.height}];
+      [viewCopy convertRect:0 toView:{self->_previewIndicatorBoundingRect.origin.x, self->_previewIndicatorBoundingRect.origin.y, self->_previewIndicatorBoundingRect.size.width, self->_previewIndicatorBoundingRect.size.height}];
       width = v35;
       height = v36;
       v37 = v35 / self->_previewIndicatorBoundingRect.size.width;
@@ -863,8 +863,8 @@ uint64_t __111__UIPreviewItemController_previewInteractionController_performCust
     CATransform3DTranslate(&v41, &v40, -self->_previewIndicatorBoundingRect.origin.x, -self->_previewIndicatorBoundingRect.origin.y, 0.0);
     v40 = v41;
     [v38 setTransform:&v40];
-    v39 = [(UIView *)self->_previewIndicatorView layer];
-    [v39 setMask:v38];
+    layer = [(UIView *)self->_previewIndicatorView layer];
+    [layer setMask:v38];
 
     [(UIView *)self->_previewIndicatorView setFrame:0.0, 0.0, width, height];
     [(UIView *)self->_previewIndicatorView bounds];

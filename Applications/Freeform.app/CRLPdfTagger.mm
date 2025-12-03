@@ -1,66 +1,66 @@
 @interface CRLPdfTagger
-+ (BOOL)isHeadingStyle:(id)a3 headingIndex:(int *)a4;
-+ (BOOL)shouldMapDrawableRep:(id)a3;
++ (BOOL)isHeadingStyle:(id)style headingIndex:(int *)index;
++ (BOOL)shouldMapDrawableRep:(id)rep;
 - (BOOL)currentParagraphHasContents;
 - (BOOL)currentParagraphNeedsSpans;
 - (BOOL)topOfContextStackIsParagraph;
 - (CRLPdfTagger)init;
 - (_NSRange)currentParagraphRange;
 - (_NSRange)topmostColumnRange;
-- (id)regularDrawableRepForObjectRep:(id)a3;
-- (id)retrieveHighestInfoAtCharIndex:(unint64_t)a3 returnTagType:(int *)a4;
+- (id)regularDrawableRepForObjectRep:(id)rep;
+- (id)retrieveHighestInfoAtCharIndex:(unint64_t)index returnTagType:(int *)type;
 - (id)state;
-- (id)topOfContextStackWithExpectedClass:(Class)a3;
+- (id)topOfContextStackWithExpectedClass:(Class)class;
 - (id)topmostColumn;
 - (id)topmostColumnContext;
-- (id)topmostContextOfClass:(Class)a3;
+- (id)topmostContextOfClass:(Class)class;
 - (id)topmostParagraphContext;
 - (id)topmostTextStorage;
-- (int)tagTypeAtDepth:(unint64_t)a3;
-- (unint64_t)depthOfContext:(id)a3;
-- (unint64_t)depthOfTopmostTagOfType:(int)a3;
-- (unint64_t)indexOfFirstVisibleCharInParagraphAtOrAfterCharIndex:(unint64_t)a3;
-- (void)advanceParagraphEnumeratorToCharIndex:(unint64_t)a3;
-- (void)assertCharIndexRelativeToParagraphRange:(BOOL)a3;
-- (void)assertTopOfContextStackIsParagraph:(BOOL)a3;
-- (void)beginAncillaryTextRunWithRange:(_NSRange)a3 baseTextRange:(_NSRange)a4;
+- (int)tagTypeAtDepth:(unint64_t)depth;
+- (unint64_t)depthOfContext:(id)context;
+- (unint64_t)depthOfTopmostTagOfType:(int)type;
+- (unint64_t)indexOfFirstVisibleCharInParagraphAtOrAfterCharIndex:(unint64_t)index;
+- (void)advanceParagraphEnumeratorToCharIndex:(unint64_t)index;
+- (void)assertCharIndexRelativeToParagraphRange:(BOOL)range;
+- (void)assertTopOfContextStackIsParagraph:(BOOL)paragraph;
+- (void)beginAncillaryTextRunWithRange:(_NSRange)range baseTextRange:(_NSRange)textRange;
 - (void)beginComment;
-- (void)beginDrawable:(id)a3;
-- (void)beginFreehandDrawing:(id)a3;
-- (void)beginLineFragmentBodyWithRange:(_NSRange)a3;
-- (void)beginLineFragmentWithRange:(_NSRange)a3;
+- (void)beginDrawable:(id)drawable;
+- (void)beginFreehandDrawing:(id)drawing;
+- (void)beginLineFragmentBodyWithRange:(_NSRange)range;
+- (void)beginLineFragmentWithRange:(_NSRange)range;
 - (void)beginListLabel;
-- (void)beginMultiParagraphEntityWithLineFragmentRange:(_NSRange)a3;
-- (void)beginObject:(id)a3;
+- (void)beginMultiParagraphEntityWithLineFragmentRange:(_NSRange)range;
+- (void)beginObject:(id)object;
 - (void)beginPage;
-- (void)beginParagraphBodyWithLineFragmentRange:(_NSRange)a3;
-- (void)beginParagraphWithLineFragmentRange:(_NSRange)a3;
-- (void)beginPrimaryTextRunWithRange:(_NSRange)a3 hasActualContents:(BOOL)a4;
-- (void)beginTagWithType:(int)a3 tagProperties:(id)a4;
-- (void)beginTextColumn:(id)a3 limitSelection:(id)a4;
-- (void)beginTextStorageChunk:(id)a3 limitSelection:(id)a4;
-- (void)dispatchObject:(id)a3 drawableBlock:(id)a4;
-- (void)endAncillaryTextRunWithRange:(_NSRange)a3 baseTextRange:(_NSRange)a4;
+- (void)beginParagraphBodyWithLineFragmentRange:(_NSRange)range;
+- (void)beginParagraphWithLineFragmentRange:(_NSRange)range;
+- (void)beginPrimaryTextRunWithRange:(_NSRange)range hasActualContents:(BOOL)contents;
+- (void)beginTagWithType:(int)type tagProperties:(id)properties;
+- (void)beginTextColumn:(id)column limitSelection:(id)selection;
+- (void)beginTextStorageChunk:(id)chunk limitSelection:(id)selection;
+- (void)dispatchObject:(id)object drawableBlock:(id)block;
+- (void)endAncillaryTextRunWithRange:(_NSRange)range baseTextRange:(_NSRange)textRange;
 - (void)endComment;
-- (void)endDrawable:(id)a3;
-- (void)endFreehandDrawing:(id)a3;
-- (void)endLineFragmentBodyWithRange:(_NSRange)a3;
-- (void)endLineFragmentWithRange:(_NSRange)a3;
+- (void)endDrawable:(id)drawable;
+- (void)endFreehandDrawing:(id)drawing;
+- (void)endLineFragmentBodyWithRange:(_NSRange)range;
+- (void)endLineFragmentWithRange:(_NSRange)range;
 - (void)endListLabel;
-- (void)endMultiParagraphEntityWithLineFragmentRange:(_NSRange)a3;
-- (void)endObject:(id)a3;
-- (void)endParagraphWithLineFragmentRange:(_NSRange)a3;
-- (void)endPrimaryTextRunWithRange:(_NSRange)a3 hasActualContents:(BOOL)a4;
+- (void)endMultiParagraphEntityWithLineFragmentRange:(_NSRange)range;
+- (void)endObject:(id)object;
+- (void)endParagraphWithLineFragmentRange:(_NSRange)range;
+- (void)endPrimaryTextRunWithRange:(_NSRange)range hasActualContents:(BOOL)contents;
 - (void)endTag;
-- (void)endTextColumn:(id)a3;
-- (void)endTextStorageChunk:(id)a3;
-- (void)executeBlock:(id)a3;
-- (void)handleObject:(id)a3 drawableBlock:(id)a4;
-- (void)popContextWithExpectedClass:(Class)a3;
-- (void)popTagStackUntilReachingHeight:(unint64_t)a3;
-- (void)pushContext:(id)a3;
-- (void)restoreStateFromTopOfContextStackWithExpectedClass:(Class)a3;
-- (void)setState:(id)a3;
+- (void)endTextColumn:(id)column;
+- (void)endTextStorageChunk:(id)chunk;
+- (void)executeBlock:(id)block;
+- (void)handleObject:(id)object drawableBlock:(id)block;
+- (void)popContextWithExpectedClass:(Class)class;
+- (void)popTagStackUntilReachingHeight:(unint64_t)height;
+- (void)pushContext:(id)context;
+- (void)restoreStateFromTopOfContextStackWithExpectedClass:(Class)class;
+- (void)setState:(id)state;
 - (void)setUp;
 @end
 
@@ -101,46 +101,46 @@
   [(NSMutableArray *)self->_paragraphLevelResolverStack crl_push:v9];
 }
 
-- (void)executeBlock:(id)a3
+- (void)executeBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_stateIsValid)
   {
-    v4[2]();
+    blockCopy[2]();
   }
 }
 
-- (void)pushContext:(id)a3
+- (void)pushContext:(id)context
 {
-  v13 = a3;
+  contextCopy = context;
   v4 = [(NSMutableArray *)self->_contextStack count];
-  v5 = [NSString stringWithFormat:@"%@", v13];
-  v6 = [v5 UTF8String];
-  sub_10052FA0C(v4, "PUSH %s", v7, v8, v9, v10, v11, v12, v6);
+  contextCopy = [NSString stringWithFormat:@"%@", contextCopy];
+  uTF8String = [contextCopy UTF8String];
+  sub_10052FA0C(v4, "PUSH %s", v7, v8, v9, v10, v11, v12, uTF8String);
 
-  [(NSMutableArray *)self->_contextStack crl_push:v13];
+  [(NSMutableArray *)self->_contextStack crl_push:contextCopy];
 }
 
-- (void)popContextWithExpectedClass:(Class)a3
+- (void)popContextWithExpectedClass:(Class)class
 {
-  v21 = [(NSMutableArray *)self->_contextStack crl_peek];
+  crl_peek = [(NSMutableArray *)self->_contextStack crl_peek];
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v4 = objc_opt_class();
     sub_10052E5D0(0, "Class mismatch popping rendering context: %@ instead of %@", v5, v6, v7, v8, v9, v10, v4);
   }
 
-  v11 = [(NSMutableArray *)self->_contextStack crl_pop];
+  crl_pop = [(NSMutableArray *)self->_contextStack crl_pop];
   v12 = [(NSMutableArray *)self->_contextStack count];
-  v13 = [NSString stringWithFormat:@"%@", v21];
-  v14 = [v13 UTF8String];
-  sub_10052FA0C(v12, "POP %s", v15, v16, v17, v18, v19, v20, v14);
+  v13 = [NSString stringWithFormat:@"%@", crl_peek];
+  uTF8String = [v13 UTF8String];
+  sub_10052FA0C(v12, "POP %s", v15, v16, v17, v18, v19, v20, uTF8String);
 }
 
-- (void)beginTagWithType:(int)a3 tagProperties:(id)a4
+- (void)beginTagWithType:(int)type tagProperties:(id)properties
 {
-  v4 = *&a3;
-  tagProperties = a4;
+  v4 = *&type;
+  tagProperties = properties;
   Name = CGPDFTagTypeGetName(v4);
   v7 = [(NSMutableArray *)self->_tagStack count];
   sub_10052FA0C(v7 - 1, "BEGIN %s", v8, v9, v10, v11, v12, v13, Name);
@@ -154,15 +154,15 @@
 
 - (void)endTag
 {
-  v20 = [(NSMutableArray *)self->_tagStack crl_peek];
-  v3 = [v20 tagType];
+  crl_peek = [(NSMutableArray *)self->_tagStack crl_peek];
+  tagType = [crl_peek tagType];
   if (![(CRLPdfTagger *)self taggingPreventionDepth])
   {
     CGPDFContextEndTag(self->_cgContext);
   }
 
-  v4 = [(NSMutableArray *)self->_tagStack crl_pop];
-  Name = CGPDFTagTypeGetName(v3);
+  crl_pop = [(NSMutableArray *)self->_tagStack crl_pop];
+  Name = CGPDFTagTypeGetName(tagType);
   if ([(NSMutableArray *)self->_tagStack count])
   {
     v12 = [(NSMutableArray *)self->_tagStack count];
@@ -175,25 +175,25 @@
   }
 }
 
-- (void)popTagStackUntilReachingHeight:(unint64_t)a3
+- (void)popTagStackUntilReachingHeight:(unint64_t)height
 {
-  v5 = [(NSMutableArray *)self->_tagStack count]>= a3;
+  v5 = [(NSMutableArray *)self->_tagStack count]>= height;
   v6 = [(NSMutableArray *)self->_tagStack count];
   sub_10052E5D0(v5, "Tag stack %d less than desired value %d", v7, v8, v9, v10, v11, v12, v6);
-  while ([(NSMutableArray *)self->_tagStack count]> a3)
+  while ([(NSMutableArray *)self->_tagStack count]> height)
   {
     [(CRLPdfTagger *)self endTag];
   }
 }
 
-- (id)topmostContextOfClass:(Class)a3
+- (id)topmostContextOfClass:(Class)class
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMutableArray *)self->_contextStack reverseObjectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_contextStack reverseObjectEnumerator];
+  v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -203,7 +203,7 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -214,7 +214,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -230,10 +230,10 @@ LABEL_11:
   return v8;
 }
 
-- (unint64_t)depthOfContext:(id)a3
+- (unint64_t)depthOfContext:(id)context
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_contextStack indexOfObjectIdenticalTo:v4];
+  contextCopy = context;
+  v5 = [(NSMutableArray *)self->_contextStack indexOfObjectIdenticalTo:contextCopy];
   v6 = 0x7FFFFFFFFFFFFFFFLL;
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -243,26 +243,26 @@ LABEL_11:
   return v6;
 }
 
-- (int)tagTypeAtDepth:(unint64_t)a3
+- (int)tagTypeAtDepth:(unint64_t)depth
 {
-  v4 = self;
-  v5 = [(NSMutableArray *)self->_tagStack count]> a3;
-  [(NSMutableArray *)v4->_tagStack count];
-  sub_10052E5D0(v5, "Tag depth %d exceeds tag stack height %d", v6, v7, v8, v9, v10, v11, a3);
-  v12 = [(NSMutableArray *)v4->_tagStack objectAtIndexedSubscript:[(NSMutableArray *)v4->_tagStack count]+ ~a3];
-  LODWORD(v4) = [v12 tagType];
+  selfCopy = self;
+  v5 = [(NSMutableArray *)self->_tagStack count]> depth;
+  [(NSMutableArray *)selfCopy->_tagStack count];
+  sub_10052E5D0(v5, "Tag depth %d exceeds tag stack height %d", v6, v7, v8, v9, v10, v11, depth);
+  v12 = [(NSMutableArray *)selfCopy->_tagStack objectAtIndexedSubscript:[(NSMutableArray *)selfCopy->_tagStack count]+ ~depth];
+  LODWORD(selfCopy) = [v12 tagType];
 
-  return v4;
+  return selfCopy;
 }
 
-- (unint64_t)depthOfTopmostTagOfType:(int)a3
+- (unint64_t)depthOfTopmostTagOfType:(int)type
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableArray *)self->_tagStack reverseObjectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_tagStack reverseObjectEnumerator];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = 0;
@@ -275,10 +275,10 @@ LABEL_3:
     {
       if (*v12 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
-      if ([*(*(&v11 + 1) + 8 * v8) tagType] == a3)
+      if ([*(*(&v11 + 1) + 8 * v8) tagType] == type)
       {
         break;
       }
@@ -286,7 +286,7 @@ LABEL_3:
       ++v9;
       if (v5 == ++v8)
       {
-        v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -313,33 +313,33 @@ LABEL_9:
   return v2;
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v4 = a3;
-  -[CRLPdfTagger popTagStackUntilReachingHeight:](self, "popTagStackUntilReachingHeight:", [v4 tagStackHeight]);
+  stateCopy = state;
+  -[CRLPdfTagger popTagStackUntilReachingHeight:](self, "popTagStackUntilReachingHeight:", [stateCopy tagStackHeight]);
 }
 
-- (id)topOfContextStackWithExpectedClass:(Class)a3
+- (id)topOfContextStackWithExpectedClass:(Class)class
 {
-  v4 = [(NSMutableArray *)self->_contextStack crl_peek];
+  crl_peek = [(NSMutableArray *)self->_contextStack crl_peek];
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = NSStringFromClass(a3);
+  v6 = NSStringFromClass(class);
   v7 = objc_opt_class();
   v15 = NSStringFromClass(v7);
   sub_10052E5D0(isKindOfClass & 1, "Incorrect top context class: expected %@, actual %@", v8, v9, v10, v11, v12, v13, v6);
 
-  return v4;
+  return crl_peek;
 }
 
-- (void)restoreStateFromTopOfContextStackWithExpectedClass:(Class)a3
+- (void)restoreStateFromTopOfContextStackWithExpectedClass:(Class)class
 {
-  v5 = [(objc_class *)a3 isSubclassOfClass:objc_opt_class()];
+  v5 = [(objc_class *)class isSubclassOfClass:objc_opt_class()];
   sub_10052E5D0(v5, "Unexpected class hierarchy", v6, v7, v8, v9, v10, v11, v13);
-  v14 = [(CRLPdfTagger *)self topOfContextStackWithExpectedClass:a3];
-  v12 = [v14 taggerState];
-  [(CRLPdfTagger *)self setState:v12];
+  v14 = [(CRLPdfTagger *)self topOfContextStackWithExpectedClass:class];
+  taggerState = [v14 taggerState];
+  [(CRLPdfTagger *)self setState:taggerState];
 
-  [(CRLPdfTagger *)self popContextWithExpectedClass:a3];
+  [(CRLPdfTagger *)self popContextWithExpectedClass:class];
 }
 
 - (id)topmostColumnContext
@@ -358,27 +358,27 @@ LABEL_9:
 
 - (id)topmostColumn
 {
-  v2 = [(CRLPdfTagger *)self topmostColumnContext];
-  v3 = [v2 column];
+  topmostColumnContext = [(CRLPdfTagger *)self topmostColumnContext];
+  column = [topmostColumnContext column];
 
-  return v3;
+  return column;
 }
 
 - (id)topmostTextStorage
 {
-  v2 = [(CRLPdfTagger *)self topmostColumn];
-  v3 = [v2 storage];
+  topmostColumn = [(CRLPdfTagger *)self topmostColumn];
+  storage = [topmostColumn storage];
 
-  return v3;
+  return storage;
 }
 
 - (_NSRange)topmostColumnRange
 {
-  v2 = [(CRLPdfTagger *)self topmostColumnContext];
-  v3 = [v2 range];
+  topmostColumnContext = [(CRLPdfTagger *)self topmostColumnContext];
+  range = [topmostColumnContext range];
   v5 = v4;
 
-  v6 = v3;
+  v6 = range;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -393,21 +393,21 @@ LABEL_9:
   }
 }
 
-- (void)beginTextStorageChunk:(id)a3 limitSelection:(id)a4
+- (void)beginTextStorageChunk:(id)chunk limitSelection:(id)selection
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100530760;
   v7[3] = &unk_10186D198;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(CRLPdfTagger *)v8 executeBlock:v7];
+  selfCopy = self;
+  chunkCopy = chunk;
+  selectionCopy = selection;
+  v5 = selectionCopy;
+  v6 = chunkCopy;
+  [(CRLPdfTagger *)selfCopy executeBlock:v7];
 }
 
-- (void)endTextStorageChunk:(id)a3
+- (void)endTextStorageChunk:(id)chunk
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -417,21 +417,21 @@ LABEL_9:
   [(CRLPdfTagger *)self executeBlock:v3];
 }
 
-- (void)beginTextColumn:(id)a3 limitSelection:(id)a4
+- (void)beginTextColumn:(id)column limitSelection:(id)selection
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100530BC8;
   v7[3] = &unk_10186D198;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(CRLPdfTagger *)v8 executeBlock:v7];
+  selfCopy = self;
+  columnCopy = column;
+  selectionCopy = selection;
+  v5 = selectionCopy;
+  v6 = columnCopy;
+  [(CRLPdfTagger *)selfCopy executeBlock:v7];
 }
 
-- (void)endTextColumn:(id)a3
+- (void)endTextColumn:(id)column
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -443,47 +443,47 @@ LABEL_9:
 
 - (BOOL)topOfContextStackIsParagraph
 {
-  v2 = [(NSMutableArray *)self->_contextStack crl_peek];
+  crl_peek = [(NSMutableArray *)self->_contextStack crl_peek];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)assertTopOfContextStackIsParagraph:(BOOL)a3
+- (void)assertTopOfContextStackIsParagraph:(BOOL)paragraph
 {
-  if ([(CRLPdfTagger *)self topOfContextStackIsParagraph]!= a3)
+  if ([(CRLPdfTagger *)self topOfContextStackIsParagraph]!= paragraph)
   {
 
     sub_10052E5D0(0, "Incorrect paragraph rendering context life span", v3, v4, v5, v6, v7, v8, v10);
   }
 }
 
-- (void)beginMultiParagraphEntityWithLineFragmentRange:(_NSRange)a3
+- (void)beginMultiParagraphEntityWithLineFragmentRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(CRLPdfTagger *)self topmostParagraphLevelResolver];
-  v7 = [(CRLPdfTagger *)self topmostColumnContext];
-  v8 = [v7 paragraphEnumerator];
-  v16 = sub_100240930(v8);
+  length = range.length;
+  location = range.location;
+  topmostParagraphLevelResolver = [(CRLPdfTagger *)self topmostParagraphLevelResolver];
+  topmostColumnContext = [(CRLPdfTagger *)self topmostColumnContext];
+  paragraphEnumerator = [topmostColumnContext paragraphEnumerator];
+  v16 = sub_100240930(paragraphEnumerator);
   v18 = v16 <= location && v16 + v9 >= location + length;
   sub_10052E5D0(v18, "Line fragment not within current paragraph", v10, v11, v12, v13, v14, v15, v31);
   v35 = 0;
-  v19 = [v6 levelOfCurrentParagraph:&v35];
+  v19 = [topmostParagraphLevelResolver levelOfCurrentParagraph:&v35];
   v33 = v35;
   if ((v19 & 0x80000000) != 0)
   {
     goto LABEL_17;
   }
 
-  v32 = v7;
-  v20 = [(CRLPdfTagger *)self topmostColumnRange];
+  v32 = topmostColumnContext;
+  topmostColumnRange = [(CRLPdfTagger *)self topmostColumnRange];
   v22 = v21;
   v23 = objc_opt_class();
-  v24 = [v7 column];
-  v25 = [v24 storage];
-  v26 = [v23 indexOfFirstVisibleCharInRange:v20 ofStorage:{v22, v25}];
+  column = [topmostColumnContext column];
+  storage = [column storage];
+  v26 = [v23 indexOfFirstVisibleCharInRange:topmostColumnRange ofStorage:{v22, storage}];
 
   if (v26 >= v16)
   {
@@ -494,25 +494,25 @@ LABEL_9:
   else
   {
     v34 = 0;
-    v27 = [v6 levelOfCurrentParagraph:{&v34, sub_1002407F0(v8)}];
+    v27 = [topmostParagraphLevelResolver levelOfCurrentParagraph:{&v34, sub_1002407F0(paragraphEnumerator)}];
     v28 = v34;
-    v29 = sub_100240814(v8);
+    v29 = sub_100240814(paragraphEnumerator);
     if (v19 <= v27)
     {
       if (v19 != v27)
       {
 
-        v7 = v32;
+        topmostColumnContext = v32;
         goto LABEL_17;
       }
 
-      v30 = [v6 paragraphInfo:v28 matchesParagraphInfo:v33 level:{v19, v29}] ^ 1;
-      v7 = v32;
+      v30 = [topmostParagraphLevelResolver paragraphInfo:v28 matchesParagraphInfo:v33 level:{v19, v29}] ^ 1;
+      topmostColumnContext = v32;
       goto LABEL_15;
     }
   }
 
-  v7 = v32;
+  topmostColumnContext = v32;
   v30 = v19 - v27;
 LABEL_15:
 
@@ -520,7 +520,7 @@ LABEL_15:
   {
     do
     {
-      -[CRLPdfTagger beginTagWithType:](self, "beginTagWithType:", [v6 tagType]);
+      -[CRLPdfTagger beginTagWithType:](self, "beginTagWithType:", [topmostParagraphLevelResolver tagType]);
       --v30;
     }
 
@@ -530,28 +530,28 @@ LABEL_15:
 LABEL_17:
 }
 
-- (void)endMultiParagraphEntityWithLineFragmentRange:(_NSRange)a3
+- (void)endMultiParagraphEntityWithLineFragmentRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(CRLPdfTagger *)self topmostParagraphLevelResolver];
-  v7 = [(CRLPdfTagger *)self topmostColumnContext];
-  v8 = [v7 paragraphEnumerator];
-  v9 = sub_100240930(v8);
+  length = range.length;
+  location = range.location;
+  topmostParagraphLevelResolver = [(CRLPdfTagger *)self topmostParagraphLevelResolver];
+  topmostColumnContext = [(CRLPdfTagger *)self topmostColumnContext];
+  paragraphEnumerator = [topmostColumnContext paragraphEnumerator];
+  v9 = sub_100240930(paragraphEnumerator);
   v17 = &v9[v16];
   v19 = v9 <= location && v17 >= location + length;
   sub_10052E5D0(v19, "Line fragment not within current paragraph", v10, v11, v12, v13, v14, v15, v32);
   v35 = 0;
-  v20 = [v6 levelOfCurrentParagraph:&v35];
+  v20 = [topmostParagraphLevelResolver levelOfCurrentParagraph:&v35];
   v33 = v35;
   if ((v20 & 0x80000000) != 0)
   {
     goto LABEL_14;
   }
 
-  v21 = [(CRLPdfTagger *)self topmostColumnRange];
-  v23 = (&v21[v22] - v17);
-  if (&v21[v22] <= v17 || (v24 = objc_opt_class(), [v7 column], v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "storage"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v24, "indexOfFirstVisibleCharInRange:ofStorage:", v17, v23, v26), v26, v25, v27 == 0x7FFFFFFFFFFFFFFFLL))
+  topmostColumnRange = [(CRLPdfTagger *)self topmostColumnRange];
+  v23 = (&topmostColumnRange[v22] - v17);
+  if (&topmostColumnRange[v22] <= v17 || (v24 = objc_opt_class(), [topmostColumnContext column], v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "storage"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v24, "indexOfFirstVisibleCharInRange:ofStorage:", v17, v23, v26), v26, v25, v27 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v28 = 0;
     v29 = -1;
@@ -560,9 +560,9 @@ LABEL_17:
   else
   {
     v34 = 0;
-    v29 = [v6 levelOfCurrentParagraph:{&v34, sub_100240814(v8)}];
+    v29 = [topmostParagraphLevelResolver levelOfCurrentParagraph:{&v34, sub_100240814(paragraphEnumerator)}];
     v28 = v34;
-    v31 = sub_1002407F0(v8);
+    v31 = sub_1002407F0(paragraphEnumerator);
     if (v20 <= v29)
     {
       if (v20 != v29)
@@ -571,7 +571,7 @@ LABEL_17:
         goto LABEL_14;
       }
 
-      v30 = [v6 paragraphInfo:v33 matchesParagraphInfo:v28 level:{v20, v31}] ^ 1;
+      v30 = [topmostParagraphLevelResolver paragraphInfo:v33 matchesParagraphInfo:v28 level:{v20, v31}] ^ 1;
       goto LABEL_12;
     }
   }
@@ -593,12 +593,12 @@ LABEL_12:
 LABEL_14:
 }
 
-+ (BOOL)isHeadingStyle:(id)a3 headingIndex:(int *)a4
++ (BOOL)isHeadingStyle:(id)style headingIndex:(int *)index
 {
-  v5 = [a3 intValueForProperty:41];
-  if (a4 && v5 <= 6)
+  v5 = [style intValueForProperty:41];
+  if (index && v5 <= 6)
   {
-    *a4 = v5;
+    *index = v5;
   }
 
   return v5 < 7;
@@ -606,10 +606,10 @@ LABEL_14:
 
 - (BOOL)currentParagraphNeedsSpans
 {
-  v2 = [(CRLPdfTagger *)self topmostColumnContext];
-  v3 = [v2 column];
-  v4 = [v3 storage];
-  v5 = sub_100240930([v2 paragraphEnumerator]);
+  topmostColumnContext = [(CRLPdfTagger *)self topmostColumnContext];
+  column = [topmostColumnContext column];
+  storage = [column storage];
+  v5 = sub_100240930([topmostColumnContext paragraphEnumerator]);
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -624,7 +624,7 @@ LABEL_14:
   v9[3] = &unk_10186D1C0;
   v9[4] = &v12;
   v9[5] = v10;
-  [v4 enumerateSmartFieldsWithAttributeKind:6 inRange:v5 usingBlock:{v6, v9}];
+  [storage enumerateSmartFieldsWithAttributeKind:6 inRange:v5 usingBlock:{v6, v9}];
   v7 = *(v13 + 24);
   _Block_object_dispose(v10, 8);
   _Block_object_dispose(&v12, 8);
@@ -634,36 +634,36 @@ LABEL_14:
 
 - (BOOL)currentParagraphHasContents
 {
-  v2 = [(CRLPdfTagger *)self topmostColumnContext];
-  v3 = [v2 column];
-  v4 = [v3 storage];
-  v5 = sub_100240930([v2 paragraphEnumerator]);
+  topmostColumnContext = [(CRLPdfTagger *)self topmostColumnContext];
+  column = [topmostColumnContext column];
+  storage = [column storage];
+  v5 = sub_100240930([topmostColumnContext paragraphEnumerator]);
   v7 = v5;
   v8 = v6;
   if (v6)
   {
-    v8 = v6 - sub_10027E2F0([v4 characterAtIndex:&v5[v6 - 1]]);
+    v8 = v6 - sub_10027E2F0([storage characterAtIndex:&v5[v6 - 1]]);
   }
 
-  v9 = [objc_opt_class() indexOfFirstVisibleCharInRange:v7 ofStorage:{v8, v4}];
+  v9 = [objc_opt_class() indexOfFirstVisibleCharInRange:v7 ofStorage:{v8, storage}];
   v11 = v9 != 0x7FFFFFFFFFFFFFFFLL && v9 < &v7[v8];
 
   return v11;
 }
 
-- (void)beginParagraphWithLineFragmentRange:(_NSRange)a3
+- (void)beginParagraphWithLineFragmentRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   [(CRLPdfTagger *)self assertTopOfContextStackIsParagraph:0];
   [(CRLPdfTagger *)self beginMultiParagraphEntityWithLineFragmentRange:location, length];
   v6 = [[CRLPdfTaggerParagraphContext alloc] initWithStateOfTagger:self needsSpans:[(CRLPdfTagger *)self currentParagraphNeedsSpans]];
   [(CRLPdfTagger *)self pushContext:v6];
-  v7 = [(CRLPdfTagger *)self topmostColumnContext];
-  v8 = [v7 paragraphEnumerator];
-  v9 = sub_100240898(v8, 0);
-  v10 = sub_1002409FC(v8);
-  v11 = [v10 labelTypeForLevel:sub_1002409EC(v8)];
+  topmostColumnContext = [(CRLPdfTagger *)self topmostColumnContext];
+  paragraphEnumerator = [topmostColumnContext paragraphEnumerator];
+  v9 = sub_100240898(paragraphEnumerator, 0);
+  v10 = sub_1002409FC(paragraphEnumerator);
+  v11 = [v10 labelTypeForLevel:sub_1002409EC(paragraphEnumerator)];
   v16 = 0;
   v12 = [CRLPdfTagger isHeadingStyle:v9 headingIndex:&v16];
   if (v12)
@@ -707,39 +707,39 @@ LABEL_14:
   }
 }
 
-- (void)endParagraphWithLineFragmentRange:(_NSRange)a3
+- (void)endParagraphWithLineFragmentRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   [(CRLPdfTagger *)self restoreStateFromTopOfContextStackWithExpectedClass:objc_opt_class()];
 
   [(CRLPdfTagger *)self endMultiParagraphEntityWithLineFragmentRange:location, length];
 }
 
-- (void)beginParagraphBodyWithLineFragmentRange:(_NSRange)a3
+- (void)beginParagraphBodyWithLineFragmentRange:(_NSRange)range
 {
-  if ([(CRLPdfTagger *)self topmostTagType:a3.location]== 301)
+  if ([(CRLPdfTagger *)self topmostTagType:range.location]== 301)
   {
 
     [(CRLPdfTagger *)self beginTagWithType:303];
   }
 }
 
-- (void)assertCharIndexRelativeToParagraphRange:(BOOL)a3
+- (void)assertCharIndexRelativeToParagraphRange:(BOOL)range
 {
-  if (!a3)
+  if (!range)
   {
-    sub_10052E5D0(0, "Char index not in paragraph range", a3, v3, v4, v5, v6, v7, v8);
+    sub_10052E5D0(0, "Char index not in paragraph range", range, v3, v4, v5, v6, v7, v8);
   }
 }
 
-- (void)advanceParagraphEnumeratorToCharIndex:(unint64_t)a3
+- (void)advanceParagraphEnumeratorToCharIndex:(unint64_t)index
 {
-  v7 = [(CRLPdfTagger *)self topmostColumnContext];
-  for (i = [v7 paragraphEnumerator]; ; sub_100240814(i))
+  topmostColumnContext = [(CRLPdfTagger *)self topmostColumnContext];
+  for (i = [topmostColumnContext paragraphEnumerator]; ; sub_100240814(i))
   {
     v5 = sub_100240930(i);
-    if (v5 + v6 > a3)
+    if (v5 + v6 > index)
     {
       break;
     }
@@ -748,11 +748,11 @@ LABEL_14:
 
 - (_NSRange)currentParagraphRange
 {
-  v3 = [(CRLPdfTagger *)self topmostColumnRange];
+  topmostColumnRange = [(CRLPdfTagger *)self topmostColumnRange];
   v5 = v4;
-  v6 = [(CRLPdfTagger *)self topmostColumnContext];
-  v10.location = sub_100240930([v6 paragraphEnumerator]);
-  v12.location = v3;
+  topmostColumnContext = [(CRLPdfTagger *)self topmostColumnContext];
+  v10.location = sub_100240930([topmostColumnContext paragraphEnumerator]);
+  v12.location = topmostColumnRange;
   v12.length = v5;
   v7 = NSIntersectionRange(v10, v12);
 
@@ -763,12 +763,12 @@ LABEL_14:
   return result;
 }
 
-- (unint64_t)indexOfFirstVisibleCharInParagraphAtOrAfterCharIndex:(unint64_t)a3
+- (unint64_t)indexOfFirstVisibleCharInParagraphAtOrAfterCharIndex:(unint64_t)index
 {
-  v4 = [(CRLPdfTagger *)self currentParagraphRange];
-  if (a3 - v4 < v5 && a3 >= v4)
+  currentParagraphRange = [(CRLPdfTagger *)self currentParagraphRange];
+  if (index - currentParagraphRange < v5 && index >= currentParagraphRange)
   {
-    return a3;
+    return index;
   }
 
   else
@@ -777,24 +777,24 @@ LABEL_14:
   }
 }
 
-- (void)beginLineFragmentWithRange:(_NSRange)a3
+- (void)beginLineFragmentWithRange:(_NSRange)range
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1005319EC;
   v3[3] = &unk_10186D1E8;
-  v4 = a3;
+  rangeCopy = range;
   v3[4] = self;
   [(CRLPdfTagger *)self executeBlock:v3];
 }
 
-- (void)endLineFragmentWithRange:(_NSRange)a3
+- (void)endLineFragmentWithRange:(_NSRange)range
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100531AC8;
   v3[3] = &unk_10186D1E8;
-  v4 = a3;
+  rangeCopy = range;
   v3[4] = self;
   [(CRLPdfTagger *)self executeBlock:v3];
 }
@@ -819,125 +819,125 @@ LABEL_14:
   [(CRLPdfTagger *)self executeBlock:v2];
 }
 
-- (void)beginLineFragmentBodyWithRange:(_NSRange)a3
+- (void)beginLineFragmentBodyWithRange:(_NSRange)range
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100531D6C;
   v3[3] = &unk_10186D1E8;
-  v4 = a3;
+  rangeCopy = range;
   v3[4] = self;
   [(CRLPdfTagger *)self executeBlock:v3];
 }
 
-- (void)endLineFragmentBodyWithRange:(_NSRange)a3
+- (void)endLineFragmentBodyWithRange:(_NSRange)range
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100531E8C;
   v3[3] = &unk_10186D1E8;
-  v4 = a3;
+  rangeCopy = range;
   v3[4] = self;
   [(CRLPdfTagger *)self executeBlock:v3];
 }
 
-- (id)retrieveHighestInfoAtCharIndex:(unint64_t)a3 returnTagType:(int *)a4
+- (id)retrieveHighestInfoAtCharIndex:(unint64_t)index returnTagType:(int *)type
 {
-  v6 = [(CRLPdfTagger *)self topmostTextStorage];
-  v7 = v6;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  topmostTextStorage = [(CRLPdfTagger *)self topmostTextStorage];
+  v7 = topmostTextStorage;
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [v6 smartFieldAtCharIndex:a3 attributeKind:6 effectiveRange:0];
+    v9 = [topmostTextStorage smartFieldAtCharIndex:index attributeKind:6 effectiveRange:0];
     v10 = objc_opt_class();
     v8 = sub_100014370(v10, v9);
 
     if (v8)
     {
-      *a4 = 506;
+      *type = 506;
     }
   }
 
   return v8;
 }
 
-- (void)beginPrimaryTextRunWithRange:(_NSRange)a3 hasActualContents:(BOOL)a4
+- (void)beginPrimaryTextRunWithRange:(_NSRange)range hasActualContents:(BOOL)contents
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100532050;
   v4[3] = &unk_10186D210;
   v4[4] = self;
-  v5 = a3;
-  v6 = a4;
+  rangeCopy = range;
+  contentsCopy = contents;
   [(CRLPdfTagger *)self executeBlock:v4];
 }
 
-- (void)endPrimaryTextRunWithRange:(_NSRange)a3 hasActualContents:(BOOL)a4
+- (void)endPrimaryTextRunWithRange:(_NSRange)range hasActualContents:(BOOL)contents
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1005321A8;
   v4[3] = &unk_10183F960;
   v4[4] = self;
-  [(CRLPdfTagger *)self executeBlock:v4, a3.length, a4];
+  [(CRLPdfTagger *)self executeBlock:v4, range.length, contents];
 }
 
-- (void)beginAncillaryTextRunWithRange:(_NSRange)a3 baseTextRange:(_NSRange)a4
+- (void)beginAncillaryTextRunWithRange:(_NSRange)range baseTextRange:(_NSRange)textRange
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100532264;
   v4[3] = &unk_10186D238;
   v4[4] = self;
-  v5 = a3;
-  v6 = a4;
+  rangeCopy = range;
+  textRangeCopy = textRange;
   [(CRLPdfTagger *)self executeBlock:v4];
 }
 
-- (void)endAncillaryTextRunWithRange:(_NSRange)a3 baseTextRange:(_NSRange)a4
+- (void)endAncillaryTextRunWithRange:(_NSRange)range baseTextRange:(_NSRange)textRange
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10053238C;
   v4[3] = &unk_10183F960;
   v4[4] = self;
-  [(CRLPdfTagger *)self executeBlock:v4, a3.length, a4.location, a4.length];
+  [(CRLPdfTagger *)self executeBlock:v4, range.length, textRange.location, textRange.length];
 }
 
-- (void)dispatchObject:(id)a3 drawableBlock:(id)a4
+- (void)dispatchObject:(id)object drawableBlock:(id)block
 {
-  v9 = a3;
-  v5 = a4;
+  objectCopy = object;
+  blockCopy = block;
   v6 = objc_opt_class();
-  v7 = [v9 info];
-  v8 = sub_100014370(v6, v7);
+  info = [objectCopy info];
+  v8 = sub_100014370(v6, info);
 
-  if (v5 && v8)
+  if (blockCopy && v8)
   {
-    v5[2](v5, v9);
+    blockCopy[2](blockCopy, objectCopy);
   }
 }
 
-- (void)handleObject:(id)a3 drawableBlock:(id)a4
+- (void)handleObject:(id)object drawableBlock:(id)block
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1005325A8;
   v7[3] = &unk_10186D260;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(CRLPdfTagger *)v8 executeBlock:v7];
+  selfCopy = self;
+  objectCopy = object;
+  blockCopy = block;
+  v5 = blockCopy;
+  v6 = objectCopy;
+  [(CRLPdfTagger *)selfCopy executeBlock:v7];
 }
 
-- (id)regularDrawableRepForObjectRep:(id)a3
+- (id)regularDrawableRepForObjectRep:(id)rep
 {
   v6 = 0;
   v7 = &v6;
@@ -950,19 +950,19 @@ LABEL_14:
   v5[2] = sub_1005326D8;
   v5[3] = &unk_10186D288;
   v5[4] = &v6;
-  [(CRLPdfTagger *)self dispatchObject:a3 drawableBlock:v5];
+  [(CRLPdfTagger *)self dispatchObject:rep drawableBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
   return v3;
 }
 
-+ (BOOL)shouldMapDrawableRep:(id)a3
++ (BOOL)shouldMapDrawableRep:(id)rep
 {
-  v3 = a3;
+  repCopy = rep;
   v4 = objc_opt_class();
-  v5 = [v3 info];
-  v6 = sub_100014370(v4, v5);
+  info = [repCopy info];
+  v6 = sub_100014370(v4, info);
 
   v7 = objc_opt_class();
   v8 = sub_100014370(v7, v6);
@@ -984,50 +984,50 @@ LABEL_14:
   if (objc_opt_isKindOfClass())
   {
     v13 = objc_opt_class();
-    v14 = [v3 info];
-    v15 = sub_100014370(v13, v14);
+    info2 = [repCopy info];
+    v15 = sub_100014370(v13, info2);
 
-    v16 = [v15 accessibilityDescription];
-    v12 |= [v16 length] != 0;
+    accessibilityDescription = [v15 accessibilityDescription];
+    v12 |= [accessibilityDescription length] != 0;
   }
 
   return v12 & 1;
 }
 
-- (void)beginObject:(id)a3
+- (void)beginObject:(id)object
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1005328FC;
   v3[3] = &unk_10186D2B0;
   v3[4] = self;
-  [(CRLPdfTagger *)self handleObject:a3 drawableBlock:v3];
+  [(CRLPdfTagger *)self handleObject:object drawableBlock:v3];
 }
 
-- (void)endObject:(id)a3
+- (void)endObject:(id)object
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1005329E4;
   v3[3] = &unk_10186D2B0;
   v3[4] = self;
-  [(CRLPdfTagger *)self handleObject:a3 drawableBlock:v3];
+  [(CRLPdfTagger *)self handleObject:object drawableBlock:v3];
 }
 
-- (void)beginDrawable:(id)a3
+- (void)beginDrawable:(id)drawable
 {
-  v4 = a3;
-  v5 = [[CRLPdfTaggerDrawableContext alloc] initWithStateOfTagger:self drawableRep:v4];
+  drawableCopy = drawable;
+  v5 = [[CRLPdfTaggerDrawableContext alloc] initWithStateOfTagger:self drawableRep:drawableCopy];
   [(CRLPdfTagger *)self pushContext:v5];
   v6 = objc_opt_class();
-  v7 = [v4 info];
-  v8 = sub_100014370(v6, v7);
+  info = [drawableCopy info];
+  v8 = sub_100014370(v6, info);
 
-  v9 = [v8 accessibilityDescription];
-  if ([v9 length])
+  accessibilityDescription = [v8 accessibilityDescription];
+  if ([accessibilityDescription length])
   {
     v20 = kCGPDFTagPropertyAlternativeText;
-    v21 = v9;
+    v21 = accessibilityDescription;
     v10 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
   }
 
@@ -1036,8 +1036,8 @@ LABEL_14:
     v10 = 0;
   }
 
-  v11 = [(CRLPdfTagger *)self state];
-  [(CRLPdfTaggerDrawableContext *)v5 setTaggerStateOutsideCore:v11];
+  state = [(CRLPdfTagger *)self state];
+  [(CRLPdfTaggerDrawableContext *)v5 setTaggerStateOutsideCore:state];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -1081,35 +1081,35 @@ LABEL_14:
   }
 }
 
-- (void)endDrawable:(id)a3
+- (void)endDrawable:(id)drawable
 {
   v4 = objc_opt_class();
 
   [(CRLPdfTagger *)self restoreStateFromTopOfContextStackWithExpectedClass:v4];
 }
 
-- (void)beginFreehandDrawing:(id)a3
+- (void)beginFreehandDrawing:(id)drawing
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100533018;
   v4[3] = &unk_10185D010;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(CRLPdfTagger *)v5 executeBlock:v4];
+  selfCopy = self;
+  drawingCopy = drawing;
+  v3 = drawingCopy;
+  [(CRLPdfTagger *)selfCopy executeBlock:v4];
 }
 
-- (void)endFreehandDrawing:(id)a3
+- (void)endFreehandDrawing:(id)drawing
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1005330D0;
   v4[3] = &unk_10185D010;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(CRLPdfTagger *)v5 executeBlock:v4];
+  selfCopy = self;
+  drawingCopy = drawing;
+  v3 = drawingCopy;
+  [(CRLPdfTagger *)selfCopy executeBlock:v4];
 }
 
 - (void)beginComment

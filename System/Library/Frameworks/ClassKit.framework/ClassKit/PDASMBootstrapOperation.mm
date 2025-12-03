@@ -1,8 +1,8 @@
 @interface PDASMBootstrapOperation
 + (id)defaultEndpointInfo;
 - (BOOL)canSkipExecution;
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4;
-- (BOOL)saveServiceConfig:(id)a3 forEDUMAID:(BOOL)a4;
+- (BOOL)processResponseObject:(id)object error:(id *)error;
+- (BOOL)saveServiceConfig:(id)config forEDUMAID:(BOOL)d;
 @end
 
 @implementation PDASMBootstrapOperation
@@ -29,63 +29,63 @@
 
 - (BOOL)canSkipExecution
 {
-  v3 = [(PDEndpointRequestOperation *)self endpointInfo];
-  v4 = v3;
-  if (!v3 || *(v3 + 16) == 0.0)
+  endpointInfo = [(PDEndpointRequestOperation *)self endpointInfo];
+  v4 = endpointInfo;
+  if (!endpointInfo || *(endpointInfo + 16) == 0.0)
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v5 = [(PDEndpointRequestOperation *)self endpointInfo];
-    v6 = !sub_1000E9D80(v5);
+    endpointInfo2 = [(PDEndpointRequestOperation *)self endpointInfo];
+    v6 = !sub_1000E9D80(endpointInfo2);
   }
 
   return v6;
 }
 
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4
+- (BOOL)processResponseObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   if (![(PDOperation *)self isAborted])
   {
-    v8 = [(PDOperation *)self database];
-    v9 = [(PDURLRequestOperation *)self stats];
-    if (v9)
+    database = [(PDOperation *)self database];
+    stats = [(PDURLRequestOperation *)self stats];
+    if (stats)
     {
-      v9[15] = 1;
+      stats[15] = 1;
     }
 
     CLSInitLog();
-    v10 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    logSubsystem = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEFAULT))
     {
       v11 = objc_opt_class();
       v12 = v11;
-      v13 = [(PDURLRequestOperation *)self operationID];
+      operationID = [(PDURLRequestOperation *)self operationID];
       *buf = 138543618;
       *&buf[4] = v11;
       *&buf[12] = 2114;
-      *&buf[14] = v13;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ processing response;", buf, 0x16u);
+      *&buf[14] = operationID;
+      _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ processing response;", buf, 0x16u);
     }
 
     CLSInitLog();
-    v14 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    logSubsystem2 = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEBUG))
     {
       v21 = objc_opt_class();
       v22 = v21;
-      v23 = [(PDURLRequestOperation *)self operationID];
-      v24 = [v6 dictionaryRepresentation];
+      operationID2 = [(PDURLRequestOperation *)self operationID];
+      dictionaryRepresentation = [objectCopy dictionaryRepresentation];
       *buf = 138543874;
       *&buf[4] = v21;
       *&buf[12] = 2114;
-      *&buf[14] = v23;
+      *&buf[14] = operationID2;
       *&buf[22] = 2112;
-      v34 = v24;
-      _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%{public}@ %{public}@ response data: %@", buf, 0x20u);
+      v34 = dictionaryRepresentation;
+      _os_log_debug_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEBUG, "%{public}@ %{public}@ response data: %@", buf, 0x20u);
     }
 
     *buf = 0;
@@ -98,11 +98,11 @@
     v26 = 3221225472;
     v27 = sub_10007BA7C;
     v28 = &unk_100203CF0;
-    v15 = v8;
+    v15 = database;
     v29 = v15;
-    v16 = v6;
+    v16 = objectCopy;
     v30 = v16;
-    v31 = self;
+    selfCopy = self;
     v32 = buf;
     if (v15)
     {
@@ -111,10 +111,10 @@
       v19 = *(*&buf[8] + 40);
       if (v19)
       {
-        if (a4)
+        if (error)
         {
           v7 = 0;
-          *a4 = v19;
+          *error = v19;
 LABEL_18:
 
           _Block_object_dispose(buf, 8);
@@ -144,11 +144,11 @@ LABEL_19:
   return v7;
 }
 
-- (BOOL)saveServiceConfig:(id)a3 forEDUMAID:(BOOL)a4
+- (BOOL)saveServiceConfig:(id)config forEDUMAID:(BOOL)d
 {
-  v6 = a3;
-  v7 = [(PDOperation *)self database];
-  v8 = sub_1000BA854(v7);
+  configCopy = config;
+  database = [(PDOperation *)self database];
+  v8 = sub_1000BA854(database);
   v9 = v8;
   if (v8)
   {
@@ -164,13 +164,13 @@ LABEL_19:
   v20 = 3221225472;
   v21 = sub_10007CE40;
   v22 = &unk_100203D18;
-  v11 = v6;
+  v11 = configCopy;
   v23 = v11;
-  LOBYTE(v26) = a4;
-  v12 = v7;
+  LOBYTE(v26) = d;
+  v12 = database;
   v13 = v12;
   v24 = v12;
-  v25 = self;
+  selfCopy = self;
   if (v12 && [v12 performTransaction:&v19 forWriting:1])
   {
     v14 = sub_1000BA854(v13);

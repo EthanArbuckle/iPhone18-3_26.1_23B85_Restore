@@ -1,33 +1,33 @@
 @interface BMPBSiriQueryEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addResults:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addResults:(id)results;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBSiriQueryEvent
 
-- (void)addResults:(id)a3
+- (void)addResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   results = self->_results;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!results)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_results;
     self->_results = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     results = self->_results;
   }
 
-  [(NSMutableArray *)results addObject:v4];
+  [(NSMutableArray *)results addObject:resultsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = BMPBSiriQueryEvent;
   v4 = [(BMPBSiriQueryEvent *)&v8 description];
-  v5 = [(BMPBSiriQueryEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBSiriQueryEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,17 +45,17 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_absoluteTimestamp];
-    [v3 setObject:v4 forKey:@"absoluteTimestamp"];
+    [dictionary setObject:v4 forKey:@"absoluteTimestamp"];
   }
 
   query = self->_query;
   if (query)
   {
-    [v3 setObject:query forKey:@"query"];
+    [dictionary setObject:query forKey:@"query"];
   }
 
   if ([(NSMutableArray *)self->_results count])
@@ -80,8 +80,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -90,36 +90,36 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"results"];
+    [dictionary setObject:v6 forKey:@"results"];
   }
 
   uniqueId = self->_uniqueId;
   if (uniqueId)
   {
-    [v3 setObject:uniqueId forKey:@"uniqueId"];
+    [dictionary setObject:uniqueId forKey:@"uniqueId"];
   }
 
   contentProtection = self->_contentProtection;
   if (contentProtection)
   {
-    [v3 setObject:contentProtection forKey:@"contentProtection"];
+    [dictionary setObject:contentProtection forKey:@"contentProtection"];
   }
 
   personaId = self->_personaId;
   if (personaId)
   {
-    [v3 setObject:personaId forKey:@"personaId"];
+    [dictionary setObject:personaId forKey:@"personaId"];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     absoluteTimestamp = self->_absoluteTimestamp;
@@ -181,28 +181,28 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_absoluteTimestamp;
-    *(v4 + 56) |= 1u;
+    toCopy[1] = *&self->_absoluteTimestamp;
+    *(toCopy + 56) |= 1u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if (self->_query)
   {
-    [v4 setQuery:?];
+    [toCopy setQuery:?];
   }
 
   if ([(BMPBSiriQueryEvent *)self resultsCount])
   {
     [v10 clearResults];
-    v5 = [(BMPBSiriQueryEvent *)self resultsCount];
-    if (v5)
+    resultsCount = [(BMPBSiriQueryEvent *)self resultsCount];
+    if (resultsCount)
     {
-      v6 = v5;
+      v6 = resultsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(BMPBSiriQueryEvent *)self resultsAtIndex:i];
@@ -230,10 +230,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -241,7 +241,7 @@
     *(v5 + 56) |= 1u;
   }
 
-  v7 = [(NSString *)self->_query copyWithZone:a3];
+  v7 = [(NSString *)self->_query copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
@@ -265,7 +265,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v23 + 1) + 8 * v13) copyWithZone:{a3, v23}];
+        v14 = [*(*(&v23 + 1) + 8 * v13) copyWithZone:{zone, v23}];
         [v6 addResults:v14];
 
         ++v13;
@@ -278,15 +278,15 @@
     while (v11);
   }
 
-  v15 = [(NSString *)self->_uniqueId copyWithZone:a3];
+  v15 = [(NSString *)self->_uniqueId copyWithZone:zone];
   v16 = v6[6];
   v6[6] = v15;
 
-  v17 = [(NSString *)self->_contentProtection copyWithZone:a3];
+  v17 = [(NSString *)self->_contentProtection copyWithZone:zone];
   v18 = v6[2];
   v6[2] = v17;
 
-  v19 = [(NSString *)self->_personaId copyWithZone:a3];
+  v19 = [(NSString *)self->_personaId copyWithZone:zone];
   v20 = v6[3];
   v6[3] = v19;
 
@@ -294,24 +294,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(equalCopy + 56);
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_absoluteTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_absoluteTimestamp != *(equalCopy + 1))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
 LABEL_17:
     v11 = 0;
@@ -319,13 +319,13 @@ LABEL_17:
   }
 
   query = self->_query;
-  if (query | *(v4 + 4) && ![(NSString *)query isEqual:?])
+  if (query | *(equalCopy + 4) && ![(NSString *)query isEqual:?])
   {
     goto LABEL_17;
   }
 
   results = self->_results;
-  if (results | *(v4 + 5))
+  if (results | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)results isEqual:?])
     {
@@ -334,7 +334,7 @@ LABEL_17:
   }
 
   uniqueId = self->_uniqueId;
-  if (uniqueId | *(v4 + 6))
+  if (uniqueId | *(equalCopy + 6))
   {
     if (![(NSString *)uniqueId isEqual:?])
     {
@@ -343,7 +343,7 @@ LABEL_17:
   }
 
   contentProtection = self->_contentProtection;
-  if (contentProtection | *(v4 + 2))
+  if (contentProtection | *(equalCopy + 2))
   {
     if (![(NSString *)contentProtection isEqual:?])
     {
@@ -352,7 +352,7 @@ LABEL_17:
   }
 
   personaId = self->_personaId;
-  if (personaId | *(v4 + 3))
+  if (personaId | *(equalCopy + 3))
   {
     v11 = [(NSString *)personaId isEqual:?];
   }
@@ -409,18 +409,18 @@ LABEL_18:
   return v11 ^ v12 ^ [(NSString *)self->_personaId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4[7])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[7])
   {
-    self->_absoluteTimestamp = v4[1];
+    self->_absoluteTimestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBSiriQueryEvent *)self setQuery:?];
   }

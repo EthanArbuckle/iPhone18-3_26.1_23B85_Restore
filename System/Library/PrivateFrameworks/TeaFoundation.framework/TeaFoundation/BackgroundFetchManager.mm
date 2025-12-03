@@ -1,27 +1,27 @@
 @interface BackgroundFetchManager
-- (void)locationManager:(id)a3 didStartMonitoringForRegion:(id)a4;
-- (void)locationManager:(id)a3 monitoringDidFailForRegion:(id)a4 withError:(id)a5;
+- (void)locationManager:(id)manager didStartMonitoringForRegion:(id)region;
+- (void)locationManager:(id)manager monitoringDidFailForRegion:(id)region withError:(id)error;
 @end
 
 @implementation BackgroundFetchManager
 
-- (void)locationManager:(id)a3 didStartMonitoringForRegion:(id)a4
+- (void)locationManager:(id)manager didStartMonitoringForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  regionCopy = region;
   v8.super.isa = self;
   isa = v8.super.isa;
-  v8._internal = v7;
+  v8._internal = regionCopy;
   BackgroundFetchManager.locationManager(_:didStartMonitoringFor:)(v8, v9);
 }
 
-- (void)locationManager:(id)a3 monitoringDidFailForRegion:(id)a4 withError:(id)a5
+- (void)locationManager:(id)manager monitoringDidFailForRegion:(id)region withError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  v10 = self;
-  BackgroundFetchManager.locationManager(_:monitoringDidFailFor:withError:)(v10, a4, v11);
+  managerCopy = manager;
+  regionCopy = region;
+  errorCopy = error;
+  selfCopy = self;
+  BackgroundFetchManager.locationManager(_:monitoringDidFailFor:withError:)(selfCopy, region, errorCopy);
 }
 
 @end

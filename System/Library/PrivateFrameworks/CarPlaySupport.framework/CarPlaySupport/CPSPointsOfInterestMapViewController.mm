@@ -3,133 +3,133 @@
 - (BOOL)isLocationAuthorized;
 - (CGSize)buttonSize;
 - (CLLocation)userLocation;
-- (CPSPointsOfInterestMapViewController)initWithEntity:(id)a3 resourceProvider:(id)a4;
+- (CPSPointsOfInterestMapViewController)initWithEntity:(id)entity resourceProvider:(id)provider;
 - (id)_linearFocusItems;
 - (id)_linearFocusMovementSequences;
-- (id)mapView:(id)a3 clusterAnnotationForMemberAnnotations:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
+- (id)mapView:(id)view clusterAnnotationForMemberAnnotations:(id)annotations;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
 - (id)preferredFocusEnvironments;
 - (id)template;
 - (void)_notifyRegionDidChange;
 - (void)_updateFocusedItem;
-- (void)beginPanningWithCompletion:(id)a3;
+- (void)beginPanningWithCompletion:(id)completion;
 - (void)centerMap;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)didSelectButton:(id)a3;
-- (void)didUpdateEntity:(id)a3;
-- (void)dismissPanView:(id)a3;
-- (void)highlightModel:(id)a3;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)mapView:(id)a3 didAddAnnotationViews:(id)a4;
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)mapViewDidFinishRenderingMap:(id)a3 fullyRendered:(BOOL)a4;
-- (void)panBeganWithDirection:(int64_t)a3;
-- (void)panEndedWithDirection:(int64_t)a3;
-- (void)panWithDirection:(int64_t)a3;
-- (void)picker:(id)a3 didDeselectModel:(id)a4;
-- (void)picker:(id)a3 didHighlightModel:(id)a4;
-- (void)picker:(id)a3 didSelectModel:(id)a4;
-- (void)picker:(id)a3 didUnhighlightModel:(id)a4;
-- (void)reloadAnnotations:(BOOL)a3;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)didSelectButton:(id)button;
+- (void)didUpdateEntity:(id)entity;
+- (void)dismissPanView:(id)view;
+- (void)highlightModel:(id)model;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)mapView:(id)view didAddAnnotationViews:(id)views;
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)mapViewDidFinishRenderingMap:(id)map fullyRendered:(BOOL)rendered;
+- (void)panBeganWithDirection:(int64_t)direction;
+- (void)panEndedWithDirection:(int64_t)direction;
+- (void)panWithDirection:(int64_t)direction;
+- (void)picker:(id)picker didDeselectModel:(id)model;
+- (void)picker:(id)picker didHighlightModel:(id)model;
+- (void)picker:(id)picker didSelectModel:(id)model;
+- (void)picker:(id)picker didUnhighlightModel:(id)model;
+- (void)reloadAnnotations:(BOOL)annotations;
 - (void)setUpLocationManager;
 - (void)setUpMapView;
 - (void)setUpPanView;
 - (void)setupViews;
-- (void)unhighlightModel:(id)a3;
-- (void)updateMapViewEdgeInsetsFittingAnnotations:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)unhighlightModel:(id)model;
+- (void)updateMapViewEdgeInsetsFittingAnnotations:(BOOL)annotations;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)zoomIn;
 - (void)zoomOut;
-- (void)zoomToLocation:(id)a3;
+- (void)zoomToLocation:(id)location;
 @end
 
 @implementation CPSPointsOfInterestMapViewController
 
-- (CPSPointsOfInterestMapViewController)initWithEntity:(id)a3 resourceProvider:(id)a4
+- (CPSPointsOfInterestMapViewController)initWithEntity:(id)entity resourceProvider:(id)provider
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, entity);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, provider);
   v16 = MEMORY[0x277D82BE0](location[0]);
-  v4 = v19;
-  v19 = 0;
+  v4 = selfCopy;
+  selfCopy = 0;
   v15.receiver = v4;
   v15.super_class = CPSPointsOfInterestMapViewController;
   v14 = [(CPSBaseEntityContentViewController *)&v15 initWithEntity:v16 resourceProvider:v17];
-  v19 = v14;
-  objc_storeStrong(&v19, v14);
+  selfCopy = v14;
+  objc_storeStrong(&selfCopy, v14);
   if (v14)
   {
     v5 = [CPSPointsOfInterestPickerViewController alloc];
     v6 = [(CPSPointsOfInterestPickerViewController *)v5 initWithEntity:location[0] resourceProvider:v17];
-    pickerViewController = v19->_pickerViewController;
-    v19->_pickerViewController = v6;
+    pickerViewController = selfCopy->_pickerViewController;
+    selfCopy->_pickerViewController = v6;
     *&v8 = MEMORY[0x277D82BD8](pickerViewController).n128_u64[0];
-    [(CPSPointsOfInterestPickerViewController *)v19->_pickerViewController setDelegate:v19, v8];
+    [(CPSPointsOfInterestPickerViewController *)selfCopy->_pickerViewController setDelegate:selfCopy, v8];
     v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    clusterAnnotations = v19->_clusterAnnotations;
-    v19->_clusterAnnotations = v9;
+    clusterAnnotations = selfCopy->_clusterAnnotations;
+    selfCopy->_clusterAnnotations = v9;
     MEMORY[0x277D82BD8](clusterAnnotations);
   }
 
-  v12 = MEMORY[0x277D82BE0](v19);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v12;
 }
 
 - (id)template
 {
   v3 = objc_opt_class();
-  v5 = [(CPSBaseEntityContentViewController *)self resourceProvider];
-  v4 = [(CPSEntityResourceProvider *)v5 entityTemplate];
-  v6 = CPSSafeCast_8(v3, v4);
-  MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  resourceProvider = [(CPSBaseEntityContentViewController *)self resourceProvider];
+  entityTemplate = [(CPSEntityResourceProvider *)resourceProvider entityTemplate];
+  v6 = CPSSafeCast_8(v3, entityTemplate);
+  MEMORY[0x277D82BD8](entityTemplate);
+  MEMORY[0x277D82BD8](resourceProvider);
 
   return v6;
 }
 
 - (CLLocation)userLocation
 {
-  v3 = [(CPSPointsOfInterestMapViewController *)self locationManager];
-  v4 = [(CLLocationManager *)v3 location];
-  MEMORY[0x277D82BD8](v3);
+  locationManager = [(CPSPointsOfInterestMapViewController *)self locationManager];
+  location = [(CLLocationManager *)locationManager location];
+  MEMORY[0x277D82BD8](locationManager);
 
-  return v4;
+  return location;
 }
 
-- (void)didUpdateEntity:(id)a3
+- (void)didUpdateEntity:(id)entity
 {
   v35 = *MEMORY[0x277D85DE8];
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v31.receiver = v33;
+  objc_storeStrong(location, entity);
+  v31.receiver = selfCopy;
   v31.super_class = CPSPointsOfInterestMapViewController;
   [(CPSBaseEntityContentViewController *)&v31 didUpdateEntity:location[0]];
-  pickerViewController = v33->_pickerViewController;
-  v22 = [(CPSBaseEntityContentViewController *)v33 entity];
+  pickerViewController = selfCopy->_pickerViewController;
+  entity = [(CPSBaseEntityContentViewController *)selfCopy entity];
   [(CPSBaseEntityContentViewController *)pickerViewController updateWithEntity:?];
-  *&v3 = MEMORY[0x277D82BD8](v22).n128_u64[0];
-  v23 = [(CPSPointsOfInterestMapViewController *)v33 pointsOfInterest];
-  v30 = [v23 pointsOfInterest];
-  MEMORY[0x277D82BD8](v23);
-  v29 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v30, "count")}];
+  *&v3 = MEMORY[0x277D82BD8](entity).n128_u64[0];
+  pointsOfInterest = [(CPSPointsOfInterestMapViewController *)selfCopy pointsOfInterest];
+  v23PointsOfInterest = [pointsOfInterest pointsOfInterest];
+  MEMORY[0x277D82BD8](pointsOfInterest);
+  v29 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v23PointsOfInterest, "count")}];
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x277D82BE0](v30);
+  obj = MEMORY[0x277D82BE0](v23PointsOfInterest);
   v25 = [obj countByEnumeratingWithState:__b objects:v34 count:16];
   if (v25)
   {
@@ -145,14 +145,14 @@
       }
 
       v28 = *(__b[1] + 8 * v19);
-      annotations = v33->_annotations;
-      v13 = [v28 identifier];
+      annotations = selfCopy->_annotations;
+      identifier = [v28 identifier];
       v26 = [(NSMutableDictionary *)annotations objectForKeyedSubscript:?];
-      *&v4 = MEMORY[0x277D82BD8](v13).n128_u64[0];
-      v14 = v30;
-      v15 = [(CPSPointOfInterestAnnotation *)v26 pointOfInterest];
+      *&v4 = MEMORY[0x277D82BD8](identifier).n128_u64[0];
+      v14 = v23PointsOfInterest;
+      pointOfInterest = [(CPSPointOfInterestAnnotation *)v26 pointOfInterest];
       v16 = [v14 containsObject:?];
-      v5 = MEMORY[0x277D82BD8](v15).n128_u64[0];
+      v5 = MEMORY[0x277D82BD8](pointOfInterest).n128_u64[0];
       if (!v16)
       {
         v6 = [CPSPointOfInterestAnnotation alloc];
@@ -164,9 +164,9 @@
 
       v9 = v26;
       v10 = v29;
-      v11 = [v28 identifier];
+      identifier2 = [v28 identifier];
       [v10 setObject:v9 forKeyedSubscript:?];
-      MEMORY[0x277D82BD8](v11);
+      MEMORY[0x277D82BD8](identifier2);
       objc_storeStrong(&v26, 0);
       ++v19;
       if (v17 + 1 >= v20)
@@ -182,60 +182,60 @@
   }
 
   MEMORY[0x277D82BD8](obj);
-  objc_storeStrong(&v33->_annotations, v29);
-  [(CPSPointsOfInterestMapViewController *)v33 reloadAnnotations:[(CPSPointsOfInterestMapViewController *)v33 hasPerformedInitialLayout]^ 1];
+  objc_storeStrong(&selfCopy->_annotations, v29);
+  [(CPSPointsOfInterestMapViewController *)selfCopy reloadAnnotations:[(CPSPointsOfInterestMapViewController *)selfCopy hasPerformedInitialLayout]^ 1];
   objc_storeStrong(&v29, 0);
-  objc_storeStrong(&v30, 0);
+  objc_storeStrong(&v23PointsOfInterest, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)viewDidLoad
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = CPSPointsOfInterestMapViewController;
   [(CPSPointsOfInterestMapViewController *)&v2 viewDidLoad];
-  [(CPSPointsOfInterestMapViewController *)v4 setupViews];
+  [(CPSPointsOfInterestMapViewController *)selfCopy setupViews];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = CPSPointsOfInterestMapViewController;
   [(CPSPointsOfInterestMapViewController *)&v5 viewDidLayoutSubviews];
-  v3 = [(CPSPointsOfInterestMapViewController *)v7 annotations];
+  annotations = [(CPSPointsOfInterestMapViewController *)selfCopy annotations];
   LOBYTE(v4) = 0;
-  if ([(NSMutableDictionary *)v3 count])
+  if ([(NSMutableDictionary *)annotations count])
   {
-    v4 = ![(CPSPointsOfInterestMapViewController *)v7 hasPerformedInitialLayout];
+    v4 = ![(CPSPointsOfInterestMapViewController *)selfCopy hasPerformedInitialLayout];
   }
 
-  *&v2 = MEMORY[0x277D82BD8](v3).n128_u64[0];
+  *&v2 = MEMORY[0x277D82BD8](annotations).n128_u64[0];
   if (v4)
   {
-    [(CPSPointsOfInterestMapViewController *)v7 reloadAnnotations:1, v2];
+    [(CPSPointsOfInterestMapViewController *)selfCopy reloadAnnotations:1, v2];
   }
 
   else
   {
-    [(CPSPointsOfInterestMapViewController *)v7 updateMapViewEdgeInsetsFittingAnnotations:0, v2];
+    [(CPSPointsOfInterestMapViewController *)selfCopy updateMapViewEdgeInsetsFittingAnnotations:0, v2];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v16 = a3;
-  v15 = self;
+  sizeCopy = size;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
+  objc_storeStrong(location, coordinator);
   v13 = 0x4065800000000000;
-  v11 = v16.width * 0.45;
+  v11 = sizeCopy.width * 0.45;
   v10 = 0x406B800000000000;
-  if (v16.width * 0.45 >= 220.0)
+  if (sizeCopy.width * 0.45 >= 220.0)
   {
     v6 = 220.0;
   }
@@ -258,36 +258,36 @@
   }
 
   v8 = v5;
-  v4 = [(CPSPointsOfInterestMapViewController *)v15 pickerWidthConstraint];
-  [(NSLayoutConstraint *)v4 setConstant:v5];
-  MEMORY[0x277D82BD8](v4);
-  v7.receiver = v15;
+  pickerWidthConstraint = [(CPSPointsOfInterestMapViewController *)selfCopy pickerWidthConstraint];
+  [(NSLayoutConstraint *)pickerWidthConstraint setConstant:v5];
+  MEMORY[0x277D82BD8](pickerWidthConstraint);
+  v7.receiver = selfCopy;
   v7.super_class = CPSPointsOfInterestMapViewController;
-  [(CPSPointsOfInterestMapViewController *)&v7 viewWillTransitionToSize:location[0] withTransitionCoordinator:v16.width, v16.height];
+  [(CPSPointsOfInterestMapViewController *)&v7 viewWillTransitionToSize:location[0] withTransitionCoordinator:sizeCopy.width, sizeCopy.height];
   objc_storeStrong(location, 0);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  appearCopy = appear;
   v12.receiver = self;
   v12.super_class = CPSPointsOfInterestMapViewController;
-  [(CPSPointsOfInterestMapViewController *)&v12 viewDidAppear:a3];
-  v11 = [(CPSPointsOfInterestMapViewController *)v15 locationManager];
-  *&v3 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-  if (v11)
+  [(CPSPointsOfInterestMapViewController *)&v12 viewDidAppear:appear];
+  locationManager = [(CPSPointsOfInterestMapViewController *)selfCopy locationManager];
+  *&v3 = MEMORY[0x277D82BD8](locationManager).n128_u64[0];
+  if (locationManager)
   {
-    v10 = [(CPSPointsOfInterestMapViewController *)v15 locationManager];
-    [(CLLocationManager *)v10 startUpdatingLocation];
-    MEMORY[0x277D82BD8](v10);
+    locationManager2 = [(CPSPointsOfInterestMapViewController *)selfCopy locationManager];
+    [(CLLocationManager *)locationManager2 startUpdatingLocation];
+    MEMORY[0x277D82BD8](locationManager2);
   }
 
-  v8 = [(CPSPointsOfInterestMapViewController *)v15 view];
-  [v8 frame];
+  view = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  [view frame];
   v9 = CGRectGetWidth(v16) * 0.45;
-  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](view);
   if (v9 >= 220.0)
   {
     v7 = 220.0;
@@ -308,25 +308,25 @@
     v6 = *&v7;
   }
 
-  v5 = [(CPSPointsOfInterestMapViewController *)v15 pickerWidthConstraint];
-  [(NSLayoutConstraint *)v5 setConstant:v4];
-  MEMORY[0x277D82BD8](v5);
+  pickerWidthConstraint = [(CPSPointsOfInterestMapViewController *)selfCopy pickerWidthConstraint];
+  [(NSLayoutConstraint *)pickerWidthConstraint setConstant:v4];
+  MEMORY[0x277D82BD8](pickerWidthConstraint);
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4.receiver = v6;
+  objc_storeStrong(location, controller);
+  v4.receiver = selfCopy;
   v4.super_class = CPSPointsOfInterestMapViewController;
   [(CPSPointsOfInterestMapViewController *)&v4 didMoveToParentViewController:location[0]];
   if (!location[0])
   {
-    v3 = [(CPSPointsOfInterestMapViewController *)v6 locationManager];
-    [(CLLocationManager *)v3 stopUpdatingLocation];
-    MEMORY[0x277D82BD8](v3);
+    locationManager = [(CPSPointsOfInterestMapViewController *)selfCopy locationManager];
+    [(CLLocationManager *)locationManager stopUpdatingLocation];
+    MEMORY[0x277D82BD8](locationManager);
   }
 
   objc_storeStrong(location, 0);
@@ -335,111 +335,111 @@
 - (void)setupViews
 {
   v171[6] = *MEMORY[0x277D85DE8];
-  v162 = self;
+  selfCopy = self;
   v161[1] = a2;
-  v111 = [MEMORY[0x277D75348] tableBackgroundColor];
-  v110 = [(CPSPointsOfInterestMapViewController *)v162 view];
-  [v110 setBackgroundColor:v111];
-  MEMORY[0x277D82BD8](v110);
-  MEMORY[0x277D82BD8](v111);
+  tableBackgroundColor = [MEMORY[0x277D75348] tableBackgroundColor];
+  view = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  [view setBackgroundColor:tableBackgroundColor];
+  MEMORY[0x277D82BD8](view);
+  MEMORY[0x277D82BD8](tableBackgroundColor);
   v161[0] = objc_opt_new();
-  [(CPSPointsOfInterestMapViewController *)v162 setUpLocationManager];
-  [(CPSPointsOfInterestMapViewController *)v162 setUpMapView];
-  v112 = [(CPSPointsOfInterestMapViewController *)v162 mapView];
-  [(MKMapView *)v112 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v114 = [(CPSPointsOfInterestMapViewController *)v162 view];
-  v113 = [(CPSPointsOfInterestMapViewController *)v162 mapView];
-  [v114 addSubview:?];
-  MEMORY[0x277D82BD8](v113);
-  MEMORY[0x277D82BD8](v114);
+  [(CPSPointsOfInterestMapViewController *)selfCopy setUpLocationManager];
+  [(CPSPointsOfInterestMapViewController *)selfCopy setUpMapView];
+  mapView = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+  [(MKMapView *)mapView setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  mapView2 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+  [view2 addSubview:?];
+  MEMORY[0x277D82BD8](mapView2);
+  MEMORY[0x277D82BD8](view2);
   v115 = objc_alloc_init(MEMORY[0x277D756D0]);
-  [(CPSPointsOfInterestMapViewController *)v162 setMapVisibleRegionGuide:?];
-  v117 = [(CPSPointsOfInterestMapViewController *)v162 view];
-  v116 = [(CPSPointsOfInterestMapViewController *)v162 mapVisibleRegionGuide];
-  [v117 addLayoutGuide:?];
-  MEMORY[0x277D82BD8](v116);
-  v150 = [(CPSPointsOfInterestMapViewController *)v162 mapView];
-  v149 = [(MKMapView *)v150 topAnchor];
-  v148 = [(CPSPointsOfInterestMapViewController *)v162 view];
-  v147 = [v148 topAnchor];
-  v146 = [v149 constraintEqualToAnchor:?];
+  [(CPSPointsOfInterestMapViewController *)selfCopy setMapVisibleRegionGuide:?];
+  view3 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  mapVisibleRegionGuide = [(CPSPointsOfInterestMapViewController *)selfCopy mapVisibleRegionGuide];
+  [view3 addLayoutGuide:?];
+  MEMORY[0x277D82BD8](mapVisibleRegionGuide);
+  mapView3 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+  topAnchor = [(MKMapView *)mapView3 topAnchor];
+  view4 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  topAnchor2 = [view4 topAnchor];
+  v146 = [topAnchor constraintEqualToAnchor:?];
   v171[0] = v146;
-  v145 = [(CPSPointsOfInterestMapViewController *)v162 mapView];
-  v144 = [(MKMapView *)v145 bottomAnchor];
-  v143 = [(CPSPointsOfInterestMapViewController *)v162 view];
-  v142 = [v143 bottomAnchor];
-  v141 = [v144 constraintEqualToAnchor:?];
+  mapView4 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+  bottomAnchor = [(MKMapView *)mapView4 bottomAnchor];
+  view5 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v141 = [bottomAnchor constraintEqualToAnchor:?];
   v171[1] = v141;
-  v140 = [(CPSPointsOfInterestMapViewController *)v162 mapView];
-  v139 = [(MKMapView *)v140 leftAnchor];
-  v138 = [(CPSPointsOfInterestMapViewController *)v162 view];
-  v137 = [v138 leftAnchor];
-  v136 = [v139 constraintEqualToAnchor:?];
+  mapView5 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+  leftAnchor = [(MKMapView *)mapView5 leftAnchor];
+  view6 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  leftAnchor2 = [view6 leftAnchor];
+  v136 = [leftAnchor constraintEqualToAnchor:?];
   v171[2] = v136;
-  v135 = [(CPSPointsOfInterestMapViewController *)v162 mapView];
-  v134 = [(MKMapView *)v135 rightAnchor];
-  v133 = [(CPSPointsOfInterestMapViewController *)v162 view];
-  v132 = [v133 rightAnchor];
-  v131 = [v134 constraintEqualToAnchor:?];
+  mapView6 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+  rightAnchor = [(MKMapView *)mapView6 rightAnchor];
+  view7 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  rightAnchor2 = [view7 rightAnchor];
+  v131 = [rightAnchor constraintEqualToAnchor:?];
   v171[3] = v131;
-  v130 = [(CPSPointsOfInterestMapViewController *)v162 mapVisibleRegionGuide];
-  v129 = [(UILayoutGuide *)v130 topAnchor];
-  v128 = [(CPSPointsOfInterestMapViewController *)v162 view];
-  v127 = [v128 safeAreaLayoutGuide];
-  v126 = [v127 topAnchor];
-  v125 = [(NSLayoutYAxisAnchor *)v129 constraintEqualToAnchor:?];
+  mapVisibleRegionGuide2 = [(CPSPointsOfInterestMapViewController *)selfCopy mapVisibleRegionGuide];
+  topAnchor3 = [(UILayoutGuide *)mapVisibleRegionGuide2 topAnchor];
+  view8 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  safeAreaLayoutGuide = [view8 safeAreaLayoutGuide];
+  topAnchor4 = [safeAreaLayoutGuide topAnchor];
+  v125 = [(NSLayoutYAxisAnchor *)topAnchor3 constraintEqualToAnchor:?];
   v171[4] = v125;
-  v124 = [(CPSPointsOfInterestMapViewController *)v162 mapVisibleRegionGuide];
-  v123 = [(UILayoutGuide *)v124 bottomAnchor];
-  v122 = [(CPSPointsOfInterestMapViewController *)v162 view];
-  v121 = [v122 safeAreaLayoutGuide];
-  v120 = [v121 bottomAnchor];
-  v119 = [(NSLayoutYAxisAnchor *)v123 constraintEqualToAnchor:?];
+  mapVisibleRegionGuide3 = [(CPSPointsOfInterestMapViewController *)selfCopy mapVisibleRegionGuide];
+  bottomAnchor3 = [(UILayoutGuide *)mapVisibleRegionGuide3 bottomAnchor];
+  view9 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  safeAreaLayoutGuide2 = [view9 safeAreaLayoutGuide];
+  bottomAnchor4 = [safeAreaLayoutGuide2 bottomAnchor];
+  v119 = [(NSLayoutYAxisAnchor *)bottomAnchor3 constraintEqualToAnchor:?];
   v171[5] = v119;
   v118 = [MEMORY[0x277CBEA60] arrayWithObjects:v171 count:6];
   [v161[0] addObjectsFromArray:?];
   MEMORY[0x277D82BD8](v118);
   MEMORY[0x277D82BD8](v119);
-  MEMORY[0x277D82BD8](v120);
-  MEMORY[0x277D82BD8](v121);
-  MEMORY[0x277D82BD8](v122);
-  MEMORY[0x277D82BD8](v123);
-  MEMORY[0x277D82BD8](v124);
+  MEMORY[0x277D82BD8](bottomAnchor4);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide2);
+  MEMORY[0x277D82BD8](view9);
+  MEMORY[0x277D82BD8](bottomAnchor3);
+  MEMORY[0x277D82BD8](mapVisibleRegionGuide3);
   MEMORY[0x277D82BD8](v125);
-  MEMORY[0x277D82BD8](v126);
-  MEMORY[0x277D82BD8](v127);
-  MEMORY[0x277D82BD8](v128);
-  MEMORY[0x277D82BD8](v129);
-  MEMORY[0x277D82BD8](v130);
+  MEMORY[0x277D82BD8](topAnchor4);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide);
+  MEMORY[0x277D82BD8](view8);
+  MEMORY[0x277D82BD8](topAnchor3);
+  MEMORY[0x277D82BD8](mapVisibleRegionGuide2);
   MEMORY[0x277D82BD8](v131);
-  MEMORY[0x277D82BD8](v132);
-  MEMORY[0x277D82BD8](v133);
-  MEMORY[0x277D82BD8](v134);
-  MEMORY[0x277D82BD8](v135);
+  MEMORY[0x277D82BD8](rightAnchor2);
+  MEMORY[0x277D82BD8](view7);
+  MEMORY[0x277D82BD8](rightAnchor);
+  MEMORY[0x277D82BD8](mapView6);
   MEMORY[0x277D82BD8](v136);
-  MEMORY[0x277D82BD8](v137);
-  MEMORY[0x277D82BD8](v138);
-  MEMORY[0x277D82BD8](v139);
-  MEMORY[0x277D82BD8](v140);
+  MEMORY[0x277D82BD8](leftAnchor2);
+  MEMORY[0x277D82BD8](view6);
+  MEMORY[0x277D82BD8](leftAnchor);
+  MEMORY[0x277D82BD8](mapView5);
   MEMORY[0x277D82BD8](v141);
-  MEMORY[0x277D82BD8](v142);
-  MEMORY[0x277D82BD8](v143);
-  MEMORY[0x277D82BD8](v144);
-  MEMORY[0x277D82BD8](v145);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](view5);
+  MEMORY[0x277D82BD8](bottomAnchor);
+  MEMORY[0x277D82BD8](mapView4);
   MEMORY[0x277D82BD8](v146);
-  MEMORY[0x277D82BD8](v147);
-  MEMORY[0x277D82BD8](v148);
-  MEMORY[0x277D82BD8](v149);
-  MEMORY[0x277D82BD8](v150);
-  v151 = [[CPSPointsOfInterestMapControlsViewController alloc] initWithMapDelegate:v162];
-  [(CPSPointsOfInterestMapViewController *)v162 setMapControlsViewController:?];
-  v153 = [(CPSPointsOfInterestMapViewController *)v162 mapControlsViewController];
-  v170[0] = v153;
-  v152 = [(CPSPointsOfInterestMapViewController *)v162 pickerViewController];
-  v170[1] = v152;
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](view4);
+  MEMORY[0x277D82BD8](topAnchor);
+  MEMORY[0x277D82BD8](mapView3);
+  v151 = [[CPSPointsOfInterestMapControlsViewController alloc] initWithMapDelegate:selfCopy];
+  [(CPSPointsOfInterestMapViewController *)selfCopy setMapControlsViewController:?];
+  mapControlsViewController = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+  v170[0] = mapControlsViewController;
+  pickerViewController = [(CPSPointsOfInterestMapViewController *)selfCopy pickerViewController];
+  v170[1] = pickerViewController;
   v160 = [MEMORY[0x277CBEA60] arrayWithObjects:v170 count:2];
-  MEMORY[0x277D82BD8](v152);
-  MEMORY[0x277D82BD8](v153);
+  MEMORY[0x277D82BD8](pickerViewController);
+  MEMORY[0x277D82BD8](mapControlsViewController);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](v160);
   v155 = [obj countByEnumeratingWithState:__b objects:v169 count:16];
@@ -457,17 +457,17 @@
       }
 
       v159 = *(__b[1] + 8 * v108);
-      [v159 willMoveToParentViewController:v162];
-      [(CPSPointsOfInterestMapViewController *)v162 addChildViewController:v159];
-      v103 = [v159 view];
-      [v103 setTranslatesAutoresizingMaskIntoConstraints:0];
-      *&v2 = MEMORY[0x277D82BD8](v103).n128_u64[0];
-      v105 = [(CPSPointsOfInterestMapViewController *)v162 view];
-      v104 = [v159 view];
-      [v105 addSubview:?];
-      MEMORY[0x277D82BD8](v104);
-      *&v3 = MEMORY[0x277D82BD8](v105).n128_u64[0];
-      [v159 didMoveToParentViewController:{v162, v3}];
+      [v159 willMoveToParentViewController:selfCopy];
+      [(CPSPointsOfInterestMapViewController *)selfCopy addChildViewController:v159];
+      view10 = [v159 view];
+      [view10 setTranslatesAutoresizingMaskIntoConstraints:0];
+      *&v2 = MEMORY[0x277D82BD8](view10).n128_u64[0];
+      view11 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+      view12 = [v159 view];
+      [view11 addSubview:?];
+      MEMORY[0x277D82BD8](view12);
+      *&v3 = MEMORY[0x277D82BD8](view11).n128_u64[0];
+      [v159 didMoveToParentViewController:{selfCopy, v3}];
       ++v108;
       if (v106 + 1 >= v109)
       {
@@ -482,214 +482,214 @@
   }
 
   *&v4 = MEMORY[0x277D82BD8](obj).n128_u64[0];
-  v58 = [(CPSPointsOfInterestMapViewController *)v162 pickerViewController];
-  v157 = [(CPSPointsOfInterestPickerViewController *)v58 view];
-  *&v5 = MEMORY[0x277D82BD8](v58).n128_u64[0];
-  v59 = [(CPSPointsOfInterestMapViewController *)v162 mapControlsViewController];
-  location = [(CPSPointsOfInterestMapControlsViewController *)v59 view];
-  v61 = [v157 widthAnchor];
-  v60 = [v61 constraintEqualToConstant:0.0];
-  [(CPSPointsOfInterestMapViewController *)v162 setPickerWidthConstraint:?];
+  pickerViewController2 = [(CPSPointsOfInterestMapViewController *)selfCopy pickerViewController];
+  view13 = [(CPSPointsOfInterestPickerViewController *)pickerViewController2 view];
+  *&v5 = MEMORY[0x277D82BD8](pickerViewController2).n128_u64[0];
+  mapControlsViewController2 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+  location = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController2 view];
+  widthAnchor = [view13 widthAnchor];
+  v60 = [widthAnchor constraintEqualToConstant:0.0];
+  [(CPSPointsOfInterestMapViewController *)selfCopy setPickerWidthConstraint:?];
   MEMORY[0x277D82BD8](v60);
-  *&v6 = MEMORY[0x277D82BD8](v61).n128_u64[0];
+  *&v6 = MEMORY[0x277D82BD8](widthAnchor).n128_u64[0];
   v62 = v161[0];
-  v86 = [v157 topAnchor];
-  v85 = [(CPSPointsOfInterestMapViewController *)v162 view];
-  v84 = [v85 safeAreaLayoutGuide];
-  v83 = [v84 topAnchor];
-  v82 = [v86 constraintEqualToAnchor:4.0 constant:?];
+  topAnchor5 = [view13 topAnchor];
+  view14 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  safeAreaLayoutGuide3 = [view14 safeAreaLayoutGuide];
+  topAnchor6 = [safeAreaLayoutGuide3 topAnchor];
+  v82 = [topAnchor5 constraintEqualToAnchor:4.0 constant:?];
   v168[0] = v82;
-  v81 = [v157 bottomAnchor];
-  v80 = [(CPSPointsOfInterestMapViewController *)v162 view];
-  v79 = [v80 safeAreaLayoutGuide];
-  v78 = [v79 bottomAnchor];
-  v77 = [v81 constraintEqualToAnchor:? constant:?];
+  bottomAnchor5 = [view13 bottomAnchor];
+  view15 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  safeAreaLayoutGuide4 = [view15 safeAreaLayoutGuide];
+  bottomAnchor6 = [safeAreaLayoutGuide4 bottomAnchor];
+  v77 = [bottomAnchor5 constraintEqualToAnchor:? constant:?];
   v168[1] = v77;
-  v76 = [(CPSPointsOfInterestMapViewController *)v162 pickerWidthConstraint];
-  v168[2] = v76;
-  v75 = [location topAnchor];
-  v74 = [(CPSPointsOfInterestMapViewController *)v162 view];
-  v73 = [v74 safeAreaLayoutGuide];
-  v72 = [v73 topAnchor];
-  v71 = [v75 constraintEqualToAnchor:8.0 constant:?];
+  pickerWidthConstraint = [(CPSPointsOfInterestMapViewController *)selfCopy pickerWidthConstraint];
+  v168[2] = pickerWidthConstraint;
+  topAnchor7 = [location topAnchor];
+  view16 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  safeAreaLayoutGuide5 = [view16 safeAreaLayoutGuide];
+  topAnchor8 = [safeAreaLayoutGuide5 topAnchor];
+  v71 = [topAnchor7 constraintEqualToAnchor:8.0 constant:?];
   v168[3] = v71;
-  v70 = [location bottomAnchor];
-  v69 = [(CPSPointsOfInterestMapViewController *)v162 view];
-  v68 = [v69 safeAreaLayoutGuide];
-  v67 = [v68 bottomAnchor];
-  v66 = [v70 constraintEqualToAnchor:-4.0 constant:?];
+  bottomAnchor7 = [location bottomAnchor];
+  view17 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  safeAreaLayoutGuide6 = [view17 safeAreaLayoutGuide];
+  bottomAnchor8 = [safeAreaLayoutGuide6 bottomAnchor];
+  v66 = [bottomAnchor7 constraintEqualToAnchor:-4.0 constant:?];
   v168[4] = v66;
-  v65 = [location widthAnchor];
-  v64 = [v65 constraintEqualToConstant:36.0];
+  widthAnchor2 = [location widthAnchor];
+  v64 = [widthAnchor2 constraintEqualToConstant:36.0];
   v168[5] = v64;
   v63 = [MEMORY[0x277CBEA60] arrayWithObjects:v168 count:6];
   [v62 addObjectsFromArray:?];
   MEMORY[0x277D82BD8](v63);
   MEMORY[0x277D82BD8](v64);
-  MEMORY[0x277D82BD8](v65);
+  MEMORY[0x277D82BD8](widthAnchor2);
   MEMORY[0x277D82BD8](v66);
-  MEMORY[0x277D82BD8](v67);
-  MEMORY[0x277D82BD8](v68);
-  MEMORY[0x277D82BD8](v69);
-  MEMORY[0x277D82BD8](v70);
+  MEMORY[0x277D82BD8](bottomAnchor8);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide6);
+  MEMORY[0x277D82BD8](view17);
+  MEMORY[0x277D82BD8](bottomAnchor7);
   MEMORY[0x277D82BD8](v71);
-  MEMORY[0x277D82BD8](v72);
-  MEMORY[0x277D82BD8](v73);
-  MEMORY[0x277D82BD8](v74);
-  MEMORY[0x277D82BD8](v75);
-  MEMORY[0x277D82BD8](v76);
+  MEMORY[0x277D82BD8](topAnchor8);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide5);
+  MEMORY[0x277D82BD8](view16);
+  MEMORY[0x277D82BD8](topAnchor7);
+  MEMORY[0x277D82BD8](pickerWidthConstraint);
   MEMORY[0x277D82BD8](v77);
-  MEMORY[0x277D82BD8](v78);
-  MEMORY[0x277D82BD8](v79);
-  MEMORY[0x277D82BD8](v80);
-  MEMORY[0x277D82BD8](v81);
+  MEMORY[0x277D82BD8](bottomAnchor6);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide4);
+  MEMORY[0x277D82BD8](view15);
+  MEMORY[0x277D82BD8](bottomAnchor5);
   MEMORY[0x277D82BD8](v82);
-  MEMORY[0x277D82BD8](v83);
-  MEMORY[0x277D82BD8](v84);
-  MEMORY[0x277D82BD8](v85);
-  *&v7 = MEMORY[0x277D82BD8](v86).n128_u64[0];
-  v99 = [(CPSPointsOfInterestMapViewController *)v162 mapVisibleRegionGuide];
-  v98 = [(UILayoutGuide *)v99 leftAnchor];
-  v97 = [(CPSPointsOfInterestMapViewController *)v162 view];
-  v96 = [v97 safeAreaLayoutGuide];
-  v95 = [v96 leftAnchor];
-  v94 = [(NSLayoutXAxisAnchor *)v98 constraintEqualToAnchor:?];
+  MEMORY[0x277D82BD8](topAnchor6);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide3);
+  MEMORY[0x277D82BD8](view14);
+  *&v7 = MEMORY[0x277D82BD8](topAnchor5).n128_u64[0];
+  mapVisibleRegionGuide4 = [(CPSPointsOfInterestMapViewController *)selfCopy mapVisibleRegionGuide];
+  leftAnchor3 = [(UILayoutGuide *)mapVisibleRegionGuide4 leftAnchor];
+  view18 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  safeAreaLayoutGuide7 = [view18 safeAreaLayoutGuide];
+  leftAnchor4 = [safeAreaLayoutGuide7 leftAnchor];
+  v94 = [(NSLayoutXAxisAnchor *)leftAnchor3 constraintEqualToAnchor:?];
   v167[0] = v94;
-  v93 = [(CPSPointsOfInterestMapViewController *)v162 mapVisibleRegionGuide];
-  v92 = [(UILayoutGuide *)v93 rightAnchor];
-  v91 = [(CPSPointsOfInterestMapViewController *)v162 view];
-  v90 = [v91 safeAreaLayoutGuide];
-  v89 = [v90 rightAnchor];
-  v88 = [(NSLayoutXAxisAnchor *)v92 constraintEqualToAnchor:?];
+  mapVisibleRegionGuide5 = [(CPSPointsOfInterestMapViewController *)selfCopy mapVisibleRegionGuide];
+  rightAnchor3 = [(UILayoutGuide *)mapVisibleRegionGuide5 rightAnchor];
+  view19 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  safeAreaLayoutGuide8 = [view19 safeAreaLayoutGuide];
+  rightAnchor4 = [safeAreaLayoutGuide8 rightAnchor];
+  v88 = [(NSLayoutXAxisAnchor *)rightAnchor3 constraintEqualToAnchor:?];
   v167[1] = v88;
   v87 = [MEMORY[0x277CBEA60] arrayWithObjects:v167 count:2];
-  [(CPSPointsOfInterestMapViewController *)v162 setPanModeConstraints:?];
+  [(CPSPointsOfInterestMapViewController *)selfCopy setPanModeConstraints:?];
   MEMORY[0x277D82BD8](v87);
   MEMORY[0x277D82BD8](v88);
-  MEMORY[0x277D82BD8](v89);
-  MEMORY[0x277D82BD8](v90);
-  MEMORY[0x277D82BD8](v91);
-  MEMORY[0x277D82BD8](v92);
-  MEMORY[0x277D82BD8](v93);
+  MEMORY[0x277D82BD8](rightAnchor4);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide8);
+  MEMORY[0x277D82BD8](view19);
+  MEMORY[0x277D82BD8](rightAnchor3);
+  MEMORY[0x277D82BD8](mapVisibleRegionGuide5);
   MEMORY[0x277D82BD8](v94);
-  MEMORY[0x277D82BD8](v95);
-  MEMORY[0x277D82BD8](v96);
-  MEMORY[0x277D82BD8](v97);
-  MEMORY[0x277D82BD8](v98);
-  *&v8 = MEMORY[0x277D82BD8](v99).n128_u64[0];
-  v101 = [(CPSBaseEntityContentViewController *)v162 resourceProvider];
-  v100 = [(CPSEntityResourceProvider *)v101 templateEnvironment];
-  v102 = [(CPSTemplateEnvironment *)v100 rightHandDrive];
-  MEMORY[0x277D82BD8](v100);
-  *&v9 = MEMORY[0x277D82BD8](v101).n128_u64[0];
-  if (v102)
+  MEMORY[0x277D82BD8](leftAnchor4);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide7);
+  MEMORY[0x277D82BD8](view18);
+  MEMORY[0x277D82BD8](leftAnchor3);
+  *&v8 = MEMORY[0x277D82BD8](mapVisibleRegionGuide4).n128_u64[0];
+  resourceProvider = [(CPSBaseEntityContentViewController *)selfCopy resourceProvider];
+  templateEnvironment = [(CPSEntityResourceProvider *)resourceProvider templateEnvironment];
+  rightHandDrive = [(CPSTemplateEnvironment *)templateEnvironment rightHandDrive];
+  MEMORY[0x277D82BD8](templateEnvironment);
+  *&v9 = MEMORY[0x277D82BD8](resourceProvider).n128_u64[0];
+  if (rightHandDrive)
   {
     v37 = v161[0];
-    v48 = [location leftAnchor];
-    v47 = [(CPSPointsOfInterestMapViewController *)v162 view];
-    v46 = [v47 safeAreaLayoutGuide];
-    v45 = [v46 leftAnchor];
-    v44 = [v48 constraintEqualToAnchor:4.0 constant:?];
+    leftAnchor5 = [location leftAnchor];
+    view20 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+    safeAreaLayoutGuide9 = [view20 safeAreaLayoutGuide];
+    leftAnchor6 = [safeAreaLayoutGuide9 leftAnchor];
+    v44 = [leftAnchor5 constraintEqualToAnchor:4.0 constant:?];
     v166[0] = v44;
-    v43 = [v157 rightAnchor];
-    v42 = [(CPSPointsOfInterestMapViewController *)v162 view];
-    v41 = [v42 safeAreaLayoutGuide];
-    v40 = [v41 rightAnchor];
-    v39 = [v43 constraintEqualToAnchor:-4.0 constant:?];
+    rightAnchor5 = [view13 rightAnchor];
+    view21 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+    safeAreaLayoutGuide10 = [view21 safeAreaLayoutGuide];
+    rightAnchor6 = [safeAreaLayoutGuide10 rightAnchor];
+    v39 = [rightAnchor5 constraintEqualToAnchor:-4.0 constant:?];
     v166[1] = v39;
     v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v166 count:?];
     [v37 addObjectsFromArray:?];
     MEMORY[0x277D82BD8](v38);
     MEMORY[0x277D82BD8](v39);
-    MEMORY[0x277D82BD8](v40);
-    MEMORY[0x277D82BD8](v41);
-    MEMORY[0x277D82BD8](v42);
-    MEMORY[0x277D82BD8](v43);
+    MEMORY[0x277D82BD8](rightAnchor6);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide10);
+    MEMORY[0x277D82BD8](view21);
+    MEMORY[0x277D82BD8](rightAnchor5);
     MEMORY[0x277D82BD8](v44);
-    MEMORY[0x277D82BD8](v45);
-    MEMORY[0x277D82BD8](v46);
-    MEMORY[0x277D82BD8](v47);
-    *&v10 = MEMORY[0x277D82BD8](v48).n128_u64[0];
-    v57 = [(CPSPointsOfInterestMapViewController *)v162 mapVisibleRegionGuide];
-    v56 = [(UILayoutGuide *)v57 leftAnchor];
-    v55 = [location rightAnchor];
-    v54 = [(NSLayoutXAxisAnchor *)v56 constraintEqualToAnchor:?];
+    MEMORY[0x277D82BD8](leftAnchor6);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide9);
+    MEMORY[0x277D82BD8](view20);
+    *&v10 = MEMORY[0x277D82BD8](leftAnchor5).n128_u64[0];
+    mapVisibleRegionGuide6 = [(CPSPointsOfInterestMapViewController *)selfCopy mapVisibleRegionGuide];
+    leftAnchor7 = [(UILayoutGuide *)mapVisibleRegionGuide6 leftAnchor];
+    rightAnchor7 = [location rightAnchor];
+    v54 = [(NSLayoutXAxisAnchor *)leftAnchor7 constraintEqualToAnchor:?];
     v165[0] = v54;
-    v53 = [(CPSPointsOfInterestMapViewController *)v162 mapVisibleRegionGuide];
-    v52 = [(UILayoutGuide *)v53 rightAnchor];
-    v51 = [v157 leftAnchor];
-    v50 = [(NSLayoutXAxisAnchor *)v52 constraintEqualToAnchor:?];
+    mapVisibleRegionGuide7 = [(CPSPointsOfInterestMapViewController *)selfCopy mapVisibleRegionGuide];
+    rightAnchor8 = [(UILayoutGuide *)mapVisibleRegionGuide7 rightAnchor];
+    leftAnchor8 = [view13 leftAnchor];
+    v50 = [(NSLayoutXAxisAnchor *)rightAnchor8 constraintEqualToAnchor:?];
     v165[1] = v50;
     v49 = [MEMORY[0x277CBEA60] arrayWithObjects:v165 count:2];
-    [(CPSPointsOfInterestMapViewController *)v162 setPickerModeConstraints:?];
+    [(CPSPointsOfInterestMapViewController *)selfCopy setPickerModeConstraints:?];
     MEMORY[0x277D82BD8](v49);
     MEMORY[0x277D82BD8](v50);
-    MEMORY[0x277D82BD8](v51);
-    MEMORY[0x277D82BD8](v52);
-    MEMORY[0x277D82BD8](v53);
+    MEMORY[0x277D82BD8](leftAnchor8);
+    MEMORY[0x277D82BD8](rightAnchor8);
+    MEMORY[0x277D82BD8](mapVisibleRegionGuide7);
     MEMORY[0x277D82BD8](v54);
-    MEMORY[0x277D82BD8](v55);
-    MEMORY[0x277D82BD8](v56);
-    v11 = MEMORY[0x277D82BD8](v57).n128_u64[0];
+    MEMORY[0x277D82BD8](rightAnchor7);
+    MEMORY[0x277D82BD8](leftAnchor7);
+    v11 = MEMORY[0x277D82BD8](mapVisibleRegionGuide6).n128_u64[0];
   }
 
   else
   {
     v16 = v161[0];
-    v27 = [v157 leftAnchor];
-    v26 = [(CPSPointsOfInterestMapViewController *)v162 view];
-    v25 = [v26 safeAreaLayoutGuide];
-    v24 = [v25 leftAnchor];
-    v23 = [v27 constraintEqualToAnchor:4.0 constant:?];
+    leftAnchor9 = [view13 leftAnchor];
+    view22 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+    safeAreaLayoutGuide11 = [view22 safeAreaLayoutGuide];
+    leftAnchor10 = [safeAreaLayoutGuide11 leftAnchor];
+    v23 = [leftAnchor9 constraintEqualToAnchor:4.0 constant:?];
     v164[0] = v23;
-    v22 = [location rightAnchor];
-    v21 = [(CPSPointsOfInterestMapViewController *)v162 view];
-    v20 = [v21 safeAreaLayoutGuide];
-    v19 = [v20 rightAnchor];
-    v18 = [v22 constraintEqualToAnchor:-4.0 constant:?];
+    rightAnchor9 = [location rightAnchor];
+    view23 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+    safeAreaLayoutGuide12 = [view23 safeAreaLayoutGuide];
+    rightAnchor10 = [safeAreaLayoutGuide12 rightAnchor];
+    v18 = [rightAnchor9 constraintEqualToAnchor:-4.0 constant:?];
     v164[1] = v18;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v164 count:?];
     [v16 addObjectsFromArray:?];
     MEMORY[0x277D82BD8](v17);
     MEMORY[0x277D82BD8](v18);
-    MEMORY[0x277D82BD8](v19);
-    MEMORY[0x277D82BD8](v20);
-    MEMORY[0x277D82BD8](v21);
-    MEMORY[0x277D82BD8](v22);
+    MEMORY[0x277D82BD8](rightAnchor10);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide12);
+    MEMORY[0x277D82BD8](view23);
+    MEMORY[0x277D82BD8](rightAnchor9);
     MEMORY[0x277D82BD8](v23);
-    MEMORY[0x277D82BD8](v24);
-    MEMORY[0x277D82BD8](v25);
-    MEMORY[0x277D82BD8](v26);
-    *&v12 = MEMORY[0x277D82BD8](v27).n128_u64[0];
-    v36 = [(CPSPointsOfInterestMapViewController *)v162 mapVisibleRegionGuide];
-    v35 = [(UILayoutGuide *)v36 leftAnchor];
-    v34 = [v157 rightAnchor];
-    v33 = [(NSLayoutXAxisAnchor *)v35 constraintEqualToAnchor:?];
+    MEMORY[0x277D82BD8](leftAnchor10);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide11);
+    MEMORY[0x277D82BD8](view22);
+    *&v12 = MEMORY[0x277D82BD8](leftAnchor9).n128_u64[0];
+    mapVisibleRegionGuide8 = [(CPSPointsOfInterestMapViewController *)selfCopy mapVisibleRegionGuide];
+    leftAnchor11 = [(UILayoutGuide *)mapVisibleRegionGuide8 leftAnchor];
+    rightAnchor11 = [view13 rightAnchor];
+    v33 = [(NSLayoutXAxisAnchor *)leftAnchor11 constraintEqualToAnchor:?];
     v163[0] = v33;
-    v32 = [(CPSPointsOfInterestMapViewController *)v162 mapVisibleRegionGuide];
-    v31 = [(UILayoutGuide *)v32 rightAnchor];
-    v30 = [location leftAnchor];
-    v29 = [(NSLayoutXAxisAnchor *)v31 constraintEqualToAnchor:?];
+    mapVisibleRegionGuide9 = [(CPSPointsOfInterestMapViewController *)selfCopy mapVisibleRegionGuide];
+    rightAnchor12 = [(UILayoutGuide *)mapVisibleRegionGuide9 rightAnchor];
+    leftAnchor12 = [location leftAnchor];
+    v29 = [(NSLayoutXAxisAnchor *)rightAnchor12 constraintEqualToAnchor:?];
     v163[1] = v29;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v163 count:2];
-    [(CPSPointsOfInterestMapViewController *)v162 setPickerModeConstraints:?];
+    [(CPSPointsOfInterestMapViewController *)selfCopy setPickerModeConstraints:?];
     MEMORY[0x277D82BD8](v28);
     MEMORY[0x277D82BD8](v29);
-    MEMORY[0x277D82BD8](v30);
-    MEMORY[0x277D82BD8](v31);
-    MEMORY[0x277D82BD8](v32);
+    MEMORY[0x277D82BD8](leftAnchor12);
+    MEMORY[0x277D82BD8](rightAnchor12);
+    MEMORY[0x277D82BD8](mapVisibleRegionGuide9);
     MEMORY[0x277D82BD8](v33);
-    MEMORY[0x277D82BD8](v34);
-    MEMORY[0x277D82BD8](v35);
-    v11 = MEMORY[0x277D82BD8](v36).n128_u64[0];
+    MEMORY[0x277D82BD8](rightAnchor11);
+    MEMORY[0x277D82BD8](leftAnchor11);
+    v11 = MEMORY[0x277D82BD8](mapVisibleRegionGuide8).n128_u64[0];
   }
 
-  v15 = [(CPSPointsOfInterestMapViewController *)v162 pickerModeConstraints:*&v11];
+  v15 = [(CPSPointsOfInterestMapViewController *)selfCopy pickerModeConstraints:*&v11];
   [v14 addObjectsFromArray:?];
   *&v13 = MEMORY[0x277D82BD8](v15).n128_u64[0];
   [MEMORY[0x277CCAAD0] activateConstraints:{v161[0], v13}];
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v157, 0);
+  objc_storeStrong(&view13, 0);
   objc_storeStrong(&v160, 0);
   objc_storeStrong(v161, 0);
 }
@@ -697,13 +697,13 @@
 - (void)setUpMapView
 {
   v33[4] = *MEMORY[0x277D85DE8];
-  v31 = self;
+  selfCopy = self;
   v30[1] = a2;
-  v13 = [(CPSBaseEntityContentViewController *)self resourceProvider];
-  v12 = [(CPSEntityResourceProvider *)v13 templateEnvironment];
-  v30[0] = [(CPSTemplateEnvironment *)v12 bundleIdentifier];
-  MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
+  resourceProvider = [(CPSBaseEntityContentViewController *)self resourceProvider];
+  templateEnvironment = [(CPSEntityResourceProvider *)resourceProvider templateEnvironment];
+  v30[0] = [(CPSTemplateEnvironment *)templateEnvironment bundleIdentifier];
+  MEMORY[0x277D82BD8](templateEnvironment);
+  MEMORY[0x277D82BD8](resourceProvider);
   v33[0] = objc_opt_class();
   v33[1] = objc_opt_class();
   v33[2] = objc_opt_class();
@@ -713,23 +713,23 @@
   v14 = MEMORY[0x277D85CD0];
   v2 = MEMORY[0x277D85CD0];
   v16 = v14;
-  location = [v15 initWithEffectiveBundleIdentifier:v30[0] delegate:v31 onQueue:?];
+  location = [v15 initWithEffectiveBundleIdentifier:v30[0] delegate:selfCopy onQueue:?];
   MEMORY[0x277D82BD8](v16);
   v3 = objc_alloc(MEMORY[0x277CD4EC8]);
   v17 = [v3 initWithFrame:location locationManager:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  [(CPSPointsOfInterestMapViewController *)v31 setMapView:?];
-  v18 = [(CPSPointsOfInterestMapViewController *)v31 isLocationAuthorized];
-  v19 = [(CPSPointsOfInterestMapViewController *)v31 mapView];
-  [(MKMapView *)v19 setShowsUserLocation:v18];
-  v20 = [(CPSPointsOfInterestMapViewController *)v31 mapView];
-  [(MKMapView *)v20 setShowsAttribution:0];
-  v21 = [(CPSPointsOfInterestMapViewController *)v31 mapView];
-  [(MKMapView *)v21 setMapType:0];
-  v22 = [(CPSPointsOfInterestMapViewController *)v31 mapView];
-  [(MKMapView *)v22 setDelegate:v31];
-  v23 = [(CPSPointsOfInterestMapViewController *)v31 mapView];
-  [(MKMapView *)v23 setIsAccessibilityElement:0];
-  MEMORY[0x277D82BD8](v23);
+  [(CPSPointsOfInterestMapViewController *)selfCopy setMapView:?];
+  isLocationAuthorized = [(CPSPointsOfInterestMapViewController *)selfCopy isLocationAuthorized];
+  mapView = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+  [(MKMapView *)mapView setShowsUserLocation:isLocationAuthorized];
+  mapView2 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+  [(MKMapView *)mapView2 setShowsAttribution:0];
+  mapView3 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+  [(MKMapView *)mapView3 setMapType:0];
+  mapView4 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+  [(MKMapView *)mapView4 setDelegate:selfCopy];
+  mapView5 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+  [(MKMapView *)mapView5 setIsAccessibilityElement:0];
+  MEMORY[0x277D82BD8](mapView5);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](v29);
   v25 = [obj countByEnumeratingWithState:__b objects:v32 count:16];
@@ -748,7 +748,7 @@
 
       v27 = 0;
       v27 = *(__b[1] + 8 * v10);
-      mapView = v31->_mapView;
+      mapView = selfCopy->_mapView;
       v5 = v27;
       v7 = NSStringFromClass(v27);
       [(MKMapView *)mapView registerClass:v5 forAnnotationViewWithReuseIdentifier:?];
@@ -772,19 +772,19 @@
   objc_storeStrong(v30, 0);
 }
 
-- (void)updateMapViewEdgeInsetsFittingAnnotations:(BOOL)a3
+- (void)updateMapViewEdgeInsetsFittingAnnotations:(BOOL)annotations
 {
-  v93 = self;
+  selfCopy = self;
   v92 = a2;
-  v91 = a3;
-  v46 = [(CPSPointsOfInterestMapViewController *)self mapVisibleRegionGuide];
-  [(UILayoutGuide *)v46 layoutFrame];
+  annotationsCopy = annotations;
+  mapVisibleRegionGuide = [(CPSPointsOfInterestMapViewController *)self mapVisibleRegionGuide];
+  [(UILayoutGuide *)mapVisibleRegionGuide layoutFrame];
   v83 = v3;
   v84 = v4;
   v85 = v5;
   v86 = v6;
-  v45 = [(CPSPointsOfInterestMapViewController *)v93 view];
-  [v45 bounds];
+  view = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  [view bounds];
   v79 = v7;
   v80 = v8;
   v81 = v9;
@@ -794,42 +794,42 @@
   v88 = v12;
   v89 = v13;
   v90 = v14;
-  MEMORY[0x277D82BD8](v45);
-  v47 = [(CPSPointsOfInterestMapViewController *)v93 mapView];
-  [(MKMapView *)v47 _edgeInsets];
+  MEMORY[0x277D82BD8](view);
+  mapView = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+  [(MKMapView *)mapView _edgeInsets];
   v75 = v15;
   v76 = v16;
   v77 = v17;
   v78 = v18;
   v48 = UIEdgeInsetsEqualToEdgeInsets(v87, v88, v89, v90, v15, v16, v17, v18);
-  *&v19 = MEMORY[0x277D82BD8](v47).n128_u64[0];
+  *&v19 = MEMORY[0x277D82BD8](mapView).n128_u64[0];
   if (!v48)
   {
-    v40 = [(CPSPointsOfInterestMapViewController *)v93 mapView];
-    [(MKMapView *)v40 centerCoordinate];
+    mapView2 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+    [(MKMapView *)mapView2 centerCoordinate];
     *&v74 = v20;
     *(&v74 + 1) = v21;
-    v41 = [(CPSPointsOfInterestMapViewController *)v93 mapView];
-    [(MKMapView *)v41 _setEdgeInsets:v87, v88, v89, v90];
-    v43 = [(CPSPointsOfInterestMapViewController *)v93 mapView];
-    v42 = [(MKMapView *)v43 camera];
-    v73 = [(MKMapCamera *)v42 copy];
-    MEMORY[0x277D82BD8](v42);
-    MEMORY[0x277D82BD8](v43);
+    mapView3 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+    [(MKMapView *)mapView3 _setEdgeInsets:v87, v88, v89, v90];
+    mapView4 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+    camera = [(MKMapView *)mapView4 camera];
+    v73 = [(MKMapCamera *)camera copy];
+    MEMORY[0x277D82BD8](camera);
+    MEMORY[0x277D82BD8](mapView4);
     v72 = v74;
     v71 = v74;
     [v73 setCenterCoordinate:v74];
-    v44 = [(CPSPointsOfInterestMapViewController *)v93 annotations];
-    v70 = [(NSMutableDictionary *)v44 allValues];
-    v22 = MEMORY[0x277D82BD8](v44).n128_u64[0];
-    if (v91 && [v70 count])
+    annotations = [(CPSPointsOfInterestMapViewController *)selfCopy annotations];
+    allValues = [(NSMutableDictionary *)annotations allValues];
+    v22 = MEMORY[0x277D82BD8](annotations).n128_u64[0];
+    if (annotationsCopy && [allValues count])
     {
-      [(CPSPointsOfInterestMapViewController *)v93 mapVisibleRegion];
+      [(CPSPointsOfInterestMapViewController *)selfCopy mapVisibleRegion];
       *&v67 = v23;
       *(&v67 + 1) = v24;
       v68 = v25;
       v69 = v26;
-      v66 = CPSCoordinateRegionContainsAnnotations(v70, v23, v24, v25, v26);
+      v66 = CPSCoordinateRegionContainsAnnotations(allValues, v23, v24, v25, v26);
       if (v66)
       {
         v56 = v67;
@@ -839,7 +839,7 @@
 
       else
       {
-        *&v63 = CPSCoordinateRegionForAnnotations(v70);
+        *&v63 = CPSCoordinateRegionForAnnotations(allValues);
         *(&v63 + 1) = v28;
         v64 = v29;
         v65 = v27;
@@ -853,8 +853,8 @@
         else
         {
           v38 = MEMORY[0x277CD4E58];
-          v39 = [(CPSPointsOfInterestMapViewController *)v93 mapVisibleRegionGuide];
-          [(UILayoutGuide *)v39 layoutFrame];
+          mapVisibleRegionGuide2 = [(CPSPointsOfInterestMapViewController *)selfCopy mapVisibleRegionGuide];
+          [(UILayoutGuide *)mapVisibleRegionGuide2 layoutFrame];
           v59 = v30;
           v60 = v31;
           *&v61 = v32;
@@ -864,55 +864,55 @@
           v35 = v73;
           v73 = v34;
           MEMORY[0x277D82BD8](v35);
-          v22 = MEMORY[0x277D82BD8](v39).n128_u64[0];
+          v22 = MEMORY[0x277D82BD8](mapVisibleRegionGuide2).n128_u64[0];
         }
       }
     }
 
-    v37 = [(CPSPointsOfInterestMapViewController *)v93 mapView];
+    mapView5 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
     v36 = v73;
     v49 = MEMORY[0x277D85DD0];
     v50 = -1073741824;
     v51 = 0;
     v52 = __82__CPSPointsOfInterestMapViewController_updateMapViewEdgeInsetsFittingAnnotations___block_invoke;
     v53 = &unk_278D913E8;
-    v54 = MEMORY[0x277D82BE0](v93);
-    [(MKMapView *)v37 _CPS_setCamera:v36 animated:1 completionBlock:&v49];
-    MEMORY[0x277D82BD8](v37);
+    v54 = MEMORY[0x277D82BE0](selfCopy);
+    [(MKMapView *)mapView5 _CPS_setCamera:v36 animated:1 completionBlock:&v49];
+    MEMORY[0x277D82BD8](mapView5);
     objc_storeStrong(&v54, 0);
-    objc_storeStrong(&v70, 0);
+    objc_storeStrong(&allValues, 0);
     objc_storeStrong(&v73, 0);
   }
 }
 
 - ($EFF74E1A437733FA0F87D07FFF1B01BE)mapVisibleRegion
 {
-  v10 = [(CPSPointsOfInterestMapViewController *)self mapView];
-  v9 = [(CPSPointsOfInterestMapViewController *)self mapVisibleRegionGuide];
-  [(UILayoutGuide *)v9 layoutFrame];
+  mapView = [(CPSPointsOfInterestMapViewController *)self mapView];
+  mapVisibleRegionGuide = [(CPSPointsOfInterestMapViewController *)self mapVisibleRegionGuide];
+  [(UILayoutGuide *)mapVisibleRegionGuide layoutFrame];
   v11 = v3;
   v12 = v4;
   v13 = v5;
   v14 = v6;
-  v8 = [(CPSPointsOfInterestMapViewController *)self mapView];
-  [(MKMapView *)v10 convertRect:v11 toRegionFromView:v12, v13, v14];
-  MEMORY[0x277D82BD8](v8);
-  MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
+  mapView2 = [(CPSPointsOfInterestMapViewController *)self mapView];
+  [(MKMapView *)mapView convertRect:v11 toRegionFromView:v12, v13, v14];
+  MEMORY[0x277D82BD8](mapView2);
+  MEMORY[0x277D82BD8](mapVisibleRegionGuide);
+  MEMORY[0x277D82BD8](mapView);
   return result;
 }
 
-- (void)highlightModel:(id)a3
+- (void)highlightModel:(id)model
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   if (location[0])
   {
-    v7 = [(CPSPointsOfInterestMapViewController *)v19 clusterAnnotations];
-    v8 = [location[0] identifier];
-    v9 = [(NSMutableDictionary *)v7 objectForKey:?];
+    clusterAnnotations = [(CPSPointsOfInterestMapViewController *)selfCopy clusterAnnotations];
+    identifier = [location[0] identifier];
+    v9 = [(NSMutableDictionary *)clusterAnnotations objectForKey:?];
     v15 = 0;
     v13 = 0;
     v11 = 0;
@@ -923,11 +923,11 @@
 
     else
     {
-      v16 = [(CPSPointsOfInterestMapViewController *)v19 annotations];
+      annotations = [(CPSPointsOfInterestMapViewController *)selfCopy annotations];
       v15 = 1;
-      v14 = [location[0] identifier];
+      identifier2 = [location[0] identifier];
       v13 = 1;
-      v12 = [(NSMutableDictionary *)v16 objectForKey:?];
+      v12 = [(NSMutableDictionary *)annotations objectForKey:?];
       v11 = 1;
       v3 = MEMORY[0x277D82BE0](v12);
     }
@@ -940,20 +940,20 @@
 
     if (v13)
     {
-      MEMORY[0x277D82BD8](v14);
+      MEMORY[0x277D82BD8](identifier2);
     }
 
     if (v15)
     {
-      MEMORY[0x277D82BD8](v16);
+      MEMORY[0x277D82BD8](annotations);
     }
 
     MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v8);
-    *&v4 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-    v6 = [(CPSPointsOfInterestMapViewController *)v19 mapView];
-    v10 = [(MKMapView *)v6 viewForAnnotation:v17];
-    *&v5 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+    MEMORY[0x277D82BD8](identifier);
+    *&v4 = MEMORY[0x277D82BD8](clusterAnnotations).n128_u64[0];
+    mapView = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+    v10 = [(MKMapView *)mapView viewForAnnotation:v17];
+    *&v5 = MEMORY[0x277D82BD8](mapView).n128_u64[0];
     [(MKAnnotationView *)v10 setSelected:1 animated:1, v5];
     objc_storeStrong(&v10, 0);
     objc_storeStrong(&v17, 0);
@@ -962,17 +962,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)unhighlightModel:(id)a3
+- (void)unhighlightModel:(id)model
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   if (location[0])
   {
-    v7 = [(CPSPointsOfInterestMapViewController *)v19 clusterAnnotations];
-    v8 = [location[0] identifier];
-    v9 = [(NSMutableDictionary *)v7 objectForKey:?];
+    clusterAnnotations = [(CPSPointsOfInterestMapViewController *)selfCopy clusterAnnotations];
+    identifier = [location[0] identifier];
+    v9 = [(NSMutableDictionary *)clusterAnnotations objectForKey:?];
     v15 = 0;
     v13 = 0;
     v11 = 0;
@@ -983,11 +983,11 @@
 
     else
     {
-      v16 = [(CPSPointsOfInterestMapViewController *)v19 annotations];
+      annotations = [(CPSPointsOfInterestMapViewController *)selfCopy annotations];
       v15 = 1;
-      v14 = [location[0] identifier];
+      identifier2 = [location[0] identifier];
       v13 = 1;
-      v12 = [(NSMutableDictionary *)v16 objectForKey:?];
+      v12 = [(NSMutableDictionary *)annotations objectForKey:?];
       v11 = 1;
       v3 = MEMORY[0x277D82BE0](v12);
     }
@@ -1000,20 +1000,20 @@
 
     if (v13)
     {
-      MEMORY[0x277D82BD8](v14);
+      MEMORY[0x277D82BD8](identifier2);
     }
 
     if (v15)
     {
-      MEMORY[0x277D82BD8](v16);
+      MEMORY[0x277D82BD8](annotations);
     }
 
     MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v8);
-    *&v4 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-    v6 = [(CPSPointsOfInterestMapViewController *)v19 mapView];
-    v10 = [(MKMapView *)v6 viewForAnnotation:v17];
-    *&v5 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+    MEMORY[0x277D82BD8](identifier);
+    *&v4 = MEMORY[0x277D82BD8](clusterAnnotations).n128_u64[0];
+    mapView = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+    v10 = [(MKMapView *)mapView viewForAnnotation:v17];
+    *&v5 = MEMORY[0x277D82BD8](mapView).n128_u64[0];
     [(MKAnnotationView *)v10 setSelected:0 animated:1, v5];
     objc_storeStrong(&v10, 0);
     objc_storeStrong(&v17, 0);
@@ -1022,22 +1022,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)reloadAnnotations:(BOOL)a3
+- (void)reloadAnnotations:(BOOL)annotations
 {
   v55 = *MEMORY[0x277D85DE8];
-  v51 = self;
+  selfCopy = self;
   v50 = a2;
-  v49 = a3;
+  annotationsCopy = annotations;
   if (([(CPSPointsOfInterestMapViewController *)self isViewLoaded]& 1) != 0)
   {
-    v33 = [(CPSPointsOfInterestMapViewController *)v51 annotations];
-    v32 = [(NSMutableDictionary *)v33 allValues];
-    v48 = [v32 mutableCopy];
-    MEMORY[0x277D82BD8](v32);
-    v35 = [(CPSPointsOfInterestMapViewController *)v51 mapView];
-    v34 = [(MKMapView *)v35 annotations];
-    v47 = [(NSArray *)v34 mutableCopy];
-    MEMORY[0x277D82BD8](v34);
+    annotations = [(CPSPointsOfInterestMapViewController *)selfCopy annotations];
+    allValues = [(NSMutableDictionary *)annotations allValues];
+    v48 = [allValues mutableCopy];
+    MEMORY[0x277D82BD8](allValues);
+    mapView = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+    annotations2 = [(MKMapView *)mapView annotations];
+    v47 = [(NSArray *)annotations2 mutableCopy];
+    MEMORY[0x277D82BD8](annotations2);
     v46 = [v48 mutableCopy];
     v45 = objc_opt_new();
     memset(__b, 0, sizeof(__b));
@@ -1104,8 +1104,8 @@
             {
               location = MEMORY[0x277D82BE0](v42);
               memset(v38, 0, sizeof(v38));
-              v20 = [location memberAnnotations];
-              v21 = [v20 countByEnumeratingWithState:v38 objects:v52 count:16];
+              memberAnnotations = [location memberAnnotations];
+              v21 = [memberAnnotations countByEnumeratingWithState:v38 objects:v52 count:16];
               if (v21)
               {
                 v17 = *v38[2];
@@ -1116,22 +1116,22 @@
                   v16 = v18;
                   if (*v38[2] != v17)
                   {
-                    objc_enumerationMutation(v20);
+                    objc_enumerationMutation(memberAnnotations);
                   }
 
                   v39 = *(v38[1] + 8 * v18);
-                  v15 = [(CPSPointsOfInterestMapViewController *)v51 clusterAnnotations];
-                  v14 = [v39 pointOfInterest];
-                  v13 = [v14 identifier];
-                  [(NSMutableDictionary *)v15 removeObjectForKey:?];
-                  MEMORY[0x277D82BD8](v13);
-                  MEMORY[0x277D82BD8](v14);
-                  *&v3 = MEMORY[0x277D82BD8](v15).n128_u64[0];
+                  clusterAnnotations = [(CPSPointsOfInterestMapViewController *)selfCopy clusterAnnotations];
+                  pointOfInterest = [v39 pointOfInterest];
+                  identifier = [pointOfInterest identifier];
+                  [(NSMutableDictionary *)clusterAnnotations removeObjectForKey:?];
+                  MEMORY[0x277D82BD8](identifier);
+                  MEMORY[0x277D82BD8](pointOfInterest);
+                  *&v3 = MEMORY[0x277D82BD8](clusterAnnotations).n128_u64[0];
                   ++v18;
                   if (v16 + 1 >= v19)
                   {
                     v18 = 0;
-                    v19 = [v20 countByEnumeratingWithState:v38 objects:v52 count:{16, v3}];
+                    v19 = [memberAnnotations countByEnumeratingWithState:v38 objects:v52 count:{16, v3}];
                     if (!v19)
                     {
                       break;
@@ -1140,7 +1140,7 @@
                 }
               }
 
-              MEMORY[0x277D82BD8](v20);
+              MEMORY[0x277D82BD8](memberAnnotations);
               objc_storeStrong(&location, 0);
             }
           }
@@ -1160,23 +1160,23 @@
     }
 
     *&v4 = MEMORY[0x277D82BD8](v26).n128_u64[0];
-    v11 = [(CPSPointsOfInterestMapViewController *)v51 mapView];
-    [(MKMapView *)v11 removeAnnotations:v45];
-    *&v5 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-    v12 = [(CPSPointsOfInterestMapViewController *)v51 mapView];
-    [(MKMapView *)v12 addAnnotations:v46];
-    *&v6 = MEMORY[0x277D82BD8](v12).n128_u64[0];
-    if (v49)
+    mapView2 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+    [(MKMapView *)mapView2 removeAnnotations:v45];
+    *&v5 = MEMORY[0x277D82BD8](mapView2).n128_u64[0];
+    mapView3 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+    [(MKMapView *)mapView3 addAnnotations:v46];
+    *&v6 = MEMORY[0x277D82BD8](mapView3).n128_u64[0];
+    if (annotationsCopy)
     {
-      v10 = [(CPSPointsOfInterestMapViewController *)v51 mapView];
-      v9 = [(CPSPointsOfInterestMapViewController *)v51 annotations];
-      v8 = [(NSMutableDictionary *)v9 allValues];
-      [MKMapView showAnnotations:v10 animated:"showAnnotations:animated:"];
-      MEMORY[0x277D82BD8](v8);
-      MEMORY[0x277D82BD8](v9);
-      *&v7 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-      [(CPSPointsOfInterestMapViewController *)v51 updateMapViewEdgeInsetsFittingAnnotations:1, v7];
-      [(CPSPointsOfInterestMapViewController *)v51 setHasPerformedInitialLayout:1];
+      mapView4 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+      annotations3 = [(CPSPointsOfInterestMapViewController *)selfCopy annotations];
+      allValues2 = [(NSMutableDictionary *)annotations3 allValues];
+      [MKMapView showAnnotations:mapView4 animated:"showAnnotations:animated:"];
+      MEMORY[0x277D82BD8](allValues2);
+      MEMORY[0x277D82BD8](annotations3);
+      *&v7 = MEMORY[0x277D82BD8](mapView4).n128_u64[0];
+      [(CPSPointsOfInterestMapViewController *)selfCopy updateMapViewEdgeInsetsFittingAnnotations:1, v7];
+      [(CPSPointsOfInterestMapViewController *)selfCopy setHasPerformedInitialLayout:1];
     }
 
     objc_storeStrong(&v45, 0);
@@ -1186,57 +1186,57 @@
   }
 }
 
-- (void)zoomToLocation:(id)a3
+- (void)zoomToLocation:(id)location
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(CPSPointsOfInterestMapViewController *)v10 annotations];
-  v4 = [location[0] identifier];
-  v8 = [(NSMutableDictionary *)v5 objectForKeyedSubscript:?];
-  MEMORY[0x277D82BD8](v4);
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-  v7 = [(CPSPointsOfInterestMapViewController *)v10 mapView];
+  objc_storeStrong(location, location);
+  annotations = [(CPSPointsOfInterestMapViewController *)selfCopy annotations];
+  identifier = [location[0] identifier];
+  v8 = [(NSMutableDictionary *)annotations objectForKeyedSubscript:?];
+  MEMORY[0x277D82BD8](identifier);
+  *&v3 = MEMORY[0x277D82BD8](annotations).n128_u64[0];
+  mapView = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
   v11[0] = v8;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  [MKMapView showAnnotations:v7 animated:"showAnnotations:animated:"];
+  [MKMapView showAnnotations:mapView animated:"showAnnotations:animated:"];
   MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](mapView);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v65 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v63 = 0;
-  objc_storeStrong(&v63, a4);
+  objc_storeStrong(&v63, annotation);
   v62 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v61 = MEMORY[0x277D82BE0](v63);
-    v40 = [(CPSPointsOfInterestMapViewController *)v65 template];
-    v36 = [v40 selectedIndex];
-    v39 = [(CPSPointsOfInterestMapViewController *)v65 pointsOfInterest];
-    v38 = [v39 pointsOfInterest];
-    v37 = [v61 pointOfInterest];
-    v41 = v36 == [v38 indexOfObject:?];
-    MEMORY[0x277D82BD8](v37);
-    MEMORY[0x277D82BD8](v38);
-    MEMORY[0x277D82BD8](v39);
+    template = [(CPSPointsOfInterestMapViewController *)selfCopy template];
+    selectedIndex = [template selectedIndex];
+    pointsOfInterest = [(CPSPointsOfInterestMapViewController *)selfCopy pointsOfInterest];
+    v39PointsOfInterest = [pointsOfInterest pointsOfInterest];
+    pointOfInterest = [v61 pointOfInterest];
+    v41 = selectedIndex == [v39PointsOfInterest indexOfObject:?];
+    MEMORY[0x277D82BD8](pointOfInterest);
+    MEMORY[0x277D82BD8](v39PointsOfInterest);
+    MEMORY[0x277D82BD8](pointsOfInterest);
     v60 = v41;
-    v43 = [v61 pointOfInterest];
-    v42 = [v43 pinImageSet];
-    v59 = [v42 image];
-    MEMORY[0x277D82BD8](v42);
-    MEMORY[0x277D82BD8](v43);
-    if (v59)
+    pointOfInterest2 = [v61 pointOfInterest];
+    pinImageSet = [pointOfInterest2 pinImageSet];
+    image = [pinImageSet image];
+    MEMORY[0x277D82BD8](pinImageSet);
+    MEMORY[0x277D82BD8](pointOfInterest2);
+    if (image)
     {
       v33 = location[0];
       v4 = objc_opt_class();
@@ -1273,15 +1273,15 @@
       }
 
       MEMORY[0x277D82BD8](v35);
-      v28 = [v61 pointOfInterest];
-      v27 = [v28 pinImageSet];
+      pointOfInterest3 = [v61 pointOfInterest];
+      pinImageSet2 = [pointOfInterest3 pinImageSet];
       [v58 setImageSet:?];
-      MEMORY[0x277D82BD8](v27);
-      v30 = [v61 pointOfInterest];
-      v29 = [v30 selectedPinImageSet];
+      MEMORY[0x277D82BD8](pinImageSet2);
+      pointOfInterest4 = [v61 pointOfInterest];
+      selectedPinImageSet = [pointOfInterest4 selectedPinImageSet];
       [v58 setSelectedImageSet:?];
-      MEMORY[0x277D82BD8](v29);
-      *&v7 = MEMORY[0x277D82BD8](v30).n128_u64[0];
+      MEMORY[0x277D82BD8](selectedPinImageSet);
+      *&v7 = MEMORY[0x277D82BD8](pointOfInterest4).n128_u64[0];
       if (v60)
       {
         v26 = 0;
@@ -1342,7 +1342,7 @@
       MEMORY[0x277D82BD8](v24);
     }
 
-    objc_storeStrong(&v59, 0);
+    objc_storeStrong(&image, 0);
     objc_storeStrong(&v61, 0);
   }
 
@@ -1400,15 +1400,15 @@
   return v15;
 }
 
-- (void)mapView:(id)a3 didAddAnnotationViews:(id)a4
+- (void)mapView:(id)view didAddAnnotationViews:(id)views
 {
   v16 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, views);
   memset(__b, 0, sizeof(__b));
   v9 = MEMORY[0x277D82BE0](v13);
   v10 = [v9 countByEnumeratingWithState:__b objects:v15 count:16];
@@ -1445,15 +1445,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)mapView:(id)a3 clusterAnnotationForMemberAnnotations:(id)a4
+- (id)mapView:(id)view clusterAnnotationForMemberAnnotations:(id)annotations
 {
   v26 = *MEMORY[0x277D85DE8];
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, annotations);
   v4 = objc_alloc(MEMORY[0x277CD4DB0]);
   v21 = [v4 initWithMemberAnnotations:v22];
   memset(__b, 0, sizeof(__b));
@@ -1473,14 +1473,14 @@
       }
 
       v20 = *(__b[1] + 8 * v14);
-      v11 = [(CPSPointsOfInterestMapViewController *)v24 clusterAnnotations];
+      clusterAnnotations = [(CPSPointsOfInterestMapViewController *)selfCopy clusterAnnotations];
       v8 = v21;
-      v10 = [v20 pointOfInterest];
-      v9 = [v10 identifier];
-      [(NSMutableDictionary *)v11 setObject:v8 forKey:?];
-      MEMORY[0x277D82BD8](v9);
-      MEMORY[0x277D82BD8](v10);
-      *&v5 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+      pointOfInterest = [v20 pointOfInterest];
+      identifier = [pointOfInterest identifier];
+      [(NSMutableDictionary *)clusterAnnotations setObject:v8 forKey:?];
+      MEMORY[0x277D82BD8](identifier);
+      MEMORY[0x277D82BD8](pointOfInterest);
+      *&v5 = MEMORY[0x277D82BD8](clusterAnnotations).n128_u64[0];
       ++v14;
       if (v12 + 1 >= v15)
       {
@@ -1503,57 +1503,57 @@
   return v7;
 }
 
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v8 = [v11 annotation];
+  objc_storeStrong(&v11, annotationView);
+  annotation = [v11 annotation];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  *&v4 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+  *&v4 = MEMORY[0x277D82BD8](annotation).n128_u64[0];
   if (isKindOfClass)
   {
-    v10 = [v11 annotation];
-    v6 = [(CPSPointsOfInterestMapViewController *)v13 pickerViewController];
-    v5 = [v10 pointOfInterest];
-    [(CPSPointsOfInterestPickerViewController *)v6 setSelectedItem:?];
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
-    objc_storeStrong(&v10, 0);
+    annotation2 = [v11 annotation];
+    pickerViewController = [(CPSPointsOfInterestMapViewController *)selfCopy pickerViewController];
+    pointOfInterest = [annotation2 pointOfInterest];
+    [(CPSPointsOfInterestPickerViewController *)pickerViewController setSelectedItem:?];
+    MEMORY[0x277D82BD8](pointOfInterest);
+    MEMORY[0x277D82BD8](pickerViewController);
+    objc_storeStrong(&annotation2, 0);
   }
 
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   if ([location[0] isRegionChanging])
   {
-    [(CPSPointsOfInterestMapViewController *)v5 _notifyRegionDidChange];
+    [(CPSPointsOfInterestMapViewController *)selfCopy _notifyRegionDidChange];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)mapViewDidFinishRenderingMap:(id)a3 fullyRendered:(BOOL)a4
+- (void)mapViewDidFinishRenderingMap:(id)map fullyRendered:(BOOL)rendered
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (!-[CPSPointsOfInterestMapViewController hasPerformedInitialLayout](v6, "hasPerformedInitialLayout") && a4 && ([location[0] _isAnimating] & 1) == 0)
+  objc_storeStrong(location, map);
+  if (!-[CPSPointsOfInterestMapViewController hasPerformedInitialLayout](selfCopy, "hasPerformedInitialLayout") && rendered && ([location[0] _isAnimating] & 1) == 0)
   {
-    [(CPSPointsOfInterestMapViewController *)v6 setHasPerformedInitialLayout:1];
-    [(CPSPointsOfInterestMapViewController *)v6 _notifyRegionDidChange];
+    [(CPSPointsOfInterestMapViewController *)selfCopy setHasPerformedInitialLayout:1];
+    [(CPSPointsOfInterestMapViewController *)selfCopy _notifyRegionDidChange];
   }
 
   objc_storeStrong(location, 0);
@@ -1561,89 +1561,89 @@
 
 - (void)_notifyRegionDidChange
 {
-  v9 = [(CPSPointsOfInterestMapViewController *)self panTimer];
-  v10 = 0;
-  if (!v9)
+  panTimer = [(CPSPointsOfInterestMapViewController *)self panTimer];
+  hasPerformedInitialLayout = 0;
+  if (!panTimer)
   {
-    v10 = [(CPSPointsOfInterestMapViewController *)self hasPerformedInitialLayout];
+    hasPerformedInitialLayout = [(CPSPointsOfInterestMapViewController *)self hasPerformedInitialLayout];
   }
 
-  *&v2 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-  if (v10)
+  *&v2 = MEMORY[0x277D82BD8](panTimer).n128_u64[0];
+  if (hasPerformedInitialLayout)
   {
-    v8 = [(CPSBaseEntityContentViewController *)self resourceProvider];
-    v7 = [(CPSEntityResourceProvider *)v8 actionDelegate];
+    resourceProvider = [(CPSBaseEntityContentViewController *)self resourceProvider];
+    actionDelegate = [(CPSEntityResourceProvider *)resourceProvider actionDelegate];
     [(CPSPointsOfInterestMapViewController *)self mapVisibleRegion];
-    [(CPSEntityActionDelegate *)v7 entityContentViewController:self regionDidChange:v3, v4, v5, v6];
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    [(CPSEntityActionDelegate *)actionDelegate entityContentViewController:self regionDidChange:v3, v4, v5, v6];
+    MEMORY[0x277D82BD8](actionDelegate);
+    MEMORY[0x277D82BD8](resourceProvider);
   }
 }
 
 - (void)zoomIn
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
-  v2 = [(CPSPointsOfInterestMapViewController *)self mapView];
+  mapView = [(CPSPointsOfInterestMapViewController *)self mapView];
   v3 = MEMORY[0x277D85DD0];
   v4 = -1073741824;
   v5 = 0;
   v6 = __46__CPSPointsOfInterestMapViewController_zoomIn__block_invoke;
   v7 = &unk_278D913E8;
-  v8[0] = MEMORY[0x277D82BE0](v9);
-  [(MKMapView *)v2 _zoomInWithCompletionHandler:?];
-  MEMORY[0x277D82BD8](v2);
+  v8[0] = MEMORY[0x277D82BE0](selfCopy);
+  [(MKMapView *)mapView _zoomInWithCompletionHandler:?];
+  MEMORY[0x277D82BD8](mapView);
   objc_storeStrong(v8, 0);
 }
 
 - (void)zoomOut
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
-  v2 = [(CPSPointsOfInterestMapViewController *)self mapView];
+  mapView = [(CPSPointsOfInterestMapViewController *)self mapView];
   v3 = MEMORY[0x277D85DD0];
   v4 = -1073741824;
   v5 = 0;
   v6 = __47__CPSPointsOfInterestMapViewController_zoomOut__block_invoke;
   v7 = &unk_278D913E8;
-  v8[0] = MEMORY[0x277D82BE0](v9);
-  [(MKMapView *)v2 _zoomOutWithCompletionHandler:?];
-  MEMORY[0x277D82BD8](v2);
+  v8[0] = MEMORY[0x277D82BE0](selfCopy);
+  [(MKMapView *)mapView _zoomOutWithCompletionHandler:?];
+  MEMORY[0x277D82BD8](mapView);
   objc_storeStrong(v8, 0);
 }
 
-- (void)beginPanningWithCompletion:(id)a3
+- (void)beginPanningWithCompletion:(id)completion
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(CPSPointsOfInterestMapViewController *)v21 panViewController];
-  *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  if (!v7)
+  objc_storeStrong(location, completion);
+  panViewController = [(CPSPointsOfInterestMapViewController *)selfCopy panViewController];
+  *&v3 = MEMORY[0x277D82BD8](panViewController).n128_u64[0];
+  if (!panViewController)
   {
-    [(CPSPointsOfInterestMapViewController *)v21 setUpPanView];
+    [(CPSPointsOfInterestMapViewController *)selfCopy setUpPanView];
   }
 
-  [(CPSPointsOfInterestMapViewController *)v21 setPanCompletionHandler:location[0], v3];
+  [(CPSPointsOfInterestMapViewController *)selfCopy setPanCompletionHandler:location[0], v3];
   v4 = MEMORY[0x277D75D18];
-  v6 = [(CPSPointsOfInterestMapViewController *)v21 pickerViewController];
-  v5 = [(CPSPointsOfInterestPickerViewController *)v6 view];
+  pickerViewController = [(CPSPointsOfInterestMapViewController *)selfCopy pickerViewController];
+  view = [(CPSPointsOfInterestPickerViewController *)pickerViewController view];
   v14 = MEMORY[0x277D85DD0];
   v15 = -1073741824;
   v16 = 0;
   v17 = __67__CPSPointsOfInterestMapViewController_beginPanningWithCompletion___block_invoke;
   v18 = &unk_278D913E8;
-  v19 = MEMORY[0x277D82BE0](v21);
+  v19 = MEMORY[0x277D82BE0](selfCopy);
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
   v11 = __67__CPSPointsOfInterestMapViewController_beginPanningWithCompletion___block_invoke_2;
   v12 = &unk_278D91398;
-  v13 = MEMORY[0x277D82BE0](v21);
-  [v4 transitionWithView:v5 duration:0x10000 options:&v14 animations:&v8 completion:0.25];
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
+  [v4 transitionWithView:view duration:0x10000 options:&v14 animations:&v8 completion:0.25];
+  MEMORY[0x277D82BD8](view);
+  MEMORY[0x277D82BD8](pickerViewController);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(location, 0);
@@ -1689,61 +1689,61 @@ uint64_t __67__CPSPointsOfInterestMapViewController_beginPanningWithCompletion__
 
 - (void)centerMap
 {
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
-  v13 = [(CPSPointsOfInterestMapViewController *)self userLocation];
-  *&v2 = MEMORY[0x277D82BD8](v13).n128_u64[0];
-  if (v13)
+  userLocation = [(CPSPointsOfInterestMapViewController *)self userLocation];
+  *&v2 = MEMORY[0x277D82BD8](userLocation).n128_u64[0];
+  if (userLocation)
   {
-    [(CPSPointsOfInterestMapViewController *)v25 setCenterMapPending:0, v2];
-    v8 = [(CPSPointsOfInterestMapViewController *)v25 userLocation];
-    [(CLLocation *)v8 coordinate];
+    [(CPSPointsOfInterestMapViewController *)selfCopy setCenterMapPending:0, v2];
+    userLocation2 = [(CPSPointsOfInterestMapViewController *)selfCopy userLocation];
+    [(CLLocation *)userLocation2 coordinate];
     *&v23 = v3;
     *(&v23 + 1) = v4;
-    v10 = [(CPSPointsOfInterestMapViewController *)v25 mapView];
-    v9 = [(MKMapView *)v10 camera];
-    v22 = [(MKMapCamera *)v9 copy];
-    MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
+    mapView = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
+    camera = [(MKMapView *)mapView camera];
+    v22 = [(MKMapCamera *)camera copy];
+    MEMORY[0x277D82BD8](camera);
+    MEMORY[0x277D82BD8](mapView);
     v21 = v23;
     v20 = v23;
     [v22 setCenterCoordinate:v23];
-    v11 = [(CPSPointsOfInterestMapViewController *)v25 annotations];
-    v12 = [(NSMutableDictionary *)v11 count];
-    *&v5 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+    annotations = [(CPSPointsOfInterestMapViewController *)selfCopy annotations];
+    v12 = [(NSMutableDictionary *)annotations count];
+    *&v5 = MEMORY[0x277D82BD8](annotations).n128_u64[0];
     if (!v12)
     {
       [v22 setCenterCoordinateDistance:12500.0];
     }
 
-    v7 = [(CPSPointsOfInterestMapViewController *)v25 mapView];
+    mapView2 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
     v6 = v22;
     v14 = MEMORY[0x277D85DD0];
     v15 = -1073741824;
     v16 = 0;
     v17 = __49__CPSPointsOfInterestMapViewController_centerMap__block_invoke;
     v18 = &unk_278D913E8;
-    v19 = MEMORY[0x277D82BE0](v25);
-    [(MKMapView *)v7 _CPS_setCamera:v6 animated:1 completionBlock:&v14];
-    MEMORY[0x277D82BD8](v7);
+    v19 = MEMORY[0x277D82BE0](selfCopy);
+    [(MKMapView *)mapView2 _CPS_setCamera:v6 animated:1 completionBlock:&v14];
+    MEMORY[0x277D82BD8](mapView2);
     objc_storeStrong(&v19, 0);
     objc_storeStrong(&v22, 0);
   }
 
   else
   {
-    [(CPSPointsOfInterestMapViewController *)v25 setCenterMapPending:1, v2];
+    [(CPSPointsOfInterestMapViewController *)selfCopy setCenterMapPending:1, v2];
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, locations);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -1752,7 +1752,7 @@ uint64_t __67__CPSPointsOfInterestMapViewController_beginPanningWithCompletion__
   v10 = 0;
   v11 = __75__CPSPointsOfInterestMapViewController_locationManager_didUpdateLocations___block_invoke;
   v12 = &unk_278D913E8;
-  v13 = MEMORY[0x277D82BE0](v16);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v8);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v13, 0);
@@ -1778,14 +1778,14 @@ uint64_t __75__CPSPointsOfInterestMapViewController_locationManager_didUpdateLoc
   return result;
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, error);
   if ([v14 code] == 1)
   {
     v5 = MEMORY[0x277D85CD0];
@@ -1796,7 +1796,7 @@ uint64_t __75__CPSPointsOfInterestMapViewController_locationManager_didUpdateLoc
     v10 = 0;
     v11 = __73__CPSPointsOfInterestMapViewController_locationManager_didFailWithError___block_invoke;
     v12 = &unk_278D913E8;
-    v13 = MEMORY[0x277D82BE0](v16);
+    v13 = MEMORY[0x277D82BE0](selfCopy);
     dispatch_async(queue, &v8);
     MEMORY[0x277D82BD8](queue);
     objc_storeStrong(&v13, 0);
@@ -1814,12 +1814,12 @@ double __73__CPSPointsOfInterestMapViewController_locationManager_didFailWithErr
   return result;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, authorization);
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -1828,7 +1828,7 @@ double __73__CPSPointsOfInterestMapViewController_locationManager_didFailWithErr
   v8 = 0;
   v9 = __78__CPSPointsOfInterestMapViewController_locationManagerDidChangeAuthorization___block_invoke;
   v10 = &unk_278D913E8;
-  v11 = MEMORY[0x277D82BE0](v13);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v11, 0);
@@ -1853,244 +1853,244 @@ uint64_t __78__CPSPointsOfInterestMapViewController_locationManagerDidChangeAuth
 
 - (void)setUpLocationManager
 {
-  v21 = self;
+  selfCopy = self;
   v20[1] = a2;
-  v19 = [(CPSPointsOfInterestMapViewController *)self locationManager];
-  *&v2 = MEMORY[0x277D82BD8](v19).n128_u64[0];
-  if (!v19)
+  locationManager = [(CPSPointsOfInterestMapViewController *)self locationManager];
+  *&v2 = MEMORY[0x277D82BD8](locationManager).n128_u64[0];
+  if (!locationManager)
   {
-    v6 = [(CPSBaseEntityContentViewController *)v21 resourceProvider];
-    v5 = [(CPSEntityResourceProvider *)v6 templateEnvironment];
-    v20[0] = [(CPSTemplateEnvironment *)v5 bundleIdentifier];
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    resourceProvider = [(CPSBaseEntityContentViewController *)selfCopy resourceProvider];
+    templateEnvironment = [(CPSEntityResourceProvider *)resourceProvider templateEnvironment];
+    v20[0] = [(CPSTemplateEnvironment *)templateEnvironment bundleIdentifier];
+    MEMORY[0x277D82BD8](templateEnvironment);
+    MEMORY[0x277D82BD8](resourceProvider);
     v10 = objc_alloc(MEMORY[0x277CBFC10]);
     v8 = v20[0];
-    v9 = v21;
+    v9 = selfCopy;
     v7 = MEMORY[0x277D85CD0];
     v3 = MEMORY[0x277D85CD0];
     v12 = v7;
     v11 = [v10 initWithEffectiveBundleIdentifier:v8 delegate:v9 onQueue:?];
-    [(CPSPointsOfInterestMapViewController *)v21 setLocationManager:?];
+    [(CPSPointsOfInterestMapViewController *)selfCopy setLocationManager:?];
     MEMORY[0x277D82BD8](v11);
     *&v4 = MEMORY[0x277D82BD8](v12).n128_u64[0];
-    v13 = v21;
-    v14 = [(CPSPointsOfInterestMapViewController *)v21 locationManager];
-    [(CLLocationManager *)v14 setDelegate:v13];
-    MEMORY[0x277D82BD8](v14);
+    v13 = selfCopy;
+    locationManager2 = [(CPSPointsOfInterestMapViewController *)selfCopy locationManager];
+    [(CLLocationManager *)locationManager2 setDelegate:v13];
+    MEMORY[0x277D82BD8](locationManager2);
     v15 = *MEMORY[0x277CE4200];
-    v16 = [(CPSPointsOfInterestMapViewController *)v21 locationManager];
-    [(CLLocationManager *)v16 setDistanceFilter:v15];
-    MEMORY[0x277D82BD8](v16);
+    locationManager3 = [(CPSPointsOfInterestMapViewController *)selfCopy locationManager];
+    [(CLLocationManager *)locationManager3 setDistanceFilter:v15];
+    MEMORY[0x277D82BD8](locationManager3);
     v17 = *MEMORY[0x277CE4208];
-    v18 = [(CPSPointsOfInterestMapViewController *)v21 locationManager];
-    [(CLLocationManager *)v18 setDesiredAccuracy:v17];
-    MEMORY[0x277D82BD8](v18);
+    locationManager4 = [(CPSPointsOfInterestMapViewController *)selfCopy locationManager];
+    [(CLLocationManager *)locationManager4 setDesiredAccuracy:v17];
+    MEMORY[0x277D82BD8](locationManager4);
     objc_storeStrong(v20, 0);
   }
 }
 
 - (BOOL)isLocationAuthorized
 {
-  v3 = [(CPSPointsOfInterestMapViewController *)self locationManager];
-  v4 = [(CLLocationManager *)v3 authorizationStatus];
-  MEMORY[0x277D82BD8](v3);
-  return v4 == kCLAuthorizationStatusAuthorizedWhenInUse || v4 == kCLAuthorizationStatusAuthorizedAlways;
+  locationManager = [(CPSPointsOfInterestMapViewController *)self locationManager];
+  authorizationStatus = [(CLLocationManager *)locationManager authorizationStatus];
+  MEMORY[0x277D82BD8](locationManager);
+  return authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse || authorizationStatus == kCLAuthorizationStatusAuthorizedAlways;
 }
 
 - (void)setUpPanView
 {
   v95[4] = *MEMORY[0x277D85DE8];
-  v91 = self;
+  selfCopy = self;
   v90[1] = a2;
   v90[0] = objc_opt_new();
   v31 = [CPSPanViewController alloc];
-  v33 = [(CPSBaseEntityContentViewController *)v91 resourceProvider];
-  v32 = [(CPSEntityResourceProvider *)v33 templateEnvironment];
+  resourceProvider = [(CPSBaseEntityContentViewController *)selfCopy resourceProvider];
+  templateEnvironment = [(CPSEntityResourceProvider *)resourceProvider templateEnvironment];
   location = [(CPSPanViewController *)v31 initWithEnvironment:?];
-  MEMORY[0x277D82BD8](v32);
-  [location setPanDelegate:{v91, MEMORY[0x277D82BD8](v33).n128_f64[0]}];
-  [(CPSPointsOfInterestMapViewController *)v91 setPanViewController:location];
-  v34 = [(CPSPointsOfInterestMapViewController *)v91 panViewController];
-  [(CPSPanViewController *)v34 willMoveToParentViewController:v91];
-  v35 = [(CPSPointsOfInterestMapViewController *)v91 panViewController];
-  [(CPSPointsOfInterestMapViewController *)v91 addChildViewController:?];
-  v38 = [(CPSPointsOfInterestMapViewController *)v91 view];
-  v37 = [(CPSPointsOfInterestMapViewController *)v91 panViewController];
-  v36 = [(CPSPanViewController *)v37 view];
-  [v38 addSubview:?];
-  MEMORY[0x277D82BD8](v36);
-  MEMORY[0x277D82BD8](v37);
-  v39 = [(CPSPointsOfInterestMapViewController *)v91 panViewController];
-  [(CPSPanViewController *)v39 didMoveToParentViewController:v91];
-  v68 = [(CPSPointsOfInterestMapViewController *)v91 panViewController];
-  v67 = [(CPSPanViewController *)v68 view];
-  v66 = [v67 topAnchor];
-  v65 = [(CPSPointsOfInterestMapViewController *)v91 view];
-  v64 = [v65 safeAreaLayoutGuide];
-  v63 = [v64 topAnchor];
-  v62 = [v66 constraintEqualToAnchor:?];
+  MEMORY[0x277D82BD8](templateEnvironment);
+  [location setPanDelegate:{selfCopy, MEMORY[0x277D82BD8](resourceProvider).n128_f64[0]}];
+  [(CPSPointsOfInterestMapViewController *)selfCopy setPanViewController:location];
+  panViewController = [(CPSPointsOfInterestMapViewController *)selfCopy panViewController];
+  [(CPSPanViewController *)panViewController willMoveToParentViewController:selfCopy];
+  panViewController2 = [(CPSPointsOfInterestMapViewController *)selfCopy panViewController];
+  [(CPSPointsOfInterestMapViewController *)selfCopy addChildViewController:?];
+  view = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  panViewController3 = [(CPSPointsOfInterestMapViewController *)selfCopy panViewController];
+  view2 = [(CPSPanViewController *)panViewController3 view];
+  [view addSubview:?];
+  MEMORY[0x277D82BD8](view2);
+  MEMORY[0x277D82BD8](panViewController3);
+  panViewController4 = [(CPSPointsOfInterestMapViewController *)selfCopy panViewController];
+  [(CPSPanViewController *)panViewController4 didMoveToParentViewController:selfCopy];
+  panViewController5 = [(CPSPointsOfInterestMapViewController *)selfCopy panViewController];
+  view3 = [(CPSPanViewController *)panViewController5 view];
+  topAnchor = [view3 topAnchor];
+  view4 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v62 = [topAnchor constraintEqualToAnchor:?];
   v95[0] = v62;
-  v61 = [(CPSPointsOfInterestMapViewController *)v91 panViewController];
-  v60 = [(CPSPanViewController *)v61 view];
-  v59 = [v60 bottomAnchor];
-  v58 = [(CPSPointsOfInterestMapViewController *)v91 view];
-  v57 = [v58 safeAreaLayoutGuide];
-  v56 = [v57 bottomAnchor];
-  v55 = [v59 constraintEqualToAnchor:?];
+  panViewController6 = [(CPSPointsOfInterestMapViewController *)selfCopy panViewController];
+  view5 = [(CPSPanViewController *)panViewController6 view];
+  bottomAnchor = [view5 bottomAnchor];
+  view6 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  safeAreaLayoutGuide2 = [view6 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+  v55 = [bottomAnchor constraintEqualToAnchor:?];
   v95[1] = v55;
-  v54 = [(CPSPointsOfInterestMapViewController *)v91 panViewController];
-  v53 = [(CPSPanViewController *)v54 view];
-  v52 = [v53 leftAnchor];
-  v51 = [(CPSPointsOfInterestMapViewController *)v91 view];
-  v50 = [v51 safeAreaLayoutGuide];
-  v49 = [v50 leftAnchor];
-  v48 = [v52 constraintEqualToAnchor:?];
+  panViewController7 = [(CPSPointsOfInterestMapViewController *)selfCopy panViewController];
+  view7 = [(CPSPanViewController *)panViewController7 view];
+  leftAnchor = [view7 leftAnchor];
+  view8 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  safeAreaLayoutGuide3 = [view8 safeAreaLayoutGuide];
+  leftAnchor2 = [safeAreaLayoutGuide3 leftAnchor];
+  v48 = [leftAnchor constraintEqualToAnchor:?];
   v95[2] = v48;
-  v47 = [(CPSPointsOfInterestMapViewController *)v91 panViewController];
-  v46 = [(CPSPanViewController *)v47 view];
-  v45 = [v46 rightAnchor];
-  v44 = [(CPSPointsOfInterestMapViewController *)v91 view];
-  v43 = [v44 safeAreaLayoutGuide];
-  v42 = [v43 rightAnchor];
-  v41 = [v45 constraintEqualToAnchor:?];
+  panViewController8 = [(CPSPointsOfInterestMapViewController *)selfCopy panViewController];
+  view9 = [(CPSPanViewController *)panViewController8 view];
+  rightAnchor = [view9 rightAnchor];
+  view10 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  safeAreaLayoutGuide4 = [view10 safeAreaLayoutGuide];
+  rightAnchor2 = [safeAreaLayoutGuide4 rightAnchor];
+  v41 = [rightAnchor constraintEqualToAnchor:?];
   v95[3] = v41;
   v40 = [MEMORY[0x277CBEA60] arrayWithObjects:v95 count:?];
   [v90[0] addObjectsFromArray:?];
   MEMORY[0x277D82BD8](v40);
   MEMORY[0x277D82BD8](v41);
-  MEMORY[0x277D82BD8](v42);
-  MEMORY[0x277D82BD8](v43);
-  MEMORY[0x277D82BD8](v44);
-  MEMORY[0x277D82BD8](v45);
-  MEMORY[0x277D82BD8](v46);
-  MEMORY[0x277D82BD8](v47);
+  MEMORY[0x277D82BD8](rightAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide4);
+  MEMORY[0x277D82BD8](view10);
+  MEMORY[0x277D82BD8](rightAnchor);
+  MEMORY[0x277D82BD8](view9);
+  MEMORY[0x277D82BD8](panViewController8);
   MEMORY[0x277D82BD8](v48);
-  MEMORY[0x277D82BD8](v49);
-  MEMORY[0x277D82BD8](v50);
-  MEMORY[0x277D82BD8](v51);
-  MEMORY[0x277D82BD8](v52);
-  MEMORY[0x277D82BD8](v53);
-  MEMORY[0x277D82BD8](v54);
+  MEMORY[0x277D82BD8](leftAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide3);
+  MEMORY[0x277D82BD8](view8);
+  MEMORY[0x277D82BD8](leftAnchor);
+  MEMORY[0x277D82BD8](view7);
+  MEMORY[0x277D82BD8](panViewController7);
   MEMORY[0x277D82BD8](v55);
-  MEMORY[0x277D82BD8](v56);
-  MEMORY[0x277D82BD8](v57);
-  MEMORY[0x277D82BD8](v58);
-  MEMORY[0x277D82BD8](v59);
-  MEMORY[0x277D82BD8](v60);
-  MEMORY[0x277D82BD8](v61);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide2);
+  MEMORY[0x277D82BD8](view6);
+  MEMORY[0x277D82BD8](bottomAnchor);
+  MEMORY[0x277D82BD8](view5);
+  MEMORY[0x277D82BD8](panViewController6);
   MEMORY[0x277D82BD8](v62);
-  MEMORY[0x277D82BD8](v63);
-  MEMORY[0x277D82BD8](v64);
-  MEMORY[0x277D82BD8](v65);
-  MEMORY[0x277D82BD8](v66);
-  MEMORY[0x277D82BD8](v67);
-  MEMORY[0x277D82BD8](v68);
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide);
+  MEMORY[0x277D82BD8](view4);
+  MEMORY[0x277D82BD8](topAnchor);
+  MEMORY[0x277D82BD8](view3);
+  MEMORY[0x277D82BD8](panViewController5);
   v69 = objc_alloc_init(CPSActionButton);
-  [(CPSPointsOfInterestMapViewController *)v91 setDonePanningButton:?];
-  v70 = [(CPSPointsOfInterestMapViewController *)v91 donePanningButton];
-  [(CPUITemplateButton *)v70 setDelegate:v91];
-  v71 = [(CPSPointsOfInterestMapViewController *)v91 donePanningButton];
-  [(CPSActionButton *)v71 setLayoutDelegate:v91];
-  v72 = [(CPSPointsOfInterestMapViewController *)v91 donePanningButton];
-  [(CPSActionButton *)v72 setTranslatesAutoresizingMaskIntoConstraints:0];
-  MEMORY[0x277D82BD8](v72);
+  [(CPSPointsOfInterestMapViewController *)selfCopy setDonePanningButton:?];
+  donePanningButton = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
+  [(CPUITemplateButton *)donePanningButton setDelegate:selfCopy];
+  donePanningButton2 = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
+  [(CPSActionButton *)donePanningButton2 setLayoutDelegate:selfCopy];
+  donePanningButton3 = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
+  [(CPSActionButton *)donePanningButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  MEMORY[0x277D82BD8](donePanningButton3);
   v74 = CPSLocalizedStringForKey(@"DONE");
-  v73 = [(CPSPointsOfInterestMapViewController *)v91 donePanningButton];
-  [(CPSActionButton *)v73 setButtonText:v74];
-  MEMORY[0x277D82BD8](v73);
-  v78 = [(CPSPointsOfInterestMapViewController *)v91 donePanningButton];
-  v77 = [(CPSActionButton *)v78 buttonText];
-  v94 = v77;
+  donePanningButton4 = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
+  [(CPSActionButton *)donePanningButton4 setButtonText:v74];
+  MEMORY[0x277D82BD8](donePanningButton4);
+  donePanningButton5 = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
+  buttonText = [(CPSActionButton *)donePanningButton5 buttonText];
+  v94 = buttonText;
   v76 = [MEMORY[0x277CBEA60] arrayWithObjects:&v94 count:1];
-  v75 = [(CPSPointsOfInterestMapViewController *)v91 donePanningButton];
-  [(CPSActionButton *)v75 setAccessibilityUserInputLabels:v76];
-  MEMORY[0x277D82BD8](v75);
+  donePanningButton6 = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
+  [(CPSActionButton *)donePanningButton6 setAccessibilityUserInputLabels:v76];
+  MEMORY[0x277D82BD8](donePanningButton6);
   MEMORY[0x277D82BD8](v76);
-  MEMORY[0x277D82BD8](v77);
-  v80 = [(CPSPointsOfInterestMapViewController *)v91 donePanningButton];
-  v79 = [MEMORY[0x277D75348] _carSystemFocusColor];
-  [CPSActionButton setTitleColor:v80 forState:"setTitleColor:forState:"];
-  MEMORY[0x277D82BD8](v79);
-  v82 = [(CPSPointsOfInterestMapViewController *)v91 donePanningButton];
-  v81 = [MEMORY[0x277D75348] _carSystemFocusLabelColor];
-  [CPSActionButton setTitleColor:v82 forState:"setTitleColor:forState:"];
-  MEMORY[0x277D82BD8](v81);
-  v84 = [(CPSPointsOfInterestMapViewController *)v91 view];
-  v83 = [(CPSPointsOfInterestMapViewController *)v91 donePanningButton];
-  [v84 addSubview:?];
-  MEMORY[0x277D82BD8](v83);
-  v85 = [(CPSPointsOfInterestMapViewController *)v91 donePanningButton];
-  [(CPSActionButton *)v85 setNeedsLayout];
-  v87 = [(CPSBaseEntityContentViewController *)v91 resourceProvider];
-  v86 = [(CPSEntityResourceProvider *)v87 templateEnvironment];
-  v88 = [(CPSTemplateEnvironment *)v86 rightHandDrive];
-  MEMORY[0x277D82BD8](v86);
-  *&v2 = MEMORY[0x277D82BD8](v87).n128_u64[0];
-  if (v88)
+  MEMORY[0x277D82BD8](buttonText);
+  donePanningButton7 = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
+  _carSystemFocusColor = [MEMORY[0x277D75348] _carSystemFocusColor];
+  [CPSActionButton setTitleColor:donePanningButton7 forState:"setTitleColor:forState:"];
+  MEMORY[0x277D82BD8](_carSystemFocusColor);
+  donePanningButton8 = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
+  _carSystemFocusLabelColor = [MEMORY[0x277D75348] _carSystemFocusLabelColor];
+  [CPSActionButton setTitleColor:donePanningButton8 forState:"setTitleColor:forState:"];
+  MEMORY[0x277D82BD8](_carSystemFocusLabelColor);
+  view11 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+  donePanningButton9 = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
+  [view11 addSubview:?];
+  MEMORY[0x277D82BD8](donePanningButton9);
+  donePanningButton10 = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
+  [(CPSActionButton *)donePanningButton10 setNeedsLayout];
+  resourceProvider2 = [(CPSBaseEntityContentViewController *)selfCopy resourceProvider];
+  templateEnvironment2 = [(CPSEntityResourceProvider *)resourceProvider2 templateEnvironment];
+  rightHandDrive = [(CPSTemplateEnvironment *)templateEnvironment2 rightHandDrive];
+  MEMORY[0x277D82BD8](templateEnvironment2);
+  *&v2 = MEMORY[0x277D82BD8](resourceProvider2).n128_u64[0];
+  if (rightHandDrive)
   {
-    v17 = [(CPSPointsOfInterestMapViewController *)v91 donePanningButton];
-    v16 = [(CPSActionButton *)v17 trailingAnchor];
-    v15 = [(CPSPointsOfInterestMapViewController *)v91 view];
-    v14 = [v15 safeAreaLayoutGuide];
-    v13 = [v14 trailingAnchor];
-    v12 = [v16 constraintEqualToAnchor:-8.0 constant:?];
+    donePanningButton11 = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
+    trailingAnchor = [(CPSActionButton *)donePanningButton11 trailingAnchor];
+    view12 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+    safeAreaLayoutGuide5 = [view12 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide5 trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:-8.0 constant:?];
     v92[0] = v12;
-    v11 = [(CPSPointsOfInterestMapViewController *)v91 donePanningButton];
-    v10 = [(CPSActionButton *)v11 topAnchor];
-    v9 = [(CPSPointsOfInterestMapViewController *)v91 view];
-    v8 = [v9 safeAreaLayoutGuide];
-    v7 = [v8 topAnchor];
-    v6 = [v10 constraintEqualToAnchor:8.0 constant:?];
+    donePanningButton12 = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
+    topAnchor3 = [(CPSActionButton *)donePanningButton12 topAnchor];
+    view13 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+    safeAreaLayoutGuide6 = [view13 safeAreaLayoutGuide];
+    topAnchor4 = [safeAreaLayoutGuide6 topAnchor];
+    v6 = [topAnchor3 constraintEqualToAnchor:8.0 constant:?];
     v92[1] = v6;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v92 count:2];
     [v90[0] addObjectsFromArray:?];
     MEMORY[0x277D82BD8](v5);
     MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](topAnchor4);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide6);
+    MEMORY[0x277D82BD8](view13);
+    MEMORY[0x277D82BD8](topAnchor3);
+    MEMORY[0x277D82BD8](donePanningButton12);
     MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v14);
-    MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v16);
-    v3 = MEMORY[0x277D82BD8](v17).n128_u64[0];
+    MEMORY[0x277D82BD8](trailingAnchor2);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide5);
+    MEMORY[0x277D82BD8](view12);
+    MEMORY[0x277D82BD8](trailingAnchor);
+    v3 = MEMORY[0x277D82BD8](donePanningButton11).n128_u64[0];
   }
 
   else
   {
-    v30 = [(CPSPointsOfInterestMapViewController *)v91 donePanningButton];
-    v29 = [(CPSActionButton *)v30 leadingAnchor];
-    v28 = [(CPSPointsOfInterestMapViewController *)v91 view];
-    v27 = [v28 safeAreaLayoutGuide];
-    v26 = [v27 leadingAnchor];
-    v25 = [v29 constraintEqualToAnchor:? constant:?];
+    donePanningButton13 = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
+    leadingAnchor = [(CPSActionButton *)donePanningButton13 leadingAnchor];
+    view14 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+    safeAreaLayoutGuide7 = [view14 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide7 leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToAnchor:? constant:?];
     v93[0] = v25;
-    v24 = [(CPSPointsOfInterestMapViewController *)v91 donePanningButton];
-    v23 = [(CPSActionButton *)v24 topAnchor];
-    v22 = [(CPSPointsOfInterestMapViewController *)v91 view];
-    v21 = [v22 safeAreaLayoutGuide];
-    v20 = [v21 topAnchor];
-    v19 = [v23 constraintEqualToAnchor:8.0 constant:?];
+    donePanningButton14 = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
+    topAnchor5 = [(CPSActionButton *)donePanningButton14 topAnchor];
+    view15 = [(CPSPointsOfInterestMapViewController *)selfCopy view];
+    safeAreaLayoutGuide8 = [view15 safeAreaLayoutGuide];
+    topAnchor6 = [safeAreaLayoutGuide8 topAnchor];
+    v19 = [topAnchor5 constraintEqualToAnchor:8.0 constant:?];
     v93[1] = v19;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v93 count:2];
     [v90[0] addObjectsFromArray:?];
     MEMORY[0x277D82BD8](v18);
     MEMORY[0x277D82BD8](v19);
-    MEMORY[0x277D82BD8](v20);
-    MEMORY[0x277D82BD8](v21);
-    MEMORY[0x277D82BD8](v22);
-    MEMORY[0x277D82BD8](v23);
-    MEMORY[0x277D82BD8](v24);
+    MEMORY[0x277D82BD8](topAnchor6);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide8);
+    MEMORY[0x277D82BD8](view15);
+    MEMORY[0x277D82BD8](topAnchor5);
+    MEMORY[0x277D82BD8](donePanningButton14);
     MEMORY[0x277D82BD8](v25);
-    MEMORY[0x277D82BD8](v26);
-    MEMORY[0x277D82BD8](v27);
-    MEMORY[0x277D82BD8](v28);
-    MEMORY[0x277D82BD8](v29);
-    v3 = MEMORY[0x277D82BD8](v30).n128_u64[0];
+    MEMORY[0x277D82BD8](leadingAnchor2);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide7);
+    MEMORY[0x277D82BD8](view14);
+    MEMORY[0x277D82BD8](leadingAnchor);
+    v3 = MEMORY[0x277D82BD8](donePanningButton13).n128_u64[0];
   }
 
   [MEMORY[0x277CCAAD0] activateConstraints:{v90[0], *&v3, v90}];
@@ -2098,18 +2098,18 @@ uint64_t __78__CPSPointsOfInterestMapViewController_locationManagerDidChangeAuth
   objc_storeStrong(v4, 0);
 }
 
-- (void)didSelectButton:(id)a3
+- (void)didSelectButton:(id)button
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, button);
   v5 = location[0];
-  v4 = [(CPSPointsOfInterestMapViewController *)v7 donePanningButton];
-  *&v3 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v5 == v4)
+  donePanningButton = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
+  *&v3 = MEMORY[0x277D82BD8](donePanningButton).n128_u64[0];
+  if (v5 == donePanningButton)
   {
-    [(CPSPointsOfInterestMapViewController *)v7 dismissPanView:location[0], v3];
+    [(CPSPointsOfInterestMapViewController *)selfCopy dismissPanView:location[0], v3];
   }
 
   objc_storeStrong(location, 0);
@@ -2123,11 +2123,11 @@ uint64_t __78__CPSPointsOfInterestMapViewController_locationManagerDidChangeAuth
   return result;
 }
 
-- (void)panBeganWithDirection:(int64_t)a3
+- (void)panBeganWithDirection:(int64_t)direction
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  directionCopy = direction;
   v3 = MEMORY[0x277CBEBB8];
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
@@ -2135,9 +2135,9 @@ uint64_t __78__CPSPointsOfInterestMapViewController_locationManagerDidChangeAuth
   v8 = __62__CPSPointsOfInterestMapViewController_panBeganWithDirection___block_invoke;
   v9 = &unk_278D92520;
   v10[0] = MEMORY[0x277D82BE0](self);
-  v10[1] = v11;
+  v10[1] = directionCopy;
   v4 = [v3 scheduledTimerWithTimeInterval:1 repeats:0.016 block:?];
-  [(CPSPointsOfInterestMapViewController *)v13 setPanTimer:?];
+  [(CPSPointsOfInterestMapViewController *)selfCopy setPanTimer:?];
   MEMORY[0x277D82BD8](v4);
   objc_storeStrong(v10, 0);
 }
@@ -2182,29 +2182,29 @@ void __62__CPSPointsOfInterestMapViewController_panBeganWithDirection___block_in
   objc_storeStrong(location, 0);
 }
 
-- (void)panEndedWithDirection:(int64_t)a3
+- (void)panEndedWithDirection:(int64_t)direction
 {
-  v3 = [(CPSPointsOfInterestMapViewController *)self panTimer];
-  [(NSTimer *)v3 invalidate];
-  [(CPSPointsOfInterestMapViewController *)self setPanTimer:0, MEMORY[0x277D82BD8](v3).n128_f64[0]];
+  panTimer = [(CPSPointsOfInterestMapViewController *)self panTimer];
+  [(NSTimer *)panTimer invalidate];
+  [(CPSPointsOfInterestMapViewController *)self setPanTimer:0, MEMORY[0x277D82BD8](panTimer).n128_f64[0]];
   [(CPSPointsOfInterestMapViewController *)self _notifyRegionDidChange];
 }
 
-- (void)panWithDirection:(int64_t)a3
+- (void)panWithDirection:(int64_t)direction
 {
-  v23 = self;
+  selfCopy = self;
   v22 = a2;
-  v21 = a3;
-  v9 = [(CPSPointsOfInterestMapViewController *)self mapView];
-  v8 = [(MKMapView *)v9 camera];
-  v20 = [(MKMapCamera *)v8 copy];
-  MEMORY[0x277D82BD8](v8);
+  directionCopy = direction;
+  mapView = [(CPSPointsOfInterestMapViewController *)self mapView];
+  camera = [(MKMapView *)mapView camera];
+  v20 = [(MKMapCamera *)camera copy];
+  MEMORY[0x277D82BD8](camera);
   [v20 centerCoordinate];
   *&v19 = v3;
   *(&v19 + 1) = v4;
   [v20 altitude];
   v18 = 0.003 * (v5 / 1000.0);
-  switch(v21)
+  switch(directionCopy)
   {
     case 1:
       *(&v19 + 1) = *(&v19 + 1) - v18;
@@ -2223,52 +2223,52 @@ void __62__CPSPointsOfInterestMapViewController_panBeganWithDirection___block_in
   v17 = v19;
   v16 = v19;
   [v20 setCenterCoordinate:v19];
-  v7 = [(CPSPointsOfInterestMapViewController *)v23 mapView];
+  mapView2 = [(CPSPointsOfInterestMapViewController *)selfCopy mapView];
   v6 = v20;
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
   v13 = __57__CPSPointsOfInterestMapViewController_panWithDirection___block_invoke;
   v14 = &unk_278D913E8;
-  v15 = MEMORY[0x277D82BE0](v23);
-  [(MKMapView *)v7 _CPS_setCamera:v6 animated:1 completionBlock:&v10];
-  MEMORY[0x277D82BD8](v7);
+  v15 = MEMORY[0x277D82BE0](selfCopy);
+  [(MKMapView *)mapView2 _CPS_setCamera:v6 animated:1 completionBlock:&v10];
+  MEMORY[0x277D82BD8](mapView2);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v20, 0);
 }
 
-- (void)dismissPanView:(id)a3
+- (void)dismissPanView:(id)view
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v7 = MEMORY[0x277D75D18];
-  v9 = [(CPSPointsOfInterestMapViewController *)v24 pickerViewController];
-  v8 = [(CPSPointsOfInterestPickerViewController *)v9 view];
+  pickerViewController = [(CPSPointsOfInterestMapViewController *)selfCopy pickerViewController];
+  view = [(CPSPointsOfInterestPickerViewController *)pickerViewController view];
   v17 = MEMORY[0x277D85DD0];
   v18 = -1073741824;
   v19 = 0;
   v20 = __55__CPSPointsOfInterestMapViewController_dismissPanView___block_invoke;
   v21 = &unk_278D913E8;
-  v22 = MEMORY[0x277D82BE0](v24);
+  v22 = MEMORY[0x277D82BE0](selfCopy);
   v11 = MEMORY[0x277D85DD0];
   v12 = -1073741824;
   v13 = 0;
   v14 = __55__CPSPointsOfInterestMapViewController_dismissPanView___block_invoke_2;
   v15 = &unk_278D91398;
-  v16 = MEMORY[0x277D82BE0](v24);
-  [v7 transitionWithView:v8 duration:0x10000 options:&v17 animations:&v11 completion:0.25];
-  MEMORY[0x277D82BD8](v8);
-  *&v3 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-  v10 = [(CPSPointsOfInterestMapViewController *)v24 panCompletionHandler];
-  *&v4 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-  if (v10)
+  v16 = MEMORY[0x277D82BE0](selfCopy);
+  [v7 transitionWithView:view duration:0x10000 options:&v17 animations:&v11 completion:0.25];
+  MEMORY[0x277D82BD8](view);
+  *&v3 = MEMORY[0x277D82BD8](pickerViewController).n128_u64[0];
+  panCompletionHandler = [(CPSPointsOfInterestMapViewController *)selfCopy panCompletionHandler];
+  *&v4 = MEMORY[0x277D82BD8](panCompletionHandler).n128_u64[0];
+  if (panCompletionHandler)
   {
-    v6 = [(CPSPointsOfInterestMapViewController *)v24 panCompletionHandler];
-    v6[2]();
-    *&v5 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-    [(CPSPointsOfInterestMapViewController *)v24 setPanCompletionHandler:0, v5];
+    panCompletionHandler2 = [(CPSPointsOfInterestMapViewController *)selfCopy panCompletionHandler];
+    panCompletionHandler2[2]();
+    *&v5 = MEMORY[0x277D82BD8](panCompletionHandler2).n128_u64[0];
+    [(CPSPointsOfInterestMapViewController *)selfCopy setPanCompletionHandler:0, v5];
   }
 
   objc_storeStrong(&v16, 0);
@@ -2314,62 +2314,62 @@ uint64_t __55__CPSPointsOfInterestMapViewController_dismissPanView___block_invok
   return [*(a1 + 32) _updateFocusedItem];
 }
 
-- (void)picker:(id)a3 didSelectModel:(id)a4
+- (void)picker:(id)picker didSelectModel:(id)model
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, picker);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  [(CPSPointsOfInterestMapViewController *)v11 highlightModel:v9];
-  v8 = [(CPSBaseEntityContentViewController *)v11 resourceProvider];
-  v7 = [(CPSEntityResourceProvider *)v8 actionDelegate];
-  v5 = v11;
-  v6 = [v9 identifier];
-  [(CPSEntityActionDelegate *)v7 entityContentViewController:v5 didSelectPointOfInterestWithIdentifier:?];
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
+  objc_storeStrong(&v9, model);
+  [(CPSPointsOfInterestMapViewController *)selfCopy highlightModel:v9];
+  resourceProvider = [(CPSBaseEntityContentViewController *)selfCopy resourceProvider];
+  actionDelegate = [(CPSEntityResourceProvider *)resourceProvider actionDelegate];
+  v5 = selfCopy;
+  identifier = [v9 identifier];
+  [(CPSEntityActionDelegate *)actionDelegate entityContentViewController:v5 didSelectPointOfInterestWithIdentifier:?];
+  MEMORY[0x277D82BD8](identifier);
+  MEMORY[0x277D82BD8](actionDelegate);
+  MEMORY[0x277D82BD8](resourceProvider);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)picker:(id)a3 didDeselectModel:(id)a4
+- (void)picker:(id)picker didDeselectModel:(id)model
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, picker);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(CPSPointsOfInterestMapViewController *)v7 unhighlightModel:v5];
+  objc_storeStrong(&v5, model);
+  [(CPSPointsOfInterestMapViewController *)selfCopy unhighlightModel:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)picker:(id)a3 didHighlightModel:(id)a4
+- (void)picker:(id)picker didHighlightModel:(id)model
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, picker);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(CPSPointsOfInterestMapViewController *)v7 highlightModel:v5];
+  objc_storeStrong(&v5, model);
+  [(CPSPointsOfInterestMapViewController *)selfCopy highlightModel:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)picker:(id)a3 didUnhighlightModel:(id)a4
+- (void)picker:(id)picker didUnhighlightModel:(id)model
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, picker);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(CPSPointsOfInterestMapViewController *)v7 unhighlightModel:v5];
+  objc_storeStrong(&v5, model);
+  [(CPSPointsOfInterestMapViewController *)selfCopy unhighlightModel:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
@@ -2377,12 +2377,12 @@ uint64_t __55__CPSPointsOfInterestMapViewController_dismissPanView___block_invok
 - (id)_linearFocusMovementSequences
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v4 = objc_alloc(MEMORY[0x277D75F88]);
-  v5 = [(CPSPointsOfInterestMapViewController *)v8 _linearFocusItems];
+  _linearFocusItems = [(CPSPointsOfInterestMapViewController *)selfCopy _linearFocusItems];
   v7[0] = [v4 initWithItems:? loops:? restrictEnteringSequence:?];
-  *&v2 = MEMORY[0x277D82BD8](v5).n128_u64[0];
+  *&v2 = MEMORY[0x277D82BD8](_linearFocusItems).n128_u64[0];
   v9[0] = v7[0];
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:{1, v2}];
   objc_storeStrong(v7, 0);
@@ -2392,221 +2392,221 @@ uint64_t __55__CPSPointsOfInterestMapViewController_dismissPanView___block_invok
 
 - (id)_linearFocusItems
 {
-  v131 = self;
+  selfCopy = self;
   v130[1] = a2;
   v130[0] = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v121 = [(CPSPointsOfInterestMapViewController *)v131 panViewController];
-  v122 = [(CPSPanViewController *)v121 view];
+  panViewController = [(CPSPointsOfInterestMapViewController *)selfCopy panViewController];
+  view = [(CPSPanViewController *)panViewController view];
   v127 = 0;
   v125 = 0;
   v123 = 0;
-  if (v122)
+  if (view)
   {
-    v128 = [(CPSPointsOfInterestMapViewController *)v131 panViewController];
+    panViewController2 = [(CPSPointsOfInterestMapViewController *)selfCopy panViewController];
     v127 = 1;
-    v126 = [(CPSPanViewController *)v128 view];
+    view2 = [(CPSPanViewController *)panViewController2 view];
     v125 = 1;
-    v123 = [v126 isHidden] == 0;
+    v123 = [view2 isHidden] == 0;
   }
 
   if (v125)
   {
-    MEMORY[0x277D82BD8](v126);
+    MEMORY[0x277D82BD8](view2);
   }
 
   if (v127)
   {
-    MEMORY[0x277D82BD8](v128);
+    MEMORY[0x277D82BD8](panViewController2);
   }
 
-  MEMORY[0x277D82BD8](v122);
-  *&v2 = MEMORY[0x277D82BD8](v121).n128_u64[0];
+  MEMORY[0x277D82BD8](view);
+  *&v2 = MEMORY[0x277D82BD8](panViewController).n128_u64[0];
   v129 = v123;
   if (v123)
   {
-    v117 = [(CPSPointsOfInterestMapViewController *)v131 panViewController];
-    location = [(CPSPanViewController *)v117 panView];
-    v119 = [(CPSBaseEntityContentViewController *)v131 resourceProvider];
-    v118 = [(CPSEntityResourceProvider *)v119 templateEnvironment];
-    v120 = [(CPSTemplateEnvironment *)v118 rightHandDrive];
-    MEMORY[0x277D82BD8](v118);
-    *&v3 = MEMORY[0x277D82BD8](v119).n128_u64[0];
-    if (v120)
+    panViewController3 = [(CPSPointsOfInterestMapViewController *)selfCopy panViewController];
+    location = [(CPSPanViewController *)panViewController3 panView];
+    resourceProvider = [(CPSBaseEntityContentViewController *)selfCopy resourceProvider];
+    templateEnvironment = [(CPSEntityResourceProvider *)resourceProvider templateEnvironment];
+    rightHandDrive = [(CPSTemplateEnvironment *)templateEnvironment rightHandDrive];
+    MEMORY[0x277D82BD8](templateEnvironment);
+    *&v3 = MEMORY[0x277D82BD8](resourceProvider).n128_u64[0];
+    if (rightHandDrive)
     {
-      v93 = [location panRightButton];
-      v13 = MEMORY[0x277D82BD8](v93).n128_u64[0];
-      if (v93)
+      panRightButton = [location panRightButton];
+      v13 = MEMORY[0x277D82BD8](panRightButton).n128_u64[0];
+      if (panRightButton)
       {
-        v92 = [location panRightButton];
+        panRightButton2 = [location panRightButton];
         [v130[0] addObject:?];
-        v13 = MEMORY[0x277D82BD8](v92).n128_u64[0];
+        v13 = MEMORY[0x277D82BD8](panRightButton2).n128_u64[0];
       }
 
-      v91 = [location panDownButton];
-      v14 = MEMORY[0x277D82BD8](v91).n128_u64[0];
-      if (v91)
+      panDownButton = [location panDownButton];
+      v14 = MEMORY[0x277D82BD8](panDownButton).n128_u64[0];
+      if (panDownButton)
       {
-        v90 = [location panDownButton];
+        panDownButton2 = [location panDownButton];
         [v130[0] addObject:?];
-        v14 = MEMORY[0x277D82BD8](v90).n128_u64[0];
+        v14 = MEMORY[0x277D82BD8](panDownButton2).n128_u64[0];
       }
 
-      v88 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-      v89 = [(CPSPointsOfInterestMapControlsViewController *)v88 zoomOutButton];
-      MEMORY[0x277D82BD8](v89);
-      v15 = MEMORY[0x277D82BD8](v88).n128_u64[0];
-      if (v89)
+      mapControlsViewController = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+      zoomOutButton = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController zoomOutButton];
+      MEMORY[0x277D82BD8](zoomOutButton);
+      v15 = MEMORY[0x277D82BD8](mapControlsViewController).n128_u64[0];
+      if (zoomOutButton)
       {
-        v87 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-        v86 = [(CPSPointsOfInterestMapControlsViewController *)v87 zoomOutButton];
+        mapControlsViewController2 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+        zoomOutButton2 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController2 zoomOutButton];
         [v130[0] addObject:?];
-        MEMORY[0x277D82BD8](v86);
-        v15 = MEMORY[0x277D82BD8](v87).n128_u64[0];
+        MEMORY[0x277D82BD8](zoomOutButton2);
+        v15 = MEMORY[0x277D82BD8](mapControlsViewController2).n128_u64[0];
       }
 
-      v84 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-      v85 = [(CPSPointsOfInterestMapControlsViewController *)v84 zoomInButton];
-      MEMORY[0x277D82BD8](v85);
-      v16 = MEMORY[0x277D82BD8](v84).n128_u64[0];
-      if (v85)
+      mapControlsViewController3 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+      zoomInButton = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController3 zoomInButton];
+      MEMORY[0x277D82BD8](zoomInButton);
+      v16 = MEMORY[0x277D82BD8](mapControlsViewController3).n128_u64[0];
+      if (zoomInButton)
       {
-        v83 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-        v82 = [(CPSPointsOfInterestMapControlsViewController *)v83 zoomInButton];
+        mapControlsViewController4 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+        zoomInButton2 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController4 zoomInButton];
         [v130[0] addObject:?];
-        MEMORY[0x277D82BD8](v82);
-        v16 = MEMORY[0x277D82BD8](v83).n128_u64[0];
+        MEMORY[0x277D82BD8](zoomInButton2);
+        v16 = MEMORY[0x277D82BD8](mapControlsViewController4).n128_u64[0];
       }
 
-      v81 = [location panLeftButton];
-      v17 = MEMORY[0x277D82BD8](v81).n128_u64[0];
-      if (v81)
+      panLeftButton = [location panLeftButton];
+      v17 = MEMORY[0x277D82BD8](panLeftButton).n128_u64[0];
+      if (panLeftButton)
       {
-        v80 = [location panLeftButton];
+        panLeftButton2 = [location panLeftButton];
         [v130[0] addObject:?];
-        v17 = MEMORY[0x277D82BD8](v80).n128_u64[0];
+        v17 = MEMORY[0x277D82BD8](panLeftButton2).n128_u64[0];
       }
 
-      v78 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-      v79 = [(CPSPointsOfInterestMapControlsViewController *)v78 centerButton];
-      MEMORY[0x277D82BD8](v79);
-      v18 = MEMORY[0x277D82BD8](v78).n128_u64[0];
-      if (v79)
+      mapControlsViewController5 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+      centerButton = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController5 centerButton];
+      MEMORY[0x277D82BD8](centerButton);
+      v18 = MEMORY[0x277D82BD8](mapControlsViewController5).n128_u64[0];
+      if (centerButton)
       {
-        v77 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-        v76 = [(CPSPointsOfInterestMapControlsViewController *)v77 centerButton];
+        mapControlsViewController6 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+        centerButton2 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController6 centerButton];
         [v130[0] addObject:?];
-        MEMORY[0x277D82BD8](v76);
-        v18 = MEMORY[0x277D82BD8](v77).n128_u64[0];
+        MEMORY[0x277D82BD8](centerButton2);
+        v18 = MEMORY[0x277D82BD8](mapControlsViewController6).n128_u64[0];
       }
 
-      v75 = [location panUpButton];
-      v19 = MEMORY[0x277D82BD8](v75).n128_u64[0];
-      if (v75)
+      panUpButton = [location panUpButton];
+      v19 = MEMORY[0x277D82BD8](panUpButton).n128_u64[0];
+      if (panUpButton)
       {
-        v74 = [location panUpButton];
+        panUpButton2 = [location panUpButton];
         [v130[0] addObject:?];
-        v19 = MEMORY[0x277D82BD8](v74).n128_u64[0];
+        v19 = MEMORY[0x277D82BD8](panUpButton2).n128_u64[0];
       }
 
-      v72 = [(CPSPointsOfInterestMapViewController *)v131 donePanningButton];
-      [(CPSActionButton *)v72 alpha];
+      donePanningButton = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
+      [(CPSActionButton *)donePanningButton alpha];
       v73 = v20;
-      MEMORY[0x277D82BD8](v72);
+      MEMORY[0x277D82BD8](donePanningButton);
       if (v73 == 1.0)
       {
-        v71 = [(CPSPointsOfInterestMapViewController *)v131 donePanningButton];
+        donePanningButton2 = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
         [v130[0] addObject:?];
-        MEMORY[0x277D82BD8](v71);
+        MEMORY[0x277D82BD8](donePanningButton2);
       }
     }
 
     else
     {
-      v115 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-      v116 = [(CPSPointsOfInterestMapControlsViewController *)v115 centerButton];
-      MEMORY[0x277D82BD8](v116);
-      v4 = MEMORY[0x277D82BD8](v115).n128_u64[0];
-      if (v116)
+      mapControlsViewController7 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+      centerButton3 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController7 centerButton];
+      MEMORY[0x277D82BD8](centerButton3);
+      v4 = MEMORY[0x277D82BD8](mapControlsViewController7).n128_u64[0];
+      if (centerButton3)
       {
-        v114 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-        v113 = [(CPSPointsOfInterestMapControlsViewController *)v114 centerButton];
+        mapControlsViewController8 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+        centerButton4 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController8 centerButton];
         [v130[0] addObject:?];
-        MEMORY[0x277D82BD8](v113);
-        v4 = MEMORY[0x277D82BD8](v114).n128_u64[0];
+        MEMORY[0x277D82BD8](centerButton4);
+        v4 = MEMORY[0x277D82BD8](mapControlsViewController8).n128_u64[0];
       }
 
-      v112 = [location panRightButton];
-      v5 = MEMORY[0x277D82BD8](v112).n128_u64[0];
-      if (v112)
+      panRightButton3 = [location panRightButton];
+      v5 = MEMORY[0x277D82BD8](panRightButton3).n128_u64[0];
+      if (panRightButton3)
       {
-        v111 = [location panRightButton];
+        panRightButton4 = [location panRightButton];
         [v130[0] addObject:?];
-        v5 = MEMORY[0x277D82BD8](v111).n128_u64[0];
+        v5 = MEMORY[0x277D82BD8](panRightButton4).n128_u64[0];
       }
 
-      v109 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-      v110 = [(CPSPointsOfInterestMapControlsViewController *)v109 zoomInButton];
-      MEMORY[0x277D82BD8](v110);
-      v6 = MEMORY[0x277D82BD8](v109).n128_u64[0];
-      if (v110)
+      mapControlsViewController9 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+      zoomInButton3 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController9 zoomInButton];
+      MEMORY[0x277D82BD8](zoomInButton3);
+      v6 = MEMORY[0x277D82BD8](mapControlsViewController9).n128_u64[0];
+      if (zoomInButton3)
       {
-        v108 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-        v107 = [(CPSPointsOfInterestMapControlsViewController *)v108 zoomInButton];
+        mapControlsViewController10 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+        zoomInButton4 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController10 zoomInButton];
         [v130[0] addObject:?];
-        MEMORY[0x277D82BD8](v107);
-        v6 = MEMORY[0x277D82BD8](v108).n128_u64[0];
+        MEMORY[0x277D82BD8](zoomInButton4);
+        v6 = MEMORY[0x277D82BD8](mapControlsViewController10).n128_u64[0];
       }
 
-      v105 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-      v106 = [(CPSPointsOfInterestMapControlsViewController *)v105 zoomOutButton];
-      MEMORY[0x277D82BD8](v106);
-      v7 = MEMORY[0x277D82BD8](v105).n128_u64[0];
-      if (v106)
+      mapControlsViewController11 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+      zoomOutButton3 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController11 zoomOutButton];
+      MEMORY[0x277D82BD8](zoomOutButton3);
+      v7 = MEMORY[0x277D82BD8](mapControlsViewController11).n128_u64[0];
+      if (zoomOutButton3)
       {
-        v104 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-        v103 = [(CPSPointsOfInterestMapControlsViewController *)v104 zoomOutButton];
+        mapControlsViewController12 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+        zoomOutButton4 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController12 zoomOutButton];
         [v130[0] addObject:?];
-        MEMORY[0x277D82BD8](v103);
-        v7 = MEMORY[0x277D82BD8](v104).n128_u64[0];
+        MEMORY[0x277D82BD8](zoomOutButton4);
+        v7 = MEMORY[0x277D82BD8](mapControlsViewController12).n128_u64[0];
       }
 
-      v102 = [location panDownButton];
-      v8 = MEMORY[0x277D82BD8](v102).n128_u64[0];
-      if (v102)
+      panDownButton3 = [location panDownButton];
+      v8 = MEMORY[0x277D82BD8](panDownButton3).n128_u64[0];
+      if (panDownButton3)
       {
-        v101 = [location panDownButton];
+        panDownButton4 = [location panDownButton];
         [v130[0] addObject:?];
-        v8 = MEMORY[0x277D82BD8](v101).n128_u64[0];
+        v8 = MEMORY[0x277D82BD8](panDownButton4).n128_u64[0];
       }
 
-      v100 = [location panLeftButton];
-      v9 = MEMORY[0x277D82BD8](v100).n128_u64[0];
-      if (v100)
+      panLeftButton3 = [location panLeftButton];
+      v9 = MEMORY[0x277D82BD8](panLeftButton3).n128_u64[0];
+      if (panLeftButton3)
       {
-        v99 = [location panLeftButton];
+        panLeftButton4 = [location panLeftButton];
         [v130[0] addObject:?];
-        v9 = MEMORY[0x277D82BD8](v99).n128_u64[0];
+        v9 = MEMORY[0x277D82BD8](panLeftButton4).n128_u64[0];
       }
 
-      v97 = [(CPSPointsOfInterestMapViewController *)v131 donePanningButton];
-      [(CPSActionButton *)v97 alpha];
+      donePanningButton3 = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
+      [(CPSActionButton *)donePanningButton3 alpha];
       v98 = v10;
-      MEMORY[0x277D82BD8](v97);
+      MEMORY[0x277D82BD8](donePanningButton3);
       v11 = v98;
       if (v98 == 1.0)
       {
-        v96 = [(CPSPointsOfInterestMapViewController *)v131 donePanningButton];
+        donePanningButton4 = [(CPSPointsOfInterestMapViewController *)selfCopy donePanningButton];
         [v130[0] addObject:?];
-        *&v11 = MEMORY[0x277D82BD8](v96).n128_u64[0];
+        *&v11 = MEMORY[0x277D82BD8](donePanningButton4).n128_u64[0];
       }
 
-      v95 = [location panUpButton];
-      *&v12 = MEMORY[0x277D82BD8](v95).n128_u64[0];
-      if (v95)
+      panUpButton3 = [location panUpButton];
+      *&v12 = MEMORY[0x277D82BD8](panUpButton3).n128_u64[0];
+      if (panUpButton3)
       {
-        v94 = [location panUpButton];
+        panUpButton4 = [location panUpButton];
         [v130[0] addObject:?];
-        MEMORY[0x277D82BD8](v94);
+        MEMORY[0x277D82BD8](panUpButton4);
       }
     }
 
@@ -2615,128 +2615,128 @@ uint64_t __55__CPSPointsOfInterestMapViewController_dismissPanView___block_invok
 
   else
   {
-    v69 = [(CPSBaseEntityContentViewController *)v131 resourceProvider];
-    v68 = [(CPSEntityResourceProvider *)v69 templateEnvironment];
-    v70 = [(CPSTemplateEnvironment *)v68 rightHandDrive];
-    MEMORY[0x277D82BD8](v68);
-    *&v21 = MEMORY[0x277D82BD8](v69).n128_u64[0];
-    if (v70)
+    resourceProvider2 = [(CPSBaseEntityContentViewController *)selfCopy resourceProvider];
+    templateEnvironment2 = [(CPSEntityResourceProvider *)resourceProvider2 templateEnvironment];
+    rightHandDrive2 = [(CPSTemplateEnvironment *)templateEnvironment2 rightHandDrive];
+    MEMORY[0x277D82BD8](templateEnvironment2);
+    *&v21 = MEMORY[0x277D82BD8](resourceProvider2).n128_u64[0];
+    if (rightHandDrive2)
     {
-      v66 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-      v67 = [(CPSPointsOfInterestMapControlsViewController *)v66 centerButton];
-      MEMORY[0x277D82BD8](v67);
-      v22 = MEMORY[0x277D82BD8](v66).n128_u64[0];
-      if (v67)
+      mapControlsViewController13 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+      centerButton5 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController13 centerButton];
+      MEMORY[0x277D82BD8](centerButton5);
+      v22 = MEMORY[0x277D82BD8](mapControlsViewController13).n128_u64[0];
+      if (centerButton5)
       {
-        v65 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-        v64 = [(CPSPointsOfInterestMapControlsViewController *)v65 centerButton];
+        mapControlsViewController14 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+        centerButton6 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController14 centerButton];
         [v130[0] addObject:?];
-        MEMORY[0x277D82BD8](v64);
-        v22 = MEMORY[0x277D82BD8](v65).n128_u64[0];
+        MEMORY[0x277D82BD8](centerButton6);
+        v22 = MEMORY[0x277D82BD8](mapControlsViewController14).n128_u64[0];
       }
 
-      v62 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-      v63 = [(CPSPointsOfInterestMapControlsViewController *)v62 panButton];
-      MEMORY[0x277D82BD8](v63);
-      v23 = MEMORY[0x277D82BD8](v62).n128_u64[0];
-      if (v63)
+      mapControlsViewController15 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+      panButton = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController15 panButton];
+      MEMORY[0x277D82BD8](panButton);
+      v23 = MEMORY[0x277D82BD8](mapControlsViewController15).n128_u64[0];
+      if (panButton)
       {
-        v61 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-        v60 = [(CPSPointsOfInterestMapControlsViewController *)v61 panButton];
+        mapControlsViewController16 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+        panButton2 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController16 panButton];
         [v130[0] addObject:?];
-        MEMORY[0x277D82BD8](v60);
-        v23 = MEMORY[0x277D82BD8](v61).n128_u64[0];
+        MEMORY[0x277D82BD8](panButton2);
+        v23 = MEMORY[0x277D82BD8](mapControlsViewController16).n128_u64[0];
       }
 
-      v58 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-      v59 = [(CPSPointsOfInterestMapControlsViewController *)v58 zoomInButton];
-      MEMORY[0x277D82BD8](v59);
-      v24 = MEMORY[0x277D82BD8](v58).n128_u64[0];
-      if (v59)
+      mapControlsViewController17 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+      zoomInButton5 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController17 zoomInButton];
+      MEMORY[0x277D82BD8](zoomInButton5);
+      v24 = MEMORY[0x277D82BD8](mapControlsViewController17).n128_u64[0];
+      if (zoomInButton5)
       {
-        v57 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-        v56 = [(CPSPointsOfInterestMapControlsViewController *)v57 zoomInButton];
+        mapControlsViewController18 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+        zoomInButton6 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController18 zoomInButton];
         [v130[0] addObject:?];
-        MEMORY[0x277D82BD8](v56);
-        v24 = MEMORY[0x277D82BD8](v57).n128_u64[0];
+        MEMORY[0x277D82BD8](zoomInButton6);
+        v24 = MEMORY[0x277D82BD8](mapControlsViewController18).n128_u64[0];
       }
 
-      v54 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-      v55 = [(CPSPointsOfInterestMapControlsViewController *)v54 zoomOutButton];
-      MEMORY[0x277D82BD8](v55);
-      v25 = MEMORY[0x277D82BD8](v54).n128_u64[0];
-      if (v55)
+      mapControlsViewController19 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+      zoomOutButton5 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController19 zoomOutButton];
+      MEMORY[0x277D82BD8](zoomOutButton5);
+      v25 = MEMORY[0x277D82BD8](mapControlsViewController19).n128_u64[0];
+      if (zoomOutButton5)
       {
-        v53 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-        v52 = [(CPSPointsOfInterestMapControlsViewController *)v53 zoomOutButton];
+        mapControlsViewController20 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+        zoomOutButton6 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController20 zoomOutButton];
         [v130[0] addObject:?];
-        MEMORY[0x277D82BD8](v52);
-        v25 = MEMORY[0x277D82BD8](v53).n128_u64[0];
+        MEMORY[0x277D82BD8](zoomOutButton6);
+        v25 = MEMORY[0x277D82BD8](mapControlsViewController20).n128_u64[0];
       }
 
-      v51 = [(CPSPointsOfInterestMapViewController *)v131 pickerViewController];
-      v50 = [(CPSPointsOfInterestPickerViewController *)v51 _linearFocusItems];
+      pickerViewController = [(CPSPointsOfInterestMapViewController *)selfCopy pickerViewController];
+      _linearFocusItems = [(CPSPointsOfInterestPickerViewController *)pickerViewController _linearFocusItems];
       [v130[0] addObjectsFromArray:?];
-      MEMORY[0x277D82BD8](v50);
-      MEMORY[0x277D82BD8](v51);
+      MEMORY[0x277D82BD8](_linearFocusItems);
+      MEMORY[0x277D82BD8](pickerViewController);
     }
 
     else
     {
-      v47 = [(CPSPointsOfInterestMapViewController *)v131 pickerViewController];
-      v46 = [(CPSPointsOfInterestPickerViewController *)v47 _linearFocusItems];
+      pickerViewController2 = [(CPSPointsOfInterestMapViewController *)selfCopy pickerViewController];
+      _linearFocusItems2 = [(CPSPointsOfInterestPickerViewController *)pickerViewController2 _linearFocusItems];
       [v130[0] addObjectsFromArray:?];
-      MEMORY[0x277D82BD8](v46);
-      v48 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-      v49 = [(CPSPointsOfInterestMapControlsViewController *)v48 centerButton];
-      MEMORY[0x277D82BD8](v49);
-      v26 = MEMORY[0x277D82BD8](v48).n128_u64[0];
-      if (v49)
+      MEMORY[0x277D82BD8](_linearFocusItems2);
+      mapControlsViewController21 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+      centerButton7 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController21 centerButton];
+      MEMORY[0x277D82BD8](centerButton7);
+      v26 = MEMORY[0x277D82BD8](mapControlsViewController21).n128_u64[0];
+      if (centerButton7)
       {
-        v45 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-        v44 = [(CPSPointsOfInterestMapControlsViewController *)v45 centerButton];
+        mapControlsViewController22 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+        centerButton8 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController22 centerButton];
         [v130[0] addObject:?];
-        MEMORY[0x277D82BD8](v44);
-        v26 = MEMORY[0x277D82BD8](v45).n128_u64[0];
+        MEMORY[0x277D82BD8](centerButton8);
+        v26 = MEMORY[0x277D82BD8](mapControlsViewController22).n128_u64[0];
       }
 
-      v42 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-      v43 = [(CPSPointsOfInterestMapControlsViewController *)v42 panButton];
-      MEMORY[0x277D82BD8](v43);
-      v27 = MEMORY[0x277D82BD8](v42).n128_u64[0];
-      if (v43)
+      mapControlsViewController23 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+      panButton3 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController23 panButton];
+      MEMORY[0x277D82BD8](panButton3);
+      v27 = MEMORY[0x277D82BD8](mapControlsViewController23).n128_u64[0];
+      if (panButton3)
       {
-        v41 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-        v40 = [(CPSPointsOfInterestMapControlsViewController *)v41 panButton];
+        mapControlsViewController24 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+        panButton4 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController24 panButton];
         [v130[0] addObject:?];
-        MEMORY[0x277D82BD8](v40);
-        v27 = MEMORY[0x277D82BD8](v41).n128_u64[0];
+        MEMORY[0x277D82BD8](panButton4);
+        v27 = MEMORY[0x277D82BD8](mapControlsViewController24).n128_u64[0];
       }
 
-      v38 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-      v39 = [(CPSPointsOfInterestMapControlsViewController *)v38 zoomInButton];
-      MEMORY[0x277D82BD8](v39);
-      v28 = MEMORY[0x277D82BD8](v38).n128_u64[0];
-      if (v39)
+      mapControlsViewController25 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+      zoomInButton7 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController25 zoomInButton];
+      MEMORY[0x277D82BD8](zoomInButton7);
+      v28 = MEMORY[0x277D82BD8](mapControlsViewController25).n128_u64[0];
+      if (zoomInButton7)
       {
-        v37 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-        v36 = [(CPSPointsOfInterestMapControlsViewController *)v37 zoomInButton];
+        mapControlsViewController26 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+        zoomInButton8 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController26 zoomInButton];
         [v130[0] addObject:?];
-        MEMORY[0x277D82BD8](v36);
-        v28 = MEMORY[0x277D82BD8](v37).n128_u64[0];
+        MEMORY[0x277D82BD8](zoomInButton8);
+        v28 = MEMORY[0x277D82BD8](mapControlsViewController26).n128_u64[0];
       }
 
-      v34 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-      v35 = [(CPSPointsOfInterestMapControlsViewController *)v34 zoomOutButton];
-      MEMORY[0x277D82BD8](v35);
-      *&v29 = MEMORY[0x277D82BD8](v34).n128_u64[0];
-      if (v35)
+      mapControlsViewController27 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+      zoomOutButton7 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController27 zoomOutButton];
+      MEMORY[0x277D82BD8](zoomOutButton7);
+      *&v29 = MEMORY[0x277D82BD8](mapControlsViewController27).n128_u64[0];
+      if (zoomOutButton7)
       {
-        v33 = [(CPSPointsOfInterestMapViewController *)v131 mapControlsViewController];
-        v32 = [(CPSPointsOfInterestMapControlsViewController *)v33 zoomOutButton];
+        mapControlsViewController28 = [(CPSPointsOfInterestMapViewController *)selfCopy mapControlsViewController];
+        zoomOutButton8 = [(CPSPointsOfInterestMapControlsViewController *)mapControlsViewController28 zoomOutButton];
         [v130[0] addObject:?];
-        MEMORY[0x277D82BD8](v32);
-        MEMORY[0x277D82BD8](v33);
+        MEMORY[0x277D82BD8](zoomOutButton8);
+        MEMORY[0x277D82BD8](mapControlsViewController28);
       }
     }
   }
@@ -2750,57 +2750,57 @@ uint64_t __55__CPSPointsOfInterestMapViewController_dismissPanView___block_invok
 - (id)preferredFocusEnvironments
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
-  v10 = [(CPSPointsOfInterestMapViewController *)self panViewController];
-  v11 = [(CPSPanViewController *)v10 view];
+  panViewController = [(CPSPointsOfInterestMapViewController *)self panViewController];
+  view = [(CPSPanViewController *)panViewController view];
   v18 = 0;
   v16 = 0;
   v12 = 0;
-  if (v11)
+  if (view)
   {
-    v19 = [(CPSPointsOfInterestMapViewController *)v22 panViewController];
+    panViewController2 = [(CPSPointsOfInterestMapViewController *)selfCopy panViewController];
     v18 = 1;
-    v17 = [(CPSPanViewController *)v19 view];
+    view2 = [(CPSPanViewController *)panViewController2 view];
     v16 = 1;
-    v12 = [v17 isHidden] == 0;
+    v12 = [view2 isHidden] == 0;
   }
 
   if (v16)
   {
-    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](view2);
   }
 
   if (v18)
   {
-    MEMORY[0x277D82BD8](v19);
+    MEMORY[0x277D82BD8](panViewController2);
   }
 
-  MEMORY[0x277D82BD8](v11);
-  *&v2 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+  MEMORY[0x277D82BD8](view);
+  *&v2 = MEMORY[0x277D82BD8](panViewController).n128_u64[0];
   v20 = v12;
   if (v12)
   {
-    v8 = [(CPSPointsOfInterestMapViewController *)v22 panViewController];
-    v15 = [(CPSPanViewController *)v8 panView];
-    *&v3 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-    v9 = [(CPSPanView *)v15 panUpButton];
-    v25[0] = v9;
+    panViewController3 = [(CPSPointsOfInterestMapViewController *)selfCopy panViewController];
+    panView = [(CPSPanViewController *)panViewController3 panView];
+    *&v3 = MEMORY[0x277D82BD8](panViewController3).n128_u64[0];
+    panUpButton = [(CPSPanView *)panView panUpButton];
+    v25[0] = panUpButton;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
-    MEMORY[0x277D82BD8](v9);
-    objc_storeStrong(&v15, 0);
+    MEMORY[0x277D82BD8](panUpButton);
+    objc_storeStrong(&panView, 0);
   }
 
   else
   {
-    v7 = [(CPSPointsOfInterestMapViewController *)v22 pickerViewController];
-    v14 = [(CPSPointsOfInterestPickerViewController *)v7 _linearFocusItems];
-    if ([v14 count])
+    pickerViewController = [(CPSPointsOfInterestMapViewController *)selfCopy pickerViewController];
+    _linearFocusItems = [(CPSPointsOfInterestPickerViewController *)pickerViewController _linearFocusItems];
+    if ([_linearFocusItems count])
     {
-      v6 = [v14 firstObject];
-      v24 = v6;
+      firstObject = [_linearFocusItems firstObject];
+      v24 = firstObject;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
-      MEMORY[0x277D82BD8](v6);
+      MEMORY[0x277D82BD8](firstObject);
       v13 = 1;
     }
 
@@ -2809,7 +2809,7 @@ uint64_t __55__CPSPointsOfInterestMapViewController_dismissPanView___block_invok
       v13 = 0;
     }
 
-    objc_storeStrong(&v14, 0);
+    objc_storeStrong(&_linearFocusItems, 0);
     if (!v13)
     {
       v23 = MEMORY[0x277D82BE0](MEMORY[0x277CBEBF8]);
@@ -2823,11 +2823,11 @@ uint64_t __55__CPSPointsOfInterestMapViewController_dismissPanView___block_invok
 
 - (void)_updateFocusedItem
 {
-  v4 = self;
+  selfCopy = self;
   v3[1] = a2;
   v3[0] = [objc_alloc(MEMORY[0x277D75F98]) initWithEnvironment:self];
   [v3[0] setAllowsDeferral:0];
-  v2 = [MEMORY[0x277D75518] focusSystemForEnvironment:v4];
+  v2 = [MEMORY[0x277D75518] focusSystemForEnvironment:selfCopy];
   [v2 _requestFocusUpdate:v3[0]];
   objc_storeStrong(&v2, 0);
   objc_storeStrong(v3, 0);

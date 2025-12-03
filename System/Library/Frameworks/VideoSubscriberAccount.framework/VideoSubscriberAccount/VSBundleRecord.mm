@@ -1,14 +1,14 @@
 @interface VSBundleRecord
-- (VSBundleRecord)initWithBundleID:(id)a3;
+- (VSBundleRecord)initWithBundleID:(id)d;
 - (id)bundleVersion;
 @end
 
 @implementation VSBundleRecord
 
-- (VSBundleRecord)initWithBundleID:(id)a3
+- (VSBundleRecord)initWithBundleID:(id)d
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v44.receiver = self;
   v44.super_class = VSBundleRecord;
   v5 = [(VSBundleRecord *)&v44 init];
@@ -44,7 +44,7 @@
     v26 = __35__VSBundleRecord_initWithBundleID___block_invoke;
     v27 = &unk_278B741E8;
     v30 = &v32;
-    v13 = v4;
+    v13 = dCopy;
     v28 = v13;
     v31 = &v38;
     v14 = v11;
@@ -126,20 +126,20 @@ uint64_t __35__VSBundleRecord_initWithBundleID___block_invoke(uint64_t a1)
 
 - (id)bundleVersion
 {
-  v3 = [(VSBundleRecord *)self record];
+  record = [(VSBundleRecord *)self record];
 
-  if (v3)
+  if (record)
   {
-    v4 = [(VSBundleRecord *)self record];
-    v5 = [v4 bundleVersion];
+    record2 = [(VSBundleRecord *)self record];
+    bundleVersion = [record2 bundleVersion];
   }
 
   else
   {
-    v5 = 0;
+    bundleVersion = 0;
   }
 
-  return v5;
+  return bundleVersion;
 }
 
 @end

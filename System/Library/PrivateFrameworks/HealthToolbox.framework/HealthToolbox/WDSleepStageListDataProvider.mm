@@ -1,17 +1,17 @@
 @interface WDSleepStageListDataProvider
 - (id)_durationFormatter;
-- (id)_sleepDataDictionaryFromSamples:(id)a3;
-- (id)_sleepSampleBucketAtIndex:(unint64_t)a3 section:(unint64_t)a4;
+- (id)_sleepDataDictionaryFromSamples:(id)samples;
+- (id)_sleepSampleBucketAtIndex:(unint64_t)index section:(unint64_t)section;
 - (id)sampleTypes;
-- (id)secondaryTextForObject:(id)a3;
-- (id)textForObject:(id)a3;
-- (id)titleForSection:(unint64_t)a3;
-- (id)viewControllerForItemAtIndexPath:(id)a3;
-- (unint64_t)numberOfObjectsForSection:(unint64_t)a3;
+- (id)secondaryTextForObject:(id)object;
+- (id)textForObject:(id)object;
+- (id)titleForSection:(unint64_t)section;
+- (id)viewControllerForItemAtIndexPath:(id)path;
+- (unint64_t)numberOfObjectsForSection:(unint64_t)section;
 - (void)_callUpdateHandler;
 - (void)deleteAllData;
-- (void)deleteObjectsAtIndexPath:(id)a3 healthStore:(id)a4 options:(unint64_t)a5 completion:(id)a6;
-- (void)removeObjectAtIndex:(unint64_t)a3 forSection:(unint64_t)a4 sectionRemoved:(BOOL *)a5;
+- (void)deleteObjectsAtIndexPath:(id)path healthStore:(id)store options:(unint64_t)options completion:(id)completion;
+- (void)removeObjectAtIndex:(unint64_t)index forSection:(unint64_t)section sectionRemoved:(BOOL *)removed;
 @end
 
 @implementation WDSleepStageListDataProvider
@@ -19,9 +19,9 @@
 - (id)sampleTypes
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [(WDSampleListDataProvider *)self displayType];
-  v3 = [v2 sampleType];
-  v7[0] = v3;
+  displayType = [(WDSampleListDataProvider *)self displayType];
+  sampleType = [displayType sampleType];
+  v7[0] = sampleType;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
 
   v5 = *MEMORY[0x277D85DE8];
@@ -31,12 +31,12 @@
 
 - (void)_callUpdateHandler
 {
-  v3 = [(WDSampleListDataProvider *)self samples];
-  v4 = [v3 allSamples];
+  samples = [(WDSampleListDataProvider *)self samples];
+  allSamples = [samples allSamples];
 
-  v5 = [(WDSleepStageListDataProvider *)self _sleepDataDictionaryFromSamples:v4];
-  v6 = [(NSMutableDictionary *)v5 allKeys];
-  v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_7];
+  v5 = [(WDSleepStageListDataProvider *)self _sleepDataDictionaryFromSamples:allSamples];
+  allKeys = [(NSMutableDictionary *)v5 allKeys];
+  v7 = [allKeys sortedArrayUsingComparator:&__block_literal_global_7];
 
   sleepData = self->_sleepData;
   self->_sleepData = v5;
@@ -61,16 +61,16 @@ uint64_t __50__WDSleepStageListDataProvider__callUpdateHandler__block_invoke(uin
   return v7;
 }
 
-- (id)_sleepDataDictionaryFromSamples:(id)a3
+- (id)_sleepDataDictionaryFromSamples:(id)samples
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  samplesCopy = samples;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v3;
+  obj = samplesCopy;
   v5 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v5)
   {
@@ -89,11 +89,11 @@ uint64_t __50__WDSleepStageListDataProvider__callUpdateHandler__block_invoke(uin
 
         v10 = *(*(&v28 + 1) + 8 * i);
         v11 = [&v8[75] sleep_timePeriodForSample:{v10, v23}];
-        v12 = [v4 objectForKeyedSubscript:v11];
-        if (!v12)
+        array = [dictionary objectForKeyedSubscript:v11];
+        if (!array)
         {
-          v12 = [MEMORY[0x277CBEB18] array];
-          [v4 setObject:v12 forKeyedSubscript:v11];
+          array = [MEMORY[0x277CBEB18] array];
+          [dictionary setObject:array forKeyedSubscript:v11];
         }
 
         v26[0] = MEMORY[0x277D85DD0];
@@ -101,25 +101,25 @@ uint64_t __50__WDSleepStageListDataProvider__callUpdateHandler__block_invoke(uin
         v27[0] = __64__WDSleepStageListDataProvider__sleepDataDictionaryFromSamples___block_invoke;
         v27[1] = &unk_2796E7A80;
         v27[2] = v10;
-        v13 = [v12 hk_firstObjectPassingTest:v26];
+        v13 = [array hk_firstObjectPassingTest:v26];
         if (!v13)
         {
           v25 = [WDSleepStageSampleBucket alloc];
-          v14 = v4;
+          v14 = dictionary;
           v15 = v7;
-          v16 = [v10 value];
-          v17 = [v10 sourceRevision];
+          value = [v10 value];
+          sourceRevision = [v10 sourceRevision];
           [v10 device];
           v19 = v18 = v6;
-          v20 = v16;
+          v20 = value;
           v7 = v15;
-          v4 = v14;
-          v13 = [(WDSleepStageSampleBucket *)v25 initWithSleepStage:v20 timePeriod:v11 sourceRevision:v17 device:v19];
+          dictionary = v14;
+          v13 = [(WDSleepStageSampleBucket *)v25 initWithSleepStage:v20 timePeriod:v11 sourceRevision:sourceRevision device:v19];
 
           v6 = v18;
           v8 = &OBJC_METACLASS___WDAppSourcesListTableViewSection;
 
-          [v12 addObject:v13];
+          [array addObject:v13];
         }
 
         [(WDSleepStageSampleBucket *)v13 addSample:v10];
@@ -131,10 +131,10 @@ uint64_t __50__WDSleepStageListDataProvider__callUpdateHandler__block_invoke(uin
     while (v6);
   }
 
-  [v4 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_300];
+  [dictionary enumerateKeysAndObjectsUsingBlock:&__block_literal_global_300];
   v21 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
 uint64_t __64__WDSleepStageListDataProvider__sleepDataDictionaryFromSamples___block_invoke_3(uint64_t a1, void *a2, void *a3)
@@ -156,36 +156,36 @@ uint64_t __64__WDSleepStageListDataProvider__sleepDataDictionaryFromSamples___bl
   return v7;
 }
 
-- (id)titleForSection:(unint64_t)a3
+- (id)titleForSection:(unint64_t)section
 {
   if ([(NSMutableArray *)self->_orderedKeys count])
   {
-    v5 = [(NSMutableArray *)self->_orderedKeys objectAtIndexedSubscript:a3];
-    v6 = [v5 sleep_titleString];
+    v5 = [(NSMutableArray *)self->_orderedKeys objectAtIndexedSubscript:section];
+    sleep_titleString = [v5 sleep_titleString];
   }
 
   else
   {
-    v6 = &stru_28641D9B8;
+    sleep_titleString = &stru_28641D9B8;
   }
 
-  return v6;
+  return sleep_titleString;
 }
 
-- (unint64_t)numberOfObjectsForSection:(unint64_t)a3
+- (unint64_t)numberOfObjectsForSection:(unint64_t)section
 {
-  v4 = [(NSMutableArray *)self->_orderedKeys objectAtIndexedSubscript:a3];
+  v4 = [(NSMutableArray *)self->_orderedKeys objectAtIndexedSubscript:section];
   v5 = [(NSMutableDictionary *)self->_sleepData objectForKeyedSubscript:v4];
   v6 = [v5 count];
 
   return v6;
 }
 
-- (id)_sleepSampleBucketAtIndex:(unint64_t)a3 section:(unint64_t)a4
+- (id)_sleepSampleBucketAtIndex:(unint64_t)index section:(unint64_t)section
 {
-  v6 = [(NSMutableArray *)self->_orderedKeys objectAtIndexedSubscript:a4];
+  v6 = [(NSMutableArray *)self->_orderedKeys objectAtIndexedSubscript:section];
   v7 = [(NSMutableDictionary *)self->_sleepData objectForKeyedSubscript:v6];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  v8 = [v7 objectAtIndexedSubscript:index];
 
   return v8;
 }
@@ -214,19 +214,19 @@ uint64_t __50__WDSleepStageListDataProvider__durationFormatter__block_invoke()
   return [v2 setAllowedUnits:96];
 }
 
-- (id)textForObject:(id)a3
+- (id)textForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(WDSleepStageListDataProvider *)self _durationFormatter];
-  [v4 totalDuration];
-  v6 = [v5 stringFromTimeInterval:?];
+  objectCopy = object;
+  _durationFormatter = [(WDSleepStageListDataProvider *)self _durationFormatter];
+  [objectCopy totalDuration];
+  v6 = [_durationFormatter stringFromTimeInterval:?];
 
   v7 = MEMORY[0x277CCACA8];
   v8 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v9 = [v8 localizedStringForKey:@"INTERVALS_OF_TIME_NUMBERED_UNIT" value:&stru_28641D9B8 table:@"HealthUI-Localizable"];
-  v10 = [v4 numberOfSamples];
+  numberOfSamples = [objectCopy numberOfSamples];
 
-  v11 = [v7 localizedStringWithFormat:v9, v10];
+  v11 = [v7 localizedStringWithFormat:v9, numberOfSamples];
 
   v12 = MEMORY[0x277CCACA8];
   v13 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -236,14 +236,14 @@ uint64_t __50__WDSleepStageListDataProvider__durationFormatter__block_invoke()
   return v15;
 }
 
-- (id)secondaryTextForObject:(id)a3
+- (id)secondaryTextForObject:(id)object
 {
-  v3 = [a3 sleepStage];
+  sleepStage = [object sleepStage];
   v4 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v5 = v4;
-  if (v3 > 2)
+  if (sleepStage > 2)
   {
-    switch(v3)
+    switch(sleepStage)
     {
       case 3:
         v6 = @"ASLEEP_CORE";
@@ -261,13 +261,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v3 == 1)
+  if (sleepStage == 1)
   {
     v6 = @"ASLEEP_UNSPECIFIED";
     goto LABEL_12;
   }
 
-  if (v3 != 2)
+  if (sleepStage != 2)
   {
 LABEL_13:
     v6 = @"IN_BED";
@@ -283,18 +283,18 @@ LABEL_15:
   return v8;
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3 forSection:(unint64_t)a4 sectionRemoved:(BOOL *)a5
+- (void)removeObjectAtIndex:(unint64_t)index forSection:(unint64_t)section sectionRemoved:(BOOL *)removed
 {
   v26 = *MEMORY[0x277D85DE8];
-  v19 = [(NSMutableArray *)self->_orderedKeys objectAtIndexedSubscript:a4];
+  v19 = [(NSMutableArray *)self->_orderedKeys objectAtIndexedSubscript:section];
   v7 = [(NSMutableDictionary *)self->_sleepData objectForKeyedSubscript:?];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  v8 = [v7 objectAtIndexedSubscript:index];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [v8 samples];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  samples = [v8 samples];
+  v10 = [samples countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -305,21 +305,21 @@ LABEL_15:
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(samples);
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [(WDSampleListDataProvider *)self samples];
-        [v15 removeSample:v14];
+        samples2 = [(WDSampleListDataProvider *)self samples];
+        [samples2 removeSample:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v11 = [samples countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v11);
   }
 
-  [v7 removeObjectAtIndex:a3];
+  [v7 removeObjectAtIndex:index];
   if ([v7 count])
   {
     v16 = 0;
@@ -327,11 +327,11 @@ LABEL_15:
 
   else
   {
-    [(NSMutableArray *)self->_orderedKeys removeObjectAtIndex:a4];
+    [(NSMutableArray *)self->_orderedKeys removeObjectAtIndex:section];
     v16 = 1;
   }
 
-  *a5 = v16;
+  *removed = v16;
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -341,47 +341,47 @@ LABEL_15:
   v7.receiver = self;
   v7.super_class = WDSleepStageListDataProvider;
   [(WDSampleListDataProvider *)&v7 deleteAllData];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   sleepData = self->_sleepData;
-  self->_sleepData = v3;
+  self->_sleepData = dictionary;
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   orderedKeys = self->_orderedKeys;
-  self->_orderedKeys = v5;
+  self->_orderedKeys = array;
 }
 
-- (void)deleteObjectsAtIndexPath:(id)a3 healthStore:(id)a4 options:(unint64_t)a5 completion:(id)a6
+- (void)deleteObjectsAtIndexPath:(id)path healthStore:(id)store options:(unint64_t)options completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v12 row];
-  v14 = [v12 section];
+  completionCopy = completion;
+  storeCopy = store;
+  pathCopy = path;
+  v13 = [pathCopy row];
+  section = [pathCopy section];
 
-  v16 = [(WDSleepStageListDataProvider *)self _sleepSampleBucketAtIndex:v13 section:v14];
-  v15 = [v16 samples];
-  [v11 deleteObjects:v15 options:a5 withCompletion:v10];
+  v16 = [(WDSleepStageListDataProvider *)self _sleepSampleBucketAtIndex:v13 section:section];
+  samples = [v16 samples];
+  [storeCopy deleteObjects:samples options:options withCompletion:completionCopy];
 }
 
-- (id)viewControllerForItemAtIndexPath:(id)a3
+- (id)viewControllerForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [WDSleepStageCategoryDataProvider alloc];
-  v6 = [(WDSampleListDataProvider *)self displayType];
-  v7 = [(WDSampleListDataProvider *)self profile];
-  v8 = [(WDSampleListDataProvider *)v5 initWithDisplayType:v6 profile:v7];
+  displayType = [(WDSampleListDataProvider *)self displayType];
+  profile = [(WDSampleListDataProvider *)self profile];
+  v8 = [(WDSampleListDataProvider *)v5 initWithDisplayType:displayType profile:profile];
 
-  v9 = [v4 row];
-  v10 = [v4 section];
+  v9 = [pathCopy row];
+  section = [pathCopy section];
 
-  v11 = [(WDSleepStageListDataProvider *)self _sleepSampleBucketAtIndex:v9 section:v10];
-  v12 = [v11 predicate];
-  [(WDSampleListDataProvider *)v8 setDefaultQueryPredicate:v12];
+  v11 = [(WDSleepStageListDataProvider *)self _sleepSampleBucketAtIndex:v9 section:section];
+  predicate = [v11 predicate];
+  [(WDSampleListDataProvider *)v8 setDefaultQueryPredicate:predicate];
 
   v13 = [WDDataListViewController alloc];
-  v14 = [(WDSampleListDataProvider *)self displayType];
-  v15 = [(WDSampleListDataProvider *)self profile];
-  v16 = [(WDDataListViewController *)v13 initWithDisplayType:v14 profile:v15 dataProvider:v8 usingInsetStyling:1];
+  displayType2 = [(WDSampleListDataProvider *)self displayType];
+  profile2 = [(WDSampleListDataProvider *)self profile];
+  v16 = [(WDDataListViewController *)v13 initWithDisplayType:displayType2 profile:profile2 dataProvider:v8 usingInsetStyling:1];
 
   return v16;
 }

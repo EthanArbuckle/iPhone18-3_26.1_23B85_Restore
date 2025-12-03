@@ -1,11 +1,11 @@
 @interface THWReviewMoreAnswersLayer
 - (CGSize)layerSize;
 - (THWReviewMoreAnswersLayer)init;
-- (id)p_pathWithDirection:(int)a3 origin:(CGPoint)a4 size:(CGSize)a5 scale:(double)a6 includeWedge:(BOOL)a7;
+- (id)p_pathWithDirection:(int)direction origin:(CGPoint)origin size:(CGSize)size scale:(double)scale includeWedge:(BOOL)wedge;
 - (void)dealloc;
 - (void)p_updateTextLayerFrame;
-- (void)setContentsScale:(double)a3;
-- (void)setScale:(double)a3;
+- (void)setContentsScale:(double)scale;
+- (void)setScale:(double)scale;
 @end
 
 @implementation THWReviewMoreAnswersLayer
@@ -67,33 +67,33 @@
   [(CATextLayer *)textLayer setFrame:?];
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   v5.receiver = self;
   v5.super_class = THWReviewMoreAnswersLayer;
   [(THWReviewMoreAnswersLayer *)&v5 setContentsScale:?];
-  [(CATextLayer *)self->_textLayer setContentsScale:a3];
+  [(CATextLayer *)self->_textLayer setContentsScale:scale];
   [(THWReviewMoreAnswersLayer *)self p_updateTextLayerFrame];
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  if (self->_scale != a3)
+  if (self->_scale != scale)
   {
-    self->_scale = a3;
-    [(CATextLayer *)self->_textLayer setFontSize:a3 * 14.0];
+    self->_scale = scale;
+    [(CATextLayer *)self->_textLayer setFontSize:scale * 14.0];
     -[THWReviewMoreAnswersLayer setPath:](self, "setPath:", [-[THWReviewMoreAnswersLayer p_pathWithDirection:origin:size:scale:includeWedge:](self p_pathWithDirection:3 origin:1 size:CGPointZero.x scale:CGPointZero.y includeWedge:{self->_layerSize.width, self->_layerSize.height, self->_scale), "CGPath"}]);
 
     [(THWReviewMoreAnswersLayer *)self p_updateTextLayerFrame];
   }
 }
 
-- (id)p_pathWithDirection:(int)a3 origin:(CGPoint)a4 size:(CGSize)a5 scale:(double)a6 includeWedge:(BOOL)a7
+- (id)p_pathWithDirection:(int)direction origin:(CGPoint)origin size:(CGSize)size scale:(double)scale includeWedge:(BOOL)wedge
 {
   TSURound();
   v11 = v10;
   TSURound();
-  if (a3 != 0 && a7)
+  if (direction != 0 && wedge)
   {
     v13 = v12;
   }
@@ -111,7 +111,7 @@
   TSDRoundedSize();
   v19 = v18;
   v21 = v20;
-  v22 = a6 * 3.5;
+  v22 = scale * 3.5;
   memset(&m, 0, sizeof(m));
   CGAffineTransformMakeTranslation(&m, v15, v17);
   Mutable = CGPathCreateMutable();
@@ -119,7 +119,7 @@
   v33 = (v19 - v11) * 0.5;
   CGPathAddLineToPoint(Mutable, &m, v33, 0.0);
   v24 = 0.0;
-  if (a3 == 1)
+  if (direction == 1)
   {
     v24 = -v13;
   }
@@ -132,7 +132,7 @@
   v32 = (v21 - v11) * 0.5;
   CGPathAddLineToPoint(Mutable, &m, v19, v32);
   v26 = 0.0;
-  if (a3 == 2)
+  if (direction == 2)
   {
     v26 = v13;
   }
@@ -143,7 +143,7 @@
   CGPathAddLineToPoint(Mutable, &m, v19, v21 - v22);
   CGPathAddArcToPoint(Mutable, &m, v19, v21, v19 - v22, v21, v22);
   CGPathAddLineToPoint(Mutable, &m, v25, v21);
-  if (a3 == 3)
+  if (direction == 3)
   {
     v28 = v13;
   }
@@ -159,7 +159,7 @@
   CGPathAddArcToPoint(Mutable, &m, 0.0, v21, 0.0, v21 - v22, v22);
   CGPathAddLineToPoint(Mutable, &m, 0.0, v27);
   v29 = -v13;
-  if (a3 != 4)
+  if (direction != 4)
   {
     v29 = 0.0;
   }

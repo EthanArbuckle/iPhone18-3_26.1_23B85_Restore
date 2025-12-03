@@ -1,26 +1,26 @@
 @interface IXSPromisedOutOfBandStreamingZipTransfer
-- (IXSPromisedOutOfBandStreamingZipTransfer)initWithSeed:(id)a3 error:(id *)a4;
+- (IXSPromisedOutOfBandStreamingZipTransfer)initWithSeed:(id)seed error:(id *)error;
 - (unint64_t)totalBytesForProgress;
-- (void)_remote_setArchiveBytesConsumed:(unint64_t)a3;
+- (void)_remote_setArchiveBytesConsumed:(unint64_t)consumed;
 - (void)reset;
 @end
 
 @implementation IXSPromisedOutOfBandStreamingZipTransfer
 
-- (IXSPromisedOutOfBandStreamingZipTransfer)initWithSeed:(id)a3 error:(id *)a4
+- (IXSPromisedOutOfBandStreamingZipTransfer)initWithSeed:(id)seed error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = IXSPromisedOutOfBandStreamingZipTransfer;
-  return [(IXSDataPromise *)&v5 initWithSeed:a3 error:a4];
+  return [(IXSDataPromise *)&v5 initWithSeed:seed error:error];
 }
 
 - (void)reset
 {
-  v3 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  v4 = [(IXSDataPromise *)self seed];
-  [v4 setArchiveBytesConsumed:0];
+  seed = [(IXSDataPromise *)self seed];
+  [seed setArchiveBytesConsumed:0];
 
   v5.receiver = self;
   v5.super_class = IXSPromisedOutOfBandStreamingZipTransfer;
@@ -29,28 +29,28 @@
 
 - (unint64_t)totalBytesForProgress
 {
-  v3 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  v4 = [(IXSDataPromise *)self seed];
-  v5 = [v4 archiveSizeBytes];
+  seed = [(IXSDataPromise *)self seed];
+  archiveSizeBytes = [seed archiveSizeBytes];
 
-  return v5;
+  return archiveSizeBytes;
 }
 
-- (void)_remote_setArchiveBytesConsumed:(unint64_t)a3
+- (void)_remote_setArchiveBytesConsumed:(unint64_t)consumed
 {
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000030E4;
   v7[3] = &unk_100100DF8;
   v7[4] = self;
-  v7[5] = a3;
-  dispatch_sync(v6, v7);
+  v7[5] = consumed;
+  dispatch_sync(accessQueue2, v7);
 }
 
 @end

@@ -41,9 +41,9 @@
     if (orderMode)
     {
 LABEL_9:
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull _UICollectionViewSubviewOrderModeToString(_UICollectionViewSubviewOrderMode)"];
-      [v8 handleFailureInFunction:v9 file:@"_UICollectionViewSubviewRouter.m" lineNumber:539 description:{@"Unknown order mode: %ld", orderMode}];
+      [currentHandler handleFailureInFunction:v9 file:@"_UICollectionViewSubviewRouter.m" lineNumber:539 description:{@"Unknown order mode: %ld", orderMode}];
 
       v7 = &stru_1EFB14550;
       goto LABEL_12;
@@ -83,8 +83,8 @@ LABEL_12:
     zIndex = 0;
   }
 
-  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@" zIndex = %ld", zIndex];
-  v13 = [v10 stringByAppendingString:v12];
+  zIndex = [MEMORY[0x1E696AEC0] stringWithFormat:@" zIndex = %ld", zIndex];
+  v13 = [v10 stringByAppendingString:zIndex];
 
   v10 = v13;
 LABEL_16:

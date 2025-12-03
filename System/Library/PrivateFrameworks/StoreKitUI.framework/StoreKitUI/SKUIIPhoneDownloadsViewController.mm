@@ -1,23 +1,23 @@
 @interface SKUIIPhoneDownloadsViewController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (SKUIDownloadsChildViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_reload;
 - (void)loadView;
-- (void)reloadDownloadsAtIndexes:(id)a3;
-- (void)setDownloads:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)reloadDownloadsAtIndexes:(id)indexes;
+- (void)setDownloads:(id)downloads;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation SKUIIPhoneDownloadsViewController
 
-- (void)reloadDownloadsAtIndexes:(id)a3
+- (void)reloadDownloadsAtIndexes:(id)indexes
 {
   downloads = self->_downloads;
-  v5 = a3;
+  indexesCopy = indexes;
   v6 = [(NSArray *)downloads copy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -26,7 +26,7 @@
   v8[4] = self;
   v9 = v6;
   v7 = v6;
-  [v5 enumerateIndexesUsingBlock:v8];
+  [indexesCopy enumerateIndexesUsingBlock:v8];
 }
 
 void __62__SKUIIPhoneDownloadsViewController_reloadDownloadsAtIndexes___block_invoke(uint64_t a1, unint64_t a2)
@@ -47,15 +47,15 @@ void __62__SKUIIPhoneDownloadsViewController_reloadDownloadsAtIndexes___block_in
   SKUIConfigureDownloadsCellView(v7, v6, v9, 0, *(*(a1 + 32) + 1024));
 }
 
-- (void)setDownloads:(id)a3
+- (void)setDownloads:(id)downloads
 {
-  v5 = a3;
-  if (self->_downloads != v5)
+  downloadsCopy = downloads;
+  if (self->_downloads != downloadsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_downloads, a3);
+    v6 = downloadsCopy;
+    objc_storeStrong(&self->_downloads, downloads);
     [(SKUIIPhoneDownloadsViewController *)self _reload];
-    v5 = v6;
+    downloadsCopy = v6;
   }
 }
 
@@ -76,34 +76,34 @@ void __62__SKUIIPhoneDownloadsViewController_reloadDownloadsAtIndexes___block_in
   [(SKUIIPhoneDownloadsViewController *)&v8 viewDidLayoutSubviews];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = a4;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = -[NSArray objectAtIndex:](self->_downloads, "objectAtIndex:", [v7 row]);
+  v6 = -[NSArray objectAtIndex:](self->_downloads, "objectAtIndex:", [pathCopy row]);
   [WeakRetained childViewController:self performActionForDownload:v6];
 
-  [(UITableView *)self->_tableView deselectRowAtIndexPath:v7 animated:0];
+  [(UITableView *)self->_tableView deselectRowAtIndexPath:pathCopy animated:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   downloads = self->_downloads;
-  v6 = a4;
-  v7 = -[NSArray objectAtIndex:](downloads, "objectAtIndex:", [v6 item]);
-  v8 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"a" forIndexPath:v6];
+  pathCopy = path;
+  v7 = -[NSArray objectAtIndex:](downloads, "objectAtIndex:", [pathCopy item]);
+  v8 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"a" forIndexPath:pathCopy];
 
-  v9 = [v8 cellView];
+  cellView = [v8 cellView];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v11 = [WeakRetained childViewController:self artworkForDownload:v7];
-  SKUIConfigureDownloadsCellView(v9, v7, v11, 0, self->_clientContext);
+  SKUIConfigureDownloadsCellView(cellView, v7, v11, 0, self->_clientContext);
 
   [v8 setSelectionStyle:0];
 
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -113,33 +113,33 @@ void __62__SKUIIPhoneDownloadsViewController_reloadDownloadsAtIndexes___block_in
   return [(NSArray *)self->_downloads count];
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 row];
+  pathCopy = path;
+  v6 = [pathCopy row];
   if (v6 >= [(NSArray *)self->_downloads count])
   {
-    v8 = 0;
+    isCancelable = 0;
   }
 
   else
   {
-    v7 = -[NSArray objectAtIndex:](self->_downloads, "objectAtIndex:", [v5 row]);
-    v8 = [v7 isCancelable];
+    v7 = -[NSArray objectAtIndex:](self->_downloads, "objectAtIndex:", [pathCopy row]);
+    isCancelable = [v7 isCancelable];
   }
 
-  return v8;
+  return isCancelable;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  if (a4 == 1)
+  if (style == 1)
   {
-    v6 = a5;
+    pathCopy = path;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     downloads = self->_downloads;
-    v9 = [v6 row];
+    v9 = [pathCopy row];
 
     v10 = [(NSArray *)downloads objectAtIndex:v9];
     v12[0] = v10;
@@ -153,8 +153,8 @@ void __62__SKUIIPhoneDownloadsViewController_reloadDownloadsAtIndexes___block_in
   if ([(NSArray *)self->_downloads count])
   {
     [(UITableView *)self->_tableView reloadData];
-    v3 = [(SKUIIPhoneDownloadsViewController *)self view];
-    v14 = v3;
+    view = [(SKUIIPhoneDownloadsViewController *)self view];
+    v14 = view;
     v4 = 0;
   }
 
@@ -190,19 +190,19 @@ void __62__SKUIIPhoneDownloadsViewController_reloadDownloadsAtIndexes___block_in
       self->_noContentView = v10;
 
       v12 = self->_noContentView;
-      v13 = [MEMORY[0x277D75348] systemBackgroundColor];
-      [(_UIContentUnavailableView *)v12 setBackgroundColor:v13];
+      systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+      [(_UIContentUnavailableView *)v12 setBackgroundColor:systemBackgroundColor];
 
       [(_UIContentUnavailableView *)self->_noContentView setMessage:v8];
     }
 
     [(UITableView *)self->_tableView reloadData];
-    v3 = [(SKUIIPhoneDownloadsViewController *)self view];
+    view = [(SKUIIPhoneDownloadsViewController *)self view];
     v4 = self->_noContentView;
-    v14 = v3;
+    v14 = view;
   }
 
-  [v3 setOverlayView:v4];
+  [view setOverlayView:v4];
 }
 
 - (SKUIDownloadsChildViewControllerDelegate)delegate

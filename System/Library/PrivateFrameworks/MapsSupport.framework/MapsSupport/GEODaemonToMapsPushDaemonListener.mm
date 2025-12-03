@@ -1,7 +1,7 @@
 @interface GEODaemonToMapsPushDaemonListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (GEODaemonToMapsPushDaemonListener)init;
-- (GEODaemonToMapsPushDaemonListener)initWithMapsPushDaemon:(id)a3;
+- (GEODaemonToMapsPushDaemonListener)initWithMapsPushDaemon:(id)daemon;
 @end
 
 @implementation GEODaemonToMapsPushDaemonListener
@@ -13,42 +13,42 @@
   return result;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   WeakRetained = objc_loadWeakRetained(&self->_mapsPushDaemon);
   if (!WeakRetained)
   {
-    [v6 invalidate];
+    [listenerCopy invalidate];
     goto LABEL_5;
   }
 
-  v9 = [v7 valueForEntitlement:@"com.apple.Maps.mapspushd.geod"];
+  v9 = [connectionCopy valueForEntitlement:@"com.apple.Maps.mapspushd.geod"];
 
   if (!v9)
   {
 LABEL_5:
-    [v7 invalidate];
+    [connectionCopy invalidate];
     goto LABEL_6;
   }
 
   v10 = +[NSXPCInterface geo_MapsNotificationDaemonFromGeodInterface];
-  [v7 setExportedInterface:v10];
+  [connectionCopy setExportedInterface:v10];
 
   v11 = objc_loadWeakRetained(&self->_mapsPushDaemon);
-  [v7 setExportedObject:v11];
+  [connectionCopy setExportedObject:v11];
 
 LABEL_6:
-  [v7 resume];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (GEODaemonToMapsPushDaemonListener)initWithMapsPushDaemon:(id)a3
+- (GEODaemonToMapsPushDaemonListener)initWithMapsPushDaemon:(id)daemon
 {
-  v4 = a3;
-  if (v4)
+  daemonCopy = daemon;
+  if (daemonCopy)
   {
     v11.receiver = self;
     v11.super_class = GEODaemonToMapsPushDaemonListener;
@@ -56,7 +56,7 @@ LABEL_6:
     p_isa = &v5->super.isa;
     if (v5)
     {
-      objc_storeWeak(&v5->_mapsPushDaemon, v4);
+      objc_storeWeak(&v5->_mapsPushDaemon, daemonCopy);
       v7 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.Maps.mapspushd.geoservices"];
       v8 = p_isa[2];
       p_isa[2] = v7;
@@ -65,15 +65,15 @@ LABEL_6:
     }
 
     self = p_isa;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

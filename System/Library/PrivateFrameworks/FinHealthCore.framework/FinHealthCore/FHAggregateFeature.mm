@@ -1,41 +1,41 @@
 @interface FHAggregateFeature
-- (BOOL)isEqual:(id)a3;
-- (FHAggregateFeature)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FHAggregateFeature)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FHAggregateFeature
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"aggregateType"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_processingWindowStartDate forKey:@"processingWindowStartDate"];
-  [v5 encodeObject:self->_processingWindowEndDate forKey:@"processingWindowEndDate"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"aggregateType"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_processingWindowStartDate forKey:@"processingWindowStartDate"];
+  [coderCopy encodeObject:self->_processingWindowEndDate forKey:@"processingWindowEndDate"];
 }
 
-- (FHAggregateFeature)initWithCoder:(id)a3
+- (FHAggregateFeature)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = FHAggregateFeature;
   v5 = [(FHAggregateFeature *)&v13 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"aggregateType"];
-    v6 = [v4 decodeObjectForKey:@"name"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"aggregateType"];
+    v6 = [coderCopy decodeObjectForKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectForKey:@"processingWindowStartDate"];
+    v8 = [coderCopy decodeObjectForKey:@"processingWindowStartDate"];
     processingWindowStartDate = v5->_processingWindowStartDate;
     v5->_processingWindowStartDate = v8;
 
-    v10 = [v4 decodeObjectForKey:@"processingWindowEndDate"];
+    v10 = [coderCopy decodeObjectForKey:@"processingWindowEndDate"];
     processingWindowEndDate = v5->_processingWindowEndDate;
     v5->_processingWindowEndDate = v10;
   }
@@ -56,41 +56,41 @@
 
 - (unint64_t)hash
 {
-  v3 = [(FHAggregateFeature *)self type];
-  v4 = [(FHAggregateFeature *)self name];
-  v5 = [v4 hash] - v3 + 32 * v3;
+  type = [(FHAggregateFeature *)self type];
+  name = [(FHAggregateFeature *)self name];
+  v5 = [name hash] - type + 32 * type;
 
-  v6 = [(FHAggregateFeature *)self processingWindowStartDate];
-  v7 = [v6 hash] - v5 + 32 * v5;
+  processingWindowStartDate = [(FHAggregateFeature *)self processingWindowStartDate];
+  v7 = [processingWindowStartDate hash] - v5 + 32 * v5;
 
-  v8 = [(FHAggregateFeature *)self processingWindowEndDate];
-  v9 = [v8 hash] - v7 + 32 * v7;
+  processingWindowEndDate = [(FHAggregateFeature *)self processingWindowEndDate];
+  v9 = [processingWindowEndDate hash] - v7 + 32 * v7;
 
   return v9 + 923521;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v6 = [(FHAggregateFeature *)self type], v6 == [(FHAggregateFeature *)v5 type]))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v6 = [(FHAggregateFeature *)self type], v6 == [(FHAggregateFeature *)v5 type]))
   {
-    v7 = [(FHAggregateFeature *)self name];
-    v8 = [(FHAggregateFeature *)v5 name];
-    if ([v7 isEqual:v8])
+    name = [(FHAggregateFeature *)self name];
+    name2 = [(FHAggregateFeature *)v5 name];
+    if ([name isEqual:name2])
     {
-      v9 = [(FHAggregateFeature *)self processingWindowStartDate];
-      v10 = [(FHAggregateFeature *)v5 processingWindowStartDate];
-      if ([v9 isEqual:v10])
+      processingWindowStartDate = [(FHAggregateFeature *)self processingWindowStartDate];
+      processingWindowStartDate2 = [(FHAggregateFeature *)v5 processingWindowStartDate];
+      if ([processingWindowStartDate isEqual:processingWindowStartDate2])
       {
-        v11 = [(FHAggregateFeature *)self processingWindowEndDate];
-        v12 = [(FHAggregateFeature *)v5 processingWindowEndDate];
-        v13 = [v11 isEqual:v12];
+        processingWindowEndDate = [(FHAggregateFeature *)self processingWindowEndDate];
+        processingWindowEndDate2 = [(FHAggregateFeature *)v5 processingWindowEndDate];
+        v13 = [processingWindowEndDate isEqual:processingWindowEndDate2];
       }
 
       else

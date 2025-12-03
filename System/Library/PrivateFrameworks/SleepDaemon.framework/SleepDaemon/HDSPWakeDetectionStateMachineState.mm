@@ -8,7 +8,7 @@
 - (void)updateState
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HKSPStateMachineState *)self stateMachine];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
   if ([(HDSPWakeDetectionStateMachineState *)self isWakeDetectionDisabled])
   {
     v4 = HKSPLogForCategory();
@@ -20,15 +20,15 @@
       _os_log_impl(&dword_269B11000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] wake detection disabled", v15, 0xCu);
     }
 
-    v6 = [v3 disabledState];
-    [v3 enterState:v6];
+    disabledState = [stateMachine disabledState];
+    [stateMachine enterState:disabledState];
   }
 
   else
   {
-    v6 = [v3 infoProvider];
-    v7 = [v6 activeTypes];
-    if (v7)
+    disabledState = [stateMachine infoProvider];
+    activeTypes = [disabledState activeTypes];
+    if (activeTypes)
     {
       v9 = HKSPLogForCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -39,10 +39,10 @@
         _os_log_impl(&dword_269B11000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] in detection window for activity (and explicit)", v15, 0xCu);
       }
 
-      v8 = [v3 activityDetectingState];
+      activityDetectingState = [stateMachine activityDetectingState];
     }
 
-    else if ((v7 & 2) != 0)
+    else if ((activeTypes & 2) != 0)
     {
       v11 = HKSPLogForCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -53,16 +53,16 @@
         _os_log_impl(&dword_269B11000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] in detection window for explicit", v15, 0xCu);
       }
 
-      v8 = [v3 explicitDetectingState];
+      activityDetectingState = [stateMachine explicitDetectingState];
     }
 
     else
     {
-      v8 = [v3 waitingState];
+      activityDetectingState = [stateMachine waitingState];
     }
 
-    v13 = v8;
-    [v3 enterState:{v8, *v15}];
+    v13 = activityDetectingState;
+    [stateMachine enterState:{activityDetectingState, *v15}];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -71,29 +71,29 @@
 - (BOOL)isWakeDetectionDisabled
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v2 infoProvider];
-  v4 = [v3 sleepScheduleModel];
-  v5 = [v4 sleepSchedule];
-  if ([v5 isEnabledAndHasOccurrences])
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
+  sleepSchedule = [sleepScheduleModel sleepSchedule];
+  if ([sleepSchedule isEnabledAndHasOccurrences])
   {
-    v6 = [v4 sleepSettings];
-    if ([v3 isWatch] && (-[NSObject watchSleepFeaturesEnabled](v6, "watchSleepFeaturesEnabled") & 1) == 0)
+    sleepSettings = [sleepScheduleModel sleepSettings];
+    if ([infoProvider isWatch] && (-[NSObject watchSleepFeaturesEnabled](sleepSettings, "watchSleepFeaturesEnabled") & 1) == 0)
     {
-      v7 = HKSPLogForCategory();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      sleepEventRecord = HKSPLogForCategory();
+      if (os_log_type_enabled(sleepEventRecord, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138543362;
         v17 = objc_opt_class();
         v10 = v17;
-        _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep features disabled", &v16, 0xCu);
+        _os_log_impl(&dword_269B11000, sleepEventRecord, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep features disabled", &v16, 0xCu);
       }
 
       goto LABEL_20;
     }
 
-    v7 = [v4 sleepEventRecord];
-    if ([v3 isWatch] && (-[NSObject isAnySleepTrackingOnboardingCompleted](v7, "isAnySleepTrackingOnboardingCompleted") & 1) == 0)
+    sleepEventRecord = [sleepScheduleModel sleepEventRecord];
+    if ([infoProvider isWatch] && (-[NSObject isAnySleepTrackingOnboardingCompleted](sleepEventRecord, "isAnySleepTrackingOnboardingCompleted") & 1) == 0)
     {
       v11 = HKSPLogForCategory();
       if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -113,7 +113,7 @@ LABEL_20:
 
     else
     {
-      if ([v3 isWatch] & 1) != 0 || (-[NSObject isAnySleepCoachingOnboardingCompleted](v7, "isAnySleepCoachingOnboardingCompleted"))
+      if ([infoProvider isWatch] & 1) != 0 || (-[NSObject isAnySleepCoachingOnboardingCompleted](sleepEventRecord, "isAnySleepCoachingOnboardingCompleted"))
       {
         v8 = 0;
 LABEL_21:
@@ -138,13 +138,13 @@ LABEL_21:
     goto LABEL_19;
   }
 
-  v6 = HKSPLogForCategory();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  sleepSettings = HKSPLogForCategory();
+  if (os_log_type_enabled(sleepSettings, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138543362;
     v17 = objc_opt_class();
     v9 = v17;
-    _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep schedule disabled", &v16, 0xCu);
+    _os_log_impl(&dword_269B11000, sleepSettings, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep schedule disabled", &v16, 0xCu);
   }
 
   v8 = 1;

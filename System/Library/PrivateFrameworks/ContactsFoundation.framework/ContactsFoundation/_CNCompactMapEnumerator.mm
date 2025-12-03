@@ -1,22 +1,22 @@
 @interface _CNCompactMapEnumerator
-- (_CNCompactMapEnumerator)initWithEnumerator:(id)a3 transform:(id)a4;
+- (_CNCompactMapEnumerator)initWithEnumerator:(id)enumerator transform:(id)transform;
 - (id)nextObject;
 @end
 
 @implementation _CNCompactMapEnumerator
 
-- (_CNCompactMapEnumerator)initWithEnumerator:(id)a3 transform:(id)a4
+- (_CNCompactMapEnumerator)initWithEnumerator:(id)enumerator transform:(id)transform
 {
-  v7 = a3;
-  v8 = a4;
+  enumeratorCopy = enumerator;
+  transformCopy = transform;
   v15.receiver = self;
   v15.super_class = _CNCompactMapEnumerator;
   v9 = [(_CNCompactMapEnumerator *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_enumerator, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_enumerator, enumerator);
+    v11 = [transformCopy copy];
     transform = v10->_transform;
     v10->_transform = v11;
 

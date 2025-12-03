@@ -1,71 +1,71 @@
 @interface BMPBHomeKitClientMediaAccessoryControlEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAccessoryState:(id)a3;
-- (void)addZoneNames:(id)a3;
-- (void)addZoneUniqueIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAccessoryState:(id)state;
+- (void)addZoneNames:(id)names;
+- (void)addZoneUniqueIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBHomeKitClientMediaAccessoryControlEvent
 
-- (void)addAccessoryState:(id)a3
+- (void)addAccessoryState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   accessoryStates = self->_accessoryStates;
-  v8 = v4;
+  v8 = stateCopy;
   if (!accessoryStates)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_accessoryStates;
     self->_accessoryStates = v6;
 
-    v4 = v8;
+    stateCopy = v8;
     accessoryStates = self->_accessoryStates;
   }
 
-  [(NSMutableArray *)accessoryStates addObject:v4];
+  [(NSMutableArray *)accessoryStates addObject:stateCopy];
 }
 
-- (void)addZoneUniqueIdentifiers:(id)a3
+- (void)addZoneUniqueIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   zoneUniqueIdentifiers = self->_zoneUniqueIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!zoneUniqueIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_zoneUniqueIdentifiers;
     self->_zoneUniqueIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     zoneUniqueIdentifiers = self->_zoneUniqueIdentifiers;
   }
 
-  [(NSMutableArray *)zoneUniqueIdentifiers addObject:v4];
+  [(NSMutableArray *)zoneUniqueIdentifiers addObject:identifiersCopy];
 }
 
-- (void)addZoneNames:(id)a3
+- (void)addZoneNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   zoneNames = self->_zoneNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!zoneNames)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_zoneNames;
     self->_zoneNames = v6;
 
-    v4 = v8;
+    namesCopy = v8;
     zoneNames = self->_zoneNames;
   }
 
-  [(NSMutableArray *)zoneNames addObject:v4];
+  [(NSMutableArray *)zoneNames addObject:namesCopy];
 }
 
 - (id)description
@@ -74,8 +74,8 @@
   v8.receiver = self;
   v8.super_class = BMPBHomeKitClientMediaAccessoryControlEvent;
   v4 = [(BMPBHomeKitClientMediaAccessoryControlEvent *)&v8 description];
-  v5 = [(BMPBHomeKitClientMediaAccessoryControlEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBHomeKitClientMediaAccessoryControlEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -83,18 +83,18 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   base = self->_base;
   if (base)
   {
-    v5 = [(BMPBHomeKitClientBase *)base dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"base"];
+    dictionaryRepresentation = [(BMPBHomeKitClientBase *)base dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"base"];
   }
 
   accessoryUniqueIdentifier = self->_accessoryUniqueIdentifier;
   if (accessoryUniqueIdentifier)
   {
-    [v3 setObject:accessoryUniqueIdentifier forKey:@"accessoryUniqueIdentifier"];
+    [dictionary setObject:accessoryUniqueIdentifier forKey:@"accessoryUniqueIdentifier"];
   }
 
   if ([(NSMutableArray *)self->_accessoryStates count])
@@ -119,8 +119,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation2 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation2];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -129,60 +129,60 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"accessoryState"];
+    [dictionary setObject:v7 forKey:@"accessoryState"];
   }
 
   accessoryMediaRouteIdentifier = self->_accessoryMediaRouteIdentifier;
   if (accessoryMediaRouteIdentifier)
   {
-    [v3 setObject:accessoryMediaRouteIdentifier forKey:@"accessoryMediaRouteIdentifier"];
+    [dictionary setObject:accessoryMediaRouteIdentifier forKey:@"accessoryMediaRouteIdentifier"];
   }
 
   zoneUniqueIdentifiers = self->_zoneUniqueIdentifiers;
   if (zoneUniqueIdentifiers)
   {
-    [v3 setObject:zoneUniqueIdentifiers forKey:@"zoneUniqueIdentifiers"];
+    [dictionary setObject:zoneUniqueIdentifiers forKey:@"zoneUniqueIdentifiers"];
   }
 
   roomUniqueIdentifier = self->_roomUniqueIdentifier;
   if (roomUniqueIdentifier)
   {
-    [v3 setObject:roomUniqueIdentifier forKey:@"roomUniqueIdentifier"];
+    [dictionary setObject:roomUniqueIdentifier forKey:@"roomUniqueIdentifier"];
   }
 
   accessoryName = self->_accessoryName;
   if (accessoryName)
   {
-    [v3 setObject:accessoryName forKey:@"accessoryName"];
+    [dictionary setObject:accessoryName forKey:@"accessoryName"];
   }
 
   roomName = self->_roomName;
   if (roomName)
   {
-    [v3 setObject:roomName forKey:@"roomName"];
+    [dictionary setObject:roomName forKey:@"roomName"];
   }
 
   zoneNames = self->_zoneNames;
   if (zoneNames)
   {
-    [v3 setObject:zoneNames forKey:@"zoneNames"];
+    [dictionary setObject:zoneNames forKey:@"zoneNames"];
   }
 
   homeName = self->_homeName;
   if (homeName)
   {
-    [v3 setObject:homeName forKey:@"homeName"];
+    [dictionary setObject:homeName forKey:@"homeName"];
   }
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_base)
   {
     PBDataWriterWriteSubmessage();
@@ -317,99 +317,99 @@
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if (self->_base)
   {
-    [v16 setBase:?];
+    [toCopy setBase:?];
   }
 
   if (self->_accessoryUniqueIdentifier)
   {
-    [v16 setAccessoryUniqueIdentifier:?];
+    [toCopy setAccessoryUniqueIdentifier:?];
   }
 
   if ([(BMPBHomeKitClientMediaAccessoryControlEvent *)self accessoryStatesCount])
   {
-    [v16 clearAccessoryStates];
-    v4 = [(BMPBHomeKitClientMediaAccessoryControlEvent *)self accessoryStatesCount];
-    if (v4)
+    [toCopy clearAccessoryStates];
+    accessoryStatesCount = [(BMPBHomeKitClientMediaAccessoryControlEvent *)self accessoryStatesCount];
+    if (accessoryStatesCount)
     {
-      v5 = v4;
+      v5 = accessoryStatesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(BMPBHomeKitClientMediaAccessoryControlEvent *)self accessoryStateAtIndex:i];
-        [v16 addAccessoryState:v7];
+        [toCopy addAccessoryState:v7];
       }
     }
   }
 
   if (self->_accessoryMediaRouteIdentifier)
   {
-    [v16 setAccessoryMediaRouteIdentifier:?];
+    [toCopy setAccessoryMediaRouteIdentifier:?];
   }
 
   if ([(BMPBHomeKitClientMediaAccessoryControlEvent *)self zoneUniqueIdentifiersCount])
   {
-    [v16 clearZoneUniqueIdentifiers];
-    v8 = [(BMPBHomeKitClientMediaAccessoryControlEvent *)self zoneUniqueIdentifiersCount];
-    if (v8)
+    [toCopy clearZoneUniqueIdentifiers];
+    zoneUniqueIdentifiersCount = [(BMPBHomeKitClientMediaAccessoryControlEvent *)self zoneUniqueIdentifiersCount];
+    if (zoneUniqueIdentifiersCount)
     {
-      v9 = v8;
+      v9 = zoneUniqueIdentifiersCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(BMPBHomeKitClientMediaAccessoryControlEvent *)self zoneUniqueIdentifiersAtIndex:j];
-        [v16 addZoneUniqueIdentifiers:v11];
+        [toCopy addZoneUniqueIdentifiers:v11];
       }
     }
   }
 
   if (self->_roomUniqueIdentifier)
   {
-    [v16 setRoomUniqueIdentifier:?];
+    [toCopy setRoomUniqueIdentifier:?];
   }
 
   if (self->_accessoryName)
   {
-    [v16 setAccessoryName:?];
+    [toCopy setAccessoryName:?];
   }
 
   if (self->_roomName)
   {
-    [v16 setRoomName:?];
+    [toCopy setRoomName:?];
   }
 
   if ([(BMPBHomeKitClientMediaAccessoryControlEvent *)self zoneNamesCount])
   {
-    [v16 clearZoneNames];
-    v12 = [(BMPBHomeKitClientMediaAccessoryControlEvent *)self zoneNamesCount];
-    if (v12)
+    [toCopy clearZoneNames];
+    zoneNamesCount = [(BMPBHomeKitClientMediaAccessoryControlEvent *)self zoneNamesCount];
+    if (zoneNamesCount)
     {
-      v13 = v12;
+      v13 = zoneNamesCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(BMPBHomeKitClientMediaAccessoryControlEvent *)self zoneNamesAtIndex:k];
-        [v16 addZoneNames:v15];
+        [toCopy addZoneNames:v15];
       }
     }
   }
 
   if (self->_homeName)
   {
-    [v16 setHomeName:?];
+    [toCopy setHomeName:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v55 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(BMPBHomeKitClientBase *)self->_base copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(BMPBHomeKitClientBase *)self->_base copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
-  v8 = [(NSString *)self->_accessoryUniqueIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_accessoryUniqueIdentifier copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
@@ -433,7 +433,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v48 + 1) + 8 * v14) copyWithZone:a3];
+        v15 = [*(*(&v48 + 1) + 8 * v14) copyWithZone:zone];
         [v5 addAccessoryState:v15];
 
         ++v14;
@@ -446,7 +446,7 @@
     while (v12);
   }
 
-  v16 = [(NSString *)self->_accessoryMediaRouteIdentifier copyWithZone:a3];
+  v16 = [(NSString *)self->_accessoryMediaRouteIdentifier copyWithZone:zone];
   v17 = v5[1];
   v5[1] = v16;
 
@@ -470,7 +470,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v44 + 1) + 8 * v22) copyWithZone:a3];
+        v23 = [*(*(&v44 + 1) + 8 * v22) copyWithZone:zone];
         [v5 addZoneUniqueIdentifiers:v23];
 
         ++v22;
@@ -483,15 +483,15 @@
     while (v20);
   }
 
-  v24 = [(NSString *)self->_roomUniqueIdentifier copyWithZone:a3];
+  v24 = [(NSString *)self->_roomUniqueIdentifier copyWithZone:zone];
   v25 = v5[8];
   v5[8] = v24;
 
-  v26 = [(NSString *)self->_accessoryName copyWithZone:a3];
+  v26 = [(NSString *)self->_accessoryName copyWithZone:zone];
   v27 = v5[2];
   v5[2] = v26;
 
-  v28 = [(NSString *)self->_roomName copyWithZone:a3];
+  v28 = [(NSString *)self->_roomName copyWithZone:zone];
   v29 = v5[7];
   v5[7] = v28;
 
@@ -515,7 +515,7 @@
           objc_enumerationMutation(v30);
         }
 
-        v35 = [*(*(&v40 + 1) + 8 * v34) copyWithZone:{a3, v40}];
+        v35 = [*(*(&v40 + 1) + 8 * v34) copyWithZone:{zone, v40}];
         [v5 addZoneNames:v35];
 
         ++v34;
@@ -528,7 +528,7 @@
     while (v32);
   }
 
-  v36 = [(NSString *)self->_homeName copyWithZone:a3];
+  v36 = [(NSString *)self->_homeName copyWithZone:zone];
   v37 = v5[6];
   v5[6] = v36;
 
@@ -536,16 +536,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   base = self->_base;
-  if (base | v4[5])
+  if (base | equalCopy[5])
   {
     if (![(BMPBHomeKitClientBase *)base isEqual:?])
     {
@@ -554,15 +554,15 @@
   }
 
   accessoryUniqueIdentifier = self->_accessoryUniqueIdentifier;
-  if (accessoryUniqueIdentifier | v4[4] && ![(NSString *)accessoryUniqueIdentifier isEqual:?])
+  if (accessoryUniqueIdentifier | equalCopy[4] && ![(NSString *)accessoryUniqueIdentifier isEqual:?])
   {
     goto LABEL_22;
   }
 
-  if (((accessoryStates = self->_accessoryStates, !(accessoryStates | v4[3])) || [(NSMutableArray *)accessoryStates isEqual:?]) && ((accessoryMediaRouteIdentifier = self->_accessoryMediaRouteIdentifier, !(accessoryMediaRouteIdentifier | v4[1])) || [(NSString *)accessoryMediaRouteIdentifier isEqual:?]) && ((zoneUniqueIdentifiers = self->_zoneUniqueIdentifiers, !(zoneUniqueIdentifiers | v4[10])) || [(NSMutableArray *)zoneUniqueIdentifiers isEqual:?]) && ((roomUniqueIdentifier = self->_roomUniqueIdentifier, !(roomUniqueIdentifier | v4[8])) || [(NSString *)roomUniqueIdentifier isEqual:?]) && ((accessoryName = self->_accessoryName, !(accessoryName | v4[2])) || [(NSString *)accessoryName isEqual:?]) && ((roomName = self->_roomName, !(roomName | v4[7])) || [(NSString *)roomName isEqual:?]) && ((zoneNames = self->_zoneNames, !(zoneNames | v4[9])) || [(NSMutableArray *)zoneNames isEqual:?]))
+  if (((accessoryStates = self->_accessoryStates, !(accessoryStates | equalCopy[3])) || [(NSMutableArray *)accessoryStates isEqual:?]) && ((accessoryMediaRouteIdentifier = self->_accessoryMediaRouteIdentifier, !(accessoryMediaRouteIdentifier | equalCopy[1])) || [(NSString *)accessoryMediaRouteIdentifier isEqual:?]) && ((zoneUniqueIdentifiers = self->_zoneUniqueIdentifiers, !(zoneUniqueIdentifiers | equalCopy[10])) || [(NSMutableArray *)zoneUniqueIdentifiers isEqual:?]) && ((roomUniqueIdentifier = self->_roomUniqueIdentifier, !(roomUniqueIdentifier | equalCopy[8])) || [(NSString *)roomUniqueIdentifier isEqual:?]) && ((accessoryName = self->_accessoryName, !(accessoryName | equalCopy[2])) || [(NSString *)accessoryName isEqual:?]) && ((roomName = self->_roomName, !(roomName | equalCopy[7])) || [(NSString *)roomName isEqual:?]) && ((zoneNames = self->_zoneNames, !(zoneNames | equalCopy[9])) || [(NSMutableArray *)zoneNames isEqual:?]))
   {
     homeName = self->_homeName;
-    if (homeName | v4[6])
+    if (homeName | equalCopy[6])
     {
       v15 = [(NSString *)homeName isEqual:?];
     }
@@ -596,12 +596,12 @@ LABEL_22:
   return v9 ^ v11 ^ [(NSString *)self->_homeName hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   base = self->_base;
-  v6 = *(v4 + 5);
+  v6 = *(fromCopy + 5);
   if (base)
   {
     if (v6)
@@ -615,7 +615,7 @@ LABEL_22:
     [(BMPBHomeKitClientMediaAccessoryControlEvent *)self setBase:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBHomeKitClientMediaAccessoryControlEvent *)self setAccessoryUniqueIdentifier:?];
   }
@@ -624,7 +624,7 @@ LABEL_22:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   v8 = [v7 countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v8)
   {
@@ -648,7 +648,7 @@ LABEL_22:
     while (v9);
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(BMPBHomeKitClientMediaAccessoryControlEvent *)self setAccessoryMediaRouteIdentifier:?];
   }
@@ -657,7 +657,7 @@ LABEL_22:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = *(v4 + 10);
+  v12 = *(fromCopy + 10);
   v13 = [v12 countByEnumeratingWithState:&v27 objects:v36 count:16];
   if (v13)
   {
@@ -681,17 +681,17 @@ LABEL_22:
     while (v14);
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(BMPBHomeKitClientMediaAccessoryControlEvent *)self setRoomUniqueIdentifier:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BMPBHomeKitClientMediaAccessoryControlEvent *)self setAccessoryName:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(BMPBHomeKitClientMediaAccessoryControlEvent *)self setRoomName:?];
   }
@@ -700,7 +700,7 @@ LABEL_22:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v17 = *(v4 + 9);
+  v17 = *(fromCopy + 9);
   v18 = [v17 countByEnumeratingWithState:&v23 objects:v35 count:16];
   if (v18)
   {
@@ -724,7 +724,7 @@ LABEL_22:
     while (v19);
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(BMPBHomeKitClientMediaAccessoryControlEvent *)self setHomeName:?];
   }

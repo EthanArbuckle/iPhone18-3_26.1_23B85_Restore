@@ -1,16 +1,16 @@
 @interface CoreFileHandlerV2
-- (BOOL)getCorefileLogInfo:(unint64_t *)a3 :(unint64_t *)a4 :(unsigned int *)a5;
-- (BOOL)isZeroes:(id)a3;
-- (const)getCoreDumpNameWithIndex:(unint64_t)a3;
-- (id)getCoreDumpEncryptionKey:(unint64_t)a3;
-- (void)getCoreDumpInfoWithIndex:(unint64_t)a3 :(unint64_t *)a4 :(unint64_t *)a5 :(unsigned int *)a6;
+- (BOOL)getCorefileLogInfo:(unint64_t *)info :(unint64_t *)a4 :(unsigned int *)a5;
+- (BOOL)isZeroes:(id)zeroes;
+- (const)getCoreDumpNameWithIndex:(unint64_t)index;
+- (id)getCoreDumpEncryptionKey:(unint64_t)key;
+- (void)getCoreDumpInfoWithIndex:(unint64_t)index :(unint64_t *)a4 :(unint64_t *)a5 :(unsigned int *)a6;
 @end
 
 @implementation CoreFileHandlerV2
 
-- (id)getCoreDumpEncryptionKey:(unint64_t)a3
+- (id)getCoreDumpEncryptionKey:(unint64_t)key
 {
-  if (self->_corefileHeader->num_files <= a3)
+  if (self->_corefileHeader->num_files <= key)
   {
     _os_assert_log();
     result = _os_crash();
@@ -27,9 +27,9 @@
   return result;
 }
 
-- (BOOL)getCorefileLogInfo:(unint64_t *)a3 :(unint64_t *)a4 :(unsigned int *)a5
+- (BOOL)getCorefileLogInfo:(unint64_t *)info :(unint64_t *)a4 :(unsigned int *)a5
 {
-  if (!a3)
+  if (!info)
   {
     _os_assert_log();
     _os_crash();
@@ -50,7 +50,7 @@ LABEL_9:
   *a4 = log_length;
   if (log_length)
   {
-    *a3 = corefileHeader->log_offset;
+    *info = corefileHeader->log_offset;
     *a5 = 0;
     flags = corefileHeader->flags;
     if (flags)
@@ -79,10 +79,10 @@ LABEL_9:
   return log_length != 0;
 }
 
-- (void)getCoreDumpInfoWithIndex:(unint64_t)a3 :(unint64_t *)a4 :(unint64_t *)a5 :(unsigned int *)a6
+- (void)getCoreDumpInfoWithIndex:(unint64_t)index :(unint64_t *)a4 :(unint64_t *)a5 :(unsigned int *)a6
 {
   corefileHeader = self->_corefileHeader;
-  if (corefileHeader->num_files <= a3)
+  if (corefileHeader->num_files <= index)
   {
     _os_assert_log();
     _os_crash();
@@ -116,7 +116,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v7 = &corefileHeader->signature + 5 * a3;
+  v7 = &corefileHeader->signature + 5 * index;
   v8 = v7[8];
   *a4 = v7[9];
   *a5 = v7[10];
@@ -170,12 +170,12 @@ LABEL_12:
   *a6 = v9;
 }
 
-- (const)getCoreDumpNameWithIndex:(unint64_t)a3
+- (const)getCoreDumpNameWithIndex:(unint64_t)index
 {
   corefileHeader = self->_corefileHeader;
-  if (corefileHeader->num_files > a3)
+  if (corefileHeader->num_files > index)
   {
-    return (&corefileHeader[1].pub_key_offset + 5 * a3);
+    return (&corefileHeader[1].pub_key_offset + 5 * index);
   }
 
   _os_assert_log();
@@ -184,22 +184,22 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)isZeroes:(id)a3
+- (BOOL)isZeroes:(id)zeroes
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  if ([v3 length])
+  zeroesCopy = zeroes;
+  bytes = [zeroesCopy bytes];
+  if ([zeroesCopy length])
   {
     v5 = 0;
     while (1)
     {
-      v6 = v4[v5] == 0;
-      if (v4[v5])
+      v6 = bytes[v5] == 0;
+      if (bytes[v5])
       {
         break;
       }
 
-      if (++v5 >= [v3 length])
+      if (++v5 >= [zeroesCopy length])
       {
         goto LABEL_5;
       }

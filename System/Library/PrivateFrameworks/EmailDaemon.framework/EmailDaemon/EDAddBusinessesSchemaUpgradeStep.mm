@@ -1,10 +1,10 @@
 @interface EDAddBusinessesSchemaUpgradeStep
-+ (BOOL)runWithConnection:(id)a3 error:(id *)a4;
++ (BOOL)runWithConnection:(id)connection error:(id *)error;
 + (id)_businessAddressesTableSchema;
 + (id)_businessCategoriesTableSchema;
 + (id)_businessesTableSchema;
 + (id)log;
-+ (int)runWithConnection:(id)a3 databaseName:(id)a4 updateProtectedSchema:(BOOL)a5;
++ (int)runWithConnection:(id)connection databaseName:(id)name updateProtectedSchema:(BOOL)schema;
 @end
 
 @implementation EDAddBusinessesSchemaUpgradeStep
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __39__EDAddBusinessesSchemaUpgradeStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_3 != -1)
   {
     dispatch_once(&log_onceToken_3, block);
@@ -34,43 +34,43 @@ void __39__EDAddBusinessesSchemaUpgradeStep_log__block_invoke(uint64_t a1)
   log_log_3 = v1;
 }
 
-+ (BOOL)runWithConnection:(id)a3 error:(id *)a4
++ (BOOL)runWithConnection:(id)connection error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 runWithConnection:v6 databaseName:0 updateProtectedSchema:1];
+  connectionCopy = connection;
+  v7 = [self runWithConnection:connectionCopy databaseName:0 updateProtectedSchema:1];
   v8 = v7;
-  if (a4 && v7)
+  if (error && v7)
   {
-    *a4 = [MEMORY[0x1E696ABC0] ef_SQLiteErrorWithCode:v7];
+    *error = [MEMORY[0x1E696ABC0] ef_SQLiteErrorWithCode:v7];
   }
 
   return v8 == 0;
 }
 
-+ (int)runWithConnection:(id)a3 databaseName:(id)a4 updateProtectedSchema:(BOOL)a5
++ (int)runWithConnection:(id)connection databaseName:(id)name updateProtectedSchema:(BOOL)schema
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = sqlite3_exec([v8 sqlDB], "DROP TABLE IF EXISTS businesses", 0, 0, 0);
+  schemaCopy = schema;
+  connectionCopy = connection;
+  nameCopy = name;
+  v10 = sqlite3_exec([connectionCopy sqlDB], "DROP TABLE IF EXISTS businesses", 0, 0, 0);
   if (v10)
   {
-    v11 = +[EDAddBusinessesSchemaUpgradeStep log];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    nameCopy = +[EDAddBusinessesSchemaUpgradeStep log];
+    if (os_log_type_enabled(nameCopy, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1C61EF000, v11, OS_LOG_TYPE_DEFAULT, "Failed to drop businesses table", buf, 2u);
+      _os_log_impl(&dword_1C61EF000, nameCopy, OS_LOG_TYPE_DEFAULT, "Failed to drop businesses table", buf, 2u);
     }
 
     goto LABEL_29;
   }
 
-  if (v5)
+  if (schemaCopy)
   {
-    if ([v8 columnExists:@"domain" inTable:@"addresses" type:0])
+    if ([connectionCopy columnExists:@"domain" inTable:@"addresses" type:0])
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE %@.addresses DROP COLUMN domain", v9];;
-      v10 = sqlite3_exec([v8 sqlDB], -[NSObject UTF8String](v11, "UTF8String"), 0, 0, 0);
+      nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE %@.addresses DROP COLUMN domain", nameCopy];;
+      v10 = sqlite3_exec([connectionCopy sqlDB], -[NSObject UTF8String](nameCopy, "UTF8String"), 0, 0, 0);
       if (v10)
       {
         v12 = +[EDAddBusinessesSchemaUpgradeStep log];
@@ -83,8 +83,8 @@ void __39__EDAddBusinessesSchemaUpgradeStep_log__block_invoke(uint64_t a1)
         goto LABEL_29;
       }
 
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE %@.addresses DROP COLUMN business", v9];;
-      v10 = sqlite3_exec([v8 sqlDB], objc_msgSend(v13, "UTF8String"), 0, 0, 0);
+      nameCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE %@.addresses DROP COLUMN business", nameCopy];;
+      v10 = sqlite3_exec([connectionCopy sqlDB], objc_msgSend(nameCopy2, "UTF8String"), 0, 0, 0);
       if (v10)
       {
         v14 = +[EDAddBusinessesSchemaUpgradeStep log];
@@ -102,9 +102,9 @@ LABEL_17:
       }
     }
 
-    v11 = [a1 _businessesTableSchema];
-    v13 = [v11 definitionWithDatabaseName:v9];
-    v10 = sqlite3_exec([v8 sqlDB], objc_msgSend(v13, "UTF8String"), 0, 0, 0);
+    nameCopy = [self _businessesTableSchema];
+    nameCopy2 = [nameCopy definitionWithDatabaseName:nameCopy];
+    v10 = sqlite3_exec([connectionCopy sqlDB], objc_msgSend(nameCopy2, "UTF8String"), 0, 0, 0);
     if (v10)
     {
       v14 = +[EDAddBusinessesSchemaUpgradeStep log];
@@ -122,16 +122,16 @@ LABEL_18:
     }
   }
 
-  v11 = [a1 _businessAddressesTableSchema];
-  v17 = [v11 definitionWithDatabaseName:0];
-  v10 = sqlite3_exec([v8 sqlDB], objc_msgSend(v17, "UTF8String"), 0, 0, 0);
+  nameCopy = [self _businessAddressesTableSchema];
+  v17 = [nameCopy definitionWithDatabaseName:0];
+  v10 = sqlite3_exec([connectionCopy sqlDB], objc_msgSend(v17, "UTF8String"), 0, 0, 0);
   if (v10)
   {
-    v18 = +[EDAddBusinessesSchemaUpgradeStep log];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    _businessCategoriesTableSchema = +[EDAddBusinessesSchemaUpgradeStep log];
+    if (os_log_type_enabled(_businessCategoriesTableSchema, OS_LOG_TYPE_DEFAULT))
     {
       *v23 = 0;
-      _os_log_impl(&dword_1C61EF000, v18, OS_LOG_TYPE_DEFAULT, "Failed to create business_addresses table", v23, 2u);
+      _os_log_impl(&dword_1C61EF000, _businessCategoriesTableSchema, OS_LOG_TYPE_DEFAULT, "Failed to create business_addresses table", v23, 2u);
     }
 
     v19 = v17;
@@ -139,10 +139,10 @@ LABEL_18:
 
   else
   {
-    v18 = [a1 _businessCategoriesTableSchema];
-    v19 = [v18 definitionWithDatabaseName:0];
+    _businessCategoriesTableSchema = [self _businessCategoriesTableSchema];
+    v19 = [_businessCategoriesTableSchema definitionWithDatabaseName:0];
 
-    v10 = sqlite3_exec([v8 sqlDB], objc_msgSend(v19, "UTF8String"), 0, 0, 0);
+    v10 = sqlite3_exec([connectionCopy sqlDB], objc_msgSend(v19, "UTF8String"), 0, 0, 0);
     if (v10)
     {
       v20 = +[EDAddBusinessesSchemaUpgradeStep log];
@@ -201,22 +201,22 @@ LABEL_29:
   [v5 addUniquenessConstraintForColumns:v7 conflictResolution:1];
 
   v8 = objc_alloc(MEMORY[0x1E699B898]);
-  v9 = [v28 columnExpression];
-  v10 = [v9 isNotNull];
-  v31[0] = v10;
-  v11 = [v27 columnExpression];
-  v12 = [v11 isNull];
-  v31[1] = v12;
+  columnExpression = [v28 columnExpression];
+  isNotNull = [columnExpression isNotNull];
+  v31[0] = isNotNull;
+  columnExpression2 = [v27 columnExpression];
+  isNull = [columnExpression2 isNull];
+  v31[1] = isNull;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
   v14 = [v8 initWithExpressions:v13];
 
   v15 = objc_alloc(MEMORY[0x1E699B898]);
-  v16 = [v28 columnExpression];
-  v17 = [v16 isNull];
-  v30[0] = v17;
-  v18 = [v27 columnExpression];
-  v19 = [v18 isNotNull];
-  v30[1] = v19;
+  columnExpression3 = [v28 columnExpression];
+  isNull2 = [columnExpression3 isNull];
+  v30[0] = isNull2;
+  columnExpression4 = [v27 columnExpression];
+  isNotNull2 = [columnExpression4 isNotNull];
+  v30[1] = isNotNull2;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
   v21 = [v15 initWithExpressions:v20];
 

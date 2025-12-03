@@ -5,10 +5,10 @@
 - (double)innerCircleStrokeWidth;
 - (double)strokeOutlineWidth;
 - (double)strokeWidth;
-- (id)_uiColorForCursorColor:(int64_t)a3;
+- (id)_uiColorForCursorColor:(int64_t)color;
 - (id)deselectedStrokeColor;
 - (id)selectedStrokeColor;
-- (void)setCursorColor:(int64_t)a3;
+- (void)setCursorColor:(int64_t)color;
 @end
 
 @implementation HNDMousePointerAppearance
@@ -22,11 +22,11 @@
   return v2;
 }
 
-- (void)setCursorColor:(int64_t)a3
+- (void)setCursorColor:(int64_t)color
 {
-  if (self->_cursorColor != a3)
+  if (self->_cursorColor != color)
   {
-    self->_cursorColor = a3;
+    self->_cursorColor = color;
     v5 = [(HNDMousePointerAppearance *)self _uiColorForCursorColor:?];
     pointerUIColorRepresentation = self->_pointerUIColorRepresentation;
     self->_pointerUIColorRepresentation = v5;
@@ -35,7 +35,7 @@
   }
 }
 
-- (id)_uiColorForCursorColor:(int64_t)a3
+- (id)_uiColorForCursorColor:(int64_t)color
 {
   v3 = AXSAssistiveTouchCursorColor();
   if (v3)
@@ -50,19 +50,19 @@
 {
   if ([(HNDMousePointerAppearance *)self cursorColor]== 1)
   {
-    v3 = +[UIColor whiteColor];
+    selectedStrokeColor = +[UIColor whiteColor];
 LABEL_8:
-    v4 = v3;
+    v4 = selectedStrokeColor;
     goto LABEL_9;
   }
 
   if ([(HNDMousePointerAppearance *)self cursorColor]!= 2 || ([(HNDMousePointerAppearance *)self _uiColorForCursorColor:1], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [(HNDMousePointerAppearance *)self pointerUIColorRepresentation];
+    pointerUIColorRepresentation = [(HNDMousePointerAppearance *)self pointerUIColorRepresentation];
 
-    if (v5)
+    if (pointerUIColorRepresentation)
     {
-      v6 = [(HNDMousePointerAppearance *)self pointerUIColorRepresentation];
+      pointerUIColorRepresentation2 = [(HNDMousePointerAppearance *)self pointerUIColorRepresentation];
       v4 = AXSlightlyBrighterColorForColor();
 
       goto LABEL_9;
@@ -70,7 +70,7 @@ LABEL_8:
 
     v8.receiver = self;
     v8.super_class = HNDMousePointerAppearance;
-    v3 = [(HNDMousePointerAppearance *)&v8 selectedStrokeColor];
+    selectedStrokeColor = [(HNDMousePointerAppearance *)&v8 selectedStrokeColor];
     goto LABEL_8;
   }
 
@@ -81,21 +81,21 @@ LABEL_9:
 
 - (id)deselectedStrokeColor
 {
-  v3 = [(HNDMousePointerAppearance *)self pointerUIColorRepresentation];
+  pointerUIColorRepresentation = [(HNDMousePointerAppearance *)self pointerUIColorRepresentation];
 
-  if (v3)
+  if (pointerUIColorRepresentation)
   {
-    v4 = [(HNDMousePointerAppearance *)self pointerUIColorRepresentation];
+    pointerUIColorRepresentation2 = [(HNDMousePointerAppearance *)self pointerUIColorRepresentation];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = HNDMousePointerAppearance;
-    v4 = [(HNDMousePointerAppearance *)&v6 deselectedStrokeColor];
+    pointerUIColorRepresentation2 = [(HNDMousePointerAppearance *)&v6 deselectedStrokeColor];
   }
 
-  return v4;
+  return pointerUIColorRepresentation2;
 }
 
 - (double)strokeWidth

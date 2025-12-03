@@ -1,30 +1,30 @@
 @interface SFDomainSubscriptionRequestItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFDomainSubscriptionRequestItem)initWithCoder:(id)a3;
-- (SFDomainSubscriptionRequestItem)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFDomainSubscriptionRequestItem)initWithCoder:(id)coder;
+- (SFDomainSubscriptionRequestItem)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFDomainSubscriptionRequestItem
 
-- (SFDomainSubscriptionRequestItem)initWithProtobuf:(id)a3
+- (SFDomainSubscriptionRequestItem)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v11.receiver = self;
   v11.super_class = SFDomainSubscriptionRequestItem;
   v5 = [(SFDomainSubscriptionRequestItem *)&v11 init];
   if (v5)
   {
-    v6 = [v4 sportsSubscriptionRequestItem];
+    sportsSubscriptionRequestItem = [protobufCopy sportsSubscriptionRequestItem];
 
-    if (v6)
+    if (sportsSubscriptionRequestItem)
     {
       v7 = [SFSportsSubscriptionRequestItem alloc];
-      v8 = [v4 sportsSubscriptionRequestItem];
-      v9 = [(SFSportsSubscriptionRequestItem *)v7 initWithProtobuf:v8];
+      sportsSubscriptionRequestItem2 = [protobufCopy sportsSubscriptionRequestItem];
+      v9 = [(SFSportsSubscriptionRequestItem *)v7 initWithProtobuf:sportsSubscriptionRequestItem2];
     }
 
     else
@@ -41,22 +41,22 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v4 = [equalCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 init];
 }
@@ -64,31 +64,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBDomainSubscriptionRequestItem alloc] initWithFacade:self];
-  v3 = [(_SFPBDomainSubscriptionRequestItem *)v2 jsonData];
+  jsonData = [(_SFPBDomainSubscriptionRequestItem *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBDomainSubscriptionRequestItem alloc] initWithFacade:self];
-  v3 = [(_SFPBDomainSubscriptionRequestItem *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBDomainSubscriptionRequestItem *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBDomainSubscriptionRequestItem alloc] initWithFacade:self];
-  v5 = [(_SFPBDomainSubscriptionRequestItem *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBDomainSubscriptionRequestItem *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFDomainSubscriptionRequestItem)initWithCoder:(id)a3
+- (SFDomainSubscriptionRequestItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBDomainSubscriptionRequestItem alloc] initWithData:v5];
   v7 = [(SFDomainSubscriptionRequestItem *)self initWithProtobuf:v6];

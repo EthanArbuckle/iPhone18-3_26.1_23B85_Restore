@@ -1,41 +1,41 @@
 @interface EvaluationDataSourceEspressoWrapper
-- (EvaluationDataSourceEspressoWrapper)initWithEvaluatorDataSource:(id)a3;
-- (id)dataProcessAtIndex:(int)a3;
+- (EvaluationDataSourceEspressoWrapper)initWithEvaluatorDataSource:(id)source;
+- (id)dataProcessAtIndex:(int)index;
 - (int)numberOfDataPoints;
 @end
 
 @implementation EvaluationDataSourceEspressoWrapper
 
-- (EvaluationDataSourceEspressoWrapper)initWithEvaluatorDataSource:(id)a3
+- (EvaluationDataSourceEspressoWrapper)initWithEvaluatorDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = EvaluationDataSourceEspressoWrapper;
   v6 = [(EvaluationDataSourceEspressoWrapper *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)dataProcessAtIndex:(int)a3
+- (id)dataProcessAtIndex:(int)index
 {
   v78[2] = *MEMORY[0x277D85DE8];
-  v4 = [(EvaluationDataSourceEspressoWrapper *)self dataSource];
-  v5 = [v4 batchSize];
+  dataSource = [(EvaluationDataSourceEspressoWrapper *)self dataSource];
+  batchSize = [dataSource batchSize];
 
-  v6 = [(EvaluationDataSourceEspressoWrapper *)self dataSource];
-  v7 = [v6 modelFeatures];
+  dataSource2 = [(EvaluationDataSourceEspressoWrapper *)self dataSource];
+  modelFeatures = [dataSource2 modelFeatures];
 
-  v57 = v7;
-  v58 = [v7 componentsSeparatedByString:{@", "}];
+  v57 = modelFeatures;
+  v58 = [modelFeatures componentsSeparatedByString:{@", "}];
   v61 = [v58 count];
   v8 = objc_alloc(MEMORY[0x277CBFF48]);
-  v9 = [MEMORY[0x277CCABB0] numberWithInt:v5];
+  v9 = [MEMORY[0x277CCABB0] numberWithInt:batchSize];
   v78[0] = v9;
   v10 = [MEMORY[0x277CCABB0] numberWithInt:v61];
   v78[1] = v10;
@@ -45,7 +45,7 @@
   v13 = v70;
 
   v14 = objc_alloc(MEMORY[0x277CBFF48]);
-  v15 = [MEMORY[0x277CCABB0] numberWithInt:v5];
+  v15 = [MEMORY[0x277CCABB0] numberWithInt:batchSize];
   v77[0] = v15;
   v77[1] = &unk_2884B2378;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v77 count:2];
@@ -54,19 +54,19 @@
   v59 = v69;
 
   v64 = objc_alloc_init(MEMORY[0x277D07750]);
-  if (v5 >= 1)
+  if (batchSize >= 1)
   {
     v17 = 0;
-    v63 = v5 * a3;
-    v60 = v5;
+    v63 = batchSize * index;
+    v60 = batchSize;
     do
     {
-      v18 = [(EvaluationDataSourceEspressoWrapper *)self dataSource];
-      v66 = [v18 dataForRecord:v17 + v63];
+      dataSource3 = [(EvaluationDataSourceEspressoWrapper *)self dataSource];
+      v66 = [dataSource3 dataForRecord:v17 + v63];
 
-      v19 = [(EvaluationDataSourceEspressoWrapper *)self dataSource];
-      v20 = [v19 modelFeatures];
-      v21 = [v20 length] == 0;
+      dataSource4 = [(EvaluationDataSourceEspressoWrapper *)self dataSource];
+      modelFeatures2 = [dataSource4 modelFeatures];
+      v21 = [modelFeatures2 length] == 0;
 
       if (v21)
       {
@@ -75,8 +75,8 @@
 
       else
       {
-        v22 = [(EvaluationDataSourceEspressoWrapper *)self dataSource];
-        v23 = [v22 extractFeatureDataForRecord:v17 + v63];
+        dataSource5 = [(EvaluationDataSourceEspressoWrapper *)self dataSource];
+        v23 = [dataSource5 extractFeatureDataForRecord:v17 + v63];
 
         v24 = v23;
       }
@@ -107,11 +107,11 @@
         while ((v61 & 0x7FFFFFFF) != v30);
       }
 
-      v35 = [(EvaluationDataSourceEspressoWrapper *)self dataSource];
-      v36 = [v35 classificationForRecord:v17 + v63];
+      dataSource6 = [(EvaluationDataSourceEspressoWrapper *)self dataSource];
+      v36 = [dataSource6 classificationForRecord:v17 + v63];
 
-      v37 = [(EvaluationDataSourceEspressoWrapper *)self dataSource];
-      v38 = [v37 vectorForClassification:v36];
+      dataSource7 = [(EvaluationDataSourceEspressoWrapper *)self dataSource];
+      v38 = [dataSource7 vectorForClassification:v36];
 
       for (i = 0; i < [v38 count]; ++i)
       {
@@ -143,11 +143,11 @@
     while (v17 != v60);
   }
 
-  v48 = [(EvaluatorDataSource *)self->_dataSource modelInputSchemaInputName];
-  v49 = [(EvaluatorDataSource *)self->_dataSource modelInputSchemaLabelName];
+  modelInputSchemaInputName = [(EvaluatorDataSource *)self->_dataSource modelInputSchemaInputName];
+  modelInputSchemaLabelName = [(EvaluatorDataSource *)self->_dataSource modelInputSchemaLabelName];
   v50 = objc_alloc(MEMORY[0x277CBFED0]);
-  v73[0] = v48;
-  v73[1] = v49;
+  v73[0] = modelInputSchemaInputName;
+  v73[1] = modelInputSchemaLabelName;
   v74[0] = v12;
   v74[1] = v62;
   v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v74 forKeys:v73 count:2];
@@ -168,10 +168,10 @@
 
 - (int)numberOfDataPoints
 {
-  v2 = [(EvaluationDataSourceEspressoWrapper *)self dataSource];
-  v3 = [v2 recordCount];
+  dataSource = [(EvaluationDataSourceEspressoWrapper *)self dataSource];
+  recordCount = [dataSource recordCount];
 
-  return v3;
+  return recordCount;
 }
 
 @end

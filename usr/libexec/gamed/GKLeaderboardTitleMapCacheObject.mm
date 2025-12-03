@@ -1,22 +1,22 @@
 @interface GKLeaderboardTitleMapCacheObject
-- (void)updateWithServerRepresentation:(id)a3;
+- (void)updateWithServerRepresentation:(id)representation;
 @end
 
 @implementation GKLeaderboardTitleMapCacheObject
 
-- (void)updateWithServerRepresentation:(id)a3
+- (void)updateWithServerRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v7.receiver = self;
   v7.super_class = GKLeaderboardTitleMapCacheObject;
-  [(GKCacheObject *)&v7 updateWithServerRepresentation:v4];
-  v5 = [v4 objectForKeyedSubscript:@"category-name"];
+  [(GKCacheObject *)&v7 updateWithServerRepresentation:representationCopy];
+  v5 = [representationCopy objectForKeyedSubscript:@"category-name"];
   if (v5)
   {
     [(GKLeaderboardTitleMapCacheObject *)self setIdentifier:v5];
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"category-title"];
+  v6 = [representationCopy objectForKeyedSubscript:@"category-title"];
 
   if (v6)
   {

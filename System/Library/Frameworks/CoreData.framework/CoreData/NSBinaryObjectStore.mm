@@ -1,9 +1,9 @@
 @interface NSBinaryObjectStore
-+ (BOOL)setMetadata:(id)a3 forPersistentStoreWithURL:(id)a4 options:(id)a5 error:(id *)a6;
-+ (id)metadataForPersistentStoreWithURL:(id)a3 options:(id)a4 error:(id *)a5;
++ (BOOL)setMetadata:(id)metadata forPersistentStoreWithURL:(id)l options:(id)options error:(id *)error;
++ (id)metadataForPersistentStoreWithURL:(id)l options:(id)options error:(id *)error;
 + (uint64_t)_classesForPropertyValues;
-- (NSBinaryObjectStore)initWithPersistentStoreCoordinator:(id)a3 configurationName:(id)a4 URL:(id)a5 options:(id)a6;
-- (void)saveDocumentToPath:(id)a3;
+- (NSBinaryObjectStore)initWithPersistentStoreCoordinator:(id)coordinator configurationName:(id)name URL:(id)l options:(id)options;
+- (void)saveDocumentToPath:(id)path;
 @end
 
 @implementation NSBinaryObjectStore
@@ -25,11 +25,11 @@
   return _classesForPropertyValues_expectedClasses;
 }
 
-- (NSBinaryObjectStore)initWithPersistentStoreCoordinator:(id)a3 configurationName:(id)a4 URL:(id)a5 options:(id)a6
+- (NSBinaryObjectStore)initWithPersistentStoreCoordinator:(id)coordinator configurationName:(id)name URL:(id)l options:(id)options
 {
   v40 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  if (!a5)
+  if (!l)
   {
 
     v24 = MEMORY[0x1E695DF30];
@@ -38,11 +38,11 @@
     goto LABEL_36;
   }
 
-  if (([a5 isFileURL] & 1) == 0)
+  if (([l isFileURL] & 1) == 0)
   {
     v27 = MEMORY[0x1E695DF30];
     v28 = *MEMORY[0x1E695D940];
-    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CoreData binary stores only support file URLs (got %@).", a5];
+    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CoreData binary stores only support file URLs (got %@).", l];
     v24 = v27;
     v25 = v28;
 LABEL_36:
@@ -51,18 +51,18 @@ LABEL_36:
 
   v38 = 0;
   v37 = 0;
-  if (![NSPersistentStore doURLStuff:a5 createdStubFile:&v37 + 1 readOnly:&v37 error:&v38 options:a6])
+  if (![NSPersistentStore doURLStuff:l createdStubFile:&v37 + 1 readOnly:&v37 error:&v38 options:options])
   {
 
-    v29 = [v38 code];
+    code = [v38 code];
     v30 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v38, @"NSUnderlyingException", 0}];
-    v31 = [_NSCoreDataException exceptionWithName:v29 code:@"Error validating url for store" reason:v30 userInfo:?];
+    v31 = [_NSCoreDataException exceptionWithName:code code:@"Error validating url for store" reason:v30 userInfo:?];
     objc_exception_throw(v31);
   }
 
-  if (v37 == 1 && ([objc_msgSend(a6 valueForKey:{@"NSReadOnlyPersistentStoreOption", "BOOLValue"}] & 1) == 0)
+  if (v37 == 1 && ([objc_msgSend(options valueForKey:{@"NSReadOnlyPersistentStoreOption", "BOOLValue"}] & 1) == 0)
   {
-    if ([a6 valueForKey:@"NSReadOnlyPersistentStoreOption"] && (z9dsptsiQ80etb9782fsrs98bfdle88 & 0x10000000000) != 0)
+    if ([options valueForKey:@"NSReadOnlyPersistentStoreOption"] && (z9dsptsiQ80etb9782fsrs98bfdle88 & 0x10000000000) != 0)
     {
       if (v38)
       {
@@ -78,15 +78,15 @@ LABEL_36:
       objc_exception_throw(v35);
     }
 
-    if (a6)
+    if (options)
     {
-      a6 = [a6 mutableCopy];
-      [a6 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", 1), @"NSReadOnlyPersistentStoreOption"}];
+      options = [options mutableCopy];
+      [options setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", 1), @"NSReadOnlyPersistentStoreOption"}];
     }
 
     else
     {
-      a6 = [MEMORY[0x1E695DF90] dictionaryWithObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", 1), @"NSReadOnlyPersistentStoreOption"}];
+      options = [MEMORY[0x1E695DF90] dictionaryWithObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", 1), @"NSReadOnlyPersistentStoreOption"}];
     }
 
     v11 = objc_autoreleasePoolPush();
@@ -99,7 +99,7 @@ LABEL_36:
         if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
         {
           buf.st_dev = 138412290;
-          *&buf.st_mode = a5;
+          *&buf.st_mode = l;
           _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: Attempt to add read-only file at path %@ read/write. Adding it read-only instead. This will be a hard error in the future; you must specify the NSReadOnlyPersistentStoreOption.\n", &buf, 0xCu);
         }
       }
@@ -110,7 +110,7 @@ LABEL_36:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
           buf.st_dev = 138412290;
-          *&buf.st_mode = a5;
+          *&buf.st_mode = l;
           _os_log_impl(&dword_18565F000, v13, OS_LOG_TYPE_INFO, "CoreData: debug: Attempt to add read-only file at path %@ read/write. Adding it read-only instead. This will be a hard error in the future; you must specify the NSReadOnlyPersistentStoreOption.\n", &buf, 0xCu);
         }
       }
@@ -126,13 +126,13 @@ LABEL_36:
       v14 = 9;
     }
 
-    _NSCoreDataLog_console(v14, "Attempt to add read-only file at path %@ read/write. Adding it read-only instead. This will be a hard error in the future; you must specify the NSReadOnlyPersistentStoreOption.", a5);
+    _NSCoreDataLog_console(v14, "Attempt to add read-only file at path %@ read/write. Adding it read-only instead. This will be a hard error in the future; you must specify the NSReadOnlyPersistentStoreOption.", l);
     objc_autoreleasePoolPop(v11);
   }
 
   v36.receiver = self;
   v36.super_class = NSBinaryObjectStore;
-  v15 = [(NSMappedObjectStore *)&v36 initWithPersistentStoreCoordinator:a3 configurationName:a4 URL:a5 options:a6];
+  v15 = [(NSMappedObjectStore *)&v36 initWithPersistentStoreCoordinator:coordinator configurationName:name URL:l options:options];
   v16 = v15;
   if (v15)
   {
@@ -143,23 +143,23 @@ LABEL_36:
     }
 
     v17 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-    if (([a5 isFileURL] & 1) == 0)
+    if (([l isFileURL] & 1) == 0)
     {
       v32 = MEMORY[0x1E695DF30];
       v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"NSBinaryObjectStore only supports file URLs right now."];
       objc_exception_throw([v32 exceptionWithName:*MEMORY[0x1E695D940] reason:v33 userInfo:0]);
     }
 
-    v18 = [a5 path];
+    path = [l path];
     memset(&buf, 0, sizeof(buf));
-    if (stat([v18 fileSystemRepresentation], &buf) || buf.st_size < 1)
+    if (stat([path fileSystemRepresentation], &buf) || buf.st_size < 1)
     {
       v19 = [[NSDictionaryStoreMap alloc] initWithStore:v16];
     }
 
     else
     {
-      v19 = -[NSDictionaryStoreMap initWithStore:fromPath:]([NSDictionaryStoreMap alloc], "initWithStore:fromPath:", v16, [a5 path]);
+      v19 = -[NSDictionaryStoreMap initWithStore:fromPath:]([NSDictionaryStoreMap alloc], "initWithStore:fromPath:", v16, [l path]);
     }
 
     v20 = v19;
@@ -177,11 +177,11 @@ LABEL_36:
   return v16;
 }
 
-- (void)saveDocumentToPath:(id)a3
+- (void)saveDocumentToPath:(id)path
 {
   if ([(NSPersistentStore *)self isReadOnly])
   {
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Can't save store to %@ (read-only store)", a3), 0}]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Can't save store to %@ (read-only store)", path), 0}]);
   }
 
   if (self)
@@ -194,23 +194,23 @@ LABEL_36:
     theMap = 0;
   }
 
-  [(NSDictionaryStoreMap *)theMap saveToPath:a3];
+  [(NSDictionaryStoreMap *)theMap saveToPath:path];
 
   [(NSPersistentStore *)self doFilesystemCleanupOnRemove:0];
 }
 
-+ (id)metadataForPersistentStoreWithURL:(id)a3 options:(id)a4 error:(id *)a5
++ (id)metadataForPersistentStoreWithURL:(id)l options:(id)options error:(id *)error
 {
-  if (([a3 isFileURL] & 1) == 0)
+  if (([l isFileURL] & 1) == 0)
   {
-    if (!a5)
+    if (!error)
     {
       return 0;
     }
 
     v11 = objc_alloc(MEMORY[0x1E695DF20]);
-    v8 = [v11 initWithObjectsAndKeys:{a3, *MEMORY[0x1E696A998], 0}];
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:262 userInfo:v8];
+    v8 = [v11 initWithObjectsAndKeys:{l, *MEMORY[0x1E696A998], 0}];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:262 userInfo:v8];
 LABEL_20:
 
     return 0;
@@ -220,7 +220,7 @@ LABEL_20:
   v8 = objc_alloc_init(NSBinaryObjectStoreFile);
   if (byte_1ED4BEEC4 == 1)
   {
-    v9 = [a4 objectForKey:@"_NSBinaryStoreInsecureDecodingCompatibilityOption"];
+    v9 = [options objectForKey:@"_NSBinaryStoreInsecureDecodingCompatibilityOption"];
     if (v9)
     {
       v10 = [v9 BOOLValue] ^ 1;
@@ -237,11 +237,11 @@ LABEL_20:
     v10 = 0;
   }
 
-  if ((-[NSBinaryObjectStoreFile readMetadataFromFile:securely:error:](v8, [a3 path], v10, &v16) & 1) == 0)
+  if ((-[NSBinaryObjectStoreFile readMetadataFromFile:securely:error:](v8, [l path], v10, &v16) & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v16;
+      *error = v16;
     }
 
     goto LABEL_20;
@@ -276,18 +276,18 @@ LABEL_20:
   }
 }
 
-+ (BOOL)setMetadata:(id)a3 forPersistentStoreWithURL:(id)a4 options:(id)a5 error:(id *)a6
++ (BOOL)setMetadata:(id)metadata forPersistentStoreWithURL:(id)l options:(id)options error:(id *)error
 {
-  v27.receiver = a1;
+  v27.receiver = self;
   v27.super_class = &OBJC_METACLASS___NSBinaryObjectStore;
-  if (!objc_msgSendSuper2(&v27, sel_setMetadata_forPersistentStoreWithURL_error_, a3, a4, a6))
+  if (!objc_msgSendSuper2(&v27, sel_setMetadata_forPersistentStoreWithURL_error_, metadata, l, error))
   {
     return 0;
   }
 
   if (byte_1ED4BEEC4 == 1)
   {
-    v10 = [a5 objectForKey:@"_NSBinaryStoreInsecureDecodingCompatibilityOption"];
+    v10 = [options objectForKey:@"_NSBinaryStoreInsecureDecodingCompatibilityOption"];
     if (v10)
     {
       v11 = [v10 BOOLValue] ^ 1;
@@ -305,7 +305,7 @@ LABEL_20:
   }
 
   v13 = objc_alloc_init(NSBinaryObjectStoreFile);
-  if (!-[NSBinaryObjectStoreFile readMetadataFromFile:securely:error:](v13, [a4 path], v11, a6))
+  if (!-[NSBinaryObjectStoreFile readMetadataFromFile:securely:error:](v13, [l path], v11, error))
   {
     v12 = 0;
     if (!v13)
@@ -318,7 +318,7 @@ LABEL_44:
     return v12;
   }
 
-  v14 = [a3 mutableCopy];
+  v14 = [metadata mutableCopy];
   v15 = v14;
   if (v13)
   {
@@ -416,7 +416,7 @@ LABEL_44:
     v13->_fullMetadata = v25;
   }
 
-  v12 = -[NSBinaryObjectStoreFile writeMetadataToFile:error:](v13, [a4 path], a6);
+  v12 = -[NSBinaryObjectStoreFile writeMetadataToFile:error:](v13, [l path], error);
   if (v13)
   {
     goto LABEL_44;

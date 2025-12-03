@@ -1,9 +1,9 @@
 @interface _CDSpotlightCoalescedDeletionOperation
-- (BOOL)addDeletion:(id)a3;
+- (BOOL)addDeletion:(id)deletion;
 - (_CDSpotlightCoalescedDeletionOperation)init;
-- (_CDSpotlightCoalescedDeletionOperation)initWithBundleIdToIdentifiers:(id)a3 bundleIdToCompletionBlocks:(id)a4 bundleIdToDomainIdentifiers:(id)a5 bundleIdToDomainCompletionBlocks:(id)a6;
+- (_CDSpotlightCoalescedDeletionOperation)initWithBundleIdToIdentifiers:(id)identifiers bundleIdToCompletionBlocks:(id)blocks bundleIdToDomainIdentifiers:(id)domainIdentifiers bundleIdToDomainCompletionBlocks:(id)completionBlocks;
 - (id)description;
-- (void)enumerateDeletionPredicatesAndCompletionsWithBlock:(id)a3;
+- (void)enumerateDeletionPredicatesAndCompletionsWithBlock:(id)block;
 @end
 
 @implementation _CDSpotlightCoalescedDeletionOperation
@@ -19,22 +19,22 @@
   return v7;
 }
 
-- (_CDSpotlightCoalescedDeletionOperation)initWithBundleIdToIdentifiers:(id)a3 bundleIdToCompletionBlocks:(id)a4 bundleIdToDomainIdentifiers:(id)a5 bundleIdToDomainCompletionBlocks:(id)a6
+- (_CDSpotlightCoalescedDeletionOperation)initWithBundleIdToIdentifiers:(id)identifiers bundleIdToCompletionBlocks:(id)blocks bundleIdToDomainIdentifiers:(id)domainIdentifiers bundleIdToDomainCompletionBlocks:(id)completionBlocks
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifiersCopy = identifiers;
+  blocksCopy = blocks;
+  domainIdentifiersCopy = domainIdentifiers;
+  completionBlocksCopy = completionBlocks;
   v20.receiver = self;
   v20.super_class = _CDSpotlightCoalescedDeletionOperation;
   v15 = [(_CDSpotlightCoalescedDeletionOperation *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_bundleIdToItemIdentifiers, a3);
-    objc_storeStrong(&v16->_bundleIdToItemCompletionBlocks, a4);
-    objc_storeStrong(&v16->_bundleIdToDomainIdentifiers, a5);
-    objc_storeStrong(&v16->_bundleIdToDomainCompletionBlocks, a6);
+    objc_storeStrong(&v15->_bundleIdToItemIdentifiers, identifiers);
+    objc_storeStrong(&v16->_bundleIdToItemCompletionBlocks, blocks);
+    objc_storeStrong(&v16->_bundleIdToDomainIdentifiers, domainIdentifiers);
+    objc_storeStrong(&v16->_bundleIdToDomainCompletionBlocks, completionBlocks);
     v17 = os_transaction_create();
     transaction = v16->_transaction;
     v16->_transaction = v17;
@@ -60,21 +60,21 @@
     bundleIdToDomainIdentifiers = 0;
   }
 
-  v8 = [v3 initWithFormat:@"%@ - itemIdentifierIds: %@, domainIdentifierIds: %@", v5, v6, bundleIdToDomainIdentifiers];
+  bundleIdToDomainIdentifiers = [v3 initWithFormat:@"%@ - itemIdentifierIds: %@, domainIdentifierIds: %@", v5, v6, bundleIdToDomainIdentifiers];
 
-  return v8;
+  return bundleIdToDomainIdentifiers;
 }
 
-- (void)enumerateDeletionPredicatesAndCompletionsWithBlock:(id)a3
+- (void)enumerateDeletionPredicatesAndCompletionsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   bundleIdToItemIdentifiers = self->_bundleIdToItemIdentifiers;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __93___CDSpotlightCoalescedDeletionOperation_enumerateDeletionPredicatesAndCompletionsWithBlock___block_invoke;
   v11[3] = &unk_1E7368FD8;
   v11[4] = self;
-  v6 = v4;
+  v6 = blockCopy;
   v12 = v6;
   [(NSMutableDictionary *)bundleIdToItemIdentifiers enumerateKeysAndObjectsUsingBlock:v11];
   bundleIdToDomainIdentifiers = self->_bundleIdToDomainIdentifiers;
@@ -88,16 +88,16 @@
   [(NSMutableDictionary *)bundleIdToDomainIdentifiers enumerateKeysAndObjectsUsingBlock:v9];
 }
 
-- (BOOL)addDeletion:(id)a3
+- (BOOL)addDeletion:(id)deletion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  deletionCopy = deletion;
+  v5 = deletionCopy;
+  if (deletionCopy)
   {
-    v4 = v4[1];
+    deletionCopy = deletionCopy[1];
   }
 
-  if ([v4 isEqualToString:@"identifiers"])
+  if ([deletionCopy isEqualToString:@"identifiers"])
   {
     if (v5)
     {

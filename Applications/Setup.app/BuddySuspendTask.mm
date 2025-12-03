@@ -1,8 +1,8 @@
 @interface BuddySuspendTask
-+ (BOOL)hasSuspendTaskWithBuddyPreferencesExcludedFromBackup:(id)a3;
++ (BOOL)hasSuspendTaskWithBuddyPreferencesExcludedFromBackup:(id)backup;
 - (BuddySuspendTask)init;
-- (void)_attemptPreheat:(unint64_t)a3;
-- (void)accountWasAdded:(id)a3;
+- (void)_attemptPreheat:(unint64_t)preheat;
+- (void)accountWasAdded:(id)added;
 - (void)preheat;
 @end
 
@@ -36,15 +36,15 @@
   return v8;
 }
 
-+ (BOOL)hasSuspendTaskWithBuddyPreferencesExcludedFromBackup:(id)a3
++ (BOOL)hasSuspendTaskWithBuddyPreferencesExcludedFromBackup:(id)backup
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, backup);
   v3 = +[NSLocale currentLocale];
-  v4 = [(NSLocale *)v3 countryCode];
-  v5 = ![(NSString *)v4 isEqualToString:@"RU"];
+  countryCode = [(NSLocale *)v3 countryCode];
+  v5 = ![(NSString *)countryCode isEqualToString:@"RU"];
 
   if (v5)
   {
@@ -54,9 +54,9 @@
   else
   {
     v6 = [location[0] objectForKey:@"AppStorePresented" includeCache:0];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
-    if (v7)
+    if (bOOLValue)
     {
       v15 = 0;
     }
@@ -69,8 +69,8 @@
     else
     {
       v8 = +[MCProfileConnection sharedConnection];
-      v9 = [v8 skipSetupKeys];
-      v10 = [v9 containsObject:kMCCCSkipAppStore];
+      skipSetupKeys = [v8 skipSetupKeys];
+      v10 = [skipSetupKeys containsObject:kMCCCSkipAppStore];
 
       if (v10)
       {
@@ -93,26 +93,26 @@
 
 - (void)preheat
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
   v2 = &_dispatch_main_q;
   dispatch_assert_queue_V2(v2);
 
-  v3 = [(BuddySuspendTask *)v22 bag];
+  v3 = [(BuddySuspendTask *)selfCopy bag];
   if (!v3)
   {
     v4 = objc_alloc_init(BuddyMediaServicesBag);
-    [(BuddySuspendTask *)v22 setBag:v4];
+    [(BuddySuspendTask *)selfCopy setBag:v4];
   }
 
-  v5 = [(BuddySuspendTask *)v22 launchURL];
+  launchURL = [(BuddySuspendTask *)selfCopy launchURL];
   v19 = 0;
   v6 = 1;
-  if (v5)
+  if (launchURL)
   {
-    v20 = [(BuddySuspendTask *)v22 message];
+    message = [(BuddySuspendTask *)selfCopy message];
     v19 = 1;
-    v6 = v20 == 0;
+    v6 = message == 0;
   }
 
   if (v19)
@@ -134,27 +134,27 @@
     objc_storeStrong(&oslog, 0);
   }
 
-  v9 = [(BuddySuspendTask *)v22 preheatQueue];
+  preheatQueue = [(BuddySuspendTask *)selfCopy preheatQueue];
   block = _NSConcreteStackBlock;
   v11 = -1073741824;
   v12 = 0;
   v13 = sub_1000F5D88;
   v14 = &unk_10032B0D0;
-  v15 = v22;
-  dispatch_async(v9, &block);
+  v15 = selfCopy;
+  dispatch_async(preheatQueue, &block);
 
   objc_storeStrong(&v15, 0);
 }
 
-- (void)_attemptPreheat:(unint64_t)a3
+- (void)_attemptPreheat:(unint64_t)preheat
 {
-  v93 = self;
+  selfCopy = self;
   v92 = a2;
-  v91 = a3;
-  v3 = [(BuddySuspendTask *)self preheatQueue];
-  dispatch_assert_queue_V2(v3);
+  preheatCopy = preheat;
+  preheatQueue = [(BuddySuspendTask *)self preheatQueue];
+  dispatch_assert_queue_V2(preheatQueue);
 
-  if (v91)
+  if (preheatCopy)
   {
     v83 = 0;
     v84 = &v83;
@@ -173,7 +173,7 @@
     v75 = sub_1000F6850;
     v76 = &unk_10032CCC0;
     v77[1] = &v83;
-    v77[0] = v93;
+    v77[0] = selfCopy;
     v77[2] = &v78;
     dispatch_sync(v6, &block);
 
@@ -198,10 +198,10 @@
       v67 = 0;
       if ((v84[3] & 1) == 0)
       {
-        v9 = [(BuddySuspendTask *)v93 bag];
-        v10 = [(BuddyMediaServicesBag *)v9 getAppStoreURL];
+        v9 = [(BuddySuspendTask *)selfCopy bag];
+        getAppStoreURL = [(BuddyMediaServicesBag *)v9 getAppStoreURL];
         obj = v67;
-        v11 = [v10 valueWithError:&obj];
+        v11 = [getAppStoreURL valueWithError:&obj];
         objc_storeStrong(&v67, obj);
         v66 = v11;
 
@@ -214,7 +214,7 @@
           v54 = 0;
           v55 = sub_1000F68D8;
           v56 = &unk_10032B838;
-          v57 = v93;
+          v57 = selfCopy;
           v58 = v66;
           dispatch_async(v13, &v52);
 
@@ -237,9 +237,9 @@
 
             else if (v67)
             {
-              v62 = [v67 domain];
+              domain = [v67 domain];
               v61 = 1;
-              v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v62, [v67 code]);
+              v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v67 code]);
               v60 = v12;
               v59 = 1;
             }
@@ -268,10 +268,10 @@
 
       if ((v84[3] & 1) != 0 && (v79[3] & 1) == 0)
       {
-        v14 = [(BuddySuspendTask *)v93 bag];
-        v15 = [(BuddyMediaServicesBag *)v14 getAppStoreMessage];
+        v14 = [(BuddySuspendTask *)selfCopy bag];
+        getAppStoreMessage = [(BuddyMediaServicesBag *)v14 getAppStoreMessage];
         v50 = v67;
-        v16 = [v15 valueWithError:&v50];
+        v16 = [getAppStoreMessage valueWithError:&v50];
         objc_storeStrong(&v67, v50);
         v51 = v16;
 
@@ -290,9 +290,9 @@
 
             else if (v67)
             {
-              v47 = [v67 domain];
+              domain2 = [v67 domain];
               v46 = 1;
-              v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v47, [v67 code]);
+              v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain2, [v67 code]);
               v45 = v17;
               v44 = 1;
             }
@@ -325,7 +325,7 @@
           v39 = 0;
           v40 = sub_1000F6908;
           v41 = &unk_10032B838;
-          v42 = v93;
+          v42 = selfCopy;
           v43 = v51;
           dispatch_async(v18, &v37);
 
@@ -365,15 +365,15 @@
 
         objc_storeStrong(&v36, 0);
         v21 = dispatch_time(0, 10000000000);
-        v22 = [(BuddySuspendTask *)v93 preheatQueue];
+        preheatQueue2 = [(BuddySuspendTask *)selfCopy preheatQueue];
         v28 = _NSConcreteStackBlock;
         v29 = -1073741824;
         v30 = 0;
         v31 = sub_1000F6938;
         v32 = &unk_10032B718;
-        v33[0] = v93;
-        v33[1] = v91;
-        dispatch_after(v21, v22, &v28);
+        v33[0] = selfCopy;
+        v33[1] = preheatCopy;
+        dispatch_after(v21, preheatQueue2, &v28);
 
         objc_storeStrong(v33, 0);
       }
@@ -403,12 +403,12 @@
   }
 }
 
-- (void)accountWasAdded:(id)a3
+- (void)accountWasAdded:(id)added
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, added);
   v14 = _BYLoggingFacility();
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -420,14 +420,14 @@
   }
 
   objc_storeStrong(&v14, 0);
-  v5 = [(BuddySuspendTask *)v16 preheatQueue];
+  preheatQueue = [(BuddySuspendTask *)selfCopy preheatQueue];
   block = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_1000F6ABC;
   v10 = &unk_10032B0D0;
-  v11 = v16;
-  dispatch_async(v5, &block);
+  v11 = selfCopy;
+  dispatch_async(preheatQueue, &block);
 
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);

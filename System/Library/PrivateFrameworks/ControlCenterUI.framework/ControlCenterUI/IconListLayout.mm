@@ -1,16 +1,16 @@
 @interface IconListLayout
-- (CGSize)iconSpacingForOrientation:(int64_t)a3;
+- (CGSize)iconSpacingForOrientation:(int64_t)orientation;
 - (SBHIconGridSizeClassSet)supportedIconGridSizeClasses;
 - (SBHIconGridSizeClassSizeMap)iconGridSizeClassSizes;
 - (SBIconImageInfo)iconImageInfo;
-- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)a3;
-- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)a3 orientation:(id)a4;
-- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)a3;
+- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)class;
+- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)class orientation:(id)orientation;
+- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)orientation;
 - (_TtC15ControlCenterUI14IconListLayout)init;
-- (id)iconGridSizeClassSizesForOrientation:(int64_t)a3;
-- (int64_t)numberOfColumnsForOrientation:(int64_t)a3;
-- (int64_t)numberOfRowsForOrientation:(int64_t)a3;
-- (void)setIconGridSizeClassSizes:(id)a3;
+- (id)iconGridSizeClassSizesForOrientation:(int64_t)orientation;
+- (int64_t)numberOfColumnsForOrientation:(int64_t)orientation;
+- (int64_t)numberOfRowsForOrientation:(int64_t)orientation;
+- (void)setIconGridSizeClassSizes:(id)sizes;
 @end
 
 @implementation IconListLayout
@@ -24,45 +24,45 @@
   v8 = v7;
   CCUIBoundsSizeForGridSizeClassWithGeometry();
   MEMORY[0x223D675B0](v4, v6, v8);
-  v9 = [objc_opt_self() mainScreen];
-  [v9 scale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
 
   return result;
 }
 
-- (int64_t)numberOfColumnsForOrientation:(int64_t)a3
+- (int64_t)numberOfColumnsForOrientation:(int64_t)orientation
 {
-  IsLandscape = UIInterfaceOrientationIsLandscape(a3);
-  v5 = self;
+  IsLandscape = UIInterfaceOrientationIsLandscape(orientation);
+  selfCopy = self;
   v6 = 8;
   if (!IsLandscape)
   {
     v6 = 0;
   }
 
-  v7 = *(&v5->super.isa + OBJC_IVAR____TtC15ControlCenterUI14IconListLayout_portraitGridDimensions + v6);
+  v7 = *(&selfCopy->super.isa + OBJC_IVAR____TtC15ControlCenterUI14IconListLayout_portraitGridDimensions + v6);
 
   return v7;
 }
 
-- (int64_t)numberOfRowsForOrientation:(int64_t)a3
+- (int64_t)numberOfRowsForOrientation:(int64_t)orientation
 {
-  IsLandscape = UIInterfaceOrientationIsLandscape(a3);
-  v5 = self;
+  IsLandscape = UIInterfaceOrientationIsLandscape(orientation);
+  selfCopy = self;
   v6 = 8;
   if (IsLandscape)
   {
     v6 = 0;
   }
 
-  v7 = *(&v5->super.isa + OBJC_IVAR____TtC15ControlCenterUI14IconListLayout_portraitGridDimensions + v6);
+  v7 = *(&selfCopy->super.isa + OBJC_IVAR____TtC15ControlCenterUI14IconListLayout_portraitGridDimensions + v6);
 
   return v7;
 }
 
-- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)a3
+- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)orientation
 {
-  v3 = CCUILayoutEdgeInsetsForInterfaceOrientation(a3);
+  v3 = CCUILayoutEdgeInsetsForInterfaceOrientation(orientation);
   result.right = v6;
   result.bottom = v5;
   result.left = v4;
@@ -70,7 +70,7 @@
   return result;
 }
 
-- (CGSize)iconSpacingForOrientation:(int64_t)a3
+- (CGSize)iconSpacingForOrientation:(int64_t)orientation
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC15ControlCenterUI14IconListLayout_fixedIconSpacing);
   v4 = *&self->$__lazy_storage_$_iconGridSizeClassSizes[OBJC_IVAR____TtC15ControlCenterUI14IconListLayout_fixedIconSpacing];
@@ -81,35 +81,35 @@
 
 - (SBHIconGridSizeClassSizeMap)iconGridSizeClassSizes
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21EA94B54();
 
   return v3;
 }
 
-- (void)setIconGridSizeClassSizes:(id)a3
+- (void)setIconGridSizeClassSizes:(id)sizes
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC15ControlCenterUI14IconListLayout____lazy_storage___iconGridSizeClassSizes);
-  *(&self->super.isa + OBJC_IVAR____TtC15ControlCenterUI14IconListLayout____lazy_storage___iconGridSizeClassSizes) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC15ControlCenterUI14IconListLayout____lazy_storage___iconGridSizeClassSizes) = sizes;
+  sizesCopy = sizes;
 }
 
-- (id)iconGridSizeClassSizesForOrientation:(int64_t)a3
+- (id)iconGridSizeClassSizesForOrientation:(int64_t)orientation
 {
-  v3 = sub_21EA94FD8(a3);
+  v3 = sub_21EA94FD8(orientation);
 
   return v3;
 }
 
 - (SBHIconGridSizeClassSet)supportedIconGridSizeClasses
 {
-  v2 = [objc_opt_self() controlCenterDomain];
-  v3 = [v2 allNonDefaultGridSizeClasses];
+  controlCenterDomain = [objc_opt_self() controlCenterDomain];
+  allNonDefaultGridSizeClasses = [controlCenterDomain allNonDefaultGridSizeClasses];
 
-  return v3;
+  return allNonDefaultGridSizeClasses;
 }
 
-- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)a3
+- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)class
 {
   v4 = a4;
   v5 = CCUIGridSizeClassForSBHIconGridSizeClass();
@@ -118,23 +118,23 @@
   v9 = v8;
   CCUIBoundsSizeForGridSizeClassWithGeometry();
   MEMORY[0x223D675B0](v5, v7, v9);
-  v10 = [objc_opt_self() mainScreen];
-  [v10 scale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
 
   return result;
 }
 
-- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)a3 orientation:(id)a4
+- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)class orientation:(id)orientation
 {
-  v5 = a4;
+  orientationCopy = orientation;
   v6 = CCUIGridSizeClassForSBHIconGridSizeClass();
   CCUIPortraitMainListGridGeometryInfo();
   v8 = v7;
   v10 = v9;
   CCUIBoundsSizeForGridSizeClassWithGeometry();
   MEMORY[0x223D675B0](v6, v8, v10);
-  v11 = [objc_opt_self() mainScreen];
-  [v11 scale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
 
   return result;
 }

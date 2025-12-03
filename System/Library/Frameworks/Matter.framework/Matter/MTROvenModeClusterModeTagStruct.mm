@@ -1,6 +1,6 @@
 @interface MTROvenModeClusterModeTagStruct
 - (MTROvenModeClusterModeTagStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROvenModeClusterModeTagStruct);
-  v5 = [(MTROvenModeClusterModeTagStruct *)self mfgCode];
-  [(MTROvenModeClusterModeTagStruct *)v4 setMfgCode:v5];
+  mfgCode = [(MTROvenModeClusterModeTagStruct *)self mfgCode];
+  [(MTROvenModeClusterModeTagStruct *)v4 setMfgCode:mfgCode];
 
-  v6 = [(MTROvenModeClusterModeTagStruct *)self value];
-  [(MTROvenModeClusterModeTagStruct *)v4 setValue:v6];
+  value = [(MTROvenModeClusterModeTagStruct *)self value];
+  [(MTROvenModeClusterModeTagStruct *)v4 setValue:value];
 
   return v4;
 }

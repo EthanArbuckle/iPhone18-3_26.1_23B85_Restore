@@ -1,67 +1,67 @@
 @interface _ML3MultiUserMusicLibraryResourcesManager
 - (NSString)cachedLibraryContainerPath;
 - (NSString)cachedMusicContainerPath;
-- (_ML3MultiUserMusicLibraryResourcesManager)initWithLibraryResourcesService:(id)a3;
+- (_ML3MultiUserMusicLibraryResourcesManager)initWithLibraryResourcesService:(id)service;
 - (id)libraryContainerPath;
 - (id)musicAssetsContainerPath;
-- (void)emergencyDisconnectWithCompletion:(id)a3;
-- (void)performDatabasePathChange:(id)a3 completion:(id)a4;
-- (void)setCachedLibraryContainerPath:(id)a3;
-- (void)setCachedMusicContainerPath:(id)a3;
+- (void)emergencyDisconnectWithCompletion:(id)completion;
+- (void)performDatabasePathChange:(id)change completion:(id)completion;
+- (void)setCachedLibraryContainerPath:(id)path;
+- (void)setCachedMusicContainerPath:(id)path;
 @end
 
 @implementation _ML3MultiUserMusicLibraryResourcesManager
 
-- (void)emergencyDisconnectWithCompletion:(id)a3
+- (void)emergencyDisconnectWithCompletion:(id)completion
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(_ML3MultiUserMusicLibraryResourcesManager *)self cachedLibraryContainerPath];
+    cachedLibraryContainerPath = [(_ML3MultiUserMusicLibraryResourcesManager *)self cachedLibraryContainerPath];
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v6;
+    v10 = cachedLibraryContainerPath;
     _os_log_impl(&dword_22D2FA000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ - emergencyDisconnectWithCompletion: - Wiping cached media folder path: %{public}@", &v7, 0x16u);
   }
 
   [(_ML3MultiUserMusicLibraryResourcesManager *)self setCachedLibraryContainerPath:0];
-  v4[2](v4, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
-- (void)performDatabasePathChange:(id)a3 completion:(id)a4
+- (void)performDatabasePathChange:(id)change completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v6;
+    v12 = changeCopy;
     _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ - performDatabasePathChange: - newPath=%{public}@ - No-Op", &v9, 0x16u);
   }
 
   [(_ML3MultiUserMusicLibraryResourcesManager *)self setCachedLibraryContainerPath:0];
-  v7[2](v7, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
-- (void)setCachedLibraryContainerPath:(id)a3
+- (void)setCachedLibraryContainerPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_ML3MultiUserMusicLibraryResourcesManager *)self serialQueue];
+  pathCopy = path;
+  serialQueue = [(_ML3MultiUserMusicLibraryResourcesManager *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75___ML3MultiUserMusicLibraryResourcesManager_setCachedLibraryContainerPath___block_invoke;
   v7[3] = &unk_2787660F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = pathCopy;
+  v6 = pathCopy;
+  dispatch_sync(serialQueue, v7);
 }
 
 - (NSString)cachedLibraryContainerPath
@@ -72,14 +72,14 @@
   v10 = __Block_byref_object_copy__28328;
   v11 = __Block_byref_object_dispose__28329;
   v12 = 0;
-  v3 = [(_ML3MultiUserMusicLibraryResourcesManager *)self serialQueue];
+  serialQueue = [(_ML3MultiUserMusicLibraryResourcesManager *)self serialQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71___ML3MultiUserMusicLibraryResourcesManager_cachedLibraryContainerPath__block_invoke;
   v6[3] = &unk_278766080;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serialQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -87,18 +87,18 @@
   return v4;
 }
 
-- (void)setCachedMusicContainerPath:(id)a3
+- (void)setCachedMusicContainerPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_ML3MultiUserMusicLibraryResourcesManager *)self serialQueue];
+  pathCopy = path;
+  serialQueue = [(_ML3MultiUserMusicLibraryResourcesManager *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73___ML3MultiUserMusicLibraryResourcesManager_setCachedMusicContainerPath___block_invoke;
   v7[3] = &unk_2787660F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = pathCopy;
+  v6 = pathCopy;
+  dispatch_sync(serialQueue, v7);
 }
 
 - (NSString)cachedMusicContainerPath
@@ -109,14 +109,14 @@
   v10 = __Block_byref_object_copy__28328;
   v11 = __Block_byref_object_dispose__28329;
   v12 = 0;
-  v3 = [(_ML3MultiUserMusicLibraryResourcesManager *)self serialQueue];
+  serialQueue = [(_ML3MultiUserMusicLibraryResourcesManager *)self serialQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69___ML3MultiUserMusicLibraryResourcesManager_cachedMusicContainerPath__block_invoke;
   v6[3] = &unk_278766080;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serialQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -127,16 +127,16 @@
 - (id)musicAssetsContainerPath
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(_ML3MultiUserMusicLibraryResourcesManager *)self cachedMusicContainerPath];
+  cachedMusicContainerPath = [(_ML3MultiUserMusicLibraryResourcesManager *)self cachedMusicContainerPath];
 
   v4 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (cachedMusicContainerPath)
   {
     if (v5)
     {
       *buf = 138543362;
-      v28 = self;
+      selfCopy5 = self;
       _os_log_impl(&dword_22D2FA000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ - musicContainerPath - Using the cached path", buf, 0xCu);
     }
   }
@@ -146,13 +146,13 @@
     if (v5)
     {
       *buf = 138543362;
-      v28 = self;
+      selfCopy5 = self;
       _os_log_impl(&dword_22D2FA000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ - musicContainerPath - Using the service to retrieve musicContainerPath", buf, 0xCu);
     }
 
-    v6 = [(_ML3MultiUserMusicLibraryResourcesManager *)self libraryResourcesServices];
+    libraryResourcesServices = [(_ML3MultiUserMusicLibraryResourcesManager *)self libraryResourcesServices];
     v24 = 0;
-    v4 = [v6 musicContainerPathWithError:&v24];
+    v4 = [libraryResourcesServices musicContainerPathWithError:&v24];
     v7 = v24;
 
     if (v7)
@@ -161,7 +161,7 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v28 = self;
+        selfCopy5 = self;
         v29 = 2114;
         v30 = v7;
         _os_log_impl(&dword_22D2FA000, v12, OS_LOG_TYPE_ERROR, "%{public}@ - musicContainerPath - Fatal error retrieving library container path [throwing] - error=%{public}@", buf, 0x16u);
@@ -173,7 +173,7 @@
         if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
         {
           *buf = 138543618;
-          v28 = self;
+          selfCopy5 = self;
           v29 = 2114;
           v30 = v7;
           _os_log_impl(&dword_22D2FA000, v13, OS_LOG_TYPE_FAULT, "%{public}@ - musicContainerPath - Fatal error retrieving library container path [throwing] - error=%{public}@", buf, 0x16u);
@@ -208,17 +208,17 @@
   v8 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(_ML3MultiUserMusicLibraryResourcesManager *)self cachedMusicContainerPath];
+    cachedMusicContainerPath2 = [(_ML3MultiUserMusicLibraryResourcesManager *)self cachedMusicContainerPath];
     *buf = 138543618;
-    v28 = self;
+    selfCopy5 = self;
     v29 = 2114;
-    v30 = v9;
+    v30 = cachedMusicContainerPath2;
     _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ - musicContainerPath - Retrieved path: %{public}@", buf, 0x16u);
   }
 
-  v10 = [(_ML3MultiUserMusicLibraryResourcesManager *)self cachedMusicContainerPath];
+  cachedMusicContainerPath3 = [(_ML3MultiUserMusicLibraryResourcesManager *)self cachedMusicContainerPath];
 
-  return v10;
+  return cachedMusicContainerPath3;
 }
 
 - (id)libraryContainerPath
@@ -229,14 +229,14 @@
   v10 = __Block_byref_object_copy__28328;
   v11 = __Block_byref_object_dispose__28329;
   v12 = 0;
-  v3 = [(_ML3MultiUserMusicLibraryResourcesManager *)self serialQueue];
+  serialQueue = [(_ML3MultiUserMusicLibraryResourcesManager *)self serialQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65___ML3MultiUserMusicLibraryResourcesManager_libraryContainerPath__block_invoke;
   v6[3] = &unk_278766080;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serialQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -244,16 +244,16 @@
   return v4;
 }
 
-- (_ML3MultiUserMusicLibraryResourcesManager)initWithLibraryResourcesService:(id)a3
+- (_ML3MultiUserMusicLibraryResourcesManager)initWithLibraryResourcesService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v12.receiver = self;
   v12.super_class = _ML3MultiUserMusicLibraryResourcesManager;
   v6 = [(_ML3BaseMusicLibraryResourcesManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_libraryResourcesServices, a3);
+    objc_storeStrong(&v6->_libraryResourcesServices, service);
     v8 = +[ML3MusicLibraryAccountChangeObserverProxy sharedProxy];
     [v8 addAccountChangeObserver:v7];
 

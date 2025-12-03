@@ -1,9 +1,9 @@
 @interface IMPassPreviewGenerator
 + (id)UTITypes;
-+ (id)_dictionaryRepresentationForColor:(id)a3;
-+ (id)_dictionaryRepresentationForPassText:(id)a3;
-+ (id)generateAndPersistMetadataFromSourceURL:(id)a3 senderContext:(id)a4 withPreviewConstraints:(IMPreviewConstraints *)a5 error:(id *)a6;
-+ (id)previewFromSourceURL:(id)a3 senderContext:(id)a4 withPreviewConstraints:(IMPreviewConstraints *)a5 error:(id *)a6;
++ (id)_dictionaryRepresentationForColor:(id)color;
++ (id)_dictionaryRepresentationForPassText:(id)text;
++ (id)generateAndPersistMetadataFromSourceURL:(id)l senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error;
++ (id)previewFromSourceURL:(id)l senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error;
 + (id)temporaryDirectory;
 @end
 
@@ -23,26 +23,26 @@
   v9[2] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E695DFF8];
   v3 = IMSafeTemporaryDirectory();
-  v4 = [v3 path];
-  v9[0] = v4;
+  path = [v3 path];
+  v9[0] = path;
   v9[1] = @"PassPreview";
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v2 fileURLWithPathComponents:v5];
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  [v7 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:0];
 
   return v6;
 }
 
-+ (id)_dictionaryRepresentationForPassText:(id)a3
++ (id)_dictionaryRepresentationForPassText:(id)text
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [v4 text];
-  if (v6)
+  textCopy = text;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  text = [textCopy text];
+  if (text)
   {
-    CFDictionarySetValue(v5, @"text", v6);
+    CFDictionarySetValue(dictionary, @"text", text);
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -50,12 +50,12 @@
     sub_1A88C6068();
   }
 
-  v7 = [v4 color];
-  v8 = [a1 _dictionaryRepresentationForColor:v7];
+  color = [textCopy color];
+  v8 = [self _dictionaryRepresentationForColor:color];
 
   if (v8)
   {
-    CFDictionarySetValue(v5, @"color", v8);
+    CFDictionarySetValue(dictionary, @"color", v8);
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -63,19 +63,19 @@
     sub_1A88C60F0();
   }
 
-  return v5;
+  return dictionary;
 }
 
-+ (id)_dictionaryRepresentationForColor:(id)a3
++ (id)_dictionaryRepresentationForColor:(id)color
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  colorCopy = color;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v5 = MEMORY[0x1E696AD98];
-  [v3 red];
+  [colorCopy red];
   v6 = [v5 numberWithDouble:?];
   if (v6)
   {
-    CFDictionarySetValue(v4, @"red", v6);
+    CFDictionarySetValue(dictionary, @"red", v6);
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -84,11 +84,11 @@
   }
 
   v7 = MEMORY[0x1E696AD98];
-  [v3 green];
+  [colorCopy green];
   v8 = [v7 numberWithDouble:?];
   if (v8)
   {
-    CFDictionarySetValue(v4, @"green", v8);
+    CFDictionarySetValue(dictionary, @"green", v8);
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -97,11 +97,11 @@
   }
 
   v9 = MEMORY[0x1E696AD98];
-  [v3 blue];
+  [colorCopy blue];
   v10 = [v9 numberWithDouble:?];
   if (v10)
   {
-    CFDictionarySetValue(v4, @"blue", v10);
+    CFDictionarySetValue(dictionary, @"blue", v10);
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -110,11 +110,11 @@
   }
 
   v11 = MEMORY[0x1E696AD98];
-  [v3 alpha];
+  [colorCopy alpha];
   v12 = [v11 numberWithDouble:?];
   if (v12)
   {
-    CFDictionarySetValue(v4, @"alpha", v12);
+    CFDictionarySetValue(dictionary, @"alpha", v12);
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -122,42 +122,42 @@
     sub_1A88C4B40();
   }
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)generateAndPersistMetadataFromSourceURL:(id)a3 senderContext:(id)a4 withPreviewConstraints:(IMPreviewConstraints *)a5 error:(id *)a6
++ (id)generateAndPersistMetadataFromSourceURL:(id)l senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error
 {
   v62 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  lCopy = l;
+  contextCopy = context;
   v12 = _os_activity_create(&dword_1A85E5000, "com.apple.messages.AttachmentGeneratePreviewWallet", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v12, &state);
-  v13 = *&a5->var1.height;
-  *buf = *&a5->var0;
+  v13 = *&constraints->var1.height;
+  *buf = *&constraints->var0;
   *&buf[16] = v13;
-  v61 = *&a5->var3;
-  v56 = v10;
-  v14 = [a1 previewFromSourceURL:v10 senderContext:v11 withPreviewConstraints:buf error:a6];
+  v61 = *&constraints->var3;
+  v56 = lCopy;
+  v14 = [self previewFromSourceURL:lCopy senderContext:contextCopy withPreviewConstraints:buf error:error];
   if (!v14)
   {
     v57 = 0;
     goto LABEL_61;
   }
 
-  v55 = [a1 temporaryDirectory];
-  v54 = [MEMORY[0x1E696AEC0] stringGUID];
-  v15 = [v55 URLByAppendingPathComponent:? isDirectory:?];
+  temporaryDirectory = [self temporaryDirectory];
+  stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+  v15 = [temporaryDirectory URLByAppendingPathComponent:? isDirectory:?];
   v57 = [v15 URLByAppendingPathExtension:@"plist"];
 
-  v16 = [MEMORY[0x1E695DF90] dictionary];
-  v17 = [v14 backgroundColor];
-  v18 = [a1 _dictionaryRepresentationForColor:v17];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  backgroundColor = [v14 backgroundColor];
+  v18 = [self _dictionaryRepresentationForColor:backgroundColor];
 
   if (v18)
   {
-    CFDictionarySetValue(v16, @"backgroundColor", v18);
+    CFDictionarySetValue(dictionary, @"backgroundColor", v18);
   }
 
   NSSelectorFromString(&cfstr_Background.isa);
@@ -167,20 +167,20 @@
     v20 = [v19 dataUsingEncoding:0 error:0];
     if (v20)
     {
-      CFDictionarySetValue(v16, @"backgroundImage", v20);
+      CFDictionarySetValue(dictionary, @"backgroundImage", v20);
     }
   }
 
-  v21 = [v14 primaryText];
+  primaryText = [v14 primaryText];
 
-  if (v21)
+  if (primaryText)
   {
-    v22 = [v14 primaryText];
-    v23 = [a1 _dictionaryRepresentationForPassText:v22];
+    primaryText2 = [v14 primaryText];
+    v23 = [self _dictionaryRepresentationForPassText:primaryText2];
 
     if (v23)
     {
-      CFDictionarySetValue(v16, @"primaryText", v23);
+      CFDictionarySetValue(dictionary, @"primaryText", v23);
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -189,16 +189,16 @@
     }
   }
 
-  v24 = [v14 secondaryText];
+  secondaryText = [v14 secondaryText];
 
-  if (v24)
+  if (secondaryText)
   {
-    v25 = [v14 secondaryText];
-    v26 = [a1 _dictionaryRepresentationForPassText:v25];
+    secondaryText2 = [v14 secondaryText];
+    v26 = [self _dictionaryRepresentationForPassText:secondaryText2];
 
     if (v26)
     {
-      CFDictionarySetValue(v16, @"secondaryText", v26);
+      CFDictionarySetValue(dictionary, @"secondaryText", v26);
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -207,16 +207,16 @@
     }
   }
 
-  v27 = [v14 tertiaryText];
+  tertiaryText = [v14 tertiaryText];
 
-  if (v27)
+  if (tertiaryText)
   {
-    v28 = [v14 tertiaryText];
-    v29 = [a1 _dictionaryRepresentationForPassText:v28];
+    tertiaryText2 = [v14 tertiaryText];
+    v29 = [self _dictionaryRepresentationForPassText:tertiaryText2];
 
     if (v29)
     {
-      CFDictionarySetValue(v16, @"tertiaryText", v29);
+      CFDictionarySetValue(dictionary, @"tertiaryText", v29);
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -225,24 +225,24 @@
     }
   }
 
-  v30 = [v14 headerImage];
-  v31 = [v30 image];
-  v32 = [v31 dataUsingEncoding:0 error:0];
+  headerImage = [v14 headerImage];
+  image = [headerImage image];
+  v32 = [image dataUsingEncoding:0 error:0];
 
   v33 = v32;
   if (v33)
   {
-    CFDictionarySetValue(v16, @"image", v33);
+    CFDictionarySetValue(dictionary, @"image", v33);
   }
 
-  v34 = [v14 icon];
-  v35 = [v34 image];
-  v36 = [v35 dataUsingEncoding:0 error:0];
+  icon = [v14 icon];
+  image2 = [icon image];
+  v36 = [image2 dataUsingEncoding:0 error:0];
 
   v37 = v36;
   if (v37)
   {
-    CFDictionarySetValue(v16, @"icon", v37);
+    CFDictionarySetValue(dictionary, @"icon", v37);
   }
 
   if (IMOSLoggingEnabled())
@@ -251,19 +251,19 @@
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      *&buf[4] = v16;
+      *&buf[4] = dictionary;
       _os_log_impl(&dword_1A85E5000, v38, OS_LOG_TYPE_INFO, "Writing pass plist %p", buf, 0xCu);
     }
   }
 
   v58 = 0;
-  v39 = [MEMORY[0x1E696AE40] dataWithPropertyList:v16 format:200 options:0 error:&v58];
+  v39 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary format:200 options:0 error:&v58];
   v40 = v58;
   v41 = v40;
   if (v39)
   {
-    v42 = [v57 path];
-    v43 = [v39 writeToFile:v42 atomically:1];
+    path = [v57 path];
+    v43 = [v39 writeToFile:path atomically:1];
 
     if (v43)
     {
@@ -272,9 +272,9 @@
         v44 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
         {
-          v45 = [v57 path];
+          path2 = [v57 path];
           *buf = 138412290;
-          *&buf[4] = v45;
+          *&buf[4] = path2;
           _os_log_impl(&dword_1A85E5000, v44, OS_LOG_TYPE_INFO, "Wrote down pass plist to %@", buf, 0xCu);
         }
       }
@@ -289,9 +289,9 @@
       v49 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
       {
-        v50 = [v57 path];
+        path3 = [v57 path];
         *buf = 138412290;
-        *&buf[4] = v50;
+        *&buf[4] = path3;
         _os_log_impl(&dword_1A85E5000, v49, OS_LOG_TYPE_INFO, "Couldn't write down pass plist to %@", buf, 0xCu);
       }
     }
@@ -317,10 +317,10 @@
   v47 = 1;
 LABEL_52:
 
-  if (a6 && v47 && v46)
+  if (error && v47 && v46)
   {
     v51 = v46;
-    *a6 = v46;
+    *error = v46;
   }
 
   if (IMOSLoggingEnabled())
@@ -342,12 +342,12 @@ LABEL_61:
   return v57;
 }
 
-+ (id)previewFromSourceURL:(id)a3 senderContext:(id)a4 withPreviewConstraints:(IMPreviewConstraints *)a5 error:(id *)a6
++ (id)previewFromSourceURL:(id)l senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  lCopy = l;
+  contextCopy = context;
+  if (lCopy)
   {
     *&v45 = 0;
     *(&v45 + 1) = &v45;
@@ -357,17 +357,17 @@ LABEL_61:
     v49 = 0;
     v10 = MEMORY[0x1E695DFF8];
     v11 = IMSafeTemporaryDirectory();
-    v12 = [v11 path];
-    v44[0] = v12;
+    path = [v11 path];
+    v44[0] = path;
     v44[1] = @"PassPreview";
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
     v14 = [v10 fileURLWithPathComponents:v13];
 
-    v15 = [MEMORY[0x1E696AC08] defaultManager];
-    [v15 createDirectoryAtURL:v14 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtURL:v14 withIntermediateDirectories:1 attributes:0 error:0];
 
-    v16 = [MEMORY[0x1E696AEC0] stringGUID];
-    v17 = [v14 URLByAppendingPathComponent:v16 isDirectory:0];
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+    v17 = [v14 URLByAppendingPathComponent:stringGUID isDirectory:0];
     v18 = [v17 URLByAppendingPathExtension:@"plist"];
 
     if (v18)
@@ -388,7 +388,7 @@ LABEL_61:
       v34 = &v45;
       v20 = v19;
       v32 = v20;
-      [IMAttachmentBlastdoor generatePassPreview:v8 senderContext:v9 withCompletionBlock:v31];
+      [IMAttachmentBlastdoor generatePassPreview:lCopy senderContext:contextCopy withCompletionBlock:v31];
       v21 = dispatch_time(0, 5000000000);
       if (dispatch_group_wait(v20, v21))
       {
@@ -402,10 +402,10 @@ LABEL_61:
           }
         }
 
-        if (a6)
+        if (error)
         {
           [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:12 userInfo:0];
-          *a6 = v23 = 0;
+          *error = v23 = 0;
         }
 
         else
@@ -416,12 +416,12 @@ LABEL_61:
 
       else
       {
-        if (a6)
+        if (error)
         {
           v27 = *(*(&v45 + 1) + 40);
           if (v27)
           {
-            *a6 = v27;
+            *error = v27;
           }
         }
 
@@ -453,15 +453,15 @@ LABEL_61:
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
           LODWORD(v39) = 138412290;
-          *(&v39 + 4) = v16;
+          *(&v39 + 4) = stringGUID;
           _os_log_impl(&dword_1A85E5000, v26, OS_LOG_TYPE_INFO, "Failed to get a temporaryPreviewURL %@", &v39, 0xCu);
         }
       }
 
-      if (a6)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:12 userInfo:0];
-        *a6 = v23 = 0;
+        *error = v23 = 0;
       }
 
       else
@@ -487,10 +487,10 @@ LABEL_61:
       }
     }
 
-    if (a6)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:5 userInfo:0];
-      *a6 = v23 = 0;
+      *error = v23 = 0;
     }
 
     else

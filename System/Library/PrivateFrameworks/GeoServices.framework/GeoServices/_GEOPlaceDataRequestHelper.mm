@@ -1,7 +1,7 @@
 @interface _GEOPlaceDataRequestHelper
-+ (id)helperExpiredIdentifiers:(id)a3;
-+ (id)helperForHandler:(id)a3 identifiers:(id)a4;
-- (BOOL)finishedIdentifier:(id)a3 withResult:(id)a4 error:(id)a5;
++ (id)helperExpiredIdentifiers:(id)identifiers;
++ (id)helperForHandler:(id)handler identifiers:(id)identifiers;
+- (BOOL)finishedIdentifier:(id)identifier withResult:(id)result error:(id)error;
 - (id)description;
 - (void)failAllRemainingRequests;
 @end
@@ -15,8 +15,8 @@
     v3 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
     {
-      v4 = [(NSMutableSet *)self->_remaningIdentifiers allObjects];
-      v5 = [v4 componentsJoinedByString:{@", "}];
+      allObjects = [(NSMutableSet *)self->_remaningIdentifiers allObjects];
+      v5 = [allObjects componentsJoinedByString:{@", "}];
       v10 = 138543362;
       v11 = v5;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_FAULT, "Watchdog timeout, server error fetching muids: %{public}@", &v10, 0xCu);
@@ -37,15 +37,15 @@
   }
 }
 
-- (BOOL)finishedIdentifier:(id)a3 withResult:(id)a4 error:(id)a5
+- (BOOL)finishedIdentifier:(id)identifier withResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(NSMutableSet *)self->_remaningIdentifiers removeObject:v8];
-  if (v9 && self->_results)
+  identifierCopy = identifier;
+  resultCopy = result;
+  errorCopy = error;
+  [(NSMutableSet *)self->_remaningIdentifiers removeObject:identifierCopy];
+  if (resultCopy && self->_results)
   {
-    v11 = [(NSDictionary *)self->_identifierOrderMap objectForKeyedSubscript:v8];
+    v11 = [(NSDictionary *)self->_identifierOrderMap objectForKeyedSubscript:identifierCopy];
     if (!v11)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
@@ -62,8 +62,8 @@
     v19 = 3221225472;
     v20 = sub_10004B4B8;
     v21 = &unk_100083810;
-    v22 = self;
-    v23 = v9;
+    selfCopy = self;
+    v23 = resultCopy;
     [v12 enumerateIndexesUsingBlock:&v18];
   }
 
@@ -77,9 +77,9 @@ LABEL_6:
   requestHandler = self->_requestHandler;
   if (requestHandler)
   {
-    if (v10)
+    if (errorCopy)
     {
-      requestHandler[2](self->_requestHandler, 0, v10);
+      requestHandler[2](self->_requestHandler, 0, errorCopy);
     }
 
     else
@@ -103,19 +103,19 @@ LABEL_13:
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   v5 = objc_retainBlock(self->_requestHandler);
-  v6 = [(NSDictionary *)self->_identifierOrderMap allKeys];
-  v7 = [NSString stringWithFormat:@"<%@ %p handler %p identifiers %@ remaning %@ results.count: %d", v4, self, v5, v6, self->_remaningIdentifiers, [(NSMutableArray *)self->_results count]];
+  allKeys = [(NSDictionary *)self->_identifierOrderMap allKeys];
+  v7 = [NSString stringWithFormat:@"<%@ %p handler %p identifiers %@ remaning %@ results.count: %d", v4, self, v5, allKeys, self->_remaningIdentifiers, [(NSMutableArray *)self->_results count]];
 
   return v7;
 }
 
-+ (id)helperExpiredIdentifiers:(id)a3
++ (id)helperExpiredIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = objc_alloc_init(_GEOPlaceDataRequestHelper);
   if (v4)
   {
-    v5 = [v3 mutableCopy];
+    v5 = [identifiersCopy mutableCopy];
     remaningIdentifiers = v4->_remaningIdentifiers;
     v4->_remaningIdentifiers = v5;
   }
@@ -123,26 +123,26 @@ LABEL_13:
   return v4;
 }
 
-+ (id)helperForHandler:(id)a3 identifiers:(id)a4
++ (id)helperForHandler:(id)handler identifiers:(id)identifiers
 {
-  v5 = a3;
-  v6 = a4;
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
   v7 = objc_alloc_init(_GEOPlaceDataRequestHelper);
   if (v7)
   {
-    v8 = [v5 copy];
+    v8 = [handlerCopy copy];
     requestHandler = v7->_requestHandler;
     v7->_requestHandler = v8;
 
-    v10 = [NSMutableSet setWithArray:v6];
+    v10 = [NSMutableSet setWithArray:identifiersCopy];
     remaningIdentifiers = v7->_remaningIdentifiers;
     v7->_remaningIdentifiers = v10;
 
-    v12 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+    v12 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [identifiersCopy count]);
     results = v7->_results;
     v7->_results = v12;
 
-    v14 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v6 count]);
+    v14 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [identifiersCopy count]);
     v20 = _NSConcreteStackBlock;
     v21 = 3221225472;
     v22 = sub_10004B76C;
@@ -151,7 +151,7 @@ LABEL_13:
     v24 = v15;
     v25 = v14;
     v16 = v14;
-    [v6 enumerateObjectsUsingBlock:&v20];
+    [identifiersCopy enumerateObjectsUsingBlock:&v20];
     v17 = [v16 copy];
     identifierOrderMap = v15->_identifierOrderMap;
     v15->_identifierOrderMap = v17;

@@ -1,10 +1,10 @@
 @interface NavigationBarLargeTitleView
-- (_TtC5UIKit27NavigationBarLargeTitleView)initWithCoder:(id)a3;
+- (_TtC5UIKit27NavigationBarLargeTitleView)initWithCoder:(id)coder;
 - (double)alpha;
 - (void)didMoveToWindow;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)setAlpha:(double)a3;
+- (void)setAlpha:(double)alpha;
 @end
 
 @implementation NavigationBarLargeTitleView
@@ -19,10 +19,10 @@
   v4 = *&v2[OBJC_IVAR____TtC5UIKit27NavigationBarLargeTitleView_largeTitleView];
   [v2 directionalLayoutMargins];
   [v4 setDirectionalLayoutMargins_];
-  v5 = [*&v2[v3] layout];
-  if (v5)
+  layout = [*&v2[v3] layout];
+  if (layout)
   {
-    v6 = v5;
+    v6 = layout;
     [v2 directionalLayoutMargins];
     [v6 setLayoutMargins_];
   }
@@ -38,11 +38,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188C12820();
 }
 
-- (_TtC5UIKit27NavigationBarLargeTitleView)initWithCoder:(id)a3
+- (_TtC5UIKit27NavigationBarLargeTitleView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit27NavigationBarLargeTitleView_preferredHeight) = 0;
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit27NavigationBarLargeTitleView_recipientScrollViewRemovedFromWindowHandler);
@@ -53,15 +53,15 @@
   return result;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   ObjectType = swift_getObjectType();
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = self;
-  [(UIView *)&v9 setAlpha:a3];
-  v7 = *(&v6->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit27NavigationBarLargeTitleView_largeTitleView);
-  v8.receiver = v6;
+  selfCopy = self;
+  [(UIView *)&v9 setAlpha:alpha];
+  v7 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit27NavigationBarLargeTitleView_largeTitleView);
+  v8.receiver = selfCopy;
   v8.super_class = ObjectType;
   [(UIView *)&v8 alpha];
   [v7 setAlpha_];
@@ -69,7 +69,7 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1891730AC();
 }
 

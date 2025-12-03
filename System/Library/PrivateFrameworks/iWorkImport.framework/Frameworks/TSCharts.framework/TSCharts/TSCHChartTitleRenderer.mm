@@ -1,30 +1,30 @@
 @interface TSCHChartTitleRenderer
-+ (id)defaultParagraphStyleForCenteredTitleEllipsisWithChartInfo:(id)a3 originalParagraphStyle:(id)a4 scaleTextPercent:(double)a5 titleRootedLayoutRect:(CGRect)a6;
-- (BOOL)canEditTextForSelectionPath:(id)a3;
-- (BOOL)canRenderSelectionPath:(id)a3;
++ (id)defaultParagraphStyleForCenteredTitleEllipsisWithChartInfo:(id)info originalParagraphStyle:(id)style scaleTextPercent:(double)percent titleRootedLayoutRect:(CGRect)rect;
+- (BOOL)canEditTextForSelectionPath:(id)path;
+- (BOOL)canRenderSelectionPath:(id)path;
 - (BOOL)shouldPlaceTitleAtCenter;
-- (CGRect)frameForEditingTextForSelectionPath:(id)a3;
-- (CGRect)p_rawFrameForEditingTextForSelectionPath:(id)a3;
-- (id)textLayoutPropertiesWithWrapWidth:(double)a3;
-- (void)addSelection:(id)a3 toCGPath:(CGPath *)a4 useWrapWidth:(BOOL)a5;
-- (void)p_drawTitle:(CGContext *)a3 rangePtr:(_NSRange *)a4;
-- (void)renderIntoContext:(CGContext *)a3 selection:(id)a4;
-- (void)useEditedString:(id)a3;
+- (CGRect)frameForEditingTextForSelectionPath:(id)path;
+- (CGRect)p_rawFrameForEditingTextForSelectionPath:(id)path;
+- (id)textLayoutPropertiesWithWrapWidth:(double)width;
+- (void)addSelection:(id)selection toCGPath:(CGPath *)path useWrapWidth:(BOOL)width;
+- (void)p_drawTitle:(CGContext *)title rangePtr:(_NSRange *)ptr;
+- (void)renderIntoContext:(CGContext *)context selection:(id)selection;
+- (void)useEditedString:(id)string;
 @end
 
 @implementation TSCHChartTitleRenderer
 
-- (void)useEditedString:(id)a3
+- (void)useEditedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   objc_opt_class();
   v9 = objc_msgSend_layoutItem(self, v5, v6, v7, v8);
   v14 = TSUDynamicCast();
 
-  objc_msgSend_setEditedString_(v14, v10, v11, v12, v13, v4);
+  objc_msgSend_setEditedString_(v14, v10, v11, v12, v13, stringCopy);
 }
 
-- (void)p_drawTitle:(CGContext *)a3 rangePtr:(_NSRange *)a4
+- (void)p_drawTitle:(CGContext *)title rangePtr:(_NSRange *)ptr
 {
   objc_opt_class();
   v11 = objc_msgSend_layoutItem(self, v7, v8, v9, v10);
@@ -52,9 +52,9 @@
   v35 = objc_msgSend_titleText(v12, v30, v34, *&v33, v31);
   if (!CGRectIsNull(v170) && objc_msgSend_length(v35, v36, v37, v38, v39))
   {
-    CGContextSaveGState(a3);
+    CGContextSaveGState(title);
     transform = v168;
-    CGContextConcatCTM(a3, &transform);
+    CGContextConcatCTM(title, &transform);
     v44 = objc_msgSend_titleSelectionPath(v12, v40, v41, v42, v43);
     v49 = objc_msgSend_textDrawingFlagForSelectionPath_(self, v45, v46, v47, v48, v44);
 
@@ -64,11 +64,11 @@
       {
         v54 = objc_msgSend_yellowColor(MEMORY[0x277D81180], v50, v51, v52, v53);
         v59 = objc_msgSend_CGColor(v54, v55, v56, v57, v58);
-        CGContextSetFillColorWithColor(a3, v59);
+        CGContextSetFillColorWithColor(title, v59);
 
         TSURectWithSize();
         v172 = CGRectInset(v171, -3.0, -1.0);
-        CGContextFillRect(a3, v172);
+        CGContextFillRect(title, v172);
       }
 
       v60 = TSDCGContextGetPdfTagger();
@@ -93,10 +93,10 @@
       v165 = objc_msgSend_textLayoutPropertiesWithWrapWidth_(self, v89, v27, v90, v91);
       memset(&transform, 0, sizeof(transform));
       objc_msgSend_initializeTextLayoutResults(TSCHText, v92, 0.0, v93, v94);
-      if (a4)
+      if (ptr)
       {
-        location = a4->location;
-        length = a4->length;
+        location = ptr->location;
+        length = ptr->length;
       }
 
       else
@@ -108,7 +108,7 @@
       objc_msgSend_viewScale(self, v95, v96, v97, v98);
       v102 = v101;
       v106 = objc_msgSend_textStyleProvidingSource(v12, v103, v101, v104, v105);
-      objc_msgSend_drawText_paragraphStyle_intoContext_wrapWidth_atPosition_range_viewScale_layoutProperties_styleProvidingSource_outTextLayoutResults_(v166, v107, v27, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v35, v80, a3, location, length, v165, v102, v106, &transform);
+      objc_msgSend_drawText_paragraphStyle_intoContext_wrapWidth_atPosition_range_viewScale_layoutProperties_styleProvidingSource_outTextLayoutResults_(v166, v107, v27, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v35, v80, title, location, length, v165, v102, v106, &transform);
 
       if (LOBYTE(transform.ty) == 1)
       {
@@ -158,7 +158,7 @@
         objc_msgSend_viewScale(self, v152, v153, v154, v155);
         v157 = v156;
         v161 = objc_msgSend_textStyleProvidingSource(v12, v158, v156, v159, v160);
-        objc_msgSend_drawText_paragraphStyle_intoContext_wrapWidth_atPosition_range_viewScale_layoutProperties_styleProvidingSource_outTextLayoutResults_(v128, v162, v27, 0.0, v145, v116, v123, a3, 0, v151, v146, v157, v161, 0);
+        objc_msgSend_drawText_paragraphStyle_intoContext_wrapWidth_atPosition_range_viewScale_layoutProperties_styleProvidingSource_outTextLayoutResults_(v128, v162, v27, 0.0, v145, v116, v123, title, 0, v151, v146, v157, v161, 0);
 
         v70 = v163;
       }
@@ -166,15 +166,15 @@
       objc_msgSend_endChartTitle(v164, v108, v109, v110, v111);
     }
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(title);
   }
 }
 
-+ (id)defaultParagraphStyleForCenteredTitleEllipsisWithChartInfo:(id)a3 originalParagraphStyle:(id)a4 scaleTextPercent:(double)a5 titleRootedLayoutRect:(CGRect)a6
++ (id)defaultParagraphStyleForCenteredTitleEllipsisWithChartInfo:(id)info originalParagraphStyle:(id)style scaleTextPercent:(double)percent titleRootedLayoutRect:(CGRect)rect
 {
-  width = a6.size.width;
-  v9 = a4;
-  v15 = objc_msgSend_context(a3, v10, v11, v12, v13);
+  width = rect.size.width;
+  styleCopy = style;
+  v15 = objc_msgSend_context(info, v10, v11, v12, v13);
   if (!v15)
   {
     v19 = MEMORY[0x277D81150];
@@ -185,9 +185,9 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v30, v31, v32, v33);
   }
 
-  v34 = objc_msgSend_fullyPopulatedStyleFromStyle_context_(TSCHStyleUtilities, v14, v16, v17, v18, v9, v15);
+  v34 = objc_msgSend_fullyPopulatedStyleFromStyle_context_(TSCHStyleUtilities, v14, v16, v17, v18, styleCopy, v15);
   objc_msgSend_floatValueForProperty_(v34, v35, v36, v37, v38, 17);
-  v41 = a5 / 100.0 * v40;
+  v41 = percent / 100.0 * v40;
   if (v41 >= width * 0.05 * 1.3)
   {
     v41 = width * 0.05 * 1.3;
@@ -206,42 +206,42 @@
   return v34;
 }
 
-- (BOOL)canRenderSelectionPath:(id)a3
+- (BOOL)canRenderSelectionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   objc_opt_class();
   v9 = objc_msgSend_layoutItem(self, v5, v6, v7, v8);
   v10 = TSUDynamicCast();
 
   v15 = objc_msgSend_titleSelectionPath(v10, v11, v12, v13, v14);
-  isEqual = objc_msgSend_isEqual_(v4, v16, v17, v18, v19, v15);
+  isEqual = objc_msgSend_isEqual_(pathCopy, v16, v17, v18, v19, v15);
 
   return isEqual;
 }
 
-- (void)renderIntoContext:(CGContext *)a3 selection:(id)a4
+- (void)renderIntoContext:(CGContext *)context selection:(id)selection
 {
-  v6 = a4;
+  selectionCopy = selection;
   objc_opt_class();
   v11 = objc_msgSend_layoutItem(self, v7, v8, v9, v10);
   v12 = TSUDynamicCast();
 
-  v17 = objc_msgSend_path(v6, v13, v14, v15, v16);
+  v17 = objc_msgSend_path(selectionCopy, v13, v14, v15, v16);
   v22 = objc_msgSend_titleSelectionPath(v12, v18, v19, v20, v21);
   isEqual = objc_msgSend_isEqual_(v17, v23, v24, v25, v26, v22);
 
   if (isEqual)
   {
-    v36[0] = objc_msgSend_range(v6, v28, v29, v30, v31);
+    v36[0] = objc_msgSend_range(selectionCopy, v28, v29, v30, v31);
     v36[1] = v32;
-    objc_msgSend_p_drawTitle_rangePtr_(self, v32, v33, v34, v35, a3, v36);
+    objc_msgSend_p_drawTitle_rangePtr_(self, v32, v33, v34, v35, context, v36);
   }
 }
 
-- (void)addSelection:(id)a3 toCGPath:(CGPath *)a4 useWrapWidth:(BOOL)a5
+- (void)addSelection:(id)selection toCGPath:(CGPath *)path useWrapWidth:(BOOL)width
 {
-  v6 = a3;
-  v11 = objc_msgSend_path(v6, v7, v8, v9, v10);
+  selectionCopy = selection;
+  v11 = objc_msgSend_path(selectionCopy, v7, v8, v9, v10);
   if (objc_msgSend_canEditTextForSelectionPath_(self, v12, v13, v14, v15, v11))
   {
     objc_opt_class();
@@ -253,7 +253,7 @@
     v33.size = v22;
     v23 = MEMORY[0x277CBF3A8];
     v32 = *MEMORY[0x277CBF3A8];
-    v26 = objc_msgSend_range(v6, v24, 0.0, *&v32, v25, 0, 0, 0, 0, 0, 0);
+    v26 = objc_msgSend_range(selectionCopy, v24, 0.0, *&v32, v25, 0, 0, 0, 0, 0, 0);
     if (v21)
     {
       objc_msgSend_searchSelectionTransformForRenderingRange_outElementSize_outClipRect_(v21, v27, v28, v29, v30, v26, v27, &v32, &v33);
@@ -267,15 +267,15 @@
   }
 }
 
-- (CGRect)p_rawFrameForEditingTextForSelectionPath:(id)a3
+- (CGRect)p_rawFrameForEditingTextForSelectionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   objc_opt_class();
   v9 = objc_msgSend_layoutItem(self, v5, v6, v7, v8);
   v10 = TSUDynamicCast();
 
   v15 = objc_msgSend_titleSelectionPath(v10, v11, v12, v13, v14);
-  isEqual = objc_msgSend_isEqual_(v4, v16, v17, v18, v19, v15);
+  isEqual = objc_msgSend_isEqual_(pathCopy, v16, v17, v18, v19, v15);
 
   if (isEqual)
   {
@@ -294,7 +294,7 @@
     {
       v38[0].receiver = self;
       v38[0].super_class = TSCHChartTitleRenderer;
-      [(objc_super *)v38 frameForEditingTextForSelectionPath:v4];
+      [(objc_super *)v38 frameForEditingTextForSelectionPath:pathCopy];
     }
 
     else
@@ -309,7 +309,7 @@
   {
     v41.receiver = self;
     v41.super_class = TSCHChartTitleRenderer;
-    [(TSCHRenderer *)&v41 frameForEditingTextForSelectionPath:v4];
+    [(TSCHRenderer *)&v41 frameForEditingTextForSelectionPath:pathCopy];
   }
 
   v29 = v25;
@@ -328,19 +328,19 @@
   return result;
 }
 
-- (BOOL)canEditTextForSelectionPath:(id)a3
+- (BOOL)canEditTextForSelectionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   objc_opt_class();
   v9 = objc_msgSend_layoutItem(self, v5, v6, v7, v8);
   v10 = TSUDynamicCast();
 
   v15 = objc_msgSend_titleSelectionPath(v10, v11, v12, v13, v14);
-  isEqual = objc_msgSend_isEqual_(v4, v16, v17, v18, v19, v15);
+  isEqual = objc_msgSend_isEqual_(pathCopy, v16, v17, v18, v19, v15);
 
   if (isEqual && objc_msgSend_isTitleOn(v10, v21, v22, v23, v24))
   {
-    objc_msgSend_p_rawFrameForEditingTextForSelectionPath_(self, v25, v26, v27, v28, v4);
+    objc_msgSend_p_rawFrameForEditingTextForSelectionPath_(self, v25, v26, v27, v28, pathCopy);
     self->_startingEditingFrame.origin.x = v29;
     self->_startingEditingFrame.origin.y = v30;
     self->_startingEditingFrame.size.width = v31;
@@ -352,16 +352,16 @@
   {
     v35.receiver = self;
     v35.super_class = TSCHChartTitleRenderer;
-    v33 = [(TSCHRenderer *)&v35 canEditTextForSelectionPath:v4];
+    v33 = [(TSCHRenderer *)&v35 canEditTextForSelectionPath:pathCopy];
   }
 
   return v33;
 }
 
-- (CGRect)frameForEditingTextForSelectionPath:(id)a3
+- (CGRect)frameForEditingTextForSelectionPath:(id)path
 {
-  v4 = a3;
-  objc_msgSend_p_rawFrameForEditingTextForSelectionPath_(self, v5, v6, v7, v8, v4);
+  pathCopy = path;
+  objc_msgSend_p_rawFrameForEditingTextForSelectionPath_(self, v5, v6, v7, v8, pathCopy);
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -375,7 +375,7 @@
     width = self->_startingEditingFrame.size.width;
     if (!CGRectEqualToRect(*(&height - 3), *MEMORY[0x277CBF3A0]))
     {
-      v26 = objc_msgSend_name(v4, v22, v23, v24, v25);
+      v26 = objc_msgSend_name(pathCopy, v22, v23, v24, v25);
       isEqual = objc_msgSend_isEqual_(v26, v27, v28, v29, v30, @"chartTitle");
 
       if (isEqual)
@@ -388,7 +388,7 @@
         goto LABEL_8;
       }
 
-      v36 = objc_msgSend_name(v4, v32, v33, v34, v35);
+      v36 = objc_msgSend_name(pathCopy, v32, v33, v34, v35);
       v41 = objc_msgSend_isEqual_(v36, v37, v38, v39, v40, @"chartDataSetName");
 
       if (v41)
@@ -437,7 +437,7 @@ LABEL_9:
   return shouldPlaceTitleAtCenter;
 }
 
-- (id)textLayoutPropertiesWithWrapWidth:(double)a3
+- (id)textLayoutPropertiesWithWrapWidth:(double)width
 {
   objc_opt_class();
   v9 = objc_msgSend_layoutItem(self, v5, v6, v7, v8);
@@ -445,12 +445,12 @@ LABEL_9:
 
   if (objc_msgSend_shouldPlaceTitleAtCenter(self, v11, v12, v13, v14) && v10)
   {
-    v18 = objc_msgSend_placeTitleAtCenterPropertiesForWrapWidth_(TSCHTextLayoutProperties, v15, a3, v16, v17);
+    v18 = objc_msgSend_placeTitleAtCenterPropertiesForWrapWidth_(TSCHTextLayoutProperties, v15, width, v16, v17);
   }
 
   else
   {
-    v18 = objc_msgSend_defaultPropertiesForWrapWidth_(TSCHTextLayoutProperties, v15, a3, v16, v17);
+    v18 = objc_msgSend_defaultPropertiesForWrapWidth_(TSCHTextLayoutProperties, v15, width, v16, v17);
   }
 
   v19 = v18;

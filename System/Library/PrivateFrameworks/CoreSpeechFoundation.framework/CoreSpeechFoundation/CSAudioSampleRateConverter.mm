@@ -1,20 +1,20 @@
 @interface CSAudioSampleRateConverter
 + (id)downsampler;
 + (id)upsampler;
-- (CSAudioSampleRateConverter)initWithInASBD:(AudioStreamBasicDescription *)a3 outASBD:(AudioStreamBasicDescription *)a4;
-- (OpaqueAudioConverter)_createSampleRateConverterWithInASBD:(AudioStreamBasicDescription *)a3 outASBD:(AudioStreamBasicDescription *)a4;
-- (id)convertSampleRateOfBuffer:(id)a3;
+- (CSAudioSampleRateConverter)initWithInASBD:(AudioStreamBasicDescription *)d outASBD:(AudioStreamBasicDescription *)bD;
+- (OpaqueAudioConverter)_createSampleRateConverterWithInASBD:(AudioStreamBasicDescription *)d outASBD:(AudioStreamBasicDescription *)bD;
+- (id)convertSampleRateOfBuffer:(id)buffer;
 - (void)dealloc;
 @end
 
 @implementation CSAudioSampleRateConverter
 
-- (id)convertSampleRateOfBuffer:(id)a3
+- (id)convertSampleRateOfBuffer:(id)buffer
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!self->_sampleRateConverter || ![v4 length])
+  bufferCopy = buffer;
+  v5 = bufferCopy;
+  if (!self->_sampleRateConverter || ![bufferCopy length])
   {
     v6 = v5;
     goto LABEL_18;
@@ -42,7 +42,7 @@
     inInputDataProcUserData[2] = __56__CSAudioSampleRateConverter_convertSampleRateOfBuffer___block_invoke;
     inInputDataProcUserData[3] = &unk_1E865A7F0;
     v11 = v5;
-    v22 = self;
+    selfCopy = self;
     v23 = v26;
     v21 = v11;
     v12 = AudioConverterFillComplexBuffer(sampleRateConverter, AudioConverterFillComplexBuffer_BlockInvoke, inInputDataProcUserData, &ioOutputDataPacketSize, &outOutputData, 0);
@@ -163,11 +163,11 @@ uint64_t __56__CSAudioSampleRateConverter_convertSampleRateOfBuffer___block_invo
   return result;
 }
 
-- (OpaqueAudioConverter)_createSampleRateConverterWithInASBD:(AudioStreamBasicDescription *)a3 outASBD:(AudioStreamBasicDescription *)a4
+- (OpaqueAudioConverter)_createSampleRateConverterWithInASBD:(AudioStreamBasicDescription *)d outASBD:(AudioStreamBasicDescription *)bD
 {
   v23 = *MEMORY[0x1E69E9840];
   outAudioConverter = 0;
-  v7 = AudioConverterNew(a3, a4, &outAudioConverter);
+  v7 = AudioConverterNew(d, bD, &outAudioConverter);
   if (!v7)
   {
     inPropertyData = 127;
@@ -190,7 +190,7 @@ uint64_t __56__CSAudioSampleRateConverter_convertSampleRateOfBuffer___block_invo
       inPropertyData = 1852797549;
       if (!AudioConverterSetProperty(outAudioConverter, 0x73726361u, 4u, &inPropertyData))
       {
-        v16 = a4->mSampleRate / a3->mSampleRate;
+        v16 = bD->mSampleRate / d->mSampleRate;
         self->_outBufferScaleFactor = v16;
         result = outAudioConverter;
         goto LABEL_13;
@@ -249,7 +249,7 @@ LABEL_13:
   [(CSAudioSampleRateConverter *)&v4 dealloc];
 }
 
-- (CSAudioSampleRateConverter)initWithInASBD:(AudioStreamBasicDescription *)a3 outASBD:(AudioStreamBasicDescription *)a4
+- (CSAudioSampleRateConverter)initWithInASBD:(AudioStreamBasicDescription *)d outASBD:(AudioStreamBasicDescription *)bD
 {
   v19.receiver = self;
   v19.super_class = CSAudioSampleRateConverter;
@@ -257,24 +257,24 @@ LABEL_13:
   v7 = v6;
   if (v6)
   {
-    v8 = *&a3->mSampleRate;
-    v9 = *&a3->mBytesPerPacket;
-    *(v6 + 7) = *&a3->mBitsPerChannel;
+    v8 = *&d->mSampleRate;
+    v9 = *&d->mBytesPerPacket;
+    *(v6 + 7) = *&d->mBitsPerChannel;
     *(v6 + 40) = v9;
     *(v6 + 24) = v8;
-    v10 = *&a4->mSampleRate;
-    v11 = *&a4->mBytesPerPacket;
-    *(v6 + 12) = *&a4->mBitsPerChannel;
+    v10 = *&bD->mSampleRate;
+    v11 = *&bD->mBytesPerPacket;
+    *(v6 + 12) = *&bD->mBitsPerChannel;
     *(v6 + 4) = v10;
     *(v6 + 5) = v11;
-    v12 = *&a3->mBytesPerPacket;
-    v17[0] = *&a3->mSampleRate;
+    v12 = *&d->mBytesPerPacket;
+    v17[0] = *&d->mSampleRate;
     v17[1] = v12;
-    v18 = *&a3->mBitsPerChannel;
-    v13 = *&a4->mBytesPerPacket;
-    v15[0] = *&a4->mSampleRate;
+    v18 = *&d->mBitsPerChannel;
+    v13 = *&bD->mBytesPerPacket;
+    v15[0] = *&bD->mSampleRate;
     v15[1] = v13;
-    v16 = *&a4->mBitsPerChannel;
+    v16 = *&bD->mBitsPerChannel;
     *(v6 + 1) = [v6 _createSampleRateConverterWithInASBD:v17 outASBD:v15];
   }
 

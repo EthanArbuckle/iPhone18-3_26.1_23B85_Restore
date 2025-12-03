@@ -1,12 +1,12 @@
 @interface CNChangeHistoryLegacyResultConverter
-+ (id)contactEventForChange:(void *)a3 factory:;
++ (id)contactEventForChange:(void *)change factory:;
 + (id)os_log;
-- (CNChangeHistoryLegacyResultConverter)initWithContactStore:(id)a3 additionalContactKeyDescriptors:(id)a4;
-- (id)coalesceGroupEvents:(id)a1;
-- (id)eventsFromResult:(id)a3;
-- (id)groupEventsFromLegacyResult:(void *)a1;
+- (CNChangeHistoryLegacyResultConverter)initWithContactStore:(id)store additionalContactKeyDescriptors:(id)descriptors;
+- (id)coalesceGroupEvents:(id)events;
+- (id)eventsFromResult:(id)result;
+- (id)groupEventsFromLegacyResult:(void *)result;
 - (id)keysToFetch;
-- (void)contactEventsFromLegacyResult:(void *)a1;
+- (void)contactEventsFromLegacyResult:(void *)result;
 @end
 
 @implementation CNChangeHistoryLegacyResultConverter
@@ -33,20 +33,20 @@ uint64_t __46__CNChangeHistoryLegacyResultConverter_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNChangeHistoryLegacyResultConverter)initWithContactStore:(id)a3 additionalContactKeyDescriptors:(id)a4
+- (CNChangeHistoryLegacyResultConverter)initWithContactStore:(id)store additionalContactKeyDescriptors:(id)descriptors
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  descriptorsCopy = descriptors;
   v16.receiver = self;
   v16.super_class = CNChangeHistoryLegacyResultConverter;
   v9 = [(CNChangeHistoryLegacyResultConverter *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contactStore, a3);
-    if (v8)
+    objc_storeStrong(&v9->_contactStore, store);
+    if (descriptorsCopy)
     {
-      v11 = v8;
+      v11 = descriptorsCopy;
     }
 
     else
@@ -65,24 +65,24 @@ uint64_t __46__CNChangeHistoryLegacyResultConverter_os_log__block_invoke()
   return v10;
 }
 
-- (id)eventsFromResult:(id)a3
+- (id)eventsFromResult:(id)result
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNChangeHistoryLegacyResultConverter *)&self->super.isa contactEventsFromLegacyResult:v4];
+  resultCopy = result;
+  v5 = [(CNChangeHistoryLegacyResultConverter *)&self->super.isa contactEventsFromLegacyResult:resultCopy];
   if ([v5 isSuccess])
   {
-    v9 = [(CNChangeHistoryLegacyResultConverter *)self groupEventsFromLegacyResult:v4];
+    v9 = [(CNChangeHistoryLegacyResultConverter *)self groupEventsFromLegacyResult:resultCopy];
     if ([v9 isSuccess])
     {
-      v10 = [v5 value];
-      v17[0] = v10;
-      v11 = [v9 value];
-      v17[1] = v11;
+      value = [v5 value];
+      v17[0] = value;
+      value2 = [v9 value];
+      v17[1] = value2;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-      v13 = [v12 _cn_flatten];
+      _cn_flatten = [v12 _cn_flatten];
 
-      v14 = [MEMORY[0x1E6996810] successWithValue:v13];
+      v14 = [MEMORY[0x1E6996810] successWithValue:_cn_flatten];
     }
 
     else
@@ -95,8 +95,8 @@ uint64_t __46__CNChangeHistoryLegacyResultConverter_os_log__block_invoke()
       }
 
       v16 = MEMORY[0x1E6996810];
-      v13 = [v9 error];
-      v14 = [v16 failureWithError:v13];
+      _cn_flatten = [v9 error];
+      v14 = [v16 failureWithError:_cn_flatten];
     }
 
     v7 = v14;
@@ -117,28 +117,28 @@ uint64_t __46__CNChangeHistoryLegacyResultConverter_os_log__block_invoke()
   return v7;
 }
 
-+ (id)contactEventForChange:(void *)a3 factory:
++ (id)contactEventForChange:(void *)change factory:
 {
   v4 = a2;
-  v5 = a3;
+  changeCopy = change;
   objc_opt_self();
-  v6 = [v4 changeType];
+  changeType = [v4 changeType];
   v7 = 0;
-  if (v6 <= 4)
+  if (changeType <= 4)
   {
-    if (v6 <= 1)
+    if (changeType <= 1)
     {
-      if (v6)
+      if (changeType)
       {
-        if (v6 != 1)
+        if (changeType != 1)
         {
           goto LABEL_26;
         }
 
 LABEL_16:
-        v8 = [v4 contact];
-        v11 = [v4 imagesChanged];
-        v12 = [v5 updateContactEventWithContact:v8 imagesChanged:{objc_msgSend(v11, "BOOLValue")}];
+        contact = [v4 contact];
+        imagesChanged = [v4 imagesChanged];
+        v12 = [changeCopy updateContactEventWithContact:contact imagesChanged:{objc_msgSend(imagesChanged, "BOOLValue")}];
 LABEL_17:
         v7 = v12;
         goto LABEL_21;
@@ -147,73 +147,73 @@ LABEL_17:
 
     else
     {
-      if (v6 == 2)
+      if (changeType == 2)
       {
         goto LABEL_19;
       }
 
-      if (v6 != 3)
+      if (changeType != 3)
       {
         goto LABEL_16;
       }
     }
 
-    v8 = [v4 contact];
-    v9 = [v5 addContactEventWithContact:v8 containerIdentifier:0];
+    contact = [v4 contact];
+    v9 = [changeCopy addContactEventWithContact:contact containerIdentifier:0];
     goto LABEL_24;
   }
 
-  if (v6 > 7)
+  if (changeType > 7)
   {
-    if (v6 == 8)
+    if (changeType == 8)
     {
-      v8 = [v4 contact];
-      v9 = [v5 preferredContactForNameEventWithPreferredContact:v8 unifiedContact:0];
+      contact = [v4 contact];
+      v9 = [changeCopy preferredContactForNameEventWithPreferredContact:contact unifiedContact:0];
       goto LABEL_24;
     }
 
-    if (v6 == 9)
+    if (changeType == 9)
     {
-      v8 = [v4 contact];
-      v9 = [v5 preferredContactForImageEventWithPreferredContact:v8 unifiedContact:0];
+      contact = [v4 contact];
+      v9 = [changeCopy preferredContactForImageEventWithPreferredContact:contact unifiedContact:0];
       goto LABEL_24;
     }
 
-    if (v6 != 10)
+    if (changeType != 10)
     {
       goto LABEL_26;
     }
 
     v10 = *MEMORY[0x1E69964C0];
-    v8 = [v4 contactIdentifier];
-    v11 = (*(v10 + 16))(v10, v8);
-    v12 = [v5 differentMeCardEventWithContactIdentifier:v11];
+    contact = [v4 contactIdentifier];
+    imagesChanged = (*(v10 + 16))(v10, contact);
+    v12 = [changeCopy differentMeCardEventWithContactIdentifier:imagesChanged];
     goto LABEL_17;
   }
 
-  if (v6 == 5)
+  if (changeType == 5)
   {
 LABEL_19:
-    v8 = [v4 contactIdentifier];
-    v9 = [v5 deleteContactEventWithContactIdentifier:v8];
+    contact = [v4 contactIdentifier];
+    v9 = [changeCopy deleteContactEventWithContactIdentifier:contact];
     goto LABEL_24;
   }
 
-  if (v6 != 6)
+  if (changeType != 6)
   {
-    v8 = [v4 contact];
-    v9 = [v5 unlinkContactEventWithContact:v8];
+    contact = [v4 contact];
+    v9 = [changeCopy unlinkContactEventWithContact:contact];
 LABEL_24:
     v7 = v9;
     goto LABEL_25;
   }
 
-  v8 = [v4 contact];
-  v11 = [v4 linkToPersonUUID];
-  v13 = [CNContact contactWithIdentifierOnly:v11];
-  v14 = [v4 personLinkUUID];
-  v15 = [CNContact contactWithIdentifierOnly:v14];
-  v7 = [v5 linkContactsEventWithFromContact:v8 toContact:v13 unifiedContact:v15];
+  contact = [v4 contact];
+  imagesChanged = [v4 linkToPersonUUID];
+  v13 = [CNContact contactWithIdentifierOnly:imagesChanged];
+  personLinkUUID = [v4 personLinkUUID];
+  v15 = [CNContact contactWithIdentifierOnly:personLinkUUID];
+  v7 = [changeCopy linkContactsEventWithFromContact:contact toContact:v13 unifiedContact:v15];
 
 LABEL_21:
 LABEL_25:
@@ -224,16 +224,16 @@ LABEL_26:
   return v16;
 }
 
-- (void)contactEventsFromLegacyResult:(void *)a1
+- (void)contactEventsFromLegacyResult:(void *)result
 {
   v3 = a2;
-  if (a1)
+  if (result)
   {
-    v4 = [(CNChangeHistoryLegacyResultConverter *)a1 keysToFetch];
+    keysToFetch = [(CNChangeHistoryLegacyResultConverter *)result keysToFetch];
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6 = [a1 contactStore];
+    contactStore = [result contactStore];
     v19 = v3;
-    v7 = [v3 contactChangesEnumeratorWithKeysToFetch:v4 contactStore:v6];
+    v7 = [v3 contactChangesEnumeratorWithKeysToFetch:keysToFetch contactStore:contactStore];
 
     v8 = v7;
     OUTLINED_FUNCTION_0_4();
@@ -251,18 +251,18 @@ LABEL_26:
             objc_enumerationMutation(v8);
           }
 
-          v14 = [CNChangeHistoryLegacyResultConverter contactEventForChange:a1[3] factory:?];
+          v14 = [CNChangeHistoryLegacyResultConverter contactEventForChange:result[3] factory:?];
           if (![v14 isSuccess])
           {
             v16 = MEMORY[0x1E6996810];
-            v17 = [v14 error];
-            a1 = [v16 failureWithError:v17];
+            error = [v14 error];
+            result = [v16 failureWithError:error];
 
             goto LABEL_12;
           }
 
-          v15 = [v14 value];
-          [v5 addObject:v15];
+          value = [v14 value];
+          [v5 addObject:value];
         }
 
         OUTLINED_FUNCTION_0_4();
@@ -276,25 +276,25 @@ LABEL_26:
       }
     }
 
-    a1 = [MEMORY[0x1E6996810] successWithValue:v5];
+    result = [MEMORY[0x1E6996810] successWithValue:v5];
 LABEL_12:
 
     v3 = v19;
   }
 
-  return a1;
+  return result;
 }
 
-- (id)groupEventsFromLegacyResult:(void *)a1
+- (id)groupEventsFromLegacyResult:(void *)result
 {
   v3 = a2;
   v30 = v3;
-  if (a1)
+  if (result)
   {
     v4 = v3;
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6 = [a1 contactStore];
-    v7 = [v4 groupChangesEnumeratorWithContactStore:v6];
+    contactStore = [result contactStore];
+    v7 = [v4 groupChangesEnumeratorWithContactStore:contactStore];
 
     v8 = v7;
     OUTLINED_FUNCTION_0_4();
@@ -318,37 +318,37 @@ LABEL_12:
         }
 
         v14 = *(8 * v13);
-        v15 = [v14 changeType];
-        if (v15 <= 5)
+        changeType = [v14 changeType];
+        if (changeType <= 5)
         {
-          if (((1 << v15) & 9) != 0)
+          if (((1 << changeType) & 9) != 0)
           {
-            v19 = a1[3];
-            v17 = [v14 group];
-            v18 = [v19 addGroupEventWithGroup:v17 containerIdentifier:0];
+            v19 = result[3];
+            group = [v14 group];
+            v18 = [v19 addGroupEventWithGroup:group containerIdentifier:0];
 LABEL_12:
             v20 = v18;
           }
 
           else
           {
-            if (((1 << v15) & 0x12) != 0)
+            if (((1 << changeType) & 0x12) != 0)
             {
-              v16 = a1[3];
-              v17 = [v14 group];
-              v18 = [v16 updateGroupEventWithGroup:v17];
+              v16 = result[3];
+              group = [v14 group];
+              v18 = [v16 updateGroupEventWithGroup:group];
               goto LABEL_12;
             }
 
-            v21 = a1[3];
-            v17 = [v14 groupIdentifier];
+            v21 = result[3];
+            group = [v14 groupIdentifier];
             [v14 externalURI];
             v22 = v5;
-            v24 = v23 = a1;
-            v25 = [v14 externalModificationTag];
-            v20 = [v21 deleteGroupEventWithGroupIdentifier:v17 externalURI:v24 externalModificationTag:v25];
+            v24 = v23 = result;
+            externalModificationTag = [v14 externalModificationTag];
+            v20 = [v21 deleteGroupEventWithGroupIdentifier:group externalURI:v24 externalModificationTag:externalModificationTag];
 
-            a1 = v23;
+            result = v23;
             v5 = v22;
           }
 
@@ -370,7 +370,7 @@ LABEL_15:
       {
 LABEL_19:
 
-        v27 = [(CNChangeHistoryLegacyResultConverter *)a1 coalesceGroupEvents:v5];
+        v27 = [(CNChangeHistoryLegacyResultConverter *)result coalesceGroupEvents:v5];
         v28 = [MEMORY[0x1E6996810] successWithValue:v27];
 
         goto LABEL_20;
@@ -386,42 +386,42 @@ LABEL_20:
 
 - (id)keysToFetch
 {
-  v1 = a1;
+  selfCopy = self;
   v8[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = *MEMORY[0x1E6996530];
-    v3 = [a1 additionalContactKeyDescriptors];
-    LODWORD(v2) = (*(v2 + 16))(v2, v3);
+    additionalContactKeyDescriptors = [self additionalContactKeyDescriptors];
+    LODWORD(v2) = (*(v2 + 16))(v2, additionalContactKeyDescriptors);
 
     if (v2)
     {
       v8[0] = @"identifier";
-      v1 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
+      selfCopy = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
     }
 
     else
     {
-      v4 = [v1 additionalContactKeyDescriptors];
-      v7[1] = v4;
+      additionalContactKeyDescriptors2 = [selfCopy additionalContactKeyDescriptors];
+      v7[1] = additionalContactKeyDescriptors2;
       v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
-      v1 = [v5 _cn_flatten];
+      selfCopy = [v5 _cn_flatten];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (id)coalesceGroupEvents:(id)a1
+- (id)coalesceGroupEvents:(id)events
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (events)
   {
-    a1 = v3;
+    events = v3;
   }
 
-  return a1;
+  return events;
 }
 
 - (void)eventsFromResult:(void *)a1 .cold.1(void *a1)

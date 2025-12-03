@@ -1,7 +1,7 @@
 @interface CITemperatureAndTint
 + (id)customAttributes;
 - (id)outputImage;
-- (void)setInputNeutral:(id)a3;
+- (void)setInputNeutral:(id)neutral;
 @end
 
 @implementation CITemperatureAndTint
@@ -40,17 +40,17 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:5];
 }
 
-- (void)setInputNeutral:(id)a3
+- (void)setInputNeutral:(id)neutral
 {
   v99 = *MEMORY[0x1E69E9840];
   inputNeutral = self->inputNeutral;
-  if ([a3 count] == 3)
+  if ([neutral count] == 3)
   {
-    [a3 X];
+    [neutral X];
     v76 = v6;
-    [a3 Y];
+    [neutral Y];
     v75 = v7;
-    [a3 Z];
+    [neutral Z];
     v8.f64[0] = v76;
     v8.f64[1] = v75;
     v97 = vmulq_f64(v8, v8);
@@ -178,15 +178,15 @@
     v72 = v64 * v71 + v47 * (1.0 - v71);
     v73 = v63 * v71 + v60 * (1.0 - v71);
     v74 = sqrt(v73 * v73 + v72 * v72);
-    v20 = [CIVector vectorWithX:1000000.0 / ((1.0 - v71) * *v58 + *(v58 - 4) * v71) Y:(v73 / v74 * (v57 - (v67 * (1.0 - v71) + *(v58 - 2) * v71)) + (v56 - (v68 * (1.0 - v71) + *(v58 - 3) * v71)) * (v72 / v74)) * -3000.0];
+    neutralCopy = [CIVector vectorWithX:1000000.0 / ((1.0 - v71) * *v58 + *(v58 - 4) * v71) Y:(v73 / v74 * (v57 - (v67 * (1.0 - v71) + *(v58 - 2) * v71)) + (v56 - (v68 * (1.0 - v71) + *(v58 - 3) * v71)) * (v72 / v74)) * -3000.0];
   }
 
   else
   {
-    v20 = a3;
+    neutralCopy = neutral;
   }
 
-  self->inputNeutral = v20;
+  self->inputNeutral = neutralCopy;
 }
 
 - (id)outputImage

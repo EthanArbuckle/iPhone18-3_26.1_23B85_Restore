@@ -21,8 +21,8 @@
   HasInternalUI = PFOSVariantHasInternalUI();
   if ((HasInternalUI & 1) == 0)
   {
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v3 = [v5 BOOLForKey:@"photosChallengeProfileEnabled"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v3 = [standardUserDefaults BOOLForKey:@"photosChallengeProfileEnabled"];
   }
 
   [(PXForYouSettings *)self setShowSurveyQuestions:v3];
@@ -51,13 +51,13 @@
 + (id)settingsControllerModule
 {
   v79[12] = *MEMORY[0x1E69E9840];
-  v72 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v73 = [v72 photoLibraryURL];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  photoLibraryURL = [px_deprecated_appPhotoLibrary photoLibraryURL];
   v70 = MEMORY[0x1E69C6638];
   v68 = [MEMORY[0x1E69C66A8] rowWithTitle:@"Show Memories" valueKeyPath:@"showMemories"];
   v79[0] = v68;
   v2 = MEMORY[0x1E69C66A8];
-  v66 = [MEMORY[0x1E696AE18] predicateWithValue:{objc_msgSend(MEMORY[0x1E69BE6A8], "sharedStreamsEnabledForPhotoLibraryURL:", v73)}];
+  v66 = [MEMORY[0x1E696AE18] predicateWithValue:{objc_msgSend(MEMORY[0x1E69BE6A8], "sharedStreamsEnabledForPhotoLibraryURL:", photoLibraryURL)}];
   v63 = [v2 px_rowWithTitle:@"Show Shared Album Activity" valueKeyPath:@"showSharedAlbumActivity" condition:v66];
   v79[1] = v63;
   v61 = [MEMORY[0x1E69C66A8] rowWithTitle:@"Show CMM Invitations" valueKeyPath:@"showCMMInvitations"];
@@ -114,11 +114,11 @@
   v67 = [MEMORY[0x1E69C66A8] rowWithTitle:@"Use Mock Data" valueKeyPath:@"useMockData"];
   v77[0] = v67;
   v28 = MEMORY[0x1E69C66A8];
-  v62 = [MEMORY[0x1E696AE18] predicateWithValue:{objc_msgSend(MEMORY[0x1E69BE6A8], "sharedStreamsEnabledForPhotoLibraryURL:", v73)}];
+  v62 = [MEMORY[0x1E696AE18] predicateWithValue:{objc_msgSend(MEMORY[0x1E69BE6A8], "sharedStreamsEnabledForPhotoLibraryURL:", photoLibraryURL)}];
   v29 = [v28 px_rowWithTitle:@"Force Display Report Junk" valueKeyPath:@"forceDisplayReportJunk" condition:v62];
   v77[1] = v29;
   v30 = MEMORY[0x1E69C66A8];
-  v31 = [MEMORY[0x1E696AE18] predicateWithValue:{objc_msgSend(MEMORY[0x1E69BE6A8], "sharedStreamsEnabledForPhotoLibraryURL:", v73)}];
+  v31 = [MEMORY[0x1E696AE18] predicateWithValue:{objc_msgSend(MEMORY[0x1E69BE6A8], "sharedStreamsEnabledForPhotoLibraryURL:", photoLibraryURL)}];
   v32 = [v30 px_rowWithTitle:@"Force Portrait Bias" valueKeyPath:@"forcePortraitBias" condition:v31];
   v77[2] = v32;
   v33 = [MEMORY[0x1E69C66A8] rowWithTitle:@"Square Shared Album Activity" valueKeyPath:@"useSquareSharedAlbumActivity"];
@@ -151,14 +151,14 @@
   v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v75 count:1];
   v50 = [v48 sectionWithRows:v49];
 
-  v51 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v52 = MEMORY[0x1E69C6638];
   v74[0] = v71;
   v74[1] = v65;
   v74[2] = v69;
   v74[3] = v44;
   v74[4] = v50;
-  v74[5] = v51;
+  v74[5] = px_restoreDefaultsSection;
   v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:6];
   v54 = [v52 moduleWithTitle:@"For You" contents:v53];
 

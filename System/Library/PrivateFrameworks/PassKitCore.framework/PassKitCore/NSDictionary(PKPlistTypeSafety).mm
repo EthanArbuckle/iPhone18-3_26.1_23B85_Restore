@@ -25,7 +25,7 @@
 
 - (void)PKNumberForKey:()PKPlistTypeSafety
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -44,7 +44,7 @@
 
 - (id)PKDecimalNumberFromStringForKey:()PKPlistTypeSafety
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -61,7 +61,7 @@
 
 - (id)PKDecimalNumberForKey:()PKPlistTypeSafety
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -91,7 +91,7 @@
 
 - (id)PKDateForKey:()PKPlistTypeSafety
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -116,7 +116,7 @@ LABEL_7:
 
 - (id)PKDateComponentsForKey:()PKPlistTypeSafety
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -133,7 +133,7 @@ LABEL_7:
 
 - (void)PKStringForKey:()PKPlistTypeSafety
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -152,7 +152,7 @@ LABEL_7:
 
 - (id)PKURLForKey:()PKPlistTypeSafety
 {
-  v1 = [a1 PKStringForKey:?];
+  v1 = [self PKStringForKey:?];
   if (v1)
   {
     v2 = [MEMORY[0x1E695DFF8] URLWithString:v1];
@@ -168,7 +168,7 @@ LABEL_7:
 
 - (id)PKUUIDForKey:()PKPlistTypeSafety
 {
-  v1 = [a1 PKStringForKey:?];
+  v1 = [self PKStringForKey:?];
   if (v1)
   {
     v2 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v1];
@@ -184,7 +184,7 @@ LABEL_7:
 
 - (id)PKColorForKey:()PKPlistTypeSafety
 {
-  v1 = [a1 PKStringForKey:?];
+  v1 = [self PKStringForKey:?];
   if (v1)
   {
     v2 = [PKColor colorFromString:v1];
@@ -200,15 +200,15 @@ LABEL_7:
 
 - (uint64_t)PKIntegerForKey:()PKPlistTypeSafety
 {
-  v1 = [a1 PKNumberForKey:?];
-  v2 = [v1 integerValue];
+  v1 = [self PKNumberForKey:?];
+  integerValue = [v1 integerValue];
 
-  return v2;
+  return integerValue;
 }
 
 - (double)PKDoubleForKey:()PKPlistTypeSafety
 {
-  v1 = [a1 PKNumberForKey:?];
+  v1 = [self PKNumberForKey:?];
   [v1 doubleValue];
   v3 = v2;
 
@@ -217,15 +217,15 @@ LABEL_7:
 
 - (uint64_t)PKBoolForKey:()PKPlistTypeSafety
 {
-  v1 = [a1 PKNumberForKey:?];
-  v2 = [v1 BOOLValue];
+  v1 = [self PKNumberForKey:?];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)PKDataForKey:()PKPlistTypeSafety
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -244,7 +244,7 @@ LABEL_7:
 
 - (void)PKDictionaryForKey:()PKPlistTypeSafety
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -264,7 +264,7 @@ LABEL_7:
 - (id)PKDictionaryOfKeyClass:()PKPlistTypeSafety valueClass:ForKey:
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [a1 PKDictionaryForKey:a5];
+  v5 = [self PKDictionaryForKey:a5];
   v6 = v5;
   if (v5)
   {
@@ -315,7 +315,7 @@ LABEL_14:
 
 - (void)PKArrayForKey:()PKPlistTypeSafety
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -335,7 +335,7 @@ LABEL_14:
 - (id)PKArrayContaining:()PKPlistTypeSafety forKey:
 {
   v16 = *MEMORY[0x1E69E9840];
-  [a1 PKArrayForKey:a4];
+  [self PKArrayForKey:a4];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -380,7 +380,7 @@ LABEL_11:
 
 - (id)PKSetForKey:()PKPlistTypeSafety
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -405,7 +405,7 @@ LABEL_7:
 
 - (PKCurrencyAmount)PKCurrencyAmountForKey:()PKPlistTypeSafety
 {
-  v1 = [a1 PKDictionaryForKey:?];
+  v1 = [self PKDictionaryForKey:?];
   v2 = [[PKCurrencyAmount alloc] initWithDictionary:v1];
 
   return v2;
@@ -414,7 +414,7 @@ LABEL_7:
 - (id)PKSetContaining:()PKPlistTypeSafety forKey:
 {
   v16 = *MEMORY[0x1E69E9840];
-  [a1 PKSetForKey:a4];
+  [self PKSetForKey:a4];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;

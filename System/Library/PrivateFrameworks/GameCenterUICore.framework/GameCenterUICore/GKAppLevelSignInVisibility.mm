@@ -1,18 +1,18 @@
 @interface GKAppLevelSignInVisibility
 + (void)didShowBanner;
 + (void)didShowFullscreen;
-+ (void)fetchAppLevelVisibilityConstraintsWithHandler:(id)a3;
-+ (void)fetchConfigsWithHandler:(id)a3;
++ (void)fetchAppLevelVisibilityConstraintsWithHandler:(id)handler;
++ (void)fetchConfigsWithHandler:(id)handler;
 @end
 
 @implementation GKAppLevelSignInVisibility
 
-+ (void)fetchConfigsWithHandler:(id)a3
++ (void)fetchConfigsWithHandler:(id)handler
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-  v5 = [v4 utilityService];
+  handlerCopy = handler;
+  proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+  utilityService = [proxyForLocalPlayer utilityService];
   v6 = *MEMORY[0x277D0B9D8];
   v11[0] = *MEMORY[0x277D0BD68];
   v11[1] = v6;
@@ -22,9 +22,9 @@
   v9[1] = 3221225472;
   v9[2] = __54__GKAppLevelSignInVisibility_fetchConfigsWithHandler___block_invoke;
   v9[3] = &unk_27967F2B8;
-  v10 = v3;
-  v8 = v3;
-  [v5 getStoreBagValuesForKeys:v7 handler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [utilityService getStoreBagValuesForKeys:v7 handler:v9];
 }
 
 void __54__GKAppLevelSignInVisibility_fetchConfigsWithHandler___block_invoke(uint64_t a1, void *a2)
@@ -53,16 +53,16 @@ void __54__GKAppLevelSignInVisibility_fetchConfigsWithHandler___block_invoke(uin
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)fetchAppLevelVisibilityConstraintsWithHandler:(id)a3
++ (void)fetchAppLevelVisibilityConstraintsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __76__GKAppLevelSignInVisibility_fetchAppLevelVisibilityConstraintsWithHandler___block_invoke;
   v6[3] = &unk_27967F3A8;
-  v7 = v4;
-  v5 = v4;
-  [a1 fetchConfigsWithHandler:v6];
+  v7 = handlerCopy;
+  v5 = handlerCopy;
+  [self fetchConfigsWithHandler:v6];
 }
 
 void __76__GKAppLevelSignInVisibility_fetchAppLevelVisibilityConstraintsWithHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -166,20 +166,20 @@ void __76__GKAppLevelSignInVisibility_fetchAppLevelVisibilityConstraintsWithHand
 
 + (void)didShowBanner
 {
-  v2 = [MEMORY[0x277D0C228] shared];
-  [v2 didShowBanner];
+  mEMORY[0x277D0C228] = [MEMORY[0x277D0C228] shared];
+  [mEMORY[0x277D0C228] didShowBanner];
 
-  v3 = [MEMORY[0x277D0C228] sharedWithoutPersistence];
-  [v3 didShowFullscreen];
+  mEMORY[0x277D0C228]2 = [MEMORY[0x277D0C228] sharedWithoutPersistence];
+  [mEMORY[0x277D0C228]2 didShowFullscreen];
 }
 
 + (void)didShowFullscreen
 {
-  v2 = [MEMORY[0x277D0C228] shared];
-  [v2 didShowFullscreen];
+  mEMORY[0x277D0C228] = [MEMORY[0x277D0C228] shared];
+  [mEMORY[0x277D0C228] didShowFullscreen];
 
-  v3 = [MEMORY[0x277D0C228] sharedWithoutPersistence];
-  [v3 didShowFullscreen];
+  mEMORY[0x277D0C228]2 = [MEMORY[0x277D0C228] sharedWithoutPersistence];
+  [mEMORY[0x277D0C228]2 didShowFullscreen];
 }
 
 @end

@@ -1,38 +1,38 @@
 @interface MTIDSpan
 + (id)localCalendar;
-+ (id)spanForScheme:(id)a3 date:(id)a4 referenceDate:(id)a5;
-- (MTIDSpan)initWithScheme:(id)a3 date:(id)a4 referenceDate:(id)a5;
++ (id)spanForScheme:(id)scheme date:(id)date referenceDate:(id)referenceDate;
+- (MTIDSpan)initWithScheme:(id)scheme date:(id)date referenceDate:(id)referenceDate;
 @end
 
 @implementation MTIDSpan
 
-+ (id)spanForScheme:(id)a3 date:(id)a4 referenceDate:(id)a5
++ (id)spanForScheme:(id)scheme date:(id)date referenceDate:(id)referenceDate
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[MTIDSpan alloc] initWithScheme:v9 date:v8 referenceDate:v7];
+  referenceDateCopy = referenceDate;
+  dateCopy = date;
+  schemeCopy = scheme;
+  v10 = [[MTIDSpan alloc] initWithScheme:schemeCopy date:dateCopy referenceDate:referenceDateCopy];
 
   return v10;
 }
 
-- (MTIDSpan)initWithScheme:(id)a3 date:(id)a4 referenceDate:(id)a5
+- (MTIDSpan)initWithScheme:(id)scheme date:(id)date referenceDate:(id)referenceDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  schemeCopy = scheme;
+  dateCopy = date;
+  referenceDateCopy = referenceDate;
   v27.receiver = self;
   v27.super_class = MTIDSpan;
   v11 = [(MTIDSpan *)&v27 init];
   v12 = v11;
   if (v11)
   {
-    [(MTIDSpan *)v11 setReferenceDate:v10];
-    if ([v8 rotationSchedule] == 1)
+    [(MTIDSpan *)v11 setReferenceDate:referenceDateCopy];
+    if ([schemeCopy rotationSchedule] == 1)
     {
       v13 = +[MTIDSpan localCalendar];
-      v14 = [v13 components:28 fromDate:v9];
-      v15 = [v13 components:28 fromDate:v10];
+      v14 = [v13 components:28 fromDate:dateCopy];
+      v15 = [v13 components:28 fromDate:referenceDateCopy];
       v16 = [v13 components:16 fromDateComponents:v15 toDateComponents:v14 options:0];
       v12->_serialNumber = [v16 day];
       v17 = [v13 dateFromComponents:v14];
@@ -48,25 +48,25 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    if ([v8 lifespan] >= 1)
+    if ([schemeCopy lifespan] >= 1)
     {
-      if (v10)
+      if (referenceDateCopy)
       {
-        [v9 timeIntervalSinceDate:v10];
+        [dateCopy timeIntervalSinceDate:referenceDateCopy];
       }
 
       else
       {
-        [v9 timeIntervalSince1970];
+        [dateCopy timeIntervalSince1970];
       }
 
-      v22 = (v21 / [v8 lifespan]);
+      v22 = (v21 / [schemeCopy lifespan]);
       v12->_serialNumber = v22;
-      v23 = [v10 dateByAddingTimeInterval:{(objc_msgSend(v8, "lifespan") * v22)}];
+      v23 = [referenceDateCopy dateByAddingTimeInterval:{(objc_msgSend(schemeCopy, "lifespan") * v22)}];
       v24 = v12->_startDate;
       v12->_startDate = v23;
 
-      v25 = -[NSDate dateByAddingTimeInterval:](v12->_startDate, "dateByAddingTimeInterval:", [v8 lifespan]);
+      v25 = -[NSDate dateByAddingTimeInterval:](v12->_startDate, "dateByAddingTimeInterval:", [schemeCopy lifespan]);
       v13 = v12->_endDate;
       v12->_endDate = v25;
       goto LABEL_9;
@@ -87,8 +87,8 @@ LABEL_10:
 
   v2 = localCalendar_lock;
   objc_sync_enter(v2);
-  v3 = [MEMORY[0x277CBEBB0] localTimeZone];
-  if (!localCalendar_calendar || ([localCalendar_calendar timeZone], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v3, "isEqualToTimeZone:", v4), v4, (v5 & 1) == 0))
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  if (!localCalendar_calendar || ([localCalendar_calendar timeZone], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(localTimeZone, "isEqualToTimeZone:", v4), v4, (v5 & 1) == 0))
   {
     v6 = objc_alloc(MEMORY[0x277CBEA80]);
     v7 = [v6 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];

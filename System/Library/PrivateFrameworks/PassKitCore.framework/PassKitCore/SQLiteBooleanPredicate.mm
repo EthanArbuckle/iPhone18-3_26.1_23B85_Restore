@@ -1,7 +1,7 @@
 @interface SQLiteBooleanPredicate
 + (id)falsePredicate;
 + (id)truePredicate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
@@ -43,14 +43,14 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = SQLiteBooleanPredicate;
-  if ([(SQLitePredicate *)&v7 isEqual:v4])
+  if ([(SQLitePredicate *)&v7 isEqual:equalCopy])
   {
-    v5 = self->_BOOLeanValue == v4[8];
+    v5 = self->_BOOLeanValue == equalCopy[8];
   }
 
   else

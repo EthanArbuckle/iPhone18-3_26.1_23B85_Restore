@@ -1,18 +1,18 @@
 @interface FigDeferredTransactionReleaseTrigger
-- (FigDeferredTransactionReleaseTrigger)initWithReleaseBlock:(id)a3;
+- (FigDeferredTransactionReleaseTrigger)initWithReleaseBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation FigDeferredTransactionReleaseTrigger
 
-- (FigDeferredTransactionReleaseTrigger)initWithReleaseBlock:(id)a3
+- (FigDeferredTransactionReleaseTrigger)initWithReleaseBlock:(id)block
 {
   v6.receiver = self;
   v6.super_class = FigDeferredTransactionReleaseTrigger;
   v4 = [(FigDeferredTransactionReleaseTrigger *)&v6 init];
   if (v4)
   {
-    v4->_blockToCallOnRelease = _Block_copy(a3);
+    v4->_blockToCallOnRelease = _Block_copy(block);
   }
 
   return v4;

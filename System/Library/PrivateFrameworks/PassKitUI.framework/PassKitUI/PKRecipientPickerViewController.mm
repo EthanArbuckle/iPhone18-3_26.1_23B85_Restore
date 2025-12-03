@@ -1,80 +1,80 @@
 @interface PKRecipientPickerViewController
 - ($85E40A55691FE2F31975A98F57E3065D)pkui_navigationStatusBarStyleDescriptor;
-- (BOOL)_hasHeaderForSection:(unint64_t)a3;
+- (BOOL)_hasHeaderForSection:(unint64_t)section;
 - (BOOL)_isRecipientTextViewEmpty;
 - (BOOL)_showNearby;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (PKRecipientPickerViewController)initWithTransactionSourceCollection:(id)a3 familyCollection:(id)a4 peerPaymentSendFlowType:(int64_t)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (id)_recipientForIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (unint64_t)_composeAddressKindFromCounterpartHandle:(id)a3;
-- (void)_addRecipient:(id)a3;
-- (void)_addRecipientFromContactProperty:(id)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (PKRecipientPickerViewController)initWithTransactionSourceCollection:(id)collection familyCollection:(id)familyCollection peerPaymentSendFlowType:(int64_t)type;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (id)_recipientForIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (unint64_t)_composeAddressKindFromCounterpartHandle:(id)handle;
+- (void)_addRecipient:(id)recipient;
+- (void)_addRecipientFromContactProperty:(id)property;
 - (void)_cancelledAction;
 - (void)_clearRecipientTextView;
-- (void)_configureCell:(id)a3 withContact:(id)a4;
-- (void)_configureHeaderView:(id)a3 inSection:(unint64_t)a4;
-- (void)_keyboardWillChange:(id)a3;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
+- (void)_configureCell:(id)cell withContact:(id)contact;
+- (void)_configureHeaderView:(id)view inSection:(unint64_t)section;
+- (void)_keyboardWillChange:(id)change;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
 - (void)_nextAction;
 - (void)_removeAllRecipients;
 - (void)_showNearbyAmountEntry;
-- (void)_showNextScreenWithRecipient:(id)a3;
-- (void)_updateLayoutForKeyboardAction:(id)a3;
+- (void)_showNextScreenWithRecipient:(id)recipient;
+- (void)_updateLayoutForKeyboardAction:(id)action;
 - (void)_updateNextBarButtonItem;
-- (void)autocompleteResultsController:(id)a3 didRequestInfoAboutRecipient:(id)a4;
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5;
-- (void)autocompleteResultsController:(id)a3 tintColorForRecipient:(id)a4 completion:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)composeHeaderView:(id)a3 didChangeSize:(CGSize)a4;
-- (void)composeRecipientView:(id)a3 didAddRecipient:(id)a4;
-- (void)composeRecipientView:(id)a3 didFinishEnteringAddress:(id)a4;
-- (void)composeRecipientView:(id)a3 textDidChange:(id)a4;
-- (void)composeRecipientViewRequestAddRecipient:(id)a3;
-- (void)consumeResults:(id)a3 taskID:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4;
+- (void)autocompleteResultsController:(id)controller didRequestInfoAboutRecipient:(id)recipient;
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index;
+- (void)autocompleteResultsController:(id)controller tintColorForRecipient:(id)recipient completion:(id)completion;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)composeHeaderView:(id)view didChangeSize:(CGSize)size;
+- (void)composeRecipientView:(id)view didAddRecipient:(id)recipient;
+- (void)composeRecipientView:(id)view didFinishEnteringAddress:(id)address;
+- (void)composeRecipientView:(id)view textDidChange:(id)change;
+- (void)composeRecipientViewRequestAddRecipient:(id)recipient;
+- (void)consumeResults:(id)results taskID:(id)d;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property;
 - (void)dealloc;
-- (void)finishedTaskWithID:(id)a3;
+- (void)finishedTaskWithID:(id)d;
 - (void)loadView;
-- (void)setPerformingAction:(BOOL)a3;
+- (void)setPerformingAction:(BOOL)action;
 - (void)setUpNavigationBar;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKRecipientPickerViewController
 
-- (PKRecipientPickerViewController)initWithTransactionSourceCollection:(id)a3 familyCollection:(id)a4 peerPaymentSendFlowType:(int64_t)a5
+- (PKRecipientPickerViewController)initWithTransactionSourceCollection:(id)collection familyCollection:(id)familyCollection peerPaymentSendFlowType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  collectionCopy = collection;
+  familyCollectionCopy = familyCollection;
   v74.receiver = self;
   v74.super_class = PKRecipientPickerViewController;
   v11 = [(PKRecipientPickerViewController *)&v74 init];
   v12 = v11;
   if (v11)
   {
-    v73 = v10;
-    objc_storeStrong(&v11->_transactionSourceCollection, a3);
-    objc_storeStrong(&v12->_familyCollection, a4);
-    v12->_peerPaymentSendFlowType = a5;
-    if (a5 == 2)
+    v73 = familyCollectionCopy;
+    objc_storeStrong(&v11->_transactionSourceCollection, collection);
+    objc_storeStrong(&v12->_familyCollection, familyCollection);
+    v12->_peerPaymentSendFlowType = type;
+    if (type == 2)
     {
       v13 = PKLocalizedPeerPaymentRecurringString(&cfstr_RecipientPicke.isa);
     }
 
     else
     {
-      if (a5 != 1)
+      if (type != 1)
       {
         goto LABEL_7;
       }
@@ -86,9 +86,9 @@
     v12->_title = v13;
 
 LABEL_7:
-    v15 = [MEMORY[0x1E69B8740] defaultContactResolver];
+    defaultContactResolver = [MEMORY[0x1E69B8740] defaultContactResolver];
     contactResolver = v12->_contactResolver;
-    v12->_contactResolver = v15;
+    v12->_contactResolver = defaultContactResolver;
 
     currentTaskID = v12->_currentTaskID;
     v12->_currentTaskID = 0;
@@ -115,12 +115,12 @@ LABEL_7:
     v26 = +[PKPeerPaymentTheme secondaryButtonTextColor];
     [(CNComposeRecipientTextView *)v25 setTintColor:v26];
 
-    v27 = [(CNComposeRecipientTextView *)v12->_recipientTextView textView];
+    textView = [(CNComposeRecipientTextView *)v12->_recipientTextView textView];
     v28 = +[PKPeerPaymentTheme primaryTextColor];
-    [v27 setTintColor:v28];
+    [textView setTintColor:v28];
 
-    v72 = v27;
-    [v27 setKeyboardAppearance:1];
+    v72 = textView;
+    [textView setKeyboardAppearance:1];
     v29 = 0.0;
     if (PKIsMac())
     {
@@ -139,8 +139,8 @@ LABEL_7:
 LABEL_13:
         [(CNComposeRecipientTextView *)v12->_recipientTextView setShowGlassBackground:1];
         [(CNComposeRecipientTextView *)v12->_recipientTextView setOverrideContentMargins:v32, v30, v29, v31];
-        v33 = [(CNComposeRecipientTextView *)v12->_recipientTextView textView];
-        [v33 setReturnKeyType:11];
+        textView2 = [(CNComposeRecipientTextView *)v12->_recipientTextView textView];
+        [textView2 setReturnKeyType:11];
 
         [(CNComposeRecipientTextView *)v12->_recipientTextView setAccessibilityIdentifier:*MEMORY[0x1E69B9B18]];
         v34 = objc_alloc_init(_PKAutocompleteResultsTableViewController);
@@ -169,7 +169,7 @@ LABEL_13:
 
         [(UICollectionView *)v12->_suggestionsView setDataSource:v12];
         [(UICollectionView *)v12->_suggestionsView setDelegate:v12];
-        v47 = [objc_alloc(MEMORY[0x1E69B8788]) initWithTransactionType:3 transactionSourceCollection:v9 paymentDataProvider:0];
+        v47 = [objc_alloc(MEMORY[0x1E69B8788]) initWithTransactionType:3 transactionSourceCollection:collectionCopy paymentDataProvider:0];
         transactionFetcher = v12->_transactionFetcher;
         v12->_transactionFetcher = v47;
 
@@ -190,41 +190,41 @@ LABEL_13:
         sampleNearbyHeaderView = v12->_sampleNearbyHeaderView;
         v12->_sampleNearbyHeaderView = v55;
 
-        v57 = [MEMORY[0x1E69B8EF8] sharedService];
-        v58 = [v57 context];
-        v59 = [v58 configuration];
-        [v59 contactFormatConfiguration];
-        v61 = v60 = v9;
+        mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+        context = [mEMORY[0x1E69B8EF8] context];
+        configuration = [context configuration];
+        [configuration contactFormatConfiguration];
+        v61 = v60 = collectionCopy;
 
         v62 = [objc_alloc(MEMORY[0x1E69B8730]) initWithConfiguration:v61];
         contactFormatValidator = v12->_contactFormatValidator;
         v12->_contactFormatValidator = v62;
 
-        v64 = [MEMORY[0x1E69B9020] sharedService];
-        v65 = [objc_alloc(MEMORY[0x1E69B8F28]) initWithPeerPaymentWebService:v64];
+        mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+        v65 = [objc_alloc(MEMORY[0x1E69B8F28]) initWithPeerPaymentWebService:mEMORY[0x1E69B9020]];
         peerPaymentController = v12->_peerPaymentController;
         v12->_peerPaymentController = v65;
 
-        v67 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v67 addObserver:v12 selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
-        [v67 addObserver:v12 selector:sel__keyboardWillChange_ name:*MEMORY[0x1E69DE068] object:0];
-        [v67 addObserver:v12 selector:sel__keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter addObserver:v12 selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+        [defaultCenter addObserver:v12 selector:sel__keyboardWillChange_ name:*MEMORY[0x1E69DE068] object:0];
+        [defaultCenter addObserver:v12 selector:sel__keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
         [(PKRecipientPickerViewController *)v12 setOverrideUserInterfaceStyle:2];
         [(PKRecipientPickerViewController *)v12 _generateSuggestions];
-        v68 = [MEMORY[0x1E69B9020] sharedService];
+        mEMORY[0x1E69B9020]2 = [MEMORY[0x1E69B9020] sharedService];
         v69 = objc_alloc_init(MEMORY[0x1E69B8F40]);
         [v69 setEndpoint:5];
         [v69 setQuoteRequestDestination:1];
         [v69 setMessagesContext:1];
-        [v68 prewarmDeviceScoreForAttributes:v69];
+        [mEMORY[0x1E69B9020]2 prewarmDeviceScoreForAttributes:v69];
         v70 = objc_alloc_init(MEMORY[0x1E69B8F40]);
         [v70 setEndpoint:3];
         [v70 setQuoteRequestDestination:1];
         [v70 setMessagesContext:1];
-        [v68 prewarmDeviceScoreForAttributes:v70];
+        [mEMORY[0x1E69B9020]2 prewarmDeviceScoreForAttributes:v70];
 
-        v9 = v60;
-        v10 = v73;
+        collectionCopy = v60;
+        familyCollectionCopy = v73;
         goto LABEL_14;
       }
 
@@ -243,45 +243,45 @@ LABEL_14:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E69B9020] sharedService];
+  mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
   v4 = objc_alloc_init(MEMORY[0x1E69B8F40]);
   [v4 setEndpoint:5];
   [v4 setQuoteRequestDestination:1];
   [v4 setMessagesContext:1];
-  [v3 unloadDeviceScoreForAttributes:v4];
+  [mEMORY[0x1E69B9020] unloadDeviceScoreForAttributes:v4];
   v5 = objc_alloc_init(MEMORY[0x1E69B8F40]);
   [v5 setEndpoint:3];
   [v5 setQuoteRequestDestination:1];
   [v5 setMessagesContext:1];
-  [v3 unloadDeviceScoreForAttributes:v5];
+  [mEMORY[0x1E69B9020] unloadDeviceScoreForAttributes:v5];
 
   v6.receiver = self;
   v6.super_class = PKRecipientPickerViewController;
   [(PKRecipientPickerViewController *)&v6 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = PKRecipientPickerViewController;
-  [(PKRecipientPickerViewController *)&v7 viewWillAppear:a3];
+  [(PKRecipientPickerViewController *)&v7 viewWillAppear:appear];
   [(PKRecipientPickerViewController *)self setUpNavigationBar];
-  v4 = [(CNComposeRecipientTextView *)self->_recipientTextView text];
-  v5 = [v4 isEqualToString:self->_currentRecipientText];
+  text = [(CNComposeRecipientTextView *)self->_recipientTextView text];
+  v5 = [text isEqualToString:self->_currentRecipientText];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(CNComposeRecipientTextView *)self->_recipientTextView textView];
-    [v6 setText:self->_currentRecipientText];
+    textView = [(CNComposeRecipientTextView *)self->_recipientTextView textView];
+    [textView setText:self->_currentRecipientText];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v14[4] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = PKRecipientPickerViewController;
-  [(PKRecipientPickerViewController *)&v12 viewDidAppear:a3];
+  [(PKRecipientPickerViewController *)&v12 viewDidAppear:appear];
   [(CNComposeRecipientTextView *)self->_recipientTextView becomeFirstResponder];
   if (self->_peerPaymentSendFlowType == 1)
   {
@@ -305,12 +305,12 @@ LABEL_14:
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v14[4] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = PKRecipientPickerViewController;
-  [(PKRecipientPickerViewController *)&v12 viewDidDisappear:a3];
+  [(PKRecipientPickerViewController *)&v12 viewDidDisappear:disappear];
   if (self->_peerPaymentSendFlowType == 1)
   {
     v4 = MEMORY[0x1E69B8540];
@@ -338,27 +338,27 @@ LABEL_14:
   v19.receiver = self;
   v19.super_class = PKRecipientPickerViewController;
   [(PKRecipientPickerViewController *)&v19 loadView];
-  v3 = [(PKRecipientPickerViewController *)self view];
+  view = [(PKRecipientPickerViewController *)self view];
   v4 = +[PKPeerPaymentTheme backgroundColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
-  [v3 addSubview:self->_containerView];
+  [view addSubview:self->_containerView];
   recipientTextView = self->_recipientTextView;
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [(CNComposeRecipientTextView *)recipientTextView setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(CNComposeRecipientTextView *)recipientTextView setBackgroundColor:clearColor];
 
-  v7 = [(_PKAutocompleteResultsTableViewController *)self->_resultsViewController view];
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [v7 setBackgroundColor:v8];
+  view2 = [(_PKAutocompleteResultsTableViewController *)self->_resultsViewController view];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [view2 setBackgroundColor:clearColor2];
 
   [(UIView *)self->_containerView setPreservesSuperviewLayoutMargins:1];
   [(UIView *)self->_containerView addSubview:self->_recipientTextView];
-  [(UIView *)self->_containerView addSubview:v7];
+  [(UIView *)self->_containerView addSubview:view2];
   [(_PKAutocompleteResultsTableViewController *)self->_resultsViewController didMoveToParentViewController:self];
   [(PKRecipientPickerViewController *)self addChildViewController:self->_resultsViewController];
   suggestionsView = self->_suggestionsView;
-  v10 = [MEMORY[0x1E69DC888] clearColor];
-  [(UICollectionView *)suggestionsView setBackgroundColor:v10];
+  clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+  [(UICollectionView *)suggestionsView setBackgroundColor:clearColor3];
 
   [(UICollectionView *)self->_suggestionsView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKDashboardRecipientPickerSuggestionsThumbnailCellIdentifier"];
   v11 = self->_suggestionsView;
@@ -376,23 +376,23 @@ LABEL_14:
   }
 
   [(UICollectionView *)self->_suggestionsView setContentInset:8.0, v15, 8.0, v15];
-  v16 = [(PKRecipientPickerViewController *)self traitCollection];
-  v17 = [v16 userInterfaceIdiom];
+  traitCollection = [(PKRecipientPickerViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v17 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [(UICollectionView *)self->_suggestionsView setKeyboardDismissMode:1];
   }
 
   [(UIView *)self->_containerView addSubview:self->_suggestionsView];
-  v18 = [(PKRecipientPickerViewController *)self view];
-  [v18 setAccessibilityIdentifier:*MEMORY[0x1E69B9B20]];
+  view3 = [(PKRecipientPickerViewController *)self view];
+  [view3 setAccessibilityIdentifier:*MEMORY[0x1E69B9B20]];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(PKRecipientPickerViewController *)self view];
-  [v3 bounds];
+  view = [(PKRecipientPickerViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -418,11 +418,11 @@ LABEL_14:
   v23 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentWal_0.isa);
   [(CNComposeRecipientTextView *)v22 setLabel:v23];
 
-  v24 = [(CNComposeRecipientTextView *)self->_recipientTextView recipients];
-  v25 = [v24 count] != 0;
+  recipients = [(CNComposeRecipientTextView *)self->_recipientTextView recipients];
+  v25 = [recipients count] != 0;
 
   LOBYTE(v23) = [(PKRecipientPickerViewController *)self _isRecipientTextViewEmpty];
-  v26 = [(_PKAutocompleteResultsTableViewController *)self->_resultsViewController view];
+  view2 = [(_PKAutocompleteResultsTableViewController *)self->_resultsViewController view];
   [(UIView *)self->_containerView safeAreaInsets];
   v28 = v27;
   [(CNComposeRecipientTextView *)self->_recipientTextView frame];
@@ -435,8 +435,8 @@ LABEL_14:
   v39.origin.y = y;
   v39.size.width = width;
   v39.size.height = height;
-  [v26 setFrame:{v36, MaxY, v15, v28 + v17 - CGRectGetMaxY(v39)}];
-  [v26 setHidden:(v25 | v23) & 1];
+  [view2 setFrame:{v36, MaxY, v15, v28 + v17 - CGRectGetMaxY(v39)}];
+  [view2 setHidden:(v25 | v23) & 1];
   suggestionsView = self->_suggestionsView;
   v40.origin.x = x;
   v40.origin.y = y;
@@ -462,12 +462,12 @@ LABEL_14:
 - (void)setUpNavigationBar
 {
   [(PKRecipientPickerViewController *)self setTitle:self->_title];
-  v3 = [(PKRecipientPickerViewController *)self navigationController];
-  v4 = [v3 navigationBar];
+  navigationController = [(PKRecipientPickerViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
-  [v4 setOverrideUserInterfaceStyle:2];
-  v5 = [(PKRecipientPickerViewController *)self navigationItem];
-  [v5 setBackButtonDisplayMode:2];
+  [navigationBar setOverrideUserInterfaceStyle:2];
+  navigationItem = [(PKRecipientPickerViewController *)self navigationItem];
+  [navigationItem setBackButtonDisplayMode:2];
   v6 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentWal_1.isa);
   if (_UISolariumFeatureFlagEnabled())
   {
@@ -481,7 +481,7 @@ LABEL_14:
     v8 = [v7 actionWithHandler:&v14];
     v9 = objc_alloc(MEMORY[0x1E69DC708]);
     v10 = [v9 initWithBarButtonSystemItem:1 primaryAction:{v8, v14, v15, v16, v17}];
-    [v5 setLeftBarButtonItem:v10];
+    [navigationItem setLeftBarButtonItem:v10];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -494,13 +494,13 @@ LABEL_14:
     v12 = +[PKPeerPaymentTheme primaryNavigationTintColor];
     [v11 setTintColor:v12];
 
-    [v5 setRightBarButtonItem:v11];
+    [navigationItem setRightBarButtonItem:v11];
     [v11 setAccessibilityIdentifier:*MEMORY[0x1E69B9990]];
     [(PKRecipientPickerViewController *)self _updateNextBarButtonItem];
     v13 = +[PKPeerPaymentTheme secondaryButtonTextColor];
     [v10 setTintColor:v13];
 
-    [v5 setLeftBarButtonItem:v10];
+    [navigationItem setLeftBarButtonItem:v10];
   }
 
   [v10 setAccessibilityIdentifier:*MEMORY[0x1E69B9708]];
@@ -512,10 +512,10 @@ void __53__PKRecipientPickerViewController_setUpNavigationBar__block_invoke(uint
   [WeakRetained _cancelledAction];
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -561,14 +561,14 @@ BOOL __53__PKRecipientPickerViewController__keyboardWillShow___block_invoke(uint
   return !CGRectEqualToRect(*(*(a1 + 32) + 1040), v16);
 }
 
-- (void)_keyboardWillChange:(id)a3
+- (void)_keyboardWillChange:(id)change
 {
   if (self->_keyboardVisible)
   {
     v10 = v3;
     v11 = v4;
-    v6 = [a3 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x1E69DDFA0]];
+    userInfo = [change userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
     if (v7)
     {
@@ -603,7 +603,7 @@ BOOL __55__PKRecipientPickerViewController__keyboardWillChange___block_invoke(ui
   return !CGRectEqualToRect(*(*(a1 + 32) + 1040), v13);
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -629,17 +629,17 @@ BOOL __53__PKRecipientPickerViewController__keyboardWillHide___block_invoke(uint
   return !CGRectEqualToRect(*&v3, v8);
 }
 
-- (void)_updateLayoutForKeyboardAction:(id)a3
+- (void)_updateLayoutForKeyboardAction:(id)action
 {
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
-    v5 = [(PKRecipientPickerViewController *)self viewIfLoaded];
-    v6 = v5;
-    if (v5)
+    viewIfLoaded = [(PKRecipientPickerViewController *)self viewIfLoaded];
+    v6 = viewIfLoaded;
+    if (viewIfLoaded)
     {
-      [v5 layoutIfNeeded];
-      if (v4[2](v4))
+      [viewIfLoaded layoutIfNeeded];
+      if (actionCopy[2](actionCopy))
       {
         [v6 setNeedsLayout];
         v7 = MEMORY[0x1E69DD250];
@@ -654,24 +654,24 @@ BOOL __53__PKRecipientPickerViewController__keyboardWillHide___block_invoke(uint
 
     else
     {
-      v4[2](v4);
+      actionCopy[2](actionCopy);
     }
   }
 }
 
 - (void)_nextAction
 {
-  v3 = [(CNComposeRecipientTextView *)self->_recipientTextView recipients];
-  v4 = [v3 firstObject];
+  recipients = [(CNComposeRecipientTextView *)self->_recipientTextView recipients];
+  firstObject = [recipients firstObject];
 
-  [(PKRecipientPickerViewController *)self _showNextScreenWithRecipient:v4];
+  [(PKRecipientPickerViewController *)self _showNextScreenWithRecipient:firstObject];
 }
 
 - (void)_cancelledAction
 {
   v14[5] = *MEMORY[0x1E69E9840];
-  v3 = [(PKRecipientPickerViewController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PKRecipientPickerViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
   if (self->_peerPaymentSendFlowType == 1)
   {
@@ -702,39 +702,39 @@ BOOL __53__PKRecipientPickerViewController__keyboardWillHide___block_invoke(uint
 {
   if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
   {
-    v3 = [(PKRecipientPickerViewController *)self navigationItem];
-    v10 = [v3 rightBarButtonItem];
+    navigationItem = [(PKRecipientPickerViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-    v4 = [(CNComposeRecipientTextView *)self->_recipientTextView recipients];
-    v5 = [v4 count];
-    v6 = [(CNComposeRecipientTextView *)self->_recipientTextView maxRecipients];
+    recipients = [(CNComposeRecipientTextView *)self->_recipientTextView recipients];
+    v5 = [recipients count];
+    maxRecipients = [(CNComposeRecipientTextView *)self->_recipientTextView maxRecipients];
 
-    v7 = [(PKRecipientPickerViewController *)self _isRecipientTextViewEmpty];
-    v9 = v5 == v6 && v7 && !self->_performingAction;
-    [v10 setEnabled:v9];
+    _isRecipientTextViewEmpty = [(PKRecipientPickerViewController *)self _isRecipientTextViewEmpty];
+    v9 = v5 == maxRecipients && _isRecipientTextViewEmpty && !self->_performingAction;
+    [rightBarButtonItem setEnabled:v9];
   }
 }
 
-- (void)_addRecipientFromContactProperty:(id)a3
+- (void)_addRecipientFromContactProperty:(id)property
 {
-  v13 = a3;
-  v4 = [v13 contact];
-  v5 = [v13 value];
+  propertyCopy = property;
+  contact = [propertyCopy contact];
+  value = [propertyCopy value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v7 = [v13 value];
-  v8 = v7;
+  value2 = [propertyCopy value];
+  stringValue = value2;
   if (isKindOfClass)
   {
     v9 = 0;
-    if (!v7)
+    if (!value2)
     {
       goto LABEL_7;
     }
 
 LABEL_6:
-    v12 = [objc_alloc(MEMORY[0x1E6996408]) initWithContact:v4 address:v8 kind:v9];
+    v12 = [objc_alloc(MEMORY[0x1E6996408]) initWithContact:contact address:stringValue kind:v9];
     [(PKRecipientPickerViewController *)self _addRecipient:v12];
 
     goto LABEL_7;
@@ -745,11 +745,11 @@ LABEL_6:
 
   if (v10)
   {
-    v11 = [v13 value];
-    v8 = [v11 stringValue];
+    value3 = [propertyCopy value];
+    stringValue = [value3 stringValue];
 
     v9 = 1;
-    if (v8)
+    if (stringValue)
     {
       goto LABEL_6;
     }
@@ -758,16 +758,16 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_addRecipient:(id)a3
+- (void)_addRecipient:(id)recipient
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recipientCopy = recipient;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CNComposeRecipientTextView *)self->_recipientTextView recipients];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  recipients = [(CNComposeRecipientTextView *)self->_recipientTextView recipients];
+  v6 = [recipients countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -778,12 +778,12 @@ LABEL_3:
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(recipients);
       }
 
-      v10 = [*(*(&v13 + 1) + 8 * v9) address];
-      v11 = [v4 address];
-      v12 = [v10 caseInsensitiveCompare:v11];
+      address = [*(*(&v13 + 1) + 8 * v9) address];
+      address2 = [recipientCopy address];
+      v12 = [address caseInsensitiveCompare:address2];
 
       if (!v12)
       {
@@ -792,7 +792,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [recipients countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -807,20 +807,20 @@ LABEL_3:
   {
 LABEL_9:
 
-    [(CNComposeRecipientTextView *)self->_recipientTextView addRecipient:v4];
-    v5 = [(PKRecipientPickerViewController *)self view];
-    [v5 setNeedsLayout];
+    [(CNComposeRecipientTextView *)self->_recipientTextView addRecipient:recipientCopy];
+    recipients = [(PKRecipientPickerViewController *)self view];
+    [recipients setNeedsLayout];
   }
 }
 
 - (BOOL)_isRecipientTextViewEmpty
 {
-  v2 = [(CNComposeRecipientTextView *)self->_recipientTextView text];
-  v3 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  text = [(CNComposeRecipientTextView *)self->_recipientTextView text];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v4 = [text stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  LOBYTE(v2) = [v4 length] == 0;
-  return v2;
+  LOBYTE(text) = [v4 length] == 0;
+  return text;
 }
 
 - (void)_clearRecipientTextView
@@ -833,19 +833,19 @@ LABEL_9:
   [(CNComposeRecipientTextView *)recipientTextView clearText];
 }
 
-- (unint64_t)_composeAddressKindFromCounterpartHandle:(id)a3
+- (unint64_t)_composeAddressKindFromCounterpartHandle:(id)handle
 {
-  v4 = a3;
-  if ([v4 length])
+  handleCopy = handle;
+  if ([handleCopy length])
   {
-    if (([(PKContactFormatValidator *)self->_contactFormatValidator emailAddressIsValid:v4]& 1) != 0)
+    if (([(PKContactFormatValidator *)self->_contactFormatValidator emailAddressIsValid:handleCopy]& 1) != 0)
     {
       v5 = 0;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v4];
+      v6 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:handleCopy];
       if ([(PKContactFormatValidator *)self->_contactFormatValidator phoneNumberIsValid:v6 forCountryCode:0])
       {
         v5 = 1;
@@ -866,9 +866,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)_showNextScreenWithRecipient:(id)a3
+- (void)_showNextScreenWithRecipient:(id)recipient
 {
-  v4 = a3;
+  recipientCopy = recipient;
   if (!self->_performingAction)
   {
     [(PKRecipientPickerViewController *)self setPerformingAction:1];
@@ -884,7 +884,7 @@ LABEL_9:
 
     v6 = [[PKPeerPaymentRemoteMessagesComposer alloc] initWithPeerPaymentController:self->_peerPaymentController presentingViewController:self actionType:v5 sourceType:1];
     objc_initWeak(&location, self);
-    v7 = [v4 address];
+    address = [recipientCopy address];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __64__PKRecipientPickerViewController__showNextScreenWithRecipient___block_invoke;
@@ -892,9 +892,9 @@ LABEL_9:
     objc_copyWeak(&v13, &location);
     v8 = v6;
     v10 = v8;
-    v11 = v4;
-    v12 = self;
-    [(PKPeerPaymentRemoteMessagesComposer *)v8 validateRecipientWithAddress:v7 completion:v9];
+    v11 = recipientCopy;
+    selfCopy = self;
+    [(PKPeerPaymentRemoteMessagesComposer *)v8 validateRecipientWithAddress:address completion:v9];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -933,8 +933,8 @@ id __64__PKRecipientPickerViewController__showNextScreenWithRecipient___block_in
   if (_UISolariumFeatureFlagEnabled())
   {
     v3 = [[PKNearbyPeerPaymentAmountEntryViewController alloc] initWithInitialAmount:0 initialMemo:0];
-    v4 = [(PKRecipientPickerViewController *)self navigationController];
-    [v4 pushViewController:v3 animated:1];
+    navigationController = [(PKRecipientPickerViewController *)self navigationController];
+    [navigationController pushViewController:v3 animated:1];
   }
 
   else
@@ -997,16 +997,16 @@ void __57__PKRecipientPickerViewController__showNearbyAmountEntry__block_invoke(
   }
 }
 
-- (void)setPerformingAction:(BOOL)a3
+- (void)setPerformingAction:(BOOL)action
 {
-  if (self->_performingAction != a3)
+  if (self->_performingAction != action)
   {
-    self->_performingAction = a3;
+    self->_performingAction = action;
     [(PKRecipientPickerViewController *)self _updateNextBarButtonItem];
   }
 }
 
-- (void)composeRecipientView:(id)a3 didAddRecipient:(id)a4
+- (void)composeRecipientView:(id)view didAddRecipient:(id)recipient
 {
   if (_UISolariumFeatureFlagEnabled())
   {
@@ -1022,13 +1022,13 @@ void __57__PKRecipientPickerViewController__showNearbyAmountEntry__block_invoke(
   }
 }
 
-- (void)composeRecipientView:(id)a3 didFinishEnteringAddress:(id)a4
+- (void)composeRecipientView:(id)view didFinishEnteringAddress:(id)address
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AB08];
-  v6 = a4;
-  v7 = [v5 whitespaceCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  addressCopy = address;
+  whitespaceCharacterSet = [v5 whitespaceCharacterSet];
+  v8 = [addressCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if (![v8 length])
   {
@@ -1071,10 +1071,10 @@ LABEL_7:
 LABEL_11:
 }
 
-- (void)composeRecipientView:(id)a3 textDidChange:(id)a4
+- (void)composeRecipientView:(id)view textDidChange:(id)change
 {
-  v17 = a3;
-  v6 = a4;
+  viewCopy = view;
+  changeCopy = change;
   if (self->_currentTaskID)
   {
     [(CNAutocompleteSearchManager *)self->_searchManager cancelTaskWithID:?];
@@ -1085,19 +1085,19 @@ LABEL_11:
   autocompleteResults = self->_autocompleteResults;
   self->_autocompleteResults = 0;
 
-  v9 = [(CNComposeRecipientTextView *)self->_recipientTextView recipients];
-  v10 = [v9 count];
+  recipients = [(CNComposeRecipientTextView *)self->_recipientTextView recipients];
+  v10 = [recipients count];
 
-  if (v10 == -[CNComposeRecipientTextView maxRecipients](self->_recipientTextView, "maxRecipients") && [v6 length])
+  if (v10 == -[CNComposeRecipientTextView maxRecipients](self->_recipientTextView, "maxRecipients") && [changeCopy length])
   {
     [(PKRecipientPickerViewController *)self _clearRecipientTextView];
   }
 
   else
   {
-    v11 = [(CNComposeRecipientTextView *)self->_recipientTextView text];
+    text = [(CNComposeRecipientTextView *)self->_recipientTextView text];
     currentRecipientText = self->_currentRecipientText;
-    self->_currentRecipientText = v11;
+    self->_currentRecipientText = text;
 
     [(PKRecipientPickerViewController *)self _updateNextBarButtonItem];
     if ([(PKRecipientPickerViewController *)self _isRecipientTextViewEmpty])
@@ -1109,17 +1109,17 @@ LABEL_11:
       }
     }
 
-    v13 = [(PKRecipientPickerViewController *)self view];
-    [v13 setNeedsLayout];
+    view = [(PKRecipientPickerViewController *)self view];
+    [view setNeedsLayout];
 
     v14 = objc_alloc_init(MEMORY[0x1E6996330]);
-    v15 = [(CNAutocompleteSearchManager *)self->_searchManager searchForText:v6 withAutocompleteFetchContext:v14 consumer:self];
+    v15 = [(CNAutocompleteSearchManager *)self->_searchManager searchForText:changeCopy withAutocompleteFetchContext:v14 consumer:self];
     v16 = self->_currentTaskID;
     self->_currentTaskID = v15;
   }
 }
 
-- (void)composeRecipientViewRequestAddRecipient:(id)a3
+- (void)composeRecipientViewRequestAddRecipient:(id)recipient
 {
   v7 = objc_alloc_init(getCNContactPickerViewControllerClass());
   [v7 setDelegate:self];
@@ -1138,12 +1138,12 @@ LABEL_11:
   [(PKRecipientPickerViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)composeHeaderView:(id)a3 didChangeSize:(CGSize)a4
+- (void)composeHeaderView:(id)view didChangeSize:(CGSize)size
 {
-  [(CNComposeRecipientTextView *)self->_recipientTextView frame:a3];
+  [(CNComposeRecipientTextView *)self->_recipientTextView frame:view];
   [(CNComposeRecipientTextView *)self->_recipientTextView setFrame:?];
-  v5 = [(PKRecipientPickerViewController *)self view];
-  [v5 setNeedsLayout];
+  view = [(PKRecipientPickerViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)_removeAllRecipients
@@ -1153,8 +1153,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(CNComposeRecipientTextView *)self->_recipientTextView recipients];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  recipients = [(CNComposeRecipientTextView *)self->_recipientTextView recipients];
+  v4 = [recipients countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1166,38 +1166,38 @@ LABEL_11:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(recipients);
         }
 
         [(CNComposeRecipientTextView *)self->_recipientTextView removeRecipient:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [recipients countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property
 {
-  v6 = a4;
-  v7 = a3;
+  propertyCopy = property;
+  pickerCopy = picker;
   [(PKRecipientPickerViewController *)self _removeAllRecipients];
-  [(PKRecipientPickerViewController *)self _addRecipientFromContactProperty:v6];
+  [(PKRecipientPickerViewController *)self _addRecipientFromContactProperty:propertyCopy];
 
-  [v7 dismissViewControllerAnimated:1 completion:0];
+  [pickerCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v6 = a4;
-  v7 = a3;
+  contactCopy = contact;
+  pickerCopy = picker;
   [(PKRecipientPickerViewController *)self _removeAllRecipients];
-  [v7 dismissViewControllerAnimated:1 completion:0];
+  [pickerCopy dismissViewControllerAnimated:1 completion:0];
 
-  v9 = PKComposeRecipientFromContact(v6);
+  v9 = PKComposeRecipientFromContact(contactCopy);
 
   v8 = v9;
   if (v9)
@@ -1207,41 +1207,41 @@ LABEL_11:
   }
 }
 
-- (void)consumeResults:(id)a3 taskID:(id)a4
+- (void)consumeResults:(id)results taskID:(id)d
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!self->_currentTaskID || [v6 isEqualToNumber:?])
+  resultsCopy = results;
+  dCopy = d;
+  v7 = dCopy;
+  if (!self->_currentTaskID || [dCopy isEqualToNumber:?])
   {
     autocompleteResults = self->_autocompleteResults;
     if (autocompleteResults)
     {
-      v9 = [(NSArray *)autocompleteResults arrayByAddingObjectsFromArray:v12];
+      v9 = [(NSArray *)autocompleteResults arrayByAddingObjectsFromArray:resultsCopy];
     }
 
     else
     {
-      v9 = v12;
+      v9 = resultsCopy;
     }
 
     v10 = self->_autocompleteResults;
     self->_autocompleteResults = v9;
 
     [(CNAutocompleteResultsTableViewController *)self->_resultsViewController setRecipients:self->_autocompleteResults];
-    v11 = [(PKRecipientPickerViewController *)self view];
-    [v11 setNeedsLayout];
+    view = [(PKRecipientPickerViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)finishedTaskWithID:(id)a3
+- (void)finishedTaskWithID:(id)d
 {
-  v5 = a3;
-  if ([v5 isEqualToNumber:self->_currentTaskID])
+  dCopy = d;
+  if ([dCopy isEqualToNumber:self->_currentTaskID])
   {
     if (!self->_autocompleteResults)
     {
-      [(PKRecipientPickerViewController *)self consumeResults:MEMORY[0x1E695E0F0] taskID:v5];
+      [(PKRecipientPickerViewController *)self consumeResults:MEMORY[0x1E695E0F0] taskID:dCopy];
     }
 
     currentTaskID = self->_currentTaskID;
@@ -1249,9 +1249,9 @@ LABEL_11:
   }
 }
 
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index
 {
-  v9 = a4;
+  recipientCopy = recipient;
   if (self->_currentTaskID)
   {
     [(CNAutocompleteSearchManager *)self->_searchManager cancelTaskWithID:?];
@@ -1261,36 +1261,36 @@ LABEL_11:
 
   [(PKRecipientPickerViewController *)self _clearRecipientTextView];
   [(CNComposeRecipientTextView *)self->_recipientTextView setAccessibilityIdentifier:@"AppleCash.RecipientPicker.TextView"];
-  [(PKRecipientPickerViewController *)self _addRecipient:v9];
+  [(PKRecipientPickerViewController *)self _addRecipient:recipientCopy];
   autocompleteResults = self->_autocompleteResults;
   self->_autocompleteResults = 0;
 
-  v8 = [(PKRecipientPickerViewController *)self view];
-  [v8 setNeedsLayout];
+  view = [(PKRecipientPickerViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)autocompleteResultsController:(id)a3 didRequestInfoAboutRecipient:(id)a4
+- (void)autocompleteResultsController:(id)controller didRequestInfoAboutRecipient:(id)recipient
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  recipientCopy = recipient;
   [(CNComposeRecipientTextView *)self->_recipientTextView clearText];
-  v6 = [v5 contact];
-  if (!v6)
+  contact = [recipientCopy contact];
+  if (!contact)
   {
-    v10 = [v5 address];
-    if (!v10)
+    address = [recipientCopy address];
+    if (!address)
     {
       v7 = 0;
       goto LABEL_13;
     }
 
     v11 = objc_alloc_init(MEMORY[0x1E695CF18]);
-    [v11 setNamePrefix:v10];
+    [v11 setNamePrefix:address];
     [v11 setContactType:0];
-    v12 = [v5 kind];
-    if (v12 == 1)
+    kind = [recipientCopy kind];
+    if (kind == 1)
     {
-      v13 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v10];
+      v13 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:address];
       v14 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:0 value:v13];
       v17 = v14;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
@@ -1299,7 +1299,7 @@ LABEL_11:
 
     else
     {
-      if (v12)
+      if (kind)
       {
 LABEL_12:
         v7 = [MEMORY[0x1E695D148] viewControllerForUnknownContact:v11];
@@ -1313,7 +1313,7 @@ LABEL_13:
         goto LABEL_3;
       }
 
-      v13 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:0 value:v10];
+      v13 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:0 value:address];
       v18[0] = v13;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
       [v11 setEmailAddresses:v14];
@@ -1322,7 +1322,7 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  v7 = [MEMORY[0x1E695D148] viewControllerForContact:v6];
+  v7 = [MEMORY[0x1E695D148] viewControllerForContact:contact];
   if (v7)
   {
 LABEL_3:
@@ -1332,27 +1332,27 @@ LABEL_3:
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
     [v7 setDisplayedPropertyKeys:v8];
 
-    v9 = [(PKRecipientPickerViewController *)self navigationController];
-    [v9 pushViewController:v7 animated:1];
+    navigationController = [(PKRecipientPickerViewController *)self navigationController];
+    [navigationController pushViewController:v7 animated:1];
   }
 
 LABEL_4:
 }
 
-- (void)autocompleteResultsController:(id)a3 tintColorForRecipient:(id)a4 completion:(id)a5
+- (void)autocompleteResultsController:(id)controller tintColorForRecipient:(id)recipient completion:(id)completion
 {
   v6 = MEMORY[0x1E69DC888];
-  v7 = a5;
-  v8 = [v6 labelColor];
-  (*(a5 + 2))(v7, v8);
+  completionCopy = completion;
+  labelColor = [v6 labelColor];
+  (*(completion + 2))(completionCopy, labelColor);
 }
 
 - (BOOL)_showNearby
 {
-  v3 = [MEMORY[0x1E69B9000] sharedInstance];
-  v4 = [v3 account];
+  mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
+  account = [mEMORY[0x1E69B9000] account];
 
-  if ([v4 supportsDeviceTap])
+  if ([account supportsDeviceTap])
   {
     v5 = self->_peerPaymentSendFlowType == 1;
   }
@@ -1654,22 +1654,22 @@ uint64_t __55__PKRecipientPickerViewController__generateSuggestions__block_invok
   return [v4 reloadData];
 }
 
-- (void)_configureCell:(id)a3 withContact:(id)a4
+- (void)_configureCell:(id)cell withContact:(id)contact
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 identifier];
-  [v5 setIdentifier:v7];
+  cellCopy = cell;
+  contactCopy = contact;
+  identifier = [contactCopy identifier];
+  [cellCopy setIdentifier:identifier];
 
-  [v5 setWantsCustomAppearance:1];
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [v5 setBackgroundColor:v8];
+  [cellCopy setWantsCustomAppearance:1];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [cellCopy setBackgroundColor:clearColor];
 
-  v9 = [v5 avatarView];
-  if (v6)
+  avatarView = [cellCopy avatarView];
+  if (contactCopy)
   {
-    v17[0] = v6;
+    v17[0] = contactCopy;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   }
 
@@ -1681,33 +1681,33 @@ uint64_t __55__PKRecipientPickerViewController__generateSuggestions__block_invok
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
   }
 
-  [v9 setContacts:v10];
-  [v9 frame];
-  [v9 setFrame:?];
-  [v5 showAvatarView:1];
-  v12 = [v6 emailAddresses];
-  v13 = [v12 firstObject];
-  v14 = [v13 value];
+  [avatarView setContacts:v10];
+  [avatarView frame];
+  [avatarView setFrame:?];
+  [cellCopy showAvatarView:1];
+  emailAddresses = [contactCopy emailAddresses];
+  firstObject = [emailAddresses firstObject];
+  value = [firstObject value];
 
-  v15 = [MEMORY[0x1E69B8F30] displayNameForCounterpartHandle:v14 contact:v6];
-  [v5 setTitle:v15];
+  v15 = [MEMORY[0x1E69B8F30] displayNameForCounterpartHandle:value contact:contactCopy];
+  [cellCopy setTitle:v15];
 }
 
-- (BOOL)_hasHeaderForSection:(unint64_t)a3
+- (BOOL)_hasHeaderForSection:(unint64_t)section
 {
-  if (a3 == 2)
+  if (section == 2)
   {
-    v5 = [(PKRecipientPickerViewController *)self _showRecentSuggestions]|| [(PKRecipientPickerViewController *)self _showFamilySuggestions];
-    return [(PKRecipientPickerViewController *)self _showNearby]&& v5;
+    _showFamilySuggestions = [(PKRecipientPickerViewController *)self _showRecentSuggestions]|| [(PKRecipientPickerViewController *)self _showFamilySuggestions];
+    return [(PKRecipientPickerViewController *)self _showNearby]&& _showFamilySuggestions;
   }
 
-  else if (a3 == 1)
+  else if (section == 1)
   {
 
     return [(PKRecipientPickerViewController *)self _showRecentSuggestions];
   }
 
-  else if (a3)
+  else if (section)
   {
     return 0;
   }
@@ -1719,16 +1719,16 @@ uint64_t __55__PKRecipientPickerViewController__generateSuggestions__block_invok
   }
 }
 
-- (void)_configureHeaderView:(id)a3 inSection:(unint64_t)a4
+- (void)_configureHeaderView:(id)view inSection:(unint64_t)section
 {
-  v8 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (section == 1)
   {
     v5 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentWal_2.isa);
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!section)
   {
     v5 = PKLocalizedPeerPaymentRecurringString(&cfstr_RecipientPicke_0.isa);
 LABEL_5:
@@ -1738,29 +1738,29 @@ LABEL_5:
 
   v6 = 0;
 LABEL_7:
-  [v8 setTitle:v6];
-  [v8 setTitleStyle:2];
-  v7 = [MEMORY[0x1E69DC888] labelColor];
-  [v8 setTitleColor:v7];
+  [viewCopy setTitle:v6];
+  [viewCopy setTitleStyle:2];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [viewCopy setTitleColor:labelColor];
 
-  [v8 setHorizontalInset:0.0];
+  [viewCopy setHorizontalInset:0.0];
 }
 
-- (id)_recipientForIndexPath:(id)a3
+- (id)_recipientForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  if (!v5)
+  pathCopy = path;
+  section = [pathCopy section];
+  if (!section)
   {
     v6 = &OBJC_IVAR___PKRecipientPickerViewController__suggestedFamilyRecipients;
     goto LABEL_5;
   }
 
-  if (v5 == 1)
+  if (section == 1)
   {
     v6 = &OBJC_IVAR___PKRecipientPickerViewController__suggestedRecipients;
 LABEL_5:
-    v7 = [*(&self->super.super.super.isa + *v6) objectAtIndex:{objc_msgSend(v4, "row")}];
+    v7 = [*(&self->super.super.super.isa + *v6) objectAtIndex:{objc_msgSend(pathCopy, "row")}];
     goto LABEL_7;
   }
 
@@ -1770,13 +1770,13 @@ LABEL_7:
   return v7;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
   v11 = *MEMORY[0x1E69DDC08];
-  v12 = v9;
+  v12 = kindCopy;
   v13 = v12;
   if (v11 == v12)
   {
@@ -1798,26 +1798,26 @@ LABEL_7:
     }
   }
 
-  v15 = [v10 section];
-  if (v15 != 2)
+  section = [pathCopy section];
+  if (section != 2)
   {
-    if (v15 == 1)
+    if (section == 1)
     {
-      v16 = [v8 dequeueReusableSupplementaryViewOfKind:v13 withReuseIdentifier:@"PKDashboardRecipientPickerSuggestionsTitleIdentifier" forIndexPath:v10];
-      v17 = self;
+      v16 = [viewCopy dequeueReusableSupplementaryViewOfKind:v13 withReuseIdentifier:@"PKDashboardRecipientPickerSuggestionsTitleIdentifier" forIndexPath:pathCopy];
+      selfCopy2 = self;
       v18 = v16;
       v19 = 1;
       goto LABEL_14;
     }
 
-    if (!v15)
+    if (!section)
     {
-      v16 = [v8 dequeueReusableSupplementaryViewOfKind:v13 withReuseIdentifier:@"PKDashboardRecipientPickerFamilySuggestionsTitleIdentifier" forIndexPath:v10];
-      v17 = self;
+      v16 = [viewCopy dequeueReusableSupplementaryViewOfKind:v13 withReuseIdentifier:@"PKDashboardRecipientPickerFamilySuggestionsTitleIdentifier" forIndexPath:pathCopy];
+      selfCopy2 = self;
       v18 = v16;
       v19 = 0;
 LABEL_14:
-      [(PKRecipientPickerViewController *)v17 _configureHeaderView:v18 inSection:v19];
+      [(PKRecipientPickerViewController *)selfCopy2 _configureHeaderView:v18 inSection:v19];
       goto LABEL_16;
     }
 
@@ -1826,24 +1826,24 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  v16 = [v8 dequeueReusableSupplementaryViewOfKind:v13 withReuseIdentifier:@"PKDashboardRecipientPickerNearbyHeaderIdentifier" forIndexPath:v10];
+  v16 = [viewCopy dequeueReusableSupplementaryViewOfKind:v13 withReuseIdentifier:@"PKDashboardRecipientPickerNearbyHeaderIdentifier" forIndexPath:pathCopy];
 LABEL_16:
 
   return v16;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 2)
+  viewCopy = view;
+  if (section == 2)
   {
-    v9 = [(PKRecipientPickerViewController *)self _showNearby];
+    _showNearby = [(PKRecipientPickerViewController *)self _showNearby];
     goto LABEL_21;
   }
 
-  if (a4 != 1)
+  if (section != 1)
   {
-    if (!a4 && [(PKRecipientPickerViewController *)self _showFamilySuggestions])
+    if (!section && [(PKRecipientPickerViewController *)self _showFamilySuggestions])
     {
       v7 = 1160;
       if ([(NSArray *)self->_suggestedFamilyRecipients count]<= 7)
@@ -1851,12 +1851,12 @@ LABEL_16:
 LABEL_6:
         suggestedRecipients = *(&self->super.super.super.isa + v7);
 LABEL_19:
-        v9 = [(NSArray *)suggestedRecipients count];
+        _showNearby = [(NSArray *)suggestedRecipients count];
         goto LABEL_21;
       }
 
 LABEL_20:
-      v9 = 8;
+      _showNearby = 8;
       goto LABEL_21;
     }
 
@@ -1866,19 +1866,19 @@ LABEL_20:
   if (![(PKRecipientPickerViewController *)self _showRecentSuggestions])
   {
 LABEL_12:
-    v9 = 0;
+    _showNearby = 0;
     goto LABEL_21;
   }
 
   if (![(PKRecipientPickerViewController *)self _showFamilySuggestions]|| [(NSArray *)self->_suggestedFamilyRecipients count]> 4)
   {
-    v10 = [(PKRecipientPickerViewController *)self _showNearby];
+    _showNearby2 = [(PKRecipientPickerViewController *)self _showNearby];
     v11 = [(NSArray *)self->_suggestedRecipients count];
-    if (v10)
+    if (_showNearby2)
     {
       if (v11 > 3)
       {
-        v9 = 4;
+        _showNearby = 4;
         goto LABEL_21;
       }
     }
@@ -1898,22 +1898,22 @@ LABEL_12:
     goto LABEL_6;
   }
 
-  v9 = 2;
+  _showNearby = 2;
 LABEL_21:
 
-  return v9;
+  return _showNearby;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 >= 2)
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section >= 2)
   {
-    if (v8 == 2)
+    if (section == 2)
     {
-      v9 = [v6 dequeueReusableCellWithReuseIdentifier:@"PKDashboardRecipientPickerNearbyCellIdentifier" forIndexPath:v7];
+      v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"PKDashboardRecipientPickerNearbyCellIdentifier" forIndexPath:pathCopy];
     }
 
     else
@@ -1924,23 +1924,23 @@ LABEL_21:
 
   else
   {
-    v9 = [v6 dequeueReusableCellWithReuseIdentifier:@"PKDashboardRecipientPickerSuggestionsThumbnailCellIdentifier" forIndexPath:v7];
-    v10 = [(PKRecipientPickerViewController *)self _recipientForIndexPath:v7];
-    v11 = [v10 contact];
+    v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"PKDashboardRecipientPickerSuggestionsThumbnailCellIdentifier" forIndexPath:pathCopy];
+    v10 = [(PKRecipientPickerViewController *)self _recipientForIndexPath:pathCopy];
+    contact = [v10 contact];
 
-    [(PKRecipientPickerViewController *)self _configureCell:v9 withContact:v11];
+    [(PKRecipientPickerViewController *)self _configureCell:v9 withContact:contact];
   }
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v7 = a4;
-  v5 = [v7 section];
-  if (v5 >= 2)
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section >= 2)
   {
-    if (v5 == 2)
+    if (section == 2)
     {
       [(PKRecipientPickerViewController *)self _showNearbyAmountEntry];
     }
@@ -1948,7 +1948,7 @@ LABEL_21:
 
   else
   {
-    v6 = [(PKRecipientPickerViewController *)self _recipientForIndexPath:v7];
+    v6 = [(PKRecipientPickerViewController *)self _recipientForIndexPath:pathCopy];
     if (v6)
     {
       [(PKRecipientPickerViewController *)self _addRecipient:v6];
@@ -1957,19 +1957,19 @@ LABEL_21:
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
-  [v7 bounds];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy bounds];
   v10 = 75.0;
   if ((v9 + -24.0) * 0.25 < 75.0)
   {
-    [v7 bounds];
+    [viewCopy bounds];
     v10 = (v11 + -24.0) * 0.25;
   }
 
-  if ([v8 section] == 2)
+  if ([pathCopy section] == 2)
   {
     p_sampleNearbyCell = &self->_sampleNearbyCell;
   }
@@ -1991,12 +1991,12 @@ LABEL_21:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v7 = a3;
-  if ([(PKRecipientPickerViewController *)self _hasHeaderForSection:a5])
+  viewCopy = view;
+  if ([(PKRecipientPickerViewController *)self _hasHeaderForSection:section])
   {
-    if (a5 == 2)
+    if (section == 2)
     {
       p_sampleNearbyHeaderView = &self->_sampleNearbyHeaderView;
     }
@@ -2004,11 +2004,11 @@ LABEL_21:
     else
     {
       p_sampleNearbyHeaderView = &self->_sampleHeaderView;
-      [(PKRecipientPickerViewController *)self _configureHeaderView:self->_sampleHeaderView inSection:a5];
+      [(PKRecipientPickerViewController *)self _configureHeaderView:self->_sampleHeaderView inSection:section];
     }
 
     v11 = *p_sampleNearbyHeaderView;
-    [v7 bounds];
+    [viewCopy bounds];
     [v11 sizeThatFits:{v12, 3.40282347e38}];
     v9 = v13;
     v10 = v14;
@@ -2027,7 +2027,7 @@ LABEL_21:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
   v5 = *MEMORY[0x1E695F060];
   v6 = *(MEMORY[0x1E695F060] + 8);
@@ -2036,16 +2036,16 @@ LABEL_21:
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   v5 = 12.0;
-  if (a5 == 2)
+  if (index == 2)
   {
     v5 = 24.0;
   }
 
   v6 = 0.0;
-  if (a5 != 2)
+  if (index != 2)
   {
     v6 = 24.0;
   }

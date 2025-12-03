@@ -12,11 +12,11 @@
 {
   v6.receiver = self;
   v6.super_class = PHSingleLineTableViewCell;
-  v3 = [(PHTableViewCell *)&v6 loadRootViewAndContentViews];
-  v4 = [(PHTableViewCell *)self titleLabel];
-  [v4 setNumberOfLines:0];
+  loadRootViewAndContentViews = [(PHTableViewCell *)&v6 loadRootViewAndContentViews];
+  titleLabel = [(PHTableViewCell *)self titleLabel];
+  [titleLabel setNumberOfLines:0];
 
-  return v3;
+  return loadRootViewAndContentViews;
 }
 
 - (void)updateFontsAndLayoutMetrics
@@ -25,17 +25,17 @@
   v10.super_class = PHSingleLineTableViewCell;
   [(PHTableViewCell *)&v10 updateFontsAndLayoutMetrics];
   v3 = +[UIFont telephonyUIBodyShortFont];
-  v4 = [(PHTableViewCell *)self subtitleLabel];
-  [v4 setFont:v3];
+  subtitleLabel = [(PHTableViewCell *)self subtitleLabel];
+  [subtitleLabel setFont:v3];
 
   v5 = NUIContainerViewLengthUseDefault;
-  v6 = [(PHTableViewCell *)self subtitleLabel];
-  [v6 setCustomBaselineOffsetFromBottom:v5];
+  subtitleLabel2 = [(PHTableViewCell *)self subtitleLabel];
+  [subtitleLabel2 setCustomBaselineOffsetFromBottom:v5];
 
   [(PHSingleLineTableViewCell *)self effectiveBaselineOffsetFromBottom];
   v8 = v7;
-  v9 = [(PHTableViewCell *)self subtitleLabel];
-  [v9 setCustomBaselineOffsetFromBottom:v8];
+  subtitleLabel3 = [(PHTableViewCell *)self subtitleLabel];
+  [subtitleLabel3 setCustomBaselineOffsetFromBottom:v8];
 }
 
 - (NSDirectionalEdgeInsets)rootViewLayoutMargins
@@ -48,8 +48,8 @@
   v8 = v7;
   [(PHSingleLineTableViewCell *)self titleLabelLastBaselineLayoutConstraintConstant];
   v10 = v9;
-  v11 = [(PHTableViewCell *)self titleLabel];
-  [v11 effectiveBaselineOffsetFromBottom];
+  titleLabel = [(PHTableViewCell *)self titleLabel];
+  [titleLabel effectiveBaselineOffsetFromBottom];
   v13 = v10 - v12;
 
   v14 = v4;
@@ -65,10 +65,10 @@
 
 - (double)titleLabelFirstBaselineLayoutConstraintConstant
 {
-  v2 = [(PHTableViewCell *)self titleLabel];
-  v3 = [v2 font];
-  v4 = [v3 fontDescriptor];
-  v5 = [v4 objectForKey:UIFontDescriptorTextStyleAttribute];
+  titleLabel = [(PHTableViewCell *)self titleLabel];
+  font = [titleLabel font];
+  fontDescriptor = [font fontDescriptor];
+  v5 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v5)
   {
@@ -87,10 +87,10 @@
 
 - (double)titleLabelLastBaselineLayoutConstraintConstant
 {
-  v2 = [(PHTableViewCell *)self titleLabel];
-  v3 = [v2 font];
-  v4 = [v3 fontDescriptor];
-  v5 = [v4 objectForKey:UIFontDescriptorTextStyleAttribute];
+  titleLabel = [(PHTableViewCell *)self titleLabel];
+  font = [titleLabel font];
+  fontDescriptor = [font fontDescriptor];
+  v5 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v5)
   {

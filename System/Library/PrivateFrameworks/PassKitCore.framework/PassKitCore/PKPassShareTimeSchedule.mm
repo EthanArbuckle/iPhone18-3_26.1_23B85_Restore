@@ -1,18 +1,18 @@
 @interface PKPassShareTimeSchedule
 + (id)emptySchedule;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPassShareTimeSchedule:(id)a3;
-- (PKPassShareTimeSchedule)initWithCoder:(id)a3;
-- (PKPassShareTimeSchedule)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPassShareTimeSchedule:(id)schedule;
+- (PKPassShareTimeSchedule)initWithCoder:(id)coder;
+- (PKPassShareTimeSchedule)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)intersect:(id)a3;
+- (id)intersect:(id)intersect;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDaysOfMonth:(id)a3;
-- (void)setDaysOfWeek:(id)a3;
-- (void)setHoursOfDay:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDaysOfMonth:(id)month;
+- (void)setDaysOfWeek:(id)week;
+- (void)setHoursOfDay:(id)day;
 @end
 
 @implementation PKPassShareTimeSchedule
@@ -26,10 +26,10 @@
   return v2;
 }
 
-- (PKPassShareTimeSchedule)initWithDictionary:(id)a3
+- (PKPassShareTimeSchedule)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v16.receiver = self;
     v16.super_class = PKPassShareTimeSchedule;
@@ -40,7 +40,7 @@
       aBlock[1] = 3221225472;
       aBlock[2] = __46__PKPassShareTimeSchedule_initWithDictionary___block_invoke;
       aBlock[3] = &unk_1E79D46B8;
-      v6 = v4;
+      v6 = dictionaryCopy;
       v15 = v6;
       v7 = _Block_copy(aBlock);
       v8 = v7[2](v7, @"hoursOfDay");
@@ -58,15 +58,15 @@
     }
 
     self = v5;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 id __46__PKPassShareTimeSchedule_initWithDictionary___block_invoke(uint64_t a1, void *a2)
@@ -159,46 +159,46 @@ LABEL_14:
   return v11;
 }
 
-- (void)setHoursOfDay:(id)a3
+- (void)setHoursOfDay:(id)day
 {
-  v4 = [a3 sortedArrayUsingComparator:&__block_literal_global_169_0];
+  v4 = [day sortedArrayUsingComparator:&__block_literal_global_169_0];
   hoursOfDay = self->_hoursOfDay;
   self->_hoursOfDay = v4;
 }
 
-- (void)setDaysOfWeek:(id)a3
+- (void)setDaysOfWeek:(id)week
 {
-  v4 = [a3 sortedArrayUsingComparator:&__block_literal_global_171];
+  v4 = [week sortedArrayUsingComparator:&__block_literal_global_171];
   daysOfWeek = self->_daysOfWeek;
   self->_daysOfWeek = v4;
 }
 
-- (void)setDaysOfMonth:(id)a3
+- (void)setDaysOfMonth:(id)month
 {
-  v4 = [a3 sortedArrayUsingComparator:&__block_literal_global_173_0];
+  v4 = [month sortedArrayUsingComparator:&__block_literal_global_173_0];
   daysOfMonth = self->_daysOfMonth;
   self->_daysOfMonth = v4;
 }
 
-- (id)intersect:(id)a3
+- (id)intersect:(id)intersect
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  intersectCopy = intersect;
+  v5 = intersectCopy;
+  if (intersectCopy)
   {
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __37__PKPassShareTimeSchedule_intersect___block_invoke;
     v19 = &unk_1E79D4700;
-    v20 = self;
-    v6 = v4;
+    selfCopy = self;
+    v6 = intersectCopy;
     v21 = v6;
     v7 = _Block_copy(&v16);
     v8 = v7[2](v7, &__block_literal_global_178);
     v9 = v8;
     if (v8 && ![v8 count])
     {
-      v14 = 0;
+      selfCopy2 = 0;
     }
 
     else
@@ -207,7 +207,7 @@ LABEL_14:
       v11 = v10;
       if (v10 && ![v10 count])
       {
-        v14 = 0;
+        selfCopy2 = 0;
       }
 
       else
@@ -216,17 +216,17 @@ LABEL_14:
         v13 = v12;
         if ((!v12 || [v12 count]) && self->_interval == v6[4] && self->_frequency == v6[5])
         {
-          v14 = objc_alloc_init(PKPassShareTimeSchedule);
-          [(PKPassShareTimeSchedule *)v14 setHoursOfDay:v9];
-          [(PKPassShareTimeSchedule *)v14 setDaysOfWeek:v11];
-          [(PKPassShareTimeSchedule *)v14 setDaysOfMonth:v13];
-          [(PKPassShareTimeSchedule *)v14 setInterval:self->_interval];
-          [(PKPassShareTimeSchedule *)v14 setFrequency:self->_frequency];
+          selfCopy2 = objc_alloc_init(PKPassShareTimeSchedule);
+          [(PKPassShareTimeSchedule *)selfCopy2 setHoursOfDay:v9];
+          [(PKPassShareTimeSchedule *)selfCopy2 setDaysOfWeek:v11];
+          [(PKPassShareTimeSchedule *)selfCopy2 setDaysOfMonth:v13];
+          [(PKPassShareTimeSchedule *)selfCopy2 setInterval:self->_interval];
+          [(PKPassShareTimeSchedule *)selfCopy2 setFrequency:self->_frequency];
         }
 
         else
         {
-          v14 = 0;
+          selfCopy2 = 0;
         }
       }
     }
@@ -234,10 +234,10 @@ LABEL_14:
 
   else
   {
-    v14 = self;
+    selfCopy2 = self;
   }
 
-  return v14;
+  return selfCopy2;
 }
 
 id __37__PKPassShareTimeSchedule_intersect___block_invoke(uint64_t a1, void *a2)
@@ -322,9 +322,9 @@ id __37__PKPassShareTimeSchedule_intersect___block_invoke(uint64_t a1, void *a2)
   return v12;
 }
 
-- (PKPassShareTimeSchedule)initWithCoder:(id)a3
+- (PKPassShareTimeSchedule)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = PKPassShareTimeSchedule;
   v5 = [(PKPassShareTimeSchedule *)&v18 init];
@@ -333,37 +333,37 @@ id __37__PKPassShareTimeSchedule_intersect___block_invoke(uint64_t a1, void *a2)
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"hoursOfDay"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"hoursOfDay"];
     hoursOfDay = v5->_hoursOfDay;
     v5->_hoursOfDay = v9;
 
-    v11 = [v4 decodeObjectOfClasses:v8 forKey:@"daysOfWeek"];
+    v11 = [coderCopy decodeObjectOfClasses:v8 forKey:@"daysOfWeek"];
     daysOfWeek = v5->_daysOfWeek;
     v5->_daysOfWeek = v11;
 
-    v13 = [v4 decodeObjectOfClasses:v8 forKey:@"daysOfMonth"];
+    v13 = [coderCopy decodeObjectOfClasses:v8 forKey:@"daysOfMonth"];
     daysOfMonth = v5->_daysOfMonth;
     v5->_daysOfMonth = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interval"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interval"];
     v5->_interval = [v15 unsignedIntegerValue];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"frequency"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"frequency"];
     v5->_frequency = PKPassShareTimeScheduleFrequencyFromString(v16);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   hoursOfDay = self->_hoursOfDay;
-  v8 = a3;
-  [v8 encodeObject:hoursOfDay forKey:@"hoursOfDay"];
-  [v8 encodeObject:self->_daysOfWeek forKey:@"daysOfWeek"];
-  [v8 encodeObject:self->_daysOfMonth forKey:@"daysOfMonth"];
+  coderCopy = coder;
+  [coderCopy encodeObject:hoursOfDay forKey:@"hoursOfDay"];
+  [coderCopy encodeObject:self->_daysOfWeek forKey:@"daysOfWeek"];
+  [coderCopy encodeObject:self->_daysOfMonth forKey:@"daysOfMonth"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_interval];
-  [v8 encodeObject:v5 forKey:@"interval"];
+  [coderCopy encodeObject:v5 forKey:@"interval"];
 
   v6 = self->_frequency - 1;
   if (v6 > 2)
@@ -376,7 +376,7 @@ id __37__PKPassShareTimeSchedule_intersect___block_invoke(uint64_t a1, void *a2)
     v7 = off_1E79D4758[v6];
   }
 
-  [v8 encodeObject:v7 forKey:@"frequency"];
+  [coderCopy encodeObject:v7 forKey:@"frequency"];
 }
 
 - (id)description
@@ -403,11 +403,11 @@ id __37__PKPassShareTimeSchedule_intersect___block_invoke(uint64_t a1, void *a2)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_hoursOfDay)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_daysOfWeek)
@@ -427,33 +427,33 @@ id __37__PKPassShareTimeSchedule_intersect___block_invoke(uint64_t a1, void *a2)
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassShareTimeSchedule *)self isEqualToPassShareTimeSchedule:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassShareTimeSchedule *)self isEqualToPassShareTimeSchedule:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPassShareTimeSchedule:(id)a3
+- (BOOL)isEqualToPassShareTimeSchedule:(id)schedule
 {
-  v4 = a3;
-  if (!v4)
+  scheduleCopy = schedule;
+  if (!scheduleCopy)
   {
     goto LABEL_22;
   }
 
   hoursOfDay = self->_hoursOfDay;
-  v6 = v4[1];
+  v6 = scheduleCopy[1];
   if (hoursOfDay)
   {
     v7 = v6 == 0;
@@ -478,7 +478,7 @@ id __37__PKPassShareTimeSchedule_intersect___block_invoke(uint64_t a1, void *a2)
   }
 
   daysOfWeek = self->_daysOfWeek;
-  v9 = v4[2];
+  v9 = scheduleCopy[2];
   if (daysOfWeek && v9)
   {
     if (([(NSArray *)daysOfWeek isEqual:?]& 1) == 0)
@@ -493,7 +493,7 @@ id __37__PKPassShareTimeSchedule_intersect___block_invoke(uint64_t a1, void *a2)
   }
 
   daysOfMonth = self->_daysOfMonth;
-  v11 = v4[3];
+  v11 = scheduleCopy[3];
   if (!daysOfMonth || !v11)
   {
     if (daysOfMonth == v11)
@@ -512,18 +512,18 @@ LABEL_22:
   }
 
 LABEL_20:
-  if (self->_interval != v4[4])
+  if (self->_interval != scheduleCopy[4])
   {
     goto LABEL_22;
   }
 
-  v12 = self->_frequency == v4[5];
+  v12 = self->_frequency == scheduleCopy[5];
 LABEL_23:
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PKPassShareTimeSchedule allocWithZone:?]];
   v5 = [(NSArray *)self->_hoursOfDay copy];

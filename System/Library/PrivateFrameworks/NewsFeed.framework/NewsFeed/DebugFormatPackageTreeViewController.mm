@@ -1,14 +1,14 @@
 @interface DebugFormatPackageTreeViewController
-- (_TtC8NewsFeed36DebugFormatPackageTreeViewController)initWithCoder:(id)a3;
-- (_TtC8NewsFeed36DebugFormatPackageTreeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8NewsFeed36DebugFormatPackageTreeViewController)initWithCoder:(id)coder;
+- (_TtC8NewsFeed36DebugFormatPackageTreeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation DebugFormatPackageTreeViewController
 
-- (_TtC8NewsFeed36DebugFormatPackageTreeViewController)initWithCoder:(id)a3
+- (_TtC8NewsFeed36DebugFormatPackageTreeViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8NewsFeed36DebugFormatPackageTreeViewController_styler;
   type metadata accessor for DebugFormatStyler();
@@ -23,28 +23,28 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7143C18();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
   v4 = v9.receiver;
-  [(DebugFormatPackageTreeViewController *)&v9 viewWillAppear:v3];
-  v5 = [v4 navigationController];
-  if (v5)
+  [(DebugFormatPackageTreeViewController *)&v9 viewWillAppear:appearCopy];
+  navigationController = [v4 navigationController];
+  if (navigationController)
   {
-    v6 = v5;
-    [v5 setToolbarHidden:0 animated:v3];
+    v6 = navigationController;
+    [navigationController setToolbarHidden:0 animated:appearCopy];
   }
 
-  v7 = [v4 navigationController];
-  v8 = [v7 toolbar];
+  navigationController2 = [v4 navigationController];
+  toolbar = [navigationController2 toolbar];
 
-  sub_1D71CD8F4(v8);
+  sub_1D71CD8F4(toolbar);
 }
 
 - (void)viewWillLayoutSubviews
@@ -54,21 +54,21 @@
   v2 = v15.receiver;
   [(DebugFormatPackageTreeViewController *)&v15 viewWillLayoutSubviews];
   v3 = sub_1D7142EE4();
-  v4 = [v3 view];
+  view = [v3 view];
 
-  if (v4)
+  if (view)
   {
-    v5 = [v2 view];
-    if (v5)
+    view2 = [v2 view];
+    if (view2)
     {
-      v6 = v5;
-      [v5 bounds];
+      v6 = view2;
+      [view2 bounds];
       v8 = v7;
       v10 = v9;
       v12 = v11;
       v14 = v13;
 
-      [v4 setFrame_];
+      [view setFrame_];
       return;
     }
   }
@@ -81,7 +81,7 @@
   __break(1u);
 }
 
-- (_TtC8NewsFeed36DebugFormatPackageTreeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8NewsFeed36DebugFormatPackageTreeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

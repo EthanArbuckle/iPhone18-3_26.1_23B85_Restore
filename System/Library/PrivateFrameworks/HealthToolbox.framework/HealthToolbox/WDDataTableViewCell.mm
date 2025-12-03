@@ -3,21 +3,21 @@
 - (CGRect)imageViewFrame;
 - (CGRect)textLabelFrame;
 - (UIFont)bodyFont;
-- (WDDataTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_contentSizeCategoryDidChange:(id)a3;
+- (WDDataTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setDateString:(id)a3;
-- (void)setDisplayValue:(id)a3;
+- (void)setDateString:(id)string;
+- (void)setDisplayValue:(id)value;
 @end
 
 @implementation WDDataTableViewCell
 
-- (WDDataTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WDDataTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v19.receiver = self;
   v19.super_class = WDDataTableViewCell;
-  v4 = [(WDDataTableViewCell *)&v19 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WDDataTableViewCell *)&v19 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D755E8]);
@@ -30,8 +30,8 @@
     v4->_textLabel = v7;
 
     [(UILabel *)v4->_textLabel setTextAlignment:4];
-    v9 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v4->_textLabel setTextColor:v9];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v4->_textLabel setTextColor:labelColor];
 
     [(UILabel *)v4->_textLabel setAdjustsFontSizeToFitWidth:1];
     v10 = 2 * ([(WDDataTableViewCell *)v4 effectiveUserInterfaceLayoutDirection]== 0);
@@ -40,29 +40,29 @@
     v4->_detailTextLabel = v11;
 
     [(UILabel *)v4->_detailTextLabel setTextAlignment:v10];
-    v13 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v4->_detailTextLabel setTextColor:v13];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v4->_detailTextLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v4->_detailTextLabel setNumberOfLines:0];
     [(UILabel *)v4->_detailTextLabel setAdjustsFontSizeToFitWidth:1];
-    v14 = [(WDDataTableViewCell *)v4 contentView];
-    [v14 addSubview:v4->_imageView];
+    contentView = [(WDDataTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_imageView];
 
     [(WDDataTableViewCell *)v4 imageViewFrame];
     [(UIImageView *)v4->_imageView setFrame:?];
-    v15 = [(WDDataTableViewCell *)v4 contentView];
-    [v15 addSubview:v4->_textLabel];
+    contentView2 = [(WDDataTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_textLabel];
 
     [(WDDataTableViewCell *)v4 textLabelFrame];
     [(UILabel *)v4->_textLabel setFrame:?];
-    v16 = [(WDDataTableViewCell *)v4 contentView];
-    [v16 addSubview:v4->_detailTextLabel];
+    contentView3 = [(WDDataTableViewCell *)v4 contentView];
+    [contentView3 addSubview:v4->_detailTextLabel];
 
     [(WDDataTableViewCell *)v4 detailTextLabelFrame];
     [(UILabel *)v4->_detailTextLabel setFrame:?];
     [(WDDataTableViewCell *)v4 _contentSizeCategoryDidChange:0];
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v4 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
   }
 
   return v4;
@@ -70,8 +70,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76810] object:0];
 
   v4.receiver = self;
   v4.super_class = WDDataTableViewCell;
@@ -108,19 +108,19 @@
 
 - (CGRect)imageViewFrame
 {
-  v3 = [(WDDataTableViewCell *)self imageView];
-  v4 = [v3 image];
+  imageView = [(WDDataTableViewCell *)self imageView];
+  image = [imageView image];
 
-  if (v4)
+  if (image)
   {
     if ([(WDDataTableViewCell *)self effectiveUserInterfaceLayoutDirection])
     {
-      v5 = [(WDDataTableViewCell *)self contentView];
-      [v5 bounds];
+      contentView = [(WDDataTableViewCell *)self contentView];
+      [contentView bounds];
       v7 = v6 + -24.0 + -16.0;
 
-      v8 = [(WDDataTableViewCell *)self contentView];
-      [v8 bounds];
+      contentView2 = [(WDDataTableViewCell *)self contentView];
+      [contentView2 bounds];
       v10 = round((v9 + -24.0) * 0.5);
 
       v11 = 24.0;
@@ -156,8 +156,8 @@
 
 - (CGRect)textLabelFrame
 {
-  v3 = [(WDDataTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(WDDataTableViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
 
   if ([(WDDataTableViewCell *)self effectiveUserInterfaceLayoutDirection])
@@ -167,8 +167,8 @@
     [(WDDataTableViewCell *)self imageViewFrame];
     if (CGRectIsEmpty(v21))
     {
-      v7 = [(WDDataTableViewCell *)self contentView];
-      [v7 bounds];
+      contentView2 = [(WDDataTableViewCell *)self contentView];
+      [contentView2 bounds];
       MinX = v8;
     }
 
@@ -186,11 +186,11 @@
   {
     [(WDDataTableViewCell *)self imageViewFrame];
     MaxX = CGRectGetMaxX(v22);
-    v11 = [(WDDataTableViewCell *)self imageView];
-    v12 = [v11 image];
+    imageView = [(WDDataTableViewCell *)self imageView];
+    image = [imageView image];
 
     v13 = 8.0;
-    if (!v12)
+    if (!image)
     {
       v13 = 16.0;
     }
@@ -214,20 +214,20 @@
 
 - (CGRect)detailTextLabelFrame
 {
-  v3 = [(WDDataTableViewCell *)self textLabel];
-  v4 = [(WDDataTableViewCell *)self contentView];
-  [v4 bounds];
-  [v3 sizeThatFits:{0.0, v5}];
+  textLabel = [(WDDataTableViewCell *)self textLabel];
+  contentView = [(WDDataTableViewCell *)self contentView];
+  [contentView bounds];
+  [textLabel sizeThatFits:{0.0, v5}];
   v7 = v6;
 
-  v8 = [(WDDataTableViewCell *)self detailTextLabel];
-  v9 = [(WDDataTableViewCell *)self contentView];
-  [v9 bounds];
-  [v8 sizeThatFits:{0.0, v10}];
+  detailTextLabel = [(WDDataTableViewCell *)self detailTextLabel];
+  contentView2 = [(WDDataTableViewCell *)self contentView];
+  [contentView2 bounds];
+  [detailTextLabel sizeThatFits:{0.0, v10}];
   v12 = v11;
 
-  v13 = [(WDDataTableViewCell *)self contentView];
-  [v13 bounds];
+  contentView3 = [(WDDataTableViewCell *)self contentView];
+  [contentView3 bounds];
   v15 = v14 + -32.0;
   [(WDDataTableViewCell *)self imageViewFrame];
   v17 = v15 - v16 + -8.0 + -4.0;
@@ -236,15 +236,15 @@
   if (v7 + v12 > v17)
   {
     v19 = v17 - v7;
-    v20 = [(WDDataTableViewCell *)self contentView];
-    [v20 bounds];
+    contentView4 = [(WDDataTableViewCell *)self contentView];
+    [contentView4 bounds];
     v22 = v21 / 3.0;
-    v23 = [(WDDataTableViewCell *)self contentView];
-    [v23 bounds];
+    contentView5 = [(WDDataTableViewCell *)self contentView];
+    [contentView5 bounds];
     v25 = v24;
 
-    v26 = [(WDDataTableViewCell *)self detailTextLabel];
-    [v26 sizeThatFits:{v22, v25}];
+    detailTextLabel2 = [(WDDataTableViewCell *)self detailTextLabel];
+    [detailTextLabel2 sizeThatFits:{v22, v25}];
     v12 = v27;
 
     if (v12 < v19)
@@ -253,15 +253,15 @@
     }
   }
 
-  v28 = [(WDDataTableViewCell *)self contentView];
-  [v28 bounds];
+  contentView6 = [(WDDataTableViewCell *)self contentView];
+  [contentView6 bounds];
   v30 = v29;
 
   v31 = 16.0;
   if (![(WDDataTableViewCell *)self effectiveUserInterfaceLayoutDirection])
   {
-    v32 = [(WDDataTableViewCell *)self contentView];
-    [v32 bounds];
+    contentView7 = [(WDDataTableViewCell *)self contentView];
+    [contentView7 bounds];
     v31 = v33 - v12 + -16.0;
   }
 
@@ -276,44 +276,44 @@
   return result;
 }
 
-- (void)setDisplayValue:(id)a3
+- (void)setDisplayValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  valueCopy = value;
+  v5 = [valueCopy copy];
   displayValue = self->_displayValue;
   self->_displayValue = v5;
 
-  v7 = [(WDDataTableViewCell *)self textLabel];
-  [v7 setText:v4];
+  textLabel = [(WDDataTableViewCell *)self textLabel];
+  [textLabel setText:valueCopy];
 
   [(WDDataTableViewCell *)self setNeedsLayout];
 }
 
-- (void)setDateString:(id)a3
+- (void)setDateString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  stringCopy = string;
+  v5 = [stringCopy copy];
   dateString = self->_dateString;
   self->_dateString = v5;
 
-  v7 = [(WDDataTableViewCell *)self detailTextLabel];
-  [v7 setText:v4];
+  detailTextLabel = [(WDDataTableViewCell *)self detailTextLabel];
+  [detailTextLabel setText:stringCopy];
 
   [(WDDataTableViewCell *)self setNeedsLayout];
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
   bodyFont = self->_bodyFont;
   self->_bodyFont = 0;
 
-  v5 = [(WDDataTableViewCell *)self bodyFont];
-  v6 = [(WDDataTableViewCell *)self textLabel];
-  [v6 setFont:v5];
+  bodyFont = [(WDDataTableViewCell *)self bodyFont];
+  textLabel = [(WDDataTableViewCell *)self textLabel];
+  [textLabel setFont:bodyFont];
 
-  v7 = [(WDDataTableViewCell *)self bodyFont];
-  v8 = [(WDDataTableViewCell *)self detailTextLabel];
-  [v8 setFont:v7];
+  bodyFont2 = [(WDDataTableViewCell *)self bodyFont];
+  detailTextLabel = [(WDDataTableViewCell *)self detailTextLabel];
+  [detailTextLabel setFont:bodyFont2];
 
   [(WDDataTableViewCell *)self setNeedsLayout];
 }

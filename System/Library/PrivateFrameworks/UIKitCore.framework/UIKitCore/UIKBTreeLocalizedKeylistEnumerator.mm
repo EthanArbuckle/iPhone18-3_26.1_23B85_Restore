@@ -1,5 +1,5 @@
 @interface UIKBTreeLocalizedKeylistEnumerator
-- (UIKBTreeLocalizedKeylistEnumerator)initWithKeyplaneCache:(id)a3;
+- (UIKBTreeLocalizedKeylistEnumerator)initWithKeyplaneCache:(id)cache;
 - (id)nextObject;
 @end
 
@@ -7,28 +7,28 @@
 
 - (id)nextObject
 {
-  v3 = [(NSEnumerator *)self->_nameEnum nextObject];
-  if (v3)
+  nextObject = [(NSEnumerator *)self->_nameEnum nextObject];
+  if (nextObject)
   {
-    v4 = v3;
+    v4 = nextObject;
     while (1)
     {
       if (![UIKBTree shouldSkipCacheString:v4])
       {
         v5 = [(NSDictionary *)self->_keyplaneCache objectForKey:v4];
-        v6 = [v5 lastObject];
-        v7 = [v6 localizationKey];
+        lastObject = [v5 lastObject];
+        localizationKey = [lastObject localizationKey];
 
-        if (v7)
+        if (localizationKey)
         {
           break;
         }
       }
 
-      v8 = [(NSEnumerator *)self->_nameEnum nextObject];
+      nextObject2 = [(NSEnumerator *)self->_nameEnum nextObject];
 
-      v4 = v8;
-      if (!v8)
+      v4 = nextObject2;
+      if (!nextObject2)
       {
         goto LABEL_6;
       }
@@ -46,19 +46,19 @@ LABEL_6:
   return v9;
 }
 
-- (UIKBTreeLocalizedKeylistEnumerator)initWithKeyplaneCache:(id)a3
+- (UIKBTreeLocalizedKeylistEnumerator)initWithKeyplaneCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v12.receiver = self;
   v12.super_class = UIKBTreeLocalizedKeylistEnumerator;
   v6 = [(UIKBTreeLocalizedKeylistEnumerator *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keyplaneCache, a3);
-    v8 = [(NSDictionary *)v7->_keyplaneCache keyEnumerator];
+    objc_storeStrong(&v6->_keyplaneCache, cache);
+    keyEnumerator = [(NSDictionary *)v7->_keyplaneCache keyEnumerator];
     nameEnum = v7->_nameEnum;
-    v7->_nameEnum = v8;
+    v7->_nameEnum = keyEnumerator;
 
     v10 = v7;
   }

@@ -1,72 +1,72 @@
 @interface BNPresentableIdentification
-+ (id)genericIdentificationForPresentable:(id)a3;
-+ (id)identificationWithRequesterIdentifier:(id)a3;
-+ (id)identificationWithRequesterIdentifier:(id)a3 requestIdentifier:(id)a4;
-+ (id)identificationWithRequesterIdentifier:(id)a3 requestIdentifier:(id)a4 uniqueIdentifier:(id)a5;
-+ (id)requesterIdentificationForPresentable:(id)a3;
-+ (id)uniqueIdentificationForPresentable:(id)a3;
-- (BNPresentableIdentification)initWithBSXPCCoder:(id)a3;
-- (BNPresentableIdentification)initWithRequesterIdentifier:(id)a3 requestIdentifier:(id)a4 uniqueIdentifier:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
++ (id)genericIdentificationForPresentable:(id)presentable;
++ (id)identificationWithRequesterIdentifier:(id)identifier;
++ (id)identificationWithRequesterIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier;
++ (id)identificationWithRequesterIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier uniqueIdentifier:(id)uniqueIdentifier;
++ (id)requesterIdentificationForPresentable:(id)presentable;
++ (id)uniqueIdentificationForPresentable:(id)presentable;
+- (BNPresentableIdentification)initWithBSXPCCoder:(id)coder;
+- (BNPresentableIdentification)initWithRequesterIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier uniqueIdentifier:(id)uniqueIdentifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation BNPresentableIdentification
 
-+ (id)identificationWithRequesterIdentifier:(id)a3 requestIdentifier:(id)a4 uniqueIdentifier:(id)a5
++ (id)identificationWithRequesterIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier uniqueIdentifier:(id)uniqueIdentifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithRequesterIdentifier:v10 requestIdentifier:v9 uniqueIdentifier:v8];
+  uniqueIdentifierCopy = uniqueIdentifier;
+  requestIdentifierCopy = requestIdentifier;
+  identifierCopy = identifier;
+  v11 = [[self alloc] initWithRequesterIdentifier:identifierCopy requestIdentifier:requestIdentifierCopy uniqueIdentifier:uniqueIdentifierCopy];
 
   return v11;
 }
 
-+ (id)identificationWithRequesterIdentifier:(id)a3 requestIdentifier:(id)a4
++ (id)identificationWithRequesterIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithRequesterIdentifier:v7 requestIdentifier:v6 uniqueIdentifier:0];
+  requestIdentifierCopy = requestIdentifier;
+  identifierCopy = identifier;
+  v8 = [[self alloc] initWithRequesterIdentifier:identifierCopy requestIdentifier:requestIdentifierCopy uniqueIdentifier:0];
 
   return v8;
 }
 
-+ (id)identificationWithRequesterIdentifier:(id)a3
++ (id)identificationWithRequesterIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithRequesterIdentifier:v4 requestIdentifier:0 uniqueIdentifier:0];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithRequesterIdentifier:identifierCopy requestIdentifier:0 uniqueIdentifier:0];
 
   return v5;
 }
 
-+ (id)uniqueIdentificationForPresentable:(id)a3
++ (id)uniqueIdentificationForPresentable:(id)presentable
 {
-  v4 = a3;
+  presentableCopy = presentable;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 requesterIdentifier];
+    requesterIdentifier = [presentableCopy requesterIdentifier];
   }
 
   else
   {
-    v5 = 0;
+    requesterIdentifier = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 requestIdentifier];
+    requestIdentifier = [presentableCopy requestIdentifier];
   }
 
   else
   {
-    v6 = 0;
+    requestIdentifier = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v4 uniquePresentableIdentifier];
-    if (v5)
+    uniquePresentableIdentifier = [presentableCopy uniquePresentableIdentifier];
+    if (requesterIdentifier)
     {
       goto LABEL_14;
     }
@@ -74,52 +74,52 @@
 
   else
   {
-    v7 = 0;
-    if (v5)
+    uniquePresentableIdentifier = 0;
+    if (requesterIdentifier)
     {
       goto LABEL_14;
     }
   }
 
-  if (!v6 && !v7)
+  if (!requestIdentifier && !uniquePresentableIdentifier)
   {
     v8 = 0;
     goto LABEL_15;
   }
 
 LABEL_14:
-  v8 = [[a1 alloc] initWithRequesterIdentifier:v5 requestIdentifier:v6 uniqueIdentifier:v7];
+  v8 = [[self alloc] initWithRequesterIdentifier:requesterIdentifier requestIdentifier:requestIdentifier uniqueIdentifier:uniquePresentableIdentifier];
 LABEL_15:
 
   return v8;
 }
 
-+ (id)genericIdentificationForPresentable:(id)a3
++ (id)genericIdentificationForPresentable:(id)presentable
 {
-  v4 = a3;
+  presentableCopy = presentable;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 requesterIdentifier];
+    requesterIdentifier = [presentableCopy requesterIdentifier];
   }
 
   else
   {
-    v5 = 0;
+    requesterIdentifier = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 requestIdentifier];
+    requestIdentifier = [presentableCopy requestIdentifier];
   }
 
   else
   {
-    v6 = 0;
+    requestIdentifier = 0;
   }
 
-  if (v5 | v6)
+  if (requesterIdentifier | requestIdentifier)
   {
-    v7 = [[a1 alloc] initWithRequesterIdentifier:v5 requestIdentifier:v6 uniqueIdentifier:0];
+    v7 = [[self alloc] initWithRequesterIdentifier:requesterIdentifier requestIdentifier:requestIdentifier uniqueIdentifier:0];
   }
 
   else
@@ -130,13 +130,13 @@ LABEL_15:
   return v7;
 }
 
-+ (id)requesterIdentificationForPresentable:(id)a3
++ (id)requesterIdentificationForPresentable:(id)presentable
 {
-  v4 = a3;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v4 requesterIdentifier], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  presentableCopy = presentable;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([presentableCopy requesterIdentifier], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
-    v7 = [[a1 alloc] initWithRequesterIdentifier:v5 requestIdentifier:0 uniqueIdentifier:0];
+    v7 = [[self alloc] initWithRequesterIdentifier:v5 requestIdentifier:0 uniqueIdentifier:0];
   }
 
   else
@@ -147,12 +147,12 @@ LABEL_15:
   return v7;
 }
 
-- (BNPresentableIdentification)initWithRequesterIdentifier:(id)a3 requestIdentifier:(id)a4 uniqueIdentifier:(id)a5
+- (BNPresentableIdentification)initWithRequesterIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier uniqueIdentifier:(id)uniqueIdentifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  identifierCopy = identifier;
+  requestIdentifierCopy = requestIdentifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  if (!identifierCopy)
   {
     [BNPresentableIdentification initWithRequesterIdentifier:a2 requestIdentifier:self uniqueIdentifier:?];
   }
@@ -162,15 +162,15 @@ LABEL_15:
   v12 = [(BNPresentableIdentification *)&v20 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [identifierCopy copy];
     requesterIdentifier = v12->_requesterIdentifier;
     v12->_requesterIdentifier = v13;
 
-    v15 = [v10 copy];
+    v15 = [requestIdentifierCopy copy];
     requestIdentifier = v12->_requestIdentifier;
     v12->_requestIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [uniqueIdentifierCopy copy];
     uniquePresentableIdentifier = v12->_uniquePresentableIdentifier;
     v12->_uniquePresentableIdentifier = v17;
   }
@@ -178,32 +178,32 @@ LABEL_15:
   return v12;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   requesterIdentifier = self->_requesterIdentifier;
-  v5 = a3;
-  [v5 encodeObject:requesterIdentifier forKey:@"requesterIdentifier"];
-  [v5 encodeObject:self->_requestIdentifier forKey:@"requestIdentifier"];
-  [v5 encodeObject:self->_uniquePresentableIdentifier forKey:@"uniquePresentableIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:requesterIdentifier forKey:@"requesterIdentifier"];
+  [coderCopy encodeObject:self->_requestIdentifier forKey:@"requestIdentifier"];
+  [coderCopy encodeObject:self->_uniquePresentableIdentifier forKey:@"uniquePresentableIdentifier"];
 }
 
-- (BNPresentableIdentification)initWithBSXPCCoder:(id)a3
+- (BNPresentableIdentification)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = BNPresentableIdentification;
   v5 = [(BNPresentableIdentification *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requesterIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requesterIdentifier"];
     requesterIdentifier = v5->_requesterIdentifier;
     v5->_requesterIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestIdentifier"];
     requestIdentifier = v5->_requestIdentifier;
     v5->_requestIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniquePresentableIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniquePresentableIdentifier"];
     uniquePresentableIdentifier = v5->_uniquePresentableIdentifier;
     v5->_uniquePresentableIdentifier = v10;
   }
@@ -211,7 +211,7 @@ LABEL_15:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   requesterIdentifier = self->_requesterIdentifier;

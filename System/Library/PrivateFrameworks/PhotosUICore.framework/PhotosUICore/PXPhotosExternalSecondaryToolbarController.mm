@@ -1,13 +1,13 @@
 @interface PXPhotosExternalSecondaryToolbarController
-- (CGSize)secondaryToolbarControllerToolbarSize:(id)a3;
-- (PXPhotosExternalSecondaryToolbarController)initWithContainerView:(id)a3;
-- (UIEdgeInsets)secondaryToolbarControllerScrollableContentPadding:(id)a3;
-- (UIEdgeInsets)secondaryToolbarControllerToolbarContentInsets:(id)a3;
+- (CGSize)secondaryToolbarControllerToolbarSize:(id)size;
+- (PXPhotosExternalSecondaryToolbarController)initWithContainerView:(id)view;
+- (UIEdgeInsets)secondaryToolbarControllerScrollableContentPadding:(id)padding;
+- (UIEdgeInsets)secondaryToolbarControllerToolbarContentInsets:(id)insets;
 @end
 
 @implementation PXPhotosExternalSecondaryToolbarController
 
-- (CGSize)secondaryToolbarControllerToolbarSize:(id)a3
+- (CGSize)secondaryToolbarControllerToolbarSize:(id)size
 {
   v3 = 260.0;
   v4 = 19.0;
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (UIEdgeInsets)secondaryToolbarControllerScrollableContentPadding:(id)a3
+- (UIEdgeInsets)secondaryToolbarControllerScrollableContentPadding:(id)padding
 {
   v3 = *off_1E7721FA8;
   v4 = *(off_1E7721FA8 + 1);
@@ -29,7 +29,7 @@
   return result;
 }
 
-- (UIEdgeInsets)secondaryToolbarControllerToolbarContentInsets:(id)a3
+- (UIEdgeInsets)secondaryToolbarControllerToolbarContentInsets:(id)insets
 {
   v3 = *off_1E7721FA8;
   v4 = *(off_1E7721FA8 + 1);
@@ -42,11 +42,11 @@
   return result;
 }
 
-- (PXPhotosExternalSecondaryToolbarController)initWithContainerView:(id)a3
+- (PXPhotosExternalSecondaryToolbarController)initWithContainerView:(id)view
 {
   v4.receiver = self;
   v4.super_class = PXPhotosExternalSecondaryToolbarController;
-  return [(PXSecondaryToolbarController *)&v4 initWithContainerView:a3 styleGuideProvider:self];
+  return [(PXSecondaryToolbarController *)&v4 initWithContainerView:view styleGuideProvider:self];
 }
 
 @end

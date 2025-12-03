@@ -1,11 +1,11 @@
 @interface CMContinuityCaptureUserOnboarding
 + (id)sharedInstance;
-+ (id)stateToString:(int64_t)a3;
++ (id)stateToString:(int64_t)string;
 + (void)invalidate;
 - (BOOL)logTryItNowAnalytics;
-- (CMContinuityCaptureUserOnboarding)initWithQueue:(id)a3;
+- (CMContinuityCaptureUserOnboarding)initWithQueue:(id)queue;
 - (id)description;
-- (void)setLogTryItNowAnalytics:(BOOL)a3;
+- (void)setLogTryItNowAnalytics:(BOOL)analytics;
 @end
 
 @implementation CMContinuityCaptureUserOnboarding
@@ -34,19 +34,19 @@ void __51__CMContinuityCaptureUserOnboarding_sharedInstance__block_invoke()
 
 - (BOOL)logTryItNowAnalytics
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  logTryItNowAnalytics = v2->_logTryItNowAnalytics;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  logTryItNowAnalytics = selfCopy->_logTryItNowAnalytics;
+  objc_sync_exit(selfCopy);
 
   return logTryItNowAnalytics;
 }
 
-- (void)setLogTryItNowAnalytics:(BOOL)a3
+- (void)setLogTryItNowAnalytics:(BOOL)analytics
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_logTryItNowAnalytics = a3;
+  obj->_logTryItNowAnalytics = analytics;
   objc_sync_exit(obj);
 }
 
@@ -62,19 +62,19 @@ void __51__CMContinuityCaptureUserOnboarding_sharedInstance__block_invoke()
   objc_sync_exit(obj);
 }
 
-+ (id)stateToString:(int64_t)a3
++ (id)stateToString:(int64_t)string
 {
-  if (a3 >= 5)
+  if (string >= 5)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unexpected onboarding state %d", a3];
+    string = [MEMORY[0x277CCACA8] stringWithFormat:@"Unexpected onboarding state %d", string];
   }
 
   else
   {
-    v4 = off_278D5C460[a3];
+    string = off_278D5C460[string];
   }
 
-  return v4;
+  return string;
 }
 
 - (id)description
@@ -87,7 +87,7 @@ void __51__CMContinuityCaptureUserOnboarding_sharedInstance__block_invoke()
   return v6;
 }
 
-- (CMContinuityCaptureUserOnboarding)initWithQueue:(id)a3
+- (CMContinuityCaptureUserOnboarding)initWithQueue:(id)queue
 {
   v7.receiver = self;
   v7.super_class = CMContinuityCaptureUserOnboarding;

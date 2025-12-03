@@ -4,10 +4,10 @@
 - (NSUUID)documentID;
 - (_WKFrameHandle)frame;
 - (_WKFrameHandle)parentFrame;
-- (_WKResourceLoadInfo)initWithCoder:(id)a3;
+- (_WKResourceLoadInfo)initWithCoder:(id)coder;
 - (int64_t)resourceType;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _WKResourceLoadInfo
@@ -196,7 +196,7 @@ LABEL_7:
   }
 }
 
-- (_WKResourceLoadInfo)initWithCoder:(id)a3
+- (_WKResourceLoadInfo)initWithCoder:(id)coder
 {
   v39 = *MEMORY[0x1E69E9840];
   v25.receiver = self;
@@ -207,8 +207,8 @@ LABEL_7:
     return v4;
   }
 
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"resourceLoadID"];
-  if (!v5 || (v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"frame"]) == 0 || (v7 = objc_msgSend(a3, "decodeObjectOfClass:forKey:", objc_opt_class(), @"parentFrame"), v8 = objc_msgSend(a3, "decodeObjectOfClass:forKey:", objc_opt_class(), @"documentID"), (v9 = objc_msgSend(a3, "decodeObjectOfClass:forKey:", objc_opt_class(), @"originalURL")) == 0) || (v10 = objc_msgSend(a3, "decodeObjectOfClass:forKey:", objc_opt_class(), @"originalHTTPMethod")) == 0 || (v11 = objc_msgSend(a3, "decodeObjectOfClass:forKey:", objc_opt_class(), @"eventTimestamp")) == 0 || (v24 = objc_msgSend(a3, "decodeObjectOfClass:forKey:", objc_opt_class(), @"loadedFromCache")) == 0 || (v12 = objc_msgSend(a3, "decodeObjectOfClass:forKey:", objc_opt_class(), @"type")) == 0)
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"resourceLoadID"];
+  if (!v5 || (v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"frame"]) == 0 || (v7 = objc_msgSend(coder, "decodeObjectOfClass:forKey:", objc_opt_class(), @"parentFrame"), v8 = objc_msgSend(coder, "decodeObjectOfClass:forKey:", objc_opt_class(), @"documentID"), (v9 = objc_msgSend(coder, "decodeObjectOfClass:forKey:", objc_opt_class(), @"originalURL")) == 0) || (v10 = objc_msgSend(coder, "decodeObjectOfClass:forKey:", objc_opt_class(), @"originalHTTPMethod")) == 0 || (v11 = objc_msgSend(coder, "decodeObjectOfClass:forKey:", objc_opt_class(), @"eventTimestamp")) == 0 || (v24 = objc_msgSend(coder, "decodeObjectOfClass:forKey:", objc_opt_class(), @"loadedFromCache")) == 0 || (v12 = objc_msgSend(coder, "decodeObjectOfClass:forKey:", objc_opt_class(), @"type")) == 0)
   {
 
     return 0;
@@ -254,13 +254,13 @@ LABEL_20:
     MEMORY[0x19EB02040](v36, v10);
     [v11 timeIntervalSince1970];
     v36[1] = v17;
-    v37 = [v24 BOOLValue];
-    v18 = [v12 unsignedCharValue];
-    v38 = v18;
-    v19 = API::Object::apiObjectsUnderConstruction(v18);
-    v20 = [(_WKResourceLoadInfo *)v4 _apiObject];
+    bOOLValue = [v24 BOOLValue];
+    unsignedCharValue = [v12 unsignedCharValue];
+    v38 = unsignedCharValue;
+    v19 = API::Object::apiObjectsUnderConstruction(unsignedCharValue);
+    _apiObject = [(_WKResourceLoadInfo *)v4 _apiObject];
     v26 = v4;
-    v27 = v20;
+    v27 = _apiObject;
     WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v19, &v27, &v26, &v28);
     API::ResourceLoadInfo::ResourceLoadInfo([(_WKResourceLoadInfo *)v4 _apiObject], v30);
     v22 = v36[0];
@@ -288,19 +288,19 @@ LABEL_20:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", -[_WKResourceLoadInfo resourceLoadID](self, "resourceLoadID")), @"resourceLoadID"}];
-  [a3 encodeObject:-[_WKResourceLoadInfo frame](self forKey:{"frame"), @"frame"}];
-  [a3 encodeObject:-[_WKResourceLoadInfo parentFrame](self forKey:{"parentFrame"), @"parentFrame"}];
-  [a3 encodeObject:-[_WKResourceLoadInfo documentID](self forKey:{"documentID"), @"documentID"}];
-  [a3 encodeObject:-[_WKResourceLoadInfo originalURL](self forKey:{"originalURL"), @"originalURL"}];
-  [a3 encodeObject:-[_WKResourceLoadInfo originalHTTPMethod](self forKey:{"originalHTTPMethod"), @"originalHTTPMethod"}];
-  [a3 encodeObject:-[_WKResourceLoadInfo eventTimestamp](self forKey:{"eventTimestamp"), @"eventTimestamp"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", -[_WKResourceLoadInfo loadedFromCache](self, "loadedFromCache")), @"loadedFromCache"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", -[_WKResourceLoadInfo resourceLoadID](self, "resourceLoadID")), @"resourceLoadID"}];
+  [coder encodeObject:-[_WKResourceLoadInfo frame](self forKey:{"frame"), @"frame"}];
+  [coder encodeObject:-[_WKResourceLoadInfo parentFrame](self forKey:{"parentFrame"), @"parentFrame"}];
+  [coder encodeObject:-[_WKResourceLoadInfo documentID](self forKey:{"documentID"), @"documentID"}];
+  [coder encodeObject:-[_WKResourceLoadInfo originalURL](self forKey:{"originalURL"), @"originalURL"}];
+  [coder encodeObject:-[_WKResourceLoadInfo originalHTTPMethod](self forKey:{"originalHTTPMethod"), @"originalHTTPMethod"}];
+  [coder encodeObject:-[_WKResourceLoadInfo eventTimestamp](self forKey:{"eventTimestamp"), @"eventTimestamp"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", -[_WKResourceLoadInfo loadedFromCache](self, "loadedFromCache")), @"loadedFromCache"}];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:self[2]._info.m_storage.data[9]];
 
-  [a3 encodeObject:v5 forKey:@"type"];
+  [coder encodeObject:v5 forKey:@"type"];
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface MIPLibraryPin
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDefaultAction:(BOOL)a3;
-- (void)setHasEntityType:(BOOL)a3;
-- (void)setHasPosition:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDefaultAction:(BOOL)action;
+- (void)setHasEntityType:(BOOL)type;
+- (void)setHasPosition:(BOOL)position;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MIPLibraryPin
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 56);
+  fromCopy = from;
+  v5 = *(fromCopy + 56);
   if ((v5 & 4) != 0)
   {
-    self->_entityType = *(v4 + 3);
+    self->_entityType = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -35,14 +35,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 56) & 2) == 0)
+  else if ((*(fromCopy + 56) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_defaultAction = *(v4 + 2);
+  self->_defaultAction = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -55,27 +55,27 @@ LABEL_4:
   }
 
 LABEL_15:
-  self->_position = *(v4 + 4);
+  self->_position = *(fromCopy + 4);
   *&self->_has |= 8u;
-  if (*(v4 + 56))
+  if (*(fromCopy + 56))
   {
 LABEL_5:
-    self->_cloudItemID = *(v4 + 1);
+    self->_cloudItemID = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_6:
-  v6 = v4;
-  if (*(v4 + 5))
+  v6 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(MIPLibraryPin *)self setCloudLibraryID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(MIPLibraryPin *)self setPositionUUID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
@@ -135,23 +135,23 @@ LABEL_10:
   return v7 ^ [(NSString *)self->_positionUUID hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_entityType != *(v4 + 3))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_entityType != *(equalCopy + 3))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
 LABEL_26:
     v7 = 0;
@@ -160,51 +160,51 @@ LABEL_26:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_defaultAction != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_defaultAction != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 56) & 8) == 0 || self->_position != *(v4 + 4))
+    if ((*(equalCopy + 56) & 8) == 0 || self->_position != *(equalCopy + 4))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 56) & 8) != 0)
+  else if ((*(equalCopy + 56) & 8) != 0)
   {
     goto LABEL_26;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_cloudItemID != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_cloudItemID != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_26;
   }
 
   cloudLibraryID = self->_cloudLibraryID;
-  if (cloudLibraryID | *(v4 + 5) && ![(NSString *)cloudLibraryID isEqual:?])
+  if (cloudLibraryID | *(equalCopy + 5) && ![(NSString *)cloudLibraryID isEqual:?])
   {
     goto LABEL_26;
   }
 
   positionUUID = self->_positionUUID;
-  if (positionUUID | *(v4 + 6))
+  if (positionUUID | *(equalCopy + 6))
   {
     v7 = [(NSString *)positionUUID isEqual:?];
   }
@@ -219,9 +219,9 @@ LABEL_27:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -271,25 +271,25 @@ LABEL_5:
   }
 
 LABEL_6:
-  v8 = [(NSString *)self->_cloudLibraryID copyWithZone:a3];
+  v8 = [(NSString *)self->_cloudLibraryID copyWithZone:zone];
   v9 = v6[5];
   v6[5] = v8;
 
-  v10 = [(NSString *)self->_positionUUID copyWithZone:a3];
+  v10 = [(NSString *)self->_positionUUID copyWithZone:zone];
   v11 = v6[6];
   v6[6] = v10;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[3] = self->_entityType;
-    *(v4 + 56) |= 4u;
+    toCopy[3] = self->_entityType;
+    *(toCopy + 56) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -308,8 +308,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = self->_defaultAction;
-  *(v4 + 56) |= 2u;
+  toCopy[2] = self->_defaultAction;
+  *(toCopy + 56) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -323,39 +323,39 @@ LABEL_4:
   }
 
 LABEL_15:
-  v4[4] = self->_position;
-  *(v4 + 56) |= 8u;
+  toCopy[4] = self->_position;
+  *(toCopy + 56) |= 8u;
   if (*&self->_has)
   {
 LABEL_5:
-    v4[1] = self->_cloudItemID;
-    *(v4 + 56) |= 1u;
+    toCopy[1] = self->_cloudItemID;
+    *(toCopy + 56) |= 1u;
   }
 
 LABEL_6:
-  v6 = v4;
+  v6 = toCopy;
   if (self->_cloudLibraryID)
   {
-    [v4 setCloudLibraryID:?];
-    v4 = v6;
+    [toCopy setCloudLibraryID:?];
+    toCopy = v6;
   }
 
   if (self->_positionUUID)
   {
     [v6 setPositionUUID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if ((has & 4) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -375,7 +375,7 @@ LABEL_3:
   }
 
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -390,36 +390,36 @@ LABEL_4:
 
 LABEL_15:
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   if (*&self->_has)
   {
 LABEL_5:
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_6:
   if (self->_cloudLibraryID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_positionUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_entityType];
-    [v3 setObject:v9 forKey:@"entityType"];
+    [dictionary setObject:v9 forKey:@"entityType"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -440,7 +440,7 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_defaultAction];
-  [v3 setObject:v10 forKey:@"defaultAction"];
+  [dictionary setObject:v10 forKey:@"defaultAction"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -456,29 +456,29 @@ LABEL_4:
 
 LABEL_15:
   v11 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_position];
-  [v3 setObject:v11 forKey:@"position"];
+  [dictionary setObject:v11 forKey:@"position"];
 
   if (*&self->_has)
   {
 LABEL_5:
     v5 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_cloudItemID];
-    [v3 setObject:v5 forKey:@"cloudItemID"];
+    [dictionary setObject:v5 forKey:@"cloudItemID"];
   }
 
 LABEL_6:
   cloudLibraryID = self->_cloudLibraryID;
   if (cloudLibraryID)
   {
-    [v3 setObject:cloudLibraryID forKey:@"cloudLibraryID"];
+    [dictionary setObject:cloudLibraryID forKey:@"cloudLibraryID"];
   }
 
   positionUUID = self->_positionUUID;
   if (positionUUID)
   {
-    [v3 setObject:positionUUID forKey:@"positionUUID"];
+    [dictionary setObject:positionUUID forKey:@"positionUUID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -487,15 +487,15 @@ LABEL_6:
   v8.receiver = self;
   v8.super_class = MIPLibraryPin;
   v4 = [(MIPLibraryPin *)&v8 description];
-  v5 = [(MIPLibraryPin *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MIPLibraryPin *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasPosition:(BOOL)a3
+- (void)setHasPosition:(BOOL)position
 {
-  if (a3)
+  if (position)
   {
     v3 = 8;
   }
@@ -508,9 +508,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDefaultAction:(BOOL)a3
+- (void)setHasDefaultAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 2;
   }
@@ -523,9 +523,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasEntityType:(BOOL)a3
+- (void)setHasEntityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }

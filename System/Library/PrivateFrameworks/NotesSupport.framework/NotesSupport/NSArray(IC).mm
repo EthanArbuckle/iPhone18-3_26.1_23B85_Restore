@@ -64,7 +64,7 @@
 
 - (BOOL)ic_containsObjectOfClass:()IC
 {
-  v1 = [a1 ic_firstObjectOfClass:?];
+  v1 = [self ic_firstObjectOfClass:?];
   v2 = v1 != 0;
 
   return v2;
@@ -72,10 +72,10 @@
 
 - (id)ic_randomObject
 {
-  v2 = [a1 count];
+  v2 = [self count];
   if (v2)
   {
-    v2 = [a1 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(a1, "count"))}];
+    v2 = [self objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(self, "count"))}];
   }
 
   return v2;
@@ -83,7 +83,7 @@
 
 - (id)ic_objectPassingTest:()IC
 {
-  v2 = [a1 indexOfObjectPassingTest:?];
+  v2 = [self indexOfObjectPassingTest:?];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
@@ -91,7 +91,7 @@
 
   else
   {
-    v3 = [a1 objectAtIndex:v2];
+    v3 = [self objectAtIndex:v2];
   }
 
   return v3;
@@ -99,7 +99,7 @@
 
 - (BOOL)ic_containsObjectPassingTest:()IC
 {
-  v1 = [a1 ic_objectPassingTest:?];
+  v1 = [self ic_objectPassingTest:?];
   v2 = v1 != 0;
 
   return v2;
@@ -114,15 +114,15 @@
   v8[3] = &unk_1E8485498;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 ic_containsObjectPassingTest:v8];
+  v6 = [self ic_containsObjectPassingTest:v8];
 
   return v6;
 }
 
 - (id)ic_objectsPassingTest:()IC
 {
-  v2 = [a1 indexesOfObjectsPassingTest:?];
-  v3 = [a1 objectsAtIndexes:v2];
+  v2 = [self indexesOfObjectsPassingTest:?];
+  v3 = [self objectsAtIndexes:v2];
 
   return v3;
 }
@@ -134,7 +134,7 @@
   v5[2] = __33__NSArray_IC__ic_objectsOfClass___block_invoke;
   v5[3] = &__block_descriptor_40_e15_B32__0_8Q16_B24lu32l8;
   v5[4] = a3;
-  v3 = [a1 ic_objectsPassingTest:v5];
+  v3 = [self ic_objectsPassingTest:v5];
 
   return v3;
 }
@@ -146,7 +146,7 @@
   v5[2] = __37__NSArray_IC__ic_firstObjectOfClass___block_invoke;
   v5[3] = &__block_descriptor_40_e15_B32__0_8Q16_B24lu32l8;
   v5[4] = a3;
-  v3 = [a1 ic_objectPassingTest:v5];
+  v3 = [self ic_objectPassingTest:v5];
 
   return v3;
 }
@@ -160,7 +160,7 @@
   v8[3] = &unk_1E8485498;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 ic_objectsPassingTest:v8];
+  v6 = [self ic_objectsPassingTest:v8];
 
   return v6;
 }
@@ -174,23 +174,23 @@
   v8[3] = &unk_1E8485498;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 ic_objectPassingTest:v8];
+  v6 = [self ic_objectPassingTest:v8];
 
   return v6;
 }
 
 - (ICTuple)ic_arrayBySplittingIntoTwoArraysWithMaxPrefixCount:()IC
 {
-  if ([a1 count] <= a3)
+  if ([self count] <= a3)
   {
     v8 = [ICTuple alloc];
-    v7 = [(ICTuple *)v8 initWithFirstObject:a1 secondObject:MEMORY[0x1E695E0F0]];
+    v7 = [(ICTuple *)v8 initWithFirstObject:self secondObject:MEMORY[0x1E695E0F0]];
   }
 
   else
   {
-    v5 = [a1 subarrayWithRange:{0, a3}];
-    v6 = [a1 subarrayWithRange:{a3, objc_msgSend(a1, "count") - a3}];
+    v5 = [self subarrayWithRange:{0, a3}];
+    v6 = [self subarrayWithRange:{a3, objc_msgSend(self, "count") - a3}];
     v7 = [[ICTuple alloc] initWithFirstObject:v5 secondObject:v6];
   }
 
@@ -201,7 +201,7 @@
 {
   v6 = a4;
   v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:a3];
-  v8 = [MEMORY[0x1E695DF70] arrayWithArray:a1];
+  v8 = [MEMORY[0x1E695DF70] arrayWithArray:self];
   if ([v7 count] < a3)
   {
     while ([v8 count])
@@ -238,13 +238,13 @@
 - (id)ic_arrayByGroupingIntoArraysWithMaxCount:()IC
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -256,7 +256,7 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
@@ -265,14 +265,14 @@
         {
           v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:a3];
 
-          [v5 addObject:v14];
+          [array addObject:v14];
           v9 = v14;
         }
 
         [v9 addObject:v12];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -283,21 +283,21 @@
     v9 = 0;
   }
 
-  return v5;
+  return array;
 }
 
 - (unint64_t)ic_indexOfSortedObject:()IC insertionIndex:usingComparator:
 {
   v8 = a3;
   v9 = a5;
-  v10 = [a1 indexOfObject:v8 inSortedRange:0 options:objc_msgSend(a1 usingComparator:{"count"), 1280, v9}];
+  v10 = [self indexOfObject:v8 inSortedRange:0 options:objc_msgSend(self usingComparator:{"count"), 1280, v9}];
 
   if (a4)
   {
     *a4 = v10;
   }
 
-  if (v10 >= [a1 count] || (objc_msgSend(a1, "objectAtIndexedSubscript:", v10), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqual:", v8), v11, (v12 & 1) == 0))
+  if (v10 >= [self count] || (objc_msgSend(self, "objectAtIndexedSubscript:", v10), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqual:", v8), v11, (v12 & 1) == 0))
   {
     v10 = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -307,7 +307,7 @@
 
 - (id)ic_objectBefore:()IC wrap:
 {
-  v6 = [a1 indexOfObject:?];
+  v6 = [self indexOfObject:?];
   v7 = 0;
   if (v6)
   {
@@ -321,7 +321,7 @@
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL && v8)
   {
-    v7 = [a1 objectAtIndexedSubscript:{(v6 + objc_msgSend(a1, "count") - 1) % objc_msgSend(a1, "count")}];
+    v7 = [self objectAtIndexedSubscript:{(v6 + objc_msgSend(self, "count") - 1) % objc_msgSend(self, "count")}];
   }
 
   return v7;
@@ -329,15 +329,15 @@
 
 - (id)ic_objectAfter:()IC wrap:
 {
-  v6 = [a1 indexOfObject:?];
-  if (v6 == 0x7FFFFFFFFFFFFFFFLL || (v8 = v6, (a4 & 1) == 0) && v6 == [a1 count] - 1)
+  v6 = [self indexOfObject:?];
+  if (v6 == 0x7FFFFFFFFFFFFFFFLL || (v8 = v6, (a4 & 1) == 0) && v6 == [self count] - 1)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [a1 objectAtIndexedSubscript:{(v8 + 1) % objc_msgSend(a1, "count")}];
+    v7 = [self objectAtIndexedSubscript:{(v8 + 1) % objc_msgSend(self, "count")}];
   }
 
   return v7;
@@ -345,11 +345,11 @@
 
 - (id)ic_arrayByAddingNonNilObject:()IC
 {
-  v4 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = selfCopy;
   if (a3)
   {
-    v6 = [v4 arrayByAddingObject:a3];
+    v6 = [selfCopy arrayByAddingObject:a3];
 
     v5 = v6;
   }
@@ -359,11 +359,11 @@
 
 - (id)ic_arrayByAddingObjectsFromNonNilArray:()IC
 {
-  v4 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = selfCopy;
   if (a3)
   {
-    v6 = [v4 arrayByAddingObjectsFromArray:a3];
+    v6 = [selfCopy arrayByAddingObjectsFromArray:a3];
 
     v5 = v6;
   }
@@ -374,7 +374,7 @@
 - (id)ic_compactMap:()IC
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __29__NSArray_IC__ic_compactMap___block_invoke;
@@ -383,7 +383,7 @@
   v15 = v4;
   v6 = v5;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:&v10];
+  [self enumerateObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;
@@ -392,7 +392,7 @@
 - (id)ic_map:()IC
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __22__NSArray_IC__ic_map___block_invoke;
@@ -401,7 +401,7 @@
   v15 = v4;
   v6 = v5;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:&v10];
+  [self enumerateObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;
@@ -410,16 +410,16 @@
 - (id)ic_flatMap:()IC
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __26__NSArray_IC__ic_flatMap___block_invoke;
   v13 = &unk_1E8485508;
-  v14 = v5;
+  v14 = array;
   v15 = v4;
-  v6 = v5;
+  v6 = array;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:&v10];
+  [self enumerateObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;
@@ -443,7 +443,7 @@
   v14 = &v15;
   v9 = v7;
   v13 = v9;
-  [a1 enumerateObjectsUsingBlock:v12];
+  [self enumerateObjectsUsingBlock:v12];
   v10 = v16[5];
 
   _Block_object_dispose(&v15, 8);
@@ -453,22 +453,22 @@
 
 - (uint64_t)ic_subarrayFromIndex:()IC
 {
-  v5 = [a1 count] - a3;
+  v5 = [self count] - a3;
 
-  return [a1 subarrayWithRange:{a3, v5}];
+  return [self subarrayWithRange:{a3, v5}];
 }
 
 - (id)ic_dictionaryByHashingContentWithFunction:()IC
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(self, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -479,7 +479,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -490,7 +490,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -503,9 +503,9 @@
 
 - (BOOL)ic_allSatisfy:()IC
 {
-  v2 = [a1 ic_objectsPassingTest:?];
+  v2 = [self ic_objectsPassingTest:?];
   v3 = [v2 count];
-  v4 = v3 == [a1 count];
+  v4 = v3 == [self count];
 
   return v4;
 }

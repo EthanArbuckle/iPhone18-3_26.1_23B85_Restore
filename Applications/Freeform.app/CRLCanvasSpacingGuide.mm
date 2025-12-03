@@ -1,23 +1,23 @@
 @interface CRLCanvasSpacingGuide
-- (BOOL)canBeSnappedToByEdge:(int)a3 ofFrame:(CGRect)a4 inVisibleUnscaledRect:(CGRect)a5;
-- (BOOL)isAssociatedContentVisibleInUnscaledRect:(CGRect)a3;
+- (BOOL)canBeSnappedToByEdge:(int)edge ofFrame:(CGRect)frame inVisibleUnscaledRect:(CGRect)rect;
+- (BOOL)isAssociatedContentVisibleInUnscaledRect:(CGRect)rect;
 - (CRLCanvasSpacing)parentSpacing;
 - (id)description;
-- (id)initForEdge:(int)a3 ofGeneratingObjectRect:(CGRect)a4 andParentSpacing:(id)a5;
-- (id)renderableWithICC:(id)a3;
-- (int64_t)compare:(id)a3;
+- (id)initForEdge:(int)edge ofGeneratingObjectRect:(CGRect)rect andParentSpacing:(id)spacing;
+- (id)renderableWithICC:(id)c;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation CRLCanvasSpacingGuide
 
-- (id)initForEdge:(int)a3 ofGeneratingObjectRect:(CGRect)a4 andParentSpacing:(id)a5
+- (id)initForEdge:(int)edge ofGeneratingObjectRect:(CGRect)rect andParentSpacing:(id)spacing
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a5;
-  if (a3 > 5)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spacingCopy = spacing;
+  if (edge > 5)
   {
     v20 = 0;
     v21 = 0;
@@ -26,14 +26,14 @@
     goto LABEL_30;
   }
 
-  if (((1 << a3) & 5) != 0)
+  if (((1 << edge) & 5) != 0)
   {
     v15 = +[CRLSwappableAxesGeometry standardAxesGeometry];
   }
 
   else
   {
-    if (((1 << a3) & 0x12) != 0)
+    if (((1 << edge) & 0x12) != 0)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -71,24 +71,24 @@
   objc_storeWeak(&self->mVerticalGeom, v15);
 
 LABEL_16:
-  if (((1 << a3) & 9) != 0)
+  if (((1 << edge) & 9) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->mVerticalGeom);
     [WeakRetained rectMinX:{x, y, width, height}];
     v26 = v25;
-    [v11 exactOffset];
+    [spacingCopy exactOffset];
     v23 = v26 - v27;
 
     v18 = objc_loadWeakRetained(&self->mVerticalGeom);
     [v18 rectMaxX:{x, y, width, height}];
     v29 = v28;
-    [v11 exactOffset];
+    [spacingCopy exactOffset];
     v21 = 0;
     v22 = v29 + v30;
     v20 = 1;
   }
 
-  else if (((1 << a3) & 0x12) != 0)
+  else if (((1 << edge) & 0x12) != 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -127,13 +127,13 @@ LABEL_16:
     v31 = objc_loadWeakRetained(&self->mVerticalGeom);
     [v31 rectMaxX:{x, y, width, height}];
     v33 = v32;
-    [v11 exactOffset];
+    [spacingCopy exactOffset];
     v23 = v33 + v34;
 
     v18 = objc_loadWeakRetained(&self->mVerticalGeom);
     [v18 rectMinX:{x, y, width, height}];
     v36 = v35;
-    [v11 exactOffset];
+    [spacingCopy exactOffset];
     v20 = 0;
     v22 = v36 - v37;
     v21 = 1;
@@ -165,23 +165,23 @@ LABEL_30:
     v40->mGeneratingObjectRect.size.width = width;
     v40->mGeneratingObjectRect.size.height = height;
     v40->mOppositeOffset = v22;
-    [(CRLCanvasSpacingGuide *)v40 setParentSpacing:v11];
+    [(CRLCanvasSpacingGuide *)v40 setParentSpacing:spacingCopy];
   }
 
   return v40;
 }
 
-- (BOOL)canBeSnappedToByEdge:(int)a3 ofFrame:(CGRect)a4 inVisibleUnscaledRect:(CGRect)a5
+- (BOOL)canBeSnappedToByEdge:(int)edge ofFrame:(CGRect)frame inVisibleUnscaledRect:(CGRect)rect
 {
-  height = a5.size.height;
-  y = a5.origin.y;
-  width = a5.size.width;
-  x = a5.origin.x;
-  v6 = a4.size.height;
-  v7 = a4.size.width;
-  v8 = a4.origin.y;
-  v9 = a4.origin.x;
-  v10 = *&a3;
+  height = rect.size.height;
+  y = rect.origin.y;
+  width = rect.size.width;
+  x = rect.origin.x;
+  v6 = frame.size.height;
+  v7 = frame.size.width;
+  v8 = frame.origin.y;
+  v9 = frame.origin.x;
+  v10 = *&edge;
   WeakRetained = objc_loadWeakRetained(&self->mVerticalGeom);
   [WeakRetained makeHorizontalSpacingRectBetweenRect:self->mGeneratingObjectRect.origin.x andRect:{self->mGeneratingObjectRect.origin.y, self->mGeneratingObjectRect.size.width, self->mGeneratingObjectRect.size.height, v9, v8, v7, v6}];
   v32 = v13;
@@ -230,12 +230,12 @@ LABEL_30:
   return [(CRLCanvasAlignmentGuide *)&v33 canBeSnappedToByEdge:v10 ofFrame:v9 inVisibleUnscaledRect:v8, v7, v6, x, y, width, v28];
 }
 
-- (BOOL)isAssociatedContentVisibleInUnscaledRect:(CGRect)a3
+- (BOOL)isAssociatedContentVisibleInUnscaledRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   mOppositeOffset = self->mOppositeOffset;
   WeakRetained = objc_loadWeakRetained(&self->mVerticalGeom);
   [WeakRetained rectMinX:{x, y, width, height}];
@@ -255,19 +255,19 @@ LABEL_30:
   return sub_10011FF38(self->mGeneratingObjectRect.origin.x, self->mGeneratingObjectRect.origin.y, self->mGeneratingObjectRect.size.width, self->mGeneratingObjectRect.size.height, x, y, width, height) && v14;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(CRLCanvasSpacingGuide *)self parentSpacing];
-  v6 = [v4 parentSpacing];
+  compareCopy = compare;
+  parentSpacing = [(CRLCanvasSpacingGuide *)self parentSpacing];
+  parentSpacing2 = [compareCopy parentSpacing];
 
-  v7 = [v5 compare:v6];
+  v7 = [parentSpacing compare:parentSpacing2];
   return v7;
 }
 
-- (id)renderableWithICC:(id)a3
+- (id)renderableWithICC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   WeakRetained = objc_loadWeakRetained(&self->mVerticalGeom);
   [WeakRetained makeHorizontalSpacingRectBetweenRect:self->mGeneratingObjectRect.origin.x andRect:{self->mGeneratingObjectRect.origin.y, self->mGeneratingObjectRect.size.width, self->mGeneratingObjectRect.size.height, self->super.super.mSnappingObjectFrame.origin.x, self->super.super.mSnappingObjectFrame.origin.y, self->super.super.mSnappingObjectFrame.size.width, self->super.super.mSnappingObjectFrame.size.height}];
   v7 = v6;
@@ -287,8 +287,8 @@ LABEL_30:
     -[CRLCanvasRenderable setBackgroundColor:](self->super.mRenderable, "setBackgroundColor:", [v17 CGColor]);
 
     [(CRLCanvasRenderable *)self->super.mRenderable setPosition:CGPointZero.x, CGPointZero.y];
-    v18 = [(CRLCanvasSpacingGuide *)self parentSpacing];
-    v19 = [v18 spacingRectsRenderableForGuideRect:v4 withICC:{v7, v9, v11, v13}];
+    parentSpacing = [(CRLCanvasSpacingGuide *)self parentSpacing];
+    v19 = [parentSpacing spacingRectsRenderableForGuideRect:cCopy withICC:{v7, v9, v11, v13}];
 
     if (v19)
     {
@@ -297,7 +297,7 @@ LABEL_30:
 
     v20 = [CRLCanvasSpacingGuideUILayer alloc];
     v21 = objc_loadWeakRetained(&self->mVerticalGeom);
-    v22 = -[CRLCanvasSpacingGuideUILayer initWithSpacingRect:ofOrientation:icc:useVisibleRect:](v20, "initWithSpacingRect:ofOrientation:icc:useVisibleRect:", [v21 horizontalOrientation], v4, 1, v7, v9, v11, v13);
+    v22 = -[CRLCanvasSpacingGuideUILayer initWithSpacingRect:ofOrientation:icc:useVisibleRect:](v20, "initWithSpacingRect:ofOrientation:icc:useVisibleRect:", [v21 horizontalOrientation], cCopy, 1, v7, v9, v11, v13);
     mSpacingUILayer = self->mSpacingUILayer;
     self->mSpacingUILayer = v22;
 
@@ -309,16 +309,16 @@ LABEL_30:
     mRenderable = self->super.mRenderable;
   }
 
-  v26 = [(CRLCanvasSpacingGuide *)self parentSpacing];
-  v27 = [v26 spacingRectsRenderableForGuideRect:v4 withICC:{v7, v9, v11, v13}];
+  parentSpacing2 = [(CRLCanvasSpacingGuide *)self parentSpacing];
+  v27 = [parentSpacing2 spacingRectsRenderableForGuideRect:cCopy withICC:{v7, v9, v11, v13}];
   [(CRLCanvasRenderable *)mRenderable addSubrenderable:v27];
 
   if (self->super.super.mLocationInvalidated)
   {
-    v28 = [(CRLCanvasSpacingGuide *)self parentSpacing];
-    [v28 updateSpacingUIWithICC:v4];
+    parentSpacing3 = [(CRLCanvasSpacingGuide *)self parentSpacing];
+    [parentSpacing3 updateSpacingUIWithICC:cCopy];
 
-    [(CRLCanvasSpacingGuideUILayer *)self->mSpacingUILayer setFrameFromSpacingRect:v4 icc:v7, v9, v11, v13];
+    [(CRLCanvasSpacingGuideUILayer *)self->mSpacingUILayer setFrameFromSpacingRect:cCopy icc:v7, v9, v11, v13];
     self->super.super.mLocationInvalidated = 0;
   }
 
@@ -354,8 +354,8 @@ LABEL_30:
 
   [(CRLCanvasAbstractGuide *)self offset];
   v8 = v7;
-  v9 = [(CRLCanvasSpacingGuide *)self parentSpacing];
-  [v9 exactOffset];
+  parentSpacing = [(CRLCanvasSpacingGuide *)self parentSpacing];
+  [parentSpacing exactOffset];
   v11 = v10;
   v12 = NSStringFromCGRect(self->mGeneratingObjectRect);
   v13 = [NSString stringWithFormat:@"<%@ %p: %@ %@ spacing guide with offset %f parentOffset %f from SpacingRect: %@>", v4, self, v5, v6, v8, v11, v12];

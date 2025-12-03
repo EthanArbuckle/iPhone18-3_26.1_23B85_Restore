@@ -1,23 +1,23 @@
 @interface SXJSONArray
-- (SXJSONArray)initWithValueClassBlock:(id)a3 objectValueClassBlock:(id)a4 purgeBlock:(id)a5 andJSONObject:(id)a6 andVersion:(id)a7;
+- (SXJSONArray)initWithValueClassBlock:(id)block objectValueClassBlock:(id)classBlock purgeBlock:(id)purgeBlock andJSONObject:(id)object andVersion:(id)version;
 - (id)NSArray;
 - (id)description;
 - (id)firstObject;
 - (id)lastObject;
-- (id)objectAtIndex:(unint64_t)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (id)objectAtIndex:(unint64_t)index;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation SXJSONArray
 
-- (SXJSONArray)initWithValueClassBlock:(id)a3 objectValueClassBlock:(id)a4 purgeBlock:(id)a5 andJSONObject:(id)a6 andVersion:(id)a7
+- (SXJSONArray)initWithValueClassBlock:(id)block objectValueClassBlock:(id)classBlock purgeBlock:(id)purgeBlock andJSONObject:(id)object andVersion:(id)version
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12)
+  blockCopy = block;
+  classBlockCopy = classBlock;
+  purgeBlockCopy = purgeBlock;
+  objectCopy = object;
+  versionCopy = version;
+  if (blockCopy)
   {
     v38.receiver = self;
     v38.super_class = SXJSONArray;
@@ -25,25 +25,25 @@
     v18 = v17;
     if (v17)
     {
-      objc_storeStrong(&v17->super._specificationVersion, a7);
+      objc_storeStrong(&v17->super._specificationVersion, version);
       v19 = MEMORY[0x1E696AE18];
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
       v35[2] = __97__SXJSONArray_initWithValueClassBlock_objectValueClassBlock_purgeBlock_andJSONObject_andVersion___block_invoke;
       v35[3] = &unk_1E8500860;
-      v34 = v14;
-      v37 = v14;
-      v36 = v16;
+      v34 = purgeBlockCopy;
+      v37 = purgeBlockCopy;
+      v36 = versionCopy;
       v20 = [v19 predicateWithBlock:v35];
-      v21 = [(SXJSONArray *)v15 filteredArrayUsingPredicate:v20];
+      v21 = [(SXJSONArray *)objectCopy filteredArrayUsingPredicate:v20];
       json = v18->_json;
       v18->_json = v21;
 
-      v23 = [v13 copy];
+      v23 = [classBlockCopy copy];
       objectValueClassBlock = v18->_objectValueClassBlock;
       v18->_objectValueClassBlock = v23;
 
-      v25 = [v12 copy];
+      v25 = [blockCopy copy];
       valueClassBlock = v18->_valueClassBlock;
       v18->_valueClassBlock = v25;
 
@@ -58,8 +58,8 @@
         do
         {
           v30 = v18->_objects;
-          v31 = [MEMORY[0x1E695DFB0] null];
-          [(NSMutableArray *)v30 addObject:v31];
+          null = [MEMORY[0x1E695DFB0] null];
+          [(NSMutableArray *)v30 addObject:null];
 
           ++v29;
         }
@@ -68,7 +68,7 @@
       }
 
       self = v18;
-      v14 = v34;
+      purgeBlockCopy = v34;
     }
 
     else
@@ -79,7 +79,7 @@
 
   else
   {
-    v18 = v15;
+    v18 = objectCopy;
   }
 
   v32 = v18;
@@ -96,25 +96,25 @@ BOOL __97__SXJSONArray_initWithValueClassBlock_objectValueClassBlock_purgeBlock_
   return v6;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  if (self->_count <= a3)
+  if (self->_count <= index)
   {
     v5 = 0;
     goto LABEL_23;
   }
 
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMutableArray *)self->_objects objectAtIndex:a3];
+  v5 = [(NSMutableArray *)self->_objects objectAtIndex:index];
   os_unfair_lock_unlock(&self->super._unfairLock);
-  v6 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v5 != v6)
+  if (v5 != null)
   {
     goto LABEL_23;
   }
 
-  v7 = [(NSArray *)self->_json objectAtIndex:a3];
+  v7 = [(NSArray *)self->_json objectAtIndex:index];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -169,12 +169,12 @@ BOOL __97__SXJSONArray_initWithValueClassBlock_objectValueClassBlock_purgeBlock_
     v5 = v10;
 LABEL_18:
     os_unfair_lock_lock_with_options();
-    v17 = [(NSMutableArray *)self->_objects objectAtIndex:a3];
-    v18 = [MEMORY[0x1E695DFB0] null];
+    v17 = [(NSMutableArray *)self->_objects objectAtIndex:index];
+    null2 = [MEMORY[0x1E695DFB0] null];
 
-    if (v17 == v18)
+    if (v17 == null2)
     {
-      [(NSMutableArray *)self->_objects replaceObjectAtIndex:a3 withObject:v5];
+      [(NSMutableArray *)self->_objects replaceObjectAtIndex:index withObject:v5];
     }
 
     else
@@ -229,42 +229,42 @@ LABEL_23:
   return v4;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  var0 = a3->var0;
-  if (self->_count - a3->var0 >= a5)
+  var0 = state->var0;
+  if (self->_count - state->var0 >= count)
   {
-    v7 = a5;
+    countCopy = count;
   }
 
   else
   {
-    v7 = self->_count - a3->var0;
+    countCopy = self->_count - state->var0;
   }
 
-  a3->var1 = a4;
-  a3->var2 = a3->var3;
-  if (v7)
+  state->var1 = objects;
+  state->var2 = state->var3;
+  if (countCopy)
   {
-    v8 = a4;
+    objectsCopy = objects;
     v10 = var0;
-    v11 = v7;
+    v11 = countCopy;
     do
     {
-      *v8++ = [(SXJSONArray *)self objectAtIndex:v10++];
+      *objectsCopy++ = [(SXJSONArray *)self objectAtIndex:v10++];
       --v11;
     }
 
     while (v11);
   }
 
-  a3->var0 = v7 + var0;
-  return v7;
+  state->var0 = countCopy + var0;
+  return countCopy;
 }
 
 - (id)NSArray
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self->_count)
   {
     v4 = 0;
@@ -272,7 +272,7 @@ LABEL_23:
     do
     {
       v6 = [(SXJSONArray *)self objectAtIndex:v4];
-      [v3 addObject:v6];
+      [array addObject:v6];
 
       v4 = v5;
     }
@@ -280,7 +280,7 @@ LABEL_23:
     while (self->_count > v5++);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)description

@@ -6,10 +6,10 @@
 
 - (BOOL)wf_isUserCancelledError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x277CCA050]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA050]])
   {
-    v3 = [a1 code] == 3072;
+    v3 = [self code] == 3072;
   }
 
   else

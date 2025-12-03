@@ -1,8 +1,8 @@
 @interface SBFWallpaperCoreAnalyticsLogger
 - (SBFWallpaperCoreAnalyticsLogger)init;
-- (SBFWallpaperCoreAnalyticsLogger)initWithWallpaperDefaultsDomain:(id)a3;
+- (SBFWallpaperCoreAnalyticsLogger)initWithWallpaperDefaultsDomain:(id)domain;
 - (unint64_t)ageOfWallpaper;
-- (void)saveStateOfWallpaperToCoreAnalytics:(int64_t)a3 withHasVideo:(BOOL)a4 hasProcedural:(BOOL)a5 name:(id)a6;
+- (void)saveStateOfWallpaperToCoreAnalytics:(int64_t)analytics withHasVideo:(BOOL)video hasProcedural:(BOOL)procedural name:(id)name;
 @end
 
 @implementation SBFWallpaperCoreAnalyticsLogger
@@ -15,16 +15,16 @@
   return v4;
 }
 
-- (SBFWallpaperCoreAnalyticsLogger)initWithWallpaperDefaultsDomain:(id)a3
+- (SBFWallpaperCoreAnalyticsLogger)initWithWallpaperDefaultsDomain:(id)domain
 {
-  v5 = a3;
+  domainCopy = domain;
   v9.receiver = self;
   v9.super_class = SBFWallpaperCoreAnalyticsLogger;
   v6 = [(SBFWallpaperCoreAnalyticsLogger *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wallpaperDefaultsDomain, a3);
+    objc_storeStrong(&v6->_wallpaperDefaultsDomain, domain);
   }
 
   return v7;
@@ -32,13 +32,13 @@
 
 - (unint64_t)ageOfWallpaper
 {
-  v2 = [(PBUIWallpaperDefaultsDomain *)self->_wallpaperDefaultsDomain dateWallpaperLastChanged];
-  v3 = [MEMORY[0x1E695DF00] date];
-  if (v2)
+  dateWallpaperLastChanged = [(PBUIWallpaperDefaultsDomain *)self->_wallpaperDefaultsDomain dateWallpaperLastChanged];
+  date = [MEMORY[0x1E695DF00] date];
+  if (dateWallpaperLastChanged)
   {
     v4 = objc_alloc(MEMORY[0x1E695DEE8]);
     v5 = [v4 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-    v6 = [v5 components:16 fromDate:v2 toDate:v3 options:0];
+    v6 = [v5 components:16 fromDate:dateWallpaperLastChanged toDate:date options:0];
     v7 = [v6 day];
   }
 
@@ -65,14 +65,14 @@ LABEL_9:
   return v10;
 }
 
-- (void)saveStateOfWallpaperToCoreAnalytics:(int64_t)a3 withHasVideo:(BOOL)a4 hasProcedural:(BOOL)a5 name:(id)a6
+- (void)saveStateOfWallpaperToCoreAnalytics:(int64_t)analytics withHasVideo:(BOOL)video hasProcedural:(BOOL)procedural name:(id)name
 {
-  v8 = a4;
-  v18 = a6;
-  v11 = [v18 length];
+  videoCopy = video;
+  nameCopy = name;
+  v11 = [nameCopy length];
   v12 = v11;
   v13 = @"UserPhoto";
-  if (v8)
+  if (videoCopy)
   {
     v13 = @"UserIris";
     v14 = @"PreCannedIris";
@@ -88,7 +88,7 @@ LABEL_9:
     v13 = v14;
   }
 
-  if (a5)
+  if (procedural)
   {
     v15 = @"Procedural";
   }
@@ -100,38 +100,38 @@ LABEL_9:
 
   if ([(__CFString *)v15 length])
   {
-    if (a3)
+    if (analytics)
     {
       lockType = self->_lockType;
       self->_lockType = &v15->isa;
     }
 
-    if ((a3 & 2) != 0)
+    if ((analytics & 2) != 0)
     {
       homeType = self->_homeType;
       self->_homeType = &v15->isa;
     }
   }
 
-  if (v12 && [v18 length])
+  if (v12 && [nameCopy length])
   {
-    if (a3)
+    if (analytics)
     {
-      objc_storeStrong(&self->_lockName, a6);
+      objc_storeStrong(&self->_lockName, name);
     }
 
-    if ((a3 & 2) != 0)
+    if ((analytics & 2) != 0)
     {
-      objc_storeStrong(&self->_homeName, a6);
+      objc_storeStrong(&self->_homeName, name);
     }
   }
 
-  if (a3)
+  if (analytics)
   {
-    self->_irisEnabled = v8;
+    self->_irisEnabled = videoCopy;
   }
 
-  self->_sharedWallpaper = a3 == 3;
+  self->_sharedWallpaper = analytics == 3;
 }
 
 id __70__SBFWallpaperCoreAnalyticsLogger_sendStateOfWallpaperToCoreAnalytics__block_invoke(uint64_t a1)

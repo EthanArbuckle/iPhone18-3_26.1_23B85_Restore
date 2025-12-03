@@ -1,20 +1,20 @@
 @interface SMTPhoneticMatchHelper
-+ (id)fetchContentsWithConfiguration:(id)a3 feedTypeString:(id)a4 rankingMethod:(id)a5 shouldStopBlock:(id)a6;
++ (id)fetchContentsWithConfiguration:(id)configuration feedTypeString:(id)string rankingMethod:(id)method shouldStopBlock:(id)block;
 @end
 
 @implementation SMTPhoneticMatchHelper
 
-+ (id)fetchContentsWithConfiguration:(id)a3 feedTypeString:(id)a4 rankingMethod:(id)a5 shouldStopBlock:(id)a6
++ (id)fetchContentsWithConfiguration:(id)configuration feedTypeString:(id)string rankingMethod:(id)method shouldStopBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v74 = [v10 isEqualToString:EARPhoneticMatchFeedTypeArtistsKey];
+  configurationCopy = configuration;
+  stringCopy = string;
+  methodCopy = method;
+  blockCopy = block;
+  v74 = [stringCopy isEqualToString:EARPhoneticMatchFeedTypeArtistsKey];
   if (v74)
   {
-    v13 = [objc_alloc(sub_100024154()) init];
-    [v13 setGroupingType:2];
+    podcastsQuery = [objc_alloc(sub_100024154()) init];
+    [podcastsQuery setGroupingType:2];
     v14 = 0;
     v71 = 0;
     v72 = 0;
@@ -24,10 +24,10 @@
     v15 = 1;
   }
 
-  else if ([v10 isEqualToString:EARPhoneticMatchFeedTypeSongsKey])
+  else if ([stringCopy isEqualToString:EARPhoneticMatchFeedTypeSongsKey])
   {
-    v13 = [objc_alloc(sub_100024154()) init];
-    [v13 setGroupingType:0];
+    podcastsQuery = [objc_alloc(sub_100024154()) init];
+    [podcastsQuery setGroupingType:0];
     v14 = 0;
     v70 = 0;
     v71 = 0;
@@ -37,10 +37,10 @@
     v15 = 3;
   }
 
-  else if ([v10 isEqualToString:EARPhoneticMatchFeedTypeSongsArtistsKey])
+  else if ([stringCopy isEqualToString:EARPhoneticMatchFeedTypeSongsArtistsKey])
   {
-    v13 = [objc_alloc(sub_100024154()) init];
-    [v13 setGroupingType:0];
+    podcastsQuery = [objc_alloc(sub_100024154()) init];
+    [podcastsQuery setGroupingType:0];
     v14 = 0;
     v70 = 0;
     v71 = 0;
@@ -50,11 +50,11 @@
     v15 = 4;
   }
 
-  else if ([v10 isEqualToString:EARPhoneticMatchFeedTypeAlbumsKey])
+  else if ([stringCopy isEqualToString:EARPhoneticMatchFeedTypeAlbumsKey])
   {
-    v13 = [objc_alloc(sub_100024154()) init];
+    podcastsQuery = [objc_alloc(sub_100024154()) init];
     v71 = 1;
-    [v13 setGroupingType:1];
+    [podcastsQuery setGroupingType:1];
     v14 = 0;
     v72 = 0;
     v70 = 0;
@@ -63,11 +63,11 @@
     v15 = 2;
   }
 
-  else if ([v10 isEqualToString:EARPhoneticMatchFeedTypeAlbumsArtistsKey])
+  else if ([stringCopy isEqualToString:EARPhoneticMatchFeedTypeAlbumsArtistsKey])
   {
-    v13 = [objc_alloc(sub_100024154()) init];
+    podcastsQuery = [objc_alloc(sub_100024154()) init];
     v70 = 1;
-    [v13 setGroupingType:1];
+    [podcastsQuery setGroupingType:1];
     v14 = 0;
     v71 = 0;
     v72 = 0;
@@ -76,9 +76,9 @@
     v15 = 5;
   }
 
-  else if ([v10 isEqualToString:EARPhoneticMatchFeedTypePodcastsKey])
+  else if ([stringCopy isEqualToString:EARPhoneticMatchFeedTypePodcastsKey])
   {
-    v13 = [sub_100024154() podcastsQuery];
+    podcastsQuery = [sub_100024154() podcastsQuery];
     v14 = 0;
     v71 = 0;
     v72 = 0;
@@ -88,9 +88,9 @@
     v15 = 9;
   }
 
-  else if ([v10 isEqualToString:EARPhoneticMatchFeedTypePlaylistsKey])
+  else if ([stringCopy isEqualToString:EARPhoneticMatchFeedTypePlaylistsKey])
   {
-    v13 = [sub_100024154() playlistsQuery];
+    podcastsQuery = [sub_100024154() playlistsQuery];
     v71 = 0;
     v72 = 0;
     v70 = 0;
@@ -102,13 +102,13 @@
 
   else
   {
-    if (![v10 isEqualToString:EARPhoneticMatchFeedTypeComposersKey])
+    if (![stringCopy isEqualToString:EARPhoneticMatchFeedTypeComposersKey])
     {
       v61 = 0;
       goto LABEL_71;
     }
 
-    v13 = [sub_100024154() composersQuery];
+    podcastsQuery = [sub_100024154() composersQuery];
     v14 = 0;
     v71 = 0;
     v72 = 0;
@@ -118,29 +118,29 @@
     v15 = 6;
   }
 
-  [v13 setShouldIncludeNonLibraryEntities:1];
-  [v13 setSortItems:1];
-  v16 = [[_EARPhoneticMatchData alloc] initWithFeedType:v15 jsonConfigFile:v9];
-  v17 = [v16 getLimit];
-  if (v17 >= 2000)
+  [podcastsQuery setShouldIncludeNonLibraryEntities:1];
+  [podcastsQuery setSortItems:1];
+  v16 = [[_EARPhoneticMatchData alloc] initWithFeedType:v15 jsonConfigFile:configurationCopy];
+  getLimit = [v16 getLimit];
+  if (getLimit >= 2000)
   {
     v18 = 2000;
   }
 
   else
   {
-    v18 = v17;
+    v18 = getLimit;
   }
 
-  [v13 setEntityLimit:v18 & ~(v18 >> 31)];
+  [podcastsQuery setEntityLimit:v18 & ~(v18 >> 31)];
   if ((v14 & 1) == 0)
   {
-    if ([v11 isEqualToString:EARPhoneticMatchRankingMethodPlayCount])
+    if ([methodCopy isEqualToString:EARPhoneticMatchRankingMethodPlayCount])
     {
       v19 = sub_100024234();
       v94 = v19;
       v20 = [NSArray arrayWithObjects:&v94 count:1];
-      [v13 _setOrderingProperties:v20];
+      [podcastsQuery _setOrderingProperties:v20];
 
       v21 = sub_100024234();
       v92 = v21;
@@ -149,17 +149,17 @@
       v23 = &v92;
 LABEL_25:
       v26 = [NSDictionary dictionaryWithObjects:v22 forKeys:v23 count:1];
-      [v13 _setOrderingDirectionMappings:v26];
+      [podcastsQuery _setOrderingDirectionMappings:v26];
 
       goto LABEL_26;
     }
 
-    if ([v11 isEqualToString:EARPhoneticMatchRankingMethodMostRecentlyPlayed])
+    if ([methodCopy isEqualToString:EARPhoneticMatchRankingMethodMostRecentlyPlayed])
     {
       v24 = sub_100024398();
       v91 = v24;
       v25 = [NSArray arrayWithObjects:&v91 count:1];
-      [v13 _setOrderingProperties:v25];
+      [podcastsQuery _setOrderingProperties:v25];
 
       v21 = sub_100024398();
       v89 = v21;
@@ -176,16 +176,16 @@ LABEL_26:
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  obj = [v13 collections];
+  obj = [podcastsQuery collections];
   v27 = [obj countByEnumeratingWithState:&v76 objects:v88 count:16];
   if (v27)
   {
     v28 = v27;
     v75 = *v77;
-    v68 = v10;
-    v69 = v9;
-    v66 = v13;
-    v67 = v11;
+    v68 = stringCopy;
+    v69 = configurationCopy;
+    v66 = podcastsQuery;
+    v67 = methodCopy;
     do
     {
       v29 = 0;
@@ -198,83 +198,83 @@ LABEL_26:
 
         v30 = *(*(&v76 + 1) + 8 * v29);
         v31 = objc_autoreleasePoolPush();
-        if (v12[2](v12))
+        if (blockCopy[2](blockCopy))
         {
           objc_autoreleasePoolPop(v31);
 
           v61 = 0;
-          v10 = v68;
-          v9 = v69;
-          v13 = v66;
-          v11 = v67;
+          stringCopy = v68;
+          configurationCopy = v69;
+          podcastsQuery = v66;
+          methodCopy = v67;
           goto LABEL_70;
         }
 
         if (![v16 roomForMoreData])
         {
           objc_autoreleasePoolPop(v31);
-          v10 = v68;
-          v9 = v69;
-          v13 = v66;
-          v11 = v67;
+          stringCopy = v68;
+          configurationCopy = v69;
+          podcastsQuery = v66;
+          methodCopy = v67;
           goto LABEL_69;
         }
 
         if (v74)
         {
-          v32 = [v30 representativeItem];
-          v33 = [v32 artist];
+          representativeItem = [v30 representativeItem];
+          artist = [representativeItem artist];
 
-          if (!v33)
+          if (!artist)
           {
             goto LABEL_42;
           }
 
-          v34 = [v30 representativeItem];
-          v35 = [v34 artist];
-          v87 = v35;
+          representativeItem2 = [v30 representativeItem];
+          artist2 = [representativeItem2 artist];
+          v87 = artist2;
           v36 = &v87;
           goto LABEL_39;
         }
 
         if (HIDWORD(v72))
         {
-          v37 = [v30 representativeItem];
-          v38 = [v37 title];
+          representativeItem3 = [v30 representativeItem];
+          title = [representativeItem3 title];
 
-          if (!v38)
+          if (!title)
           {
             goto LABEL_42;
           }
 
-          v34 = [v30 representativeItem];
-          v35 = [v34 title];
-          v86 = v35;
+          representativeItem2 = [v30 representativeItem];
+          artist2 = [representativeItem2 title];
+          v86 = artist2;
           v36 = &v86;
           goto LABEL_39;
         }
 
         if (v72)
         {
-          v34 = [v30 representativeItem];
-          v41 = [v34 title];
-          if (!v41)
+          representativeItem2 = [v30 representativeItem];
+          title2 = [representativeItem2 title];
+          if (!title2)
           {
             goto LABEL_41;
           }
 
-          v42 = v41;
-          v43 = [v30 representativeItem];
-          v44 = [v43 artist];
+          v42 = title2;
+          representativeItem4 = [v30 representativeItem];
+          artist3 = [representativeItem4 artist];
 
-          if (v44)
+          if (artist3)
           {
-            v34 = [v30 representativeItem];
-            v35 = [v34 title];
-            v85[0] = v35;
-            v39 = [v30 representativeItem];
-            v45 = [v39 artist];
-            v85[1] = v45;
+            representativeItem2 = [v30 representativeItem];
+            artist2 = [representativeItem2 title];
+            v85[0] = artist2;
+            representativeItem5 = [v30 representativeItem];
+            artist4 = [representativeItem5 artist];
+            v85[1] = artist4;
             v46 = v85;
             goto LABEL_48;
           }
@@ -282,14 +282,14 @@ LABEL_26:
 
         else if (v71)
         {
-          v49 = [v30 representativeItem];
-          v50 = [v49 albumTitle];
+          representativeItem6 = [v30 representativeItem];
+          albumTitle = [representativeItem6 albumTitle];
 
-          if (v50)
+          if (albumTitle)
           {
-            v34 = [v30 representativeItem];
-            v35 = [v34 albumTitle];
-            v84 = v35;
+            representativeItem2 = [v30 representativeItem];
+            artist2 = [representativeItem2 albumTitle];
+            v84 = artist2;
             v36 = &v84;
             goto LABEL_39;
           }
@@ -297,25 +297,25 @@ LABEL_26:
 
         else if (v70)
         {
-          v34 = [v30 representativeItem];
-          v51 = [v34 albumTitle];
-          if (!v51)
+          representativeItem2 = [v30 representativeItem];
+          albumTitle2 = [representativeItem2 albumTitle];
+          if (!albumTitle2)
           {
             goto LABEL_41;
           }
 
-          v52 = v51;
-          v53 = [v30 representativeItem];
-          v54 = [v53 albumArtist];
+          v52 = albumTitle2;
+          representativeItem7 = [v30 representativeItem];
+          albumArtist = [representativeItem7 albumArtist];
 
-          if (v54)
+          if (albumArtist)
           {
-            v34 = [v30 representativeItem];
-            v35 = [v34 albumTitle];
-            v83[0] = v35;
-            v39 = [v30 representativeItem];
-            v45 = [v39 albumArtist];
-            v83[1] = v45;
+            representativeItem2 = [v30 representativeItem];
+            artist2 = [representativeItem2 albumTitle];
+            v83[0] = artist2;
+            representativeItem5 = [v30 representativeItem];
+            artist4 = [representativeItem5 albumArtist];
+            v83[1] = artist4;
             v46 = v83;
 LABEL_48:
             v47 = [NSArray arrayWithObjects:v46 count:2];
@@ -329,14 +329,14 @@ LABEL_41:
 
         else if (v65)
         {
-          v55 = [v30 representativeItem];
-          v56 = [v55 podcastTitle];
+          representativeItem8 = [v30 representativeItem];
+          podcastTitle = [representativeItem8 podcastTitle];
 
-          if (v56)
+          if (podcastTitle)
           {
-            v34 = [v30 representativeItem];
-            v35 = [v34 podcastTitle];
-            v82 = v35;
+            representativeItem2 = [v30 representativeItem];
+            artist2 = [representativeItem2 podcastTitle];
+            v82 = artist2;
             v36 = &v82;
             goto LABEL_39;
           }
@@ -346,34 +346,34 @@ LABEL_41:
         {
           if (v64)
           {
-            v34 = v30;
-            v57 = [v34 name];
+            representativeItem2 = v30;
+            name = [representativeItem2 name];
 
-            if (!v57)
+            if (!name)
             {
               goto LABEL_41;
             }
 
-            v35 = [v34 name];
-            v81 = v35;
+            artist2 = [representativeItem2 name];
+            v81 = artist2;
             v36 = &v81;
 LABEL_39:
-            v39 = [NSArray arrayWithObjects:v36 count:1];
+            representativeItem5 = [NSArray arrayWithObjects:v36 count:1];
             LODWORD(v40) = 1.0;
-            [v16 appendData:v39 prior:v40];
+            [v16 appendData:representativeItem5 prior:v40];
             goto LABEL_40;
           }
 
           if (v63)
           {
-            v58 = [v30 representativeItem];
-            v59 = [v58 composer];
+            representativeItem9 = [v30 representativeItem];
+            composer = [representativeItem9 composer];
 
-            if (v59)
+            if (composer)
             {
-              v34 = [v30 representativeItem];
-              v35 = [v34 composer];
-              v80 = v35;
+              representativeItem2 = [v30 representativeItem];
+              artist2 = [representativeItem2 composer];
+              v80 = artist2;
               v36 = &v80;
               goto LABEL_39;
             }
@@ -388,10 +388,10 @@ LABEL_42:
       while (v28 != v29);
       v60 = [obj countByEnumeratingWithState:&v76 objects:v88 count:16];
       v28 = v60;
-      v10 = v68;
-      v9 = v69;
-      v13 = v66;
-      v11 = v67;
+      stringCopy = v68;
+      configurationCopy = v69;
+      podcastsQuery = v66;
+      methodCopy = v67;
     }
 
     while (v60);

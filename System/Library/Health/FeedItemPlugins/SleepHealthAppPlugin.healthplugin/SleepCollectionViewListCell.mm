@@ -1,17 +1,17 @@
 @interface SleepCollectionViewListCell
-- (_TtC20SleepHealthAppPlugin27SleepCollectionViewListCell)initWithCoder:(id)a3;
-- (_TtC20SleepHealthAppPlugin27SleepCollectionViewListCell)initWithFrame:(CGRect)a3;
+- (_TtC20SleepHealthAppPlugin27SleepCollectionViewListCell)initWithCoder:(id)coder;
+- (_TtC20SleepHealthAppPlugin27SleepCollectionViewListCell)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
 @end
 
 @implementation SleepCollectionViewListCell
 
-- (_TtC20SleepHealthAppPlugin27SleepCollectionViewListCell)initWithFrame:(CGRect)a3
+- (_TtC20SleepHealthAppPlugin27SleepCollectionViewListCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_29E7544C8();
   sub_29E7544B8();
   sub_29E754468();
@@ -22,15 +22,15 @@
 
   v12.receiver = self;
   v12.super_class = type metadata accessor for SleepCollectionViewListCell();
-  v8 = [(SleepCollectionViewListCell *)&v12 initWithFrame:x, y, width, height];
-  v9 = *((*MEMORY[0x29EDCA1E8] & v8->super.super.super.super.super.super.isa) + 0x50);
-  v10 = v8;
+  height = [(SleepCollectionViewListCell *)&v12 initWithFrame:x, y, width, height];
+  v9 = *((*MEMORY[0x29EDCA1E8] & height->super.super.super.super.super.super.isa) + 0x50);
+  v10 = height;
   v9();
 
   return v10;
 }
 
-- (_TtC20SleepHealthAppPlugin27SleepCollectionViewListCell)initWithCoder:(id)a3
+- (_TtC20SleepHealthAppPlugin27SleepCollectionViewListCell)initWithCoder:(id)coder
 {
   sub_29E7544C8();
   sub_29E7544B8();
@@ -55,7 +55,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_29E71D07C();
 }
 

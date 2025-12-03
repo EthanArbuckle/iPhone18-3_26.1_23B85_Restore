@@ -1,38 +1,38 @@
 @interface AmbientNoMatchUIView
 - (CGSize)intrinsicContentSize;
-- (_TtC11ShazamKitUI20AmbientNoMatchUIView)initWithCoder:(id)a3;
-- (_TtC11ShazamKitUI20AmbientNoMatchUIView)initWithFrame:(CGRect)a3;
+- (_TtC11ShazamKitUI20AmbientNoMatchUIView)initWithCoder:(id)coder;
+- (_TtC11ShazamKitUI20AmbientNoMatchUIView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AmbientNoMatchUIView
 
-- (_TtC11ShazamKitUI20AmbientNoMatchUIView)initWithFrame:(CGRect)a3
+- (_TtC11ShazamKitUI20AmbientNoMatchUIView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = OBJC_IVAR____TtC11ShazamKitUI20AmbientNoMatchUIView_titleLabel;
   *(&self->super.super.super.isa + v9) = [objc_allocWithZone(MEMORY[0x277D756B8]) initWithFrame_];
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(AmbientNoMatchUIView *)&v12 initWithFrame:x, y, width, height];
+  height = [(AmbientNoMatchUIView *)&v12 initWithFrame:x, y, width, height];
   sub_265F97C20();
 
-  return v10;
+  return height;
 }
 
-- (_TtC11ShazamKitUI20AmbientNoMatchUIView)initWithCoder:(id)a3
+- (_TtC11ShazamKitUI20AmbientNoMatchUIView)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = OBJC_IVAR____TtC11ShazamKitUI20AmbientNoMatchUIView_titleLabel;
   v7 = objc_allocWithZone(MEMORY[0x277D756B8]);
-  v8 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.isa + v6) = [v7 initWithFrame_];
   v13.receiver = self;
   v13.super_class = ObjectType;
-  v9 = [(AmbientNoMatchUIView *)&v13 initWithCoder:v8];
+  v9 = [(AmbientNoMatchUIView *)&v13 initWithCoder:coderCopy];
   v10 = v9;
   if (v9)
   {
@@ -45,12 +45,12 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  v3 = [(AmbientNoMatchUIView *)v2 superview];
-  if (v3)
+  selfCopy = self;
+  superview = [(AmbientNoMatchUIView *)selfCopy superview];
+  if (superview)
   {
-    v4 = v3;
-    [v3 bounds];
+    v4 = superview;
+    [superview bounds];
     v6 = v5;
     v8 = v7;
   }

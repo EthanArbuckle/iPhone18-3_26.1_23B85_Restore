@@ -1,20 +1,20 @@
 @interface BioUserDefaults
-+ (id)preferenceObjectForKey:(id)a3;
++ (id)preferenceObjectForKey:(id)key;
 + (id)sharedInstance;
-- (BOOL)BOOLForKey:(id)a3;
-- (BOOL)setObject:(id)a3 forKey:(id)a4;
+- (BOOL)BOOLForKey:(id)key;
+- (BOOL)setObject:(id)object forKey:(id)key;
 - (BOOL)synchronize;
-- (id)numberForKey:(id)a3;
-- (id)objectOfClass:(Class)a3 forKey:(id)a4;
+- (id)numberForKey:(id)key;
+- (id)objectOfClass:(Class)class forKey:(id)key;
 - (id)stateDictionary;
-- (id)stringForKey:(id)a3;
-- (int)intForKey:(id)a3;
-- (int64_t)integerForKey:(id)a3;
-- (unint64_t)unsignedIntegerForKey:(id)a3;
-- (unsigned)unsignedIntForKey:(id)a3;
-- (void)registerDefaults:(id)a3;
-- (void)registerUpdateNotification:(id)a3;
-- (void)unregisterUpdateNotification:(id)a3;
+- (id)stringForKey:(id)key;
+- (int)intForKey:(id)key;
+- (int64_t)integerForKey:(id)key;
+- (unint64_t)unsignedIntegerForKey:(id)key;
+- (unsigned)unsignedIntForKey:(id)key;
+- (void)registerDefaults:(id)defaults;
+- (void)registerUpdateNotification:(id)notification;
+- (void)unregisterUpdateNotification:(id)notification;
 - (void)updateNotification;
 @end
 
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __33__BioUserDefaults_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -44,9 +44,9 @@ uint64_t __33__BioUserDefaults_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)registerDefaults:(id)a3
+- (void)registerDefaults:(id)defaults
 {
-  v4 = a3;
+  defaultsCopy = defaults;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__BioUserDefaults_registerDefaults___block_invoke;
@@ -59,7 +59,7 @@ uint64_t __33__BioUserDefaults_sharedInstance__block_invoke(uint64_t a1)
 
   v5 = self->_registeredDefaults;
   objc_sync_enter(v5);
-  [(NSMutableDictionary *)self->_registeredDefaults addEntriesFromDictionary:v4];
+  [(NSMutableDictionary *)self->_registeredDefaults addEntriesFromDictionary:defaultsCopy];
   objc_sync_exit(v5);
 }
 
@@ -112,9 +112,9 @@ uint64_t __36__BioUserDefaults_registerDefaults___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerUpdateNotification:(id)a3
+- (void)registerUpdateNotification:(id)notification
 {
-  v10 = a3;
+  notificationCopy = notification;
   v4 = self->_updateBlocks;
   objc_sync_enter(v4);
   updateBlocks = self->_updateBlocks;
@@ -130,19 +130,19 @@ uint64_t __36__BioUserDefaults_registerDefaults___block_invoke(uint64_t a1)
     updateBlocks = self->_updateBlocks;
   }
 
-  v9 = MEMORY[0x1CCA736F0](v10);
+  v9 = MEMORY[0x1CCA736F0](notificationCopy);
   [(NSMutableArray *)updateBlocks addObject:v9];
 
   objc_sync_exit(v4);
 }
 
-- (void)unregisterUpdateNotification:(id)a3
+- (void)unregisterUpdateNotification:(id)notification
 {
-  v10 = a3;
+  notificationCopy = notification;
   v4 = self->_updateBlocks;
   objc_sync_enter(v4);
   updateBlocks = self->_updateBlocks;
-  v6 = MEMORY[0x1CCA736F0](v10);
+  v6 = MEMORY[0x1CCA736F0](notificationCopy);
   [(NSMutableArray *)updateBlocks removeObject:v6];
 
   v7 = self->_updateBlocks;
@@ -158,16 +158,16 @@ uint64_t __36__BioUserDefaults_registerDefaults___block_invoke(uint64_t a1)
   objc_sync_exit(v4);
 }
 
-- (id)objectOfClass:(Class)a3 forKey:(id)a4
+- (id)objectOfClass:(Class)class forKey:(id)key
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  keyCopy = key;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:@"/Library/Managed Preferences/mobile/com.apple.biometrickitd.plist"];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  v7 = [v6 objectForKeyedSubscript:keyCopy];
 
   if (!v7)
   {
-    v8 = CFPreferencesCopyValue(v5, @"com.apple.biometrickitd", *MEMORY[0x1E695E8A0], *MEMORY[0x1E695E8B0]);
+    v8 = CFPreferencesCopyValue(keyCopy, @"com.apple.biometrickitd", *MEMORY[0x1E695E8A0], *MEMORY[0x1E695E8B0]);
     if (v8)
     {
       v7 = v8;
@@ -204,18 +204,18 @@ uint64_t __36__BioUserDefaults_registerDefaults___block_invoke(uint64_t a1)
       CFRelease(v7);
     }
 
-    v7 = CFPreferencesCopyValue(v5, @"com.apple.biometrickitd", @"mobile", *MEMORY[0x1E695E898]);
+    v7 = CFPreferencesCopyValue(keyCopy, @"com.apple.biometrickitd", @"mobile", *MEMORY[0x1E695E898]);
     if (!v7)
     {
 LABEL_18:
       v11 = self->_registeredDefaults;
       objc_sync_enter(v11);
-      v12 = [(NSMutableDictionary *)self->_registeredDefaults objectForKeyedSubscript:v5];
+      v12 = [(NSMutableDictionary *)self->_registeredDefaults objectForKeyedSubscript:keyCopy];
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v7 = [(NSMutableDictionary *)self->_registeredDefaults objectForKeyedSubscript:v5];
+        v7 = [(NSMutableDictionary *)self->_registeredDefaults objectForKeyedSubscript:keyCopy];
       }
 
       else
@@ -267,83 +267,83 @@ LABEL_22:
   return v7;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BioUserDefaults *)self objectOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(BioUserDefaults *)self objectOfClass:objc_opt_class() forKey:keyCopy];
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
-- (int)intForKey:(id)a3
+- (int)intForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BioUserDefaults *)self objectOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(BioUserDefaults *)self objectOfClass:objc_opt_class() forKey:keyCopy];
 
-  v6 = [v5 intValue];
-  return v6;
+  intValue = [v5 intValue];
+  return intValue;
 }
 
-- (int64_t)integerForKey:(id)a3
+- (int64_t)integerForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BioUserDefaults *)self objectOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(BioUserDefaults *)self objectOfClass:objc_opt_class() forKey:keyCopy];
 
-  v6 = [v5 integerValue];
-  return v6;
+  integerValue = [v5 integerValue];
+  return integerValue;
 }
 
-- (unsigned)unsignedIntForKey:(id)a3
+- (unsigned)unsignedIntForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BioUserDefaults *)self objectOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(BioUserDefaults *)self objectOfClass:objc_opt_class() forKey:keyCopy];
 
-  v6 = [v5 unsignedIntValue];
-  return v6;
+  unsignedIntValue = [v5 unsignedIntValue];
+  return unsignedIntValue;
 }
 
-- (unint64_t)unsignedIntegerForKey:(id)a3
+- (unint64_t)unsignedIntegerForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BioUserDefaults *)self objectOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(BioUserDefaults *)self objectOfClass:objc_opt_class() forKey:keyCopy];
 
-  v6 = [v5 unsignedIntegerValue];
-  return v6;
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (id)numberForKey:(id)a3
+- (id)numberForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BioUserDefaults *)self objectOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(BioUserDefaults *)self objectOfClass:objc_opt_class() forKey:keyCopy];
 
   return v5;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BioUserDefaults *)self objectOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(BioUserDefaults *)self objectOfClass:objc_opt_class() forKey:keyCopy];
 
   return v5;
 }
 
-- (BOOL)setObject:(id)a3 forKey:(id)a4
+- (BOOL)setObject:(id)object forKey:(id)key
 {
   v4 = *MEMORY[0x1E695E8A0];
   v5 = *MEMORY[0x1E695E8B0];
-  CFPreferencesSetValue(a4, a3, @"com.apple.biometrickitd", *MEMORY[0x1E695E8A0], *MEMORY[0x1E695E8B0]);
+  CFPreferencesSetValue(key, object, @"com.apple.biometrickitd", *MEMORY[0x1E695E8A0], *MEMORY[0x1E695E8B0]);
   return CFPreferencesSynchronize(@"com.apple.biometrickitd", v4, v5) != 0;
 }
 
-+ (id)preferenceObjectForKey:(id)a3
++ (id)preferenceObjectForKey:(id)key
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  keyCopy = key;
   v4 = *MEMORY[0x1E695E8A0];
   v5 = *MEMORY[0x1E695E8B0];
   CFPreferencesSynchronize(@"com.apple.biometrickitd", *MEMORY[0x1E695E8A0], *MEMORY[0x1E695E8B0]);
-  v6 = CFPreferencesCopyValue(v3, @"com.apple.biometrickitd", v4, v5);
+  v6 = CFPreferencesCopyValue(keyCopy, @"com.apple.biometrickitd", v4, v5);
   if (v6)
   {
     v7 = v6;
@@ -383,7 +383,7 @@ LABEL_22:
 
   v9 = *MEMORY[0x1E695E898];
   CFPreferencesSynchronize(@"com.apple.biometrickitd", @"mobile", *MEMORY[0x1E695E898]);
-  v7 = CFPreferencesCopyValue(v3, @"com.apple.biometrickitd", @"mobile", v9);
+  v7 = CFPreferencesCopyValue(keyCopy, @"com.apple.biometrickitd", @"mobile", v9);
   if (v7)
   {
     objc_opt_class();

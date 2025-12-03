@@ -1,17 +1,17 @@
 @interface CKDProcessScopedClientProxy
-+ (BOOL)isPlatformBinary:(id *)a3;
-- (BOOL)canOpenFileAtURL:(id)a3;
++ (BOOL)isPlatformBinary:(id *)binary;
+- (BOOL)canOpenFileAtURL:(id)l;
 - (BOOL)hasValidatedEntitlements;
 - (BOOL)isClientMainBundleAppleExecutable;
 - (BOOL)processIsAttached;
-- (CKDProcessScopedClientProxy)initWithClientConnection:(id)a3;
+- (CKDProcessScopedClientProxy)initWithClientConnection:(id)connection;
 - (CKDXPCConnection)clientConnection;
 - (id)CKPropertiesDescription;
-- (id)clientEntitlementsWithContainerOptions:(id)a3;
-- (id)getFileMetadataWithFileHandle:(id)a3 openInfo:(id)a4 error:(id *)a5;
-- (id)issueSandboxExtensionForItem:(id)a3 error:(id *)a4;
+- (id)clientEntitlementsWithContainerOptions:(id)options;
+- (id)getFileMetadataWithFileHandle:(id)handle openInfo:(id)info error:(id *)error;
+- (id)issueSandboxExtensionForItem:(id)item error:(id *)error;
 - (void)calculateCloudCoreClientEntitlements;
-- (void)handleSignificantIssue:(id)a3 actions:(unint64_t)a4;
+- (void)handleSignificantIssue:(id)issue actions:(unint64_t)actions;
 @end
 
 @implementation CKDProcessScopedClientProxy
@@ -57,18 +57,18 @@
   return WeakRetained;
 }
 
-- (id)clientEntitlementsWithContainerOptions:(id)a3
+- (id)clientEntitlementsWithContainerOptions:(id)options
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_225072F00(v4);
+  optionsCopy = options;
+  selfCopy = self;
+  v6 = sub_225072F00(optionsCopy);
 
   return v6;
 }
 
 - (void)calculateCloudCoreClientEntitlements
 {
-  v2 = self;
+  selfCopy = self;
   sub_2250738B0();
 }
 
@@ -91,20 +91,20 @@
   return v16;
 }
 
-- (CKDProcessScopedClientProxy)initWithClientConnection:(id)a3
+- (CKDProcessScopedClientProxy)initWithClientConnection:(id)connection
 {
   v70 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v65.receiver = self;
   v65.super_class = CKDProcessScopedClientProxy;
   v5 = [(CKDProcessScopedClientProxy *)&v65 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_clientConnection, v4);
+    objc_storeWeak(&v5->_clientConnection, connectionCopy);
     v63 = 0u;
     v64 = 0u;
-    v9 = objc_msgSend_xpcConnection(v4, v7, v8);
+    v9 = objc_msgSend_xpcConnection(connectionCopy, v7, v8);
     v12 = v9;
     if (v9)
     {
@@ -117,7 +117,7 @@
       v64 = 0u;
     }
 
-    v15 = objc_msgSend_xpcConnection(v4, v13, v14);
+    v15 = objc_msgSend_xpcConnection(connectionCopy, v13, v14);
     v6->_pid = objc_msgSend_processIdentifier(v15, v16, v17);
 
     v18 = objc_alloc(MEMORY[0x277CBC350]);
@@ -223,10 +223,10 @@
   return v6;
 }
 
-- (id)getFileMetadataWithFileHandle:(id)a3 openInfo:(id)a4 error:(id *)a5
+- (id)getFileMetadataWithFileHandle:(id)handle openInfo:(id)info error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  handleCopy = handle;
+  infoCopy = info;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -254,9 +254,9 @@
   v25 = 3221225472;
   v26 = sub_22518EE58;
   v27 = &unk_2785481A0;
-  v12 = v8;
+  v12 = handleCopy;
   v28 = v12;
-  v13 = v9;
+  v13 = infoCopy;
   v29 = v13;
   v31 = &v36;
   v32 = &v42;
@@ -273,9 +273,9 @@
     v43[5] = v18;
 
     v20 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v43[5];
+      *error = v43[5];
     }
   }
 
@@ -290,9 +290,9 @@
         v43[5] = v21;
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = v43[5];
+        *error = v43[5];
       }
     }
 
@@ -305,23 +305,23 @@
   return v20;
 }
 
-- (void)handleSignificantIssue:(id)a3 actions:(unint64_t)a4
+- (void)handleSignificantIssue:(id)issue actions:(unint64_t)actions
 {
-  v6 = a3;
+  issueCopy = issue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_22518F050;
   v9[3] = &unk_2785481C8;
-  v10 = v6;
-  v11 = a4;
-  v7 = v6;
+  v10 = issueCopy;
+  actionsCopy = actions;
+  v7 = issueCopy;
   objc_msgSend_getProcessScopedClientProxySynchronous_errorHandler_clientProxyHandler_(self, v8, 1, &unk_28385CDE0, v9);
 }
 
-- (id)issueSandboxExtensionForItem:(id)a3 error:(id *)a4
+- (id)issueSandboxExtensionForItem:(id)item error:(id *)error
 {
   v84 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_CKNoFollowFileURL(a3, a2, a3);
+  v6 = objc_msgSend_CKNoFollowFileURL(item, a2, item);
   v9 = objc_msgSend_path(v6, v7, v8);
   v10 = *MEMORY[0x277D861C0];
   objc_msgSend_fileSystemRepresentation(v9, v11, v12);
@@ -372,18 +372,18 @@
       *&buf[24] = v33;
       _os_log_error_impl(&dword_22506F000, v63, OS_LOG_TYPE_ERROR, "Failed to issue sandbox extension for applicationBundleID=%@ and path=%@: %@", buf, 0x20u);
 
-      if (a4)
+      if (error)
       {
         goto LABEL_15;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_15:
       v48 = v33;
       v32 = 0;
-      *a4 = v33;
+      *error = v33;
       goto LABEL_22;
     }
 
@@ -451,10 +451,10 @@ LABEL_22:
   return v32;
 }
 
-+ (BOOL)isPlatformBinary:(id *)a3
++ (BOOL)isPlatformBinary:(id *)binary
 {
-  v3 = *&a3->var0[4];
-  *v8.val = *a3->var0;
+  v3 = *&binary->var0[4];
+  *v8.val = *binary->var0;
   *&v8.val[4] = v3;
   v4 = SecTaskCreateWithAuditToken(0, &v8);
   if (!v4)
@@ -471,11 +471,11 @@ LABEL_22:
 - (BOOL)hasValidatedEntitlements
 {
   v21 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_hasValidatedEntitlementsTernary == -1)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_hasValidatedEntitlementsTernary == -1)
   {
-    v5 = objc_msgSend_clientConnection(v2, v3, v4);
+    v5 = objc_msgSend_clientConnection(selfCopy, v3, v4);
     v8 = objc_msgSend_xpcConnection(v5, v6, v7);
     v11 = v8;
     if (v8)
@@ -492,15 +492,15 @@ LABEL_22:
 
     if (v12)
     {
-      v2->_hasValidatedEntitlementsTernary = SecTaskEntitlementsValidated();
+      selfCopy->_hasValidatedEntitlementsTernary = SecTaskEntitlementsValidated();
       if (CKBoolFromCKTernary())
       {
-        hasValidatedEntitlementsTernary = v2->_hasValidatedEntitlementsTernary;
+        hasValidatedEntitlementsTernary = selfCopy->_hasValidatedEntitlementsTernary;
       }
 
       else
       {
-        v2->_hasValidatedEntitlementsTernary = (~SecTaskGetCodeSignStatus(v12) & 0x24000001) == 0;
+        selfCopy->_hasValidatedEntitlementsTernary = (~SecTaskGetCodeSignStatus(v12) & 0x24000001) == 0;
       }
 
       if ((CKBoolFromCKTernary() & 1) == 0)
@@ -514,7 +514,7 @@ LABEL_22:
         if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
         {
           v20.val[0] = 138412290;
-          *&v20.val[1] = v2;
+          *&v20.val[1] = selfCopy;
           _os_log_impl(&dword_22506F000, v15, OS_LOG_TYPE_INFO, "Binary has invalid entitlements for %@", &v20, 0xCu);
         }
       }
@@ -538,24 +538,24 @@ LABEL_22:
     }
   }
 
-  v16 = v2->_hasValidatedEntitlementsTernary;
+  v16 = selfCopy->_hasValidatedEntitlementsTernary;
   v17 = CKBoolFromCKTernary();
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v18 = *MEMORY[0x277D85DE8];
   return v17;
 }
 
-- (BOOL)canOpenFileAtURL:(id)a3
+- (BOOL)canOpenFileAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v7 = objc_msgSend_clientConnection(self, v5, v6);
   v10 = objc_msgSend_xpcConnection(v7, v8, v9);
 
-  if (v10 && objc_msgSend_isFileURL(v4, v11, v12) && (objc_msgSend_path(v4, v13, v14), v15 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend_length(v15, v16, v17), v15, v18))
+  if (v10 && objc_msgSend_isFileURL(lCopy, v11, v12) && (objc_msgSend_path(lCopy, v13, v14), v15 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend_length(v15, v16, v17), v15, v18))
   {
     objc_msgSend_auditToken(v10, v19, v20);
-    v23 = objc_msgSend_path(v4, v21, v22);
+    v23 = objc_msgSend_path(lCopy, v21, v22);
     v24 = v23;
     objc_msgSend_fileSystemRepresentation(v24, v25, v26);
     v27 = sandbox_check_by_audit_token() == 0;

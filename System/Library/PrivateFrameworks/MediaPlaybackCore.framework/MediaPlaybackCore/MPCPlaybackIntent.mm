@@ -1,26 +1,26 @@
 @interface MPCPlaybackIntent
 + (id)continueListeningRadioPlaybackIntent;
-+ (id)intentFromModelRequest:(id)a3;
-+ (id)radioPlaybackIntentFromAlbum:(id)a3;
-+ (id)radioPlaybackIntentFromArtist:(id)a3;
-+ (id)radioPlaybackIntentFromReference:(id)a3;
-+ (id)radioPlaybackIntentFromSong:(id)a3;
-+ (id)radioPlaybackIntentWithStation:(id)a3;
-+ (id)radioPlaybackIntentWithStationStringID:(id)a3;
-+ (id)radioPlaybackIntentWithStationURL:(id)a3;
-+ (id)sharedSessionIntentWithProperties:(id)a3 identity:(id)a4;
-+ (id)tracklistDataSourceClassForSource:(uint64_t)a1;
-+ (id)tracklistDataSourceForSource:(int64_t)a3;
-+ (void)buildSharedSessionIntentWithIntent:(id)a3 identity:(id)a4 extendedStatusCompletion:(id)a5;
++ (id)intentFromModelRequest:(id)request;
++ (id)radioPlaybackIntentFromAlbum:(id)album;
++ (id)radioPlaybackIntentFromArtist:(id)artist;
++ (id)radioPlaybackIntentFromReference:(id)reference;
++ (id)radioPlaybackIntentFromSong:(id)song;
++ (id)radioPlaybackIntentWithStation:(id)station;
++ (id)radioPlaybackIntentWithStationStringID:(id)d;
++ (id)radioPlaybackIntentWithStationURL:(id)l;
++ (id)sharedSessionIntentWithProperties:(id)properties identity:(id)identity;
++ (id)tracklistDataSourceClassForSource:(uint64_t)source;
++ (id)tracklistDataSourceForSource:(int64_t)source;
++ (void)buildSharedSessionIntentWithIntent:(id)intent identity:(id)identity extendedStatusCompletion:(id)completion;
 - (MPCPlaybackIntent)init;
 - (MPCPlaybackIntentDataSource)tracklistDataSource;
 - (MPCPlaybackSharedListeningProperties)sharedListeningProperties;
 - (id)description;
-- (void)getArchiveWithConfiguration:(id)a3 completion:(id)a4;
-- (void)getRemotePlaybackQueueDataWithCompletion:(id)a3;
-- (void)getRemotePlaybackQueueWithDestination:(int64_t)a3 completion:(id)a4;
-- (void)getRepresentativeObjectWithProperties:(id)a3 completion:(id)a4;
-- (void)getSharedListeningTracklistWithCompletion:(id)a3;
+- (void)getArchiveWithConfiguration:(id)configuration completion:(id)completion;
+- (void)getRemotePlaybackQueueDataWithCompletion:(id)completion;
+- (void)getRemotePlaybackQueueWithDestination:(int64_t)destination completion:(id)completion;
+- (void)getRepresentativeObjectWithProperties:(id)properties completion:(id)completion;
+- (void)getSharedListeningTracklistWithCompletion:(id)completion;
 @end
 
 @implementation MPCPlaybackIntent
@@ -47,103 +47,103 @@
   return v3;
 }
 
-- (void)getSharedListeningTracklistWithCompletion:(id)a3
+- (void)getSharedListeningTracklistWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MPCPlaybackIntent *)self tracklistDataSource];
-  [v5 getSharedListeningTracklistFromIntent:self withCompletion:v4];
+  completionCopy = completion;
+  tracklistDataSource = [(MPCPlaybackIntent *)self tracklistDataSource];
+  [tracklistDataSource getSharedListeningTracklistFromIntent:self withCompletion:completionCopy];
 }
 
 - (MPCPlaybackSharedListeningProperties)sharedListeningProperties
 {
   if ([(MPCPlaybackIntent *)self tracklistSource]== 100)
   {
-    v3 = [(MPCPlaybackIntent *)self tracklistToken];
-    v4 = [v3 sharedListeningProperties];
+    tracklistToken = [(MPCPlaybackIntent *)self tracklistToken];
+    sharedListeningProperties = [tracklistToken sharedListeningProperties];
   }
 
   else
   {
-    v4 = 0;
+    sharedListeningProperties = 0;
   }
 
-  return v4;
+  return sharedListeningProperties;
 }
 
-- (void)getArchiveWithConfiguration:(id)a3 completion:(id)a4
+- (void)getArchiveWithConfiguration:(id)configuration completion:(id)completion
 {
-  v11 = a3;
-  v7 = a4;
-  if (!v7)
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MPCPlaybackIntent.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCPlaybackIntent.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
-  v8 = [(MPCPlaybackIntent *)self tracklistDataSource];
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  tracklistDataSource = [(MPCPlaybackIntent *)self tracklistDataSource];
+  if (tracklistDataSource && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v8 getArchiveFromIntent:self configuration:v11 completion:v7];
+    [tracklistDataSource getArchiveFromIntent:self configuration:configurationCopy completion:completionCopy];
   }
 
   else
   {
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPCError" code:1 userInfo:0];
-    v7[2](v7, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
   }
 }
 
-- (void)getRepresentativeObjectWithProperties:(id)a3 completion:(id)a4
+- (void)getRepresentativeObjectWithProperties:(id)properties completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  propertiesCopy = properties;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"MPCPlaybackIntent.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCPlaybackIntent.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
-  v9 = [(MPCPlaybackIntent *)self tracklistDataSource];
-  if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
+  tracklistDataSource = [(MPCPlaybackIntent *)self tracklistDataSource];
+  if (tracklistDataSource && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __70__MPCPlaybackIntent_getRepresentativeObjectWithProperties_completion___block_invoke;
     v12[3] = &unk_1E8237EC0;
-    v13 = v8;
-    [v9 getRepresentativeObjectFromIntent:self properties:v7 completion:v12];
+    v13 = completionCopy;
+    [tracklistDataSource getRepresentativeObjectFromIntent:self properties:propertiesCopy completion:v12];
   }
 
   else
   {
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPCError" code:1 userInfo:0];
-    (*(v8 + 2))(v8, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
-- (void)getRemotePlaybackQueueWithDestination:(int64_t)a3 completion:(id)a4
+- (void)getRemotePlaybackQueueWithDestination:(int64_t)destination completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"MPCPlaybackIntent.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCPlaybackIntent.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
-  v8 = [(MPCPlaybackIntent *)self tracklistDataSource];
-  if (v8)
+  tracklistDataSource = [(MPCPlaybackIntent *)self tracklistDataSource];
+  if (tracklistDataSource)
   {
-    v9 = [MEMORY[0x1E69708A8] standardUserDefaults];
-    v10 = [v9 forcedIntentDestination];
+    standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+    forcedIntentDestination = [standardUserDefaults forcedIntentDestination];
 
-    if (v10)
+    if (forcedIntentDestination)
     {
-      v11 = [v10 intValue];
-      if (v11 && v11 <= 3)
+      intValue = [forcedIntentDestination intValue];
+      if (intValue && intValue <= 3)
       {
-        v13 = v11;
-        a3 = v11;
+        v13 = intValue;
+        destination = intValue;
         v14 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
@@ -154,25 +154,25 @@
       }
     }
 
-    [v8 getRemotePlaybackQueueFromIntent:self destination:a3 completion:v7];
+    [tracklistDataSource getRemotePlaybackQueueFromIntent:self destination:destination completion:completionCopy];
   }
 
   else
   {
     v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPCError" code:1 userInfo:0];
-    v7[2](v7, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
   }
 }
 
-- (void)getRemotePlaybackQueueDataWithCompletion:(id)a3
+- (void)getRemotePlaybackQueueDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__MPCPlaybackIntent_getRemotePlaybackQueueDataWithCompletion___block_invoke;
   v6[3] = &unk_1E8237E98;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(MPCPlaybackIntent *)self getRemotePlaybackQueueWithDestination:3 completion:v6];
 }
 
@@ -312,14 +312,14 @@ LABEL_27:
   return v12;
 }
 
-+ (id)tracklistDataSourceForSource:(int64_t)a3
++ (id)tracklistDataSourceForSource:(int64_t)source
 {
-  v3 = objc_alloc_init([(MPCPlaybackIntent *)a1 tracklistDataSourceClassForSource:a3]);
+  v3 = objc_alloc_init([(MPCPlaybackIntent *)self tracklistDataSourceClassForSource:source]);
 
   return v3;
 }
 
-+ (id)tracklistDataSourceClassForSource:(uint64_t)a1
++ (id)tracklistDataSourceClassForSource:(uint64_t)source
 {
   objc_opt_self();
   v3 = 0;
@@ -356,14 +356,14 @@ LABEL_14:
   return v3;
 }
 
-+ (id)sharedSessionIntentWithProperties:(id)a3 identity:(id)a4
++ (id)sharedSessionIntentWithProperties:(id)properties identity:(id)identity
 {
-  v5 = a4;
-  v6 = a3;
+  identityCopy = identity;
+  propertiesCopy = properties;
   v7 = objc_alloc_init(MPCSharedListeningPlaybackIntentTracklistToken);
-  [(MPCSharedListeningPlaybackIntentTracklistToken *)v7 setSharedListeningProperties:v6];
+  [(MPCSharedListeningPlaybackIntentTracklistToken *)v7 setSharedListeningProperties:propertiesCopy];
 
-  [(MPCSharedListeningPlaybackIntentTracklistToken *)v7 setIdentity:v5];
+  [(MPCSharedListeningPlaybackIntentTracklistToken *)v7 setIdentity:identityCopy];
   v8 = objc_alloc_init(MPCPlaybackIntent);
   [(MPCPlaybackIntent *)v8 setTracklistSource:100];
   [(MPCPlaybackIntent *)v8 setTracklistToken:v7];
@@ -371,20 +371,20 @@ LABEL_14:
   return v8;
 }
 
-+ (void)buildSharedSessionIntentWithIntent:(id)a3 identity:(id)a4 extendedStatusCompletion:(id)a5
++ (void)buildSharedSessionIntentWithIntent:(id)intent identity:(id)identity extendedStatusCompletion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  identityCopy = identity;
+  intentCopy = intent;
   v10 = objc_alloc_init(MPCSharedListeningPlaybackIntentDataSource);
-  [(MPCSharedListeningPlaybackIntentDataSource *)v10 buildSharedSessionIntentWithIntent:v9 identity:v8 completion:v7];
+  [(MPCSharedListeningPlaybackIntentDataSource *)v10 buildSharedSessionIntentWithIntent:intentCopy identity:identityCopy completion:completionCopy];
 }
 
-+ (id)radioPlaybackIntentWithStationURL:(id)a3
++ (id)radioPlaybackIntentWithStationURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_alloc_init(MPCRadioPlaybackIntentTracklistToken);
-  [(MPCRadioPlaybackIntentTracklistToken *)v4 setRadioStationURL:v3];
+  [(MPCRadioPlaybackIntentTracklistToken *)v4 setRadioStationURL:lCopy];
 
   v5 = objc_alloc_init(MPCPlaybackIntent);
   [(MPCPlaybackIntent *)v5 setTracklistSource:1];
@@ -393,20 +393,20 @@ LABEL_14:
   return v5;
 }
 
-+ (id)radioPlaybackIntentWithStationStringID:(id)a3
++ (id)radioPlaybackIntentWithStationStringID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(MPCRadioPlaybackIntentTracklistToken);
   v5 = objc_alloc(MEMORY[0x1E6970750]);
   v6 = objc_alloc(MEMORY[0x1E6970550]);
-  v7 = [MEMORY[0x1E6970758] identityKind];
+  identityKind = [MEMORY[0x1E6970758] identityKind];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __60__MPCPlaybackIntent_radioPlaybackIntentWithStationStringID___block_invoke;
   v13[3] = &unk_1E82389D8;
-  v14 = v3;
-  v8 = v3;
-  v9 = [v6 initWithSource:@"MPCPlaybackIntent" modelKind:v7 block:v13];
+  v14 = dCopy;
+  v8 = dCopy;
+  v9 = [v6 initWithSource:@"MPCPlaybackIntent" modelKind:identityKind block:v13];
   v10 = [v5 initWithIdentifiers:v9 block:&__block_literal_global_25499];
   [(MPCRadioPlaybackIntentTracklistToken *)v4 setRadioStation:v10];
 
@@ -427,11 +427,11 @@ void __60__MPCPlaybackIntent_radioPlaybackIntentWithStationStringID___block_invo
   [a2 setRadioIdentifiersWithBlock:v3];
 }
 
-+ (id)radioPlaybackIntentWithStation:(id)a3
++ (id)radioPlaybackIntentWithStation:(id)station
 {
-  v3 = a3;
+  stationCopy = station;
   v4 = objc_alloc_init(MPCRadioPlaybackIntentTracklistToken);
-  [(MPCRadioPlaybackIntentTracklistToken *)v4 setRadioStation:v3];
+  [(MPCRadioPlaybackIntentTracklistToken *)v4 setRadioStation:stationCopy];
 
   v5 = objc_alloc_init(MPCPlaybackIntent);
   [(MPCPlaybackIntent *)v5 setTracklistSource:1];
@@ -440,12 +440,12 @@ void __60__MPCPlaybackIntent_radioPlaybackIntentWithStationStringID___block_invo
   return v5;
 }
 
-+ (id)radioPlaybackIntentFromSong:(id)a3
++ (id)radioPlaybackIntentFromSong:(id)song
 {
-  v4 = [MPCModelRadioContentReference referenceWithMPModelObject:a3];
+  v4 = [MPCModelRadioContentReference referenceWithMPModelObject:song];
   if (v4)
   {
-    v5 = [a1 radioPlaybackIntentFromReference:v4];
+    v5 = [self radioPlaybackIntentFromReference:v4];
   }
 
   else
@@ -456,12 +456,12 @@ void __60__MPCPlaybackIntent_radioPlaybackIntentWithStationStringID___block_invo
   return v5;
 }
 
-+ (id)radioPlaybackIntentFromArtist:(id)a3
++ (id)radioPlaybackIntentFromArtist:(id)artist
 {
-  v4 = [MPCModelRadioContentReference referenceWithMPModelObject:a3];
+  v4 = [MPCModelRadioContentReference referenceWithMPModelObject:artist];
   if (v4)
   {
-    v5 = [a1 radioPlaybackIntentFromReference:v4];
+    v5 = [self radioPlaybackIntentFromReference:v4];
   }
 
   else
@@ -472,12 +472,12 @@ void __60__MPCPlaybackIntent_radioPlaybackIntentWithStationStringID___block_invo
   return v5;
 }
 
-+ (id)radioPlaybackIntentFromAlbum:(id)a3
++ (id)radioPlaybackIntentFromAlbum:(id)album
 {
-  v4 = [MPCModelRadioContentReference referenceWithMPModelObject:a3];
+  v4 = [MPCModelRadioContentReference referenceWithMPModelObject:album];
   if (v4)
   {
-    v5 = [a1 radioPlaybackIntentFromReference:v4];
+    v5 = [self radioPlaybackIntentFromReference:v4];
   }
 
   else
@@ -488,11 +488,11 @@ void __60__MPCPlaybackIntent_radioPlaybackIntentWithStationStringID___block_invo
   return v5;
 }
 
-+ (id)radioPlaybackIntentFromReference:(id)a3
++ (id)radioPlaybackIntentFromReference:(id)reference
 {
-  v3 = a3;
+  referenceCopy = reference;
   v4 = objc_alloc_init(MPCRadioPlaybackIntentTracklistToken);
-  [(MPCRadioPlaybackIntentTracklistToken *)v4 setSeedContentReference:v3];
+  [(MPCRadioPlaybackIntentTracklistToken *)v4 setSeedContentReference:referenceCopy];
 
   v5 = objc_alloc_init(MPCPlaybackIntent);
   [(MPCPlaybackIntent *)v5 setTracklistSource:1];
@@ -513,12 +513,12 @@ void __60__MPCPlaybackIntent_radioPlaybackIntentWithStationStringID___block_invo
   return v3;
 }
 
-+ (id)intentFromModelRequest:(id)a3
++ (id)intentFromModelRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_alloc_init(MPCPlaybackIntent);
   v5 = objc_alloc_init(MPCModelPlaybackIntentTracklistToken);
-  [(MPCModelPlaybackIntentTracklistToken *)v5 setRequest:v3];
+  [(MPCModelPlaybackIntentTracklistToken *)v5 setRequest:requestCopy];
 
   [(MPCPlaybackIntent *)v4 setTracklistToken:v5];
   [(MPCPlaybackIntent *)v4 setTracklistSource:3];

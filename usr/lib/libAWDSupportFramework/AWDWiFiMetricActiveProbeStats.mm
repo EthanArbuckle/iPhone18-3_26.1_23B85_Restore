@@ -1,31 +1,31 @@
 @interface AWDWiFiMetricActiveProbeStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAvgRTTLargePktSize:(BOOL)a3;
-- (void)setHasAvgRTTMediumPktSize:(BOOL)a3;
-- (void)setHasAvgRTTSmallPktSize:(BOOL)a3;
-- (void)setHasMaxRTTLargePktSize:(BOOL)a3;
-- (void)setHasMaxRTTMediumPktSize:(BOOL)a3;
-- (void)setHasMaxRTTSmallPktSize:(BOOL)a3;
-- (void)setHasMinRTTLargePktSize:(BOOL)a3;
-- (void)setHasMinRTTMediumPktSize:(BOOL)a3;
-- (void)setHasMinRTTSmallPktSize:(BOOL)a3;
-- (void)setHasPerLargePktSize:(BOOL)a3;
-- (void)setHasPerMediumPktSize:(BOOL)a3;
-- (void)setHasPerSmallPktSize:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAvgRTTLargePktSize:(BOOL)size;
+- (void)setHasAvgRTTMediumPktSize:(BOOL)size;
+- (void)setHasAvgRTTSmallPktSize:(BOOL)size;
+- (void)setHasMaxRTTLargePktSize:(BOOL)size;
+- (void)setHasMaxRTTMediumPktSize:(BOOL)size;
+- (void)setHasMaxRTTSmallPktSize:(BOOL)size;
+- (void)setHasMinRTTLargePktSize:(BOOL)size;
+- (void)setHasMinRTTMediumPktSize:(BOOL)size;
+- (void)setHasMinRTTSmallPktSize:(BOOL)size;
+- (void)setHasPerLargePktSize:(BOOL)size;
+- (void)setHasPerMediumPktSize:(BOOL)size;
+- (void)setHasPerSmallPktSize:(BOOL)size;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricActiveProbeStats
 
-- (void)setHasMinRTTSmallPktSize:(BOOL)a3
+- (void)setHasMinRTTSmallPktSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 512;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasMaxRTTSmallPktSize:(BOOL)a3
+- (void)setHasMaxRTTSmallPktSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 64;
   }
@@ -53,9 +53,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasAvgRTTSmallPktSize:(BOOL)a3
+- (void)setHasAvgRTTSmallPktSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 8;
   }
@@ -68,9 +68,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasPerSmallPktSize:(BOOL)a3
+- (void)setHasPerSmallPktSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 4096;
   }
@@ -83,9 +83,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasMinRTTMediumPktSize:(BOOL)a3
+- (void)setHasMinRTTMediumPktSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 256;
   }
@@ -98,9 +98,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasMaxRTTMediumPktSize:(BOOL)a3
+- (void)setHasMaxRTTMediumPktSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 32;
   }
@@ -113,9 +113,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasAvgRTTMediumPktSize:(BOOL)a3
+- (void)setHasAvgRTTMediumPktSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 4;
   }
@@ -128,9 +128,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasPerMediumPktSize:(BOOL)a3
+- (void)setHasPerMediumPktSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 2048;
   }
@@ -143,9 +143,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasMinRTTLargePktSize:(BOOL)a3
+- (void)setHasMinRTTLargePktSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 128;
   }
@@ -158,9 +158,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasMaxRTTLargePktSize:(BOOL)a3
+- (void)setHasMaxRTTLargePktSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 16;
   }
@@ -173,9 +173,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasAvgRTTLargePktSize:(BOOL)a3
+- (void)setHasAvgRTTLargePktSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 2;
   }
@@ -188,9 +188,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasPerLargePktSize:(BOOL)a3
+- (void)setHasPerLargePktSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 1024;
   }
@@ -212,11 +212,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -235,7 +235,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_minRTTSmallPktSize), @"minRTTSmallPktSize"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_minRTTSmallPktSize), @"minRTTSmallPktSize"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -249,7 +249,7 @@ LABEL_4:
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_maxRTTSmallPktSize), @"maxRTTSmallPktSize"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_maxRTTSmallPktSize), @"maxRTTSmallPktSize"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -263,7 +263,7 @@ LABEL_5:
   }
 
 LABEL_19:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgRTTSmallPktSize), @"avgRTTSmallPktSize"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgRTTSmallPktSize), @"avgRTTSmallPktSize"}];
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -277,7 +277,7 @@ LABEL_6:
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_perSmallPktSize), @"perSmallPktSize"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_perSmallPktSize), @"perSmallPktSize"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -291,7 +291,7 @@ LABEL_7:
   }
 
 LABEL_21:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_minRTTMediumPktSize), @"minRTTMediumPktSize"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_minRTTMediumPktSize), @"minRTTMediumPktSize"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -305,7 +305,7 @@ LABEL_8:
   }
 
 LABEL_22:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_maxRTTMediumPktSize), @"maxRTTMediumPktSize"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_maxRTTMediumPktSize), @"maxRTTMediumPktSize"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -319,7 +319,7 @@ LABEL_9:
   }
 
 LABEL_23:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgRTTMediumPktSize), @"avgRTTMediumPktSize"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgRTTMediumPktSize), @"avgRTTMediumPktSize"}];
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -333,7 +333,7 @@ LABEL_10:
   }
 
 LABEL_24:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_perMediumPktSize), @"perMediumPktSize"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_perMediumPktSize), @"perMediumPktSize"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -347,7 +347,7 @@ LABEL_11:
   }
 
 LABEL_25:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_minRTTLargePktSize), @"minRTTLargePktSize"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_minRTTLargePktSize), @"minRTTLargePktSize"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -358,17 +358,17 @@ LABEL_12:
     }
 
 LABEL_27:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgRTTLargePktSize), @"avgRTTLargePktSize"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgRTTLargePktSize), @"avgRTTLargePktSize"}];
     if ((*&self->_has & 0x400) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_14;
   }
 
 LABEL_26:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_maxRTTLargePktSize), @"maxRTTLargePktSize"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_maxRTTLargePktSize), @"maxRTTLargePktSize"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -379,13 +379,13 @@ LABEL_13:
   if ((has & 0x400) != 0)
   {
 LABEL_14:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_perLargePktSize), @"perLargePktSize"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_perLargePktSize), @"perLargePktSize"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -573,13 +573,13 @@ LABEL_27:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 32) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 32) |= 1u;
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -598,8 +598,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 12) = self->_minRTTSmallPktSize;
-  *(a3 + 32) |= 0x200u;
+  *(to + 12) = self->_minRTTSmallPktSize;
+  *(to + 32) |= 0x200u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -613,8 +613,8 @@ LABEL_4:
   }
 
 LABEL_17:
-  *(a3 + 9) = self->_maxRTTSmallPktSize;
-  *(a3 + 32) |= 0x40u;
+  *(to + 9) = self->_maxRTTSmallPktSize;
+  *(to + 32) |= 0x40u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -628,8 +628,8 @@ LABEL_5:
   }
 
 LABEL_18:
-  *(a3 + 6) = self->_avgRTTSmallPktSize;
-  *(a3 + 32) |= 8u;
+  *(to + 6) = self->_avgRTTSmallPktSize;
+  *(to + 32) |= 8u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -643,8 +643,8 @@ LABEL_6:
   }
 
 LABEL_19:
-  *(a3 + 15) = self->_perSmallPktSize;
-  *(a3 + 32) |= 0x1000u;
+  *(to + 15) = self->_perSmallPktSize;
+  *(to + 32) |= 0x1000u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -658,8 +658,8 @@ LABEL_7:
   }
 
 LABEL_20:
-  *(a3 + 11) = self->_minRTTMediumPktSize;
-  *(a3 + 32) |= 0x100u;
+  *(to + 11) = self->_minRTTMediumPktSize;
+  *(to + 32) |= 0x100u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -673,8 +673,8 @@ LABEL_8:
   }
 
 LABEL_21:
-  *(a3 + 8) = self->_maxRTTMediumPktSize;
-  *(a3 + 32) |= 0x20u;
+  *(to + 8) = self->_maxRTTMediumPktSize;
+  *(to + 32) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -688,8 +688,8 @@ LABEL_9:
   }
 
 LABEL_22:
-  *(a3 + 5) = self->_avgRTTMediumPktSize;
-  *(a3 + 32) |= 4u;
+  *(to + 5) = self->_avgRTTMediumPktSize;
+  *(to + 32) |= 4u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -703,8 +703,8 @@ LABEL_10:
   }
 
 LABEL_23:
-  *(a3 + 14) = self->_perMediumPktSize;
-  *(a3 + 32) |= 0x800u;
+  *(to + 14) = self->_perMediumPktSize;
+  *(to + 32) |= 0x800u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -718,8 +718,8 @@ LABEL_11:
   }
 
 LABEL_24:
-  *(a3 + 10) = self->_minRTTLargePktSize;
-  *(a3 + 32) |= 0x80u;
+  *(to + 10) = self->_minRTTLargePktSize;
+  *(to + 32) |= 0x80u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -733,8 +733,8 @@ LABEL_12:
   }
 
 LABEL_25:
-  *(a3 + 7) = self->_maxRTTLargePktSize;
-  *(a3 + 32) |= 0x10u;
+  *(to + 7) = self->_maxRTTLargePktSize;
+  *(to + 32) |= 0x10u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -745,23 +745,23 @@ LABEL_13:
     }
 
 LABEL_27:
-    *(a3 + 13) = self->_perLargePktSize;
-    *(a3 + 32) |= 0x400u;
+    *(to + 13) = self->_perLargePktSize;
+    *(to + 32) |= 0x400u;
     return;
   }
 
 LABEL_26:
-  *(a3 + 4) = self->_avgRTTLargePktSize;
-  *(a3 + 32) |= 2u;
+  *(to + 4) = self->_avgRTTLargePktSize;
+  *(to + 32) |= 2u;
   if ((*&self->_has & 0x400) != 0)
   {
     goto LABEL_27;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -948,16 +948,16 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 32);
+    v7 = *(equal + 32);
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_66;
       }
@@ -972,20 +972,20 @@ LABEL_66:
 
     if ((*&self->_has & 0x200) != 0)
     {
-      if ((*(a3 + 32) & 0x200) == 0 || self->_minRTTSmallPktSize != *(a3 + 12))
+      if ((*(equal + 32) & 0x200) == 0 || self->_minRTTSmallPktSize != *(equal + 12))
       {
         goto LABEL_66;
       }
     }
 
-    else if ((*(a3 + 32) & 0x200) != 0)
+    else if ((*(equal + 32) & 0x200) != 0)
     {
       goto LABEL_66;
     }
 
     if ((has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_maxRTTSmallPktSize != *(a3 + 9))
+      if ((v7 & 0x40) == 0 || self->_maxRTTSmallPktSize != *(equal + 9))
       {
         goto LABEL_66;
       }
@@ -998,7 +998,7 @@ LABEL_66:
 
     if ((has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_avgRTTSmallPktSize != *(a3 + 6))
+      if ((v7 & 8) == 0 || self->_avgRTTSmallPktSize != *(equal + 6))
       {
         goto LABEL_66;
       }
@@ -1011,33 +1011,33 @@ LABEL_66:
 
     if ((*&self->_has & 0x1000) != 0)
     {
-      if ((*(a3 + 32) & 0x1000) == 0 || self->_perSmallPktSize != *(a3 + 15))
+      if ((*(equal + 32) & 0x1000) == 0 || self->_perSmallPktSize != *(equal + 15))
       {
         goto LABEL_66;
       }
     }
 
-    else if ((*(a3 + 32) & 0x1000) != 0)
+    else if ((*(equal + 32) & 0x1000) != 0)
     {
       goto LABEL_66;
     }
 
     if ((*&self->_has & 0x100) != 0)
     {
-      if ((*(a3 + 32) & 0x100) == 0 || self->_minRTTMediumPktSize != *(a3 + 11))
+      if ((*(equal + 32) & 0x100) == 0 || self->_minRTTMediumPktSize != *(equal + 11))
       {
         goto LABEL_66;
       }
     }
 
-    else if ((*(a3 + 32) & 0x100) != 0)
+    else if ((*(equal + 32) & 0x100) != 0)
     {
       goto LABEL_66;
     }
 
     if ((has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_maxRTTMediumPktSize != *(a3 + 8))
+      if ((v7 & 0x20) == 0 || self->_maxRTTMediumPktSize != *(equal + 8))
       {
         goto LABEL_66;
       }
@@ -1050,7 +1050,7 @@ LABEL_66:
 
     if ((has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_avgRTTMediumPktSize != *(a3 + 5))
+      if ((v7 & 4) == 0 || self->_avgRTTMediumPktSize != *(equal + 5))
       {
         goto LABEL_66;
       }
@@ -1063,20 +1063,20 @@ LABEL_66:
 
     if ((*&self->_has & 0x800) != 0)
     {
-      if ((*(a3 + 32) & 0x800) == 0 || self->_perMediumPktSize != *(a3 + 14))
+      if ((*(equal + 32) & 0x800) == 0 || self->_perMediumPktSize != *(equal + 14))
       {
         goto LABEL_66;
       }
     }
 
-    else if ((*(a3 + 32) & 0x800) != 0)
+    else if ((*(equal + 32) & 0x800) != 0)
     {
       goto LABEL_66;
     }
 
     if ((has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_minRTTLargePktSize != *(a3 + 10))
+      if ((v7 & 0x80) == 0 || self->_minRTTLargePktSize != *(equal + 10))
       {
         goto LABEL_66;
       }
@@ -1089,7 +1089,7 @@ LABEL_66:
 
     if ((has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_maxRTTLargePktSize != *(a3 + 7))
+      if ((v7 & 0x10) == 0 || self->_maxRTTLargePktSize != *(equal + 7))
       {
         goto LABEL_66;
       }
@@ -1102,7 +1102,7 @@ LABEL_66:
 
     if ((has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_avgRTTLargePktSize != *(a3 + 4))
+      if ((v7 & 2) == 0 || self->_avgRTTLargePktSize != *(equal + 4))
       {
         goto LABEL_66;
       }
@@ -1116,7 +1116,7 @@ LABEL_66:
     LOBYTE(v5) = (v7 & 0x400) == 0;
     if ((*&self->_has & 0x400) != 0)
     {
-      if ((*(a3 + 32) & 0x400) == 0 || self->_perLargePktSize != *(a3 + 13))
+      if ((*(equal + 32) & 0x400) == 0 || self->_perLargePktSize != *(equal + 13))
       {
         goto LABEL_66;
       }
@@ -1309,14 +1309,14 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 32);
+    v3 = *(from + 32);
     if ((v3 & 0x200) == 0)
     {
 LABEL_3:
@@ -1329,14 +1329,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 32) & 0x200) == 0)
+  else if ((*(from + 32) & 0x200) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_minRTTSmallPktSize = *(a3 + 12);
+  self->_minRTTSmallPktSize = *(from + 12);
   *&self->_has |= 0x200u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 0x40) == 0)
   {
 LABEL_4:
@@ -1349,9 +1349,9 @@ LABEL_4:
   }
 
 LABEL_17:
-  self->_maxRTTSmallPktSize = *(a3 + 9);
+  self->_maxRTTSmallPktSize = *(from + 9);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 8) == 0)
   {
 LABEL_5:
@@ -1364,9 +1364,9 @@ LABEL_5:
   }
 
 LABEL_18:
-  self->_avgRTTSmallPktSize = *(a3 + 6);
+  self->_avgRTTSmallPktSize = *(from + 6);
   *&self->_has |= 8u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 0x1000) == 0)
   {
 LABEL_6:
@@ -1379,9 +1379,9 @@ LABEL_6:
   }
 
 LABEL_19:
-  self->_perSmallPktSize = *(a3 + 15);
+  self->_perSmallPktSize = *(from + 15);
   *&self->_has |= 0x1000u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 0x100) == 0)
   {
 LABEL_7:
@@ -1394,9 +1394,9 @@ LABEL_7:
   }
 
 LABEL_20:
-  self->_minRTTMediumPktSize = *(a3 + 11);
+  self->_minRTTMediumPktSize = *(from + 11);
   *&self->_has |= 0x100u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 0x20) == 0)
   {
 LABEL_8:
@@ -1409,9 +1409,9 @@ LABEL_8:
   }
 
 LABEL_21:
-  self->_maxRTTMediumPktSize = *(a3 + 8);
+  self->_maxRTTMediumPktSize = *(from + 8);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 4) == 0)
   {
 LABEL_9:
@@ -1424,9 +1424,9 @@ LABEL_9:
   }
 
 LABEL_22:
-  self->_avgRTTMediumPktSize = *(a3 + 5);
+  self->_avgRTTMediumPktSize = *(from + 5);
   *&self->_has |= 4u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 0x800) == 0)
   {
 LABEL_10:
@@ -1439,9 +1439,9 @@ LABEL_10:
   }
 
 LABEL_23:
-  self->_perMediumPktSize = *(a3 + 14);
+  self->_perMediumPktSize = *(from + 14);
   *&self->_has |= 0x800u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 0x80) == 0)
   {
 LABEL_11:
@@ -1454,9 +1454,9 @@ LABEL_11:
   }
 
 LABEL_24:
-  self->_minRTTLargePktSize = *(a3 + 10);
+  self->_minRTTLargePktSize = *(from + 10);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 0x10) == 0)
   {
 LABEL_12:
@@ -1469,9 +1469,9 @@ LABEL_12:
   }
 
 LABEL_25:
-  self->_maxRTTLargePktSize = *(a3 + 7);
+  self->_maxRTTLargePktSize = *(from + 7);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 2) == 0)
   {
 LABEL_13:
@@ -1481,15 +1481,15 @@ LABEL_13:
     }
 
 LABEL_27:
-    self->_perLargePktSize = *(a3 + 13);
+    self->_perLargePktSize = *(from + 13);
     *&self->_has |= 0x400u;
     return;
   }
 
 LABEL_26:
-  self->_avgRTTLargePktSize = *(a3 + 4);
+  self->_avgRTTLargePktSize = *(from + 4);
   *&self->_has |= 2u;
-  if ((*(a3 + 32) & 0x400) != 0)
+  if ((*(from + 32) & 0x400) != 0)
   {
     goto LABEL_27;
   }

@@ -1,44 +1,44 @@
 @interface LACEnvironmentMechanismUserPassword
-- (BOOL)isEqual:(id)a3;
-- (LACEnvironmentMechanismUserPassword)initWithAvailabilityError:(id)a3 set:(BOOL)a4;
-- (LACEnvironmentMechanismUserPassword)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LACEnvironmentMechanismUserPassword)initWithAvailabilityError:(id)error set:(BOOL)set;
+- (LACEnvironmentMechanismUserPassword)initWithCoder:(id)coder;
 - (id)descriptionDetails;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LACEnvironmentMechanismUserPassword
 
-- (LACEnvironmentMechanismUserPassword)initWithAvailabilityError:(id)a3 set:(BOOL)a4
+- (LACEnvironmentMechanismUserPassword)initWithAvailabilityError:(id)error set:(BOOL)set
 {
   v6.receiver = self;
   v6.super_class = LACEnvironmentMechanismUserPassword;
-  result = [(LACEnvironmentMechanism *)&v6 initWithAvailabilityError:a3 localizedName:@"Passcode" iconSystemName:@"lock.shield"];
+  result = [(LACEnvironmentMechanism *)&v6 initWithAvailabilityError:error localizedName:@"Passcode" iconSystemName:@"lock.shield"];
   if (result)
   {
-    result->_set = a4;
+    result->_set = set;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = LACEnvironmentMechanismUserPassword;
-  v4 = a3;
-  [(LACEnvironmentMechanism *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(LACEnvironmentMechanism *)&v7 encodeWithCoder:coderCopy];
   v5 = [(LACEnvironmentMechanismUserPassword *)self set:v7.receiver];
   v6 = NSStringFromSelector("set");
-  [v4 encodeBool:v5 forKey:v6];
+  [coderCopy encodeBool:v5 forKey:v6];
 }
 
-- (LACEnvironmentMechanismUserPassword)initWithCoder:(id)a3
+- (LACEnvironmentMechanismUserPassword)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_availabilityError);
-  v6 = [v4 decodeObjectForKey:v5];
+  v6 = [coderCopy decodeObjectForKey:v5];
   v7 = NSStringFromSelector("set");
-  v8 = [v4 decodeBoolForKey:v7];
+  v8 = [coderCopy decodeBoolForKey:v7];
 
   v9 = [(LACEnvironmentMechanismUserPassword *)self initWithAvailabilityError:v6 set:v8];
   return v9;
@@ -61,10 +61,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -73,9 +73,9 @@
   {
     v10.receiver = self;
     v10.super_class = LACEnvironmentMechanismUserPassword;
-    if ([(LACEnvironmentMechanism *)&v10 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(LACEnvironmentMechanism *)&v10 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(LACEnvironmentMechanismUserPassword *)self set];
       v7 = [(LACEnvironmentMechanismUserPassword *)v5 set];
 

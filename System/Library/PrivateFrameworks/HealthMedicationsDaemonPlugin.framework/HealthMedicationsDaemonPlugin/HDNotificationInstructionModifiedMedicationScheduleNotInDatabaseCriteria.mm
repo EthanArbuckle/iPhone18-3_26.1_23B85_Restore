@@ -1,33 +1,33 @@
 @interface HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria
-- (BOOL)isEqual:(id)a3;
-- (HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria)initWithCodableNotificationInstructionCriteria:(id)a3;
-- (HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria)initWithCoder:(id)a3;
-- (HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria)initWithMessageDictionary:(id)a3;
-- (HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria)initWithUUID:(id)a3 modificationDate:(id)a4;
-- (id)_initWithUUID:(void *)a3 modificationDate:;
-- (id)_initWithUUIDString:(void *)a3 modificationTimeInterval:;
+- (BOOL)isEqual:(id)equal;
+- (HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria)initWithCodableNotificationInstructionCriteria:(id)criteria;
+- (HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria)initWithCoder:(id)coder;
+- (HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria)initWithMessageDictionary:(id)dictionary;
+- (HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria)initWithUUID:(id)d modificationDate:(id)date;
+- (id)_initWithUUID:(void *)d modificationDate:;
+- (id)_initWithUUIDString:(void *)string modificationTimeInterval:;
 - (id)codableCriteria;
 - (id)description;
 - (id)messageDictionary;
-- (int64_t)isValidWithDatabaseTransaction:(id)a3 error:(id *)a4;
+- (int64_t)isValidWithDatabaseTransaction:(id)transaction error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria
 
-- (int64_t)isValidWithDatabaseTransaction:(id)a3 error:(id *)a4
+- (int64_t)isValidWithDatabaseTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
+  transactionCopy = transaction;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 1;
-  v7 = [v6 protectedDatabase];
-  v8 = v7;
-  if (!v7)
+  protectedDatabase = [transactionCopy protectedDatabase];
+  v8 = protectedDatabase;
+  if (!protectedDatabase)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:6 description:@"Protected database is inaccessible"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:6 description:@"Protected database is inaccessible"];
     goto LABEL_5;
   }
 
@@ -41,7 +41,7 @@
   v11[2] = __113__HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria_isValidWithDatabaseTransaction_error___block_invoke_3;
   v11[3] = &unk_2796CE5C8;
   v11[4] = &v13;
-  if (![v7 executeCachedStatementForKey:&isValidWithDatabaseTransaction_error__lookupKey error:a4 SQLGenerator:&__block_literal_global_14 bindingHandler:v12 enumerationHandler:v11])
+  if (![protectedDatabase executeCachedStatementForKey:&isValidWithDatabaseTransaction_error__lookupKey error:error SQLGenerator:&__block_literal_global_14 bindingHandler:v12 enumerationHandler:v11])
   {
 LABEL_5:
     v9 = 0;
@@ -73,20 +73,20 @@ uint64_t __113__HDNotificationInstructionModifiedMedicationScheduleNotInDatabase
   return HDSQLiteBindFoundationValueToStatement();
 }
 
-- (HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria)initWithUUID:(id)a3 modificationDate:(id)a4
+- (HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria)initWithUUID:(id)d modificationDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria;
   v8 = [(HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     UUID = v8->_UUID;
     v8->_UUID = v9;
 
-    v11 = [v7 copy];
+    v11 = [dateCopy copy];
     modificationDate = v8->_modificationDate;
     v8->_modificationDate = v11;
   }
@@ -94,14 +94,14 @@ uint64_t __113__HDNotificationInstructionModifiedMedicationScheduleNotInDatabase
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria;
-  if ([(HDNotificationInstructionCriteria *)&v12 isEqual:v4])
+  if ([(HDNotificationInstructionCriteria *)&v12 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     UUID = self->_UUID;
     v7 = v5[1];
     if (UUID != v7 && (!v7 || ![(NSUUID *)UUID isEqual:?]))
@@ -156,12 +156,12 @@ LABEL_12:
   return [v3 stringWithFormat:@"<%@ %@ mtime:%@>", v4, UUID, self->_modificationDate];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"UUID"];
-  [v5 encodeObject:self->_modificationDate forKey:@"ModificationDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"UUID"];
+  [coderCopy encodeObject:self->_modificationDate forKey:@"ModificationDate"];
 }
 
 - (id)messageDictionary
@@ -169,17 +169,17 @@ LABEL_12:
   v13[2] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria;
-  v3 = [(HDNotificationInstructionCriteria *)&v11 messageDictionary];
+  messageDictionary = [(HDNotificationInstructionCriteria *)&v11 messageDictionary];
   v12[0] = @"UUID";
-  v4 = [(NSUUID *)self->_UUID UUIDString];
+  uUIDString = [(NSUUID *)self->_UUID UUIDString];
   v12[1] = @"ModificationDate";
-  v13[0] = v4;
+  v13[0] = uUIDString;
   v5 = MEMORY[0x277CCABB0];
   [(NSDate *)self->_modificationDate timeIntervalSinceReferenceDate];
   v6 = [v5 numberWithDouble:?];
   v13[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  v8 = [v3 hk_dictionaryByAddingEntriesFromDictionary:v7];
+  v8 = [messageDictionary hk_dictionaryByAddingEntriesFromDictionary:v7];
 
   v9 = *MEMORY[0x277D85DE8];
 
@@ -190,88 +190,88 @@ LABEL_12:
 {
   v6.receiver = self;
   v6.super_class = HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria;
-  v3 = [(HDNotificationInstructionCriteria *)&v6 codableCriteria];
-  v4 = [(NSUUID *)self->_UUID UUIDString];
-  [v3 setUUIDString:v4];
+  codableCriteria = [(HDNotificationInstructionCriteria *)&v6 codableCriteria];
+  uUIDString = [(NSUUID *)self->_UUID UUIDString];
+  [codableCriteria setUUIDString:uUIDString];
 
   [(NSDate *)self->_modificationDate timeIntervalSinceReferenceDate];
-  [v3 setModificationTimeInterval:?];
+  [codableCriteria setModificationTimeInterval:?];
 
-  return v3;
+  return codableCriteria;
 }
 
-- (id)_initWithUUIDString:(void *)a3 modificationTimeInterval:
+- (id)_initWithUUIDString:(void *)string modificationTimeInterval:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  v8 = 0;
-  if (a1 && v5 && v6)
+  stringCopy = string;
+  v7 = stringCopy;
+  selfCopy = 0;
+  if (self && v5 && stringCopy)
   {
     v10 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v5];
     v11 = MEMORY[0x277CBEAA8];
     [v7 doubleValue];
     v12 = [v11 dateWithTimeIntervalSinceReferenceDate:?];
-    a1 = [(HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria *)a1 _initWithUUID:v10 modificationDate:v12];
+    self = [(HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria *)self _initWithUUID:v10 modificationDate:v12];
 
-    v8 = a1;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)_initWithUUID:(void *)a3 modificationDate:
+- (id)_initWithUUID:(void *)d modificationDate:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  v8 = 0;
-  if (a1 && v5 && v6)
+  dCopy = d;
+  v7 = dCopy;
+  selfCopy = 0;
+  if (self && v5 && dCopy)
   {
-    a1 = [a1 initWithUUID:v5 modificationDate:v6];
-    v8 = a1;
+    self = [self initWithUUID:v5 modificationDate:dCopy];
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria)initWithCoder:(id)a3
+- (HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ModificationDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ModificationDate"];
 
   v7 = [(HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria *)self _initWithUUID:v5 modificationDate:v6];
   return v7;
 }
 
-- (HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria)initWithMessageDictionary:(id)a3
+- (HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria)initWithMessageDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 hk_safeStringForKeyPath:@"UUID" error:0];
-  v6 = [v4 hk_safeNumberForKeyPath:@"ModificationDate" error:0];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy hk_safeStringForKeyPath:@"UUID" error:0];
+  v6 = [dictionaryCopy hk_safeNumberForKeyPath:@"ModificationDate" error:0];
 
   v7 = [(HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria *)self _initWithUUIDString:v5 modificationTimeInterval:v6];
   return v7;
 }
 
-- (HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria)initWithCodableNotificationInstructionCriteria:(id)a3
+- (HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria)initWithCodableNotificationInstructionCriteria:(id)criteria
 {
-  v4 = a3;
-  if ([v4 hasUUIDString])
+  criteriaCopy = criteria;
+  if ([criteriaCopy hasUUIDString])
   {
-    v5 = [v4 uUIDString];
+    uUIDString = [criteriaCopy uUIDString];
   }
 
   else
   {
-    v5 = 0;
+    uUIDString = 0;
   }
 
-  if ([v4 hasModificationTimeInterval])
+  if ([criteriaCopy hasModificationTimeInterval])
   {
     v6 = MEMORY[0x277CCABB0];
-    [v4 modificationTimeInterval];
+    [criteriaCopy modificationTimeInterval];
     v7 = [v6 numberWithDouble:?];
   }
 
@@ -280,7 +280,7 @@ LABEL_12:
     v7 = 0;
   }
 
-  v8 = [(HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria *)self _initWithUUIDString:v5 modificationTimeInterval:v7];
+  v8 = [(HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria *)self _initWithUUIDString:uUIDString modificationTimeInterval:v7];
 
   return v8;
 }

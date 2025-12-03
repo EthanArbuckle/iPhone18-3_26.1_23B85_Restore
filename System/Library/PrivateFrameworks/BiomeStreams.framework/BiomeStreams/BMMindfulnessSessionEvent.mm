@@ -1,9 +1,9 @@
 @interface BMMindfulnessSessionEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMMindfulnessSessionEvent)initWithProto:(id)a3;
-- (BMMindfulnessSessionEvent)initWithProtoData:(id)a3;
-- (BMMindfulnessSessionEvent)initWithSessionType:(unint64_t)a3 stateType:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMMindfulnessSessionEvent)initWithProto:(id)proto;
+- (BMMindfulnessSessionEvent)initWithProtoData:(id)data;
+- (BMMindfulnessSessionEvent)initWithSessionType:(unint64_t)type stateType:(unint64_t)stateType;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -12,15 +12,15 @@
 
 @implementation BMMindfulnessSessionEvent
 
-- (BMMindfulnessSessionEvent)initWithSessionType:(unint64_t)a3 stateType:(unint64_t)a4
+- (BMMindfulnessSessionEvent)initWithSessionType:(unint64_t)type stateType:(unint64_t)stateType
 {
   v7.receiver = self;
   v7.super_class = BMMindfulnessSessionEvent;
   result = [(BMEventBase *)&v7 init];
   if (result)
   {
-    result->_sessionType = a3;
-    result->_stateType = a4;
+    result->_sessionType = type;
+    result->_stateType = stateType;
   }
 
   return result;
@@ -36,44 +36,44 @@
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v4 = BMMindfulnessSessionEvent_v1;
+    selfCopy = BMMindfulnessSessionEvent_v1;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = a3;
-  v6 = [[v4 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[selfCopy alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMMindfulnessSessionEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMMindfulnessSessionEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMMindfulnessSessionEvent)initWithProto:(id)a3
+- (BMMindfulnessSessionEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 sessionType];
-      v7 = v6;
-      if (v6 >= 3)
+      v5 = protoCopy;
+      sessionType = [v5 sessionType];
+      v7 = sessionType;
+      if (sessionType >= 3)
       {
         v10 = __biome_log_for_category();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -86,11 +86,11 @@
 
       else
       {
-        v8 = v6;
+        v8 = sessionType;
       }
 
       self = [(BMMindfulnessSessionEvent *)self initWithSessionType:v8 stateType:typeWithBMPBMindfulnessSessionStateType([v5 stateType])];
-      v9 = self;
+      selfCopy = self;
     }
 
     else
@@ -101,43 +101,43 @@
         [BMMindfulnessSessionEvent initWithProto:];
       }
 
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (BMMindfulnessSessionEvent)initWithProtoData:(id)a3
+- (BMMindfulnessSessionEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBMindfulnessSessionEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBMindfulnessSessionEvent alloc] initWithData:dataCopy];
 
     self = [(BMMindfulnessSessionEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMMindfulnessSessionEvent *)self sessionType];
-  v5 = v4;
-  if (!v4 || v4 == 2 || v4 == 1)
+  sessionType = [(BMMindfulnessSessionEvent *)self sessionType];
+  v5 = sessionType;
+  if (!sessionType || sessionType == 2 || sessionType == 1)
   {
     v6 = 0;
   }
@@ -154,20 +154,20 @@
     v6 = 1;
   }
 
-  v8 = [(BMMindfulnessSessionEvent *)self stateType];
-  if (v8 >= 5)
+  stateType = [(BMMindfulnessSessionEvent *)self stateType];
+  if (stateType >= 5)
   {
     v10 = __biome_log_for_category();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(BMMindfulnessSessionEvent *)v8 proto];
+      [(BMMindfulnessSessionEvent *)stateType proto];
     }
   }
 
   else if ((v6 & 1) == 0)
   {
     [v3 setSessionType:v5];
-    [v3 setStateType:v8];
+    [v3 setStateType:stateType];
     v9 = v3;
     goto LABEL_15;
   }
@@ -188,13 +188,13 @@ LABEL_15:
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     sessionType = self->_sessionType;
     if (sessionType == [v5 sessionType])
     {

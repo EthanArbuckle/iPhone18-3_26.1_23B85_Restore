@@ -1,5 +1,5 @@
 @interface _MFMailboxUidEnumerator
-- (_MFMailboxUidEnumerator)initWithMailbox:(id)a3;
+- (_MFMailboxUidEnumerator)initWithMailbox:(id)mailbox;
 - (id)nextObject;
 @end
 
@@ -22,10 +22,10 @@
   return v4;
 }
 
-- (_MFMailboxUidEnumerator)initWithMailbox:(id)a3
+- (_MFMailboxUidEnumerator)initWithMailbox:(id)mailbox
 {
-  v4 = a3;
-  if (v4)
+  mailboxCopy = mailbox;
+  if (mailboxCopy)
   {
     v10.receiver = self;
     v10.super_class = _MFMailboxUidEnumerator;
@@ -36,19 +36,19 @@
       mailboxes = v5->_mailboxes;
       v5->_mailboxes = v6;
 
-      [v4 addToPostOrderTraversal:v5->_mailboxes];
+      [mailboxCopy addToPostOrderTraversal:v5->_mailboxes];
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

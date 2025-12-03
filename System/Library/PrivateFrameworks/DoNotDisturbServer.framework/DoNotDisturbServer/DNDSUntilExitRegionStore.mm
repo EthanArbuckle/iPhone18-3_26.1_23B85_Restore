@@ -1,26 +1,26 @@
 @interface DNDSUntilExitRegionStore
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithActiveLifetimeAssertionUUIDs:(id)a3 currentRegion:(id)a4 regionEntered:(id)a5;
-- (id)_initWithStore:(id)a3;
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithActiveLifetimeAssertionUUIDs:(id)ds currentRegion:(id)region regionEntered:(id)entered;
+- (id)_initWithStore:(id)store;
 - (id)description;
-- (id)dictionaryRepresentationWithContext:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)dictionaryRepresentationWithContext:(id)context;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation DNDSUntilExitRegionStore
 
-- (id)_initWithStore:(id)a3
+- (id)_initWithStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v23.receiver = self;
   v23.super_class = DNDSUntilExitRegionStore;
   v5 = [(DNDSUntilExitRegionStore *)&v23 init];
   if (v5)
   {
-    v6 = [v4 activeLifetimeAssertionUUIDs];
-    v7 = [v6 copy];
+    activeLifetimeAssertionUUIDs = [storeCopy activeLifetimeAssertionUUIDs];
+    v7 = [activeLifetimeAssertionUUIDs copy];
     v8 = v7;
     if (v7)
     {
@@ -34,8 +34,8 @@
 
     objc_storeStrong(&v5->_activeLifetimeAssertionUUIDs, v9);
 
-    v10 = [v4 hasActiveLifetimes];
-    v11 = [v10 copy];
+    hasActiveLifetimes = [storeCopy hasActiveLifetimes];
+    v11 = [hasActiveLifetimes copy];
     v12 = v11;
     if (v11)
     {
@@ -50,13 +50,13 @@
     hasActiveLifetimes = v5->_hasActiveLifetimes;
     v5->_hasActiveLifetimes = v13;
 
-    v15 = [v4 currentRegion];
-    v16 = [v15 copy];
+    currentRegion = [storeCopy currentRegion];
+    v16 = [currentRegion copy];
     currentRegion = v5->_currentRegion;
     v5->_currentRegion = v16;
 
-    v18 = [v4 regionEntered];
-    v19 = [v18 copy];
+    regionEntered = [storeCopy regionEntered];
+    v19 = [regionEntered copy];
     v20 = v19;
     if (v19)
     {
@@ -74,24 +74,24 @@
   return v5;
 }
 
-- (id)_initWithActiveLifetimeAssertionUUIDs:(id)a3 currentRegion:(id)a4 regionEntered:(id)a5
+- (id)_initWithActiveLifetimeAssertionUUIDs:(id)ds currentRegion:(id)region regionEntered:(id)entered
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dsCopy = ds;
+  regionCopy = region;
+  enteredCopy = entered;
   v17.receiver = self;
   v17.super_class = DNDSUntilExitRegionStore;
   v12 = [(DNDSUntilExitRegionStore *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_activeLifetimeAssertionUUIDs, a3);
-    v14 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v9, "count") != 0}];
+    objc_storeStrong(&v12->_activeLifetimeAssertionUUIDs, ds);
+    v14 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(dsCopy, "count") != 0}];
     hasActiveLifetimes = v13->_hasActiveLifetimes;
     v13->_hasActiveLifetimes = v14;
 
-    objc_storeStrong(&v13->_currentRegion, a4);
-    objc_storeStrong(&v13->_regionEntered, a5);
+    objc_storeStrong(&v13->_currentRegion, region);
+    objc_storeStrong(&v13->_regionEntered, entered);
   }
 
   return v13;
@@ -99,22 +99,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDSUntilExitRegionStore *)self activeLifetimeAssertionUUIDs];
-  v4 = [v3 hash];
-  v5 = [(DNDSUntilExitRegionStore *)self currentRegion];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DNDSUntilExitRegionStore *)self hasActiveLifetimes];
-  v8 = [v7 hash];
-  v9 = [(DNDSUntilExitRegionStore *)self regionEntered];
-  v10 = v8 ^ [v9 hash];
+  activeLifetimeAssertionUUIDs = [(DNDSUntilExitRegionStore *)self activeLifetimeAssertionUUIDs];
+  v4 = [activeLifetimeAssertionUUIDs hash];
+  currentRegion = [(DNDSUntilExitRegionStore *)self currentRegion];
+  v6 = [currentRegion hash] ^ v4;
+  hasActiveLifetimes = [(DNDSUntilExitRegionStore *)self hasActiveLifetimes];
+  v8 = [hasActiveLifetimes hash];
+  regionEntered = [(DNDSUntilExitRegionStore *)self regionEntered];
+  v10 = v8 ^ [regionEntered hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -124,21 +124,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(DNDSUntilExitRegionStore *)self activeLifetimeAssertionUUIDs];
-      v8 = [(DNDSUntilExitRegionStore *)v6 activeLifetimeAssertionUUIDs];
-      if (v7 != v8)
+      v6 = equalCopy;
+      activeLifetimeAssertionUUIDs = [(DNDSUntilExitRegionStore *)self activeLifetimeAssertionUUIDs];
+      activeLifetimeAssertionUUIDs2 = [(DNDSUntilExitRegionStore *)v6 activeLifetimeAssertionUUIDs];
+      if (activeLifetimeAssertionUUIDs != activeLifetimeAssertionUUIDs2)
       {
-        v9 = [(DNDSUntilExitRegionStore *)self activeLifetimeAssertionUUIDs];
-        if (!v9)
+        activeLifetimeAssertionUUIDs3 = [(DNDSUntilExitRegionStore *)self activeLifetimeAssertionUUIDs];
+        if (!activeLifetimeAssertionUUIDs3)
         {
           v13 = 0;
           goto LABEL_50;
         }
 
-        v10 = v9;
-        v11 = [(DNDSUntilExitRegionStore *)v6 activeLifetimeAssertionUUIDs];
-        if (!v11)
+        v10 = activeLifetimeAssertionUUIDs3;
+        activeLifetimeAssertionUUIDs4 = [(DNDSUntilExitRegionStore *)v6 activeLifetimeAssertionUUIDs];
+        if (!activeLifetimeAssertionUUIDs4)
         {
           v13 = 0;
 LABEL_49:
@@ -146,9 +146,9 @@ LABEL_49:
           goto LABEL_50;
         }
 
-        v12 = [(DNDSUntilExitRegionStore *)self activeLifetimeAssertionUUIDs];
-        v3 = [(DNDSUntilExitRegionStore *)v6 activeLifetimeAssertionUUIDs];
-        if (![v12 isEqual:v3])
+        activeLifetimeAssertionUUIDs5 = [(DNDSUntilExitRegionStore *)self activeLifetimeAssertionUUIDs];
+        activeLifetimeAssertionUUIDs6 = [(DNDSUntilExitRegionStore *)v6 activeLifetimeAssertionUUIDs];
+        if (![activeLifetimeAssertionUUIDs5 isEqual:activeLifetimeAssertionUUIDs6])
         {
           v13 = 0;
 LABEL_48:
@@ -156,34 +156,34 @@ LABEL_48:
           goto LABEL_49;
         }
 
-        v48 = v3;
-        v49 = v12;
-        v50 = v11;
+        v48 = activeLifetimeAssertionUUIDs6;
+        v49 = activeLifetimeAssertionUUIDs5;
+        v50 = activeLifetimeAssertionUUIDs4;
         v51 = v10;
       }
 
-      v14 = [(DNDSUntilExitRegionStore *)self currentRegion];
-      v15 = [(DNDSUntilExitRegionStore *)v6 currentRegion];
-      if (v14 != v15)
+      currentRegion = [(DNDSUntilExitRegionStore *)self currentRegion];
+      currentRegion2 = [(DNDSUntilExitRegionStore *)v6 currentRegion];
+      if (currentRegion != currentRegion2)
       {
-        v16 = [(DNDSUntilExitRegionStore *)self currentRegion];
-        if (v16)
+        currentRegion3 = [(DNDSUntilExitRegionStore *)self currentRegion];
+        if (currentRegion3)
         {
-          v17 = v16;
-          v18 = [(DNDSUntilExitRegionStore *)v6 currentRegion];
-          if (v18)
+          v17 = currentRegion3;
+          currentRegion4 = [(DNDSUntilExitRegionStore *)v6 currentRegion];
+          if (currentRegion4)
           {
-            v19 = v18;
-            v47 = v14;
-            v20 = [(DNDSUntilExitRegionStore *)self currentRegion];
-            v3 = [(DNDSUntilExitRegionStore *)v6 currentRegion];
-            if (([v20 isEqual:v3] & 1) == 0)
+            v19 = currentRegion4;
+            v47 = currentRegion;
+            currentRegion5 = [(DNDSUntilExitRegionStore *)self currentRegion];
+            activeLifetimeAssertionUUIDs6 = [(DNDSUntilExitRegionStore *)v6 currentRegion];
+            if (([currentRegion5 isEqual:activeLifetimeAssertionUUIDs6] & 1) == 0)
             {
 
               goto LABEL_38;
             }
 
-            v41 = v20;
+            v41 = currentRegion5;
             v42 = v19;
             v43 = v17;
             goto LABEL_17;
@@ -193,39 +193,39 @@ LABEL_48:
         goto LABEL_38;
       }
 
-      v47 = v14;
+      v47 = currentRegion;
 LABEL_17:
-      v21 = [(DNDSUntilExitRegionStore *)self hasActiveLifetimes];
-      v46 = [(DNDSUntilExitRegionStore *)v6 hasActiveLifetimes];
-      if (v21 == v46)
+      hasActiveLifetimes = [(DNDSUntilExitRegionStore *)self hasActiveLifetimes];
+      hasActiveLifetimes2 = [(DNDSUntilExitRegionStore *)v6 hasActiveLifetimes];
+      if (hasActiveLifetimes == hasActiveLifetimes2)
       {
-        v44 = v21;
-        v45 = v3;
+        v44 = hasActiveLifetimes;
+        v45 = activeLifetimeAssertionUUIDs6;
         goto LABEL_25;
       }
 
-      v22 = [(DNDSUntilExitRegionStore *)self hasActiveLifetimes];
-      if (v22)
+      hasActiveLifetimes3 = [(DNDSUntilExitRegionStore *)self hasActiveLifetimes];
+      if (hasActiveLifetimes3)
       {
-        v23 = v22;
-        v24 = [(DNDSUntilExitRegionStore *)v6 hasActiveLifetimes];
-        if (v24)
+        v23 = hasActiveLifetimes3;
+        hasActiveLifetimes4 = [(DNDSUntilExitRegionStore *)v6 hasActiveLifetimes];
+        if (hasActiveLifetimes4)
         {
-          v45 = v3;
-          v40 = v24;
-          v25 = [(DNDSUntilExitRegionStore *)self hasActiveLifetimes];
-          v26 = [(DNDSUntilExitRegionStore *)v6 hasActiveLifetimes];
-          if ([v25 isEqual:v26])
+          v45 = activeLifetimeAssertionUUIDs6;
+          v40 = hasActiveLifetimes4;
+          hasActiveLifetimes5 = [(DNDSUntilExitRegionStore *)self hasActiveLifetimes];
+          hasActiveLifetimes6 = [(DNDSUntilExitRegionStore *)v6 hasActiveLifetimes];
+          if ([hasActiveLifetimes5 isEqual:hasActiveLifetimes6])
           {
-            v37 = v26;
-            v38 = v25;
+            v37 = hasActiveLifetimes6;
+            v38 = hasActiveLifetimes5;
             v39 = v23;
-            v44 = v21;
+            v44 = hasActiveLifetimes;
 LABEL_25:
-            v27 = [(DNDSUntilExitRegionStore *)self regionEntered];
-            v28 = [(DNDSUntilExitRegionStore *)v6 regionEntered];
-            v29 = v28;
-            if (v27 == v28)
+            regionEntered = [(DNDSUntilExitRegionStore *)self regionEntered];
+            regionEntered2 = [(DNDSUntilExitRegionStore *)v6 regionEntered];
+            v29 = regionEntered2;
+            if (regionEntered == regionEntered2)
             {
 
               v13 = 1;
@@ -233,19 +233,19 @@ LABEL_25:
 
             else
             {
-              v30 = [(DNDSUntilExitRegionStore *)self regionEntered];
-              if (v30)
+              regionEntered3 = [(DNDSUntilExitRegionStore *)self regionEntered];
+              if (regionEntered3)
               {
-                v36 = v30;
-                v31 = [(DNDSUntilExitRegionStore *)v6 regionEntered];
-                if (v31)
+                v36 = regionEntered3;
+                regionEntered4 = [(DNDSUntilExitRegionStore *)v6 regionEntered];
+                if (regionEntered4)
                 {
-                  v35 = v31;
-                  v32 = [(DNDSUntilExitRegionStore *)self regionEntered];
-                  v33 = [(DNDSUntilExitRegionStore *)v6 regionEntered];
-                  v13 = [v32 isEqual:v33];
+                  v35 = regionEntered4;
+                  regionEntered5 = [(DNDSUntilExitRegionStore *)self regionEntered];
+                  regionEntered6 = [(DNDSUntilExitRegionStore *)v6 regionEntered];
+                  v13 = [regionEntered5 isEqual:regionEntered6];
 
-                  v31 = v35;
+                  regionEntered4 = v35;
                 }
 
                 else
@@ -261,20 +261,20 @@ LABEL_25:
               }
             }
 
-            if (v44 != v46)
+            if (v44 != hasActiveLifetimes2)
             {
             }
 
-            if (v47 != v15)
+            if (v47 != currentRegion2)
             {
             }
 
 LABEL_47:
-            v11 = v50;
+            activeLifetimeAssertionUUIDs4 = v50;
             v10 = v51;
-            v12 = v49;
-            v3 = v48;
-            if (v7 != v8)
+            activeLifetimeAssertionUUIDs5 = v49;
+            activeLifetimeAssertionUUIDs6 = v48;
+            if (activeLifetimeAssertionUUIDs != activeLifetimeAssertionUUIDs2)
             {
               goto LABEL_48;
             }
@@ -284,12 +284,12 @@ LABEL_50:
             goto LABEL_51;
           }
 
-          v24 = v40;
-          v3 = v45;
+          hasActiveLifetimes4 = v40;
+          activeLifetimeAssertionUUIDs6 = v45;
         }
       }
 
-      if (v47 != v15)
+      if (v47 != currentRegion2)
       {
       }
 
@@ -310,28 +310,28 @@ LABEL_51:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDSUntilExitRegionStore *)self activeLifetimeAssertionUUIDs];
-  v6 = [(DNDSUntilExitRegionStore *)self hasActiveLifetimes];
-  v7 = [(DNDSUntilExitRegionStore *)self currentRegion];
-  v8 = [(DNDSUntilExitRegionStore *)self regionEntered];
-  v9 = [v3 stringWithFormat:@"<%@: %p activeAssertionUUIDs: %@; hasActiveLifetimes: %@; currentRegion: %@; regionEntered: %@>", v4, self, v5, v6, v7, v8];;
+  activeLifetimeAssertionUUIDs = [(DNDSUntilExitRegionStore *)self activeLifetimeAssertionUUIDs];
+  hasActiveLifetimes = [(DNDSUntilExitRegionStore *)self hasActiveLifetimes];
+  currentRegion = [(DNDSUntilExitRegionStore *)self currentRegion];
+  regionEntered = [(DNDSUntilExitRegionStore *)self regionEntered];
+  v9 = [v3 stringWithFormat:@"<%@: %p activeAssertionUUIDs: %@; hasActiveLifetimes: %@; currentRegion: %@; regionEntered: %@>", v4, self, activeLifetimeAssertionUUIDs, hasActiveLifetimes, currentRegion, regionEntered];;
 
   return v9;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSMutableUntilExitRegionStore alloc];
 
   return [(DNDSUntilExitRegionStore *)v4 _initWithStore:self];
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context
 {
-  v5 = a3;
-  v6 = [v5 bs_safeObjectForKey:@"activeLifetimeAssertionUUIDs" ofType:objc_opt_class()];
+  representationCopy = representation;
+  v6 = [representationCopy bs_safeObjectForKey:@"activeLifetimeAssertionUUIDs" ofType:objc_opt_class()];
   v7 = [v6 bs_mapNoNulls:&__block_literal_global_376];
-  v8 = [v5 bs_safeObjectForKey:@"currentRegion" ofType:objc_opt_class()];
+  v8 = [representationCopy bs_safeObjectForKey:@"currentRegion" ofType:objc_opt_class()];
   if (v8)
   {
     v9 = [v8 bs_safeObjectForKey:@"regionIdentifier" ofType:objc_opt_class()];
@@ -356,8 +356,8 @@ LABEL_51:
     v20 = 0;
   }
 
-  v21 = [v5 bs_safeObjectForKey:@"regionEntered" ofType:objc_opt_class()];
-  v22 = [[a1 alloc] _initWithActiveLifetimeAssertionUUIDs:v7 currentRegion:v20 regionEntered:v21];
+  v21 = [representationCopy bs_safeObjectForKey:@"regionEntered" ofType:objc_opt_class()];
+  v22 = [[self alloc] _initWithActiveLifetimeAssertionUUIDs:v7 currentRegion:v20 regionEntered:v21];
 
   return v22;
 }
@@ -371,20 +371,20 @@ id __68__DNDSUntilExitRegionStore_newWithDictionaryRepresentation_context___bloc
   return v4;
 }
 
-- (id)dictionaryRepresentationWithContext:(id)a3
+- (id)dictionaryRepresentationWithContext:(id)context
 {
   v19[4] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = [(NSArray *)self->_activeLifetimeAssertionUUIDs bs_mapNoNulls:&__block_literal_global_393];
   currentRegion = self->_currentRegion;
   if (currentRegion)
   {
-    v7 = [(CLRegion *)currentRegion identifier];
+    identifier = [(CLRegion *)currentRegion identifier];
     [(CLRegion *)self->_currentRegion center];
     v9 = v8;
     v11 = v10;
     [(CLRegion *)self->_currentRegion radius];
-    v19[0] = v7;
+    v19[0] = identifier;
     v18[0] = @"regionIdentifier";
     v18[1] = @"regionRadius";
     v12 = [MEMORY[0x277CCABB0] numberWithDouble:?];
@@ -403,13 +403,13 @@ id __68__DNDSUntilExitRegionStore_newWithDictionaryRepresentation_context___bloc
     v15 = 0;
   }
 
-  [v4 setObject:v5 forKeyedSubscript:@"activeLifetimeAssertionUUIDs"];
-  [v4 setObject:v15 forKeyedSubscript:@"currentRegion"];
-  [v4 setObject:self->_regionEntered forKeyedSubscript:@"regionEntered"];
+  [dictionary setObject:v5 forKeyedSubscript:@"activeLifetimeAssertionUUIDs"];
+  [dictionary setObject:v15 forKeyedSubscript:@"currentRegion"];
+  [dictionary setObject:self->_regionEntered forKeyedSubscript:@"regionEntered"];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
 @end

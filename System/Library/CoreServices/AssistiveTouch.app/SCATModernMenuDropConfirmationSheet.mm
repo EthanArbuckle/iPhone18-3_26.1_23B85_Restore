@@ -1,6 +1,6 @@
 @interface SCATModernMenuDropConfirmationSheet
 - (id)makeMenuItemsIfNeeded;
-- (void)menuItemWasActivated:(id)a3;
+- (void)menuItemWasActivated:(id)activated;
 @end
 
 @implementation SCATModernMenuDropConfirmationSheet
@@ -16,11 +16,11 @@
   return v5;
 }
 
-- (void)menuItemWasActivated:(id)a3
+- (void)menuItemWasActivated:(id)activated
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:@"kSCATPerformDropIdentifier"];
+  activatedCopy = activated;
+  identifier = [activatedCopy identifier];
+  v6 = [identifier isEqualToString:@"kSCATPerformDropIdentifier"];
 
   if (v6)
   {
@@ -32,7 +32,7 @@
   {
     v8.receiver = self;
     v8.super_class = SCATModernMenuDropConfirmationSheet;
-    [(SCATModernMenuSheet *)&v8 menuItemWasActivated:v4];
+    [(SCATModernMenuSheet *)&v8 menuItemWasActivated:activatedCopy];
   }
 }
 

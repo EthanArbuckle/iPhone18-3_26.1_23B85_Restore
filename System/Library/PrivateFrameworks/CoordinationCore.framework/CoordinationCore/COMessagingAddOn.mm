@@ -2,16 +2,16 @@
 - (COMessagingAddOn)init;
 - (COMessagingAddOnDelegate)delegate;
 - (void)_configureTimer;
-- (void)_handleRequest:(id)a3 callback:(id)a4;
+- (void)_handleRequest:(id)request callback:(id)callback;
 - (void)_timerFired;
-- (void)_timerRequestAdded:(id)a3;
-- (void)_withLock:(id)a3;
-- (void)broadcastRequest:(id)a3 recipientsCallback:(id)a4 completionHandler:(id)a5;
-- (void)didAddToMeshController:(id)a3;
-- (void)didChangeNodesForMeshController:(id)a3;
-- (void)sendRequest:(id)a3 members:(id)a4 withCompletionHandler:(id)a5;
-- (void)setDelegate:(id)a3;
-- (void)willRemoveFromMeshController:(id)a3;
+- (void)_timerRequestAdded:(id)added;
+- (void)_withLock:(id)lock;
+- (void)broadcastRequest:(id)request recipientsCallback:(id)callback completionHandler:(id)handler;
+- (void)didAddToMeshController:(id)controller;
+- (void)didChangeNodesForMeshController:(id)controller;
+- (void)sendRequest:(id)request members:(id)members withCompletionHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
+- (void)willRemoveFromMeshController:(id)controller;
 @end
 
 @implementation COMessagingAddOn
@@ -25,9 +25,9 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     queuedIncomingRequests = v3->_queuedIncomingRequests;
-    v3->_queuedIncomingRequests = v4;
+    v3->_queuedIncomingRequests = array;
 
     v6 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, 0);
     timer = v3->_timer;
@@ -39,11 +39,11 @@
   return v3;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -79,16 +79,16 @@ uint64_t __28__COMessagingAddOn_delegate__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](WeakRetained, v4);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__COMessagingAddOn_setDelegate___block_invoke;
   v6[3] = &unk_278E156B0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = delegateCopy;
+  selfCopy = self;
+  v5 = delegateCopy;
   [(COMessagingAddOn *)self _withLock:v6];
 }
 
@@ -107,29 +107,29 @@ void __32__COMessagingAddOn_setDelegate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)sendRequest:(id)a3 members:(id)a4 withCompletionHandler:(id)a5
+- (void)sendRequest:(id)request members:(id)members withCompletionHandler:(id)handler
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COMeshAddOn *)self meshController];
-  v12 = v11;
-  if (!v9)
+  requestCopy = request;
+  membersCopy = members;
+  handlerCopy = handler;
+  meshController = [(COMeshAddOn *)self meshController];
+  v12 = meshController;
+  if (!membersCopy)
   {
-    [v11 sendRequest:v8 withCompletionHandler:v10];
+    [meshController sendRequest:requestCopy withCompletionHandler:handlerCopy];
 
     goto LABEL_28;
   }
 
-  v13 = [v11 nodeForMe];
+  nodeForMe = [meshController nodeForMe];
 
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v33 = v9;
-  obj = v9;
+  v33 = membersCopy;
+  obj = membersCopy;
   v41 = [obj countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (!v41)
   {
@@ -137,12 +137,12 @@ void __32__COMessagingAddOn_setDelegate___block_invoke(uint64_t a1)
   }
 
   v14 = *v47;
-  v38 = v8;
+  v38 = requestCopy;
   v39 = *MEMORY[0x277CFCF10];
-  v36 = self;
-  v37 = v10;
+  selfCopy = self;
+  v37 = handlerCopy;
   v34 = *v47;
-  v35 = v13;
+  v35 = nodeForMe;
   do
   {
     for (i = 0; i != v41; ++i)
@@ -153,13 +153,13 @@ void __32__COMessagingAddOn_setDelegate___block_invoke(uint64_t a1)
       }
 
       v16 = *(*(&v46 + 1) + 8 * i);
-      v17 = [v13 memberSnapshot];
-      v18 = [v17 member];
-      v19 = [v18 isEqualToMember:v16];
+      memberSnapshot = [nodeForMe memberSnapshot];
+      member = [memberSnapshot member];
+      v19 = [member isEqualToMember:v16];
 
       if (v19)
       {
-        v20 = v13;
+        v20 = nodeForMe;
         if (v20)
         {
           goto LABEL_9;
@@ -172,10 +172,10 @@ void __32__COMessagingAddOn_setDelegate___block_invoke(uint64_t a1)
         v45 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v22 = [(COMeshAddOn *)self meshController];
-        v23 = [v22 nodes];
+        meshController2 = [(COMeshAddOn *)self meshController];
+        nodes = [meshController2 nodes];
 
-        v24 = [v23 countByEnumeratingWithState:&v42 objects:v50 count:16];
+        v24 = [nodes countByEnumeratingWithState:&v42 objects:v50 count:16];
         if (v24)
         {
           v25 = v24;
@@ -186,13 +186,13 @@ void __32__COMessagingAddOn_setDelegate___block_invoke(uint64_t a1)
             {
               if (*v43 != v26)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(nodes);
               }
 
               v28 = *(*(&v42 + 1) + 8 * j);
-              v29 = [v28 memberSnapshot];
-              v30 = [v29 member];
-              v31 = [v30 isEqualToMember:v16];
+              memberSnapshot2 = [v28 memberSnapshot];
+              member2 = [memberSnapshot2 member];
+              v31 = [member2 isEqualToMember:v16];
 
               if (v31)
               {
@@ -201,7 +201,7 @@ void __32__COMessagingAddOn_setDelegate___block_invoke(uint64_t a1)
               }
             }
 
-            v25 = [v23 countByEnumeratingWithState:&v42 objects:v50 count:16];
+            v25 = [nodes countByEnumeratingWithState:&v42 objects:v50 count:16];
             if (v25)
             {
               continue;
@@ -212,10 +212,10 @@ void __32__COMessagingAddOn_setDelegate___block_invoke(uint64_t a1)
 
           v20 = 0;
 LABEL_20:
-          v10 = v37;
-          v8 = v38;
-          v13 = v35;
-          self = v36;
+          handlerCopy = v37;
+          requestCopy = v38;
+          nodeForMe = v35;
+          self = selfCopy;
           v14 = v34;
         }
 
@@ -227,14 +227,14 @@ LABEL_20:
         if (v20)
         {
 LABEL_9:
-          v21 = [(COMeshAddOn *)self meshController];
-          [v21 sendRequest:v8 toPeer:v20 withCompletionHandler:v10];
+          meshController3 = [(COMeshAddOn *)self meshController];
+          [meshController3 sendRequest:requestCopy toPeer:v20 withCompletionHandler:handlerCopy];
           goto LABEL_24;
         }
       }
 
-      v21 = [MEMORY[0x277CCA9B8] errorWithDomain:v39 code:-1111 userInfo:0];
-      (*(v10 + 2))(v10, v8, 0, 0, v21);
+      meshController3 = [MEMORY[0x277CCA9B8] errorWithDomain:v39 code:-1111 userInfo:0];
+      (*(handlerCopy + 2))(handlerCopy, requestCopy, 0, 0, meshController3);
 LABEL_24:
     }
 
@@ -244,34 +244,34 @@ LABEL_24:
   while (v41);
 LABEL_26:
 
-  v9 = v33;
+  membersCopy = v33;
 LABEL_28:
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)broadcastRequest:(id)a3 recipientsCallback:(id)a4 completionHandler:(id)a5
+- (void)broadcastRequest:(id)request recipientsCallback:(id)callback completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(COMeshAddOn *)self meshController];
-  [v11 broadcastRequest:v10 includingSelf:1 recipientsCallback:v9 completionHandler:v8];
+  handlerCopy = handler;
+  callbackCopy = callback;
+  requestCopy = request;
+  meshController = [(COMeshAddOn *)self meshController];
+  [meshController broadcastRequest:requestCopy includingSelf:1 recipientsCallback:callbackCopy completionHandler:handlerCopy];
 }
 
-- (void)didAddToMeshController:(id)a3
+- (void)didAddToMeshController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = COMessagingAddOn;
-  [(COMeshAddOn *)&v8 didAddToMeshController:v4];
+  [(COMeshAddOn *)&v8 didAddToMeshController:controllerCopy];
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __43__COMessagingAddOn_didAddToMeshController___block_invoke;
   v5[3] = &unk_278E15FA8;
   objc_copyWeak(&v6, &location);
-  [v4 registerHandler:v5 forRequestClass:objc_opt_class()];
+  [controllerCopy registerHandler:v5 forRequestClass:objc_opt_class()];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -288,30 +288,30 @@ void __43__COMessagingAddOn_didAddToMeshController___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)willRemoveFromMeshController:(id)a3
+- (void)willRemoveFromMeshController:(id)controller
 {
-  v4 = a3;
-  [v4 deregisterHandlerForRequestClass:objc_opt_class()];
-  v5 = [(COMessagingAddOn *)self timer];
-  dispatch_source_set_timer(v5, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+  controllerCopy = controller;
+  [controllerCopy deregisterHandlerForRequestClass:objc_opt_class()];
+  timer = [(COMessagingAddOn *)self timer];
+  dispatch_source_set_timer(timer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
 
   [(COMessagingAddOn *)self setTimerEnabled:0];
   v6.receiver = self;
   v6.super_class = COMessagingAddOn;
-  [(COMeshAddOn *)&v6 willRemoveFromMeshController:v4];
+  [(COMeshAddOn *)&v6 willRemoveFromMeshController:controllerCopy];
 }
 
-- (void)didChangeNodesForMeshController:(id)a3
+- (void)didChangeNodesForMeshController:(id)controller
 {
   v36 = *MEMORY[0x277D85DE8];
   v30.receiver = self;
   v30.super_class = COMessagingAddOn;
-  [(COMeshAddOn *)&v30 didChangeNodesForMeshController:a3];
-  v4 = [(COMeshAddOn *)self meshController];
-  v5 = [v4 nodes];
+  [(COMeshAddOn *)&v30 didChangeNodesForMeshController:controller];
+  meshController = [(COMeshAddOn *)self meshController];
+  nodes = [meshController nodes];
 
-  v23 = [MEMORY[0x277CBEB18] array];
-  v24 = self;
+  array = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -335,29 +335,29 @@ void __43__COMessagingAddOn_didAddToMeshController___block_invoke(uint64_t a1, v
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v12 = [v11 senderNode];
-        if ([v5 containsObject:v12])
+        senderNode = [v11 senderNode];
+        if ([nodes containsObject:senderNode])
         {
-          v13 = [v12 memberSnapshot];
-          if (v13)
+          memberSnapshot = [senderNode memberSnapshot];
+          if (memberSnapshot)
           {
             v14 = COCoreLogForCategory(10);
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
-              v15 = [v11 request];
+              request = [v11 request];
               *buf = v21;
-              v32 = v24;
+              v32 = selfCopy;
               v33 = 2112;
-              v34 = v15;
+              v34 = request;
               _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p Add-on found a snapshot for queued request %@", buf, 0x16u);
             }
 
-            v16 = [(COMessagingAddOn *)v24 delegate];
-            v17 = [v11 request];
-            v18 = [v11 callback];
-            [v16 addOn:v24 receivedRequest:v17 callback:v18];
+            delegate = [(COMessagingAddOn *)selfCopy delegate];
+            request2 = [v11 request];
+            callback = [v11 callback];
+            [delegate addOn:selfCopy receivedRequest:request2 callback:callback];
 
-            [v23 addObject:v11];
+            [array addObject:v11];
             v9 = v22;
           }
         }
@@ -369,43 +369,43 @@ void __43__COMessagingAddOn_didAddToMeshController___block_invoke(uint64_t a1, v
     while (v8);
   }
 
-  v19 = [(COMessagingAddOn *)v24 queuedIncomingRequests];
-  [v19 removeObjectsInArray:v23];
+  queuedIncomingRequests = [(COMessagingAddOn *)selfCopy queuedIncomingRequests];
+  [queuedIncomingRequests removeObjectsInArray:array];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRequest:(id)a3 callback:(id)a4
+- (void)_handleRequest:(id)request callback:(id)callback
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 sender];
-  v9 = [v8 memberSnapshot];
-  if (v9)
+  requestCopy = request;
+  callbackCopy = callback;
+  sender = [requestCopy sender];
+  memberSnapshot = [sender memberSnapshot];
+  if (memberSnapshot)
   {
-    v10 = [(COMessagingAddOn *)self delegate];
-    [(COMessagingQueuedIncomingRequest *)v10 addOn:self receivedRequest:v6 callback:v7];
+    delegate = [(COMessagingAddOn *)self delegate];
+    [(COMessagingQueuedIncomingRequest *)delegate addOn:self receivedRequest:requestCopy callback:callbackCopy];
   }
 
   else
   {
-    v10 = [[COMessagingQueuedIncomingRequest alloc] initWithRequest:v6 callback:v7];
+    delegate = [[COMessagingQueuedIncomingRequest alloc] initWithRequest:requestCopy callback:callbackCopy];
 
-    v11 = [(COMessagingAddOn *)self queuedIncomingRequests];
-    [v11 addObject:v10];
+    queuedIncomingRequests = [(COMessagingAddOn *)self queuedIncomingRequests];
+    [queuedIncomingRequests addObject:delegate];
 
-    [(COMessagingAddOn *)self _timerRequestAdded:v10];
-    v7 = COCoreLogForCategory(10);
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    [(COMessagingAddOn *)self _timerRequestAdded:delegate];
+    callbackCopy = COCoreLogForCategory(10);
+    if (os_log_type_enabled(callbackCopy, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134218498;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = v6;
+      v16 = requestCopy;
       v17 = 2112;
-      v18 = v8;
-      _os_log_impl(&dword_244378000, v7, OS_LOG_TYPE_DEFAULT, "%p Add-on received a request %@ from node %@ with missing snapshot. Enqueuing request", &v13, 0x20u);
+      v18 = sender;
+      _os_log_impl(&dword_244378000, callbackCopy, OS_LOG_TYPE_DEFAULT, "%p Add-on received a request %@ from node %@ with missing snapshot. Enqueuing request", &v13, 0x20u);
     }
   }
 
@@ -414,18 +414,18 @@ void __43__COMessagingAddOn_didAddToMeshController___block_invoke(uint64_t a1, v
 
 - (void)_configureTimer
 {
-  v3 = [(COMessagingAddOn *)self timer];
-  dispatch_source_set_timer(v3, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+  timer = [(COMessagingAddOn *)self timer];
+  dispatch_source_set_timer(timer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
 
   [(COMessagingAddOn *)self setTimerEnabled:0];
   objc_initWeak(&location, self);
-  v4 = [(COMessagingAddOn *)self timer];
+  timer2 = [(COMessagingAddOn *)self timer];
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __35__COMessagingAddOn__configureTimer__block_invoke;
   v9 = &unk_278E15B10;
   objc_copyWeak(&v10, &location);
-  dispatch_source_set_event_handler(v4, &v6);
+  dispatch_source_set_event_handler(timer2, &v6);
 
   v5 = [(COMessagingAddOn *)self timer:v6];
   dispatch_activate(v5);
@@ -455,7 +455,7 @@ void __35__COMessagingAddOn__configureTimer__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
   v3 = *(*a2 + 24);
   v5 = 134218240;
-  v6 = a1;
+  selfCopy = self;
   v7 = 2048;
   v8 = v3;
   _os_log_debug_impl(&dword_244378000, log, OS_LOG_TYPE_DEBUG, "%p cleanup timer reconfiguring to %llu", &v5, 0x16u);
@@ -509,7 +509,7 @@ void __31__COMessagingAddOn__timerFired__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)_timerRequestAdded:(id)a3
+- (void)_timerRequestAdded:(id)added
 {
   if (![(COMessagingAddOn *)self isTimerEnabled])
   {
@@ -520,9 +520,9 @@ void __31__COMessagingAddOn__timerFired__block_invoke(uint64_t a1, void *a2)
     }
 
     [(COMessagingAddOn *)self setTimerEnabled:1];
-    v5 = [(COMessagingAddOn *)self timer];
+    timer = [(COMessagingAddOn *)self timer];
     v6 = dispatch_time(0, 300000000000);
-    dispatch_source_set_timer(v5, v6, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+    dispatch_source_set_timer(timer, v6, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
   }
 }
 

@@ -1,22 +1,22 @@
 @interface PKPaletteInputAssistantButtonProvider
-- (BOOL)_shouldIncludeBarButtonItem:(id)a3;
-- (PKPaletteInputAssistantButtonProvider)initWithInputAssistantItem:(id)a3;
+- (BOOL)_shouldIncludeBarButtonItem:(id)item;
+- (PKPaletteInputAssistantButtonProvider)initWithInputAssistantItem:(id)item;
 - (id)_nonSystemBarButtonItemGroups;
 - (id)buttonsForCurrentConfiguration;
 @end
 
 @implementation PKPaletteInputAssistantButtonProvider
 
-- (PKPaletteInputAssistantButtonProvider)initWithInputAssistantItem:(id)a3
+- (PKPaletteInputAssistantButtonProvider)initWithInputAssistantItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = PKPaletteInputAssistantButtonProvider;
   v6 = [(PKPaletteInputAssistantButtonProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_inputAssistantItem, a3);
+    objc_storeStrong(&v6->_inputAssistantItem, item);
   }
 
   return v7;
@@ -25,13 +25,13 @@
 - (id)buttonsForCurrentConfiguration
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaletteInputAssistantButtonProvider *)self _nonSystemBarButtonItemGroups];
-  v4 = [MEMORY[0x1E695DF70] array];
+  _nonSystemBarButtonItemGroups = [(PKPaletteInputAssistantButtonProvider *)self _nonSystemBarButtonItemGroups];
+  array = [MEMORY[0x1E695DF70] array];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v3;
+  obj = _nonSystemBarButtonItemGroups;
   v5 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v5)
   {
@@ -51,8 +51,8 @@
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v9 = [v8 barButtonItems];
-        v10 = [v9 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        barButtonItems = [v8 barButtonItems];
+        v10 = [barButtonItems countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v10)
         {
           v11 = v10;
@@ -63,18 +63,18 @@
             {
               if (*v25 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(barButtonItems);
               }
 
               v14 = *(*(&v24 + 1) + 8 * j);
               if ([(PKPaletteInputAssistantButtonProvider *)self _shouldIncludeBarButtonItem:v14])
               {
                 v15 = [[PKPaletteBarButton alloc] initWithBarButtonItem:v14];
-                [v4 addObject:v15];
+                [array addObject:v15];
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v11 = [barButtonItems countByEnumeratingWithState:&v24 objects:v32 count:16];
           }
 
           while (v11);
@@ -90,14 +90,14 @@
   if (_os_feature_enabled_impl() && [MEMORY[0x1E69DCBF0] dictationInputModeIsFunctional])
   {
     v16 = MEMORY[0x1E69DC6B8];
-    v17 = [(PKPaletteInputAssistantButtonProvider *)self inputAssistantItem];
-    v18 = [v16 barButtonItemForAssistantItemStyle:12 target:v17];
+    inputAssistantItem = [(PKPaletteInputAssistantButtonProvider *)self inputAssistantItem];
+    v18 = [v16 barButtonItemForAssistantItemStyle:12 target:inputAssistantItem];
 
     v19 = [[PKPaletteDictationBarButton alloc] initWithBarButtonItem:v18];
-    [v4 addObject:v19];
+    [array addObject:v19];
   }
 
-  v20 = [v4 copy];
+  v20 = [array copy];
 
   return v20;
 }
@@ -105,16 +105,16 @@
 - (id)_nonSystemBarButtonItemGroups
 {
   v25 = *MEMORY[0x1E69E9840];
-  v2 = [(PKPaletteInputAssistantButtonProvider *)self inputAssistantItem];
+  inputAssistantItem = [(PKPaletteInputAssistantButtonProvider *)self inputAssistantItem];
   v3 = MEMORY[0x1E695E0F0];
-  if (v2)
+  if (inputAssistantItem)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = [v2 leadingBarButtonGroups];
-    v6 = v5;
-    if (v5)
+    leadingBarButtonGroups = [inputAssistantItem leadingBarButtonGroups];
+    v6 = leadingBarButtonGroups;
+    if (leadingBarButtonGroups)
     {
-      v7 = v5;
+      v7 = leadingBarButtonGroups;
     }
 
     else
@@ -124,11 +124,11 @@
 
     v8 = v7;
 
-    v9 = [v2 trailingBarButtonGroups];
-    v10 = v9;
-    if (v9)
+    trailingBarButtonGroups = [inputAssistantItem trailingBarButtonGroups];
+    v10 = trailingBarButtonGroups;
+    if (trailingBarButtonGroups)
     {
-      v11 = v9;
+      v11 = trailingBarButtonGroups;
     }
 
     else
@@ -176,23 +176,23 @@
   return v3;
 }
 
-- (BOOL)_shouldIncludeBarButtonItem:(id)a3
+- (BOOL)_shouldIncludeBarButtonItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 customView];
+  itemCopy = item;
+  customView = [itemCopy customView];
 
-  if (v5 || ([v4 target], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) != 0))
+  if (customView || ([itemCopy target], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) != 0))
   {
     v8 = 0;
   }
 
   else
   {
-    v10 = [(PKPaletteInputAssistantButtonProvider *)self inclusionFilter];
-    v11 = v10;
-    if (v10)
+    inclusionFilter = [(PKPaletteInputAssistantButtonProvider *)self inclusionFilter];
+    v11 = inclusionFilter;
+    if (inclusionFilter)
     {
-      v8 = (*(v10 + 16))(v10, self, v4);
+      v8 = (*(inclusionFilter + 16))(inclusionFilter, self, itemCopy);
     }
 
     else

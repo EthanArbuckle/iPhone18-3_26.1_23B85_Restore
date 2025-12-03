@@ -3,30 +3,30 @@
 - (UIEdgeInsets)insets;
 - (_UIAssertion)backgroundSuppressionAssertion;
 - (_UIMagicMorphDestination)init;
-- (_UIMagicMorphDestination)initWithPreview:(id)a3;
-- (_UIMagicMorphDestination)initWithView:(id)a3;
-- (void)setBackgroundSuppressionAssertion:(id)a3;
-- (void)setHidingAssertion:(id)a3;
-- (void)setPreview:(id)a3;
-- (void)setShadowPath:(id)a3;
-- (void)setShadowProperties:(id)a3;
+- (_UIMagicMorphDestination)initWithPreview:(id)preview;
+- (_UIMagicMorphDestination)initWithView:(id)view;
+- (void)setBackgroundSuppressionAssertion:(id)assertion;
+- (void)setHidingAssertion:(id)assertion;
+- (void)setPreview:(id)preview;
+- (void)setShadowPath:(id)path;
+- (void)setShadowProperties:(id)properties;
 - (void)unhideImmediately;
 @end
 
 @implementation _UIMagicMorphDestination
 
-- (void)setPreview:(id)a3
+- (void)setPreview:(id)preview
 {
   v4 = *(&self->super.isa + OBJC_IVAR____UIMagicMorphDestination_preview);
-  *(&self->super.isa + OBJC_IVAR____UIMagicMorphDestination_preview) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____UIMagicMorphDestination_preview) = preview;
+  previewCopy = preview;
 }
 
-- (void)setShadowProperties:(id)a3
+- (void)setShadowProperties:(id)properties
 {
   v4 = *(&self->super.isa + OBJC_IVAR____UIMagicMorphDestination_shadowProperties);
-  *(&self->super.isa + OBJC_IVAR____UIMagicMorphDestination_shadowProperties) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____UIMagicMorphDestination_shadowProperties) = properties;
+  propertiesCopy = properties;
 }
 
 - (UIEdgeInsets)insets
@@ -42,11 +42,11 @@
   return result;
 }
 
-- (void)setHidingAssertion:(id)a3
+- (void)setHidingAssertion:(id)assertion
 {
   v4 = *(&self->super.isa + OBJC_IVAR____UIMagicMorphDestination_hidingAssertion);
-  *(&self->super.isa + OBJC_IVAR____UIMagicMorphDestination_hidingAssertion) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____UIMagicMorphDestination_hidingAssertion) = assertion;
+  assertionCopy = assertion;
 }
 
 - (_UIAssertion)backgroundSuppressionAssertion
@@ -56,48 +56,48 @@
   return v2;
 }
 
-- (void)setBackgroundSuppressionAssertion:(id)a3
+- (void)setBackgroundSuppressionAssertion:(id)assertion
 {
-  *(&self->super.isa + OBJC_IVAR____UIMagicMorphDestination_backgroundSuppressionAssertion) = a3;
+  *(&self->super.isa + OBJC_IVAR____UIMagicMorphDestination_backgroundSuppressionAssertion) = assertion;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)setShadowPath:(id)a3
+- (void)setShadowPath:(id)path
 {
   v4 = *(&self->super.isa + OBJC_IVAR____UIMagicMorphDestination_shadowPath);
-  *(&self->super.isa + OBJC_IVAR____UIMagicMorphDestination_shadowPath) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____UIMagicMorphDestination_shadowPath) = path;
+  pathCopy = path;
 }
 
-- (_UIMagicMorphDestination)initWithPreview:(id)a3
+- (_UIMagicMorphDestination)initWithPreview:(id)preview
 {
-  v3 = a3;
-  v4 = sub_188D626CC(v3);
+  previewCopy = preview;
+  v4 = sub_188D626CC(previewCopy);
 
   return v4;
 }
 
-- (_UIMagicMorphDestination)initWithView:(id)a3
+- (_UIMagicMorphDestination)initWithView:(id)view
 {
   v5 = objc_allocWithZone(UITargetedPreview);
-  v6 = a3;
-  v7 = [v5 initWithView_];
-  v8 = [(_UIMagicMorphDestination *)self initWithPreview:v7];
+  viewCopy = view;
+  initWithView_ = [v5 initWithView_];
+  v8 = [(_UIMagicMorphDestination *)self initWithPreview:initWithView_];
 
   return v8;
 }
 
 - (void)unhideImmediately
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890DEC38();
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890DED60();
 
   v3 = sub_18A4A7258();

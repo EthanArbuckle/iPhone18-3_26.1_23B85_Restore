@@ -1,9 +1,9 @@
 @interface UARPHeySiriModelVoiceAssist
 + (id)tag;
-- (BOOL)processDynamicAsset:(id *)a3;
+- (BOOL)processDynamicAsset:(id *)asset;
 - (UARPHeySiriModelVoiceAssist)init;
-- (id)generateAsset:(id *)a3;
-- (void)currentHeySiriModel:(id)a3 fallbackModel:(id)a4 error:(id)a5;
+- (id)generateAsset:(id *)asset;
+- (void)currentHeySiriModel:(id)model fallbackModel:(id)fallbackModel error:(id)error;
 @end
 
 @implementation UARPHeySiriModelVoiceAssist
@@ -15,23 +15,23 @@
   return 0;
 }
 
-- (BOOL)processDynamicAsset:(id *)a3
+- (BOOL)processDynamicAsset:(id *)asset
 {
   v5 = [UARPSuperBinaryAsset alloc];
   v6 = [(UARPHeySiriModelBase *)self url];
   v7 = [(UARPSuperBinaryAsset *)v5 initWithURL:v6];
   [(UARPHeySiriModelBase *)self setSuperbinary:v7];
 
-  v8 = [(UARPHeySiriModelBase *)self superbinary];
-  LOBYTE(a3) = [v8 expandHeadersAndTLVs:a3];
+  superbinary = [(UARPHeySiriModelBase *)self superbinary];
+  LOBYTE(asset) = [superbinary expandHeadersAndTLVs:asset];
 
-  v9 = [(UARPHeySiriModelBase *)self superbinary];
-  v10 = [v9 tlvs];
-  v11 = [UARPSuperBinaryAssetTLV findTLVWithType:76079623 tlvs:v10];
+  superbinary2 = [(UARPHeySiriModelBase *)self superbinary];
+  tlvs = [superbinary2 tlvs];
+  v11 = [UARPSuperBinaryAssetTLV findTLVWithType:76079623 tlvs:tlvs];
 
-  v12 = [v11 valueAsVersion];
-  -[UARPHeySiriModelBase setMajorVersion:](self, "setMajorVersion:", [v12 majorVersion]);
-  -[UARPHeySiriModelBase setMinorVersion:](self, "setMinorVersion:", [v12 minorVersion]);
+  valueAsVersion = [v11 valueAsVersion];
+  -[UARPHeySiriModelBase setMajorVersion:](self, "setMajorVersion:", [valueAsVersion majorVersion]);
+  -[UARPHeySiriModelBase setMinorVersion:](self, "setMinorVersion:", [valueAsVersion minorVersion]);
   v15.receiver = self;
   v15.super_class = UARPHeySiriModelVoiceAssist;
   [(UARPHeySiriModelBase *)&v15 setDelegate:self];
@@ -39,26 +39,26 @@
   v14.super_class = UARPHeySiriModelVoiceAssist;
   [(UARPHeySiriModelBase *)&v14 checkCurrentHeySiriModel];
 
-  return a3;
+  return asset;
 }
 
-- (void)currentHeySiriModel:(id)a3 fallbackModel:(id)a4 error:(id)a5
+- (void)currentHeySiriModel:(id)model fallbackModel:(id)fallbackModel error:(id)error
 {
   v128 = *MEMORY[0x277D85DE8];
-  v95 = a3;
-  v94 = a4;
+  modelCopy = model;
+  fallbackModelCopy = fallbackModel;
   v123.receiver = self;
   v123.super_class = UARPHeySiriModelVoiceAssist;
-  v7 = [(UARPHeySiriModelBase *)&v123 accessory];
-  v8 = [v7 modelNumber];
-  v9 = [UARPSupportedAccessory findByAppleModelNumber:v8];
+  accessory = [(UARPHeySiriModelBase *)&v123 accessory];
+  modelNumber = [accessory modelNumber];
+  v9 = [UARPSupportedAccessory findByAppleModelNumber:modelNumber];
 
   if (v9)
   {
     v10 = MEMORY[0x277CCAB68];
     v11 = UARPStringSupplementalAssetsFilepath();
-    v12 = [v9 supplementalMobileAssetAppleModelNumber];
-    v13 = [v10 stringWithFormat:@"%@/%@-%@", v11, v12, @"VoiceAssist"];
+    supplementalMobileAssetAppleModelNumber = [v9 supplementalMobileAssetAppleModelNumber];
+    v13 = [v10 stringWithFormat:@"%@/%@-%@", v11, supplementalMobileAssetAppleModelNumber, @"VoiceAssist"];
 
     v120 = 0;
     LOBYTE(v10) = appendFirstUarpFilenameToFilepath(v13, &v120);
@@ -134,7 +134,7 @@
     v115 = 0u;
     v112 = 0u;
     v113 = 0u;
-    v86 = self;
+    selfCopy = self;
     obj = [(UARPSuperBinaryAsset *)self->_asset payloads];
     v91 = [obj countByEnumeratingWithState:&v112 objects:v125 count:16];
     if (v91)
@@ -156,8 +156,8 @@
           v109 = 0u;
           v110 = 0u;
           v111 = 0u;
-          v25 = [v24 tlvs];
-          v26 = [v25 countByEnumeratingWithState:&v108 objects:v124 count:16];
+          tlvs = [v24 tlvs];
+          v26 = [tlvs countByEnumeratingWithState:&v108 objects:v124 count:16];
           if (v26)
           {
             v27 = v26;
@@ -168,25 +168,25 @@
               {
                 if (*v109 != v28)
                 {
-                  objc_enumerationMutation(v25);
+                  objc_enumerationMutation(tlvs);
                 }
 
                 v30 = *(*(&v108 + 1) + 8 * i);
                 if ([v30 type] == 76079617)
                 {
-                  v31 = [v30 valueAsString];
-                  v32 = [v95 modelLocale];
-                  v33 = [v31 isEqualToString:v32];
+                  valueAsString = [v30 valueAsString];
+                  modelLocale = [modelCopy modelLocale];
+                  v33 = [valueAsString isEqualToString:modelLocale];
 
                   v34 = p_payloadModel;
-                  if ((v33 & 1) != 0 || ([v94 modelLocale], v35 = objc_claimAutoreleasedReturnValue(), v36 = objc_msgSend(v31, "isEqualToString:", v35), v35, v34 = location, v36))
+                  if ((v33 & 1) != 0 || ([fallbackModelCopy modelLocale], v35 = objc_claimAutoreleasedReturnValue(), v36 = objc_msgSend(valueAsString, "isEqualToString:", v35), v35, v34 = location, v36))
                   {
                     objc_storeStrong(v34, v24);
                   }
                 }
               }
 
-              v27 = [v25 countByEnumeratingWithState:&v108 objects:v124 count:16];
+              v27 = [tlvs countByEnumeratingWithState:&v108 objects:v124 count:16];
             }
 
             while (v27);
@@ -203,19 +203,19 @@
     }
 
     v37 = UARPUtilsBuildURLForTemporaryFile();
-    v38 = v86[15];
-    v86[15] = v37;
+    v38 = selfCopy[15];
+    selfCopy[15] = v37;
 
-    v39 = v86[20];
-    v40 = v86[15];
-    v41 = [v39 rangeMetadata];
+    v39 = selfCopy[20];
+    v40 = selfCopy[15];
+    rangeMetadata = [v39 rangeMetadata];
     v107 = 0;
-    LOBYTE(v39) = [v39 exportSuperBinaryContentToFilepath:v40 range:v41 error:{v42, &v107}];
+    LOBYTE(v39) = [v39 exportSuperBinaryContentToFilepath:v40 range:rangeMetadata error:{v42, &v107}];
     v43 = v107;
 
     if ((v39 & 1) == 0)
     {
-      v106.receiver = v86;
+      v106.receiver = selfCopy;
       v106.super_class = UARPHeySiriModelVoiceAssist;
       v57 = [(UARPHeySiriModelBase *)&v106 log];
       v16 = v85;
@@ -232,20 +232,20 @@
     if (*p_payloadModel)
     {
       v44 = UARPUtilsBuildURLForTemporaryFile();
-      v45 = v86[16];
-      v86[16] = v44;
+      v45 = selfCopy[16];
+      selfCopy[16] = v44;
 
-      v46 = v86[20];
-      v47 = v86[16];
-      v48 = [(UARPSuperBinaryAssetPayload *)*p_payloadModel rangeMetadata];
+      v46 = selfCopy[20];
+      v47 = selfCopy[16];
+      rangeMetadata2 = [(UARPSuperBinaryAssetPayload *)*p_payloadModel rangeMetadata];
       v105 = 0;
-      LOBYTE(v46) = [v46 exportSuperBinaryContentToFilepath:v47 range:v48 error:{v49, &v105}];
+      LOBYTE(v46) = [v46 exportSuperBinaryContentToFilepath:v47 range:rangeMetadata2 error:{v49, &v105}];
       v50 = v105;
 
       if ((v46 & 1) == 0)
       {
         v14 = v50;
-        v104.receiver = v86;
+        v104.receiver = selfCopy;
         v104.super_class = UARPHeySiriModelVoiceAssist;
         v57 = [(UARPHeySiriModelBase *)&v104 log];
         if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
@@ -259,19 +259,19 @@
       }
 
       v51 = UARPUtilsBuildURLForTemporaryFile();
-      v52 = v86[17];
-      v86[17] = v51;
+      v52 = selfCopy[17];
+      selfCopy[17] = v51;
 
-      v53 = v86[20];
-      v54 = v86[17];
-      v55 = [(UARPSuperBinaryAssetPayload *)*p_payloadModel rangePayload];
+      v53 = selfCopy[20];
+      v54 = selfCopy[17];
+      rangePayload = [(UARPSuperBinaryAssetPayload *)*p_payloadModel rangePayload];
       v103 = 0;
-      LOBYTE(v53) = [v53 exportSuperBinaryContentToFilepath:v54 range:v55 error:{v56, &v103}];
+      LOBYTE(v53) = [v53 exportSuperBinaryContentToFilepath:v54 range:rangePayload error:{v56, &v103}];
       v43 = v103;
 
       if ((v53 & 1) == 0)
       {
-        v102.receiver = v86;
+        v102.receiver = selfCopy;
         v102.super_class = UARPHeySiriModelVoiceAssist;
         v57 = [(UARPHeySiriModelBase *)&v102 log];
         v13 = v87;
@@ -295,30 +295,30 @@ LABEL_60:
 
     else
     {
-      v66 = v86[16];
-      v86[16] = 0;
+      v66 = selfCopy[16];
+      selfCopy[16] = 0;
 
-      v67 = v86[17];
-      v86[17] = 0;
+      v67 = selfCopy[17];
+      selfCopy[17] = 0;
     }
 
     v13 = v87;
     if (*location)
     {
       v68 = UARPUtilsBuildURLForTemporaryFile();
-      v69 = v86[18];
-      v86[18] = v68;
+      v69 = selfCopy[18];
+      selfCopy[18] = v68;
 
-      v70 = v86[20];
-      v71 = v86[18];
-      v72 = [*location rangeMetadata];
+      v70 = selfCopy[20];
+      v71 = selfCopy[18];
+      rangeMetadata3 = [*location rangeMetadata];
       v101 = 0;
-      LOBYTE(v70) = [v70 exportSuperBinaryContentToFilepath:v71 range:v72 error:{v73, &v101}];
+      LOBYTE(v70) = [v70 exportSuperBinaryContentToFilepath:v71 range:rangeMetadata3 error:{v73, &v101}];
       v14 = v101;
 
       if ((v70 & 1) == 0)
       {
-        v100.receiver = v86;
+        v100.receiver = selfCopy;
         v100.super_class = UARPHeySiriModelVoiceAssist;
         v57 = [(UARPHeySiriModelBase *)&v100 log];
         if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
@@ -330,19 +330,19 @@ LABEL_60:
       }
 
       v74 = UARPUtilsBuildURLForTemporaryFile();
-      v75 = v86[19];
-      v86[19] = v74;
+      v75 = selfCopy[19];
+      selfCopy[19] = v74;
 
-      v76 = v86[20];
-      v77 = v86[19];
-      v78 = [*location rangePayload];
+      v76 = selfCopy[20];
+      v77 = selfCopy[19];
+      rangePayload2 = [*location rangePayload];
       v99 = 0;
-      LOBYTE(v76) = [v76 exportSuperBinaryContentToFilepath:v77 range:v78 error:{v79, &v99}];
+      LOBYTE(v76) = [v76 exportSuperBinaryContentToFilepath:v77 range:rangePayload2 error:{v79, &v99}];
       v43 = v99;
 
       if ((v76 & 1) == 0)
       {
-        v98.receiver = v86;
+        v98.receiver = selfCopy;
         v98.super_class = UARPHeySiriModelVoiceAssist;
         v57 = [(UARPHeySiriModelBase *)&v98 log];
         if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
@@ -356,19 +356,19 @@ LABEL_60:
 
     else
     {
-      v80 = v86[18];
-      v86[18] = 0;
+      v80 = selfCopy[18];
+      selfCopy[18] = 0;
 
-      v81 = v86[19];
-      v86[19] = 0;
+      v81 = selfCopy[19];
+      selfCopy[19] = 0;
     }
 
     v97 = v43;
-    v57 = [v86 generateAsset:&v97];
+    v57 = [selfCopy generateAsset:&v97];
     v14 = v97;
 
     v82 = +[UARPHeySiriModelVoiceAssist tag];
-    v96.receiver = v86;
+    v96.receiver = selfCopy;
     v96.super_class = UARPHeySiriModelVoiceAssist;
     [(UARPHeySiriModelBase *)&v96 offerDynamicAssetToAccessory:v57 tag:v82 error:0];
 
@@ -382,10 +382,10 @@ LABEL_60:
   {
     v121.receiver = self;
     v121.super_class = UARPHeySiriModelVoiceAssist;
-    v58 = [(UARPHeySiriModelBase *)&v121 accessory];
-    v59 = [v58 modelNumber];
+    accessory2 = [(UARPHeySiriModelBase *)&v121 accessory];
+    modelNumber2 = [accessory2 modelNumber];
     *buf = 138412290;
-    v127 = v59;
+    v127 = modelNumber2;
     _os_log_error_impl(&dword_247AA7000, v14, OS_LOG_TYPE_ERROR, "Could not find supported accessory for  %@", buf, 0xCu);
   }
 
@@ -394,7 +394,7 @@ LABEL_61:
   v83 = *MEMORY[0x277D85DE8];
 }
 
-- (id)generateAsset:(id *)a3
+- (id)generateAsset:(id *)asset
 {
   v54 = 0;
   v53 = 0;
@@ -435,14 +435,14 @@ LABEL_61:
   v10 = MEMORY[0x277CCA1C0];
   if (self->_superBinaryMetaDataURL)
   {
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v12 = [(NSURL *)self->_superBinaryMetaDataURL absoluteString];
-    v13 = [v11 attributesOfItemAtPath:v12 error:a3];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    absoluteString = [(NSURL *)self->_superBinaryMetaDataURL absoluteString];
+    v13 = [defaultManager attributesOfItemAtPath:absoluteString error:asset];
 
     v14 = [v13 objectForKeyedSubscript:*v10];
-    v15 = [v14 unsignedLongValue];
-    v9 += v15;
-    HIDWORD(v55) = v15;
+    unsignedLongValue = [v14 unsignedLongValue];
+    v9 += unsignedLongValue;
+    HIDWORD(v55) = unsignedLongValue;
     v52 = v9;
   }
 
@@ -452,18 +452,18 @@ LABEL_61:
   {
     LODWORD(v48) = 40;
     DWORD1(v48) = [v16 tag];
-    v17 = [MEMORY[0x277CCAA00] defaultManager];
-    v18 = [(NSURL *)self->_modelMetaDataURL absoluteString];
-    v19 = [v17 attributesOfItemAtPath:v18 error:a3];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    absoluteString2 = [(NSURL *)self->_modelMetaDataURL absoluteString];
+    v19 = [defaultManager2 attributesOfItemAtPath:absoluteString2 error:asset];
 
     v20 = *v10;
     v21 = [v19 objectForKeyedSubscript:*v10];
     DWORD2(v49) = v9;
     HIDWORD(v49) = [v21 unsignedLongValue];
     v22 = v9 + HIDWORD(v49);
-    v23 = [MEMORY[0x277CCAA00] defaultManager];
-    v24 = [(NSURL *)self->_modelDataURL absoluteString];
-    v25 = [v23 attributesOfItemAtPath:v24 error:a3];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+    absoluteString3 = [(NSURL *)self->_modelDataURL absoluteString];
+    v25 = [defaultManager3 attributesOfItemAtPath:absoluteString3 error:asset];
 
     v26 = [v25 objectForKeyedSubscript:v20];
     LODWORD(v50) = v22;
@@ -476,18 +476,18 @@ LABEL_61:
   {
     LODWORD(v45) = 40;
     DWORD1(v45) = [v43 tag];
-    v27 = [MEMORY[0x277CCAA00] defaultManager];
-    v28 = [(NSURL *)self->_fallbackModelMetaDataURL absoluteString];
-    v29 = [v27 attributesOfItemAtPath:v28 error:a3];
+    defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
+    absoluteString4 = [(NSURL *)self->_fallbackModelMetaDataURL absoluteString];
+    v29 = [defaultManager4 attributesOfItemAtPath:absoluteString4 error:asset];
 
     v30 = *MEMORY[0x277CCA1C0];
     v31 = [v29 objectForKeyedSubscript:*MEMORY[0x277CCA1C0]];
     DWORD2(v46) = v9;
     HIDWORD(v46) = [v31 unsignedLongValue];
     v32 = v9 + HIDWORD(v46);
-    v33 = [MEMORY[0x277CCAA00] defaultManager];
-    v34 = [(NSURL *)self->_fallbackModelDataURL absoluteString];
-    v35 = [v33 attributesOfItemAtPath:v34 error:a3];
+    defaultManager5 = [MEMORY[0x277CCAA00] defaultManager];
+    absoluteString5 = [(NSURL *)self->_fallbackModelDataURL absoluteString];
+    v35 = [defaultManager5 attributesOfItemAtPath:absoluteString5 error:asset];
 
     v36 = [v35 objectForKeyedSubscript:v30];
     LODWORD(v47) = v32;
@@ -499,7 +499,7 @@ LABEL_61:
   uarpPayloadHeaderEndianSwap(&v48, &v48);
   uarpPayloadHeaderEndianSwap(&v45, &v45);
   v37 = UARPUtilsBuildURLForTemporaryFile();
-  v38 = [MEMORY[0x277CCA9F8] fileHandleForWritingToURL:v37 error:a3];
+  v38 = [MEMORY[0x277CCA9F8] fileHandleForWritingToURL:v37 error:asset];
   if (v38)
   {
     v39 = objc_alloc_init(MEMORY[0x277CBEB28]);
@@ -514,7 +514,7 @@ LABEL_61:
       [v39 appendBytes:&v45 length:40];
     }
 
-    if ([v38 uarpWriteData:v39 error:a3] && objc_msgSend(v38, "uarpCloseAndReturnError:", a3) && uarpUtilsConcatenateURLs(v37, *(&self->super.super.isa + v42), a3) && uarpUtilsConcatenateURLs(v37, self->_modelMetaDataURL, a3) && uarpUtilsConcatenateURLs(v37, self->_modelDataURL, a3) && uarpUtilsConcatenateURLs(v37, self->_fallbackModelMetaDataURL, a3) && uarpUtilsConcatenateURLs(v37, self->_fallbackModelDataURL, a3))
+    if ([v38 uarpWriteData:v39 error:asset] && objc_msgSend(v38, "uarpCloseAndReturnError:", asset) && uarpUtilsConcatenateURLs(v37, *(&self->super.super.isa + v42), asset) && uarpUtilsConcatenateURLs(v37, self->_modelMetaDataURL, asset) && uarpUtilsConcatenateURLs(v37, self->_modelDataURL, asset) && uarpUtilsConcatenateURLs(v37, self->_fallbackModelMetaDataURL, asset) && uarpUtilsConcatenateURLs(v37, self->_fallbackModelDataURL, asset))
     {
       v40 = v37;
     }

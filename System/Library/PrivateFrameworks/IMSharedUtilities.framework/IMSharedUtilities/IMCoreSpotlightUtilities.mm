@@ -25,7 +25,7 @@
 + (id)chatAutoDonatingServerDateCustomKey;
 + (id)chatStyleCustomKey;
 + (id)checkPriorityCustomKey;
-+ (id)descriptionForReindexReason:(unint64_t)a3;
++ (id)descriptionForReindexReason:(unint64_t)reason;
 + (id)partCountKey;
 + (id)partIndexKey;
 + (id)threadIdentifierCustomKey;
@@ -39,49 +39,49 @@
 + (int64_t)reindexSupplementalBatchSize;
 + (int64_t)spotlightTimeoutSeconds;
 + (unint64_t)reindexReason;
-+ (void)setAllowCriticalThrottleBypass:(BOOL)a3;
-+ (void)setAlwaysLogAllTimingResults:(BOOL)a3;
-+ (void)setAlwaysUseCriticalIndex:(BOOL)a3;
-+ (void)setChatBatchSize:(int64_t)a3;
-+ (void)setExitOnIndexingTimeout:(BOOL)a3;
-+ (void)setExtendedSpotlightTimeoutSeconds:(int64_t)a3;
-+ (void)setForceSpotlightIndexingErrors:(BOOL)a3;
-+ (void)setIgnorePreviewGenerationNotifications:(BOOL)a3;
-+ (void)setIgnoreThrottling:(BOOL)a3;
-+ (void)setMessageRecordBatchSize:(int64_t)a3;
-+ (void)setMessageSubBatchSize:(int64_t)a3;
-+ (void)setNeedsDeferredIndexing:(BOOL)a3;
-+ (void)setNeedsIndexing:(BOOL)a3;
-+ (void)setNotifyForSpotlightEvents:(BOOL)a3;
-+ (void)setNotifyForVerboseSpotlightEvents:(BOOL)a3;
-+ (void)setReindexFirstBatchSize:(int64_t)a3;
-+ (void)setReindexSchedulingBatchDelay:(double)a3;
-+ (void)setReindexSchedulingBatchSize:(int64_t)a3;
-+ (void)setReindexSchedulingContext:(id)a3;
-+ (void)setReindexSchedulingInProgress:(BOOL)a3;
-+ (void)setReindexSchedulingLastRowID:(int64_t)a3;
-+ (void)setReindexSchedulingUserInfoData:(id)a3;
-+ (void)setReindexSupplementalBatchSize:(int64_t)a3;
-+ (void)setReindexingSuspendedUntilDate:(id)a3;
-+ (void)setReindexingSuspensionReason:(id)a3;
-+ (void)setSpotlightEventsAreTimeSensitive:(BOOL)a3;
-+ (void)setSpotlightTimeoutSeconds:(int64_t)a3;
-+ (void)setWithdrawDonationsForFailedPreviewGenerations:(BOOL)a3;
++ (void)setAllowCriticalThrottleBypass:(BOOL)bypass;
++ (void)setAlwaysLogAllTimingResults:(BOOL)results;
++ (void)setAlwaysUseCriticalIndex:(BOOL)index;
++ (void)setChatBatchSize:(int64_t)size;
++ (void)setExitOnIndexingTimeout:(BOOL)timeout;
++ (void)setExtendedSpotlightTimeoutSeconds:(int64_t)seconds;
++ (void)setForceSpotlightIndexingErrors:(BOOL)errors;
++ (void)setIgnorePreviewGenerationNotifications:(BOOL)notifications;
++ (void)setIgnoreThrottling:(BOOL)throttling;
++ (void)setMessageRecordBatchSize:(int64_t)size;
++ (void)setMessageSubBatchSize:(int64_t)size;
++ (void)setNeedsDeferredIndexing:(BOOL)indexing;
++ (void)setNeedsIndexing:(BOOL)indexing;
++ (void)setNotifyForSpotlightEvents:(BOOL)events;
++ (void)setNotifyForVerboseSpotlightEvents:(BOOL)events;
++ (void)setReindexFirstBatchSize:(int64_t)size;
++ (void)setReindexSchedulingBatchDelay:(double)delay;
++ (void)setReindexSchedulingBatchSize:(int64_t)size;
++ (void)setReindexSchedulingContext:(id)context;
++ (void)setReindexSchedulingInProgress:(BOOL)progress;
++ (void)setReindexSchedulingLastRowID:(int64_t)d;
++ (void)setReindexSchedulingUserInfoData:(id)data;
++ (void)setReindexSupplementalBatchSize:(int64_t)size;
++ (void)setReindexingSuspendedUntilDate:(id)date;
++ (void)setReindexingSuspensionReason:(id)reason;
++ (void)setSpotlightEventsAreTimeSensitive:(BOOL)sensitive;
++ (void)setSpotlightTimeoutSeconds:(int64_t)seconds;
++ (void)setWithdrawDonationsForFailedPreviewGenerations:(BOOL)generations;
 @end
 
 @implementation IMCoreSpotlightUtilities
 
 + (BOOL)alwaysUseCriticalIndex
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 0;
   }
 
-  v5 = [a1 _alwaysUseCriticalIndexKey];
+  _alwaysUseCriticalIndexKey = [self _alwaysUseCriticalIndexKey];
   v6 = IMGetDomainBoolForKeyWithDefaultValue();
 
   return v6;
@@ -89,15 +89,15 @@
 
 + (BOOL)forceSpotlightIndexingErrors
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 0;
   }
 
-  v5 = [a1 _forceSpotlightIndexingErrorsKey];
+  _forceSpotlightIndexingErrorsKey = [self _forceSpotlightIndexingErrorsKey];
   v6 = IMGetDomainBoolForKeyWithDefaultValue();
 
   return v6;
@@ -106,9 +106,9 @@
 + (BOOL)needsIndexing
 {
   v2 = +[IMFeatureFlags sharedFeatureFlags];
-  v3 = [v2 isSpotlightReindexRefactorEnabled];
+  isSpotlightReindexRefactorEnabled = [v2 isSpotlightReindexRefactorEnabled];
 
-  if (v3)
+  if (isSpotlightReindexRefactorEnabled)
   {
     return 0;
   }
@@ -116,17 +116,17 @@
   return IMGetCachedDomainBoolForKeyWithDefaultValue();
 }
 
-+ (void)setNeedsIndexing:(BOOL)a3
++ (void)setNeedsIndexing:(BOOL)indexing
 {
   v4 = +[IMFeatureFlags sharedFeatureFlags];
-  v5 = [v4 isSpotlightReindexRefactorEnabled];
+  isSpotlightReindexRefactorEnabled = [v4 isSpotlightReindexRefactorEnabled];
 
-  if ((v5 & 1) == 0)
+  if ((isSpotlightReindexRefactorEnabled & 1) == 0)
   {
     IMSetDomainBoolForKey();
-    if (!a3)
+    if (!indexing)
     {
-      v6 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       IMSetDomainValueForKey();
     }
   }
@@ -135,9 +135,9 @@
 + (BOOL)needsDeferredIndexing
 {
   v2 = +[IMFeatureFlags sharedFeatureFlags];
-  v3 = [v2 isSpotlightReindexRefactorEnabled];
+  isSpotlightReindexRefactorEnabled = [v2 isSpotlightReindexRefactorEnabled];
 
-  if (v3)
+  if (isSpotlightReindexRefactorEnabled)
   {
     return 0;
   }
@@ -145,28 +145,28 @@
   return IMGetCachedDomainBoolForKeyWithDefaultValue();
 }
 
-+ (void)setNeedsDeferredIndexing:(BOOL)a3
++ (void)setNeedsDeferredIndexing:(BOOL)indexing
 {
   v3 = +[IMFeatureFlags sharedFeatureFlags];
-  v4 = [v3 isSpotlightReindexRefactorEnabled];
+  isSpotlightReindexRefactorEnabled = [v3 isSpotlightReindexRefactorEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((isSpotlightReindexRefactorEnabled & 1) == 0)
   {
 
     IMSetDomainBoolForKey();
   }
 }
 
-+ (id)descriptionForReindexReason:(unint64_t)a3
++ (id)descriptionForReindexReason:(unint64_t)reason
 {
-  if (a3 - 1 > 5)
+  if (reason - 1 > 5)
   {
     return @"No Recorded Reason";
   }
 
   else
   {
-    return off_1E782B2E0[a3 - 1];
+    return off_1E782B2E0[reason - 1];
   }
 }
 
@@ -183,9 +183,9 @@
 + (unint64_t)reindexReason
 {
   v2 = +[IMFeatureFlags sharedFeatureFlags];
-  v3 = [v2 isSpotlightReindexRefactorEnabled];
+  isSpotlightReindexRefactorEnabled = [v2 isSpotlightReindexRefactorEnabled];
 
-  if (v3)
+  if (isSpotlightReindexRefactorEnabled)
   {
     return 0;
   }
@@ -195,7 +195,7 @@
 
 + (NSDate)reindexingSuspendedUntilDate
 {
-  v2 = [a1 _reindexSuspendedUntilKey];
+  _reindexSuspendedUntilKey = [self _reindexSuspendedUntilKey];
   v3 = IMGetCachedDomainValueForKey();
 
   objc_opt_class();
@@ -212,16 +212,16 @@
   return v4;
 }
 
-+ (void)setReindexingSuspendedUntilDate:(id)a3
++ (void)setReindexingSuspendedUntilDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 _reindexSuspendedUntilKey];
+  dateCopy = date;
+  _reindexSuspendedUntilKey = [self _reindexSuspendedUntilKey];
   IMSetDomainValueForKey();
 }
 
 + (NSString)reindexingSuspensionReason
 {
-  v2 = [a1 _reindexSuspensionReasonKey];
+  _reindexSuspensionReasonKey = [self _reindexSuspensionReasonKey];
   v3 = IMGetCachedDomainValueForKey();
 
   objc_opt_class();
@@ -238,18 +238,18 @@
   return v4;
 }
 
-+ (void)setReindexingSuspensionReason:(id)a3
++ (void)setReindexingSuspensionReason:(id)reason
 {
-  v4 = a3;
-  v5 = [a1 _reindexSuspensionReasonKey];
+  reasonCopy = reason;
+  _reindexSuspensionReasonKey = [self _reindexSuspensionReasonKey];
   IMSetDomainValueForKey();
 }
 
 + (BOOL)reindexingSuspended
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [a1 reindexingSuspendedUntilDate];
-  [v3 timeIntervalSinceDate:v4];
+  date = [MEMORY[0x1E695DF00] date];
+  reindexingSuspendedUntilDate = [self reindexingSuspendedUntilDate];
+  [date timeIntervalSinceDate:reindexingSuspendedUntilDate];
   v6 = v5 < 0.0;
 
   return v6;
@@ -257,456 +257,456 @@
 
 + (BOOL)notifyForSpotlightEvents
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 0;
   }
 
-  v5 = [a1 _notifyForSpotlightEventsKey];
+  _notifyForSpotlightEventsKey = [self _notifyForSpotlightEventsKey];
   v6 = IMGetDomainBoolForKeyWithDefaultValue();
 
   return v6;
 }
 
-+ (void)setNotifyForSpotlightEvents:(BOOL)a3
++ (void)setNotifyForSpotlightEvents:(BOOL)events
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _notifyForSpotlightEventsKey];
+    _notifyForSpotlightEventsKey = [self _notifyForSpotlightEventsKey];
     IMSetDomainBoolForKey();
   }
 }
 
 + (BOOL)notifyForVerboseSpotlightEvents
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 0;
   }
 
-  v5 = [a1 _notifyForVerboseSpotlightEventsKey];
+  _notifyForVerboseSpotlightEventsKey = [self _notifyForVerboseSpotlightEventsKey];
   v6 = IMGetDomainBoolForKeyWithDefaultValue();
 
   return v6;
 }
 
-+ (void)setNotifyForVerboseSpotlightEvents:(BOOL)a3
++ (void)setNotifyForVerboseSpotlightEvents:(BOOL)events
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _notifyForVerboseSpotlightEventsKey];
+    _notifyForVerboseSpotlightEventsKey = [self _notifyForVerboseSpotlightEventsKey];
     IMSetDomainBoolForKey();
   }
 }
 
 + (BOOL)spotlightEventsAreTimeSensitive
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 0;
   }
 
-  v5 = [a1 _spotlightEventsAreTimeSensitiveKey];
+  _spotlightEventsAreTimeSensitiveKey = [self _spotlightEventsAreTimeSensitiveKey];
   v6 = IMGetDomainBoolForKeyWithDefaultValue();
 
   return v6;
 }
 
-+ (void)setSpotlightEventsAreTimeSensitive:(BOOL)a3
++ (void)setSpotlightEventsAreTimeSensitive:(BOOL)sensitive
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _spotlightEventsAreTimeSensitiveKey];
+    _spotlightEventsAreTimeSensitiveKey = [self _spotlightEventsAreTimeSensitiveKey];
     IMSetDomainBoolForKey();
   }
 }
 
 + (BOOL)exitOnIndexingTimeout
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 1;
   }
 
-  v5 = [a1 _exitOnIndexingTimeoutKey];
+  _exitOnIndexingTimeoutKey = [self _exitOnIndexingTimeoutKey];
   v6 = IMGetDomainBoolForKeyWithDefaultValue();
 
   return v6;
 }
 
-+ (void)setExitOnIndexingTimeout:(BOOL)a3
++ (void)setExitOnIndexingTimeout:(BOOL)timeout
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _exitOnIndexingTimeoutKey];
+    _exitOnIndexingTimeoutKey = [self _exitOnIndexingTimeoutKey];
     IMSetDomainBoolForKey();
   }
 }
 
 + (BOOL)alwaysLogAllTimingResults
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 0;
   }
 
-  v5 = [a1 _alwaysLogAllTimingResultsKey];
+  _alwaysLogAllTimingResultsKey = [self _alwaysLogAllTimingResultsKey];
   v6 = IMGetDomainBoolForKeyWithDefaultValue();
 
   return v6;
 }
 
-+ (void)setAlwaysLogAllTimingResults:(BOOL)a3
++ (void)setAlwaysLogAllTimingResults:(BOOL)results
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _alwaysLogAllTimingResultsKey];
+    _alwaysLogAllTimingResultsKey = [self _alwaysLogAllTimingResultsKey];
     IMSetDomainBoolForKey();
   }
 }
 
-+ (void)setForceSpotlightIndexingErrors:(BOOL)a3
++ (void)setForceSpotlightIndexingErrors:(BOOL)errors
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _forceSpotlightIndexingErrorsKey];
+    _forceSpotlightIndexingErrorsKey = [self _forceSpotlightIndexingErrorsKey];
     IMSetDomainBoolForKey();
   }
 }
 
-+ (void)setAlwaysUseCriticalIndex:(BOOL)a3
++ (void)setAlwaysUseCriticalIndex:(BOOL)index
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _alwaysUseCriticalIndexKey];
+    _alwaysUseCriticalIndexKey = [self _alwaysUseCriticalIndexKey];
     IMSetDomainBoolForKey();
   }
 }
 
 + (BOOL)ignoreThrottling
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 0;
   }
 
-  v5 = [a1 _ignoreThrottlingKey];
+  _ignoreThrottlingKey = [self _ignoreThrottlingKey];
   v6 = IMGetDomainBoolForKeyWithDefaultValue();
 
   return v6;
 }
 
-+ (void)setIgnoreThrottling:(BOOL)a3
++ (void)setIgnoreThrottling:(BOOL)throttling
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _ignoreThrottlingKey];
+    _ignoreThrottlingKey = [self _ignoreThrottlingKey];
     IMSetDomainBoolForKey();
   }
 }
 
 + (BOOL)allowCriticalThrottleBypass
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 1;
   }
 
-  v5 = [a1 _allowCriticalThrottleBypassKey];
+  _allowCriticalThrottleBypassKey = [self _allowCriticalThrottleBypassKey];
   v6 = IMGetDomainBoolForKeyWithDefaultValue();
 
   return v6;
 }
 
-+ (void)setAllowCriticalThrottleBypass:(BOOL)a3
++ (void)setAllowCriticalThrottleBypass:(BOOL)bypass
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _allowCriticalThrottleBypassKey];
+    _allowCriticalThrottleBypassKey = [self _allowCriticalThrottleBypassKey];
     IMSetDomainBoolForKey();
   }
 }
 
 + (int64_t)spotlightTimeoutSeconds
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 30;
   }
 
-  v5 = [a1 _spotlightTimeoutSecondsKey];
+  _spotlightTimeoutSecondsKey = [self _spotlightTimeoutSecondsKey];
   v6 = IMGetCachedDomainIntForKeyWithDefaultValue();
 
   return v6;
 }
 
-+ (void)setSpotlightTimeoutSeconds:(int64_t)a3
++ (void)setSpotlightTimeoutSeconds:(int64_t)seconds
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _spotlightTimeoutSecondsKey];
+    _spotlightTimeoutSecondsKey = [self _spotlightTimeoutSecondsKey];
     IMSetDomainIntForKey();
   }
 }
 
 + (int64_t)extendedSpotlightTimeoutSeconds
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 60;
   }
 
-  v5 = [a1 _extendedSpotlightTimeoutSecondsKey];
+  _extendedSpotlightTimeoutSecondsKey = [self _extendedSpotlightTimeoutSecondsKey];
   v6 = IMGetCachedDomainIntForKeyWithDefaultValue();
 
   return v6;
 }
 
-+ (void)setExtendedSpotlightTimeoutSeconds:(int64_t)a3
++ (void)setExtendedSpotlightTimeoutSeconds:(int64_t)seconds
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _extendedSpotlightTimeoutSecondsKey];
+    _extendedSpotlightTimeoutSecondsKey = [self _extendedSpotlightTimeoutSecondsKey];
     IMSetDomainIntForKey();
   }
 }
 
 + (int64_t)chatBatchSize
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 100;
   }
 
-  v5 = [a1 _chatBatchSizeKey];
+  _chatBatchSizeKey = [self _chatBatchSizeKey];
   v6 = IMGetCachedDomainIntForKeyWithDefaultValue();
 
   return v6;
 }
 
-+ (void)setChatBatchSize:(int64_t)a3
++ (void)setChatBatchSize:(int64_t)size
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _chatBatchSizeKey];
+    _chatBatchSizeKey = [self _chatBatchSizeKey];
     IMSetDomainIntForKey();
   }
 }
 
 + (int64_t)messageSubBatchSize
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 100;
   }
 
-  v5 = [a1 _messageSubBatchSizeKey];
+  _messageSubBatchSizeKey = [self _messageSubBatchSizeKey];
   v6 = IMGetCachedDomainIntForKeyWithDefaultValue();
 
   return v6;
 }
 
-+ (void)setMessageSubBatchSize:(int64_t)a3
++ (void)setMessageSubBatchSize:(int64_t)size
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _messageSubBatchSizeKey];
+    _messageSubBatchSizeKey = [self _messageSubBatchSizeKey];
     IMSetDomainIntForKey();
   }
 }
 
 + (int64_t)messageRecordBatchSize
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 16;
   }
 
-  v5 = [a1 _messageRecordBatchSizeKey];
+  _messageRecordBatchSizeKey = [self _messageRecordBatchSizeKey];
   v6 = IMGetCachedDomainIntForKeyWithDefaultValue();
 
   return v6;
 }
 
-+ (void)setMessageRecordBatchSize:(int64_t)a3
++ (void)setMessageRecordBatchSize:(int64_t)size
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _messageRecordBatchSizeKey];
+    _messageRecordBatchSizeKey = [self _messageRecordBatchSizeKey];
     IMSetDomainIntForKey();
   }
 }
 
 + (int64_t)reindexFirstBatchSize
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 3000;
   }
 
-  v5 = [a1 _reindexFirstBatchSizeKey];
+  _reindexFirstBatchSizeKey = [self _reindexFirstBatchSizeKey];
   v6 = IMGetCachedDomainIntForKeyWithDefaultValue();
 
   return v6;
 }
 
-+ (void)setReindexFirstBatchSize:(int64_t)a3
++ (void)setReindexFirstBatchSize:(int64_t)size
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _reindexFirstBatchSizeKey];
+    _reindexFirstBatchSizeKey = [self _reindexFirstBatchSizeKey];
     IMSetDomainIntForKey();
   }
 }
 
 + (int64_t)reindexSupplementalBatchSize
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 500;
   }
 
-  v5 = [a1 _reindexSupplementalBatchSizeKey];
+  _reindexSupplementalBatchSizeKey = [self _reindexSupplementalBatchSizeKey];
   v6 = IMGetCachedDomainIntForKeyWithDefaultValue();
 
   return v6;
 }
 
-+ (void)setReindexSupplementalBatchSize:(int64_t)a3
++ (void)setReindexSupplementalBatchSize:(int64_t)size
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _reindexSupplementalBatchSizeKey];
+    _reindexSupplementalBatchSizeKey = [self _reindexSupplementalBatchSizeKey];
     IMSetDomainIntForKey();
   }
 }
 
 + (int64_t)reindexSchedulingBatchSize
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 500;
   }
 
-  v5 = [a1 _reindexSchedulingBatchSizeKey];
+  _reindexSchedulingBatchSizeKey = [self _reindexSchedulingBatchSizeKey];
   v6 = IMGetCachedDomainIntForKeyWithDefaultValue();
 
   return v6;
 }
 
-+ (void)setReindexSchedulingBatchSize:(int64_t)a3
++ (void)setReindexSchedulingBatchSize:(int64_t)size
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _reindexSchedulingBatchSizeKey];
+    _reindexSchedulingBatchSizeKey = [self _reindexSchedulingBatchSizeKey];
     IMSetDomainIntForKey();
   }
 }
 
 + (double)reindexSchedulingBatchDelay
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v4)
+  if (isInternalInstall)
   {
-    v5 = [a1 _reindexSchedulingBatchDelayKey];
+    _reindexSchedulingBatchDelayKey = [self _reindexSchedulingBatchDelayKey];
     v6 = IMGetCachedDomainValueForKey();
 
     objc_opt_class();
@@ -729,36 +729,36 @@ LABEL_7:
   return 0.1;
 }
 
-+ (void)setReindexSchedulingBatchDelay:(double)a3
++ (void)setReindexSchedulingBatchDelay:(double)delay
 {
-  v5 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v6 = [v5 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v6)
+  if (isInternalInstall)
   {
-    v8 = [a1 _reindexSchedulingBatchDelayKey];
-    v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    _reindexSchedulingBatchDelayKey = [self _reindexSchedulingBatchDelayKey];
+    v7 = [MEMORY[0x1E696AD98] numberWithDouble:delay];
     IMSetDomainValueForKey();
   }
 }
 
 + (BOOL)reindexSchedulingInProgress
 {
-  v2 = [a1 _reindexSchedulingInProgressKey];
+  _reindexSchedulingInProgressKey = [self _reindexSchedulingInProgressKey];
   v3 = IMGetDomainBoolForKeyWithDefaultValue();
 
   return v3;
 }
 
-+ (void)setReindexSchedulingInProgress:(BOOL)a3
++ (void)setReindexSchedulingInProgress:(BOOL)progress
 {
-  v3 = [a1 _reindexSchedulingInProgressKey];
+  _reindexSchedulingInProgressKey = [self _reindexSchedulingInProgressKey];
   IMSetDomainBoolForKey();
 }
 
 + (NSData)reindexSchedulingContext
 {
-  v2 = [a1 _reindexSchedulingContextKey];
+  _reindexSchedulingContextKey = [self _reindexSchedulingContextKey];
   v3 = IMGetCachedDomainValueForKey();
 
   objc_opt_class();
@@ -771,16 +771,16 @@ LABEL_7:
   return v3;
 }
 
-+ (void)setReindexSchedulingContext:(id)a3
++ (void)setReindexSchedulingContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 _reindexSchedulingContextKey];
+  contextCopy = context;
+  _reindexSchedulingContextKey = [self _reindexSchedulingContextKey];
   IMSetDomainValueForKey();
 }
 
 + (NSData)reindexSchedulingUserInfoData
 {
-  v2 = [a1 _reindexSchedulingUserInfoDataKey];
+  _reindexSchedulingUserInfoDataKey = [self _reindexSchedulingUserInfoDataKey];
   v3 = IMGetCachedDomainValueForKey();
 
   objc_opt_class();
@@ -793,79 +793,79 @@ LABEL_7:
   return v3;
 }
 
-+ (void)setReindexSchedulingUserInfoData:(id)a3
++ (void)setReindexSchedulingUserInfoData:(id)data
 {
-  v4 = a3;
-  v5 = [a1 _reindexSchedulingUserInfoDataKey];
+  dataCopy = data;
+  _reindexSchedulingUserInfoDataKey = [self _reindexSchedulingUserInfoDataKey];
   IMSetDomainValueForKey();
 }
 
 + (int64_t)reindexSchedulingLastRowID
 {
-  v2 = [a1 _reindexSchedulingLastRowIDKey];
+  _reindexSchedulingLastRowIDKey = [self _reindexSchedulingLastRowIDKey];
   v3 = IMGetCachedDomainIntForKeyWithDefaultValue();
 
   return v3;
 }
 
-+ (void)setReindexSchedulingLastRowID:(int64_t)a3
++ (void)setReindexSchedulingLastRowID:(int64_t)d
 {
-  v3 = [a1 _reindexSchedulingLastRowIDKey];
+  _reindexSchedulingLastRowIDKey = [self _reindexSchedulingLastRowIDKey];
   IMSetDomainIntForKey();
 }
 
 + (BOOL)withdrawDonationsForFailedPreviewGenerations
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 1;
   }
 
-  v5 = [a1 _withdrawDonationsForFailedPreviewGenerationsKey];
+  _withdrawDonationsForFailedPreviewGenerationsKey = [self _withdrawDonationsForFailedPreviewGenerationsKey];
   v6 = IMGetDomainBoolForKeyWithDefaultValue();
 
   return v6;
 }
 
-+ (void)setWithdrawDonationsForFailedPreviewGenerations:(BOOL)a3
++ (void)setWithdrawDonationsForFailedPreviewGenerations:(BOOL)generations
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _withdrawDonationsForFailedPreviewGenerationsKey];
+    _withdrawDonationsForFailedPreviewGenerationsKey = [self _withdrawDonationsForFailedPreviewGenerationsKey];
     IMSetDomainBoolForKey();
   }
 }
 
 + (BOOL)ignorePreviewGenerationNotifications
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v4)
+  if (!isInternalInstall)
   {
     return 0;
   }
 
-  v5 = [a1 _ignorePreviewGenerationNotificationsKey];
+  _ignorePreviewGenerationNotificationsKey = [self _ignorePreviewGenerationNotificationsKey];
   v6 = IMGetDomainBoolForKeyWithDefaultValue();
 
   return v6;
 }
 
-+ (void)setIgnorePreviewGenerationNotifications:(BOOL)a3
++ (void)setIgnorePreviewGenerationNotifications:(BOOL)notifications
 {
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [a1 _ignorePreviewGenerationNotificationsKey];
+    _ignorePreviewGenerationNotificationsKey = [self _ignorePreviewGenerationNotificationsKey];
     IMSetDomainBoolForKey();
   }
 }

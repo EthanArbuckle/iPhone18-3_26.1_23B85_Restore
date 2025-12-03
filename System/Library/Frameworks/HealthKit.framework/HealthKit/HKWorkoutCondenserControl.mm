@@ -1,26 +1,26 @@
 @interface HKWorkoutCondenserControl
 + (id)taskIdentifier;
-- (HKWorkoutCondenserControl)initWithHealthStore:(id)a3;
-- (void)condensableWorkoutsWithCompletion:(id)a3;
-- (void)condenseWorkoutWithUUID:(id)a3 completion:(id)a4;
-- (void)condenseWorkoutsForReason:(int64_t)a3 workoutBatchLimit:(int64_t)a4 completion:(id)a5;
-- (void)condensedWorkoutsWithCompletion:(id)a3;
+- (HKWorkoutCondenserControl)initWithHealthStore:(id)store;
+- (void)condensableWorkoutsWithCompletion:(id)completion;
+- (void)condenseWorkoutWithUUID:(id)d completion:(id)completion;
+- (void)condenseWorkoutsForReason:(int64_t)reason workoutBatchLimit:(int64_t)limit completion:(id)completion;
+- (void)condensedWorkoutsWithCompletion:(id)completion;
 @end
 
 @implementation HKWorkoutCondenserControl
 
-- (HKWorkoutCondenserControl)initWithHealthStore:(id)a3
+- (HKWorkoutCondenserControl)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = HKWorkoutCondenserControl;
   v5 = [(HKWorkoutCondenserControl *)&v12 init];
   if (v5)
   {
     v6 = [HKTaskServerProxyProvider alloc];
-    v7 = [objc_opt_class() taskIdentifier];
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 taskUUID:v8];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v9;
 
@@ -37,16 +37,16 @@
   return NSStringFromClass(v2);
 }
 
-- (void)condenseWorkoutsForReason:(int64_t)a3 workoutBatchLimit:(int64_t)a4 completion:(id)a5
+- (void)condenseWorkoutsForReason:(int64_t)reason workoutBatchLimit:(int64_t)limit completion:(id)completion
 {
-  v8 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a5];
+  v8 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __84__HKWorkoutCondenserControl_condenseWorkoutsForReason_workoutBatchLimit_completion___block_invoke;
   v13[3] = &unk_1E737D818;
-  v15 = a3;
-  v16 = a4;
+  reasonCopy = reason;
+  limitCopy = limit;
   v14 = v8;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -57,16 +57,16 @@
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)condenseWorkoutWithUUID:(id)a3 completion:(id)a4
+- (void)condenseWorkoutWithUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  dCopy = d;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__HKWorkoutCondenserControl_condenseWorkoutWithUUID_completion___block_invoke;
   v13[3] = &unk_1E737D840;
-  v14 = v6;
+  v14 = dCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -74,13 +74,13 @@
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = dCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)condensedWorkoutsWithCompletion:(id)a3
+- (void)condensedWorkoutsWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -96,9 +96,9 @@
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
 }
 
-- (void)condensableWorkoutsWithCompletion:(id)a3
+- (void)condensableWorkoutsWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;

@@ -1,10 +1,10 @@
 @interface WheelchairStatusObserver
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4;
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change;
 @end
 
 @implementation WheelchairStatusObserver
 
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change
 {
   swift_getObjectType();
   sub_20C4E6A00();

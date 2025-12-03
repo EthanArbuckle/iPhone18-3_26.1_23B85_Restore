@@ -2,7 +2,7 @@
 - (id)badgeRect;
 - (id)hintedShadowBlur;
 - (id)hintedShadowOffset;
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation ISiOSMacAppRecipe
@@ -88,15 +88,15 @@ uint64_t __30__ISiOSMacAppRecipe_badgeRect__block_invoke()
   return [v2 addHintedRect:50.0 forSize:{50.0, 412.0, 412.0, 512.0, 512.0}];
 }
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = objc_alloc_init(ISLayer);
   [(ISLayer *)v8 setSize:width, height];
   [(ISLayer *)v8 setName:@"Root layer"];
-  v9 = [(ISiOSMacAppRecipe *)self badgeRect];
-  [v9 hintedRectForSize:{width, height}];
+  badgeRect = [(ISiOSMacAppRecipe *)self badgeRect];
+  [badgeRect hintedRectForSize:{width, height}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -105,8 +105,8 @@ uint64_t __30__ISiOSMacAppRecipe_badgeRect__block_invoke()
   v18 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v18 setName:@"masked layer"];
   [(ISLayer *)v18 setFrame:v11, v13, v15, v17];
-  v19 = [MEMORY[0x1E69A8968] white];
-  [(ISContentLayer *)v18 setContent:v19];
+  white = [MEMORY[0x1E69A8968] white];
+  [(ISContentLayer *)v18 setContent:white];
 
   v20 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v20 setName:@"Image"];
@@ -125,18 +125,18 @@ uint64_t __30__ISiOSMacAppRecipe_badgeRect__block_invoke()
   [(ISLayer *)v23 setName:@"shadow background layer"];
   [(ISLayer *)v23 setSize:width, height];
   v24 = objc_opt_new();
-  v25 = [(ISiOSMacAppRecipe *)self hintedShadowBlur];
-  [v25 hintedFloatForSize:{width, height}];
+  hintedShadowBlur = [(ISiOSMacAppRecipe *)self hintedShadowBlur];
+  [hintedShadowBlur hintedFloatForSize:{width, height}];
   [v24 setBlur:?];
 
-  v26 = [(ISiOSMacAppRecipe *)self hintedShadowOffset];
-  [v26 hintedSizeForSize:{width, height}];
+  hintedShadowOffset = [(ISiOSMacAppRecipe *)self hintedShadowOffset];
+  [hintedShadowOffset hintedSizeForSize:{width, height}];
   [v24 setOffset:?];
 
   v27 = [objc_alloc(MEMORY[0x1E69A8968]) initWithWhite:0.0 alpha:0.28];
   [v24 setColor:v27];
 
-  [v24 setScale:a4];
+  [v24 setScale:scale];
   [(ISLayer *)v23 setEffect:v24];
   [(ISLayer *)v8 addSublayer:v23];
   [(ISLayer *)v23 addSublayer:v18];

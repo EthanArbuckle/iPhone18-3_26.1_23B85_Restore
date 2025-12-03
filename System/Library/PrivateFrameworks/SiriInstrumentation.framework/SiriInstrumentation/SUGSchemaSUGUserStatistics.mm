@@ -1,26 +1,26 @@
 @interface SUGSchemaSUGUserStatistics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SUGSchemaSUGUserStatistics)initWithDictionary:(id)a3;
-- (SUGSchemaSUGUserStatistics)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SUGSchemaSUGUserStatistics)initWithDictionary:(id)dictionary;
+- (SUGSchemaSUGUserStatistics)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SUGSchemaSUGUserStatistics
 
-- (SUGSchemaSUGUserStatistics)initWithDictionary:(id)a3
+- (SUGSchemaSUGUserStatistics)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = SUGSchemaSUGUserStatistics;
   v5 = [(SUGSchemaSUGUserStatistics *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"totalSiriRequests"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"totalSiriRequests"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(SUGSchemaSUGUserStatistics *)v5 setTotalSiriRequests:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"totalPreviousSuggestionsShown"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"totalPreviousSuggestionsShown"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(SUGSchemaSUGUserStatistics *)v5 setTotalPreviousSuggestionsShown:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"totalSiriHelpRequests"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"totalSiriHelpRequests"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(SUGSchemaSUGUserStatistics *)v5 setTotalSiriHelpRequests:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"totalUniqueSiriEventTypes"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"totalUniqueSiriEventTypes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(SUGSchemaSUGUserStatistics *)v5 setTotalUniqueSiriEventTypes:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"isTwoByThreeUser"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"isTwoByThreeUser"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (SUGSchemaSUGUserStatistics)initWithJSON:(id)a3
+- (SUGSchemaSUGUserStatistics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SUGSchemaSUGUserStatistics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SUGSchemaSUGUserStatistics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SUGSchemaSUGUserStatistics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,80 +101,80 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*(&self->_isTwoByThreeUser + 1))
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[SUGSchemaSUGUserStatistics isTwoByThreeUser](self, "isTwoByThreeUser")}];
-    [v3 setObject:v4 forKeyedSubscript:@"isTwoByThreeUser"];
+    [dictionary setObject:v4 forKeyedSubscript:@"isTwoByThreeUser"];
   }
 
   if (self->_totalPreviousSuggestionsShown)
   {
-    v5 = [(SUGSchemaSUGUserStatistics *)self totalPreviousSuggestionsShown];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    totalPreviousSuggestionsShown = [(SUGSchemaSUGUserStatistics *)self totalPreviousSuggestionsShown];
+    dictionaryRepresentation = [totalPreviousSuggestionsShown dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"totalPreviousSuggestionsShown"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"totalPreviousSuggestionsShown"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"totalPreviousSuggestionsShown"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"totalPreviousSuggestionsShown"];
     }
   }
 
   if (self->_totalSiriHelpRequests)
   {
-    v8 = [(SUGSchemaSUGUserStatistics *)self totalSiriHelpRequests];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    totalSiriHelpRequests = [(SUGSchemaSUGUserStatistics *)self totalSiriHelpRequests];
+    dictionaryRepresentation2 = [totalSiriHelpRequests dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"totalSiriHelpRequests"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"totalSiriHelpRequests"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"totalSiriHelpRequests"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"totalSiriHelpRequests"];
     }
   }
 
   if (self->_totalSiriRequests)
   {
-    v11 = [(SUGSchemaSUGUserStatistics *)self totalSiriRequests];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    totalSiriRequests = [(SUGSchemaSUGUserStatistics *)self totalSiriRequests];
+    dictionaryRepresentation3 = [totalSiriRequests dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"totalSiriRequests"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"totalSiriRequests"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"totalSiriRequests"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"totalSiriRequests"];
     }
   }
 
   if (self->_totalUniqueSiriEventTypes)
   {
-    v14 = [(SUGSchemaSUGUserStatistics *)self totalUniqueSiriEventTypes];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    totalUniqueSiriEventTypes = [(SUGSchemaSUGUserStatistics *)self totalUniqueSiriEventTypes];
+    dictionaryRepresentation4 = [totalUniqueSiriEventTypes dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"totalUniqueSiriEventTypes"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"totalUniqueSiriEventTypes"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"totalUniqueSiriEventTypes"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"totalUniqueSiriEventTypes"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -196,28 +196,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(SUGSchemaSUGUserStatistics *)self totalSiriRequests];
-  v6 = [v4 totalSiriRequests];
-  if ((v5 != 0) == (v6 == 0))
+  totalSiriRequests = [(SUGSchemaSUGUserStatistics *)self totalSiriRequests];
+  totalSiriRequests2 = [equalCopy totalSiriRequests];
+  if ((totalSiriRequests != 0) == (totalSiriRequests2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(SUGSchemaSUGUserStatistics *)self totalSiriRequests];
-  if (v7)
+  totalSiriRequests3 = [(SUGSchemaSUGUserStatistics *)self totalSiriRequests];
+  if (totalSiriRequests3)
   {
-    v8 = v7;
-    v9 = [(SUGSchemaSUGUserStatistics *)self totalSiriRequests];
-    v10 = [v4 totalSiriRequests];
-    v11 = [v9 isEqual:v10];
+    v8 = totalSiriRequests3;
+    totalSiriRequests4 = [(SUGSchemaSUGUserStatistics *)self totalSiriRequests];
+    totalSiriRequests5 = [equalCopy totalSiriRequests];
+    v11 = [totalSiriRequests4 isEqual:totalSiriRequests5];
 
     if (!v11)
     {
@@ -229,20 +229,20 @@
   {
   }
 
-  v5 = [(SUGSchemaSUGUserStatistics *)self totalPreviousSuggestionsShown];
-  v6 = [v4 totalPreviousSuggestionsShown];
-  if ((v5 != 0) == (v6 == 0))
+  totalSiriRequests = [(SUGSchemaSUGUserStatistics *)self totalPreviousSuggestionsShown];
+  totalSiriRequests2 = [equalCopy totalPreviousSuggestionsShown];
+  if ((totalSiriRequests != 0) == (totalSiriRequests2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(SUGSchemaSUGUserStatistics *)self totalPreviousSuggestionsShown];
-  if (v12)
+  totalPreviousSuggestionsShown = [(SUGSchemaSUGUserStatistics *)self totalPreviousSuggestionsShown];
+  if (totalPreviousSuggestionsShown)
   {
-    v13 = v12;
-    v14 = [(SUGSchemaSUGUserStatistics *)self totalPreviousSuggestionsShown];
-    v15 = [v4 totalPreviousSuggestionsShown];
-    v16 = [v14 isEqual:v15];
+    v13 = totalPreviousSuggestionsShown;
+    totalPreviousSuggestionsShown2 = [(SUGSchemaSUGUserStatistics *)self totalPreviousSuggestionsShown];
+    totalPreviousSuggestionsShown3 = [equalCopy totalPreviousSuggestionsShown];
+    v16 = [totalPreviousSuggestionsShown2 isEqual:totalPreviousSuggestionsShown3];
 
     if (!v16)
     {
@@ -254,20 +254,20 @@
   {
   }
 
-  v5 = [(SUGSchemaSUGUserStatistics *)self totalSiriHelpRequests];
-  v6 = [v4 totalSiriHelpRequests];
-  if ((v5 != 0) == (v6 == 0))
+  totalSiriRequests = [(SUGSchemaSUGUserStatistics *)self totalSiriHelpRequests];
+  totalSiriRequests2 = [equalCopy totalSiriHelpRequests];
+  if ((totalSiriRequests != 0) == (totalSiriRequests2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(SUGSchemaSUGUserStatistics *)self totalSiriHelpRequests];
-  if (v17)
+  totalSiriHelpRequests = [(SUGSchemaSUGUserStatistics *)self totalSiriHelpRequests];
+  if (totalSiriHelpRequests)
   {
-    v18 = v17;
-    v19 = [(SUGSchemaSUGUserStatistics *)self totalSiriHelpRequests];
-    v20 = [v4 totalSiriHelpRequests];
-    v21 = [v19 isEqual:v20];
+    v18 = totalSiriHelpRequests;
+    totalSiriHelpRequests2 = [(SUGSchemaSUGUserStatistics *)self totalSiriHelpRequests];
+    totalSiriHelpRequests3 = [equalCopy totalSiriHelpRequests];
+    v21 = [totalSiriHelpRequests2 isEqual:totalSiriHelpRequests3];
 
     if (!v21)
     {
@@ -279,22 +279,22 @@
   {
   }
 
-  v5 = [(SUGSchemaSUGUserStatistics *)self totalUniqueSiriEventTypes];
-  v6 = [v4 totalUniqueSiriEventTypes];
-  if ((v5 != 0) == (v6 == 0))
+  totalSiriRequests = [(SUGSchemaSUGUserStatistics *)self totalUniqueSiriEventTypes];
+  totalSiriRequests2 = [equalCopy totalUniqueSiriEventTypes];
+  if ((totalSiriRequests != 0) == (totalSiriRequests2 == 0))
   {
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  v22 = [(SUGSchemaSUGUserStatistics *)self totalUniqueSiriEventTypes];
-  if (v22)
+  totalUniqueSiriEventTypes = [(SUGSchemaSUGUserStatistics *)self totalUniqueSiriEventTypes];
+  if (totalUniqueSiriEventTypes)
   {
-    v23 = v22;
-    v24 = [(SUGSchemaSUGUserStatistics *)self totalUniqueSiriEventTypes];
-    v25 = [v4 totalUniqueSiriEventTypes];
-    v26 = [v24 isEqual:v25];
+    v23 = totalUniqueSiriEventTypes;
+    totalUniqueSiriEventTypes2 = [(SUGSchemaSUGUserStatistics *)self totalUniqueSiriEventTypes];
+    totalUniqueSiriEventTypes3 = [equalCopy totalUniqueSiriEventTypes];
+    v26 = [totalUniqueSiriEventTypes2 isEqual:totalUniqueSiriEventTypes3];
 
     if (!v26)
     {
@@ -306,9 +306,9 @@ LABEL_21:
   {
   }
 
-  if (*(&self->_isTwoByThreeUser + 1) == (v4[41] & 1))
+  if (*(&self->_isTwoByThreeUser + 1) == (equalCopy[41] & 1))
   {
-    if (!*(&self->_isTwoByThreeUser + 1) || (isTwoByThreeUser = self->_isTwoByThreeUser, isTwoByThreeUser == [v4 isTwoByThreeUser]))
+    if (!*(&self->_isTwoByThreeUser + 1) || (isTwoByThreeUser = self->_isTwoByThreeUser, isTwoByThreeUser == [equalCopy isTwoByThreeUser]))
     {
       v27 = 1;
       goto LABEL_23;
@@ -322,38 +322,38 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
-  v4 = [(SUGSchemaSUGUserStatistics *)self totalSiriRequests];
+  toCopy = to;
+  totalSiriRequests = [(SUGSchemaSUGUserStatistics *)self totalSiriRequests];
 
-  if (v4)
+  if (totalSiriRequests)
   {
-    v5 = [(SUGSchemaSUGUserStatistics *)self totalSiriRequests];
+    totalSiriRequests2 = [(SUGSchemaSUGUserStatistics *)self totalSiriRequests];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SUGSchemaSUGUserStatistics *)self totalPreviousSuggestionsShown];
+  totalPreviousSuggestionsShown = [(SUGSchemaSUGUserStatistics *)self totalPreviousSuggestionsShown];
 
-  if (v6)
+  if (totalPreviousSuggestionsShown)
   {
-    v7 = [(SUGSchemaSUGUserStatistics *)self totalPreviousSuggestionsShown];
+    totalPreviousSuggestionsShown2 = [(SUGSchemaSUGUserStatistics *)self totalPreviousSuggestionsShown];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(SUGSchemaSUGUserStatistics *)self totalSiriHelpRequests];
+  totalSiriHelpRequests = [(SUGSchemaSUGUserStatistics *)self totalSiriHelpRequests];
 
-  if (v8)
+  if (totalSiriHelpRequests)
   {
-    v9 = [(SUGSchemaSUGUserStatistics *)self totalSiriHelpRequests];
+    totalSiriHelpRequests2 = [(SUGSchemaSUGUserStatistics *)self totalSiriHelpRequests];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(SUGSchemaSUGUserStatistics *)self totalUniqueSiriEventTypes];
+  totalUniqueSiriEventTypes = [(SUGSchemaSUGUserStatistics *)self totalUniqueSiriEventTypes];
 
-  if (v10)
+  if (totalUniqueSiriEventTypes)
   {
-    v11 = [(SUGSchemaSUGUserStatistics *)self totalUniqueSiriEventTypes];
+    totalUniqueSiriEventTypes2 = [(SUGSchemaSUGUserStatistics *)self totalUniqueSiriEventTypes];
     PBDataWriterWriteSubmessage();
   }
 
@@ -363,44 +363,44 @@ LABEL_23:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = SUGSchemaSUGUserStatistics;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(SUGSchemaSUGUserStatistics *)self totalSiriRequests];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  totalSiriRequests = [(SUGSchemaSUGUserStatistics *)self totalSiriRequests];
+  v7 = [totalSiriRequests applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SUGSchemaSUGUserStatistics *)self deleteTotalSiriRequests];
   }
 
-  v9 = [(SUGSchemaSUGUserStatistics *)self totalPreviousSuggestionsShown];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  totalPreviousSuggestionsShown = [(SUGSchemaSUGUserStatistics *)self totalPreviousSuggestionsShown];
+  v10 = [totalPreviousSuggestionsShown applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SUGSchemaSUGUserStatistics *)self deleteTotalPreviousSuggestionsShown];
   }
 
-  v12 = [(SUGSchemaSUGUserStatistics *)self totalSiriHelpRequests];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  totalSiriHelpRequests = [(SUGSchemaSUGUserStatistics *)self totalSiriHelpRequests];
+  v13 = [totalSiriHelpRequests applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(SUGSchemaSUGUserStatistics *)self deleteTotalSiriHelpRequests];
   }
 
-  v15 = [(SUGSchemaSUGUserStatistics *)self totalUniqueSiriEventTypes];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  totalUniqueSiriEventTypes = [(SUGSchemaSUGUserStatistics *)self totalUniqueSiriEventTypes];
+  v16 = [totalUniqueSiriEventTypes applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(SUGSchemaSUGUserStatistics *)self deleteTotalUniqueSiriEventTypes];
   }

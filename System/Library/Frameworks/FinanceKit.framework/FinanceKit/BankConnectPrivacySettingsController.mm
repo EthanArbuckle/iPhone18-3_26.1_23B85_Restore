@@ -1,12 +1,12 @@
 @interface BankConnectPrivacySettingsController
 - (_TtC10FinanceKit36BankConnectPrivacySettingsController)init;
-- (_TtC10FinanceKit36BankConnectPrivacySettingsController)initWithBundleID:(id)a3;
+- (_TtC10FinanceKit36BankConnectPrivacySettingsController)initWithBundleID:(id)d;
 - (unint64_t)authorizationType;
 @end
 
 @implementation BankConnectPrivacySettingsController
 
-- (_TtC10FinanceKit36BankConnectPrivacySettingsController)initWithBundleID:(id)a3
+- (_TtC10FinanceKit36BankConnectPrivacySettingsController)initWithBundleID:(id)d
 {
   v4 = sub_1B7800868();
   v6 = v5;
@@ -31,7 +31,7 @@
   v2 = *&self->bundleID[OBJC_IVAR____TtC10FinanceKit36BankConnectPrivacySettingsController_bundleID];
   v6[0] = *(&self->super.isa + OBJC_IVAR____TtC10FinanceKit36BankConnectPrivacySettingsController_bundleID);
   v6[1] = v2;
-  v3 = self;
+  selfCopy = self;
 
   v4 = AppAuthorizationStateManager.authorizationType(bundleID:)(v6);
 

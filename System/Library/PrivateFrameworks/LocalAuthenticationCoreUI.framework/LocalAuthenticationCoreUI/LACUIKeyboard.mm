@@ -1,8 +1,8 @@
 @interface LACUIKeyboard
 + (id)activeKeyboard;
 - (CGRect)frame;
-- (void)setupInParentView:(id)a3;
-- (void)updateTopLayoutGuide:(id)a3;
+- (void)setupInParentView:(id)view;
+- (void)updateTopLayoutGuide:(id)guide;
 @end
 
 @implementation LACUIKeyboard
@@ -26,13 +26,13 @@ uint64_t __31__LACUIKeyboard_activeKeyboard__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setupInParentView:(id)a3
+- (void)setupInParentView:(id)view
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v5 = [LACUIKeyboardView alloc];
-  v6 = [[LACUIKeyboardInternal alloc] initWithDefaultSize];
-  v7 = [(LACUIKeyboardView *)v5 initWithKeyboard:v6];
+  initWithDefaultSize = [[LACUIKeyboardInternal alloc] initWithDefaultSize];
+  v7 = [(LACUIKeyboardView *)v5 initWithKeyboard:initWithDefaultSize];
 
   v8 = objc_alloc_init(MEMORY[0x277D75A68]);
   [v8 setAxis:1];
@@ -42,16 +42,16 @@ uint64_t __31__LACUIKeyboard_activeKeyboard__block_invoke()
   [v8 addArrangedSubview:v7];
   LODWORD(v9) = 1148846080;
   [v8 setContentHuggingPriority:1 forAxis:v9];
-  [v4 addSubview:v8];
-  v10 = [v8 centerXAnchor];
-  v11 = [v4 centerXAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  [viewCopy addSubview:v8];
+  centerXAnchor = [v8 centerXAnchor];
+  centerXAnchor2 = [viewCopy centerXAnchor];
+  v12 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   keyboardAnchorHorizontal = self->_keyboardAnchorHorizontal;
   self->_keyboardAnchorHorizontal = v12;
 
-  v14 = [v8 bottomAnchor];
-  v15 = [v4 bottomAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  bottomAnchor = [v8 bottomAnchor];
+  bottomAnchor2 = [viewCopy bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   keyboardAnchorVertical = self->_keyboardAnchorVertical;
   self->_keyboardAnchorVertical = v16;
 
@@ -65,27 +65,27 @@ uint64_t __31__LACUIKeyboard_activeKeyboard__block_invoke()
   [v18 activateConstraints:v20];
 
   objc_storeWeak(&self->_keyboardContainer, v8);
-  objc_storeWeak(&self->_parentView, v4);
+  objc_storeWeak(&self->_parentView, viewCopy);
 
   objc_storeWeak(&self->_keyboardView, v7);
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateTopLayoutGuide:(id)a3
+- (void)updateTopLayoutGuide:(id)guide
 {
-  v4 = a3;
+  guideCopy = guide;
   WeakRetained = objc_loadWeakRetained(&self->_parentView);
   if (WeakRetained)
   {
     v6 = WeakRetained;
-    v7 = [v4 owningView];
+    owningView = [guideCopy owningView];
     v8 = objc_loadWeakRetained(&self->_parentView);
-    v9 = [v7 isDescendantOfView:v8];
+    v9 = [owningView isDescendantOfView:v8];
 
     if (v9)
     {
-      v10 = [(NSLayoutConstraint *)self->_keyboardAnchorVertical identifier];
-      if ([v10 isEqualToString:@"default.vertical"])
+      identifier = [(NSLayoutConstraint *)self->_keyboardAnchorVertical identifier];
+      if ([identifier isEqualToString:@"default.vertical"])
       {
         v11 = 0.0;
       }
@@ -102,7 +102,7 @@ uint64_t __31__LACUIKeyboard_activeKeyboard__block_invoke()
       v13[2] = __38__LACUIKeyboard_updateTopLayoutGuide___block_invoke;
       v13[3] = &unk_27981E848;
       objc_copyWeak(&v15, &location);
-      v14 = v4;
+      v14 = guideCopy;
       [v12 animateWithDuration:v13 animations:v11];
 
       objc_destroyWeak(&v15);

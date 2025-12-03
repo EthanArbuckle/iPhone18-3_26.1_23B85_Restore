@@ -1,21 +1,21 @@
 @interface HUHomeStatusDetailsItemAndPriorityTuple
 - (HFItem)item;
-- (HUHomeStatusDetailsItemAndPriorityTuple)initWithItem:(id)a3 priority:(int64_t)a4;
+- (HUHomeStatusDetailsItemAndPriorityTuple)initWithItem:(id)item priority:(int64_t)priority;
 @end
 
 @implementation HUHomeStatusDetailsItemAndPriorityTuple
 
-- (HUHomeStatusDetailsItemAndPriorityTuple)initWithItem:(id)a3 priority:(int64_t)a4
+- (HUHomeStatusDetailsItemAndPriorityTuple)initWithItem:(id)item priority:(int64_t)priority
 {
-  v6 = a3;
+  itemCopy = item;
   v10.receiver = self;
   v10.super_class = HUHomeStatusDetailsItemAndPriorityTuple;
   v7 = [(HUHomeStatusDetailsItemAndPriorityTuple *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_item, v6);
-    v8->_priority = a4;
+    objc_storeWeak(&v7->_item, itemCopy);
+    v8->_priority = priority;
   }
 
   return v8;

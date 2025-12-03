@@ -1,18 +1,18 @@
 @interface SAAppPath
-+ (BOOL)isValidAppPathPlist:(id)a3 writersID:(id)a4 uniquePaths:(id)a5 sharedPaths:(id)a6;
-+ (BOOL)isValidAppPathPlistArray:(id)a3;
-+ (BOOL)validatePaths:(id)a3;
-+ (id)newFromPlist:(id)a3;
++ (BOOL)isValidAppPathPlist:(id)plist writersID:(id)d uniquePaths:(id)paths sharedPaths:(id)sharedPaths;
++ (BOOL)isValidAppPathPlistArray:(id)array;
++ (BOOL)validatePaths:(id)paths;
++ (id)newFromPlist:(id)plist;
 - (BOOL)forceHidden;
 - (BOOL)forceVisible;
-- (BOOL)isAppRecordUserVisible:(id)a3;
+- (BOOL)isAppRecordUserVisible:(id)visible;
 - (BOOL)isAppUserVisible;
 - (BOOL)isUserVisible;
 - (SAAppPath)init;
-- (SAAppPath)initWithBundleID:(id)a3;
-- (SAAppPath)initWithBundleID:(id)a3 writersIDs:(id)a4 uniquePaths:(id)a5 sharedPaths:(id)a6;
-- (SAAppPath)initWithBundleRecord:(id)a3 identifier:(id)a4 dataContainerPath:(id)a5 personaUniqueString:(id)a6 isPlugin:(BOOL)a7 isGroup:(BOOL)a8;
-- (SAAppPath)initWithCoder:(id)a3;
+- (SAAppPath)initWithBundleID:(id)d;
+- (SAAppPath)initWithBundleID:(id)d writersIDs:(id)ds uniquePaths:(id)paths sharedPaths:(id)sharedPaths;
+- (SAAppPath)initWithBundleRecord:(id)record identifier:(id)identifier dataContainerPath:(id)path personaUniqueString:(id)string isPlugin:(BOOL)plugin isGroup:(BOOL)group;
+- (SAAppPath)initWithCoder:(id)coder;
 - (id)appRecord;
 - (id)cachePath;
 - (id)getDictionary;
@@ -21,28 +21,28 @@
 - (int64_t)threeDaysAgo;
 - (unint64_t)getAppCacheSize;
 - (unint64_t)tempSize;
-- (void)addBinaryPath:(id)a3;
-- (void)addBinaryPaths:(id)a3;
-- (void)addGroupContainerID:(id)a3;
-- (void)addGroupContainerIDs:(id)a3;
-- (void)addSharedPath:(id)a3;
-- (void)addSharedPaths:(id)a3;
-- (void)addUniquePath:(id)a3;
-- (void)addUniquePaths:(id)a3;
-- (void)addWriterID:(id)a3;
-- (void)addWriterIDs:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)extendWithPropertiesFromAppPath:(id)a3;
-- (void)getAppCacheInfo:(id)a3;
-- (void)removeBinaryPath:(id)a3;
-- (void)removeBinaryPaths:(id)a3;
-- (void)removeSharedPath:(id)a3;
-- (void)removeSharedPaths:(id)a3;
-- (void)removeUniquePath:(id)a3;
-- (void)removeUniquePaths:(id)a3;
-- (void)removeWriterID:(id)a3;
-- (void)removeWriterIDs:(id)a3;
-- (void)updateLastUsedDate:(id)a3;
+- (void)addBinaryPath:(id)path;
+- (void)addBinaryPaths:(id)paths;
+- (void)addGroupContainerID:(id)d;
+- (void)addGroupContainerIDs:(id)ds;
+- (void)addSharedPath:(id)path;
+- (void)addSharedPaths:(id)paths;
+- (void)addUniquePath:(id)path;
+- (void)addUniquePaths:(id)paths;
+- (void)addWriterID:(id)d;
+- (void)addWriterIDs:(id)ds;
+- (void)encodeWithCoder:(id)coder;
+- (void)extendWithPropertiesFromAppPath:(id)path;
+- (void)getAppCacheInfo:(id)info;
+- (void)removeBinaryPath:(id)path;
+- (void)removeBinaryPaths:(id)paths;
+- (void)removeSharedPath:(id)path;
+- (void)removeSharedPaths:(id)paths;
+- (void)removeUniquePath:(id)path;
+- (void)removeUniquePaths:(id)paths;
+- (void)removeWriterID:(id)d;
+- (void)removeWriterIDs:(id)ds;
+- (void)updateLastUsedDate:(id)date;
 @end
 
 @implementation SAAppPath
@@ -74,44 +74,44 @@
   return v3;
 }
 
-- (SAAppPath)initWithBundleID:(id)a3
+- (SAAppPath)initWithBundleID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v6 = [(SAAppPath *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->identifier, a3);
+    objc_storeStrong(&v6->identifier, d);
   }
 
   return v7;
 }
 
-- (SAAppPath)initWithBundleID:(id)a3 writersIDs:(id)a4 uniquePaths:(id)a5 sharedPaths:(id)a6
+- (SAAppPath)initWithBundleID:(id)d writersIDs:(id)ds uniquePaths:(id)paths sharedPaths:(id)sharedPaths
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  dsCopy = ds;
+  pathsCopy = paths;
+  sharedPathsCopy = sharedPaths;
   v18.receiver = self;
   v18.super_class = SAAppPath;
   v15 = [(SAAppPath *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->identifier, a3);
-    objc_storeStrong(&v16->writersIDs, a4);
-    objc_storeStrong(&v16->uniquePaths, a5);
-    objc_storeStrong(&v16->sharedPaths, a6);
+    objc_storeStrong(&v15->identifier, d);
+    objc_storeStrong(&v16->writersIDs, ds);
+    objc_storeStrong(&v16->uniquePaths, paths);
+    objc_storeStrong(&v16->sharedPaths, sharedPaths);
   }
 
   return v16;
 }
 
-+ (BOOL)isValidAppPathPlistArray:(id)a3
++ (BOOL)isValidAppPathPlistArray:(id)array
 {
-  v3 = a3;
-  if (v3)
+  arrayCopy = array;
+  if (arrayCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -120,7 +120,7 @@
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v4 = v3;
+      v4 = arrayCopy;
       v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
@@ -187,13 +187,13 @@ LABEL_18:
   return v10;
 }
 
-+ (BOOL)isValidAppPathPlist:(id)a3 writersID:(id)a4 uniquePaths:(id)a5 sharedPaths:(id)a6
++ (BOOL)isValidAppPathPlist:(id)plist writersID:(id)d uniquePaths:(id)paths sharedPaths:(id)sharedPaths
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v9)
+  plistCopy = plist;
+  dCopy = d;
+  pathsCopy = paths;
+  sharedPathsCopy = sharedPaths;
+  if (!plistCopy)
   {
     v14 = SALog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -216,7 +216,7 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  if (v10 && ![SAAppPath isValidAppPathPlistArray:v10])
+  if (dCopy && ![SAAppPath isValidAppPathPlistArray:dCopy])
   {
     v14 = SALog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -227,7 +227,7 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  if (v11 && ![SAAppPath isValidAppPathPlistArray:v11])
+  if (pathsCopy && ![SAAppPath isValidAppPathPlistArray:pathsCopy])
   {
     v14 = SALog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -238,7 +238,7 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  if (v12 && ![SAAppPath isValidAppPathPlistArray:v12])
+  if (sharedPathsCopy && ![SAAppPath isValidAppPathPlistArray:sharedPathsCopy])
   {
     v14 = SALog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -258,14 +258,14 @@ LABEL_21:
   return v13;
 }
 
-+ (BOOL)validatePaths:(id)a3
++ (BOOL)validatePaths:(id)paths
 {
-  v3 = a3;
+  pathsCopy = paths;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  v4 = [pathsCopy countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (!v4)
   {
     v8 = 1;
@@ -284,7 +284,7 @@ LABEL_21:
     {
       if (*v18 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(pathsCopy);
       }
 
       v10 = *(*(&v17 + 1) + 8 * v9);
@@ -357,7 +357,7 @@ LABEL_15:
     }
 
     while (v6 != v9);
-    v14 = [v3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+    v14 = [pathsCopy countByEnumeratingWithState:&v17 objects:v23 count:16];
     v6 = v14;
   }
 
@@ -367,11 +367,11 @@ LABEL_25:
   return v8 & 1;
 }
 
-+ (id)newFromPlist:(id)a3
++ (id)newFromPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v5 = +[NSFileManager defaultManager];
-  if (![v5 fileExistsAtPath:v4] || (objc_msgSend(v4, "pathExtension"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqual:", @"plist"), v6, (v7 & 1) == 0))
+  if (![v5 fileExistsAtPath:plistCopy] || (objc_msgSend(plistCopy, "pathExtension"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqual:", @"plist"), v6, (v7 & 1) == 0))
   {
     v13 = SALog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -389,7 +389,7 @@ LABEL_25:
   }
 
   v63 = 0;
-  v8 = [NSData dataWithContentsOfFile:v4 options:2 error:&v63];
+  v8 = [NSData dataWithContentsOfFile:plistCopy options:2 error:&v63];
   v9 = v63;
   if (v9 || !v8)
   {
@@ -448,7 +448,7 @@ LABEL_26:
   v44 = v10;
   v47 = v11;
   v48 = v14;
-  v49 = a1;
+  selfCopy = self;
   if (!v13)
   {
     v18 = 0;
@@ -515,7 +515,7 @@ LABEL_39:
 
   v14 = v48;
 LABEL_40:
-  v46 = v4;
+  v46 = plistCopy;
   if (!v14)
   {
     v23 = 0;
@@ -662,9 +662,9 @@ LABEL_69:
 LABEL_73:
 
   v5 = v45;
-  v4 = v46;
+  plistCopy = v46;
   v10 = v44;
-  if (([(objc_class *)v49 validatePaths:v13]& 1) == 0)
+  if (([(objc_class *)selfCopy validatePaths:v13]& 1) == 0)
   {
     v41 = SALog();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -673,7 +673,7 @@ LABEL_73:
     }
   }
 
-  if (([(objc_class *)v49 validatePaths:v48, v43]& 1) == 0)
+  if (([(objc_class *)selfCopy validatePaths:v48, v43]& 1) == 0)
   {
     v42 = SALog();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -682,7 +682,7 @@ LABEL_73:
     }
   }
 
-  v24 = [[v49 alloc] initWithBundleID:v47 writersIDs:v37 uniquePaths:v18 sharedPaths:v23];
+  v24 = [[selfCopy alloc] initWithBundleID:v47 writersIDs:v37 uniquePaths:v18 sharedPaths:v23];
 
   v11 = v47;
   v9 = 0;
@@ -691,13 +691,13 @@ LABEL_27:
   return v24;
 }
 
-- (void)addBinaryPaths:(id)a3
+- (void)addBinaryPaths:(id)paths
 {
-  v4 = a3;
-  if (v4)
+  pathsCopy = paths;
+  if (pathsCopy)
   {
     binaryPaths = self->binaryPaths;
-    v8 = v4;
+    v8 = pathsCopy;
     if (!binaryPaths)
     {
       v6 = +[NSMutableSet set];
@@ -713,13 +713,13 @@ LABEL_27:
   _objc_release_x1();
 }
 
-- (void)addBinaryPath:(id)a3
+- (void)addBinaryPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v6 = v4;
-    if ([v4 length])
+    v6 = pathCopy;
+    if ([pathCopy length])
     {
       v5 = [NSSet setWithObject:v6];
       [(SAAppPath *)self addBinaryPaths:v5];
@@ -729,13 +729,13 @@ LABEL_27:
   _objc_release_x1();
 }
 
-- (void)addUniquePath:(id)a3
+- (void)addUniquePath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v6 = v4;
-    if ([v4 length])
+    v6 = pathCopy;
+    if ([pathCopy length])
     {
       v5 = [NSMutableSet setWithObject:v6];
       [(SAAppPath *)self addUniquePaths:v5];
@@ -745,13 +745,13 @@ LABEL_27:
   _objc_release_x1();
 }
 
-- (void)addUniquePaths:(id)a3
+- (void)addUniquePaths:(id)paths
 {
-  v4 = a3;
-  if (v4)
+  pathsCopy = paths;
+  if (pathsCopy)
   {
     uniquePaths = self->uniquePaths;
-    v8 = v4;
+    v8 = pathsCopy;
     if (!uniquePaths)
     {
       v6 = objc_opt_new();
@@ -767,13 +767,13 @@ LABEL_27:
   _objc_release_x1();
 }
 
-- (void)addSharedPath:(id)a3
+- (void)addSharedPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v6 = v4;
-    if ([v4 length])
+    v6 = pathCopy;
+    if ([pathCopy length])
     {
       v5 = [NSMutableSet setWithObject:v6];
       [(SAAppPath *)self addSharedPaths:v5];
@@ -783,13 +783,13 @@ LABEL_27:
   _objc_release_x1();
 }
 
-- (void)addSharedPaths:(id)a3
+- (void)addSharedPaths:(id)paths
 {
-  v4 = a3;
-  if (v4)
+  pathsCopy = paths;
+  if (pathsCopy)
   {
     sharedPaths = self->sharedPaths;
-    v8 = v4;
+    v8 = pathsCopy;
     if (!sharedPaths)
     {
       v6 = objc_opt_new();
@@ -805,13 +805,13 @@ LABEL_27:
   _objc_release_x1();
 }
 
-- (void)addWriterID:(id)a3
+- (void)addWriterID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v6 = v4;
-    if ([v4 length])
+    v6 = dCopy;
+    if ([dCopy length])
     {
       v5 = [NSMutableSet setWithObject:v6];
       [(SAAppPath *)self addWriterIDs:v5];
@@ -821,13 +821,13 @@ LABEL_27:
   _objc_release_x1();
 }
 
-- (void)addGroupContainerID:(id)a3
+- (void)addGroupContainerID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v6 = v4;
-    if ([v4 length])
+    v6 = dCopy;
+    if ([dCopy length])
     {
       v5 = [NSMutableSet setWithObject:v6];
       [(SAAppPath *)self addGroupContainerIDs:v5];
@@ -837,13 +837,13 @@ LABEL_27:
   _objc_release_x1();
 }
 
-- (void)addGroupContainerIDs:(id)a3
+- (void)addGroupContainerIDs:(id)ds
 {
-  v4 = a3;
-  if (v4)
+  dsCopy = ds;
+  if (dsCopy)
   {
     groupContainerIdentifiers = self->_groupContainerIdentifiers;
-    v8 = v4;
+    v8 = dsCopy;
     if (!groupContainerIdentifiers)
     {
       v6 = +[NSMutableSet set];
@@ -859,13 +859,13 @@ LABEL_27:
   _objc_release_x1();
 }
 
-- (void)addWriterIDs:(id)a3
+- (void)addWriterIDs:(id)ds
 {
-  v4 = a3;
-  if (v4)
+  dsCopy = ds;
+  if (dsCopy)
   {
     writersIDs = self->writersIDs;
-    v9 = v4;
+    v9 = dsCopy;
     if (!writersIDs)
     {
       v6 = objc_opt_new();
@@ -875,58 +875,58 @@ LABEL_27:
       writersIDs = self->writersIDs;
     }
 
-    v8 = [v9 allObjects];
-    [(NSMutableSet *)writersIDs addObjectsFromArray:v8];
+    allObjects = [v9 allObjects];
+    [(NSMutableSet *)writersIDs addObjectsFromArray:allObjects];
 
-    v4 = v9;
+    dsCopy = v9;
   }
 }
 
-- (void)removeBinaryPath:(id)a3
+- (void)removeBinaryPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = [NSSet setWithObject:?];
     [(SAAppPath *)self removeBinaryPaths:v4];
   }
 }
 
-- (void)removeBinaryPaths:(id)a3
+- (void)removeBinaryPaths:(id)paths
 {
-  if (a3)
+  if (paths)
   {
     [(NSMutableSet *)self->binaryPaths minusSet:?];
   }
 }
 
-- (void)removeUniquePath:(id)a3
+- (void)removeUniquePath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = [NSSet setWithObject:?];
     [(SAAppPath *)self removeUniquePaths:v4];
   }
 }
 
-- (void)removeUniquePaths:(id)a3
+- (void)removeUniquePaths:(id)paths
 {
-  if (a3)
+  if (paths)
   {
     [(NSMutableSet *)self->uniquePaths minusSet:?];
   }
 }
 
-- (void)removeWriterIDs:(id)a3
+- (void)removeWriterIDs:(id)ds
 {
-  v4 = a3;
-  v5 = v4;
+  dsCopy = ds;
+  v5 = dsCopy;
   if (self->writersIDs)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v6 = [dsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -954,132 +954,132 @@ LABEL_27:
   }
 }
 
-- (void)removeWriterID:(id)a3
+- (void)removeWriterID:(id)d
 {
-  if (a3)
+  if (d)
   {
     [(NSMutableSet *)self->writersIDs removeObject:?];
   }
 }
 
-- (void)removeSharedPath:(id)a3
+- (void)removeSharedPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = [NSSet setWithObject:?];
     [(SAAppPath *)self removeSharedPaths:v4];
   }
 }
 
-- (void)removeSharedPaths:(id)a3
+- (void)removeSharedPaths:(id)paths
 {
-  if (a3)
+  if (paths)
   {
     [(NSMutableSet *)self->sharedPaths minusSet:?];
   }
 }
 
-- (void)updateLastUsedDate:(id)a3
+- (void)updateLastUsedDate:(id)date
 {
-  v4 = a3;
-  if (v4)
+  dateCopy = date;
+  if (dateCopy)
   {
-    v8 = v4;
-    v5 = [v4 objectForKeyedSubscript:self->identifier];
+    v8 = dateCopy;
+    v5 = [dateCopy objectForKeyedSubscript:self->identifier];
 
-    v4 = v8;
+    dateCopy = v8;
     if (v5)
     {
       v6 = [v8 objectForKeyedSubscript:self->identifier];
       lastUsed = self->_lastUsed;
       self->_lastUsed = v6;
 
-      v4 = v8;
+      dateCopy = v8;
     }
   }
 }
 
-- (void)extendWithPropertiesFromAppPath:(id)a3
+- (void)extendWithPropertiesFromAppPath:(id)path
 {
-  v21 = a3;
-  v4 = [v21 writersIDs];
-  [(SAAppPath *)self addWriterIDs:v4];
+  pathCopy = path;
+  writersIDs = [pathCopy writersIDs];
+  [(SAAppPath *)self addWriterIDs:writersIDs];
 
-  v5 = [v21 sharedPaths];
-  [(SAAppPath *)self addSharedPaths:v5];
+  sharedPaths = [pathCopy sharedPaths];
+  [(SAAppPath *)self addSharedPaths:sharedPaths];
 
-  v6 = [v21 uniquePaths];
-  [(SAAppPath *)self addUniquePaths:v6];
+  uniquePaths = [pathCopy uniquePaths];
+  [(SAAppPath *)self addUniquePaths:uniquePaths];
 
-  v7 = [v21 binaryPaths];
-  [(SAAppPath *)self addBinaryPaths:v7];
+  binaryPaths = [pathCopy binaryPaths];
+  [(SAAppPath *)self addBinaryPaths:binaryPaths];
 
-  v8 = [v21 groupContainerIdentifiers];
-  [(SAAppPath *)self addGroupContainerIDs:v8];
+  groupContainerIdentifiers = [pathCopy groupContainerIdentifiers];
+  [(SAAppPath *)self addGroupContainerIDs:groupContainerIdentifiers];
 
-  v9 = [v21 lastUsed];
+  lastUsed = [pathCopy lastUsed];
 
-  if (v9)
+  if (lastUsed)
   {
     lastUsed = self->_lastUsed;
-    if (!lastUsed || ([v21 lastUsed], v11 = objc_claimAutoreleasedReturnValue(), v12 = -[NSDate compare:](lastUsed, "compare:", v11), v11, v12 == -1))
+    if (!lastUsed || ([pathCopy lastUsed], v11 = objc_claimAutoreleasedReturnValue(), v12 = -[NSDate compare:](lastUsed, "compare:", v11), v11, v12 == -1))
     {
-      v13 = [v21 lastUsed];
+      lastUsed2 = [pathCopy lastUsed];
       v14 = self->_lastUsed;
-      self->_lastUsed = v13;
+      self->_lastUsed = lastUsed2;
     }
   }
 
   if (!self->_dataContainerPath)
   {
-    v15 = [v21 dataContainerPath];
+    dataContainerPath = [pathCopy dataContainerPath];
     dataContainerPath = self->_dataContainerPath;
-    self->_dataContainerPath = v15;
+    self->_dataContainerPath = dataContainerPath;
   }
 
   if ([(NSNumber *)self->_isAppRecordUserVisible BOOLValue])
   {
-    v17 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v18 = [v21 isAppRecordUserVisible];
-    v17 = [v18 BOOLValue];
+    isAppRecordUserVisible = [pathCopy isAppRecordUserVisible];
+    bOOLValue = [isAppRecordUserVisible BOOLValue];
   }
 
-  v19 = [NSNumber numberWithBool:v17];
+  v19 = [NSNumber numberWithBool:bOOLValue];
   isAppRecordUserVisible = self->_isAppRecordUserVisible;
   self->_isAppRecordUserVisible = v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"bundleID"];
-  [v5 encodeObject:self->writersIDs forKey:@"writersIDs"];
-  [v5 encodeObject:self->uniquePaths forKey:@"uniqueURLs"];
-  [v5 encodeObject:self->sharedPaths forKey:@"sharedURLs"];
-  [v5 encodeObject:self->binaryPaths forKey:@"binaryURLs"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"bundleID"];
+  [coderCopy encodeObject:self->writersIDs forKey:@"writersIDs"];
+  [coderCopy encodeObject:self->uniquePaths forKey:@"uniqueURLs"];
+  [coderCopy encodeObject:self->sharedPaths forKey:@"sharedURLs"];
+  [coderCopy encodeObject:self->binaryPaths forKey:@"binaryURLs"];
 }
 
-- (SAAppPath)initWithCoder:(id)a3
+- (SAAppPath)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = SAAppPath;
   v5 = [(SAAppPath *)&v32 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     identifier = v5->identifier;
     v5->identifier = v6;
 
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [NSSet setWithObjects:v8, v9, objc_opt_class(), 0];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"writersIDs"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"writersIDs"];
     writersIDs = v5->writersIDs;
     v5->writersIDs = v11;
 
@@ -1087,7 +1087,7 @@ LABEL_27:
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [NSSet setWithObjects:v13, v14, v15, objc_opt_class(), 0];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"uniqueURLs"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"uniqueURLs"];
     uniquePaths = v5->uniquePaths;
     v5->uniquePaths = v17;
 
@@ -1095,7 +1095,7 @@ LABEL_27:
     v20 = objc_opt_class();
     v21 = objc_opt_class();
     v22 = [NSSet setWithObjects:v19, v20, v21, objc_opt_class(), 0];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"sharedURLs"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"sharedURLs"];
     sharedPaths = v5->sharedPaths;
     v5->sharedPaths = v23;
 
@@ -1103,7 +1103,7 @@ LABEL_27:
     v26 = objc_opt_class();
     v27 = objc_opt_class();
     v28 = [NSSet setWithObjects:v25, v26, v27, objc_opt_class(), 0];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"binaryURLs"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"binaryURLs"];
     binaryPaths = v5->binaryPaths;
     v5->binaryPaths = v29;
   }
@@ -1111,11 +1111,11 @@ LABEL_27:
   return v5;
 }
 
-- (SAAppPath)initWithBundleRecord:(id)a3 identifier:(id)a4 dataContainerPath:(id)a5 personaUniqueString:(id)a6 isPlugin:(BOOL)a7 isGroup:(BOOL)a8
+- (SAAppPath)initWithBundleRecord:(id)record identifier:(id)identifier dataContainerPath:(id)path personaUniqueString:(id)string isPlugin:(BOOL)plugin isGroup:(BOOL)group
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  recordCopy = record;
+  identifierCopy = identifier;
+  pathCopy = path;
   v77.receiver = self;
   v77.super_class = SAAppPath;
   v16 = [(SAAppPath *)&v77 init];
@@ -1125,31 +1125,31 @@ LABEL_27:
     goto LABEL_44;
   }
 
-  if (v14)
+  if (identifierCopy)
   {
-    objc_storeStrong(&v16->_dataContainerPath, a5);
-    objc_storeStrong(&v17->identifier, a4);
+    objc_storeStrong(&v16->_dataContainerPath, path);
+    objc_storeStrong(&v17->identifier, identifier);
     v18 = &SBSCopyDisplayIdentifiers_ptr;
     if (v17->_dataContainerPath)
     {
-      if (a8)
+      if (group)
       {
         [(SAAppPath *)v17 addSharedPath:?];
 LABEL_34:
-        v46 = [v13 groupContainerIdentifiers];
-        [(SAAppPath *)v17 addGroupContainerIDs:v46];
+        groupContainerIdentifiers = [recordCopy groupContainerIdentifiers];
+        [(SAAppPath *)v17 addGroupContainerIDs:groupContainerIdentifiers];
 
         v47 = v18[221];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v64 = a7;
+          pluginCopy = plugin;
           v71 = 0u;
           v72 = 0u;
           v69 = 0u;
           v70 = 0u;
-          v48 = [v13 applicationExtensionRecords];
-          v49 = [v48 countByEnumeratingWithState:&v69 objects:v78 count:16];
+          applicationExtensionRecords = [recordCopy applicationExtensionRecords];
+          v49 = [applicationExtensionRecords countByEnumeratingWithState:&v69 objects:v78 count:16];
           if (v49)
           {
             v50 = v49;
@@ -1160,35 +1160,35 @@ LABEL_34:
               {
                 if (*v70 != v51)
                 {
-                  objc_enumerationMutation(v48);
+                  objc_enumerationMutation(applicationExtensionRecords);
                 }
 
-                v53 = [*(*(&v69 + 1) + 8 * i) groupContainerIdentifiers];
-                [(SAAppPath *)v17 addGroupContainerIDs:v53];
+                groupContainerIdentifiers2 = [*(*(&v69 + 1) + 8 * i) groupContainerIdentifiers];
+                [(SAAppPath *)v17 addGroupContainerIDs:groupContainerIdentifiers2];
               }
 
-              v50 = [v48 countByEnumeratingWithState:&v69 objects:v78 count:16];
+              v50 = [applicationExtensionRecords countByEnumeratingWithState:&v69 objects:v78 count:16];
             }
 
             while (v50);
           }
 
-          a7 = v64;
+          plugin = pluginCopy;
         }
 
-        v54 = [NSNumber numberWithBool:[(SAAppPath *)v17 isAppRecordUserVisible:v13]];
+        v54 = [NSNumber numberWithBool:[(SAAppPath *)v17 isAppRecordUserVisible:recordCopy]];
         isAppRecordUserVisible = v17->_isAppRecordUserVisible;
         v17->_isAppRecordUserVisible = v54;
 
-        v17->_isPlugin = a7;
-        v17->_isGroup = a8;
+        v17->_isPlugin = plugin;
+        v17->_isGroup = group;
         goto LABEL_44;
       }
 
       [(SAAppPath *)v17 addUniquePath:?];
     }
 
-    else if (a8)
+    else if (group)
     {
       goto LABEL_34;
     }
@@ -1196,19 +1196,19 @@ LABEL_34:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = sub_10000185C(v13);
-      v21 = [v20 allKeys];
-      v22 = v13;
-      v23 = [v22 bundleContainerURL];
-      v61 = v15;
-      v62 = v14;
-      if (v23)
+      v20 = sub_10000185C(recordCopy);
+      allKeys = [v20 allKeys];
+      v22 = recordCopy;
+      bundleContainerURL = [v22 bundleContainerURL];
+      v61 = pathCopy;
+      v62 = identifierCopy;
+      if (bundleContainerURL)
       {
         goto LABEL_17;
       }
 
-      v24 = [v22 executableURL];
-      v65 = sub_100001A5C([v24 fileSystemRepresentation]);
+      executableURL = [v22 executableURL];
+      v65 = sub_100001A5C([executableURL fileSystemRepresentation]);
 
       v25 = SALog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -1216,13 +1216,13 @@ LABEL_34:
         sub_10003CC2C();
       }
 
-      v23 = v65;
+      bundleContainerURL = v65;
       if (v65)
       {
 LABEL_17:
-        v66 = v23;
-        v26 = [v23 path];
-        [(SAAppPath *)v17 addBinaryPath:v26];
+        v66 = bundleContainerURL;
+        path = [bundleContainerURL path];
+        [(SAAppPath *)v17 addBinaryPath:path];
 
         v68 = 1;
       }
@@ -1234,15 +1234,15 @@ LABEL_17:
       }
 
       v57 = v22;
-      v63 = a7;
-      v60 = a8;
-      if (v21)
+      pluginCopy2 = plugin;
+      groupCopy = group;
+      if (allKeys)
       {
-        v27 = [NSMutableSet setWithArray:v21];
+        v27 = [NSMutableSet setWithArray:allKeys];
         [(SAAppPath *)v17 addWriterIDs:v27];
       }
 
-      v58 = v21;
+      v58 = allKeys;
       v59 = v20;
       v75 = 0u;
       v76 = 0u;
@@ -1271,16 +1271,16 @@ LABEL_17:
             {
               if (!v68 || (+[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [v34 fileSystemRepresentation]), v35 = objc_claimAutoreleasedReturnValue(), +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", objc_msgSend(v66, "fileSystemRepresentation")), v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v35, "hasPrefix:", v36), v36, v35, (v37 & 1) == 0))
               {
-                v38 = [v34 path];
-                [(SAAppPath *)v17 addBinaryPath:v38];
+                path2 = [v34 path];
+                [(SAAppPath *)v17 addBinaryPath:path2];
               }
             }
 
             v39 = [v32 objectForKeyedSubscript:@"CONTAINER_CLASS_APPLICATION_DATA"];
             v40 = sub_10000CA38(v39);
 
-            v41 = [v40 path];
-            [(SAAppPath *)v17 addUniquePath:v41];
+            path3 = [v40 path];
+            [(SAAppPath *)v17 addUniquePath:path3];
           }
 
           v29 = [obj countByEnumeratingWithState:&v73 objects:v79 count:16];
@@ -1289,23 +1289,23 @@ LABEL_17:
         while (v29);
       }
 
-      v14 = v62;
-      v15 = v61;
-      a8 = v60;
-      a7 = v63;
+      identifierCopy = v62;
+      pathCopy = v61;
+      group = groupCopy;
+      plugin = pluginCopy2;
       v18 = &SBSCopyDisplayIdentifiers_ptr;
     }
 
     else
     {
-      v42 = [v13 executableURL];
+      executableURL2 = [recordCopy executableURL];
 
-      if (v42)
+      if (executableURL2)
       {
-        v43 = [v13 executableURL];
-        v44 = sub_100001A5C([v43 fileSystemRepresentation]);
-        v45 = [v44 path];
-        [(SAAppPath *)v17 addBinaryPath:v45];
+        executableURL3 = [recordCopy executableURL];
+        v44 = sub_100001A5C([executableURL3 fileSystemRepresentation]);
+        path4 = [v44 path];
+        [(SAAppPath *)v17 addBinaryPath:path4];
       }
     }
 
@@ -1324,8 +1324,8 @@ LABEL_44:
 
 - (int)urgency
 {
-  v2 = [(SAAppPath *)self lastUsed];
-  v3 = urgencyForDate(v2);
+  lastUsed = [(SAAppPath *)self lastUsed];
+  v3 = urgencyForDate(lastUsed);
 
   return v3;
 }
@@ -1338,8 +1338,8 @@ LABEL_44:
   }
 
   v3 = qword_1000736B0;
-  v4 = [(SAAppPath *)self identifier];
-  v5 = [v3 objectForKey:v4];
+  identifier = [(SAAppPath *)self identifier];
+  v5 = [v3 objectForKey:identifier];
   v6 = [v5 isEqual:&__kCFBooleanTrue];
 
   return v6;
@@ -1353,8 +1353,8 @@ LABEL_44:
   }
 
   v3 = qword_1000736C0;
-  v4 = [(SAAppPath *)self identifier];
-  v5 = [v3 objectForKey:v4];
+  identifier = [(SAAppPath *)self identifier];
+  v5 = [v3 objectForKey:identifier];
   v6 = [v5 isEqual:&__kCFBooleanTrue];
 
   if (v6)
@@ -1362,45 +1362,45 @@ LABEL_44:
     return 1;
   }
 
-  v8 = [(SAAppPath *)self identifier];
-  v9 = [SALLMList isLLM:v8];
+  identifier2 = [(SAAppPath *)self identifier];
+  v9 = [SALLMList isLLM:identifier2];
 
   return v9;
 }
 
-- (BOOL)isAppRecordUserVisible:(id)a3
+- (BOOL)isAppRecordUserVisible:(id)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = visibleCopy;
     v5 = v4;
     if (v4)
     {
       if ([v4 developerType] == 1 && (objc_msgSend(v5, "isDeletable") & 1) == 0)
       {
-        v6 = [v5 isSystemPlaceholder];
+        isSystemPlaceholder = [v5 isSystemPlaceholder];
       }
 
       else
       {
-        v6 = 1;
+        isSystemPlaceholder = 1;
       }
     }
 
     else
     {
-      v6 = 0;
+      isSystemPlaceholder = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    isSystemPlaceholder = 0;
   }
 
-  return v6;
+  return isSystemPlaceholder;
 }
 
 - (id)appRecord
@@ -1411,14 +1411,14 @@ LABEL_44:
   v10 = sub_10000D0C4;
   v11 = sub_10000D0D4;
   v12 = 0;
-  v3 = [(SAAppPath *)self identifier];
+  identifier = [(SAAppPath *)self identifier];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000D0DC;
   v6[3] = &unk_100064BB0;
   v6[4] = self;
   v6[5] = &v7;
-  [SASupport getLSAppRecordForBundle:v3 reply:v6];
+  [SASupport getLSAppRecordForBundle:identifier reply:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1439,22 +1439,22 @@ LABEL_44:
   }
 
   v5 = SBSCopyDisplayIdentifiers();
-  v6 = [(SAAppPath *)self identifier];
-  v7 = [v5 containsObject:v6];
+  identifier = [(SAAppPath *)self identifier];
+  v7 = [v5 containsObject:identifier];
 
   if (v7)
   {
     return 1;
   }
 
-  v8 = [(SAAppPath *)self isAppRecordUserVisible];
+  isAppRecordUserVisible = [(SAAppPath *)self isAppRecordUserVisible];
 
-  if (!v8)
+  if (!isAppRecordUserVisible)
   {
-    v10 = [(SAAppPath *)self appRecord];
-    if (v10)
+    appRecord = [(SAAppPath *)self appRecord];
+    if (appRecord)
     {
-      v3 = [(SAAppPath *)self isAppRecordUserVisible:v10];
+      v3 = [(SAAppPath *)self isAppRecordUserVisible:appRecord];
     }
 
     else
@@ -1630,12 +1630,12 @@ LABEL_44:
       while (v32);
     }
 
-    v37 = [(SAAppPath *)self dataContainerPath];
+    dataContainerPath = [(SAAppPath *)self dataContainerPath];
 
-    if (v37)
+    if (dataContainerPath)
     {
-      v38 = [(SAAppPath *)self dataContainerPath];
-      [v4 setObject:v38 forKeyedSubscript:@"SPACE_ATTRIBUTION_CONTAINER_URL"];
+      dataContainerPath2 = [(SAAppPath *)self dataContainerPath];
+      [v4 setObject:dataContainerPath2 forKeyedSubscript:@"SPACE_ATTRIBUTION_CONTAINER_URL"];
     }
 
     v39 = [NSNumber numberWithUnsignedLongLong:[(SAAppPath *)self getAppCacheSize]];
@@ -1648,69 +1648,69 @@ LABEL_44:
   return v4;
 }
 
-- (void)getAppCacheInfo:(id)a3
+- (void)getAppCacheInfo:(id)info
 {
-  v10 = a3;
-  v4 = [(SAAppPath *)self cachePath];
+  infoCopy = info;
+  cachePath = [(SAAppPath *)self cachePath];
 
-  if (v4)
+  if (cachePath)
   {
     v5 = objc_opt_new();
-    v6 = [(SAAppPath *)self cachePath];
-    v7 = [v5 getFolderSizeAtPath:v6 options:6];
+    cachePath2 = [(SAAppPath *)self cachePath];
+    v7 = [v5 getFolderSizeAtPath:cachePath2 options:6];
 
-    v8 = [v7 volumePath];
+    volumePath = [v7 volumePath];
     v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v7 dirStatsID]);
-    v10[2](v10, v8, v9, [v7 dataSize], objc_msgSend(v7, "fileCount"));
+    infoCopy[2](infoCopy, volumePath, v9, [v7 dataSize], objc_msgSend(v7, "fileCount"));
   }
 
   else
   {
-    v10[2](v10, 0, 0, 0, 0);
+    infoCopy[2](infoCopy, 0, 0, 0, 0);
   }
 }
 
 - (unint64_t)getAppCacheSize
 {
-  v3 = [(SAAppPath *)self cachePath];
+  cachePath = [(SAAppPath *)self cachePath];
 
-  if (!v3)
+  if (!cachePath)
   {
     return 0;
   }
 
   v4 = objc_opt_new();
-  v5 = [(SAAppPath *)self cachePath];
-  v6 = [v4 getFolderSizeAtPath:v5 options:6];
+  cachePath2 = [(SAAppPath *)self cachePath];
+  v6 = [v4 getFolderSizeAtPath:cachePath2 options:6];
 
-  v7 = [v6 dataSize];
-  return v7;
+  dataSize = [v6 dataSize];
+  return dataSize;
 }
 
 - (unint64_t)tempSize
 {
-  v3 = [(SAAppPath *)self tmpPath];
+  tmpPath = [(SAAppPath *)self tmpPath];
 
-  if (!v3)
+  if (!tmpPath)
   {
     return 0;
   }
 
-  v4 = [(SAAppPath *)self tmpPath];
-  v5 = [0 getFolderSizeAtPath:v4 options:2];
+  tmpPath2 = [(SAAppPath *)self tmpPath];
+  v5 = [0 getFolderSizeAtPath:tmpPath2 options:2];
 
-  v6 = [v5 dataSize];
-  return v6;
+  dataSize = [v5 dataSize];
+  return dataSize;
 }
 
 - (id)cachePath
 {
-  v3 = [(SAAppPath *)self dataContainerPath];
+  dataContainerPath = [(SAAppPath *)self dataContainerPath];
 
-  if (v3)
+  if (dataContainerPath)
   {
-    v4 = [(SAAppPath *)self dataContainerPath];
-    v5 = [v4 stringByAppendingPathComponent:@"Library/Caches"];
+    dataContainerPath2 = [(SAAppPath *)self dataContainerPath];
+    v5 = [dataContainerPath2 stringByAppendingPathComponent:@"Library/Caches"];
   }
 
   else
@@ -1723,12 +1723,12 @@ LABEL_44:
 
 - (id)tmpPath
 {
-  v3 = [(SAAppPath *)self dataContainerPath];
+  dataContainerPath = [(SAAppPath *)self dataContainerPath];
 
-  if (v3)
+  if (dataContainerPath)
   {
-    v4 = [(SAAppPath *)self dataContainerPath];
-    v5 = [v4 stringByAppendingPathComponent:@"tmp"];
+    dataContainerPath2 = [(SAAppPath *)self dataContainerPath];
+    v5 = [dataContainerPath2 stringByAppendingPathComponent:@"tmp"];
   }
 
   else

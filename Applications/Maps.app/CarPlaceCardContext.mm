@@ -4,12 +4,12 @@
 - (_TtC4Maps19CarPlaceCardContext)init;
 - (id)desiredCards;
 - (id)personalizedItemSources;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)configureCard:(id)a3 forKey:(id)a4;
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)placeItemDidUpdateWithNote:(id)a3;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)setPlaceItem:(id)a3;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)configureCard:(id)card forKey:(id)key;
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)placeItemDidUpdateWithNote:(id)note;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)setPlaceItem:(id)item;
 @end
 
 @implementation CarPlaceCardContext
@@ -33,24 +33,24 @@
   return v3.super.isa;
 }
 
-- (void)setPlaceItem:(id)a3
+- (void)setPlaceItem:(id)item
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps19CarPlaceCardContext_placeItem);
-  *(self + OBJC_IVAR____TtC4Maps19CarPlaceCardContext_placeItem) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR____TtC4Maps19CarPlaceCardContext_placeItem) = item;
+  itemCopy = item;
+  selfCopy = self;
 
   sub_10055A47C();
 }
 
-- (void)placeItemDidUpdateWithNote:(id)a3
+- (void)placeItemDidUpdateWithNote:(id)note
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_10055A7F8();
 
   (*(v5 + 8))(v7, v4);
@@ -68,9 +68,9 @@
   return v4.super.isa;
 }
 
-- (void)configureCard:(id)a3 forKey:(id)a4
+- (void)configureCard:(id)card forKey:(id)key
 {
-  if (a4)
+  if (key)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -83,14 +83,14 @@
   }
 
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_10055AA54(a3, v6, v8);
+  selfCopy = self;
+  sub_10055AA54(card, v6, v8);
   swift_unknownObjectRelease();
 }
 
 - (id)personalizedItemSources
 {
-  v2 = self;
+  selfCopy = self;
   sub_10055ADB0();
 
   sub_100014C84(0, &qword_101909CF0);
@@ -99,21 +99,21 @@
   return v3.super.isa;
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10055AF24(v6, v7);
+  controllerCopy = controller;
+  animationCopy = animation;
+  selfCopy = self;
+  sub_10055AF24(controllerCopy, animationCopy);
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v7 = swift_allocObject();
   swift_unknownObjectWeakInit();
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
-  *(v8 + 24) = a3;
+  *(v8 + 24) = controller;
   v13[4] = sub_10055C290;
   v13[5] = v8;
   v13[0] = _NSConcreteStackBlock;
@@ -121,20 +121,20 @@
   v13[2] = sub_100039C64;
   v13[3] = &unk_101621630;
   v9 = _Block_copy(v13);
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
+  controllerCopy = controller;
+  animationCopy = animation;
+  selfCopy = self;
 
-  [v11 addPreparation:v9];
+  [animationCopy addPreparation:v9];
   _Block_release(v9);
 }
 
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10055C174(v7);
+  controllerCopy = controller;
+  animationCopy = animation;
+  selfCopy = self;
+  sub_10055C174(animationCopy);
 }
 
 - (_TtC4Maps19CarPlaceCardContext)init

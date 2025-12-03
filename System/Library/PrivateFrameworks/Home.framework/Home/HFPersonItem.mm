@@ -1,25 +1,25 @@
 @interface HFPersonItem
-- (HFPersonItem)initWithPerson:(id)a3 fromPersonManager:(id)a4 home:(id)a5;
+- (HFPersonItem)initWithPerson:(id)person fromPersonManager:(id)manager home:(id)home;
 - (NSString)description;
 - (id)_homeKitObjectFetch;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HFPersonItem
 
-- (HFPersonItem)initWithPerson:(id)a3 fromPersonManager:(id)a4 home:(id)a5
+- (HFPersonItem)initWithPerson:(id)person fromPersonManager:(id)manager home:(id)home
 {
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  homeCopy = home;
   v14.receiver = self;
   v14.super_class = HFPersonItem;
-  v11 = [(HFFetchedHomeKitObjectItem *)&v14 initWithHomeKitObject:a3];
+  v11 = [(HFFetchedHomeKitObjectItem *)&v14 initWithHomeKitObject:person];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_personManager, a4);
-    objc_storeStrong(&v12->_home, a5);
+    objc_storeStrong(&v11->_personManager, manager);
+    objc_storeStrong(&v12->_home, home);
   }
 
   return v12;
@@ -31,38 +31,38 @@
   v9.receiver = self;
   v9.super_class = HFPersonItem;
   v4 = [(HFItem *)&v9 description];
-  v5 = [(HFPersonItem *)self person];
-  v6 = [(HFPersonItem *)self personManager];
-  v7 = [v3 stringWithFormat:@"%@ person: %@ manager: %@", v4, v5, v6];
+  person = [(HFPersonItem *)self person];
+  personManager = [(HFPersonItem *)self personManager];
+  v7 = [v3 stringWithFormat:@"%@ person: %@ manager: %@", v4, person, personManager];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFPersonItem *)self person];
-  v6 = [(HFPersonItem *)self personManager];
-  v7 = [(HFPersonItem *)self home];
-  v8 = [v4 initWithPerson:v5 fromPersonManager:v6 home:v7];
+  person = [(HFPersonItem *)self person];
+  personManager = [(HFPersonItem *)self personManager];
+  home = [(HFPersonItem *)self home];
+  v8 = [v4 initWithPerson:person fromPersonManager:personManager home:home];
 
   [v8 copyLatestResultsFromItem:self];
   return v8;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = HFPersonItem;
-  v5 = [(HFFetchedHomeKitObjectItem *)&v11 _subclass_updateWithOptions:v4];
+  v5 = [(HFFetchedHomeKitObjectItem *)&v11 _subclass_updateWithOptions:optionsCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __44__HFPersonItem__subclass_updateWithOptions___block_invoke;
   v9[3] = &unk_277DF3068;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = optionsCopy;
+  v6 = optionsCopy;
   v7 = [v5 flatMap:v9];
 
   return v7;
@@ -100,10 +100,10 @@ uint64_t __44__HFPersonItem__subclass_updateWithOptions___block_invoke_2(uint64_
 
 - (id)_homeKitObjectFetch
 {
-  v3 = [(HFPersonItem *)self personManager];
-  v4 = [(HFPersonItem *)self person];
-  v5 = [v4 UUID];
-  v6 = [v3 hf_personWithIdentifier:v5];
+  personManager = [(HFPersonItem *)self personManager];
+  person = [(HFPersonItem *)self person];
+  uUID = [person UUID];
+  v6 = [personManager hf_personWithIdentifier:uUID];
 
   return v6;
 }

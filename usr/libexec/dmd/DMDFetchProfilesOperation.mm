@@ -1,6 +1,6 @@
 @interface DMDFetchProfilesOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -23,9 +23,9 @@
   return v3;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v5 = -[DMDFetchProfilesOperation _profileListWithFilterFlags:](self, "_profileListWithFilterFlags:", MCProfileFilterFlagsFromDMFProfileFilterFlags([a3 filterFlags]));
+  v5 = -[DMDFetchProfilesOperation _profileListWithFilterFlags:](self, "_profileListWithFilterFlags:", MCProfileFilterFlagsFromDMFProfileFilterFlags([request filterFlags]));
   v4 = [[DMFFetchProfilesResultObject alloc] initWithProfiles:v5];
   [(DMDFetchProfilesOperation *)self endOperationWithResultObject:v4];
 }

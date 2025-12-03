@@ -10,7 +10,7 @@
 - (UIControl)studioLightButton;
 - (UIControl)videoPauseButton;
 - (UIView)shutterButton;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)callBack;
 - (void)close;
 - (void)handleCameraBlurTapped;
@@ -24,7 +24,7 @@
 - (void)handleStudioLightTapped;
 - (void)handleVideoMessageButtonTapped;
 - (void)layoutSubviews;
-- (void)setShutterButton:(id)a3;
+- (void)setShutterButton:(id)button;
 - (void)showCallDetails;
 @end
 
@@ -102,110 +102,110 @@
 
 - (UIView)shutterButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LocalParticipantControlsView.shutterButton.getter();
 
   return v3;
 }
 
-- (void)setShutterButton:(id)a3
+- (void)setShutterButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  LocalParticipantControlsView.shutterButton.setter(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  LocalParticipantControlsView.shutterButton.setter(buttonCopy);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   LocalParticipantControlsView.layoutSubviews()();
 }
 
 - (void)handleEffectsTapped
 {
-  v2 = self;
+  selfCopy = self;
   LocalParticipantControlsView.handleEffectsTapped()();
 }
 
 - (void)handleCinematicFramingTapped
 {
-  v2 = self;
+  selfCopy = self;
   LocalParticipantControlsView.handleCinematicFramingTapped()();
 }
 
 - (void)handleCameraBlurTapped
 {
-  v2 = self;
+  selfCopy = self;
   LocalParticipantControlsView.handleCameraBlurTapped()();
 }
 
 - (void)handleCollapseButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   LocalParticipantControlsView.handleCollapseButtonTapped()();
 }
 
 - (void)handleRotateButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   LocalParticipantControlsView.handleRotateButtonTapped()();
 }
 
 - (void)handleCameraFlipTapped
 {
-  v2 = self;
+  selfCopy = self;
   LocalParticipantControlsView.handleCameraFlipTapped()();
 }
 
 - (void)handleReactionEffectGestureTapped
 {
-  v2 = self;
+  selfCopy = self;
   LocalParticipantControlsView.handleReactionEffectGestureTapped()();
 }
 
 - (void)handleStudioLightTapped
 {
-  v2 = self;
+  selfCopy = self;
   LocalParticipantControlsView.handleStudioLightTapped()();
 }
 
 - (void)handleVideoMessageButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   LocalParticipantControlsView.handleVideoMessageButtonTapped()();
 }
 
 - (void)showCallDetails
 {
-  v2 = self;
+  selfCopy = self;
   LocalParticipantControlsView.showCallDetails()();
 }
 
 - (void)callBack
 {
-  v2 = self;
+  selfCopy = self;
   LocalParticipantControlsView.callBack()();
 }
 
 - (void)close
 {
-  v2 = self;
+  selfCopy = self;
   LocalParticipantControlsView.close()();
 }
 
 - (void)handleShutterButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   LocalParticipantControlsView.handleShutterButtonTapped()();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v15.value.super.isa = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v15.value.super.isa = event;
   LocalParticipantControlsView.hitTest(_:with:)(v10, __PAIR128__(*&y, *&x), v15);
   v12 = v11;
 

@@ -1,45 +1,45 @@
 @interface LPLinkMetadataStatusTransformer
-- (LPLinkMetadataStatusTransformer)initWithMetadata:(id)a3 URL:(id)a4;
+- (LPLinkMetadataStatusTransformer)initWithMetadata:(id)metadata URL:(id)l;
 - (LPLinkMetadataStatusTransformerDelegate)delegate;
 - (NSAttributedString)statusText;
 - (NSURL)actionURL;
 - (NSURL)canonicalURL;
 - (id)originalURL;
 - (void)dealloc;
-- (void)setMetadata:(id)a3;
+- (void)setMetadata:(id)metadata;
 @end
 
 @implementation LPLinkMetadataStatusTransformer
 
-- (LPLinkMetadataStatusTransformer)initWithMetadata:(id)a3 URL:(id)a4
+- (LPLinkMetadataStatusTransformer)initWithMetadata:(id)metadata URL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  metadataCopy = metadata;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = LPLinkMetadataStatusTransformer;
   v9 = [(LPLinkMetadataStatusTransformer *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_metadata, a3);
-    objc_storeStrong(&v10->_URL, a4);
-    v11 = [(LPLinkMetadata *)v10->_metadata specialization];
-    if (v11)
+    objc_storeStrong(&v9->_metadata, metadata);
+    objc_storeStrong(&v10->_URL, l);
+    specialization = [(LPLinkMetadata *)v10->_metadata specialization];
+    if (specialization)
     {
-      v12 = [(LPLinkMetadata *)v10->_metadata specialization];
-      if (([v12 conformsToProtocol:&unk_1F24959C8] & 1) == 0)
+      specialization2 = [(LPLinkMetadata *)v10->_metadata specialization];
+      if (([specialization2 conformsToProtocol:&unk_1F24959C8] & 1) == 0)
       {
 
         goto LABEL_7;
       }
 
-      v13 = [(LPLinkMetadata *)v10->_metadata specialization];
+      specialization3 = [(LPLinkMetadata *)v10->_metadata specialization];
       v14 = objc_opt_respondsToSelector();
 
       if (v14)
       {
-        v11 = [(LPLinkMetadata *)v10->_metadata specialization];
-        [v11 initializeForTransformer:v10];
+        specialization = [(LPLinkMetadata *)v10->_metadata specialization];
+        [specialization initializeForTransformer:v10];
 LABEL_7:
       }
     }
@@ -52,23 +52,23 @@ LABEL_7:
 
 - (void)dealloc
 {
-  v3 = [(LPLinkMetadata *)self->_metadata specialization];
-  if (v3)
+  specialization = [(LPLinkMetadata *)self->_metadata specialization];
+  if (specialization)
   {
-    v4 = [(LPLinkMetadata *)self->_metadata specialization];
-    if (([v4 conformsToProtocol:&unk_1F24959C8] & 1) == 0)
+    specialization2 = [(LPLinkMetadata *)self->_metadata specialization];
+    if (([specialization2 conformsToProtocol:&unk_1F24959C8] & 1) == 0)
     {
 
       goto LABEL_6;
     }
 
-    v5 = [(LPLinkMetadata *)self->_metadata specialization];
+    specialization3 = [(LPLinkMetadata *)self->_metadata specialization];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v3 = [(LPLinkMetadata *)self->_metadata specialization];
-      [v3 destroyForTransformer:self];
+      specialization = [(LPLinkMetadata *)self->_metadata specialization];
+      [specialization destroyForTransformer:self];
 LABEL_6:
     }
   }
@@ -78,17 +78,17 @@ LABEL_6:
   [(LPLinkMetadataStatusTransformer *)&v7 dealloc];
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  v16 = a3;
+  metadataCopy = metadata;
   p_metadata = &self->_metadata;
-  v6 = [(LPLinkMetadata *)self->_metadata specialization];
-  if (v6)
+  specialization = [(LPLinkMetadata *)self->_metadata specialization];
+  if (specialization)
   {
-    v7 = [(LPLinkMetadata *)*p_metadata specialization];
-    if ([v7 conformsToProtocol:&unk_1F24959C8])
+    specialization2 = [(LPLinkMetadata *)*p_metadata specialization];
+    if ([specialization2 conformsToProtocol:&unk_1F24959C8])
     {
-      v8 = [(LPLinkMetadata *)*p_metadata specialization];
+      specialization3 = [(LPLinkMetadata *)*p_metadata specialization];
       v9 = objc_opt_respondsToSelector();
 
       if ((v9 & 1) == 0)
@@ -96,8 +96,8 @@ LABEL_6:
         goto LABEL_7;
       }
 
-      v6 = [(LPLinkMetadata *)*p_metadata specialization];
-      [v6 destroyForTransformer:self];
+      specialization = [(LPLinkMetadata *)*p_metadata specialization];
+      [specialization destroyForTransformer:self];
     }
 
     else
@@ -106,17 +106,17 @@ LABEL_6:
   }
 
 LABEL_7:
-  objc_storeStrong(&self->_metadata, a3);
-  v10 = [(LPLinkMetadata *)*p_metadata specialization];
-  if (!v10)
+  objc_storeStrong(&self->_metadata, metadata);
+  specialization4 = [(LPLinkMetadata *)*p_metadata specialization];
+  if (!specialization4)
   {
     goto LABEL_13;
   }
 
-  v11 = [(LPLinkMetadata *)*p_metadata specialization];
-  if ([v11 conformsToProtocol:&unk_1F24959C8])
+  specialization5 = [(LPLinkMetadata *)*p_metadata specialization];
+  if ([specialization5 conformsToProtocol:&unk_1F24959C8])
   {
-    v12 = [(LPLinkMetadata *)*p_metadata specialization];
+    specialization6 = [(LPLinkMetadata *)*p_metadata specialization];
     v13 = objc_opt_respondsToSelector();
 
     if ((v13 & 1) == 0)
@@ -124,8 +124,8 @@ LABEL_7:
       goto LABEL_13;
     }
 
-    v10 = [(LPLinkMetadata *)*p_metadata specialization];
-    [v10 initializeForTransformer:self];
+    specialization4 = [(LPLinkMetadata *)*p_metadata specialization];
+    [specialization4 initializeForTransformer:self];
   }
 
   else
@@ -144,22 +144,22 @@ LABEL_13:
 
 - (NSAttributedString)statusText
 {
-  v3 = [(LPLinkMetadata *)self->_metadata specialization];
-  if (!v3)
+  specialization = [(LPLinkMetadata *)self->_metadata specialization];
+  if (!specialization)
   {
     goto LABEL_5;
   }
 
-  v4 = v3;
-  v5 = [(LPLinkMetadata *)self->_metadata specialization];
-  if (([v5 conformsToProtocol:&unk_1F24959C8] & 1) == 0)
+  specialization4 = specialization;
+  specialization2 = [(LPLinkMetadata *)self->_metadata specialization];
+  if (([specialization2 conformsToProtocol:&unk_1F24959C8] & 1) == 0)
   {
 
     v8 = 0;
     goto LABEL_7;
   }
 
-  v6 = [(LPLinkMetadata *)self->_metadata specialization];
+  specialization3 = [(LPLinkMetadata *)self->_metadata specialization];
   v7 = objc_opt_respondsToSelector();
 
   if ((v7 & 1) == 0)
@@ -169,8 +169,8 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v4 = [(LPLinkMetadata *)self->_metadata specialization];
-  v8 = [v4 statusForTransformer:self];
+  specialization4 = [(LPLinkMetadata *)self->_metadata specialization];
+  v8 = [specialization4 statusForTransformer:self];
 LABEL_7:
 
 LABEL_8:
@@ -180,22 +180,22 @@ LABEL_8:
 
 - (NSURL)actionURL
 {
-  v3 = [(LPLinkMetadata *)self->_metadata specialization];
-  if (!v3)
+  specialization = [(LPLinkMetadata *)self->_metadata specialization];
+  if (!specialization)
   {
     goto LABEL_5;
   }
 
-  v4 = v3;
-  v5 = [(LPLinkMetadata *)self->_metadata specialization];
-  if (([v5 conformsToProtocol:&unk_1F24959C8] & 1) == 0)
+  specialization4 = specialization;
+  specialization2 = [(LPLinkMetadata *)self->_metadata specialization];
+  if (([specialization2 conformsToProtocol:&unk_1F24959C8] & 1) == 0)
   {
 
     v8 = 0;
     goto LABEL_7;
   }
 
-  v6 = [(LPLinkMetadata *)self->_metadata specialization];
+  specialization3 = [(LPLinkMetadata *)self->_metadata specialization];
   v7 = objc_opt_respondsToSelector();
 
   if ((v7 & 1) == 0)
@@ -205,8 +205,8 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v4 = [(LPLinkMetadata *)self->_metadata specialization];
-  v8 = [v4 actionURLForTransformer:self];
+  specialization4 = [(LPLinkMetadata *)self->_metadata specialization];
+  v8 = [specialization4 actionURLForTransformer:self];
 LABEL_7:
 
 LABEL_8:
@@ -219,15 +219,15 @@ LABEL_8:
   URL = self->_URL;
   if (URL)
   {
-    v3 = URL;
+    originalURL = URL;
   }
 
   else
   {
-    v3 = [(LPLinkMetadata *)self->_metadata originalURL];
+    originalURL = [(LPLinkMetadata *)self->_metadata originalURL];
   }
 
-  return v3;
+  return originalURL;
 }
 
 - (NSURL)canonicalURL
@@ -236,15 +236,15 @@ LABEL_8:
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    originalURL = v3;
   }
 
   else
   {
-    v5 = [(LPLinkMetadataStatusTransformer *)self originalURL];
+    originalURL = [(LPLinkMetadataStatusTransformer *)self originalURL];
   }
 
-  v6 = v5;
+  v6 = originalURL;
 
   return v6;
 }

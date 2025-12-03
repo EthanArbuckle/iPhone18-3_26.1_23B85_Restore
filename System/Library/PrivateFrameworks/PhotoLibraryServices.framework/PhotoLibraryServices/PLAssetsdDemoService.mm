@@ -1,32 +1,32 @@
 @interface PLAssetsdDemoService
-- (PLAssetsdDemoService)initWithConnectionAuthorization:(id)a3;
-- (void)cleanupForStoreDemoModeByStagingTemplateOrResettingLibrary:(id)a3;
-- (void)hasCompletedMomentAnalysisWithReply:(id)a3;
-- (void)hasCompletedRestorePostProcessingWithReply:(id)a3;
+- (PLAssetsdDemoService)initWithConnectionAuthorization:(id)authorization;
+- (void)cleanupForStoreDemoModeByStagingTemplateOrResettingLibrary:(id)library;
+- (void)hasCompletedMomentAnalysisWithReply:(id)reply;
+- (void)hasCompletedRestorePostProcessingWithReply:(id)reply;
 @end
 
 @implementation PLAssetsdDemoService
 
-- (void)hasCompletedMomentAnalysisWithReply:(id)a3
+- (void)hasCompletedMomentAnalysisWithReply:(id)reply
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  replyCopy = reply;
   v12 = 0u;
   *sel = 0u;
   v10 = 0u;
-  v4 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v10) = v4;
-  if (v4)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v10) = enabled;
+  if (enabled)
   {
     *(&v10 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: hasCompletedMomentAnalysisWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v10 + 1), (&v12 + 8));
   }
 
-  v5 = [MEMORY[0x1E69BF2A0] systemLibraryURL];
-  v6 = [PLPhotoLibrary newPhotoLibraryWithName:"[PLAssetsdDemoService hasCompletedMomentAnalysisWithReply:]" loadedFromURL:v5 options:0 error:0];
+  systemLibraryURL = [MEMORY[0x1E69BF2A0] systemLibraryURL];
+  v6 = [PLPhotoLibrary newPhotoLibraryWithName:"[PLAssetsdDemoService hasCompletedMomentAnalysisWithReply:]" loadedFromURL:systemLibraryURL options:0 error:0];
 
-  v3[2](v3, [v6 hasCompletedMomentAnalysis]);
+  replyCopy[2](replyCopy, [v6 hasCompletedMomentAnalysis]);
   if (v11 == 1)
   {
     os_activity_scope_leave((&v12 + 8));
@@ -46,26 +46,26 @@
   }
 }
 
-- (void)hasCompletedRestorePostProcessingWithReply:(id)a3
+- (void)hasCompletedRestorePostProcessingWithReply:(id)reply
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  replyCopy = reply;
   v12 = 0u;
   *sel = 0u;
   v10 = 0u;
-  v4 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v10) = v4;
-  if (v4)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v10) = enabled;
+  if (enabled)
   {
     *(&v10 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: hasCompletedRestorePostProcessingWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v10 + 1), (&v12 + 8));
   }
 
-  v5 = [MEMORY[0x1E69BF2A0] systemLibraryURL];
-  v6 = [PLPhotoLibrary newPhotoLibraryWithName:"[PLAssetsdDemoService hasCompletedRestorePostProcessingWithReply:]" loadedFromURL:v5 options:0 error:0];
+  systemLibraryURL = [MEMORY[0x1E69BF2A0] systemLibraryURL];
+  v6 = [PLPhotoLibrary newPhotoLibraryWithName:"[PLAssetsdDemoService hasCompletedRestorePostProcessingWithReply:]" loadedFromURL:systemLibraryURL options:0 error:0];
 
-  v3[2](v3, [v6 hasCompletedRestorePostProcessing]);
+  replyCopy[2](replyCopy, [v6 hasCompletedRestorePostProcessing]);
   if (v11 == 1)
   {
     os_activity_scope_leave((&v12 + 8));
@@ -85,16 +85,16 @@
   }
 }
 
-- (void)cleanupForStoreDemoModeByStagingTemplateOrResettingLibrary:(id)a3
+- (void)cleanupForStoreDemoModeByStagingTemplateOrResettingLibrary:(id)library
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  libraryCopy = library;
   v27 = 0u;
   *sel = 0u;
   v26 = 0u;
-  v4 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v26) = v4;
-  if (v4)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v26) = enabled;
+  if (enabled)
   {
     *(&v26 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: cleanupForStoreDemoModeByStagingTemplateOrResettingLibrary:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -110,18 +110,18 @@
     _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "Cleanup for store demo mode [requested by SpringBoard]", buf, 2u);
   }
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v6 demoContentPhotoLibraryTemplatePath];
-  v10 = [v8 fileExistsAtPath:v9];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  demoContentPhotoLibraryTemplatePath = [v6 demoContentPhotoLibraryTemplatePath];
+  v10 = [defaultManager fileExistsAtPath:demoContentPhotoLibraryTemplatePath];
 
   if (v10)
   {
     v11 = PLStoreDemoModeGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 demoContentPhotoLibraryTemplatePath];
+      demoContentPhotoLibraryTemplatePath2 = [v6 demoContentPhotoLibraryTemplatePath];
       *buf = 138543362;
-      v34 = v12;
+      v34 = demoContentPhotoLibraryTemplatePath2;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Found demo content template, staging photo library from %{public}@", buf, 0xCu);
     }
 
@@ -182,7 +182,7 @@ LABEL_18:
     }
   }
 
-  v3[2](v3, v16, v13);
+  libraryCopy[2](libraryCopy, v16, v13);
   if ((v14 & v16) == 1)
   {
     v22 = PLStoreDemoModeGetLog();
@@ -214,16 +214,16 @@ LABEL_18:
   }
 }
 
-- (PLAssetsdDemoService)initWithConnectionAuthorization:(id)a3
+- (PLAssetsdDemoService)initWithConnectionAuthorization:(id)authorization
 {
-  v5 = a3;
+  authorizationCopy = authorization;
   v9.receiver = self;
   v9.super_class = PLAssetsdDemoService;
   v6 = [(PLAssetsdDemoService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connectionAuthorization, a3);
+    objc_storeStrong(&v6->_connectionAuthorization, authorization);
   }
 
   return v7;

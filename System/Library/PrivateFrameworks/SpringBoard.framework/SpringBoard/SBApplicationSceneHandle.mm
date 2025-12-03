@@ -1,53 +1,53 @@
 @interface SBApplicationSceneHandle
-+ (id)lookupOrCreatePersistenceIDFromApplication:(id)a3 sceneID:(id)a4;
-- (id)_createApplicationSceneClientSettingsFromContext:(id)a3 entity:(id)a4 initialSceneSettings:(id)a5;
-- (id)_createApplicationSceneSettingsFromContext:(id)a3 entity:(id)a4;
-- (id)_createApplicationSceneTransitionContextFromContext:(id)a3 entity:(id)a4;
-- (id)_createParametersFromTransitionContext:(id)a3 entity:(id)a4;
-- (id)_createProcessExecutionContextFromContext:(id)a3 entity:(id)a4;
-- (id)_initWithApplication:(id)a3 scene:(id)a4 displayIdentity:(id)a5;
-- (id)_initWithApplication:(id)a3 sceneDefinition:(id)a4 displayIdentity:(id)a5;
-- (id)_initWithDefinition:(id)a3;
-- (id)_initWithScene:(id)a3;
++ (id)lookupOrCreatePersistenceIDFromApplication:(id)application sceneID:(id)d;
+- (id)_createApplicationSceneClientSettingsFromContext:(id)context entity:(id)entity initialSceneSettings:(id)settings;
+- (id)_createApplicationSceneSettingsFromContext:(id)context entity:(id)entity;
+- (id)_createApplicationSceneTransitionContextFromContext:(id)context entity:(id)entity;
+- (id)_createParametersFromTransitionContext:(id)context entity:(id)entity;
+- (id)_createProcessExecutionContextFromContext:(id)context entity:(id)entity;
+- (id)_initWithApplication:(id)application scene:(id)scene displayIdentity:(id)identity;
+- (id)_initWithApplication:(id)application sceneDefinition:(id)definition displayIdentity:(id)identity;
+- (id)_initWithDefinition:(id)definition;
+- (id)_initWithScene:(id)scene;
 - (id)displayItemRepresentation;
 - (id)newSceneViewController;
-- (id)newSceneViewWithReferenceSize:(CGSize)a3 contentOrientation:(int64_t)a4 containerOrientation:(int64_t)a5 hostRequester:(id)a6;
-- (void)_applicationsDidChange:(id)a3;
+- (id)newSceneViewWithReferenceSize:(CGSize)size contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation hostRequester:(id)requester;
+- (void)_applicationsDidChange:(id)change;
 - (void)_commonInit;
-- (void)_commonInitWithApplication:(id)a3 sceneIdentifier:(id)a4 displayIdentity:(id)a5;
-- (void)_noteDidMoveFromSceneManager:(id)a3;
+- (void)_commonInitWithApplication:(id)application sceneIdentifier:(id)identifier displayIdentity:(id)identity;
+- (void)_noteDidMoveFromSceneManager:(id)manager;
 - (void)_stopObserving;
-- (void)addSceneUpdateContributer:(id)a3;
+- (void)addSceneUpdateContributer:(id)contributer;
 - (void)dealloc;
-- (void)removeSceneUpdateContributer:(id)a3;
-- (void)setSceneUpdateInProgress:(BOOL)a3;
+- (void)removeSceneUpdateContributer:(id)contributer;
+- (void)setSceneUpdateInProgress:(BOOL)progress;
 @end
 
 @implementation SBApplicationSceneHandle
 
 - (id)displayItemRepresentation
 {
-  v3 = [(SBApplicationSceneHandle *)self application];
-  v4 = [(SBApplicationSceneHandle *)self sceneIdentifier];
-  if ([v3 isWebApplication])
+  application = [(SBApplicationSceneHandle *)self application];
+  sceneIdentifier = [(SBApplicationSceneHandle *)self sceneIdentifier];
+  if ([application isWebApplication])
   {
-    v5 = [SBDisplayItem webAppDisplayItemWithWebAppIdentifier:v4];
+    v5 = [SBDisplayItem webAppDisplayItemWithWebAppIdentifier:sceneIdentifier];
   }
 
   else
   {
-    v6 = [v3 bundleIdentifier];
-    v7 = [v6 isEqualToString:@"com.apple.PrintKit.Print-Center"];
+    bundleIdentifier = [application bundleIdentifier];
+    v7 = [bundleIdentifier isEqualToString:@"com.apple.PrintKit.Print-Center"];
 
-    v8 = [v3 bundleIdentifier];
+    bundleIdentifier2 = [application bundleIdentifier];
     if (v7)
     {
-      [SBDisplayItem switcherServiceDisplayItemWithServiceIdentifier:v8];
+      [SBDisplayItem switcherServiceDisplayItemWithServiceIdentifier:bundleIdentifier2];
     }
 
     else
     {
-      [SBDisplayItem displayItemWithType:0 bundleIdentifier:v8 uniqueIdentifier:v4];
+      [SBDisplayItem displayItemWithType:0 bundleIdentifier:bundleIdentifier2 uniqueIdentifier:sceneIdentifier];
     }
     v5 = ;
   }
@@ -60,13 +60,13 @@
   v8.receiver = self;
   v8.super_class = SBApplicationSceneHandle;
   [(SBApplicationSceneHandle *)&v8 _commonInit];
-  v3 = [(SBApplicationSceneHandle *)self _definition];
-  v4 = [v3 identity];
-  v5 = [v4 identifier];
+  _definition = [(SBApplicationSceneHandle *)self _definition];
+  identity = [_definition identity];
+  identifier = [identity identifier];
 
   application = self->_application;
-  v7 = [(SBApplicationSceneHandle *)self displayIdentity];
-  [(SBApplicationSceneHandle *)self _commonInitWithApplication:application sceneIdentifier:v5 displayIdentity:v7];
+  displayIdentity = [(SBApplicationSceneHandle *)self displayIdentity];
+  [(SBApplicationSceneHandle *)self _commonInitWithApplication:application sceneIdentifier:identifier displayIdentity:displayIdentity];
 }
 
 - (void)dealloc
@@ -79,23 +79,23 @@
 
 - (void)_stopObserving
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:0];
 }
 
-+ (id)lookupOrCreatePersistenceIDFromApplication:(id)a3 sceneID:(id)a4
++ (id)lookupOrCreatePersistenceIDFromApplication:(id)application sceneID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 _dataStore];
-  v8 = [v7 sceneStoreForIdentifier:v6 creatingIfNecessary:1];
+  applicationCopy = application;
+  dCopy = d;
+  _dataStore = [applicationCopy _dataStore];
+  v8 = [_dataStore sceneStoreForIdentifier:dCopy creatingIfNecessary:1];
 
   v9 = [v8 safeObjectForKey:@"persistenceIdentifier" ofType:objc_opt_class()];
   if (!v9)
   {
-    v10 = [v5 bundleIdentifier];
-    v11 = v6;
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"sceneID:%@-", v10];
+    bundleIdentifier = [applicationCopy bundleIdentifier];
+    v11 = dCopy;
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"sceneID:%@-", bundleIdentifier];
     v13 = [v11 length];
     if (v13 >= [v12 length] && objc_msgSend(v11, "hasPrefix:", v12))
     {
@@ -111,10 +111,10 @@
 
     if ([v9 isEqualToString:@"default"])
     {
-      v15 = [MEMORY[0x277CCAD78] UUID];
-      v16 = [v15 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
 
-      v9 = v16;
+      v9 = uUIDString;
     }
 
     [v8 setObject:v9 forKey:@"persistenceIdentifier"];
@@ -123,28 +123,28 @@
   return v9;
 }
 
-- (id)_initWithScene:(id)a3
+- (id)_initWithScene:(id)scene
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBApplicationSceneHandle.m" lineNumber:101 description:@"This initializer is unavailable."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBApplicationSceneHandle.m" lineNumber:101 description:@"This initializer is unavailable."];
 
   return 0;
 }
 
-- (id)_initWithDefinition:(id)a3
+- (id)_initWithDefinition:(id)definition
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBApplicationSceneHandle.m" lineNumber:106 description:@"This initializer is unavailable."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBApplicationSceneHandle.m" lineNumber:106 description:@"This initializer is unavailable."];
 
   return 0;
 }
 
-- (id)_initWithApplication:(id)a3 scene:(id)a4 displayIdentity:(id)a5
+- (id)_initWithApplication:(id)application scene:(id)scene displayIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 settings];
+  applicationCopy = application;
+  sceneCopy = scene;
+  identityCopy = identity;
+  settings = [sceneCopy settings];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -153,7 +153,7 @@
     [SBApplicationSceneHandle _initWithApplication:scene:displayIdentity:];
   }
 
-  v13 = [v9 clientSettings];
+  clientSettings = [sceneCopy clientSettings];
   objc_opt_class();
   v14 = objc_opt_isKindOfClass();
 
@@ -163,105 +163,105 @@
   }
 
   application = self->_application;
-  self->_application = v8;
-  v16 = v8;
+  self->_application = applicationCopy;
+  v16 = applicationCopy;
 
   v19.receiver = self;
   v19.super_class = SBApplicationSceneHandle;
-  v17 = [(SBApplicationSceneHandle *)&v19 _initWithScene:v9 displayIdentity:v10];
+  v17 = [(SBApplicationSceneHandle *)&v19 _initWithScene:sceneCopy displayIdentity:identityCopy];
 
   return v17;
 }
 
-- (id)_initWithApplication:(id)a3 sceneDefinition:(id)a4 displayIdentity:(id)a5
+- (id)_initWithApplication:(id)application sceneDefinition:(id)definition displayIdentity:(id)identity
 {
-  objc_storeStrong(&self->_application, a3);
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
+  objc_storeStrong(&self->_application, application);
+  applicationCopy = application;
+  identityCopy = identity;
+  definitionCopy = definition;
   v14.receiver = self;
   v14.super_class = SBApplicationSceneHandle;
-  v12 = [(SBApplicationSceneHandle *)&v14 _initWithDefinition:v11 displayIdentity:v10];
+  v12 = [(SBApplicationSceneHandle *)&v14 _initWithDefinition:definitionCopy displayIdentity:identityCopy];
 
   return v12;
 }
 
-- (void)_commonInitWithApplication:(id)a3 sceneIdentifier:(id)a4 displayIdentity:(id)a5
+- (void)_commonInitWithApplication:(id)application sceneIdentifier:(id)identifier displayIdentity:(id)identity
 {
-  v8 = a4;
-  v9 = a3;
-  self->_isSecure = [a5 expectsSecureRendering];
-  v10 = [objc_opt_class() lookupOrCreatePersistenceIDFromApplication:v9 sceneID:v8];
+  identifierCopy = identifier;
+  applicationCopy = application;
+  self->_isSecure = [identity expectsSecureRendering];
+  v10 = [objc_opt_class() lookupOrCreatePersistenceIDFromApplication:applicationCopy sceneID:identifierCopy];
 
   persistenceIdentifier = self->_persistenceIdentifier;
   self->_persistenceIdentifier = v10;
 
   self->_layoutRole = 0;
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 addObserver:self selector:sel__applicationsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__applicationsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
 }
 
-- (void)_noteDidMoveFromSceneManager:(id)a3
+- (void)_noteDidMoveFromSceneManager:(id)manager
 {
   v6.receiver = self;
   v6.super_class = SBApplicationSceneHandle;
-  [(SBApplicationSceneHandle *)&v6 _noteDidMoveFromSceneManager:a3];
-  v4 = [(SBApplicationSceneHandle *)self sceneManager];
-  v5 = [v4 displayIdentity];
-  self->_isSecure = [v5 expectsSecureRendering];
+  [(SBApplicationSceneHandle *)&v6 _noteDidMoveFromSceneManager:manager];
+  sceneManager = [(SBApplicationSceneHandle *)self sceneManager];
+  displayIdentity = [sceneManager displayIdentity];
+  self->_isSecure = [displayIdentity expectsSecureRendering];
 }
 
-- (id)_createParametersFromTransitionContext:(id)a3 entity:(id)a4
+- (id)_createParametersFromTransitionContext:(id)context entity:(id)entity
 {
   v6 = MEMORY[0x277D0AD50];
-  v7 = a4;
-  v8 = a3;
-  v9 = [(SBApplicationSceneHandle *)self _definition];
-  v10 = [v9 specification];
-  v11 = [v6 parametersForSpecification:v10];
+  entityCopy = entity;
+  contextCopy = context;
+  _definition = [(SBApplicationSceneHandle *)self _definition];
+  specification = [_definition specification];
+  v11 = [v6 parametersForSpecification:specification];
 
-  v12 = [(SBApplicationSceneHandle *)self _createApplicationSceneSettingsFromContext:v8 entity:v7];
+  v12 = [(SBApplicationSceneHandle *)self _createApplicationSceneSettingsFromContext:contextCopy entity:entityCopy];
   [v11 setSettings:v12];
 
-  v13 = [v11 settings];
-  v14 = [(SBApplicationSceneHandle *)self _createApplicationSceneClientSettingsFromContext:v8 entity:v7 initialSceneSettings:v13];
+  settings = [v11 settings];
+  v14 = [(SBApplicationSceneHandle *)self _createApplicationSceneClientSettingsFromContext:contextCopy entity:entityCopy initialSceneSettings:settings];
 
   [v11 setClientSettings:v14];
 
   return v11;
 }
 
-- (id)_createProcessExecutionContextFromContext:(id)a3 entity:(id)a4
+- (id)_createProcessExecutionContextFromContext:(id)context entity:(id)entity
 {
   v84[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  contextCopy = context;
+  entityCopy = entity;
+  if (!entityCopy)
   {
     [SBApplicationSceneHandle _createProcessExecutionContextFromContext:entity:];
   }
 
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [v7 objectForProcessSetting:2];
-  v74 = v8;
-  [v8 addEntriesFromDictionary:v9];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v9 = [entityCopy objectForProcessSetting:2];
+  v74 = dictionary;
+  [dictionary addEntriesFromDictionary:v9];
 
-  v10 = [v6 request];
-  v69 = v10;
-  if ([v10 isMainWorkspaceTransitionRequest])
+  request = [contextCopy request];
+  v69 = request;
+  if ([request isMainWorkspaceTransitionRequest])
   {
-    v11 = [v10 source];
+    source = [request source];
   }
 
   else
   {
-    v11 = 0;
+    source = 0;
   }
 
-  v12 = [v7 objectForActivationSetting:19];
-  v13 = [v12 unsignedIntegerValue];
+  v12 = [entityCopy objectForActivationSetting:19];
+  unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-  if (!v13)
+  if (!unsignedIntegerValue)
   {
     v14 = SBLogCommon();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -272,26 +272,26 @@
     mach_continuous_time();
   }
 
-  v15 = [(SBApplicationSceneHandle *)self application];
-  v16 = SBMainWorkspaceTransitionSourceDescription(v11);
+  application = [(SBApplicationSceneHandle *)self application];
+  v16 = SBMainWorkspaceTransitionSourceDescription(source);
   [v16 cStringUsingEncoding:4];
 
-  v17 = [v15 info];
-  v18 = [v17 bundleVersion];
-  [v18 cStringUsingEncoding:4];
+  info = [application info];
+  bundleVersion = [info bundleVersion];
+  [bundleVersion cStringUsingEncoding:4];
 
-  v19 = [v15 info];
-  v20 = [v19 shortVersionString];
-  [v20 cStringUsingEncoding:4];
+  info2 = [application info];
+  shortVersionString = [info2 shortVersionString];
+  [shortVersionString cStringUsingEncoding:4];
 
   obj = 0;
-  v21 = [v15 bundleIdentifier];
-  [v21 cStringUsingEncoding:4];
+  bundleIdentifier = [application bundleIdentifier];
+  [bundleIdentifier cStringUsingEncoding:4];
 
-  [v6 isBackground];
+  [contextCopy isBackground];
   alm_app_will_launch_with_details_and_metrics_payload();
   objc_storeStrong(&self->_launchMetricsPayload, 0);
-  v22 = [v7 objectForActivationSetting:18];
+  v22 = [entityCopy objectForActivationSetting:18];
   [v22 doubleValue];
   self->_userLaunchEventTime = v23;
 
@@ -318,7 +318,7 @@
     v27 = [MEMORY[0x277CCABB0] numberWithDouble:self->_userLaunchEventTime];
     v84[2] = v27;
     v83[3] = @"__PPT_BackgroundLaunch";
-    v28 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v6, "isBackground")}];
+    v28 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(contextCopy, "isBackground")}];
     v84[3] = v28;
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v84 forKeys:v83 count:4];
     [v74 addEntriesFromDictionary:v29];
@@ -331,15 +331,15 @@
     }
   }
 
-  v70 = v6;
-  v31 = [v7 objectForProcessSetting:1];
-  v71 = [v7 objectForProcessSetting:3];
-  v73 = [v7 objectForProcessSetting:4];
-  v32 = [v7 BOOLForProcessSetting:5];
-  v33 = [v7 BOOLForProcessSetting:6];
-  v68 = [v7 BOOLForProcessSetting:7];
-  v34 = [v7 BOOLForProcessSetting:8];
-  v35 = [v7 objectForActivationSetting:33];
+  v70 = contextCopy;
+  v31 = [entityCopy objectForProcessSetting:1];
+  v71 = [entityCopy objectForProcessSetting:3];
+  v73 = [entityCopy objectForProcessSetting:4];
+  v32 = [entityCopy BOOLForProcessSetting:5];
+  v33 = [entityCopy BOOLForProcessSetting:6];
+  v68 = [entityCopy BOOLForProcessSetting:7];
+  v34 = [entityCopy BOOLForProcessSetting:8];
+  v35 = [entityCopy objectForActivationSetting:33];
   v36 = objc_opt_class();
   v37 = v35;
   if (v36)
@@ -371,20 +371,20 @@
     v42 = v34;
     v43 = v31;
     v44 = objc_alloc(MEMORY[0x277CC1E58]);
-    v45 = [v15 bundleIdentifier];
+    bundleIdentifier2 = [application bundleIdentifier];
     v75 = 0;
-    v46 = [v44 initWithBundleIdentifier:v45 allowPlaceholder:0 personaUniqueString:v72 error:&v75];
+    v46 = [v44 initWithBundleIdentifier:bundleIdentifier2 allowPlaceholder:0 personaUniqueString:v72 error:&v75];
     v47 = v75;
 
     if (v46)
     {
-      v48 = [MEMORY[0x277D46F60] identityForLSApplicationIdentity:v46];
+      processIdentity = [MEMORY[0x277D46F60] identityForLSApplicationIdentity:v46];
 
       v31 = v43;
       v34 = v42;
       v32 = v41;
       v33 = v67;
-      if (v48)
+      if (processIdentity)
       {
         goto LABEL_30;
       }
@@ -395,10 +395,10 @@
       v49 = SBLogCommon();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
       {
-        v66 = [v15 bundleIdentifier];
+        bundleIdentifier3 = [application bundleIdentifier];
         v64 = [v47 descriptionWithMultilinePrefix:0];
         *buf = 138543874;
-        v78 = v66;
+        v78 = bundleIdentifier3;
         v79 = 2114;
         v80 = v72;
         v81 = 2114;
@@ -414,12 +414,12 @@
     }
   }
 
-  v50 = [v15 info];
-  v48 = [v50 processIdentity];
+  info3 = [application info];
+  processIdentity = [info3 processIdentity];
 
 LABEL_30:
   v51 = objc_alloc_init(MEMORY[0x277D0AAA8]);
-  [v51 setIdentity:v48];
+  [v51 setIdentity:processIdentity];
   [v51 setEnvironment:v74];
   [v51 setWaitForDebugger:v32];
   [v51 setDisableASLR:v33];
@@ -432,11 +432,11 @@ LABEL_30:
   [v51 setStandardErrorURL:v53];
 
   [v51 setEnableMTE:v34];
-  v54 = [v7 objectForActivationSetting:30];
+  v54 = [entityCopy objectForActivationSetting:30];
   v55 = v54;
   if (v54)
   {
-    v56 = [v54 integerValue];
+    integerValue = [v54 integerValue];
     v57 = v70;
   }
 
@@ -444,35 +444,35 @@ LABEL_30:
   {
     v58 = v31;
     v57 = v70;
-    if ([v7 BOOLForActivationSetting:3])
+    if ([entityCopy BOOLForActivationSetting:3])
     {
-      v59 = [v15 info];
-      v60 = [v59 hasViewServicesEntitlement];
+      info4 = [application info];
+      hasViewServicesEntitlement = [info4 hasViewServicesEntitlement];
 
-      if (v60)
+      if (hasViewServicesEntitlement)
       {
-        v56 = 3;
+        integerValue = 3;
       }
 
       else
       {
-        v56 = 2;
+        integerValue = 2;
       }
     }
 
     else
     {
-      v56 = 4;
+      integerValue = 4;
     }
 
-    v61 = [MEMORY[0x277CCABB0] numberWithInteger:v56];
-    [v7 setObject:v61 forActivationSetting:30];
+    v61 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
+    [entityCopy setObject:v61 forActivationSetting:30];
 
     v31 = v58;
     v40 = v71;
   }
 
-  [v51 setLaunchIntent:v56];
+  [v51 setLaunchIntent:integerValue];
   if (v68)
   {
     +[SBSceneWatchdogProvider disabledSceneWatchdogProvider];
@@ -485,20 +485,20 @@ LABEL_30:
   v62 = ;
   [v51 setWatchdogProvider:v62];
 
-  [(SBApplicationSceneHandle *)self _modifyProcessExecutionContext:v51 fromRequestContext:v57 entity:v7];
+  [(SBApplicationSceneHandle *)self _modifyProcessExecutionContext:v51 fromRequestContext:v57 entity:entityCopy];
 
   return v51;
 }
 
-- (id)_createApplicationSceneTransitionContextFromContext:(id)a3 entity:(id)a4
+- (id)_createApplicationSceneTransitionContextFromContext:(id)context entity:(id)entity
 {
   v118 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  contextCopy = context;
+  entityCopy = entity;
+  v8 = entityCopy;
+  if (contextCopy)
   {
-    if (v7)
+    if (entityCopy)
     {
       goto LABEL_3;
     }
@@ -515,17 +515,17 @@ LABEL_30:
 
   [SBApplicationSceneHandle _createApplicationSceneTransitionContextFromContext:entity:];
 LABEL_3:
-  v9 = [(SBApplicationSceneHandle *)self application];
-  v10 = [(SBApplicationSceneHandle *)self _definition];
-  v11 = [v10 specification];
-  v12 = objc_alloc_init([v11 transitionContextClass]);
+  application = [(SBApplicationSceneHandle *)self application];
+  _definition = [(SBApplicationSceneHandle *)self _definition];
+  specification = [_definition specification];
+  v12 = objc_alloc_init([specification transitionContextClass]);
 
   if (!v12)
   {
     v12 = objc_alloc_init(MEMORY[0x277D75188]);
   }
 
-  v13 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v14 = [v8 objectForActivationSetting:14];
   v15 = objc_opt_class();
   v16 = v14;
@@ -549,9 +549,9 @@ LABEL_3:
 
   v18 = v17;
 
-  if ([v18 length] && objc_msgSend(v9, "shouldReceiveSourceApplicationContextFromOriginatingApplication:", v18))
+  if ([v18 length] && objc_msgSend(application, "shouldReceiveSourceApplicationContextFromOriginatingApplication:", v18))
   {
-    [v13 setObject:v18 forKey:*MEMORY[0x277D76690]];
+    [dictionary setObject:v18 forKey:*MEMORY[0x277D76690]];
   }
 
   v19 = [v8 objectForActivationSetting:5];
@@ -578,13 +578,13 @@ LABEL_3:
   v23 = v22;
 
   v103 = v23;
-  v24 = [v23 relativeString];
-  if ([v24 length])
+  relativeString = [v23 relativeString];
+  if ([relativeString length])
   {
-    [v13 setObject:v24 forKey:*MEMORY[0x277D76698]];
+    [dictionary setObject:relativeString forKey:*MEMORY[0x277D76698]];
   }
 
-  v100 = v24;
+  v100 = relativeString;
   v25 = [v8 objectForActivationSetting:34];
   v26 = NSClassFromString(&cfstr_Uispastesharin.isa);
   v27 = v25;
@@ -610,29 +610,29 @@ LABEL_3:
 
   if (v29)
   {
-    [v13 setObject:v29 forKey:@"__PasteSharingToken"];
+    [dictionary setObject:v29 forKey:@"__PasteSharingToken"];
   }
 
   v99 = v29;
-  v30 = [v6 request];
+  request = [contextCopy request];
   v101 = v18;
-  v105 = v30;
-  if ([v30 isMainWorkspaceTransitionRequest])
+  v105 = request;
+  if ([request isMainWorkspaceTransitionRequest])
   {
-    v31 = v30;
-    v32 = [v31 source];
+    v31 = request;
+    source = [v31 source];
   }
 
   else
   {
-    v32 = 0;
+    source = 0;
   }
 
-  v106 = v13;
+  v106 = dictionary;
   v33 = [v8 objectForActivationSetting:19];
-  v34 = [v33 unsignedIntegerValue];
+  unsignedIntegerValue = [v33 unsignedIntegerValue];
 
-  if (!v34)
+  if (!unsignedIntegerValue)
   {
     v35 = SBLogCommon();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -643,20 +643,20 @@ LABEL_3:
     mach_continuous_time();
   }
 
-  v36 = [v6 isBackground];
-  v37 = SBMainWorkspaceTransitionSourceDescription(v32);
+  isBackground = [contextCopy isBackground];
+  v37 = SBMainWorkspaceTransitionSourceDescription(source);
   [v37 cStringUsingEncoding:4];
 
-  v38 = [v9 info];
-  v39 = [v38 bundleVersion];
-  [v39 cStringUsingEncoding:4];
+  info = [application info];
+  bundleVersion = [info bundleVersion];
+  [bundleVersion cStringUsingEncoding:4];
 
-  v40 = [v9 info];
-  v41 = [v40 shortVersionString];
-  [v41 cStringUsingEncoding:4];
+  info2 = [application info];
+  shortVersionString = [info2 shortVersionString];
+  [shortVersionString cStringUsingEncoding:4];
 
-  v104 = v9;
-  v102 = v36;
+  v104 = application;
+  v102 = isBackground;
   if (self->_userLaunchSignpostID)
   {
     alm_app_will_activate_with_signpost_id();
@@ -664,13 +664,13 @@ LABEL_3:
 
   else
   {
-    v42 = [(SBApplicationSceneHandle *)self sceneIfExists];
-    v43 = [v103 scheme];
-    v94 = [v43 isEqualToString:@"test"];
+    sceneIfExists = [(SBApplicationSceneHandle *)self sceneIfExists];
+    scheme = [v103 scheme];
+    v94 = [scheme isEqualToString:@"test"];
 
-    if (v42)
+    if (sceneIfExists)
     {
-      v44 = [v42 isActive] ^ 1;
+      v44 = [sceneIfExists isActive] ^ 1;
     }
 
     else
@@ -678,16 +678,16 @@ LABEL_3:
       v44 = 1;
     }
 
-    v45 = [v42 settings];
-    v46 = [v45 isForeground];
+    settings = [sceneIfExists settings];
+    isForeground = [settings isForeground];
 
     v47 = [v8 BOOLForActivationSetting:52];
-    if (((v94 | v44) & 1) != 0 || ((v46 | v102) & 1) == 0 || v47)
+    if (((v94 | v44) & 1) != 0 || ((isForeground | v102) & 1) == 0 || v47)
     {
       alm_app_will_activate_with_details();
     }
 
-    v9 = v104;
+    application = v104;
   }
 
   v48 = [v8 objectForActivationSetting:15];
@@ -715,7 +715,7 @@ LABEL_3:
 
   if ([v52 count])
   {
-    [v13 setObject:v52 forKey:*MEMORY[0x277D76678]];
+    [dictionary setObject:v52 forKey:*MEMORY[0x277D76678]];
   }
 
   v98 = v52;
@@ -744,13 +744,13 @@ LABEL_3:
 
   if ([v57 count])
   {
-    [v13 addEntriesFromDictionary:v57];
+    [dictionary addEntriesFromDictionary:v57];
   }
 
   v97 = v57;
-  if ([v13 count])
+  if ([dictionary count])
   {
-    [v12 setPayload:v13];
+    [v12 setPayload:dictionary];
   }
 
   v58 = [v8 objectForActivationSetting:32];
@@ -769,20 +769,20 @@ LABEL_3:
 
   if ((LCSFeatureEnabled() & 1) != 0 || v59)
   {
-    v60 = v9;
-    v61 = [v8 application];
-    v62 = [v61 bundleIdentifier];
+    v60 = application;
+    application2 = [v8 application];
+    bundleIdentifier = [application2 bundleIdentifier];
 
     v63 = +[SBCaptureApplicationCenter sharedInstance];
-    v64 = [v63 captureApplicationForBundleIdentifier:v62];
+    v64 = [v63 captureApplicationForBundleIdentifier:bundleIdentifier];
 
-    v65 = [v8 activationSettings];
-    v66 = [v65 BOOLForActivationSetting:36];
+    activationSettings = [v8 activationSettings];
+    v66 = [activationSettings BOOLForActivationSetting:36];
 
     if (v66 && v64)
     {
       v67 = +[SBCaptureApplicationCenter sharedInstance];
-      v68 = [v67 launchActionsForCaptureApplication:v62 launchTarget:0 launchType:0];
+      v68 = [v67 launchActionsForCaptureApplication:bundleIdentifier launchTarget:0 launchType:0];
       [v8 addActions:v68];
     }
 
@@ -792,7 +792,7 @@ LABEL_3:
       if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v113 = v62;
+        v113 = bundleIdentifier;
         v114 = 1024;
         v115 = v66;
         v116 = 1024;
@@ -801,46 +801,46 @@ LABEL_3:
       }
     }
 
-    v9 = v60;
+    application = v60;
   }
 
-  v69 = [v8 actions];
-  if ([v69 count])
+  actions = [v8 actions];
+  if ([actions count])
   {
-    [v12 setActions:v69];
+    [v12 setActions:actions];
   }
 
   [v8 removeAllActions];
-  v70 = [v6 animationSettings];
-  if (v70)
+  animationSettings = [contextCopy animationSettings];
+  if (animationSettings)
   {
-    [v12 setAnimationSettings:v70];
+    [v12 setAnimationSettings:animationSettings];
   }
 
-  v95 = v70;
-  v96 = v69;
+  v95 = animationSettings;
+  v96 = actions;
   if ((v102 & 1) == 0)
   {
-    v71 = v9;
-    v72 = [v6 animationFence];
-    if (([v6 fencesAnimations] & 1) != 0 || v72)
+    v71 = application;
+    animationFence = [contextCopy animationFence];
+    if (([contextCopy fencesAnimations] & 1) != 0 || animationFence)
     {
-      v73 = [v12 animationFence];
-      if (v73)
+      animationFence2 = [v12 animationFence];
+      if (animationFence2)
       {
       }
 
       else
       {
-        v74 = [(SBApplicationSceneHandle *)self sceneIfExists];
-        v75 = [v74 clientProcess];
-        v76 = [v75 isForeground];
+        sceneIfExists2 = [(SBApplicationSceneHandle *)self sceneIfExists];
+        clientProcess = [sceneIfExists2 clientProcess];
+        isForeground2 = [clientProcess isForeground];
 
-        if (v76)
+        if (isForeground2)
         {
-          if (v72)
+          if (animationFence)
           {
-            [v12 setAnimationFence:v72];
+            [v12 setAnimationFence:animationFence];
           }
 
           else
@@ -852,7 +852,7 @@ LABEL_3:
       }
     }
 
-    v9 = v71;
+    application = v71;
   }
 
   if (([v8 BOOLForActivationSetting:49] & 1) != 0 || objc_msgSend(v8, "BOOLForActivationSetting:", 62))
@@ -885,32 +885,32 @@ LABEL_3:
     self->_launchMetricsPayload = 0;
   }
 
-  v80 = [v9 info];
-  v81 = [v80 isAppleApplication];
+  info3 = [application info];
+  isAppleApplication = [info3 isAppleApplication];
 
-  if (v81)
+  if (isAppleApplication)
   {
-    v82 = [v105 originatingProcess];
-    [v12 setOriginatingProcess:v82];
+    originatingProcess = [v105 originatingProcess];
+    [v12 setOriginatingProcess:originatingProcess];
   }
 
-  [v6 watchdogScaleFactor];
+  [contextCopy watchdogScaleFactor];
   [v12 setWatchdogScaleFactor:?];
-  if ([v6 alwaysRunsWatchdog])
+  if ([contextCopy alwaysRunsWatchdog])
   {
-    v83 = [v12 watchdogTransitionContext];
-    [v83 setWatchdogBehavior:1];
+    watchdogTransitionContext = [v12 watchdogTransitionContext];
+    [watchdogTransitionContext setWatchdogBehavior:1];
   }
 
   v84 = [v8 objectForActivationSetting:30];
-  v85 = [v84 integerValue];
+  integerValue = [v84 integerValue];
 
-  if (v85 == 1)
+  if (integerValue == 1)
   {
     [v12 setAllowCPUThrottling:1];
   }
 
-  [(SBApplicationSceneHandle *)self _modifyApplicationTransitionContext:v12 fromRequestContext:v6 entity:v8];
+  [(SBApplicationSceneHandle *)self _modifyApplicationTransitionContext:v12 fromRequestContext:contextCopy entity:v8];
   [(NSHashTable *)self->_sceneUpdateContributers allObjects];
   v107 = 0u;
   v108 = 0u;
@@ -933,7 +933,7 @@ LABEL_3:
         v91 = *(*(&v107 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v91 applicationSceneHandle:self appendToTransitionContext:v12 fromRequestContext:v6 entity:v8];
+          [v91 applicationSceneHandle:self appendToTransitionContext:v12 fromRequestContext:contextCopy entity:v8];
         }
       }
 
@@ -947,36 +947,36 @@ LABEL_3:
   return v12;
 }
 
-- (void)setSceneUpdateInProgress:(BOOL)a3
+- (void)setSceneUpdateInProgress:(BOOL)progress
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  if (self->_sceneUpdateInProgress != a3)
+  if (self->_sceneUpdateInProgress != progress)
   {
-    self->_sceneUpdateInProgress = a3;
+    self->_sceneUpdateInProgress = progress;
     v7 = @"SceneIdentifierKey";
-    v4 = [(SBApplicationSceneHandle *)self sceneIdentifier];
-    v8[0] = v4;
+    sceneIdentifier = [(SBApplicationSceneHandle *)self sceneIdentifier];
+    v8[0] = sceneIdentifier;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 postNotificationName:@"SBApplicationSceneHandleProgressNotification" object:self userInfo:v5];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBApplicationSceneHandleProgressNotification" object:self userInfo:v5];
   }
 }
 
-- (void)_applicationsDidChange:(id)a3
+- (void)_applicationsDidChange:(id)change
 {
-  v14 = a3;
+  changeCopy = change;
   v4 = [MEMORY[0x277CBEB58] set];
-  v5 = [v14 userInfo];
-  v6 = [v5 objectForKey:@"SBInstalledApplicationsReplacedBundleIDs"];
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKey:@"SBInstalledApplicationsReplacedBundleIDs"];
 
   if ([v6 count])
   {
     [v4 unionSet:v6];
   }
 
-  v7 = [v14 userInfo];
-  v8 = [v7 objectForKey:@"SBInstalledApplicationsAddedBundleIDs"];
+  userInfo2 = [changeCopy userInfo];
+  v8 = [userInfo2 objectForKey:@"SBInstalledApplicationsAddedBundleIDs"];
 
   if ([v8 count])
   {
@@ -985,13 +985,13 @@ LABEL_3:
 
   if ([v4 count])
   {
-    v9 = [(SBApplicationSceneHandle *)self application];
-    v10 = [v9 bundleIdentifier];
+    application = [(SBApplicationSceneHandle *)self application];
+    bundleIdentifier = [application bundleIdentifier];
 
-    if ([v4 containsObject:v10])
+    if ([v4 containsObject:bundleIdentifier])
     {
       v11 = +[SBApplicationController sharedInstance];
-      v12 = [v11 applicationWithBundleIdentifier:v10];
+      v12 = [v11 applicationWithBundleIdentifier:bundleIdentifier];
 
       if (!v12)
       {
@@ -1004,15 +1004,15 @@ LABEL_3:
   }
 }
 
-- (id)_createApplicationSceneSettingsFromContext:(id)a3 entity:(id)a4
+- (id)_createApplicationSceneSettingsFromContext:(id)context entity:(id)entity
 {
   v87 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  contextCopy = context;
+  entityCopy = entity;
+  v9 = entityCopy;
+  if (contextCopy)
   {
-    if (v8)
+    if (entityCopy)
     {
       goto LABEL_3;
     }
@@ -1029,29 +1029,29 @@ LABEL_3:
 
   [SBApplicationSceneHandle _createApplicationSceneSettingsFromContext:entity:];
 LABEL_3:
-  v70 = [v7 request];
-  v10 = [v70 displayConfiguration];
-  v11 = [(SBApplicationSceneHandle *)self sceneIfExists];
-  v12 = v11;
-  if (v11)
+  request = [contextCopy request];
+  displayConfiguration = [request displayConfiguration];
+  sceneIfExists = [(SBApplicationSceneHandle *)self sceneIfExists];
+  v12 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v13 = [v11 settings];
-    v14 = [v13 mutableCopy];
+    settings = [sceneIfExists settings];
+    v14 = [settings mutableCopy];
   }
 
   else
   {
-    v13 = [(SBApplicationSceneHandle *)self _definition];
-    [v13 specification];
-    v16 = v15 = v10;
+    settings = [(SBApplicationSceneHandle *)self _definition];
+    [settings specification];
+    v16 = v15 = displayConfiguration;
     v17 = [objc_msgSend(v16 "settingsClass")];
     v14 = [v17 mutableCopy];
 
-    v10 = v15;
+    displayConfiguration = v15;
   }
 
-  v71 = v10;
-  [v14 setDisplayConfiguration:v10];
+  v71 = displayConfiguration;
+  [v14 setDisplayConfiguration:displayConfiguration];
   [v14 setPersistenceIdentifier:self->_persistenceIdentifier];
   if (_os_feature_enabled_impl())
   {
@@ -1064,18 +1064,18 @@ LABEL_3:
   }
 
   [v14 setInterruptionPolicy:v18];
-  v19 = [v7 isBackground];
-  v20 = v19;
+  isBackground = [contextCopy isBackground];
+  v20 = isBackground;
   v69 = v12;
-  if (!v12 || (v19 & 1) == 0)
+  if (!v12 || (isBackground & 1) == 0)
   {
-    v21 = [(SBApplicationSceneHandle *)self application];
+    application = [(SBApplicationSceneHandle *)self application];
     v22 = v20 ^ 1u;
     [v14 setForeground:v22];
     [v14 setLevel:1.0];
-    if ((v22 & 1) != 0 || ([v21 info], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "hasHiddenTag"), v23, !v24))
+    if ((v22 & 1) != 0 || ([application info], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "hasHiddenTag"), v23, !v24))
     {
-      [v7 frameForApplicationSceneEntity:v9];
+      [contextCopy frameForApplicationSceneEntity:v9];
       v33 = v32;
       v35 = v34;
       v37 = v36;
@@ -1085,32 +1085,32 @@ LABEL_3:
         v39 = SBLogAppSwitcher();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
-          v66 = SBMainWorkspaceTransitionSourceDescription([v70 source]);
-          v67 = [v71 identity];
-          v68 = [v7 layoutState];
+          v66 = SBMainWorkspaceTransitionSourceDescription([request source]);
+          identity = [v71 identity];
+          layoutState = [contextCopy layoutState];
           *buf = 138544386;
           v78 = v69;
           v79 = 2114;
           v80 = v66;
           v81 = 2114;
-          v82 = v67;
+          v82 = identity;
           v83 = 2114;
           v84 = v9;
           v85 = 2114;
-          v86 = v68;
+          v86 = layoutState;
           _os_log_error_impl(&dword_21ED4E000, v39, OS_LOG_TYPE_ERROR, "-_cASSFC:E: produced {0,0} with scene %{public}@, source %{public}@, display configuration %{public}@, entity %{public}@, request context %{public}@", buf, 0x34u);
         }
 
-        v40 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v89.origin.x = v33;
         v89.origin.y = v35;
         v89.size.width = v37;
         v89.size.height = v38;
         v41 = NSStringFromCGRect(v89);
-        [v40 handleFailureInMethod:a2 object:self file:@"SBApplicationSceneHandle.m" lineNumber:602 description:{@"frame (%@) isn't valid", v41}];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SBApplicationSceneHandle.m" lineNumber:602 description:{@"frame (%@) isn't valid", v41}];
       }
 
-      v25 = v21;
+      v25 = application;
       v30 = v14;
       v26 = v33;
       v27 = v35;
@@ -1120,33 +1120,33 @@ LABEL_3:
 
     else
     {
-      v25 = v21;
+      v25 = application;
       [v71 bounds];
       v30 = v14;
     }
 
     [v30 setFrame:{v26, v27, v28, v29}];
-    v42 = [v7 layoutState];
-    v43 = [(SBApplicationSceneHandle *)self sceneIdentifier];
-    v44 = [v42 elementWithIdentifier:v43];
+    layoutState2 = [contextCopy layoutState];
+    sceneIdentifier = [(SBApplicationSceneHandle *)self sceneIdentifier];
+    v44 = [layoutState2 elementWithIdentifier:sceneIdentifier];
 
-    v45 = [v14 interfaceOrientation];
-    if (v45 <= 1)
+    interfaceOrientation = [v14 interfaceOrientation];
+    if (interfaceOrientation <= 1)
     {
       v46 = 1;
     }
 
     else
     {
-      v46 = v45;
+      v46 = interfaceOrientation;
     }
 
-    v47 = [v7 interfaceOrientation];
-    v48 = v47;
+    interfaceOrientation2 = [contextCopy interfaceOrientation];
+    v48 = interfaceOrientation2;
     if (v44)
     {
-      v49 = [v7 layoutState];
-      v50 = [v49 interfaceOrientationForLayoutElement:v44 unknownAllowed:1];
+      layoutState3 = [contextCopy layoutState];
+      v50 = [layoutState3 interfaceOrientationForLayoutElement:v44 unknownAllowed:1];
 
       if (v48)
       {
@@ -1167,9 +1167,9 @@ LABEL_3:
 
     else
     {
-      if (v47)
+      if (interfaceOrientation2)
       {
-        v50 = v47;
+        v50 = interfaceOrientation2;
       }
 
       else
@@ -1192,23 +1192,23 @@ LABEL_3:
     }
 
     [v14 setInterfaceOrientationMode:v53];
-    [v14 setInLiveResize:{objc_msgSend(v7, "isInLiveResize")}];
+    [v14 setInLiveResize:{objc_msgSend(contextCopy, "isInLiveResize")}];
     v54 = [v9 objectForActivationSetting:61];
     if (v54)
     {
-      v55 = [v14 ignoreOcclusionReasons];
-      [v55 addObject:v54];
+      ignoreOcclusionReasons = [v14 ignoreOcclusionReasons];
+      [ignoreOcclusionReasons addObject:v54];
     }
 
-    [(SBApplicationSceneHandle *)self _modifyApplicationSceneSettings:v14 fromRequestContext:v7 entity:v9];
+    [(SBApplicationSceneHandle *)self _modifyApplicationSceneSettings:v14 fromRequestContext:contextCopy entity:v9];
   }
 
-  v56 = [(NSHashTable *)self->_sceneUpdateContributers allObjects];
+  allObjects = [(NSHashTable *)self->_sceneUpdateContributers allObjects];
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v57 = [v56 countByEnumeratingWithState:&v72 objects:v76 count:16];
+  v57 = [allObjects countByEnumeratingWithState:&v72 objects:v76 count:16];
   if (v57)
   {
     v58 = v57;
@@ -1219,17 +1219,17 @@ LABEL_3:
       {
         if (*v73 != v59)
         {
-          objc_enumerationMutation(v56);
+          objc_enumerationMutation(allObjects);
         }
 
         v61 = *(*(&v72 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v61 applicationSceneHandle:self appendToSceneSettings:v14 fromRequestContext:v7 entity:v9];
+          [v61 applicationSceneHandle:self appendToSceneSettings:v14 fromRequestContext:contextCopy entity:v9];
         }
       }
 
-      v58 = [v56 countByEnumeratingWithState:&v72 objects:v76 count:16];
+      v58 = [allObjects countByEnumeratingWithState:&v72 objects:v76 count:16];
     }
 
     while (v58);
@@ -1244,15 +1244,15 @@ LABEL_3:
   return v14;
 }
 
-- (id)_createApplicationSceneClientSettingsFromContext:(id)a3 entity:(id)a4 initialSceneSettings:(id)a5
+- (id)_createApplicationSceneClientSettingsFromContext:(id)context entity:(id)entity initialSceneSettings:(id)settings
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  contextCopy = context;
+  entityCopy = entity;
+  settingsCopy = settings;
+  v11 = settingsCopy;
+  if (contextCopy)
   {
-    if (v10)
+    if (settingsCopy)
     {
       goto LABEL_3;
     }
@@ -1269,24 +1269,24 @@ LABEL_3:
 
   [SBApplicationSceneHandle _createApplicationSceneClientSettingsFromContext:entity:initialSceneSettings:];
 LABEL_3:
-  v12 = [(SBApplicationSceneHandle *)self _definition];
-  v13 = [v12 specification];
-  v14 = [objc_msgSend(v13 "clientSettingsClass")];
+  _definition = [(SBApplicationSceneHandle *)self _definition];
+  specification = [_definition specification];
+  v14 = [objc_msgSend(specification "clientSettingsClass")];
   v15 = [v14 mutableCopy];
 
-  [(SBApplicationSceneHandle *)self _modifyApplicationSceneClientSettings:v15 fromRequestContext:v8 entity:v9 initialSceneSettings:v11];
+  [(SBApplicationSceneHandle *)self _modifyApplicationSceneClientSettings:v15 fromRequestContext:contextCopy entity:entityCopy initialSceneSettings:v11];
 
   return v15;
 }
 
-- (id)newSceneViewWithReferenceSize:(CGSize)a3 contentOrientation:(int64_t)a4 containerOrientation:(int64_t)a5 hostRequester:(id)a6
+- (id)newSceneViewWithReferenceSize:(CGSize)size contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation hostRequester:(id)requester
 {
-  height = a3.height;
-  width = a3.width;
-  v11 = a6;
-  v12 = [[SBApplicationSceneView alloc] initWithSceneHandle:self referenceSize:a4 contentOrientation:a5 containerOrientation:v11 hostRequester:width, height];
+  height = size.height;
+  width = size.width;
+  requesterCopy = requester;
+  height = [[SBApplicationSceneView alloc] initWithSceneHandle:self referenceSize:orientation contentOrientation:containerOrientation containerOrientation:requesterCopy hostRequester:width, height];
 
-  return v12;
+  return height;
 }
 
 - (id)newSceneViewController
@@ -1296,27 +1296,27 @@ LABEL_3:
   return [(SBApplicationSceneViewController *)v3 initWithSceneHandle:self];
 }
 
-- (void)addSceneUpdateContributer:(id)a3
+- (void)addSceneUpdateContributer:(id)contributer
 {
-  v4 = a3;
+  contributerCopy = contributer;
   sceneUpdateContributers = self->_sceneUpdateContributers;
-  v8 = v4;
+  v8 = contributerCopy;
   if (!sceneUpdateContributers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_sceneUpdateContributers;
-    self->_sceneUpdateContributers = v6;
+    self->_sceneUpdateContributers = weakObjectsHashTable;
 
-    v4 = v8;
+    contributerCopy = v8;
     sceneUpdateContributers = self->_sceneUpdateContributers;
   }
 
-  [(NSHashTable *)sceneUpdateContributers addObject:v4];
+  [(NSHashTable *)sceneUpdateContributers addObject:contributerCopy];
 }
 
-- (void)removeSceneUpdateContributer:(id)a3
+- (void)removeSceneUpdateContributer:(id)contributer
 {
-  [(NSHashTable *)self->_sceneUpdateContributers removeObject:a3];
+  [(NSHashTable *)self->_sceneUpdateContributers removeObject:contributer];
   if (![(NSHashTable *)self->_sceneUpdateContributers count])
   {
     sceneUpdateContributers = self->_sceneUpdateContributers;

@@ -1,10 +1,10 @@
 @interface IDSGroupServer
 - (IDSGroupServer)init;
-- (IDSGroupServer)initWithMessageDelivery:(id)a3;
-- (id)_getMessageCompletionCurrentEntries:(id)a3 withCompletion:(id)a4;
-- (id)_putMessageCompletionWithCompletion:(id)a3;
-- (void)_queryGroupServerENID:(id)a3 withPreviousEntries:(id)a4 completion:(id)a5;
-- (void)publishGroupForKey:(id)a3 data:(id)a4 signature:(id)a5 forwardingSig:(id)a6 ENID:(id)a7 version:(id)a8 completion:(id)a9;
+- (IDSGroupServer)initWithMessageDelivery:(id)delivery;
+- (id)_getMessageCompletionCurrentEntries:(id)entries withCompletion:(id)completion;
+- (id)_putMessageCompletionWithCompletion:(id)completion;
+- (void)_queryGroupServerENID:(id)d withPreviousEntries:(id)entries completion:(id)completion;
+- (void)publishGroupForKey:(id)key data:(id)data signature:(id)signature forwardingSig:(id)sig ENID:(id)d version:(id)version completion:(id)completion;
 @end
 
 @implementation IDSGroupServer
@@ -17,16 +17,16 @@
   return v4;
 }
 
-- (IDSGroupServer)initWithMessageDelivery:(id)a3
+- (IDSGroupServer)initWithMessageDelivery:(id)delivery
 {
-  v5 = a3;
+  deliveryCopy = delivery;
   v11.receiver = self;
   v11.super_class = IDSGroupServer;
   v6 = [(IDSGroupServer *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_messageDelivery, a3);
+    objc_storeStrong(&v6->_messageDelivery, delivery);
     v8 = [IDSPushHandler sharedInstanceWithPortName:@"com.apple.identityservicesd.aps"];
     pushHandler = v7->_pushHandler;
     v7->_pushHandler = v8;
@@ -35,120 +35,120 @@
   return v7;
 }
 
-- (id)_getMessageCompletionCurrentEntries:(id)a3 withCompletion:(id)a4
+- (id)_getMessageCompletionCurrentEntries:(id)entries withCompletion:(id)completion
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1004A1884;
   v10[3] = &unk_100BDD8A8;
-  v11 = a3;
-  v12 = self;
-  v13 = a4;
-  v6 = v13;
-  v7 = v11;
+  entriesCopy = entries;
+  selfCopy = self;
+  completionCopy = completion;
+  v6 = completionCopy;
+  v7 = entriesCopy;
   v8 = objc_retainBlock(v10);
 
   return v8;
 }
 
-- (id)_putMessageCompletionWithCompletion:(id)a3
+- (id)_putMessageCompletionWithCompletion:(id)completion
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1004A1A78;
   v6[3] = &unk_100BDD8F8;
   v6[4] = self;
-  v7 = a3;
-  v3 = v7;
+  completionCopy = completion;
+  v3 = completionCopy;
   v4 = objc_retainBlock(v6);
 
   return v4;
 }
 
-- (void)publishGroupForKey:(id)a3 data:(id)a4 signature:(id)a5 forwardingSig:(id)a6 ENID:(id)a7 version:(id)a8 completion:(id)a9
+- (void)publishGroupForKey:(id)key data:(id)data signature:(id)signature forwardingSig:(id)sig ENID:(id)d version:(id)version completion:(id)completion
 {
-  v34 = a9;
-  v33 = a8;
-  v31 = a7;
-  v32 = a6;
-  v30 = a5;
-  v16 = a4;
-  v17 = a3;
+  completionCopy = completion;
+  versionCopy = version;
+  dCopy = d;
+  sigCopy = sig;
+  signatureCopy = signature;
+  dataCopy = data;
+  keyCopy = key;
   v35 = [[FTMessageDelivery_DualMode alloc] initWithPreferedType:2];
   v18 = objc_alloc_init(IDSGroupPutMessage);
   v19 = +[FTDeviceSupport sharedInstance];
-  v20 = [v19 model];
+  model = [v19 model];
 
   v21 = +[FTDeviceSupport sharedInstance];
-  v22 = [v21 productOSVersion];
+  productOSVersion = [v21 productOSVersion];
 
   v23 = +[FTDeviceSupport sharedInstance];
-  v24 = [v23 productBuildVersion];
+  productBuildVersion = [v23 productBuildVersion];
 
   v25 = +[FTDeviceSupport sharedInstance];
-  v26 = [v25 deviceName];
+  deviceName = [v25 deviceName];
 
-  v27 = [(IDSGroupServer *)self pushHandler];
-  v28 = [v27 pushToken];
-  [(IDSGroupPutMessage *)v18 setPushToken:v28];
+  pushHandler = [(IDSGroupServer *)self pushHandler];
+  pushToken = [pushHandler pushToken];
+  [(IDSGroupPutMessage *)v18 setPushToken:pushToken];
 
   IDSAssignPushIdentityToMessage();
-  [(IDSGroupPutMessage *)v18 setHardwareVersion:v20];
-  [(IDSGroupPutMessage *)v18 setOsVersion:v22];
-  [(IDSGroupPutMessage *)v18 setSoftwareVersion:v24];
-  [(IDSGroupPutMessage *)v18 setDeviceName:v26];
+  [(IDSGroupPutMessage *)v18 setHardwareVersion:model];
+  [(IDSGroupPutMessage *)v18 setOsVersion:productOSVersion];
+  [(IDSGroupPutMessage *)v18 setSoftwareVersion:productBuildVersion];
+  [(IDSGroupPutMessage *)v18 setDeviceName:deviceName];
   [(IDSGroupPutMessage *)v18 setSigAlgorithm:@"SHA256withECDSA"];
   [(IDSGroupPutMessage *)v18 setForwardingSigAlgorithm:@"SHA256withECDSA"];
-  [(IDSGroupPutMessage *)v18 setKey:v17];
+  [(IDSGroupPutMessage *)v18 setKey:keyCopy];
 
-  [(IDSGroupPutMessage *)v18 setData:v16];
-  [(IDSGroupPutMessage *)v18 setSignature:v30];
+  [(IDSGroupPutMessage *)v18 setData:dataCopy];
+  [(IDSGroupPutMessage *)v18 setSignature:signatureCopy];
 
-  [(IDSGroupPutMessage *)v18 setEngramID:v31];
-  [(IDSGroupPutMessage *)v18 setVersion:v33];
+  [(IDSGroupPutMessage *)v18 setEngramID:dCopy];
+  [(IDSGroupPutMessage *)v18 setVersion:versionCopy];
 
-  [(IDSGroupPutMessage *)v18 setForwardingSig:v32];
-  v29 = [(IDSGroupServer *)self _putMessageCompletionWithCompletion:v34];
+  [(IDSGroupPutMessage *)v18 setForwardingSig:sigCopy];
+  v29 = [(IDSGroupServer *)self _putMessageCompletionWithCompletion:completionCopy];
 
   [(IDSGroupPutMessage *)v18 setCompletionBlock:v29];
   [v35 sendMessage:v18];
 }
 
-- (void)_queryGroupServerENID:(id)a3 withPreviousEntries:(id)a4 completion:(id)a5
+- (void)_queryGroupServerENID:(id)d withPreviousEntries:(id)entries completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  entriesCopy = entries;
+  dCopy = d;
   v23 = objc_alloc_init(IDSGroupGetMessage);
   v11 = +[FTDeviceSupport sharedInstance];
-  v12 = [v11 model];
+  model = [v11 model];
 
   v13 = +[FTDeviceSupport sharedInstance];
-  v14 = [v13 productOSVersion];
+  productOSVersion = [v13 productOSVersion];
 
   v15 = +[FTDeviceSupport sharedInstance];
-  v16 = [v15 productBuildVersion];
+  productBuildVersion = [v15 productBuildVersion];
 
   v17 = +[FTDeviceSupport sharedInstance];
-  v18 = [v17 deviceName];
+  deviceName = [v17 deviceName];
 
-  v19 = [(IDSGroupServer *)self pushHandler];
-  v20 = [v19 pushToken];
-  [(IDSGroupGetMessage *)v23 setPushToken:v20];
+  pushHandler = [(IDSGroupServer *)self pushHandler];
+  pushToken = [pushHandler pushToken];
+  [(IDSGroupGetMessage *)v23 setPushToken:pushToken];
 
   IDSAssignPushIdentityToMessage();
-  [(IDSGroupGetMessage *)v23 setHardwareVersion:v12];
-  [(IDSGroupGetMessage *)v23 setOsVersion:v14];
-  [(IDSGroupGetMessage *)v23 setSoftwareVersion:v16];
-  [(IDSGroupGetMessage *)v23 setDeviceName:v18];
-  [(IDSGroupGetMessage *)v23 setEngramID:v10];
+  [(IDSGroupGetMessage *)v23 setHardwareVersion:model];
+  [(IDSGroupGetMessage *)v23 setOsVersion:productOSVersion];
+  [(IDSGroupGetMessage *)v23 setSoftwareVersion:productBuildVersion];
+  [(IDSGroupGetMessage *)v23 setDeviceName:deviceName];
+  [(IDSGroupGetMessage *)v23 setEngramID:dCopy];
 
   [(IDSGroupGetMessage *)v23 setVersion:&off_100C3C790];
-  v21 = [(IDSGroupServer *)self _getMessageCompletionCurrentEntries:v9 withCompletion:v8];
+  v21 = [(IDSGroupServer *)self _getMessageCompletionCurrentEntries:entriesCopy withCompletion:completionCopy];
 
   [(IDSGroupGetMessage *)v23 setCompletionBlock:v21];
-  v22 = [(IDSGroupServer *)self messageDelivery];
-  [v22 sendMessage:v23];
+  messageDelivery = [(IDSGroupServer *)self messageDelivery];
+  [messageDelivery sendMessage:v23];
 }
 
 @end

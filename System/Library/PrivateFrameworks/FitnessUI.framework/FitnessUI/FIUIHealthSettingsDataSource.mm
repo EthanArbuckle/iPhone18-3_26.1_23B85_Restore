@@ -1,9 +1,9 @@
 @interface FIUIHealthSettingsDataSource
-- (BOOL)shouldBypassFirstResponderAction:(id)a3;
-- (BOOL)shouldHighlightRowAtIndexPath:(id)a3;
+- (BOOL)shouldBypassFirstResponderAction:(id)action;
+- (BOOL)shouldHighlightRowAtIndexPath:(id)path;
 - (FIUIHealthSettingsBirthDatePickerController)birthDatePickerController;
-- (FIUIHealthSettingsDataSource)initWithActivitySettingsController:(id)a3 showWheelchair:(BOOL)a4;
-- (FIUIHealthSettingsDataSource)initWithActivitySettingsController:(id)a3 showWheelchair:(BOOL)a4 pregnancyStateProvider:(id)a5 showPregnancy:(BOOL)a6;
+- (FIUIHealthSettingsDataSource)initWithActivitySettingsController:(id)controller showWheelchair:(BOOL)wheelchair;
+- (FIUIHealthSettingsDataSource)initWithActivitySettingsController:(id)controller showWheelchair:(BOOL)wheelchair pregnancyStateProvider:(id)provider showPregnancy:(BOOL)pregnancy;
 - (FIUIHealthSettingsDataSourceDelegate)delegate;
 - (FIUIHealthSettingsHeightPickerController)heightPickerController;
 - (FIUIHealthSettingsSexPickerController)sexPickerController;
@@ -12,37 +12,37 @@
 - (id)birthDateCell;
 - (id)heightCell;
 - (id)pregnancyStateCell;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)weightCell;
 - (id)wheelchairUseCell;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_configurePregnancyStateCellForModel:(id)a3;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_configurePregnancyStateCellForModel:(id)model;
 - (void)_updateBiologicalSexCell;
 - (void)_updateBirthDateCell;
 - (void)_updateCells;
 - (void)_updateHeightCell;
-- (void)_updatePregnancyStateCellWithModel:(id)a3;
+- (void)_updatePregnancyStateCellWithModel:(id)model;
 - (void)_updateWeightCell;
-- (void)cellDidBecomeFirstResponder:(id)a3;
-- (void)endEditingAndDiscardChanges:(BOOL)a3;
-- (void)pregnancyModelDidChangeWithProvider:(id)a3 model:(id)a4;
+- (void)cellDidBecomeFirstResponder:(id)responder;
+- (void)endEditingAndDiscardChanges:(BOOL)changes;
+- (void)pregnancyModelDidChangeWithProvider:(id)provider model:(id)model;
 - (void)startEditing;
-- (void)wheelchairSwitchDidChange:(id)a3;
+- (void)wheelchairSwitchDidChange:(id)change;
 @end
 
 @implementation FIUIHealthSettingsDataSource
 
-- (FIUIHealthSettingsDataSource)initWithActivitySettingsController:(id)a3 showWheelchair:(BOOL)a4 pregnancyStateProvider:(id)a5 showPregnancy:(BOOL)a6
+- (FIUIHealthSettingsDataSource)initWithActivitySettingsController:(id)controller showWheelchair:(BOOL)wheelchair pregnancyStateProvider:(id)provider showPregnancy:(BOOL)pregnancy
 {
-  v11 = a3;
-  v12 = a5;
+  controllerCopy = controller;
+  providerCopy = provider;
   v22.receiver = self;
   v22.super_class = FIUIHealthSettingsDataSource;
   v13 = [(FIUIHealthSettingsDataSource *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_settingsController, a3);
+    objc_storeStrong(&v13->_settingsController, controller);
     objc_initWeak(&location, v14);
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
@@ -50,9 +50,9 @@
     v19 = &unk_1E878BDC0;
     objc_copyWeak(&v20, &location);
     [(FIActivitySettingsController *)v14->_settingsController setUpdateHandler:&v16];
-    v14->_showWheelchair = a4;
-    objc_storeStrong(&v14->_pregnancyStateProvider, a5);
-    v14->_showPregnancy = a6;
+    v14->_showWheelchair = wheelchair;
+    objc_storeStrong(&v14->_pregnancyStateProvider, provider);
+    v14->_showPregnancy = pregnancy;
     [(FIUIPregnancyStateProvider *)v14->_pregnancyStateProvider addObserver:v14, v16, v17, v18, v19];
     objc_destroyWeak(&v20);
     objc_destroyWeak(&location);
@@ -67,16 +67,16 @@ void __119__FIUIHealthSettingsDataSource_initWithActivitySettingsController_show
   [WeakRetained _updateCells];
 }
 
-- (FIUIHealthSettingsDataSource)initWithActivitySettingsController:(id)a3 showWheelchair:(BOOL)a4
+- (FIUIHealthSettingsDataSource)initWithActivitySettingsController:(id)controller showWheelchair:(BOOL)wheelchair
 {
-  v7 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = FIUIHealthSettingsDataSource;
   v8 = [(FIUIHealthSettingsDataSource *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_settingsController, a3);
+    objc_storeStrong(&v8->_settingsController, controller);
     objc_initWeak(&location, v9);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -84,7 +84,7 @@ void __119__FIUIHealthSettingsDataSource_initWithActivitySettingsController_show
     v11[3] = &unk_1E878BDC0;
     objc_copyWeak(&v12, &location);
     [(FIActivitySettingsController *)v9->_settingsController setUpdateHandler:v11];
-    v9->_showWheelchair = a4;
+    v9->_showWheelchair = wheelchair;
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
@@ -108,16 +108,16 @@ void __82__FIUIHealthSettingsDataSource_initWithActivitySettingsController_showW
 
     v5 = FIUIBundle();
     v6 = [v5 localizedStringForKey:@"BIRTHDATE" value:&stru_1F5F88F90 table:@"Localizable"];
-    v7 = [(FIUIHealthSettingsTableViewCell *)self->_birthDateCell textLabel];
-    [v7 setText:v6];
+    textLabel = [(FIUIHealthSettingsTableViewCell *)self->_birthDateCell textLabel];
+    [textLabel setText:v6];
 
-    v8 = [(FIUIHealthSettingsDataSource *)self birthDatePickerController];
-    v9 = [v8 datePickerView];
-    v10 = [FIUIHostingAreaLayoutView blackBackgroundViewHostingView:v9];
+    birthDatePickerController = [(FIUIHealthSettingsDataSource *)self birthDatePickerController];
+    datePickerView = [birthDatePickerController datePickerView];
+    v10 = [FIUIHostingAreaLayoutView blackBackgroundViewHostingView:datePickerView];
 
     [(FIUIHealthSettingsTableViewCell *)self->_birthDateCell setInputView:v10];
-    v11 = [(FIUIHealthSettingsDataSource *)self birthDatePickerController];
-    [(FIUIHealthSettingsTableViewCell *)self->_birthDateCell setForceUpdatable:v11];
+    birthDatePickerController2 = [(FIUIHealthSettingsDataSource *)self birthDatePickerController];
+    [(FIUIHealthSettingsTableViewCell *)self->_birthDateCell setForceUpdatable:birthDatePickerController2];
   }
 
   [(FIUIHealthSettingsDataSource *)self _updateBirthDateCell];
@@ -136,16 +136,16 @@ void __82__FIUIHealthSettingsDataSource_initWithActivitySettingsController_showW
 
     v5 = FIUIBundle();
     v6 = [v5 localizedStringForKey:@"BIOLOGICAL_SEX" value:&stru_1F5F88F90 table:@"Localizable"];
-    v7 = [(FIUIHealthSettingsTableViewCell *)self->_biologicalSexCell textLabel];
-    [v7 setText:v6];
+    textLabel = [(FIUIHealthSettingsTableViewCell *)self->_biologicalSexCell textLabel];
+    [textLabel setText:v6];
 
-    v8 = [(FIUIHealthSettingsDataSource *)self sexPickerController];
-    v9 = [v8 pickerView];
-    v10 = [FIUIHostingAreaLayoutView blackBackgroundViewHostingView:v9];
+    sexPickerController = [(FIUIHealthSettingsDataSource *)self sexPickerController];
+    pickerView = [sexPickerController pickerView];
+    v10 = [FIUIHostingAreaLayoutView blackBackgroundViewHostingView:pickerView];
 
     [(FIUIHealthSettingsTableViewCell *)self->_biologicalSexCell setInputView:v10];
-    v11 = [(FIUIHealthSettingsDataSource *)self sexPickerController];
-    [(FIUIHealthSettingsTableViewCell *)self->_biologicalSexCell setForceUpdatable:v11];
+    sexPickerController2 = [(FIUIHealthSettingsDataSource *)self sexPickerController];
+    [(FIUIHealthSettingsTableViewCell *)self->_biologicalSexCell setForceUpdatable:sexPickerController2];
   }
 
   [(FIUIHealthSettingsDataSource *)self _updateBiologicalSexCell];
@@ -164,16 +164,16 @@ void __82__FIUIHealthSettingsDataSource_initWithActivitySettingsController_showW
 
     v5 = FIUIBundle();
     v6 = [v5 localizedStringForKey:@"HEIGHT" value:&stru_1F5F88F90 table:@"Localizable"];
-    v7 = [(FIUIHealthSettingsTableViewCell *)self->_heightCell textLabel];
-    [v7 setText:v6];
+    textLabel = [(FIUIHealthSettingsTableViewCell *)self->_heightCell textLabel];
+    [textLabel setText:v6];
 
-    v8 = [(FIUIHealthSettingsDataSource *)self heightPickerController];
-    v9 = [v8 pickerView];
-    v10 = [FIUIHostingAreaLayoutView blackBackgroundViewHostingView:v9];
+    heightPickerController = [(FIUIHealthSettingsDataSource *)self heightPickerController];
+    pickerView = [heightPickerController pickerView];
+    v10 = [FIUIHostingAreaLayoutView blackBackgroundViewHostingView:pickerView];
 
     [(FIUIHealthSettingsTableViewCell *)self->_heightCell setInputView:v10];
-    v11 = [(FIUIHealthSettingsDataSource *)self heightPickerController];
-    [(FIUIHealthSettingsTableViewCell *)self->_heightCell setForceUpdatable:v11];
+    heightPickerController2 = [(FIUIHealthSettingsDataSource *)self heightPickerController];
+    [(FIUIHealthSettingsTableViewCell *)self->_heightCell setForceUpdatable:heightPickerController2];
   }
 
   [(FIUIHealthSettingsDataSource *)self _updateHeightCell];
@@ -192,16 +192,16 @@ void __82__FIUIHealthSettingsDataSource_initWithActivitySettingsController_showW
 
     v5 = FIUIBundle();
     v6 = [v5 localizedStringForKey:@"WEIGHT" value:&stru_1F5F88F90 table:@"Localizable"];
-    v7 = [(FIUIHealthSettingsTableViewCell *)self->_weightCell textLabel];
-    [v7 setText:v6];
+    textLabel = [(FIUIHealthSettingsTableViewCell *)self->_weightCell textLabel];
+    [textLabel setText:v6];
 
-    v8 = [(FIUIHealthSettingsDataSource *)self weightPickerController];
-    v9 = [v8 pickerView];
-    v10 = [FIUIHostingAreaLayoutView blackBackgroundViewHostingView:v9];
+    weightPickerController = [(FIUIHealthSettingsDataSource *)self weightPickerController];
+    pickerView = [weightPickerController pickerView];
+    v10 = [FIUIHostingAreaLayoutView blackBackgroundViewHostingView:pickerView];
 
     [(FIUIHealthSettingsTableViewCell *)self->_weightCell setInputView:v10];
-    v11 = [(FIUIHealthSettingsDataSource *)self weightPickerController];
-    [(FIUIHealthSettingsTableViewCell *)self->_weightCell setForceUpdatable:v11];
+    weightPickerController2 = [(FIUIHealthSettingsDataSource *)self weightPickerController];
+    [(FIUIHealthSettingsTableViewCell *)self->_weightCell setForceUpdatable:weightPickerController2];
   }
 
   [(FIUIHealthSettingsDataSource *)self _updateWeightCell];
@@ -221,8 +221,8 @@ void __82__FIUIHealthSettingsDataSource_initWithActivitySettingsController_showW
 
     v6 = FIUIBundle();
     v7 = [v6 localizedStringForKey:@"WHEELCHAIR_USE" value:&stru_1F5F88F90 table:@"Localizable"];
-    v8 = [(FIUIHealthSettingsTableViewCell *)self->_wheelchairUseCell textLabel];
-    [v8 setText:v7];
+    textLabel = [(FIUIHealthSettingsTableViewCell *)self->_wheelchairUseCell textLabel];
+    [textLabel setText:v7];
 
     v9 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
     [v9 setOn:{-[FIActivitySettingsController wheelchairUse](self->_settingsController, "wheelchairUse") == 2}];
@@ -244,8 +244,8 @@ void __82__FIUIHealthSettingsDataSource_initWithActivitySettingsController_showW
     v5 = self->_pregnancyStateCell;
     self->_pregnancyStateCell = v4;
 
-    v6 = [(FIUIPregnancyStateProvider *)self->_pregnancyStateProvider currentModel];
-    [(FIUIHealthSettingsDataSource *)self _configurePregnancyStateCellForModel:v6];
+    currentModel = [(FIUIPregnancyStateProvider *)self->_pregnancyStateProvider currentModel];
+    [(FIUIHealthSettingsDataSource *)self _configurePregnancyStateCellForModel:currentModel];
 
     pregnancyStateCell = self->_pregnancyStateCell;
   }
@@ -264,57 +264,57 @@ void __82__FIUIHealthSettingsDataSource_initWithActivitySettingsController_showW
 
 - (void)_updateHeightCell
 {
-  v5 = [(FIActivitySettingsController *)self->_settingsController height];
-  v3 = FIUIHeightDisplayString(v5);
-  v4 = [(FIUIHealthSettingsTableViewCell *)self->_heightCell detailTextLabel];
-  [v4 setText:v3];
+  height = [(FIActivitySettingsController *)self->_settingsController height];
+  v3 = FIUIHeightDisplayString(height);
+  detailTextLabel = [(FIUIHealthSettingsTableViewCell *)self->_heightCell detailTextLabel];
+  [detailTextLabel setText:v3];
 }
 
 - (void)_updateWeightCell
 {
-  v5 = [(FIActivitySettingsController *)self->_settingsController weight];
-  v3 = FIUIWeightDisplayString(v5);
-  v4 = [(FIUIHealthSettingsTableViewCell *)self->_weightCell detailTextLabel];
-  [v4 setText:v3];
+  weight = [(FIActivitySettingsController *)self->_settingsController weight];
+  v3 = FIUIWeightDisplayString(weight);
+  detailTextLabel = [(FIUIHealthSettingsTableViewCell *)self->_weightCell detailTextLabel];
+  [detailTextLabel setText:v3];
 }
 
 - (void)_updateBirthDateCell
 {
-  v5 = [(FIActivitySettingsController *)self->_settingsController dateOfBirth];
-  v3 = FIUIDateOfBirthDisplayString(v5);
-  v4 = [(FIUIHealthSettingsTableViewCell *)self->_birthDateCell detailTextLabel];
-  [v4 setText:v3];
+  dateOfBirth = [(FIActivitySettingsController *)self->_settingsController dateOfBirth];
+  v3 = FIUIDateOfBirthDisplayString(dateOfBirth);
+  detailTextLabel = [(FIUIHealthSettingsTableViewCell *)self->_birthDateCell detailTextLabel];
+  [detailTextLabel setText:v3];
 }
 
 - (void)_updateBiologicalSexCell
 {
   v4 = FIUIBiologicalSexDisplayString([(FIActivitySettingsController *)self->_settingsController biologicalSex]);
-  v3 = [(FIUIHealthSettingsTableViewCell *)self->_biologicalSexCell detailTextLabel];
-  [v3 setText:v4];
+  detailTextLabel = [(FIUIHealthSettingsTableViewCell *)self->_biologicalSexCell detailTextLabel];
+  [detailTextLabel setText:v4];
 }
 
-- (void)_updatePregnancyStateCellWithModel:(id)a3
+- (void)_updatePregnancyStateCellWithModel:(id)model
 {
-  [(FIUIHealthSettingsDataSource *)self _configurePregnancyStateCellForModel:a3];
+  [(FIUIHealthSettingsDataSource *)self _configurePregnancyStateCellForModel:model];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained shouldReloadPregnancySection];
 }
 
-- (void)_configurePregnancyStateCellForModel:(id)a3
+- (void)_configurePregnancyStateCellForModel:(id)model
 {
   pregnancyStateCell = self->_pregnancyStateCell;
-  v5 = a3;
-  v17 = [(FIUIHealthSettingsTableViewCell *)pregnancyStateCell defaultContentConfiguration];
-  v6 = [MEMORY[0x1E6989B18] keyColors];
-  v7 = [v6 nonGradientTextColor];
-  v8 = [v17 textProperties];
-  [v8 setColor:v7];
+  modelCopy = model;
+  defaultContentConfiguration = [(FIUIHealthSettingsTableViewCell *)pregnancyStateCell defaultContentConfiguration];
+  keyColors = [MEMORY[0x1E6989B18] keyColors];
+  nonGradientTextColor = [keyColors nonGradientTextColor];
+  textProperties = [defaultContentConfiguration textProperties];
+  [textProperties setColor:nonGradientTextColor];
 
-  v9 = [v5 state];
+  state = [modelCopy state];
   v10 = FIUIBundle();
   v11 = v10;
-  v12 = v9 == 1;
-  v13 = v9 == 1;
+  v12 = state == 1;
+  v13 = state == 1;
   if (v12)
   {
     v14 = @"EDIT_PREGNANCY_BUTTON";
@@ -336,11 +336,11 @@ void __82__FIUIHealthSettingsDataSource_initWithActivitySettingsController_showW
   }
 
   v16 = [v10 localizedStringForKey:v14 value:&stru_1F5F88F90 table:@"Localizable"];
-  [v17 setText:v16];
+  [defaultContentConfiguration setText:v16];
 
   [(FIUIHealthSettingsTableViewCell *)self->_pregnancyStateCell setAccessoryType:v13];
   [(FIUIHealthSettingsTableViewCell *)self->_pregnancyStateCell setAccessibilityIdentifier:*v15];
-  [(FIUIHealthSettingsTableViewCell *)self->_pregnancyStateCell setContentConfiguration:v17];
+  [(FIUIHealthSettingsTableViewCell *)self->_pregnancyStateCell setContentConfiguration:defaultContentConfiguration];
 }
 
 - (FIUIHealthSettingsHeightPickerController)heightPickerController
@@ -355,9 +355,9 @@ void __82__FIUIHealthSettingsDataSource_initWithActivitySettingsController_showW
 
     v6 = self->_heightPickerController;
     v7 = objc_loadWeakRetained(&location);
-    v8 = [v7 settingsController];
-    v9 = [v8 height];
-    [(FIUIHealthSettingsHeightPickerController *)v6 setHeightQuantity:v9];
+    settingsController = [v7 settingsController];
+    height = [settingsController height];
+    [(FIUIHealthSettingsHeightPickerController *)v6 setHeightQuantity:height];
 
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -391,8 +391,8 @@ void __54__FIUIHealthSettingsDataSource_heightPickerController__block_invoke(uin
     self->_birthDatePickerController = v4;
 
     v6 = self->_birthDatePickerController;
-    v7 = [(FIActivitySettingsController *)self->_settingsController dateOfBirth];
-    [(FIUIHealthSettingsBirthDatePickerController *)v6 setDateOfBirth:v7];
+    dateOfBirth = [(FIActivitySettingsController *)self->_settingsController dateOfBirth];
+    [(FIUIHealthSettingsBirthDatePickerController *)v6 setDateOfBirth:dateOfBirth];
 
     objc_initWeak(&location, self);
     v9[0] = MEMORY[0x1E69E9820];
@@ -429,9 +429,9 @@ void __57__FIUIHealthSettingsDataSource_birthDatePickerController__block_invoke(
 
     v6 = self->_weightPickerController;
     v7 = objc_loadWeakRetained(&location);
-    v8 = [v7 settingsController];
-    v9 = [v8 weight];
-    [(FIUIHealthSettingsWeightPickerController *)v6 setWeightQuantity:v9];
+    settingsController = [v7 settingsController];
+    weight = [settingsController weight];
+    [(FIUIHealthSettingsWeightPickerController *)v6 setWeightQuantity:weight];
 
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -487,10 +487,10 @@ void __51__FIUIHealthSettingsDataSource_sexPickerController__block_invoke(uint64
   [v3 setBiologicalSex:a2];
 }
 
-- (void)wheelchairSwitchDidChange:(id)a3
+- (void)wheelchairSwitchDidChange:(id)change
 {
-  v4 = [a3 isOn];
-  if (v4)
+  isOn = [change isOn];
+  if (isOn)
   {
     v5 = 2;
   }
@@ -502,27 +502,27 @@ void __51__FIUIHealthSettingsDataSource_sexPickerController__block_invoke(uint64
 
   [(FIActivitySettingsController *)self->_settingsController setWheelchairUse:v5];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained wheelchairUseSwitchDidChangeTo:v4];
+  [WeakRetained wheelchairUseSwitchDidChangeTo:isOn];
 }
 
-- (void)cellDidBecomeFirstResponder:(id)a3
+- (void)cellDidBecomeFirstResponder:(id)responder
 {
-  v3 = [a3 forceUpdatable];
-  [v3 forceUpdate];
+  forceUpdatable = [responder forceUpdatable];
+  [forceUpdatable forceUpdate];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
-    if (a4 == 2)
+    if (section == 2)
     {
       return self->_showPregnancy;
     }
 
     else
     {
-      return a4 == 1 && self->_showWheelchair;
+      return section == 1 && self->_showWheelchair;
     }
   }
 
@@ -532,23 +532,23 @@ void __51__FIUIHealthSettingsDataSource_sexPickerController__block_invoke(uint64
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    if ([v5 section] == 1)
+    if ([pathCopy section] == 1)
     {
-      if (![v5 row])
+      if (![pathCopy row])
       {
-        v6 = [(FIUIHealthSettingsDataSource *)self wheelchairUseCell];
+        wheelchairUseCell = [(FIUIHealthSettingsDataSource *)self wheelchairUseCell];
         goto LABEL_18;
       }
     }
 
-    else if ([v5 section] == 2 && !objc_msgSend(v5, "row"))
+    else if ([pathCopy section] == 2 && !objc_msgSend(pathCopy, "row"))
     {
-      v6 = [(FIUIHealthSettingsDataSource *)self pregnancyStateCell];
+      wheelchairUseCell = [(FIUIHealthSettingsDataSource *)self pregnancyStateCell];
       goto LABEL_18;
     }
 
@@ -556,13 +556,13 @@ void __51__FIUIHealthSettingsDataSource_sexPickerController__block_invoke(uint64
     goto LABEL_19;
   }
 
-  v7 = [v5 row];
+  v7 = [pathCopy row];
   v8 = 0;
   if (v7 > 1)
   {
     if (v7 == 2)
     {
-      v6 = [(FIUIHealthSettingsDataSource *)self heightCell];
+      wheelchairUseCell = [(FIUIHealthSettingsDataSource *)self heightCell];
     }
 
     else
@@ -572,7 +572,7 @@ void __51__FIUIHealthSettingsDataSource_sexPickerController__block_invoke(uint64
         goto LABEL_19;
       }
 
-      v6 = [(FIUIHealthSettingsDataSource *)self weightCell];
+      wheelchairUseCell = [(FIUIHealthSettingsDataSource *)self weightCell];
     }
   }
 
@@ -583,29 +583,29 @@ void __51__FIUIHealthSettingsDataSource_sexPickerController__block_invoke(uint64
       goto LABEL_19;
     }
 
-    v6 = [(FIUIHealthSettingsDataSource *)self biologicalSexCell];
+    wheelchairUseCell = [(FIUIHealthSettingsDataSource *)self biologicalSexCell];
   }
 
   else
   {
-    v6 = [(FIUIHealthSettingsDataSource *)self birthDateCell];
+    wheelchairUseCell = [(FIUIHealthSettingsDataSource *)self birthDateCell];
   }
 
 LABEL_18:
-  v8 = v6;
+  v8 = wheelchairUseCell;
 LABEL_19:
 
   return v8;
 }
 
-- (BOOL)shouldHighlightRowAtIndexPath:(id)a3
+- (BOOL)shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  if ([v4 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    v5 = [v4 section];
-    v6 = [(FIUIHealthSettingsDataSource *)self pregnancySectionIndexPath];
-    v7 = v5 == [v6 section];
+    section = [pathCopy section];
+    pregnancySectionIndexPath = [(FIUIHealthSettingsDataSource *)self pregnancySectionIndexPath];
+    v7 = section == [pregnancySectionIndexPath section];
   }
 
   else
@@ -616,13 +616,13 @@ LABEL_19:
   return v7;
 }
 
-- (BOOL)shouldBypassFirstResponderAction:(id)a3
+- (BOOL)shouldBypassFirstResponderAction:(id)action
 {
-  v4 = [a3 section];
-  v5 = [(FIUIHealthSettingsDataSource *)self pregnancySectionIndexPath];
-  LOBYTE(v4) = v4 == [v5 section];
+  section = [action section];
+  pregnancySectionIndexPath = [(FIUIHealthSettingsDataSource *)self pregnancySectionIndexPath];
+  LOBYTE(section) = section == [pregnancySectionIndexPath section];
 
-  return v4;
+  return section;
 }
 
 - (void)startEditing
@@ -642,9 +642,9 @@ LABEL_19:
   self->_preEditSettingsController = v4;
 }
 
-- (void)endEditingAndDiscardChanges:(BOOL)a3
+- (void)endEditingAndDiscardChanges:(BOOL)changes
 {
-  if (a3)
+  if (changes)
   {
     objc_storeStrong(&self->_settingsController, self->_preEditSettingsController);
     [(FIUIHealthSettingsDataSource *)self _updateCells];
@@ -654,16 +654,16 @@ LABEL_19:
   self->_preEditSettingsController = 0;
 }
 
-- (void)pregnancyModelDidChangeWithProvider:(id)a3 model:(id)a4
+- (void)pregnancyModelDidChangeWithProvider:(id)provider model:(id)model
 {
-  v5 = a4;
+  modelCopy = model;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__FIUIHealthSettingsDataSource_pregnancyModelDidChangeWithProvider_model___block_invoke;
   v7[3] = &unk_1E878BFB8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = modelCopy;
+  v6 = modelCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 

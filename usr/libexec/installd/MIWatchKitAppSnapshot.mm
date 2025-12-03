@@ -1,25 +1,25 @@
 @interface MIWatchKitAppSnapshot
-- (BOOL)createSnapshotWithError:(id *)a3;
-- (MIWatchKitAppSnapshot)initWithBundleID:(id)a3 snapshotTo:(id)a4 onlyV1AppIfPresent:(BOOL)a5 placeholderOnly:(BOOL)a6;
+- (BOOL)createSnapshotWithError:(id *)error;
+- (MIWatchKitAppSnapshot)initWithBundleID:(id)d snapshotTo:(id)to onlyV1AppIfPresent:(BOOL)present placeholderOnly:(BOOL)only;
 - (void)dealloc;
 @end
 
 @implementation MIWatchKitAppSnapshot
 
-- (MIWatchKitAppSnapshot)initWithBundleID:(id)a3 snapshotTo:(id)a4 onlyV1AppIfPresent:(BOOL)a5 placeholderOnly:(BOOL)a6
+- (MIWatchKitAppSnapshot)initWithBundleID:(id)d snapshotTo:(id)to onlyV1AppIfPresent:(BOOL)present placeholderOnly:(BOOL)only
 {
-  v11 = a3;
-  v12 = a4;
+  dCopy = d;
+  toCopy = to;
   v16.receiver = self;
   v16.super_class = MIWatchKitAppSnapshot;
   v13 = [(MIWatchKitAppSnapshot *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_bundleID, a3);
-    v14->_onlyV1 = a5;
-    v14->_placeholderOnly = a6;
-    objc_storeStrong(&v14->_destURL, a4);
+    objc_storeStrong(&v13->_bundleID, d);
+    v14->_onlyV1 = present;
+    v14->_placeholderOnly = only;
+    objc_storeStrong(&v14->_destURL, to);
     v14->_identifierLocked = 0;
   }
 
@@ -30,8 +30,8 @@
 {
   if ([(MIWatchKitAppSnapshot *)self identifierLocked])
   {
-    v3 = [(MIWatchKitAppSnapshot *)self bundleID];
-    sub_100054780(v3);
+    bundleID = [(MIWatchKitAppSnapshot *)self bundleID];
+    sub_100054780(bundleID);
   }
 
   v4.receiver = self;
@@ -39,21 +39,21 @@
   [(MIWatchKitAppSnapshot *)&v4 dealloc];
 }
 
-- (BOOL)createSnapshotWithError:(id *)a3
+- (BOOL)createSnapshotWithError:(id *)error
 {
-  v5 = [(MIWatchKitAppSnapshot *)self bundleID];
-  sub_100054628(v5);
+  bundleID = [(MIWatchKitAppSnapshot *)self bundleID];
+  sub_100054628(bundleID);
 
   [(MIWatchKitAppSnapshot *)self setIdentifierLocked:1];
   v6 = +[MIHelperServiceClient sharedInstance];
-  v7 = [(MIWatchKitAppSnapshot *)self bundleID];
-  v8 = [(MIWatchKitAppSnapshot *)self destURL];
+  bundleID2 = [(MIWatchKitAppSnapshot *)self bundleID];
+  destURL = [(MIWatchKitAppSnapshot *)self destURL];
   v14 = 0;
-  v9 = [v6 createAppSnapshotWithBundleID:v7 snapshotToURL:v8 onlyV1AppIfPresent:-[MIWatchKitAppSnapshot onlyV1](self placeholderOnly:"onlyV1") withError:{-[MIWatchKitAppSnapshot placeholderOnly](self, "placeholderOnly"), &v14}];
+  v9 = [v6 createAppSnapshotWithBundleID:bundleID2 snapshotToURL:destURL onlyV1AppIfPresent:-[MIWatchKitAppSnapshot onlyV1](self placeholderOnly:"onlyV1") withError:{-[MIWatchKitAppSnapshot placeholderOnly](self, "placeholderOnly"), &v14}];
   v10 = v14;
 
-  v11 = [(MIWatchKitAppSnapshot *)self bundleID];
-  sub_100054780(v11);
+  bundleID3 = [(MIWatchKitAppSnapshot *)self bundleID];
+  sub_100054780(bundleID3);
 
   [(MIWatchKitAppSnapshot *)self setIdentifierLocked:0];
   if (v9)
@@ -66,10 +66,10 @@
     MOLogWrite();
   }
 
-  if (a3 && v10)
+  if (error && v10)
   {
     v12 = v10;
-    *a3 = v10;
+    *error = v10;
   }
 
   return v9 != 0;

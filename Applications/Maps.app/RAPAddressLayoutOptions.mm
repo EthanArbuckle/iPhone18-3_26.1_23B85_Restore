@@ -2,9 +2,9 @@
 + (id)allFieldsDisabledOptions;
 + (id)allFieldsEnabledOptions;
 + (id)clientOverrideOptions;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (RAPAddressLayoutOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)numberOfEnabledOptions;
 @end
 
@@ -13,14 +13,14 @@
 - (int64_t)numberOfEnabledOptions
 {
   LODWORD(v3) = [(RAPAddressLayoutOptions *)self showBuilding];
-  v4 = [(RAPAddressLayoutOptions *)self showFloor];
+  showFloor = [(RAPAddressLayoutOptions *)self showFloor];
   v5 = 1;
   if (v3)
   {
     v5 = 2;
   }
 
-  if (v4)
+  if (showFloor)
   {
     v3 = v5;
   }
@@ -33,14 +33,14 @@
   return v3 + [(RAPAddressLayoutOptions *)self showUnit];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(RAPAddressLayoutOptions *)self showFloor];
-  if (v5 == [v4 showFloor] && (v6 = -[RAPAddressLayoutOptions showUnit](self, "showUnit"), v6 == objc_msgSend(v4, "showUnit")))
+  equalCopy = equal;
+  showFloor = [(RAPAddressLayoutOptions *)self showFloor];
+  if (showFloor == [equalCopy showFloor] && (v6 = -[RAPAddressLayoutOptions showUnit](self, "showUnit"), v6 == objc_msgSend(equalCopy, "showUnit")))
   {
-    v8 = [(RAPAddressLayoutOptions *)self showBuilding];
-    v7 = v8 ^ [v4 showBuilding] ^ 1;
+    showBuilding = [(RAPAddressLayoutOptions *)self showBuilding];
+    v7 = showBuilding ^ [equalCopy showBuilding] ^ 1;
   }
 
   else
@@ -51,9 +51,9 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setShowUnit:{-[RAPAddressLayoutOptions showUnit](self, "showUnit")}];
   [v4 setShowBuilding:{-[RAPAddressLayoutOptions showBuilding](self, "showBuilding")}];
   [v4 setShowFloor:{-[RAPAddressLayoutOptions showFloor](self, "showFloor")}];

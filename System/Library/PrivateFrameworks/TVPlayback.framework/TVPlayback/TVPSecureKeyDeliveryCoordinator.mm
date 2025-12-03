@@ -1,21 +1,21 @@
 @interface TVPSecureKeyDeliveryCoordinator
-+ (BOOL)isSecureKeyDeliveryRequest:(id)a3;
++ (BOOL)isSecureKeyDeliveryRequest:(id)request;
 + (void)initialize;
 - (TVPSecureKeyDeliveryCoordinator)init;
-- (TVPSecureKeyDeliveryCoordinator)initWithSecureKeyLoader:(id)a3;
+- (TVPSecureKeyDeliveryCoordinator)initWithSecureKeyLoader:(id)loader;
 - (TVPSecureKeyDeliveryCoordinatorDelegate)delegate;
-- (void)_finishLoadingWithError:(id)a3 forRequest:(id)a4;
-- (void)_loadSecureKeyRequest:(id)a3 sendStartReportingEvent:(BOOL)a4;
-- (void)loadSecureKeyRequest:(id)a3;
-- (void)secureKeyLoader:(id)a3 didFailWithError:(id)a4 forRequest:(id)a5;
-- (void)secureKeyLoader:(id)a3 didLoadCertificateData:(id)a4 forRequest:(id)a5;
-- (void)secureKeyLoader:(id)a3 didLoadContentIdentifierData:(id)a4 forRequest:(id)a5;
-- (void)secureKeyLoader:(id)a3 didLoadKeyResponseData:(id)a4 renewalDate:(id)a5 forRequest:(id)a6;
-- (void)secureKeyLoader:(id)a3 didReceiveUpdatedRentalExpirationDate:(id)a4;
-- (void)secureKeyLoader:(id)a3 didReceiveUpdatedRentalExpirationDate:(id)a4 playbackStartDate:(id)a5;
-- (void)secureKeyLoader:(id)a3 didReceiveUpdatedRentalPlaybackStartDate:(id)a4;
+- (void)_finishLoadingWithError:(id)error forRequest:(id)request;
+- (void)_loadSecureKeyRequest:(id)request sendStartReportingEvent:(BOOL)event;
+- (void)loadSecureKeyRequest:(id)request;
+- (void)secureKeyLoader:(id)loader didFailWithError:(id)error forRequest:(id)request;
+- (void)secureKeyLoader:(id)loader didLoadCertificateData:(id)data forRequest:(id)request;
+- (void)secureKeyLoader:(id)loader didLoadContentIdentifierData:(id)data forRequest:(id)request;
+- (void)secureKeyLoader:(id)loader didLoadKeyResponseData:(id)data renewalDate:(id)date forRequest:(id)request;
+- (void)secureKeyLoader:(id)loader didReceiveUpdatedRentalExpirationDate:(id)date;
+- (void)secureKeyLoader:(id)loader didReceiveUpdatedRentalExpirationDate:(id)date playbackStartDate:(id)startDate;
+- (void)secureKeyLoader:(id)loader didReceiveUpdatedRentalPlaybackStartDate:(id)date;
 - (void)sendStopRequest;
-- (void)setEventCollection:(id)a3;
+- (void)setEventCollection:(id)collection;
 @end
 
 @implementation TVPSecureKeyDeliveryCoordinator
@@ -35,25 +35,25 @@ uint64_t __45__TVPSecureKeyDeliveryCoordinator_initialize__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)isSecureKeyDeliveryRequest:(id)a3
++ (BOOL)isSecureKeyDeliveryRequest:(id)request
 {
-  v3 = [a3 URL];
-  v4 = [v3 scheme];
+  v3 = [request URL];
+  scheme = [v3 scheme];
 
-  LOBYTE(v3) = [v4 isEqualToString:@"skd"];
+  LOBYTE(v3) = [scheme isEqualToString:@"skd"];
   return v3;
 }
 
-- (TVPSecureKeyDeliveryCoordinator)initWithSecureKeyLoader:(id)a3
+- (TVPSecureKeyDeliveryCoordinator)initWithSecureKeyLoader:(id)loader
 {
-  v5 = a3;
-  if (!v5)
+  loaderCopy = loader;
+  if (!loaderCopy)
   {
     v11 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Argument passed to -initWithSecureKeyLoader: must be non-nil." userInfo:0];
     objc_exception_throw(v11);
   }
 
-  v6 = v5;
+  v6 = loaderCopy;
   v12.receiver = self;
   v12.super_class = TVPSecureKeyDeliveryCoordinator;
   v7 = [(TVPSecureKeyDeliveryCoordinator *)&v12 init];
@@ -63,68 +63,68 @@ uint64_t __45__TVPSecureKeyDeliveryCoordinator_initialize__block_invoke()
     requestsAwaitingCertFetch = v7->_requestsAwaitingCertFetch;
     v7->_requestsAwaitingCertFetch = v8;
 
-    objc_storeStrong(&v7->_secureKeyLoader, a3);
+    objc_storeStrong(&v7->_secureKeyLoader, loader);
     [(TVPSecureKeyLoader *)v7->_secureKeyLoader setDelegate:v7];
   }
 
   return v7;
 }
 
-- (void)loadSecureKeyRequest:(id)a3
+- (void)loadSecureKeyRequest:(id)request
 {
-  v6 = a3;
-  v4 = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
-  [v6 setEventCollection:v4];
+  requestCopy = request;
+  eventCollection = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
+  [requestCopy setEventCollection:eventCollection];
 
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [v6 setRequestStartDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  [requestCopy setRequestStartDate:date];
 
-  [(TVPSecureKeyDeliveryCoordinator *)self _loadSecureKeyRequest:v6 sendStartReportingEvent:1];
+  [(TVPSecureKeyDeliveryCoordinator *)self _loadSecureKeyRequest:requestCopy sendStartReportingEvent:1];
 }
 
 - (void)sendStopRequest
 {
-  v2 = [(TVPSecureKeyDeliveryCoordinator *)self secureKeyLoader];
-  [v2 sendStopRequest];
+  secureKeyLoader = [(TVPSecureKeyDeliveryCoordinator *)self secureKeyLoader];
+  [secureKeyLoader sendStopRequest];
 }
 
-- (void)setEventCollection:(id)a3
+- (void)setEventCollection:(id)collection
 {
-  objc_storeStrong(&self->_eventCollection, a3);
-  v5 = a3;
-  v6 = [(TVPSecureKeyDeliveryCoordinator *)self secureKeyLoader];
-  [v6 setEventCollection:v5];
+  objc_storeStrong(&self->_eventCollection, collection);
+  collectionCopy = collection;
+  secureKeyLoader = [(TVPSecureKeyDeliveryCoordinator *)self secureKeyLoader];
+  [secureKeyLoader setEventCollection:collectionCopy];
 }
 
-- (void)secureKeyLoader:(id)a3 didLoadCertificateData:(id)a4 forRequest:(id)a5
+- (void)secureKeyLoader:(id)loader didLoadCertificateData:(id)data forRequest:(id)request
 {
   v43 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v8 = a4;
-  v9 = a5;
+  loaderCopy = loader;
+  dataCopy = data;
+  requestCopy = request;
   [(TVPSecureKeyDeliveryCoordinator *)self setCertFetchInProgress:0];
   v10 = sDeliveryCoordinatorLogObject;
   if (os_log_type_enabled(sDeliveryCoordinatorLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
     *buf = 134218240;
-    v40 = [v9 requestID];
+    requestID = [requestCopy requestID];
     v41 = 2048;
-    v42 = [v8 length];
+    v42 = [dataCopy length];
     _os_log_impl(&dword_26CEDD000, v11, OS_LOG_TYPE_DEFAULT, "Cert fetch complete for request %lu.  Cert length is %lu", buf, 0x16u);
   }
 
-  v31 = v9;
-  if ([v8 length])
+  v31 = requestCopy;
+  if ([dataCopy length])
   {
-    [(TVPSecureKeyDeliveryCoordinator *)self setCertificateData:v8];
+    [(TVPSecureKeyDeliveryCoordinator *)self setCertificateData:dataCopy];
   }
 
-  v12 = [(TVPSecureKeyDeliveryCoordinator *)self requestsAwaitingCertFetch];
-  v13 = [v12 copy];
+  requestsAwaitingCertFetch = [(TVPSecureKeyDeliveryCoordinator *)self requestsAwaitingCertFetch];
+  v13 = [requestsAwaitingCertFetch copy];
 
-  v14 = [(TVPSecureKeyDeliveryCoordinator *)self requestsAwaitingCertFetch];
-  [v14 removeAllObjects];
+  requestsAwaitingCertFetch2 = [(TVPSecureKeyDeliveryCoordinator *)self requestsAwaitingCertFetch];
+  [requestsAwaitingCertFetch2 removeAllObjects];
 
   v36 = 0u;
   v37 = 0u;
@@ -146,34 +146,34 @@ uint64_t __45__TVPSecureKeyDeliveryCoordinator_initialize__block_invoke()
         }
 
         v19 = *(*(&v34 + 1) + 8 * i);
-        v20 = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
+        eventCollection = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
         v21 = TVPPlaybackReportingEventFPSCertFetch;
         v22 = MEMORY[0x277CCACA8];
-        v23 = [v19 reportingID];
-        v24 = [v22 stringWithFormat:@"%@%@", v21, v23];
-        [v20 addEndEventWithName:v21 identifier:v24];
+        reportingID = [v19 reportingID];
+        v24 = [v22 stringWithFormat:@"%@%@", v21, reportingID];
+        [eventCollection addEndEventWithName:v21 identifier:v24];
 
         v25 = sDeliveryCoordinatorLogObject;
         if (os_log_type_enabled(sDeliveryCoordinatorLogObject, OS_LOG_TYPE_DEFAULT))
         {
           v26 = v25;
-          v27 = [v19 requestID];
+          requestID2 = [v19 requestID];
           *buf = 134217984;
-          v40 = v27;
+          requestID = requestID2;
           _os_log_impl(&dword_26CEDD000, v26, OS_LOG_TYPE_DEFAULT, "After cert fetch completion, continuing request %lu", buf, 0xCu);
         }
 
-        if (![v8 length])
+        if (![dataCopy length])
         {
           v29 = TVPSKDErrorWithCode(-345003);
-          [(TVPSecureKeyDeliveryCoordinator *)self secureKeyLoader:v32 didFailWithError:v29 forRequest:v19];
+          [(TVPSecureKeyDeliveryCoordinator *)self secureKeyLoader:loaderCopy didFailWithError:v29 forRequest:v19];
 
           goto LABEL_17;
         }
 
-        [v19 setCertificateData:v8];
-        v28 = [(TVPSecureKeyDeliveryCoordinator *)self secureKeyLoader];
-        [v28 startLoadingContentIdentifierDataForRequest:v19];
+        [v19 setCertificateData:dataCopy];
+        secureKeyLoader = [(TVPSecureKeyDeliveryCoordinator *)self secureKeyLoader];
+        [secureKeyLoader startLoadingContentIdentifierDataForRequest:v19];
       }
 
       v16 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
@@ -191,39 +191,39 @@ LABEL_17:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)secureKeyLoader:(id)a3 didLoadContentIdentifierData:(id)a4 forRequest:(id)a5
+- (void)secureKeyLoader:(id)loader didLoadContentIdentifierData:(id)data forRequest:(id)request
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 length])
+  loaderCopy = loader;
+  dataCopy = data;
+  requestCopy = request;
+  if ([dataCopy length])
   {
-    [v10 setContentIdentifierData:v9];
+    [requestCopy setContentIdentifierData:dataCopy];
     objc_initWeak(&location, self);
     v11 = sDeliveryCoordinatorLogObject;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v10 requestID];
+      requestID = [requestCopy requestID];
       *buf = 134217984;
-      v26 = v12;
+      v26 = requestID;
       _os_log_impl(&dword_26CEDD000, v11, OS_LOG_TYPE_DEFAULT, "Loading key request data for id %lu", buf, 0xCu);
     }
 
-    v13 = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
+    eventCollection = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
     v14 = TVPPlaybackReportingEventFPSRequestDataGeneration;
     v15 = MEMORY[0x277CCACA8];
-    v16 = [v10 reportingID];
-    v17 = [v15 stringWithFormat:@"%@%@", v14, v16];
-    [v13 addStartEventWithName:v14 identifier:v17];
+    reportingID = [requestCopy reportingID];
+    v17 = [v15 stringWithFormat:@"%@%@", v14, reportingID];
+    [eventCollection addStartEventWithName:v14 identifier:v17];
 
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __91__TVPSecureKeyDeliveryCoordinator_secureKeyLoader_didLoadContentIdentifierData_forRequest___block_invoke;
     v20[3] = &unk_279D7D0C0;
     objc_copyWeak(&v23, &location);
-    v21 = v10;
-    v22 = v8;
+    v21 = requestCopy;
+    v22 = loaderCopy;
     [v21 loadKeyRequestDataAsynchronouslyWithCompletion:v20];
 
     objc_destroyWeak(&v23);
@@ -233,7 +233,7 @@ LABEL_17:
   else
   {
     v18 = TVPSKDErrorWithCode(-345006);
-    [(TVPSecureKeyDeliveryCoordinator *)self secureKeyLoader:v8 didFailWithError:v18 forRequest:v10];
+    [(TVPSecureKeyDeliveryCoordinator *)self secureKeyLoader:loaderCopy didFailWithError:v18 forRequest:requestCopy];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -303,85 +303,85 @@ void __91__TVPSecureKeyDeliveryCoordinator_secureKeyLoader_didLoadContentIdentif
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)secureKeyLoader:(id)a3 didLoadKeyResponseData:(id)a4 renewalDate:(id)a5 forRequest:(id)a6
+- (void)secureKeyLoader:(id)loader didLoadKeyResponseData:(id)data renewalDate:(id)date forRequest:(id)request
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  loaderCopy = loader;
+  dataCopy = data;
+  dateCopy = date;
+  requestCopy = request;
   v14 = sDeliveryCoordinatorLogObject;
   if (os_log_type_enabled(sDeliveryCoordinatorLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
     *buf = 134217984;
-    v46 = [v13 requestID];
+    requestID = [requestCopy requestID];
     _os_log_impl(&dword_26CEDD000, v15, OS_LOG_TYPE_DEFAULT, "FPS key fetch complete for id %lu", buf, 0xCu);
   }
 
-  v16 = [MEMORY[0x277CBEAA8] date];
-  [v13 setRequestEndDate:v16];
+  date = [MEMORY[0x277CBEAA8] date];
+  [requestCopy setRequestEndDate:date];
 
-  if ([v11 length])
+  if ([dataCopy length])
   {
-    v43 = v12;
-    v17 = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
+    v43 = dateCopy;
+    eventCollection = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
     v18 = TVPPlaybackReportingEventFPSServerKeyFetch;
     v19 = MEMORY[0x277CCACA8];
-    v20 = [v13 reportingID];
-    v21 = [v19 stringWithFormat:@"%@%@", v18, v20];
-    v22 = [v13 requestCompletionTime];
-    [v17 addEndEventWithName:v18 identifier:v21 timestamp:v22];
+    reportingID = [requestCopy reportingID];
+    v21 = [v19 stringWithFormat:@"%@%@", v18, reportingID];
+    requestCompletionTime = [requestCopy requestCompletionTime];
+    [eventCollection addEndEventWithName:v18 identifier:v21 timestamp:requestCompletionTime];
 
-    v23 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
-    [v23 secureKeyDeliveryCoordinatorWillSucceed:self];
+    delegate = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
+    [delegate secureKeyDeliveryCoordinatorWillSucceed:self];
 
-    v24 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
+    delegate2 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
     LOBYTE(v18) = objc_opt_respondsToSelector();
 
     if (v18)
     {
-      v25 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
-      [v25 secureKeyDeliveryCoordinatorWillSucceed:self forKeyRequest:v13];
+      delegate3 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
+      [delegate3 secureKeyDeliveryCoordinatorWillSucceed:self forKeyRequest:requestCopy];
     }
 
-    v26 = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
+    eventCollection2 = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
     v27 = TVPPlaybackReportingEventFPSOverallFetch;
     v28 = MEMORY[0x277CCACA8];
-    v29 = [v13 reportingID];
-    v30 = [v28 stringWithFormat:@"%@%@", v27, v29];
-    v31 = [v13 requestCompletionTime];
-    [v26 addEndEventWithName:v27 identifier:v30 timestamp:v31];
+    reportingID2 = [requestCopy reportingID];
+    v30 = [v28 stringWithFormat:@"%@%@", v27, reportingID2];
+    requestCompletionTime2 = [requestCopy requestCompletionTime];
+    [eventCollection2 addEndEventWithName:v27 identifier:v30 timestamp:requestCompletionTime2];
 
-    if ([v13 retrievesOfflineKeys])
+    if ([requestCopy retrievesOfflineKeys])
     {
       v32 = sDeliveryCoordinatorLogObject;
       if (os_log_type_enabled(sDeliveryCoordinatorLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v33 = v32;
-        v34 = [v13 requestID];
+        requestID2 = [requestCopy requestID];
         *buf = 134217984;
-        v46 = v34;
+        requestID = requestID2;
         _os_log_impl(&dword_26CEDD000, v33, OS_LOG_TYPE_DEFAULT, "Converting key response data to offline key data for id %lu", buf, 0xCu);
       }
 
       v44 = 0;
-      v35 = [v13 offlineKeyDataForResponseData:v11 error:&v44];
+      v35 = [requestCopy offlineKeyDataForResponseData:dataCopy error:&v44];
       v36 = v44;
 
       if ([v35 length])
       {
-        v37 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
+        delegate4 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
         v38 = objc_opt_respondsToSelector();
 
         if (v38)
         {
-          v39 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
-          [v39 secureKeyDeliveryCoordinator:self didReceiveOfflineKeyData:v35 forKeyRequest:v13];
+          delegate5 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
+          [delegate5 secureKeyDeliveryCoordinator:self didReceiveOfflineKeyData:v35 forKeyRequest:requestCopy];
         }
 
-        v12 = v43;
-        [v13 finishLoadingWithResponseData:v35 renewalDate:v43 keyType:2];
+        dateCopy = v43;
+        [requestCopy finishLoadingWithResponseData:v35 renewalDate:v43 keyType:2];
       }
 
       else
@@ -392,89 +392,89 @@ void __91__TVPSecureKeyDeliveryCoordinator_secureKeyLoader_didLoadContentIdentif
           [TVPSecureKeyDeliveryCoordinator secureKeyLoader:v36 didLoadKeyResponseData:v41 renewalDate:? forRequest:?];
         }
 
-        [(TVPSecureKeyDeliveryCoordinator *)self _finishLoadingWithError:v36 forRequest:v13];
-        v12 = v43;
+        [(TVPSecureKeyDeliveryCoordinator *)self _finishLoadingWithError:v36 forRequest:requestCopy];
+        dateCopy = v43;
       }
     }
 
     else
     {
-      v12 = v43;
-      [v13 finishLoadingWithResponseData:v11 renewalDate:v43 keyType:1];
-      v35 = v11;
+      dateCopy = v43;
+      [requestCopy finishLoadingWithResponseData:dataCopy renewalDate:v43 keyType:1];
+      v35 = dataCopy;
     }
   }
 
   else
   {
     v40 = TVPSKDErrorWithCode(-345009);
-    [(TVPSecureKeyDeliveryCoordinator *)self secureKeyLoader:v10 didFailWithError:v40 forRequest:v13];
+    [(TVPSecureKeyDeliveryCoordinator *)self secureKeyLoader:loaderCopy didFailWithError:v40 forRequest:requestCopy];
 
-    v35 = v11;
+    v35 = dataCopy;
   }
 
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)secureKeyLoader:(id)a3 didReceiveUpdatedRentalExpirationDate:(id)a4
+- (void)secureKeyLoader:(id)loader didReceiveUpdatedRentalExpirationDate:(id)date
 {
-  v5 = a4;
-  v6 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
-  [v6 secureKeyDeliveryCoordinator:self didReceiveUpdatedRentalExpirationDate:v5];
+  dateCopy = date;
+  delegate = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
+  [delegate secureKeyDeliveryCoordinator:self didReceiveUpdatedRentalExpirationDate:dateCopy];
 }
 
-- (void)secureKeyLoader:(id)a3 didReceiveUpdatedRentalPlaybackStartDate:(id)a4
+- (void)secureKeyLoader:(id)loader didReceiveUpdatedRentalPlaybackStartDate:(id)date
 {
-  v8 = a4;
-  v5 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
+  dateCopy = date;
+  delegate = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
-    [v7 secureKeyDeliveryCoordinator:self didReceiveUpdatedRentalPlaybackStartDate:v8];
+    delegate2 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
+    [delegate2 secureKeyDeliveryCoordinator:self didReceiveUpdatedRentalPlaybackStartDate:dateCopy];
   }
 }
 
-- (void)secureKeyLoader:(id)a3 didReceiveUpdatedRentalExpirationDate:(id)a4 playbackStartDate:(id)a5
+- (void)secureKeyLoader:(id)loader didReceiveUpdatedRentalExpirationDate:(id)date playbackStartDate:(id)startDate
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
+  dateCopy = date;
+  startDateCopy = startDate;
+  delegate = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
-    [v10 secureKeyDeliveryCoordinator:self didReceiveUpdatedRentalExpirationDate:v11 playbackStartDate:v7];
+    delegate2 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
+    [delegate2 secureKeyDeliveryCoordinator:self didReceiveUpdatedRentalExpirationDate:dateCopy playbackStartDate:startDateCopy];
   }
 }
 
-- (void)secureKeyLoader:(id)a3 didFailWithError:(id)a4 forRequest:(id)a5
+- (void)secureKeyLoader:(id)loader didFailWithError:(id)error forRequest:(id)request
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  loaderCopy = loader;
+  errorCopy = error;
+  requestCopy = request;
   v11 = sDeliveryCoordinatorLogObject;
   if (os_log_type_enabled(sDeliveryCoordinatorLogObject, OS_LOG_TYPE_ERROR))
   {
-    [TVPSecureKeyDeliveryCoordinator secureKeyLoader:v9 didFailWithError:v11 forRequest:?];
+    [TVPSecureKeyDeliveryCoordinator secureKeyLoader:errorCopy didFailWithError:v11 forRequest:?];
   }
 
-  v12 = [MEMORY[0x277CBEAA8] date];
-  [v10 setRequestEndDate:v12];
+  date = [MEMORY[0x277CBEAA8] date];
+  [requestCopy setRequestEndDate:date];
 
   if ([(TVPSecureKeyDeliveryCoordinator *)self certFetchInProgress])
   {
-    v34 = v10;
-    v35 = v8;
-    v13 = [(TVPSecureKeyDeliveryCoordinator *)self requestsAwaitingCertFetch];
-    v14 = [v13 copy];
+    v34 = requestCopy;
+    v35 = loaderCopy;
+    requestsAwaitingCertFetch = [(TVPSecureKeyDeliveryCoordinator *)self requestsAwaitingCertFetch];
+    v14 = [requestsAwaitingCertFetch copy];
 
     [(TVPSecureKeyDeliveryCoordinator *)self setCertFetchInProgress:0];
-    v15 = [(TVPSecureKeyDeliveryCoordinator *)self requestsAwaitingCertFetch];
-    [v15 removeAllObjects];
+    requestsAwaitingCertFetch2 = [(TVPSecureKeyDeliveryCoordinator *)self requestsAwaitingCertFetch];
+    [requestsAwaitingCertFetch2 removeAllObjects];
 
     v45 = 0u;
     v46 = 0u;
@@ -487,7 +487,7 @@ void __91__TVPSecureKeyDeliveryCoordinator_secureKeyLoader_didLoadContentIdentif
       v17 = v16;
       v38 = *v44;
       v37 = *MEMORY[0x277CCA7E8];
-      v39 = v9;
+      v39 = errorCopy;
       do
       {
         for (i = 0; i != v17; ++i)
@@ -498,10 +498,10 @@ void __91__TVPSecureKeyDeliveryCoordinator_secureKeyLoader_didLoadContentIdentif
           }
 
           v19 = *(*(&v43 + 1) + 8 * i);
-          if (v9)
+          if (errorCopy)
           {
             v49 = v37;
-            v50 = v9;
+            v50 = errorCopy;
             v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
           }
 
@@ -511,26 +511,26 @@ void __91__TVPSecureKeyDeliveryCoordinator_secureKeyLoader_didLoadContentIdentif
           }
 
           v21 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.ATV.secureKeyDelivery" code:-345001 userInfo:v20];
-          v22 = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
+          eventCollection = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
           v23 = TVPPlaybackReportingEventFPSCertFetch;
           v24 = MEMORY[0x277CCACA8];
-          v25 = [v19 reportingID];
-          v26 = [v24 stringWithFormat:@"%@%@", v23, v25];
-          [v22 addEndEventWithName:v23 identifier:v26];
+          reportingID = [v19 reportingID];
+          v26 = [v24 stringWithFormat:@"%@%@", v23, reportingID];
+          [eventCollection addEndEventWithName:v23 identifier:v26];
 
           v27 = sDeliveryCoordinatorLogObject;
           if (os_log_type_enabled(sDeliveryCoordinatorLogObject, OS_LOG_TYPE_DEFAULT))
           {
             v28 = v27;
-            v29 = [v19 requestID];
+            requestID = [v19 requestID];
             *buf = 134217984;
-            v48 = v29;
+            v48 = requestID;
             _os_log_impl(&dword_26CEDD000, v28, OS_LOG_TYPE_DEFAULT, "After cert fetch failure, failing request %lu", buf, 0xCu);
           }
 
           [(TVPSecureKeyDeliveryCoordinator *)self _finishLoadingWithError:v21 forRequest:v19];
 
-          v9 = v39;
+          errorCopy = v39;
         }
 
         v17 = [obj countByEnumeratingWithState:&v43 objects:v51 count:16];
@@ -539,17 +539,17 @@ void __91__TVPSecureKeyDeliveryCoordinator_secureKeyLoader_didLoadContentIdentif
       while (v17);
     }
 
-    v10 = v34;
-    v8 = v35;
+    requestCopy = v34;
+    loaderCopy = v35;
   }
 
   else
   {
-    IsFatalSKDError = TVPErrorIsFatalSKDError(v9);
-    [v10 setRetryCount:{objc_msgSend(v10, "retryCount") + 1}];
-    if ((IsFatalSKDError & 1) != 0 || [v10 retryCount] > 1)
+    IsFatalSKDError = TVPErrorIsFatalSKDError(errorCopy);
+    [requestCopy setRetryCount:{objc_msgSend(requestCopy, "retryCount") + 1}];
+    if ((IsFatalSKDError & 1) != 0 || [requestCopy retryCount] > 1)
     {
-      [(TVPSecureKeyDeliveryCoordinator *)self _finishLoadingWithError:v9 forRequest:v10];
+      [(TVPSecureKeyDeliveryCoordinator *)self _finishLoadingWithError:errorCopy forRequest:requestCopy];
     }
 
     else
@@ -567,7 +567,7 @@ void __91__TVPSecureKeyDeliveryCoordinator_secureKeyLoader_didLoadContentIdentif
       block[2] = __79__TVPSecureKeyDeliveryCoordinator_secureKeyLoader_didFailWithError_forRequest___block_invoke;
       block[3] = &unk_279D7BA58;
       objc_copyWeak(&v42, buf);
-      v41 = v10;
+      v41 = requestCopy;
       dispatch_after(v32, MEMORY[0x277D85CD0], block);
 
       objc_destroyWeak(&v42);
@@ -600,120 +600,120 @@ uint64_t __79__TVPSecureKeyDeliveryCoordinator_secureKeyLoader_didFailWithError_
   return 0;
 }
 
-- (void)_loadSecureKeyRequest:(id)a3 sendStartReportingEvent:(BOOL)a4
+- (void)_loadSecureKeyRequest:(id)request sendStartReportingEvent:(BOOL)event
 {
-  v4 = a4;
+  eventCopy = event;
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v4)
+  requestCopy = request;
+  if (eventCopy)
   {
-    v7 = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
+    eventCollection = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
     v8 = TVPPlaybackReportingEventFPSOverallFetch;
     v9 = MEMORY[0x277CCACA8];
-    v10 = [v6 reportingID];
-    v11 = [v9 stringWithFormat:@"%@%@", v8, v10];
-    [v7 addStartEventWithName:v8 identifier:v11];
+    reportingID = [requestCopy reportingID];
+    v11 = [v9 stringWithFormat:@"%@%@", v8, reportingID];
+    [eventCollection addStartEventWithName:v8 identifier:v11];
   }
 
-  v12 = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
+  eventCollection2 = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
   v13 = TVPPlaybackReportingEventFPSCertFetch;
   v14 = MEMORY[0x277CCACA8];
-  v15 = [v6 reportingID];
-  v16 = [v14 stringWithFormat:@"%@%@", v13, v15];
-  [v12 addStartEventWithName:v13 identifier:v16];
+  reportingID2 = [requestCopy reportingID];
+  v16 = [v14 stringWithFormat:@"%@%@", v13, reportingID2];
+  [eventCollection2 addStartEventWithName:v13 identifier:v16];
 
-  v17 = [(TVPSecureKeyDeliveryCoordinator *)self certificateData];
+  certificateData = [(TVPSecureKeyDeliveryCoordinator *)self certificateData];
 
-  if (v17)
+  if (certificateData)
   {
     v18 = sDeliveryCoordinatorLogObject;
     if (os_log_type_enabled(sDeliveryCoordinatorLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v19 = v18;
       *buf = 134217984;
-      v34 = [v6 requestID];
+      requestID = [requestCopy requestID];
       _os_log_impl(&dword_26CEDD000, v19, OS_LOG_TYPE_DEFAULT, "Using cached cert data for request %lu", buf, 0xCu);
     }
 
-    v20 = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
+    eventCollection3 = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
     v21 = TVPPlaybackReportingEventFPSCertFetch;
     v22 = MEMORY[0x277CCACA8];
-    v23 = [v6 reportingID];
-    v24 = [v22 stringWithFormat:@"%@%@", v21, v23];
-    [v20 addEndEventWithName:v21 identifier:v24];
+    reportingID3 = [requestCopy reportingID];
+    v24 = [v22 stringWithFormat:@"%@%@", v21, reportingID3];
+    [eventCollection3 addEndEventWithName:v21 identifier:v24];
 
-    v25 = [(TVPSecureKeyDeliveryCoordinator *)self certificateData];
-    [v6 setCertificateData:v25];
+    certificateData2 = [(TVPSecureKeyDeliveryCoordinator *)self certificateData];
+    [requestCopy setCertificateData:certificateData2];
 
-    v26 = [(TVPSecureKeyDeliveryCoordinator *)self secureKeyLoader];
-    [v26 startLoadingContentIdentifierDataForRequest:v6];
+    secureKeyLoader = [(TVPSecureKeyDeliveryCoordinator *)self secureKeyLoader];
+    [secureKeyLoader startLoadingContentIdentifierDataForRequest:requestCopy];
     goto LABEL_13;
   }
 
-  v27 = [(TVPSecureKeyDeliveryCoordinator *)self requestsAwaitingCertFetch];
-  [v27 addObject:v6];
+  requestsAwaitingCertFetch = [(TVPSecureKeyDeliveryCoordinator *)self requestsAwaitingCertFetch];
+  [requestsAwaitingCertFetch addObject:requestCopy];
 
-  v28 = [(TVPSecureKeyDeliveryCoordinator *)self certFetchInProgress];
+  certFetchInProgress = [(TVPSecureKeyDeliveryCoordinator *)self certFetchInProgress];
   v29 = sDeliveryCoordinatorLogObject;
   v30 = os_log_type_enabled(sDeliveryCoordinatorLogObject, OS_LOG_TYPE_DEFAULT);
-  if (!v28)
+  if (!certFetchInProgress)
   {
     if (v30)
     {
       v31 = v29;
       *buf = 134217984;
-      v34 = [v6 requestID];
+      requestID = [requestCopy requestID];
       _os_log_impl(&dword_26CEDD000, v31, OS_LOG_TYPE_DEFAULT, "No cached cert data exists in coordinator for request %lu.  Starting cert fetch", buf, 0xCu);
     }
 
     [(TVPSecureKeyDeliveryCoordinator *)self setCertFetchInProgress:1];
-    v26 = [(TVPSecureKeyDeliveryCoordinator *)self secureKeyLoader];
-    [v26 startLoadingCertificateDataForRequest:v6];
+    secureKeyLoader = [(TVPSecureKeyDeliveryCoordinator *)self secureKeyLoader];
+    [secureKeyLoader startLoadingCertificateDataForRequest:requestCopy];
     goto LABEL_13;
   }
 
   if (v30)
   {
-    v26 = v29;
+    secureKeyLoader = v29;
     *buf = 134217984;
-    v34 = [v6 requestID];
-    _os_log_impl(&dword_26CEDD000, v26, OS_LOG_TYPE_DEFAULT, "No cached cert data exists in coordinator for request %lu.  Waiting for cert fetch already in progress to complete", buf, 0xCu);
+    requestID = [requestCopy requestID];
+    _os_log_impl(&dword_26CEDD000, secureKeyLoader, OS_LOG_TYPE_DEFAULT, "No cached cert data exists in coordinator for request %lu.  Waiting for cert fetch already in progress to complete", buf, 0xCu);
 LABEL_13:
   }
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishLoadingWithError:(id)a3 forRequest:(id)a4
+- (void)_finishLoadingWithError:(id)error forRequest:(id)request
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
-  [v7 secureKeyDeliveryCoordinator:self willFailWithError:v18];
+  errorCopy = error;
+  requestCopy = request;
+  delegate = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
+  [delegate secureKeyDeliveryCoordinator:self willFailWithError:errorCopy];
 
-  v8 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
+  delegate2 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
-    [v10 secureKeyDeliveryCoordinator:self willFailWithError:v18 forKeyRequest:v6];
+    delegate3 = [(TVPSecureKeyDeliveryCoordinator *)self delegate];
+    [delegate3 secureKeyDeliveryCoordinator:self willFailWithError:errorCopy forKeyRequest:requestCopy];
   }
 
-  v11 = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
+  eventCollection = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
   v12 = TVPPlaybackReportingEventFPSOverallFetch;
   v13 = MEMORY[0x277CCACA8];
-  v14 = [v6 reportingID];
-  v15 = [v13 stringWithFormat:@"%@%@", v12, v14];
-  [v11 addEndEventWithName:v12 identifier:v15];
+  reportingID = [requestCopy reportingID];
+  v15 = [v13 stringWithFormat:@"%@%@", v12, reportingID];
+  [eventCollection addEndEventWithName:v12 identifier:v15];
 
-  v16 = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
-  [v16 addSingleShotEventWithName:TVPPlaybackReportingEventError value:v18];
+  eventCollection2 = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
+  [eventCollection2 addSingleShotEventWithName:TVPPlaybackReportingEventError value:errorCopy];
 
-  v17 = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
-  [v17 addSingleShotEventWithName:TVPPlaybackReportingEventErrorEvent value:TVPPlaybackReportingEventFPSOverallFetch];
+  eventCollection3 = [(TVPSecureKeyDeliveryCoordinator *)self eventCollection];
+  [eventCollection3 addSingleShotEventWithName:TVPPlaybackReportingEventErrorEvent value:TVPPlaybackReportingEventFPSOverallFetch];
 
-  [v6 finishLoadingWithError:v18];
+  [requestCopy finishLoadingWithError:errorCopy];
 }
 
 - (TVPSecureKeyDeliveryCoordinatorDelegate)delegate

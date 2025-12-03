@@ -2,7 +2,7 @@
 - (ICDocCamPageContentViewTapDelegate)tapDelegate;
 - (UIImageView)imageView;
 - (void)didReceiveMemoryWarning;
-- (void)handleSingleTap:(id)a3;
+- (void)handleSingleTap:(id)tap;
 - (void)viewDidLoad;
 @end
 
@@ -13,20 +13,20 @@
   v7.receiver = self;
   v7.super_class = ICDocCamPageContentViewController;
   [(ICDocCamPageContentViewController *)&v7 viewDidLoad];
-  v3 = [(ICDocCamPageContentViewController *)self image];
-  v4 = [(ICDocCamPageContentViewController *)self imageView];
-  [v4 setImage:v3];
+  image = [(ICDocCamPageContentViewController *)self image];
+  imageView = [(ICDocCamPageContentViewController *)self imageView];
+  [imageView setImage:image];
 
   v5 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_handleSingleTap_];
   [v5 setNumberOfTapsRequired:1];
-  v6 = [(ICDocCamPageContentViewController *)self view];
-  [v6 addGestureRecognizer:v5];
+  view = [(ICDocCamPageContentViewController *)self view];
+  [view addGestureRecognizer:v5];
 }
 
-- (void)handleSingleTap:(id)a3
+- (void)handleSingleTap:(id)tap
 {
-  v4 = [(ICDocCamPageContentViewController *)self tapDelegate];
-  [v4 pageContentViewDidTap:{-[ICDocCamPageContentViewController pageIndex](self, "pageIndex")}];
+  tapDelegate = [(ICDocCamPageContentViewController *)self tapDelegate];
+  [tapDelegate pageContentViewDidTap:{-[ICDocCamPageContentViewController pageIndex](self, "pageIndex")}];
 }
 
 - (void)didReceiveMemoryWarning

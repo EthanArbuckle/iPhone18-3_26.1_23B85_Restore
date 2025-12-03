@@ -1,22 +1,22 @@
 @interface HKDeviceQuery
-+ (void)configureClientInterface:(id)a3;
-- (HKDeviceQuery)initWithObjectType:(id)a3 predicate:(id)a4 resultsHandler:(id)a5;
-- (void)clientRemote_deliverDevices:(id)a3 done:(BOOL)a4 reset:(BOOL)a5 query:(id)a6;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
++ (void)configureClientInterface:(id)interface;
+- (HKDeviceQuery)initWithObjectType:(id)type predicate:(id)predicate resultsHandler:(id)handler;
+- (void)clientRemote_deliverDevices:(id)devices done:(BOOL)done reset:(BOOL)reset query:(id)query;
+- (void)queue_deliverError:(id)error;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 @end
 
 @implementation HKDeviceQuery
 
-- (HKDeviceQuery)initWithObjectType:(id)a3 predicate:(id)a4 resultsHandler:(id)a5
+- (HKDeviceQuery)initWithObjectType:(id)type predicate:(id)predicate resultsHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v13.receiver = self;
   v13.super_class = HKDeviceQuery;
-  v9 = [(HKQuery *)&v13 _initWithObjectType:a3 predicate:a4];
+  v9 = [(HKQuery *)&v13 _initWithObjectType:type predicate:predicate];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [handlerCopy copy];
     resultsHandler = v9->_resultsHandler;
     v9->_resultsHandler = v10;
 
@@ -26,23 +26,23 @@
   return v9;
 }
 
-- (void)clientRemote_deliverDevices:(id)a3 done:(BOOL)a4 reset:(BOOL)a5 query:(id)a6
+- (void)clientRemote_deliverDevices:(id)devices done:(BOOL)done reset:(BOOL)reset query:(id)query
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(HKQuery *)self queue];
+  devicesCopy = devices;
+  queryCopy = query;
+  queue = [(HKQuery *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __62__HKDeviceQuery_clientRemote_deliverDevices_done_reset_query___block_invoke;
   v15[3] = &unk_1E7379FC0;
-  v18 = a5;
+  resetCopy = reset;
   v15[4] = self;
-  v16 = v10;
-  v19 = a4;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, v15);
+  v16 = devicesCopy;
+  doneCopy = done;
+  v17 = queryCopy;
+  v13 = queryCopy;
+  v14 = devicesCopy;
+  dispatch_async(queue, v15);
 }
 
 void __62__HKDeviceQuery_clientRemote_deliverDevices_done_reset_query___block_invoke(uint64_t a1)
@@ -86,38 +86,38 @@ void __62__HKDeviceQuery_clientRemote_deliverDevices_done_reset_query___block_in
   }
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _Block_copy(self->_resultsHandler);
   if (v5)
   {
-    v6 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __36__HKDeviceQuery_queue_deliverError___block_invoke;
     block[3] = &unk_1E7376618;
     v9 = v5;
     block[4] = self;
-    v8 = v4;
-    dispatch_async(v6, block);
+    v8 = errorCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   resultsHandler = self->_resultsHandler;
   self->_resultsHandler = 0;
   MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v4 = a3;
-  v6.receiver = a1;
+  interfaceCopy = interface;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___HKDeviceQuery;
-  objc_msgSendSuper2(&v6, sel_configureClientInterface_, v4);
-  v5 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_clientRemote_deliverDevices_done_reset_query_ argumentIndex:0 ofReply:0];
+  objc_msgSendSuper2(&v6, sel_configureClientInterface_, interfaceCopy);
+  v5 = [interfaceCopy hk_setArrayOfClass:objc_opt_class() forSelector:sel_clientRemote_deliverDevices_done_reset_query_ argumentIndex:0 ofReply:0];
 }
 
 @end

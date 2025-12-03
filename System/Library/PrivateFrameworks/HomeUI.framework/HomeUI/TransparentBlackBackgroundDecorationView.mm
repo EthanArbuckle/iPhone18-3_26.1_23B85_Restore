@@ -1,28 +1,28 @@
 @interface TransparentBlackBackgroundDecorationView
-- (_TtC6HomeUI40TransparentBlackBackgroundDecorationView)initWithCoder:(id)a3;
-- (_TtC6HomeUI40TransparentBlackBackgroundDecorationView)initWithFrame:(CGRect)a3;
+- (_TtC6HomeUI40TransparentBlackBackgroundDecorationView)initWithCoder:(id)coder;
+- (_TtC6HomeUI40TransparentBlackBackgroundDecorationView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TransparentBlackBackgroundDecorationView
 
-- (_TtC6HomeUI40TransparentBlackBackgroundDecorationView)initWithFrame:(CGRect)a3
+- (_TtC6HomeUI40TransparentBlackBackgroundDecorationView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12.receiver = self;
   v12.super_class = type metadata accessor for TransparentBlackBackgroundDecorationView();
-  v7 = [(SolidColorSectionBackgroundDecorationView *)&v12 initWithFrame:x, y, width, height];
+  height = [(SolidColorSectionBackgroundDecorationView *)&v12 initWithFrame:x, y, width, height];
   v8 = objc_allocWithZone(MEMORY[0x277D75348]);
-  v9 = v7;
+  v9 = height;
   v10 = [v8 initWithWhite:0.0 alpha:0.5];
   [(TransparentBlackBackgroundDecorationView *)v9 setBackgroundColor:v10];
 
   return v9;
 }
 
-- (_TtC6HomeUI40TransparentBlackBackgroundDecorationView)initWithCoder:(id)a3
+- (_TtC6HomeUI40TransparentBlackBackgroundDecorationView)initWithCoder:(id)coder
 {
   result = sub_20D568A58();
   __break(1u);

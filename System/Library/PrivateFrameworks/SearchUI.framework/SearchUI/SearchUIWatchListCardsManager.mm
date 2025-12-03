@@ -1,21 +1,21 @@
 @interface SearchUIWatchListCardsManager
 - (BOOL)isTappable;
-- (SearchUIWatchListCardsManager)initWithWatchListIdentifier:(id)a3;
-- (void)addWatchListRowModelObserver:(id)a3;
+- (SearchUIWatchListCardsManager)initWithWatchListIdentifier:(id)identifier;
+- (void)addWatchListRowModelObserver:(id)observer;
 @end
 
 @implementation SearchUIWatchListCardsManager
 
-- (SearchUIWatchListCardsManager)initWithWatchListIdentifier:(id)a3
+- (SearchUIWatchListCardsManager)initWithWatchListIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = SearchUIWatchListCardsManager;
   v5 = [(SearchUIWatchListCardsManager *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(SearchUIWatchListCardsManager *)v5 setWatchListIdentifier:v4];
+    [(SearchUIWatchListCardsManager *)v5 setWatchListIdentifier:identifierCopy];
     v7 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:517 capacity:0];
     [(SearchUIWatchListCardsManager *)v6 setRowModels:v7];
 
@@ -24,7 +24,7 @@
     v9[2] = __61__SearchUIWatchListCardsManager_initWithWatchListIdentifier___block_invoke;
     v9[3] = &unk_1E85B4AB8;
     v10 = v6;
-    [SearchUIWatchListUtilities generateWatchListReponseForWatchListIdentifier:v4 type:5 completion:v9];
+    [SearchUIWatchListUtilities generateWatchListReponseForWatchListIdentifier:identifierCopy type:5 completion:v9];
   }
 
   return v6;
@@ -188,17 +188,17 @@ LABEL_28:
   }
 }
 
-- (void)addWatchListRowModelObserver:(id)a3
+- (void)addWatchListRowModelObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SearchUIWatchListCardsManager *)self rowModels];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  rowModels = [(SearchUIWatchListCardsManager *)self rowModels];
+  [rowModels addObject:observerCopy];
 }
 
 - (BOOL)isTappable
 {
-  v2 = [(SearchUIWatchListCardsManager *)self response];
-  v3 = v2 != 0;
+  response = [(SearchUIWatchListCardsManager *)self response];
+  v3 = response != 0;
 
   return v3;
 }

@@ -14,7 +14,7 @@
   v7 = *MEMORY[0x1E69DDC70];
   v8 = a3;
   v9 = [v6 traitCollectionWithPreferredContentSizeCategory:v7];
-  v10 = [a1 _sf_staticConfigurationWithTextStyle:v8 scale:a4 compatibleWithTraitCollection:v9];
+  v10 = [self _sf_staticConfigurationWithTextStyle:v8 scale:a4 compatibleWithTraitCollection:v9];
 
   return v10;
 }
@@ -25,13 +25,13 @@
   v9 = a5;
   v10 = a3;
   v11 = [v8 preferredFontDescriptorWithTextStyle:v10 compatibleWithTraitCollection:v9];
-  v12 = [v11 fontAttributes];
-  v13 = [v12 objectForKeyedSubscript:*MEMORY[0x1E69DB8F0]];
+  fontAttributes = [v11 fontAttributes];
+  v13 = [fontAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB8F0]];
   v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69DB990]];
   [v14 floatValue];
   v16 = v15;
 
-  v17 = [a1 _sf_staticConfigurationWithTextStyle:v10 scale:a4 weight:MEMORY[0x18CFFDEE0](v16) compatibleWithTraitCollection:v9];
+  v17 = [self _sf_staticConfigurationWithTextStyle:v10 scale:a4 weight:MEMORY[0x18CFFDEE0](v16) compatibleWithTraitCollection:v9];
 
   return v17;
 }
@@ -40,14 +40,14 @@
 {
   v9 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:a3 compatibleWithTraitCollection:a6];
   [v9 pointSize];
-  v10 = [a1 configurationWithPointSize:a5 weight:a4 scale:?];
+  v10 = [self configurationWithPointSize:a5 weight:a4 scale:?];
 
   return v10;
 }
 
 + (id)safari_barButtonConfiguration
 {
-  v1 = [a1 configurationWithTextStyle:*MEMORY[0x1E69DDCF8] scale:3];
+  v1 = [self configurationWithTextStyle:*MEMORY[0x1E69DDCF8] scale:3];
   v2 = [MEMORY[0x1E69DCAD8] configurationWithWeight:5];
   v3 = [v1 configurationByApplyingConfiguration:v2];
 
@@ -56,7 +56,7 @@
 
 + (id)safari_URLFieldButtonConfiguration
 {
-  v1 = [a1 configurationWithTextStyle:*MEMORY[0x1E69DDCF8] scale:2];
+  v1 = [self configurationWithTextStyle:*MEMORY[0x1E69DDCF8] scale:2];
   v2 = [MEMORY[0x1E69DCAD8] configurationWithWeight:5];
   v3 = [v1 configurationByApplyingConfiguration:v2];
 

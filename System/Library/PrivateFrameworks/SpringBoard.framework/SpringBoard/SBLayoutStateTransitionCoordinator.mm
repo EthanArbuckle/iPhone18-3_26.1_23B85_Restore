@@ -1,15 +1,15 @@
 @interface SBLayoutStateTransitionCoordinator
 - (BOOL)isTransitioning;
-- (CGRect)applicationTransitionContext:(id)a3 frameForApplicationSceneEntity:(id)a4;
-- (SBLayoutStateTransitionCoordinator)initWithWindowScene:(id)a3;
+- (CGRect)applicationTransitionContext:(id)context frameForApplicationSceneEntity:(id)entity;
+- (SBLayoutStateTransitionCoordinator)initWithWindowScene:(id)scene;
 - (SBLayoutStateTransitionSceneEntityFrameProvider)sceneEntityFrameProvider;
 - (SBWindowScene)windowScene;
-- (id)layoutStateForApplicationTransitionContext:(id)a3;
-- (id)previousLayoutStateForApplicationTransitionContext:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)beginTransitionForWorkspaceTransaction:(id)a3;
-- (void)endTransitionWithError:(id)a3;
-- (void)removeObserver:(id)a3;
+- (id)layoutStateForApplicationTransitionContext:(id)context;
+- (id)previousLayoutStateForApplicationTransitionContext:(id)context;
+- (void)addObserver:(id)observer;
+- (void)beginTransitionForWorkspaceTransaction:(id)transaction;
+- (void)endTransitionWithError:(id)error;
+- (void)removeObserver:(id)observer;
 - (void)willEndTransition;
 @end
 
@@ -17,8 +17,8 @@
 
 - (BOOL)isTransitioning
 {
-  v2 = [(SBLayoutStateTransitionCoordinator *)self transitionContext];
-  v3 = v2 != 0;
+  transitionContext = [(SBLayoutStateTransitionCoordinator *)self transitionContext];
+  v3 = transitionContext != 0;
 
   return v3;
 }
@@ -82,8 +82,8 @@
           v9 = *(*(&v11 + 1) + 8 * v8);
           if (objc_opt_respondsToSelector())
           {
-            v10 = [(SBLayoutStateTransitionCoordinator *)self transitionContext];
-            [v9 layoutStateTransitionCoordinator:self transitionWillEndWithTransitionContext:v10];
+            transitionContext = [(SBLayoutStateTransitionCoordinator *)self transitionContext];
+            [v9 layoutStateTransitionCoordinator:self transitionWillEndWithTransitionContext:transitionContext];
           }
 
           ++v8;
@@ -98,49 +98,49 @@
   }
 }
 
-- (SBLayoutStateTransitionCoordinator)initWithWindowScene:(id)a3
+- (SBLayoutStateTransitionCoordinator)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v10.receiver = self;
   v10.super_class = SBLayoutStateTransitionCoordinator;
   v5 = [(SBLayoutStateTransitionCoordinator *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_windowScene, v4);
-    v7 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    objc_storeWeak(&v5->_windowScene, sceneCopy);
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     observerPointerArray = v6->_observerPointerArray;
-    v6->_observerPointerArray = v7;
+    v6->_observerPointerArray = weakObjectsPointerArray;
   }
 
   return v6;
 }
 
-- (id)layoutStateForApplicationTransitionContext:(id)a3
+- (id)layoutStateForApplicationTransitionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v6 = [WeakRetained layoutStateManager];
-  v7 = [v6 layoutStateForApplicationTransitionContext:v4];
+  layoutStateManager = [WeakRetained layoutStateManager];
+  v7 = [layoutStateManager layoutStateForApplicationTransitionContext:contextCopy];
 
   return v7;
 }
 
-- (id)previousLayoutStateForApplicationTransitionContext:(id)a3
+- (id)previousLayoutStateForApplicationTransitionContext:(id)context
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v4 = [WeakRetained layoutStateProvider];
-  v5 = [v4 layoutState];
+  layoutStateProvider = [WeakRetained layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
 
-  return v5;
+  return layoutState;
 }
 
-- (CGRect)applicationTransitionContext:(id)a3 frameForApplicationSceneEntity:(id)a4
+- (CGRect)applicationTransitionContext:(id)context frameForApplicationSceneEntity:(id)entity
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 request];
-  [v7 applicationTransitionContext:v6 frameForApplicationSceneEntity:v5];
+  entityCopy = entity;
+  contextCopy = context;
+  request = [contextCopy request];
+  [request applicationTransitionContext:contextCopy frameForApplicationSceneEntity:entityCopy];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -157,13 +157,13 @@
   return result;
 }
 
-- (void)beginTransitionForWorkspaceTransaction:(id)a3
+- (void)beginTransitionForWorkspaceTransaction:(id)transaction
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   if (![(SBLayoutStateTransitionCoordinator *)self isTransitioning])
   {
-    v5 = [[SBLayoutStateTransitionContext alloc] initWithWorkspaceTransaction:v4];
+    v5 = [[SBLayoutStateTransitionContext alloc] initWithWorkspaceTransaction:transactionCopy];
     transitionContext = self->_transitionContext;
     self->_transitionContext = v5;
 
@@ -191,8 +191,8 @@
           v13 = *(*(&v15 + 1) + 8 * v12);
           if (objc_opt_respondsToSelector())
           {
-            v14 = [(SBLayoutStateTransitionCoordinator *)self transitionContext];
-            [v13 layoutStateTransitionCoordinator:self transitionDidBeginWithTransitionContext:v14];
+            transitionContext = [(SBLayoutStateTransitionCoordinator *)self transitionContext];
+            [v13 layoutStateTransitionCoordinator:self transitionDidBeginWithTransitionContext:transitionContext];
           }
 
           ++v12;
@@ -207,14 +207,14 @@
   }
 }
 
-- (void)endTransitionWithError:(id)a3
+- (void)endTransitionWithError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if ([(SBLayoutStateTransitionCoordinator *)self isTransitioning])
   {
-    v5 = [(SBLayoutStateTransitionCoordinator *)self transitionContext];
-    [v5 transitionCompletedWithError:v4];
+    transitionContext = [(SBLayoutStateTransitionCoordinator *)self transitionContext];
+    [transitionContext transitionCompletedWithError:errorCopy];
 
     v6 = [(NSPointerArray *)self->_observerPointerArray copy];
     v15 = 0u;
@@ -240,8 +240,8 @@
           v12 = *(*(&v15 + 1) + 8 * v11);
           if (objc_opt_respondsToSelector())
           {
-            v13 = [(SBLayoutStateTransitionCoordinator *)self transitionContext];
-            [v12 layoutStateTransitionCoordinator:self transitionDidEndWithTransitionContext:v13];
+            transitionContext2 = [(SBLayoutStateTransitionCoordinator *)self transitionContext];
+            [v12 layoutStateTransitionCoordinator:self transitionDidEndWithTransitionContext:transitionContext2];
           }
 
           ++v11;
@@ -259,25 +259,25 @@
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSPointerArray *)self->_observerPointerArray addPointer:?];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v7 = a3;
-  if (v7)
+  observerCopy = observer;
+  if (observerCopy)
   {
     v4 = [(NSPointerArray *)self->_observerPointerArray count];
     if (v4)
     {
       v5 = v4;
       v6 = 0;
-      while ([(NSPointerArray *)self->_observerPointerArray pointerAtIndex:v6]!= v7)
+      while ([(NSPointerArray *)self->_observerPointerArray pointerAtIndex:v6]!= observerCopy)
       {
         if (v5 == ++v6)
         {

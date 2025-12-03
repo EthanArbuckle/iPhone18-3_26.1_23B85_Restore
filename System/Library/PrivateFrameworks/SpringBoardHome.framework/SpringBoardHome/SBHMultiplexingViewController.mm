@@ -1,15 +1,15 @@
 @interface SBHMultiplexingViewController
 - (NSString)description;
-- (SBHMultiplexingViewController)initWithLevel:(double)a3 identifier:(id)a4;
+- (SBHMultiplexingViewController)initWithLevel:(double)level identifier:(id)identifier;
 - (id)sbh_underlyingAvocadoHostViewControllers;
 - (void)_setUpMultiplexedViewController;
-- (void)activateWithViewController:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)activateWithViewController:(id)controller;
+- (void)addObserver:(id)observer;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)deactivate;
 - (void)dealloc;
 - (void)loadView;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation SBHMultiplexingViewController
@@ -21,9 +21,9 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIViewController *)v3 parentViewController];
+    parentViewController = [(UIViewController *)v3 parentViewController];
 
-    if (v5 != self)
+    if (parentViewController != self)
     {
       v6 = SBLogWidgets();
       if (os_signpost_enabled(v6))
@@ -37,12 +37,12 @@
         _os_signpost_emit_with_name_impl(&dword_1BEB18000, v6, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SBH_HOME_LAYOUT_MULTIPLEX_ACTIVATE", "%{public}@", buf, 0xCu);
       }
 
-      v11 = [(UIViewController *)v4 view];
-      v12 = [(SBHMultiplexingViewController *)self view];
-      [v12 bounds];
-      [v11 setFrame:?];
+      view = [(UIViewController *)v4 view];
+      view2 = [(SBHMultiplexingViewController *)self view];
+      [view2 bounds];
+      [view setFrame:?];
 
-      [v11 setAutoresizingMask:18];
+      [view setAutoresizingMask:18];
       [(UIViewController *)v4 bs_endAppearanceTransition:1];
       [(SBHMultiplexingViewController *)self bs_addChildViewController:v4];
       v19 = 0u;
@@ -117,7 +117,7 @@
       *buf = 138543618;
       v25 = v10;
       v26 = 2048;
-      v27 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1BEB18000, v8, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> deactivate", buf, 0x16u);
     }
 
@@ -171,25 +171,25 @@
 
 - (void)dealloc
 {
-  v3 = [(SBHMultiplexingViewController *)self multiplexingManager];
-  [v3 validateActiveMultiplexingViewControllerForIdentifier:self->_identifier];
+  multiplexingManager = [(SBHMultiplexingViewController *)self multiplexingManager];
+  [multiplexingManager validateActiveMultiplexingViewControllerForIdentifier:self->_identifier];
 
   v4.receiver = self;
   v4.super_class = SBHMultiplexingViewController;
   [(SBHMultiplexingViewController *)&v4 dealloc];
 }
 
-- (SBHMultiplexingViewController)initWithLevel:(double)a3 identifier:(id)a4
+- (SBHMultiplexingViewController)initWithLevel:(double)level identifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = SBHMultiplexingViewController;
   v7 = [(SBHMultiplexingViewController *)&v12 initWithNibName:0 bundle:0];
   v8 = v7;
   if (v7)
   {
-    v7->_level = a3;
-    v9 = [v6 copy];
+    v7->_level = level;
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
   }
@@ -197,11 +197,11 @@
   return v8;
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = SBHMultiplexingViewController;
-  [(SBHMultiplexingViewController *)&v4 viewIsAppearing:a3];
+  [(SBHMultiplexingViewController *)&v4 viewIsAppearing:appearing];
   [(SBHMultiplexingViewController *)self _setUpMultiplexedViewController];
 }
 
@@ -214,10 +214,10 @@
   return v4;
 }
 
-- (void)activateWithViewController:(id)a3
+- (void)activateWithViewController:(id)controller
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = SBLogWidgets();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -228,57 +228,57 @@
     v13 = 138544130;
     v14 = v7;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
     v18 = v9;
     v19 = 2048;
-    v20 = v4;
+    v20 = controllerCopy;
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> activateWithViewController: <%{public}@:%p>", &v13, 0x2Au);
   }
 
   multiplexedViewController = self->_multiplexedViewController;
-  self->_multiplexedViewController = v4;
+  self->_multiplexedViewController = controllerCopy;
 
   if ([(SBHMultiplexingViewController *)self isViewLoaded])
   {
-    v11 = [(SBHMultiplexingViewController *)self view];
-    v12 = [v11 window];
+    view = [(SBHMultiplexingViewController *)self view];
+    window = [view window];
 
-    if (v12)
+    if (window)
     {
       [(SBHMultiplexingViewController *)self _setUpMultiplexedViewController];
     }
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__SBHMultiplexingViewController_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_1E8088F18;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = formatterCopy;
+  selfCopy = self;
+  v5 = formatterCopy;
   [v5 appendProem:self block:v6];
 }
 
@@ -291,13 +291,13 @@ id __62__SBHMultiplexingViewController_appendDescriptionToFormatter___block_invo
 
 - (id)sbh_underlyingAvocadoHostViewControllers
 {
-  v3 = [(SBHMultiplexingViewController *)self multiplexedViewController];
-  v4 = [v3 sbh_isWidgetHostViewController];
+  multiplexedViewController = [(SBHMultiplexingViewController *)self multiplexedViewController];
+  sbh_isWidgetHostViewController = [multiplexedViewController sbh_isWidgetHostViewController];
   v5 = MEMORY[0x1E695DFD8];
-  if (v4)
+  if (sbh_isWidgetHostViewController)
   {
-    v6 = [(SBHMultiplexingViewController *)self multiplexedViewController];
-    v7 = [v5 setWithObject:v6];
+    multiplexedViewController2 = [(SBHMultiplexingViewController *)self multiplexedViewController];
+    v7 = [v5 setWithObject:multiplexedViewController2];
   }
 
   else

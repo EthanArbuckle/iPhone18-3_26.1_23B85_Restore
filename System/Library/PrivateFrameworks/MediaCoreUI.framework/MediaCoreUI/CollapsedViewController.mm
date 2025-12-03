@@ -11,10 +11,10 @@
   v6.super_class = swift_getObjectType();
   v2 = v6.receiver;
   [(CollapsedViewController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
+    v4 = view;
     v5 = sub_1C5B9E6A8();
     [v4 addSubview_];
   }
@@ -27,7 +27,7 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5BA6310();
 }
 

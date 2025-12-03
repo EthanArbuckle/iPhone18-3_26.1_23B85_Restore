@@ -1,9 +1,9 @@
 @interface FxPlugDescriptor
-+ (id)fxPlugDescriptorWithPROPlugIn:(void *)a3;
++ (id)fxPlugDescriptorWithPROPlugIn:(void *)in;
 - (BOOL)canDoGPU;
 - (BOOL)requiresCoreImage;
 - (Class)plugInClass;
-- (FxPlugDescriptor)initWithPROPlugIn:(void *)a3;
+- (FxPlugDescriptor)initWithPROPlugIn:(void *)in;
 - (id)displayName;
 - (id)flavor;
 - (id)groupDescriptor;
@@ -15,7 +15,7 @@
 
 @implementation FxPlugDescriptor
 
-- (FxPlugDescriptor)initWithPROPlugIn:(void *)a3
+- (FxPlugDescriptor)initWithPROPlugIn:(void *)in
 {
   v7.receiver = self;
   v7.super_class = FxPlugDescriptor;
@@ -26,7 +26,7 @@
     v4->_priv = v5;
     if (v5)
     {
-      v4->_priv->var0 = a3;
+      v4->_priv->var0 = in;
     }
   }
 
@@ -53,9 +53,9 @@
   [(FxPlugDescriptor *)&v10 dealloc];
 }
 
-+ (id)fxPlugDescriptorWithPROPlugIn:(void *)a3
++ (id)fxPlugDescriptorWithPROPlugIn:(void *)in
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithPROPlugIn:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithPROPlugIn:in];
 
   return v3;
 }
@@ -65,9 +65,9 @@
   var0 = self->_priv->var0;
   if (var0)
   {
-    v3 = [var0 infoDictionary];
+    infoDictionary = [var0 infoDictionary];
 
-    return [v3 objectForKey:@"FxPlugProperties"];
+    return [infoDictionary objectForKey:@"FxPlugProperties"];
   }
 
   else
@@ -95,9 +95,9 @@
 
 - (id)flavor
 {
-  v2 = [(FxPlugDescriptor *)self properties];
+  properties = [(FxPlugDescriptor *)self properties];
 
-  return [v2 objectForKey:@"Flavor"];
+  return [properties objectForKey:@"Flavor"];
 }
 
 - (id)displayName
@@ -158,17 +158,17 @@
     return 0;
   }
 
-  v3 = [var0 group];
-  FxDebugAssert(v3 != 0, &cfstr_PluginGroupRet.isa, v4, v5, v6, v7, v8, v9, v13);
-  if (!v3)
+  group = [var0 group];
+  FxDebugAssert(group != 0, &cfstr_PluginGroupRet.isa, v4, v5, v6, v7, v8, v9, v13);
+  if (!group)
   {
     return 0;
   }
 
-  v10 = [v3 displayName];
-  v11 = CFUUIDCreateString(0, [v3 uuid]);
+  displayName = [group displayName];
+  v11 = CFUUIDCreateString(0, [group uuid]);
 
-  return [FxPlugGroupDescriptor fxPlugGroupDescriptorWithUUID:v11 andDisplayName:v10];
+  return [FxPlugGroupDescriptor fxPlugGroupDescriptorWithUUID:v11 andDisplayName:displayName];
 }
 
 - (BOOL)canDoGPU

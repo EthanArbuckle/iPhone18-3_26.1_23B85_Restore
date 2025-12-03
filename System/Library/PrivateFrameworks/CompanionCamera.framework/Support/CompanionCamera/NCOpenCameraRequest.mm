@@ -1,14 +1,14 @@
 @interface NCOpenCameraRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSupportedCaptureModes:(id)a3;
-- (int)supportedCaptureModeAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (int)StringAsSupportedCaptureModes:(id)modes;
+- (int)supportedCaptureModeAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NCOpenCameraRequest
@@ -21,69 +21,69 @@
   [(NCOpenCameraRequest *)&v3 dealloc];
 }
 
-- (int)supportedCaptureModeAtIndex:(unint64_t)a3
+- (int)supportedCaptureModeAtIndex:(unint64_t)index
 {
   p_supportedCaptureModes = &self->_supportedCaptureModes;
   count = self->_supportedCaptureModes.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_supportedCaptureModes->list[a3];
+  return p_supportedCaptureModes->list[index];
 }
 
-- (int)StringAsSupportedCaptureModes:(id)a3
+- (int)StringAsSupportedCaptureModes:(id)modes
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Photo"])
+  modesCopy = modes;
+  if ([modesCopy isEqualToString:@"Photo"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Video"])
+  else if ([modesCopy isEqualToString:@"Video"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Square"])
+  else if ([modesCopy isEqualToString:@"Square"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Timelapse"])
+  else if ([modesCopy isEqualToString:@"Timelapse"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Portrait"])
+  else if ([modesCopy isEqualToString:@"Portrait"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Slomo"])
+  else if ([modesCopy isEqualToString:@"Slomo"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Panorama"])
+  else if ([modesCopy isEqualToString:@"Panorama"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Cinematic"])
+  else if ([modesCopy isEqualToString:@"Cinematic"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SpatialVideo"])
+  else if ([modesCopy isEqualToString:@"SpatialVideo"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SpatialPhoto"])
+  else if ([modesCopy isEqualToString:@"SpatialPhoto"])
   {
     v4 = 12;
   }
@@ -101,8 +101,8 @@
   v7.receiver = self;
   v7.super_class = NCOpenCameraRequest;
   v3 = [(NCOpenCameraRequest *)&v7 description];
-  v4 = [(NCOpenCameraRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NCOpenCameraRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -144,7 +144,7 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   p_supportedCaptureModes = &self->_supportedCaptureModes;
   if (self->_supportedCaptureModes.count)
@@ -161,35 +161,35 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(NCOpenCameraRequest *)self supportedCaptureModesCount])
   {
-    [v7 clearSupportedCaptureModes];
-    v4 = [(NCOpenCameraRequest *)self supportedCaptureModesCount];
-    if (v4)
+    [toCopy clearSupportedCaptureModes];
+    supportedCaptureModesCount = [(NCOpenCameraRequest *)self supportedCaptureModesCount];
+    if (supportedCaptureModesCount)
     {
-      v5 = v4;
+      v5 = supportedCaptureModesCount;
       for (i = 0; i != v5; ++i)
       {
-        [v7 addSupportedCaptureMode:{-[NCOpenCameraRequest supportedCaptureModeAtIndex:](self, "supportedCaptureModeAtIndex:", i)}];
+        [toCopy addSupportedCaptureMode:{-[NCOpenCameraRequest supportedCaptureModeAtIndex:](self, "supportedCaptureModeAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedInt32Copy();
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     IsEqual = PBRepeatedInt32IsEqual();
   }
@@ -202,16 +202,16 @@
   return IsEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v7 = a3;
-  v4 = [v7 supportedCaptureModesCount];
-  if (v4)
+  fromCopy = from;
+  supportedCaptureModesCount = [fromCopy supportedCaptureModesCount];
+  if (supportedCaptureModesCount)
   {
-    v5 = v4;
+    v5 = supportedCaptureModesCount;
     for (i = 0; i != v5; ++i)
     {
-      -[NCOpenCameraRequest addSupportedCaptureMode:](self, "addSupportedCaptureMode:", [v7 supportedCaptureModeAtIndex:i]);
+      -[NCOpenCameraRequest addSupportedCaptureMode:](self, "addSupportedCaptureMode:", [fromCopy supportedCaptureModeAtIndex:i]);
     }
   }
 }

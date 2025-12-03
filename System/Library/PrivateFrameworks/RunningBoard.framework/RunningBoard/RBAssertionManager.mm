@@ -1,95 +1,95 @@
 @interface RBAssertionManager
 + (id)sharedWorkloop;
-- (BOOL)_decreaseInFlightOperationsForOriginator:(id)a3;
-- (BOOL)_increaseInFlightOperationsForOriginator:(id)a3 andSuspendIfNeeded:(id)a4;
-- (BOOL)_lock_batchContextInvalidatesSynchronously:(id)a3;
-- (BOOL)_lock_enforceAssertionLimitIfNecessaryForBatchContext:(id)a3 originatorProcess:(id)a4 error:(id *)a5;
-- (BOOL)_lock_hasStartTimeDefiningAssertionsForTargetProcessIdentity:(id)a3;
-- (BOOL)_lock_originatorHasExited:(id)a3;
-- (BOOL)_lock_validateDescriptor:(id)a3 originatorProcess:(id)a4 originatorState:(id)a5 concreteTarget:(id)a6 targetProcess:(id)a7 targetIdentity:(id)a8 targetIdentifier:(id)a9 targetState:(id)a10 acquisitionContext:(id)a11 error:(id *)a12;
-- (BOOL)_lock_willExceedAssertionLimitForOriginatorProcess:(id)a3 withIncomingCount:(unint64_t)a4;
-- (BOOL)addSavedEndowment:(id)a3 forProcess:(id)a4;
-- (BOOL)areTargetPropertiesValidForContext:(id)a3 forAttributeWithDomain:(id)a4 andName:(id)a5;
-- (BOOL)containsAttributeWithDomain:(id)a3 andName:(id)a4;
-- (BOOL)hasAssertionWithIdentifier:(id)a3;
-- (BOOL)hasAssertionWithIdentifierForTarget:(id)a3 identifier:(id)a4;
-- (BOOL)invalidateAssertionWithIdentifier:(id)a3;
-- (BOOL)invalidateAssertionsDueToCPUUsageViolationForProcessIdentifier:(id)a3;
-- (BOOL)isProcessForeground:(id)a3;
+- (BOOL)_decreaseInFlightOperationsForOriginator:(id)originator;
+- (BOOL)_increaseInFlightOperationsForOriginator:(id)originator andSuspendIfNeeded:(id)needed;
+- (BOOL)_lock_batchContextInvalidatesSynchronously:(id)synchronously;
+- (BOOL)_lock_enforceAssertionLimitIfNecessaryForBatchContext:(id)context originatorProcess:(id)process error:(id *)error;
+- (BOOL)_lock_hasStartTimeDefiningAssertionsForTargetProcessIdentity:(id)identity;
+- (BOOL)_lock_originatorHasExited:(id)exited;
+- (BOOL)_lock_validateDescriptor:(id)descriptor originatorProcess:(id)process originatorState:(id)state concreteTarget:(id)target targetProcess:(id)targetProcess targetIdentity:(id)identity targetIdentifier:(id)identifier targetState:(id)self0 acquisitionContext:(id)self1 error:(id *)self2;
+- (BOOL)_lock_willExceedAssertionLimitForOriginatorProcess:(id)process withIncomingCount:(unint64_t)count;
+- (BOOL)addSavedEndowment:(id)endowment forProcess:(id)process;
+- (BOOL)areTargetPropertiesValidForContext:(id)context forAttributeWithDomain:(id)domain andName:(id)name;
+- (BOOL)containsAttributeWithDomain:(id)domain andName:(id)name;
+- (BOOL)hasAssertionWithIdentifier:(id)identifier;
+- (BOOL)hasAssertionWithIdentifierForTarget:(id)target identifier:(id)identifier;
+- (BOOL)invalidateAssertionWithIdentifier:(id)identifier;
+- (BOOL)invalidateAssertionsDueToCPUUsageViolationForProcessIdentifier:(id)identifier;
+- (BOOL)isProcessForeground:(id)foreground;
 - (NSString)debugDescription;
 - (NSString)stateCaptureTitle;
 - (RBAssertionManager)init;
-- (RBAssertionManager)initWithDelegate:(id)a3 bundlePropertiesManager:(id)a4 originatorPidStore:(id)a5 assertionDescriptorValidator:(id)a6 timeProvider:(id)a7 daemonContext:(id)a8 maxOperationsInFlight:(unint64_t)a9 maxAssertionsPerOriginator:(unint64_t)a10;
+- (RBAssertionManager)initWithDelegate:(id)delegate bundlePropertiesManager:(id)manager originatorPidStore:(id)store assertionDescriptorValidator:(id)validator timeProvider:(id)provider daemonContext:(id)context maxOperationsInFlight:(unint64_t)flight maxAssertionsPerOriginator:(unint64_t)self0;
 - (RBSystemState)systemState;
-- (double)_lock_delayedStartTimeForAssertion:(id)a3;
-- (double)_lock_invalidationTimeForAssertion:(id)a3;
-- (double)_lock_originatorExitTimeForAssertion:(id)a3;
-- (double)_lock_relativeStartTimeForAssertion:(id)a3;
-- (double)_lock_startTimeForAssertion:(id)a3;
-- (double)_remainingRuntimeForProcessIdentity:(id)a3;
-- (double)eventQueue:(id)a3 startTimeForAssertion:(id)a4;
-- (id)_concreteTargetForTarget:(id)a3 allowAbstractTarget:(BOOL)a4;
-- (id)_lock_activateDelayedAssertionsForTargets:(id)a3;
-- (id)_lock_assertionCreationAttributeContextForTargetIdentity:(id)a3 originator:(id)a4;
-- (id)_lock_createAssertionForDescriptor:(id)a3 originatorState:(id)a4 acquisitionContext:(id)a5 error:(id *)a6;
-- (id)_lock_createAssertionWithAcquisitionContext:(id)a3 attributeContext:(id)a4 concreteTarget:(id)a5 targetIdentity:(id)a6 originator:(id)a7 error:(id *)a8;
-- (id)_lock_createAssertionsForBatchContext:(id)a3 originatorState:(id)a4 errorsByIndex:(id)a5;
-- (id)_lock_deactivateAssertions:(id)a3;
-- (id)_lock_deactivateDelayedAssertionsForTargets:(id)a3;
-- (id)_lock_deactivateExistingAssertionsDelayedByIncomingAssertions:(id)a3;
-- (id)_lock_invalidateAssertionByConditions:(id)a3 changedAssertions:(id *)a4;
-- (id)_lock_originatorIdentifiersInAssertions:(id)a3;
-- (id)_lock_sortedAssertionsForTarget:(id)a3;
-- (id)_lock_targetIdentitiesInAssertions:(id)a3;
-- (id)_lock_updateStatesDueToChangingAssertions:(id)a3 invalidatedAssertions:(id)a4;
-- (id)additionalRestrictionsForDomain:(id)a3 andName:(id)a4;
+- (double)_lock_delayedStartTimeForAssertion:(id)assertion;
+- (double)_lock_invalidationTimeForAssertion:(id)assertion;
+- (double)_lock_originatorExitTimeForAssertion:(id)assertion;
+- (double)_lock_relativeStartTimeForAssertion:(id)assertion;
+- (double)_lock_startTimeForAssertion:(id)assertion;
+- (double)_remainingRuntimeForProcessIdentity:(id)identity;
+- (double)eventQueue:(id)queue startTimeForAssertion:(id)assertion;
+- (id)_concreteTargetForTarget:(id)target allowAbstractTarget:(BOOL)abstractTarget;
+- (id)_lock_activateDelayedAssertionsForTargets:(id)targets;
+- (id)_lock_assertionCreationAttributeContextForTargetIdentity:(id)identity originator:(id)originator;
+- (id)_lock_createAssertionForDescriptor:(id)descriptor originatorState:(id)state acquisitionContext:(id)context error:(id *)error;
+- (id)_lock_createAssertionWithAcquisitionContext:(id)context attributeContext:(id)attributeContext concreteTarget:(id)target targetIdentity:(id)identity originator:(id)originator error:(id *)error;
+- (id)_lock_createAssertionsForBatchContext:(id)context originatorState:(id)state errorsByIndex:(id)index;
+- (id)_lock_deactivateAssertions:(id)assertions;
+- (id)_lock_deactivateDelayedAssertionsForTargets:(id)targets;
+- (id)_lock_deactivateExistingAssertionsDelayedByIncomingAssertions:(id)assertions;
+- (id)_lock_invalidateAssertionByConditions:(id)conditions changedAssertions:(id *)assertions;
+- (id)_lock_originatorIdentifiersInAssertions:(id)assertions;
+- (id)_lock_sortedAssertionsForTarget:(id)target;
+- (id)_lock_targetIdentitiesInAssertions:(id)assertions;
+- (id)_lock_updateStatesDueToChangingAssertions:(id)assertions invalidatedAssertions:(id)invalidatedAssertions;
+- (id)additionalRestrictionsForDomain:(id)domain andName:(id)name;
 - (id)allEntitlements;
-- (id)assertionWithIdentifier:(id)a3;
-- (id)assertionsForOriginator:(id)a3;
-- (id)attributesForDomain:(id)a3 andName:(id)a4 context:(id)a5 withError:(id *)a6;
-- (id)endowmentNamespaceForDomain:(id)a3 andName:(id)a4;
-- (id)limitationsForInstance:(id)a3;
-- (id)originatorEntitlementsForDomain:(id)a3 andName:(id)a4;
-- (id)popPluginHoldForAssertion:(id)a3;
-- (id)restrictionsForDomain:(id)a3 andName:(id)a4;
-- (id)savedEndowmentsForProcess:(id)a3;
-- (id)stateForIdentity:(id)a3;
-- (id)targetEntitlementsForDomain:(id)a3 andName:(id)a4;
-- (unint64_t)_lock_incomingAssertionCountForBatchContext:(id)a3 originatorIdentifier:(id)a4;
-- (unint64_t)_lock_numberOfStartTimeDefiningAssertionsForTargetProcessIdentity:(id)a3;
-- (unint64_t)_lock_resolvePreliminaryStatesForNonExistingProcessesWithAssertions:(id)a3 completionPolicy:(unint64_t)a4;
-- (void)_acquireAssertions:(id)a3 invalidateIdentifiers:(id)a4 forOriginatorProcess:(id)a5 completionPolicy:(unint64_t)a6 acquisitionErrorsByIndex:(id)a7 completeStage:(id)a8;
-- (void)_acquireUnderlyingAssertionForProcess:(id)a3;
-- (void)_decreaseInFlightOperationsForTargetIdentities:(id)a3;
+- (id)assertionWithIdentifier:(id)identifier;
+- (id)assertionsForOriginator:(id)originator;
+- (id)attributesForDomain:(id)domain andName:(id)name context:(id)context withError:(id *)error;
+- (id)endowmentNamespaceForDomain:(id)domain andName:(id)name;
+- (id)limitationsForInstance:(id)instance;
+- (id)originatorEntitlementsForDomain:(id)domain andName:(id)name;
+- (id)popPluginHoldForAssertion:(id)assertion;
+- (id)restrictionsForDomain:(id)domain andName:(id)name;
+- (id)savedEndowmentsForProcess:(id)process;
+- (id)stateForIdentity:(id)identity;
+- (id)targetEntitlementsForDomain:(id)domain andName:(id)name;
+- (unint64_t)_lock_incomingAssertionCountForBatchContext:(id)context originatorIdentifier:(id)identifier;
+- (unint64_t)_lock_numberOfStartTimeDefiningAssertionsForTargetProcessIdentity:(id)identity;
+- (unint64_t)_lock_resolvePreliminaryStatesForNonExistingProcessesWithAssertions:(id)assertions completionPolicy:(unint64_t)policy;
+- (void)_acquireAssertions:(id)assertions invalidateIdentifiers:(id)identifiers forOriginatorProcess:(id)process completionPolicy:(unint64_t)policy acquisitionErrorsByIndex:(id)index completeStage:(id)stage;
+- (void)_acquireUnderlyingAssertionForProcess:(id)process;
+- (void)_decreaseInFlightOperationsForTargetIdentities:(id)identities;
 - (void)_dumpAssertions;
-- (void)_increaseInFlightOperationsForTargetIdentities:(id)a3;
-- (void)_invalidateAssertionsWithContext:(id)a3;
-- (void)_lock_addAssertion:(id)a3;
-- (void)_lock_checkAssertionToInvalidateByCondition:(id)a3 condition:(id)a4 currentValue:(id)a5 assertionsToInvalidate:(id)a6;
-- (void)_lock_clearStartTimesForUnbusyTargets:(id)a3;
-- (void)_lock_dumpAssertionsForTarget:(id)a3;
-- (void)_lock_enqueueAssertionsForRemoval:(id)a3;
-- (void)_lock_finalizeRemovingAssertions:(id)a3;
-- (void)_lock_invalidateAssertions:(id)a3 forceSync:(BOOL)a4;
-- (void)_lock_notifyDelegateOfExcessiveAssertionsForOriginatorProcess:(id)a3;
-- (void)_lock_notifyDelegateOfInvalidatedAssertions:(id)a3;
-- (void)_lock_notifyDelegateOfProcessStateChangeSet:(id)a3;
-- (void)_lock_removeAssertion:(id)a3;
-- (void)_lock_removeAssertions:(id)a3 andUpdateChangedAssertions:(id)a4;
+- (void)_increaseInFlightOperationsForTargetIdentities:(id)identities;
+- (void)_invalidateAssertionsWithContext:(id)context;
+- (void)_lock_addAssertion:(id)assertion;
+- (void)_lock_checkAssertionToInvalidateByCondition:(id)condition condition:(id)a4 currentValue:(id)value assertionsToInvalidate:(id)invalidate;
+- (void)_lock_clearStartTimesForUnbusyTargets:(id)targets;
+- (void)_lock_dumpAssertionsForTarget:(id)target;
+- (void)_lock_enqueueAssertionsForRemoval:(id)removal;
+- (void)_lock_finalizeRemovingAssertions:(id)assertions;
+- (void)_lock_invalidateAssertions:(id)assertions forceSync:(BOOL)sync;
+- (void)_lock_notifyDelegateOfExcessiveAssertionsForOriginatorProcess:(id)process;
+- (void)_lock_notifyDelegateOfInvalidatedAssertions:(id)assertions;
+- (void)_lock_notifyDelegateOfProcessStateChangeSet:(id)set;
+- (void)_lock_removeAssertion:(id)assertion;
+- (void)_lock_removeAssertions:(id)assertions andUpdateChangedAssertions:(id)changedAssertions;
 - (void)_lock_removeInvalidAssertions;
-- (void)_lock_removeStateForProcessIdentityIfNecessary:(id)a3;
-- (void)_lock_setState:(id)a3 forProcessIdentity:(id)a4;
-- (void)_lock_setSystemState:(id)a3;
+- (void)_lock_removeStateForProcessIdentityIfNecessary:(id)necessary;
+- (void)_lock_setState:(id)state forProcessIdentity:(id)identity;
+- (void)_lock_setSystemState:(id)state;
 - (void)_removeInvalidAssertions;
-- (void)acquireAssertionWithContext:(id)a3 completion:(id)a4;
-- (void)commitBatchWithContext:(id)a3 completion:(id)a4;
-- (void)eventQueue:(id)a3 handleAssertionsExpirationWarningEventForProcessIdentity:(id)a4 expirationTime:(double)a5;
-- (void)eventQueue:(id)a3 handleInvalidationEventForAssertion:(id)a4;
-- (void)eventQueue:(id)a3 handleWarningEventForAssertion:(id)a4;
+- (void)acquireAssertionWithContext:(id)context completion:(id)completion;
+- (void)commitBatchWithContext:(id)context completion:(id)completion;
+- (void)eventQueue:(id)queue handleAssertionsExpirationWarningEventForProcessIdentity:(id)identity expirationTime:(double)time;
+- (void)eventQueue:(id)queue handleInvalidationEventForAssertion:(id)assertion;
+- (void)eventQueue:(id)queue handleWarningEventForAssertion:(id)assertion;
 - (void)periodicRunningProcessDump;
-- (void)processDidLaunch:(id)a3;
-- (void)processDidTerminate:(id)a3;
-- (void)revalidateAssertionsForProcessIdentities:(id)a3;
+- (void)processDidLaunch:(id)launch;
+- (void)processDidTerminate:(id)terminate;
+- (void)revalidateAssertionsForProcessIdentities:(id)identities;
 @end
 
 @implementation RBAssertionManager
@@ -308,21 +308,21 @@ void __48__RBAssertionManager_periodicRunningProcessDump__block_invoke_2(uint64_
 
 - (RBAssertionManager)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"RBAssertionManager.m" lineNumber:159 description:@"-init is not allowed on RBAssertionManager"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RBAssertionManager.m" lineNumber:159 description:@"-init is not allowed on RBAssertionManager"];
 
   return 0;
 }
 
-- (RBAssertionManager)initWithDelegate:(id)a3 bundlePropertiesManager:(id)a4 originatorPidStore:(id)a5 assertionDescriptorValidator:(id)a6 timeProvider:(id)a7 daemonContext:(id)a8 maxOperationsInFlight:(unint64_t)a9 maxAssertionsPerOriginator:(unint64_t)a10
+- (RBAssertionManager)initWithDelegate:(id)delegate bundlePropertiesManager:(id)manager originatorPidStore:(id)store assertionDescriptorValidator:(id)validator timeProvider:(id)provider daemonContext:(id)context maxOperationsInFlight:(unint64_t)flight maxAssertionsPerOriginator:(unint64_t)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v66 = a5;
-  v65 = a6;
-  v19 = a7;
-  obj = a8;
-  v20 = a8;
+  delegateCopy = delegate;
+  managerCopy = manager;
+  storeCopy = store;
+  validatorCopy = validator;
+  providerCopy = provider;
+  obj = context;
+  contextCopy = context;
   v67.receiver = self;
   v67.super_class = RBAssertionManager;
   v21 = [(RBAssertionManager *)&v67 init];
@@ -331,10 +331,10 @@ void __48__RBAssertionManager_periodicRunningProcessDump__block_invoke_2(uint64_
     goto LABEL_11;
   }
 
-  if (!v17)
+  if (!delegateCopy)
   {
     [RBAssertionManager initWithDelegate:bundlePropertiesManager:originatorPidStore:assertionDescriptorValidator:timeProvider:daemonContext:maxOperationsInFlight:maxAssertionsPerOriginator:];
-    if (v18)
+    if (managerCopy)
     {
       goto LABEL_4;
     }
@@ -344,24 +344,24 @@ LABEL_13:
     goto LABEL_4;
   }
 
-  if (!v18)
+  if (!managerCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_4:
-  if (!v66)
+  if (!storeCopy)
   {
     [RBAssertionManager initWithDelegate:bundlePropertiesManager:originatorPidStore:assertionDescriptorValidator:timeProvider:daemonContext:maxOperationsInFlight:maxAssertionsPerOriginator:];
   }
 
-  if (!v65)
+  if (!validatorCopy)
   {
     [RBAssertionManager initWithDelegate:bundlePropertiesManager:originatorPidStore:assertionDescriptorValidator:timeProvider:daemonContext:maxOperationsInFlight:maxAssertionsPerOriginator:];
   }
 
-  v63 = v20;
-  if (!v20)
+  v63 = contextCopy;
+  if (!contextCopy)
   {
     [RBAssertionManager initWithDelegate:bundlePropertiesManager:originatorPidStore:assertionDescriptorValidator:timeProvider:daemonContext:maxOperationsInFlight:maxAssertionsPerOriginator:];
   }
@@ -376,13 +376,13 @@ LABEL_4:
   calloutQueue = v21->_calloutQueue;
   v21->_calloutQueue = v25;
 
-  objc_storeStrong(&v21->_delegate, a3);
-  objc_storeStrong(&v21->_bundlePropertiesManager, a4);
-  objc_storeStrong(&v21->_descriptorValidator, a6);
-  objc_storeStrong(&v21->_originatorPidStore, a5);
-  objc_storeStrong(&v21->_timeProvider, a7);
-  v21->_maxOperationsInFlight = a9;
-  v21->_maxAssertionsPerOriginator = a10;
+  objc_storeStrong(&v21->_delegate, delegate);
+  objc_storeStrong(&v21->_bundlePropertiesManager, manager);
+  objc_storeStrong(&v21->_descriptorValidator, validator);
+  objc_storeStrong(&v21->_originatorPidStore, store);
+  objc_storeStrong(&v21->_timeProvider, provider);
+  v21->_maxOperationsInFlight = flight;
+  v21->_maxAssertionsPerOriginator = originator;
   objc_storeStrong(&v21->_daemonContext, obj);
   v27 = objc_alloc_init(RBAssertionCollection);
   assertions = v21->_assertions;
@@ -400,17 +400,17 @@ LABEL_4:
   stateMap = v21->_stateMap;
   v21->_stateMap = v33;
 
-  v35 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   relativeStartTimesByTargetIdentity = v21->_relativeStartTimesByTargetIdentity;
-  v21->_relativeStartTimesByTargetIdentity = v35;
+  v21->_relativeStartTimesByTargetIdentity = dictionary;
 
-  v37 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+  weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
   originatorExitTimesByAssertion = v21->_originatorExitTimesByAssertion;
-  v21->_originatorExitTimesByAssertion = v37;
+  v21->_originatorExitTimesByAssertion = weakToStrongObjectsMapTable;
 
-  v39 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   originatorToInFlightOperationsCountMap = v21->_originatorToInFlightOperationsCountMap;
-  v21->_originatorToInFlightOperationsCountMap = v39;
+  v21->_originatorToInFlightOperationsCountMap = dictionary2;
 
   v41 = objc_alloc_init(MEMORY[0x277CCA940]);
   inFlightAssertionTargets = v21->_inFlightAssertionTargets;
@@ -421,7 +421,7 @@ LABEL_4:
   inFlightTerminations = v21->_inFlightTerminations;
   v21->_inFlightTerminations = v43;
 
-  v45 = [[RBAssertionManagerEventQueue alloc] initWithTimeProvider:v19];
+  v45 = [[RBAssertionManagerEventQueue alloc] initWithTimeProvider:providerCopy];
   eventQueue = v21->_eventQueue;
   v21->_eventQueue = v45;
 
@@ -438,9 +438,9 @@ LABEL_4:
   invalidAssertions = v21->_invalidAssertions;
   v21->_invalidAssertions = v51;
 
-  v53 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+  weakToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
   savedEndowments = v21->_savedEndowments;
-  v21->_savedEndowments = v53;
+  v21->_savedEndowments = weakToStrongObjectsMapTable2;
 
   v55 = objc_alloc_init(RBAssertionStateResolver);
   stateResolver = v21->_stateResolver;
@@ -450,14 +450,14 @@ LABEL_4:
   [(RBAssertionStateResolver *)v21->_stateResolver setProcessIndex:v21->_processIndex];
   [(RBAssertionStateResolver *)v21->_stateResolver setStateMap:v21->_stateMap];
   v57 = v21->_stateResolver;
-  v20 = v63;
-  v58 = [v63 domainAttributeManager];
-  [(RBAssertionStateResolver *)v57 setDomainAttributeManager:v58];
+  contextCopy = v63;
+  domainAttributeManager = [v63 domainAttributeManager];
+  [(RBAssertionStateResolver *)v57 setDomainAttributeManager:domainAttributeManager];
 
   [(RBAssertionStateResolver *)v21->_stateResolver setBundlePropertiesManager:v21->_bundlePropertiesManager];
   v59 = v21->_stateResolver;
-  v60 = [(RBDaemonContextProviding *)v21->_daemonContext entitlementManager];
-  [(RBAssertionStateResolver *)v59 setEntitlementManager:v60];
+  entitlementManager = [(RBDaemonContextProviding *)v21->_daemonContext entitlementManager];
+  [(RBAssertionStateResolver *)v59 setEntitlementManager:entitlementManager];
 
   [(RBAssertionStateResolver *)v21->_stateResolver setSavedEndowments:v21->_savedEndowments];
   [(RBAssertionManager *)v21 periodicRunningProcessDump];
@@ -473,22 +473,22 @@ LABEL_11:
   v5 = [(RBAssertionCollection *)self->_assertions count];
   v6 = [(RBSystemState *)self->_systemState debugDescription];
   v7 = [(RBAssertionManagerEventQueue *)self->_eventQueue count];
-  v8 = [(RBProcessMap *)self->_stateMap dictionary];
-  v9 = [v8 entriesToStringWithIndent:1 debug:1];
+  dictionary = [(RBProcessMap *)self->_stateMap dictionary];
+  v9 = [dictionary entriesToStringWithIndent:1 debug:1];
   v10 = [v3 initWithFormat:@"<%@| assertionCount:%lu systemState:%@ eventQueueCount:%lu processStates:{\n%@}>", v4, v5, v6, v7, v9];
 
   return v10;
 }
 
-- (void)commitBatchWithContext:(id)a3 completion:(id)a4
+- (void)commitBatchWithContext:(id)context completion:(id)completion
 {
   v101 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_workloop);
   dispatch_assert_queue_not_V2(self->_calloutQueue);
-  v58 = self;
-  if (!v7)
+  selfCopy = self;
+  if (!contextCopy)
   {
     [RBAssertionManager commitBatchWithContext:completion:];
   }
@@ -504,38 +504,38 @@ LABEL_11:
   v90 = v92;
   v91 = a2;
   v87[4] = self;
-  v59 = v7;
+  v59 = contextCopy;
   v88 = v59;
-  v52 = v8;
+  v52 = completionCopy;
   v89 = v52;
   v54 = MEMORY[0x266729AD0](v87);
-  v62 = [MEMORY[0x277CBEB38] dictionary];
-  v60 = [MEMORY[0x277CBEB18] array];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   os_unfair_lock_lock(&self->_lock);
-  v10 = [v59 process];
-  v55 = [v10 identifier];
-  v53 = [v10 identity];
-  v11 = [v59 acquisitionPolicy];
-  if (v11 == 1)
+  process = [v59 process];
+  identifier = [process identifier];
+  identity = [process identity];
+  acquisitionPolicy = [v59 acquisitionPolicy];
+  if (acquisitionPolicy == 1)
   {
     v12 = 1;
   }
 
-  else if ([(RBAssertionManager *)v58 _lock_batchContextInvalidatesSynchronously:v59])
+  else if ([(RBAssertionManager *)selfCopy _lock_batchContextInvalidatesSynchronously:v59])
   {
     v12 = 1;
   }
 
   else
   {
-    v12 = v11;
+    v12 = acquisitionPolicy;
   }
 
   v57 = v12;
-  v13 = [v59 descriptorsToAcquire];
-  v56 = v10;
-  v14 = [v13 count] == 0;
+  descriptorsToAcquire = [v59 descriptorsToAcquire];
+  v56 = process;
+  v14 = [descriptorsToAcquire count] == 0;
 
   if (v14)
   {
@@ -545,23 +545,23 @@ LABEL_11:
   else
   {
     v86 = 0;
-    v15 = [(RBAssertionManager *)v58 _lock_enforceAssertionLimitIfNecessaryForBatchContext:v59 originatorProcess:v56 error:&v86];
+    v15 = [(RBAssertionManager *)selfCopy _lock_enforceAssertionLimitIfNecessaryForBatchContext:v59 originatorProcess:v56 error:&v86];
     v16 = v86;
     if (v15)
     {
-      os_unfair_lock_unlock(&v58->_lock);
+      os_unfair_lock_unlock(&selfCopy->_lock);
       (v54)[2](v54, 0, 0, v16);
       goto LABEL_39;
     }
 
-    v50 = [(RBProcessMap *)v58->_stateMap valueForIdentity:v53];
-    v49 = [MEMORY[0x277CBEB38] dictionary];
+    v50 = [(RBProcessMap *)selfCopy->_stateMap valueForIdentity:identity];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     v48 = v16;
 
-    v51 = [(RBAssertionManager *)v58 _lock_createAssertionsForBatchContext:v59 originatorState:v50 errorsByIndex:v49];
+    v51 = [(RBAssertionManager *)selfCopy _lock_createAssertionsForBatchContext:v59 originatorState:v50 errorsByIndex:dictionary3];
     if ([v51 count])
     {
-      v57 = [(RBAssertionManager *)v58 _lock_resolvePreliminaryStatesForNonExistingProcessesWithAssertions:v51 completionPolicy:v57, v16];
+      v57 = [(RBAssertionManager *)selfCopy _lock_resolvePreliminaryStatesForNonExistingProcessesWithAssertions:v51 completionPolicy:v57, v16];
       v84 = 0u;
       v85 = 0u;
       v82 = 0u;
@@ -583,33 +583,33 @@ LABEL_11:
 
             v19 = *(*(&v82 + 1) + 8 * i);
             v20 = [obj objectForKeyedSubscript:v19];
-            v21 = [v20 identifier];
-            [v62 setObject:v21 forKeyedSubscript:v19];
-            v22 = [v20 target];
-            v23 = [v22 identity];
+            identifier2 = [v20 identifier];
+            [dictionary setObject:identifier2 forKeyedSubscript:v19];
+            target = [v20 target];
+            identity2 = [target identity];
 
-            if (v23)
+            if (identity2)
             {
-              [v60 addObject:v23];
+              [array addObject:identity2];
             }
 
-            v24 = [v20 target];
-            v25 = [v24 process];
+            target2 = [v20 target];
+            process2 = [target2 process];
 
             v26 = rbs_sp_assertion_log();
-            v27 = os_signpost_id_make_with_pointer(v26, [v21 hash]);
+            v27 = os_signpost_id_make_with_pointer(v26, [identifier2 hash]);
 
             v28 = rbs_sp_assertion_log();
             v29 = v28;
             if (v27 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
             {
-              v30 = [v20 explanation];
-              v31 = [v25 shortDescription];
-              v32 = [v21 description];
+              explanation = [v20 explanation];
+              shortDescription = [process2 shortDescription];
+              v32 = [identifier2 description];
               *buf = 138543874;
-              v95 = v30;
+              v95 = explanation;
               v96 = 2114;
-              v97 = v31;
+              v97 = shortDescription;
               v98 = 2114;
               v99 = v32;
               _os_signpost_emit_with_name_impl(&dword_262485000, v29, OS_SIGNPOST_INTERVAL_BEGIN, v27, "ClientAssertion", "explanation=%{public}@;target=%{public}@;identifier=%{public}@", buf, 0x20u);
@@ -623,16 +623,16 @@ LABEL_11:
       }
     }
 
-    v9 = v49;
+    dictionary2 = dictionary3;
   }
 
-  os_unfair_lock_unlock(&v58->_lock);
-  dispatch_sync(v58->_calloutQueue, &__block_literal_global_53);
-  v33 = [MEMORY[0x277D47038] currentContext];
-  v34 = [v33 connection];
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  dispatch_sync(selfCopy->_calloutQueue, &__block_literal_global_53);
+  currentContext = [MEMORY[0x277D47038] currentContext];
+  connection = [currentContext connection];
 
-  [(RBAssertionManager *)v58 _increaseInFlightOperationsForTargetIdentities:v60];
-  if (v34 && [(RBAssertionManager *)v58 _increaseInFlightOperationsForOriginator:v55 andSuspendIfNeeded:v34])
+  [(RBAssertionManager *)selfCopy _increaseInFlightOperationsForTargetIdentities:array];
+  if (connection && [(RBAssertionManager *)selfCopy _increaseInFlightOperationsForOriginator:identifier andSuspendIfNeeded:connection])
   {
     v35 = rbs_process_log();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -645,19 +645,19 @@ LABEL_11:
   v72[1] = 3221225472;
   v72[2] = __56__RBAssertionManager_commitBatchWithContext_completion___block_invoke_55;
   v72[3] = &unk_279B32D78;
-  v72[4] = v58;
-  v73 = v60;
+  v72[4] = selfCopy;
+  v73 = array;
   v36 = v51;
   v74 = v36;
-  v37 = v34;
+  v37 = connection;
   v75 = v37;
-  v76 = v55;
+  v76 = identifier;
   v38 = v56;
   v77 = v38;
   v81 = v57;
   v80 = v54;
-  v78 = v62;
-  v39 = v9;
+  v78 = dictionary;
+  v39 = dictionary2;
   v79 = v39;
   v40 = [v72 copy];
   v40[2](v40, 0, 0);
@@ -665,27 +665,27 @@ LABEL_11:
   v65[1] = 3221225472;
   v65[2] = __56__RBAssertionManager_commitBatchWithContext_completion___block_invoke_58;
   v65[3] = &unk_279B32DA0;
-  v65[4] = v58;
+  v65[4] = selfCopy;
   v41 = v36;
   v66 = v41;
   v67 = v59;
   v68 = v38;
   v71 = v57;
-  v9 = v39;
-  v69 = v9;
+  dictionary2 = v39;
+  v69 = dictionary2;
   v42 = v40;
   v70 = v42;
   v43 = MEMORY[0x266729AD0](v65);
-  v44 = [MEMORY[0x277D47038] currentContext];
-  v45 = v44;
-  if (v57 == 1 && v44)
+  currentContext2 = [MEMORY[0x277D47038] currentContext];
+  v45 = currentContext2;
+  if (v57 == 1 && currentContext2)
   {
-    [v44 handoffToQueue:v58->_workloop block:v43];
+    [currentContext2 handoffToQueue:selfCopy->_workloop block:v43];
   }
 
   else
   {
-    workloop = v58->_workloop;
+    workloop = selfCopy->_workloop;
     if (v57 == 1)
     {
       dispatch_async_and_wait(workloop, v43);
@@ -827,35 +827,35 @@ void __56__RBAssertionManager_commitBatchWithContext_completion___block_invoke_5
   [v2 _acquireAssertions:v3 invalidateIdentifiers:v4 forOriginatorProcess:*(a1 + 56) completionPolicy:*(a1 + 80) acquisitionErrorsByIndex:*(a1 + 64) completeStage:*(a1 + 72)];
 }
 
-- (void)acquireAssertionWithContext:(id)a3 completion:(id)a4
+- (void)acquireAssertionWithContext:(id)context completion:(id)completion
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 process];
-  v9 = [v7 descriptor];
-  v19[0] = v9;
+  completionCopy = completion;
+  contextCopy = context;
+  process = [contextCopy process];
+  descriptor = [contextCopy descriptor];
+  v19[0] = descriptor;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-  v11 = [RBAssertionBatchContext contextForProcess:v8 withDescriptorsToAcquire:v10 identifiersToInvalidate:MEMORY[0x277CBEBF8] daemonContext:self->_daemonContext];
+  v11 = [RBAssertionBatchContext contextForProcess:process withDescriptorsToAcquire:v10 identifiersToInvalidate:MEMORY[0x277CBEBF8] daemonContext:self->_daemonContext];
 
-  [v11 setUnitTesting:{objc_msgSend(v7, "unitTesting")}];
-  v12 = [v7 holdToken];
-  [v11 setHoldToken:v12];
+  [v11 setUnitTesting:{objc_msgSend(contextCopy, "unitTesting")}];
+  holdToken = [contextCopy holdToken];
+  [v11 setHoldToken:holdToken];
 
-  [v11 setAllowAbstractTarget:{objc_msgSend(v7, "allowAbstractTarget")}];
-  v13 = [v7 targetClientRestriction];
-  [v11 setTargetClientRestriction:v13];
+  [v11 setAllowAbstractTarget:{objc_msgSend(contextCopy, "allowAbstractTarget")}];
+  targetClientRestriction = [contextCopy targetClientRestriction];
+  [v11 setTargetClientRestriction:targetClientRestriction];
 
-  [v11 setAcquisitionPolicy:{objc_msgSend(v7, "acquisitionPolicy")}];
-  v14 = [v7 launchAssertion];
+  [v11 setAcquisitionPolicy:{objc_msgSend(contextCopy, "acquisitionPolicy")}];
+  launchAssertion = [contextCopy launchAssertion];
 
-  [v11 setLaunchAssertion:v14];
+  [v11 setLaunchAssertion:launchAssertion];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __61__RBAssertionManager_acquireAssertionWithContext_completion___block_invoke;
   v17[3] = &unk_279B32DC8;
-  v18 = v6;
-  v15 = v6;
+  v18 = completionCopy;
+  v15 = completionCopy;
   [(RBAssertionManager *)self commitBatchWithContext:v11 completion:v17];
 
   v16 = *MEMORY[0x277D85DE8];
@@ -879,19 +879,19 @@ void __61__RBAssertionManager_acquireAssertionWithContext_completion___block_inv
   }
 }
 
-- (BOOL)invalidateAssertionWithIdentifier:(id)a3
+- (BOOL)invalidateAssertionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [RBAssertionManager invalidateAssertionWithIdentifier:];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(RBAssertionCollection *)self->_assertions assertionWithIdentifier:v4];
-  if ([(NSMutableSet *)self->_acquiringAssertionIdentifiers containsObject:v4])
+  v5 = [(RBAssertionCollection *)self->_assertions assertionWithIdentifier:identifierCopy];
+  if ([(NSMutableSet *)self->_acquiringAssertionIdentifiers containsObject:identifierCopy])
   {
-    [(NSMutableSet *)self->_acquiringAssertionIdentifiers removeObject:v4];
+    [(NSMutableSet *)self->_acquiringAssertionIdentifiers removeObject:identifierCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -900,24 +900,24 @@ void __61__RBAssertionManager_acquireAssertionWithContext_completion___block_inv
   return v6;
 }
 
-- (BOOL)invalidateAssertionsDueToCPUUsageViolationForProcessIdentifier:(id)a3
+- (BOOL)invalidateAssertionsDueToCPUUsageViolationForProcessIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(RBProcessIndex *)self->_processIndex processForIdentifier:v4];
-  v6 = [v5 identity];
-  if (v6)
+  v5 = [(RBProcessIndex *)self->_processIndex processForIdentifier:identifierCopy];
+  identity = [v5 identity];
+  if (identity)
   {
     v23 = v5;
-    v22 = [(RBProcessMap *)self->_stateMap valueForIdentity:v6];
-    v7 = [v22 role];
+    v22 = [(RBProcessMap *)self->_stateMap valueForIdentity:identity];
+    role = [v22 role];
     v8 = [MEMORY[0x277CBEB58] set];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v9 = [(RBAssertionCollection *)self->_assertions assertionsForTargetIdentity:v6];
+    v9 = [(RBAssertionCollection *)self->_assertions assertionsForTargetIdentity:identity];
     v10 = [v9 countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v10)
     {
@@ -933,7 +933,7 @@ void __61__RBAssertionManager_acquireAssertionWithContext_completion___block_inv
           }
 
           v14 = *(*(&v24 + 1) + 8 * i);
-          if ([v14 maxCPUUsageViolationPolicyForRole:v7] == 1)
+          if ([v14 maxCPUUsageViolationPolicyForRole:role] == 1)
           {
             [v14 setInvalidationReason:5];
             [v8 addObject:v14];
@@ -949,7 +949,7 @@ void __61__RBAssertionManager_acquireAssertionWithContext_completion___block_inv
     v15 = rbs_process_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v4 pid];
+      v16 = [identifierCopy pid];
       v17 = [v8 count];
       *buf = 67240448;
       v29 = v16;
@@ -978,22 +978,22 @@ void __61__RBAssertionManager_acquireAssertionWithContext_completion___block_inv
   return v19;
 }
 
-- (id)limitationsForInstance:(id)a3
+- (id)limitationsForInstance:(id)instance
 {
   v4 = MEMORY[0x277D46F78];
-  v5 = a3;
+  instanceCopy = instance;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 identity];
+  identity = [instanceCopy identity];
 
-  [(RBAssertionManager *)self _remainingRuntimeForProcessIdentity:v7];
+  [(RBAssertionManager *)self _remainingRuntimeForProcessIdentity:identity];
   [v6 setRunTime:?];
 
   return v6;
 }
 
-- (id)assertionsForOriginator:(id)a3
+- (id)assertionsForOriginator:(id)originator
 {
-  v3 = [(RBAssertionCollection *)self->_assertions assertionsForOriginator:a3];
+  v3 = [(RBAssertionCollection *)self->_assertions assertionsForOriginator:originator];
   v4 = v3;
   if (v3)
   {
@@ -1010,29 +1010,29 @@ void __61__RBAssertionManager_acquireAssertionWithContext_completion___block_inv
   return v6;
 }
 
-- (BOOL)hasAssertionWithIdentifier:(id)a3
+- (BOOL)hasAssertionWithIdentifier:(id)identifier
 {
-  v3 = [(RBAssertionCollection *)self->_assertions assertionWithIdentifier:a3];
+  v3 = [(RBAssertionCollection *)self->_assertions assertionWithIdentifier:identifier];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)assertionWithIdentifier:(id)a3
+- (id)assertionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(RBAssertionCollection *)self->_assertions assertionWithIdentifier:v4];
+  v5 = [(RBAssertionCollection *)self->_assertions assertionWithIdentifier:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (BOOL)hasAssertionWithIdentifierForTarget:(id)a3 identifier:(id)a4
+- (BOOL)hasAssertionWithIdentifierForTarget:(id)target identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  identifierCopy = identifier;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -1042,10 +1042,10 @@ void __61__RBAssertionManager_acquireAssertionWithContext_completion___block_inv
   v11[1] = 3221225472;
   v11[2] = __69__RBAssertionManager_hasAssertionWithIdentifierForTarget_identifier___block_invoke;
   v11[3] = &unk_279B32DF0;
-  v9 = v7;
+  v9 = identifierCopy;
   v12 = v9;
   v13 = &v14;
-  [(RBAssertionCollection *)assertions enumerateAssertionsForTargetProcessIdentity:v6 withBlock:v11];
+  [(RBAssertionCollection *)assertions enumerateAssertionsForTargetProcessIdentity:targetCopy withBlock:v11];
   LOBYTE(assertions) = *(v15 + 24);
 
   _Block_object_dispose(&v14, 8);
@@ -1064,14 +1064,14 @@ void __69__RBAssertionManager_hasAssertionWithIdentifierForTarget_identifier___b
   }
 }
 
-- (id)popPluginHoldForAssertion:(id)a3
+- (id)popPluginHoldForAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_pluginHoldsForAssertions objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_pluginHoldsForAssertions objectForKey:assertionCopy];
   if (v5)
   {
-    [(NSMutableDictionary *)self->_pluginHoldsForAssertions removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_pluginHoldsForAssertions removeObjectForKey:assertionCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -1079,30 +1079,30 @@ void __69__RBAssertionManager_hasAssertionWithIdentifierForTarget_identifier___b
   return v5;
 }
 
-- (void)processDidLaunch:(id)a3
+- (void)processDidLaunch:(id)launch
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  launchCopy = launch;
   os_unfair_lock_assert_not_owner(&self->_lock);
-  v5 = [v4 identity];
+  identity = [launchCopy identity];
   os_unfair_lock_lock(&self->_lock);
-  if ([(RBProcessIndex *)self->_processIndex addProcess:v4])
+  if ([(RBProcessIndex *)self->_processIndex addProcess:launchCopy])
   {
-    v6 = [(RBProcessMap *)self->_stateMap valueForIdentity:v5];
+    v6 = [(RBProcessMap *)self->_stateMap valueForIdentity:identity];
     if (!v6)
     {
-      v6 = [[RBProcessState alloc] initWithIdentity:v5];
-      [(RBAssertionManager *)self _lock_setState:v6 forProcessIdentity:v5];
+      v6 = [[RBProcessState alloc] initWithIdentity:identity];
+      [(RBAssertionManager *)self _lock_setState:v6 forProcessIdentity:identity];
     }
 
     v19 = v6;
-    v20 = v5;
+    v20 = identity;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v21 = self;
-    v7 = [(RBAssertionCollection *)self->_assertions assertionsForTargetIdentity:v5];
+    selfCopy = self;
+    v7 = [(RBAssertionCollection *)self->_assertions assertionsForTargetIdentity:identity];
     v8 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v8)
     {
@@ -1119,7 +1119,7 @@ void __69__RBAssertionManager_hasAssertionWithIdentifierForTarget_identifier___b
           }
 
           v13 = *(*(&v25 + 1) + 8 * i);
-          [v13 setTargetProcessForAbstract:v4];
+          [v13 setTargetProcessForAbstract:launchCopy];
           if (!v10)
           {
             v10 = [MEMORY[0x277CBEB58] set];
@@ -1129,7 +1129,7 @@ void __69__RBAssertionManager_hasAssertionWithIdentifierForTarget_identifier___b
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v30 = v4;
+            v30 = launchCopy;
             v31 = 2112;
             v32 = v13;
             _os_log_impl(&dword_262485000, v14, OS_LOG_TYPE_DEFAULT, "%@: applying persistent assertion '%@'", buf, 0x16u);
@@ -1149,14 +1149,14 @@ void __69__RBAssertionManager_hasAssertionWithIdentifierForTarget_identifier___b
       v10 = 0;
     }
 
-    self = v21;
-    calloutQueue = v21->_calloutQueue;
+    self = selfCopy;
+    calloutQueue = selfCopy->_calloutQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __39__RBAssertionManager_processDidLaunch___block_invoke;
     block[3] = &unk_279B329D0;
-    block[4] = v21;
-    v23 = v4;
+    block[4] = selfCopy;
+    v23 = launchCopy;
     v24 = v19;
     v16 = v19;
     dispatch_async(calloutQueue, block);
@@ -1164,10 +1164,10 @@ void __69__RBAssertionManager_hasAssertionWithIdentifierForTarget_identifier___b
     if (v10)
     {
       v17 = [MEMORY[0x277CBEB98] set];
-      [(RBAssertionManager *)v21 _lock_removeAssertions:v17 andUpdateChangedAssertions:v10];
+      [(RBAssertionManager *)selfCopy _lock_removeAssertions:v17 andUpdateChangedAssertions:v10];
     }
 
-    v5 = v20;
+    identity = v20;
   }
 
   else
@@ -1177,7 +1177,7 @@ void __69__RBAssertionManager_hasAssertionWithIdentifierForTarget_identifier___b
 
   os_unfair_lock_unlock(&self->_lock);
   dispatch_sync(self->_calloutQueue, &__block_literal_global_70);
-  [(RBAssertionManager *)self _acquireUnderlyingAssertionForProcess:v4];
+  [(RBAssertionManager *)self _acquireUnderlyingAssertionForProcess:launchCopy];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -1189,16 +1189,16 @@ uint64_t __39__RBAssertionManager_processDidLaunch___block_invoke(void *a1)
   return [*(a1[4] + 32) assertionManager:? didAddProcess:? withState:?];
 }
 
-- (BOOL)isProcessForeground:(id)a3
+- (BOOL)isProcessForeground:(id)foreground
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  foregroundCopy = foreground;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  if ([(RBProcessIndex *)self->_processIndex containsProcess:v4])
+  if ([(RBProcessIndex *)self->_processIndex containsProcess:foregroundCopy])
   {
-    v5 = [v4 identity];
-    v6 = [(RBAssertionCollection *)self->_assertions assertionsForTargetIdentity:v5];
+    identity = [foregroundCopy identity];
+    v6 = [(RBAssertionCollection *)self->_assertions assertionsForTargetIdentity:identity];
     os_unfair_lock_unlock(&self->_lock);
     v30 = 0u;
     v31 = 0u;
@@ -1226,10 +1226,10 @@ uint64_t __39__RBAssertionManager_processDidLaunch___block_invoke(void *a1)
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v14 = [v13 inheritances];
-          v15 = [v14 allNamespaces];
+          inheritances = [v13 inheritances];
+          allNamespaces = [inheritances allNamespaces];
 
-          v16 = [v15 countByEnumeratingWithState:&v24 objects:v32 count:16];
+          v16 = [allNamespaces countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (v16)
           {
             v17 = v16;
@@ -1240,7 +1240,7 @@ uint64_t __39__RBAssertionManager_processDidLaunch___block_invoke(void *a1)
               {
                 if (*v25 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(allNamespaces);
                 }
 
                 if ([*(*(&v24 + 1) + 8 * j) isEqual:v11])
@@ -1251,7 +1251,7 @@ uint64_t __39__RBAssertionManager_processDidLaunch___block_invoke(void *a1)
                 }
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v24 objects:v32 count:16];
+              v17 = [allNamespaces countByEnumeratingWithState:&v24 objects:v32 count:16];
               if (v17)
               {
                 continue;
@@ -1282,8 +1282,8 @@ LABEL_23:
   else
   {
     os_unfair_lock_unlock(&self->_lock);
-    v5 = rbs_process_log();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    identity = rbs_process_log();
+    if (os_log_type_enabled(identity, OS_LOG_TYPE_ERROR))
     {
       [RBAssertionManager isProcessForeground:];
     }
@@ -1295,30 +1295,30 @@ LABEL_23:
   return v20;
 }
 
-- (void)processDidTerminate:(id)a3
+- (void)processDidTerminate:(id)terminate
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  terminateCopy = terminate;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  if ([(RBProcessIndex *)self->_processIndex containsProcess:v4])
+  if ([(RBProcessIndex *)self->_processIndex containsProcess:terminateCopy])
   {
-    [(NSMutableSet *)self->_inFlightTerminations addObject:v4];
-    v40 = [(RBProcessState *)v4 identity];
-    v5 = [(RBProcessState *)v4 identifier];
+    [(NSMutableSet *)self->_inFlightTerminations addObject:terminateCopy];
+    identity = [(RBProcessState *)terminateCopy identity];
+    identifier = [(RBProcessState *)terminateCopy identifier];
     v6 = rbs_process_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v56 = v4;
+      v56 = terminateCopy;
       _os_log_impl(&dword_262485000, v6, OS_LOG_TYPE_DEFAULT, "Removing assertions for terminated process: %{public}@", buf, 0xCu);
     }
 
-    v41 = v4;
+    v41 = terminateCopy;
 
     v7 = MEMORY[0x277CBEB58];
-    v38 = v5;
-    v8 = [(RBAssertionCollection *)self->_assertions assertionsForOriginator:v5];
+    v38 = identifier;
+    v8 = [(RBAssertionCollection *)self->_assertions assertionsForOriginator:identifier];
     v9 = [v7 setWithSet:v8];
 
     v10 = [MEMORY[0x277CBEB58] set];
@@ -1354,9 +1354,9 @@ LABEL_23:
             v18 = rbs_ttl_log();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
-              v19 = [v17 identifier];
+              identifier2 = [v17 identifier];
               *buf = 138543362;
-              v56 = v19;
+              v56 = identifier2;
               _os_log_impl(&dword_262485000, v18, OS_LOG_TYPE_DEFAULT, "Activating after-originator-exit assertion %{public}@", buf, 0xCu);
             }
           }
@@ -1378,8 +1378,8 @@ LABEL_23:
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v39 = self;
-    v20 = [(RBAssertionCollection *)self->_assertions assertionsForTargetIdentity:v40];
+    selfCopy = self;
+    v20 = [(RBAssertionCollection *)self->_assertions assertionsForTargetIdentity:identity];
     v21 = [v20 countByEnumeratingWithState:&v47 objects:v61 count:16];
     v22 = v41;
     if (v21)
@@ -1403,9 +1403,9 @@ LABEL_23:
               goto LABEL_24;
             }
 
-            v27 = [(RBProcessState *)v26 identifier];
-            v28 = [(RBProcessState *)v22 launchAssertionIdentifier];
-            v29 = [v27 isEqual:v28];
+            identifier3 = [(RBProcessState *)v26 identifier];
+            launchAssertionIdentifier = [(RBProcessState *)v22 launchAssertionIdentifier];
+            v29 = [identifier3 isEqual:launchAssertionIdentifier];
 
             v22 = v41;
             if ((v29 & 1) == 0)
@@ -1413,13 +1413,13 @@ LABEL_23:
               v30 = rbs_assertion_log();
               if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
               {
-                v31 = [(RBProcessState *)v41 rbs_pid];
+                rbs_pid = [(RBProcessState *)v41 rbs_pid];
                 *buf = 138412802;
                 v56 = v26;
                 v57 = 2112;
                 v58 = v41;
                 v59 = 1024;
-                v60 = v31;
+                v60 = rbs_pid;
                 _os_log_impl(&dword_262485000, v30, OS_LOG_TYPE_DEFAULT, "Skipping assertion: %@ for invalidation as this doesn't belong to the terminating process: %@ with pid: %d", buf, 0x1Cu);
               }
             }
@@ -1439,13 +1439,13 @@ LABEL_24:
       while (v23);
     }
 
-    self = v39;
-    [(RBAssertionManager *)v39 _lock_removeAssertions:v10 andUpdateChangedAssertions:v43];
-    [(NSMutableDictionary *)v39->_relativeStartTimesByTargetIdentity removeObjectForKey:v40];
-    v32 = [(RBProcessMap *)v39->_stateMap valueForIdentity:v40];
+    self = selfCopy;
+    [(RBAssertionManager *)selfCopy _lock_removeAssertions:v10 andUpdateChangedAssertions:v43];
+    [(NSMutableDictionary *)selfCopy->_relativeStartTimesByTargetIdentity removeObjectForKey:identity];
+    v32 = [(RBProcessMap *)selfCopy->_stateMap valueForIdentity:identity];
     if (!v32)
     {
-      v32 = [[RBProcessState alloc] initWithIdentity:v40];
+      v32 = [[RBProcessState alloc] initWithIdentity:identity];
     }
 
     v33 = rbs_process_log();
@@ -1456,24 +1456,24 @@ LABEL_24:
       _os_log_impl(&dword_262485000, v33, OS_LOG_TYPE_INFO, "Resolved state for exited process: %{public}@", buf, 0xCu);
     }
 
-    [(RBProcessIndex *)v39->_processIndex removeProcess:v41];
-    [(NSMutableSet *)v39->_inFlightTerminations removeObject:v41];
-    calloutQueue = v39->_calloutQueue;
+    [(RBProcessIndex *)selfCopy->_processIndex removeProcess:v41];
+    [(NSMutableSet *)selfCopy->_inFlightTerminations removeObject:v41];
+    calloutQueue = selfCopy->_calloutQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __42__RBAssertionManager_processDidTerminate___block_invoke;
     block[3] = &unk_279B329D0;
-    block[4] = v39;
+    block[4] = selfCopy;
     v45 = v41;
     v46 = v32;
     v35 = v32;
-    v4 = v41;
+    terminateCopy = v41;
     v36 = v35;
     dispatch_async(calloutQueue, block);
-    [(RBAssertionManager *)v39 _lock_removeStateForProcessIdentityIfNecessary:v40];
+    [(RBAssertionManager *)selfCopy _lock_removeStateForProcessIdentityIfNecessary:identity];
   }
 
-  [(NSMapTable *)self->_savedEndowments removeObjectForKey:v4];
+  [(NSMapTable *)self->_savedEndowments removeObjectForKey:terminateCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   v37 = *MEMORY[0x277D85DE8];
@@ -1486,28 +1486,28 @@ uint64_t __42__RBAssertionManager_processDidTerminate___block_invoke(void *a1)
   return [*(a1[4] + 32) assertionManager:? didRemoveProcess:? withState:?];
 }
 
-- (id)stateForIdentity:(id)a3
+- (id)stateForIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(RBProcessMap *)self->_stateMap valueForIdentity:v4];
+  v5 = [(RBProcessMap *)self->_stateMap valueForIdentity:identityCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)revalidateAssertionsForProcessIdentities:(id)a3
+- (void)revalidateAssertionsForProcessIdentities:(id)identities
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identitiesCopy = identities;
   os_unfair_lock_lock(&self->_lock);
   v5 = [MEMORY[0x277CBEB58] set];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v4;
+  obj = identitiesCopy;
   v6 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -1633,110 +1633,110 @@ void __63__RBAssertionManager_revalidateAssertionsForProcessIdentities___block_i
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)attributesForDomain:(id)a3 andName:(id)a4 context:(id)a5 withError:(id *)a6
+- (id)attributesForDomain:(id)domain andName:(id)name context:(id)context withError:(id *)error
 {
   daemonContext = self->_daemonContext;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(RBDaemonContextProviding *)daemonContext domainAttributeManager];
-  v14 = [v13 attributesForDomain:v12 andName:v11 context:v10 withError:a6];
+  contextCopy = context;
+  nameCopy = name;
+  domainCopy = domain;
+  domainAttributeManager = [(RBDaemonContextProviding *)daemonContext domainAttributeManager];
+  v14 = [domainAttributeManager attributesForDomain:domainCopy andName:nameCopy context:contextCopy withError:error];
 
   return v14;
 }
 
-- (id)originatorEntitlementsForDomain:(id)a3 andName:(id)a4
+- (id)originatorEntitlementsForDomain:(id)domain andName:(id)name
 {
   daemonContext = self->_daemonContext;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RBDaemonContextProviding *)daemonContext domainAttributeManager];
-  v9 = [v8 originatorEntitlementsForDomain:v7 andName:v6];
+  nameCopy = name;
+  domainCopy = domain;
+  domainAttributeManager = [(RBDaemonContextProviding *)daemonContext domainAttributeManager];
+  v9 = [domainAttributeManager originatorEntitlementsForDomain:domainCopy andName:nameCopy];
 
   return v9;
 }
 
-- (id)endowmentNamespaceForDomain:(id)a3 andName:(id)a4
+- (id)endowmentNamespaceForDomain:(id)domain andName:(id)name
 {
   daemonContext = self->_daemonContext;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RBDaemonContextProviding *)daemonContext domainAttributeManager];
-  v9 = [v8 endowmentNamespaceForDomain:v7 andName:v6];
+  nameCopy = name;
+  domainCopy = domain;
+  domainAttributeManager = [(RBDaemonContextProviding *)daemonContext domainAttributeManager];
+  v9 = [domainAttributeManager endowmentNamespaceForDomain:domainCopy andName:nameCopy];
 
   return v9;
 }
 
-- (BOOL)containsAttributeWithDomain:(id)a3 andName:(id)a4
+- (BOOL)containsAttributeWithDomain:(id)domain andName:(id)name
 {
   daemonContext = self->_daemonContext;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RBDaemonContextProviding *)daemonContext domainAttributeManager];
-  v9 = [v8 containsAttributeWithDomain:v7 andName:v6];
+  nameCopy = name;
+  domainCopy = domain;
+  domainAttributeManager = [(RBDaemonContextProviding *)daemonContext domainAttributeManager];
+  v9 = [domainAttributeManager containsAttributeWithDomain:domainCopy andName:nameCopy];
 
   return v9;
 }
 
 - (id)allEntitlements
 {
-  v2 = [(RBDaemonContextProviding *)self->_daemonContext domainAttributeManager];
-  v3 = [v2 allEntitlements];
+  domainAttributeManager = [(RBDaemonContextProviding *)self->_daemonContext domainAttributeManager];
+  allEntitlements = [domainAttributeManager allEntitlements];
 
-  return v3;
+  return allEntitlements;
 }
 
-- (BOOL)areTargetPropertiesValidForContext:(id)a3 forAttributeWithDomain:(id)a4 andName:(id)a5
+- (BOOL)areTargetPropertiesValidForContext:(id)context forAttributeWithDomain:(id)domain andName:(id)name
 {
   daemonContext = self->_daemonContext;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(RBDaemonContextProviding *)daemonContext domainAttributeManager];
-  v12 = [v11 areTargetPropertiesValidForContext:v10 forAttributeWithDomain:v9 andName:v8];
+  nameCopy = name;
+  domainCopy = domain;
+  contextCopy = context;
+  domainAttributeManager = [(RBDaemonContextProviding *)daemonContext domainAttributeManager];
+  v12 = [domainAttributeManager areTargetPropertiesValidForContext:contextCopy forAttributeWithDomain:domainCopy andName:nameCopy];
 
   return v12;
 }
 
-- (id)additionalRestrictionsForDomain:(id)a3 andName:(id)a4
+- (id)additionalRestrictionsForDomain:(id)domain andName:(id)name
 {
   daemonContext = self->_daemonContext;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RBDaemonContextProviding *)daemonContext domainAttributeManager];
-  v9 = [v8 additionalRestrictionsForDomain:v7 andName:v6];
+  nameCopy = name;
+  domainCopy = domain;
+  domainAttributeManager = [(RBDaemonContextProviding *)daemonContext domainAttributeManager];
+  v9 = [domainAttributeManager additionalRestrictionsForDomain:domainCopy andName:nameCopy];
 
   return v9;
 }
 
-- (id)restrictionsForDomain:(id)a3 andName:(id)a4
+- (id)restrictionsForDomain:(id)domain andName:(id)name
 {
   daemonContext = self->_daemonContext;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RBDaemonContextProviding *)daemonContext domainAttributeManager];
-  v9 = [v8 restrictionsForDomain:v7 andName:v6];
+  nameCopy = name;
+  domainCopy = domain;
+  domainAttributeManager = [(RBDaemonContextProviding *)daemonContext domainAttributeManager];
+  v9 = [domainAttributeManager restrictionsForDomain:domainCopy andName:nameCopy];
 
   return v9;
 }
 
-- (id)targetEntitlementsForDomain:(id)a3 andName:(id)a4
+- (id)targetEntitlementsForDomain:(id)domain andName:(id)name
 {
   daemonContext = self->_daemonContext;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RBDaemonContextProviding *)daemonContext domainAttributeManager];
-  v9 = [v8 targetEntitlementsForDomain:v7 andName:v6];
+  nameCopy = name;
+  domainCopy = domain;
+  domainAttributeManager = [(RBDaemonContextProviding *)daemonContext domainAttributeManager];
+  v9 = [domainAttributeManager targetEntitlementsForDomain:domainCopy andName:nameCopy];
 
   return v9;
 }
 
-- (void)eventQueue:(id)a3 handleAssertionsExpirationWarningEventForProcessIdentity:(id)a4 expirationTime:(double)a5
+- (void)eventQueue:(id)queue handleAssertionsExpirationWarningEventForProcessIdentity:(id)identity expirationTime:(double)time
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  identityCopy = identity;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(RBProcessIndex *)self->_processIndex processForIdentity:v7];
+  v8 = [(RBProcessIndex *)self->_processIndex processForIdentity:identityCopy];
 
   if (v8)
   {
@@ -1755,7 +1755,7 @@ void __63__RBAssertionManager_revalidateAssertionsForProcessIdentities___block_i
     block[3] = &unk_279B32E40;
     block[4] = self;
     v13 = v8;
-    v14 = a5;
+    timeCopy = time;
     dispatch_async(calloutQueue, block);
   }
 
@@ -1764,11 +1764,11 @@ void __63__RBAssertionManager_revalidateAssertionsForProcessIdentities___block_i
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)eventQueue:(id)a3 handleWarningEventForAssertion:(id)a4
+- (void)eventQueue:(id)queue handleWarningEventForAssertion:(id)assertion
 {
-  v5 = a4;
+  assertionCopy = assertion;
   os_unfair_lock_lock(&self->_lock);
-  if ([(RBAssertionCollection *)self->_assertions hasAssertion:v5])
+  if ([(RBAssertionCollection *)self->_assertions hasAssertion:assertionCopy])
   {
     calloutQueue = self->_calloutQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -1776,32 +1776,32 @@ void __63__RBAssertionManager_revalidateAssertionsForProcessIdentities___block_i
     v7[2] = __64__RBAssertionManager_eventQueue_handleWarningEventForAssertion___block_invoke;
     v7[3] = &unk_279B32B80;
     v7[4] = self;
-    v8 = v5;
+    v8 = assertionCopy;
     dispatch_async(calloutQueue, v7);
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)eventQueue:(id)a3 handleInvalidationEventForAssertion:(id)a4
+- (void)eventQueue:(id)queue handleInvalidationEventForAssertion:(id)assertion
 {
-  v6 = a4;
+  assertionCopy = assertion;
   os_unfair_lock_lock(&self->_lock);
-  if ([v6 isValid])
+  if ([assertionCopy isValid])
   {
-    [v6 setInvalidationReason:4];
-    v5 = [MEMORY[0x277CBEB98] setWithObject:v6];
+    [assertionCopy setInvalidationReason:4];
+    v5 = [MEMORY[0x277CBEB98] setWithObject:assertionCopy];
     [(RBAssertionManager *)self _lock_enqueueAssertionsForRemoval:v5];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (double)eventQueue:(id)a3 startTimeForAssertion:(id)a4
+- (double)eventQueue:(id)queue startTimeForAssertion:(id)assertion
 {
-  v5 = a4;
+  assertionCopy = assertion;
   os_unfair_lock_lock(&self->_lock);
-  [(RBAssertionManager *)self _lock_startTimeForAssertion:v5];
+  [(RBAssertionManager *)self _lock_startTimeForAssertion:assertionCopy];
   v7 = v6;
 
   os_unfair_lock_unlock(&self->_lock);
@@ -1815,10 +1815,10 @@ void __63__RBAssertionManager_revalidateAssertionsForProcessIdentities___block_i
   return NSStringFromClass(v2);
 }
 
-- (double)_remainingRuntimeForProcessIdentity:(id)a3
+- (double)_remainingRuntimeForProcessIdentity:(id)identity
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identityCopy = identity;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   [(RBTimeProviding *)self->_timeProvider currentTime];
@@ -1827,7 +1827,7 @@ void __63__RBAssertionManager_revalidateAssertionsForProcessIdentities___block_i
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = [(RBAssertionCollection *)self->_assertions assertionsForTargetIdentity:v4, 0];
+  v7 = [(RBAssertionCollection *)self->_assertions assertionsForTargetIdentity:identityCopy, 0];
   v8 = [v7 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v8)
   {
@@ -1852,8 +1852,8 @@ void __63__RBAssertionManager_revalidateAssertionsForProcessIdentities___block_i
           [v16 invalidationDuration];
           if (v17 <= 0.0)
           {
-            v27 = [v16 processState];
-            v28 = [v27 role] > 1;
+            processState = [v16 processState];
+            v28 = [processState role] > 1;
 
             v11 |= v28;
           }
@@ -1863,7 +1863,7 @@ void __63__RBAssertionManager_revalidateAssertionsForProcessIdentities___block_i
             v18 = v17;
             [(RBAssertionManager *)self _lock_startTimeForAssertion:v16];
             v20 = v19;
-            v21 = [v16 endPolicy];
+            endPolicy = [v16 endPolicy];
             v22 = v18 + v20 - v6;
             if (v14 >= v22)
             {
@@ -1875,16 +1875,16 @@ void __63__RBAssertionManager_revalidateAssertionsForProcessIdentities___block_i
               v23 = v14;
             }
 
-            if (v21 == 2)
+            if (endPolicy == 2)
             {
               v14 = v23;
             }
 
-            v10 |= v21 == 2;
-            v24 = [v16 processState];
-            v25 = [v24 role];
+            v10 |= endPolicy == 2;
+            processState2 = [v16 processState];
+            role = [processState2 role];
 
-            if (v13 < v22 && v25 > 1)
+            if (v13 < v22 && role > 1)
             {
               v13 = v22;
             }
@@ -1946,33 +1946,33 @@ void __63__RBAssertionManager_revalidateAssertionsForProcessIdentities___block_i
   return v13;
 }
 
-- (id)_concreteTargetForTarget:(id)a3 allowAbstractTarget:(BOOL)a4
+- (id)_concreteTargetForTarget:(id)target allowAbstractTarget:(BOOL)abstractTarget
 {
-  v4 = a4;
+  abstractTargetCopy = abstractTarget;
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  targetCopy = target;
+  if (!targetCopy)
   {
     [RBAssertionManager _concreteTargetForTarget:allowAbstractTarget:];
   }
 
-  if ([v6 isSystem])
+  if ([targetCopy isSystem])
   {
     v7 = +[RBConcreteTarget systemTarget];
     goto LABEL_22;
   }
 
-  v8 = [v6 processIdentity];
+  processIdentity = [targetCopy processIdentity];
   processIndex = self->_processIndex;
-  if (v8)
+  if (processIdentity)
   {
-    v10 = [(RBProcessIndex *)processIndex processForIdentity:v8];
+    v10 = [(RBProcessIndex *)processIndex processForIdentity:processIdentity];
   }
 
   else
   {
-    v11 = [v6 processIdentifier];
-    v10 = [(RBProcessIndex *)processIndex processForIdentifier:v11];
+    processIdentifier = [targetCopy processIdentifier];
+    v10 = [(RBProcessIndex *)processIndex processForIdentifier:processIdentifier];
   }
 
   if ([v10 isTerminating])
@@ -1987,7 +1987,7 @@ void __63__RBAssertionManager_revalidateAssertionsForProcessIdentities___block_i
 
     v10 = 0;
     v7 = 0;
-    if (!v4)
+    if (!abstractTargetCopy)
     {
       goto LABEL_21;
     }
@@ -1995,21 +1995,21 @@ void __63__RBAssertionManager_revalidateAssertionsForProcessIdentities___block_i
     goto LABEL_14;
   }
 
-  if (v4)
+  if (abstractTargetCopy)
   {
 LABEL_14:
-    if (v8)
+    if (processIdentity)
     {
-      v13 = v8;
+      identity = processIdentity;
 LABEL_19:
-      v15 = [v6 environment];
-      v7 = [RBConcreteTarget targetWithIdentity:v13 environment:v15];
+      environment = [targetCopy environment];
+      v7 = [RBConcreteTarget targetWithIdentity:identity environment:environment];
 
       goto LABEL_21;
     }
 
-    v13 = [v10 identity];
-    if (v13)
+    identity = [v10 identity];
+    if (identity)
     {
       goto LABEL_19;
     }
@@ -2024,8 +2024,8 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v14 = [v6 environment];
-  v7 = [RBConcreteTarget targetWithProcess:v10 environment:v14];
+  environment2 = [targetCopy environment];
+  v7 = [RBConcreteTarget targetWithProcess:v10 environment:environment2];
 
 LABEL_21:
 LABEL_22:
@@ -2035,18 +2035,18 @@ LABEL_22:
   return v7;
 }
 
-- (void)_increaseInFlightOperationsForTargetIdentities:(id)a3
+- (void)_increaseInFlightOperationsForTargetIdentities:(id)identities
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identitiesCopy = identities;
+  if (identitiesCopy)
   {
     os_unfair_lock_lock(&self->_inFlightOperationsLock);
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v4;
+    v5 = identitiesCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -2088,18 +2088,18 @@ LABEL_22:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_decreaseInFlightOperationsForTargetIdentities:(id)a3
+- (void)_decreaseInFlightOperationsForTargetIdentities:(id)identities
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identitiesCopy = identities;
+  if (identitiesCopy)
   {
     os_unfair_lock_lock(&self->_inFlightOperationsLock);
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v4;
+    v5 = identitiesCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -2141,20 +2141,20 @@ LABEL_22:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_increaseInFlightOperationsForOriginator:(id)a3 andSuspendIfNeeded:(id)a4
+- (BOOL)_increaseInFlightOperationsForOriginator:(id)originator andSuspendIfNeeded:(id)needed
 {
-  v6 = a4;
-  v7 = a3;
+  neededCopy = needed;
+  originatorCopy = originator;
   os_unfair_lock_lock(&self->_inFlightOperationsLock);
-  v8 = [(NSMutableDictionary *)self->_originatorToInFlightOperationsCountMap objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_originatorToInFlightOperationsCountMap objectForKeyedSubscript:originatorCopy];
   v9 = [v8 unsignedIntegerValue] + 1;
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9];
-  [(NSMutableDictionary *)self->_originatorToInFlightOperationsCountMap setObject:v10 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_originatorToInFlightOperationsCountMap setObject:v10 forKeyedSubscript:originatorCopy];
 
   maxOperationsInFlight = self->_maxOperationsInFlight;
   if (v9 == maxOperationsInFlight)
   {
-    xpc_connection_suspend(v6);
+    xpc_connection_suspend(neededCopy);
   }
 
   os_unfair_lock_unlock(&self->_inFlightOperationsLock);
@@ -2162,25 +2162,25 @@ LABEL_22:
   return v9 == maxOperationsInFlight;
 }
 
-- (BOOL)_decreaseInFlightOperationsForOriginator:(id)a3
+- (BOOL)_decreaseInFlightOperationsForOriginator:(id)originator
 {
-  v4 = a3;
+  originatorCopy = originator;
   os_unfair_lock_lock(&self->_inFlightOperationsLock);
-  v5 = [(NSMutableDictionary *)self->_originatorToInFlightOperationsCountMap objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_originatorToInFlightOperationsCountMap objectForKeyedSubscript:originatorCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 unsignedIntegerValue];
-    v8 = v7 - 1;
-    if (v7 == 1)
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
+    v8 = unsignedIntegerValue - 1;
+    if (unsignedIntegerValue == 1)
     {
-      [(NSMutableDictionary *)self->_originatorToInFlightOperationsCountMap setObject:0 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_originatorToInFlightOperationsCountMap setObject:0 forKeyedSubscript:originatorCopy];
     }
 
     else
     {
       v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
-      [(NSMutableDictionary *)self->_originatorToInFlightOperationsCountMap setObject:v9 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_originatorToInFlightOperationsCountMap setObject:v9 forKeyedSubscript:originatorCopy];
     }
   }
 
@@ -2195,43 +2195,43 @@ LABEL_22:
   return v10;
 }
 
-- (void)_lock_enqueueAssertionsForRemoval:(id)a3
+- (void)_lock_enqueueAssertionsForRemoval:(id)removal
 {
-  v4 = a3;
+  removalCopy = removal;
   os_unfair_lock_assert_owner(&self->_lock);
   if ([(NSMutableSet *)self->_invalidAssertions count])
   {
-    [(NSMutableSet *)self->_invalidAssertions unionSet:v4];
+    [(NSMutableSet *)self->_invalidAssertions unionSet:removalCopy];
   }
 
   else
   {
-    v5 = [v4 count];
-    [(NSMutableSet *)self->_invalidAssertions unionSet:v4];
+    v5 = [removalCopy count];
+    [(NSMutableSet *)self->_invalidAssertions unionSet:removalCopy];
     if (v5)
     {
       timeProvider = self->_timeProvider;
-      v7 = [MEMORY[0x277D47028] sharedBackgroundWorkloop];
+      mEMORY[0x277D47028] = [MEMORY[0x277D47028] sharedBackgroundWorkloop];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __56__RBAssertionManager__lock_enqueueAssertionsForRemoval___block_invoke;
       v8[3] = &unk_279B32CB0;
       v8[4] = self;
-      [(RBTimeProviding *)timeProvider executeAfter:v7 onQueue:v8 block:0.1];
+      [(RBTimeProviding *)timeProvider executeAfter:mEMORY[0x277D47028] onQueue:v8 block:0.1];
     }
   }
 }
 
-- (void)_lock_notifyDelegateOfProcessStateChangeSet:(id)a3
+- (void)_lock_notifyDelegateOfProcessStateChangeSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__RBAssertionManager__lock_notifyDelegateOfProcessStateChangeSet___block_invoke;
   v6[3] = &unk_279B32B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = setCopy;
+  v5 = setCopy;
   _os_activity_initiate(&dword_262485000, "state notification", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -2253,16 +2253,16 @@ void __66__RBAssertionManager__lock_notifyDelegateOfProcessStateChangeSet___bloc
   }
 }
 
-- (id)_lock_targetIdentitiesInAssertions:(id)a3
+- (id)_lock_targetIdentitiesInAssertions:(id)assertions
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  assertionsCopy = assertions;
   v4 = [MEMORY[0x277CBEB58] set];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = assertionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -2277,12 +2277,12 @@ void __66__RBAssertionManager__lock_notifyDelegateOfProcessStateChangeSet___bloc
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) target];
-        v11 = [v10 identity];
+        target = [*(*(&v14 + 1) + 8 * i) target];
+        identity = [target identity];
 
-        if (v11)
+        if (identity)
         {
-          [v4 addObject:v11];
+          [v4 addObject:identity];
         }
       }
 
@@ -2297,16 +2297,16 @@ void __66__RBAssertionManager__lock_notifyDelegateOfProcessStateChangeSet___bloc
   return v4;
 }
 
-- (id)_lock_originatorIdentifiersInAssertions:(id)a3
+- (id)_lock_originatorIdentifiersInAssertions:(id)assertions
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  assertionsCopy = assertions;
   v4 = [MEMORY[0x277CBEB58] set];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = assertionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -2321,12 +2321,12 @@ void __66__RBAssertionManager__lock_notifyDelegateOfProcessStateChangeSet___bloc
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) originator];
-        v11 = [v10 identifier];
+        originator = [*(*(&v14 + 1) + 8 * i) originator];
+        identifier = [originator identifier];
 
-        if (v11)
+        if (identifier)
         {
-          [v4 addObject:v11];
+          [v4 addObject:identifier];
         }
       }
 
@@ -2341,31 +2341,31 @@ void __66__RBAssertionManager__lock_notifyDelegateOfProcessStateChangeSet___bloc
   return v4;
 }
 
-- (id)_lock_deactivateAssertions:(id)a3
+- (id)_lock_deactivateAssertions:(id)assertions
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v32 = self;
+  assertionsCopy = assertions;
+  selfCopy = self;
   os_unfair_lock_assert_owner(&self->_lock);
   v5 = rbs_assertion_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v45 = [v4 count];
+    v45 = [assertionsCopy count];
     _os_log_impl(&dword_262485000, v5, OS_LOG_TYPE_INFO, "Removing %{public}lu assertions", buf, 0xCu);
   }
 
-  if ([v4 count])
+  if ([assertionsCopy count])
   {
     context = objc_autoreleasePoolPush();
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v33 = [MEMORY[0x277CBEB58] set];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v31 = v4;
-    v7 = v4;
+    v31 = assertionsCopy;
+    v7 = assertionsCopy;
     v8 = [v7 countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v8)
     {
@@ -2386,12 +2386,12 @@ void __66__RBAssertionManager__lock_notifyDelegateOfProcessStateChangeSet___bloc
             [RBAssertionManager _lock_deactivateAssertions:];
           }
 
-          v13 = [v12 target];
-          v14 = [v13 identity];
+          target = [v12 target];
+          identity = [target identity];
 
-          if (v14 && [v12 definesRelativeStartTime] && objc_msgSend(v12, "isActive"))
+          if (identity && [v12 definesRelativeStartTime] && objc_msgSend(v12, "isActive"))
           {
-            v15 = [v6 objectForKeyedSubscript:v14];
+            v15 = [dictionary objectForKeyedSubscript:identity];
             if (v15)
             {
               v16 = v15;
@@ -2400,21 +2400,21 @@ void __66__RBAssertionManager__lock_notifyDelegateOfProcessStateChangeSet___bloc
 
             else
             {
-              v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RBAssertionManager _lock_numberOfStartTimeDefiningAssertionsForTargetProcessIdentity:](v32, "_lock_numberOfStartTimeDefiningAssertionsForTargetProcessIdentity:", v14) - 1}];
+              v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RBAssertionManager _lock_numberOfStartTimeDefiningAssertionsForTargetProcessIdentity:](selfCopy, "_lock_numberOfStartTimeDefiningAssertionsForTargetProcessIdentity:", identity) - 1}];
             }
 
-            [v6 setObject:v17 forKeyedSubscript:v14];
+            [dictionary setObject:v17 forKeyedSubscript:identity];
             if (![v17 unsignedIntegerValue])
             {
               v18 = rbs_assertion_log();
               if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543362;
-                v45 = v14;
+                v45 = identity;
                 _os_log_impl(&dword_262485000, v18, OS_LOG_TYPE_DEFAULT, "Removed last relative-start-date-defining assertion for process %{public}@", buf, 0xCu);
               }
 
-              [v33 addObject:v14];
+              [v33 addObject:identity];
             }
           }
         }
@@ -2453,9 +2453,9 @@ void __66__RBAssertionManager__lock_notifyDelegateOfProcessStateChangeSet___bloc
       while (v21);
     }
 
-    v24 = [(RBAssertionManager *)v32 _lock_activateDelayedAssertionsForTargets:v33];
-    v25 = [(RBAssertionManager *)v32 _lock_targetIdentitiesInAssertions:v19];
-    [(RBAssertionManager *)v32 _lock_clearStartTimesForUnbusyTargets:v25];
+    v24 = [(RBAssertionManager *)selfCopy _lock_activateDelayedAssertionsForTargets:v33];
+    v25 = [(RBAssertionManager *)selfCopy _lock_targetIdentitiesInAssertions:v19];
+    [(RBAssertionManager *)selfCopy _lock_clearStartTimesForUnbusyTargets:v25];
     if (v24)
     {
       v26 = [v19 setByAddingObjectsFromSet:v24];
@@ -2467,7 +2467,7 @@ void __66__RBAssertionManager__lock_notifyDelegateOfProcessStateChangeSet___bloc
     }
 
     v27 = v26;
-    v4 = v31;
+    assertionsCopy = v31;
 
     objc_autoreleasePoolPop(context);
   }
@@ -2482,15 +2482,15 @@ void __66__RBAssertionManager__lock_notifyDelegateOfProcessStateChangeSet___bloc
   return v27;
 }
 
-- (void)_lock_finalizeRemovingAssertions:(id)a3
+- (void)_lock_finalizeRemovingAssertions:(id)assertions
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assertionsCopy = assertions;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  v5 = [assertionsCopy countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2502,20 +2502,20 @@ void __66__RBAssertionManager__lock_notifyDelegateOfProcessStateChangeSet___bloc
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assertionsCopy);
         }
 
         [(RBAssertionManager *)self _lock_removeAssertion:*(*(&v19 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v6 = [assertionsCopy countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(RBAssertionManager *)self _lock_targetIdentitiesInAssertions:v4];
+  v9 = [(RBAssertionManager *)self _lock_targetIdentitiesInAssertions:assertionsCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -2548,56 +2548,56 @@ void __66__RBAssertionManager__lock_notifyDelegateOfProcessStateChangeSet___bloc
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lock_notifyDelegateOfInvalidatedAssertions:(id)a3
+- (void)_lock_notifyDelegateOfInvalidatedAssertions:(id)assertions
 {
-  v4 = a3;
+  assertionsCopy = assertions;
   calloutQueue = self->_calloutQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__RBAssertionManager__lock_notifyDelegateOfInvalidatedAssertions___block_invoke;
   v7[3] = &unk_279B32B80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assertionsCopy;
+  v6 = assertionsCopy;
   dispatch_async(calloutQueue, v7);
 }
 
-- (void)_lock_removeAssertions:(id)a3 andUpdateChangedAssertions:(id)a4
+- (void)_lock_removeAssertions:(id)assertions andUpdateChangedAssertions:(id)changedAssertions
 {
-  v11 = a3;
-  v6 = a4;
+  assertionsCopy = assertions;
+  changedAssertionsCopy = changedAssertions;
   os_unfair_lock_assert_owner(&self->_lock);
-  v7 = [(RBAssertionManager *)self _lock_deactivateAssertions:v11];
+  v7 = [(RBAssertionManager *)self _lock_deactivateAssertions:assertionsCopy];
   v8 = [MEMORY[0x277CBEB58] set];
   if ([v7 count])
   {
     [v8 unionSet:v7];
   }
 
-  if ([v6 count])
+  if ([changedAssertionsCopy count])
   {
-    [v8 unionSet:v6];
+    [v8 unionSet:changedAssertionsCopy];
   }
 
-  v9 = [v11 mutableCopy];
+  v9 = [assertionsCopy mutableCopy];
   v10 = [(RBAssertionManager *)self _lock_updateStatesDueToChangingAssertions:v8 invalidatedAssertions:v9];
   [(RBAssertionManager *)self _lock_finalizeRemovingAssertions:v9];
   [(RBAssertionManager *)self _lock_notifyDelegateOfInvalidatedAssertions:v9];
   [(RBAssertionManager *)self _lock_notifyDelegateOfProcessStateChangeSet:v10];
 }
 
-- (void)_lock_dumpAssertionsForTarget:(id)a3
+- (void)_lock_dumpAssertionsForTarget:(id)target
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  targetCopy = target;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(RBAssertionManager *)self _lock_sortedAssertionsForTarget:v4];
+  v5 = [(RBAssertionManager *)self _lock_sortedAssertionsForTarget:targetCopy];
   v18 = [v5 count];
   v6 = rbs_assertion_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v25 = v4;
+    v25 = targetCopy;
     v26 = 2048;
     v27 = v18;
     _os_log_impl(&dword_262485000, v6, OS_LOG_TYPE_INFO, "%{public}@ has %lu targeting assertions. Debug log lines of their details follow.", buf, 0x16u);
@@ -2628,21 +2628,21 @@ void __66__RBAssertionManager__lock_notifyDelegateOfProcessStateChangeSet___bloc
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
           ++v9;
-          v14 = [v12 identifier];
-          v15 = [v12 explanation];
-          v16 = [v12 attributes];
+          identifier = [v12 identifier];
+          explanation = [v12 explanation];
+          attributes = [v12 attributes];
           *buf = 138544642;
-          v25 = v4;
+          v25 = targetCopy;
           v26 = 2048;
           v27 = v9;
           v28 = 2048;
           v29 = v18;
           v30 = 2114;
-          v31 = v14;
+          v31 = identifier;
           v32 = 2114;
-          v33 = v15;
+          v33 = explanation;
           v34 = 2114;
-          v35 = v16;
+          v35 = attributes;
           _os_log_impl(&dword_262485000, v13, OS_LOG_TYPE_INFO, "%{public}@ assertion details %lu/%lu. ID:%{public}@ Explanation:%{public}@ Attributes:\n%{public}@", buf, 0x3Eu);
         }
       }
@@ -2656,14 +2656,14 @@ void __66__RBAssertionManager__lock_notifyDelegateOfProcessStateChangeSet___bloc
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_lock_sortedAssertionsForTarget:(id)a3
+- (id)_lock_sortedAssertionsForTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(RBAssertionCollection *)self->_assertions assertionsForTargetIdentity:v4];
+  v5 = [(RBAssertionCollection *)self->_assertions assertionsForTargetIdentity:targetCopy];
 
-  v6 = [v5 allObjects];
-  v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_84];
+  allObjects = [v5 allObjects];
+  v7 = [allObjects sortedArrayUsingComparator:&__block_literal_global_84];
 
   return v7;
 }
@@ -2683,41 +2683,41 @@ uint64_t __54__RBAssertionManager__lock_sortedAssertionsForTarget___block_invoke
   return v11;
 }
 
-- (void)_lock_removeAssertion:(id)a3
+- (void)_lock_removeAssertion:(id)assertion
 {
-  v11 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_assert_owner(&self->_lock);
-  [(RBAssertionCollection *)self->_assertions removeAssertion:v11];
-  v4 = [(RBDaemonContextProviding *)self->_daemonContext historicalStatistics];
-  [v4 notifyAssertionCount:{-[RBAssertionCollection count](self->_assertions, "count")}];
+  [(RBAssertionCollection *)self->_assertions removeAssertion:assertionCopy];
+  historicalStatistics = [(RBDaemonContextProviding *)self->_daemonContext historicalStatistics];
+  [historicalStatistics notifyAssertionCount:{-[RBAssertionCollection count](self->_assertions, "count")}];
 
-  v5 = [(RBDaemonContextProviding *)self->_daemonContext stateCaptureManager];
-  [v5 removeItem:v11];
+  stateCaptureManager = [(RBDaemonContextProviding *)self->_daemonContext stateCaptureManager];
+  [stateCaptureManager removeItem:assertionCopy];
 
-  v6 = [v11 originator];
-  v7 = [v6 identifier];
+  originator = [assertionCopy originator];
+  identifier = [originator identifier];
 
-  if (![(RBAssertionCollection *)self->_assertions hasAssertionsForOriginator:v7])
+  if (![(RBAssertionCollection *)self->_assertions hasAssertionsForOriginator:identifier])
   {
-    v8 = [(RBProcessIndex *)self->_processIndex processForIdentifier:v7];
+    v8 = [(RBProcessIndex *)self->_processIndex processForIdentifier:identifier];
     if ([v8 isReported])
     {
-      -[RBAssertionOriginatorPidPersisting removePid:](self->_originatorPidStore, "removePid:", [v7 pid]);
+      -[RBAssertionOriginatorPidPersisting removePid:](self->_originatorPidStore, "removePid:", [identifier pid]);
     }
   }
 
-  v9 = [v11 target];
-  v10 = [v9 identity];
+  target = [assertionCopy target];
+  identity = [target identity];
 
-  if (v10)
+  if (identity)
   {
-    RBPowerlogEvent(2, v10, [(RBAssertionCollection *)self->_assertions assertionCountForTargetProcessIdentity:v10], 0xFFFFFFFFLL);
+    RBPowerlogEvent(2, identity, [(RBAssertionCollection *)self->_assertions assertionCountForTargetProcessIdentity:identity], 0xFFFFFFFFLL);
   }
 }
 
-- (void)_lock_addAssertion:(id)a3
+- (void)_lock_addAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_assert_owner(&self->_lock);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -2729,73 +2729,73 @@ uint64_t __54__RBAssertionManager__lock_sortedAssertionsForTarget___block_invoke
     dispatch_once(&_lock_addAssertion__onceToken, block);
   }
 
-  v5 = [v4 originator];
-  v6 = [v5 identifier];
+  originator = [assertionCopy originator];
+  identifier = [originator identifier];
 
-  if (![(RBAssertionCollection *)self->_assertions hasAssertionsForOriginator:v6])
+  if (![(RBAssertionCollection *)self->_assertions hasAssertionsForOriginator:identifier])
   {
-    v7 = [(RBProcessIndex *)self->_processIndex processForIdentifier:v6];
+    v7 = [(RBProcessIndex *)self->_processIndex processForIdentifier:identifier];
     if ([v7 isReported])
     {
-      -[RBAssertionOriginatorPidPersisting addPid:](self->_originatorPidStore, "addPid:", [v6 pid]);
+      -[RBAssertionOriginatorPidPersisting addPid:](self->_originatorPidStore, "addPid:", [identifier pid]);
     }
   }
 
-  [(RBAssertionCollection *)self->_assertions addAssertion:v4];
-  v8 = [(RBDaemonContextProviding *)self->_daemonContext historicalStatistics];
-  [v8 notifyAssertionCount:{-[RBAssertionCollection count](self->_assertions, "count")}];
+  [(RBAssertionCollection *)self->_assertions addAssertion:assertionCopy];
+  historicalStatistics = [(RBDaemonContextProviding *)self->_daemonContext historicalStatistics];
+  [historicalStatistics notifyAssertionCount:{-[RBAssertionCollection count](self->_assertions, "count")}];
 
-  v9 = [(RBDaemonContextProviding *)self->_daemonContext stateCaptureManager];
-  [v9 addItem:v4];
+  stateCaptureManager = [(RBDaemonContextProviding *)self->_daemonContext stateCaptureManager];
+  [stateCaptureManager addItem:assertionCopy];
 
-  v10 = [v4 target];
-  v11 = [v10 identity];
+  target = [assertionCopy target];
+  identity = [target identity];
 
-  if (v11)
+  if (identity)
   {
-    RBPowerlogEvent(1, v11, [(RBAssertionCollection *)self->_assertions assertionCountForTargetProcessIdentity:v11], 0xFFFFFFFFLL);
+    RBPowerlogEvent(1, identity, [(RBAssertionCollection *)self->_assertions assertionCountForTargetProcessIdentity:identity], 0xFFFFFFFFLL);
   }
 }
 
-- (void)_lock_checkAssertionToInvalidateByCondition:(id)a3 condition:(id)a4 currentValue:(id)a5 assertionsToInvalidate:(id)a6
+- (void)_lock_checkAssertionToInvalidateByCondition:(id)condition condition:(id)a4 currentValue:(id)value assertionsToInvalidate:(id)invalidate
 {
-  v16 = a3;
+  conditionCopy = condition;
   v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if ([v16 isActive])
+  valueCopy = value;
+  invalidateCopy = invalidate;
+  if ([conditionCopy isActive])
   {
-    v12 = [v16 intransientState];
-    v13 = [v12 invalidatesOnConditions];
-    v14 = [v13 objectForKey:v9];
+    intransientState = [conditionCopy intransientState];
+    invalidatesOnConditions = [intransientState invalidatesOnConditions];
+    v14 = [invalidatesOnConditions objectForKey:v9];
 
     if (v14)
     {
-      if (!v10)
+      if (!valueCopy)
       {
         [RBAssertionManager _lock_checkAssertionToInvalidateByCondition:condition:currentValue:assertionsToInvalidate:];
       }
 
-      v15 = [v10 integerValue];
-      if (v15 > [v14 integerValue])
+      integerValue = [valueCopy integerValue];
+      if (integerValue > [v14 integerValue])
       {
-        [v11 addObject:v16];
-        [v16 setInvalidationReason:8];
+        [invalidateCopy addObject:conditionCopy];
+        [conditionCopy setInvalidationReason:8];
       }
     }
   }
 }
 
-- (id)_lock_invalidateAssertionByConditions:(id)a3 changedAssertions:(id *)a4
+- (id)_lock_invalidateAssertionByConditions:(id)conditions changedAssertions:(id *)assertions
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  conditionsCopy = conditions;
   v6 = [MEMORY[0x277CBEB58] set];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v5;
+  v7 = conditionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
@@ -2831,17 +2831,17 @@ uint64_t __54__RBAssertionManager__lock_sortedAssertionsForTarget___block_invoke
     while (v9);
   }
 
-  *a4 = [(RBAssertionManager *)self _lock_deactivateAssertions:v6];
+  *assertions = [(RBAssertionManager *)self _lock_deactivateAssertions:v6];
 
   v16 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (id)_lock_updateStatesDueToChangingAssertions:(id)a3 invalidatedAssertions:(id)a4
+- (id)_lock_updateStatesDueToChangingAssertions:(id)assertions invalidatedAssertions:(id)invalidatedAssertions
 {
-  v6 = a3;
-  v7 = a4;
+  assertionsCopy = assertions;
+  invalidatedAssertionsCopy = invalidatedAssertions;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -2854,12 +2854,12 @@ uint64_t __54__RBAssertionManager__lock_sortedAssertionsForTarget___block_invoke
   v13[1] = 3221225472;
   v13[2] = __86__RBAssertionManager__lock_updateStatesDueToChangingAssertions_invalidatedAssertions___block_invoke;
   v13[3] = &unk_279B32EB0;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
+  v14 = assertionsCopy;
+  selfCopy = self;
+  v16 = invalidatedAssertionsCopy;
   v17 = &v18;
-  v9 = v7;
-  v10 = v6;
+  v9 = invalidatedAssertionsCopy;
+  v10 = assertionsCopy;
   _os_activity_initiate(&dword_262485000, "state update", OS_ACTIVITY_FLAG_DEFAULT, v13);
 
   v11 = v19[5];
@@ -3038,20 +3038,20 @@ LABEL_33:
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lock_removeStateForProcessIdentityIfNecessary:(id)a3
+- (void)_lock_removeStateForProcessIdentityIfNecessary:(id)necessary
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  necessaryCopy = necessary;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (![(RBAssertionCollection *)self->_assertions assertionCountForTargetProcessIdentity:v4]&& ![(RBProcessIndex *)self->_processIndex containsIdentity:v4])
+  if (![(RBAssertionCollection *)self->_assertions assertionCountForTargetProcessIdentity:necessaryCopy]&& ![(RBProcessIndex *)self->_processIndex containsIdentity:necessaryCopy])
   {
-    [(RBProcessMap *)self->_stateMap removeIdentity:v4];
-    [(NSMutableSet *)self->_assertionTargets removeObject:v4];
+    [(RBProcessMap *)self->_stateMap removeIdentity:necessaryCopy];
+    [(NSMutableSet *)self->_assertionTargets removeObject:necessaryCopy];
     v5 = rbs_process_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v11 = v4;
+      v11 = necessaryCopy;
       _os_log_impl(&dword_262485000, v5, OS_LOG_TYPE_INFO, "Ended tracking state for process identity %{public}@", buf, 0xCu);
     }
 
@@ -3061,41 +3061,41 @@ LABEL_33:
     v8[2] = __69__RBAssertionManager__lock_removeStateForProcessIdentityIfNecessary___block_invoke;
     v8[3] = &unk_279B32B80;
     v8[4] = self;
-    v9 = v4;
+    v9 = necessaryCopy;
     dispatch_async(calloutQueue, v8);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lock_setState:(id)a3 forProcessIdentity:(id)a4
+- (void)_lock_setState:(id)state forProcessIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  identityCopy = identity;
   os_unfair_lock_assert_owner(&self->_lock);
-  v8 = [(RBProcessMap *)self->_stateMap containsIdentity:v7];
-  v9 = [(RBProcessMap *)self->_stateMap setValue:v6 forIdentity:v7];
+  v8 = [(RBProcessMap *)self->_stateMap containsIdentity:identityCopy];
+  v9 = [(RBProcessMap *)self->_stateMap setValue:stateCopy forIdentity:identityCopy];
   if (!v8)
   {
-    [(NSMutableSet *)self->_assertionTargets addObject:v7];
+    [(NSMutableSet *)self->_assertionTargets addObject:identityCopy];
     calloutQueue = self->_calloutQueue;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __56__RBAssertionManager__lock_setState_forProcessIdentity___block_invoke;
     v11[3] = &unk_279B32B80;
     v11[4] = self;
-    v12 = v7;
+    v12 = identityCopy;
     dispatch_async(calloutQueue, v11);
   }
 }
 
-- (void)_lock_setSystemState:(id)a3
+- (void)_lock_setSystemState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (([v4 isEqual:self->_systemState] & 1) == 0)
+  if (([stateCopy isEqual:self->_systemState] & 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [stateCopy copy];
     systemState = self->_systemState;
     self->_systemState = v5;
 
@@ -3111,29 +3111,29 @@ LABEL_33:
   }
 }
 
-- (double)_lock_startTimeForAssertion:(id)a3
+- (double)_lock_startTimeForAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_assert_owner(&self->_lock);
-  [v4 creationTime];
+  [assertionCopy creationTime];
   v6 = v5;
-  v7 = [v4 startPolicy];
-  if (v7 > 100)
+  startPolicy = [assertionCopy startPolicy];
+  if (startPolicy > 100)
   {
-    if (v7 == 101)
+    if (startPolicy == 101)
     {
-      [(RBAssertionManager *)self _lock_relativeStartTimeForAssertion:v4];
+      [(RBAssertionManager *)self _lock_relativeStartTimeForAssertion:assertionCopy];
     }
 
     else
     {
-      if (v7 != 102)
+      if (startPolicy != 102)
       {
-        if (v7 == 103)
+        if (startPolicy == 103)
         {
-          [(RBAssertionManager *)self _lock_delayedStartTimeForAssertion:v4];
+          [(RBAssertionManager *)self _lock_delayedStartTimeForAssertion:assertionCopy];
           v6 = v8;
-          [v4 creationTime];
+          [assertionCopy creationTime];
           if (v6 < v9)
           {
             v6 = v9;
@@ -3143,7 +3143,7 @@ LABEL_33:
         goto LABEL_14;
       }
 
-      [(RBAssertionManager *)self _lock_delayedStartTimeForAssertion:v4];
+      [(RBAssertionManager *)self _lock_delayedStartTimeForAssertion:assertionCopy];
     }
 
 LABEL_13:
@@ -3151,26 +3151,26 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v7 != 2)
+  if (startPolicy != 2)
   {
-    if (v7 != 3)
+    if (startPolicy != 3)
     {
       goto LABEL_14;
     }
 
-    [(RBAssertionManager *)self _lock_originatorExitTimeForAssertion:v4];
+    [(RBAssertionManager *)self _lock_originatorExitTimeForAssertion:assertionCopy];
     goto LABEL_13;
   }
 
-  v12 = [v4 target];
-  v13 = [v12 process];
+  target = [assertionCopy target];
+  process = [target process];
 
-  if (v13)
+  if (process)
   {
     timeProvider = self->_timeProvider;
-    v15 = [v4 target];
-    v16 = [v15 process];
-    [(RBTimeProviding *)timeProvider startTimeForProcess:v16];
+    target2 = [assertionCopy target];
+    process2 = [target2 process];
+    [(RBTimeProviding *)timeProvider startTimeForProcess:process2];
     v6 = v17;
   }
 
@@ -3179,16 +3179,16 @@ LABEL_14:
   return v6;
 }
 
-- (double)_lock_invalidationTimeForAssertion:(id)a3
+- (double)_lock_invalidationTimeForAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_assert_owner(&self->_lock);
-  [(RBAssertionManager *)self _lock_startTimeForAssertion:v4];
+  [(RBAssertionManager *)self _lock_startTimeForAssertion:assertionCopy];
   v6 = v5;
-  [v4 invalidationDuration];
+  [assertionCopy invalidationDuration];
   v8 = v6 + v7;
-  v9 = [v4 startPolicy];
-  if (((v9 - 102) < 2 || v9 == 3) && ![v4 isActive])
+  startPolicy = [assertionCopy startPolicy];
+  if (((startPolicy - 102) < 2 || startPolicy == 3) && ![assertionCopy isActive])
   {
     v8 = 1.79769313e308;
   }
@@ -3196,20 +3196,20 @@ LABEL_14:
   return v8;
 }
 
-- (double)_lock_relativeStartTimeForAssertion:(id)a3
+- (double)_lock_relativeStartTimeForAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_assert_owner(&self->_lock);
   [(RBTimeProviding *)self->_timeProvider currentTime];
   v6 = v5;
-  v7 = [v4 target];
-  v8 = [v7 identity];
+  target = [assertionCopy target];
+  identity = [target identity];
 
-  if (v8)
+  if (identity)
   {
-    if (([v4 isActive] & 1) != 0 || !-[RBAssertionManager _lock_hasStartTimeDefiningAssertionsForTargetProcessIdentity:](self, "_lock_hasStartTimeDefiningAssertionsForTargetProcessIdentity:", v8))
+    if (([assertionCopy isActive] & 1) != 0 || !-[RBAssertionManager _lock_hasStartTimeDefiningAssertionsForTargetProcessIdentity:](self, "_lock_hasStartTimeDefiningAssertionsForTargetProcessIdentity:", identity))
     {
-      v10 = [(NSMutableDictionary *)self->_relativeStartTimesByTargetIdentity objectForKeyedSubscript:v8];
+      v10 = [(NSMutableDictionary *)self->_relativeStartTimesByTargetIdentity objectForKeyedSubscript:identity];
       v11 = v10;
       if (v10)
       {
@@ -3228,20 +3228,20 @@ LABEL_14:
   return v6;
 }
 
-- (double)_lock_originatorExitTimeForAssertion:(id)a3
+- (double)_lock_originatorExitTimeForAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_assert_owner(&self->_lock);
   [(RBTimeProviding *)self->_timeProvider currentTime];
   v6 = v5;
-  v7 = [v4 originator];
-  v8 = [v7 identifier];
+  originator = [assertionCopy originator];
+  identifier = [originator identifier];
 
-  if (v8)
+  if (identifier)
   {
-    if ([v4 isActive])
+    if ([assertionCopy isActive])
     {
-      v9 = [(NSMapTable *)self->_originatorExitTimesByAssertion objectForKey:v4];
+      v9 = [(NSMapTable *)self->_originatorExitTimesByAssertion objectForKey:assertionCopy];
       if (v9)
       {
         v10 = v9;
@@ -3252,7 +3252,7 @@ LABEL_14:
         v11 = MEMORY[0x277CCABB0];
         [(RBTimeProviding *)self->_timeProvider currentTime];
         v10 = [v11 numberWithDouble:?];
-        [(NSMapTable *)self->_originatorExitTimesByAssertion setObject:v10 forKey:v4];
+        [(NSMapTable *)self->_originatorExitTimesByAssertion setObject:v10 forKey:assertionCopy];
         if (!v10)
         {
           [RBAssertionManager _lock_originatorExitTimeForAssertion:];
@@ -3272,16 +3272,16 @@ LABEL_14:
   return v6;
 }
 
-- (id)_lock_deactivateDelayedAssertionsForTargets:(id)a3
+- (id)_lock_deactivateDelayedAssertionsForTargets:(id)targets
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  targetsCopy = targets;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = targetsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -3341,20 +3341,20 @@ void __66__RBAssertionManager__lock_deactivateDelayedAssertionsForTargets___bloc
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_lock_activateDelayedAssertionsForTargets:(id)a3
+- (id)_lock_activateDelayedAssertionsForTargets:(id)targets
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  targetsCopy = targets;
   os_unfair_lock_assert_owner(&self->_lock);
-  if ([v4 count])
+  if ([targetsCopy count])
   {
     v5 = [MEMORY[0x277CBEB58] set];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v17 = v4;
-    v6 = v4;
+    v17 = targetsCopy;
+    v6 = targetsCopy;
     v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v7)
     {
@@ -3393,7 +3393,7 @@ void __66__RBAssertionManager__lock_deactivateDelayedAssertionsForTargets___bloc
       while (v8);
     }
 
-    v4 = v17;
+    targetsCopy = v17;
   }
 
   else
@@ -3427,19 +3427,19 @@ void __64__RBAssertionManager__lock_activateDelayedAssertionsForTargets___block_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lock_clearStartTimesForUnbusyTargets:(id)a3
+- (void)_lock_clearStartTimesForUnbusyTargets:(id)targets
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  targetsCopy = targets;
   os_unfair_lock_assert_owner(&self->_lock);
-  if ([v4 count])
+  if ([targetsCopy count])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v12 = v4;
-    v5 = v4;
+    v12 = targetsCopy;
+    v5 = targetsCopy;
     v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v6)
     {
@@ -3482,7 +3482,7 @@ void __64__RBAssertionManager__lock_activateDelayedAssertionsForTargets___block_
       while (v6);
     }
 
-    v4 = v12;
+    targetsCopy = v12;
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -3497,20 +3497,20 @@ void __60__RBAssertionManager__lock_clearStartTimesForUnbusyTargets___block_invo
   }
 }
 
-- (double)_lock_delayedStartTimeForAssertion:(id)a3
+- (double)_lock_delayedStartTimeForAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_assert_owner(&self->_lock);
   [(RBTimeProviding *)self->_timeProvider currentTime];
   v6 = v5;
-  v7 = [v4 target];
-  v8 = [v7 identity];
+  target = [assertionCopy target];
+  identity = [target identity];
 
-  if (v8)
+  if (identity)
   {
-    if (([v4 isActive] & 1) != 0 || !-[RBAssertionManager _lock_hasStartTimeDefiningAssertionsForTargetProcessIdentity:](self, "_lock_hasStartTimeDefiningAssertionsForTargetProcessIdentity:", v8))
+    if (([assertionCopy isActive] & 1) != 0 || !-[RBAssertionManager _lock_hasStartTimeDefiningAssertionsForTargetProcessIdentity:](self, "_lock_hasStartTimeDefiningAssertionsForTargetProcessIdentity:", identity))
     {
-      v9 = [(NSMutableDictionary *)self->_relativeStartTimesByTargetIdentity objectForKeyedSubscript:v8];
+      v9 = [(NSMutableDictionary *)self->_relativeStartTimesByTargetIdentity objectForKeyedSubscript:identity];
       v10 = v9;
       if (v9)
       {
@@ -3528,9 +3528,9 @@ void __60__RBAssertionManager__lock_clearStartTimesForUnbusyTargets___block_invo
   return v6;
 }
 
-- (unint64_t)_lock_numberOfStartTimeDefiningAssertionsForTargetProcessIdentity:(id)a3
+- (unint64_t)_lock_numberOfStartTimeDefiningAssertionsForTargetProcessIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   os_unfair_lock_assert_owner(&self->_lock);
   v9 = 0;
   v10 = &v9;
@@ -3542,7 +3542,7 @@ void __60__RBAssertionManager__lock_clearStartTimesForUnbusyTargets___block_invo
   v8[2] = __88__RBAssertionManager__lock_numberOfStartTimeDefiningAssertionsForTargetProcessIdentity___block_invoke;
   v8[3] = &unk_279B32F00;
   v8[4] = &v9;
-  [(RBAssertionCollection *)assertions enumerateAssertionsForTargetProcessIdentity:v4 withBlock:v8];
+  [(RBAssertionCollection *)assertions enumerateAssertionsForTargetProcessIdentity:identityCopy withBlock:v8];
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
 
@@ -3558,9 +3558,9 @@ void __88__RBAssertionManager__lock_numberOfStartTimeDefiningAssertionsForTarget
   }
 }
 
-- (BOOL)_lock_hasStartTimeDefiningAssertionsForTargetProcessIdentity:(id)a3
+- (BOOL)_lock_hasStartTimeDefiningAssertionsForTargetProcessIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   os_unfair_lock_assert_owner(&self->_lock);
   v8 = 0;
   v9 = &v8;
@@ -3572,7 +3572,7 @@ void __88__RBAssertionManager__lock_numberOfStartTimeDefiningAssertionsForTarget
   v7[2] = __83__RBAssertionManager__lock_hasStartTimeDefiningAssertionsForTargetProcessIdentity___block_invoke;
   v7[3] = &unk_279B32F00;
   v7[4] = &v8;
-  [(RBAssertionCollection *)assertions enumerateAssertionsForTargetProcessIdentity:v4 withBlock:v7];
+  [(RBAssertionCollection *)assertions enumerateAssertionsForTargetProcessIdentity:identityCopy withBlock:v7];
   LOBYTE(self) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
 
@@ -3589,24 +3589,24 @@ void __83__RBAssertionManager__lock_hasStartTimeDefiningAssertionsForTargetProce
   }
 }
 
-- (void)_acquireUnderlyingAssertionForProcess:(id)a3
+- (void)_acquireUnderlyingAssertionForProcess:(id)process
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  processCopy = process;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy__1;
   v32 = __Block_byref_object_dispose__1;
-  v33 = [v4 underlyingAssertion];
+  underlyingAssertion = [processCopy underlyingAssertion];
   if (!v29[5])
   {
-    v5 = [v4 identity];
-    v6 = [v5 isApplication];
+    identity = [processCopy identity];
+    isApplication = [identity isApplication];
 
-    if (v6)
+    if (isApplication)
     {
-      if (!os_variant_has_internal_content() || ([v4 identity], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "embeddedApplicationIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "hasPrefix:", @"com.apple.runningboard.test"), v8, v7, (v9 & 1) == 0))
+      if (!os_variant_has_internal_content() || ([processCopy identity], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "embeddedApplicationIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "hasPrefix:", @"com.apple.runningboard.test"), v8, v7, (v9 & 1) == 0))
       {
         v10 = v29[5];
         v29[5] = @"defaultUnderlyingAppAssertion";
@@ -3615,7 +3615,7 @@ void __83__RBAssertionManager__lock_hasStartTimeDefiningAssertionsForTargetProce
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v36 = v4;
+          v36 = processCopy;
           _os_log_impl(&dword_262485000, v11, OS_LOG_TYPE_DEFAULT, "Using default underlying assertion for app: %{public}@", buf, 0xCu);
         }
       }
@@ -3624,8 +3624,8 @@ void __83__RBAssertionManager__lock_hasStartTimeDefiningAssertionsForTargetProce
 
   if (v29[5])
   {
-    v12 = [v4 auditToken];
-    v13 = v12 == 0;
+    auditToken = [processCopy auditToken];
+    v13 = auditToken == 0;
 
     if (v13)
     {
@@ -3641,8 +3641,8 @@ void __83__RBAssertionManager__lock_hasStartTimeDefiningAssertionsForTargetProce
       v14 = MEMORY[0x277D46DC8];
       v15 = [MEMORY[0x277D46DD0] identifierWithClientPid:getpid()];
       v16 = MEMORY[0x277D47008];
-      v17 = [v4 identifier];
-      v18 = [v16 targetWithProcessIdentifier:v17];
+      identifier = [processCopy identifier];
+      v18 = [v16 targetWithProcessIdentifier:identifier];
       v19 = [MEMORY[0x277D46E38] attributeWithDomain:@"com.apple.underlying" name:v29[5]];
       v34[0] = v19;
       v20 = [MEMORY[0x277D46D78] attributeWithCompletionPolicy:1];
@@ -3650,12 +3650,12 @@ void __83__RBAssertionManager__lock_hasStartTimeDefiningAssertionsForTargetProce
       v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
       v22 = [v14 descriptorWithIdentifier:v15 target:v18 explanation:@"RB Underlying Assertion" attributes:v21];
 
-      v23 = [RBAssertionAcquisitionContext contextForProcess:v4 withDescriptor:v22 daemonContext:self->_daemonContext];
+      v23 = [RBAssertionAcquisitionContext contextForProcess:processCopy withDescriptor:v22 daemonContext:self->_daemonContext];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __60__RBAssertionManager__acquireUnderlyingAssertionForProcess___block_invoke;
       v25[3] = &unk_279B32F28;
-      v26 = v4;
+      v26 = processCopy;
       v27 = &v28;
       [(RBAssertionManager *)self acquireAssertionWithContext:v23 completion:v25];
     }
@@ -3714,19 +3714,19 @@ void __60__RBAssertionManager__acquireUnderlyingAssertionForProcess___block_invo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invalidateAssertionsWithContext:(id)a3
+- (void)_invalidateAssertionsWithContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = [MEMORY[0x277CBEB58] set];
   os_unfair_lock_lock(&self->_lock);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v15 = v4;
-  v6 = [v4 identifiersToInvalidate];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  v15 = contextCopy;
+  identifiersToInvalidate = [contextCopy identifiersToInvalidate];
+  v7 = [identifiersToInvalidate countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3737,7 +3737,7 @@ void __60__RBAssertionManager__acquireUnderlyingAssertionForProcess___block_invo
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(identifiersToInvalidate);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -3764,7 +3764,7 @@ void __60__RBAssertionManager__acquireUnderlyingAssertionForProcess___block_invo
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v8 = [identifiersToInvalidate countByEnumeratingWithState:&v16 objects:v22 count:16];
     }
 
     while (v8);
@@ -3780,41 +3780,41 @@ void __60__RBAssertionManager__acquireUnderlyingAssertionForProcess___block_invo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_lock_validateDescriptor:(id)a3 originatorProcess:(id)a4 originatorState:(id)a5 concreteTarget:(id)a6 targetProcess:(id)a7 targetIdentity:(id)a8 targetIdentifier:(id)a9 targetState:(id)a10 acquisitionContext:(id)a11 error:(id *)a12
+- (BOOL)_lock_validateDescriptor:(id)descriptor originatorProcess:(id)process originatorState:(id)state concreteTarget:(id)target targetProcess:(id)targetProcess targetIdentity:(id)identity targetIdentifier:(id)identifier targetState:(id)self0 acquisitionContext:(id)self1 error:(id *)self2
 {
-  v37 = a11;
-  v36 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
+  contextCopy = context;
+  targetStateCopy = targetState;
+  identifierCopy = identifier;
+  identityCopy = identity;
+  targetProcessCopy = targetProcess;
+  targetCopy = target;
+  stateCopy = state;
+  processCopy = process;
+  descriptorCopy = descriptor;
   os_unfair_lock_assert_owner(&self->_lock);
   v26 = +[RBAssertionDescriptorValidatorContext context];
-  [v26 setAssertionDescriptor:v25];
+  [v26 setAssertionDescriptor:descriptorCopy];
 
-  [v26 setOriginatorProcess:v24];
-  [v26 setOriginatorState:v23];
+  [v26 setOriginatorProcess:processCopy];
+  [v26 setOriginatorState:stateCopy];
 
-  [v26 setTarget:v22];
-  [v26 setTargetProcess:v21];
+  [v26 setTarget:targetCopy];
+  [v26 setTargetProcess:targetProcessCopy];
 
-  [v26 setTargetIdentity:v20];
-  [v26 setTargetIdentifier:v19];
+  [v26 setTargetIdentity:identityCopy];
+  [v26 setTargetIdentifier:identifierCopy];
 
-  [v26 setTargetState:v36];
-  [v26 setAcquisitionContext:v37];
+  [v26 setTargetState:targetStateCopy];
+  [v26 setAcquisitionContext:contextCopy];
 
-  v27 = [(RBDaemonContextProviding *)self->_daemonContext entitlementManager];
-  [v26 setEntitlementManager:v27];
+  entitlementManager = [(RBDaemonContextProviding *)self->_daemonContext entitlementManager];
+  [v26 setEntitlementManager:entitlementManager];
 
   [v26 setBundlePropertiesManager:self->_bundlePropertiesManager];
-  v28 = [(RBDaemonContextProviding *)self->_daemonContext domainAttributeManager];
-  [v26 setDomainAttributeManager:v28];
+  domainAttributeManager = [(RBDaemonContextProviding *)self->_daemonContext domainAttributeManager];
+  [v26 setDomainAttributeManager:domainAttributeManager];
 
-  v29 = [(RBAssertionManager *)self _lock_savedEndowmentsForProcess:v24];
+  v29 = [(RBAssertionManager *)self _lock_savedEndowmentsForProcess:processCopy];
 
   [v26 setSavedEndowments:v29];
   [v26 setSystemState:self->_systemState];
@@ -3828,7 +3828,7 @@ void __60__RBAssertionManager__acquireUnderlyingAssertionForProcess___block_invo
     if (!v32)
     {
       [RBAssertionManager _lock_validateDescriptor:originatorProcess:originatorState:concreteTarget:targetProcess:targetIdentity:targetIdentifier:targetState:acquisitionContext:error:];
-      if (!a12)
+      if (!error)
       {
         goto LABEL_5;
       }
@@ -3836,11 +3836,11 @@ void __60__RBAssertionManager__acquireUnderlyingAssertionForProcess___block_invo
       goto LABEL_4;
     }
 
-    if (a12)
+    if (error)
     {
 LABEL_4:
       v34 = v33;
-      *a12 = v33;
+      *error = v33;
     }
   }
 
@@ -3849,23 +3849,23 @@ LABEL_5:
   return v31;
 }
 
-- (id)_lock_assertionCreationAttributeContextForTargetIdentity:(id)a3 originator:(id)a4
+- (id)_lock_assertionCreationAttributeContextForTargetIdentity:(id)identity originator:(id)originator
 {
-  v6 = a4;
-  v7 = a3;
+  originatorCopy = originator;
+  identityCopy = identity;
   os_unfair_lock_assert_owner(&self->_lock);
   v8 = objc_alloc_init(RBAttributeContext);
-  v9 = [(RBDaemonContextProviding *)self->_daemonContext entitlementManager];
-  [(RBAttributeContext *)v8 setEntitlementManager:v9];
+  entitlementManager = [(RBDaemonContextProviding *)self->_daemonContext entitlementManager];
+  [(RBAttributeContext *)v8 setEntitlementManager:entitlementManager];
 
-  v10 = [(RBDaemonContextProviding *)self->_daemonContext domainAttributeManager];
-  [(RBAttributeContext *)v8 setDomainAttributeManager:v10];
+  domainAttributeManager = [(RBDaemonContextProviding *)self->_daemonContext domainAttributeManager];
+  [(RBAttributeContext *)v8 setDomainAttributeManager:domainAttributeManager];
 
   [(RBAttributeContext *)v8 setBundlePropertiesManager:self->_bundlePropertiesManager];
-  v11 = [(RBProcessMap *)self->_stateMap valueForIdentity:v7];
+  v11 = [(RBProcessMap *)self->_stateMap valueForIdentity:identityCopy];
 
   [(RBAttributeContext *)v8 setInitialProcessState:v11];
-  v12 = [(RBAssertionManager *)self _lock_savedEndowmentsForProcess:v6];
+  v12 = [(RBAssertionManager *)self _lock_savedEndowmentsForProcess:originatorCopy];
 
   [(RBAttributeContext *)v8 setSavedEndowments:v12];
   [(RBAttributeContext *)v8 setSystemState:self->_systemState];
@@ -3873,41 +3873,41 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)_lock_originatorHasExited:(id)a3
+- (BOOL)_lock_originatorHasExited:(id)exited
 {
-  v3 = [a3 originator];
-  v4 = v3;
-  if (v3)
+  originator = [exited originator];
+  v4 = originator;
+  if (originator)
   {
-    v5 = [v3 isTerminating];
+    isTerminating = [originator isTerminating];
   }
 
   else
   {
-    v5 = 1;
+    isTerminating = 1;
   }
 
-  return v5;
+  return isTerminating;
 }
 
-- (id)_lock_createAssertionWithAcquisitionContext:(id)a3 attributeContext:(id)a4 concreteTarget:(id)a5 targetIdentity:(id)a6 originator:(id)a7 error:(id *)a8
+- (id)_lock_createAssertionWithAcquisitionContext:(id)context attributeContext:(id)attributeContext concreteTarget:(id)target targetIdentity:(id)identity originator:(id)originator error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a4;
-  v19 = [v14 descriptor];
+  contextCopy = context;
+  targetCopy = target;
+  identityCopy = identity;
+  originatorCopy = originator;
+  attributeContextCopy = attributeContext;
+  descriptor = [contextCopy descriptor];
   [(RBTimeProviding *)self->_timeProvider currentTime];
-  v20 = [RBAssertion assertionWithDescriptor:v19 target:v15 originator:v17 context:v18 creationTime:?];
+  v20 = [RBAssertion assertionWithDescriptor:descriptor target:targetCopy originator:originatorCopy context:attributeContextCopy creationTime:?];
 
-  v21 = [v20 startPolicy];
-  if (v21 <= 100)
+  startPolicy = [v20 startPolicy];
+  if (startPolicy <= 100)
   {
-    if (v21 >= 3)
+    if (startPolicy >= 3)
     {
-      if (v21 != 3)
+      if (startPolicy != 3)
       {
         goto LABEL_22;
       }
@@ -3957,9 +3957,9 @@ LABEL_15:
     goto LABEL_22;
   }
 
-  if ((v21 - 102) >= 2)
+  if ((startPolicy - 102) >= 2)
   {
-    if (v21 != 101)
+    if (startPolicy != 101)
     {
       goto LABEL_22;
     }
@@ -3967,7 +3967,7 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  v26 = [(RBAssertionManager *)self _lock_hasStartTimeDefiningAssertionsForTargetProcessIdentity:v16];
+  v26 = [(RBAssertionManager *)self _lock_hasStartTimeDefiningAssertionsForTargetProcessIdentity:identityCopy];
   v23 = rbs_ttl_log();
   v27 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
   if (!v26)
@@ -3996,13 +3996,13 @@ LABEL_21:
 
   [v20 deactivate];
 LABEL_22:
-  v29 = [v15 identity];
-  if (([v20 startPolicy] == 103 || objc_msgSend(v20, "startPolicy") == 101 || objc_msgSend(v20, "startPolicy") == 102) && (-[NSMutableDictionary objectForKeyedSubscript:](self->_relativeStartTimesByTargetIdentity, "objectForKeyedSubscript:", v29), v30 = objc_claimAutoreleasedReturnValue(), v30, !v30))
+  identity = [targetCopy identity];
+  if (([v20 startPolicy] == 103 || objc_msgSend(v20, "startPolicy") == 101 || objc_msgSend(v20, "startPolicy") == 102) && (-[NSMutableDictionary objectForKeyedSubscript:](self->_relativeStartTimesByTargetIdentity, "objectForKeyedSubscript:", identity), v30 = objc_claimAutoreleasedReturnValue(), v30, !v30))
   {
     v32 = MEMORY[0x277CCABB0];
     [(RBTimeProviding *)self->_timeProvider currentTime];
     v33 = [v32 numberWithDouble:?];
-    [(NSMutableDictionary *)self->_relativeStartTimesByTargetIdentity setObject:v33 forKeyedSubscript:v29];
+    [(NSMutableDictionary *)self->_relativeStartTimesByTargetIdentity setObject:v33 forKeyedSubscript:identity];
 
     v31 = 1;
   }
@@ -4017,27 +4017,27 @@ LABEL_22:
   [(RBAssertionManager *)self _lock_invalidationTimeForAssertion:v20];
   if (v35 == 0.0 || (v37 = v36, [(RBTimeProviding *)self->_timeProvider currentTime], v37 > v38))
   {
-    v39 = [v14 holdToken];
+    holdToken = [contextCopy holdToken];
 
-    if (v39)
+    if (holdToken)
     {
       pluginHoldsForAssertions = self->_pluginHoldsForAssertions;
-      v41 = [v14 holdToken];
-      v42 = [v20 identifier];
-      [(NSMutableDictionary *)pluginHoldsForAssertions setObject:v41 forKey:v42];
+      holdToken2 = [contextCopy holdToken];
+      identifier = [v20 identifier];
+      [(NSMutableDictionary *)pluginHoldsForAssertions setObject:holdToken2 forKey:identifier];
     }
 
-    a8 = v20;
+    error = v20;
   }
 
   else
   {
     if (v31)
     {
-      [(NSMutableDictionary *)self->_relativeStartTimesByTargetIdentity setObject:0 forKeyedSubscript:v29];
+      [(NSMutableDictionary *)self->_relativeStartTimesByTargetIdentity setObject:0 forKeyedSubscript:identity];
     }
 
-    if (a8)
+    if (error)
     {
       v43 = MEMORY[0x277CCA9B8];
       v44 = *MEMORY[0x277D47050];
@@ -4046,52 +4046,52 @@ LABEL_22:
       v49[0] = @"Assertion's invalidation time is in the past";
       v49[1] = MEMORY[0x277CBEC38];
       v45 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:2];
-      *a8 = [v43 errorWithDomain:v44 code:2 userInfo:v45];
+      *error = [v43 errorWithDomain:v44 code:2 userInfo:v45];
 
-      a8 = 0;
+      error = 0;
     }
   }
 
   v46 = *MEMORY[0x277D85DE8];
 
-  return a8;
+  return error;
 }
 
-- (id)_lock_createAssertionForDescriptor:(id)a3 originatorState:(id)a4 acquisitionContext:(id)a5 error:(id *)a6
+- (id)_lock_createAssertionForDescriptor:(id)descriptor originatorState:(id)state acquisitionContext:(id)context error:(id *)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v48 = a4;
-  v10 = a5;
-  v11 = [v9 target];
-  v12 = [v10 process];
-  v13 = -[RBAssertionManager _concreteTargetForTarget:allowAbstractTarget:](self, "_concreteTargetForTarget:allowAbstractTarget:", v11, [v10 allowAbstractTarget]);
-  if ([v10 allowAbstractTarget])
+  descriptorCopy = descriptor;
+  stateCopy = state;
+  contextCopy = context;
+  target = [descriptorCopy target];
+  process = [contextCopy process];
+  v13 = -[RBAssertionManager _concreteTargetForTarget:allowAbstractTarget:](self, "_concreteTargetForTarget:allowAbstractTarget:", target, [contextCopy allowAbstractTarget]);
+  if ([contextCopy allowAbstractTarget])
   {
-    v14 = [(RBAssertionManager *)self _concreteTargetForTarget:v11 allowAbstractTarget:0];
-    v46 = [v14 process];
+    v14 = [(RBAssertionManager *)self _concreteTargetForTarget:target allowAbstractTarget:0];
+    process2 = [v14 process];
   }
 
   else
   {
-    v46 = 0;
+    process2 = 0;
   }
 
   v15 = rbs_ttl_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = [v13 description];
-    v17 = v16;
+    shortDescription = v16;
     if (!v16)
     {
-      v17 = [v11 shortDescription];
+      shortDescription = [target shortDescription];
     }
 
-    v18 = [v9 debugDescription];
+    v18 = [descriptorCopy debugDescription];
     *buf = 138543874;
-    v53 = v17;
+    v53 = shortDescription;
     v54 = 2114;
-    v55 = v12;
+    v55 = process;
     v56 = 2114;
     v57 = v18;
     _os_log_impl(&dword_262485000, v15, OS_LOG_TYPE_DEFAULT, "Acquiring assertion targeting %{public}@ from originator %{public}@ with description %{public}@", buf, 0x20u);
@@ -4100,58 +4100,58 @@ LABEL_22:
     }
   }
 
-  v47 = v12;
+  v47 = process;
   if (v13)
   {
-    v43 = v11;
-    v19 = [v13 identity];
-    v20 = [v13 process];
-    v21 = v20;
-    if (v20)
+    v43 = target;
+    identity = [v13 identity];
+    process3 = [v13 process];
+    v21 = process3;
+    if (process3)
     {
-      v22 = v20;
+      v22 = process3;
     }
 
     else
     {
-      v22 = [(RBProcessIndex *)self->_processIndex processForIdentity:v19];
+      v22 = [(RBProcessIndex *)self->_processIndex processForIdentity:identity];
     }
 
     v27 = v22;
 
-    v30 = [v27 identifier];
-    v31 = [(RBProcessMap *)self->_stateMap valueForIdentity:v19];
+    identifier = [v27 identifier];
+    v31 = [(RBProcessMap *)self->_stateMap valueForIdentity:identity];
     v49 = 0;
-    v42 = v30;
-    v32 = [(RBAssertionManager *)self _lock_validateDescriptor:v9 originatorProcess:v47 originatorState:v48 concreteTarget:v13 targetProcess:v27 targetIdentity:v19 targetIdentifier:v30 targetState:v31 acquisitionContext:v10 error:&v49];
+    v42 = identifier;
+    v32 = [(RBAssertionManager *)self _lock_validateDescriptor:descriptorCopy originatorProcess:v47 originatorState:stateCopy concreteTarget:v13 targetProcess:v27 targetIdentity:identity targetIdentifier:identifier targetState:v31 acquisitionContext:contextCopy error:&v49];
     v33 = v49;
     v34 = v33;
     if (v32)
     {
-      v41 = [(RBAssertionManager *)self _lock_assertionCreationAttributeContextForTargetIdentity:v19 originator:v47];
-      v28 = [RBAssertionManager _lock_createAssertionWithAcquisitionContext:"_lock_createAssertionWithAcquisitionContext:attributeContext:concreteTarget:targetIdentity:originator:error:" attributeContext:v10 concreteTarget:? targetIdentity:? originator:? error:?];
-      v26 = 0;
+      v41 = [(RBAssertionManager *)self _lock_assertionCreationAttributeContextForTargetIdentity:identity originator:v47];
+      v28 = [RBAssertionManager _lock_createAssertionWithAcquisitionContext:"_lock_createAssertionWithAcquisitionContext:attributeContext:concreteTarget:targetIdentity:originator:error:" attributeContext:contextCopy concreteTarget:? targetIdentity:? originator:? error:?];
+      shortDescription2 = 0;
 
       if (v28)
       {
-        v29 = v46;
-        if ([v10 allowAbstractTarget] && v46)
+        v29 = process2;
+        if ([contextCopy allowAbstractTarget] && process2)
         {
           v35 = rbs_ttl_log();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
           {
-            v45 = [v9 debugDescription];
+            v45 = [descriptorCopy debugDescription];
             *buf = 138543618;
             v53 = v45;
             v54 = 2114;
-            v55 = v46;
+            v55 = process2;
             _os_log_impl(&dword_262485000, v35, OS_LOG_TYPE_DEFAULT, "setting abstract target for %{public}@ to %{public}@", buf, 0x16u);
           }
 
-          [v28 setTargetProcessForAbstract:v46];
+          [v28 setTargetProcessForAbstract:process2];
         }
 
-        if ([v10 launchAssertion])
+        if ([contextCopy launchAssertion])
         {
           [v28 setLaunchAssertion:1];
         }
@@ -4161,22 +4161,22 @@ LABEL_22:
 
       else
       {
-        v29 = v46;
-        if (a6)
+        v29 = process2;
+        if (error)
         {
-          v38 = v26;
-          *a6 = v26;
+          v38 = shortDescription2;
+          *error = shortDescription2;
         }
       }
     }
 
     else
     {
-      if (a6)
+      if (error)
       {
         v37 = v33;
         v28 = 0;
-        *a6 = v34;
+        *error = v34;
       }
 
       else
@@ -4184,17 +4184,17 @@ LABEL_22:
         v28 = 0;
       }
 
-      v26 = v34;
-      v29 = v46;
+      shortDescription2 = v34;
+      v29 = process2;
     }
   }
 
   else
   {
-    if (!a6)
+    if (!error)
     {
       v28 = 0;
-      v29 = v46;
+      v29 = process2;
       goto LABEL_36;
     }
 
@@ -4202,18 +4202,18 @@ LABEL_22:
     v24 = *MEMORY[0x277D47050];
     v50 = *MEMORY[0x277CCA470];
     v25 = MEMORY[0x277CCACA8];
-    v43 = v11;
-    v26 = [v11 shortDescription];
-    v19 = [v25 stringWithFormat:@"Specified target process %@ does not exist", v26];
-    v51 = v19;
+    v43 = target;
+    shortDescription2 = [target shortDescription];
+    identity = [v25 stringWithFormat:@"Specified target process %@ does not exist", shortDescription2];
+    v51 = identity;
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
     [v23 errorWithDomain:v24 code:2 userInfo:v27];
-    *a6 = v28 = 0;
-    v29 = v46;
+    *error = v28 = 0;
+    v29 = process2;
   }
 
-  v11 = v43;
-  v12 = v47;
+  target = v43;
+  process = v47;
 LABEL_36:
 
   v39 = *MEMORY[0x277D85DE8];
@@ -4221,20 +4221,20 @@ LABEL_36:
   return v28;
 }
 
-- (unint64_t)_lock_incomingAssertionCountForBatchContext:(id)a3 originatorIdentifier:(id)a4
+- (unint64_t)_lock_incomingAssertionCountForBatchContext:(id)context originatorIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 descriptorsToAcquire];
-  v9 = [v8 count];
+  contextCopy = context;
+  identifierCopy = identifier;
+  descriptorsToAcquire = [contextCopy descriptorsToAcquire];
+  v9 = [descriptorsToAcquire count];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v20 = v6;
-  obj = [v6 identifiersToInvalidate];
+  v20 = contextCopy;
+  obj = [contextCopy identifiersToInvalidate];
   v10 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
@@ -4251,9 +4251,9 @@ LABEL_36:
         }
 
         v14 = [(RBAssertionCollection *)self->_assertions assertionWithIdentifier:*(*(&v22 + 1) + 8 * v13)];
-        v15 = [v14 originator];
-        v16 = [v15 identifier];
-        v17 = [v16 isEqual:v7];
+        originator = [v14 originator];
+        identifier = [originator identifier];
+        v17 = [identifier isEqual:identifierCopy];
 
         v9 -= v17;
         ++v13;
@@ -4270,23 +4270,23 @@ LABEL_36:
   return v9;
 }
 
-- (BOOL)_lock_willExceedAssertionLimitForOriginatorProcess:(id)a3 withIncomingCount:(unint64_t)a4
+- (BOOL)_lock_willExceedAssertionLimitForOriginatorProcess:(id)process withIncomingCount:(unint64_t)count
 {
-  v6 = a3;
-  v7 = v6;
+  processCopy = process;
+  v7 = processCopy;
   maxAssertionsPerOriginator = self->_maxAssertionsPerOriginator;
-  v9 = maxAssertionsPerOriginator >= a4;
-  v10 = maxAssertionsPerOriginator - a4;
+  v9 = maxAssertionsPerOriginator >= count;
+  v10 = maxAssertionsPerOriginator - count;
   if (v10 != 0 && v9)
   {
     assertions = self->_assertions;
-    v12 = [v6 identifier];
-    v13 = [(RBAssertionCollection *)assertions hasAssertionsForOriginator:v12 exceedingCount:v10];
+    identifier = [processCopy identifier];
+    v13 = [(RBAssertionCollection *)assertions hasAssertionsForOriginator:identifier exceedingCount:v10];
 
     if (v13)
     {
-      v14 = [(RBDaemonContextProviding *)self->_daemonContext entitlementManager];
-      v15 = [v14 entitlementsForProcess:v7];
+      entitlementManager = [(RBDaemonContextProviding *)self->_daemonContext entitlementManager];
+      v15 = [entitlementManager entitlementsForProcess:v7];
       v16 = [v15 rb_hasEntitlement:@"com.apple.runningboard.performancetest"];
 
       v17 = v16 ^ 1;
@@ -4306,40 +4306,40 @@ LABEL_36:
   return v17;
 }
 
-- (void)_lock_notifyDelegateOfExcessiveAssertionsForOriginatorProcess:(id)a3
+- (void)_lock_notifyDelegateOfExcessiveAssertionsForOriginatorProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   calloutQueue = self->_calloutQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__RBAssertionManager__lock_notifyDelegateOfExcessiveAssertionsForOriginatorProcess___block_invoke;
   v7[3] = &unk_279B32B80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = processCopy;
+  v6 = processCopy;
   dispatch_async(calloutQueue, v7);
 }
 
-- (BOOL)_lock_enforceAssertionLimitIfNecessaryForBatchContext:(id)a3 originatorProcess:(id)a4 error:(id *)a5
+- (BOOL)_lock_enforceAssertionLimitIfNecessaryForBatchContext:(id)context originatorProcess:(id)process error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v8 identifier];
-  v11 = [(RBAssertionManager *)self _lock_incomingAssertionCountForBatchContext:v9 originatorIdentifier:v10];
+  processCopy = process;
+  contextCopy = context;
+  identifier = [processCopy identifier];
+  v11 = [(RBAssertionManager *)self _lock_incomingAssertionCountForBatchContext:contextCopy originatorIdentifier:identifier];
 
-  v12 = [(RBAssertionManager *)self _lock_willExceedAssertionLimitForOriginatorProcess:v8 withIncomingCount:v11];
+  v12 = [(RBAssertionManager *)self _lock_willExceedAssertionLimitForOriginatorProcess:processCopy withIncomingCount:v11];
   if (v12)
   {
-    [(RBAssertionManager *)self _lock_notifyDelegateOfExcessiveAssertionsForOriginatorProcess:v8];
-    if (a5)
+    [(RBAssertionManager *)self _lock_notifyDelegateOfExcessiveAssertionsForOriginatorProcess:processCopy];
+    if (error)
     {
       v13 = MEMORY[0x277CCA9B8];
       v14 = *MEMORY[0x277D47050];
       v18 = *MEMORY[0x277CCA470];
       v19[0] = @"Originator is holding too many assertions";
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-      *a5 = [v13 errorWithDomain:v14 code:2 userInfo:v15];
+      *error = [v13 errorWithDomain:v14 code:2 userInfo:v15];
     }
   }
 
@@ -4347,57 +4347,57 @@ LABEL_36:
   return v12;
 }
 
-- (id)_lock_createAssertionsForBatchContext:(id)a3 originatorState:(id)a4 errorsByIndex:(id)a5
+- (id)_lock_createAssertionsForBatchContext:(id)context originatorState:(id)state errorsByIndex:(id)index
 {
-  v8 = a3;
-  v23 = a4;
-  v21 = a5;
-  v9 = [v8 descriptorsToAcquire];
-  v10 = [v9 count];
+  contextCopy = context;
+  stateCopy = state;
+  indexCopy = index;
+  descriptorsToAcquire = [contextCopy descriptorsToAcquire];
+  v10 = [descriptorsToAcquire count];
 
-  v22 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (v10)
   {
     for (i = 0; i != v10; ++i)
     {
-      v12 = [v8 descriptorsToAcquire];
-      v13 = [v12 objectAtIndexedSubscript:i];
+      descriptorsToAcquire2 = [contextCopy descriptorsToAcquire];
+      v13 = [descriptorsToAcquire2 objectAtIndexedSubscript:i];
 
-      v14 = [v8 acquisitionContextForDescriptor:v13];
+      v14 = [contextCopy acquisitionContextForDescriptor:v13];
       v24 = 0;
-      v15 = [(RBAssertionManager *)self _lock_createAssertionForDescriptor:v13 originatorState:v23 acquisitionContext:v14 error:&v24];
+      v15 = [(RBAssertionManager *)self _lock_createAssertionForDescriptor:v13 originatorState:stateCopy acquisitionContext:v14 error:&v24];
       v16 = v24;
       if (v15)
       {
         acquiringAssertionIdentifiers = self->_acquiringAssertionIdentifiers;
-        v18 = [v15 identifier];
-        [(NSMutableSet *)acquiringAssertionIdentifiers addObject:v18];
+        identifier = [v15 identifier];
+        [(NSMutableSet *)acquiringAssertionIdentifiers addObject:identifier];
 
         v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:i];
-        [v22 setObject:v15 forKeyedSubscript:v19];
+        [dictionary setObject:v15 forKeyedSubscript:v19];
       }
 
       else
       {
         v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:i];
-        [v21 setObject:v16 forKeyedSubscript:v19];
+        [indexCopy setObject:v16 forKeyedSubscript:v19];
       }
     }
   }
 
-  return v22;
+  return dictionary;
 }
 
-- (id)_lock_deactivateExistingAssertionsDelayedByIncomingAssertions:(id)a3
+- (id)_lock_deactivateExistingAssertionsDelayedByIncomingAssertions:(id)assertions
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assertionsCopy = assertions;
   v5 = [MEMORY[0x277CBEB58] set];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = assertionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -4413,12 +4413,12 @@ LABEL_36:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 target];
-        v13 = [v12 identity];
+        target = [v11 target];
+        identity = [target identity];
 
         if ([v11 definesRelativeStartTime])
         {
-          v14 = v13 == 0;
+          v14 = identity == 0;
         }
 
         else
@@ -4426,9 +4426,9 @@ LABEL_36:
           v14 = 1;
         }
 
-        if (!v14 && ([v5 containsObject:v13] & 1) == 0)
+        if (!v14 && ([v5 containsObject:identity] & 1) == 0)
         {
-          [v5 addObject:v13];
+          [v5 addObject:identity];
         }
       }
 
@@ -4445,17 +4445,17 @@ LABEL_36:
   return v15;
 }
 
-- (void)_lock_invalidateAssertions:(id)a3 forceSync:(BOOL)a4
+- (void)_lock_invalidateAssertions:(id)assertions forceSync:(BOOL)sync
 {
-  v4 = a4;
+  syncCopy = sync;
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  assertionsCopy = assertions;
   os_unfair_lock_assert_owner(&self->_lock);
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v6;
+  v7 = assertionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v8)
   {
@@ -4474,19 +4474,19 @@ LABEL_36:
         v13 = rbs_ttl_log();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v12 originator];
+          originator = [v12 originator];
           *buf = 138543618;
           v25 = v12;
           v26 = 2114;
-          v27 = v14;
+          v27 = originator;
           _os_log_impl(&dword_262485000, v13, OS_LOG_TYPE_DEFAULT, "Invalidating assertion %{public}@ from originator %{public}@", buf, 0x16u);
         }
 
         [v12 setInvalidationReason:3];
-        v15 = [v12 identifier];
-        if (([(NSMutableSet *)self->_acquiringAssertionIdentifiers containsObject:v15]& 1) != 0)
+        identifier = [v12 identifier];
+        if (([(NSMutableSet *)self->_acquiringAssertionIdentifiers containsObject:identifier]& 1) != 0)
         {
-          [(NSMutableSet *)self->_acquiringAssertionIdentifiers removeObject:v15];
+          [(NSMutableSet *)self->_acquiringAssertionIdentifiers removeObject:identifier];
         }
 
         else
@@ -4494,7 +4494,7 @@ LABEL_36:
           v16 = [MEMORY[0x277CBEB98] setWithObject:v12];
           [(RBAssertionManager *)self _lock_enqueueAssertionsForRemoval:v16];
 
-          v4 |= [v12 invalidatesSynchronously];
+          syncCopy |= [v12 invalidatesSynchronously];
         }
       }
 
@@ -4504,7 +4504,7 @@ LABEL_36:
     while (v9);
   }
 
-  if (v4)
+  if (syncCopy)
   {
     v17 = rbs_assertion_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -4521,14 +4521,14 @@ LABEL_36:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_acquireAssertions:(id)a3 invalidateIdentifiers:(id)a4 forOriginatorProcess:(id)a5 completionPolicy:(unint64_t)a6 acquisitionErrorsByIndex:(id)a7 completeStage:(id)a8
+- (void)_acquireAssertions:(id)assertions invalidateIdentifiers:(id)identifiers forOriginatorProcess:(id)process completionPolicy:(unint64_t)policy acquisitionErrorsByIndex:(id)index completeStage:(id)stage
 {
   v126 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v79 = a4;
-  v14 = a5;
-  v82 = a7;
-  v78 = a8;
+  assertionsCopy = assertions;
+  identifiersCopy = identifiers;
+  processCopy = process;
+  indexCopy = index;
+  stageCopy = stage;
   dispatch_assert_queue_V2(self->_workloop);
   os_unfair_lock_lock(&self->_lock);
   v83 = [MEMORY[0x277CBEB58] set];
@@ -4537,14 +4537,14 @@ LABEL_36:
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
-  obj = v13;
+  obj = assertionsCopy;
   v88 = [obj countByEnumeratingWithState:&v111 objects:v125 count:16];
   if (v88)
   {
     v89 = *v112;
     v80 = *MEMORY[0x277CCA470];
     v81 = *MEMORY[0x277D47050];
-    v86 = v14;
+    v86 = processCopy;
     do
     {
       v15 = 0;
@@ -4557,24 +4557,24 @@ LABEL_36:
 
         v16 = *(*(&v111 + 1) + 8 * v15);
         v17 = [obj objectForKeyedSubscript:v16];
-        v18 = [v17 identifier];
-        v19 = [v17 target];
-        v20 = [v19 process];
-        v96 = v18;
+        identifier = [v17 identifier];
+        target = [v17 target];
+        process = [target process];
+        v96 = identifier;
         v97 = v15;
-        v94 = v20;
-        v95 = v19;
+        v94 = process;
+        v95 = target;
         v90 = v16;
-        v93 = [(NSMutableSet *)self->_acquiringAssertionIdentifiers containsObject:v18];
-        if (!v20)
+        v93 = [(NSMutableSet *)self->_acquiringAssertionIdentifiers containsObject:identifier];
+        if (!process)
         {
           v21 = 1;
           goto LABEL_10;
         }
 
-        if ([(RBProcessIndex *)self->_processIndex containsProcess:v20])
+        if ([(RBProcessIndex *)self->_processIndex containsProcess:process])
         {
-          v21 = [(NSMutableSet *)self->_inFlightTerminations containsObject:v20]^ 1;
+          v21 = [(NSMutableSet *)self->_inFlightTerminations containsObject:process]^ 1;
 LABEL_10:
           v92 = v21;
           goto LABEL_12;
@@ -4582,16 +4582,16 @@ LABEL_10:
 
         v92 = 0;
 LABEL_12:
-        v91 = [(RBProcessIndex *)self->_processIndex containsProcess:v14];
+        v91 = [(RBProcessIndex *)self->_processIndex containsProcess:processCopy];
         v99 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v107 = 0u;
         v108 = 0u;
         v109 = 0u;
         v110 = 0u;
-        v22 = [(RBSystemState *)self->_systemState conditions];
-        v23 = [v22 allKeys];
+        conditions = [(RBSystemState *)self->_systemState conditions];
+        allKeys = [conditions allKeys];
 
-        v24 = [v23 countByEnumeratingWithState:&v107 objects:v124 count:16];
+        v24 = [allKeys countByEnumeratingWithState:&v107 objects:v124 count:16];
         if (v24)
         {
           v25 = v24;
@@ -4602,33 +4602,33 @@ LABEL_12:
             {
               if (*v108 != v26)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(allKeys);
               }
 
               v28 = *(*(&v107 + 1) + 8 * i);
-              v29 = [v17 intransientState];
-              v30 = [v29 invalidatesOnConditions];
-              v31 = [v30 objectForKey:v28];
+              intransientState = [v17 intransientState];
+              invalidatesOnConditions = [intransientState invalidatesOnConditions];
+              v31 = [invalidatesOnConditions objectForKey:v28];
 
               if (v31)
               {
-                v32 = [(RBSystemState *)self->_systemState conditions];
-                v33 = [v32 objectForKey:v28];
+                conditions2 = [(RBSystemState *)self->_systemState conditions];
+                v33 = [conditions2 objectForKey:v28];
 
                 if (!v33)
                 {
                   [RBAssertionManager _acquireAssertions:invalidateIdentifiers:forOriginatorProcess:completionPolicy:acquisitionErrorsByIndex:completeStage:];
                 }
 
-                v34 = [v33 integerValue];
-                if (v34 > [v31 integerValue])
+                integerValue = [v33 integerValue];
+                if (integerValue > [v31 integerValue])
                 {
                   [v99 addObject:v28];
                 }
               }
             }
 
-            v25 = [v23 countByEnumeratingWithState:&v107 objects:v124 count:16];
+            v25 = [allKeys countByEnumeratingWithState:&v107 objects:v124 count:16];
           }
 
           while (v25);
@@ -4636,13 +4636,13 @@ LABEL_12:
 
         if ([v17 suspendsOnOriginatorSuspension])
         {
-          v14 = v86;
+          processCopy = v86;
           v35 = v96;
           if ([v86 isLifecycleManaged])
           {
             stateMap = self->_stateMap;
-            v37 = [v86 identity];
-            v38 = [(RBProcessMap *)stateMap valueForIdentity:v37];
+            identity = [v86 identity];
+            v38 = [(RBProcessMap *)stateMap valueForIdentity:identity];
             v39 = [v38 role] == 1;
           }
 
@@ -4655,14 +4655,14 @@ LABEL_12:
         else
         {
           v39 = 0;
-          v14 = v86;
+          processCopy = v86;
           v35 = v96;
         }
 
         [(NSMutableSet *)self->_acquiringAssertionIdentifiers removeObject:v35];
         if ([v99 count])
         {
-          if (a6 != 1)
+          if (policy != 1)
           {
             [v84 addObject:v17];
             v46 = rbs_assertion_log();
@@ -4718,7 +4718,7 @@ LABEL_12:
             goto LABEL_41;
           }
 
-          if (a6 != 1)
+          if (policy != 1)
           {
             [v84 addObject:v17];
             v46 = rbs_assertion_log();
@@ -4744,14 +4744,14 @@ LABEL_41:
           v50 = MEMORY[0x277CCA9B8];
           v116 = v80;
           v51 = MEMORY[0x277CCACA8];
-          v52 = [v94 shortDescription];
-          v53 = [v51 stringWithFormat:@"Specified target process %@ does not exist", v52];
+          shortDescription = [v94 shortDescription];
+          v53 = [v51 stringWithFormat:@"Specified target process %@ does not exist", shortDescription];
           v117 = v53;
           v54 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v117 forKeys:&v116 count:1];
           v42 = [v50 errorWithDomain:v81 code:2 userInfo:v54];
 
 LABEL_32:
-          [v82 setObject:v42 forKeyedSubscript:v90];
+          [indexCopy setObject:v42 forKeyedSubscript:v90];
 
 LABEL_43:
           v44 = v97;
@@ -4787,16 +4787,16 @@ LABEL_44:
   v56 = v83;
   v57 = [(RBAssertionManager *)self _lock_deactivateExistingAssertionsDelayedByIncomingAssertions:v83];
   [v83 unionSet:v57];
-  v58 = v79;
-  if ([v79 count])
+  v58 = identifiersCopy;
+  if ([identifiersCopy count])
   {
-    v87 = v14;
+    v87 = processCopy;
     v59 = [MEMORY[0x277CBEB58] set];
     v103 = 0u;
     v104 = 0u;
     v105 = 0u;
     v106 = 0u;
-    v60 = v79;
+    v60 = identifiersCopy;
     v61 = [v60 countByEnumeratingWithState:&v103 objects:v115 count:16];
     if (v61)
     {
@@ -4865,8 +4865,8 @@ LABEL_44:
     [v83 unionSet:v69];
     [v84 unionSet:v59];
 
-    v58 = v79;
-    v14 = v87;
+    v58 = identifiersCopy;
+    processCopy = v87;
   }
 
   if ([v56 count])
@@ -4874,13 +4874,13 @@ LABEL_44:
     v70 = v56;
     v71 = v84;
     v72 = [(RBAssertionManager *)self _lock_updateStatesDueToChangingAssertions:v70 invalidatedAssertions:v84];
-    v73 = v78;
+    v73 = stageCopy;
   }
 
   else
   {
     v72 = 0;
-    v73 = v78;
+    v73 = stageCopy;
     v71 = v84;
   }
 
@@ -4900,11 +4900,11 @@ LABEL_44:
     v101 = v72;
     v102 = v73;
     v74 = MEMORY[0x266729AD0](v100);
-    v75 = [MEMORY[0x277D47038] currentContext];
-    v76 = v75;
-    if (a6 == 1 && v75)
+    currentContext = [MEMORY[0x277D47038] currentContext];
+    v76 = currentContext;
+    if (policy == 1 && currentContext)
     {
-      [v75 handoffToQueue:self->_calloutQueue block:v74];
+      [currentContext handoffToQueue:self->_calloutQueue block:v74];
       os_unfair_lock_unlock(&self->_lock);
     }
 
@@ -4912,13 +4912,13 @@ LABEL_44:
     {
       dispatch_async(self->_calloutQueue, v74);
       os_unfair_lock_unlock(&self->_lock);
-      if (a6 == 1)
+      if (policy == 1)
       {
         dispatch_sync(self->_calloutQueue, &__block_literal_global_132);
       }
     }
 
-    v73 = v78;
+    v73 = stageCopy;
   }
 
   else
@@ -4946,17 +4946,17 @@ void __140__RBAssertionManager__acquireAssertions_invalidateIdentifiers_forOrigi
   [v4 assertionManager:v2 didUpdateProcessStates:v3 completion:v5];
 }
 
-- (unint64_t)_lock_resolvePreliminaryStatesForNonExistingProcessesWithAssertions:(id)a3 completionPolicy:(unint64_t)a4
+- (unint64_t)_lock_resolvePreliminaryStatesForNonExistingProcessesWithAssertions:(id)assertions completionPolicy:(unint64_t)policy
 {
-  v36 = a4;
+  policyCopy = policy;
   v55 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v37 = [MEMORY[0x277CBEB38] dictionary];
+  assertionsCopy = assertions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v6 = v5;
+  v6 = assertionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v49 objects:v54 count:16];
   v38 = v6;
   if (v7)
@@ -4973,36 +4973,36 @@ void __140__RBAssertionManager__acquireAssertions_invalidateIdentifiers_forOrigi
           objc_enumerationMutation(v6);
         }
 
-        v11 = [v6 objectForKeyedSubscript:{*(*(&v49 + 1) + 8 * i), v36}];
-        v12 = [v11 target];
-        v13 = [v12 process];
-        v14 = [v12 identity];
-        v15 = v14;
-        if (v13)
+        v11 = [v6 objectForKeyedSubscript:{*(*(&v49 + 1) + 8 * i), policyCopy}];
+        target = [v11 target];
+        process = [target process];
+        identity = [target identity];
+        v15 = identity;
+        if (process)
         {
           v16 = 1;
         }
 
         else
         {
-          v16 = v14 == 0;
+          v16 = identity == 0;
         }
 
         if (!v16)
         {
-          v17 = self;
-          v18 = [(RBProcessMap *)self->_stateMap valueForIdentity:v14];
+          selfCopy = self;
+          v18 = [(RBProcessMap *)self->_stateMap valueForIdentity:identity];
           if (!v18 && [v11 isActive] && (objc_msgSend(v11, "isPersistent") & 1) == 0)
           {
-            v40 = [v11 originator];
-            v19 = [(RBAssertionManager *)v17 _lock_assertionCreationAttributeContextForTargetIdentity:v15 originator:v40];
+            originator = [v11 originator];
+            v19 = [(RBAssertionManager *)selfCopy _lock_assertionCreationAttributeContextForTargetIdentity:v15 originator:originator];
 
             v41 = v19;
             v20 = [v11 updateProcessStateWithAttributeContext:v19];
             if (v20)
             {
               v39 = v20;
-              v21 = [v37 objectForKeyedSubscript:v15];
+              v21 = [dictionary objectForKeyedSubscript:v15];
               if (v21)
               {
                 v22 = v21;
@@ -5012,7 +5012,7 @@ void __140__RBAssertionManager__acquireAssertions_invalidateIdentifiers_forOrigi
               else
               {
                 v22 = [v39 mutableCopy];
-                [v37 setObject:v22 forKeyedSubscript:v15];
+                [dictionary setObject:v22 forKeyedSubscript:v15];
               }
 
               v20 = v39;
@@ -5023,7 +5023,7 @@ void __140__RBAssertionManager__acquireAssertions_invalidateIdentifiers_forOrigi
             v6 = v38;
           }
 
-          self = v17;
+          self = selfCopy;
         }
       }
 
@@ -5038,13 +5038,13 @@ void __140__RBAssertionManager__acquireAssertions_invalidateIdentifiers_forOrigi
     v42 = 0;
   }
 
-  if ([v37 count])
+  if ([dictionary count])
   {
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v23 = v37;
+    v23 = dictionary;
     v24 = [v23 countByEnumeratingWithState:&v45 objects:v53 count:16];
     if (v24)
     {
@@ -5060,7 +5060,7 @@ void __140__RBAssertionManager__acquireAssertions_invalidateIdentifiers_forOrigi
           }
 
           v28 = *(*(&v45 + 1) + 8 * j);
-          v29 = [v23 objectForKeyedSubscript:{v28, v36}];
+          v29 = [v23 objectForKeyedSubscript:{v28, policyCopy}];
           [(RBAssertionManager *)self _lock_setState:v29 forProcessIdentity:v28];
         }
 
@@ -5070,8 +5070,8 @@ void __140__RBAssertionManager__acquireAssertions_invalidateIdentifiers_forOrigi
       while (v25);
     }
 
-    v30 = v36;
-    if (v42 == [v38 count] && v36 == 1)
+    v30 = policyCopy;
+    if (v42 == [v38 count] && policyCopy == 1)
     {
       v30 = 0;
     }
@@ -5090,7 +5090,7 @@ void __140__RBAssertionManager__acquireAssertions_invalidateIdentifiers_forOrigi
 
   else
   {
-    v30 = v36;
+    v30 = policyCopy;
   }
 
   v34 = *MEMORY[0x277D85DE8];
@@ -5153,15 +5153,15 @@ void __107__RBAssertionManager__lock_resolvePreliminaryStatesForNonExistingProce
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_lock_batchContextInvalidatesSynchronously:(id)a3
+- (BOOL)_lock_batchContextInvalidatesSynchronously:(id)synchronously
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [a3 identifiersToInvalidate];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  identifiersToInvalidate = [synchronously identifiersToInvalidate];
+  v5 = [identifiersToInvalidate countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -5172,20 +5172,20 @@ void __107__RBAssertionManager__lock_resolvePreliminaryStatesForNonExistingProce
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(identifiersToInvalidate);
         }
 
         v9 = [(RBAssertionCollection *)self->_assertions assertionWithIdentifier:*(*(&v14 + 1) + 8 * i)];
-        v10 = [v9 invalidatesSynchronously];
+        invalidatesSynchronously = [v9 invalidatesSynchronously];
 
-        if (v10)
+        if (invalidatesSynchronously)
         {
           v11 = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [identifiersToInvalidate countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -5202,17 +5202,17 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)addSavedEndowment:(id)a3 forProcess:(id)a4
+- (BOOL)addSavedEndowment:(id)endowment forProcess:(id)process
 {
-  v6 = a3;
-  v7 = a4;
+  endowmentCopy = endowment;
+  processCopy = process;
   os_unfair_lock_lock(&self->_lock);
   p_savedEndowments = &self->_savedEndowments;
-  v9 = [(NSMapTable *)self->_savedEndowments objectForKey:v7];
+  v9 = [(NSMapTable *)self->_savedEndowments objectForKey:processCopy];
   if (v9)
   {
     v10 = v9;
-    v11 = [v6 key];
+    v11 = [endowmentCopy key];
     v12 = [v10 objectForKey:v11];
 
     if (v12)
@@ -5222,23 +5222,23 @@ LABEL_11:
     }
 
     v17 = [v10 mutableCopy];
-    v18 = [v6 endowment];
-    v19 = [v6 key];
-    [v17 setObject:v18 forKey:v19];
+    endowment = [endowmentCopy endowment];
+    v19 = [endowmentCopy key];
+    [v17 setObject:endowment forKey:v19];
 
     v20 = *p_savedEndowments;
     v21 = [v17 copy];
-    [v20 setObject:v21 forKey:v7];
+    [v20 setObject:v21 forKey:processCopy];
   }
 
   else
   {
     v14 = MEMORY[0x277CBEAC0];
-    v15 = [v6 endowment];
-    v16 = [v6 key];
-    v10 = [v14 dictionaryWithObject:v15 forKey:v16];
+    endowment2 = [endowmentCopy endowment];
+    v16 = [endowmentCopy key];
+    v10 = [v14 dictionaryWithObject:endowment2 forKey:v16];
 
-    [*p_savedEndowments setObject:v10 forKey:v7];
+    [*p_savedEndowments setObject:v10 forKey:processCopy];
   }
 
   v13 = 1;
@@ -5253,11 +5253,11 @@ LABEL_7:
   return v13;
 }
 
-- (id)savedEndowmentsForProcess:(id)a3
+- (id)savedEndowmentsForProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(RBAssertionManager *)self _lock_savedEndowmentsForProcess:v4];
+  v5 = [(RBAssertionManager *)self _lock_savedEndowmentsForProcess:processCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 

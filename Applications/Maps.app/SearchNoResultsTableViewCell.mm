@@ -1,13 +1,13 @@
 @interface SearchNoResultsTableViewCell
 + (id)identifier;
-- (SearchNoResultsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SearchNoResultsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (SearchNoResultsTableViewCellDelegate)delegate;
 - (void)_didTapOnRAPButton;
 - (void)_removeRAPButton;
 - (void)clearHeightConstraint;
 - (void)layoutSubviews;
-- (void)setEnableStructuredRAPAffordance:(BOOL)a3;
-- (void)setHeightConstraint:(double)a3 withPriority:(float)a4;
+- (void)setEnableStructuredRAPAffordance:(BOOL)affordance;
+- (void)setHeightConstraint:(double)constraint withPriority:(float)priority;
 - (void)setupSubviews;
 @end
 
@@ -25,14 +25,14 @@
   v4.receiver = self;
   v4.super_class = SearchNoResultsTableViewCell;
   [(SearchNoResultsTableViewCell *)&v4 layoutSubviews];
-  v3 = [(SearchNoResultsTableViewCell *)self keyboardAvoidingView];
-  [v3 updateForKeyboardFrame];
+  keyboardAvoidingView = [(SearchNoResultsTableViewCell *)self keyboardAvoidingView];
+  [keyboardAvoidingView updateForKeyboardFrame];
 }
 
 - (void)_didTapOnRAPButton
 {
-  v2 = [(SearchNoResultsTableViewCell *)self delegate];
-  [v2 didTapOnReportAnIssue];
+  delegate = [(SearchNoResultsTableViewCell *)self delegate];
+  [delegate didTapOnReportAnIssue];
 }
 
 - (void)_removeRAPButton
@@ -43,12 +43,12 @@
   [(UIButton *)rapButton removeFromSuperview];
 }
 
-- (void)setEnableStructuredRAPAffordance:(BOOL)a3
+- (void)setEnableStructuredRAPAffordance:(BOOL)affordance
 {
   enableStructuredRAPAffordance = self->_enableStructuredRAPAffordance;
-  if (!enableStructuredRAPAffordance || a3)
+  if (!enableStructuredRAPAffordance || affordance)
   {
-    if (!enableStructuredRAPAffordance && a3)
+    if (!enableStructuredRAPAffordance && affordance)
     {
       [(SearchNoResultsTableViewCell *)self _addRAPButton];
     }
@@ -59,75 +59,75 @@
     [(SearchNoResultsTableViewCell *)self _removeRAPButton];
   }
 
-  self->_enableStructuredRAPAffordance = a3;
+  self->_enableStructuredRAPAffordance = affordance;
 }
 
-- (void)setHeightConstraint:(double)a3 withPriority:(float)a4
+- (void)setHeightConstraint:(double)constraint withPriority:(float)priority
 {
-  v7 = [(SearchNoResultsTableViewCell *)self heightConstraint];
-  if (v7)
+  heightConstraint = [(SearchNoResultsTableViewCell *)self heightConstraint];
+  if (heightConstraint)
   {
-    v8 = v7;
-    v9 = [(SearchNoResultsTableViewCell *)self heightConstraint];
-    [v9 priority];
-    if (v10 == a4)
+    v8 = heightConstraint;
+    heightConstraint2 = [(SearchNoResultsTableViewCell *)self heightConstraint];
+    [heightConstraint2 priority];
+    if (v10 == priority)
     {
     }
 
     else
     {
-      v11 = [(SearchNoResultsTableViewCell *)self heightConstraint];
-      [v11 priority];
+      heightConstraint3 = [(SearchNoResultsTableViewCell *)self heightConstraint];
+      [heightConstraint3 priority];
       v13 = v12;
 
-      if (v13 == 1000.0 || a4 == 1000.0)
+      if (v13 == 1000.0 || priority == 1000.0)
       {
         [(SearchNoResultsTableViewCell *)self clearHeightConstraint];
       }
     }
   }
 
-  v14 = [(SearchNoResultsTableViewCell *)self heightConstraint];
+  heightConstraint4 = [(SearchNoResultsTableViewCell *)self heightConstraint];
 
-  if (v14)
+  if (heightConstraint4)
   {
-    v15 = [(SearchNoResultsTableViewCell *)self heightConstraint];
-    [v15 setConstant:a3];
+    heightConstraint5 = [(SearchNoResultsTableViewCell *)self heightConstraint];
+    [heightConstraint5 setConstant:constraint];
 
-    v16 = [(SearchNoResultsTableViewCell *)self heightConstraint];
-    [v16 priority];
+    heightConstraint6 = [(SearchNoResultsTableViewCell *)self heightConstraint];
+    [heightConstraint6 priority];
     v18 = v17;
 
-    if (v18 == a4)
+    if (v18 == priority)
     {
       return;
     }
 
-    v25 = [(SearchNoResultsTableViewCell *)self heightConstraint];
-    *&v19 = a4;
-    [v25 setPriority:v19];
+    heightConstraint7 = [(SearchNoResultsTableViewCell *)self heightConstraint];
+    *&v19 = priority;
+    [heightConstraint7 setPriority:v19];
   }
 
   else
   {
-    v20 = [(SearchNoResultsTableViewCell *)self contentView];
-    v21 = [v20 heightAnchor];
-    v22 = [v21 constraintEqualToConstant:a3];
+    contentView = [(SearchNoResultsTableViewCell *)self contentView];
+    heightAnchor = [contentView heightAnchor];
+    v22 = [heightAnchor constraintEqualToConstant:constraint];
     [(SearchNoResultsTableViewCell *)self setHeightConstraint:v22];
 
-    v23 = [(SearchNoResultsTableViewCell *)self heightConstraint];
-    *&v24 = a4;
-    [v23 setPriority:v24];
+    heightConstraint8 = [(SearchNoResultsTableViewCell *)self heightConstraint];
+    *&v24 = priority;
+    [heightConstraint8 setPriority:v24];
 
-    v25 = [(SearchNoResultsTableViewCell *)self heightConstraint];
-    [v25 setActive:1];
+    heightConstraint7 = [(SearchNoResultsTableViewCell *)self heightConstraint];
+    [heightConstraint7 setActive:1];
   }
 }
 
 - (void)clearHeightConstraint
 {
-  v3 = [(SearchNoResultsTableViewCell *)self heightConstraint];
-  [v3 setActive:0];
+  heightConstraint = [(SearchNoResultsTableViewCell *)self heightConstraint];
+  [heightConstraint setActive:0];
 
   [(SearchNoResultsTableViewCell *)self setHeightConstraint:0];
 }
@@ -164,12 +164,12 @@
   v10 = [[KeyboardAvoidingView alloc] initWithContentView:v3];
   [(SearchNoResultsTableViewCell *)self setKeyboardAvoidingView:v10];
 
-  v11 = [(SearchNoResultsTableViewCell *)self keyboardAvoidingView];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  keyboardAvoidingView = [(SearchNoResultsTableViewCell *)self keyboardAvoidingView];
+  [keyboardAvoidingView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v12 = [(SearchNoResultsTableViewCell *)self contentView];
-  v13 = [(SearchNoResultsTableViewCell *)self keyboardAvoidingView];
-  [v12 addSubview:v13];
+  contentView = [(SearchNoResultsTableViewCell *)self contentView];
+  keyboardAvoidingView2 = [(SearchNoResultsTableViewCell *)self keyboardAvoidingView];
+  [contentView addSubview:keyboardAvoidingView2];
 
   v14 = +[UIButtonConfiguration plainButtonConfiguration];
   v15 = +[NSBundle mainBundle];
@@ -187,46 +187,46 @@
   [(UIButton *)self->_rapButton setConfiguration:v14];
   [(UIStackView *)self->_stackView centerXAnchor];
   v46 = v45 = v3;
-  v44 = [v3 centerXAnchor];
-  v43 = [v46 constraintEqualToAnchor:v44];
+  centerXAnchor = [v3 centerXAnchor];
+  v43 = [v46 constraintEqualToAnchor:centerXAnchor];
   v49[0] = v43;
-  v42 = [(UIStackView *)self->_stackView centerYAnchor];
-  v41 = [v3 centerYAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  centerYAnchor = [(UIStackView *)self->_stackView centerYAnchor];
+  centerYAnchor2 = [v3 centerYAnchor];
+  v40 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v49[1] = v40;
-  v39 = [(SearchNoResultsTableViewCell *)self keyboardAvoidingView];
-  v37 = [v39 leadingAnchor];
-  v38 = [(SearchNoResultsTableViewCell *)self contentView];
-  v36 = [v38 leadingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  keyboardAvoidingView3 = [(SearchNoResultsTableViewCell *)self keyboardAvoidingView];
+  leadingAnchor = [keyboardAvoidingView3 leadingAnchor];
+  contentView2 = [(SearchNoResultsTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v49[2] = v35;
-  v34 = [(SearchNoResultsTableViewCell *)self keyboardAvoidingView];
-  v32 = [v34 trailingAnchor];
-  v33 = [(SearchNoResultsTableViewCell *)self contentView];
-  v31 = [v33 trailingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  keyboardAvoidingView4 = [(SearchNoResultsTableViewCell *)self keyboardAvoidingView];
+  trailingAnchor = [keyboardAvoidingView4 trailingAnchor];
+  contentView3 = [(SearchNoResultsTableViewCell *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v49[3] = v30;
-  v29 = [(SearchNoResultsTableViewCell *)self keyboardAvoidingView];
-  v19 = [v29 topAnchor];
-  v20 = [(SearchNoResultsTableViewCell *)self contentView];
-  v21 = [v20 topAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  keyboardAvoidingView5 = [(SearchNoResultsTableViewCell *)self keyboardAvoidingView];
+  topAnchor = [keyboardAvoidingView5 topAnchor];
+  contentView4 = [(SearchNoResultsTableViewCell *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v49[4] = v22;
-  v23 = [(SearchNoResultsTableViewCell *)self keyboardAvoidingView];
-  v24 = [v23 bottomAnchor];
-  v25 = [(SearchNoResultsTableViewCell *)self contentView];
-  v26 = [v25 bottomAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  keyboardAvoidingView6 = [(SearchNoResultsTableViewCell *)self keyboardAvoidingView];
+  bottomAnchor = [keyboardAvoidingView6 bottomAnchor];
+  contentView5 = [(SearchNoResultsTableViewCell *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v49[5] = v27;
   v28 = [NSArray arrayWithObjects:v49 count:6];
   [NSLayoutConstraint activateConstraints:v28];
 }
 
-- (SearchNoResultsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SearchNoResultsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = SearchNoResultsTableViewCell;
-  v4 = [(SearchNoResultsTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SearchNoResultsTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[UIColor clearColor];

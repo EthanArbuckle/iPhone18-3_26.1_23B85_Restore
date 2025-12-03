@@ -1,35 +1,35 @@
 @interface TSUHTMLLog
-- (TSUHTMLLog)initWithPath:(id)a3;
-- (id)uniqueIdentifierWithPrefix:(id)a3;
-- (void)_writeMarkupData:(id)a3;
+- (TSUHTMLLog)initWithPath:(id)path;
+- (id)uniqueIdentifierWithPrefix:(id)prefix;
+- (void)_writeMarkupData:(id)data;
 - (void)dealloc;
 - (void)logBegin;
 @end
 
 @implementation TSUHTMLLog
 
-- (TSUHTMLLog)initWithPath:(id)a3
+- (TSUHTMLLog)initWithPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = TSUHTMLLog;
   v4 = [(TSUHTMLLog *)&v10 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [a3 copy];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v6 = [path copy];
     v4->_path = v6;
-    v7 = [(NSString *)v6 stringByDeletingLastPathComponent];
-    if ([v5 fileExistsAtPath:v4->_path])
+    stringByDeletingLastPathComponent = [(NSString *)v6 stringByDeletingLastPathComponent];
+    if ([defaultManager fileExistsAtPath:v4->_path])
     {
-      [v5 removeItemAtPath:v4->_path error:0];
+      [defaultManager removeItemAtPath:v4->_path error:0];
     }
 
-    if (([v5 fileExistsAtPath:v7] & 1) == 0)
+    if (([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent] & 1) == 0)
     {
-      [v5 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:0];
+      [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
     }
 
-    [v5 createFileAtPath:v4->_path contents:objc_msgSend(MEMORY[0x277CBEA90] attributes:{"data"), 0}];
+    [defaultManager createFileAtPath:v4->_path contents:objc_msgSend(MEMORY[0x277CBEA90] attributes:{"data"), 0}];
     v8 = [MEMORY[0x277CCA9F8] fileHandleForWritingAtPath:v4->_path];
     v4->_handle = v8;
     if (v8)
@@ -53,15 +53,15 @@
   [(TSUHTMLLog *)&v3 dealloc];
 }
 
-- (id)uniqueIdentifierWithPrefix:(id)a3
+- (id)uniqueIdentifierWithPrefix:(id)prefix
 {
   v3 = MEMORY[0x277CCACA8];
   uniquifier = self->_uniquifier;
   self->_uniquifier = uniquifier + 1;
-  return [v3 stringWithFormat:@"%@-%tu", a3, uniquifier];
+  return [v3 stringWithFormat:@"%@-%tu", prefix, uniquifier];
 }
 
-- (void)_writeMarkupData:(id)a3
+- (void)_writeMarkupData:(id)data
 {
   if (!self->_logStarted)
   {
@@ -69,8 +69,8 @@
     [(TSUHTMLLog *)self logBegin];
   }
 
-  v5 = [a3 UTF8String];
-  -[NSFileHandle writeData:](self->_handle, "writeData:", [MEMORY[0x277CBEA90] dataWithBytes:v5 length:strlen(v5)]);
+  uTF8String = [data UTF8String];
+  -[NSFileHandle writeData:](self->_handle, "writeData:", [MEMORY[0x277CBEA90] dataWithBytes:uTF8String length:strlen(uTF8String)]);
   handle = self->_handle;
 
   MEMORY[0x2821F9670](handle, sel_synchronizeFile);

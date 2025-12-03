@@ -1,20 +1,20 @@
 @interface AMSPaymentSetupFeatureVerification
-- (AMSPaymentSetupFeatureVerification)initWithIdentifier:(id)a3;
-- (BOOL)isPaymentSetupFeatureSupportedWithError:(id *)a3;
+- (AMSPaymentSetupFeatureVerification)initWithIdentifier:(id)identifier;
+- (BOOL)isPaymentSetupFeatureSupportedWithError:(id *)error;
 - (id)performPaymentSetupFeatureLookup;
 @end
 
 @implementation AMSPaymentSetupFeatureVerification
 
-- (AMSPaymentSetupFeatureVerification)initWithIdentifier:(id)a3
+- (AMSPaymentSetupFeatureVerification)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = AMSPaymentSetupFeatureVerification;
   v5 = [(AMSPaymentSetupFeatureVerification *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -22,13 +22,13 @@
   return v5;
 }
 
-- (BOOL)isPaymentSetupFeatureSupportedWithError:(id *)a3
+- (BOOL)isPaymentSetupFeatureSupportedWithError:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
   v4 = AMSSetLogKeyIfNeeded();
-  v5 = [(AMSPaymentSetupFeatureVerification *)self performPaymentSetupFeatureLookup];
+  performPaymentSetupFeatureLookup = [(AMSPaymentSetupFeatureVerification *)self performPaymentSetupFeatureLookup];
   v21 = 0;
-  v6 = [v5 resultWithError:&v21];
+  v6 = [performPaymentSetupFeatureLookup resultWithError:&v21];
   v7 = v21;
   if (v7)
   {
@@ -38,8 +38,8 @@
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
       *buf = 138543874;
@@ -49,7 +49,7 @@
       v26 = 2114;
       v27 = v7;
       v11 = v10;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Failed to find feature with error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Failed to find feature with error: %{public}@", buf, 0x20u);
     }
 
     goto LABEL_7;
@@ -68,8 +68,8 @@ LABEL_7:
     v13 = +[AMSLogConfig sharedConfig];
   }
 
-  v14 = [v13 OSLogObject];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v13 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v15 = objc_opt_class();
     v16 = MEMORY[0x1E696AD98];
@@ -82,7 +82,7 @@ LABEL_7:
     v25 = v4;
     v26 = 2114;
     v27 = v19;
-    _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Candidate payment setup feature state: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Candidate payment setup feature state: %{public}@", buf, 0x20u);
   }
 
   v12 = [v6 state] == 1;

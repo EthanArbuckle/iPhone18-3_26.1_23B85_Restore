@@ -1,6 +1,6 @@
 @interface MTRGroupKeyManagementClusterGroupKeyMapStruct
 - (MTRGroupKeyManagementClusterGroupKeyMapStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRGroupKeyManagementClusterGroupKeyMapStruct);
-  v5 = [(MTRGroupKeyManagementClusterGroupKeyMapStruct *)self groupId];
-  [(MTRGroupKeyManagementClusterGroupKeyMapStruct *)v4 setGroupId:v5];
+  groupId = [(MTRGroupKeyManagementClusterGroupKeyMapStruct *)self groupId];
+  [(MTRGroupKeyManagementClusterGroupKeyMapStruct *)v4 setGroupId:groupId];
 
-  v6 = [(MTRGroupKeyManagementClusterGroupKeyMapStruct *)self groupKeySetID];
-  [(MTRGroupKeyManagementClusterGroupKeyMapStruct *)v4 setGroupKeySetID:v6];
+  groupKeySetID = [(MTRGroupKeyManagementClusterGroupKeyMapStruct *)self groupKeySetID];
+  [(MTRGroupKeyManagementClusterGroupKeyMapStruct *)v4 setGroupKeySetID:groupKeySetID];
 
-  v7 = [(MTRGroupKeyManagementClusterGroupKeyMapStruct *)self fabricIndex];
-  [(MTRGroupKeyManagementClusterGroupKeyMapStruct *)v4 setFabricIndex:v7];
+  fabricIndex = [(MTRGroupKeyManagementClusterGroupKeyMapStruct *)self fabricIndex];
+  [(MTRGroupKeyManagementClusterGroupKeyMapStruct *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

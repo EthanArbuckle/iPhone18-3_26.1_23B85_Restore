@@ -1,17 +1,17 @@
 @interface NSError
-+ (id)MOSErrorWithCode:(int)a3 userInfo:(id)a4;
++ (id)MOSErrorWithCode:(int)code userInfo:(id)info;
 @end
 
 @implementation NSError
 
-+ (id)MOSErrorWithCode:(int)a3 userInfo:(id)a4
++ (id)MOSErrorWithCode:(int)code userInfo:(id)info
 {
-  v4 = *&a3;
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  v4 = *&code;
+  infoCopy = info;
+  v6 = infoCopy;
+  if (infoCopy)
   {
-    v7 = [v5 mutableCopy];
+    v7 = [infoCopy mutableCopy];
 
     v8 = sub_21DA41C(v4);
     [v7 setObject:v8 forKey:@"ErrorString"];

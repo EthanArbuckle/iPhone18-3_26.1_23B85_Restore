@@ -1,22 +1,22 @@
 @interface ACCSQLiteStatement
 - (ACCSQLite)SQLite;
-- (ACCSQLiteStatement)initWithSQLite:(id)a3 SQL:(id)a4 handle:(sqlite3_stmt *)a5;
+- (ACCSQLiteStatement)initWithSQLite:(id)lite SQL:(id)l handle:(sqlite3_stmt *)handle;
 - (BOOL)step;
 - (id)allObjects;
 - (id)allObjectsByColumnName;
-- (id)blobAtIndex:(unint64_t)a3;
-- (id)columnNameAtIndex:(unint64_t)a3;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)retainedTemporaryBoundObject:(id)a3;
-- (id)textAtIndex:(unint64_t)a3;
-- (void)bindBlob:(id)a3 atIndex:(unint64_t)a4;
-- (void)bindDouble:(double)a3 atIndex:(unint64_t)a4;
-- (void)bindInt64:(int64_t)a3 atIndex:(unint64_t)a4;
-- (void)bindInt:(int)a3 atIndex:(unint64_t)a4;
-- (void)bindNullAtIndex:(unint64_t)a3;
-- (void)bindText:(id)a3 atIndex:(unint64_t)a4;
-- (void)bindValue:(id)a3 atIndex:(unint64_t)a4;
-- (void)bindValues:(id)a3;
+- (id)blobAtIndex:(unint64_t)index;
+- (id)columnNameAtIndex:(unint64_t)index;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)retainedTemporaryBoundObject:(id)object;
+- (id)textAtIndex:(unint64_t)index;
+- (void)bindBlob:(id)blob atIndex:(unint64_t)index;
+- (void)bindDouble:(double)double atIndex:(unint64_t)index;
+- (void)bindInt64:(int64_t)int64 atIndex:(unint64_t)index;
+- (void)bindInt:(int)int atIndex:(unint64_t)index;
+- (void)bindNullAtIndex:(unint64_t)index;
+- (void)bindText:(id)text atIndex:(unint64_t)index;
+- (void)bindValue:(id)value atIndex:(unint64_t)index;
+- (void)bindValues:(id)values;
 - (void)finalizeStatement;
 - (void)reset;
 - (void)resetAfterStepError;
@@ -24,19 +24,19 @@
 
 @implementation ACCSQLiteStatement
 
-- (ACCSQLiteStatement)initWithSQLite:(id)a3 SQL:(id)a4 handle:(sqlite3_stmt *)a5
+- (ACCSQLiteStatement)initWithSQLite:(id)lite SQL:(id)l handle:(sqlite3_stmt *)handle
 {
-  v8 = a3;
-  v9 = a4;
+  liteCopy = lite;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = ACCSQLiteStatement;
   v10 = [(ACCSQLiteStatement *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_SQLite, v8);
-    objc_storeStrong(&v11->_SQL, a4);
-    v11->_handle = a5;
+    objc_storeWeak(&v10->_SQLite, liteCopy);
+    objc_storeStrong(&v11->_SQL, l);
+    v11->_handle = handle;
     v11->_reset = 1;
   }
 
@@ -145,7 +145,7 @@ LABEL_8:
   }
 }
 
-- (void)bindInt:(int)a3 atIndex:(unint64_t)a4
+- (void)bindInt:(int)int atIndex:(unint64_t)index
 {
   if (!self->_reset)
   {
@@ -156,17 +156,17 @@ LABEL_8:
 
     SQL = self->_SQL;
     v10 = 138412290;
-    v11 = SQL;
+    indexCopy = SQL;
     v7 = "[#ACCEventLogger] accsqlite: Statement is not reset: %@";
     v8 = 12;
     goto LABEL_7;
   }
 
-  if (sqlite3_bind_int(self->_handle, a4 + 1, a3) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
+  if (sqlite3_bind_int(self->_handle, index + 1, int) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = self->_SQL;
     v10 = 134218242;
-    v11 = a4;
+    indexCopy = index;
     v12 = 2112;
     v13 = v6;
     v7 = "[#ACCEventLogger] accsqlite: Error binding int at %ld: %@";
@@ -176,7 +176,7 @@ LABEL_7:
   }
 }
 
-- (void)bindInt64:(int64_t)a3 atIndex:(unint64_t)a4
+- (void)bindInt64:(int64_t)int64 atIndex:(unint64_t)index
 {
   if (!self->_reset)
   {
@@ -187,17 +187,17 @@ LABEL_7:
 
     SQL = self->_SQL;
     v10 = 138412290;
-    v11 = SQL;
+    indexCopy = SQL;
     v7 = "[#ACCEventLogger] accsqlite: Statement is not reset: %@";
     v8 = 12;
     goto LABEL_7;
   }
 
-  if (sqlite3_bind_int64(self->_handle, a4 + 1, a3) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
+  if (sqlite3_bind_int64(self->_handle, index + 1, int64) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = self->_SQL;
     v10 = 134218242;
-    v11 = a4;
+    indexCopy = index;
     v12 = 2112;
     v13 = v6;
     v7 = "[#ACCEventLogger] accsqlite: Error binding int64 at %ld: %@";
@@ -207,7 +207,7 @@ LABEL_7:
   }
 }
 
-- (void)bindDouble:(double)a3 atIndex:(unint64_t)a4
+- (void)bindDouble:(double)double atIndex:(unint64_t)index
 {
   if (!self->_reset)
   {
@@ -218,17 +218,17 @@ LABEL_7:
 
     SQL = self->_SQL;
     v10 = 138412290;
-    v11 = SQL;
+    indexCopy = SQL;
     v7 = "[#ACCEventLogger] accsqlite: Statement is not reset: %@";
     v8 = 12;
     goto LABEL_7;
   }
 
-  if (sqlite3_bind_double(self->_handle, a4 + 1, a3) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
+  if (sqlite3_bind_double(self->_handle, index + 1, double) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = self->_SQL;
     v10 = 134218242;
-    v11 = a4;
+    indexCopy = index;
     v12 = 2112;
     v13 = v6;
     v7 = "[#ACCEventLogger] accsqlite: Error binding double at %ld: %@";
@@ -238,23 +238,23 @@ LABEL_7:
   }
 }
 
-- (void)bindBlob:(id)a3 atIndex:(unint64_t)a4
+- (void)bindBlob:(id)blob atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
+  blobCopy = blob;
+  v7 = blobCopy;
   if (self->_reset)
   {
-    if (!v6)
+    if (!blobCopy)
     {
-      [(ACCSQLiteStatement *)self bindNullAtIndex:a4];
+      [(ACCSQLiteStatement *)self bindNullAtIndex:index];
       goto LABEL_10;
     }
 
-    if (sqlite3_bind_blob(self->_handle, a4 + 1, [v6 bytes], objc_msgSend(v6, "length"), 0) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
+    if (sqlite3_bind_blob(self->_handle, index + 1, [blobCopy bytes], objc_msgSend(blobCopy, "length"), 0) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       SQL = self->_SQL;
       v12 = 134218242;
-      v13 = a4;
+      indexCopy = index;
       v14 = 2112;
       v15 = SQL;
       v9 = "[#ACCEventLogger] accsqlite: Error binding blob at %ld: %@";
@@ -268,7 +268,7 @@ LABEL_8:
   {
     v11 = self->_SQL;
     v12 = 138412290;
-    v13 = v11;
+    indexCopy = v11;
     v9 = "[#ACCEventLogger] accsqlite: Statement is not reset: %@";
     v10 = 12;
     goto LABEL_8;
@@ -277,23 +277,23 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)bindText:(id)a3 atIndex:(unint64_t)a4
+- (void)bindText:(id)text atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
+  textCopy = text;
+  v7 = textCopy;
   if (self->_reset)
   {
-    if (!v6)
+    if (!textCopy)
     {
-      [(ACCSQLiteStatement *)self bindNullAtIndex:a4];
+      [(ACCSQLiteStatement *)self bindNullAtIndex:index];
       goto LABEL_10;
     }
 
-    if (sqlite3_bind_text(self->_handle, a4 + 1, [v6 UTF8String], -1, 0) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
+    if (sqlite3_bind_text(self->_handle, index + 1, [textCopy UTF8String], -1, 0) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       SQL = self->_SQL;
       v12 = 134218242;
-      v13 = a4;
+      indexCopy = index;
       v14 = 2112;
       v15 = SQL;
       v9 = "[#ACCEventLogger] accsqlite: Error binding text at %ld: %@";
@@ -307,7 +307,7 @@ LABEL_8:
   {
     v11 = self->_SQL;
     v12 = 138412290;
-    v13 = v11;
+    indexCopy = v11;
     v9 = "[#ACCEventLogger] accsqlite: Statement is not reset: %@";
     v10 = 12;
     goto LABEL_8;
@@ -316,9 +316,9 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)bindNullAtIndex:(unint64_t)a3
+- (void)bindNullAtIndex:(unint64_t)index
 {
-  if (sqlite3_bind_null(self->_handle, a3 + 1))
+  if (sqlite3_bind_null(self->_handle, index + 1))
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -328,9 +328,9 @@ LABEL_10:
   }
 }
 
-- (id)retainedTemporaryBoundObject:(id)a3
+- (id)retainedTemporaryBoundObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   temporaryBoundObjects = self->_temporaryBoundObjects;
   if (!temporaryBoundObjects)
   {
@@ -341,43 +341,43 @@ LABEL_10:
     temporaryBoundObjects = self->_temporaryBoundObjects;
   }
 
-  [(NSMutableArray *)temporaryBoundObjects addObject:v4];
+  [(NSMutableArray *)temporaryBoundObjects addObject:objectCopy];
 
-  return v4;
+  return objectCopy;
 }
 
-- (void)bindValue:(id)a3 atIndex:(unint64_t)a4
+- (void)bindValue:(id)value atIndex:(unint64_t)index
 {
-  v6 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [ACCObjCType typeForValue:v6];
-    if ([v7 isIntegerNumber])
+    absoluteString = [ACCObjCType typeForValue:valueCopy];
+    if ([absoluteString isIntegerNumber])
     {
-      if ([v7 size] <= 4)
+      if ([absoluteString size] <= 4)
       {
 LABEL_4:
-        -[ACCSQLiteStatement bindInt:atIndex:](self, "bindInt:atIndex:", [v6 intValue], a4);
+        -[ACCSQLiteStatement bindInt:atIndex:](self, "bindInt:atIndex:", [valueCopy intValue], index);
 LABEL_13:
 
         goto LABEL_14;
       }
     }
 
-    else if ([v7 code] == &dword_8 + 2)
+    else if ([absoluteString code] == &dword_8 + 2)
     {
       goto LABEL_4;
     }
 
-    -[ACCSQLiteStatement bindInt64:atIndex:](self, "bindInt64:atIndex:", [v6 longLongValue], a4);
+    -[ACCSQLiteStatement bindInt64:atIndex:](self, "bindInt64:atIndex:", [valueCopy longLongValue], index);
     goto LABEL_13;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(ACCSQLiteStatement *)self bindBlob:v6 atIndex:a4];
+    [(ACCSQLiteStatement *)self bindBlob:valueCopy atIndex:index];
     goto LABEL_14;
   }
 
@@ -386,12 +386,12 @@ LABEL_13:
   {
     *&v11 = 0xAAAAAAAAAAAAAAAALL;
     *(&v11 + 1) = 0xAAAAAAAAAAAAAAAALL;
-    [v6 getUUIDBytes:&v11];
+    [valueCopy getUUIDBytes:&v11];
     v8 = [NSData dataWithBytes:&v11 length:16];
 LABEL_11:
-    v7 = v8;
+    absoluteString = v8;
     v9 = [(ACCSQLiteStatement *)self retainedTemporaryBoundObject:v8];
-    [(ACCSQLiteStatement *)self bindBlob:v9 atIndex:a4];
+    [(ACCSQLiteStatement *)self bindBlob:v9 atIndex:index];
 LABEL_12:
 
     goto LABEL_13;
@@ -400,38 +400,38 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(ACCSQLiteStatement *)self bindText:v6 atIndex:a4];
+    [(ACCSQLiteStatement *)self bindText:valueCopy atIndex:index];
     goto LABEL_14;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(ACCSQLiteStatement *)self bindNullAtIndex:a4];
+    [(ACCSQLiteStatement *)self bindNullAtIndex:index];
     goto LABEL_14;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 timeIntervalSinceReferenceDate];
-    [(ACCSQLiteStatement *)self bindDouble:a4 atIndex:?];
+    [valueCopy timeIntervalSinceReferenceDate];
+    [(ACCSQLiteStatement *)self bindDouble:index atIndex:?];
     goto LABEL_14;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [NSKeyedArchiver archivedDataWithRootObject:v6];
+    v8 = [NSKeyedArchiver archivedDataWithRootObject:valueCopy];
     goto LABEL_11;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 absoluteString];
-    v9 = [(ACCSQLiteStatement *)self retainedTemporaryBoundObject:v7];
-    [(ACCSQLiteStatement *)self bindText:v9 atIndex:a4];
+    absoluteString = [valueCopy absoluteString];
+    v9 = [(ACCSQLiteStatement *)self retainedTemporaryBoundObject:absoluteString];
+    [(ACCSQLiteStatement *)self bindText:v9 atIndex:index];
     goto LABEL_12;
   }
 
@@ -446,46 +446,46 @@ LABEL_12:
 LABEL_14:
 }
 
-- (void)bindValues:(id)a3
+- (void)bindValues:(id)values
 {
-  v6 = a3;
-  if ([v6 count])
+  valuesCopy = values;
+  if ([valuesCopy count])
   {
     v4 = 0;
     do
     {
-      v5 = [v6 objectAtIndexedSubscript:v4];
+      v5 = [valuesCopy objectAtIndexedSubscript:v4];
       [(ACCSQLiteStatement *)self bindValue:v5 atIndex:v4];
 
       ++v4;
     }
 
-    while (v4 < [v6 count]);
+    while (v4 < [valuesCopy count]);
   }
 }
 
-- (id)columnNameAtIndex:(unint64_t)a3
+- (id)columnNameAtIndex:(unint64_t)index
 {
-  v3 = sqlite3_column_name(self->_handle, a3);
+  v3 = sqlite3_column_name(self->_handle, index);
 
   return [NSString stringWithUTF8String:v3];
 }
 
-- (id)blobAtIndex:(unint64_t)a3
+- (id)blobAtIndex:(unint64_t)index
 {
-  v3 = a3;
-  v5 = sqlite3_column_blob(self->_handle, a3);
+  indexCopy = index;
+  v5 = sqlite3_column_blob(self->_handle, index);
   if (v5)
   {
-    v5 = [NSData dataWithBytes:v5 length:sqlite3_column_bytes(self->_handle, v3)];
+    v5 = [NSData dataWithBytes:v5 length:sqlite3_column_bytes(self->_handle, indexCopy)];
   }
 
   return v5;
 }
 
-- (id)textAtIndex:(unint64_t)a3
+- (id)textAtIndex:(unint64_t)index
 {
-  v3 = sqlite3_column_text(self->_handle, a3);
+  v3 = sqlite3_column_text(self->_handle, index);
   if (v3)
   {
     v3 = [NSString stringWithUTF8String:v3];
@@ -494,7 +494,7 @@ LABEL_14:
   return v3;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   v5 = [(ACCSQLiteStatement *)self columnTypeAtIndex:?];
   v6 = v5;
@@ -502,13 +502,13 @@ LABEL_14:
   {
     if (v5 == 1)
     {
-      v7 = [NSNumber numberWithLongLong:[(ACCSQLiteStatement *)self int64AtIndex:a3]];
+      v7 = [NSNumber numberWithLongLong:[(ACCSQLiteStatement *)self int64AtIndex:index]];
       goto LABEL_15;
     }
 
     if (v5 == 2)
     {
-      [(ACCSQLiteStatement *)self doubleAtIndex:a3];
+      [(ACCSQLiteStatement *)self doubleAtIndex:index];
       v7 = [NSNumber numberWithDouble:?];
       goto LABEL_15;
     }
@@ -519,10 +519,10 @@ LABEL_14:
     switch(v5)
     {
       case 3:
-        v7 = [(ACCSQLiteStatement *)self textAtIndex:a3];
+        v7 = [(ACCSQLiteStatement *)self textAtIndex:index];
         goto LABEL_15;
       case 4:
-        v7 = [(ACCSQLiteStatement *)self blobAtIndex:a3];
+        v7 = [(ACCSQLiteStatement *)self blobAtIndex:index];
         goto LABEL_15;
       case 5:
         goto LABEL_14;
@@ -545,11 +545,11 @@ LABEL_15:
 
 - (id)allObjects
 {
-  v3 = [(ACCSQLiteStatement *)self columnCount];
-  v4 = [NSMutableArray arrayWithCapacity:v3];
-  if (v3)
+  columnCount = [(ACCSQLiteStatement *)self columnCount];
+  v4 = [NSMutableArray arrayWithCapacity:columnCount];
+  if (columnCount)
   {
-    for (i = 0; i != v3; ++i)
+    for (i = 0; i != columnCount; ++i)
     {
       v6 = [(ACCSQLiteStatement *)self objectAtIndex:i];
       if (v6)
@@ -570,11 +570,11 @@ LABEL_15:
 
 - (id)allObjectsByColumnName
 {
-  v3 = [(ACCSQLiteStatement *)self columnCount];
-  v4 = [NSMutableDictionary dictionaryWithCapacity:v3];
-  if (v3)
+  columnCount = [(ACCSQLiteStatement *)self columnCount];
+  v4 = [NSMutableDictionary dictionaryWithCapacity:columnCount];
+  if (columnCount)
   {
-    for (i = 0; i != v3; ++i)
+    for (i = 0; i != columnCount; ++i)
     {
       v6 = [(ACCSQLiteStatement *)self columnNameAtIndex:i];
       v7 = [(ACCSQLiteStatement *)self objectAtIndex:i];

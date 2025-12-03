@@ -1,8 +1,8 @@
 @interface SFMediaPlaybackButton
 - (BOOL)isHighlighted;
-- (SFMediaPlaybackButton)initWithFrame:(CGRect)a3;
+- (SFMediaPlaybackButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)updateHighlightIndicator;
 @end
 
@@ -10,7 +10,7 @@
 
 - (void)updateHighlightIndicator
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BABBEEC();
 }
 
@@ -21,13 +21,13 @@
   return [(SFMediaPlaybackButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = type metadata accessor for MediaPlaybackButton();
   v4 = v5.receiver;
-  [(SFMediaPlaybackButton *)&v5 setHighlighted:v3];
+  [(SFMediaPlaybackButton *)&v5 setHighlighted:highlightedCopy];
   sub_18BABC11C();
 }
 
@@ -38,12 +38,12 @@
   v2 = v5.receiver;
   [(SFMediaPlaybackButton *)&v5 layoutSubviews];
   v3 = OBJC_IVAR___SFMediaPlaybackButton_highlightIndicatorView;
-  v4 = [*&v2[OBJC_IVAR___SFMediaPlaybackButton_highlightIndicatorView] layer];
+  layer = [*&v2[OBJC_IVAR___SFMediaPlaybackButton_highlightIndicatorView] layer];
   [*&v2[v3] bounds];
-  [v4 setCornerRadius_];
+  [layer setCornerRadius_];
 }
 
-- (SFMediaPlaybackButton)initWithFrame:(CGRect)a3
+- (SFMediaPlaybackButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

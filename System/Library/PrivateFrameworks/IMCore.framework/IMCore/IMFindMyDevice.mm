@@ -1,54 +1,54 @@
 @interface IMFindMyDevice
-+ (id)deviceWithFMFDevice:(id)a3;
-+ (id)deviceWithFMLDevice:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)deviceWithFMFDevice:(id)device;
++ (id)deviceWithFMLDevice:(id)device;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isThisDevice;
-- (IMFindMyDevice)initWithFMFDevice:(id)a3 fmlDevice:(id)a4;
+- (IMFindMyDevice)initWithFMFDevice:(id)device fmlDevice:(id)fmlDevice;
 - (NSString)deviceName;
 - (unint64_t)hash;
 @end
 
 @implementation IMFindMyDevice
 
-+ (id)deviceWithFMFDevice:(id)a3
++ (id)deviceWithFMFDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = [IMFindMyDevice alloc];
-  v6 = objc_msgSend_initWithFMFDevice_fmlDevice_(v4, v5, v3, 0);
+  v6 = objc_msgSend_initWithFMFDevice_fmlDevice_(v4, v5, deviceCopy, 0);
 
   return v6;
 }
 
-+ (id)deviceWithFMLDevice:(id)a3
++ (id)deviceWithFMLDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = [IMFindMyDevice alloc];
-  v6 = objc_msgSend_initWithFMFDevice_fmlDevice_(v4, v5, 0, v3);
+  v6 = objc_msgSend_initWithFMFDevice_fmlDevice_(v4, v5, 0, deviceCopy);
 
   return v6;
 }
 
-- (IMFindMyDevice)initWithFMFDevice:(id)a3 fmlDevice:(id)a4
+- (IMFindMyDevice)initWithFMFDevice:(id)device fmlDevice:(id)fmlDevice
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  fmlDeviceCopy = fmlDevice;
   v12.receiver = self;
   v12.super_class = IMFindMyDevice;
   v9 = [(IMFindMyDevice *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_fmfDevice, a3);
-    objc_storeStrong(&v10->_fmlDevice, a4);
+    objc_storeStrong(&v9->_fmfDevice, device);
+    objc_storeStrong(&v10->_fmlDevice, fmlDevice);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v26 = 1;
   }
@@ -58,7 +58,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       v11 = objc_msgSend_fmfDevice(self, v7, v8);
       if (v11 || (objc_msgSend_fmfDevice(v6, v9, v10), (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {

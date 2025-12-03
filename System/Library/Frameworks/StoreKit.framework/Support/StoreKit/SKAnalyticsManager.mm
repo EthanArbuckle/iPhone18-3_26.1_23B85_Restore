@@ -1,17 +1,17 @@
 @interface SKAnalyticsManager
-+ (void)sendEvent:(id)a3;
-+ (void)sendEventLazyWithName:(id)a3 buildEvent:(id)a4;
++ (void)sendEvent:(id)event;
++ (void)sendEventLazyWithName:(id)name buildEvent:(id)event;
 @end
 
 @implementation SKAnalyticsManager
 
-+ (void)sendEvent:(id)a3
++ (void)sendEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 canCreatePayload])
+  eventCopy = event;
+  if ([eventCopy canCreatePayload])
   {
-    v4 = [v3 eventName];
-    v6 = v3;
+    eventName = [eventCopy eventName];
+    v6 = eventCopy;
     AnalyticsSendEventLazy();
   }
 
@@ -30,10 +30,10 @@
   }
 }
 
-+ (void)sendEventLazyWithName:(id)a3 buildEvent:(id)a4
++ (void)sendEventLazyWithName:(id)name buildEvent:(id)event
 {
-  v5 = a4;
-  v4 = v5;
+  eventCopy = event;
+  v4 = eventCopy;
   AnalyticsSendEventLazy();
 }
 

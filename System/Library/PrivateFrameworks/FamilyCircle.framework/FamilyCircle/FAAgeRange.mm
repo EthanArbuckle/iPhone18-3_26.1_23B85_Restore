@@ -2,117 +2,117 @@
 + (id)ageRangeResponseDisplayNames;
 + (id)ageRangeResponseTypeDisplayNames;
 + (id)ageRangeValidationLevelDisplayNames;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualAgeRange:(id)a3;
-- (FAAgeRange)initWithAltDSID:(id)a3 bundleID:(id)a4 lowerbound:(id)a5 upperbound:(id)a6;
-- (FAAgeRange)initWithAltDSID:(id)a3 bundleID:(id)a4 lowerbound:(id)a5 upperbound:(id)a6 response:(int64_t)a7 responseType:(int64_t)a8 createdAt:(id)a9 invalidatedAt:(id)a10 validationLevel:(int64_t)a11;
-- (FAAgeRange)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualAgeRange:(id)range;
+- (FAAgeRange)initWithAltDSID:(id)d bundleID:(id)iD lowerbound:(id)lowerbound upperbound:(id)upperbound;
+- (FAAgeRange)initWithAltDSID:(id)d bundleID:(id)iD lowerbound:(id)lowerbound upperbound:(id)upperbound response:(int64_t)response responseType:(int64_t)type createdAt:(id)at invalidatedAt:(id)self0 validationLevel:(int64_t)self1;
+- (FAAgeRange)initWithCoder:(id)coder;
 - (id)ageRangeResponseToString;
 - (id)ageRangeResponseTypeToString;
 - (id)ageRangeValidationLevelToString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FAAgeRange
 
-- (FAAgeRange)initWithAltDSID:(id)a3 bundleID:(id)a4 lowerbound:(id)a5 upperbound:(id)a6 response:(int64_t)a7 responseType:(int64_t)a8 createdAt:(id)a9 invalidatedAt:(id)a10 validationLevel:(int64_t)a11
+- (FAAgeRange)initWithAltDSID:(id)d bundleID:(id)iD lowerbound:(id)lowerbound upperbound:(id)upperbound response:(int64_t)response responseType:(int64_t)type createdAt:(id)at invalidatedAt:(id)self0 validationLevel:(int64_t)self1
 {
-  v16 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v17 = a9;
-  v18 = a10;
+  dCopy = d;
+  iDCopy = iD;
+  lowerboundCopy = lowerbound;
+  upperboundCopy = upperbound;
+  atCopy = at;
+  invalidatedAtCopy = invalidatedAt;
   v27.receiver = self;
   v27.super_class = FAAgeRange;
   v19 = [(FAAgeRange *)&v27 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_altDSID, a3);
-    objc_storeStrong(&v20->_bundleID, a4);
-    objc_storeStrong(&v20->_lowerbound, a5);
-    objc_storeStrong(&v20->_upperbound, a6);
-    v20->_response = a7;
-    v20->_responseType = a8;
-    objc_storeStrong(&v20->_createdAt, a9);
-    objc_storeStrong(&v20->_invalidatedAt, a10);
-    v20->_validationLevel = a11;
+    objc_storeStrong(&v19->_altDSID, d);
+    objc_storeStrong(&v20->_bundleID, iD);
+    objc_storeStrong(&v20->_lowerbound, lowerbound);
+    objc_storeStrong(&v20->_upperbound, upperbound);
+    v20->_response = response;
+    v20->_responseType = type;
+    objc_storeStrong(&v20->_createdAt, at);
+    objc_storeStrong(&v20->_invalidatedAt, invalidatedAt);
+    v20->_validationLevel = level;
   }
 
   return v20;
 }
 
-- (FAAgeRange)initWithAltDSID:(id)a3 bundleID:(id)a4 lowerbound:(id)a5 upperbound:(id)a6
+- (FAAgeRange)initWithAltDSID:(id)d bundleID:(id)iD lowerbound:(id)lowerbound upperbound:(id)upperbound
 {
   v10 = MEMORY[0x1E695DF00];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 date];
-  v16 = [(FAAgeRange *)self initWithAltDSID:v14 bundleID:v13 lowerbound:v12 upperbound:v11 response:2 responseType:0 createdAt:v15 invalidatedAt:0 validationLevel:1];
+  upperboundCopy = upperbound;
+  lowerboundCopy = lowerbound;
+  iDCopy = iD;
+  dCopy = d;
+  date = [v10 date];
+  v16 = [(FAAgeRange *)self initWithAltDSID:dCopy bundleID:iDCopy lowerbound:lowerboundCopy upperbound:upperboundCopy response:2 responseType:0 createdAt:date invalidatedAt:0 validationLevel:1];
 
   return v16;
 }
 
-- (FAAgeRange)initWithCoder:(id)a3
+- (FAAgeRange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(FAAgeRange *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_altDSID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bundleID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bundleID"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_lowerBound"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lowerBound"];
     lowerbound = v5->_lowerbound;
     v5->_lowerbound = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_upperBound"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_upperBound"];
     upperbound = v5->_upperbound;
     v5->_upperbound = v12;
 
-    v5->_response = [v4 decodeIntegerForKey:@"_response"];
-    v5->_responseType = [v4 decodeIntegerForKey:@"_responseType"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_createdAt"];
+    v5->_response = [coderCopy decodeIntegerForKey:@"_response"];
+    v5->_responseType = [coderCopy decodeIntegerForKey:@"_responseType"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_createdAt"];
     createdAt = v5->_createdAt;
     v5->_createdAt = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_invalidatedAt"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_invalidatedAt"];
     invalidatedAt = v5->_invalidatedAt;
     v5->_invalidatedAt = v16;
 
-    v5->_validationLevel = [v4 decodeIntegerForKey:@"_validationLevel"];
+    v5->_validationLevel = [coderCopy decodeIntegerForKey:@"_validationLevel"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   altDSID = self->_altDSID;
-  v5 = a3;
-  [v5 encodeObject:altDSID forKey:@"_altDSID"];
-  [v5 encodeObject:self->_bundleID forKey:@"_bundleID"];
-  [v5 encodeObject:self->_lowerbound forKey:@"_lowerBound"];
-  [v5 encodeObject:self->_upperbound forKey:@"_upperBound"];
-  [v5 encodeInteger:self->_response forKey:@"_response"];
-  [v5 encodeInteger:self->_responseType forKey:@"_responseType"];
-  [v5 encodeObject:self->_createdAt forKey:@"_createdAt"];
-  [v5 encodeObject:self->_invalidatedAt forKey:@"_invalidatedAt"];
-  [v5 encodeInteger:self->_validationLevel forKey:@"_validationLevel"];
+  coderCopy = coder;
+  [coderCopy encodeObject:altDSID forKey:@"_altDSID"];
+  [coderCopy encodeObject:self->_bundleID forKey:@"_bundleID"];
+  [coderCopy encodeObject:self->_lowerbound forKey:@"_lowerBound"];
+  [coderCopy encodeObject:self->_upperbound forKey:@"_upperBound"];
+  [coderCopy encodeInteger:self->_response forKey:@"_response"];
+  [coderCopy encodeInteger:self->_responseType forKey:@"_responseType"];
+  [coderCopy encodeObject:self->_createdAt forKey:@"_createdAt"];
+  [coderCopy encodeObject:self->_invalidatedAt forKey:@"_invalidatedAt"];
+  [coderCopy encodeInteger:self->_validationLevel forKey:@"_validationLevel"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = [(NSString *)self->_altDSID copy];
@@ -150,43 +150,43 @@
   v3 = MEMORY[0x1E696AEC0];
   altDSID = self->_altDSID;
   bundleID = self->_bundleID;
-  v6 = [(NSNumber *)self->_lowerbound intValue];
-  v7 = [(NSNumber *)self->_upperbound intValue];
-  v8 = [(FAAgeRange *)self ageRangeResponseToString];
-  v9 = [(FAAgeRange *)self ageRangeResponseTypeToString];
+  intValue = [(NSNumber *)self->_lowerbound intValue];
+  intValue2 = [(NSNumber *)self->_upperbound intValue];
+  ageRangeResponseToString = [(FAAgeRange *)self ageRangeResponseToString];
+  ageRangeResponseTypeToString = [(FAAgeRange *)self ageRangeResponseTypeToString];
   createdAt = self->_createdAt;
   invalidatedAt = self->_invalidatedAt;
-  v12 = [(FAAgeRange *)self ageRangeValidationLevelToString];
-  v13 = [v3 stringWithFormat:@"Age Range record with altDSID: %@, bundleID: %@, lowerbound: %ld, upperbound: %ld, response: %@, responseType: %@, createdAt: %@, invalidatedAt: %@, validationLevel: %@", altDSID, bundleID, v6, v7, v8, v9, createdAt, invalidatedAt, v12];
+  ageRangeValidationLevelToString = [(FAAgeRange *)self ageRangeValidationLevelToString];
+  v13 = [v3 stringWithFormat:@"Age Range record with altDSID: %@, bundleID: %@, lowerbound: %ld, upperbound: %ld, response: %@, responseType: %@, createdAt: %@, invalidatedAt: %@, validationLevel: %@", altDSID, bundleID, intValue, intValue2, ageRangeResponseToString, ageRangeResponseTypeToString, createdAt, invalidatedAt, ageRangeValidationLevelToString];
 
   return v13;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(FAAgeRange *)self altDSID];
-  v4 = [v3 hash];
-  v5 = [(FAAgeRange *)self bundleID];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(FAAgeRange *)self lowerbound];
-  v8 = [v7 hash];
-  v9 = [(FAAgeRange *)self upperbound];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(FAAgeRange *)self response];
-  v12 = v11 ^ [(FAAgeRange *)self responseType];
-  v13 = [(FAAgeRange *)self createdAt];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(FAAgeRange *)self invalidatedAt];
-  v16 = v10 ^ v14 ^ [v15 hash];
-  v17 = [(FAAgeRange *)self validationLevel];
+  altDSID = [(FAAgeRange *)self altDSID];
+  v4 = [altDSID hash];
+  bundleID = [(FAAgeRange *)self bundleID];
+  v6 = [bundleID hash] ^ v4;
+  lowerbound = [(FAAgeRange *)self lowerbound];
+  v8 = [lowerbound hash];
+  upperbound = [(FAAgeRange *)self upperbound];
+  v10 = v6 ^ v8 ^ [upperbound hash];
+  response = [(FAAgeRange *)self response];
+  v12 = response ^ [(FAAgeRange *)self responseType];
+  createdAt = [(FAAgeRange *)self createdAt];
+  v14 = v12 ^ [createdAt hash];
+  invalidatedAt = [(FAAgeRange *)self invalidatedAt];
+  v16 = v10 ^ v14 ^ [invalidatedAt hash];
+  validationLevel = [(FAAgeRange *)self validationLevel];
 
-  return v16 ^ v17;
+  return v16 ^ validationLevel;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -194,52 +194,52 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(FAAgeRange *)self isEqualAgeRange:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(FAAgeRange *)self isEqualAgeRange:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualAgeRange:(id)a3
+- (BOOL)isEqualAgeRange:(id)range
 {
-  v4 = a3;
-  v5 = [(FAAgeRange *)self altDSID];
-  v6 = [v4 altDSID];
-  if (v5 == v6)
+  rangeCopy = range;
+  altDSID = [(FAAgeRange *)self altDSID];
+  altDSID2 = [rangeCopy altDSID];
+  if (altDSID == altDSID2)
   {
-    v8 = [(FAAgeRange *)self bundleID];
-    v9 = [v4 bundleID];
-    if (v8 == v9)
+    bundleID = [(FAAgeRange *)self bundleID];
+    bundleID2 = [rangeCopy bundleID];
+    if (bundleID == bundleID2)
     {
-      v10 = [(FAAgeRange *)self lowerbound];
-      v11 = [v4 lowerbound];
-      if (v10 == v11)
+      lowerbound = [(FAAgeRange *)self lowerbound];
+      lowerbound2 = [rangeCopy lowerbound];
+      if (lowerbound == lowerbound2)
       {
-        v12 = [(FAAgeRange *)self upperbound];
-        v13 = [v4 upperbound];
-        if (v12 == v13)
+        upperbound = [(FAAgeRange *)self upperbound];
+        upperbound2 = [rangeCopy upperbound];
+        if (upperbound == upperbound2)
         {
-          v26 = v12;
-          v14 = [(FAAgeRange *)self response];
-          if (v14 == [v4 response] && (v15 = -[FAAgeRange responseType](self, "responseType"), v15 == objc_msgSend(v4, "responseType")))
+          v26 = upperbound;
+          response = [(FAAgeRange *)self response];
+          if (response == [rangeCopy response] && (v15 = -[FAAgeRange responseType](self, "responseType"), v15 == objc_msgSend(rangeCopy, "responseType")))
           {
-            v16 = [(FAAgeRange *)self createdAt];
-            v17 = [v4 createdAt];
-            v25 = v16;
-            v18 = v16 == v17;
-            v12 = v26;
+            createdAt = [(FAAgeRange *)self createdAt];
+            createdAt2 = [rangeCopy createdAt];
+            v25 = createdAt;
+            v18 = createdAt == createdAt2;
+            upperbound = v26;
             if (v18)
             {
-              v23 = v17;
-              v24 = [(FAAgeRange *)self invalidatedAt];
-              v19 = [v4 invalidatedAt];
-              if (v24 == v19)
+              v23 = createdAt2;
+              invalidatedAt = [(FAAgeRange *)self invalidatedAt];
+              invalidatedAt2 = [rangeCopy invalidatedAt];
+              if (invalidatedAt == invalidatedAt2)
               {
-                v22 = v19;
-                v20 = [(FAAgeRange *)self validationLevel];
-                v18 = v20 == [v4 validationLevel];
-                v19 = v22;
-                v12 = v26;
+                v22 = invalidatedAt2;
+                validationLevel = [(FAAgeRange *)self validationLevel];
+                v18 = validationLevel == [rangeCopy validationLevel];
+                invalidatedAt2 = v22;
+                upperbound = v26;
                 v7 = v18;
               }
 
@@ -248,7 +248,7 @@
                 v7 = 0;
               }
 
-              v17 = v23;
+              createdAt2 = v23;
             }
 
             else
@@ -260,7 +260,7 @@
           else
           {
             v7 = 0;
-            v12 = v26;
+            upperbound = v26;
           }
         }
 
@@ -307,9 +307,9 @@
 
 - (id)ageRangeResponseToString
 {
-  v3 = [objc_opt_class() ageRangeResponseDisplayNames];
+  ageRangeResponseDisplayNames = [objc_opt_class() ageRangeResponseDisplayNames];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{-[FAAgeRange response](self, "response")}];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [ageRangeResponseDisplayNames objectForKeyedSubscript:v4];
 
   return v5;
 }
@@ -329,9 +329,9 @@
 
 - (id)ageRangeResponseTypeToString
 {
-  v3 = [objc_opt_class() ageRangeResponseTypeDisplayNames];
+  ageRangeResponseTypeDisplayNames = [objc_opt_class() ageRangeResponseTypeDisplayNames];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{-[FAAgeRange responseType](self, "responseType")}];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [ageRangeResponseTypeDisplayNames objectForKeyedSubscript:v4];
 
   return v5;
 }
@@ -353,9 +353,9 @@
 
 - (id)ageRangeValidationLevelToString
 {
-  v3 = [objc_opt_class() ageRangeValidationLevelDisplayNames];
+  ageRangeValidationLevelDisplayNames = [objc_opt_class() ageRangeValidationLevelDisplayNames];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{-[FAAgeRange validationLevel](self, "validationLevel")}];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [ageRangeValidationLevelDisplayNames objectForKeyedSubscript:v4];
 
   return v5;
 }

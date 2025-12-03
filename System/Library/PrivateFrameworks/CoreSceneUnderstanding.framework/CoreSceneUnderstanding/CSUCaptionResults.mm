@@ -1,20 +1,20 @@
 @interface CSUCaptionResults
-+ (id)createCaptionResultsWithResults:(id)a3;
-- (CSUCaptionResults)initWithCaptionResults:(id)a3;
++ (id)createCaptionResultsWithResults:(id)results;
+- (CSUCaptionResults)initWithCaptionResults:(id)results;
 @end
 
 @implementation CSUCaptionResults
 
-- (CSUCaptionResults)initWithCaptionResults:(id)a3
+- (CSUCaptionResults)initWithCaptionResults:(id)results
 {
-  v5 = a3;
+  resultsCopy = results;
   v12.receiver = self;
   v12.super_class = CSUCaptionResults;
   v6 = [(CSUCaptionResults *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_results, a3);
+    objc_storeStrong(&v6->_results, results);
     decoderFeaturesCSUBuffer = v7->_decoderFeaturesCSUBuffer;
     v7->_decoderFeaturesCSUBuffer = 0;
 
@@ -27,11 +27,11 @@
   return v7;
 }
 
-+ (id)createCaptionResultsWithResults:(id)a3
++ (id)createCaptionResultsWithResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v4 = [CSUCaptionResults alloc];
-  v8 = objc_msgSend_initWithCaptionResults_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithCaptionResults_(v4, v5, resultsCopy, v6, v7);
 
   return v8;
 }

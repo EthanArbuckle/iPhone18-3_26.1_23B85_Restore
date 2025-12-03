@@ -1,35 +1,35 @@
 @interface AXPhoenixDataArchiver
-- (AXPhoenixDataArchiver)initWithPath:(id)a3;
-- (void)addDirectoryToArchive:(id)a3 withDirName:(id)a4;
-- (void)addFileToArchive:(id)a3 withFileName:(id)a4;
+- (AXPhoenixDataArchiver)initWithPath:(id)path;
+- (void)addDirectoryToArchive:(id)archive withDirName:(id)name;
+- (void)addFileToArchive:(id)archive withFileName:(id)name;
 @end
 
 @implementation AXPhoenixDataArchiver
 
-- (AXPhoenixDataArchiver)initWithPath:(id)a3
+- (AXPhoenixDataArchiver)initWithPath:(id)path
 {
   v16 = *MEMORY[0x277D85DE8];
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v13;
-  v13 = 0;
+  objc_storeStrong(location, path);
+  v3 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v3;
   v11.super_class = AXPhoenixDataArchiver;
-  v13 = [(AXPhoenixDataArchiver *)&v11 init];
-  objc_storeStrong(&v13, v13);
-  if (!v13)
+  selfCopy = [(AXPhoenixDataArchiver *)&v11 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (!selfCopy)
   {
     goto LABEL_7;
   }
 
-  [v13 setArchiver:archive_write_new()];
-  [v13 archiver];
+  [selfCopy setArchiver:archive_write_new()];
+  [selfCopy archiver];
   archive_write_add_filter_gzip();
-  [v13 archiver];
+  [selfCopy archiver];
   archive_write_set_format_ustar();
-  [v13 archiver];
+  [selfCopy archiver];
   v8 = location[0];
   v4 = location[0];
   [v8 UTF8String];
@@ -40,7 +40,7 @@
     v5 = location[0];
     chmod([v7 UTF8String], 0x1B4u);
 LABEL_7:
-    v14 = MEMORY[0x277D82BE0](v13);
+    v14 = MEMORY[0x277D82BE0](selfCopy);
     goto LABEL_8;
   }
 
@@ -52,43 +52,43 @@ LABEL_7:
   }
 
   objc_storeStrong(&oslog, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   v14 = 0;
 LABEL_8:
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (void)addFileToArchive:(id)a3 withFileName:(id)a4
+- (void)addFileToArchive:(id)archive withFileName:(id)name
 {
   v26 = *MEMORY[0x277D85DE8];
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, archive);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, name);
   v19 = 0;
   memset(&__b, 0, sizeof(__b));
   i = 0;
   v16 = 0;
   v10 = location[0];
   v4 = location[0];
-  v15 = [v10 UTF8String];
-  if (v15)
+  uTF8String = [v10 UTF8String];
+  if (uTF8String)
   {
-    stat(v15, &__b);
+    stat(uTF8String, &__b);
     v19 = archive_entry_new();
     archive_entry_copy_stat();
     v8 = v20;
     v5 = v20;
     [v8 UTF8String];
     archive_entry_set_pathname();
-    [(AXPhoenixDataArchiver *)v22 archiver];
+    [(AXPhoenixDataArchiver *)selfCopy archiver];
     archive_write_header();
-    v16 = open(v15, 0);
+    v16 = open(uTF8String, 0);
     if (v16 == -1)
     {
       v11 = AXLogBackTap();
@@ -108,7 +108,7 @@ LABEL_8:
     {
       for (i = read(v16, v25, 0x2000uLL); i > 0; i = read(v16, v25, 0x2000uLL))
       {
-        [(AXPhoenixDataArchiver *)v22 archiver];
+        [(AXPhoenixDataArchiver *)selfCopy archiver];
         archive_write_data();
       }
 
@@ -137,18 +137,18 @@ LABEL_8:
   *MEMORY[0x277D85DE8];
 }
 
-- (void)addDirectoryToArchive:(id)a3 withDirName:(id)a4
+- (void)addDirectoryToArchive:(id)archive withDirName:(id)name
 {
   v33 = *MEMORY[0x277D85DE8];
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, archive);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
-  v21 = [MEMORY[0x277CCAA00] defaultManager];
-  v28 = [v21 contentsOfDirectoryAtPath:location[0] error:0];
-  MEMORY[0x277D82BD8](v21);
+  objc_storeStrong(&v29, name);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v28 = [defaultManager contentsOfDirectoryAtPath:location[0] error:0];
+  MEMORY[0x277D82BD8](defaultManager);
   v27 = 0;
   memset(__b, 0, sizeof(__b));
   v22 = MEMORY[0x277D82BE0](v28);
@@ -168,33 +168,33 @@ LABEL_8:
 
       v26 = *(__b[1] + 8 * v18);
       v24 = [location[0] stringByAppendingPathComponent:v26];
-      v14 = [MEMORY[0x277CCAA00] defaultManager];
-      v15 = [v14 fileExistsAtPath:v24 isDirectory:&v27];
-      MEMORY[0x277D82BD8](v14);
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      v15 = [defaultManager2 fileExistsAtPath:v24 isDirectory:&v27];
+      MEMORY[0x277D82BD8](defaultManager2);
       if (v15)
       {
         if (v27)
         {
-          v11 = v31;
+          v11 = selfCopy;
           v10 = v24;
           v9 = v29;
-          v13 = [v26 lastPathComponent];
+          lastPathComponent = [v26 lastPathComponent];
           v12 = [v9 stringByAppendingPathComponent:?];
           [(AXPhoenixDataArchiver *)v11 addDirectoryToArchive:v10 withDirName:?];
           MEMORY[0x277D82BD8](v12);
-          MEMORY[0x277D82BD8](v13);
+          MEMORY[0x277D82BD8](lastPathComponent);
         }
 
         else
         {
-          v6 = v31;
+          v6 = selfCopy;
           v5 = v24;
           v4 = v29;
-          v8 = [v26 lastPathComponent];
+          lastPathComponent2 = [v26 lastPathComponent];
           v7 = [v4 stringByAppendingPathComponent:?];
           [(AXPhoenixDataArchiver *)v6 addFileToArchive:v5 withFileName:?];
           MEMORY[0x277D82BD8](v7);
-          MEMORY[0x277D82BD8](v8);
+          MEMORY[0x277D82BD8](lastPathComponent2);
         }
       }
 

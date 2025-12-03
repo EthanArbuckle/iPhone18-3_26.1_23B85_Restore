@@ -1,15 +1,15 @@
 @interface CRLUIButtonAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (id)__accessibilityLabel;
 @end
 
 @implementation CRLUIButtonAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -22,17 +22,17 @@
     v3 = [(CRLUIButtonAccessibility *)self backgroundImageForState:0];
   }
 
-  v4 = [v3 accessibilityLabel];
-  if ([v4 length])
+  accessibilityLabel = [v3 accessibilityLabel];
+  if ([accessibilityLabel length])
   {
-    v5 = v4;
+    v5 = accessibilityLabel;
     goto LABEL_13;
   }
 
   if (!qword_101A34F68)
   {
-    v6 = [objc_opt_class() crlaxAdditionalButtonLabelsPerImageFileName];
-    v7 = [v6 mutableCopy];
+    crlaxAdditionalButtonLabelsPerImageFileName = [objc_opt_class() crlaxAdditionalButtonLabelsPerImageFileName];
+    v7 = [crlaxAdditionalButtonLabelsPerImageFileName mutableCopy];
     v8 = qword_101A34F68;
     qword_101A34F68 = v7;
 
@@ -126,17 +126,17 @@
     [v49 setObject:v50 forKey:@"Keyboard-DateTime.png"];
   }
 
-  v51 = [v3 accessibilityIdentifier];
-  v52 = [v51 lastPathComponent];
+  accessibilityIdentifier = [v3 accessibilityIdentifier];
+  lastPathComponent = [accessibilityIdentifier lastPathComponent];
 
-  v53 = [qword_101A34F68 objectForKey:v52];
-  if (v53)
+  crlaxAddDocumentButtonLabel = [qword_101A34F68 objectForKey:lastPathComponent];
+  if (crlaxAddDocumentButtonLabel)
   {
     goto LABEL_10;
   }
 
   v54 = qword_101A34F68;
-  v55 = [v52 stringByAppendingPathExtension:@"png"];
+  v55 = [lastPathComponent stringByAppendingPathExtension:@"png"];
   v5 = [v54 objectForKey:v55];
 
   if (v5)
@@ -144,36 +144,36 @@
     goto LABEL_12;
   }
 
-  if ([v52 hasPrefix:@"CRL_Sync"])
+  if ([lastPathComponent hasPrefix:@"CRL_Sync"])
   {
     v57 = @"sync.button";
   }
 
-  else if ([v52 hasPrefix:@"CRL_Duplicate"])
+  else if ([lastPathComponent hasPrefix:@"CRL_Duplicate"])
   {
     v57 = @"duplicate.button";
   }
 
-  else if ([v52 hasPrefix:@"CRL_Delete"])
+  else if ([lastPathComponent hasPrefix:@"CRL_Delete"])
   {
     v57 = @"delete.button";
   }
 
-  else if ([v52 hasPrefix:@"CRL_Action"])
+  else if ([lastPathComponent hasPrefix:@"CRL_Action"])
   {
     v57 = @"action.button";
   }
 
-  else if ([v52 hasPrefix:@"CRL_New"])
+  else if ([lastPathComponent hasPrefix:@"CRL_New"])
   {
-    v58 = [(CRLUIButtonAccessibility *)self superview];
+    superview = [(CRLUIButtonAccessibility *)self superview];
     NSClassFromString(@"CRLToolbar");
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v53 = [objc_opt_class() crlaxAddDocumentButtonLabel];
-      if (v53)
+      crlaxAddDocumentButtonLabel = [objc_opt_class() crlaxAddDocumentButtonLabel];
+      if (crlaxAddDocumentButtonLabel)
       {
         goto LABEL_10;
       }
@@ -182,27 +182,27 @@
     v57 = @"new.button";
   }
 
-  else if ([v52 hasPrefix:@"CRL_GearIcon"])
+  else if ([lastPathComponent hasPrefix:@"CRL_GearIcon"])
   {
     v57 = @"gear.button";
   }
 
   else
   {
-    if (([v52 hasPrefix:@"kn_tb_icon_play"] & 1) == 0 && !objc_msgSend(v52, "hasPrefix:", @"kn_tb_icon_extdisplay"))
+    if (([lastPathComponent hasPrefix:@"kn_tb_icon_play"] & 1) == 0 && !objc_msgSend(lastPathComponent, "hasPrefix:", @"kn_tb_icon_extdisplay"))
     {
       v60.receiver = self;
       v60.super_class = CRLUIButtonAccessibility;
-      v53 = [(CRLUIButtonAccessibility *)&v60 accessibilityLabel];
+      crlaxAddDocumentButtonLabel = [(CRLUIButtonAccessibility *)&v60 accessibilityLabel];
       goto LABEL_10;
     }
 
     v57 = @"preview.animation";
   }
 
-  v53 = CRLAccessibilityLocalizedString(v57);
+  crlaxAddDocumentButtonLabel = CRLAccessibilityLocalizedString(v57);
 LABEL_10:
-  v5 = v53;
+  v5 = crlaxAddDocumentButtonLabel;
 LABEL_12:
 
 LABEL_13:

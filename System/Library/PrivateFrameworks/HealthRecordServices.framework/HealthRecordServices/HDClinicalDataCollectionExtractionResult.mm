@@ -1,23 +1,23 @@
 @interface HDClinicalDataCollectionExtractionResult
-- (HDClinicalDataCollectionExtractionResult)initWithCoder:(id)a3;
-- (HDClinicalDataCollectionExtractionResult)initWithRedactedResources:(id)a3 rulesVersion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (HDClinicalDataCollectionExtractionResult)initWithCoder:(id)coder;
+- (HDClinicalDataCollectionExtractionResult)initWithRedactedResources:(id)resources rulesVersion:(id)version;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDClinicalDataCollectionExtractionResult
 
-- (HDClinicalDataCollectionExtractionResult)initWithRedactedResources:(id)a3 rulesVersion:(id)a4
+- (HDClinicalDataCollectionExtractionResult)initWithRedactedResources:(id)resources rulesVersion:(id)version
 {
-  v6 = a3;
-  v7 = a4;
+  resourcesCopy = resources;
+  versionCopy = version;
   v8 = [(HDClinicalDataCollectionExtractionResult *)self init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [resourcesCopy copy];
     redactedResources = v8->_redactedResources;
     v8->_redactedResources = v9;
 
-    v11 = [v7 copy];
+    v11 = [versionCopy copy];
     rulesVersion = v8->_rulesVersion;
     v8->_rulesVersion = v11;
   }
@@ -25,12 +25,12 @@
   return v8;
 }
 
-- (HDClinicalDataCollectionExtractionResult)initWithCoder:(id)a3
+- (HDClinicalDataCollectionExtractionResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"RedactedResources"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RulesVersion"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"RedactedResources"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RulesVersion"];
   v8 = v7;
   if (v6)
   {
@@ -44,25 +44,25 @@
 
   if (v9)
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v10 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HDClinicalDataCollectionExtractionResult *)self initWithRedactedResources:v6 rulesVersion:v7];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   redactedResources = self->_redactedResources;
-  v5 = a3;
-  [v5 encodeObject:redactedResources forKey:@"RedactedResources"];
-  [v5 encodeObject:self->_rulesVersion forKey:@"RulesVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:redactedResources forKey:@"RedactedResources"];
+  [coderCopy encodeObject:self->_rulesVersion forKey:@"RulesVersion"];
 }
 
 @end

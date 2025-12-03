@@ -1,20 +1,20 @@
 @interface _ImageAssetMediaProvider
-- (_ImageAssetMediaProvider)initWithData:(id)a3;
-- (int64_t)requestCGImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
+- (_ImageAssetMediaProvider)initWithData:(id)data;
+- (int64_t)requestCGImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
 @end
 
 @implementation _ImageAssetMediaProvider
 
-- (_ImageAssetMediaProvider)initWithData:(id)a3
+- (_ImageAssetMediaProvider)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = _ImageAssetMediaProvider;
   v5 = [(_ImageAssetMediaProvider *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dataCopy copy];
     data = v5->_data;
     v5->_data = v6;
   }
@@ -22,25 +22,25 @@
   return v5;
 }
 
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  v9 = a7;
-  v10 = [a3 image];
-  (*(a7 + 2))(v9, v10, MEMORY[0x1E695E0F8]);
+  handlerCopy = handler;
+  image = [asset image];
+  (*(handler + 2))(handlerCopy, image, MEMORY[0x1E695E0F8]);
 
   return 0;
 }
 
-- (int64_t)requestCGImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestCGImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  v9 = a7;
-  v10 = a3;
-  v11 = [v10 image];
-  v12 = [v11 CGImage];
-  v13 = [v10 image];
+  handlerCopy = handler;
+  assetCopy = asset;
+  image = [assetCopy image];
+  cGImage = [image CGImage];
+  image2 = [assetCopy image];
 
-  v14 = [v13 imageOrientation];
-  (*(a7 + 2))(v9, v12, v14, MEMORY[0x1E695E0F8]);
+  imageOrientation = [image2 imageOrientation];
+  (*(handler + 2))(handlerCopy, cGImage, imageOrientation, MEMORY[0x1E695E0F8]);
 
   return 0;
 }

@@ -16,18 +16,18 @@
 
 - (void)retainIOService
 {
-  v2 = [(ASDTIOService *)self ioObject];
+  ioObject = [(ASDTIOService *)self ioObject];
 
-  IOObjectRetain(v2);
+  IOObjectRetain(ioObject);
 }
 
 - (void)releaseIOService
 {
   if ([(ASDTIOService *)self ioObject])
   {
-    v3 = [(ASDTIOService *)self ioObject];
+    ioObject = [(ASDTIOService *)self ioObject];
 
-    IOObjectRelease(v3);
+    IOObjectRelease(ioObject);
   }
 }
 

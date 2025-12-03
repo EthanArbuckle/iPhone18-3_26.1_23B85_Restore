@@ -1,31 +1,31 @@
 @interface GDGraphSongEvent
-- (GDGraphSongEvent)initWithEntityIdentifierField:(id)a3 dateField:(id)a4 playbackStateField:(id)a5 songField:(id)a6 allDateField:(id)a7 allPlaybackStateField:(id)a8 allSongField:(id)a9;
+- (GDGraphSongEvent)initWithEntityIdentifierField:(id)field dateField:(id)dateField playbackStateField:(id)stateField songField:(id)songField allDateField:(id)allDateField allPlaybackStateField:(id)playbackStateField allSongField:(id)allSongField;
 @end
 
 @implementation GDGraphSongEvent
 
-- (GDGraphSongEvent)initWithEntityIdentifierField:(id)a3 dateField:(id)a4 playbackStateField:(id)a5 songField:(id)a6 allDateField:(id)a7 allPlaybackStateField:(id)a8 allSongField:(id)a9
+- (GDGraphSongEvent)initWithEntityIdentifierField:(id)field dateField:(id)dateField playbackStateField:(id)stateField songField:(id)songField allDateField:(id)allDateField allPlaybackStateField:(id)playbackStateField allSongField:(id)allSongField
 {
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v16 = a8;
-  v17 = a9;
+  fieldCopy = field;
+  dateFieldCopy = dateField;
+  stateFieldCopy = stateField;
+  songFieldCopy = songField;
+  allDateFieldCopy = allDateField;
+  playbackStateFieldCopy = playbackStateField;
+  allSongFieldCopy = allSongField;
   v26.receiver = self;
   v26.super_class = GDGraphSongEvent;
   v18 = [(GDGraphSongEvent *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_entityIdentifier, a3);
-    objc_storeStrong(&v19->_date, a4);
-    objc_storeStrong(&v19->_playbackState, a5);
-    objc_storeStrong(&v19->_song, a6);
-    objc_storeStrong(&v19->_allDate, a7);
-    objc_storeStrong(&v19->_allPlaybackState, a8);
-    objc_storeStrong(&v19->_allSong, a9);
+    objc_storeStrong(&v18->_entityIdentifier, field);
+    objc_storeStrong(&v19->_date, dateField);
+    objc_storeStrong(&v19->_playbackState, stateField);
+    objc_storeStrong(&v19->_song, songField);
+    objc_storeStrong(&v19->_allDate, allDateField);
+    objc_storeStrong(&v19->_allPlaybackState, playbackStateField);
+    objc_storeStrong(&v19->_allSong, allSongField);
   }
 
   return v19;

@@ -1,24 +1,24 @@
 @interface CRLiOSCanvasViewController
-- (BOOL)allowGestureInRestrictedGestureMode:(id)a3;
-- (BOOL)allowTouchOutsideCanvasViewAtPoint:(CGPoint)a3 forGesture:(id)a4;
+- (BOOL)allowGestureInRestrictedGestureMode:(id)mode;
+- (BOOL)allowTouchOutsideCanvasViewAtPoint:(CGPoint)point forGesture:(id)gesture;
 - (BOOL)allowUndoRedoOperations;
 - (BOOL)allowedToEnterQuickSelectMode;
 - (BOOL)allowsCanvasScrollingFromKeyboard;
 - (BOOL)allowsSystemDragSession;
 - (BOOL)becomeFirstResponderIfAppropriate;
-- (BOOL)canInsertBoardItemsFromDragOperationForDragInfo:(id)a3;
-- (BOOL)canInsertScribbleElementAtPoint:(CGPoint)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)canvasSubview:(id)a3 shouldHandleEventAtBoundsPoint:(CGPoint)a4;
-- (BOOL)contextMenuPositionShouldUpdateForContextMenuController:(id)a3;
-- (BOOL)disallowRectangularMarqueeOperationAtUnscaledPoint:(CGPoint)a3;
+- (BOOL)canInsertBoardItemsFromDragOperationForDragInfo:(id)info;
+- (BOOL)canInsertScribbleElementAtPoint:(CGPoint)point;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)canvasSubview:(id)subview shouldHandleEventAtBoundsPoint:(CGPoint)point;
+- (BOOL)contextMenuPositionShouldUpdateForContextMenuController:(id)controller;
+- (BOOL)disallowRectangularMarqueeOperationAtUnscaledPoint:(CGPoint)point;
 - (BOOL)documentChromeHasPresentedViewController;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)handleDoubleTapAtPoint:(CGPoint)a3 withRecognizer:(id)a4;
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 withRecognizer:(id)a4;
-- (BOOL)i_allowCanvasInteraction:(id)a3 atPoint:(CGPoint)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)handleDoubleTapAtPoint:(CGPoint)point withRecognizer:(id)recognizer;
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point withRecognizer:(id)recognizer;
+- (BOOL)i_allowCanvasInteraction:(id)interaction atPoint:(CGPoint)point;
 - (BOOL)inInspectorPanZoomMode;
 - (BOOL)inInspectorTextEditingMode;
 - (BOOL)inMediaBrowsingMode;
@@ -29,28 +29,28 @@
 - (BOOL)p_currentModeAllowsQuickSelect;
 - (BOOL)p_currentModeIsFind;
 - (BOOL)p_editorAllowsQuickSelect;
-- (BOOL)p_isAccessibilityTextResponderAction:(SEL)a3;
+- (BOOL)p_isAccessibilityTextResponderAction:(SEL)action;
 - (BOOL)p_scribblePreventedRegardlessOfPoint;
-- (BOOL)p_shouldIgnoreKeyboardInputForTouchType:(int64_t)a3 atSomeTouchPoint:(CGPoint)a4;
-- (BOOL)p_shouldShowMiniFormatterForSelectionPath:(id)a3;
+- (BOOL)p_shouldIgnoreKeyboardInputForTouchType:(int64_t)type atSomeTouchPoint:(CGPoint)point;
+- (BOOL)p_shouldShowMiniFormatterForSelectionPath:(id)path;
 - (BOOL)preserveEditorSelection;
-- (BOOL)respondsToSelector:(SEL)a3 withSender:(id)a4;
-- (BOOL)shouldAllowDragOperationForDragInfo:(id)a3;
-- (BOOL)shouldBeginScribblingAtPoint:(CGPoint)a3;
+- (BOOL)respondsToSelector:(SEL)selector withSender:(id)sender;
+- (BOOL)shouldAllowDragOperationForDragInfo:(id)info;
+- (BOOL)shouldBeginScribblingAtPoint:(CGPoint)point;
 - (BOOL)shouldIgnoreKeyboardInput;
-- (BOOL)shouldIgnoreTextGesture:(id)a3 atPoint:(CGPoint)a4;
-- (BOOL)shouldIncludeObjectInScribbleCapableElements:(id)a3;
+- (BOOL)shouldIgnoreTextGesture:(id)gesture atPoint:(CGPoint)point;
+- (BOOL)shouldIncludeObjectInScribbleCapableElements:(id)elements;
 - (BOOL)shouldSelectAndScrollWithApplePencil;
-- (BOOL)touchHitsCanvasViewAtPoint:(CGPoint)a3;
+- (BOOL)touchHitsCanvasViewAtPoint:(CGPoint)point;
 - (CALayer)layer;
 - (CGPoint)lastTapPoint;
-- (CGPoint)p_targetPointForEditMenuForSelectionPath:(id)a3 outModifiedDirection:(int64_t *)a4;
-- (CGRect)p_targetRectForMenuControllerPositionForSelectionPath:(id)a3;
+- (CGPoint)p_targetPointForEditMenuForSelectionPath:(id)path outModifiedDirection:(int64_t *)direction;
+- (CGRect)p_targetRectForMenuControllerPositionForSelectionPath:(id)path;
 - (CGRect)rectForInsertingScribbleElements;
 - (CGRect)rectToIncludeWhenGrowingCanvasToFitContent;
 - (CGRect)targetRectForContextMenuController;
-- (CGRect)targetRectForEditMenu:(id)a3;
-- (CGRect)visibleCanvasRectForQuickSelectViewController:(id)a3;
+- (CGRect)targetRectForEditMenu:(id)menu;
+- (CGRect)visibleCanvasRectForQuickSelectViewController:(id)controller;
 - (CGRect)visibleScaledRectForCanvasUI;
 - (CRLCanvasImageHUDController)imageHUDController;
 - (CRLCanvasLayer)canvasLayer;
@@ -61,9 +61,9 @@
 - (CRLUserDialogPresenter)userDialogPresenter;
 - (CRLiOSCanvasDragInteractionDelegate)dragInteractionDelegate;
 - (CRLiOSCanvasDropInteractionDelegate)dropInteractionDelegate;
-- (CRLiOSCanvasViewController)initWithCoder:(id)a3;
-- (CRLiOSCanvasViewController)initWithInteractiveCanvasController:(id)a3;
-- (CRLiOSCanvasViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CRLiOSCanvasViewController)initWithCoder:(id)coder;
+- (CRLiOSCanvasViewController)initWithInteractiveCanvasController:(id)controller;
+- (CRLiOSCanvasViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (CRLiOSCanvasViewControllerDelegate)delegate;
 - (CRLiOSPencilMediating)pencilMediator;
 - (NSArray)commonGestureRecognizers;
@@ -74,123 +74,123 @@
 - (_TtC8Freeform21CRLEditingCoordinator)editingCoordinator;
 - (_TtC8Freeform28CRLiOSMiniFormatterPresenter)miniFormatterPresenter;
 - (_TtC8Freeform41CRLiOSShapeLibraryCanvasPopoverController)shapeLibraryPopoverController;
-- (id)_scribbleCapableElementsForReps:(id)a3 forRect:(CGRect)a4;
-- (id)beginModalOperationWithLocalizedMessage:(id)a3 progress:(id)a4 cancelHandler:(id)a5;
-- (id)beginModalOperationWithPresentedLocalizedMessage:(id)a3 progress:(id)a4 cancelHandler:(id)a5;
-- (id)containedScribbleElementForContainerScribbleElement:(id)a3;
+- (id)_scribbleCapableElementsForReps:(id)reps forRect:(CGRect)rect;
+- (id)beginModalOperationWithLocalizedMessage:(id)message progress:(id)progress cancelHandler:(id)handler;
+- (id)beginModalOperationWithPresentedLocalizedMessage:(id)message progress:(id)progress cancelHandler:(id)handler;
+- (id)containedScribbleElementForContainerScribbleElement:(id)element;
 - (id)contextMenuInteractionDelegate;
-- (id)editMenuConfigrationForSelectionPath:(id)a3 withConfigurationIdentifier:(id)a4;
+- (id)editMenuConfigrationForSelectionPath:(id)path withConfigurationIdentifier:(id)identifier;
 - (id)gesturesSupportingStylusAndIndirectPointer;
 - (id)gesturesThatImmediateMarqueeShouldRequireToFail;
-- (id)hitKnobWithTouch:(id)a3 returningRep:(id *)a4;
-- (id)hitRepWithTouch:(id)a3;
-- (id)insertTextBoxForScribbleAtUnscaledCanvasPoint:(CGPoint)a3;
-- (id)insertedScribbleElementAtPoint:(CGPoint)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)hitKnobWithTouch:(id)touch returningRep:(id *)rep;
+- (id)hitRepWithTouch:(id)touch;
+- (id)insertTextBoxForScribbleAtUnscaledCanvasPoint:(CGPoint)point;
+- (id)insertedScribbleElementAtPoint:(CGPoint)point;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)modelContainerForLocalDragContext;
 - (id)newDragAndDropController;
 - (id)p_allRepsForHitTestingOrdered;
-- (id)p_reasonStringForIgnoringKeyboardInputWithAllTouchesDoneGestureRecognizer:(id)a3;
-- (id)p_willPresentError:(id)a3;
+- (id)p_reasonStringForIgnoringKeyboardInputWithAllTouchesDoneGestureRecognizer:(id)recognizer;
+- (id)p_willPresentError:(id)error;
 - (id)pointerInteractionDelegate;
-- (id)scribbleCapableElementWithIdentifier:(id)a3;
-- (id)scribbleCapableElementsForRect:(CGRect)a3;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
-- (id)viewForGestureRecognizer:(id)a3;
+- (id)scribbleCapableElementWithIdentifier:(id)identifier;
+- (id)scribbleCapableElementsForRect:(CGRect)rect;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
+- (id)viewForGestureRecognizer:(id)recognizer;
 - (void)addCommonObservers;
-- (void)addInspectorPanZoomModeGRsToArray:(id)a3;
-- (void)alignmentToolsControllerShouldDismiss:(id)a3;
-- (void)canvasZoomTracker:(id)a3 willBeginViewScaleFeedbackWithZoomMethod:(int64_t)a4;
-- (void)canvasZoomTracker:(id)a3 willUpdateViewScaleFeedbackWithScale:(double)a4;
-- (void)canvasZoomTrackerDidEndFinalZoomAnimation:(id)a3;
-- (void)canvasZoomTrackerDidEndViewScaleFeedback:(id)a3;
-- (void)canvasZoomTrackerDidFinish:(id)a3;
-- (void)canvasZoomTrackerWillBeginFinalZoomAnimation:(id)a3;
-- (void)contextMenuDidHideForContextMenuController:(id)a3;
-- (void)cut:(id)a3;
+- (void)addInspectorPanZoomModeGRsToArray:(id)array;
+- (void)alignmentToolsControllerShouldDismiss:(id)dismiss;
+- (void)canvasZoomTracker:(id)tracker willBeginViewScaleFeedbackWithZoomMethod:(int64_t)method;
+- (void)canvasZoomTracker:(id)tracker willUpdateViewScaleFeedbackWithScale:(double)scale;
+- (void)canvasZoomTrackerDidEndFinalZoomAnimation:(id)animation;
+- (void)canvasZoomTrackerDidEndViewScaleFeedback:(id)feedback;
+- (void)canvasZoomTrackerDidFinish:(id)finish;
+- (void)canvasZoomTrackerWillBeginFinalZoomAnimation:(id)animation;
+- (void)contextMenuDidHideForContextMenuController:(id)controller;
+- (void)cut:(id)cut;
 - (void)dealloc;
-- (void)didDismissQuickSelectViewController:(id)a3;
-- (void)didSetDocumentToMode:(id)a3 fromMode:(id)a4 animated:(BOOL)a5;
-- (void)didStartCountingTouches:(id)a3 touchType:(int64_t)a4 atSomeTouchPoint:(CGPoint)a5;
-- (void)didStopCountingTouches:(id)a3;
+- (void)didDismissQuickSelectViewController:(id)controller;
+- (void)didSetDocumentToMode:(id)mode fromMode:(id)fromMode animated:(BOOL)animated;
+- (void)didStartCountingTouches:(id)touches touchType:(int64_t)type atSomeTouchPoint:(CGPoint)point;
+- (void)didStopCountingTouches:(id)touches;
 - (void)dismissDocumentChromePresentedViewController;
 - (void)dragSessionWillBegin;
-- (void)endModalOperationWithToken:(id)a3;
+- (void)endModalOperationWithToken:(id)token;
 - (void)endPreventingDefaultPencilBehaviors;
 - (void)enterQuickSelectMode;
 - (void)forceStopScrolling;
-- (void)forwardInvocation:(id)a3;
-- (void)handleDoubleTap:(id)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)handleDoubleTap:(id)tap;
 - (void)hideEditMenu;
 - (void)i_startObservingFreehandDrawingToolkit;
 - (void)i_updateZoomGestureRecognizer;
-- (void)insertStencilFromLibrary:(id)a3;
+- (void)insertStencilFromLibrary:(id)library;
 - (void)leaveQuickSelectModeIfNeeded;
-- (void)modifyGesturesUsedForStylusAndIndirectPointerAddingTouchType:(int64_t)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)p_accessibilityInvertColorsDidChange:(id)a3;
-- (void)p_allTouchesDone:(id)a3;
-- (void)p_applicationDidBecomeActive:(id)a3;
-- (void)p_buildMenuItems:(id)a3 forSelectionPath:(id)a4;
-- (void)p_buildMenuTitles:(id)a3 forSelectionPath:(id)a4;
-- (void)p_didEnterBackground:(id)a3;
-- (void)p_handleHoverGesture:(id)a3;
-- (void)p_handlePencilDown:(id)a3;
-- (void)p_handleSingleTapGesture:(id)a3;
-- (void)p_handleTapForEditMenu:(id)a3;
-- (void)p_keyWindowDidChange:(id)a3;
+- (void)modifyGesturesUsedForStylusAndIndirectPointerAddingTouchType:(int64_t)type;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)p_accessibilityInvertColorsDidChange:(id)change;
+- (void)p_allTouchesDone:(id)done;
+- (void)p_applicationDidBecomeActive:(id)active;
+- (void)p_buildMenuItems:(id)items forSelectionPath:(id)path;
+- (void)p_buildMenuTitles:(id)titles forSelectionPath:(id)path;
+- (void)p_didEnterBackground:(id)background;
+- (void)p_handleHoverGesture:(id)gesture;
+- (void)p_handlePencilDown:(id)down;
+- (void)p_handleSingleTapGesture:(id)gesture;
+- (void)p_handleTapForEditMenu:(id)menu;
+- (void)p_keyWindowDidChange:(id)change;
 - (void)p_leaveQuickSelectMode;
-- (void)p_presentStencilLibraryWithBoardItemsToSave:(id)a3;
+- (void)p_presentStencilLibraryWithBoardItemsToSave:(id)save;
 - (void)p_schedulePreventInsertScribbleElementTimer;
-- (void)p_setDragLiftDelay:(double)a3;
+- (void)p_setDragLiftDelay:(double)delay;
 - (void)p_setUpWPGestureRecognizers;
 - (void)p_setupDidEnterBackgroundObserver;
 - (void)p_setupWillEnterForegroundObserver;
-- (void)p_willEnterForeground:(id)a3;
-- (void)p_zoomWithGesture:(id)a3;
+- (void)p_willEnterForeground:(id)foreground;
+- (void)p_zoomWithGesture:(id)gesture;
 - (void)presentAlignmentTools;
-- (void)presentError:(id)a3 completionHandler:(id)a4;
-- (void)presentErrors:(id)a3 withLocalizedDescription:(id)a4 completionHandler:(id)a5;
-- (void)presentMediaCompatibilityAlertWithReasons:(int64_t)a3 forMediaType:(int64_t)a4 forSingleMediaObject:(BOOL)a5 completionHandler:(id)a6;
+- (void)presentError:(id)error completionHandler:(id)handler;
+- (void)presentErrors:(id)errors withLocalizedDescription:(id)description completionHandler:(id)handler;
+- (void)presentMediaCompatibilityAlertWithReasons:(int64_t)reasons forMediaType:(int64_t)type forSingleMediaObject:(BOOL)object completionHandler:(id)handler;
 - (void)removeCommonObservers;
 - (void)resetGesturesForContextSwitch;
-- (void)saveSelectedBoardItemsAsStencil:(id)a3;
+- (void)saveSelectedBoardItemsAsStencil:(id)stencil;
 - (void)scribbleInteractionDidFinishWriting;
-- (void)scribbleInteractionWillBeginWritingScribbleElementWillBeInserted:(BOOL)a3;
+- (void)scribbleInteractionWillBeginWritingScribbleElementWillBeInserted:(BOOL)inserted;
 - (void)scrollViewDidScroll;
-- (void)setContextMenuMightBeDisplayed:(BOOL)a3;
-- (void)setDelegate:(id)a3;
+- (void)setContextMenuMightBeDisplayed:(BOOL)displayed;
+- (void)setDelegate:(id)delegate;
 - (void)setUpCommonGestureAllowedTouchTypes;
 - (void)setUpGestureRecognizers;
-- (void)setView:(id)a3;
+- (void)setView:(id)view;
 - (void)showDefaultEditUIForCurrentSelection;
-- (void)showEditMenuForSelectionPath:(id)a3;
-- (void)showEditUIForSelectionPath:(id)a3;
-- (void)showMiniFormatterToExitDrawingMode:(id)a3;
-- (void)showURLAlertFromAlertPresenter:(id)a3;
+- (void)showEditMenuForSelectionPath:(id)path;
+- (void)showEditUIForSelectionPath:(id)path;
+- (void)showMiniFormatterToExitDrawingMode:(id)mode;
+- (void)showURLAlertFromAlertPresenter:(id)presenter;
 - (void)teardown;
 - (void)toggleDefaultEditUIForCurrentSelection;
 - (void)toggleEditMenuForCurrentSelection;
-- (void)unlock:(id)a3;
+- (void)unlock:(id)unlock;
 - (void)updateToolbarButtons;
-- (void)userDismissedAlignmentToolsController:(id)a3;
-- (void)validateCommand:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)userDismissedAlignmentToolsController:(id)controller;
+- (void)validateCommand:(id)command;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
 - (void)willUpdateLayerTree;
 @end
 
 @implementation CRLiOSCanvasViewController
 
-- (CRLiOSCanvasViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CRLiOSCanvasViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = CRLiOSCanvasViewController;
-  v4 = [(CRLiOSCanvasViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(CRLiOSCanvasViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -200,11 +200,11 @@
   return v5;
 }
 
-- (CRLiOSCanvasViewController)initWithCoder:(id)a3
+- (CRLiOSCanvasViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CRLiOSCanvasViewController;
-  v3 = [(CRLiOSCanvasViewController *)&v6 initWithCoder:a3];
+  v3 = [(CRLiOSCanvasViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -214,9 +214,9 @@
   return v4;
 }
 
-- (CRLiOSCanvasViewController)initWithInteractiveCanvasController:(id)a3
+- (CRLiOSCanvasViewController)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = CRLiOSCanvasViewController;
   v5 = [(CRLiOSCanvasViewController *)&v8 initWithNibName:0 bundle:0];
@@ -224,15 +224,15 @@
   if (v5)
   {
     sub_10037B87C(v5);
-    [(CRLiOSCanvasViewController *)v6 setInteractiveCanvasController:v4];
+    [(CRLiOSCanvasViewController *)v6 setInteractiveCanvasController:controllerCopy];
   }
 
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
 
   v5 = obj;
@@ -263,11 +263,11 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CRLiOSCanvasViewController;
-  [(CRLiOSCanvasViewController *)&v4 viewDidAppear:a3];
+  [(CRLiOSCanvasViewController *)&v4 viewDidAppear:appear];
   if (!self->mSceneWillEnterForegroundObserver)
   {
     [(CRLiOSCanvasViewController *)self p_setupWillEnterForegroundObserver];
@@ -283,11 +283,11 @@
 
 - (void)p_setupWillEnterForegroundObserver
 {
-  v3 = [(CRLiOSCanvasViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
+  view = [(CRLiOSCanvasViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  if (v5)
+  if (windowScene)
   {
     objc_initWeak(&location, self);
     v6 = +[NSNotificationCenter defaultCenter];
@@ -298,7 +298,7 @@
     v11[2] = sub_10037BCB8;
     v11[3] = &unk_101859F90;
     objc_copyWeak(&v12, &location);
-    v9 = [v6 addObserverForName:v7 object:v5 queue:v8 usingBlock:v11];
+    v9 = [v6 addObserverForName:v7 object:windowScene queue:v8 usingBlock:v11];
     mSceneWillEnterForegroundObserver = self->mSceneWillEnterForegroundObserver;
     self->mSceneWillEnterForegroundObserver = v9;
 
@@ -309,11 +309,11 @@
 
 - (void)p_setupDidEnterBackgroundObserver
 {
-  v3 = [(CRLiOSCanvasViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
+  view = [(CRLiOSCanvasViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  if (v5)
+  if (windowScene)
   {
     objc_initWeak(&location, self);
     v6 = +[NSNotificationCenter defaultCenter];
@@ -324,7 +324,7 @@
     v11[2] = sub_10037BE88;
     v11[3] = &unk_101859F90;
     objc_copyWeak(&v12, &location);
-    v9 = [v6 addObserverForName:v7 object:v5 queue:v8 usingBlock:v11];
+    v9 = [v6 addObserverForName:v7 object:windowScene queue:v8 usingBlock:v11];
     mSceneDidEnterBackgroundObserver = self->mSceneDidEnterBackgroundObserver;
     self->mSceneDidEnterBackgroundObserver = v9;
 
@@ -333,7 +333,7 @@
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v12.receiver = self;
   v12.super_class = CRLiOSCanvasViewController;
@@ -341,7 +341,7 @@
   {
     v11.receiver = self;
     v11.super_class = CRLiOSCanvasViewController;
-    v5 = [(CRLiOSCanvasViewController *)&v11 methodSignatureForSelector:a3];
+    v5 = [(CRLiOSCanvasViewController *)&v11 methodSignatureForSelector:selector];
   }
 
   else
@@ -363,20 +363,20 @@
   return v5;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3 withSender:(id)a4
+- (BOOL)respondsToSelector:(SEL)selector withSender:(id)sender
 {
-  v6 = a4;
+  senderCopy = sender;
   v10.receiver = self;
   v10.super_class = CRLiOSCanvasViewController;
-  if ([(CRLiOSCanvasViewController *)&v10 respondsToSelector:a3])
+  if ([(CRLiOSCanvasViewController *)&v10 respondsToSelector:selector])
   {
     v7 = 1;
   }
 
-  else if ([CRLInteractiveCanvasController selectorIsActionMethod:a3])
+  else if ([CRLInteractiveCanvasController selectorIsActionMethod:selector])
   {
-    v8 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v7 = [v8 respondsToSelector:a3 withSender:v6];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    v7 = [interactiveCanvasController respondsToSelector:selector withSender:senderCopy];
   }
 
   else
@@ -387,11 +387,11 @@
   return v7;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  [v4 invokeWithTarget:v5];
+  invocationCopy = invocation;
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  [invocationCopy invokeWithTarget:interactiveCanvasController];
 }
 
 - (void)dealloc
@@ -430,32 +430,32 @@
   [(CRLiOSCanvasViewController *)&v6 dealloc];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  [v5 stopWritingTools];
+  controllerCopy = controller;
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  [interactiveCanvasController stopWritingTools];
 
   v6.receiver = self;
   v6.super_class = CRLiOSCanvasViewController;
-  [(CRLiOSCanvasViewController *)&v6 willMoveToParentViewController:v4];
+  [(CRLiOSCanvasViewController *)&v6 willMoveToParentViewController:controllerCopy];
 }
 
 - (void)teardown
 {
   if ([(CRLiOSCanvasViewController *)self isViewLoaded])
   {
-    v3 = [(CRLiOSCanvasViewController *)self canvasView];
-    [v3 teardown];
+    canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+    [canvasView teardown];
 
-    v4 = [(CRLiOSCanvasViewController *)self canvasView];
-    [v4 setGestureRecognizers:0];
+    canvasView2 = [(CRLiOSCanvasViewController *)self canvasView];
+    [canvasView2 setGestureRecognizers:0];
   }
 
   [CRLiOSScribbleInteractionSetupHelper setupScribbleEditingProvider:self scribbleObserver:0 scribbleActive:0];
-  v5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v6 = [v5 freehandDrawingToolkit];
-  [v6 removeToolkitObserver:self];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  freehandDrawingToolkit = [interactiveCanvasController freehandDrawingToolkit];
+  [freehandDrawingToolkit removeToolkitObserver:self];
 
   [(CRLiOSCanvasViewController *)self leaveQuickSelectModeIfNeeded];
   [(CRLiOSPencilMediator *)self->mPencilMediator teardown];
@@ -485,8 +485,8 @@
   v59.receiver = self;
   v59.super_class = CRLiOSCanvasViewController;
   [(CRLiOSCanvasViewController *)&v59 viewDidLoad];
-  v3 = [(CRLiOSCanvasViewController *)self canvasView];
-  if (v3)
+  canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+  if (canvasView)
   {
     WeakRetained = objc_loadWeakRetained(&self->mICC);
 
@@ -519,39 +519,39 @@
       [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:423 isFatal:0 description:"invalid nil value for '%{public}s'", "mICC"];
     }
 
-    v8 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    [v8 viewScale];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    [interactiveCanvasController viewScale];
     v10 = v9;
 
     v11 = objc_loadWeakRetained(&self->mICC);
-    [v3 setController:v11];
+    [canvasView setController:v11];
 
     v12 = objc_loadWeakRetained(&self->mICC);
-    v13 = [v12 canvas];
-    [v13 setViewScale:v10];
+    canvas = [v12 canvas];
+    [canvas setViewScale:v10];
 
     v14 = objc_loadWeakRetained(&self->mICC);
-    v15 = [v14 canvas];
+    canvas2 = [v14 canvas];
     +[UIScreen crl_screenScale];
-    [v15 i_setContentsScale:?];
+    [canvas2 i_setContentsScale:?];
 
-    [v3 setMultipleTouchEnabled:1];
-    [v3 setExclusiveTouch:1];
-    [v3 setClearsContextBeforeDrawing:0];
-    v16 = [v3 enclosingScrollView];
-    v17 = v16;
-    if (v16)
+    [canvasView setMultipleTouchEnabled:1];
+    [canvasView setExclusiveTouch:1];
+    [canvasView setClearsContextBeforeDrawing:0];
+    enclosingScrollView = [canvasView enclosingScrollView];
+    v17 = enclosingScrollView;
+    if (enclosingScrollView)
     {
-      v18 = [v16 delegate];
+      delegate = [enclosingScrollView delegate];
 
-      if (!v18)
+      if (!delegate)
       {
         v19 = objc_loadWeakRetained(&self->mICC);
         [v17 setDelegate:v19];
       }
 
-      v20 = [(CRLiOSCanvasViewController *)self canvasLayer];
-      [v20 fixFrameAndScrollView];
+      canvasLayer = [(CRLiOSCanvasViewController *)self canvasLayer];
+      [canvasLayer fixFrameAndScrollView];
 
       [v17 setAutoresizesSubviews:0];
       [v17 setDelaysContentTouches:0];
@@ -565,68 +565,68 @@
     if ([(CRLiOSCanvasViewController *)self canReceiveSystemDrops])
     {
       v22 = [UIDropInteraction alloc];
-      v23 = [(CRLiOSCanvasViewController *)self dropInteractionDelegate];
-      v24 = [v22 initWithDelegate:v23];
-      [v3 addInteraction:v24];
+      dropInteractionDelegate = [(CRLiOSCanvasViewController *)self dropInteractionDelegate];
+      v24 = [v22 initWithDelegate:dropInteractionDelegate];
+      [canvasView addInteraction:v24];
     }
 
     if ([(CRLiOSCanvasViewController *)self canOriginateSystemDrags])
     {
       v25 = [UIDragInteraction alloc];
-      v26 = [(CRLiOSCanvasViewController *)self dragInteractionDelegate];
-      v27 = [v25 initWithDelegate:v26];
+      dragInteractionDelegate = [(CRLiOSCanvasViewController *)self dragInteractionDelegate];
+      v27 = [v25 initWithDelegate:dragInteractionDelegate];
       mDragInteraction = self->mDragInteraction;
       self->mDragInteraction = v27;
 
-      v29 = [(CRLiOSCanvasViewController *)self dragInteraction];
-      [v3 addInteraction:v29];
+      dragInteraction = [(CRLiOSCanvasViewController *)self dragInteraction];
+      [canvasView addInteraction:dragInteraction];
 
-      v30 = [(CRLiOSCanvasViewController *)self dragInteraction];
-      [v30 setAllowsSimultaneousRecognitionDuringLift:1];
+      dragInteraction2 = [(CRLiOSCanvasViewController *)self dragInteraction];
+      [dragInteraction2 setAllowsSimultaneousRecognitionDuringLift:1];
 
-      v31 = [(CRLiOSCanvasViewController *)self dragInteraction];
-      LOBYTE(v26) = objc_opt_respondsToSelector();
+      dragInteraction3 = [(CRLiOSCanvasViewController *)self dragInteraction];
+      LOBYTE(dragInteractionDelegate) = objc_opt_respondsToSelector();
 
-      if (v26)
+      if (dragInteractionDelegate)
       {
-        v32 = [(CRLiOSCanvasViewController *)self dragInteraction];
-        [v32 _setAdditionalTouchesCancelLift:1];
+        dragInteraction4 = [(CRLiOSCanvasViewController *)self dragInteraction];
+        [dragInteraction4 _setAdditionalTouchesCancelLift:1];
       }
 
-      v33 = [(CRLiOSCanvasViewController *)self dragInteraction];
-      [v33 setEnabled:1];
+      dragInteraction5 = [(CRLiOSCanvasViewController *)self dragInteraction];
+      [dragInteraction5 setEnabled:1];
 
-      v34 = [(CRLiOSCanvasViewController *)self dragInteraction];
+      dragInteraction6 = [(CRLiOSCanvasViewController *)self dragInteraction];
       v35 = objc_opt_respondsToSelector();
 
       if (v35)
       {
-        v36 = [(CRLiOSCanvasViewController *)self dragInteraction];
-        [v36 _setAllowsPointerDragBeforeLiftDelay:0];
+        dragInteraction7 = [(CRLiOSCanvasViewController *)self dragInteraction];
+        [dragInteraction7 _setAllowsPointerDragBeforeLiftDelay:0];
       }
 
       [(CRLiOSCanvasViewController *)self p_setDragLiftDelay:0.7];
     }
 
     v37 = [UIContextMenuInteraction alloc];
-    v38 = [(CRLiOSCanvasViewController *)self contextMenuInteractionDelegate];
-    v39 = [v37 initWithDelegate:v38];
+    contextMenuInteractionDelegate = [(CRLiOSCanvasViewController *)self contextMenuInteractionDelegate];
+    v39 = [v37 initWithDelegate:contextMenuInteractionDelegate];
 
-    [v3 addInteraction:v39];
+    [canvasView addInteraction:v39];
     v40 = [UIPointerInteraction alloc];
-    v41 = [(CRLiOSCanvasViewController *)self pointerInteractionDelegate];
-    v42 = [v40 initWithDelegate:v41];
+    pointerInteractionDelegate = [(CRLiOSCanvasViewController *)self pointerInteractionDelegate];
+    v42 = [v40 initWithDelegate:pointerInteractionDelegate];
     mPointerInteraction = self->mPointerInteraction;
     self->mPointerInteraction = v42;
 
-    [v3 addInteraction:self->mPointerInteraction];
+    [canvasView addInteraction:self->mPointerInteraction];
     v44 = [UIEditMenuInteraction alloc];
-    v45 = [(CRLiOSCanvasViewController *)self contextMenuInteractionDelegate];
-    v46 = [v44 initWithDelegate:v45];
+    contextMenuInteractionDelegate2 = [(CRLiOSCanvasViewController *)self contextMenuInteractionDelegate];
+    v46 = [v44 initWithDelegate:contextMenuInteractionDelegate2];
 
     [v46 setPresentsContextMenuAsSecondaryAction:0];
     [(CRLiOSCanvasViewController *)self setEditMenuInteraction:v46];
-    [v3 addInteraction:v46];
+    [canvasView addInteraction:v46];
     v47 = [CRLCanvasRepEnterExitNotifier alloc];
     v48 = objc_loadWeakRetained(&self->mICC);
     v49 = [(CRLCanvasRepEnterExitNotifier *)v47 initWithInteractiveCanvasController:v48];
@@ -644,12 +644,12 @@
     if (+[CRLFeatureFlagGroup isBatteriesIncludedEnabled](_TtC8Freeform19CRLFeatureFlagGroup, "isBatteriesIncludedEnabled") && +[_TtC8Freeform34CRLWPSystemWritingToolsCoordinator isWritingToolsAvailable])
     {
       v52 = [_TtC8Freeform24CRLWPWritingToolsHandler alloc];
-      v53 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-      v54 = [(CRLWPWritingToolsHandler *)v52 initWithInteractiveCanvasController:v53];
+      interactiveCanvasController2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+      v54 = [(CRLWPWritingToolsHandler *)v52 initWithInteractiveCanvasController:interactiveCanvasController2];
 
       v55 = [_TtC8Freeform34CRLWPSystemWritingToolsCoordinator makeCoordinatorWithDelegate:v54];
-      v56 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-      [v56 setWritingToolsDelegate:v54];
+      interactiveCanvasController3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+      [interactiveCanvasController3 setWritingToolsDelegate:v54];
 
       writingToolsCoordinator = self->_writingToolsCoordinator;
       self->_writingToolsCoordinator = v55;
@@ -686,41 +686,41 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = CRLiOSCanvasViewController;
-  [(CRLiOSCanvasViewController *)&v7 viewWillAppear:a3];
+  [(CRLiOSCanvasViewController *)&v7 viewWillAppear:appear];
   WeakRetained = objc_loadWeakRetained(&self->mICC);
-  v5 = [WeakRetained canvas];
-  v6 = [(CRLiOSCanvasViewController *)self traitCollection];
-  [v5 i_setCanvasIsWideGamut:{objc_msgSend(v6, "displayGamut") == 1}];
+  canvas = [WeakRetained canvas];
+  traitCollection = [(CRLiOSCanvasViewController *)self traitCollection];
+  [canvas i_setCanvasIsWideGamut:{objc_msgSend(traitCollection, "displayGamut") == 1}];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  if ([v5 currentlyScrolling])
+  disappearCopy = disappear;
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  if ([interactiveCanvasController currentlyScrolling])
   {
     [(CRLiOSCanvasViewController *)self forceStopScrolling];
   }
 
   v6.receiver = self;
   v6.super_class = CRLiOSCanvasViewController;
-  [(CRLiOSCanvasViewController *)&v6 viewWillDisappear:v3];
+  [(CRLiOSCanvasViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
   v8.receiver = self;
   v8.super_class = CRLiOSCanvasViewController;
-  v4 = a3;
-  [(CRLiOSCanvasViewController *)&v8 setView:v4];
+  viewCopy = view;
+  [(CRLiOSCanvasViewController *)&v8 setView:viewCopy];
   v5 = objc_opt_class();
-  v6 = [v4 layer];
+  layer = [viewCopy layer];
 
-  v7 = sub_100014370(v5, v6);
+  v7 = sub_100014370(v5, layer);
   objc_storeWeak(&self->mCanvasLayer, v7);
 }
 
@@ -734,18 +734,18 @@
 - (CRLCanvasView)canvasView
 {
   v3 = objc_opt_class();
-  v4 = [(CRLiOSCanvasViewController *)self view];
-  v5 = sub_100014370(v3, v4);
+  view = [(CRLiOSCanvasViewController *)self view];
+  v5 = sub_100014370(v3, view);
 
   return v5;
 }
 
 - (CALayer)layer
 {
-  v2 = [(CRLiOSCanvasViewController *)self view];
-  v3 = [v2 layer];
+  view = [(CRLiOSCanvasViewController *)self view];
+  layer = [view layer];
 
-  return v3;
+  return layer;
 }
 
 - (_TtC8Freeform41CRLiOSShapeLibraryCanvasPopoverController)shapeLibraryPopoverController
@@ -754,8 +754,8 @@
   if (!shapeLibraryPopoverController)
   {
     v4 = [_TtC8Freeform41CRLiOSShapeLibraryCanvasPopoverController alloc];
-    v5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v6 = [(CRLiOSShapeLibraryCanvasPopoverController *)v4 initWithInteractiveCanvasController:v5];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    v6 = [(CRLiOSShapeLibraryCanvasPopoverController *)v4 initWithInteractiveCanvasController:interactiveCanvasController];
     v7 = self->_shapeLibraryPopoverController;
     self->_shapeLibraryPopoverController = v6;
 
@@ -772,21 +772,21 @@
     return 0;
   }
 
-  v3 = [(CRLiOSCanvasViewController *)self view];
-  v4 = [v3 window];
-  if ([v4 isKeyWindow])
+  view = [(CRLiOSCanvasViewController *)self view];
+  window = [view window];
+  if ([window isKeyWindow])
   {
     WeakRetained = objc_loadWeakRetained(&self->mICC);
-    v6 = [WeakRetained textInputResponder];
-    v7 = [v6 isFirstResponder];
+    textInputResponder = [WeakRetained textInputResponder];
+    isFirstResponder = [textInputResponder isFirstResponder];
   }
 
   else
   {
-    v7 = 0;
+    isFirstResponder = 0;
   }
 
-  return v7;
+  return isFirstResponder;
 }
 
 - (void)willUpdateLayerTree
@@ -840,24 +840,24 @@
   [v6 removeObserver:self forKeyPath:@"CRLSelectAndScrollWithApplePencil"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = +[NSUserDefaults standardUserDefaults];
   v14 = v13;
-  if (v13 != v11)
+  if (v13 != objectCopy)
   {
 
 LABEL_5:
     v16.receiver = self;
     v16.super_class = CRLiOSCanvasViewController;
-    [(CRLiOSCanvasViewController *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(CRLiOSCanvasViewController *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_6;
   }
 
-  v15 = [v10 isEqualToString:@"CRLSelectAndScrollWithApplePencil"];
+  v15 = [pathCopy isEqualToString:@"CRLSelectAndScrollWithApplePencil"];
 
   if (!v15)
   {
@@ -868,35 +868,35 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)p_accessibilityInvertColorsDidChange:(id)a3
+- (void)p_accessibilityInvertColorsDidChange:(id)change
 {
-  v3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  [v3 invalidateAllLayers];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  [interactiveCanvasController invalidateAllLayers];
 }
 
-- (void)showURLAlertFromAlertPresenter:(id)a3
+- (void)showURLAlertFromAlertPresenter:(id)presenter
 {
-  v6 = a3;
-  v4 = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
-  [v4 dismissMiniFormatter];
+  presenterCopy = presenter;
+  miniFormatterPresenter = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
+  [miniFormatterPresenter dismissMiniFormatter];
 
-  v5 = [(CRLiOSCanvasViewController *)self presentedViewController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  presentedViewController = [(CRLiOSCanvasViewController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 
-  [v6 showAlertFrom:self];
+  [presenterCopy showAlertFrom:self];
 }
 
-- (void)p_willEnterForeground:(id)a3
+- (void)p_willEnterForeground:(id)foreground
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController:a3];
-  v4 = [v3 canvas];
-  v5 = [v4 topLevelReps];
+  v3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController:foreground];
+  canvas = [v3 canvas];
+  topLevelReps = [canvas topLevelReps];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [topLevelReps countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -907,30 +907,30 @@ LABEL_6:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v10 + 1) + 8 * i) recursivelyPerformSelector:"willEnterForeground"];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [topLevelReps countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)p_didEnterBackground:(id)a3
+- (void)p_didEnterBackground:(id)background
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController:a3];
-  v4 = [v3 canvas];
-  v5 = [v4 topLevelReps];
+  v3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController:background];
+  canvas = [v3 canvas];
+  topLevelReps = [canvas topLevelReps];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [topLevelReps countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -941,30 +941,30 @@ LABEL_6:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v10 + 1) + 8 * i) recursivelyPerformSelector:"didEnterBackground"];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [topLevelReps countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)p_applicationDidBecomeActive:(id)a3
+- (void)p_applicationDidBecomeActive:(id)active
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController:a3];
-  v4 = [v3 canvas];
-  v5 = [v4 topLevelReps];
+  v3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController:active];
+  canvas = [v3 canvas];
+  topLevelReps = [canvas topLevelReps];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [topLevelReps countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -975,36 +975,36 @@ LABEL_6:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v10 + 1) + 8 * i) recursivelyPerformSelector:"i_applicationDidBecomeActive"];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [topLevelReps countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)p_keyWindowDidChange:(id)a3
+- (void)p_keyWindowDidChange:(id)change
 {
-  v4 = [a3 object];
-  v5 = [(CRLiOSCanvasViewController *)self view];
-  v6 = [v5 window];
+  object = [change object];
+  view = [(CRLiOSCanvasViewController *)self view];
+  window = [view window];
 
-  if (v4 == v6)
+  if (object == window)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
     WeakRetained = objc_loadWeakRetained(&self->mICC);
-    v8 = [WeakRetained canvas];
-    v9 = [v8 topLevelReps];
+    canvas = [WeakRetained canvas];
+    topLevelReps = [canvas topLevelReps];
 
-    v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v10 = [topLevelReps countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1015,13 +1015,13 @@ LABEL_6:
         {
           if (*v15 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(topLevelReps);
           }
 
           [*(*(&v14 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"layerHostContainerFocusDidChange"];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v11 = [topLevelReps countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v11);
@@ -1029,23 +1029,23 @@ LABEL_6:
   }
 }
 
-- (id)hitRepWithTouch:(id)a3
+- (id)hitRepWithTouch:(id)touch
 {
-  v4 = a3;
-  if (v4)
+  touchCopy = touch;
+  if (touchCopy)
   {
-    v5 = [(CRLiOSCanvasViewController *)self canvasView];
-    [v4 locationInView:v5];
+    canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+    [touchCopy locationInView:canvasView];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    [v10 convertBoundsToUnscaledPoint:{v7, v9}];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    [interactiveCanvasController convertBoundsToUnscaledPoint:{v7, v9}];
     v12 = v11;
     v14 = v13;
 
-    v15 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v16 = [v15 hitRep:{v12, v14}];
+    interactiveCanvasController2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    v16 = [interactiveCanvasController2 hitRep:{v12, v14}];
   }
 
   else
@@ -1082,24 +1082,24 @@ LABEL_6:
   return v16;
 }
 
-- (id)hitKnobWithTouch:(id)a3 returningRep:(id *)a4
+- (id)hitKnobWithTouch:(id)touch returningRep:(id *)rep
 {
-  v6 = a3;
-  if (v6)
+  touchCopy = touch;
+  if (touchCopy)
   {
-    v7 = [(CRLiOSCanvasViewController *)self canvasView];
-    [v6 locationInView:v7];
+    canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+    [touchCopy locationInView:canvasView];
     v9 = v8;
     v11 = v10;
 
-    v12 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    [v12 convertBoundsToUnscaledPoint:{v9, v11}];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    [interactiveCanvasController convertBoundsToUnscaledPoint:{v9, v11}];
     v14 = v13;
     v16 = v15;
 
-    v17 = sub_10042B6C0([v6 type]);
-    v18 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v19 = [v18 hitKnobAtPoint:v17 inputType:a4 returningRep:{v14, v16}];
+    v17 = sub_10042B6C0([touchCopy type]);
+    interactiveCanvasController2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    v19 = [interactiveCanvasController2 hitKnobAtPoint:v17 inputType:rep returningRep:{v14, v16}];
   }
 
   else
@@ -1131,27 +1131,27 @@ LABEL_6:
     [CRLAssertionHandler handleFailureInFunction:v21 file:v22 lineNumber:694 isFatal:0 description:"invalid nil value for '%{public}s'", "touch"];
 
     v19 = 0;
-    if (a4)
+    if (rep)
     {
-      *a4 = 0;
+      *rep = 0;
     }
   }
 
   return v19;
 }
 
-- (BOOL)canvasSubview:(id)a3 shouldHandleEventAtBoundsPoint:(CGPoint)a4
+- (BOOL)canvasSubview:(id)subview shouldHandleEventAtBoundsPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  if ([v8 i_isRepContentPlatformView:v7])
+  y = point.y;
+  x = point.x;
+  subviewCopy = subview;
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  if ([interactiveCanvasController i_isRepContentPlatformView:subviewCopy])
   {
-    [v8 convertBoundsToUnscaledPoint:{x, y}];
+    [interactiveCanvasController convertBoundsToUnscaledPoint:{x, y}];
     v10 = v9;
     v12 = v11;
-    v13 = [v8 hitKnobAtPoint:1 inputType:0 returningRep:?];
+    v13 = [interactiveCanvasController hitKnobAtPoint:1 inputType:0 returningRep:?];
     if (v13)
     {
       v14 = 0;
@@ -1159,14 +1159,14 @@ LABEL_6:
 
     else
     {
-      v15 = [v8 hitRep:{v10, v12}];
+      v15 = [interactiveCanvasController hitRep:{v10, v12}];
       v16 = v15;
       if (v15 && [v15 directlyManagesContentPlatformView] && objc_msgSend(v16, "wantsContentPlatformViewEventHandling"))
       {
-        v17 = [v16 contentPlatformView];
-        if (v17)
+        contentPlatformView = [v16 contentPlatformView];
+        if (contentPlatformView)
         {
-          v14 = [v7 isDescendantOfView:v17];
+          v14 = [subviewCopy isDescendantOfView:contentPlatformView];
         }
 
         else
@@ -1192,39 +1192,39 @@ LABEL_6:
 
 - (NSArray)commonGestureRecognizers
 {
-  v14 = [(CRLiOSCanvasViewController *)self singleTapGestureRecognizer];
-  v3 = [(CRLiOSCanvasViewController *)self doubleTapGestureRecognizer];
-  v4 = [(CRLiOSCanvasViewController *)self editMenuTapGestureRecognizer];
-  v5 = [(CRLiOSCanvasViewController *)self knobDragGestureRecognizer];
-  v6 = [(CRLiOSCanvasViewController *)self multiSelectGestureRecognizer];
-  v7 = [(CRLiOSCanvasViewController *)self repDragGestureRecognizer];
-  v8 = [(CRLiOSCanvasViewController *)self repRotateGestureRecognizer];
-  v9 = [(CRLiOSCanvasViewController *)self repRotateKnobGestureRecognizer];
-  v10 = [(CRLiOSCanvasViewController *)self zoomGestureRecognizer];
-  v11 = [(CRLiOSCanvasViewController *)self nudgeGestureRecognizer];
-  v12 = [NSArray arrayWithObjects:v14, v3, v4, v5, v6, v7, v8, v9, v10, v11, 0];
+  singleTapGestureRecognizer = [(CRLiOSCanvasViewController *)self singleTapGestureRecognizer];
+  doubleTapGestureRecognizer = [(CRLiOSCanvasViewController *)self doubleTapGestureRecognizer];
+  editMenuTapGestureRecognizer = [(CRLiOSCanvasViewController *)self editMenuTapGestureRecognizer];
+  knobDragGestureRecognizer = [(CRLiOSCanvasViewController *)self knobDragGestureRecognizer];
+  multiSelectGestureRecognizer = [(CRLiOSCanvasViewController *)self multiSelectGestureRecognizer];
+  repDragGestureRecognizer = [(CRLiOSCanvasViewController *)self repDragGestureRecognizer];
+  repRotateGestureRecognizer = [(CRLiOSCanvasViewController *)self repRotateGestureRecognizer];
+  repRotateKnobGestureRecognizer = [(CRLiOSCanvasViewController *)self repRotateKnobGestureRecognizer];
+  zoomGestureRecognizer = [(CRLiOSCanvasViewController *)self zoomGestureRecognizer];
+  nudgeGestureRecognizer = [(CRLiOSCanvasViewController *)self nudgeGestureRecognizer];
+  v12 = [NSArray arrayWithObjects:singleTapGestureRecognizer, doubleTapGestureRecognizer, editMenuTapGestureRecognizer, knobDragGestureRecognizer, multiSelectGestureRecognizer, repDragGestureRecognizer, repRotateGestureRecognizer, repRotateKnobGestureRecognizer, zoomGestureRecognizer, nudgeGestureRecognizer, 0];
 
   return v12;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 type] == 2)
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  if ([touchCopy type] == 2)
   {
-    v8 = [v7 window];
-    [v7 locationInView:v8];
+    window = [touchCopy window];
+    [touchCopy locationInView:window];
     v10 = v9;
     v12 = v11;
-    v13 = [v8 screen];
-    [v13 bounds];
+    screen = [window screen];
+    [screen bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [v13 coordinateSpace];
-    [v8 convertPoint:v22 toCoordinateSpace:{v10, v12}];
+    coordinateSpace = [screen coordinateSpace];
+    [window convertPoint:coordinateSpace toCoordinateSpace:{v10, v12}];
     v24 = v23;
     v26 = v25;
 
@@ -1248,13 +1248,13 @@ LABEL_30:
     }
   }
 
-  v8 = [(CRLiOSCanvasViewController *)self canvasView];
-  [v7 locationInView:v8];
+  window = [(CRLiOSCanvasViewController *)self canvasView];
+  [touchCopy locationInView:window];
   v28 = v27;
   v30 = v29;
-  v31 = [(CRLiOSCanvasViewController *)self editMenuTapGestureRecognizer];
+  editMenuTapGestureRecognizer = [(CRLiOSCanvasViewController *)self editMenuTapGestureRecognizer];
 
-  if (v31 == v6)
+  if (editMenuTapGestureRecognizer == recognizerCopy)
   {
     v32 = +[UIMenuController sharedMenuController];
     if ([v32 isMenuVisible])
@@ -1264,27 +1264,27 @@ LABEL_30:
 
     else
     {
-      v33 = [(CRLiOSCanvasViewController *)self contextMenuInteractionDelegate];
-      self->mContextMenuMightBeDisplayed = [v33 currentlyDisplayingMenu];
+      contextMenuInteractionDelegate = [(CRLiOSCanvasViewController *)self contextMenuInteractionDelegate];
+      self->mContextMenuMightBeDisplayed = [contextMenuInteractionDelegate currentlyDisplayingMenu];
     }
   }
 
-  if ([(CRLiOSCanvasViewController *)self touchHitsCanvasViewAtPoint:v28, v30]|| [(CRLiOSCanvasViewController *)self allowTouchOutsideCanvasViewAtPoint:v6 forGesture:v28, v30])
+  if ([(CRLiOSCanvasViewController *)self touchHitsCanvasViewAtPoint:v28, v30]|| [(CRLiOSCanvasViewController *)self allowTouchOutsideCanvasViewAtPoint:recognizerCopy forGesture:v28, v30])
   {
-    v34 = [(CRLiOSCanvasViewController *)self traitCollection];
-    if ([v34 crl_isCompactWidth] && -[CRLiOSCanvasViewController inInspectorPanZoomMode](self, "inInspectorPanZoomMode") || -[CRLiOSCanvasViewController inMediaBrowsingMode](self, "inMediaBrowsingMode"))
+    traitCollection = [(CRLiOSCanvasViewController *)self traitCollection];
+    if ([traitCollection crl_isCompactWidth] && -[CRLiOSCanvasViewController inInspectorPanZoomMode](self, "inInspectorPanZoomMode") || -[CRLiOSCanvasViewController inMediaBrowsingMode](self, "inMediaBrowsingMode"))
     {
 
 LABEL_19:
-      v36 = [(CRLiOSCanvasViewController *)self canvasView];
-      v37 = [v36 gestureRecognizers];
-      v38 = [v37 containsObject:v6];
+      canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+      gestureRecognizers = [canvasView gestureRecognizers];
+      v38 = [gestureRecognizers containsObject:recognizerCopy];
 
       if (v38)
       {
         v39 = +[NSMutableArray array];
         [(CRLiOSCanvasViewController *)self addInspectorPanZoomModeGRsToArray:v39];
-        v40 = [v39 containsObject:v6];
+        v40 = [v39 containsObject:recognizerCopy];
 
         if ((v40 & 1) == 0)
         {
@@ -1295,9 +1295,9 @@ LABEL_19:
       goto LABEL_26;
     }
 
-    v35 = [(CRLiOSCanvasViewController *)self inInspectorTextEditingMode];
+    inInspectorTextEditingMode = [(CRLiOSCanvasViewController *)self inInspectorTextEditingMode];
 
-    if (v35)
+    if (inInspectorTextEditingMode)
     {
       goto LABEL_19;
     }
@@ -1313,29 +1313,29 @@ LABEL_19:
     goto LABEL_30;
   }
 
-  if (![(CRLiOSCanvasViewController *)self allowGestureInRestrictedGestureMode:v6])
+  if (![(CRLiOSCanvasViewController *)self allowGestureInRestrictedGestureMode:recognizerCopy])
   {
     goto LABEL_30;
   }
 
 LABEL_26:
-  if (self->mPencilDownGestureRecognizer == v6)
+  if (self->mPencilDownGestureRecognizer == recognizerCopy)
   {
-    v42 = [(CRLiOSCanvasViewController *)self delegate];
+    delegate = [(CRLiOSCanvasViewController *)self delegate];
     v43 = objc_opt_respondsToSelector();
 
     if ((v43 & 1) == 0 || (-[CRLiOSCanvasViewController delegate](self, "delegate"), v44 = objc_claimAutoreleasedReturnValue(), [v44 currentDocumentMode], v45 = objc_claimAutoreleasedReturnValue(), v44, v46 = objc_msgSend(v45, "pencilModeType"), v45, !v46))
     {
       WeakRetained = objc_loadWeakRetained(&self->mICC);
-      v49 = [(CRLiOSCanvasViewController *)self canvasView];
-      [v7 locationInView:v49];
+      canvasView2 = [(CRLiOSCanvasViewController *)self canvasView];
+      [touchCopy locationInView:canvasView2];
       [WeakRetained convertBoundsToUnscaledPoint:?];
       v51 = v50;
       v53 = v52;
 
       v54 = objc_loadWeakRetained(&self->mICC);
-      v55 = [v54 freehandDrawingToolkit];
-      v56 = [v55 freehandDrawingBehaviorForTouchType:2 atUnscaledPoint:{v51, v53}];
+      freehandDrawingToolkit = [v54 freehandDrawingToolkit];
+      v56 = [freehandDrawingToolkit freehandDrawingBehaviorForTouchType:2 atUnscaledPoint:{v51, v53}];
 
       v41 = v56 == 1;
       goto LABEL_31;
@@ -1350,16 +1350,16 @@ LABEL_31:
   return v41;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRLiOSCanvasViewController *)self rectangularMarqueeGestureRecognizer];
-  v9 = v8;
-  if (v8 == v6)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  rectangularMarqueeGestureRecognizer = [(CRLiOSCanvasViewController *)self rectangularMarqueeGestureRecognizer];
+  v9 = rectangularMarqueeGestureRecognizer;
+  if (rectangularMarqueeGestureRecognizer == recognizerCopy)
   {
-    v10 = [(CRLiOSCanvasViewController *)self gesturesThatImmediateMarqueeShouldRequireToFail];
-    v11 = [v10 containsObject:v7];
+    gesturesThatImmediateMarqueeShouldRequireToFail = [(CRLiOSCanvasViewController *)self gesturesThatImmediateMarqueeShouldRequireToFail];
+    v11 = [gesturesThatImmediateMarqueeShouldRequireToFail containsObject:gestureRecognizerCopy];
 
     if (v11)
     {
@@ -1381,15 +1381,15 @@ LABEL_6:
   v14 = [CRLFeatureFlagsHelper isOSFeatureEnabled:9];
   if ((v13 & 1) == 0 && v14)
   {
-    v15 = [(CRLiOSCanvasViewController *)self delegate];
+    delegate = [(CRLiOSCanvasViewController *)self delegate];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v17 = [(CRLiOSCanvasViewController *)self delegate];
-      v18 = [v17 currentDocumentMode];
+      delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+      currentDocumentMode = [delegate2 currentDocumentMode];
 
-      v13 = [v18 gestureRecognizer:v6 shouldRequireFailureOfGestureRecognizer:v7];
+      v13 = [currentDocumentMode gestureRecognizer:recognizerCopy shouldRequireFailureOfGestureRecognizer:gestureRecognizerCopy];
     }
 
     else
@@ -1403,32 +1403,32 @@ LABEL_6:
 
 - (void)setUpGestureRecognizers
 {
-  v68 = [(CRLiOSCanvasViewController *)self canvasView];
+  canvasView = [(CRLiOSCanvasViewController *)self canvasView];
   v3 = [[CRLiOSTapGestureRecognizer alloc] initWithTarget:self action:"p_handleSingleTapGesture:"];
   [(CRLiOSTapGestureRecognizer *)v3 setDelegate:self];
   [(CRLiOSTapGestureRecognizer *)v3 setName:@"Single Tap"];
-  [v68 addGestureRecognizer:v3];
+  [canvasView addGestureRecognizer:v3];
   v67 = v3;
   [(CRLiOSCanvasViewController *)self setSingleTapGestureRecognizer:v3];
   v4 = [[CRLiOSPencilDownGestureRecognizer alloc] initWithTarget:self action:"p_handlePencilDown:"];
   [(CRLiOSPencilDownGestureRecognizer *)v4 setName:@"CVCPencilDown"];
   [(CRLiOSPencilDownGestureRecognizer *)v4 setDelegate:self];
-  [v68 addGestureRecognizer:v4];
+  [canvasView addGestureRecognizer:v4];
   v66 = v4;
   [(CRLiOSCanvasViewController *)self setPencilDownGestureRecognizer:v4];
   v5 = [[CRLiOSTapGestureRecognizer alloc] initWithTarget:self action:"handleDoubleTap:"];
   [(CRLiOSTapGestureRecognizer *)v5 setNumberOfTapsRequired:2];
   [(CRLiOSTapGestureRecognizer *)v5 setDelegate:self];
   [(CRLiOSTapGestureRecognizer *)v5 setName:@"Double tap"];
-  [v68 addGestureRecognizer:v5];
+  [canvasView addGestureRecognizer:v5];
   v65 = v5;
   [(CRLiOSCanvasViewController *)self setDoubleTapGestureRecognizer:v5];
   v6 = [[CRLiOSEditMenuTapGestureRecognizer alloc] initWithTarget:self action:"p_handleTapForEditMenu:"];
   [(CRLiOSEditMenuTapGestureRecognizer *)v6 setDelegate:self];
-  v7 = [(CRLiOSCanvasViewController *)self doubleTapGestureRecognizer];
-  [(CRLiOSEditMenuTapGestureRecognizer *)v6 requireGestureRecognizerToFail:v7];
+  doubleTapGestureRecognizer = [(CRLiOSCanvasViewController *)self doubleTapGestureRecognizer];
+  [(CRLiOSEditMenuTapGestureRecognizer *)v6 requireGestureRecognizerToFail:doubleTapGestureRecognizer];
 
-  [v68 addGestureRecognizer:v6];
+  [canvasView addGestureRecognizer:v6];
   v64 = v6;
   [(CRLiOSCanvasViewController *)self setEditMenuTapGestureRecognizer:v6];
   v8 = [CRLiOSKnobDragGestureRecognizer alloc];
@@ -1436,7 +1436,7 @@ LABEL_6:
   v10 = [(CRLiOSKnobDragGestureRecognizer *)v8 initWithInteractiveCanvasController:WeakRetained];
 
   [(CRLiOSKnobDragGestureRecognizer *)v10 setDelegate:self];
-  [v68 addGestureRecognizer:v10];
+  [canvasView addGestureRecognizer:v10];
   v63 = v10;
   [(CRLiOSCanvasViewController *)self setKnobDragGestureRecognizer:v10];
   v11 = [CRLiOSMultiSelectGestureRecognizer alloc];
@@ -1444,7 +1444,7 @@ LABEL_6:
   v13 = [(CRLiOSMultiSelectGestureRecognizer *)v11 initWithInteractiveCanvasController:v12];
 
   [(CRLiOSMultiSelectGestureRecognizer *)v13 setDelegate:self];
-  [v68 addGestureRecognizer:v13];
+  [canvasView addGestureRecognizer:v13];
   v62 = v13;
   [(CRLiOSCanvasViewController *)self setMultiSelectGestureRecognizer:v13];
   v14 = [CRLiOSRepDragGestureRecognizer alloc];
@@ -1452,7 +1452,7 @@ LABEL_6:
   v16 = [(CRLiOSRepDragGestureRecognizer *)v14 initWithInteractiveCanvasController:v15];
 
   [(CRLiOSRepDragGestureRecognizer *)v16 setDelegate:self];
-  [v68 addGestureRecognizer:v16];
+  [canvasView addGestureRecognizer:v16];
   v61 = v16;
   [(CRLiOSCanvasViewController *)self setRepDragGestureRecognizer:v16];
   v17 = [CRLiOSRepNudgeGestureRecognizer alloc];
@@ -1461,7 +1461,7 @@ LABEL_6:
 
   [(CRLiOSRepNudgeGestureRecognizer *)v19 setDelegate:self];
   [(CRLiOSRepNudgeGestureRecognizer *)v19 setAllowedTouchTypes:&off_1018E1D58];
-  [v68 addGestureRecognizer:v19];
+  [canvasView addGestureRecognizer:v19];
   v60 = v19;
   [(CRLiOSCanvasViewController *)self setNudgeGestureRecognizer:v19];
   v20 = [CRLiOSRepRotateGestureRecognizer alloc];
@@ -1469,7 +1469,7 @@ LABEL_6:
   v22 = [(CRLiOSRepRotateGestureRecognizer *)v20 initWithInteractiveCanvasController:v21];
 
   [(CRLiOSRepRotateGestureRecognizer *)v22 setDelegate:self];
-  [v68 addGestureRecognizer:v22];
+  [canvasView addGestureRecognizer:v22];
   [(CRLiOSRepRotateGestureRecognizer *)v22 setName:@"rotate finger"];
   v59 = v22;
   [(CRLiOSCanvasViewController *)self setRepRotateGestureRecognizer:v22];
@@ -1478,24 +1478,24 @@ LABEL_6:
   v25 = [(CRLiOSRepRotateKnobGestureRecognizer *)v23 initWithInteractiveCanvasController:v24];
 
   [(CRLiOSRepRotateKnobGestureRecognizer *)v25 setDelegate:self];
-  [v68 addGestureRecognizer:v25];
+  [canvasView addGestureRecognizer:v25];
   [(CRLiOSRepRotateKnobGestureRecognizer *)v25 setName:@"rotate knob"];
   v58 = v25;
   [(CRLiOSCanvasViewController *)self setRepRotateKnobGestureRecognizer:v25];
   v26 = [[CRLiOSAllTouchesDoneGestureRecognizer alloc] initWithTarget:self action:"p_allTouchesDone:"];
   [(CRLiOSAllTouchesDoneGestureRecognizer *)v26 setDelegate:self];
-  [v68 addGestureRecognizer:v26];
+  [canvasView addGestureRecognizer:v26];
   v57 = v26;
   [(CRLiOSCanvasViewController *)self setAllTouchesDoneGestureRecognizer:v26];
   v27 = [[CRLiOSAllTouchesDoneGestureRecognizer alloc] initWithTarget:self action:"p_allTouchesDone:"];
   [(CRLiOSAllTouchesDoneGestureRecognizer *)v27 setDelegate:self];
   [(CRLiOSAllTouchesDoneGestureRecognizer *)v27 setAllowedTouchTypes:&off_1018E1D70];
-  [v68 addGestureRecognizer:v27];
+  [canvasView addGestureRecognizer:v27];
   [(CRLiOSAllTouchesDoneGestureRecognizer *)v27 setName:@"indirect"];
   objc_storeStrong(&self->mAllIndirectPointerTouchesDoneGestureRecognizer, v27);
   v28 = [[CRLiOSCanvasZoomPinchGestureRecognizer alloc] initWithTarget:self action:"p_zoomWithGesture:"];
   [(CRLiOSCanvasZoomPinchGestureRecognizer *)v28 setDelegate:self];
-  [v68 addGestureRecognizer:v28];
+  [canvasView addGestureRecognizer:v28];
   v56 = v28;
   [(CRLiOSCanvasViewController *)self setZoomGestureRecognizer:v28];
   [(CRLiOSCanvasViewController *)self i_updateZoomGestureRecognizer];
@@ -1504,14 +1504,14 @@ LABEL_6:
   v31 = [(CRLiOSPreventScrollGestureRecognizer *)v29 initWithInteractiveCanvasController:v30];
 
   [(CRLiOSPreventScrollGestureRecognizer *)v31 setDelegate:self];
-  [v68 addGestureRecognizer:v31];
+  [canvasView addGestureRecognizer:v31];
   objc_storeStrong(&self->mPreventScrollGestureRecognizer, v31);
   v32 = [CRLiOSFreehandDrawingGestureRecognizer alloc];
   v33 = objc_loadWeakRetained(&self->mICC);
   v34 = [(CRLiOSFreehandDrawingGestureRecognizer *)v32 initWithInteractiveCanvasController:v33];
 
   [(CRLiOSFreehandDrawingGestureRecognizer *)v34 setDelegate:self];
-  [v68 addGestureRecognizer:v34];
+  [canvasView addGestureRecognizer:v34];
   objc_storeStrong(&self->mFreehandDrawingGestureRecognizer, v34);
   v35 = objc_loadWeakRetained(&self->mDelegate);
   LOBYTE(v33) = objc_opt_respondsToSelector();
@@ -1521,37 +1521,37 @@ LABEL_6:
     v36 = objc_loadWeakRetained(&self->mDelegate);
     v37 = [v36 pencilKitCanvasViewControllerForCanvasViewController:self];
 
-    v38 = [v37 pencilKitCanvasView];
-    v39 = [v38 _hoverGestureRecognizer];
+    pencilKitCanvasView = [v37 pencilKitCanvasView];
+    _hoverGestureRecognizer = [pencilKitCanvasView _hoverGestureRecognizer];
 
-    if (v39)
+    if (_hoverGestureRecognizer)
     {
-      v40 = [v38 _hoverGestureRecognizer];
-      [v68 addGestureRecognizer:v40];
+      _hoverGestureRecognizer2 = [pencilKitCanvasView _hoverGestureRecognizer];
+      [canvasView addGestureRecognizer:_hoverGestureRecognizer2];
     }
   }
 
   mFreehandDrawingGestureRecognizer = self->mFreehandDrawingGestureRecognizer;
-  v42 = [(CRLiOSCanvasViewController *)self knobDragGestureRecognizer];
-  [(CRLiOSFreehandDrawingGestureRecognizer *)mFreehandDrawingGestureRecognizer requireGestureRecognizerToFail:v42];
+  knobDragGestureRecognizer = [(CRLiOSCanvasViewController *)self knobDragGestureRecognizer];
+  [(CRLiOSFreehandDrawingGestureRecognizer *)mFreehandDrawingGestureRecognizer requireGestureRecognizerToFail:knobDragGestureRecognizer];
 
-  v43 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v44 = [v43 freehandDrawingToolkit];
-  [(CRLiOSFreehandDrawingGestureRecognizer *)self->mFreehandDrawingGestureRecognizer setEnabled:v44 != 0];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  freehandDrawingToolkit = [interactiveCanvasController freehandDrawingToolkit];
+  [(CRLiOSFreehandDrawingGestureRecognizer *)self->mFreehandDrawingGestureRecognizer setEnabled:freehandDrawingToolkit != 0];
 
   v45 = [CRLiOSRectangularMarqueeGestureRecognizer alloc];
-  v46 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v47 = [(CRLiOSRectangularMarqueeGestureRecognizer *)v45 initWithInteractiveCanvasController:v46];
+  interactiveCanvasController2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  v47 = [(CRLiOSRectangularMarqueeGestureRecognizer *)v45 initWithInteractiveCanvasController:interactiveCanvasController2];
 
   [(CRLiOSRectangularMarqueeGestureRecognizer *)v47 setDelegate:self];
-  [v68 addGestureRecognizer:v47];
+  [canvasView addGestureRecognizer:v47];
   [(CRLiOSCanvasViewController *)self setRectangularMarqueeGestureRecognizer:v47];
   v48 = [[UIHoverGestureRecognizer alloc] initWithTarget:self action:"p_handleHoverGesture:"];
-  [v68 addGestureRecognizer:v48];
+  [canvasView addGestureRecognizer:v48];
   v49 = [_TtC8Freeform31CRLiOSPencilHoverGestureHandler alloc];
   v50 = objc_loadWeakRetained(&self->mICC);
-  v51 = [(CRLiOSCanvasViewController *)self pencilMediator];
-  v52 = [(CRLiOSPencilHoverGestureHandler *)v49 initWithInteractiveCanvasController:v50 pencilMediator:v51];
+  pencilMediator = [(CRLiOSCanvasViewController *)self pencilMediator];
+  v52 = [(CRLiOSPencilHoverGestureHandler *)v49 initWithInteractiveCanvasController:v50 pencilMediator:pencilMediator];
   mPencilHoverGestureHandler = self->mPencilHoverGestureHandler;
   self->mPencilHoverGestureHandler = v52;
 
@@ -1560,34 +1560,34 @@ LABEL_6:
   self->mPencilHoverGestureRecognizer = v54;
 
   [(UIHoverGestureRecognizer *)self->mPencilHoverGestureRecognizer setAllowedTouchTypes:&off_1018E1D88];
-  [v68 addGestureRecognizer:self->mPencilHoverGestureRecognizer];
+  [canvasView addGestureRecognizer:self->mPencilHoverGestureRecognizer];
   [(CRLiOSCanvasViewController *)self p_setUpWPGestureRecognizers];
   [(CRLiOSCanvasViewController *)self setUpCommonGestureAllowedTouchTypes];
 }
 
 - (id)gesturesSupportingStylusAndIndirectPointer
 {
-  v3 = [(CRLiOSCanvasViewController *)self immediateDoubleTapGestureRecognizer];
-  v9[0] = v3;
-  v4 = [(CRLiOSCanvasViewController *)self tapAndTouchGestureRecognizer];
-  v9[1] = v4;
-  v5 = [(CRLiOSCanvasViewController *)self doubleTapAndTouchGestureRecognizer];
-  v9[2] = v5;
-  v6 = [(CRLiOSCanvasViewController *)self immediatePressGestureRecognizer];
-  v9[3] = v6;
+  immediateDoubleTapGestureRecognizer = [(CRLiOSCanvasViewController *)self immediateDoubleTapGestureRecognizer];
+  v9[0] = immediateDoubleTapGestureRecognizer;
+  tapAndTouchGestureRecognizer = [(CRLiOSCanvasViewController *)self tapAndTouchGestureRecognizer];
+  v9[1] = tapAndTouchGestureRecognizer;
+  doubleTapAndTouchGestureRecognizer = [(CRLiOSCanvasViewController *)self doubleTapAndTouchGestureRecognizer];
+  v9[2] = doubleTapAndTouchGestureRecognizer;
+  immediatePressGestureRecognizer = [(CRLiOSCanvasViewController *)self immediatePressGestureRecognizer];
+  v9[3] = immediatePressGestureRecognizer;
   v7 = [NSArray arrayWithObjects:v9 count:4];
 
   return v7;
 }
 
-- (void)modifyGesturesUsedForStylusAndIndirectPointerAddingTouchType:(int64_t)a3
+- (void)modifyGesturesUsedForStylusAndIndirectPointerAddingTouchType:(int64_t)type
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(CRLiOSCanvasViewController *)self gesturesSupportingStylusAndIndirectPointer];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  gesturesSupportingStylusAndIndirectPointer = [(CRLiOSCanvasViewController *)self gesturesSupportingStylusAndIndirectPointer];
+  v5 = [gesturesSupportingStylusAndIndirectPointer countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1598,17 +1598,17 @@ LABEL_6:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(gesturesSupportingStylusAndIndirectPointer);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 allowedTouchTypes];
-        v11 = [NSNumber numberWithInteger:a3];
-        v12 = [v10 arrayByAddingObject:v11];
+        allowedTouchTypes = [v9 allowedTouchTypes];
+        v11 = [NSNumber numberWithInteger:type];
+        v12 = [allowedTouchTypes arrayByAddingObject:v11];
         [v9 setAllowedTouchTypes:v12];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [gesturesSupportingStylusAndIndirectPointer countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1617,28 +1617,28 @@ LABEL_6:
 
 - (void)p_setUpWPGestureRecognizers
 {
-  v3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v28 = [v3 gestureDispatcher];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  gestureDispatcher = [interactiveCanvasController gestureDispatcher];
 
   v4 = [[NSMutableArray alloc] initWithCapacity:0];
   gestureRecognizers = self->_gestureRecognizers;
   self->_gestureRecognizers = v4;
 
-  v6 = [[CRLWPTapAndTouchGestureRecognizer alloc] initWithGestureDispatcher:v28 gestureKind:@"CRLWPDoubleTapAndTouch"];
+  v6 = [[CRLWPTapAndTouchGestureRecognizer alloc] initWithGestureDispatcher:gestureDispatcher gestureKind:@"CRLWPDoubleTapAndTouch"];
   [(CRLWPTapAndTouchGestureRecognizer *)v6 setNumberOfTapsRequired:2];
   v7 = [(CRLiOSCanvasViewController *)self viewForGestureRecognizer:v6];
   [v7 addGestureRecognizer:v6];
 
   [(NSMutableArray *)self->_gestureRecognizers addObject:v6];
   [(CRLiOSCanvasViewController *)self setDoubleTapAndTouchGestureRecognizer:v6];
-  v8 = [[CRLWPTapAndTouchGestureRecognizer alloc] initWithGestureDispatcher:v28 gestureKind:@"CRLWPTapAndTouch"];
+  v8 = [[CRLWPTapAndTouchGestureRecognizer alloc] initWithGestureDispatcher:gestureDispatcher gestureKind:@"CRLWPTapAndTouch"];
   [(CRLWPTapAndTouchGestureRecognizer *)v8 setNumberOfTapsRequired:1];
   v9 = [(CRLiOSCanvasViewController *)self viewForGestureRecognizer:v8];
   [v9 addGestureRecognizer:v8];
 
   [(NSMutableArray *)self->_gestureRecognizers addObject:v8];
   [(CRLiOSCanvasViewController *)self setTapAndTouchGestureRecognizer:v8];
-  v10 = [[CRLWPLongPressGestureRecognizer alloc] initWithGestureDispatcher:v28 gestureKind:@"CRLWPLongPress"];
+  v10 = [[CRLWPLongPressGestureRecognizer alloc] initWithGestureDispatcher:gestureDispatcher gestureKind:@"CRLWPLongPress"];
   [(CRLWPLongPressGestureRecognizer *)v10 setNumberOfTapsRequired:0];
   v11 = [(CRLiOSCanvasViewController *)self viewForGestureRecognizer:v10];
   [v11 addGestureRecognizer:v10];
@@ -1646,29 +1646,29 @@ LABEL_6:
   [(NSMutableArray *)self->_gestureRecognizers addObject:v10];
   [(CRLiOSCanvasViewController *)self setLongPressGestureRecognizer:v10];
   [(CRLWPLongPressGestureRecognizer *)v10 setAllowedTouchTypes:&off_1018E1DA0];
-  v12 = [[CRLWPImmediatePressGestureRecognizer alloc] initWithGestureDispatcher:v28 gestureKind:@"CRLWPImmediatePress"];
+  v12 = [[CRLWPImmediatePressGestureRecognizer alloc] initWithGestureDispatcher:gestureDispatcher gestureKind:@"CRLWPImmediatePress"];
   [(CRLWPImmediatePressGestureRecognizer *)v12 setMaximumNumberOfTouches:1];
   v13 = [(CRLiOSCanvasViewController *)self viewForGestureRecognizer:v12];
   [v13 addGestureRecognizer:v12];
 
   [(NSMutableArray *)self->_gestureRecognizers addObject:v12];
   [(CRLiOSCanvasViewController *)self setImmediatePressGestureRecognizer:v12];
-  v14 = [(CRLiOSCanvasViewController *)self immediatePressGestureRecognizer];
-  [v14 setDisallowOptionKey:1];
+  immediatePressGestureRecognizer = [(CRLiOSCanvasViewController *)self immediatePressGestureRecognizer];
+  [immediatePressGestureRecognizer setDisallowOptionKey:1];
 
-  v15 = [(CRLiOSCanvasViewController *)self canvasView];
-  v16 = [(CRLiOSCanvasViewController *)self immediatePressGestureRecognizer];
-  [v16 setCanvasView:v15];
+  canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+  immediatePressGestureRecognizer2 = [(CRLiOSCanvasViewController *)self immediatePressGestureRecognizer];
+  [immediatePressGestureRecognizer2 setCanvasView:canvasView];
 
   [(CRLWPImmediatePressGestureRecognizer *)v12 setAllowedTouchTypes:&off_1018E1DB8];
-  v17 = [[CRLWPTapGestureRecognizer alloc] initWithGestureDispatcher:v28 gestureKind:@"CRLWPImmediateDoubleTap"];
+  v17 = [[CRLWPTapGestureRecognizer alloc] initWithGestureDispatcher:gestureDispatcher gestureKind:@"CRLWPImmediateDoubleTap"];
   [(CRLWPTapGestureRecognizer *)v17 setNumberOfTapsRequired:2];
   v18 = [(CRLiOSCanvasViewController *)self viewForGestureRecognizer:v17];
   [v18 addGestureRecognizer:v17];
 
   [(NSMutableArray *)self->_gestureRecognizers addObject:v17];
   [(CRLiOSCanvasViewController *)self setImmediateDoubleTapGestureRecognizer:v17];
-  v19 = [[CRLWPTapGestureRecognizer alloc] initWithGestureDispatcher:v28 gestureKind:@"CRLWPSecondarySingleTap"];
+  v19 = [[CRLWPTapGestureRecognizer alloc] initWithGestureDispatcher:gestureDispatcher gestureKind:@"CRLWPSecondarySingleTap"];
   secondarySingleTapGestureRecognizer = self->_secondarySingleTapGestureRecognizer;
   self->_secondarySingleTapGestureRecognizer = v19;
 
@@ -1677,7 +1677,7 @@ LABEL_6:
   [v21 addGestureRecognizer:self->_secondarySingleTapGestureRecognizer];
 
   [(NSMutableArray *)self->_gestureRecognizers addObject:self->_secondarySingleTapGestureRecognizer];
-  v22 = [[CRLWPTapGestureRecognizer alloc] initWithGestureDispatcher:v28 gestureKind:@"CRLWPImmediateSingleTap"];
+  v22 = [[CRLWPTapGestureRecognizer alloc] initWithGestureDispatcher:gestureDispatcher gestureKind:@"CRLWPImmediateSingleTap"];
   v23 = [(CRLiOSCanvasViewController *)self viewForGestureRecognizer:v22];
   [v23 addGestureRecognizer:v22];
 
@@ -1685,33 +1685,33 @@ LABEL_6:
   [(CRLiOSCanvasViewController *)self setImmediateSingleTapGestureRecognizer:v22];
   [(CRLiOSCanvasViewController *)self modifyGesturesUsedForStylusAndIndirectPointerAddingTouchType:3];
   [(CRLiOSCanvasViewController *)self modifyGesturesUsedForStylusAndIndirectPointerAddingTouchType:2];
-  v24 = [(CRLiOSCanvasViewController *)self delegate];
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
   v25 = objc_opt_respondsToSelector();
 
   v26 = 0;
   if (v25)
   {
-    v27 = [(CRLiOSCanvasViewController *)self delegate];
-    v26 = [v27 scribbleInteractionObserverForCanvasViewController:self];
+    delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+    v26 = [delegate2 scribbleInteractionObserverForCanvasViewController:self];
   }
 
   [CRLiOSScribbleInteractionSetupHelper setupScribbleEditingProvider:self scribbleObserver:v26 scribbleActive:1];
-  [v28 prioritizeRecognizer:v8 overRecognizer:v22];
-  [v28 allowSimultaneousRecognitionByRecognizers:{v22, self->_secondarySingleTapGestureRecognizer, 0}];
-  [v28 allowSimultaneousRecognitionByRecognizers:{self->_secondarySingleTapGestureRecognizer, v10, 0}];
-  [v28 allowSimultaneousRecognitionByRecognizers:{v8, v12, 0}];
-  [v28 allowSimultaneousRecognitionByRecognizers:{v22, v8, 0}];
-  [v28 allowSimultaneousRecognitionByRecognizers:{v6, v17, 0}];
-  [v28 allowSimultaneousRecognitionByRecognizers:{v6, v8, 0}];
+  [gestureDispatcher prioritizeRecognizer:v8 overRecognizer:v22];
+  [gestureDispatcher allowSimultaneousRecognitionByRecognizers:{v22, self->_secondarySingleTapGestureRecognizer, 0}];
+  [gestureDispatcher allowSimultaneousRecognitionByRecognizers:{self->_secondarySingleTapGestureRecognizer, v10, 0}];
+  [gestureDispatcher allowSimultaneousRecognitionByRecognizers:{v8, v12, 0}];
+  [gestureDispatcher allowSimultaneousRecognitionByRecognizers:{v22, v8, 0}];
+  [gestureDispatcher allowSimultaneousRecognitionByRecognizers:{v6, v17, 0}];
+  [gestureDispatcher allowSimultaneousRecognitionByRecognizers:{v6, v8, 0}];
 }
 
-- (BOOL)touchHitsCanvasViewAtPoint:(CGPoint)a3
+- (BOOL)touchHitsCanvasViewAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CRLiOSCanvasViewController *)self canvasView];
-  v6 = [v5 hitTest:0 withEvent:{x, y}];
-  v7 = v6 == v5;
+  y = point.y;
+  x = point.x;
+  canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+  v6 = [canvasView hitTest:0 withEvent:{x, y}];
+  v7 = v6 == canvasView;
 
   return v7;
 }
@@ -1719,43 +1719,43 @@ LABEL_6:
 - (NSArray)passthroughViewsToAllowCanvasInteractionDuringPopoverPresentation
 {
   v3 = +[NSMutableArray array];
-  v4 = [(CRLiOSCanvasViewController *)self canvasView];
-  [v3 crl_addNonNilObject:v4];
+  canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+  [v3 crl_addNonNilObject:canvasView];
 
-  v5 = [(CRLiOSCanvasViewController *)self i_quickSelectViewController];
-  v6 = [v5 view];
-  [v3 crl_addNonNilObject:v6];
+  i_quickSelectViewController = [(CRLiOSCanvasViewController *)self i_quickSelectViewController];
+  view = [i_quickSelectViewController view];
+  [v3 crl_addNonNilObject:view];
 
   return v3;
 }
 
-- (BOOL)i_allowCanvasInteraction:(id)a3 atPoint:(CGPoint)a4
+- (BOOL)i_allowCanvasInteraction:(id)interaction atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  if ([(CRLiOSCanvasViewController *)self touchHitsCanvasViewAtPoint:a3])
+  y = point.y;
+  x = point.x;
+  if ([(CRLiOSCanvasViewController *)self touchHitsCanvasViewAtPoint:interaction])
   {
     return 1;
   }
 
-  v8 = [(CRLiOSCanvasViewController *)self canvasView];
-  v9 = [v8 hitTest:0 withEvent:{x, y}];
-  v10 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v11 = [v10 i_isRepContentPlatformView:v9];
+  canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+  v9 = [canvasView hitTest:0 withEvent:{x, y}];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  v11 = [interactiveCanvasController i_isRepContentPlatformView:v9];
 
   return v11;
 }
 
-- (void)p_handleHoverGesture:(id)a3
+- (void)p_handleHoverGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(CRLiOSCanvasViewController *)self delegate];
+  gestureCopy = gesture;
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0 || (-[CRLiOSCanvasViewController delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), [v7 currentDocumentMode], v8 = objc_claimAutoreleasedReturnValue(), v7, v9 = objc_msgSend(v8, "pencilModeType"), v8, v9 != 1))
   {
-    v10 = [(CRLiOSCanvasViewController *)self canvasView];
-    [v4 locationInView:v10];
+    canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+    [gestureCopy locationInView:canvasView];
     v12 = v11;
     v14 = v13;
     WeakRetained = objc_loadWeakRetained(&self->mICC);
@@ -1770,26 +1770,26 @@ LABEL_6:
 
     else
     {
-      v20 = [(CRLiOSCanvasViewController *)self allowTouchOutsideCanvasViewAtPoint:v4 forGesture:v12, v14];
+      v20 = [(CRLiOSCanvasViewController *)self allowTouchOutsideCanvasViewAtPoint:gestureCopy forGesture:v12, v14];
     }
 
-    v21 = [CRLCanvasEnterExitPlatformObject platformObjectWithGesture:v4];
+    v21 = [CRLCanvasEnterExitPlatformObject platformObjectWithGesture:gestureCopy];
     if (!v20)
     {
       goto LABEL_13;
     }
 
-    v22 = [v4 state];
-    if (v22 <= 2)
+    state = [gestureCopy state];
+    if (state <= 2)
     {
-      if (v22)
+      if (state)
       {
-        if (v22 == 1)
+        if (state == 1)
         {
           [(CRLCanvasRepEnterExitNotifier *)self->mEnterExitNotifier cursorEnteredAtPoint:v21 withPlatformObject:v17, v19];
         }
 
-        else if (v22 == 2)
+        else if (state == 2)
         {
           [(CRLCanvasRepEnterExitNotifier *)self->mEnterExitNotifier updateEnteredExitedRepStateAtPoint:v21 withPlatformObject:v17, v19];
         }
@@ -1827,7 +1827,7 @@ LABEL_6:
       goto LABEL_14;
     }
 
-    if ((v22 - 3) < 3)
+    if ((state - 3) < 3)
     {
 LABEL_13:
       [(CRLCanvasRepEnterExitNotifier *)self->mEnterExitNotifier cursorExitedAtPoint:v21 withPlatformObject:v17, v19];
@@ -1840,43 +1840,43 @@ LABEL_14:
 - (NSArray)gesturesToAdjustIfStylusShouldSelectAndScroll
 {
   v3 = +[NSMutableArray array];
-  v4 = [(CRLiOSCanvasViewController *)self repDragGestureRecognizer];
-  [v3 crl_addNonNilObject:v4];
+  repDragGestureRecognizer = [(CRLiOSCanvasViewController *)self repDragGestureRecognizer];
+  [v3 crl_addNonNilObject:repDragGestureRecognizer];
 
-  v5 = [(CRLiOSCanvasViewController *)self singleTapGestureRecognizer];
-  [v3 crl_addNonNilObject:v5];
+  singleTapGestureRecognizer = [(CRLiOSCanvasViewController *)self singleTapGestureRecognizer];
+  [v3 crl_addNonNilObject:singleTapGestureRecognizer];
 
-  v6 = [(CRLiOSCanvasViewController *)self doubleTapGestureRecognizer];
-  [v3 crl_addNonNilObject:v6];
+  doubleTapGestureRecognizer = [(CRLiOSCanvasViewController *)self doubleTapGestureRecognizer];
+  [v3 crl_addNonNilObject:doubleTapGestureRecognizer];
 
-  v7 = [(CRLiOSCanvasViewController *)self rectangularMarqueeGestureRecognizer];
-  [v3 crl_addNonNilObject:v7];
+  rectangularMarqueeGestureRecognizer = [(CRLiOSCanvasViewController *)self rectangularMarqueeGestureRecognizer];
+  [v3 crl_addNonNilObject:rectangularMarqueeGestureRecognizer];
 
   return v3;
 }
 
-- (BOOL)disallowRectangularMarqueeOperationAtUnscaledPoint:(CGPoint)a3
+- (BOOL)disallowRectangularMarqueeOperationAtUnscaledPoint:(CGPoint)point
 {
-  v3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController:a3.x];
+  v3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController:point.x];
   if ([v3 currentlyScrolling])
   {
-    v4 = 1;
+    isInOperation = 1;
   }
 
   else
   {
-    v5 = [v3 dynamicOperationController];
-    v4 = [v5 isInOperation];
+    dynamicOperationController = [v3 dynamicOperationController];
+    isInOperation = [dynamicOperationController isInOperation];
   }
 
-  return v4;
+  return isInOperation;
 }
 
 - (id)gesturesThatImmediateMarqueeShouldRequireToFail
 {
-  v3 = [(CRLiOSCanvasViewController *)self singleTapGestureRecognizer];
-  v4 = [(CRLiOSCanvasViewController *)self editMenuTapGestureRecognizer];
-  v5 = [NSSet setWithObjects:v3, v4, 0];
+  singleTapGestureRecognizer = [(CRLiOSCanvasViewController *)self singleTapGestureRecognizer];
+  editMenuTapGestureRecognizer = [(CRLiOSCanvasViewController *)self editMenuTapGestureRecognizer];
+  v5 = [NSSet setWithObjects:singleTapGestureRecognizer, editMenuTapGestureRecognizer, 0];
 
   return v5;
 }
@@ -1893,25 +1893,25 @@ LABEL_14:
     v3 = &off_1018E1DE8;
   }
 
-  v4 = [(CRLiOSCanvasViewController *)self gesturesToAdjustIfStylusShouldSelectAndScroll];
-  v5 = [(CRLiOSCanvasViewController *)self delegate];
+  gesturesToAdjustIfStylusShouldSelectAndScroll = [(CRLiOSCanvasViewController *)self gesturesToAdjustIfStylusShouldSelectAndScroll];
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CRLiOSCanvasViewController *)self delegate];
-    v8 = [v7 currentDocumentMode];
+    delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+    currentDocumentMode = [delegate2 currentDocumentMode];
 
-    v9 = [v8 gesturesToAdjustIfPencilShouldSelectAndScrollFromGestures:v4];
+    v9 = [currentDocumentMode gesturesToAdjustIfPencilShouldSelectAndScrollFromGestures:gesturesToAdjustIfStylusShouldSelectAndScroll];
 
-    v4 = v9;
+    gesturesToAdjustIfStylusShouldSelectAndScroll = v9;
   }
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = v4;
+  v10 = gesturesToAdjustIfStylusShouldSelectAndScroll;
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v11)
   {
@@ -1945,10 +1945,10 @@ LABEL_14:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(CRLiOSCanvasViewController *)self view];
-  v4 = [v3 gestureRecognizers];
+  view = [(CRLiOSCanvasViewController *)self view];
+  gestureRecognizers = [view gestureRecognizers];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [gestureRecognizers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1959,15 +1959,15 @@ LABEL_14:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         if ([v9 isEnabled])
         {
-          v10 = [v9 delegate];
+          delegate = [v9 delegate];
 
-          if (v10 == self)
+          if (delegate == self)
           {
             [v9 setEnabled:0];
             [v9 setEnabled:1];
@@ -1975,46 +1975,46 @@ LABEL_14:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [gestureRecognizers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [(CRLiOSCanvasViewController *)self editMenuTapGestureRecognizer];
-  v12 = [v11 isEnabled];
+  editMenuTapGestureRecognizer = [(CRLiOSCanvasViewController *)self editMenuTapGestureRecognizer];
+  isEnabled = [editMenuTapGestureRecognizer isEnabled];
 
-  if (v12)
+  if (isEnabled)
   {
-    v13 = [(CRLiOSCanvasViewController *)self editMenuTapGestureRecognizer];
-    [v13 setIgnoreTargetAction:1];
+    editMenuTapGestureRecognizer2 = [(CRLiOSCanvasViewController *)self editMenuTapGestureRecognizer];
+    [editMenuTapGestureRecognizer2 setIgnoreTargetAction:1];
   }
 }
 
 - (void)i_updateZoomGestureRecognizer
 {
-  v5 = [(CRLiOSCanvasViewController *)self canvasLayer];
-  v3 = [v5 allowsPinchZoom];
-  v4 = [(CRLiOSCanvasViewController *)self zoomGestureRecognizer];
-  [v4 setEnabled:v3];
+  canvasLayer = [(CRLiOSCanvasViewController *)self canvasLayer];
+  allowsPinchZoom = [canvasLayer allowsPinchZoom];
+  zoomGestureRecognizer = [(CRLiOSCanvasViewController *)self zoomGestureRecognizer];
+  [zoomGestureRecognizer setEnabled:allowsPinchZoom];
 }
 
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 withRecognizer:(id)a4
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point withRecognizer:(id)recognizer
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  recognizerCopy = recognizer;
   self->mLastTapPoint.x = x;
   self->mLastTapPoint.y = y;
-  v8 = [(CRLiOSCanvasViewController *)self delegate];
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(CRLiOSCanvasViewController *)self delegate];
-    v11 = [v10 currentDocumentMode];
+    delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+    currentDocumentMode = [delegate2 currentDocumentMode];
 
-    if (!v11)
+    if (!currentDocumentMode)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -2043,7 +2043,7 @@ LABEL_14:
       [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:1260 isFatal:0 description:"invalid nil value for '%{public}s'", "currentMode"];
     }
 
-    v15 = [v11 handleSingleTapAtPoint:objc_msgSend(v7 touchType:{"touchTypeForTap"), x, y}];
+    v15 = [currentDocumentMode handleSingleTapAtPoint:objc_msgSend(recognizerCopy touchType:{"touchTypeForTap"), x, y}];
 
     if (v15)
     {
@@ -2087,7 +2087,7 @@ LABEL_14:
   }
 
 LABEL_23:
-  v23 = sub_10042B6C0([v7 touchTypeForTap]);
+  v23 = sub_10042B6C0([recognizerCopy touchTypeForTap]);
   v24 = objc_loadWeakRetained(&self->mICC);
   v34 = 0;
   v25 = [v24 hitKnobAtPoint:v23 inputType:&v34 returningRep:{x, y}];
@@ -2103,13 +2103,13 @@ LABEL_23:
     v27 = objc_loadWeakRetained(&self->mICC);
     v28 = [v27 hitRep:{x, y}];
 
-    v29 = [v28 repForSelecting];
-    if (v29 || ([v28 shouldIgnoreSingleTapAtPoint:v7 withRecognizer:{x, y}] & 1) == 0)
+    repForSelecting = [v28 repForSelecting];
+    if (repForSelecting || ([v28 shouldIgnoreSingleTapAtPoint:recognizerCopy withRecognizer:{x, y}] & 1) == 0)
     {
-      v30 = ([v7 modifierFlags] & 0x120000) != 0;
-      v31 = [(CRLiOSCanvasViewController *)self isCurrentlyInQuickSelectMode];
+      v30 = ([recognizerCopy modifierFlags] & 0x120000) != 0;
+      isCurrentlyInQuickSelectMode = [(CRLiOSCanvasViewController *)self isCurrentlyInQuickSelectMode];
       v32 = objc_loadWeakRetained(&self->mICC);
-      v16 = [v32 handleSingleTapAtPoint:v31 ^ v30 extendingSelection:v23 inputType:{x, y}];
+      v16 = [v32 handleSingleTapAtPoint:isCurrentlyInQuickSelectMode ^ v30 extendingSelection:v23 inputType:{x, y}];
     }
 
     else
@@ -2122,11 +2122,11 @@ LABEL_32:
   return v16;
 }
 
-- (void)handleDoubleTap:(id)a3
+- (void)handleDoubleTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   v5 = objc_opt_class();
-  v12 = sub_100014370(v5, v4);
+  v12 = sub_100014370(v5, tapCopy);
 
   if (v12)
   {
@@ -2144,13 +2144,13 @@ LABEL_32:
   }
 }
 
-- (BOOL)handleDoubleTapAtPoint:(CGPoint)a3 withRecognizer:(id)a4
+- (BOOL)handleDoubleTapAtPoint:(CGPoint)point withRecognizer:(id)recognizer
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  recognizerCopy = recognizer;
   v8 = objc_opt_class();
-  v9 = sub_100014370(v8, v7);
+  v9 = sub_100014370(v8, recognizerCopy);
   v10 = sub_10042B6C0([v9 touchTypeForTap]);
 
   WeakRetained = objc_loadWeakRetained(&self->mICC);
@@ -2177,19 +2177,19 @@ LABEL_32:
     v14 = 0;
   }
 
-  v15 = [(CRLiOSCanvasViewController *)self delegate];
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
-    v17 = [(CRLiOSCanvasViewController *)self delegate];
-    v18 = [v17 currentDocumentMode];
+    delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+    currentDocumentMode = [delegate2 currentDocumentMode];
 
     v19 = objc_opt_class();
-    v20 = sub_100014370(v19, v7);
-    v21 = [v20 touchTypeForTap];
+    v20 = sub_100014370(v19, recognizerCopy);
+    touchTypeForTap = [v20 touchTypeForTap];
 
-    v14 |= [v18 shouldHandleDoubleTapAtPoint:v21 touchType:{x, y}];
+    v14 |= [currentDocumentMode shouldHandleDoubleTapAtPoint:touchTypeForTap touchType:{x, y}];
   }
 
 LABEL_8:
@@ -2202,36 +2202,36 @@ LABEL_8:
 LABEL_10:
   v23 = objc_loadWeakRetained(&self->mICC);
   v24 = [v23 hitRep:{x, y}];
-  v25 = [v24 repForSelecting];
+  repForSelecting = [v24 repForSelecting];
 
-  if (v25)
+  if (repForSelecting)
   {
-    v26 = [v25 info];
+    info = [repForSelecting info];
 
-    if (v26)
+    if (info)
     {
-      v42 = v7;
+      v42 = recognizerCopy;
       v43 = v13;
       v27 = objc_loadWeakRetained(&self->mICC);
-      v28 = [v27 selectionModelTranslator];
+      selectionModelTranslator = [v27 selectionModelTranslator];
       v29 = objc_loadWeakRetained(&self->mICC);
-      v30 = [v29 editorController];
-      v31 = [v30 selectionPath];
-      v32 = [v28 boardItemsForSelectionPath:v31];
+      editorController = [v29 editorController];
+      selectionPath = [editorController selectionPath];
+      v32 = [selectionModelTranslator boardItemsForSelectionPath:selectionPath];
 
       v33 = objc_loadWeakRetained(&self->mICC);
-      v34 = [v33 canvasEditor];
+      canvasEditor = [v33 canvasEditor];
 
-      if ([v32 count] != 1 || (objc_msgSend(v25, "info"), v35 = objc_claimAutoreleasedReturnValue(), v36 = objc_msgSend(v32, "containsObject:", v35), v35, (v36 & 1) == 0))
+      if ([v32 count] != 1 || (objc_msgSend(repForSelecting, "info"), v35 = objc_claimAutoreleasedReturnValue(), v36 = objc_msgSend(v32, "containsObject:", v35), v35, (v36 & 1) == 0))
       {
-        v37 = [v25 info];
-        v38 = [v34 selectionPathWithInfo:v37];
-        v39 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-        v40 = [v39 editorController];
-        [v40 setSelectionPath:v38];
+        info2 = [repForSelecting info];
+        v38 = [canvasEditor selectionPathWithInfo:info2];
+        interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+        editorController2 = [interactiveCanvasController editorController];
+        [editorController2 setSelectionPath:v38];
       }
 
-      v7 = v42;
+      recognizerCopy = v42;
       v13 = v43;
     }
   }
@@ -2242,121 +2242,121 @@ LABEL_17:
   return v22;
 }
 
-- (void)p_handleTapForEditMenu:(id)a3
+- (void)p_handleTapForEditMenu:(id)menu
 {
-  v4 = a3;
+  menuCopy = menu;
   v5 = objc_opt_class();
-  v35 = sub_100014370(v5, v4);
+  v35 = sub_100014370(v5, menuCopy);
 
   v6 = v35;
   if (v35)
   {
-    v7 = [v35 ignoreTargetAction];
+    ignoreTargetAction = [v35 ignoreTargetAction];
     v6 = v35;
-    if ((v7 & 1) == 0)
+    if ((ignoreTargetAction & 1) == 0)
     {
-      v8 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-      if (![v8 shouldAllowKeyCommands])
+      interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+      if (![interactiveCanvasController shouldAllowKeyCommands])
       {
         goto LABEL_25;
       }
 
-      v9 = [(CRLiOSCanvasViewController *)self isCurrentlyInQuickSelectMode];
+      isCurrentlyInQuickSelectMode = [(CRLiOSCanvasViewController *)self isCurrentlyInQuickSelectMode];
 
       v6 = v35;
-      if (v9)
+      if (isCurrentlyInQuickSelectMode)
       {
         goto LABEL_26;
       }
 
       WeakRetained = objc_loadWeakRetained(&self->mICC);
-      v11 = [(CRLiOSCanvasViewController *)self canvasView];
-      [v35 locationInView:v11];
+      canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+      [v35 locationInView:canvasView];
       [WeakRetained convertBoundsToUnscaledPoint:?];
       v13 = v12;
       v15 = v14;
 
-      v16 = [v35 touchedRep];
-      v8 = v16;
-      if (!v16)
+      touchedRep = [v35 touchedRep];
+      interactiveCanvasController = touchedRep;
+      if (!touchedRep)
       {
         goto LABEL_25;
       }
 
-      if ([v16 hasBeenRemoved])
+      if ([touchedRep hasBeenRemoved])
       {
         goto LABEL_25;
       }
 
-      v17 = [v8 repForSelecting];
+      repForSelecting = [interactiveCanvasController repForSelecting];
 
-      if (v17 != v8)
+      if (repForSelecting != interactiveCanvasController)
       {
         goto LABEL_25;
       }
 
-      if (([v8 isSelectedIgnoringLocking] & 1) == 0 && -[CRLiOSCanvasViewController shouldSelectAndShowEditMenuOnFirstTapForRep:](self, "shouldSelectAndShowEditMenuOnFirstTapForRep:", v8))
+      if (([interactiveCanvasController isSelectedIgnoringLocking] & 1) == 0 && -[CRLiOSCanvasViewController shouldSelectAndShowEditMenuOnFirstTapForRep:](self, "shouldSelectAndShowEditMenuOnFirstTapForRep:", interactiveCanvasController))
       {
         v18 = objc_loadWeakRetained(&self->mICC);
         [v18 endEditing];
 
         v19 = objc_loadWeakRetained(&self->mICC);
-        v20 = [v19 canvasEditor];
+        canvasEditor = [v19 canvasEditor];
 
-        v21 = [v8 info];
-        v22 = [v20 selectionPathWithInfo:v21];
-        v23 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-        v24 = [v23 editorController];
-        [v24 setSelectionPath:v22];
+        info = [interactiveCanvasController info];
+        v22 = [canvasEditor selectionPathWithInfo:info];
+        interactiveCanvasController2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+        editorController = [interactiveCanvasController2 editorController];
+        [editorController setSelectionPath:v22];
       }
 
       self->mLastTapPoint = CGPointZero;
-      if (![v8 isSelectedIgnoringLocking] || (objc_msgSend(v8, "shouldIgnoreEditMenuTapAtPoint:withRecognizer:", v35, v13, v15) & 1) != 0)
+      if (![interactiveCanvasController isSelectedIgnoringLocking] || (objc_msgSend(interactiveCanvasController, "shouldIgnoreEditMenuTapAtPoint:withRecognizer:", v35, v13, v15) & 1) != 0)
       {
         goto LABEL_25;
       }
 
-      if ([v8 wantsToManuallyHandleEditMenuTapAtPoint:{v13, v15}])
+      if ([interactiveCanvasController wantsToManuallyHandleEditMenuTapAtPoint:{v13, v15}])
       {
-        [v8 handleEditMenuTapAtPoint:sub_10042B6C0(objc_msgSend(v35 inputType:{"touchTypeForTap")), v13, v15}];
+        [interactiveCanvasController handleEditMenuTapAtPoint:sub_10042B6C0(objc_msgSend(v35 inputType:{"touchTypeForTap")), v13, v15}];
       }
 
       else
       {
         if (!self->mContextMenuMightBeDisplayed)
         {
-          v25 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-          v26 = [v25 editorController];
-          v27 = [v26 selectionPath];
-          v28 = [(CRLiOSCanvasViewController *)self p_shouldShowMiniFormatterForSelectionPath:v27];
+          interactiveCanvasController3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+          editorController2 = [interactiveCanvasController3 editorController];
+          selectionPath = [editorController2 selectionPath];
+          v28 = [(CRLiOSCanvasViewController *)self p_shouldShowMiniFormatterForSelectionPath:selectionPath];
 
           if (v28)
           {
-            if ([v8 manuallyControlsMiniFormatter])
+            if ([interactiveCanvasController manuallyControlsMiniFormatter])
             {
               goto LABEL_25;
             }
 
-            if (UIAccessibilityIsVoiceOverRunning() && [v8 isSelected])
+            if (UIAccessibilityIsVoiceOverRunning() && [interactiveCanvasController isSelected])
             {
-              [v8 accessibilityActivationPoint];
-              [v8 handleDoubleTapAtPoint:1 inputType:?];
+              [interactiveCanvasController accessibilityActivationPoint];
+              [interactiveCanvasController handleDoubleTapAtPoint:1 inputType:?];
               goto LABEL_25;
             }
 
-            v29 = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
-            v32 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-            v33 = [v32 editorController];
-            v34 = [v33 selectionPath];
-            [v29 handleSingleTapOnRep:v8 withSelectionPath:v34];
+            miniFormatterPresenter = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
+            interactiveCanvasController4 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+            editorController3 = [interactiveCanvasController4 editorController];
+            selectionPath2 = [editorController3 selectionPath];
+            [miniFormatterPresenter handleSingleTapOnRep:interactiveCanvasController withSelectionPath:selectionPath2];
           }
 
           else
           {
-            v29 = objc_loadWeakRetained(&self->mICC);
-            v30 = [v29 editorController];
-            v31 = [v30 selectionPath];
-            [(CRLiOSCanvasViewController *)self showEditUIForSelectionPath:v31];
+            miniFormatterPresenter = objc_loadWeakRetained(&self->mICC);
+            editorController4 = [miniFormatterPresenter editorController];
+            selectionPath3 = [editorController4 selectionPath];
+            [(CRLiOSCanvasViewController *)self showEditUIForSelectionPath:selectionPath3];
           }
 
           goto LABEL_25;
@@ -2374,48 +2374,48 @@ LABEL_25:
 LABEL_26:
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  v8 = gestureRecognizerCopy;
   v9 = 64;
   mSingleTapGestureRecognizer = self->mSingleTapGestureRecognizer;
   mEditMenuTapGestureRecognizer = self->mEditMenuTapGestureRecognizer;
-  if (mSingleTapGestureRecognizer == v6 && mEditMenuTapGestureRecognizer == v7)
+  if (mSingleTapGestureRecognizer == recognizerCopy && mEditMenuTapGestureRecognizer == gestureRecognizerCopy)
   {
     goto LABEL_34;
   }
 
-  if (mSingleTapGestureRecognizer == v7 && mEditMenuTapGestureRecognizer == v6)
+  if (mSingleTapGestureRecognizer == gestureRecognizerCopy && mEditMenuTapGestureRecognizer == recognizerCopy)
   {
     goto LABEL_34;
   }
 
   mRepDragGestureRecognizer = self->mRepDragGestureRecognizer;
-  if ((mRepDragGestureRecognizer == v6 || self->mNudgeGestureRecognizer == v6 || self->mMultiSelectGestureRecognizer == v6) && (mRepDragGestureRecognizer == v8 || self->mNudgeGestureRecognizer == v8 || self->mMultiSelectGestureRecognizer == v8))
+  if ((mRepDragGestureRecognizer == recognizerCopy || self->mNudgeGestureRecognizer == recognizerCopy || self->mMultiSelectGestureRecognizer == recognizerCopy) && (mRepDragGestureRecognizer == v8 || self->mNudgeGestureRecognizer == v8 || self->mMultiSelectGestureRecognizer == v8))
   {
     goto LABEL_34;
   }
 
-  v15 = mRepDragGestureRecognizer == v6 || mRepDragGestureRecognizer == v8;
-  if (!v15 || [(CRLiOSRepDragGestureRecognizer *)mRepDragGestureRecognizer state]!= 3 || (v16 = self->mEditMenuTapGestureRecognizer, v17 = 1, v16 != v6) && v16 != v8 && (v18 = self->mSingleTapGestureRecognizer, v18 != v6) && v18 != v8)
+  v15 = mRepDragGestureRecognizer == recognizerCopy || mRepDragGestureRecognizer == v8;
+  if (!v15 || [(CRLiOSRepDragGestureRecognizer *)mRepDragGestureRecognizer state]!= 3 || (v16 = self->mEditMenuTapGestureRecognizer, v17 = 1, v16 != recognizerCopy) && v16 != v8 && (v18 = self->mSingleTapGestureRecognizer, v18 != recognizerCopy) && v18 != v8)
   {
-    v19 = [(CRLiOSCanvasViewController *)self preventScrollGestureRecognizer];
-    if (v19 != v6)
+    preventScrollGestureRecognizer = [(CRLiOSCanvasViewController *)self preventScrollGestureRecognizer];
+    if (preventScrollGestureRecognizer != recognizerCopy)
     {
-      v20 = [(CRLiOSCanvasViewController *)self preventScrollGestureRecognizer];
-      v9 = v20;
-      if (v20 != v8)
+      preventScrollGestureRecognizer2 = [(CRLiOSCanvasViewController *)self preventScrollGestureRecognizer];
+      v9 = preventScrollGestureRecognizer2;
+      if (preventScrollGestureRecognizer2 != v8)
       {
 
 LABEL_36:
         if ([CRLFeatureFlagsHelper isOSFeatureEnabled:9]&& ([(CRLiOSCanvasViewController *)self delegate], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_opt_respondsToSelector(), v28, (v29 & 1) != 0))
         {
-          v30 = [(CRLiOSCanvasViewController *)self delegate];
-          v31 = [v30 currentDocumentMode];
+          delegate = [(CRLiOSCanvasViewController *)self delegate];
+          currentDocumentMode = [delegate currentDocumentMode];
 
-          v17 = [v31 gestureRecognizer:v6 shouldRecognizeSimultaneouslyWithGestureRecognizer:v8];
+          v17 = [currentDocumentMode gestureRecognizer:recognizerCopy shouldRecognizeSimultaneouslyWithGestureRecognizer:v8];
         }
 
         else
@@ -2427,23 +2427,23 @@ LABEL_36:
       }
     }
 
-    v21 = [(CRLiOSCanvasViewController *)self canvasView];
-    v22 = [v21 enclosingScrollView];
-    v23 = [v22 panGestureRecognizer];
-    if (v23 == v6)
+    canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+    enclosingScrollView = [canvasView enclosingScrollView];
+    panGestureRecognizer = [enclosingScrollView panGestureRecognizer];
+    if (panGestureRecognizer == recognizerCopy)
     {
       v32 = 0;
     }
 
     else
     {
-      v24 = [(CRLiOSCanvasViewController *)self canvasView];
-      v25 = [v24 enclosingScrollView];
-      v26 = [v25 panGestureRecognizer];
-      v32 = v26 != v8;
+      canvasView2 = [(CRLiOSCanvasViewController *)self canvasView];
+      enclosingScrollView2 = [canvasView2 enclosingScrollView];
+      panGestureRecognizer2 = [enclosingScrollView2 panGestureRecognizer];
+      v32 = panGestureRecognizer2 != v8;
     }
 
-    if (v19 != v6)
+    if (preventScrollGestureRecognizer != recognizerCopy)
     {
     }
 
@@ -2461,28 +2461,28 @@ LABEL_35:
   return v17;
 }
 
-- (BOOL)shouldIgnoreTextGesture:(id)a3 atPoint:(CGPoint)a4
+- (BOOL)shouldIgnoreTextGesture:(id)gesture atPoint:(CGPoint)point
 {
-  v5 = [(CRLiOSCanvasViewController *)self delegate:a3];
+  v5 = [(CRLiOSCanvasViewController *)self delegate:gesture];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CRLiOSCanvasViewController *)self delegate];
-    v8 = [v7 currentDocumentMode];
+    delegate = [(CRLiOSCanvasViewController *)self delegate];
+    currentDocumentMode = [delegate currentDocumentMode];
 
-    v9 = [v8 shouldAllowTextGesturesInRestrictedGestureMode];
+    shouldAllowTextGesturesInRestrictedGestureMode = [currentDocumentMode shouldAllowTextGesturesInRestrictedGestureMode];
   }
 
   else
   {
-    v9 = 0;
+    shouldAllowTextGesturesInRestrictedGestureMode = 0;
   }
 
   if ([(CRLiOSCanvasViewController *)self inInspectorPanZoomMode])
   {
-    v10 = 1;
-    if (v9)
+    inInspectorTextEditingMode = 1;
+    if (shouldAllowTextGesturesInRestrictedGestureMode)
     {
       goto LABEL_10;
     }
@@ -2490,8 +2490,8 @@ LABEL_35:
 
   else
   {
-    v10 = [(CRLiOSCanvasViewController *)self inInspectorTextEditingMode];
-    if (v9)
+    inInspectorTextEditingMode = [(CRLiOSCanvasViewController *)self inInspectorTextEditingMode];
+    if (shouldAllowTextGesturesInRestrictedGestureMode)
     {
       goto LABEL_10;
     }
@@ -2499,8 +2499,8 @@ LABEL_35:
 
   if ([(CRLiOSCanvasViewController *)self inRestrictedGestureMode])
   {
-    v11 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v12 = [v11 editingDisabled] ^ 1;
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    v12 = [interactiveCanvasController editingDisabled] ^ 1;
 
     goto LABEL_11;
   }
@@ -2515,63 +2515,63 @@ LABEL_11:
     if (objc_opt_respondsToSelector())
     {
       v15 = objc_loadWeakRetained(&self->mDelegate);
-      v16 = [v15 shouldIgnoreTextGestures];
+      shouldIgnoreTextGestures = [v15 shouldIgnoreTextGestures];
     }
 
     else
     {
-      v16 = 0;
+      shouldIgnoreTextGestures = 0;
     }
   }
 
   else
   {
-    v16 = 0;
+    shouldIgnoreTextGestures = 0;
   }
 
-  return (v10 | v12 | v16) & 1;
+  return (inInspectorTextEditingMode | v12 | shouldIgnoreTextGestures) & 1;
 }
 
-- (void)p_allTouchesDone:(id)a3
+- (void)p_allTouchesDone:(id)done
 {
-  v4 = [(CRLiOSCanvasViewController *)self view];
-  v5 = [v4 window];
-  [v5 makeKeyWindow];
+  view = [(CRLiOSCanvasViewController *)self view];
+  window = [view window];
+  [window makeKeyWindow];
 
   v6 = +[NSNotificationCenter defaultCenter];
   [v6 postNotificationName:@"CRLInteractiveCanvasControllerAllTouchesInGestureFinished" object:self];
 }
 
-- (id)p_reasonStringForIgnoringKeyboardInputWithAllTouchesDoneGestureRecognizer:(id)a3
+- (id)p_reasonStringForIgnoringKeyboardInputWithAllTouchesDoneGestureRecognizer:(id)recognizer
 {
-  v3 = [a3 name];
-  v4 = [NSString stringWithFormat:@"All Touches Gestures In Flight (%@)", v3];
+  name = [recognizer name];
+  v4 = [NSString stringWithFormat:@"All Touches Gestures In Flight (%@)", name];
 
   return v4;
 }
 
-- (void)didStartCountingTouches:(id)a3 touchType:(int64_t)a4 atSomeTouchPoint:(CGPoint)a5
+- (void)didStartCountingTouches:(id)touches touchType:(int64_t)type atSomeTouchPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
+  y = point.y;
+  x = point.x;
+  touchesCopy = touches;
   if (+[_TtC8Freeform19CRLFeatureFlagGroup isEasierConnectionLinesEnabled])
   {
-    v10 = [(CRLiOSCanvasViewController *)self delegate];
+    delegate = [(CRLiOSCanvasViewController *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(CRLiOSCanvasViewController *)self delegate];
-      [v12 userDidInteractWithCanvas:self];
+      delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+      [delegate2 userDidInteractWithCanvas:self];
     }
   }
 
-  [(CRLiOSCanvasViewController *)self p_shouldIgnoreKeyboardInputForTouchType:a4 atSomeTouchPoint:x, y];
-  v13 = [(CRLiOSCanvasViewController *)self editingCoordinator];
-  [v13 suspendCollaborationWithReason:@"CRLCanvasTouches"];
+  [(CRLiOSCanvasViewController *)self p_shouldIgnoreKeyboardInputForTouchType:type atSomeTouchPoint:x, y];
+  editingCoordinator = [(CRLiOSCanvasViewController *)self editingCoordinator];
+  [editingCoordinator suspendCollaborationWithReason:@"CRLCanvasTouches"];
 
-  if (self->mAllIndirectPointerTouchesDoneGestureRecognizer == v9)
+  if (self->mAllIndirectPointerTouchesDoneGestureRecognizer == touchesCopy)
   {
     if ([(CRLiOSCanvasViewController *)self currentlyTrackingIndirectPointerTouch])
     {
@@ -2605,7 +2605,7 @@ LABEL_11:
     [(CRLiOSCanvasViewController *)self setCurrentlyTrackingIndirectPointerTouch:1];
   }
 
-  else if (self->mAllTouchesDoneGestureRecognizer == v9)
+  else if (self->mAllTouchesDoneGestureRecognizer == touchesCopy)
   {
     if (self->mIsCurrentlyTrackingTouch)
     {
@@ -2642,21 +2642,21 @@ LABEL_11:
   [(CRLiOSPencilHoverGestureHandler *)self->mPencilHoverGestureHandler removeHoverEffect];
 }
 
-- (BOOL)p_shouldIgnoreKeyboardInputForTouchType:(int64_t)a3 atSomeTouchPoint:(CGPoint)a4
+- (BOOL)p_shouldIgnoreKeyboardInputForTouchType:(int64_t)type atSomeTouchPoint:(CGPoint)point
 {
-  if (a3 == 2)
+  if (type == 2)
   {
-    y = a4.y;
-    x = a4.x;
-    v7 = [(CRLiOSCanvasViewController *)self delegate];
+    y = point.y;
+    x = point.x;
+    delegate = [(CRLiOSCanvasViewController *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(CRLiOSCanvasViewController *)self delegate];
-      v10 = [v9 currentDocumentMode];
+      delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+      currentDocumentMode = [delegate2 currentDocumentMode];
 
-      if (!v10)
+      if (!currentDocumentMode)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -2685,14 +2685,14 @@ LABEL_11:
         [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:1504 isFatal:0 description:"invalid nil value for '%{public}s'", "currentMode"];
       }
 
-      v14 = [v10 pencilModeType];
-      if (v14 == 2)
+      pencilModeType = [currentDocumentMode pencilModeType];
+      if (pencilModeType == 2)
       {
         v15 = 0;
         goto LABEL_18;
       }
 
-      if (v14 == 1)
+      if (pencilModeType == 1)
       {
         v15 = 1;
 LABEL_18:
@@ -2701,10 +2701,10 @@ LABEL_18:
       }
     }
 
-    v16 = [(CRLiOSCanvasViewController *)self pencilMediator];
+    pencilMediator = [(CRLiOSCanvasViewController *)self pencilMediator];
     WeakRetained = objc_loadWeakRetained(&self->mICC);
     [WeakRetained convertBoundsToUnscaledPoint:{x, y}];
-    v18 = [v16 pencilBehaviorOutsideModesAtUnscaledPoint:?];
+    v18 = [pencilMediator pencilBehaviorOutsideModesAtUnscaledPoint:?];
 
     return v18 != 2;
   }
@@ -2712,17 +2712,17 @@ LABEL_18:
   return 1;
 }
 
-- (void)didStopCountingTouches:(id)a3
+- (void)didStopCountingTouches:(id)touches
 {
-  v4 = a3;
-  v5 = [(CRLiOSCanvasViewController *)self editingCoordinator];
-  [v5 resumeCollaborationWithReason:@"CRLCanvasTouches"];
+  touchesCopy = touches;
+  editingCoordinator = [(CRLiOSCanvasViewController *)self editingCoordinator];
+  [editingCoordinator resumeCollaborationWithReason:@"CRLCanvasTouches"];
 
   WeakRetained = objc_loadWeakRetained(&self->mICC);
-  v7 = [WeakRetained textInputResponder];
-  [v7 becomeFirstResponder];
+  textInputResponder = [WeakRetained textInputResponder];
+  [textInputResponder becomeFirstResponder];
 
-  if (self->mAllIndirectPointerTouchesDoneGestureRecognizer == v4)
+  if (self->mAllIndirectPointerTouchesDoneGestureRecognizer == touchesCopy)
   {
     if (![(CRLiOSCanvasViewController *)self currentlyTrackingIndirectPointerTouch])
     {
@@ -2756,7 +2756,7 @@ LABEL_18:
     [(CRLiOSCanvasViewController *)self setCurrentlyTrackingIndirectPointerTouch:0];
   }
 
-  else if (self->mAllTouchesDoneGestureRecognizer == v4)
+  else if (self->mAllTouchesDoneGestureRecognizer == touchesCopy)
   {
     if (!self->mIsCurrentlyTrackingTouch)
     {
@@ -2791,21 +2791,21 @@ LABEL_18:
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v17.receiver = self;
   v17.super_class = CRLiOSCanvasViewController;
-  [(CRLiOSCanvasViewController *)&v17 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(CRLiOSCanvasViewController *)&v17 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x2020000000;
   v16 = 0;
-  if (v7)
+  if (coordinatorCopy)
   {
-    [v7 targetTransform];
+    [coordinatorCopy targetTransform];
   }
 
   else
@@ -2813,8 +2813,8 @@ LABEL_18:
     memset(v14, 0, sizeof(v14));
   }
 
-  v8 = [(CRLiOSCanvasViewController *)self view];
-  [v8 bounds];
+  view = [(CRLiOSCanvasViewController *)self view];
+  [view bounds];
   v11 = sub_10013A1E4(v14, v9, v10);
 
   if (v11)
@@ -2831,20 +2831,20 @@ LABEL_18:
     v12[3] = &unk_10185A2E0;
     v12[4] = self;
     v12[5] = v15;
-    [v7 animateAlongsideTransition:v13 completion:v12];
+    [coordinatorCopy animateAlongsideTransition:v13 completion:v12];
   }
 
   _Block_object_dispose(v15, 8);
 }
 
-- (BOOL)allowTouchOutsideCanvasViewAtPoint:(CGPoint)a3 forGesture:(id)a4
+- (BOOL)allowTouchOutsideCanvasViewAtPoint:(CGPoint)point forGesture:(id)gesture
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
+  y = point.y;
+  x = point.x;
+  gestureCopy = gesture;
+  v8 = gestureCopy;
   mAllIndirectPointerTouchesDoneGestureRecognizer = self->mAllIndirectPointerTouchesDoneGestureRecognizer;
-  if (v7 && mAllIndirectPointerTouchesDoneGestureRecognizer != v7)
+  if (gestureCopy && mAllIndirectPointerTouchesDoneGestureRecognizer != gestureCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->mDelegate);
     v11 = objc_opt_respondsToSelector();
@@ -2861,14 +2861,14 @@ LABEL_18:
     }
 
 LABEL_7:
-    v15 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v16 = [v15 drawingIntelligenceProvider];
-    v14 = [v16 isDetectionDecoratorViewHitAtScaledPoint:{x, y}];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    drawingIntelligenceProvider = [interactiveCanvasController drawingIntelligenceProvider];
+    v14 = [drawingIntelligenceProvider isDetectionDecoratorViewHitAtScaledPoint:{x, y}];
 
     goto LABEL_8;
   }
 
-  if (mAllIndirectPointerTouchesDoneGestureRecognizer != v7)
+  if (mAllIndirectPointerTouchesDoneGestureRecognizer != gestureCopy)
   {
     goto LABEL_7;
   }
@@ -2880,24 +2880,24 @@ LABEL_8:
   return v14;
 }
 
-- (id)viewForGestureRecognizer:(id)a3
+- (id)viewForGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->mDelegate);
-    v8 = [v7 viewForGestureRecognizer:v4];
+    canvasView = [v7 viewForGestureRecognizer:recognizerCopy];
   }
 
   else
   {
-    v8 = [(CRLiOSCanvasViewController *)self canvasView];
+    canvasView = [(CRLiOSCanvasViewController *)self canvasView];
   }
 
-  return v8;
+  return canvasView;
 }
 
 - (CRLiOSCanvasDropInteractionDelegate)dropInteractionDelegate
@@ -2906,8 +2906,8 @@ LABEL_8:
   if (!mDropInteractionDelegate)
   {
     v4 = [CRLiOSCanvasDropInteractionDelegate alloc];
-    v5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v6 = [(CRLiOSCanvasDropInteractionDelegate *)v4 initWithICC:v5];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    v6 = [(CRLiOSCanvasDropInteractionDelegate *)v4 initWithICC:interactiveCanvasController];
     v7 = self->mDropInteractionDelegate;
     self->mDropInteractionDelegate = v6;
 
@@ -2923,8 +2923,8 @@ LABEL_8:
   if (!mDragInteractionDelegate)
   {
     v4 = [CRLiOSCanvasDragInteractionDelegate alloc];
-    v5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v6 = [(CRLiOSCanvasDragInteractionDelegate *)v4 initWithInteractiveCanvasController:v5];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    v6 = [(CRLiOSCanvasDragInteractionDelegate *)v4 initWithInteractiveCanvasController:interactiveCanvasController];
     v7 = self->mDragInteractionDelegate;
     self->mDragInteractionDelegate = v6;
 
@@ -2940,8 +2940,8 @@ LABEL_8:
   if (!mContextMenuInteractionDelegate)
   {
     v4 = [CRLiOSCanvasContextMenuInteractionDelegate alloc];
-    v5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v6 = [(CRLiOSCanvasContextMenuInteractionDelegate *)v4 initWithInteractiveCanvasController:v5];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    v6 = [(CRLiOSCanvasContextMenuInteractionDelegate *)v4 initWithInteractiveCanvasController:interactiveCanvasController];
     v7 = self->mContextMenuInteractionDelegate;
     self->mContextMenuInteractionDelegate = v6;
 
@@ -2957,8 +2957,8 @@ LABEL_8:
   if (!mPointerInteractionDelegate)
   {
     v4 = [CRLiOSCanvasPointerInteractionDelegate alloc];
-    v5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v6 = [(CRLiOSCanvasPointerInteractionDelegate *)v4 initWithInteractiveCanvasController:v5];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    v6 = [(CRLiOSCanvasPointerInteractionDelegate *)v4 initWithInteractiveCanvasController:interactiveCanvasController];
     v7 = self->mPointerInteractionDelegate;
     self->mPointerInteractionDelegate = v6;
 
@@ -2971,35 +2971,35 @@ LABEL_8:
 - (id)newDragAndDropController
 {
   v3 = [CRLiOSDragAndDropController alloc];
-  v4 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v5 = [(CRLDragAndDropController *)v3 initWithDelegate:self interactiveCanvasController:v4];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  v5 = [(CRLDragAndDropController *)v3 initWithDelegate:self interactiveCanvasController:interactiveCanvasController];
 
   return v5;
 }
 
 - (id)modelContainerForLocalDragContext
 {
-  v2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v3 = [v2 board];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  board = [interactiveCanvasController board];
 
-  return v3;
+  return board;
 }
 
 - (void)dragSessionWillBegin
 {
-  v3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v4 = [v3 canvasView];
-  v5 = [v4 enclosingScrollView];
-  v6 = [v5 panGestureRecognizer];
-  [v6 setState:4];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  canvasView = [interactiveCanvasController canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
+  panGestureRecognizer = [enclosingScrollView panGestureRecognizer];
+  [panGestureRecognizer setState:4];
 
-  v7 = [(CRLiOSCanvasViewController *)self singleTapGestureRecognizer];
-  [v7 setState:4];
+  singleTapGestureRecognizer = [(CRLiOSCanvasViewController *)self singleTapGestureRecognizer];
+  [singleTapGestureRecognizer setState:4];
 }
 
 - (BOOL)allowsSystemDragSession
 {
-  v3 = [(CRLiOSCanvasViewController *)self delegate];
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -3007,49 +3007,49 @@ LABEL_8:
     return 1;
   }
 
-  v5 = [(CRLiOSCanvasViewController *)self delegate];
-  v6 = [v5 allowsSystemDragSession];
+  delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+  allowsSystemDragSession = [delegate2 allowsSystemDragSession];
 
-  return v6;
+  return allowsSystemDragSession;
 }
 
-- (void)p_setDragLiftDelay:(double)a3
+- (void)p_setDragLiftDelay:(double)delay
 {
-  v5 = [(CRLiOSCanvasViewController *)self dragInteraction];
+  dragInteraction = [(CRLiOSCanvasViewController *)self dragInteraction];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CRLiOSCanvasViewController *)self dragInteraction];
-    [v7 _setLiftDelay:a3];
+    dragInteraction2 = [(CRLiOSCanvasViewController *)self dragInteraction];
+    [dragInteraction2 _setLiftDelay:delay];
   }
 
-  v8 = [(CRLiOSCanvasViewController *)self dragInteraction];
+  dragInteraction3 = [(CRLiOSCanvasViewController *)self dragInteraction];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(CRLiOSCanvasViewController *)self dragInteraction];
-    [v10 _setPointerLiftDelay:a3];
+    dragInteraction4 = [(CRLiOSCanvasViewController *)self dragInteraction];
+    [dragInteraction4 _setPointerLiftDelay:delay];
   }
 }
 
-- (BOOL)canInsertBoardItemsFromDragOperationForDragInfo:(id)a3
+- (BOOL)canInsertBoardItemsFromDragOperationForDragInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_opt_class();
-  v6 = [v4 platformDraggingInfo];
+  platformDraggingInfo = [infoCopy platformDraggingInfo];
 
-  v7 = [v6 localDragSession];
-  v8 = [v7 localContext];
-  v9 = sub_100014370(v5, v8);
+  localDragSession = [platformDraggingInfo localDragSession];
+  localContext = [localDragSession localContext];
+  v9 = sub_100014370(v5, localContext);
 
   if (v9)
   {
-    v10 = [v9 modelContainer];
-    v11 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v12 = [v11 board];
-    v13 = v10 != v12;
+    modelContainer = [v9 modelContainer];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    board = [interactiveCanvasController board];
+    v13 = modelContainer != board;
   }
 
   else
@@ -3060,22 +3060,22 @@ LABEL_8:
   return v13;
 }
 
-- (BOOL)shouldAllowDragOperationForDragInfo:(id)a3
+- (BOOL)shouldAllowDragOperationForDragInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CRLiOSCanvasViewController *)self delegate];
+  infoCopy = info;
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v7 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
     goto LABEL_5;
   }
 
-  v6 = [v5 shouldRejectDragOperationForDragInfo:v4];
-  v7 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  v6 = [delegate shouldRejectDragOperationForDragInfo:infoCopy];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
   if ((v6 & 1) == 0)
   {
 LABEL_5:
-    v8 = [v7 isInDynamicOperation] ^ 1;
+    v8 = [interactiveCanvasController isInDynamicOperation] ^ 1;
     goto LABEL_6;
   }
 
@@ -3085,9 +3085,9 @@ LABEL_6:
   return v8;
 }
 
-- (CGRect)targetRectForEditMenu:(id)a3
+- (CGRect)targetRectForEditMenu:(id)menu
 {
-  v4 = a3;
+  menuCopy = menu;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
@@ -3096,12 +3096,12 @@ LABEL_6:
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v9 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v10 = [v9 editorController];
-  v11 = [v10 currentEditors];
-  v12 = [v11 reverseObjectEnumerator];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
+  currentEditors = [editorController currentEditors];
+  reverseObjectEnumerator = [currentEditors reverseObjectEnumerator];
 
-  v13 = [v12 countByEnumeratingWithState:&v91 objects:v97 count:16];
+  v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v91 objects:v97 count:16];
   if (v13)
   {
     v14 = v13;
@@ -3112,7 +3112,7 @@ LABEL_3:
     {
       if (*v92 != v15)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v17 = *(*(&v91 + 1) + 8 * v16);
@@ -3131,7 +3131,7 @@ LABEL_3:
 
       if (v14 == ++v16)
       {
-        v14 = [v12 countByEnumeratingWithState:&v91 objects:v97 count:16];
+        v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v91 objects:v97 count:16];
         if (v14)
         {
           goto LABEL_3;
@@ -3148,8 +3148,8 @@ LABEL_3:
   v99.size.height = height;
   if (CGRectIsNull(v99))
   {
-    v18 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v19 = [v18 infosForSelectionPath:v4];
+    interactiveCanvasController2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    v19 = [interactiveCanvasController2 infosForSelectionPath:menuCopy];
 
     if ([v19 count])
     {
@@ -3159,8 +3159,8 @@ LABEL_3:
       if ([v19 count] == 1)
       {
         v21 = objc_loadWeakRetained(&self->mICC);
-        v22 = [v19 anyObject];
-        v23 = [v21 repForInfo:v22];
+        anyObject = [v19 anyObject];
+        v23 = [v21 repForInfo:anyObject];
 
         [v23 targetRectForEditMenu];
         v24 = v100.origin.x;
@@ -3210,7 +3210,7 @@ LABEL_3:
         {
           v44 = v43;
           v79 = v19;
-          v80 = v4;
+          v80 = menuCopy;
           v45 = *v87;
           do
           {
@@ -3243,8 +3243,8 @@ LABEL_3:
                       objc_enumerationMutation(v49);
                     }
 
-                    v54 = [*(*(&v82 + 1) + 8 * j) layout];
-                    [v54 insertionFrameInRoot];
+                    layout = [*(*(&v82 + 1) + 8 * j) layout];
+                    [layout insertionFrameInRoot];
                     v56 = v55;
                     v58 = v57;
                     v60 = v59;
@@ -3290,7 +3290,7 @@ LABEL_3:
 
           while (v44);
           v19 = v79;
-          v4 = v80;
+          menuCopy = v80;
         }
 
         v105.origin.x = x;
@@ -3309,9 +3309,9 @@ LABEL_3:
 
     else
     {
-      v28 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+      interactiveCanvasController3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
       [(CRLiOSCanvasViewController *)self lastTapPoint];
-      [v28 convertUnscaledToBoundsPoint:?];
+      [interactiveCanvasController3 convertUnscaledToBoundsPoint:?];
       v30 = v29;
       v32 = v31;
 
@@ -3335,17 +3335,17 @@ LABEL_3:
   return result;
 }
 
-- (void)showEditMenuForSelectionPath:(id)a3
+- (void)showEditMenuForSelectionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[UIMenuController sharedMenuController];
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   if (objc_opt_respondsToSelector())
   {
     v7 = objc_loadWeakRetained(&self->mDelegate);
-    v8 = [v7 allowEditMenuToAppear];
+    allowEditMenuToAppear = [v7 allowEditMenuToAppear];
 
-    if (!v8)
+    if (!allowEditMenuToAppear)
     {
       goto LABEL_20;
     }
@@ -3357,9 +3357,9 @@ LABEL_3:
 
   if ([(CRLiOSCanvasViewController *)self becomeFirstResponderIfAppropriate])
   {
-    v9 = [(CRLiOSCanvasViewController *)self view];
-    v10 = [v9 window];
-    [v10 makeKeyWindow];
+    view = [(CRLiOSCanvasViewController *)self view];
+    window = [view window];
+    [window makeKeyWindow];
 
     if (self->mContextMenuController)
     {
@@ -3374,7 +3374,7 @@ LABEL_3:
     v18 = v17;
     v20 = v19;
 
-    [(CRLiOSCanvasViewController *)self targetRectForEditMenu:v4];
+    [(CRLiOSCanvasViewController *)self targetRectForEditMenu:pathCopy];
     v42.origin.x = v14;
     v42.origin.y = v16;
     v42.size.width = v18;
@@ -3387,9 +3387,9 @@ LABEL_3:
     if (!CGRectEqualToRect(v41, v43))
     {
       v21 = +[NSMutableArray array];
-      [(CRLiOSCanvasViewController *)self p_buildMenuItems:v21 forSelectionPath:v4];
+      [(CRLiOSCanvasViewController *)self p_buildMenuItems:v21 forSelectionPath:pathCopy];
       [v5 setMenuItems:v21];
-      [(CRLiOSCanvasViewController *)self p_targetRectForMenuControllerPositionForSelectionPath:v4];
+      [(CRLiOSCanvasViewController *)self p_targetRectForMenuControllerPositionForSelectionPath:pathCopy];
       v23 = v22;
       v25 = v24;
       v27 = v26;
@@ -3431,13 +3431,13 @@ LABEL_3:
       mContextMenuController = self->mContextMenuController;
       self->mContextMenuController = v33;
 
-      v35 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-      v36 = [v35 infosForSelectionPath:v4];
+      interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+      v36 = [interactiveCanvasController infosForSelectionPath:pathCopy];
 
       v37 = [NSSet setWithSet:v36];
       v38 = self->mContextMenuController;
-      v39 = [(CRLiOSCanvasViewController *)self canvasView];
-      [(CRLiOSContextMenuController *)v38 showContextMenuFromView:v39 rect:1 animated:v37 withChangeSources:v23, v25, v27, v29];
+      canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+      [(CRLiOSContextMenuController *)v38 showContextMenuFromView:canvasView rect:1 animated:v37 withChangeSources:v23, v25, v27, v29];
 
       self->mContextMenuMightBeDisplayed = 1;
     }
@@ -3446,9 +3446,9 @@ LABEL_3:
 LABEL_20:
 }
 
-- (CGRect)p_targetRectForMenuControllerPositionForSelectionPath:(id)a3
+- (CGRect)p_targetRectForMenuControllerPositionForSelectionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[UIMenuController sharedMenuController];
   WeakRetained = objc_loadWeakRetained(&self->mICC);
   [WeakRetained visibleBoundsRect];
@@ -3457,7 +3457,7 @@ LABEL_20:
   v12 = v11;
   v14 = v13;
 
-  [(CRLiOSCanvasViewController *)self targetRectForEditMenu:v4];
+  [(CRLiOSCanvasViewController *)self targetRectForEditMenu:pathCopy];
   y = v53.origin.y;
   x = v53.origin.x;
   height = v53.size.height;
@@ -3523,8 +3523,8 @@ LABEL_20:
 
   else
   {
-    v29 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v30 = [v29 infosForSelectionPath:v4];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    v30 = [interactiveCanvasController infosForSelectionPath:pathCopy];
 
     v31 = [v30 objectsPassingTest:&stru_10185A340];
     if ([v31 count] > 1)
@@ -3582,20 +3582,20 @@ LABEL_20:
   return result;
 }
 
-- (void)p_buildMenuTitles:(id)a3 forSelectionPath:(id)a4
+- (void)p_buildMenuTitles:(id)titles forSelectionPath:(id)path
 {
-  v5 = a3;
+  titlesCopy = titles;
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"Select Objects…" value:0 table:0];
 
-  [v5 addObject:v7];
-  v8 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v9 = [v8 canvasEditor];
-  v10 = [v9 canvasEditorCanUngroupWithSender:0];
+  [titlesCopy addObject:v7];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  v10 = [canvasEditor canvasEditorCanUngroupWithSender:0];
 
-  v11 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v12 = [v11 canvasEditor];
-  v13 = [v12 canvasEditorCanGroupWithSender:0];
+  interactiveCanvasController2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  canvasEditor2 = [interactiveCanvasController2 canvasEditor];
+  v13 = [canvasEditor2 canvasEditorCanGroupWithSender:0];
 
   if (v13)
   {
@@ -3620,23 +3620,23 @@ LABEL_20:
 
   v18 = [v14 localizedStringForKey:v16 value:v17 table:0];
 
-  [v5 addObject:v18];
+  [titlesCopy addObject:v18];
 LABEL_6:
   v19 = +[NSBundle mainBundle];
   v20 = [v19 localizedStringForKey:@"Unlock" value:0 table:0];
 
   v36 = v20;
-  [v5 addObject:v20];
+  [titlesCopy addObject:v20];
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v21 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v22 = [v21 editorController];
-  v23 = [v22 currentEditors];
+  interactiveCanvasController3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController3 editorController];
+  currentEditors = [editorController currentEditors];
 
-  obj = v23;
-  v24 = [v23 countByEnumeratingWithState:&v42 objects:v47 count:16];
+  obj = currentEditors;
+  v24 = [currentEditors countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v24)
   {
     v25 = v24;
@@ -3676,8 +3676,8 @@ LABEL_6:
                   objc_enumerationMutation(v30);
                 }
 
-                v35 = [*(*(&v38 + 1) + 8 * v34) title];
-                [v5 addObject:v35];
+                title = [*(*(&v38 + 1) + 8 * v34) title];
+                [titlesCopy addObject:title];
 
                 v34 = v34 + 1;
               }
@@ -3701,27 +3701,27 @@ LABEL_6:
   }
 }
 
-- (void)p_buildMenuItems:(id)a3 forSelectionPath:(id)a4
+- (void)p_buildMenuItems:(id)items forSelectionPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  pathCopy = path;
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"Select Objects…" value:0 table:0];
 
   v10 = [[UIMenuItem alloc] initWithTitle:v9 action:"enterQuickSelectMode:"];
-  [v6 addObject:v10];
+  [itemsCopy addObject:v10];
 
-  v11 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v49 = v7;
-  v12 = [v11 infosForSelectionPath:v7];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  v49 = pathCopy;
+  v12 = [interactiveCanvasController infosForSelectionPath:pathCopy];
 
-  v13 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v14 = [v13 canvasEditor];
-  v15 = [v14 canvasEditorCanUngroupWithSender:0];
+  interactiveCanvasController2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController2 canvasEditor];
+  v15 = [canvasEditor canvasEditorCanUngroupWithSender:0];
 
-  v16 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v17 = [v16 canvasEditor];
-  v18 = [v17 canvasEditorCanGroupWithSender:0];
+  interactiveCanvasController3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  canvasEditor2 = [interactiveCanvasController3 canvasEditor];
+  v18 = [canvasEditor2 canvasEditorCanGroupWithSender:0];
 
   if (v18)
   {
@@ -3743,13 +3743,13 @@ LABEL_6:
   }
 
   v22 = [[UIMenuItem alloc] initWithTitle:v20 action:*v21];
-  [v6 addObject:v22];
+  [itemsCopy addObject:v22];
 
 LABEL_6:
-  v23 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v24 = [v23 canvasEditor];
-  v25 = [v24 canvasEditorHelper];
-  v26 = [v25 canvasEditorCanPerformShowMiniFormatterToExitDrawingModeActionWithSender:0];
+  interactiveCanvasController4 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  canvasEditor3 = [interactiveCanvasController4 canvasEditor];
+  canvasEditorHelper = [canvasEditor3 canvasEditorHelper];
+  v26 = [canvasEditorHelper canvasEditorCanPerformShowMiniFormatterToExitDrawingModeActionWithSender:0];
 
   if (v26 == 1)
   {
@@ -3757,14 +3757,14 @@ LABEL_6:
     v28 = [v27 localizedStringForKey:@"Edit" value:0 table:0];
 
     v29 = [[UIMenuItem alloc] initWithTitle:v28 action:"showMiniFormatterToExitDrawingMode:"];
-    [v6 addObject:v29];
+    [itemsCopy addObject:v29];
   }
 
   if ([v12 count] == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->mICC);
-    v31 = [v12 anyObject];
-    v32 = [WeakRetained repForInfo:v31];
+    anyObject = [v12 anyObject];
+    v32 = [WeakRetained repForInfo:anyObject];
 
     if ([v32 isLocked])
     {
@@ -3773,8 +3773,8 @@ LABEL_6:
 
     else
     {
-      v34 = [v32 itemsToAddToEditMenu];
-      [v6 addObjectsFromArray:v34];
+      itemsToAddToEditMenu = [v32 itemsToAddToEditMenu];
+      [itemsCopy addObjectsFromArray:itemsToAddToEditMenu];
 
       v33 = 1;
     }
@@ -3790,14 +3790,14 @@ LABEL_6:
   v36 = [v35 localizedStringForKey:@"Unlock" value:0 table:0];
 
   v37 = [[UIMenuItem alloc] initWithTitle:v36 action:"unlock:"];
-  [v6 addObject:v37];
+  [itemsCopy addObject:v37];
   if (v33)
   {
     v38 = [(CRLiOSCanvasViewController *)self itemsToAddToEditMenuForRep:v32];
     v39 = v38;
     if (v38 && [v38 count])
     {
-      [v6 addObjectsFromArray:v39];
+      [itemsCopy addObjectsFromArray:v39];
     }
   }
 
@@ -3806,11 +3806,11 @@ LABEL_6:
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v40 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v41 = [v40 editorController];
-  v42 = [v41 currentEditors];
+  interactiveCanvasController5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController5 editorController];
+  currentEditors = [editorController currentEditors];
 
-  v43 = [v42 countByEnumeratingWithState:&v50 objects:v54 count:16];
+  v43 = [currentEditors countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (v43)
   {
     v44 = v43;
@@ -3821,17 +3821,17 @@ LABEL_6:
       {
         if (*v51 != v45)
         {
-          objc_enumerationMutation(v42);
+          objc_enumerationMutation(currentEditors);
         }
 
         v47 = *(*(&v50 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v47 addContextualMenuItemsToArray:v6];
+          [v47 addContextualMenuItemsToArray:itemsCopy];
         }
       }
 
-      v44 = [v42 countByEnumeratingWithState:&v50 objects:v54 count:16];
+      v44 = [currentEditors countByEnumeratingWithState:&v50 objects:v54 count:16];
     }
 
     while (v44);
@@ -3849,9 +3849,9 @@ LABEL_6:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->mICC);
-    v3 = [WeakRetained editorController];
-    v4 = [v3 selectionPath];
-    [(CRLiOSCanvasViewController *)self showEditMenuForSelectionPath:v4];
+    editorController = [WeakRetained editorController];
+    selectionPath = [editorController selectionPath];
+    [(CRLiOSCanvasViewController *)self showEditMenuForSelectionPath:selectionPath];
   }
 }
 
@@ -3865,23 +3865,23 @@ LABEL_6:
 
   else
   {
-    v3 = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
-    v4 = [v3 isPresentingMiniFormatter];
+    miniFormatterPresenter = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
+    isPresentingMiniFormatter = [miniFormatterPresenter isPresentingMiniFormatter];
 
-    if (v4)
+    if (isPresentingMiniFormatter)
     {
-      v9 = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
-      [v9 dismissMiniFormatter];
+      miniFormatterPresenter2 = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
+      [miniFormatterPresenter2 dismissMiniFormatter];
     }
 
     else
     {
-      v5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-      v6 = [v5 layerHost];
-      v7 = [v6 asiOSCVC];
-      v8 = [v7 isCurrentlyInQuickSelectMode];
+      interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+      layerHost = [interactiveCanvasController layerHost];
+      asiOSCVC = [layerHost asiOSCVC];
+      isCurrentlyInQuickSelectMode = [asiOSCVC isCurrentlyInQuickSelectMode];
 
-      if ((v8 & 1) == 0)
+      if ((isCurrentlyInQuickSelectMode & 1) == 0)
       {
 
         [(CRLiOSCanvasViewController *)self showDefaultEditUIForCurrentSelection];
@@ -3893,27 +3893,27 @@ LABEL_6:
 - (void)showDefaultEditUIForCurrentSelection
 {
   WeakRetained = objc_loadWeakRetained(&self->mICC);
-  v4 = [WeakRetained editorController];
-  v10 = [v4 selectionPath];
+  editorController = [WeakRetained editorController];
+  selectionPath = [editorController selectionPath];
 
-  if ([(CRLiOSCanvasViewController *)self p_shouldShowMiniFormatterForSelectionPath:v10])
+  if ([(CRLiOSCanvasViewController *)self p_shouldShowMiniFormatterForSelectionPath:selectionPath])
   {
-    v5 = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
-    [v5 presentMiniFormatterForSelectionPath:v10];
+    miniFormatterPresenter = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
+    [miniFormatterPresenter presentMiniFormatterForSelectionPath:selectionPath];
 
     goto LABEL_8;
   }
 
-  v6 = [(CRLiOSCanvasViewController *)self delegate];
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(CRLiOSCanvasViewController *)self delegate];
-    v8 = [v7 currentDocumentMode];
-    v9 = [v8 wantsLegacyEditMenu];
+    delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+    currentDocumentMode = [delegate2 currentDocumentMode];
+    wantsLegacyEditMenu = [currentDocumentMode wantsLegacyEditMenu];
 
-    if (v9)
+    if (wantsLegacyEditMenu)
     {
-      [(CRLiOSCanvasViewController *)self showEditMenuForSelectionPath:v10];
+      [(CRLiOSCanvasViewController *)self showEditMenuForSelectionPath:selectionPath];
       goto LABEL_8;
     }
   }
@@ -3922,36 +3922,36 @@ LABEL_6:
   {
   }
 
-  [(CRLiOSCanvasViewController *)self showEditUIForSelectionPath:v10];
+  [(CRLiOSCanvasViewController *)self showEditUIForSelectionPath:selectionPath];
 LABEL_8:
 }
 
-- (id)editMenuConfigrationForSelectionPath:(id)a3 withConfigurationIdentifier:(id)a4
+- (id)editMenuConfigrationForSelectionPath:(id)path withConfigurationIdentifier:(id)identifier
 {
   v9 = 0;
-  v6 = a4;
-  [(CRLiOSCanvasViewController *)self p_targetPointForEditMenuForSelectionPath:a3 outModifiedDirection:&v9];
-  v7 = [UIEditMenuConfiguration configurationWithIdentifier:v6 sourcePoint:?];
+  identifierCopy = identifier;
+  [(CRLiOSCanvasViewController *)self p_targetPointForEditMenuForSelectionPath:path outModifiedDirection:&v9];
+  v7 = [UIEditMenuConfiguration configurationWithIdentifier:identifierCopy sourcePoint:?];
 
   [v7 setPreferredArrowDirection:v9];
 
   return v7;
 }
 
-- (CGPoint)p_targetPointForEditMenuForSelectionPath:(id)a3 outModifiedDirection:(int64_t *)a4
+- (CGPoint)p_targetPointForEditMenuForSelectionPath:(id)path outModifiedDirection:(int64_t *)direction
 {
-  [(CRLiOSCanvasViewController *)self targetRectForEditMenu:a3];
+  [(CRLiOSCanvasViewController *)self targetRectForEditMenu:path];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v14 = +[UIApplication sharedApplication];
-  v15 = [v14 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v14 preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v15))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    v16 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    [v16 visibleBoundsRect];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    [interactiveCanvasController visibleBoundsRect];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -3992,7 +3992,7 @@ LABEL_8:
       v9 = v9 + v34;
     }
 
-    *a4 = v30;
+    *direction = v30;
   }
 
   v31 = v7 + v11 * 0.5;
@@ -4002,17 +4002,17 @@ LABEL_8:
   return result;
 }
 
-- (void)showEditUIForSelectionPath:(id)a3
+- (void)showEditUIForSelectionPath:(id)path
 {
-  v5 = [(CRLiOSCanvasViewController *)self editMenuConfigrationForSelectionPath:a3 withConfigurationIdentifier:@"CRLDefault"];
-  v4 = [(CRLiOSCanvasViewController *)self editMenuInteraction];
-  [v4 presentEditMenuWithConfiguration:v5];
+  v5 = [(CRLiOSCanvasViewController *)self editMenuConfigrationForSelectionPath:path withConfigurationIdentifier:@"CRLDefault"];
+  editMenuInteraction = [(CRLiOSCanvasViewController *)self editMenuInteraction];
+  [editMenuInteraction presentEditMenuWithConfiguration:v5];
 }
 
 - (void)hideEditMenu
 {
-  v3 = [(CRLiOSCanvasViewController *)self editMenuInteraction];
-  [v3 dismissMenu];
+  editMenuInteraction = [(CRLiOSCanvasViewController *)self editMenuInteraction];
+  [editMenuInteraction dismissMenu];
 
   v4 = +[UIMenuController sharedMenuController];
   [v4 hideMenu];
@@ -4022,16 +4022,16 @@ LABEL_8:
 
 - (_TtC8Freeform21CRLEditingCoordinator)editingCoordinator
 {
-  v2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v3 = [v2 editingCoordinator];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  editingCoordinator = [interactiveCanvasController editingCoordinator];
 
-  return v3;
+  return editingCoordinator;
 }
 
-- (void)contextMenuDidHideForContextMenuController:(id)a3
+- (void)contextMenuDidHideForContextMenuController:(id)controller
 {
   mContextMenuController = self->mContextMenuController;
-  if (mContextMenuController != a3)
+  if (mContextMenuController != controller)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -4070,9 +4070,9 @@ LABEL_8:
   [v9 setMenuItems:&__NSArray0__struct];
 }
 
-- (BOOL)contextMenuPositionShouldUpdateForContextMenuController:(id)a3
+- (BOOL)contextMenuPositionShouldUpdateForContextMenuController:(id)controller
 {
-  if (self->mContextMenuController != a3)
+  if (self->mContextMenuController != controller)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -4101,10 +4101,10 @@ LABEL_8:
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:2093 isFatal:0 description:"Unexpected context menu controller updating!"];
   }
 
-  v7 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v8 = [v7 editorController];
-  v9 = [v8 selectionPath];
-  [(CRLiOSCanvasViewController *)self p_targetRectForMenuControllerPositionForSelectionPath:v9];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
+  selectionPath = [editorController selectionPath];
+  [(CRLiOSCanvasViewController *)self p_targetRectForMenuControllerPositionForSelectionPath:selectionPath];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -4117,13 +4117,13 @@ LABEL_8:
   return !CGRectEqualToRect(v19, self->mTargetRectForContextMenuController);
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if ([(CRLiOSCanvasViewController *)self p_isAccessibilityTextResponderAction:a3])
+  senderCopy = sender;
+  if ([(CRLiOSCanvasViewController *)self p_isAccessibilityTextResponderAction:action])
   {
-    v7 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v8 = [v7 textInputResponder];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    textInputResponder = [interactiveCanvasController textInputResponder];
 
     if (objc_opt_respondsToSelector())
     {
@@ -4131,32 +4131,32 @@ LABEL_8:
     }
   }
 
-  if (!sel_isEqual(a3, "find:"))
+  if (!sel_isEqual(action, "find:"))
   {
     goto LABEL_8;
   }
 
   v9 = objc_opt_class();
-  v10 = [(CRLiOSCanvasViewController *)self delegate];
-  v8 = sub_100013F00(v9, v10);
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
+  textInputResponder = sub_100013F00(v9, delegate);
 
-  if (!v8 || ([v8 canPerformAction:a3 withSender:v6] & 1) == 0)
+  if (!textInputResponder || ([textInputResponder canPerformAction:action withSender:senderCopy] & 1) == 0)
   {
 
 LABEL_8:
     v12.receiver = self;
     v12.super_class = CRLiOSCanvasViewController;
-    v8 = [(CRLiOSCanvasViewController *)&v12 targetForAction:a3 withSender:v6];
+    textInputResponder = [(CRLiOSCanvasViewController *)&v12 targetForAction:action withSender:senderCopy];
   }
 
 LABEL_9:
 
-  return v8;
+  return textInputResponder;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
+  senderCopy = sender;
   if (self->mHasBeenTornDown || [(CRLiOSCanvasViewController *)self p_currentModeIsFind])
   {
     v7 = 0;
@@ -4164,7 +4164,7 @@ LABEL_9:
 
   else
   {
-    v9 = "bringToFront:" == a3 || "sendToBack:" == a3;
+    v9 = "bringToFront:" == action || "sendToBack:" == action;
     if (v9 && (objc_opt_self(), v10 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass & 1) != 0))
     {
       v7 = 1;
@@ -4173,11 +4173,11 @@ LABEL_9:
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->mICC);
-      v13 = [WeakRetained tmCoordinator];
-      v14 = [v13 controllingTM];
-      v15 = [v14 tracker];
+      tmCoordinator = [WeakRetained tmCoordinator];
+      controllingTM = [tmCoordinator controllingTM];
+      tracker = [controllingTM tracker];
 
-      if (v15 && (objc_opt_respondsToSelector() & 1) != 0 && ([v15 disallowAllActionsWhileTracking] & 1) != 0)
+      if (tracker && (objc_opt_respondsToSelector() & 1) != 0 && ([tracker disallowAllActionsWhileTracking] & 1) != 0)
       {
         v7 = 0;
       }
@@ -4193,7 +4193,7 @@ LABEL_9:
         else
         {
           v17 = objc_loadWeakRetained(&self->mICC);
-          v7 = [v17 canPerformInteractiveAction:a3 withSender:v6];
+          v7 = [v17 canPerformInteractiveAction:action withSender:senderCopy];
         }
       }
     }
@@ -4202,12 +4202,12 @@ LABEL_9:
   return v7;
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  v5 = [v4 action];
-  v6 = v5;
-  if (v5 == "sendToBack:" || v5 == "bringToFront:")
+  commandCopy = command;
+  action = [commandCopy action];
+  v6 = action;
+  if (action == "sendToBack:" || action == "bringToFront:")
   {
     v8 = [CRLiOSCanvasViewController canPerformAction:"canPerformAction:withSender:" withSender:?];
     v9 = [(CRLiOSCanvasViewController *)self canPerformAction:"bringToFront:" withSender:self];
@@ -4226,42 +4226,42 @@ LABEL_9:
       v10 = 4;
     }
 
-    [v4 setAttributes:v10];
+    [commandCopy setAttributes:v10];
   }
 
 LABEL_12:
-  v11 = [(CRLiOSCanvasViewController *)self editorController];
-  v12 = [v11 editorForEditAction:v6 withSender:v4];
+  editorController = [(CRLiOSCanvasViewController *)self editorController];
+  v12 = [editorController editorForEditAction:v6 withSender:commandCopy];
 
   if (objc_opt_respondsToSelector())
   {
-    [v12 updateStateForCommand:v4];
+    [v12 updateStateForCommand:commandCopy];
   }
 
   v13.receiver = self;
   v13.super_class = CRLiOSCanvasViewController;
-  [(CRLiOSCanvasViewController *)&v13 validateCommand:v4];
+  [(CRLiOSCanvasViewController *)&v13 validateCommand:commandCopy];
 }
 
-- (void)setContextMenuMightBeDisplayed:(BOOL)a3
+- (void)setContextMenuMightBeDisplayed:(BOOL)displayed
 {
-  if (!a3)
+  if (!displayed)
   {
     v5 = +[UIMenuController sharedMenuController];
-    v6 = [v5 isMenuVisible];
+    isMenuVisible = [v5 isMenuVisible];
 
-    if (v6)
+    if (isMenuVisible)
     {
       [(CRLiOSCanvasViewController *)self hideEditMenu];
     }
   }
 
-  self->mContextMenuMightBeDisplayed = a3;
+  self->mContextMenuMightBeDisplayed = displayed;
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v6 = a3;
+  cutCopy = cut;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -4269,12 +4269,12 @@ LABEL_12:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->mICC);
-  [WeakRetained makeEditorPerformAction:a2 withSender:v6];
+  [WeakRetained makeEditorPerformAction:a2 withSender:cutCopy];
 }
 
-- (void)showMiniFormatterToExitDrawingMode:(id)a3
+- (void)showMiniFormatterToExitDrawingMode:(id)mode
 {
-  v7 = a3;
+  modeCopy = mode;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -4282,26 +4282,26 @@ LABEL_12:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->mICC);
-  v5 = [WeakRetained canvasEditor];
-  v6 = [v5 canvasEditorHelper];
-  [v6 showMiniFormatterToExitDrawingMode:v7];
+  canvasEditor = [WeakRetained canvasEditor];
+  canvasEditorHelper = [canvasEditor canvasEditorHelper];
+  [canvasEditorHelper showMiniFormatterToExitDrawingMode:modeCopy];
 }
 
-- (void)unlock:(id)a3
+- (void)unlock:(id)unlock
 {
-  v5 = a3;
-  v6 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  [v6 makeEditorPerformAction:a2 withSender:v5];
+  unlockCopy = unlock;
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  [interactiveCanvasController makeEditorPerformAction:a2 withSender:unlockCopy];
 
   objc_opt_class();
   LOBYTE(a2) = objc_opt_isKindOfClass();
 
   if (a2)
   {
-    v9 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v7 = [v9 editorController];
-    v8 = [v7 selectionPath];
-    [(CRLiOSCanvasViewController *)self showEditMenuForSelectionPath:v8];
+    interactiveCanvasController2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    editorController = [interactiveCanvasController2 editorController];
+    selectionPath = [editorController selectionPath];
+    [(CRLiOSCanvasViewController *)self showEditMenuForSelectionPath:selectionPath];
   }
 }
 
@@ -4336,20 +4336,20 @@ LABEL_12:
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:2228 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  v6 = [(CRLiOSCanvasViewController *)self canvasView];
-  v7 = [v6 enclosingScrollView];
+  canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
 
-  if ([v7 isScrollEnabled])
+  if ([enclosingScrollView isScrollEnabled])
   {
-    v8 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v9 = [v8 currentlyScrolling];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    currentlyScrolling = [interactiveCanvasController currentlyScrolling];
 
-    if (v9)
+    if (currentlyScrolling)
     {
-      [v7 setScrollEnabled:0];
-      [v7 setScrollEnabled:1];
-      [v7 contentOffset];
-      [v7 setContentOffset:0 animated:?];
+      [enclosingScrollView setScrollEnabled:0];
+      [enclosingScrollView setScrollEnabled:1];
+      [enclosingScrollView contentOffset];
+      [enclosingScrollView setContentOffset:0 animated:?];
     }
   }
 }
@@ -4358,26 +4358,26 @@ LABEL_12:
 {
   if (+[_TtC8Freeform19CRLFeatureFlagGroup isEasierConnectionLinesEnabled])
   {
-    v3 = [(CRLiOSCanvasViewController *)self delegate];
+    delegate = [(CRLiOSCanvasViewController *)self delegate];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [(CRLiOSCanvasViewController *)self delegate];
-      [v5 userDidInteractWithCanvas:self];
+      delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+      [delegate2 userDidInteractWithCanvas:self];
     }
   }
 }
 
 - (void)enterQuickSelectMode
 {
-  v3 = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
-  v4 = [v3 isPresentingMiniFormatter];
+  miniFormatterPresenter = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
+  isPresentingMiniFormatter = [miniFormatterPresenter isPresentingMiniFormatter];
 
-  if ([(CRLiOSCanvasViewController *)self allowedToEnterQuickSelectMode]&& v4)
+  if ([(CRLiOSCanvasViewController *)self allowedToEnterQuickSelectMode]&& isPresentingMiniFormatter)
   {
-    v5 = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
-    [v5 dismissMiniFormatter];
+    miniFormatterPresenter2 = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
+    [miniFormatterPresenter2 dismissMiniFormatter];
   }
 
   if ([(CRLiOSCanvasViewController *)self isCurrentlyInQuickSelectMode]|| ![(CRLiOSCanvasViewController *)self allowedToEnterQuickSelectMode])
@@ -4405,19 +4405,19 @@ LABEL_12:
     }
 
     v19 = [NSString stringWithUTF8String:"[CRLiOSCanvasViewController enterQuickSelectMode]"];
-    v20 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLiOSCanvasViewController.m"];
-    [CRLAssertionHandler handleFailureInFunction:v19 file:v20 lineNumber:2267 isFatal:0 description:"Attempting to enter Quick Select mode at an inappropriate time."];
+    enclosingScrollView = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLiOSCanvasViewController.m"];
+    [CRLAssertionHandler handleFailureInFunction:v19 file:enclosingScrollView lineNumber:2267 isFatal:0 description:"Attempting to enter Quick Select mode at an inappropriate time."];
   }
 
   else
   {
-    v6 = [(CRLiOSCanvasViewController *)self delegate];
+    delegate = [(CRLiOSCanvasViewController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CRLiOSCanvasViewController *)self delegate];
-      [v8 willEnterQuickSelectModeForCanvasViewController:self];
+      delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+      [delegate2 willEnterQuickSelectModeForCanvasViewController:self];
     }
 
     [(CRLiOSCanvasViewController *)self beginPreventingDefaultPencilBehaviors];
@@ -4425,22 +4425,22 @@ LABEL_12:
     mQuickSelectViewController = self->mQuickSelectViewController;
     self->mQuickSelectViewController = v9;
 
-    v11 = [(CRLiOSCanvasViewController *)self delegate];
+    delegate3 = [(CRLiOSCanvasViewController *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(CRLiOSCanvasViewController *)self delegate];
-      [v13 didEnterQuickSelectModeForCanvasViewController:self];
+      delegate4 = [(CRLiOSCanvasViewController *)self delegate];
+      [delegate4 didEnterQuickSelectModeForCanvasViewController:self];
     }
 
-    v14 = [(CRLiOSCanvasViewController *)self delegate];
+    delegate5 = [(CRLiOSCanvasViewController *)self delegate];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v16 = [(CRLiOSCanvasViewController *)self delegate];
-      v17 = [v16 quickSelectHUDParentViewForCanvasViewController:self];
+      delegate6 = [(CRLiOSCanvasViewController *)self delegate];
+      v17 = [delegate6 quickSelectHUDParentViewForCanvasViewController:self];
     }
 
     else
@@ -4450,24 +4450,24 @@ LABEL_12:
 
     v35 = v17;
     [(CRLiOSQuickSelectViewController *)self->mQuickSelectViewController presentOnCanvasViewController:self parentView:v17];
-    v21 = [(CRLiOSCanvasViewController *)self canvasView];
-    v20 = [v21 enclosingScrollView];
+    canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+    enclosingScrollView = [canvasView enclosingScrollView];
 
-    v22 = [v20 panGestureRecognizer];
-    self->mEnclosingScrollViewPanGestureMinimumTouchCountBeforeQuickSelect = [v22 minimumNumberOfTouches];
+    panGestureRecognizer = [enclosingScrollView panGestureRecognizer];
+    self->mEnclosingScrollViewPanGestureMinimumTouchCountBeforeQuickSelect = [panGestureRecognizer minimumNumberOfTouches];
 
-    v23 = [v20 panGestureRecognizer];
-    [v23 setMinimumNumberOfTouches:2];
+    panGestureRecognizer2 = [enclosingScrollView panGestureRecognizer];
+    [panGestureRecognizer2 setMinimumNumberOfTouches:2];
 
     self->mEditMenuTapGestureRecognizerEnabledBeforeQuickSelect = [(CRLiOSEditMenuTapGestureRecognizer *)self->mEditMenuTapGestureRecognizer isEnabled];
     [(CRLiOSEditMenuTapGestureRecognizer *)self->mEditMenuTapGestureRecognizer setEnabled:0];
-    v24 = [(CRLiOSCanvasViewController *)self delegate];
+    delegate7 = [(CRLiOSCanvasViewController *)self delegate];
     v25 = objc_opt_respondsToSelector();
 
     if (v25)
     {
-      v26 = [(CRLiOSCanvasViewController *)self delegate];
-      [v26 updateToolbarButtons];
+      delegate8 = [(CRLiOSCanvasViewController *)self delegate];
+      [delegate8 updateToolbarButtons];
     }
 
     v38 = 0u;
@@ -4475,10 +4475,10 @@ LABEL_12:
     v36 = 0u;
     v37 = 0u;
     WeakRetained = objc_loadWeakRetained(&self->mICC);
-    v28 = [WeakRetained canvas];
-    v29 = [v28 topLevelReps];
+    canvas = [WeakRetained canvas];
+    topLevelReps = [canvas topLevelReps];
 
-    v30 = [v29 countByEnumeratingWithState:&v36 objects:v40 count:16];
+    v30 = [topLevelReps countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v30)
     {
       v31 = v30;
@@ -4489,7 +4489,7 @@ LABEL_12:
         {
           if (*v37 != v32)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(topLevelReps);
           }
 
           v34 = *(*(&v36 + 1) + 8 * i);
@@ -4497,7 +4497,7 @@ LABEL_12:
           [v34 recursivelyPerformSelectorIfImplemented:"stopPlaybackIfNeeded"];
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v36 objects:v40 count:16];
+        v31 = [topLevelReps countByEnumeratingWithState:&v36 objects:v40 count:16];
       }
 
       while (v31);
@@ -4516,23 +4516,23 @@ LABEL_12:
   }
 }
 
-- (CGRect)visibleCanvasRectForQuickSelectViewController:(id)a3
+- (CGRect)visibleCanvasRectForQuickSelectViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  [v5 visibleScaledRectForCanvasUI];
+  controllerCopy = controller;
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  [interactiveCanvasController visibleScaledRectForCanvasUI];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(CRLiOSCanvasViewController *)self delegate];
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
   {
-    v16 = [(CRLiOSCanvasViewController *)self delegate];
-    [v16 safeInsetsForTemporaryHUDsToAvoidViewsObscuringCanvasScrollViewForCanvasViewController:self];
+    delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+    [delegate2 safeInsetsForTemporaryHUDsToAvoidViewsObscuringCanvasScrollViewForCanvasViewController:self];
     left = v17;
     bottom = v19;
     right = v21;
@@ -4560,7 +4560,7 @@ LABEL_12:
 
   v27 = v7 + v26;
   v28 = v11 - (v26 + v26);
-  if ([v4 isInCompactViewModeForCompactFrame:v23 andRegularSizeFrame:{v24, v11, v25, v27, v24, v28, v25}])
+  if ([controllerCopy isInCompactViewModeForCompactFrame:v23 andRegularSizeFrame:{v24, v11, v25, v27, v24, v28, v25}])
   {
     v27 = v23;
   }
@@ -4583,19 +4583,19 @@ LABEL_12:
 
 - (BOOL)allowedToEnterQuickSelectMode
 {
-  v3 = [(CRLiOSCanvasViewController *)self p_currentModeAllowsQuickSelect];
-  if (v3)
+  p_currentModeAllowsQuickSelect = [(CRLiOSCanvasViewController *)self p_currentModeAllowsQuickSelect];
+  if (p_currentModeAllowsQuickSelect)
   {
 
-    LOBYTE(v3) = [(CRLiOSCanvasViewController *)self p_editorAllowsQuickSelect];
+    LOBYTE(p_currentModeAllowsQuickSelect) = [(CRLiOSCanvasViewController *)self p_editorAllowsQuickSelect];
   }
 
-  return v3;
+  return p_currentModeAllowsQuickSelect;
 }
 
 - (BOOL)p_currentModeAllowsQuickSelect
 {
-  v3 = [(CRLiOSCanvasViewController *)self delegate];
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -4603,10 +4603,10 @@ LABEL_12:
     return 1;
   }
 
-  v5 = [(CRLiOSCanvasViewController *)self delegate];
-  v6 = [v5 currentDocumentMode];
+  delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+  currentDocumentMode = [delegate2 currentDocumentMode];
 
-  if (!v6)
+  if (!currentDocumentMode)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -4635,22 +4635,22 @@ LABEL_12:
     [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:2367 isFatal:0 description:"invalid nil value for '%{public}s'", "currentMode"];
   }
 
-  v10 = [v6 allowedToEnterQuickSelectModeForCanvasViewController:self];
+  v10 = [currentDocumentMode allowedToEnterQuickSelectModeForCanvasViewController:self];
 
   return v10;
 }
 
 - (BOOL)p_currentModeIsFind
 {
-  v3 = [(CRLiOSCanvasViewController *)self delegate];
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CRLiOSCanvasViewController *)self delegate];
-    v6 = [v5 currentDocumentMode];
+    delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+    currentDocumentMode = [delegate2 currentDocumentMode];
 
-    if (!v6)
+    if (!currentDocumentMode)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -4697,58 +4697,58 @@ LABEL_12:
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 1;
-  v2 = [(CRLiOSCanvasViewController *)self editorController];
+  editorController = [(CRLiOSCanvasViewController *)self editorController];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100385E58;
   v4[3] = &unk_101840680;
   v4[4] = &v5;
-  [v2 enumerateEditorsOnStackUsingBlock:v4];
+  [editorController enumerateEditorsOnStackUsingBlock:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(editorController) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return editorController;
 }
 
 - (void)p_leaveQuickSelectMode
 {
-  v3 = [(CRLiOSCanvasViewController *)self delegate];
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CRLiOSCanvasViewController *)self delegate];
-    [v5 willLeaveQuickSelectModeForCanvasViewController:self];
+    delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+    [delegate2 willLeaveQuickSelectModeForCanvasViewController:self];
   }
 
   [(CRLiOSQuickSelectViewController *)self->mQuickSelectViewController dismiss];
-  v6 = [(CRLiOSCanvasViewController *)self canvasView];
-  v7 = [v6 enclosingScrollView];
+  canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
 
   mEnclosingScrollViewPanGestureMinimumTouchCountBeforeQuickSelect = self->mEnclosingScrollViewPanGestureMinimumTouchCountBeforeQuickSelect;
-  v9 = [v7 panGestureRecognizer];
-  [v9 setMinimumNumberOfTouches:mEnclosingScrollViewPanGestureMinimumTouchCountBeforeQuickSelect];
+  panGestureRecognizer = [enclosingScrollView panGestureRecognizer];
+  [panGestureRecognizer setMinimumNumberOfTouches:mEnclosingScrollViewPanGestureMinimumTouchCountBeforeQuickSelect];
 
   [(CRLiOSEditMenuTapGestureRecognizer *)self->mEditMenuTapGestureRecognizer setEnabled:self->mEditMenuTapGestureRecognizerEnabledBeforeQuickSelect];
   mQuickSelectViewController = self->mQuickSelectViewController;
   self->mQuickSelectViewController = 0;
 
-  v11 = [(CRLiOSCanvasViewController *)self delegate];
-  LOBYTE(v9) = objc_opt_respondsToSelector();
+  delegate3 = [(CRLiOSCanvasViewController *)self delegate];
+  LOBYTE(panGestureRecognizer) = objc_opt_respondsToSelector();
 
-  if (v9)
+  if (panGestureRecognizer)
   {
-    v12 = [(CRLiOSCanvasViewController *)self delegate];
-    [v12 didLeaveQuickSelectModeForCanvasViewController:self];
+    delegate4 = [(CRLiOSCanvasViewController *)self delegate];
+    [delegate4 didLeaveQuickSelectModeForCanvasViewController:self];
   }
 
-  v13 = [(CRLiOSCanvasViewController *)self delegate];
+  delegate5 = [(CRLiOSCanvasViewController *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(CRLiOSCanvasViewController *)self delegate];
-    [v15 updateToolbarButtons];
+    delegate6 = [(CRLiOSCanvasViewController *)self delegate];
+    [delegate6 updateToolbarButtons];
   }
 
   v25 = 0u;
@@ -4756,10 +4756,10 @@ LABEL_12:
   v23 = 0u;
   v24 = 0u;
   WeakRetained = objc_loadWeakRetained(&self->mICC);
-  v17 = [WeakRetained canvas];
-  v18 = [v17 topLevelReps];
+  canvas = [WeakRetained canvas];
+  topLevelReps = [canvas topLevelReps];
 
-  v19 = [v18 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v19 = [topLevelReps countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v19)
   {
     v20 = v19;
@@ -4770,13 +4770,13 @@ LABEL_12:
       {
         if (*v24 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v23 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"invalidateKnobs"];
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v20 = [topLevelReps countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v20);
@@ -4787,8 +4787,8 @@ LABEL_12:
 
 - (CGRect)visibleScaledRectForCanvasUI
 {
-  v2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  [v2 visibleScaledRectForCanvasUI];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  [interactiveCanvasController visibleScaledRectForCanvasUI];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -4807,31 +4807,31 @@ LABEL_12:
 
 - (CRLEditorController)editorController
 {
-  v2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v3 = [v2 editorController];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
 
-  return v3;
+  return editorController;
 }
 
-- (void)didDismissQuickSelectViewController:(id)a3
+- (void)didDismissQuickSelectViewController:(id)controller
 {
-  if (self->mQuickSelectViewController == a3)
+  if (self->mQuickSelectViewController == controller)
   {
     v4 = [(CRLiOSCanvasViewController *)self shouldExitQuickSelectModeForQuickSelectViewController:?];
     [(CRLiOSCanvasViewController *)self leaveQuickSelectModeIfNeeded];
     if ((v4 & 1) == 0)
     {
-      v5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-      v6 = [v5 editingDisabled];
+      interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+      editingDisabled = [interactiveCanvasController editingDisabled];
 
-      if ((v6 & 1) == 0)
+      if ((editingDisabled & 1) == 0)
       {
-        v7 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-        v8 = [v7 selectionModelTranslator];
-        v9 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-        v10 = [v9 editorController];
-        v11 = [v10 selectionPath];
-        v12 = [v8 boardItemsForSelectionPath:v11];
+        interactiveCanvasController2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+        selectionModelTranslator = [interactiveCanvasController2 selectionModelTranslator];
+        interactiveCanvasController3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+        editorController = [interactiveCanvasController3 editorController];
+        selectionPath = [editorController selectionPath];
+        v12 = [selectionModelTranslator boardItemsForSelectionPath:selectionPath];
         v13 = [v12 count];
 
         if (v13)
@@ -4849,18 +4849,18 @@ LABEL_12:
   if (!self->mAlignmentController)
   {
     v3 = [[_TtC8Freeform30CRLiOSAlignmentToolsController alloc] initWithDelegate:self];
-    v4 = [(CRLiOSAlignmentToolsController *)v3 viewController];
-    [(CRLiOSCanvasViewController *)self presentViewController:v4 animated:1 completion:0];
+    viewController = [(CRLiOSAlignmentToolsController *)v3 viewController];
+    [(CRLiOSCanvasViewController *)self presentViewController:viewController animated:1 completion:0];
 
     mAlignmentController = self->mAlignmentController;
     self->mAlignmentController = v3;
   }
 }
 
-- (void)userDismissedAlignmentToolsController:(id)a3
+- (void)userDismissedAlignmentToolsController:(id)controller
 {
   mAlignmentController = self->mAlignmentController;
-  if (mAlignmentController != a3)
+  if (mAlignmentController != controller)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -4894,11 +4894,11 @@ LABEL_12:
   self->mAlignmentController = 0;
 }
 
-- (void)alignmentToolsControllerShouldDismiss:(id)a3
+- (void)alignmentToolsControllerShouldDismiss:(id)dismiss
 {
-  v4 = a3;
-  mAlignmentController = v4;
-  if (self->mAlignmentController != v4)
+  dismissCopy = dismiss;
+  mAlignmentController = dismissCopy;
+  if (self->mAlignmentController != dismissCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -4963,12 +4963,12 @@ LABEL_12:
   if (self->mAlignmentController)
   {
 LABEL_21:
-    v12 = [(CRLiOSCanvasViewController *)self presentedViewController];
-    v13 = [(CRLiOSAlignmentToolsController *)self->mAlignmentController viewController];
+    presentedViewController = [(CRLiOSCanvasViewController *)self presentedViewController];
+    viewController = [(CRLiOSAlignmentToolsController *)self->mAlignmentController viewController];
 
-    if (v12 == v13)
+    if (presentedViewController == viewController)
     {
-      [v12 dismissViewControllerAnimated:1 completion:0];
+      [presentedViewController dismissViewControllerAnimated:1 completion:0];
     }
 
     v14 = self->mAlignmentController;
@@ -4978,41 +4978,41 @@ LABEL_21:
 
 - (BOOL)inRestrictedGestureMode
 {
-  v2 = [(CRLiOSCanvasViewController *)self delegate];
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 currentDocumentMode];
-    v4 = v3;
-    if (v3)
+    currentDocumentMode = [delegate currentDocumentMode];
+    v4 = currentDocumentMode;
+    if (currentDocumentMode)
     {
-      v5 = [v3 wantsCanvasInRestrictedGestureMode];
+      wantsCanvasInRestrictedGestureMode = [currentDocumentMode wantsCanvasInRestrictedGestureMode];
     }
 
     else
     {
-      v5 = 0;
+      wantsCanvasInRestrictedGestureMode = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    wantsCanvasInRestrictedGestureMode = 0;
   }
 
-  return v5;
+  return wantsCanvasInRestrictedGestureMode;
 }
 
-- (BOOL)allowGestureInRestrictedGestureMode:(id)a3
+- (BOOL)allowGestureInRestrictedGestureMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(CRLiOSCanvasViewController *)self delegate];
+  modeCopy = mode;
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 currentDocumentMode];
-    v7 = v6;
-    if (v6)
+    currentDocumentMode = [delegate currentDocumentMode];
+    v7 = currentDocumentMode;
+    if (currentDocumentMode)
     {
-      v8 = [v6 allowGestureInRestrictedGestureMode:v4];
+      v8 = [currentDocumentMode allowGestureInRestrictedGestureMode:modeCopy];
     }
 
     else
@@ -5040,9 +5040,9 @@ LABEL_21:
   }
 
   v5 = objc_loadWeakRetained(&self->mDelegate);
-  v6 = [v5 inInspectorPanZoomMode];
+  inInspectorPanZoomMode = [v5 inInspectorPanZoomMode];
 
-  return v6;
+  return inInspectorPanZoomMode;
 }
 
 - (BOOL)inInspectorTextEditingMode
@@ -5056,24 +5056,24 @@ LABEL_21:
   }
 
   v5 = objc_loadWeakRetained(&self->mDelegate);
-  v6 = [v5 inInspectorTextEditingMode];
+  inInspectorTextEditingMode = [v5 inInspectorTextEditingMode];
 
-  return v6;
+  return inInspectorTextEditingMode;
 }
 
-- (void)addInspectorPanZoomModeGRsToArray:(id)a3
+- (void)addInspectorPanZoomModeGRsToArray:(id)array
 {
-  v7 = a3;
-  v4 = [(CRLiOSCanvasViewController *)self zoomGestureRecognizer];
-  [v7 addObject:v4];
+  arrayCopy = array;
+  zoomGestureRecognizer = [(CRLiOSCanvasViewController *)self zoomGestureRecognizer];
+  [arrayCopy addObject:zoomGestureRecognizer];
 
-  v5 = [(CRLiOSCanvasViewController *)self singleTapGestureRecognizer];
-  [v7 addObject:v5];
+  singleTapGestureRecognizer = [(CRLiOSCanvasViewController *)self singleTapGestureRecognizer];
+  [arrayCopy addObject:singleTapGestureRecognizer];
 
   if ([(CRLiOSCanvasViewController *)self inMediaBrowsingMode])
   {
-    v6 = [(CRLiOSCanvasViewController *)self knobDragGestureRecognizer];
-    [v7 addObject:v6];
+    knobDragGestureRecognizer = [(CRLiOSCanvasViewController *)self knobDragGestureRecognizer];
+    [arrayCopy addObject:knobDragGestureRecognizer];
   }
 }
 
@@ -5088,17 +5088,17 @@ LABEL_21:
   }
 
   v5 = objc_loadWeakRetained(&self->mDelegate);
-  v6 = [v5 inMediaBrowsingMode];
+  inMediaBrowsingMode = [v5 inMediaBrowsingMode];
 
-  return v6;
+  return inMediaBrowsingMode;
 }
 
-- (void)p_handlePencilDown:(id)a3
+- (void)p_handlePencilDown:(id)down
 {
-  v4 = a3;
+  downCopy = down;
   WeakRetained = objc_loadWeakRetained(&self->mICC);
-  v6 = [(CRLiOSCanvasViewController *)self canvasView];
-  [v4 locationInView:v6];
+  canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+  [downCopy locationInView:canvasView];
   v8 = v7;
   v10 = v9;
 
@@ -5107,31 +5107,31 @@ LABEL_21:
   v14 = v13;
 
   v15 = objc_loadWeakRetained(&self->mICC);
-  v16 = [v15 freehandDrawingToolkit];
-  v17 = [v16 freehandDrawingBehaviorForTouchType:2 atUnscaledPoint:{v12, v14}];
+  freehandDrawingToolkit = [v15 freehandDrawingToolkit];
+  v17 = [freehandDrawingToolkit freehandDrawingBehaviorForTouchType:2 atUnscaledPoint:{v12, v14}];
 
   if (v17 == 1)
   {
     v18 = objc_loadWeakRetained(&self->mICC);
-    v19 = [v18 canvasEditor];
+    canvasEditor = [v18 canvasEditor];
     v20 = +[NSSet set];
-    v25 = [v19 selectionPathWithInfos:v20];
+    v25 = [canvasEditor selectionPathWithInfos:v20];
 
     v21 = objc_loadWeakRetained(&self->mICC);
-    v22 = [v21 editorController];
-    [v22 setSelectionPath:v25];
+    editorController = [v21 editorController];
+    [editorController setSelectionPath:v25];
 
     v23 = objc_loadWeakRetained(&self->mICC);
-    v24 = [v23 freehandDrawingToolkit];
-    [v24 beginDrawingModeIfNeededForTouchType:2];
+    freehandDrawingToolkit2 = [v23 freehandDrawingToolkit];
+    [freehandDrawingToolkit2 beginDrawingModeIfNeededForTouchType:2];
   }
 }
 
-- (void)p_handleSingleTapGesture:(id)a3
+- (void)p_handleSingleTapGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   v5 = objc_opt_class();
-  v17 = sub_100014370(v5, v4);
+  v17 = sub_100014370(v5, gestureCopy);
 
   v6 = v17;
   if (v17)
@@ -5141,8 +5141,8 @@ LABEL_21:
     if (!v7)
     {
       v8 = objc_opt_class();
-      v9 = [(CRLiOSCanvasViewController *)self presentedViewController];
-      v10 = sub_100014370(v8, v9);
+      presentedViewController = [(CRLiOSCanvasViewController *)self presentedViewController];
+      v10 = sub_100014370(v8, presentedViewController);
 
       if (v10 && ([v10 isBeingDismissed] & 1) == 0)
       {
@@ -5169,23 +5169,23 @@ LABEL_21:
   }
 }
 
-- (void)p_zoomWithGesture:(id)a3
+- (void)p_zoomWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 state];
-  if (v5 == 3)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if (state == 3)
   {
     v9 = 0;
     v10 = 2;
   }
 
-  else if (v5 == 2)
+  else if (state == 2)
   {
     v9 = 1;
     v10 = 1;
   }
 
-  else if (v5 == 1)
+  else if (state == 1)
   {
     if (self->mCanvasZoomTracker)
     {
@@ -5229,51 +5229,51 @@ LABEL_21:
   if (!self->mCanvasZoomTracker)
   {
     v11 = [CRLCanvasZoomTracker alloc];
-    v12 = [(CRLiOSCanvasViewController *)self canvasLayer];
-    v13 = [(CRLCanvasZoomTracker *)v11 initWithCanvasLayer:v12];
+    canvasLayer = [(CRLiOSCanvasViewController *)self canvasLayer];
+    v13 = [(CRLCanvasZoomTracker *)v11 initWithCanvasLayer:canvasLayer];
     mCanvasZoomTracker = self->mCanvasZoomTracker;
     self->mCanvasZoomTracker = v13;
 
     [(CRLCanvasZoomTracker *)self->mCanvasZoomTracker setDelegate:self];
   }
 
-  v15 = [(CRLiOSCanvasViewController *)self canvasView];
-  v16 = [v15 superview];
-  [v4 locationInView:v16];
+  canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+  superview = [canvasView superview];
+  [gestureCopy locationInView:superview];
   v18 = v17;
   v20 = v19;
 
-  v21 = [(CRLiOSCanvasViewController *)self canvasView];
-  v22 = [(CRLiOSCanvasViewController *)self canvasView];
-  v23 = [v22 superview];
-  [v21 convertPoint:v23 fromView:{v18, v20}];
+  canvasView2 = [(CRLiOSCanvasViewController *)self canvasView];
+  canvasView3 = [(CRLiOSCanvasViewController *)self canvasView];
+  superview2 = [canvasView3 superview];
+  [canvasView2 convertPoint:superview2 fromView:{v18, v20}];
   v25 = v24;
   v27 = v26;
 
-  if (!v9 || [v4 numberOfTouches] == 2 || !objc_msgSend(v4, "numberOfTouches"))
+  if (!v9 || [gestureCopy numberOfTouches] == 2 || !objc_msgSend(gestureCopy, "numberOfTouches"))
   {
     v28 = self->mCanvasZoomTracker;
-    [v4 scale];
+    [gestureCopy scale];
     v30 = v29;
-    [v4 velocity];
+    [gestureCopy velocity];
     [(CRLCanvasZoomTracker *)v28 zoomWithScale:v10 velocity:v30 locationInView:v31 phase:v25, v27];
   }
 }
 
-- (void)canvasZoomTracker:(id)a3 willBeginViewScaleFeedbackWithZoomMethod:(int64_t)a4
+- (void)canvasZoomTracker:(id)tracker willBeginViewScaleFeedbackWithZoomMethod:(int64_t)method
 {
-  v40 = [(CRLiOSCanvasViewController *)self canvasView];
+  canvasView = [(CRLiOSCanvasViewController *)self canvasView];
   v6 = self->mZoomGestureRecognizer;
   v7 = v6;
-  self->mCanvasZoomMethod = a4;
-  if (a4 || [(CRLiOSCanvasZoomPinchGestureRecognizer *)v6 numberOfTouches]!= 2)
+  self->mCanvasZoomMethod = method;
+  if (method || [(CRLiOSCanvasZoomPinchGestureRecognizer *)v6 numberOfTouches]!= 2)
   {
-    v16 = [v40 enclosingScrollView];
-    [v16 center];
+    enclosingScrollView = [canvasView enclosingScrollView];
+    [enclosingScrollView center];
     v18 = v17;
     v20 = v19 + -120.0;
-    v21 = [v16 superview];
-    [v21 convertPoint:v40 toView:{v18, v20}];
+    superview = [enclosingScrollView superview];
+    [superview convertPoint:canvasView toView:{v18, v20}];
     v13 = v22;
     v15 = v23;
 
@@ -5283,10 +5283,10 @@ LABEL_21:
 
   else
   {
-    [(CRLiOSCanvasZoomPinchGestureRecognizer *)v7 locationOfTouch:0 inView:v40];
+    [(CRLiOSCanvasZoomPinchGestureRecognizer *)v7 locationOfTouch:0 inView:canvasView];
     v9 = v8;
     v11 = v10;
-    [(CRLiOSCanvasZoomPinchGestureRecognizer *)v7 locationOfTouch:1 inView:v40];
+    [(CRLiOSCanvasZoomPinchGestureRecognizer *)v7 locationOfTouch:1 inView:canvasView];
     v13 = v12;
     v15 = v14;
   }
@@ -5338,21 +5338,21 @@ LABEL_21:
   self->mLastZoomHUDLocation.y = v39;
 }
 
-- (void)canvasZoomTracker:(id)a3 willUpdateViewScaleFeedbackWithScale:(double)a4
+- (void)canvasZoomTracker:(id)tracker willUpdateViewScaleFeedbackWithScale:(double)scale
 {
-  v19 = [(CRLiOSCanvasViewController *)self canvasLayer];
-  [v19 minimumPinchViewScale];
+  canvasLayer = [(CRLiOSCanvasViewController *)self canvasLayer];
+  [canvasLayer minimumPinchViewScale];
   v7 = v6;
-  [v19 maximumPinchViewScale];
-  v9 = sub_1004C3240(a4, v7, v8);
-  v10 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v11 = [v10 i_descriptionForViewScale:self->mCanvasZoomMethod zoomMethod:v9];
+  [canvasLayer maximumPinchViewScale];
+  v9 = sub_1004C3240(scale, v7, v8);
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  v11 = [interactiveCanvasController i_descriptionForViewScale:self->mCanvasZoomMethod zoomMethod:v9];
 
-  v12 = [(CRLiOSCanvasViewController *)self delegate];
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v13 = [(CRLiOSCanvasViewController *)self delegate];
-    v14 = [v13 allowsZoomHUD] ^ 1;
+    delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+    v14 = [delegate2 allowsZoomHUD] ^ 1;
   }
 
   else
@@ -5373,12 +5373,12 @@ LABEL_21:
     [v16 setLabelText:v11];
 
     v17 = +[CRLCanvasHUDController sharedHUDController];
-    v18 = [(CRLiOSCanvasViewController *)self canvasView];
-    [v17 showHUDForKey:self forTouchPoint:v18 inCanvasView:1 withUpwardsNudge:self->mLastZoomHUDLocation.x size:{self->mLastZoomHUDLocation.y, 0.0}];
+    canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+    [v17 showHUDForKey:self forTouchPoint:canvasView inCanvasView:1 withUpwardsNudge:self->mLastZoomHUDLocation.x size:{self->mLastZoomHUDLocation.y, 0.0}];
   }
 }
 
-- (void)canvasZoomTrackerDidEndViewScaleFeedback:(id)a3
+- (void)canvasZoomTrackerDidEndViewScaleFeedback:(id)feedback
 {
   v4 = +[CRLCanvasHUDController sharedHUDController];
   [v4 hideHUDForKey:self];
@@ -5407,60 +5407,60 @@ LABEL_21:
   return result;
 }
 
-- (void)canvasZoomTrackerWillBeginFinalZoomAnimation:(id)a3
+- (void)canvasZoomTrackerWillBeginFinalZoomAnimation:(id)animation
 {
-  v4 = [(CRLiOSCanvasViewController *)self crl_windowWrapper];
-  v5 = [v4 newWrapperBeginningIgnoringUserInteractionSafely];
+  crl_windowWrapper = [(CRLiOSCanvasViewController *)self crl_windowWrapper];
+  newWrapperBeginningIgnoringUserInteractionSafely = [crl_windowWrapper newWrapperBeginningIgnoringUserInteractionSafely];
 
-  [(CRLiOSCanvasViewController *)self setZoomTrackerIgnoreInteractionEventsSafeWrapper:v5];
+  [(CRLiOSCanvasViewController *)self setZoomTrackerIgnoreInteractionEventsSafeWrapper:newWrapperBeginningIgnoringUserInteractionSafely];
 }
 
-- (void)canvasZoomTrackerDidEndFinalZoomAnimation:(id)a3
+- (void)canvasZoomTrackerDidEndFinalZoomAnimation:(id)animation
 {
-  v4 = [(CRLiOSCanvasViewController *)self zoomTrackerIgnoreInteractionEventsSafeWrapper];
-  [v4 endIgnoringUserInteractionSafely];
+  zoomTrackerIgnoreInteractionEventsSafeWrapper = [(CRLiOSCanvasViewController *)self zoomTrackerIgnoreInteractionEventsSafeWrapper];
+  [zoomTrackerIgnoreInteractionEventsSafeWrapper endIgnoringUserInteractionSafely];
 
   [(CRLiOSCanvasViewController *)self setZoomTrackerIgnoreInteractionEventsSafeWrapper:0];
 }
 
-- (void)canvasZoomTrackerDidFinish:(id)a3
+- (void)canvasZoomTrackerDidFinish:(id)finish
 {
   [(CRLCanvasZoomTracker *)self->mCanvasZoomTracker setDelegate:0];
   mCanvasZoomTracker = self->mCanvasZoomTracker;
   self->mCanvasZoomTracker = 0;
 }
 
-- (id)p_willPresentError:(id)a3
+- (id)p_willPresentError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 localizedRecoveryOptions];
-  v5 = v4;
-  if (v4 && [v4 count])
+  errorCopy = error;
+  localizedRecoveryOptions = [errorCopy localizedRecoveryOptions];
+  v5 = localizedRecoveryOptions;
+  if (localizedRecoveryOptions && [localizedRecoveryOptions count])
   {
-    v6 = [v3 recoveryAttempter];
-    if (!v6 || (objc_opt_respondsToSelector() & 1) == 0 && (objc_opt_respondsToSelector() & 1) == 0)
+    recoveryAttempter = [errorCopy recoveryAttempter];
+    if (!recoveryAttempter || (objc_opt_respondsToSelector() & 1) == 0 && (objc_opt_respondsToSelector() & 1) == 0)
     {
-      v7 = [v3 userInfo];
-      v8 = [v7 mutableCopy];
+      userInfo = [errorCopy userInfo];
+      v8 = [userInfo mutableCopy];
 
       [v8 removeObjectForKey:NSLocalizedRecoverySuggestionErrorKey];
       [v8 removeObjectForKey:NSLocalizedRecoveryOptionsErrorKey];
       [v8 removeObjectForKey:NSRecoveryAttempterErrorKey];
-      v9 = [v3 domain];
-      v10 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v9, [v3 code], v8);
+      domain = [errorCopy domain];
+      v10 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain, [errorCopy code], v8);
 
-      v3 = v10;
+      errorCopy = v10;
     }
   }
 
-  return v3;
+  return errorCopy;
 }
 
-- (void)presentError:(id)a3 completionHandler:(id)a4
+- (void)presentError:(id)error completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(CRLiOSCanvasViewController *)self p_willPresentError:a3];
-  v8 = [_TtC8Freeform32CRLSelectionAwareAlertController crl_alertControllerWithError:v7 preferredStyle:1 completion:v6];
+  handlerCopy = handler;
+  v7 = [(CRLiOSCanvasViewController *)self p_willPresentError:error];
+  v8 = [_TtC8Freeform32CRLSelectionAwareAlertController crl_alertControllerWithError:v7 preferredStyle:1 completion:handlerCopy];
 
   if (qword_101AD5A28 != -1)
   {
@@ -5471,18 +5471,18 @@ LABEL_21:
   if (os_log_type_enabled(off_1019EDA80, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [v8 title];
-    v12 = [v8 message];
+    title = [v8 title];
+    message = [v8 message];
     *buf = 138412546;
-    v18 = v11;
+    v18 = title;
     v19 = 2112;
-    v20 = v12;
+    v20 = message;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "title: %@, message: %@", buf, 0x16u);
   }
 
-  v13 = [(CRLiOSCanvasViewController *)self presentedViewController];
-  v14 = [v13 isBeingDismissed];
-  if (!v13 || (v14 & 1) != 0)
+  presentedViewController = [(CRLiOSCanvasViewController *)self presentedViewController];
+  isBeingDismissed = [presentedViewController isBeingDismissed];
+  if (!presentedViewController || (isBeingDismissed & 1) != 0)
   {
     [(CRLiOSCanvasViewController *)self presentViewController:v8 animated:1 completion:0];
   }
@@ -5499,38 +5499,38 @@ LABEL_21:
   }
 }
 
-- (void)presentErrors:(id)a3 withLocalizedDescription:(id)a4 completionHandler:(id)a5
+- (void)presentErrors:(id)errors withLocalizedDescription:(id)description completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] == 1)
+  errorsCopy = errors;
+  descriptionCopy = description;
+  handlerCopy = handler;
+  if ([errorsCopy count] == 1)
   {
-    v11 = [v8 firstObject];
+    firstObject = [errorsCopy firstObject];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100387E0C;
     v20[3] = &unk_10183D168;
     v12 = &v21;
-    v21 = v10;
-    v13 = [_TtC8Freeform32CRLSelectionAwareAlertController crl_alertControllerWithError:v11 preferredStyle:1 completion:v20];
+    v21 = handlerCopy;
+    v13 = [_TtC8Freeform32CRLSelectionAwareAlertController crl_alertControllerWithError:firstObject preferredStyle:1 completion:v20];
   }
 
   else
   {
-    v13 = [_TtC8Freeform32CRLSelectionAwareAlertController alertControllerWithTitle:v9 message:0 preferredStyle:1];
+    v13 = [_TtC8Freeform32CRLSelectionAwareAlertController alertControllerWithTitle:descriptionCopy message:0 preferredStyle:1];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100387E24;
     v18[3] = &unk_101840470;
     v12 = &v19;
-    v19 = v10;
+    v19 = handlerCopy;
     [v13 crl_addSimpleOKButtonWithHandler:v18];
   }
 
-  v14 = [(CRLiOSCanvasViewController *)self presentedViewController];
-  v15 = v14;
-  if (v14 && ([v14 isBeingDismissed] & 1) == 0)
+  presentedViewController = [(CRLiOSCanvasViewController *)self presentedViewController];
+  v15 = presentedViewController;
+  if (presentedViewController && ([presentedViewController isBeingDismissed] & 1) == 0)
   {
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -5547,11 +5547,11 @@ LABEL_21:
   }
 }
 
-- (id)beginModalOperationWithLocalizedMessage:(id)a3 progress:(id)a4 cancelHandler:(id)a5
+- (id)beginModalOperationWithLocalizedMessage:(id)message progress:(id)progress cancelHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  progressCopy = progress;
+  handlerCopy = handler;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -5581,8 +5581,8 @@ LABEL_21:
     [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:2814 isFatal:0 description:"Modal operations must be started on the main thread, "];
   }
 
-  v14 = [(CRLiOSCanvasViewController *)self userDialogPresenter];
-  if (!v14)
+  userDialogPresenter = [(CRLiOSCanvasViewController *)self userDialogPresenter];
+  if (!userDialogPresenter)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -5611,16 +5611,16 @@ LABEL_21:
     [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:2818 isFatal:0 description:"invalid nil value for '%{public}s'", "modalOperationPresenter"];
   }
 
-  v18 = [v14 beginModalOperationWithLocalizedMessage:v8 progress:v9 cancelHandler:v10];
+  v18 = [userDialogPresenter beginModalOperationWithLocalizedMessage:messageCopy progress:progressCopy cancelHandler:handlerCopy];
 
   return v18;
 }
 
-- (id)beginModalOperationWithPresentedLocalizedMessage:(id)a3 progress:(id)a4 cancelHandler:(id)a5
+- (id)beginModalOperationWithPresentedLocalizedMessage:(id)message progress:(id)progress cancelHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  progressCopy = progress;
+  handlerCopy = handler;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -5650,8 +5650,8 @@ LABEL_21:
     [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:2825 isFatal:0 description:"Modal operations must be started on the main thread, "];
   }
 
-  v14 = [(CRLiOSCanvasViewController *)self userDialogPresenter];
-  if (!v14)
+  userDialogPresenter = [(CRLiOSCanvasViewController *)self userDialogPresenter];
+  if (!userDialogPresenter)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -5680,14 +5680,14 @@ LABEL_21:
     [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:2829 isFatal:0 description:"invalid nil value for '%{public}s'", "modalOperationPresenter"];
   }
 
-  v18 = [v14 beginModalOperationWithPresentedLocalizedMessage:v8 progress:v9 cancelHandler:v10];
+  v18 = [userDialogPresenter beginModalOperationWithPresentedLocalizedMessage:messageCopy progress:progressCopy cancelHandler:handlerCopy];
 
   return v18;
 }
 
-- (void)endModalOperationWithToken:(id)a3
+- (void)endModalOperationWithToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -5717,8 +5717,8 @@ LABEL_21:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:2835 isFatal:0 description:"Modal operations must be ended on the main thread, "];
   }
 
-  v8 = [(CRLiOSCanvasViewController *)self userDialogPresenter];
-  if (!v8)
+  userDialogPresenter = [(CRLiOSCanvasViewController *)self userDialogPresenter];
+  if (!userDialogPresenter)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -5747,38 +5747,38 @@ LABEL_21:
     [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:2839 isFatal:0 description:"invalid nil value for '%{public}s'", "modalOperationPresenter"];
   }
 
-  [v8 endModalOperationWithToken:v4];
+  [userDialogPresenter endModalOperationWithToken:tokenCopy];
 }
 
-- (void)presentMediaCompatibilityAlertWithReasons:(int64_t)a3 forMediaType:(int64_t)a4 forSingleMediaObject:(BOOL)a5 completionHandler:(id)a6
+- (void)presentMediaCompatibilityAlertWithReasons:(int64_t)reasons forMediaType:(int64_t)type forSingleMediaObject:(BOOL)object completionHandler:(id)handler
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = [(CRLiOSCanvasViewController *)self userDialogPresenter];
-  [v11 presentMediaCompatibilityAlertWithReasons:a3 forMediaType:a4 forSingleMediaObject:v6 completionHandler:v10];
+  objectCopy = object;
+  handlerCopy = handler;
+  userDialogPresenter = [(CRLiOSCanvasViewController *)self userDialogPresenter];
+  [userDialogPresenter presentMediaCompatibilityAlertWithReasons:reasons forMediaType:type forSingleMediaObject:objectCopy completionHandler:handlerCopy];
 }
 
-- (void)didSetDocumentToMode:(id)a3 fromMode:(id)a4 animated:(BOOL)a5
+- (void)didSetDocumentToMode:(id)mode fromMode:(id)fromMode animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 knobValidatorBlock];
-  v10 = [(CRLiOSCanvasViewController *)self knobDragGestureRecognizer];
-  [v10 setKnobValidatorBlock:v9];
+  modeCopy = mode;
+  fromModeCopy = fromMode;
+  knobValidatorBlock = [modeCopy knobValidatorBlock];
+  knobDragGestureRecognizer = [(CRLiOSCanvasViewController *)self knobDragGestureRecognizer];
+  [knobDragGestureRecognizer setKnobValidatorBlock:knobValidatorBlock];
 
-  if ([v7 wantsToSuppressMiniFormatter] && (objc_msgSend(v8, "wantsToSuppressMiniFormatter") & 1) == 0)
+  if ([modeCopy wantsToSuppressMiniFormatter] && (objc_msgSend(fromModeCopy, "wantsToSuppressMiniFormatter") & 1) == 0)
   {
-    v11 = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
-    [v11 dismissMiniFormatter];
+    miniFormatterPresenter = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
+    [miniFormatterPresenter dismissMiniFormatter];
     goto LABEL_7;
   }
 
-  if (([v7 wantsToSuppressMiniFormatter] & 1) == 0 && objc_msgSend(v8, "wantsToSuppressMiniFormatter"))
+  if (([modeCopy wantsToSuppressMiniFormatter] & 1) == 0 && objc_msgSend(fromModeCopy, "wantsToSuppressMiniFormatter"))
   {
-    v11 = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
-    v12 = [(CRLiOSCanvasViewController *)self editorController];
-    v13 = [v12 selectionPath];
-    [v11 presentMiniFormatterForSelectionPath:v13];
+    miniFormatterPresenter = [(CRLiOSCanvasViewController *)self miniFormatterPresenter];
+    editorController = [(CRLiOSCanvasViewController *)self editorController];
+    selectionPath = [editorController selectionPath];
+    [miniFormatterPresenter presentMiniFormatterForSelectionPath:selectionPath];
 
 LABEL_7:
   }
@@ -5787,11 +5787,11 @@ LABEL_7:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v15 = [v14 canvas];
-  v16 = [v15 topLevelReps];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  canvas = [interactiveCanvasController canvas];
+  topLevelReps = [canvas topLevelReps];
 
-  v17 = [v16 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v17 = [topLevelReps countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v17)
   {
     v18 = v17;
@@ -5802,21 +5802,21 @@ LABEL_7:
       {
         if (*v24 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v23 + 1) + 8 * i) recursivelyPerformSelector:"documentModeDidChange"];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v18 = [topLevelReps countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v18);
   }
 
-  v21 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v22 = [v21 drawingIntelligenceProvider];
-  [v22 documentModeDidChange];
+  interactiveCanvasController2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  drawingIntelligenceProvider = [interactiveCanvasController2 drawingIntelligenceProvider];
+  [drawingIntelligenceProvider documentModeDidChange];
 }
 
 - (_TtC8Freeform28CRLiOSMiniFormatterPresenter)miniFormatterPresenter
@@ -5832,9 +5832,9 @@ LABEL_7:
     else
     {
       v4 = [_TtC8Freeform28CRLiOSMiniFormatterPresenter alloc];
-      v5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-      v6 = [v5 editorController];
-      v7 = [(CRLiOSMiniFormatterPresenter *)v4 initWithEditorController:v6 canvasLayerHosting:self];
+      interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+      editorController = [interactiveCanvasController editorController];
+      v7 = [(CRLiOSMiniFormatterPresenter *)v4 initWithEditorController:editorController canvasLayerHosting:self];
       v8 = self->_miniFormatterPresenter;
       self->_miniFormatterPresenter = v7;
 
@@ -5847,23 +5847,23 @@ LABEL_7:
 
 - (void)updateToolbarButtons
 {
-  v3 = [(CRLiOSCanvasViewController *)self delegate];
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CRLiOSCanvasViewController *)self delegate];
-    [v5 updateToolbarButtons];
+    delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+    [delegate2 updateToolbarButtons];
   }
 }
 
-- (BOOL)p_shouldShowMiniFormatterForSelectionPath:(id)a3
+- (BOOL)p_shouldShowMiniFormatterForSelectionPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v6 = [v5 documentIsSharedReadOnly];
+  pathCopy = path;
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  documentIsSharedReadOnly = [interactiveCanvasController documentIsSharedReadOnly];
 
-  if (v6 & 1) != 0 || (-[CRLiOSCanvasViewController interactiveCanvasController](self, "interactiveCanvasController"), v7 = objc_claimAutoreleasedReturnValue(), [v7 layerHost], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "asiOSCVC"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isCurrentlyInQuickSelectMode"), v9, v8, v7, (v10))
+  if (documentIsSharedReadOnly & 1) != 0 || (-[CRLiOSCanvasViewController interactiveCanvasController](self, "interactiveCanvasController"), v7 = objc_claimAutoreleasedReturnValue(), [v7 layerHost], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "asiOSCVC"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isCurrentlyInQuickSelectMode"), v9, v8, v7, (v10))
   {
     v11 = 0;
   }
@@ -5871,8 +5871,8 @@ LABEL_7:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->mICC);
-    v13 = [WeakRetained selectionModelTranslator];
-    v14 = [v13 boardItemsForSelectionPath:v4];
+    selectionModelTranslator = [WeakRetained selectionModelTranslator];
+    v14 = [selectionModelTranslator boardItemsForSelectionPath:pathCopy];
 
     v11 = [v14 count] != 0;
   }
@@ -5886,8 +5886,8 @@ LABEL_7:
   if (!mPencilMediator)
   {
     v4 = [_TtC8Freeform20CRLiOSPencilMediator alloc];
-    v5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v6 = [(CRLiOSPencilMediator *)v4 initWithInteractiveCanvasController:v5];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    v6 = [(CRLiOSPencilMediator *)v4 initWithInteractiveCanvasController:interactiveCanvasController];
     v7 = self->mPencilMediator;
     self->mPencilMediator = v6;
 
@@ -5899,8 +5899,8 @@ LABEL_7:
 
 - (BOOL)shouldSelectAndScrollWithApplePencil
 {
-  v2 = [(CRLiOSCanvasViewController *)self delegate];
-  if (!v2)
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
+  if (!delegate)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -5929,9 +5929,9 @@ LABEL_7:
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:2918 isFatal:0 description:"invalid nil value for '%{public}s'", "delegate"];
   }
 
-  v6 = [v2 shouldSelectAndScrollWithApplePencil];
+  shouldSelectAndScrollWithApplePencil = [delegate shouldSelectAndScrollWithApplePencil];
 
-  return v6;
+  return shouldSelectAndScrollWithApplePencil;
 }
 
 - (void)endPreventingDefaultPencilBehaviors
@@ -5970,22 +5970,22 @@ LABEL_7:
 
 - (BOOL)isShowingRadialPalette
 {
-  v2 = [(CRLiOSCanvasViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
+  view = [(CRLiOSCanvasViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  if (v4)
+  if (windowScene)
   {
-    v5 = [PKPencilSqueezeInteraction _existingInteractionForWindowScene:v4];
-    v6 = [v5 _paletteViewVisible];
+    v5 = [PKPencilSqueezeInteraction _existingInteractionForWindowScene:windowScene];
+    _paletteViewVisible = [v5 _paletteViewVisible];
   }
 
   else
   {
-    v6 = 0;
+    _paletteViewVisible = 0;
   }
 
-  return v6;
+  return _paletteViewVisible;
 }
 
 - (UICanvasFeedbackGenerator)feedbackGenerator
@@ -5998,8 +5998,8 @@ LABEL_7:
 
   else
   {
-    v5 = [(CRLiOSCanvasViewController *)self canvasView];
-    if (!v5)
+    canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+    if (!canvasView)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -6028,7 +6028,7 @@ LABEL_7:
       [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:2960 isFatal:0 description:"invalid nil value for '%{public}s'", "canvasView"];
     }
 
-    v9 = [UICanvasFeedbackGenerator feedbackGeneratorForView:v5];
+    v9 = [UICanvasFeedbackGenerator feedbackGeneratorForView:canvasView];
     v10 = self->mFeedbackGenerator;
     self->mFeedbackGenerator = v9;
 
@@ -6040,46 +6040,46 @@ LABEL_7:
 
 - (void)i_startObservingFreehandDrawingToolkit
 {
-  v4 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v3 = [v4 freehandDrawingToolkit];
-  [v3 addToolkitObserver:self];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  freehandDrawingToolkit = [interactiveCanvasController freehandDrawingToolkit];
+  [freehandDrawingToolkit addToolkitObserver:self];
 }
 
 - (BOOL)isHandlingScribbleWriting
 {
-  v3 = [(CRLiOSCanvasViewController *)self scribbleInteraction];
-  if ([v3 isHandlingWriting])
+  scribbleInteraction = [(CRLiOSCanvasViewController *)self scribbleInteraction];
+  if ([scribbleInteraction isHandlingWriting])
   {
-    v4 = 1;
+    isHandlingWriting = 1;
   }
 
   else
   {
-    v5 = [(CRLiOSCanvasViewController *)self directScribbleInteraction];
-    v4 = [v5 isHandlingWriting];
+    directScribbleInteraction = [(CRLiOSCanvasViewController *)self directScribbleInteraction];
+    isHandlingWriting = [directScribbleInteraction isHandlingWriting];
   }
 
-  return v4;
+  return isHandlingWriting;
 }
 
 - (UITextInput)currentEditingTextInputResponder
 {
-  v2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v3 = [v2 textInputResponder];
-  v4 = [v3 editor];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  textInputResponder = [interactiveCanvasController textInputResponder];
+  editor = [textInputResponder editor];
   v5 = objc_opt_class();
-  v11 = sub_100303920(v4, v5, 1, v6, v7, v8, v9, v10, &OBJC_PROTOCOL___CRLEditor);
+  v11 = sub_100303920(editor, v5, 1, v6, v7, v8, v9, v10, &OBJC_PROTOCOL___CRLEditor);
 
   if (v11)
   {
     v12 = objc_opt_class();
-    v13 = [v2 editorController];
-    v14 = [v13 selectionForEditor:v11];
+    editorController = [interactiveCanvasController editorController];
+    v14 = [editorController selectionForEditor:v11];
     v15 = sub_100014370(v12, v14);
 
     if (v15 && [v15 range] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v16 = v3;
+      v16 = textInputResponder;
     }
 
     else
@@ -6098,49 +6098,49 @@ LABEL_7:
 
 - (BOOL)p_scribblePreventedRegardlessOfPoint
 {
-  v3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  if ([v3 editingDisabled] & 1) != 0 || (objc_msgSend(v3, "isInDynamicOperation"))
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  if ([interactiveCanvasController editingDisabled] & 1) != 0 || (objc_msgSend(interactiveCanvasController, "isInDynamicOperation"))
   {
-    v4 = 1;
+    shouldPreventDefaultPencilBehaviors = 1;
   }
 
   else
   {
-    v4 = [(CRLiOSCanvasViewController *)self shouldPreventDefaultPencilBehaviors];
+    shouldPreventDefaultPencilBehaviors = [(CRLiOSCanvasViewController *)self shouldPreventDefaultPencilBehaviors];
   }
 
-  return v4;
+  return shouldPreventDefaultPencilBehaviors;
 }
 
-- (BOOL)shouldBeginScribblingAtPoint:(CGPoint)a3
+- (BOOL)shouldBeginScribblingAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (![(CRLiOSCanvasViewController *)self p_scribblePreventedRegardlessOfPoint])
   {
-    v7 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    [v7 convertBoundsToUnscaledPoint:{x, y}];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    [interactiveCanvasController convertBoundsToUnscaledPoint:{x, y}];
     v9 = v8;
     v11 = v10;
-    v12 = [(CRLiOSCanvasViewController *)self delegate];
+    delegate = [(CRLiOSCanvasViewController *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(CRLiOSCanvasViewController *)self delegate];
-      v15 = [v14 currentDocumentMode];
-      v16 = [v15 pencilModeType];
+      delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+      currentDocumentMode = [delegate2 currentDocumentMode];
+      pencilModeType = [currentDocumentMode pencilModeType];
 
-      if (v16 == 1)
+      if (pencilModeType == 1)
       {
         goto LABEL_9;
       }
 
-      if (v16 == 2)
+      if (pencilModeType == 2)
       {
 LABEL_7:
-        v19 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-        v20 = [v19 hitKnobAtPoint:2 inputType:0 returningRep:{v9, v11}];
+        interactiveCanvasController2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+        v20 = [interactiveCanvasController2 hitKnobAtPoint:2 inputType:0 returningRep:{v9, v11}];
 
         if ([v20 worksWithStylus])
         {
@@ -6149,7 +6149,7 @@ LABEL_7:
 
         else
         {
-          v21 = [v7 hitRep:{v9, v11}];
+          v21 = [interactiveCanvasController hitRep:{v9, v11}];
           v22 = v21;
           if (v21 && ([v21 convertNaturalPointFromUnscaledCanvas:{v9, v11}], !objc_msgSend(v22, "shouldBeginScribbleAtPoint:")))
           {
@@ -6171,8 +6171,8 @@ LABEL_7:
       }
     }
 
-    v17 = [(CRLiOSCanvasViewController *)self pencilMediator];
-    v18 = [v17 pencilBehaviorOutsideModesAtUnscaledPoint:{v9, v11}];
+    pencilMediator = [(CRLiOSCanvasViewController *)self pencilMediator];
+    v18 = [pencilMediator pencilBehaviorOutsideModesAtUnscaledPoint:{v9, v11}];
 
     if (v18 == 2)
     {
@@ -6189,45 +6189,45 @@ LABEL_18:
   return 0;
 }
 
-- (id)containedScribbleElementForContainerScribbleElement:(id)a3
+- (id)containedScribbleElementForContainerScribbleElement:(id)element
 {
-  v8 = sub_1003035DC(a3, 1, a3, v3, v4, v5, v6, v7, &OBJC_PROTOCOL___CRLWPContainerTextEditingRep);
+  v8 = sub_1003035DC(element, 1, element, v3, v4, v5, v6, v7, &OBJC_PROTOCOL___CRLWPContainerTextEditingRep);
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 containedRep];
-    v11 = [v10 scribbleCapableElements];
-    v12 = [v11 lastObject];
+    containedRep = [v8 containedRep];
+    scribbleCapableElements = [containedRep scribbleCapableElements];
+    lastObject = [scribbleCapableElements lastObject];
   }
 
   else
   {
-    v12 = 0;
+    lastObject = 0;
   }
 
-  return v12;
+  return lastObject;
 }
 
-- (id)scribbleCapableElementsForRect:(CGRect)a3
+- (id)scribbleCapableElementsForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(CRLiOSCanvasViewController *)self p_scribblePreventedRegardlessOfPoint])
   {
-    v8 = &__NSArray0__struct;
+    height = &__NSArray0__struct;
   }
 
   else
   {
     v9 = objc_alloc_init(NSMutableArray);
-    v10 = [(CRLiOSCanvasViewController *)self p_allRepsForHitTestingOrdered];
+    p_allRepsForHitTestingOrdered = [(CRLiOSCanvasViewController *)self p_allRepsForHitTestingOrdered];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v11 = [p_allRepsForHitTestingOrdered countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v11)
     {
       v18 = v11;
@@ -6238,7 +6238,7 @@ LABEL_18:
         {
           if (*v25 != v19)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(p_allRepsForHitTestingOrdered);
           }
 
           v21 = *(*(&v24 + 1) + 8 * i);
@@ -6249,24 +6249,24 @@ LABEL_18:
           }
         }
 
-        v18 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v18 = [p_allRepsForHitTestingOrdered countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v18);
     }
 
-    v8 = [(CRLiOSCanvasViewController *)self _scribbleCapableElementsForReps:v9 forRect:x, y, width, height];
+    height = [(CRLiOSCanvasViewController *)self _scribbleCapableElementsForReps:v9 forRect:x, y, width, height];
   }
 
-  return v8;
+  return height;
 }
 
 - (id)p_allRepsForHitTestingOrdered
 {
-  v2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v3 = [v2 canvas];
-  v4 = [v3 topLevelReps];
-  v5 = [v4 mutableCopy];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  canvas = [interactiveCanvasController canvas];
+  topLevelReps = [canvas topLevelReps];
+  v5 = [topLevelReps mutableCopy];
 
   if ([v5 count])
   {
@@ -6274,10 +6274,10 @@ LABEL_18:
     do
     {
       v7 = [v5 objectAtIndexedSubscript:v6];
-      v8 = [v7 childRepsForHitTesting];
+      childRepsForHitTesting = [v7 childRepsForHitTesting];
 
-      v9 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", ++v6, [v8 count]);
-      [v5 insertObjects:v8 atIndexes:v9];
+      v9 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", ++v6, [childRepsForHitTesting count]);
+      [v5 insertObjects:childRepsForHitTesting atIndexes:v9];
     }
 
     while (v6 < [v5 count]);
@@ -6288,15 +6288,15 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)shouldIncludeObjectInScribbleCapableElements:(id)a3
+- (BOOL)shouldIncludeObjectInScribbleCapableElements:(id)elements
 {
-  v3 = a3;
+  elementsCopy = elements;
   v4 = objc_opt_class();
-  v5 = sub_100014370(v4, v3);
+  v5 = sub_100014370(v4, elementsCopy);
 
   v12 = sub_1003035DC(v5, 1, v6, v7, v8, v9, v10, v11, &OBJC_PROTOCOL___CRLWPContainerTextEditingRep);
-  v13 = [v5 parentRep];
-  v20 = sub_1003035DC(v13, 1, v14, v15, v16, v17, v18, v19, &OBJC_PROTOCOL___CRLWPContainerTextEditingRep);
+  parentRep = [v5 parentRep];
+  v20 = sub_1003035DC(parentRep, 1, v14, v15, v16, v17, v18, v19, &OBJC_PROTOCOL___CRLWPContainerTextEditingRep);
 
   if (v20)
   {
@@ -6313,9 +6313,9 @@ LABEL_18:
   return v22;
 }
 
-- (id)scribbleCapableElementWithIdentifier:(id)a3
+- (id)scribbleCapableElementWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(CRLiOSCanvasViewController *)self p_scribblePreventedRegardlessOfPoint])
   {
     v5 = 0;
@@ -6323,15 +6323,15 @@ LABEL_18:
 
   else
   {
-    v6 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v7 = [v6 canvas];
-    v8 = [v7 allRepsOrdered];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    canvas = [interactiveCanvasController canvas];
+    allRepsOrdered = [canvas allRepsOrdered];
 
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v9 = v8;
+    v9 = allRepsOrdered;
     v10 = [v9 countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v10)
     {
@@ -6357,7 +6357,7 @@ LABEL_18:
             v22 = v21;
             if (objc_opt_respondsToSelector())
             {
-              v23 = [v22 scribbleCapableElementWithIdentifier:v4];
+              v23 = [v22 scribbleCapableElementWithIdentifier:identifierCopy];
               if (v23)
               {
                 goto LABEL_28;
@@ -6366,12 +6366,12 @@ LABEL_18:
 
             else
             {
-              v24 = [v22 scribbleCapableElements];
+              scribbleCapableElements = [v22 scribbleCapableElements];
               v36 = 0u;
               v37 = 0u;
               v38 = 0u;
               v39 = 0u;
-              v25 = v24;
+              v25 = scribbleCapableElements;
               v23 = [v25 countByEnumeratingWithState:&v36 objects:v44 count:16];
               if (v23)
               {
@@ -6386,8 +6386,8 @@ LABEL_18:
                     }
 
                     v28 = *(*(&v36 + 1) + 8 * i);
-                    v29 = [v28 scribbleIdentifier];
-                    v30 = [v29 isEqual:v4];
+                    scribbleIdentifier = [v28 scribbleIdentifier];
+                    v30 = [scribbleIdentifier isEqual:identifierCopy];
 
                     if (v30)
                     {
@@ -6445,19 +6445,19 @@ LABEL_29:
   return v5;
 }
 
-- (id)_scribbleCapableElementsForReps:(id)a3 forRect:(CGRect)a4
+- (id)_scribbleCapableElementsForReps:(id)reps forRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  repsCopy = reps;
   v9 = objc_alloc_init(NSMutableArray);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v8;
+  obj = repsCopy;
   v10 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v10)
   {
@@ -6475,18 +6475,18 @@ LABEL_29:
         v14 = *(*(&v27 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v15 = [v14 scribbleCapableElementsForRect:{x, y, width, height}];
-          [v9 crl_addObjectsFromNonNilArray:v15];
+          scribbleCapableElements = [v14 scribbleCapableElementsForRect:{x, y, width, height}];
+          [v9 crl_addObjectsFromNonNilArray:scribbleCapableElements];
         }
 
         else
         {
-          v15 = [v14 scribbleCapableElements];
+          scribbleCapableElements = [v14 scribbleCapableElements];
           v23 = 0u;
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v16 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          v16 = [scribbleCapableElements countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v16)
           {
             v17 = v16;
@@ -6497,7 +6497,7 @@ LABEL_29:
               {
                 if (*v24 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(scribbleCapableElements);
                 }
 
                 v20 = *(*(&v23 + 1) + 8 * j);
@@ -6512,7 +6512,7 @@ LABEL_29:
                 }
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
+              v17 = [scribbleCapableElements countByEnumeratingWithState:&v23 objects:v31 count:16];
             }
 
             while (v17);
@@ -6529,13 +6529,13 @@ LABEL_29:
   return v9;
 }
 
-- (void)scribbleInteractionWillBeginWritingScribbleElementWillBeInserted:(BOOL)a3
+- (void)scribbleInteractionWillBeginWritingScribbleElementWillBeInserted:(BOOL)inserted
 {
-  v5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v6 = [v5 textInputResponder];
-  [v6 scribbleWillBegin];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  textInputResponder = [interactiveCanvasController textInputResponder];
+  [textInputResponder scribbleWillBegin];
 
-  if (!a3)
+  if (!inserted)
   {
 
     [(CRLiOSCanvasViewController *)self p_schedulePreventInsertScribbleElementTimer];
@@ -6545,23 +6545,23 @@ LABEL_29:
 - (void)scribbleInteractionDidFinishWriting
 {
   [(CRLiOSCanvasViewController *)self p_schedulePreventInsertScribbleElementTimer];
-  v3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v4 = [v3 textInputResponder];
-  [v4 reloadInputViews];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  textInputResponder = [interactiveCanvasController textInputResponder];
+  [textInputResponder reloadInputViews];
 
   if (![(CRLiOSCanvasViewController *)self wantsSystemInputAssistantForScribble])
   {
-    v5 = [(CRLiOSCanvasViewController *)self delegate];
+    delegate = [(CRLiOSCanvasViewController *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(CRLiOSCanvasViewController *)self delegate];
-      [v7 beginHandwritingModeIfNeeded];
+      delegate2 = [(CRLiOSCanvasViewController *)self delegate];
+      [delegate2 beginHandwritingModeIfNeeded];
     }
 
-    v8 = [(CRLiOSCanvasViewController *)self pencilMediator];
-    if (!v8)
+    pencilMediator = [(CRLiOSCanvasViewController *)self pencilMediator];
+    if (!pencilMediator)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -6590,17 +6590,17 @@ LABEL_29:
       [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:3226 isFatal:0 description:"invalid nil value for '%{public}s'", "pencilMediator"];
     }
 
-    [v8 markPencilUsedForMode:2];
-    v12 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v13 = [v12 textInputResponder];
-    [v13 scribbleDidEnd];
+    [pencilMediator markPencilUsedForMode:2];
+    interactiveCanvasController2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    textInputResponder2 = [interactiveCanvasController2 textInputResponder];
+    [textInputResponder2 scribbleDidEnd];
   }
 }
 
 - (void)p_schedulePreventInsertScribbleElementTimer
 {
-  v3 = [(CRLiOSCanvasViewController *)self preventInsertScribbleElementTimer];
-  [v3 invalidate];
+  preventInsertScribbleElementTimer = [(CRLiOSCanvasViewController *)self preventInsertScribbleElementTimer];
+  [preventInsertScribbleElementTimer invalidate];
 
   objc_initWeak(&location, self);
   v5 = _NSConcreteStackBlock;
@@ -6617,8 +6617,8 @@ LABEL_29:
 
 - (CGRect)rectForInsertingScribbleElements
 {
-  v2 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  [v2 visibleBoundsRect];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  [interactiveCanvasController visibleBoundsRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -6635,42 +6635,42 @@ LABEL_29:
   return result;
 }
 
-- (BOOL)canInsertScribbleElementAtPoint:(CGPoint)a3
+- (BOOL)canInsertScribbleElementAtPoint:(CGPoint)point
 {
-  v4 = [(CRLiOSCanvasViewController *)self shouldBeginScribblingAtPoint:a3.x, a3.y];
+  v4 = [(CRLiOSCanvasViewController *)self shouldBeginScribblingAtPoint:point.x, point.y];
   if (v4)
   {
-    v5 = [(CRLiOSCanvasViewController *)self preventInsertScribbleElementTimer];
+    preventInsertScribbleElementTimer = [(CRLiOSCanvasViewController *)self preventInsertScribbleElementTimer];
 
-    LOBYTE(v4) = v5 == 0;
+    LOBYTE(v4) = preventInsertScribbleElementTimer == 0;
   }
 
   return v4;
 }
 
-- (id)insertedScribbleElementAtPoint:(CGPoint)a3
+- (id)insertedScribbleElementAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(CRLiOSCanvasViewController *)self canInsertScribbleElementAtPoint:?])
   {
-    v6 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    [v6 convertBoundsToUnscaledPoint:{x, y}];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    [interactiveCanvasController convertBoundsToUnscaledPoint:{x, y}];
     v8 = v7;
     v10 = v9;
     v11 = objc_opt_class();
     v12 = [(CRLiOSCanvasViewController *)self insertTextBoxForScribbleAtUnscaledCanvasPoint:v8, v10];
     v13 = sub_100014370(v11, v12);
 
-    v14 = [v13 scribbleCapableElements];
-    v15 = [v14 firstObject];
+    scribbleCapableElements = [v13 scribbleCapableElements];
+    firstObject = [scribbleCapableElements firstObject];
 
-    v16 = [v15 scribbleEditingBlock];
+    scribbleEditingBlock = [firstObject scribbleEditingBlock];
 
-    if (v16)
+    if (scribbleEditingBlock)
     {
-      v17 = [v15 scribbleEditingBlock];
-      v17[2](v17, 0, v8, v10);
+      scribbleEditingBlock2 = [firstObject scribbleEditingBlock];
+      scribbleEditingBlock2[2](scribbleEditingBlock2, 0, v8, v10);
     }
 
     [(CRLiOSCanvasViewController *)self p_schedulePreventInsertScribbleElementTimer];
@@ -6678,61 +6678,61 @@ LABEL_29:
 
   else
   {
-    v15 = 0;
+    firstObject = 0;
   }
 
-  return v15;
+  return firstObject;
 }
 
-- (id)insertTextBoxForScribbleAtUnscaledCanvasPoint:(CGPoint)a3
+- (id)insertTextBoxForScribbleAtUnscaledCanvasPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v6 = [v5 commandController];
-  [v6 openGroup];
-  [v6 enableProgressiveEnqueuingInCurrentGroup];
-  v7 = [v5 editingCoordinator];
-  v8 = [v7 boardItemFactory];
-  v9 = [v8 makeShapeItemWithShapeType:0];
+  y = point.y;
+  x = point.x;
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
+  [commandController openGroup];
+  [commandController enableProgressiveEnqueuingInCurrentGroup];
+  editingCoordinator = [interactiveCanvasController editingCoordinator];
+  boardItemFactory = [editingCoordinator boardItemFactory];
+  v9 = [boardItemFactory makeShapeItemWithShapeType:0];
 
   v10 = [CRLInsertionContext dragInsertionContextWithPreferredCenter:1 required:0 fromDragToInsertController:0 insertFloating:0 targetZOrder:x, y];
-  v11 = [v5 canvasEditor];
+  canvasEditor = [interactiveCanvasController canvasEditor];
   v46 = v9;
   v12 = [NSArray arrayWithObjects:&v46 count:1];
-  [v11 prepareGeometryForInsertingBoardItems:v12 withInsertionContext:v10];
+  [canvasEditor prepareGeometryForInsertingBoardItems:v12 withInsertionContext:v10];
 
-  v13 = [v5 canvasEditor];
+  canvasEditor2 = [interactiveCanvasController canvasEditor];
   v45 = v9;
   v14 = [NSArray arrayWithObjects:&v45 count:1];
   v39 = v10;
-  [v13 insertBoardItems:v14 withInsertionContext:v10 postProcessBlock:0];
+  [canvasEditor2 insertBoardItems:v14 withInsertionContext:v10 postProcessBlock:0];
 
   v15 = objc_opt_class();
   v16 = sub_100013F00(v15, v9);
-  v17 = [v16 text];
-  if (v17)
+  text = [v16 text];
+  if (text)
   {
     v18 = [_TtC8Freeform23CRLWPReplaceTextCommand alloc];
-    v19 = [v17 range];
-    v21 = [(CRLWPReplaceTextCommand *)v18 initWithShapeItem:v16 range:v19 text:v20, &stru_1018BCA28];
-    [v6 enqueueCommand:v21];
+    range = [text range];
+    v21 = [(CRLWPReplaceTextCommand *)v18 initWithShapeItem:v16 range:range text:v20, &stru_1018BCA28];
+    [commandController enqueueCommand:v21];
   }
 
   v38 = v16;
-  [v6 closeGroup];
-  v22 = [v5 canvas];
-  [v22 layoutInvalidated];
+  [commandController closeGroup];
+  canvas = [interactiveCanvasController canvas];
+  [canvas layoutInvalidated];
 
-  [v5 layoutIfNeeded];
-  v23 = [v5 canvas];
-  v24 = [v23 allRepsOrdered];
+  [interactiveCanvasController layoutIfNeeded];
+  canvas2 = [interactiveCanvasController canvas];
+  allRepsOrdered = [canvas2 allRepsOrdered];
 
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v25 = v24;
+  v25 = allRepsOrdered;
   v26 = [v25 countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v26)
   {
@@ -6748,9 +6748,9 @@ LABEL_5:
       }
 
       v30 = *(*(&v40 + 1) + 8 * v29);
-      v31 = [v30 info];
+      info = [v30 info];
 
-      if (v31 == v9)
+      if (info == v9)
       {
         break;
       }
@@ -6813,30 +6813,30 @@ LABEL_22:
   return v33;
 }
 
-- (void)insertStencilFromLibrary:(id)a3
+- (void)insertStencilFromLibrary:(id)library
 {
   v4 = objc_opt_new();
   [(CRLiOSCanvasViewController *)self p_presentStencilLibraryWithBoardItemsToSave:v4];
 }
 
-- (void)saveSelectedBoardItemsAsStencil:(id)a3
+- (void)saveSelectedBoardItemsAsStencil:(id)stencil
 {
-  v8 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v4 = [v8 selectionModelTranslator];
-  v5 = [v8 editorController];
-  v6 = [v5 selectionPath];
-  v7 = [v4 unlockedBoardItemsForSelectionPath:v6];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  selectionModelTranslator = [interactiveCanvasController selectionModelTranslator];
+  editorController = [interactiveCanvasController editorController];
+  selectionPath = [editorController selectionPath];
+  v7 = [selectionModelTranslator unlockedBoardItemsForSelectionPath:selectionPath];
 
   [(CRLiOSCanvasViewController *)self p_presentStencilLibraryWithBoardItemsToSave:v7];
 }
 
-- (void)p_presentStencilLibraryWithBoardItemsToSave:(id)a3
+- (void)p_presentStencilLibraryWithBoardItemsToSave:(id)save
 {
-  v4 = a3;
+  saveCopy = save;
   v5 = [_TtC8Freeform34CRLiOSStencilLibraryViewController alloc];
-  v6 = [(CRLiOSCanvasViewController *)self editingCoordinator];
-  v7 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v8 = [(CRLiOSStencilLibraryViewController *)v5 initWithEditingCoordinator:v6 interactiveCanvasController:v7 boardItemsToSave:v4];
+  editingCoordinator = [(CRLiOSCanvasViewController *)self editingCoordinator];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  v8 = [(CRLiOSStencilLibraryViewController *)v5 initWithEditingCoordinator:editingCoordinator interactiveCanvasController:interactiveCanvasController boardItemsToSave:saveCopy];
 
   [(CRLiOSStencilLibraryViewController *)v8 setModalPresentationStyle:2];
   [(CRLiOSStencilLibraryViewController *)v8 setModalInPresentation:1];
@@ -6858,19 +6858,19 @@ LABEL_22:
 - (BOOL)preserveEditorSelection
 {
   v3 = objc_opt_class();
-  v4 = [(CRLiOSCanvasViewController *)self delegate];
-  v5 = sub_100014370(v3, v4);
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
+  v5 = sub_100014370(v3, delegate);
 
-  v6 = [v5 presentedViewController];
-  if (!v6)
+  presentedViewController = [v5 presentedViewController];
+  if (!presentedViewController)
   {
-    v10 = [(CRLiOSCanvasViewController *)self delegate];
+    delegate2 = [(CRLiOSCanvasViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(CRLiOSCanvasViewController *)self delegate];
-      v12 = [v11 preserveEditorSelection];
+      delegate3 = [(CRLiOSCanvasViewController *)self delegate];
+      preserveEditorSelection = [delegate3 preserveEditorSelection];
 
-      if (v12)
+      if (preserveEditorSelection)
       {
         goto LABEL_11;
       }
@@ -6880,15 +6880,15 @@ LABEL_22:
     {
     }
 
-    v13 = [(CRLiOSCanvasViewController *)self crl_windowWrapper];
-    if ([v13 isInSplitViewMode])
+    crl_windowWrapper = [(CRLiOSCanvasViewController *)self crl_windowWrapper];
+    if ([crl_windowWrapper isInSplitViewMode])
     {
-      v14 = [(CRLiOSCanvasViewController *)self shouldPreserveEditorSelectionInSplitViewMode];
+      shouldPreserveEditorSelectionInSplitViewMode = [(CRLiOSCanvasViewController *)self shouldPreserveEditorSelectionInSplitViewMode];
 
-      if (v14)
+      if (shouldPreserveEditorSelectionInSplitViewMode)
       {
 LABEL_11:
-        v8 = 1;
+        wantsToPreserveEditorSelection = 1;
         goto LABEL_4;
       }
     }
@@ -6897,41 +6897,41 @@ LABEL_11:
     {
     }
 
-    v15 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-    v16 = [v15 editorController];
-    v7 = [v16 textInputEditor];
+    interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+    editorController = [interactiveCanvasController editorController];
+    textInputEditor = [editorController textInputEditor];
 
-    if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (textInputEditor && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v8 = [v7 wantsToPreserveEditorSelection];
+      wantsToPreserveEditorSelection = [textInputEditor wantsToPreserveEditorSelection];
     }
 
     else
     {
-      v8 = 0;
+      wantsToPreserveEditorSelection = 0;
     }
 
     goto LABEL_3;
   }
 
-  v7 = v6;
-  v8 = 1;
+  textInputEditor = presentedViewController;
+  wantsToPreserveEditorSelection = 1;
 LABEL_3:
 
 LABEL_4:
-  return v8;
+  return wantsToPreserveEditorSelection;
 }
 
 - (BOOL)shouldIgnoreKeyboardInput
 {
   v3 = objc_opt_class();
-  v4 = [(CRLiOSCanvasViewController *)self delegate];
-  v5 = sub_100014370(v3, v4);
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
+  v5 = sub_100014370(v3, delegate);
 
-  v6 = [v5 presentedViewController];
-  if (v6)
+  presentedViewController = [v5 presentedViewController];
+  if (presentedViewController)
   {
-    v7 = 1;
+    printerOptionsShowing = 1;
   }
 
   else
@@ -6940,21 +6940,21 @@ LABEL_4:
     if (objc_opt_respondsToSelector())
     {
       v9 = objc_loadWeakRetained(&self->mDelegate);
-      v7 = [v9 printerOptionsShowing];
+      printerOptionsShowing = [v9 printerOptionsShowing];
     }
 
     else
     {
-      v7 = 0;
+      printerOptionsShowing = 0;
     }
   }
 
-  v10 = [v5 presentedViewController];
-  v11 = [_TtC8Freeform58CRLPresentedPopoverTextEditingBehaviorProvidingSwiftHelper allowTextInputWhilePresentingFor:v10];
+  presentedViewController2 = [v5 presentedViewController];
+  v11 = [_TtC8Freeform58CRLPresentedPopoverTextEditingBehaviorProvidingSwiftHelper allowTextInputWhilePresentingFor:presentedViewController2];
 
   if (v11 == 2)
   {
-    v12 = v7;
+    v12 = printerOptionsShowing;
   }
 
   else
@@ -6967,46 +6967,46 @@ LABEL_4:
 
 - (BOOL)becomeFirstResponderIfAppropriate
 {
-  v3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v4 = [v3 textInputResponder];
-  v5 = [v4 isFirstResponder];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  textInputResponder = [interactiveCanvasController textInputResponder];
+  isFirstResponder = [textInputResponder isFirstResponder];
 
-  if (v5 & 1) != 0 || (-[CRLiOSCanvasViewController interactiveCanvasController](self, "interactiveCanvasController"), v6 = objc_claimAutoreleasedReturnValue(), [v6 textInputResponder], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "canBecomeFirstResponder"), v7, v6, v8) && (-[CRLiOSCanvasViewController interactiveCanvasController](self, "interactiveCanvasController"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "textInputResponder"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "becomeFirstResponder"), v10, v9, (v11) || (-[CRLiOSCanvasViewController isFirstResponder](self, "isFirstResponder"))
+  if (isFirstResponder & 1) != 0 || (-[CRLiOSCanvasViewController interactiveCanvasController](self, "interactiveCanvasController"), v6 = objc_claimAutoreleasedReturnValue(), [v6 textInputResponder], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "canBecomeFirstResponder"), v7, v6, v8) && (-[CRLiOSCanvasViewController interactiveCanvasController](self, "interactiveCanvasController"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "textInputResponder"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "becomeFirstResponder"), v10, v9, (v11) || (-[CRLiOSCanvasViewController isFirstResponder](self, "isFirstResponder"))
   {
-    LOBYTE(v12) = 1;
+    LOBYTE(canBecomeFirstResponder) = 1;
   }
 
   else
   {
-    v12 = [(CRLiOSCanvasViewController *)self canBecomeFirstResponder];
-    if (v12)
+    canBecomeFirstResponder = [(CRLiOSCanvasViewController *)self canBecomeFirstResponder];
+    if (canBecomeFirstResponder)
     {
 
-      LOBYTE(v12) = [(CRLiOSCanvasViewController *)self becomeFirstResponder];
+      LOBYTE(canBecomeFirstResponder) = [(CRLiOSCanvasViewController *)self becomeFirstResponder];
     }
   }
 
-  return v12;
+  return canBecomeFirstResponder;
 }
 
 - (BOOL)allowsCanvasScrollingFromKeyboard
 {
-  v3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v4 = [v3 editorController];
-  v5 = [v4 selectionPath];
-  v6 = [v3 canvasEditor];
-  v7 = [v6 selectionPathWithInfo:0];
-  v8 = [v5 isEqual:v7];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
+  selectionPath = [editorController selectionPath];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  v7 = [canvasEditor selectionPathWithInfo:0];
+  v8 = [selectionPath isEqual:v7];
 
-  v9 = [(CRLiOSCanvasViewController *)self canvasView];
-  v10 = [v9 enclosingScrollView];
+  canvasView = [(CRLiOSCanvasViewController *)self canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
 
-  [v10 bounds];
+  [enclosingScrollView bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  [v10 contentSize];
+  [enclosingScrollView contentSize];
   v20 = v19;
   v22 = v21;
   v25.origin.x = v12;
@@ -7032,20 +7032,20 @@ LABEL_4:
 
 - (BOOL)allowUndoRedoOperations
 {
-  v3 = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
-  v4 = [v3 tmCoordinator];
-  v5 = [v4 controllingTM];
+  interactiveCanvasController = [(CRLiOSCanvasViewController *)self interactiveCanvasController];
+  tmCoordinator = [interactiveCanvasController tmCoordinator];
+  controllingTM = [tmCoordinator controllingTM];
 
-  if (v5)
+  if (controllingTM)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      [v3 isInDynamicOperation];
+      [interactiveCanvasController isInDynamicOperation];
       LOBYTE(v7) = 0;
       goto LABEL_9;
     }
 
-    v6 = [v5 allowUndoRedoOperations] ^ 1;
+    v6 = [controllingTM allowUndoRedoOperations] ^ 1;
   }
 
   else
@@ -7054,7 +7054,7 @@ LABEL_4:
   }
 
   LOBYTE(v7) = 0;
-  if (([v3 isInDynamicOperation] & 1) == 0 && (v6 & 1) == 0)
+  if (([interactiveCanvasController isInDynamicOperation] & 1) == 0 && (v6 & 1) == 0)
   {
     v7 = ![(CRLiOSCanvasViewController *)self shouldIgnoreKeyboardInput];
   }
@@ -7067,39 +7067,39 @@ LABEL_9:
 - (BOOL)documentChromeHasPresentedViewController
 {
   v3 = objc_opt_class();
-  v4 = [(CRLiOSCanvasViewController *)self delegate];
-  v5 = sub_100014370(v3, v4);
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
+  v5 = sub_100014370(v3, delegate);
 
-  v6 = [v5 presentedViewController];
-  LOBYTE(v4) = v6 != 0;
+  presentedViewController = [v5 presentedViewController];
+  LOBYTE(delegate) = presentedViewController != 0;
 
-  return v4;
+  return delegate;
 }
 
 - (void)dismissDocumentChromePresentedViewController
 {
   v3 = objc_opt_class();
-  v4 = [(CRLiOSCanvasViewController *)self delegate];
-  v9 = sub_100014370(v3, v4);
+  delegate = [(CRLiOSCanvasViewController *)self delegate];
+  v9 = sub_100014370(v3, delegate);
 
-  v5 = [v9 presentedViewController];
+  presentedViewController = [v9 presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
-    v6 = [(CRLiOSCanvasViewController *)self delegate];
+    delegate2 = [(CRLiOSCanvasViewController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CRLiOSCanvasViewController *)self delegate];
-      [v8 dismissPresentedViewController];
+      delegate3 = [(CRLiOSCanvasViewController *)self delegate];
+      [delegate3 dismissPresentedViewController];
     }
   }
 }
 
-- (BOOL)p_isAccessibilityTextResponderAction:(SEL)a3
+- (BOOL)p_isAccessibilityTextResponderAction:(SEL)action
 {
-  v3 = NSStringFromSelector(a3);
+  v3 = NSStringFromSelector(action);
   v4 = [&off_1018E1E00 containsObject:v3];
 
   return v4;
@@ -7112,15 +7112,15 @@ LABEL_9:
     WeakRetained = objc_loadWeakRetained(&self->mDelegate);
     v4 = [WeakRetained pencilKitCanvasViewControllerForCanvasViewController:self];
 
-    v5 = [v4 smartSelectionManager];
+    smartSelectionManager = [v4 smartSelectionManager];
   }
 
   else
   {
-    v5 = 0;
+    smartSelectionManager = 0;
   }
 
-  return v5;
+  return smartSelectionManager;
 }
 
 - (CRLInteractiveCanvasController)interactiveCanvasController

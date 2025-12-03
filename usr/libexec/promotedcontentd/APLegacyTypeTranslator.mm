@@ -1,138 +1,138 @@
 @interface APLegacyTypeTranslator
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)adSizeForContainerSize:(id)a3 adData:(id)a4;
++ ($F24F406B2B787EFB06265DBA3D28CBD5)adSizeForContainerSize:(id)size adData:(id)data;
 + ($F24F406B2B787EFB06265DBA3D28CBD5)errorAdSizeForContainerSize:(id)result;
-+ (id)base64Decode:(id)a3;
-+ (id)numericParameterArrayToDictionary:(id)a3;
-+ (id)parameterArrayToDictionary:(id)a3;
-+ (id)parameterArrayToDictionaryForMetadata:(id)a3;
-+ (id)valueTranslated:(id)a3 forKey:(id)a4;
-+ (int)AdDataUnfilledReasonCodeToASECode:(int)a3;
-+ (int)connectionTypeToAPPBAdConnection:(int64_t)a3;
-+ (int)placementTypeToCreativeType:(int64_t)a3;
-+ (int)unfilledReasonCodeToASEStatusCode:(int64_t)a3;
-+ (int64_t)AdDataUnfilledReasonCodeToUnfilledReasonCode:(int)a3;
-+ (int64_t)AppStoreViewTemplateTypeToTemplateType:(int)a3;
-+ (int64_t)RelevantIdentifierToRelevantIdentifierType:(int)a3;
-+ (int64_t)clickActionTypeToTapActionType:(int)a3;
-+ (int64_t)creativeTypeToPlacementType:(int)a3;
-+ (int64_t)directionToGradientOrientation:(int)a3;
-+ (unint64_t)adPrivacyMarkPositionToAdPrivacyMarkerPosition:(int)a3;
-+ (unint64_t)adPrivacyMarkerTypeToPrivacyMarkerType:(int)a3;
-+ (void)_invalidElementError:(int64_t)a3;
++ (id)base64Decode:(id)decode;
++ (id)numericParameterArrayToDictionary:(id)dictionary;
++ (id)parameterArrayToDictionary:(id)dictionary;
++ (id)parameterArrayToDictionaryForMetadata:(id)metadata;
++ (id)valueTranslated:(id)translated forKey:(id)key;
++ (int)AdDataUnfilledReasonCodeToASECode:(int)code;
++ (int)connectionTypeToAPPBAdConnection:(int64_t)connection;
++ (int)placementTypeToCreativeType:(int64_t)type;
++ (int)unfilledReasonCodeToASEStatusCode:(int64_t)code;
++ (int64_t)AdDataUnfilledReasonCodeToUnfilledReasonCode:(int)code;
++ (int64_t)AppStoreViewTemplateTypeToTemplateType:(int)type;
++ (int64_t)RelevantIdentifierToRelevantIdentifierType:(int)type;
++ (int64_t)clickActionTypeToTapActionType:(int)type;
++ (int64_t)creativeTypeToPlacementType:(int)type;
++ (int64_t)directionToGradientOrientation:(int)orientation;
++ (unint64_t)adPrivacyMarkPositionToAdPrivacyMarkerPosition:(int)position;
++ (unint64_t)adPrivacyMarkerTypeToPrivacyMarkerType:(int)type;
++ (void)_invalidElementError:(int64_t)error;
 @end
 
 @implementation APLegacyTypeTranslator
 
-+ (void)_invalidElementError:(int64_t)a3
++ (void)_invalidElementError:(int64_t)error
 {
   v4 = APLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
     v5 = 134217984;
-    v6 = a3;
+    errorCopy = error;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "LegacyTypeTranslator error - InvalidElement: %ld", &v5, 0xCu);
   }
 }
 
-+ (int)placementTypeToCreativeType:(int64_t)a3
++ (int)placementTypeToCreativeType:(int64_t)type
 {
-  if (a3 < 8 && ((0x9Fu >> a3) & 1) != 0)
+  if (type < 8 && ((0x9Fu >> type) & 1) != 0)
   {
-    return dword_1003F06A0[a3];
+    return dword_1003F06A0[type];
   }
 
-  [a1 _invalidElementError:{v3, v4}];
+  [self _invalidElementError:{v3, v4}];
   return 0;
 }
 
-+ (int64_t)creativeTypeToPlacementType:(int)a3
++ (int64_t)creativeTypeToPlacementType:(int)type
 {
-  if (a3 < 0xC && ((0xF35u >> a3) & 1) != 0)
+  if (type < 0xC && ((0xF35u >> type) & 1) != 0)
   {
-    return qword_1003F06C0[a3];
+    return qword_1003F06C0[type];
   }
 
-  [a1 _invalidElementError:{a3, v3, v4}];
+  [self _invalidElementError:{type, v3, v4}];
   return -1;
 }
 
-+ (unint64_t)adPrivacyMarkPositionToAdPrivacyMarkerPosition:(int)a3
++ (unint64_t)adPrivacyMarkPositionToAdPrivacyMarkerPosition:(int)position
 {
   v6 = 0;
   v4 = xmmword_1003F0680;
   v5 = xmmword_1003F0690;
-  if (a3 < 5)
+  if (position < 5)
   {
-    return *(&v4 + a3);
+    return *(&v4 + position);
   }
 
-  [a1 _invalidElementError:{a3, v4, v5, v6}];
+  [self _invalidElementError:{position, v4, v5, v6}];
   return 0;
 }
 
-+ (unint64_t)adPrivacyMarkerTypeToPrivacyMarkerType:(int)a3
++ (unint64_t)adPrivacyMarkerTypeToPrivacyMarkerType:(int)type
 {
-  if (!a3)
+  if (!type)
   {
     return 0;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return 1;
   }
 
-  [a1 _invalidElementError:{a3, v3, v4}];
+  [self _invalidElementError:{type, v3, v4}];
   return 0;
 }
 
-+ (int64_t)clickActionTypeToTapActionType:(int)a3
++ (int64_t)clickActionTypeToTapActionType:(int)type
 {
-  if (a3 < 0xE && ((0x3D03u >> a3) & 1) != 0)
+  if (type < 0xE && ((0x3D03u >> type) & 1) != 0)
   {
-    return qword_1003F0720[a3];
+    return qword_1003F0720[type];
   }
 
-  [a1 _invalidElementError:{a3, v3, v4}];
+  [self _invalidElementError:{type, v3, v4}];
   return 0;
 }
 
-+ (int64_t)RelevantIdentifierToRelevantIdentifierType:(int)a3
++ (int64_t)RelevantIdentifierToRelevantIdentifierType:(int)type
 {
-  if ((a3 - 15001) < 5)
+  if ((type - 15001) < 5)
   {
-    return a3;
+    return type;
   }
 
-  [a1 _invalidElementError:{a3, v3, v4}];
+  [self _invalidElementError:{type, v3, v4}];
   return 0;
 }
 
-+ (int)AdDataUnfilledReasonCodeToASECode:(int)a3
++ (int)AdDataUnfilledReasonCodeToASECode:(int)code
 {
-  if ((a3 - 201) < 5)
+  if ((code - 201) < 5)
   {
-    return dword_1003F0790[a3 - 201];
+    return dword_1003F0790[code - 201];
   }
 
-  [a1 _invalidElementError:{a3, v3, v4}];
+  [self _invalidElementError:{code, v3, v4}];
   return 0;
 }
 
-+ (int64_t)AdDataUnfilledReasonCodeToUnfilledReasonCode:(int)a3
++ (int64_t)AdDataUnfilledReasonCodeToUnfilledReasonCode:(int)code
 {
-  if ((a3 - 201) < 5)
+  if ((code - 201) < 5)
   {
-    return a3;
+    return code;
   }
 
-  [a1 _invalidElementError:{a3, v3, v4}];
+  [self _invalidElementError:{code, v3, v4}];
   return 0;
 }
 
-+ (int64_t)AppStoreViewTemplateTypeToTemplateType:(int)a3
++ (int64_t)AppStoreViewTemplateTypeToTemplateType:(int)type
 {
-  v3 = (a3 - 4781);
+  v3 = (type - 4781);
   if (v3 >= 0xA)
   {
     return 4780;
@@ -144,13 +144,13 @@
   }
 }
 
-+ (int)unfilledReasonCodeToASEStatusCode:(int64_t)a3
++ (int)unfilledReasonCodeToASEStatusCode:(int64_t)code
 {
-  if (a3 <= 1009)
+  if (code <= 1009)
   {
-    if (a3 > 203)
+    if (code > 203)
     {
-      switch(a3)
+      switch(code)
       {
         case 204:
           return 14;
@@ -163,7 +163,7 @@
 
     else
     {
-      switch(a3)
+      switch(code)
       {
         case 201:
           return 3;
@@ -175,9 +175,9 @@
     }
   }
 
-  else if (a3 > 1023)
+  else if (code > 1023)
   {
-    switch(a3)
+    switch(code)
     {
       case 1024:
         return 4;
@@ -190,12 +190,12 @@
 
   else
   {
-    if ((a3 - 1021) < 3)
+    if ((code - 1021) < 3)
     {
       return 9;
     }
 
-    if (a3 == 1010)
+    if (code == 1010)
     {
       return 3001;
     }
@@ -205,18 +205,18 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 134349056;
-    v7 = a3;
+    codeCopy = code;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Unable to determine ASE status code with unfilled reason code: %{public}ld.", &v6, 0xCu);
   }
 
   return 0;
 }
 
-+ (int)connectionTypeToAPPBAdConnection:(int64_t)a3
++ (int)connectionTypeToAPPBAdConnection:(int64_t)connection
 {
-  if (a3 < 0xA)
+  if (connection < 0xA)
   {
-    return a3 + 1;
+    return connection + 1;
   }
 
   else
@@ -225,15 +225,15 @@
   }
 }
 
-+ (id)parameterArrayToDictionary:(id)a3
++ (id)parameterArrayToDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = +[NSMutableDictionary dictionary];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = dictionaryCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -253,13 +253,13 @@
         if (v11)
         {
           v12 = v11;
-          v13 = [v10 value];
+          value = [v10 value];
 
-          if (v13)
+          if (value)
           {
-            v14 = [v10 value];
+            value2 = [v10 value];
             v15 = [v10 key];
-            [v4 setValue:v14 forKey:v15];
+            [v4 setValue:value2 forKey:v15];
           }
         }
       }
@@ -273,15 +273,15 @@
   return v4;
 }
 
-+ (id)numericParameterArrayToDictionary:(id)a3
++ (id)numericParameterArrayToDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = +[NSMutableDictionary dictionary];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = dictionaryCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -301,9 +301,9 @@
         if (v11)
         {
           v12 = v11;
-          v13 = [v10 value];
+          value = [v10 value];
 
-          if (v13)
+          if (value)
           {
             v14 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v10 value]);
             v15 = [v10 key];
@@ -321,15 +321,15 @@
   return v4;
 }
 
-+ (id)parameterArrayToDictionaryForMetadata:(id)a3
++ (id)parameterArrayToDictionaryForMetadata:(id)metadata
 {
-  v3 = a3;
+  metadataCopy = metadata;
   v4 = +[NSMutableDictionary dictionary];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = metadataCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -349,13 +349,13 @@
         if (v11)
         {
           v12 = v11;
-          v13 = [v10 value];
+          value = [v10 value];
 
-          if (v13)
+          if (value)
           {
-            v14 = [v10 value];
+            value2 = [v10 value];
             v15 = [v10 key];
-            v16 = [APLegacyTypeTranslator valueTranslated:v14 forKey:v15];
+            v16 = [APLegacyTypeTranslator valueTranslated:value2 forKey:v15];
 
             v17 = [v10 key];
             [v4 setValue:v16 forKey:v17];
@@ -372,28 +372,28 @@
   return v4;
 }
 
-+ (id)valueTranslated:(id)a3 forKey:(id)a4
++ (id)valueTranslated:(id)translated forKey:(id)key
 {
-  v5 = a3;
+  translatedCopy = translated;
   v14[0] = @"adCampaignBlacklistedKeywords";
   v14[1] = @"adGloballyBlacklistedKeywords";
   v14[2] = @"adCampaignBlacklistedCategories";
   v14[3] = @"adGloballyBlacklistedCategories";
-  v6 = a4;
+  keyCopy = key;
   v7 = [NSArray arrayWithObjects:v14 count:4];
-  v8 = [v7 containsObject:v6];
+  v8 = [v7 containsObject:keyCopy];
 
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v11 = [NSCharacterSet characterSetWithCharactersInString:@"[]"];
-    v10 = [v5 stringByTrimmingCharactersInSet:v11];
+    v10 = [translatedCopy stringByTrimmingCharactersInSet:v11];
 
     v9 = [v10 componentsSeparatedByString:{@", "}];
   }
 
   else
   {
-    v9 = v5;
+    v9 = translatedCopy;
     v10 = v9;
   }
 
@@ -409,25 +409,25 @@
   return result;
 }
 
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)adSizeForContainerSize:(id)a3 adData:(id)a4
++ ($F24F406B2B787EFB06265DBA3D28CBD5)adSizeForContainerSize:(id)size adData:(id)data
 {
-  v4 = a4;
+  dataCopy = data;
   v5 = APLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    var0 = a3.var0;
+    var0 = size.var0;
     v40 = 2048;
-    var1 = a3.var1;
+    var1 = size.var1;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Attempting to find best fit for container (%.0f, %.0f)", buf, 0x16u);
   }
 
-  v6 = [v4 creativeSizes];
-  v7 = v6;
-  if (v6 && [v6 count])
+  creativeSizes = [dataCopy creativeSizes];
+  v7 = creativeSizes;
+  if (creativeSizes && [creativeSizes count])
   {
     v31 = v7;
-    v32 = v4;
+    v32 = dataCopy;
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
@@ -451,47 +451,47 @@
           }
 
           v16 = *(*(&v34 + 1) + 8 * i);
-          v17 = [v16 width];
-          v18 = [v16 height];
+          width = [v16 width];
+          height = [v16 height];
           v19 = APLogForCategory();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
             *buf = 134218496;
-            var0 = v17;
+            var0 = width;
             v40 = 2048;
-            var1 = v18;
+            var1 = height;
             v42 = 2048;
-            v43 = v17 / v18;
+            v43 = width / height;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Candidate size: (%.0f, %.0f) Aspect: %.2f", buf, 0x20u);
           }
 
-          if (a3.var0 / v17 >= a3.var1 / v18)
+          if (size.var0 / width >= size.var1 / height)
           {
-            v20 = a3.var1 / v18;
+            v20 = size.var1 / height;
           }
 
           else
           {
-            v20 = a3.var0 / v17;
+            v20 = size.var0 / width;
           }
 
-          v21 = v20 * v17;
-          v22 = v20 * v18;
+          v21 = v20 * width;
+          v22 = v20 * height;
           v23 = APLogForCategory();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
           {
             *buf = 134219264;
-            var0 = v20 * v17;
+            var0 = v20 * width;
             v40 = 2048;
-            var1 = v20 * v18;
+            var1 = v20 * height;
             v42 = 2048;
             v43 = v21 / v22;
             v44 = 2048;
             v45 = v20;
             v46 = 2048;
-            v47 = a3.var0;
+            v47 = size.var0;
             v48 = 2048;
-            v49 = a3.var1;
+            v49 = size.var1;
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "Scaling candidate to (%.0f, %.0f) Aspect: %.2f, Scale factor: %.2f, to fit in container (%.0f, %.0f)", buf, 0x3Eu);
           }
 
@@ -501,15 +501,15 @@
           if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
           {
             *buf = 134217984;
-            var0 = v26 / (a3.var1 * a3.var0);
+            var0 = v26 / (size.var1 * size.var0);
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Scaled candidate fill ratio: %.2f", buf, 0xCu);
           }
 
           if (v12 < v26)
           {
             v12 = v26;
-            v13 = v18;
-            v14 = v17;
+            v13 = height;
+            v14 = width;
           }
         }
 
@@ -526,16 +526,16 @@
     }
 
     v7 = v31;
-    v4 = v32;
+    dataCopy = v32;
   }
 
   else
   {
     v13 = 0.0;
     v14 = 0.0;
-    if ([v4 hasUnfilledReasonCode])
+    if ([dataCopy hasUnfilledReasonCode])
     {
-      [APLegacyTypeTranslator errorAdSizeForContainerSize:a3.var0, a3.var1];
+      [APLegacyTypeTranslator errorAdSizeForContainerSize:size.var0, size.var1];
       v14 = v27;
       v13 = v28;
     }
@@ -548,12 +548,12 @@
   return result;
 }
 
-+ (id)base64Decode:(id)a3
++ (id)base64Decode:(id)decode
 {
-  v3 = a3;
-  if (v3)
+  decodeCopy = decode;
+  if (decodeCopy)
   {
-    v4 = [[NSData alloc] initWithBase64EncodedString:v3 options:0];
+    v4 = [[NSData alloc] initWithBase64EncodedString:decodeCopy options:0];
     if (v4)
     {
       v5 = [[NSString alloc] initWithData:v4 encoding:4];
@@ -584,9 +584,9 @@ LABEL_10:
   return v5;
 }
 
-+ (int64_t)directionToGradientOrientation:(int)a3
++ (int64_t)directionToGradientOrientation:(int)orientation
 {
-  if (a3 == 90)
+  if (orientation == 90)
   {
     return 20001;
   }

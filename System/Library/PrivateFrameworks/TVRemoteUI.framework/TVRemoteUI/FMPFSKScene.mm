@@ -2,16 +2,16 @@
 - (CGSize)size;
 - (NSString)description;
 - (_TtC10TVRemoteUI11FMPFSKScene)init;
-- (_TtC10TVRemoteUI11FMPFSKScene)initWithSize:(CGSize)a3;
-- (void)setSize:(CGSize)a3;
-- (void)update:(double)a3;
+- (_TtC10TVRemoteUI11FMPFSKScene)initWithSize:(CGSize)size;
+- (void)setSize:(CGSize)size;
+- (void)update:(double)update;
 @end
 
 @implementation FMPFSKScene
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FMR1HapticsController.description.getter();
   v5 = v4;
 
@@ -20,10 +20,10 @@
   return v6;
 }
 
-- (void)update:(double)a3
+- (void)update:(double)update
 {
-  v4 = self;
-  FMPFSKScene.update(_:)(a3);
+  selfCopy = self;
+  FMPFSKScene.update(_:)(update);
 }
 
 - (CGSize)size
@@ -36,15 +36,15 @@
   return result;
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   FMPFSKScene.size.setter(width, height);
 }
 
-- (_TtC10TVRemoteUI11FMPFSKScene)initWithSize:(CGSize)a3
+- (_TtC10TVRemoteUI11FMPFSKScene)initWithSize:(CGSize)size
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

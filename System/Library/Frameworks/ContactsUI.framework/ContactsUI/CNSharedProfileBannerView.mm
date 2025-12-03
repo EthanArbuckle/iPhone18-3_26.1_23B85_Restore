@@ -4,31 +4,31 @@
 - (CGSize)avatarSize;
 - (CNSharedProfileBannerView)init;
 - (CNSharedProfileBannerViewDelegate)delegate;
-- (double)estimatedHeightForWidth:(double)a3;
-- (id)actionButtonTitleForAction:(unint64_t)a3;
+- (double)estimatedHeightForWidth:(double)width;
+- (id)actionButtonTitleForAction:(unint64_t)action;
 - (id)contactDisplayName;
 - (id)horizontalConstraints;
-- (id)subtitleForAction:(unint64_t)a3 contactName:(id)a4;
-- (id)subtitleForTappedAction:(unint64_t)a3;
-- (id)subtitleTextColorForTappedAction:(unint64_t)a3;
-- (id)titleForAction:(unint64_t)a3;
+- (id)subtitleForAction:(unint64_t)action contactName:(id)name;
+- (id)subtitleForTappedAction:(unint64_t)action;
+- (id)subtitleTextColorForTappedAction:(unint64_t)action;
+- (id)titleForAction:(unint64_t)action;
 - (id)verticalConstraintsWithAvatarView;
 - (id)verticalConstraintsWithHiddenAvatarView;
-- (id)xmarkImageWithColorConfiguration:(id)a3;
-- (void)avatarCacheDidUpdateForIdentifiers:(id)a3;
+- (id)xmarkImageWithColorConfiguration:(id)configuration;
+- (void)avatarCacheDidUpdateForIdentifiers:(id)identifiers;
 - (void)didTapActionButton;
 - (void)didTapDismiss;
-- (void)invalidateAvatarCacheEntriesForContact:(id)a3;
+- (void)invalidateAvatarCacheEntriesForContact:(id)contact;
 - (void)layoutSubviews;
 - (void)performAnimationIfNeeded;
-- (void)setStyle:(id)a3;
-- (void)setTappedAction:(unint64_t)a3;
+- (void)setStyle:(id)style;
+- (void)setTappedAction:(unint64_t)action;
 - (void)setUpActionButton;
 - (void)setUpAvatarView;
 - (void)setUpDismissButton;
 - (void)setUpLabels;
 - (void)setUpViews;
-- (void)setUpWithSharedProfileStateOracle:(id)a3 tappedAction:(unint64_t)a4 hasPerformedAnimation:(BOOL)a5;
+- (void)setUpWithSharedProfileStateOracle:(id)oracle tappedAction:(unint64_t)action hasPerformedAnimation:(BOOL)animation;
 - (void)startObservingAvatarCacheInvalidation;
 - (void)updateConstraints;
 - (void)updateContactForTappedAction;
@@ -46,9 +46,9 @@
 
 - (CGSize)avatarSize
 {
-  v2 = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
+  ab_preferredContentSizeCategoryIsAccessibilityCategory = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
   v3 = 60.0;
-  if (v2)
+  if (ab_preferredContentSizeCategoryIsAccessibilityCategory)
   {
     v3 = 40.0;
   }
@@ -61,24 +61,24 @@
 
 - (BOOL)isRTL
 {
-  v2 = [(CNSharedProfileBannerView *)self traitCollection];
-  v3 = [v2 layoutDirection] == 1;
+  traitCollection = [(CNSharedProfileBannerView *)self traitCollection];
+  v3 = [traitCollection layoutDirection] == 1;
 
   return v3;
 }
 
 - (id)contactDisplayName
 {
-  v2 = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
-  v3 = [v2 contact];
+  sharedProfileStateOracle = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
+  contact = [sharedProfileStateOracle contact];
 
   v4 = &stru_1F0CE7398;
-  if (v3)
+  if (contact)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695CD80]);
     [v5 setStyle:1000];
     [v5 setFallbackStyle:-1];
-    v6 = [v5 stringFromContact:v3];
+    v6 = [v5 stringFromContact:contact];
     v7 = v6;
     if (v6)
     {
@@ -96,30 +96,30 @@
   return v4;
 }
 
-- (void)avatarCacheDidUpdateForIdentifiers:(id)a3
+- (void)avatarCacheDidUpdateForIdentifiers:(id)identifiers
 {
   v26 = *MEMORY[0x1E69E9840];
   if ([(CNSharedProfileBannerView *)self shouldPerformActionUponCacheInvalidation])
   {
     [(CNSharedProfileBannerView *)self setShouldPerformActionUponCacheInvalidation:0];
-    v4 = [(CNSharedProfileBannerView *)self tappedAction];
+    tappedAction = [(CNSharedProfileBannerView *)self tappedAction];
     v5 = [objc_opt_class() log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [MEMORY[0x1E695CF98] descriptionForActionType:v4];
-      v7 = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
-      v8 = [v7 contact];
-      v9 = [v8 identifier];
+      v6 = [MEMORY[0x1E695CF98] descriptionForActionType:tappedAction];
+      sharedProfileStateOracle = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
+      contact = [sharedProfileStateOracle contact];
+      identifier = [contact identifier];
       *buf = 138412546;
       v21 = v6;
       v22 = 2112;
-      v23 = v9;
+      v23 = identifier;
       _os_log_impl(&dword_199A75000, v5, OS_LOG_TYPE_DEFAULT, "Performing %@ action type on contact (%@) from banner view", buf, 0x16u);
     }
 
-    v10 = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
+    sharedProfileStateOracle2 = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
     v19 = 0;
-    v11 = [v10 updateContactAndNicknamesForActionType:v4 error:&v19];
+    v11 = [sharedProfileStateOracle2 updateContactAndNicknamesForActionType:tappedAction error:&v19];
     v12 = v19;
 
     if (v11)
@@ -130,7 +130,7 @@
       v16[3] = &unk_1E74E6DF8;
       v16[4] = self;
       v17 = v11;
-      v18 = v4;
+      v18 = tappedAction;
       dispatch_async(MEMORY[0x1E69E96A0], v16);
     }
 
@@ -139,10 +139,10 @@
       v13 = [objc_opt_class() log];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = [0 identifier];
-        v15 = [MEMORY[0x1E695CF98] descriptionForActionType:v4];
+        identifier2 = [0 identifier];
+        v15 = [MEMORY[0x1E695CF98] descriptionForActionType:tappedAction];
         *buf = 138412802;
-        v21 = v14;
+        v21 = identifier2;
         v22 = 2112;
         v23 = v15;
         v24 = 2112;
@@ -159,17 +159,17 @@ void __64__CNSharedProfileBannerView_avatarCacheDidUpdateForIdentifiers___block_
   [v2 sharedProfileBannerView:*(a1 + 32) didUpdateContact:*(a1 + 40) forAction:*(a1 + 48)];
 }
 
-- (void)invalidateAvatarCacheEntriesForContact:(id)a3
+- (void)invalidateAvatarCacheEntriesForContact:(id)contact
 {
-  v3 = a3;
-  if (v3)
+  contactCopy = contact;
+  if (contactCopy)
   {
     v4 = +[CNUIContactsEnvironment currentEnvironment];
-    v5 = [v4 cachingLikenessRenderer];
+    cachingLikenessRenderer = [v4 cachingLikenessRenderer];
     v6 = &unk_1F0E28E18;
-    if ([v5 conformsToProtocol:v6])
+    if ([cachingLikenessRenderer conformsToProtocol:v6])
     {
-      v7 = v5;
+      v7 = cachingLikenessRenderer;
     }
 
     else
@@ -187,7 +187,7 @@ void __64__CNSharedProfileBannerView_avatarCacheDidUpdateForIdentifiers___block_
       v10[2] = __68__CNSharedProfileBannerView_invalidateAvatarCacheEntriesForContact___block_invoke;
       v10[3] = &unk_1E74E77C0;
       v11 = v8;
-      v12 = v3;
+      v12 = contactCopy;
       dispatch_async(v9, v10);
     }
   }
@@ -206,29 +206,29 @@ void __68__CNSharedProfileBannerView_invalidateAvatarCacheEntriesForContact___bl
 - (void)didTapDismiss
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
-  v4 = [v3 bannerActionTypeForEffectiveState];
+  sharedProfileStateOracle = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
+  bannerActionTypeForEffectiveState = [sharedProfileStateOracle bannerActionTypeForEffectiveState];
 
-  v5 = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
+  sharedProfileStateOracle2 = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
   v9 = 0;
-  v6 = [v5 updateContactAndNicknamesForDeclinedActionType:v4 error:&v9];
+  v6 = [sharedProfileStateOracle2 updateContactAndNicknamesForDeclinedActionType:bannerActionTypeForEffectiveState error:&v9];
   v7 = v9;
 
   if (v6)
   {
     [(CNSharedProfileBannerView *)self setIsIgnored:1];
-    v8 = [(CNSharedProfileBannerView *)self delegate];
-    [v8 sharedProfileBannerView:self didDismissWithUpdatedContact:v6 forAction:v4];
+    delegate = [(CNSharedProfileBannerView *)self delegate];
+    [delegate sharedProfileBannerView:self didDismissWithUpdatedContact:v6 forAction:bannerActionTypeForEffectiveState];
   }
 
   else
   {
-    v8 = [objc_opt_class() log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    delegate = [objc_opt_class() log];
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v11 = v7;
-      _os_log_error_impl(&dword_199A75000, v8, OS_LOG_TYPE_ERROR, "Error updating contact for dismiss action: %@", buf, 0xCu);
+      _os_log_error_impl(&dword_199A75000, delegate, OS_LOG_TYPE_ERROR, "Error updating contact for dismiss action: %@", buf, 0xCu);
     }
   }
 }
@@ -236,50 +236,50 @@ void __68__CNSharedProfileBannerView_invalidateAvatarCacheEntriesForContact___bl
 - (void)updateContactForTappedAction
 {
   [(CNSharedProfileBannerView *)self setShouldPerformActionUponCacheInvalidation:1];
-  v4 = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
-  v3 = [v4 contact];
-  [(CNSharedProfileBannerView *)self invalidateAvatarCacheEntriesForContact:v3];
+  sharedProfileStateOracle = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
+  contact = [sharedProfileStateOracle contact];
+  [(CNSharedProfileBannerView *)self invalidateAvatarCacheEntriesForContact:contact];
 }
 
 - (void)didTapActionButton
 {
-  v3 = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
-  v4 = [v3 bannerActionTypeForEffectiveState];
+  sharedProfileStateOracle = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
+  bannerActionTypeForEffectiveState = [sharedProfileStateOracle bannerActionTypeForEffectiveState];
 
-  [(CNSharedProfileBannerView *)self setTappedAction:v4];
+  [(CNSharedProfileBannerView *)self setTappedAction:bannerActionTypeForEffectiveState];
 
   [(CNSharedProfileBannerView *)self updateContactForTappedAction];
 }
 
 - (void)performAnimationIfNeeded
 {
-  v3 = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
-  v4 = [v3 bannerActionTypeForEffectiveState];
+  sharedProfileStateOracle = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
+  bannerActionTypeForEffectiveState = [sharedProfileStateOracle bannerActionTypeForEffectiveState];
 
-  if ([(CNSharedProfileBannerView *)self isRevertAction:v4])
+  if ([(CNSharedProfileBannerView *)self isRevertAction:bannerActionTypeForEffectiveState])
   {
-    v5 = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
-    v10 = [v5 targetProfileForActionType:v4];
+    sharedProfileStateOracle2 = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
+    v10 = [sharedProfileStateOracle2 targetProfileForActionType:bannerActionTypeForEffectiveState];
 
-    v6 = [(CNSharedProfileBannerView *)self animationGenerator];
-    v7 = [(CNSharedProfileBannerView *)self avatarView];
-    v8 = [v10 contact];
-    v9 = [(CNSharedProfileBannerView *)self isRTL];
+    animationGenerator = [(CNSharedProfileBannerView *)self animationGenerator];
+    avatarView = [(CNSharedProfileBannerView *)self avatarView];
+    contact = [v10 contact];
+    isRTL = [(CNSharedProfileBannerView *)self isRTL];
     [(CNSharedProfileBannerView *)self avatarSize];
-    [v6 performCoinFlipAnimationForAnimatingAvatarView:v7 toContact:v8 rightToLeft:v9 avatarSize:0 completionHandler:?];
+    [animationGenerator performCoinFlipAnimationForAnimatingAvatarView:avatarView toContact:contact rightToLeft:isRTL avatarSize:0 completionHandler:?];
   }
 }
 
-- (id)actionButtonTitleForAction:(unint64_t)a3
+- (id)actionButtonTitleForAction:(unint64_t)action
 {
-  if (a3 - 1 > 2)
+  if (action - 1 > 2)
   {
     v5 = &stru_1F0CE7398;
   }
 
   else
   {
-    v3 = *(&off_1E74E47B8 + a3 - 1);
+    v3 = *(&off_1E74E47B8 + action - 1);
     v4 = CNContactsUIBundle();
     v5 = [v4 localizedStringForKey:v3 value:&stru_1F0CE7398 table:@"Localized"];
   }
@@ -287,40 +287,40 @@ void __68__CNSharedProfileBannerView_invalidateAvatarCacheEntriesForContact___bl
   return v5;
 }
 
-- (id)subtitleTextColorForTappedAction:(unint64_t)a3
+- (id)subtitleTextColorForTappedAction:(unint64_t)action
 {
-  if (a3 - 1 < 2)
+  if (action - 1 < 2)
   {
     v3 = +[CNUIColorRepository sharedProfileBannerSubtitleRevertedColor];
 LABEL_5:
-    v4 = v3;
+    subtitleTextColor = v3;
     goto LABEL_7;
   }
 
-  if (a3 == 3)
+  if (action == 3)
   {
     v3 = +[CNUIColorRepository sharedProfileBannerSubtitleUpdatedColor];
     goto LABEL_5;
   }
 
-  v5 = [(CNSharedProfileBannerView *)self style];
-  v4 = [v5 subtitleTextColor];
+  style = [(CNSharedProfileBannerView *)self style];
+  subtitleTextColor = [style subtitleTextColor];
 
 LABEL_7:
 
-  return v4;
+  return subtitleTextColor;
 }
 
-- (id)subtitleForTappedAction:(unint64_t)a3
+- (id)subtitleForTappedAction:(unint64_t)action
 {
-  if (a3 - 1 > 2)
+  if (action - 1 > 2)
   {
     v5 = &stru_1F0CE7398;
   }
 
   else
   {
-    v3 = *(&off_1E74E47A0 + a3 - 1);
+    v3 = *(&off_1E74E47A0 + action - 1);
     v4 = CNContactsUIBundle();
     v5 = [v4 localizedStringForKey:v3 value:&stru_1F0CE7398 table:@"Localized"];
   }
@@ -328,27 +328,27 @@ LABEL_7:
   return v5;
 }
 
-- (id)subtitleForAction:(unint64_t)a3 contactName:(id)a4
+- (id)subtitleForAction:(unint64_t)action contactName:(id)name
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a4;
+  nameCopy = name;
   v6 = CNContactsUIBundle();
   v7 = [v6 localizedStringForKey:@"SNAP_PHOTO_BANNER_SUBTITLE_%@" value:&stru_1F0CE7398 table:@"Localized"];
-  v8 = [v4 localizedStringWithFormat:v7, v5];
+  nameCopy = [v4 localizedStringWithFormat:v7, nameCopy];
 
-  return v8;
+  return nameCopy;
 }
 
-- (id)titleForAction:(unint64_t)a3
+- (id)titleForAction:(unint64_t)action
 {
-  if (a3 - 1 > 2)
+  if (action - 1 > 2)
   {
     v5 = &stru_1F0CE7398;
   }
 
   else
   {
-    v3 = *(&off_1E74E4788 + a3 - 1);
+    v3 = *(&off_1E74E4788 + action - 1);
     v4 = CNContactsUIBundle();
     v5 = [v4 localizedStringForKey:v3 value:&stru_1F0CE7398 table:@"Localized"];
   }
@@ -356,11 +356,11 @@ LABEL_7:
   return v5;
 }
 
-- (void)setTappedAction:(unint64_t)a3
+- (void)setTappedAction:(unint64_t)action
 {
-  if (self->_tappedAction != a3)
+  if (self->_tappedAction != action)
   {
-    self->_tappedAction = a3;
+    self->_tappedAction = action;
     [(CNSharedProfileBannerView *)self updateUIForCurrentState];
   }
 }
@@ -372,29 +372,29 @@ LABEL_7:
     return;
   }
 
-  v3 = 504;
+  fontDescriptor = 504;
   tappedAction = self->_tappedAction;
-  v5 = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
-  v6 = [v5 bannerActionTypeForEffectiveState];
+  sharedProfileStateOracle = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
+  bannerActionTypeForEffectiveState = [sharedProfileStateOracle bannerActionTypeForEffectiveState];
 
-  v7 = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
-  v25 = [v7 targetProfileForActionType:v6];
+  sharedProfileStateOracle2 = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
+  v25 = [sharedProfileStateOracle2 targetProfileForActionType:bannerActionTypeForEffectiveState];
 
   if (tappedAction)
   {
     v8 = self->_tappedAction;
-    v9 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v9 = self;
-    v8 = v6;
+    selfCopy2 = self;
+    v8 = bannerActionTypeForEffectiveState;
   }
 
-  v10 = [(CNSharedProfileBannerView *)v9 titleForAction:v8];
-  v11 = [(CNSharedProfileBannerView *)self titleLabel];
-  [v11 setText:v10];
+  contactDisplayName = [(CNSharedProfileBannerView *)selfCopy2 titleForAction:v8];
+  titleLabel = [(CNSharedProfileBannerView *)self titleLabel];
+  [titleLabel setText:contactDisplayName];
 
   if (tappedAction)
   {
@@ -403,12 +403,12 @@ LABEL_7:
 
   else
   {
-    v10 = [(CNSharedProfileBannerView *)self contactDisplayName];
-    [(CNSharedProfileBannerView *)self subtitleForAction:v6 contactName:v10];
+    contactDisplayName = [(CNSharedProfileBannerView *)self contactDisplayName];
+    [(CNSharedProfileBannerView *)self subtitleForAction:bannerActionTypeForEffectiveState contactName:contactDisplayName];
   }
   v12 = ;
-  v13 = [(CNSharedProfileBannerView *)self subtitleLabel];
-  [v13 setText:v12];
+  subtitleLabel = [(CNSharedProfileBannerView *)self subtitleLabel];
+  [subtitleLabel setText:v12];
 
   if (tappedAction)
   {
@@ -418,50 +418,50 @@ LABEL_7:
   else
   {
 
-    v10 = [(CNSharedProfileBannerView *)self style];
-    [v10 subtitleTextColor];
+    contactDisplayName = [(CNSharedProfileBannerView *)self style];
+    [contactDisplayName subtitleTextColor];
   }
-  v14 = ;
-  v15 = [(CNSharedProfileBannerView *)self subtitleLabel];
-  [v15 setTextColor:v14];
+  subtitleFont = ;
+  subtitleLabel2 = [(CNSharedProfileBannerView *)self subtitleLabel];
+  [subtitleLabel2 setTextColor:subtitleFont];
 
   if (tappedAction)
   {
-    v16 = [(CNSharedProfileBannerView *)self style];
-    v14 = [v16 subtitleFont];
-    v3 = [v14 fontDescriptor];
-    [CNUIFontRepository boldFontWithFontDescriptor:v3];
+    style = [(CNSharedProfileBannerView *)self style];
+    subtitleFont = [style subtitleFont];
+    fontDescriptor = [subtitleFont fontDescriptor];
+    [CNUIFontRepository boldFontWithFontDescriptor:fontDescriptor];
   }
 
   else
   {
 
-    v16 = [(CNSharedProfileBannerView *)self style];
-    [v16 subtitleFont];
+    style = [(CNSharedProfileBannerView *)self style];
+    [style subtitleFont];
   }
   v17 = ;
-  v18 = [(CNSharedProfileBannerView *)self subtitleLabel];
-  [v18 setFont:v17];
+  subtitleLabel3 = [(CNSharedProfileBannerView *)self subtitleLabel];
+  [subtitleLabel3 setFont:v17];
 
   if (tappedAction)
   {
 
-    v17 = v14;
+    v17 = subtitleFont;
   }
 
-  v19 = [(CNSharedProfileBannerView *)self actionButton];
-  v20 = [(CNSharedProfileBannerView *)self actionButtonTitleForAction:v6];
-  [v19 setTitle:v20 forState:0];
+  actionButton = [(CNSharedProfileBannerView *)self actionButton];
+  v20 = [(CNSharedProfileBannerView *)self actionButtonTitleForAction:bannerActionTypeForEffectiveState];
+  [actionButton setTitle:v20 forState:0];
 
-  v21 = [(CNSharedProfileBannerView *)self actionButton];
-  [v21 setHidden:tappedAction != 0];
+  actionButton2 = [(CNSharedProfileBannerView *)self actionButton];
+  [actionButton2 setHidden:tappedAction != 0];
 
-  if ([(CNSharedProfileBannerView *)self isRevertAction:v6])
+  if ([(CNSharedProfileBannerView *)self isRevertAction:bannerActionTypeForEffectiveState])
   {
-    v22 = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
-    v23 = [v22 contact];
-    v24 = [(CNSharedProfileBannerView *)self avatarView];
-    [v24 setContact:v23];
+    sharedProfileStateOracle3 = [(CNSharedProfileBannerView *)self sharedProfileStateOracle];
+    contact = [sharedProfileStateOracle3 contact];
+    avatarView = [(CNSharedProfileBannerView *)self avatarView];
+    [avatarView setContact:contact];
 
 LABEL_21:
     goto LABEL_22;
@@ -469,22 +469,22 @@ LABEL_21:
 
   if (!tappedAction)
   {
-    v22 = [v25 contact];
-    v23 = [(CNSharedProfileBannerView *)self avatarView];
-    [v23 setContact:v22];
+    sharedProfileStateOracle3 = [v25 contact];
+    contact = [(CNSharedProfileBannerView *)self avatarView];
+    [contact setContact:sharedProfileStateOracle3];
     goto LABEL_21;
   }
 
 LABEL_22:
 }
 
-- (void)setUpWithSharedProfileStateOracle:(id)a3 tappedAction:(unint64_t)a4 hasPerformedAnimation:(BOOL)a5
+- (void)setUpWithSharedProfileStateOracle:(id)oracle tappedAction:(unint64_t)action hasPerformedAnimation:(BOOL)animation
 {
-  v9 = a3;
-  objc_storeStrong(&self->_sharedProfileStateOracle, a3);
-  self->_tappedAction = a4;
+  oracleCopy = oracle;
+  objc_storeStrong(&self->_sharedProfileStateOracle, oracle);
+  self->_tappedAction = action;
   [(CNSharedProfileBannerView *)self updateUIForCurrentState];
-  if (!a5)
+  if (!animation)
   {
     [(CNSharedProfileBannerView *)self performSelector:sel_performAnimationIfNeeded withObject:0 afterDelay:0.5];
   }
@@ -493,10 +493,10 @@ LABEL_22:
 - (void)startObservingAvatarCacheInvalidation
 {
   v3 = +[CNUIContactsEnvironment currentEnvironment];
-  v4 = [v3 cachingLikenessRenderer];
-  if ([v4 conformsToProtocol:&unk_1F0E28E18])
+  cachingLikenessRenderer = [v3 cachingLikenessRenderer];
+  if ([cachingLikenessRenderer conformsToProtocol:&unk_1F0E28E18])
   {
-    v5 = v4;
+    v5 = cachingLikenessRenderer;
   }
 
   else
@@ -514,32 +514,32 @@ LABEL_22:
   }
 }
 
-- (double)estimatedHeightForWidth:(double)a3
+- (double)estimatedHeightForWidth:(double)width
 {
-  v5 = [(CNSharedProfileBannerView *)self dismissButton];
-  [v5 sizeToFit];
+  dismissButton = [(CNSharedProfileBannerView *)self dismissButton];
+  [dismissButton sizeToFit];
 
-  v6 = [(CNSharedProfileBannerView *)self avatarView];
-  [v6 sizeToFit];
+  avatarView = [(CNSharedProfileBannerView *)self avatarView];
+  [avatarView sizeToFit];
 
-  v7 = [(CNSharedProfileBannerView *)self actionButton];
-  [v7 sizeToFit];
+  actionButton = [(CNSharedProfileBannerView *)self actionButton];
+  [actionButton sizeToFit];
 
-  v8 = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
-  v9 = [(CNSharedProfileBannerView *)self avatarView];
-  v10 = [v9 isHidden];
+  ab_preferredContentSizeCategoryIsAccessibilityCategory = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
+  avatarView2 = [(CNSharedProfileBannerView *)self avatarView];
+  isHidden = [avatarView2 isHidden];
   v11 = 0.0;
-  if (v8)
+  if (ab_preferredContentSizeCategoryIsAccessibilityCategory)
   {
-    if ((v10 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v12 = [(CNSharedProfileBannerView *)self avatarView];
-      [v12 frame];
+      avatarView3 = [(CNSharedProfileBannerView *)self avatarView];
+      [avatarView3 frame];
       v11 = v13;
     }
 
-    v14 = [(CNSharedProfileBannerView *)self actionButton];
-    [v14 frame];
+    actionButton2 = [(CNSharedProfileBannerView *)self actionButton];
+    [actionButton2 frame];
     v16 = v15;
 
     v17 = v11 + v16 + 16.0;
@@ -547,30 +547,30 @@ LABEL_22:
 
   else
   {
-    if ((v10 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v18 = [(CNSharedProfileBannerView *)self avatarView];
-      [v18 frame];
+      avatarView4 = [(CNSharedProfileBannerView *)self avatarView];
+      [avatarView4 frame];
       v11 = v19;
     }
 
-    v20 = [(CNSharedProfileBannerView *)self actionButton];
-    [v20 frame];
+    actionButton3 = [(CNSharedProfileBannerView *)self actionButton];
+    [actionButton3 frame];
     v22 = v21;
-    v23 = [(CNSharedProfileBannerView *)self dismissButton];
-    [v23 frame];
+    dismissButton2 = [(CNSharedProfileBannerView *)self dismissButton];
+    [dismissButton2 frame];
     v25 = v22 + v24;
 
-    a3 = a3 - v11 - v25 + -40.0;
+    width = width - v11 - v25 + -40.0;
     v17 = 16.0;
   }
 
-  v26 = [(CNSharedProfileBannerView *)self titleLabel];
-  [v26 sizeThatFits:{a3, 3.40282347e38}];
+  titleLabel = [(CNSharedProfileBannerView *)self titleLabel];
+  [titleLabel sizeThatFits:{width, 3.40282347e38}];
   v28 = v27;
 
-  v29 = [(CNSharedProfileBannerView *)self subtitleLabel];
-  [v29 sizeThatFits:{a3, 3.40282347e38}];
+  subtitleLabel = [(CNSharedProfileBannerView *)self subtitleLabel];
+  [subtitleLabel sizeThatFits:{width, 3.40282347e38}];
   v31 = v30;
 
   result = v17 + v28 + v31;
@@ -585,68 +585,68 @@ LABEL_22:
 - (id)verticalConstraintsWithHiddenAvatarView
 {
   v56[12] = *MEMORY[0x1E69E9840];
-  v55 = [(CNSharedProfileBannerView *)self avatarView];
-  v54 = [v55 centerXAnchor];
-  v53 = [(CNSharedProfileBannerView *)self centerXAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53];
+  avatarView = [(CNSharedProfileBannerView *)self avatarView];
+  centerXAnchor = [avatarView centerXAnchor];
+  centerXAnchor2 = [(CNSharedProfileBannerView *)self centerXAnchor];
+  v52 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v56[0] = v52;
-  v51 = [(CNSharedProfileBannerView *)self avatarView];
-  v50 = [v51 topAnchor];
-  v49 = [(CNSharedProfileBannerView *)self topAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49 constant:8.0];
+  avatarView2 = [(CNSharedProfileBannerView *)self avatarView];
+  topAnchor = [avatarView2 topAnchor];
+  topAnchor2 = [(CNSharedProfileBannerView *)self topAnchor];
+  v48 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:8.0];
   v56[1] = v48;
-  v47 = [(CNSharedProfileBannerView *)self avatarView];
-  v45 = [v47 heightAnchor];
-  v46 = [(CNSharedProfileBannerView *)self avatarView];
-  v44 = [v46 widthAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  avatarView3 = [(CNSharedProfileBannerView *)self avatarView];
+  heightAnchor = [avatarView3 heightAnchor];
+  avatarView4 = [(CNSharedProfileBannerView *)self avatarView];
+  widthAnchor = [avatarView4 widthAnchor];
+  v43 = [heightAnchor constraintEqualToAnchor:widthAnchor];
   v56[2] = v43;
-  v42 = [(CNSharedProfileBannerView *)self avatarView];
-  v41 = [v42 heightAnchor];
-  v40 = [v41 constraintEqualToConstant:60.0];
+  avatarView5 = [(CNSharedProfileBannerView *)self avatarView];
+  heightAnchor2 = [avatarView5 heightAnchor];
+  v40 = [heightAnchor2 constraintEqualToConstant:60.0];
   v56[3] = v40;
-  v39 = [(CNSharedProfileBannerView *)self labelStackView];
-  v38 = [v39 topAnchor];
-  v37 = [(CNSharedProfileBannerView *)self topAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  labelStackView = [(CNSharedProfileBannerView *)self labelStackView];
+  topAnchor3 = [labelStackView topAnchor];
+  topAnchor4 = [(CNSharedProfileBannerView *)self topAnchor];
+  v36 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v56[4] = v36;
-  v35 = [(CNSharedProfileBannerView *)self labelStackView];
-  v34 = [v35 leadingAnchor];
-  v33 = [(CNSharedProfileBannerView *)self leadingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  labelStackView2 = [(CNSharedProfileBannerView *)self labelStackView];
+  leadingAnchor = [labelStackView2 leadingAnchor];
+  leadingAnchor2 = [(CNSharedProfileBannerView *)self leadingAnchor];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v56[5] = v32;
-  v31 = [(CNSharedProfileBannerView *)self labelStackView];
-  v29 = [v31 trailingAnchor];
-  v30 = [(CNSharedProfileBannerView *)self dismissButton];
-  v28 = [v30 leadingAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  labelStackView3 = [(CNSharedProfileBannerView *)self labelStackView];
+  trailingAnchor = [labelStackView3 trailingAnchor];
+  dismissButton = [(CNSharedProfileBannerView *)self dismissButton];
+  leadingAnchor3 = [dismissButton leadingAnchor];
+  v27 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3];
   v56[6] = v27;
-  v26 = [(CNSharedProfileBannerView *)self actionButton];
-  v24 = [v26 topAnchor];
-  v25 = [(CNSharedProfileBannerView *)self labelStackView];
-  v23 = [v25 bottomAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  actionButton = [(CNSharedProfileBannerView *)self actionButton];
+  topAnchor5 = [actionButton topAnchor];
+  labelStackView4 = [(CNSharedProfileBannerView *)self labelStackView];
+  bottomAnchor = [labelStackView4 bottomAnchor];
+  v22 = [topAnchor5 constraintEqualToAnchor:bottomAnchor];
   v56[7] = v22;
-  v21 = [(CNSharedProfileBannerView *)self actionButton];
-  v19 = [v21 centerXAnchor];
-  v20 = [(CNSharedProfileBannerView *)self labelStackView];
-  v18 = [v20 centerXAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  actionButton2 = [(CNSharedProfileBannerView *)self actionButton];
+  centerXAnchor3 = [actionButton2 centerXAnchor];
+  labelStackView5 = [(CNSharedProfileBannerView *)self labelStackView];
+  centerXAnchor4 = [labelStackView5 centerXAnchor];
+  v17 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v56[8] = v17;
-  v16 = [(CNSharedProfileBannerView *)self actionButton];
-  v15 = [v16 bottomAnchor];
-  v3 = [(CNSharedProfileBannerView *)self bottomAnchor];
-  v4 = [v15 constraintEqualToAnchor:v3 constant:-8.0];
+  actionButton3 = [(CNSharedProfileBannerView *)self actionButton];
+  bottomAnchor2 = [actionButton3 bottomAnchor];
+  bottomAnchor3 = [(CNSharedProfileBannerView *)self bottomAnchor];
+  v4 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-8.0];
   v56[9] = v4;
-  v5 = [(CNSharedProfileBannerView *)self dismissButton];
-  v6 = [v5 trailingAnchor];
-  v7 = [(CNSharedProfileBannerView *)self trailingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  dismissButton2 = [(CNSharedProfileBannerView *)self dismissButton];
+  trailingAnchor2 = [dismissButton2 trailingAnchor];
+  trailingAnchor3 = [(CNSharedProfileBannerView *)self trailingAnchor];
+  v8 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v56[10] = v8;
-  v9 = [(CNSharedProfileBannerView *)self dismissButton];
-  v10 = [v9 centerYAnchor];
-  v11 = [(CNSharedProfileBannerView *)self centerYAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  dismissButton3 = [(CNSharedProfileBannerView *)self dismissButton];
+  centerYAnchor = [dismissButton3 centerYAnchor];
+  centerYAnchor2 = [(CNSharedProfileBannerView *)self centerYAnchor];
+  v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v56[11] = v12;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:12];
 
@@ -656,68 +656,68 @@ LABEL_22:
 - (id)verticalConstraintsWithAvatarView
 {
   v56[12] = *MEMORY[0x1E69E9840];
-  v55 = [(CNSharedProfileBannerView *)self avatarView];
-  v54 = [v55 centerXAnchor];
-  v53 = [(CNSharedProfileBannerView *)self centerXAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53];
+  avatarView = [(CNSharedProfileBannerView *)self avatarView];
+  centerXAnchor = [avatarView centerXAnchor];
+  centerXAnchor2 = [(CNSharedProfileBannerView *)self centerXAnchor];
+  v52 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v56[0] = v52;
-  v51 = [(CNSharedProfileBannerView *)self avatarView];
-  v50 = [v51 topAnchor];
-  v49 = [(CNSharedProfileBannerView *)self topAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49 constant:8.0];
+  avatarView2 = [(CNSharedProfileBannerView *)self avatarView];
+  topAnchor = [avatarView2 topAnchor];
+  topAnchor2 = [(CNSharedProfileBannerView *)self topAnchor];
+  v48 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:8.0];
   v56[1] = v48;
-  v47 = [(CNSharedProfileBannerView *)self avatarView];
-  v45 = [v47 heightAnchor];
-  v46 = [(CNSharedProfileBannerView *)self avatarView];
-  v44 = [v46 widthAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  avatarView3 = [(CNSharedProfileBannerView *)self avatarView];
+  heightAnchor = [avatarView3 heightAnchor];
+  avatarView4 = [(CNSharedProfileBannerView *)self avatarView];
+  widthAnchor = [avatarView4 widthAnchor];
+  v43 = [heightAnchor constraintEqualToAnchor:widthAnchor];
   v56[2] = v43;
-  v42 = [(CNSharedProfileBannerView *)self avatarView];
-  v41 = [v42 heightAnchor];
-  v40 = [v41 constraintEqualToConstant:60.0];
+  avatarView5 = [(CNSharedProfileBannerView *)self avatarView];
+  heightAnchor2 = [avatarView5 heightAnchor];
+  v40 = [heightAnchor2 constraintEqualToConstant:60.0];
   v56[3] = v40;
-  v39 = [(CNSharedProfileBannerView *)self labelStackView];
-  v37 = [v39 topAnchor];
-  v38 = [(CNSharedProfileBannerView *)self avatarView];
-  v36 = [v38 bottomAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  labelStackView = [(CNSharedProfileBannerView *)self labelStackView];
+  topAnchor3 = [labelStackView topAnchor];
+  avatarView6 = [(CNSharedProfileBannerView *)self avatarView];
+  bottomAnchor = [avatarView6 bottomAnchor];
+  v35 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v56[4] = v35;
-  v34 = [(CNSharedProfileBannerView *)self labelStackView];
-  v33 = [v34 leadingAnchor];
-  v32 = [(CNSharedProfileBannerView *)self leadingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  labelStackView2 = [(CNSharedProfileBannerView *)self labelStackView];
+  leadingAnchor = [labelStackView2 leadingAnchor];
+  leadingAnchor2 = [(CNSharedProfileBannerView *)self leadingAnchor];
+  v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v56[5] = v31;
-  v30 = [(CNSharedProfileBannerView *)self labelStackView];
-  v29 = [v30 trailingAnchor];
-  v28 = [(CNSharedProfileBannerView *)self trailingAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  labelStackView3 = [(CNSharedProfileBannerView *)self labelStackView];
+  trailingAnchor = [labelStackView3 trailingAnchor];
+  trailingAnchor2 = [(CNSharedProfileBannerView *)self trailingAnchor];
+  v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v56[6] = v27;
-  v26 = [(CNSharedProfileBannerView *)self actionButton];
-  v24 = [v26 topAnchor];
-  v25 = [(CNSharedProfileBannerView *)self labelStackView];
-  v23 = [v25 bottomAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  actionButton = [(CNSharedProfileBannerView *)self actionButton];
+  topAnchor4 = [actionButton topAnchor];
+  labelStackView4 = [(CNSharedProfileBannerView *)self labelStackView];
+  bottomAnchor2 = [labelStackView4 bottomAnchor];
+  v22 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2];
   v56[7] = v22;
-  v21 = [(CNSharedProfileBannerView *)self actionButton];
-  v19 = [v21 centerXAnchor];
-  v20 = [(CNSharedProfileBannerView *)self labelStackView];
-  v18 = [v20 centerXAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  actionButton2 = [(CNSharedProfileBannerView *)self actionButton];
+  centerXAnchor3 = [actionButton2 centerXAnchor];
+  labelStackView5 = [(CNSharedProfileBannerView *)self labelStackView];
+  centerXAnchor4 = [labelStackView5 centerXAnchor];
+  v17 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v56[8] = v17;
-  v16 = [(CNSharedProfileBannerView *)self actionButton];
-  v15 = [v16 bottomAnchor];
-  v3 = [(CNSharedProfileBannerView *)self bottomAnchor];
-  v4 = [v15 constraintEqualToAnchor:v3 constant:-8.0];
+  actionButton3 = [(CNSharedProfileBannerView *)self actionButton];
+  bottomAnchor3 = [actionButton3 bottomAnchor];
+  bottomAnchor4 = [(CNSharedProfileBannerView *)self bottomAnchor];
+  v4 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-8.0];
   v56[9] = v4;
-  v5 = [(CNSharedProfileBannerView *)self dismissButton];
-  v6 = [v5 trailingAnchor];
-  v7 = [(CNSharedProfileBannerView *)self trailingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  dismissButton = [(CNSharedProfileBannerView *)self dismissButton];
+  trailingAnchor3 = [dismissButton trailingAnchor];
+  trailingAnchor4 = [(CNSharedProfileBannerView *)self trailingAnchor];
+  v8 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v56[10] = v8;
-  v9 = [(CNSharedProfileBannerView *)self dismissButton];
-  v10 = [v9 topAnchor];
-  v11 = [(CNSharedProfileBannerView *)self topAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  dismissButton2 = [(CNSharedProfileBannerView *)self dismissButton];
+  topAnchor5 = [dismissButton2 topAnchor];
+  topAnchor6 = [(CNSharedProfileBannerView *)self topAnchor];
+  v12 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v56[11] = v12;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:12];
 
@@ -727,87 +727,87 @@ LABEL_22:
 - (id)horizontalConstraints
 {
   v63[13] = *MEMORY[0x1E69E9840];
-  v3 = [(CNSharedProfileBannerView *)self avatarView];
-  v4 = [v3 isHidden];
-  v5 = [(CNSharedProfileBannerView *)self labelStackView];
-  v6 = [v5 leadingAnchor];
-  if (v4)
+  avatarView = [(CNSharedProfileBannerView *)self avatarView];
+  isHidden = [avatarView isHidden];
+  labelStackView = [(CNSharedProfileBannerView *)self labelStackView];
+  leadingAnchor = [labelStackView leadingAnchor];
+  if (isHidden)
   {
-    v7 = [(CNSharedProfileBannerView *)self leadingAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    leadingAnchor2 = [(CNSharedProfileBannerView *)self leadingAnchor];
+    v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   }
 
   else
   {
-    v7 = [(CNSharedProfileBannerView *)self avatarView];
-    v9 = [v7 trailingAnchor];
-    v8 = [v6 constraintEqualToSystemSpacingAfterAnchor:v9 multiplier:1.0];
+    leadingAnchor2 = [(CNSharedProfileBannerView *)self avatarView];
+    trailingAnchor = [leadingAnchor2 trailingAnchor];
+    v8 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor multiplier:1.0];
   }
 
   v38 = v8;
 
-  v62 = [(CNSharedProfileBannerView *)self avatarView];
-  v61 = [v62 centerYAnchor];
-  v60 = [(CNSharedProfileBannerView *)self centerYAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60];
+  avatarView2 = [(CNSharedProfileBannerView *)self avatarView];
+  centerYAnchor = [avatarView2 centerYAnchor];
+  centerYAnchor2 = [(CNSharedProfileBannerView *)self centerYAnchor];
+  v59 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v63[0] = v59;
-  v58 = [(CNSharedProfileBannerView *)self avatarView];
-  v57 = [v58 leadingAnchor];
-  v56 = [(CNSharedProfileBannerView *)self leadingAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56];
+  avatarView3 = [(CNSharedProfileBannerView *)self avatarView];
+  leadingAnchor3 = [avatarView3 leadingAnchor];
+  leadingAnchor4 = [(CNSharedProfileBannerView *)self leadingAnchor];
+  v55 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v63[1] = v55;
-  v54 = [(CNSharedProfileBannerView *)self avatarView];
-  v52 = [v54 heightAnchor];
-  v53 = [(CNSharedProfileBannerView *)self avatarView];
-  v51 = [v53 widthAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  avatarView4 = [(CNSharedProfileBannerView *)self avatarView];
+  heightAnchor = [avatarView4 heightAnchor];
+  avatarView5 = [(CNSharedProfileBannerView *)self avatarView];
+  widthAnchor = [avatarView5 widthAnchor];
+  v50 = [heightAnchor constraintEqualToAnchor:widthAnchor];
   v63[2] = v50;
-  v49 = [(CNSharedProfileBannerView *)self avatarView];
-  v48 = [v49 heightAnchor];
-  v47 = [v48 constraintEqualToConstant:40.0];
+  avatarView6 = [(CNSharedProfileBannerView *)self avatarView];
+  heightAnchor2 = [avatarView6 heightAnchor];
+  v47 = [heightAnchor2 constraintEqualToConstant:40.0];
   v63[3] = v47;
-  v46 = [(CNSharedProfileBannerView *)self labelStackView];
-  v45 = [v46 centerYAnchor];
-  v44 = [(CNSharedProfileBannerView *)self centerYAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  labelStackView2 = [(CNSharedProfileBannerView *)self labelStackView];
+  centerYAnchor3 = [labelStackView2 centerYAnchor];
+  centerYAnchor4 = [(CNSharedProfileBannerView *)self centerYAnchor];
+  v43 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v63[4] = v43;
-  v42 = [(CNSharedProfileBannerView *)self labelStackView];
-  v41 = [v42 topAnchor];
-  v40 = [(CNSharedProfileBannerView *)self topAnchor];
-  v39 = [v41 constraintGreaterThanOrEqualToAnchor:v40 constant:8.0];
+  labelStackView3 = [(CNSharedProfileBannerView *)self labelStackView];
+  topAnchor = [labelStackView3 topAnchor];
+  topAnchor2 = [(CNSharedProfileBannerView *)self topAnchor];
+  v39 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:8.0];
   v63[5] = v39;
-  v37 = [(CNSharedProfileBannerView *)self labelStackView];
-  v36 = [v37 bottomAnchor];
-  v35 = [(CNSharedProfileBannerView *)self bottomAnchor];
-  v34 = [v36 constraintLessThanOrEqualToAnchor:v35 constant:8.0];
+  labelStackView4 = [(CNSharedProfileBannerView *)self labelStackView];
+  bottomAnchor = [labelStackView4 bottomAnchor];
+  bottomAnchor2 = [(CNSharedProfileBannerView *)self bottomAnchor];
+  v34 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:8.0];
   v63[6] = v34;
   v63[7] = v8;
-  v33 = [(CNSharedProfileBannerView *)self actionButton];
-  v31 = [v33 leadingAnchor];
-  v32 = [(CNSharedProfileBannerView *)self labelStackView];
-  v30 = [v32 trailingAnchor];
-  v29 = [v31 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v30 multiplier:1.0];
+  actionButton = [(CNSharedProfileBannerView *)self actionButton];
+  leadingAnchor5 = [actionButton leadingAnchor];
+  labelStackView5 = [(CNSharedProfileBannerView *)self labelStackView];
+  trailingAnchor2 = [labelStackView5 trailingAnchor];
+  v29 = [leadingAnchor5 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:1.0];
   v63[8] = v29;
-  v28 = [(CNSharedProfileBannerView *)self actionButton];
-  v27 = [v28 centerYAnchor];
-  v26 = [(CNSharedProfileBannerView *)self centerYAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  actionButton2 = [(CNSharedProfileBannerView *)self actionButton];
+  centerYAnchor5 = [actionButton2 centerYAnchor];
+  centerYAnchor6 = [(CNSharedProfileBannerView *)self centerYAnchor];
+  v25 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   v63[9] = v25;
-  v24 = [(CNSharedProfileBannerView *)self dismissButton];
-  v22 = [v24 leadingAnchor];
-  v23 = [(CNSharedProfileBannerView *)self actionButton];
-  v10 = [v23 trailingAnchor];
-  v11 = [v22 constraintEqualToAnchor:v10];
+  dismissButton = [(CNSharedProfileBannerView *)self dismissButton];
+  leadingAnchor6 = [dismissButton leadingAnchor];
+  actionButton3 = [(CNSharedProfileBannerView *)self actionButton];
+  trailingAnchor3 = [actionButton3 trailingAnchor];
+  v11 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor3];
   v63[10] = v11;
-  v12 = [(CNSharedProfileBannerView *)self dismissButton];
-  v13 = [v12 trailingAnchor];
-  v14 = [(CNSharedProfileBannerView *)self trailingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  dismissButton2 = [(CNSharedProfileBannerView *)self dismissButton];
+  trailingAnchor4 = [dismissButton2 trailingAnchor];
+  trailingAnchor5 = [(CNSharedProfileBannerView *)self trailingAnchor];
+  v15 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v63[11] = v15;
-  v16 = [(CNSharedProfileBannerView *)self dismissButton];
-  v17 = [v16 centerYAnchor];
-  v18 = [(CNSharedProfileBannerView *)self centerYAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  dismissButton3 = [(CNSharedProfileBannerView *)self dismissButton];
+  centerYAnchor7 = [dismissButton3 centerYAnchor];
+  centerYAnchor8 = [(CNSharedProfileBannerView *)self centerYAnchor];
+  v19 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
   v63[12] = v19;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:13];
 
@@ -826,8 +826,8 @@ LABEL_22:
 
   if ([MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory])
   {
-    v3 = [(CNSharedProfileBannerView *)self avatarView];
-    if ([v3 isHidden])
+    avatarView = [(CNSharedProfileBannerView *)self avatarView];
+    if ([avatarView isHidden])
     {
       [(CNSharedProfileBannerView *)self verticalConstraintsWithHiddenAvatarView];
     }
@@ -845,77 +845,77 @@ LABEL_22:
 
   else
   {
-    v5 = [(CNSharedProfileBannerView *)self horizontalConstraints];
-    v3 = self->_constraints;
-    self->_constraints = v5;
+    horizontalConstraints = [(CNSharedProfileBannerView *)self horizontalConstraints];
+    avatarView = self->_constraints;
+    self->_constraints = horizontalConstraints;
     v6 = 4;
   }
 
   [MEMORY[0x1E696ACD8] activateConstraints:self->_constraints];
-  v8 = [(CNSharedProfileBannerView *)self titleLabel];
-  [v8 setTextAlignment:v6];
+  titleLabel = [(CNSharedProfileBannerView *)self titleLabel];
+  [titleLabel setTextAlignment:v6];
 
-  v9 = [(CNSharedProfileBannerView *)self subtitleLabel];
-  [v9 setTextAlignment:v6];
+  subtitleLabel = [(CNSharedProfileBannerView *)self subtitleLabel];
+  [subtitleLabel setTextAlignment:v6];
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v6 = a3;
-  if (self->_style != v6)
+  styleCopy = style;
+  if (self->_style != styleCopy)
   {
-    v22 = v6;
-    objc_storeStrong(&self->_style, a3);
-    v7 = [(CNSharedProfileBannerStyle *)v22 titleTextColor];
-    v8 = [(CNSharedProfileBannerView *)self titleLabel];
-    [v8 setTextColor:v7];
+    v22 = styleCopy;
+    objc_storeStrong(&self->_style, style);
+    titleTextColor = [(CNSharedProfileBannerStyle *)v22 titleTextColor];
+    titleLabel = [(CNSharedProfileBannerView *)self titleLabel];
+    [titleLabel setTextColor:titleTextColor];
 
-    v9 = [(CNSharedProfileBannerStyle *)v22 subtitleTextColor];
-    v10 = [(CNSharedProfileBannerView *)self subtitleLabel];
-    [v10 setTextColor:v9];
+    subtitleTextColor = [(CNSharedProfileBannerStyle *)v22 subtitleTextColor];
+    subtitleLabel = [(CNSharedProfileBannerView *)self subtitleLabel];
+    [subtitleLabel setTextColor:subtitleTextColor];
 
-    v11 = [(CNSharedProfileBannerStyle *)v22 titleFont];
-    v12 = [(CNSharedProfileBannerView *)self titleLabel];
-    [v12 setFont:v11];
+    titleFont = [(CNSharedProfileBannerStyle *)v22 titleFont];
+    titleLabel2 = [(CNSharedProfileBannerView *)self titleLabel];
+    [titleLabel2 setFont:titleFont];
 
-    v13 = [(CNSharedProfileBannerView *)self hasTappedAction];
+    hasTappedAction = [(CNSharedProfileBannerView *)self hasTappedAction];
     [(CNSharedProfileBannerStyle *)v22 subtitleFont];
-    if (v13)
-      v12 = {;
-      v3 = [v12 fontDescriptor];
-      [CNUIFontRepository boldFontWithFontDescriptor:v3];
+    if (hasTappedAction)
+      titleLabel2 = {;
+      fontDescriptor = [titleLabel2 fontDescriptor];
+      [CNUIFontRepository boldFontWithFontDescriptor:fontDescriptor];
     }
     v14 = ;
-    v15 = [(CNSharedProfileBannerView *)self subtitleLabel];
-    [v15 setFont:v14];
+    subtitleLabel2 = [(CNSharedProfileBannerView *)self subtitleLabel];
+    [subtitleLabel2 setFont:v14];
 
-    if (v13)
+    if (hasTappedAction)
     {
 
-      v14 = v12;
+      v14 = titleLabel2;
     }
 
-    v16 = [(CNSharedProfileBannerStyle *)v22 actionButtonConfiguration];
-    v17 = [(CNSharedProfileBannerView *)self actionButton];
-    [v17 setConfiguration:v16];
+    actionButtonConfiguration = [(CNSharedProfileBannerStyle *)v22 actionButtonConfiguration];
+    actionButton = [(CNSharedProfileBannerView *)self actionButton];
+    [actionButton setConfiguration:actionButtonConfiguration];
 
-    v18 = [(CNSharedProfileBannerStyle *)v22 xmarkButtonColorConfiguration];
-    v19 = [(CNSharedProfileBannerView *)self xmarkImageWithColorConfiguration:v18];
-    v20 = [(CNSharedProfileBannerView *)self dismissButton];
-    v21 = [v20 imageView];
-    [v21 setImage:v19];
+    xmarkButtonColorConfiguration = [(CNSharedProfileBannerStyle *)v22 xmarkButtonColorConfiguration];
+    v19 = [(CNSharedProfileBannerView *)self xmarkImageWithColorConfiguration:xmarkButtonColorConfiguration];
+    dismissButton = [(CNSharedProfileBannerView *)self dismissButton];
+    imageView = [dismissButton imageView];
+    [imageView setImage:v19];
 
-    v6 = v22;
+    styleCopy = v22;
   }
 }
 
-- (id)xmarkImageWithColorConfiguration:(id)a3
+- (id)xmarkImageWithColorConfiguration:(id)configuration
 {
   v3 = MEMORY[0x1E69DCAD8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [v3 configurationWithScale:2];
   v6 = [MEMORY[0x1E69DCAD8] configurationWithWeight:7];
-  v7 = [v6 configurationByApplyingConfiguration:v4];
+  v7 = [v6 configurationByApplyingConfiguration:configurationCopy];
 
   v8 = [v5 configurationByApplyingConfiguration:v7];
 
@@ -926,16 +926,16 @@ LABEL_22:
 
 - (void)setUpDismissButton
 {
-  v7 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  v3 = [(CNSharedProfileBannerView *)self style];
-  v4 = [v3 xmarkButtonColorConfiguration];
-  v5 = [(CNSharedProfileBannerView *)self xmarkImageWithColorConfiguration:v4];
-  [v7 setImage:v5];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  style = [(CNSharedProfileBannerView *)self style];
+  xmarkButtonColorConfiguration = [style xmarkButtonColorConfiguration];
+  v5 = [(CNSharedProfileBannerView *)self xmarkImageWithColorConfiguration:xmarkButtonColorConfiguration];
+  [plainButtonConfiguration setImage:v5];
 
-  [v7 setButtonSize:2];
+  [plainButtonConfiguration setButtonSize:2];
   v6 = objc_alloc_init(MEMORY[0x1E69DC738]);
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v6 setConfiguration:v7];
+  [v6 setConfiguration:plainButtonConfiguration];
   [v6 addTarget:self action:sel_didTapDismiss forControlEvents:64];
   [(CNSharedProfileBannerView *)self addSubview:v6];
   [(CNSharedProfileBannerView *)self setDismissButton:v6];
@@ -945,9 +945,9 @@ LABEL_22:
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DC738]);
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [(CNSharedProfileBannerView *)self style];
-  v4 = [v3 actionButtonConfiguration];
-  [v5 setConfiguration:v4];
+  style = [(CNSharedProfileBannerView *)self style];
+  actionButtonConfiguration = [style actionButtonConfiguration];
+  [v5 setConfiguration:actionButtonConfiguration];
 
   [v5 addTarget:self action:sel_didTapActionButton forControlEvents:64];
   [(CNSharedProfileBannerView *)self addSubview:v5];
@@ -960,13 +960,13 @@ LABEL_22:
   v3 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v3 setNumberOfLines:0];
-  v4 = [(CNSharedProfileBannerView *)self style];
-  v5 = [v4 titleTextColor];
-  [v3 setTextColor:v5];
+  style = [(CNSharedProfileBannerView *)self style];
+  titleTextColor = [style titleTextColor];
+  [v3 setTextColor:titleTextColor];
 
-  v6 = [(CNSharedProfileBannerView *)self style];
-  v7 = [v6 titleFont];
-  [v3 setFont:v7];
+  style2 = [(CNSharedProfileBannerView *)self style];
+  titleFont = [style2 titleFont];
+  [v3 setFont:titleFont];
 
   [v3 setAdjustsFontSizeToFitWidth:1];
   [(CNSharedProfileBannerView *)self setTitleLabel:v3];
@@ -974,21 +974,21 @@ LABEL_22:
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v8 setNumberOfLines:0];
   [v8 setLineBreakMode:1];
-  v9 = [(CNSharedProfileBannerView *)self style];
-  v10 = [v9 subtitleTextColor];
-  [v8 setTextColor:v10];
+  style3 = [(CNSharedProfileBannerView *)self style];
+  subtitleTextColor = [style3 subtitleTextColor];
+  [v8 setTextColor:subtitleTextColor];
 
-  v11 = [(CNSharedProfileBannerView *)self style];
-  v12 = [v11 subtitleFont];
-  [v8 setFont:v12];
+  style4 = [(CNSharedProfileBannerView *)self style];
+  subtitleFont = [style4 subtitleFont];
+  [v8 setFont:subtitleFont];
 
   [v8 setAdjustsFontSizeToFitWidth:1];
   [(CNSharedProfileBannerView *)self setSubtitleLabel:v8];
   v13 = objc_alloc(MEMORY[0x1E69DCF90]);
-  v14 = [(CNSharedProfileBannerView *)self titleLabel];
-  v18[0] = v14;
-  v15 = [(CNSharedProfileBannerView *)self subtitleLabel];
-  v18[1] = v15;
+  titleLabel = [(CNSharedProfileBannerView *)self titleLabel];
+  v18[0] = titleLabel;
+  subtitleLabel = [(CNSharedProfileBannerView *)self subtitleLabel];
+  v18[1] = subtitleLabel;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v17 = [v13 initWithArrangedSubviews:v16];
 
@@ -1021,11 +1021,11 @@ LABEL_22:
   v7.receiver = self;
   v7.super_class = CNSharedProfileBannerView;
   [(CNSharedProfileBannerView *)&v7 layoutSubviews];
-  v3 = [(CNSharedProfileBannerView *)self labelStackView];
-  [v3 bounds];
+  labelStackView = [(CNSharedProfileBannerView *)self labelStackView];
+  [labelStackView bounds];
   v5 = v4 + 20.0;
-  v6 = [(CNSharedProfileBannerView *)self titleLabel];
-  [v6 setPreferredMaxLayoutWidth:v5];
+  titleLabel = [(CNSharedProfileBannerView *)self titleLabel];
+  [titleLabel setPreferredMaxLayoutWidth:v5];
 }
 
 - (CNSharedProfileBannerView)init

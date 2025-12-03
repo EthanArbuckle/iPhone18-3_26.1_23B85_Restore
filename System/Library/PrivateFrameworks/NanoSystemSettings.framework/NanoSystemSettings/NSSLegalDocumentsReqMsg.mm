@@ -1,58 +1,58 @@
 @interface NSSLegalDocumentsReqMsg
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addLegacyPreferredLanguages:(id)a3;
-- (void)addPreferredLanguages:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFetchBuiltinApps:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addLegacyPreferredLanguages:(id)languages;
+- (void)addPreferredLanguages:(id)languages;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFetchBuiltinApps:(BOOL)apps;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSSLegalDocumentsReqMsg
 
-- (void)addLegacyPreferredLanguages:(id)a3
+- (void)addLegacyPreferredLanguages:(id)languages
 {
-  v4 = a3;
+  languagesCopy = languages;
   legacyPreferredLanguages = self->_legacyPreferredLanguages;
-  v8 = v4;
+  v8 = languagesCopy;
   if (!legacyPreferredLanguages)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_legacyPreferredLanguages;
     self->_legacyPreferredLanguages = v6;
 
-    v4 = v8;
+    languagesCopy = v8;
     legacyPreferredLanguages = self->_legacyPreferredLanguages;
   }
 
-  [(NSMutableArray *)legacyPreferredLanguages addObject:v4];
+  [(NSMutableArray *)legacyPreferredLanguages addObject:languagesCopy];
 }
 
-- (void)addPreferredLanguages:(id)a3
+- (void)addPreferredLanguages:(id)languages
 {
-  v4 = a3;
+  languagesCopy = languages;
   preferredLanguages = self->_preferredLanguages;
-  v8 = v4;
+  v8 = languagesCopy;
   if (!preferredLanguages)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_preferredLanguages;
     self->_preferredLanguages = v6;
 
-    v4 = v8;
+    languagesCopy = v8;
     preferredLanguages = self->_preferredLanguages;
   }
 
-  [(NSMutableArray *)preferredLanguages addObject:v4];
+  [(NSMutableArray *)preferredLanguages addObject:languagesCopy];
 }
 
-- (void)setHasFetchBuiltinApps:(BOOL)a3
+- (void)setHasFetchBuiltinApps:(BOOL)apps
 {
-  if (a3)
+  if (apps)
   {
     v3 = 2;
   }
@@ -71,20 +71,20 @@
   v8.receiver = self;
   v8.super_class = NSSLegalDocumentsReqMsg;
   v4 = [(NSSLegalDocumentsReqMsg *)&v8 description];
-  v5 = [(NSSLegalDocumentsReqMsg *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSSLegalDocumentsReqMsg *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   legacyPreferredLanguages = self->_legacyPreferredLanguages;
   if (legacyPreferredLanguages)
   {
-    [v3 setObject:legacyPreferredLanguages forKey:@"legacyPreferredLanguages"];
+    [dictionary setObject:legacyPreferredLanguages forKey:@"legacyPreferredLanguages"];
   }
 
   preferredLanguages = self->_preferredLanguages;
@@ -111,10 +111,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -190,35 +190,35 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   if ([(NSSLegalDocumentsReqMsg *)self legacyPreferredLanguagesCount])
   {
-    [v13 clearLegacyPreferredLanguages];
-    v4 = [(NSSLegalDocumentsReqMsg *)self legacyPreferredLanguagesCount];
-    if (v4)
+    [toCopy clearLegacyPreferredLanguages];
+    legacyPreferredLanguagesCount = [(NSSLegalDocumentsReqMsg *)self legacyPreferredLanguagesCount];
+    if (legacyPreferredLanguagesCount)
     {
-      v5 = v4;
+      v5 = legacyPreferredLanguagesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NSSLegalDocumentsReqMsg *)self legacyPreferredLanguagesAtIndex:i];
-        [v13 addLegacyPreferredLanguages:v7];
+        [toCopy addLegacyPreferredLanguages:v7];
       }
     }
   }
 
   if ([(NSSLegalDocumentsReqMsg *)self preferredLanguagesCount])
   {
-    [v13 clearPreferredLanguages];
-    v8 = [(NSSLegalDocumentsReqMsg *)self preferredLanguagesCount];
-    if (v8)
+    [toCopy clearPreferredLanguages];
+    preferredLanguagesCount = [(NSSLegalDocumentsReqMsg *)self preferredLanguagesCount];
+    if (preferredLanguagesCount)
     {
-      v9 = v8;
+      v9 = preferredLanguagesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NSSLegalDocumentsReqMsg *)self preferredLanguagesAtIndex:j];
-        [v13 addPreferredLanguages:v11];
+        [toCopy addPreferredLanguages:v11];
       }
     }
   }
@@ -226,22 +226,22 @@
   has = self->_has;
   if (has)
   {
-    v13[24] = self->_addUrlToSAR;
-    v13[28] |= 1u;
+    toCopy[24] = self->_addUrlToSAR;
+    toCopy[28] |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v13[25] = self->_fetchBuiltinApps;
-    v13[28] |= 2u;
+    toCopy[25] = self->_fetchBuiltinApps;
+    toCopy[28] |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -261,7 +261,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v25 + 1) + 8 * i) copyWithZone:a3];
+        v11 = [*(*(&v25 + 1) + 8 * i) copyWithZone:zone];
         [v5 addLegacyPreferredLanguages:v11];
       }
 
@@ -290,7 +290,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v21 + 1) + 8 * j) copyWithZone:{a3, v21}];
+        v17 = [*(*(&v21 + 1) + 8 * j) copyWithZone:{zone, v21}];
         [v5 addPreferredLanguages:v17];
       }
 
@@ -318,16 +318,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   legacyPreferredLanguages = self->_legacyPreferredLanguages;
-  if (legacyPreferredLanguages | *(v4 + 1))
+  if (legacyPreferredLanguages | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)legacyPreferredLanguages isEqual:?])
     {
@@ -336,7 +336,7 @@
   }
 
   preferredLanguages = self->_preferredLanguages;
-  if (preferredLanguages | *(v4 + 2))
+  if (preferredLanguages | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)preferredLanguages isEqual:?])
     {
@@ -346,7 +346,7 @@
 
   if ((*&self->_has & 1) == 0)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
       goto LABEL_8;
     }
@@ -356,40 +356,40 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ((*(v4 + 28) & 1) == 0)
+  if ((*(equalCopy + 28) & 1) == 0)
   {
     goto LABEL_14;
   }
 
-  v9 = *(v4 + 24);
+  v9 = *(equalCopy + 24);
   if (self->_addUrlToSAR)
   {
-    if ((*(v4 + 24) & 1) == 0)
+    if ((*(equalCopy + 24) & 1) == 0)
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_14;
   }
 
 LABEL_8:
-  v7 = (*(v4 + 28) & 2) == 0;
+  v7 = (*(equalCopy + 28) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) != 0)
+    if ((*(equalCopy + 28) & 2) != 0)
     {
       if (self->_fetchBuiltinApps)
       {
-        if (*(v4 + 25))
+        if (*(equalCopy + 25))
         {
           goto LABEL_22;
         }
       }
 
-      else if (!*(v4 + 25))
+      else if (!*(equalCopy + 25))
       {
 LABEL_22:
         v7 = 1;
@@ -433,15 +433,15 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v6)
   {
@@ -469,7 +469,7 @@ LABEL_3:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = *(v4 + 2);
+  v10 = *(fromCopy + 2);
   v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v11)
   {
@@ -493,17 +493,17 @@ LABEL_3:
     while (v12);
   }
 
-  v15 = *(v4 + 28);
+  v15 = *(fromCopy + 28);
   if (v15)
   {
-    self->_addUrlToSAR = *(v4 + 24);
+    self->_addUrlToSAR = *(fromCopy + 24);
     *&self->_has |= 1u;
-    v15 = *(v4 + 28);
+    v15 = *(fromCopy + 28);
   }
 
   if ((v15 & 2) != 0)
   {
-    self->_fetchBuiltinApps = *(v4 + 25);
+    self->_fetchBuiltinApps = *(fromCopy + 25);
     *&self->_has |= 2u;
   }
 

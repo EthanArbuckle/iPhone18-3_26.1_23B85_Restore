@@ -28,7 +28,7 @@
   v14 = &v15;
   v6 = v5;
   v12 = v6;
-  v7 = [a1 addCompletionBlock:v11];
+  v7 = [self addCompletionBlock:v11];
   dispatch_group_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   if (a3)
   {

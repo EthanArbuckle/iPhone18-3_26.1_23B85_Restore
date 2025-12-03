@@ -1,6 +1,6 @@
 @interface MTRAccessControlClusterCommissioningAccessRestrictionEntryStruct
 - (MTRAccessControlClusterCommissioningAccessRestrictionEntryStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -20,25 +20,25 @@
     cluster = v3->_cluster;
     v3->_cluster = &unk_284C3E588;
 
-    v6 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     restrictions = v3->_restrictions;
-    v3->_restrictions = v6;
+    v3->_restrictions = array;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRAccessControlClusterCommissioningAccessRestrictionEntryStruct);
-  v5 = [(MTRAccessControlClusterCommissioningAccessRestrictionEntryStruct *)self endpoint];
-  [(MTRAccessControlClusterCommissioningAccessRestrictionEntryStruct *)v4 setEndpoint:v5];
+  endpoint = [(MTRAccessControlClusterCommissioningAccessRestrictionEntryStruct *)self endpoint];
+  [(MTRAccessControlClusterCommissioningAccessRestrictionEntryStruct *)v4 setEndpoint:endpoint];
 
-  v6 = [(MTRAccessControlClusterCommissioningAccessRestrictionEntryStruct *)self cluster];
-  [(MTRAccessControlClusterCommissioningAccessRestrictionEntryStruct *)v4 setCluster:v6];
+  cluster = [(MTRAccessControlClusterCommissioningAccessRestrictionEntryStruct *)self cluster];
+  [(MTRAccessControlClusterCommissioningAccessRestrictionEntryStruct *)v4 setCluster:cluster];
 
-  v7 = [(MTRAccessControlClusterCommissioningAccessRestrictionEntryStruct *)self restrictions];
-  [(MTRAccessControlClusterCommissioningAccessRestrictionEntryStruct *)v4 setRestrictions:v7];
+  restrictions = [(MTRAccessControlClusterCommissioningAccessRestrictionEntryStruct *)self restrictions];
+  [(MTRAccessControlClusterCommissioningAccessRestrictionEntryStruct *)v4 setRestrictions:restrictions];
 
   return v4;
 }

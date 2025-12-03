@@ -1,71 +1,71 @@
 @interface PKPassBannerViewController
-+ (id)createForTransactionWithPass:(id)a3 primaryText:(id)a4 secondaryText:(id)a5 trailingViewConfiguration:(id)a6 walletForeground:(BOOL)a7;
-+ (id)createWithPass:(id)a3 primaryText:(id)a4 secondaryText:(id)a5 trailingViewConfiguration:(id)a6 walletForeground:(BOOL)a7;
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4;
++ (id)createForTransactionWithPass:(id)pass primaryText:(id)text secondaryText:(id)secondaryText trailingViewConfiguration:(id)configuration walletForeground:(BOOL)foreground;
++ (id)createWithPass:(id)pass primaryText:(id)text secondaryText:(id)secondaryText trailingViewConfiguration:(id)configuration walletForeground:(BOOL)foreground;
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize;
 - (PKBannerViewControllerPresentable)presentable;
 - (UIEdgeInsets)bannerContentOutsets;
-- (double)_layoutContentViewWithBounds:(CGFloat)a3 commit:(CGFloat)a4;
+- (double)_layoutContentViewWithBounds:(CGFloat)bounds commit:(CGFloat)commit;
 - (double)_maximumSystemApertureWidth;
-- (id)_initWithPass:(void *)a3 primaryText:(void *)a4 secondaryText:(void *)a5 trailingViewConfiguration:(char)a6 walletForeground:;
+- (id)_initWithPass:(void *)pass primaryText:(void *)text secondaryText:(void *)secondaryText trailingViewConfiguration:(char)configuration walletForeground:;
 - (unint64_t)presentationBehaviors;
 - (void)_appeared;
 - (void)_platterView;
 - (void)_revoke;
 - (void)_revoked;
-- (void)_tapped:(id)a3;
+- (void)_tapped:(id)_tapped;
 - (void)_updateFonts;
 - (void)dealloc;
 - (void)loadView;
-- (void)passBannerMinimalViewDidChangeSize:(id)a3;
-- (void)presentableDidAppearAsBanner:(id)a3;
-- (void)presentableWillAppearAsBanner:(id)a3;
-- (void)setActiveLayoutMode:(int64_t)a3;
-- (void)setPresentable:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)passBannerMinimalViewDidChangeSize:(id)size;
+- (void)presentableDidAppearAsBanner:(id)banner;
+- (void)presentableWillAppearAsBanner:(id)banner;
+- (void)setActiveLayoutMode:(int64_t)mode;
+- (void)setPresentable:(id)presentable;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PKPassBannerViewController
 
-+ (id)createWithPass:(id)a3 primaryText:(id)a4 secondaryText:(id)a5 trailingViewConfiguration:(id)a6 walletForeground:(BOOL)a7
++ (id)createWithPass:(id)pass primaryText:(id)text secondaryText:(id)secondaryText trailingViewConfiguration:(id)configuration walletForeground:(BOOL)foreground
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[PKPassBannerViewController alloc] _initWithPass:v14 primaryText:v13 secondaryText:v12 trailingViewConfiguration:v11 walletForeground:a7];
+  configurationCopy = configuration;
+  secondaryTextCopy = secondaryText;
+  textCopy = text;
+  passCopy = pass;
+  v15 = [[PKPassBannerViewController alloc] _initWithPass:passCopy primaryText:textCopy secondaryText:secondaryTextCopy trailingViewConfiguration:configurationCopy walletForeground:foreground];
 
   return v15;
 }
 
-- (id)_initWithPass:(void *)a3 primaryText:(void *)a4 secondaryText:(void *)a5 trailingViewConfiguration:(char)a6 walletForeground:
+- (id)_initWithPass:(void *)pass primaryText:(void *)text secondaryText:(void *)secondaryText trailingViewConfiguration:(char)configuration walletForeground:
 {
   v12 = a2;
-  v13 = a3;
-  v14 = a4;
-  result = a5;
+  passCopy = pass;
+  textCopy = text;
+  result = secondaryText;
   v16 = result;
-  if (!a1)
+  if (!self)
   {
 LABEL_15:
 
-    return a1;
+    return self;
   }
 
   if (v12)
   {
-    v22.receiver = a1;
+    v22.receiver = self;
     v22.super_class = PKPassBannerViewController;
     v17 = objc_msgSendSuper2(&v22, sel_initWithNibName_bundle_, 0, 0);
-    a1 = v17;
+    self = v17;
     if (v17)
     {
       objc_storeStrong(v17 + 140, a2);
-      v18 = [v13 length];
+      v18 = [passCopy length];
       if (v18)
       {
-        v19 = [v13 copy];
+        v19 = [passCopy copy];
       }
 
       else
@@ -73,15 +73,15 @@ LABEL_15:
         v19 = 0;
       }
 
-      objc_storeStrong(a1 + 141, v19);
+      objc_storeStrong(self + 141, v19);
       if (v18)
       {
       }
 
-      v20 = [v14 length];
+      v20 = [textCopy length];
       if (v20)
       {
-        v21 = [v14 copy];
+        v21 = [textCopy copy];
       }
 
       else
@@ -89,14 +89,14 @@ LABEL_15:
         v21 = 0;
       }
 
-      objc_storeStrong(a1 + 142, v21);
+      objc_storeStrong(self + 142, v21);
       if (v20)
       {
       }
 
-      objc_storeStrong(a1 + 143, a5);
-      *(a1 + 993) = a6;
-      a1[126] = SBSIsSystemApertureAvailable();
+      objc_storeStrong(self + 143, secondaryText);
+      *(self + 993) = configuration;
+      self[126] = SBSIsSystemApertureAvailable();
     }
 
     goto LABEL_15;
@@ -106,13 +106,13 @@ LABEL_15:
   return result;
 }
 
-+ (id)createForTransactionWithPass:(id)a3 primaryText:(id)a4 secondaryText:(id)a5 trailingViewConfiguration:(id)a6 walletForeground:(BOOL)a7
++ (id)createForTransactionWithPass:(id)pass primaryText:(id)text secondaryText:(id)secondaryText trailingViewConfiguration:(id)configuration walletForeground:(BOOL)foreground
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[PKPassBannerViewController alloc] _initWithPass:v14 primaryText:v13 secondaryText:v12 trailingViewConfiguration:v11 walletForeground:a7];
+  configurationCopy = configuration;
+  secondaryTextCopy = secondaryText;
+  textCopy = text;
+  passCopy = pass;
+  v15 = [[PKPassBannerViewController alloc] _initWithPass:passCopy primaryText:textCopy secondaryText:secondaryTextCopy trailingViewConfiguration:configurationCopy walletForeground:foreground];
 
   if (v15)
   {
@@ -135,14 +135,14 @@ LABEL_15:
   [(PKPassBannerViewController *)&v4 dealloc];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = PKPassBannerViewController;
-  [(PKPassBannerViewController *)&v9 traitCollectionDidChange:v4];
-  v5 = [(PKPassBannerViewController *)self traitCollection];
-  if (!v4 || ([v4 preferredContentSizeCategory], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "preferredContentSizeCategory"), v7 = objc_claimAutoreleasedReturnValue(), v8 = UIContentSizeCategoryCompareToCategory(v6, v7), v7, v6, v8))
+  [(PKPassBannerViewController *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKPassBannerViewController *)self traitCollection];
+  if (!changeCopy || ([changeCopy preferredContentSizeCategory], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(traitCollection, "preferredContentSizeCategory"), v7 = objc_claimAutoreleasedReturnValue(), v8 = UIContentSizeCategoryCompareToCategory(v6, v7), v7, v6, v8))
   {
     [(PKPassBannerViewController *)self _updateFonts];
   }
@@ -151,22 +151,22 @@ LABEL_15:
 - (void)_updateFonts
 {
   v66[3] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 viewIfLoaded];
-    if (!v2)
+    viewIfLoaded = [self viewIfLoaded];
+    if (!viewIfLoaded)
     {
 LABEL_52:
 
       return;
     }
 
-    v3 = [a1 traitCollection];
-    v4 = v3;
-    if (!a1[126])
+    traitCollection = [self traitCollection];
+    v4 = traitCollection;
+    if (!self[126])
     {
       v5 = MEMORY[0x1E69DD1B8];
-      if (!v3)
+      if (!traitCollection)
       {
         v4 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x1E69DDC70]];
         if (!v4)
@@ -177,7 +177,7 @@ LABEL_52:
         goto LABEL_7;
       }
 
-      v62[0] = v3;
+      v62[0] = traitCollection;
       v6 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x1E69DDC70]];
       v62[1] = v6;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:2];
@@ -194,11 +194,11 @@ LABEL_51:
     }
 
 LABEL_7:
-    if (a1[126])
+    if (self[126])
     {
       v9 = [MEMORY[0x1E69DB878] sbui_systemAperturePreferredFontForTextStyle:1 compatibleWithTraitCollection:v4];
-      v10 = a1[133];
-      a1[133] = v9;
+      v10 = self[133];
+      self[133] = v9;
 
       [MEMORY[0x1E69DB878] sbui_systemAperturePreferredFontForTextStyle:3 compatibleWithTraitCollection:v4];
     }
@@ -208,61 +208,61 @@ LABEL_7:
       v12 = *MEMORY[0x1E69DB8D8];
       v13 = *MEMORY[0x1E69DB980];
       v14 = PKFontForDesign(v4, *MEMORY[0x1E69DB8D8], *MEMORY[0x1E69DDDC0], *MEMORY[0x1E69DB980]);
-      v15 = a1[133];
-      a1[133] = v14;
+      v15 = self[133];
+      self[133] = v14;
 
       PKFontForDesign(v4, v12, *MEMORY[0x1E69DDD40], v13);
     }
     v11 = ;
-    v16 = a1[134];
-    a1[134] = v11;
+    v16 = self[134];
+    self[134] = v11;
 
-    v17 = a1[136];
+    v17 = self[136];
     if (v17)
     {
-      [v17 setFont:a1[133]];
+      [v17 setFont:self[133]];
     }
 
-    v18 = a1[137];
+    v18 = self[137];
     if (v18)
     {
-      [v18 setFont:a1[134]];
+      [v18 setFont:self[134]];
     }
 
-    if (a1[136] || a1[137])
+    if (self[136] || self[137])
     {
-      [v2 setNeedsLayout];
+      [viewIfLoaded setNeedsLayout];
     }
 
-    if (!a1[135])
+    if (!self[135])
     {
       goto LABEL_51;
     }
 
-    v19 = [a1 viewIfLoaded];
-    if (!v19 || !a1[135])
+    viewIfLoaded2 = [self viewIfLoaded];
+    if (!viewIfLoaded2 || !self[135])
     {
       goto LABEL_50;
     }
 
-    v20 = a1[141];
-    v61 = a1[142];
-    v21 = [MEMORY[0x1E69DC888] clearColor];
+    v20 = self[141];
+    v61 = self[142];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
     v22 = MEMORY[0x1E69DB600];
     v58 = v20;
     if (v20)
     {
       v23 = *MEMORY[0x1E69DB648];
-      v66[0] = a1[133];
+      v66[0] = self[133];
       v24 = MEMORY[0x1E69DB650];
       v25 = *MEMORY[0x1E69DB650];
       v65[0] = v23;
       v65[1] = v25;
-      v26 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
       v27 = v22;
       v65[2] = *v22;
-      v66[1] = v26;
-      v66[2] = v21;
+      v66[1] = labelColor;
+      v66[2] = clearColor;
       v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:v65 count:3];
 
       v28 = 0x1E695D000;
@@ -279,27 +279,27 @@ LABEL_7:
     if (v61)
     {
       v29 = *MEMORY[0x1E69DB648];
-      v64[0] = a1[134];
+      v64[0] = self[134];
       v30 = *v24;
       v63[0] = v29;
       v63[1] = v30;
-      v31 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
       v63[2] = *v27;
-      v64[1] = v31;
-      v64[2] = v21;
-      v32 = v21;
+      v64[1] = secondaryLabelColor;
+      v64[2] = clearColor;
+      v32 = clearColor;
       v33 = [*(v28 + 3872) dictionaryWithObjects:v64 forKeys:v63 count:3];
     }
 
     else
     {
-      v32 = v21;
+      v32 = clearColor;
       v33 = 0;
     }
 
     v34 = objc_alloc_init(MEMORY[0x1E696AD40]);
     v35 = objc_alloc(MEMORY[0x1E696AAB0]);
-    if ([v19 _shouldReverseLayoutDirection])
+    if ([viewIfLoaded2 _shouldReverseLayoutDirection])
     {
       v36 = @"⁧";
     }
@@ -327,7 +327,7 @@ LABEL_7:
     if (v58)
     {
       v40 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v41 = a1[141];
+      v41 = self[141];
       if (v41)
       {
         v42 = MEMORY[0x1E696AEC0];
@@ -369,18 +369,18 @@ LABEL_46:
       v55 = [v53 initWithString:@"⁩" attributes:v54];
       [v34 appendAttributedString:v55];
 
-      v56 = a1[135];
+      v56 = self[135];
       v57 = [v34 copy];
       [v56 setAttributedText:v57];
 
-      [v19 setNeedsLayout];
+      [viewIfLoaded2 setNeedsLayout];
 LABEL_50:
 
       goto LABEL_51;
     }
 
     v47 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v48 = a1[142];
+    v48 = self[142];
     if (v48)
     {
       v49 = MEMORY[0x1E696AEC0];
@@ -407,22 +407,22 @@ LABEL_50:
   v30.receiver = self;
   v30.super_class = PKPassBannerViewController;
   [(PKPassBannerViewController *)&v30 loadView];
-  v3 = [(PKPassBannerViewController *)self view];
-  [v3 setAutoresizingMask:0];
-  v4 = [(PKPassBannerViewController *)self _platterView];
-  if (v4)
+  view = [(PKPassBannerViewController *)self view];
+  [view setAutoresizingMask:0];
+  _platterView = [(PKPassBannerViewController *)self _platterView];
+  if (_platterView)
   {
-    [v3 addSubview:v4];
-    v5 = [v4 customContentView];
+    [view addSubview:_platterView];
+    customContentView = [_platterView customContentView];
   }
 
   else
   {
-    v5 = v3;
+    customContentView = view;
   }
 
   contentView = self->_contentView;
-  self->_contentView = v5;
+  self->_contentView = customContentView;
 
   v7 = [[PKPassBannerLeadingView alloc] _initWithStyle:self->_pass pass:?];
   leadingView = self->_leadingView;
@@ -503,7 +503,7 @@ LABEL_50:
 
   else
   {
-    v21 = [v4 visualStylingProviderForCategory:1];
+    v21 = [_platterView visualStylingProviderForCategory:1];
     v22 = v21;
     v23 = self->_primaryLabel;
     if (v23)
@@ -517,12 +517,12 @@ LABEL_50:
       [v22 automaticallyUpdateView:v24 withStyle:1];
     }
 
-    if (v4)
+    if (_platterView)
     {
       v25 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__tapped_];
-      [v4 addGestureRecognizer:v25];
+      [_platterView addGestureRecognizer:v25];
       v26 = self->_trailingView;
-      v27 = v4;
+      v27 = _platterView;
       v28 = v27;
       if (v26 && v26->_imageView && !v26->_imageColor)
       {
@@ -537,13 +537,13 @@ LABEL_50:
 
 - (void)_platterView
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[128];
+    selfCopy = self;
+    v3 = self[128];
     if (!v3)
     {
-      if (a1[126])
+      if (self[126])
       {
         v3 = 0;
       }
@@ -551,19 +551,19 @@ LABEL_50:
       else
       {
         v4 = [MEMORY[0x1E69C4A78] platterViewWithStyle:*MEMORY[0x1E69C4A80]];
-        v5 = v2[128];
-        v2[128] = v4;
+        v5 = selfCopy[128];
+        selfCopy[128] = v4;
 
-        [v2[128] setMaterialGroupNameBase:@"pass-notification"];
-        v3 = v2[128];
+        [selfCopy[128] setMaterialGroupNameBase:@"pass-notification"];
+        v3 = selfCopy[128];
       }
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __38__PKPassBannerViewController_loadView__block_invoke(void *a1)
@@ -578,19 +578,19 @@ void __38__PKPassBannerViewController_loadView__block_invoke(void *a1)
   }
 }
 
-- (double)_layoutContentViewWithBounds:(CGFloat)a3 commit:(CGFloat)a4
+- (double)_layoutContentViewWithBounds:(CGFloat)bounds commit:(CGFloat)commit
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v12 = *(a1 + 1008);
+  v12 = *(self + 1008);
   if (v12 == 1)
   {
-    v31 = *(a1 + 1112);
-    v32 = [*(a1 + 1032) _shouldReverseLayoutDirection];
-    if (v32)
+    v31 = *(self + 1112);
+    _shouldReverseLayoutDirection = [*(self + 1032) _shouldReverseLayoutDirection];
+    if (_shouldReverseLayoutDirection)
     {
       v33 = 2;
     }
@@ -602,14 +602,14 @@ void __38__PKPassBannerViewController_loadView__block_invoke(void *a1)
 
     PKFloatRoundToPixel();
     rect_24 = v34;
-    v35 = [*(a1 + 1032) SBUISA_systemApertureObstructedAreaLayoutGuide];
-    [v35 layoutFrame];
+    sBUISA_systemApertureObstructedAreaLayoutGuide = [*(self + 1032) SBUISA_systemApertureObstructedAreaLayoutGuide];
+    [sBUISA_systemApertureObstructedAreaLayoutGuide layoutFrame];
     v153 = v36;
     v158 = v37;
     v162 = v38;
     v40 = v39;
 
-    [*(a1 + 1032) SBUISA_standardInteritemPadding];
+    [*(self + 1032) SBUISA_standardInteritemPadding];
     amount = v41;
     if (v31 == 4)
     {
@@ -621,21 +621,21 @@ void __38__PKPassBannerViewController_loadView__block_invoke(void *a1)
       v42 = 0.5;
     }
 
-    __72__PKPassBannerViewController__layoutModernContentViewWithBounds_commit___block_invoke(*(a1 + 1040));
+    __72__PKPassBannerViewController__layoutModernContentViewWithBounds_commit___block_invoke(*(self + 1040));
     v44 = v43;
     v46 = v45;
-    __72__PKPassBannerViewController__layoutModernContentViewWithBounds_commit___block_invoke(*(a1 + 1048));
+    __72__PKPassBannerViewController__layoutModernContentViewWithBounds_commit___block_invoke(*(self + 1048));
     r2 = v44;
     v156 = v47;
     rect = v46;
     rect_8 = v48;
     v49 = v46 > 0.0 && v44 > 0.0;
-    v50 = *(a1 + 1048);
-    v172 = a4;
+    v50 = *(self + 1048);
+    commitCopy = commit;
     v174 = a5;
     v152 = v42;
     rect_16a = a6;
-    v170 = a3;
+    boundsCopy = bounds;
     if (v50)
     {
       LODWORD(v50) = *(v50 + 424) != 0;
@@ -677,13 +677,13 @@ void __38__PKPassBannerViewController_loadView__block_invoke(void *a1)
     v61 = fmax(v60, 15.0);
     v62 = v154 + v58;
     v63 = v54 + v61;
-    v64 = v174;
+    _maximumSystemApertureWidth = v174;
     if (v31 != 4)
     {
-      v64 = [(PKPassBannerViewController *)a1 _maximumSystemApertureWidth];
+      _maximumSystemApertureWidth = [(PKPassBannerViewController *)self _maximumSystemApertureWidth];
     }
 
-    v65 = v64 - v62;
+    v65 = _maximumSystemApertureWidth - v62;
     v66 = amount;
     if (v49)
     {
@@ -749,28 +749,28 @@ LABEL_105:
     v150 = v62;
     if (v31 == 4)
     {
-      [*(a1 + 1056) setAlpha:0.0];
-      [*(a1 + 1040) setAlpha:1.0];
-      [*(a1 + 1048) setAlpha:1.0];
+      [*(self + 1056) setAlpha:0.0];
+      [*(self + 1040) setAlpha:1.0];
+      [*(self + 1048) setAlpha:1.0];
     }
 
     v149 = v63;
-    [*(a1 + 1080) setAlpha:(v31 == 4)];
-    v91 = fmax(v153, a3);
-    v92 = v91 - a3;
+    [*(self + 1080) setAlpha:(v31 == 4)];
+    v91 = fmax(v153, bounds);
+    v92 = v91 - bounds;
     v93 = fmax(v153 + v162, v91);
-    v94 = fmax(a3 + v174, v93) - v93;
-    if (v32)
+    v94 = fmax(bounds + v174, v93) - v93;
+    if (_shouldReverseLayoutDirection)
     {
-      v95 = v93;
+      boundsCopy2 = v93;
     }
 
     else
     {
-      v95 = a3;
+      boundsCopy2 = bounds;
     }
 
-    if (v32)
+    if (_shouldReverseLayoutDirection)
     {
       v96 = v94;
     }
@@ -780,17 +780,17 @@ LABEL_105:
       v96 = v92;
     }
 
-    if (v32)
+    if (_shouldReverseLayoutDirection)
     {
-      v97 = a3;
+      boundsCopy3 = bounds;
     }
 
     else
     {
-      v97 = v93;
+      boundsCopy3 = v93;
     }
 
-    if (v32)
+    if (_shouldReverseLayoutDirection)
     {
       v98 = v92;
     }
@@ -800,34 +800,34 @@ LABEL_105:
       v98 = v94;
     }
 
-    v147 = v97;
+    v147 = boundsCopy3;
     v148 = v98;
     v189 = MEMORY[0x1E69E9820];
     v190 = 3221225472;
     v191 = __72__PKPassBannerViewController__layoutModernContentViewWithBounds_commit___block_invoke_3;
     v192 = &__block_descriptor_64_e62__CGSize_dd_56__0_CGSize_dd_8_CGRect__CGPoint_dd__CGSize_dd__24l;
-    v193.origin.x = a3 + 15.0;
-    v193.origin.y = v172 + v71;
+    v193.origin.x = bounds + 15.0;
+    v193.origin.y = commitCopy + v71;
     v193.size.width = v174 + -30.0;
     v193.size.height = a6 - (v71 + v71);
     v99 = _Block_copy(&v189);
     v100 = v99;
     memset(&v187, 0, sizeof(v187));
-    v188.origin.x = v95;
-    v188.origin.y = v172;
+    v188.origin.x = boundsCopy2;
+    v188.origin.y = commitCopy;
     v188.size.width = v96;
     v188.size.height = a6;
     v151 = v70;
     if (v49)
     {
-      (v99[2])(v99, r2, rect, v95, v172, v96, a6);
+      (v99[2])(v99, r2, rect, boundsCopy2, commitCopy, v96, a6);
     }
 
     PKFloatRoundToPixel();
     v102 = v101;
     PKFloatRoundToPixel();
-    v198.origin.x = v95;
-    v198.origin.y = v172;
+    v198.origin.x = boundsCopy2;
+    v198.origin.y = commitCopy;
     v198.size.width = v96;
     v198.size.height = a6;
     CGRectDivide(v198, &v187, &v188, fmax(v102, 15.0), v33);
@@ -838,14 +838,14 @@ LABEL_105:
     v110 = v106;
     if (v31 == 4)
     {
-      [*(a1 + 1040) setFrame:{v103, v104, v105, v106}];
+      [*(self + 1040) setFrame:{v103, v104, v105, v106}];
     }
 
     v145 = v110;
     v146 = v109;
     recta = v107;
     v188.origin.x = v147;
-    v188.origin.y = v172;
+    v188.origin.y = commitCopy;
     v188.size.width = v148;
     v188.size.height = a6;
     if (v57)
@@ -864,11 +864,11 @@ LABEL_105:
       v157 = v116;
       v159 = v113;
       v122 = v115;
-      [*(a1 + 1048) setFrame:?];
-      v199.origin.x = v170;
-      v199.origin.y = v172;
-      v188.origin.x = v170;
-      v188.origin.y = v172;
+      [*(self + 1048) setFrame:?];
+      v199.origin.x = boundsCopy;
+      v199.origin.y = commitCopy;
+      v188.origin.x = boundsCopy;
+      v188.origin.y = commitCopy;
       v199.size.width = v174;
       v188.size.width = v174;
       v188.size.height = rect_16a;
@@ -941,7 +941,7 @@ LABEL_105:
       else
       {
         v66 = amount;
-        if (v32)
+        if (_shouldReverseLayoutDirection)
         {
           v136 = v130 + v132;
           v130 = fmin(v134 + v135, v130 + v132);
@@ -1010,8 +1010,8 @@ LABEL_105:
     v179 = 0;
     v177 = 0u;
     v178 = 0u;
-    v137[2](&v177, v137, *(a1 + 1080), v188.size.width);
-    v139 = *(a1 + 1080);
+    v137[2](&v177, v137, *(self + 1080), v188.size.width);
+    v139 = *(self + 1080);
     v140 = v138[2];
     v175[0] = v177;
     v175[1] = v178;
@@ -1024,7 +1024,7 @@ LABEL_105:
 
   if (!v12)
   {
-    if ([*(a1 + 1032) _shouldReverseLayoutDirection])
+    if ([*(self + 1032) _shouldReverseLayoutDirection])
     {
       v13 = 2;
     }
@@ -1036,15 +1036,15 @@ LABEL_105:
 
     v15 = *MEMORY[0x1E695F060];
     v14 = *(MEMORY[0x1E695F060] + 8);
-    [*(a1 + 1040) sizeThatFits:{*MEMORY[0x1E695F060], v14}];
+    [*(self + 1040) sizeThatFits:{*MEMORY[0x1E695F060], v14}];
     v17 = v16;
     v19 = v16 > 0.0 && v18 > 0.0;
     PKFloatRoundToPixel();
     v21 = v20;
     PKFloatRoundToPixel();
     v22 = fmax(v21, 20.0);
-    [*(a1 + 1048) sizeThatFits:{v15, v14}];
-    v25 = *(a1 + 1048);
+    [*(self + 1048) sizeThatFits:{v15, v14}];
+    v25 = *(self + 1048);
     if (v25)
     {
       LOBYTE(v25) = *(v25 + 424) != 0;
@@ -1061,10 +1061,10 @@ LABEL_105:
     v29 = v28;
     PKFloatRoundToPixel();
     memset(&slice, 0, sizeof(slice));
-    v197.origin.x = a3;
-    v197.origin.y = a4;
-    remainder.origin.x = a3;
-    remainder.origin.y = a4;
+    v197.origin.x = bounds;
+    v197.origin.y = commit;
+    remainder.origin.x = bounds;
+    remainder.origin.y = commit;
     v197.size.width = a5;
     v197.size.height = a6;
     remainder.size.width = a5;
@@ -1087,7 +1087,7 @@ LABEL_105:
     v73 = fmax(v29, v30);
     if (a2)
     {
-      v74 = *(a1 + 1040);
+      v74 = *(self + 1040);
       PKSizeAlignedInRect();
       [v74 setFrame:?];
     }
@@ -1112,9 +1112,9 @@ LABEL_52:
             v192 = &__block_descriptor_64_e27__CGSize_dd_16__0__UILabel_8l;
             v193 = remainder;
             v76 = _Block_copy(&v189);
-            v77 = v76[2](v76, *(a1 + 1088));
+            v77 = v76[2](v76, *(self + 1088));
             v79 = v78;
-            v80 = v76[2](v76, *(a1 + 1096));
+            v80 = v76[2](v76, *(self + 1096));
             v82 = v81;
             v83 = v80 > 0.0 && v81 > 0.0;
             PKSizeAlignedInRect();
@@ -1137,7 +1137,7 @@ LABEL_52:
             v88 = v77 > 0.0 && v79 > 0.0 && v83;
             if (a2)
             {
-              v89 = *(a1 + 1096);
+              v89 = *(self + 1096);
               PKSizeAlignedInRect();
               [v89 setFrame:?];
               if (!v88)
@@ -1182,7 +1182,7 @@ LABEL_66:
             }
 
 LABEL_65:
-            v90 = *(a1 + 1088);
+            v90 = *(self + 1088);
             PKSizeAlignedInRect();
             [v90 setFrame:?];
             goto LABEL_66;
@@ -1210,7 +1210,7 @@ LABEL_65:
       }
     }
 
-    v75 = *(a1 + 1048);
+    v75 = *(self + 1048);
     PKSizeAlignedInRect();
     [v75 setFrame:?];
     goto LABEL_49;
@@ -1232,20 +1232,20 @@ void *__72__PKPassBannerViewController__layoutModernContentViewWithBounds_commit
 
 - (double)_maximumSystemApertureWidth
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  if (a1[126] != 1)
+  if (self[126] != 1)
   {
     __break(1u);
     return 0.0;
   }
 
-  v1 = [a1 viewIfLoaded];
-  v2 = v1;
-  if (v1 && ([v1 window], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  viewIfLoaded = [self viewIfLoaded];
+  v2 = viewIfLoaded;
+  if (viewIfLoaded && ([viewIfLoaded window], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v4 = v3;
     [v3 bounds];
@@ -1422,8 +1422,8 @@ double __72__PKPassBannerViewController__layoutLegacyContentViewWithBounds_commi
   v15.receiver = self;
   v15.super_class = PKPassBannerViewController;
   [(PKPassBannerViewController *)&v15 viewWillLayoutSubviews];
-  v3 = [(PKPassBannerViewController *)self view];
-  [(UIView *)v3 bounds];
+  view = [(PKPassBannerViewController *)self view];
+  [(UIView *)view bounds];
   v8 = v4;
   v9 = v5;
   v10 = v6;
@@ -1436,7 +1436,7 @@ double __72__PKPassBannerViewController__layoutLegacyContentViewWithBounds_commi
 
   v13 = *MEMORY[0x1E695EFF8];
   v14 = *(MEMORY[0x1E695EFF8] + 8);
-  if (v3 == self->_contentView)
+  if (view == self->_contentView)
   {
     v13 = v8;
     v14 = v9;
@@ -1458,27 +1458,27 @@ void __47__PKPassBannerViewController__startRevokeTimer__block_invoke(uint64_t a
 
 - (void)_revoke
 {
-  if (a1 && (*(a1 + 995) & 1) == 0)
+  if (self && (*(self + 995) & 1) == 0)
   {
-    [(PKPassBannerViewController *)a1 _revoked];
-    WeakRetained = objc_loadWeakRetained((a1 + 1104));
+    [(PKPassBannerViewController *)self _revoked];
+    WeakRetained = objc_loadWeakRetained((self + 1104));
     [WeakRetained revoke];
   }
 }
 
 - (void)_revoked
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 995) & 1) == 0)
+    if ((*(self + 995) & 1) == 0)
     {
-      *(a1 + 995) = 1;
-      v2 = *(a1 + 1000);
+      *(self + 995) = 1;
+      v2 = *(self + 1000);
       if (v2)
       {
         dispatch_source_cancel(v2);
-        v3 = *(a1 + 1000);
-        *(a1 + 1000) = 0;
+        v3 = *(self + 1000);
+        *(self + 1000) = 0;
       }
     }
   }
@@ -1486,19 +1486,19 @@ void __47__PKPassBannerViewController__startRevokeTimer__block_invoke(uint64_t a
 
 - (void)_appeared
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 994) & 1) == 0)
+    if ((*(self + 994) & 1) == 0)
     {
-      *(a1 + 994) = 1;
-      if ((*(a1 + 995) & 1) == 0)
+      *(self + 994) = 1;
+      if ((*(self + 995) & 1) == 0)
       {
-        if (*(a1 + 992) == 1)
+        if (*(self + 992) == 1)
         {
           v2 = 1394;
-          if ([*(a1 + 1120) passType] == 1)
+          if ([*(self + 1120) passType] == 1)
           {
-            if ([*(a1 + 1120) isAccessPass])
+            if ([*(self + 1120) isAccessPass])
             {
               v2 = 1163;
             }
@@ -1521,15 +1521,15 @@ void __47__PKPassBannerViewController__startRevokeTimer__block_invoke(uint64_t a
   }
 }
 
-- (void)_tapped:(id)a3
+- (void)_tapped:(id)_tapped
 {
-  v7 = [(PKPass *)self->_pass passURL];
-  if (v7)
+  passURL = [(PKPass *)self->_pass passURL];
+  if (passURL)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v4 setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E699F918]];
     [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E699F970]];
-    [v4 setObject:v7 forKeyedSubscript:*MEMORY[0x1E699F960]];
+    [v4 setObject:passURL forKeyedSubscript:*MEMORY[0x1E699F960]];
     v5 = *MEMORY[0x1E69BC3D8];
     v6 = [MEMORY[0x1E699FB70] optionsWithDictionary:v4];
     PKOpenApplication(v5, v6);
@@ -1552,25 +1552,25 @@ void __57__PKPassBannerViewController__updatePreferredContentSize__block_invoke(
   }
 }
 
-- (void)setPresentable:(id)a3
+- (void)setPresentable:(id)presentable
 {
-  v5 = a3;
-  objc_storeWeak(&self->_presentable, v5);
-  v4 = v5;
-  if (v5 && self->_revoked)
+  presentableCopy = presentable;
+  objc_storeWeak(&self->_presentable, presentableCopy);
+  v4 = presentableCopy;
+  if (presentableCopy && self->_revoked)
   {
-    [v5 revoke];
-    v4 = v5;
+    [presentableCopy revoke];
+    v4 = presentableCopy;
   }
 }
 
 - (UIEdgeInsets)bannerContentOutsets
 {
-  v2 = [(PKPassBannerViewController *)self _platterView];
-  v3 = v2;
-  if (v2)
+  _platterView = [(PKPassBannerViewController *)self _platterView];
+  v3 = _platterView;
+  if (_platterView)
   {
-    [v2 shadowOutsets];
+    [_platterView shadowOutsets];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -1596,31 +1596,31 @@ void __57__PKPassBannerViewController__updatePreferredContentSize__block_invoke(
   return result;
 }
 
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize
 {
   if (self->_style)
   {
 
-    [(PKPassBannerViewController *)self preferredContentSize:a3.width];
+    [(PKPassBannerViewController *)self preferredContentSize:size.width];
   }
 
   else
   {
-    height = a3.height;
-    width = a3.width;
-    [(PKPassBannerViewController *)self loadViewIfNeeded:a3.width];
+    height = size.height;
+    width = size.width;
+    [(PKPassBannerViewController *)self loadViewIfNeeded:size.width];
     v9 = *MEMORY[0x1E695EFF8];
     v10 = *(MEMORY[0x1E695EFF8] + 8);
 
-    v5 = [(PKPassBannerViewController *)self _layoutContentViewWithBounds:v9 commit:v10, width, height];
+    height = [(PKPassBannerViewController *)self _layoutContentViewWithBounds:v9 commit:v10, width, height];
   }
 
   result.height = v6;
-  result.width = v5;
+  result.width = height;
   return result;
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
   if (!self->_style)
   {
@@ -1628,7 +1628,7 @@ void __57__PKPassBannerViewController__updatePreferredContentSize__block_invoke(
   }
 }
 
-- (void)presentableDidAppearAsBanner:(id)a3
+- (void)presentableDidAppearAsBanner:(id)banner
 {
   if (!self->_style)
   {
@@ -1681,20 +1681,20 @@ void __57__PKPassBannerViewController__updatePreferredContentSize__block_invoke(
   }
 }
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
-  if (self->_activeLayoutMode != a3)
+  if (self->_activeLayoutMode != mode)
   {
-    v5 = [(PKPassBannerViewController *)self viewIfLoaded];
-    v7 = v5;
-    if (v5)
+    viewIfLoaded = [(PKPassBannerViewController *)self viewIfLoaded];
+    v7 = viewIfLoaded;
+    if (viewIfLoaded)
     {
-      [v5 layoutIfNeeded];
-      v5 = v7;
+      [viewIfLoaded layoutIfNeeded];
+      viewIfLoaded = v7;
     }
 
-    self->_activeLayoutMode = a3;
-    if (a3 == 4)
+    self->_activeLayoutMode = mode;
+    if (mode == 4)
     {
       if (self->_style != 1)
       {
@@ -1706,30 +1706,30 @@ void __57__PKPassBannerViewController__updatePreferredContentSize__block_invoke(
       {
         self->_updatingPreferredContentSize = 1;
         objc_initWeak(&location, self);
-        v6 = [(PKPassBannerViewController *)self systemApertureElementContext];
+        systemApertureElementContext = [(PKPassBannerViewController *)self systemApertureElementContext];
         v8[0] = MEMORY[0x1E69E9820];
         v8[1] = 3221225472;
         v8[2] = __57__PKPassBannerViewController__updatePreferredContentSize__block_invoke;
         v8[3] = &unk_1E80110E0;
         objc_copyWeak(&v9, &location);
         v8[4] = self;
-        [v6 setElementNeedsUpdateWithCoordinatedAnimations:v8];
+        [systemApertureElementContext setElementNeedsUpdateWithCoordinatedAnimations:v8];
 
         objc_destroyWeak(&v9);
         objc_destroyWeak(&location);
-        v5 = v7;
+        viewIfLoaded = v7;
       }
     }
 
-    if (v5)
+    if (viewIfLoaded)
     {
       [v7 setNeedsLayout];
-      v5 = v7;
+      viewIfLoaded = v7;
     }
   }
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
   if (!self->_revoked && !self->_appeared)
   {
@@ -1741,16 +1741,16 @@ void __57__PKPassBannerViewController__updatePreferredContentSize__block_invoke(
   }
 }
 
-- (void)passBannerMinimalViewDidChangeSize:(id)a3
+- (void)passBannerMinimalViewDidChangeSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   if (self->_style == 1 && self->_activeLayoutMode != 4)
   {
-    v6 = v4;
-    v5 = [(PKPassBannerViewController *)self systemApertureElementContext];
-    [v5 setElementNeedsUpdate];
+    v6 = sizeCopy;
+    systemApertureElementContext = [(PKPassBannerViewController *)self systemApertureElementContext];
+    [systemApertureElementContext setElementNeedsUpdate];
 
-    v4 = v6;
+    sizeCopy = v6;
   }
 }
 

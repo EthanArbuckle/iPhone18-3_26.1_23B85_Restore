@@ -1,20 +1,20 @@
 @interface SAFenceManager
-- (BOOL)isSafeLocation:(id)a3;
-- (BOOL)startMonitorSafeLocation:(id)a3 forDevice:(id)a4;
-- (BOOL)startMonitorUnsafeLocationExit:(id)a3 forDevice:(id)a4;
-- (BOOL)stopMonitorSafeLocation:(id)a3 forDevice:(id)a4;
-- (BOOL)stopMonitorUnsafeLocationExit:(id)a3 forDevice:(id)a4;
+- (BOOL)isSafeLocation:(id)location;
+- (BOOL)startMonitorSafeLocation:(id)location forDevice:(id)device;
+- (BOOL)startMonitorUnsafeLocationExit:(id)exit forDevice:(id)device;
+- (BOOL)stopMonitorSafeLocation:(id)location forDevice:(id)device;
+- (BOOL)stopMonitorUnsafeLocationExit:(id)exit forDevice:(id)device;
 - (SAFenceManager)init;
-- (id)getRegionForSafeLocation:(id)a3;
+- (id)getRegionForSafeLocation:(id)location;
 - (unint64_t)getSafeLocationCount;
 - (unint64_t)getUnsafeLocationCount;
-- (void)addClient:(id)a3;
-- (void)handleFenceEvent:(unint64_t)a3 forRegion:(id)a4;
-- (void)ingestTAEvent:(id)a3;
-- (void)notifyState:(unint64_t)a3 forSafeLocationRegion:(id)a4;
-- (void)notifyState:(unint64_t)a3 forUnsafeLocationRegion:(id)a4;
-- (void)removeClient:(id)a3;
-- (void)removeLocationsForDeviceUuid:(id)a3;
+- (void)addClient:(id)client;
+- (void)handleFenceEvent:(unint64_t)event forRegion:(id)region;
+- (void)ingestTAEvent:(id)event;
+- (void)notifyState:(unint64_t)state forSafeLocationRegion:(id)region;
+- (void)notifyState:(unint64_t)state forUnsafeLocationRegion:(id)region;
+- (void)removeClient:(id)client;
+- (void)removeLocationsForDeviceUuid:(id)uuid;
 @end
 
 @implementation SAFenceManager
@@ -56,30 +56,30 @@
 
 - (unint64_t)getSafeLocationCount
 {
-  v2 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
-  v3 = [v2 count];
+  deviceUUIDsBySafeLocation = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
+  v3 = [deviceUUIDsBySafeLocation count];
 
   return v3;
 }
 
 - (unint64_t)getUnsafeLocationCount
 {
-  v2 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
-  v3 = [v2 count];
+  deviceUUIDsByUnsafeRegionIdentifier = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
+  v3 = [deviceUUIDsByUnsafeRegionIdentifier count];
 
   return v3;
 }
 
-- (id)getRegionForSafeLocation:(id)a3
+- (id)getRegionForSafeLocation:(id)location
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locationCopy = location;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(SAFenceManager *)self safeLocationsByRegionIdentifier];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  safeLocationsByRegionIdentifier = [(SAFenceManager *)self safeLocationsByRegionIdentifier];
+  v6 = [safeLocationsByRegionIdentifier countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -90,24 +90,24 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(safeLocationsByRegionIdentifier);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [(SAFenceManager *)self safeLocationsByRegionIdentifier];
-        v12 = [v11 objectForKey:v10];
-        v13 = [v12 isEqual:v4];
+        safeLocationsByRegionIdentifier2 = [(SAFenceManager *)self safeLocationsByRegionIdentifier];
+        v12 = [safeLocationsByRegionIdentifier2 objectForKey:v10];
+        v13 = [v12 isEqual:locationCopy];
 
         if (v13)
         {
-          v16 = [(SAFenceManager *)self regionsByRegionIdentifier];
-          v15 = [v16 objectForKey:v10];
+          regionsByRegionIdentifier = [(SAFenceManager *)self regionsByRegionIdentifier];
+          v15 = [regionsByRegionIdentifier objectForKey:v10];
 
           goto LABEL_13;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v7 = [safeLocationsByRegionIdentifier countByEnumeratingWithState:&v19 objects:v27 count:16];
       if (v7)
       {
         continue;
@@ -135,25 +135,25 @@ LABEL_13:
   return v15;
 }
 
-- (BOOL)startMonitorSafeLocation:(id)a3 forDevice:(id)a4
+- (BOOL)startMonitorSafeLocation:(id)location forDevice:(id)device
 {
   v78 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
-  v9 = [v8 objectForKey:v6];
+  locationCopy = location;
+  deviceCopy = device;
+  deviceUUIDsBySafeLocation = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
+  v9 = [deviceUUIDsBySafeLocation objectForKey:locationCopy];
 
   if (!v9)
   {
     v61 = 0;
-    v13 = [v6 identifier];
-    v14 = [v13 UUIDString];
+    identifier = [locationCopy identifier];
+    uUIDString = [identifier UUIDString];
 
-    [v6 latitude];
+    [locationCopy latitude];
     v16 = v15;
-    [v6 longitude];
+    [locationCopy longitude];
     v18 = v17;
-    [v6 radius];
+    [locationCopy radius];
     if (v19 >= 100.0)
     {
       v20 = v19;
@@ -164,34 +164,34 @@ LABEL_13:
       v20 = 100.0;
     }
 
-    v60 = v14;
-    v21 = [objc_alloc(MEMORY[0x277CBFBC8]) initForLowPowerWithCenter:v14 radius:v16 identifier:{v18, v20}];
-    [v21 setGeoReferenceFrame:{objc_msgSend(v6, "referenceFrame")}];
+    v60 = uUIDString;
+    v21 = [objc_alloc(MEMORY[0x277CBFBC8]) initForLowPowerWithCenter:uUIDString radius:v16 identifier:{v18, v20}];
+    [v21 setGeoReferenceFrame:{objc_msgSend(locationCopy, "referenceFrame")}];
     v22 = v21;
-    v64 = v7;
-    v23 = [objc_alloc(MEMORY[0x277CBEB58]) initWithObjects:{v7, 0}];
-    v24 = [(SAFenceManager *)self regionsByRegionIdentifier];
-    v25 = [v22 identifier];
-    [v24 setObject:v22 forKey:v25];
+    v64 = deviceCopy;
+    v23 = [objc_alloc(MEMORY[0x277CBEB58]) initWithObjects:{deviceCopy, 0}];
+    regionsByRegionIdentifier = [(SAFenceManager *)self regionsByRegionIdentifier];
+    identifier2 = [v22 identifier];
+    [regionsByRegionIdentifier setObject:v22 forKey:identifier2];
 
-    v26 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
-    [v26 setObject:v23 forKey:v6];
+    deviceUUIDsBySafeLocation2 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
+    [deviceUUIDsBySafeLocation2 setObject:v23 forKey:locationCopy];
 
-    v27 = [(SAFenceManager *)self safeLocationsByRegionIdentifier];
-    v28 = [v22 identifier];
-    v29 = v6;
-    [v27 setObject:v6 forKey:v28];
+    safeLocationsByRegionIdentifier = [(SAFenceManager *)self safeLocationsByRegionIdentifier];
+    identifier3 = [v22 identifier];
+    v29 = locationCopy;
+    [safeLocationsByRegionIdentifier setObject:locationCopy forKey:identifier3];
 
-    v30 = [(SAFenceManager *)self statesByRegionIdentifier];
-    v31 = [v22 identifier];
-    [v30 setObject:&unk_287710090 forKey:v31];
+    statesByRegionIdentifier = [(SAFenceManager *)self statesByRegionIdentifier];
+    identifier4 = [v22 identifier];
+    [statesByRegionIdentifier setObject:&unk_287710090 forKey:identifier4];
 
     v67 = 0u;
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v32 = [(SAFenceManager *)self clients];
-    v33 = [v32 countByEnumeratingWithState:&v65 objects:v73 count:16];
+    clients = [(SAFenceManager *)self clients];
+    v33 = [clients countByEnumeratingWithState:&v65 objects:v73 count:16];
     if (v33)
     {
       v34 = v33;
@@ -203,7 +203,7 @@ LABEL_13:
         {
           if (*v66 != v35)
           {
-            objc_enumerationMutation(v32);
+            objc_enumerationMutation(clients);
           }
 
           v37 = *(*(&v65 + 1) + 8 * v36);
@@ -216,50 +216,50 @@ LABEL_13:
         }
 
         while (v34 != v36);
-        v34 = [v32 countByEnumeratingWithState:&v65 objects:v73 count:16];
+        v34 = [clients countByEnumeratingWithState:&v65 objects:v73 count:16];
       }
 
       while (v34);
     }
 
-    v6 = v29;
+    locationCopy = v29;
     goto LABEL_33;
   }
 
-  v10 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
-  v11 = [v10 objectForKey:v6];
+  deviceUUIDsBySafeLocation3 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
+  v11 = [deviceUUIDsBySafeLocation3 objectForKey:locationCopy];
 
-  if (![v11 containsObject:v7])
+  if (![v11 containsObject:deviceCopy])
   {
     v60 = v11;
     v61 = v9;
-    v38 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
-    v39 = [v38 objectForKey:v6];
-    v64 = v7;
-    [v39 addObject:v7];
+    deviceUUIDsBySafeLocation4 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
+    v39 = [deviceUUIDsBySafeLocation4 objectForKey:locationCopy];
+    v64 = deviceCopy;
+    [v39 addObject:deviceCopy];
 
-    v40 = [(SAFenceManager *)self getRegionForSafeLocation:v6];
-    v41 = [(SAFenceManager *)self statesByRegionIdentifier];
-    v42 = [v40 identifier];
-    v43 = [v41 objectForKey:v42];
+    v40 = [(SAFenceManager *)self getRegionForSafeLocation:locationCopy];
+    statesByRegionIdentifier2 = [(SAFenceManager *)self statesByRegionIdentifier];
+    identifier5 = [v40 identifier];
+    v43 = [statesByRegionIdentifier2 objectForKey:identifier5];
 
     if (v43)
     {
-      v44 = [(SAFenceManager *)self statesByRegionIdentifier];
-      v45 = [v40 identifier];
-      v46 = [v44 objectForKey:v45];
+      statesByRegionIdentifier3 = [(SAFenceManager *)self statesByRegionIdentifier];
+      identifier6 = [v40 identifier];
+      v46 = [statesByRegionIdentifier3 objectForKey:identifier6];
       v47 = [v46 isEqual:&unk_287710090];
 
       if ((v47 & 1) == 0)
       {
-        v62 = self;
-        v63 = v6;
+        selfCopy = self;
+        v63 = locationCopy;
         v71 = 0u;
         v72 = 0u;
         v69 = 0u;
         v70 = 0u;
-        v48 = [(SAFenceManager *)self clients];
-        v49 = [v48 countByEnumeratingWithState:&v69 objects:v74 count:16];
+        clients2 = [(SAFenceManager *)self clients];
+        v49 = [clients2 countByEnumeratingWithState:&v69 objects:v74 count:16];
         if (v49)
         {
           v50 = v49;
@@ -271,15 +271,15 @@ LABEL_13:
             {
               if (*v70 != v51)
               {
-                objc_enumerationMutation(v48);
+                objc_enumerationMutation(clients2);
               }
 
               v53 = *(*(&v69 + 1) + 8 * v52);
               if (objc_opt_respondsToSelector())
               {
-                v54 = [(SAFenceManager *)v62 statesByRegionIdentifier];
-                v55 = [v40 identifier];
-                v56 = [v54 objectForKey:v55];
+                statesByRegionIdentifier4 = [(SAFenceManager *)selfCopy statesByRegionIdentifier];
+                identifier7 = [v40 identifier];
+                v56 = [statesByRegionIdentifier4 objectForKey:identifier7];
                 [v53 didDetermineState:objc_msgSend(v56 forSafeLocation:"unsignedIntegerValue") forDevice:{v63, v64}];
               }
 
@@ -287,13 +287,13 @@ LABEL_13:
             }
 
             while (v50 != v52);
-            v50 = [v48 countByEnumeratingWithState:&v69 objects:v74 count:16];
+            v50 = [clients2 countByEnumeratingWithState:&v69 objects:v74 count:16];
           }
 
           while (v50);
         }
 
-        v6 = v63;
+        locationCopy = v63;
       }
     }
 
@@ -310,7 +310,7 @@ LABEL_13:
     }
 
 LABEL_33:
-    v7 = v64;
+    deviceCopy = v64;
     v11 = v60;
     v9 = v61;
     goto LABEL_34;
@@ -331,13 +331,13 @@ LABEL_34:
   return v9 == 0;
 }
 
-- (BOOL)stopMonitorSafeLocation:(id)a3 forDevice:(id)a4
+- (BOOL)stopMonitorSafeLocation:(id)location forDevice:(id)device
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
-  v9 = [v8 objectForKey:v6];
+  locationCopy = location;
+  deviceCopy = device;
+  deviceUUIDsBySafeLocation = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
+  v9 = [deviceUUIDsBySafeLocation objectForKey:locationCopy];
 
   if (!v9)
   {
@@ -353,12 +353,12 @@ LABEL_34:
     goto LABEL_15;
   }
 
-  v10 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
-  v11 = [v10 objectForKey:v6];
-  [v11 removeObject:v7];
+  deviceUUIDsBySafeLocation2 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
+  v11 = [deviceUUIDsBySafeLocation2 objectForKey:locationCopy];
+  [v11 removeObject:deviceCopy];
 
-  v12 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
-  v13 = [v12 objectForKey:v6];
+  deviceUUIDsBySafeLocation3 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
+  v13 = [deviceUUIDsBySafeLocation3 objectForKey:locationCopy];
   v14 = [v13 count];
 
   if (v14)
@@ -368,25 +368,25 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v33 = v7;
-  v15 = [(SAFenceManager *)self getRegionForSafeLocation:v6];
-  v16 = [(SAFenceManager *)self statesByRegionIdentifier];
-  v17 = [v15 identifier];
-  [v16 removeObjectForKey:v17];
+  v33 = deviceCopy;
+  v15 = [(SAFenceManager *)self getRegionForSafeLocation:locationCopy];
+  statesByRegionIdentifier = [(SAFenceManager *)self statesByRegionIdentifier];
+  identifier = [v15 identifier];
+  [statesByRegionIdentifier removeObjectForKey:identifier];
 
-  v18 = [(SAFenceManager *)self safeLocationsByRegionIdentifier];
-  v19 = [v15 identifier];
-  [v18 removeObjectForKey:v19];
+  safeLocationsByRegionIdentifier = [(SAFenceManager *)self safeLocationsByRegionIdentifier];
+  identifier2 = [v15 identifier];
+  [safeLocationsByRegionIdentifier removeObjectForKey:identifier2];
 
-  v20 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
-  [v20 removeObjectForKey:v6];
+  deviceUUIDsBySafeLocation4 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
+  [deviceUUIDsBySafeLocation4 removeObjectForKey:locationCopy];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v21 = [(SAFenceManager *)self clients];
-  v22 = [v21 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  clients = [(SAFenceManager *)self clients];
+  v22 = [clients countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v22)
   {
     v23 = v22;
@@ -397,7 +397,7 @@ LABEL_15:
       {
         if (*v35 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(clients);
         }
 
         v26 = *(*(&v34 + 1) + 8 * i);
@@ -407,39 +407,39 @@ LABEL_15:
         }
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v23 = [clients countByEnumeratingWithState:&v34 objects:v38 count:16];
     }
 
     while (v23);
   }
 
-  v27 = [(SAFenceManager *)self regionsByRegionIdentifier];
-  v28 = [v15 identifier];
-  [v27 removeObjectForKey:v28];
+  regionsByRegionIdentifier = [(SAFenceManager *)self regionsByRegionIdentifier];
+  identifier3 = [v15 identifier];
+  [regionsByRegionIdentifier removeObjectForKey:identifier3];
 
   v29 = 1;
-  v7 = v33;
+  deviceCopy = v33;
 LABEL_16:
 
   v31 = *MEMORY[0x277D85DE8];
   return v29;
 }
 
-- (BOOL)startMonitorUnsafeLocationExit:(id)a3 forDevice:(id)a4
+- (BOOL)startMonitorUnsafeLocationExit:(id)exit forDevice:(id)device
 {
   v68 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
-  v9 = [v6 identifier];
-  v10 = [v8 objectForKey:v9];
+  exitCopy = exit;
+  deviceCopy = device;
+  deviceUUIDsByUnsafeRegionIdentifier = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
+  identifier = [exitCopy identifier];
+  v10 = [deviceUUIDsByUnsafeRegionIdentifier objectForKey:identifier];
 
   if (!v10)
   {
     goto LABEL_9;
   }
 
-  if (![v10 containsObject:v7])
+  if (![v10 containsObject:deviceCopy])
   {
     goto LABEL_6;
   }
@@ -453,30 +453,30 @@ LABEL_16:
     _os_log_impl(&dword_2656EA000, v11, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#sa #fencemgr, Unsafe location already used for this device}", &buf, 0x12u);
   }
 
-  [(SAFenceManager *)self stopMonitorUnsafeLocationExit:v6 forDevice:v7];
-  v12 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
-  v13 = [v6 identifier];
-  v14 = [v12 objectForKey:v13];
+  [(SAFenceManager *)self stopMonitorUnsafeLocationExit:exitCopy forDevice:deviceCopy];
+  deviceUUIDsByUnsafeRegionIdentifier2 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
+  identifier2 = [exitCopy identifier];
+  v14 = [deviceUUIDsByUnsafeRegionIdentifier2 objectForKey:identifier2];
 
   v10 = v14;
   if (v14)
   {
 LABEL_6:
-    v15 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
-    v16 = [v6 identifier];
-    v17 = [v15 objectForKey:v16];
-    [v17 addObject:v7];
+    deviceUUIDsByUnsafeRegionIdentifier3 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
+    identifier3 = [exitCopy identifier];
+    v17 = [deviceUUIDsByUnsafeRegionIdentifier3 objectForKey:identifier3];
+    [v17 addObject:deviceCopy];
 
-    v18 = [(SAFenceManager *)self statesByRegionIdentifier];
-    v19 = [v6 identifier];
-    v20 = [v18 objectForKey:v19];
+    statesByRegionIdentifier = [(SAFenceManager *)self statesByRegionIdentifier];
+    identifier4 = [exitCopy identifier];
+    v20 = [statesByRegionIdentifier objectForKey:identifier4];
 
     if (v20)
     {
       v52 = v10;
-      v21 = [(SAFenceManager *)self statesByRegionIdentifier];
-      v22 = [v6 identifier];
-      v23 = [v21 objectForKey:v22];
+      statesByRegionIdentifier2 = [(SAFenceManager *)self statesByRegionIdentifier];
+      identifier5 = [exitCopy identifier];
+      v23 = [statesByRegionIdentifier2 objectForKey:identifier5];
       v24 = [v23 isEqual:&unk_287710090];
 
       if (v24)
@@ -487,7 +487,7 @@ LABEL_6:
 
       else
       {
-        v53 = v7;
+        v53 = deviceCopy;
         v61 = 0u;
         v62 = 0u;
         v59 = 0u;
@@ -512,9 +512,9 @@ LABEL_6:
               {
                 [(SAFenceManager *)self statesByRegionIdentifier];
                 v47 = v46 = self;
-                v48 = [v6 identifier];
-                v49 = [v47 objectForKey:v48];
-                [v45 didDetermineState:objc_msgSend(v49 forUnsafeLocation:"unsignedIntegerValue") forDevice:{v6, v53}];
+                identifier6 = [exitCopy identifier];
+                v49 = [v47 objectForKey:identifier6];
+                [v45 didDetermineState:objc_msgSend(v49 forUnsafeLocation:"unsignedIntegerValue") forDevice:{exitCopy, v53}];
 
                 self = v46;
               }
@@ -528,7 +528,7 @@ LABEL_6:
 
         v25 = 0;
         v10 = v52;
-        v7 = v53;
+        deviceCopy = v53;
       }
     }
 
@@ -550,26 +550,26 @@ LABEL_6:
   else
   {
 LABEL_9:
-    v26 = v7;
-    v27 = [objc_alloc(MEMORY[0x277CBEB58]) initWithObjects:{v7, 0}];
-    v28 = [(SAFenceManager *)self regionsByRegionIdentifier];
-    v29 = [v6 identifier];
-    [v28 setObject:v6 forKey:v29];
+    v26 = deviceCopy;
+    v27 = [objc_alloc(MEMORY[0x277CBEB58]) initWithObjects:{deviceCopy, 0}];
+    regionsByRegionIdentifier = [(SAFenceManager *)self regionsByRegionIdentifier];
+    identifier7 = [exitCopy identifier];
+    [regionsByRegionIdentifier setObject:exitCopy forKey:identifier7];
 
-    v30 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
-    v31 = [v6 identifier];
-    [v30 setObject:v27 forKey:v31];
+    deviceUUIDsByUnsafeRegionIdentifier4 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
+    identifier8 = [exitCopy identifier];
+    [deviceUUIDsByUnsafeRegionIdentifier4 setObject:v27 forKey:identifier8];
 
-    v32 = [(SAFenceManager *)self statesByRegionIdentifier];
-    v33 = [v6 identifier];
-    [v32 setObject:&unk_287710090 forKey:v33];
+    statesByRegionIdentifier3 = [(SAFenceManager *)self statesByRegionIdentifier];
+    identifier9 = [exitCopy identifier];
+    [statesByRegionIdentifier3 setObject:&unk_287710090 forKey:identifier9];
 
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v34 = [(SAFenceManager *)self clients];
-    v35 = [v34 countByEnumeratingWithState:&v55 objects:v63 count:16];
+    clients = [(SAFenceManager *)self clients];
+    v35 = [clients countByEnumeratingWithState:&v55 objects:v63 count:16];
     if (v35)
     {
       v36 = v35;
@@ -580,17 +580,17 @@ LABEL_9:
         {
           if (*v56 != v37)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(clients);
           }
 
           v39 = *(*(&v55 + 1) + 8 * j);
           if (objc_opt_respondsToSelector())
           {
-            [v39 addGeofence:v6];
+            [v39 addGeofence:exitCopy];
           }
         }
 
-        v36 = [v34 countByEnumeratingWithState:&v55 objects:v63 count:16];
+        v36 = [clients countByEnumeratingWithState:&v55 objects:v63 count:16];
       }
 
       while (v36);
@@ -598,21 +598,21 @@ LABEL_9:
 
     v10 = 0;
     v25 = 1;
-    v7 = v26;
+    deviceCopy = v26;
   }
 
   v50 = *MEMORY[0x277D85DE8];
   return v25;
 }
 
-- (BOOL)stopMonitorUnsafeLocationExit:(id)a3 forDevice:(id)a4
+- (BOOL)stopMonitorUnsafeLocationExit:(id)exit forDevice:(id)device
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
-  v9 = [v6 identifier];
-  v10 = [v8 objectForKey:v9];
+  exitCopy = exit;
+  deviceCopy = device;
+  deviceUUIDsByUnsafeRegionIdentifier = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
+  identifier = [exitCopy identifier];
+  v10 = [deviceUUIDsByUnsafeRegionIdentifier objectForKey:identifier];
 
   if (!v10)
   {
@@ -628,14 +628,14 @@ LABEL_9:
     goto LABEL_15;
   }
 
-  v11 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
-  v12 = [v6 identifier];
-  v13 = [v11 objectForKey:v12];
-  [v13 removeObject:v7];
+  deviceUUIDsByUnsafeRegionIdentifier2 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
+  identifier2 = [exitCopy identifier];
+  v13 = [deviceUUIDsByUnsafeRegionIdentifier2 objectForKey:identifier2];
+  [v13 removeObject:deviceCopy];
 
-  v14 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
-  v15 = [v6 identifier];
-  v16 = [v14 objectForKey:v15];
+  deviceUUIDsByUnsafeRegionIdentifier3 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
+  identifier3 = [exitCopy identifier];
+  v16 = [deviceUUIDsByUnsafeRegionIdentifier3 objectForKey:identifier3];
   v17 = [v16 count];
 
   if (v17)
@@ -645,20 +645,20 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v18 = [(SAFenceManager *)self statesByRegionIdentifier];
-  v19 = [v6 identifier];
-  [v18 removeObjectForKey:v19];
+  statesByRegionIdentifier = [(SAFenceManager *)self statesByRegionIdentifier];
+  identifier4 = [exitCopy identifier];
+  [statesByRegionIdentifier removeObjectForKey:identifier4];
 
-  v20 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
-  v21 = [v6 identifier];
-  [v20 removeObjectForKey:v21];
+  deviceUUIDsByUnsafeRegionIdentifier4 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
+  identifier5 = [exitCopy identifier];
+  [deviceUUIDsByUnsafeRegionIdentifier4 removeObjectForKey:identifier5];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v22 = [(SAFenceManager *)self clients];
-  v23 = [v22 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  clients = [(SAFenceManager *)self clients];
+  v23 = [clients countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v23)
   {
     v24 = v23;
@@ -669,25 +669,25 @@ LABEL_15:
       {
         if (*v35 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(clients);
         }
 
         v27 = *(*(&v34 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v27 removeGeofence:v6];
+          [v27 removeGeofence:exitCopy];
         }
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v24 = [clients countByEnumeratingWithState:&v34 objects:v38 count:16];
     }
 
     while (v24);
   }
 
-  v28 = [(SAFenceManager *)self regionsByRegionIdentifier];
-  v29 = [v6 identifier];
-  [v28 removeObjectForKey:v29];
+  regionsByRegionIdentifier = [(SAFenceManager *)self regionsByRegionIdentifier];
+  identifier6 = [exitCopy identifier];
+  [regionsByRegionIdentifier removeObjectForKey:identifier6];
 
   v30 = 1;
 LABEL_16:
@@ -696,17 +696,17 @@ LABEL_16:
   return v30;
 }
 
-- (void)removeLocationsForDeviceUuid:(id)a3
+- (void)removeLocationsForDeviceUuid:(id)uuid
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  uuidCopy = uuid;
   v37 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v5 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
-  v6 = [v5 countByEnumeratingWithState:&v50 objects:v57 count:16];
+  deviceUUIDsByUnsafeRegionIdentifier = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
+  v6 = [deviceUUIDsByUnsafeRegionIdentifier countByEnumeratingWithState:&v50 objects:v57 count:16];
   if (v6)
   {
     v7 = v6;
@@ -718,18 +718,18 @@ LABEL_16:
       {
         if (*v51 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(deviceUUIDsByUnsafeRegionIdentifier);
         }
 
         v10 = *(*(&v50 + 1) + 8 * v9);
-        v11 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
-        v12 = [v11 objectForKey:v10];
-        v13 = [v12 containsObject:v4];
+        deviceUUIDsByUnsafeRegionIdentifier2 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
+        v12 = [deviceUUIDsByUnsafeRegionIdentifier2 objectForKey:v10];
+        v13 = [v12 containsObject:uuidCopy];
 
         if (v13)
         {
-          v14 = [(SAFenceManager *)self regionsByRegionIdentifier];
-          v15 = [v14 objectForKey:v10];
+          regionsByRegionIdentifier = [(SAFenceManager *)self regionsByRegionIdentifier];
+          v15 = [regionsByRegionIdentifier objectForKey:v10];
           [v37 addObject:v15];
         }
 
@@ -737,7 +737,7 @@ LABEL_16:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v50 objects:v57 count:16];
+      v7 = [deviceUUIDsByUnsafeRegionIdentifier countByEnumeratingWithState:&v50 objects:v57 count:16];
     }
 
     while (v7);
@@ -748,8 +748,8 @@ LABEL_16:
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v16 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
-  v17 = [v16 countByEnumeratingWithState:&v46 objects:v56 count:16];
+  deviceUUIDsBySafeLocation = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
+  v17 = [deviceUUIDsBySafeLocation countByEnumeratingWithState:&v46 objects:v56 count:16];
   if (v17)
   {
     v18 = v17;
@@ -761,13 +761,13 @@ LABEL_16:
       {
         if (*v47 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(deviceUUIDsBySafeLocation);
         }
 
         v21 = *(*(&v46 + 1) + 8 * v20);
-        v22 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
-        v23 = [v22 objectForKey:v21];
-        v24 = [v23 containsObject:v4];
+        deviceUUIDsBySafeLocation2 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
+        v23 = [deviceUUIDsBySafeLocation2 objectForKey:v21];
+        v24 = [v23 containsObject:uuidCopy];
 
         if (v24)
         {
@@ -778,7 +778,7 @@ LABEL_16:
       }
 
       while (v18 != v20);
-      v18 = [v16 countByEnumeratingWithState:&v46 objects:v56 count:16];
+      v18 = [deviceUUIDsBySafeLocation countByEnumeratingWithState:&v46 objects:v56 count:16];
     }
 
     while (v18);
@@ -804,7 +804,7 @@ LABEL_16:
           objc_enumerationMutation(v25);
         }
 
-        [(SAFenceManager *)self stopMonitorUnsafeLocationExit:*(*(&v42 + 1) + 8 * v29++) forDevice:v4];
+        [(SAFenceManager *)self stopMonitorUnsafeLocationExit:*(*(&v42 + 1) + 8 * v29++) forDevice:uuidCopy];
       }
 
       while (v27 != v29);
@@ -834,7 +834,7 @@ LABEL_16:
           objc_enumerationMutation(v30);
         }
 
-        [(SAFenceManager *)self stopMonitorSafeLocation:*(*(&v38 + 1) + 8 * v34++) forDevice:v4];
+        [(SAFenceManager *)self stopMonitorSafeLocation:*(*(&v38 + 1) + 8 * v34++) forDevice:uuidCopy];
       }
 
       while (v32 != v34);
@@ -847,33 +847,33 @@ LABEL_16:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ingestTAEvent:(id)a3
+- (void)ingestTAEvent:(id)event
 {
-  v7 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v7;
-    v5 = [v4 eventType];
-    v6 = [v4 region];
+    v4 = eventCopy;
+    eventType = [v4 eventType];
+    region = [v4 region];
 
-    [(SAFenceManager *)self handleFenceEvent:v5 forRegion:v6];
+    [(SAFenceManager *)self handleFenceEvent:eventType forRegion:region];
   }
 }
 
-- (void)handleFenceEvent:(unint64_t)a3 forRegion:(id)a4
+- (void)handleFenceEvent:(unint64_t)event forRegion:(id)region
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 identifier];
-  v8 = v7;
-  if (a3 <= 2)
+  regionCopy = region;
+  identifier = [regionCopy identifier];
+  v8 = identifier;
+  if (event <= 2)
   {
-    if (a3)
+    if (event)
     {
-      if (a3 != 1)
+      if (event != 1)
       {
-        if (a3 != 2)
+        if (event != 2)
         {
           goto LABEL_31;
         }
@@ -882,7 +882,7 @@ LABEL_16:
       }
 
 LABEL_15:
-      if ([v7 hasPrefix:@"unsafe_"])
+      if ([identifier hasPrefix:@"unsafe_"])
       {
         v12 = [(NSMutableDictionary *)self->_deviceUUIDsByUnsafeRegionIdentifier objectForKey:v8];
 
@@ -893,13 +893,13 @@ LABEL_15:
           v15 = [v13 initWithUUIDString:v14];
 
           v16 = [objc_alloc(MEMORY[0x277CBEB58]) initWithObjects:{v15, 0}];
-          v17 = [(SAFenceManager *)self regionsByRegionIdentifier];
-          v18 = [v6 identifier];
-          [v17 setObject:v6 forKey:v18];
+          regionsByRegionIdentifier = [(SAFenceManager *)self regionsByRegionIdentifier];
+          identifier2 = [regionCopy identifier];
+          [regionsByRegionIdentifier setObject:regionCopy forKey:identifier2];
 
-          v19 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
-          v20 = [v6 identifier];
-          [v19 setObject:v16 forKey:v20];
+          deviceUUIDsByUnsafeRegionIdentifier = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
+          identifier3 = [regionCopy identifier];
+          [deviceUUIDsByUnsafeRegionIdentifier setObject:v16 forKey:identifier3];
 
           v21 = TASALog;
           if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -915,44 +915,44 @@ LABEL_15:
         }
       }
 
-      if (a3 <= 2)
+      if (event <= 2)
       {
         goto LABEL_26;
       }
 
 LABEL_22:
-      if ([(SAFenceManager *)self isSafeLocation:v6])
+      if ([(SAFenceManager *)self isSafeLocation:regionCopy])
       {
-        v22 = self;
+        selfCopy3 = self;
         v23 = 2;
 LABEL_28:
-        [(SAFenceManager *)v22 notifyState:v23 forSafeLocationRegion:v6];
+        [(SAFenceManager *)selfCopy3 notifyState:v23 forSafeLocationRegion:regionCopy];
         goto LABEL_31;
       }
 
-      v24 = self;
+      selfCopy4 = self;
       v25 = 2;
 LABEL_30:
-      [(SAFenceManager *)v24 notifyState:v25 forUnsafeLocationRegion:v6];
+      [(SAFenceManager *)selfCopy4 notifyState:v25 forUnsafeLocationRegion:regionCopy];
       goto LABEL_31;
     }
 
     goto LABEL_13;
   }
 
-  if (a3 <= 4)
+  if (event <= 4)
   {
-    if (a3 == 3)
+    if (event == 3)
     {
 LABEL_26:
-      if ([(SAFenceManager *)self isSafeLocation:v6])
+      if ([(SAFenceManager *)self isSafeLocation:regionCopy])
       {
-        v22 = self;
+        selfCopy3 = self;
         v23 = 1;
         goto LABEL_28;
       }
 
-      v24 = self;
+      selfCopy4 = self;
       v25 = 1;
       goto LABEL_30;
     }
@@ -960,29 +960,29 @@ LABEL_26:
     goto LABEL_15;
   }
 
-  if (a3 == 5)
+  if (event == 5)
   {
 LABEL_13:
-    v10 = [(SAFenceManager *)self statesByRegionIdentifier];
-    v11 = [v6 identifier];
-    [v10 setObject:&unk_287710090 forKey:v11];
+    statesByRegionIdentifier = [(SAFenceManager *)self statesByRegionIdentifier];
+    identifier4 = [regionCopy identifier];
+    [statesByRegionIdentifier setObject:&unk_287710090 forKey:identifier4];
     goto LABEL_14;
   }
 
-  if (a3 == 6)
+  if (event == 6)
   {
     v9 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
     {
-      v10 = v9;
-      v11 = [v6 identifier];
+      statesByRegionIdentifier = v9;
+      identifier4 = [regionCopy identifier];
       *buf = 68289283;
       v28 = 0;
       v29 = 2082;
       v30 = "";
       v31 = 2113;
-      v32 = v11;
-      _os_log_impl(&dword_2656EA000, v10, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#sa #fencemgr, region monitoring error, regionUUID:%{private}@}", buf, 0x1Cu);
+      v32 = identifier4;
+      _os_log_impl(&dword_2656EA000, statesByRegionIdentifier, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#sa #fencemgr, region monitoring error, regionUUID:%{private}@}", buf, 0x1Cu);
 LABEL_14:
     }
   }
@@ -992,53 +992,53 @@ LABEL_31:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isSafeLocation:(id)a3
+- (BOOL)isSafeLocation:(id)location
 {
-  v3 = a3;
+  locationCopy = location;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = locationCopy;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 isLowPower];
+      isLowPower = [v4 isLowPower];
     }
 
     else
     {
-      v5 = 0;
+      isLowPower = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    isLowPower = 0;
   }
 
-  return v5;
+  return isLowPower;
 }
 
-- (void)notifyState:(unint64_t)a3 forSafeLocationRegion:(id)a4
+- (void)notifyState:(unint64_t)state forSafeLocationRegion:(id)region
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(SAFenceManager *)self statesByRegionIdentifier];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v9 = [v6 identifier];
-  [v7 setObject:v8 forKey:v9];
+  regionCopy = region;
+  statesByRegionIdentifier = [(SAFenceManager *)self statesByRegionIdentifier];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
+  identifier = [regionCopy identifier];
+  [statesByRegionIdentifier setObject:v8 forKey:identifier];
 
-  v10 = [(SAFenceManager *)self safeLocationsByRegionIdentifier];
-  v11 = [v6 identifier];
-  v12 = [v10 objectForKey:v11];
+  safeLocationsByRegionIdentifier = [(SAFenceManager *)self safeLocationsByRegionIdentifier];
+  identifier2 = [regionCopy identifier];
+  v12 = [safeLocationsByRegionIdentifier objectForKey:identifier2];
 
   v13 = TASALog;
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [v6 identifier];
-    v16 = [v15 UTF8String];
-    v17 = [(SAFenceManager *)self clients];
-    v18 = [v17 count];
+    identifier3 = [regionCopy identifier];
+    uTF8String = [identifier3 UTF8String];
+    clients = [(SAFenceManager *)self clients];
+    v18 = [clients count];
     v47 = 2082;
     v48 = "";
     v19 = "Yes";
@@ -1049,7 +1049,7 @@ LABEL_31:
     }
 
     v49 = 2081;
-    v50 = v16;
+    v50 = uTF8String;
     v51 = 2049;
     v52 = v18;
     v53 = 2081;
@@ -1066,7 +1066,7 @@ LABEL_31:
   if (v34)
   {
     v32 = *v41;
-    v33 = self;
+    selfCopy = self;
     do
     {
       v20 = 0;
@@ -1083,8 +1083,8 @@ LABEL_31:
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v22 = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
-        v23 = [v22 objectForKey:v12];
+        deviceUUIDsBySafeLocation = [(SAFenceManager *)self deviceUUIDsBySafeLocation];
+        v23 = [deviceUUIDsBySafeLocation objectForKey:v12];
 
         v24 = [v23 countByEnumeratingWithState:&v36 objects:v44 count:16];
         if (v24)
@@ -1104,7 +1104,7 @@ LABEL_31:
               v28 = *(*(&v36 + 1) + 8 * v27);
               if (objc_opt_respondsToSelector())
               {
-                [v21 didDetermineState:a3 forSafeLocation:v12 forDevice:v28];
+                [v21 didDetermineState:state forSafeLocation:v12 forDevice:v28];
               }
 
               ++v27;
@@ -1118,7 +1118,7 @@ LABEL_31:
         }
 
         v20 = v35 + 1;
-        self = v33;
+        self = selfCopy;
       }
 
       while (v35 + 1 != v34);
@@ -1131,29 +1131,29 @@ LABEL_31:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyState:(unint64_t)a3 forUnsafeLocationRegion:(id)a4
+- (void)notifyState:(unint64_t)state forUnsafeLocationRegion:(id)region
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(SAFenceManager *)self statesByRegionIdentifier];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v9 = [v6 identifier];
-  [v7 setObject:v8 forKey:v9];
+  regionCopy = region;
+  statesByRegionIdentifier = [(SAFenceManager *)self statesByRegionIdentifier];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
+  identifier = [regionCopy identifier];
+  [statesByRegionIdentifier setObject:v8 forKey:identifier];
 
   v10 = TASALog;
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [v6 identifier];
-    v13 = [v12 UTF8String];
-    v14 = [(SAFenceManager *)self clients];
+    identifier2 = [regionCopy identifier];
+    uTF8String = [identifier2 UTF8String];
+    clients = [(SAFenceManager *)self clients];
     buf = 68289539;
     v42 = 2082;
     v43 = "";
     v44 = 2081;
-    v45 = v13;
+    v45 = uTF8String;
     v46 = 2049;
-    v47 = [v14 count];
+    v47 = [clients count];
     _os_log_impl(&dword_2656EA000, v11, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa #fencemgr, notify state for unsafe, regionUUID:%{private}s, Clients:%{private}ld}", &buf, 0x26u);
   }
 
@@ -1166,7 +1166,7 @@ LABEL_31:
   if (v29)
   {
     v27 = *v36;
-    v28 = self;
+    selfCopy = self;
     do
     {
       v15 = 0;
@@ -1183,9 +1183,9 @@ LABEL_31:
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v17 = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
-        v18 = [v6 identifier];
-        v19 = [v17 objectForKey:v18];
+        deviceUUIDsByUnsafeRegionIdentifier = [(SAFenceManager *)self deviceUUIDsByUnsafeRegionIdentifier];
+        identifier3 = [regionCopy identifier];
+        v19 = [deviceUUIDsByUnsafeRegionIdentifier objectForKey:identifier3];
 
         v20 = [v19 countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v20)
@@ -1205,7 +1205,7 @@ LABEL_31:
               v24 = *(*(&v31 + 1) + 8 * v23);
               if (objc_opt_respondsToSelector())
               {
-                [v16 didDetermineState:a3 forUnsafeLocation:v6 forDevice:v24];
+                [v16 didDetermineState:state forUnsafeLocation:regionCopy forDevice:v24];
               }
 
               ++v23;
@@ -1219,7 +1219,7 @@ LABEL_31:
         }
 
         v15 = v30 + 1;
-        self = v28;
+        self = selfCopy;
       }
 
       while (v30 + 1 != v29);
@@ -1232,18 +1232,18 @@ LABEL_31:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v4 = a3;
-  v5 = [(SAFenceManager *)self clients];
-  [v5 addObject:v4];
+  clientCopy = client;
+  clients = [(SAFenceManager *)self clients];
+  [clients addObject:clientCopy];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
-  v5 = [(SAFenceManager *)self clients];
-  [v5 removeObject:v4];
+  clientCopy = client;
+  clients = [(SAFenceManager *)self clients];
+  [clients removeObject:clientCopy];
 }
 
 @end

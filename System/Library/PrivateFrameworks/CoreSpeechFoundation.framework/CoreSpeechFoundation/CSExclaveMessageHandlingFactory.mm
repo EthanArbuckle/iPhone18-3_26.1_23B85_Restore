@@ -1,6 +1,6 @@
 @interface CSExclaveMessageHandlingFactory
 + (id)commonExclaveMessageHandler;
-+ (id)exclaveSecondPassVoiceTriggerAnalyzerForFirstPassSource:(unint64_t)a3;
++ (id)exclaveSecondPassVoiceTriggerAnalyzerForFirstPassSource:(unint64_t)source;
 @end
 
 @implementation CSExclaveMessageHandlingFactory
@@ -16,22 +16,22 @@
       v3 = off_1E8659830;
     }
 
-    v4 = [(__objc2_class *)*v3 sharedClient];
+    sharedClient = [(__objc2_class *)*v3 sharedClient];
   }
 
   else
   {
-    v4 = 0;
+    sharedClient = 0;
   }
 
-  return v4;
+  return sharedClient;
 }
 
-+ (id)exclaveSecondPassVoiceTriggerAnalyzerForFirstPassSource:(unint64_t)a3
++ (id)exclaveSecondPassVoiceTriggerAnalyzerForFirstPassSource:(unint64_t)source
 {
   if (+[CSUtils isExclaveHardware])
   {
-    v4 = a3 - 11 > 3;
+    v4 = source - 11 > 3;
   }
 
   else

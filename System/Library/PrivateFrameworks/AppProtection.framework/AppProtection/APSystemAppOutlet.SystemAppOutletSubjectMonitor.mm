@@ -1,16 +1,16 @@
 @interface APSystemAppOutlet.SystemAppOutletSubjectMonitor
 - (_TtCE13AppProtectionCSo17APSystemAppOutlet29SystemAppOutletSubjectMonitor)init;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 @end
 
 @implementation APSystemAppOutlet.SystemAppOutletSubjectMonitor
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   type metadata accessor for APSubject(0);
   v5 = sub_185B67F6C();
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_185AEC728(v5, v7);
   swift_unknownObjectRelease();
 }

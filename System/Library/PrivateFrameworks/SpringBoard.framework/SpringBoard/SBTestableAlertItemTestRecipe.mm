@@ -1,5 +1,5 @@
 @interface SBTestableAlertItemTestRecipe
-+ (id)nameForCase:(int64_t)a3;
++ (id)nameForCase:(int64_t)case;
 + (id)testCases;
 + (id)testCasesGrouped;
 - (id)_anyAppIcon;
@@ -7,8 +7,8 @@
 - (id)_anyUserInstalledAppIcon;
 - (id)_mapsApp;
 - (id)_nextAlertItemToTest;
-- (id)alertForIndex:(int64_t)a3;
-- (id)dataPlanAlertItemForCase:(int64_t)a3;
+- (id)alertForIndex:(int64_t)index;
+- (id)dataPlanAlertItemForCase:(int64_t)case;
 - (id)iconController;
 - (void)_dismissCurrentItem;
 - (void)handleVolumeDecrease;
@@ -45,16 +45,16 @@
   return v5;
 }
 
-+ (id)nameForCase:(int64_t)a3
++ (id)nameForCase:(int64_t)case
 {
-  if (a3 > 0x32)
+  if (case > 0x32)
   {
     return @"Not a Real Test";
   }
 
   else
   {
-    return off_2783B4D10[a3];
+    return off_2783B4D10[case];
   }
 }
 
@@ -69,16 +69,16 @@
 {
   while (!self->_item)
   {
-    v3 = [(SBTestableAlertItemTestRecipe *)self _nextAlertItemToTest];
+    _nextAlertItemToTest = [(SBTestableAlertItemTestRecipe *)self _nextAlertItemToTest];
     item = self->_item;
-    self->_item = v3;
+    self->_item = _nextAlertItemToTest;
 
     if (![(SBAlertItem *)self->_item shouldShowInLockScreen])
     {
       v5 = +[SBLockStateAggregator sharedInstance];
-      v6 = [v5 hasAnyLockState];
+      hasAnyLockState = [v5 hasAnyLockState];
 
-      if (v6)
+      if (hasAnyLockState)
       {
         [(SBTestableAlertItemTestRecipe *)self _dismissCurrentItem];
       }
@@ -99,11 +99,11 @@
 
 - (id)iconController
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 embeddedDisplayWindowScene];
-  v4 = [v3 iconController];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+  iconController = [embeddedDisplayWindowScene iconController];
 
-  return v4;
+  return iconController;
 }
 
 - (id)_anyAppIcon
@@ -113,11 +113,11 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(SBTestableAlertItemTestRecipe *)self iconController];
-  v3 = [v2 iconModel];
-  v4 = [v3 leafIcons];
+  iconController = [(SBTestableAlertItemTestRecipe *)self iconController];
+  iconModel = [iconController iconModel];
+  leafIcons = [iconModel leafIcons];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [leafIcons countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -127,7 +127,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(leafIcons);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -138,7 +138,7 @@
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [leafIcons countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -160,11 +160,11 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(SBTestableAlertItemTestRecipe *)self iconController];
-  v3 = [v2 iconModel];
-  v4 = [v3 leafIcons];
+  iconController = [(SBTestableAlertItemTestRecipe *)self iconController];
+  iconModel = [iconController iconModel];
+  leafIcons = [iconModel leafIcons];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [leafIcons countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -174,16 +174,16 @@ LABEL_11:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(leafIcons);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         if ([v8 isApplicationIcon])
         {
-          v9 = [v8 application];
-          v10 = [v9 isSystemApplication];
+          application = [v8 application];
+          isSystemApplication = [application isSystemApplication];
 
-          if (!v10)
+          if (!isSystemApplication)
           {
             v5 = v8;
             goto LABEL_12;
@@ -191,7 +191,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [leafIcons countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -221,10 +221,10 @@ LABEL_12:
   return v3;
 }
 
-- (id)dataPlanAlertItemForCase:(int64_t)a3
+- (id)dataPlanAlertItemForCase:(int64_t)case
 {
-  v4 = [SBApp telephonyStateProvider];
-  if ([v4 isSIMPresentForSlot:1])
+  telephonyStateProvider = [SBApp telephonyStateProvider];
+  if ([telephonyStateProvider isSIMPresentForSlot:1])
   {
     v5 = 1;
   }
@@ -234,21 +234,21 @@ LABEL_12:
     v5 = 2;
   }
 
-  v6 = [v4 carrierBundleInfoForSlot:v5];
-  v7 = [v6 carrierName];
+  v6 = [telephonyStateProvider carrierBundleInfoForSlot:v5];
+  carrierName = [v6 carrierName];
   v8 = 0;
-  if (a3 <= 27)
+  if (case <= 27)
   {
-    if (a3 > 25)
+    if (case > 25)
     {
       v9 = [SBDataPlanActivationAlertItem alloc];
-      v10 = a3 != 26;
+      v10 = case != 26;
       v15 = 1;
     }
 
     else
     {
-      if (a3 == 24)
+      if (case == 24)
       {
         v9 = [SBDataPlanActivationAlertItem alloc];
         v10 = 0;
@@ -256,7 +256,7 @@ LABEL_12:
 
       else
       {
-        if (a3 != 25)
+        if (case != 25)
         {
           goto LABEL_23;
         }
@@ -272,16 +272,16 @@ LABEL_12:
     goto LABEL_20;
   }
 
-  if (a3 <= 29)
+  if (case <= 29)
   {
-    if (a3 == 28)
+    if (case == 28)
     {
-      v11 = [[SBDataPlanCompletionAlertItem alloc] initWithCarrierName:v7 newAccount:1];
+      v11 = [[SBDataPlanCompletionAlertItem alloc] initWithCarrierName:carrierName newAccount:1];
     }
 
     else
     {
-      v11 = [[SBDataPlanFailureAlertItem alloc] initWithAccountURL:0 carrierName:v7 newAccount:1];
+      v11 = [[SBDataPlanFailureAlertItem alloc] initWithAccountURL:0 carrierName:carrierName newAccount:1];
     }
 
 LABEL_20:
@@ -289,24 +289,24 @@ LABEL_20:
     goto LABEL_23;
   }
 
-  if (a3 == 30)
+  if (case == 30)
   {
     v16 = [SBDataPlanUsageAlertItem alloc];
     LODWORD(v17) = 0.5;
-    v13 = [MEMORY[0x277CCABB0] numberWithFloat:v17];
-    v14 = [(SBDataPlanUsageAlertItem *)v16 initWithAccountURL:0 usage:v13];
+    date = [MEMORY[0x277CCABB0] numberWithFloat:v17];
+    v14 = [(SBDataPlanUsageAlertItem *)v16 initWithAccountURL:0 usage:date];
   }
 
   else
   {
-    if (a3 != 31)
+    if (case != 31)
     {
       goto LABEL_23;
     }
 
     v12 = [SBDataPlanExpirationAlertItem alloc];
-    v13 = [MEMORY[0x277CBEAA8] date];
-    v14 = [(SBDataPlanExpirationAlertItem *)v12 initWithAccountURL:0 expirationDate:v13];
+    date = [MEMORY[0x277CBEAA8] date];
+    v14 = [(SBDataPlanExpirationAlertItem *)v12 initWithAccountURL:0 expirationDate:date];
   }
 
   v8 = v14;
@@ -324,31 +324,31 @@ LABEL_23:
     recipesToTest = self->_recipesToTest;
     v5 = _nextAlertItemToTest_alertItemIndex++;
     v6 = [(NSArray *)recipesToTest objectAtIndex:v5 % v3];
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
     v8 = _nextAlertItemToTest_alertItemIndex++;
-    v7 = v8 % 52;
+    integerValue = v8 % 52;
   }
 
-  return [(SBTestableAlertItemTestRecipe *)self alertForIndex:v7];
+  return [(SBTestableAlertItemTestRecipe *)self alertForIndex:integerValue];
 }
 
-- (id)alertForIndex:(int64_t)a3
+- (id)alertForIndex:(int64_t)index
 {
   v3 = 0;
-  switch(a3)
+  switch(index)
   {
     case 0:
       v37 = [SBBuddyLockScreenDismissOnlyAlertItem alloc];
-      v9 = [MEMORY[0x277CCA8D8] mainBundle];
-      v10 = [v9 localizedStringForKey:@"ACTIVATION_REQUIRED" value:@"Activation Required" table:@"SpringBoard"];
-      v11 = [(SBDismissOnlyAlertItem *)v37 initWithTitle:v10 body:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      musicApplication = [mainBundle localizedStringForKey:@"ACTIVATION_REQUIRED" value:@"Activation Required" table:@"SpringBoard"];
+      v11 = [(SBDismissOnlyAlertItem *)v37 initWithTitle:musicApplication body:0];
       goto LABEL_28;
     case 1:
-      v9 = [*MEMORY[0x277D76620] performSelector:sel__settingLanguageStringForNewLanguage];
+      mainBundle = [*MEMORY[0x277D76620] performSelector:sel__settingLanguageStringForNewLanguage];
       v28 = SBBuddyLockScreenDismissOnlyAlertItem;
       goto LABEL_26;
     case 2:
@@ -368,14 +368,14 @@ LABEL_33:
       v5 = [[SBBluetoothAccessoryLowPowerAlertItem alloc] initWithAccessory:@" Pencil" batteryLevel:5];
       goto LABEL_59;
     case 6:
-      v9 = [(SBTestableAlertItemTestRecipe *)self _mapsApp];
+      mainBundle = [(SBTestableAlertItemTestRecipe *)self _mapsApp];
       v42 = SBApplicationLaunchNotifyInCallAlertItem;
       goto LABEL_41;
     case 7:
-      v9 = [(SBTestableAlertItemTestRecipe *)self _mapsApp];
+      mainBundle = [(SBTestableAlertItemTestRecipe *)self _mapsApp];
       v42 = SBApplicationLaunchNotifyAirplaneModeAlertItem;
 LABEL_41:
-      v36 = [[v42 alloc] initWithApplication:v9];
+      v36 = [[v42 alloc] initWithApplication:mainBundle];
       goto LABEL_54;
     case 8:
       v12 = [SBDismissOnlyAlertItem alloc];
@@ -383,36 +383,36 @@ LABEL_41:
       v14 = @"Some kind of download error";
       goto LABEL_14;
     case 9:
-      v43 = [MEMORY[0x277CCA8D8] mainBundle];
-      v32 = [v43 localizedStringForKey:@"WAITING_FOR_ACTIVATION_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v32 = [mainBundle2 localizedStringForKey:@"WAITING_FOR_ACTIVATION_TITLE" value:&stru_283094718 table:@"SpringBoard"];
 
-      v44 = [MEMORY[0x277CCA8D8] mainBundle];
-      v34 = [v44 localizedStringForKey:@"WAITING_FOR_ACTIVATION_BODY" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+      v34 = [mainBundle3 localizedStringForKey:@"WAITING_FOR_ACTIVATION_BODY" value:&stru_283094718 table:@"SpringBoard"];
 
       v35 = SBDismissOnlyAlertItem;
       goto LABEL_43;
     case 10:
-      v23 = [MEMORY[0x277CCA8D8] mainBundle];
-      v24 = v23;
+      mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+      v24 = mainBundle4;
       v25 = @"PHONE_ACTIVATED";
       goto LABEL_25;
     case 11:
-      v23 = [MEMORY[0x277CCA8D8] mainBundle];
-      v24 = v23;
+      mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+      v24 = mainBundle4;
       v25 = @"UNSUPPORTED_CHARGING_ACCESSORY";
 LABEL_25:
-      v9 = [v23 localizedStringForKey:v25 value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle = [mainBundle4 localizedStringForKey:v25 value:&stru_283094718 table:@"SpringBoard"];
 
       v28 = SBDismissOnlyAlertItem;
 LABEL_26:
-      v36 = [[v28 alloc] initWithTitle:v9 body:0];
+      v36 = [[v28 alloc] initWithTitle:mainBundle body:0];
       goto LABEL_54;
     case 12:
-      v31 = [MEMORY[0x277CCA8D8] mainBundle];
-      v32 = [v31 localizedStringForKey:@"CARRIER_DEBUGGING_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle5 = [MEMORY[0x277CCA8D8] mainBundle];
+      v32 = [mainBundle5 localizedStringForKey:@"CARRIER_DEBUGGING_TITLE" value:&stru_283094718 table:@"SpringBoard"];
 
-      v33 = [MEMORY[0x277CCA8D8] mainBundle];
-      v34 = [v33 localizedStringForKey:@"CARRIER_DEBUGGING_BODY" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle6 = [MEMORY[0x277CCA8D8] mainBundle];
+      v34 = [mainBundle6 localizedStringForKey:@"CARRIER_DEBUGGING_BODY" value:&stru_283094718 table:@"SpringBoard"];
 
       v35 = NSClassFromString(&cfstr_Sbcarrierdebug.isa);
 LABEL_43:
@@ -426,23 +426,23 @@ LABEL_43:
       v16 = SBRestoreFailureAlertItem;
       goto LABEL_35;
     case 15:
-      v39 = [MEMORY[0x277CCA8D8] mainBundle];
-      v40 = v39;
+      mainBundle7 = [MEMORY[0x277CCA8D8] mainBundle];
+      v40 = mainBundle7;
       v41 = @"RESTRICTED_URL_TITLE";
       goto LABEL_48;
     case 16:
-      v39 = [MEMORY[0x277CCA8D8] mainBundle];
-      v40 = v39;
+      mainBundle7 = [MEMORY[0x277CCA8D8] mainBundle];
+      v40 = mainBundle7;
       v41 = @"UNHANDLED_URL_BODY";
 LABEL_48:
-      v9 = [v39 localizedStringForKey:v41 value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle = [mainBundle7 localizedStringForKey:v41 value:&stru_283094718 table:@"SpringBoard"];
 
       v45 = MEMORY[0x277CCACA8];
-      v46 = [MEMORY[0x277CCA8D8] mainBundle];
-      v47 = [v46 localizedStringForKey:@"RESTRICTED_URL_BODY" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle8 = [MEMORY[0x277CCA8D8] mainBundle];
+      v47 = [mainBundle8 localizedStringForKey:@"RESTRICTED_URL_BODY" value:&stru_283094718 table:@"SpringBoard"];
       v48 = [v45 stringWithFormat:v47, @"http://www.apple.com"];
 
-      v3 = [(SBDismissOnlyAlertItem *)[SBUnsupportedURLAlertItem alloc] initWithTitle:v9 body:v48];
+      v3 = [(SBDismissOnlyAlertItem *)[SBUnsupportedURLAlertItem alloc] initWithTitle:mainBundle body:v48];
       goto LABEL_55;
     case 17:
       v15 = SBAppProfileExpiredAlertItem;
@@ -457,8 +457,8 @@ LABEL_48:
       v15 = SBAppFreeDevProfileNotTrustedAlertItem;
 LABEL_53:
       v50 = [v15 alloc];
-      v9 = [(SBTestableAlertItemTestRecipe *)self _mapsApp];
-      v36 = [v50 initWithApp:v9];
+      mainBundle = [(SBTestableAlertItemTestRecipe *)self _mapsApp];
+      v36 = [v50 initWithApp:mainBundle];
 LABEL_54:
       v3 = v36;
       goto LABEL_55;
@@ -469,17 +469,17 @@ LABEL_35:
       goto LABEL_59;
     case 22:
       v29 = [SBFairPlayFamilyLeaveAlertItem alloc];
-      v9 = +[SBApplicationController sharedInstance];
-      v10 = [v9 musicApplication];
-      v30 = [v10 info];
-      v3 = [(SBFairPlayFamilyLeaveAlertItem *)v29 initWithAppInfo:v30];
+      mainBundle = +[SBApplicationController sharedInstance];
+      musicApplication = [mainBundle musicApplication];
+      info = [musicApplication info];
+      v3 = [(SBFairPlayFamilyLeaveAlertItem *)v29 initWithAppInfo:info];
 
       goto LABEL_29;
     case 23:
       v22 = [SBVPPAppRequiresHealingAlertItem alloc];
-      v9 = +[SBApplicationController sharedInstance];
-      v10 = [v9 cameraApplication];
-      v11 = [(SBVPPAppRequiresHealingAlertItem *)v22 initWithApplication:v10];
+      mainBundle = +[SBApplicationController sharedInstance];
+      musicApplication = [mainBundle cameraApplication];
+      v11 = [(SBVPPAppRequiresHealingAlertItem *)v22 initWithApplication:musicApplication];
       goto LABEL_28;
     case 24:
     case 25:
@@ -493,9 +493,9 @@ LABEL_35:
       goto LABEL_59;
     case 32:
       v8 = [SBPasscodeComplianceAlertItem alloc];
-      v9 = [MEMORY[0x277CCA8D8] mainBundle];
-      v10 = [v9 localizedStringForKey:@"NON_COMPLIANT_PASSCODE_CONTINUE" value:&stru_283094718 table:@"SpringBoard"];
-      v11 = [(SBPasscodeComplianceAlertItem *)v8 initWithTitle:@"Non-compliant passcode!" message:@"Which is bad!" continueButtonTitle:v10 cancelButtonTitle:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      musicApplication = [mainBundle localizedStringForKey:@"NON_COMPLIANT_PASSCODE_CONTINUE" value:&stru_283094718 table:@"SpringBoard"];
+      v11 = [(SBPasscodeComplianceAlertItem *)v8 initWithTitle:@"Non-compliant passcode!" message:@"Which is bad!" continueButtonTitle:musicApplication cancelButtonTitle:0];
 LABEL_28:
       v3 = v11;
 LABEL_29:
@@ -503,18 +503,18 @@ LABEL_29:
       goto LABEL_55;
     case 33:
       v17 = [SBPasscodeComplianceAlertItem alloc];
-      v9 = [MEMORY[0x277CCA8D8] mainBundle];
-      v18 = [v9 localizedStringForKey:@"NON_COMPLIANT_PASSCODE_CONTINUE" value:&stru_283094718 table:@"SpringBoard"];
-      v19 = [MEMORY[0x277CCA8D8] mainBundle];
-      v20 = [v19 localizedStringForKey:@"NON_COMPLIANT_PASSCODE_LATER" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v18 = [mainBundle localizedStringForKey:@"NON_COMPLIANT_PASSCODE_CONTINUE" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle9 = [MEMORY[0x277CCA8D8] mainBundle];
+      v20 = [mainBundle9 localizedStringForKey:@"NON_COMPLIANT_PASSCODE_LATER" value:&stru_283094718 table:@"SpringBoard"];
       v21 = @"Which is bad, but whatevs?";
       goto LABEL_46;
     case 34:
       v17 = [SBPasscodeComplianceAlertItem alloc];
-      v9 = [MEMORY[0x277CCA8D8] mainBundle];
-      v18 = [v9 localizedStringForKey:@"NON_COMPLIANT_PASSCODE_CONTINUE" value:&stru_283094718 table:@"SpringBoard"];
-      v19 = [MEMORY[0x277CCA8D8] mainBundle];
-      v20 = [v19 localizedStringForKey:@"PASSCODE_REMINDER_CANCEL" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v18 = [mainBundle localizedStringForKey:@"NON_COMPLIANT_PASSCODE_CONTINUE" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle9 = [MEMORY[0x277CCA8D8] mainBundle];
+      v20 = [mainBundle9 localizedStringForKey:@"PASSCODE_REMINDER_CANCEL" value:&stru_283094718 table:@"SpringBoard"];
       v21 = @"Which is bad, so cancel!";
 LABEL_46:
       v3 = [(SBPasscodeComplianceAlertItem *)v17 initWithTitle:@"Non-compliant passcode!" message:v21 continueButtonTitle:v18 cancelButtonTitle:v20];

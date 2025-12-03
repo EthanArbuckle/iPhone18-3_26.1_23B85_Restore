@@ -1,8 +1,8 @@
 @interface SGEventMetadata
-+ (id)describeType:(unsigned __int8)a3;
-+ (id)eventMetadataFromEKEvent:(id)a3;
-+ (unsigned)eventTypeFromString:(id)a3;
-- (SGEventMetadata)initWithType:(unsigned __int8)a3 categoryDescription:(id)a4 originBundleId:(id)a5 confidence:(double)a6 schemaOrg:(id)a7 participants:(id)a8 eventActivities:(id)a9;
++ (id)describeType:(unsigned __int8)type;
++ (id)eventMetadataFromEKEvent:(id)event;
++ (unsigned)eventTypeFromString:(id)string;
+- (SGEventMetadata)initWithType:(unsigned __int8)type categoryDescription:(id)description originBundleId:(id)id confidence:(double)confidence schemaOrg:(id)org participants:(id)participants eventActivities:(id)activities;
 - (id)jsonObject;
 - (id)toJsonString;
 @end
@@ -32,10 +32,10 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v20 + 1) + 8 * i) jsonObject];
-        if (v9)
+        jsonObject = [*(*(&v20 + 1) + 8 * i) jsonObject];
+        if (jsonObject)
         {
-          [v3 addObject:v9];
+          [v3 addObject:jsonObject];
         }
       }
 
@@ -77,9 +77,9 @@
 {
   v3 = objc_autoreleasePoolPush();
   v4 = MEMORY[0x1E696ACB0];
-  v5 = [(SGEventMetadata *)self jsonObject];
+  jsonObject = [(SGEventMetadata *)self jsonObject];
   v10 = 0;
-  v6 = [v4 dataWithJSONObject:v5 options:0 error:&v10];
+  v6 = [v4 dataWithJSONObject:jsonObject options:0 error:&v10];
   v7 = v10;
 
   objc_autoreleasePoolPop(v3);
@@ -96,23 +96,23 @@
   return v8;
 }
 
-- (SGEventMetadata)initWithType:(unsigned __int8)a3 categoryDescription:(id)a4 originBundleId:(id)a5 confidence:(double)a6 schemaOrg:(id)a7 participants:(id)a8 eventActivities:(id)a9
+- (SGEventMetadata)initWithType:(unsigned __int8)type categoryDescription:(id)description originBundleId:(id)id confidence:(double)confidence schemaOrg:(id)org participants:(id)participants eventActivities:(id)activities
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  descriptionCopy = description;
+  idCopy = id;
+  orgCopy = org;
+  participantsCopy = participants;
+  activitiesCopy = activities;
   v30.receiver = self;
   v30.super_class = SGEventMetadata;
   v21 = [(SGEventMetadata *)&v30 init];
   v22 = v21;
   if (v21)
   {
-    v21->_type = a3;
-    if (v16)
+    v21->_type = type;
+    if (descriptionCopy)
     {
-      v23 = v16;
+      v23 = descriptionCopy;
     }
 
     else
@@ -121,9 +121,9 @@
     }
 
     objc_storeStrong(&v21->_categoryDescription, v23);
-    if (v17)
+    if (idCopy)
     {
-      v24 = v17;
+      v24 = idCopy;
     }
 
     else
@@ -132,11 +132,11 @@
     }
 
     objc_storeStrong(&v22->_originBundleId, v24);
-    v22->_confidence = a6;
+    v22->_confidence = confidence;
     v25 = MEMORY[0x1E695E0F0];
-    if (v18)
+    if (orgCopy)
     {
-      v26 = v18;
+      v26 = orgCopy;
     }
 
     else
@@ -145,9 +145,9 @@
     }
 
     objc_storeStrong(&v22->_schemaOrg, v26);
-    if (v19)
+    if (participantsCopy)
     {
-      v27 = v19;
+      v27 = participantsCopy;
     }
 
     else
@@ -156,9 +156,9 @@
     }
 
     objc_storeStrong(&v22->_participants, v27);
-    if (v20)
+    if (activitiesCopy)
     {
-      v28 = v20;
+      v28 = activitiesCopy;
     }
 
     else
@@ -172,15 +172,15 @@
   return v22;
 }
 
-+ (unsigned)eventTypeFromString:(id)a3
++ (unsigned)eventTypeFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"StructuredEvent"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"StructuredEvent"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NLEvent"])
+  else if ([stringCopy isEqualToString:@"NLEvent"])
   {
     v4 = 2;
   }
@@ -193,33 +193,33 @@
   return v4;
 }
 
-+ (id)describeType:(unsigned __int8)a3
++ (id)describeType:(unsigned __int8)type
 {
-  if (a3 > 2u)
+  if (type > 2u)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E7EFC668[a3];
+    return off_1E7EFC668[type];
   }
 }
 
-+ (id)eventMetadataFromEKEvent:(id)a3
++ (id)eventMetadataFromEKEvent:(id)event
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 customObjectForKey:@"SGEventMetadataKey"];
+  v6 = [eventCopy customObjectForKey:@"SGEventMetadataKey"];
   objc_autoreleasePoolPop(v5);
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v27 = objc_autoreleasePoolPush();
-    v7 = [v4 customObjectForKey:@"SuggestionsSchemaOrg"];
+    v7 = [eventCopy customObjectForKey:@"SuggestionsSchemaOrg"];
 
-    v28 = [v4 customObjectForKey:@"SuggestionsNLEventDictionaryKey"];
-    v29 = [v4 customObjectForKey:@"SuggestionsOriginBundleId"];
+    v28 = [eventCopy customObjectForKey:@"SuggestionsNLEventDictionaryKey"];
+    v29 = [eventCopy customObjectForKey:@"SuggestionsOriginBundleId"];
     if (v29 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v30 = v29;
@@ -256,7 +256,7 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v42 = v4;
+    v42 = eventCopy;
     v31 = v28;
     v32 = [v31 objectForKeyedSubscript:@"SuggestionsNLEventDictionaryEventTypeKey"];
     if (v32 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -274,13 +274,13 @@ LABEL_29:
     v36 = v35;
 
     v26 = [[SGEventMetadata alloc] initWithType:2 categoryDescription:v33 originBundleId:v30 confidence:0 schemaOrg:0 participants:v36];
-    v4 = v42;
+    eventCopy = v42;
 LABEL_28:
 
     goto LABEL_29;
   }
 
-  v41 = v4;
+  v41 = eventCopy;
   context = objc_autoreleasePoolPush();
   v7 = v6;
   v39 = [v7 objectForKeyedSubscript:@"SGEventMetadataConfidenceKey"];
@@ -325,7 +325,7 @@ LABEL_28:
 
   v19 = [SGEventMetadata alloc];
   v20 = [v7 objectForKeyedSubscript:@"SGEventMetadataTypeKey"];
-  v21 = [a1 eventTypeFromString:v20];
+  v21 = [self eventTypeFromString:v20];
   v22 = [v7 objectForKeyedSubscript:@"SGEventMetadataCategoryDescriptionKey"];
   v23 = [v7 objectForKeyedSubscript:@"SGEventMetadataBundleIdKey"];
   v24 = [v7 objectForKeyedSubscript:@"SGEventMetadataSchemaOrgKey"];
@@ -333,7 +333,7 @@ LABEL_28:
   v26 = [(SGEventMetadata *)v19 initWithType:v21 categoryDescription:v22 originBundleId:v23 confidence:v24 schemaOrg:v25 participants:v10 eventActivities:v9];
 
   objc_autoreleasePoolPop(context);
-  v4 = v41;
+  eventCopy = v41;
 LABEL_30:
 
   v37 = *MEMORY[0x1E69E9840];

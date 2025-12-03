@@ -6,10 +6,10 @@
 - (DYShaderProfilerTiming)vertexTiming;
 - (id).cxx_construct;
 - (void)buildDrawCallIndexMap;
-- (void)setComputeTiming:(DYShaderProfilerTiming *)a3;
-- (void)setFragmentTiming:(DYShaderProfilerTiming *)a3;
-- (void)setTiming:(DYShaderProfilerTiming *)a3;
-- (void)setVertexTiming:(DYShaderProfilerTiming *)a3;
+- (void)setComputeTiming:(DYShaderProfilerTiming *)timing;
+- (void)setFragmentTiming:(DYShaderProfilerTiming *)timing;
+- (void)setTiming:(DYShaderProfilerTiming *)timing;
+- (void)setVertexTiming:(DYShaderProfilerTiming *)timing;
 @end
 
 @implementation DYShaderProfilerResult
@@ -80,11 +80,11 @@ void __47__DYShaderProfilerResult_buildDrawCallIndexMap__block_invoke(uint64_t a
   return self;
 }
 
-- (void)setVertexTiming:(DYShaderProfilerTiming *)a3
+- (void)setVertexTiming:(DYShaderProfilerTiming *)timing
 {
-  v3 = *&a3->_cycle.average;
-  v4 = *&a3->_cycle.max;
-  *&self->_vertexTiming._time.min = *&a3->_time.min;
+  v3 = *&timing->_cycle.average;
+  v4 = *&timing->_cycle.max;
+  *&self->_vertexTiming._time.min = *&timing->_time.min;
   *&self->_vertexTiming._cycle.max = v4;
   *&self->_vertexTiming._cycle.average = v3;
 }
@@ -98,11 +98,11 @@ void __47__DYShaderProfilerResult_buildDrawCallIndexMap__block_invoke(uint64_t a
   return self;
 }
 
-- (void)setFragmentTiming:(DYShaderProfilerTiming *)a3
+- (void)setFragmentTiming:(DYShaderProfilerTiming *)timing
 {
-  v3 = *&a3->_cycle.average;
-  v4 = *&a3->_cycle.max;
-  *&self->_fragmentTiming._time.min = *&a3->_time.min;
+  v3 = *&timing->_cycle.average;
+  v4 = *&timing->_cycle.max;
+  *&self->_fragmentTiming._time.min = *&timing->_time.min;
   *&self->_fragmentTiming._cycle.max = v4;
   *&self->_fragmentTiming._cycle.average = v3;
 }
@@ -116,11 +116,11 @@ void __47__DYShaderProfilerResult_buildDrawCallIndexMap__block_invoke(uint64_t a
   return self;
 }
 
-- (void)setComputeTiming:(DYShaderProfilerTiming *)a3
+- (void)setComputeTiming:(DYShaderProfilerTiming *)timing
 {
-  v3 = *&a3->_cycle.average;
-  v4 = *&a3->_cycle.max;
-  *&self->_computeTiming._time.min = *&a3->_time.min;
+  v3 = *&timing->_cycle.average;
+  v4 = *&timing->_cycle.max;
+  *&self->_computeTiming._time.min = *&timing->_time.min;
   *&self->_computeTiming._cycle.max = v4;
   *&self->_computeTiming._cycle.average = v3;
 }
@@ -134,11 +134,11 @@ void __47__DYShaderProfilerResult_buildDrawCallIndexMap__block_invoke(uint64_t a
   return self;
 }
 
-- (void)setTiming:(DYShaderProfilerTiming *)a3
+- (void)setTiming:(DYShaderProfilerTiming *)timing
 {
-  v3 = *&a3->_cycle.average;
-  v4 = *&a3->_cycle.max;
-  *&self->_timing._time.min = *&a3->_time.min;
+  v3 = *&timing->_cycle.average;
+  v4 = *&timing->_cycle.max;
+  *&self->_timing._time.min = *&timing->_time.min;
   *&self->_timing._cycle.max = v4;
   *&self->_timing._cycle.average = v3;
 }

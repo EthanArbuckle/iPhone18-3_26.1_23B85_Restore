@@ -1,21 +1,21 @@
 @interface AWDIDSLocalDeliverySocketClosed
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBytesSent:(BOOL)a3;
-- (void)setHasCloseError:(BOOL)a3;
-- (void)setHasIsToDefaultPairedDevice:(BOOL)a3;
-- (void)setHasPacketsReceived:(BOOL)a3;
-- (void)setHasPacketsSent:(BOOL)a3;
-- (void)setHasPriority:(BOOL)a3;
-- (void)setHasSocketError:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasBytesSent:(BOOL)sent;
+- (void)setHasCloseError:(BOOL)error;
+- (void)setHasIsToDefaultPairedDevice:(BOOL)device;
+- (void)setHasPacketsReceived:(BOOL)received;
+- (void)setHasPacketsSent:(BOOL)sent;
+- (void)setHasPriority:(BOOL)priority;
+- (void)setHasSocketError:(BOOL)error;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSLocalDeliverySocketClosed
@@ -30,9 +30,9 @@
   [(AWDIDSLocalDeliverySocketClosed *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 256;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasIsToDefaultPairedDevice:(BOOL)a3
+- (void)setHasIsToDefaultPairedDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 8;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasCloseError:(BOOL)a3
+- (void)setHasCloseError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 4;
   }
@@ -75,9 +75,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasSocketError:(BOOL)a3
+- (void)setHasSocketError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 128;
   }
@@ -90,9 +90,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasBytesSent:(BOOL)a3
+- (void)setHasBytesSent:(BOOL)sent
 {
-  if (a3)
+  if (sent)
   {
     v3 = 2;
   }
@@ -105,9 +105,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasPacketsSent:(BOOL)a3
+- (void)setHasPacketsSent:(BOOL)sent
 {
-  if (a3)
+  if (sent)
   {
     v3 = 32;
   }
@@ -120,9 +120,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasPacketsReceived:(BOOL)a3
+- (void)setHasPacketsReceived:(BOOL)received
 {
-  if (a3)
+  if (received)
   {
     v3 = 16;
   }
@@ -135,9 +135,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasPriority:(BOOL)a3
+- (void)setHasPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 64;
   }
@@ -159,22 +159,22 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 0x100) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   service = self->_service;
   if (service)
   {
-    [v3 setObject:service forKey:@"service"];
+    [dictionary setObject:service forKey:@"service"];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_isToDefaultPairedDevice), @"isToDefaultPairedDevice"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_isToDefaultPairedDevice), @"isToDefaultPairedDevice"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -193,7 +193,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_closeError), @"closeError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_closeError), @"closeError"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -207,7 +207,7 @@ LABEL_8:
   }
 
 LABEL_21:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_socketError), @"socketError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_socketError), @"socketError"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -221,7 +221,7 @@ LABEL_9:
   }
 
 LABEL_22:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesSent), @"bytesSent"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesSent), @"bytesSent"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -235,7 +235,7 @@ LABEL_10:
   }
 
 LABEL_23:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_packetsSent), @"packetsSent"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_packetsSent), @"packetsSent"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -249,7 +249,7 @@ LABEL_11:
   }
 
 LABEL_24:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesReceived), @"bytesReceived"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesReceived), @"bytesReceived"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -263,30 +263,30 @@ LABEL_12:
   }
 
 LABEL_25:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_packetsReceived), @"packetsReceived"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_packetsReceived), @"packetsReceived"}];
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_13:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_priority), @"priority"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_priority), @"priority"}];
   }
 
 LABEL_14:
   streamName = self->_streamName;
   if (streamName)
   {
-    [v3 setObject:streamName forKey:@"streamName"];
+    [dictionary setObject:streamName forKey:@"streamName"];
   }
 
   guid = self->_guid;
   if (guid)
   {
-    [v3 setObject:guid forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 0x100) != 0)
   {
@@ -419,24 +419,24 @@ LABEL_14:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 0x100) != 0)
   {
-    *(a3 + 9) = self->_timestamp;
-    *(a3 + 52) |= 0x100u;
+    *(to + 9) = self->_timestamp;
+    *(to + 52) |= 0x100u;
   }
 
   if (self->_service)
   {
-    [a3 setService:?];
+    [to setService:?];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(a3 + 4) = self->_isToDefaultPairedDevice;
-    *(a3 + 52) |= 8u;
+    *(to + 4) = self->_isToDefaultPairedDevice;
+    *(to + 52) |= 8u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -455,8 +455,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 3) = self->_closeError;
-  *(a3 + 52) |= 4u;
+  *(to + 3) = self->_closeError;
+  *(to + 52) |= 4u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -470,8 +470,8 @@ LABEL_8:
   }
 
 LABEL_22:
-  *(a3 + 8) = self->_socketError;
-  *(a3 + 52) |= 0x80u;
+  *(to + 8) = self->_socketError;
+  *(to + 52) |= 0x80u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -485,8 +485,8 @@ LABEL_9:
   }
 
 LABEL_23:
-  *(a3 + 2) = self->_bytesSent;
-  *(a3 + 52) |= 2u;
+  *(to + 2) = self->_bytesSent;
+  *(to + 52) |= 2u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -500,8 +500,8 @@ LABEL_10:
   }
 
 LABEL_24:
-  *(a3 + 6) = self->_packetsSent;
-  *(a3 + 52) |= 0x20u;
+  *(to + 6) = self->_packetsSent;
+  *(to + 52) |= 0x20u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -515,8 +515,8 @@ LABEL_11:
   }
 
 LABEL_25:
-  *(a3 + 1) = self->_bytesReceived;
-  *(a3 + 52) |= 1u;
+  *(to + 1) = self->_bytesReceived;
+  *(to + 52) |= 1u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -530,31 +530,31 @@ LABEL_12:
   }
 
 LABEL_26:
-  *(a3 + 5) = self->_packetsReceived;
-  *(a3 + 52) |= 0x10u;
+  *(to + 5) = self->_packetsReceived;
+  *(to + 52) |= 0x10u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_13:
-    *(a3 + 7) = self->_priority;
-    *(a3 + 52) |= 0x40u;
+    *(to + 7) = self->_priority;
+    *(to + 52) |= 0x40u;
   }
 
 LABEL_14:
   if (self->_streamName)
   {
-    [a3 setStreamName:?];
+    [to setStreamName:?];
   }
 
   if (self->_guid)
   {
 
-    [a3 setGuid:?];
+    [to setGuid:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x100) != 0)
   {
@@ -562,7 +562,7 @@ LABEL_14:
     *(v5 + 104) |= 0x100u;
   }
 
-  *(v6 + 88) = [(NSString *)self->_service copyWithZone:a3];
+  *(v6 + 88) = [(NSString *)self->_service copyWithZone:zone];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -672,27 +672,27 @@ LABEL_11:
 
 LABEL_12:
 
-  *(v6 + 96) = [(NSString *)self->_streamName copyWithZone:a3];
-  *(v6 + 80) = [(NSString *)self->_guid copyWithZone:a3];
+  *(v6 + 96) = [(NSString *)self->_streamName copyWithZone:zone];
+  *(v6 + 80) = [(NSString *)self->_guid copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 52);
+    v7 = *(equal + 52);
     if ((has & 0x100) != 0)
     {
-      if ((*(a3 + 52) & 0x100) == 0 || self->_timestamp != *(a3 + 9))
+      if ((*(equal + 52) & 0x100) == 0 || self->_timestamp != *(equal + 9))
       {
         goto LABEL_54;
       }
     }
 
-    else if ((*(a3 + 52) & 0x100) != 0)
+    else if ((*(equal + 52) & 0x100) != 0)
     {
 LABEL_54:
       LOBYTE(v5) = 0;
@@ -700,7 +700,7 @@ LABEL_54:
     }
 
     service = self->_service;
-    if (service | *(a3 + 11))
+    if (service | *(equal + 11))
     {
       v5 = [(NSString *)service isEqual:?];
       if (!v5)
@@ -711,10 +711,10 @@ LABEL_54:
       has = self->_has;
     }
 
-    v9 = *(a3 + 52);
+    v9 = *(equal + 52);
     if ((has & 8) != 0)
     {
-      if ((v9 & 8) == 0 || self->_isToDefaultPairedDevice != *(a3 + 4))
+      if ((v9 & 8) == 0 || self->_isToDefaultPairedDevice != *(equal + 4))
       {
         goto LABEL_54;
       }
@@ -727,7 +727,7 @@ LABEL_54:
 
     if ((has & 4) != 0)
     {
-      if ((v9 & 4) == 0 || self->_closeError != *(a3 + 3))
+      if ((v9 & 4) == 0 || self->_closeError != *(equal + 3))
       {
         goto LABEL_54;
       }
@@ -740,7 +740,7 @@ LABEL_54:
 
     if ((has & 0x80) != 0)
     {
-      if ((v9 & 0x80) == 0 || self->_socketError != *(a3 + 8))
+      if ((v9 & 0x80) == 0 || self->_socketError != *(equal + 8))
       {
         goto LABEL_54;
       }
@@ -753,7 +753,7 @@ LABEL_54:
 
     if ((has & 2) != 0)
     {
-      if ((v9 & 2) == 0 || self->_bytesSent != *(a3 + 2))
+      if ((v9 & 2) == 0 || self->_bytesSent != *(equal + 2))
       {
         goto LABEL_54;
       }
@@ -766,7 +766,7 @@ LABEL_54:
 
     if ((has & 0x20) != 0)
     {
-      if ((v9 & 0x20) == 0 || self->_packetsSent != *(a3 + 6))
+      if ((v9 & 0x20) == 0 || self->_packetsSent != *(equal + 6))
       {
         goto LABEL_54;
       }
@@ -779,7 +779,7 @@ LABEL_54:
 
     if (has)
     {
-      if ((v9 & 1) == 0 || self->_bytesReceived != *(a3 + 1))
+      if ((v9 & 1) == 0 || self->_bytesReceived != *(equal + 1))
       {
         goto LABEL_54;
       }
@@ -792,7 +792,7 @@ LABEL_54:
 
     if ((has & 0x10) != 0)
     {
-      if ((v9 & 0x10) == 0 || self->_packetsReceived != *(a3 + 5))
+      if ((v9 & 0x10) == 0 || self->_packetsReceived != *(equal + 5))
       {
         goto LABEL_54;
       }
@@ -805,7 +805,7 @@ LABEL_54:
 
     if ((has & 0x40) != 0)
     {
-      if ((v9 & 0x40) == 0 || self->_priority != *(a3 + 7))
+      if ((v9 & 0x40) == 0 || self->_priority != *(equal + 7))
       {
         goto LABEL_54;
       }
@@ -817,10 +817,10 @@ LABEL_54:
     }
 
     streamName = self->_streamName;
-    if (!(streamName | *(a3 + 12)) || (v5 = [(NSString *)streamName isEqual:?]) != 0)
+    if (!(streamName | *(equal + 12)) || (v5 = [(NSString *)streamName isEqual:?]) != 0)
     {
       guid = self->_guid;
-      if (guid | *(a3 + 10))
+      if (guid | *(equal + 10))
       {
 
         LOBYTE(v5) = [(NSString *)guid isEqual:?];
@@ -960,25 +960,25 @@ LABEL_21:
   return v14 ^ [(NSString *)self->_guid hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 52) & 0x100) != 0)
+  if ((*(from + 52) & 0x100) != 0)
   {
-    self->_timestamp = *(a3 + 9);
+    self->_timestamp = *(from + 9);
     *&self->_has |= 0x100u;
   }
 
-  if (*(a3 + 11))
+  if (*(from + 11))
   {
     [(AWDIDSLocalDeliverySocketClosed *)self setService:?];
   }
 
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if ((v5 & 8) != 0)
   {
-    self->_isToDefaultPairedDevice = *(a3 + 4);
+    self->_isToDefaultPairedDevice = *(from + 4);
     *&self->_has |= 8u;
-    v5 = *(a3 + 52);
+    v5 = *(from + 52);
     if ((v5 & 4) == 0)
     {
 LABEL_7:
@@ -996,9 +996,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_closeError = *(a3 + 3);
+  self->_closeError = *(from + 3);
   *&self->_has |= 4u;
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if ((v5 & 0x80) == 0)
   {
 LABEL_8:
@@ -1011,9 +1011,9 @@ LABEL_8:
   }
 
 LABEL_22:
-  self->_socketError = *(a3 + 8);
+  self->_socketError = *(from + 8);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if ((v5 & 2) == 0)
   {
 LABEL_9:
@@ -1026,9 +1026,9 @@ LABEL_9:
   }
 
 LABEL_23:
-  self->_bytesSent = *(a3 + 2);
+  self->_bytesSent = *(from + 2);
   *&self->_has |= 2u;
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if ((v5 & 0x20) == 0)
   {
 LABEL_10:
@@ -1041,9 +1041,9 @@ LABEL_10:
   }
 
 LABEL_24:
-  self->_packetsSent = *(a3 + 6);
+  self->_packetsSent = *(from + 6);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if ((v5 & 1) == 0)
   {
 LABEL_11:
@@ -1056,9 +1056,9 @@ LABEL_11:
   }
 
 LABEL_25:
-  self->_bytesReceived = *(a3 + 1);
+  self->_bytesReceived = *(from + 1);
   *&self->_has |= 1u;
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if ((v5 & 0x10) == 0)
   {
 LABEL_12:
@@ -1071,22 +1071,22 @@ LABEL_12:
   }
 
 LABEL_26:
-  self->_packetsReceived = *(a3 + 5);
+  self->_packetsReceived = *(from + 5);
   *&self->_has |= 0x10u;
-  if ((*(a3 + 52) & 0x40) != 0)
+  if ((*(from + 52) & 0x40) != 0)
   {
 LABEL_13:
-    self->_priority = *(a3 + 7);
+    self->_priority = *(from + 7);
     *&self->_has |= 0x40u;
   }
 
 LABEL_14:
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
     [(AWDIDSLocalDeliverySocketClosed *)self setStreamName:?];
   }
 
-  if (*(a3 + 10))
+  if (*(from + 10))
   {
 
     [(AWDIDSLocalDeliverySocketClosed *)self setGuid:?];

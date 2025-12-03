@@ -1,21 +1,21 @@
 @interface HUQuickControlWheelPickerViewItem
-- (BOOL)isEqual:(id)a3;
-- (HUQuickControlWheelPickerViewItem)initWithHFMultiStateControlItemValue:(id)a3 text:(id)a4 isSelected:(BOOL)a5;
-- (HUQuickControlWheelPickerViewItem)initWithHFTVInputControlItemValue:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HUQuickControlWheelPickerViewItem)initWithHFMultiStateControlItemValue:(id)value text:(id)text isSelected:(BOOL)selected;
+- (HUQuickControlWheelPickerViewItem)initWithHFTVInputControlItemValue:(id)value;
 @end
 
 @implementation HUQuickControlWheelPickerViewItem
 
-- (HUQuickControlWheelPickerViewItem)initWithHFTVInputControlItemValue:(id)a3
+- (HUQuickControlWheelPickerViewItem)initWithHFTVInputControlItemValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = HUQuickControlWheelPickerViewItem;
   v5 = [(HUQuickControlWheelPickerViewItem *)&v12 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = v4;
+    v6 = valueCopy;
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
@@ -31,9 +31,9 @@
     if (v8)
     {
       objc_storeStrong(&v5->_value, v7);
-      v9 = [v8 name];
+      name = [v8 name];
       text = v5->_text;
-      v5->_text = v9;
+      v5->_text = name;
 
       v5->_isSelected = [v8 isSelected];
     }
@@ -42,17 +42,17 @@
   return v5;
 }
 
-- (HUQuickControlWheelPickerViewItem)initWithHFMultiStateControlItemValue:(id)a3 text:(id)a4 isSelected:(BOOL)a5
+- (HUQuickControlWheelPickerViewItem)initWithHFMultiStateControlItemValue:(id)value text:(id)text isSelected:(BOOL)selected
 {
-  v9 = a3;
-  v10 = a4;
+  valueCopy = value;
+  textCopy = text;
   v16.receiver = self;
   v16.super_class = HUQuickControlWheelPickerViewItem;
   v11 = [(HUQuickControlWheelPickerViewItem *)&v16 init];
   if (v11)
   {
     objc_opt_class();
-    v12 = v9;
+    v12 = valueCopy;
     if (objc_opt_isKindOfClass())
     {
       v13 = v12;
@@ -67,36 +67,36 @@
 
     if (v14)
     {
-      objc_storeStrong(&v11->_value, a3);
-      objc_storeStrong(&v11->_text, a4);
-      v11->_isSelected = a5;
+      objc_storeStrong(&v11->_value, value);
+      objc_storeStrong(&v11->_text, text);
+      v11->_isSelected = selected;
     }
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v13.receiver = self;
     v13.super_class = HUQuickControlWheelPickerViewItem;
     if ([(HUQuickControlWheelPickerViewItem *)&v13 isEqual:v5])
     {
-      v6 = [(HUQuickControlWheelPickerViewItem *)self value];
-      v7 = [v5 value];
-      if ([v6 isEqual:v7])
+      value = [(HUQuickControlWheelPickerViewItem *)self value];
+      value2 = [v5 value];
+      if ([value isEqual:value2])
       {
-        v8 = [(HUQuickControlWheelPickerViewItem *)self text];
-        v9 = [v5 text];
-        if ([v8 isEqualToString:v9])
+        text = [(HUQuickControlWheelPickerViewItem *)self text];
+        text2 = [v5 text];
+        if ([text isEqualToString:text2])
         {
-          v10 = [(HUQuickControlWheelPickerViewItem *)self isSelected];
-          v11 = v10 ^ [v5 isSelected] ^ 1;
+          isSelected = [(HUQuickControlWheelPickerViewItem *)self isSelected];
+          v11 = isSelected ^ [v5 isSelected] ^ 1;
         }
 
         else

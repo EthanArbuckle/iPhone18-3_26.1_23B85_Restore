@@ -4,31 +4,31 @@
 - (BOOL)shouldShowMandrake;
 - (BOOL)shouldShowSkipper;
 - (COSSOSController)init;
-- (id)assetNameForSafetyFeatureRow:(int64_t)a3;
+- (id)assetNameForSafetyFeatureRow:(int64_t)row;
 - (id)backtrackSubtitle;
 - (id)detailString;
 - (id)emergencySOSSubtitle;
 - (id)fallDetectionSubtitle;
 - (id)fallDetectionTitle;
 - (id)getSafetyFeatureRows;
-- (id)imageWithAssetName:(id)a3;
+- (id)imageWithAssetName:(id)name;
 - (id)kappaSubtitle;
-- (id)linkButtonForAssetName:(id)a3;
+- (id)linkButtonForAssetName:(id)name;
 - (id)mandrakeSubtitle;
-- (id)safetyFeaturesFromRows:(id)a3;
+- (id)safetyFeaturesFromRows:(id)rows;
 - (id)satelliteSubtitle;
 - (id)skipperLinkButton;
-- (id)subtitleForSafetyFeatureRow:(int64_t)a3;
+- (id)subtitleForSafetyFeatureRow:(int64_t)row;
 - (id)suggestedButtonTitle;
-- (id)tintColorForAssetName:(id)a3;
-- (id)titleForSafetyFeatureRow:(int64_t)a3;
+- (id)tintColorForAssetName:(id)name;
+- (id)titleForSafetyFeatureRow:(int64_t)row;
 - (id)titleString;
-- (void)_fetchNewtonEligibility:(id)a3;
+- (void)_fetchNewtonEligibility:(id)eligibility;
 - (void)_startLoading;
 - (void)_stopLoading;
 - (void)didEstablishHold;
 - (void)setNewtonSettingBasedOnEligibility;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)updateAvailableSafetyFeatures;
 - (void)viewDidLoad;
 @end
@@ -67,20 +67,20 @@
   self->_spinner = v3;
 
   [(UIActivityIndicatorView *)self->_spinner setHidesWhenStopped:1];
-  v5 = [(COSSOSController *)self view];
-  [v5 addSubview:self->_spinner];
+  view = [(COSSOSController *)self view];
+  [view addSubview:self->_spinner];
 
   [(UIActivityIndicatorView *)self->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
-  v7 = [(COSSOSController *)self buttonTray];
-  v8 = [v7 centerXAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  centerXAnchor = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
+  buttonTray = [(COSSOSController *)self buttonTray];
+  centerXAnchor2 = [buttonTray centerXAnchor];
+  v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v9 setActive:1];
 
-  v10 = [(UIActivityIndicatorView *)self->_spinner bottomAnchor];
-  v11 = [(COSSOSController *)self buttonTray];
-  v12 = [v11 topAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  bottomAnchor = [(UIActivityIndicatorView *)self->_spinner bottomAnchor];
+  buttonTray2 = [(COSSOSController *)self buttonTray];
+  topAnchor = [buttonTray2 topAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:topAnchor];
   [v13 setActive:1];
 
   [(COSSOSController *)self setNewtonSettingBasedOnEligibility];
@@ -89,15 +89,15 @@
 - (void)_startLoading
 {
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
-  v3 = [(COSSOSController *)self suggestedChoiceButton];
-  [v3 setEnabled:0];
+  suggestedChoiceButton = [(COSSOSController *)self suggestedChoiceButton];
+  [suggestedChoiceButton setEnabled:0];
 }
 
 - (void)_stopLoading
 {
   [(UIActivityIndicatorView *)self->_spinner stopAnimating];
-  v3 = [(COSSOSController *)self suggestedChoiceButton];
-  [v3 setEnabled:1];
+  suggestedChoiceButton = [(COSSOSController *)self suggestedChoiceButton];
+  [suggestedChoiceButton setEnabled:1];
 }
 
 - (id)titleString
@@ -124,23 +124,23 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v4 = [(COSSOSController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(COSSOSController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (BOOL)shouldShowKappa
 {
-  v2 = [sub_1000124B0() isKappaDetectionSupportedOnActiveWatch];
-  if (v2)
+  isKappaDetectionSupportedOnActiveWatch = [sub_1000124B0() isKappaDetectionSupportedOnActiveWatch];
+  if (isKappaDetectionSupportedOnActiveWatch)
   {
     v3 = sub_1000124B0();
 
-    LOBYTE(v2) = [v3 isKappaVisible];
+    LOBYTE(isKappaDetectionSupportedOnActiveWatch) = [v3 isKappaVisible];
   }
 
-  return v2;
+  return isKappaDetectionSupportedOnActiveWatch;
 }
 
 - (BOOL)shouldShowMandrake
@@ -178,7 +178,7 @@
 
 - (void)updateAvailableSafetyFeatures
 {
-  v13 = [(COSSOSController *)self getSafetyFeatureRows];
+  getSafetyFeatureRows = [(COSSOSController *)self getSafetyFeatureRows];
   [(COSSOSController *)self safetyFeaturesFromRows:?];
   v17 = 0u;
   v18 = 0u;
@@ -198,15 +198,15 @@
         }
 
         v4 = *(*(&v17 + 1) + 8 * i);
-        v5 = [v4 title];
-        v6 = [v4 subtitle];
-        v7 = [v4 assetName];
-        v8 = [(COSSOSController *)self imageWithAssetName:v7];
-        v9 = [v4 assetName];
-        v10 = [(COSSOSController *)self tintColorForAssetName:v9];
-        v11 = [v4 assetName];
-        v12 = [(COSSOSController *)self linkButtonForAssetName:v11];
-        [(COSSOSController *)self addBulletedListItemWithTitle:v5 description:v6 image:v8 tintColor:v10 linkButton:v12];
+        title = [v4 title];
+        subtitle = [v4 subtitle];
+        assetName = [v4 assetName];
+        v8 = [(COSSOSController *)self imageWithAssetName:assetName];
+        assetName2 = [v4 assetName];
+        v10 = [(COSSOSController *)self tintColorForAssetName:assetName2];
+        assetName3 = [v4 assetName];
+        v12 = [(COSSOSController *)self linkButtonForAssetName:assetName3];
+        [(COSSOSController *)self addBulletedListItemWithTitle:title description:subtitle image:v8 tintColor:v10 linkButton:v12];
       }
 
       v16 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -234,11 +234,11 @@
   return v7;
 }
 
-- (id)tintColorForAssetName:(id)a3
+- (id)tintColorForAssetName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [(COSSOSController *)self assetNameForSafetyFeatureRow:5];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [nameCopy isEqualToString:v5];
 
   if (v6)
   {
@@ -254,35 +254,35 @@
   return v7;
 }
 
-- (id)linkButtonForAssetName:(id)a3
+- (id)linkButtonForAssetName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [(COSSOSController *)self assetNameForSafetyFeatureRow:5];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [nameCopy isEqualToString:v5];
 
   if (v6)
   {
-    v7 = [(COSSOSController *)self skipperLinkButton];
+    skipperLinkButton = [(COSSOSController *)self skipperLinkButton];
   }
 
   else
   {
-    v7 = 0;
+    skipperLinkButton = 0;
   }
 
-  return v7;
+  return skipperLinkButton;
 }
 
-- (id)imageWithAssetName:(id)a3
+- (id)imageWithAssetName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[NSBundle mainBundle];
-  v5 = [UIImage imageNamed:v3 inBundle:v4];
+  v5 = [UIImage imageNamed:nameCopy inBundle:v4];
 
   if (!v5)
   {
     v6 = [UIImageSymbolConfiguration configurationWithPointSize:7 weight:22.0];
-    v7 = [UIImage systemImageNamed:v3 withConfiguration:v6];
+    v7 = [UIImage systemImageNamed:nameCopy withConfiguration:v6];
     v8 = v7;
     if (v7)
     {
@@ -291,7 +291,7 @@
 
     else
     {
-      v9 = [UIImage _systemImageNamed:v3 withConfiguration:v6];
+      v9 = [UIImage _systemImageNamed:nameCopy withConfiguration:v6];
     }
 
     v5 = v9;
@@ -332,15 +332,15 @@
   return v3;
 }
 
-- (id)safetyFeaturesFromRows:(id)a3
+- (id)safetyFeaturesFromRows:(id)rows
 {
-  v4 = a3;
+  rowsCopy = rows;
   v5 = objc_alloc_init(NSMutableArray);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v4;
+  obj = rowsCopy;
   v6 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -355,10 +355,10 @@
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v17 + 1) + 8 * i) integerValue];
-        v11 = [(COSSOSController *)self titleForSafetyFeatureRow:v10];
-        v12 = [(COSSOSController *)self subtitleForSafetyFeatureRow:v10];
-        v13 = [(COSSOSController *)self assetNameForSafetyFeatureRow:v10];
+        integerValue = [*(*(&v17 + 1) + 8 * i) integerValue];
+        v11 = [(COSSOSController *)self titleForSafetyFeatureRow:integerValue];
+        v12 = [(COSSOSController *)self subtitleForSafetyFeatureRow:integerValue];
+        v13 = [(COSSOSController *)self assetNameForSafetyFeatureRow:integerValue];
         v14 = [[COSSOSSafetyFeature alloc] initWithTitle:v11 subtitle:v12 assetName:v13];
         [v5 addObject:v14];
       }
@@ -372,11 +372,11 @@
   return v5;
 }
 
-- (id)titleForSafetyFeatureRow:(int64_t)a3
+- (id)titleForSafetyFeatureRow:(int64_t)row
 {
-  if (a3 > 2)
+  if (row > 2)
   {
-    switch(a3)
+    switch(row)
     {
       case 3:
         v4 = [NSBundle bundleForClass:objc_opt_class()];
@@ -403,7 +403,7 @@
     goto LABEL_15;
   }
 
-  if (!a3)
+  if (!row)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -412,13 +412,13 @@
     goto LABEL_15;
   }
 
-  if (a3 == 1)
+  if (row == 1)
   {
-    v3 = [(COSSOSController *)self fallDetectionTitle];
+    fallDetectionTitle = [(COSSOSController *)self fallDetectionTitle];
     goto LABEL_16;
   }
 
-  if (a3 != 2)
+  if (row != 2)
   {
     goto LABEL_16;
   }
@@ -430,89 +430,89 @@
     v6 = @"SOS_KAPPA_TITLE";
     v7 = @"Localizable-Kappa";
 LABEL_15:
-    v3 = [v4 localizedStringForKey:v6 value:&stru_10026E598 table:v7];
+    fallDetectionTitle = [v4 localizedStringForKey:v6 value:&stru_10026E598 table:v7];
 
     goto LABEL_16;
   }
 
-  v3 = @"Kappa";
+  fallDetectionTitle = @"Kappa";
 LABEL_16:
 
-  return v3;
+  return fallDetectionTitle;
 }
 
-- (id)subtitleForSafetyFeatureRow:(int64_t)a3
+- (id)subtitleForSafetyFeatureRow:(int64_t)row
 {
-  if (a3 > 2)
+  if (row > 2)
   {
-    switch(a3)
+    switch(row)
     {
       case 3:
-        v3 = [(COSSOSController *)self mandrakeSubtitle];
+        mandrakeSubtitle = [(COSSOSController *)self mandrakeSubtitle];
         break;
       case 4:
-        v3 = [(COSSOSController *)self backtrackSubtitle];
+        mandrakeSubtitle = [(COSSOSController *)self backtrackSubtitle];
         break;
       case 5:
-        v3 = [(COSSOSController *)self satelliteSubtitle];
+        mandrakeSubtitle = [(COSSOSController *)self satelliteSubtitle];
         break;
       default:
         goto LABEL_15;
     }
   }
 
-  else if (a3)
+  else if (row)
   {
-    if (a3 == 1)
+    if (row == 1)
     {
-      v3 = [(COSSOSController *)self fallDetectionSubtitle];
+      mandrakeSubtitle = [(COSSOSController *)self fallDetectionSubtitle];
     }
 
     else
     {
-      if (a3 != 2)
+      if (row != 2)
       {
         goto LABEL_15;
       }
 
-      v3 = [(COSSOSController *)self kappaSubtitle];
+      mandrakeSubtitle = [(COSSOSController *)self kappaSubtitle];
     }
   }
 
   else
   {
-    v3 = [(COSSOSController *)self emergencySOSSubtitle];
+    mandrakeSubtitle = [(COSSOSController *)self emergencySOSSubtitle];
   }
 
-  a2 = v3;
+  a2 = mandrakeSubtitle;
 LABEL_15:
 
   return a2;
 }
 
-- (id)assetNameForSafetyFeatureRow:(int64_t)a3
+- (id)assetNameForSafetyFeatureRow:(int64_t)row
 {
   device = self->_device;
   v5 = [[NSUUID alloc] initWithUUIDString:@"622B6312-95FA-4F09-9148-69E286A9C31F"];
   v6 = [(NRDevice *)device supportsCapability:v5];
 
   v7 = @"SOS";
-  if (a3 <= 2)
+  if (row <= 2)
   {
-    if (a3 == 1)
+    if (row == 1)
     {
       v7 = @"fall_detection";
       goto LABEL_17;
     }
 
-    if (a3 != 2)
+    if (row != 2)
     {
       goto LABEL_17;
     }
 
-    v8 = [sub_1000124B0() isKappaUnmasked];
+    isKappaUnmasked = [sub_1000124B0() isKappaUnmasked];
     v9 = @"CrDetect_Icon_45";
-    if (!v8)
+    if (!isKappaUnmasked)
     {
       v9 = @"SOS";
     }
@@ -522,7 +522,7 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  switch(a3)
+  switch(row)
   {
     case 3:
       v7 = @"Mandrake_Icon_40";
@@ -549,13 +549,13 @@ LABEL_17:
 {
   if ([(COSSOSController *)self isTinker])
   {
-    v2 = [UIApp setupController];
-    v3 = [v2 tinkerUserName];
-    v4 = [v3 localizedCapitalizedString];
-    v5 = v4;
-    if (v4)
+    setupController = [UIApp setupController];
+    tinkerUserName = [setupController tinkerUserName];
+    localizedCapitalizedString = [tinkerUserName localizedCapitalizedString];
+    v5 = localizedCapitalizedString;
+    if (localizedCapitalizedString)
     {
-      v6 = v4;
+      v6 = localizedCapitalizedString;
     }
 
     else
@@ -600,10 +600,10 @@ LABEL_17:
 
 - (id)fallDetectionSubtitle
 {
-  v2 = [(COSSOSController *)self isTinker];
+  isTinker = [(COSSOSController *)self isTinker];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (isTinker)
   {
     v5 = @"SOS_NEWTON_SUBTITLE_TINKER";
   }
@@ -620,23 +620,23 @@ LABEL_17:
 
 - (id)kappaSubtitle
 {
-  v2 = [(COSSOSController *)self isTinker];
-  v3 = [sub_1000124B0() isKappaUnmasked];
+  isTinker = [(COSSOSController *)self isTinker];
+  isKappaUnmasked = [sub_1000124B0() isKappaUnmasked];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = v4;
   v6 = @"SOS_KAPPA_SUBTITLE_TINKER_MASKED";
-  if (v3)
+  if (isKappaUnmasked)
   {
     v6 = @"SOS_KAPPA_SUBTITLE_TINKER";
   }
 
   v7 = @"SOS_KAPPA_SUBTITLE";
-  if (!v3)
+  if (!isKappaUnmasked)
   {
     v7 = @"SOS_KAPPA_SUBTITLE_MASKED";
   }
 
-  if (v2)
+  if (isTinker)
   {
     v8 = v6;
   }
@@ -653,10 +653,10 @@ LABEL_17:
 
 - (id)mandrakeSubtitle
 {
-  v2 = [(COSSOSController *)self isTinker];
+  isTinker = [(COSSOSController *)self isTinker];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (isTinker)
   {
     v5 = @"SOS_MANDRAKE_SUBTITLE_TINKER";
   }
@@ -673,10 +673,10 @@ LABEL_17:
 
 - (id)backtrackSubtitle
 {
-  v2 = [(COSSOSController *)self isTinker];
+  isTinker = [(COSSOSController *)self isTinker];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (isTinker)
   {
     v5 = @"SOS_FOOTPRINT_SUBTITLE_TINKER";
   }
@@ -707,11 +707,11 @@ LABEL_17:
   v10[3] = &unk_100268158;
   v10[4] = self;
   v3 = objc_retainBlock(v10);
-  v4 = [sub_1000124B0() newtonTriggersEmergencySOSNumber];
-  v5 = v4;
-  if (v4)
+  newtonTriggersEmergencySOSNumber = [sub_1000124B0() newtonTriggersEmergencySOSNumber];
+  v5 = newtonTriggersEmergencySOSNumber;
+  if (newtonTriggersEmergencySOSNumber)
   {
-    if ([v4 BOOLValue])
+    if ([newtonTriggersEmergencySOSNumber BOOLValue])
     {
       if ([sub_1000124B0() newtonTriggersEmergencySOSWorkouts])
       {
@@ -753,21 +753,21 @@ LABEL_17:
   }
 }
 
-- (void)_fetchNewtonEligibility:(id)a3
+- (void)_fetchNewtonEligibility:(id)eligibility
 {
-  v4 = a3;
+  eligibilityCopy = eligibility;
   if ([(COSSOSController *)self isTinker])
   {
-    v5 = [(COSSOSController *)self device];
-    v6 = [v5 pairingID];
+    device = [(COSSOSController *)self device];
+    pairingID = [device pairingID];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100013D3C;
     v13[3] = &unk_1002681F8;
     v7 = &v14;
-    v14 = v4;
-    v8 = v4;
-    sub_10002E5B0(v6, &_dispatch_main_q, v13);
+    v14 = eligibilityCopy;
+    v8 = eligibilityCopy;
+    sub_10002E5B0(pairingID, &_dispatch_main_q, v13);
   }
 
   else
@@ -778,8 +778,8 @@ LABEL_17:
     v11[2] = sub_100014028;
     v11[3] = &unk_1002681D0;
     v7 = &v12;
-    v12 = v4;
-    v10 = v4;
+    v12 = eligibilityCopy;
+    v10 = eligibilityCopy;
     [v9 newtonEligibilityWithCompletion:v11];
   }
 }

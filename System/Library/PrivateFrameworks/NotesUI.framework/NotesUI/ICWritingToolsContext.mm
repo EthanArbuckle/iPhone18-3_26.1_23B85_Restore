@@ -1,30 +1,30 @@
 @interface ICWritingToolsContext
-- (ICWritingToolsContext)initWithAttributedString:(id)a3 originalString:(id)a4 originalRange:(_NSRange)a5 rangeMapping:(id)a6;
-- (_NSRange)rangeInOriginalStringCorrespondingToRange:(_NSRange)a3;
-- (void)updateRangeMapping:(id)a3 withinRange:(_NSRange)a4;
+- (ICWritingToolsContext)initWithAttributedString:(id)string originalString:(id)originalString originalRange:(_NSRange)range rangeMapping:(id)mapping;
+- (_NSRange)rangeInOriginalStringCorrespondingToRange:(_NSRange)range;
+- (void)updateRangeMapping:(id)mapping withinRange:(_NSRange)range;
 @end
 
 @implementation ICWritingToolsContext
 
-- (ICWritingToolsContext)initWithAttributedString:(id)a3 originalString:(id)a4 originalRange:(_NSRange)a5 rangeMapping:(id)a6
+- (ICWritingToolsContext)initWithAttributedString:(id)string originalString:(id)originalString originalRange:(_NSRange)range rangeMapping:(id)mapping
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v44 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (location != [v12 length] || length)
+  stringCopy = string;
+  originalStringCopy = originalString;
+  mappingCopy = mapping;
+  if (location != [originalStringCopy length] || length)
   {
-    v31 = self;
+    selfCopy = self;
     v32 = length;
-    v33 = v12;
-    v34 = v11;
+    v33 = originalStringCopy;
+    v34 = stringCopy;
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = [v13 allKeys];
+    obj = [mappingCopy allKeys];
     v16 = [obj countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v16)
     {
@@ -43,16 +43,16 @@
           v20 = *(*(&v39 + 1) + 8 * i);
           [v20 rangeValue];
           v22 = v21;
-          v23 = [v13 objectForKeyedSubscript:v20];
-          v24 = [v23 rangeValue];
+          v23 = [mappingCopy objectForKeyedSubscript:v20];
+          rangeValue = [v23 rangeValue];
           v26 = v25;
 
-          if (location >= v24 + v26)
+          if (location >= rangeValue + v26)
           {
             v14 = v22 + v14 - v26;
           }
 
-          else if (location > v24)
+          else if (location > rangeValue)
           {
             v27 = os_log_create("com.apple.notes", "WritingTools");
             if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -73,44 +73,44 @@
       v14 = location;
     }
 
-    v12 = v33;
-    v11 = v34;
-    self = v31;
+    originalStringCopy = v33;
+    stringCopy = v34;
+    self = selfCopy;
     v15 = v32;
   }
 
   else
   {
-    v14 = [v11 length];
+    v14 = [stringCopy length];
     v15 = 0;
   }
 
   v36.receiver = self;
   v36.super_class = ICWritingToolsContext;
-  v28 = [(UIWritingToolsCoordinatorContext *)&v36 initWithAttributedString:v11 range:v14, v15];
+  v28 = [(UIWritingToolsCoordinatorContext *)&v36 initWithAttributedString:stringCopy range:v14, v15];
   v29 = v28;
   if (v28)
   {
-    [(ICWritingToolsContext *)v28 setOriginalString:v12];
-    [(ICWritingToolsContext *)v29 setRangeMapping:v13];
+    [(ICWritingToolsContext *)v28 setOriginalString:originalStringCopy];
+    [(ICWritingToolsContext *)v29 setRangeMapping:mappingCopy];
   }
 
   return v29;
 }
 
-- (_NSRange)rangeInOriginalStringCorrespondingToRange:(_NSRange)a3
+- (_NSRange)rangeInOriginalStringCorrespondingToRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v39 = *MEMORY[0x1E69E9840];
-  v5 = [(ICWritingToolsContext *)self rangeMapping];
-  v6 = [v5 count];
+  rangeMapping = [(ICWritingToolsContext *)self rangeMapping];
+  v6 = [rangeMapping count];
 
   if (v6)
   {
-    v7 = [(ICWritingToolsContext *)self rangeMapping];
-    v8 = [v7 allKeys];
-    v9 = [v8 sortedArrayUsingComparator:&__block_literal_global_5];
+    rangeMapping2 = [(ICWritingToolsContext *)self rangeMapping];
+    allKeys = [rangeMapping2 allKeys];
+    v9 = [allKeys sortedArrayUsingComparator:&__block_literal_global_5];
 
     v36 = 0u;
     v37 = 0u;
@@ -136,16 +136,16 @@
           }
 
           v15 = *(*(&v34 + 1) + 8 * i);
-          v16 = [v15 rangeValue];
+          rangeValue = [v15 rangeValue];
           v18 = v17;
-          v19 = [(ICWritingToolsContext *)self rangeMapping];
-          v20 = [v19 objectForKeyedSubscript:v15];
+          rangeMapping3 = [(ICWritingToolsContext *)self rangeMapping];
+          v20 = [rangeMapping3 objectForKeyedSubscript:v15];
           [v20 rangeValue];
           v22 = v21;
 
           v23 = v22 - v18;
-          v24 = v16 + v18;
-          if (v16 < v32 && v24 > location)
+          v24 = rangeValue + v18;
+          if (rangeValue < v32 && v24 > location)
           {
             v26 = v22 - v18;
           }
@@ -204,17 +204,17 @@ uint64_t __67__ICWritingToolsContext_rangeInOriginalStringCorrespondingToRange__
   }
 }
 
-- (void)updateRangeMapping:(id)a3 withinRange:(_NSRange)a4
+- (void)updateRangeMapping:(id)mapping withinRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v31 = self;
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  mappingCopy = mapping;
+  v7 = mappingCopy;
   if (location)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
@@ -236,11 +236,11 @@ uint64_t __67__ICWritingToolsContext_rangeInOriginalStringCorrespondingToRange__
           }
 
           v14 = *(*(&v38 + 1) + 8 * i);
-          v15 = [v14 rangeValue];
+          rangeValue = [v14 rangeValue];
           v17 = v16;
           v18 = [v9 objectForKeyedSubscript:v14];
-          v19 = [MEMORY[0x1E696B098] valueWithRange:{v15 + location, v17}];
-          [v8 setObject:v18 forKeyedSubscript:v19];
+          v19 = [MEMORY[0x1E696B098] valueWithRange:{rangeValue + location, v17}];
+          [dictionary setObject:v18 forKeyedSubscript:v19];
         }
 
         v11 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
@@ -249,25 +249,25 @@ uint64_t __67__ICWritingToolsContext_rangeInOriginalStringCorrespondingToRange__
       while (v11);
     }
 
-    v20 = [v8 copy];
+    v20 = [dictionary copy];
     v7 = v9;
   }
 
   else
   {
-    v20 = v6;
+    v20 = mappingCopy;
   }
 
-  v21 = v31;
-  v22 = [(ICWritingToolsContext *)v31 rangeMapping];
-  v23 = [v22 mutableCopy];
+  v21 = selfCopy;
+  rangeMapping = [(ICWritingToolsContext *)selfCopy rangeMapping];
+  v23 = [rangeMapping mutableCopy];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v24 = [(ICWritingToolsContext *)v21 rangeMapping];
-  v25 = [v24 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  rangeMapping2 = [(ICWritingToolsContext *)v21 rangeMapping];
+  v25 = [rangeMapping2 countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v25)
   {
     v26 = v25;
@@ -278,7 +278,7 @@ uint64_t __67__ICWritingToolsContext_rangeInOriginalStringCorrespondingToRange__
       {
         if (*v35 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(rangeMapping2);
         }
 
         v29 = *(*(&v34 + 1) + 8 * j);
@@ -291,7 +291,7 @@ uint64_t __67__ICWritingToolsContext_rangeInOriginalStringCorrespondingToRange__
         }
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v26 = [rangeMapping2 countByEnumeratingWithState:&v34 objects:v42 count:16];
     }
 
     while (v26);

@@ -1,56 +1,56 @@
 @interface TSPObjectReferenceMap
 - (TSPObjectReferenceMap)init;
-- (TSPObjectReferenceMap)initWithContext:(id)a3 delegate:(id)a4;
-- (TSPObjectReferenceMap)initWithContext:(id)a3 delegate:(id)a4 externalReferencesFromComponent:(id)a5;
+- (TSPObjectReferenceMap)initWithContext:(id)context delegate:(id)delegate;
+- (TSPObjectReferenceMap)initWithContext:(id)context delegate:(id)delegate externalReferencesFromComponent:(id)component;
 - (id).cxx_construct;
-- (id)descriptionOfAllPossiblePathsToObject:(id)a3 withLimit:(unint64_t)a4;
-- (id)descriptionOfAllPossiblePathsToObjectIdentifier:(int64_t)a3 withLimit:(unint64_t)a4;
-- (id)parentObjectPathsForObjectIdentifier:(int64_t)a3 limit:(unint64_t)a4 totalParentObjects:(unint64_t *)a5;
-- (id)parentObjectsForObject:(id)a3;
-- (id)parentObjectsForObjectIdentifier:(int64_t)a3;
-- (unint64_t)visitObjectWithIdentifier:(int64_t)a3 level:(unint64_t)a4 mode:(int)a5 limit:(unint64_t)a6 pathSuffix:(id)a7 visitedObjectIdentifiers:(id)a8 updatingParentObjectPaths:(id)a9;
-- (void)addObjectReferenceMap:(id)a3;
-- (void)addReferenceFromObjectIdentifier:(int64_t)a3 toObjectIdentifier:(int64_t)a4;
-- (void)addReferenceFromObjectIdentifier:(int64_t)a3 toObjectOrLazyReference:(id)a4;
-- (void)addReferencesFromObject:(id)a3 archiver:(id)a4;
-- (void)mergeWithObjectReferenceMap:(id)a3;
+- (id)descriptionOfAllPossiblePathsToObject:(id)object withLimit:(unint64_t)limit;
+- (id)descriptionOfAllPossiblePathsToObjectIdentifier:(int64_t)identifier withLimit:(unint64_t)limit;
+- (id)parentObjectPathsForObjectIdentifier:(int64_t)identifier limit:(unint64_t)limit totalParentObjects:(unint64_t *)objects;
+- (id)parentObjectsForObject:(id)object;
+- (id)parentObjectsForObjectIdentifier:(int64_t)identifier;
+- (unint64_t)visitObjectWithIdentifier:(int64_t)identifier level:(unint64_t)level mode:(int)mode limit:(unint64_t)limit pathSuffix:(id)suffix visitedObjectIdentifiers:(id)identifiers updatingParentObjectPaths:(id)paths;
+- (void)addObjectReferenceMap:(id)map;
+- (void)addReferenceFromObjectIdentifier:(int64_t)identifier toObjectIdentifier:(int64_t)objectIdentifier;
+- (void)addReferenceFromObjectIdentifier:(int64_t)identifier toObjectOrLazyReference:(id)reference;
+- (void)addReferencesFromObject:(id)object archiver:(id)archiver;
+- (void)mergeWithObjectReferenceMap:(id)map;
 @end
 
 @implementation TSPObjectReferenceMap
 
-- (TSPObjectReferenceMap)initWithContext:(id)a3 delegate:(id)a4
+- (TSPObjectReferenceMap)initWithContext:(id)context delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = TSPObjectReferenceMap;
   v8 = [(TSPObjectReferenceMap *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_context, v6);
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v8->_context, contextCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
   }
 
   return v9;
 }
 
-- (TSPObjectReferenceMap)initWithContext:(id)a3 delegate:(id)a4 externalReferencesFromComponent:(id)a5
+- (TSPObjectReferenceMap)initWithContext:(id)context delegate:(id)delegate externalReferencesFromComponent:(id)component
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v14 = objc_msgSend_initWithContext_delegate_(self, v11, v8, v9);
+  contextCopy = context;
+  delegateCopy = delegate;
+  componentCopy = component;
+  v14 = objc_msgSend_initWithContext_delegate_(self, v11, contextCopy, delegateCopy);
   if (v14)
   {
-    v15 = objc_msgSend_identifier(v10, v12, v13);
+    v15 = objc_msgSend_identifier(componentCopy, v12, v13);
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = sub_276A686EC;
     v18[3] = &unk_27A6E5470;
     v19 = v14;
     v20 = v15;
-    objc_msgSend_enumerateExternalReferences_(v10, v16, v18);
+    objc_msgSend_enumerateExternalReferences_(componentCopy, v16, v18);
   }
 
   return v14;
@@ -72,29 +72,29 @@
   objc_exception_throw(v13);
 }
 
-- (id)parentObjectsForObject:(id)a3
+- (id)parentObjectsForObject:(id)object
 {
-  v4 = a3;
-  v7 = objc_msgSend_tsp_identifier(v4, v5, v6);
+  objectCopy = object;
+  v7 = objc_msgSend_tsp_identifier(objectCopy, v5, v6);
   v9 = objc_msgSend_parentObjectsForObjectIdentifier_(self, v8, v7);
 
   return v9;
 }
 
-- (id)descriptionOfAllPossiblePathsToObject:(id)a3 withLimit:(unint64_t)a4
+- (id)descriptionOfAllPossiblePathsToObject:(id)object withLimit:(unint64_t)limit
 {
-  v6 = a3;
-  v9 = objc_msgSend_tsp_identifier(v6, v7, v8);
-  v11 = objc_msgSend_descriptionOfAllPossiblePathsToObjectIdentifier_withLimit_(self, v10, v9, a4);
+  objectCopy = object;
+  v9 = objc_msgSend_tsp_identifier(objectCopy, v7, v8);
+  v11 = objc_msgSend_descriptionOfAllPossiblePathsToObjectIdentifier_withLimit_(self, v10, v9, limit);
 
   return v11;
 }
 
-- (id)parentObjectsForObjectIdentifier:(int64_t)a3
+- (id)parentObjectsForObjectIdentifier:(int64_t)identifier
 {
-  v21 = a3;
-  v3 = a3 == 1 || a3 == 3;
-  if (v3 || (v5 = sub_2769ABC64(&self->_inverseReferenceMap.__table_.__bucket_list_.__ptr_, &v21)) == 0)
+  identifierCopy = identifier;
+  v3 = identifier == 1 || identifier == 3;
+  if (v3 || (v5 = sub_2769ABC64(&self->_inverseReferenceMap.__table_.__bucket_list_.__ptr_, &identifierCopy)) == 0)
   {
     v13 = 0;
   }
@@ -123,13 +123,13 @@
   return v13;
 }
 
-- (id)parentObjectPathsForObjectIdentifier:(int64_t)a3 limit:(unint64_t)a4 totalParentObjects:(unint64_t *)a5
+- (id)parentObjectPathsForObjectIdentifier:(int64_t)identifier limit:(unint64_t)limit totalParentObjects:(unint64_t *)objects
 {
-  v19 = a3;
-  v6 = a3 == 1 || a3 == 3;
-  if (v6 || (v9 = sub_2769ABC64(&self->_inverseReferenceMap.__table_.__bucket_list_.__ptr_, &v19)) == 0)
+  identifierCopy = identifier;
+  v6 = identifier == 1 || identifier == 3;
+  if (v6 || (v9 = sub_2769ABC64(&self->_inverseReferenceMap.__table_.__bucket_list_.__ptr_, &identifierCopy)) == 0)
   {
-    if (a5)
+    if (objects)
     {
       v17 = 0;
       v11 = 0;
@@ -143,37 +143,37 @@
   {
     v10 = v9;
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if (a4)
+    if (limit)
     {
       v12 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      v14 = objc_msgSend_visitObjectWithIdentifier_level_mode_limit_pathSuffix_visitedObjectIdentifiers_updatingParentObjectPaths_(self, v13, v19, 0, 1, a4, &stru_2885C9BB8, v12, v11);
+      v14 = objc_msgSend_visitObjectWithIdentifier_level_mode_limit_pathSuffix_visitedObjectIdentifiers_updatingParentObjectPaths_(self, v13, identifierCopy, 0, 1, limit, &stru_2885C9BB8, v12, v11);
 
       if (v14)
       {
         v15 = objc_alloc_init(MEMORY[0x277CBEB58]);
-        objc_msgSend_visitObjectWithIdentifier_level_mode_limit_pathSuffix_visitedObjectIdentifiers_updatingParentObjectPaths_(self, v16, v19, 0, 2, v14, &stru_2885C9BB8, v15, v11);
+        objc_msgSend_visitObjectWithIdentifier_level_mode_limit_pathSuffix_visitedObjectIdentifiers_updatingParentObjectPaths_(self, v16, identifierCopy, 0, 2, v14, &stru_2885C9BB8, v15, v11);
       }
     }
 
-    if (a5)
+    if (objects)
     {
       v17 = v10[4];
 LABEL_13:
-      *a5 = v17;
+      *objects = v17;
     }
   }
 
   return v11;
 }
 
-- (id)descriptionOfAllPossiblePathsToObjectIdentifier:(int64_t)a3 withLimit:(unint64_t)a4
+- (id)descriptionOfAllPossiblePathsToObjectIdentifier:(int64_t)identifier withLimit:(unint64_t)limit
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = objc_alloc_init(MEMORY[0x277CCAB68]);
   objc_msgSend_appendString_(v7, v8, @"(\n");
   v9 = objc_autoreleasePoolPush();
   v25 = 0;
-  objc_msgSend_parentObjectPathsForObjectIdentifier_limit_totalParentObjects_(self, v10, a3, a4, &v25);
+  objc_msgSend_parentObjectPathsForObjectIdentifier_limit_totalParentObjects_(self, v10, identifier, limit, &v25);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
@@ -200,7 +200,7 @@ LABEL_13:
     while (v14);
   }
 
-  if (v25 > a4)
+  if (v25 > limit)
   {
     objc_msgSend_appendFormat_(v7, v17, @"    Total known parent objects: %tu\n", v25);
   }
@@ -212,10 +212,10 @@ LABEL_13:
   return v7;
 }
 
-- (void)addReferencesFromObject:(id)a3 archiver:(id)a4
+- (void)addReferencesFromObject:(id)object archiver:(id)archiver
 {
-  v12[0] = objc_msgSend_tsp_identifier(a3, a2, a3);
-  v8 = objc_msgSend_aggregatedStrongReferences(a4, v6, v7);
+  v12[0] = objc_msgSend_tsp_identifier(object, a2, object);
+  v8 = objc_msgSend_aggregatedStrongReferences(archiver, v6, v7);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_276A69150;
@@ -232,11 +232,11 @@ LABEL_13:
   }
 }
 
-- (void)mergeWithObjectReferenceMap:(id)a3
+- (void)mergeWithObjectReferenceMap:(id)map
 {
-  if (a3)
+  if (map)
   {
-    for (i = *(a3 + 5); i; i = *i)
+    for (i = *(map + 5); i; i = *i)
     {
       v5 = i[2];
       v16 = v5;
@@ -261,18 +261,18 @@ LABEL_13:
       objc_msgSend_addReferenceFromObjectIdentifier_toObjectIdentifier_(self, a2, i[5], v5);
     }
 
-    if (*(a3 + 10))
+    if (*(map + 10))
     {
       sub_276A6A76C();
     }
   }
 }
 
-- (void)addObjectReferenceMap:(id)a3
+- (void)addObjectReferenceMap:(id)map
 {
-  if (a3)
+  if (map)
   {
-    v3 = *(a3 + 5);
+    v3 = *(map + 5);
     if (v3)
     {
       v15 = v3[2];
@@ -298,32 +298,32 @@ LABEL_13:
       sub_276A6A668();
     }
 
-    if (*(a3 + 10))
+    if (*(map + 10))
     {
       sub_276A6A76C();
     }
   }
 }
 
-- (unint64_t)visitObjectWithIdentifier:(int64_t)a3 level:(unint64_t)a4 mode:(int)a5 limit:(unint64_t)a6 pathSuffix:(id)a7 visitedObjectIdentifiers:(id)a8 updatingParentObjectPaths:(id)a9
+- (unint64_t)visitObjectWithIdentifier:(int64_t)identifier level:(unint64_t)level mode:(int)mode limit:(unint64_t)limit pathSuffix:(id)suffix visitedObjectIdentifiers:(id)identifiers updatingParentObjectPaths:(id)paths
 {
-  v43 = a3;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
-  if (a6)
+  identifierCopy = identifier;
+  suffixCopy = suffix;
+  identifiersCopy = identifiers;
+  pathsCopy = paths;
+  if (limit)
   {
     v18 = objc_alloc(MEMORY[0x277CCABB0]);
-    v20 = objc_msgSend_initWithLongLong_(v18, v19, a3);
-    objc_msgSend_addObject_(v16, v21, v20);
+    v20 = objc_msgSend_initWithLongLong_(v18, v19, identifier);
+    objc_msgSend_addObject_(identifiersCopy, v21, v20);
 
     v39 = 0;
     v40 = &v39;
     v41 = 0x2020000000;
-    v42 = a6;
-    if (a3 == 1 || a3 == 3)
+    limitCopy = limit;
+    if (identifier == 1 || identifier == 3)
     {
-      if (a4 <= 1 && a5 != 1 || !objc_msgSend_length(v15, v22, v23))
+      if (level <= 1 && mode != 1 || !objc_msgSend_length(suffixCopy, v22, v23))
       {
         goto LABEL_20;
       }
@@ -331,38 +331,38 @@ LABEL_13:
 
     else
     {
-      v26 = sub_2769ABC64(&self->_inverseReferenceMap.__table_.__bucket_list_.__ptr_, &v43);
+      v26 = sub_2769ABC64(&self->_inverseReferenceMap.__table_.__bucket_list_.__ptr_, &identifierCopy);
       v28 = v26;
       if (v26)
       {
-        if (a4)
+        if (level)
         {
-          v29 = a5;
+          modeCopy = mode;
         }
 
         else
         {
-          v29 = 0;
+          modeCopy = 0;
         }
 
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
         v31[2] = sub_276A699A8;
         v31[3] = &unk_27A6E54E8;
-        v36 = v43;
+        v36 = identifierCopy;
         v31[4] = self;
-        v32 = v15;
-        v38 = a5;
-        v33 = v16;
-        v37 = a4;
-        v34 = v17;
+        v32 = suffixCopy;
+        modeCopy2 = mode;
+        v33 = identifiersCopy;
+        levelCopy = level;
+        v34 = pathsCopy;
         v35 = &v39;
-        sub_276A68AF0((v28 + 3), v29, v31);
+        sub_276A68AF0((v28 + 3), modeCopy, v31);
 
         goto LABEL_20;
       }
 
-      if (a4 <= 1 && a5 != 1)
+      if (level <= 1 && mode != 1)
       {
 LABEL_20:
         v25 = v40[3];
@@ -371,7 +371,7 @@ LABEL_20:
       }
     }
 
-    objc_msgSend_addObject_(v17, v27, v15);
+    objc_msgSend_addObject_(pathsCopy, v27, suffixCopy);
     --v40[3];
     goto LABEL_20;
   }
@@ -382,14 +382,14 @@ LABEL_21:
   return v25;
 }
 
-- (void)addReferenceFromObjectIdentifier:(int64_t)a3 toObjectOrLazyReference:(id)a4
+- (void)addReferenceFromObjectIdentifier:(int64_t)identifier toObjectOrLazyReference:(id)reference
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v10 = objc_msgSend_tsp_identifier(a4, v7, v8);
+    v10 = objc_msgSend_tsp_identifier(reference, v7, v8);
 
-    objc_msgSend_addReferenceFromObjectIdentifier_toObjectIdentifier_(self, v9, a3, v10);
+    objc_msgSend_addReferenceFromObjectIdentifier_toObjectIdentifier_(self, v9, identifier, v10);
   }
 
   else
@@ -407,10 +407,10 @@ LABEL_21:
   }
 }
 
-- (void)addReferenceFromObjectIdentifier:(int64_t)a3 toObjectIdentifier:(int64_t)a4
+- (void)addReferenceFromObjectIdentifier:(int64_t)identifier toObjectIdentifier:(int64_t)objectIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  objectIdentifierCopy = objectIdentifier;
   v4 = 0;
   v5 = 1;
   sub_276A6A850();

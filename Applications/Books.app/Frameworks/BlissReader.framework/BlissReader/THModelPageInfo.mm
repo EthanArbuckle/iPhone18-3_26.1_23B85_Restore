@@ -4,26 +4,26 @@
 - (CGSize)autosizeMargin;
 - (NSArray)floatingDrawables;
 - (NSArray)modelBodyInfos;
-- (THModelPageInfo)initWithContext:(id)a3;
+- (THModelPageInfo)initWithContext:(id)context;
 - (THWPStorage)bodyStorage;
 - (_NSRange)bodyStorageRange;
 - (id)childEnumerator;
 - (unint64_t)absolutePageIndex;
 - (unint64_t)relativePageIndexInParent;
-- (void)addBodyBoxInfo:(id)a3 insertContext:(id)a4;
-- (void)addFloatingDrawable:(id)a3 insertContext:(id)a4;
+- (void)addBodyBoxInfo:(id)info insertContext:(id)context;
+- (void)addFloatingDrawable:(id)drawable insertContext:(id)context;
 - (void)dealloc;
-- (void)setAutosizeMargin:(CGSize)a3;
-- (void)setBodyBoxInfos:(id)a3;
-- (void)setDrawablesZOrder:(id)a3;
-- (void)setFloatingDrawableStorage:(id)a3;
-- (void)setGeometry:(id)a3;
-- (void)setOwningAttachment:(id)a3;
-- (void)setParentInfo:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 context:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 context:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)setAutosizeMargin:(CGSize)margin;
+- (void)setBodyBoxInfos:(id)infos;
+- (void)setDrawablesZOrder:(id)order;
+- (void)setFloatingDrawableStorage:(id)storage;
+- (void)setGeometry:(id)geometry;
+- (void)setOwningAttachment:(id)attachment;
+- (void)setParentInfo:(id)info;
+- (void)wasAddedToDocumentRoot:(id)root context:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root context:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation THModelPageInfo
@@ -37,52 +37,52 @@
   return result;
 }
 
-- (void)setAutosizeMargin:(CGSize)a3
+- (void)setAutosizeMargin:(CGSize)margin
 {
-  height = a3.height;
-  width = a3.width;
+  height = margin.height;
+  width = margin.width;
   [(THModelPageInfo *)self willModify];
   self->mAutosizeMargin.width = width;
   self->mAutosizeMargin.height = height;
 }
 
-- (void)setBodyBoxInfos:(id)a3
+- (void)setBodyBoxInfos:(id)infos
 {
   [(THModelPageInfo *)self willModify];
-  v5 = a3;
+  infosCopy = infos;
 
-  self->mBodyBoxInfos = a3;
+  self->mBodyBoxInfos = infos;
 }
 
-- (void)setDrawablesZOrder:(id)a3
+- (void)setDrawablesZOrder:(id)order
 {
   [(THModelPageInfo *)self willModify];
-  v5 = a3;
+  orderCopy = order;
 
-  self->mDrawablesZOrder = a3;
+  self->mDrawablesZOrder = order;
 }
 
-- (void)setFloatingDrawableStorage:(id)a3
+- (void)setFloatingDrawableStorage:(id)storage
 {
   [(THModelPageInfo *)self willModify];
-  v5 = a3;
+  storageCopy = storage;
 
-  self->mFloatingDrawableStorage = a3;
+  self->mFloatingDrawableStorage = storage;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   [(THModelPageInfo *)self willModify];
-  v5 = a3;
+  geometryCopy = geometry;
 
-  self->mGeometry = a3;
+  self->mGeometry = geometry;
 }
 
-- (THModelPageInfo)initWithContext:(id)a3
+- (THModelPageInfo)initWithContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = THModelPageInfo;
-  v3 = [(THModelPageInfo *)&v5 initWithContext:a3];
+  v3 = [(THModelPageInfo *)&v5 initWithContext:context];
   if (v3)
   {
     [(THModelPageInfo *)v3 setFloatingDrawableStorage:[[THDrawableStorage alloc] initWithContext:[(THModelPageInfo *)v3 context]]];
@@ -137,23 +137,23 @@
 
 - (NSArray)floatingDrawables
 {
-  v2 = [(THModelPageInfo *)self floatingDrawableStorage];
+  floatingDrawableStorage = [(THModelPageInfo *)self floatingDrawableStorage];
 
-  return [(THDrawableStorage *)v2 drawables];
+  return [(THDrawableStorage *)floatingDrawableStorage drawables];
 }
 
 - (NSArray)modelBodyInfos
 {
-  v2 = [(THModelPageInfo *)self bodyBoxInfos];
+  bodyBoxInfos = [(THModelPageInfo *)self bodyBoxInfos];
 
-  return [NSArray arrayWithArray:v2];
+  return [NSArray arrayWithArray:bodyBoxInfos];
 }
 
 - (THWPStorage)bodyStorage
 {
-  v2 = [(THModelPageInfo *)self parentContentNodeBody];
+  parentContentNodeBody = [(THModelPageInfo *)self parentContentNodeBody];
 
-  return [(THModelContentNodeBody *)v2 bodyStorage];
+  return [(THModelContentNodeBody *)parentContentNodeBody bodyStorage];
 }
 
 - (_NSRange)bodyStorageRange
@@ -178,96 +178,96 @@
 
 - (unint64_t)relativePageIndexInParent
 {
-  v3 = [(THModelPageInfo *)self parentContentNodeBody];
+  parentContentNodeBody = [(THModelPageInfo *)self parentContentNodeBody];
 
-  return [(THModelContentNodeBody *)v3 relativeIndexOfPageInfo:self];
+  return [(THModelContentNodeBody *)parentContentNodeBody relativeIndexOfPageInfo:self];
 }
 
 - (unint64_t)absolutePageIndex
 {
-  v3 = [(THModelPageInfo *)self relativePageIndexInParent];
-  v4 = [(THModelPageInfo *)self parent];
+  relativePageIndexInParent = [(THModelPageInfo *)self relativePageIndexInParent];
+  parent = [(THModelPageInfo *)self parent];
 
-  return [(THModelNode *)v4 absolutePageIndexForRelativePageIndex:v3];
+  return [(THModelNode *)parent absolutePageIndexForRelativePageIndex:relativePageIndexInParent];
 }
 
-- (void)addFloatingDrawable:(id)a3 insertContext:(id)a4
+- (void)addFloatingDrawable:(id)drawable insertContext:(id)context
 {
-  [a3 setParentInfo:self];
-  v7 = [(THModelPageInfo *)self floatingDrawableStorage];
+  [drawable setParentInfo:self];
+  floatingDrawableStorage = [(THModelPageInfo *)self floatingDrawableStorage];
 
-  [(THDrawableStorage *)v7 addDrawable:a3 insertContext:a4];
+  [(THDrawableStorage *)floatingDrawableStorage addDrawable:drawable insertContext:context];
 }
 
-- (void)addBodyBoxInfo:(id)a3 insertContext:(id)a4
+- (void)addBodyBoxInfo:(id)info insertContext:(id)context
 {
-  v7 = [(THModelPageInfo *)self documentRoot];
-  if (v7)
+  documentRoot = [(THModelPageInfo *)self documentRoot];
+  if (documentRoot)
   {
-    v8 = v7;
-    [a3 willBeAddedToDocumentRoot:v7 context:a4];
-    [a3 setParentInfo:self];
-    [(NSMutableArray *)[(THModelPageInfo *)self bodyBoxInfos] addObject:a3];
+    v8 = documentRoot;
+    [info willBeAddedToDocumentRoot:documentRoot context:context];
+    [info setParentInfo:self];
+    [(NSMutableArray *)[(THModelPageInfo *)self bodyBoxInfos] addObject:info];
 
-    [a3 wasAddedToDocumentRoot:v8 context:a4];
+    [info wasAddedToDocumentRoot:v8 context:context];
   }
 
   else
   {
-    [a3 setParentInfo:self];
-    v9 = [(THModelPageInfo *)self bodyBoxInfos];
+    [info setParentInfo:self];
+    bodyBoxInfos = [(THModelPageInfo *)self bodyBoxInfos];
 
-    [(NSMutableArray *)v9 addObject:a3];
+    [(NSMutableArray *)bodyBoxInfos addObject:info];
   }
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 context:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root context:(id)context
 {
-  [(THDrawableStorage *)[(THModelPageInfo *)self floatingDrawableStorage] willBeAddedToDocumentRoot:a3 context:a4];
+  [(THDrawableStorage *)[(THModelPageInfo *)self floatingDrawableStorage] willBeAddedToDocumentRoot:root context:context];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_3B140;
   v7[3] = &unk_45B930;
-  v7[4] = a3;
-  v7[5] = a4;
+  v7[4] = root;
+  v7[5] = context;
   [(NSMutableArray *)[(THModelPageInfo *)self bodyBoxInfos] enumerateObjectsUsingBlock:v7];
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 context:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root context:(id)context
 {
-  [(THDrawableStorage *)[(THModelPageInfo *)self floatingDrawableStorage] wasAddedToDocumentRoot:a3 context:a4];
+  [(THDrawableStorage *)[(THModelPageInfo *)self floatingDrawableStorage] wasAddedToDocumentRoot:root context:context];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_3B1EC;
   v7[3] = &unk_45B930;
-  v7[4] = a3;
-  v7[5] = a4;
+  v7[4] = root;
+  v7[5] = context;
   [(NSMutableArray *)[(THModelPageInfo *)self bodyBoxInfos] enumerateObjectsUsingBlock:v7];
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
-  [(THDrawableStorage *)[(THModelPageInfo *)self floatingDrawableStorage] willBeRemovedFromDocumentRoot:a3];
+  [(THDrawableStorage *)[(THModelPageInfo *)self floatingDrawableStorage] willBeRemovedFromDocumentRoot:root];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_3B288;
   v5[3] = &unk_45B958;
-  v5[4] = a3;
+  v5[4] = root;
   [(NSMutableArray *)[(THModelPageInfo *)self bodyBoxInfos] enumerateObjectsUsingBlock:v5];
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
-  [(THDrawableStorage *)[(THModelPageInfo *)self floatingDrawableStorage] wasRemovedFromDocumentRoot:a3];
+  [(THDrawableStorage *)[(THModelPageInfo *)self floatingDrawableStorage] wasRemovedFromDocumentRoot:root];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_3B324;
   v5[3] = &unk_45B958;
-  v5[4] = a3;
+  v5[4] = root;
   [(NSMutableArray *)[(THModelPageInfo *)self bodyBoxInfos] enumerateObjectsUsingBlock:v5];
 }
 
-- (void)setOwningAttachment:(id)a3
+- (void)setOwningAttachment:(id)attachment
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [NSString stringWithUTF8String:"[THModelPageInfo setOwningAttachment:]"];
@@ -276,7 +276,7 @@
   [v3 handleFailureInFunction:v4 file:v5 lineNumber:193 description:@"Can't set owning attachment on page info. It's a page."];
 }
 
-- (void)setParentInfo:(id)a3
+- (void)setParentInfo:(id)info
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [NSString stringWithUTF8String:"[THModelPageInfo setParentInfo:]"];
@@ -287,16 +287,16 @@
 
 - (id)childEnumerator
 {
-  v2 = [(THModelPageInfo *)self childInfos];
+  childInfos = [(THModelPageInfo *)self childInfos];
 
-  return [v2 objectEnumerator];
+  return [childInfos objectEnumerator];
 }
 
 - (BOOL)isAnchoredToText
 {
-  v2 = [(THModelPageInfo *)self owningAttachment];
+  owningAttachment = [(THModelPageInfo *)self owningAttachment];
 
-  return [(TSDOwningAttachment *)v2 isAnchored];
+  return [(TSDOwningAttachment *)owningAttachment isAnchored];
 }
 
 - (BOOL)isInlineWithText

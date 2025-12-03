@@ -1,33 +1,33 @@
 @interface NSPPrivacyProxyTransparencyTokenEntry
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTokenKeys:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTokenKeys:(id)keys;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyTransparencyTokenEntry
 
-- (void)addTokenKeys:(id)a3
+- (void)addTokenKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   tokenKeys = self->_tokenKeys;
-  v8 = v4;
+  v8 = keysCopy;
   if (!tokenKeys)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_tokenKeys;
     self->_tokenKeys = v6;
 
-    v4 = v8;
+    keysCopy = v8;
     tokenKeys = self->_tokenKeys;
   }
 
-  [(NSMutableArray *)tokenKeys addObject:v4];
+  [(NSMutableArray *)tokenKeys addObject:keysCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyTransparencyTokenEntry;
   v4 = [(NSPPrivacyProxyTransparencyTokenEntry *)&v8 description];
-  v5 = [(NSPPrivacyProxyTransparencyTokenEntry *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyTransparencyTokenEntry *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,17 +45,17 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_configurationDeliveryStart];
-  [v3 setObject:v4 forKey:@"configurationDeliveryStart"];
+  [dictionary setObject:v4 forKey:@"configurationDeliveryStart"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_configurationDeliveryEnd];
-  [v3 setObject:v5 forKey:@"configurationDeliveryEnd"];
+  [dictionary setObject:v5 forKey:@"configurationDeliveryEnd"];
 
   issuerName = self->_issuerName;
   if (issuerName)
   {
-    [v3 setObject:issuerName forKey:@"issuerName"];
+    [dictionary setObject:issuerName forKey:@"issuerName"];
   }
 
   if ([(NSMutableArray *)self->_tokenKeys count])
@@ -80,8 +80,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -90,18 +90,18 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"tokenKeys"];
+    [dictionary setObject:v7 forKey:@"tokenKeys"];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   configurationDeliveryStart = self->_configurationDeliveryStart;
   PBDataWriterWriteUint64Field();
   configurationDeliveryEnd = self->_configurationDeliveryEnd;
@@ -147,20 +147,20 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[2] = self->_configurationDeliveryStart;
-  v4[1] = self->_configurationDeliveryEnd;
-  v9 = v4;
-  [v4 setIssuerName:self->_issuerName];
+  toCopy = to;
+  toCopy[2] = self->_configurationDeliveryStart;
+  toCopy[1] = self->_configurationDeliveryEnd;
+  v9 = toCopy;
+  [toCopy setIssuerName:self->_issuerName];
   if ([(NSPPrivacyProxyTransparencyTokenEntry *)self tokenKeysCount])
   {
     [v9 clearTokenKeys];
-    v5 = [(NSPPrivacyProxyTransparencyTokenEntry *)self tokenKeysCount];
-    if (v5)
+    tokenKeysCount = [(NSPPrivacyProxyTransparencyTokenEntry *)self tokenKeysCount];
+    if (tokenKeysCount)
     {
-      v6 = v5;
+      v6 = tokenKeysCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NSPPrivacyProxyTransparencyTokenEntry *)self tokenKeysAtIndex:i];
@@ -170,13 +170,13 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[2] = self->_configurationDeliveryStart;
   v5[1] = self->_configurationDeliveryEnd;
-  v6 = [(NSString *)self->_issuerName copyWithZone:a3];
+  v6 = [(NSString *)self->_issuerName copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -200,7 +200,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addTokenKeys:v13];
 
         ++v12;
@@ -217,13 +217,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_configurationDeliveryStart == v4[2] && self->_configurationDeliveryEnd == v4[1] && ((issuerName = self->_issuerName, !(issuerName | v4[3])) || -[NSString isEqual:](issuerName, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_configurationDeliveryStart == equalCopy[2] && self->_configurationDeliveryEnd == equalCopy[1] && ((issuerName = self->_issuerName, !(issuerName | equalCopy[3])) || -[NSString isEqual:](issuerName, "isEqual:")))
   {
     tokenKeys = self->_tokenKeys;
-    if (tokenKeys | v4[4])
+    if (tokenKeys | equalCopy[4])
     {
       v7 = [(NSMutableArray *)tokenKeys isEqual:?];
     }
@@ -249,13 +249,13 @@
   return v3 ^ v4 ^ [(NSMutableArray *)self->_tokenKeys hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  self->_configurationDeliveryStart = *(v4 + 2);
-  self->_configurationDeliveryEnd = *(v4 + 1);
-  if (*(v4 + 3))
+  fromCopy = from;
+  self->_configurationDeliveryStart = *(fromCopy + 2);
+  self->_configurationDeliveryEnd = *(fromCopy + 1);
+  if (*(fromCopy + 3))
   {
     [(NSPPrivacyProxyTransparencyTokenEntry *)self setIssuerName:?];
   }
@@ -264,7 +264,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

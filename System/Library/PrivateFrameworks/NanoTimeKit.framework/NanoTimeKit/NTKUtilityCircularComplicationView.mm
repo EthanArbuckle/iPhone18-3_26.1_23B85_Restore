@@ -1,19 +1,19 @@
 @interface NTKUtilityCircularComplicationView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NTKUtilityCircularComplicationView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NTKUtilityCircularComplicationView)initWithFrame:(CGRect)frame;
 - (void)_updateEditingRotationAngle;
 - (void)layoutSubviews;
-- (void)setEditing:(BOOL)a3;
-- (void)setEditingRotationAngle:(double)a3;
+- (void)setEditing:(BOOL)editing;
+- (void)setEditingRotationAngle:(double)angle;
 @end
 
 @implementation NTKUtilityCircularComplicationView
 
-- (NTKUtilityCircularComplicationView)initWithFrame:(CGRect)a3
+- (NTKUtilityCircularComplicationView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = NTKUtilityCircularComplicationView;
-  v3 = [(NTKUtilityComplicationView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKUtilityComplicationView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(NTKContainerView);
@@ -38,11 +38,11 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(NTKUtilityComplicationView *)self device];
-  ___LayoutConstants_block_invoke_70(v11, v34);
+  device = [(NTKUtilityComplicationView *)self device];
+  ___LayoutConstants_block_invoke_70(device, v34);
   v12 = -v35;
-  v13 = [(NTKUtilityComplicationView *)self device];
-  ___LayoutConstants_block_invoke_70(v13, v32);
+  device2 = [(NTKUtilityComplicationView *)self device];
+  ___LayoutConstants_block_invoke_70(device2, v32);
   v37.origin.x = v4;
   v37.origin.y = v6;
   v37.size.width = v8;
@@ -53,13 +53,13 @@
   width = v38.size.width;
   height = v38.size.height;
 
-  v18 = [(NTKUtilityComplicationView *)self highlightView];
-  [v18 setFrame:{x, y, width, height}];
+  highlightView = [(NTKUtilityComplicationView *)self highlightView];
+  [highlightView setFrame:{x, y, width, height}];
 
-  v19 = [(NTKUtilityCircularComplicationView *)self bounds];
+  bounds = [(NTKUtilityCircularComplicationView *)self bounds];
   v21 = v20;
   contentView = self->_contentView;
-  MEMORY[0x2318D8E70](v19);
+  MEMORY[0x2318D8E70](bounds);
   [(NTKContainerView *)contentView setCenter:?];
   [(NTKContainerView *)self->_contentView bounds];
   v24 = v23;
@@ -72,9 +72,9 @@
   [(NTKContainerView *)v30 setTransform:&v31];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(NTKUtilityComplicationView *)self device:a3.width];
+  v3 = [(NTKUtilityComplicationView *)self device:fits.width];
   ___LayoutConstants_block_invoke_70(v3, v7);
   v4 = v8;
 
@@ -85,19 +85,19 @@
   return result;
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
   v4.receiver = self;
   v4.super_class = NTKUtilityCircularComplicationView;
-  [(NTKUtilityComplicationView *)&v4 setEditing:a3];
+  [(NTKUtilityComplicationView *)&v4 setEditing:editing];
   [(NTKUtilityCircularComplicationView *)self _updateEditingRotationAngle];
 }
 
-- (void)setEditingRotationAngle:(double)a3
+- (void)setEditingRotationAngle:(double)angle
 {
   v4.receiver = self;
   v4.super_class = NTKUtilityCircularComplicationView;
-  [(NTKUtilityComplicationView *)&v4 setEditingRotationAngle:a3];
+  [(NTKUtilityComplicationView *)&v4 setEditingRotationAngle:angle];
   [(NTKUtilityCircularComplicationView *)self _updateEditingRotationAngle];
 }
 

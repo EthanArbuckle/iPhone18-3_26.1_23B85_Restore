@@ -26,9 +26,9 @@
     v6 = [instanceFromCMSCoded__classmap objectForKey:v5];
     if (v6)
     {
-      v7 = [v6 instanceFromCMSCoded:v3];
+      needsValue = [v6 instanceFromCMSCoded:v3];
 LABEL_14:
-      v9 = v7;
+      v9 = needsValue;
       goto LABEL_15;
     }
   }
@@ -37,7 +37,7 @@ LABEL_14:
 
   if (v8)
   {
-    v7 = [MEMORY[0x277CD3D40] needsValue];
+    needsValue = [MEMORY[0x277CD3D40] needsValue];
     goto LABEL_14;
   }
 
@@ -45,7 +45,7 @@ LABEL_14:
 
   if (v10)
   {
-    v7 = [MEMORY[0x277CD3D40] notRequired];
+    needsValue = [MEMORY[0x277CD3D40] notRequired];
     goto LABEL_14;
   }
 
@@ -53,7 +53,7 @@ LABEL_14:
 
   if (v9)
   {
-    v7 = [MEMORY[0x277CD3D40] unsupported];
+    needsValue = [MEMORY[0x277CD3D40] unsupported];
     goto LABEL_14;
   }
 
@@ -66,15 +66,15 @@ LABEL_16:
 
 - (void)cmsCoded
 {
-  v1 = [a1 resolutionResultCode];
-  if ((v1 - 1) > 4)
+  resolutionResultCode = [self resolutionResultCode];
+  if ((resolutionResultCode - 1) > 4)
   {
     return &unk_2856B0BD8;
   }
 
   else
   {
-    return *(&off_278DDCF00 + v1 - 1);
+    return *(&off_278DDCF00 + resolutionResultCode - 1);
   }
 }
 

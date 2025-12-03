@@ -33,7 +33,7 @@
     _Block_object_dispose(&v21, 8);
     v13 = [v12 scopeWithPointSize:a6 scale:0 rightToLeft:a2 style:{a3, a4}];
     v14 = objc_alloc_init(getCNAvatarImageRendererClass());
-    v25[0] = a1;
+    v25[0] = self;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
     v16 = [v14 avatarImageForContacts:v15 scope:v13];
   }
@@ -41,8 +41,8 @@
   else
   {
     v17 = objc_alloc_init(getCNAvatarImageRendererClass());
-    v18 = [v17 placeholderImageProvider];
-    v16 = [v18 imageForSize:a2 scale:{a3, a4}];
+    placeholderImageProvider = [v17 placeholderImageProvider];
+    v16 = [placeholderImageProvider imageForSize:a2 scale:{a3, a4}];
   }
 
   return v16;
@@ -50,12 +50,12 @@
 
 - (uint64_t)_mapkit_isSharedLocationContact
 {
-  v1 = [a1 postalAddresses];
-  v2 = [v1 firstObject];
+  postalAddresses = [self postalAddresses];
+  firstObject = [postalAddresses firstObject];
 
-  v3 = [v2 identifier];
-  v4 = [MEMORY[0x1E695CD58] _mapkit_sharedLocationContactIdentifer];
-  v5 = [v3 isEqualToString:v4];
+  identifier = [firstObject identifier];
+  _mapkit_sharedLocationContactIdentifer = [MEMORY[0x1E695CD58] _mapkit_sharedLocationContactIdentifer];
+  v5 = [identifier isEqualToString:_mapkit_sharedLocationContactIdentifer];
 
   return v5;
 }
@@ -63,10 +63,10 @@
 - (uint64_t)_maps_isEqualToContact:()MKExtras
 {
   v4 = a3;
-  if (a1 != v4)
+  if (self != v4)
   {
-    v5 = [MEMORY[0x1E695CD58] mapsContactKeys];
-    if (![a1 areKeysAvailable:v5] || !objc_msgSend(v4, "areKeysAvailable:", v5))
+    mapsContactKeys = [MEMORY[0x1E695CD58] mapsContactKeys];
+    if (![self areKeysAvailable:mapsContactKeys] || !objc_msgSend(v4, "areKeysAvailable:", mapsContactKeys))
     {
       v49 = 0;
 LABEL_72:
@@ -74,9 +74,9 @@ LABEL_72:
       goto LABEL_73;
     }
 
-    v6 = [a1 namePrefix];
-    v7 = [v4 namePrefix];
-    if (![v6 isEqualToString:v7])
+    namePrefix = [self namePrefix];
+    namePrefix2 = [v4 namePrefix];
+    if (![namePrefix isEqualToString:namePrefix2])
     {
       v49 = 0;
 LABEL_71:
@@ -84,9 +84,9 @@ LABEL_71:
       goto LABEL_72;
     }
 
-    v8 = [a1 givenName];
-    v9 = [v4 givenName];
-    if (![v8 isEqualToString:v9])
+    givenName = [self givenName];
+    givenName2 = [v4 givenName];
+    if (![givenName isEqualToString:givenName2])
     {
       v49 = 0;
 LABEL_70:
@@ -94,9 +94,9 @@ LABEL_70:
       goto LABEL_71;
     }
 
-    v10 = [a1 middleName];
-    v11 = [v4 middleName];
-    if (![v10 isEqualToString:v11])
+    middleName = [self middleName];
+    middleName2 = [v4 middleName];
+    if (![middleName isEqualToString:middleName2])
     {
       v49 = 0;
 LABEL_69:
@@ -104,12 +104,12 @@ LABEL_69:
       goto LABEL_70;
     }
 
-    v12 = [a1 familyName];
-    v13 = [v4 familyName];
-    v92 = v12;
-    v14 = v12;
-    v15 = v13;
-    if (![v14 isEqualToString:v13])
+    familyName = [self familyName];
+    familyName2 = [v4 familyName];
+    v92 = familyName;
+    v14 = familyName;
+    v15 = familyName2;
+    if (![v14 isEqualToString:familyName2])
     {
       v49 = 0;
 LABEL_68:
@@ -117,96 +117,96 @@ LABEL_68:
       goto LABEL_69;
     }
 
-    v90 = v10;
-    v16 = [a1 nameSuffix];
+    v90 = middleName;
+    nameSuffix = [self nameSuffix];
     [v4 nameSuffix];
-    v89 = v91 = v16;
-    if (![v16 isEqualToString:?])
+    v89 = v91 = nameSuffix;
+    if (![nameSuffix isEqualToString:?])
     {
       v49 = 0;
-      v10 = v90;
+      middleName = v90;
 LABEL_67:
 
       goto LABEL_68;
     }
 
-    v17 = [a1 nickname];
-    v87 = [v4 nickname];
-    v88 = v17;
-    if (![v17 isEqualToString:?])
+    nickname = [self nickname];
+    nickname2 = [v4 nickname];
+    v88 = nickname;
+    if (![nickname isEqualToString:?])
     {
       v49 = 0;
-      v10 = v90;
+      middleName = v90;
 LABEL_66:
 
       goto LABEL_67;
     }
 
-    v18 = [a1 phoneticGivenName];
+    phoneticGivenName = [self phoneticGivenName];
     [v4 phoneticGivenName];
-    v85 = v86 = v18;
-    if (![v18 isEqualToString:?])
+    v85 = v86 = phoneticGivenName;
+    if (![phoneticGivenName isEqualToString:?])
     {
       v49 = 0;
-      v10 = v90;
+      middleName = v90;
 LABEL_65:
 
       goto LABEL_66;
     }
 
-    v19 = [a1 phoneticMiddleName];
-    v83 = [v4 phoneticMiddleName];
-    v84 = v19;
-    if (![v19 isEqualToString:?])
+    phoneticMiddleName = [self phoneticMiddleName];
+    phoneticMiddleName2 = [v4 phoneticMiddleName];
+    v84 = phoneticMiddleName;
+    if (![phoneticMiddleName isEqualToString:?])
     {
       v49 = 0;
-      v10 = v90;
+      middleName = v90;
 LABEL_64:
 
       goto LABEL_65;
     }
 
-    v20 = [a1 phoneticFamilyName];
-    v81 = [v4 phoneticFamilyName];
-    v82 = v20;
-    if (![v20 isEqualToString:?])
+    phoneticFamilyName = [self phoneticFamilyName];
+    phoneticFamilyName2 = [v4 phoneticFamilyName];
+    v82 = phoneticFamilyName;
+    if (![phoneticFamilyName isEqualToString:?])
     {
       v49 = 0;
-      v10 = v90;
+      middleName = v90;
 LABEL_63:
 
       goto LABEL_64;
     }
 
-    v21 = [a1 organizationName];
-    v69 = [v4 organizationName];
-    v70 = v21;
-    if (![v21 isEqualToString:?])
+    organizationName = [self organizationName];
+    organizationName2 = [v4 organizationName];
+    v70 = organizationName;
+    if (![organizationName isEqualToString:?])
     {
       v49 = 0;
-      v10 = v90;
+      middleName = v90;
 LABEL_62:
 
       goto LABEL_63;
     }
 
-    v22 = [a1 jobTitle];
-    v62 = [v4 jobTitle];
-    v63 = v22;
-    if (![v22 isEqualToString:?])
+    jobTitle = [self jobTitle];
+    jobTitle2 = [v4 jobTitle];
+    v63 = jobTitle;
+    if (![jobTitle isEqualToString:?])
     {
       v49 = 0;
 LABEL_61:
-      v10 = v90;
+      middleName = v90;
 
       goto LABEL_62;
     }
 
     v60 = v15;
-    v23 = [a1 phoneNumbers];
-    v24 = [v4 phoneNumbers];
-    v25 = v23;
-    v26 = v24;
+    phoneNumbers = [self phoneNumbers];
+    phoneNumbers2 = [v4 phoneNumbers];
+    v25 = phoneNumbers;
+    v26 = phoneNumbers2;
     v78 = [v25 count];
     v71 = v26;
     if (v78 != [v26 count])
@@ -253,10 +253,10 @@ LABEL_60:
 
 LABEL_20:
 
-    v28 = [a1 emailAddresses];
-    v29 = [v4 emailAddresses];
-    v30 = v28;
-    v31 = v29;
+    emailAddresses = [self emailAddresses];
+    emailAddresses2 = [v4 emailAddresses];
+    v30 = emailAddresses;
+    v31 = emailAddresses2;
     v61 = v30;
     v32 = [v30 count];
     v80 = v31;
@@ -300,10 +300,10 @@ LABEL_59:
 
 LABEL_25:
 
-    v35 = [a1 postalAddresses];
-    v36 = [v4 postalAddresses];
-    v37 = v35;
-    v38 = v36;
+    postalAddresses = [self postalAddresses];
+    postalAddresses2 = [v4 postalAddresses];
+    v37 = postalAddresses;
+    v38 = postalAddresses2;
     v77 = v37;
     v39 = [v37 count];
     v74 = v38;
@@ -314,10 +314,10 @@ LABEL_25:
       {
 LABEL_30:
 
-        v41 = [a1 urlAddresses];
-        v42 = [v4 urlAddresses];
-        v43 = v41;
-        v44 = v42;
+        urlAddresses = [self urlAddresses];
+        urlAddresses2 = [v4 urlAddresses];
+        v43 = urlAddresses;
+        v44 = urlAddresses2;
         v59 = v43;
         v45 = [v43 count];
         v56 = v44;
@@ -397,7 +397,7 @@ LABEL_73:
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   v12 = [v10 _crossPlatformUnifiedMeContactWithKeysToFetch:v11 error:0];
 
-  v13 = [v12 _mapkit_avatarImageWithSize:a6 scale:a1 rightToLeft:{a2, a3}];
+  v13 = [v12 _mapkit_avatarImageWithSize:a6 scale:self rightToLeft:{a2, a3}];
 
   return v13;
 }
@@ -405,9 +405,9 @@ LABEL_73:
 + (id)mapsContactKeys
 {
   v11[17] = *MEMORY[0x1E69E9840];
-  v0 = [MEMORY[0x1E695CE30] descriptorForRequiredKeys];
+  descriptorForRequiredKeys = [MEMORY[0x1E695CE30] descriptorForRequiredKeys];
   v1 = *MEMORY[0x1E695C410];
-  v11[0] = v0;
+  v11[0] = descriptorForRequiredKeys;
   v11[1] = v1;
   v2 = *MEMORY[0x1E695C240];
   v11[2] = *MEMORY[0x1E695C300];

@@ -1,33 +1,33 @@
 @interface VMViewController
 - (VMViewController)init;
-- (VMViewController)initWithCoder:(id)a3;
-- (VMViewController)initWithManager:(id)a3;
-- (VMViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)detailSlider:(id)a3 didChangeValue:(float)a4;
-- (void)detailSliderTrackingDidCancel:(id)a3;
+- (VMViewController)initWithCoder:(id)coder;
+- (VMViewController)initWithManager:(id)manager;
+- (VMViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)detailSlider:(id)slider didChangeValue:(float)value;
+- (void)detailSliderTrackingDidCancel:(id)cancel;
 - (void)pause;
 - (void)play;
-- (void)playbackControls:(id)a3 didRequestState:(int64_t)a4;
-- (void)playerController:(id)a3 didChangeToCurrentTime:(float)a4;
-- (void)playerController:(id)a3 didChangeToDuration:(double)a4;
-- (void)playerController:(id)a3 didChangeToStatus:(int64_t)a4;
-- (void)playerController:(id)a3 didChangeToTimeControlStatus:(int64_t)a4;
-- (void)playerController:(id)a3 didSeekToTime:(float)a4;
+- (void)playbackControls:(id)controls didRequestState:(int64_t)state;
+- (void)playerController:(id)controller didChangeToCurrentTime:(float)time;
+- (void)playerController:(id)controller didChangeToDuration:(double)duration;
+- (void)playerController:(id)controller didChangeToStatus:(int64_t)status;
+- (void)playerController:(id)controller didChangeToTimeControlStatus:(int64_t)status;
+- (void)playerController:(id)controller didSeekToTime:(float)time;
 - (void)stop;
 @end
 
 @implementation VMViewController
 
-- (VMViewController)initWithManager:(id)a3
+- (VMViewController)initWithManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = VMViewController;
   v6 = [(PHViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_manager, a3);
+    objc_storeStrong(&v6->_manager, manager);
   }
 
   return v7;
@@ -40,115 +40,115 @@
   return 0;
 }
 
-- (VMViewController)initWithCoder:(id)a3
+- (VMViewController)initWithCoder:(id)coder
 {
   [(VMViewController *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (VMViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (VMViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  [(VMViewController *)self doesNotRecognizeSelector:a2, a4];
+  [(VMViewController *)self doesNotRecognizeSelector:a2, bundle];
 
   return 0;
 }
 
-- (void)detailSliderTrackingDidCancel:(id)a3
+- (void)detailSliderTrackingDidCancel:(id)cancel
 {
-  v7 = [(VMViewController *)self playerController];
-  [v7 currentTime];
+  playerController = [(VMViewController *)self playerController];
+  [playerController currentTime];
   v5 = v4;
-  v6 = [(VMViewController *)self playerControlsView];
-  [v6 setElapsedTime:v5];
+  playerControlsView = [(VMViewController *)self playerControlsView];
+  [playerControlsView setElapsedTime:v5];
 }
 
-- (void)detailSlider:(id)a3 didChangeValue:(float)a4
+- (void)detailSlider:(id)slider didChangeValue:(float)value
 {
-  v6 = [(VMViewController *)self playerController];
-  *&v5 = a4;
-  [v6 seekToTime:v5];
+  playerController = [(VMViewController *)self playerController];
+  *&v5 = value;
+  [playerController seekToTime:v5];
 }
 
-- (void)playerController:(id)a3 didChangeToCurrentTime:(float)a4
+- (void)playerController:(id)controller didChangeToCurrentTime:(float)time
 {
-  v5 = [(VMViewController *)self playerControlsView];
-  [v5 setElapsedTime:1 animated:a4];
+  playerControlsView = [(VMViewController *)self playerControlsView];
+  [playerControlsView setElapsedTime:1 animated:time];
 }
 
-- (void)playerController:(id)a3 didChangeToDuration:(double)a4
+- (void)playerController:(id)controller didChangeToDuration:(double)duration
 {
-  v6 = a3;
-  v7 = [(VMViewController *)self playerControlsView];
-  v8 = [v7 timelineSlider];
-  [v8 setDuration:a4];
+  controllerCopy = controller;
+  playerControlsView = [(VMViewController *)self playerControlsView];
+  timelineSlider = [playerControlsView timelineSlider];
+  [timelineSlider setDuration:duration];
 
-  v9 = [v6 status];
-  if (v9 == 1)
+  status = [controllerCopy status];
+  if (status == 1)
   {
-    v10 = [(VMViewController *)self playerControlsView];
-    [v10 setEnabled:1];
+    playerControlsView2 = [(VMViewController *)self playerControlsView];
+    [playerControlsView2 setEnabled:1];
   }
 }
 
-- (void)playerController:(id)a3 didChangeToStatus:(int64_t)a4
+- (void)playerController:(id)controller didChangeToStatus:(int64_t)status
 {
-  v6 = a3;
-  if (a4)
+  controllerCopy = controller;
+  if (status)
   {
-    if (a4 != 1)
+    if (status != 1)
     {
       goto LABEL_6;
     }
 
-    v12 = v6;
-    [v6 duration];
+    v12 = controllerCopy;
+    [controllerCopy duration];
     v8 = v7;
-    v9 = [(VMViewController *)self playerControlsView];
-    [v9 setDuration:v8];
+    playerControlsView = [(VMViewController *)self playerControlsView];
+    [playerControlsView setDuration:v8];
 
-    v10 = [(VMViewController *)self playerControlsView];
-    [v10 setElapsedTime:0.0];
+    playerControlsView2 = [(VMViewController *)self playerControlsView];
+    [playerControlsView2 setElapsedTime:0.0];
 
-    a4 = 1;
+    status = 1;
   }
 
   else
   {
-    v12 = v6;
+    v12 = controllerCopy;
   }
 
-  v11 = [(VMViewController *)self playerControlsView];
-  [v11 setEnabled:a4];
+  playerControlsView3 = [(VMViewController *)self playerControlsView];
+  [playerControlsView3 setEnabled:status];
 
-  v6 = v12;
+  controllerCopy = v12;
 LABEL_6:
 }
 
-- (void)playerController:(id)a3 didChangeToTimeControlStatus:(int64_t)a4
+- (void)playerController:(id)controller didChangeToTimeControlStatus:(int64_t)status
 {
-  v6 = a3;
-  if (a4 <= 2)
+  controllerCopy = controller;
+  if (status <= 2)
   {
-    v7 = qword_100078D20[a4];
-    v9 = v6;
-    v8 = [(VMViewController *)self playerControlsView];
-    [v8 setState:v7 animated:1];
+    v7 = qword_100078D20[status];
+    v9 = controllerCopy;
+    playerControlsView = [(VMViewController *)self playerControlsView];
+    [playerControlsView setState:v7 animated:1];
 
-    v6 = v9;
+    controllerCopy = v9;
   }
 }
 
-- (void)playerController:(id)a3 didSeekToTime:(float)a4
+- (void)playerController:(id)controller didSeekToTime:(float)time
 {
-  v5 = [(VMViewController *)self playerControlsView];
-  [v5 setElapsedTime:1 animated:a4];
+  playerControlsView = [(VMViewController *)self playerControlsView];
+  [playerControlsView setElapsedTime:1 animated:time];
 }
 
-- (void)playbackControls:(id)a3 didRequestState:(int64_t)a4
+- (void)playbackControls:(id)controls didRequestState:(int64_t)state
 {
-  v6 = a3;
-  switch(a4)
+  controlsCopy = controls;
+  switch(state)
   {
     case 2:
       [(VMViewController *)self pause];
@@ -161,25 +161,25 @@ LABEL_6:
       break;
   }
 
-  [v6 setState:a4];
+  [controlsCopy setState:state];
 }
 
 - (void)pause
 {
-  v2 = [(VMViewController *)self playerController];
-  [v2 pause];
+  playerController = [(VMViewController *)self playerController];
+  [playerController pause];
 }
 
 - (void)play
 {
-  v2 = [(VMViewController *)self playerController];
-  [v2 play];
+  playerController = [(VMViewController *)self playerController];
+  [playerController play];
 }
 
 - (void)stop
 {
-  v2 = [(VMViewController *)self playerController];
-  [v2 stop];
+  playerController = [(VMViewController *)self playerController];
+  [playerController stop];
 }
 
 @end

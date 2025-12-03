@@ -1,47 +1,47 @@
 @interface CNUnifiedContacts
-+ (BOOL)canUnifyLabel:(id)a3 withLabel:(id)a4 forProperty:(id)a5;
-+ (BOOL)doesMultiValue:(id)a3 needLabeledValue:(id)a4 fromMultiValue:(id)a5 forProperty:(id)a6;
-+ (BOOL)shouldIncludeLabeledValue:(id)a3 fromSource:(id)a4 inDestination:(id)a5 forProperty:(id)a6;
-+ (BOOL)shouldLabeledValue:(id)a3 replaceInferiorValueInMultiValue:(id)a4 forProperty:(id)a5;
-+ (id)_unifyContactsSortedByPreference:(void *)a3 options:;
-+ (id)findFirstIdentifier:(void *)a3 inMultiValue:;
-+ (id)firstNonNilValueForProperty:(id)a3 inContacts:(id)a4;
-+ (id)identifierMapForUnifiedContact:(void *)a3 backingContacts:;
-+ (id)identifierMapForUnifiedMultiValue:(void *)a3 backingMultiValues:(void *)a4 forProperty:;
++ (BOOL)canUnifyLabel:(id)label withLabel:(id)withLabel forProperty:(id)property;
++ (BOOL)doesMultiValue:(id)value needLabeledValue:(id)labeledValue fromMultiValue:(id)multiValue forProperty:(id)property;
++ (BOOL)shouldIncludeLabeledValue:(id)value fromSource:(id)source inDestination:(id)destination forProperty:(id)property;
++ (BOOL)shouldLabeledValue:(id)value replaceInferiorValueInMultiValue:(id)multiValue forProperty:(id)property;
++ (id)_unifyContactsSortedByPreference:(void *)preference options:;
++ (id)findFirstIdentifier:(void *)identifier inMultiValue:;
++ (id)firstNonNilValueForProperty:(id)property inContacts:(id)contacts;
++ (id)identifierMapForUnifiedContact:(void *)contact backingContacts:;
++ (id)identifierMapForUnifiedMultiValue:(void *)value backingMultiValues:(void *)values forProperty:;
 + (id)imageValuePropertiesByKey;
 + (id)imageValuePropertyKeys;
-+ (id)indexesOfLabeledValuesUnifiableWithLabelValuePair:(id)a3 inMultiValue:(id)a4 forProperty:(id)a5;
-+ (id)indexesOfValuesInferiorTo:(id)a3 inMultiValue:(id)a4 forProperty:(id)a5;
++ (id)indexesOfLabeledValuesUnifiableWithLabelValuePair:(id)pair inMultiValue:(id)value forProperty:(id)property;
++ (id)indexesOfValuesInferiorTo:(id)to inMultiValue:(id)value forProperty:(id)property;
 + (id)makeNonNameSingleValuePropertiesByKey;
 + (id)nonNameSingleValuePropertiesByKey;
-+ (id)sortedContacts:(id)a3 withPreferredContact:(id)a4;
-+ (id)unifiedIdentifiersForLabeledValue:(id)a3 inUnifiedMap:(id)a4 forProperty:(id)a5;
-+ (id)unifiedIdentifiersForValue:(id)a3 inUnifiedMap:(id)a4 forProperty:(id)a5;
-+ (id)unifyAvailableKeysOfContacts:(id)a3;
-+ (id)unifyMultivalues:(void *)a3 forProperty:;
-+ (id)unifyMultivalues:(void *)a3 forProperty:(void *)a4 options:;
++ (id)sortedContacts:(id)contacts withPreferredContact:(id)contact;
++ (id)unifiedIdentifiersForLabeledValue:(id)value inUnifiedMap:(id)map forProperty:(id)property;
++ (id)unifiedIdentifiersForValue:(id)value inUnifiedMap:(id)map forProperty:(id)property;
++ (id)unifyAvailableKeysOfContacts:(id)contacts;
++ (id)unifyMultivalues:(void *)multivalues forProperty:;
++ (id)unifyMultivalues:(void *)multivalues forProperty:(void *)property options:;
 + (id)wallpaperValuePropertiesByKey;
 + (id)wallpaperValuePropertyKeys;
-+ (uint64_t)countOfLabel:(void *)a3 value:(void *)a4 inMultiValue:(void *)a5 forProperty:;
-+ (uint64_t)indexOfPreferredContactForUnifying:(int)a3 includingMainStoreContacts:;
-+ (uint64_t)indexOfUnifiedIdentifier:(void *)a3 onNonUnifiedMultiValue:(void *)a4 withIdentifierMap:;
-+ (unint64_t)countOfLabelIncludingEquivalents:(id)a3 value:(id)a4 inMultiValue:(id)a5 forProperty:(id)a6;
-+ (unint64_t)countOfLabelsUnifiableWithLabel:(id)a3 valuesUnifiableWithValue:(id)a4 inMultiValue:(id)a5 forProperty:(id)a6;
-+ (unint64_t)indexOfPreferredContactForImage:(id)a3;
-+ (unint64_t)indexOfPreferredContactForWallpaper:(id)a3 prefersSharedImage:(BOOL)a4;
-+ (unint64_t)indexOfValueMostInferiorTo:(id)a3 inMultiValue:(id)a4 forProperty:(id)a5;
-+ (void)addLinkedIdentifier:(void *)a3 toLabeledValue:;
-+ (void)addLinkedLabeledValue:(id)a3 toLabeledValue:(id)a4 forProperty:(id)a5;
-+ (void)correlateIdentifiersOfUnifiedMap:(void *)a3 toIdentifiersOfMultiValueMap:(void *)a4 intoMap:(void *)a5 forProperty:;
-+ (void)identifierMapForUnifiedMultiValue:(void *)a3 backingMultiValues:(void *)a4 intoMap:(void *)a5 forProperty:;
-+ (void)replaceInferiorValueInMultiValue:(id)a3 withEntryAtIndex:(unint64_t)a4 fromMultiValue:(id)a5 forProperty:(id)a6;
-+ (void)unifyImageOfContacts:(id)a3 intoContact:(id)a4 availableKeyDescriptor:(id)a5;
-+ (void)unifyMultiValue:(id)a3 intoMultiValue:(id)a4 forProperty:(id)a5;
-+ (void)unifyMultiValuesOfContacts:(void *)a3 intoContact:(void *)a4 availableKeyDescriptor:(void *)a5 options:;
-+ (void)unifyNamesOfContacts:(id)a3 withPreferredContact:(id)a4 intoContact:(id)a5 availableKeyDescriptor:(id)a6;
-+ (void)unifyNonNameSingleValuesOfContacts:(id)a3 withPreferredContact:(id)a4 intoContact:(id)a5 availableKeyDescriptor:(id)a6;
-+ (void)unifySingleValuesProperties:(id)a3 ofContacts:(id)a4 intoContact:(id)a5 availableKeyDescriptor:(id)a6;
-+ (void)unifyWallpaperOfContacts:(id)a3 intoContact:(id)a4 availableKeyDescriptor:(id)a5;
++ (uint64_t)countOfLabel:(void *)label value:(void *)value inMultiValue:(void *)multiValue forProperty:;
++ (uint64_t)indexOfPreferredContactForUnifying:(int)unifying includingMainStoreContacts:;
++ (uint64_t)indexOfUnifiedIdentifier:(void *)identifier onNonUnifiedMultiValue:(void *)value withIdentifierMap:;
++ (unint64_t)countOfLabelIncludingEquivalents:(id)equivalents value:(id)value inMultiValue:(id)multiValue forProperty:(id)property;
++ (unint64_t)countOfLabelsUnifiableWithLabel:(id)label valuesUnifiableWithValue:(id)value inMultiValue:(id)multiValue forProperty:(id)property;
++ (unint64_t)indexOfPreferredContactForImage:(id)image;
++ (unint64_t)indexOfPreferredContactForWallpaper:(id)wallpaper prefersSharedImage:(BOOL)image;
++ (unint64_t)indexOfValueMostInferiorTo:(id)to inMultiValue:(id)value forProperty:(id)property;
++ (void)addLinkedIdentifier:(void *)identifier toLabeledValue:;
++ (void)addLinkedLabeledValue:(id)value toLabeledValue:(id)labeledValue forProperty:(id)property;
++ (void)correlateIdentifiersOfUnifiedMap:(void *)map toIdentifiersOfMultiValueMap:(void *)valueMap intoMap:(void *)intoMap forProperty:;
++ (void)identifierMapForUnifiedMultiValue:(void *)value backingMultiValues:(void *)values intoMap:(void *)map forProperty:;
++ (void)replaceInferiorValueInMultiValue:(id)value withEntryAtIndex:(unint64_t)index fromMultiValue:(id)multiValue forProperty:(id)property;
++ (void)unifyImageOfContacts:(id)contacts intoContact:(id)contact availableKeyDescriptor:(id)descriptor;
++ (void)unifyMultiValue:(id)value intoMultiValue:(id)multiValue forProperty:(id)property;
++ (void)unifyMultiValuesOfContacts:(void *)contacts intoContact:(void *)contact availableKeyDescriptor:(void *)descriptor options:;
++ (void)unifyNamesOfContacts:(id)contacts withPreferredContact:(id)contact intoContact:(id)intoContact availableKeyDescriptor:(id)descriptor;
++ (void)unifyNonNameSingleValuesOfContacts:(id)contacts withPreferredContact:(id)contact intoContact:(id)intoContact availableKeyDescriptor:(id)descriptor;
++ (void)unifySingleValuesProperties:(id)properties ofContacts:(id)contacts intoContact:(id)contact availableKeyDescriptor:(id)descriptor;
++ (void)unifyWallpaperOfContacts:(id)contacts intoContact:(id)contact availableKeyDescriptor:(id)descriptor;
 @end
 
 @implementation CNUnifiedContacts
@@ -52,7 +52,7 @@
   block[1] = 3221225472;
   block[2] = __54__CNUnifiedContacts_nonNameSingleValuePropertiesByKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (nonNameSingleValuePropertiesByKey_cn_once_token_4 != -1)
   {
     dispatch_once(&nonNameSingleValuePropertiesByKey_cn_once_token_4, block);
@@ -96,9 +96,9 @@ void __54__CNUnifiedContacts_nonNameSingleValuePropertiesByKey__block_invoke(uin
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   [v3 removeObjectsInArray:v12];
 
-  v13 = [a1 imageValuePropertiesByKey];
-  v14 = [v13 allValues];
-  [v3 removeObjectsInArray:v14];
+  imageValuePropertiesByKey = [self imageValuePropertiesByKey];
+  allValues = [imageValuePropertiesByKey allValues];
+  [v3 removeObjectsInArray:allValues];
 
   v15 = [v3 _cn_indexBy:&__block_literal_global_54];
 
@@ -146,7 +146,7 @@ void __43__CNUnifiedContacts_imageValuePropertyKeys__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __43__CNUnifiedContacts_imageValuePropertyKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (imageValuePropertyKeys_cn_once_token_2 != -1)
   {
     dispatch_once(&imageValuePropertyKeys_cn_once_token_2, block);
@@ -175,7 +175,7 @@ void __43__CNUnifiedContacts_imageValuePropertyKeys__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __47__CNUnifiedContacts_wallpaperValuePropertyKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (wallpaperValuePropertyKeys_cn_once_token_3 != -1)
   {
     dispatch_once(&wallpaperValuePropertyKeys_cn_once_token_3, block);
@@ -222,11 +222,11 @@ void __50__CNUnifiedContacts_wallpaperValuePropertiesByKey__block_invoke()
   wallpaperValuePropertiesByKey_cn_once_object_1 = v5;
 }
 
-+ (uint64_t)indexOfPreferredContactForUnifying:(int)a3 includingMainStoreContacts:
++ (uint64_t)indexOfPreferredContactForUnifying:(int)unifying includingMainStoreContacts:
 {
   v4 = a2;
   objc_opt_self();
-  if (!a3 || (v5 = [v4 _cn_indexOfFirstObjectPassingTest:&__block_literal_global_43], v5 == 0x7FFFFFFFFFFFFFFFLL))
+  if (!unifying || (v5 = [v4 _cn_indexOfFirstObjectPassingTest:&__block_literal_global_43], v5 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v6 = [v4 _cn_indexOfFirstObjectPassingTest:&__block_literal_global_32];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
@@ -243,32 +243,32 @@ void __50__CNUnifiedContacts_wallpaperValuePropertiesByKey__block_invoke()
   return v5;
 }
 
-+ (id)_unifyContactsSortedByPreference:(void *)a3 options:
++ (id)_unifyContactsSortedByPreference:(void *)preference options:
 {
   v4 = a2;
-  v5 = a3;
+  preferenceCopy = preference;
   v6 = objc_opt_self();
   if ((*(*MEMORY[0x1E6996530] + 16))())
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
   else
   {
     v8 = [v4 count];
-    v7 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     if (v8 != 1)
     {
       v9 = [v6 unifyAvailableKeysOfContacts:v4];
-      if ([v5 shouldIncludeMainStoreContacts] && (objc_msgSend(v7, "linkIdentifier"), (v10 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v7, "identifier"), (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+      if ([preferenceCopy shouldIncludeMainStoreContacts] && (objc_msgSend(firstObject, "linkIdentifier"), (v10 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(firstObject, "identifier"), (v10 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v11 = v10;
         v12 = [(CNContact *)[CNMutableContact alloc] initWithIdentifier:v10 availableKeyDescriptor:v9];
-        [v6 unifyNamesOfContacts:v4 withPreferredContact:v7 intoContact:v12 availableKeyDescriptor:v9];
-        [v6 unifyNonNameSingleValuesOfContacts:v4 withPreferredContact:v7 intoContact:v12 availableKeyDescriptor:v9];
+        [v6 unifyNamesOfContacts:v4 withPreferredContact:firstObject intoContact:v12 availableKeyDescriptor:v9];
+        [v6 unifyNonNameSingleValuesOfContacts:v4 withPreferredContact:firstObject intoContact:v12 availableKeyDescriptor:v9];
         [v6 unifyImageOfContacts:v4 intoContact:v12 availableKeyDescriptor:v9];
         [v6 unifyWallpaperOfContacts:v4 intoContact:v12 availableKeyDescriptor:v9];
-        [(CNUnifiedContacts *)v6 unifyMultiValuesOfContacts:v4 intoContact:v12 availableKeyDescriptor:v9 options:v5];
+        [(CNUnifiedContacts *)v6 unifyMultiValuesOfContacts:v4 intoContact:v12 availableKeyDescriptor:v9 options:preferenceCopy];
         [(CNMutableContact *)v12 setLinkedContacts:v4];
       }
 
@@ -277,61 +277,61 @@ void __50__CNUnifiedContacts_wallpaperValuePropertiesByKey__block_invoke()
         v12 = 0;
       }
 
-      v7 = v12;
+      firstObject = v12;
     }
   }
 
-  return v7;
+  return firstObject;
 }
 
-+ (id)unifyMultivalues:(void *)a3 forProperty:
++ (id)unifyMultivalues:(void *)multivalues forProperty:
 {
-  v4 = a3;
+  multivaluesCopy = multivalues;
   v5 = a2;
   v6 = objc_opt_self();
   v7 = +[CNContactUnificationOptions sharedInstance];
-  v8 = [(CNUnifiedContacts *)v6 unifyMultivalues:v5 forProperty:v4 options:v7];
+  v8 = [(CNUnifiedContacts *)v6 unifyMultivalues:v5 forProperty:multivaluesCopy options:v7];
 
   return v8;
 }
 
-+ (id)unifyMultivalues:(void *)a3 forProperty:(void *)a4 options:
++ (id)unifyMultivalues:(void *)multivalues forProperty:(void *)property options:
 {
   v29 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  multivaluesCopy = multivalues;
+  propertyCopy = property;
   v9 = objc_opt_self();
   v10 = [v6 _cn_filter:*MEMORY[0x1E6996538]];
   if ([v10 count])
   {
     if ([v10 count] == 1)
     {
-      v11 = [v10 firstObject];
+      firstObject = [v10 firstObject];
 LABEL_4:
-      v12 = v11;
+      v12 = firstObject;
       goto LABEL_17;
     }
 
-    v13 = [v8 labeledValueUnificationThreshold];
-    if (v13 != 0x7FFFFFFFFFFFFFFFLL)
+    labeledValueUnificationThreshold = [propertyCopy labeledValueUnificationThreshold];
+    if (labeledValueUnificationThreshold != 0x7FFFFFFFFFFFFFFFLL)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __58__CNUnifiedContacts_unifyMultivalues_forProperty_options___block_invoke;
       aBlock[3] = &__block_descriptor_40_e17_B16__0__NSArray_8l;
-      aBlock[4] = v13;
+      aBlock[4] = labeledValueUnificationThreshold;
       v14 = _Block_copy(aBlock);
       v15 = [v10 _cn_any:v14];
 
       if (v15)
       {
-        v11 = [v10 _cn_flatten];
+        firstObject = [v10 _cn_flatten];
         goto LABEL_4;
       }
     }
 
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -351,7 +351,7 @@ LABEL_4:
             objc_enumerationMutation(v17);
           }
 
-          [v9 unifyMultiValue:*(*(&v23 + 1) + 8 * i) intoMultiValue:v16 forProperty:{v7, v23}];
+          [v9 unifyMultiValue:*(*(&v23 + 1) + 8 * i) intoMultiValue:array forProperty:{multivaluesCopy, v23}];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -360,7 +360,7 @@ LABEL_4:
       while (v19);
     }
 
-    v12 = [v16 copy];
+    v12 = [array copy];
   }
 
   else
@@ -373,13 +373,13 @@ LABEL_17:
   return v12;
 }
 
-+ (id)identifierMapForUnifiedContact:(void *)a3 backingContacts:
++ (id)identifierMapForUnifiedContact:(void *)contact backingContacts:
 {
   v26 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  v20 = a3;
+  contactCopy = contact;
   v5 = objc_opt_self();
-  v19 = [MEMORY[0x1E6996780] multiDictionary];
+  multiDictionary = [MEMORY[0x1E6996780] multiDictionary];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -405,13 +405,13 @@ LABEL_17:
 
         if (v13)
         {
-          v14 = [v11 valueForKeyTransform];
-          v15 = (v14)[2](v14, v4);
+          valueForKeyTransform = [v11 valueForKeyTransform];
+          v15 = (valueForKeyTransform)[2](valueForKeyTransform, v4);
 
-          v16 = [v11 valueForKeyTransform];
-          v17 = [v20 _cn_map:v16];
+          valueForKeyTransform2 = [v11 valueForKeyTransform];
+          v17 = [contactCopy _cn_map:valueForKeyTransform2];
 
-          [(CNUnifiedContacts *)v5 identifierMapForUnifiedMultiValue:v15 backingMultiValues:v17 intoMap:v19 forProperty:v11];
+          [(CNUnifiedContacts *)v5 identifierMapForUnifiedMultiValue:v15 backingMultiValues:v17 intoMap:multiDictionary forProperty:v11];
         }
       }
 
@@ -421,50 +421,50 @@ LABEL_17:
     while (v8);
   }
 
-  return v19;
+  return multiDictionary;
 }
 
-+ (id)identifierMapForUnifiedMultiValue:(void *)a3 backingMultiValues:(void *)a4 forProperty:
++ (id)identifierMapForUnifiedMultiValue:(void *)value backingMultiValues:(void *)values forProperty:
 {
-  v6 = a4;
-  v7 = a3;
+  valuesCopy = values;
+  valueCopy = value;
   v8 = a2;
   v9 = objc_opt_self();
-  v10 = [MEMORY[0x1E6996780] multiDictionary];
-  [(CNUnifiedContacts *)v9 identifierMapForUnifiedMultiValue:v8 backingMultiValues:v7 intoMap:v10 forProperty:v6];
+  multiDictionary = [MEMORY[0x1E6996780] multiDictionary];
+  [(CNUnifiedContacts *)v9 identifierMapForUnifiedMultiValue:v8 backingMultiValues:valueCopy intoMap:multiDictionary forProperty:valuesCopy];
 
-  return v10;
+  return multiDictionary;
 }
 
-+ (uint64_t)indexOfUnifiedIdentifier:(void *)a3 onNonUnifiedMultiValue:(void *)a4 withIdentifierMap:
++ (uint64_t)indexOfUnifiedIdentifier:(void *)identifier onNonUnifiedMultiValue:(void *)value withIdentifierMap:
 {
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  valueCopy = value;
   v9 = objc_opt_self();
-  v10 = [v8 objectsForKey:v6];
+  v10 = [valueCopy objectsForKey:v6];
 
-  v11 = [(CNUnifiedContacts *)v9 findFirstIdentifier:v10 inMultiValue:v7];
+  v11 = [(CNUnifiedContacts *)v9 findFirstIdentifier:v10 inMultiValue:identifierCopy];
   if (!v11)
   {
     v11 = v6;
   }
 
   v12 = [CNLabeledValue testMatchingIdentifier:v11];
-  v13 = [v7 indexOfObjectPassingTest:v12];
+  v13 = [identifierCopy indexOfObjectPassingTest:v12];
 
   return v13;
 }
 
-+ (void)addLinkedIdentifier:(void *)a3 toLabeledValue:
++ (void)addLinkedIdentifier:(void *)identifier toLabeledValue:
 {
   v7 = a2;
-  v4 = a3;
+  identifierCopy = identifier;
   objc_opt_self();
   if (v7)
   {
-    v5 = [v4 linkedIdentifiers];
-    v6 = [v5 mutableCopy];
+    linkedIdentifiers = [identifierCopy linkedIdentifiers];
+    v6 = [linkedIdentifiers mutableCopy];
 
     if (!v6)
     {
@@ -472,16 +472,16 @@ LABEL_17:
     }
 
     [v6 addObject:v7];
-    [v4 setLinkedIdentifiers:v6];
+    [identifierCopy setLinkedIdentifiers:v6];
   }
 }
 
-+ (unint64_t)indexOfPreferredContactForWallpaper:(id)a3 prefersSharedImage:(BOOL)a4
++ (unint64_t)indexOfPreferredContactForWallpaper:(id)wallpaper prefersSharedImage:(BOOL)image
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (!v4 || (v7 = [v5 indexOfObjectPassingTest:&__block_literal_global_35_0], v7 == 0x7FFFFFFFFFFFFFFFLL))
+  imageCopy = image;
+  wallpaperCopy = wallpaper;
+  v6 = wallpaperCopy;
+  if (!imageCopy || (v7 = [wallpaperCopy indexOfObjectPassingTest:&__block_literal_global_35_0], v7 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v7 = [v6 indexOfObjectPassingTest:&__block_literal_global_37];
   }
@@ -531,9 +531,9 @@ uint64_t __76__CNUnifiedContacts_indexOfPreferredContactForWallpaper_prefersShar
   return v3;
 }
 
-+ (unint64_t)indexOfPreferredContactForImage:(id)a3
++ (unint64_t)indexOfPreferredContactForImage:(id)image
 {
-  result = [a3 indexOfObjectPassingTest:&__block_literal_global_39_0];
+  result = [image indexOfObjectPassingTest:&__block_literal_global_39_0];
   if (result == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -558,13 +558,13 @@ uint64_t __53__CNUnifiedContacts_indexOfPreferredContactForImage___block_invoke(
   return v3;
 }
 
-+ (void)unifyMultiValuesOfContacts:(void *)a3 intoContact:(void *)a4 availableKeyDescriptor:(void *)a5 options:
++ (void)unifyMultiValuesOfContacts:(void *)contacts intoContact:(void *)contact availableKeyDescriptor:(void *)descriptor options:
 {
   v49 = *MEMORY[0x1E69E9840];
   v35 = a2;
-  v32 = a3;
-  v8 = a4;
-  v31 = a5;
+  contactsCopy = contacts;
+  contactCopy = contact;
+  descriptorCopy = descriptor;
   v30 = objc_opt_self();
   v43 = 0u;
   v44 = 0u;
@@ -578,7 +578,7 @@ uint64_t __53__CNUnifiedContacts_indexOfPreferredContactForImage___block_invoke(
     v11 = *v44;
     v12 = *MEMORY[0x1E6996588];
     v33 = *v44;
-    v34 = v8;
+    v34 = contactCopy;
     do
     {
       v13 = 0;
@@ -592,7 +592,7 @@ uint64_t __53__CNUnifiedContacts_indexOfPreferredContactForImage___block_invoke(
 
         v14 = *(*(&v43 + 1) + 8 * v13);
         v15 = [v14 key];
-        v16 = [v8 containsKey:v15];
+        v16 = [contactCopy containsKey:v15];
 
         if (v16)
         {
@@ -637,13 +637,13 @@ uint64_t __53__CNUnifiedContacts_indexOfPreferredContactForImage___block_invoke(
 
           if ([v17 count])
           {
-            v28 = [(CNUnifiedContacts *)v30 unifyMultivalues:v17 forProperty:v14 options:v31];
+            v28 = [(CNUnifiedContacts *)v30 unifyMultivalues:v17 forProperty:v14 options:descriptorCopy];
             v29 = [v14 key];
-            [v32 setValue:v28 forKey:v29];
+            [contactsCopy setValue:v28 forKey:v29];
           }
 
           v11 = v33;
-          v8 = v34;
+          contactCopy = v34;
           v10 = v36;
           v13 = v38;
         }
@@ -659,15 +659,15 @@ uint64_t __53__CNUnifiedContacts_indexOfPreferredContactForImage___block_invoke(
   }
 }
 
-+ (id)unifyAvailableKeysOfContacts:(id)a3
++ (id)unifyAvailableKeysOfContacts:(id)contacts
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contactsCopy = contacts;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v4 = [contactsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (!v4)
   {
     v6 = 0;
@@ -684,21 +684,21 @@ uint64_t __53__CNUnifiedContacts_indexOfPreferredContactForImage___block_invoke(
     {
       if (*v17 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(contactsCopy);
       }
 
       v10 = *(*(&v16 + 1) + 8 * i);
-      v11 = [v10 storeIdentifier];
+      storeIdentifier = [v10 storeIdentifier];
 
-      if (!v11)
+      if (!storeIdentifier)
       {
-        v12 = [v10 keyVector];
-        if (v12)
+        keyVector = [v10 keyVector];
+        if (keyVector)
         {
           if (v6)
           {
 LABEL_9:
-            if (([v12 isEqual:v6] & 1) == 0)
+            if (([keyVector isEqual:v6] & 1) == 0)
             {
               [MEMORY[0x1E695DF30] raise:v8 format:@"Cannot unify contacts with different available keys."];
             }
@@ -709,21 +709,21 @@ LABEL_9:
 
         else
         {
-          v12 = [MEMORY[0x1E695DFB0] null];
+          keyVector = [MEMORY[0x1E695DFB0] null];
           if (v6)
           {
             goto LABEL_9;
           }
         }
 
-        v6 = v12;
+        v6 = keyVector;
 LABEL_13:
 
         continue;
       }
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v5 = [contactsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   }
 
   while (v5);
@@ -743,116 +743,116 @@ LABEL_18:
   return v14;
 }
 
-+ (void)unifyNamesOfContacts:(id)a3 withPreferredContact:(id)a4 intoContact:(id)a5 availableKeyDescriptor:(id)a6
++ (void)unifyNamesOfContacts:(id)contacts withPreferredContact:(id)contact intoContact:(id)intoContact availableKeyDescriptor:(id)descriptor
 {
-  v13 = a4;
-  v7 = a5;
-  if ([v13 isKeyAvailable:@"namePrefix"])
+  contactCopy = contact;
+  intoContactCopy = intoContact;
+  if ([contactCopy isKeyAvailable:@"namePrefix"])
   {
-    v8 = [v13 namePrefix];
-    [v7 setNamePrefix:v8];
+    namePrefix = [contactCopy namePrefix];
+    [intoContactCopy setNamePrefix:namePrefix];
   }
 
-  if ([v13 isKeyAvailable:@"givenName"])
+  if ([contactCopy isKeyAvailable:@"givenName"])
   {
-    v9 = [v13 givenName];
-    [v7 setGivenName:v9];
+    givenName = [contactCopy givenName];
+    [intoContactCopy setGivenName:givenName];
   }
 
-  if ([v13 isKeyAvailable:@"middleName"])
+  if ([contactCopy isKeyAvailable:@"middleName"])
   {
-    v10 = [v13 middleName];
-    [v7 setMiddleName:v10];
+    middleName = [contactCopy middleName];
+    [intoContactCopy setMiddleName:middleName];
   }
 
-  if ([v13 isKeyAvailable:@"familyName"])
+  if ([contactCopy isKeyAvailable:@"familyName"])
   {
-    v11 = [v13 familyName];
-    [v7 setFamilyName:v11];
+    familyName = [contactCopy familyName];
+    [intoContactCopy setFamilyName:familyName];
   }
 
-  if ([v13 isKeyAvailable:@"nameSuffix"])
+  if ([contactCopy isKeyAvailable:@"nameSuffix"])
   {
-    v12 = [v13 nameSuffix];
-    [v7 setNameSuffix:v12];
+    nameSuffix = [contactCopy nameSuffix];
+    [intoContactCopy setNameSuffix:nameSuffix];
   }
 }
 
-+ (void)unifyNonNameSingleValuesOfContacts:(id)a3 withPreferredContact:(id)a4 intoContact:(id)a5 availableKeyDescriptor:(id)a6
++ (void)unifyNonNameSingleValuesOfContacts:(id)contacts withPreferredContact:(id)contact intoContact:(id)intoContact availableKeyDescriptor:(id)descriptor
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
-  v12 = [a1 nonNameSingleValuePropertiesByKey];
-  [a1 unifySingleValuesProperties:v12 ofContacts:v11 intoContact:v10 availableKeyDescriptor:v9];
+  descriptorCopy = descriptor;
+  intoContactCopy = intoContact;
+  contactsCopy = contacts;
+  nonNameSingleValuePropertiesByKey = [self nonNameSingleValuePropertiesByKey];
+  [self unifySingleValuesProperties:nonNameSingleValuePropertiesByKey ofContacts:contactsCopy intoContact:intoContactCopy availableKeyDescriptor:descriptorCopy];
 }
 
-+ (id)sortedContacts:(id)a3 withPreferredContact:(id)a4
++ (id)sortedContacts:(id)contacts withPreferredContact:(id)contact
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
-  [v6 removeObject:v5];
-  [v6 insertObject:v5 atIndex:0];
+  contactCopy = contact;
+  v6 = [contacts mutableCopy];
+  [v6 removeObject:contactCopy];
+  [v6 insertObject:contactCopy atIndex:0];
 
   v7 = [v6 copy];
 
   return v7;
 }
 
-+ (void)unifyWallpaperOfContacts:(id)a3 intoContact:(id)a4 availableKeyDescriptor:(id)a5
++ (void)unifyWallpaperOfContacts:(id)contacts intoContact:(id)contact availableKeyDescriptor:(id)descriptor
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 containsKey:@"sharedPhotoDisplayPreference"])
+  contactsCopy = contacts;
+  contactCopy = contact;
+  descriptorCopy = descriptor;
+  if ([descriptorCopy containsKey:@"sharedPhotoDisplayPreference"])
   {
-    v10 = [a1 wallpaperValuePropertyKeys];
-    v11 = [v9 intersectsKeyVector:v10];
+    wallpaperValuePropertyKeys = [self wallpaperValuePropertyKeys];
+    v11 = [descriptorCopy intersectsKeyVector:wallpaperValuePropertyKeys];
 
     if (v11)
     {
-      v12 = [v15 objectAtIndexedSubscript:{objc_msgSend(a1, "indexOfPreferredContactForWallpaper:prefersSharedImage:", v15, (objc_msgSend(v8, "sharedPhotoDisplayPreference") & 0xFFFFFFFFFFFFFFFDLL) == 1)}];
-      v13 = [a1 sortedContacts:v15 withPreferredContact:v12];
-      v14 = [a1 wallpaperValuePropertiesByKey];
-      [a1 unifySingleValuesProperties:v14 ofContacts:v13 intoContact:v8 availableKeyDescriptor:v9];
+      v12 = [contactsCopy objectAtIndexedSubscript:{objc_msgSend(self, "indexOfPreferredContactForWallpaper:prefersSharedImage:", contactsCopy, (objc_msgSend(contactCopy, "sharedPhotoDisplayPreference") & 0xFFFFFFFFFFFFFFFDLL) == 1)}];
+      v13 = [self sortedContacts:contactsCopy withPreferredContact:v12];
+      wallpaperValuePropertiesByKey = [self wallpaperValuePropertiesByKey];
+      [self unifySingleValuesProperties:wallpaperValuePropertiesByKey ofContacts:v13 intoContact:contactCopy availableKeyDescriptor:descriptorCopy];
     }
   }
 }
 
-+ (void)unifyImageOfContacts:(id)a3 intoContact:(id)a4 availableKeyDescriptor:(id)a5
++ (void)unifyImageOfContacts:(id)contacts intoContact:(id)contact availableKeyDescriptor:(id)descriptor
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [a1 imageValuePropertyKeys];
-  v11 = [v9 intersectsKeyVector:v10];
+  contactsCopy = contacts;
+  contactCopy = contact;
+  descriptorCopy = descriptor;
+  imageValuePropertyKeys = [self imageValuePropertyKeys];
+  v11 = [descriptorCopy intersectsKeyVector:imageValuePropertyKeys];
 
   if (v11)
   {
-    v12 = [v15 objectAtIndexedSubscript:{objc_msgSend(a1, "indexOfPreferredContactForImage:", v15)}];
-    v13 = [a1 sortedContacts:v15 withPreferredContact:v12];
-    v14 = [a1 imageValuePropertiesByKey];
-    [a1 unifySingleValuesProperties:v14 ofContacts:v13 intoContact:v8 availableKeyDescriptor:v9];
+    v12 = [contactsCopy objectAtIndexedSubscript:{objc_msgSend(self, "indexOfPreferredContactForImage:", contactsCopy)}];
+    v13 = [self sortedContacts:contactsCopy withPreferredContact:v12];
+    imageValuePropertiesByKey = [self imageValuePropertiesByKey];
+    [self unifySingleValuesProperties:imageValuePropertiesByKey ofContacts:v13 intoContact:contactCopy availableKeyDescriptor:descriptorCopy];
   }
 }
 
-+ (void)unifySingleValuesProperties:(id)a3 ofContacts:(id)a4 intoContact:(id)a5 availableKeyDescriptor:(id)a6
++ (void)unifySingleValuesProperties:(id)properties ofContacts:(id)contacts intoContact:(id)contact availableKeyDescriptor:(id)descriptor
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  propertiesCopy = properties;
+  contactsCopy = contacts;
+  contactCopy = contact;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __95__CNUnifiedContacts_unifySingleValuesProperties_ofContacts_intoContact_availableKeyDescriptor___block_invoke;
   v16[3] = &unk_1E7413400;
-  v17 = v10;
-  v18 = v11;
-  v19 = v12;
-  v20 = a1;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
-  [a6 enumeratePropertiesUsingBlock:v16];
+  v17 = propertiesCopy;
+  v18 = contactsCopy;
+  v19 = contactCopy;
+  selfCopy = self;
+  v13 = contactCopy;
+  v14 = contactsCopy;
+  v15 = propertiesCopy;
+  [descriptor enumeratePropertiesUsingBlock:v16];
 }
 
 uint64_t __95__CNUnifiedContacts_unifySingleValuesProperties_ofContacts_intoContact_availableKeyDescriptor___block_invoke(uint64_t a1, void *a2)
@@ -878,16 +878,16 @@ uint64_t __95__CNUnifiedContacts_unifySingleValuesProperties_ofContacts_intoCont
   return MEMORY[0x1EEE66BB8](v5, v6);
 }
 
-+ (id)firstNonNilValueForProperty:(id)a3 inContacts:(id)a4
++ (id)firstNonNilValueForProperty:(id)property inContacts:(id)contacts
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  propertyCopy = property;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  contactsCopy = contacts;
+  v7 = [contactsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -898,16 +898,16 @@ uint64_t __95__CNUnifiedContacts_unifySingleValuesProperties_ofContacts_intoCont
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(contactsCopy);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v5 key];
+        v12 = [propertyCopy key];
         v13 = [v11 isKeyAvailable:v12];
 
         if (v13)
         {
-          v14 = [v5 CNValueForContact:v11];
+          v14 = [propertyCopy CNValueForContact:v11];
           if (v14)
           {
             v15 = v14;
@@ -916,7 +916,7 @@ uint64_t __95__CNUnifiedContacts_unifySingleValuesProperties_ofContacts_intoCont
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [contactsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -932,22 +932,22 @@ LABEL_12:
   return v15;
 }
 
-+ (void)unifyMultiValue:(id)a3 intoMultiValue:(id)a4 forProperty:(id)a5
++ (void)unifyMultiValue:(id)value intoMultiValue:(id)multiValue forProperty:(id)property
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  multiValueCopy = multiValue;
+  propertyCopy = property;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __64__CNUnifiedContacts_unifyMultiValue_intoMultiValue_forProperty___block_invoke;
   v14[3] = &unk_1E7413498;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v18 = a1;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = valueCopy;
+  v16 = multiValueCopy;
+  v17 = propertyCopy;
+  selfCopy = self;
+  v11 = propertyCopy;
+  v12 = multiValueCopy;
+  v13 = valueCopy;
   [v13 enumerateObjectsUsingBlock:v14];
 }
 
@@ -1024,27 +1024,27 @@ uint64_t __64__CNUnifiedContacts_unifyMultiValue_intoMultiValue_forProperty___bl
   return v5;
 }
 
-+ (BOOL)shouldIncludeLabeledValue:(id)a3 fromSource:(id)a4 inDestination:(id)a5 forProperty:(id)a6
++ (BOOL)shouldIncludeLabeledValue:(id)value fromSource:(id)source inDestination:(id)destination forProperty:(id)property
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v13 value];
-  v15 = [v13 label];
+  propertyCopy = property;
+  destinationCopy = destination;
+  sourceCopy = source;
+  valueCopy = value;
+  value = [valueCopy value];
+  label = [valueCopy label];
 
-  v16 = [(CNUnifiedContacts *)a1 countOfLabel:v15 value:v14 inMultiValue:v12 forProperty:v10];
-  v17 = [a1 countOfLabelIncludingEquivalents:v15 value:v14 inMultiValue:v11 forProperty:v10];
+  v16 = [(CNUnifiedContacts *)self countOfLabel:label value:value inMultiValue:sourceCopy forProperty:propertyCopy];
+  v17 = [self countOfLabelIncludingEquivalents:label value:value inMultiValue:destinationCopy forProperty:propertyCopy];
 
   return v17 < v16;
 }
 
-+ (uint64_t)countOfLabel:(void *)a3 value:(void *)a4 inMultiValue:(void *)a5 forProperty:
++ (uint64_t)countOfLabel:(void *)label value:(void *)value inMultiValue:(void *)multiValue forProperty:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  labelCopy = label;
+  valueCopy = value;
+  multiValueCopy = multiValue;
   objc_opt_self();
   v20 = 0;
   v21 = &v20;
@@ -1056,69 +1056,69 @@ uint64_t __64__CNUnifiedContacts_unifyMultiValue_intoMultiValue_forProperty___bl
   v16[3] = &unk_1E7413510;
   v12 = v8;
   v17 = v12;
-  v13 = v9;
+  v13 = labelCopy;
   v18 = v13;
   v19 = &v20;
-  [v10 enumerateObjectsUsingBlock:v16];
+  [valueCopy enumerateObjectsUsingBlock:v16];
   v14 = v21[3];
 
   _Block_object_dispose(&v20, 8);
   return v14;
 }
 
-+ (BOOL)doesMultiValue:(id)a3 needLabeledValue:(id)a4 fromMultiValue:(id)a5 forProperty:(id)a6
++ (BOOL)doesMultiValue:(id)value needLabeledValue:(id)labeledValue fromMultiValue:(id)multiValue forProperty:(id)property
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v12 value];
-  v15 = [v12 label];
+  propertyCopy = property;
+  multiValueCopy = multiValue;
+  labeledValueCopy = labeledValue;
+  valueCopy = value;
+  value = [labeledValueCopy value];
+  label = [labeledValueCopy label];
 
-  v16 = [a1 countOfLabelsUnifiableWithLabel:v15 valuesUnifiableWithValue:v14 inMultiValue:v11 forProperty:v10];
-  v17 = [a1 countOfLabelsUnifiableWithLabel:v15 valuesUnifiableWithValue:v14 inMultiValue:v13 forProperty:v10];
+  v16 = [self countOfLabelsUnifiableWithLabel:label valuesUnifiableWithValue:value inMultiValue:multiValueCopy forProperty:propertyCopy];
+  v17 = [self countOfLabelsUnifiableWithLabel:label valuesUnifiableWithValue:value inMultiValue:valueCopy forProperty:propertyCopy];
 
   return v17 < v16;
 }
 
-+ (BOOL)shouldLabeledValue:(id)a3 replaceInferiorValueInMultiValue:(id)a4 forProperty:(id)a5
++ (BOOL)shouldLabeledValue:(id)value replaceInferiorValueInMultiValue:(id)multiValue forProperty:(id)property
 {
-  v5 = [a1 indexesOfValuesInferiorTo:a3 inMultiValue:a4 forProperty:a5];
+  v5 = [self indexesOfValuesInferiorTo:value inMultiValue:multiValue forProperty:property];
   v6 = [v5 count] != 0;
 
   return v6;
 }
 
-+ (void)addLinkedLabeledValue:(id)a3 toLabeledValue:(id)a4 forProperty:(id)a5
++ (void)addLinkedLabeledValue:(id)value toLabeledValue:(id)labeledValue forProperty:(id)property
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7 != v8)
+  valueCopy = value;
+  labeledValueCopy = labeledValue;
+  propertyCopy = property;
+  if (valueCopy != labeledValueCopy)
   {
-    v10 = [v8 linkedIdentifiers];
-    v11 = [v10 mutableCopy];
+    linkedIdentifiers = [labeledValueCopy linkedIdentifiers];
+    v11 = [linkedIdentifiers mutableCopy];
 
     if (!v11)
     {
       v11 = [MEMORY[0x1E695DFA8] set];
     }
 
-    v12 = [v7 identifier];
+    identifier = [valueCopy identifier];
 
-    if (v12)
+    if (identifier)
     {
-      v13 = [v7 identifier];
-      [v11 addObject:v13];
+      identifier2 = [valueCopy identifier];
+      [v11 addObject:identifier2];
     }
 
     else
     {
-      v13 = os_log_create("com.apple.contacts", "91450879");
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+      identifier2 = os_log_create("com.apple.contacts", "91450879");
+      if (os_log_type_enabled(identifier2, OS_LOG_TYPE_FAULT))
       {
-        [CNUnifiedContacts addLinkedLabeledValue:v7 toLabeledValue:v9 forProperty:v13];
+        [CNUnifiedContacts addLinkedLabeledValue:valueCopy toLabeledValue:propertyCopy forProperty:identifier2];
       }
     }
 
@@ -1126,8 +1126,8 @@ uint64_t __64__CNUnifiedContacts_unifyMultiValue_intoMultiValue_forProperty___bl
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v14 = [v7 linkedIdentifiers];
-    v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    linkedIdentifiers2 = [valueCopy linkedIdentifiers];
+    v15 = [linkedIdentifiers2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v15)
     {
       v16 = v15;
@@ -1139,60 +1139,60 @@ uint64_t __64__CNUnifiedContacts_unifyMultiValue_intoMultiValue_forProperty___bl
         {
           if (*v20 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(linkedIdentifiers2);
           }
 
           [v11 addObject:*(*(&v19 + 1) + 8 * v18++)];
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v16 = [linkedIdentifiers2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v16);
     }
 
-    [v7 setLinkedIdentifiers:0];
-    [v8 setLinkedIdentifiers:v11];
+    [valueCopy setLinkedIdentifiers:0];
+    [labeledValueCopy setLinkedIdentifiers:v11];
   }
 }
 
-+ (id)indexesOfLabeledValuesUnifiableWithLabelValuePair:(id)a3 inMultiValue:(id)a4 forProperty:(id)a5
++ (id)indexesOfLabeledValuesUnifiableWithLabelValuePair:(id)pair inMultiValue:(id)value forProperty:(id)property
 {
-  v7 = a3;
-  v8 = a5;
+  pairCopy = pair;
+  propertyCopy = property;
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __96__CNUnifiedContacts_indexesOfLabeledValuesUnifiableWithLabelValuePair_inMultiValue_forProperty___block_invoke;
   v19 = &unk_1E7413378;
-  v20 = v7;
-  v21 = v8;
-  v9 = v8;
-  v10 = v7;
-  v11 = a4;
-  v12 = [v11 _cn_filter:&v16];
+  v20 = pairCopy;
+  v21 = propertyCopy;
+  v9 = propertyCopy;
+  v10 = pairCopy;
+  valueCopy = value;
+  v12 = [valueCopy _cn_filter:&v16];
   v13 = [MEMORY[0x1E695DFD8] setWithArray:{v12, v16, v17, v18, v19}];
-  v14 = [v11 _cn_indicesForObjects:v13];
+  v14 = [valueCopy _cn_indicesForObjects:v13];
 
   return v14;
 }
 
-+ (id)indexesOfValuesInferiorTo:(id)a3 inMultiValue:(id)a4 forProperty:(id)a5
++ (id)indexesOfValuesInferiorTo:(id)to inMultiValue:(id)value forProperty:(id)property
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 indexesOfLabeledValuesUnifiableWithLabelValuePair:v8 inMultiValue:v9 forProperty:v10];
+  toCopy = to;
+  valueCopy = value;
+  propertyCopy = property;
+  v11 = [self indexesOfLabeledValuesUnifiableWithLabelValuePair:toCopy inMultiValue:valueCopy forProperty:propertyCopy];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __72__CNUnifiedContacts_indexesOfValuesInferiorTo_inMultiValue_forProperty___block_invoke;
   v17[3] = &unk_1E74134C0;
-  v18 = v9;
-  v19 = v10;
-  v20 = v8;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v18 = valueCopy;
+  v19 = propertyCopy;
+  v20 = toCopy;
+  v12 = toCopy;
+  v13 = propertyCopy;
+  v14 = valueCopy;
   v15 = [v11 indexesPassingTest:v17];
 
   return v15;
@@ -1210,12 +1210,12 @@ uint64_t __72__CNUnifiedContacts_indexesOfValuesInferiorTo_inMultiValue_forPrope
   return v7;
 }
 
-+ (unint64_t)indexOfValueMostInferiorTo:(id)a3 inMultiValue:(id)a4 forProperty:(id)a5
++ (unint64_t)indexOfValueMostInferiorTo:(id)to inMultiValue:(id)value forProperty:(id)property
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 indexesOfValuesInferiorTo:v8 inMultiValue:v9 forProperty:v10];
+  toCopy = to;
+  valueCopy = value;
+  propertyCopy = property;
+  v11 = [self indexesOfValuesInferiorTo:toCopy inMultiValue:valueCopy forProperty:propertyCopy];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -1225,11 +1225,11 @@ uint64_t __72__CNUnifiedContacts_indexesOfValuesInferiorTo_inMultiValue_forPrope
   v17[2] = __73__CNUnifiedContacts_indexOfValueMostInferiorTo_inMultiValue_forProperty___block_invoke;
   v17[3] = &unk_1E74134E8;
   v21 = &v22;
-  v12 = v8;
+  v12 = toCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = valueCopy;
   v19 = v13;
-  v14 = v10;
+  v14 = propertyCopy;
   v20 = v14;
   [v11 enumerateIndexesUsingBlock:v17];
   v15 = v23[3];
@@ -1260,36 +1260,36 @@ void __73__CNUnifiedContacts_indexOfValueMostInferiorTo_inMultiValue_forProperty
   }
 }
 
-+ (void)replaceInferiorValueInMultiValue:(id)a3 withEntryAtIndex:(unint64_t)a4 fromMultiValue:(id)a5 forProperty:(id)a6
++ (void)replaceInferiorValueInMultiValue:(id)value withEntryAtIndex:(unint64_t)index fromMultiValue:(id)multiValue forProperty:(id)property
 {
-  v15 = a3;
-  v10 = a6;
-  v11 = [a5 objectAtIndex:a4];
-  v12 = [v11 labelValuePair];
-  v13 = [a1 indexOfValueMostInferiorTo:v12 inMultiValue:v15 forProperty:v10];
+  valueCopy = value;
+  propertyCopy = property;
+  v11 = [multiValue objectAtIndex:index];
+  labelValuePair = [v11 labelValuePair];
+  v13 = [self indexOfValueMostInferiorTo:labelValuePair inMultiValue:valueCopy forProperty:propertyCopy];
 
   if (v13 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = [v15 objectAtIndex:v13];
-    [a1 addLinkedLabeledValue:v14 toLabeledValue:v11 forProperty:v10];
+    v14 = [valueCopy objectAtIndex:v13];
+    [self addLinkedLabeledValue:v14 toLabeledValue:v11 forProperty:propertyCopy];
 
-    [v15 replaceObjectAtIndex:v13 withObject:v11];
+    [valueCopy replaceObjectAtIndex:v13 withObject:v11];
   }
 }
 
-+ (unint64_t)countOfLabelIncludingEquivalents:(id)a3 value:(id)a4 inMultiValue:(id)a5 forProperty:(id)a6
++ (unint64_t)countOfLabelIncludingEquivalents:(id)equivalents value:(id)value inMultiValue:(id)multiValue forProperty:(id)property
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(CNUnifiedContacts *)a1 countOfLabel:v10 value:v11 inMultiValue:v12 forProperty:v13];
+  equivalentsCopy = equivalents;
+  valueCopy = value;
+  multiValueCopy = multiValue;
+  propertyCopy = property;
+  v14 = [(CNUnifiedContacts *)self countOfLabel:equivalentsCopy value:valueCopy inMultiValue:multiValueCopy forProperty:propertyCopy];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v15 = [v13 unifiableLabelsForLabel:{v10, 0}];
+  v15 = [propertyCopy unifiableLabelsForLabel:{equivalentsCopy, 0}];
   v16 = [v15 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v16)
   {
@@ -1305,7 +1305,7 @@ void __73__CNUnifiedContacts_indexOfValueMostInferiorTo_inMultiValue_forProperty
           objc_enumerationMutation(v15);
         }
 
-        v14 += [(CNUnifiedContacts *)a1 countOfLabel:v11 value:v12 inMultiValue:v13 forProperty:?];
+        v14 += [(CNUnifiedContacts *)self countOfLabel:valueCopy value:multiValueCopy inMultiValue:propertyCopy forProperty:?];
       }
 
       while (v17 != v19);
@@ -1352,35 +1352,35 @@ void __65__CNUnifiedContacts_countOfLabel_value_inMultiValue_forProperty___block
   }
 }
 
-+ (unint64_t)countOfLabelsUnifiableWithLabel:(id)a3 valuesUnifiableWithValue:(id)a4 inMultiValue:(id)a5 forProperty:(id)a6
++ (unint64_t)countOfLabelsUnifiableWithLabel:(id)label valuesUnifiableWithValue:(id)value inMultiValue:(id)multiValue forProperty:(id)property
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = [CNLabelValuePair labeledValueWithLabel:a3 value:a4];
-  v13 = [a1 indexesOfLabeledValuesUnifiableWithLabelValuePair:v12 inMultiValue:v11 forProperty:v10];
+  propertyCopy = property;
+  multiValueCopy = multiValue;
+  v12 = [CNLabelValuePair labeledValueWithLabel:label value:value];
+  v13 = [self indexesOfLabeledValuesUnifiableWithLabelValuePair:v12 inMultiValue:multiValueCopy forProperty:propertyCopy];
 
   v14 = [v13 count];
   return v14;
 }
 
-+ (void)identifierMapForUnifiedMultiValue:(void *)a3 backingMultiValues:(void *)a4 intoMap:(void *)a5 forProperty:
++ (void)identifierMapForUnifiedMultiValue:(void *)value backingMultiValues:(void *)values intoMap:(void *)map forProperty:
 {
   v29 = *MEMORY[0x1E69E9840];
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  valueCopy = value;
+  valuesCopy = values;
+  mapCopy = map;
   v12 = objc_opt_self();
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __94__CNUnifiedContacts_identifierMapForUnifiedMultiValue_backingMultiValues_intoMap_forProperty___block_invoke;
   aBlock[3] = &unk_1E7413538;
-  v13 = v11;
+  v13 = mapCopy;
   v27 = v13;
   v14 = _Block_copy(aBlock);
   v21 = v8;
   v15 = v14[2](v14, v8);
-  v16 = [v9 _cn_map:v14];
+  v16 = [valueCopy _cn_map:v14];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -1400,7 +1400,7 @@ void __65__CNUnifiedContacts_countOfLabel_value_inMultiValue_forProperty___block
           objc_enumerationMutation(v16);
         }
 
-        [(CNUnifiedContacts *)v12 correlateIdentifiersOfUnifiedMap:v15 toIdentifiersOfMultiValueMap:*(*(&v22 + 1) + 8 * v20++) intoMap:v10 forProperty:v13];
+        [(CNUnifiedContacts *)v12 correlateIdentifiersOfUnifiedMap:v15 toIdentifiersOfMultiValueMap:*(*(&v22 + 1) + 8 * v20++) intoMap:valuesCopy forProperty:v13];
       }
 
       while (v18 != v20);
@@ -1411,25 +1411,25 @@ void __65__CNUnifiedContacts_countOfLabel_value_inMultiValue_forProperty___block
   }
 }
 
-+ (void)correlateIdentifiersOfUnifiedMap:(void *)a3 toIdentifiersOfMultiValueMap:(void *)a4 intoMap:(void *)a5 forProperty:
++ (void)correlateIdentifiersOfUnifiedMap:(void *)map toIdentifiersOfMultiValueMap:(void *)valueMap intoMap:(void *)intoMap forProperty:
 {
   v8 = a2;
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  valueMapCopy = valueMap;
+  intoMapCopy = intoMap;
+  mapCopy = map;
   v12 = objc_opt_self();
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __103__CNUnifiedContacts_correlateIdentifiersOfUnifiedMap_toIdentifiersOfMultiValueMap_intoMap_forProperty___block_invoke;
   v16[3] = &unk_1E7413560;
   v17 = v8;
-  v18 = v10;
-  v19 = v9;
+  v18 = intoMapCopy;
+  v19 = valueMapCopy;
   v20 = v12;
-  v13 = v9;
-  v14 = v10;
+  v13 = valueMapCopy;
+  v14 = intoMapCopy;
   v15 = v8;
-  [v11 eachObject:v16];
+  [mapCopy eachObject:v16];
 }
 
 void __103__CNUnifiedContacts_correlateIdentifiersOfUnifiedMap_toIdentifiersOfMultiValueMap_intoMap_forProperty___block_invoke(uint64_t a1, uint64_t a2, void *a3, unint64_t a4)
@@ -1443,45 +1443,45 @@ void __103__CNUnifiedContacts_correlateIdentifiersOfUnifiedMap_toIdentifiersOfMu
   }
 }
 
-+ (id)unifiedIdentifiersForLabeledValue:(id)a3 inUnifiedMap:(id)a4 forProperty:(id)a5
++ (id)unifiedIdentifiersForLabeledValue:(id)value inUnifiedMap:(id)map forProperty:(id)property
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 label];
-  v12 = [v11 isEqual:&stru_1F094DAB0];
+  valueCopy = value;
+  propertyCopy = property;
+  mapCopy = map;
+  label = [valueCopy label];
+  v12 = [label isEqual:&stru_1F094DAB0];
 
   if (v12)
   {
-    v13 = [v8 value];
-    v14 = [a1 unifiedIdentifiersForValue:v13 inUnifiedMap:v10 forProperty:v9];
+    value = [valueCopy value];
+    _cn_flatten = [self unifiedIdentifiersForValue:value inUnifiedMap:mapCopy forProperty:propertyCopy];
   }
 
   else
   {
-    v15 = [v10 allKeys];
+    allKeys = [mapCopy allKeys];
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
     v21 = __80__CNUnifiedContacts_unifiedIdentifiersForLabeledValue_inUnifiedMap_forProperty___block_invoke;
     v22 = &unk_1E7413378;
-    v23 = v8;
-    v24 = v9;
-    v16 = [v15 _cn_filter:&v19];
+    v23 = valueCopy;
+    v24 = propertyCopy;
+    v16 = [allKeys _cn_filter:&v19];
 
-    v17 = [v10 objectsForKeys:{v16, v19, v20, v21, v22}];
+    v17 = [mapCopy objectsForKeys:{v16, v19, v20, v21, v22}];
 
-    v14 = [v17 _cn_flatten];
+    _cn_flatten = [v17 _cn_flatten];
   }
 
-  return v14;
+  return _cn_flatten;
 }
 
-+ (BOOL)canUnifyLabel:(id)a3 withLabel:(id)a4 forProperty:(id)a5
++ (BOOL)canUnifyLabel:(id)label withLabel:(id)withLabel forProperty:(id)property
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([MEMORY[0x1E69966F0] isObject:v7 equalToOther:v8])
+  labelCopy = label;
+  withLabelCopy = withLabel;
+  propertyCopy = property;
+  if ([MEMORY[0x1E69966F0] isObject:labelCopy equalToOther:withLabelCopy])
   {
 LABEL_2:
     v10 = 1;
@@ -1489,16 +1489,16 @@ LABEL_2:
   }
 
   v10 = 0;
-  if (v7 && v8)
+  if (labelCopy && withLabelCopy)
   {
-    if (([v7 isEqualToString:&stru_1F094DAB0] & 1) == 0 && (objc_msgSend(v8, "isEqualToString:", &stru_1F094DAB0) & 1) == 0)
+    if (([labelCopy isEqualToString:&stru_1F094DAB0] & 1) == 0 && (objc_msgSend(withLabelCopy, "isEqualToString:", &stru_1F094DAB0) & 1) == 0)
     {
-      v12 = [v9 unifiableLabelsForLabel:v7];
+      v12 = [propertyCopy unifiableLabelsForLabel:labelCopy];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __57__CNUnifiedContacts_canUnifyLabel_withLabel_forProperty___block_invoke;
       v13[3] = &unk_1E7412440;
-      v14 = v8;
+      v14 = withLabelCopy;
       v10 = [v12 _cn_any:v13];
 
       goto LABEL_3;
@@ -1512,20 +1512,20 @@ LABEL_3:
   return v10;
 }
 
-+ (id)unifiedIdentifiersForValue:(id)a3 inUnifiedMap:(id)a4 forProperty:(id)a5
++ (id)unifiedIdentifiersForValue:(id)value inUnifiedMap:(id)map forProperty:(id)property
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v21 = [MEMORY[0x1E695DF70] array];
+  valueCopy = value;
+  mapCopy = map;
+  propertyCopy = property;
+  array = [MEMORY[0x1E695DF70] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v8;
-  v11 = [v8 allKeys];
-  v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v10 = mapCopy;
+  allKeys = [mapCopy allKeys];
+  v12 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1536,40 +1536,40 @@ LABEL_3:
       {
         if (*v23 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allKeys);
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
-        v17 = [v16 value];
-        v18 = [v9 canUnifyValue:v17 withValue:v7];
+        value = [v16 value];
+        v18 = [propertyCopy canUnifyValue:value withValue:valueCopy];
 
         if (v18)
         {
           v19 = [v10 objectsForKey:v16];
-          [v21 addObjectsFromArray:v19];
+          [array addObjectsFromArray:v19];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v13 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v13);
   }
 
-  return v21;
+  return array;
 }
 
-+ (id)findFirstIdentifier:(void *)a3 inMultiValue:
++ (id)findFirstIdentifier:(void *)identifier inMultiValue:
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = a2;
   objc_opt_self();
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__CNUnifiedContacts_findFirstIdentifier_inMultiValue___block_invoke;
   v9[3] = &unk_1E7412440;
-  v10 = v4;
-  v6 = v4;
+  v10 = identifierCopy;
+  v6 = identifierCopy;
   v7 = [v5 _cn_firstObjectPassingTest:v9];
 
   return v7;

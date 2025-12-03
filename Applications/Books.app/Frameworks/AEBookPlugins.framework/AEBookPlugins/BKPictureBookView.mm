@@ -1,26 +1,26 @@
 @interface BKPictureBookView
-+ (CGSize)actualSizeForContentSize:(CGSize)result drawsSpine:(BOOL)a4;
-- (BKPictureBookView)initWithFrame:(CGRect)a3;
++ (CGSize)actualSizeForContentSize:(CGSize)result drawsSpine:(BOOL)spine;
+- (BKPictureBookView)initWithFrame:(CGRect)frame;
 - (CGSize)actualSize;
 - (CGSize)contentSize;
 - (CGSize)idealSinglePageSize;
 - (id)gutter;
 - (void)_updateShadowPath;
-- (void)calculateFramesAtScale:(double)a3 contentFrame:(CGRect *)a4 leftContentFrame:(CGRect *)a5 rightContentFrame:(CGRect *)a6;
+- (void)calculateFramesAtScale:(double)scale contentFrame:(CGRect *)frame leftContentFrame:(CGRect *)contentFrame rightContentFrame:(CGRect *)rightContentFrame;
 - (void)layoutSubviews;
-- (void)setContentSize:(CGSize)a3;
-- (void)setDrawsSpine:(BOOL)a3;
-- (void)setLeftContentView:(id)a3;
-- (void)setRightContentView:(id)a3;
+- (void)setContentSize:(CGSize)size;
+- (void)setDrawsSpine:(BOOL)spine;
+- (void)setLeftContentView:(id)view;
+- (void)setRightContentView:(id)view;
 @end
 
 @implementation BKPictureBookView
 
-- (BKPictureBookView)initWithFrame:(CGRect)a3
+- (BKPictureBookView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = BKPictureBookView;
-  v3 = [(BKPictureBookView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKPictureBookView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -40,12 +40,12 @@
   return v4;
 }
 
-- (void)calculateFramesAtScale:(double)a3 contentFrame:(CGRect *)a4 leftContentFrame:(CGRect *)a5 rightContentFrame:(CGRect *)a6
+- (void)calculateFramesAtScale:(double)scale contentFrame:(CGRect *)frame leftContentFrame:(CGRect *)contentFrame rightContentFrame:(CGRect *)rightContentFrame
 {
   [(BKPictureBookView *)self actualSize];
-  v12 = v11 * a3;
+  v12 = v11 * scale;
   [(BKPictureBookView *)self actualSize];
-  v41.size.height = v13 * a3;
+  v41.size.height = v13 * scale;
   v41.origin.x = 0.0;
   v41.origin.y = 0.0;
   v41.size.width = v12;
@@ -108,15 +108,15 @@
   v46.size.width = width * 0.5;
   v46.size.height = height;
   v47 = CGRectIntegral(v46);
-  a4->origin.x = v40;
-  a4->origin.y = v37;
-  a4->size.width = v38;
-  a4->size.height = v39;
-  a5->origin.x = v33;
-  a5->origin.y = v34;
-  a5->size.width = v35;
-  a5->size.height = v36;
-  *a6 = v47;
+  frame->origin.x = v40;
+  frame->origin.y = v37;
+  frame->size.width = v38;
+  frame->size.height = v39;
+  contentFrame->origin.x = v33;
+  contentFrame->origin.y = v34;
+  contentFrame->size.width = v35;
+  contentFrame->size.height = v36;
+  *rightContentFrame = v47;
 }
 
 - (void)layoutSubviews
@@ -139,25 +139,25 @@
   [(UIView *)self->_rightContentView setFrame:v13, v14];
   if ([(BKPictureBookView *)self drawsSpine])
   {
-    v6 = [(BKPictureBookView *)self gutter];
-    v7 = [v6 image];
-    [v7 size];
+    gutter = [(BKPictureBookView *)self gutter];
+    image = [gutter image];
+    [image size];
     v9 = v8;
 
     v10 = v4 * v9;
     v11 = CGRectGetMidX(v17) + v10 * -0.5;
     MinY = CGRectGetMinY(v17);
-    [v6 setFrame:{v11, MinY, v10, CGRectGetHeight(v17)}];
+    [gutter setFrame:{v11, MinY, v10, CGRectGetHeight(v17)}];
   }
 
   [(BKPictureBookView *)self _updateShadowPath];
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  if (self->_contentSize.width != a3.width || self->_contentSize.height != a3.height)
+  if (self->_contentSize.width != size.width || self->_contentSize.height != size.height)
   {
-    self->_contentSize = a3;
+    self->_contentSize = size;
     [(BKPictureBookView *)self setNeedsLayout];
   }
 }
@@ -168,46 +168,46 @@
   [(BKPictureBookView *)self contentSize];
   v5 = v4;
   v7 = v6;
-  v8 = [(BKPictureBookView *)self drawsSpine];
+  drawsSpine = [(BKPictureBookView *)self drawsSpine];
 
-  [v3 actualSizeForContentSize:v8 drawsSpine:{v5, v7}];
+  [v3 actualSizeForContentSize:drawsSpine drawsSpine:{v5, v7}];
   result.height = v10;
   result.width = v9;
   return result;
 }
 
-+ (CGSize)actualSizeForContentSize:(CGSize)result drawsSpine:(BOOL)a4
++ (CGSize)actualSizeForContentSize:(CGSize)result drawsSpine:(BOOL)spine
 {
   v4 = result.width + result.width;
   result.width = v4;
   return result;
 }
 
-- (void)setLeftContentView:(id)a3
+- (void)setLeftContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   leftContentView = self->_leftContentView;
-  if (leftContentView != v5)
+  if (leftContentView != viewCopy)
   {
-    v8 = v5;
-    v7 = [(UIView *)leftContentView superview];
+    v8 = viewCopy;
+    superview = [(UIView *)leftContentView superview];
 
-    if (!v8 || v7 == self)
+    if (!v8 || superview == self)
     {
       [(UIView *)self->_leftContentView removeFromSuperview];
-      objc_storeStrong(&self->_leftContentView, a3);
+      objc_storeStrong(&self->_leftContentView, view);
       if (!v8)
       {
 LABEL_7:
         leftContentView = [(BKPictureBookView *)self setNeedsLayout];
-        v5 = v8;
+        viewCopy = v8;
         goto LABEL_8;
       }
     }
 
     else
     {
-      objc_storeStrong(&self->_leftContentView, a3);
+      objc_storeStrong(&self->_leftContentView, view);
     }
 
     [(UIView *)self->_contentView addSubview:self->_leftContentView];
@@ -216,34 +216,34 @@ LABEL_7:
 
 LABEL_8:
 
-  _objc_release_x1(leftContentView, v5);
+  _objc_release_x1(leftContentView, viewCopy);
 }
 
-- (void)setRightContentView:(id)a3
+- (void)setRightContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   rightContentView = self->_rightContentView;
-  if (rightContentView != v5)
+  if (rightContentView != viewCopy)
   {
-    v8 = v5;
-    v7 = [(UIView *)rightContentView superview];
+    v8 = viewCopy;
+    superview = [(UIView *)rightContentView superview];
 
-    if (!v8 || v7 == self)
+    if (!v8 || superview == self)
     {
       [(UIView *)self->_rightContentView removeFromSuperview];
-      objc_storeStrong(&self->_rightContentView, a3);
+      objc_storeStrong(&self->_rightContentView, view);
       if (!v8)
       {
 LABEL_7:
         rightContentView = [(BKPictureBookView *)self setNeedsLayout];
-        v5 = v8;
+        viewCopy = v8;
         goto LABEL_8;
       }
     }
 
     else
     {
-      objc_storeStrong(&self->_rightContentView, a3);
+      objc_storeStrong(&self->_rightContentView, view);
     }
 
     [(UIView *)self->_contentView addSubview:self->_rightContentView];
@@ -252,7 +252,7 @@ LABEL_7:
 
 LABEL_8:
 
-  _objc_release_x1(rightContentView, v5);
+  _objc_release_x1(rightContentView, viewCopy);
 }
 
 - (void)_updateShadowPath
@@ -261,18 +261,18 @@ LABEL_8:
   {
     [(UIView *)self->_contentView frame];
     v3 = [UIBezierPath bezierPathWithRect:?];
-    v4 = [v3 CGPath];
-    v5 = [(BKPictureBookView *)self layer];
-    [v5 setShadowPath:v4];
+    cGPath = [v3 CGPath];
+    layer = [(BKPictureBookView *)self layer];
+    [layer setShadowPath:cGPath];
 
     [(BKPictureBookView *)self scale];
     v7 = v6 * 2.8;
-    v8 = [(BKPictureBookView *)self layer];
-    [v8 setShadowOffset:{0.0, v7}];
+    layer2 = [(BKPictureBookView *)self layer];
+    [layer2 setShadowOffset:{0.0, v7}];
 
-    v9 = [(BKPictureBookView *)self layer];
+    layer3 = [(BKPictureBookView *)self layer];
     LODWORD(v10) = 1051931443;
-    [v9 setShadowOpacity:v10];
+    [layer3 setShadowOpacity:v10];
 
     [(BKPictureBookView *)self scale];
     v12 = v11 * 8.5;
@@ -280,8 +280,8 @@ LABEL_8:
 
   else
   {
-    v13 = [(BKPictureBookView *)self layer];
-    [v13 shadowOpacity];
+    layer4 = [(BKPictureBookView *)self layer];
+    [layer4 shadowOpacity];
     v15 = v14;
 
     if (v15 <= 0.0)
@@ -289,33 +289,33 @@ LABEL_8:
       return;
     }
 
-    v16 = [(BKPictureBookView *)self layer];
-    [v16 setShadowPath:0];
+    layer5 = [(BKPictureBookView *)self layer];
+    [layer5 setShadowPath:0];
 
     height = CGSizeZero.height;
-    v18 = [(BKPictureBookView *)self layer];
-    [v18 setShadowOffset:{CGSizeZero.width, height}];
+    layer6 = [(BKPictureBookView *)self layer];
+    [layer6 setShadowOffset:{CGSizeZero.width, height}];
 
-    v19 = [(BKPictureBookView *)self layer];
-    [v19 setShadowOpacity:0.0];
+    layer7 = [(BKPictureBookView *)self layer];
+    [layer7 setShadowOpacity:0.0];
 
     v12 = 0.0;
   }
 
-  v20 = [(BKPictureBookView *)self layer];
-  [v20 setShadowRadius:v12];
+  layer8 = [(BKPictureBookView *)self layer];
+  [layer8 setShadowRadius:v12];
 }
 
-- (void)setDrawsSpine:(BOOL)a3
+- (void)setDrawsSpine:(BOOL)spine
 {
-  if (self->_drawsSpine != a3)
+  if (self->_drawsSpine != spine)
   {
-    self->_drawsSpine = a3;
-    if (a3)
+    self->_drawsSpine = spine;
+    if (spine)
     {
-      v6 = [(BKPictureBookView *)self gutter];
-      [(BKPictureBookView *)self addSubview:v6];
-      gutter = v6;
+      gutter = [(BKPictureBookView *)self gutter];
+      [(BKPictureBookView *)self addSubview:gutter];
+      gutter = gutter;
     }
 
     else

@@ -1,17 +1,17 @@
 @interface PLPersistedMemoryMetadata
-+ (BOOL)isValidPath:(id)a3;
++ (BOOL)isValidPath:(id)path;
 - (BOOL)_readMetadata;
-- (BOOL)_updateAssetsInMemory:(id)a3 relationshipName:(id)a4 persistedAssetUUIDs:(id)a5 includePendingChanges:(BOOL)a6;
-- (BOOL)_updateAssetsInMemory:(id)a3 relationshipName:(id)a4 persistedOrderedAssetUUIDs:(id)a5 includePendingChanges:(BOOL)a6;
-- (BOOL)hasAllAssetsAvailableInManagedObjectContext:(id)a3 includePendingAssetChanges:(BOOL)a4;
-- (BOOL)updateAssetsInMemory:(id)a3 includePendingAssetChanges:(BOOL)a4;
+- (BOOL)_updateAssetsInMemory:(id)memory relationshipName:(id)name persistedAssetUUIDs:(id)ds includePendingChanges:(BOOL)changes;
+- (BOOL)_updateAssetsInMemory:(id)memory relationshipName:(id)name persistedOrderedAssetUUIDs:(id)ds includePendingChanges:(BOOL)changes;
+- (BOOL)hasAllAssetsAvailableInManagedObjectContext:(id)context includePendingAssetChanges:(BOOL)changes;
+- (BOOL)updateAssetsInMemory:(id)memory includePendingAssetChanges:(BOOL)changes;
 - (PLPersistedMemoryMetadata)init;
-- (PLPersistedMemoryMetadata)initWithPLMemory:(id)a3 metadataURL:(id)a4;
-- (PLPersistedMemoryMetadata)initWithPLMemory:(id)a3 pathManager:(id)a4;
-- (PLPersistedMemoryMetadata)initWithPersistedDataAtURL:(id)a3;
+- (PLPersistedMemoryMetadata)initWithPLMemory:(id)memory metadataURL:(id)l;
+- (PLPersistedMemoryMetadata)initWithPLMemory:(id)memory pathManager:(id)manager;
+- (PLPersistedMemoryMetadata)initWithPersistedDataAtURL:(id)l;
 - (id)_metadataData;
 - (id)description;
-- (id)insertMemoryFromDataInManagedObjectContext:(id)a3;
+- (id)insertMemoryFromDataInManagedObjectContext:(id)context;
 - (void)_saveMetadata;
 - (void)removePersistedData;
 @end
@@ -21,15 +21,15 @@
 - (void)_saveMetadata
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(PLPersistedMemoryMetadata *)self _metadataData];
+  _metadataData = [(PLPersistedMemoryMetadata *)self _metadataData];
   v5 = MEMORY[0x1E69BF230];
-  v6 = [(PLPersistedMemoryMetadata *)self metadataURL];
-  [v5 persistMetadata:v4 fileURL:v6];
+  metadataURL = [(PLPersistedMemoryMetadata *)self metadataURL];
+  [v5 persistMetadata:_metadataData fileURL:metadataURL];
 
   v7 = MEMORY[0x1E69BF238];
-  v8 = [(PLPersistedMemoryMetadata *)self metadataURL];
-  v9 = [v8 path];
-  [v7 changeFileOwnerToMobileAtPath:v9 error:0];
+  metadataURL2 = [(PLPersistedMemoryMetadata *)self metadataURL];
+  path = [metadataURL2 path];
+  [v7 changeFileOwnerToMobileAtPath:path error:0];
 
   objc_autoreleasePoolPop(v3);
 }
@@ -49,62 +49,62 @@
     memory = self;
   }
 
-  v5 = [memory uuid];
+  uuid = [memory uuid];
 
-  if (v5)
+  if (uuid)
   {
-    [v3 encodeObject:v5 forKey:@"uuid"];
+    [v3 encodeObject:uuid forKey:@"uuid"];
   }
 
   if (self->_memory)
   {
-    v6 = self->_memory;
+    selfCopy = self->_memory;
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  v7 = [v6 title];
+  title = [selfCopy title];
 
-  if (v7)
+  if (title)
   {
-    [v3 encodeObject:v7 forKey:@"title"];
+    [v3 encodeObject:title forKey:@"title"];
   }
 
   if (self->_memory)
   {
-    v8 = self->_memory;
+    selfCopy2 = self->_memory;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
   }
 
-  v9 = [v8 subtitle];
+  subtitle = [selfCopy2 subtitle];
 
-  if (v9)
+  if (subtitle)
   {
-    [v3 encodeObject:v9 forKey:@"subtitle"];
+    [v3 encodeObject:subtitle forKey:@"subtitle"];
   }
 
   if (self->_memory)
   {
-    v10 = self->_memory;
+    selfCopy3 = self->_memory;
   }
 
   else
   {
-    v10 = self;
+    selfCopy3 = self;
   }
 
-  v11 = [v10 creationDate];
+  creationDate = [selfCopy3 creationDate];
 
-  if (v11)
+  if (creationDate)
   {
-    [v3 encodeObject:v11 forKey:@"creationDate"];
+    [v3 encodeObject:creationDate forKey:@"creationDate"];
   }
 
   v12 = self->_memory;
@@ -146,107 +146,107 @@ LABEL_26:
   }
 
 LABEL_27:
-  v17 = self->_memory;
-  if (!v17)
+  selfCopy4 = self->_memory;
+  if (!selfCopy4)
   {
-    v17 = self;
+    selfCopy4 = self;
   }
 
-  v18 = [v17 pendingState];
-  if (v18)
+  pendingState = [selfCopy4 pendingState];
+  if (pendingState)
   {
-    v19 = [MEMORY[0x1E696AD98] numberWithShort:v18];
+    v19 = [MEMORY[0x1E696AD98] numberWithShort:pendingState];
     [v3 encodeObject:v19 forKey:@"isPending"];
   }
 
-  v20 = self->_memory;
-  if (!v20)
+  selfCopy5 = self->_memory;
+  if (!selfCopy5)
   {
-    v20 = self;
+    selfCopy5 = self;
   }
 
-  v21 = [v20 creationType];
-  if (v21)
+  creationType = [selfCopy5 creationType];
+  if (creationType)
   {
-    v22 = [MEMORY[0x1E696AD98] numberWithShort:v21];
+    v22 = [MEMORY[0x1E696AD98] numberWithShort:creationType];
     [v3 encodeObject:v22 forKey:@"creationType"];
   }
 
-  v23 = self->_memory;
-  if (!v23)
+  selfCopy6 = self->_memory;
+  if (!selfCopy6)
   {
-    v23 = self;
+    selfCopy6 = self;
   }
 
-  v24 = [v23 userActionOptions];
-  if (v24)
+  userActionOptions = [selfCopy6 userActionOptions];
+  if (userActionOptions)
   {
-    v25 = [MEMORY[0x1E696AD98] numberWithShort:v24];
+    v25 = [MEMORY[0x1E696AD98] numberWithShort:userActionOptions];
     [v3 encodeObject:v25 forKey:@"isUserCreated"];
   }
 
   if (self->_memory)
   {
-    v26 = self->_memory;
+    selfCopy7 = self->_memory;
   }
 
   else
   {
-    v26 = self;
+    selfCopy7 = self;
   }
 
-  v27 = [v26 category];
-  if (v27)
+  category = [selfCopy7 category];
+  if (category)
   {
-    v28 = [MEMORY[0x1E696AD98] numberWithShort:v27];
+    v28 = [MEMORY[0x1E696AD98] numberWithShort:category];
     [v3 encodeObject:v28 forKey:@"category"];
   }
 
   if (self->_memory)
   {
-    v29 = self->_memory;
+    selfCopy8 = self->_memory;
   }
 
   else
   {
-    v29 = self;
+    selfCopy8 = self;
   }
 
-  v30 = [v29 subcategory];
-  if (v30)
+  subcategory = [selfCopy8 subcategory];
+  if (subcategory)
   {
-    v31 = [MEMORY[0x1E696AD98] numberWithShort:v30];
+    v31 = [MEMORY[0x1E696AD98] numberWithShort:subcategory];
     [v3 encodeObject:v31 forKey:@"subcategory"];
   }
 
   v32 = self->_memory;
   if (v32)
   {
-    v33 = [(PLMemory *)v32 keyAsset];
-    v34 = [v33 uuid];
+    keyAsset = [(PLMemory *)v32 keyAsset];
+    uuid2 = [keyAsset uuid];
   }
 
   else
   {
-    v33 = [(PLPersistedMemoryMetadata *)self keyAssetUUID];
-    v34 = v33;
+    keyAsset = [(PLPersistedMemoryMetadata *)self keyAssetUUID];
+    uuid2 = keyAsset;
   }
 
-  if (v34)
+  if (uuid2)
   {
-    [v3 encodeObject:v34 forKey:@"keyAssetUUID"];
+    [v3 encodeObject:uuid2 forKey:@"keyAssetUUID"];
   }
 
   v35 = self->_memory;
-  v123 = v34;
-  v124 = v11;
-  v130 = v5;
-  v125 = v9;
-  v126 = v7;
+  v123 = uuid2;
+  v124 = creationDate;
+  v130 = uuid;
+  v125 = subtitle;
+  v126 = title;
   if (v35)
   {
-    v36 = [(PLMemory *)v35 representativeAssets];
-    v37 = [v36 valueForKey:@"uuid"];
+    representativeAssets = [(PLMemory *)v35 representativeAssets];
+    v37 = [representativeAssets valueForKey:@"uuid"];
 
     v38 = PLArchiveDataFromUUIDStringsSet();
     if (v38)
@@ -254,8 +254,8 @@ LABEL_27:
       [v3 encodeObject:v38 forKey:@"representativeAssetUUIDs"];
     }
 
-    v39 = [(PLMemory *)self->_memory curatedAssets];
-    v40 = [v39 valueForKey:@"uuid"];
+    curatedAssets = [(PLMemory *)self->_memory curatedAssets];
+    v40 = [curatedAssets valueForKey:@"uuid"];
 
     v41 = PLArchiveDataFromUUIDStringsSet();
     if (v41)
@@ -264,8 +264,8 @@ LABEL_27:
     }
 
     v121 = v41;
-    v42 = [(PLMemory *)self->_memory extendedCuratedAssets];
-    v43 = [v42 valueForKey:@"uuid"];
+    extendedCuratedAssets = [(PLMemory *)self->_memory extendedCuratedAssets];
+    v43 = [extendedCuratedAssets valueForKey:@"uuid"];
 
     v44 = PLArchiveDataFromUUIDStringsSet();
     if (v44)
@@ -275,8 +275,8 @@ LABEL_27:
 
     v119 = v43;
     v129 = v38;
-    v45 = [(PLMemory *)self->_memory movieCuratedAssets];
-    v46 = [v45 valueForKey:@"uuid"];
+    movieCuratedAssets = [(PLMemory *)self->_memory movieCuratedAssets];
+    v46 = [movieCuratedAssets valueForKey:@"uuid"];
 
     v117 = v46;
     v47 = PLArchiveDataFromUUIDStringsSet();
@@ -286,8 +286,8 @@ LABEL_27:
     }
 
     v116 = v37;
-    v48 = [(PLMemory *)self->_memory userCuratedAssets];
-    v49 = [v48 valueForKey:@"uuid"];
+    userCuratedAssets = [(PLMemory *)self->_memory userCuratedAssets];
+    v49 = [userCuratedAssets valueForKey:@"uuid"];
 
     v50 = v49;
     v51 = PLArchiveDataFromUUIDStringsSet();
@@ -297,8 +297,8 @@ LABEL_27:
     }
 
     v127 = v40;
-    v52 = [(PLMemory *)self->_memory userRemovedAssets];
-    v53 = [v52 valueForKey:@"uuid"];
+    userRemovedAssets = [(PLMemory *)self->_memory userRemovedAssets];
+    v53 = [userRemovedAssets valueForKey:@"uuid"];
 
     v54 = PLArchiveDataFromUUIDStringsSet();
     if (v54)
@@ -306,8 +306,8 @@ LABEL_27:
       [v3 encodeObject:v54 forKey:@"userRemovedAssetUUIDs"];
     }
 
-    v55 = [(PLMemory *)self->_memory customUserAssets];
-    v56 = [v55 valueForKey:@"uuid"];
+    customUserAssets = [(PLMemory *)self->_memory customUserAssets];
+    v56 = [customUserAssets valueForKey:@"uuid"];
 
     if (v56)
     {
@@ -324,7 +324,7 @@ LABEL_27:
 
   else
   {
-    v62 = [(PLPersistedMemoryMetadata *)self representativeAssetUUIDs];
+    representativeAssetUUIDs = [(PLPersistedMemoryMetadata *)self representativeAssetUUIDs];
     v57 = PLArchiveDataFromUUIDStringsSet();
 
     if (v57)
@@ -332,7 +332,7 @@ LABEL_27:
       [v3 encodeObject:v57 forKey:@"representativeAssetUUIDs"];
     }
 
-    v63 = [(PLPersistedMemoryMetadata *)self curatedAssetUUIDs];
+    curatedAssetUUIDs = [(PLPersistedMemoryMetadata *)self curatedAssetUUIDs];
     v58 = PLArchiveDataFromUUIDStringsSet();
 
     if (v58)
@@ -340,7 +340,7 @@ LABEL_27:
       [v3 encodeObject:v58 forKey:@"curatedAssetUUIDs"];
     }
 
-    v64 = [(PLPersistedMemoryMetadata *)self extendedCuratedAssetUUIDs];
+    extendedCuratedAssetUUIDs = [(PLPersistedMemoryMetadata *)self extendedCuratedAssetUUIDs];
     v59 = PLArchiveDataFromUUIDStringsSet();
 
     if (v59)
@@ -348,7 +348,7 @@ LABEL_27:
       [v3 encodeObject:v59 forKey:@"extendedCuratedAssetUUIDs"];
     }
 
-    v65 = [(PLPersistedMemoryMetadata *)self movieCuratedAssetUUIDs];
+    movieCuratedAssetUUIDs = [(PLPersistedMemoryMetadata *)self movieCuratedAssetUUIDs];
     v61 = PLArchiveDataFromUUIDStringsSet();
 
     if (v61)
@@ -356,7 +356,7 @@ LABEL_27:
       [v3 encodeObject:v61 forKey:@"movieCuratedAssetUUIDs"];
     }
 
-    v66 = [(PLPersistedMemoryMetadata *)self userCuratedAssetUUIDs];
+    userCuratedAssetUUIDs = [(PLPersistedMemoryMetadata *)self userCuratedAssetUUIDs];
     v60 = PLArchiveDataFromUUIDStringsSet();
 
     if (v60)
@@ -364,8 +364,8 @@ LABEL_27:
       [v3 encodeObject:v60 forKey:@"userCuratedAssetUUIDs"];
     }
 
-    v67 = [(PLMemory *)self->_memory customUserAssets];
-    v44 = [v67 valueForKey:@"uuid"];
+    customUserAssets2 = [(PLMemory *)self->_memory customUserAssets];
+    v44 = [customUserAssets2 valueForKey:@"uuid"];
 
     if (v44)
     {
@@ -375,100 +375,100 @@ LABEL_27:
 
   if (self->_memory)
   {
-    v68 = self->_memory;
+    selfCopy9 = self->_memory;
   }
 
   else
   {
-    v68 = self;
+    selfCopy9 = self;
   }
 
-  v69 = [v68 movieData];
+  movieData = [selfCopy9 movieData];
 
-  if (v69)
+  if (movieData)
   {
-    [v3 encodeObject:v69 forKey:@"movieData"];
+    [v3 encodeObject:movieData forKey:@"movieData"];
   }
 
   if (self->_memory)
   {
-    v70 = self->_memory;
+    selfCopy10 = self->_memory;
   }
 
   else
   {
-    v70 = self;
+    selfCopy10 = self;
   }
 
-  v71 = [v70 movieAssetState];
+  movieAssetState = [selfCopy10 movieAssetState];
 
-  if (v71)
+  if (movieAssetState)
   {
-    [v3 encodeObject:v71 forKey:@"movieAssetState"];
+    [v3 encodeObject:movieAssetState forKey:@"movieAssetState"];
   }
 
   if (self->_memory)
   {
-    v72 = self->_memory;
+    selfCopy11 = self->_memory;
   }
 
   else
   {
-    v72 = self;
+    selfCopy11 = self;
   }
 
-  v73 = [v72 photosGraphVersion];
-  if (v73)
+  photosGraphVersion = [selfCopy11 photosGraphVersion];
+  if (photosGraphVersion)
   {
-    v74 = [*(v13 + 3480) numberWithLongLong:v73];
+    v74 = [*(v13 + 3480) numberWithLongLong:photosGraphVersion];
     [v3 encodeObject:v74 forKey:@"photosGraphVersion"];
   }
 
   if (self->_memory)
   {
-    v75 = self->_memory;
+    selfCopy12 = self->_memory;
   }
 
   else
   {
-    v75 = self;
+    selfCopy12 = self;
   }
 
-  v76 = [v75 photosGraphData];
+  photosGraphData = [selfCopy12 photosGraphData];
 
-  if (v76)
+  if (photosGraphData)
   {
-    [v3 encodeObject:v76 forKey:@"photosGraphData"];
+    [v3 encodeObject:photosGraphData forKey:@"photosGraphData"];
   }
 
   if (self->_memory)
   {
-    v77 = self->_memory;
+    selfCopy13 = self->_memory;
   }
 
   else
   {
-    v77 = self;
+    selfCopy13 = self;
   }
 
-  v78 = [v77 assetListPredicate];
+  assetListPredicate = [selfCopy13 assetListPredicate];
 
-  if (v78)
+  if (assetListPredicate)
   {
-    [v3 encodeObject:v78 forKey:@"assetListPredicate"];
+    [v3 encodeObject:assetListPredicate forKey:@"assetListPredicate"];
   }
 
   if (self->_memory)
   {
-    v79 = self->_memory;
+    selfCopy14 = self->_memory;
   }
 
   else
   {
-    v79 = self;
+    selfCopy14 = self;
   }
 
-  [v79 score];
+  [selfCopy14 score];
   if (v80 != 0.0)
   {
     v81 = [*(v13 + 3480) numberWithDouble:?];
@@ -477,172 +477,172 @@ LABEL_27:
 
   if (self->_memory)
   {
-    v82 = self->_memory;
+    selfCopy15 = self->_memory;
   }
 
   else
   {
-    v82 = self;
+    selfCopy15 = self;
   }
 
-  v83 = [v82 notificationState];
-  if (v83)
+  notificationState = [selfCopy15 notificationState];
+  if (notificationState)
   {
-    v84 = [*(v13 + 3480) numberWithShort:v83];
+    v84 = [*(v13 + 3480) numberWithShort:notificationState];
     [v3 encodeObject:v84 forKey:@"notificationState"];
   }
 
   if (self->_memory)
   {
-    v85 = self->_memory;
+    selfCopy16 = self->_memory;
   }
 
   else
   {
-    v85 = self;
+    selfCopy16 = self;
   }
 
-  v86 = [v85 blacklistedFeature];
+  blacklistedFeature = [selfCopy16 blacklistedFeature];
 
-  if (v86)
+  if (blacklistedFeature)
   {
-    [v3 encodeObject:v86 forKey:@"blacklistedFeature"];
+    [v3 encodeObject:blacklistedFeature forKey:@"blacklistedFeature"];
   }
 
   if (self->_memory)
   {
-    v87 = self->_memory;
+    selfCopy17 = self->_memory;
   }
 
   else
   {
-    v87 = self;
+    selfCopy17 = self;
   }
 
-  v88 = [v87 playCount];
-  if (v88)
+  playCount = [selfCopy17 playCount];
+  if (playCount)
   {
-    [v3 encodeInt64:v88 forKey:@"playCount"];
+    [v3 encodeInt64:playCount forKey:@"playCount"];
   }
 
   if (self->_memory)
   {
-    v89 = self->_memory;
+    selfCopy18 = self->_memory;
   }
 
   else
   {
-    v89 = self;
+    selfCopy18 = self;
   }
 
-  v90 = [v89 shareCount];
-  if (v90)
+  shareCount = [selfCopy18 shareCount];
+  if (shareCount)
   {
-    [v3 encodeInt64:v90 forKey:@"shareCount"];
+    [v3 encodeInt64:shareCount forKey:@"shareCount"];
   }
 
   if (self->_memory)
   {
-    v91 = self->_memory;
+    selfCopy19 = self->_memory;
   }
 
   else
   {
-    v91 = self;
+    selfCopy19 = self;
   }
 
-  v92 = [v91 viewCount];
-  if (v92)
+  viewCount = [selfCopy19 viewCount];
+  if (viewCount)
   {
-    [v3 encodeInt64:v92 forKey:@"viewCount"];
+    [v3 encodeInt64:viewCount forKey:@"viewCount"];
   }
 
   if (self->_memory)
   {
-    v93 = self->_memory;
+    selfCopy20 = self->_memory;
   }
 
   else
   {
-    v93 = self;
+    selfCopy20 = self;
   }
 
-  v94 = [v93 pendingPlayCount];
-  if (v94)
+  pendingPlayCount = [selfCopy20 pendingPlayCount];
+  if (pendingPlayCount)
   {
-    [v3 encodeInt64:v94 forKey:@"pendingPlayCount"];
+    [v3 encodeInt64:pendingPlayCount forKey:@"pendingPlayCount"];
   }
 
   if (self->_memory)
   {
-    v95 = self->_memory;
+    selfCopy21 = self->_memory;
   }
 
   else
   {
-    v95 = self;
+    selfCopy21 = self;
   }
 
-  v96 = [v95 pendingShareCount];
-  if (v96)
+  pendingShareCount = [selfCopy21 pendingShareCount];
+  if (pendingShareCount)
   {
-    [v3 encodeInt64:v96 forKey:@"pendingShareCount"];
+    [v3 encodeInt64:pendingShareCount forKey:@"pendingShareCount"];
   }
 
   if (self->_memory)
   {
-    v97 = self->_memory;
+    selfCopy22 = self->_memory;
   }
 
   else
   {
-    v97 = self;
+    selfCopy22 = self;
   }
 
-  v98 = [v97 pendingViewCount];
-  if (v98)
+  pendingViewCount = [selfCopy22 pendingViewCount];
+  if (pendingViewCount)
   {
-    [v3 encodeInt64:v98 forKey:@"pendingViewCount"];
+    [v3 encodeInt64:pendingViewCount forKey:@"pendingViewCount"];
   }
 
-  v118 = v76;
-  v120 = v71;
-  v122 = v69;
+  v118 = photosGraphData;
+  v120 = movieAssetState;
+  v122 = movieData;
   if (self->_memory)
   {
-    v99 = self->_memory;
+    selfCopy23 = self->_memory;
   }
 
   else
   {
-    v99 = self;
+    selfCopy23 = self;
   }
 
-  v100 = [v99 featuredState];
-  if (v100)
+  featuredState = [selfCopy23 featuredState];
+  if (featuredState)
   {
-    [v3 encodeInt64:v100 forKey:@"featuredState"];
+    [v3 encodeInt64:featuredState forKey:@"featuredState"];
   }
 
   v128 = v3;
   if (self->_memory)
   {
-    v101 = self->_memory;
+    selfCopy24 = self->_memory;
   }
 
   else
   {
-    v101 = self;
+    selfCopy24 = self;
   }
 
-  v102 = [v101 userFeedbacks];
+  userFeedbacks = [selfCopy24 userFeedbacks];
 
-  v103 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v102, "count")}];
+  v103 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(userFeedbacks, "count")}];
   v131 = 0u;
   v132 = 0u;
   v133 = 0u;
   v134 = 0u;
-  v104 = v102;
+  v104 = userFeedbacks;
   v105 = [v104 countByEnumeratingWithState:&v131 objects:v139 count:16];
   if (v105)
   {
@@ -658,10 +658,10 @@ LABEL_27:
         }
 
         v109 = *(*(&v131 + 1) + 8 * i);
-        v110 = [v109 dictionaryRepresentation];
-        if (v110)
+        dictionaryRepresentation = [v109 dictionaryRepresentation];
+        if (dictionaryRepresentation)
         {
-          [v103 addObject:v110];
+          [v103 addObject:dictionaryRepresentation];
         }
 
         else
@@ -669,11 +669,11 @@ LABEL_27:
           v111 = PLMigrationGetLog();
           if (os_log_type_enabled(v111, OS_LOG_TYPE_INFO))
           {
-            v112 = [v109 uuid];
+            uuid3 = [v109 uuid];
             *buf = 138543618;
             v136 = v130;
             v137 = 2114;
-            v138 = v112;
+            v138 = uuid3;
             _os_log_impl(&dword_19BF1F000, v111, OS_LOG_TYPE_INFO, "Missing user feedback dictionary representation for memory %{public}@, userFeedback: %{public}@", buf, 0x16u);
           }
         }
@@ -690,16 +690,16 @@ LABEL_27:
     [v128 encodeObject:v103 forKey:@"userFeedbacks"];
   }
 
-  v113 = [v128 encodedData];
+  encodedData = [v128 encodedData];
 
-  return v113;
+  return encodedData;
 }
 
 - (BOOL)_readMetadata
 {
   v3 = MEMORY[0x1E695DEF0];
-  v4 = [(PLPersistedMemoryMetadata *)self metadataURL];
-  v5 = [v3 dataWithContentsOfURL:v4];
+  metadataURL = [(PLPersistedMemoryMetadata *)self metadataURL];
+  v5 = [v3 dataWithContentsOfURL:metadataURL];
 
   if (v5)
   {
@@ -833,106 +833,106 @@ LABEL_27:
 
 - (id)description
 {
-  v2 = self;
+  selfCopy = self;
   if (self->_memory)
   {
     self = self->_memory;
   }
 
-  v3 = [(PLPersistedMemoryMetadata *)self title];
-  if (v2->_memory)
+  title = [(PLPersistedMemoryMetadata *)self title];
+  if (selfCopy->_memory)
   {
-    memory = v2->_memory;
+    memory = selfCopy->_memory;
   }
 
   else
   {
-    memory = v2;
+    memory = selfCopy;
   }
 
-  v5 = [memory subtitle];
-  if (v2->_memory)
+  subtitle = [memory subtitle];
+  if (selfCopy->_memory)
   {
-    v6 = v2->_memory;
+    v6 = selfCopy->_memory;
   }
 
   else
   {
-    v6 = v2;
+    v6 = selfCopy;
   }
 
-  v28 = [v6 category];
-  if (v2->_memory)
+  category = [v6 category];
+  if (selfCopy->_memory)
   {
-    v7 = v2->_memory;
+    v7 = selfCopy->_memory;
   }
 
   else
   {
-    v7 = v2;
+    v7 = selfCopy;
   }
 
-  v27 = [v7 subcategory];
-  if (v2->_memory)
+  subcategory = [v7 subcategory];
+  if (selfCopy->_memory)
   {
-    v8 = v2->_memory;
+    v8 = selfCopy->_memory;
   }
 
   else
   {
-    v8 = v2;
+    v8 = selfCopy;
   }
 
-  v9 = [v8 uuid];
-  v10 = v2->_memory;
+  uuid = [v8 uuid];
+  v10 = selfCopy->_memory;
   if (v10)
   {
-    v11 = [(PLMemory *)v10 favorite];
+    favorite = [(PLMemory *)v10 favorite];
   }
 
   else
   {
-    v11 = [(PLPersistedMemoryMetadata *)v2 isFavorite];
+    favorite = [(PLPersistedMemoryMetadata *)selfCopy isFavorite];
   }
 
-  v12 = v11;
-  v13 = v2->_memory;
+  v12 = favorite;
+  v13 = selfCopy->_memory;
   if (!v13)
   {
-    v13 = v2;
+    v13 = selfCopy;
   }
 
-  v14 = [v13 pendingState];
-  v15 = v2->_memory;
+  pendingState = [v13 pendingState];
+  v15 = selfCopy->_memory;
   if (!v15)
   {
-    v15 = v2;
+    v15 = selfCopy;
   }
 
-  v16 = [v15 creationType];
-  v17 = v2->_memory;
+  creationType = [v15 creationType];
+  v17 = selfCopy->_memory;
   if (v17)
   {
-    v18 = [(PLMemory *)v17 rejected];
+    rejected = [(PLMemory *)v17 rejected];
   }
 
   else
   {
-    v18 = [(PLPersistedMemoryMetadata *)v2 isRejected];
+    rejected = [(PLPersistedMemoryMetadata *)selfCopy isRejected];
   }
 
-  v19 = v18;
-  v20 = v2->_memory;
+  v19 = rejected;
+  v20 = selfCopy->_memory;
   if (!v20)
   {
-    v20 = v2;
+    v20 = selfCopy;
   }
 
-  v21 = [v20 userActionOptions];
-  v29.receiver = v2;
+  userActionOptions = [v20 userActionOptions];
+  v29.receiver = selfCopy;
   v29.super_class = PLPersistedMemoryMetadata;
   v22 = [(PLPersistedMemoryMetadata *)&v29 description];
-  v23 = v2->_memory;
+  v23 = selfCopy->_memory;
   if (v23)
   {
     [(PLMemory *)v23 objectID];
@@ -940,52 +940,52 @@ LABEL_27:
 
   else
   {
-    [(NSURL *)v2->_metadataURL path];
+    [(NSURL *)selfCopy->_metadataURL path];
   }
   v24 = ;
-  v25 = [v22 stringByAppendingFormat:@" memory %@: uuid:%@ title:%@ / %@, category:%d/%d [fav:%d, rej:%d, pend:%d, user:%d, creaType:%d]", v24, v9, v3, v5, v28, v27, v12, v19, v14, v21, v16];
+  v25 = [v22 stringByAppendingFormat:@" memory %@: uuid:%@ title:%@ / %@, category:%d/%d [fav:%d, rej:%d, pend:%d, user:%d, creaType:%d]", v24, uuid, title, subtitle, category, subcategory, v12, v19, pendingState, userActionOptions, creationType];
 
   return v25;
 }
 
-- (BOOL)hasAllAssetsAvailableInManagedObjectContext:(id)a3 includePendingAssetChanges:(BOOL)a4
+- (BOOL)hasAllAssetsAvailableInManagedObjectContext:(id)context includePendingAssetChanges:(BOOL)changes
 {
-  v4 = a4;
+  changesCopy = changes;
   v29 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695DFA8];
-  v7 = a3;
+  contextCopy = context;
   v8 = [v6 set];
-  v9 = [(PLPersistedMemoryMetadata *)self representativeAssetUUIDs];
-  [v8 unionSet:v9];
+  representativeAssetUUIDs = [(PLPersistedMemoryMetadata *)self representativeAssetUUIDs];
+  [v8 unionSet:representativeAssetUUIDs];
 
-  v10 = [(PLPersistedMemoryMetadata *)self curatedAssetUUIDs];
-  [v8 unionSet:v10];
+  curatedAssetUUIDs = [(PLPersistedMemoryMetadata *)self curatedAssetUUIDs];
+  [v8 unionSet:curatedAssetUUIDs];
 
-  v11 = [(PLPersistedMemoryMetadata *)self extendedCuratedAssetUUIDs];
-  [v8 unionSet:v11];
+  extendedCuratedAssetUUIDs = [(PLPersistedMemoryMetadata *)self extendedCuratedAssetUUIDs];
+  [v8 unionSet:extendedCuratedAssetUUIDs];
 
-  v12 = [(PLPersistedMemoryMetadata *)self movieCuratedAssetUUIDs];
-  [v8 unionSet:v12];
+  movieCuratedAssetUUIDs = [(PLPersistedMemoryMetadata *)self movieCuratedAssetUUIDs];
+  [v8 unionSet:movieCuratedAssetUUIDs];
 
-  v13 = [(PLPersistedMemoryMetadata *)self userCuratedAssetUUIDs];
-  [v8 unionSet:v13];
+  userCuratedAssetUUIDs = [(PLPersistedMemoryMetadata *)self userCuratedAssetUUIDs];
+  [v8 unionSet:userCuratedAssetUUIDs];
 
-  v14 = [(PLPersistedMemoryMetadata *)self userRemovedAssetUUIDs];
-  [v8 unionSet:v14];
+  userRemovedAssetUUIDs = [(PLPersistedMemoryMetadata *)self userRemovedAssetUUIDs];
+  [v8 unionSet:userRemovedAssetUUIDs];
 
-  v15 = [(PLPersistedMemoryMetadata *)self customUserAssetUUIDs];
-  v16 = [v15 set];
+  customUserAssetUUIDs = [(PLPersistedMemoryMetadata *)self customUserAssetUUIDs];
+  v16 = [customUserAssetUUIDs set];
   [v8 unionSet:v16];
 
-  v17 = [(PLPersistedMemoryMetadata *)self keyAssetUUID];
-  if (v17)
+  keyAssetUUID = [(PLPersistedMemoryMetadata *)self keyAssetUUID];
+  if (keyAssetUUID)
   {
-    [v8 addObject:v17];
+    [v8 addObject:keyAssetUUID];
   }
 
-  v18 = [v8 allObjects];
+  allObjects = [v8 allObjects];
   v24 = 0;
-  v19 = [PLManagedAsset countForAssetsWithUUIDs:v18 includePendingChanges:v4 inManagedObjectContext:v7 error:&v24];
+  v19 = [PLManagedAsset countForAssetsWithUUIDs:allObjects includePendingChanges:changesCopy inManagedObjectContext:contextCopy error:&v24];
 
   v20 = v24;
   if (v19 == 0x7FFFFFFFFFFFFFFFLL)
@@ -994,7 +994,7 @@ LABEL_27:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v26 = self;
+      selfCopy = self;
       v27 = 2112;
       v28 = v20;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "Failed to fetch count for assets in memory metadata %@, %@", buf, 0x16u);
@@ -1006,61 +1006,61 @@ LABEL_27:
   return v22;
 }
 
-- (BOOL)updateAssetsInMemory:(id)a3 includePendingAssetChanges:(BOOL)a4
+- (BOOL)updateAssetsInMemory:(id)memory includePendingAssetChanges:(BOOL)changes
 {
-  v4 = a4;
+  changesCopy = changes;
   v36[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLPersistedMemoryMetadata *)self representativeAssetUUIDs];
-  v8 = [(PLPersistedMemoryMetadata *)self _updateAssetsInMemory:v6 relationshipName:@"representativeAssets" persistedAssetUUIDs:v7 includePendingChanges:v4];
+  memoryCopy = memory;
+  representativeAssetUUIDs = [(PLPersistedMemoryMetadata *)self representativeAssetUUIDs];
+  v8 = [(PLPersistedMemoryMetadata *)self _updateAssetsInMemory:memoryCopy relationshipName:@"representativeAssets" persistedAssetUUIDs:representativeAssetUUIDs includePendingChanges:changesCopy];
 
-  v9 = [(PLPersistedMemoryMetadata *)self curatedAssetUUIDs];
-  LOBYTE(v7) = [(PLPersistedMemoryMetadata *)self _updateAssetsInMemory:v6 relationshipName:@"curatedAssets" persistedAssetUUIDs:v9 includePendingChanges:v4];
+  curatedAssetUUIDs = [(PLPersistedMemoryMetadata *)self curatedAssetUUIDs];
+  LOBYTE(representativeAssetUUIDs) = [(PLPersistedMemoryMetadata *)self _updateAssetsInMemory:memoryCopy relationshipName:@"curatedAssets" persistedAssetUUIDs:curatedAssetUUIDs includePendingChanges:changesCopy];
 
-  v10 = [(PLPersistedMemoryMetadata *)self extendedCuratedAssetUUIDs];
-  LOBYTE(v9) = [(PLPersistedMemoryMetadata *)self _updateAssetsInMemory:v6 relationshipName:@"extendedCuratedAssets" persistedAssetUUIDs:v10 includePendingChanges:v4];
+  extendedCuratedAssetUUIDs = [(PLPersistedMemoryMetadata *)self extendedCuratedAssetUUIDs];
+  LOBYTE(curatedAssetUUIDs) = [(PLPersistedMemoryMetadata *)self _updateAssetsInMemory:memoryCopy relationshipName:@"extendedCuratedAssets" persistedAssetUUIDs:extendedCuratedAssetUUIDs includePendingChanges:changesCopy];
 
-  v11 = [(PLPersistedMemoryMetadata *)self movieCuratedAssetUUIDs];
-  LOBYTE(v10) = [(PLPersistedMemoryMetadata *)self _updateAssetsInMemory:v6 relationshipName:@"movieCuratedAssets" persistedAssetUUIDs:v11 includePendingChanges:v4];
+  movieCuratedAssetUUIDs = [(PLPersistedMemoryMetadata *)self movieCuratedAssetUUIDs];
+  LOBYTE(extendedCuratedAssetUUIDs) = [(PLPersistedMemoryMetadata *)self _updateAssetsInMemory:memoryCopy relationshipName:@"movieCuratedAssets" persistedAssetUUIDs:movieCuratedAssetUUIDs includePendingChanges:changesCopy];
 
-  v12 = [(PLPersistedMemoryMetadata *)self userCuratedAssetUUIDs];
-  v13 = [(PLPersistedMemoryMetadata *)self _updateAssetsInMemory:v6 relationshipName:@"userCuratedAssets" persistedAssetUUIDs:v12 includePendingChanges:v4];
+  userCuratedAssetUUIDs = [(PLPersistedMemoryMetadata *)self userCuratedAssetUUIDs];
+  v13 = [(PLPersistedMemoryMetadata *)self _updateAssetsInMemory:memoryCopy relationshipName:@"userCuratedAssets" persistedAssetUUIDs:userCuratedAssetUUIDs includePendingChanges:changesCopy];
 
-  v14 = [(PLPersistedMemoryMetadata *)self userRemovedAssetUUIDs];
-  v15 = [(PLPersistedMemoryMetadata *)self _updateAssetsInMemory:v6 relationshipName:@"userRemovedAssets" persistedAssetUUIDs:v14 includePendingChanges:v4];
+  userRemovedAssetUUIDs = [(PLPersistedMemoryMetadata *)self userRemovedAssetUUIDs];
+  v15 = [(PLPersistedMemoryMetadata *)self _updateAssetsInMemory:memoryCopy relationshipName:@"userRemovedAssets" persistedAssetUUIDs:userRemovedAssetUUIDs includePendingChanges:changesCopy];
 
-  v16 = [(PLPersistedMemoryMetadata *)self customUserAssetUUIDs];
-  v17 = ([(PLPersistedMemoryMetadata *)self _updateAssetsInMemory:v6 relationshipName:@"customUserAssets" persistedOrderedAssetUUIDs:v16 includePendingChanges:v4]&& v15) & v13 & v10 & v9 & v7 & v8;
+  customUserAssetUUIDs = [(PLPersistedMemoryMetadata *)self customUserAssetUUIDs];
+  v17 = ([(PLPersistedMemoryMetadata *)self _updateAssetsInMemory:memoryCopy relationshipName:@"customUserAssets" persistedOrderedAssetUUIDs:customUserAssetUUIDs includePendingChanges:changesCopy]&& v15) & v13 & extendedCuratedAssetUUIDs & curatedAssetUUIDs & representativeAssetUUIDs & v8;
 
-  v18 = [(PLPersistedMemoryMetadata *)self keyAssetUUID];
-  if (v18)
+  keyAssetUUID = [(PLPersistedMemoryMetadata *)self keyAssetUUID];
+  if (keyAssetUUID)
   {
-    v19 = [v6 keyAsset];
-    v20 = v19;
-    if (!v19 || ([v19 uuid], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", v18), v21, (v22 & 1) == 0))
+    keyAsset = [memoryCopy keyAsset];
+    v20 = keyAsset;
+    if (!keyAsset || ([keyAsset uuid], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", keyAssetUUID), v21, (v22 & 1) == 0))
     {
-      v36[0] = v18;
+      v36[0] = keyAssetUUID;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
-      v24 = [v6 photoLibrary];
-      v25 = [PLManagedAsset assetsWithUUIDs:v23 options:v4 inLibrary:v24];
+      photoLibrary = [memoryCopy photoLibrary];
+      v25 = [PLManagedAsset assetsWithUUIDs:v23 options:changesCopy inLibrary:photoLibrary];
 
       if ([v25 count])
       {
         v26 = PLMigrationGetLog();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
-          v27 = [v6 uuid];
-          v28 = [(PLPersistedMemoryMetadata *)self metadataURL];
-          v29 = [v28 path];
+          uuid = [memoryCopy uuid];
+          metadataURL = [(PLPersistedMemoryMetadata *)self metadataURL];
+          path = [metadataURL path];
           v32 = 138412546;
-          v33 = v27;
+          v33 = uuid;
           v34 = 2112;
-          v35 = v29;
+          v35 = path;
           _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_INFO, "Updating key asset in memory %@ to match persisted UUID from %@", &v32, 0x16u);
         }
 
         v30 = [v25 objectAtIndexedSubscript:0];
-        [v6 setKeyAsset:v30];
+        [memoryCopy setKeyAsset:v30];
       }
 
       else
@@ -1073,17 +1073,17 @@ LABEL_27:
   return v17 & 1;
 }
 
-- (BOOL)_updateAssetsInMemory:(id)a3 relationshipName:(id)a4 persistedOrderedAssetUUIDs:(id)a5 includePendingChanges:(BOOL)a6
+- (BOOL)_updateAssetsInMemory:(id)memory relationshipName:(id)name persistedOrderedAssetUUIDs:(id)ds includePendingChanges:(BOOL)changes
 {
-  v6 = a6;
+  changesCopy = changes;
   v68 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 valueForKey:v11];
+  memoryCopy = memory;
+  nameCopy = name;
+  dsCopy = ds;
+  v13 = [memoryCopy valueForKey:nameCopy];
   v14 = [v13 valueForKey:@"uuid"];
 
-  LODWORD(v13) = [v12 isEqual:v14];
+  LODWORD(v13) = [dsCopy isEqual:v14];
   v15 = PLMigrationGetLog();
   v16 = v15;
   if (v13)
@@ -1091,13 +1091,13 @@ LABEL_27:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       v17 = [v14 count];
-      v18 = [v10 uuid];
+      uuid = [memoryCopy uuid];
       *buf = 67109634;
       *v67 = v17;
       *&v67[4] = 2112;
-      *&v67[6] = v11;
+      *&v67[6] = nameCopy;
       *&v67[14] = 2112;
-      *&v67[16] = v18;
+      *&v67[16] = uuid;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEBUG, "Persisted asset UUIDs (%d total) match database for memory %@ %@", buf, 0x1Cu);
     }
 
@@ -1107,24 +1107,24 @@ LABEL_27:
   else
   {
     v52 = v14;
-    v53 = v11;
+    v53 = nameCopy;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v20 = [v10 uuid];
-      v21 = [(PLPersistedMemoryMetadata *)self metadataURL];
-      v22 = [v21 path];
+      uuid2 = [memoryCopy uuid];
+      metadataURL = [(PLPersistedMemoryMetadata *)self metadataURL];
+      path = [metadataURL path];
       *buf = 138412546;
-      *v67 = v20;
+      *v67 = uuid2;
       *&v67[8] = 2112;
-      *&v67[10] = v22;
+      *&v67[10] = path;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_INFO, "Updating assets in memory %@ to match persisted UUIDs from %@", buf, 0x16u);
     }
 
-    v54 = v12;
-    v23 = [v12 array];
-    v55 = v10;
-    v24 = [v10 photoLibrary];
-    v25 = [PLManagedAsset assetsWithUUIDs:v23 options:v6 inLibrary:v24];
+    v54 = dsCopy;
+    array = [dsCopy array];
+    v55 = memoryCopy;
+    photoLibrary = [memoryCopy photoLibrary];
+    v25 = [PLManagedAsset assetsWithUUIDs:array options:changesCopy inLibrary:photoLibrary];
 
     v26 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v25, "count")}];
     v60 = 0u;
@@ -1147,11 +1147,11 @@ LABEL_27:
           }
 
           v31 = *(*(&v60 + 1) + 8 * i);
-          v32 = [v31 uuid];
-          v33 = v32;
+          uuid3 = [v31 uuid];
+          v33 = uuid3;
           if (v31)
           {
-            v34 = v32 == 0;
+            v34 = uuid3 == 0;
           }
 
           else
@@ -1161,19 +1161,19 @@ LABEL_27:
 
           if (!v34)
           {
-            [v26 setObject:v31 forKey:v32];
+            [v26 setObject:v31 forKey:uuid3];
           }
 
-          v35 = [v31 uuid];
+          uuid4 = [v31 uuid];
 
-          if (!v35)
+          if (!uuid4)
           {
             v36 = PLMigrationGetLog();
             if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
             {
-              v37 = [v55 uuid];
+              uuid5 = [v55 uuid];
               *buf = 138543362;
-              *v67 = v37;
+              *v67 = uuid5;
               _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_INFO, "Missing asset or asset.uuid for memory %{public}@", buf, 0xCu);
             }
           }
@@ -1218,9 +1218,9 @@ LABEL_27:
             v47 = PLMigrationGetLog();
             if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
             {
-              v48 = [v55 uuid];
+              uuid6 = [v55 uuid];
               *buf = 138543362;
-              *v67 = v48;
+              *v67 = uuid6;
               _os_log_impl(&dword_19BF1F000, v47, OS_LOG_TYPE_INFO, "Missing asset for persisted asset uuids for memory %{public}@", buf, 0xCu);
             }
           }
@@ -1232,31 +1232,31 @@ LABEL_27:
       while (v41);
     }
 
-    v10 = v55;
-    v11 = v53;
+    memoryCopy = v55;
+    nameCopy = v53;
     v49 = [v55 mutableOrderedSetValueForKey:v53];
     [v49 addObjectsFromArray:v38];
     v50 = [v16 count];
     v19 = v50 == [v39 count];
 
-    v12 = v54;
+    dsCopy = v54;
     v14 = v52;
   }
 
   return v19;
 }
 
-- (BOOL)_updateAssetsInMemory:(id)a3 relationshipName:(id)a4 persistedAssetUUIDs:(id)a5 includePendingChanges:(BOOL)a6
+- (BOOL)_updateAssetsInMemory:(id)memory relationshipName:(id)name persistedAssetUUIDs:(id)ds includePendingChanges:(BOOL)changes
 {
-  v6 = a6;
+  changesCopy = changes;
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 valueForKey:v11];
+  memoryCopy = memory;
+  nameCopy = name;
+  dsCopy = ds;
+  v13 = [memoryCopy valueForKey:nameCopy];
   v14 = [v13 valueForKey:@"uuid"];
 
-  v15 = [v12 isEqual:v14];
+  v15 = [dsCopy isEqual:v14];
   v16 = PLMigrationGetLog();
   v17 = v16;
   if (v15)
@@ -1264,13 +1264,13 @@ LABEL_27:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       v18 = [v14 count];
-      v19 = [v10 uuid];
+      uuid = [memoryCopy uuid];
       v29 = 67109634;
       *v30 = v18;
       *&v30[4] = 2112;
-      *&v30[6] = v11;
+      *&v30[6] = nameCopy;
       *&v30[14] = 2112;
-      *&v30[16] = v19;
+      *&v30[16] = uuid;
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEBUG, "Persisted asset UUIDs (%d total) match database for memory %@ %@", &v29, 0x1Cu);
     }
 
@@ -1281,38 +1281,38 @@ LABEL_27:
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v21 = [v10 uuid];
-      v22 = [(PLPersistedMemoryMetadata *)self metadataURL];
-      v23 = [v22 path];
+      uuid2 = [memoryCopy uuid];
+      metadataURL = [(PLPersistedMemoryMetadata *)self metadataURL];
+      path = [metadataURL path];
       v29 = 138412546;
-      *v30 = v21;
+      *v30 = uuid2;
       *&v30[8] = 2112;
-      *&v30[10] = v23;
+      *&v30[10] = path;
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_INFO, "Updating assets in memory %@ to match persisted UUIDs from %@", &v29, 0x16u);
     }
 
-    v24 = [v12 allObjects];
-    v25 = [v10 photoLibrary];
-    v17 = [PLManagedAsset assetsWithUUIDs:v24 options:v6 inLibrary:v25];
+    allObjects = [dsCopy allObjects];
+    photoLibrary = [memoryCopy photoLibrary];
+    v17 = [PLManagedAsset assetsWithUUIDs:allObjects options:changesCopy inLibrary:photoLibrary];
 
-    v26 = [v10 mutableSetValueForKey:v11];
+    v26 = [memoryCopy mutableSetValueForKey:nameCopy];
     [v26 addObjectsFromArray:v17];
     v27 = [v17 count];
-    v20 = v27 == [v12 count];
+    v20 = v27 == [dsCopy count];
   }
 
   return v20;
 }
 
-- (id)insertMemoryFromDataInManagedObjectContext:(id)a3
+- (id)insertMemoryFromDataInManagedObjectContext:(id)context
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLPersistedMemoryMetadata *)self uuid];
-  v6 = [(PLPersistedMemoryMetadata *)self title];
-  v7 = [(PLPersistedMemoryMetadata *)self subtitle];
-  v8 = [(PLPersistedMemoryMetadata *)self creationDate];
-  v9 = [PLMemory insertIntoContext:v4 withUUID:v5 title:v6 subtitle:v7 creationDate:v8];
+  contextCopy = context;
+  uuid = [(PLPersistedMemoryMetadata *)self uuid];
+  title = [(PLPersistedMemoryMetadata *)self title];
+  subtitle = [(PLPersistedMemoryMetadata *)self subtitle];
+  creationDate = [(PLPersistedMemoryMetadata *)self creationDate];
+  v9 = [PLMemory insertIntoContext:contextCopy withUUID:uuid title:title subtitle:subtitle creationDate:creationDate];
 
   [v9 setRejected:{-[PLPersistedMemoryMetadata isRejected](self, "isRejected")}];
   [v9 setFavorite:{-[PLPersistedMemoryMetadata isFavorite](self, "isFavorite")}];
@@ -1321,24 +1321,24 @@ LABEL_27:
   [v9 setUserActionOptions:{-[PLPersistedMemoryMetadata userActionOptions](self, "userActionOptions")}];
   [v9 setCategory:{-[PLPersistedMemoryMetadata category](self, "category")}];
   [v9 setSubcategory:{-[PLPersistedMemoryMetadata subcategory](self, "subcategory")}];
-  v10 = [(PLPersistedMemoryMetadata *)self movieData];
-  [v9 setMovieData:v10];
+  movieData = [(PLPersistedMemoryMetadata *)self movieData];
+  [v9 setMovieData:movieData];
 
-  v11 = [(PLPersistedMemoryMetadata *)self movieAssetState];
-  [v9 setMovieAssetState:v11];
+  movieAssetState = [(PLPersistedMemoryMetadata *)self movieAssetState];
+  [v9 setMovieAssetState:movieAssetState];
 
   [v9 setPhotosGraphVersion:{-[PLPersistedMemoryMetadata photosGraphVersion](self, "photosGraphVersion")}];
-  v12 = [(PLPersistedMemoryMetadata *)self photosGraphData];
-  [v9 setPhotosGraphData:v12];
+  photosGraphData = [(PLPersistedMemoryMetadata *)self photosGraphData];
+  [v9 setPhotosGraphData:photosGraphData];
 
-  v13 = [(PLPersistedMemoryMetadata *)self assetListPredicate];
-  [v9 setAssetListPredicate:v13];
+  assetListPredicate = [(PLPersistedMemoryMetadata *)self assetListPredicate];
+  [v9 setAssetListPredicate:assetListPredicate];
 
   [v9 setNotificationState:{-[PLPersistedMemoryMetadata notificationState](self, "notificationState")}];
   [(PLPersistedMemoryMetadata *)self score];
   [v9 setScore:?];
-  v14 = [(PLPersistedMemoryMetadata *)self blacklistedFeature];
-  [v9 setBlacklistedFeature:v14];
+  blacklistedFeature = [(PLPersistedMemoryMetadata *)self blacklistedFeature];
+  [v9 setBlacklistedFeature:blacklistedFeature];
 
   [v9 setPlayCount:{-[PLPersistedMemoryMetadata playCount](self, "playCount")}];
   [v9 setShareCount:{-[PLPersistedMemoryMetadata shareCount](self, "shareCount")}];
@@ -1353,9 +1353,9 @@ LABEL_27:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v26 = self;
-  v16 = [(PLPersistedMemoryMetadata *)self userFeedbacksDictionaryArray];
-  v17 = [v16 countByEnumeratingWithState:&v27 objects:v33 count:16];
+  selfCopy = self;
+  userFeedbacksDictionaryArray = [(PLPersistedMemoryMetadata *)self userFeedbacksDictionaryArray];
+  v17 = [userFeedbacksDictionaryArray countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v17)
   {
     v18 = v17;
@@ -1366,10 +1366,10 @@ LABEL_27:
       {
         if (*v28 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(userFeedbacksDictionaryArray);
         }
 
-        v21 = [PLUserFeedback insertIntoManagedObjectContext:v4 withDictionaryRepresentation:*(*(&v27 + 1) + 8 * i)];
+        v21 = [PLUserFeedback insertIntoManagedObjectContext:contextCopy withDictionaryRepresentation:*(*(&v27 + 1) + 8 * i)];
         if (v21)
         {
           [v15 addObject:v21];
@@ -1380,15 +1380,15 @@ LABEL_27:
           v22 = PLMigrationGetLog();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
           {
-            v23 = [(PLPersistedMemoryMetadata *)v26 uuid];
+            uuid2 = [(PLPersistedMemoryMetadata *)selfCopy uuid];
             *buf = 138543362;
-            v32 = v23;
+            v32 = uuid2;
             _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_INFO, "Missing user feedback for memory %{public}@", buf, 0xCu);
           }
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v27 objects:v33 count:16];
+      v18 = [userFeedbacksDictionaryArray countByEnumeratingWithState:&v27 objects:v33 count:16];
     }
 
     while (v18);
@@ -1402,10 +1402,10 @@ LABEL_27:
 - (void)removePersistedData
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   metadataURL = self->_metadataURL;
   v9 = 0;
-  v5 = [v3 removeItemAtURL:metadataURL error:&v9];
+  v5 = [defaultManager removeItemAtURL:metadataURL error:&v9];
   v6 = v9;
 
   if ((v5 & 1) == 0)
@@ -1413,9 +1413,9 @@ LABEL_27:
     v7 = PLMigrationGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(NSURL *)self->_metadataURL path];
+      path = [(NSURL *)self->_metadataURL path];
       *buf = 138412546;
-      v11 = v8;
+      v11 = path;
       v12 = 2112;
       v13 = v6;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "Failed to remove persisted memory metadata %@ %@", buf, 0x16u);
@@ -1423,14 +1423,14 @@ LABEL_27:
   }
 }
 
-- (PLPersistedMemoryMetadata)initWithPersistedDataAtURL:(id)a3
+- (PLPersistedMemoryMetadata)initWithPersistedDataAtURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = PLPersistedMemoryMetadata;
   v6 = [(PLPersistedMemoryMetadata *)&v10 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_metadataURL, a3), ![(PLPersistedMemoryMetadata *)v7 _readMetadata]))
+  if (v6 && (objc_storeStrong(&v6->_metadataURL, l), ![(PLPersistedMemoryMetadata *)v7 _readMetadata]))
   {
     v8 = 0;
   }
@@ -1443,35 +1443,35 @@ LABEL_27:
   return v8;
 }
 
-- (PLPersistedMemoryMetadata)initWithPLMemory:(id)a3 pathManager:(id)a4
+- (PLPersistedMemoryMetadata)initWithPLMemory:(id)memory pathManager:(id)manager
 {
   v6 = MEMORY[0x1E695DFF8];
-  v7 = a3;
-  v8 = [a4 privateDirectoryWithSubType:4 createIfNeeded:1 error:0];
+  memoryCopy = memory;
+  v8 = [manager privateDirectoryWithSubType:4 createIfNeeded:1 error:0];
   v9 = [v6 fileURLWithPath:v8 isDirectory:1];
 
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [v7 uuid];
-  v12 = [v10 stringWithFormat:@"%@.%@", v11, PLMemoryMetadataExtension];
+  uuid = [memoryCopy uuid];
+  pLMemoryMetadataExtension = [v10 stringWithFormat:@"%@.%@", uuid, PLMemoryMetadataExtension];
 
-  v13 = [v9 URLByAppendingPathComponent:v12];
-  v14 = [(PLPersistedMemoryMetadata *)self initWithPLMemory:v7 metadataURL:v13];
+  v13 = [v9 URLByAppendingPathComponent:pLMemoryMetadataExtension];
+  v14 = [(PLPersistedMemoryMetadata *)self initWithPLMemory:memoryCopy metadataURL:v13];
 
   return v14;
 }
 
-- (PLPersistedMemoryMetadata)initWithPLMemory:(id)a3 metadataURL:(id)a4
+- (PLPersistedMemoryMetadata)initWithPLMemory:(id)memory metadataURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  memoryCopy = memory;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = PLPersistedMemoryMetadata;
   v9 = [(PLPersistedMemoryMetadata *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_memory, a3);
-    objc_storeStrong(&v10->_metadataURL, a4);
+    objc_storeStrong(&v9->_memory, memory);
+    objc_storeStrong(&v10->_metadataURL, l);
     v10->_version = 2;
   }
 
@@ -1480,16 +1480,16 @@ LABEL_27:
 
 - (PLPersistedMemoryMetadata)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PLPersistedMemoryMetadata.m" lineNumber:90 description:@"Can't initialize a PLPersistedMemoryMetadata object using -init."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLPersistedMemoryMetadata.m" lineNumber:90 description:@"Can't initialize a PLPersistedMemoryMetadata object using -init."];
 
   return 0;
 }
 
-+ (BOOL)isValidPath:(id)a3
++ (BOOL)isValidPath:(id)path
 {
-  v3 = [a3 pathExtension];
-  v4 = [v3 isEqualToString:PLMemoryMetadataExtension];
+  pathExtension = [path pathExtension];
+  v4 = [pathExtension isEqualToString:PLMemoryMetadataExtension];
 
   return v4;
 }

@@ -1,23 +1,23 @@
 @interface RUIPrivacyLinkContainerView
-- (RUIPrivacyLinkContainerView)initWithAttributes:(id)a3;
-- (double)footerHeightForWidth:(double)a3 inView:(id)a4;
+- (RUIPrivacyLinkContainerView)initWithAttributes:(id)attributes;
+- (double)footerHeightForWidth:(double)width inView:(id)view;
 - (id)_viewController;
-- (void)configureInPage:(id)a3;
+- (void)configureInPage:(id)page;
 - (void)didMoveToWindow;
 @end
 
 @implementation RUIPrivacyLinkContainerView
 
-- (RUIPrivacyLinkContainerView)initWithAttributes:(id)a3
+- (RUIPrivacyLinkContainerView)initWithAttributes:(id)attributes
 {
-  v5 = a3;
+  attributesCopy = attributes;
   v9.receiver = self;
   v9.super_class = RUIPrivacyLinkContainerView;
   v6 = [(RUIPrivacyLinkContainerView *)&v9 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_attributes, a3);
+    objc_storeStrong(&v6->_attributes, attributes);
   }
 
   return v7;
@@ -25,8 +25,8 @@
 
 - (id)_viewController
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
     do
     {
@@ -36,30 +36,30 @@
         break;
       }
 
-      v3 = [(RUIPrivacyLinkContainerView *)v2 nextResponder];
+      nextResponder = [(RUIPrivacyLinkContainerView *)selfCopy nextResponder];
 
-      v2 = v3;
+      selfCopy = nextResponder;
     }
 
-    while (v3);
+    while (nextResponder);
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)didMoveToWindow
 {
   [(OBPrivacyLinkController *)self->_linkController removeFromParentViewController];
-  v3 = [(RUIPrivacyLinkContainerView *)self _viewController];
-  [v3 addChildViewController:self->_linkController];
-  [(OBPrivacyLinkController *)self->_linkController didMoveToParentViewController:v3];
+  _viewController = [(RUIPrivacyLinkContainerView *)self _viewController];
+  [_viewController addChildViewController:self->_linkController];
+  [(OBPrivacyLinkController *)self->_linkController didMoveToParentViewController:_viewController];
 }
 
-- (void)configureInPage:(id)a3
+- (void)configureInPage:(id)page
 {
   v39[4] = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  if (v33)
+  pageCopy = page;
+  if (pageCopy)
   {
     v4 = [(NSDictionary *)self->_attributes objectForKeyedSubscript:@"privacyBundleIdentifier"];
 
@@ -91,40 +91,40 @@
       self->_linkController = v8;
 
       v10 = [(NSDictionary *)self->_attributes objectForKeyedSubscript:@"hidePrivacyIcon"];
-      v11 = [v10 BOOLValue];
+      bOOLValue = [v10 BOOLValue];
 
-      if (v11)
+      if (bOOLValue)
       {
         [(OBPrivacyLinkController *)self->_linkController setDisplayIcon:0];
         [(OBPrivacyLinkController *)self->_linkController setDisplayCaptionText:0];
       }
 
-      v12 = [(OBPrivacyLinkController *)self->_linkController view];
-      [(RUIPrivacyLinkContainerView *)self addSubview:v12];
+      view = [(OBPrivacyLinkController *)self->_linkController view];
+      [(RUIPrivacyLinkContainerView *)self addSubview:view];
 
-      v13 = [(OBPrivacyLinkController *)self->_linkController view];
-      [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+      view2 = [(OBPrivacyLinkController *)self->_linkController view];
+      [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
       v24 = MEMORY[0x277CCAAD0];
-      v31 = [(OBPrivacyLinkController *)self->_linkController view];
-      v30 = [v31 topAnchor];
-      v29 = [(RUIPrivacyLinkContainerView *)self topAnchor];
-      v28 = [v30 constraintEqualToAnchor:v29 constant:10.0];
+      view3 = [(OBPrivacyLinkController *)self->_linkController view];
+      topAnchor = [view3 topAnchor];
+      topAnchor2 = [(RUIPrivacyLinkContainerView *)self topAnchor];
+      v28 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
       v39[0] = v28;
-      v27 = [(OBPrivacyLinkController *)self->_linkController view];
-      v25 = [v27 bottomAnchor];
-      v26 = [(RUIPrivacyLinkContainerView *)self bottomAnchor];
-      v14 = [v25 constraintEqualToAnchor:v26 constant:-10.0];
+      view4 = [(OBPrivacyLinkController *)self->_linkController view];
+      bottomAnchor = [view4 bottomAnchor];
+      bottomAnchor2 = [(RUIPrivacyLinkContainerView *)self bottomAnchor];
+      v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
       v39[1] = v14;
-      v15 = [(OBPrivacyLinkController *)self->_linkController view];
-      v16 = [v15 leadingAnchor];
-      v17 = [(RUIPrivacyLinkContainerView *)self leadingAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17];
+      view5 = [(OBPrivacyLinkController *)self->_linkController view];
+      leadingAnchor = [view5 leadingAnchor];
+      leadingAnchor2 = [(RUIPrivacyLinkContainerView *)self leadingAnchor];
+      v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v39[2] = v18;
-      v19 = [(OBPrivacyLinkController *)self->_linkController view];
-      v20 = [v19 trailingAnchor];
-      v21 = [(RUIPrivacyLinkContainerView *)self trailingAnchor];
-      v22 = [v20 constraintEqualToAnchor:v21];
+      view6 = [(OBPrivacyLinkController *)self->_linkController view];
+      trailingAnchor = [view6 trailingAnchor];
+      trailingAnchor2 = [(RUIPrivacyLinkContainerView *)self trailingAnchor];
+      v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v39[3] = v22;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:4];
       [v24 activateConstraints:v23];
@@ -132,11 +132,11 @@
   }
 }
 
-- (double)footerHeightForWidth:(double)a3 inView:(id)a4
+- (double)footerHeightForWidth:(double)width inView:(id)view
 {
   LODWORD(v4) = 1148846080;
   LODWORD(v5) = 1112014848;
-  [(RUIPrivacyLinkContainerView *)self systemLayoutSizeFittingSize:a4 withHorizontalFittingPriority:a3 verticalFittingPriority:*(MEMORY[0x277D76C78] + 8), v4, v5];
+  [(RUIPrivacyLinkContainerView *)self systemLayoutSizeFittingSize:view withHorizontalFittingPriority:width verticalFittingPriority:*(MEMORY[0x277D76C78] + 8), v4, v5];
   return v6;
 }
 

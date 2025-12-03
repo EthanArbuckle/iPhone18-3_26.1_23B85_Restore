@@ -1,7 +1,7 @@
 @interface MDLMaterialProperty
-+ (__n128)_decodeMatrixPropertyWithCoder:(void *)a3 forKey:(void *)a4;
-+ (__n128)_decodeVectorWithCoder:(id)a3 forKey:(uint64_t)a4;
-+ (id)decodeMaterialPropertyWithCoder:(id)a3 forKey:(id)a4 allocator:(id)a5;
++ (__n128)_decodeMatrixPropertyWithCoder:(void *)coder forKey:(void *)key;
++ (__n128)_decodeVectorWithCoder:(id)coder forKey:(uint64_t)key;
++ (id)decodeMaterialPropertyWithCoder:(id)coder forKey:(id)key allocator:(id)allocator;
 - (CGColorRef)color;
 - (MDLMaterialProperty)initWithName:(NSString *)name semantic:(MDLMaterialSemantic)semantic;
 - (MDLMaterialProperty)initWithName:(NSString *)name semantic:(MDLMaterialSemantic)semantic URL:(NSURL *)URL;
@@ -13,25 +13,25 @@
 - (MDLMaterialProperty)initWithName:(NSString *)name semantic:(MDLMaterialSemantic)semantic matrix4x4:(matrix_float4x4)value;
 - (MDLMaterialProperty)initWithName:(NSString *)name semantic:(MDLMaterialSemantic)semantic string:(NSString *)string;
 - (MDLMaterialProperty)initWithName:(NSString *)name semantic:(MDLMaterialSemantic)semantic textureSampler:(MDLTextureSampler *)textureSampler;
-- (MDLMaterialProperty)initWithName:(id)a3 buffer:(id)a4;
-- (MDLMaterialProperty)initWithName:(id)a3 buffer:(id)a4 stride:(unint64_t)a5;
-- (MDLMaterialProperty)initWithName:(id)a3 semantic:(unint64_t)a4 float4WithSRGBA:;
+- (MDLMaterialProperty)initWithName:(id)name buffer:(id)buffer;
+- (MDLMaterialProperty)initWithName:(id)name buffer:(id)buffer stride:(unint64_t)stride;
+- (MDLMaterialProperty)initWithName:(id)name semantic:(unint64_t)semantic float4WithSRGBA:;
 - (MDLTextureSampler)textureSamplerValue;
 - (NSString)stringValue;
 - (NSURL)URLValue;
-- (__n128)setMatrix4x4Value:(__n128)a3;
+- (__n128)setMatrix4x4Value:(__n128)value;
 - (float)floatValue;
 - (float)luminance;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (matrix_float4x4)matrix4x4;
 - (vector_float2)float2Value;
 - (vector_float3)float3Value;
 - (vector_float4)float4Value;
-- (void)_encodeMatrixPropertyWithCoder:(id)a3 forKey:(id)a4;
-- (void)_encodeVector:(id)a3 withCoder:(id)a4 forKey:;
+- (void)_encodeMatrixPropertyWithCoder:(id)coder forKey:(id)key;
+- (void)_encodeVector:(id)vector withCoder:(id)coder forKey:;
 - (void)clear;
 - (void)dealloc;
-- (void)encodeMaterialPropertyWithCoder:(id)a3 forKey:(id)a4 allocator:(id)a5;
+- (void)encodeMaterialPropertyWithCoder:(id)coder forKey:(id)key allocator:(id)allocator;
 - (void)setColor:(CGColorRef)color;
 - (void)setFloat3Value:(vector_float3)float3Value;
 - (void)setFloat4Value:(vector_float4)float4Value;
@@ -90,20 +90,20 @@
   objc_storeWeak(&self->_overridee, 0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_string, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_string, v11, zone);
   v13 = *(v10 + 8);
   *(v10 + 8) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_name, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_name, v14, zone);
   v16 = *(v10 + 16);
   *(v10 + 16) = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_url, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_url, v17, zone);
   v19 = *(v10 + 24);
   *(v10 + 24) = v18;
 
@@ -312,12 +312,12 @@
   return v14;
 }
 
-- (MDLMaterialProperty)initWithName:(id)a3 semantic:(unint64_t)a4 float4WithSRGBA:
+- (MDLMaterialProperty)initWithName:(id)name semantic:(unint64_t)semantic float4WithSRGBA:
 {
   v14 = v4;
-  v7 = a3;
+  nameCopy = name;
   objc_msgSend_clear(self, v8, v9);
-  v11 = objc_msgSend_initWithName_semantic_(self, v10, v7, a4);
+  v11 = objc_msgSend_initWithName_semantic_(self, v10, nameCopy, semantic);
   v12 = v11;
   if (v11)
   {
@@ -342,32 +342,32 @@
   return v12;
 }
 
-- (MDLMaterialProperty)initWithName:(id)a3 buffer:(id)a4 stride:(unint64_t)a5
+- (MDLMaterialProperty)initWithName:(id)name buffer:(id)buffer stride:(unint64_t)stride
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  bufferCopy = buffer;
   objc_msgSend_clear(self, v10, v11);
-  v13 = objc_msgSend_initWithName_semantic_(self, v12, v8, 32769);
+  v13 = objc_msgSend_initWithName_semantic_(self, v12, nameCopy, 32769);
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong((v13 + 136), a4);
-    v14->_stride = a5;
+    objc_storeStrong((v13 + 136), buffer);
+    v14->_stride = stride;
     v14->_type = 10;
   }
 
   return v14;
 }
 
-- (MDLMaterialProperty)initWithName:(id)a3 buffer:(id)a4
+- (MDLMaterialProperty)initWithName:(id)name buffer:(id)buffer
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  bufferCopy = buffer;
   objc_msgSend_clear(self, v9, v10);
-  v14 = objc_msgSend_initWithName_semantic_(self, v11, v7, 32769);
+  v14 = objc_msgSend_initWithName_semantic_(self, v11, nameCopy, 32769);
   if (v14)
   {
-    if (objc_msgSend_type(v8, v12, v13) != 3)
+    if (objc_msgSend_type(bufferCopy, v12, v13) != 3)
     {
       v15 = NSStringFromSelector(a2);
       v16 = MEMORY[0x277CBEAD8];
@@ -379,7 +379,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v14->_buffer, a4);
+      objc_storeStrong(&v14->_buffer, buffer);
     }
 
     else
@@ -702,10 +702,10 @@
   return result;
 }
 
-- (__n128)setMatrix4x4Value:(__n128)a3
+- (__n128)setMatrix4x4Value:(__n128)value
 {
   result[4] = a2;
-  result[5] = a3;
+  result[5] = value;
   result[6] = a4;
   result[7] = a5;
   result[12].n128_u64[0] = 9;
@@ -713,19 +713,19 @@
   return result;
 }
 
-- (void)_encodeVector:(id)a3 withCoder:(id)a4 forKey:
+- (void)_encodeVector:(id)vector withCoder:(id)coder forKey:
 {
   v7 = *MEMORY[0x277D85DE8];
   v6 = v4;
-  objc_msgSend_encodeBytes_length_forKey_(a3, a2, &v6, 16, a4);
+  objc_msgSend_encodeBytes_length_forKey_(vector, a2, &v6, 16, coder);
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (__n128)_decodeVectorWithCoder:(id)a3 forKey:(uint64_t)a4
++ (__n128)_decodeVectorWithCoder:(id)coder forKey:(uint64_t)key
 {
   v9 = 0;
-  v5 = a3;
-  v7 = objc_msgSend_decodeBytesForKey_returnedLength_(v5, v6, a4, &v9);
+  coderCopy = coder;
+  v7 = objc_msgSend_decodeBytesForKey_returnedLength_(coderCopy, v6, key, &v9);
   result.n128_u64[0] = 0;
   if (v9 == 16)
   {
@@ -735,128 +735,128 @@
   return result;
 }
 
-- (void)_encodeMatrixPropertyWithCoder:(id)a3 forKey:(id)a4
+- (void)_encodeMatrixPropertyWithCoder:(id)coder forKey:(id)key
 {
-  v23 = a3;
-  v6 = a4;
+  coderCopy = coder;
+  keyCopy = key;
   v19 = *self->_anon_40;
-  v8 = objc_msgSend_stringByAppendingString_(v6, v7, @".column0");
-  objc_msgSend__encodeVector_withCoder_forKey_(self, v9, v23, v8, *&v19);
+  v8 = objc_msgSend_stringByAppendingString_(keyCopy, v7, @".column0");
+  objc_msgSend__encodeVector_withCoder_forKey_(self, v9, coderCopy, v8, *&v19);
 
   v20 = *&self->_anon_40[16];
-  v11 = objc_msgSend_stringByAppendingString_(v6, v10, @".column1");
-  objc_msgSend__encodeVector_withCoder_forKey_(self, v12, v23, v11, *&v20);
+  v11 = objc_msgSend_stringByAppendingString_(keyCopy, v10, @".column1");
+  objc_msgSend__encodeVector_withCoder_forKey_(self, v12, coderCopy, v11, *&v20);
 
   v21 = *&self->_anon_40[32];
-  v14 = objc_msgSend_stringByAppendingString_(v6, v13, @".column2");
-  objc_msgSend__encodeVector_withCoder_forKey_(self, v15, v23, v14, *&v21);
+  v14 = objc_msgSend_stringByAppendingString_(keyCopy, v13, @".column2");
+  objc_msgSend__encodeVector_withCoder_forKey_(self, v15, coderCopy, v14, *&v21);
 
   v22 = *&self->_anon_40[48];
-  v17 = objc_msgSend_stringByAppendingString_(v6, v16, @".column3");
-  objc_msgSend__encodeVector_withCoder_forKey_(self, v18, v23, v17, *&v22);
+  v17 = objc_msgSend_stringByAppendingString_(keyCopy, v16, @".column3");
+  objc_msgSend__encodeVector_withCoder_forKey_(self, v18, coderCopy, v17, *&v22);
 }
 
-+ (__n128)_decodeMatrixPropertyWithCoder:(void *)a3 forKey:(void *)a4
++ (__n128)_decodeMatrixPropertyWithCoder:(void *)coder forKey:(void *)key
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = objc_msgSend_stringByAppendingString_(v7, v8, @".column0");
-  objc_msgSend__decodeVectorWithCoder_forKey_(a1, v10, v6, v9);
+  coderCopy = coder;
+  keyCopy = key;
+  v9 = objc_msgSend_stringByAppendingString_(keyCopy, v8, @".column0");
+  objc_msgSend__decodeVectorWithCoder_forKey_(self, v10, coderCopy, v9);
   v22 = v11;
 
-  v13 = objc_msgSend_stringByAppendingString_(v7, v12, @".column1");;
-  objc_msgSend__decodeVectorWithCoder_forKey_(a1, v14, v6, v13);
+  v13 = objc_msgSend_stringByAppendingString_(keyCopy, v12, @".column1");;
+  objc_msgSend__decodeVectorWithCoder_forKey_(self, v14, coderCopy, v13);
 
-  v16 = objc_msgSend_stringByAppendingString_(v7, v15, @".column2");
-  objc_msgSend__decodeVectorWithCoder_forKey_(a1, v17, v6, v16);
+  v16 = objc_msgSend_stringByAppendingString_(keyCopy, v15, @".column2");
+  objc_msgSend__decodeVectorWithCoder_forKey_(self, v17, coderCopy, v16);
 
-  v19 = objc_msgSend_stringByAppendingString_(v7, v18, @".column3");
-  objc_msgSend__decodeVectorWithCoder_forKey_(a1, v20, v6, v19);
+  v19 = objc_msgSend_stringByAppendingString_(keyCopy, v18, @".column3");
+  objc_msgSend__decodeVectorWithCoder_forKey_(self, v20, coderCopy, v19);
 
   return v22;
 }
 
-- (void)encodeMaterialPropertyWithCoder:(id)a3 forKey:(id)a4 allocator:(id)a5
+- (void)encodeMaterialPropertyWithCoder:(id)coder forKey:(id)key allocator:(id)allocator
 {
-  v41 = a3;
-  v8 = a4;
-  v9 = a5;
+  coderCopy = coder;
+  keyCopy = key;
+  allocatorCopy = allocator;
   string = self->_string;
-  v12 = objc_msgSend_stringByAppendingString_(v8, v11, @".string");
-  objc_msgSend_encodeObject_forKey_(v41, v13, string, v12);
+  v12 = objc_msgSend_stringByAppendingString_(keyCopy, v11, @".string");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v13, string, v12);
 
   name = self->_name;
-  v16 = objc_msgSend_stringByAppendingString_(v8, v15, @".name");
-  objc_msgSend_encodeObject_forKey_(v41, v17, name, v16);
+  v16 = objc_msgSend_stringByAppendingString_(keyCopy, v15, @".name");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v17, name, v16);
 
   url = self->_url;
-  v20 = objc_msgSend_stringByAppendingString_(v8, v19, @".url");
-  objc_msgSend_encodeObject_forKey_(v41, v21, url, v20);
+  v20 = objc_msgSend_stringByAppendingString_(keyCopy, v19, @".url");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v21, url, v20);
 
   v40 = *self->_float;
-  v23 = objc_msgSend_stringByAppendingString_(v8, v22, @".vector");
-  objc_msgSend__encodeVector_withCoder_forKey_(self, v24, v41, v23, *&v40);
+  v23 = objc_msgSend_stringByAppendingString_(keyCopy, v22, @".vector");
+  objc_msgSend__encodeVector_withCoder_forKey_(self, v24, coderCopy, v23, *&v40);
 
-  v26 = objc_msgSend_stringByAppendingString_(v8, v25, @".matrix");
-  objc_msgSend__encodeMatrixPropertyWithCoder_forKey_(self, v27, v41, v26);
+  v26 = objc_msgSend_stringByAppendingString_(keyCopy, v25, @".matrix");
+  objc_msgSend__encodeMatrixPropertyWithCoder_forKey_(self, v27, coderCopy, v26);
 
   buffer = self->_buffer;
-  v30 = objc_msgSend_stringByAppendingString_(v8, v29, @".buffer");
-  objc_msgSend_encodeBuffer_withCoder_forKey_(v9, v31, buffer, v41, v30);
+  v30 = objc_msgSend_stringByAppendingString_(keyCopy, v29, @".buffer");
+  objc_msgSend_encodeBuffer_withCoder_forKey_(allocatorCopy, v31, buffer, coderCopy, v30);
 
   stride = self->_stride;
-  v34 = objc_msgSend_stringByAppendingString_(v8, v33, @".stride");
-  objc_msgSend_encodeInteger_forKey_(v41, v35, stride, v34);
+  v34 = objc_msgSend_stringByAppendingString_(keyCopy, v33, @".stride");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v35, stride, v34);
 
   semantic = self->_semantic;
-  v38 = objc_msgSend_stringByAppendingString_(v8, v37, @".semantic");
-  objc_msgSend_encodeInteger_forKey_(v41, v39, semantic, v38);
+  v38 = objc_msgSend_stringByAppendingString_(keyCopy, v37, @".semantic");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v39, semantic, v38);
 }
 
-+ (id)decodeMaterialPropertyWithCoder:(id)a3 forKey:(id)a4 allocator:(id)a5
++ (id)decodeMaterialPropertyWithCoder:(id)coder forKey:(id)key allocator:(id)allocator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  coderCopy = coder;
+  keyCopy = key;
+  allocatorCopy = allocator;
   v11 = objc_alloc_init(MDLMaterialProperty);
   v12 = objc_opt_class();
-  v14 = objc_msgSend_stringByAppendingString_(v9, v13, @".string");
-  v16 = objc_msgSend_decodeObjectOfClass_forKey_(v8, v15, v12, v14);
+  v14 = objc_msgSend_stringByAppendingString_(keyCopy, v13, @".string");
+  v16 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v15, v12, v14);
   string = v11->_string;
   v11->_string = v16;
 
   v18 = objc_opt_class();
-  v20 = objc_msgSend_stringByAppendingString_(v9, v19, @".name");
-  v22 = objc_msgSend_decodeObjectOfClass_forKey_(v8, v21, v18, v20);
+  v20 = objc_msgSend_stringByAppendingString_(keyCopy, v19, @".name");
+  v22 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v21, v18, v20);
   name = v11->_name;
   v11->_name = v22;
 
   v24 = objc_opt_class();
-  v26 = objc_msgSend_stringByAppendingString_(v9, v25, @".url");
-  v28 = objc_msgSend_decodeObjectOfClass_forKey_(v8, v27, v24, v26);
+  v26 = objc_msgSend_stringByAppendingString_(keyCopy, v25, @".url");
+  v28 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v27, v24, v26);
   url = v11->_url;
   v11->_url = v28;
 
-  v31 = objc_msgSend_stringByAppendingString_(v9, v30, @".vector");
-  objc_msgSend__decodeVectorWithCoder_forKey_(a1, v32, v8, v31);
+  v31 = objc_msgSend_stringByAppendingString_(keyCopy, v30, @".vector");
+  objc_msgSend__decodeVectorWithCoder_forKey_(self, v32, coderCopy, v31);
   *v11->_float = v33;
 
-  v35 = objc_msgSend_stringByAppendingString_(v9, v34, @".matrix");
-  objc_msgSend__decodeMatrixPropertyWithCoder_forKey_(a1, v36, v8, v35);
+  v35 = objc_msgSend_stringByAppendingString_(keyCopy, v34, @".matrix");
+  objc_msgSend__decodeMatrixPropertyWithCoder_forKey_(self, v36, coderCopy, v35);
   *v11->_anon_40 = v37;
   *&v11->_anon_40[16] = v38;
   *&v11->_anon_40[32] = v39;
   *&v11->_anon_40[48] = v40;
 
-  v42 = objc_msgSend_stringByAppendingString_(v9, v41, @".buffer");
-  v44 = objc_msgSend_decodeBufferWithCoder_forKey_(v10, v43, v8, v42);
+  v42 = objc_msgSend_stringByAppendingString_(keyCopy, v41, @".buffer");
+  v44 = objc_msgSend_decodeBufferWithCoder_forKey_(allocatorCopy, v43, coderCopy, v42);
   buffer = v11->_buffer;
   v11->_buffer = v44;
 
-  v47 = objc_msgSend_stringByAppendingString_(v9, v46, @".stride");
-  v11->_stride = objc_msgSend_decodeIntegerForKey_(v8, v48, v47);
+  v47 = objc_msgSend_stringByAppendingString_(keyCopy, v46, @".stride");
+  v11->_stride = objc_msgSend_decodeIntegerForKey_(coderCopy, v48, v47);
 
-  v11->_semantic = objc_msgSend_decodeIntegerForKey_(v8, v49, @".semantic");
+  v11->_semantic = objc_msgSend_decodeIntegerForKey_(coderCopy, v49, @".semantic");
 
   return v11;
 }

@@ -1,16 +1,16 @@
 @interface PKAddSecureElementPassViewController
 + (BOOL)canAddSecureElementPassWithConfiguration:(PKAddSecureElementPassConfiguration *)configuration;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result;
 - (PKAddSecureElementPassViewController)initWithConfiguration:(PKAddSecureElementPassConfiguration *)configuration delegate:(id)delegate;
 - (id)delegate;
-- (void)_handleCanceledPresentationWithPresentingViewController:(id)a3;
+- (void)_handleCanceledPresentationWithPresentingViewController:(id)controller;
 - (void)dealloc;
-- (void)didFinishWithPass:(id)a3 error:(id)a4;
-- (void)didFinishWithPasses:(id)a3 error:(id)a4;
+- (void)didFinishWithPass:(id)pass error:(id)error;
+- (void)didFinishWithPasses:(id)passes error:(id)error;
 - (void)loadRemoteViewController;
 - (void)loadView;
-- (void)setRemoteVC:(id)a3 completionHandler:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setRemoteVC:(id)c completionHandler:(id)handler;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -22,11 +22,11 @@
   v4 = configuration;
   if (v4)
   {
-    v5 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v6 = v5;
-    if (v5)
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    v6 = mEMORY[0x1E69B8A58];
+    if (mEMORY[0x1E69B8A58])
     {
-      v7 = [v5 canAddSecureElementPassWithConfiguration:v4];
+      v7 = [mEMORY[0x1E69B8A58] canAddSecureElementPassWithConfiguration:v4];
     }
 
     else
@@ -68,7 +68,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
     goto LABEL_4;
   }
 
@@ -83,12 +83,12 @@
   v11 = v11;
   if (([v11 containsObject:@"carkey"] & 1) == 0)
   {
-    v12 = [v11 containsObject:@"shareablecredential"];
+    bOOLValue = [v11 containsObject:@"shareablecredential"];
 
 LABEL_4:
     CFRelease(v10);
 
-    if (v12)
+    if (bOOLValue)
     {
       if (v7)
       {
@@ -99,10 +99,10 @@ LABEL_15:
       v21 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v27 = [MEMORY[0x1E696AAE8] mainBundle];
-        v28 = [v27 bundleIdentifier];
+        mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+        bundleIdentifier = [mainBundle bundleIdentifier];
         *buf = 138543362;
-        v33 = v28;
+        v33 = bundleIdentifier;
         _os_log_error_impl(&dword_1BD026000, v21, OS_LOG_TYPE_ERROR, "%{public}@ missing configuration parameter", buf, 0xCu);
       }
 
@@ -113,11 +113,11 @@ LABEL_19:
     v21 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v24 = [MEMORY[0x1E696AAE8] mainBundle];
-      v25 = [v24 bundleIdentifier];
+      mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier2 = [mainBundle2 bundleIdentifier];
       v26 = *MEMORY[0x1E69BC3C0];
       *buf = 138543618;
-      v33 = v25;
+      v33 = bundleIdentifier2;
       v34 = 2114;
       v35 = v26;
       _os_log_error_impl(&dword_1BD026000, v21, OS_LOG_TYPE_ERROR, "%{public}@ missing entitlement: %{public}@", buf, 0x16u);
@@ -145,7 +145,7 @@ LABEL_6:
 
 LABEL_21:
 
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_22;
   }
 
@@ -157,10 +157,10 @@ LABEL_21:
   {
     objc_storeStrong(&v13->_configuration, configuration);
     objc_storeWeak(&v14->_delegate, v8);
-    v15 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v16 = [v15 passbookHasBeenDeleted];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    passbookHasBeenDeleted = [mEMORY[0x1E69B8A58] passbookHasBeenDeleted];
 
-    if (v16)
+    if (passbookHasBeenDeleted)
     {
       v17 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -194,10 +194,10 @@ LABEL_21:
   }
 
   self = v14;
-  v22 = self;
+  selfCopy = self;
 LABEL_22:
 
-  return v22;
+  return selfCopy;
 }
 
 void __71__PKAddSecureElementPassViewController_initWithConfiguration_delegate___block_invoke(uint64_t a1, void *a2)
@@ -212,7 +212,7 @@ void __71__PKAddSecureElementPassViewController_initWithConfiguration_delegate__
   remoteVCRequest = self->_remoteVCRequest;
   if (remoteVCRequest)
   {
-    v4 = [(_UIAsyncInvocation *)remoteVCRequest invoke];
+    invoke = [(_UIAsyncInvocation *)remoteVCRequest invoke];
     v5 = self->_remoteVCRequest;
     self->_remoteVCRequest = 0;
   }
@@ -222,29 +222,29 @@ void __71__PKAddSecureElementPassViewController_initWithConfiguration_delegate__
   [(PKAddSecureElementPassViewController *)&v6 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKAddSecureElementPassViewController;
-  [(PKAddSecureElementPassViewController *)&v5 viewDidAppear:a3];
+  [(PKAddSecureElementPassViewController *)&v5 viewDidAppear:appear];
   if (self->_animatedTransitionHandler)
   {
-    v4 = [(PKAddSecureElementPassViewController *)self presentingViewController];
-    [(PKAddSecureElementPassViewController *)self _handleCanceledPresentationWithPresentingViewController:v4];
+    presentingViewController = [(PKAddSecureElementPassViewController *)self presentingViewController];
+    [(PKAddSecureElementPassViewController *)self _handleCanceledPresentationWithPresentingViewController:presentingViewController];
   }
 }
 
 - (void)loadRemoteViewController
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(PKAddSecureElementPassConfiguration *)self->_configuration configurationType];
-  if (v3 == 1)
+  configurationType = [(PKAddSecureElementPassConfiguration *)self->_configuration configurationType];
+  if (configurationType == 1)
   {
     v5 = @"PKSubcredentialProvisioningServiceViewController";
     goto LABEL_12;
   }
 
-  if (v3 == 4 || v3 == 2)
+  if (configurationType == 4 || configurationType == 2)
   {
     v5 = @"PKPushableCredentialsNavigationController";
 LABEL_12:
@@ -339,17 +339,17 @@ void __64__PKAddSecureElementPassViewController_loadRemoteViewController__block_
   [WeakRetained _endDelayingPresentation];
 }
 
-- (void)setRemoteVC:(id)a3 completionHandler:(id)a4
+- (void)setRemoteVC:(id)c completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_remoteVC, a3);
+  cCopy = c;
+  handlerCopy = handler;
+  objc_storeStrong(&self->_remoteVC, c);
   [(PKAddSecureElementPassViewController *)self addChildViewController:self->_remoteVC];
-  v9 = [(PKRemoteAddSecureElementPassViewController *)self->_remoteVC view];
-  v10 = [(PKAddSecureElementPassViewController *)self view];
-  [v10 addSubview:v9];
-  [v10 setNeedsLayout];
-  [v10 layoutIfNeeded];
+  view = [(PKRemoteAddSecureElementPassViewController *)self->_remoteVC view];
+  view2 = [(PKAddSecureElementPassViewController *)self view];
+  [view2 addSubview:view];
+  [view2 setNeedsLayout];
+  [view2 layoutIfNeeded];
   [(_UIRemoteViewController *)self->_remoteVC didMoveToParentViewController:self];
   [(PKAddSecureElementPassViewController *)self setNeedsStatusBarAppearanceUpdate];
   remoteVC = self->_remoteVC;
@@ -357,17 +357,17 @@ void __64__PKAddSecureElementPassViewController_loadRemoteViewController__block_
   v24[1] = 3221225472;
   v24[2] = __70__PKAddSecureElementPassViewController_setRemoteVC_completionHandler___block_invoke;
   v24[3] = &unk_1E8012C28;
-  v12 = v8;
+  v12 = handlerCopy;
   v25 = v12;
   v13 = [(_UIRemoteViewController *)remoteVC serviceViewControllerProxyWithErrorHandler:v24];
   if (v13)
   {
-    v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v15 = [v14 fixedCoordinateSpace];
-    [v15 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    fixedCoordinateSpace = [mainScreen fixedCoordinateSpace];
+    [fixedCoordinateSpace bounds];
     v17 = v16;
     v19 = v18;
-    [v14 scale];
+    [mainScreen scale];
     [v13 setDisplayPropertiesWithScreenSize:v17 scale:{v19, v20}];
 
     configuration = self->_configuration;
@@ -413,24 +413,24 @@ void __70__PKAddSecureElementPassViewController_setRemoteVC_completionHandler___
   }
 }
 
-- (void)didFinishWithPass:(id)a3 error:(id)a4
+- (void)didFinishWithPass:(id)pass error:(id)error
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  passCopy = pass;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v10 count:1];
+  errorCopy = error;
+  passCopy2 = pass;
+  v9 = [v6 arrayWithObjects:&passCopy count:1];
 
-  [(PKAddSecureElementPassViewController *)self didFinishWithPasses:v9 error:v7, v10, v11];
+  [(PKAddSecureElementPassViewController *)self didFinishWithPasses:v9 error:errorCopy, passCopy, v11];
 }
 
-- (void)didFinishWithPasses:(id)a3 error:(id)a4
+- (void)didFinishWithPasses:(id)passes error:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  passesCopy = passes;
+  errorCopy = error;
+  v8 = errorCopy;
   v9 = 0;
   atomic_compare_exchange_strong(&self->_finished, &v9, 1u);
   if (v9)
@@ -445,7 +445,7 @@ void __70__PKAddSecureElementPassViewController_setRemoteVC_completionHandler___
 
   else
   {
-    if (v7)
+    if (errorCopy)
     {
 
       v10 = PKLogFacilityTypeGetObject();
@@ -456,7 +456,7 @@ void __70__PKAddSecureElementPassViewController_setRemoteVC_completionHandler___
         _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "Adding secure element passes finished with error: %@", &v16, 0xCu);
       }
 
-      v6 = 0;
+      passesCopy = 0;
     }
 
     else
@@ -465,7 +465,7 @@ void __70__PKAddSecureElementPassViewController_setRemoteVC_completionHandler___
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138412290;
-        v17 = v6;
+        v17 = passesCopy;
         _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "Adding secure element passes finished with passes: %@", &v16, 0xCu);
       }
     }
@@ -478,7 +478,7 @@ void __70__PKAddSecureElementPassViewController_setRemoteVC_completionHandler___
 
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained addSecureElementPassViewController:self didFinishAddingSecureElementPasses:v6 error:v8];
+      [WeakRetained addSecureElementPassViewController:self didFinishAddingSecureElementPasses:passesCopy error:v8];
       goto LABEL_20;
     }
 
@@ -491,7 +491,7 @@ void __70__PKAddSecureElementPassViewController_setRemoteVC_completionHandler___
         _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "User is using deprecated delegate method.", &v16, 2u);
       }
 
-      v13 = [v6 objectAtIndexedSubscript:0];
+      v13 = [passesCopy objectAtIndexedSubscript:0];
       [WeakRetained addSecureElementPassViewController:self didFinishAddingSecureElementPass:v13 error:v8];
     }
 
@@ -505,17 +505,17 @@ LABEL_17:
         _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "Delegate not set, dismissing add secure element passes view controller.", &v16, 2u);
       }
 
-      v15 = [(PKAddSecureElementPassViewController *)self presentingViewController];
-      [v15 dismissViewControllerAnimated:1 completion:0];
+      presentingViewController = [(PKAddSecureElementPassViewController *)self presentingViewController];
+      [presentingViewController dismissViewControllerAnimated:1 completion:0];
     }
   }
 
 LABEL_20:
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result
 {
-  if (self->_remoteVC != a3)
+  if (self->_remoteVC != container)
   {
     v7 = v4;
     v8 = v5;
@@ -532,9 +532,9 @@ LABEL_20:
   v5.receiver = self;
   v5.super_class = PKAddSecureElementPassViewController;
   [(PKAddSecureElementPassViewController *)&v5 loadView];
-  v3 = [(PKAddSecureElementPassViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PKAddSecureElementPassViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 }
 
 - (void)viewWillLayoutSubviews
@@ -542,17 +542,17 @@ LABEL_20:
   v5.receiver = self;
   v5.super_class = PKAddSecureElementPassViewController;
   [(PKAddSecureElementPassViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(PKAddSecureElementPassViewController *)self view];
-  v4 = [(PKRemoteAddSecureElementPassViewController *)self->_remoteVC view];
-  [v3 bounds];
-  [v4 setFrame:?];
+  view = [(PKAddSecureElementPassViewController *)self view];
+  view2 = [(PKRemoteAddSecureElementPassViewController *)self->_remoteVC view];
+  [view bounds];
+  [view2 setFrame:?];
 }
 
-- (void)_handleCanceledPresentationWithPresentingViewController:(id)a3
+- (void)_handleCanceledPresentationWithPresentingViewController:(id)controller
 {
   animatedTransitionHandler = self->_animatedTransitionHandler;
   self->_animatedTransitionHandler = 0;
-  v5 = a3;
+  controllerCopy = controller;
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -567,7 +567,7 @@ LABEL_20:
   v7 = v6;
   v16 = v7;
   v8 = PKCreateAlertControllerForWalletUninstalled(v15);
-  v9 = [v5 pkui_frontMostViewController];
+  pkui_frontMostViewController = [controllerCopy pkui_frontMostViewController];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -577,7 +577,7 @@ LABEL_20:
   v14 = v7;
   v10 = v7;
   v11 = v8;
-  [v9 presentViewController:v11 animated:1 completion:v12];
+  [pkui_frontMostViewController presentViewController:v11 animated:1 completion:v12];
 }
 
 void __96__PKAddSecureElementPassViewController__handleCanceledPresentationWithPresentingViewController___block_invoke(uint64_t a1)

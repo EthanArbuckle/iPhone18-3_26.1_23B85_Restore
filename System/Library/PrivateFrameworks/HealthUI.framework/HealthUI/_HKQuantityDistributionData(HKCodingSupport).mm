@@ -11,8 +11,8 @@
   v8 = a4;
   v9 = [MEMORY[0x1E696C348] quantityWithUnit:a5 doubleValue:0.0];
   v10 = MEMORY[0x1E696C348];
-  v11 = [MEMORY[0x1E696C510] secondUnit];
-  v12 = [v10 quantityWithUnit:v11 doubleValue:0.0];
+  secondUnit = [MEMORY[0x1E696C510] secondUnit];
+  v12 = [v10 quantityWithUnit:secondUnit doubleValue:0.0];
 
   if ([v7 hasStartDate])
   {
@@ -41,8 +41,8 @@
   if ([v7 hasMinimumBucketValue])
   {
     v15 = MEMORY[0x1E696C348];
-    v16 = [v7 minimumBucketValue];
-    v37 = [v15 createWithCodableQuantity:v16];
+    minimumBucketValue = [v7 minimumBucketValue];
+    v37 = [v15 createWithCodableQuantity:minimumBucketValue];
   }
 
   else
@@ -53,8 +53,8 @@
   if ([v7 hasMinimumValue])
   {
     v17 = MEMORY[0x1E696C348];
-    v18 = [v7 minimumValue];
-    v36 = [v17 createWithCodableQuantity:v18];
+    minimumValue = [v7 minimumValue];
+    v36 = [v17 createWithCodableQuantity:minimumValue];
   }
 
   else
@@ -65,8 +65,8 @@
   if ([v7 hasMaximumValue])
   {
     v19 = MEMORY[0x1E696C348];
-    v20 = [v7 maximumValue];
-    v35 = [v19 createWithCodableQuantity:v20];
+    maximumValue = [v7 maximumValue];
+    v35 = [v19 createWithCodableQuantity:maximumValue];
   }
 
   else
@@ -77,8 +77,8 @@
   if ([v7 hasAverageValue])
   {
     v21 = MEMORY[0x1E696C348];
-    v22 = [v7 averageValue];
-    v34 = [v21 createWithCodableQuantity:v22];
+    averageValue = [v7 averageValue];
+    v34 = [v21 createWithCodableQuantity:averageValue];
   }
 
   else
@@ -91,8 +91,8 @@
   if ([v7 hasDuration])
   {
     v23 = MEMORY[0x1E696C348];
-    v24 = [v7 duration];
-    v25 = [v23 createWithCodableQuantity:v24];
+    duration = [v7 duration];
+    v25 = [v23 createWithCodableQuantity:duration];
   }
 
   else
@@ -101,8 +101,8 @@
   }
 
   v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "histogramCountsCount")}];
-  v27 = [v7 contextIdentifiers];
-  v28 = [v27 hk_map:&__block_literal_global_358_0];
+  contextIdentifiers = [v7 contextIdentifiers];
+  v28 = [contextIdentifiers hk_map:&__block_literal_global_358_0];
 
   if ([v7 histogramCountsCount])
   {
@@ -128,32 +128,32 @@
 - (HKCodableQuantityDistributionData)codableQuantityDistributionData
 {
   v2 = objc_alloc_init(HKCodableQuantityDistributionData);
-  v3 = [a1 startDate];
-  [v3 timeIntervalSinceReferenceDate];
+  startDate = [self startDate];
+  [startDate timeIntervalSinceReferenceDate];
   [(HKCodableQuantityDistributionData *)v2 setStartDate:?];
 
-  v4 = [a1 endDate];
-  [v4 timeIntervalSinceReferenceDate];
+  endDate = [self endDate];
+  [endDate timeIntervalSinceReferenceDate];
   [(HKCodableQuantityDistributionData *)v2 setEndDate:?];
 
-  v5 = [a1 minimumBucketValue];
-  v6 = [v5 codableRepresentation];
-  [(HKCodableQuantityDistributionData *)v2 setMinimumBucketValue:v6];
+  minimumBucketValue = [self minimumBucketValue];
+  codableRepresentation = [minimumBucketValue codableRepresentation];
+  [(HKCodableQuantityDistributionData *)v2 setMinimumBucketValue:codableRepresentation];
 
-  v7 = [a1 minimumValue];
-  v8 = [v7 codableRepresentation];
-  [(HKCodableQuantityDistributionData *)v2 setMinimumValue:v8];
+  minimumValue = [self minimumValue];
+  codableRepresentation2 = [minimumValue codableRepresentation];
+  [(HKCodableQuantityDistributionData *)v2 setMinimumValue:codableRepresentation2];
 
-  v9 = [a1 maximumValue];
-  v10 = [v9 codableRepresentation];
-  [(HKCodableQuantityDistributionData *)v2 setMaximumValue:v10];
+  maximumValue = [self maximumValue];
+  codableRepresentation3 = [maximumValue codableRepresentation];
+  [(HKCodableQuantityDistributionData *)v2 setMaximumValue:codableRepresentation3];
 
-  v11 = [a1 averageValue];
-  if (v11)
+  averageValue = [self averageValue];
+  if (averageValue)
   {
-    v12 = [a1 averageValue];
-    v13 = [v12 codableRepresentation];
-    [(HKCodableQuantityDistributionData *)v2 setAverageValue:v13];
+    averageValue2 = [self averageValue];
+    codableRepresentation4 = [averageValue2 codableRepresentation];
+    [(HKCodableQuantityDistributionData *)v2 setAverageValue:codableRepresentation4];
   }
 
   else
@@ -161,12 +161,12 @@
     [(HKCodableQuantityDistributionData *)v2 setAverageValue:0];
   }
 
-  v14 = [a1 duration];
-  if (v14)
+  duration = [self duration];
+  if (duration)
   {
-    v15 = [a1 duration];
-    v16 = [v15 codableRepresentation];
-    [(HKCodableQuantityDistributionData *)v2 setDuration:v16];
+    duration2 = [self duration];
+    codableRepresentation5 = [duration2 codableRepresentation];
+    [(HKCodableQuantityDistributionData *)v2 setDuration:codableRepresentation5];
   }
 
   else
@@ -174,23 +174,23 @@
     [(HKCodableQuantityDistributionData *)v2 setDuration:0];
   }
 
-  v17 = [a1 histogramCounts];
+  histogramCounts = [self histogramCounts];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __79___HKQuantityDistributionData_HKCodingSupport__codableQuantityDistributionData__block_invoke;
   v26[3] = &unk_1E81B58B0;
   v18 = v2;
   v27 = v18;
-  [v17 enumerateObjectsUsingBlock:v26];
+  [histogramCounts enumerateObjectsUsingBlock:v26];
 
-  v19 = [a1 contextIdentifiers];
+  contextIdentifiers = [self contextIdentifiers];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __79___HKQuantityDistributionData_HKCodingSupport__codableQuantityDistributionData__block_invoke_2;
   v24[3] = &unk_1E81BC9B8;
   v20 = v18;
   v25 = v20;
-  [v19 enumerateObjectsUsingBlock:v24];
+  [contextIdentifiers enumerateObjectsUsingBlock:v24];
 
   v21 = v25;
   v22 = v20;

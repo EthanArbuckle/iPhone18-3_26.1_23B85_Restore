@@ -1,11 +1,11 @@
 @interface HearingMLHelperServiceXPCServer
-- (BOOL)_connectionIsCorrenctlyEntitled:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_connectionIsCorrenctlyEntitled:(id)entitled;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (HearingMLHelperServiceXPCServer)init;
 - (HearingMLHelperServiceXPCServerDelegate)delegate;
-- (void)_destroyXPCConnection:(id)a3;
+- (void)_destroyXPCConnection:(id)connection;
 - (void)run;
-- (void)trainWithDetectorID:(id)a3 hallucinatorPath:(id)a4 pretrainedWeightsPath:(id)a5 resultHandler:(id)a6;
+- (void)trainWithDetectorID:(id)d hallucinatorPath:(id)path pretrainedWeightsPath:(id)weightsPath resultHandler:(id)handler;
 @end
 
 @implementation HearingMLHelperServiceXPCServer
@@ -37,33 +37,33 @@
   [v4 resume];
 }
 
-- (void)_destroyXPCConnection:(id)a3
+- (void)_destroyXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = AXLogUltronKShot();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Will destroy connection to client: %@", &v7, 0xCu);
   }
 
-  [v4 invalidate];
-  v6 = [(HearingMLHelperServiceXPCServer *)self connections];
-  [v6 removeObject:v4];
+  [connectionCopy invalidate];
+  connections = [(HearingMLHelperServiceXPCServer *)self connections];
+  [connections removeObject:connectionCopy];
 }
 
-- (void)trainWithDetectorID:(id)a3 hallucinatorPath:(id)a4 pretrainedWeightsPath:(id)a5 resultHandler:(id)a6
+- (void)trainWithDetectorID:(id)d hallucinatorPath:(id)path pretrainedWeightsPath:(id)weightsPath resultHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  pathCopy = path;
+  weightsPathCopy = weightsPath;
+  handlerCopy = handler;
   v14 = AXLogUltronKShot();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v10;
+    v26 = dCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "XPC Server - trainWithDetectorID: %@ received training request", buf, 0xCu);
   }
 
@@ -71,63 +71,63 @@
   block[1] = 3221225472;
   block[2] = sub_100001090;
   block[3] = &unk_1000041F0;
-  v20 = v10;
-  v21 = self;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = dCopy;
+  selfCopy = self;
+  v22 = pathCopy;
+  v23 = weightsPathCopy;
+  v24 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = weightsPathCopy;
+  v17 = pathCopy;
+  v18 = dCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HearingMLHelperServiceXPCServer *)self _connectionIsCorrenctlyEntitled:v7];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [(HearingMLHelperServiceXPCServer *)self _connectionIsCorrenctlyEntitled:connectionCopy];
   v9 = AXLogUltronKShot();
   v10 = v9;
   if (v8)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      sub_100001E74(v7, v10);
+      sub_100001E74(connectionCopy, v10);
     }
 
     v11 = HearingMLHelperServiceInterface();
-    [v7 setExportedInterface:v11];
+    [connectionCopy setExportedInterface:v11];
 
-    [v7 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___HearingMLHelperClientInterface];
-    [v7 setRemoteObjectInterface:v12];
+    [connectionCopy setRemoteObjectInterface:v12];
 
-    objc_initWeak(&location, v7);
-    [v7 setInterruptionHandler:&stru_100004230];
+    objc_initWeak(&location, connectionCopy);
+    [connectionCopy setInterruptionHandler:&stru_100004230];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1000014A4;
     v18[3] = &unk_100004258;
     v18[4] = self;
     objc_copyWeak(&v19, &location);
-    [v7 setInvalidationHandler:v18];
-    [v7 resume];
-    v13 = [(HearingMLHelperServiceXPCServer *)self connections];
-    [v13 addObject:v7];
+    [connectionCopy setInvalidationHandler:v18];
+    [connectionCopy resume];
+    connections = [(HearingMLHelperServiceXPCServer *)self connections];
+    [connections addObject:connectionCopy];
 
     v14 = AXLogUltronKShot();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 auditSessionIdentifier]);
-      v16 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 processIdentifier]);
+      v15 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [connectionCopy auditSessionIdentifier]);
+      v16 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [connectionCopy processIdentifier]);
       *buf = 138412802;
       v22 = v15;
       v23 = 2112;
       v24 = v16;
       v25 = 2112;
-      v26 = v7;
+      v26 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Accepting connection from client. AuditID:%@. PID:%@. connection: %@", buf, 0x20u);
     }
 
@@ -139,21 +139,21 @@
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      sub_100001DAC(v7, v10);
+      sub_100001DAC(connectionCopy, v10);
     }
   }
 
   return v8;
 }
 
-- (BOOL)_connectionIsCorrenctlyEntitled:(id)a3
+- (BOOL)_connectionIsCorrenctlyEntitled:(id)entitled
 {
-  v3 = a3;
-  v4 = v3;
+  entitledCopy = entitled;
+  v4 = entitledCopy;
   memset(&cf[1], 0, sizeof(audit_token_t));
-  if (v3)
+  if (entitledCopy)
   {
-    [v3 auditToken];
+    [entitledCopy auditToken];
   }
 
   cf[0] = cf[1];

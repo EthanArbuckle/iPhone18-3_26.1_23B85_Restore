@@ -6,10 +6,10 @@
 
 + (id)px_standardFetchOptions
 {
-  v0 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v1 = [v0 px_standardLibrarySpecificFetchOptions];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  px_standardLibrarySpecificFetchOptions = [px_deprecated_appPhotoLibrary px_standardLibrarySpecificFetchOptions];
 
-  return v1;
+  return px_standardLibrarySpecificFetchOptions;
 }
 
 @end

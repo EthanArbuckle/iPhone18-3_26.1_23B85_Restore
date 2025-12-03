@@ -1,16 +1,16 @@
 @interface ANSTISPAlgorithmConfiguration
-- (ANSTISPAlgorithmConfiguration)initWithVersion:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ANSTISPAlgorithmConfiguration)initWithVersion:(unint64_t)version;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation ANSTISPAlgorithmConfiguration
 
-- (ANSTISPAlgorithmConfiguration)initWithVersion:(unint64_t)a3
+- (ANSTISPAlgorithmConfiguration)initWithVersion:(unint64_t)version
 {
   v4.receiver = self;
   v4.super_class = ANSTISPAlgorithmConfiguration;
-  result = [(ANSTConfiguration *)&v4 initWithVersion:a3];
+  result = [(ANSTConfiguration *)&v4 initWithVersion:version];
   if (result)
   {
     result->_enableObjectTracking = 1;
@@ -111,7 +111,7 @@ LABEL_17:
   return v23;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ANSTISPAlgorithmConfiguration alloc];
   v7 = objc_msgSend_version(self, v5, v6);

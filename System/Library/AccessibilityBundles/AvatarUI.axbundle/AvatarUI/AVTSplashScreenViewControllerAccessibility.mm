@@ -1,19 +1,19 @@
 @interface AVTSplashScreenViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation AVTSplashScreenViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTSplashScreenViewController" hasInstanceMethod:@"playerViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTSplashScreenViewController" hasInstanceMethod:@"configuration" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTSplashScreenConfiguration" hasInstanceMethod:@"primaryPlayerItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVPlayerItem" hasInstanceMethod:@"_URL" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTSplashScreenViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTSplashScreenViewController" hasInstanceMethod:@"playerViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTSplashScreenViewController" hasInstanceMethod:@"configuration" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTSplashScreenConfiguration" hasInstanceMethod:@"primaryPlayerItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVPlayerItem" hasInstanceMethod:@"_URL" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTSplashScreenViewController" isKindOfClass:@"UIViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,11 +1,11 @@
 @interface HMDAccessoryMetric
 + (id)logCategory;
 - (HMDAccessory)accessory;
-- (HMDAccessoryMetric)initWithAccessory:(id)a3;
+- (HMDAccessoryMetric)initWithAccessory:(id)accessory;
 - (id)logIdentifier;
 - (void)_initDiagnosticCounters;
 - (void)submitMetricAndStop;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDAccessoryMetric
@@ -19,34 +19,34 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAccessoryMetric *)self accessory];
+  accessory = [(HMDAccessoryMetric *)self accessory];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [v2 name];
-  v5 = [v2 identifier];
-  v6 = [v3 stringWithFormat:@"%@ : %@", v4, v5];
+  name = [accessory name];
+  identifier = [accessory identifier];
+  v6 = [v3 stringWithFormat:@"%@ : %@", name, identifier];
 
   return v6;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryMetric *)self accessory];
-  v6 = [(HMDAccessoryMetric *)self accessoryMetricTimer];
+  fireCopy = fire;
+  accessory = [(HMDAccessoryMetric *)self accessory];
+  accessoryMetricTimer = [(HMDAccessoryMetric *)self accessoryMetricTimer];
 
-  if (v6 == v4)
+  if (accessoryMetricTimer == fireCopy)
   {
-    v7 = [(HMDAccessoryMetric *)self sessionMetric];
-    [v7 submitMetric];
+    sessionMetric = [(HMDAccessoryMetric *)self sessionMetric];
+    [sessionMetric submitMetric];
 
-    v8 = [(HMDAccessoryMetric *)self sessionMetric];
-    [v8 resetSessionMetric];
+    sessionMetric2 = [(HMDAccessoryMetric *)self sessionMetric];
+    [sessionMetric2 resetSessionMetric];
 
-    if (!v5)
+    if (!accessory)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -57,23 +57,23 @@
       }
 
       objc_autoreleasePoolPop(v9);
-      v13 = [(HMDAccessoryMetric *)v10 accessoryMetricTimer];
-      [v13 cancel];
+      accessoryMetricTimer2 = [(HMDAccessoryMetric *)selfCopy accessoryMetricTimer];
+      [accessoryMetricTimer2 cancel];
 
-      [(HMDAccessoryMetric *)v10 setAccessoryMetricTimer:0];
+      [(HMDAccessoryMetric *)selfCopy setAccessoryMetricTimer:0];
     }
 
-    v14 = [(HMDAccessoryMetric *)self diagnosticsMetric];
-    v15 = [v14 collectMetric];
+    diagnosticsMetric = [(HMDAccessoryMetric *)self diagnosticsMetric];
+    collectMetric = [diagnosticsMetric collectMetric];
 
-    v16 = [(HMDAccessoryMetric *)self previousDiagnosticMetrics];
+    previousDiagnosticMetrics = [(HMDAccessoryMetric *)self previousDiagnosticMetrics];
 
     v17 = 0;
-    if (v16 && v15)
+    if (previousDiagnosticMetrics && collectMetric)
     {
-      v42 = v5;
-      v43 = v4;
-      v17 = [v15 mutableCopy];
+      v42 = accessory;
+      v43 = fireCopy;
+      v17 = [collectMetric mutableCopy];
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
@@ -95,14 +95,14 @@
             }
 
             v22 = *(*(&v46 + 1) + 8 * i);
-            v23 = [v15 objectForKeyedSubscript:v22];
+            v23 = [collectMetric objectForKeyedSubscript:v22];
             [(HMDAccessoryMetric *)self previousDiagnosticMetrics];
             v25 = v24 = self;
             v26 = [v25 objectForKeyedSubscript:v22];
 
             v27 = MEMORY[0x277CCABB0];
-            v28 = [v23 intValue];
-            v29 = v28 - [v26 intValue];
+            intValue = [v23 intValue];
+            v29 = intValue - [v26 intValue];
             v30 = v27;
             self = v24;
             v31 = [v30 numberWithInt:v29];
@@ -116,27 +116,27 @@
         while (v19);
       }
 
-      v5 = v42;
-      v4 = v43;
+      accessory = v42;
+      fireCopy = v43;
     }
 
-    [(HMDAccessoryMetric *)self setPreviousDiagnosticMetrics:v15];
+    [(HMDAccessoryMetric *)self setPreviousDiagnosticMetrics:collectMetric];
     if ([v17 count])
     {
       v32 = MEMORY[0x277CCABB0];
-      v33 = [(HMDAccessoryMetric *)self diagnosticsMetric];
-      v34 = [v33 metricCollectionStartTime];
-      [v34 timeIntervalSinceNow];
+      diagnosticsMetric2 = [(HMDAccessoryMetric *)self diagnosticsMetric];
+      metricCollectionStartTime = [diagnosticsMetric2 metricCollectionStartTime];
+      [metricCollectionStartTime timeIntervalSinceNow];
       LODWORD(v36) = llround(fabs(v35));
       v37 = [v32 numberWithInt:v36];
       [v17 setObject:v37 forKeyedSubscript:@"HMMTRAccessoryDiagnosticLogEventDurationInSeconds"];
 
-      v38 = [(HMDAccessoryMetric *)self diagnosticsMetric];
-      [v38 submitMetric:v17];
+      diagnosticsMetric3 = [(HMDAccessoryMetric *)self diagnosticsMetric];
+      [diagnosticsMetric3 submitMetric:v17];
 
-      v39 = [MEMORY[0x277CBEAA8] date];
-      v40 = [(HMDAccessoryMetric *)self diagnosticsMetric];
-      [v40 setMetricCollectionStartTime:v39];
+      date = [MEMORY[0x277CBEAA8] date];
+      diagnosticsMetric4 = [(HMDAccessoryMetric *)self diagnosticsMetric];
+      [diagnosticsMetric4 setMetricCollectionStartTime:date];
     }
   }
 
@@ -145,11 +145,11 @@
 
 - (void)submitMetricAndStop
 {
-  v3 = [(HMDAccessoryMetric *)self sessionMetric];
-  [v3 submitMetric];
+  sessionMetric = [(HMDAccessoryMetric *)self sessionMetric];
+  [sessionMetric submitMetric];
 
-  v4 = [(HMDAccessoryMetric *)self accessoryMetricTimer];
-  [v4 suspend];
+  accessoryMetricTimer = [(HMDAccessoryMetric *)self accessoryMetricTimer];
+  [accessoryMetricTimer suspend];
 }
 
 - (void)_initDiagnosticCounters
@@ -183,27 +183,27 @@
   deltaCounters = self->_deltaCounters;
   self->_deltaCounters = v11;
 
-  v13 = [(HMDAccessoryMetric *)self previousDiagnosticMetrics];
-  v14 = [v13 count];
+  previousDiagnosticMetrics = [(HMDAccessoryMetric *)self previousDiagnosticMetrics];
+  v14 = [previousDiagnosticMetrics count];
 
   if (!v14)
   {
-    v15 = [(HMDAccessoryMetric *)self diagnosticsMetric];
-    v16 = [v15 metric];
-    [(HMDAccessoryMetric *)self setPreviousDiagnosticMetrics:v16];
+    diagnosticsMetric = [(HMDAccessoryMetric *)self diagnosticsMetric];
+    metric = [diagnosticsMetric metric];
+    [(HMDAccessoryMetric *)self setPreviousDiagnosticMetrics:metric];
 
-    v17 = [MEMORY[0x277CBEAA8] date];
-    v18 = [(HMDAccessoryMetric *)self diagnosticsMetric];
-    [v18 setMetricCollectionStartTime:v17];
+    date = [MEMORY[0x277CBEAA8] date];
+    diagnosticsMetric2 = [(HMDAccessoryMetric *)self diagnosticsMetric];
+    [diagnosticsMetric2 setMetricCollectionStartTime:date];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAccessoryMetric)initWithAccessory:(id)a3
+- (HMDAccessoryMetric)initWithAccessory:(id)accessory
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   v25.receiver = self;
   v25.super_class = HMDAccessoryMetric;
   v5 = [(HMDAccessoryMetric *)&v25 init];
@@ -213,22 +213,22 @@
     workQueue = v5->_workQueue;
     v5->_workQueue = v6;
 
-    objc_storeWeak(&v5->_accessory, v4);
-    v8 = [[HMDAccessorySessionMetric alloc] initWithAccessory:v4 workQueue:v5->_workQueue];
+    objc_storeWeak(&v5->_accessory, accessoryCopy);
+    v8 = [[HMDAccessorySessionMetric alloc] initWithAccessory:accessoryCopy workQueue:v5->_workQueue];
     sessionMetric = v5->_sessionMetric;
     v5->_sessionMetric = v8;
 
-    v10 = [[HMDAccessoryDiagnosticsMetric alloc] initWithAccessory:v4];
+    v10 = [[HMDAccessoryDiagnosticsMetric alloc] initWithAccessory:accessoryCopy];
     diagnosticsMetric = v5->_diagnosticsMetric;
     v5->_diagnosticsMetric = v10;
 
-    v12 = [MEMORY[0x277D0F8D0] sharedPreferences];
-    v13 = [v12 preferenceForKey:@"HMDAccessorySessionMetricSubmissionInterval"];
-    v14 = [v13 numberValue];
+    mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+    v13 = [mEMORY[0x277D0F8D0] preferenceForKey:@"HMDAccessorySessionMetricSubmissionInterval"];
+    numberValue = [v13 numberValue];
 
-    if (v14)
+    if (numberValue)
     {
-      [v14 floatValue];
+      [numberValue floatValue];
       v16 = v15;
     }
 

@@ -4,23 +4,23 @@
 - (NSDictionary)actionsGroupedByBundleIdentifier;
 - (NSDictionary)entitiesGroupedByBundleIdentifier;
 - (id)bundleIdentifiers;
-- (id)cachedActionIdentifiersForBundleIdentifier:(id)a3;
+- (id)cachedActionIdentifiersForBundleIdentifier:(id)identifier;
 - (id)cachedActions;
 - (id)cachedBundleIdentifiers;
 - (id)cachedEntities;
-- (id)cachedEntityIdentifiersForBundleIdentifier:(id)a3;
-- (id)supportedActionIdentifiersForBundleIdentifier:(id)a3;
-- (id)supportedEntityIdentifiersForBundleIdentifier:(id)a3;
-- (void)cacheActionIdentifiers:(id)a3 forBundleIdentifier:(id)a4;
-- (void)cacheActions:(id)a3;
-- (void)cacheBundleIdentifiers:(id)a3;
-- (void)cacheEntities:(id)a3;
-- (void)cacheEntityIdentifiers:(id)a3 forBundleIdentifier:(id)a4;
+- (id)cachedEntityIdentifiersForBundleIdentifier:(id)identifier;
+- (id)supportedActionIdentifiersForBundleIdentifier:(id)identifier;
+- (id)supportedEntityIdentifiersForBundleIdentifier:(id)identifier;
+- (void)cacheActionIdentifiers:(id)identifiers forBundleIdentifier:(id)identifier;
+- (void)cacheActions:(id)actions;
+- (void)cacheBundleIdentifiers:(id)identifiers;
+- (void)cacheEntities:(id)entities;
+- (void)cacheEntityIdentifiers:(id)identifiers forBundleIdentifier:(id)identifier;
 - (void)evictCache;
 - (void)metadataProvider;
-- (void)setLockCachedActions:(uint64_t)a1;
-- (void)setLockCachedBundleIdentifiers:(uint64_t)a1;
-- (void)setLockCachedEntities:(uint64_t)a1;
+- (void)setLockCachedActions:(uint64_t)actions;
+- (void)setLockCachedBundleIdentifiers:(uint64_t)identifiers;
+- (void)setLockCachedEntities:(uint64_t)entities;
 @end
 
 @implementation INLinkActionProvider
@@ -52,34 +52,34 @@
   v3[2](v3);
 }
 
-- (void)setLockCachedBundleIdentifiers:(uint64_t)a1
+- (void)setLockCachedBundleIdentifiers:(uint64_t)identifiers
 {
-  if (a1)
+  if (identifiers)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((identifiers + 24), a2);
   }
 }
 
-- (void)setLockCachedActions:(uint64_t)a1
+- (void)setLockCachedActions:(uint64_t)actions
 {
-  if (a1)
+  if (actions)
   {
-    objc_storeStrong((a1 + 48), a2);
+    objc_storeStrong((actions + 48), a2);
   }
 }
 
-- (void)setLockCachedEntities:(uint64_t)a1
+- (void)setLockCachedEntities:(uint64_t)entities
 {
-  if (a1)
+  if (entities)
   {
-    objc_storeStrong((a1 + 56), a2);
+    objc_storeStrong((entities + 56), a2);
   }
 }
 
-- (void)cacheEntityIdentifiers:(id)a3 forBundleIdentifier:(id)a4
+- (void)cacheEntityIdentifiers:(id)identifiers forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -98,15 +98,15 @@
   }
 
   v10 = lockCachedEntityIdentifiers;
-  [(NSMutableDictionary *)v10 setObject:v6 forKey:v7];
+  [(NSMutableDictionary *)v10 setObject:identifiersCopy forKey:identifierCopy];
 
   v8[2](v8);
 }
 
-- (void)cacheActionIdentifiers:(id)a3 forBundleIdentifier:(id)a4
+- (void)cacheActionIdentifiers:(id)identifiers forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -125,14 +125,14 @@
   }
 
   v10 = lockCachedActionIdentifiers;
-  [(NSMutableDictionary *)v10 setObject:v6 forKey:v7];
+  [(NSMutableDictionary *)v10 setObject:identifiersCopy forKey:identifierCopy];
 
   v8[2](v8);
 }
 
-- (void)cacheEntities:(id)a3
+- (void)cacheEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   os_unfair_lock_lock(&self->_lock);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -140,14 +140,14 @@
   v6[3] = &unk_1E72882F8;
   v6[4] = self;
   v5 = MEMORY[0x193AD7780](v6);
-  [(INLinkActionProvider *)self setLockCachedEntities:v4];
+  [(INLinkActionProvider *)self setLockCachedEntities:entitiesCopy];
 
   v5[2](v5);
 }
 
-- (void)cacheActions:(id)a3
+- (void)cacheActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   os_unfair_lock_lock(&self->_lock);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -155,14 +155,14 @@
   v6[3] = &unk_1E72882F8;
   v6[4] = self;
   v5 = MEMORY[0x193AD7780](v6);
-  [(INLinkActionProvider *)self setLockCachedActions:v4];
+  [(INLinkActionProvider *)self setLockCachedActions:actionsCopy];
 
   v5[2](v5);
 }
 
-- (void)cacheBundleIdentifiers:(id)a3
+- (void)cacheBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   os_unfair_lock_lock(&self->_lock);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -170,14 +170,14 @@
   v6[3] = &unk_1E72882F8;
   v6[4] = self;
   v5 = MEMORY[0x193AD7780](v6);
-  [(INLinkActionProvider *)self setLockCachedBundleIdentifiers:v4];
+  [(INLinkActionProvider *)self setLockCachedBundleIdentifiers:identifiersCopy];
 
   v5[2](v5);
 }
 
-- (id)cachedEntityIdentifiersForBundleIdentifier:(id)a3
+- (id)cachedEntityIdentifiersForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -196,16 +196,16 @@
   }
 
   v7 = lockCachedEntityIdentifiers;
-  v8 = [(NSMutableDictionary *)v7 objectForKey:v4];
+  v8 = [(NSMutableDictionary *)v7 objectForKey:identifierCopy];
 
   v5[2](v5);
 
   return v8;
 }
 
-- (id)cachedActionIdentifiersForBundleIdentifier:(id)a3
+- (id)cachedActionIdentifiersForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -224,7 +224,7 @@
   }
 
   v7 = lockCachedActionIdentifiers;
-  v8 = [(NSMutableDictionary *)v7 objectForKey:v4];
+  v8 = [(NSMutableDictionary *)v7 objectForKey:identifierCopy];
 
   v5[2](v5);
 
@@ -306,32 +306,32 @@
   return v5;
 }
 
-- (id)supportedEntityIdentifiersForBundleIdentifier:(id)a3
+- (id)supportedEntityIdentifiersForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INLinkActionProvider *)self cachedEntities];
+  identifierCopy = identifier;
+  cachedEntities = [(INLinkActionProvider *)self cachedEntities];
 
-  if (v5)
+  if (cachedEntities)
   {
-    v6 = [(INLinkActionProvider *)self cachedEntities];
-    v7 = [v6 objectForKey:v4];
+    cachedEntities2 = [(INLinkActionProvider *)self cachedEntities];
+    v7 = [cachedEntities2 objectForKey:identifierCopy];
 
-    v8 = [v7 allKeys];
+    allKeys = [v7 allKeys];
 
     goto LABEL_13;
   }
 
-  v9 = [(INLinkActionProvider *)self cachedEntityIdentifiersForBundleIdentifier:v4];
+  v9 = [(INLinkActionProvider *)self cachedEntityIdentifiersForBundleIdentifier:identifierCopy];
   v10 = v9;
   if (!v9)
   {
-    v11 = [(INLinkActionProvider *)self metadataProvider];
+    metadataProvider = [(INLinkActionProvider *)self metadataProvider];
     if (objc_opt_respondsToSelector())
     {
       v16 = 0;
-      v8 = [v11 entityIdentifiersForBundleIdentifier:v4 error:&v16];
+      allKeys = [metadataProvider entityIdentifiersForBundleIdentifier:identifierCopy error:&v16];
       v12 = v16;
-      if (!v8)
+      if (!allKeys)
       {
         goto LABEL_11;
       }
@@ -340,11 +340,11 @@
     else
     {
       v15 = 0;
-      v13 = [v11 entitiesForBundleIdentifier:v4 error:&v15];
+      v13 = [metadataProvider entitiesForBundleIdentifier:identifierCopy error:&v15];
       v12 = v15;
-      v8 = [v13 if_compactMap:&__block_literal_global_9];
+      allKeys = [v13 if_compactMap:&__block_literal_global_9];
 
-      if (!v8)
+      if (!allKeys)
       {
 LABEL_11:
 
@@ -354,26 +354,26 @@ LABEL_11:
 
     if ([(INLinkActionProvider *)self isCachingLinkMetadata])
     {
-      [(INLinkActionProvider *)self cacheEntityIdentifiers:v8 forBundleIdentifier:v4];
+      [(INLinkActionProvider *)self cacheEntityIdentifiers:allKeys forBundleIdentifier:identifierCopy];
     }
 
     goto LABEL_11;
   }
 
-  v8 = v9;
+  allKeys = v9;
 LABEL_12:
 
 LABEL_13:
 
-  return v8;
+  return allKeys;
 }
 
 - (void)metadataProvider
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = a1[2];
+    selfCopy = self;
+    v2 = self[2];
     if (!v2)
     {
       v9 = 0;
@@ -395,16 +395,16 @@ LABEL_13:
       v4 = v3;
       _Block_object_dispose(&v9, 8);
       v5 = objc_alloc_init(v3);
-      v6 = v1[2];
-      v1[2] = v5;
+      v6 = selfCopy[2];
+      selfCopy[2] = v5;
 
-      v2 = v1[2];
+      v2 = selfCopy[2];
     }
 
-    a1 = v2;
+    self = v2;
   }
 
-  return a1;
+  return self;
 }
 
 void *__70__INLinkActionProvider_supportedEntityIdentifiersForBundleIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -434,32 +434,32 @@ void *__70__INLinkActionProvider_supportedEntityIdentifiersForBundleIdentifier__
   return v3;
 }
 
-- (id)supportedActionIdentifiersForBundleIdentifier:(id)a3
+- (id)supportedActionIdentifiersForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INLinkActionProvider *)self cachedActions];
+  identifierCopy = identifier;
+  cachedActions = [(INLinkActionProvider *)self cachedActions];
 
-  if (v5)
+  if (cachedActions)
   {
-    v6 = [(INLinkActionProvider *)self cachedActions];
-    v7 = [v6 objectForKey:v4];
+    cachedActions2 = [(INLinkActionProvider *)self cachedActions];
+    v7 = [cachedActions2 objectForKey:identifierCopy];
 
-    v8 = [v7 allKeys];
+    allKeys = [v7 allKeys];
 
     goto LABEL_13;
   }
 
-  v9 = [(INLinkActionProvider *)self cachedActionIdentifiersForBundleIdentifier:v4];
+  v9 = [(INLinkActionProvider *)self cachedActionIdentifiersForBundleIdentifier:identifierCopy];
   v10 = v9;
   if (!v9)
   {
-    v11 = [(INLinkActionProvider *)self metadataProvider];
+    metadataProvider = [(INLinkActionProvider *)self metadataProvider];
     if (objc_opt_respondsToSelector())
     {
       v16 = 0;
-      v8 = [v11 actionIdentifiersForBundleIdentifier:v4 error:&v16];
+      allKeys = [metadataProvider actionIdentifiersForBundleIdentifier:identifierCopy error:&v16];
       v12 = v16;
-      if (!v8)
+      if (!allKeys)
       {
         goto LABEL_11;
       }
@@ -468,11 +468,11 @@ void *__70__INLinkActionProvider_supportedEntityIdentifiersForBundleIdentifier__
     else
     {
       v15 = 0;
-      v13 = [v11 actionsForBundleIdentifier:v4 error:&v15];
+      v13 = [metadataProvider actionsForBundleIdentifier:identifierCopy error:&v15];
       v12 = v15;
-      v8 = [v13 if_compactMap:&__block_literal_global_158298];
+      allKeys = [v13 if_compactMap:&__block_literal_global_158298];
 
-      if (!v8)
+      if (!allKeys)
       {
 LABEL_11:
 
@@ -482,18 +482,18 @@ LABEL_11:
 
     if ([(INLinkActionProvider *)self isCachingLinkMetadata])
     {
-      [(INLinkActionProvider *)self cacheActionIdentifiers:v8 forBundleIdentifier:v4];
+      [(INLinkActionProvider *)self cacheActionIdentifiers:allKeys forBundleIdentifier:identifierCopy];
     }
 
     goto LABEL_11;
   }
 
-  v8 = v9;
+  allKeys = v9;
 LABEL_12:
 
 LABEL_13:
 
-  return v8;
+  return allKeys;
 }
 
 void *__70__INLinkActionProvider_supportedActionIdentifiersForBundleIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -525,9 +525,9 @@ void *__70__INLinkActionProvider_supportedActionIdentifiersForBundleIdentifier__
 
 - (id)bundleIdentifiers
 {
-  v3 = [(INLinkActionProvider *)self metadataProvider];
+  metadataProvider = [(INLinkActionProvider *)self metadataProvider];
   v6 = 0;
-  v4 = [v3 bundlesWithError:&v6];
+  v4 = [metadataProvider bundlesWithError:&v6];
   if (v4 && [(INLinkActionProvider *)self isCachingLinkMetadata])
   {
     [(INLinkActionProvider *)self cacheBundleIdentifiers:v4];
@@ -538,42 +538,42 @@ void *__70__INLinkActionProvider_supportedActionIdentifiersForBundleIdentifier__
 
 - (NSDictionary)entitiesGroupedByBundleIdentifier
 {
-  v3 = [(INLinkActionProvider *)self cachedEntities];
+  cachedEntities = [(INLinkActionProvider *)self cachedEntities];
 
-  if (v3)
+  if (cachedEntities)
   {
-    v4 = [(INLinkActionProvider *)self cachedEntities];
+    cachedEntities2 = [(INLinkActionProvider *)self cachedEntities];
   }
 
   else
   {
-    v5 = [(INLinkActionProvider *)self metadataProvider];
+    metadataProvider = [(INLinkActionProvider *)self metadataProvider];
     v7 = 0;
-    v4 = [v5 entitiesWithError:&v7];
-    if (v4 && [(INLinkActionProvider *)self isCachingLinkMetadata])
+    cachedEntities2 = [metadataProvider entitiesWithError:&v7];
+    if (cachedEntities2 && [(INLinkActionProvider *)self isCachingLinkMetadata])
     {
-      [(INLinkActionProvider *)self cacheEntities:v4];
+      [(INLinkActionProvider *)self cacheEntities:cachedEntities2];
     }
   }
 
-  return v4;
+  return cachedEntities2;
 }
 
 - (NSDictionary)actionsGroupedByBundleIdentifier
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(INLinkActionProvider *)self cachedActions];
+  cachedActions = [(INLinkActionProvider *)self cachedActions];
   os_unfair_lock_unlock(&self->_lock);
-  if (v3)
+  if (cachedActions)
   {
-    v4 = v3;
+    v4 = cachedActions;
   }
 
   else
   {
-    v5 = [(INLinkActionProvider *)self metadataProvider];
+    metadataProvider = [(INLinkActionProvider *)self metadataProvider];
     v7 = 0;
-    v4 = [v5 actionsWithError:&v7];
+    v4 = [metadataProvider actionsWithError:&v7];
     if (v4 && [(INLinkActionProvider *)self isCachingLinkMetadata])
     {
       [(INLinkActionProvider *)self cacheActions:v4];

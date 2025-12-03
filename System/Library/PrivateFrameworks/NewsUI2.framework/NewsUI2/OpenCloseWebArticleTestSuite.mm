@@ -1,17 +1,17 @@
 @interface OpenCloseWebArticleTestSuite
 - (_TtC7NewsUI228OpenCloseWebArticleTestSuite)init;
-- (void)setupTestWithContext:(id)a3 completion:(id)a4;
+- (void)setupTestWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation OpenCloseWebArticleTestSuite
 
-- (void)setupTestWithContext:(id)a3 completion:(id)a4
+- (void)setupTestWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_2195D8174(v7, v8, v6);
+  contextCopy = context;
+  selfCopy = self;
+  sub_2195D8174(contextCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

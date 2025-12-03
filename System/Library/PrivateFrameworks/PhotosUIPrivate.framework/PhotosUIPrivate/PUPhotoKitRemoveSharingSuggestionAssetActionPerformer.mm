@@ -1,27 +1,27 @@
 @interface PUPhotoKitRemoveSharingSuggestionAssetActionPerformer
-- (BOOL)assetActionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5;
-- (id)undoManagerForAssetActionPerformer:(id)a3;
+- (BOOL)assetActionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler;
+- (id)undoManagerForAssetActionPerformer:(id)performer;
 - (void)_performTrashTask;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PUPhotoKitRemoveSharingSuggestionAssetActionPerformer
 
-- (BOOL)assetActionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5
+- (BOOL)assetActionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(PUAssetActionPerformer *)self delegate];
-  LOBYTE(self) = [v9 assetActionPerformer:self dismissViewController:v8 completionHandler:v7];
+  handlerCopy = handler;
+  controllerCopy = controller;
+  delegate = [(PUAssetActionPerformer *)self delegate];
+  LOBYTE(self) = [delegate assetActionPerformer:self dismissViewController:controllerCopy completionHandler:handlerCopy];
 
   return self;
 }
 
-- (id)undoManagerForAssetActionPerformer:(id)a3
+- (id)undoManagerForAssetActionPerformer:(id)performer
 {
-  v4 = a3;
-  v5 = [(PUAssetActionPerformer *)self delegate];
-  v6 = [v5 undoManagerForAssetActionPerformer:v4];
+  performerCopy = performer;
+  delegate = [(PUAssetActionPerformer *)self delegate];
+  v6 = [delegate undoManagerForAssetActionPerformer:performerCopy];
 
   return v6;
 }
@@ -29,9 +29,9 @@
 - (void)_performTrashTask
 {
   v3 = [PUPhotoKitTrashActionPerformer alloc];
-  v4 = [(PUAssetActionPerformer *)self assets];
-  v5 = [(PUAssetActionPerformer *)self assetsByAssetCollection];
-  v6 = [(PUAssetActionPerformer *)v3 initWithActionType:8 assets:v4 orAssetsByAssetCollection:v5];
+  assets = [(PUAssetActionPerformer *)self assets];
+  assetsByAssetCollection = [(PUAssetActionPerformer *)self assetsByAssetCollection];
+  v6 = [(PUAssetActionPerformer *)v3 initWithActionType:8 assets:assets orAssetsByAssetCollection:assetsByAssetCollection];
 
   [(PUAssetActionPerformer *)v6 setDelegate:self];
   [(PUPhotoKitRemoveSharingSuggestionAssetActionPerformer *)self setTrashActionPerformer:v6];
@@ -45,7 +45,7 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PUAssetActionPerformer *)self assets];
+  assets = [(PUAssetActionPerformer *)self assets];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __83__PUPhotoKitRemoveSharingSuggestionAssetActionPerformer_performUserInteractionTask__block_invoke;
@@ -64,7 +64,7 @@
   v19[3] = &unk_1E7B7E148;
   v19[4] = self;
   v6 = _Block_copy(v19);
-  v7 = [MEMORY[0x1E69C37F8] warningStringForAssets:v3 isDeleting:1];
+  v7 = [MEMORY[0x1E69C37F8] warningStringForAssets:assets isDeleting:1];
   v8 = PULocalizedString(@"CANCEL");
   v9 = PULocalizedString(@"REMOVE_FROM_ALBUM_BUTTON");
   v10 = PULocalizedString(@"DELETE_FROM_LIBRARY_BUTTON_TITLE");

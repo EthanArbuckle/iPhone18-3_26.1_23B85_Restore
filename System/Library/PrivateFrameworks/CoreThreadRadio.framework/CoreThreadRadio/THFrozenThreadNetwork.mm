@@ -1,20 +1,20 @@
 @interface THFrozenThreadNetwork
-+ (id)frozenThreadNetworkFromKeychainDictionary:(id)a3;
-+ (id)keyChainQueryForDeleteFrozenThreadNetworkRecordOperation:(id)a3;
++ (id)frozenThreadNetworkFromKeychainDictionary:(id)dictionary;
++ (id)keyChainQueryForDeleteFrozenThreadNetworkRecordOperation:(id)operation;
 + (id)keyChainQueryForDeleteFrozenThreadNetworkRecordsOperation;
 + (id)keyChainQueryForFetchFrozenThreadNetworkRecordsOperation;
-+ (id)keyChainQueryForFrozenThreadNetworkRecordOperationForCredentialsDataSet:(id)a3;
++ (id)keyChainQueryForFrozenThreadNetworkRecordOperationForCredentialsDataSet:(id)set;
 - (id)keyChainItemRepresentationForFrozenThreadNetworkAddOperation;
 - (id)keyChainQueryForFrozenThreadNetworkUpdateOperation;
 @end
 
 @implementation THFrozenThreadNetwork
 
-+ (id)frozenThreadNetworkFromKeychainDictionary:(id)a3
++ (id)frozenThreadNetworkFromKeychainDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 objectForKey:kSecAttrAccount];
+  v5 = [dictionaryCopy objectForKey:kSecAttrAccount];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -22,7 +22,7 @@
     goto LABEL_8;
   }
 
-  v6 = [v3 objectForKey:kSecAttrAccount];
+  v6 = [dictionaryCopy objectForKey:kSecAttrAccount];
 
   if (!v6)
   {
@@ -39,11 +39,11 @@ LABEL_8:
     v9 = [[THThreadNetworkCredentialsDataSet alloc] initWithDataSetArray:v8 userInfo:0];
     if (v9)
     {
-      v10 = [v3 objectForKey:kSecAttrCreationDate];
+      v10 = [dictionaryCopy objectForKey:kSecAttrCreationDate];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v3 objectForKey:kSecAttrCreationDate];
+        v11 = [dictionaryCopy objectForKey:kSecAttrCreationDate];
       }
 
       else
@@ -51,11 +51,11 @@ LABEL_8:
         v11 = 0;
       }
 
-      v15 = [v3 objectForKey:kSecAttrModificationDate];
+      v15 = [dictionaryCopy objectForKey:kSecAttrModificationDate];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = [v3 objectForKey:kSecAttrModificationDate];
+        v16 = [dictionaryCopy objectForKey:kSecAttrModificationDate];
       }
 
       else
@@ -97,11 +97,11 @@ LABEL_12:
 
 - (id)keyChainItemRepresentationForFrozenThreadNetworkAddOperation
 {
-  v2 = [(THFrozenThreadNetwork *)self keyChainQueryForFrozenThreadNetworkUpdateOperation];
-  v3 = v2;
-  if (v2)
+  keyChainQueryForFrozenThreadNetworkUpdateOperation = [(THFrozenThreadNetwork *)self keyChainQueryForFrozenThreadNetworkUpdateOperation];
+  v3 = keyChainQueryForFrozenThreadNetworkUpdateOperation;
+  if (keyChainQueryForFrozenThreadNetworkUpdateOperation)
   {
-    v4 = [v2 mutableCopy];
+    v4 = [keyChainQueryForFrozenThreadNetworkUpdateOperation mutableCopy];
     v8[0] = kSecAttrIsInvisible;
     v8[1] = kSecAttrSynchronizable;
     v9[0] = &__kCFBooleanTrue;
@@ -138,17 +138,17 @@ LABEL_12:
 
 - (id)keyChainQueryForFrozenThreadNetworkUpdateOperation
 {
-  v3 = [(THFrozenThreadNetwork *)self credentialsDataSet];
-  if (!v3)
+  credentialsDataSet = [(THFrozenThreadNetwork *)self credentialsDataSet];
+  if (!credentialsDataSet)
   {
     goto LABEL_4;
   }
 
-  v4 = v3;
-  v5 = [(THFrozenThreadNetwork *)self credentialsDataSet];
-  v6 = [v5 dataSetArray];
+  v4 = credentialsDataSet;
+  credentialsDataSet2 = [(THFrozenThreadNetwork *)self credentialsDataSet];
+  dataSetArray = [credentialsDataSet2 dataSetArray];
 
-  if (v6)
+  if (dataSetArray)
   {
     v12[0] = kSecClass;
     v12[1] = kSecAttrSynchronizable;
@@ -157,9 +157,9 @@ LABEL_12:
     v13[2] = kSecAttrViewHintHome;
     v12[2] = kSecAttrSyncViewHint;
     v12[3] = kSecAttrAccount;
-    v7 = [(THFrozenThreadNetwork *)self credentialsDataSet];
-    v8 = [v7 dataSetArray];
-    v9 = base64StringFromData(v8);
+    credentialsDataSet3 = [(THFrozenThreadNetwork *)self credentialsDataSet];
+    dataSetArray2 = [credentialsDataSet3 dataSetArray];
+    v9 = base64StringFromData(dataSetArray2);
     v13[3] = v9;
     v10 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:4];
   }
@@ -167,8 +167,8 @@ LABEL_12:
   else
   {
 LABEL_4:
-    v7 = THCredentialsServerLogHandleForCategory(1);
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    credentialsDataSet3 = THCredentialsServerLogHandleForCategory(1);
+    if (os_log_type_enabled(credentialsDataSet3, OS_LOG_TYPE_ERROR))
     {
       [THFrozenThreadNetwork(Keychain) keyChainQueryForFrozenThreadNetworkUpdateOperation];
     }
@@ -179,12 +179,12 @@ LABEL_4:
   return v10;
 }
 
-+ (id)keyChainQueryForDeleteFrozenThreadNetworkRecordOperation:(id)a3
++ (id)keyChainQueryForDeleteFrozenThreadNetworkRecordOperation:(id)operation
 {
   v8[0] = kSecAttrAccount;
-  v3 = [a3 credentialsDataSet];
-  v4 = [v3 dataSetArray];
-  v5 = base64StringFromData(v4);
+  credentialsDataSet = [operation credentialsDataSet];
+  dataSetArray = [credentialsDataSet dataSetArray];
+  v5 = base64StringFromData(dataSetArray);
   v9[0] = v5;
   v9[1] = kSecClassInternetPassword;
   v8[1] = kSecClass;
@@ -237,12 +237,12 @@ LABEL_4:
   return v2;
 }
 
-+ (id)keyChainQueryForFrozenThreadNetworkRecordOperationForCredentialsDataSet:(id)a3
++ (id)keyChainQueryForFrozenThreadNetworkRecordOperationForCredentialsDataSet:(id)set
 {
   v8[0] = kSecAttrAccount;
-  v3 = [a3 credentialsDataSet];
-  v4 = [v3 dataSetArray];
-  v5 = base64StringFromData(v4);
+  credentialsDataSet = [set credentialsDataSet];
+  dataSetArray = [credentialsDataSet dataSetArray];
+  v5 = base64StringFromData(dataSetArray);
   v9[0] = v5;
   v9[1] = kSecClassInternetPassword;
   v8[1] = kSecClass;

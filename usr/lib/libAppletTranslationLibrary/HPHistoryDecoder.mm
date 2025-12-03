@@ -1,29 +1,29 @@
 @interface HPHistoryDecoder
-+ ($06D0163FE0D7AFE752A9F21F38483579)getInOutStation:(id)a3;
-+ ($391024036B902F3EE9BCB0FBA5EF777F)getCommuterBalance:(id)a3;
-+ ($391024036B902F3EE9BCB0FBA5EF777F)getTransactionBalance:(id)a3;
-+ ($9E16F6706E08E1DCF37CEDFAE5F41851)getSectorInformation:(id)a3;
-+ (BOOL)getGreenCarTicketUsed:(id)a3;
-+ (BOOL)getIsDenyListed:(id)a3;
-+ (id)_decodeShinkansenTrainDataWithBlock:(id)a3 andBlock:(id)a4;
-+ (id)getTransactionDate:(id)a3;
-+ (id)parseGreencarBlocks:(id)a3;
-+ (id)parseShinkansenBlocks:(id)a3 fromServiceCode:(unsigned __int16)a4;
-+ (id)parseSuicaHistoryBlocks:(id)a3 withIDm:(id)a4;
-+ (int)getTransactionAmount:(id)a3 withPreviousBlock:(id)a4;
-+ (unsigned)getHistoryNumber:(id)a3;
-+ (unsigned)getTypeOfUse:(id)a3;
++ ($06D0163FE0D7AFE752A9F21F38483579)getInOutStation:(id)station;
++ ($391024036B902F3EE9BCB0FBA5EF777F)getCommuterBalance:(id)balance;
++ ($391024036B902F3EE9BCB0FBA5EF777F)getTransactionBalance:(id)balance;
++ ($9E16F6706E08E1DCF37CEDFAE5F41851)getSectorInformation:(id)information;
++ (BOOL)getGreenCarTicketUsed:(id)used;
++ (BOOL)getIsDenyListed:(id)listed;
++ (id)_decodeShinkansenTrainDataWithBlock:(id)block andBlock:(id)andBlock;
++ (id)getTransactionDate:(id)date;
++ (id)parseGreencarBlocks:(id)blocks;
++ (id)parseShinkansenBlocks:(id)blocks fromServiceCode:(unsigned __int16)code;
++ (id)parseSuicaHistoryBlocks:(id)blocks withIDm:(id)dm;
++ (int)getTransactionAmount:(id)amount withPreviousBlock:(id)block;
++ (unsigned)getHistoryNumber:(id)number;
++ (unsigned)getTypeOfUse:(id)use;
 @end
 
 @implementation HPHistoryDecoder
 
-+ (id)getTransactionDate:(id)a3
++ (id)getTransactionDate:(id)date
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([SlalomUtils isValidFelicaBlock:v3])
+  dateCopy = date;
+  if ([SlalomUtils isValidFelicaBlock:dateCopy])
   {
-    v4 = bswap32(*([v3 bytes] + 4));
+    v4 = bswap32(*([dateCopy bytes] + 4));
     v5 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [v5 setYear:(v4 >> 25) + 2000];
     [v5 setMonth:(v4 >> 21) & 0xF];
@@ -36,7 +36,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v3;
+      v10 = dateCopy;
       _os_log_impl(&dword_22EEF5000, v6, OS_LOG_TYPE_DEFAULT, "Failed to get the transaction date for Suica, invalid block: %@", &v9, 0xCu);
     }
 
@@ -48,14 +48,14 @@
   return v5;
 }
 
-+ ($391024036B902F3EE9BCB0FBA5EF777F)getTransactionBalance:(id)a3
++ ($391024036B902F3EE9BCB0FBA5EF777F)getTransactionBalance:(id)balance
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([SlalomUtils isValidFelicaBlock:v3])
+  balanceCopy = balance;
+  if ([SlalomUtils isValidFelicaBlock:balanceCopy])
   {
-    v4 = [v3 bytes];
-    v5 = ((v4[12] << 16) | (v4[11] << 8) | v4[10]) << 32;
+    bytes = [balanceCopy bytes];
+    v5 = ((bytes[12] << 16) | (bytes[11] << 8) | bytes[10]) << 32;
     v6 = 1;
   }
 
@@ -65,7 +65,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = balanceCopy;
       _os_log_impl(&dword_22EEF5000, v7, OS_LOG_TYPE_DEFAULT, "Failed to get the transaction balance for Suica, invalid block: %@", &v10, 0xCu);
     }
 
@@ -77,14 +77,14 @@
   return (v6 | v5);
 }
 
-+ ($391024036B902F3EE9BCB0FBA5EF777F)getCommuterBalance:(id)a3
++ ($391024036B902F3EE9BCB0FBA5EF777F)getCommuterBalance:(id)balance
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([SlalomUtils isValidFelicaBlock:v3])
+  balanceCopy = balance;
+  if ([SlalomUtils isValidFelicaBlock:balanceCopy])
   {
-    v4 = [v3 bytes];
-    v5 = ((v4[13] << 16) | (v4[12] << 8) | v4[11]) << 32;
+    bytes = [balanceCopy bytes];
+    v5 = ((bytes[13] << 16) | (bytes[12] << 8) | bytes[11]) << 32;
     v6 = 1;
   }
 
@@ -94,7 +94,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = balanceCopy;
       _os_log_impl(&dword_22EEF5000, v7, OS_LOG_TYPE_DEFAULT, "Failed to get the commuter balance for Suica, invalid block: %@", &v10, 0xCu);
     }
 
@@ -106,14 +106,14 @@
   return (v6 | v5);
 }
 
-+ (unsigned)getTypeOfUse:(id)a3
++ (unsigned)getTypeOfUse:(id)use
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([SlalomUtils isValidFelicaBlock:v3])
+  useCopy = use;
+  if ([SlalomUtils isValidFelicaBlock:useCopy])
   {
-    v4 = [v3 bytes];
-    v5 = *(v4 + 3) | ((*(v4 + 1) & 0x7F) << 8);
+    bytes = [useCopy bytes];
+    v5 = *(bytes + 3) | ((*(bytes + 1) & 0x7F) << 8);
   }
 
   else
@@ -122,7 +122,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v3;
+      v10 = useCopy;
       _os_log_impl(&dword_22EEF5000, v6, OS_LOG_TYPE_DEFAULT, "Failed to get the type of use for Suica, invalid block: %@", &v9, 0xCu);
     }
 
@@ -133,18 +133,18 @@
   return v5;
 }
 
-+ (int)getTransactionAmount:(id)a3 withPreviousBlock:(id)a4
++ (int)getTransactionAmount:(id)amount withPreviousBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![SlalomUtils isValidFelicaBlock:v6])
+  amountCopy = amount;
+  blockCopy = block;
+  if (![SlalomUtils isValidFelicaBlock:amountCopy])
   {
     v10 = ATLLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v6;
+      v15 = amountCopy;
       v11 = "Failed to get the transaction amount use for Suica, invalid (current) block: %@";
 LABEL_8:
       _os_log_impl(&dword_22EEF5000, v10, OS_LOG_TYPE_DEFAULT, v11, &v14, 0xCu);
@@ -156,13 +156,13 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![SlalomUtils isValidFelicaBlock:v7])
+  if (![SlalomUtils isValidFelicaBlock:blockCopy])
   {
     v10 = ATLLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v7;
+      v15 = blockCopy;
       v11 = "Failed to get the transaction amount use for Suica, invalid (previous) block: %@";
       goto LABEL_8;
     }
@@ -170,25 +170,25 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = [a1 getTransactionBalance:v6] >> 32;
-  v9 = ([a1 getTransactionBalance:v7] >> 32) - v8;
+  v8 = [self getTransactionBalance:amountCopy] >> 32;
+  v9 = ([self getTransactionBalance:blockCopy] >> 32) - v8;
 LABEL_10:
 
   v12 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-+ ($9E16F6706E08E1DCF37CEDFAE5F41851)getSectorInformation:(id)a3
++ ($9E16F6706E08E1DCF37CEDFAE5F41851)getSectorInformation:(id)information
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([SlalomUtils isValidFelicaBlock:v3])
+  informationCopy = information;
+  if ([SlalomUtils isValidFelicaBlock:informationCopy])
   {
-    v4 = [v3 bytes];
-    v5 = bswap32(*(v4 + 6)) >> 16;
-    v6 = (*(v4 + 15) & 0x30) << 48;
-    v7 = (bswap32(*(v4 + 8)) >> 16) << 32;
-    v8 = (*(v4 + 15) & 0xC0) << 16;
+    bytes = [informationCopy bytes];
+    v5 = bswap32(*(bytes + 6)) >> 16;
+    v6 = (*(bytes + 15) & 0x30) << 48;
+    v7 = (bswap32(*(bytes + 8)) >> 16) << 32;
+    v8 = (*(bytes + 15) & 0xC0) << 16;
   }
 
   else
@@ -197,7 +197,7 @@ LABEL_10:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v3;
+      v13 = informationCopy;
       _os_log_impl(&dword_22EEF5000, v9, OS_LOG_TYPE_DEFAULT, "Failed to get the sector information for Suica, invalid block: %@", &v12, 0xCu);
     }
 
@@ -211,13 +211,13 @@ LABEL_10:
   return (v7 | v6 | v8 | v5);
 }
 
-+ (BOOL)getGreenCarTicketUsed:(id)a3
++ (BOOL)getGreenCarTicketUsed:(id)used
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([SlalomUtils isValidFelicaBlock:v3])
+  usedCopy = used;
+  if ([SlalomUtils isValidFelicaBlock:usedCopy])
   {
-    v4 = *([v3 bytes] + 15) & 1;
+    v4 = *([usedCopy bytes] + 15) & 1;
   }
 
   else
@@ -226,7 +226,7 @@ LABEL_10:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = usedCopy;
       _os_log_impl(&dword_22EEF5000, v5, OS_LOG_TYPE_DEFAULT, "Failed to get the GreenCar information for Suica, invalid block: %@", &v8, 0xCu);
     }
 
@@ -237,15 +237,15 @@ LABEL_10:
   return v4;
 }
 
-+ ($06D0163FE0D7AFE752A9F21F38483579)getInOutStation:(id)a3
++ ($06D0163FE0D7AFE752A9F21F38483579)getInOutStation:(id)station
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([SlalomUtils isValidFelicaBlock:v3])
+  stationCopy = station;
+  if ([SlalomUtils isValidFelicaBlock:stationCopy])
   {
-    v4 = [v3 bytes];
-    LODWORD(v5) = *v4 >> 7;
-    v6 = (v4[1] >> 6) & 1;
+    bytes = [stationCopy bytes];
+    LODWORD(v5) = *bytes >> 7;
+    v6 = (bytes[1] >> 6) & 1;
   }
 
   else
@@ -254,7 +254,7 @@ LABEL_10:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v3;
+      v10 = stationCopy;
       _os_log_impl(&dword_22EEF5000, v5, OS_LOG_TYPE_DEFAULT, "Failed to get the In and Out information for Suica, invalid block: %@", &v9, 0xCu);
     }
 
@@ -266,13 +266,13 @@ LABEL_10:
   return (v5 | (v6 << 8));
 }
 
-+ (BOOL)getIsDenyListed:(id)a3
++ (BOOL)getIsDenyListed:(id)listed
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([SlalomUtils isValidFelicaBlock:v3])
+  listedCopy = listed;
+  if ([SlalomUtils isValidFelicaBlock:listedCopy])
   {
-    v4 = *([v3 bytes] + 8) < 0;
+    v4 = *([listedCopy bytes] + 8) < 0;
   }
 
   else
@@ -281,7 +281,7 @@ LABEL_10:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = listedCopy;
       _os_log_impl(&dword_22EEF5000, v5, OS_LOG_TYPE_DEFAULT, "Failed to get the denylisted information for Suica, invalid block: %@", &v8, 0xCu);
     }
 
@@ -292,13 +292,13 @@ LABEL_10:
   return v4;
 }
 
-+ (unsigned)getHistoryNumber:(id)a3
++ (unsigned)getHistoryNumber:(id)number
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([SlalomUtils isValidFelicaBlock:v3])
+  numberCopy = number;
+  if ([SlalomUtils isValidFelicaBlock:numberCopy])
   {
-    LODWORD(v4) = bswap32(*([v3 bytes] + 13)) >> 16;
+    LODWORD(v4) = bswap32(*([numberCopy bytes] + 13)) >> 16;
   }
 
   else
@@ -307,7 +307,7 @@ LABEL_10:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v3;
+      v8 = numberCopy;
       _os_log_impl(&dword_22EEF5000, v4, OS_LOG_TYPE_DEFAULT, "Failed to get the history number information for Suica, invalid block: %@", &v7, 0xCu);
     }
 
@@ -318,13 +318,13 @@ LABEL_10:
   return v4;
 }
 
-+ (id)parseSuicaHistoryBlocks:(id)a3 withIDm:(id)a4
++ (id)parseSuicaHistoryBlocks:(id)blocks withIDm:(id)dm
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7 || [v7 length] != 8)
+  blocksCopy = blocks;
+  dmCopy = dm;
+  v8 = dmCopy;
+  if (!dmCopy || [dmCopy length] != 8)
   {
     NSLog(&cfstr_IdmNotProvided.isa, v8);
 LABEL_14:
@@ -332,123 +332,123 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v6 || ![v6 count])
+  if (!blocksCopy || ![blocksCopy count])
   {
     NSLog(&cfstr_TheArrayOfBloc.isa);
     goto LABEL_14;
   }
 
-  v48 = [MEMORY[0x277CBEB38] dictionary];
-  v51 = [MEMORY[0x277CBEB18] array];
-  if ([v6 count])
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  if ([blocksCopy count])
   {
     v9 = 0;
     v10 = 0;
     v11 = 0x277CBE000uLL;
-    v49 = a1;
+    selfCopy = self;
     v50 = v8;
-    v52 = v6;
+    v52 = blocksCopy;
     do
     {
       v53 = v10;
-      v12 = [MEMORY[0x277CBEB38] dictionary];
-      v13 = [v6 objectAtIndexedSubscript:v9];
-      v14 = [a1 getTransactionDate:v13];
-      v15 = [a1 getTypeOfUse:v13];
-      v16 = [a1 getSectorInformation:v13];
-      v17 = [a1 getTransactionBalance:v13] >> 32;
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      v13 = [blocksCopy objectAtIndexedSubscript:v9];
+      v14 = [self getTransactionDate:v13];
+      v15 = [self getTypeOfUse:v13];
+      v16 = [self getSectorInformation:v13];
+      v17 = [self getTransactionBalance:v13] >> 32;
       v56 = 0;
       v18 = v9 + 1;
-      if (v18 >= [v6 count])
+      if (v18 >= [blocksCopy count])
       {
         *md = 0;
         v58 = 0;
         v20 = v11;
         v21 = [*(v11 + 2704) dataWithBytesNoCopy:md length:16 freeWhenDone:0];
-        v56 = [a1 getTransactionAmount:v13 withPreviousBlock:v21];
+        v56 = [self getTransactionAmount:v13 withPreviousBlock:v21];
       }
 
       else
       {
         v19 = [v52 objectAtIndexedSubscript:v18];
-        v56 = [a1 getTransactionAmount:v13 withPreviousBlock:v19];
+        v56 = [self getTransactionAmount:v13 withPreviousBlock:v19];
 
         v20 = v11;
       }
 
       v22 = v14;
-      [v12 setObject:v14 forKeyedSubscript:@"NFTransactionDate"];
+      [dictionary2 setObject:v14 forKeyedSubscript:@"NFTransactionDate"];
       v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v17];
-      [v12 setObject:v23 forKeyedSubscript:@"NFBalance"];
+      [dictionary2 setObject:v23 forKeyedSubscript:@"NFBalance"];
 
       v24 = [MEMORY[0x277CCABB0] numberWithInt:v56];
-      [v12 setObject:v24 forKeyedSubscript:@"NFAmount"];
+      [dictionary2 setObject:v24 forKeyedSubscript:@"NFAmount"];
 
-      [v12 setObject:&unk_2843C69F8 forKeyedSubscript:@"NFAmountType"];
+      [dictionary2 setObject:&unk_2843C69F8 forKeyedSubscript:@"NFAmountType"];
       v25 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v15 >> 8];
-      [v12 setObject:v25 forKeyedSubscript:@"NFTransactionType"];
+      [dictionary2 setObject:v25 forKeyedSubscript:@"NFTransactionType"];
 
       v26 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v15];
-      [v12 setObject:v26 forKeyedSubscript:@"NFSectorCombination"];
+      [dictionary2 setObject:v26 forKeyedSubscript:@"NFSectorCombination"];
 
       v55[0] = BYTE1(v16);
       v55[1] = v16;
       v55[2] = BYTE2(v16);
       v27 = [*(v20 + 2704) dataWithBytes:v55 length:3];
-      [v12 setObject:v27 forKeyedSubscript:@"NFStartStationData"];
+      [dictionary2 setObject:v27 forKeyedSubscript:@"NFStartStationData"];
 
       v28 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v16];
-      [v12 setObject:v28 forKeyedSubscript:@"NFStartStation"];
+      [dictionary2 setObject:v28 forKeyedSubscript:@"NFStartStation"];
 
       v29 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:BYTE2(v16)];
-      [v12 setObject:v29 forKeyedSubscript:@"NFStartStationExt"];
+      [dictionary2 setObject:v29 forKeyedSubscript:@"NFStartStationExt"];
 
       v54[0] = BYTE5(v16);
       v54[1] = BYTE4(v16);
       v54[2] = BYTE6(v16);
       v30 = [*(v20 + 2704) dataWithBytes:v54 length:3];
-      [v12 setObject:v30 forKeyedSubscript:@"NFEndStationData"];
+      [dictionary2 setObject:v30 forKeyedSubscript:@"NFEndStationData"];
 
       v31 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:WORD2(v16)];
-      [v12 setObject:v31 forKeyedSubscript:@"NFEndStation"];
+      [dictionary2 setObject:v31 forKeyedSubscript:@"NFEndStation"];
 
       v32 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:BYTE6(v16)];
-      [v12 setObject:v32 forKeyedSubscript:@"NFEndStationExt"];
+      [dictionary2 setObject:v32 forKeyedSubscript:@"NFEndStationExt"];
 
       data = 0;
       v60 = 0;
       v8 = v50;
       data = *[v50 bytes];
       LODWORD(v60) = bswap32(v56);
-      v33 = [v13 bytes];
-      WORD2(v60) = *(v33 + 4);
+      bytes = [v13 bytes];
+      WORD2(v60) = *(bytes + 4);
       CC_SHA256(&data, 0xDu, md);
       v34 = [MEMORY[0x277CBEB28] dataWithBytes:md length:16];
       [v34 increaseLengthBy:16];
-      v35 = [v34 asHexString];
-      [v12 setObject:v35 forKeyedSubscript:@"NFTransactionID"];
+      asHexString = [v34 asHexString];
+      [dictionary2 setObject:asHexString forKeyedSubscript:@"NFTransactionID"];
 
-      v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:bswap32(*(v33 + 13)) >> 16];
-      [v12 setObject:v36 forKeyedSubscript:@"NFHistorySequenceNumber"];
+      v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:bswap32(*(bytes + 13)) >> 16];
+      [dictionary2 setObject:v36 forKeyedSubscript:@"NFHistorySequenceNumber"];
 
       v37 = v20;
-      v38 = [SlalomUtils readBitsValueFromBuffer:v33 + 1 bitPosition:7 length:1];
+      v38 = [SlalomUtils readBitsValueFromBuffer:bytes + 1 bitPosition:7 length:1];
       v39 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v38];
-      [v12 setObject:v39 forKeyedSubscript:@"NFSFBreakdown"];
+      [dictionary2 setObject:v39 forKeyedSubscript:@"NFSFBreakdown"];
 
-      v40 = [SlalomUtils readBitsValueFromBuffer:v33 bitPosition:0 length:7];
+      v40 = [SlalomUtils readBitsValueFromBuffer:bytes bitPosition:0 length:7];
       v41 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v40];
-      [v12 setObject:v41 forKeyedSubscript:@"NFDeviceCode"];
+      [dictionary2 setObject:v41 forKeyedSubscript:@"NFDeviceCode"];
 
-      v42 = [SlalomUtils readBitsValueFromBuffer:v33 + 2 bitPosition:0 length:7];
+      v42 = [SlalomUtils readBitsValueFromBuffer:bytes + 2 bitPosition:0 length:7];
       v43 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v42];
-      [v12 setObject:v43 forKeyedSubscript:@"NFPaymentType"];
+      [dictionary2 setObject:v43 forKeyedSubscript:@"NFPaymentType"];
 
-      [v51 addObject:v12];
+      [array addObject:dictionary2];
       v9 = (v53 + 1);
-      v6 = v52;
+      blocksCopy = v52;
       v44 = [v52 count];
-      a1 = v49;
+      self = selfCopy;
       v11 = v37;
       v10 = v53 + 1;
     }
@@ -456,8 +456,8 @@ LABEL_14:
     while (v44 > v9);
   }
 
-  v45 = v48;
-  [v48 setObject:v51 forKeyedSubscript:@"NFHistoryRecords"];
+  v45 = dictionary;
+  [dictionary setObject:array forKeyedSubscript:@"NFHistoryRecords"];
 
 LABEL_15:
   v46 = *MEMORY[0x277D85DE8];
@@ -465,67 +465,67 @@ LABEL_15:
   return v45;
 }
 
-+ (id)parseGreencarBlocks:(id)a3
++ (id)parseGreencarBlocks:(id)blocks
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ![v3 count])
+  blocksCopy = blocks;
+  v4 = blocksCopy;
+  if (!blocksCopy || ![blocksCopy count])
   {
     v11 = 0;
     goto LABEL_18;
   }
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6 = [v4 objectAtIndexedSubscript:0];
   if ([SlalomUtils isValidFelicaBlock:v6])
   {
     if (![v6 isAll00])
     {
-      v12 = [v6 bytes];
-      v13 = [MEMORY[0x277CBEA90] dataWithBytes:v12 length:2];
+      bytes = [v6 bytes];
+      v13 = [MEMORY[0x277CBEA90] dataWithBytes:bytes length:2];
       if (([v13 isAll00] & 1) == 0)
       {
-        [v5 setObject:v13 forKeyedSubscript:@"NFStartStationData"];
+        [dictionary setObject:v13 forKeyedSubscript:@"NFStartStationData"];
       }
 
-      v14 = [MEMORY[0x277CBEA90] dataWithBytes:v12 + 2 length:2];
+      v14 = [MEMORY[0x277CBEA90] dataWithBytes:bytes + 2 length:2];
 
       if (([v14 isAll00] & 1) == 0)
       {
-        [v5 setObject:v14 forKeyedSubscript:@"NFEndStationData"];
+        [dictionary setObject:v14 forKeyedSubscript:@"NFEndStationData"];
       }
 
-      v15 = [SlalomUtils readUInt16FromBytes:v12 + 4];
+      v15 = [SlalomUtils readUInt16FromBytes:bytes + 4];
       v16 = objc_alloc_init(MEMORY[0x277CBEAB8]);
       [v16 setYear:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v15, 7, 9) + 2000}];
       [v16 setMonth:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v15, 4, 5)}];
       [v16 setDay:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v15, 5, 0)}];
-      [v5 setObject:v16 forKeyedSubscript:@"NFPurchaseDate"];
-      v17 = [SlalomUtils readUInt24FromBytes:v12 + 6];
+      [dictionary setObject:v16 forKeyedSubscript:@"NFPurchaseDate"];
+      v17 = [SlalomUtils readUInt24FromBytes:bytes + 6];
       v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v17, 6, 13)}];
-      [v5 setObject:v18 forKeyedSubscript:@"NFMinuteSold"];
+      [dictionary setObject:v18 forKeyedSubscript:@"NFMinuteSold"];
 
       v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v17, 5, 19)}];
-      [v5 setObject:v19 forKeyedSubscript:@"NFHourSold"];
+      [dictionary setObject:v19 forKeyedSubscript:@"NFHourSold"];
 
-      v20 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:10 * *(v12 + 9)];
-      [v5 setObject:v20 forKeyedSubscript:@"NFFare"];
+      v20 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:10 * *(bytes + 9)];
+      [dictionary setObject:v20 forKeyedSubscript:@"NFFare"];
 
-      v21 = [MEMORY[0x277CBEA90] dataWithBytes:v12 + 12 length:2];
-      [v5 setObject:v21 forKeyedSubscript:@"NFRefundStation"];
+      v21 = [MEMORY[0x277CBEA90] dataWithBytes:bytes + 12 length:2];
+      [dictionary setObject:v21 forKeyedSubscript:@"NFRefundStation"];
 
-      v22 = [SlalomUtils readUInt16FromBytes:v12 + 14];
+      v22 = [SlalomUtils readUInt16FromBytes:bytes + 14];
       v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v22, 1, 0)}];
-      [v5 setObject:v23 forKeyedSubscript:@"NFTicketUsed"];
+      [dictionary setObject:v23 forKeyedSubscript:@"NFTicketUsed"];
 
       v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v22, 6, 5)}];
-      [v5 setObject:v24 forKeyedSubscript:@"NFRefundDay"];
+      [dictionary setObject:v24 forKeyedSubscript:@"NFRefundDay"];
 
       v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v22, 6, 11)}];
-      [v5 setObject:v25 forKeyedSubscript:@"NFRefundMonth"];
+      [dictionary setObject:v25 forKeyedSubscript:@"NFRefundMonth"];
 
-      v11 = v5;
+      v11 = dictionary;
       goto LABEL_17;
     }
 
@@ -564,15 +564,15 @@ LABEL_18:
   return v11;
 }
 
-+ (id)parseShinkansenBlocks:(id)a3 fromServiceCode:(unsigned __int16)a4
++ (id)parseShinkansenBlocks:(id)blocks fromServiceCode:(unsigned __int16)code
 {
-  v4 = a4;
+  codeCopy = code;
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 count])
+  blocksCopy = blocks;
+  v7 = blocksCopy;
+  if (blocksCopy && [blocksCopy count])
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v9 = [v7 objectAtIndexedSubscript:0];
     if ([SlalomUtils isValidFelicaBlock:v9])
     {
@@ -597,17 +597,17 @@ LABEL_44:
         goto LABEL_45;
       }
 
-      if (v4 != 6475)
+      if (codeCopy != 6475)
       {
-        v46 = [v9 bytes];
-        if (!v46)
+        bytes = [v9 bytes];
+        if (!bytes)
         {
           goto LABEL_43;
         }
 
-        v47 = v46;
-        v48 = [MEMORY[0x277CCABB0] numberWithInt:*v46];
-        [v8 setObject:v48 forKeyedSubscript:@"NFTicketSelected"];
+        v47 = bytes;
+        v48 = [MEMORY[0x277CCABB0] numberWithInt:*bytes];
+        [dictionary setObject:v48 forKeyedSubscript:@"NFTicketSelected"];
 
         if ([v9 length] < 9)
         {
@@ -616,86 +616,86 @@ LABEL_44:
 
         v49 = v47[8];
         v50 = [MEMORY[0x277CCABB0] numberWithInt:(v49 >> 4) & 1];
-        [v8 setObject:v50 forKeyedSubscript:@"NFNotifyOnLowBalance"];
+        [dictionary setObject:v50 forKeyedSubscript:@"NFNotifyOnLowBalance"];
 
         v22 = [MEMORY[0x277CCABB0] numberWithInt:(v49 >> 5) & 1];
-        [v8 setObject:v22 forKeyedSubscript:@"NFAllowBalanceUsageForCommute"];
+        [dictionary setObject:v22 forKeyedSubscript:@"NFAllowBalanceUsageForCommute"];
 LABEL_42:
 
 LABEL_43:
-        v14 = v8;
+        v14 = dictionary;
         goto LABEL_44;
       }
 
       if ([v7 count] == 8)
       {
-        v15 = [v9 bytes];
-        v16 = [SlalomUtils readUInt16FromBytes:v15];
+        bytes2 = [v9 bytes];
+        v16 = [SlalomUtils readUInt16FromBytes:bytes2];
         v17 = objc_alloc_init(MEMORY[0x277CBEAB8]);
         [v17 setYear:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v16, 7, 9) + 2000}];
         [v17 setMonth:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v16, 4, 5)}];
         [v17 setDay:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v16, 5, 0)}];
-        [v8 setObject:v17 forKeyedSubscript:@"NFExpressTicketDate"];
-        v18 = [MEMORY[0x277CBEA90] dataWithBytes:v15 + 2 length:3];
-        [v8 setObject:v18 forKeyedSubscript:@"NFExpressTicketNumber"];
+        [dictionary setObject:v17 forKeyedSubscript:@"NFExpressTicketDate"];
+        v18 = [MEMORY[0x277CBEA90] dataWithBytes:bytes2 + 2 length:3];
+        [dictionary setObject:v18 forKeyedSubscript:@"NFExpressTicketNumber"];
 
-        v19 = [SlalomUtils readUInt16FromBytes:v15 + 11];
+        v19 = [SlalomUtils readUInt16FromBytes:bytes2 + 11];
         v20 = objc_alloc_init(MEMORY[0x277CBEAB8]);
 
         [v20 setYear:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v19, 7, 9) + 2000}];
         [v20 setMonth:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v19, 4, 5)}];
         [v20 setDay:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v19, 5, 0)}];
-        [v8 setObject:v20 forKeyedSubscript:@"NFIssueDate"];
-        v21 = [SlalomUtils readUInt16FromBytes:v15 + 13];
+        [dictionary setObject:v20 forKeyedSubscript:@"NFIssueDate"];
+        v21 = [SlalomUtils readUInt16FromBytes:bytes2 + 13];
         v22 = objc_alloc_init(MEMORY[0x277CBEAB8]);
 
         [v22 setYear:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v21, 7, 9) + 2000}];
         [v22 setMonth:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v21, 4, 5)}];
         [v22 setDay:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v21, 5, 0)}];
-        [v8 setObject:v22 forKeyedSubscript:@"NFValidityStartDate"];
-        v23 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v15 + 15)];
-        [v8 setObject:v23 forKeyedSubscript:@"NFValidityTerm"];
+        [dictionary setObject:v22 forKeyedSubscript:@"NFValidityStartDate"];
+        v23 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(bytes2 + 15)];
+        [dictionary setObject:v23 forKeyedSubscript:@"NFValidityTerm"];
 
         v24 = [v7 objectAtIndexedSubscript:5];
 
         v54 = v24;
-        v25 = [v24 bytes];
-        v53 = [MEMORY[0x277CBEA90] dataWithBytes:v25 length:2];
-        v26 = [MEMORY[0x277CBEA90] dataWithBytes:v25 + 2 length:2];
-        v56 = [MEMORY[0x277CBEA90] dataWithBytes:v25 + 4 length:2];
-        v55 = [MEMORY[0x277CBEA90] dataWithBytes:v25 + 6 length:2];
-        v27 = [SlalomUtils readNumberFromBytes:v25 + 8 numberOfBytes:6];
+        bytes3 = [v24 bytes];
+        v53 = [MEMORY[0x277CBEA90] dataWithBytes:bytes3 length:2];
+        v26 = [MEMORY[0x277CBEA90] dataWithBytes:bytes3 + 2 length:2];
+        v56 = [MEMORY[0x277CBEA90] dataWithBytes:bytes3 + 4 length:2];
+        v55 = [MEMORY[0x277CBEA90] dataWithBytes:bytes3 + 6 length:2];
+        v27 = [SlalomUtils readNumberFromBytes:bytes3 + 8 numberOfBytes:6];
         v28 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{10 * +[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v27, 12, 12)}];
-        [v8 setObject:v28 forKeyedSubscript:@"NFExpressFareC"];
+        [dictionary setObject:v28 forKeyedSubscript:@"NFExpressFareC"];
 
         v29 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{10 * +[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v27, 12, 12)}];
-        [v8 setObject:v29 forKeyedSubscript:@"NFExpressFareB"];
+        [dictionary setObject:v29 forKeyedSubscript:@"NFExpressFareB"];
 
         v30 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{10 * +[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v27, 12, 24)}];
-        [v8 setObject:v30 forKeyedSubscript:@"NFExpressFareA"];
+        [dictionary setObject:v30 forKeyedSubscript:@"NFExpressFareA"];
 
         v31 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{10 * +[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v27, 12, 36)}];
-        [v8 setObject:v31 forKeyedSubscript:@"NFExpressFare"];
+        [dictionary setObject:v31 forKeyedSubscript:@"NFExpressFare"];
 
-        v32 = [SlalomUtils readUInt16FromBytes:v25 + 14];
+        v32 = [SlalomUtils readUInt16FromBytes:bytes3 + 14];
         v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:2 * ((5 * v32) & 0x7FFF)];
-        [v8 setObject:v33 forKeyedSubscript:@"NFTotalFare"];
+        [dictionary setObject:v33 forKeyedSubscript:@"NFTotalFare"];
 
-        v34 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         if (v53 && v26 && ([v53 isAll00] & 1) == 0 && (objc_msgSend(v26, "isAll00") & 1) == 0)
         {
           v35 = [v7 objectAtIndexedSubscript:1];
           v36 = [v7 objectAtIndexedSubscript:2];
-          v37 = [a1 _decodeShinkansenTrainDataWithBlock:v35 andBlock:v36];
+          dictionary2 = [self _decodeShinkansenTrainDataWithBlock:v35 andBlock:v36];
 
-          if (!v37)
+          if (!dictionary2)
           {
-            v37 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary2 = [MEMORY[0x277CBEB38] dictionary];
           }
 
-          [v37 setObject:v53 forKey:@"NFStartStationData"];
-          [v37 setObject:v26 forKey:@"NFEndStationData"];
-          [v34 addObject:v37];
+          [dictionary2 setObject:v53 forKey:@"NFStartStationData"];
+          [dictionary2 setObject:v26 forKey:@"NFEndStationData"];
+          [array addObject:dictionary2];
         }
 
         v39 = v55;
@@ -704,17 +704,17 @@ LABEL_43:
         {
           v40 = [v7 objectAtIndexedSubscript:3];
           v41 = [v7 objectAtIndexedSubscript:4];
-          v42 = [a1 _decodeShinkansenTrainDataWithBlock:v40 andBlock:v41];
+          dictionary3 = [self _decodeShinkansenTrainDataWithBlock:v40 andBlock:v41];
 
-          if (!v42)
+          if (!dictionary3)
           {
-            v42 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary3 = [MEMORY[0x277CBEB38] dictionary];
           }
 
-          [v42 setObject:v26 forKey:@"NFStartStationData"];
+          [dictionary3 setObject:v26 forKey:@"NFStartStationData"];
           v38 = v56;
-          [v42 setObject:v56 forKey:@"NFEndStationData"];
-          [v34 addObject:v42];
+          [dictionary3 setObject:v56 forKey:@"NFEndStationData"];
+          [array addObject:dictionary3];
 
           v39 = v55;
         }
@@ -723,20 +723,20 @@ LABEL_43:
         {
           v43 = [v7 objectAtIndexedSubscript:6];
           v44 = [v7 objectAtIndexedSubscript:7];
-          v45 = [a1 _decodeShinkansenTrainDataWithBlock:v43 andBlock:v44];
+          dictionary4 = [self _decodeShinkansenTrainDataWithBlock:v43 andBlock:v44];
 
-          if (!v45)
+          if (!dictionary4)
           {
-            v45 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary4 = [MEMORY[0x277CBEB38] dictionary];
           }
 
           v38 = v56;
-          [v45 setObject:v56 forKey:@"NFStartStationData"];
-          [v45 setObject:v39 forKey:@"NFEndStationData"];
-          [v34 addObject:v45];
+          [dictionary4 setObject:v56 forKey:@"NFStartStationData"];
+          [dictionary4 setObject:v39 forKey:@"NFEndStationData"];
+          [array addObject:dictionary4];
         }
 
-        [v8 setObject:v34 forKeyedSubscript:@"NFTrains"];
+        [dictionary setObject:array forKeyedSubscript:@"NFTrains"];
 
         v9 = v54;
         goto LABEL_42;
@@ -771,11 +771,11 @@ LABEL_43:
     goto LABEL_13;
   }
 
-  v8 = ATLLogObject();
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  dictionary = ATLLogObject();
+  if (os_log_type_enabled(dictionary, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_22EEF5000, v8, OS_LOG_TYPE_DEFAULT, "Bailing out for Shinkansen Service, not enough blocks", buf, 2u);
+    _os_log_impl(&dword_22EEF5000, dictionary, OS_LOG_TYPE_DEFAULT, "Bailing out for Shinkansen Service, not enough blocks", buf, 2u);
   }
 
   v14 = 0;
@@ -786,18 +786,18 @@ LABEL_45:
   return v14;
 }
 
-+ (id)_decodeShinkansenTrainDataWithBlock:(id)a3 andBlock:(id)a4
++ (id)_decodeShinkansenTrainDataWithBlock:(id)block andBlock:(id)andBlock
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (![SlalomUtils isValidFelicaBlock:v5])
+  blockCopy = block;
+  andBlockCopy = andBlock;
+  if (![SlalomUtils isValidFelicaBlock:blockCopy])
   {
     v33 = ATLLogObject();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v39 = v5;
+      v39 = blockCopy;
       v34 = "Failed to get the denylisted information for Suica, invalid (block1) block: %@";
 LABEL_16:
       _os_log_impl(&dword_22EEF5000, v33, OS_LOG_TYPE_DEFAULT, v34, buf, 0xCu);
@@ -810,13 +810,13 @@ LABEL_18:
     goto LABEL_26;
   }
 
-  if (![SlalomUtils isValidFelicaBlock:v6])
+  if (![SlalomUtils isValidFelicaBlock:andBlockCopy])
   {
     v33 = ATLLogObject();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v39 = v6;
+      v39 = andBlockCopy;
       v34 = "Failed to get the denylisted information for Suica, invalid (block2) block: %@";
       goto LABEL_16;
     }
@@ -824,61 +824,61 @@ LABEL_18:
     goto LABEL_17;
   }
 
-  if ([v5 isAll00] && (objc_msgSend(v6, "isAll00") & 1) != 0)
+  if ([blockCopy isAll00] && (objc_msgSend(andBlockCopy, "isAll00") & 1) != 0)
   {
     goto LABEL_18;
   }
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [v5 mutableCopy];
-  v9 = [v6 bytes];
-  [v8 appendBytes:v9 length:6];
-  [v7 setObject:v8 forKeyedSubscript:@"NFTrainName"];
-  v10 = [SlalomUtils readNumberFromBytes:v9 + 6 numberOfBytes:8];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v8 = [blockCopy mutableCopy];
+  bytes = [andBlockCopy bytes];
+  [v8 appendBytes:bytes length:6];
+  [dictionary setObject:v8 forKeyedSubscript:@"NFTrainName"];
+  v10 = [SlalomUtils readNumberFromBytes:bytes + 6 numberOfBytes:8];
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v10, 6, 0)}];
-  [v7 setObject:v11 forKeyedSubscript:@"NFArrivalMinute"];
+  [dictionary setObject:v11 forKeyedSubscript:@"NFArrivalMinute"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v10, 5, 6)}];
-  [v7 setObject:v12 forKeyedSubscript:@"NFArrivalHour"];
+  [dictionary setObject:v12 forKeyedSubscript:@"NFArrivalHour"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v10, 6, 11)}];
-  [v7 setObject:v13 forKeyedSubscript:@"NFDepartureMinute"];
+  [dictionary setObject:v13 forKeyedSubscript:@"NFDepartureMinute"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v10, 5, 17)}];
-  [v7 setObject:v14 forKeyedSubscript:@"NFDepartureHour"];
+  [dictionary setObject:v14 forKeyedSubscript:@"NFDepartureHour"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v10, 20, 22)}];
-  [v7 setObject:v15 forKeyedSubscript:@"NFPBCode"];
+  [dictionary setObject:v15 forKeyedSubscript:@"NFPBCode"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v10, 1, 42)}];
-  [v7 setObject:v16 forKeyedSubscript:@"NFReissue"];
+  [dictionary setObject:v16 forKeyedSubscript:@"NFReissue"];
 
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v10, 3, 43)}];
-  [v7 setObject:v17 forKeyedSubscript:@"NFCarId"];
+  [dictionary setObject:v17 forKeyedSubscript:@"NFCarId"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v10, 1, 46)}];
-  [v7 setObject:v18 forKeyedSubscript:@"NFSmoking"];
+  [dictionary setObject:v18 forKeyedSubscript:@"NFSmoking"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v10, 5, 47)}];
-  [v7 setObject:v19 forKeyedSubscript:@"NFCarNumber"];
+  [dictionary setObject:v19 forKeyedSubscript:@"NFCarNumber"];
 
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v10, 3, 52)}];
-  [v7 setObject:v20 forKeyedSubscript:@"NFSeatType"];
+  [dictionary setObject:v20 forKeyedSubscript:@"NFSeatType"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v10, 1, 55)}];
-  [v7 setObject:v21 forKeyedSubscript:@"NFChild"];
+  [dictionary setObject:v21 forKeyedSubscript:@"NFChild"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v10, 2, 56)}];
-  [v7 setObject:v22 forKeyedSubscript:@"NFGreenCar"];
+  [dictionary setObject:v22 forKeyedSubscript:@"NFGreenCar"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[SlalomUtils getBitsFrom:numberOfBits:startingFrom:](SlalomUtils, "getBitsFrom:numberOfBits:startingFrom:", v10, 6, 58)}];
-  [v7 setObject:v23 forKeyedSubscript:@"NFSeatNumber"];
+  [dictionary setObject:v23 forKeyedSubscript:@"NFSeatNumber"];
 
-  v24 = [SlalomUtils readUInt16FromBytes:v9 + 14];
+  v24 = [SlalomUtils readUInt16FromBytes:bytes + 14];
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:10 * (v24 >> 6)];
-  [v7 setObject:v25 forKeyedSubscript:@"NFGreenCarFare"];
+  [dictionary setObject:v25 forKeyedSubscript:@"NFGreenCarFare"];
 
-  v26 = [v7 objectForKeyedSubscript:@"NFDepartureHour"];
+  v26 = [dictionary objectForKeyedSubscript:@"NFDepartureHour"];
   if (![v26 isEqualToNumber:&unk_2843C6A10])
   {
 LABEL_23:
@@ -886,7 +886,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v27 = [v7 objectForKeyedSubscript:@"NFDepartureMinute"];
+  v27 = [dictionary objectForKeyedSubscript:@"NFDepartureMinute"];
   if (![v27 isEqualToNumber:&unk_2843C6A10])
   {
 LABEL_22:
@@ -894,7 +894,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v28 = [v7 objectForKeyedSubscript:@"NFArrivalHour"];
+  v28 = [dictionary objectForKeyedSubscript:@"NFArrivalHour"];
   if (![v28 isEqualToNumber:&unk_2843C6A10])
   {
 LABEL_21:
@@ -902,7 +902,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v29 = [v7 objectForKeyedSubscript:@"NFArrivalMinute"];
+  v29 = [dictionary objectForKeyedSubscript:@"NFArrivalMinute"];
   if (![v29 isEqualToNumber:&unk_2843C6A10])
   {
 LABEL_20:
@@ -910,20 +910,20 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v30 = [v7 objectForKeyedSubscript:@"NFPBCode"];
+  v30 = [dictionary objectForKeyedSubscript:@"NFPBCode"];
   if (![v30 isEqualToNumber:&unk_2843C6A10])
   {
 
     goto LABEL_20;
   }
 
-  v31 = [v7 objectForKeyedSubscript:@"NFCarId"];
+  v31 = [dictionary objectForKeyedSubscript:@"NFCarId"];
   v37 = [v31 isEqualToNumber:&unk_2843C6A10];
 
   if ((v37 & 1) == 0)
   {
 LABEL_24:
-    v32 = v7;
+    v32 = dictionary;
     goto LABEL_25;
   }
 

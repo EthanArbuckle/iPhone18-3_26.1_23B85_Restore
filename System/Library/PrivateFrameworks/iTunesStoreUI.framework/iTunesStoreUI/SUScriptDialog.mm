@@ -1,6 +1,6 @@
 @interface SUScriptDialog
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSNumber)cancelButtonIndex;
 - (NSNumber)destructiveButtonIndex;
@@ -12,14 +12,14 @@
 - (id)textFields;
 - (void)_logSheetWarnings;
 - (void)dealloc;
-- (void)setBody:(id)a3;
-- (void)setButtons:(id)a3;
-- (void)setCancelButtonIndex:(id)a3;
-- (void)setDestructiveButtonIndex:(id)a3;
-- (void)setTextFields:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)showFromDOMElement:(id)a3;
-- (void)showSheetInPopOver:(id)a3;
+- (void)setBody:(id)body;
+- (void)setButtons:(id)buttons;
+- (void)setCancelButtonIndex:(id)index;
+- (void)setDestructiveButtonIndex:(id)index;
+- (void)setTextFields:(id)fields;
+- (void)setTitle:(id)title;
+- (void)showFromDOMElement:(id)element;
+- (void)showSheetInPopOver:(id)over;
 @end
 
 @implementation SUScriptDialog
@@ -61,7 +61,7 @@ uint64_t __27__SUScriptDialog_showSheet__block_invoke(uint64_t a1)
   return [v1 showSheet];
 }
 
-- (void)showSheetInPopOver:(id)a3
+- (void)showSheetInPopOver:(id)over
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -92,7 +92,7 @@ uint64_t __37__SUScriptDialog_showSheetInPopOver___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)showFromDOMElement:(id)a3
+- (void)showFromDOMElement:(id)element
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -161,19 +161,19 @@ uint64_t __37__SUScriptDialog_showFromDOMElement___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    bodyCopy = 0;
 LABEL_3:
     [(SUScriptObject *)self lock];
     body = self->_body;
-    if (body != v5)
+    if (body != bodyCopy)
     {
 
-      self->_body = v5;
+      self->_body = bodyCopy;
     }
 
     [(SUScriptObject *)self unlock];
@@ -182,8 +182,8 @@ LABEL_3:
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
-  if (!a3)
+  bodyCopy = 0;
+  if (!body)
   {
     goto LABEL_3;
   }
@@ -194,7 +194,7 @@ LABEL_3:
   }
 
   objc_opt_class();
-  v5 = a3;
+  bodyCopy = body;
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_3;
@@ -205,7 +205,7 @@ LABEL_3:
   [v8 throwException:@"Invalid argument"];
 }
 
-- (void)setButtons:(id)a3
+- (void)setButtons:(id)buttons
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -213,7 +213,7 @@ LABEL_3:
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v10 = 0;
-    if (!a3 || (isKindOfClass & 1) != 0)
+    if (!buttons || (isKindOfClass & 1) != 0)
     {
       goto LABEL_3;
     }
@@ -221,7 +221,7 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [a3 copyArrayValueWithValidator:__SUButtonValidator context:0];
+      v10 = [buttons copyArrayValueWithValidator:__SUButtonValidator context:0];
       if (v10)
       {
         goto LABEL_3;
@@ -257,24 +257,24 @@ LABEL_3:
 LABEL_6:
 }
 
-- (void)setCancelButtonIndex:(id)a3
+- (void)setCancelButtonIndex:(id)index
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    indexCopy2 = 0;
     goto LABEL_3;
   }
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
-  if (!a3 || (isKindOfClass & 1) != 0)
+  indexCopy2 = 0;
+  if (!index || (isKindOfClass & 1) != 0)
   {
 LABEL_3:
     [(SUScriptObject *)self lock];
 
-    self->_cancelButtonIndex = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:{objc_msgSend(v5, "intValue")}];
+    self->_cancelButtonIndex = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:{objc_msgSend(indexCopy2, "intValue")}];
 
     [(SUScriptObject *)self unlock];
     return;
@@ -283,11 +283,11 @@ LABEL_3:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = a3;
+    indexCopy2 = index;
     goto LABEL_3;
   }
 
-  v5 = a3;
+  indexCopy2 = index;
   if (objc_opt_respondsToSelector())
   {
     goto LABEL_3;
@@ -298,24 +298,24 @@ LABEL_3:
   [v7 throwException:@"Invalid argument"];
 }
 
-- (void)setDestructiveButtonIndex:(id)a3
+- (void)setDestructiveButtonIndex:(id)index
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    indexCopy2 = 0;
     goto LABEL_3;
   }
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
-  if (!a3 || (isKindOfClass & 1) != 0)
+  indexCopy2 = 0;
+  if (!index || (isKindOfClass & 1) != 0)
   {
 LABEL_3:
     [(SUScriptObject *)self lock];
 
-    self->_destructiveButtonIndex = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:{objc_msgSend(v5, "intValue")}];
+    self->_destructiveButtonIndex = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:{objc_msgSend(indexCopy2, "intValue")}];
 
     [(SUScriptObject *)self unlock];
     return;
@@ -324,11 +324,11 @@ LABEL_3:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = a3;
+    indexCopy2 = index;
     goto LABEL_3;
   }
 
-  v5 = a3;
+  indexCopy2 = index;
   if (objc_opt_respondsToSelector())
   {
     goto LABEL_3;
@@ -339,7 +339,7 @@ LABEL_3:
   [v7 throwException:@"Invalid argument"];
 }
 
-- (void)setTextFields:(id)a3
+- (void)setTextFields:(id)fields
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -347,7 +347,7 @@ LABEL_3:
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v10 = 0;
-    if (!a3 || (isKindOfClass & 1) != 0)
+    if (!fields || (isKindOfClass & 1) != 0)
     {
       goto LABEL_3;
     }
@@ -355,7 +355,7 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [a3 copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
+      v10 = [fields copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
       if (v10)
       {
         goto LABEL_3;
@@ -391,19 +391,19 @@ LABEL_3:
 LABEL_6:
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    titleCopy = 0;
 LABEL_3:
     [(SUScriptObject *)self lock];
     title = self->_title;
-    if (title != v5)
+    if (title != titleCopy)
     {
 
-      self->_title = v5;
+      self->_title = titleCopy;
     }
 
     [(SUScriptObject *)self unlock];
@@ -412,8 +412,8 @@ LABEL_3:
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
-  if (!a3)
+  titleCopy = 0;
+  if (!title)
   {
     goto LABEL_3;
   }
@@ -424,7 +424,7 @@ LABEL_3:
   }
 
   objc_opt_class();
-  v5 = a3;
+  titleCopy = title;
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_3;
@@ -459,19 +459,19 @@ LABEL_3:
   [(SUScriptObject *)self lock];
   if ([self->_textFields count])
   {
-    v3 = [MEMORY[0x1E69D4938] sharedConfig];
-    v4 = [v3 shouldLog];
-    if ([v3 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v5 &= 2u;
     }
@@ -496,19 +496,19 @@ LABEL_3:
 
   if ([(NSString *)self->_body length])
   {
-    v9 = [MEMORY[0x1E69D4938] sharedConfig];
-    v10 = [v9 shouldLog];
-    if ([v9 shouldLogToDisk])
+    mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+    if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog2 | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog2;
     }
 
-    if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v11 &= 2u;
     }
@@ -537,38 +537,38 @@ LABEL_3:
 
 - (id)_nativeDialog
 {
-  v3 = [(SUScriptObject *)self nativeObject];
+  nativeObject = [(SUScriptObject *)self nativeObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v3 = objc_alloc_init(SUScriptDialogNativeObject);
-    [(SUScriptObject *)self setNativeObject:v3];
+    nativeObject = objc_alloc_init(SUScriptDialogNativeObject);
+    [(SUScriptObject *)self setNativeObject:nativeObject];
   }
 
-  return v3;
+  return nativeObject;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_13 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptDialog;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_10, 5);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_10, 5);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptDialog;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -578,14 +578,14 @@ LABEL_3:
 {
   v4.receiver = self;
   v4.super_class = SUScriptDialog;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_13 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_13 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_10 = sel_dismiss;
     unk_1EBF3A9D0 = @"dismiss";

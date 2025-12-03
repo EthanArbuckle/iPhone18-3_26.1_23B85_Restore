@@ -1,20 +1,20 @@
 @interface MapsUICollectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityCollectionViewBehavesLikeUIViewAccessibility;
 @end
 
 @implementation MapsUICollectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SteppingPageViewController"];
-  [v3 validateClass:@"UICollectionView" hasInstanceMethod:@"accessibilityCollectionViewBehavesLikeUIViewAccessibility" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SteppingPageViewController"];
+  [validationsCopy validateClass:@"UICollectionView" hasInstanceMethod:@"accessibilityCollectionViewBehavesLikeUIViewAccessibility" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)accessibilityCollectionViewBehavesLikeUIViewAccessibility
 {
-  v3 = [(MapsUICollectionViewAccessibility *)self delegate];
+  delegate = [(MapsUICollectionViewAccessibility *)self delegate];
   NSClassFromString(&cfstr_Steppingpagevi.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 

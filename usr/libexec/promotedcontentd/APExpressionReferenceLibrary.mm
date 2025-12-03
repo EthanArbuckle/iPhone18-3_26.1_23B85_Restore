@@ -1,23 +1,23 @@
 @interface APExpressionReferenceLibrary
-- (APExpressionReferenceLibrary)initWithStorage:(id)a3;
-- (id)_createNodeFromDictionary:(id)a3 identifier:(id)a4 error:(id *)a5;
-- (id)_validateAndAddReference:(id)a3 reference:(id)a4;
-- (id)addReference:(id)a3;
-- (id)addReferences:(id)a3;
-- (id)referenceFromIdentifier:(id)a3 error:(id *)a4;
+- (APExpressionReferenceLibrary)initWithStorage:(id)storage;
+- (id)_createNodeFromDictionary:(id)dictionary identifier:(id)identifier error:(id *)error;
+- (id)_validateAndAddReference:(id)reference reference:(id)a4;
+- (id)addReference:(id)reference;
+- (id)addReferences:(id)references;
+- (id)referenceFromIdentifier:(id)identifier error:(id *)error;
 - (unint64_t)referenceCount;
 - (void)_persistNewReferences;
 - (void)beginUpdate;
 - (void)dealloc;
 - (void)endUpdate;
-- (void)removeReferences:(id)a3;
+- (void)removeReferences:(id)references;
 @end
 
 @implementation APExpressionReferenceLibrary
 
-- (APExpressionReferenceLibrary)initWithStorage:(id)a3
+- (APExpressionReferenceLibrary)initWithStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v17.receiver = self;
   v17.super_class = APExpressionReferenceLibrary;
   v6 = [(APExpressionReferenceLibrary *)&v17 init];
@@ -38,9 +38,9 @@
   unsavedReferences = v6->_unsavedReferences;
   v6->_unsavedReferences = v11;
 
-  if (objc_opt_respondsToSelector() & 1) == 0 || ([v5 initialize])
+  if (objc_opt_respondsToSelector() & 1) == 0 || ([storageCopy initialize])
   {
-    objc_storeStrong(&v6->_storage, a3);
+    objc_storeStrong(&v6->_storage, storage);
 LABEL_5:
     v13 = v6;
     goto LABEL_6;
@@ -55,7 +55,7 @@ LABEL_5:
 
   if (objc_opt_respondsToSelector())
   {
-    [v5 finalize];
+    [storageCopy finalize];
   }
 
   v13 = 0;
@@ -66,27 +66,27 @@ LABEL_6:
 
 - (void)_persistNewReferences
 {
-  v3 = [(APExpressionReferenceLibrary *)self lock];
-  [v3 lock];
+  lock = [(APExpressionReferenceLibrary *)self lock];
+  [lock lock];
 
-  v4 = [(APExpressionReferenceLibrary *)self updateCount];
-  if (v4)
+  updateCount = [(APExpressionReferenceLibrary *)self updateCount];
+  if (updateCount)
   {
-    v3 = [(APExpressionReferenceLibrary *)self unsavedReferences];
-    if ([v3 count] < 0x65)
+    lock = [(APExpressionReferenceLibrary *)self unsavedReferences];
+    if ([lock count] < 0x65)
     {
       goto LABEL_11;
     }
   }
 
-  v5 = [(APExpressionReferenceLibrary *)self storage];
-  if (v5)
+  storage = [(APExpressionReferenceLibrary *)self storage];
+  if (storage)
   {
-    v6 = [(APExpressionReferenceLibrary *)self storage];
-    v7 = [(APExpressionReferenceLibrary *)self unsavedReferences];
-    v8 = [v6 persist:v7];
+    storage2 = [(APExpressionReferenceLibrary *)self storage];
+    unsavedReferences = [(APExpressionReferenceLibrary *)self unsavedReferences];
+    v8 = [storage2 persist:unsavedReferences];
 
-    if (v4)
+    if (updateCount)
     {
 
       if ((v8 & 1) == 0)
@@ -100,45 +100,45 @@ LABEL_6:
       goto LABEL_12;
     }
 
-    v3 = [(APExpressionReferenceLibrary *)self unsavedReferences];
-    [v3 removeAllObjects];
+    lock = [(APExpressionReferenceLibrary *)self unsavedReferences];
+    [lock removeAllObjects];
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  if (v4)
+  if (updateCount)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
-  v9 = [(APExpressionReferenceLibrary *)self lock];
-  [v9 unlock];
+  lock2 = [(APExpressionReferenceLibrary *)self lock];
+  [lock2 unlock];
 }
 
-- (id)_createNodeFromDictionary:(id)a3 identifier:(id)a4 error:(id *)a5
+- (id)_createNodeFromDictionary:(id)dictionary identifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectForKey:@"expression"];
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  v9 = [dictionaryCopy objectForKey:@"expression"];
 
   if (v9)
   {
     v10 = [APTargetingExpressionNode alloc];
-    v11 = [v7 objectForKeyedSubscript:@"expression"];
-    v12 = [v7 objectForKeyedSubscript:@"subexpressions"];
-    v13 = [v7 objectForKeyedSubscript:@"data"];
-    v14 = [(APTargetingExpressionNode *)v10 initWithParent:0 identifier:v8 expressionOrReference:v11 subExpressions:v12 data:v13 error:a5];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"expression"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"subexpressions"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"data"];
+    v14 = [(APTargetingExpressionNode *)v10 initWithParent:0 identifier:identifierCopy expressionOrReference:v11 subExpressions:v12 data:v13 error:error];
   }
 
   else
   {
-    v15 = [v7 objectForKey:@"adaptor"];
+    v15 = [dictionaryCopy objectForKey:@"adaptor"];
 
     if (v15)
     {
-      v14 = [[APDataSourceNode alloc] initWithParent:0 identifier:v8 dataSource:v7 error:a5];
+      v14 = [[APDataSourceNode alloc] initWithParent:0 identifier:identifierCopy dataSource:dictionaryCopy error:error];
     }
 
     else
@@ -147,7 +147,7 @@ LABEL_12:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         v18 = 138543362;
-        v19 = v7;
+        v19 = dictionaryCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Value does not represent a targeting expression or data adaptor: %{public}@", &v18, 0xCu);
       }
 
@@ -162,17 +162,17 @@ LABEL_12:
 {
   [(APExpressionReferenceLibrary *)self _persistNewReferences];
   [(APUnfairRecursiveLock *)self->_lock lock];
-  v3 = [(APExpressionReferenceLibrary *)self storage];
-  if (v3)
+  storage = [(APExpressionReferenceLibrary *)self storage];
+  if (storage)
   {
-    v4 = v3;
-    v5 = [(APExpressionReferenceLibrary *)self storage];
+    v4 = storage;
+    storage2 = [(APExpressionReferenceLibrary *)self storage];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(APExpressionReferenceLibrary *)self storage];
-      [v7 finalize];
+      storage3 = [(APExpressionReferenceLibrary *)self storage];
+      [storage3 finalize];
     }
   }
 
@@ -187,18 +187,18 @@ LABEL_12:
 
 - (void)beginUpdate
 {
-  v3 = [(APExpressionReferenceLibrary *)self lock];
-  [v3 lock];
+  lock = [(APExpressionReferenceLibrary *)self lock];
+  [lock lock];
 
   [(APExpressionReferenceLibrary *)self setUpdateCount:[(APExpressionReferenceLibrary *)self updateCount]+ 1];
-  v4 = [(APExpressionReferenceLibrary *)self lock];
-  [v4 unlock];
+  lock2 = [(APExpressionReferenceLibrary *)self lock];
+  [lock2 unlock];
 }
 
 - (void)endUpdate
 {
-  v3 = [(APExpressionReferenceLibrary *)self lock];
-  [v3 lock];
+  lock = [(APExpressionReferenceLibrary *)self lock];
+  [lock lock];
 
   if ([(APExpressionReferenceLibrary *)self updateCount])
   {
@@ -206,39 +206,39 @@ LABEL_12:
   }
 
   [(APExpressionReferenceLibrary *)self _persistNewReferences];
-  v4 = [(APExpressionReferenceLibrary *)self lock];
-  [v4 unlock];
+  lock2 = [(APExpressionReferenceLibrary *)self lock];
+  [lock2 unlock];
 }
 
-- (id)referenceFromIdentifier:(id)a3 error:(id *)a4
+- (id)referenceFromIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(APExpressionReferenceLibrary *)self lock];
-  [v7 lock];
+  identifierCopy = identifier;
+  lock = [(APExpressionReferenceLibrary *)self lock];
+  [lock lock];
 
-  v8 = [(APExpressionReferenceLibrary *)self referenceCache];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  referenceCache = [(APExpressionReferenceLibrary *)self referenceCache];
+  v9 = [referenceCache objectForKeyedSubscript:identifierCopy];
 
   if (!v9)
   {
-    v10 = [(APExpressionReferenceLibrary *)self unsavedReferences];
-    v11 = [v10 objectForKeyedSubscript:v6];
+    unsavedReferences = [(APExpressionReferenceLibrary *)self unsavedReferences];
+    v11 = [unsavedReferences objectForKeyedSubscript:identifierCopy];
 
-    if (v11 || (-[APExpressionReferenceLibrary storage](self, "storage"), v12 = objc_claimAutoreleasedReturnValue(), [v12 find:v6], v11 = objc_claimAutoreleasedReturnValue(), v12, v11))
+    if (v11 || (-[APExpressionReferenceLibrary storage](self, "storage"), v12 = objc_claimAutoreleasedReturnValue(), [v12 find:identifierCopy], v11 = objc_claimAutoreleasedReturnValue(), v12, v11))
     {
-      v13 = [(APExpressionReferenceLibrary *)self _createNodeFromDictionary:v11 identifier:v6 error:a4];
+      v13 = [(APExpressionReferenceLibrary *)self _createNodeFromDictionary:v11 identifier:identifierCopy error:error];
       if (v13)
       {
         v9 = v13;
-        v14 = [(APExpressionReferenceLibrary *)self referenceCache];
-        [v14 setObject:v9 forKey:v6];
+        referenceCache2 = [(APExpressionReferenceLibrary *)self referenceCache];
+        [referenceCache2 setObject:v9 forKey:identifierCopy];
       }
 
       else
       {
-        if (a4)
+        if (error)
         {
-          v15 = *a4;
+          v15 = *error;
         }
 
         else
@@ -246,7 +246,7 @@ LABEL_12:
           v15 = @"(unavailable)";
         }
 
-        v16 = [NSString stringWithFormat:@"Error creating node %@: %@", v6, v15];
+        v16 = [NSString stringWithFormat:@"Error creating node %@: %@", identifierCopy, v15];
         v17 = APLogForCategory();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
@@ -265,16 +265,16 @@ LABEL_12:
     }
   }
 
-  v18 = [(APExpressionReferenceLibrary *)self lock];
-  [v18 unlock];
+  lock2 = [(APExpressionReferenceLibrary *)self lock];
+  [lock2 unlock];
 
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    v19 = [NSString stringWithFormat:@"Reference '%@' not registered.", v6];
+    identifierCopy = [NSString stringWithFormat:@"Reference '%@' not registered.", identifierCopy];
     v28 = NSLocalizedDescriptionKey;
-    v29 = v19;
+    v29 = identifierCopy;
     v20 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-    *a4 = [NSError errorWithDomain:@"com.apple.ap.targetingexpressions" code:-1128 userInfo:v20];
+    *error = [NSError errorWithDomain:@"com.apple.ap.targetingexpressions" code:-1128 userInfo:v20];
   }
 
   if ([v9 conformsToProtocol:&OBJC_PROTOCOL___APExpressionEvaluationProtocol])
@@ -284,21 +284,21 @@ LABEL_12:
 
   else
   {
-    v22 = [NSString stringWithFormat:@"Reference %@ does not conform to APExpressionEvaluationProtocol", v6];
+    identifierCopy2 = [NSString stringWithFormat:@"Reference %@ does not conform to APExpressionEvaluationProtocol", identifierCopy];
     v23 = APLogForCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v31 = v22;
+      v31 = identifierCopy2;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%{public}@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v26 = NSLocalizedDescriptionKey;
-      v27 = v22;
+      v27 = identifierCopy2;
       v24 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-      *a4 = [NSError errorWithDomain:@"com.apple.ap.targetingexpressions" code:-1121 userInfo:v24];
+      *error = [NSError errorWithDomain:@"com.apple.ap.targetingexpressions" code:-1121 userInfo:v24];
     }
 
     v21 = 0;
@@ -307,29 +307,29 @@ LABEL_12:
   return v21;
 }
 
-- (id)_validateAndAddReference:(id)a3 reference:(id)a4
+- (id)_validateAndAddReference:(id)reference reference:(id)a4
 {
-  v6 = a3;
+  referenceCopy = reference;
   v7 = a4;
-  v8 = [(APExpressionReferenceLibrary *)self lock];
-  [v8 lock];
+  lock = [(APExpressionReferenceLibrary *)self lock];
+  [lock lock];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(APExpressionReferenceLibrary *)self unsavedReferences];
-    [v9 setObject:v7 forKey:v6];
+    unsavedReferences = [(APExpressionReferenceLibrary *)self unsavedReferences];
+    [unsavedReferences setObject:v7 forKey:referenceCopy];
 
-    v10 = [(APExpressionReferenceLibrary *)self lock];
-    [v10 unlock];
+    lock2 = [(APExpressionReferenceLibrary *)self lock];
+    [lock2 unlock];
 
     v11 = 0;
   }
 
   else
   {
-    v12 = [(APExpressionReferenceLibrary *)self lock];
-    [v12 unlock];
+    lock3 = [(APExpressionReferenceLibrary *)self lock];
+    [lock3 unlock];
 
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
@@ -344,11 +344,11 @@ LABEL_12:
   return v11;
 }
 
-- (id)addReference:(id)a3
+- (id)addReference:(id)reference
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  referenceCopy = reference;
+  v5 = referenceCopy;
+  if (referenceCopy && [referenceCopy length])
   {
     v6 = [v5 dataUsingEncoding:4];
     v27 = 0;
@@ -366,25 +366,25 @@ LABEL_12:
       if (objc_opt_isKindOfClass())
       {
         v13 = v7;
-        v14 = [v13 allKeys];
-        v15 = [v14 firstObject];
+        allKeys = [v13 allKeys];
+        firstObject = [allKeys firstObject];
 
         objc_opt_class();
         v26 = v13;
         if (objc_opt_isKindOfClass())
         {
-          v16 = [v13 allValues];
-          v17 = [v16 firstObject];
+          allValues = [v13 allValues];
+          firstObject2 = [allValues firstObject];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v10 = [(APExpressionReferenceLibrary *)self _validateAndAddReference:v15 reference:v17];
+            v10 = [(APExpressionReferenceLibrary *)self _validateAndAddReference:firstObject reference:firstObject2];
           }
 
           else
           {
-            v23 = [NSString stringWithFormat:@"Reference '%@' must be dictionary type.", v15, v26];
+            v23 = [NSString stringWithFormat:@"Reference '%@' must be dictionary type.", firstObject, v26];
             v28 = NSLocalizedDescriptionKey;
             v29 = v23;
             v24 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
@@ -394,9 +394,9 @@ LABEL_12:
 
         else
         {
-          v17 = [NSString stringWithFormat:@"Identifier '%@' must be string type.", v15, v13];
+          firstObject2 = [NSString stringWithFormat:@"Identifier '%@' must be string type.", firstObject, v13];
           v30 = NSLocalizedDescriptionKey;
-          v31 = v17;
+          v31 = firstObject2;
           v22 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
           v10 = [NSError errorWithDomain:@"com.apple.ap.targetingexpressions" code:-1112 userInfo:v22];
         }
@@ -430,18 +430,18 @@ LABEL_12:
   return v10;
 }
 
-- (id)addReferences:(id)a3
+- (id)addReferences:(id)references
 {
-  v4 = a3;
-  v5 = [(APExpressionReferenceLibrary *)self lock];
-  [v5 lock];
+  referencesCopy = references;
+  lock = [(APExpressionReferenceLibrary *)self lock];
+  [lock lock];
 
   v6 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = referencesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -469,23 +469,23 @@ LABEL_12:
     while (v9);
   }
 
-  v13 = [(APExpressionReferenceLibrary *)self lock];
-  [v13 unlock];
+  lock2 = [(APExpressionReferenceLibrary *)self lock];
+  [lock2 unlock];
 
   return v6;
 }
 
-- (void)removeReferences:(id)a3
+- (void)removeReferences:(id)references
 {
-  v4 = a3;
-  v5 = [(APExpressionReferenceLibrary *)self lock];
-  [v5 lock];
+  referencesCopy = references;
+  lock = [(APExpressionReferenceLibrary *)self lock];
+  [lock lock];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = referencesCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -502,18 +502,18 @@ LABEL_12:
         }
 
         v11 = *(*(&v17 + 1) + 8 * v10);
-        v12 = [(APExpressionReferenceLibrary *)self referenceCache];
-        [v12 removeObjectForKey:v11];
+        referenceCache = [(APExpressionReferenceLibrary *)self referenceCache];
+        [referenceCache removeObjectForKey:v11];
 
-        v13 = [(APExpressionReferenceLibrary *)self unsavedReferences];
-        [v13 removeObjectForKey:v11];
+        unsavedReferences = [(APExpressionReferenceLibrary *)self unsavedReferences];
+        [unsavedReferences removeObjectForKey:v11];
 
-        v14 = [(APExpressionReferenceLibrary *)self storage];
+        storage = [(APExpressionReferenceLibrary *)self storage];
 
-        if (v14)
+        if (storage)
         {
-          v15 = [(APExpressionReferenceLibrary *)self storage];
-          [v15 remove:v11];
+          storage2 = [(APExpressionReferenceLibrary *)self storage];
+          [storage2 remove:v11];
         }
 
         v10 = v10 + 1;
@@ -526,34 +526,34 @@ LABEL_12:
     while (v8);
   }
 
-  v16 = [(APExpressionReferenceLibrary *)self lock];
-  [v16 unlock];
+  lock2 = [(APExpressionReferenceLibrary *)self lock];
+  [lock2 unlock];
 }
 
 - (unint64_t)referenceCount
 {
-  v3 = [(APExpressionReferenceLibrary *)self lock];
-  [v3 lock];
+  lock = [(APExpressionReferenceLibrary *)self lock];
+  [lock lock];
 
-  v4 = [(APExpressionReferenceLibrary *)self storage];
+  storage = [(APExpressionReferenceLibrary *)self storage];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(APExpressionReferenceLibrary *)self storage];
-    v6 = [v5 recordCount];
+    storage2 = [(APExpressionReferenceLibrary *)self storage];
+    recordCount = [storage2 recordCount];
   }
 
   else
   {
-    v6 = 0;
+    recordCount = 0;
   }
 
-  v7 = [(APExpressionReferenceLibrary *)self unsavedReferences];
-  v8 = [v7 count];
+  unsavedReferences = [(APExpressionReferenceLibrary *)self unsavedReferences];
+  v8 = [unsavedReferences count];
 
-  v9 = [(APExpressionReferenceLibrary *)self lock];
-  [v9 unlock];
+  lock2 = [(APExpressionReferenceLibrary *)self lock];
+  [lock2 unlock];
 
-  return v6 + v8;
+  return recordCount + v8;
 }
 
 @end

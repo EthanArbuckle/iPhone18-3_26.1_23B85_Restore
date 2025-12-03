@@ -1,12 +1,12 @@
 @interface CRLiOSFolderGridViewController.Item.ViewController.ItemView
-- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController8ItemView)initWithCoder:(id)a3;
-- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController8ItemView)initWithFrame:(CGRect)a3;
+- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController8ItemView)initWithCoder:(id)coder;
+- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController8ItemView)initWithFrame:(CGRect)frame;
 - (void)updateConstraints;
 @end
 
 @implementation CRLiOSFolderGridViewController.Item.ViewController.ItemView
 
-- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController8ItemView)initWithCoder:(id)a3
+- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController8ItemView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -28,7 +28,7 @@
   }
 }
 
-- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController8ItemView)initWithFrame:(CGRect)a3
+- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController8ItemView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

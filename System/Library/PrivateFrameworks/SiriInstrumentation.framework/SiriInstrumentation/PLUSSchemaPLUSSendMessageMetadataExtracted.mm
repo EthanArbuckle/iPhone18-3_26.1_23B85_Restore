@@ -1,29 +1,29 @@
 @interface PLUSSchemaPLUSSendMessageMetadataExtracted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSSendMessageMetadataExtracted)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSSendMessageMetadataExtracted)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSSendMessageMetadataExtracted)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSSendMessageMetadataExtracted)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasInitialSendMessageRequestHasPayload:(BOOL)a3;
-- (void)setHasNumberOfTimesMessageContactChanged:(BOOL)a3;
-- (void)setHasNumberOfTimesMessagePayloadChanged:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasInitialSendMessageRequestHasPayload:(BOOL)payload;
+- (void)setHasNumberOfTimesMessageContactChanged:(BOOL)changed;
+- (void)setHasNumberOfTimesMessagePayloadChanged:(BOOL)changed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSSendMessageMetadataExtracted
 
-- (PLUSSchemaPLUSSendMessageMetadataExtracted)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSSendMessageMetadataExtracted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PLUSSchemaPLUSSendMessageMetadataExtracted;
   v5 = [(PLUSSchemaPLUSSendMessageMetadataExtracted *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"originalPlusId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"originalPlusId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,28 +31,28 @@
       [(PLUSSchemaPLUSSendMessageMetadataExtracted *)v5 setOriginalPlusId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"initialSendMessageRequestNumberOfContacts"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"initialSendMessageRequestNumberOfContacts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSSendMessageMetadataExtracted setInitialSendMessageRequestNumberOfContacts:](v5, "setInitialSendMessageRequestNumberOfContacts:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"initialSendMessageRequestHasPayload"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"initialSendMessageRequestHasPayload"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSSendMessageMetadataExtracted setInitialSendMessageRequestHasPayload:](v5, "setInitialSendMessageRequestHasPayload:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"numberOfTimesMessageContactChanged"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"numberOfTimesMessageContactChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSSendMessageMetadataExtracted setNumberOfTimesMessageContactChanged:](v5, "setNumberOfTimesMessageContactChanged:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"numberOfTimesMessagePayloadChanged"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"numberOfTimesMessagePayloadChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSSendMessageMetadataExtracted)initWithJSON:(id)a3
+- (PLUSSchemaPLUSSendMessageMetadataExtracted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSSendMessageMetadataExtracted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSSendMessageMetadataExtracted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSSendMessageMetadataExtracted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,12 +101,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLUSSchemaPLUSSendMessageMetadataExtracted initialSendMessageRequestHasPayload](self, "initialSendMessageRequestHasPayload")}];
-    [v3 setObject:v8 forKeyedSubscript:@"initialSendMessageRequestHasPayload"];
+    [dictionary setObject:v8 forKeyedSubscript:@"initialSendMessageRequestHasPayload"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -127,7 +127,7 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PLUSSchemaPLUSSendMessageMetadataExtracted initialSendMessageRequestNumberOfContacts](self, "initialSendMessageRequestNumberOfContacts")}];
-  [v3 setObject:v9 forKeyedSubscript:@"initialSendMessageRequestNumberOfContacts"];
+  [dictionary setObject:v9 forKeyedSubscript:@"initialSendMessageRequestNumberOfContacts"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -143,35 +143,35 @@ LABEL_4:
 
 LABEL_11:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PLUSSchemaPLUSSendMessageMetadataExtracted numberOfTimesMessageContactChanged](self, "numberOfTimesMessageContactChanged")}];
-  [v3 setObject:v10 forKeyedSubscript:@"numberOfTimesMessageContactChanged"];
+  [dictionary setObject:v10 forKeyedSubscript:@"numberOfTimesMessageContactChanged"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PLUSSchemaPLUSSendMessageMetadataExtracted numberOfTimesMessagePayloadChanged](self, "numberOfTimesMessagePayloadChanged")}];
-    [v3 setObject:v5 forKeyedSubscript:@"numberOfTimesMessagePayloadChanged"];
+    [dictionary setObject:v5 forKeyedSubscript:@"numberOfTimesMessagePayloadChanged"];
   }
 
 LABEL_6:
   if (self->_originalPlusId)
   {
-    v6 = [(PLUSSchemaPLUSSendMessageMetadataExtracted *)self originalPlusId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    originalPlusId = [(PLUSSchemaPLUSSendMessageMetadataExtracted *)self originalPlusId];
+    dictionaryRepresentation = [originalPlusId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"originalPlusId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"originalPlusId"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"originalPlusId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"originalPlusId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -229,30 +229,30 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = [(PLUSSchemaPLUSSendMessageMetadataExtracted *)self originalPlusId];
-  v6 = [v4 originalPlusId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  originalPlusId = [(PLUSSchemaPLUSSendMessageMetadataExtracted *)self originalPlusId];
+  originalPlusId2 = [equalCopy originalPlusId];
+  v7 = originalPlusId2;
+  if ((originalPlusId != 0) == (originalPlusId2 == 0))
   {
 
     goto LABEL_24;
   }
 
-  v8 = [(PLUSSchemaPLUSSendMessageMetadataExtracted *)self originalPlusId];
-  if (v8)
+  originalPlusId3 = [(PLUSSchemaPLUSSendMessageMetadataExtracted *)self originalPlusId];
+  if (originalPlusId3)
   {
-    v9 = v8;
-    v10 = [(PLUSSchemaPLUSSendMessageMetadataExtracted *)self originalPlusId];
-    v11 = [v4 originalPlusId];
-    v12 = [v10 isEqual:v11];
+    v9 = originalPlusId3;
+    originalPlusId4 = [(PLUSSchemaPLUSSendMessageMetadataExtracted *)self originalPlusId];
+    originalPlusId5 = [equalCopy originalPlusId];
+    v12 = [originalPlusId4 isEqual:originalPlusId5];
 
     if (!v12)
     {
@@ -265,7 +265,7 @@ LABEL_5:
   }
 
   has = self->_has;
-  v14 = v4[32];
+  v14 = equalCopy[32];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_24:
@@ -276,13 +276,13 @@ LABEL_24:
   if (*&has)
   {
     initialSendMessageRequestNumberOfContacts = self->_initialSendMessageRequestNumberOfContacts;
-    if (initialSendMessageRequestNumberOfContacts != [v4 initialSendMessageRequestNumberOfContacts])
+    if (initialSendMessageRequestNumberOfContacts != [equalCopy initialSendMessageRequestNumberOfContacts])
     {
       goto LABEL_24;
     }
 
     has = self->_has;
-    v14 = v4[32];
+    v14 = equalCopy[32];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -294,13 +294,13 @@ LABEL_24:
   if (v16)
   {
     initialSendMessageRequestHasPayload = self->_initialSendMessageRequestHasPayload;
-    if (initialSendMessageRequestHasPayload != [v4 initialSendMessageRequestHasPayload])
+    if (initialSendMessageRequestHasPayload != [equalCopy initialSendMessageRequestHasPayload])
     {
       goto LABEL_24;
     }
 
     has = self->_has;
-    v14 = v4[32];
+    v14 = equalCopy[32];
   }
 
   v18 = (*&has >> 2) & 1;
@@ -312,10 +312,10 @@ LABEL_24:
   if (v18)
   {
     numberOfTimesMessageContactChanged = self->_numberOfTimesMessageContactChanged;
-    if (numberOfTimesMessageContactChanged == [v4 numberOfTimesMessageContactChanged])
+    if (numberOfTimesMessageContactChanged == [equalCopy numberOfTimesMessageContactChanged])
     {
       has = self->_has;
-      v14 = v4[32];
+      v14 = equalCopy[32];
       goto LABEL_20;
     }
 
@@ -332,7 +332,7 @@ LABEL_20:
   if (v20)
   {
     numberOfTimesMessagePayloadChanged = self->_numberOfTimesMessagePayloadChanged;
-    if (numberOfTimesMessagePayloadChanged != [v4 numberOfTimesMessagePayloadChanged])
+    if (numberOfTimesMessagePayloadChanged != [equalCopy numberOfTimesMessagePayloadChanged])
     {
       goto LABEL_24;
     }
@@ -344,14 +344,14 @@ LABEL_25:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(PLUSSchemaPLUSSendMessageMetadataExtracted *)self originalPlusId];
+  toCopy = to;
+  originalPlusId = [(PLUSSchemaPLUSSendMessageMetadataExtracted *)self originalPlusId];
 
-  if (v4)
+  if (originalPlusId)
   {
-    v5 = [(PLUSSchemaPLUSSendMessageMetadataExtracted *)self originalPlusId];
+    originalPlusId2 = [(PLUSSchemaPLUSSendMessageMetadataExtracted *)self originalPlusId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -362,11 +362,11 @@ LABEL_25:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v7 = v8;
+    v7 = toCopy;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -386,20 +386,20 @@ LABEL_7:
   }
 
   PBDataWriterWriteUint32Field();
-  v7 = v8;
+  v7 = toCopy;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_8:
     PBDataWriterWriteUint32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 
 LABEL_9:
 }
 
-- (void)setHasNumberOfTimesMessagePayloadChanged:(BOOL)a3
+- (void)setHasNumberOfTimesMessagePayloadChanged:(BOOL)changed
 {
-  if (a3)
+  if (changed)
   {
     v3 = 8;
   }
@@ -412,9 +412,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNumberOfTimesMessageContactChanged:(BOOL)a3
+- (void)setHasNumberOfTimesMessageContactChanged:(BOOL)changed
 {
-  if (a3)
+  if (changed)
   {
     v3 = 4;
   }
@@ -427,9 +427,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasInitialSendMessageRequestHasPayload:(BOOL)a3
+- (void)setHasInitialSendMessageRequestHasPayload:(BOOL)payload
 {
-  if (a3)
+  if (payload)
   {
     v3 = 2;
   }
@@ -442,17 +442,17 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = PLUSSchemaPLUSSendMessageMetadataExtracted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(PLUSSchemaPLUSSendMessageMetadataExtracted *)self originalPlusId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(PLUSSchemaPLUSSendMessageMetadataExtracted *)self deleteOriginalPlusId];
   }

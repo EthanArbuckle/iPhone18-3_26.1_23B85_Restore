@@ -1,8 +1,8 @@
 @interface _UIDataSourceBatchUpdateMapHelper
 - (id)description;
-- (id)finalIndexPathForInitialIndexPath:(uint64_t)a1;
-- (id)initWithInitialSnapshot:(void *)a3 finalSnapshot:(void *)a4 updates:(int)a5 assertingForInvalidUpdates:;
-- (id)initialIndexPathForFinalIndexPath:(uint64_t)a1;
+- (id)finalIndexPathForInitialIndexPath:(uint64_t)path;
+- (id)initWithInitialSnapshot:(void *)snapshot finalSnapshot:(void *)finalSnapshot updates:(int)updates assertingForInvalidUpdates:;
+- (id)initialIndexPathForFinalIndexPath:(uint64_t)path;
 - (uint64_t)finalGlobalIndexForInitialGlobalIndex:(uint64_t)result;
 - (uint64_t)finalSectionIndexForInitialSectionIndex:(uint64_t)result;
 - (uint64_t)initialGlobalIndexForFinalGlobalIndex:(uint64_t)result;
@@ -12,41 +12,41 @@
 
 @implementation _UIDataSourceBatchUpdateMapHelper
 
-- (id)initWithInitialSnapshot:(void *)a3 finalSnapshot:(void *)a4 updates:(int)a5 assertingForInvalidUpdates:
+- (id)initWithInitialSnapshot:(void *)snapshot finalSnapshot:(void *)finalSnapshot updates:(int)updates assertingForInvalidUpdates:
 {
   v73 = *MEMORY[0x1E69E9840];
   v51 = a2;
-  v52 = a3;
-  v53 = a4;
-  if (a1)
+  snapshotCopy = snapshot;
+  finalSnapshotCopy = finalSnapshot;
+  if (self)
   {
-    v54.receiver = a1;
+    v54.receiver = self;
     v54.super_class = _UIDataSourceBatchUpdateMapHelper;
     v9 = objc_msgSendSuper2(&v54, sel_init);
-    a1 = v9;
+    self = v9;
     if (!v9)
     {
       goto LABEL_25;
     }
 
     objc_storeStrong(v9 + 1, a2);
-    objc_storeStrong(a1 + 2, a3);
-    objc_storeStrong(a1 + 3, a4);
-    v10 = a1[1];
-    v11 = [v10 numberOfSections];
-    v12 = v11;
-    if (v11 != 0x7FFFFFFFFFFFFFFFLL)
+    objc_storeStrong(self + 2, snapshot);
+    objc_storeStrong(self + 3, finalSnapshot);
+    v10 = self[1];
+    numberOfSections = [v10 numberOfSections];
+    v12 = numberOfSections;
+    if (numberOfSections != 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (!HIDWORD(v11))
+      if (!HIDWORD(numberOfSections))
       {
 LABEL_6:
-        v13 = [v10 numberOfItems];
-        v14 = v13;
-        if (v13 != 0x7FFFFFFFFFFFFFFFLL)
+        numberOfItems = [v10 numberOfItems];
+        v14 = numberOfItems;
+        if (numberOfItems != 0x7FFFFFFFFFFFFFFFLL)
         {
-          if (!HIDWORD(v13))
+          if (!HIDWORD(numberOfItems))
           {
-            v15 = v13 << 32;
+            v15 = numberOfItems << 32;
 LABEL_10:
             aBlock[0] = MEMORY[0x1E69E9820];
             aBlock[1] = 3221225472;
@@ -62,21 +62,21 @@ LABEL_10:
             v46 = v16;
             v66 = v46;
             v47 = _Block_copy(v65);
-            v17 = a1[2];
-            v18 = [v17 numberOfSections];
-            v19 = v18;
-            if (v18 != 0x7FFFFFFFFFFFFFFFLL)
+            v17 = self[2];
+            numberOfSections2 = [v17 numberOfSections];
+            v19 = numberOfSections2;
+            if (numberOfSections2 != 0x7FFFFFFFFFFFFFFFLL)
             {
-              if (!HIDWORD(v18))
+              if (!HIDWORD(numberOfSections2))
               {
 LABEL_13:
-                v20 = [v17 numberOfItems];
-                v21 = v20;
-                if (v20 != 0x7FFFFFFFFFFFFFFFLL)
+                numberOfItems2 = [v17 numberOfItems];
+                v21 = numberOfItems2;
+                if (numberOfItems2 != 0x7FFFFFFFFFFFFFFFLL)
                 {
-                  if (!HIDWORD(v20))
+                  if (!HIDWORD(numberOfItems2))
                   {
-                    v22 = v20 << 32;
+                    v22 = numberOfItems2 << 32;
 LABEL_17:
                     v63[0] = MEMORY[0x1E69E9820];
                     v63[1] = 3221225472;
@@ -92,7 +92,7 @@ LABEL_17:
                     v24 = v23;
                     v62 = v24;
                     v25 = _Block_copy(v61);
-                    v26 = a1[3];
+                    v26 = self[3];
                     v59[0] = MEMORY[0x1E69E9820];
                     v59[1] = 3221225472;
                     v59[2] = __83___UIDataSourceBatchUpdateMapHelper__generateUpdateMapsAssertingForInvalidUpdates___block_invoke_5;
@@ -114,16 +114,16 @@ LABEL_17:
                     v31 = v72;
                     v33 = v70;
                     v32 = v71;
-                    *(a1 + 2) = *buf;
-                    *(a1 + 3) = v33;
-                    *(a1 + 4) = v32;
-                    a1[10] = v31;
-                    if (*(a1 + 80) == 1)
+                    *(self + 2) = *buf;
+                    *(self + 3) = v33;
+                    *(self + 4) = v32;
+                    self[10] = v31;
+                    if (*(self + 80) == 1)
                     {
-                      if (a5)
+                      if (updates)
                       {
-                        v34 = [MEMORY[0x1E696AAA8] currentHandler];
-                        [v34 handleFailureInMethod:sel__generateUpdateMapsAssertingForInvalidUpdates_ object:a1 file:@"_UIDataSourceBatchUpdateMapHelper.m" lineNumber:82 description:{@"%@", v30}];
+                        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+                        [currentHandler handleFailureInMethod:sel__generateUpdateMapsAssertingForInvalidUpdates_ object:self file:@"_UIDataSourceBatchUpdateMapHelper.m" lineNumber:82 description:{@"%@", v30}];
                       }
 
                       else
@@ -138,47 +138,47 @@ LABEL_17:
                       }
                     }
 
-                    if (a5 & 1) == 0 && (a1[10])
+                    if (updates & 1) == 0 && (self[10])
                     {
                       goto LABEL_24;
                     }
 
 LABEL_25:
-                    a1 = a1;
-                    v36 = a1;
+                    self = self;
+                    selfCopy = self;
                     goto LABEL_26;
                   }
 
-                  v44 = [MEMORY[0x1E696AAA8] currentHandler];
+                  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
                   v45 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"_UIMapIndex _UIMapIndexFromNSInteger(const NSInteger)"];
-                  [v44 handleFailureInFunction:v45 file:@"_UIDataSourceBatchUpdateMap.h" lineNumber:28 description:{@"NSInteger index is negative or too large: %ld", v21}];
+                  [currentHandler2 handleFailureInFunction:v45 file:@"_UIDataSourceBatchUpdateMap.h" lineNumber:28 description:{@"NSInteger index is negative or too large: %ld", v21}];
                 }
 
                 v22 = 0xFFFFFFFF00000000;
                 goto LABEL_17;
               }
 
-              v42 = [MEMORY[0x1E696AAA8] currentHandler];
+              currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
               v43 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"_UIMapIndex _UIMapIndexFromNSInteger(const NSInteger)"];
-              [v42 handleFailureInFunction:v43 file:@"_UIDataSourceBatchUpdateMap.h" lineNumber:28 description:{@"NSInteger index is negative or too large: %ld", v19}];
+              [currentHandler3 handleFailureInFunction:v43 file:@"_UIDataSourceBatchUpdateMap.h" lineNumber:28 description:{@"NSInteger index is negative or too large: %ld", v19}];
             }
 
             v19 = 0xFFFFFFFFLL;
             goto LABEL_13;
           }
 
-          v40 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
           v41 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"_UIMapIndex _UIMapIndexFromNSInteger(const NSInteger)"];
-          [v40 handleFailureInFunction:v41 file:@"_UIDataSourceBatchUpdateMap.h" lineNumber:28 description:{@"NSInteger index is negative or too large: %ld", v14}];
+          [currentHandler4 handleFailureInFunction:v41 file:@"_UIDataSourceBatchUpdateMap.h" lineNumber:28 description:{@"NSInteger index is negative or too large: %ld", v14}];
         }
 
         v15 = 0xFFFFFFFF00000000;
         goto LABEL_10;
       }
 
-      v38 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v39 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"_UIMapIndex _UIMapIndexFromNSInteger(const NSInteger)"];
-      [v38 handleFailureInFunction:v39 file:@"_UIDataSourceBatchUpdateMap.h" lineNumber:28 description:{@"NSInteger index is negative or too large: %ld", v12}];
+      [currentHandler5 handleFailureInFunction:v39 file:@"_UIDataSourceBatchUpdateMap.h" lineNumber:28 description:{@"NSInteger index is negative or too large: %ld", v12}];
     }
 
     v12 = 0xFFFFFFFFLL;
@@ -186,10 +186,10 @@ LABEL_25:
   }
 
 LABEL_24:
-  v36 = 0;
+  selfCopy = 0;
 LABEL_26:
 
-  return v36;
+  return selfCopy;
 }
 
 - (uint64_t)initialGlobalIndexForFinalGlobalIndex:(uint64_t)result
@@ -200,9 +200,9 @@ LABEL_26:
     v4 = *(result + 72);
     if (!v4)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NSInteger _UIUpdateMapOldGlobalItemForNewGlobalItem(const _UIDataSourceUpdateMaps, const NSInteger)"}];
-      [v5 handleFailureInFunction:v6 file:@"_UIDataSourceBatchUpdateMap.h" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"updateMaps.newGlobalItemMap != NULL"}];
+      [currentHandler handleFailureInFunction:v6 file:@"_UIDataSourceBatchUpdateMap.h" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"updateMaps.newGlobalItemMap != NULL"}];
     }
 
     if (a2 > 0x7FFFFFFFFFFFFFFELL)
@@ -233,9 +233,9 @@ LABEL_26:
     v4 = *(result + 64);
     if (!v4)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NSInteger _UIUpdateMapNewGlobalItemForOldGlobalItem(const _UIDataSourceUpdateMaps, const NSInteger)"}];
-      [v5 handleFailureInFunction:v6 file:@"_UIDataSourceBatchUpdateMap.h" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"updateMaps.oldGlobalItemMap != NULL"}];
+      [currentHandler handleFailureInFunction:v6 file:@"_UIDataSourceBatchUpdateMap.h" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"updateMaps.oldGlobalItemMap != NULL"}];
     }
 
     if (a2 > 0x7FFFFFFFFFFFFFFELL)
@@ -258,12 +258,12 @@ LABEL_26:
   return result;
 }
 
-- (id)initialIndexPathForFinalIndexPath:(uint64_t)a1
+- (id)initialIndexPathForFinalIndexPath:(uint64_t)path
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (path && v3)
   {
     if ([v3 section] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "item") == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -272,14 +272,14 @@ LABEL_26:
 
     else
     {
-      v7 = -[_UIDataSourceBatchUpdateMapHelper initialGlobalIndexForFinalGlobalIndex:](a1, [*(a1 + 16) globalIndexForIndexPath:v4]);
+      v7 = -[_UIDataSourceBatchUpdateMapHelper initialGlobalIndexForFinalGlobalIndex:](path, [*(path + 16) globalIndexForIndexPath:v4]);
       if (v7 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v5 = 0;
         goto LABEL_10;
       }
 
-      v6 = [*(a1 + 8) indexPathForGlobalIndex:v7];
+      v6 = [*(path + 8) indexPathForGlobalIndex:v7];
     }
 
     v5 = v6;
@@ -290,12 +290,12 @@ LABEL_10:
   return v5;
 }
 
-- (id)finalIndexPathForInitialIndexPath:(uint64_t)a1
+- (id)finalIndexPathForInitialIndexPath:(uint64_t)path
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (path && v3)
   {
     if ([v3 section] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "item") == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -304,14 +304,14 @@ LABEL_10:
 
     else
     {
-      v7 = -[_UIDataSourceBatchUpdateMapHelper finalGlobalIndexForInitialGlobalIndex:](a1, [*(a1 + 8) globalIndexForIndexPath:v4]);
+      v7 = -[_UIDataSourceBatchUpdateMapHelper finalGlobalIndexForInitialGlobalIndex:](path, [*(path + 8) globalIndexForIndexPath:v4]);
       if (v7 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v5 = 0;
         goto LABEL_10;
       }
 
-      v6 = [*(a1 + 16) indexPathForGlobalIndex:v7];
+      v6 = [*(path + 16) indexPathForGlobalIndex:v7];
     }
 
     v5 = v6;
@@ -330,9 +330,9 @@ LABEL_10:
     v4 = *(result + 56);
     if (!v4)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NSInteger _UIUpdateMapOldSectionForNewSection(const _UIDataSourceUpdateMaps, const NSInteger)"}];
-      [v5 handleFailureInFunction:v6 file:@"_UIDataSourceBatchUpdateMap.h" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"updateMaps.newSectionMap != NULL"}];
+      [currentHandler handleFailureInFunction:v6 file:@"_UIDataSourceBatchUpdateMap.h" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"updateMaps.newSectionMap != NULL"}];
     }
 
     if (a2 > 0x7FFFFFFFFFFFFFFELL)
@@ -363,9 +363,9 @@ LABEL_10:
     v4 = *(result + 48);
     if (!v4)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NSInteger _UIUpdateMapNewSectionForOldSection(const _UIDataSourceUpdateMaps, const NSInteger)"}];
-      [v5 handleFailureInFunction:v6 file:@"_UIDataSourceBatchUpdateMap.h" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"updateMaps.oldSectionMap != NULL"}];
+      [currentHandler handleFailureInFunction:v6 file:@"_UIDataSourceBatchUpdateMap.h" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"updateMaps.oldSectionMap != NULL"}];
     }
 
     if (a2 > 0x7FFFFFFFFFFFFFFELL)

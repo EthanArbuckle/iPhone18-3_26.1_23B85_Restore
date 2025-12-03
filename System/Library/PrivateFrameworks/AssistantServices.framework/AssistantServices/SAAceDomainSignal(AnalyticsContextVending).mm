@@ -6,15 +6,15 @@
 
 - (void)af_addEntriesToAnalyticsContext:()AnalyticsContextVending
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &off_1F05B0610;
   v4 = a3;
   objc_msgSendSuper2(&v8, sel_af_addEntriesToAnalyticsContext_, v4);
-  v5 = [a1 domain];
-  v6 = v5;
-  if (v5)
+  domain = [self domain];
+  v6 = domain;
+  if (domain)
   {
-    v7 = v5;
+    v7 = domain;
   }
 
   else

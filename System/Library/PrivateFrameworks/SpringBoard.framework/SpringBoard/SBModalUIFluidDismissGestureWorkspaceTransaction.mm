@@ -1,8 +1,8 @@
 @interface SBModalUIFluidDismissGestureWorkspaceTransaction
 - (BOOL)_shouldDismissImmmediatelyAtFullGestureProgress;
-- (SBModalUIFluidDismissGestureWorkspaceTransaction)initWithTransitionRequest:(id)a3 windowScene:(id)a4 dismissalType:(int64_t)a5 initiatedFromBottomEdge:(BOOL)a6;
+- (SBModalUIFluidDismissGestureWorkspaceTransaction)initWithTransitionRequest:(id)request windowScene:(id)scene dismissalType:(int64_t)type initiatedFromBottomEdge:(BOOL)edge;
 - (SBWindowScene)windowScene;
-- (double)_backgroundWeightingForDismissal:(BOOL)a3;
+- (double)_backgroundWeightingForDismissal:(BOOL)dismissal;
 - (double)_backgroundWeightingForGestureProgress;
 - (double)_clientAnimationsDelay;
 - (double)_hapticDelay;
@@ -18,37 +18,37 @@
 - (id)_viewForGesture;
 - (int64_t)_notificationFeedbackType;
 - (void)_begin;
-- (void)_cleanupHierarchyForDismissal:(BOOL)a3;
+- (void)_cleanupHierarchyForDismissal:(BOOL)dismissal;
 - (void)_didComplete;
-- (void)_didInterruptWithReason:(id)a3;
-- (void)_dismissClientAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_finishInteractionAndDismiss:(BOOL)a3 animated:(BOOL)a4;
-- (void)_finishWithCompletionType:(int64_t)a3;
-- (void)_finishWithGesture:(id)a3;
-- (void)_setFluidDismissalState:(id)a3;
+- (void)_didInterruptWithReason:(id)reason;
+- (void)_dismissClientAnimated:(BOOL)animated completion:(id)completion;
+- (void)_finishInteractionAndDismiss:(BOOL)dismiss animated:(BOOL)animated;
+- (void)_finishWithCompletionType:(int64_t)type;
+- (void)_finishWithGesture:(id)gesture;
+- (void)_setFluidDismissalState:(id)state;
 - (void)_updateDismissingViewLayoutAndStyleForGesture;
-- (void)_updateWithGesture:(id)a3;
-- (void)systemGestureStateChanged:(id)a3;
+- (void)_updateWithGesture:(id)gesture;
+- (void)systemGestureStateChanged:(id)changed;
 @end
 
 @implementation SBModalUIFluidDismissGestureWorkspaceTransaction
 
-- (SBModalUIFluidDismissGestureWorkspaceTransaction)initWithTransitionRequest:(id)a3 windowScene:(id)a4 dismissalType:(int64_t)a5 initiatedFromBottomEdge:(BOOL)a6
+- (SBModalUIFluidDismissGestureWorkspaceTransaction)initWithTransitionRequest:(id)request windowScene:(id)scene dismissalType:(int64_t)type initiatedFromBottomEdge:(BOOL)edge
 {
-  v10 = a4;
+  sceneCopy = scene;
   v18.receiver = self;
   v18.super_class = SBModalUIFluidDismissGestureWorkspaceTransaction;
-  v11 = [(SBSystemGestureWorkspaceTransaction *)&v18 initWithTransitionRequest:a3];
+  v11 = [(SBSystemGestureWorkspaceTransaction *)&v18 initWithTransitionRequest:request];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_windowScene, v10);
-    v13 = [v10 assistantController];
+    objc_storeWeak(&v11->_windowScene, sceneCopy);
+    assistantController = [sceneCopy assistantController];
     assistantController = v12->_assistantController;
-    v12->_assistantController = v13;
+    v12->_assistantController = assistantController;
 
-    v12->_dismissalType = a5;
-    v12->_initiatedFromBottomEdge = a6;
+    v12->_dismissalType = type;
+    v12->_initiatedFromBottomEdge = edge;
     v15 = +[SBAppSwitcherDomain rootSettings];
     settings = v12->_settings;
     v12->_settings = v15;
@@ -59,18 +59,18 @@
   return v12;
 }
 
-- (void)_didInterruptWithReason:(id)a3
+- (void)_didInterruptWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
-  [v5 setEnabled:0];
+  reasonCopy = reason;
+  gestureRecognizer = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
+  [gestureRecognizer setEnabled:0];
 
-  v6 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
-  [v6 setEnabled:1];
+  gestureRecognizer2 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
+  [gestureRecognizer2 setEnabled:1];
 
   v7.receiver = self;
   v7.super_class = SBModalUIFluidDismissGestureWorkspaceTransaction;
-  [(SBModalUIFluidDismissGestureWorkspaceTransaction *)&v7 _didInterruptWithReason:v4];
+  [(SBModalUIFluidDismissGestureWorkspaceTransaction *)&v7 _didInterruptWithReason:reasonCopy];
 }
 
 - (void)_begin
@@ -85,28 +85,28 @@
         goto LABEL_14;
       }
 
-      v10 = [MEMORY[0x277CCA890] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"SBModalUIFluidDismissGestureWorkspaceTransaction.m" lineNumber:128 description:@"Invalid dismissal type for dismiss gesture workspace transaction"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBModalUIFluidDismissGestureWorkspaceTransaction.m" lineNumber:128 description:@"Invalid dismissal type for dismiss gesture workspace transaction"];
       goto LABEL_11;
     }
 
-    v7 = [(SBAssistantSceneControlling *)self->_assistantController assistantRootViewController];
+    assistantRootViewController = [(SBAssistantSceneControlling *)self->_assistantController assistantRootViewController];
     v8 = 256;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v5 = [WeakRetained transientOverlayPresenter];
+    transientOverlayPresenter = [WeakRetained transientOverlayPresenter];
     transientOverlayPresenter = self->_transientOverlayPresenter;
-    self->_transientOverlayPresenter = v5;
+    self->_transientOverlayPresenter = transientOverlayPresenter;
 
-    v7 = [(SBTransientOverlayPresenting *)self->_transientOverlayPresenter viewControllerForGestureDismissal];
+    assistantRootViewController = [(SBTransientOverlayPresenting *)self->_transientOverlayPresenter viewControllerForGestureDismissal];
     v8 = 272;
   }
 
   v9 = *(&self->super.super.super.super.super.super.isa + v8);
-  *(&self->super.super.super.super.super.super.isa + v8) = v7;
+  *(&self->super.super.super.super.super.super.isa + v8) = assistantRootViewController;
 
   if (!*(&self->super.super.super.super.super.super.isa + v8))
   {
@@ -114,13 +114,13 @@
   }
 
   [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self addMilestone:@"SBModalUIFluidDismissGestureMilestone"];
-  v10 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _viewForGesture];
-  v11 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
+  currentHandler = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _viewForGesture];
+  gestureRecognizer = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
   _UISystemGestureLocationInView();
   v13 = v12;
   v15 = v14;
 
-  [v10 bounds];
+  [currentHandler bounds];
   x = v31.origin.x;
   y = v31.origin.y;
   width = v31.size.width;
@@ -147,14 +147,14 @@ LABEL_12:
   if (self->_dismissalType == 3)
   {
     v26 = +[SBKeyboardSuppressionManager sharedInstance];
-    v27 = [(SBWorkspaceTransaction *)self transitionRequest];
-    v28 = [v27 displayIdentity];
-    [v26 startSuppressingKeyboardWithReason:@"SBModalUIFluidDismissGestureKeyboardSuppressionReason" predicate:0 displayIdentity:v28];
+    transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+    displayIdentity = [transitionRequest displayIdentity];
+    [v26 startSuppressingKeyboardWithReason:@"SBModalUIFluidDismissGestureKeyboardSuppressionReason" predicate:0 displayIdentity:displayIdentity];
   }
 
 LABEL_14:
-  v29 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _dismissalFeedbackGenerator];
-  [v29 activateWithCompletionBlock:0];
+  _dismissalFeedbackGenerator = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _dismissalFeedbackGenerator];
+  [_dismissalFeedbackGenerator activateWithCompletionBlock:0];
 
   v30.receiver = self;
   v30.super_class = SBModalUIFluidDismissGestureWorkspaceTransaction;
@@ -166,8 +166,8 @@ LABEL_14:
   v6.receiver = self;
   v6.super_class = SBModalUIFluidDismissGestureWorkspaceTransaction;
   [(SBSystemGestureWorkspaceTransaction *)&v6 _didComplete];
-  v3 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _dismissalFeedbackGenerator];
-  [v3 deactivate];
+  _dismissalFeedbackGenerator = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _dismissalFeedbackGenerator];
+  [_dismissalFeedbackGenerator deactivate];
 
   if (self->_dismissalType == 3)
   {
@@ -180,48 +180,48 @@ LABEL_14:
   self->_statusBarAssertion = 0;
 }
 
-- (void)systemGestureStateChanged:(id)a3
+- (void)systemGestureStateChanged:(id)changed
 {
-  v5 = a3;
+  changedCopy = changed;
   if ([(SBModalUIFluidDismissGestureWorkspaceTransaction *)self isRunning]&& !self->_isDismissing)
   {
-    v4 = [v5 state];
-    if (v4 == 2)
+    state = [changedCopy state];
+    if (state == 2)
     {
-      [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _updateWithGesture:v5];
+      [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _updateWithGesture:changedCopy];
     }
 
-    else if (v4 == 1)
+    else if (state == 1)
     {
-      [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _beginWithGesture:v5];
+      [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _beginWithGesture:changedCopy];
     }
 
     else
     {
-      [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _finishWithGesture:v5];
+      [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _finishWithGesture:changedCopy];
     }
   }
 }
 
-- (void)_finishWithCompletionType:(int64_t)a3
+- (void)_finishWithCompletionType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = SBModalUIFluidDismissGestureWorkspaceTransaction;
   [(SBSystemGestureWorkspaceTransaction *)&v8 _finishWithCompletionType:?];
-  if (a3 == 1)
+  if (type == 1)
   {
     v5 = +[SBKeyboardFocusCoordinator sharedInstance];
-    v6 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self windowScene];
+    windowScene = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self windowScene];
     v7 = +[SBKeyboardFocusArbitrationReason modalUIFluidDismissGestureDidFinish];
-    [v5 requestArbitrationForSBWindowScene:v6 forReason:v7];
+    [v5 requestArbitrationForSBWindowScene:windowScene forReason:v7];
   }
 
   [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self removeMilestone:@"SBModalUIFluidDismissGestureMilestone"];
 }
 
-- (void)_updateWithGesture:(id)a3
+- (void)_updateWithGesture:(id)gesture
 {
-  v5 = a3;
+  gestureCopy = gesture;
   if (!self->_hasPreservedInputViews)
   {
     self->_hasPreservedInputViews = 1;
@@ -239,17 +239,17 @@ LABEL_14:
   }
 }
 
-- (void)_finishWithGesture:(id)a3
+- (void)_finishWithGesture:(id)gesture
 {
-  v5 = a3;
-  v12 = v5;
+  gestureCopy = gesture;
+  v12 = gestureCopy;
   if (!self->_assistantRootViewController && !self->_transientOverlayViewController)
   {
     [(SBModalUIFluidDismissGestureWorkspaceTransaction *)a2 _finishWithGesture:?];
-    v5 = v12;
+    gestureCopy = v12;
   }
 
-  if (([v5 state] & 0xFFFFFFFFFFFFFFFELL) == 4)
+  if (([gestureCopy state] & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
     v6 = 0;
     animateGestureCancelationOrFailure = self->_animateGestureCancelationOrFailure;
@@ -257,10 +257,10 @@ LABEL_14:
 
   else
   {
-    v8 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _viewForGesture];
-    [v12 velocityInView:v8];
+    _viewForGesture = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _viewForGesture];
+    [v12 velocityInView:_viewForGesture];
     v10 = v9;
-    [v12 translationInView:v8];
+    [v12 translationInView:_viewForGesture];
     v6 = v11 + v10 * 0.15 <= self->_dismissalThreshold;
 
     animateGestureCancelationOrFailure = 1;
@@ -269,18 +269,18 @@ LABEL_14:
   [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _finishInteractionAndDismiss:v6 animated:animateGestureCancelationOrFailure];
 }
 
-- (void)_finishInteractionAndDismiss:(BOOL)a3 animated:(BOOL)a4
+- (void)_finishInteractionAndDismiss:(BOOL)dismiss animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  self->_isDismissing = a3;
+  animatedCopy = animated;
+  dismissCopy = dismiss;
+  self->_isDismissing = dismiss;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
   v24 = 0;
   v7 = dispatch_group_create();
   v8 = v7;
-  if (v5)
+  if (dismissCopy)
   {
     dispatch_group_enter(v7);
     v21[0] = MEMORY[0x277D85DD0];
@@ -288,7 +288,7 @@ LABEL_14:
     v21[2] = __90__SBModalUIFluidDismissGestureWorkspaceTransaction__finishInteractionAndDismiss_animated___block_invoke;
     v21[3] = &unk_2783A8C18;
     v22 = v8;
-    [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _dismissClientAnimated:v4 completion:v21];
+    [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _dismissClientAnimated:animatedCopy completion:v21];
   }
 
   v9 = 0.0;
@@ -304,8 +304,8 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __90__SBModalUIFluidDismissGestureWorkspaceTransaction__finishInteractionAndDismiss_animated___block_invoke_2;
   block[3] = &unk_2783AF868;
-  v19 = v4;
-  v20 = v5;
+  v19 = animatedCopy;
+  v20 = dismissCopy;
   block[4] = self;
   v18 = v23;
   v12 = v8;
@@ -322,7 +322,7 @@ LABEL_14:
   v14[3] = &unk_2783AD078;
   v14[4] = self;
   v14[5] = v23;
-  v15 = v5;
+  v15 = dismissCopy;
   v13 = MEMORY[0x277D85CD0];
   dispatch_group_notify(v12, MEMORY[0x277D85CD0], v14);
 
@@ -499,7 +499,7 @@ uint64_t __90__SBModalUIFluidDismissGestureWorkspaceTransaction__finishInteracti
   v6 = v5;
   [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _swipeUpGestureTranslation];
   v7 = MEMORY[0x277D75D18];
-  v8 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _layoutSettings];
+  _layoutSettings = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _layoutSettings];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __97__SBModalUIFluidDismissGestureWorkspaceTransaction__updateDismissingViewLayoutAndStyleForGesture__block_invoke;
@@ -507,27 +507,27 @@ uint64_t __90__SBModalUIFluidDismissGestureWorkspaceTransaction__finishInteracti
   v13[4] = self;
   v13[5] = v4;
   v13[6] = v6;
-  [v7 sb_animateWithSettings:v8 mode:5 animations:v13 completion:0];
+  [v7 sb_animateWithSettings:_layoutSettings mode:5 animations:v13 completion:0];
 
   if (self->_dismissalType == 3 && !SBReduceMotion())
   {
     if (BSFloatGreaterThanFloat())
     {
-      v9 = +[SBSpotlightDomain rootSettings];
-      [v9 maxTranslationForHomeScreenScale];
-      [v9 homeScreenScaleRubberbandingMin];
-      [v9 homeScreenScaleRubberbandingMax];
-      [v9 homeScreenScaleRubberbandingRange];
+      _homeScreenAnimator2 = +[SBSpotlightDomain rootSettings];
+      [_homeScreenAnimator2 maxTranslationForHomeScreenScale];
+      [_homeScreenAnimator2 homeScreenScaleRubberbandingMin];
+      [_homeScreenAnimator2 homeScreenScaleRubberbandingMax];
+      [_homeScreenAnimator2 homeScreenScaleRubberbandingRange];
       BSUIConstrainValueToIntervalWithRubberBand();
       v11 = v10;
-      v12 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _homeScreenAnimator];
-      [v12 setHomeScreenScale:5 behaviorMode:0 completion:v11];
+      _homeScreenAnimator = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _homeScreenAnimator];
+      [_homeScreenAnimator setHomeScreenScale:5 behaviorMode:0 completion:v11];
     }
 
     else
     {
-      v9 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _homeScreenAnimator];
-      [v9 setHomeScreenScale:5 behaviorMode:0 completion:1.0];
+      _homeScreenAnimator2 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _homeScreenAnimator];
+      [_homeScreenAnimator2 setHomeScreenScale:5 behaviorMode:0 completion:1.0];
     }
   }
 }
@@ -672,45 +672,45 @@ void __97__SBModalUIFluidDismissGestureWorkspaceTransaction__updateDismissingVie
 
 - (id)_layoutSettings
 {
-  v4 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
+  dismissalType = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
   v5 = 0;
-  if (v4 > 4)
+  if (dismissalType > 4)
   {
-    if ((v4 - 5) >= 2)
+    if ((dismissalType - 5) >= 2)
     {
       goto LABEL_11;
     }
 
-    v6 = [(SBAppSwitcherSettings *)self->_settings animationSettings];
-    v7 = [v6 alertBarSwipeDismissalSettings];
+    animationSettings = [(SBAppSwitcherSettings *)self->_settings animationSettings];
+    alertBarSwipeDismissalSettings = [animationSettings alertBarSwipeDismissalSettings];
   }
 
-  else if ((v4 - 2) >= 3)
+  else if ((dismissalType - 2) >= 3)
   {
-    if (!v4)
+    if (!dismissalType)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"SBModalUIFluidDismissGestureWorkspaceTransaction.m" lineNumber:403 description:@"Invalid dismissal type for dismiss gesture workspace transaction"];
+      animationSettings = [MEMORY[0x277CCA890] currentHandler];
+      [animationSettings handleFailureInMethod:a2 object:self file:@"SBModalUIFluidDismissGestureWorkspaceTransaction.m" lineNumber:403 description:@"Invalid dismissal type for dismiss gesture workspace transaction"];
       v5 = 0;
       goto LABEL_10;
     }
 
-    if (v4 != 1)
+    if (dismissalType != 1)
     {
       goto LABEL_11;
     }
 
-    v6 = [(SBAppSwitcherSettings *)self->_settings animationSettings];
-    v7 = [v6 siriSwipeDismissalSettings];
+    animationSettings = [(SBAppSwitcherSettings *)self->_settings animationSettings];
+    alertBarSwipeDismissalSettings = [animationSettings siriSwipeDismissalSettings];
   }
 
   else
   {
-    v6 = [(SBAppSwitcherSettings *)self->_settings animationSettings];
-    v7 = [v6 alertCardifiedDismissalSettings];
+    animationSettings = [(SBAppSwitcherSettings *)self->_settings animationSettings];
+    alertBarSwipeDismissalSettings = [animationSettings alertCardifiedDismissalSettings];
   }
 
-  v5 = v7;
+  v5 = alertBarSwipeDismissalSettings;
 LABEL_10:
 
 LABEL_11:
@@ -720,31 +720,31 @@ LABEL_11:
 
 - (double)_zoomOutDelay
 {
-  v3 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
+  dismissalType = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
   v4 = 0.0;
-  if (v3 > 4)
+  if (dismissalType > 4)
   {
-    if ((v3 - 5) < 2)
+    if ((dismissalType - 5) < 2)
     {
-      v5 = [(SBAppSwitcherSettings *)self->_settings animationSettings];
-      [v5 alertBarSwipeDismissZoomOutDelay];
+      animationSettings = [(SBAppSwitcherSettings *)self->_settings animationSettings];
+      [animationSettings alertBarSwipeDismissZoomOutDelay];
       goto LABEL_9;
     }
   }
 
   else
   {
-    if (v3 == 1)
+    if (dismissalType == 1)
     {
-      v5 = [(SBAppSwitcherSettings *)self->_settings animationSettings];
-      [v5 siriSwipeDismissZoomOutDelay];
+      animationSettings = [(SBAppSwitcherSettings *)self->_settings animationSettings];
+      [animationSettings siriSwipeDismissZoomOutDelay];
       goto LABEL_9;
     }
 
-    if (v3 == 2 || v3 == 4)
+    if (dismissalType == 2 || dismissalType == 4)
     {
-      v5 = [(SBAppSwitcherSettings *)self->_settings animationSettings];
-      [v5 alertCardifiedDismissZoomOutDelay];
+      animationSettings = [(SBAppSwitcherSettings *)self->_settings animationSettings];
+      [animationSettings alertCardifiedDismissZoomOutDelay];
 LABEL_9:
       v4 = v6;
     }
@@ -755,31 +755,31 @@ LABEL_9:
 
 - (double)_clientAnimationsDelay
 {
-  v3 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
+  dismissalType = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
   v4 = 0.0;
-  if (v3 > 4)
+  if (dismissalType > 4)
   {
-    if ((v3 - 5) < 2)
+    if ((dismissalType - 5) < 2)
     {
-      v5 = [(SBAppSwitcherSettings *)self->_settings animationSettings];
-      [v5 alertBarSwipeDismissClientAnimationsDelay];
+      animationSettings = [(SBAppSwitcherSettings *)self->_settings animationSettings];
+      [animationSettings alertBarSwipeDismissClientAnimationsDelay];
       goto LABEL_9;
     }
   }
 
   else
   {
-    if (v3 == 1)
+    if (dismissalType == 1)
     {
-      v5 = [(SBAppSwitcherSettings *)self->_settings animationSettings];
-      [v5 siriSwipeDismissClientAnimationsDelay];
+      animationSettings = [(SBAppSwitcherSettings *)self->_settings animationSettings];
+      [animationSettings siriSwipeDismissClientAnimationsDelay];
       goto LABEL_9;
     }
 
-    if (v3 == 2 || v3 == 4)
+    if (dismissalType == 2 || dismissalType == 4)
     {
-      v5 = [(SBAppSwitcherSettings *)self->_settings animationSettings];
-      [v5 alertCardifiedDismissClientAnimationsDelay];
+      animationSettings = [(SBAppSwitcherSettings *)self->_settings animationSettings];
+      [animationSettings alertCardifiedDismissClientAnimationsDelay];
 LABEL_9:
       v4 = v6;
     }
@@ -790,31 +790,31 @@ LABEL_9:
 
 - (double)_hapticDelay
 {
-  v3 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
+  dismissalType = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
   v4 = 0.0;
-  if (v3 > 4)
+  if (dismissalType > 4)
   {
-    if ((v3 - 5) < 2)
+    if ((dismissalType - 5) < 2)
     {
-      v5 = [(SBAppSwitcherSettings *)self->_settings animationSettings];
-      [v5 alertBarSwipeDismissHapticDelay];
+      animationSettings = [(SBAppSwitcherSettings *)self->_settings animationSettings];
+      [animationSettings alertBarSwipeDismissHapticDelay];
       goto LABEL_9;
     }
   }
 
   else
   {
-    if (v3 == 1)
+    if (dismissalType == 1)
     {
-      v5 = [(SBAppSwitcherSettings *)self->_settings animationSettings];
-      [v5 siriSwipeDismissHapticDelay];
+      animationSettings = [(SBAppSwitcherSettings *)self->_settings animationSettings];
+      [animationSettings siriSwipeDismissHapticDelay];
       goto LABEL_9;
     }
 
-    if (v3 == 2 || v3 == 4)
+    if (dismissalType == 2 || dismissalType == 4)
     {
-      v5 = [(SBAppSwitcherSettings *)self->_settings animationSettings];
-      [v5 alertCardifiedDismissHapticDelay];
+      animationSettings = [(SBAppSwitcherSettings *)self->_settings animationSettings];
+      [animationSettings alertCardifiedDismissHapticDelay];
 LABEL_9:
       v4 = v6;
     }
@@ -825,25 +825,25 @@ LABEL_9:
 
 - (int64_t)_notificationFeedbackType
 {
-  v2 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
-  if (v2 > 6)
+  dismissalType = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
+  if (dismissalType > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_21F8A6000[v2];
+    return qword_21F8A6000[dismissalType];
   }
 }
 
-- (void)_dismissClientAnimated:(BOOL)a3 completion:(id)a4
+- (void)_dismissClientAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v7 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   v8 = 0.0;
   v9 = 0.0;
-  if (v4)
+  if (animatedCopy)
   {
     [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _clientAnimationsDelay];
     v9 = v10;
@@ -854,11 +854,11 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = __86__SBModalUIFluidDismissGestureWorkspaceTransaction__dismissClientAnimated_completion___block_invoke;
   block[3] = &unk_2783ABD10;
-  v20 = v4;
+  v20 = animatedCopy;
   block[4] = self;
   block[5] = a2;
   dispatch_after(v11, MEMORY[0x277D85CD0], block);
-  if (v4)
+  if (animatedCopy)
   {
     [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _hapticDelay];
     v8 = v12;
@@ -884,7 +884,7 @@ LABEL_9:
 
   v16 = dispatch_time(0, (v15 * 1000000000.0));
   v17 = MEMORY[0x277D85CD0];
-  dispatch_after(v16, MEMORY[0x277D85CD0], v7);
+  dispatch_after(v16, MEMORY[0x277D85CD0], completionCopy);
 }
 
 void __86__SBModalUIFluidDismissGestureWorkspaceTransaction__dismissClientAnimated_completion___block_invoke(uint64_t a1)
@@ -926,36 +926,36 @@ void __86__SBModalUIFluidDismissGestureWorkspaceTransaction__dismissClientAnimat
 
 - (double)_scaleForDismissal
 {
-  v2 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
+  dismissalType = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
   result = 0.0;
-  if (v2 <= 6)
+  if (dismissalType <= 6)
   {
-    return dbl_21F8A6038[v2];
+    return dbl_21F8A6038[dismissalType];
   }
 
   return result;
 }
 
-- (double)_backgroundWeightingForDismissal:(BOOL)a3
+- (double)_backgroundWeightingForDismissal:(BOOL)dismissal
 {
-  v3 = a3;
-  v4 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
-  if (v4 > 6)
+  dismissalCopy = dismissal;
+  dismissalType = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
+  if (dismissalType > 6)
   {
     return 0.0;
   }
 
-  if (v4 == 3)
+  if (dismissalType == 3)
   {
     v7 = +[SBLockScreenManager sharedInstance];
-    v8 = [v7 isUILocked];
+    isUILocked = [v7 isUILocked];
 
     v9 = +[SBSpotlightDomain rootSettings];
     v10 = v9;
     v5 = 0.0;
-    if (v8)
+    if (isUILocked)
     {
-      v11 = !v3;
+      v11 = !dismissalCopy;
     }
 
     else
@@ -970,7 +970,7 @@ void __86__SBModalUIFluidDismissGestureWorkspaceTransaction__dismissClientAnimat
     }
   }
 
-  else if (v3)
+  else if (dismissalCopy)
   {
     return 0.0;
   }
@@ -987,13 +987,13 @@ void __86__SBModalUIFluidDismissGestureWorkspaceTransaction__dismissClientAnimat
 {
   [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _swipeUpGestureProgress];
   v4 = v3;
-  v5 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
-  if (v5 > 6)
+  dismissalType = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
+  if (dismissalType > 6)
   {
     return 0.0;
   }
 
-  if (((1 << v5) & 0x1E) != 0)
+  if (((1 << dismissalType) & 0x1E) != 0)
   {
     return v4 * -0.145 + 1.0;
   }
@@ -1005,18 +1005,18 @@ void __86__SBModalUIFluidDismissGestureWorkspaceTransaction__dismissClientAnimat
 {
   [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _swipeUpGestureProgress];
   v4 = v3;
-  v5 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
-  if (v5 > 6)
+  dismissalType = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
+  if (dismissalType > 6)
   {
     return 0.0;
   }
 
-  if (((1 << v5) & 0x16) != 0)
+  if (((1 << dismissalType) & 0x16) != 0)
   {
     return v4 * -0.1 + 0.9;
   }
 
-  if (((1 << v5) & 0x61) != 0)
+  if (((1 << dismissalType) & 0x61) != 0)
   {
     return 1.0;
   }
@@ -1042,18 +1042,18 @@ void __86__SBModalUIFluidDismissGestureWorkspaceTransaction__dismissClientAnimat
 {
   [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _swipeUpGestureProgress];
   v4 = v3;
-  v5 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
-  if (v5 > 6)
+  dismissalType = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
+  if (dismissalType > 6)
   {
     return 0.0;
   }
 
-  if (((1 << v5) & 0x1D) != 0)
+  if (((1 << dismissalType) & 0x1D) != 0)
   {
     v6 = -10.0;
   }
 
-  else if (((1 << v5) & 0x60) != 0)
+  else if (((1 << dismissalType) & 0x60) != 0)
   {
     v6 = -15.0;
   }
@@ -1068,19 +1068,19 @@ void __86__SBModalUIFluidDismissGestureWorkspaceTransaction__dismissClientAnimat
 
 - (double)_swipeUpGestureTranslation
 {
-  v3 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
-  v4 = [v3 state];
+  gestureRecognizer = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
+  state = [gestureRecognizer state];
 
   v5 = 0.0;
-  if (v4 != 1)
+  if (state != 1)
   {
-    v6 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _viewForGesture];
+    _viewForGesture = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _viewForGesture];
     dismissalType = self->_dismissalType;
-    v8 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
-    v9 = v8;
+    gestureRecognizer2 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
+    v9 = gestureRecognizer2;
     if (dismissalType == 3)
     {
-      [v8 translationInView:v6];
+      [gestureRecognizer2 translationInView:_viewForGesture];
       v5 = v10;
     }
 
@@ -1100,8 +1100,8 @@ void __86__SBModalUIFluidDismissGestureWorkspaceTransaction__dismissClientAnimat
 {
   [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self _swipeUpGestureTranslation];
   v4 = v3;
-  v5 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
-  if (v5 < 5)
+  dismissalType = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
+  if (dismissalType < 5)
   {
     v6 = fabs(v4);
     v7 = pow((v6 + v6) / 500.0 + 0.0, 0.7);
@@ -1111,7 +1111,7 @@ LABEL_4:
     return result;
   }
 
-  if (v5 - 5 < 2)
+  if (dismissalType - 5 < 2)
   {
     goto LABEL_4;
   }
@@ -1121,21 +1121,21 @@ LABEL_4:
 
 - (BOOL)_shouldDismissImmmediatelyAtFullGestureProgress
 {
-  v4 = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
-  if ((v4 - 5) < 2)
+  dismissalType = [(SBModalUIFluidDismissGestureWorkspaceTransaction *)self dismissalType];
+  if ((dismissalType - 5) < 2)
   {
     return 1;
   }
 
-  if (!v4)
+  if (!dismissalType)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"SBModalUIFluidDismissGestureWorkspaceTransaction.m" lineNumber:739 description:@"Invalid dismissal type for dismiss gesture workspace transaction"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBModalUIFluidDismissGestureWorkspaceTransaction.m" lineNumber:739 description:@"Invalid dismissal type for dismiss gesture workspace transaction"];
 
     return 0;
   }
 
-  if (v4 != 3)
+  if (dismissalType != 3)
   {
     return 0;
   }
@@ -1143,16 +1143,16 @@ LABEL_4:
   return SBReduceMotion();
 }
 
-- (void)_setFluidDismissalState:(id)a3
+- (void)_setFluidDismissalState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   assistantRootViewController = self->_assistantRootViewController;
   if (assistantRootViewController && (self->_dismissalType - 1) <= 1)
   {
-    v7 = v4;
-    [(SBAssistantRootViewController *)assistantRootViewController setFluidDismissalState:v4];
+    v7 = stateCopy;
+    [(SBAssistantRootViewController *)assistantRootViewController setFluidDismissalState:stateCopy];
 LABEL_7:
-    v4 = v7;
+    stateCopy = v7;
     goto LABEL_8;
   }
 
@@ -1161,8 +1161,8 @@ LABEL_7:
     transientOverlayPresenter = self->_transientOverlayPresenter;
     if (transientOverlayPresenter)
     {
-      v7 = v4;
-      [(SBTransientOverlayPresenting *)transientOverlayPresenter setFluidDismissalState:v4 forViewController:?];
+      v7 = stateCopy;
+      [(SBTransientOverlayPresenting *)transientOverlayPresenter setFluidDismissalState:stateCopy forViewController:?];
       goto LABEL_7;
     }
   }
@@ -1182,12 +1182,12 @@ LABEL_8:
     transientOverlayViewController = self->_assistantRootViewController;
   }
 
-  v3 = [transientOverlayViewController view];
+  view = [transientOverlayViewController view];
 
-  return v3;
+  return view;
 }
 
-- (void)_cleanupHierarchyForDismissal:(BOOL)a3
+- (void)_cleanupHierarchyForDismissal:(BOOL)dismissal
 {
   if (self->_hasPreservedInputViews)
   {
@@ -1212,9 +1212,9 @@ LABEL_8:
 - (id)_homeScreenAnimator
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [WeakRetained homeScreenController];
+  homeScreenController = [WeakRetained homeScreenController];
 
-  return v3;
+  return homeScreenController;
 }
 
 - (SBWindowScene)windowScene

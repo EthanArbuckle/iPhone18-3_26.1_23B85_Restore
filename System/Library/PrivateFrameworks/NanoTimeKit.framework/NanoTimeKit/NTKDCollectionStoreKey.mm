@@ -1,37 +1,37 @@
 @interface NTKDCollectionStoreKey
-+ (id)keyWithCollectionIdentifier:(id)a3 deviceUUID:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)keyWithCollectionIdentifier:(id)identifier deviceUUID:(id)d;
+- (BOOL)isEqual:(id)equal;
 - (id)plistRepresentation;
 @end
 
 @implementation NTKDCollectionStoreKey
 
-+ (id)keyWithCollectionIdentifier:(id)a3 deviceUUID:(id)a4
++ (id)keyWithCollectionIdentifier:(id)identifier deviceUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  identifierCopy = identifier;
+  dCopy = d;
+  v8 = objc_alloc_init(self);
   v9 = v8[1];
-  v8[1] = v6;
-  v10 = v6;
+  v8[1] = identifierCopy;
+  v10 = identifierCopy;
 
   v11 = v8[2];
-  v8[2] = v7;
+  v8[2] = dCopy;
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     collectionIdentifier = self->_collectionIdentifier;
-    v6 = [v4 collectionIdentifier];
+    collectionIdentifier = [equalCopy collectionIdentifier];
     if (NTKEqualStrings())
     {
       deviceUUID = self->_deviceUUID;
-      v8 = [v4 deviceUUID];
+      deviceUUID = [equalCopy deviceUUID];
       v9 = NTKEqualObjects();
     }
 
@@ -55,8 +55,8 @@
   deviceUUID = self->_deviceUUID;
   if (deviceUUID)
   {
-    v4 = [(NSUUID *)deviceUUID UUIDString];
-    v5 = [NSString stringWithFormat:@"%@:%@", collectionIdentifier, v4];
+    uUIDString = [(NSUUID *)deviceUUID UUIDString];
+    v5 = [NSString stringWithFormat:@"%@:%@", collectionIdentifier, uUIDString];
   }
 
   else

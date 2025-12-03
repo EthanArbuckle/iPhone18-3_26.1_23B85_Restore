@@ -1,16 +1,16 @@
 @interface PASUIExtensionHostViewController
-- (_TtC23ProximityAppleIDSetupUI32PASUIExtensionHostViewController)initWithCoder:(id)a3;
-- (_TtC23ProximityAppleIDSetupUI32PASUIExtensionHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)extensionDidFinishWith:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)hostViewControllerDidActivate:(id)a3;
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4;
-- (void)promptForFlowCancelWithCompletion:(id)a3;
+- (_TtC23ProximityAppleIDSetupUI32PASUIExtensionHostViewController)initWithCoder:(id)coder;
+- (_TtC23ProximityAppleIDSetupUI32PASUIExtensionHostViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)extensionDidFinishWith:(id)with context:(id)context completion:(id)completion;
+- (void)hostViewControllerDidActivate:(id)activate;
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error;
+- (void)promptForFlowCancelWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation PASUIExtensionHostViewController
 
-- (_TtC23ProximityAppleIDSetupUI32PASUIExtensionHostViewController)initWithCoder:(id)a3
+- (_TtC23ProximityAppleIDSetupUI32PASUIExtensionHostViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ProximityAppleIDSetupUI32PASUIExtensionHostViewController_finished) = 0;
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC23ProximityAppleIDSetupUI32PASUIExtensionHostViewController_delegate) = 0;
@@ -29,11 +29,11 @@
   v2 = v6.receiver;
   [(PASUIExtensionHostViewController *)&v6 viewDidLoad];
   v3 = sub_261149D60();
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    sub_26111DAF8(v3, v4);
+    v5 = view;
+    sub_26111DAF8(v3, view);
   }
 
   else
@@ -42,45 +42,45 @@
   }
 }
 
-- (_TtC23ProximityAppleIDSetupUI32PASUIExtensionHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23ProximityAppleIDSetupUI32PASUIExtensionHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
-  sub_26114A814(v4);
+  activateCopy = activate;
+  selfCopy = self;
+  sub_26114A814(activateCopy);
 }
 
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_26114B8C0(a4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  errorCopy = error;
+  sub_26114B8C0(error);
 }
 
-- (void)extensionDidFinishWith:(id)a3 context:(id)a4 completion:(id)a5
+- (void)extensionDidFinishWith:(id)with context:(id)context completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  sub_26114ABA4(v10, v11, sub_2611262F4, v9);
+  withCopy = with;
+  contextCopy = context;
+  selfCopy = self;
+  sub_26114ABA4(withCopy, contextCopy, sub_2611262F4, v9);
 }
 
-- (void)promptForFlowCancelWithCompletion:(id)a3
+- (void)promptForFlowCancelWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_26114B1A0(sub_2611262F4, v5);
 }
 

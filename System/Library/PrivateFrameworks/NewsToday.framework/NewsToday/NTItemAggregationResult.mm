@@ -1,10 +1,10 @@
 @interface NTItemAggregationResult
 - (NTItemAggregationResult)init;
-- (NTItemAggregationResult)initWithAggregatedItemsBySectionDescriptor:(id)a3 unusedSectionDescriptors:(id)a4 debugInspectionsBySectionDescriptor:(id)a5;
-- (double)headlineSlotCostWithSlotCost:(double)a3;
-- (double)sectionOverheadSlotCostWithInfo:(id)a3;
-- (double)slotCostWithInfo:(id)a3;
-- (id)copyWithHeadlineScale:(double)a3;
+- (NTItemAggregationResult)initWithAggregatedItemsBySectionDescriptor:(id)descriptor unusedSectionDescriptors:(id)descriptors debugInspectionsBySectionDescriptor:(id)sectionDescriptor;
+- (double)headlineSlotCostWithSlotCost:(double)cost;
+- (double)sectionOverheadSlotCostWithInfo:(id)info;
+- (double)slotCostWithInfo:(id)info;
+- (id)copyWithHeadlineScale:(double)scale;
 - (unint64_t)itemCount;
 @end
 
@@ -36,21 +36,21 @@
   objc_exception_throw(v6);
 }
 
-- (NTItemAggregationResult)initWithAggregatedItemsBySectionDescriptor:(id)a3 unusedSectionDescriptors:(id)a4 debugInspectionsBySectionDescriptor:(id)a5
+- (NTItemAggregationResult)initWithAggregatedItemsBySectionDescriptor:(id)descriptor unusedSectionDescriptors:(id)descriptors debugInspectionsBySectionDescriptor:(id)sectionDescriptor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  descriptorCopy = descriptor;
+  descriptorsCopy = descriptors;
+  sectionDescriptorCopy = sectionDescriptor;
+  if (!descriptorCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTItemAggregationResult initWithAggregatedItemsBySectionDescriptor:unusedSectionDescriptors:debugInspectionsBySectionDescriptor:];
-    if (v9)
+    if (descriptorsCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (descriptorsCopy)
   {
     goto LABEL_6;
   }
@@ -66,15 +66,15 @@ LABEL_6:
   v11 = [(NTItemAggregationResult *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [descriptorCopy copy];
     aggregatedItemsBySectionDescriptor = v11->_aggregatedItemsBySectionDescriptor;
     v11->_aggregatedItemsBySectionDescriptor = v12;
 
-    v14 = [v9 copy];
+    v14 = [descriptorsCopy copy];
     unusedSectionDescriptors = v11->_unusedSectionDescriptors;
     v11->_unusedSectionDescriptors = v14;
 
-    v16 = [v10 copy];
+    v16 = [sectionDescriptorCopy copy];
     debugInspectionsBySectionDescriptor = v11->_debugInspectionsBySectionDescriptor;
     v11->_debugInspectionsBySectionDescriptor = v16;
 
@@ -84,32 +84,32 @@ LABEL_6:
   return v11;
 }
 
-- (id)copyWithHeadlineScale:(double)a3
+- (id)copyWithHeadlineScale:(double)scale
 {
   v5 = [NTItemAggregationResult alloc];
-  v6 = [(NTItemAggregationResult *)self aggregatedItemsBySectionDescriptor];
-  v7 = [(NTItemAggregationResult *)self unusedSectionDescriptors];
-  v8 = [(NTItemAggregationResult *)self debugInspectionsBySectionDescriptor];
-  v9 = [(NTItemAggregationResult *)v5 initWithAggregatedItemsBySectionDescriptor:v6 unusedSectionDescriptors:v7 debugInspectionsBySectionDescriptor:v8];
+  aggregatedItemsBySectionDescriptor = [(NTItemAggregationResult *)self aggregatedItemsBySectionDescriptor];
+  unusedSectionDescriptors = [(NTItemAggregationResult *)self unusedSectionDescriptors];
+  debugInspectionsBySectionDescriptor = [(NTItemAggregationResult *)self debugInspectionsBySectionDescriptor];
+  v9 = [(NTItemAggregationResult *)v5 initWithAggregatedItemsBySectionDescriptor:aggregatedItemsBySectionDescriptor unusedSectionDescriptors:unusedSectionDescriptors debugInspectionsBySectionDescriptor:debugInspectionsBySectionDescriptor];
 
-  [(NTItemAggregationResult *)v9 setHeadlineScale:a3];
+  [(NTItemAggregationResult *)v9 setHeadlineScale:scale];
   return v9;
 }
 
-- (double)headlineSlotCostWithSlotCost:(double)a3
+- (double)headlineSlotCostWithSlotCost:(double)cost
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(NTItemAggregationResult *)self aggregatedItemsBySectionDescriptor];
+  aggregatedItemsBySectionDescriptor = [(NTItemAggregationResult *)self aggregatedItemsBySectionDescriptor];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__NTItemAggregationResult_headlineSlotCostWithSlotCost___block_invoke;
   v10[3] = &unk_2799833B0;
   v10[4] = &v11;
-  *&v10[5] = a3;
-  [v5 enumerateKeysAndObjectsUsingBlock:v10];
+  *&v10[5] = cost;
+  [aggregatedItemsBySectionDescriptor enumerateKeysAndObjectsUsingBlock:v10];
 
   v6 = v12[3];
   [(NTItemAggregationResult *)self headlineScale];
@@ -128,22 +128,22 @@ double __56__NTItemAggregationResult_headlineSlotCostWithSlotCost___block_invoke
   return result;
 }
 
-- (double)sectionOverheadSlotCostWithInfo:(id)a3
+- (double)sectionOverheadSlotCostWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(NTItemAggregationResult *)self aggregatedItemsBySectionDescriptor];
+  aggregatedItemsBySectionDescriptor = [(NTItemAggregationResult *)self aggregatedItemsBySectionDescriptor];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__NTItemAggregationResult_sectionOverheadSlotCostWithInfo___block_invoke;
   v9[3] = &unk_2799833D8;
-  v6 = v4;
+  v6 = infoCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [aggregatedItemsBySectionDescriptor enumerateKeysAndObjectsUsingBlock:v9];
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);
@@ -182,14 +182,14 @@ uint64_t __59__NTItemAggregationResult_sectionOverheadSlotCostWithInfo___block_i
   return MEMORY[0x2821F96F8](v5, v6);
 }
 
-- (double)slotCostWithInfo:(id)a3
+- (double)slotCostWithInfo:(id)info
 {
-  v4 = a3;
-  [(NTItemAggregationResult *)self sectionOverheadSlotCostWithInfo:v4];
+  infoCopy = info;
+  [(NTItemAggregationResult *)self sectionOverheadSlotCostWithInfo:infoCopy];
   v6 = v5;
-  v7 = [v4 sectionSlotCostInfo];
+  sectionSlotCostInfo = [infoCopy sectionSlotCostInfo];
 
-  [v7 headlineSlotCost];
+  [sectionSlotCostInfo headlineSlotCost];
   [(NTItemAggregationResult *)self headlineSlotCostWithSlotCost:?];
   v9 = v6 + v8;
 
@@ -203,10 +203,10 @@ uint64_t __59__NTItemAggregationResult_sectionOverheadSlotCostWithInfo___block_i
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(NTItemAggregationResult *)self aggregatedItemsBySectionDescriptor];
-  v3 = [v2 allValues];
+  aggregatedItemsBySectionDescriptor = [(NTItemAggregationResult *)self aggregatedItemsBySectionDescriptor];
+  allValues = [aggregatedItemsBySectionDescriptor allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -218,13 +218,13 @@ uint64_t __59__NTItemAggregationResult_sectionOverheadSlotCostWithInfo___block_i
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v6 += [*(*(&v11 + 1) + 8 * i) count];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);

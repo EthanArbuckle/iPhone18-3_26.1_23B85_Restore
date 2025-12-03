@@ -1,14 +1,14 @@
 @interface HKClinicalGatewayEndpointSchema
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKClinicalGatewayEndpointSchema)init;
-- (HKClinicalGatewayEndpointSchema)initWithAuth:(id)a3 body:(id)a4 enabled:(BOOL)a5 form:(id)a6 headers:(id)a7 method:(id)a8 minCompatibleAPIVersion:(int64_t)a9 name:(id)a10 query:(id)a11 URL:(id)a12 definition:(id)a13;
-- (HKClinicalGatewayEndpointSchema)initWithCoder:(id)a3;
-- (id)_queryItemsWithBindings:(id)a3 queryMode:(int64_t)a4 authentication:(id)a5 error:(id *)a6;
-- (id)_queryParametersWithAuthentication:(id)a3;
-- (id)createURLWithBindings:(id)a3 queryMode:(int64_t)a4 authentication:(id)a5 error:(id *)a6;
-- (id)currentScopeStringWithError:(id *)a3;
+- (HKClinicalGatewayEndpointSchema)initWithAuth:(id)auth body:(id)body enabled:(BOOL)enabled form:(id)form headers:(id)headers method:(id)method minCompatibleAPIVersion:(int64_t)version name:(id)self0 query:(id)self1 URL:(id)self2 definition:(id)self3;
+- (HKClinicalGatewayEndpointSchema)initWithCoder:(id)coder;
+- (id)_queryItemsWithBindings:(id)bindings queryMode:(int64_t)mode authentication:(id)authentication error:(id *)error;
+- (id)_queryParametersWithAuthentication:(id)authentication;
+- (id)createURLWithBindings:(id)bindings queryMode:(int64_t)mode authentication:(id)authentication error:(id *)error;
+- (id)currentScopeStringWithError:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalGatewayEndpointSchema
@@ -23,57 +23,57 @@
   return 0;
 }
 
-- (HKClinicalGatewayEndpointSchema)initWithAuth:(id)a3 body:(id)a4 enabled:(BOOL)a5 form:(id)a6 headers:(id)a7 method:(id)a8 minCompatibleAPIVersion:(int64_t)a9 name:(id)a10 query:(id)a11 URL:(id)a12 definition:(id)a13
+- (HKClinicalGatewayEndpointSchema)initWithAuth:(id)auth body:(id)body enabled:(BOOL)enabled form:(id)form headers:(id)headers method:(id)method minCompatibleAPIVersion:(int64_t)version name:(id)self0 query:(id)self1 URL:(id)self2 definition:(id)self3
 {
-  v47 = a3;
-  v19 = a4;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
-  v26 = a13;
+  authCopy = auth;
+  bodyCopy = body;
+  formCopy = form;
+  headersCopy = headers;
+  methodCopy = method;
+  nameCopy = name;
+  queryCopy = query;
+  lCopy = l;
+  definitionCopy = definition;
   v48.receiver = self;
   v48.super_class = HKClinicalGatewayEndpointSchema;
   v27 = [(HKClinicalGatewayEndpointSchema *)&v48 init];
   if (v27)
   {
-    v28 = [v47 copy];
+    v28 = [authCopy copy];
     auth = v27->_auth;
     v27->_auth = v28;
 
-    v30 = [v19 copy];
+    v30 = [bodyCopy copy];
     body = v27->_body;
     v27->_body = v30;
 
-    v27->_enabled = a5;
-    v32 = [v20 copy];
+    v27->_enabled = enabled;
+    v32 = [formCopy copy];
     form = v27->_form;
     v27->_form = v32;
 
-    v34 = [v21 copy];
+    v34 = [headersCopy copy];
     headers = v27->_headers;
     v27->_headers = v34;
 
-    v36 = [v22 copy];
+    v36 = [methodCopy copy];
     method = v27->_method;
     v27->_method = v36;
 
-    v27->_minCompatibleAPIVersion = a9;
-    v38 = [v23 copy];
+    v27->_minCompatibleAPIVersion = version;
+    v38 = [nameCopy copy];
     name = v27->_name;
     v27->_name = v38;
 
-    v40 = [v24 copy];
+    v40 = [queryCopy copy];
     query = v27->_query;
     v27->_query = v40;
 
-    v42 = [v25 copy];
+    v42 = [lCopy copy];
     URL = v27->_URL;
     v27->_URL = v42;
 
-    v44 = [v26 copy];
+    v44 = [definitionCopy copy];
     definition = v27->_definition;
     v27->_definition = v44;
   }
@@ -81,7 +81,7 @@
   return v27;
 }
 
-- (id)currentScopeStringWithError:(id *)a3
+- (id)currentScopeStringWithError:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
@@ -104,22 +104,22 @@
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 param];
-        v11 = [v10 isEqualToString:@"scope"];
+        param = [v9 param];
+        v11 = [param isEqualToString:@"scope"];
 
         if (v11)
         {
-          v13 = [v9 literal];
+          literal = [v9 literal];
 
-          if (v13)
+          if (literal)
           {
-            v12 = [v9 literal];
+            literal2 = [v9 literal];
           }
 
           else
           {
-            [MEMORY[0x277CCA9B8] hk_assignError:a3 code:100 format:{@"Scope parameter item did not have a literal key-value pair %@", v9}];
-            v12 = 0;
+            [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"Scope parameter item did not have a literal key-value pair %@", v9}];
+            literal2 = 0;
           }
 
           goto LABEL_14;
@@ -136,26 +136,26 @@
     }
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a3 code:118 format:@"Unable to find scope query parameter"];
-  v12 = 0;
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:118 format:@"Unable to find scope query parameter"];
+  literal2 = 0;
 LABEL_14:
   v14 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return literal2;
 }
 
-- (id)createURLWithBindings:(id)a3 queryMode:(int64_t)a4 authentication:(id)a5 error:(id *)a6
+- (id)createURLWithBindings:(id)bindings queryMode:(int64_t)mode authentication:(id)authentication error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  bindingsCopy = bindings;
+  authenticationCopy = authentication;
   v12 = [(HKClinicalGatewayEndpointSchema *)self URL];
-  if (v12 && (v13 = v12, [MEMORY[0x277CCACE0] componentsWithString:self->_URL], v14 = objc_claimAutoreleasedReturnValue(), v13, v14))
+  if (v12 && (v13 = v12, [MEMORY[0x277CCACE0] componentsWithString:self->_URL], name = objc_claimAutoreleasedReturnValue(), v13, name))
   {
-    v15 = [(HKClinicalGatewayEndpointSchema *)self _queryItemsWithBindings:v10 queryMode:a4 authentication:v11 error:a6];
+    v15 = [(HKClinicalGatewayEndpointSchema *)self _queryItemsWithBindings:bindingsCopy queryMode:mode authentication:authenticationCopy error:error];
     if (v15)
     {
-      [v14 setQueryItems:v15];
-      v16 = [v14 URL];
+      [name setQueryItems:v15];
+      v16 = [name URL];
       v17 = v16;
       if (v16)
       {
@@ -164,7 +164,7 @@ LABEL_14:
 
       else
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:a6 code:100 format:{@"Unable to create URL from components: %@", v14}];
+        [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"Unable to create URL from components: %@", name}];
       }
     }
 
@@ -177,27 +177,27 @@ LABEL_14:
   else
   {
     v19 = MEMORY[0x277CCA9B8];
-    v14 = [(HKClinicalGatewayEndpointSchema *)self name];
-    [v19 hk_assignError:a6 code:100 format:{@"Unable to determine base URL for endpoint %@", v14}];
+    name = [(HKClinicalGatewayEndpointSchema *)self name];
+    [v19 hk_assignError:error code:100 format:{@"Unable to determine base URL for endpoint %@", name}];
     v17 = 0;
   }
 
   return v17;
 }
 
-- (id)_queryParametersWithAuthentication:(id)a3
+- (id)_queryParametersWithAuthentication:(id)authentication
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (-[NSString caseInsensitiveCompare:](self->_name, "caseInsensitiveCompare:", @"authorize") || !HKFHIRServerAuthenticationPKCEAlgorithmIsSupported([v4 PKCEAlgorithm]))
+  authenticationCopy = authentication;
+  if (-[NSString caseInsensitiveCompare:](self->_name, "caseInsensitiveCompare:", @"authorize") || !HKFHIRServerAuthenticationPKCEAlgorithmIsSupported([authenticationCopy PKCEAlgorithm]))
   {
     v19 = self->_query;
   }
 
   else
   {
-    v30 = self;
-    v32 = v4;
+    selfCopy = self;
+    v32 = authenticationCopy;
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
@@ -220,24 +220,24 @@ LABEL_14:
           }
 
           v10 = *(*(&v35 + 1) + 8 * i);
-          v11 = [v10 param];
-          if (v11 == @"code_challenge" || (v12 = v11, [v10 param], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", @"code_challenge"), v13, v12, (v14 & 1) != 0))
+          param = [v10 param];
+          if (param == @"code_challenge" || (v12 = param, [v10 param], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", @"code_challenge"), v13, v12, (v14 & 1) != 0))
           {
             v7 = 1;
           }
 
           else
           {
-            v15 = [v10 param];
-            if (v15 == @"code_challenge_method")
+            param2 = [v10 param];
+            if (param2 == @"code_challenge_method")
             {
               v18 = 1;
             }
 
             else
             {
-              v16 = [v10 param];
-              v17 = [v16 isEqualToString:@"code_challenge_method"];
+              param3 = [v10 param];
+              v17 = [param3 isEqualToString:@"code_challenge_method"];
 
               v18 = v17 | v33;
             }
@@ -265,7 +265,7 @@ LABEL_14:
       [v22 addObject:v23];
     }
 
-    v4 = v32;
+    authenticationCopy = v32;
     if ((v33 & 1) == 0)
     {
       v24 = [HKClinicalGatewayEndpointSchemaParameter alloc];
@@ -294,18 +294,18 @@ LABEL_14:
   return v19;
 }
 
-- (id)_queryItemsWithBindings:(id)a3 queryMode:(int64_t)a4 authentication:(id)a5 error:(id *)a6
+- (id)_queryItemsWithBindings:(id)bindings queryMode:(int64_t)mode authentication:(id)authentication error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v9 = a5;
+  bindingsCopy = bindings;
+  authenticationCopy = authentication;
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v30 = v9;
-  v11 = [(HKClinicalGatewayEndpointSchema *)self _queryParametersWithAuthentication:v9];
+  v30 = authenticationCopy;
+  v11 = [(HKClinicalGatewayEndpointSchema *)self _queryParametersWithAuthentication:authenticationCopy];
   v12 = [v11 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v12)
   {
@@ -321,14 +321,14 @@ LABEL_14:
         }
 
         v16 = *(*(&v32 + 1) + 8 * i);
-        if ([v16 useWithQueryMode:a4])
+        if ([v16 useWithQueryMode:mode])
         {
-          v17 = [v16 literal];
+          literal = [v16 literal];
 
-          if (v17)
+          if (literal)
           {
-            v18 = [v16 literal];
-            if (!v18)
+            literal2 = [v16 literal];
+            if (!literal2)
             {
               goto LABEL_16;
             }
@@ -336,14 +336,14 @@ LABEL_14:
 
           else
           {
-            v19 = [v16 variable];
+            variable = [v16 variable];
 
-            if (!v19 || ([v16 variable], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "objectForKeyedSubscript:", v20), v18 = objc_claimAutoreleasedReturnValue(), v20, !v18))
+            if (!variable || ([v16 variable], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(bindingsCopy, "objectForKeyedSubscript:", v20), literal2 = objc_claimAutoreleasedReturnValue(), v20, !literal2))
             {
 LABEL_16:
               v25 = MEMORY[0x277CCA9B8];
-              v26 = [v16 param];
-              [v25 hk_assignError:a6 code:3 format:{@"Unbound variable: %@", v26}];
+              param = [v16 param];
+              [v25 hk_assignError:error code:3 format:{@"Unbound variable: %@", param}];
 
               v24 = 0;
               goto LABEL_17;
@@ -351,8 +351,8 @@ LABEL_16:
           }
 
           v21 = objc_alloc(MEMORY[0x277CCAD18]);
-          v22 = [v16 param];
-          v23 = [v21 initWithName:v22 value:v18];
+          param2 = [v16 param];
+          v23 = [v21 initWithName:param2 value:literal2];
 
           [v10 addObject:v23];
         }
@@ -376,13 +376,13 @@ LABEL_17:
   return v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = v6;
-  if (self != v6)
+  equalCopy = equal;
+  v7 = equalCopy;
+  if (self != equalCopy)
   {
-    v8 = v6;
+    v8 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -393,20 +393,20 @@ LABEL_29:
     }
 
     auth = self->_auth;
-    v10 = [(HKClinicalGatewayEndpointSchema *)v8 auth];
-    if (auth != v10)
+    auth = [(HKClinicalGatewayEndpointSchema *)v8 auth];
+    if (auth != auth)
     {
-      v11 = [(HKClinicalGatewayEndpointSchema *)v8 auth];
-      if (!v11)
+      auth2 = [(HKClinicalGatewayEndpointSchema *)v8 auth];
+      if (!auth2)
       {
         v14 = 0;
         goto LABEL_28;
       }
 
-      v3 = v11;
+      v3 = auth2;
       v12 = self->_auth;
-      v13 = [(HKClinicalGatewayEndpointSchema *)v8 auth];
-      if (![(NSString *)v12 isEqualToString:v13])
+      auth3 = [(HKClinicalGatewayEndpointSchema *)v8 auth];
+      if (![(NSString *)v12 isEqualToString:auth3])
       {
         v14 = 0;
 LABEL_27:
@@ -414,25 +414,25 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      v104 = v13;
+      v104 = auth3;
     }
 
     body = self->_body;
-    v16 = [(HKClinicalGatewayEndpointSchema *)v8 body];
-    if (body != v16)
+    body = [(HKClinicalGatewayEndpointSchema *)v8 body];
+    if (body != body)
     {
-      v17 = [(HKClinicalGatewayEndpointSchema *)v8 body];
-      if (!v17)
+      body2 = [(HKClinicalGatewayEndpointSchema *)v8 body];
+      if (!body2)
       {
         goto LABEL_25;
       }
 
-      v4 = v17;
+      v4 = body2;
       v18 = self->_body;
-      v19 = [(HKClinicalGatewayEndpointSchema *)v8 body];
+      body3 = [(HKClinicalGatewayEndpointSchema *)v8 body];
       v20 = v18;
-      v21 = v19;
-      if (([(NSDictionary *)v20 isEqual:v19]& 1) == 0)
+      v21 = body3;
+      if (([(NSDictionary *)v20 isEqual:body3]& 1) == 0)
       {
 
 LABEL_24:
@@ -446,7 +446,7 @@ LABEL_24:
     if (enabled != [(HKClinicalGatewayEndpointSchema *)v8 enabled])
     {
       v14 = 0;
-      if (body == v16)
+      if (body == body)
       {
 LABEL_22:
 
@@ -459,14 +459,14 @@ LABEL_21:
     }
 
     v102 = auth;
-    v23 = v16;
+    v23 = body;
     v24 = body;
     v25 = v3;
     v26 = v4;
     form = self->_form;
-    v28 = [(HKClinicalGatewayEndpointSchema *)v8 form];
+    form = [(HKClinicalGatewayEndpointSchema *)v8 form];
     v101 = form;
-    if (form == v28)
+    if (form == form)
     {
       v4 = v26;
       v3 = v25;
@@ -475,41 +475,41 @@ LABEL_21:
     }
 
     v99 = v25;
-    v29 = [(HKClinicalGatewayEndpointSchema *)v8 form];
-    if (v29)
+    form2 = [(HKClinicalGatewayEndpointSchema *)v8 form];
+    if (form2)
     {
-      v97 = v29;
-      v30 = v28;
+      v97 = form2;
+      v30 = form;
       v31 = self->_form;
-      v32 = [(HKClinicalGatewayEndpointSchema *)v8 form];
+      form3 = [(HKClinicalGatewayEndpointSchema *)v8 form];
       v33 = v31;
-      v34 = v32;
-      if ([(NSArray *)v33 isEqualToArray:v32])
+      v34 = form3;
+      if ([(NSArray *)v33 isEqualToArray:form3])
       {
         v98 = v24;
         v92 = v34;
-        v28 = v30;
+        form = v30;
         v4 = v26;
         v3 = v25;
 LABEL_32:
-        v16 = v23;
+        body = v23;
         headers = self->_headers;
-        v100 = [(HKClinicalGatewayEndpointSchema *)v8 headers];
+        headers = [(HKClinicalGatewayEndpointSchema *)v8 headers];
         v96 = headers;
-        v37 = headers == v100;
+        v37 = headers == headers;
         auth = v102;
         if (!v37)
         {
-          v38 = [(HKClinicalGatewayEndpointSchema *)v8 headers];
-          if (!v38)
+          headers2 = [(HKClinicalGatewayEndpointSchema *)v8 headers];
+          if (!headers2)
           {
 
-            if (v101 != v28)
+            if (v101 != form)
             {
             }
 
             v50 = v103;
-            if (v98 == v16)
+            if (v98 == body)
             {
               goto LABEL_25;
             }
@@ -517,21 +517,21 @@ LABEL_32:
             goto LABEL_50;
           }
 
-          v91 = v38;
+          v91 = headers2;
           v94 = v4;
-          v39 = v28;
+          v39 = form;
           v40 = self->_headers;
-          v41 = [(HKClinicalGatewayEndpointSchema *)v8 headers];
+          headers3 = [(HKClinicalGatewayEndpointSchema *)v8 headers];
           v42 = v40;
-          v43 = v41;
-          if (![(NSArray *)v42 isEqualToArray:v41])
+          v43 = headers3;
+          if (![(NSArray *)v42 isEqualToArray:headers3])
           {
 
             if (v101 != v39)
             {
             }
 
-            if (v98 != v16)
+            if (v98 != body)
             {
             }
 
@@ -539,40 +539,40 @@ LABEL_32:
           }
 
           v90 = v43;
-          v28 = v39;
+          form = v39;
           v4 = v94;
         }
 
         method = self->_method;
-        v95 = [(HKClinicalGatewayEndpointSchema *)v8 method];
-        if (method == v95)
+        method = [(HKClinicalGatewayEndpointSchema *)v8 method];
+        if (method == method)
         {
-          v93 = v28;
+          v93 = form;
           minCompatibleAPIVersion = self->_minCompatibleAPIVersion;
           if (minCompatibleAPIVersion != [(HKClinicalGatewayEndpointSchema *)v8 minCompatibleAPIVersion])
           {
             v14 = 0;
-            v58 = v100;
-            v59 = v95;
+            v58 = headers;
+            v59 = method;
             goto LABEL_114;
           }
         }
 
         else
         {
-          v46 = [(HKClinicalGatewayEndpointSchema *)v8 method];
-          if (!v46)
+          method2 = [(HKClinicalGatewayEndpointSchema *)v8 method];
+          if (!method2)
           {
 
-            if (v96 != v100)
+            if (v96 != headers)
             {
             }
 
-            if (v101 != v28)
+            if (v101 != form)
             {
             }
 
-            if (v98 == v16)
+            if (v98 == body)
             {
               goto LABEL_25;
             }
@@ -581,14 +581,14 @@ LABEL_32:
           }
 
           v86 = method;
-          v89 = v46;
-          v93 = v28;
+          v89 = method2;
+          v93 = form;
           v47 = self->_method;
-          v48 = [(HKClinicalGatewayEndpointSchema *)v8 method];
-          if (![(NSString *)v47 isEqualToString:v48])
+          method3 = [(HKClinicalGatewayEndpointSchema *)v8 method];
+          if (![(NSString *)v47 isEqualToString:method3])
           {
 
-            if (v96 != v100)
+            if (v96 != headers)
             {
             }
 
@@ -596,20 +596,20 @@ LABEL_32:
             {
             }
 
-            if (v98 != v16)
+            if (v98 != body)
             {
             }
 
             goto LABEL_25;
           }
 
-          v84 = v48;
+          v84 = method3;
           v49 = self->_minCompatibleAPIVersion;
           if (v49 != [(HKClinicalGatewayEndpointSchema *)v8 minCompatibleAPIVersion])
           {
             v14 = 0;
-            v58 = v100;
-            v59 = v95;
+            v58 = headers;
+            v59 = method;
             v66 = v84;
 LABEL_113:
 
@@ -622,7 +622,7 @@ LABEL_114:
             {
             }
 
-            if (v98 == v16)
+            if (v98 == body)
             {
               goto LABEL_22;
             }
@@ -634,50 +634,50 @@ LABEL_114:
         }
 
         name = self->_name;
-        v85 = [(HKClinicalGatewayEndpointSchema *)v8 name];
-        if (name == v85)
+        name = [(HKClinicalGatewayEndpointSchema *)v8 name];
+        if (name == name)
         {
           v83 = name;
 LABEL_74:
           query = self->_query;
-          v82 = [(HKClinicalGatewayEndpointSchema *)v8 query];
+          query = [(HKClinicalGatewayEndpointSchema *)v8 query];
           v80 = query;
-          if (query != v82)
+          if (query != query)
           {
-            v61 = [(HKClinicalGatewayEndpointSchema *)v8 query];
-            if (!v61)
+            query2 = [(HKClinicalGatewayEndpointSchema *)v8 query];
+            if (!query2)
             {
               v88 = method;
               v14 = 0;
               goto LABEL_110;
             }
 
-            v78 = v61;
+            v78 = query2;
             v62 = self->_query;
-            v63 = [(HKClinicalGatewayEndpointSchema *)v8 query];
+            query3 = [(HKClinicalGatewayEndpointSchema *)v8 query];
             v64 = v62;
-            v65 = v63;
-            if (![(NSArray *)v64 isEqualToArray:v63])
+            v65 = query3;
+            if (![(NSArray *)v64 isEqualToArray:query3])
             {
 
               v14 = 0;
 LABEL_96:
-              v73 = v85;
-              v67 = v95;
-              if (v83 == v85)
+              v73 = name;
+              v67 = method;
+              if (v83 == name)
               {
                 goto LABEL_99;
               }
 
 LABEL_98:
-              v73 = v85;
+              v73 = name;
 LABEL_99:
 
               if (method != v67)
               {
               }
 
-              if (v96 != v100)
+              if (v96 != headers)
               {
               }
 
@@ -685,7 +685,7 @@ LABEL_99:
               {
               }
 
-              if (v98 == v16)
+              if (v98 == body)
               {
                 goto LABEL_22;
               }
@@ -715,7 +715,7 @@ LABEL_99:
               v72 = [(HKClinicalGatewayEndpointSchema *)v8 URL];
               v14 = [(NSString *)v71 isEqualToString:v72];
 
-              if (v80 != v82)
+              if (v80 != query)
               {
               }
 
@@ -725,13 +725,13 @@ LABEL_99:
             v88 = method;
           }
 
-          if (v80 == v82)
+          if (v80 == query)
           {
 
-            v74 = v85;
-            v58 = v100;
-            v59 = v95;
-            if (v83 == v85)
+            v74 = name;
+            v58 = headers;
+            v59 = method;
+            if (v83 == name)
             {
 LABEL_112:
 
@@ -746,16 +746,16 @@ LABEL_112:
 
 LABEL_111:
 
-            v74 = v85;
+            v74 = name;
             goto LABEL_112;
           }
 
 LABEL_110:
-          v58 = v100;
-          v59 = v95;
+          v58 = headers;
+          v59 = method;
 
-          v74 = v85;
-          if (v83 == v85)
+          v74 = name;
+          if (v83 == name)
           {
             goto LABEL_112;
           }
@@ -763,31 +763,31 @@ LABEL_110:
           goto LABEL_111;
         }
 
-        v53 = [(HKClinicalGatewayEndpointSchema *)v8 name];
-        if (!v53)
+        name2 = [(HKClinicalGatewayEndpointSchema *)v8 name];
+        if (!name2)
         {
           v14 = 0;
-          v67 = v95;
+          v67 = method;
           goto LABEL_98;
         }
 
         v83 = name;
-        v81 = v53;
+        v81 = name2;
         v54 = self->_name;
-        v55 = [(HKClinicalGatewayEndpointSchema *)v8 name];
+        name3 = [(HKClinicalGatewayEndpointSchema *)v8 name];
         v56 = v54;
-        v57 = v55;
-        if ([(NSString *)v56 isEqualToString:v55])
+        v57 = name3;
+        if ([(NSString *)v56 isEqualToString:name3])
         {
           v79 = v57;
           goto LABEL_74;
         }
 
-        if (method != v95)
+        if (method != method)
         {
         }
 
-        if (v96 != v100)
+        if (v96 != headers)
         {
         }
 
@@ -795,7 +795,7 @@ LABEL_110:
         {
         }
 
-        if (v98 != v16)
+        if (v98 != body)
         {
           v50 = v103;
 LABEL_50:
@@ -807,8 +807,8 @@ LABEL_25:
 
         v14 = 0;
 LABEL_26:
-        v13 = v104;
-        if (auth != v10)
+        auth3 = v104;
+        if (auth != auth)
         {
           goto LABEL_27;
         }
@@ -824,9 +824,9 @@ LABEL_28:
 LABEL_45:
 
         v14 = 0;
-        v13 = v104;
+        auth3 = v104;
         v3 = v99;
-        if (v102 == v10)
+        if (v102 == auth)
         {
           goto LABEL_28;
         }
@@ -868,10 +868,10 @@ LABEL_30:
   return v8 ^ v10 ^ [(NSString *)self->_URL hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  coderCopy = coder;
   body = self->_body;
   if (body)
   {
@@ -904,29 +904,29 @@ LABEL_30:
     v7 = 0;
   }
 
-  [v5 encodeObject:self->_auth forKey:@"auth"];
-  [v5 encodeObject:v7 forKey:@"body"];
-  [v5 encodeBool:self->_enabled forKey:@"enabled"];
-  [v5 encodeObject:self->_form forKey:@"form"];
-  [v5 encodeObject:self->_headers forKey:@"headers"];
-  [v5 encodeObject:self->_method forKey:@"method"];
-  [v5 encodeInteger:self->_minCompatibleAPIVersion forKey:@"minCompatibleAPIVersion"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_query forKey:@"query"];
-  [v5 encodeObject:self->_URL forKey:@"URL"];
-  [v5 encodeObject:self->_definition forKey:@"definition"];
+  [coderCopy encodeObject:self->_auth forKey:@"auth"];
+  [coderCopy encodeObject:v7 forKey:@"body"];
+  [coderCopy encodeBool:self->_enabled forKey:@"enabled"];
+  [coderCopy encodeObject:self->_form forKey:@"form"];
+  [coderCopy encodeObject:self->_headers forKey:@"headers"];
+  [coderCopy encodeObject:self->_method forKey:@"method"];
+  [coderCopy encodeInteger:self->_minCompatibleAPIVersion forKey:@"minCompatibleAPIVersion"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_query forKey:@"query"];
+  [coderCopy encodeObject:self->_URL forKey:@"URL"];
+  [coderCopy encodeObject:self->_definition forKey:@"definition"];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (HKClinicalGatewayEndpointSchema)initWithCoder:(id)a3
+- (HKClinicalGatewayEndpointSchema)initWithCoder:(id)coder
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"auth"];
+  coderCopy = coder;
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"auth"];
   if (v6)
   {
-    v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"body"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"body"];
     if (v7)
     {
       v39 = 0;
@@ -958,16 +958,16 @@ LABEL_30:
       v8 = 0;
     }
 
-    if ([v5 containsValueForKey:@"enabled"])
+    if ([coderCopy containsValueForKey:@"enabled"])
     {
-      v12 = [v5 decodeBoolForKey:@"enabled"];
-      v13 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"method"];
-      if (v13 && ([v5 containsValueForKey:@"minCompatibleAPIVersion"] & 1) != 0)
+      v12 = [coderCopy decodeBoolForKey:@"enabled"];
+      v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"method"];
+      if (v13 && ([coderCopy containsValueForKey:@"minCompatibleAPIVersion"] & 1) != 0)
       {
         v34 = v12;
-        v33 = [v5 decodeIntegerForKey:@"minCompatibleAPIVersion"];
-        v14 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-        v36 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+        v33 = [coderCopy decodeIntegerForKey:@"minCompatibleAPIVersion"];
+        v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+        v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
         v37 = MEMORY[0x277CBEB98];
         v15 = objc_opt_class();
         v16 = objc_opt_class();
@@ -976,51 +976,51 @@ LABEL_30:
         v31 = v16;
         v19 = v36;
         v38 = [v37 setWithObjects:{v15, v31, v18, objc_opt_class(), 0}];
-        v20 = [v5 decodeObjectOfClasses:? forKey:?];
+        v20 = [coderCopy decodeObjectOfClasses:? forKey:?];
         v21 = v20;
         if (v17 && v36 && v20)
         {
           [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
           v22 = v35 = v17;
-          v32 = [v5 decodeObjectOfClasses:v22 forKey:@"form"];
-          v23 = [v5 decodeObjectOfClasses:v22 forKey:@"headers"];
-          v24 = [v5 decodeObjectOfClasses:v22 forKey:@"query"];
+          v32 = [coderCopy decodeObjectOfClasses:v22 forKey:@"form"];
+          v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"headers"];
+          v24 = [coderCopy decodeObjectOfClasses:v22 forKey:@"query"];
           self = [(HKClinicalGatewayEndpointSchema *)self initWithAuth:v6 body:v8 enabled:v34 form:v32 headers:v23 method:v13 minCompatibleAPIVersion:v33 name:v35 query:v24 URL:v36 definition:v21];
 
           v19 = v36;
           v17 = v35;
-          v11 = self;
+          selfCopy = self;
         }
 
         else
         {
-          [v5 hrs_failWithCocoaValueNotFoundError];
-          v11 = 0;
+          [coderCopy hrs_failWithCocoaValueNotFoundError];
+          selfCopy = 0;
         }
       }
 
       else
       {
-        [v5 hrs_failWithCocoaValueNotFoundError];
-        v11 = 0;
+        [coderCopy hrs_failWithCocoaValueNotFoundError];
+        selfCopy = 0;
       }
     }
 
     else
     {
-      [v5 hrs_failWithCocoaValueNotFoundError];
-      v11 = 0;
+      [coderCopy hrs_failWithCocoaValueNotFoundError];
+      selfCopy = 0;
     }
   }
 
   else
   {
-    [v5 hrs_failWithCocoaValueNotFoundError];
-    v11 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
   v25 = *MEMORY[0x277D85DE8];
-  return v11;
+  return selfCopy;
 }
 
 @end

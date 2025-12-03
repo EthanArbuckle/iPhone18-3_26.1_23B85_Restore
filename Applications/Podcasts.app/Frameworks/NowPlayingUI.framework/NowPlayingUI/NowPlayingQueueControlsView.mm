@@ -1,12 +1,12 @@
 @interface NowPlayingQueueControlsView
-- (_TtC12NowPlayingUI27NowPlayingQueueControlsView)initWithCoder:(id)a3;
+- (_TtC12NowPlayingUI27NowPlayingQueueControlsView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)preferredContentSizeDidChangeWithNewContentSizeCategory:(id)a3;
+- (void)preferredContentSizeDidChangeWithNewContentSizeCategory:(id)category;
 @end
 
 @implementation NowPlayingQueueControlsView
 
-- (_TtC12NowPlayingUI27NowPlayingQueueControlsView)initWithCoder:(id)a3
+- (_TtC12NowPlayingUI27NowPlayingQueueControlsView)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI27NowPlayingQueueControlsView_shareHandler);
   *v4 = 0;
@@ -24,20 +24,20 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_AC1C4();
 }
 
-- (void)preferredContentSizeDidChangeWithNewContentSizeCategory:(id)a3
+- (void)preferredContentSizeDidChangeWithNewContentSizeCategory:(id)category
 {
-  v4 = self;
+  selfCopy = self;
   sub_ABFB4();
-  [(NowPlayingQueueControlsView *)v4 setNeedsLayout];
-  v3 = *(&v4->super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI27NowPlayingQueueControlsView_layoutInvalidationHandler);
+  [(NowPlayingQueueControlsView *)selfCopy setNeedsLayout];
+  v3 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI27NowPlayingQueueControlsView_layoutInvalidationHandler);
   if (v3)
   {
 
-    v3(v4);
+    v3(selfCopy);
 
     sub_2173C(v3);
   }

@@ -1,31 +1,31 @@
 @interface SPParsecQueryTask
 - (SDSearchQuery)resultPipe;
-- (SPParsecQueryTask)initWithStore:(id)a3 resultPipe:(id)a4 queue:(id)a5 visibleApps:(id)a6 hiddenApps:(id)a7;
-- (id)findLocalCopies:(id)a3 alternativeResults:(id)a4 withQueryString:(id)a5;
-- (id)rerankMapsResultsWithLocalSignals:(id)a3 forQueryId:(int64_t)a4;
-- (id)unarchiveWithQuery:(id)a3;
+- (SPParsecQueryTask)initWithStore:(id)store resultPipe:(id)pipe queue:(id)queue visibleApps:(id)apps hiddenApps:(id)hiddenApps;
+- (id)findLocalCopies:(id)copies alternativeResults:(id)results withQueryString:(id)string;
+- (id)rerankMapsResultsWithLocalSignals:(id)signals forQueryId:(int64_t)id;
+- (id)unarchiveWithQuery:(id)query;
 - (void)cancel;
 - (void)dealloc;
 - (void)finished;
-- (void)geoUserSessionEntityString:(id)a3;
-- (void)queryDidFinishLoading:(id)a3;
-- (void)resumeWithArchive:(id)a3;
-- (void)resumeWithTimeout:(double)a3;
+- (void)geoUserSessionEntityString:(id)string;
+- (void)queryDidFinishLoading:(id)loading;
+- (void)resumeWithArchive:(id)archive;
+- (void)resumeWithTimeout:(double)timeout;
 @end
 
 @implementation SPParsecQueryTask
 
-- (void)resumeWithTimeout:(double)a3
+- (void)resumeWithTimeout:(double)timeout
 {
-  self->_timeOut = a3;
+  self->_timeOut = timeout;
   self->_queryStartTime = CFAbsoluteTimeGetCurrent();
-  v4 = [(SPParsecQueryTask *)self parsecQuery];
-  [v4 resume];
+  parsecQuery = [(SPParsecQueryTask *)self parsecQuery];
+  [parsecQuery resume];
 }
 
-- (id)unarchiveWithQuery:(id)a3
+- (id)unarchiveWithQuery:(id)query
 {
-  v3 = [SPParsecArchive archivePathForQuery:a3];
+  v3 = [SPParsecArchive archivePathForQuery:query];
   v4 = [NSData dataWithContentsOfFile:v3];
   v11 = 0;
   v5 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v4 error:&v11];
@@ -37,16 +37,16 @@
   return v7;
 }
 
-- (void)resumeWithArchive:(id)a3
+- (void)resumeWithArchive:(id)archive
 {
-  v4 = a3;
-  v9 = [v4 query];
-  v5 = [v4 resultsSections];
-  v6 = [v4 suggestions];
-  v7 = [v4 corrections];
-  v8 = [v4 suggestionsAreBlended];
+  archiveCopy = archive;
+  query = [archiveCopy query];
+  resultsSections = [archiveCopy resultsSections];
+  suggestions = [archiveCopy suggestions];
+  corrections = [archiveCopy corrections];
+  suggestionsAreBlended = [archiveCopy suggestionsAreBlended];
 
-  [(SPParsecQueryTask *)self query:v9 didFinishWithResults:v5 withSuggestions:v6 withCorrections:v7 withAlternativeResults:0 suggestionsAreBlended:v8];
+  [(SPParsecQueryTask *)self query:query didFinishWithResults:resultsSections withSuggestions:suggestions withCorrections:corrections withAlternativeResults:0 suggestionsAreBlended:suggestionsAreBlended];
 }
 
 - (void)dealloc
@@ -57,31 +57,31 @@
   [(SPParsecQueryTask *)&v3 dealloc];
 }
 
-- (SPParsecQueryTask)initWithStore:(id)a3 resultPipe:(id)a4 queue:(id)a5 visibleApps:(id)a6 hiddenApps:(id)a7
+- (SPParsecQueryTask)initWithStore:(id)store resultPipe:(id)pipe queue:(id)queue visibleApps:(id)apps hiddenApps:(id)hiddenApps
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  storeCopy = store;
+  pipeCopy = pipe;
+  queueCopy = queue;
+  appsCopy = apps;
+  hiddenAppsCopy = hiddenApps;
   v27.receiver = self;
   v27.super_class = SPParsecQueryTask;
   v18 = [(SPParsecQueryTask *)&v27 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_store, a3);
-    objc_storeWeak(&v19->_resultPipe, v14);
-    objc_storeStrong(&v19->_queue, a5);
+    objc_storeStrong(&v18->_store, store);
+    objc_storeWeak(&v19->_resultPipe, pipeCopy);
+    objc_storeStrong(&v19->_queue, queue);
     pthread_mutex_init(&v19->_mutex, 0);
     v19->_type = 1;
     v20 = objc_opt_new();
     rankingInfo = v19->_rankingInfo;
     v19->_rankingInfo = v20;
 
-    if (v16)
+    if (appsCopy)
     {
-      v22 = v16;
+      v22 = appsCopy;
     }
 
     else
@@ -92,9 +92,9 @@
     setOfVisibleApps = v19->_setOfVisibleApps;
     v19->_setOfVisibleApps = v22;
 
-    if (v17)
+    if (hiddenAppsCopy)
     {
-      v24 = v17;
+      v24 = hiddenAppsCopy;
     }
 
     else
@@ -161,32 +161,32 @@ LABEL_65:
 
   WeakRetained = objc_loadWeakRetained(&self->_resultPipe);
   self->_done = 1;
-  v14 = [(PRSQueryTask *)self->_parsecQuery category_stats];
-  [(PRSRankingConfiguration *)self->_rankingInfo setSqfData:v14];
+  category_stats = [(PRSQueryTask *)self->_parsecQuery category_stats];
+  [(PRSRankingConfiguration *)self->_rankingInfo setSqfData:category_stats];
 
-  v15 = [(PRSQueryTask *)self->_parsecQuery server_features];
-  [(PRSRankingConfiguration *)self->_rankingInfo setServerFeatures:v15];
+  server_features = [(PRSQueryTask *)self->_parsecQuery server_features];
+  [(PRSRankingConfiguration *)self->_rankingInfo setServerFeatures:server_features];
 
   [(PRSRankingConfiguration *)self->_rankingInfo setParsecCategoryOrder:self->_parsecResultsCategoryOrder];
-  v16 = [(PRSQueryTask *)self->_parsecQuery serverRelevanceScores];
-  [(PRSRankingConfiguration *)self->_rankingInfo setServerRelevanceScores:v16];
+  serverRelevanceScores = [(PRSQueryTask *)self->_parsecQuery serverRelevanceScores];
+  [(PRSRankingConfiguration *)self->_rankingInfo setServerRelevanceScores:serverRelevanceScores];
 
   [(PRSQueryTask *)self->_parsecQuery serverRelevanceScoreThreshold];
   [(PRSRankingConfiguration *)self->_rankingInfo setServerRelevanceScoreThreshold:?];
   v17 = objc_opt_new();
-  v18 = [(PRSQueryTask *)self->_parsecQuery engagementSignal];
-  v19 = [v17 initWithSFEngagementSignal:v18];
+  engagementSignal = [(PRSQueryTask *)self->_parsecQuery engagementSignal];
+  v19 = [v17 initWithSFEngagementSignal:engagementSignal];
   [(PRSRankingConfiguration *)self->_rankingInfo setIFunScores:v19];
 
-  v20 = [(SPParsecDatastore *)self->_store cepDictionary];
-  v21 = v20;
-  if (!v20)
+  cepDictionary = [(SPParsecDatastore *)self->_store cepDictionary];
+  cannedCEPValues = cepDictionary;
+  if (!cepDictionary)
   {
-    v21 = [(SPParsecDatastore *)self->_store cannedCEPValues];
+    cannedCEPValues = [(SPParsecDatastore *)self->_store cannedCEPValues];
   }
 
-  [(PRSRankingConfiguration *)self->_rankingInfo setQueryIndependentCategoryProbabilities:v21];
-  if (!v20)
+  [(PRSRankingConfiguration *)self->_rankingInfo setQueryIndependentCategoryProbabilities:cannedCEPValues];
+  if (!cepDictionary)
   {
   }
 
@@ -214,15 +214,15 @@ LABEL_65:
       }
 
       v73 = *(*(&v82 + 1) + 8 * i);
-      v23 = [v73 bundleIdentifier];
-      if ([v23 isEqualToString:@"com.apple.parsec.itunes.iosSoftware"])
+      bundleIdentifier = [v73 bundleIdentifier];
+      if ([bundleIdentifier isEqualToString:@"com.apple.parsec.itunes.iosSoftware"])
       {
       }
 
       else
       {
-        v24 = [v73 bundleIdentifier];
-        v25 = [v24 hasPrefix:@"com.apple.parsec.app_distr"];
+        bundleIdentifier2 = [v73 bundleIdentifier];
+        v25 = [bundleIdentifier2 hasPrefix:@"com.apple.parsec.app_distr"];
 
         if (!v25)
         {
@@ -231,8 +231,8 @@ LABEL_65:
       }
 
       v26 = objc_opt_new();
-      v27 = [v73 results];
-      v28 = [v27 count] == 0;
+      results = [v73 results];
+      v28 = [results count] == 0;
 
       if (!v28)
       {
@@ -243,8 +243,8 @@ LABEL_65:
       v81 = 0u;
       v78 = 0u;
       v79 = 0u;
-      v29 = [v73 results];
-      v30 = [v29 countByEnumeratingWithState:&v78 objects:v93 count:16];
+      results2 = [v73 results];
+      v30 = [results2 countByEnumeratingWithState:&v78 objects:v93 count:16];
       if (v30)
       {
         v31 = *v79;
@@ -254,12 +254,12 @@ LABEL_65:
           {
             if (*v79 != v31)
             {
-              objc_enumerationMutation(v29);
+              objc_enumerationMutation(results2);
             }
 
             v33 = *(*(&v78 + 1) + 8 * j);
-            v34 = [v33 applicationBundleIdentifier];
-            if ([(NSSet *)self->_setOfVisibleApps containsObject:v34])
+            applicationBundleIdentifier = [v33 applicationBundleIdentifier];
+            if ([(NSSet *)self->_setOfVisibleApps containsObject:applicationBundleIdentifier])
             {
               v35 = SPLogForSPLogCategoryDefault();
               v36 = v35;
@@ -276,7 +276,7 @@ LABEL_65:
               if (os_log_type_enabled(v35, v37))
               {
                 *buf = 138412290;
-                v90 = v34;
+                v90 = applicationBundleIdentifier;
                 _os_log_impl(&_mh_execute_header, v36, v37, "De-dupped app with bundle id: %@", buf, 0xCu);
               }
 
@@ -286,7 +286,7 @@ LABEL_65:
             }
           }
 
-          v30 = [v29 countByEnumeratingWithState:&v78 objects:v93 count:16];
+          v30 = [results2 countByEnumeratingWithState:&v78 objects:v93 count:16];
         }
 
         while (v30);
@@ -353,7 +353,7 @@ LABEL_42:
     block[2] = sub_10005AB34;
     block[3] = &unk_100091EA8;
     v76 = WeakRetained;
-    v77 = self;
+    selfCopy = self;
     v47 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v46, 0, block);
     tracing_dispatch_async();
   }
@@ -390,11 +390,11 @@ LABEL_42:
 
   if (os_log_type_enabled(v51, v53))
   {
-    v54 = [WeakRetained queryContext];
-    v55 = [v54 searchString];
+    queryContext = [WeakRetained queryContext];
+    searchString = [queryContext searchString];
     v56 = [(NSArray *)self->_parsecResults valueForKey:@"title"];
     *buf = 138412546;
-    v90 = v55;
+    v90 = searchString;
     v91 = 2112;
     v92 = v56;
     _os_log_impl(&_mh_execute_header, v52, v53, "Parsec query: %@ returned results: %@", buf, 0x16u);
@@ -483,9 +483,9 @@ LABEL_42:
   *(v3 + 32) = v25;
 }
 
-- (void)queryDidFinishLoading:(id)a3
+- (void)queryDidFinishLoading:(id)loading
 {
-  v4 = a3;
+  loadingCopy = loading;
   v5 = si_tracing_current_span();
   v18 = *v5;
   v19 = *(v5 + 16);
@@ -501,7 +501,7 @@ LABEL_42:
   *(v5 + 32) = "[SPParsecQueryTask queryDidFinishLoading:]";
   si_tracing_log_span_begin();
   queue = self->_queue;
-  v17 = v4;
+  v17 = loadingCopy;
   tracing_dispatch_async();
 
   v11 = *v5;
@@ -516,18 +516,18 @@ LABEL_42:
   *(v5 + 32) = v20;
 }
 
-- (void)geoUserSessionEntityString:(id)a3
+- (void)geoUserSessionEntityString:(id)string
 {
-  v4 = a3;
-  v5 = [(SPParsecQueryTask *)self resultPipe];
-  [v5 setGeoUserSessionEntityString:v4];
+  stringCopy = string;
+  resultPipe = [(SPParsecQueryTask *)self resultPipe];
+  [resultPipe setGeoUserSessionEntityString:stringCopy];
 }
 
-- (id)findLocalCopies:(id)a3 alternativeResults:(id)a4 withQueryString:(id)a5
+- (id)findLocalCopies:(id)copies alternativeResults:(id)results withQueryString:(id)string
 {
-  v124 = a3;
-  v121 = a4;
-  v135 = a5;
+  copiesCopy = copies;
+  resultsCopy = results;
+  stringCopy = string;
   v7 = si_tracing_current_span();
   v8 = *(v7 + 16);
   v170 = *v7;
@@ -544,9 +544,9 @@ LABEL_42:
   *(v123 + 28) = 102;
   *(v123 + 32) = "[SPParsecQueryTask findLocalCopies:alternativeResults:withQueryString:]";
   si_tracing_log_span_begin();
-  if (![v124 count])
+  if (![copiesCopy count])
   {
-    v127 = 0;
+    allValues = 0;
     goto LABEL_79;
   }
 
@@ -558,7 +558,7 @@ LABEL_42:
   v169 = 0u;
   v166 = 0u;
   v167 = 0u;
-  obj = v124;
+  obj = copiesCopy;
   v133 = [obj countByEnumeratingWithState:&v166 objects:v179 count:16];
   if (!v133)
   {
@@ -581,8 +581,8 @@ LABEL_42:
       v163 = 0u;
       v164 = 0u;
       v165 = 0u;
-      v15 = [v14 results];
-      v16 = [v15 countByEnumeratingWithState:&v162 objects:v178 count:16];
+      results = [v14 results];
+      v16 = [results countByEnumeratingWithState:&v162 objects:v178 count:16];
       if (v16)
       {
         v17 = *v163;
@@ -592,21 +592,21 @@ LABEL_42:
           {
             if (*v163 != v17)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(results);
             }
 
             v19 = *(*(&v162 + 1) + 8 * j);
-            v20 = [v19 sectionBundleIdentifier];
-            v21 = [v20 isEqualToString:v13];
+            sectionBundleIdentifier = [v19 sectionBundleIdentifier];
+            v21 = [sectionBundleIdentifier isEqualToString:v13];
 
             if (v21)
             {
-              v22 = [v19 title];
-              v23 = [v22 text];
-              [v141 addObject:v23];
+              title = [v19 title];
+              text = [title text];
+              [v141 addObject:text];
 
-              v24 = [v19 applicationBundleIdentifier];
-              [v140 addObject:v24];
+              applicationBundleIdentifier = [v19 applicationBundleIdentifier];
+              [v140 addObject:applicationBundleIdentifier];
 LABEL_17:
 
               continue;
@@ -614,19 +614,19 @@ LABEL_17:
 
             if (objc_opt_respondsToSelector())
             {
-              v25 = [v19 storeIdentifier];
-              v26 = v25 == 0;
+              storeIdentifier = [v19 storeIdentifier];
+              v26 = storeIdentifier == 0;
 
               if (!v26)
               {
-                v24 = [v19 storeIdentifier];
-                [v139 addObject:v24];
+                applicationBundleIdentifier = [v19 storeIdentifier];
+                [v139 addObject:applicationBundleIdentifier];
                 goto LABEL_17;
               }
             }
           }
 
-          v16 = [v15 countByEnumeratingWithState:&v162 objects:v178 count:16];
+          v16 = [results countByEnumeratingWithState:&v162 objects:v178 count:16];
         }
 
         while (v16);
@@ -643,7 +643,7 @@ LABEL_22:
   v161 = 0u;
   v158 = 0u;
   v159 = 0u;
-  v27 = v121;
+  v27 = resultsCopy;
   v28 = [v27 countByEnumeratingWithState:&v158 objects:v177 count:16];
   if (v28)
   {
@@ -659,17 +659,17 @@ LABEL_22:
         }
 
         v32 = *(*(&v158 + 1) + 8 * k);
-        v33 = [v32 sectionBundleIdentifier];
-        v34 = [v33 isEqualToString:v30];
+        sectionBundleIdentifier2 = [v32 sectionBundleIdentifier];
+        v34 = [sectionBundleIdentifier2 isEqualToString:v30];
 
         if (v34)
         {
-          v35 = [v32 title];
-          v36 = [v35 text];
-          [v141 addObject:v36];
+          title2 = [v32 title];
+          text2 = [title2 text];
+          [v141 addObject:text2];
 
-          v37 = [v32 applicationBundleIdentifier];
-          [v140 addObject:v37];
+          applicationBundleIdentifier2 = [v32 applicationBundleIdentifier];
+          [v140 addObject:applicationBundleIdentifier2];
 LABEL_32:
 
           continue;
@@ -677,13 +677,13 @@ LABEL_32:
 
         if (objc_opt_respondsToSelector())
         {
-          v38 = [v32 storeIdentifier];
-          v39 = v38 == 0;
+          storeIdentifier2 = [v32 storeIdentifier];
+          v39 = storeIdentifier2 == 0;
 
           if (!v39)
           {
-            v37 = [v32 storeIdentifier];
-            [v139 addObject:v37];
+            applicationBundleIdentifier2 = [v32 storeIdentifier];
+            [v139 addObject:applicationBundleIdentifier2];
             goto LABEL_32;
           }
         }
@@ -702,15 +702,15 @@ LABEL_32:
     v115 = sub_10005C424(@"kMDItemAlternateNames", v141);
     if (v116 && v115)
     {
-      v40 = [&stru_100094040 stringByAppendingFormat:@"(_kMDItemBundleID = com.apple.application && ((%@) || (%@)))", v116, v115];
+      v115 = [&stru_100094040 stringByAppendingFormat:@"(_kMDItemBundleID = com.apple.application && ((%@) || (%@)))", v116, v115];
       if (!v118)
       {
-        v43 = v40;
+        v43 = v115;
         goto LABEL_45;
       }
 
-      v41 = v40;
-      v42 = [(__CFString *)v40 stringByAppendingString:@" || "];
+      v41 = v115;
+      v42 = [(__CFString *)v115 stringByAppendingString:@" || "];
 
       v43 = v42;
     }
@@ -733,21 +733,21 @@ LABEL_45:
 
         v47 = [PRSRankingItemRanker alloc];
         v48 = objc_loadWeakRetained(&self->_resultPipe);
-        v49 = [v48 queryContext];
-        v50 = [v49 keyboardLanguage];
+        queryContext = [v48 queryContext];
+        keyboardLanguage = [queryContext keyboardLanguage];
         v51 = objc_loadWeakRetained(&self->_resultPipe);
-        v52 = [v51 queryContext];
-        [v52 currentTime];
+        queryContext2 = [v51 queryContext];
+        [queryContext2 currentTime];
         v53 = -v46;
-        v114 = [v47 initWithSearchString:v135 queryID:v53 language:v50 currentTime:?];
+        v114 = [v47 initWithSearchString:stringCopy queryID:v53 language:keyboardLanguage currentTime:?];
 
         v54 = objc_loadWeakRetained(&self->_resultPipe);
-        v55 = [v54 queryContext];
-        v56 = [v55 queryKind];
+        queryContext3 = [v54 queryContext];
+        queryKind = [queryContext3 queryKind];
         v57 = objc_loadWeakRetained(&self->_resultPipe);
-        v58 = [v57 queryContext];
-        v59 = [v58 keyboardLanguage];
-        v126 = [v114 rankingConfigurationWithMeContact:0 emailAddresses:0 phoneFavorites:0 vipList:0 clientBundle:PRSRankingSearchBundleString spotlightQuery:v120 userQuery:v135 tokenString:0 queryKind:v56 flags:0 keyboardLanguage:v59];
+        queryContext4 = [v57 queryContext];
+        keyboardLanguage2 = [queryContext4 keyboardLanguage];
+        v126 = [v114 rankingConfigurationWithMeContact:0 emailAddresses:0 phoneFavorites:0 vipList:0 clientBundle:PRSRankingSearchBundleString spotlightQuery:v120 userQuery:stringCopy tokenString:0 queryKind:queryKind flags:0 keyboardLanguage:keyboardLanguage2];
 
         v122 = objc_alloc_init(CSSearchQueryContext);
         [v122 setQueryID:v53];
@@ -759,12 +759,12 @@ LABEL_45:
         v61 = rankingPrefetchedAttributesArray();
         [v122 setFetchAttributes:v61];
 
-        v62 = [v126 rankingQueries];
-        [v122 setRankingQueries:v62];
+        rankingQueries = [v126 rankingQueries];
+        [v122 setRankingQueries:rankingQueries];
 
         v63 = objc_loadWeakRetained(&self->_resultPipe);
-        v64 = [v63 queryContext];
-        [v64 currentTime];
+        queryContext5 = [v63 queryContext];
+        [queryContext5 currentTime];
         v66 = v65;
 
         if (qword_1000A8910 != -1)
@@ -773,8 +773,8 @@ LABEL_45:
         }
 
         v67 = [[NSMapTable alloc] initWithKeyOptions:66307 valueOptions:0 capacity:256];
-        v125 = [v122 fetchAttributes];
-        v68 = [v125 count];
+        fetchAttributes = [v122 fetchAttributes];
+        v68 = [fetchAttributes count];
         v155[0] = _NSConcreteStackBlock;
         v155[1] = 3221225472;
         v155[2] = sub_10005C658;
@@ -792,9 +792,9 @@ LABEL_45:
         {
           for (m = 0; m != v68; ++m)
           {
-            v75 = [v126 requiredAttributes];
-            v76 = [v125 objectAtIndexedSubscript:m];
-            v77 = [v75 containsObject:v76];
+            requiredAttributes = [v126 requiredAttributes];
+            v76 = [fetchAttributes objectAtIndexedSubscript:m];
+            v77 = [requiredAttributes containsObject:v76];
 
             if (v77)
             {
@@ -839,12 +839,12 @@ LABEL_45:
 
         v81 = dispatch_time(0, 500000000);
         dispatch_group_wait(v80, v81);
-        v127 = [v111 allValues];
-        for (obja = 0; [v127 count] > obja; ++obja)
+        allValues = [v111 allValues];
+        for (obja = 0; [allValues count] > obja; ++obja)
         {
-          v128 = [v127 objectAtIndexedSubscript:?];
-          v82 = [v128 results];
-          v83 = [v82 copy];
+          v128 = [allValues objectAtIndexedSubscript:?];
+          results2 = [v128 results];
+          v83 = [results2 copy];
 
           v134 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v83, "count")}];
           v144 = 0u;
@@ -867,15 +867,15 @@ LABEL_45:
 
                 v86 = *(*(&v142 + 1) + 8 * n);
                 v87 = objc_loadWeakRetained(&self->_resultPipe);
-                v88 = [v87 queryContext];
-                v89 = [v86 resultWithTime:v135 searchString:0 isCorrectedQuery:v88 withQueryContext:v66];
+                queryContext6 = [v87 queryContext];
+                v89 = [v86 resultWithTime:stringCopy searchString:0 isCorrectedQuery:queryContext6 withQueryContext:v66];
 
                 if (v89)
                 {
                   [v89 setType:26];
-                  v90 = [v86 rankingItem];
-                  v91 = [v90 L2FeatureVector];
-                  if (v91)
+                  rankingItem = [v86 rankingItem];
+                  l2FeatureVector = [rankingItem L2FeatureVector];
+                  if (l2FeatureVector)
                   {
                     v92 = v86 == 0;
                   }
@@ -890,16 +890,16 @@ LABEL_45:
                   if (v93)
                   {
                     v173[0] = @"score";
-                    [v90 score];
+                    [rankingItem score];
                     v94 = [NSNumber numberWithFloat:?];
                     v174[0] = v94;
                     v173[1] = @"raw score";
-                    [v90 rawScore];
+                    [rankingItem rawScore];
                     v95 = [NSNumber numberWithFloat:?];
                     v174[1] = v95;
                     v173[2] = @"original score";
-                    v96 = [v90 L2FeatureVector];
-                    [v96 originalL2Score];
+                    l2FeatureVector2 = [rankingItem L2FeatureVector];
+                    [l2FeatureVector2 originalL2Score];
                     v97 = [NSNumber numberWithFloat:?];
                     v174[2] = v97;
                     v98 = [NSDictionary dictionaryWithObjects:v174 forKeys:v173 count:3];
@@ -907,8 +907,8 @@ LABEL_45:
                   }
 
                   [v134 addObject:v89];
-                  v99 = [v86 rankingItem];
-                  [v99 score];
+                  rankingItem2 = [v86 rankingItem];
+                  [rankingItem2 score];
                   [v89 setL2score:?];
                 }
 
@@ -928,13 +928,13 @@ LABEL_45:
       }
     }
 
-    v44 = [(__CFString *)v43 stringByAppendingFormat:@"(%@)", v118];
+    v118 = [(__CFString *)v43 stringByAppendingFormat:@"(%@)", v118];
 
-    v43 = v44;
+    v43 = v118;
     goto LABEL_45;
   }
 
-  v127 = 0;
+  allValues = 0;
 LABEL_78:
 
 LABEL_79:
@@ -950,12 +950,12 @@ LABEL_79:
   *(v123 + 16) = v106;
   *(v123 + 32) = v172;
 
-  return v127;
+  return allValues;
 }
 
-- (id)rerankMapsResultsWithLocalSignals:(id)a3 forQueryId:(int64_t)a4
+- (id)rerankMapsResultsWithLocalSignals:(id)signals forQueryId:(int64_t)id
 {
-  v6 = a3;
+  signalsCopy = signals;
   v7 = logForCSLogCategoryPersonalization();
   v8 = os_signpost_id_generate(v7);
   v9 = v7;
@@ -966,8 +966,8 @@ LABEL_79:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "rerankMapsResultsWithLocalSignals", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v11 = [(SPParsecDatastore *)self->_store mapsParsecRanker];
-  v12 = [v11 rerankMapsResultsWithLocalSignals:v6 forQueryId:a4];
+  mapsParsecRanker = [(SPParsecDatastore *)self->_store mapsParsecRanker];
+  v12 = [mapsParsecRanker rerankMapsResultsWithLocalSignals:signalsCopy forQueryId:id];
 
   v13 = v10;
   v14 = v13;

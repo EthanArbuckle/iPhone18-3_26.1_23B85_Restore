@@ -1,5 +1,5 @@
 @interface CFXClipCompositionDataSource
-- (CFXClipCompositionDataSource)initWithClip:(id)a3;
+- (CFXClipCompositionDataSource)initWithClip:(id)clip;
 - (CGSize)frameSize;
 - (CGSize)renderSize;
 - (id)colorSpace;
@@ -10,16 +10,16 @@
 
 @implementation CFXClipCompositionDataSource
 
-- (CFXClipCompositionDataSource)initWithClip:(id)a3
+- (CFXClipCompositionDataSource)initWithClip:(id)clip
 {
-  v5 = a3;
+  clipCopy = clip;
   v9.receiver = self;
   v9.super_class = CFXClipCompositionDataSource;
   v6 = [(CFXClipCompositionDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clip, a3);
+    objc_storeStrong(&v6->_clip, clip);
   }
 
   return v7;
@@ -55,34 +55,34 @@
 
 - (int)duration
 {
-  v2 = [(CFXClipCompositionDataSource *)self clip];
-  v3 = [v2 duration];
+  clip = [(CFXClipCompositionDataSource *)self clip];
+  duration = [clip duration];
 
-  return v3;
+  return duration;
 }
 
 - (int)frameRate
 {
   v2 = +[CFXMediaSettings sharedInstance];
-  v3 = [v2 frameRate];
+  frameRate = [v2 frameRate];
 
-  return v3;
+  return frameRate;
 }
 
 - (int)timeScale
 {
   v2 = +[CFXMediaSettings sharedInstance];
-  v3 = [v2 timeScale];
+  timeScale = [v2 timeScale];
 
-  return v3;
+  return timeScale;
 }
 
 - (id)colorSpace
 {
-  v2 = [(CFXClip *)self->_clip mediaItem];
-  v3 = [v2 colorSpace];
+  mediaItem = [(CFXClip *)self->_clip mediaItem];
+  colorSpace = [mediaItem colorSpace];
 
-  return v3;
+  return colorSpace;
 }
 
 @end

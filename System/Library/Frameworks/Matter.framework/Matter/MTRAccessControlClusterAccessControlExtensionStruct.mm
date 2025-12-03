@@ -1,6 +1,6 @@
 @interface MTRAccessControlClusterAccessControlExtensionStruct
 - (MTRAccessControlClusterAccessControlExtensionStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,9 +13,9 @@
   v2 = [(MTRAccessControlClusterAccessControlExtensionStruct *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     data = v2->_data;
-    v2->_data = v3;
+    v2->_data = data;
 
     fabricIndex = v2->_fabricIndex;
     v2->_fabricIndex = &unk_284C3E588;
@@ -24,14 +24,14 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRAccessControlClusterAccessControlExtensionStruct);
-  v5 = [(MTRAccessControlClusterAccessControlExtensionStruct *)self data];
-  [(MTRAccessControlClusterAccessControlExtensionStruct *)v4 setData:v5];
+  data = [(MTRAccessControlClusterAccessControlExtensionStruct *)self data];
+  [(MTRAccessControlClusterAccessControlExtensionStruct *)v4 setData:data];
 
-  v6 = [(MTRAccessControlClusterAccessControlExtensionStruct *)self fabricIndex];
-  [(MTRAccessControlClusterAccessControlExtensionStruct *)v4 setFabricIndex:v6];
+  fabricIndex = [(MTRAccessControlClusterAccessControlExtensionStruct *)self fabricIndex];
+  [(MTRAccessControlClusterAccessControlExtensionStruct *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

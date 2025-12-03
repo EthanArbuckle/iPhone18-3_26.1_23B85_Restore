@@ -1,10 +1,10 @@
 @interface FIUITextView
-- (void)centerTextVerticallyWithTopOffset:(double)a3;
+- (void)centerTextVerticallyWithTopOffset:(double)offset;
 @end
 
 @implementation FIUITextView
 
-- (void)centerTextVerticallyWithTopOffset:(double)a3
+- (void)centerTextVerticallyWithTopOffset:(double)offset
 {
   [(FIUITextView *)self bounds];
   [(FIUITextView *)self sizeThatFits:v4, 1.79769313e308];

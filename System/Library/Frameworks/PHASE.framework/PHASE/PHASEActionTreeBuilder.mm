@@ -1,14 +1,14 @@
 @interface PHASEActionTreeBuilder
-+ (id)getParamArray:(id)a3 globalParamUIDs:(id)a4 outError:(id *)a5;
-- (BOOL)addParameter:(id)a3;
-- (BOOL)checkNodeForValidChannelLayouts:(id)a3 assetRegistry:(id)a4 outError:(id *)a5;
-- (BOOL)processNode:(id)a3 withArray:(id)a4 assetRegistry:(id)a5 outError:(id *)a6;
++ (id)getParamArray:(id)array globalParamUIDs:(id)ds outError:(id *)error;
+- (BOOL)addParameter:(id)parameter;
+- (BOOL)checkNodeForValidChannelLayouts:(id)layouts assetRegistry:(id)registry outError:(id *)error;
+- (BOOL)processNode:(id)node withArray:(id)array assetRegistry:(id)registry outError:(id *)error;
 - (PHASEActionTreeBuilder)init;
-- (id)createParseableDictionaryWithUID:(id)a3 rootNodes:(id)a4 globalParamUIDs:(id)a5 assetRegistry:(id)a6 outError:(id *)a7;
-- (id)generateNodeDictionary:(id)a3 outError:(id *)a4;
-- (void)fillGeneratorNodeEntries:(id)a3 dictionary:(id)a4;
-- (void)fillOutDirectivityFieldsWithParams:(id)a3 dictionary:(id)a4 isListener:(BOOL)a5;
-- (void)fillOutDistanceFieldsWithParams:(id)a3 dictionary:(id)a4;
+- (id)createParseableDictionaryWithUID:(id)d rootNodes:(id)nodes globalParamUIDs:(id)ds assetRegistry:(id)registry outError:(id *)error;
+- (id)generateNodeDictionary:(id)dictionary outError:(id *)error;
+- (void)fillGeneratorNodeEntries:(id)entries dictionary:(id)dictionary;
+- (void)fillOutDirectivityFieldsWithParams:(id)params dictionary:(id)dictionary isListener:(BOOL)listener;
+- (void)fillOutDistanceFieldsWithParams:(id)params dictionary:(id)dictionary;
 @end
 
 @implementation PHASEActionTreeBuilder
@@ -39,20 +39,20 @@
   return v2;
 }
 
-- (BOOL)addParameter:(id)a3
+- (BOOL)addParameter:(id)parameter
 {
-  v4 = a3;
-  [(NSMutableSet *)self->_parameters addObject:v4];
+  parameterCopy = parameter;
+  [(NSMutableSet *)self->_parameters addObject:parameterCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 inputMetaParameterDefinition];
+    v5 = parameterCopy;
+    inputMetaParameterDefinition = [v5 inputMetaParameterDefinition];
 
-    if (v6)
+    if (inputMetaParameterDefinition)
     {
-      v7 = [v5 inputMetaParameterDefinition];
-      v8 = [(PHASEActionTreeBuilder *)self addParameter:v7];
+      inputMetaParameterDefinition2 = [v5 inputMetaParameterDefinition];
+      v8 = [(PHASEActionTreeBuilder *)self addParameter:inputMetaParameterDefinition2];
     }
 
     else
@@ -69,105 +69,105 @@
   return v8;
 }
 
-- (void)fillGeneratorNodeEntries:(id)a3 dictionary:(id)a4
+- (void)fillGeneratorNodeEntries:(id)entries dictionary:(id)dictionary
 {
-  v26 = a3;
-  v6 = a4;
-  v7 = [v26 identifier];
-  [v6 setObject:v7 forKey:@"Name"];
+  entriesCopy = entries;
+  dictionaryCopy = dictionary;
+  identifier = [entriesCopy identifier];
+  [dictionaryCopy setObject:identifier forKey:@"Name"];
 
-  v8 = GetCalibrationModeString([v26 calibrationMode]);
-  [v6 setObject:v8 forKey:@"CalibrationMode"];
+  v8 = GetCalibrationModeString([entriesCopy calibrationMode]);
+  [dictionaryCopy setObject:v8 forKey:@"CalibrationMode"];
 
-  v9 = 0x277CCA000;
+  group2 = 0x277CCA000;
   v10 = MEMORY[0x277CCABB0];
-  [v26 level];
+  [entriesCopy level];
   v11 = [v10 numberWithDouble:?];
-  [v6 setObject:v11 forKey:@"Level"];
+  [dictionaryCopy setObject:v11 forKey:@"Level"];
 
   v12 = MEMORY[0x277CCABB0];
-  [v26 rate];
+  [entriesCopy rate];
   v13 = [v12 numberWithDouble:?];
-  [v6 setObject:v13 forKey:@"Rate"];
+  [dictionaryCopy setObject:v13 forKey:@"Rate"];
 
-  v14 = [v26 group];
-  if (v14)
+  group = [entriesCopy group];
+  if (group)
   {
-    v9 = [v26 group];
-    v15 = [v9 identifier];
+    group2 = [entriesCopy group];
+    identifier2 = [group2 identifier];
   }
 
   else
   {
-    v15 = &stru_284D3D208;
+    identifier2 = &stru_284D3D208;
   }
 
-  [v6 setObject:v15 forKey:@"Group"];
-  if (v14)
+  [dictionaryCopy setObject:identifier2 forKey:@"Group"];
+  if (group)
   {
   }
 
-  v16 = [v26 gainMetaParameterDefinition];
+  gainMetaParameterDefinition = [entriesCopy gainMetaParameterDefinition];
 
-  if (v16)
+  if (gainMetaParameterDefinition)
   {
-    v17 = [v26 gainMetaParameterDefinition];
-    [(PHASEActionTreeBuilder *)self addParameter:v17];
+    gainMetaParameterDefinition2 = [entriesCopy gainMetaParameterDefinition];
+    [(PHASEActionTreeBuilder *)self addParameter:gainMetaParameterDefinition2];
 
-    v18 = [v26 gainMetaParameterDefinition];
-    v19 = [v18 identifier];
-    [v6 setObject:v19 forKey:@"GainParameterName"];
+    gainMetaParameterDefinition3 = [entriesCopy gainMetaParameterDefinition];
+    identifier3 = [gainMetaParameterDefinition3 identifier];
+    [dictionaryCopy setObject:identifier3 forKey:@"GainParameterName"];
   }
 
-  v20 = [v26 rateMetaParameterDefinition];
+  rateMetaParameterDefinition = [entriesCopy rateMetaParameterDefinition];
 
-  if (v20)
+  if (rateMetaParameterDefinition)
   {
-    v21 = [v26 rateMetaParameterDefinition];
-    [(PHASEActionTreeBuilder *)self addParameter:v21];
+    rateMetaParameterDefinition2 = [entriesCopy rateMetaParameterDefinition];
+    [(PHASEActionTreeBuilder *)self addParameter:rateMetaParameterDefinition2];
 
-    v22 = [v26 rateMetaParameterDefinition];
-    v23 = [v22 identifier];
-    [v6 setObject:v23 forKey:@"RateParameterName"];
+    rateMetaParameterDefinition3 = [entriesCopy rateMetaParameterDefinition];
+    identifier4 = [rateMetaParameterDefinition3 identifier];
+    [dictionaryCopy setObject:identifier4 forKey:@"RateParameterName"];
   }
 
-  v24 = [v26 mixerDefinition];
-  v25 = [v24 identifier];
-  [v6 setObject:v25 forKey:@"Submix"];
+  mixerDefinition = [entriesCopy mixerDefinition];
+  identifier5 = [mixerDefinition identifier];
+  [dictionaryCopy setObject:identifier5 forKey:@"Submix"];
 }
 
-- (id)generateNodeDictionary:(id)a3 outError:(id *)a4
+- (id)generateNodeDictionary:(id)dictionary outError:(id *)error
 {
   v251 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dictionaryCopy = dictionary;
+  v7 = dictionaryCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v203 = a4;
-  v204 = v6;
+  errorCopy = error;
+  v204 = dictionaryCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
-    v9 = self;
+    selfCopy = self;
     mixNodes = self->_mixNodes;
-    v11 = [v8 mixerDefinition];
-    [(NSMutableSet *)mixNodes addObject:v11];
+    mixerDefinition = [v8 mixerDefinition];
+    [(NSMutableSet *)mixNodes addObject:mixerDefinition];
 
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v12 setObject:@"sampler" forKey:@"Type"];
-    [(PHASEActionTreeBuilder *)v9 fillGeneratorNodeEntries:v8 dictionary:v12];
-    v13 = [v8 assetIdentifier];
-    [v12 setObject:v13 forKey:@"Asset"];
+    [(PHASEActionTreeBuilder *)selfCopy fillGeneratorNodeEntries:v8 dictionary:v12];
+    assetIdentifier = [v8 assetIdentifier];
+    [v12 setObject:assetIdentifier forKey:@"Asset"];
 
     v14 = GetCullOptionString([v8 cullOption]);
     [v12 setObject:v14 forKey:@"CullOption"];
 
-    v15 = GetPlaybackModeString([v8 playbackMode]);
-    [v12 setObject:v15 forKey:@"PlaybackMode"];
+    targetLKFS = GetPlaybackModeString([v8 playbackMode]);
+    [v12 setObject:targetLKFS forKey:@"PlaybackMode"];
 LABEL_11:
 
     goto LABEL_12;
@@ -177,22 +177,22 @@ LABEL_11:
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
-    v16 = self;
+    selfCopy2 = self;
     v17 = self->_mixNodes;
-    v18 = [v8 mixerDefinition];
-    [(NSMutableSet *)v17 addObject:v18];
+    mixerDefinition2 = [v8 mixerDefinition];
+    [(NSMutableSet *)v17 addObject:mixerDefinition2];
 
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v12 setObject:@"pushstream" forKey:@"Type"];
-    [(PHASEActionTreeBuilder *)v16 fillGeneratorNodeEntries:v8 dictionary:v12];
-    v19 = [v8 format];
-    [v12 setObject:v19 forKey:@"Format"];
+    [(PHASEActionTreeBuilder *)selfCopy2 fillGeneratorNodeEntries:v8 dictionary:v12];
+    format = [v8 format];
+    [v12 setObject:format forKey:@"Format"];
 
     v20 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v8, "normalize")}];
     [v12 setObject:v20 forKey:@"Normalize"];
 
-    v15 = [v8 targetLKFS];
-    [v12 setObject:v15 forKey:@"TargetLKFS"];
+    targetLKFS = [v8 targetLKFS];
+    [v12 setObject:targetLKFS forKey:@"TargetLKFS"];
     goto LABEL_11;
   }
 
@@ -200,17 +200,17 @@ LABEL_11:
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
-    v21 = self;
+    selfCopy3 = self;
     v22 = self->_mixNodes;
-    v23 = [v8 mixerDefinition];
-    [(NSMutableSet *)v22 addObject:v23];
+    mixerDefinition3 = [v8 mixerDefinition];
+    [(NSMutableSet *)v22 addObject:mixerDefinition3];
 
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v12 setObject:@"externaloutputpullstream" forKey:@"Type"];
-    [(PHASEActionTreeBuilder *)v21 fillGeneratorNodeEntries:v8 dictionary:v12];
-    v24 = [v8 uuid];
-    v25 = [v24 UUIDString];
-    [v12 setObject:v25 forKey:@"UUID"];
+    [(PHASEActionTreeBuilder *)selfCopy3 fillGeneratorNodeEntries:v8 dictionary:v12];
+    uuid = [v8 uuid];
+    uUIDString = [uuid UUIDString];
+    [v12 setObject:uUIDString forKey:@"UUID"];
 
     v26 = GetChannelLayoutString([v8 channelLayoutTag]);
     [v12 setObject:v26 forKey:@"ChannelLayoutTag"];
@@ -218,8 +218,8 @@ LABEL_11:
     v27 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v8, "normalize")}];
     [v12 setObject:v27 forKey:@"Normalize"];
 
-    v15 = [v8 targetLKFS];
-    [v12 setObject:v15 forKey:@"TargetLKFS"];
+    targetLKFS = [v8 targetLKFS];
+    [v12 setObject:targetLKFS forKey:@"TargetLKFS"];
     goto LABEL_11;
   }
 
@@ -227,22 +227,22 @@ LABEL_11:
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
-    v28 = self;
+    selfCopy4 = self;
     v29 = self->_mixNodes;
-    v30 = [v8 mixerDefinition];
-    [(NSMutableSet *)v29 addObject:v30];
+    mixerDefinition4 = [v8 mixerDefinition];
+    [(NSMutableSet *)v29 addObject:mixerDefinition4];
 
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v12 setObject:@"pullstream" forKey:@"Type"];
-    [(PHASEActionTreeBuilder *)v28 fillGeneratorNodeEntries:v8 dictionary:v12];
-    v31 = [v8 format];
-    [v12 setObject:v31 forKey:@"Format"];
+    [(PHASEActionTreeBuilder *)selfCopy4 fillGeneratorNodeEntries:v8 dictionary:v12];
+    format2 = [v8 format];
+    [v12 setObject:format2 forKey:@"Format"];
 
     v32 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v8, "normalize")}];
     [v12 setObject:v32 forKey:@"Normalize"];
 
-    v15 = [v8 targetLKFS];
-    [v12 setObject:v15 forKey:@"TargetLKFS"];
+    targetLKFS = [v8 targetLKFS];
+    [v12 setObject:targetLKFS forKey:@"TargetLKFS"];
     goto LABEL_11;
   }
 
@@ -272,7 +272,7 @@ LABEL_11:
 
           v34 = *(*(&v231 + 1) + 8 * i);
           v209 = MEMORY[0x277CBEAC0];
-          v210 = [*(v34 + 8) identifier];
+          identifier = [*(v34 + 8) identifier];
           v35 = *(v34 + 16);
           v216 = objc_alloc_init(MEMORY[0x277CBEB38]);
           v36 = MEMORY[0x277CCABB0];
@@ -288,8 +288,8 @@ LABEL_11:
           v41 = objc_alloc_init(MEMORY[0x277CBEB18]);
           for (j = 0; ; ++j)
           {
-            v43 = [v35 segments];
-            v44 = [v43 count] > j;
+            segments = [v35 segments];
+            v44 = [segments count] > j;
 
             if (!v44)
             {
@@ -298,21 +298,21 @@ LABEL_11:
 
             v45 = objc_alloc_init(MEMORY[0x277CBEB38]);
             v46 = MEMORY[0x277CCABB0];
-            v47 = [v35 segments];
-            v48 = [v47 objectAtIndexedSubscript:j];
+            segments2 = [v35 segments];
+            v48 = [segments2 objectAtIndexedSubscript:j];
             [v48 endPoint];
             v49 = [v46 numberWithDouble:?];
             [v45 setValue:v49 forKey:@"InputValue"];
 
             v50 = MEMORY[0x277CCABB0];
-            v51 = [v35 segments];
-            v52 = [v51 objectAtIndexedSubscript:j];
+            segments3 = [v35 segments];
+            v52 = [segments3 objectAtIndexedSubscript:j];
             [v52 endPoint];
             v54 = [v50 numberWithDouble:v53];
             [v45 setValue:v54 forKey:@"OutputValue"];
 
-            v55 = [v35 segments];
-            v56 = [v55 objectAtIndexedSubscript:j];
+            segments4 = [v35 segments];
+            v56 = [segments4 objectAtIndexedSubscript:j];
             v57 = GetCurveTypeString([v56 curveType]);
             [v45 setValue:v57 forKey:@"CurveType"];
 
@@ -321,7 +321,7 @@ LABEL_11:
 
           [v216 setValue:v41 forKey:@"Segments"];
 
-          v58 = [v209 dictionaryWithObjectsAndKeys:{v210, @"SubTreeNodeName", v216, @"Envelope", 0}];
+          v58 = [v209 dictionaryWithObjectsAndKeys:{identifier, @"SubTreeNodeName", v216, @"Envelope", 0}];
 
           [v207 addObject:v58];
         }
@@ -332,41 +332,41 @@ LABEL_11:
       while (v208);
     }
 
-    v59 = [v202 blendParameterDefinition];
-    v60 = v59 == 0;
+    blendParameterDefinition = [v202 blendParameterDefinition];
+    v60 = blendParameterDefinition == 0;
 
     if (!v60)
     {
-      v61 = [v202 blendParameterDefinition];
-      [(PHASEActionTreeBuilder *)self addParameter:v61];
+      blendParameterDefinition2 = [v202 blendParameterDefinition];
+      [(PHASEActionTreeBuilder *)self addParameter:blendParameterDefinition2];
 
       v62 = MEMORY[0x277CBEB38];
-      v63 = [v202 identifier];
-      v64 = [v202 blendParameterDefinition];
-      v65 = [v64 identifier];
-      v12 = [v62 dictionaryWithObjectsAndKeys:{v63, @"Name", @"blend", @"Type", v207, @"Children", v65, @"BlendParameter", 0}];
+      identifier2 = [v202 identifier];
+      blendParameterDefinition3 = [v202 blendParameterDefinition];
+      identifier3 = [blendParameterDefinition3 identifier];
+      v12 = [v62 dictionaryWithObjectsAndKeys:{identifier2, @"Name", @"blend", @"Type", v207, @"Children", identifier3, @"BlendParameter", 0}];
 
-      v66 = [v202 blendParameterDefinition];
-      [(PHASEActionTreeBuilder *)v201 addParameter:v66];
+      blendParameterDefinition4 = [v202 blendParameterDefinition];
+      [(PHASEActionTreeBuilder *)v201 addParameter:blendParameterDefinition4];
 LABEL_54:
 
       goto LABEL_12;
     }
 
-    v106 = [v202 spatialMixerDefinitionForDistance];
-    v107 = v106 == 0;
+    spatialMixerDefinitionForDistance = [v202 spatialMixerDefinitionForDistance];
+    v107 = spatialMixerDefinitionForDistance == 0;
 
     if (!v107)
     {
       v108 = self->_mixNodes;
-      v109 = [v202 spatialMixerDefinitionForDistance];
-      [(NSMutableSet *)v108 addObject:v109];
+      spatialMixerDefinitionForDistance2 = [v202 spatialMixerDefinitionForDistance];
+      [(NSMutableSet *)v108 addObject:spatialMixerDefinitionForDistance2];
 
       v110 = MEMORY[0x277CBEB38];
-      v66 = [v202 identifier];
-      v111 = [v202 spatialMixerDefinitionForDistance];
-      v112 = [v111 identifier];
-      v12 = [v110 dictionaryWithObjectsAndKeys:{v66, @"Name", @"blend", @"Type", v207, @"Children", @"auto_distance", @"BlendParameter", v112, @"DistanceSubmixName", 0}];
+      blendParameterDefinition4 = [v202 identifier];
+      spatialMixerDefinitionForDistance3 = [v202 spatialMixerDefinitionForDistance];
+      identifier4 = [spatialMixerDefinitionForDistance3 identifier];
+      v12 = [v110 dictionaryWithObjectsAndKeys:{blendParameterDefinition4, @"Name", @"blend", @"Type", v207, @"Children", @"auto_distance", @"BlendParameter", identifier4, @"DistanceSubmixName", 0}];
 
       goto LABEL_54;
     }
@@ -382,19 +382,19 @@ LABEL_54:
     {
       v190 = [v187 objectForKeyedSubscript:v185];
       v191 = v190;
-      v192 = [v190 UTF8String];
+      uTF8String = [v190 UTF8String];
       *buf = 136315650;
       v243 = "PHASEAssetRegistry.mm";
       v244 = 1024;
       v245 = 2349;
       v246 = 2080;
-      v247 = v192;
+      v247 = uTF8String;
       _os_log_impl(&dword_23A302000, v189, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
     }
 
-    if (v203)
+    if (errorCopy)
     {
-      *v203 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924648 userInfo:v187];
+      *errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924648 userInfo:v187];
     }
 
     goto LABEL_95;
@@ -409,9 +409,9 @@ LABEL_54:
     v230 = 0u;
     v227 = 0u;
     v228 = 0u;
-    v67 = [v211 subtrees];
-    v214 = v67;
-    v68 = [v67 countByEnumeratingWithState:&v227 objects:v241 count:16];
+    subtrees = [v211 subtrees];
+    v214 = subtrees;
+    v68 = [subtrees countByEnumeratingWithState:&v227 objects:v241 count:16];
     if (v68)
     {
       v69 = *v228;
@@ -425,8 +425,8 @@ LABEL_54:
           }
 
           v71 = *(*(&v227 + 1) + 8 * k);
-          v72 = [v71 subtree];
-          v73 = v72 == 0;
+          subtree = [v71 subtree];
+          v73 = subtree == 0;
 
           if (v73)
           {
@@ -441,34 +441,34 @@ LABEL_54:
             {
               v103 = [v100 objectForKeyedSubscript:v98];
               v104 = v103;
-              v105 = [v103 UTF8String];
+              uTF8String2 = [v103 UTF8String];
               *buf = 136315650;
               v243 = "PHASEAssetRegistry.mm";
               v244 = 1024;
               v245 = 2367;
               v246 = 2080;
-              v247 = v105;
+              v247 = uTF8String2;
               _os_log_impl(&dword_23A302000, v102, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
             }
 
-            if (v203)
+            if (errorCopy)
             {
-              *v203 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924648 userInfo:v100];
+              *errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924648 userInfo:v100];
             }
 
             goto LABEL_95;
           }
 
           v74 = MEMORY[0x277CBEAC0];
-          v75 = [v71 subtree];
-          v76 = [v75 identifier];
-          v77 = [v71 switchValue];
-          v78 = [v74 dictionaryWithObjectsAndKeys:{v76, @"SubTreeNodeName", v77, @"SwitchValue", 0}];
+          subtree2 = [v71 subtree];
+          identifier5 = [subtree2 identifier];
+          switchValue = [v71 switchValue];
+          v78 = [v74 dictionaryWithObjectsAndKeys:{identifier5, @"SubTreeNodeName", switchValue, @"SwitchValue", 0}];
 
           [v217 addObject:v78];
         }
 
-        v67 = v214;
+        subtrees = v214;
         v68 = [v214 countByEnumeratingWithState:&v227 objects:v241 count:16];
         if (v68)
         {
@@ -479,14 +479,14 @@ LABEL_54:
       }
     }
 
-    v79 = [v211 switchMetaParameterDefinition];
-    [(PHASEActionTreeBuilder *)self addParameter:v79];
+    switchMetaParameterDefinition = [v211 switchMetaParameterDefinition];
+    [(PHASEActionTreeBuilder *)self addParameter:switchMetaParameterDefinition];
 
     v80 = MEMORY[0x277CBEB38];
-    v81 = [v211 identifier];
-    v82 = [v211 switchMetaParameterDefinition];
-    v83 = [v82 identifier];
-    v12 = [v80 dictionaryWithObjectsAndKeys:{v81, @"Name", @"switch", @"Type", v83, @"SwitchParameter", v217, @"Children", 0}];
+    identifier6 = [v211 identifier];
+    switchMetaParameterDefinition2 = [v211 switchMetaParameterDefinition];
+    identifier7 = [switchMetaParameterDefinition2 identifier];
+    v12 = [v80 dictionaryWithObjectsAndKeys:{identifier6, @"Name", @"switch", @"Type", identifier7, @"SwitchParameter", v217, @"Children", 0}];
   }
 
   else
@@ -500,9 +500,9 @@ LABEL_54:
       v226 = 0u;
       v223 = 0u;
       v224 = 0u;
-      v84 = [v212 subtrees];
-      v215 = v84;
-      v85 = [v84 countByEnumeratingWithState:&v223 objects:v238 count:16];
+      subtrees2 = [v212 subtrees];
+      v215 = subtrees2;
+      v85 = [subtrees2 countByEnumeratingWithState:&v223 objects:v238 count:16];
       if (v85)
       {
         v86 = *v224;
@@ -517,17 +517,17 @@ LABEL_54:
 
             v88 = *(*(&v223 + 1) + 8 * m);
             v89 = MEMORY[0x277CBEAC0];
-            v90 = [v88 subtree];
-            v91 = [v90 identifier];
+            subtree3 = [v88 subtree];
+            identifier8 = [subtree3 identifier];
             v92 = MEMORY[0x277CCABB0];
             [v88 weight];
             v93 = [v92 numberWithDouble:?];
-            v94 = [v89 dictionaryWithObjectsAndKeys:{v91, @"SubTreeNodeName", v93, @"Weight", 0}];
+            v94 = [v89 dictionaryWithObjectsAndKeys:{identifier8, @"SubTreeNodeName", v93, @"Weight", 0}];
 
             [v218 addObject:v94];
           }
 
-          v84 = v215;
+          subtrees2 = v215;
           v85 = [v215 countByEnumeratingWithState:&v223 objects:v238 count:16];
         }
 
@@ -535,9 +535,9 @@ LABEL_54:
       }
 
       v95 = MEMORY[0x277CBEB38];
-      v96 = [v212 identifier];
+      identifier9 = [v212 identifier];
       v97 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v212, "uniqueSelectionQueueLength")}];
-      v12 = [v95 dictionaryWithObjectsAndKeys:{v96, @"Name", @"random", @"Type", v97, @"UniqueSelectionQueueLength", v218, @"Children", 0}];
+      v12 = [v95 dictionaryWithObjectsAndKeys:{identifier9, @"Name", @"random", @"Type", v97, @"UniqueSelectionQueueLength", v218, @"Children", 0}];
     }
 
     else
@@ -551,8 +551,8 @@ LABEL_54:
         v222 = 0u;
         v219 = 0u;
         v220 = 0u;
-        v115 = [v113 children];
-        v116 = [v115 countByEnumeratingWithState:&v219 objects:v237 count:16];
+        children = [v113 children];
+        v116 = [children countByEnumeratingWithState:&v219 objects:v237 count:16];
         if (v116)
         {
           v117 = *v220;
@@ -562,22 +562,22 @@ LABEL_54:
             {
               if (*v220 != v117)
               {
-                objc_enumerationMutation(v115);
+                objc_enumerationMutation(children);
               }
 
-              v119 = [*(*(&v219 + 1) + 8 * n) identifier];
-              [v114 addObject:v119];
+              identifier10 = [*(*(&v219 + 1) + 8 * n) identifier];
+              [v114 addObject:identifier10];
             }
 
-            v116 = [v115 countByEnumeratingWithState:&v219 objects:v237 count:16];
+            v116 = [children countByEnumeratingWithState:&v219 objects:v237 count:16];
           }
 
           while (v116);
         }
 
         v120 = MEMORY[0x277CBEB38];
-        v121 = [v113 identifier];
-        v12 = [v120 dictionaryWithObjectsAndKeys:{v121, @"Name", @"container", @"Type", v114, @"Children", 0}];
+        identifier11 = [v113 identifier];
+        v12 = [v120 dictionaryWithObjectsAndKeys:{identifier11, @"Name", @"container", @"Type", v114, @"Children", 0}];
       }
 
       else
@@ -585,7 +585,7 @@ LABEL_54:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v193 = *MEMORY[0x277CCA450];
             v235 = *MEMORY[0x277CCA450];
@@ -598,17 +598,17 @@ LABEL_54:
             {
               v198 = [v195 objectForKeyedSubscript:v193];
               v199 = v198;
-              v200 = [v198 UTF8String];
+              uTF8String3 = [v198 UTF8String];
               *buf = 136315650;
               v243 = "PHASEAssetRegistry.mm";
               v244 = 1024;
               v245 = 2534;
               v246 = 2080;
-              v247 = v200;
+              v247 = uTF8String3;
               _os_log_impl(&dword_23A302000, v197, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
             }
 
-            *v203 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924648 userInfo:v195];
+            *errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924648 userInfo:v195];
           }
 
 LABEL_95:
@@ -617,14 +617,14 @@ LABEL_95:
         }
 
         v122 = v7;
-        v123 = self;
+        selfCopy5 = self;
         v124 = self->_mixNodes;
-        v125 = [v122 mixerDefinition];
-        [(NSMutableSet *)v124 addObject:v125];
+        mixerDefinition5 = [v122 mixerDefinition];
+        [(NSMutableSet *)v124 addObject:mixerDefinition5];
 
         v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
         [v12 setObject:@"procedure" forKey:@"Type"];
-        [(PHASEActionTreeBuilder *)v123 fillGeneratorNodeEntries:v122 dictionary:v12];
+        [(PHASEActionTreeBuilder *)selfCopy5 fillGeneratorNodeEntries:v122 dictionary:v12];
         v126 = GetCullOptionString([v122 cullOption]);
         [v12 setObject:v126 forKey:@"CullOption"];
 
@@ -687,112 +687,112 @@ LABEL_95:
           v148 = [v147 numberWithDouble:?];
           [v12 setObject:v148 forKey:@"BubbleGain"];
 
-          v149 = [v130 fallRateMetaParameterDefinition];
+          fallRateMetaParameterDefinition = [v130 fallRateMetaParameterDefinition];
 
-          if (v149)
+          if (fallRateMetaParameterDefinition)
           {
-            v150 = [v130 fallRateMetaParameterDefinition];
-            [(PHASEActionTreeBuilder *)v123 addParameter:v150];
+            fallRateMetaParameterDefinition2 = [v130 fallRateMetaParameterDefinition];
+            [(PHASEActionTreeBuilder *)selfCopy5 addParameter:fallRateMetaParameterDefinition2];
 
-            v151 = [v130 fallRateMetaParameterDefinition];
-            v152 = [v151 identifier];
-            [v12 setObject:v152 forKey:@"FallRateParameterName"];
+            fallRateMetaParameterDefinition3 = [v130 fallRateMetaParameterDefinition];
+            identifier12 = [fallRateMetaParameterDefinition3 identifier];
+            [v12 setObject:identifier12 forKey:@"FallRateParameterName"];
           }
 
-          v153 = [v130 averageDropDiameterMetaParameterDefinition];
+          averageDropDiameterMetaParameterDefinition = [v130 averageDropDiameterMetaParameterDefinition];
 
-          if (v153)
+          if (averageDropDiameterMetaParameterDefinition)
           {
-            v154 = [v130 averageDropDiameterMetaParameterDefinition];
-            [(PHASEActionTreeBuilder *)v123 addParameter:v154];
+            averageDropDiameterMetaParameterDefinition2 = [v130 averageDropDiameterMetaParameterDefinition];
+            [(PHASEActionTreeBuilder *)selfCopy5 addParameter:averageDropDiameterMetaParameterDefinition2];
 
-            v155 = [v130 averageDropDiameterMetaParameterDefinition];
-            v156 = [v155 identifier];
-            [v12 setObject:v156 forKey:@"AverageDropDiameterParameterName"];
+            averageDropDiameterMetaParameterDefinition3 = [v130 averageDropDiameterMetaParameterDefinition];
+            identifier13 = [averageDropDiameterMetaParameterDefinition3 identifier];
+            [v12 setObject:identifier13 forKey:@"AverageDropDiameterParameterName"];
           }
 
-          v157 = [v130 maxDropDiameterMetaParameterDefinition];
+          maxDropDiameterMetaParameterDefinition = [v130 maxDropDiameterMetaParameterDefinition];
 
-          if (v157)
+          if (maxDropDiameterMetaParameterDefinition)
           {
-            v158 = [v130 maxDropDiameterMetaParameterDefinition];
-            [(PHASEActionTreeBuilder *)v123 addParameter:v158];
+            maxDropDiameterMetaParameterDefinition2 = [v130 maxDropDiameterMetaParameterDefinition];
+            [(PHASEActionTreeBuilder *)selfCopy5 addParameter:maxDropDiameterMetaParameterDefinition2];
 
-            v159 = [v130 maxDropDiameterMetaParameterDefinition];
-            v160 = [v159 identifier];
-            [v12 setObject:v160 forKey:@"MaxDropDiameterParameterName"];
+            maxDropDiameterMetaParameterDefinition3 = [v130 maxDropDiameterMetaParameterDefinition];
+            identifier14 = [maxDropDiameterMetaParameterDefinition3 identifier];
+            [v12 setObject:identifier14 forKey:@"MaxDropDiameterParameterName"];
           }
 
-          v161 = [v130 impulseShapeMetaParameterDefinition];
+          impulseShapeMetaParameterDefinition = [v130 impulseShapeMetaParameterDefinition];
 
-          if (v161)
+          if (impulseShapeMetaParameterDefinition)
           {
-            v162 = [v130 impulseShapeMetaParameterDefinition];
-            [(PHASEActionTreeBuilder *)v123 addParameter:v162];
+            impulseShapeMetaParameterDefinition2 = [v130 impulseShapeMetaParameterDefinition];
+            [(PHASEActionTreeBuilder *)selfCopy5 addParameter:impulseShapeMetaParameterDefinition2];
 
-            v163 = [v130 impulseShapeMetaParameterDefinition];
-            v164 = [v163 identifier];
-            [v12 setObject:v164 forKey:@"ImpulseShapeParameterName"];
+            impulseShapeMetaParameterDefinition3 = [v130 impulseShapeMetaParameterDefinition];
+            identifier15 = [impulseShapeMetaParameterDefinition3 identifier];
+            [v12 setObject:identifier15 forKey:@"ImpulseShapeParameterName"];
           }
 
-          v165 = [v130 impulseGainExponentMetaParameterDefinition];
+          impulseGainExponentMetaParameterDefinition = [v130 impulseGainExponentMetaParameterDefinition];
 
-          if (v165)
+          if (impulseGainExponentMetaParameterDefinition)
           {
-            v166 = [v130 impulseGainExponentMetaParameterDefinition];
-            [(PHASEActionTreeBuilder *)v123 addParameter:v166];
+            impulseGainExponentMetaParameterDefinition2 = [v130 impulseGainExponentMetaParameterDefinition];
+            [(PHASEActionTreeBuilder *)selfCopy5 addParameter:impulseGainExponentMetaParameterDefinition2];
 
-            v167 = [v130 impulseGainExponentMetaParameterDefinition];
-            v168 = [v167 identifier];
-            [v12 setObject:v168 forKey:@"ImpulseGainExponentParameterName"];
+            impulseGainExponentMetaParameterDefinition3 = [v130 impulseGainExponentMetaParameterDefinition];
+            identifier16 = [impulseGainExponentMetaParameterDefinition3 identifier];
+            [v12 setObject:identifier16 forKey:@"ImpulseGainExponentParameterName"];
           }
 
-          v169 = [v130 impulseGainMetaParameterDefinition];
+          impulseGainMetaParameterDefinition = [v130 impulseGainMetaParameterDefinition];
 
-          if (v169)
+          if (impulseGainMetaParameterDefinition)
           {
-            v170 = [v130 impulseGainMetaParameterDefinition];
-            [(PHASEActionTreeBuilder *)v123 addParameter:v170];
+            impulseGainMetaParameterDefinition2 = [v130 impulseGainMetaParameterDefinition];
+            [(PHASEActionTreeBuilder *)selfCopy5 addParameter:impulseGainMetaParameterDefinition2];
 
-            v171 = [v130 impulseGainMetaParameterDefinition];
-            v172 = [v171 identifier];
-            [v12 setObject:v172 forKey:@"ImpulseGainParameterName"];
+            impulseGainMetaParameterDefinition3 = [v130 impulseGainMetaParameterDefinition];
+            identifier17 = [impulseGainMetaParameterDefinition3 identifier];
+            [v12 setObject:identifier17 forKey:@"ImpulseGainParameterName"];
           }
 
-          v173 = [v130 chirpRiseRateMetaParameterDefinition];
+          chirpRiseRateMetaParameterDefinition = [v130 chirpRiseRateMetaParameterDefinition];
 
-          if (v173)
+          if (chirpRiseRateMetaParameterDefinition)
           {
-            v174 = [v130 chirpRiseRateMetaParameterDefinition];
-            [(PHASEActionTreeBuilder *)v123 addParameter:v174];
+            chirpRiseRateMetaParameterDefinition2 = [v130 chirpRiseRateMetaParameterDefinition];
+            [(PHASEActionTreeBuilder *)selfCopy5 addParameter:chirpRiseRateMetaParameterDefinition2];
 
-            v175 = [v130 chirpRiseRateMetaParameterDefinition];
-            v176 = [v175 identifier];
-            [v12 setObject:v176 forKey:@"ChirpRiseRateParameterName"];
+            chirpRiseRateMetaParameterDefinition3 = [v130 chirpRiseRateMetaParameterDefinition];
+            identifier18 = [chirpRiseRateMetaParameterDefinition3 identifier];
+            [v12 setObject:identifier18 forKey:@"ChirpRiseRateParameterName"];
           }
 
-          v177 = [v130 baseFrequencyMultiplierMetaParameterDefinition];
+          baseFrequencyMultiplierMetaParameterDefinition = [v130 baseFrequencyMultiplierMetaParameterDefinition];
 
-          if (v177)
+          if (baseFrequencyMultiplierMetaParameterDefinition)
           {
-            v178 = [v130 baseFrequencyMultiplierMetaParameterDefinition];
-            [(PHASEActionTreeBuilder *)v123 addParameter:v178];
+            baseFrequencyMultiplierMetaParameterDefinition2 = [v130 baseFrequencyMultiplierMetaParameterDefinition];
+            [(PHASEActionTreeBuilder *)selfCopy5 addParameter:baseFrequencyMultiplierMetaParameterDefinition2];
 
-            v179 = [v130 baseFrequencyMultiplierMetaParameterDefinition];
-            v180 = [v179 identifier];
-            [v12 setObject:v180 forKey:@"BaseFrequencyMultiplierParameterName"];
+            baseFrequencyMultiplierMetaParameterDefinition3 = [v130 baseFrequencyMultiplierMetaParameterDefinition];
+            identifier19 = [baseFrequencyMultiplierMetaParameterDefinition3 identifier];
+            [v12 setObject:identifier19 forKey:@"BaseFrequencyMultiplierParameterName"];
           }
 
-          v181 = [v130 bubbleGainMetaParameterDefinition];
+          bubbleGainMetaParameterDefinition = [v130 bubbleGainMetaParameterDefinition];
 
-          if (v181)
+          if (bubbleGainMetaParameterDefinition)
           {
-            v182 = [v130 bubbleGainMetaParameterDefinition];
-            [(PHASEActionTreeBuilder *)v123 addParameter:v182];
+            bubbleGainMetaParameterDefinition2 = [v130 bubbleGainMetaParameterDefinition];
+            [(PHASEActionTreeBuilder *)selfCopy5 addParameter:bubbleGainMetaParameterDefinition2];
 
-            v183 = [v130 bubbleGainMetaParameterDefinition];
-            v184 = [v183 identifier];
-            [v12 setObject:v184 forKey:@"BubbleGainParameterName"];
+            bubbleGainMetaParameterDefinition3 = [v130 bubbleGainMetaParameterDefinition];
+            identifier20 = [bubbleGainMetaParameterDefinition3 identifier];
+            [v12 setObject:identifier20 forKey:@"BubbleGainParameterName"];
           }
         }
       }
@@ -804,29 +804,29 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)processNode:(id)a3 withArray:(id)a4 assetRegistry:(id)a5 outError:(id *)a6
+- (BOOL)processNode:(id)node withArray:(id)array assetRegistry:(id)registry outError:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6)
+  nodeCopy = node;
+  arrayCopy = array;
+  registryCopy = registry;
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
-  if ([(PHASEActionTreeBuilder *)self checkNodeForValidChannelLayouts:v10 assetRegistry:v12 outError:a6])
+  if ([(PHASEActionTreeBuilder *)self checkNodeForValidChannelLayouts:nodeCopy assetRegistry:registryCopy outError:error])
   {
-    v13 = [(PHASEActionTreeBuilder *)self generateNodeDictionary:v10 outError:a6];
+    v13 = [(PHASEActionTreeBuilder *)self generateNodeDictionary:nodeCopy outError:error];
     if (v13)
     {
-      [v11 addObject:v13];
+      [arrayCopy addObject:v13];
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v14 = [v10 children];
-      v15 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      children = [nodeCopy children];
+      v15 = [children countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v15)
       {
         v16 = *v21;
@@ -836,17 +836,17 @@ LABEL_12:
           {
             if (*v21 != v16)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(children);
             }
 
-            if (![(PHASEActionTreeBuilder *)self processNode:*(*(&v20 + 1) + 8 * i) withArray:v11 assetRegistry:v12 outError:a6])
+            if (![(PHASEActionTreeBuilder *)self processNode:*(*(&v20 + 1) + 8 * i) withArray:arrayCopy assetRegistry:registryCopy outError:error])
             {
               v18 = 0;
               goto LABEL_16;
             }
           }
 
-          v15 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v15 = [children countByEnumeratingWithState:&v20 objects:v24 count:16];
           if (v15)
           {
             continue;
@@ -874,23 +874,23 @@ LABEL_16:
   return v18;
 }
 
-+ (id)getParamArray:(id)a3 globalParamUIDs:(id)a4 outError:(id *)a5
++ (id)getParamArray:(id)array globalParamUIDs:(id)ds outError:(id *)error
 {
   v89 = *MEMORY[0x277D85DE8];
-  v62 = a3;
-  v67 = a4;
+  arrayCopy = array;
+  dsCopy = ds;
   v63 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v61 = a5;
+  errorCopy = error;
   v77 = 0u;
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  obj = v62;
+  obj = arrayCopy;
   v68 = [obj countByEnumeratingWithState:&v75 objects:v88 count:16];
   if (v68)
   {
@@ -905,8 +905,8 @@ LABEL_16:
         }
 
         v69 = *(*(&v75 + 1) + 8 * i);
-        v7 = [v69 identifier];
-        v8 = [v67 containsObject:v7];
+        identifier = [v69 identifier];
+        v8 = [dsCopy containsObject:identifier];
 
         if ((v8 & 1) == 0)
         {
@@ -919,10 +919,10 @@ LABEL_16:
             v74 = 0u;
             v71 = 0u;
             v72 = 0u;
-            v10 = [v65 envelope];
-            v11 = [v10 segments];
+            envelope = [v65 envelope];
+            segments = [envelope segments];
 
-            v12 = [v11 countByEnumeratingWithState:&v71 objects:v87 count:16];
+            v12 = [segments countByEnumeratingWithState:&v71 objects:v87 count:16];
             if (v12)
             {
               v13 = *v72;
@@ -932,7 +932,7 @@ LABEL_16:
                 {
                   if (*v72 != v13)
                   {
-                    objc_enumerationMutation(v11);
+                    objc_enumerationMutation(segments);
                   }
 
                   v15 = *(*(&v71 + 1) + 8 * j);
@@ -949,7 +949,7 @@ LABEL_16:
                   [v9 addObject:v23];
                 }
 
-                v12 = [v11 countByEnumeratingWithState:&v71 objects:v87 count:16];
+                v12 = [segments countByEnumeratingWithState:&v71 objects:v87 count:16];
               }
 
               while (v12);
@@ -957,20 +957,20 @@ LABEL_16:
 
             v24 = MEMORY[0x277CBEAC0];
             v25 = MEMORY[0x277CCABB0];
-            v26 = [v65 envelope];
-            [v26 startPoint];
+            envelope2 = [v65 envelope];
+            [envelope2 startPoint];
             v27 = [v25 numberWithDouble:?];
             v28 = MEMORY[0x277CCABB0];
-            v29 = [v65 envelope];
-            [v29 startPoint];
+            envelope3 = [v65 envelope];
+            [envelope3 startPoint];
             v31 = [v28 numberWithDouble:v30];
             v32 = [v24 dictionaryWithObjectsAndKeys:{v27, @"StartInputValue", v31, @"StartOutputValue", v9, @"Segments", 0}];
 
             v33 = MEMORY[0x277CBEAC0];
-            v34 = [v65 identifier];
-            v35 = [v65 inputMetaParameterDefinition];
-            v36 = [v35 identifier];
-            v37 = [v33 dictionaryWithObjectsAndKeys:{@"mapped_range", @"Type", v34, @"Name", v36, @"LinkedInputParameter", @"float", @"InputType", @"float", @"OutputType", v32, @"Envelope", 0}];
+            identifier2 = [v65 identifier];
+            inputMetaParameterDefinition = [v65 inputMetaParameterDefinition];
+            identifier3 = [inputMetaParameterDefinition identifier];
+            v37 = [v33 dictionaryWithObjectsAndKeys:{@"mapped_range", @"Type", identifier2, @"Name", identifier3, @"LinkedInputParameter", @"float", @"InputType", @"float", @"OutputType", v32, @"Envelope", 0}];
 
             [v63 addObject:v37];
           }
@@ -982,15 +982,15 @@ LABEL_16:
             {
               v38 = v69;
               v39 = MEMORY[0x277CBEAC0];
-              v40 = [v38 identifier];
+              identifier4 = [v38 identifier];
               v41 = MEMORY[0x277CCABB0];
               [v38 minimum];
               v42 = [v41 numberWithDouble:?];
               v43 = MEMORY[0x277CCABB0];
               [v38 maximum];
               v44 = [v43 numberWithDouble:?];
-              v45 = [v38 value];
-              v9 = [v39 dictionaryWithObjectsAndKeys:{v40, @"Name", @"input", @"Type", @"float", @"InputType", v42, @"RangeMin", v44, @"RangeMax", v45, @"DefaultValue", 0}];
+              value = [v38 value];
+              v9 = [v39 dictionaryWithObjectsAndKeys:{identifier4, @"Name", @"input", @"Type", @"float", @"InputType", v42, @"RangeMin", v44, @"RangeMax", value, @"DefaultValue", 0}];
 
               [v63 addObject:v9];
             }
@@ -1000,7 +1000,7 @@ LABEL_16:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (v61)
+                if (errorCopy)
                 {
                   v52 = *MEMORY[0x277CCA450];
                   v85 = *MEMORY[0x277CCA450];
@@ -1013,17 +1013,17 @@ LABEL_16:
                   {
                     v57 = [v54 objectForKeyedSubscript:v52];
                     v58 = v57;
-                    v59 = [v57 UTF8String];
+                    uTF8String = [v57 UTF8String];
                     *buf = 136315650;
                     v80 = "PHASEAssetRegistry.mm";
                     v81 = 1024;
                     v82 = 2676;
                     v83 = 2080;
-                    v84 = v59;
+                    v84 = uTF8String;
                     _os_log_impl(&dword_23A302000, v56, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
                   }
 
-                  *v61 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924648 userInfo:v54];
+                  *errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924648 userInfo:v54];
                 }
 
                 v51 = 0;
@@ -1033,9 +1033,9 @@ LABEL_16:
 
               v46 = v69;
               v47 = MEMORY[0x277CBEAC0];
-              v48 = [v46 identifier];
-              v49 = [v46 value];
-              v9 = [v47 dictionaryWithObjectsAndKeys:{v48, @"Name", @"input", @"Type", @"string", @"InputType", v49, @"DefaultValue", 0}];
+              identifier5 = [v46 identifier];
+              value2 = [v46 value];
+              v9 = [v47 dictionaryWithObjectsAndKeys:{identifier5, @"Name", @"input", @"Type", @"string", @"InputType", value2, @"DefaultValue", 0}];
 
               [v63 addObject:v9];
             }
@@ -1060,22 +1060,22 @@ LABEL_31:
   return v51;
 }
 
-- (void)fillOutDistanceFieldsWithParams:(id)a3 dictionary:(id)a4
+- (void)fillOutDistanceFieldsWithParams:(id)params dictionary:(id)dictionary
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v30 = v6;
-  v31 = v5;
-  if (v5)
+  paramsCopy = params;
+  dictionaryCopy = dictionary;
+  v30 = dictionaryCopy;
+  v31 = paramsCopy;
+  if (paramsCopy)
   {
-    v7 = [v5 fadeOutParameters];
+    fadeOutParameters = [paramsCopy fadeOutParameters];
 
-    if (v7)
+    if (fadeOutParameters)
     {
       v8 = MEMORY[0x277CCABB0];
-      v9 = [v5 fadeOutParameters];
-      [v9 cullDistance];
+      fadeOutParameters2 = [paramsCopy fadeOutParameters];
+      [fadeOutParameters2 cullDistance];
       v10 = [v8 numberWithDouble:?];
       [v30 setObject:v10 forKey:@"FadeOutCullDistance"];
     }
@@ -1084,7 +1084,7 @@ LABEL_31:
     if (objc_opt_isKindOfClass())
     {
       [v30 setObject:@"geometric_spreading" forKey:@"DistanceModelType"];
-      v11 = v5;
+      v11 = paramsCopy;
       v12 = MEMORY[0x277CCABB0];
       [v11 rolloffFactor];
       v13 = [v12 numberWithDouble:?];
@@ -1097,16 +1097,16 @@ LABEL_31:
       if (objc_opt_isKindOfClass())
       {
         [v30 setObject:@"envelope" forKey:@"DistanceModelType"];
-        v29 = v5;
+        v29 = paramsCopy;
         v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v34 = 0u;
         v35 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v15 = [v29 envelope];
-        v16 = [v15 segments];
+        envelope = [v29 envelope];
+        segments = [envelope segments];
 
-        v17 = [v16 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v17 = [segments countByEnumeratingWithState:&v32 objects:v36 count:16];
         if (v17)
         {
           v18 = *v33;
@@ -1116,7 +1116,7 @@ LABEL_31:
             {
               if (*v33 != v18)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(segments);
               }
 
               v20 = *(*(&v32 + 1) + 8 * i);
@@ -1133,7 +1133,7 @@ LABEL_31:
               [v14 addObject:v28];
             }
 
-            v17 = [v16 countByEnumeratingWithState:&v32 objects:v36 count:16];
+            v17 = [segments countByEnumeratingWithState:&v32 objects:v36 count:16];
           }
 
           while (v17);
@@ -1146,25 +1146,25 @@ LABEL_31:
 
   else
   {
-    [v6 setObject:@"none" forKey:@"DistanceModelType"];
+    [dictionaryCopy setObject:@"none" forKey:@"DistanceModelType"];
   }
 }
 
-- (void)fillOutDirectivityFieldsWithParams:(id)a3 dictionary:(id)a4 isListener:(BOOL)a5
+- (void)fillOutDirectivityFieldsWithParams:(id)params dictionary:(id)dictionary isListener:(BOOL)listener
 {
-  v5 = a5;
+  listenerCopy = listener;
   v68 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v52 = v8;
-  v53 = v7;
-  if (v7)
+  paramsCopy = params;
+  dictionaryCopy = dictionary;
+  v52 = dictionaryCopy;
+  v53 = paramsCopy;
+  if (paramsCopy)
   {
-    v51 = v5;
+    v51 = listenerCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (v5)
+      if (listenerCopy)
       {
         v9 = @"ListenerDirectivityModelType";
       }
@@ -1175,7 +1175,7 @@ LABEL_31:
       }
 
       [v52 setObject:@"cardioid" forKey:v9];
-      v54 = v7;
+      v54 = paramsCopy;
       v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v64 = 0u;
       v65 = 0u;
@@ -1235,7 +1235,7 @@ LABEL_31:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v5)
+        if (listenerCopy)
         {
           v25 = @"ListenerDirectivityModelType";
         }
@@ -1246,14 +1246,14 @@ LABEL_31:
         }
 
         [v52 setObject:@"cone" forKey:v25];
-        v50 = v7;
+        v50 = paramsCopy;
         v60 = 0u;
         v61 = 0u;
         v58 = 0u;
         v59 = 0u;
         obja = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v55 = [v50 subbandParameters];
-        v26 = [v55 countByEnumeratingWithState:&v58 objects:v66 count:16];
+        subbandParameters = [v50 subbandParameters];
+        v26 = [subbandParameters countByEnumeratingWithState:&v58 objects:v66 count:16];
         if (v26)
         {
           v27 = *v59;
@@ -1263,7 +1263,7 @@ LABEL_31:
             {
               if (*v59 != v27)
               {
-                objc_enumerationMutation(v55);
+                objc_enumerationMutation(subbandParameters);
               }
 
               v29 = *(*(&v58 + 1) + 8 * j);
@@ -1285,7 +1285,7 @@ LABEL_31:
               [obja addObject:v39];
             }
 
-            v26 = [v55 countByEnumeratingWithState:&v58 objects:v66 count:16];
+            v26 = [subbandParameters countByEnumeratingWithState:&v58 objects:v66 count:16];
           }
 
           while (v26);
@@ -1309,7 +1309,7 @@ LABEL_31:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if (v5)
+          if (listenerCopy)
           {
             v41 = @"ListenerDirectivityModelType";
           }
@@ -1320,7 +1320,7 @@ LABEL_31:
           }
 
           [v52 setObject:@"sphericalcap" forKey:v41];
-          v42 = v7;
+          v42 = paramsCopy;
           v43 = MEMORY[0x277CBEB38];
           v44 = MEMORY[0x277CCABB0];
           [v42 sphereRadius];
@@ -1348,7 +1348,7 @@ LABEL_31:
 
   else
   {
-    if (v5)
+    if (listenerCopy)
     {
       v24 = @"ListenerDirectivityModelType";
     }
@@ -1358,29 +1358,29 @@ LABEL_31:
       v24 = @"SourceDirectivityModelType";
     }
 
-    [v8 setObject:@"none" forKey:v24];
+    [dictionaryCopy setObject:@"none" forKey:v24];
   }
 }
 
-- (BOOL)checkNodeForValidChannelLayouts:(id)a3 assetRegistry:(id)a4 outError:(id *)a5
+- (BOOL)checkNodeForValidChannelLayouts:(id)layouts assetRegistry:(id)registry outError:(id *)error
 {
   v69[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  layoutsCopy = layouts;
+  registryCopy = registry;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_38;
   }
 
-  v9 = v7;
-  v10 = [v9 mixerDefinition];
+  v9 = layoutsCopy;
+  mixerDefinition = [v9 mixerDefinition];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v20 = [v9 mixerDefinition];
+    mixerDefinition2 = [v9 mixerDefinition];
     objc_opt_class();
     v21 = objc_opt_isKindOfClass();
 
@@ -1393,13 +1393,13 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v12 = [v9 mixerDefinition];
+    mixerDefinition3 = [v9 mixerDefinition];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v22 = v9;
-      v23 = [v22 assetIdentifier];
-      v25 = [v8 getSoundAssetInfo:{Phase::GetStringHashId(v23, v24)}];
+      assetIdentifier = [v22 assetIdentifier];
+      v25 = [registryCopy getSoundAssetInfo:{Phase::GetStringHashId(assetIdentifier, v24)}];
 
       if (!v25)
       {
@@ -1410,10 +1410,10 @@ LABEL_36:
       }
 
       v26 = *(v25 + 36);
-      v27 = [v12 inputChannelLayout];
-      v28 = [v27 layoutTag];
+      inputChannelLayout = [mixerDefinition3 inputChannelLayout];
+      layoutTag = [inputChannelLayout layoutTag];
 
-      if (v26 == v28)
+      if (v26 == layoutTag)
       {
         goto LABEL_36;
       }
@@ -1424,13 +1424,13 @@ LABEL_36:
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        v44 = [v9 format];
-        v45 = [v44 channelLayout];
-        v46 = [v45 layoutTag];
-        v47 = [v12 inputChannelLayout];
-        v48 = [v47 layoutTag];
+        format = [v9 format];
+        channelLayout = [format channelLayout];
+        layoutTag2 = [channelLayout layoutTag];
+        inputChannelLayout2 = [mixerDefinition3 inputChannelLayout];
+        layoutTag3 = [inputChannelLayout2 layoutTag];
 
-        if (v46 == v48)
+        if (layoutTag2 == layoutTag3)
         {
           goto LABEL_36;
         }
@@ -1444,10 +1444,10 @@ LABEL_36:
           goto LABEL_36;
         }
 
-        v57 = [v12 inputChannelLayout];
-        v58 = [v57 layoutTag];
+        inputChannelLayout3 = [mixerDefinition3 inputChannelLayout];
+        layoutTag4 = [inputChannelLayout3 layoutTag];
 
-        if (v58 == 6553601)
+        if (layoutTag4 == 6553601)
         {
           goto LABEL_36;
         }
@@ -1464,17 +1464,17 @@ LABEL_36:
     {
       v53 = [v36 objectForKeyedSubscript:v49];
       v54 = v53;
-      v55 = [v53 UTF8String];
+      uTF8String = [v53 UTF8String];
       *buf = 136315650;
       v63 = "PHASEAssetRegistry.mm";
       v64 = 1024;
       v65 = 2907;
       v66 = 2080;
-      v67 = v55;
+      uTF8String2 = uTF8String;
       _os_log_impl(&dword_23A302000, v52, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_33;
     }
@@ -1483,21 +1483,21 @@ LABEL_36:
     goto LABEL_32;
   }
 
-  v12 = [v9 mixerDefinition];
+  mixerDefinition3 = [v9 mixerDefinition];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v13 = v9;
-    v14 = [v13 assetIdentifier];
-    v16 = [v8 getSoundAssetInfo:{Phase::GetStringHashId(v14, v15)}];
+    assetIdentifier2 = [v13 assetIdentifier];
+    v16 = [registryCopy getSoundAssetInfo:{Phase::GetStringHashId(assetIdentifier2, v15)}];
 
     if (v16)
     {
       v17 = *(v16 + 36);
-      v18 = [v12 inputChannelLayout];
-      v19 = [v18 layoutTag];
+      inputChannelLayout4 = [mixerDefinition3 inputChannelLayout];
+      layoutTag5 = [inputChannelLayout4 layoutTag];
 
-      if (v17 == v19)
+      if (v17 == layoutTag5)
       {
         goto LABEL_36;
       }
@@ -1511,13 +1511,13 @@ LABEL_36:
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v29 = [v9 format];
-    v30 = [v29 channelLayout];
-    v31 = [v30 layoutTag];
-    v32 = [v12 inputChannelLayout];
-    v33 = [v32 layoutTag];
+    format2 = [v9 format];
+    channelLayout2 = [format2 channelLayout];
+    layoutTag6 = [channelLayout2 layoutTag];
+    inputChannelLayout5 = [mixerDefinition3 inputChannelLayout];
+    layoutTag7 = [inputChannelLayout5 layoutTag];
 
-    if (v31 == v33)
+    if (layoutTag6 == layoutTag7)
     {
       goto LABEL_36;
     }
@@ -1531,10 +1531,10 @@ LABEL_36:
       goto LABEL_36;
     }
 
-    v42 = [v12 inputChannelLayout];
-    v43 = [v42 layoutTag];
+    inputChannelLayout6 = [mixerDefinition3 inputChannelLayout];
+    layoutTag8 = [inputChannelLayout6 layoutTag];
 
-    if (v43 == 6553601)
+    if (layoutTag8 == 6553601)
     {
       goto LABEL_36;
     }
@@ -1557,18 +1557,18 @@ LABEL_17:
     v64 = 1024;
     v65 = 2856;
     v66 = 2080;
-    v67 = [v39 UTF8String];
+    uTF8String2 = [v39 UTF8String];
     _os_log_impl(&dword_23A302000, v38, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_33;
   }
 
   v41 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924646 userInfo:v36];
 LABEL_32:
-  *a5 = v41;
+  *error = v41;
 LABEL_33:
 
   v56 = 0;
@@ -1577,31 +1577,31 @@ LABEL_39:
   return v56;
 }
 
-- (id)createParseableDictionaryWithUID:(id)a3 rootNodes:(id)a4 globalParamUIDs:(id)a5 assetRegistry:(id)a6 outError:(id *)a7
+- (id)createParseableDictionaryWithUID:(id)d rootNodes:(id)nodes globalParamUIDs:(id)ds assetRegistry:(id)registry outError:(id *)error
 {
   v161 = *MEMORY[0x277D85DE8];
-  v120 = a3;
-  v118 = a4;
-  v121 = a5;
-  v128 = a6;
+  dCopy = d;
+  nodesCopy = nodes;
+  dsCopy = ds;
+  registryCopy = registry;
   self->_nextNodeId = 0;
   v129 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (a7)
+  if (error)
   {
-    *a7 = 0;
+    *error = 0;
   }
 
   v144 = 0u;
   v145 = 0u;
   v142 = 0u;
   v143 = 0u;
-  obj = v118;
+  obj = nodesCopy;
   v12 = [obj countByEnumeratingWithState:&v142 objects:v160 count:16];
   if (!v12)
   {
 LABEL_11:
-    v126 = self;
-    v117 = a7;
+    selfCopy = self;
+    errorCopy = error;
 
     v140 = 0u;
     v141 = 0u;
@@ -1609,14 +1609,14 @@ LABEL_11:
     v139 = 0u;
     v115 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v116 = self->_mixNodes;
-    v15 = a7;
+    errorCopy2 = error;
     v110 = [(NSMutableSet *)v116 countByEnumeratingWithState:&v138 objects:v159 count:16];
     if (!v110)
     {
 LABEL_52:
 
-      v90 = [(NSMutableSet *)v126->_parameters allObjects];
-      v116 = [PHASEActionTreeBuilder getParamArray:v90 globalParamUIDs:v121 outError:v117];
+      allObjects = [(NSMutableSet *)selfCopy->_parameters allObjects];
+      v116 = [PHASEActionTreeBuilder getParamArray:allObjects globalParamUIDs:dsCopy outError:errorCopy];
 
       if (!v116)
       {
@@ -1624,7 +1624,7 @@ LABEL_52:
         goto LABEL_61;
       }
 
-      v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v120, @"Name", v116, @"Parameters", v115, @"Submixes", v129, @"Nodes", 0}];
+      errorCopy2 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{dCopy, @"Name", v116, @"Parameters", v115, @"Submixes", v129, @"Nodes", 0}];
 LABEL_62:
 
       v91 = v115;
@@ -1651,10 +1651,10 @@ LABEL_13:
         v137 = 0u;
         v134 = 0u;
         v135 = 0u;
-        v16 = [v123 spatialPipeline];
-        v114 = [v16 entries];
+        spatialPipeline = [v123 spatialPipeline];
+        entries = [spatialPipeline entries];
 
-        v108 = [v114 countByEnumeratingWithState:&v134 objects:v158 count:16];
+        v108 = [entries countByEnumeratingWithState:&v134 objects:v158 count:16];
         if (v108)
         {
           v109 = *v135;
@@ -1664,14 +1664,14 @@ LABEL_13:
             {
               if (*v135 != v109)
               {
-                objc_enumerationMutation(v114);
+                objc_enumerationMutation(entries);
               }
 
               v17 = *(*(&v134 + 1) + 8 * i);
-              v18 = [v123 spatialPipeline];
-              v19 = [v18 entries];
+              spatialPipeline2 = [v123 spatialPipeline];
+              entries2 = [spatialPipeline2 entries];
               v111 = v17;
-              v20 = [v19 objectForKeyedSubscript:v17];
+              v20 = [entries2 objectForKeyedSubscript:v17];
               LODWORD(v17) = v20 == 0;
 
               if (v17)
@@ -1679,17 +1679,17 @@ LABEL_13:
                 std::terminate();
               }
 
-              v21 = [v123 spatialPipeline];
-              v22 = [v21 entries];
-              v23 = [v22 objectForKeyedSubscript:v111];
+              spatialPipeline3 = [v123 spatialPipeline];
+              entries3 = [spatialPipeline3 entries];
+              v23 = [entries3 objectForKeyedSubscript:v111];
 
               v24 = objc_alloc_init(MEMORY[0x277CBEB38]);
               v132 = 0u;
               v133 = 0u;
               v130 = 0u;
               v131 = 0u;
-              v25 = [v23 tweakParams];
-              v26 = [v25 countByEnumeratingWithState:&v130 objects:v157 count:16];
+              tweakParams = [v23 tweakParams];
+              v26 = [tweakParams countByEnumeratingWithState:&v130 objects:v157 count:16];
               if (v26)
               {
                 v27 = *v131;
@@ -1699,12 +1699,12 @@ LABEL_13:
                   {
                     if (*v131 != v27)
                     {
-                      objc_enumerationMutation(v25);
+                      objc_enumerationMutation(tweakParams);
                     }
 
                     v29 = *(*(&v130 + 1) + 8 * j);
-                    v30 = [v23 tweakParams];
-                    v31 = [v30 objectForKeyedSubscript:v29];
+                    tweakParams2 = [v23 tweakParams];
+                    v31 = [tweakParams2 objectForKeyedSubscript:v29];
 
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
@@ -1728,34 +1728,34 @@ LABEL_13:
                         {
                           v97 = [v94 objectForKeyedSubscript:v92];
                           v98 = v97;
-                          v99 = [v97 UTF8String];
+                          uTF8String = [v97 UTF8String];
                           *buf = 136315650;
                           v150 = "PHASEAssetRegistry.mm";
                           v151 = 1024;
                           v152 = 2978;
                           v153 = 2080;
-                          v154 = v99;
+                          v154 = uTF8String;
                           _os_log_impl(&dword_23A302000, v96, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
                         }
 
-                        if (v117)
+                        if (errorCopy)
                         {
-                          *v117 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924648 userInfo:v94];
+                          *errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924648 userInfo:v94];
                         }
 
                         goto LABEL_60;
                       }
 
                       v32 = v31;
-                      v33 = [v32 identifier];
+                      identifier = [v32 identifier];
                       v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"metaparam_", v29];
-                      [v24 setObject:v33 forKeyedSubscript:v34];
+                      [v24 setObject:identifier forKeyedSubscript:v34];
 
-                      [(PHASEActionTreeBuilder *)v126 addParameter:v32];
+                      [(PHASEActionTreeBuilder *)selfCopy addParameter:v32];
                     }
                   }
 
-                  v26 = [v25 countByEnumeratingWithState:&v130 objects:v157 count:16];
+                  v26 = [tweakParams countByEnumeratingWithState:&v130 objects:v157 count:16];
                   if (v26)
                   {
                     continue;
@@ -1774,56 +1774,56 @@ LABEL_13:
               v40 = [MEMORY[0x277CCABB0] numberWithDouble:1.0];
               v41 = [v35 dictionaryWithObjectsAndKeys:{v36, @"Category", v38, @"Send", v39, @"SendHF", v40, @"SendLF", v24, @"TweakParams", 0}];
 
-              v42 = [v23 sendLevelMetaParameterDefinition];
-              LOBYTE(v39) = v42 == 0;
+              sendLevelMetaParameterDefinition = [v23 sendLevelMetaParameterDefinition];
+              LOBYTE(v39) = sendLevelMetaParameterDefinition == 0;
 
               if ((v39 & 1) == 0)
               {
-                v43 = [v23 sendLevelMetaParameterDefinition];
-                v44 = [v43 identifier];
-                [v41 setObject:v44 forKey:@"SendParameterName"];
+                sendLevelMetaParameterDefinition2 = [v23 sendLevelMetaParameterDefinition];
+                identifier2 = [sendLevelMetaParameterDefinition2 identifier];
+                [v41 setObject:identifier2 forKey:@"SendParameterName"];
 
-                v45 = [v23 sendLevelMetaParameterDefinition];
-                [(PHASEActionTreeBuilder *)v126 addParameter:v45];
+                sendLevelMetaParameterDefinition3 = [v23 sendLevelMetaParameterDefinition];
+                [(PHASEActionTreeBuilder *)selfCopy addParameter:sendLevelMetaParameterDefinition3];
               }
 
               [v122 addObject:v41];
             }
 
-            v108 = [v114 countByEnumeratingWithState:&v134 objects:v158 count:16];
+            v108 = [entries countByEnumeratingWithState:&v134 objects:v158 count:16];
           }
 
           while (v108);
         }
 
         v46 = MEMORY[0x277CBEB38];
-        v47 = [v123 identifier];
+        identifier3 = [v123 identifier];
         v48 = MEMORY[0x277CCABB0];
         [v123 gain];
         v49 = [v48 numberWithDouble:?];
-        v50 = [v46 dictionaryWithObjectsAndKeys:{v47, @"Name", @"spatial", @"Type", v49, @"Gain", v122, @"SpatialCategories", 0}];
+        v50 = [v46 dictionaryWithObjectsAndKeys:{identifier3, @"Name", @"spatial", @"Type", v49, @"Gain", v122, @"SpatialCategories", 0}];
 
-        v51 = [v123 gainMetaParameterDefinition];
-        LOBYTE(v47) = v51 == 0;
+        gainMetaParameterDefinition = [v123 gainMetaParameterDefinition];
+        LOBYTE(identifier3) = gainMetaParameterDefinition == 0;
 
-        if ((v47 & 1) == 0)
+        if ((identifier3 & 1) == 0)
         {
-          v52 = [v123 gainMetaParameterDefinition];
-          v53 = [v52 identifier];
-          [v50 setObject:v53 forKey:@"GainParameterName"];
+          gainMetaParameterDefinition2 = [v123 gainMetaParameterDefinition];
+          identifier4 = [gainMetaParameterDefinition2 identifier];
+          [v50 setObject:identifier4 forKey:@"GainParameterName"];
 
-          v54 = [v123 gainMetaParameterDefinition];
-          [(PHASEActionTreeBuilder *)v126 addParameter:v54];
+          gainMetaParameterDefinition3 = [v123 gainMetaParameterDefinition];
+          [(PHASEActionTreeBuilder *)selfCopy addParameter:gainMetaParameterDefinition3];
         }
 
-        v55 = [v123 distanceModelParameters];
-        [(PHASEActionTreeBuilder *)v126 fillOutDistanceFieldsWithParams:v55 dictionary:v50];
+        distanceModelParameters = [v123 distanceModelParameters];
+        [(PHASEActionTreeBuilder *)selfCopy fillOutDistanceFieldsWithParams:distanceModelParameters dictionary:v50];
 
-        v56 = [v123 listenerDirectivityModelParameters];
-        [(PHASEActionTreeBuilder *)v126 fillOutDirectivityFieldsWithParams:v56 dictionary:v50 isListener:1];
+        listenerDirectivityModelParameters = [v123 listenerDirectivityModelParameters];
+        [(PHASEActionTreeBuilder *)selfCopy fillOutDirectivityFieldsWithParams:listenerDirectivityModelParameters dictionary:v50 isListener:1];
 
-        v57 = [v123 sourceDirectivityModelParameters];
-        [(PHASEActionTreeBuilder *)v126 fillOutDirectivityFieldsWithParams:v57 dictionary:v50 isListener:0];
+        sourceDirectivityModelParameters = [v123 sourceDirectivityModelParameters];
+        [(PHASEActionTreeBuilder *)selfCopy fillOutDirectivityFieldsWithParams:sourceDirectivityModelParameters dictionary:v50 isListener:0];
 
         v58 = MEMORY[0x277CCABB0];
         [v123 listenerDopplerFactor];
@@ -1845,25 +1845,25 @@ LABEL_13:
         {
           v62 = v125;
           v63 = MEMORY[0x277CBEB38];
-          v64 = [v62 identifier];
+          identifier5 = [v62 identifier];
           v65 = MEMORY[0x277CCABB0];
           [v62 gain];
           v66 = [v65 numberWithDouble:?];
-          v67 = [v62 inputChannelLayout];
-          v68 = GetChannelLayoutString([v67 layoutTag]);
-          v122 = [v63 dictionaryWithObjectsAndKeys:{v64, @"Name", @"channel", @"Type", v66, @"Gain", v68, @"ChannelLayout", 0}];
+          inputChannelLayout = [v62 inputChannelLayout];
+          v68 = GetChannelLayoutString([inputChannelLayout layoutTag]);
+          v122 = [v63 dictionaryWithObjectsAndKeys:{identifier5, @"Name", @"channel", @"Type", v66, @"Gain", v68, @"ChannelLayout", 0}];
 
-          v69 = [v62 gainMetaParameterDefinition];
-          LOBYTE(v64) = v69 == 0;
+          gainMetaParameterDefinition4 = [v62 gainMetaParameterDefinition];
+          LOBYTE(identifier5) = gainMetaParameterDefinition4 == 0;
 
-          if ((v64 & 1) == 0)
+          if ((identifier5 & 1) == 0)
           {
-            v70 = [v62 gainMetaParameterDefinition];
-            v71 = [v70 identifier];
-            [v122 setObject:v71 forKey:@"GainParameterName"];
+            gainMetaParameterDefinition5 = [v62 gainMetaParameterDefinition];
+            identifier6 = [gainMetaParameterDefinition5 identifier];
+            [v122 setObject:identifier6 forKey:@"GainParameterName"];
 
-            v72 = [v62 gainMetaParameterDefinition];
-            [(PHASEActionTreeBuilder *)v126 addParameter:v72];
+            gainMetaParameterDefinition6 = [v62 gainMetaParameterDefinition];
+            [(PHASEActionTreeBuilder *)selfCopy addParameter:gainMetaParameterDefinition6];
           }
 
           [v115 addObject:v122];
@@ -1873,7 +1873,7 @@ LABEL_13:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v15)
+          if (!errorCopy2)
           {
             goto LABEL_62;
           }
@@ -1889,21 +1889,21 @@ LABEL_13:
           {
             v105 = [v123 objectForKeyedSubscript:v101];
             v106 = v105;
-            v107 = [v105 UTF8String];
+            uTF8String2 = [v105 UTF8String];
             *buf = 136315650;
             v150 = "PHASEAssetRegistry.mm";
             v151 = 1024;
             v152 = 3084;
             v153 = 2080;
-            v154 = v107;
+            v154 = uTF8String2;
             _os_log_impl(&dword_23A302000, v104, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
           }
 
-          *v117 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924648 userInfo:v123];
+          *errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924648 userInfo:v123];
 LABEL_60:
 
 LABEL_61:
-          v15 = 0;
+          errorCopy2 = 0;
           goto LABEL_62;
         }
 
@@ -1923,25 +1923,25 @@ LABEL_61:
         v122 = [MEMORY[0x277CBEA60] arrayWithObjects:v148 count:4];
 
         v80 = MEMORY[0x277CBEB38];
-        v81 = [v73 identifier];
+        identifier7 = [v73 identifier];
         v82 = MEMORY[0x277CCABB0];
         [v73 gain];
         v83 = [v82 numberWithDouble:?];
-        v84 = [v73 inputChannelLayout];
-        v85 = GetChannelLayoutString([v84 layoutTag]);
-        v50 = [v80 dictionaryWithObjectsAndKeys:{v81, @"Name", @"ambient", @"Type", v83, @"Gain", v122, @"Orientation", v85, @"ChannelLayout", 0}];
+        inputChannelLayout2 = [v73 inputChannelLayout];
+        v85 = GetChannelLayoutString([inputChannelLayout2 layoutTag]);
+        v50 = [v80 dictionaryWithObjectsAndKeys:{identifier7, @"Name", @"ambient", @"Type", v83, @"Gain", v122, @"Orientation", v85, @"ChannelLayout", 0}];
 
-        v86 = [v73 gainMetaParameterDefinition];
-        LOBYTE(v84) = v86 == 0;
+        gainMetaParameterDefinition7 = [v73 gainMetaParameterDefinition];
+        LOBYTE(inputChannelLayout2) = gainMetaParameterDefinition7 == 0;
 
-        if ((v84 & 1) == 0)
+        if ((inputChannelLayout2 & 1) == 0)
         {
-          v87 = [v73 gainMetaParameterDefinition];
-          v88 = [v87 identifier];
-          [v50 setObject:v88 forKey:@"GainParameterName"];
+          gainMetaParameterDefinition8 = [v73 gainMetaParameterDefinition];
+          identifier8 = [gainMetaParameterDefinition8 identifier];
+          [v50 setObject:identifier8 forKey:@"GainParameterName"];
 
-          v89 = [v73 gainMetaParameterDefinition];
-          [(PHASEActionTreeBuilder *)v126 addParameter:v89];
+          gainMetaParameterDefinition9 = [v73 gainMetaParameterDefinition];
+          [(PHASEActionTreeBuilder *)selfCopy addParameter:gainMetaParameterDefinition9];
         }
 
         [v115 addObject:v50];
@@ -1949,7 +1949,7 @@ LABEL_61:
 
 LABEL_50:
       ++v119;
-      v15 = v117;
+      errorCopy2 = errorCopy;
       if (v119 == v110)
       {
         v110 = [(NSMutableSet *)v116 countByEnumeratingWithState:&v138 objects:v159 count:16];
@@ -1973,7 +1973,7 @@ LABEL_5:
       objc_enumerationMutation(obj);
     }
 
-    if (![(PHASEActionTreeBuilder *)self processNode:*(*(&v142 + 1) + 8 * v14) withArray:v129 assetRegistry:v128 outError:a7])
+    if (![(PHASEActionTreeBuilder *)self processNode:*(*(&v142 + 1) + 8 * v14) withArray:v129 assetRegistry:registryCopy outError:error])
     {
       break;
     }
@@ -1990,11 +1990,11 @@ LABEL_5:
     }
   }
 
-  v15 = 0;
+  errorCopy2 = 0;
   v91 = obj;
 LABEL_63:
 
-  return v15;
+  return errorCopy2;
 }
 
 @end

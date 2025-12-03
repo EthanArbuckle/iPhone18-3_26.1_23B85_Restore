@@ -1,29 +1,29 @@
 @interface PGOverTimeMemoryGenerator
-- (BOOL)_shouldCreateFeaturedSeasonMemoryForMomentNodes:(id)a3 featureNodes:(id)a4;
-- (BOOL)_shouldCreateFeaturedTimePeriodMemoriesForMomentNodes:(id)a3 configuration:(id)a4;
-- (BOOL)_shouldCreateFeaturedYearMemoryForMomentNodes:(id)a3 featureNodes:(id)a4 inYear:(int64_t)a5 configuration:(id)a6;
-- (BOOL)_shouldCreateMemoryForMomentNodes:(id)a3 featureNodes:(id)a4 withConfiguration:(id)a5;
-- (BOOL)_shouldCreateOverTheYearsMemoryForMomentNodes:(id)a3 featureNodes:(id)a4 configuration:(id)a5;
-- (id)_filteredMomentNodesFromMomentNodes:(id)a3 featureNodes:(id)a4;
-- (id)chapterTitleGeneratorForTriggeredMemory:(id)a3 curatedAssets:(id)a4 extendedCuratedAssets:(id)a5 titleGenerationContext:(id)a6 inGraph:(id)a7;
-- (id)generatePotentialMemoriesForProcessingWindow:(id)a3 graph:(id)a4 progressBlock:(id)a5;
+- (BOOL)_shouldCreateFeaturedSeasonMemoryForMomentNodes:(id)nodes featureNodes:(id)featureNodes;
+- (BOOL)_shouldCreateFeaturedTimePeriodMemoriesForMomentNodes:(id)nodes configuration:(id)configuration;
+- (BOOL)_shouldCreateFeaturedYearMemoryForMomentNodes:(id)nodes featureNodes:(id)featureNodes inYear:(int64_t)year configuration:(id)configuration;
+- (BOOL)_shouldCreateMemoryForMomentNodes:(id)nodes featureNodes:(id)featureNodes withConfiguration:(id)configuration;
+- (BOOL)_shouldCreateOverTheYearsMemoryForMomentNodes:(id)nodes featureNodes:(id)featureNodes configuration:(id)configuration;
+- (id)_filteredMomentNodesFromMomentNodes:(id)nodes featureNodes:(id)featureNodes;
+- (id)chapterTitleGeneratorForTriggeredMemory:(id)memory curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph;
+- (id)generatePotentialMemoriesForProcessingWindow:(id)window graph:(id)graph progressBlock:(id)block;
 - (unint64_t)memoryCategory;
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3;
-- (unint64_t)numberOfRelevantAssetsForMomentNodes:(id)a3 featureNodes:(id)a4;
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4;
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type;
+- (unint64_t)numberOfRelevantAssetsForMomentNodes:(id)nodes featureNodes:(id)featureNodes;
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block;
 @end
 
 @implementation PGOverTimeMemoryGenerator
 
-- (id)chapterTitleGeneratorForTriggeredMemory:(id)a3 curatedAssets:(id)a4 extendedCuratedAssets:(id)a5 titleGenerationContext:(id)a6 inGraph:(id)a7
+- (id)chapterTitleGeneratorForTriggeredMemory:(id)memory curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph
 {
-  v7 = a3;
-  v8 = [v7 memoryFeatureNodes];
-  v9 = [(PGGraphNodeCollection *)PGGraphOverTheYearsNodeCollection subsetInCollection:v8];
+  memoryCopy = memory;
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  v9 = [(PGGraphNodeCollection *)PGGraphOverTheYearsNodeCollection subsetInCollection:memoryFeatureNodes];
 
   if ([v9 count])
   {
-    v10 = [[PGYearChapterTitleGenerator alloc] initWithTriggeredMemory:v7];
+    v10 = [[PGYearChapterTitleGenerator alloc] initWithTriggeredMemory:memoryCopy];
   }
 
   else
@@ -34,10 +34,10 @@
   return v10;
 }
 
-- (unint64_t)numberOfRelevantAssetsForMomentNodes:(id)a3 featureNodes:(id)a4
+- (unint64_t)numberOfRelevantAssetsForMomentNodes:(id)nodes featureNodes:(id)featureNodes
 {
-  v6 = a3;
-  v7 = a4;
+  nodesCopy = nodes;
+  featureNodesCopy = featureNodes;
   if ([(PGOverTimeMemoryGenerator *)self intersectRelevantAssetsForFeatures])
   {
     v17 = 0;
@@ -50,21 +50,21 @@
     v12 = 3221225472;
     v13 = __79__PGOverTimeMemoryGenerator_numberOfRelevantAssetsForMomentNodes_featureNodes___block_invoke;
     v14 = &unk_278888358;
-    v15 = v6;
+    v15 = nodesCopy;
     v16 = &v17;
-    [v7 enumerateIdentifiersAsCollectionsWithBlock:&v11];
-    v8 = [v18[5] count];
+    [featureNodesCopy enumerateIdentifiersAsCollectionsWithBlock:&v11];
+    numberOfRelevantAssets = [v18[5] count];
 
     _Block_object_dispose(&v17, 8);
   }
 
   else
   {
-    v9 = [(PGGraphEdgeCollection *)PGGraphMomentFeaturesEdgeCollection edgesFromNodes:v6 toNodes:v7];
-    v8 = [v9 numberOfRelevantAssets];
+    v9 = [(PGGraphEdgeCollection *)PGGraphMomentFeaturesEdgeCollection edgesFromNodes:nodesCopy toNodes:featureNodesCopy];
+    numberOfRelevantAssets = [v9 numberOfRelevantAssets];
   }
 
-  return v8;
+  return numberOfRelevantAssets;
 }
 
 void __79__PGOverTimeMemoryGenerator_numberOfRelevantAssetsForMomentNodes_featureNodes___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -87,48 +87,48 @@ void __79__PGOverTimeMemoryGenerator_numberOfRelevantAssetsForMomentNodes_featur
   }
 }
 
-- (BOOL)_shouldCreateMemoryForMomentNodes:(id)a3 featureNodes:(id)a4 withConfiguration:(id)a5
+- (BOOL)_shouldCreateMemoryForMomentNodes:(id)nodes featureNodes:(id)featureNodes withConfiguration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 count];
-  if (v11 < [v10 minimumNumberOfMoments])
+  nodesCopy = nodes;
+  featureNodesCopy = featureNodes;
+  configurationCopy = configuration;
+  v11 = [nodesCopy count];
+  if (v11 < [configurationCopy minimumNumberOfMoments])
   {
     goto LABEL_2;
   }
 
-  v14 = [(PGOverTimeMemoryGenerator *)self momentRequirements];
-  if (([v14 filterUninterestingWithAlternateJunking] & 1) != 0 || !objc_msgSend(v10, "minimumNumberOfMomentsInterestingWithAlternateJunking"))
+  momentRequirements = [(PGOverTimeMemoryGenerator *)self momentRequirements];
+  if (([momentRequirements filterUninterestingWithAlternateJunking] & 1) != 0 || !objc_msgSend(configurationCopy, "minimumNumberOfMomentsInterestingWithAlternateJunking"))
   {
   }
 
   else
   {
-    v15 = [(PGMemoryGenerator *)self memoryGenerationContext];
-    v16 = [v15 interestingWithAlternateJunkingSubsetFromMomentNodes:v8];
+    memoryGenerationContext = [(PGMemoryGenerator *)self memoryGenerationContext];
+    v16 = [memoryGenerationContext interestingWithAlternateJunkingSubsetFromMomentNodes:nodesCopy];
     v17 = [v16 count];
-    v18 = [v10 minimumNumberOfMomentsInterestingWithAlternateJunking];
+    minimumNumberOfMomentsInterestingWithAlternateJunking = [configurationCopy minimumNumberOfMomentsInterestingWithAlternateJunking];
 
-    if (v17 < v18)
+    if (v17 < minimumNumberOfMomentsInterestingWithAlternateJunking)
     {
       goto LABEL_2;
     }
   }
 
-  v19 = [(PGOverTimeMemoryGenerator *)self momentRequirements];
-  if (([v19 filterUninterestingForMemories] & 1) != 0 || !objc_msgSend(v10, "minimumNumberOfMomentsInterestingForMemories"))
+  momentRequirements2 = [(PGOverTimeMemoryGenerator *)self momentRequirements];
+  if (([momentRequirements2 filterUninterestingForMemories] & 1) != 0 || !objc_msgSend(configurationCopy, "minimumNumberOfMomentsInterestingForMemories"))
   {
 
     goto LABEL_14;
   }
 
-  v20 = [(PGMemoryGenerator *)self memoryGenerationContext];
-  v21 = [v20 interestingForMemoriesSubsetFromMomentNodes:v8];
+  memoryGenerationContext2 = [(PGMemoryGenerator *)self memoryGenerationContext];
+  v21 = [memoryGenerationContext2 interestingForMemoriesSubsetFromMomentNodes:nodesCopy];
   v22 = [v21 count];
-  v23 = [v10 minimumNumberOfMomentsInterestingForMemories];
+  minimumNumberOfMomentsInterestingForMemories = [configurationCopy minimumNumberOfMomentsInterestingForMemories];
 
-  if (v22 < v23)
+  if (v22 < minimumNumberOfMomentsInterestingForMemories)
   {
 LABEL_2:
     v12 = 0;
@@ -136,34 +136,34 @@ LABEL_2:
   }
 
 LABEL_14:
-  if ([v10 minimumNumberOfAssetsInExtendedCuration])
+  if ([configurationCopy minimumNumberOfAssetsInExtendedCuration])
   {
-    v24 = [(PGMemoryGenerator *)self memoryGenerationContext];
-    v25 = [v24 numberOfAssetsInExtendedCurationForMomentNodes:v8];
-    v26 = [v10 minimumNumberOfAssetsInExtendedCuration];
+    memoryGenerationContext3 = [(PGMemoryGenerator *)self memoryGenerationContext];
+    v25 = [memoryGenerationContext3 numberOfAssetsInExtendedCurationForMomentNodes:nodesCopy];
+    minimumNumberOfAssetsInExtendedCuration = [configurationCopy minimumNumberOfAssetsInExtendedCuration];
 
-    if (v25 < v26)
+    if (v25 < minimumNumberOfAssetsInExtendedCuration)
     {
       goto LABEL_2;
     }
   }
 
-  if ([v10 minimumNumberOfRelevantAssets])
+  if ([configurationCopy minimumNumberOfRelevantAssets])
   {
-    v27 = [(PGOverTimeMemoryGenerator *)self numberOfRelevantAssetsForMomentNodes:v8 featureNodes:v9];
-    if (v27 < [v10 minimumNumberOfRelevantAssets])
+    v27 = [(PGOverTimeMemoryGenerator *)self numberOfRelevantAssetsForMomentNodes:nodesCopy featureNodes:featureNodesCopy];
+    if (v27 < [configurationCopy minimumNumberOfRelevantAssets])
     {
       goto LABEL_2;
     }
   }
 
-  [v10 aboveMomentAverageContentScoreThreshold];
+  [configurationCopy aboveMomentAverageContentScoreThreshold];
   if (v28 > 0.0)
   {
-    v29 = [(PGMemoryGenerator *)self memoryGenerationContext];
-    [v29 averageContentScoreForMomentNodes:v8];
+    memoryGenerationContext4 = [(PGMemoryGenerator *)self memoryGenerationContext];
+    [memoryGenerationContext4 averageContentScoreForMomentNodes:nodesCopy];
     v31 = v30;
-    [v10 aboveMomentAverageContentScoreThreshold];
+    [configurationCopy aboveMomentAverageContentScoreThreshold];
     v33 = v32;
 
     if (v31 <= v33)
@@ -172,10 +172,10 @@ LABEL_14:
     }
   }
 
-  if ([v10 allMomentsMustHaveScenesProcessed])
+  if ([configurationCopy allMomentsMustHaveScenesProcessed])
   {
-    v34 = [(PGMemoryGenerator *)self processedScenesAndFacesCache];
-    v35 = [v34 allMomentNodesInCollectionHaveScenesProcessed:v8];
+    processedScenesAndFacesCache = [(PGMemoryGenerator *)self processedScenesAndFacesCache];
+    v35 = [processedScenesAndFacesCache allMomentNodesInCollectionHaveScenesProcessed:nodesCopy];
 
     if (!v35)
     {
@@ -183,10 +183,10 @@ LABEL_14:
     }
   }
 
-  if ([v10 allMomentsMustHaveFacesProcessed])
+  if ([configurationCopy allMomentsMustHaveFacesProcessed])
   {
-    v36 = [(PGMemoryGenerator *)self processedScenesAndFacesCache];
-    v12 = [v36 allMomentNodesInCollectionHaveFacesProcessed:v8];
+    processedScenesAndFacesCache2 = [(PGMemoryGenerator *)self processedScenesAndFacesCache];
+    v12 = [processedScenesAndFacesCache2 allMomentNodesInCollectionHaveFacesProcessed:nodesCopy];
   }
 
   else
@@ -199,36 +199,36 @@ LABEL_3:
   return v12 & 1;
 }
 
-- (BOOL)_shouldCreateFeaturedSeasonMemoryForMomentNodes:(id)a3 featureNodes:(id)a4
+- (BOOL)_shouldCreateFeaturedSeasonMemoryForMomentNodes:(id)nodes featureNodes:(id)featureNodes
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PGOverTimeMemoryGenerator *)self featuredSeasonConfiguration];
-  v9 = [v6 universalDateInterval];
-  [v9 duration];
+  nodesCopy = nodes;
+  featureNodesCopy = featureNodes;
+  featuredSeasonConfiguration = [(PGOverTimeMemoryGenerator *)self featuredSeasonConfiguration];
+  universalDateInterval = [nodesCopy universalDateInterval];
+  [universalDateInterval duration];
   v11 = v10;
-  [v8 minimumOverallTimeIntervalOfMoments];
+  [featuredSeasonConfiguration minimumOverallTimeIntervalOfMoments];
   v13 = v12;
 
   if (v11 >= v13)
   {
-    v34 = v8;
-    v35 = v7;
-    v15 = [v6 graph];
-    v16 = [(PGMemoryGenerator *)self memoryGenerationContext];
-    v36 = v6;
-    v17 = [v16 yearNodesForMomentNodes:v6];
+    v34 = featuredSeasonConfiguration;
+    v35 = featureNodesCopy;
+    graph = [nodesCopy graph];
+    memoryGenerationContext = [(PGMemoryGenerator *)self memoryGenerationContext];
+    v36 = nodesCopy;
+    v17 = [memoryGenerationContext yearNodesForMomentNodes:nodesCopy];
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v18 = [(PGMemoryGenerator *)self memoryGenerationContext];
+    memoryGenerationContext2 = [(PGMemoryGenerator *)self memoryGenerationContext];
     v33 = v17;
-    v19 = [v18 yearsForYearNodes:v17];
+    universalStartDates = [memoryGenerationContext2 yearsForYearNodes:v17];
 
-    v20 = [v19 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    v20 = [universalStartDates countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v20)
     {
       v21 = v20;
@@ -239,24 +239,24 @@ LABEL_3:
         {
           if (*v38 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(universalStartDates);
           }
 
           v24 = *(*(&v37 + 1) + 8 * i);
-          v25 = [(PGMemoryGenerator *)self processedScenesAndFacesCache];
-          v26 = [v25 libraryHasEnoughScenesProcessed:-[PGOverTimeMemoryGenerator requireSceneProcessingMeetsThresholdOverTime](self andProcessedFaces:"requireSceneProcessingMeetsThresholdOverTime") forYear:-[PGOverTimeMemoryGenerator requireFaceProcessingMeetsThresholdOverTime](self inGraph:{"requireFaceProcessingMeetsThresholdOverTime"), objc_msgSend(v24, "integerValue"), v15}];
+          processedScenesAndFacesCache = [(PGMemoryGenerator *)self processedScenesAndFacesCache];
+          v26 = [processedScenesAndFacesCache libraryHasEnoughScenesProcessed:-[PGOverTimeMemoryGenerator requireSceneProcessingMeetsThresholdOverTime](self andProcessedFaces:"requireSceneProcessingMeetsThresholdOverTime") forYear:-[PGOverTimeMemoryGenerator requireFaceProcessingMeetsThresholdOverTime](self inGraph:{"requireFaceProcessingMeetsThresholdOverTime"), objc_msgSend(v24, "integerValue"), graph}];
 
           if (!v26)
           {
             v14 = 0;
-            v7 = v35;
-            v6 = v36;
-            v8 = v34;
+            featureNodesCopy = v35;
+            nodesCopy = v36;
+            featuredSeasonConfiguration = v34;
             goto LABEL_16;
           }
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        v21 = [universalStartDates countByEnumeratingWithState:&v37 objects:v41 count:16];
         if (v21)
         {
           continue;
@@ -269,29 +269,29 @@ LABEL_3:
     if (-[PGOverTimeMemoryGenerator requireSceneProcessingMeetsThresholdOverTime](self, "requireSceneProcessingMeetsThresholdOverTime") && (-[PGMemoryGenerator processedScenesAndFacesCache](self, "processedScenesAndFacesCache"), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v27 libraryHasEnoughScenesProcessedWithMinimumSceneAnalysisVersion:{-[PGOverTimeMemoryGenerator minimumSceneAnalysisVersion](self, "minimumSceneAnalysisVersion")}], v27, !v28))
     {
       v14 = 0;
-      v7 = v35;
-      v6 = v36;
+      featureNodesCopy = v35;
+      nodesCopy = v36;
       v30 = v33;
-      v8 = v34;
+      featuredSeasonConfiguration = v34;
     }
 
     else
     {
-      v6 = v36;
-      v19 = [v36 universalStartDates];
-      v8 = v34;
-      v29 = [v34 minimumNumberOfMoments];
+      nodesCopy = v36;
+      universalStartDates = [v36 universalStartDates];
+      featuredSeasonConfiguration = v34;
+      minimumNumberOfMoments = [v34 minimumNumberOfMoments];
       [v34 minimumMomentSpreadicityTimeInterval];
-      if ([PGMemoryGenerationHelper dates:v19 passSpreadicityWithMinimumCardinal:v29 minimumTimeInterval:?])
+      if ([PGMemoryGenerationHelper dates:universalStartDates passSpreadicityWithMinimumCardinal:minimumNumberOfMoments minimumTimeInterval:?])
       {
-        v7 = v35;
+        featureNodesCopy = v35;
         v14 = [(PGOverTimeMemoryGenerator *)self _shouldCreateMemoryForMomentNodes:v36 featureNodes:v35 withConfiguration:v34];
       }
 
       else
       {
         v14 = 0;
-        v7 = v35;
+        featureNodesCopy = v35;
       }
 
 LABEL_16:
@@ -308,32 +308,32 @@ LABEL_16:
   return v14;
 }
 
-- (BOOL)_shouldCreateFeaturedYearMemoryForMomentNodes:(id)a3 featureNodes:(id)a4 inYear:(int64_t)a5 configuration:(id)a6
+- (BOOL)_shouldCreateFeaturedYearMemoryForMomentNodes:(id)nodes featureNodes:(id)featureNodes inYear:(int64_t)year configuration:(id)configuration
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 universalDateInterval];
-  [v13 duration];
+  nodesCopy = nodes;
+  featureNodesCopy = featureNodes;
+  configurationCopy = configuration;
+  universalDateInterval = [nodesCopy universalDateInterval];
+  [universalDateInterval duration];
   v15 = v14;
-  [v12 minimumOverallTimeIntervalOfMoments];
+  [configurationCopy minimumOverallTimeIntervalOfMoments];
   v17 = v16;
 
   if (v15 >= v17)
   {
-    v19 = [v10 universalStartDates];
-    v20 = [v12 minimumNumberOfMoments];
-    [v12 minimumMomentSpreadicityTimeInterval];
-    if (![PGMemoryGenerationHelper dates:v19 passSpreadicityWithMinimumCardinal:v20 minimumTimeInterval:?])
+    universalStartDates = [nodesCopy universalStartDates];
+    minimumNumberOfMoments = [configurationCopy minimumNumberOfMoments];
+    [configurationCopy minimumMomentSpreadicityTimeInterval];
+    if (![PGMemoryGenerationHelper dates:universalStartDates passSpreadicityWithMinimumCardinal:minimumNumberOfMoments minimumTimeInterval:?])
     {
       goto LABEL_8;
     }
 
-    v21 = [(PGMemoryGenerator *)self processedScenesAndFacesCache];
-    v22 = [(PGOverTimeMemoryGenerator *)self requireSceneProcessingMeetsThresholdOverTime];
-    v23 = [(PGOverTimeMemoryGenerator *)self requireFaceProcessingMeetsThresholdOverTime];
-    v24 = [v10 graph];
-    v25 = [v21 libraryHasEnoughScenesProcessed:v22 andProcessedFaces:v23 forYear:a5 inGraph:v24];
+    processedScenesAndFacesCache = [(PGMemoryGenerator *)self processedScenesAndFacesCache];
+    requireSceneProcessingMeetsThresholdOverTime = [(PGOverTimeMemoryGenerator *)self requireSceneProcessingMeetsThresholdOverTime];
+    requireFaceProcessingMeetsThresholdOverTime = [(PGOverTimeMemoryGenerator *)self requireFaceProcessingMeetsThresholdOverTime];
+    graph = [nodesCopy graph];
+    v25 = [processedScenesAndFacesCache libraryHasEnoughScenesProcessed:requireSceneProcessingMeetsThresholdOverTime andProcessedFaces:requireFaceProcessingMeetsThresholdOverTime forYear:year inGraph:graph];
 
     if (!v25)
     {
@@ -342,7 +342,7 @@ LABEL_16:
 
     if (!-[PGOverTimeMemoryGenerator requireSceneProcessingMeetsThresholdOverTime](self, "requireSceneProcessingMeetsThresholdOverTime") || (-[PGMemoryGenerator processedScenesAndFacesCache](self, "processedScenesAndFacesCache"), v26 = objc_claimAutoreleasedReturnValue(), v27 = [v26 libraryHasEnoughScenesProcessedWithMinimumSceneAnalysisVersion:{-[PGOverTimeMemoryGenerator minimumSceneAnalysisVersion](self, "minimumSceneAnalysisVersion")}], v26, v27))
     {
-      v18 = [(PGOverTimeMemoryGenerator *)self _shouldCreateMemoryForMomentNodes:v10 featureNodes:v11 withConfiguration:v12];
+      v18 = [(PGOverTimeMemoryGenerator *)self _shouldCreateMemoryForMomentNodes:nodesCopy featureNodes:featureNodesCopy withConfiguration:configurationCopy];
     }
 
     else
@@ -360,35 +360,35 @@ LABEL_8:
   return v18;
 }
 
-- (BOOL)_shouldCreateFeaturedTimePeriodMemoriesForMomentNodes:(id)a3 configuration:(id)a4
+- (BOOL)_shouldCreateFeaturedTimePeriodMemoriesForMomentNodes:(id)nodes configuration:(id)configuration
 {
-  if (!a4)
+  if (!configuration)
   {
     return 0;
   }
 
-  v5 = a4;
-  v6 = [a3 count];
-  v7 = [v5 minimumNumberOfMoments];
+  configurationCopy = configuration;
+  v6 = [nodes count];
+  minimumNumberOfMoments = [configurationCopy minimumNumberOfMoments];
 
-  return v6 >= v7;
+  return v6 >= minimumNumberOfMoments;
 }
 
-- (BOOL)_shouldCreateOverTheYearsMemoryForMomentNodes:(id)a3 featureNodes:(id)a4 configuration:(id)a5
+- (BOOL)_shouldCreateOverTheYearsMemoryForMomentNodes:(id)nodes featureNodes:(id)featureNodes configuration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v10)
+  nodesCopy = nodes;
+  featureNodesCopy = featureNodes;
+  configurationCopy = configuration;
+  v11 = configurationCopy;
+  if (!configurationCopy)
   {
     v16 = 0;
     goto LABEL_19;
   }
 
-  v12 = [v10 minimumNumberOfMoments];
-  v13 = [(PGMemoryGenerator *)self memoryGenerationContext];
-  v14 = [v13 yearNodesForMomentNodes:v8];
+  minimumNumberOfMoments = [configurationCopy minimumNumberOfMoments];
+  memoryGenerationContext = [(PGMemoryGenerator *)self memoryGenerationContext];
+  v14 = [memoryGenerationContext yearNodesForMomentNodes:nodesCopy];
 
   v15 = [v14 count];
   if (v15 < [v11 minimumNumberOfYears])
@@ -399,21 +399,21 @@ LABEL_8:
       goto LABEL_17;
     }
 
-    v17 = [(PGMemoryGenerator *)self memoryGenerationContext];
-    v18 = [v17 yearsForYearNodes:v14];
+    memoryGenerationContext2 = [(PGMemoryGenerator *)self memoryGenerationContext];
+    universalStartDates = [memoryGenerationContext2 yearsForYearNodes:v14];
 
-    v19 = [v18 firstObject];
-    v20 = [v19 integerValue];
-    v21 = [v18 lastObject];
-    v22 = [v21 integerValue];
-    if (v20 - v22 >= 0)
+    firstObject = [universalStartDates firstObject];
+    integerValue = [firstObject integerValue];
+    lastObject = [universalStartDates lastObject];
+    integerValue2 = [lastObject integerValue];
+    if (integerValue - integerValue2 >= 0)
     {
-      v23 = v20 - v22;
+      v23 = integerValue - integerValue2;
     }
 
     else
     {
-      v23 = v22 - v20;
+      v23 = integerValue2 - integerValue;
     }
 
     if (v23 != 1)
@@ -421,18 +421,18 @@ LABEL_8:
       goto LABEL_15;
     }
 
-    v12 = [v11 minimumNumberOfMomentsForTwoConsecutiveYears];
+    minimumNumberOfMoments = [v11 minimumNumberOfMomentsForTwoConsecutiveYears];
   }
 
-  v18 = [v8 universalStartDates];
+  universalStartDates = [nodesCopy universalStartDates];
   [v11 minimumMomentSpreadicityTimeInterval];
-  if (![PGMemoryGenerationHelper dates:v18 passSpreadicityWithMinimumCardinal:v12 minimumTimeInterval:?])
+  if (![PGMemoryGenerationHelper dates:universalStartDates passSpreadicityWithMinimumCardinal:minimumNumberOfMoments minimumTimeInterval:?])
   {
     goto LABEL_15;
   }
 
-  v24 = [(PGMemoryGenerator *)self processedScenesAndFacesCache];
-  v25 = [v24 libraryHasEnoughScenesProcessed:-[PGOverTimeMemoryGenerator requireSceneProcessingMeetsThresholdOverTime](self andProcessedFaces:{"requireSceneProcessingMeetsThresholdOverTime"), -[PGOverTimeMemoryGenerator requireFaceProcessingMeetsThresholdOverTime](self, "requireFaceProcessingMeetsThresholdOverTime")}];
+  processedScenesAndFacesCache = [(PGMemoryGenerator *)self processedScenesAndFacesCache];
+  v25 = [processedScenesAndFacesCache libraryHasEnoughScenesProcessed:-[PGOverTimeMemoryGenerator requireSceneProcessingMeetsThresholdOverTime](self andProcessedFaces:{"requireSceneProcessingMeetsThresholdOverTime"), -[PGOverTimeMemoryGenerator requireFaceProcessingMeetsThresholdOverTime](self, "requireFaceProcessingMeetsThresholdOverTime")}];
 
   if (!v25 || -[PGOverTimeMemoryGenerator requireSceneProcessingMeetsThresholdOverTime](self, "requireSceneProcessingMeetsThresholdOverTime") && (-[PGMemoryGenerator processedScenesAndFacesCache](self, "processedScenesAndFacesCache"), v26 = objc_claimAutoreleasedReturnValue(), v27 = [v26 libraryHasEnoughScenesProcessedWithMinimumSceneAnalysisVersion:{-[PGOverTimeMemoryGenerator minimumSceneAnalysisVersion](self, "minimumSceneAnalysisVersion")}], v26, !v27))
   {
@@ -441,7 +441,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v16 = [(PGOverTimeMemoryGenerator *)self _shouldCreateMemoryForMomentNodes:v8 featureNodes:v9 withConfiguration:v11];
+  v16 = [(PGOverTimeMemoryGenerator *)self _shouldCreateMemoryForMomentNodes:nodesCopy featureNodes:featureNodesCopy withConfiguration:v11];
 LABEL_16:
 
 LABEL_17:
@@ -450,47 +450,47 @@ LABEL_19:
   return v16;
 }
 
-- (id)_filteredMomentNodesFromMomentNodes:(id)a3 featureNodes:(id)a4
+- (id)_filteredMomentNodesFromMomentNodes:(id)nodes featureNodes:(id)featureNodes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [(PGOverTimeMemoryGenerator *)self momentRequirements];
-  v10 = [v9 filterUninterestingWithAlternateJunking];
+  nodesCopy = nodes;
+  featureNodesCopy = featureNodes;
+  v8 = nodesCopy;
+  momentRequirements = [(PGOverTimeMemoryGenerator *)self momentRequirements];
+  filterUninterestingWithAlternateJunking = [momentRequirements filterUninterestingWithAlternateJunking];
 
   v11 = v8;
-  if (v10)
+  if (filterUninterestingWithAlternateJunking)
   {
-    v12 = [(PGMemoryGenerator *)self memoryGenerationContext];
-    v11 = [v12 interestingWithAlternateJunkingSubsetFromMomentNodes:v8];
+    memoryGenerationContext = [(PGMemoryGenerator *)self memoryGenerationContext];
+    v11 = [memoryGenerationContext interestingWithAlternateJunkingSubsetFromMomentNodes:v8];
   }
 
-  v13 = [(PGOverTimeMemoryGenerator *)self momentRequirements];
-  v14 = [v13 filterUninterestingForMemories];
+  momentRequirements2 = [(PGOverTimeMemoryGenerator *)self momentRequirements];
+  filterUninterestingForMemories = [momentRequirements2 filterUninterestingForMemories];
 
-  if (v14)
+  if (filterUninterestingForMemories)
   {
-    v15 = [(PGMemoryGenerator *)self memoryGenerationContext];
-    v16 = [v15 interestingForMemoriesSubsetFromMomentNodes:v11];
+    memoryGenerationContext2 = [(PGMemoryGenerator *)self memoryGenerationContext];
+    v16 = [memoryGenerationContext2 interestingForMemoriesSubsetFromMomentNodes:v11];
 
     v11 = v16;
   }
 
-  v17 = [(PGOverTimeMemoryGenerator *)self momentRequirements];
-  v18 = [v17 minimumNumberOfRelevantAssets];
+  momentRequirements3 = [(PGOverTimeMemoryGenerator *)self momentRequirements];
+  minimumNumberOfRelevantAssets = [momentRequirements3 minimumNumberOfRelevantAssets];
 
-  v19 = [(PGOverTimeMemoryGenerator *)self momentRequirements];
-  v20 = [v19 minimumNumberOfAssetsInExtendedCuration];
+  momentRequirements4 = [(PGOverTimeMemoryGenerator *)self momentRequirements];
+  minimumNumberOfAssetsInExtendedCuration = [momentRequirements4 minimumNumberOfAssetsInExtendedCuration];
 
   v33 = MEMORY[0x277D85DD0];
   v34 = 3221225472;
   v35 = __78__PGOverTimeMemoryGenerator__filteredMomentNodesFromMomentNodes_featureNodes___block_invoke;
   v36 = &unk_278888330;
-  v39 = v20;
-  v40 = v18;
-  v37 = self;
-  v38 = v7;
-  v21 = v7;
+  v39 = minimumNumberOfAssetsInExtendedCuration;
+  v40 = minimumNumberOfRelevantAssets;
+  selfCopy = self;
+  v38 = featureNodesCopy;
+  v21 = featureNodesCopy;
   v22 = [v11 filteredCollectionUsingBlock:&v33];
 
   v23 = [(PGOverTimeMemoryGenerator *)self momentRequirements:v33];
@@ -499,20 +499,20 @@ LABEL_19:
 
   if (v25 > 0.0)
   {
-    v26 = [(PGOverTimeMemoryGenerator *)self momentRequirements];
-    [v26 aboveContentScoreThreshold];
+    momentRequirements5 = [(PGOverTimeMemoryGenerator *)self momentRequirements];
+    [momentRequirements5 aboveContentScoreThreshold];
     v27 = [v22 momentNodesWithContentScoreAbove:?];
 
     v22 = v27;
   }
 
-  v28 = [(PGOverTimeMemoryGenerator *)self momentRequirements];
-  v29 = [v28 minimumNumberOfPersons];
+  momentRequirements6 = [(PGOverTimeMemoryGenerator *)self momentRequirements];
+  minimumNumberOfPersons = [momentRequirements6 minimumNumberOfPersons];
 
-  if (v29)
+  if (minimumNumberOfPersons)
   {
-    v30 = [(PGOverTimeMemoryGenerator *)self momentRequirements];
-    v31 = [v22 momentNodesWithMinimumNumberOfPersons:{objc_msgSend(v30, "minimumNumberOfPersons")}];
+    momentRequirements7 = [(PGOverTimeMemoryGenerator *)self momentRequirements];
+    v31 = [v22 momentNodesWithMinimumNumberOfPersons:{objc_msgSend(momentRequirements7, "minimumNumberOfPersons")}];
 
     v22 = v31;
   }
@@ -549,39 +549,39 @@ uint64_t __78__PGOverTimeMemoryGenerator__filteredMomentNodesFromMomentNodes_fea
   return v8 & 1;
 }
 
-- (id)generatePotentialMemoriesForProcessingWindow:(id)a3 graph:(id)a4 progressBlock:(id)a5
+- (id)generatePotentialMemoriesForProcessingWindow:(id)window graph:(id)graph progressBlock:(id)block
 {
   v60 = *MEMORY[0x277D85DE8];
-  v40 = a3;
-  v8 = a4;
-  v39 = a5;
-  v9 = [(PGOverTimeMemoryGenerator *)self overTheYearsConfiguration];
-  if (v9 || ([(PGOverTimeMemoryGenerator *)self featuredYearConfiguration], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  windowCopy = window;
+  graphCopy = graph;
+  blockCopy = block;
+  overTheYearsConfiguration = [(PGOverTimeMemoryGenerator *)self overTheYearsConfiguration];
+  if (overTheYearsConfiguration || ([(PGOverTimeMemoryGenerator *)self featuredYearConfiguration], (overTheYearsConfiguration = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
     goto LABEL_4;
   }
 
-  v30 = [(PGOverTimeMemoryGenerator *)self featuredSeasonConfiguration];
+  featuredSeasonConfiguration = [(PGOverTimeMemoryGenerator *)self featuredSeasonConfiguration];
 
-  if (v30)
+  if (featuredSeasonConfiguration)
   {
 LABEL_4:
-    v10 = [MEMORY[0x277D22C80] progressReporterWithProgressBlock:v39];
+    v10 = [MEMORY[0x277D22C80] progressReporterWithProgressBlock:blockCopy];
     *v58 = 0;
     *&v58[8] = v58;
     *&v58[16] = 0x2020000000;
     LOBYTE(v59) = 0;
-    v11 = [(PGMemoryGenerator *)self memoryGenerationContext];
-    v12 = [v11 momentNodesForProcessingWindow:v40 inGraph:v8];
+    memoryGenerationContext = [(PGMemoryGenerator *)self memoryGenerationContext];
+    v12 = [memoryGenerationContext momentNodesForProcessingWindow:windowCopy inGraph:graphCopy];
 
-    v13 = [(PGMemoryGenerator *)self momentNodesWithBlockedFeatureCache];
-    v14 = [v13 momentNodesWithBlockedFeature];
+    momentNodesWithBlockedFeatureCache = [(PGMemoryGenerator *)self momentNodesWithBlockedFeatureCache];
+    momentNodesWithBlockedFeature = [momentNodesWithBlockedFeatureCache momentNodesWithBlockedFeature];
 
-    v15 = [(PGMemoryGenerator *)self memoryGenerationContext];
-    v16 = [v15 momentNodesAtSensitiveLocationsInGraph:v8];
+    memoryGenerationContext2 = [(PGMemoryGenerator *)self memoryGenerationContext];
+    v16 = [memoryGenerationContext2 momentNodesAtSensitiveLocationsInGraph:graphCopy];
 
-    v17 = [(PGGraphNodeCollection *)PGGraphOverTheYearsNodeCollection nodesInGraph:v8];
+    v17 = [(PGGraphNodeCollection *)PGGraphOverTheYearsNodeCollection nodesInGraph:graphCopy];
     v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v41[0] = MEMORY[0x277D85DD0];
@@ -589,24 +589,24 @@ LABEL_4:
     v41[2] = __94__PGOverTimeMemoryGenerator_generatePotentialMemoriesForProcessingWindow_graph_progressBlock___block_invoke;
     v41[3] = &unk_278888308;
     v52 = v58;
-    v20 = v10;
-    v42 = v20;
+    loggingConnection = v10;
+    v42 = loggingConnection;
     v53 = 0x3FE0000000000000;
-    v21 = v14;
+    v21 = momentNodesWithBlockedFeature;
     v43 = v21;
     v22 = v16;
     v44 = v22;
-    v45 = self;
+    selfCopy = self;
     v23 = v12;
     v46 = v23;
-    v47 = v40;
+    v47 = windowCopy;
     v24 = v17;
     v48 = v24;
     v25 = v18;
     v49 = v25;
     v26 = v19;
     v50 = v26;
-    v51 = v8;
+    v51 = graphCopy;
     [(PGOverTimeMemoryGenerator *)self enumerateMomentNodesAndFeatureNodesInGraph:v51 usingBlock:v41];
     if (*(*&v58[8] + 24))
     {
@@ -625,22 +625,22 @@ LABEL_7:
       goto LABEL_20;
     }
 
-    v27 = [v20 isCancelledWithProgress:1.0];
+    v27 = [loggingConnection isCancelledWithProgress:1.0];
     *(*&v58[8] + 24) = v27;
     if (v27)
     {
       goto LABEL_7;
     }
 
-    v29 = [(PGOverTimeMemoryGenerator *)self fallbackOverTheYearsConfiguration];
-    if (v29)
+    fallbackOverTheYearsConfiguration = [(PGOverTimeMemoryGenerator *)self fallbackOverTheYearsConfiguration];
+    if (fallbackOverTheYearsConfiguration)
     {
     }
 
     else
     {
-      v31 = [(PGOverTimeMemoryGenerator *)self fallbackFeaturedYearConfiguration];
-      v32 = v31 == 0;
+      fallbackFeaturedYearConfiguration = [(PGOverTimeMemoryGenerator *)self fallbackFeaturedYearConfiguration];
+      v32 = fallbackFeaturedYearConfiguration == 0;
 
       if (v32)
       {
@@ -662,19 +662,19 @@ LABEL_20:
     goto LABEL_19;
   }
 
-  v20 = [(PGMemoryGenerator *)self loggingConnection];
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+  loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
-    v36 = [(PGOverTimeMemoryGenerator *)self overTheYearsConfiguration];
-    v37 = [(PGOverTimeMemoryGenerator *)self featuredYearConfiguration];
-    v38 = [(PGOverTimeMemoryGenerator *)self featuredSeasonConfiguration];
+    overTheYearsConfiguration2 = [(PGOverTimeMemoryGenerator *)self overTheYearsConfiguration];
+    featuredYearConfiguration = [(PGOverTimeMemoryGenerator *)self featuredYearConfiguration];
+    featuredSeasonConfiguration2 = [(PGOverTimeMemoryGenerator *)self featuredSeasonConfiguration];
     *v58 = 138412802;
-    *&v58[4] = v36;
+    *&v58[4] = overTheYearsConfiguration2;
     *&v58[12] = 2112;
-    *&v58[14] = v37;
+    *&v58[14] = featuredYearConfiguration;
     *&v58[22] = 2112;
-    v59 = v38;
-    _os_log_error_impl(&dword_22F0FC000, v20, OS_LOG_TYPE_ERROR, "[PGOverTimeMemoryGenerator] At least one of the overTheYearsConfiguration (%@), featuredYearConfiguration (%@), or featuredSeasonConfiguration (%@) must not be nil", v58, 0x20u);
+    v59 = featuredSeasonConfiguration2;
+    _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGOverTimeMemoryGenerator] At least one of the overTheYearsConfiguration (%@), featuredYearConfiguration (%@), or featuredSeasonConfiguration (%@) must not be nil", v58, 0x20u);
   }
 
   v28 = MEMORY[0x277CBEBF8];
@@ -965,15 +965,15 @@ void __94__PGOverTimeMemoryGenerator_generatePotentialMemoriesForProcessingWindo
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  graphCopy = graph;
+  blockCopy = block;
   v9 = PGAbstractMethodException(self, a2);
   objc_exception_throw(v9);
 }
 
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type
 {
   v3 = PGAbstractMethodException(self, a2);
   objc_exception_throw(v3);

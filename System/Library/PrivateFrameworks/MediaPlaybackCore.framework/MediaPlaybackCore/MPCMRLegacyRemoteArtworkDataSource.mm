@@ -1,36 +1,36 @@
 @interface MPCMRLegacyRemoteArtworkDataSource
 + (MPCMRLegacyRemoteArtworkDataSource)sharedDataSource;
 + (id)bestArtworkSizes;
-- (BOOL)areRepresentationsAvailableForCatalog:(id)a3;
-- (id)_urlForCatalog:(id)a3 size:(CGSize)a4;
-- (id)requestForCatalog:(id)a3 size:(CGSize)a4;
-- (id)supportedSizesForCatalog:(id)a3;
-- (void)getExportableArtworkPropertiesForCatalog:(id)a3 completionHandler:(id)a4;
+- (BOOL)areRepresentationsAvailableForCatalog:(id)catalog;
+- (id)_urlForCatalog:(id)catalog size:(CGSize)size;
+- (id)requestForCatalog:(id)catalog size:(CGSize)size;
+- (id)supportedSizesForCatalog:(id)catalog;
+- (void)getExportableArtworkPropertiesForCatalog:(id)catalog completionHandler:(id)handler;
 @end
 
 @implementation MPCMRLegacyRemoteArtworkDataSource
 
-- (void)getExportableArtworkPropertiesForCatalog:(id)a3 completionHandler:(id)a4
+- (void)getExportableArtworkPropertiesForCatalog:(id)catalog completionHandler:(id)handler
 {
-  v5 = a4;
-  v7 = [a3 token];
-  v6 = [v7 artworkProperties];
-  v5[2](v5, v6, 0);
+  handlerCopy = handler;
+  token = [catalog token];
+  artworkProperties = [token artworkProperties];
+  handlerCopy[2](handlerCopy, artworkProperties, 0);
 }
 
-- (id)requestForCatalog:(id)a3 size:(CGSize)a4
+- (id)requestForCatalog:(id)catalog size:(CGSize)size
 {
-  v4 = [(MPCMRLegacyRemoteArtworkDataSource *)self _urlForCatalog:a3 size:a4.width, a4.height];
+  v4 = [(MPCMRLegacyRemoteArtworkDataSource *)self _urlForCatalog:catalog size:size.width, size.height];
   v5 = [MEMORY[0x1E696AF68] requestWithURL:v4 cachePolicy:0 timeoutInterval:60.0];
 
   return v5;
 }
 
-- (id)_urlForCatalog:(id)a3 size:(CGSize)a4
+- (id)_urlForCatalog:(id)catalog size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
+  height = size.height;
+  width = size.width;
+  catalogCopy = catalog;
   MSVGetMaximumScreenSize();
   if (height >= width)
   {
@@ -54,39 +54,39 @@
     height = v12;
   }
 
-  v13 = [v6 token];
-  v14 = [v13 artworkProperties];
-  v15 = [v14 artworkInfo];
+  token = [catalogCopy token];
+  artworkProperties = [token artworkProperties];
+  artworkInfo = [artworkProperties artworkInfo];
 
-  v16 = [v15 artworkURLWithSize:*MEMORY[0x1E69E4240] cropStyle:*MEMORY[0x1E69E4268] format:MSVDeviceSupportsExtendedColorDisplay() preferP3ColorSpace:{width, height}];
+  v16 = [artworkInfo artworkURLWithSize:*MEMORY[0x1E69E4240] cropStyle:*MEMORY[0x1E69E4268] format:MSVDeviceSupportsExtendedColorDisplay() preferP3ColorSpace:{width, height}];
 
   return v16;
 }
 
-- (id)supportedSizesForCatalog:(id)a3
+- (id)supportedSizesForCatalog:(id)catalog
 {
-  v3 = [a3 token];
-  v4 = [v3 artworkProperties];
-  v5 = [v4 artworkInfo];
-  v6 = [v5 sizeInfo];
+  token = [catalog token];
+  artworkProperties = [token artworkProperties];
+  artworkInfo = [artworkProperties artworkInfo];
+  sizeInfo = [artworkInfo sizeInfo];
 
-  v7 = [v6 type];
-  if (v7 == 2)
+  type = [sizeInfo type];
+  if (type == 2)
   {
-    v19 = [v6 supportedSizes];
-    if ([v19 count])
+    supportedSizes = [sizeInfo supportedSizes];
+    if ([supportedSizes count])
     {
-      v20 = [v6 hasMaxSupportedSize];
+      hasMaxSupportedSize = [sizeInfo hasMaxSupportedSize];
 
-      if (v20)
+      if (hasMaxSupportedSize)
       {
-        v21 = [v6 supportedSizes];
-        [v6 maxSupportedSize];
-        v14 = _MPCRemotePlayerArtworkDataSourceValidSupportedSizes(v21, v22, v23);
+        supportedSizes2 = [sizeInfo supportedSizes];
+        [sizeInfo maxSupportedSize];
+        allObjects = _MPCRemotePlayerArtworkDataSourceValidSupportedSizes(supportedSizes2, v22, v23);
 
-        if ([v14 count])
+        if ([allObjects count])
         {
-          v24 = v14;
+          v24 = allObjects;
         }
 
         else
@@ -108,20 +108,20 @@ LABEL_3:
     goto LABEL_17;
   }
 
-  if (v7 != 1 || ![v6 hasMaxSupportedSize])
+  if (type != 1 || ![sizeInfo hasMaxSupportedSize])
   {
     goto LABEL_3;
   }
 
-  v9 = [MEMORY[0x1E69704A8] systemConfiguration];
-  v10 = [v3 artworkProperties];
-  v11 = [v10 mediaType];
-  v12 = [v3 artworkProperties];
-  v13 = [v9 supportedSizesForMediaType:v11 artworkType:{objc_msgSend(v12, "mediaLibraryArtworkType")}];
-  v14 = [v13 allObjects];
+  systemConfiguration = [MEMORY[0x1E69704A8] systemConfiguration];
+  artworkProperties2 = [token artworkProperties];
+  mediaType = [artworkProperties2 mediaType];
+  artworkProperties3 = [token artworkProperties];
+  v13 = [systemConfiguration supportedSizesForMediaType:mediaType artworkType:{objc_msgSend(artworkProperties3, "mediaLibraryArtworkType")}];
+  allObjects = [v13 allObjects];
 
-  [v6 maxSupportedSize];
-  v17 = _MPCRemotePlayerArtworkDataSourceValidSupportedSizes(v14, v15, v16);
+  [sizeInfo maxSupportedSize];
+  v17 = _MPCRemotePlayerArtworkDataSourceValidSupportedSizes(allObjects, v15, v16);
   if ([v17 count])
   {
     v18 = v17;
@@ -140,13 +140,13 @@ LABEL_17:
   return v8;
 }
 
-- (BOOL)areRepresentationsAvailableForCatalog:(id)a3
+- (BOOL)areRepresentationsAvailableForCatalog:(id)catalog
 {
-  v3 = [a3 token];
-  v4 = [v3 artworkProperties];
-  v5 = [v4 isValid];
+  token = [catalog token];
+  artworkProperties = [token artworkProperties];
+  isValid = [artworkProperties isValid];
 
-  return v5;
+  return isValid;
 }
 
 + (id)bestArtworkSizes
@@ -165,7 +165,7 @@ LABEL_17:
   block[1] = 3221225472;
   block[2] = __54__MPCMRLegacyRemoteArtworkDataSource_sharedDataSource__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedDataSource_onceToken != -1)
   {
     dispatch_once(&sharedDataSource_onceToken, block);

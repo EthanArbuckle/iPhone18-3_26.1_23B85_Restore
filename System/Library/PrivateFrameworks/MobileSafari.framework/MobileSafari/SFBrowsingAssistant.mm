@@ -1,18 +1,18 @@
 @interface SFBrowsingAssistant
 - (BOOL)stepperFocused;
-- (SFBrowsingAssistant)initWithCoder:(id)a3;
-- (SFBrowsingAssistant)initWithNibName:(id)a3 bundle:(id)a4;
-- (SFBrowsingAssistant)initWithShowingOnStartPage:(BOOL)a3;
+- (SFBrowsingAssistant)initWithCoder:(id)coder;
+- (SFBrowsingAssistant)initWithNibName:(id)name bundle:(id)bundle;
+- (SFBrowsingAssistant)initWithShowingOnStartPage:(BOOL)page;
 - (double)detentHeight;
 - (void)readerVisibilityDidChange;
 - (void)reloadData;
-- (void)setStepperFocused:(BOOL)a3;
+- (void)setStepperFocused:(BOOL)focused;
 - (void)viewDidLoad;
 @end
 
 @implementation SFBrowsingAssistant
 
-- (SFBrowsingAssistant)initWithCoder:(id)a3
+- (SFBrowsingAssistant)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
@@ -21,13 +21,13 @@
   return result;
 }
 
-- (SFBrowsingAssistant)initWithShowingOnStartPage:(BOOL)a3
+- (SFBrowsingAssistant)initWithShowingOnStartPage:(BOOL)page
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
-  *(self + OBJC_IVAR___SFBrowsingAssistant_isShowingOnStartPage) = a3;
+  *(self + OBJC_IVAR___SFBrowsingAssistant_isShowingOnStartPage) = page;
   v5 = objc_allocWithZone(type metadata accessor for BrowsingAssistant());
-  *(self + OBJC_IVAR___SFBrowsingAssistant_assistant) = sub_18BA03558(a3);
+  *(self + OBJC_IVAR___SFBrowsingAssistant_assistant) = sub_18BA03558(page);
   v7.receiver = self;
   v7.super_class = SFBrowsingAssistant;
   return [(SFBrowsingAssistant *)&v7 initWithNibName:0 bundle:0];
@@ -40,12 +40,12 @@
   MEMORY[0x1EEE9AC00](v3);
   v6 = &v24 - v5;
   v7 = *(self + OBJC_IVAR___SFBrowsingAssistant_assistant);
-  v8 = self;
-  v9 = [v7 view];
-  if (v9)
+  selfCopy = self;
+  view = [v7 view];
+  if (view)
   {
-    v11 = v9;
-    [v9 bounds];
+    v11 = view;
+    [view bounds];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -76,7 +76,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   SFBrowsingAssistant.viewDidLoad()();
 }
 
@@ -94,29 +94,29 @@
   }
 }
 
-- (void)setStepperFocused:(BOOL)a3
+- (void)setStepperFocused:(BOOL)focused
 {
-  v4 = self;
-  sub_18BA0B45C(a3);
+  selfCopy = self;
+  sub_18BA0B45C(focused);
 }
 
 - (void)readerVisibilityDidChange
 {
-  v2 = self;
+  selfCopy = self;
   SFBrowsingAssistant.readerVisibilityDidChange()();
 }
 
 - (void)reloadData
 {
   v2 = *(self + OBJC_IVAR___SFBrowsingAssistant_assistant);
-  v3 = self;
+  selfCopy = self;
   if ([v2 isViewLoaded])
   {
     sub_18BA0B840(0, 255, CGRectMake, 0);
   }
 }
 
-- (SFBrowsingAssistant)initWithNibName:(id)a3 bundle:(id)a4
+- (SFBrowsingAssistant)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

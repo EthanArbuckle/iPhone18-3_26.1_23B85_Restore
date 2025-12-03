@@ -1,67 +1,67 @@
 @interface INFERENCESchemaINFERENCEContactSignalSet
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEContactSignalSet)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEContactSignalSet)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEContactSignalSet)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEContactSignalSet)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addHandlesWithPrivacySignalSets:(id)a3;
-- (void)setHasAreAllPrimaryContactTokensInQuery:(BOOL)a3;
-- (void)setHasAreAllQueryTokensInContact:(BOOL)a3;
-- (void)setHasAreQueryDiacriticsRemoved:(BOOL)a3;
-- (void)setHasHasHandleWithAllowedType:(BOOL)a3;
-- (void)setHasHasHandleWithPreferredType:(BOOL)a3;
-- (void)setHasHasSuggestedProperties:(BOOL)a3;
-- (void)setHasIsAsrE3Signal:(BOOL)a3;
-- (void)setHasIsCommunalRequest:(BOOL)a3;
-- (void)setHasIsFavorite:(BOOL)a3;
-- (void)setHasIsFromNLXSearch:(BOOL)a3;
-- (void)setHasIsFromSRRSearch:(BOOL)a3;
-- (void)setHasIsFromStandardSearch:(BOOL)a3;
-- (void)setHasIsHypocorism:(BOOL)a3;
-- (void)setHasIsMeCard:(BOOL)a3;
-- (void)setHasIsMeCardRelation:(BOOL)a3;
-- (void)setHasIsMeCardRelationExactMatch:(BOOL)a3;
-- (void)setHasIsOnlyCandidate:(BOOL)a3;
-- (void)setHasIsPartialNameMatch:(BOOL)a3;
-- (void)setHasIsPlusSignal:(BOOL)a3;
-- (void)setHasIsQueryNameDerivedFromRelationshipLabel:(BOOL)a3;
-- (void)setHasIsQueryNormalized:(BOOL)a3;
-- (void)setHasIsQueryRelationshipLabelDerivedFromName:(BOOL)a3;
-- (void)setHasIsQueryStrippedOfPunctuation:(BOOL)a3;
-- (void)setHasIsQueryStrippedOfSymbols:(BOOL)a3;
-- (void)setHasIsQueryStrippedOfWhitespace:(BOOL)a3;
-- (void)setHasIsRecent:(BOOL)a3;
-- (void)setHasIsRecentInSameDomain:(BOOL)a3;
-- (void)setHasIsRecentInSiriRequest:(BOOL)a3;
-- (void)setHasIsRecentlyCorrected:(BOOL)a3;
-- (void)setHasIsRelationAlias:(BOOL)a3;
-- (void)setHasIsSuggestedContact:(BOOL)a3;
-- (void)setHasIsThirdPartyMatch:(BOOL)a3;
-- (void)setHasIsTransliterated:(BOOL)a3;
-- (void)setHasNlxScore:(BOOL)a3;
-- (void)setHasRecencyRank:(BOOL)a3;
-- (void)setHasRecencyRankInSameDomain:(BOOL)a3;
-- (void)setHasRecencyRankInSiriRequest:(BOOL)a3;
-- (void)setHasSrrScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addHandlesWithPrivacySignalSets:(id)sets;
+- (void)setHasAreAllPrimaryContactTokensInQuery:(BOOL)query;
+- (void)setHasAreAllQueryTokensInContact:(BOOL)contact;
+- (void)setHasAreQueryDiacriticsRemoved:(BOOL)removed;
+- (void)setHasHasHandleWithAllowedType:(BOOL)type;
+- (void)setHasHasHandleWithPreferredType:(BOOL)type;
+- (void)setHasHasSuggestedProperties:(BOOL)properties;
+- (void)setHasIsAsrE3Signal:(BOOL)signal;
+- (void)setHasIsCommunalRequest:(BOOL)request;
+- (void)setHasIsFavorite:(BOOL)favorite;
+- (void)setHasIsFromNLXSearch:(BOOL)search;
+- (void)setHasIsFromSRRSearch:(BOOL)search;
+- (void)setHasIsFromStandardSearch:(BOOL)search;
+- (void)setHasIsHypocorism:(BOOL)hypocorism;
+- (void)setHasIsMeCard:(BOOL)card;
+- (void)setHasIsMeCardRelation:(BOOL)relation;
+- (void)setHasIsMeCardRelationExactMatch:(BOOL)match;
+- (void)setHasIsOnlyCandidate:(BOOL)candidate;
+- (void)setHasIsPartialNameMatch:(BOOL)match;
+- (void)setHasIsPlusSignal:(BOOL)signal;
+- (void)setHasIsQueryNameDerivedFromRelationshipLabel:(BOOL)label;
+- (void)setHasIsQueryNormalized:(BOOL)normalized;
+- (void)setHasIsQueryRelationshipLabelDerivedFromName:(BOOL)name;
+- (void)setHasIsQueryStrippedOfPunctuation:(BOOL)punctuation;
+- (void)setHasIsQueryStrippedOfSymbols:(BOOL)symbols;
+- (void)setHasIsQueryStrippedOfWhitespace:(BOOL)whitespace;
+- (void)setHasIsRecent:(BOOL)recent;
+- (void)setHasIsRecentInSameDomain:(BOOL)domain;
+- (void)setHasIsRecentInSiriRequest:(BOOL)request;
+- (void)setHasIsRecentlyCorrected:(BOOL)corrected;
+- (void)setHasIsRelationAlias:(BOOL)alias;
+- (void)setHasIsSuggestedContact:(BOOL)contact;
+- (void)setHasIsThirdPartyMatch:(BOOL)match;
+- (void)setHasIsTransliterated:(BOOL)transliterated;
+- (void)setHasNlxScore:(BOOL)score;
+- (void)setHasRecencyRank:(BOOL)rank;
+- (void)setHasRecencyRankInSameDomain:(BOOL)domain;
+- (void)setHasRecencyRankInSiriRequest:(BOOL)request;
+- (void)setHasSrrScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEContactSignalSet
 
-- (INFERENCESchemaINFERENCEContactSignalSet)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEContactSignalSet)initWithDictionary:(id)dictionary
 {
   v114 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v112.receiver = self;
   v112.super_class = INFERENCESchemaINFERENCEContactSignalSet;
   v5 = [(INFERENCESchemaINFERENCEContactSignalSet *)&v112 init];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"speechAlternativeRanks"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"speechAlternativeRanks"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
     }
 
     v73 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"isQueryStrippedOfTitles"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isQueryStrippedOfTitles"];
     objc_opt_class();
     v107 = v8;
     if (objc_opt_isKindOfClass())
@@ -78,7 +78,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsQueryStrippedOfTitles:](v5, "setIsQueryStrippedOfTitles:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isSuggestedContact"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isSuggestedContact"];
     objc_opt_class();
     v106 = v9;
     if (objc_opt_isKindOfClass())
@@ -86,7 +86,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsSuggestedContact:](v5, "setIsSuggestedContact:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"areAllQueryTokensInContact"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"areAllQueryTokensInContact"];
     objc_opt_class();
     v105 = v10;
     if (objc_opt_isKindOfClass())
@@ -94,7 +94,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setAreAllQueryTokensInContact:](v5, "setAreAllQueryTokensInContact:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"areAllPrimaryContactTokensInQuery"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"areAllPrimaryContactTokensInQuery"];
     objc_opt_class();
     v104 = v11;
     if (objc_opt_isKindOfClass())
@@ -102,7 +102,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setAreAllPrimaryContactTokensInQuery:](v5, "setAreAllPrimaryContactTokensInQuery:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"isHypocorism"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isHypocorism"];
     objc_opt_class();
     v103 = v12;
     if (objc_opt_isKindOfClass())
@@ -110,7 +110,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsHypocorism:](v5, "setIsHypocorism:", [v12 BOOLValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"hasSuggestedProperties"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"hasSuggestedProperties"];
     objc_opt_class();
     v102 = v13;
     if (objc_opt_isKindOfClass())
@@ -118,7 +118,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setHasSuggestedProperties:](v5, "setHasSuggestedProperties:", [v13 BOOLValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"isPartialNameMatch"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"isPartialNameMatch"];
     objc_opt_class();
     v101 = v14;
     if (objc_opt_isKindOfClass())
@@ -126,7 +126,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsPartialNameMatch:](v5, "setIsPartialNameMatch:", [v14 BOOLValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"isFromStandardSearch"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isFromStandardSearch"];
     objc_opt_class();
     v100 = v15;
     if (objc_opt_isKindOfClass())
@@ -134,7 +134,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsFromStandardSearch:](v5, "setIsFromStandardSearch:", [v15 BOOLValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"isFromNLXSearch"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"isFromNLXSearch"];
     objc_opt_class();
     v99 = v16;
     if (objc_opt_isKindOfClass())
@@ -142,7 +142,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsFromNLXSearch:](v5, "setIsFromNLXSearch:", [v16 BOOLValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"isFromSRRSearch"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"isFromSRRSearch"];
     objc_opt_class();
     v98 = v17;
     if (objc_opt_isKindOfClass())
@@ -150,7 +150,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsFromSRRSearch:](v5, "setIsFromSRRSearch:", [v17 BOOLValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"nlxScore"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"nlxScore"];
     objc_opt_class();
     v97 = v18;
     if (objc_opt_isKindOfClass())
@@ -159,7 +159,7 @@
       [(INFERENCESchemaINFERENCEContactSignalSet *)v5 setNlxScore:?];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"srrScore"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"srrScore"];
     objc_opt_class();
     v96 = v19;
     if (objc_opt_isKindOfClass())
@@ -168,7 +168,7 @@
       [(INFERENCESchemaINFERENCEContactSignalSet *)v5 setSrrScore:?];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"isRecent"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"isRecent"];
     objc_opt_class();
     v95 = v20;
     if (objc_opt_isKindOfClass())
@@ -176,7 +176,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsRecent:](v5, "setIsRecent:", [v20 BOOLValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"isRecentInSameDomain"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"isRecentInSameDomain"];
     objc_opt_class();
     v94 = v21;
     if (objc_opt_isKindOfClass())
@@ -184,7 +184,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsRecentInSameDomain:](v5, "setIsRecentInSameDomain:", [v21 BOOLValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"isRecentInSiriRequest"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"isRecentInSiriRequest"];
     objc_opt_class();
     v93 = v22;
     if (objc_opt_isKindOfClass())
@@ -192,7 +192,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsRecentInSiriRequest:](v5, "setIsRecentInSiriRequest:", [v22 BOOLValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"isRecentlyCorrected"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"isRecentlyCorrected"];
     objc_opt_class();
     v92 = v23;
     if (objc_opt_isKindOfClass())
@@ -200,7 +200,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsRecentlyCorrected:](v5, "setIsRecentlyCorrected:", [v23 BOOLValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"recencyRank"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"recencyRank"];
     objc_opt_class();
     v91 = v24;
     if (objc_opt_isKindOfClass())
@@ -208,7 +208,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setRecencyRank:](v5, "setRecencyRank:", [v24 intValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"recencyRankInSameDomain"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"recencyRankInSameDomain"];
     objc_opt_class();
     v90 = v25;
     if (objc_opt_isKindOfClass())
@@ -216,7 +216,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setRecencyRankInSameDomain:](v5, "setRecencyRankInSameDomain:", [v25 intValue]);
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"recencyRankInSiriRequest"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"recencyRankInSiriRequest"];
     objc_opt_class();
     v89 = v26;
     if (objc_opt_isKindOfClass())
@@ -224,7 +224,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setRecencyRankInSiriRequest:](v5, "setRecencyRankInSiriRequest:", [v26 intValue]);
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"historyStats"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"historyStats"];
     objc_opt_class();
     v88 = v27;
     if (objc_opt_isKindOfClass())
@@ -233,7 +233,7 @@
       [(INFERENCESchemaINFERENCEContactSignalSet *)v5 setHistoryStats:v28];
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"historyStatsInSameDomain"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"historyStatsInSameDomain"];
     objc_opt_class();
     v87 = v29;
     if (objc_opt_isKindOfClass())
@@ -242,7 +242,7 @@
       [(INFERENCESchemaINFERENCEContactSignalSet *)v5 setHistoryStatsInSameDomain:v30];
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"historyStatsInSiriRequests"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"historyStatsInSiriRequests"];
     objc_opt_class();
     v86 = v31;
     if (objc_opt_isKindOfClass())
@@ -251,7 +251,7 @@
       [(INFERENCESchemaINFERENCEContactSignalSet *)v5 setHistoryStatsInSiriRequests:v32];
     }
 
-    v33 = [v4 objectForKeyedSubscript:@"isMeCard"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"isMeCard"];
     objc_opt_class();
     v85 = v33;
     if (objc_opt_isKindOfClass())
@@ -259,7 +259,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsMeCard:](v5, "setIsMeCard:", [v33 BOOLValue]);
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"isMeCardRelation"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"isMeCardRelation"];
     objc_opt_class();
     v84 = v34;
     if (objc_opt_isKindOfClass())
@@ -267,7 +267,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsMeCardRelation:](v5, "setIsMeCardRelation:", [v34 BOOLValue]);
     }
 
-    v35 = [v4 objectForKeyedSubscript:@"isMeCardRelationExactMatch"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"isMeCardRelationExactMatch"];
     objc_opt_class();
     v83 = v35;
     if (objc_opt_isKindOfClass())
@@ -275,7 +275,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsMeCardRelationExactMatch:](v5, "setIsMeCardRelationExactMatch:", [v35 BOOLValue]);
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"isRelationAlias"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"isRelationAlias"];
     objc_opt_class();
     v82 = v36;
     if (objc_opt_isKindOfClass())
@@ -283,7 +283,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsRelationAlias:](v5, "setIsRelationAlias:", [v36 BOOLValue]);
     }
 
-    v37 = [v4 objectForKeyedSubscript:@"areQueryDiacriticsRemoved"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"areQueryDiacriticsRemoved"];
     objc_opt_class();
     v81 = v37;
     if (objc_opt_isKindOfClass())
@@ -291,7 +291,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setAreQueryDiacriticsRemoved:](v5, "setAreQueryDiacriticsRemoved:", [v37 BOOLValue]);
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"isQueryNameDerivedFromRelationshipLabel"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"isQueryNameDerivedFromRelationshipLabel"];
     objc_opt_class();
     v80 = v38;
     if (objc_opt_isKindOfClass())
@@ -299,7 +299,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsQueryNameDerivedFromRelationshipLabel:](v5, "setIsQueryNameDerivedFromRelationshipLabel:", [v38 BOOLValue]);
     }
 
-    v39 = [v4 objectForKeyedSubscript:@"isQueryRelationshipLabelDerivedFromName"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"isQueryRelationshipLabelDerivedFromName"];
     objc_opt_class();
     v79 = v39;
     if (objc_opt_isKindOfClass())
@@ -307,7 +307,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsQueryRelationshipLabelDerivedFromName:](v5, "setIsQueryRelationshipLabelDerivedFromName:", [v39 BOOLValue]);
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"isThirdPartyMatch"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"isThirdPartyMatch"];
     objc_opt_class();
     v78 = v40;
     if (objc_opt_isKindOfClass())
@@ -315,7 +315,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsThirdPartyMatch:](v5, "setIsThirdPartyMatch:", [v40 BOOLValue]);
     }
 
-    v41 = [v4 objectForKeyedSubscript:@"isFavorite"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"isFavorite"];
     objc_opt_class();
     v77 = v41;
     if (objc_opt_isKindOfClass())
@@ -323,7 +323,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsFavorite:](v5, "setIsFavorite:", [v41 BOOLValue]);
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"isTransliterated"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"isTransliterated"];
     objc_opt_class();
     v76 = v42;
     if (objc_opt_isKindOfClass())
@@ -331,7 +331,7 @@
       -[INFERENCESchemaINFERENCEContactSignalSet setIsTransliterated:](v5, "setIsTransliterated:", [v42 BOOLValue]);
     }
 
-    v43 = [v4 objectForKeyedSubscript:@"requestMatchSignalSet"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"requestMatchSignalSet"];
     objc_opt_class();
     v75 = v43;
     if (objc_opt_isKindOfClass())
@@ -340,7 +340,7 @@
       [(INFERENCESchemaINFERENCEContactSignalSet *)v5 setRequestMatchSignalSet:v44];
     }
 
-    v45 = [v4 objectForKeyedSubscript:@"handlesWithPrivacySignalSets"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"handlesWithPrivacySignalSets"];
     objc_opt_class();
     v74 = v45;
     if (objc_opt_isKindOfClass())
@@ -380,28 +380,28 @@
       }
     }
 
-    v53 = [v4 objectForKeyedSubscript:@"hasHandleWithPreferredType"];
+    v53 = [dictionaryCopy objectForKeyedSubscript:@"hasHandleWithPreferredType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactSignalSet setHasHandleWithPreferredType:](v5, "setHasHandleWithPreferredType:", [v53 BOOLValue]);
     }
 
-    v54 = [v4 objectForKeyedSubscript:@"hasHandleWithAllowedType"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"hasHandleWithAllowedType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactSignalSet setHasHandleWithAllowedType:](v5, "setHasHandleWithAllowedType:", [v54 BOOLValue]);
     }
 
-    v55 = [v4 objectForKeyedSubscript:@"isCommunalRequest"];
+    v55 = [dictionaryCopy objectForKeyedSubscript:@"isCommunalRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactSignalSet setIsCommunalRequest:](v5, "setIsCommunalRequest:", [v55 BOOLValue]);
     }
 
-    v56 = [v4 objectForKeyedSubscript:@"fractionOfCommunalDevicesMatchingCandidate"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"fractionOfCommunalDevicesMatchingCandidate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -410,7 +410,7 @@
     }
 
     v72 = v53;
-    v57 = [v4 objectForKeyedSubscript:@"isPlusSignal"];
+    v57 = [dictionaryCopy objectForKeyedSubscript:@"isPlusSignal"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -419,14 +419,14 @@
 
     v70 = v55;
     v71 = v54;
-    v58 = [v4 objectForKeyedSubscript:{@"isOnlyCandidate", v57}];
+    v58 = [dictionaryCopy objectForKeyedSubscript:{@"isOnlyCandidate", v57}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactSignalSet setIsOnlyCandidate:](v5, "setIsOnlyCandidate:", [v58 BOOLValue]);
     }
 
-    v59 = [v4 objectForKeyedSubscript:@"thirdPartyAppBundleId"];
+    v59 = [dictionaryCopy objectForKeyedSubscript:@"thirdPartyAppBundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -435,35 +435,35 @@
     }
 
     v69 = v56;
-    v61 = [v4 objectForKeyedSubscript:@"isQueryNormalized"];
+    v61 = [dictionaryCopy objectForKeyedSubscript:@"isQueryNormalized"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactSignalSet setIsQueryNormalized:](v5, "setIsQueryNormalized:", [v61 BOOLValue]);
     }
 
-    v62 = [v4 objectForKeyedSubscript:@"isQueryStrippedOfPunctuation"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"isQueryStrippedOfPunctuation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactSignalSet setIsQueryStrippedOfPunctuation:](v5, "setIsQueryStrippedOfPunctuation:", [v62 BOOLValue]);
     }
 
-    v63 = [v4 objectForKeyedSubscript:@"isQueryStrippedOfWhitespace"];
+    v63 = [dictionaryCopy objectForKeyedSubscript:@"isQueryStrippedOfWhitespace"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactSignalSet setIsQueryStrippedOfWhitespace:](v5, "setIsQueryStrippedOfWhitespace:", [v63 BOOLValue]);
     }
 
-    v64 = [v4 objectForKeyedSubscript:@"isQueryStrippedOfSymbols"];
+    v64 = [dictionaryCopy objectForKeyedSubscript:@"isQueryStrippedOfSymbols"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactSignalSet setIsQueryStrippedOfSymbols:](v5, "setIsQueryStrippedOfSymbols:", [v64 BOOLValue]);
     }
 
-    v65 = [v4 objectForKeyedSubscript:@"isAsrE3Signal"];
+    v65 = [dictionaryCopy objectForKeyedSubscript:@"isAsrE3Signal"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -476,30 +476,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEContactSignalSet)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEContactSignalSet)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEContactSignalSet *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEContactSignalSet *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEContactSignalSet *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -513,13 +513,13 @@
 - (id)dictionaryRepresentation
 {
   v86 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = &self->_isAsrE3Signal + 1;
   v5 = *(&self->_isAsrE3Signal + 1);
   if ((v5 & 8) != 0)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet areAllPrimaryContactTokensInQuery](self, "areAllPrimaryContactTokensInQuery")}];
-    [v3 setObject:v21 forKeyedSubscript:@"areAllPrimaryContactTokensInQuery"];
+    [dictionary setObject:v21 forKeyedSubscript:@"areAllPrimaryContactTokensInQuery"];
 
     v5 = *v4;
     if ((*v4 & 4) == 0)
@@ -540,13 +540,13 @@ LABEL_3:
   }
 
   v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet areAllQueryTokensInContact](self, "areAllQueryTokensInContact")}];
-  [v3 setObject:v22 forKeyedSubscript:@"areAllQueryTokensInContact"];
+  [dictionary setObject:v22 forKeyedSubscript:@"areAllQueryTokensInContact"];
 
   if ((*v4 & 0x800000) != 0)
   {
 LABEL_4:
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet areQueryDiacriticsRemoved](self, "areQueryDiacriticsRemoved")}];
-    [v3 setObject:v6 forKeyedSubscript:@"areQueryDiacriticsRemoved"];
+    [dictionary setObject:v6 forKeyedSubscript:@"areQueryDiacriticsRemoved"];
   }
 
 LABEL_5:
@@ -555,13 +555,13 @@ LABEL_5:
     v7 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactSignalSet *)self fractionOfCommunalDevicesMatchingCandidate];
     v8 = [v7 numberWithFloat:?];
-    [v3 setObject:v8 forKeyedSubscript:@"fractionOfCommunalDevicesMatchingCandidate"];
+    [dictionary setObject:v8 forKeyedSubscript:@"fractionOfCommunalDevicesMatchingCandidate"];
   }
 
   if ([(NSArray *)self->_handlesWithPrivacySignalSets count])
   {
-    v80 = v3;
-    v9 = [MEMORY[0x1E695DF70] array];
+    v80 = dictionary;
+    array = [MEMORY[0x1E695DF70] array];
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
@@ -581,16 +581,16 @@ LABEL_5:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v81 + 1) + 8 * i) dictionaryRepresentation];
-          if (v15)
+          dictionaryRepresentation = [*(*(&v81 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v9 addObject:v15];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v16 = [MEMORY[0x1E695DFB0] null];
-            [v9 addObject:v16];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -600,15 +600,15 @@ LABEL_5:
       while (v12);
     }
 
-    v3 = v80;
-    [v80 setObject:v9 forKeyedSubscript:@"handlesWithPrivacySignalSets"];
+    dictionary = v80;
+    [v80 setObject:array forKeyedSubscript:@"handlesWithPrivacySignalSets"];
   }
 
   v17 = *v4;
   if ((*v4 & 0x40000000) != 0)
   {
     v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet hasHandleWithAllowedType](self, "hasHandleWithAllowedType")}];
-    [v3 setObject:v23 forKeyedSubscript:@"hasHandleWithAllowedType"];
+    [dictionary setObject:v23 forKeyedSubscript:@"hasHandleWithAllowedType"];
 
     v17 = *v4;
     if ((*v4 & 0x20000000) == 0)
@@ -629,75 +629,75 @@ LABEL_21:
   }
 
   v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet hasHandleWithPreferredType](self, "hasHandleWithPreferredType")}];
-  [v3 setObject:v24 forKeyedSubscript:@"hasHandleWithPreferredType"];
+  [dictionary setObject:v24 forKeyedSubscript:@"hasHandleWithPreferredType"];
 
   if ((*v4 & 0x20) != 0)
   {
 LABEL_22:
     v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet hasSuggestedProperties](self, "hasSuggestedProperties")}];
-    [v3 setObject:v18 forKeyedSubscript:@"hasSuggestedProperties"];
+    [dictionary setObject:v18 forKeyedSubscript:@"hasSuggestedProperties"];
   }
 
 LABEL_23:
   if (self->_historyStats)
   {
-    v19 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStats];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    historyStats = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStats];
+    dictionaryRepresentation2 = [historyStats dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"historyStats"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"historyStats"];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v25 forKeyedSubscript:@"historyStats"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"historyStats"];
     }
   }
 
   if (self->_historyStatsInSameDomain)
   {
-    v26 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSameDomain];
-    v27 = [v26 dictionaryRepresentation];
-    if (v27)
+    historyStatsInSameDomain = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSameDomain];
+    dictionaryRepresentation3 = [historyStatsInSameDomain dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v27 forKeyedSubscript:@"historyStatsInSameDomain"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"historyStatsInSameDomain"];
     }
 
     else
     {
-      v28 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v28 forKeyedSubscript:@"historyStatsInSameDomain"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"historyStatsInSameDomain"];
     }
   }
 
   if (self->_historyStatsInSiriRequests)
   {
-    v29 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSiriRequests];
-    v30 = [v29 dictionaryRepresentation];
-    if (v30)
+    historyStatsInSiriRequests = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSiriRequests];
+    dictionaryRepresentation4 = [historyStatsInSiriRequests dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v30 forKeyedSubscript:@"historyStatsInSiriRequests"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"historyStatsInSiriRequests"];
     }
 
     else
     {
-      v31 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v31 forKeyedSubscript:@"historyStatsInSiriRequests"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"historyStatsInSiriRequests"];
     }
   }
 
   if (*(&self->_has + 1) < 0)
   {
     v32 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isAsrE3Signal](self, "isAsrE3Signal")}];
-    [v3 setObject:v32 forKeyedSubscript:@"isAsrE3Signal"];
+    [dictionary setObject:v32 forKeyedSubscript:@"isAsrE3Signal"];
   }
 
   v33 = *v4;
   if ((*v4 & 0x80000000) != 0)
   {
     v62 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isCommunalRequest](self, "isCommunalRequest")}];
-    [v3 setObject:v62 forKeyedSubscript:@"isCommunalRequest"];
+    [dictionary setObject:v62 forKeyedSubscript:@"isCommunalRequest"];
 
     v33 = *v4;
     if ((*v4 & 0x8000000) == 0)
@@ -718,7 +718,7 @@ LABEL_48:
   }
 
   v63 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isFavorite](self, "isFavorite")}];
-  [v3 setObject:v63 forKeyedSubscript:@"isFavorite"];
+  [dictionary setObject:v63 forKeyedSubscript:@"isFavorite"];
 
   v33 = *v4;
   if ((*v4 & 0x100) == 0)
@@ -734,7 +734,7 @@ LABEL_49:
 
 LABEL_106:
   v64 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isFromNLXSearch](self, "isFromNLXSearch")}];
-  [v3 setObject:v64 forKeyedSubscript:@"isFromNLXSearch"];
+  [dictionary setObject:v64 forKeyedSubscript:@"isFromNLXSearch"];
 
   v33 = *v4;
   if ((*v4 & 0x200) == 0)
@@ -750,7 +750,7 @@ LABEL_50:
 
 LABEL_107:
   v65 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isFromSRRSearch](self, "isFromSRRSearch")}];
-  [v3 setObject:v65 forKeyedSubscript:@"isFromSRRSearch"];
+  [dictionary setObject:v65 forKeyedSubscript:@"isFromSRRSearch"];
 
   v33 = *v4;
   if ((*v4 & 0x80) == 0)
@@ -766,7 +766,7 @@ LABEL_51:
 
 LABEL_108:
   v66 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isFromStandardSearch](self, "isFromStandardSearch")}];
-  [v3 setObject:v66 forKeyedSubscript:@"isFromStandardSearch"];
+  [dictionary setObject:v66 forKeyedSubscript:@"isFromStandardSearch"];
 
   v33 = *v4;
   if ((*v4 & 0x10) == 0)
@@ -782,7 +782,7 @@ LABEL_52:
 
 LABEL_109:
   v67 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isHypocorism](self, "isHypocorism")}];
-  [v3 setObject:v67 forKeyedSubscript:@"isHypocorism"];
+  [dictionary setObject:v67 forKeyedSubscript:@"isHypocorism"];
 
   v33 = *v4;
   if ((*v4 & 0x80000) == 0)
@@ -798,7 +798,7 @@ LABEL_53:
 
 LABEL_110:
   v68 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isMeCard](self, "isMeCard")}];
-  [v3 setObject:v68 forKeyedSubscript:@"isMeCard"];
+  [dictionary setObject:v68 forKeyedSubscript:@"isMeCard"];
 
   v33 = *v4;
   if ((*v4 & 0x100000) == 0)
@@ -814,57 +814,57 @@ LABEL_54:
 
 LABEL_111:
   v69 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isMeCardRelation](self, "isMeCardRelation")}];
-  [v3 setObject:v69 forKeyedSubscript:@"isMeCardRelation"];
+  [dictionary setObject:v69 forKeyedSubscript:@"isMeCardRelation"];
 
   if ((*v4 & 0x200000) != 0)
   {
 LABEL_55:
     v34 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isMeCardRelationExactMatch](self, "isMeCardRelationExactMatch")}];
-    [v3 setObject:v34 forKeyedSubscript:@"isMeCardRelationExactMatch"];
+    [dictionary setObject:v34 forKeyedSubscript:@"isMeCardRelationExactMatch"];
   }
 
 LABEL_56:
   if ((*(&self->_has + 1) & 4) != 0)
   {
     v35 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isOnlyCandidate](self, "isOnlyCandidate")}];
-    [v3 setObject:v35 forKeyedSubscript:@"isOnlyCandidate"];
+    [dictionary setObject:v35 forKeyedSubscript:@"isOnlyCandidate"];
   }
 
   if ((*v4 & 0x40) != 0)
   {
     v36 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isPartialNameMatch](self, "isPartialNameMatch")}];
-    [v3 setObject:v36 forKeyedSubscript:@"isPartialNameMatch"];
+    [dictionary setObject:v36 forKeyedSubscript:@"isPartialNameMatch"];
   }
 
   if ((*(&self->_has + 1) & 2) != 0)
   {
     v37 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isPlusSignal](self, "isPlusSignal")}];
-    [v3 setObject:v37 forKeyedSubscript:@"isPlusSignal"];
+    [dictionary setObject:v37 forKeyedSubscript:@"isPlusSignal"];
   }
 
   if (*&self->_has)
   {
     v38 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isQueryNameDerivedFromRelationshipLabel](self, "isQueryNameDerivedFromRelationshipLabel")}];
-    [v3 setObject:v38 forKeyedSubscript:@"isQueryNameDerivedFromRelationshipLabel"];
+    [dictionary setObject:v38 forKeyedSubscript:@"isQueryNameDerivedFromRelationshipLabel"];
   }
 
   if ((*(&self->_has + 1) & 8) != 0)
   {
     v39 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isQueryNormalized](self, "isQueryNormalized")}];
-    [v3 setObject:v39 forKeyedSubscript:@"isQueryNormalized"];
+    [dictionary setObject:v39 forKeyedSubscript:@"isQueryNormalized"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v40 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isQueryRelationshipLabelDerivedFromName](self, "isQueryRelationshipLabelDerivedFromName")}];
-    [v3 setObject:v40 forKeyedSubscript:@"isQueryRelationshipLabelDerivedFromName"];
+    [dictionary setObject:v40 forKeyedSubscript:@"isQueryRelationshipLabelDerivedFromName"];
   }
 
   v41 = *(&self->_has + 1);
   if ((v41 & 0x10) != 0)
   {
     v42 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isQueryStrippedOfPunctuation](self, "isQueryStrippedOfPunctuation")}];
-    [v3 setObject:v42 forKeyedSubscript:@"isQueryStrippedOfPunctuation"];
+    [dictionary setObject:v42 forKeyedSubscript:@"isQueryStrippedOfPunctuation"];
 
     v41 = *(&self->_has + 1);
   }
@@ -872,26 +872,26 @@ LABEL_56:
   if ((v41 & 0x40) != 0)
   {
     v43 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isQueryStrippedOfSymbols](self, "isQueryStrippedOfSymbols")}];
-    [v3 setObject:v43 forKeyedSubscript:@"isQueryStrippedOfSymbols"];
+    [dictionary setObject:v43 forKeyedSubscript:@"isQueryStrippedOfSymbols"];
   }
 
   if (*v4)
   {
     v44 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isQueryStrippedOfTitles](self, "isQueryStrippedOfTitles")}];
-    [v3 setObject:v44 forKeyedSubscript:@"isQueryStrippedOfTitles"];
+    [dictionary setObject:v44 forKeyedSubscript:@"isQueryStrippedOfTitles"];
   }
 
   if ((*(&self->_has + 1) & 0x20) != 0)
   {
     v45 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isQueryStrippedOfWhitespace](self, "isQueryStrippedOfWhitespace")}];
-    [v3 setObject:v45 forKeyedSubscript:@"isQueryStrippedOfWhitespace"];
+    [dictionary setObject:v45 forKeyedSubscript:@"isQueryStrippedOfWhitespace"];
   }
 
   v46 = *v4;
   if ((*v4 & 0x1000) != 0)
   {
     v50 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isRecent](self, "isRecent")}];
-    [v3 setObject:v50 forKeyedSubscript:@"isRecent"];
+    [dictionary setObject:v50 forKeyedSubscript:@"isRecent"];
 
     v46 = *v4;
     if ((*v4 & 0x2000) == 0)
@@ -912,7 +912,7 @@ LABEL_78:
   }
 
   v51 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isRecentInSameDomain](self, "isRecentInSameDomain")}];
-  [v3 setObject:v51 forKeyedSubscript:@"isRecentInSameDomain"];
+  [dictionary setObject:v51 forKeyedSubscript:@"isRecentInSameDomain"];
 
   v46 = *v4;
   if ((*v4 & 0x4000) == 0)
@@ -928,7 +928,7 @@ LABEL_79:
 
 LABEL_94:
   v52 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isRecentInSiriRequest](self, "isRecentInSiriRequest")}];
-  [v3 setObject:v52 forKeyedSubscript:@"isRecentInSiriRequest"];
+  [dictionary setObject:v52 forKeyedSubscript:@"isRecentInSiriRequest"];
 
   v46 = *v4;
   if ((*v4 & 0x8000) == 0)
@@ -944,7 +944,7 @@ LABEL_80:
 
 LABEL_95:
   v53 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isRecentlyCorrected](self, "isRecentlyCorrected")}];
-  [v3 setObject:v53 forKeyedSubscript:@"isRecentlyCorrected"];
+  [dictionary setObject:v53 forKeyedSubscript:@"isRecentlyCorrected"];
 
   v46 = *v4;
   if ((*v4 & 0x400000) == 0)
@@ -960,7 +960,7 @@ LABEL_81:
 
 LABEL_96:
   v54 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isRelationAlias](self, "isRelationAlias")}];
-  [v3 setObject:v54 forKeyedSubscript:@"isRelationAlias"];
+  [dictionary setObject:v54 forKeyedSubscript:@"isRelationAlias"];
 
   v46 = *v4;
   if ((*v4 & 2) == 0)
@@ -976,7 +976,7 @@ LABEL_82:
 
 LABEL_97:
   v55 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isSuggestedContact](self, "isSuggestedContact")}];
-  [v3 setObject:v55 forKeyedSubscript:@"isSuggestedContact"];
+  [dictionary setObject:v55 forKeyedSubscript:@"isSuggestedContact"];
 
   v46 = *v4;
   if ((*v4 & 0x4000000) == 0)
@@ -992,7 +992,7 @@ LABEL_83:
 
 LABEL_98:
   v56 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isThirdPartyMatch](self, "isThirdPartyMatch")}];
-  [v3 setObject:v56 forKeyedSubscript:@"isThirdPartyMatch"];
+  [dictionary setObject:v56 forKeyedSubscript:@"isThirdPartyMatch"];
 
   v46 = *v4;
   if ((*v4 & 0x10000000) == 0)
@@ -1008,7 +1008,7 @@ LABEL_84:
 
 LABEL_99:
   v57 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactSignalSet isTransliterated](self, "isTransliterated")}];
-  [v3 setObject:v57 forKeyedSubscript:@"isTransliterated"];
+  [dictionary setObject:v57 forKeyedSubscript:@"isTransliterated"];
 
   v46 = *v4;
   if ((*v4 & 0x400) == 0)
@@ -1026,7 +1026,7 @@ LABEL_100:
   v58 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactSignalSet *)self nlxScore];
   v59 = [v58 numberWithFloat:?];
-  [v3 setObject:v59 forKeyedSubscript:@"nlxScore"];
+  [dictionary setObject:v59 forKeyedSubscript:@"nlxScore"];
 
   v46 = *v4;
   if ((*v4 & 0x10000) == 0)
@@ -1042,7 +1042,7 @@ LABEL_86:
 
 LABEL_101:
   v60 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEContactSignalSet recencyRank](self, "recencyRank")}];
-  [v3 setObject:v60 forKeyedSubscript:@"recencyRank"];
+  [dictionary setObject:v60 forKeyedSubscript:@"recencyRank"];
 
   v46 = *v4;
   if ((*v4 & 0x20000) == 0)
@@ -1058,45 +1058,45 @@ LABEL_87:
 
 LABEL_102:
   v61 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEContactSignalSet recencyRankInSameDomain](self, "recencyRankInSameDomain")}];
-  [v3 setObject:v61 forKeyedSubscript:@"recencyRankInSameDomain"];
+  [dictionary setObject:v61 forKeyedSubscript:@"recencyRankInSameDomain"];
 
   if ((*v4 & 0x40000) != 0)
   {
 LABEL_88:
     v47 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEContactSignalSet recencyRankInSiriRequest](self, "recencyRankInSiriRequest")}];
-    [v3 setObject:v47 forKeyedSubscript:@"recencyRankInSiriRequest"];
+    [dictionary setObject:v47 forKeyedSubscript:@"recencyRankInSiriRequest"];
   }
 
 LABEL_89:
   if (self->_requestMatchSignalSet)
   {
-    v48 = [(INFERENCESchemaINFERENCEContactSignalSet *)self requestMatchSignalSet];
-    v49 = [v48 dictionaryRepresentation];
-    if (v49)
+    requestMatchSignalSet = [(INFERENCESchemaINFERENCEContactSignalSet *)self requestMatchSignalSet];
+    dictionaryRepresentation5 = [requestMatchSignalSet dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v49 forKeyedSubscript:@"requestMatchSignalSet"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"requestMatchSignalSet"];
     }
 
     else
     {
-      v70 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v70 forKeyedSubscript:@"requestMatchSignalSet"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"requestMatchSignalSet"];
     }
   }
 
   if (self->_speechAlternativeRanks)
   {
-    v71 = [(INFERENCESchemaINFERENCEContactSignalSet *)self speechAlternativeRanks];
-    v72 = [v71 dictionaryRepresentation];
-    if (v72)
+    speechAlternativeRanks = [(INFERENCESchemaINFERENCEContactSignalSet *)self speechAlternativeRanks];
+    dictionaryRepresentation6 = [speechAlternativeRanks dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v72 forKeyedSubscript:@"speechAlternativeRanks"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"speechAlternativeRanks"];
     }
 
     else
     {
-      v73 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v73 forKeyedSubscript:@"speechAlternativeRanks"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"speechAlternativeRanks"];
     }
   }
 
@@ -1105,20 +1105,20 @@ LABEL_89:
     v74 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactSignalSet *)self srrScore];
     v75 = [v74 numberWithFloat:?];
-    [v3 setObject:v75 forKeyedSubscript:@"srrScore"];
+    [dictionary setObject:v75 forKeyedSubscript:@"srrScore"];
   }
 
   if (self->_thirdPartyAppBundleId)
   {
-    v76 = [(INFERENCESchemaINFERENCEContactSignalSet *)self thirdPartyAppBundleId];
-    v77 = [v76 copy];
-    [v3 setObject:v77 forKeyedSubscript:@"thirdPartyAppBundleId"];
+    thirdPartyAppBundleId = [(INFERENCESchemaINFERENCEContactSignalSet *)self thirdPartyAppBundleId];
+    v77 = [thirdPartyAppBundleId copy];
+    [dictionary setObject:v77 forKeyedSubscript:@"thirdPartyAppBundleId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v78 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v78 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -1736,28 +1736,28 @@ LABEL_102:
   return v71 ^ v72 ^ v70 ^ v69 ^ v68 ^ v67 ^ v66 ^ v65 ^ v64 ^ v63 ^ v62 ^ v61 ^ v60 ^ v59 ^ v58 ^ v57 ^ v56 ^ v55 ^ v54 ^ v53 ^ v52 ^ v51 ^ v50 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v18 ^ v22 ^ v23 ^ v24 ^ v25 ^ v30 ^ v31 ^ v32 ^ v33 ^ v34 ^ v35 ^ v36 ^ v37;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_173;
   }
 
-  v5 = [(INFERENCESchemaINFERENCEContactSignalSet *)self speechAlternativeRanks];
-  v6 = [v4 speechAlternativeRanks];
-  if ((v5 != 0) == (v6 == 0))
+  speechAlternativeRanks = [(INFERENCESchemaINFERENCEContactSignalSet *)self speechAlternativeRanks];
+  speechAlternativeRanks2 = [equalCopy speechAlternativeRanks];
+  if ((speechAlternativeRanks != 0) == (speechAlternativeRanks2 == 0))
   {
     goto LABEL_172;
   }
 
-  v7 = [(INFERENCESchemaINFERENCEContactSignalSet *)self speechAlternativeRanks];
-  if (v7)
+  speechAlternativeRanks3 = [(INFERENCESchemaINFERENCEContactSignalSet *)self speechAlternativeRanks];
+  if (speechAlternativeRanks3)
   {
-    v8 = v7;
-    v9 = [(INFERENCESchemaINFERENCEContactSignalSet *)self speechAlternativeRanks];
-    v10 = [v4 speechAlternativeRanks];
-    v11 = [v9 isEqual:v10];
+    v8 = speechAlternativeRanks3;
+    speechAlternativeRanks4 = [(INFERENCESchemaINFERENCEContactSignalSet *)self speechAlternativeRanks];
+    speechAlternativeRanks5 = [equalCopy speechAlternativeRanks];
+    v11 = [speechAlternativeRanks4 isEqual:speechAlternativeRanks5];
 
     if (!v11)
     {
@@ -1771,8 +1771,8 @@ LABEL_102:
 
   v12 = &self->_isAsrE3Signal + 1;
   v13 = *(&self->_isAsrE3Signal + 1);
-  v14 = (v4 + 141);
-  v15 = *(v4 + 141);
+  v14 = (equalCopy + 141);
+  v15 = *(equalCopy + 141);
   if ((v13 & 1) != (v15 & 1))
   {
     goto LABEL_173;
@@ -1781,7 +1781,7 @@ LABEL_102:
   if (v13)
   {
     isQueryStrippedOfTitles = self->_isQueryStrippedOfTitles;
-    if (isQueryStrippedOfTitles != [v4 isQueryStrippedOfTitles])
+    if (isQueryStrippedOfTitles != [equalCopy isQueryStrippedOfTitles])
     {
       goto LABEL_173;
     }
@@ -1799,7 +1799,7 @@ LABEL_102:
   if (v17)
   {
     isSuggestedContact = self->_isSuggestedContact;
-    if (isSuggestedContact != [v4 isSuggestedContact])
+    if (isSuggestedContact != [equalCopy isSuggestedContact])
     {
       goto LABEL_173;
     }
@@ -1817,7 +1817,7 @@ LABEL_102:
   if (v19)
   {
     areAllQueryTokensInContact = self->_areAllQueryTokensInContact;
-    if (areAllQueryTokensInContact != [v4 areAllQueryTokensInContact])
+    if (areAllQueryTokensInContact != [equalCopy areAllQueryTokensInContact])
     {
       goto LABEL_173;
     }
@@ -1835,7 +1835,7 @@ LABEL_102:
   if (v21)
   {
     areAllPrimaryContactTokensInQuery = self->_areAllPrimaryContactTokensInQuery;
-    if (areAllPrimaryContactTokensInQuery != [v4 areAllPrimaryContactTokensInQuery])
+    if (areAllPrimaryContactTokensInQuery != [equalCopy areAllPrimaryContactTokensInQuery])
     {
       goto LABEL_173;
     }
@@ -1853,7 +1853,7 @@ LABEL_102:
   if (v23)
   {
     isHypocorism = self->_isHypocorism;
-    if (isHypocorism != [v4 isHypocorism])
+    if (isHypocorism != [equalCopy isHypocorism])
     {
       goto LABEL_173;
     }
@@ -1871,7 +1871,7 @@ LABEL_102:
   if (v25)
   {
     hasSuggestedProperties = self->_hasSuggestedProperties;
-    if (hasSuggestedProperties != [v4 hasSuggestedProperties])
+    if (hasSuggestedProperties != [equalCopy hasSuggestedProperties])
     {
       goto LABEL_173;
     }
@@ -1889,7 +1889,7 @@ LABEL_102:
   if (v27)
   {
     isPartialNameMatch = self->_isPartialNameMatch;
-    if (isPartialNameMatch != [v4 isPartialNameMatch])
+    if (isPartialNameMatch != [equalCopy isPartialNameMatch])
     {
       goto LABEL_173;
     }
@@ -1907,7 +1907,7 @@ LABEL_102:
   if (v29)
   {
     isFromStandardSearch = self->_isFromStandardSearch;
-    if (isFromStandardSearch != [v4 isFromStandardSearch])
+    if (isFromStandardSearch != [equalCopy isFromStandardSearch])
     {
       goto LABEL_173;
     }
@@ -1925,7 +1925,7 @@ LABEL_102:
   if (v31)
   {
     isFromNLXSearch = self->_isFromNLXSearch;
-    if (isFromNLXSearch != [v4 isFromNLXSearch])
+    if (isFromNLXSearch != [equalCopy isFromNLXSearch])
     {
       goto LABEL_173;
     }
@@ -1943,7 +1943,7 @@ LABEL_102:
   if (v33)
   {
     isFromSRRSearch = self->_isFromSRRSearch;
-    if (isFromSRRSearch != [v4 isFromSRRSearch])
+    if (isFromSRRSearch != [equalCopy isFromSRRSearch])
     {
       goto LABEL_173;
     }
@@ -1961,7 +1961,7 @@ LABEL_102:
   if (v35)
   {
     nlxScore = self->_nlxScore;
-    [v4 nlxScore];
+    [equalCopy nlxScore];
     if (nlxScore != v37)
     {
       goto LABEL_173;
@@ -1980,7 +1980,7 @@ LABEL_102:
   if (v38)
   {
     srrScore = self->_srrScore;
-    [v4 srrScore];
+    [equalCopy srrScore];
     if (srrScore != v40)
     {
       goto LABEL_173;
@@ -1999,7 +1999,7 @@ LABEL_102:
   if (v41)
   {
     isRecent = self->_isRecent;
-    if (isRecent != [v4 isRecent])
+    if (isRecent != [equalCopy isRecent])
     {
       goto LABEL_173;
     }
@@ -2017,7 +2017,7 @@ LABEL_102:
   if (v43)
   {
     isRecentInSameDomain = self->_isRecentInSameDomain;
-    if (isRecentInSameDomain != [v4 isRecentInSameDomain])
+    if (isRecentInSameDomain != [equalCopy isRecentInSameDomain])
     {
       goto LABEL_173;
     }
@@ -2035,7 +2035,7 @@ LABEL_102:
   if (v45)
   {
     isRecentInSiriRequest = self->_isRecentInSiriRequest;
-    if (isRecentInSiriRequest != [v4 isRecentInSiriRequest])
+    if (isRecentInSiriRequest != [equalCopy isRecentInSiriRequest])
     {
       goto LABEL_173;
     }
@@ -2053,7 +2053,7 @@ LABEL_102:
   if (v47)
   {
     isRecentlyCorrected = self->_isRecentlyCorrected;
-    if (isRecentlyCorrected != [v4 isRecentlyCorrected])
+    if (isRecentlyCorrected != [equalCopy isRecentlyCorrected])
     {
       goto LABEL_173;
     }
@@ -2071,7 +2071,7 @@ LABEL_102:
   if (v49)
   {
     recencyRank = self->_recencyRank;
-    if (recencyRank != [v4 recencyRank])
+    if (recencyRank != [equalCopy recencyRank])
     {
       goto LABEL_173;
     }
@@ -2089,7 +2089,7 @@ LABEL_102:
   if (v51)
   {
     recencyRankInSameDomain = self->_recencyRankInSameDomain;
-    if (recencyRankInSameDomain != [v4 recencyRankInSameDomain])
+    if (recencyRankInSameDomain != [equalCopy recencyRankInSameDomain])
     {
       goto LABEL_173;
     }
@@ -2107,26 +2107,26 @@ LABEL_102:
   if (v53)
   {
     recencyRankInSiriRequest = self->_recencyRankInSiriRequest;
-    if (recencyRankInSiriRequest != [v4 recencyRankInSiriRequest])
+    if (recencyRankInSiriRequest != [equalCopy recencyRankInSiriRequest])
     {
       goto LABEL_173;
     }
   }
 
-  v5 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStats];
-  v6 = [v4 historyStats];
-  if ((v5 != 0) == (v6 == 0))
+  speechAlternativeRanks = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStats];
+  speechAlternativeRanks2 = [equalCopy historyStats];
+  if ((speechAlternativeRanks != 0) == (speechAlternativeRanks2 == 0))
   {
     goto LABEL_172;
   }
 
-  v55 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStats];
-  if (v55)
+  historyStats = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStats];
+  if (historyStats)
   {
-    v56 = v55;
-    v57 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStats];
-    v58 = [v4 historyStats];
-    v59 = [v57 isEqual:v58];
+    v56 = historyStats;
+    historyStats2 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStats];
+    historyStats3 = [equalCopy historyStats];
+    v59 = [historyStats2 isEqual:historyStats3];
 
     if (!v59)
     {
@@ -2138,20 +2138,20 @@ LABEL_102:
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSameDomain];
-  v6 = [v4 historyStatsInSameDomain];
-  if ((v5 != 0) == (v6 == 0))
+  speechAlternativeRanks = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSameDomain];
+  speechAlternativeRanks2 = [equalCopy historyStatsInSameDomain];
+  if ((speechAlternativeRanks != 0) == (speechAlternativeRanks2 == 0))
   {
     goto LABEL_172;
   }
 
-  v60 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSameDomain];
-  if (v60)
+  historyStatsInSameDomain = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSameDomain];
+  if (historyStatsInSameDomain)
   {
-    v61 = v60;
-    v62 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSameDomain];
-    v63 = [v4 historyStatsInSameDomain];
-    v64 = [v62 isEqual:v63];
+    v61 = historyStatsInSameDomain;
+    historyStatsInSameDomain2 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSameDomain];
+    historyStatsInSameDomain3 = [equalCopy historyStatsInSameDomain];
+    v64 = [historyStatsInSameDomain2 isEqual:historyStatsInSameDomain3];
 
     if (!v64)
     {
@@ -2163,20 +2163,20 @@ LABEL_102:
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSiriRequests];
-  v6 = [v4 historyStatsInSiriRequests];
-  if ((v5 != 0) == (v6 == 0))
+  speechAlternativeRanks = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSiriRequests];
+  speechAlternativeRanks2 = [equalCopy historyStatsInSiriRequests];
+  if ((speechAlternativeRanks != 0) == (speechAlternativeRanks2 == 0))
   {
     goto LABEL_172;
   }
 
-  v65 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSiriRequests];
-  if (v65)
+  historyStatsInSiriRequests = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSiriRequests];
+  if (historyStatsInSiriRequests)
   {
-    v66 = v65;
-    v67 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSiriRequests];
-    v68 = [v4 historyStatsInSiriRequests];
-    v69 = [v67 isEqual:v68];
+    v66 = historyStatsInSiriRequests;
+    historyStatsInSiriRequests2 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSiriRequests];
+    historyStatsInSiriRequests3 = [equalCopy historyStatsInSiriRequests];
+    v69 = [historyStatsInSiriRequests2 isEqual:historyStatsInSiriRequests3];
 
     if (!v69)
     {
@@ -2199,7 +2199,7 @@ LABEL_102:
   if (v71)
   {
     isMeCard = self->_isMeCard;
-    if (isMeCard != [v4 isMeCard])
+    if (isMeCard != [equalCopy isMeCard])
     {
       goto LABEL_173;
     }
@@ -2217,7 +2217,7 @@ LABEL_102:
   if (v74)
   {
     isMeCardRelation = self->_isMeCardRelation;
-    if (isMeCardRelation != [v4 isMeCardRelation])
+    if (isMeCardRelation != [equalCopy isMeCardRelation])
     {
       goto LABEL_173;
     }
@@ -2235,7 +2235,7 @@ LABEL_102:
   if (v76)
   {
     isMeCardRelationExactMatch = self->_isMeCardRelationExactMatch;
-    if (isMeCardRelationExactMatch != [v4 isMeCardRelationExactMatch])
+    if (isMeCardRelationExactMatch != [equalCopy isMeCardRelationExactMatch])
     {
       goto LABEL_173;
     }
@@ -2253,7 +2253,7 @@ LABEL_102:
   if (v78)
   {
     isRelationAlias = self->_isRelationAlias;
-    if (isRelationAlias != [v4 isRelationAlias])
+    if (isRelationAlias != [equalCopy isRelationAlias])
     {
       goto LABEL_173;
     }
@@ -2271,7 +2271,7 @@ LABEL_102:
   if (v80)
   {
     areQueryDiacriticsRemoved = self->_areQueryDiacriticsRemoved;
-    if (areQueryDiacriticsRemoved != [v4 areQueryDiacriticsRemoved])
+    if (areQueryDiacriticsRemoved != [equalCopy areQueryDiacriticsRemoved])
     {
       goto LABEL_173;
     }
@@ -2289,7 +2289,7 @@ LABEL_102:
   if (v82)
   {
     isQueryNameDerivedFromRelationshipLabel = self->_isQueryNameDerivedFromRelationshipLabel;
-    if (isQueryNameDerivedFromRelationshipLabel != [v4 isQueryNameDerivedFromRelationshipLabel])
+    if (isQueryNameDerivedFromRelationshipLabel != [equalCopy isQueryNameDerivedFromRelationshipLabel])
     {
       goto LABEL_173;
     }
@@ -2307,7 +2307,7 @@ LABEL_102:
   if (v84)
   {
     isQueryRelationshipLabelDerivedFromName = self->_isQueryRelationshipLabelDerivedFromName;
-    if (isQueryRelationshipLabelDerivedFromName != [v4 isQueryRelationshipLabelDerivedFromName])
+    if (isQueryRelationshipLabelDerivedFromName != [equalCopy isQueryRelationshipLabelDerivedFromName])
     {
       goto LABEL_173;
     }
@@ -2325,7 +2325,7 @@ LABEL_102:
   if (v86)
   {
     isThirdPartyMatch = self->_isThirdPartyMatch;
-    if (isThirdPartyMatch != [v4 isThirdPartyMatch])
+    if (isThirdPartyMatch != [equalCopy isThirdPartyMatch])
     {
       goto LABEL_173;
     }
@@ -2343,7 +2343,7 @@ LABEL_102:
   if (v88)
   {
     isFavorite = self->_isFavorite;
-    if (isFavorite != [v4 isFavorite])
+    if (isFavorite != [equalCopy isFavorite])
     {
       goto LABEL_173;
     }
@@ -2361,26 +2361,26 @@ LABEL_102:
   if (v90)
   {
     isTransliterated = self->_isTransliterated;
-    if (isTransliterated != [v4 isTransliterated])
+    if (isTransliterated != [equalCopy isTransliterated])
     {
       goto LABEL_173;
     }
   }
 
-  v5 = [(INFERENCESchemaINFERENCEContactSignalSet *)self requestMatchSignalSet];
-  v6 = [v4 requestMatchSignalSet];
-  if ((v5 != 0) == (v6 == 0))
+  speechAlternativeRanks = [(INFERENCESchemaINFERENCEContactSignalSet *)self requestMatchSignalSet];
+  speechAlternativeRanks2 = [equalCopy requestMatchSignalSet];
+  if ((speechAlternativeRanks != 0) == (speechAlternativeRanks2 == 0))
   {
     goto LABEL_172;
   }
 
-  v92 = [(INFERENCESchemaINFERENCEContactSignalSet *)self requestMatchSignalSet];
-  if (v92)
+  requestMatchSignalSet = [(INFERENCESchemaINFERENCEContactSignalSet *)self requestMatchSignalSet];
+  if (requestMatchSignalSet)
   {
-    v93 = v92;
-    v94 = [(INFERENCESchemaINFERENCEContactSignalSet *)self requestMatchSignalSet];
-    v95 = [v4 requestMatchSignalSet];
-    v96 = [v94 isEqual:v95];
+    v93 = requestMatchSignalSet;
+    requestMatchSignalSet2 = [(INFERENCESchemaINFERENCEContactSignalSet *)self requestMatchSignalSet];
+    requestMatchSignalSet3 = [equalCopy requestMatchSignalSet];
+    v96 = [requestMatchSignalSet2 isEqual:requestMatchSignalSet3];
 
     if (!v96)
     {
@@ -2392,20 +2392,20 @@ LABEL_102:
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEContactSignalSet *)self handlesWithPrivacySignalSets];
-  v6 = [v4 handlesWithPrivacySignalSets];
-  if ((v5 != 0) == (v6 == 0))
+  speechAlternativeRanks = [(INFERENCESchemaINFERENCEContactSignalSet *)self handlesWithPrivacySignalSets];
+  speechAlternativeRanks2 = [equalCopy handlesWithPrivacySignalSets];
+  if ((speechAlternativeRanks != 0) == (speechAlternativeRanks2 == 0))
   {
     goto LABEL_172;
   }
 
-  v97 = [(INFERENCESchemaINFERENCEContactSignalSet *)self handlesWithPrivacySignalSets];
-  if (v97)
+  handlesWithPrivacySignalSets = [(INFERENCESchemaINFERENCEContactSignalSet *)self handlesWithPrivacySignalSets];
+  if (handlesWithPrivacySignalSets)
   {
-    v98 = v97;
-    v99 = [(INFERENCESchemaINFERENCEContactSignalSet *)self handlesWithPrivacySignalSets];
-    v100 = [v4 handlesWithPrivacySignalSets];
-    v101 = [v99 isEqual:v100];
+    v98 = handlesWithPrivacySignalSets;
+    handlesWithPrivacySignalSets2 = [(INFERENCESchemaINFERENCEContactSignalSet *)self handlesWithPrivacySignalSets];
+    handlesWithPrivacySignalSets3 = [equalCopy handlesWithPrivacySignalSets];
+    v101 = [handlesWithPrivacySignalSets2 isEqual:handlesWithPrivacySignalSets3];
 
     if (!v101)
     {
@@ -2428,7 +2428,7 @@ LABEL_102:
   if (v103)
   {
     hasHandleWithPreferredType = self->_hasHandleWithPreferredType;
-    if (hasHandleWithPreferredType != [v4 hasHandleWithPreferredType])
+    if (hasHandleWithPreferredType != [equalCopy hasHandleWithPreferredType])
     {
       goto LABEL_173;
     }
@@ -2446,7 +2446,7 @@ LABEL_102:
   if (v106)
   {
     hasHandleWithAllowedType = self->_hasHandleWithAllowedType;
-    if (hasHandleWithAllowedType != [v4 hasHandleWithAllowedType])
+    if (hasHandleWithAllowedType != [equalCopy hasHandleWithAllowedType])
     {
       goto LABEL_173;
     }
@@ -2463,14 +2463,14 @@ LABEL_102:
   if ((v102 & 0x80000000) != 0)
   {
     isCommunalRequest = self->_isCommunalRequest;
-    if (isCommunalRequest != [v4 isCommunalRequest])
+    if (isCommunalRequest != [equalCopy isCommunalRequest])
     {
       goto LABEL_173;
     }
   }
 
   v109 = *(&self->_has + 1);
-  v110 = v4[145];
+  v110 = equalCopy[145];
   if ((v109 & 1) != (v110 & 1))
   {
     goto LABEL_173;
@@ -2479,14 +2479,14 @@ LABEL_102:
   if (v109)
   {
     fractionOfCommunalDevicesMatchingCandidate = self->_fractionOfCommunalDevicesMatchingCandidate;
-    [v4 fractionOfCommunalDevicesMatchingCandidate];
+    [equalCopy fractionOfCommunalDevicesMatchingCandidate];
     if (fractionOfCommunalDevicesMatchingCandidate != v112)
     {
       goto LABEL_173;
     }
 
     v109 = *(&self->_has + 1);
-    v110 = v4[145];
+    v110 = equalCopy[145];
   }
 
   v113 = (v109 >> 1) & 1;
@@ -2498,13 +2498,13 @@ LABEL_102:
   if (v113)
   {
     isPlusSignal = self->_isPlusSignal;
-    if (isPlusSignal != [v4 isPlusSignal])
+    if (isPlusSignal != [equalCopy isPlusSignal])
     {
       goto LABEL_173;
     }
 
     v109 = *(&self->_has + 1);
-    v110 = v4[145];
+    v110 = equalCopy[145];
   }
 
   v115 = (v109 >> 2) & 1;
@@ -2516,28 +2516,28 @@ LABEL_102:
   if (v115)
   {
     isOnlyCandidate = self->_isOnlyCandidate;
-    if (isOnlyCandidate != [v4 isOnlyCandidate])
+    if (isOnlyCandidate != [equalCopy isOnlyCandidate])
     {
       goto LABEL_173;
     }
   }
 
-  v5 = [(INFERENCESchemaINFERENCEContactSignalSet *)self thirdPartyAppBundleId];
-  v6 = [v4 thirdPartyAppBundleId];
-  if ((v5 != 0) == (v6 == 0))
+  speechAlternativeRanks = [(INFERENCESchemaINFERENCEContactSignalSet *)self thirdPartyAppBundleId];
+  speechAlternativeRanks2 = [equalCopy thirdPartyAppBundleId];
+  if ((speechAlternativeRanks != 0) == (speechAlternativeRanks2 == 0))
   {
 LABEL_172:
 
     goto LABEL_173;
   }
 
-  v117 = [(INFERENCESchemaINFERENCEContactSignalSet *)self thirdPartyAppBundleId];
-  if (v117)
+  thirdPartyAppBundleId = [(INFERENCESchemaINFERENCEContactSignalSet *)self thirdPartyAppBundleId];
+  if (thirdPartyAppBundleId)
   {
-    v118 = v117;
-    v119 = [(INFERENCESchemaINFERENCEContactSignalSet *)self thirdPartyAppBundleId];
-    v120 = [v4 thirdPartyAppBundleId];
-    v121 = [v119 isEqual:v120];
+    v118 = thirdPartyAppBundleId;
+    thirdPartyAppBundleId2 = [(INFERENCESchemaINFERENCEContactSignalSet *)self thirdPartyAppBundleId];
+    thirdPartyAppBundleId3 = [equalCopy thirdPartyAppBundleId];
+    v121 = [thirdPartyAppBundleId2 isEqual:thirdPartyAppBundleId3];
 
     if (!v121)
     {
@@ -2551,19 +2551,19 @@ LABEL_172:
 
   v124 = *(&self->_has + 1);
   v125 = (v124 >> 3) & 1;
-  v126 = v4[145];
+  v126 = equalCopy[145];
   if (v125 == ((v126 >> 3) & 1))
   {
     if (v125)
     {
       isQueryNormalized = self->_isQueryNormalized;
-      if (isQueryNormalized != [v4 isQueryNormalized])
+      if (isQueryNormalized != [equalCopy isQueryNormalized])
       {
         goto LABEL_173;
       }
 
       v124 = *(&self->_has + 1);
-      v126 = v4[145];
+      v126 = equalCopy[145];
     }
 
     v128 = (v124 >> 4) & 1;
@@ -2572,13 +2572,13 @@ LABEL_172:
       if (v128)
       {
         isQueryStrippedOfPunctuation = self->_isQueryStrippedOfPunctuation;
-        if (isQueryStrippedOfPunctuation != [v4 isQueryStrippedOfPunctuation])
+        if (isQueryStrippedOfPunctuation != [equalCopy isQueryStrippedOfPunctuation])
         {
           goto LABEL_173;
         }
 
         v124 = *(&self->_has + 1);
-        v126 = v4[145];
+        v126 = equalCopy[145];
       }
 
       v130 = (v124 >> 5) & 1;
@@ -2587,13 +2587,13 @@ LABEL_172:
         if (v130)
         {
           isQueryStrippedOfWhitespace = self->_isQueryStrippedOfWhitespace;
-          if (isQueryStrippedOfWhitespace != [v4 isQueryStrippedOfWhitespace])
+          if (isQueryStrippedOfWhitespace != [equalCopy isQueryStrippedOfWhitespace])
           {
             goto LABEL_173;
           }
 
           v124 = *(&self->_has + 1);
-          v126 = v4[145];
+          v126 = equalCopy[145];
         }
 
         v132 = (v124 >> 6) & 1;
@@ -2602,18 +2602,18 @@ LABEL_172:
           if (v132)
           {
             isQueryStrippedOfSymbols = self->_isQueryStrippedOfSymbols;
-            if (isQueryStrippedOfSymbols != [v4 isQueryStrippedOfSymbols])
+            if (isQueryStrippedOfSymbols != [equalCopy isQueryStrippedOfSymbols])
             {
               goto LABEL_173;
             }
 
             v124 = *(&self->_has + 1);
-            v126 = v4[145];
+            v126 = equalCopy[145];
           }
 
           if (((v126 ^ v124) & 0x80) == 0)
           {
-            if ((v124 & 0x80) == 0 || (isAsrE3Signal = self->_isAsrE3Signal, isAsrE3Signal == [v4 isAsrE3Signal]))
+            if ((v124 & 0x80) == 0 || (isAsrE3Signal = self->_isAsrE3Signal, isAsrE3Signal == [equalCopy isAsrE3Signal]))
             {
               v122 = 1;
               goto LABEL_174;
@@ -2631,15 +2631,15 @@ LABEL_174:
   return v122;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INFERENCESchemaINFERENCEContactSignalSet *)self speechAlternativeRanks];
+  toCopy = to;
+  speechAlternativeRanks = [(INFERENCESchemaINFERENCEContactSignalSet *)self speechAlternativeRanks];
 
-  if (v5)
+  if (speechAlternativeRanks)
   {
-    v6 = [(INFERENCESchemaINFERENCEContactSignalSet *)self speechAlternativeRanks];
+    speechAlternativeRanks2 = [(INFERENCESchemaINFERENCEContactSignalSet *)self speechAlternativeRanks];
     PBDataWriterWriteSubmessage();
   }
 
@@ -2898,27 +2898,27 @@ LABEL_22:
   }
 
 LABEL_23:
-  v9 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStats];
+  historyStats = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStats];
 
-  if (v9)
+  if (historyStats)
   {
-    v10 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStats];
+    historyStats2 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStats];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSameDomain];
+  historyStatsInSameDomain = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSameDomain];
 
-  if (v11)
+  if (historyStatsInSameDomain)
   {
-    v12 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSameDomain];
+    historyStatsInSameDomain2 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSameDomain];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSiriRequests];
+  historyStatsInSiriRequests = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSiriRequests];
 
-  if (v13)
+  if (historyStatsInSiriRequests)
   {
-    v14 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSiriRequests];
+    historyStatsInSiriRequests2 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSiriRequests];
     PBDataWriterWriteSubmessage();
   }
 
@@ -3050,11 +3050,11 @@ LABEL_39:
   }
 
 LABEL_40:
-  v16 = [(INFERENCESchemaINFERENCEContactSignalSet *)self requestMatchSignalSet];
+  requestMatchSignalSet = [(INFERENCESchemaINFERENCEContactSignalSet *)self requestMatchSignalSet];
 
-  if (v16)
+  if (requestMatchSignalSet)
   {
-    v17 = [(INFERENCESchemaINFERENCEContactSignalSet *)self requestMatchSignalSet];
+    requestMatchSignalSet2 = [(INFERENCESchemaINFERENCEContactSignalSet *)self requestMatchSignalSet];
     PBDataWriterWriteSubmessage();
   }
 
@@ -3150,9 +3150,9 @@ LABEL_55:
   }
 
 LABEL_56:
-  v25 = [(INFERENCESchemaINFERENCEContactSignalSet *)self thirdPartyAppBundleId];
+  thirdPartyAppBundleId = [(INFERENCESchemaINFERENCEContactSignalSet *)self thirdPartyAppBundleId];
 
-  if (v25)
+  if (thirdPartyAppBundleId)
   {
     PBDataWriterWriteStringField();
   }
@@ -3218,9 +3218,9 @@ LABEL_62:
 LABEL_63:
 }
 
-- (void)setHasIsAsrE3Signal:(BOOL)a3
+- (void)setHasIsAsrE3Signal:(BOOL)signal
 {
-  if (a3)
+  if (signal)
   {
     v3 = 0x80;
   }
@@ -3233,9 +3233,9 @@ LABEL_63:
   *(&self->_has + 1) = v3 & 0x80 | *(&self->_has + 1) & 0x7F;
 }
 
-- (void)setHasIsQueryStrippedOfSymbols:(BOOL)a3
+- (void)setHasIsQueryStrippedOfSymbols:(BOOL)symbols
 {
-  if (a3)
+  if (symbols)
   {
     v3 = 64;
   }
@@ -3248,9 +3248,9 @@ LABEL_63:
   *(&self->_has + 1) = *(&self->_has + 1) & 0xBF | v3;
 }
 
-- (void)setHasIsQueryStrippedOfWhitespace:(BOOL)a3
+- (void)setHasIsQueryStrippedOfWhitespace:(BOOL)whitespace
 {
-  if (a3)
+  if (whitespace)
   {
     v3 = 32;
   }
@@ -3263,9 +3263,9 @@ LABEL_63:
   *(&self->_has + 1) = *(&self->_has + 1) & 0xDF | v3;
 }
 
-- (void)setHasIsQueryStrippedOfPunctuation:(BOOL)a3
+- (void)setHasIsQueryStrippedOfPunctuation:(BOOL)punctuation
 {
-  if (a3)
+  if (punctuation)
   {
     v3 = 16;
   }
@@ -3278,9 +3278,9 @@ LABEL_63:
   *(&self->_has + 1) = *(&self->_has + 1) & 0xEF | v3;
 }
 
-- (void)setHasIsQueryNormalized:(BOOL)a3
+- (void)setHasIsQueryNormalized:(BOOL)normalized
 {
-  if (a3)
+  if (normalized)
   {
     v3 = 8;
   }
@@ -3293,9 +3293,9 @@ LABEL_63:
   *(&self->_has + 1) = *(&self->_has + 1) & 0xF7 | v3;
 }
 
-- (void)setHasIsOnlyCandidate:(BOOL)a3
+- (void)setHasIsOnlyCandidate:(BOOL)candidate
 {
-  if (a3)
+  if (candidate)
   {
     v3 = 4;
   }
@@ -3308,9 +3308,9 @@ LABEL_63:
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFB | v3;
 }
 
-- (void)setHasIsPlusSignal:(BOOL)a3
+- (void)setHasIsPlusSignal:(BOOL)signal
 {
-  if (a3)
+  if (signal)
   {
     v3 = 2;
   }
@@ -3323,9 +3323,9 @@ LABEL_63:
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFD | v3;
 }
 
-- (void)setHasIsCommunalRequest:(BOOL)a3
+- (void)setHasIsCommunalRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 0x80000000;
   }
@@ -3338,9 +3338,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = v3 & 0x80000000 | *(&self->_isAsrE3Signal + 1) & 0x7FFFFFFF;
 }
 
-- (void)setHasHasHandleWithAllowedType:(BOOL)a3
+- (void)setHasHasHandleWithAllowedType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x40000000;
   }
@@ -3353,9 +3353,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xBFFFFFFF | v3;
 }
 
-- (void)setHasHasHandleWithPreferredType:(BOOL)a3
+- (void)setHasHasHandleWithPreferredType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x20000000;
   }
@@ -3368,27 +3368,27 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xDFFFFFFF | v3;
 }
 
-- (void)addHandlesWithPrivacySignalSets:(id)a3
+- (void)addHandlesWithPrivacySignalSets:(id)sets
 {
-  v4 = a3;
+  setsCopy = sets;
   handlesWithPrivacySignalSets = self->_handlesWithPrivacySignalSets;
-  v8 = v4;
+  v8 = setsCopy;
   if (!handlesWithPrivacySignalSets)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_handlesWithPrivacySignalSets;
-    self->_handlesWithPrivacySignalSets = v6;
+    self->_handlesWithPrivacySignalSets = array;
 
-    v4 = v8;
+    setsCopy = v8;
     handlesWithPrivacySignalSets = self->_handlesWithPrivacySignalSets;
   }
 
-  [(NSArray *)handlesWithPrivacySignalSets addObject:v4];
+  [(NSArray *)handlesWithPrivacySignalSets addObject:setsCopy];
 }
 
-- (void)setHasIsTransliterated:(BOOL)a3
+- (void)setHasIsTransliterated:(BOOL)transliterated
 {
-  if (a3)
+  if (transliterated)
   {
     v3 = 0x10000000;
   }
@@ -3401,9 +3401,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xEFFFFFFF | v3;
 }
 
-- (void)setHasIsFavorite:(BOOL)a3
+- (void)setHasIsFavorite:(BOOL)favorite
 {
-  if (a3)
+  if (favorite)
   {
     v3 = 0x8000000;
   }
@@ -3416,9 +3416,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xF7FFFFFF | v3;
 }
 
-- (void)setHasIsThirdPartyMatch:(BOOL)a3
+- (void)setHasIsThirdPartyMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 0x4000000;
   }
@@ -3431,9 +3431,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFBFFFFFF | v3;
 }
 
-- (void)setHasIsQueryRelationshipLabelDerivedFromName:(BOOL)a3
+- (void)setHasIsQueryRelationshipLabelDerivedFromName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     v3 = 0x2000000;
   }
@@ -3446,9 +3446,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFDFFFFFF | v3;
 }
 
-- (void)setHasIsQueryNameDerivedFromRelationshipLabel:(BOOL)a3
+- (void)setHasIsQueryNameDerivedFromRelationshipLabel:(BOOL)label
 {
-  if (a3)
+  if (label)
   {
     v3 = 0x1000000;
   }
@@ -3461,9 +3461,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFEFFFFFF | v3;
 }
 
-- (void)setHasAreQueryDiacriticsRemoved:(BOOL)a3
+- (void)setHasAreQueryDiacriticsRemoved:(BOOL)removed
 {
-  if (a3)
+  if (removed)
   {
     v3 = 0x800000;
   }
@@ -3476,9 +3476,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFF7FFFFF | v3;
 }
 
-- (void)setHasIsRelationAlias:(BOOL)a3
+- (void)setHasIsRelationAlias:(BOOL)alias
 {
-  if (a3)
+  if (alias)
   {
     v3 = 0x400000;
   }
@@ -3491,9 +3491,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFBFFFFF | v3;
 }
 
-- (void)setHasIsMeCardRelationExactMatch:(BOOL)a3
+- (void)setHasIsMeCardRelationExactMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 0x200000;
   }
@@ -3506,9 +3506,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFDFFFFF | v3;
 }
 
-- (void)setHasIsMeCardRelation:(BOOL)a3
+- (void)setHasIsMeCardRelation:(BOOL)relation
 {
-  if (a3)
+  if (relation)
   {
     v3 = 0x100000;
   }
@@ -3521,9 +3521,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFEFFFFF | v3;
 }
 
-- (void)setHasIsMeCard:(BOOL)a3
+- (void)setHasIsMeCard:(BOOL)card
 {
-  if (a3)
+  if (card)
   {
     v3 = 0x80000;
   }
@@ -3536,9 +3536,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFF7FFFF | v3;
 }
 
-- (void)setHasRecencyRankInSiriRequest:(BOOL)a3
+- (void)setHasRecencyRankInSiriRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 0x40000;
   }
@@ -3551,9 +3551,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFBFFFF | v3;
 }
 
-- (void)setHasRecencyRankInSameDomain:(BOOL)a3
+- (void)setHasRecencyRankInSameDomain:(BOOL)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = 0x20000;
   }
@@ -3566,9 +3566,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFDFFFF | v3;
 }
 
-- (void)setHasRecencyRank:(BOOL)a3
+- (void)setHasRecencyRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 0x10000;
   }
@@ -3581,9 +3581,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFEFFFF | v3;
 }
 
-- (void)setHasIsRecentlyCorrected:(BOOL)a3
+- (void)setHasIsRecentlyCorrected:(BOOL)corrected
 {
-  if (a3)
+  if (corrected)
   {
     v3 = 0x8000;
   }
@@ -3596,9 +3596,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFF7FFF | v3;
 }
 
-- (void)setHasIsRecentInSiriRequest:(BOOL)a3
+- (void)setHasIsRecentInSiriRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 0x4000;
   }
@@ -3611,9 +3611,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFFBFFF | v3;
 }
 
-- (void)setHasIsRecentInSameDomain:(BOOL)a3
+- (void)setHasIsRecentInSameDomain:(BOOL)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = 0x2000;
   }
@@ -3626,9 +3626,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFFDFFF | v3;
 }
 
-- (void)setHasIsRecent:(BOOL)a3
+- (void)setHasIsRecent:(BOOL)recent
 {
-  if (a3)
+  if (recent)
   {
     v3 = 4096;
   }
@@ -3641,9 +3641,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFFEFFF | v3;
 }
 
-- (void)setHasSrrScore:(BOOL)a3
+- (void)setHasSrrScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2048;
   }
@@ -3656,9 +3656,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFFF7FF | v3;
 }
 
-- (void)setHasNlxScore:(BOOL)a3
+- (void)setHasNlxScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 1024;
   }
@@ -3671,9 +3671,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFFFBFF | v3;
 }
 
-- (void)setHasIsFromSRRSearch:(BOOL)a3
+- (void)setHasIsFromSRRSearch:(BOOL)search
 {
-  if (a3)
+  if (search)
   {
     v3 = 512;
   }
@@ -3686,9 +3686,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFFFDFF | v3;
 }
 
-- (void)setHasIsFromNLXSearch:(BOOL)a3
+- (void)setHasIsFromNLXSearch:(BOOL)search
 {
-  if (a3)
+  if (search)
   {
     v3 = 256;
   }
@@ -3701,9 +3701,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFFFEFF | v3;
 }
 
-- (void)setHasIsFromStandardSearch:(BOOL)a3
+- (void)setHasIsFromStandardSearch:(BOOL)search
 {
-  if (a3)
+  if (search)
   {
     v3 = 128;
   }
@@ -3716,9 +3716,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFFFF7F | v3;
 }
 
-- (void)setHasIsPartialNameMatch:(BOOL)a3
+- (void)setHasIsPartialNameMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 64;
   }
@@ -3731,9 +3731,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFFFFBF | v3;
 }
 
-- (void)setHasHasSuggestedProperties:(BOOL)a3
+- (void)setHasHasSuggestedProperties:(BOOL)properties
 {
-  if (a3)
+  if (properties)
   {
     v3 = 32;
   }
@@ -3746,9 +3746,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFFFFDF | v3;
 }
 
-- (void)setHasIsHypocorism:(BOOL)a3
+- (void)setHasIsHypocorism:(BOOL)hypocorism
 {
-  if (a3)
+  if (hypocorism)
   {
     v3 = 16;
   }
@@ -3761,9 +3761,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFFFFEF | v3;
 }
 
-- (void)setHasAreAllPrimaryContactTokensInQuery:(BOOL)a3
+- (void)setHasAreAllPrimaryContactTokensInQuery:(BOOL)query
 {
-  if (a3)
+  if (query)
   {
     v3 = 8;
   }
@@ -3776,9 +3776,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFFFFF7 | v3;
 }
 
-- (void)setHasAreAllQueryTokensInContact:(BOOL)a3
+- (void)setHasAreAllQueryTokensInContact:(BOOL)contact
 {
-  if (a3)
+  if (contact)
   {
     v3 = 4;
   }
@@ -3791,9 +3791,9 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFFFFFB | v3;
 }
 
-- (void)setHasIsSuggestedContact:(BOOL)a3
+- (void)setHasIsSuggestedContact:(BOOL)contact
 {
-  if (a3)
+  if (contact)
   {
     v3 = 2;
   }
@@ -3806,59 +3806,59 @@ LABEL_63:
   *(&self->_isAsrE3Signal + 1) = *(&self->_isAsrE3Signal + 1) & 0xFFFFFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v24.receiver = self;
   v24.super_class = INFERENCESchemaINFERENCEContactSignalSet;
-  v5 = [(SISchemaInstrumentationMessage *)&v24 applySensitiveConditionsPolicy:v4];
-  v6 = [(INFERENCESchemaINFERENCEContactSignalSet *)self speechAlternativeRanks];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v24 applySensitiveConditionsPolicy:policyCopy];
+  speechAlternativeRanks = [(INFERENCESchemaINFERENCEContactSignalSet *)self speechAlternativeRanks];
+  v7 = [speechAlternativeRanks applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(INFERENCESchemaINFERENCEContactSignalSet *)self deleteSpeechAlternativeRanks];
   }
 
-  v9 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStats];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  historyStats = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStats];
+  v10 = [historyStats applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(INFERENCESchemaINFERENCEContactSignalSet *)self deleteHistoryStats];
   }
 
-  v12 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSameDomain];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  historyStatsInSameDomain = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSameDomain];
+  v13 = [historyStatsInSameDomain applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(INFERENCESchemaINFERENCEContactSignalSet *)self deleteHistoryStatsInSameDomain];
   }
 
-  v15 = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSiriRequests];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  historyStatsInSiriRequests = [(INFERENCESchemaINFERENCEContactSignalSet *)self historyStatsInSiriRequests];
+  v16 = [historyStatsInSiriRequests applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(INFERENCESchemaINFERENCEContactSignalSet *)self deleteHistoryStatsInSiriRequests];
   }
 
-  v18 = [(INFERENCESchemaINFERENCEContactSignalSet *)self requestMatchSignalSet];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  requestMatchSignalSet = [(INFERENCESchemaINFERENCEContactSignalSet *)self requestMatchSignalSet];
+  v19 = [requestMatchSignalSet applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(INFERENCESchemaINFERENCEContactSignalSet *)self deleteRequestMatchSignalSet];
   }
 
-  v21 = [(INFERENCESchemaINFERENCEContactSignalSet *)self handlesWithPrivacySignalSets];
-  v22 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v21 underConditions:v4];
+  handlesWithPrivacySignalSets = [(INFERENCESchemaINFERENCEContactSignalSet *)self handlesWithPrivacySignalSets];
+  v22 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:handlesWithPrivacySignalSets underConditions:policyCopy];
   [(INFERENCESchemaINFERENCEContactSignalSet *)self setHandlesWithPrivacySignalSets:v22];
 
   return v5;

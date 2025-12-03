@@ -1,23 +1,23 @@
 @interface UNSAuthorizationAlertController
-- (UNSAuthorizationAlertController)initWithQueue:(id)a3;
-- (void)_presentAuthorizationAlertForBundleIdentifier:(id)a3 displayName:(id)a4 usageDescription:(id)a5 withResult:(id)a6;
-- (void)_queue_addResultBlock:(id)a3 forBundleIdentifier:(id)a4;
-- (void)_queue_sendResponse:(int64_t)a3 forBundleIdentifier:(id)a4;
-- (void)requestAuthorizationForBundleIdentifier:(id)a3 displayName:(id)a4 usageDescription:(id)a5 withResult:(id)a6;
+- (UNSAuthorizationAlertController)initWithQueue:(id)queue;
+- (void)_presentAuthorizationAlertForBundleIdentifier:(id)identifier displayName:(id)name usageDescription:(id)description withResult:(id)result;
+- (void)_queue_addResultBlock:(id)block forBundleIdentifier:(id)identifier;
+- (void)_queue_sendResponse:(int64_t)response forBundleIdentifier:(id)identifier;
+- (void)requestAuthorizationForBundleIdentifier:(id)identifier displayName:(id)name usageDescription:(id)description withResult:(id)result;
 @end
 
 @implementation UNSAuthorizationAlertController
 
-- (UNSAuthorizationAlertController)initWithQueue:(id)a3
+- (UNSAuthorizationAlertController)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = UNSAuthorizationAlertController;
   v6 = [(UNSAuthorizationAlertController *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
     bundleIdentifersForActiveAlerts = v7->_bundleIdentifersForActiveAlerts;
     v7->_bundleIdentifersForActiveAlerts = v8;
@@ -30,53 +30,53 @@
   return v7;
 }
 
-- (void)requestAuthorizationForBundleIdentifier:(id)a3 displayName:(id)a4 usageDescription:(id)a5 withResult:(id)a6
+- (void)requestAuthorizationForBundleIdentifier:(id)identifier displayName:(id)name usageDescription:(id)description withResult:(id)result
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  descriptionCopy = description;
+  resultCopy = result;
   dispatch_assert_queue_V2(self->_queue);
-  v14 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:v10];
-  v15 = [v14 isHidden];
+  v14 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:identifierCopy];
+  isHidden = [v14 isHidden];
 
-  if (v15)
+  if (isHidden)
   {
     v16 = *MEMORY[0x277CE2070];
     if (os_log_type_enabled(*MEMORY[0x277CE2070], OS_LOG_TYPE_DEBUG))
     {
-      [UNSAuthorizationAlertController requestAuthorizationForBundleIdentifier:v10 displayName:v16 usageDescription:? withResult:?];
+      [UNSAuthorizationAlertController requestAuthorizationForBundleIdentifier:identifierCopy displayName:v16 usageDescription:? withResult:?];
     }
 
-    v13[2](v13, -1);
+    resultCopy[2](resultCopy, -1);
   }
 
   else
   {
-    [(UNSAuthorizationAlertController *)self _queue_addResultBlock:v13 forBundleIdentifier:v10];
-    if (![(UNSAuthorizationAlertController *)self _queue_isAlertActiveForBundleIdentifier:v10])
+    [(UNSAuthorizationAlertController *)self _queue_addResultBlock:resultCopy forBundleIdentifier:identifierCopy];
+    if (![(UNSAuthorizationAlertController *)self _queue_isAlertActiveForBundleIdentifier:identifierCopy])
     {
-      [(UNSAuthorizationAlertController *)self _queue_addAlertActiveForBundleIdentifier:v10];
+      [(UNSAuthorizationAlertController *)self _queue_addAlertActiveForBundleIdentifier:identifierCopy];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __115__UNSAuthorizationAlertController_requestAuthorizationForBundleIdentifier_displayName_usageDescription_withResult___block_invoke;
       block[3] = &unk_279E10598;
       block[4] = self;
-      v18 = v10;
-      v19 = v11;
-      v20 = v12;
-      v21 = v13;
+      v18 = identifierCopy;
+      v19 = nameCopy;
+      v20 = descriptionCopy;
+      v21 = resultCopy;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
   }
 }
 
-- (void)_presentAuthorizationAlertForBundleIdentifier:(id)a3 displayName:(id)a4 usageDescription:(id)a5 withResult:(id)a6
+- (void)_presentAuthorizationAlertForBundleIdentifier:(id)identifier displayName:(id)name usageDescription:(id)description withResult:(id)result
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  descriptionCopy = description;
+  resultCopy = result;
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -84,9 +84,9 @@
   v15[3] = &unk_279E105E8;
   v15[4] = self;
   objc_copyWeak(&v17, &location);
-  v14 = v10;
+  v14 = identifierCopy;
   v16 = v14;
-  [(UNSAuthorizationAlertController *)self presentAuthorizationAlertForBundleIdentifier:v14 displayName:v11 usageDescription:v12 withResult:v15];
+  [(UNSAuthorizationAlertController *)self presentAuthorizationAlertForBundleIdentifier:v14 displayName:nameCopy usageDescription:descriptionCopy withResult:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -116,27 +116,27 @@ void __121__UNSAuthorizationAlertController__presentAuthorizationAlertForBundleI
   [v3 _queue_sendResponse:*(a1 + 48) forBundleIdentifier:*(a1 + 32)];
 }
 
-- (void)_queue_addResultBlock:(id)a3 forBundleIdentifier:(id)a4
+- (void)_queue_addResultBlock:(id)block forBundleIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_bundleIdentifiersToResultBlocks objectForKey:v6];
-  if (!v7)
+  blockCopy = block;
+  identifierCopy = identifier;
+  array = [(NSMutableDictionary *)self->_bundleIdentifiersToResultBlocks objectForKey:identifierCopy];
+  if (!array)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
-    [(NSMutableDictionary *)self->_bundleIdentifiersToResultBlocks setObject:v7 forKey:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    [(NSMutableDictionary *)self->_bundleIdentifiersToResultBlocks setObject:array forKey:identifierCopy];
   }
 
-  v8 = [v10 copy];
+  v8 = [blockCopy copy];
   v9 = _Block_copy(v8);
-  [v7 addObject:v9];
+  [array addObject:v9];
 }
 
-- (void)_queue_sendResponse:(int64_t)a3 forBundleIdentifier:(id)a4
+- (void)_queue_sendResponse:(int64_t)response forBundleIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(NSMutableDictionary *)self->_bundleIdentifiersToResultBlocks objectForKey:v5];
+  identifierCopy = identifier;
+  v6 = [(NSMutableDictionary *)self->_bundleIdentifiersToResultBlocks objectForKey:identifierCopy];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -166,7 +166,7 @@ void __121__UNSAuthorizationAlertController__presentAuthorizationAlertForBundleI
     while (v8);
   }
 
-  [(NSMutableDictionary *)self->_bundleIdentifiersToResultBlocks removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_bundleIdentifiersToResultBlocks removeObjectForKey:identifierCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }

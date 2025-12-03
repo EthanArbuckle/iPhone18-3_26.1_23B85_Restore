@@ -1,19 +1,19 @@
 @interface ISTouchIDDialog
-- (ISTouchIDDialog)initWithDialogDictionary:(id)a3;
+- (ISTouchIDDialog)initWithDialogDictionary:(id)dictionary;
 - (NSString)fallbackExplanation;
 - (NSString)fallbackMessage;
-- (id)buttonForButtonType:(int64_t)a3;
+- (id)buttonForButtonType:(int64_t)type;
 - (void)_init;
-- (void)_parseDialogDictionary:(id)a3;
-- (void)setFallbackExplanation:(id)a3;
-- (void)setFallbackMessage:(id)a3;
+- (void)_parseDialogDictionary:(id)dictionary;
+- (void)setFallbackExplanation:(id)explanation;
+- (void)setFallbackMessage:(id)message;
 @end
 
 @implementation ISTouchIDDialog
 
-- (ISTouchIDDialog)initWithDialogDictionary:(id)a3
+- (ISTouchIDDialog)initWithDialogDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   __ISRecordSPIClassUsage(self);
   v8.receiver = self;
   v8.super_class = ISTouchIDDialog;
@@ -22,7 +22,7 @@
   if (v5)
   {
     [(ISTouchIDDialog *)v5 _init];
-    [(ISTouchIDDialog *)v6 _parseDialogDictionary:v4];
+    [(ISTouchIDDialog *)v6 _parseDialogDictionary:dictionaryCopy];
   }
 
   return v6;
@@ -41,54 +41,54 @@
 - (NSString)fallbackExplanation
 {
   [(NSLock *)self->_lock lock];
-  v3 = [(SSPaymentSheet *)self->_paymentSheet explanation];
+  explanation = [(SSPaymentSheet *)self->_paymentSheet explanation];
   [(NSLock *)self->_lock unlock];
 
-  return v3;
+  return explanation;
 }
 
 - (NSString)fallbackMessage
 {
   [(NSLock *)self->_lock lock];
-  v3 = [(SSPaymentSheet *)self->_paymentSheet message];
+  message = [(SSPaymentSheet *)self->_paymentSheet message];
   [(NSLock *)self->_lock unlock];
 
-  return v3;
+  return message;
 }
 
-- (void)setFallbackExplanation:(id)a3
+- (void)setFallbackExplanation:(id)explanation
 {
   lock = self->_lock;
-  v5 = a3;
+  explanationCopy = explanation;
   [(NSLock *)lock lock];
-  [(SSPaymentSheet *)self->_paymentSheet setExplanation:v5];
+  [(SSPaymentSheet *)self->_paymentSheet setExplanation:explanationCopy];
 
   v6 = self->_lock;
 
   [(NSLock *)v6 unlock];
 }
 
-- (void)setFallbackMessage:(id)a3
+- (void)setFallbackMessage:(id)message
 {
   lock = self->_lock;
-  v5 = a3;
+  messageCopy = message;
   [(NSLock *)lock lock];
-  [(SSPaymentSheet *)self->_paymentSheet setMessage:v5];
+  [(SSPaymentSheet *)self->_paymentSheet setMessage:messageCopy];
 
   v6 = self->_lock;
 
   [(NSLock *)v6 unlock];
 }
 
-- (id)buttonForButtonType:(int64_t)a3
+- (id)buttonForButtonType:(int64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(ISDialog *)self buttons];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  buttons = [(ISDialog *)self buttons];
+  v5 = [buttons countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -99,18 +99,18 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(buttons);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 buttonType] == a3)
+        if ([v9 buttonType] == type)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [buttons countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -128,29 +128,29 @@ LABEL_11:
   return v10;
 }
 
-- (void)_parseDialogDictionary:(id)a3
+- (void)_parseDialogDictionary:(id)dictionary
 {
   v53 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D69C08];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithDictionary:v5];
+  dictionaryCopy = dictionary;
+  v6 = [[v4 alloc] initWithDictionary:dictionaryCopy];
 
-  v7 = [v6 dictionaryByEvaluatingConditions];
-  v8 = [v7 objectForKey:@"explanation"];
+  dictionaryByEvaluatingConditions = [v6 dictionaryByEvaluatingConditions];
+  v8 = [dictionaryByEvaluatingConditions objectForKey:@"explanation"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(ISTouchIDDialog *)self setBody:v8];
   }
 
-  v9 = [v7 objectForKey:@"isFree"];
+  v9 = [dictionaryByEvaluatingConditions objectForKey:@"isFree"];
 
   if (objc_opt_respondsToSelector())
   {
     -[ISTouchIDDialog setIsFree:](self, "setIsFree:", [v9 BOOLValue]);
   }
 
-  v10 = [v7 objectForKey:@"message"];
+  v10 = [dictionaryByEvaluatingConditions objectForKey:@"message"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -158,7 +158,7 @@ LABEL_11:
     [(ISDialog *)self setTitle:v10];
   }
 
-  v11 = [v7 objectForKey:@"username"];
+  v11 = [dictionaryByEvaluatingConditions objectForKey:@"username"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -167,7 +167,7 @@ LABEL_11:
   }
 
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v13 = [v7 objectForKey:@"cancelButtonString"];
+  v13 = [dictionaryByEvaluatingConditions objectForKey:@"cancelButtonString"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -175,7 +175,7 @@ LABEL_11:
     v14 = objc_alloc_init(ISTouchIDDialogButton);
     [(ISTouchIDDialogButton *)v14 setButtonType:0];
     [(ISDialogButton *)v14 setTitle:v13];
-    v15 = [v7 objectForKey:@"cancelButtonAction"];
+    v15 = [dictionaryByEvaluatingConditions objectForKey:@"cancelButtonAction"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -191,7 +191,7 @@ LABEL_11:
     v15 = v13;
   }
 
-  v16 = [v7 objectForKey:@"passwordButtonString"];
+  v16 = [dictionaryByEvaluatingConditions objectForKey:@"passwordButtonString"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -199,7 +199,7 @@ LABEL_11:
     v17 = objc_alloc_init(ISTouchIDDialogButton);
     [(ISTouchIDDialogButton *)v17 setButtonType:1];
     [(ISDialogButton *)v17 setTitle:v16];
-    v18 = [v7 objectForKey:@"passwordButtonAction"];
+    v18 = [dictionaryByEvaluatingConditions objectForKey:@"passwordButtonAction"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -215,7 +215,7 @@ LABEL_11:
     v18 = v16;
   }
 
-  v19 = [v7 objectForKey:@"touchIDButtonAction"];
+  v19 = [dictionaryByEvaluatingConditions objectForKey:@"touchIDButtonAction"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -236,7 +236,7 @@ LABEL_11:
 
   else
   {
-    v23 = [v7 objectForKey:@"paymentSheetInfo"];
+    v23 = [dictionaryByEvaluatingConditions objectForKey:@"paymentSheetInfo"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -254,7 +254,7 @@ LABEL_11:
 
   v23 = v19;
 LABEL_26:
-  v26 = [v7 objectForKey:@"applePayPaymentSession"];
+  v26 = [dictionaryByEvaluatingConditions objectForKey:@"applePayPaymentSession"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -267,25 +267,25 @@ LABEL_26:
     {
       v46 = v27;
       v29 = v6;
-      v30 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-      if (!v30)
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+      if (!mEMORY[0x277D69B38])
       {
-        v30 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v31 = [v30 shouldLog];
-      if ([v30 shouldLogToDisk])
+      shouldLog = [mEMORY[0x277D69B38] shouldLog];
+      if ([mEMORY[0x277D69B38] shouldLogToDisk])
       {
-        v32 = v31 | 2;
+        v32 = shouldLog | 2;
       }
 
       else
       {
-        v32 = v31;
+        v32 = shouldLog;
       }
 
-      v33 = [v30 OSLogObject];
-      if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+      oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v34 = v32;
       }
@@ -326,27 +326,27 @@ LABEL_63:
 
         v46 = v27;
         v29 = v6;
-        v30 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-        if (!v30)
+        mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+        if (!mEMORY[0x277D69B38])
         {
-          v30 = [MEMORY[0x277D69B38] sharedConfig];
+          mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
         }
 
-        v40 = [v30 shouldLog];
-        if ([v30 shouldLogToDisk])
+        shouldLog2 = [mEMORY[0x277D69B38] shouldLog];
+        if ([mEMORY[0x277D69B38] shouldLogToDisk])
         {
-          v40 |= 2u;
+          shouldLog2 |= 2u;
         }
 
-        v33 = [v30 OSLogObject];
-        if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+        oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
-          v41 = v40;
+          v41 = shouldLog2;
         }
 
         else
         {
-          v41 = v40 & 2;
+          v41 = shouldLog2 & 2;
         }
 
         if (!v41)
@@ -359,27 +359,27 @@ LABEL_63:
       {
         v46 = v27;
         v29 = v6;
-        v30 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-        if (!v30)
+        mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+        if (!mEMORY[0x277D69B38])
         {
-          v30 = [MEMORY[0x277D69B38] sharedConfig];
+          mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
         }
 
-        v38 = [v30 shouldLog];
-        if ([v30 shouldLogToDisk])
+        shouldLog3 = [mEMORY[0x277D69B38] shouldLog];
+        if ([mEMORY[0x277D69B38] shouldLogToDisk])
         {
-          v38 |= 2u;
+          shouldLog3 |= 2u;
         }
 
-        v33 = [v30 OSLogObject];
-        if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+        oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
-          v39 = v38;
+          v39 = shouldLog3;
         }
 
         else
         {
-          v39 = v38 & 2;
+          v39 = shouldLog3 & 2;
         }
 
         if (!v39)
@@ -406,7 +406,7 @@ LABEL_62:
       goto LABEL_63;
     }
 
-    v33 = [MEMORY[0x277CCACA8] stringWithCString:v43 encoding:{4, &v49, v45}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v43 encoding:{4, &v49, v45}];
     free(v43);
     SSFileLog();
 LABEL_61:

@@ -5,7 +5,7 @@
 - (BOOL)supportsOnDeviceSummary;
 - (BOOL)supportsPrivateCloudComputeSummary;
 - (ICModelAvailabilityManager)init;
-- (void)fetchAndCacheAsyncAvailabilities:(id)a3;
+- (void)fetchAndCacheAsyncAvailabilities:(id)availabilities;
 @end
 
 @implementation ICModelAvailabilityManager
@@ -40,12 +40,12 @@
   return [(ICModelAvailabilityManager *)&v9 init];
 }
 
-- (void)fetchAndCacheAsyncAvailabilities:(id)a3
+- (void)fetchAndCacheAsyncAvailabilities:(id)availabilities
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC7D3450);
   MEMORY[0x1EEE9AC00]();
   v6 = &v13 - v5;
-  v7 = _Block_copy(a3);
+  v7 = _Block_copy(availabilities);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   *(v8 + 24) = self;
@@ -61,26 +61,26 @@
   v11[3] = 0;
   v11[4] = &unk_1D45CAE90;
   v11[5] = v10;
-  v12 = self;
+  selfCopy = self;
   sub_1D45B818C(0, 0, v6, &unk_1D45CAEA0, v11);
 }
 
 - (BOOL)supportsCallTranscription
 {
-  v2 = [objc_opt_self() sharedConnection];
-  if (v2)
+  sharedConnection = [objc_opt_self() sharedConnection];
+  if (sharedConnection)
   {
-    v3 = v2;
-    v4 = [v2 isNotesTranscriptionAllowed];
+    v3 = sharedConnection;
+    isNotesTranscriptionAllowed = [sharedConnection isNotesTranscriptionAllowed];
 
-    if (v4)
+    if (isNotesTranscriptionAllowed)
     {
-      LOBYTE(v2) = TUTranscriptionAvailabilityForUseCase() != 0;
+      LOBYTE(sharedConnection) = TUTranscriptionAvailabilityForUseCase() != 0;
     }
 
     else
     {
-      LOBYTE(v2) = 0;
+      LOBYTE(sharedConnection) = 0;
     }
   }
 
@@ -89,12 +89,12 @@
     __break(1u);
   }
 
-  return v2;
+  return sharedConnection;
 }
 
 - (BOOL)supportsPrivateCloudComputeSummary
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ICModelAvailabilityManager.supportsPrivateCloudComputeSummary.getter();
 
   return v3 & 1;
@@ -102,7 +102,7 @@
 
 - (BOOL)supportsOnDeviceSummary
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ICModelAvailabilityManager.supportsOnDeviceSummary.getter();
 
   return v3 & 1;
@@ -110,7 +110,7 @@
 
 - (BOOL)supportsGeneralASR
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ICModelAvailabilityManager.supportsGeneralASR.getter();
 
   return v3 & 1;

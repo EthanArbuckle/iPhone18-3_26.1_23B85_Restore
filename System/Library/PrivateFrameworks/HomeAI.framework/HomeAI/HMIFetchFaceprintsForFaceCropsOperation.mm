@@ -1,6 +1,6 @@
 @interface HMIFetchFaceprintsForFaceCropsOperation
 + (id)shortDescription;
-- (HMIFetchFaceprintsForFaceCropsOperation)initWithDataSource:(id)a3 faceCropUUIDs:(id)a4;
+- (HMIFetchFaceprintsForFaceCropsOperation)initWithDataSource:(id)source faceCropUUIDs:(id)ds;
 - (NSString)shortDescription;
 - (void)main;
 - (void)mainInsideAutoreleasePool;
@@ -8,18 +8,18 @@
 
 @implementation HMIFetchFaceprintsForFaceCropsOperation
 
-- (HMIFetchFaceprintsForFaceCropsOperation)initWithDataSource:(id)a3 faceCropUUIDs:(id)a4
+- (HMIFetchFaceprintsForFaceCropsOperation)initWithDataSource:(id)source faceCropUUIDs:(id)ds
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  dsCopy = ds;
   v14.receiver = self;
   v14.super_class = HMIFetchFaceprintsForFaceCropsOperation;
   v9 = [(HMFOperation *)&v14 initWithTimeout:20.0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataSource, a3);
-    objc_storeStrong(&v10->_faceCropUUIDs, a4);
+    objc_storeStrong(&v9->_dataSource, source);
+    objc_storeStrong(&v10->_faceCropUUIDs, ds);
     v11 = [MEMORY[0x277CBEB98] set];
     faceprints = v10->_faceprints;
     v10->_faceprints = v11;
@@ -39,14 +39,14 @@
 - (void)mainInsideAutoreleasePool
 {
   objc_initWeak(&location, self);
-  v3 = [(HMIFetchFaceprintsForFaceCropsOperation *)self dataSource];
-  v4 = [(HMIFetchFaceprintsForFaceCropsOperation *)self faceCropUUIDs];
+  dataSource = [(HMIFetchFaceprintsForFaceCropsOperation *)self dataSource];
+  faceCropUUIDs = [(HMIFetchFaceprintsForFaceCropsOperation *)self faceCropUUIDs];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __68__HMIFetchFaceprintsForFaceCropsOperation_mainInsideAutoreleasePool__block_invoke;
   v5[3] = &unk_278753D20;
   objc_copyWeak(&v6, &location);
-  [v3 fetchFaceprintsForFaceCropsWithUUIDs:v4 completion:v5];
+  [dataSource fetchFaceprintsForFaceCropsWithUUIDs:faceCropUUIDs completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);

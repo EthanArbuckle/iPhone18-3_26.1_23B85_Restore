@@ -1,15 +1,15 @@
 @interface _PXStoryScrubberClipViewConfiguration
-- (BOOL)isEqual:(id)a3;
-- (_PXStoryScrubberClipViewConfiguration)initWithConfiguration:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_PXStoryScrubberClipViewConfiguration)initWithConfiguration:(id)configuration;
 - (unint64_t)hash;
 @end
 
 @implementation _PXStoryScrubberClipViewConfiguration
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -19,13 +19,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v11.receiver = self;
       v11.super_class = _PXStoryScrubberClipViewConfiguration;
       if ([(PXGFocusEffectViewConfiguration *)&v11 isEqual:v5]&& (v6 = [(_PXStoryScrubberClipViewConfiguration *)self isCurrent], v6 == [(_PXStoryScrubberClipViewConfiguration *)v5 isCurrent]) && (v7 = [(_PXStoryScrubberClipViewConfiguration *)self shouldAdjustContent], v7 == [(_PXStoryScrubberClipViewConfiguration *)v5 shouldAdjustContent]))
       {
-        v10 = [(_PXStoryScrubberClipViewConfiguration *)self segmentIdentifier];
-        v8 = v10 == [(_PXStoryScrubberClipViewConfiguration *)v5 segmentIdentifier];
+        segmentIdentifier = [(_PXStoryScrubberClipViewConfiguration *)self segmentIdentifier];
+        v8 = segmentIdentifier == [(_PXStoryScrubberClipViewConfiguration *)v5 segmentIdentifier];
       }
 
       else
@@ -50,17 +50,17 @@
   return [(PXGFocusEffectViewConfiguration *)&v3 hash]^ self->_isCurrent ^ (2 * self->_shouldAdjustContent) ^ (4 * self->_segmentIdentifier);
 }
 
-- (_PXStoryScrubberClipViewConfiguration)initWithConfiguration:(id)a3
+- (_PXStoryScrubberClipViewConfiguration)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v7.receiver = self;
   v7.super_class = _PXStoryScrubberClipViewConfiguration;
-  v5 = [(PXGFocusEffectViewConfiguration *)&v7 initWithConfiguration:v4];
+  v5 = [(PXGFocusEffectViewConfiguration *)&v7 initWithConfiguration:configurationCopy];
   if (v5)
   {
-    v5->_isCurrent = [v4 isCurrent];
-    v5->_shouldAdjustContent = [v4 shouldAdjustContent];
-    v5->_segmentIdentifier = [v4 segmentIdentifier];
+    v5->_isCurrent = [configurationCopy isCurrent];
+    v5->_shouldAdjustContent = [configurationCopy shouldAdjustContent];
+    v5->_segmentIdentifier = [configurationCopy segmentIdentifier];
   }
 
   return v5;

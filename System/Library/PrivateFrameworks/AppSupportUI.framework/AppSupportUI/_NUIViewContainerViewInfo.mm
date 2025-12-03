@@ -8,21 +8,21 @@
 
 - (double)resetCaches
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 16) = *(a1 + 8);
-    v1 = *(a1 + 144);
-    *(a1 + 144) = v1 & 0xF7;
+    *(self + 16) = *(self + 8);
+    v1 = *(self + 144);
+    *(self + 144) = v1 & 0xF7;
     if ((v1 & 0x10) == 0)
     {
       result = 1.79769313e308;
-      *(a1 + 128) = 0x7FEFFFFFFFFFFFFFLL;
+      *(self + 128) = 0x7FEFFFFFFFFFFFFFLL;
     }
 
     if ((v1 & 0x20) == 0)
     {
       result = 1.79769313e308;
-      *(a1 + 136) = 0x7FEFFFFFFFFFFFFFLL;
+      *(self + 136) = 0x7FEFFFFFFFFFFFFFLL;
     }
   }
 

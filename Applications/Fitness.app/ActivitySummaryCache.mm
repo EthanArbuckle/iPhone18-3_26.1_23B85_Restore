@@ -1,13 +1,13 @@
 @interface ActivitySummaryCache
 + (ActivitySummaryCache)sharedInstance;
 - (ActivitySummaryCache)init;
-- (id)objectForCacheIndex:(int64_t)a3;
+- (id)objectForCacheIndex:(int64_t)index;
 - (int64_t)earliestActivitySummaryIndex;
 - (int64_t)latestActivitySummaryIndex;
 - (int64_t)numberOfActivitySummaries;
 - (void)loadDataIfNeeded;
-- (void)removeObjectForCacheIndex:(int64_t)a3;
-- (void)setObject:(id)a3 forCacheIndex:(int64_t)a4;
+- (void)removeObjectForCacheIndex:(int64_t)index;
+- (void)setObject:(id)object forCacheIndex:(int64_t)index;
 - (void)startActivitySummaryQuery;
 @end
 
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = sub_10010F0BC;
   block[3] = &unk_10083A788;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1008F9AC0 != -1)
   {
     dispatch_once(&qword_1008F9AC0, block);
@@ -48,22 +48,22 @@
   return v2;
 }
 
-- (void)setObject:(id)a3 forCacheIndex:(int64_t)a4
+- (void)setObject:(id)object forCacheIndex:(int64_t)index
 {
-  v6 = a3;
+  objectCopy = object;
   readWriteQueue = self->_readWriteQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010EAC8;
   block[3] = &unk_10083C6E8;
-  v10 = v6;
-  v11 = a4;
+  v10 = objectCopy;
+  indexCopy = index;
   block[4] = self;
-  v8 = v6;
+  v8 = objectCopy;
   dispatch_sync(readWriteQueue, block);
 }
 
-- (void)removeObjectForCacheIndex:(int64_t)a3
+- (void)removeObjectForCacheIndex:(int64_t)index
 {
   readWriteQueue = self->_readWriteQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -71,11 +71,11 @@
   v4[2] = sub_10010EBE0;
   v4[3] = &unk_10083BFA0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = index;
   dispatch_sync(readWriteQueue, v4);
 }
 
-- (id)objectForCacheIndex:(int64_t)a3
+- (id)objectForCacheIndex:(int64_t)index
 {
   v7 = 0;
   v8 = &v7;
@@ -90,7 +90,7 @@
   block[3] = &unk_10083C920;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = index;
   dispatch_sync(readWriteQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -224,8 +224,8 @@
   [(HKActivitySummaryQuery *)self->_query setShouldIncludeActivitySummaryPrivateProperties:1];
   [(HKActivitySummaryQuery *)self->_query setShouldIncludeActivitySummaryStatistics:0];
   [(HKActivitySummaryQuery *)self->_query setDebugIdentifier:@"ActivitySummaryCache.activitySummaryQuery"];
-  v20 = [objc_opt_class() healthStore];
-  [v20 executeQuery:self->_query];
+  healthStore = [objc_opt_class() healthStore];
+  [healthStore executeQuery:self->_query];
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&v31);

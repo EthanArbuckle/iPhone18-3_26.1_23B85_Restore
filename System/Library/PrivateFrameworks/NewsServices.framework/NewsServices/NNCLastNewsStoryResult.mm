@@ -1,5 +1,5 @@
 @interface NNCLastNewsStoryResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NNCLastNewsStoryResult)init;
 - (unint64_t)hash;
 @end
@@ -15,81 +15,81 @@
 
 - (unint64_t)hash
 {
-  v3 = [(NNCLastNewsStoryResult *)self headlineIdentifier];
-  v4 = [v3 hash];
-  v5 = [(NNCLastNewsStoryResult *)self headlineTitle];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(NNCLastNewsStoryResult *)self sectionName];
-  v8 = [v7 hash];
+  headlineIdentifier = [(NNCLastNewsStoryResult *)self headlineIdentifier];
+  v4 = [headlineIdentifier hash];
+  headlineTitle = [(NNCLastNewsStoryResult *)self headlineTitle];
+  v6 = [headlineTitle hash] ^ v4;
+  sectionName = [(NNCLastNewsStoryResult *)self sectionName];
+  v8 = [sectionName hash];
   v9 = v6 ^ v8 ^ [(NNCLastNewsStoryResult *)self headlineIndex];
-  v10 = [(NNCLastNewsStoryResult *)self totalHeadlineCount];
+  totalHeadlineCount = [(NNCLastNewsStoryResult *)self totalHeadlineCount];
 
-  return v9 ^ v10;
+  return v9 ^ totalHeadlineCount;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(NNCLastNewsStoryResult *)self headlineIdentifier];
-    v7 = [v5 headlineIdentifier];
-    if (v6 == v7)
+    v5 = equalCopy;
+    headlineIdentifier = [(NNCLastNewsStoryResult *)self headlineIdentifier];
+    headlineIdentifier2 = [v5 headlineIdentifier];
+    if (headlineIdentifier == headlineIdentifier2)
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(NNCLastNewsStoryResult *)self headlineIdentifier];
-      v9 = [v5 headlineIdentifier];
-      v10 = [v8 isEqualToString:v9];
+      headlineIdentifier3 = [(NNCLastNewsStoryResult *)self headlineIdentifier];
+      headlineIdentifier4 = [v5 headlineIdentifier];
+      v10 = [headlineIdentifier3 isEqualToString:headlineIdentifier4];
 
       v11 = v10 ^ 1;
     }
 
-    v13 = [(NNCLastNewsStoryResult *)self headlineTitle];
-    v14 = [v5 headlineTitle];
-    if (v13 == v14)
+    headlineTitle = [(NNCLastNewsStoryResult *)self headlineTitle];
+    headlineTitle2 = [v5 headlineTitle];
+    if (headlineTitle == headlineTitle2)
     {
       v18 = 0;
     }
 
     else
     {
-      v15 = [(NNCLastNewsStoryResult *)self headlineTitle];
-      v16 = [v5 headlineTitle];
-      v17 = [v15 isEqualToString:v16];
+      headlineTitle3 = [(NNCLastNewsStoryResult *)self headlineTitle];
+      headlineTitle4 = [v5 headlineTitle];
+      v17 = [headlineTitle3 isEqualToString:headlineTitle4];
 
       v18 = v17 ^ 1;
     }
 
-    v19 = [(NNCLastNewsStoryResult *)self sectionName];
-    v20 = [v5 sectionName];
-    if (v19 == v20)
+    sectionName = [(NNCLastNewsStoryResult *)self sectionName];
+    sectionName2 = [v5 sectionName];
+    if (sectionName == sectionName2)
     {
       v24 = 0;
     }
 
     else
     {
-      v21 = [(NNCLastNewsStoryResult *)self sectionName];
-      v22 = [v5 sectionName];
-      v23 = [v21 isEqualToString:v22];
+      sectionName3 = [(NNCLastNewsStoryResult *)self sectionName];
+      sectionName4 = [v5 sectionName];
+      v23 = [sectionName3 isEqualToString:sectionName4];
 
       v24 = v23 ^ 1;
     }
 
-    v25 = [(NNCLastNewsStoryResult *)self headlineIndex];
-    v26 = [v5 headlineIndex];
-    v27 = [(NNCLastNewsStoryResult *)self totalHeadlineCount];
-    v28 = [v5 totalHeadlineCount];
+    headlineIndex = [(NNCLastNewsStoryResult *)self headlineIndex];
+    headlineIndex2 = [v5 headlineIndex];
+    totalHeadlineCount = [(NNCLastNewsStoryResult *)self totalHeadlineCount];
+    totalHeadlineCount2 = [v5 totalHeadlineCount];
     v12 = 0;
     if (((v11 | v18) & 1) == 0 && (v24 & 1) == 0)
     {
-      v12 = v25 == v26 && v27 == v28;
+      v12 = headlineIndex == headlineIndex2 && totalHeadlineCount == totalHeadlineCount2;
     }
   }
 

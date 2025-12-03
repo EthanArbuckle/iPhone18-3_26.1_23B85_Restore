@@ -1,22 +1,22 @@
 @interface NEKChangeTracker
-- (id)initForSessionAction:(int)a3 withSessionIdentifier:(id)a4;
+- (id)initForSessionAction:(int)action withSessionIdentifier:(id)identifier;
 - (void)logChanges;
-- (void)recordChange:(id)a3;
+- (void)recordChange:(id)change;
 @end
 
 @implementation NEKChangeTracker
 
-- (id)initForSessionAction:(int)a3 withSessionIdentifier:(id)a4
+- (id)initForSessionAction:(int)action withSessionIdentifier:(id)identifier
 {
-  v7 = a4;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = NEKChangeTracker;
   v8 = [(NEKChangeTracker *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v8->_sessionAction = a3;
-    objc_storeStrong(&v8->_sessionIdentifier, a4);
+    v8->_sessionAction = action;
+    objc_storeStrong(&v8->_sessionIdentifier, identifier);
     v10 = objc_alloc_init(NSMutableDictionary);
     changeCounts = v9->_changeCounts;
     v9->_changeCounts = v10;
@@ -25,24 +25,24 @@
   return v9;
 }
 
-- (void)recordChange:(id)a3
+- (void)recordChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 nekStoreType];
-    if (v6)
+    v5 = changeCopy;
+    nekStoreType = [v5 nekStoreType];
+    if (nekStoreType)
     {
-      if (v6 == 1)
+      if (nekStoreType == 1)
       {
         v7 = @"REMStore";
       }
 
       else
       {
-        v7 = [NSString stringWithFormat:@"Unknown Store [%ld]", v6];
+        v7 = [NSString stringWithFormat:@"Unknown Store [%ld]", nekStoreType];
       }
     }
 
@@ -51,21 +51,21 @@
       v7 = @"EKEventStore";
     }
 
-    v9 = [v5 nekWrapperType];
-    if (v9 >= 5)
+    nekWrapperType = [v5 nekWrapperType];
+    if (nekWrapperType >= 5)
     {
-      v10 = [NSString stringWithFormat:@"Unknown Wrapper [%ld]", v9];
+      v10 = [NSString stringWithFormat:@"Unknown Wrapper [%ld]", nekWrapperType];
     }
 
     else
     {
-      v10 = *(&off_1000B6110 + v9);
+      v10 = *(&off_1000B6110 + nekWrapperType);
     }
 
-    v11 = [v5 nekChangeType];
-    if (v11 < 5 && ((0x17u >> v11) & 1) != 0)
+    nekChangeType = [v5 nekChangeType];
+    if (nekChangeType < 5 && ((0x17u >> nekChangeType) & 1) != 0)
     {
-      v12 = *(&off_1000B6138 + v11);
+      v12 = *(&off_1000B6138 + nekChangeType);
       if (!v7)
       {
         goto LABEL_22;
@@ -74,7 +74,7 @@
 
     else
     {
-      v12 = [NSString stringWithFormat:@"Unspecified [%ld]", v11];
+      v12 = [NSString stringWithFormat:@"Unspecified [%ld]", nekChangeType];
       if (!v7)
       {
         goto LABEL_22;
@@ -86,10 +86,10 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [v5 type];
-        if (v13 > 4)
+        type = [v5 type];
+        if (type > 4)
         {
-          v17 = [NSString stringWithFormat:@"Unknown Deletion Item [%ld]", v13];
+          v17 = [NSString stringWithFormat:@"Unknown Deletion Item [%ld]", type];
 
           v10 = v17;
           if (!v17)
@@ -106,7 +106,7 @@
 
         else
         {
-          v14 = *(&off_1000B6160 + v13);
+          v14 = *(&off_1000B6160 + type);
 
           v10 = v14;
         }
@@ -154,9 +154,9 @@ LABEL_28:
 - (void)logChanges
 {
   v24 = objc_alloc_init(NSMutableDictionary);
-  v25 = self;
-  v3 = [(NSMutableDictionary *)self->_changeCounts allKeys];
-  v4 = [v3 sortedArrayUsingSelector:"compare:"];
+  selfCopy = self;
+  allKeys = [(NSMutableDictionary *)self->_changeCounts allKeys];
+  v4 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   v29 = 0u;
   v30 = 0u;
@@ -179,10 +179,10 @@ LABEL_28:
         }
 
         v9 = *(*(&v27 + 1) + 8 * i);
-        v10 = [(NSMutableDictionary *)v25->_changeCounts objectForKeyedSubscript:v9];
-        v11 = [v10 integerValue];
+        v10 = [(NSMutableDictionary *)selfCopy->_changeCounts objectForKeyedSubscript:v9];
+        integerValue = [v10 integerValue];
 
-        if (v11)
+        if (integerValue)
         {
           v12 = [v9 componentsSeparatedByString:@"|"];
           v13 = [v12 objectAtIndexedSubscript:0];
@@ -208,8 +208,8 @@ LABEL_28:
             [v16 setObject:v18 forKeyedSubscript:v14];
           }
 
-          v26 += v11;
-          [v18 appendFormat:@"(%ld) %@", v11, v15];
+          v26 += integerValue;
+          [v18 appendFormat:@"(%ld) %@", integerValue, v15];
         }
       }
 
@@ -227,8 +227,8 @@ LABEL_28:
   v19 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    sessionIdentifier = v25->_sessionIdentifier;
-    sessionAction = v25->_sessionAction;
+    sessionIdentifier = selfCopy->_sessionIdentifier;
+    sessionAction = selfCopy->_sessionAction;
     if (sessionAction)
     {
       if (sessionAction == 1)
@@ -238,7 +238,7 @@ LABEL_28:
 
       else
       {
-        v22 = [NSString stringWithFormat:@"unknownAction [%d]", v25->_sessionAction];
+        v22 = [NSString stringWithFormat:@"unknownAction [%d]", selfCopy->_sessionAction];
       }
     }
 

@@ -1,8 +1,8 @@
 @interface CAMApplicationDelegate
-- (BOOL)_isNotificationTooOld:(id)a3;
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5;
+- (BOOL)_isNotificationTooOld:(id)old;
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application openURL:(id)l options:(id)options;
 - (BOOL)cameraIsRecording;
 - (BOOL)isShowingCameraRoll;
 - (BOOL)shouldEnableCaptureMenuCommand;
@@ -11,37 +11,37 @@
 - (BOOL)shouldEnableLivePhotoMenuCommand;
 - (BOOL)shouldEnableTimerMenuCommand;
 - (id)_internalInstall_prepareCheckedBundleVersions;
-- (id)_userInfoForMode:(int64_t)a3 devicePosition:(int64_t)a4;
+- (id)_userInfoForMode:(int64_t)mode devicePosition:(int64_t)position;
 - (id)availableCaptureModes;
 - (int64_t)currentCaptureMode;
 - (int64_t)currentFlashMode;
 - (int64_t)currentLivePhotoMode;
 - (int64_t)currentTimerDuration;
 - (void)_checkInternalInstallBundlesAndAlertIfIncompatible;
-- (void)_internalInstall_presentBundleAlertForBundleInfo:(id)a3;
-- (void)application:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)handleCameraRollMenuAction:(id)a3;
-- (void)handleCameraSettingsMenuAction:(id)a3;
-- (void)handleCaptureMenuAction:(id)a3;
-- (void)handleCaptureModeMenuAction:(id)a3;
-- (void)handleFlashMenuAction:(id)a3;
-- (void)handleFlipCameraMenuAction:(id)a3;
-- (void)handleLivePhotoModeMenuAction:(id)a3;
-- (void)handleTimerMenuAction:(id)a3;
-- (void)prepareForDefaultImageSnapshotForScreen:(id)a3;
-- (void)updateShortcutItemsForApplication:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)_internalInstall_presentBundleAlertForBundleInfo:(id)info;
+- (void)application:(id)application performActionForShortcutItem:(id)item completionHandler:(id)handler;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)handleCameraRollMenuAction:(id)action;
+- (void)handleCameraSettingsMenuAction:(id)action;
+- (void)handleCaptureMenuAction:(id)action;
+- (void)handleCaptureModeMenuAction:(id)action;
+- (void)handleFlashMenuAction:(id)action;
+- (void)handleFlipCameraMenuAction:(id)action;
+- (void)handleLivePhotoModeMenuAction:(id)action;
+- (void)handleTimerMenuAction:(id)action;
+- (void)prepareForDefaultImageSnapshotForScreen:(id)screen;
+- (void)updateShortcutItemsForApplication:(id)application;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation CAMApplicationDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  optionsCopy = options;
   CAMSignpostWithIDAndArgs(2, 0xEEEEB0B5B2B2EEEELL, 0, 0, 0, 0);
   PLDebugEnableCoreDataMultithreadedAsserts();
   v8 = os_log_create("com.apple.camera", "Camera");
@@ -51,18 +51,18 @@
     _os_log_impl(&dword_1A3640000, v8, OS_LOG_TYPE_DEFAULT, "Camera launched.", buf, 2u);
   }
 
-  v9 = [MEMORY[0x1E69C4598] sharedScheduler];
-  [v9 setWaitForExtendedLaunch:1];
+  mEMORY[0x1E69C4598] = [MEMORY[0x1E69C4598] sharedScheduler];
+  [mEMORY[0x1E69C4598] setWaitForExtendedLaunch:1];
 
-  v10 = v6;
+  v10 = applicationCopy;
   [v10 _configureExtendedLaunchTestIfNeeded];
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v12 = [v10 connectedScenes];
-  v13 = [v12 countByEnumeratingWithState:&v48 objects:v53 count:16];
+  connectedScenes = [v10 connectedScenes];
+  v13 = [connectedScenes countByEnumeratingWithState:&v48 objects:v53 count:16];
   v44 = v10;
   if (v13)
   {
@@ -74,7 +74,7 @@
       {
         if (*v49 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v17 = *(*(&v48 + 1) + 8 * i);
@@ -82,17 +82,17 @@
         if (objc_opt_isKindOfClass())
         {
           v18 = v17;
-          v19 = [v18 sizeRestrictions];
-          [v19 setMinimumSize:{750.0, 750.0}];
+          sizeRestrictions = [v18 sizeRestrictions];
+          [sizeRestrictions setMinimumSize:{750.0, 750.0}];
 
-          v20 = [v18 screen];
+          screen = [v18 screen];
 
-          v11 = v20;
+          mainScreen = screen;
           goto LABEL_13;
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v48 objects:v53 count:16];
+      v14 = [connectedScenes countByEnumeratingWithState:&v48 objects:v53 count:16];
       if (v14)
       {
         continue;
@@ -105,75 +105,75 @@
 LABEL_13:
 
   v21 = [CAMSecureWindow alloc];
-  v43 = v11;
-  [v11 bounds];
+  v43 = mainScreen;
+  [mainScreen bounds];
   v22 = [(CAMSecureWindow *)v21 initWithFrame:?];
   [(CAMApplicationDelegate *)self setWindow:v22];
-  v23 = [[CAMSubsystems alloc] initWithLaunchOptions:v7];
+  v23 = [[CAMSubsystems alloc] initWithLaunchOptions:optionsCopy];
   [(CAMApplicationDelegate *)self setSubsystems:v23];
-  v24 = [(CAMApplicationDelegate *)self captureController];
-  v25 = [v24 videoPreviewLayer];
+  captureController = [(CAMApplicationDelegate *)self captureController];
+  videoPreviewLayer = [captureController videoPreviewLayer];
 
   Current = CFAbsoluteTimeGetCurrent();
-  v27 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v28 = *MEMORY[0x1E6986B70];
-  v29 = [MEMORY[0x1E696ADC8] mainQueue];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
   v47[2] = __68__CAMApplicationDelegate_application_didFinishLaunchingWithOptions___block_invoke;
   v47[3] = &__block_descriptor_40_e24_v16__0__NSNotification_8l;
   *&v47[4] = Current;
-  v30 = [v27 addObserverForName:v28 object:v25 queue:v29 usingBlock:v47];
+  v30 = [defaultCenter addObserverForName:v28 object:videoPreviewLayer queue:mainQueue usingBlock:v47];
 
-  v31 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v32 = [(CAMApplicationDelegate *)self window];
-  [v32 setRootViewController:v31];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  window = [(CAMApplicationDelegate *)self window];
+  [window setRootViewController:viewfinderViewController];
 
-  [CAMAppIntentsCache setCurrentViewfinder:v31];
+  [CAMAppIntentsCache setCurrentViewfinder:viewfinderViewController];
   [(CAMSecureWindow *)v22 makeKeyAndVisible];
   v33 = +[CAMCaptureCapabilities capabilities];
   if ([v33 shouldEnableUserNotifications])
   {
-    v34 = [*MEMORY[0x1E69DDA98] launchedToTest];
+    launchedToTest = [*MEMORY[0x1E69DDA98] launchedToTest];
 
-    if (v34)
+    if (launchedToTest)
     {
       goto LABEL_17;
     }
 
-    v35 = [MEMORY[0x1E6983308] currentNotificationCenter];
-    [v35 setDelegate:self];
+    currentNotificationCenter = [MEMORY[0x1E6983308] currentNotificationCenter];
+    [currentNotificationCenter setDelegate:self];
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = __68__CAMApplicationDelegate_application_didFinishLaunchingWithOptions___block_invoke_347;
     v45[3] = &unk_1E76FE990;
     v45[4] = self;
-    v46 = v35;
-    v33 = v35;
+    v46 = currentNotificationCenter;
+    v33 = currentNotificationCenter;
     [v33 getNotificationSettingsWithCompletionHandler:v45];
   }
 
 LABEL_17:
-  v36 = v7;
-  v37 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69DDB28]];
-  v38 = [v37 configurationRequest];
-  v39 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v40 = v39;
-  if (v38)
+  v36 = optionsCopy;
+  v37 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69DDB28]];
+  configurationRequest = [v37 configurationRequest];
+  viewfinderViewController2 = [(CAMApplicationDelegate *)self viewfinderViewController];
+  v40 = viewfinderViewController2;
+  if (configurationRequest)
   {
-    [v39 generateOrUpdateAnalyticsSessionEventIfNeededWithCaptureMode:objc_msgSend(v38 captureDevice:{"requestedCaptureMode"), objc_msgSend(v38, "requestedCaptureDevice")}];
+    [viewfinderViewController2 generateOrUpdateAnalyticsSessionEventIfNeededWithCaptureMode:objc_msgSend(configurationRequest captureDevice:{"requestedCaptureMode"), objc_msgSend(configurationRequest, "requestedCaptureDevice")}];
   }
 
   else
   {
-    [v39 generateAnalyticsSessionEventIfNeeded];
+    [viewfinderViewController2 generateAnalyticsSessionEventIfNeeded];
   }
 
   [(CAMApplicationDelegate *)self _checkInternalInstallBundlesAndAlertIfIncompatible];
   CAMSignpostWithIDAndArgs(3, 0xEEEEB0B5B2B2EEEELL, 0, 0, 0, 0);
-  v41 = [(CAMSubsystems *)self->_subsystems isConfiguredFromLaunchOptions];
+  isConfiguredFromLaunchOptions = [(CAMSubsystems *)self->_subsystems isConfiguredFromLaunchOptions];
 
-  return !v41;
+  return !isConfiguredFromLaunchOptions;
 }
 
 void __68__CAMApplicationDelegate_application_didFinishLaunchingWithOptions___block_invoke(uint64_t a1)
@@ -246,19 +246,19 @@ void __69__CAMApplicationDelegate__requestAuthorizationForNotificationCenter___b
   }
 }
 
-- (void)updateShortcutItemsForApplication:(id)a3
+- (void)updateShortcutItemsForApplication:(id)application
 {
-  v26 = a3;
+  applicationCopy = application;
   CAMSignpostWithIDAndArgs(53, 0xEEEEB0B5B2B2EEEELL, 0, 0, 0, 0);
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = +[CAMCaptureCapabilities capabilities];
-  v6 = [v5 isBackPortraitModeSupported];
-  v7 = [v5 isFrontPortraitModeSupported];
-  v25 = [v5 isBackSlomoSupported];
-  v8 = [MEMORY[0x1E696AAE8] mainBundle];
-  v9 = v8;
-  v10 = v6 == 0;
-  if (v6)
+  isBackPortraitModeSupported = [v5 isBackPortraitModeSupported];
+  isFrontPortraitModeSupported = [v5 isFrontPortraitModeSupported];
+  isBackSlomoSupported = [v5 isBackSlomoSupported];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v9 = mainBundle;
+  v10 = isBackPortraitModeSupported == 0;
+  if (isBackPortraitModeSupported)
   {
     v11 = @"Take Portrait";
   }
@@ -268,7 +268,7 @@ void __69__CAMApplicationDelegate__requestAuthorizationForNotificationCenter___b
     v11 = @"Take Photo";
   }
 
-  if (v6)
+  if (isBackPortraitModeSupported)
   {
     v12 = 6;
   }
@@ -298,13 +298,13 @@ void __69__CAMApplicationDelegate__requestAuthorizationForNotificationCenter___b
     v14 = @"com.apple.camera.shortcuts.portrait";
   }
 
-  v15 = [v8 localizedStringForKey:v11 value:&stru_1F1660A30 table:@"InfoPlist"];
+  v15 = [mainBundle localizedStringForKey:v11 value:&stru_1F1660A30 table:@"InfoPlist"];
   v16 = [(CAMApplicationDelegate *)self _userInfoForMode:v12 devicePosition:0];
   v17 = [MEMORY[0x1E69DC6A8] iconWithSystemImageName:v13];
   v18 = [objc_alloc(MEMORY[0x1E69DC6B0]) initWithType:v14 localizedTitle:v15 localizedSubtitle:0 icon:v17 userInfo:v16];
   [v4 addObject:v18];
 
-  if (v7)
+  if (isFrontPortraitModeSupported)
   {
     v19 = [v9 localizedStringForKey:@"Take Portrait Selfie" value:&stru_1F1660A30 table:@"InfoPlist"];
     v20 = [(CAMApplicationDelegate *)self _userInfoForMode:6 devicePosition:1];
@@ -315,7 +315,7 @@ void __69__CAMApplicationDelegate__requestAuthorizationForNotificationCenter___b
 
   else
   {
-    if (!v25)
+    if (!isBackSlomoSupported)
     {
       goto LABEL_18;
     }
@@ -331,18 +331,18 @@ void __69__CAMApplicationDelegate__requestAuthorizationForNotificationCenter___b
   [v4 addObject:v24];
 
 LABEL_18:
-  [v26 setShortcutItems:v4];
+  [applicationCopy setShortcutItems:v4];
   CAMSignpostWithIDAndArgs(54, 0xEEEEB0B5B2B2EEEELL, 0, 0, 0, 0);
 }
 
-- (void)application:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)application:(id)application performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v8 = [v7 isRecording];
+  itemCopy = item;
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  isRecording = [viewfinderViewController isRecording];
 
-  if (v8)
+  if (isRecording)
   {
     v9 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -355,29 +355,29 @@ LABEL_18:
   else
   {
     v9 = +[CAMUserPreferences preferences];
-    v10 = [[CAMUserPreferenceOverrides alloc] initWithShortcutItem:v6];
-    v11 = [(CAMUserPreferenceOverrides *)v10 captureMode];
-    v12 = [v11 integerValue];
-    if (v12 > 9)
+    v10 = [[CAMUserPreferenceOverrides alloc] initWithShortcutItem:itemCopy];
+    captureMode = [(CAMUserPreferenceOverrides *)v10 captureMode];
+    integerValue = [captureMode integerValue];
+    if (integerValue > 9)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = off_1E76FE9F8[v12];
+      v13 = off_1E76FE9F8[integerValue];
     }
 
-    v14 = [(CAMUserPreferenceOverrides *)v10 captureDevice];
-    v15 = [v14 integerValue];
-    if (v15 > 0xB)
+    captureDevice = [(CAMUserPreferenceOverrides *)v10 captureDevice];
+    integerValue2 = [captureDevice integerValue];
+    if (integerValue2 > 0xB)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = off_1E76FEA48[v15];
+      v16 = off_1E76FEA48[integerValue2];
     }
 
     v17 = os_log_create("com.apple.camera", "Camera");
@@ -390,10 +390,10 @@ LABEL_18:
       _os_log_impl(&dword_1A3640000, v17, OS_LOG_TYPE_DEFAULT, "Launched with a shortcut request for mode:%{public}@ device:%{public}@", &v23, 0x16u);
     }
 
-    v18 = [(CAMUserPreferenceOverrides *)v10 wantsQRCodes];
-    v19 = [v18 BOOLValue];
+    wantsQRCodes = [(CAMUserPreferenceOverrides *)v10 wantsQRCodes];
+    bOOLValue = [wantsQRCodes BOOLValue];
 
-    if (v19)
+    if (bOOLValue)
     {
       [v9 setForceEnableQRBanners:1];
       v20 = os_log_create("com.apple.camera", "Camera");
@@ -404,39 +404,39 @@ LABEL_18:
       }
     }
 
-    v21 = [(CAMApplicationDelegate *)self viewfinderViewController];
-    [v21 readUserPreferencesAndHandleChangesWithOverrides:v10];
+    viewfinderViewController2 = [(CAMApplicationDelegate *)self viewfinderViewController];
+    [viewfinderViewController2 readUserPreferencesAndHandleChangesWithOverrides:v10];
 
-    v22 = [(CAMApplicationDelegate *)self viewfinderViewController];
-    [v22 generateAnalyticsSessionEventIfNeeded];
+    viewfinderViewController3 = [(CAMApplicationDelegate *)self viewfinderViewController];
+    [viewfinderViewController3 generateAnalyticsSessionEventIfNeeded];
   }
 }
 
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5
+- (BOOL)application:(id)application openURL:(id)l options:(id)options
 {
-  v6 = a4;
-  v7 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v8 = [v7 handleURLIfNeeded:v6];
+  lCopy = l;
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  v8 = [viewfinderViewController handleURLIfNeeded:lCopy];
 
   return v8;
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
   v9 = +[CAMUserPreferences preferences];
-  v4 = [v9 forceEnableQRBanners];
+  forceEnableQRBanners = [v9 forceEnableQRBanners];
   [v9 setForceEnableQRBanners:0];
-  if (v4 && ([v9 QRBannersEnabledInSettings] & 1) == 0)
+  if (forceEnableQRBanners && ([v9 QRBannersEnabledInSettings] & 1) == 0)
   {
-    v5 = [(CAMApplicationDelegate *)self viewfinderViewController];
-    v6 = [(CAMApplicationDelegate *)self viewfinderViewController];
-    v7 = [v6 currentCaptureMode];
-    v8 = [(CAMApplicationDelegate *)self viewfinderViewController];
-    [v5 changeToMode:v7 device:{objc_msgSend(v8, "currentCaptureDevice")}];
+    viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+    viewfinderViewController2 = [(CAMApplicationDelegate *)self viewfinderViewController];
+    currentCaptureMode = [viewfinderViewController2 currentCaptureMode];
+    viewfinderViewController3 = [(CAMApplicationDelegate *)self viewfinderViewController];
+    [viewfinderViewController changeToMode:currentCaptureMode device:{objc_msgSend(viewfinderViewController3, "currentCaptureDevice")}];
   }
 }
 
-- (id)_userInfoForMode:(int64_t)a3 devicePosition:(int64_t)a4
+- (id)_userInfoForMode:(int64_t)mode devicePosition:(int64_t)position
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"CAMCaptureMode";
@@ -445,30 +445,30 @@ LABEL_18:
   v13[0] = v6;
   v7 = MEMORY[0x1E696AD98];
   v8 = +[CAMUserPreferences preferences];
-  v9 = [v7 numberWithInteger:{objc_msgSend(v8, "defaultDeviceForModeChange:devicePosition:", a3, a4)}];
+  v9 = [v7 numberWithInteger:{objc_msgSend(v8, "defaultDeviceForModeChange:devicePosition:", mode, position)}];
   v13[1] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   return v10;
 }
 
-- (void)prepareForDefaultImageSnapshotForScreen:(id)a3
+- (void)prepareForDefaultImageSnapshotForScreen:(id)screen
 {
-  v4 = a3;
-  v5 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  [v5 prepareForDefaultImageSnapshotForScreen:v4];
+  screenCopy = screen;
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  [viewfinderViewController prepareForDefaultImageSnapshotForScreen:screenCopy];
 }
 
-- (BOOL)_isNotificationTooOld:(id)a3
+- (BOOL)_isNotificationTooOld:(id)old
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF00];
-  v4 = a3;
-  v5 = [v3 date];
-  v6 = [v4 notification];
+  oldCopy = old;
+  date = [v3 date];
+  notification = [oldCopy notification];
 
-  v7 = [v6 date];
-  [v5 timeIntervalSinceDate:v7];
+  date2 = [notification date];
+  [date timeIntervalSinceDate:date2];
   v9 = v8;
 
   if (v9 > 1800.0)
@@ -501,19 +501,19 @@ void __48__CAMApplicationDelegate__isNotificationTooOld___block_invoke(uint64_t 
   CFRelease(*(a1 + 32));
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  centerCopy = center;
+  responseCopy = response;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __102__CAMApplicationDelegate_userNotificationCenter_didReceiveNotificationResponse_withCompletionHandler___block_invoke;
   v11[3] = &unk_1E76FE9B8;
-  v12 = v8;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v8;
+  v12 = responseCopy;
+  v13 = centerCopy;
+  selfCopy = self;
+  v9 = centerCopy;
+  v10 = responseCopy;
   [v9 getDeliveredNotificationsWithCompletionHandler:v11];
 }
 
@@ -716,16 +716,16 @@ LABEL_22:
 LABEL_23:
 }
 
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v8 = [v6 userInfo];
+  activityCopy = activity;
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  userInfo = [activityCopy userInfo];
 
-  if (v8)
+  if (userInfo)
   {
-    v9 = [v8 objectForKeyedSubscript:@"userAction"];
+    v9 = [userInfo objectForKeyedSubscript:@"userAction"];
     v10 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -736,7 +736,7 @@ LABEL_23:
 
     if ([v9 isEqual:@"documentScanning"])
     {
-      [v7 presentDocumentScanningViewControllerAnimated:1];
+      [viewfinderViewController presentDocumentScanningViewControllerAnimated:1];
       goto LABEL_23;
     }
 
@@ -745,7 +745,7 @@ LABEL_23:
       goto LABEL_23;
     }
 
-    v11 = [v8 objectForKeyedSubscript:@"cameraRollActionType"];
+    v11 = [userInfo objectForKeyedSubscript:@"cameraRollActionType"];
     v12 = v11;
     if (v11)
     {
@@ -753,20 +753,20 @@ LABEL_23:
       {
         v13 = 0;
 LABEL_17:
-        v14 = [v8 objectForKeyedSubscript:@"cameraRollIndex"];
+        v14 = [userInfo objectForKeyedSubscript:@"cameraRollIndex"];
 LABEL_18:
         +[CAMViewfinderLockScreenExtensionHelper beginDelayingAppearance];
         if (v14)
         {
-          v15 = [v14 unsignedIntValue];
+          unsignedIntValue = [v14 unsignedIntValue];
         }
 
         else
         {
-          v15 = 0;
+          unsignedIntValue = 0;
         }
 
-        [v7 presentCameraRollViewControllerAnimated:0 withAction:v13 selectedAssetIndexFromEnd:v15];
+        [viewfinderViewController presentCameraRollViewControllerAnimated:0 withAction:v13 selectedAssetIndexFromEnd:unsignedIntValue];
         +[CAMViewfinderLockScreenExtensionHelper endDelayingAppearance];
         goto LABEL_22;
       }
@@ -784,7 +784,7 @@ LABEL_18:
       }
 
       v17 = [v12 isEqual:@"share"];
-      v14 = [v8 objectForKeyedSubscript:@"cameraRollIndex"];
+      v14 = [userInfo objectForKeyedSubscript:@"cameraRollIndex"];
       if (v17)
       {
         v13 = 3;
@@ -794,7 +794,7 @@ LABEL_18:
 
     else
     {
-      v14 = [v8 objectForKeyedSubscript:@"cameraRollIndex"];
+      v14 = [userInfo objectForKeyedSubscript:@"cameraRollIndex"];
     }
 
 LABEL_22:
@@ -811,16 +811,16 @@ LABEL_22:
 
 LABEL_23:
 
-  return v8 != 0;
+  return userInfo != 0;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v9 = a3;
-  v4 = [v9 system];
-  v5 = [MEMORY[0x1E69DCC88] mainSystem];
+  builderCopy = builder;
+  system = [builderCopy system];
+  mainSystem = [MEMORY[0x1E69DCC88] mainSystem];
 
-  if (v4 == v5)
+  if (system == mainSystem)
   {
     systemMenuController = self->_systemMenuController;
     if (!systemMenuController)
@@ -833,197 +833,197 @@ LABEL_23:
       systemMenuController = self->_systemMenuController;
     }
 
-    [(CAMSystemMenuController *)systemMenuController installCameraMenuCommandsWithBuilder:v9];
+    [(CAMSystemMenuController *)systemMenuController installCameraMenuCommandsWithBuilder:builderCopy];
     if (objc_opt_respondsToSelector())
     {
-      [MEMORY[0x1E69C3698] insertImageMenuWithBuilder:v9 afterMenuForIdentifier:*MEMORY[0x1E69DE0F8] options:15];
+      [MEMORY[0x1E69C3698] insertImageMenuWithBuilder:builderCopy afterMenuForIdentifier:*MEMORY[0x1E69DE0F8] options:15];
     }
   }
 }
 
 - (id)availableCaptureModes
 {
-  v2 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v3 = [v2 availableCaptureModes];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  availableCaptureModes = [viewfinderViewController availableCaptureModes];
 
-  return v3;
+  return availableCaptureModes;
 }
 
 - (int64_t)currentCaptureMode
 {
-  v2 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v3 = [v2 currentCaptureMode];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  currentCaptureMode = [viewfinderViewController currentCaptureMode];
 
-  return v3;
+  return currentCaptureMode;
 }
 
 - (int64_t)currentFlashMode
 {
-  v2 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v3 = [v2 flashMode];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  flashMode = [viewfinderViewController flashMode];
 
-  return v3;
+  return flashMode;
 }
 
 - (int64_t)currentLivePhotoMode
 {
-  v2 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v3 = [v2 livePhotoMode];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  livePhotoMode = [viewfinderViewController livePhotoMode];
 
-  return v3;
+  return livePhotoMode;
 }
 
 - (int64_t)currentTimerDuration
 {
-  v2 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v3 = [v2 timerDuration];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  timerDuration = [viewfinderViewController timerDuration];
 
-  return v3;
+  return timerDuration;
 }
 
 - (BOOL)cameraIsRecording
 {
-  v2 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v3 = [v2 isRecording];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  isRecording = [viewfinderViewController isRecording];
 
-  return v3;
+  return isRecording;
 }
 
 - (BOOL)isShowingCameraRoll
 {
-  v2 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v3 = [v2 isInCameraRollView];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  isInCameraRollView = [viewfinderViewController isInCameraRollView];
 
-  return v3;
+  return isInCameraRollView;
 }
 
 - (BOOL)shouldEnableCaptureMenuCommand
 {
-  v2 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v3 = [v2 shouldEnableCaptureMenuCommand];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  shouldEnableCaptureMenuCommand = [viewfinderViewController shouldEnableCaptureMenuCommand];
 
-  return v3;
+  return shouldEnableCaptureMenuCommand;
 }
 
 - (BOOL)shouldEnableFlipCameraMenuCommand
 {
-  v2 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v3 = [v2 shouldEnableFlipCameraMenuCommand];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  shouldEnableFlipCameraMenuCommand = [viewfinderViewController shouldEnableFlipCameraMenuCommand];
 
-  return v3;
+  return shouldEnableFlipCameraMenuCommand;
 }
 
 - (BOOL)shouldEnableFlashMenuCommand
 {
-  v2 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v3 = [v2 shouldEnableFlashMenuCommand];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  shouldEnableFlashMenuCommand = [viewfinderViewController shouldEnableFlashMenuCommand];
 
-  return v3;
+  return shouldEnableFlashMenuCommand;
 }
 
 - (BOOL)shouldEnableLivePhotoMenuCommand
 {
-  v2 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v3 = [v2 shouldEnableLivePhotoMenuCommand];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  shouldEnableLivePhotoMenuCommand = [viewfinderViewController shouldEnableLivePhotoMenuCommand];
 
-  return v3;
+  return shouldEnableLivePhotoMenuCommand;
 }
 
 - (BOOL)shouldEnableTimerMenuCommand
 {
-  v2 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v3 = [v2 shouldEnableTimerMenuCommand];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  shouldEnableTimerMenuCommand = [viewfinderViewController shouldEnableTimerMenuCommand];
 
-  return v3;
+  return shouldEnableTimerMenuCommand;
 }
 
-- (void)handleCameraRollMenuAction:(id)a3
+- (void)handleCameraRollMenuAction:(id)action
 {
-  v4 = [(CAMApplicationDelegate *)self isShowingCameraRoll];
-  v5 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v6 = v5;
-  if (v4)
+  isShowingCameraRoll = [(CAMApplicationDelegate *)self isShowingCameraRoll];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  v6 = viewfinderViewController;
+  if (isShowingCameraRoll)
   {
-    [v5 dismissCameraRoll];
+    [viewfinderViewController dismissCameraRoll];
   }
 
   else
   {
-    [v5 simulateImageWellTap];
+    [viewfinderViewController simulateImageWellTap];
   }
 }
 
-- (void)handleCameraSettingsMenuAction:(id)a3
+- (void)handleCameraSettingsMenuAction:(id)action
 {
   v3 = [MEMORY[0x1E695DFF8] URLWithString:@"settings-navigation://com.apple.Settings.Camera"];
   CAMOpenSensitiveURLWithUnlockRequest(v3, 0);
 }
 
-- (void)handleCaptureMenuAction:(id)a3
+- (void)handleCaptureMenuAction:(id)action
 {
-  v3 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  [v3 simulateShutterButtonPressForCaptureMenuItem];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  [viewfinderViewController simulateShutterButtonPressForCaptureMenuItem];
 }
 
-- (void)handleCaptureModeMenuAction:(id)a3
+- (void)handleCaptureModeMenuAction:(id)action
 {
-  v4 = [(CAMSystemMenuController *)self->_systemMenuController valueForCommand:a3];
-  v5 = [v4 integerValue];
+  v4 = [(CAMSystemMenuController *)self->_systemMenuController valueForCommand:action];
+  integerValue = [v4 integerValue];
 
-  v6 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  v7 = [v6 currentCaptureDevice];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  currentCaptureDevice = [viewfinderViewController currentCaptureDevice];
 
-  v8 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  [v8 changeToMode:v5 device:v7 animated:1];
+  viewfinderViewController2 = [(CAMApplicationDelegate *)self viewfinderViewController];
+  [viewfinderViewController2 changeToMode:integerValue device:currentCaptureDevice animated:1];
 }
 
-- (void)handleFlashMenuAction:(id)a3
+- (void)handleFlashMenuAction:(id)action
 {
-  v4 = [(CAMSystemMenuController *)self->_systemMenuController valueForCommand:a3];
-  v5 = [v4 integerValue];
+  v4 = [(CAMSystemMenuController *)self->_systemMenuController valueForCommand:action];
+  integerValue = [v4 integerValue];
 
-  v6 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  [v6 setFlashMode:v5];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  [viewfinderViewController setFlashMode:integerValue];
 }
 
-- (void)handleFlipCameraMenuAction:(id)a3
+- (void)handleFlipCameraMenuAction:(id)action
 {
-  v3 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  [v3 handleFlipButtonReleased];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  [viewfinderViewController handleFlipButtonReleased];
 }
 
-- (void)handleLivePhotoModeMenuAction:(id)a3
+- (void)handleLivePhotoModeMenuAction:(id)action
 {
-  v4 = [(CAMSystemMenuController *)self->_systemMenuController valueForCommand:a3];
-  v5 = [v4 integerValue];
+  v4 = [(CAMSystemMenuController *)self->_systemMenuController valueForCommand:action];
+  integerValue = [v4 integerValue];
 
-  v6 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  [v6 setLivePhotoMode:v5];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  [viewfinderViewController setLivePhotoMode:integerValue];
 }
 
-- (void)handleTimerMenuAction:(id)a3
+- (void)handleTimerMenuAction:(id)action
 {
-  v4 = [(CAMSystemMenuController *)self->_systemMenuController valueForCommand:a3];
-  v5 = [v4 integerValue];
+  v4 = [(CAMSystemMenuController *)self->_systemMenuController valueForCommand:action];
+  integerValue = [v4 integerValue];
 
-  v6 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  [v6 setTimerDuration:v5];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  [viewfinderViewController setTimerDuration:integerValue];
 }
 
 - (void)_checkInternalInstallBundlesAndAlertIfIncompatible
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 isInternalInstall];
+  isInternalInstall = [v3 isInternalInstall];
 
-  if (v4)
+  if (isInternalInstall)
   {
-    v7 = [(CAMApplicationDelegate *)self _internalInstall_prepareCheckedBundleVersions];
-    v5 = [v7 objectForKeyedSubscript:@"isMismatched"];
-    v6 = [v5 BOOLValue];
+    _internalInstall_prepareCheckedBundleVersions = [(CAMApplicationDelegate *)self _internalInstall_prepareCheckedBundleVersions];
+    v5 = [_internalInstall_prepareCheckedBundleVersions objectForKeyedSubscript:@"isMismatched"];
+    bOOLValue = [v5 BOOLValue];
 
-    if (v6)
+    if (bOOLValue)
     {
-      [(CAMApplicationDelegate *)self _internalInstall_presentBundleAlertForBundleInfo:v7];
+      [(CAMApplicationDelegate *)self _internalInstall_presentBundleAlertForBundleInfo:_internalInstall_prepareCheckedBundleVersions];
     }
   }
 }
@@ -1031,8 +1031,8 @@ LABEL_23:
 - (id)_internalInstall_prepareCheckedBundleVersions
 {
   v25[3] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 objectForInfoDictionaryKey:@"CFBundleVersion"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v3 = [mainBundle objectForInfoDictionaryKey:@"CFBundleVersion"];
 
   v4 = CAMCameraUIFrameworkBundleVersion();
   if (v4 && v3)
@@ -1040,13 +1040,13 @@ LABEL_23:
     v5 = [&unk_1F16C9D58 containsObject:v3];
     v6 = [&unk_1F16C9D58 containsObject:v4];
     v7 = +[CAMCaptureCapabilities capabilities];
-    v8 = [v7 shouldShowAlertForBundleMismatch];
+    shouldShowAlertForBundleMismatch = [v7 shouldShowAlertForBundleMismatch];
 
     v9 = v5 ^ v6;
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"App:%@", v3];
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CameraUI:%@", v4];
     v24[0] = @"isMismatched";
-    if ((v9 & v8) != 0)
+    if ((v9 & shouldShowAlertForBundleMismatch) != 0)
     {
       v12 = @"Mismatched versions! ";
     }
@@ -1056,7 +1056,7 @@ LABEL_23:
       v12 = &stru_1F1660A30;
     }
 
-    v13 = [MEMORY[0x1E696AD98] numberWithBool:v9 & v8];
+    v13 = [MEMORY[0x1E696AD98] numberWithBool:v9 & shouldShowAlertForBundleMismatch];
     v25[0] = v13;
     v25[1] = v10;
     v24[1] = @"appVersion";
@@ -1092,11 +1092,11 @@ LABEL_23:
   return v14;
 }
 
-- (void)_internalInstall_presentBundleAlertForBundleInfo:(id)a3
+- (void)_internalInstall_presentBundleAlertForBundleInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"appVersion"];
-  v5 = [v3 objectForKeyedSubscript:@"cameraUIVersion"];
+  infoCopy = info;
+  v4 = [infoCopy objectForKeyedSubscript:@"appVersion"];
+  v5 = [infoCopy objectForKeyedSubscript:@"cameraUIVersion"];
 
   if (!v4 || !v5)
   {
@@ -1123,8 +1123,8 @@ LABEL_23:
   v14 = [MEMORY[0x1E69DC648] actionWithTitle:v10 style:0 handler:v18];
   [v12 addAction:v13];
   [v12 addAction:v14];
-  v15 = [(CAMApplicationDelegate *)self viewfinderViewController];
-  [v15 presentViewController:v12 animated:1 completion:0];
+  viewfinderViewController = [(CAMApplicationDelegate *)self viewfinderViewController];
+  [viewfinderViewController presentViewController:v12 animated:1 completion:0];
 }
 
 void __75__CAMApplicationDelegate__internalInstall_presentBundleAlertForBundleInfo___block_invoke()

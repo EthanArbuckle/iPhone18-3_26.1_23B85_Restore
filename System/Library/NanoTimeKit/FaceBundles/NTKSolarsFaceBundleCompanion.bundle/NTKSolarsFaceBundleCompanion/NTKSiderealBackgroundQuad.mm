@@ -1,80 +1,80 @@
 @interface NTKSiderealBackgroundQuad
-- (BOOL)prepareForTime:(double)a3;
-- (NTKSiderealBackgroundQuad)initWithDevice:(id)a3 orbitDiameter:(double)a4 timeOrbitRadius:(double)a5 timeRadius:(double)a6 dialImage:(id)a7 waypointImage:(id)a8 gnomonImage:(id)a9 dayGnomonImage:(id)a10 dayDiskBloomImage:(id)a11 dayDiscImage:(id)a12 nightGnomonImage:(id)a13 nightDiscImage:(id)a14 nightRingImage:(id)a15 initialData:(id)a16 useXR:(BOOL)a17;
-- (int)numSlicesForAngle:(double)a3;
+- (BOOL)prepareForTime:(double)time;
+- (NTKSiderealBackgroundQuad)initWithDevice:(id)device orbitDiameter:(double)diameter timeOrbitRadius:(double)radius timeRadius:(double)timeRadius dialImage:(id)image waypointImage:(id)waypointImage gnomonImage:(id)gnomonImage dayGnomonImage:(id)self0 dayDiskBloomImage:(id)self1 dayDiscImage:(id)self2 nightGnomonImage:(id)self3 nightDiscImage:(id)self4 nightRingImage:(id)self5 initialData:(id)self6 useXR:(BOOL)self7;
+- (int)numSlicesForAngle:(double)angle;
 - (void)loadGradientTexture;
-- (void)performOffscreenPassesWithCommandBuffer:(id)a3;
-- (void)renderForDisplayWithEncoder:(id)a3;
-- (void)setSectors:(id)a3;
-- (void)setupForQuadView:(id)a3;
-- (void)siderealDataChanged:(id)a3;
+- (void)performOffscreenPassesWithCommandBuffer:(id)buffer;
+- (void)renderForDisplayWithEncoder:(id)encoder;
+- (void)setSectors:(id)sectors;
+- (void)setupForQuadView:(id)view;
+- (void)siderealDataChanged:(id)changed;
 @end
 
 @implementation NTKSiderealBackgroundQuad
 
-- (NTKSiderealBackgroundQuad)initWithDevice:(id)a3 orbitDiameter:(double)a4 timeOrbitRadius:(double)a5 timeRadius:(double)a6 dialImage:(id)a7 waypointImage:(id)a8 gnomonImage:(id)a9 dayGnomonImage:(id)a10 dayDiskBloomImage:(id)a11 dayDiscImage:(id)a12 nightGnomonImage:(id)a13 nightDiscImage:(id)a14 nightRingImage:(id)a15 initialData:(id)a16 useXR:(BOOL)a17
+- (NTKSiderealBackgroundQuad)initWithDevice:(id)device orbitDiameter:(double)diameter timeOrbitRadius:(double)radius timeRadius:(double)timeRadius dialImage:(id)image waypointImage:(id)waypointImage gnomonImage:(id)gnomonImage dayGnomonImage:(id)self0 dayDiskBloomImage:(id)self1 dayDiscImage:(id)self2 nightGnomonImage:(id)self3 nightDiscImage:(id)self4 nightRingImage:(id)self5 initialData:(id)self6 useXR:(BOOL)self7
 {
-  v53 = a3;
-  v52 = a7;
-  v51 = a8;
-  v50 = a9;
-  v49 = a10;
-  v48 = a11;
-  v47 = a12;
-  v46 = a13;
-  v45 = a14;
-  v44 = a15;
-  v43 = a16;
+  deviceCopy = device;
+  imageCopy = image;
+  waypointImageCopy = waypointImage;
+  gnomonImageCopy = gnomonImage;
+  dayGnomonImageCopy = dayGnomonImage;
+  bloomImageCopy = bloomImage;
+  discImageCopy = discImage;
+  nightGnomonImageCopy = nightGnomonImage;
+  nightDiscImageCopy = nightDiscImage;
+  ringImageCopy = ringImage;
+  dataCopy = data;
   v54.receiver = self;
   v54.super_class = NTKSiderealBackgroundQuad;
   v25 = [(NTKSiderealBackgroundQuad *)&v54 init];
   v26 = v25;
   if (v25)
   {
-    v25->_useXR = a17;
-    v27 = a4;
-    v25->_diameter = v27;
-    objc_storeStrong(&v25->_clkDevice, a3);
+    v25->_useXR = r;
+    diameterCopy = diameter;
+    v25->_diameter = diameterCopy;
+    objc_storeStrong(&v25->_clkDevice, device);
     v26->_isConstantSun = 0;
-    objc_storeStrong(&v26->_currentData, a16);
+    objc_storeStrong(&v26->_currentData, data);
     v26->_litProgress = 1.0;
     v26->_backgroundDimming = 1.0;
     v26->_blurScale = 1.0;
     v26->_sunsetFilter = 0.0;
-    objc_storeStrong(&v26->_dialTex, a7);
-    objc_storeStrong(&v26->_waypointTex, a8);
-    objc_storeStrong(&v26->_gnomonTexture, a9);
-    objc_storeStrong(&v26->_dayGnomonTexture, a10);
-    objc_storeStrong(&v26->_dayDiskBloomTexture, a11);
-    objc_storeStrong(&v26->_dayDiskTexture, a12);
-    objc_storeStrong(&v26->_nightGnomonTexture, a13);
-    objc_storeStrong(&v26->_nightDiskTexture, a14);
-    objc_storeStrong(&v26->_nightRingTexture, a15);
+    objc_storeStrong(&v26->_dialTex, image);
+    objc_storeStrong(&v26->_waypointTex, waypointImage);
+    objc_storeStrong(&v26->_gnomonTexture, gnomonImage);
+    objc_storeStrong(&v26->_dayGnomonTexture, dayGnomonImage);
+    objc_storeStrong(&v26->_dayDiskBloomTexture, bloomImage);
+    objc_storeStrong(&v26->_dayDiskTexture, discImage);
+    objc_storeStrong(&v26->_nightGnomonTexture, nightGnomonImage);
+    objc_storeStrong(&v26->_nightDiskTexture, nightDiscImage);
+    objc_storeStrong(&v26->_nightRingTexture, ringImage);
     v26->_glowStartAngle = 0.0;
     v26->_glowEndAngle = 0.0;
-    v28 = a6;
-    v26->_blurRadius = v28;
-    v29 = a5;
-    v26->_blurOrbitRadius = v29;
+    timeRadiusCopy = timeRadius;
+    v26->_blurRadius = timeRadiusCopy;
+    radiusCopy = radius;
+    v26->_blurOrbitRadius = radiusCopy;
     v30 = +[MTLRenderPassDescriptor renderPassDescriptor];
-    v31 = [(MTLRenderPassDescriptor *)v30 colorAttachments];
-    v32 = [v31 objectAtIndexedSubscript:0];
+    colorAttachments = [(MTLRenderPassDescriptor *)v30 colorAttachments];
+    v32 = [colorAttachments objectAtIndexedSubscript:0];
 
     [v32 setLoadAction:2];
     [v32 setClearColor:{0.0, 0.0, 0.0, 0.0}];
     [v32 setStoreAction:1];
     objc_storeStrong(&v26->_offscreenPassDescriptor, v30);
     v33 = +[MTLRenderPassDescriptor renderPassDescriptor];
-    v34 = [v33 colorAttachments];
-    v35 = [v34 objectAtIndexedSubscript:0];
+    colorAttachments2 = [v33 colorAttachments];
+    v35 = [colorAttachments2 objectAtIndexedSubscript:0];
 
     [v35 setLoadAction:2];
     [v35 setClearColor:{0.0, 0.0, 0.0, 0.0}];
     [v35 setStoreAction:1];
     objc_storeStrong(&v26->_verticalBlurPassDescriptor, v30);
     v36 = +[MTLRenderPassDescriptor renderPassDescriptor];
-    v37 = [v36 colorAttachments];
-    v38 = [v37 objectAtIndexedSubscript:0];
+    colorAttachments3 = [v36 colorAttachments];
+    v38 = [colorAttachments3 objectAtIndexedSubscript:0];
 
     [v38 setLoadAction:2];
     [v38 setClearColor:{0.0, 0.0, 0.0, 0.0}];
@@ -86,20 +86,20 @@
   return v26;
 }
 
-- (void)siderealDataChanged:(id)a3
+- (void)siderealDataChanged:(id)changed
 {
-  objc_storeStrong(&self->_currentData, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_currentData, changed);
+  changedCopy = changed;
   [(NTKSiderealBackgroundQuad *)self loadGradientTexture];
-  v6 = [v5 isConstantSunUpOrDown];
+  isConstantSunUpOrDown = [changedCopy isConstantSunUpOrDown];
 
-  self->_isConstantSun = v6;
+  self->_isConstantSun = isConstantSunUpOrDown;
 }
 
-- (void)setupForQuadView:(id)a3
+- (void)setupForQuadView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v6.f64[1] = v5;
   v7 = vaddq_f64(v6, v6);
   self->_size = v7;
@@ -156,7 +156,7 @@
   v151 = v24;
   v105 = v15;
   v152 = v105;
-  v25 = v4;
+  v25 = viewCopy;
   v153 = v25;
   v26 = v23;
   v154 = v26;
@@ -257,7 +257,7 @@
   mtlIndexBuffer = self->_mtlIndexBuffer;
   self->_mtlIndexBuffer = v55;
 
-  v57 = [(MTLBuffer *)self->_mtlIndexBuffer contents];
+  contents = [(MTLBuffer *)self->_mtlIndexBuffer contents];
   v58 = 0;
   v59 = xmmword_21220;
   v60 = xmmword_21230;
@@ -270,7 +270,7 @@
   v66.i64[1] = 0x8000800080008;
   do
   {
-    *&v57[v58] = vbicq_s8(v63, vuzp1q_s16(vuzp1q_s32(vceqzq_s64(vandq_s8(v62, v64)), vceqzq_s64(vandq_s8(v61, v64))), vuzp1q_s32(vceqzq_s64(vandq_s8(v60, v64)), vceqzq_s64(vandq_s8(v59, v64)))));
+    *&contents[v58] = vbicq_s8(v63, vuzp1q_s16(vuzp1q_s32(vceqzq_s64(vandq_s8(v62, v64)), vceqzq_s64(vandq_s8(v61, v64))), vuzp1q_s32(vceqzq_s64(vandq_s8(v60, v64)), vceqzq_s64(vandq_s8(v59, v64)))));
     v60 = vaddq_s64(v60, v65);
     v61 = vaddq_s64(v61, v65);
     v62 = vaddq_s64(v62, v65);
@@ -290,34 +290,34 @@
   v71 = v70;
   if (self->_useXR)
   {
-    v72 = [v70 civilTwilightCurveP3];
+    civilTwilightCurveP3 = [v70 civilTwilightCurveP3];
     civilTwilightCurve = self->_civilTwilightCurve;
-    self->_civilTwilightCurve = v72;
+    self->_civilTwilightCurve = civilTwilightCurveP3;
 
-    v74 = [v71 nauticalTwilightCurveP3];
+    nauticalTwilightCurveP3 = [v71 nauticalTwilightCurveP3];
     nauticalTwilightCurve = self->_nauticalTwilightCurve;
-    self->_nauticalTwilightCurve = v74;
+    self->_nauticalTwilightCurve = nauticalTwilightCurveP3;
 
-    v76 = [v71 astronomicalTwilightCurveP3];
+    astronomicalTwilightCurveP3 = [v71 astronomicalTwilightCurveP3];
     astronomicalTwilightCurve = self->_astronomicalTwilightCurve;
-    self->_astronomicalTwilightCurve = v76;
+    self->_astronomicalTwilightCurve = astronomicalTwilightCurveP3;
 
     [v71 dialBackgroundCurveP3];
   }
 
   else
   {
-    v79 = [v70 civilTwilightColorCurve];
+    civilTwilightColorCurve = [v70 civilTwilightColorCurve];
     v80 = self->_civilTwilightCurve;
-    self->_civilTwilightCurve = v79;
+    self->_civilTwilightCurve = civilTwilightColorCurve;
 
-    v81 = [v71 nauticalTwilightColorCurve];
+    nauticalTwilightColorCurve = [v71 nauticalTwilightColorCurve];
     v82 = self->_nauticalTwilightCurve;
-    self->_nauticalTwilightCurve = v81;
+    self->_nauticalTwilightCurve = nauticalTwilightColorCurve;
 
-    v83 = [v71 astronomicalTwilightColorCurve];
+    astronomicalTwilightColorCurve = [v71 astronomicalTwilightColorCurve];
     v84 = self->_astronomicalTwilightCurve;
-    self->_astronomicalTwilightCurve = v83;
+    self->_astronomicalTwilightCurve = astronomicalTwilightColorCurve;
 
     [v71 dialBackgroundColorCurve];
   }
@@ -325,10 +325,10 @@
   nightColorCurve = self->_nightColorCurve;
   self->_nightColorCurve = v78;
 
-  v86 = [v71 dayDiskBloomColorCurve];
+  dayDiskBloomColorCurve = [v71 dayDiskBloomColorCurve];
   v87 = v38;
   bloomColorCurve = self->_bloomColorCurve;
-  self->_bloomColorCurve = v86;
+  self->_bloomColorCurve = dayDiskBloomColorCurve;
 
   height = self->_size.height;
   width = self->_size.width;
@@ -370,8 +370,8 @@
 
 - (void)loadGradientTexture
 {
-  v3 = [(NTKSiderealData *)self->_currentData gradientData];
-  v4 = -[MTLDevice newBufferWithBytes:length:options:](self->_device, "newBufferWithBytes:length:options:", [v3 bytes], objc_msgSend(v3, "length"), 0);
+  gradientData = [(NTKSiderealData *)self->_currentData gradientData];
+  v4 = -[MTLDevice newBufferWithBytes:length:options:](self->_device, "newBufferWithBytes:length:options:", [gradientData bytes], objc_msgSend(gradientData, "length"), 0);
   v5 = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:110 width:128 height:64 mipmapped:0];
   [v5 setStorageMode:2];
   [v5 setUsage:1];
@@ -391,12 +391,12 @@
   self->_gradientTex = v11;
 }
 
-- (void)setSectors:(id)a3
+- (void)setSectors:(id)sectors
 {
-  v11 = a3;
-  if ([v11 count])
+  sectorsCopy = sectors;
+  if ([sectorsCopy count])
   {
-    v4 = [v11 count];
+    v4 = [sectorsCopy count];
     if (v4 >= 0x12)
     {
       v5 = 18;
@@ -408,7 +408,7 @@
     }
 
     v6 = [NSIndexSet indexSetWithIndexesInRange:0, v5];
-    v7 = [v11 objectsAtIndexes:v6];
+    v7 = [sectorsCopy objectsAtIndexes:v6];
     v8 = [NSOrderedSet orderedSetWithArray:v7];
     sectors = self->_sectors;
     self->_sectors = v8;
@@ -422,9 +422,9 @@
   }
 }
 
-- (int)numSlicesForAngle:(double)a3
+- (int)numSlicesForAngle:(double)angle
 {
-  v3 = fabs(a3) * 50.0 / 3.14159265;
+  v3 = fabs(angle) * 50.0 / 3.14159265;
   if (v3 < 4.0)
   {
     return 4.0;
@@ -433,14 +433,14 @@
   return v3;
 }
 
-- (BOOL)prepareForTime:(double)a3
+- (BOOL)prepareForTime:(double)time
 {
   v4 = [(NSOrderedSet *)self->_sectors count];
   if (v4)
   {
     self->_currentBufferIndex = self->_currentBufferIndex + 1 - 3 * ((1431655766 * (self->_currentBufferIndex + 1)) >> 32);
-    v5 = [(NTKSiderealBackgroundQuad *)self _currentBuffer];
-    v6 = [v5 contents];
+    _currentBuffer = [(NTKSiderealBackgroundQuad *)self _currentBuffer];
+    contents = [_currentBuffer contents];
     [(NTKSiderealData *)self->_currentData altitudeForProgress:self->_dayProgress];
     [(NSOrderedSet *)self->_sectors count];
     NTKHighPriorityApply();
@@ -451,43 +451,43 @@
     v8 = glowStartAngle;
     glowEndAngle = self->_glowEndAngle;
     v10 = glowEndAngle;
-    v11 = [(NTKSiderealBackgroundQuad *)self numSlicesForAngle:glowEndAngle - glowStartAngle];
-    v6[102] = xmmword_212B0;
-    v6[103] = xmmword_212B0;
-    v6[104] = xmmword_212B0;
-    *(v6 + 210) = 0;
-    *(v6 + 422) = v8;
-    *(v6 + 423) = v10;
-    v6[106] = 0u;
-    *(v6 + 428) = 0;
-    *(v6 + 429) = v11;
-    *(v6 + 215) = 0;
+    glowStartAngle = [(NTKSiderealBackgroundQuad *)self numSlicesForAngle:glowEndAngle - glowStartAngle];
+    contents[102] = xmmword_212B0;
+    contents[103] = xmmword_212B0;
+    contents[104] = xmmword_212B0;
+    *(contents + 210) = 0;
+    *(contents + 422) = v8;
+    *(contents + 423) = v10;
+    contents[106] = 0u;
+    *(contents + 428) = 0;
+    *(contents + 429) = glowStartAngle;
+    *(contents + 215) = 0;
   }
 
   return v4 != 0;
 }
 
-- (void)performOffscreenPassesWithCommandBuffer:(id)a3
+- (void)performOffscreenPassesWithCommandBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = [(NTKSiderealCachedMTLTexture *)self->_dialTex loadTextureWithCommandBuffer:v4 usingBlitEncoder:0];
-  v6 = [(NTKSiderealCachedMTLTexture *)self->_waypointTex loadTextureWithCommandBuffer:v4 usingBlitEncoder:v5];
+  bufferCopy = buffer;
+  v5 = [(NTKSiderealCachedMTLTexture *)self->_dialTex loadTextureWithCommandBuffer:bufferCopy usingBlitEncoder:0];
+  v6 = [(NTKSiderealCachedMTLTexture *)self->_waypointTex loadTextureWithCommandBuffer:bufferCopy usingBlitEncoder:v5];
 
-  v7 = [(NTKSiderealCachedMTLTexture *)self->_gnomonTexture loadTextureWithCommandBuffer:v4 usingBlitEncoder:v6];
+  v7 = [(NTKSiderealCachedMTLTexture *)self->_gnomonTexture loadTextureWithCommandBuffer:bufferCopy usingBlitEncoder:v6];
 
-  v8 = [(NTKSiderealCachedMTLTexture *)self->_dayGnomonTexture loadTextureWithCommandBuffer:v4 usingBlitEncoder:v7];
+  v8 = [(NTKSiderealCachedMTLTexture *)self->_dayGnomonTexture loadTextureWithCommandBuffer:bufferCopy usingBlitEncoder:v7];
 
-  v9 = [(NTKSiderealCachedMTLTexture *)self->_dayDiskBloomTexture loadTextureWithCommandBuffer:v4 usingBlitEncoder:v8];
+  v9 = [(NTKSiderealCachedMTLTexture *)self->_dayDiskBloomTexture loadTextureWithCommandBuffer:bufferCopy usingBlitEncoder:v8];
 
-  v10 = [(NTKSiderealCachedMTLTexture *)self->_dayDiskTexture loadTextureWithCommandBuffer:v4 usingBlitEncoder:v9];
+  v10 = [(NTKSiderealCachedMTLTexture *)self->_dayDiskTexture loadTextureWithCommandBuffer:bufferCopy usingBlitEncoder:v9];
 
-  v11 = [(NTKSiderealCachedMTLTexture *)self->_nightGnomonTexture loadTextureWithCommandBuffer:v4 usingBlitEncoder:v10];
+  v11 = [(NTKSiderealCachedMTLTexture *)self->_nightGnomonTexture loadTextureWithCommandBuffer:bufferCopy usingBlitEncoder:v10];
 
-  v12 = [(NTKSiderealCachedMTLTexture *)self->_nightDiskTexture loadTextureWithCommandBuffer:v4 usingBlitEncoder:v11];
+  v12 = [(NTKSiderealCachedMTLTexture *)self->_nightDiskTexture loadTextureWithCommandBuffer:bufferCopy usingBlitEncoder:v11];
 
-  v13 = [(NTKSiderealCachedMTLTexture *)self->_nightRingTexture loadTextureWithCommandBuffer:v4 usingBlitEncoder:v12];
+  v13 = [(NTKSiderealCachedMTLTexture *)self->_nightRingTexture loadTextureWithCommandBuffer:bufferCopy usingBlitEncoder:v12];
 
-  v14 = [(NTKSiderealUncachedMTLTexture *)self->_gradientTex loadTextureWithCommandBuffer:v4 usingBlitEncoder:v13];
+  v14 = [(NTKSiderealUncachedMTLTexture *)self->_gradientTex loadTextureWithCommandBuffer:bufferCopy usingBlitEncoder:v13];
 
   if (v14)
   {
@@ -495,25 +495,25 @@
   }
 
   v96 = v14;
-  v15 = [(MTLRenderPassDescriptor *)self->_offscreenPassDescriptor colorAttachments];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  colorAttachments = [(MTLRenderPassDescriptor *)self->_offscreenPassDescriptor colorAttachments];
+  v16 = [colorAttachments objectAtIndexedSubscript:0];
   [v16 setTexture:self->_offscreenBuffer];
 
-  v17 = [v4 renderCommandEncoderWithDescriptor:self->_offscreenPassDescriptor];
-  v95 = [(NTKSiderealBackgroundQuad *)self _currentBuffer];
-  v18 = [v95 contents];
+  v17 = [bufferCopy renderCommandEncoderWithDescriptor:self->_offscreenPassDescriptor];
+  _currentBuffer = [(NTKSiderealBackgroundQuad *)self _currentBuffer];
+  contents = [_currentBuffer contents];
   [v17 setLabel:@"Sidereal Encoder"];
-  v19 = [(NTKSiderealBackgroundQuad *)self _currentBuffer];
-  [v17 setVertexBuffer:v19 offset:0 atIndex:0];
+  _currentBuffer2 = [(NTKSiderealBackgroundQuad *)self _currentBuffer];
+  [v17 setVertexBuffer:_currentBuffer2 offset:0 atIndex:0];
 
-  v20 = [(NTKSiderealUncachedMTLTexture *)self->_gradientTex texture];
-  [v17 setFragmentTexture:v20 atIndex:0];
+  texture = [(NTKSiderealUncachedMTLTexture *)self->_gradientTex texture];
+  [v17 setFragmentTexture:texture atIndex:0];
 
-  v21 = [(NTKSiderealCachedMTLTexture *)self->_dialTex texture];
-  [v17 setFragmentTexture:v21 atIndex:1];
+  texture2 = [(NTKSiderealCachedMTLTexture *)self->_dialTex texture];
+  [v17 setFragmentTexture:texture2 atIndex:1];
 
-  v22 = [(NTKSiderealCachedMTLTexture *)self->_waypointTex texture];
-  [v17 setFragmentTexture:v22 atIndex:2];
+  texture3 = [(NTKSiderealCachedMTLTexture *)self->_waypointTex texture];
+  [v17 setFragmentTexture:texture3 atIndex:2];
 
   renderingMode = self->_renderingMode;
   if (renderingMode - 1 < 2)
@@ -552,12 +552,12 @@ LABEL_9:
   v107[2] = sub_19438;
   v107[3] = &unk_2CE18;
   v29 = v17;
-  v109 = self;
-  v110 = v18;
+  selfCopy = self;
+  v110 = contents;
   v108 = v29;
   v30 = objc_retainBlock(v107);
-  v31 = [(NTKPromise *)self->_mtlSolidPipelineState object];
-  [v29 setRenderPipelineState:v31];
+  object = [(NTKPromise *)self->_mtlSolidPipelineState object];
+  [v29 setRenderPipelineState:object];
 
   if ([(NSOrderedSet *)self->_sectors count])
   {
@@ -565,9 +565,9 @@ LABEL_9:
     do
     {
       v33 = [(NSOrderedSet *)self->_sectors objectAtIndexedSubscript:v32];
-      v34 = [v33 type];
+      type = [v33 type];
 
-      if (v34)
+      if (type)
       {
         (v30[2])(v30, v32);
       }
@@ -581,8 +581,8 @@ LABEL_9:
   v35 = self->_renderingMode;
   if (!v35 || v35 == 3)
   {
-    v36 = [(NTKPromise *)self->_mtlGradientPipelineState object];
-    [v29 setRenderPipelineState:v36];
+    object2 = [(NTKPromise *)self->_mtlGradientPipelineState object];
+    [v29 setRenderPipelineState:object2];
   }
 
   if ([(NSOrderedSet *)self->_sectors count])
@@ -591,9 +591,9 @@ LABEL_9:
     do
     {
       v38 = [(NSOrderedSet *)self->_sectors objectAtIndexedSubscript:v37];
-      v39 = [v38 type];
+      type2 = [v38 type];
 
-      if (!v39)
+      if (!type2)
       {
         (v30[2])(v30, v37);
       }
@@ -615,8 +615,8 @@ LABEL_9:
 
       else
       {
-        v40 = [(NTKPromise *)self->_mtlGlowPipelineState object];
-        [v29 setRenderPipelineState:v40];
+        object3 = [(NTKPromise *)self->_mtlGlowPipelineState object];
+        [v29 setRenderPipelineState:object3];
 
         v41 = 1;
         [v29 setFragmentBytes:&self->_orbitDiameter length:4 atIndex:1];
@@ -635,8 +635,8 @@ LABEL_9:
       v41 = 0;
     }
 
-    v45 = [(NTKPromise *)self->_mtlSpritePipelineState object];
-    [v29 setRenderPipelineState:v45];
+    object4 = [(NTKPromise *)self->_mtlSpritePipelineState object];
+    [v29 setRenderPipelineState:object4];
 
     v105[0] = _NSConcreteStackBlock;
     v105[1] = 3221225472;
@@ -703,13 +703,13 @@ LABEL_9:
     v77 = vmla_n_f32(v70, COERCE_FLOAT32X2_T(-_D2), *v73.i32);
     v78 = vmla_n_f32(v70, COERCE_FLOAT32X2_T(-_D1), *v73.i32);
     v79 = vadd_f32(v70, vdup_lane_s32(v73, 0));
-    v80 = [(MTLRenderPassDescriptor *)self->_verticalBlurPassDescriptor colorAttachments];
-    v81 = [v80 objectAtIndexedSubscript:0];
+    colorAttachments2 = [(MTLRenderPassDescriptor *)self->_verticalBlurPassDescriptor colorAttachments];
+    v81 = [colorAttachments2 objectAtIndexedSubscript:0];
     [v81 setTexture:self->_verticalBlurBuffer];
 
-    v82 = [v4 renderCommandEncoderWithDescriptor:self->_verticalBlurPassDescriptor];
-    v83 = [(NTKPromise *)self->_mtlBlurPipelineState object];
-    [v82 setRenderPipelineState:v83];
+    v82 = [bufferCopy renderCommandEncoderWithDescriptor:self->_verticalBlurPassDescriptor];
+    object5 = [(NTKPromise *)self->_mtlBlurPipelineState object];
+    [v82 setRenderPipelineState:object5];
 
     v97 = v75;
     v98 = v77;
@@ -727,13 +727,13 @@ LABEL_9:
     [v82 drawPrimitives:4 vertexStart:0 vertexCount:4];
     [v82 endEncoding];
 
-    v86 = [(MTLRenderPassDescriptor *)self->_horizontalBlurPassDescriptor colorAttachments];
-    v87 = [v86 objectAtIndexedSubscript:0];
+    colorAttachments3 = [(MTLRenderPassDescriptor *)self->_horizontalBlurPassDescriptor colorAttachments];
+    v87 = [colorAttachments3 objectAtIndexedSubscript:0];
     [v87 setTexture:self->_horizontalBlurBuffer];
 
-    v88 = [v4 renderCommandEncoderWithDescriptor:self->_horizontalBlurPassDescriptor];
-    v89 = [(NTKPromise *)self->_mtlBlurPipelineState object];
-    [v88 setRenderPipelineState:v89];
+    v88 = [bufferCopy renderCommandEncoderWithDescriptor:self->_horizontalBlurPassDescriptor];
+    object6 = [(NTKPromise *)self->_mtlBlurPipelineState object];
+    [v88 setRenderPipelineState:object6];
 
     v97 = v75;
     v98 = v77;
@@ -751,11 +751,11 @@ LABEL_9:
   }
 }
 
-- (void)renderForDisplayWithEncoder:(id)a3
+- (void)renderForDisplayWithEncoder:(id)encoder
 {
-  v4 = a3;
-  v5 = [(NTKPromise *)self->_mtlCompositePipelineState object];
-  [v4 setRenderPipelineState:v5];
+  encoderCopy = encoder;
+  object = [(NTKPromise *)self->_mtlCompositePipelineState object];
+  [encoderCopy setRenderPipelineState:object];
 
   __asm
   {
@@ -793,10 +793,10 @@ LABEL_9:
   CLKInterpolateBetweenFloatsClipped();
   *&v22 = v22;
   LODWORD(v26) = LODWORD(v22);
-  [v4 setVertexBytes:v23 length:56 atIndex:3];
-  [v4 setFragmentTexture:self->_horizontalBlurBuffer atIndex:5];
-  [v4 setFragmentTexture:self->_offscreenBuffer atIndex:4];
-  [v4 drawPrimitives:4 vertexStart:0 vertexCount:4];
+  [encoderCopy setVertexBytes:v23 length:56 atIndex:3];
+  [encoderCopy setFragmentTexture:self->_horizontalBlurBuffer atIndex:5];
+  [encoderCopy setFragmentTexture:self->_offscreenBuffer atIndex:4];
+  [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4];
 }
 
 @end

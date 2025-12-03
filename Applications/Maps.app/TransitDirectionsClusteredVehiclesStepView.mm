@@ -8,9 +8,9 @@
 - (void)_tapped;
 - (void)_updateConstraintsValue;
 - (void)_updateFonts;
-- (void)_updateNavigationStateAlpha:(double)a3;
+- (void)_updateNavigationStateAlpha:(double)alpha;
 - (void)_updateShieldSize;
-- (void)configureWithItem:(id)a3;
+- (void)configureWithItem:(id)item;
 @end
 
 @implementation TransitDirectionsClusteredVehiclesStepView
@@ -24,59 +24,59 @@
 
 - (double)bottomSpacerHeight
 {
-  v2 = [(TransitDirectionsClusteredVehiclesStepView *)self traitCollection];
-  [v2 userInterfaceIdiom];
+  traitCollection = [(TransitDirectionsClusteredVehiclesStepView *)self traitCollection];
+  [traitCollection userInterfaceIdiom];
 
   return 7.0;
 }
 
-- (void)_updateNavigationStateAlpha:(double)a3
+- (void)_updateNavigationStateAlpha:(double)alpha
 {
   v5.receiver = self;
   v5.super_class = TransitDirectionsClusteredVehiclesStepView;
   [(TransitDirectionsIconStepView *)&v5 _updateNavigationStateAlpha:?];
-  [(MKTransitInfoLabelView *)self->_alternateRoutesLabel setAlpha:a3];
+  [(MKTransitInfoLabelView *)self->_alternateRoutesLabel setAlpha:alpha];
 }
 
 - (void)_tapped
 {
-  v3 = [(TransitDirectionsClusteredVehiclesStepView *)self delegate];
-  [v3 transitDirectionsClusteredVehiclesCellDidTapAlternateRouteButtonInCell:self];
+  delegate = [(TransitDirectionsClusteredVehiclesStepView *)self delegate];
+  [delegate transitDirectionsClusteredVehiclesCellDidTapAlternateRouteButtonInCell:self];
 }
 
 - (TransitDirectionsListClusteredVehicleItem)clusteredVehicleItem
 {
-  v3 = [(TransitDirectionsStepView *)self transitListItem];
+  transitListItem = [(TransitDirectionsStepView *)self transitListItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(TransitDirectionsStepView *)self transitListItem];
+    transitListItem2 = [(TransitDirectionsStepView *)self transitListItem];
   }
 
   else
   {
-    v5 = 0;
+    transitListItem2 = 0;
   }
 
-  return v5;
+  return transitListItem2;
 }
 
-- (void)configureWithItem:(id)a3
+- (void)configureWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = TransitDirectionsClusteredVehiclesStepView;
-  [(TransitDirectionsIconStepView *)&v8 configureWithItem:v4];
+  [(TransitDirectionsIconStepView *)&v8 configureWithItem:itemCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 clusteredSegment];
-    v6 = [v5 alternateRouteItemsForTransitInfoLabel];
-    if ([v6 count])
+    clusteredSegment = [itemCopy clusteredSegment];
+    alternateRouteItemsForTransitInfoLabel = [clusteredSegment alternateRouteItemsForTransitInfoLabel];
+    if ([alternateRouteItemsForTransitInfoLabel count])
     {
-      v7 = v6;
+      v7 = alternateRouteItemsForTransitInfoLabel;
     }
 
     else
@@ -90,8 +90,8 @@
 
 - (void)_updateConstraintsValue
 {
-  v3 = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel font];
-  [v3 _scaledValueForValue:22.0];
+  font = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel font];
+  [font _scaledValueForValue:22.0];
   UIRoundToViewScale();
   [(NSLayoutConstraint *)self->_messageLabelBaselineConstraint setConstant:?];
 }
@@ -99,9 +99,9 @@
 - (void)_updateShieldSize
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v3 preferredContentSizeCategory];
 
-  [(MKTransitInfoLabelView *)self->_alternateRoutesLabel setShieldSize:[MKTransitInfoLabelView clusteredShieldSizeForContentSizeCategory:v4]];
+  [(MKTransitInfoLabelView *)self->_alternateRoutesLabel setShieldSize:[MKTransitInfoLabelView clusteredShieldSizeForContentSizeCategory:preferredContentSizeCategory]];
 }
 
 - (void)_updateFonts
@@ -116,9 +116,9 @@
     +[UIFont system15];
   }
   v3 = ;
-  v4 = [v3 _mapkit_fontByAddingFeaturesForTimeDisplay];
+  _mapkit_fontByAddingFeaturesForTimeDisplay = [v3 _mapkit_fontByAddingFeaturesForTimeDisplay];
 
-  [(MKTransitInfoLabelView *)self->_alternateRoutesLabel setFont:v4];
+  [(MKTransitInfoLabelView *)self->_alternateRoutesLabel setFont:_mapkit_fontByAddingFeaturesForTimeDisplay];
 }
 
 - (void)_contentSizeCategoryDidChange
@@ -135,64 +135,64 @@
 {
   v32.receiver = self;
   v32.super_class = TransitDirectionsClusteredVehiclesStepView;
-  v3 = [(TransitDirectionsIconStepView *)&v32 _initialConstraints];
-  v4 = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel firstBaselineAnchor];
-  v5 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-  v6 = [v5 topAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  _initialConstraints = [(TransitDirectionsIconStepView *)&v32 _initialConstraints];
+  firstBaselineAnchor = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel firstBaselineAnchor];
+  contentLayoutGuide = [(TransitDirectionsStepView *)self contentLayoutGuide];
+  topAnchor = [contentLayoutGuide topAnchor];
+  v7 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor];
   messageLabelBaselineConstraint = self->_messageLabelBaselineConstraint;
   self->_messageLabelBaselineConstraint = v7;
 
-  [v3 addObject:self->_messageLabelBaselineConstraint];
-  v9 = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel centerYAnchor];
-  v10 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-  v11 = [v10 centerYAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
-  [v3 addObject:v12];
+  [_initialConstraints addObject:self->_messageLabelBaselineConstraint];
+  centerYAnchor = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel centerYAnchor];
+  contentLayoutGuide2 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+  centerYAnchor2 = [contentLayoutGuide2 centerYAnchor];
+  v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+  [_initialConstraints addObject:v12];
 
-  v13 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-  v14 = [v13 bottomAnchor];
-  v15 = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel lastBaselineAnchor];
-  v16 = [v14 constraintGreaterThanOrEqualToAnchor:v15];
-  [v3 addObject:v16];
+  contentLayoutGuide3 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+  bottomAnchor = [contentLayoutGuide3 bottomAnchor];
+  lastBaselineAnchor = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel lastBaselineAnchor];
+  v16 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor];
+  [_initialConstraints addObject:v16];
 
-  v17 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-  v18 = [v17 leadingAnchor];
-  v19 = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel leadingAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
-  [v3 addObject:v20];
+  contentLayoutGuide4 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+  leadingAnchor = [contentLayoutGuide4 leadingAnchor];
+  leadingAnchor2 = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [_initialConstraints addObject:v20];
 
   if (sub_10000FA08(self) == 5)
   {
-    v21 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-    v22 = [v21 trailingAnchor];
-    v23 = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel trailingAnchor];
-    [v22 constraintEqualToAnchor:v23];
+    contentLayoutGuide5 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+    trailingAnchor = [contentLayoutGuide5 trailingAnchor];
+    trailingAnchor2 = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel trailingAnchor];
+    [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   }
 
   else
   {
-    v24 = [(UIImageView *)self->_chevronImageView firstBaselineAnchor];
-    v25 = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel firstBaselineAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
-    [v3 addObject:v26];
+    firstBaselineAnchor2 = [(UIImageView *)self->_chevronImageView firstBaselineAnchor];
+    firstBaselineAnchor3 = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel firstBaselineAnchor];
+    v26 = [firstBaselineAnchor2 constraintEqualToAnchor:firstBaselineAnchor3];
+    [_initialConstraints addObject:v26];
 
-    v27 = [(UIImageView *)self->_chevronImageView leadingAnchor];
-    v28 = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel trailingAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28 constant:5.0];
-    [v3 addObject:v29];
+    leadingAnchor3 = [(UIImageView *)self->_chevronImageView leadingAnchor];
+    trailingAnchor3 = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel trailingAnchor];
+    v29 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3 constant:5.0];
+    [_initialConstraints addObject:v29];
 
-    v21 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-    v22 = [v21 trailingAnchor];
-    v23 = [(UIImageView *)self->_chevronImageView trailingAnchor];
-    [v22 constraintGreaterThanOrEqualToAnchor:v23];
+    contentLayoutGuide5 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+    trailingAnchor = [contentLayoutGuide5 trailingAnchor];
+    trailingAnchor2 = [(UIImageView *)self->_chevronImageView trailingAnchor];
+    [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
   }
   v30 = ;
-  [v3 addObject:v30];
+  [_initialConstraints addObject:v30];
 
   [(TransitDirectionsClusteredVehiclesStepView *)self _updateConstraintsValue];
 
-  return v3;
+  return _initialConstraints;
 }
 
 - (void)_createSubviews
@@ -218,14 +218,14 @@
   if (sub_10000FA08(self) != 5)
   {
     v7 = [UIImage systemImageNamed:@"chevron.right"];
-    v8 = [(TransitDirectionsClusteredVehiclesStepView *)self traitCollection];
-    v9 = [v8 layoutDirection];
+    traitCollection = [(TransitDirectionsClusteredVehiclesStepView *)self traitCollection];
+    layoutDirection = [traitCollection layoutDirection];
 
-    if (v9 == 1)
+    if (layoutDirection == 1)
     {
-      v10 = [v7 imageFlippedForRightToLeftLayoutDirection];
+      imageFlippedForRightToLeftLayoutDirection = [v7 imageFlippedForRightToLeftLayoutDirection];
 
-      v7 = v10;
+      v7 = imageFlippedForRightToLeftLayoutDirection;
     }
 
     v11 = [[UIImageView alloc] initWithImage:v7];
@@ -236,8 +236,8 @@
     v13 = [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleCallout];
     [(UIImageView *)self->_chevronImageView setPreferredSymbolConfiguration:v13];
 
-    v14 = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel textColor];
-    [(UIImageView *)self->_chevronImageView setTintColor:v14];
+    textColor = [(MKTransitInfoLabelView *)self->_alternateRoutesLabel textColor];
+    [(UIImageView *)self->_chevronImageView setTintColor:textColor];
 
     LODWORD(v15) = 1148846080;
     [(UIImageView *)self->_chevronImageView setContentCompressionResistancePriority:1 forAxis:v15];

@@ -4,8 +4,8 @@
 - (LAContext)biometricAuthenticationContext;
 - (void)_destroyContexts;
 - (void)_prepareContextTimeout;
-- (void)setApplePayAuthenticationContext:(id)a3;
-- (void)setBiometricAuthenticationContext:(id)a3;
+- (void)setApplePayAuthenticationContext:(id)context;
+- (void)setBiometricAuthenticationContext:(id)context;
 @end
 
 @implementation BYDaemonContext
@@ -34,18 +34,18 @@
   return v2;
 }
 
-- (void)setApplePayAuthenticationContext:(id)a3
+- (void)setApplePayAuthenticationContext:(id)context
 {
-  v4 = a3;
-  v5 = [(BYDaemonContext *)self contextQueue];
+  contextCopy = context;
+  contextQueue = [(BYDaemonContext *)self contextQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100005484;
   v7[3] = &unk_1000208D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = contextCopy;
+  v6 = contextCopy;
+  dispatch_async(contextQueue, v7);
 }
 
 - (LAContext)applePayAuthenticationContext
@@ -56,14 +56,14 @@
   v10 = sub_1000055E0;
   v11 = sub_1000055F0;
   v12 = 0;
-  v3 = [(BYDaemonContext *)self contextQueue];
+  contextQueue = [(BYDaemonContext *)self contextQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000055F8;
   v6[3] = &unk_100020900;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(contextQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -71,18 +71,18 @@
   return v4;
 }
 
-- (void)setBiometricAuthenticationContext:(id)a3
+- (void)setBiometricAuthenticationContext:(id)context
 {
-  v4 = a3;
-  v5 = [(BYDaemonContext *)self contextQueue];
+  contextCopy = context;
+  contextQueue = [(BYDaemonContext *)self contextQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000056C0;
   v7[3] = &unk_1000208D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = contextCopy;
+  v6 = contextCopy;
+  dispatch_async(contextQueue, v7);
 }
 
 - (LAContext)biometricAuthenticationContext
@@ -93,14 +93,14 @@
   v10 = sub_1000055E0;
   v11 = sub_1000055F0;
   v12 = 0;
-  v3 = [(BYDaemonContext *)self contextQueue];
+  contextQueue = [(BYDaemonContext *)self contextQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000581C;
   v6[3] = &unk_100020900;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(contextQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -111,19 +111,19 @@
 - (void)_prepareContextTimeout
 {
   v3 = dispatch_time(0, 300000000000);
-  v4 = [(BYDaemonContext *)self contextQueue];
+  contextQueue = [(BYDaemonContext *)self contextQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000058E4;
   block[3] = &unk_100020868;
   block[4] = self;
-  dispatch_after(v3, v4, block);
+  dispatch_after(v3, contextQueue, block);
 }
 
 - (void)_destroyContexts
 {
-  v3 = [(BYDaemonContext *)self contextQueue];
-  dispatch_assert_queue_V2(v3);
+  contextQueue = [(BYDaemonContext *)self contextQueue];
+  dispatch_assert_queue_V2(contextQueue);
 
   if (self->_applePayAuthenticationContext)
   {

@@ -1,8 +1,8 @@
 @interface CLSSaveResponse
 - (CLSSaveResponse)init;
-- (id)savedObjectWithObjectID:(id)a3;
-- (void)clientRemote_deliverObject:(id)a3;
-- (void)clientRemote_saveDone:(id)a3;
+- (id)savedObjectWithObjectID:(id)d;
+- (void)clientRemote_deliverObject:(id)object;
+- (void)clientRemote_saveDone:(id)done;
 @end
 
 @implementation CLSSaveResponse
@@ -35,9 +35,9 @@
   return v2;
 }
 
-- (id)savedObjectWithObjectID:(id)a3
+- (id)savedObjectWithObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -49,10 +49,10 @@
   block[1] = 3221225472;
   block[2] = sub_236F87E08;
   block[3] = &unk_278A17C30;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -61,9 +61,9 @@
   return v7;
 }
 
-- (void)clientRemote_deliverObject:(id)a3
+- (void)clientRemote_deliverObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -71,17 +71,17 @@
   block[2] = sub_236F87F24;
   block[3] = &unk_278A179D0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)clientRemote_saveDone:(id)a3
+- (void)clientRemote_saveDone:(id)done
 {
-  v4 = a3;
+  doneCopy = done;
   v5 = MEMORY[0x2383C3E80](self->_completion);
   v6 = v5;
   if (v5)
@@ -92,7 +92,7 @@
     v8[2] = sub_236F8811C;
     v8[3] = &unk_278A17C80;
     v10 = v5;
-    v9 = v4;
+    v9 = doneCopy;
     dispatch_async(queue, v8);
   }
 }

@@ -1,20 +1,20 @@
 @interface KTManagerWatchdogControl
-- (KTManagerWatchdogControl)initWithDew:(id)a3;
+- (KTManagerWatchdogControl)initWithDew:(id)dew;
 - (void)watchdogNiceExit;
-- (void)watchdogRudeExitWithReason:(id)a3;
+- (void)watchdogRudeExitWithReason:(id)reason;
 @end
 
 @implementation KTManagerWatchdogControl
 
-- (KTManagerWatchdogControl)initWithDew:(id)a3
+- (KTManagerWatchdogControl)initWithDew:(id)dew
 {
-  v4 = a3;
+  dewCopy = dew;
   v8.receiver = self;
   v8.super_class = KTManagerWatchdogControl;
   v5 = [(KTManagerWatchdogControl *)&v8 init];
   if (v5)
   {
-    -[KTManagerWatchdogControl setMaybeDoFastExit:](v5, "setMaybeDoFastExit:", [v4 fastWatchdogExit]);
+    -[KTManagerWatchdogControl setMaybeDoFastExit:](v5, "setMaybeDoFastExit:", [dewCopy fastWatchdogExit]);
     v6 = v5;
   }
 
@@ -38,9 +38,9 @@
   xpc_transaction_exit_clean();
 }
 
-- (void)watchdogRudeExitWithReason:(id)a3
+- (void)watchdogRudeExitWithReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   if (qword_10038BD00 != -1)
   {
     goto LABEL_5;
@@ -52,11 +52,11 @@
     if (os_log_type_enabled(qword_10038BD08, OS_LOG_TYPE_ERROR))
     {
       v5 = 138412290;
-      v6 = v3;
+      v6 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "watchdogRudeExit: %@", &v5, 0xCu);
     }
 
-    [v3 UTF8String];
+    [reasonCopy UTF8String];
     abort_with_payload();
 LABEL_5:
     dispatch_once(&qword_10038BD00, &stru_10031A448);

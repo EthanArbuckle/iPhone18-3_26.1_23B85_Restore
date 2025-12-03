@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneSearchTopScoreDocCollector
-- (id)newTopDocsWithOrgApacheLuceneSearchScoreDocArray:(id)a3 withInt:(int)a4;
+- (id)newTopDocsWithOrgApacheLuceneSearchScoreDocArray:(id)array withInt:(int)int;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchTopScoreDocCollector
 
-- (id)newTopDocsWithOrgApacheLuceneSearchScoreDocArray:(id)a3 withInt:(int)a4
+- (id)newTopDocsWithOrgApacheLuceneSearchScoreDocArray:(id)array withInt:(int)int
 {
-  if (a3)
+  if (array)
   {
-    if (a4)
+    if (int)
     {
       pq = self->super.pq_;
       if (pq)
@@ -31,7 +31,7 @@
         if (v9)
         {
 LABEL_8:
-          v10 = new_OrgApacheLuceneSearchTopDocs_initWithInt_withOrgApacheLuceneSearchScoreDocArray_withFloat_(self->super.totalHits_, a3, v9[2]);
+          v10 = new_OrgApacheLuceneSearchTopDocs_initWithInt_withOrgApacheLuceneSearchScoreDocArray_withFloat_(self->super.totalHits_, array, v9[2]);
 
           return v10;
         }
@@ -40,13 +40,13 @@ LABEL_8:
 
     else
     {
-      v12 = *(a3 + 2);
+      v12 = *(array + 2);
       if (v12 <= 0)
       {
         IOSArray_throwOutOfBoundsWithMsg(v12, 0);
       }
 
-      v9 = *(a3 + 3);
+      v9 = *(array + 3);
       if (v9)
       {
         goto LABEL_8;

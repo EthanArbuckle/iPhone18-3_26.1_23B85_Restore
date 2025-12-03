@@ -1,18 +1,18 @@
 @interface ButtonBarButtonVisualProvider.Button
-+ (Class)_visualProviderClassForIdiom:(int64_t)a3;
++ (Class)_visualProviderClassForIdiom:(int64_t)idiom;
 - (BOOL)_shouldAdjustToTraitCollection;
 - (CGRect)_selectedIndicatorBounds;
-- (CGRect)contentRectForBounds:(CGRect)a3;
-- (CGSize)_roundSize:(CGSize)a3;
+- (CGRect)contentRectForBounds:(CGRect)bounds;
+- (CGSize)_roundSize:(CGSize)size;
 - (UIEdgeInsets)_additionalSelectionInsets;
-- (_TtCC5UIKit29ButtonBarButtonVisualProviderP33_A98CD29F4F6ECA17AFECE41BBB264E596Button)initWithCoder:(id)a3;
-- (id)_selectedIndicatorViewWithImage:(id)a3;
+- (_TtCC5UIKit29ButtonBarButtonVisualProviderP33_A98CD29F4F6ECA17AFECE41BBB264E596Button)initWithCoder:(id)coder;
+- (id)_selectedIndicatorViewWithImage:(id)image;
 - (void)didMoveToWindow;
 @end
 
 @implementation ButtonBarButtonVisualProvider.Button
 
-+ (Class)_visualProviderClassForIdiom:(int64_t)a3
++ (Class)_visualProviderClassForIdiom:(int64_t)idiom
 {
   type metadata accessor for ButtonBarButtonVisualProvider.ButtonVisualProvider();
 
@@ -31,14 +31,14 @@
   return v2;
 }
 
-- (CGRect)contentRectForBounds:(CGRect)a3
+- (CGRect)contentRectForBounds:(CGRect)bounds
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a3.size.width != 0.0 || (v5 = 0.0, v6 = 0.0, v7 = 0.0, v8 = 0.0, a3.size.height != 0.0))
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (bounds.size.width != 0.0 || (v5 = 0.0, v6 = 0.0, v7 = 0.0, v8 = 0.0, bounds.size.height != 0.0))
   {
-    height = a3.size.height;
-    width = a3.size.width;
+    height = bounds.size.height;
+    width = bounds.size.width;
     v15.receiver = self;
     v15.super_class = swift_getObjectType();
     [(UIButton *)&v15 contentRectForBounds:x, y, width, height];
@@ -55,12 +55,12 @@
   return result;
 }
 
-- (CGSize)_roundSize:(CGSize)a3
+- (CGSize)_roundSize:(CGSize)size
 {
-  v3 = self;
-  UICeilToViewScale(v3);
+  selfCopy = self;
+  UICeilToViewScale(selfCopy);
   v5 = v4;
-  UICeilToViewScale(v3);
+  UICeilToViewScale(selfCopy);
   v7 = v6;
 
   v8 = v5;
@@ -76,8 +76,8 @@
   v4.super_class = swift_getObjectType();
   v2 = v4.receiver;
   [(UIView *)&v4 didMoveToWindow];
-  v3 = [v2 window];
-  if (v3)
+  window = [v2 window];
+  if (window)
   {
   }
 
@@ -87,7 +87,7 @@
   }
 }
 
-- (_TtCC5UIKit29ButtonBarButtonVisualProviderP33_A98CD29F4F6ECA17AFECE41BBB264E596Button)initWithCoder:(id)a3
+- (_TtCC5UIKit29ButtonBarButtonVisualProviderP33_A98CD29F4F6ECA17AFECE41BBB264E596Button)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtCC5UIKit29ButtonBarButtonVisualProviderP33_A98CD29F4F6ECA17AFECE41BBB264E596Button_selectionIndicatorViewFrame);
   v4 = *(MEMORY[0x1E695F050] + 16);
@@ -125,7 +125,7 @@
   return result;
 }
 
-- (id)_selectedIndicatorViewWithImage:(id)a3
+- (id)_selectedIndicatorViewWithImage:(id)image
 {
   if (*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtCC5UIKit29ButtonBarButtonVisualProviderP33_A98CD29F4F6ECA17AFECE41BBB264E596Button_usesTintColorCapsuleForSelection) == 1)
   {
@@ -136,9 +136,9 @@
   {
     v9.receiver = self;
     v9.super_class = swift_getObjectType();
-    v5 = a3;
+    imageCopy = image;
     v6 = v9.receiver;
-    result = [(UIButton *)&v9 _selectedIndicatorViewWithImage:v5];
+    result = [(UIButton *)&v9 _selectedIndicatorViewWithImage:imageCopy];
     if (!result)
     {
       __break(1u);

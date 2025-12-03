@@ -1,12 +1,12 @@
 @interface SFLocalImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFLocalImage)initWithCoder:(id)a3;
-- (SFLocalImage)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFLocalImage)initWithCoder:(id)coder;
+- (SFLocalImage)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFLocalImage
@@ -19,21 +19,21 @@
   return v3 ^ [(SFLocalImage *)self localImageType];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if ([(SFLocalImage *)v4 isMemberOfClass:objc_opt_class()]&& (v10.receiver = self, v10.super_class = SFLocalImage, [(SFImage *)&v10 isEqual:v4]))
+  else if ([(SFLocalImage *)equalCopy isMemberOfClass:objc_opt_class()]&& (v10.receiver = self, v10.super_class = SFLocalImage, [(SFImage *)&v10 isEqual:equalCopy]))
   {
-    v5 = v4;
-    v6 = [(SFLocalImage *)self localImageType];
-    v7 = [(SFLocalImage *)v5 localImageType];
+    v5 = equalCopy;
+    localImageType = [(SFLocalImage *)self localImageType];
+    localImageType2 = [(SFLocalImage *)v5 localImageType];
 
-    v8 = v6 == v7;
+    v8 = localImageType == localImageType2;
   }
 
   else
@@ -44,11 +44,11 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = SFLocalImage;
-  v4 = [(SFImage *)&v6 copyWithZone:a3];
+  v4 = [(SFImage *)&v6 copyWithZone:zone];
   [v4 setLocalImageType:{-[SFLocalImage localImageType](self, "localImageType")}];
   return v4;
 }
@@ -56,31 +56,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBLocalImage alloc] initWithFacade:self];
-  v3 = [(_SFPBLocalImage *)v2 jsonData];
+  jsonData = [(_SFPBLocalImage *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBLocalImage alloc] initWithFacade:self];
-  v3 = [(_SFPBLocalImage *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBLocalImage *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBImage alloc] initWithFacade:self];
-  v5 = [(_SFPBImage *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBImage *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFLocalImage)initWithCoder:(id)a3
+- (SFLocalImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBImage alloc] initWithData:v5];
   v9.receiver = self;
@@ -90,17 +90,17 @@
   return v7;
 }
 
-- (SFLocalImage)initWithProtobuf:(id)a3
+- (SFLocalImage)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v8.receiver = self;
   v8.super_class = SFLocalImage;
   v5 = [(SFLocalImage *)&v8 init];
   if (v5)
   {
-    if ([v4 localImageType])
+    if ([protobufCopy localImageType])
     {
-      -[SFLocalImage setLocalImageType:](v5, "setLocalImageType:", [v4 localImageType]);
+      -[SFLocalImage setLocalImageType:](v5, "setLocalImageType:", [protobufCopy localImageType]);
     }
 
     v6 = v5;

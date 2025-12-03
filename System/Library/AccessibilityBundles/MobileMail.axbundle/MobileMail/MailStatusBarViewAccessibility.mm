@@ -14,13 +14,13 @@
   v10 = 0u;
   v11 = 0u;
   v2 = v12 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-  if (v3)
+  accessibilityLabel = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  if (accessibilityLabel)
   {
     v4 = *v10;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != accessibilityLabel; i = i + 1)
       {
         if (*v10 != v4)
         {
@@ -30,13 +30,13 @@
         v6 = *(*(&v9 + 1) + 8 * i);
         if ([v6 _accessibilityViewIsVisible])
         {
-          v3 = [v6 accessibilityLabel];
+          accessibilityLabel = [v6 accessibilityLabel];
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-      if (v3)
+      accessibilityLabel = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      if (accessibilityLabel)
       {
         continue;
       }
@@ -49,13 +49,13 @@ LABEL_11:
 
   v7 = *MEMORY[0x29EDCA608];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(MailStatusBarViewAccessibility *)self accessibilityLabel];
-  v3 = [v2 length] != 0;
+  accessibilityLabel = [(MailStatusBarViewAccessibility *)self accessibilityLabel];
+  v3 = [accessibilityLabel length] != 0;
 
   return v3;
 }

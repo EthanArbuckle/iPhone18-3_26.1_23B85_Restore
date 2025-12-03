@@ -1,7 +1,7 @@
 @interface AccessibilityReaderAXUIService
-+ (id)possibleRequiredEntitlementsForProcessingMessageWithIdentifier:(int64_t)a3;
++ (id)possibleRequiredEntitlementsForProcessingMessageWithIdentifier:(int64_t)identifier;
 + (id)sharedInstance;
-- (id)processMessage:(id)a3 withIdentifier:(int64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6;
+- (id)processMessage:(id)message withIdentifier:(int64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error;
 @end
 
 @implementation AccessibilityReaderAXUIService
@@ -14,9 +14,9 @@
   return v2;
 }
 
-- (id)processMessage:(id)a3 withIdentifier:(int64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6
+- (id)processMessage:(id)message withIdentifier:(int64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error
 {
-  if (a3)
+  if (message)
   {
     v8 = sub_44BC();
   }
@@ -28,15 +28,15 @@
 
   v9 = sub_450C();
   v11 = v10;
-  v12 = self;
-  sub_1CF4(v8, a4, v9, v11);
+  selfCopy = self;
+  sub_1CF4(v8, identifier, v9, v11);
 
   v13.super.isa = sub_44AC().super.isa;
 
   return v13.super.isa;
 }
 
-+ (id)possibleRequiredEntitlementsForProcessingMessageWithIdentifier:(int64_t)a3
++ (id)possibleRequiredEntitlementsForProcessingMessageWithIdentifier:(int64_t)identifier
 {
   if (sub_41F8())
   {

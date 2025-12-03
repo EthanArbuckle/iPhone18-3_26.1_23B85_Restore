@@ -1,19 +1,19 @@
 @interface PGTitleSpecLocationArgument
-+ (id)argumentWithLocationTypeLocationForLocationName:(id)a3;
-- (PGTitleSpecLocationArgument)initWithLocationType:(unint64_t)a3 filterLocations:(BOOL)a4;
-- (id)_generateBusinessItemTitleWithMomentNodes:(id)a3 locationHelper:(id)a4 serviceManager:(id)a5;
-- (id)_generateLocationTitleWithOptions:(id)a3 locationHelper:(id)a4 serviceManager:(id)a5;
-- (id)_resolvedStringWithMomentNodes:(id)a3 argumentEvaluationContext:(id)a4;
-- (id)_resolvedStringWithMomentNodes:(id)a3 features:(id)a4 argumentEvaluationContext:(id)a5;
++ (id)argumentWithLocationTypeLocationForLocationName:(id)name;
+- (PGTitleSpecLocationArgument)initWithLocationType:(unint64_t)type filterLocations:(BOOL)locations;
+- (id)_generateBusinessItemTitleWithMomentNodes:(id)nodes locationHelper:(id)helper serviceManager:(id)manager;
+- (id)_generateLocationTitleWithOptions:(id)options locationHelper:(id)helper serviceManager:(id)manager;
+- (id)_resolvedStringWithMomentNodes:(id)nodes argumentEvaluationContext:(id)context;
+- (id)_resolvedStringWithMomentNodes:(id)nodes features:(id)features argumentEvaluationContext:(id)context;
 @end
 
 @implementation PGTitleSpecLocationArgument
 
-- (id)_generateLocationTitleWithOptions:(id)a3 locationHelper:(id)a4 serviceManager:(id)a5
+- (id)_generateLocationTitleWithOptions:(id)options locationHelper:(id)helper serviceManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  helperCopy = helper;
+  managerCopy = manager;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -26,7 +26,7 @@
   v13[3] = &unk_278888460;
   v13[4] = self;
   v13[5] = &v14;
-  [PGLocationTitleUtility generateLocationTitleWithOptions:v8 locationHelper:v9 serviceManager:v10 result:v13];
+  [PGLocationTitleUtility generateLocationTitleWithOptions:optionsCopy locationHelper:helperCopy serviceManager:managerCopy result:v13];
   if ([v15[5] length])
   {
     v11 = v15[5];
@@ -50,31 +50,31 @@ void __95__PGTitleSpecLocationArgument__generateLocationTitleWithOptions_locatio
   [*(a1 + 32) setUsedLocationNodes:v7];
 }
 
-- (id)_generateBusinessItemTitleWithMomentNodes:(id)a3 locationHelper:(id)a4 serviceManager:(id)a5
+- (id)_generateBusinessItemTitleWithMomentNodes:(id)nodes locationHelper:(id)helper serviceManager:(id)manager
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  managerCopy = manager;
+  helperCopy = helper;
+  nodesCopy = nodes;
   v11 = objc_alloc_init(PGLocationTitleOptions);
   [(PGLocationTitleOptions *)v11 setUseBusinessItems:1];
   [(PGLocationTitleOptions *)v11 setAoiDisplayType:0];
   [(PGLocationTitleOptions *)v11 setUseCities:0];
   [(PGLocationTitleOptions *)v11 setPeopleDisplayType:0];
   [(PGLocationTitleOptions *)v11 setLineBreakBehavior:self->_lineBreakBehavior];
-  [(PGLocationTitleOptions *)v11 setMomentNodes:v10];
+  [(PGLocationTitleOptions *)v11 setMomentNodes:nodesCopy];
 
-  v12 = [(PGTitleSpecLocationArgument *)self _generateLocationTitleWithOptions:v11 locationHelper:v9 serviceManager:v8];
+  v12 = [(PGTitleSpecLocationArgument *)self _generateLocationTitleWithOptions:v11 locationHelper:helperCopy serviceManager:managerCopy];
 
   return v12;
 }
 
-- (id)_resolvedStringWithMomentNodes:(id)a3 features:(id)a4 argumentEvaluationContext:(id)a5
+- (id)_resolvedStringWithMomentNodes:(id)nodes features:(id)features argumentEvaluationContext:(id)context
 {
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v33 = a4;
-  v37 = v8;
-  v38 = a5;
+  nodesCopy = nodes;
+  featuresCopy = features;
+  v37 = nodesCopy;
+  contextCopy = context;
   type = self->_type;
   if (type == 512)
   {
@@ -87,22 +87,22 @@ void __95__PGTitleSpecLocationArgument__generateLocationTitleWithOptions_locatio
     type = self->_type;
   }
 
-  v35 = self;
+  selfCopy = self;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
   v49 = __Block_byref_object_copy__7572;
   v50 = __Block_byref_object_dispose__7573;
   v51 = 0;
-  v11 = [v8 anyObject];
-  v34 = [v11 graph];
+  anyObject = [nodesCopy anyObject];
+  graph = [anyObject graph];
 
-  v12 = [v38 locationHelper];
+  locationHelper = [contextCopy locationHelper];
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v33;
+  obj = featuresCopy;
   v13 = [obj countByEnumeratingWithState:&v42 objects:v52 count:16];
   if (!v13)
   {
@@ -122,21 +122,21 @@ void __95__PGTitleSpecLocationArgument__generateLocationTitleWithOptions_locatio
       }
 
       v17 = *(*(&v42 + 1) + 8 * i);
-      v18 = [v17 type];
-      if ((type & 2) != 0 && v18 == 17)
+      type = [v17 type];
+      if ((type & 2) != 0 && type == 17)
       {
-        v19 = [v38 serviceManager];
-        v20 = [(PGTitleSpecLocationArgument *)v35 _generateBusinessItemTitleWithMomentNodes:v37 locationHelper:v12 serviceManager:v19];
+        serviceManager = [contextCopy serviceManager];
+        v20 = [(PGTitleSpecLocationArgument *)selfCopy _generateBusinessItemTitleWithMomentNodes:v37 locationHelper:locationHelper serviceManager:serviceManager];
         v21 = v47[5];
         v47[5] = v20;
 
         goto LABEL_38;
       }
 
-      if ((type & 4) != 0 && v18 == 8)
+      if ((type & 4) != 0 && type == 8)
       {
-        v19 = [v17 nodeInGraph:v34];
-        v22 = [PGLocationTitleUtility beautifiedLocationNodeStringWithPlaceNode:v19 locationHelper:v12];
+        serviceManager = [v17 nodeInGraph:graph];
+        v22 = [PGLocationTitleUtility beautifiedLocationNodeStringWithPlaceNode:serviceManager locationHelper:locationHelper];
         v23 = v47[5];
         v47[5] = v22;
 
@@ -145,10 +145,10 @@ void __95__PGTitleSpecLocationArgument__generateLocationTitleWithOptions_locatio
 
       if (type)
       {
-        if (v18 == 8 || v18 == 4)
+        if (type == 8 || type == 4)
         {
-          v19 = [v17 nodeInGraph:v34];
-          v25 = [PGLocationTitleUtility beautifiedLocationNodeStringWithPlaceNode:v19 locationHelper:v12];
+          serviceManager = [v17 nodeInGraph:graph];
+          v25 = [PGLocationTitleUtility beautifiedLocationNodeStringWithPlaceNode:serviceManager locationHelper:locationHelper];
           v26 = v47[5];
           v47[5] = v25;
 
@@ -173,37 +173,37 @@ LABEL_30:
             goto LABEL_39;
           }
 
-          v19 = +[PGLocationTitleOptions onlyPeopleLocationTitleOptions];
-          [v19 setLineBreakBehavior:v35->_lineBreakBehavior];
-          [v19 setMomentNodes:v37];
+          serviceManager = +[PGLocationTitleOptions onlyPeopleLocationTitleOptions];
+          [serviceManager setLineBreakBehavior:selfCopy->_lineBreakBehavior];
+          [serviceManager setMomentNodes:v37];
           if ((type & 0x30) != 0)
           {
             if ((type & 0x20) != 0)
             {
-              [v19 setAllowFamilyHome:0];
+              [serviceManager setAllowFamilyHome:0];
             }
 
-            v28 = [v38 serviceManager];
+            serviceManager2 = [contextCopy serviceManager];
             v41[0] = MEMORY[0x277D85DD0];
             v41[1] = 3221225472;
             v41[2] = __97__PGTitleSpecLocationArgument__resolvedStringWithMomentNodes_features_argumentEvaluationContext___block_invoke;
             v41[3] = &unk_27887FB60;
             v41[4] = &v46;
-            [PGLocationTitleUtility generateLocationTitleWithOptions:v19 locationHelper:v12 serviceManager:v28 result:v41];
+            [PGLocationTitleUtility generateLocationTitleWithOptions:serviceManager locationHelper:locationHelper serviceManager:serviceManager2 result:v41];
           }
 
           if (!v47[5] && (type & 1) != 0)
           {
-            [v19 setPeopleDisplayType:0];
-            [v19 setUseCities:1];
-            [v19 setAoiDisplayType:(type & 4) >> 2];
-            v29 = [v38 serviceManager];
+            [serviceManager setPeopleDisplayType:0];
+            [serviceManager setUseCities:1];
+            [serviceManager setAoiDisplayType:(type & 4) >> 2];
+            serviceManager3 = [contextCopy serviceManager];
             v39[0] = MEMORY[0x277D85DD0];
             v39[1] = 3221225472;
             v40[0] = __97__PGTitleSpecLocationArgument__resolvedStringWithMomentNodes_features_argumentEvaluationContext___block_invoke_2;
             v40[1] = &unk_27887FB60;
             v40[2] = &v46;
-            [PGLocationTitleUtility generateLocationTitleWithOptions:v19 locationHelper:v12 serviceManager:v29 result:v39];
+            [PGLocationTitleUtility generateLocationTitleWithOptions:serviceManager locationHelper:locationHelper serviceManager:serviceManager3 result:v39];
           }
         }
 
@@ -255,10 +255,10 @@ void __97__PGTitleSpecLocationArgument__resolvedStringWithMomentNodes_features_a
   *(v4 + 40) = v3;
 }
 
-- (id)_resolvedStringWithMomentNodes:(id)a3 argumentEvaluationContext:(id)a4
+- (id)_resolvedStringWithMomentNodes:(id)nodes argumentEvaluationContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  nodesCopy = nodes;
+  contextCopy = context;
   type = self->_type;
   if (type == 512)
   {
@@ -274,7 +274,7 @@ void __97__PGTitleSpecLocationArgument__resolvedStringWithMomentNodes_features_a
   v10 = (type & 0x30);
   if ((type & 0x30) == 0 || (type & 2) == 0)
   {
-    v12 = [v7 locationHelper];
+    locationHelper = [contextCopy locationHelper];
     if ((type & 0x30) == 0)
     {
       goto LABEL_14;
@@ -282,25 +282,25 @@ void __97__PGTitleSpecLocationArgument__resolvedStringWithMomentNodes_features_a
 
     v10 = +[PGLocationTitleOptions onlyPeopleLocationTitleOptions];
     [(PGLocationTitleOptions *)v10 setLineBreakBehavior:self->_lineBreakBehavior];
-    [(PGLocationTitleOptions *)v10 setMomentNodes:v6];
+    [(PGLocationTitleOptions *)v10 setMomentNodes:nodesCopy];
     [(PGLocationTitleOptions *)v10 setFilterSignificantLocationsType:1];
     if ((type & 0x20) != 0)
     {
       [(PGLocationTitleOptions *)v10 setAllowFamilyHome:0];
     }
 
-    v13 = [v7 serviceManager];
-    v14 = [(PGTitleSpecLocationArgument *)self _generateLocationTitleWithOptions:v10 locationHelper:v12 serviceManager:v13];
+    serviceManager = [contextCopy serviceManager];
+    v14 = [(PGTitleSpecLocationArgument *)self _generateLocationTitleWithOptions:v10 locationHelper:locationHelper serviceManager:serviceManager];
 
     if (!v14)
     {
 LABEL_14:
-      v24 = v12;
+      v24 = locationHelper;
       v15 = v10;
       v10 = objc_alloc_init(PGLocationTitleOptions);
 
       [(PGLocationTitleOptions *)v10 setUseBusinessItems:(type >> 1) & 1];
-      [(PGLocationTitleOptions *)v10 setMomentNodes:v6];
+      [(PGLocationTitleOptions *)v10 setMomentNodes:nodesCopy];
       [(PGLocationTitleOptions *)v10 setUseCities:type & 1];
       [(PGLocationTitleOptions *)v10 setShowAllCities:(type >> 7) & 1];
       [(PGLocationTitleOptions *)v10 setUseDistrict:(type >> 6) & 1];
@@ -323,7 +323,7 @@ LABEL_14:
         }
       }
 
-      v12 = v24;
+      locationHelper = v24;
       [(PGLocationTitleOptions *)v10 setAoiDisplayType:v17];
       [(PGLocationTitleOptions *)v10 setPeopleDisplayType:0];
       [(PGLocationTitleOptions *)v10 setLineBreakBehavior:self->_lineBreakBehavior];
@@ -338,24 +338,24 @@ LABEL_14:
       }
 
       [(PGLocationTitleOptions *)v10 setFilterSignificantLocationsType:v21];
-      v22 = [v7 serviceManager];
-      v14 = [(PGTitleSpecLocationArgument *)self _generateLocationTitleWithOptions:v10 locationHelper:v24 serviceManager:v22];
+      serviceManager2 = [contextCopy serviceManager];
+      v14 = [(PGTitleSpecLocationArgument *)self _generateLocationTitleWithOptions:v10 locationHelper:v24 serviceManager:serviceManager2];
     }
 
-    v19 = v14;
+    loggingConnection = v14;
 
-    v9 = v19;
+    v9 = loggingConnection;
   }
 
   else
   {
     v18 = +[PGLogging sharedLogging];
-    v19 = [v18 loggingConnection];
+    loggingConnection = [v18 loggingConnection];
 
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_22F0FC000, v19, OS_LOG_TYPE_ERROR, "Cannot allow business item and people home at the same time.", buf, 2u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Cannot allow business item and people home at the same time.", buf, 2u);
     }
 
     v9 = 0;
@@ -366,25 +366,25 @@ LABEL_28:
   return v9;
 }
 
-- (PGTitleSpecLocationArgument)initWithLocationType:(unint64_t)a3 filterLocations:(BOOL)a4
+- (PGTitleSpecLocationArgument)initWithLocationType:(unint64_t)type filterLocations:(BOOL)locations
 {
   v7.receiver = self;
   v7.super_class = PGTitleSpecLocationArgument;
   result = [(PGTitleSpecLocationArgument *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_filterLocations = a4;
+    result->_type = type;
+    result->_filterLocations = locations;
   }
 
   return result;
 }
 
-+ (id)argumentWithLocationTypeLocationForLocationName:(id)a3
++ (id)argumentWithLocationTypeLocationForLocationName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = [[PGTitleSpecLocationArgument alloc] initWithLocationType:512 filterLocations:0];
-  [(PGTitleSpecLocationArgument *)v4 setLocationName:v3];
+  [(PGTitleSpecLocationArgument *)v4 setLocationName:nameCopy];
 
   return v4;
 }

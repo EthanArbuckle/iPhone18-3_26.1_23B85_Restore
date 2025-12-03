@@ -2,18 +2,18 @@
 - (BOOL)isCompactFlowPresentation;
 - (BOOL)isExpanded;
 - (BOOL)isReflowablePresentation;
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
 - (CGRect)p_leftThirdBounds;
 - (CGRect)p_rightTwoThirdBounds;
 - (double)p_scaleToFitStage;
-- (id)adjustImageGeometry:(id)a3 withLayoutGeometry:(id)a4 forLayout:(id)a5;
+- (id)adjustImageGeometry:(id)geometry withLayoutGeometry:(id)layoutGeometry forLayout:(id)layout;
 - (id)childInfosForLayout;
-- (id)layoutGeometryForLayout:(id)a3;
+- (id)layoutGeometryForLayout:(id)layout;
 - (id)layoutGeometryFromProvider;
 - (void)dealloc;
 - (void)p_invalidateExternal;
-- (void)wasAddedToLayoutController:(id)a3;
+- (void)wasAddedToLayoutController:(id)controller;
 @end
 
 @implementation THWGutterLayout
@@ -29,7 +29,7 @@
 {
   v10.receiver = self;
   v10.super_class = THWGutterLayout;
-  v3 = [(THWGutterLayout *)&v10 layoutGeometryFromProvider];
+  layoutGeometryFromProvider = [(THWGutterLayout *)&v10 layoutGeometryFromProvider];
   if ([(THWGutterLayout *)self isCompactFlowPresentation])
   {
     [(THWWidgetLayoutDelegate *)[(THWGutterLayout *)self delegate] widgetLayoutBounds];
@@ -45,22 +45,22 @@
     return [[TSDLayoutGeometry alloc] initWithFrame:{(v5 - v7) * 0.5, 0.0, v7, fmax(v8 + 20.0, 120.0)}];
   }
 
-  return v3;
+  return layoutGeometryFromProvider;
 }
 
 - (id)childInfosForLayout
 {
   v5.receiver = self;
   v5.super_class = THWGutterLayout;
-  v3 = [(THWGutterLayout *)&v5 childInfosForLayout];
+  childInfosForLayout = [(THWGutterLayout *)&v5 childInfosForLayout];
   if (-[THWGutterLayout isCompactFlowPresentation](self, "isCompactFlowPresentation") && [-[THWGutterLayout info](self "info")] && objc_msgSend(objc_msgSend(-[THWGutterLayout info](self, "info"), "titleShape"), "containedStorage"))
   {
-    v3 = [v3 mutableCopy];
-    [v3 removeObjectIdenticalTo:{objc_msgSend(-[THWGutterLayout info](self, "info"), "titleShape")}];
-    [v3 addObject:{objc_msgSend(objc_msgSend(-[THWGutterLayout info](self, "info"), "titleShape"), "containedStorage")}];
+    childInfosForLayout = [childInfosForLayout mutableCopy];
+    [childInfosForLayout removeObjectIdenticalTo:{objc_msgSend(-[THWGutterLayout info](self, "info"), "titleShape")}];
+    [childInfosForLayout addObject:{objc_msgSend(objc_msgSend(-[THWGutterLayout info](self, "info"), "titleShape"), "containedStorage")}];
   }
 
-  return v3;
+  return childInfosForLayout;
 }
 
 - (CGRect)p_leftThirdBounds
@@ -99,7 +99,7 @@
   return THScaleNeededToFitSizeInSize(v4, v6, v7, v8);
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
   if (![(THWGutterLayout *)self isCompactFlowPresentation])
   {
@@ -110,11 +110,11 @@
   v4 = TSUDynamicCast();
   objc_opt_class();
   v5 = TSUDynamicCast();
-  v6 = [v4 info];
-  if (v6 != [-[THWGutterLayout info](self "info")] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  info = [v4 info];
+  if (info != [-[THWGutterLayout info](self "info")] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [v4 info];
-    if (v7 == [-[THWGutterLayout info](self "info")])
+    info2 = [v4 info];
+    if (info2 == [-[THWGutterLayout info](self "info")])
     {
       [objc_msgSend(objc_msgSend(v4 "info")];
       [(THWGutterLayout *)self p_leftThirdBounds];
@@ -149,18 +149,18 @@ LABEL_9:
   return [TSDLayout layoutGeometryFittingLayoutGeometry:v11 inFrame:v13 scale:v15, v17, v19, v20];
 }
 
-- (id)adjustImageGeometry:(id)a3 withLayoutGeometry:(id)a4 forLayout:(id)a5
+- (id)adjustImageGeometry:(id)geometry withLayoutGeometry:(id)layoutGeometry forLayout:(id)layout
 {
-  if (![(THWGutterLayout *)self isCompactFlowPresentation:a3])
+  if (![(THWGutterLayout *)self isCompactFlowPresentation:geometry])
   {
-    return a3;
+    return geometry;
   }
 
   objc_opt_class();
-  v7 = [TSUDynamicCast() info];
-  if (v7 != [-[THWGutterLayout info](self "info")])
+  info = [TSUDynamicCast() info];
+  if (info != [-[THWGutterLayout info](self "info")])
   {
-    return a3;
+    return geometry;
   }
 
   [(THWGutterLayout *)self p_leftThirdBounds];
@@ -170,7 +170,7 @@ LABEL_9:
   v16 = v15;
   [(THWGutterLayout *)self p_scaleToFitStage];
 
-  return [TSDLayout layoutGeometryFittingLayoutGeometry:a3 inFrame:v10 scale:v12, v14, v16, v17];
+  return [TSDLayout layoutGeometryFittingLayoutGeometry:geometry inFrame:v10 scale:v12, v14, v16, v17];
 }
 
 - (BOOL)isExpanded
@@ -186,16 +186,16 @@ LABEL_9:
 
 - (BOOL)isCompactFlowPresentation
 {
-  v3 = [(THWGutterLayout *)self delegate];
+  delegate = [(THWGutterLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsCompactFlow:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsCompactFlow:self];
 }
 
 - (BOOL)isReflowablePresentation
 {
-  v3 = [(THWGutterLayout *)self delegate];
+  delegate = [(THWGutterLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsReflowablePresentation:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsReflowablePresentation:self];
 }
 
 - (void)p_invalidateExternal
@@ -205,15 +205,15 @@ LABEL_9:
   [(THWGutterLayout *)self invalidateChildren];
 }
 
-- (void)wasAddedToLayoutController:(id)a3
+- (void)wasAddedToLayoutController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = THWGutterLayout;
-  [(THWGutterLayout *)&v4 wasAddedToLayoutController:a3];
+  [(THWGutterLayout *)&v4 wasAddedToLayoutController:controller];
   [(THWGutterLayout *)self p_invalidateExternal];
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -226,7 +226,7 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;

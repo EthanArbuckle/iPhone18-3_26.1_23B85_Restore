@@ -6,7 +6,7 @@
 
 - (uint64_t)PG_hasMenuItemProviderEntitlement
 {
-  v1 = [a1 valueForEntitlement:@"com.apple.pegasus.menuitemprovider"];
+  v1 = [self valueForEntitlement:@"com.apple.pegasus.menuitemprovider"];
   v2 = [v1 isEqualToNumber:MEMORY[0x1E695E118]];
 
   return v2;

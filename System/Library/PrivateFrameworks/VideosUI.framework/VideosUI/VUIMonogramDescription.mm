@@ -1,23 +1,23 @@
 @interface VUIMonogramDescription
-- (BOOL)isEqual:(id)a3;
-- (CGPoint)specialOffsetForString:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CGPoint)specialOffsetForString:(id)string;
 - (CGSize)defaultImageSize;
 - (CGSize)size;
 - (UIEdgeInsets)padding;
-- (VUIMonogramDescription)initWithText:(id)a3 imageURL:(id)a4 font:(id)a5;
-- (id)copyWithType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VUIMonogramDescription)initWithText:(id)text imageURL:(id)l font:(id)font;
+- (id)copyWithType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (unint64_t)preferedMonogramType;
 @end
 
 @implementation VUIMonogramDescription
 
-- (VUIMonogramDescription)initWithText:(id)a3 imageURL:(id)a4 font:(id)a5
+- (VUIMonogramDescription)initWithText:(id)text imageURL:(id)l font:(id)font
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  lCopy = l;
+  fontCopy = font;
   v20.receiver = self;
   v20.super_class = VUIMonogramDescription;
   v11 = [(VUIMonogramDescription *)&v20 init];
@@ -25,15 +25,15 @@
   if (v11)
   {
     v11->_shouldFallBackToSilhouette = 1;
-    v13 = [v8 copy];
+    v13 = [textCopy copy];
     text = v12->_text;
     v12->_text = v13;
 
-    v15 = [v9 copy];
+    v15 = [lCopy copy];
     imageURL = v12->_imageURL;
     v12->_imageURL = v15;
 
-    objc_storeStrong(&v12->_font, a5);
+    objc_storeStrong(&v12->_font, font);
     if (!v12->_font)
     {
       v17 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDDC0]];
@@ -48,26 +48,26 @@
   return v12;
 }
 
-- (id)copyWithType:(unint64_t)a3
+- (id)copyWithType:(unint64_t)type
 {
-  if ([(VUIMonogramDescription *)self preferedMonogramType]<= a3)
+  if ([(VUIMonogramDescription *)self preferedMonogramType]<= type)
   {
     return 0;
   }
 
   v5 = [(VUIMonogramDescription *)self copy];
   v6 = v5;
-  if (a3 <= 2)
+  if (type <= 2)
   {
     v7 = *(v5 + 24);
     *(v5 + 24) = 0;
 
-    if (a3 != 2)
+    if (type != 2)
     {
       v8 = v6[2];
       v6[2] = 0;
 
-      if (!a3)
+      if (!type)
       {
         [v6 setShouldFallBackToSilhouette:0];
       }
@@ -77,82 +77,82 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [VUIMonogramDescription allocWithZone:a3];
-  v5 = [(VUIMonogramDescription *)self text];
-  v6 = [(VUIMonogramDescription *)self imageURL];
-  v7 = [(VUIMonogramDescription *)self font];
-  v8 = [(VUIMonogramDescription *)v4 initWithText:v5 imageURL:v6 font:v7];
+  v4 = [VUIMonogramDescription allocWithZone:zone];
+  text = [(VUIMonogramDescription *)self text];
+  imageURL = [(VUIMonogramDescription *)self imageURL];
+  font = [(VUIMonogramDescription *)self font];
+  v8 = [(VUIMonogramDescription *)v4 initWithText:text imageURL:imageURL font:font];
 
   [(VUIMonogramDescription *)self size];
   [(VUIMonogramDescription *)v8 setSize:?];
   [(VUIMonogramDescription *)self defaultImageSize];
   [(VUIMonogramDescription *)v8 setDefaultImageSize:?];
-  v9 = [(VUIMonogramDescription *)self specialOffsetByFirstLetter];
-  [(VUIMonogramDescription *)v8 setSpecialOffsetByFirstLetter:v9];
+  specialOffsetByFirstLetter = [(VUIMonogramDescription *)self specialOffsetByFirstLetter];
+  [(VUIMonogramDescription *)v8 setSpecialOffsetByFirstLetter:specialOffsetByFirstLetter];
 
   [(VUIMonogramDescription *)self padding];
   [(VUIMonogramDescription *)v8 setPadding:?];
   [(VUIMonogramDescription *)v8 setScaleMode:[(VUIMonogramDescription *)self scaleMode]];
-  v10 = [(VUIMonogramDescription *)self backgroundColor];
-  [(VUIMonogramDescription *)v8 setBackgroundColor:v10];
+  backgroundColor = [(VUIMonogramDescription *)self backgroundColor];
+  [(VUIMonogramDescription *)v8 setBackgroundColor:backgroundColor];
 
-  v11 = [(VUIMonogramDescription *)self textColor];
-  [(VUIMonogramDescription *)v8 setTextColor:v11];
+  textColor = [(VUIMonogramDescription *)self textColor];
+  [(VUIMonogramDescription *)v8 setTextColor:textColor];
 
   [(VUIMonogramDescription *)self upscaleAdjustment];
   [(VUIMonogramDescription *)v8 setUpscaleAdjustment:?];
   [(VUIMonogramDescription *)self cornerRadius];
   [(VUIMonogramDescription *)v8 setCornerRadius:?];
-  v12 = [(VUIMonogramDescription *)self fillColor];
-  [(VUIMonogramDescription *)v8 setFillColor:v12];
+  fillColor = [(VUIMonogramDescription *)self fillColor];
+  [(VUIMonogramDescription *)v8 setFillColor:fillColor];
 
-  v13 = [(VUIMonogramDescription *)self gradientStartColor];
-  [(VUIMonogramDescription *)v8 setGradientStartColor:v13];
+  gradientStartColor = [(VUIMonogramDescription *)self gradientStartColor];
+  [(VUIMonogramDescription *)v8 setGradientStartColor:gradientStartColor];
 
-  v14 = [(VUIMonogramDescription *)self gradientEndColor];
-  [(VUIMonogramDescription *)v8 setGradientEndColor:v14];
+  gradientEndColor = [(VUIMonogramDescription *)self gradientEndColor];
+  [(VUIMonogramDescription *)v8 setGradientEndColor:gradientEndColor];
 
   [(VUIMonogramDescription *)v8 setShouldFallBackToSilhouette:[(VUIMonogramDescription *)self shouldFallBackToSilhouette]];
   [(VUIMonogramDescription *)self borderWidth];
   [(VUIMonogramDescription *)v8 setBorderWidth:?];
-  v15 = [(VUIMonogramDescription *)self borderColor];
-  [(VUIMonogramDescription *)v8 setBorderColor:v15];
+  borderColor = [(VUIMonogramDescription *)self borderColor];
+  [(VUIMonogramDescription *)v8 setBorderColor:borderColor];
 
   [(VUIMonogramDescription *)v8 setOptimizedImageRendering:[(VUIMonogramDescription *)self optimizedImageRendering]];
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [(VUIMonogramDescription *)self text];
-    v9 = [v7 text];
-    if (v8 != v9)
+    v7 = equalCopy;
+    text = [(VUIMonogramDescription *)self text];
+    text2 = [v7 text];
+    if (text != text2)
     {
-      v3 = [(VUIMonogramDescription *)self text];
-      v4 = [v7 text];
-      if (![v3 isEqual:v4])
+      text3 = [(VUIMonogramDescription *)self text];
+      text4 = [v7 text];
+      if (![text3 isEqual:text4])
       {
         v10 = 0;
         goto LABEL_20;
       }
     }
 
-    v11 = [(VUIMonogramDescription *)self imageURL];
-    v12 = [v7 imageURL];
-    if (v11 != v12)
+    imageURL = [(VUIMonogramDescription *)self imageURL];
+    imageURL2 = [v7 imageURL];
+    if (imageURL != imageURL2)
     {
-      v13 = [(VUIMonogramDescription *)self imageURL];
-      v86 = [v7 imageURL];
-      v87 = v13;
-      if (![v13 isEqual:?])
+      imageURL3 = [(VUIMonogramDescription *)self imageURL];
+      imageURL4 = [v7 imageURL];
+      v87 = imageURL3;
+      if (![imageURL3 isEqual:?])
       {
         v10 = 0;
         goto LABEL_17;
@@ -182,9 +182,9 @@
       goto LABEL_15;
     }
 
-    v26 = [(VUIMonogramDescription *)self specialOffsetByFirstLetter];
-    v27 = [v7 specialOffsetByFirstLetter];
-    if (v26 != v27 || (v85 = v27, -[VUIMonogramDescription padding](self, "padding"), v31 = v30, v33 = v32, v35 = v34, v37 = v36, [v7 padding], v27 = v85, v33 != v41) || v31 != v38 || v37 != v40 || v35 != v39 || (v83 = -[VUIMonogramDescription scaleMode](self, "scaleMode"), v42 = v83 == objc_msgSend(v7, "scaleMode"), v27 = v85, !v42))
+    specialOffsetByFirstLetter = [(VUIMonogramDescription *)self specialOffsetByFirstLetter];
+    specialOffsetByFirstLetter2 = [v7 specialOffsetByFirstLetter];
+    if (specialOffsetByFirstLetter != specialOffsetByFirstLetter2 || (v85 = specialOffsetByFirstLetter2, -[VUIMonogramDescription padding](self, "padding"), v31 = v30, v33 = v32, v35 = v34, v37 = v36, [v7 padding], specialOffsetByFirstLetter2 = v85, v33 != v41) || v31 != v38 || v37 != v40 || v35 != v39 || (v83 = -[VUIMonogramDescription scaleMode](self, "scaleMode"), v42 = v83 == objc_msgSend(v7, "scaleMode"), specialOffsetByFirstLetter2 = v85, !v42))
     {
 
 LABEL_15:
@@ -193,47 +193,47 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v84 = [(VUIMonogramDescription *)self backgroundColor];
-    v82 = [v7 backgroundColor];
-    v80 = v26;
-    if (v84 != v82)
+    backgroundColor = [(VUIMonogramDescription *)self backgroundColor];
+    backgroundColor2 = [v7 backgroundColor];
+    v80 = specialOffsetByFirstLetter;
+    if (backgroundColor != backgroundColor2)
     {
-      v79 = [(VUIMonogramDescription *)self backgroundColor];
-      v76 = [v7 backgroundColor];
-      if (![v79 isEqual:?])
+      backgroundColor3 = [(VUIMonogramDescription *)self backgroundColor];
+      backgroundColor4 = [v7 backgroundColor];
+      if (![backgroundColor3 isEqual:?])
       {
         v10 = 0;
-        v43 = v84;
+        v43 = backgroundColor;
         goto LABEL_62;
       }
     }
 
-    v81 = [(VUIMonogramDescription *)self textColor];
-    v78 = [v7 textColor];
-    if (v81 != v78)
+    textColor = [(VUIMonogramDescription *)self textColor];
+    textColor2 = [v7 textColor];
+    if (textColor != textColor2)
     {
-      v77 = [(VUIMonogramDescription *)self textColor];
-      v75 = [v7 textColor];
-      if (![v77 isEqual:?])
+      textColor3 = [(VUIMonogramDescription *)self textColor];
+      textColor4 = [v7 textColor];
+      if (![textColor3 isEqual:?])
       {
         v10 = 0;
-        v44 = v78;
+        v44 = textColor2;
 LABEL_60:
 
 LABEL_61:
-        v43 = v84;
-        if (v84 == v82)
+        v43 = backgroundColor;
+        if (backgroundColor == backgroundColor2)
         {
 LABEL_63:
 
           v28 = v10;
 LABEL_16:
-          if (v11 == v12)
+          if (imageURL == imageURL2)
           {
 
             v10 = v28;
 LABEL_19:
-            if (v8 == v9)
+            if (text == text2)
             {
 LABEL_21:
 
@@ -265,41 +265,41 @@ LABEL_62:
       goto LABEL_59;
     }
 
-    v74 = [(VUIMonogramDescription *)self fillColor];
-    v72 = [v7 fillColor];
-    if (v74 != v72)
+    fillColor = [(VUIMonogramDescription *)self fillColor];
+    fillColor2 = [v7 fillColor];
+    if (fillColor != fillColor2)
     {
-      v71 = [(VUIMonogramDescription *)self fillColor];
-      v67 = [v7 fillColor];
-      if (![v71 isEqual:?])
+      fillColor3 = [(VUIMonogramDescription *)self fillColor];
+      fillColor4 = [v7 fillColor];
+      if (![fillColor3 isEqual:?])
       {
         v10 = 0;
-        v51 = v72;
+        v51 = fillColor2;
         goto LABEL_57;
       }
     }
 
-    v73 = [(VUIMonogramDescription *)self gradientStartColor];
-    v69 = [v7 gradientStartColor];
-    if (v73 != v69)
+    gradientStartColor = [(VUIMonogramDescription *)self gradientStartColor];
+    gradientStartColor2 = [v7 gradientStartColor];
+    if (gradientStartColor != gradientStartColor2)
     {
-      v68 = [(VUIMonogramDescription *)self gradientStartColor];
-      v64 = [v7 gradientStartColor];
-      if (![v68 isEqual:?])
+      gradientStartColor3 = [(VUIMonogramDescription *)self gradientStartColor];
+      gradientStartColor4 = [v7 gradientStartColor];
+      if (![gradientStartColor3 isEqual:?])
       {
         v10 = 0;
-        v52 = v69;
+        v52 = gradientStartColor2;
 LABEL_55:
 
 LABEL_56:
-        v51 = v72;
-        if (v74 == v72)
+        v51 = fillColor2;
+        if (fillColor == fillColor2)
         {
 LABEL_58:
 
 LABEL_59:
-          v44 = v78;
-          if (v81 == v78)
+          v44 = textColor2;
+          if (textColor == textColor2)
           {
             goto LABEL_61;
           }
@@ -313,17 +313,17 @@ LABEL_57:
       }
     }
 
-    v70 = [(VUIMonogramDescription *)self gradientEndColor];
-    v66 = [v7 gradientEndColor];
-    if (v70 == v66 || (-[VUIMonogramDescription gradientEndColor](self, "gradientEndColor"), v65 = objc_claimAutoreleasedReturnValue(), [v7 gradientEndColor], v63 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v65, "isEqual:")))
+    gradientEndColor = [(VUIMonogramDescription *)self gradientEndColor];
+    gradientEndColor2 = [v7 gradientEndColor];
+    if (gradientEndColor == gradientEndColor2 || (-[VUIMonogramDescription gradientEndColor](self, "gradientEndColor"), v65 = objc_claimAutoreleasedReturnValue(), [v7 gradientEndColor], v63 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v65, "isEqual:")))
     {
-      v54 = [(VUIMonogramDescription *)self shouldFallBackToSilhouette];
-      if (v54 == [v7 shouldFallBackToSilhouette] && (-[VUIMonogramDescription borderWidth](self, "borderWidth"), v56 = v55, objc_msgSend(v7, "borderWidth"), v56 == v57))
+      shouldFallBackToSilhouette = [(VUIMonogramDescription *)self shouldFallBackToSilhouette];
+      if (shouldFallBackToSilhouette == [v7 shouldFallBackToSilhouette] && (-[VUIMonogramDescription borderWidth](self, "borderWidth"), v56 = v55, objc_msgSend(v7, "borderWidth"), v56 == v57))
       {
-        v58 = [(VUIMonogramDescription *)self borderColor];
-        v61 = [v7 borderColor];
-        v62 = v58;
-        if (v58 == v61)
+        borderColor = [(VUIMonogramDescription *)self borderColor];
+        borderColor2 = [v7 borderColor];
+        v62 = borderColor;
+        if (borderColor == borderColor2)
         {
 
           v10 = 1;
@@ -331,9 +331,9 @@ LABEL_57:
 
         else
         {
-          v59 = [(VUIMonogramDescription *)self borderColor];
-          v60 = [v7 borderColor];
-          v10 = [v59 isEqual:v60];
+          borderColor3 = [(VUIMonogramDescription *)self borderColor];
+          borderColor4 = [v7 borderColor];
+          v10 = [borderColor3 isEqual:borderColor4];
         }
       }
 
@@ -342,13 +342,13 @@ LABEL_57:
         v10 = 0;
       }
 
-      v53 = v66;
-      if (v70 == v66)
+      v53 = gradientEndColor2;
+      if (gradientEndColor == gradientEndColor2)
       {
 LABEL_54:
 
-        v52 = v69;
-        if (v73 == v69)
+        v52 = gradientStartColor2;
+        if (gradientStartColor == gradientStartColor2)
         {
           goto LABEL_56;
         }
@@ -360,7 +360,7 @@ LABEL_54:
     else
     {
       v10 = 0;
-      v53 = v66;
+      v53 = gradientEndColor2;
     }
 
     goto LABEL_54;
@@ -372,16 +372,16 @@ LABEL_22:
   return v10;
 }
 
-- (CGPoint)specialOffsetForString:(id)a3
+- (CGPoint)specialOffsetForString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = *MEMORY[0x1E695EFF8];
   v6 = *(MEMORY[0x1E695EFF8] + 8);
-  v7 = [(VUIMonogramDescription *)self specialOffsetByFirstLetter];
-  if (v7 && [v4 length])
+  specialOffsetByFirstLetter = [(VUIMonogramDescription *)self specialOffsetByFirstLetter];
+  if (specialOffsetByFirstLetter && [stringCopy length])
   {
-    v8 = [v4 substringToIndex:1];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    v8 = [stringCopy substringToIndex:1];
+    v9 = [specialOffsetByFirstLetter objectForKeyedSubscript:v8];
     [v9 CGPointValue];
     v5 = v10;
     v6 = v11;
@@ -396,20 +396,20 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v3 = [(VUIMonogramDescription *)self text];
-  if (v3)
+  text = [(VUIMonogramDescription *)self text];
+  if (text)
   {
-    v4 = [(VUIMonogramDescription *)self text];
-    v5 = [v4 hash];
+    text2 = [(VUIMonogramDescription *)self text];
+    v5 = [text2 hash];
   }
 
   else
   {
-    v4 = [(VUIMonogramDescription *)self imageURL];
-    if (v4)
+    text2 = [(VUIMonogramDescription *)self imageURL];
+    if (text2)
     {
-      v7 = [(VUIMonogramDescription *)self imageURL];
-      v6 = [v7 hash];
+      imageURL = [(VUIMonogramDescription *)self imageURL];
+      v6 = [imageURL hash];
 
       goto LABEL_6;
     }
@@ -427,8 +427,8 @@ LABEL_6:
 
 - (unint64_t)preferedMonogramType
 {
-  v3 = [(VUIMonogramDescription *)self imageURL];
-  if (v3)
+  imageURL = [(VUIMonogramDescription *)self imageURL];
+  if (imageURL)
   {
 
     goto LABEL_4;
@@ -437,16 +437,16 @@ LABEL_6:
   if ([(VUIMonogramDescription *)self isUsingLibraryImageLoader])
   {
 LABEL_4:
-    v4 = [(VUIMonogramDescription *)self imageURL];
-    v5 = [v4 vuicore_isResourceOrSymbolURL];
+    imageURL2 = [(VUIMonogramDescription *)self imageURL];
+    vuicore_isResourceOrSymbolURL = [imageURL2 vuicore_isResourceOrSymbolURL];
 
-    if (v5)
+    if (vuicore_isResourceOrSymbolURL)
     {
       return 3;
     }
 
-    v7 = [(VUIMonogramDescription *)self imageURL];
-    v8 = [_VUIMonogramAppleAccountImageGenerator isAppleAccountsURL:v7];
+    imageURL3 = [(VUIMonogramDescription *)self imageURL];
+    v8 = [_VUIMonogramAppleAccountImageGenerator isAppleAccountsURL:imageURL3];
 
     if (v8)
     {
@@ -459,8 +459,8 @@ LABEL_4:
     }
   }
 
-  v9 = [(VUIMonogramDescription *)self text];
-  v10 = [v9 length];
+  text = [(VUIMonogramDescription *)self text];
+  v10 = [text length];
 
   if (v10)
   {

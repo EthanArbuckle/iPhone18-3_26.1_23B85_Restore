@@ -1,27 +1,27 @@
 @interface AppContainerCaches
-+ (id)appContainerCachesWithInfo:(id)a3;
-+ (id)deleteAppCaches:(id)a3 telemetry:(id)a4;
-- (AppContainerCaches)initWithCoder:(id)a3;
-- (AppContainerCaches)initWithInfo:(id)a3;
-- (id)appCache:(id)a3 forPath:(id)a4;
-- (id)cachesForInstalledApps:(BOOL)a3 bytesNeeded:(unint64_t)a4 volume:(id)a5 sortForUrgency:(int)a6 telemetry:(id)a7;
-- (id)cdVolumeForPath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)appContainerCachesWithInfo:(id)info;
++ (id)deleteAppCaches:(id)caches telemetry:(id)telemetry;
+- (AppContainerCaches)initWithCoder:(id)coder;
+- (AppContainerCaches)initWithInfo:(id)info;
+- (id)appCache:(id)cache forPath:(id)path;
+- (id)cachesForInstalledApps:(BOOL)apps bytesNeeded:(unint64_t)needed volume:(id)volume sortForUrgency:(int)urgency telemetry:(id)telemetry;
+- (id)cdVolumeForPath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initReadOnlyCopy;
-- (void)_serviceCallback:(id)a3 replyBlock:(id)a4;
-- (void)_serviceCancelPurge:(id)a3;
-- (void)_serviceNotify:(id)a3 replyBlock:(id)a4;
-- (void)_servicePeriodic:(int)a3 info:(id)a4 replyBlock:(id)a5;
-- (void)_servicePurge:(int)a3 info:(id)a4 replyBlock:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)_serviceCallback:(id)callback replyBlock:(id)block;
+- (void)_serviceCancelPurge:(id)purge;
+- (void)_serviceNotify:(id)notify replyBlock:(id)block;
+- (void)_servicePeriodic:(int)periodic info:(id)info replyBlock:(id)block;
+- (void)_servicePurge:(int)purge info:(id)info replyBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AppContainerCaches
 
-+ (id)deleteAppCaches:(id)a3 telemetry:(id)a4
++ (id)deleteAppCaches:(id)caches telemetry:(id)telemetry
 {
-  v5 = a3;
-  v68 = a4;
+  cachesCopy = caches;
+  telemetryCopy = telemetry;
   v60 = objc_opt_new();
   v62 = objc_opt_new();
   v63 = objc_opt_new();
@@ -29,7 +29,7 @@
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  obj = v5;
+  obj = cachesCopy;
   v6 = [obj countByEnumeratingWithState:&v83 objects:v96 count:16];
   if (v6)
   {
@@ -86,17 +86,17 @@
           v59 = v10;
           if (objc_opt_isKindOfClass())
           {
-            v67 = [v13 isPlaceholder];
+            isPlaceholder = [v13 isPlaceholder];
           }
 
           else
           {
-            v67 = 0;
+            isPlaceholder = 0;
           }
 
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
-          v21 = [v13 bundleIdentifier];
+          bundleIdentifier = [v13 bundleIdentifier];
           [v13 platform];
           v22 = dataContainerURLs();
 
@@ -131,22 +131,22 @@
                   v25 = v24;
                 }
 
-                v26 = [v13 bundleIdentifier];
-                v27 = [NSSet setWithObject:v26];
-                v28 = [v13 bundleIdentifier];
-                v29 = [v13 groupContainerIdentifiers];
+                bundleIdentifier2 = [v13 bundleIdentifier];
+                v27 = [NSSet setWithObject:bundleIdentifier2];
+                bundleIdentifier3 = [v13 bundleIdentifier];
+                groupContainerIdentifiers = [v13 groupContainerIdentifiers];
                 v30 = v16;
                 v31 = [v16 objectForKeyedSubscript:v24];
                 BYTE2(v54) = v64;
-                BYTE1(v54) = v67;
+                BYTE1(v54) = isPlaceholder;
                 LOBYTE(v54) = 0;
-                v32 = [AppCache appCacheWithRecords:"appCacheWithRecords:identifier:groupIdentifiers:dataContainerURL:userManagedAssetsURL:personaUniqueString:isDataseparated:isPlaceholder:isPlugin:telemetry:" identifier:v27 groupIdentifiers:v28 dataContainerURL:v29 userManagedAssetsURL:v31 personaUniqueString:0 isDataseparated:v25 isPlaceholder:v54 isPlugin:v68 telemetry:?];
+                v32 = [AppCache appCacheWithRecords:"appCacheWithRecords:identifier:groupIdentifiers:dataContainerURL:userManagedAssetsURL:personaUniqueString:isDataseparated:isPlaceholder:isPlugin:telemetry:" identifier:v27 groupIdentifiers:bundleIdentifier3 dataContainerURL:groupContainerIdentifiers userManagedAssetsURL:v31 personaUniqueString:0 isDataseparated:v25 isPlaceholder:v54 isPlugin:telemetryCopy telemetry:?];
 
                 if (v32)
                 {
                   [v62 addObject:v32];
-                  v33 = [v32 cdVol];
-                  [v63 addObject:v33];
+                  cdVol = [v32 cdVol];
+                  [v63 addObject:cdVol];
 
                   v34 = CDGetLogHandle();
                   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -235,8 +235,8 @@
         v43 = [v42 clearCaches:1];
         v39 += v43;
         v44 = [NSNumber numberWithUnsignedLongLong:v43];
-        v45 = [v42 identifier];
-        [v60 setObject:v44 forKeyedSubscript:v45];
+        identifier = [v42 identifier];
+        [v60 setObject:v44 forKeyedSubscript:identifier];
       }
 
       v38 = [v36 countByEnumeratingWithState:&v74 objects:v88 count:16];
@@ -285,17 +285,17 @@
   return v60;
 }
 
-- (AppContainerCaches)initWithInfo:(id)a3
+- (AppContainerCaches)initWithInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v35.receiver = self;
   v35.super_class = AppContainerCaches;
-  v6 = [(CDService *)&v35 initWithInfo:v5];
+  v6 = [(CDService *)&v35 initWithInfo:infoCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_info, a3);
-    v8 = [v5 objectForKeyedSubscript:@"CONTAINER_CACHES_BY_VOLUME"];
+    objc_storeStrong(&v6->_info, info);
+    v8 = [infoCopy objectForKeyedSubscript:@"CONTAINER_CACHES_BY_VOLUME"];
     v30 = v8;
     if (v8)
     {
@@ -387,17 +387,17 @@
   return v7;
 }
 
-+ (id)appContainerCachesWithInfo:(id)a3
++ (id)appContainerCachesWithInfo:(id)info
 {
-  v3 = a3;
-  v4 = [[AppContainerCaches alloc] initWithInfo:v3];
+  infoCopy = info;
+  v4 = [[AppContainerCaches alloc] initWithInfo:infoCopy];
 
   return v4;
 }
 
-- (AppContainerCaches)initWithCoder:(id)a3
+- (AppContainerCaches)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeObjectForKey:@"CONTAINER_CACHES_BY_VOLUME"];
+  v4 = [coder decodeObjectForKey:@"CONTAINER_CACHES_BY_VOLUME"];
   v5 = v4;
   if (v4)
   {
@@ -426,17 +426,17 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AppContainerCaches *)self cachesByVolume];
-  [v4 encodeObject:v5 forKey:@"CONTAINER_CACHES_BY_VOLUME"];
+  coderCopy = coder;
+  cachesByVolume = [(AppContainerCaches *)self cachesByVolume];
+  [coderCopy encodeObject:cachesByVolume forKey:@"CONTAINER_CACHES_BY_VOLUME"];
 }
 
-- (id)cachesForInstalledApps:(BOOL)a3 bytesNeeded:(unint64_t)a4 volume:(id)a5 sortForUrgency:(int)a6 telemetry:(id)a7
+- (id)cachesForInstalledApps:(BOOL)apps bytesNeeded:(unint64_t)needed volume:(id)volume sortForUrgency:(int)urgency telemetry:(id)telemetry
 {
-  v47 = a5;
-  v11 = a7;
+  volumeCopy = volume;
+  telemetryCopy = telemetry;
   v12 = objc_opt_new();
   v13 = recentlyUsedAppsDictionary();
   v14 = objc_opt_new();
@@ -446,19 +446,19 @@
   v59[1] = 3221225472;
   v59[2] = __89__AppContainerCaches_cachesForInstalledApps_bytesNeeded_volume_sortForUrgency_telemetry___block_invoke;
   v59[3] = &unk_1000620E8;
-  if (a4)
+  if (needed)
   {
     v17 = 1;
   }
 
   else
   {
-    v17 = a6 == 4;
+    v17 = urgency == 4;
   }
 
   v18 = v17;
-  v66 = a3;
-  v65 = a6;
+  appsCopy = apps;
+  urgencyCopy = urgency;
   v46 = v13;
   v60 = v46;
   v19 = v16;
@@ -469,7 +469,7 @@
   v63 = v21;
   v22 = v12;
   v64 = v22;
-  [AppCache enumerateAppCachesOnVolume:v47 options:v18 telemetry:v11 block:v59];
+  [AppCache enumerateAppCachesOnVolume:volumeCopy options:v18 telemetry:telemetryCopy block:v59];
   v53[0] = _NSConcreteStackBlock;
   v53[1] = 3221225472;
   v53[2] = __89__AppContainerCaches_cachesForInstalledApps_bytesNeeded_volume_sortForUrgency_telemetry___block_invoke_2;
@@ -478,14 +478,14 @@
   v54 = v43;
   v42 = v20;
   v55 = v42;
-  v58 = a6;
-  v44 = v11;
+  urgencyCopy2 = urgency;
+  v44 = telemetryCopy;
   v56 = v44;
   v23 = v22;
   v57 = v23;
   v45 = v19;
   [AppCache enumerateGroupCachesOnVolume:v19 block:v53];
-  if ((a6 - 5) > 0xFFFFFFFB)
+  if ((urgency - 5) > 0xFFFFFFFB)
   {
     v24 = [v23 sortedArrayUsingComparator:&__block_literal_global_10];
   }
@@ -528,8 +528,8 @@
         v33 = CDGetLogHandle();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
-          v34 = [v32 identifier];
-          if (v34)
+          identifier = [v32 identifier];
+          if (identifier)
           {
             [v32 identifier];
           }
@@ -539,19 +539,19 @@
             [v32 bundleIdentifiers];
           }
           v35 = ;
-          v36 = [v32 lastUsed];
-          v37 = [v32 lastKnownCacheSize];
-          [v37 unsignedLongLongValue];
+          lastUsed = [v32 lastUsed];
+          lastKnownCacheSize = [v32 lastKnownCacheSize];
+          [lastKnownCacheSize unsignedLongLongValue];
           v38 = humanReadableNumber();
-          v39 = [v32 urgency];
+          urgency = [v32 urgency];
           *buf = 138413058;
           v68 = v35;
           v69 = 2112;
-          v70 = v36;
+          v70 = lastUsed;
           v71 = 2112;
           v72 = v38;
           v73 = 1024;
-          v74 = v39;
+          v74 = urgency;
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "%@ : %@ : %@, urgency: %d", buf, 0x26u);
 
           v27 = v48;
@@ -847,50 +847,50 @@ void __102__AppContainerCaches_processContainerCachesForVolume_bytesNeeded_urgen
   [v2 pruneDir:@"/private/var/mobile/tmp" bundleID:0];
 }
 
-- (id)cdVolumeForPath:(id)a3
+- (id)cdVolumeForPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   bzero(&v22, 0x878uLL);
-  if (statfs([v4 UTF8String], &v22))
+  if (statfs([pathCopy UTF8String], &v22))
   {
-    v5 = CDGetLogHandle();
-    if (!os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    cdVolumes2 = CDGetLogHandle();
+    if (!os_log_type_enabled(cdVolumes2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_3;
     }
 
-    v15 = [v4 UTF8String];
+    uTF8String = [pathCopy UTF8String];
     v16 = __error();
     v17 = strerror(*v16);
     v18 = 136315394;
-    v19 = v15;
+    v19 = uTF8String;
     v20 = 2080;
     v21 = v17;
     v12 = "statfs failed for %s : %s";
-    v13 = v5;
+    v13 = cdVolumes2;
     v14 = 22;
     goto LABEL_14;
   }
 
-  v7 = [(AppContainerCaches *)self cdVolumes];
+  cdVolumes = [(AppContainerCaches *)self cdVolumes];
   v8 = [NSString stringWithUTF8String:v22.f_mntonname];
-  v6 = [v7 objectForKeyedSubscript:v8];
+  v6 = [cdVolumes objectForKeyedSubscript:v8];
 
   if (!v6)
   {
-    v10 = [CacheDeleteVolume volumeWithPath:v4];
+    v10 = [CacheDeleteVolume volumeWithPath:pathCopy];
     if (v10)
     {
       v6 = v10;
-      v5 = [(AppContainerCaches *)self cdVolumes];
-      v11 = [v6 mountPoint];
-      [v5 setObject:v6 forKeyedSubscript:v11];
+      cdVolumes2 = [(AppContainerCaches *)self cdVolumes];
+      mountPoint = [v6 mountPoint];
+      [cdVolumes2 setObject:v6 forKeyedSubscript:mountPoint];
 
       goto LABEL_4;
     }
 
-    v5 = CDGetLogHandle();
-    if (!os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    cdVolumes2 = CDGetLogHandle();
+    if (!os_log_type_enabled(cdVolumes2, OS_LOG_TYPE_ERROR))
     {
 LABEL_3:
       v6 = 0;
@@ -900,9 +900,9 @@ LABEL_4:
     }
 
     v18 = 138412290;
-    v19 = v4;
+    v19 = pathCopy;
     v12 = "Unable to create CDVolume from: %@";
-    v13 = v5;
+    v13 = cdVolumes2;
     v14 = 12;
 LABEL_14:
     _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, v12, &v18, v14);
@@ -914,30 +914,30 @@ LABEL_6:
   return v6;
 }
 
-- (id)appCache:(id)a3 forPath:(id)a4
+- (id)appCache:(id)cache forPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  cacheCopy = cache;
+  pathCopy = path;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__8;
   v21 = __Block_byref_object_dispose__8;
   v22 = 0;
-  v8 = [(AppContainerCaches *)self mountPointForPath:v7];
+  v8 = [(AppContainerCaches *)self mountPointForPath:pathCopy];
   if (v8)
   {
-    v9 = [(AppContainerCaches *)self collection_queue];
+    collection_queue = [(AppContainerCaches *)self collection_queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __39__AppContainerCaches_appCache_forPath___block_invoke;
     block[3] = &unk_100062198;
     block[4] = self;
     v13 = v8;
-    v14 = v6;
-    v15 = v7;
+    v14 = cacheCopy;
+    v15 = pathCopy;
     v16 = &v17;
-    dispatch_sync(v9, block);
+    dispatch_sync(collection_queue, block);
   }
 
   v10 = v18[5];
@@ -1000,11 +1000,11 @@ LABEL_6:
   v3 = v2;
   if (v2)
   {
-    v4 = [(AppContainerCaches *)v2 info];
-    v5 = [AppContainerCaches appContainerCachesWithInfo:v4];
+    info = [(AppContainerCaches *)v2 info];
+    v5 = [AppContainerCaches appContainerCachesWithInfo:info];
 
-    v6 = [v5 cachesByVolume];
-    v7 = [v6 copy];
+    cachesByVolume = [v5 cachesByVolume];
+    v7 = [cachesByVolume copy];
     cachesByVolume = v3->_cachesByVolume;
     v3->_cachesByVolume = v7;
   }
@@ -1012,18 +1012,18 @@ LABEL_6:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [AppContainerCaches allocWithZone:a3];
+  v3 = [AppContainerCaches allocWithZone:zone];
 
   return [(AppContainerCaches *)v3 initReadOnlyCopy];
 }
 
-- (void)_servicePurge:(int)a3 info:(id)a4 replyBlock:(id)a5
+- (void)_servicePurge:(int)purge info:(id)info replyBlock:(id)block
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
+  infoCopy = info;
+  blockCopy = block;
+  v9 = [infoCopy objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
   v10 = evaluateStringProperty();
   v11 = [CacheDeleteVolume volumeWithPath:v10];
 
@@ -1039,20 +1039,20 @@ LABEL_6:
 
   if (v11)
   {
-    v13 = [v11 mountPoint];
+    mountPoint = [v11 mountPoint];
     v14 = getRootVolume();
-    v15 = [v13 isEqualToString:v14];
+    v15 = [mountPoint isEqualToString:v14];
 
     if (v15)
     {
       v41 = +[NSMutableDictionary dictionary];
-      v16 = [TestTelemetry testTelemetryWithInfo:v7];
-      v17 = [v7 objectForKeyedSubscript:@"CACHE_DELETE_DIAGNOSTIC_INFO"];
+      v16 = [TestTelemetry testTelemetryWithInfo:infoCopy];
+      v17 = [infoCopy objectForKeyedSubscript:@"CACHE_DELETE_DIAGNOSTIC_INFO"];
       v18 = evaluateBoolProperty();
 
-      v19 = [v7 objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
+      v19 = [infoCopy objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
       v20 = evaluateNumberProperty();
-      v21 = [v20 unsignedLongLongValue];
+      unsignedLongLongValue = [v20 unsignedLongLongValue];
 
       *buf = 0;
       *&buf[8] = buf;
@@ -1069,9 +1069,9 @@ LABEL_6:
         }
       }
 
-      if (a3 > 1 || !self->_multi_user)
+      if (purge > 1 || !self->_multi_user)
       {
-        v23 = [(AppContainerCaches *)self purge_queue];
+        purge_queue = [(AppContainerCaches *)self purge_queue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = __52__AppContainerCaches__servicePurge_info_replyBlock___block_invoke;
@@ -1079,16 +1079,16 @@ LABEL_6:
         block[4] = self;
         v46 = buf;
         v44 = v11;
-        v47 = v21;
-        v48 = a3;
+        v47 = unsignedLongLongValue;
+        purgeCopy = purge;
         v49 = v18;
         v45 = v16;
-        dispatch_sync(v23, block);
+        dispatch_sync(purge_queue, block);
       }
 
       v51[0] = @"CACHE_DELETE_VOLUME";
-      v24 = [v11 mountPoint];
-      v52[0] = v24;
+      mountPoint2 = [v11 mountPoint];
+      v52[0] = mountPoint2;
       v51[1] = @"CACHE_DELETE_AMOUNT";
       v25 = [NSNumber numberWithUnsignedLongLong:*(*&buf[8] + 24)];
       v52[1] = v25;
@@ -1097,28 +1097,28 @@ LABEL_6:
 
       if (v16)
       {
-        v28 = [v16 terminationFailures];
-        if ([v28 count])
+        terminationFailures = [v16 terminationFailures];
+        if ([terminationFailures count])
         {
 
 LABEL_19:
           v29 = +[NSMutableDictionary dictionary];
-          v33 = [v16 terminationFailures];
-          v34 = [v33 count];
+          terminationFailures2 = [v16 terminationFailures];
+          v34 = [terminationFailures2 count];
 
           if (v34)
           {
-            v35 = [v16 terminationFailures];
-            [v29 setObject:v35 forKeyedSubscript:@"CACHE_DELETE_TEST_TERMINATION_FAILURES"];
+            terminationFailures3 = [v16 terminationFailures];
+            [v29 setObject:terminationFailures3 forKeyedSubscript:@"CACHE_DELETE_TEST_TERMINATION_FAILURES"];
           }
 
-          v36 = [v16 removeFailures];
-          v37 = [v36 count];
+          removeFailures = [v16 removeFailures];
+          v37 = [removeFailures count];
 
           if (v37)
           {
-            v38 = [v16 removeFailures];
-            [v29 setObject:v38 forKeyedSubscript:@"CACHE_DELETE_TEST_REMOVE_FAILURES"];
+            removeFailures2 = [v16 removeFailures];
+            [v29 setObject:removeFailures2 forKeyedSubscript:@"CACHE_DELETE_TEST_REMOVE_FAILURES"];
           }
 
           if ([v29 count])
@@ -1129,8 +1129,8 @@ LABEL_19:
           goto LABEL_26;
         }
 
-        v31 = [v16 removeFailures];
-        v32 = [v31 count] == 0;
+        removeFailures3 = [v16 removeFailures];
+        v32 = [removeFailures3 count] == 0;
 
         if (!v32)
         {
@@ -1151,7 +1151,7 @@ LABEL_26:
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    *&buf[4] = v7;
+    *&buf[4] = infoCopy;
     _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Unable to create cdVol from info: %{public}@", buf, 0xCu);
   }
 
@@ -1161,19 +1161,19 @@ LABEL_27:
   v39 = CDGetLogHandle();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
   {
-    v40 = [v11 mountPoint];
+    mountPoint3 = [v11 mountPoint];
     *buf = 136446978;
     *&buf[4] = "com.apple.mobile.cache_delete_app_container_caches";
     *&buf[12] = 1024;
-    *&buf[14] = a3;
+    *&buf[14] = purge;
     *&buf[18] = 2114;
-    *&buf[20] = v40;
+    *&buf[20] = mountPoint3;
     *&buf[28] = 2114;
     *&buf[30] = v30;
     _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "%{public}s PURGE result: [u:%d] %{public}@ : %{public}@", buf, 0x26u);
   }
 
-  v8[2](v8, v30);
+  blockCopy[2](blockCopy, v30);
 }
 
 uint64_t __52__AppContainerCaches__servicePurge_info_replyBlock___block_invoke(uint64_t a1)
@@ -1212,34 +1212,34 @@ uint64_t __52__AppContainerCaches__servicePurge_info_replyBlock___block_invoke(u
   return clearDiscardedCaches();
 }
 
-- (void)_servicePeriodic:(int)a3 info:(id)a4 replyBlock:(id)a5
+- (void)_servicePeriodic:(int)periodic info:(id)info replyBlock:(id)block
 {
-  v6 = a4;
-  v7 = a5;
-  v8 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
+  infoCopy = info;
+  blockCopy = block;
+  v8 = [infoCopy objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
   v9 = evaluateStringProperty();
   v10 = [CacheDeleteVolume volumeWithPath:v9];
 
   v11 = CDGetLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 mountPoint];
+    mountPoint = [v10 mountPoint];
     *buf = 136446466;
     v24 = "com.apple.mobile.cache_delete_app_container_caches";
     v25 = 2114;
-    v26 = v12;
+    v26 = mountPoint;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}s: PERIODIC callback, cdVol: %{public}@", buf, 0x16u);
   }
 
   if (v10)
   {
-    v13 = [v10 mountPoint];
+    mountPoint2 = [v10 mountPoint];
     v14 = getRootVolume();
-    v15 = [v13 isEqualToString:v14];
+    v15 = [mountPoint2 isEqualToString:v14];
 
     if (v15)
     {
-      v16 = [TestTelemetry testTelemetryWithInfo:v6];
+      v16 = [TestTelemetry testTelemetryWithInfo:infoCopy];
       v17 = getRootVolume();
       v18 = volumeSupportsEAPFS();
 
@@ -1258,7 +1258,7 @@ uint64_t __52__AppContainerCaches__servicePurge_info_replyBlock___block_invoke(u
     }
   }
 
-  v7[2](v7, &off_100065B80);
+  blockCopy[2](blockCopy, &off_100065B80);
 }
 
 uint64_t __55__AppContainerCaches__servicePeriodic_info_replyBlock___block_invoke(uint64_t a1, void *a2)
@@ -1291,9 +1291,9 @@ uint64_t __55__AppContainerCaches__servicePeriodic_info_replyBlock___block_invok
   return 1;
 }
 
-- (void)_serviceCancelPurge:(id)a3
+- (void)_serviceCancelPurge:(id)purge
 {
-  v4 = a3;
+  purgeCopy = purge;
   v5 = CDGetLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1302,13 +1302,13 @@ uint64_t __55__AppContainerCaches__servicePeriodic_info_replyBlock___block_invok
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: PURGE CANCEL callback", &v7, 0xCu);
   }
 
-  v6 = [(AppContainerCaches *)self opState];
-  [v6 cancel];
+  opState = [(AppContainerCaches *)self opState];
+  [opState cancel];
 
-  v4[2](v4);
+  purgeCopy[2](purgeCopy);
 }
 
-- (void)_serviceNotify:(id)a3 replyBlock:(id)a4
+- (void)_serviceNotify:(id)notify replyBlock:(id)block
 {
   v4 = CDGetLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1319,21 +1319,21 @@ uint64_t __55__AppContainerCaches__servicePeriodic_info_replyBlock___block_invok
   }
 }
 
-- (void)_serviceCallback:(id)a3 replyBlock:(id)a4
+- (void)_serviceCallback:(id)callback replyBlock:(id)block
 {
-  v5 = a3;
-  v37 = a4;
+  callbackCopy = callback;
+  blockCopy = block;
   v39 = +[NSMutableDictionary dictionary];
-  v6 = [v5 objectForKeyedSubscript:@"CACHE_DELETE_OPERATIONS"];
+  v6 = [callbackCopy objectForKeyedSubscript:@"CACHE_DELETE_OPERATIONS"];
   v7 = CDGetLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *v49 = v5;
+    *v49 = callbackCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "com.apple.mobile.cache_delete_app_container_caches Callback ENTRY, info: %{public}@", buf, 0xCu);
   }
 
-  v38 = v5;
+  v38 = callbackCopy;
 
   v8 = getLocalVolumes();
   v44 = 0u;
@@ -1359,9 +1359,9 @@ uint64_t __55__AppContainerCaches__servicePeriodic_info_replyBlock___block_invok
         v15 = v14;
         if (v13)
         {
-          v16 = [v14 mountPoint];
+          mountPoint = [v14 mountPoint];
           v17 = getRootVolume();
-          v18 = [v16 isEqualToString:v17];
+          v18 = [mountPoint isEqualToString:v17];
 
           if (v18)
           {
@@ -1511,7 +1511,7 @@ LABEL_38:
   }
 
   v35 = [v39 copy];
-  v37[2](v37, v35);
+  blockCopy[2](blockCopy, v35);
 }
 
 @end

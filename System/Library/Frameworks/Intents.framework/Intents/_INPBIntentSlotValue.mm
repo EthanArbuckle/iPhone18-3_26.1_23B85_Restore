@@ -1,359 +1,359 @@
 @interface _INPBIntentSlotValue
-- (BOOL)isEqual:(id)a3;
-- (BOOL)payloadPrimitiveBoolAtIndex:(unint64_t)a3;
-- (_INPBIntentSlotValue)initWithCoder:(id)a3;
-- (double)payloadPrimitiveDoubleAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)payloadPrimitiveBoolAtIndex:(unint64_t)index;
+- (_INPBIntentSlotValue)initWithCoder:(id)coder;
+- (double)payloadPrimitiveDoubleAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsPayloadAccountTypes:(id)a3;
-- (int)StringAsPayloadAlarmPeriods:(id)a3;
-- (int)StringAsPayloadAlarmRepeatSchedules:(id)a3;
-- (int)StringAsPayloadAlarmSearchTypes:(id)a3;
-- (int)StringAsPayloadBalanceTypes:(id)a3;
-- (int)StringAsPayloadBillTypes:(id)a3;
-- (int)StringAsPayloadBinarySettingValues:(id)a3;
-- (int)StringAsPayloadBoundedSettingValues:(id)a3;
-- (int)StringAsPayloadCallAudioRoutes:(id)a3;
-- (int)StringAsPayloadCallCapabilities:(id)a3;
-- (int)StringAsPayloadCallDestinationTypes:(id)a3;
-- (int)StringAsPayloadCallRecordTypes:(id)a3;
-- (int)StringAsPayloadCarAirCirculationModes:(id)a3;
-- (int)StringAsPayloadCarAudioSources:(id)a3;
-- (int)StringAsPayloadCarDefrosters:(id)a3;
-- (int)StringAsPayloadCarSeats:(id)a3;
-- (int)StringAsPayloadCarSignalIdentifiers:(id)a3;
-- (int)StringAsPayloadChangeAlarmStatusOperations:(id)a3;
-- (int)StringAsPayloadDateSearchTypes:(id)a3;
-- (int)StringAsPayloadDeviceTypes:(id)a3;
-- (int)StringAsPayloadEventAttributes:(id)a3;
-- (int)StringAsPayloadFileEntityTypes:(id)a3;
-- (int)StringAsPayloadFilePropertyNames:(id)a3;
-- (int)StringAsPayloadFilePropertyQualifiers:(id)a3;
-- (int)StringAsPayloadFileSearchScopes:(id)a3;
-- (int)StringAsPayloadFileShareModes:(id)a3;
-- (int)StringAsPayloadFileTypes:(id)a3;
-- (int)StringAsPayloadHomeAttributeTypes:(id)a3;
-- (int)StringAsPayloadHomeAttributeValueTypes:(id)a3;
-- (int)StringAsPayloadHomeDeviceTypes:(id)a3;
-- (int)StringAsPayloadHomeEntityTypes:(id)a3;
-- (int)StringAsPayloadLocationSearchTypes:(id)a3;
-- (int)StringAsPayloadMediaAffinityTypes:(id)a3;
-- (int)StringAsPayloadMessageAttributes:(id)a3;
-- (int)StringAsPayloadMessageEffects:(id)a3;
-- (int)StringAsPayloadMessageTypes:(id)a3;
-- (int)StringAsPayloadNotebookItemTypes:(id)a3;
-- (int)StringAsPayloadOutgoingMessageTypes:(id)a3;
-- (int)StringAsPayloadParsecCategories:(id)a3;
-- (int)StringAsPayloadPaymentStatus:(id)a3;
-- (int)StringAsPayloadPersonalPlaceTypes:(id)a3;
-- (int)StringAsPayloadPhotoAttributes:(id)a3;
-- (int)StringAsPayloadPlaybackQueueLocations:(id)a3;
-- (int)StringAsPayloadPlaybackRepeatModes:(id)a3;
-- (int)StringAsPayloadPreferredCallProviders:(id)a3;
-- (int)StringAsPayloadRadioTypes:(id)a3;
-- (int)StringAsPayloadReadActionTypes:(id)a3;
-- (int)StringAsPayloadRelativeReferences:(id)a3;
-- (int)StringAsPayloadRelativeSettings:(id)a3;
-- (int)StringAsPayloadSettingActions:(id)a3;
-- (int)StringAsPayloadTaskPriorities:(id)a3;
-- (int)StringAsPayloadTaskStatus:(id)a3;
-- (int)StringAsPayloadTemporalEventTriggerTypes:(id)a3;
-- (int)StringAsPayloadTimerStates:(id)a3;
-- (int)StringAsPayloadTimerTypes:(id)a3;
-- (int)StringAsPayloadUpdateAlarmOperations:(id)a3;
-- (int)StringAsPayloadUserNotificationTypes:(id)a3;
-- (int)StringAsPayloadVisualCodeTypes:(id)a3;
-- (int)StringAsPayloadWellnessObjectTypes:(id)a3;
-- (int)StringAsPayloadWellnessQueryResultTypes:(id)a3;
-- (int)StringAsPayloadWellnessQuestionTypes:(id)a3;
-- (int)StringAsPayloadWorkoutGoalUnitTypes:(id)a3;
-- (int)StringAsPayloadWorkoutLocationTypes:(id)a3;
-- (int)StringAsPayloadWorkoutSequenceLabels:(id)a3;
-- (int)StringAsType:(id)a3;
-- (int)payloadPrimitiveIntAtIndex:(unint64_t)a3;
-- (int64_t)payloadEnumerationAtIndex:(unint64_t)a3;
-- (int64_t)payloadPrimitiveLongAtIndex:(unint64_t)a3;
+- (int)StringAsPayloadAccountTypes:(id)types;
+- (int)StringAsPayloadAlarmPeriods:(id)periods;
+- (int)StringAsPayloadAlarmRepeatSchedules:(id)schedules;
+- (int)StringAsPayloadAlarmSearchTypes:(id)types;
+- (int)StringAsPayloadBalanceTypes:(id)types;
+- (int)StringAsPayloadBillTypes:(id)types;
+- (int)StringAsPayloadBinarySettingValues:(id)values;
+- (int)StringAsPayloadBoundedSettingValues:(id)values;
+- (int)StringAsPayloadCallAudioRoutes:(id)routes;
+- (int)StringAsPayloadCallCapabilities:(id)capabilities;
+- (int)StringAsPayloadCallDestinationTypes:(id)types;
+- (int)StringAsPayloadCallRecordTypes:(id)types;
+- (int)StringAsPayloadCarAirCirculationModes:(id)modes;
+- (int)StringAsPayloadCarAudioSources:(id)sources;
+- (int)StringAsPayloadCarDefrosters:(id)defrosters;
+- (int)StringAsPayloadCarSeats:(id)seats;
+- (int)StringAsPayloadCarSignalIdentifiers:(id)identifiers;
+- (int)StringAsPayloadChangeAlarmStatusOperations:(id)operations;
+- (int)StringAsPayloadDateSearchTypes:(id)types;
+- (int)StringAsPayloadDeviceTypes:(id)types;
+- (int)StringAsPayloadEventAttributes:(id)attributes;
+- (int)StringAsPayloadFileEntityTypes:(id)types;
+- (int)StringAsPayloadFilePropertyNames:(id)names;
+- (int)StringAsPayloadFilePropertyQualifiers:(id)qualifiers;
+- (int)StringAsPayloadFileSearchScopes:(id)scopes;
+- (int)StringAsPayloadFileShareModes:(id)modes;
+- (int)StringAsPayloadFileTypes:(id)types;
+- (int)StringAsPayloadHomeAttributeTypes:(id)types;
+- (int)StringAsPayloadHomeAttributeValueTypes:(id)types;
+- (int)StringAsPayloadHomeDeviceTypes:(id)types;
+- (int)StringAsPayloadHomeEntityTypes:(id)types;
+- (int)StringAsPayloadLocationSearchTypes:(id)types;
+- (int)StringAsPayloadMediaAffinityTypes:(id)types;
+- (int)StringAsPayloadMessageAttributes:(id)attributes;
+- (int)StringAsPayloadMessageEffects:(id)effects;
+- (int)StringAsPayloadMessageTypes:(id)types;
+- (int)StringAsPayloadNotebookItemTypes:(id)types;
+- (int)StringAsPayloadOutgoingMessageTypes:(id)types;
+- (int)StringAsPayloadParsecCategories:(id)categories;
+- (int)StringAsPayloadPaymentStatus:(id)status;
+- (int)StringAsPayloadPersonalPlaceTypes:(id)types;
+- (int)StringAsPayloadPhotoAttributes:(id)attributes;
+- (int)StringAsPayloadPlaybackQueueLocations:(id)locations;
+- (int)StringAsPayloadPlaybackRepeatModes:(id)modes;
+- (int)StringAsPayloadPreferredCallProviders:(id)providers;
+- (int)StringAsPayloadRadioTypes:(id)types;
+- (int)StringAsPayloadReadActionTypes:(id)types;
+- (int)StringAsPayloadRelativeReferences:(id)references;
+- (int)StringAsPayloadRelativeSettings:(id)settings;
+- (int)StringAsPayloadSettingActions:(id)actions;
+- (int)StringAsPayloadTaskPriorities:(id)priorities;
+- (int)StringAsPayloadTaskStatus:(id)status;
+- (int)StringAsPayloadTemporalEventTriggerTypes:(id)types;
+- (int)StringAsPayloadTimerStates:(id)states;
+- (int)StringAsPayloadTimerTypes:(id)types;
+- (int)StringAsPayloadUpdateAlarmOperations:(id)operations;
+- (int)StringAsPayloadUserNotificationTypes:(id)types;
+- (int)StringAsPayloadVisualCodeTypes:(id)types;
+- (int)StringAsPayloadWellnessObjectTypes:(id)types;
+- (int)StringAsPayloadWellnessQueryResultTypes:(id)types;
+- (int)StringAsPayloadWellnessQuestionTypes:(id)types;
+- (int)StringAsPayloadWorkoutGoalUnitTypes:(id)types;
+- (int)StringAsPayloadWorkoutLocationTypes:(id)types;
+- (int)StringAsPayloadWorkoutSequenceLabels:(id)labels;
+- (int)StringAsType:(id)type;
+- (int)payloadPrimitiveIntAtIndex:(unint64_t)index;
+- (int64_t)payloadEnumerationAtIndex:(unint64_t)index;
+- (int64_t)payloadPrimitiveLongAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addPayloadAccountType:(int)a3;
-- (void)addPayloadActivity:(id)a3;
-- (void)addPayloadActivityList:(id)a3;
-- (void)addPayloadAlarm:(id)a3;
-- (void)addPayloadAlarmPeriod:(int)a3;
-- (void)addPayloadAlarmRepeatSchedule:(int)a3;
-- (void)addPayloadAlarmSearch:(id)a3;
-- (void)addPayloadAlarmSearchType:(int)a3;
-- (void)addPayloadAnnouncement:(id)a3;
-- (void)addPayloadAppIdentifier:(id)a3;
-- (void)addPayloadArchivedObject:(id)a3;
-- (void)addPayloadBalanceType:(int)a3;
-- (void)addPayloadBillDetailsValue:(id)a3;
-- (void)addPayloadBillPayeeValue:(id)a3;
-- (void)addPayloadBillType:(int)a3;
-- (void)addPayloadBinarySettingValue:(int)a3;
-- (void)addPayloadBoundedSettingValue:(int)a3;
-- (void)addPayloadCalendarEvent:(id)a3;
-- (void)addPayloadCallAudioRoute:(int)a3;
-- (void)addPayloadCallCapability:(int)a3;
-- (void)addPayloadCallDestinationType:(int)a3;
-- (void)addPayloadCallGroup:(id)a3;
-- (void)addPayloadCallGroupConversation:(id)a3;
-- (void)addPayloadCallRecordFilter:(id)a3;
-- (void)addPayloadCallRecordType:(int)a3;
-- (void)addPayloadCallRecordValue:(id)a3;
-- (void)addPayloadCarAirCirculationMode:(int)a3;
-- (void)addPayloadCarAudioSource:(int)a3;
-- (void)addPayloadCarDefroster:(int)a3;
-- (void)addPayloadCarSeat:(int)a3;
-- (void)addPayloadCarSignalIdentifier:(int)a3;
-- (void)addPayloadChangeAlarmStatusOperation:(int)a3;
-- (void)addPayloadChargingConnectorType:(id)a3;
-- (void)addPayloadContactEventTrigger:(id)a3;
-- (void)addPayloadContactList:(id)a3;
-- (void)addPayloadContactValue:(id)a3;
-- (void)addPayloadCurrencyAmount:(id)a3;
-- (void)addPayloadCustomObject:(id)a3;
-- (void)addPayloadDataString:(id)a3;
-- (void)addPayloadDataStringList:(id)a3;
-- (void)addPayloadDateSearchType:(int)a3;
-- (void)addPayloadDateTimeRangeList:(id)a3;
-- (void)addPayloadDateTimeRangeValue:(id)a3;
-- (void)addPayloadDateTimeValue:(id)a3;
-- (void)addPayloadDevice:(id)a3;
-- (void)addPayloadDeviceDetail:(id)a3;
-- (void)addPayloadDeviceType:(int)a3;
-- (void)addPayloadDialingContact:(id)a3;
-- (void)addPayloadDistanceList:(id)a3;
-- (void)addPayloadDistanceValue:(id)a3;
-- (void)addPayloadDoubleList:(id)a3;
-- (void)addPayloadDoubleValue:(id)a3;
-- (void)addPayloadEnergyValue:(id)a3;
-- (void)addPayloadEnumeration:(int64_t)a3;
-- (void)addPayloadEvent:(id)a3;
-- (void)addPayloadEventAttribute:(int)a3;
-- (void)addPayloadEventList:(id)a3;
-- (void)addPayloadEventParticipant:(id)a3;
-- (void)addPayloadFile:(id)a3;
-- (void)addPayloadFileEntityType:(int)a3;
-- (void)addPayloadFileProperty:(id)a3;
-- (void)addPayloadFilePropertyName:(int)a3;
-- (void)addPayloadFilePropertyQualifier:(int)a3;
-- (void)addPayloadFilePropertyValue:(id)a3;
-- (void)addPayloadFileSearchScope:(int)a3;
-- (void)addPayloadFileShareMode:(int)a3;
-- (void)addPayloadFileType:(int)a3;
-- (void)addPayloadFinancialAccountValue:(id)a3;
-- (void)addPayloadGeographicalFeature:(id)a3;
-- (void)addPayloadGeographicalFeatureList:(id)a3;
-- (void)addPayloadGetSettingResponseData:(id)a3;
-- (void)addPayloadHomeAttribute:(id)a3;
-- (void)addPayloadHomeAttributeType:(int)a3;
-- (void)addPayloadHomeAttributeValue:(id)a3;
-- (void)addPayloadHomeAttributeValueType:(int)a3;
-- (void)addPayloadHomeDeviceType:(int)a3;
-- (void)addPayloadHomeEntity:(id)a3;
-- (void)addPayloadHomeEntityType:(int)a3;
-- (void)addPayloadHomeFilter:(id)a3;
-- (void)addPayloadHomeUserTask:(id)a3;
-- (void)addPayloadIntegerList:(id)a3;
-- (void)addPayloadIntegerValue:(id)a3;
-- (void)addPayloadIntent:(id)a3;
-- (void)addPayloadIntentExecutionResult:(id)a3;
-- (void)addPayloadLocation:(id)a3;
-- (void)addPayloadLocationList:(id)a3;
-- (void)addPayloadLocationSearchType:(int)a3;
-- (void)addPayloadLongList:(id)a3;
-- (void)addPayloadLongValue:(id)a3;
-- (void)addPayloadMassValue:(id)a3;
-- (void)addPayloadMediaAffinityType:(int)a3;
-- (void)addPayloadMediaDestination:(id)a3;
-- (void)addPayloadMediaItemGroup:(id)a3;
-- (void)addPayloadMediaItemValue:(id)a3;
-- (void)addPayloadMediaSearch:(id)a3;
-- (void)addPayloadMessageAttribute:(int)a3;
-- (void)addPayloadMessageEffect:(int)a3;
-- (void)addPayloadMessageType:(int)a3;
-- (void)addPayloadModifyNickname:(id)a3;
-- (void)addPayloadModifyRelationship:(id)a3;
-- (void)addPayloadNote:(id)a3;
-- (void)addPayloadNoteContent:(id)a3;
-- (void)addPayloadNotebookItemType:(int)a3;
-- (void)addPayloadNumericSettingUnit:(int)a3;
-- (void)addPayloadNumericSettingValue:(id)a3;
-- (void)addPayloadOutgoingMessageType:(int)a3;
-- (void)addPayloadParsecCategory:(int)a3;
-- (void)addPayloadPaymentAmountValue:(id)a3;
-- (void)addPayloadPaymentMethodList:(id)a3;
-- (void)addPayloadPaymentMethodValue:(id)a3;
-- (void)addPayloadPaymentStatus:(int)a3;
-- (void)addPayloadPersonalPlaceType:(int)a3;
-- (void)addPayloadPhotoAttribute:(int)a3;
-- (void)addPayloadPlace:(id)a3;
-- (void)addPayloadPlaceList:(id)a3;
-- (void)addPayloadPlaybackQueueLocation:(int)a3;
-- (void)addPayloadPlaybackRepeatMode:(int)a3;
-- (void)addPayloadPreferredCallProvider:(int)a3;
-- (void)addPayloadPrimitiveDouble:(double)a3;
-- (void)addPayloadPrimitiveLong:(int64_t)a3;
-- (void)addPayloadPrimitiveString:(id)a3;
-- (void)addPayloadPrivateAddMediaIntentData:(id)a3;
-- (void)addPayloadPrivatePlayMediaIntentData:(id)a3;
-- (void)addPayloadPrivateSearchForMediaIntentData:(id)a3;
-- (void)addPayloadPrivateUpdateMediaAffinityIntentData:(id)a3;
-- (void)addPayloadRadioType:(int)a3;
-- (void)addPayloadReadActionType:(int)a3;
-- (void)addPayloadRelativeReference:(int)a3;
-- (void)addPayloadRelativeSetting:(int)a3;
-- (void)addPayloadSendMessageAttachment:(id)a3;
-- (void)addPayloadSettingAction:(int)a3;
-- (void)addPayloadSettingMetadata:(id)a3;
-- (void)addPayloadShareDestination:(id)a3;
-- (void)addPayloadSleepAlarmAttribute:(id)a3;
-- (void)addPayloadSpatialEventTrigger:(id)a3;
-- (void)addPayloadSpeedValue:(id)a3;
-- (void)addPayloadStartCallRequestMetadata:(id)a3;
-- (void)addPayloadStringList:(id)a3;
-- (void)addPayloadStringValue:(id)a3;
-- (void)addPayloadSupportedTrafficIncidentType:(id)a3;
-- (void)addPayloadTask:(id)a3;
-- (void)addPayloadTaskList:(id)a3;
-- (void)addPayloadTaskPriority:(int)a3;
-- (void)addPayloadTaskReference:(int)a3;
-- (void)addPayloadTaskStatus:(int)a3;
-- (void)addPayloadTemperatureList:(id)a3;
-- (void)addPayloadTemperatureValue:(id)a3;
-- (void)addPayloadTemporalEventTrigger:(id)a3;
-- (void)addPayloadTemporalEventTriggerType:(int)a3;
-- (void)addPayloadTimer:(id)a3;
-- (void)addPayloadTimerState:(int)a3;
-- (void)addPayloadTimerType:(int)a3;
-- (void)addPayloadURLValue:(id)a3;
-- (void)addPayloadUpdateAlarmOperation:(int)a3;
-- (void)addPayloadUserNotificationType:(int)a3;
-- (void)addPayloadVisualCodeType:(int)a3;
-- (void)addPayloadVoiceCommandDeviceInformation:(id)a3;
-- (void)addPayloadVolumeValue:(id)a3;
-- (void)addPayloadWellnessMetadataPair:(id)a3;
-- (void)addPayloadWellnessObjectResultValue:(id)a3;
-- (void)addPayloadWellnessObjectType:(int)a3;
-- (void)addPayloadWellnessQueryResultType:(int)a3;
-- (void)addPayloadWellnessQuestionType:(int)a3;
-- (void)addPayloadWellnessUnitType:(id)a3;
-- (void)addPayloadWellnessValue:(id)a3;
-- (void)addPayloadWorkoutAssociatedItem:(id)a3;
-- (void)addPayloadWorkoutCustomization:(id)a3;
-- (void)addPayloadWorkoutGoalUnitType:(int)a3;
-- (void)addPayloadWorkoutLocationType:(int)a3;
-- (void)addPayloadWorkoutSequenceLabel:(int)a3;
+- (void)addPayloadAccountType:(int)type;
+- (void)addPayloadActivity:(id)activity;
+- (void)addPayloadActivityList:(id)list;
+- (void)addPayloadAlarm:(id)alarm;
+- (void)addPayloadAlarmPeriod:(int)period;
+- (void)addPayloadAlarmRepeatSchedule:(int)schedule;
+- (void)addPayloadAlarmSearch:(id)search;
+- (void)addPayloadAlarmSearchType:(int)type;
+- (void)addPayloadAnnouncement:(id)announcement;
+- (void)addPayloadAppIdentifier:(id)identifier;
+- (void)addPayloadArchivedObject:(id)object;
+- (void)addPayloadBalanceType:(int)type;
+- (void)addPayloadBillDetailsValue:(id)value;
+- (void)addPayloadBillPayeeValue:(id)value;
+- (void)addPayloadBillType:(int)type;
+- (void)addPayloadBinarySettingValue:(int)value;
+- (void)addPayloadBoundedSettingValue:(int)value;
+- (void)addPayloadCalendarEvent:(id)event;
+- (void)addPayloadCallAudioRoute:(int)route;
+- (void)addPayloadCallCapability:(int)capability;
+- (void)addPayloadCallDestinationType:(int)type;
+- (void)addPayloadCallGroup:(id)group;
+- (void)addPayloadCallGroupConversation:(id)conversation;
+- (void)addPayloadCallRecordFilter:(id)filter;
+- (void)addPayloadCallRecordType:(int)type;
+- (void)addPayloadCallRecordValue:(id)value;
+- (void)addPayloadCarAirCirculationMode:(int)mode;
+- (void)addPayloadCarAudioSource:(int)source;
+- (void)addPayloadCarDefroster:(int)defroster;
+- (void)addPayloadCarSeat:(int)seat;
+- (void)addPayloadCarSignalIdentifier:(int)identifier;
+- (void)addPayloadChangeAlarmStatusOperation:(int)operation;
+- (void)addPayloadChargingConnectorType:(id)type;
+- (void)addPayloadContactEventTrigger:(id)trigger;
+- (void)addPayloadContactList:(id)list;
+- (void)addPayloadContactValue:(id)value;
+- (void)addPayloadCurrencyAmount:(id)amount;
+- (void)addPayloadCustomObject:(id)object;
+- (void)addPayloadDataString:(id)string;
+- (void)addPayloadDataStringList:(id)list;
+- (void)addPayloadDateSearchType:(int)type;
+- (void)addPayloadDateTimeRangeList:(id)list;
+- (void)addPayloadDateTimeRangeValue:(id)value;
+- (void)addPayloadDateTimeValue:(id)value;
+- (void)addPayloadDevice:(id)device;
+- (void)addPayloadDeviceDetail:(id)detail;
+- (void)addPayloadDeviceType:(int)type;
+- (void)addPayloadDialingContact:(id)contact;
+- (void)addPayloadDistanceList:(id)list;
+- (void)addPayloadDistanceValue:(id)value;
+- (void)addPayloadDoubleList:(id)list;
+- (void)addPayloadDoubleValue:(id)value;
+- (void)addPayloadEnergyValue:(id)value;
+- (void)addPayloadEnumeration:(int64_t)enumeration;
+- (void)addPayloadEvent:(id)event;
+- (void)addPayloadEventAttribute:(int)attribute;
+- (void)addPayloadEventList:(id)list;
+- (void)addPayloadEventParticipant:(id)participant;
+- (void)addPayloadFile:(id)file;
+- (void)addPayloadFileEntityType:(int)type;
+- (void)addPayloadFileProperty:(id)property;
+- (void)addPayloadFilePropertyName:(int)name;
+- (void)addPayloadFilePropertyQualifier:(int)qualifier;
+- (void)addPayloadFilePropertyValue:(id)value;
+- (void)addPayloadFileSearchScope:(int)scope;
+- (void)addPayloadFileShareMode:(int)mode;
+- (void)addPayloadFileType:(int)type;
+- (void)addPayloadFinancialAccountValue:(id)value;
+- (void)addPayloadGeographicalFeature:(id)feature;
+- (void)addPayloadGeographicalFeatureList:(id)list;
+- (void)addPayloadGetSettingResponseData:(id)data;
+- (void)addPayloadHomeAttribute:(id)attribute;
+- (void)addPayloadHomeAttributeType:(int)type;
+- (void)addPayloadHomeAttributeValue:(id)value;
+- (void)addPayloadHomeAttributeValueType:(int)type;
+- (void)addPayloadHomeDeviceType:(int)type;
+- (void)addPayloadHomeEntity:(id)entity;
+- (void)addPayloadHomeEntityType:(int)type;
+- (void)addPayloadHomeFilter:(id)filter;
+- (void)addPayloadHomeUserTask:(id)task;
+- (void)addPayloadIntegerList:(id)list;
+- (void)addPayloadIntegerValue:(id)value;
+- (void)addPayloadIntent:(id)intent;
+- (void)addPayloadIntentExecutionResult:(id)result;
+- (void)addPayloadLocation:(id)location;
+- (void)addPayloadLocationList:(id)list;
+- (void)addPayloadLocationSearchType:(int)type;
+- (void)addPayloadLongList:(id)list;
+- (void)addPayloadLongValue:(id)value;
+- (void)addPayloadMassValue:(id)value;
+- (void)addPayloadMediaAffinityType:(int)type;
+- (void)addPayloadMediaDestination:(id)destination;
+- (void)addPayloadMediaItemGroup:(id)group;
+- (void)addPayloadMediaItemValue:(id)value;
+- (void)addPayloadMediaSearch:(id)search;
+- (void)addPayloadMessageAttribute:(int)attribute;
+- (void)addPayloadMessageEffect:(int)effect;
+- (void)addPayloadMessageType:(int)type;
+- (void)addPayloadModifyNickname:(id)nickname;
+- (void)addPayloadModifyRelationship:(id)relationship;
+- (void)addPayloadNote:(id)note;
+- (void)addPayloadNoteContent:(id)content;
+- (void)addPayloadNotebookItemType:(int)type;
+- (void)addPayloadNumericSettingUnit:(int)unit;
+- (void)addPayloadNumericSettingValue:(id)value;
+- (void)addPayloadOutgoingMessageType:(int)type;
+- (void)addPayloadParsecCategory:(int)category;
+- (void)addPayloadPaymentAmountValue:(id)value;
+- (void)addPayloadPaymentMethodList:(id)list;
+- (void)addPayloadPaymentMethodValue:(id)value;
+- (void)addPayloadPaymentStatus:(int)status;
+- (void)addPayloadPersonalPlaceType:(int)type;
+- (void)addPayloadPhotoAttribute:(int)attribute;
+- (void)addPayloadPlace:(id)place;
+- (void)addPayloadPlaceList:(id)list;
+- (void)addPayloadPlaybackQueueLocation:(int)location;
+- (void)addPayloadPlaybackRepeatMode:(int)mode;
+- (void)addPayloadPreferredCallProvider:(int)provider;
+- (void)addPayloadPrimitiveDouble:(double)double;
+- (void)addPayloadPrimitiveLong:(int64_t)long;
+- (void)addPayloadPrimitiveString:(id)string;
+- (void)addPayloadPrivateAddMediaIntentData:(id)data;
+- (void)addPayloadPrivatePlayMediaIntentData:(id)data;
+- (void)addPayloadPrivateSearchForMediaIntentData:(id)data;
+- (void)addPayloadPrivateUpdateMediaAffinityIntentData:(id)data;
+- (void)addPayloadRadioType:(int)type;
+- (void)addPayloadReadActionType:(int)type;
+- (void)addPayloadRelativeReference:(int)reference;
+- (void)addPayloadRelativeSetting:(int)setting;
+- (void)addPayloadSendMessageAttachment:(id)attachment;
+- (void)addPayloadSettingAction:(int)action;
+- (void)addPayloadSettingMetadata:(id)metadata;
+- (void)addPayloadShareDestination:(id)destination;
+- (void)addPayloadSleepAlarmAttribute:(id)attribute;
+- (void)addPayloadSpatialEventTrigger:(id)trigger;
+- (void)addPayloadSpeedValue:(id)value;
+- (void)addPayloadStartCallRequestMetadata:(id)metadata;
+- (void)addPayloadStringList:(id)list;
+- (void)addPayloadStringValue:(id)value;
+- (void)addPayloadSupportedTrafficIncidentType:(id)type;
+- (void)addPayloadTask:(id)task;
+- (void)addPayloadTaskList:(id)list;
+- (void)addPayloadTaskPriority:(int)priority;
+- (void)addPayloadTaskReference:(int)reference;
+- (void)addPayloadTaskStatus:(int)status;
+- (void)addPayloadTemperatureList:(id)list;
+- (void)addPayloadTemperatureValue:(id)value;
+- (void)addPayloadTemporalEventTrigger:(id)trigger;
+- (void)addPayloadTemporalEventTriggerType:(int)type;
+- (void)addPayloadTimer:(id)timer;
+- (void)addPayloadTimerState:(int)state;
+- (void)addPayloadTimerType:(int)type;
+- (void)addPayloadURLValue:(id)value;
+- (void)addPayloadUpdateAlarmOperation:(int)operation;
+- (void)addPayloadUserNotificationType:(int)type;
+- (void)addPayloadVisualCodeType:(int)type;
+- (void)addPayloadVoiceCommandDeviceInformation:(id)information;
+- (void)addPayloadVolumeValue:(id)value;
+- (void)addPayloadWellnessMetadataPair:(id)pair;
+- (void)addPayloadWellnessObjectResultValue:(id)value;
+- (void)addPayloadWellnessObjectType:(int)type;
+- (void)addPayloadWellnessQueryResultType:(int)type;
+- (void)addPayloadWellnessQuestionType:(int)type;
+- (void)addPayloadWellnessUnitType:(id)type;
+- (void)addPayloadWellnessValue:(id)value;
+- (void)addPayloadWorkoutAssociatedItem:(id)item;
+- (void)addPayloadWorkoutCustomization:(id)customization;
+- (void)addPayloadWorkoutGoalUnitType:(int)type;
+- (void)addPayloadWorkoutLocationType:(int)type;
+- (void)addPayloadWorkoutSequenceLabel:(int)label;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPayloadActivities:(id)a3;
-- (void)setPayloadActivityLists:(id)a3;
-- (void)setPayloadAlarmSearchs:(id)a3;
-- (void)setPayloadAlarms:(id)a3;
-- (void)setPayloadAnnouncements:(id)a3;
-- (void)setPayloadAppIdentifiers:(id)a3;
-- (void)setPayloadArchivedObjects:(id)a3;
-- (void)setPayloadBillDetailsValues:(id)a3;
-- (void)setPayloadBillPayeeValues:(id)a3;
-- (void)setPayloadCalendarEvents:(id)a3;
-- (void)setPayloadCallGroupConversations:(id)a3;
-- (void)setPayloadCallGroups:(id)a3;
-- (void)setPayloadCallRecordFilters:(id)a3;
-- (void)setPayloadCallRecordValues:(id)a3;
-- (void)setPayloadChargingConnectorTypes:(id)a3;
-- (void)setPayloadContactEventTriggers:(id)a3;
-- (void)setPayloadContactLists:(id)a3;
-- (void)setPayloadContactValues:(id)a3;
-- (void)setPayloadCurrencyAmounts:(id)a3;
-- (void)setPayloadCustomObjects:(id)a3;
-- (void)setPayloadDataStringLists:(id)a3;
-- (void)setPayloadDataStrings:(id)a3;
-- (void)setPayloadDateTimeRangeLists:(id)a3;
-- (void)setPayloadDateTimeRangeValues:(id)a3;
-- (void)setPayloadDateTimeValues:(id)a3;
-- (void)setPayloadDeviceDetails:(id)a3;
-- (void)setPayloadDevices:(id)a3;
-- (void)setPayloadDialingContacts:(id)a3;
-- (void)setPayloadDistanceLists:(id)a3;
-- (void)setPayloadDistanceValues:(id)a3;
-- (void)setPayloadDoubleLists:(id)a3;
-- (void)setPayloadDoubleValues:(id)a3;
-- (void)setPayloadEnergyValues:(id)a3;
-- (void)setPayloadEnumerations:(id)a3;
-- (void)setPayloadEventLists:(id)a3;
-- (void)setPayloadEventParticipants:(id)a3;
-- (void)setPayloadEvents:(id)a3;
-- (void)setPayloadFileProperties:(id)a3;
-- (void)setPayloadFilePropertyValues:(id)a3;
-- (void)setPayloadFiles:(id)a3;
-- (void)setPayloadFinancialAccountValues:(id)a3;
-- (void)setPayloadGeographicalFeatureLists:(id)a3;
-- (void)setPayloadGeographicalFeatures:(id)a3;
-- (void)setPayloadGetSettingResponseDatas:(id)a3;
-- (void)setPayloadHomeAttributeValues:(id)a3;
-- (void)setPayloadHomeAttributes:(id)a3;
-- (void)setPayloadHomeEntities:(id)a3;
-- (void)setPayloadHomeFilters:(id)a3;
-- (void)setPayloadHomeUserTasks:(id)a3;
-- (void)setPayloadIntegerLists:(id)a3;
-- (void)setPayloadIntegerValues:(id)a3;
-- (void)setPayloadIntentExecutionResults:(id)a3;
-- (void)setPayloadIntents:(id)a3;
-- (void)setPayloadLocationLists:(id)a3;
-- (void)setPayloadLocations:(id)a3;
-- (void)setPayloadLongLists:(id)a3;
-- (void)setPayloadLongValues:(id)a3;
-- (void)setPayloadMassValues:(id)a3;
-- (void)setPayloadMediaDestinations:(id)a3;
-- (void)setPayloadMediaItemGroups:(id)a3;
-- (void)setPayloadMediaItemValues:(id)a3;
-- (void)setPayloadMediaSearchs:(id)a3;
-- (void)setPayloadModifyNicknames:(id)a3;
-- (void)setPayloadModifyRelationships:(id)a3;
-- (void)setPayloadNoteContents:(id)a3;
-- (void)setPayloadNotes:(id)a3;
-- (void)setPayloadNumericSettingValues:(id)a3;
-- (void)setPayloadPaymentAmountValues:(id)a3;
-- (void)setPayloadPaymentMethodLists:(id)a3;
-- (void)setPayloadPaymentMethodValues:(id)a3;
-- (void)setPayloadPlaceLists:(id)a3;
-- (void)setPayloadPlaces:(id)a3;
-- (void)setPayloadPrimitiveBools:(id)a3;
-- (void)setPayloadPrimitiveDoubles:(id)a3;
-- (void)setPayloadPrimitiveInts:(id)a3;
-- (void)setPayloadPrimitiveLongs:(id)a3;
-- (void)setPayloadPrimitiveStrings:(id)a3;
-- (void)setPayloadPrivateAddMediaIntentDatas:(id)a3;
-- (void)setPayloadPrivatePlayMediaIntentDatas:(id)a3;
-- (void)setPayloadPrivateSearchForMediaIntentDatas:(id)a3;
-- (void)setPayloadPrivateUpdateMediaAffinityIntentDatas:(id)a3;
-- (void)setPayloadSendMessageAttachments:(id)a3;
-- (void)setPayloadSettingMetadatas:(id)a3;
-- (void)setPayloadShareDestinations:(id)a3;
-- (void)setPayloadSleepAlarmAttributes:(id)a3;
-- (void)setPayloadSpatialEventTriggers:(id)a3;
-- (void)setPayloadSpeedValues:(id)a3;
-- (void)setPayloadStartCallRequestMetadatas:(id)a3;
-- (void)setPayloadStringLists:(id)a3;
-- (void)setPayloadStringValues:(id)a3;
-- (void)setPayloadSupportedTrafficIncidentTypes:(id)a3;
-- (void)setPayloadTaskLists:(id)a3;
-- (void)setPayloadTasks:(id)a3;
-- (void)setPayloadTemperatureLists:(id)a3;
-- (void)setPayloadTemperatureValues:(id)a3;
-- (void)setPayloadTemporalEventTriggers:(id)a3;
-- (void)setPayloadTimers:(id)a3;
-- (void)setPayloadURLValues:(id)a3;
-- (void)setPayloadVoiceCommandDeviceInformations:(id)a3;
-- (void)setPayloadVolumeValues:(id)a3;
-- (void)setPayloadWellnessMetadataPairs:(id)a3;
-- (void)setPayloadWellnessObjectResultValues:(id)a3;
-- (void)setPayloadWellnessUnitTypes:(id)a3;
-- (void)setPayloadWellnessValues:(id)a3;
-- (void)setPayloadWorkoutAssociatedItems:(id)a3;
-- (void)setPayloadWorkoutCustomizations:(id)a3;
-- (void)setType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPayloadActivities:(id)activities;
+- (void)setPayloadActivityLists:(id)lists;
+- (void)setPayloadAlarmSearchs:(id)searchs;
+- (void)setPayloadAlarms:(id)alarms;
+- (void)setPayloadAnnouncements:(id)announcements;
+- (void)setPayloadAppIdentifiers:(id)identifiers;
+- (void)setPayloadArchivedObjects:(id)objects;
+- (void)setPayloadBillDetailsValues:(id)values;
+- (void)setPayloadBillPayeeValues:(id)values;
+- (void)setPayloadCalendarEvents:(id)events;
+- (void)setPayloadCallGroupConversations:(id)conversations;
+- (void)setPayloadCallGroups:(id)groups;
+- (void)setPayloadCallRecordFilters:(id)filters;
+- (void)setPayloadCallRecordValues:(id)values;
+- (void)setPayloadChargingConnectorTypes:(id)types;
+- (void)setPayloadContactEventTriggers:(id)triggers;
+- (void)setPayloadContactLists:(id)lists;
+- (void)setPayloadContactValues:(id)values;
+- (void)setPayloadCurrencyAmounts:(id)amounts;
+- (void)setPayloadCustomObjects:(id)objects;
+- (void)setPayloadDataStringLists:(id)lists;
+- (void)setPayloadDataStrings:(id)strings;
+- (void)setPayloadDateTimeRangeLists:(id)lists;
+- (void)setPayloadDateTimeRangeValues:(id)values;
+- (void)setPayloadDateTimeValues:(id)values;
+- (void)setPayloadDeviceDetails:(id)details;
+- (void)setPayloadDevices:(id)devices;
+- (void)setPayloadDialingContacts:(id)contacts;
+- (void)setPayloadDistanceLists:(id)lists;
+- (void)setPayloadDistanceValues:(id)values;
+- (void)setPayloadDoubleLists:(id)lists;
+- (void)setPayloadDoubleValues:(id)values;
+- (void)setPayloadEnergyValues:(id)values;
+- (void)setPayloadEnumerations:(id)enumerations;
+- (void)setPayloadEventLists:(id)lists;
+- (void)setPayloadEventParticipants:(id)participants;
+- (void)setPayloadEvents:(id)events;
+- (void)setPayloadFileProperties:(id)properties;
+- (void)setPayloadFilePropertyValues:(id)values;
+- (void)setPayloadFiles:(id)files;
+- (void)setPayloadFinancialAccountValues:(id)values;
+- (void)setPayloadGeographicalFeatureLists:(id)lists;
+- (void)setPayloadGeographicalFeatures:(id)features;
+- (void)setPayloadGetSettingResponseDatas:(id)datas;
+- (void)setPayloadHomeAttributeValues:(id)values;
+- (void)setPayloadHomeAttributes:(id)attributes;
+- (void)setPayloadHomeEntities:(id)entities;
+- (void)setPayloadHomeFilters:(id)filters;
+- (void)setPayloadHomeUserTasks:(id)tasks;
+- (void)setPayloadIntegerLists:(id)lists;
+- (void)setPayloadIntegerValues:(id)values;
+- (void)setPayloadIntentExecutionResults:(id)results;
+- (void)setPayloadIntents:(id)intents;
+- (void)setPayloadLocationLists:(id)lists;
+- (void)setPayloadLocations:(id)locations;
+- (void)setPayloadLongLists:(id)lists;
+- (void)setPayloadLongValues:(id)values;
+- (void)setPayloadMassValues:(id)values;
+- (void)setPayloadMediaDestinations:(id)destinations;
+- (void)setPayloadMediaItemGroups:(id)groups;
+- (void)setPayloadMediaItemValues:(id)values;
+- (void)setPayloadMediaSearchs:(id)searchs;
+- (void)setPayloadModifyNicknames:(id)nicknames;
+- (void)setPayloadModifyRelationships:(id)relationships;
+- (void)setPayloadNoteContents:(id)contents;
+- (void)setPayloadNotes:(id)notes;
+- (void)setPayloadNumericSettingValues:(id)values;
+- (void)setPayloadPaymentAmountValues:(id)values;
+- (void)setPayloadPaymentMethodLists:(id)lists;
+- (void)setPayloadPaymentMethodValues:(id)values;
+- (void)setPayloadPlaceLists:(id)lists;
+- (void)setPayloadPlaces:(id)places;
+- (void)setPayloadPrimitiveBools:(id)bools;
+- (void)setPayloadPrimitiveDoubles:(id)doubles;
+- (void)setPayloadPrimitiveInts:(id)ints;
+- (void)setPayloadPrimitiveLongs:(id)longs;
+- (void)setPayloadPrimitiveStrings:(id)strings;
+- (void)setPayloadPrivateAddMediaIntentDatas:(id)datas;
+- (void)setPayloadPrivatePlayMediaIntentDatas:(id)datas;
+- (void)setPayloadPrivateSearchForMediaIntentDatas:(id)datas;
+- (void)setPayloadPrivateUpdateMediaAffinityIntentDatas:(id)datas;
+- (void)setPayloadSendMessageAttachments:(id)attachments;
+- (void)setPayloadSettingMetadatas:(id)metadatas;
+- (void)setPayloadShareDestinations:(id)destinations;
+- (void)setPayloadSleepAlarmAttributes:(id)attributes;
+- (void)setPayloadSpatialEventTriggers:(id)triggers;
+- (void)setPayloadSpeedValues:(id)values;
+- (void)setPayloadStartCallRequestMetadatas:(id)metadatas;
+- (void)setPayloadStringLists:(id)lists;
+- (void)setPayloadStringValues:(id)values;
+- (void)setPayloadSupportedTrafficIncidentTypes:(id)types;
+- (void)setPayloadTaskLists:(id)lists;
+- (void)setPayloadTasks:(id)tasks;
+- (void)setPayloadTemperatureLists:(id)lists;
+- (void)setPayloadTemperatureValues:(id)values;
+- (void)setPayloadTemporalEventTriggers:(id)triggers;
+- (void)setPayloadTimers:(id)timers;
+- (void)setPayloadURLValues:(id)values;
+- (void)setPayloadVoiceCommandDeviceInformations:(id)informations;
+- (void)setPayloadVolumeValues:(id)values;
+- (void)setPayloadWellnessMetadataPairs:(id)pairs;
+- (void)setPayloadWellnessObjectResultValues:(id)values;
+- (void)setPayloadWellnessUnitTypes:(id)types;
+- (void)setPayloadWellnessValues:(id)values;
+- (void)setPayloadWorkoutAssociatedItems:(id)items;
+- (void)setPayloadWorkoutCustomizations:(id)customizations;
+- (void)setType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBIntentSlotValue
@@ -435,7 +435,7 @@
 {
   v2 = MEMORY[0x1EEE9AC00](self, a2);
   v1473 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*(v2 + 16))
   {
     v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v2, "payloadAccountTypesCount")}];
@@ -463,12 +463,12 @@
       while (v5 < [v2 payloadAccountTypesCount]);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"_payloadAccountType"];
+    [dictionary setObject:v4 forKeyedSubscript:@"_payloadAccountType"];
   }
 
   if ([*(v2 + 1600) count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v1370 = 0u;
     v1371 = 0u;
     v1372 = 0u;
@@ -488,8 +488,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v1370 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v1370 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v1370 objects:v1472 count:16];
@@ -498,12 +498,12 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"_payloadActivity"];
+    [dictionary setObject:array forKeyedSubscript:@"_payloadActivity"];
   }
 
   if ([*(v2 + 1608) count])
   {
-    v15 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v1366 = 0u;
     v1367 = 0u;
     v1368 = 0u;
@@ -523,8 +523,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v1366 + 1) + 8 * j) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation2 = [*(*(&v1366 + 1) + 8 * j) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation2];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v1366 objects:v1471 count:16];
@@ -533,12 +533,12 @@
       while (v18);
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"_payloadActivityList"];
+    [dictionary setObject:array2 forKeyedSubscript:@"_payloadActivityList"];
   }
 
   if ([*(v2 + 1616) count])
   {
-    v22 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v1362 = 0u;
     v1363 = 0u;
     v1364 = 0u;
@@ -558,8 +558,8 @@
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v1362 + 1) + 8 * k) dictionaryRepresentation];
-          [v22 addObject:v28];
+          dictionaryRepresentation3 = [*(*(&v1362 + 1) + 8 * k) dictionaryRepresentation];
+          [array3 addObject:dictionaryRepresentation3];
         }
 
         v25 = [v23 countByEnumeratingWithState:&v1362 objects:v1470 count:16];
@@ -568,7 +568,7 @@
       while (v25);
     }
 
-    [v3 setObject:v22 forKeyedSubscript:@"_payloadAlarm"];
+    [dictionary setObject:array3 forKeyedSubscript:@"_payloadAlarm"];
   }
 
   if (*(v2 + 40))
@@ -598,7 +598,7 @@
       while (v30 < [v2 payloadAlarmPeriodsCount]);
     }
 
-    [v3 setObject:v29 forKeyedSubscript:@"_payloadAlarmPeriod"];
+    [dictionary setObject:v29 forKeyedSubscript:@"_payloadAlarmPeriod"];
   }
 
   if (*(v2 + 64))
@@ -628,12 +628,12 @@
       while (v34 < [v2 payloadAlarmRepeatSchedulesCount]);
     }
 
-    [v3 setObject:v33 forKeyedSubscript:@"_payloadAlarmRepeatSchedule"];
+    [dictionary setObject:v33 forKeyedSubscript:@"_payloadAlarmRepeatSchedule"];
   }
 
   if ([*(v2 + 1624) count])
   {
-    v37 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     v1358 = 0u;
     v1359 = 0u;
     v1360 = 0u;
@@ -653,8 +653,8 @@
             objc_enumerationMutation(v38);
           }
 
-          v43 = [*(*(&v1358 + 1) + 8 * m) dictionaryRepresentation];
-          [v37 addObject:v43];
+          dictionaryRepresentation4 = [*(*(&v1358 + 1) + 8 * m) dictionaryRepresentation];
+          [array4 addObject:dictionaryRepresentation4];
         }
 
         v40 = [v38 countByEnumeratingWithState:&v1358 objects:v1469 count:16];
@@ -663,7 +663,7 @@
       while (v40);
     }
 
-    [v3 setObject:v37 forKeyedSubscript:@"_payloadAlarmSearch"];
+    [dictionary setObject:array4 forKeyedSubscript:@"_payloadAlarmSearch"];
   }
 
   if (*(v2 + 88))
@@ -693,12 +693,12 @@
       while (v45 < [v2 payloadAlarmSearchTypesCount]);
     }
 
-    [v3 setObject:v44 forKeyedSubscript:@"_payloadAlarmSearchType"];
+    [dictionary setObject:v44 forKeyedSubscript:@"_payloadAlarmSearchType"];
   }
 
   if ([*(v2 + 1632) count])
   {
-    v48 = [MEMORY[0x1E695DF70] array];
+    array5 = [MEMORY[0x1E695DF70] array];
     v1354 = 0u;
     v1355 = 0u;
     v1356 = 0u;
@@ -718,8 +718,8 @@
             objc_enumerationMutation(v49);
           }
 
-          v54 = [*(*(&v1354 + 1) + 8 * n) dictionaryRepresentation];
-          [v48 addObject:v54];
+          dictionaryRepresentation5 = [*(*(&v1354 + 1) + 8 * n) dictionaryRepresentation];
+          [array5 addObject:dictionaryRepresentation5];
         }
 
         v51 = [v49 countByEnumeratingWithState:&v1354 objects:v1468 count:16];
@@ -728,12 +728,12 @@
       while (v51);
     }
 
-    [v3 setObject:v48 forKeyedSubscript:@"_payloadAnnouncement"];
+    [dictionary setObject:array5 forKeyedSubscript:@"_payloadAnnouncement"];
   }
 
   if ([*(v2 + 1640) count])
   {
-    v55 = [MEMORY[0x1E695DF70] array];
+    array6 = [MEMORY[0x1E695DF70] array];
     v1350 = 0u;
     v1351 = 0u;
     v1352 = 0u;
@@ -753,8 +753,8 @@
             objc_enumerationMutation(v56);
           }
 
-          v61 = [*(*(&v1350 + 1) + 8 * ii) dictionaryRepresentation];
-          [v55 addObject:v61];
+          dictionaryRepresentation6 = [*(*(&v1350 + 1) + 8 * ii) dictionaryRepresentation];
+          [array6 addObject:dictionaryRepresentation6];
         }
 
         v58 = [v56 countByEnumeratingWithState:&v1350 objects:v1467 count:16];
@@ -763,12 +763,12 @@
       while (v58);
     }
 
-    [v3 setObject:v55 forKeyedSubscript:@"_payloadAppIdentifier"];
+    [dictionary setObject:array6 forKeyedSubscript:@"_payloadAppIdentifier"];
   }
 
   if ([*(v2 + 1648) count])
   {
-    v62 = [MEMORY[0x1E695DF70] array];
+    array7 = [MEMORY[0x1E695DF70] array];
     v1346 = 0u;
     v1347 = 0u;
     v1348 = 0u;
@@ -788,8 +788,8 @@
             objc_enumerationMutation(v63);
           }
 
-          v68 = [*(*(&v1346 + 1) + 8 * jj) dictionaryRepresentation];
-          [v62 addObject:v68];
+          dictionaryRepresentation7 = [*(*(&v1346 + 1) + 8 * jj) dictionaryRepresentation];
+          [array7 addObject:dictionaryRepresentation7];
         }
 
         v65 = [v63 countByEnumeratingWithState:&v1346 objects:v1466 count:16];
@@ -798,7 +798,7 @@
       while (v65);
     }
 
-    [v3 setObject:v62 forKeyedSubscript:@"_payloadArchivedObject"];
+    [dictionary setObject:array7 forKeyedSubscript:@"_payloadArchivedObject"];
   }
 
   if (*(v2 + 112))
@@ -828,12 +828,12 @@
       while (v70 < [v2 payloadBalanceTypesCount]);
     }
 
-    [v3 setObject:v69 forKeyedSubscript:@"_payloadBalanceType"];
+    [dictionary setObject:v69 forKeyedSubscript:@"_payloadBalanceType"];
   }
 
   if ([*(v2 + 1656) count])
   {
-    v73 = [MEMORY[0x1E695DF70] array];
+    array8 = [MEMORY[0x1E695DF70] array];
     v1342 = 0u;
     v1343 = 0u;
     v1344 = 0u;
@@ -853,8 +853,8 @@
             objc_enumerationMutation(v74);
           }
 
-          v79 = [*(*(&v1342 + 1) + 8 * kk) dictionaryRepresentation];
-          [v73 addObject:v79];
+          dictionaryRepresentation8 = [*(*(&v1342 + 1) + 8 * kk) dictionaryRepresentation];
+          [array8 addObject:dictionaryRepresentation8];
         }
 
         v76 = [v74 countByEnumeratingWithState:&v1342 objects:v1465 count:16];
@@ -863,12 +863,12 @@
       while (v76);
     }
 
-    [v3 setObject:v73 forKeyedSubscript:@"_payloadBillDetailsValue"];
+    [dictionary setObject:array8 forKeyedSubscript:@"_payloadBillDetailsValue"];
   }
 
   if ([*(v2 + 1664) count])
   {
-    v80 = [MEMORY[0x1E695DF70] array];
+    array9 = [MEMORY[0x1E695DF70] array];
     v1338 = 0u;
     v1339 = 0u;
     v1340 = 0u;
@@ -888,8 +888,8 @@
             objc_enumerationMutation(v81);
           }
 
-          v86 = [*(*(&v1338 + 1) + 8 * mm) dictionaryRepresentation];
-          [v80 addObject:v86];
+          dictionaryRepresentation9 = [*(*(&v1338 + 1) + 8 * mm) dictionaryRepresentation];
+          [array9 addObject:dictionaryRepresentation9];
         }
 
         v83 = [v81 countByEnumeratingWithState:&v1338 objects:v1464 count:16];
@@ -898,7 +898,7 @@
       while (v83);
     }
 
-    [v3 setObject:v80 forKeyedSubscript:@"_payloadBillPayeeValue"];
+    [dictionary setObject:array9 forKeyedSubscript:@"_payloadBillPayeeValue"];
   }
 
   if (*(v2 + 136))
@@ -928,7 +928,7 @@
       while (v88 < [v2 payloadBillTypesCount]);
     }
 
-    [v3 setObject:v87 forKeyedSubscript:@"_payloadBillType"];
+    [dictionary setObject:v87 forKeyedSubscript:@"_payloadBillType"];
   }
 
   if (*(v2 + 160))
@@ -958,7 +958,7 @@
       while (v92 < [v2 payloadBinarySettingValuesCount]);
     }
 
-    [v3 setObject:v91 forKeyedSubscript:@"_payloadBinarySettingValue"];
+    [dictionary setObject:v91 forKeyedSubscript:@"_payloadBinarySettingValue"];
   }
 
   if (*(v2 + 184))
@@ -988,12 +988,12 @@
       while (v96 < [v2 payloadBoundedSettingValuesCount]);
     }
 
-    [v3 setObject:v95 forKeyedSubscript:@"_payloadBoundedSettingValue"];
+    [dictionary setObject:v95 forKeyedSubscript:@"_payloadBoundedSettingValue"];
   }
 
   if ([*(v2 + 1672) count])
   {
-    v99 = [MEMORY[0x1E695DF70] array];
+    array10 = [MEMORY[0x1E695DF70] array];
     v1334 = 0u;
     v1335 = 0u;
     v1336 = 0u;
@@ -1013,8 +1013,8 @@
             objc_enumerationMutation(v100);
           }
 
-          v105 = [*(*(&v1334 + 1) + 8 * nn) dictionaryRepresentation];
-          [v99 addObject:v105];
+          dictionaryRepresentation10 = [*(*(&v1334 + 1) + 8 * nn) dictionaryRepresentation];
+          [array10 addObject:dictionaryRepresentation10];
         }
 
         v102 = [v100 countByEnumeratingWithState:&v1334 objects:v1463 count:16];
@@ -1023,7 +1023,7 @@
       while (v102);
     }
 
-    [v3 setObject:v99 forKeyedSubscript:@"_payloadCalendarEvent"];
+    [dictionary setObject:array10 forKeyedSubscript:@"_payloadCalendarEvent"];
   }
 
   if (*(v2 + 208))
@@ -1053,7 +1053,7 @@
       while (v107 < [v2 payloadCallAudioRoutesCount]);
     }
 
-    [v3 setObject:v106 forKeyedSubscript:@"_payloadCallAudioRoute"];
+    [dictionary setObject:v106 forKeyedSubscript:@"_payloadCallAudioRoute"];
   }
 
   if (*(v2 + 232))
@@ -1088,7 +1088,7 @@
       while (v111 < [v2 payloadCallCapabilitiesCount]);
     }
 
-    [v3 setObject:v110 forKeyedSubscript:@"_payloadCallCapability"];
+    [dictionary setObject:v110 forKeyedSubscript:@"_payloadCallCapability"];
   }
 
   if (*(v2 + 256))
@@ -1118,12 +1118,12 @@
       while (v115 < [v2 payloadCallDestinationTypesCount]);
     }
 
-    [v3 setObject:v114 forKeyedSubscript:@"_payloadCallDestinationType"];
+    [dictionary setObject:v114 forKeyedSubscript:@"_payloadCallDestinationType"];
   }
 
   if ([*(v2 + 1680) count])
   {
-    v118 = [MEMORY[0x1E695DF70] array];
+    array11 = [MEMORY[0x1E695DF70] array];
     v1330 = 0u;
     v1331 = 0u;
     v1332 = 0u;
@@ -1143,8 +1143,8 @@
             objc_enumerationMutation(v119);
           }
 
-          v124 = [*(*(&v1330 + 1) + 8 * i1) dictionaryRepresentation];
-          [v118 addObject:v124];
+          dictionaryRepresentation11 = [*(*(&v1330 + 1) + 8 * i1) dictionaryRepresentation];
+          [array11 addObject:dictionaryRepresentation11];
         }
 
         v121 = [v119 countByEnumeratingWithState:&v1330 objects:v1462 count:16];
@@ -1153,12 +1153,12 @@
       while (v121);
     }
 
-    [v3 setObject:v118 forKeyedSubscript:@"_payloadCallGroup"];
+    [dictionary setObject:array11 forKeyedSubscript:@"_payloadCallGroup"];
   }
 
   if ([*(v2 + 1688) count])
   {
-    v125 = [MEMORY[0x1E695DF70] array];
+    array12 = [MEMORY[0x1E695DF70] array];
     v1326 = 0u;
     v1327 = 0u;
     v1328 = 0u;
@@ -1178,8 +1178,8 @@
             objc_enumerationMutation(v126);
           }
 
-          v131 = [*(*(&v1326 + 1) + 8 * i2) dictionaryRepresentation];
-          [v125 addObject:v131];
+          dictionaryRepresentation12 = [*(*(&v1326 + 1) + 8 * i2) dictionaryRepresentation];
+          [array12 addObject:dictionaryRepresentation12];
         }
 
         v128 = [v126 countByEnumeratingWithState:&v1326 objects:v1461 count:16];
@@ -1188,12 +1188,12 @@
       while (v128);
     }
 
-    [v3 setObject:v125 forKeyedSubscript:@"_payloadCallGroupConversation"];
+    [dictionary setObject:array12 forKeyedSubscript:@"_payloadCallGroupConversation"];
   }
 
   if ([*(v2 + 1696) count])
   {
-    v132 = [MEMORY[0x1E695DF70] array];
+    array13 = [MEMORY[0x1E695DF70] array];
     v1322 = 0u;
     v1323 = 0u;
     v1324 = 0u;
@@ -1213,8 +1213,8 @@
             objc_enumerationMutation(v133);
           }
 
-          v138 = [*(*(&v1322 + 1) + 8 * i3) dictionaryRepresentation];
-          [v132 addObject:v138];
+          dictionaryRepresentation13 = [*(*(&v1322 + 1) + 8 * i3) dictionaryRepresentation];
+          [array13 addObject:dictionaryRepresentation13];
         }
 
         v135 = [v133 countByEnumeratingWithState:&v1322 objects:v1460 count:16];
@@ -1223,7 +1223,7 @@
       while (v135);
     }
 
-    [v3 setObject:v132 forKeyedSubscript:@"_payloadCallRecordFilter"];
+    [dictionary setObject:array13 forKeyedSubscript:@"_payloadCallRecordFilter"];
   }
 
   if (*(v2 + 280))
@@ -1253,12 +1253,12 @@
       while (v140 < [v2 payloadCallRecordTypesCount]);
     }
 
-    [v3 setObject:v139 forKeyedSubscript:@"_payloadCallRecordType"];
+    [dictionary setObject:v139 forKeyedSubscript:@"_payloadCallRecordType"];
   }
 
   if ([*(v2 + 1704) count])
   {
-    v143 = [MEMORY[0x1E695DF70] array];
+    array14 = [MEMORY[0x1E695DF70] array];
     v1318 = 0u;
     v1319 = 0u;
     v1320 = 0u;
@@ -1278,8 +1278,8 @@
             objc_enumerationMutation(v144);
           }
 
-          v149 = [*(*(&v1318 + 1) + 8 * i4) dictionaryRepresentation];
-          [v143 addObject:v149];
+          dictionaryRepresentation14 = [*(*(&v1318 + 1) + 8 * i4) dictionaryRepresentation];
+          [array14 addObject:dictionaryRepresentation14];
         }
 
         v146 = [v144 countByEnumeratingWithState:&v1318 objects:v1459 count:16];
@@ -1288,7 +1288,7 @@
       while (v146);
     }
 
-    [v3 setObject:v143 forKeyedSubscript:@"_payloadCallRecordValue"];
+    [dictionary setObject:array14 forKeyedSubscript:@"_payloadCallRecordValue"];
   }
 
   if (*(v2 + 304))
@@ -1323,7 +1323,7 @@
       while (v151 < [v2 payloadCarAirCirculationModesCount]);
     }
 
-    [v3 setObject:v150 forKeyedSubscript:@"_payloadCarAirCirculationMode"];
+    [dictionary setObject:v150 forKeyedSubscript:@"_payloadCarAirCirculationMode"];
   }
 
   if (*(v2 + 328))
@@ -1353,7 +1353,7 @@
       while (v155 < [v2 payloadCarAudioSourcesCount]);
     }
 
-    [v3 setObject:v154 forKeyedSubscript:@"_payloadCarAudioSource"];
+    [dictionary setObject:v154 forKeyedSubscript:@"_payloadCarAudioSource"];
   }
 
   if (*(v2 + 352))
@@ -1383,7 +1383,7 @@
       while (v159 < [v2 payloadCarDefrostersCount]);
     }
 
-    [v3 setObject:v158 forKeyedSubscript:@"_payloadCarDefroster"];
+    [dictionary setObject:v158 forKeyedSubscript:@"_payloadCarDefroster"];
   }
 
   if (*(v2 + 376))
@@ -1413,7 +1413,7 @@
       while (v163 < [v2 payloadCarSeatsCount]);
     }
 
-    [v3 setObject:v162 forKeyedSubscript:@"_payloadCarSeat"];
+    [dictionary setObject:v162 forKeyedSubscript:@"_payloadCarSeat"];
   }
 
   if (*(v2 + 400))
@@ -1448,7 +1448,7 @@
       while (v167 < [v2 payloadCarSignalIdentifiersCount]);
     }
 
-    [v3 setObject:v166 forKeyedSubscript:@"_payloadCarSignalIdentifier"];
+    [dictionary setObject:v166 forKeyedSubscript:@"_payloadCarSignalIdentifier"];
   }
 
   if (*(v2 + 424))
@@ -1478,19 +1478,19 @@
       while (v171 < [v2 payloadChangeAlarmStatusOperationsCount]);
     }
 
-    [v3 setObject:v170 forKeyedSubscript:@"_payloadChangeAlarmStatusOperation"];
+    [dictionary setObject:v170 forKeyedSubscript:@"_payloadChangeAlarmStatusOperation"];
   }
 
   if (*(v2 + 1712))
   {
-    v174 = [v2 payloadChargingConnectorTypes];
-    v175 = [v174 copy];
-    [v3 setObject:v175 forKeyedSubscript:@"_payloadChargingConnectorType"];
+    payloadChargingConnectorTypes = [v2 payloadChargingConnectorTypes];
+    v175 = [payloadChargingConnectorTypes copy];
+    [dictionary setObject:v175 forKeyedSubscript:@"_payloadChargingConnectorType"];
   }
 
   if ([*(v2 + 1720) count])
   {
-    v176 = [MEMORY[0x1E695DF70] array];
+    array15 = [MEMORY[0x1E695DF70] array];
     v1314 = 0u;
     v1315 = 0u;
     v1316 = 0u;
@@ -1510,8 +1510,8 @@
             objc_enumerationMutation(v177);
           }
 
-          v182 = [*(*(&v1314 + 1) + 8 * i5) dictionaryRepresentation];
-          [v176 addObject:v182];
+          dictionaryRepresentation15 = [*(*(&v1314 + 1) + 8 * i5) dictionaryRepresentation];
+          [array15 addObject:dictionaryRepresentation15];
         }
 
         v179 = [v177 countByEnumeratingWithState:&v1314 objects:v1458 count:16];
@@ -1520,12 +1520,12 @@
       while (v179);
     }
 
-    [v3 setObject:v176 forKeyedSubscript:@"_payloadContactEventTrigger"];
+    [dictionary setObject:array15 forKeyedSubscript:@"_payloadContactEventTrigger"];
   }
 
   if ([*(v2 + 1728) count])
   {
-    v183 = [MEMORY[0x1E695DF70] array];
+    array16 = [MEMORY[0x1E695DF70] array];
     v1310 = 0u;
     v1311 = 0u;
     v1312 = 0u;
@@ -1545,8 +1545,8 @@
             objc_enumerationMutation(v184);
           }
 
-          v189 = [*(*(&v1310 + 1) + 8 * i6) dictionaryRepresentation];
-          [v183 addObject:v189];
+          dictionaryRepresentation16 = [*(*(&v1310 + 1) + 8 * i6) dictionaryRepresentation];
+          [array16 addObject:dictionaryRepresentation16];
         }
 
         v186 = [v184 countByEnumeratingWithState:&v1310 objects:v1457 count:16];
@@ -1555,12 +1555,12 @@
       while (v186);
     }
 
-    [v3 setObject:v183 forKeyedSubscript:@"_payloadContactList"];
+    [dictionary setObject:array16 forKeyedSubscript:@"_payloadContactList"];
   }
 
   if ([*(v2 + 1736) count])
   {
-    v190 = [MEMORY[0x1E695DF70] array];
+    array17 = [MEMORY[0x1E695DF70] array];
     v1306 = 0u;
     v1307 = 0u;
     v1308 = 0u;
@@ -1580,8 +1580,8 @@
             objc_enumerationMutation(v191);
           }
 
-          v196 = [*(*(&v1306 + 1) + 8 * i7) dictionaryRepresentation];
-          [v190 addObject:v196];
+          dictionaryRepresentation17 = [*(*(&v1306 + 1) + 8 * i7) dictionaryRepresentation];
+          [array17 addObject:dictionaryRepresentation17];
         }
 
         v193 = [v191 countByEnumeratingWithState:&v1306 objects:v1456 count:16];
@@ -1590,12 +1590,12 @@
       while (v193);
     }
 
-    [v3 setObject:v190 forKeyedSubscript:@"_payloadContactValue"];
+    [dictionary setObject:array17 forKeyedSubscript:@"_payloadContactValue"];
   }
 
   if ([*(v2 + 1744) count])
   {
-    v197 = [MEMORY[0x1E695DF70] array];
+    array18 = [MEMORY[0x1E695DF70] array];
     v1302 = 0u;
     v1303 = 0u;
     v1304 = 0u;
@@ -1615,8 +1615,8 @@
             objc_enumerationMutation(v198);
           }
 
-          v203 = [*(*(&v1302 + 1) + 8 * i8) dictionaryRepresentation];
-          [v197 addObject:v203];
+          dictionaryRepresentation18 = [*(*(&v1302 + 1) + 8 * i8) dictionaryRepresentation];
+          [array18 addObject:dictionaryRepresentation18];
         }
 
         v200 = [v198 countByEnumeratingWithState:&v1302 objects:v1455 count:16];
@@ -1625,12 +1625,12 @@
       while (v200);
     }
 
-    [v3 setObject:v197 forKeyedSubscript:@"_payloadCurrencyAmount"];
+    [dictionary setObject:array18 forKeyedSubscript:@"_payloadCurrencyAmount"];
   }
 
   if ([*(v2 + 1752) count])
   {
-    v204 = [MEMORY[0x1E695DF70] array];
+    array19 = [MEMORY[0x1E695DF70] array];
     v1298 = 0u;
     v1299 = 0u;
     v1300 = 0u;
@@ -1650,8 +1650,8 @@
             objc_enumerationMutation(v205);
           }
 
-          v210 = [*(*(&v1298 + 1) + 8 * i9) dictionaryRepresentation];
-          [v204 addObject:v210];
+          dictionaryRepresentation19 = [*(*(&v1298 + 1) + 8 * i9) dictionaryRepresentation];
+          [array19 addObject:dictionaryRepresentation19];
         }
 
         v207 = [v205 countByEnumeratingWithState:&v1298 objects:v1454 count:16];
@@ -1660,12 +1660,12 @@
       while (v207);
     }
 
-    [v3 setObject:v204 forKeyedSubscript:@"_payloadCustomObject"];
+    [dictionary setObject:array19 forKeyedSubscript:@"_payloadCustomObject"];
   }
 
   if ([*(v2 + 1760) count])
   {
-    v211 = [MEMORY[0x1E695DF70] array];
+    array20 = [MEMORY[0x1E695DF70] array];
     v1294 = 0u;
     v1295 = 0u;
     v1296 = 0u;
@@ -1685,8 +1685,8 @@
             objc_enumerationMutation(v212);
           }
 
-          v217 = [*(*(&v1294 + 1) + 8 * i10) dictionaryRepresentation];
-          [v211 addObject:v217];
+          dictionaryRepresentation20 = [*(*(&v1294 + 1) + 8 * i10) dictionaryRepresentation];
+          [array20 addObject:dictionaryRepresentation20];
         }
 
         v214 = [v212 countByEnumeratingWithState:&v1294 objects:v1453 count:16];
@@ -1695,12 +1695,12 @@
       while (v214);
     }
 
-    [v3 setObject:v211 forKeyedSubscript:@"_payloadDataString"];
+    [dictionary setObject:array20 forKeyedSubscript:@"_payloadDataString"];
   }
 
   if ([*(v2 + 1768) count])
   {
-    v218 = [MEMORY[0x1E695DF70] array];
+    array21 = [MEMORY[0x1E695DF70] array];
     v1290 = 0u;
     v1291 = 0u;
     v1292 = 0u;
@@ -1720,8 +1720,8 @@
             objc_enumerationMutation(v219);
           }
 
-          v224 = [*(*(&v1290 + 1) + 8 * i11) dictionaryRepresentation];
-          [v218 addObject:v224];
+          dictionaryRepresentation21 = [*(*(&v1290 + 1) + 8 * i11) dictionaryRepresentation];
+          [array21 addObject:dictionaryRepresentation21];
         }
 
         v221 = [v219 countByEnumeratingWithState:&v1290 objects:v1452 count:16];
@@ -1730,7 +1730,7 @@
       while (v221);
     }
 
-    [v3 setObject:v218 forKeyedSubscript:@"_payloadDataStringList"];
+    [dictionary setObject:array21 forKeyedSubscript:@"_payloadDataStringList"];
   }
 
   if (*(v2 + 448))
@@ -1780,12 +1780,12 @@ LABEL_357:
       }
     }
 
-    [v3 setObject:v225 forKeyedSubscript:@"_payloadDateSearchType"];
+    [dictionary setObject:v225 forKeyedSubscript:@"_payloadDateSearchType"];
   }
 
   if ([*(v2 + 1776) count])
   {
-    v229 = [MEMORY[0x1E695DF70] array];
+    array22 = [MEMORY[0x1E695DF70] array];
     v1286 = 0u;
     v1287 = 0u;
     v1288 = 0u;
@@ -1805,8 +1805,8 @@ LABEL_357:
             objc_enumerationMutation(v230);
           }
 
-          v235 = [*(*(&v1286 + 1) + 8 * i13) dictionaryRepresentation];
-          [v229 addObject:v235];
+          dictionaryRepresentation22 = [*(*(&v1286 + 1) + 8 * i13) dictionaryRepresentation];
+          [array22 addObject:dictionaryRepresentation22];
         }
 
         v232 = [v230 countByEnumeratingWithState:&v1286 objects:v1451 count:16];
@@ -1815,12 +1815,12 @@ LABEL_357:
       while (v232);
     }
 
-    [v3 setObject:v229 forKeyedSubscript:@"_payloadDateTimeRangeList"];
+    [dictionary setObject:array22 forKeyedSubscript:@"_payloadDateTimeRangeList"];
   }
 
   if ([*(v2 + 1784) count])
   {
-    v236 = [MEMORY[0x1E695DF70] array];
+    array23 = [MEMORY[0x1E695DF70] array];
     v1282 = 0u;
     v1283 = 0u;
     v1284 = 0u;
@@ -1840,8 +1840,8 @@ LABEL_357:
             objc_enumerationMutation(v237);
           }
 
-          v242 = [*(*(&v1282 + 1) + 8 * i14) dictionaryRepresentation];
-          [v236 addObject:v242];
+          dictionaryRepresentation23 = [*(*(&v1282 + 1) + 8 * i14) dictionaryRepresentation];
+          [array23 addObject:dictionaryRepresentation23];
         }
 
         v239 = [v237 countByEnumeratingWithState:&v1282 objects:v1450 count:16];
@@ -1850,12 +1850,12 @@ LABEL_357:
       while (v239);
     }
 
-    [v3 setObject:v236 forKeyedSubscript:@"_payloadDateTimeRangeValue"];
+    [dictionary setObject:array23 forKeyedSubscript:@"_payloadDateTimeRangeValue"];
   }
 
   if ([*(v2 + 1792) count])
   {
-    v243 = [MEMORY[0x1E695DF70] array];
+    array24 = [MEMORY[0x1E695DF70] array];
     v1278 = 0u;
     v1279 = 0u;
     v1280 = 0u;
@@ -1875,8 +1875,8 @@ LABEL_357:
             objc_enumerationMutation(v244);
           }
 
-          v249 = [*(*(&v1278 + 1) + 8 * i15) dictionaryRepresentation];
-          [v243 addObject:v249];
+          dictionaryRepresentation24 = [*(*(&v1278 + 1) + 8 * i15) dictionaryRepresentation];
+          [array24 addObject:dictionaryRepresentation24];
         }
 
         v246 = [v244 countByEnumeratingWithState:&v1278 objects:v1449 count:16];
@@ -1885,12 +1885,12 @@ LABEL_357:
       while (v246);
     }
 
-    [v3 setObject:v243 forKeyedSubscript:@"_payloadDateTimeValue"];
+    [dictionary setObject:array24 forKeyedSubscript:@"_payloadDateTimeValue"];
   }
 
   if ([*(v2 + 1800) count])
   {
-    v250 = [MEMORY[0x1E695DF70] array];
+    array25 = [MEMORY[0x1E695DF70] array];
     v1274 = 0u;
     v1275 = 0u;
     v1276 = 0u;
@@ -1910,8 +1910,8 @@ LABEL_357:
             objc_enumerationMutation(v251);
           }
 
-          v256 = [*(*(&v1274 + 1) + 8 * i16) dictionaryRepresentation];
-          [v250 addObject:v256];
+          dictionaryRepresentation25 = [*(*(&v1274 + 1) + 8 * i16) dictionaryRepresentation];
+          [array25 addObject:dictionaryRepresentation25];
         }
 
         v253 = [v251 countByEnumeratingWithState:&v1274 objects:v1448 count:16];
@@ -1920,12 +1920,12 @@ LABEL_357:
       while (v253);
     }
 
-    [v3 setObject:v250 forKeyedSubscript:@"_payloadDevice"];
+    [dictionary setObject:array25 forKeyedSubscript:@"_payloadDevice"];
   }
 
   if ([*(v2 + 1808) count])
   {
-    v257 = [MEMORY[0x1E695DF70] array];
+    array26 = [MEMORY[0x1E695DF70] array];
     v1270 = 0u;
     v1271 = 0u;
     v1272 = 0u;
@@ -1945,8 +1945,8 @@ LABEL_357:
             objc_enumerationMutation(v258);
           }
 
-          v263 = [*(*(&v1270 + 1) + 8 * i17) dictionaryRepresentation];
-          [v257 addObject:v263];
+          dictionaryRepresentation26 = [*(*(&v1270 + 1) + 8 * i17) dictionaryRepresentation];
+          [array26 addObject:dictionaryRepresentation26];
         }
 
         v260 = [v258 countByEnumeratingWithState:&v1270 objects:v1447 count:16];
@@ -1955,7 +1955,7 @@ LABEL_357:
       while (v260);
     }
 
-    [v3 setObject:v257 forKeyedSubscript:@"_payloadDeviceDetail"];
+    [dictionary setObject:array26 forKeyedSubscript:@"_payloadDeviceDetail"];
   }
 
   if (*(v2 + 472))
@@ -1985,12 +1985,12 @@ LABEL_357:
       while (v265 < [v2 payloadDeviceTypesCount]);
     }
 
-    [v3 setObject:v264 forKeyedSubscript:@"_payloadDeviceType"];
+    [dictionary setObject:v264 forKeyedSubscript:@"_payloadDeviceType"];
   }
 
   if ([*(v2 + 1816) count])
   {
-    v268 = [MEMORY[0x1E695DF70] array];
+    array27 = [MEMORY[0x1E695DF70] array];
     v1266 = 0u;
     v1267 = 0u;
     v1268 = 0u;
@@ -2010,8 +2010,8 @@ LABEL_357:
             objc_enumerationMutation(v269);
           }
 
-          v274 = [*(*(&v1266 + 1) + 8 * i18) dictionaryRepresentation];
-          [v268 addObject:v274];
+          dictionaryRepresentation27 = [*(*(&v1266 + 1) + 8 * i18) dictionaryRepresentation];
+          [array27 addObject:dictionaryRepresentation27];
         }
 
         v271 = [v269 countByEnumeratingWithState:&v1266 objects:v1446 count:16];
@@ -2020,12 +2020,12 @@ LABEL_357:
       while (v271);
     }
 
-    [v3 setObject:v268 forKeyedSubscript:@"_payloadDialingContact"];
+    [dictionary setObject:array27 forKeyedSubscript:@"_payloadDialingContact"];
   }
 
   if ([*(v2 + 1824) count])
   {
-    v275 = [MEMORY[0x1E695DF70] array];
+    array28 = [MEMORY[0x1E695DF70] array];
     v1262 = 0u;
     v1263 = 0u;
     v1264 = 0u;
@@ -2045,8 +2045,8 @@ LABEL_357:
             objc_enumerationMutation(v276);
           }
 
-          v281 = [*(*(&v1262 + 1) + 8 * i19) dictionaryRepresentation];
-          [v275 addObject:v281];
+          dictionaryRepresentation28 = [*(*(&v1262 + 1) + 8 * i19) dictionaryRepresentation];
+          [array28 addObject:dictionaryRepresentation28];
         }
 
         v278 = [v276 countByEnumeratingWithState:&v1262 objects:v1445 count:16];
@@ -2055,12 +2055,12 @@ LABEL_357:
       while (v278);
     }
 
-    [v3 setObject:v275 forKeyedSubscript:@"_payloadDistanceList"];
+    [dictionary setObject:array28 forKeyedSubscript:@"_payloadDistanceList"];
   }
 
   if ([*(v2 + 1832) count])
   {
-    v282 = [MEMORY[0x1E695DF70] array];
+    array29 = [MEMORY[0x1E695DF70] array];
     v1258 = 0u;
     v1259 = 0u;
     v1260 = 0u;
@@ -2080,8 +2080,8 @@ LABEL_357:
             objc_enumerationMutation(v283);
           }
 
-          v288 = [*(*(&v1258 + 1) + 8 * i20) dictionaryRepresentation];
-          [v282 addObject:v288];
+          dictionaryRepresentation29 = [*(*(&v1258 + 1) + 8 * i20) dictionaryRepresentation];
+          [array29 addObject:dictionaryRepresentation29];
         }
 
         v285 = [v283 countByEnumeratingWithState:&v1258 objects:v1444 count:16];
@@ -2090,12 +2090,12 @@ LABEL_357:
       while (v285);
     }
 
-    [v3 setObject:v282 forKeyedSubscript:@"_payloadDistanceValue"];
+    [dictionary setObject:array29 forKeyedSubscript:@"_payloadDistanceValue"];
   }
 
   if ([*(v2 + 1840) count])
   {
-    v289 = [MEMORY[0x1E695DF70] array];
+    array30 = [MEMORY[0x1E695DF70] array];
     v1254 = 0u;
     v1255 = 0u;
     v1256 = 0u;
@@ -2115,8 +2115,8 @@ LABEL_357:
             objc_enumerationMutation(v290);
           }
 
-          v295 = [*(*(&v1254 + 1) + 8 * i21) dictionaryRepresentation];
-          [v289 addObject:v295];
+          dictionaryRepresentation30 = [*(*(&v1254 + 1) + 8 * i21) dictionaryRepresentation];
+          [array30 addObject:dictionaryRepresentation30];
         }
 
         v292 = [v290 countByEnumeratingWithState:&v1254 objects:v1443 count:16];
@@ -2125,12 +2125,12 @@ LABEL_357:
       while (v292);
     }
 
-    [v3 setObject:v289 forKeyedSubscript:@"_payloadDoubleList"];
+    [dictionary setObject:array30 forKeyedSubscript:@"_payloadDoubleList"];
   }
 
   if ([*(v2 + 1848) count])
   {
-    v296 = [MEMORY[0x1E695DF70] array];
+    array31 = [MEMORY[0x1E695DF70] array];
     v1250 = 0u;
     v1251 = 0u;
     v1252 = 0u;
@@ -2150,8 +2150,8 @@ LABEL_357:
             objc_enumerationMutation(v297);
           }
 
-          v302 = [*(*(&v1250 + 1) + 8 * i22) dictionaryRepresentation];
-          [v296 addObject:v302];
+          dictionaryRepresentation31 = [*(*(&v1250 + 1) + 8 * i22) dictionaryRepresentation];
+          [array31 addObject:dictionaryRepresentation31];
         }
 
         v299 = [v297 countByEnumeratingWithState:&v1250 objects:v1442 count:16];
@@ -2160,12 +2160,12 @@ LABEL_357:
       while (v299);
     }
 
-    [v3 setObject:v296 forKeyedSubscript:@"_payloadDoubleValue"];
+    [dictionary setObject:array31 forKeyedSubscript:@"_payloadDoubleValue"];
   }
 
   if ([*(v2 + 1856) count])
   {
-    v303 = [MEMORY[0x1E695DF70] array];
+    array32 = [MEMORY[0x1E695DF70] array];
     v1246 = 0u;
     v1247 = 0u;
     v1248 = 0u;
@@ -2185,8 +2185,8 @@ LABEL_357:
             objc_enumerationMutation(v304);
           }
 
-          v309 = [*(*(&v1246 + 1) + 8 * i23) dictionaryRepresentation];
-          [v303 addObject:v309];
+          dictionaryRepresentation32 = [*(*(&v1246 + 1) + 8 * i23) dictionaryRepresentation];
+          [array32 addObject:dictionaryRepresentation32];
         }
 
         v306 = [v304 countByEnumeratingWithState:&v1246 objects:v1441 count:16];
@@ -2195,19 +2195,19 @@ LABEL_357:
       while (v306);
     }
 
-    [v3 setObject:v303 forKeyedSubscript:@"_payloadEnergyValue"];
+    [dictionary setObject:array32 forKeyedSubscript:@"_payloadEnergyValue"];
   }
 
   if ([*(v2 + 1864) count])
   {
-    v310 = [v2 payloadEnumerations];
-    v311 = [v310 copy];
-    [v3 setObject:v311 forKeyedSubscript:@"_payloadEnumeration"];
+    payloadEnumerations = [v2 payloadEnumerations];
+    v311 = [payloadEnumerations copy];
+    [dictionary setObject:v311 forKeyedSubscript:@"_payloadEnumeration"];
   }
 
   if ([*(v2 + 1872) count])
   {
-    v312 = [MEMORY[0x1E695DF70] array];
+    array33 = [MEMORY[0x1E695DF70] array];
     v1242 = 0u;
     v1243 = 0u;
     v1244 = 0u;
@@ -2227,8 +2227,8 @@ LABEL_357:
             objc_enumerationMutation(v313);
           }
 
-          v318 = [*(*(&v1242 + 1) + 8 * i24) dictionaryRepresentation];
-          [v312 addObject:v318];
+          dictionaryRepresentation33 = [*(*(&v1242 + 1) + 8 * i24) dictionaryRepresentation];
+          [array33 addObject:dictionaryRepresentation33];
         }
 
         v315 = [v313 countByEnumeratingWithState:&v1242 objects:v1440 count:16];
@@ -2237,7 +2237,7 @@ LABEL_357:
       while (v315);
     }
 
-    [v3 setObject:v312 forKeyedSubscript:@"_payloadEvent"];
+    [dictionary setObject:array33 forKeyedSubscript:@"_payloadEvent"];
   }
 
   if (*(v2 + 496))
@@ -2267,12 +2267,12 @@ LABEL_357:
       while (v320 < [v2 payloadEventAttributesCount]);
     }
 
-    [v3 setObject:v319 forKeyedSubscript:@"_payloadEventAttribute"];
+    [dictionary setObject:v319 forKeyedSubscript:@"_payloadEventAttribute"];
   }
 
   if ([*(v2 + 1880) count])
   {
-    v323 = [MEMORY[0x1E695DF70] array];
+    array34 = [MEMORY[0x1E695DF70] array];
     v1238 = 0u;
     v1239 = 0u;
     v1240 = 0u;
@@ -2292,8 +2292,8 @@ LABEL_357:
             objc_enumerationMutation(v324);
           }
 
-          v329 = [*(*(&v1238 + 1) + 8 * i25) dictionaryRepresentation];
-          [v323 addObject:v329];
+          dictionaryRepresentation34 = [*(*(&v1238 + 1) + 8 * i25) dictionaryRepresentation];
+          [array34 addObject:dictionaryRepresentation34];
         }
 
         v326 = [v324 countByEnumeratingWithState:&v1238 objects:v1439 count:16];
@@ -2302,12 +2302,12 @@ LABEL_357:
       while (v326);
     }
 
-    [v3 setObject:v323 forKeyedSubscript:@"_payloadEventList"];
+    [dictionary setObject:array34 forKeyedSubscript:@"_payloadEventList"];
   }
 
   if ([*(v2 + 1888) count])
   {
-    v330 = [MEMORY[0x1E695DF70] array];
+    array35 = [MEMORY[0x1E695DF70] array];
     v1234 = 0u;
     v1235 = 0u;
     v1236 = 0u;
@@ -2327,8 +2327,8 @@ LABEL_357:
             objc_enumerationMutation(v331);
           }
 
-          v336 = [*(*(&v1234 + 1) + 8 * i26) dictionaryRepresentation];
-          [v330 addObject:v336];
+          dictionaryRepresentation35 = [*(*(&v1234 + 1) + 8 * i26) dictionaryRepresentation];
+          [array35 addObject:dictionaryRepresentation35];
         }
 
         v333 = [v331 countByEnumeratingWithState:&v1234 objects:v1438 count:16];
@@ -2337,12 +2337,12 @@ LABEL_357:
       while (v333);
     }
 
-    [v3 setObject:v330 forKeyedSubscript:@"_payloadEventParticipant"];
+    [dictionary setObject:array35 forKeyedSubscript:@"_payloadEventParticipant"];
   }
 
   if ([*(v2 + 1896) count])
   {
-    v337 = [MEMORY[0x1E695DF70] array];
+    array36 = [MEMORY[0x1E695DF70] array];
     v1230 = 0u;
     v1231 = 0u;
     v1232 = 0u;
@@ -2362,8 +2362,8 @@ LABEL_357:
             objc_enumerationMutation(v338);
           }
 
-          v343 = [*(*(&v1230 + 1) + 8 * i27) dictionaryRepresentation];
-          [v337 addObject:v343];
+          dictionaryRepresentation36 = [*(*(&v1230 + 1) + 8 * i27) dictionaryRepresentation];
+          [array36 addObject:dictionaryRepresentation36];
         }
 
         v340 = [v338 countByEnumeratingWithState:&v1230 objects:v1437 count:16];
@@ -2372,7 +2372,7 @@ LABEL_357:
       while (v340);
     }
 
-    [v3 setObject:v337 forKeyedSubscript:@"_payloadFile"];
+    [dictionary setObject:array36 forKeyedSubscript:@"_payloadFile"];
   }
 
   if (*(v2 + 520))
@@ -2402,12 +2402,12 @@ LABEL_357:
       while (v345 < [v2 payloadFileEntityTypesCount]);
     }
 
-    [v3 setObject:v344 forKeyedSubscript:@"_payloadFileEntityType"];
+    [dictionary setObject:v344 forKeyedSubscript:@"_payloadFileEntityType"];
   }
 
   if ([*(v2 + 1904) count])
   {
-    v348 = [MEMORY[0x1E695DF70] array];
+    array37 = [MEMORY[0x1E695DF70] array];
     v1226 = 0u;
     v1227 = 0u;
     v1228 = 0u;
@@ -2427,8 +2427,8 @@ LABEL_357:
             objc_enumerationMutation(v349);
           }
 
-          v354 = [*(*(&v1226 + 1) + 8 * i28) dictionaryRepresentation];
-          [v348 addObject:v354];
+          dictionaryRepresentation37 = [*(*(&v1226 + 1) + 8 * i28) dictionaryRepresentation];
+          [array37 addObject:dictionaryRepresentation37];
         }
 
         v351 = [v349 countByEnumeratingWithState:&v1226 objects:v1436 count:16];
@@ -2437,7 +2437,7 @@ LABEL_357:
       while (v351);
     }
 
-    [v3 setObject:v348 forKeyedSubscript:@"_payloadFileProperty"];
+    [dictionary setObject:array37 forKeyedSubscript:@"_payloadFileProperty"];
   }
 
   if (*(v2 + 544))
@@ -2467,7 +2467,7 @@ LABEL_357:
       while (v356 < [v2 payloadFilePropertyNamesCount]);
     }
 
-    [v3 setObject:v355 forKeyedSubscript:@"_payloadFilePropertyName"];
+    [dictionary setObject:v355 forKeyedSubscript:@"_payloadFilePropertyName"];
   }
 
   if (*(v2 + 568))
@@ -2497,12 +2497,12 @@ LABEL_357:
       while (v360 < [v2 payloadFilePropertyQualifiersCount]);
     }
 
-    [v3 setObject:v359 forKeyedSubscript:@"_payloadFilePropertyQualifier"];
+    [dictionary setObject:v359 forKeyedSubscript:@"_payloadFilePropertyQualifier"];
   }
 
   if ([*(v2 + 1912) count])
   {
-    v363 = [MEMORY[0x1E695DF70] array];
+    array38 = [MEMORY[0x1E695DF70] array];
     v1222 = 0u;
     v1223 = 0u;
     v1224 = 0u;
@@ -2522,8 +2522,8 @@ LABEL_357:
             objc_enumerationMutation(v364);
           }
 
-          v369 = [*(*(&v1222 + 1) + 8 * i29) dictionaryRepresentation];
-          [v363 addObject:v369];
+          dictionaryRepresentation38 = [*(*(&v1222 + 1) + 8 * i29) dictionaryRepresentation];
+          [array38 addObject:dictionaryRepresentation38];
         }
 
         v366 = [v364 countByEnumeratingWithState:&v1222 objects:v1435 count:16];
@@ -2532,7 +2532,7 @@ LABEL_357:
       while (v366);
     }
 
-    [v3 setObject:v363 forKeyedSubscript:@"_payloadFilePropertyValue"];
+    [dictionary setObject:array38 forKeyedSubscript:@"_payloadFilePropertyValue"];
   }
 
   if (*(v2 + 592))
@@ -2562,7 +2562,7 @@ LABEL_357:
       while (v371 < [v2 payloadFileSearchScopesCount]);
     }
 
-    [v3 setObject:v370 forKeyedSubscript:@"_payloadFileSearchScope"];
+    [dictionary setObject:v370 forKeyedSubscript:@"_payloadFileSearchScope"];
   }
 
   if (*(v2 + 616))
@@ -2592,7 +2592,7 @@ LABEL_357:
       while (v375 < [v2 payloadFileShareModesCount]);
     }
 
-    [v3 setObject:v374 forKeyedSubscript:@"_payloadFileShareMode"];
+    [dictionary setObject:v374 forKeyedSubscript:@"_payloadFileShareMode"];
   }
 
   if (*(v2 + 640))
@@ -2622,12 +2622,12 @@ LABEL_357:
       while (v379 < [v2 payloadFileTypesCount]);
     }
 
-    [v3 setObject:v378 forKeyedSubscript:@"_payloadFileType"];
+    [dictionary setObject:v378 forKeyedSubscript:@"_payloadFileType"];
   }
 
   if ([*(v2 + 1920) count])
   {
-    v382 = [MEMORY[0x1E695DF70] array];
+    array39 = [MEMORY[0x1E695DF70] array];
     v1218 = 0u;
     v1219 = 0u;
     v1220 = 0u;
@@ -2647,8 +2647,8 @@ LABEL_357:
             objc_enumerationMutation(v383);
           }
 
-          v388 = [*(*(&v1218 + 1) + 8 * i30) dictionaryRepresentation];
-          [v382 addObject:v388];
+          dictionaryRepresentation39 = [*(*(&v1218 + 1) + 8 * i30) dictionaryRepresentation];
+          [array39 addObject:dictionaryRepresentation39];
         }
 
         v385 = [v383 countByEnumeratingWithState:&v1218 objects:v1434 count:16];
@@ -2657,12 +2657,12 @@ LABEL_357:
       while (v385);
     }
 
-    [v3 setObject:v382 forKeyedSubscript:@"_payloadFinancialAccountValue"];
+    [dictionary setObject:array39 forKeyedSubscript:@"_payloadFinancialAccountValue"];
   }
 
   if ([*(v2 + 1928) count])
   {
-    v389 = [MEMORY[0x1E695DF70] array];
+    array40 = [MEMORY[0x1E695DF70] array];
     v1214 = 0u;
     v1215 = 0u;
     v1216 = 0u;
@@ -2682,8 +2682,8 @@ LABEL_357:
             objc_enumerationMutation(v390);
           }
 
-          v395 = [*(*(&v1214 + 1) + 8 * i31) dictionaryRepresentation];
-          [v389 addObject:v395];
+          dictionaryRepresentation40 = [*(*(&v1214 + 1) + 8 * i31) dictionaryRepresentation];
+          [array40 addObject:dictionaryRepresentation40];
         }
 
         v392 = [v390 countByEnumeratingWithState:&v1214 objects:v1433 count:16];
@@ -2692,12 +2692,12 @@ LABEL_357:
       while (v392);
     }
 
-    [v3 setObject:v389 forKeyedSubscript:@"_payloadGeographicalFeature"];
+    [dictionary setObject:array40 forKeyedSubscript:@"_payloadGeographicalFeature"];
   }
 
   if ([*(v2 + 1936) count])
   {
-    v396 = [MEMORY[0x1E695DF70] array];
+    array41 = [MEMORY[0x1E695DF70] array];
     v1210 = 0u;
     v1211 = 0u;
     v1212 = 0u;
@@ -2717,8 +2717,8 @@ LABEL_357:
             objc_enumerationMutation(v397);
           }
 
-          v402 = [*(*(&v1210 + 1) + 8 * i32) dictionaryRepresentation];
-          [v396 addObject:v402];
+          dictionaryRepresentation41 = [*(*(&v1210 + 1) + 8 * i32) dictionaryRepresentation];
+          [array41 addObject:dictionaryRepresentation41];
         }
 
         v399 = [v397 countByEnumeratingWithState:&v1210 objects:v1432 count:16];
@@ -2727,12 +2727,12 @@ LABEL_357:
       while (v399);
     }
 
-    [v3 setObject:v396 forKeyedSubscript:@"_payloadGeographicalFeatureList"];
+    [dictionary setObject:array41 forKeyedSubscript:@"_payloadGeographicalFeatureList"];
   }
 
   if ([*(v2 + 1944) count])
   {
-    v403 = [MEMORY[0x1E695DF70] array];
+    array42 = [MEMORY[0x1E695DF70] array];
     v1206 = 0u;
     v1207 = 0u;
     v1208 = 0u;
@@ -2752,8 +2752,8 @@ LABEL_357:
             objc_enumerationMutation(v404);
           }
 
-          v409 = [*(*(&v1206 + 1) + 8 * i33) dictionaryRepresentation];
-          [v403 addObject:v409];
+          dictionaryRepresentation42 = [*(*(&v1206 + 1) + 8 * i33) dictionaryRepresentation];
+          [array42 addObject:dictionaryRepresentation42];
         }
 
         v406 = [v404 countByEnumeratingWithState:&v1206 objects:v1431 count:16];
@@ -2762,12 +2762,12 @@ LABEL_357:
       while (v406);
     }
 
-    [v3 setObject:v403 forKeyedSubscript:@"_payloadGetSettingResponseData"];
+    [dictionary setObject:array42 forKeyedSubscript:@"_payloadGetSettingResponseData"];
   }
 
   if ([*(v2 + 1952) count])
   {
-    v410 = [MEMORY[0x1E695DF70] array];
+    array43 = [MEMORY[0x1E695DF70] array];
     v1202 = 0u;
     v1203 = 0u;
     v1204 = 0u;
@@ -2787,8 +2787,8 @@ LABEL_357:
             objc_enumerationMutation(v411);
           }
 
-          v416 = [*(*(&v1202 + 1) + 8 * i34) dictionaryRepresentation];
-          [v410 addObject:v416];
+          dictionaryRepresentation43 = [*(*(&v1202 + 1) + 8 * i34) dictionaryRepresentation];
+          [array43 addObject:dictionaryRepresentation43];
         }
 
         v413 = [v411 countByEnumeratingWithState:&v1202 objects:v1430 count:16];
@@ -2797,7 +2797,7 @@ LABEL_357:
       while (v413);
     }
 
-    [v3 setObject:v410 forKeyedSubscript:@"_payloadHomeAttribute"];
+    [dictionary setObject:array43 forKeyedSubscript:@"_payloadHomeAttribute"];
   }
 
   if (*(v2 + 664))
@@ -2827,12 +2827,12 @@ LABEL_357:
       while (v418 < [v2 payloadHomeAttributeTypesCount]);
     }
 
-    [v3 setObject:v417 forKeyedSubscript:@"_payloadHomeAttributeType"];
+    [dictionary setObject:v417 forKeyedSubscript:@"_payloadHomeAttributeType"];
   }
 
   if ([*(v2 + 1960) count])
   {
-    v421 = [MEMORY[0x1E695DF70] array];
+    array44 = [MEMORY[0x1E695DF70] array];
     v1198 = 0u;
     v1199 = 0u;
     v1200 = 0u;
@@ -2852,8 +2852,8 @@ LABEL_357:
             objc_enumerationMutation(v422);
           }
 
-          v427 = [*(*(&v1198 + 1) + 8 * i35) dictionaryRepresentation];
-          [v421 addObject:v427];
+          dictionaryRepresentation44 = [*(*(&v1198 + 1) + 8 * i35) dictionaryRepresentation];
+          [array44 addObject:dictionaryRepresentation44];
         }
 
         v424 = [v422 countByEnumeratingWithState:&v1198 objects:v1429 count:16];
@@ -2862,7 +2862,7 @@ LABEL_357:
       while (v424);
     }
 
-    [v3 setObject:v421 forKeyedSubscript:@"_payloadHomeAttributeValue"];
+    [dictionary setObject:array44 forKeyedSubscript:@"_payloadHomeAttributeValue"];
   }
 
   if (*(v2 + 688))
@@ -2892,7 +2892,7 @@ LABEL_357:
       while (v429 < [v2 payloadHomeAttributeValueTypesCount]);
     }
 
-    [v3 setObject:v428 forKeyedSubscript:@"_payloadHomeAttributeValueType"];
+    [dictionary setObject:v428 forKeyedSubscript:@"_payloadHomeAttributeValueType"];
   }
 
   if (*(v2 + 712))
@@ -2922,12 +2922,12 @@ LABEL_357:
       while (v433 < [v2 payloadHomeDeviceTypesCount]);
     }
 
-    [v3 setObject:v432 forKeyedSubscript:@"_payloadHomeDeviceType"];
+    [dictionary setObject:v432 forKeyedSubscript:@"_payloadHomeDeviceType"];
   }
 
   if ([*(v2 + 1968) count])
   {
-    v436 = [MEMORY[0x1E695DF70] array];
+    array45 = [MEMORY[0x1E695DF70] array];
     v1194 = 0u;
     v1195 = 0u;
     v1196 = 0u;
@@ -2947,8 +2947,8 @@ LABEL_357:
             objc_enumerationMutation(v437);
           }
 
-          v442 = [*(*(&v1194 + 1) + 8 * i36) dictionaryRepresentation];
-          [v436 addObject:v442];
+          dictionaryRepresentation45 = [*(*(&v1194 + 1) + 8 * i36) dictionaryRepresentation];
+          [array45 addObject:dictionaryRepresentation45];
         }
 
         v439 = [v437 countByEnumeratingWithState:&v1194 objects:v1428 count:16];
@@ -2957,7 +2957,7 @@ LABEL_357:
       while (v439);
     }
 
-    [v3 setObject:v436 forKeyedSubscript:@"_payloadHomeEntity"];
+    [dictionary setObject:array45 forKeyedSubscript:@"_payloadHomeEntity"];
   }
 
   if (*(v2 + 736))
@@ -2987,12 +2987,12 @@ LABEL_357:
       while (v444 < [v2 payloadHomeEntityTypesCount]);
     }
 
-    [v3 setObject:v443 forKeyedSubscript:@"_payloadHomeEntityType"];
+    [dictionary setObject:v443 forKeyedSubscript:@"_payloadHomeEntityType"];
   }
 
   if ([*(v2 + 1976) count])
   {
-    v447 = [MEMORY[0x1E695DF70] array];
+    array46 = [MEMORY[0x1E695DF70] array];
     v1190 = 0u;
     v1191 = 0u;
     v1192 = 0u;
@@ -3012,8 +3012,8 @@ LABEL_357:
             objc_enumerationMutation(v448);
           }
 
-          v453 = [*(*(&v1190 + 1) + 8 * i37) dictionaryRepresentation];
-          [v447 addObject:v453];
+          dictionaryRepresentation46 = [*(*(&v1190 + 1) + 8 * i37) dictionaryRepresentation];
+          [array46 addObject:dictionaryRepresentation46];
         }
 
         v450 = [v448 countByEnumeratingWithState:&v1190 objects:v1427 count:16];
@@ -3022,12 +3022,12 @@ LABEL_357:
       while (v450);
     }
 
-    [v3 setObject:v447 forKeyedSubscript:@"_payloadHomeFilter"];
+    [dictionary setObject:array46 forKeyedSubscript:@"_payloadHomeFilter"];
   }
 
   if ([*(v2 + 1984) count])
   {
-    v454 = [MEMORY[0x1E695DF70] array];
+    array47 = [MEMORY[0x1E695DF70] array];
     v1186 = 0u;
     v1187 = 0u;
     v1188 = 0u;
@@ -3047,8 +3047,8 @@ LABEL_357:
             objc_enumerationMutation(v455);
           }
 
-          v460 = [*(*(&v1186 + 1) + 8 * i38) dictionaryRepresentation];
-          [v454 addObject:v460];
+          dictionaryRepresentation47 = [*(*(&v1186 + 1) + 8 * i38) dictionaryRepresentation];
+          [array47 addObject:dictionaryRepresentation47];
         }
 
         v457 = [v455 countByEnumeratingWithState:&v1186 objects:v1426 count:16];
@@ -3057,12 +3057,12 @@ LABEL_357:
       while (v457);
     }
 
-    [v3 setObject:v454 forKeyedSubscript:@"_payloadHomeUserTask"];
+    [dictionary setObject:array47 forKeyedSubscript:@"_payloadHomeUserTask"];
   }
 
   if ([*(v2 + 1992) count])
   {
-    v461 = [MEMORY[0x1E695DF70] array];
+    array48 = [MEMORY[0x1E695DF70] array];
     v1182 = 0u;
     v1183 = 0u;
     v1184 = 0u;
@@ -3082,8 +3082,8 @@ LABEL_357:
             objc_enumerationMutation(v462);
           }
 
-          v467 = [*(*(&v1182 + 1) + 8 * i39) dictionaryRepresentation];
-          [v461 addObject:v467];
+          dictionaryRepresentation48 = [*(*(&v1182 + 1) + 8 * i39) dictionaryRepresentation];
+          [array48 addObject:dictionaryRepresentation48];
         }
 
         v464 = [v462 countByEnumeratingWithState:&v1182 objects:v1425 count:16];
@@ -3092,12 +3092,12 @@ LABEL_357:
       while (v464);
     }
 
-    [v3 setObject:v461 forKeyedSubscript:@"_payloadIntegerList"];
+    [dictionary setObject:array48 forKeyedSubscript:@"_payloadIntegerList"];
   }
 
   if ([*(v2 + 2000) count])
   {
-    v468 = [MEMORY[0x1E695DF70] array];
+    array49 = [MEMORY[0x1E695DF70] array];
     v1178 = 0u;
     v1179 = 0u;
     v1180 = 0u;
@@ -3117,8 +3117,8 @@ LABEL_357:
             objc_enumerationMutation(v469);
           }
 
-          v474 = [*(*(&v1178 + 1) + 8 * i40) dictionaryRepresentation];
-          [v468 addObject:v474];
+          dictionaryRepresentation49 = [*(*(&v1178 + 1) + 8 * i40) dictionaryRepresentation];
+          [array49 addObject:dictionaryRepresentation49];
         }
 
         v471 = [v469 countByEnumeratingWithState:&v1178 objects:v1424 count:16];
@@ -3127,12 +3127,12 @@ LABEL_357:
       while (v471);
     }
 
-    [v3 setObject:v468 forKeyedSubscript:@"_payloadIntegerValue"];
+    [dictionary setObject:array49 forKeyedSubscript:@"_payloadIntegerValue"];
   }
 
   if ([*(v2 + 2008) count])
   {
-    v475 = [MEMORY[0x1E695DF70] array];
+    array50 = [MEMORY[0x1E695DF70] array];
     v1174 = 0u;
     v1175 = 0u;
     v1176 = 0u;
@@ -3152,8 +3152,8 @@ LABEL_357:
             objc_enumerationMutation(v476);
           }
 
-          v481 = [*(*(&v1174 + 1) + 8 * i41) dictionaryRepresentation];
-          [v475 addObject:v481];
+          dictionaryRepresentation50 = [*(*(&v1174 + 1) + 8 * i41) dictionaryRepresentation];
+          [array50 addObject:dictionaryRepresentation50];
         }
 
         v478 = [v476 countByEnumeratingWithState:&v1174 objects:v1423 count:16];
@@ -3162,12 +3162,12 @@ LABEL_357:
       while (v478);
     }
 
-    [v3 setObject:v475 forKeyedSubscript:@"_payloadIntent"];
+    [dictionary setObject:array50 forKeyedSubscript:@"_payloadIntent"];
   }
 
   if ([*(v2 + 2016) count])
   {
-    v482 = [MEMORY[0x1E695DF70] array];
+    array51 = [MEMORY[0x1E695DF70] array];
     v1170 = 0u;
     v1171 = 0u;
     v1172 = 0u;
@@ -3187,8 +3187,8 @@ LABEL_357:
             objc_enumerationMutation(v483);
           }
 
-          v488 = [*(*(&v1170 + 1) + 8 * i42) dictionaryRepresentation];
-          [v482 addObject:v488];
+          dictionaryRepresentation51 = [*(*(&v1170 + 1) + 8 * i42) dictionaryRepresentation];
+          [array51 addObject:dictionaryRepresentation51];
         }
 
         v485 = [v483 countByEnumeratingWithState:&v1170 objects:v1422 count:16];
@@ -3197,12 +3197,12 @@ LABEL_357:
       while (v485);
     }
 
-    [v3 setObject:v482 forKeyedSubscript:@"_payloadIntentExecutionResult"];
+    [dictionary setObject:array51 forKeyedSubscript:@"_payloadIntentExecutionResult"];
   }
 
   if ([*(v2 + 2024) count])
   {
-    v489 = [MEMORY[0x1E695DF70] array];
+    array52 = [MEMORY[0x1E695DF70] array];
     v1166 = 0u;
     v1167 = 0u;
     v1168 = 0u;
@@ -3222,8 +3222,8 @@ LABEL_357:
             objc_enumerationMutation(v490);
           }
 
-          v495 = [*(*(&v1166 + 1) + 8 * i43) dictionaryRepresentation];
-          [v489 addObject:v495];
+          dictionaryRepresentation52 = [*(*(&v1166 + 1) + 8 * i43) dictionaryRepresentation];
+          [array52 addObject:dictionaryRepresentation52];
         }
 
         v492 = [v490 countByEnumeratingWithState:&v1166 objects:v1421 count:16];
@@ -3232,12 +3232,12 @@ LABEL_357:
       while (v492);
     }
 
-    [v3 setObject:v489 forKeyedSubscript:@"_payloadLocation"];
+    [dictionary setObject:array52 forKeyedSubscript:@"_payloadLocation"];
   }
 
   if ([*(v2 + 2032) count])
   {
-    v496 = [MEMORY[0x1E695DF70] array];
+    array53 = [MEMORY[0x1E695DF70] array];
     v1162 = 0u;
     v1163 = 0u;
     v1164 = 0u;
@@ -3257,8 +3257,8 @@ LABEL_357:
             objc_enumerationMutation(v497);
           }
 
-          v502 = [*(*(&v1162 + 1) + 8 * i44) dictionaryRepresentation];
-          [v496 addObject:v502];
+          dictionaryRepresentation53 = [*(*(&v1162 + 1) + 8 * i44) dictionaryRepresentation];
+          [array53 addObject:dictionaryRepresentation53];
         }
 
         v499 = [v497 countByEnumeratingWithState:&v1162 objects:v1420 count:16];
@@ -3267,7 +3267,7 @@ LABEL_357:
       while (v499);
     }
 
-    [v3 setObject:v496 forKeyedSubscript:@"_payloadLocationList"];
+    [dictionary setObject:array53 forKeyedSubscript:@"_payloadLocationList"];
   }
 
   if (*(v2 + 760))
@@ -3305,12 +3305,12 @@ LABEL_357:
       while (v504 < [v2 payloadLocationSearchTypesCount]);
     }
 
-    [v3 setObject:v503 forKeyedSubscript:@"_payloadLocationSearchType"];
+    [dictionary setObject:v503 forKeyedSubscript:@"_payloadLocationSearchType"];
   }
 
   if ([*(v2 + 2040) count])
   {
-    v507 = [MEMORY[0x1E695DF70] array];
+    array54 = [MEMORY[0x1E695DF70] array];
     v1158 = 0u;
     v1159 = 0u;
     v1160 = 0u;
@@ -3330,8 +3330,8 @@ LABEL_357:
             objc_enumerationMutation(v508);
           }
 
-          v513 = [*(*(&v1158 + 1) + 8 * i45) dictionaryRepresentation];
-          [v507 addObject:v513];
+          dictionaryRepresentation54 = [*(*(&v1158 + 1) + 8 * i45) dictionaryRepresentation];
+          [array54 addObject:dictionaryRepresentation54];
         }
 
         v510 = [v508 countByEnumeratingWithState:&v1158 objects:v1419 count:16];
@@ -3340,12 +3340,12 @@ LABEL_357:
       while (v510);
     }
 
-    [v3 setObject:v507 forKeyedSubscript:@"_payloadLongList"];
+    [dictionary setObject:array54 forKeyedSubscript:@"_payloadLongList"];
   }
 
   if ([*(v2 + 2048) count])
   {
-    v514 = [MEMORY[0x1E695DF70] array];
+    array55 = [MEMORY[0x1E695DF70] array];
     v1154 = 0u;
     v1155 = 0u;
     v1156 = 0u;
@@ -3365,8 +3365,8 @@ LABEL_357:
             objc_enumerationMutation(v515);
           }
 
-          v520 = [*(*(&v1154 + 1) + 8 * i46) dictionaryRepresentation];
-          [v514 addObject:v520];
+          dictionaryRepresentation55 = [*(*(&v1154 + 1) + 8 * i46) dictionaryRepresentation];
+          [array55 addObject:dictionaryRepresentation55];
         }
 
         v517 = [v515 countByEnumeratingWithState:&v1154 objects:v1418 count:16];
@@ -3375,12 +3375,12 @@ LABEL_357:
       while (v517);
     }
 
-    [v3 setObject:v514 forKeyedSubscript:@"_payloadLongValue"];
+    [dictionary setObject:array55 forKeyedSubscript:@"_payloadLongValue"];
   }
 
   if ([*(v2 + 2056) count])
   {
-    v521 = [MEMORY[0x1E695DF70] array];
+    array56 = [MEMORY[0x1E695DF70] array];
     v1150 = 0u;
     v1151 = 0u;
     v1152 = 0u;
@@ -3400,8 +3400,8 @@ LABEL_357:
             objc_enumerationMutation(v522);
           }
 
-          v527 = [*(*(&v1150 + 1) + 8 * i47) dictionaryRepresentation];
-          [v521 addObject:v527];
+          dictionaryRepresentation56 = [*(*(&v1150 + 1) + 8 * i47) dictionaryRepresentation];
+          [array56 addObject:dictionaryRepresentation56];
         }
 
         v524 = [v522 countByEnumeratingWithState:&v1150 objects:v1417 count:16];
@@ -3410,7 +3410,7 @@ LABEL_357:
       while (v524);
     }
 
-    [v3 setObject:v521 forKeyedSubscript:@"_payloadMassValue"];
+    [dictionary setObject:array56 forKeyedSubscript:@"_payloadMassValue"];
   }
 
   if (*(v2 + 784))
@@ -3440,12 +3440,12 @@ LABEL_357:
       while (v529 < [v2 payloadMediaAffinityTypesCount]);
     }
 
-    [v3 setObject:v528 forKeyedSubscript:@"_payloadMediaAffinityType"];
+    [dictionary setObject:v528 forKeyedSubscript:@"_payloadMediaAffinityType"];
   }
 
   if ([*(v2 + 2064) count])
   {
-    v532 = [MEMORY[0x1E695DF70] array];
+    array57 = [MEMORY[0x1E695DF70] array];
     v1146 = 0u;
     v1147 = 0u;
     v1148 = 0u;
@@ -3465,8 +3465,8 @@ LABEL_357:
             objc_enumerationMutation(v533);
           }
 
-          v538 = [*(*(&v1146 + 1) + 8 * i48) dictionaryRepresentation];
-          [v532 addObject:v538];
+          dictionaryRepresentation57 = [*(*(&v1146 + 1) + 8 * i48) dictionaryRepresentation];
+          [array57 addObject:dictionaryRepresentation57];
         }
 
         v535 = [v533 countByEnumeratingWithState:&v1146 objects:v1416 count:16];
@@ -3475,12 +3475,12 @@ LABEL_357:
       while (v535);
     }
 
-    [v3 setObject:v532 forKeyedSubscript:@"_payloadMediaDestination"];
+    [dictionary setObject:array57 forKeyedSubscript:@"_payloadMediaDestination"];
   }
 
   if ([*(v2 + 2072) count])
   {
-    v539 = [MEMORY[0x1E695DF70] array];
+    array58 = [MEMORY[0x1E695DF70] array];
     v1142 = 0u;
     v1143 = 0u;
     v1144 = 0u;
@@ -3500,8 +3500,8 @@ LABEL_357:
             objc_enumerationMutation(v540);
           }
 
-          v545 = [*(*(&v1142 + 1) + 8 * i49) dictionaryRepresentation];
-          [v539 addObject:v545];
+          dictionaryRepresentation58 = [*(*(&v1142 + 1) + 8 * i49) dictionaryRepresentation];
+          [array58 addObject:dictionaryRepresentation58];
         }
 
         v542 = [v540 countByEnumeratingWithState:&v1142 objects:v1415 count:16];
@@ -3510,12 +3510,12 @@ LABEL_357:
       while (v542);
     }
 
-    [v3 setObject:v539 forKeyedSubscript:@"_payloadMediaItemGroup"];
+    [dictionary setObject:array58 forKeyedSubscript:@"_payloadMediaItemGroup"];
   }
 
   if ([*(v2 + 2080) count])
   {
-    v546 = [MEMORY[0x1E695DF70] array];
+    array59 = [MEMORY[0x1E695DF70] array];
     v1138 = 0u;
     v1139 = 0u;
     v1140 = 0u;
@@ -3535,8 +3535,8 @@ LABEL_357:
             objc_enumerationMutation(v547);
           }
 
-          v552 = [*(*(&v1138 + 1) + 8 * i50) dictionaryRepresentation];
-          [v546 addObject:v552];
+          dictionaryRepresentation59 = [*(*(&v1138 + 1) + 8 * i50) dictionaryRepresentation];
+          [array59 addObject:dictionaryRepresentation59];
         }
 
         v549 = [v547 countByEnumeratingWithState:&v1138 objects:v1414 count:16];
@@ -3545,12 +3545,12 @@ LABEL_357:
       while (v549);
     }
 
-    [v3 setObject:v546 forKeyedSubscript:@"_payloadMediaItemValue"];
+    [dictionary setObject:array59 forKeyedSubscript:@"_payloadMediaItemValue"];
   }
 
   if ([*(v2 + 2088) count])
   {
-    v553 = [MEMORY[0x1E695DF70] array];
+    array60 = [MEMORY[0x1E695DF70] array];
     v1134 = 0u;
     v1135 = 0u;
     v1136 = 0u;
@@ -3570,8 +3570,8 @@ LABEL_357:
             objc_enumerationMutation(v554);
           }
 
-          v559 = [*(*(&v1134 + 1) + 8 * i51) dictionaryRepresentation];
-          [v553 addObject:v559];
+          dictionaryRepresentation60 = [*(*(&v1134 + 1) + 8 * i51) dictionaryRepresentation];
+          [array60 addObject:dictionaryRepresentation60];
         }
 
         v556 = [v554 countByEnumeratingWithState:&v1134 objects:v1413 count:16];
@@ -3580,7 +3580,7 @@ LABEL_357:
       while (v556);
     }
 
-    [v3 setObject:v553 forKeyedSubscript:@"_payloadMediaSearch"];
+    [dictionary setObject:array60 forKeyedSubscript:@"_payloadMediaSearch"];
   }
 
   if (*(v2 + 808))
@@ -3610,7 +3610,7 @@ LABEL_357:
       while (v561 < [v2 payloadMessageAttributesCount]);
     }
 
-    [v3 setObject:v560 forKeyedSubscript:@"_payloadMessageAttribute"];
+    [dictionary setObject:v560 forKeyedSubscript:@"_payloadMessageAttribute"];
   }
 
   if (*(v2 + 832))
@@ -3640,7 +3640,7 @@ LABEL_357:
       while (v565 < [v2 payloadMessageEffectsCount]);
     }
 
-    [v3 setObject:v564 forKeyedSubscript:@"_payloadMessageEffect"];
+    [dictionary setObject:v564 forKeyedSubscript:@"_payloadMessageEffect"];
   }
 
   if (*(v2 + 856))
@@ -3670,12 +3670,12 @@ LABEL_357:
       while (v569 < [v2 payloadMessageTypesCount]);
     }
 
-    [v3 setObject:v568 forKeyedSubscript:@"_payloadMessageType"];
+    [dictionary setObject:v568 forKeyedSubscript:@"_payloadMessageType"];
   }
 
   if ([*(v2 + 2096) count])
   {
-    v572 = [MEMORY[0x1E695DF70] array];
+    array61 = [MEMORY[0x1E695DF70] array];
     v1130 = 0u;
     v1131 = 0u;
     v1132 = 0u;
@@ -3695,8 +3695,8 @@ LABEL_357:
             objc_enumerationMutation(v573);
           }
 
-          v578 = [*(*(&v1130 + 1) + 8 * i52) dictionaryRepresentation];
-          [v572 addObject:v578];
+          dictionaryRepresentation61 = [*(*(&v1130 + 1) + 8 * i52) dictionaryRepresentation];
+          [array61 addObject:dictionaryRepresentation61];
         }
 
         v575 = [v573 countByEnumeratingWithState:&v1130 objects:v1412 count:16];
@@ -3705,12 +3705,12 @@ LABEL_357:
       while (v575);
     }
 
-    [v3 setObject:v572 forKeyedSubscript:@"_payloadModifyNickname"];
+    [dictionary setObject:array61 forKeyedSubscript:@"_payloadModifyNickname"];
   }
 
   if ([*(v2 + 2104) count])
   {
-    v579 = [MEMORY[0x1E695DF70] array];
+    array62 = [MEMORY[0x1E695DF70] array];
     v1126 = 0u;
     v1127 = 0u;
     v1128 = 0u;
@@ -3730,8 +3730,8 @@ LABEL_357:
             objc_enumerationMutation(v580);
           }
 
-          v585 = [*(*(&v1126 + 1) + 8 * i53) dictionaryRepresentation];
-          [v579 addObject:v585];
+          dictionaryRepresentation62 = [*(*(&v1126 + 1) + 8 * i53) dictionaryRepresentation];
+          [array62 addObject:dictionaryRepresentation62];
         }
 
         v582 = [v580 countByEnumeratingWithState:&v1126 objects:v1411 count:16];
@@ -3740,12 +3740,12 @@ LABEL_357:
       while (v582);
     }
 
-    [v3 setObject:v579 forKeyedSubscript:@"_payloadModifyRelationship"];
+    [dictionary setObject:array62 forKeyedSubscript:@"_payloadModifyRelationship"];
   }
 
   if ([*(v2 + 2112) count])
   {
-    v586 = [MEMORY[0x1E695DF70] array];
+    array63 = [MEMORY[0x1E695DF70] array];
     v1122 = 0u;
     v1123 = 0u;
     v1124 = 0u;
@@ -3765,8 +3765,8 @@ LABEL_357:
             objc_enumerationMutation(v587);
           }
 
-          v592 = [*(*(&v1122 + 1) + 8 * i54) dictionaryRepresentation];
-          [v586 addObject:v592];
+          dictionaryRepresentation63 = [*(*(&v1122 + 1) + 8 * i54) dictionaryRepresentation];
+          [array63 addObject:dictionaryRepresentation63];
         }
 
         v589 = [v587 countByEnumeratingWithState:&v1122 objects:v1410 count:16];
@@ -3775,12 +3775,12 @@ LABEL_357:
       while (v589);
     }
 
-    [v3 setObject:v586 forKeyedSubscript:@"_payloadNote"];
+    [dictionary setObject:array63 forKeyedSubscript:@"_payloadNote"];
   }
 
   if ([*(v2 + 2120) count])
   {
-    v593 = [MEMORY[0x1E695DF70] array];
+    array64 = [MEMORY[0x1E695DF70] array];
     v1118 = 0u;
     v1119 = 0u;
     v1120 = 0u;
@@ -3800,8 +3800,8 @@ LABEL_357:
             objc_enumerationMutation(v594);
           }
 
-          v599 = [*(*(&v1118 + 1) + 8 * i55) dictionaryRepresentation];
-          [v593 addObject:v599];
+          dictionaryRepresentation64 = [*(*(&v1118 + 1) + 8 * i55) dictionaryRepresentation];
+          [array64 addObject:dictionaryRepresentation64];
         }
 
         v596 = [v594 countByEnumeratingWithState:&v1118 objects:v1409 count:16];
@@ -3810,7 +3810,7 @@ LABEL_357:
       while (v596);
     }
 
-    [v3 setObject:v593 forKeyedSubscript:@"_payloadNoteContent"];
+    [dictionary setObject:array64 forKeyedSubscript:@"_payloadNoteContent"];
   }
 
   if (*(v2 + 880))
@@ -3860,7 +3860,7 @@ LABEL_900:
       }
     }
 
-    [v3 setObject:v600 forKeyedSubscript:@"_payloadNotebookItemType"];
+    [dictionary setObject:v600 forKeyedSubscript:@"_payloadNotebookItemType"];
   }
 
   if (*(v2 + 904))
@@ -3885,12 +3885,12 @@ LABEL_900:
       while (v605 < [v2 payloadNumericSettingUnitsCount]);
     }
 
-    [v3 setObject:v604 forKeyedSubscript:@"_payloadNumericSettingUnit"];
+    [dictionary setObject:v604 forKeyedSubscript:@"_payloadNumericSettingUnit"];
   }
 
   if ([*(v2 + 2128) count])
   {
-    v607 = [MEMORY[0x1E695DF70] array];
+    array65 = [MEMORY[0x1E695DF70] array];
     v1114 = 0u;
     v1115 = 0u;
     v1116 = 0u;
@@ -3910,8 +3910,8 @@ LABEL_900:
             objc_enumerationMutation(v608);
           }
 
-          v613 = [*(*(&v1114 + 1) + 8 * i57) dictionaryRepresentation];
-          [v607 addObject:v613];
+          dictionaryRepresentation65 = [*(*(&v1114 + 1) + 8 * i57) dictionaryRepresentation];
+          [array65 addObject:dictionaryRepresentation65];
         }
 
         v610 = [v608 countByEnumeratingWithState:&v1114 objects:v1408 count:16];
@@ -3920,7 +3920,7 @@ LABEL_900:
       while (v610);
     }
 
-    [v3 setObject:v607 forKeyedSubscript:@"_payloadNumericSettingValue"];
+    [dictionary setObject:array65 forKeyedSubscript:@"_payloadNumericSettingValue"];
   }
 
   if (*(v2 + 928))
@@ -3955,7 +3955,7 @@ LABEL_900:
       while (v615 < [v2 payloadOutgoingMessageTypesCount]);
     }
 
-    [v3 setObject:v614 forKeyedSubscript:@"_payloadOutgoingMessageType"];
+    [dictionary setObject:v614 forKeyedSubscript:@"_payloadOutgoingMessageType"];
   }
 
   if (*(v2 + 952))
@@ -3985,12 +3985,12 @@ LABEL_900:
       while (v619 < [v2 payloadParsecCategoriesCount]);
     }
 
-    [v3 setObject:v618 forKeyedSubscript:@"_payloadParsecCategory"];
+    [dictionary setObject:v618 forKeyedSubscript:@"_payloadParsecCategory"];
   }
 
   if ([*(v2 + 2136) count])
   {
-    v622 = [MEMORY[0x1E695DF70] array];
+    array66 = [MEMORY[0x1E695DF70] array];
     v1110 = 0u;
     v1111 = 0u;
     v1112 = 0u;
@@ -4010,8 +4010,8 @@ LABEL_900:
             objc_enumerationMutation(v623);
           }
 
-          v628 = [*(*(&v1110 + 1) + 8 * i58) dictionaryRepresentation];
-          [v622 addObject:v628];
+          dictionaryRepresentation66 = [*(*(&v1110 + 1) + 8 * i58) dictionaryRepresentation];
+          [array66 addObject:dictionaryRepresentation66];
         }
 
         v625 = [v623 countByEnumeratingWithState:&v1110 objects:v1407 count:16];
@@ -4020,12 +4020,12 @@ LABEL_900:
       while (v625);
     }
 
-    [v3 setObject:v622 forKeyedSubscript:@"_payloadPaymentAmountValue"];
+    [dictionary setObject:array66 forKeyedSubscript:@"_payloadPaymentAmountValue"];
   }
 
   if ([*(v2 + 2144) count])
   {
-    v629 = [MEMORY[0x1E695DF70] array];
+    array67 = [MEMORY[0x1E695DF70] array];
     v1106 = 0u;
     v1107 = 0u;
     v1108 = 0u;
@@ -4045,8 +4045,8 @@ LABEL_900:
             objc_enumerationMutation(v630);
           }
 
-          v635 = [*(*(&v1106 + 1) + 8 * i59) dictionaryRepresentation];
-          [v629 addObject:v635];
+          dictionaryRepresentation67 = [*(*(&v1106 + 1) + 8 * i59) dictionaryRepresentation];
+          [array67 addObject:dictionaryRepresentation67];
         }
 
         v632 = [v630 countByEnumeratingWithState:&v1106 objects:v1406 count:16];
@@ -4055,12 +4055,12 @@ LABEL_900:
       while (v632);
     }
 
-    [v3 setObject:v629 forKeyedSubscript:@"_payloadPaymentMethodList"];
+    [dictionary setObject:array67 forKeyedSubscript:@"_payloadPaymentMethodList"];
   }
 
   if ([*(v2 + 2152) count])
   {
-    v636 = [MEMORY[0x1E695DF70] array];
+    array68 = [MEMORY[0x1E695DF70] array];
     v1102 = 0u;
     v1103 = 0u;
     v1104 = 0u;
@@ -4080,8 +4080,8 @@ LABEL_900:
             objc_enumerationMutation(v637);
           }
 
-          v642 = [*(*(&v1102 + 1) + 8 * i60) dictionaryRepresentation];
-          [v636 addObject:v642];
+          dictionaryRepresentation68 = [*(*(&v1102 + 1) + 8 * i60) dictionaryRepresentation];
+          [array68 addObject:dictionaryRepresentation68];
         }
 
         v639 = [v637 countByEnumeratingWithState:&v1102 objects:v1405 count:16];
@@ -4090,7 +4090,7 @@ LABEL_900:
       while (v639);
     }
 
-    [v3 setObject:v636 forKeyedSubscript:@"_payloadPaymentMethodValue"];
+    [dictionary setObject:array68 forKeyedSubscript:@"_payloadPaymentMethodValue"];
   }
 
   if (*(v2 + 976))
@@ -4120,7 +4120,7 @@ LABEL_900:
       while (v644 < [v2 payloadPaymentStatusCount]);
     }
 
-    [v3 setObject:v643 forKeyedSubscript:@"_payloadPaymentStatus"];
+    [dictionary setObject:v643 forKeyedSubscript:@"_payloadPaymentStatus"];
   }
 
   if (*(v2 + 1000))
@@ -4155,7 +4155,7 @@ LABEL_900:
       while (v648 < [v2 payloadPersonalPlaceTypesCount]);
     }
 
-    [v3 setObject:v647 forKeyedSubscript:@"_payloadPersonalPlaceType"];
+    [dictionary setObject:v647 forKeyedSubscript:@"_payloadPersonalPlaceType"];
   }
 
   if (*(v2 + 1024))
@@ -4385,12 +4385,12 @@ LABEL_1047:
       }
     }
 
-    [v3 setObject:v651 forKeyedSubscript:@"_payloadPhotoAttribute"];
+    [dictionary setObject:v651 forKeyedSubscript:@"_payloadPhotoAttribute"];
   }
 
   if ([*(v2 + 2160) count])
   {
-    v655 = [MEMORY[0x1E695DF70] array];
+    array69 = [MEMORY[0x1E695DF70] array];
     v1098 = 0u;
     v1099 = 0u;
     v1100 = 0u;
@@ -4410,8 +4410,8 @@ LABEL_1047:
             objc_enumerationMutation(v656);
           }
 
-          v661 = [*(*(&v1098 + 1) + 8 * i62) dictionaryRepresentation];
-          [v655 addObject:v661];
+          dictionaryRepresentation69 = [*(*(&v1098 + 1) + 8 * i62) dictionaryRepresentation];
+          [array69 addObject:dictionaryRepresentation69];
         }
 
         v658 = [v656 countByEnumeratingWithState:&v1098 objects:v1404 count:16];
@@ -4420,12 +4420,12 @@ LABEL_1047:
       while (v658);
     }
 
-    [v3 setObject:v655 forKeyedSubscript:@"_payloadPlace"];
+    [dictionary setObject:array69 forKeyedSubscript:@"_payloadPlace"];
   }
 
   if ([*(v2 + 2168) count])
   {
-    v662 = [MEMORY[0x1E695DF70] array];
+    array70 = [MEMORY[0x1E695DF70] array];
     v1094 = 0u;
     v1095 = 0u;
     v1096 = 0u;
@@ -4445,8 +4445,8 @@ LABEL_1047:
             objc_enumerationMutation(v663);
           }
 
-          v668 = [*(*(&v1094 + 1) + 8 * i63) dictionaryRepresentation];
-          [v662 addObject:v668];
+          dictionaryRepresentation70 = [*(*(&v1094 + 1) + 8 * i63) dictionaryRepresentation];
+          [array70 addObject:dictionaryRepresentation70];
         }
 
         v665 = [v663 countByEnumeratingWithState:&v1094 objects:v1403 count:16];
@@ -4455,7 +4455,7 @@ LABEL_1047:
       while (v665);
     }
 
-    [v3 setObject:v662 forKeyedSubscript:@"_payloadPlaceList"];
+    [dictionary setObject:array70 forKeyedSubscript:@"_payloadPlaceList"];
   }
 
   if (*(v2 + 1048))
@@ -4485,7 +4485,7 @@ LABEL_1047:
       while (v670 < [v2 payloadPlaybackQueueLocationsCount]);
     }
 
-    [v3 setObject:v669 forKeyedSubscript:@"_payloadPlaybackQueueLocation"];
+    [dictionary setObject:v669 forKeyedSubscript:@"_payloadPlaybackQueueLocation"];
   }
 
   if (*(v2 + 1072))
@@ -4515,7 +4515,7 @@ LABEL_1047:
       while (v674 < [v2 payloadPlaybackRepeatModesCount]);
     }
 
-    [v3 setObject:v673 forKeyedSubscript:@"_payloadPlaybackRepeatMode"];
+    [dictionary setObject:v673 forKeyedSubscript:@"_payloadPlaybackRepeatMode"];
   }
 
   if (*(v2 + 1096))
@@ -4545,47 +4545,47 @@ LABEL_1047:
       while (v678 < [v2 payloadPreferredCallProvidersCount]);
     }
 
-    [v3 setObject:v677 forKeyedSubscript:@"_payloadPreferredCallProvider"];
+    [dictionary setObject:v677 forKeyedSubscript:@"_payloadPreferredCallProvider"];
   }
 
   if ([*(v2 + 2176) count])
   {
-    v681 = [v2 payloadPrimitiveBools];
-    v682 = [v681 copy];
-    [v3 setObject:v682 forKeyedSubscript:@"_payloadPrimitiveBool"];
+    payloadPrimitiveBools = [v2 payloadPrimitiveBools];
+    v682 = [payloadPrimitiveBools copy];
+    [dictionary setObject:v682 forKeyedSubscript:@"_payloadPrimitiveBool"];
   }
 
   if ([*(v2 + 2184) count])
   {
-    v683 = [v2 payloadPrimitiveDoubles];
-    v684 = [v683 copy];
-    [v3 setObject:v684 forKeyedSubscript:@"_payloadPrimitiveDouble"];
+    payloadPrimitiveDoubles = [v2 payloadPrimitiveDoubles];
+    v684 = [payloadPrimitiveDoubles copy];
+    [dictionary setObject:v684 forKeyedSubscript:@"_payloadPrimitiveDouble"];
   }
 
   if ([*(v2 + 2192) count])
   {
-    v685 = [v2 payloadPrimitiveInts];
-    v686 = [v685 copy];
-    [v3 setObject:v686 forKeyedSubscript:@"_payloadPrimitiveInt"];
+    payloadPrimitiveInts = [v2 payloadPrimitiveInts];
+    v686 = [payloadPrimitiveInts copy];
+    [dictionary setObject:v686 forKeyedSubscript:@"_payloadPrimitiveInt"];
   }
 
   if ([*(v2 + 2200) count])
   {
-    v687 = [v2 payloadPrimitiveLongs];
-    v688 = [v687 copy];
-    [v3 setObject:v688 forKeyedSubscript:@"_payloadPrimitiveLong"];
+    payloadPrimitiveLongs = [v2 payloadPrimitiveLongs];
+    v688 = [payloadPrimitiveLongs copy];
+    [dictionary setObject:v688 forKeyedSubscript:@"_payloadPrimitiveLong"];
   }
 
   if (*(v2 + 2208))
   {
-    v689 = [v2 payloadPrimitiveStrings];
-    v690 = [v689 copy];
-    [v3 setObject:v690 forKeyedSubscript:@"_payloadPrimitiveString"];
+    payloadPrimitiveStrings = [v2 payloadPrimitiveStrings];
+    v690 = [payloadPrimitiveStrings copy];
+    [dictionary setObject:v690 forKeyedSubscript:@"_payloadPrimitiveString"];
   }
 
   if ([*(v2 + 2216) count])
   {
-    v691 = [MEMORY[0x1E695DF70] array];
+    array71 = [MEMORY[0x1E695DF70] array];
     v1090 = 0u;
     v1091 = 0u;
     v1092 = 0u;
@@ -4605,8 +4605,8 @@ LABEL_1047:
             objc_enumerationMutation(v692);
           }
 
-          v697 = [*(*(&v1090 + 1) + 8 * i64) dictionaryRepresentation];
-          [v691 addObject:v697];
+          dictionaryRepresentation71 = [*(*(&v1090 + 1) + 8 * i64) dictionaryRepresentation];
+          [array71 addObject:dictionaryRepresentation71];
         }
 
         v694 = [v692 countByEnumeratingWithState:&v1090 objects:v1402 count:16];
@@ -4615,12 +4615,12 @@ LABEL_1047:
       while (v694);
     }
 
-    [v3 setObject:v691 forKeyedSubscript:@"_payloadPrivateAddMediaIntentData"];
+    [dictionary setObject:array71 forKeyedSubscript:@"_payloadPrivateAddMediaIntentData"];
   }
 
   if ([*(v2 + 2224) count])
   {
-    v698 = [MEMORY[0x1E695DF70] array];
+    array72 = [MEMORY[0x1E695DF70] array];
     v1086 = 0u;
     v1087 = 0u;
     v1088 = 0u;
@@ -4640,8 +4640,8 @@ LABEL_1047:
             objc_enumerationMutation(v699);
           }
 
-          v704 = [*(*(&v1086 + 1) + 8 * i65) dictionaryRepresentation];
-          [v698 addObject:v704];
+          dictionaryRepresentation72 = [*(*(&v1086 + 1) + 8 * i65) dictionaryRepresentation];
+          [array72 addObject:dictionaryRepresentation72];
         }
 
         v701 = [v699 countByEnumeratingWithState:&v1086 objects:v1401 count:16];
@@ -4650,12 +4650,12 @@ LABEL_1047:
       while (v701);
     }
 
-    [v3 setObject:v698 forKeyedSubscript:@"_payloadPrivatePlayMediaIntentData"];
+    [dictionary setObject:array72 forKeyedSubscript:@"_payloadPrivatePlayMediaIntentData"];
   }
 
   if ([*(v2 + 2232) count])
   {
-    v705 = [MEMORY[0x1E695DF70] array];
+    array73 = [MEMORY[0x1E695DF70] array];
     v1082 = 0u;
     v1083 = 0u;
     v1084 = 0u;
@@ -4675,8 +4675,8 @@ LABEL_1047:
             objc_enumerationMutation(v706);
           }
 
-          v711 = [*(*(&v1082 + 1) + 8 * i66) dictionaryRepresentation];
-          [v705 addObject:v711];
+          dictionaryRepresentation73 = [*(*(&v1082 + 1) + 8 * i66) dictionaryRepresentation];
+          [array73 addObject:dictionaryRepresentation73];
         }
 
         v708 = [v706 countByEnumeratingWithState:&v1082 objects:v1400 count:16];
@@ -4685,12 +4685,12 @@ LABEL_1047:
       while (v708);
     }
 
-    [v3 setObject:v705 forKeyedSubscript:@"_payloadPrivateSearchForMediaIntentData"];
+    [dictionary setObject:array73 forKeyedSubscript:@"_payloadPrivateSearchForMediaIntentData"];
   }
 
   if ([*(v2 + 2240) count])
   {
-    v712 = [MEMORY[0x1E695DF70] array];
+    array74 = [MEMORY[0x1E695DF70] array];
     v1078 = 0u;
     v1079 = 0u;
     v1080 = 0u;
@@ -4710,8 +4710,8 @@ LABEL_1047:
             objc_enumerationMutation(v713);
           }
 
-          v718 = [*(*(&v1078 + 1) + 8 * i67) dictionaryRepresentation];
-          [v712 addObject:v718];
+          dictionaryRepresentation74 = [*(*(&v1078 + 1) + 8 * i67) dictionaryRepresentation];
+          [array74 addObject:dictionaryRepresentation74];
         }
 
         v715 = [v713 countByEnumeratingWithState:&v1078 objects:v1399 count:16];
@@ -4720,7 +4720,7 @@ LABEL_1047:
       while (v715);
     }
 
-    [v3 setObject:v712 forKeyedSubscript:@"_payloadPrivateUpdateMediaAffinityIntentData"];
+    [dictionary setObject:array74 forKeyedSubscript:@"_payloadPrivateUpdateMediaAffinityIntentData"];
   }
 
   if (*(v2 + 1120))
@@ -4750,7 +4750,7 @@ LABEL_1047:
       while (v720 < [v2 payloadRadioTypesCount]);
     }
 
-    [v3 setObject:v719 forKeyedSubscript:@"_payloadRadioType"];
+    [dictionary setObject:v719 forKeyedSubscript:@"_payloadRadioType"];
   }
 
   if (*(v2 + 1144))
@@ -4785,7 +4785,7 @@ LABEL_1047:
       while (v724 < [v2 payloadReadActionTypesCount]);
     }
 
-    [v3 setObject:v723 forKeyedSubscript:@"_payloadReadActionType"];
+    [dictionary setObject:v723 forKeyedSubscript:@"_payloadReadActionType"];
   }
 
   if (*(v2 + 1168))
@@ -4820,7 +4820,7 @@ LABEL_1047:
       while (v728 < [v2 payloadRelativeReferencesCount]);
     }
 
-    [v3 setObject:v727 forKeyedSubscript:@"_payloadRelativeReference"];
+    [dictionary setObject:v727 forKeyedSubscript:@"_payloadRelativeReference"];
   }
 
   if (*(v2 + 1192))
@@ -4850,12 +4850,12 @@ LABEL_1047:
       while (v732 < [v2 payloadRelativeSettingsCount]);
     }
 
-    [v3 setObject:v731 forKeyedSubscript:@"_payloadRelativeSetting"];
+    [dictionary setObject:v731 forKeyedSubscript:@"_payloadRelativeSetting"];
   }
 
   if ([*(v2 + 2248) count])
   {
-    v735 = [MEMORY[0x1E695DF70] array];
+    array75 = [MEMORY[0x1E695DF70] array];
     v1074 = 0u;
     v1075 = 0u;
     v1076 = 0u;
@@ -4875,8 +4875,8 @@ LABEL_1047:
             objc_enumerationMutation(v736);
           }
 
-          v741 = [*(*(&v1074 + 1) + 8 * i68) dictionaryRepresentation];
-          [v735 addObject:v741];
+          dictionaryRepresentation75 = [*(*(&v1074 + 1) + 8 * i68) dictionaryRepresentation];
+          [array75 addObject:dictionaryRepresentation75];
         }
 
         v738 = [v736 countByEnumeratingWithState:&v1074 objects:v1398 count:16];
@@ -4885,7 +4885,7 @@ LABEL_1047:
       while (v738);
     }
 
-    [v3 setObject:v735 forKeyedSubscript:@"_payloadSendMessageAttachment"];
+    [dictionary setObject:array75 forKeyedSubscript:@"_payloadSendMessageAttachment"];
   }
 
   if (*(v2 + 1216))
@@ -4915,12 +4915,12 @@ LABEL_1047:
       while (v743 < [v2 payloadSettingActionsCount]);
     }
 
-    [v3 setObject:v742 forKeyedSubscript:@"_payloadSettingAction"];
+    [dictionary setObject:v742 forKeyedSubscript:@"_payloadSettingAction"];
   }
 
   if ([*(v2 + 2256) count])
   {
-    v746 = [MEMORY[0x1E695DF70] array];
+    array76 = [MEMORY[0x1E695DF70] array];
     v1070 = 0u;
     v1071 = 0u;
     v1072 = 0u;
@@ -4940,8 +4940,8 @@ LABEL_1047:
             objc_enumerationMutation(v747);
           }
 
-          v752 = [*(*(&v1070 + 1) + 8 * i69) dictionaryRepresentation];
-          [v746 addObject:v752];
+          dictionaryRepresentation76 = [*(*(&v1070 + 1) + 8 * i69) dictionaryRepresentation];
+          [array76 addObject:dictionaryRepresentation76];
         }
 
         v749 = [v747 countByEnumeratingWithState:&v1070 objects:v1397 count:16];
@@ -4950,12 +4950,12 @@ LABEL_1047:
       while (v749);
     }
 
-    [v3 setObject:v746 forKeyedSubscript:@"_payloadSettingMetadata"];
+    [dictionary setObject:array76 forKeyedSubscript:@"_payloadSettingMetadata"];
   }
 
   if ([*(v2 + 2264) count])
   {
-    v753 = [MEMORY[0x1E695DF70] array];
+    array77 = [MEMORY[0x1E695DF70] array];
     v1066 = 0u;
     v1067 = 0u;
     v1068 = 0u;
@@ -4975,8 +4975,8 @@ LABEL_1047:
             objc_enumerationMutation(v754);
           }
 
-          v759 = [*(*(&v1066 + 1) + 8 * i70) dictionaryRepresentation];
-          [v753 addObject:v759];
+          dictionaryRepresentation77 = [*(*(&v1066 + 1) + 8 * i70) dictionaryRepresentation];
+          [array77 addObject:dictionaryRepresentation77];
         }
 
         v756 = [v754 countByEnumeratingWithState:&v1066 objects:v1396 count:16];
@@ -4985,12 +4985,12 @@ LABEL_1047:
       while (v756);
     }
 
-    [v3 setObject:v753 forKeyedSubscript:@"_payloadShareDestination"];
+    [dictionary setObject:array77 forKeyedSubscript:@"_payloadShareDestination"];
   }
 
   if ([*(v2 + 2272) count])
   {
-    v760 = [MEMORY[0x1E695DF70] array];
+    array78 = [MEMORY[0x1E695DF70] array];
     v1062 = 0u;
     v1063 = 0u;
     v1064 = 0u;
@@ -5010,8 +5010,8 @@ LABEL_1047:
             objc_enumerationMutation(v761);
           }
 
-          v766 = [*(*(&v1062 + 1) + 8 * i71) dictionaryRepresentation];
-          [v760 addObject:v766];
+          dictionaryRepresentation78 = [*(*(&v1062 + 1) + 8 * i71) dictionaryRepresentation];
+          [array78 addObject:dictionaryRepresentation78];
         }
 
         v763 = [v761 countByEnumeratingWithState:&v1062 objects:v1395 count:16];
@@ -5020,12 +5020,12 @@ LABEL_1047:
       while (v763);
     }
 
-    [v3 setObject:v760 forKeyedSubscript:@"_payloadSleepAlarmAttribute"];
+    [dictionary setObject:array78 forKeyedSubscript:@"_payloadSleepAlarmAttribute"];
   }
 
   if ([*(v2 + 2280) count])
   {
-    v767 = [MEMORY[0x1E695DF70] array];
+    array79 = [MEMORY[0x1E695DF70] array];
     v1058 = 0u;
     v1059 = 0u;
     v1060 = 0u;
@@ -5045,8 +5045,8 @@ LABEL_1047:
             objc_enumerationMutation(v768);
           }
 
-          v773 = [*(*(&v1058 + 1) + 8 * i72) dictionaryRepresentation];
-          [v767 addObject:v773];
+          dictionaryRepresentation79 = [*(*(&v1058 + 1) + 8 * i72) dictionaryRepresentation];
+          [array79 addObject:dictionaryRepresentation79];
         }
 
         v770 = [v768 countByEnumeratingWithState:&v1058 objects:v1394 count:16];
@@ -5055,12 +5055,12 @@ LABEL_1047:
       while (v770);
     }
 
-    [v3 setObject:v767 forKeyedSubscript:@"_payloadSpatialEventTrigger"];
+    [dictionary setObject:array79 forKeyedSubscript:@"_payloadSpatialEventTrigger"];
   }
 
   if ([*(v2 + 2288) count])
   {
-    v774 = [MEMORY[0x1E695DF70] array];
+    array80 = [MEMORY[0x1E695DF70] array];
     v1054 = 0u;
     v1055 = 0u;
     v1056 = 0u;
@@ -5080,8 +5080,8 @@ LABEL_1047:
             objc_enumerationMutation(v775);
           }
 
-          v780 = [*(*(&v1054 + 1) + 8 * i73) dictionaryRepresentation];
-          [v774 addObject:v780];
+          dictionaryRepresentation80 = [*(*(&v1054 + 1) + 8 * i73) dictionaryRepresentation];
+          [array80 addObject:dictionaryRepresentation80];
         }
 
         v777 = [v775 countByEnumeratingWithState:&v1054 objects:v1393 count:16];
@@ -5090,12 +5090,12 @@ LABEL_1047:
       while (v777);
     }
 
-    [v3 setObject:v774 forKeyedSubscript:@"_payloadSpeedValue"];
+    [dictionary setObject:array80 forKeyedSubscript:@"_payloadSpeedValue"];
   }
 
   if ([*(v2 + 2296) count])
   {
-    v781 = [MEMORY[0x1E695DF70] array];
+    array81 = [MEMORY[0x1E695DF70] array];
     v1050 = 0u;
     v1051 = 0u;
     v1052 = 0u;
@@ -5115,8 +5115,8 @@ LABEL_1047:
             objc_enumerationMutation(v782);
           }
 
-          v787 = [*(*(&v1050 + 1) + 8 * i74) dictionaryRepresentation];
-          [v781 addObject:v787];
+          dictionaryRepresentation81 = [*(*(&v1050 + 1) + 8 * i74) dictionaryRepresentation];
+          [array81 addObject:dictionaryRepresentation81];
         }
 
         v784 = [v782 countByEnumeratingWithState:&v1050 objects:v1392 count:16];
@@ -5125,12 +5125,12 @@ LABEL_1047:
       while (v784);
     }
 
-    [v3 setObject:v781 forKeyedSubscript:@"_payloadStartCallRequestMetadata"];
+    [dictionary setObject:array81 forKeyedSubscript:@"_payloadStartCallRequestMetadata"];
   }
 
   if ([*(v2 + 2304) count])
   {
-    v788 = [MEMORY[0x1E695DF70] array];
+    array82 = [MEMORY[0x1E695DF70] array];
     v1046 = 0u;
     v1047 = 0u;
     v1048 = 0u;
@@ -5150,8 +5150,8 @@ LABEL_1047:
             objc_enumerationMutation(v789);
           }
 
-          v794 = [*(*(&v1046 + 1) + 8 * i75) dictionaryRepresentation];
-          [v788 addObject:v794];
+          dictionaryRepresentation82 = [*(*(&v1046 + 1) + 8 * i75) dictionaryRepresentation];
+          [array82 addObject:dictionaryRepresentation82];
         }
 
         v791 = [v789 countByEnumeratingWithState:&v1046 objects:v1391 count:16];
@@ -5160,12 +5160,12 @@ LABEL_1047:
       while (v791);
     }
 
-    [v3 setObject:v788 forKeyedSubscript:@"_payloadStringList"];
+    [dictionary setObject:array82 forKeyedSubscript:@"_payloadStringList"];
   }
 
   if ([*(v2 + 2312) count])
   {
-    v795 = [MEMORY[0x1E695DF70] array];
+    array83 = [MEMORY[0x1E695DF70] array];
     v1042 = 0u;
     v1043 = 0u;
     v1044 = 0u;
@@ -5185,8 +5185,8 @@ LABEL_1047:
             objc_enumerationMutation(v796);
           }
 
-          v801 = [*(*(&v1042 + 1) + 8 * i76) dictionaryRepresentation];
-          [v795 addObject:v801];
+          dictionaryRepresentation83 = [*(*(&v1042 + 1) + 8 * i76) dictionaryRepresentation];
+          [array83 addObject:dictionaryRepresentation83];
         }
 
         v798 = [v796 countByEnumeratingWithState:&v1042 objects:v1390 count:16];
@@ -5195,12 +5195,12 @@ LABEL_1047:
       while (v798);
     }
 
-    [v3 setObject:v795 forKeyedSubscript:@"_payloadStringValue"];
+    [dictionary setObject:array83 forKeyedSubscript:@"_payloadStringValue"];
   }
 
   if ([*(v2 + 2320) count])
   {
-    v802 = [MEMORY[0x1E695DF70] array];
+    array84 = [MEMORY[0x1E695DF70] array];
     v1038 = 0u;
     v1039 = 0u;
     v1040 = 0u;
@@ -5220,8 +5220,8 @@ LABEL_1047:
             objc_enumerationMutation(v803);
           }
 
-          v808 = [*(*(&v1038 + 1) + 8 * i77) dictionaryRepresentation];
-          [v802 addObject:v808];
+          dictionaryRepresentation84 = [*(*(&v1038 + 1) + 8 * i77) dictionaryRepresentation];
+          [array84 addObject:dictionaryRepresentation84];
         }
 
         v805 = [v803 countByEnumeratingWithState:&v1038 objects:v1389 count:16];
@@ -5230,12 +5230,12 @@ LABEL_1047:
       while (v805);
     }
 
-    [v3 setObject:v802 forKeyedSubscript:@"_payloadSupportedTrafficIncidentType"];
+    [dictionary setObject:array84 forKeyedSubscript:@"_payloadSupportedTrafficIncidentType"];
   }
 
   if ([*(v2 + 2328) count])
   {
-    v809 = [MEMORY[0x1E695DF70] array];
+    array85 = [MEMORY[0x1E695DF70] array];
     v1034 = 0u;
     v1035 = 0u;
     v1036 = 0u;
@@ -5255,8 +5255,8 @@ LABEL_1047:
             objc_enumerationMutation(v810);
           }
 
-          v815 = [*(*(&v1034 + 1) + 8 * i78) dictionaryRepresentation];
-          [v809 addObject:v815];
+          dictionaryRepresentation85 = [*(*(&v1034 + 1) + 8 * i78) dictionaryRepresentation];
+          [array85 addObject:dictionaryRepresentation85];
         }
 
         v812 = [v810 countByEnumeratingWithState:&v1034 objects:v1388 count:16];
@@ -5265,12 +5265,12 @@ LABEL_1047:
       while (v812);
     }
 
-    [v3 setObject:v809 forKeyedSubscript:@"_payloadTask"];
+    [dictionary setObject:array85 forKeyedSubscript:@"_payloadTask"];
   }
 
   if ([*(v2 + 2336) count])
   {
-    v816 = [MEMORY[0x1E695DF70] array];
+    array86 = [MEMORY[0x1E695DF70] array];
     v1030 = 0u;
     v1031 = 0u;
     v1032 = 0u;
@@ -5290,8 +5290,8 @@ LABEL_1047:
             objc_enumerationMutation(v817);
           }
 
-          v822 = [*(*(&v1030 + 1) + 8 * i79) dictionaryRepresentation];
-          [v816 addObject:v822];
+          dictionaryRepresentation86 = [*(*(&v1030 + 1) + 8 * i79) dictionaryRepresentation];
+          [array86 addObject:dictionaryRepresentation86];
         }
 
         v819 = [v817 countByEnumeratingWithState:&v1030 objects:v1387 count:16];
@@ -5300,7 +5300,7 @@ LABEL_1047:
       while (v819);
     }
 
-    [v3 setObject:v816 forKeyedSubscript:@"_payloadTaskList"];
+    [dictionary setObject:array86 forKeyedSubscript:@"_payloadTaskList"];
   }
 
   if (*(v2 + 1240))
@@ -5330,7 +5330,7 @@ LABEL_1047:
       while (v824 < [v2 payloadTaskPrioritiesCount]);
     }
 
-    [v3 setObject:v823 forKeyedSubscript:@"_payloadTaskPriority"];
+    [dictionary setObject:v823 forKeyedSubscript:@"_payloadTaskPriority"];
   }
 
   if (*(v2 + 1264))
@@ -5359,7 +5359,7 @@ LABEL_1047:
       while (v828 < [v2 payloadTaskReferencesCount]);
     }
 
-    [v3 setObject:v827 forKeyedSubscript:@"_payloadTaskReference"];
+    [dictionary setObject:v827 forKeyedSubscript:@"_payloadTaskReference"];
   }
 
   if (*(v2 + 1288))
@@ -5402,12 +5402,12 @@ LABEL_1047:
       while (v831 < [v2 payloadTaskStatusCount]);
     }
 
-    [v3 setObject:v830 forKeyedSubscript:@"_payloadTaskStatus"];
+    [dictionary setObject:v830 forKeyedSubscript:@"_payloadTaskStatus"];
   }
 
   if ([*(v2 + 2344) count])
   {
-    v834 = [MEMORY[0x1E695DF70] array];
+    array87 = [MEMORY[0x1E695DF70] array];
     v1026 = 0u;
     v1027 = 0u;
     v1028 = 0u;
@@ -5427,8 +5427,8 @@ LABEL_1047:
             objc_enumerationMutation(v835);
           }
 
-          v840 = [*(*(&v1026 + 1) + 8 * i80) dictionaryRepresentation];
-          [v834 addObject:v840];
+          dictionaryRepresentation87 = [*(*(&v1026 + 1) + 8 * i80) dictionaryRepresentation];
+          [array87 addObject:dictionaryRepresentation87];
         }
 
         v837 = [v835 countByEnumeratingWithState:&v1026 objects:v1386 count:16];
@@ -5437,12 +5437,12 @@ LABEL_1047:
       while (v837);
     }
 
-    [v3 setObject:v834 forKeyedSubscript:@"_payloadTemperatureList"];
+    [dictionary setObject:array87 forKeyedSubscript:@"_payloadTemperatureList"];
   }
 
   if ([*(v2 + 2352) count])
   {
-    v841 = [MEMORY[0x1E695DF70] array];
+    array88 = [MEMORY[0x1E695DF70] array];
     v1022 = 0u;
     v1023 = 0u;
     v1024 = 0u;
@@ -5462,8 +5462,8 @@ LABEL_1047:
             objc_enumerationMutation(v842);
           }
 
-          v847 = [*(*(&v1022 + 1) + 8 * i81) dictionaryRepresentation];
-          [v841 addObject:v847];
+          dictionaryRepresentation88 = [*(*(&v1022 + 1) + 8 * i81) dictionaryRepresentation];
+          [array88 addObject:dictionaryRepresentation88];
         }
 
         v844 = [v842 countByEnumeratingWithState:&v1022 objects:v1385 count:16];
@@ -5472,12 +5472,12 @@ LABEL_1047:
       while (v844);
     }
 
-    [v3 setObject:v841 forKeyedSubscript:@"_payloadTemperatureValue"];
+    [dictionary setObject:array88 forKeyedSubscript:@"_payloadTemperatureValue"];
   }
 
   if ([*(v2 + 2360) count])
   {
-    v848 = [MEMORY[0x1E695DF70] array];
+    array89 = [MEMORY[0x1E695DF70] array];
     v1018 = 0u;
     v1019 = 0u;
     v1020 = 0u;
@@ -5497,8 +5497,8 @@ LABEL_1047:
             objc_enumerationMutation(v849);
           }
 
-          v854 = [*(*(&v1018 + 1) + 8 * i82) dictionaryRepresentation];
-          [v848 addObject:v854];
+          dictionaryRepresentation89 = [*(*(&v1018 + 1) + 8 * i82) dictionaryRepresentation];
+          [array89 addObject:dictionaryRepresentation89];
         }
 
         v851 = [v849 countByEnumeratingWithState:&v1018 objects:v1384 count:16];
@@ -5507,7 +5507,7 @@ LABEL_1047:
       while (v851);
     }
 
-    [v3 setObject:v848 forKeyedSubscript:@"_payloadTemporalEventTrigger"];
+    [dictionary setObject:array89 forKeyedSubscript:@"_payloadTemporalEventTrigger"];
   }
 
   if (*(v2 + 1312))
@@ -5537,12 +5537,12 @@ LABEL_1047:
       while (v856 < [v2 payloadTemporalEventTriggerTypesCount]);
     }
 
-    [v3 setObject:v855 forKeyedSubscript:@"_payloadTemporalEventTriggerType"];
+    [dictionary setObject:v855 forKeyedSubscript:@"_payloadTemporalEventTriggerType"];
   }
 
   if ([*(v2 + 2368) count])
   {
-    v859 = [MEMORY[0x1E695DF70] array];
+    array90 = [MEMORY[0x1E695DF70] array];
     v1014 = 0u;
     v1015 = 0u;
     v1016 = 0u;
@@ -5562,8 +5562,8 @@ LABEL_1047:
             objc_enumerationMutation(v860);
           }
 
-          v865 = [*(*(&v1014 + 1) + 8 * i83) dictionaryRepresentation];
-          [v859 addObject:v865];
+          dictionaryRepresentation90 = [*(*(&v1014 + 1) + 8 * i83) dictionaryRepresentation];
+          [array90 addObject:dictionaryRepresentation90];
         }
 
         v862 = [v860 countByEnumeratingWithState:&v1014 objects:v1383 count:16];
@@ -5572,7 +5572,7 @@ LABEL_1047:
       while (v862);
     }
 
-    [v3 setObject:v859 forKeyedSubscript:@"_payloadTimer"];
+    [dictionary setObject:array90 forKeyedSubscript:@"_payloadTimer"];
   }
 
   if (*(v2 + 1336))
@@ -5602,7 +5602,7 @@ LABEL_1047:
       while (v867 < [v2 payloadTimerStatesCount]);
     }
 
-    [v3 setObject:v866 forKeyedSubscript:@"_payloadTimerState"];
+    [dictionary setObject:v866 forKeyedSubscript:@"_payloadTimerState"];
   }
 
   if (*(v2 + 1360))
@@ -5632,12 +5632,12 @@ LABEL_1047:
       while (v871 < [v2 payloadTimerTypesCount]);
     }
 
-    [v3 setObject:v870 forKeyedSubscript:@"_payloadTimerType"];
+    [dictionary setObject:v870 forKeyedSubscript:@"_payloadTimerType"];
   }
 
   if ([*(v2 + 2376) count])
   {
-    v874 = [MEMORY[0x1E695DF70] array];
+    array91 = [MEMORY[0x1E695DF70] array];
     v1010 = 0u;
     v1011 = 0u;
     v1012 = 0u;
@@ -5657,8 +5657,8 @@ LABEL_1047:
             objc_enumerationMutation(v875);
           }
 
-          v880 = [*(*(&v1010 + 1) + 8 * i84) dictionaryRepresentation];
-          [v874 addObject:v880];
+          dictionaryRepresentation91 = [*(*(&v1010 + 1) + 8 * i84) dictionaryRepresentation];
+          [array91 addObject:dictionaryRepresentation91];
         }
 
         v877 = [v875 countByEnumeratingWithState:&v1010 objects:v1382 count:16];
@@ -5667,7 +5667,7 @@ LABEL_1047:
       while (v877);
     }
 
-    [v3 setObject:v874 forKeyedSubscript:@"_payloadURLValue"];
+    [dictionary setObject:array91 forKeyedSubscript:@"_payloadURLValue"];
   }
 
   if (*(v2 + 1384))
@@ -5702,7 +5702,7 @@ LABEL_1047:
       while (v882 < [v2 payloadUpdateAlarmOperationsCount]);
     }
 
-    [v3 setObject:v881 forKeyedSubscript:@"_payloadUpdateAlarmOperation"];
+    [dictionary setObject:v881 forKeyedSubscript:@"_payloadUpdateAlarmOperation"];
   }
 
   if (*(v2 + 1408))
@@ -5737,7 +5737,7 @@ LABEL_1047:
       while (v886 < [v2 payloadUserNotificationTypesCount]);
     }
 
-    [v3 setObject:v885 forKeyedSubscript:@"_payloadUserNotificationType"];
+    [dictionary setObject:v885 forKeyedSubscript:@"_payloadUserNotificationType"];
   }
 
   if (*(v2 + 1432))
@@ -5767,12 +5767,12 @@ LABEL_1047:
       while (v890 < [v2 payloadVisualCodeTypesCount]);
     }
 
-    [v3 setObject:v889 forKeyedSubscript:@"_payloadVisualCodeType"];
+    [dictionary setObject:v889 forKeyedSubscript:@"_payloadVisualCodeType"];
   }
 
   if ([*(v2 + 2384) count])
   {
-    v893 = [MEMORY[0x1E695DF70] array];
+    array92 = [MEMORY[0x1E695DF70] array];
     v1006 = 0u;
     v1007 = 0u;
     v1008 = 0u;
@@ -5792,8 +5792,8 @@ LABEL_1047:
             objc_enumerationMutation(v894);
           }
 
-          v899 = [*(*(&v1006 + 1) + 8 * i85) dictionaryRepresentation];
-          [v893 addObject:v899];
+          dictionaryRepresentation92 = [*(*(&v1006 + 1) + 8 * i85) dictionaryRepresentation];
+          [array92 addObject:dictionaryRepresentation92];
         }
 
         v896 = [v894 countByEnumeratingWithState:&v1006 objects:v1381 count:16];
@@ -5802,12 +5802,12 @@ LABEL_1047:
       while (v896);
     }
 
-    [v3 setObject:v893 forKeyedSubscript:@"_payloadVoiceCommandDeviceInformation"];
+    [dictionary setObject:array92 forKeyedSubscript:@"_payloadVoiceCommandDeviceInformation"];
   }
 
   if ([*(v2 + 2392) count])
   {
-    v900 = [MEMORY[0x1E695DF70] array];
+    array93 = [MEMORY[0x1E695DF70] array];
     v1002 = 0u;
     v1003 = 0u;
     v1004 = 0u;
@@ -5827,8 +5827,8 @@ LABEL_1047:
             objc_enumerationMutation(v901);
           }
 
-          v906 = [*(*(&v1002 + 1) + 8 * i86) dictionaryRepresentation];
-          [v900 addObject:v906];
+          dictionaryRepresentation93 = [*(*(&v1002 + 1) + 8 * i86) dictionaryRepresentation];
+          [array93 addObject:dictionaryRepresentation93];
         }
 
         v903 = [v901 countByEnumeratingWithState:&v1002 objects:v1380 count:16];
@@ -5837,12 +5837,12 @@ LABEL_1047:
       while (v903);
     }
 
-    [v3 setObject:v900 forKeyedSubscript:@"_payloadVolumeValue"];
+    [dictionary setObject:array93 forKeyedSubscript:@"_payloadVolumeValue"];
   }
 
   if ([*(v2 + 2400) count])
   {
-    v907 = [MEMORY[0x1E695DF70] array];
+    array94 = [MEMORY[0x1E695DF70] array];
     v998 = 0u;
     v999 = 0u;
     v1000 = 0u;
@@ -5862,8 +5862,8 @@ LABEL_1047:
             objc_enumerationMutation(v908);
           }
 
-          v913 = [*(*(&v998 + 1) + 8 * i87) dictionaryRepresentation];
-          [v907 addObject:v913];
+          dictionaryRepresentation94 = [*(*(&v998 + 1) + 8 * i87) dictionaryRepresentation];
+          [array94 addObject:dictionaryRepresentation94];
         }
 
         v910 = [v908 countByEnumeratingWithState:&v998 objects:v1379 count:16];
@@ -5872,12 +5872,12 @@ LABEL_1047:
       while (v910);
     }
 
-    [v3 setObject:v907 forKeyedSubscript:@"_payloadWellnessMetadataPair"];
+    [dictionary setObject:array94 forKeyedSubscript:@"_payloadWellnessMetadataPair"];
   }
 
   if ([*(v2 + 2408) count])
   {
-    v914 = [MEMORY[0x1E695DF70] array];
+    array95 = [MEMORY[0x1E695DF70] array];
     v994 = 0u;
     v995 = 0u;
     v996 = 0u;
@@ -5897,8 +5897,8 @@ LABEL_1047:
             objc_enumerationMutation(v915);
           }
 
-          v920 = [*(*(&v994 + 1) + 8 * i88) dictionaryRepresentation];
-          [v914 addObject:v920];
+          dictionaryRepresentation95 = [*(*(&v994 + 1) + 8 * i88) dictionaryRepresentation];
+          [array95 addObject:dictionaryRepresentation95];
         }
 
         v917 = [v915 countByEnumeratingWithState:&v994 objects:v1378 count:16];
@@ -5907,7 +5907,7 @@ LABEL_1047:
       while (v917);
     }
 
-    [v3 setObject:v914 forKeyedSubscript:@"_payloadWellnessObjectResultValue"];
+    [dictionary setObject:array95 forKeyedSubscript:@"_payloadWellnessObjectResultValue"];
   }
 
   if (*(v2 + 1456))
@@ -5937,7 +5937,7 @@ LABEL_1047:
       while (v922 < [v2 payloadWellnessObjectTypesCount]);
     }
 
-    [v3 setObject:v921 forKeyedSubscript:@"_payloadWellnessObjectType"];
+    [dictionary setObject:v921 forKeyedSubscript:@"_payloadWellnessObjectType"];
   }
 
   if (*(v2 + 1480))
@@ -5967,7 +5967,7 @@ LABEL_1047:
       while (v926 < [v2 payloadWellnessQueryResultTypesCount]);
     }
 
-    [v3 setObject:v925 forKeyedSubscript:@"_payloadWellnessQueryResultType"];
+    [dictionary setObject:v925 forKeyedSubscript:@"_payloadWellnessQueryResultType"];
   }
 
   if (*(v2 + 1504))
@@ -5997,12 +5997,12 @@ LABEL_1047:
       while (v930 < [v2 payloadWellnessQuestionTypesCount]);
     }
 
-    [v3 setObject:v929 forKeyedSubscript:@"_payloadWellnessQuestionType"];
+    [dictionary setObject:v929 forKeyedSubscript:@"_payloadWellnessQuestionType"];
   }
 
   if ([*(v2 + 2416) count])
   {
-    v933 = [MEMORY[0x1E695DF70] array];
+    array96 = [MEMORY[0x1E695DF70] array];
     v990 = 0u;
     v991 = 0u;
     v992 = 0u;
@@ -6022,8 +6022,8 @@ LABEL_1047:
             objc_enumerationMutation(v934);
           }
 
-          v939 = [*(*(&v990 + 1) + 8 * i89) dictionaryRepresentation];
-          [v933 addObject:v939];
+          dictionaryRepresentation96 = [*(*(&v990 + 1) + 8 * i89) dictionaryRepresentation];
+          [array96 addObject:dictionaryRepresentation96];
         }
 
         v936 = [v934 countByEnumeratingWithState:&v990 objects:v1377 count:16];
@@ -6032,12 +6032,12 @@ LABEL_1047:
       while (v936);
     }
 
-    [v3 setObject:v933 forKeyedSubscript:@"_payloadWellnessUnitType"];
+    [dictionary setObject:array96 forKeyedSubscript:@"_payloadWellnessUnitType"];
   }
 
   if ([*(v2 + 2424) count])
   {
-    v940 = [MEMORY[0x1E695DF70] array];
+    array97 = [MEMORY[0x1E695DF70] array];
     v986 = 0u;
     v987 = 0u;
     v988 = 0u;
@@ -6057,8 +6057,8 @@ LABEL_1047:
             objc_enumerationMutation(v941);
           }
 
-          v946 = [*(*(&v986 + 1) + 8 * i90) dictionaryRepresentation];
-          [v940 addObject:v946];
+          dictionaryRepresentation97 = [*(*(&v986 + 1) + 8 * i90) dictionaryRepresentation];
+          [array97 addObject:dictionaryRepresentation97];
         }
 
         v943 = [v941 countByEnumeratingWithState:&v986 objects:v1376 count:16];
@@ -6067,12 +6067,12 @@ LABEL_1047:
       while (v943);
     }
 
-    [v3 setObject:v940 forKeyedSubscript:@"_payloadWellnessValue"];
+    [dictionary setObject:array97 forKeyedSubscript:@"_payloadWellnessValue"];
   }
 
   if ([*(v2 + 2432) count])
   {
-    v947 = [MEMORY[0x1E695DF70] array];
+    array98 = [MEMORY[0x1E695DF70] array];
     v982 = 0u;
     v983 = 0u;
     v984 = 0u;
@@ -6092,8 +6092,8 @@ LABEL_1047:
             objc_enumerationMutation(v948);
           }
 
-          v953 = [*(*(&v982 + 1) + 8 * i91) dictionaryRepresentation];
-          [v947 addObject:v953];
+          dictionaryRepresentation98 = [*(*(&v982 + 1) + 8 * i91) dictionaryRepresentation];
+          [array98 addObject:dictionaryRepresentation98];
         }
 
         v950 = [v948 countByEnumeratingWithState:&v982 objects:v1375 count:16];
@@ -6102,12 +6102,12 @@ LABEL_1047:
       while (v950);
     }
 
-    [v3 setObject:v947 forKeyedSubscript:@"_payloadWorkoutAssociatedItem"];
+    [dictionary setObject:array98 forKeyedSubscript:@"_payloadWorkoutAssociatedItem"];
   }
 
   if ([*(v2 + 2440) count])
   {
-    v954 = [MEMORY[0x1E695DF70] array];
+    array99 = [MEMORY[0x1E695DF70] array];
     v978 = 0u;
     v979 = 0u;
     v980 = 0u;
@@ -6127,8 +6127,8 @@ LABEL_1047:
             objc_enumerationMutation(v955);
           }
 
-          v960 = [*(*(&v978 + 1) + 8 * i92) dictionaryRepresentation];
-          [v954 addObject:v960];
+          dictionaryRepresentation99 = [*(*(&v978 + 1) + 8 * i92) dictionaryRepresentation];
+          [array99 addObject:dictionaryRepresentation99];
         }
 
         v957 = [v955 countByEnumeratingWithState:&v978 objects:v1374 count:16];
@@ -6137,7 +6137,7 @@ LABEL_1047:
       while (v957);
     }
 
-    [v3 setObject:v954 forKeyedSubscript:@"_payloadWorkoutCustomization"];
+    [dictionary setObject:array99 forKeyedSubscript:@"_payloadWorkoutCustomization"];
   }
 
   if (*(v2 + 1528))
@@ -6167,7 +6167,7 @@ LABEL_1047:
       while (v962 < [v2 payloadWorkoutGoalUnitTypesCount]);
     }
 
-    [v3 setObject:v961 forKeyedSubscript:@"_payloadWorkoutGoalUnitType"];
+    [dictionary setObject:v961 forKeyedSubscript:@"_payloadWorkoutGoalUnitType"];
   }
 
   if (*(v2 + 1552))
@@ -6205,7 +6205,7 @@ LABEL_1047:
       while (v966 < [v2 payloadWorkoutLocationTypesCount]);
     }
 
-    [v3 setObject:v965 forKeyedSubscript:@"_payloadWorkoutLocationType"];
+    [dictionary setObject:v965 forKeyedSubscript:@"_payloadWorkoutLocationType"];
   }
 
   if (*(v2 + 1576))
@@ -6243,99 +6243,99 @@ LABEL_1047:
       while (v970 < [v2 payloadWorkoutSequenceLabelsCount]);
     }
 
-    [v3 setObject:v969 forKeyedSubscript:@"_payloadWorkoutSequenceLabel"];
+    [dictionary setObject:v969 forKeyedSubscript:@"_payloadWorkoutSequenceLabel"];
   }
 
   if ([v2 hasType])
   {
-    v973 = [v2 type];
-    if (v973 <= 99)
+    type = [v2 type];
+    if (type <= 99)
     {
-      v974 = @"String";
-      switch(v973)
+      v973 = @"String";
+      switch(type)
       {
         case 1:
           goto LABEL_1596;
         case 2:
-          v974 = @"Double";
+          v973 = @"Double";
           break;
         case 3:
-          v974 = @"Integer";
+          v973 = @"Integer";
           break;
         case 4:
-          v974 = @"Contact";
+          v973 = @"Contact";
           break;
         case 5:
-          v974 = @"DateTimeRange";
+          v973 = @"DateTimeRange";
           break;
         case 6:
-          v974 = @"Location";
+          v973 = @"Location";
           break;
         case 7:
-          v974 = @"DataString";
+          v973 = @"DataString";
           break;
         case 8:
-          v974 = @"Long";
+          v973 = @"Long";
           break;
         case 9:
-          v974 = @"PaymentMethod";
+          v973 = @"PaymentMethod";
           break;
         case 10:
-          v974 = @"Temperature";
+          v973 = @"Temperature";
           break;
         case 11:
-          v974 = @"Distance";
+          v973 = @"Distance";
           break;
         case 12:
-          v974 = @"FinancialAccount";
+          v973 = @"FinancialAccount";
           break;
         case 13:
-          v974 = @"BillType";
+          v973 = @"BillType";
           break;
         case 14:
-          v974 = @"Mass";
+          v973 = @"Mass";
           break;
         case 15:
-          v974 = @"Volume";
+          v973 = @"Volume";
           break;
         case 16:
-          v974 = @"Speed";
+          v973 = @"Speed";
           break;
         case 17:
-          v974 = @"Energy";
+          v973 = @"Energy";
           break;
         case 50:
-          v974 = @"StringList";
+          v973 = @"StringList";
           break;
         case 51:
-          v974 = @"DoubleList";
+          v973 = @"DoubleList";
           break;
         case 52:
-          v974 = @"IntegerList";
+          v973 = @"IntegerList";
           break;
         case 53:
-          v974 = @"ContactList";
+          v973 = @"ContactList";
           break;
         case 54:
-          v974 = @"DateTimeRangeList";
+          v973 = @"DateTimeRangeList";
           break;
         case 55:
-          v974 = @"LocationList";
+          v973 = @"LocationList";
           break;
         case 56:
-          v974 = @"DataStringList";
+          v973 = @"DataStringList";
           break;
         case 57:
-          v974 = @"LongList";
+          v973 = @"LongList";
           break;
         case 58:
-          v974 = @"PaymentMethodList";
+          v973 = @"PaymentMethodList";
           break;
         case 59:
-          v974 = @"TemperatureList";
+          v973 = @"TemperatureList";
           break;
         case 60:
-          v974 = @"DistanceList";
+          v973 = @"DistanceList";
           break;
         default:
           goto LABEL_1595;
@@ -6344,40 +6344,40 @@ LABEL_1047:
       goto LABEL_1596;
     }
 
-    if (v973 <= 106)
+    if (type <= 106)
     {
-      if (v973 <= 102)
+      if (type <= 102)
       {
-        if (v973 == 100)
+        if (type == 100)
         {
-          v974 = @"PrimitiveBool";
+          v973 = @"PrimitiveBool";
         }
 
-        else if (v973 == 101)
+        else if (type == 101)
         {
-          v974 = @"PrimitiveInt";
+          v973 = @"PrimitiveInt";
         }
 
         else
         {
-          v974 = @"PrimitiveLong";
+          v973 = @"PrimitiveLong";
         }
 
         goto LABEL_1596;
       }
 
-      switch(v973)
+      switch(type)
       {
         case 'g':
-          v974 = @"PrimitiveDouble";
+          v973 = @"PrimitiveDouble";
           goto LABEL_1596;
         case 'h':
-          v974 = @"PrimitiveString";
+          v973 = @"PrimitiveString";
           goto LABEL_1596;
         case 'i':
-          v974 = @"DateTime";
+          v973 = @"DateTime";
 LABEL_1596:
-          [v3 setObject:v974 forKeyedSubscript:@"type"];
+          [dictionary setObject:v973 forKeyedSubscript:@"type"];
 
           goto LABEL_1597;
       }
@@ -6385,64 +6385,64 @@ LABEL_1596:
 
     else
     {
-      if (v973 <= 109)
+      if (type <= 109)
       {
-        if (v973 == 107)
+        if (type == 107)
         {
-          v974 = @"Intent";
+          v973 = @"Intent";
         }
 
-        else if (v973 == 108)
+        else if (type == 108)
         {
-          v974 = @"ModifyRelationship";
+          v973 = @"ModifyRelationship";
         }
 
         else
         {
-          v974 = @"ModifyNickname";
+          v973 = @"ModifyNickname";
         }
 
         goto LABEL_1596;
       }
 
-      if (v973 <= 111)
+      if (type <= 111)
       {
-        if (v973 == 110)
+        if (type == 110)
         {
-          v974 = @"CalendarEvent";
+          v973 = @"CalendarEvent";
         }
 
         else
         {
-          v974 = @"EventParticipant";
+          v973 = @"EventParticipant";
         }
 
         goto LABEL_1596;
       }
 
-      if (v973 == 112)
+      if (type == 112)
       {
-        v974 = @"EventAttribute";
+        v973 = @"EventAttribute";
         goto LABEL_1596;
       }
 
-      if (v973 == 1000)
+      if (type == 1000)
       {
-        v974 = @"Extension";
+        v973 = @"Extension";
         goto LABEL_1596;
       }
     }
 
 LABEL_1595:
-    v974 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v973];
+    v973 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
     goto LABEL_1596;
   }
 
 LABEL_1597:
-  v975 = v3;
+  v975 = dictionary;
 
   v976 = *MEMORY[0x1E69E9840];
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -6633,28 +6633,28 @@ LABEL_1597:
   return v13 ^ v96 ^ v95 ^ v94 ^ v93 ^ v92 ^ v91 ^ v90 ^ v89 ^ v88 ^ v87 ^ v86 ^ v85 ^ v84 ^ v83 ^ v82 ^ v81 ^ v80 ^ v79 ^ v78 ^ v77 ^ v76 ^ v75 ^ v74 ^ v73 ^ v72 ^ v71 ^ v70 ^ v69 ^ v68 ^ v67 ^ v66 ^ v65 ^ v64 ^ v63 ^ v62 ^ v61 ^ v60 ^ v59 ^ v58 ^ v57 ^ v56 ^ v55 ^ v54 ^ v53 ^ v52 ^ v51 ^ v50 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || !PBRepeatedInt32IsEqual())
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || !PBRepeatedInt32IsEqual())
   {
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadActivities];
-  v6 = [v4 payloadActivities];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadActivities];
+  payloadActivities2 = [equalCopy payloadActivities];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v7 = [(_INPBIntentSlotValue *)self payloadActivities];
-  if (v7)
+  payloadActivities3 = [(_INPBIntentSlotValue *)self payloadActivities];
+  if (payloadActivities3)
   {
-    v8 = v7;
-    v9 = [(_INPBIntentSlotValue *)self payloadActivities];
-    v10 = [v4 payloadActivities];
-    v11 = [v9 isEqual:v10];
+    v8 = payloadActivities3;
+    payloadActivities4 = [(_INPBIntentSlotValue *)self payloadActivities];
+    payloadActivities5 = [equalCopy payloadActivities];
+    v11 = [payloadActivities4 isEqual:payloadActivities5];
 
     if (!v11)
     {
@@ -6666,20 +6666,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadActivityLists];
-  v6 = [v4 payloadActivityLists];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadActivityLists];
+  payloadActivities2 = [equalCopy payloadActivityLists];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v12 = [(_INPBIntentSlotValue *)self payloadActivityLists];
-  if (v12)
+  payloadActivityLists = [(_INPBIntentSlotValue *)self payloadActivityLists];
+  if (payloadActivityLists)
   {
-    v13 = v12;
-    v14 = [(_INPBIntentSlotValue *)self payloadActivityLists];
-    v15 = [v4 payloadActivityLists];
-    v16 = [v14 isEqual:v15];
+    v13 = payloadActivityLists;
+    payloadActivityLists2 = [(_INPBIntentSlotValue *)self payloadActivityLists];
+    payloadActivityLists3 = [equalCopy payloadActivityLists];
+    v16 = [payloadActivityLists2 isEqual:payloadActivityLists3];
 
     if (!v16)
     {
@@ -6691,20 +6691,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadAlarms];
-  v6 = [v4 payloadAlarms];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadAlarms];
+  payloadActivities2 = [equalCopy payloadAlarms];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v17 = [(_INPBIntentSlotValue *)self payloadAlarms];
-  if (v17)
+  payloadAlarms = [(_INPBIntentSlotValue *)self payloadAlarms];
+  if (payloadAlarms)
   {
-    v18 = v17;
-    v19 = [(_INPBIntentSlotValue *)self payloadAlarms];
-    v20 = [v4 payloadAlarms];
-    v21 = [v19 isEqual:v20];
+    v18 = payloadAlarms;
+    payloadAlarms2 = [(_INPBIntentSlotValue *)self payloadAlarms];
+    payloadAlarms3 = [equalCopy payloadAlarms];
+    v21 = [payloadAlarms2 isEqual:payloadAlarms3];
 
     if (!v21)
     {
@@ -6721,20 +6721,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadAlarmSearchs];
-  v6 = [v4 payloadAlarmSearchs];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadAlarmSearchs];
+  payloadActivities2 = [equalCopy payloadAlarmSearchs];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v22 = [(_INPBIntentSlotValue *)self payloadAlarmSearchs];
-  if (v22)
+  payloadAlarmSearchs = [(_INPBIntentSlotValue *)self payloadAlarmSearchs];
+  if (payloadAlarmSearchs)
   {
-    v23 = v22;
-    v24 = [(_INPBIntentSlotValue *)self payloadAlarmSearchs];
-    v25 = [v4 payloadAlarmSearchs];
-    v26 = [v24 isEqual:v25];
+    v23 = payloadAlarmSearchs;
+    payloadAlarmSearchs2 = [(_INPBIntentSlotValue *)self payloadAlarmSearchs];
+    payloadAlarmSearchs3 = [equalCopy payloadAlarmSearchs];
+    v26 = [payloadAlarmSearchs2 isEqual:payloadAlarmSearchs3];
 
     if (!v26)
     {
@@ -6751,20 +6751,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadAnnouncements];
-  v6 = [v4 payloadAnnouncements];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadAnnouncements];
+  payloadActivities2 = [equalCopy payloadAnnouncements];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v27 = [(_INPBIntentSlotValue *)self payloadAnnouncements];
-  if (v27)
+  payloadAnnouncements = [(_INPBIntentSlotValue *)self payloadAnnouncements];
+  if (payloadAnnouncements)
   {
-    v28 = v27;
-    v29 = [(_INPBIntentSlotValue *)self payloadAnnouncements];
-    v30 = [v4 payloadAnnouncements];
-    v31 = [v29 isEqual:v30];
+    v28 = payloadAnnouncements;
+    payloadAnnouncements2 = [(_INPBIntentSlotValue *)self payloadAnnouncements];
+    payloadAnnouncements3 = [equalCopy payloadAnnouncements];
+    v31 = [payloadAnnouncements2 isEqual:payloadAnnouncements3];
 
     if (!v31)
     {
@@ -6776,20 +6776,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadAppIdentifiers];
-  v6 = [v4 payloadAppIdentifiers];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadAppIdentifiers];
+  payloadActivities2 = [equalCopy payloadAppIdentifiers];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v32 = [(_INPBIntentSlotValue *)self payloadAppIdentifiers];
-  if (v32)
+  payloadAppIdentifiers = [(_INPBIntentSlotValue *)self payloadAppIdentifiers];
+  if (payloadAppIdentifiers)
   {
-    v33 = v32;
-    v34 = [(_INPBIntentSlotValue *)self payloadAppIdentifiers];
-    v35 = [v4 payloadAppIdentifiers];
-    v36 = [v34 isEqual:v35];
+    v33 = payloadAppIdentifiers;
+    payloadAppIdentifiers2 = [(_INPBIntentSlotValue *)self payloadAppIdentifiers];
+    payloadAppIdentifiers3 = [equalCopy payloadAppIdentifiers];
+    v36 = [payloadAppIdentifiers2 isEqual:payloadAppIdentifiers3];
 
     if (!v36)
     {
@@ -6801,20 +6801,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadArchivedObjects];
-  v6 = [v4 payloadArchivedObjects];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadArchivedObjects];
+  payloadActivities2 = [equalCopy payloadArchivedObjects];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v37 = [(_INPBIntentSlotValue *)self payloadArchivedObjects];
-  if (v37)
+  payloadArchivedObjects = [(_INPBIntentSlotValue *)self payloadArchivedObjects];
+  if (payloadArchivedObjects)
   {
-    v38 = v37;
-    v39 = [(_INPBIntentSlotValue *)self payloadArchivedObjects];
-    v40 = [v4 payloadArchivedObjects];
-    v41 = [v39 isEqual:v40];
+    v38 = payloadArchivedObjects;
+    payloadArchivedObjects2 = [(_INPBIntentSlotValue *)self payloadArchivedObjects];
+    payloadArchivedObjects3 = [equalCopy payloadArchivedObjects];
+    v41 = [payloadArchivedObjects2 isEqual:payloadArchivedObjects3];
 
     if (!v41)
     {
@@ -6831,20 +6831,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadBillDetailsValues];
-  v6 = [v4 payloadBillDetailsValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadBillDetailsValues];
+  payloadActivities2 = [equalCopy payloadBillDetailsValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v42 = [(_INPBIntentSlotValue *)self payloadBillDetailsValues];
-  if (v42)
+  payloadBillDetailsValues = [(_INPBIntentSlotValue *)self payloadBillDetailsValues];
+  if (payloadBillDetailsValues)
   {
-    v43 = v42;
-    v44 = [(_INPBIntentSlotValue *)self payloadBillDetailsValues];
-    v45 = [v4 payloadBillDetailsValues];
-    v46 = [v44 isEqual:v45];
+    v43 = payloadBillDetailsValues;
+    payloadBillDetailsValues2 = [(_INPBIntentSlotValue *)self payloadBillDetailsValues];
+    payloadBillDetailsValues3 = [equalCopy payloadBillDetailsValues];
+    v46 = [payloadBillDetailsValues2 isEqual:payloadBillDetailsValues3];
 
     if (!v46)
     {
@@ -6856,20 +6856,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadBillPayeeValues];
-  v6 = [v4 payloadBillPayeeValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadBillPayeeValues];
+  payloadActivities2 = [equalCopy payloadBillPayeeValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v47 = [(_INPBIntentSlotValue *)self payloadBillPayeeValues];
-  if (v47)
+  payloadBillPayeeValues = [(_INPBIntentSlotValue *)self payloadBillPayeeValues];
+  if (payloadBillPayeeValues)
   {
-    v48 = v47;
-    v49 = [(_INPBIntentSlotValue *)self payloadBillPayeeValues];
-    v50 = [v4 payloadBillPayeeValues];
-    v51 = [v49 isEqual:v50];
+    v48 = payloadBillPayeeValues;
+    payloadBillPayeeValues2 = [(_INPBIntentSlotValue *)self payloadBillPayeeValues];
+    payloadBillPayeeValues3 = [equalCopy payloadBillPayeeValues];
+    v51 = [payloadBillPayeeValues2 isEqual:payloadBillPayeeValues3];
 
     if (!v51)
     {
@@ -6886,20 +6886,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadCalendarEvents];
-  v6 = [v4 payloadCalendarEvents];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadCalendarEvents];
+  payloadActivities2 = [equalCopy payloadCalendarEvents];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v52 = [(_INPBIntentSlotValue *)self payloadCalendarEvents];
-  if (v52)
+  payloadCalendarEvents = [(_INPBIntentSlotValue *)self payloadCalendarEvents];
+  if (payloadCalendarEvents)
   {
-    v53 = v52;
-    v54 = [(_INPBIntentSlotValue *)self payloadCalendarEvents];
-    v55 = [v4 payloadCalendarEvents];
-    v56 = [v54 isEqual:v55];
+    v53 = payloadCalendarEvents;
+    payloadCalendarEvents2 = [(_INPBIntentSlotValue *)self payloadCalendarEvents];
+    payloadCalendarEvents3 = [equalCopy payloadCalendarEvents];
+    v56 = [payloadCalendarEvents2 isEqual:payloadCalendarEvents3];
 
     if (!v56)
     {
@@ -6916,20 +6916,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadCallGroups];
-  v6 = [v4 payloadCallGroups];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadCallGroups];
+  payloadActivities2 = [equalCopy payloadCallGroups];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v57 = [(_INPBIntentSlotValue *)self payloadCallGroups];
-  if (v57)
+  payloadCallGroups = [(_INPBIntentSlotValue *)self payloadCallGroups];
+  if (payloadCallGroups)
   {
-    v58 = v57;
-    v59 = [(_INPBIntentSlotValue *)self payloadCallGroups];
-    v60 = [v4 payloadCallGroups];
-    v61 = [v59 isEqual:v60];
+    v58 = payloadCallGroups;
+    payloadCallGroups2 = [(_INPBIntentSlotValue *)self payloadCallGroups];
+    payloadCallGroups3 = [equalCopy payloadCallGroups];
+    v61 = [payloadCallGroups2 isEqual:payloadCallGroups3];
 
     if (!v61)
     {
@@ -6941,20 +6941,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadCallGroupConversations];
-  v6 = [v4 payloadCallGroupConversations];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadCallGroupConversations];
+  payloadActivities2 = [equalCopy payloadCallGroupConversations];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v62 = [(_INPBIntentSlotValue *)self payloadCallGroupConversations];
-  if (v62)
+  payloadCallGroupConversations = [(_INPBIntentSlotValue *)self payloadCallGroupConversations];
+  if (payloadCallGroupConversations)
   {
-    v63 = v62;
-    v64 = [(_INPBIntentSlotValue *)self payloadCallGroupConversations];
-    v65 = [v4 payloadCallGroupConversations];
-    v66 = [v64 isEqual:v65];
+    v63 = payloadCallGroupConversations;
+    payloadCallGroupConversations2 = [(_INPBIntentSlotValue *)self payloadCallGroupConversations];
+    payloadCallGroupConversations3 = [equalCopy payloadCallGroupConversations];
+    v66 = [payloadCallGroupConversations2 isEqual:payloadCallGroupConversations3];
 
     if (!v66)
     {
@@ -6966,20 +6966,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadCallRecordFilters];
-  v6 = [v4 payloadCallRecordFilters];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadCallRecordFilters];
+  payloadActivities2 = [equalCopy payloadCallRecordFilters];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v67 = [(_INPBIntentSlotValue *)self payloadCallRecordFilters];
-  if (v67)
+  payloadCallRecordFilters = [(_INPBIntentSlotValue *)self payloadCallRecordFilters];
+  if (payloadCallRecordFilters)
   {
-    v68 = v67;
-    v69 = [(_INPBIntentSlotValue *)self payloadCallRecordFilters];
-    v70 = [v4 payloadCallRecordFilters];
-    v71 = [v69 isEqual:v70];
+    v68 = payloadCallRecordFilters;
+    payloadCallRecordFilters2 = [(_INPBIntentSlotValue *)self payloadCallRecordFilters];
+    payloadCallRecordFilters3 = [equalCopy payloadCallRecordFilters];
+    v71 = [payloadCallRecordFilters2 isEqual:payloadCallRecordFilters3];
 
     if (!v71)
     {
@@ -6996,20 +6996,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadCallRecordValues];
-  v6 = [v4 payloadCallRecordValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadCallRecordValues];
+  payloadActivities2 = [equalCopy payloadCallRecordValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v72 = [(_INPBIntentSlotValue *)self payloadCallRecordValues];
-  if (v72)
+  payloadCallRecordValues = [(_INPBIntentSlotValue *)self payloadCallRecordValues];
+  if (payloadCallRecordValues)
   {
-    v73 = v72;
-    v74 = [(_INPBIntentSlotValue *)self payloadCallRecordValues];
-    v75 = [v4 payloadCallRecordValues];
-    v76 = [v74 isEqual:v75];
+    v73 = payloadCallRecordValues;
+    payloadCallRecordValues2 = [(_INPBIntentSlotValue *)self payloadCallRecordValues];
+    payloadCallRecordValues3 = [equalCopy payloadCallRecordValues];
+    v76 = [payloadCallRecordValues2 isEqual:payloadCallRecordValues3];
 
     if (!v76)
     {
@@ -7026,20 +7026,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadChargingConnectorTypes];
-  v6 = [v4 payloadChargingConnectorTypes];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadChargingConnectorTypes];
+  payloadActivities2 = [equalCopy payloadChargingConnectorTypes];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v77 = [(_INPBIntentSlotValue *)self payloadChargingConnectorTypes];
-  if (v77)
+  payloadChargingConnectorTypes = [(_INPBIntentSlotValue *)self payloadChargingConnectorTypes];
+  if (payloadChargingConnectorTypes)
   {
-    v78 = v77;
-    v79 = [(_INPBIntentSlotValue *)self payloadChargingConnectorTypes];
-    v80 = [v4 payloadChargingConnectorTypes];
-    v81 = [v79 isEqual:v80];
+    v78 = payloadChargingConnectorTypes;
+    payloadChargingConnectorTypes2 = [(_INPBIntentSlotValue *)self payloadChargingConnectorTypes];
+    payloadChargingConnectorTypes3 = [equalCopy payloadChargingConnectorTypes];
+    v81 = [payloadChargingConnectorTypes2 isEqual:payloadChargingConnectorTypes3];
 
     if (!v81)
     {
@@ -7051,20 +7051,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadContactEventTriggers];
-  v6 = [v4 payloadContactEventTriggers];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadContactEventTriggers];
+  payloadActivities2 = [equalCopy payloadContactEventTriggers];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v82 = [(_INPBIntentSlotValue *)self payloadContactEventTriggers];
-  if (v82)
+  payloadContactEventTriggers = [(_INPBIntentSlotValue *)self payloadContactEventTriggers];
+  if (payloadContactEventTriggers)
   {
-    v83 = v82;
-    v84 = [(_INPBIntentSlotValue *)self payloadContactEventTriggers];
-    v85 = [v4 payloadContactEventTriggers];
-    v86 = [v84 isEqual:v85];
+    v83 = payloadContactEventTriggers;
+    payloadContactEventTriggers2 = [(_INPBIntentSlotValue *)self payloadContactEventTriggers];
+    payloadContactEventTriggers3 = [equalCopy payloadContactEventTriggers];
+    v86 = [payloadContactEventTriggers2 isEqual:payloadContactEventTriggers3];
 
     if (!v86)
     {
@@ -7076,20 +7076,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadContactLists];
-  v6 = [v4 payloadContactLists];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadContactLists];
+  payloadActivities2 = [equalCopy payloadContactLists];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v87 = [(_INPBIntentSlotValue *)self payloadContactLists];
-  if (v87)
+  payloadContactLists = [(_INPBIntentSlotValue *)self payloadContactLists];
+  if (payloadContactLists)
   {
-    v88 = v87;
-    v89 = [(_INPBIntentSlotValue *)self payloadContactLists];
-    v90 = [v4 payloadContactLists];
-    v91 = [v89 isEqual:v90];
+    v88 = payloadContactLists;
+    payloadContactLists2 = [(_INPBIntentSlotValue *)self payloadContactLists];
+    payloadContactLists3 = [equalCopy payloadContactLists];
+    v91 = [payloadContactLists2 isEqual:payloadContactLists3];
 
     if (!v91)
     {
@@ -7101,20 +7101,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadContactValues];
-  v6 = [v4 payloadContactValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadContactValues];
+  payloadActivities2 = [equalCopy payloadContactValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v92 = [(_INPBIntentSlotValue *)self payloadContactValues];
-  if (v92)
+  payloadContactValues = [(_INPBIntentSlotValue *)self payloadContactValues];
+  if (payloadContactValues)
   {
-    v93 = v92;
-    v94 = [(_INPBIntentSlotValue *)self payloadContactValues];
-    v95 = [v4 payloadContactValues];
-    v96 = [v94 isEqual:v95];
+    v93 = payloadContactValues;
+    payloadContactValues2 = [(_INPBIntentSlotValue *)self payloadContactValues];
+    payloadContactValues3 = [equalCopy payloadContactValues];
+    v96 = [payloadContactValues2 isEqual:payloadContactValues3];
 
     if (!v96)
     {
@@ -7126,20 +7126,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadCurrencyAmounts];
-  v6 = [v4 payloadCurrencyAmounts];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadCurrencyAmounts];
+  payloadActivities2 = [equalCopy payloadCurrencyAmounts];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v97 = [(_INPBIntentSlotValue *)self payloadCurrencyAmounts];
-  if (v97)
+  payloadCurrencyAmounts = [(_INPBIntentSlotValue *)self payloadCurrencyAmounts];
+  if (payloadCurrencyAmounts)
   {
-    v98 = v97;
-    v99 = [(_INPBIntentSlotValue *)self payloadCurrencyAmounts];
-    v100 = [v4 payloadCurrencyAmounts];
-    v101 = [v99 isEqual:v100];
+    v98 = payloadCurrencyAmounts;
+    payloadCurrencyAmounts2 = [(_INPBIntentSlotValue *)self payloadCurrencyAmounts];
+    payloadCurrencyAmounts3 = [equalCopy payloadCurrencyAmounts];
+    v101 = [payloadCurrencyAmounts2 isEqual:payloadCurrencyAmounts3];
 
     if (!v101)
     {
@@ -7151,20 +7151,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadCustomObjects];
-  v6 = [v4 payloadCustomObjects];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadCustomObjects];
+  payloadActivities2 = [equalCopy payloadCustomObjects];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v102 = [(_INPBIntentSlotValue *)self payloadCustomObjects];
-  if (v102)
+  payloadCustomObjects = [(_INPBIntentSlotValue *)self payloadCustomObjects];
+  if (payloadCustomObjects)
   {
-    v103 = v102;
-    v104 = [(_INPBIntentSlotValue *)self payloadCustomObjects];
-    v105 = [v4 payloadCustomObjects];
-    v106 = [v104 isEqual:v105];
+    v103 = payloadCustomObjects;
+    payloadCustomObjects2 = [(_INPBIntentSlotValue *)self payloadCustomObjects];
+    payloadCustomObjects3 = [equalCopy payloadCustomObjects];
+    v106 = [payloadCustomObjects2 isEqual:payloadCustomObjects3];
 
     if (!v106)
     {
@@ -7176,20 +7176,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadDataStrings];
-  v6 = [v4 payloadDataStrings];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadDataStrings];
+  payloadActivities2 = [equalCopy payloadDataStrings];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v107 = [(_INPBIntentSlotValue *)self payloadDataStrings];
-  if (v107)
+  payloadDataStrings = [(_INPBIntentSlotValue *)self payloadDataStrings];
+  if (payloadDataStrings)
   {
-    v108 = v107;
-    v109 = [(_INPBIntentSlotValue *)self payloadDataStrings];
-    v110 = [v4 payloadDataStrings];
-    v111 = [v109 isEqual:v110];
+    v108 = payloadDataStrings;
+    payloadDataStrings2 = [(_INPBIntentSlotValue *)self payloadDataStrings];
+    payloadDataStrings3 = [equalCopy payloadDataStrings];
+    v111 = [payloadDataStrings2 isEqual:payloadDataStrings3];
 
     if (!v111)
     {
@@ -7201,20 +7201,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadDataStringLists];
-  v6 = [v4 payloadDataStringLists];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadDataStringLists];
+  payloadActivities2 = [equalCopy payloadDataStringLists];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v112 = [(_INPBIntentSlotValue *)self payloadDataStringLists];
-  if (v112)
+  payloadDataStringLists = [(_INPBIntentSlotValue *)self payloadDataStringLists];
+  if (payloadDataStringLists)
   {
-    v113 = v112;
-    v114 = [(_INPBIntentSlotValue *)self payloadDataStringLists];
-    v115 = [v4 payloadDataStringLists];
-    v116 = [v114 isEqual:v115];
+    v113 = payloadDataStringLists;
+    payloadDataStringLists2 = [(_INPBIntentSlotValue *)self payloadDataStringLists];
+    payloadDataStringLists3 = [equalCopy payloadDataStringLists];
+    v116 = [payloadDataStringLists2 isEqual:payloadDataStringLists3];
 
     if (!v116)
     {
@@ -7231,20 +7231,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadDateTimeRangeLists];
-  v6 = [v4 payloadDateTimeRangeLists];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadDateTimeRangeLists];
+  payloadActivities2 = [equalCopy payloadDateTimeRangeLists];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v117 = [(_INPBIntentSlotValue *)self payloadDateTimeRangeLists];
-  if (v117)
+  payloadDateTimeRangeLists = [(_INPBIntentSlotValue *)self payloadDateTimeRangeLists];
+  if (payloadDateTimeRangeLists)
   {
-    v118 = v117;
-    v119 = [(_INPBIntentSlotValue *)self payloadDateTimeRangeLists];
-    v120 = [v4 payloadDateTimeRangeLists];
-    v121 = [v119 isEqual:v120];
+    v118 = payloadDateTimeRangeLists;
+    payloadDateTimeRangeLists2 = [(_INPBIntentSlotValue *)self payloadDateTimeRangeLists];
+    payloadDateTimeRangeLists3 = [equalCopy payloadDateTimeRangeLists];
+    v121 = [payloadDateTimeRangeLists2 isEqual:payloadDateTimeRangeLists3];
 
     if (!v121)
     {
@@ -7256,20 +7256,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadDateTimeRangeValues];
-  v6 = [v4 payloadDateTimeRangeValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadDateTimeRangeValues];
+  payloadActivities2 = [equalCopy payloadDateTimeRangeValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v122 = [(_INPBIntentSlotValue *)self payloadDateTimeRangeValues];
-  if (v122)
+  payloadDateTimeRangeValues = [(_INPBIntentSlotValue *)self payloadDateTimeRangeValues];
+  if (payloadDateTimeRangeValues)
   {
-    v123 = v122;
-    v124 = [(_INPBIntentSlotValue *)self payloadDateTimeRangeValues];
-    v125 = [v4 payloadDateTimeRangeValues];
-    v126 = [v124 isEqual:v125];
+    v123 = payloadDateTimeRangeValues;
+    payloadDateTimeRangeValues2 = [(_INPBIntentSlotValue *)self payloadDateTimeRangeValues];
+    payloadDateTimeRangeValues3 = [equalCopy payloadDateTimeRangeValues];
+    v126 = [payloadDateTimeRangeValues2 isEqual:payloadDateTimeRangeValues3];
 
     if (!v126)
     {
@@ -7281,20 +7281,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadDateTimeValues];
-  v6 = [v4 payloadDateTimeValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadDateTimeValues];
+  payloadActivities2 = [equalCopy payloadDateTimeValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v127 = [(_INPBIntentSlotValue *)self payloadDateTimeValues];
-  if (v127)
+  payloadDateTimeValues = [(_INPBIntentSlotValue *)self payloadDateTimeValues];
+  if (payloadDateTimeValues)
   {
-    v128 = v127;
-    v129 = [(_INPBIntentSlotValue *)self payloadDateTimeValues];
-    v130 = [v4 payloadDateTimeValues];
-    v131 = [v129 isEqual:v130];
+    v128 = payloadDateTimeValues;
+    payloadDateTimeValues2 = [(_INPBIntentSlotValue *)self payloadDateTimeValues];
+    payloadDateTimeValues3 = [equalCopy payloadDateTimeValues];
+    v131 = [payloadDateTimeValues2 isEqual:payloadDateTimeValues3];
 
     if (!v131)
     {
@@ -7306,20 +7306,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadDevices];
-  v6 = [v4 payloadDevices];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadDevices];
+  payloadActivities2 = [equalCopy payloadDevices];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v132 = [(_INPBIntentSlotValue *)self payloadDevices];
-  if (v132)
+  payloadDevices = [(_INPBIntentSlotValue *)self payloadDevices];
+  if (payloadDevices)
   {
-    v133 = v132;
-    v134 = [(_INPBIntentSlotValue *)self payloadDevices];
-    v135 = [v4 payloadDevices];
-    v136 = [v134 isEqual:v135];
+    v133 = payloadDevices;
+    payloadDevices2 = [(_INPBIntentSlotValue *)self payloadDevices];
+    payloadDevices3 = [equalCopy payloadDevices];
+    v136 = [payloadDevices2 isEqual:payloadDevices3];
 
     if (!v136)
     {
@@ -7331,20 +7331,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadDeviceDetails];
-  v6 = [v4 payloadDeviceDetails];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadDeviceDetails];
+  payloadActivities2 = [equalCopy payloadDeviceDetails];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v137 = [(_INPBIntentSlotValue *)self payloadDeviceDetails];
-  if (v137)
+  payloadDeviceDetails = [(_INPBIntentSlotValue *)self payloadDeviceDetails];
+  if (payloadDeviceDetails)
   {
-    v138 = v137;
-    v139 = [(_INPBIntentSlotValue *)self payloadDeviceDetails];
-    v140 = [v4 payloadDeviceDetails];
-    v141 = [v139 isEqual:v140];
+    v138 = payloadDeviceDetails;
+    payloadDeviceDetails2 = [(_INPBIntentSlotValue *)self payloadDeviceDetails];
+    payloadDeviceDetails3 = [equalCopy payloadDeviceDetails];
+    v141 = [payloadDeviceDetails2 isEqual:payloadDeviceDetails3];
 
     if (!v141)
     {
@@ -7361,20 +7361,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadDialingContacts];
-  v6 = [v4 payloadDialingContacts];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadDialingContacts];
+  payloadActivities2 = [equalCopy payloadDialingContacts];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v142 = [(_INPBIntentSlotValue *)self payloadDialingContacts];
-  if (v142)
+  payloadDialingContacts = [(_INPBIntentSlotValue *)self payloadDialingContacts];
+  if (payloadDialingContacts)
   {
-    v143 = v142;
-    v144 = [(_INPBIntentSlotValue *)self payloadDialingContacts];
-    v145 = [v4 payloadDialingContacts];
-    v146 = [v144 isEqual:v145];
+    v143 = payloadDialingContacts;
+    payloadDialingContacts2 = [(_INPBIntentSlotValue *)self payloadDialingContacts];
+    payloadDialingContacts3 = [equalCopy payloadDialingContacts];
+    v146 = [payloadDialingContacts2 isEqual:payloadDialingContacts3];
 
     if (!v146)
     {
@@ -7386,20 +7386,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadDistanceLists];
-  v6 = [v4 payloadDistanceLists];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadDistanceLists];
+  payloadActivities2 = [equalCopy payloadDistanceLists];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v147 = [(_INPBIntentSlotValue *)self payloadDistanceLists];
-  if (v147)
+  payloadDistanceLists = [(_INPBIntentSlotValue *)self payloadDistanceLists];
+  if (payloadDistanceLists)
   {
-    v148 = v147;
-    v149 = [(_INPBIntentSlotValue *)self payloadDistanceLists];
-    v150 = [v4 payloadDistanceLists];
-    v151 = [v149 isEqual:v150];
+    v148 = payloadDistanceLists;
+    payloadDistanceLists2 = [(_INPBIntentSlotValue *)self payloadDistanceLists];
+    payloadDistanceLists3 = [equalCopy payloadDistanceLists];
+    v151 = [payloadDistanceLists2 isEqual:payloadDistanceLists3];
 
     if (!v151)
     {
@@ -7411,20 +7411,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadDistanceValues];
-  v6 = [v4 payloadDistanceValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadDistanceValues];
+  payloadActivities2 = [equalCopy payloadDistanceValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v152 = [(_INPBIntentSlotValue *)self payloadDistanceValues];
-  if (v152)
+  payloadDistanceValues = [(_INPBIntentSlotValue *)self payloadDistanceValues];
+  if (payloadDistanceValues)
   {
-    v153 = v152;
-    v154 = [(_INPBIntentSlotValue *)self payloadDistanceValues];
-    v155 = [v4 payloadDistanceValues];
-    v156 = [v154 isEqual:v155];
+    v153 = payloadDistanceValues;
+    payloadDistanceValues2 = [(_INPBIntentSlotValue *)self payloadDistanceValues];
+    payloadDistanceValues3 = [equalCopy payloadDistanceValues];
+    v156 = [payloadDistanceValues2 isEqual:payloadDistanceValues3];
 
     if (!v156)
     {
@@ -7436,20 +7436,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadDoubleLists];
-  v6 = [v4 payloadDoubleLists];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadDoubleLists];
+  payloadActivities2 = [equalCopy payloadDoubleLists];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v157 = [(_INPBIntentSlotValue *)self payloadDoubleLists];
-  if (v157)
+  payloadDoubleLists = [(_INPBIntentSlotValue *)self payloadDoubleLists];
+  if (payloadDoubleLists)
   {
-    v158 = v157;
-    v159 = [(_INPBIntentSlotValue *)self payloadDoubleLists];
-    v160 = [v4 payloadDoubleLists];
-    v161 = [v159 isEqual:v160];
+    v158 = payloadDoubleLists;
+    payloadDoubleLists2 = [(_INPBIntentSlotValue *)self payloadDoubleLists];
+    payloadDoubleLists3 = [equalCopy payloadDoubleLists];
+    v161 = [payloadDoubleLists2 isEqual:payloadDoubleLists3];
 
     if (!v161)
     {
@@ -7461,20 +7461,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadDoubleValues];
-  v6 = [v4 payloadDoubleValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadDoubleValues];
+  payloadActivities2 = [equalCopy payloadDoubleValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v162 = [(_INPBIntentSlotValue *)self payloadDoubleValues];
-  if (v162)
+  payloadDoubleValues = [(_INPBIntentSlotValue *)self payloadDoubleValues];
+  if (payloadDoubleValues)
   {
-    v163 = v162;
-    v164 = [(_INPBIntentSlotValue *)self payloadDoubleValues];
-    v165 = [v4 payloadDoubleValues];
-    v166 = [v164 isEqual:v165];
+    v163 = payloadDoubleValues;
+    payloadDoubleValues2 = [(_INPBIntentSlotValue *)self payloadDoubleValues];
+    payloadDoubleValues3 = [equalCopy payloadDoubleValues];
+    v166 = [payloadDoubleValues2 isEqual:payloadDoubleValues3];
 
     if (!v166)
     {
@@ -7486,20 +7486,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadEnergyValues];
-  v6 = [v4 payloadEnergyValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadEnergyValues];
+  payloadActivities2 = [equalCopy payloadEnergyValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v167 = [(_INPBIntentSlotValue *)self payloadEnergyValues];
-  if (v167)
+  payloadEnergyValues = [(_INPBIntentSlotValue *)self payloadEnergyValues];
+  if (payloadEnergyValues)
   {
-    v168 = v167;
-    v169 = [(_INPBIntentSlotValue *)self payloadEnergyValues];
-    v170 = [v4 payloadEnergyValues];
-    v171 = [v169 isEqual:v170];
+    v168 = payloadEnergyValues;
+    payloadEnergyValues2 = [(_INPBIntentSlotValue *)self payloadEnergyValues];
+    payloadEnergyValues3 = [equalCopy payloadEnergyValues];
+    v171 = [payloadEnergyValues2 isEqual:payloadEnergyValues3];
 
     if (!v171)
     {
@@ -7511,20 +7511,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadEnumerations];
-  v6 = [v4 payloadEnumerations];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadEnumerations];
+  payloadActivities2 = [equalCopy payloadEnumerations];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v172 = [(_INPBIntentSlotValue *)self payloadEnumerations];
-  if (v172)
+  payloadEnumerations = [(_INPBIntentSlotValue *)self payloadEnumerations];
+  if (payloadEnumerations)
   {
-    v173 = v172;
-    v174 = [(_INPBIntentSlotValue *)self payloadEnumerations];
-    v175 = [v4 payloadEnumerations];
-    v176 = [v174 isEqual:v175];
+    v173 = payloadEnumerations;
+    payloadEnumerations2 = [(_INPBIntentSlotValue *)self payloadEnumerations];
+    payloadEnumerations3 = [equalCopy payloadEnumerations];
+    v176 = [payloadEnumerations2 isEqual:payloadEnumerations3];
 
     if (!v176)
     {
@@ -7536,20 +7536,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadEvents];
-  v6 = [v4 payloadEvents];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadEvents];
+  payloadActivities2 = [equalCopy payloadEvents];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v177 = [(_INPBIntentSlotValue *)self payloadEvents];
-  if (v177)
+  payloadEvents = [(_INPBIntentSlotValue *)self payloadEvents];
+  if (payloadEvents)
   {
-    v178 = v177;
-    v179 = [(_INPBIntentSlotValue *)self payloadEvents];
-    v180 = [v4 payloadEvents];
-    v181 = [v179 isEqual:v180];
+    v178 = payloadEvents;
+    payloadEvents2 = [(_INPBIntentSlotValue *)self payloadEvents];
+    payloadEvents3 = [equalCopy payloadEvents];
+    v181 = [payloadEvents2 isEqual:payloadEvents3];
 
     if (!v181)
     {
@@ -7566,20 +7566,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadEventLists];
-  v6 = [v4 payloadEventLists];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadEventLists];
+  payloadActivities2 = [equalCopy payloadEventLists];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v182 = [(_INPBIntentSlotValue *)self payloadEventLists];
-  if (v182)
+  payloadEventLists = [(_INPBIntentSlotValue *)self payloadEventLists];
+  if (payloadEventLists)
   {
-    v183 = v182;
-    v184 = [(_INPBIntentSlotValue *)self payloadEventLists];
-    v185 = [v4 payloadEventLists];
-    v186 = [v184 isEqual:v185];
+    v183 = payloadEventLists;
+    payloadEventLists2 = [(_INPBIntentSlotValue *)self payloadEventLists];
+    payloadEventLists3 = [equalCopy payloadEventLists];
+    v186 = [payloadEventLists2 isEqual:payloadEventLists3];
 
     if (!v186)
     {
@@ -7591,20 +7591,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadEventParticipants];
-  v6 = [v4 payloadEventParticipants];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadEventParticipants];
+  payloadActivities2 = [equalCopy payloadEventParticipants];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v187 = [(_INPBIntentSlotValue *)self payloadEventParticipants];
-  if (v187)
+  payloadEventParticipants = [(_INPBIntentSlotValue *)self payloadEventParticipants];
+  if (payloadEventParticipants)
   {
-    v188 = v187;
-    v189 = [(_INPBIntentSlotValue *)self payloadEventParticipants];
-    v190 = [v4 payloadEventParticipants];
-    v191 = [v189 isEqual:v190];
+    v188 = payloadEventParticipants;
+    payloadEventParticipants2 = [(_INPBIntentSlotValue *)self payloadEventParticipants];
+    payloadEventParticipants3 = [equalCopy payloadEventParticipants];
+    v191 = [payloadEventParticipants2 isEqual:payloadEventParticipants3];
 
     if (!v191)
     {
@@ -7616,20 +7616,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadFiles];
-  v6 = [v4 payloadFiles];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadFiles];
+  payloadActivities2 = [equalCopy payloadFiles];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v192 = [(_INPBIntentSlotValue *)self payloadFiles];
-  if (v192)
+  payloadFiles = [(_INPBIntentSlotValue *)self payloadFiles];
+  if (payloadFiles)
   {
-    v193 = v192;
-    v194 = [(_INPBIntentSlotValue *)self payloadFiles];
-    v195 = [v4 payloadFiles];
-    v196 = [v194 isEqual:v195];
+    v193 = payloadFiles;
+    payloadFiles2 = [(_INPBIntentSlotValue *)self payloadFiles];
+    payloadFiles3 = [equalCopy payloadFiles];
+    v196 = [payloadFiles2 isEqual:payloadFiles3];
 
     if (!v196)
     {
@@ -7646,20 +7646,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadFileProperties];
-  v6 = [v4 payloadFileProperties];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadFileProperties];
+  payloadActivities2 = [equalCopy payloadFileProperties];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v197 = [(_INPBIntentSlotValue *)self payloadFileProperties];
-  if (v197)
+  payloadFileProperties = [(_INPBIntentSlotValue *)self payloadFileProperties];
+  if (payloadFileProperties)
   {
-    v198 = v197;
-    v199 = [(_INPBIntentSlotValue *)self payloadFileProperties];
-    v200 = [v4 payloadFileProperties];
-    v201 = [v199 isEqual:v200];
+    v198 = payloadFileProperties;
+    payloadFileProperties2 = [(_INPBIntentSlotValue *)self payloadFileProperties];
+    payloadFileProperties3 = [equalCopy payloadFileProperties];
+    v201 = [payloadFileProperties2 isEqual:payloadFileProperties3];
 
     if (!v201)
     {
@@ -7676,20 +7676,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadFilePropertyValues];
-  v6 = [v4 payloadFilePropertyValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadFilePropertyValues];
+  payloadActivities2 = [equalCopy payloadFilePropertyValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v202 = [(_INPBIntentSlotValue *)self payloadFilePropertyValues];
-  if (v202)
+  payloadFilePropertyValues = [(_INPBIntentSlotValue *)self payloadFilePropertyValues];
+  if (payloadFilePropertyValues)
   {
-    v203 = v202;
-    v204 = [(_INPBIntentSlotValue *)self payloadFilePropertyValues];
-    v205 = [v4 payloadFilePropertyValues];
-    v206 = [v204 isEqual:v205];
+    v203 = payloadFilePropertyValues;
+    payloadFilePropertyValues2 = [(_INPBIntentSlotValue *)self payloadFilePropertyValues];
+    payloadFilePropertyValues3 = [equalCopy payloadFilePropertyValues];
+    v206 = [payloadFilePropertyValues2 isEqual:payloadFilePropertyValues3];
 
     if (!v206)
     {
@@ -7706,20 +7706,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadFinancialAccountValues];
-  v6 = [v4 payloadFinancialAccountValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadFinancialAccountValues];
+  payloadActivities2 = [equalCopy payloadFinancialAccountValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v207 = [(_INPBIntentSlotValue *)self payloadFinancialAccountValues];
-  if (v207)
+  payloadFinancialAccountValues = [(_INPBIntentSlotValue *)self payloadFinancialAccountValues];
+  if (payloadFinancialAccountValues)
   {
-    v208 = v207;
-    v209 = [(_INPBIntentSlotValue *)self payloadFinancialAccountValues];
-    v210 = [v4 payloadFinancialAccountValues];
-    v211 = [v209 isEqual:v210];
+    v208 = payloadFinancialAccountValues;
+    payloadFinancialAccountValues2 = [(_INPBIntentSlotValue *)self payloadFinancialAccountValues];
+    payloadFinancialAccountValues3 = [equalCopy payloadFinancialAccountValues];
+    v211 = [payloadFinancialAccountValues2 isEqual:payloadFinancialAccountValues3];
 
     if (!v211)
     {
@@ -7731,20 +7731,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadGeographicalFeatures];
-  v6 = [v4 payloadGeographicalFeatures];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadGeographicalFeatures];
+  payloadActivities2 = [equalCopy payloadGeographicalFeatures];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v212 = [(_INPBIntentSlotValue *)self payloadGeographicalFeatures];
-  if (v212)
+  payloadGeographicalFeatures = [(_INPBIntentSlotValue *)self payloadGeographicalFeatures];
+  if (payloadGeographicalFeatures)
   {
-    v213 = v212;
-    v214 = [(_INPBIntentSlotValue *)self payloadGeographicalFeatures];
-    v215 = [v4 payloadGeographicalFeatures];
-    v216 = [v214 isEqual:v215];
+    v213 = payloadGeographicalFeatures;
+    payloadGeographicalFeatures2 = [(_INPBIntentSlotValue *)self payloadGeographicalFeatures];
+    payloadGeographicalFeatures3 = [equalCopy payloadGeographicalFeatures];
+    v216 = [payloadGeographicalFeatures2 isEqual:payloadGeographicalFeatures3];
 
     if (!v216)
     {
@@ -7756,20 +7756,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadGeographicalFeatureLists];
-  v6 = [v4 payloadGeographicalFeatureLists];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadGeographicalFeatureLists];
+  payloadActivities2 = [equalCopy payloadGeographicalFeatureLists];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v217 = [(_INPBIntentSlotValue *)self payloadGeographicalFeatureLists];
-  if (v217)
+  payloadGeographicalFeatureLists = [(_INPBIntentSlotValue *)self payloadGeographicalFeatureLists];
+  if (payloadGeographicalFeatureLists)
   {
-    v218 = v217;
-    v219 = [(_INPBIntentSlotValue *)self payloadGeographicalFeatureLists];
-    v220 = [v4 payloadGeographicalFeatureLists];
-    v221 = [v219 isEqual:v220];
+    v218 = payloadGeographicalFeatureLists;
+    payloadGeographicalFeatureLists2 = [(_INPBIntentSlotValue *)self payloadGeographicalFeatureLists];
+    payloadGeographicalFeatureLists3 = [equalCopy payloadGeographicalFeatureLists];
+    v221 = [payloadGeographicalFeatureLists2 isEqual:payloadGeographicalFeatureLists3];
 
     if (!v221)
     {
@@ -7781,20 +7781,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadGetSettingResponseDatas];
-  v6 = [v4 payloadGetSettingResponseDatas];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadGetSettingResponseDatas];
+  payloadActivities2 = [equalCopy payloadGetSettingResponseDatas];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v222 = [(_INPBIntentSlotValue *)self payloadGetSettingResponseDatas];
-  if (v222)
+  payloadGetSettingResponseDatas = [(_INPBIntentSlotValue *)self payloadGetSettingResponseDatas];
+  if (payloadGetSettingResponseDatas)
   {
-    v223 = v222;
-    v224 = [(_INPBIntentSlotValue *)self payloadGetSettingResponseDatas];
-    v225 = [v4 payloadGetSettingResponseDatas];
-    v226 = [v224 isEqual:v225];
+    v223 = payloadGetSettingResponseDatas;
+    payloadGetSettingResponseDatas2 = [(_INPBIntentSlotValue *)self payloadGetSettingResponseDatas];
+    payloadGetSettingResponseDatas3 = [equalCopy payloadGetSettingResponseDatas];
+    v226 = [payloadGetSettingResponseDatas2 isEqual:payloadGetSettingResponseDatas3];
 
     if (!v226)
     {
@@ -7806,20 +7806,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadHomeAttributes];
-  v6 = [v4 payloadHomeAttributes];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadHomeAttributes];
+  payloadActivities2 = [equalCopy payloadHomeAttributes];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v227 = [(_INPBIntentSlotValue *)self payloadHomeAttributes];
-  if (v227)
+  payloadHomeAttributes = [(_INPBIntentSlotValue *)self payloadHomeAttributes];
+  if (payloadHomeAttributes)
   {
-    v228 = v227;
-    v229 = [(_INPBIntentSlotValue *)self payloadHomeAttributes];
-    v230 = [v4 payloadHomeAttributes];
-    v231 = [v229 isEqual:v230];
+    v228 = payloadHomeAttributes;
+    payloadHomeAttributes2 = [(_INPBIntentSlotValue *)self payloadHomeAttributes];
+    payloadHomeAttributes3 = [equalCopy payloadHomeAttributes];
+    v231 = [payloadHomeAttributes2 isEqual:payloadHomeAttributes3];
 
     if (!v231)
     {
@@ -7836,20 +7836,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadHomeAttributeValues];
-  v6 = [v4 payloadHomeAttributeValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadHomeAttributeValues];
+  payloadActivities2 = [equalCopy payloadHomeAttributeValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v232 = [(_INPBIntentSlotValue *)self payloadHomeAttributeValues];
-  if (v232)
+  payloadHomeAttributeValues = [(_INPBIntentSlotValue *)self payloadHomeAttributeValues];
+  if (payloadHomeAttributeValues)
   {
-    v233 = v232;
-    v234 = [(_INPBIntentSlotValue *)self payloadHomeAttributeValues];
-    v235 = [v4 payloadHomeAttributeValues];
-    v236 = [v234 isEqual:v235];
+    v233 = payloadHomeAttributeValues;
+    payloadHomeAttributeValues2 = [(_INPBIntentSlotValue *)self payloadHomeAttributeValues];
+    payloadHomeAttributeValues3 = [equalCopy payloadHomeAttributeValues];
+    v236 = [payloadHomeAttributeValues2 isEqual:payloadHomeAttributeValues3];
 
     if (!v236)
     {
@@ -7866,20 +7866,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadHomeEntities];
-  v6 = [v4 payloadHomeEntities];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadHomeEntities];
+  payloadActivities2 = [equalCopy payloadHomeEntities];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v237 = [(_INPBIntentSlotValue *)self payloadHomeEntities];
-  if (v237)
+  payloadHomeEntities = [(_INPBIntentSlotValue *)self payloadHomeEntities];
+  if (payloadHomeEntities)
   {
-    v238 = v237;
-    v239 = [(_INPBIntentSlotValue *)self payloadHomeEntities];
-    v240 = [v4 payloadHomeEntities];
-    v241 = [v239 isEqual:v240];
+    v238 = payloadHomeEntities;
+    payloadHomeEntities2 = [(_INPBIntentSlotValue *)self payloadHomeEntities];
+    payloadHomeEntities3 = [equalCopy payloadHomeEntities];
+    v241 = [payloadHomeEntities2 isEqual:payloadHomeEntities3];
 
     if (!v241)
     {
@@ -7896,20 +7896,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadHomeFilters];
-  v6 = [v4 payloadHomeFilters];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadHomeFilters];
+  payloadActivities2 = [equalCopy payloadHomeFilters];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v242 = [(_INPBIntentSlotValue *)self payloadHomeFilters];
-  if (v242)
+  payloadHomeFilters = [(_INPBIntentSlotValue *)self payloadHomeFilters];
+  if (payloadHomeFilters)
   {
-    v243 = v242;
-    v244 = [(_INPBIntentSlotValue *)self payloadHomeFilters];
-    v245 = [v4 payloadHomeFilters];
-    v246 = [v244 isEqual:v245];
+    v243 = payloadHomeFilters;
+    payloadHomeFilters2 = [(_INPBIntentSlotValue *)self payloadHomeFilters];
+    payloadHomeFilters3 = [equalCopy payloadHomeFilters];
+    v246 = [payloadHomeFilters2 isEqual:payloadHomeFilters3];
 
     if (!v246)
     {
@@ -7921,20 +7921,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadHomeUserTasks];
-  v6 = [v4 payloadHomeUserTasks];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadHomeUserTasks];
+  payloadActivities2 = [equalCopy payloadHomeUserTasks];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v247 = [(_INPBIntentSlotValue *)self payloadHomeUserTasks];
-  if (v247)
+  payloadHomeUserTasks = [(_INPBIntentSlotValue *)self payloadHomeUserTasks];
+  if (payloadHomeUserTasks)
   {
-    v248 = v247;
-    v249 = [(_INPBIntentSlotValue *)self payloadHomeUserTasks];
-    v250 = [v4 payloadHomeUserTasks];
-    v251 = [v249 isEqual:v250];
+    v248 = payloadHomeUserTasks;
+    payloadHomeUserTasks2 = [(_INPBIntentSlotValue *)self payloadHomeUserTasks];
+    payloadHomeUserTasks3 = [equalCopy payloadHomeUserTasks];
+    v251 = [payloadHomeUserTasks2 isEqual:payloadHomeUserTasks3];
 
     if (!v251)
     {
@@ -7946,20 +7946,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadIntegerLists];
-  v6 = [v4 payloadIntegerLists];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadIntegerLists];
+  payloadActivities2 = [equalCopy payloadIntegerLists];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v252 = [(_INPBIntentSlotValue *)self payloadIntegerLists];
-  if (v252)
+  payloadIntegerLists = [(_INPBIntentSlotValue *)self payloadIntegerLists];
+  if (payloadIntegerLists)
   {
-    v253 = v252;
-    v254 = [(_INPBIntentSlotValue *)self payloadIntegerLists];
-    v255 = [v4 payloadIntegerLists];
-    v256 = [v254 isEqual:v255];
+    v253 = payloadIntegerLists;
+    payloadIntegerLists2 = [(_INPBIntentSlotValue *)self payloadIntegerLists];
+    payloadIntegerLists3 = [equalCopy payloadIntegerLists];
+    v256 = [payloadIntegerLists2 isEqual:payloadIntegerLists3];
 
     if (!v256)
     {
@@ -7971,20 +7971,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadIntegerValues];
-  v6 = [v4 payloadIntegerValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadIntegerValues];
+  payloadActivities2 = [equalCopy payloadIntegerValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v257 = [(_INPBIntentSlotValue *)self payloadIntegerValues];
-  if (v257)
+  payloadIntegerValues = [(_INPBIntentSlotValue *)self payloadIntegerValues];
+  if (payloadIntegerValues)
   {
-    v258 = v257;
-    v259 = [(_INPBIntentSlotValue *)self payloadIntegerValues];
-    v260 = [v4 payloadIntegerValues];
-    v261 = [v259 isEqual:v260];
+    v258 = payloadIntegerValues;
+    payloadIntegerValues2 = [(_INPBIntentSlotValue *)self payloadIntegerValues];
+    payloadIntegerValues3 = [equalCopy payloadIntegerValues];
+    v261 = [payloadIntegerValues2 isEqual:payloadIntegerValues3];
 
     if (!v261)
     {
@@ -7996,20 +7996,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadIntents];
-  v6 = [v4 payloadIntents];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadIntents];
+  payloadActivities2 = [equalCopy payloadIntents];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v262 = [(_INPBIntentSlotValue *)self payloadIntents];
-  if (v262)
+  payloadIntents = [(_INPBIntentSlotValue *)self payloadIntents];
+  if (payloadIntents)
   {
-    v263 = v262;
-    v264 = [(_INPBIntentSlotValue *)self payloadIntents];
-    v265 = [v4 payloadIntents];
-    v266 = [v264 isEqual:v265];
+    v263 = payloadIntents;
+    payloadIntents2 = [(_INPBIntentSlotValue *)self payloadIntents];
+    payloadIntents3 = [equalCopy payloadIntents];
+    v266 = [payloadIntents2 isEqual:payloadIntents3];
 
     if (!v266)
     {
@@ -8021,20 +8021,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadIntentExecutionResults];
-  v6 = [v4 payloadIntentExecutionResults];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadIntentExecutionResults];
+  payloadActivities2 = [equalCopy payloadIntentExecutionResults];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v267 = [(_INPBIntentSlotValue *)self payloadIntentExecutionResults];
-  if (v267)
+  payloadIntentExecutionResults = [(_INPBIntentSlotValue *)self payloadIntentExecutionResults];
+  if (payloadIntentExecutionResults)
   {
-    v268 = v267;
-    v269 = [(_INPBIntentSlotValue *)self payloadIntentExecutionResults];
-    v270 = [v4 payloadIntentExecutionResults];
-    v271 = [v269 isEqual:v270];
+    v268 = payloadIntentExecutionResults;
+    payloadIntentExecutionResults2 = [(_INPBIntentSlotValue *)self payloadIntentExecutionResults];
+    payloadIntentExecutionResults3 = [equalCopy payloadIntentExecutionResults];
+    v271 = [payloadIntentExecutionResults2 isEqual:payloadIntentExecutionResults3];
 
     if (!v271)
     {
@@ -8046,20 +8046,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadLocations];
-  v6 = [v4 payloadLocations];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadLocations];
+  payloadActivities2 = [equalCopy payloadLocations];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v272 = [(_INPBIntentSlotValue *)self payloadLocations];
-  if (v272)
+  payloadLocations = [(_INPBIntentSlotValue *)self payloadLocations];
+  if (payloadLocations)
   {
-    v273 = v272;
-    v274 = [(_INPBIntentSlotValue *)self payloadLocations];
-    v275 = [v4 payloadLocations];
-    v276 = [v274 isEqual:v275];
+    v273 = payloadLocations;
+    payloadLocations2 = [(_INPBIntentSlotValue *)self payloadLocations];
+    payloadLocations3 = [equalCopy payloadLocations];
+    v276 = [payloadLocations2 isEqual:payloadLocations3];
 
     if (!v276)
     {
@@ -8071,20 +8071,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadLocationLists];
-  v6 = [v4 payloadLocationLists];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadLocationLists];
+  payloadActivities2 = [equalCopy payloadLocationLists];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v277 = [(_INPBIntentSlotValue *)self payloadLocationLists];
-  if (v277)
+  payloadLocationLists = [(_INPBIntentSlotValue *)self payloadLocationLists];
+  if (payloadLocationLists)
   {
-    v278 = v277;
-    v279 = [(_INPBIntentSlotValue *)self payloadLocationLists];
-    v280 = [v4 payloadLocationLists];
-    v281 = [v279 isEqual:v280];
+    v278 = payloadLocationLists;
+    payloadLocationLists2 = [(_INPBIntentSlotValue *)self payloadLocationLists];
+    payloadLocationLists3 = [equalCopy payloadLocationLists];
+    v281 = [payloadLocationLists2 isEqual:payloadLocationLists3];
 
     if (!v281)
     {
@@ -8101,20 +8101,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadLongLists];
-  v6 = [v4 payloadLongLists];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadLongLists];
+  payloadActivities2 = [equalCopy payloadLongLists];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v282 = [(_INPBIntentSlotValue *)self payloadLongLists];
-  if (v282)
+  payloadLongLists = [(_INPBIntentSlotValue *)self payloadLongLists];
+  if (payloadLongLists)
   {
-    v283 = v282;
-    v284 = [(_INPBIntentSlotValue *)self payloadLongLists];
-    v285 = [v4 payloadLongLists];
-    v286 = [v284 isEqual:v285];
+    v283 = payloadLongLists;
+    payloadLongLists2 = [(_INPBIntentSlotValue *)self payloadLongLists];
+    payloadLongLists3 = [equalCopy payloadLongLists];
+    v286 = [payloadLongLists2 isEqual:payloadLongLists3];
 
     if (!v286)
     {
@@ -8126,20 +8126,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadLongValues];
-  v6 = [v4 payloadLongValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadLongValues];
+  payloadActivities2 = [equalCopy payloadLongValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v287 = [(_INPBIntentSlotValue *)self payloadLongValues];
-  if (v287)
+  payloadLongValues = [(_INPBIntentSlotValue *)self payloadLongValues];
+  if (payloadLongValues)
   {
-    v288 = v287;
-    v289 = [(_INPBIntentSlotValue *)self payloadLongValues];
-    v290 = [v4 payloadLongValues];
-    v291 = [v289 isEqual:v290];
+    v288 = payloadLongValues;
+    payloadLongValues2 = [(_INPBIntentSlotValue *)self payloadLongValues];
+    payloadLongValues3 = [equalCopy payloadLongValues];
+    v291 = [payloadLongValues2 isEqual:payloadLongValues3];
 
     if (!v291)
     {
@@ -8151,20 +8151,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadMassValues];
-  v6 = [v4 payloadMassValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadMassValues];
+  payloadActivities2 = [equalCopy payloadMassValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v292 = [(_INPBIntentSlotValue *)self payloadMassValues];
-  if (v292)
+  payloadMassValues = [(_INPBIntentSlotValue *)self payloadMassValues];
+  if (payloadMassValues)
   {
-    v293 = v292;
-    v294 = [(_INPBIntentSlotValue *)self payloadMassValues];
-    v295 = [v4 payloadMassValues];
-    v296 = [v294 isEqual:v295];
+    v293 = payloadMassValues;
+    payloadMassValues2 = [(_INPBIntentSlotValue *)self payloadMassValues];
+    payloadMassValues3 = [equalCopy payloadMassValues];
+    v296 = [payloadMassValues2 isEqual:payloadMassValues3];
 
     if (!v296)
     {
@@ -8181,20 +8181,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadMediaDestinations];
-  v6 = [v4 payloadMediaDestinations];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadMediaDestinations];
+  payloadActivities2 = [equalCopy payloadMediaDestinations];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v297 = [(_INPBIntentSlotValue *)self payloadMediaDestinations];
-  if (v297)
+  payloadMediaDestinations = [(_INPBIntentSlotValue *)self payloadMediaDestinations];
+  if (payloadMediaDestinations)
   {
-    v298 = v297;
-    v299 = [(_INPBIntentSlotValue *)self payloadMediaDestinations];
-    v300 = [v4 payloadMediaDestinations];
-    v301 = [v299 isEqual:v300];
+    v298 = payloadMediaDestinations;
+    payloadMediaDestinations2 = [(_INPBIntentSlotValue *)self payloadMediaDestinations];
+    payloadMediaDestinations3 = [equalCopy payloadMediaDestinations];
+    v301 = [payloadMediaDestinations2 isEqual:payloadMediaDestinations3];
 
     if (!v301)
     {
@@ -8206,20 +8206,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadMediaItemGroups];
-  v6 = [v4 payloadMediaItemGroups];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadMediaItemGroups];
+  payloadActivities2 = [equalCopy payloadMediaItemGroups];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v302 = [(_INPBIntentSlotValue *)self payloadMediaItemGroups];
-  if (v302)
+  payloadMediaItemGroups = [(_INPBIntentSlotValue *)self payloadMediaItemGroups];
+  if (payloadMediaItemGroups)
   {
-    v303 = v302;
-    v304 = [(_INPBIntentSlotValue *)self payloadMediaItemGroups];
-    v305 = [v4 payloadMediaItemGroups];
-    v306 = [v304 isEqual:v305];
+    v303 = payloadMediaItemGroups;
+    payloadMediaItemGroups2 = [(_INPBIntentSlotValue *)self payloadMediaItemGroups];
+    payloadMediaItemGroups3 = [equalCopy payloadMediaItemGroups];
+    v306 = [payloadMediaItemGroups2 isEqual:payloadMediaItemGroups3];
 
     if (!v306)
     {
@@ -8231,20 +8231,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadMediaItemValues];
-  v6 = [v4 payloadMediaItemValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadMediaItemValues];
+  payloadActivities2 = [equalCopy payloadMediaItemValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v307 = [(_INPBIntentSlotValue *)self payloadMediaItemValues];
-  if (v307)
+  payloadMediaItemValues = [(_INPBIntentSlotValue *)self payloadMediaItemValues];
+  if (payloadMediaItemValues)
   {
-    v308 = v307;
-    v309 = [(_INPBIntentSlotValue *)self payloadMediaItemValues];
-    v310 = [v4 payloadMediaItemValues];
-    v311 = [v309 isEqual:v310];
+    v308 = payloadMediaItemValues;
+    payloadMediaItemValues2 = [(_INPBIntentSlotValue *)self payloadMediaItemValues];
+    payloadMediaItemValues3 = [equalCopy payloadMediaItemValues];
+    v311 = [payloadMediaItemValues2 isEqual:payloadMediaItemValues3];
 
     if (!v311)
     {
@@ -8256,20 +8256,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadMediaSearchs];
-  v6 = [v4 payloadMediaSearchs];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadMediaSearchs];
+  payloadActivities2 = [equalCopy payloadMediaSearchs];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v312 = [(_INPBIntentSlotValue *)self payloadMediaSearchs];
-  if (v312)
+  payloadMediaSearchs = [(_INPBIntentSlotValue *)self payloadMediaSearchs];
+  if (payloadMediaSearchs)
   {
-    v313 = v312;
-    v314 = [(_INPBIntentSlotValue *)self payloadMediaSearchs];
-    v315 = [v4 payloadMediaSearchs];
-    v316 = [v314 isEqual:v315];
+    v313 = payloadMediaSearchs;
+    payloadMediaSearchs2 = [(_INPBIntentSlotValue *)self payloadMediaSearchs];
+    payloadMediaSearchs3 = [equalCopy payloadMediaSearchs];
+    v316 = [payloadMediaSearchs2 isEqual:payloadMediaSearchs3];
 
     if (!v316)
     {
@@ -8286,20 +8286,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadModifyNicknames];
-  v6 = [v4 payloadModifyNicknames];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadModifyNicknames];
+  payloadActivities2 = [equalCopy payloadModifyNicknames];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v317 = [(_INPBIntentSlotValue *)self payloadModifyNicknames];
-  if (v317)
+  payloadModifyNicknames = [(_INPBIntentSlotValue *)self payloadModifyNicknames];
+  if (payloadModifyNicknames)
   {
-    v318 = v317;
-    v319 = [(_INPBIntentSlotValue *)self payloadModifyNicknames];
-    v320 = [v4 payloadModifyNicknames];
-    v321 = [v319 isEqual:v320];
+    v318 = payloadModifyNicknames;
+    payloadModifyNicknames2 = [(_INPBIntentSlotValue *)self payloadModifyNicknames];
+    payloadModifyNicknames3 = [equalCopy payloadModifyNicknames];
+    v321 = [payloadModifyNicknames2 isEqual:payloadModifyNicknames3];
 
     if (!v321)
     {
@@ -8311,20 +8311,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadModifyRelationships];
-  v6 = [v4 payloadModifyRelationships];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadModifyRelationships];
+  payloadActivities2 = [equalCopy payloadModifyRelationships];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v322 = [(_INPBIntentSlotValue *)self payloadModifyRelationships];
-  if (v322)
+  payloadModifyRelationships = [(_INPBIntentSlotValue *)self payloadModifyRelationships];
+  if (payloadModifyRelationships)
   {
-    v323 = v322;
-    v324 = [(_INPBIntentSlotValue *)self payloadModifyRelationships];
-    v325 = [v4 payloadModifyRelationships];
-    v326 = [v324 isEqual:v325];
+    v323 = payloadModifyRelationships;
+    payloadModifyRelationships2 = [(_INPBIntentSlotValue *)self payloadModifyRelationships];
+    payloadModifyRelationships3 = [equalCopy payloadModifyRelationships];
+    v326 = [payloadModifyRelationships2 isEqual:payloadModifyRelationships3];
 
     if (!v326)
     {
@@ -8336,20 +8336,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadNotes];
-  v6 = [v4 payloadNotes];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadNotes];
+  payloadActivities2 = [equalCopy payloadNotes];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v327 = [(_INPBIntentSlotValue *)self payloadNotes];
-  if (v327)
+  payloadNotes = [(_INPBIntentSlotValue *)self payloadNotes];
+  if (payloadNotes)
   {
-    v328 = v327;
-    v329 = [(_INPBIntentSlotValue *)self payloadNotes];
-    v330 = [v4 payloadNotes];
-    v331 = [v329 isEqual:v330];
+    v328 = payloadNotes;
+    payloadNotes2 = [(_INPBIntentSlotValue *)self payloadNotes];
+    payloadNotes3 = [equalCopy payloadNotes];
+    v331 = [payloadNotes2 isEqual:payloadNotes3];
 
     if (!v331)
     {
@@ -8361,20 +8361,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadNoteContents];
-  v6 = [v4 payloadNoteContents];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadNoteContents];
+  payloadActivities2 = [equalCopy payloadNoteContents];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v332 = [(_INPBIntentSlotValue *)self payloadNoteContents];
-  if (v332)
+  payloadNoteContents = [(_INPBIntentSlotValue *)self payloadNoteContents];
+  if (payloadNoteContents)
   {
-    v333 = v332;
-    v334 = [(_INPBIntentSlotValue *)self payloadNoteContents];
-    v335 = [v4 payloadNoteContents];
-    v336 = [v334 isEqual:v335];
+    v333 = payloadNoteContents;
+    payloadNoteContents2 = [(_INPBIntentSlotValue *)self payloadNoteContents];
+    payloadNoteContents3 = [equalCopy payloadNoteContents];
+    v336 = [payloadNoteContents2 isEqual:payloadNoteContents3];
 
     if (!v336)
     {
@@ -8391,20 +8391,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadNumericSettingValues];
-  v6 = [v4 payloadNumericSettingValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadNumericSettingValues];
+  payloadActivities2 = [equalCopy payloadNumericSettingValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v337 = [(_INPBIntentSlotValue *)self payloadNumericSettingValues];
-  if (v337)
+  payloadNumericSettingValues = [(_INPBIntentSlotValue *)self payloadNumericSettingValues];
+  if (payloadNumericSettingValues)
   {
-    v338 = v337;
-    v339 = [(_INPBIntentSlotValue *)self payloadNumericSettingValues];
-    v340 = [v4 payloadNumericSettingValues];
-    v341 = [v339 isEqual:v340];
+    v338 = payloadNumericSettingValues;
+    payloadNumericSettingValues2 = [(_INPBIntentSlotValue *)self payloadNumericSettingValues];
+    payloadNumericSettingValues3 = [equalCopy payloadNumericSettingValues];
+    v341 = [payloadNumericSettingValues2 isEqual:payloadNumericSettingValues3];
 
     if (!v341)
     {
@@ -8421,20 +8421,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadPaymentAmountValues];
-  v6 = [v4 payloadPaymentAmountValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadPaymentAmountValues];
+  payloadActivities2 = [equalCopy payloadPaymentAmountValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v342 = [(_INPBIntentSlotValue *)self payloadPaymentAmountValues];
-  if (v342)
+  payloadPaymentAmountValues = [(_INPBIntentSlotValue *)self payloadPaymentAmountValues];
+  if (payloadPaymentAmountValues)
   {
-    v343 = v342;
-    v344 = [(_INPBIntentSlotValue *)self payloadPaymentAmountValues];
-    v345 = [v4 payloadPaymentAmountValues];
-    v346 = [v344 isEqual:v345];
+    v343 = payloadPaymentAmountValues;
+    payloadPaymentAmountValues2 = [(_INPBIntentSlotValue *)self payloadPaymentAmountValues];
+    payloadPaymentAmountValues3 = [equalCopy payloadPaymentAmountValues];
+    v346 = [payloadPaymentAmountValues2 isEqual:payloadPaymentAmountValues3];
 
     if (!v346)
     {
@@ -8446,20 +8446,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadPaymentMethodLists];
-  v6 = [v4 payloadPaymentMethodLists];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadPaymentMethodLists];
+  payloadActivities2 = [equalCopy payloadPaymentMethodLists];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v347 = [(_INPBIntentSlotValue *)self payloadPaymentMethodLists];
-  if (v347)
+  payloadPaymentMethodLists = [(_INPBIntentSlotValue *)self payloadPaymentMethodLists];
+  if (payloadPaymentMethodLists)
   {
-    v348 = v347;
-    v349 = [(_INPBIntentSlotValue *)self payloadPaymentMethodLists];
-    v350 = [v4 payloadPaymentMethodLists];
-    v351 = [v349 isEqual:v350];
+    v348 = payloadPaymentMethodLists;
+    payloadPaymentMethodLists2 = [(_INPBIntentSlotValue *)self payloadPaymentMethodLists];
+    payloadPaymentMethodLists3 = [equalCopy payloadPaymentMethodLists];
+    v351 = [payloadPaymentMethodLists2 isEqual:payloadPaymentMethodLists3];
 
     if (!v351)
     {
@@ -8471,20 +8471,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadPaymentMethodValues];
-  v6 = [v4 payloadPaymentMethodValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadPaymentMethodValues];
+  payloadActivities2 = [equalCopy payloadPaymentMethodValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v352 = [(_INPBIntentSlotValue *)self payloadPaymentMethodValues];
-  if (v352)
+  payloadPaymentMethodValues = [(_INPBIntentSlotValue *)self payloadPaymentMethodValues];
+  if (payloadPaymentMethodValues)
   {
-    v353 = v352;
-    v354 = [(_INPBIntentSlotValue *)self payloadPaymentMethodValues];
-    v355 = [v4 payloadPaymentMethodValues];
-    v356 = [v354 isEqual:v355];
+    v353 = payloadPaymentMethodValues;
+    payloadPaymentMethodValues2 = [(_INPBIntentSlotValue *)self payloadPaymentMethodValues];
+    payloadPaymentMethodValues3 = [equalCopy payloadPaymentMethodValues];
+    v356 = [payloadPaymentMethodValues2 isEqual:payloadPaymentMethodValues3];
 
     if (!v356)
     {
@@ -8501,20 +8501,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadPlaces];
-  v6 = [v4 payloadPlaces];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadPlaces];
+  payloadActivities2 = [equalCopy payloadPlaces];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v357 = [(_INPBIntentSlotValue *)self payloadPlaces];
-  if (v357)
+  payloadPlaces = [(_INPBIntentSlotValue *)self payloadPlaces];
+  if (payloadPlaces)
   {
-    v358 = v357;
-    v359 = [(_INPBIntentSlotValue *)self payloadPlaces];
-    v360 = [v4 payloadPlaces];
-    v361 = [v359 isEqual:v360];
+    v358 = payloadPlaces;
+    payloadPlaces2 = [(_INPBIntentSlotValue *)self payloadPlaces];
+    payloadPlaces3 = [equalCopy payloadPlaces];
+    v361 = [payloadPlaces2 isEqual:payloadPlaces3];
 
     if (!v361)
     {
@@ -8526,20 +8526,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadPlaceLists];
-  v6 = [v4 payloadPlaceLists];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadPlaceLists];
+  payloadActivities2 = [equalCopy payloadPlaceLists];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v362 = [(_INPBIntentSlotValue *)self payloadPlaceLists];
-  if (v362)
+  payloadPlaceLists = [(_INPBIntentSlotValue *)self payloadPlaceLists];
+  if (payloadPlaceLists)
   {
-    v363 = v362;
-    v364 = [(_INPBIntentSlotValue *)self payloadPlaceLists];
-    v365 = [v4 payloadPlaceLists];
-    v366 = [v364 isEqual:v365];
+    v363 = payloadPlaceLists;
+    payloadPlaceLists2 = [(_INPBIntentSlotValue *)self payloadPlaceLists];
+    payloadPlaceLists3 = [equalCopy payloadPlaceLists];
+    v366 = [payloadPlaceLists2 isEqual:payloadPlaceLists3];
 
     if (!v366)
     {
@@ -8556,20 +8556,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadPrimitiveBools];
-  v6 = [v4 payloadPrimitiveBools];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadPrimitiveBools];
+  payloadActivities2 = [equalCopy payloadPrimitiveBools];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v367 = [(_INPBIntentSlotValue *)self payloadPrimitiveBools];
-  if (v367)
+  payloadPrimitiveBools = [(_INPBIntentSlotValue *)self payloadPrimitiveBools];
+  if (payloadPrimitiveBools)
   {
-    v368 = v367;
-    v369 = [(_INPBIntentSlotValue *)self payloadPrimitiveBools];
-    v370 = [v4 payloadPrimitiveBools];
-    v371 = [v369 isEqual:v370];
+    v368 = payloadPrimitiveBools;
+    payloadPrimitiveBools2 = [(_INPBIntentSlotValue *)self payloadPrimitiveBools];
+    payloadPrimitiveBools3 = [equalCopy payloadPrimitiveBools];
+    v371 = [payloadPrimitiveBools2 isEqual:payloadPrimitiveBools3];
 
     if (!v371)
     {
@@ -8581,20 +8581,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadPrimitiveDoubles];
-  v6 = [v4 payloadPrimitiveDoubles];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadPrimitiveDoubles];
+  payloadActivities2 = [equalCopy payloadPrimitiveDoubles];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v372 = [(_INPBIntentSlotValue *)self payloadPrimitiveDoubles];
-  if (v372)
+  payloadPrimitiveDoubles = [(_INPBIntentSlotValue *)self payloadPrimitiveDoubles];
+  if (payloadPrimitiveDoubles)
   {
-    v373 = v372;
-    v374 = [(_INPBIntentSlotValue *)self payloadPrimitiveDoubles];
-    v375 = [v4 payloadPrimitiveDoubles];
-    v376 = [v374 isEqual:v375];
+    v373 = payloadPrimitiveDoubles;
+    payloadPrimitiveDoubles2 = [(_INPBIntentSlotValue *)self payloadPrimitiveDoubles];
+    payloadPrimitiveDoubles3 = [equalCopy payloadPrimitiveDoubles];
+    v376 = [payloadPrimitiveDoubles2 isEqual:payloadPrimitiveDoubles3];
 
     if (!v376)
     {
@@ -8606,20 +8606,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadPrimitiveInts];
-  v6 = [v4 payloadPrimitiveInts];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadPrimitiveInts];
+  payloadActivities2 = [equalCopy payloadPrimitiveInts];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v377 = [(_INPBIntentSlotValue *)self payloadPrimitiveInts];
-  if (v377)
+  payloadPrimitiveInts = [(_INPBIntentSlotValue *)self payloadPrimitiveInts];
+  if (payloadPrimitiveInts)
   {
-    v378 = v377;
-    v379 = [(_INPBIntentSlotValue *)self payloadPrimitiveInts];
-    v380 = [v4 payloadPrimitiveInts];
-    v381 = [v379 isEqual:v380];
+    v378 = payloadPrimitiveInts;
+    payloadPrimitiveInts2 = [(_INPBIntentSlotValue *)self payloadPrimitiveInts];
+    payloadPrimitiveInts3 = [equalCopy payloadPrimitiveInts];
+    v381 = [payloadPrimitiveInts2 isEqual:payloadPrimitiveInts3];
 
     if (!v381)
     {
@@ -8631,20 +8631,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadPrimitiveLongs];
-  v6 = [v4 payloadPrimitiveLongs];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadPrimitiveLongs];
+  payloadActivities2 = [equalCopy payloadPrimitiveLongs];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v382 = [(_INPBIntentSlotValue *)self payloadPrimitiveLongs];
-  if (v382)
+  payloadPrimitiveLongs = [(_INPBIntentSlotValue *)self payloadPrimitiveLongs];
+  if (payloadPrimitiveLongs)
   {
-    v383 = v382;
-    v384 = [(_INPBIntentSlotValue *)self payloadPrimitiveLongs];
-    v385 = [v4 payloadPrimitiveLongs];
-    v386 = [v384 isEqual:v385];
+    v383 = payloadPrimitiveLongs;
+    payloadPrimitiveLongs2 = [(_INPBIntentSlotValue *)self payloadPrimitiveLongs];
+    payloadPrimitiveLongs3 = [equalCopy payloadPrimitiveLongs];
+    v386 = [payloadPrimitiveLongs2 isEqual:payloadPrimitiveLongs3];
 
     if (!v386)
     {
@@ -8656,20 +8656,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadPrimitiveStrings];
-  v6 = [v4 payloadPrimitiveStrings];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadPrimitiveStrings];
+  payloadActivities2 = [equalCopy payloadPrimitiveStrings];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v387 = [(_INPBIntentSlotValue *)self payloadPrimitiveStrings];
-  if (v387)
+  payloadPrimitiveStrings = [(_INPBIntentSlotValue *)self payloadPrimitiveStrings];
+  if (payloadPrimitiveStrings)
   {
-    v388 = v387;
-    v389 = [(_INPBIntentSlotValue *)self payloadPrimitiveStrings];
-    v390 = [v4 payloadPrimitiveStrings];
-    v391 = [v389 isEqual:v390];
+    v388 = payloadPrimitiveStrings;
+    payloadPrimitiveStrings2 = [(_INPBIntentSlotValue *)self payloadPrimitiveStrings];
+    payloadPrimitiveStrings3 = [equalCopy payloadPrimitiveStrings];
+    v391 = [payloadPrimitiveStrings2 isEqual:payloadPrimitiveStrings3];
 
     if (!v391)
     {
@@ -8681,20 +8681,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadPrivateAddMediaIntentDatas];
-  v6 = [v4 payloadPrivateAddMediaIntentDatas];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadPrivateAddMediaIntentDatas];
+  payloadActivities2 = [equalCopy payloadPrivateAddMediaIntentDatas];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v392 = [(_INPBIntentSlotValue *)self payloadPrivateAddMediaIntentDatas];
-  if (v392)
+  payloadPrivateAddMediaIntentDatas = [(_INPBIntentSlotValue *)self payloadPrivateAddMediaIntentDatas];
+  if (payloadPrivateAddMediaIntentDatas)
   {
-    v393 = v392;
-    v394 = [(_INPBIntentSlotValue *)self payloadPrivateAddMediaIntentDatas];
-    v395 = [v4 payloadPrivateAddMediaIntentDatas];
-    v396 = [v394 isEqual:v395];
+    v393 = payloadPrivateAddMediaIntentDatas;
+    payloadPrivateAddMediaIntentDatas2 = [(_INPBIntentSlotValue *)self payloadPrivateAddMediaIntentDatas];
+    payloadPrivateAddMediaIntentDatas3 = [equalCopy payloadPrivateAddMediaIntentDatas];
+    v396 = [payloadPrivateAddMediaIntentDatas2 isEqual:payloadPrivateAddMediaIntentDatas3];
 
     if (!v396)
     {
@@ -8706,20 +8706,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadPrivatePlayMediaIntentDatas];
-  v6 = [v4 payloadPrivatePlayMediaIntentDatas];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadPrivatePlayMediaIntentDatas];
+  payloadActivities2 = [equalCopy payloadPrivatePlayMediaIntentDatas];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v397 = [(_INPBIntentSlotValue *)self payloadPrivatePlayMediaIntentDatas];
-  if (v397)
+  payloadPrivatePlayMediaIntentDatas = [(_INPBIntentSlotValue *)self payloadPrivatePlayMediaIntentDatas];
+  if (payloadPrivatePlayMediaIntentDatas)
   {
-    v398 = v397;
-    v399 = [(_INPBIntentSlotValue *)self payloadPrivatePlayMediaIntentDatas];
-    v400 = [v4 payloadPrivatePlayMediaIntentDatas];
-    v401 = [v399 isEqual:v400];
+    v398 = payloadPrivatePlayMediaIntentDatas;
+    payloadPrivatePlayMediaIntentDatas2 = [(_INPBIntentSlotValue *)self payloadPrivatePlayMediaIntentDatas];
+    payloadPrivatePlayMediaIntentDatas3 = [equalCopy payloadPrivatePlayMediaIntentDatas];
+    v401 = [payloadPrivatePlayMediaIntentDatas2 isEqual:payloadPrivatePlayMediaIntentDatas3];
 
     if (!v401)
     {
@@ -8731,20 +8731,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadPrivateSearchForMediaIntentDatas];
-  v6 = [v4 payloadPrivateSearchForMediaIntentDatas];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadPrivateSearchForMediaIntentDatas];
+  payloadActivities2 = [equalCopy payloadPrivateSearchForMediaIntentDatas];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v402 = [(_INPBIntentSlotValue *)self payloadPrivateSearchForMediaIntentDatas];
-  if (v402)
+  payloadPrivateSearchForMediaIntentDatas = [(_INPBIntentSlotValue *)self payloadPrivateSearchForMediaIntentDatas];
+  if (payloadPrivateSearchForMediaIntentDatas)
   {
-    v403 = v402;
-    v404 = [(_INPBIntentSlotValue *)self payloadPrivateSearchForMediaIntentDatas];
-    v405 = [v4 payloadPrivateSearchForMediaIntentDatas];
-    v406 = [v404 isEqual:v405];
+    v403 = payloadPrivateSearchForMediaIntentDatas;
+    payloadPrivateSearchForMediaIntentDatas2 = [(_INPBIntentSlotValue *)self payloadPrivateSearchForMediaIntentDatas];
+    payloadPrivateSearchForMediaIntentDatas3 = [equalCopy payloadPrivateSearchForMediaIntentDatas];
+    v406 = [payloadPrivateSearchForMediaIntentDatas2 isEqual:payloadPrivateSearchForMediaIntentDatas3];
 
     if (!v406)
     {
@@ -8756,20 +8756,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadPrivateUpdateMediaAffinityIntentDatas];
-  v6 = [v4 payloadPrivateUpdateMediaAffinityIntentDatas];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadPrivateUpdateMediaAffinityIntentDatas];
+  payloadActivities2 = [equalCopy payloadPrivateUpdateMediaAffinityIntentDatas];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v407 = [(_INPBIntentSlotValue *)self payloadPrivateUpdateMediaAffinityIntentDatas];
-  if (v407)
+  payloadPrivateUpdateMediaAffinityIntentDatas = [(_INPBIntentSlotValue *)self payloadPrivateUpdateMediaAffinityIntentDatas];
+  if (payloadPrivateUpdateMediaAffinityIntentDatas)
   {
-    v408 = v407;
-    v409 = [(_INPBIntentSlotValue *)self payloadPrivateUpdateMediaAffinityIntentDatas];
-    v410 = [v4 payloadPrivateUpdateMediaAffinityIntentDatas];
-    v411 = [v409 isEqual:v410];
+    v408 = payloadPrivateUpdateMediaAffinityIntentDatas;
+    payloadPrivateUpdateMediaAffinityIntentDatas2 = [(_INPBIntentSlotValue *)self payloadPrivateUpdateMediaAffinityIntentDatas];
+    payloadPrivateUpdateMediaAffinityIntentDatas3 = [equalCopy payloadPrivateUpdateMediaAffinityIntentDatas];
+    v411 = [payloadPrivateUpdateMediaAffinityIntentDatas2 isEqual:payloadPrivateUpdateMediaAffinityIntentDatas3];
 
     if (!v411)
     {
@@ -8786,20 +8786,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadSendMessageAttachments];
-  v6 = [v4 payloadSendMessageAttachments];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadSendMessageAttachments];
+  payloadActivities2 = [equalCopy payloadSendMessageAttachments];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v412 = [(_INPBIntentSlotValue *)self payloadSendMessageAttachments];
-  if (v412)
+  payloadSendMessageAttachments = [(_INPBIntentSlotValue *)self payloadSendMessageAttachments];
+  if (payloadSendMessageAttachments)
   {
-    v413 = v412;
-    v414 = [(_INPBIntentSlotValue *)self payloadSendMessageAttachments];
-    v415 = [v4 payloadSendMessageAttachments];
-    v416 = [v414 isEqual:v415];
+    v413 = payloadSendMessageAttachments;
+    payloadSendMessageAttachments2 = [(_INPBIntentSlotValue *)self payloadSendMessageAttachments];
+    payloadSendMessageAttachments3 = [equalCopy payloadSendMessageAttachments];
+    v416 = [payloadSendMessageAttachments2 isEqual:payloadSendMessageAttachments3];
 
     if (!v416)
     {
@@ -8816,20 +8816,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadSettingMetadatas];
-  v6 = [v4 payloadSettingMetadatas];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadSettingMetadatas];
+  payloadActivities2 = [equalCopy payloadSettingMetadatas];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v417 = [(_INPBIntentSlotValue *)self payloadSettingMetadatas];
-  if (v417)
+  payloadSettingMetadatas = [(_INPBIntentSlotValue *)self payloadSettingMetadatas];
+  if (payloadSettingMetadatas)
   {
-    v418 = v417;
-    v419 = [(_INPBIntentSlotValue *)self payloadSettingMetadatas];
-    v420 = [v4 payloadSettingMetadatas];
-    v421 = [v419 isEqual:v420];
+    v418 = payloadSettingMetadatas;
+    payloadSettingMetadatas2 = [(_INPBIntentSlotValue *)self payloadSettingMetadatas];
+    payloadSettingMetadatas3 = [equalCopy payloadSettingMetadatas];
+    v421 = [payloadSettingMetadatas2 isEqual:payloadSettingMetadatas3];
 
     if (!v421)
     {
@@ -8841,20 +8841,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadShareDestinations];
-  v6 = [v4 payloadShareDestinations];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadShareDestinations];
+  payloadActivities2 = [equalCopy payloadShareDestinations];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v422 = [(_INPBIntentSlotValue *)self payloadShareDestinations];
-  if (v422)
+  payloadShareDestinations = [(_INPBIntentSlotValue *)self payloadShareDestinations];
+  if (payloadShareDestinations)
   {
-    v423 = v422;
-    v424 = [(_INPBIntentSlotValue *)self payloadShareDestinations];
-    v425 = [v4 payloadShareDestinations];
-    v426 = [v424 isEqual:v425];
+    v423 = payloadShareDestinations;
+    payloadShareDestinations2 = [(_INPBIntentSlotValue *)self payloadShareDestinations];
+    payloadShareDestinations3 = [equalCopy payloadShareDestinations];
+    v426 = [payloadShareDestinations2 isEqual:payloadShareDestinations3];
 
     if (!v426)
     {
@@ -8866,20 +8866,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadSleepAlarmAttributes];
-  v6 = [v4 payloadSleepAlarmAttributes];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadSleepAlarmAttributes];
+  payloadActivities2 = [equalCopy payloadSleepAlarmAttributes];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v427 = [(_INPBIntentSlotValue *)self payloadSleepAlarmAttributes];
-  if (v427)
+  payloadSleepAlarmAttributes = [(_INPBIntentSlotValue *)self payloadSleepAlarmAttributes];
+  if (payloadSleepAlarmAttributes)
   {
-    v428 = v427;
-    v429 = [(_INPBIntentSlotValue *)self payloadSleepAlarmAttributes];
-    v430 = [v4 payloadSleepAlarmAttributes];
-    v431 = [v429 isEqual:v430];
+    v428 = payloadSleepAlarmAttributes;
+    payloadSleepAlarmAttributes2 = [(_INPBIntentSlotValue *)self payloadSleepAlarmAttributes];
+    payloadSleepAlarmAttributes3 = [equalCopy payloadSleepAlarmAttributes];
+    v431 = [payloadSleepAlarmAttributes2 isEqual:payloadSleepAlarmAttributes3];
 
     if (!v431)
     {
@@ -8891,20 +8891,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadSpatialEventTriggers];
-  v6 = [v4 payloadSpatialEventTriggers];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadSpatialEventTriggers];
+  payloadActivities2 = [equalCopy payloadSpatialEventTriggers];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v432 = [(_INPBIntentSlotValue *)self payloadSpatialEventTriggers];
-  if (v432)
+  payloadSpatialEventTriggers = [(_INPBIntentSlotValue *)self payloadSpatialEventTriggers];
+  if (payloadSpatialEventTriggers)
   {
-    v433 = v432;
-    v434 = [(_INPBIntentSlotValue *)self payloadSpatialEventTriggers];
-    v435 = [v4 payloadSpatialEventTriggers];
-    v436 = [v434 isEqual:v435];
+    v433 = payloadSpatialEventTriggers;
+    payloadSpatialEventTriggers2 = [(_INPBIntentSlotValue *)self payloadSpatialEventTriggers];
+    payloadSpatialEventTriggers3 = [equalCopy payloadSpatialEventTriggers];
+    v436 = [payloadSpatialEventTriggers2 isEqual:payloadSpatialEventTriggers3];
 
     if (!v436)
     {
@@ -8916,20 +8916,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadSpeedValues];
-  v6 = [v4 payloadSpeedValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadSpeedValues];
+  payloadActivities2 = [equalCopy payloadSpeedValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v437 = [(_INPBIntentSlotValue *)self payloadSpeedValues];
-  if (v437)
+  payloadSpeedValues = [(_INPBIntentSlotValue *)self payloadSpeedValues];
+  if (payloadSpeedValues)
   {
-    v438 = v437;
-    v439 = [(_INPBIntentSlotValue *)self payloadSpeedValues];
-    v440 = [v4 payloadSpeedValues];
-    v441 = [v439 isEqual:v440];
+    v438 = payloadSpeedValues;
+    payloadSpeedValues2 = [(_INPBIntentSlotValue *)self payloadSpeedValues];
+    payloadSpeedValues3 = [equalCopy payloadSpeedValues];
+    v441 = [payloadSpeedValues2 isEqual:payloadSpeedValues3];
 
     if (!v441)
     {
@@ -8941,20 +8941,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadStartCallRequestMetadatas];
-  v6 = [v4 payloadStartCallRequestMetadatas];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadStartCallRequestMetadatas];
+  payloadActivities2 = [equalCopy payloadStartCallRequestMetadatas];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v442 = [(_INPBIntentSlotValue *)self payloadStartCallRequestMetadatas];
-  if (v442)
+  payloadStartCallRequestMetadatas = [(_INPBIntentSlotValue *)self payloadStartCallRequestMetadatas];
+  if (payloadStartCallRequestMetadatas)
   {
-    v443 = v442;
-    v444 = [(_INPBIntentSlotValue *)self payloadStartCallRequestMetadatas];
-    v445 = [v4 payloadStartCallRequestMetadatas];
-    v446 = [v444 isEqual:v445];
+    v443 = payloadStartCallRequestMetadatas;
+    payloadStartCallRequestMetadatas2 = [(_INPBIntentSlotValue *)self payloadStartCallRequestMetadatas];
+    payloadStartCallRequestMetadatas3 = [equalCopy payloadStartCallRequestMetadatas];
+    v446 = [payloadStartCallRequestMetadatas2 isEqual:payloadStartCallRequestMetadatas3];
 
     if (!v446)
     {
@@ -8966,20 +8966,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadStringLists];
-  v6 = [v4 payloadStringLists];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadStringLists];
+  payloadActivities2 = [equalCopy payloadStringLists];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v447 = [(_INPBIntentSlotValue *)self payloadStringLists];
-  if (v447)
+  payloadStringLists = [(_INPBIntentSlotValue *)self payloadStringLists];
+  if (payloadStringLists)
   {
-    v448 = v447;
-    v449 = [(_INPBIntentSlotValue *)self payloadStringLists];
-    v450 = [v4 payloadStringLists];
-    v451 = [v449 isEqual:v450];
+    v448 = payloadStringLists;
+    payloadStringLists2 = [(_INPBIntentSlotValue *)self payloadStringLists];
+    payloadStringLists3 = [equalCopy payloadStringLists];
+    v451 = [payloadStringLists2 isEqual:payloadStringLists3];
 
     if (!v451)
     {
@@ -8991,20 +8991,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadStringValues];
-  v6 = [v4 payloadStringValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadStringValues];
+  payloadActivities2 = [equalCopy payloadStringValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v452 = [(_INPBIntentSlotValue *)self payloadStringValues];
-  if (v452)
+  payloadStringValues = [(_INPBIntentSlotValue *)self payloadStringValues];
+  if (payloadStringValues)
   {
-    v453 = v452;
-    v454 = [(_INPBIntentSlotValue *)self payloadStringValues];
-    v455 = [v4 payloadStringValues];
-    v456 = [v454 isEqual:v455];
+    v453 = payloadStringValues;
+    payloadStringValues2 = [(_INPBIntentSlotValue *)self payloadStringValues];
+    payloadStringValues3 = [equalCopy payloadStringValues];
+    v456 = [payloadStringValues2 isEqual:payloadStringValues3];
 
     if (!v456)
     {
@@ -9016,20 +9016,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadSupportedTrafficIncidentTypes];
-  v6 = [v4 payloadSupportedTrafficIncidentTypes];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadSupportedTrafficIncidentTypes];
+  payloadActivities2 = [equalCopy payloadSupportedTrafficIncidentTypes];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v457 = [(_INPBIntentSlotValue *)self payloadSupportedTrafficIncidentTypes];
-  if (v457)
+  payloadSupportedTrafficIncidentTypes = [(_INPBIntentSlotValue *)self payloadSupportedTrafficIncidentTypes];
+  if (payloadSupportedTrafficIncidentTypes)
   {
-    v458 = v457;
-    v459 = [(_INPBIntentSlotValue *)self payloadSupportedTrafficIncidentTypes];
-    v460 = [v4 payloadSupportedTrafficIncidentTypes];
-    v461 = [v459 isEqual:v460];
+    v458 = payloadSupportedTrafficIncidentTypes;
+    payloadSupportedTrafficIncidentTypes2 = [(_INPBIntentSlotValue *)self payloadSupportedTrafficIncidentTypes];
+    payloadSupportedTrafficIncidentTypes3 = [equalCopy payloadSupportedTrafficIncidentTypes];
+    v461 = [payloadSupportedTrafficIncidentTypes2 isEqual:payloadSupportedTrafficIncidentTypes3];
 
     if (!v461)
     {
@@ -9041,20 +9041,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadTasks];
-  v6 = [v4 payloadTasks];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadTasks];
+  payloadActivities2 = [equalCopy payloadTasks];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v462 = [(_INPBIntentSlotValue *)self payloadTasks];
-  if (v462)
+  payloadTasks = [(_INPBIntentSlotValue *)self payloadTasks];
+  if (payloadTasks)
   {
-    v463 = v462;
-    v464 = [(_INPBIntentSlotValue *)self payloadTasks];
-    v465 = [v4 payloadTasks];
-    v466 = [v464 isEqual:v465];
+    v463 = payloadTasks;
+    payloadTasks2 = [(_INPBIntentSlotValue *)self payloadTasks];
+    payloadTasks3 = [equalCopy payloadTasks];
+    v466 = [payloadTasks2 isEqual:payloadTasks3];
 
     if (!v466)
     {
@@ -9066,20 +9066,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadTaskLists];
-  v6 = [v4 payloadTaskLists];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadTaskLists];
+  payloadActivities2 = [equalCopy payloadTaskLists];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v467 = [(_INPBIntentSlotValue *)self payloadTaskLists];
-  if (v467)
+  payloadTaskLists = [(_INPBIntentSlotValue *)self payloadTaskLists];
+  if (payloadTaskLists)
   {
-    v468 = v467;
-    v469 = [(_INPBIntentSlotValue *)self payloadTaskLists];
-    v470 = [v4 payloadTaskLists];
-    v471 = [v469 isEqual:v470];
+    v468 = payloadTaskLists;
+    payloadTaskLists2 = [(_INPBIntentSlotValue *)self payloadTaskLists];
+    payloadTaskLists3 = [equalCopy payloadTaskLists];
+    v471 = [payloadTaskLists2 isEqual:payloadTaskLists3];
 
     if (!v471)
     {
@@ -9096,20 +9096,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadTemperatureLists];
-  v6 = [v4 payloadTemperatureLists];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadTemperatureLists];
+  payloadActivities2 = [equalCopy payloadTemperatureLists];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v472 = [(_INPBIntentSlotValue *)self payloadTemperatureLists];
-  if (v472)
+  payloadTemperatureLists = [(_INPBIntentSlotValue *)self payloadTemperatureLists];
+  if (payloadTemperatureLists)
   {
-    v473 = v472;
-    v474 = [(_INPBIntentSlotValue *)self payloadTemperatureLists];
-    v475 = [v4 payloadTemperatureLists];
-    v476 = [v474 isEqual:v475];
+    v473 = payloadTemperatureLists;
+    payloadTemperatureLists2 = [(_INPBIntentSlotValue *)self payloadTemperatureLists];
+    payloadTemperatureLists3 = [equalCopy payloadTemperatureLists];
+    v476 = [payloadTemperatureLists2 isEqual:payloadTemperatureLists3];
 
     if (!v476)
     {
@@ -9121,20 +9121,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadTemperatureValues];
-  v6 = [v4 payloadTemperatureValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadTemperatureValues];
+  payloadActivities2 = [equalCopy payloadTemperatureValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v477 = [(_INPBIntentSlotValue *)self payloadTemperatureValues];
-  if (v477)
+  payloadTemperatureValues = [(_INPBIntentSlotValue *)self payloadTemperatureValues];
+  if (payloadTemperatureValues)
   {
-    v478 = v477;
-    v479 = [(_INPBIntentSlotValue *)self payloadTemperatureValues];
-    v480 = [v4 payloadTemperatureValues];
-    v481 = [v479 isEqual:v480];
+    v478 = payloadTemperatureValues;
+    payloadTemperatureValues2 = [(_INPBIntentSlotValue *)self payloadTemperatureValues];
+    payloadTemperatureValues3 = [equalCopy payloadTemperatureValues];
+    v481 = [payloadTemperatureValues2 isEqual:payloadTemperatureValues3];
 
     if (!v481)
     {
@@ -9146,20 +9146,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadTemporalEventTriggers];
-  v6 = [v4 payloadTemporalEventTriggers];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadTemporalEventTriggers];
+  payloadActivities2 = [equalCopy payloadTemporalEventTriggers];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v482 = [(_INPBIntentSlotValue *)self payloadTemporalEventTriggers];
-  if (v482)
+  payloadTemporalEventTriggers = [(_INPBIntentSlotValue *)self payloadTemporalEventTriggers];
+  if (payloadTemporalEventTriggers)
   {
-    v483 = v482;
-    v484 = [(_INPBIntentSlotValue *)self payloadTemporalEventTriggers];
-    v485 = [v4 payloadTemporalEventTriggers];
-    v486 = [v484 isEqual:v485];
+    v483 = payloadTemporalEventTriggers;
+    payloadTemporalEventTriggers2 = [(_INPBIntentSlotValue *)self payloadTemporalEventTriggers];
+    payloadTemporalEventTriggers3 = [equalCopy payloadTemporalEventTriggers];
+    v486 = [payloadTemporalEventTriggers2 isEqual:payloadTemporalEventTriggers3];
 
     if (!v486)
     {
@@ -9176,20 +9176,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadTimers];
-  v6 = [v4 payloadTimers];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadTimers];
+  payloadActivities2 = [equalCopy payloadTimers];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v487 = [(_INPBIntentSlotValue *)self payloadTimers];
-  if (v487)
+  payloadTimers = [(_INPBIntentSlotValue *)self payloadTimers];
+  if (payloadTimers)
   {
-    v488 = v487;
-    v489 = [(_INPBIntentSlotValue *)self payloadTimers];
-    v490 = [v4 payloadTimers];
-    v491 = [v489 isEqual:v490];
+    v488 = payloadTimers;
+    payloadTimers2 = [(_INPBIntentSlotValue *)self payloadTimers];
+    payloadTimers3 = [equalCopy payloadTimers];
+    v491 = [payloadTimers2 isEqual:payloadTimers3];
 
     if (!v491)
     {
@@ -9206,20 +9206,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadURLValues];
-  v6 = [v4 payloadURLValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadURLValues];
+  payloadActivities2 = [equalCopy payloadURLValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v492 = [(_INPBIntentSlotValue *)self payloadURLValues];
-  if (v492)
+  payloadURLValues = [(_INPBIntentSlotValue *)self payloadURLValues];
+  if (payloadURLValues)
   {
-    v493 = v492;
-    v494 = [(_INPBIntentSlotValue *)self payloadURLValues];
-    v495 = [v4 payloadURLValues];
-    v496 = [v494 isEqual:v495];
+    v493 = payloadURLValues;
+    payloadURLValues2 = [(_INPBIntentSlotValue *)self payloadURLValues];
+    payloadURLValues3 = [equalCopy payloadURLValues];
+    v496 = [payloadURLValues2 isEqual:payloadURLValues3];
 
     if (!v496)
     {
@@ -9236,20 +9236,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadVoiceCommandDeviceInformations];
-  v6 = [v4 payloadVoiceCommandDeviceInformations];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadVoiceCommandDeviceInformations];
+  payloadActivities2 = [equalCopy payloadVoiceCommandDeviceInformations];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v497 = [(_INPBIntentSlotValue *)self payloadVoiceCommandDeviceInformations];
-  if (v497)
+  payloadVoiceCommandDeviceInformations = [(_INPBIntentSlotValue *)self payloadVoiceCommandDeviceInformations];
+  if (payloadVoiceCommandDeviceInformations)
   {
-    v498 = v497;
-    v499 = [(_INPBIntentSlotValue *)self payloadVoiceCommandDeviceInformations];
-    v500 = [v4 payloadVoiceCommandDeviceInformations];
-    v501 = [v499 isEqual:v500];
+    v498 = payloadVoiceCommandDeviceInformations;
+    payloadVoiceCommandDeviceInformations2 = [(_INPBIntentSlotValue *)self payloadVoiceCommandDeviceInformations];
+    payloadVoiceCommandDeviceInformations3 = [equalCopy payloadVoiceCommandDeviceInformations];
+    v501 = [payloadVoiceCommandDeviceInformations2 isEqual:payloadVoiceCommandDeviceInformations3];
 
     if (!v501)
     {
@@ -9261,20 +9261,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadVolumeValues];
-  v6 = [v4 payloadVolumeValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadVolumeValues];
+  payloadActivities2 = [equalCopy payloadVolumeValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v502 = [(_INPBIntentSlotValue *)self payloadVolumeValues];
-  if (v502)
+  payloadVolumeValues = [(_INPBIntentSlotValue *)self payloadVolumeValues];
+  if (payloadVolumeValues)
   {
-    v503 = v502;
-    v504 = [(_INPBIntentSlotValue *)self payloadVolumeValues];
-    v505 = [v4 payloadVolumeValues];
-    v506 = [v504 isEqual:v505];
+    v503 = payloadVolumeValues;
+    payloadVolumeValues2 = [(_INPBIntentSlotValue *)self payloadVolumeValues];
+    payloadVolumeValues3 = [equalCopy payloadVolumeValues];
+    v506 = [payloadVolumeValues2 isEqual:payloadVolumeValues3];
 
     if (!v506)
     {
@@ -9286,20 +9286,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadWellnessMetadataPairs];
-  v6 = [v4 payloadWellnessMetadataPairs];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadWellnessMetadataPairs];
+  payloadActivities2 = [equalCopy payloadWellnessMetadataPairs];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v507 = [(_INPBIntentSlotValue *)self payloadWellnessMetadataPairs];
-  if (v507)
+  payloadWellnessMetadataPairs = [(_INPBIntentSlotValue *)self payloadWellnessMetadataPairs];
+  if (payloadWellnessMetadataPairs)
   {
-    v508 = v507;
-    v509 = [(_INPBIntentSlotValue *)self payloadWellnessMetadataPairs];
-    v510 = [v4 payloadWellnessMetadataPairs];
-    v511 = [v509 isEqual:v510];
+    v508 = payloadWellnessMetadataPairs;
+    payloadWellnessMetadataPairs2 = [(_INPBIntentSlotValue *)self payloadWellnessMetadataPairs];
+    payloadWellnessMetadataPairs3 = [equalCopy payloadWellnessMetadataPairs];
+    v511 = [payloadWellnessMetadataPairs2 isEqual:payloadWellnessMetadataPairs3];
 
     if (!v511)
     {
@@ -9311,20 +9311,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadWellnessObjectResultValues];
-  v6 = [v4 payloadWellnessObjectResultValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadWellnessObjectResultValues];
+  payloadActivities2 = [equalCopy payloadWellnessObjectResultValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v512 = [(_INPBIntentSlotValue *)self payloadWellnessObjectResultValues];
-  if (v512)
+  payloadWellnessObjectResultValues = [(_INPBIntentSlotValue *)self payloadWellnessObjectResultValues];
+  if (payloadWellnessObjectResultValues)
   {
-    v513 = v512;
-    v514 = [(_INPBIntentSlotValue *)self payloadWellnessObjectResultValues];
-    v515 = [v4 payloadWellnessObjectResultValues];
-    v516 = [v514 isEqual:v515];
+    v513 = payloadWellnessObjectResultValues;
+    payloadWellnessObjectResultValues2 = [(_INPBIntentSlotValue *)self payloadWellnessObjectResultValues];
+    payloadWellnessObjectResultValues3 = [equalCopy payloadWellnessObjectResultValues];
+    v516 = [payloadWellnessObjectResultValues2 isEqual:payloadWellnessObjectResultValues3];
 
     if (!v516)
     {
@@ -9341,20 +9341,20 @@ LABEL_1597:
     goto LABEL_595;
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadWellnessUnitTypes];
-  v6 = [v4 payloadWellnessUnitTypes];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadWellnessUnitTypes];
+  payloadActivities2 = [equalCopy payloadWellnessUnitTypes];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v517 = [(_INPBIntentSlotValue *)self payloadWellnessUnitTypes];
-  if (v517)
+  payloadWellnessUnitTypes = [(_INPBIntentSlotValue *)self payloadWellnessUnitTypes];
+  if (payloadWellnessUnitTypes)
   {
-    v518 = v517;
-    v519 = [(_INPBIntentSlotValue *)self payloadWellnessUnitTypes];
-    v520 = [v4 payloadWellnessUnitTypes];
-    v521 = [v519 isEqual:v520];
+    v518 = payloadWellnessUnitTypes;
+    payloadWellnessUnitTypes2 = [(_INPBIntentSlotValue *)self payloadWellnessUnitTypes];
+    payloadWellnessUnitTypes3 = [equalCopy payloadWellnessUnitTypes];
+    v521 = [payloadWellnessUnitTypes2 isEqual:payloadWellnessUnitTypes3];
 
     if (!v521)
     {
@@ -9366,20 +9366,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadWellnessValues];
-  v6 = [v4 payloadWellnessValues];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadWellnessValues];
+  payloadActivities2 = [equalCopy payloadWellnessValues];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v522 = [(_INPBIntentSlotValue *)self payloadWellnessValues];
-  if (v522)
+  payloadWellnessValues = [(_INPBIntentSlotValue *)self payloadWellnessValues];
+  if (payloadWellnessValues)
   {
-    v523 = v522;
-    v524 = [(_INPBIntentSlotValue *)self payloadWellnessValues];
-    v525 = [v4 payloadWellnessValues];
-    v526 = [v524 isEqual:v525];
+    v523 = payloadWellnessValues;
+    payloadWellnessValues2 = [(_INPBIntentSlotValue *)self payloadWellnessValues];
+    payloadWellnessValues3 = [equalCopy payloadWellnessValues];
+    v526 = [payloadWellnessValues2 isEqual:payloadWellnessValues3];
 
     if (!v526)
     {
@@ -9391,20 +9391,20 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadWorkoutAssociatedItems];
-  v6 = [v4 payloadWorkoutAssociatedItems];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadWorkoutAssociatedItems];
+  payloadActivities2 = [equalCopy payloadWorkoutAssociatedItems];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
     goto LABEL_594;
   }
 
-  v527 = [(_INPBIntentSlotValue *)self payloadWorkoutAssociatedItems];
-  if (v527)
+  payloadWorkoutAssociatedItems = [(_INPBIntentSlotValue *)self payloadWorkoutAssociatedItems];
+  if (payloadWorkoutAssociatedItems)
   {
-    v528 = v527;
-    v529 = [(_INPBIntentSlotValue *)self payloadWorkoutAssociatedItems];
-    v530 = [v4 payloadWorkoutAssociatedItems];
-    v531 = [v529 isEqual:v530];
+    v528 = payloadWorkoutAssociatedItems;
+    payloadWorkoutAssociatedItems2 = [(_INPBIntentSlotValue *)self payloadWorkoutAssociatedItems];
+    payloadWorkoutAssociatedItems3 = [equalCopy payloadWorkoutAssociatedItems];
+    v531 = [payloadWorkoutAssociatedItems2 isEqual:payloadWorkoutAssociatedItems3];
 
     if (!v531)
     {
@@ -9416,22 +9416,22 @@ LABEL_1597:
   {
   }
 
-  v5 = [(_INPBIntentSlotValue *)self payloadWorkoutCustomizations];
-  v6 = [v4 payloadWorkoutCustomizations];
-  if ((v5 != 0) == (v6 == 0))
+  payloadActivities = [(_INPBIntentSlotValue *)self payloadWorkoutCustomizations];
+  payloadActivities2 = [equalCopy payloadWorkoutCustomizations];
+  if ((payloadActivities != 0) == (payloadActivities2 == 0))
   {
 LABEL_594:
 
     goto LABEL_595;
   }
 
-  v532 = [(_INPBIntentSlotValue *)self payloadWorkoutCustomizations];
-  if (v532)
+  payloadWorkoutCustomizations = [(_INPBIntentSlotValue *)self payloadWorkoutCustomizations];
+  if (payloadWorkoutCustomizations)
   {
-    v533 = v532;
-    v534 = [(_INPBIntentSlotValue *)self payloadWorkoutCustomizations];
-    v535 = [v4 payloadWorkoutCustomizations];
-    v536 = [v534 isEqual:v535];
+    v533 = payloadWorkoutCustomizations;
+    payloadWorkoutCustomizations2 = [(_INPBIntentSlotValue *)self payloadWorkoutCustomizations];
+    payloadWorkoutCustomizations3 = [equalCopy payloadWorkoutCustomizations];
+    v536 = [payloadWorkoutCustomizations2 isEqual:payloadWorkoutCustomizations3];
 
     if (!v536)
     {
@@ -9449,10 +9449,10 @@ LABEL_594:
     {
       if (PBRepeatedInt32IsEqual())
       {
-        v539 = [(_INPBIntentSlotValue *)self hasType];
-        if (v539 == [v4 hasType])
+        hasType = [(_INPBIntentSlotValue *)self hasType];
+        if (hasType == [equalCopy hasType])
         {
-          if (!-[_INPBIntentSlotValue hasType](self, "hasType") || ![v4 hasType] || (type = self->_type, type == objc_msgSend(v4, "type")))
+          if (!-[_INPBIntentSlotValue hasType](self, "hasType") || ![equalCopy hasType] || (type = self->_type, type == objc_msgSend(equalCopy, "type")))
           {
             v537 = 1;
             goto LABEL_596;
@@ -9469,61 +9469,61 @@ LABEL_596:
   return v537;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBIntentSlotValue allocWithZone:](_INPBIntentSlotValue init];
   PBRepeatedInt32Copy();
-  v6 = [(NSArray *)self->_payloadActivities copyWithZone:a3];
+  v6 = [(NSArray *)self->_payloadActivities copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadActivities:v6];
 
-  v7 = [(NSArray *)self->_payloadActivityLists copyWithZone:a3];
+  v7 = [(NSArray *)self->_payloadActivityLists copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadActivityLists:v7];
 
-  v8 = [(NSArray *)self->_payloadAlarms copyWithZone:a3];
+  v8 = [(NSArray *)self->_payloadAlarms copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadAlarms:v8];
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v9 = [(NSArray *)self->_payloadAlarmSearchs copyWithZone:a3];
+  v9 = [(NSArray *)self->_payloadAlarmSearchs copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadAlarmSearchs:v9];
 
   PBRepeatedInt32Copy();
-  v10 = [(NSArray *)self->_payloadAnnouncements copyWithZone:a3];
+  v10 = [(NSArray *)self->_payloadAnnouncements copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadAnnouncements:v10];
 
-  v11 = [(NSArray *)self->_payloadAppIdentifiers copyWithZone:a3];
+  v11 = [(NSArray *)self->_payloadAppIdentifiers copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadAppIdentifiers:v11];
 
-  v12 = [(NSArray *)self->_payloadArchivedObjects copyWithZone:a3];
+  v12 = [(NSArray *)self->_payloadArchivedObjects copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadArchivedObjects:v12];
 
   PBRepeatedInt32Copy();
-  v13 = [(NSArray *)self->_payloadBillDetailsValues copyWithZone:a3];
+  v13 = [(NSArray *)self->_payloadBillDetailsValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadBillDetailsValues:v13];
 
-  v14 = [(NSArray *)self->_payloadBillPayeeValues copyWithZone:a3];
+  v14 = [(NSArray *)self->_payloadBillPayeeValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadBillPayeeValues:v14];
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v15 = [(NSArray *)self->_payloadCalendarEvents copyWithZone:a3];
+  v15 = [(NSArray *)self->_payloadCalendarEvents copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadCalendarEvents:v15];
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v16 = [(NSArray *)self->_payloadCallGroups copyWithZone:a3];
+  v16 = [(NSArray *)self->_payloadCallGroups copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadCallGroups:v16];
 
-  v17 = [(NSArray *)self->_payloadCallGroupConversations copyWithZone:a3];
+  v17 = [(NSArray *)self->_payloadCallGroupConversations copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadCallGroupConversations:v17];
 
-  v18 = [(NSArray *)self->_payloadCallRecordFilters copyWithZone:a3];
+  v18 = [(NSArray *)self->_payloadCallRecordFilters copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadCallRecordFilters:v18];
 
   PBRepeatedInt32Copy();
-  v19 = [(NSArray *)self->_payloadCallRecordValues copyWithZone:a3];
+  v19 = [(NSArray *)self->_payloadCallRecordValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadCallRecordValues:v19];
 
   PBRepeatedInt32Copy();
@@ -9532,325 +9532,325 @@ LABEL_596:
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v20 = [(NSArray *)self->_payloadChargingConnectorTypes copyWithZone:a3];
+  v20 = [(NSArray *)self->_payloadChargingConnectorTypes copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadChargingConnectorTypes:v20];
 
-  v21 = [(NSArray *)self->_payloadContactEventTriggers copyWithZone:a3];
+  v21 = [(NSArray *)self->_payloadContactEventTriggers copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadContactEventTriggers:v21];
 
-  v22 = [(NSArray *)self->_payloadContactLists copyWithZone:a3];
+  v22 = [(NSArray *)self->_payloadContactLists copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadContactLists:v22];
 
-  v23 = [(NSArray *)self->_payloadContactValues copyWithZone:a3];
+  v23 = [(NSArray *)self->_payloadContactValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadContactValues:v23];
 
-  v24 = [(NSArray *)self->_payloadCurrencyAmounts copyWithZone:a3];
+  v24 = [(NSArray *)self->_payloadCurrencyAmounts copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadCurrencyAmounts:v24];
 
-  v25 = [(NSArray *)self->_payloadCustomObjects copyWithZone:a3];
+  v25 = [(NSArray *)self->_payloadCustomObjects copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadCustomObjects:v25];
 
-  v26 = [(NSArray *)self->_payloadDataStrings copyWithZone:a3];
+  v26 = [(NSArray *)self->_payloadDataStrings copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadDataStrings:v26];
 
-  v27 = [(NSArray *)self->_payloadDataStringLists copyWithZone:a3];
+  v27 = [(NSArray *)self->_payloadDataStringLists copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadDataStringLists:v27];
 
   PBRepeatedInt32Copy();
-  v28 = [(NSArray *)self->_payloadDateTimeRangeLists copyWithZone:a3];
+  v28 = [(NSArray *)self->_payloadDateTimeRangeLists copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadDateTimeRangeLists:v28];
 
-  v29 = [(NSArray *)self->_payloadDateTimeRangeValues copyWithZone:a3];
+  v29 = [(NSArray *)self->_payloadDateTimeRangeValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadDateTimeRangeValues:v29];
 
-  v30 = [(NSArray *)self->_payloadDateTimeValues copyWithZone:a3];
+  v30 = [(NSArray *)self->_payloadDateTimeValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadDateTimeValues:v30];
 
-  v31 = [(NSArray *)self->_payloadDevices copyWithZone:a3];
+  v31 = [(NSArray *)self->_payloadDevices copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadDevices:v31];
 
-  v32 = [(NSArray *)self->_payloadDeviceDetails copyWithZone:a3];
+  v32 = [(NSArray *)self->_payloadDeviceDetails copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadDeviceDetails:v32];
 
   PBRepeatedInt32Copy();
-  v33 = [(NSArray *)self->_payloadDialingContacts copyWithZone:a3];
+  v33 = [(NSArray *)self->_payloadDialingContacts copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadDialingContacts:v33];
 
-  v34 = [(NSArray *)self->_payloadDistanceLists copyWithZone:a3];
+  v34 = [(NSArray *)self->_payloadDistanceLists copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadDistanceLists:v34];
 
-  v35 = [(NSArray *)self->_payloadDistanceValues copyWithZone:a3];
+  v35 = [(NSArray *)self->_payloadDistanceValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadDistanceValues:v35];
 
-  v36 = [(NSArray *)self->_payloadDoubleLists copyWithZone:a3];
+  v36 = [(NSArray *)self->_payloadDoubleLists copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadDoubleLists:v36];
 
-  v37 = [(NSArray *)self->_payloadDoubleValues copyWithZone:a3];
+  v37 = [(NSArray *)self->_payloadDoubleValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadDoubleValues:v37];
 
-  v38 = [(NSArray *)self->_payloadEnergyValues copyWithZone:a3];
+  v38 = [(NSArray *)self->_payloadEnergyValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadEnergyValues:v38];
 
-  v39 = [(NSArray *)self->_payloadEnumerations copyWithZone:a3];
+  v39 = [(NSArray *)self->_payloadEnumerations copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadEnumerations:v39];
 
-  v40 = [(NSArray *)self->_payloadEvents copyWithZone:a3];
+  v40 = [(NSArray *)self->_payloadEvents copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadEvents:v40];
 
   PBRepeatedInt32Copy();
-  v41 = [(NSArray *)self->_payloadEventLists copyWithZone:a3];
+  v41 = [(NSArray *)self->_payloadEventLists copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadEventLists:v41];
 
-  v42 = [(NSArray *)self->_payloadEventParticipants copyWithZone:a3];
+  v42 = [(NSArray *)self->_payloadEventParticipants copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadEventParticipants:v42];
 
-  v43 = [(NSArray *)self->_payloadFiles copyWithZone:a3];
+  v43 = [(NSArray *)self->_payloadFiles copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadFiles:v43];
 
   PBRepeatedInt32Copy();
-  v44 = [(NSArray *)self->_payloadFileProperties copyWithZone:a3];
+  v44 = [(NSArray *)self->_payloadFileProperties copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadFileProperties:v44];
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v45 = [(NSArray *)self->_payloadFilePropertyValues copyWithZone:a3];
+  v45 = [(NSArray *)self->_payloadFilePropertyValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadFilePropertyValues:v45];
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v46 = [(NSArray *)self->_payloadFinancialAccountValues copyWithZone:a3];
+  v46 = [(NSArray *)self->_payloadFinancialAccountValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadFinancialAccountValues:v46];
 
-  v47 = [(NSArray *)self->_payloadGeographicalFeatures copyWithZone:a3];
+  v47 = [(NSArray *)self->_payloadGeographicalFeatures copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadGeographicalFeatures:v47];
 
-  v48 = [(NSArray *)self->_payloadGeographicalFeatureLists copyWithZone:a3];
+  v48 = [(NSArray *)self->_payloadGeographicalFeatureLists copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadGeographicalFeatureLists:v48];
 
-  v49 = [(NSArray *)self->_payloadGetSettingResponseDatas copyWithZone:a3];
+  v49 = [(NSArray *)self->_payloadGetSettingResponseDatas copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadGetSettingResponseDatas:v49];
 
-  v50 = [(NSArray *)self->_payloadHomeAttributes copyWithZone:a3];
+  v50 = [(NSArray *)self->_payloadHomeAttributes copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadHomeAttributes:v50];
 
   PBRepeatedInt32Copy();
-  v51 = [(NSArray *)self->_payloadHomeAttributeValues copyWithZone:a3];
+  v51 = [(NSArray *)self->_payloadHomeAttributeValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadHomeAttributeValues:v51];
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v52 = [(NSArray *)self->_payloadHomeEntities copyWithZone:a3];
+  v52 = [(NSArray *)self->_payloadHomeEntities copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadHomeEntities:v52];
 
   PBRepeatedInt32Copy();
-  v53 = [(NSArray *)self->_payloadHomeFilters copyWithZone:a3];
+  v53 = [(NSArray *)self->_payloadHomeFilters copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadHomeFilters:v53];
 
-  v54 = [(NSArray *)self->_payloadHomeUserTasks copyWithZone:a3];
+  v54 = [(NSArray *)self->_payloadHomeUserTasks copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadHomeUserTasks:v54];
 
-  v55 = [(NSArray *)self->_payloadIntegerLists copyWithZone:a3];
+  v55 = [(NSArray *)self->_payloadIntegerLists copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadIntegerLists:v55];
 
-  v56 = [(NSArray *)self->_payloadIntegerValues copyWithZone:a3];
+  v56 = [(NSArray *)self->_payloadIntegerValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadIntegerValues:v56];
 
-  v57 = [(NSArray *)self->_payloadIntents copyWithZone:a3];
+  v57 = [(NSArray *)self->_payloadIntents copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadIntents:v57];
 
-  v58 = [(NSArray *)self->_payloadIntentExecutionResults copyWithZone:a3];
+  v58 = [(NSArray *)self->_payloadIntentExecutionResults copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadIntentExecutionResults:v58];
 
-  v59 = [(NSArray *)self->_payloadLocations copyWithZone:a3];
+  v59 = [(NSArray *)self->_payloadLocations copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadLocations:v59];
 
-  v60 = [(NSArray *)self->_payloadLocationLists copyWithZone:a3];
+  v60 = [(NSArray *)self->_payloadLocationLists copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadLocationLists:v60];
 
   PBRepeatedInt32Copy();
-  v61 = [(NSArray *)self->_payloadLongLists copyWithZone:a3];
+  v61 = [(NSArray *)self->_payloadLongLists copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadLongLists:v61];
 
-  v62 = [(NSArray *)self->_payloadLongValues copyWithZone:a3];
+  v62 = [(NSArray *)self->_payloadLongValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadLongValues:v62];
 
-  v63 = [(NSArray *)self->_payloadMassValues copyWithZone:a3];
+  v63 = [(NSArray *)self->_payloadMassValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadMassValues:v63];
 
   PBRepeatedInt32Copy();
-  v64 = [(NSArray *)self->_payloadMediaDestinations copyWithZone:a3];
+  v64 = [(NSArray *)self->_payloadMediaDestinations copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadMediaDestinations:v64];
 
-  v65 = [(NSArray *)self->_payloadMediaItemGroups copyWithZone:a3];
+  v65 = [(NSArray *)self->_payloadMediaItemGroups copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadMediaItemGroups:v65];
 
-  v66 = [(NSArray *)self->_payloadMediaItemValues copyWithZone:a3];
+  v66 = [(NSArray *)self->_payloadMediaItemValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadMediaItemValues:v66];
 
-  v67 = [(NSArray *)self->_payloadMediaSearchs copyWithZone:a3];
+  v67 = [(NSArray *)self->_payloadMediaSearchs copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadMediaSearchs:v67];
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v68 = [(NSArray *)self->_payloadModifyNicknames copyWithZone:a3];
+  v68 = [(NSArray *)self->_payloadModifyNicknames copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadModifyNicknames:v68];
 
-  v69 = [(NSArray *)self->_payloadModifyRelationships copyWithZone:a3];
+  v69 = [(NSArray *)self->_payloadModifyRelationships copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadModifyRelationships:v69];
 
-  v70 = [(NSArray *)self->_payloadNotes copyWithZone:a3];
+  v70 = [(NSArray *)self->_payloadNotes copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadNotes:v70];
 
-  v71 = [(NSArray *)self->_payloadNoteContents copyWithZone:a3];
+  v71 = [(NSArray *)self->_payloadNoteContents copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadNoteContents:v71];
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v72 = [(NSArray *)self->_payloadNumericSettingValues copyWithZone:a3];
+  v72 = [(NSArray *)self->_payloadNumericSettingValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadNumericSettingValues:v72];
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v73 = [(NSArray *)self->_payloadPaymentAmountValues copyWithZone:a3];
+  v73 = [(NSArray *)self->_payloadPaymentAmountValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadPaymentAmountValues:v73];
 
-  v74 = [(NSArray *)self->_payloadPaymentMethodLists copyWithZone:a3];
+  v74 = [(NSArray *)self->_payloadPaymentMethodLists copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadPaymentMethodLists:v74];
 
-  v75 = [(NSArray *)self->_payloadPaymentMethodValues copyWithZone:a3];
+  v75 = [(NSArray *)self->_payloadPaymentMethodValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadPaymentMethodValues:v75];
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v76 = [(NSArray *)self->_payloadPlaces copyWithZone:a3];
+  v76 = [(NSArray *)self->_payloadPlaces copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadPlaces:v76];
 
-  v77 = [(NSArray *)self->_payloadPlaceLists copyWithZone:a3];
+  v77 = [(NSArray *)self->_payloadPlaceLists copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadPlaceLists:v77];
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v78 = [(NSArray *)self->_payloadPrimitiveBools copyWithZone:a3];
+  v78 = [(NSArray *)self->_payloadPrimitiveBools copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadPrimitiveBools:v78];
 
-  v79 = [(NSArray *)self->_payloadPrimitiveDoubles copyWithZone:a3];
+  v79 = [(NSArray *)self->_payloadPrimitiveDoubles copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadPrimitiveDoubles:v79];
 
-  v80 = [(NSArray *)self->_payloadPrimitiveInts copyWithZone:a3];
+  v80 = [(NSArray *)self->_payloadPrimitiveInts copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadPrimitiveInts:v80];
 
-  v81 = [(NSArray *)self->_payloadPrimitiveLongs copyWithZone:a3];
+  v81 = [(NSArray *)self->_payloadPrimitiveLongs copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadPrimitiveLongs:v81];
 
-  v82 = [(NSArray *)self->_payloadPrimitiveStrings copyWithZone:a3];
+  v82 = [(NSArray *)self->_payloadPrimitiveStrings copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadPrimitiveStrings:v82];
 
-  v83 = [(NSArray *)self->_payloadPrivateAddMediaIntentDatas copyWithZone:a3];
+  v83 = [(NSArray *)self->_payloadPrivateAddMediaIntentDatas copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadPrivateAddMediaIntentDatas:v83];
 
-  v84 = [(NSArray *)self->_payloadPrivatePlayMediaIntentDatas copyWithZone:a3];
+  v84 = [(NSArray *)self->_payloadPrivatePlayMediaIntentDatas copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadPrivatePlayMediaIntentDatas:v84];
 
-  v85 = [(NSArray *)self->_payloadPrivateSearchForMediaIntentDatas copyWithZone:a3];
+  v85 = [(NSArray *)self->_payloadPrivateSearchForMediaIntentDatas copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadPrivateSearchForMediaIntentDatas:v85];
 
-  v86 = [(NSArray *)self->_payloadPrivateUpdateMediaAffinityIntentDatas copyWithZone:a3];
+  v86 = [(NSArray *)self->_payloadPrivateUpdateMediaAffinityIntentDatas copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadPrivateUpdateMediaAffinityIntentDatas:v86];
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v87 = [(NSArray *)self->_payloadSendMessageAttachments copyWithZone:a3];
+  v87 = [(NSArray *)self->_payloadSendMessageAttachments copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadSendMessageAttachments:v87];
 
   PBRepeatedInt32Copy();
-  v88 = [(NSArray *)self->_payloadSettingMetadatas copyWithZone:a3];
+  v88 = [(NSArray *)self->_payloadSettingMetadatas copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadSettingMetadatas:v88];
 
-  v89 = [(NSArray *)self->_payloadShareDestinations copyWithZone:a3];
+  v89 = [(NSArray *)self->_payloadShareDestinations copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadShareDestinations:v89];
 
-  v90 = [(NSArray *)self->_payloadSleepAlarmAttributes copyWithZone:a3];
+  v90 = [(NSArray *)self->_payloadSleepAlarmAttributes copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadSleepAlarmAttributes:v90];
 
-  v91 = [(NSArray *)self->_payloadSpatialEventTriggers copyWithZone:a3];
+  v91 = [(NSArray *)self->_payloadSpatialEventTriggers copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadSpatialEventTriggers:v91];
 
-  v92 = [(NSArray *)self->_payloadSpeedValues copyWithZone:a3];
+  v92 = [(NSArray *)self->_payloadSpeedValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadSpeedValues:v92];
 
-  v93 = [(NSArray *)self->_payloadStartCallRequestMetadatas copyWithZone:a3];
+  v93 = [(NSArray *)self->_payloadStartCallRequestMetadatas copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadStartCallRequestMetadatas:v93];
 
-  v94 = [(NSArray *)self->_payloadStringLists copyWithZone:a3];
+  v94 = [(NSArray *)self->_payloadStringLists copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadStringLists:v94];
 
-  v95 = [(NSArray *)self->_payloadStringValues copyWithZone:a3];
+  v95 = [(NSArray *)self->_payloadStringValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadStringValues:v95];
 
-  v96 = [(NSArray *)self->_payloadSupportedTrafficIncidentTypes copyWithZone:a3];
+  v96 = [(NSArray *)self->_payloadSupportedTrafficIncidentTypes copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadSupportedTrafficIncidentTypes:v96];
 
-  v97 = [(NSArray *)self->_payloadTasks copyWithZone:a3];
+  v97 = [(NSArray *)self->_payloadTasks copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadTasks:v97];
 
-  v98 = [(NSArray *)self->_payloadTaskLists copyWithZone:a3];
+  v98 = [(NSArray *)self->_payloadTaskLists copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadTaskLists:v98];
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v99 = [(NSArray *)self->_payloadTemperatureLists copyWithZone:a3];
+  v99 = [(NSArray *)self->_payloadTemperatureLists copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadTemperatureLists:v99];
 
-  v100 = [(NSArray *)self->_payloadTemperatureValues copyWithZone:a3];
+  v100 = [(NSArray *)self->_payloadTemperatureValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadTemperatureValues:v100];
 
-  v101 = [(NSArray *)self->_payloadTemporalEventTriggers copyWithZone:a3];
+  v101 = [(NSArray *)self->_payloadTemporalEventTriggers copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadTemporalEventTriggers:v101];
 
   PBRepeatedInt32Copy();
-  v102 = [(NSArray *)self->_payloadTimers copyWithZone:a3];
+  v102 = [(NSArray *)self->_payloadTimers copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadTimers:v102];
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v103 = [(NSArray *)self->_payloadURLValues copyWithZone:a3];
+  v103 = [(NSArray *)self->_payloadURLValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadURLValues:v103];
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v104 = [(NSArray *)self->_payloadVoiceCommandDeviceInformations copyWithZone:a3];
+  v104 = [(NSArray *)self->_payloadVoiceCommandDeviceInformations copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadVoiceCommandDeviceInformations:v104];
 
-  v105 = [(NSArray *)self->_payloadVolumeValues copyWithZone:a3];
+  v105 = [(NSArray *)self->_payloadVolumeValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadVolumeValues:v105];
 
-  v106 = [(NSArray *)self->_payloadWellnessMetadataPairs copyWithZone:a3];
+  v106 = [(NSArray *)self->_payloadWellnessMetadataPairs copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadWellnessMetadataPairs:v106];
 
-  v107 = [(NSArray *)self->_payloadWellnessObjectResultValues copyWithZone:a3];
+  v107 = [(NSArray *)self->_payloadWellnessObjectResultValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadWellnessObjectResultValues:v107];
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v108 = [(NSArray *)self->_payloadWellnessUnitTypes copyWithZone:a3];
+  v108 = [(NSArray *)self->_payloadWellnessUnitTypes copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadWellnessUnitTypes:v108];
 
-  v109 = [(NSArray *)self->_payloadWellnessValues copyWithZone:a3];
+  v109 = [(NSArray *)self->_payloadWellnessValues copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadWellnessValues:v109];
 
-  v110 = [(NSArray *)self->_payloadWorkoutAssociatedItems copyWithZone:a3];
+  v110 = [(NSArray *)self->_payloadWorkoutAssociatedItems copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadWorkoutAssociatedItems:v110];
 
-  v111 = [(NSArray *)self->_payloadWorkoutCustomizations copyWithZone:a3];
+  v111 = [(NSArray *)self->_payloadWorkoutCustomizations copyWithZone:zone];
   [(_INPBIntentSlotValue *)v5 setPayloadWorkoutCustomizations:v111];
 
   PBRepeatedInt32Copy();
@@ -9864,34 +9864,34 @@ LABEL_596:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBIntentSlotValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBIntentSlotValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBIntentSlotValue)initWithCoder:(id)a3
+- (_INPBIntentSlotValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBIntentSlotValue *)self initWithData:v6];
+    self = [(_INPBIntentSlotValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v1300 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_payloadAccountTypes.count)
   {
     v5 = 0;
@@ -13833,210 +13833,210 @@ LABEL_596:
   v769 = *MEMORY[0x1E69E9840];
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"String"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"String"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Double"])
+  else if ([typeCopy isEqualToString:@"Double"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Integer"])
+  else if ([typeCopy isEqualToString:@"Integer"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Contact"])
+  else if ([typeCopy isEqualToString:@"Contact"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"DateTimeRange"])
+  else if ([typeCopy isEqualToString:@"DateTimeRange"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Location"])
+  else if ([typeCopy isEqualToString:@"Location"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"DataString"])
+  else if ([typeCopy isEqualToString:@"DataString"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Long"])
+  else if ([typeCopy isEqualToString:@"Long"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"PaymentMethod"])
+  else if ([typeCopy isEqualToString:@"PaymentMethod"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Temperature"])
+  else if ([typeCopy isEqualToString:@"Temperature"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"Distance"])
+  else if ([typeCopy isEqualToString:@"Distance"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"FinancialAccount"])
+  else if ([typeCopy isEqualToString:@"FinancialAccount"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"BillType"])
+  else if ([typeCopy isEqualToString:@"BillType"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"Mass"])
+  else if ([typeCopy isEqualToString:@"Mass"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"Volume"])
+  else if ([typeCopy isEqualToString:@"Volume"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"Speed"])
+  else if ([typeCopy isEqualToString:@"Speed"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"Energy"])
+  else if ([typeCopy isEqualToString:@"Energy"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"StringList"])
+  else if ([typeCopy isEqualToString:@"StringList"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"DoubleList"])
+  else if ([typeCopy isEqualToString:@"DoubleList"])
   {
     v4 = 51;
   }
 
-  else if ([v3 isEqualToString:@"IntegerList"])
+  else if ([typeCopy isEqualToString:@"IntegerList"])
   {
     v4 = 52;
   }
 
-  else if ([v3 isEqualToString:@"ContactList"])
+  else if ([typeCopy isEqualToString:@"ContactList"])
   {
     v4 = 53;
   }
 
-  else if ([v3 isEqualToString:@"DateTimeRangeList"])
+  else if ([typeCopy isEqualToString:@"DateTimeRangeList"])
   {
     v4 = 54;
   }
 
-  else if ([v3 isEqualToString:@"LocationList"])
+  else if ([typeCopy isEqualToString:@"LocationList"])
   {
     v4 = 55;
   }
 
-  else if ([v3 isEqualToString:@"DataStringList"])
+  else if ([typeCopy isEqualToString:@"DataStringList"])
   {
     v4 = 56;
   }
 
-  else if ([v3 isEqualToString:@"LongList"])
+  else if ([typeCopy isEqualToString:@"LongList"])
   {
     v4 = 57;
   }
 
-  else if ([v3 isEqualToString:@"PaymentMethodList"])
+  else if ([typeCopy isEqualToString:@"PaymentMethodList"])
   {
     v4 = 58;
   }
 
-  else if ([v3 isEqualToString:@"TemperatureList"])
+  else if ([typeCopy isEqualToString:@"TemperatureList"])
   {
     v4 = 59;
   }
 
-  else if ([v3 isEqualToString:@"DistanceList"])
+  else if ([typeCopy isEqualToString:@"DistanceList"])
   {
     v4 = 60;
   }
 
-  else if ([v3 isEqualToString:@"PrimitiveBool"])
+  else if ([typeCopy isEqualToString:@"PrimitiveBool"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"PrimitiveInt"])
+  else if ([typeCopy isEqualToString:@"PrimitiveInt"])
   {
     v4 = 101;
   }
 
-  else if ([v3 isEqualToString:@"PrimitiveLong"])
+  else if ([typeCopy isEqualToString:@"PrimitiveLong"])
   {
     v4 = 102;
   }
 
-  else if ([v3 isEqualToString:@"PrimitiveDouble"])
+  else if ([typeCopy isEqualToString:@"PrimitiveDouble"])
   {
     v4 = 103;
   }
 
-  else if ([v3 isEqualToString:@"PrimitiveString"])
+  else if ([typeCopy isEqualToString:@"PrimitiveString"])
   {
     v4 = 104;
   }
 
-  else if ([v3 isEqualToString:@"DateTime"])
+  else if ([typeCopy isEqualToString:@"DateTime"])
   {
     v4 = 105;
   }
 
-  else if ([v3 isEqualToString:@"Intent"])
+  else if ([typeCopy isEqualToString:@"Intent"])
   {
     v4 = 107;
   }
 
-  else if ([v3 isEqualToString:@"ModifyRelationship"])
+  else if ([typeCopy isEqualToString:@"ModifyRelationship"])
   {
     v4 = 108;
   }
 
-  else if ([v3 isEqualToString:@"ModifyNickname"])
+  else if ([typeCopy isEqualToString:@"ModifyNickname"])
   {
     v4 = 109;
   }
 
-  else if ([v3 isEqualToString:@"CalendarEvent"])
+  else if ([typeCopy isEqualToString:@"CalendarEvent"])
   {
     v4 = 110;
   }
 
-  else if ([v3 isEqualToString:@"EventParticipant"])
+  else if ([typeCopy isEqualToString:@"EventParticipant"])
   {
     v4 = 111;
   }
 
-  else if ([v3 isEqualToString:@"EventAttribute"])
+  else if ([typeCopy isEqualToString:@"EventAttribute"])
   {
     v4 = 112;
   }
 
-  else if ([v3 isEqualToString:@"Extension"])
+  else if ([typeCopy isEqualToString:@"Extension"])
   {
     v4 = 1000;
   }
@@ -14049,10 +14049,10 @@ LABEL_596:
   return v4;
 }
 
-- (void)setType:(int)a3
+- (void)setType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -14060,107 +14060,107 @@ LABEL_596:
   else
   {
     *&self->_has = has | 1;
-    self->_type = a3;
+    self->_type = type;
   }
 }
 
-- (int)StringAsPayloadWorkoutSequenceLabels:(id)a3
+- (int)StringAsPayloadWorkoutSequenceLabels:(id)labels
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"last"])
+  labelsCopy = labels;
+  if ([labelsCopy isEqualToString:@"last"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"next"];
+    v4 = [labelsCopy isEqualToString:@"next"];
   }
 
   return v4;
 }
 
-- (void)addPayloadWorkoutSequenceLabel:(int)a3
+- (void)addPayloadWorkoutSequenceLabel:(int)label
 {
-  if (a3 != 0x7FFFFFFF)
+  if (label != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadWorkoutLocationTypes:(id)a3
+- (int)StringAsPayloadWorkoutLocationTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"OUTDOOR"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"OUTDOOR"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"INDOOR"];
+    v4 = [typesCopy isEqualToString:@"INDOOR"];
   }
 
   return v4;
 }
 
-- (void)addPayloadWorkoutLocationType:(int)a3
+- (void)addPayloadWorkoutLocationType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadWorkoutGoalUnitTypes:(id)a3
+- (int)StringAsPayloadWorkoutGoalUnitTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Inch"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"Inch"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Meter"])
+  else if ([typesCopy isEqualToString:@"Meter"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Foot"])
+  else if ([typesCopy isEqualToString:@"Foot"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Mile"])
+  else if ([typesCopy isEqualToString:@"Mile"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Yard"])
+  else if ([typesCopy isEqualToString:@"Yard"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Second"])
+  else if ([typesCopy isEqualToString:@"Second"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Minute"])
+  else if ([typesCopy isEqualToString:@"Minute"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Hour"])
+  else if ([typesCopy isEqualToString:@"Hour"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Joule"])
+  else if ([typesCopy isEqualToString:@"Joule"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"KiloCalorie"])
+  else if ([typesCopy isEqualToString:@"KiloCalorie"])
   {
     v4 = 9;
   }
@@ -14173,161 +14173,161 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadWorkoutGoalUnitType:(int)a3
+- (void)addPayloadWorkoutGoalUnitType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadWorkoutCustomization:(id)a3
+- (void)addPayloadWorkoutCustomization:(id)customization
 {
-  v4 = a3;
+  customizationCopy = customization;
   payloadWorkoutCustomizations = self->_payloadWorkoutCustomizations;
-  v8 = v4;
+  v8 = customizationCopy;
   if (!payloadWorkoutCustomizations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadWorkoutCustomizations;
-    self->_payloadWorkoutCustomizations = v6;
+    self->_payloadWorkoutCustomizations = array;
 
-    v4 = v8;
+    customizationCopy = v8;
     payloadWorkoutCustomizations = self->_payloadWorkoutCustomizations;
   }
 
-  [(NSArray *)payloadWorkoutCustomizations addObject:v4];
+  [(NSArray *)payloadWorkoutCustomizations addObject:customizationCopy];
 }
 
-- (void)setPayloadWorkoutCustomizations:(id)a3
+- (void)setPayloadWorkoutCustomizations:(id)customizations
 {
-  v4 = [a3 mutableCopy];
+  v4 = [customizations mutableCopy];
   payloadWorkoutCustomizations = self->_payloadWorkoutCustomizations;
   self->_payloadWorkoutCustomizations = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadWorkoutCustomizations);
 }
 
-- (void)addPayloadWorkoutAssociatedItem:(id)a3
+- (void)addPayloadWorkoutAssociatedItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   payloadWorkoutAssociatedItems = self->_payloadWorkoutAssociatedItems;
-  v8 = v4;
+  v8 = itemCopy;
   if (!payloadWorkoutAssociatedItems)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadWorkoutAssociatedItems;
-    self->_payloadWorkoutAssociatedItems = v6;
+    self->_payloadWorkoutAssociatedItems = array;
 
-    v4 = v8;
+    itemCopy = v8;
     payloadWorkoutAssociatedItems = self->_payloadWorkoutAssociatedItems;
   }
 
-  [(NSArray *)payloadWorkoutAssociatedItems addObject:v4];
+  [(NSArray *)payloadWorkoutAssociatedItems addObject:itemCopy];
 }
 
-- (void)setPayloadWorkoutAssociatedItems:(id)a3
+- (void)setPayloadWorkoutAssociatedItems:(id)items
 {
-  v4 = [a3 mutableCopy];
+  v4 = [items mutableCopy];
   payloadWorkoutAssociatedItems = self->_payloadWorkoutAssociatedItems;
   self->_payloadWorkoutAssociatedItems = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadWorkoutAssociatedItems);
 }
 
-- (void)addPayloadWellnessValue:(id)a3
+- (void)addPayloadWellnessValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadWellnessValues = self->_payloadWellnessValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadWellnessValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadWellnessValues;
-    self->_payloadWellnessValues = v6;
+    self->_payloadWellnessValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadWellnessValues = self->_payloadWellnessValues;
   }
 
-  [(NSArray *)payloadWellnessValues addObject:v4];
+  [(NSArray *)payloadWellnessValues addObject:valueCopy];
 }
 
-- (void)setPayloadWellnessValues:(id)a3
+- (void)setPayloadWellnessValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadWellnessValues = self->_payloadWellnessValues;
   self->_payloadWellnessValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadWellnessValues);
 }
 
-- (void)addPayloadWellnessUnitType:(id)a3
+- (void)addPayloadWellnessUnitType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   payloadWellnessUnitTypes = self->_payloadWellnessUnitTypes;
-  v8 = v4;
+  v8 = typeCopy;
   if (!payloadWellnessUnitTypes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadWellnessUnitTypes;
-    self->_payloadWellnessUnitTypes = v6;
+    self->_payloadWellnessUnitTypes = array;
 
-    v4 = v8;
+    typeCopy = v8;
     payloadWellnessUnitTypes = self->_payloadWellnessUnitTypes;
   }
 
-  [(NSArray *)payloadWellnessUnitTypes addObject:v4];
+  [(NSArray *)payloadWellnessUnitTypes addObject:typeCopy];
 }
 
-- (void)setPayloadWellnessUnitTypes:(id)a3
+- (void)setPayloadWellnessUnitTypes:(id)types
 {
-  v4 = [a3 mutableCopy];
+  v4 = [types mutableCopy];
   payloadWellnessUnitTypes = self->_payloadWellnessUnitTypes;
   self->_payloadWellnessUnitTypes = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadWellnessUnitTypes);
 }
 
-- (int)StringAsPayloadWellnessQuestionTypes:(id)a3
+- (int)StringAsPayloadWellnessQuestionTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_QUESTION_TYPE"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"UNKNOWN_QUESTION_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"VERIFICATION"])
+  else if ([typesCopy isEqualToString:@"VERIFICATION"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"QUANTIFICATION"])
+  else if ([typesCopy isEqualToString:@"QUANTIFICATION"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TEMPORAL"])
+  else if ([typesCopy isEqualToString:@"TEMPORAL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"COMPARISON"])
+  else if ([typesCopy isEqualToString:@"COMPARISON"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"QUALITY"])
+  else if ([typesCopy isEqualToString:@"QUALITY"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SPEED_RATE"])
+  else if ([typesCopy isEqualToString:@"SPEED_RATE"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"INSTANCE_COUNT"])
+  else if ([typesCopy isEqualToString:@"INSTANCE_COUNT"])
   {
     v4 = 7;
   }
@@ -14340,63 +14340,63 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadWellnessQuestionType:(int)a3
+- (void)addPayloadWellnessQuestionType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadWellnessQueryResultTypes:(id)a3
+- (int)StringAsPayloadWellnessQueryResultTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_RESULT_TYPE"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"UNKNOWN_RESULT_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"RAW"])
+  else if ([typesCopy isEqualToString:@"RAW"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AVERAGE"])
+  else if ([typesCopy isEqualToString:@"AVERAGE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MINIMUM"])
+  else if ([typesCopy isEqualToString:@"MINIMUM"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MAXIMUM"])
+  else if ([typesCopy isEqualToString:@"MAXIMUM"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SUM"])
+  else if ([typesCopy isEqualToString:@"SUM"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"FIRST"])
+  else if ([typesCopy isEqualToString:@"FIRST"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"LAST"])
+  else if ([typesCopy isEqualToString:@"LAST"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ABOVE"])
+  else if ([typesCopy isEqualToString:@"ABOVE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"BELOW"])
+  else if ([typesCopy isEqualToString:@"BELOW"])
   {
     v4 = 9;
   }
@@ -14409,388 +14409,388 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadWellnessQueryResultType:(int)a3
+- (void)addPayloadWellnessQueryResultType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadWellnessObjectTypes:(id)a3
+- (int)StringAsPayloadWellnessObjectTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BASAL_BODY_TEMPERATURE"])
+  else if ([typesCopy isEqualToString:@"BASAL_BODY_TEMPERATURE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"BIOTIN"])
+  else if ([typesCopy isEqualToString:@"BIOTIN"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BLOOD_ALCOHOL_CONTENT"])
+  else if ([typesCopy isEqualToString:@"BLOOD_ALCOHOL_CONTENT"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"BLOOD_GLUCOSE"])
+  else if ([typesCopy isEqualToString:@"BLOOD_GLUCOSE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"BLOOD_PRESSURE"])
+  else if ([typesCopy isEqualToString:@"BLOOD_PRESSURE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"BLOOD_PRESSURE_DIASTOLIC"])
+  else if ([typesCopy isEqualToString:@"BLOOD_PRESSURE_DIASTOLIC"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"BLOOD_PRESSURE_SYSTOLIC"])
+  else if ([typesCopy isEqualToString:@"BLOOD_PRESSURE_SYSTOLIC"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"BLOOD_TYPE"])
+  else if ([typesCopy isEqualToString:@"BLOOD_TYPE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"BODY_FAT_PERCENTAGE"])
+  else if ([typesCopy isEqualToString:@"BODY_FAT_PERCENTAGE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"BODY_MASS_INDEX"])
+  else if ([typesCopy isEqualToString:@"BODY_MASS_INDEX"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"BODY_TEMPERATURE"])
+  else if ([typesCopy isEqualToString:@"BODY_TEMPERATURE"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"CAFFEINE"])
+  else if ([typesCopy isEqualToString:@"CAFFEINE"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"CALCIUM"])
+  else if ([typesCopy isEqualToString:@"CALCIUM"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"CARBOHYDRATES"])
+  else if ([typesCopy isEqualToString:@"CARBOHYDRATES"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"CHLORIDE"])
+  else if ([typesCopy isEqualToString:@"CHLORIDE"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"CHROMIUM"])
+  else if ([typesCopy isEqualToString:@"CHROMIUM"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"COPPER"])
+  else if ([typesCopy isEqualToString:@"COPPER"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"DIETARY_CHOLESTEROL"])
+  else if ([typesCopy isEqualToString:@"DIETARY_CHOLESTEROL"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"DIETARY_SUGAR"])
+  else if ([typesCopy isEqualToString:@"DIETARY_SUGAR"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"ELECTRODERMAL_ACTIVITY"])
+  else if ([typesCopy isEqualToString:@"ELECTRODERMAL_ACTIVITY"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"ENERGY_CONSUMED"])
+  else if ([typesCopy isEqualToString:@"ENERGY_CONSUMED"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"FAT_MONOUN_SATURATED"])
+  else if ([typesCopy isEqualToString:@"FAT_MONOUN_SATURATED"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"FAT_POLYUN_SATURATED"])
+  else if ([typesCopy isEqualToString:@"FAT_POLYUN_SATURATED"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"FAT_SATURATED"])
+  else if ([typesCopy isEqualToString:@"FAT_SATURATED"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"FAT_TOTAL"])
+  else if ([typesCopy isEqualToString:@"FAT_TOTAL"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"FIBER"])
+  else if ([typesCopy isEqualToString:@"FIBER"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"FOLATE"])
+  else if ([typesCopy isEqualToString:@"FOLATE"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"FORCED_EXPIRATORY_VOLUME"])
+  else if ([typesCopy isEqualToString:@"FORCED_EXPIRATORY_VOLUME"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"FORCED_VITAL_CAPACITY"])
+  else if ([typesCopy isEqualToString:@"FORCED_VITAL_CAPACITY"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"HEART_RATE"])
+  else if ([typesCopy isEqualToString:@"HEART_RATE"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"HEART_RATE_VARIABILITY_SDNN"])
+  else if ([typesCopy isEqualToString:@"HEART_RATE_VARIABILITY_SDNN"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"HEIGHT"])
+  else if ([typesCopy isEqualToString:@"HEIGHT"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"INHALER_USAGE"])
+  else if ([typesCopy isEqualToString:@"INHALER_USAGE"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"INSULIN_DELIVERY"])
+  else if ([typesCopy isEqualToString:@"INSULIN_DELIVERY"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"IODINE"])
+  else if ([typesCopy isEqualToString:@"IODINE"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"IRON"])
+  else if ([typesCopy isEqualToString:@"IRON"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"LEAN_BODY_MASS"])
+  else if ([typesCopy isEqualToString:@"LEAN_BODY_MASS"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"MAGNESIUM"])
+  else if ([typesCopy isEqualToString:@"MAGNESIUM"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"MANGANESE"])
+  else if ([typesCopy isEqualToString:@"MANGANESE"])
   {
     v4 = 39;
   }
 
-  else if ([v3 isEqualToString:@"MOLYBDENUM"])
+  else if ([typesCopy isEqualToString:@"MOLYBDENUM"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"NIACIN"])
+  else if ([typesCopy isEqualToString:@"NIACIN"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"NUMBER_OF_TIMES_FALLEN"])
+  else if ([typesCopy isEqualToString:@"NUMBER_OF_TIMES_FALLEN"])
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqualToString:@"OXYGEN_SATURATION"])
+  else if ([typesCopy isEqualToString:@"OXYGEN_SATURATION"])
   {
     v4 = 43;
   }
 
-  else if ([v3 isEqualToString:@"PANTOTHENIC_ACID"])
+  else if ([typesCopy isEqualToString:@"PANTOTHENIC_ACID"])
   {
     v4 = 44;
   }
 
-  else if ([v3 isEqualToString:@"PEAK_EXPIRATORY_FLOW_RATE"])
+  else if ([typesCopy isEqualToString:@"PEAK_EXPIRATORY_FLOW_RATE"])
   {
     v4 = 45;
   }
 
-  else if ([v3 isEqualToString:@"PERIPHERAL_PERFUSION_INDEX"])
+  else if ([typesCopy isEqualToString:@"PERIPHERAL_PERFUSION_INDEX"])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:@"PHOSPHORUS"])
+  else if ([typesCopy isEqualToString:@"PHOSPHORUS"])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:@"POTASSIUM"])
+  else if ([typesCopy isEqualToString:@"POTASSIUM"])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:@"PROTEIN"])
+  else if ([typesCopy isEqualToString:@"PROTEIN"])
   {
     v4 = 49;
   }
 
-  else if ([v3 isEqualToString:@"RESPIRATORY_RATE"])
+  else if ([typesCopy isEqualToString:@"RESPIRATORY_RATE"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"RESTINGHEART_RATE"])
+  else if ([typesCopy isEqualToString:@"RESTINGHEART_RATE"])
   {
     v4 = 51;
   }
 
-  else if ([v3 isEqualToString:@"RIBOFLAVIN"])
+  else if ([typesCopy isEqualToString:@"RIBOFLAVIN"])
   {
     v4 = 52;
   }
 
-  else if ([v3 isEqualToString:@"SELENIUM"])
+  else if ([typesCopy isEqualToString:@"SELENIUM"])
   {
     v4 = 53;
   }
 
-  else if ([v3 isEqualToString:@"SODIUM"])
+  else if ([typesCopy isEqualToString:@"SODIUM"])
   {
     v4 = 54;
   }
 
-  else if ([v3 isEqualToString:@"THIAMIN"])
+  else if ([typesCopy isEqualToString:@"THIAMIN"])
   {
     v4 = 55;
   }
 
-  else if ([v3 isEqualToString:@"UV_INDEX"])
+  else if ([typesCopy isEqualToString:@"UV_INDEX"])
   {
     v4 = 56;
   }
 
-  else if ([v3 isEqualToString:@"VITAMIN_A"])
+  else if ([typesCopy isEqualToString:@"VITAMIN_A"])
   {
     v4 = 57;
   }
 
-  else if ([v3 isEqualToString:@"VITAMIN_B12"])
+  else if ([typesCopy isEqualToString:@"VITAMIN_B12"])
   {
     v4 = 58;
   }
 
-  else if ([v3 isEqualToString:@"VITAMIN_B6"])
+  else if ([typesCopy isEqualToString:@"VITAMIN_B6"])
   {
     v4 = 59;
   }
 
-  else if ([v3 isEqualToString:@"VITAMIN_C"])
+  else if ([typesCopy isEqualToString:@"VITAMIN_C"])
   {
     v4 = 60;
   }
 
-  else if ([v3 isEqualToString:@"VITAMIN_D"])
+  else if ([typesCopy isEqualToString:@"VITAMIN_D"])
   {
     v4 = 61;
   }
 
-  else if ([v3 isEqualToString:@"VITAMIN_E"])
+  else if ([typesCopy isEqualToString:@"VITAMIN_E"])
   {
     v4 = 62;
   }
 
-  else if ([v3 isEqualToString:@"VITAMIN_K"])
+  else if ([typesCopy isEqualToString:@"VITAMIN_K"])
   {
     v4 = 63;
   }
 
-  else if ([v3 isEqualToString:@"WAIST_CIRCUMFERENCE"])
+  else if ([typesCopy isEqualToString:@"WAIST_CIRCUMFERENCE"])
   {
     v4 = 64;
   }
 
-  else if ([v3 isEqualToString:@"WALKING_HEART_RATE_AVERAGE"])
+  else if ([typesCopy isEqualToString:@"WALKING_HEART_RATE_AVERAGE"])
   {
     v4 = 65;
   }
 
-  else if ([v3 isEqualToString:@"WATER"])
+  else if ([typesCopy isEqualToString:@"WATER"])
   {
     v4 = 66;
   }
 
-  else if ([v3 isEqualToString:@"WEIGHT"])
+  else if ([typesCopy isEqualToString:@"WEIGHT"])
   {
     v4 = 67;
   }
 
-  else if ([v3 isEqualToString:@"ZINC"])
+  else if ([typesCopy isEqualToString:@"ZINC"])
   {
     v4 = 68;
   }
 
-  else if ([v3 isEqualToString:@"CERVICAL_MUCUS_QUALITY"])
+  else if ([typesCopy isEqualToString:@"CERVICAL_MUCUS_QUALITY"])
   {
     v4 = 69;
   }
 
-  else if ([v3 isEqualToString:@"OVULATION_TEST_RESULT"])
+  else if ([typesCopy isEqualToString:@"OVULATION_TEST_RESULT"])
   {
     v4 = 70;
   }
 
-  else if ([v3 isEqualToString:@"MENSTRUAL_FLOW"])
+  else if ([typesCopy isEqualToString:@"MENSTRUAL_FLOW"])
   {
     v4 = 71;
   }
 
-  else if ([v3 isEqualToString:@"INTERMENSTRUAL_BLEEDING"])
+  else if ([typesCopy isEqualToString:@"INTERMENSTRUAL_BLEEDING"])
   {
     v4 = 72;
   }
 
-  else if ([v3 isEqualToString:@"SEXUAL_ACTIVITY"])
+  else if ([typesCopy isEqualToString:@"SEXUAL_ACTIVITY"])
   {
     v4 = 73;
   }
 
-  else if ([v3 isEqualToString:@"MINDFUL_SESSION"])
+  else if ([typesCopy isEqualToString:@"MINDFUL_SESSION"])
   {
     v4 = 74;
   }
@@ -14803,156 +14803,156 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadWellnessObjectType:(int)a3
+- (void)addPayloadWellnessObjectType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadWellnessObjectResultValue:(id)a3
+- (void)addPayloadWellnessObjectResultValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadWellnessObjectResultValues = self->_payloadWellnessObjectResultValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadWellnessObjectResultValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadWellnessObjectResultValues;
-    self->_payloadWellnessObjectResultValues = v6;
+    self->_payloadWellnessObjectResultValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadWellnessObjectResultValues = self->_payloadWellnessObjectResultValues;
   }
 
-  [(NSArray *)payloadWellnessObjectResultValues addObject:v4];
+  [(NSArray *)payloadWellnessObjectResultValues addObject:valueCopy];
 }
 
-- (void)setPayloadWellnessObjectResultValues:(id)a3
+- (void)setPayloadWellnessObjectResultValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadWellnessObjectResultValues = self->_payloadWellnessObjectResultValues;
   self->_payloadWellnessObjectResultValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadWellnessObjectResultValues);
 }
 
-- (void)addPayloadWellnessMetadataPair:(id)a3
+- (void)addPayloadWellnessMetadataPair:(id)pair
 {
-  v4 = a3;
+  pairCopy = pair;
   payloadWellnessMetadataPairs = self->_payloadWellnessMetadataPairs;
-  v8 = v4;
+  v8 = pairCopy;
   if (!payloadWellnessMetadataPairs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadWellnessMetadataPairs;
-    self->_payloadWellnessMetadataPairs = v6;
+    self->_payloadWellnessMetadataPairs = array;
 
-    v4 = v8;
+    pairCopy = v8;
     payloadWellnessMetadataPairs = self->_payloadWellnessMetadataPairs;
   }
 
-  [(NSArray *)payloadWellnessMetadataPairs addObject:v4];
+  [(NSArray *)payloadWellnessMetadataPairs addObject:pairCopy];
 }
 
-- (void)setPayloadWellnessMetadataPairs:(id)a3
+- (void)setPayloadWellnessMetadataPairs:(id)pairs
 {
-  v4 = [a3 mutableCopy];
+  v4 = [pairs mutableCopy];
   payloadWellnessMetadataPairs = self->_payloadWellnessMetadataPairs;
   self->_payloadWellnessMetadataPairs = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadWellnessMetadataPairs);
 }
 
-- (void)addPayloadVolumeValue:(id)a3
+- (void)addPayloadVolumeValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadVolumeValues = self->_payloadVolumeValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadVolumeValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadVolumeValues;
-    self->_payloadVolumeValues = v6;
+    self->_payloadVolumeValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadVolumeValues = self->_payloadVolumeValues;
   }
 
-  [(NSArray *)payloadVolumeValues addObject:v4];
+  [(NSArray *)payloadVolumeValues addObject:valueCopy];
 }
 
-- (void)setPayloadVolumeValues:(id)a3
+- (void)setPayloadVolumeValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadVolumeValues = self->_payloadVolumeValues;
   self->_payloadVolumeValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadVolumeValues);
 }
 
-- (void)addPayloadVoiceCommandDeviceInformation:(id)a3
+- (void)addPayloadVoiceCommandDeviceInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   payloadVoiceCommandDeviceInformations = self->_payloadVoiceCommandDeviceInformations;
-  v8 = v4;
+  v8 = informationCopy;
   if (!payloadVoiceCommandDeviceInformations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadVoiceCommandDeviceInformations;
-    self->_payloadVoiceCommandDeviceInformations = v6;
+    self->_payloadVoiceCommandDeviceInformations = array;
 
-    v4 = v8;
+    informationCopy = v8;
     payloadVoiceCommandDeviceInformations = self->_payloadVoiceCommandDeviceInformations;
   }
 
-  [(NSArray *)payloadVoiceCommandDeviceInformations addObject:v4];
+  [(NSArray *)payloadVoiceCommandDeviceInformations addObject:informationCopy];
 }
 
-- (void)setPayloadVoiceCommandDeviceInformations:(id)a3
+- (void)setPayloadVoiceCommandDeviceInformations:(id)informations
 {
-  v4 = [a3 mutableCopy];
+  v4 = [informations mutableCopy];
   payloadVoiceCommandDeviceInformations = self->_payloadVoiceCommandDeviceInformations;
   self->_payloadVoiceCommandDeviceInformations = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadVoiceCommandDeviceInformations);
 }
 
-- (int)StringAsPayloadVisualCodeTypes:(id)a3
+- (int)StringAsPayloadVisualCodeTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CONTACT"])
+  else if ([typesCopy isEqualToString:@"CONTACT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"REQUEST_PAYMENT"])
+  else if ([typesCopy isEqualToString:@"REQUEST_PAYMENT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SEND_PAYMENT"])
+  else if ([typesCopy isEqualToString:@"SEND_PAYMENT"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"TRANSIT"])
+  else if ([typesCopy isEqualToString:@"TRANSIT"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"BUS"])
+  else if ([typesCopy isEqualToString:@"BUS"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SUBWAY"])
+  else if ([typesCopy isEqualToString:@"SUBWAY"])
   {
     v4 = 6;
   }
@@ -14965,21 +14965,21 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadVisualCodeType:(int)a3
+- (void)addPayloadVisualCodeType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadUserNotificationTypes:(id)a3
+- (int)StringAsPayloadUserNotificationTypes:(id)types
 {
-  v3 = a3;
+  typesCopy = types;
   v4 = 1;
-  if (([v3 isEqualToString:@"ANNOUNCEMENT"] & 1) == 0)
+  if (([typesCopy isEqualToString:@"ANNOUNCEMENT"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"DELIVERY_FAILURE"])
+    if ([typesCopy isEqualToString:@"DELIVERY_FAILURE"])
     {
       v4 = 2;
     }
@@ -14993,21 +14993,21 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadUserNotificationType:(int)a3
+- (void)addPayloadUserNotificationType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadUpdateAlarmOperations:(id)a3
+- (int)StringAsPayloadUpdateAlarmOperations:(id)operations
 {
-  v3 = a3;
+  operationsCopy = operations;
   v4 = 1;
-  if (([v3 isEqualToString:@"UPDATE_LABEL"] & 1) == 0)
+  if (([operationsCopy isEqualToString:@"UPDATE_LABEL"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"UPDATE_TIME"])
+    if ([operationsCopy isEqualToString:@"UPDATE_TIME"])
     {
       v4 = 2;
     }
@@ -15021,55 +15021,55 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadUpdateAlarmOperation:(int)a3
+- (void)addPayloadUpdateAlarmOperation:(int)operation
 {
-  if (a3 != 0x7FFFFFFF)
+  if (operation != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadURLValue:(id)a3
+- (void)addPayloadURLValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadURLValues = self->_payloadURLValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadURLValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadURLValues;
-    self->_payloadURLValues = v6;
+    self->_payloadURLValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadURLValues = self->_payloadURLValues;
   }
 
-  [(NSArray *)payloadURLValues addObject:v4];
+  [(NSArray *)payloadURLValues addObject:valueCopy];
 }
 
-- (void)setPayloadURLValues:(id)a3
+- (void)setPayloadURLValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadURLValues = self->_payloadURLValues;
   self->_payloadURLValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadURLValues);
 }
 
-- (int)StringAsPayloadTimerTypes:(id)a3
+- (int)StringAsPayloadTimerTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TYPE"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"UNKNOWN_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DEFAULT_TYPE"])
+  else if ([typesCopy isEqualToString:@"DEFAULT_TYPE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SLEEP_TIMER"])
+  else if ([typesCopy isEqualToString:@"SLEEP_TIMER"])
   {
     v4 = 2;
   }
@@ -15082,28 +15082,28 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadTimerType:(int)a3
+- (void)addPayloadTimerType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadTimerStates:(id)a3
+- (int)StringAsPayloadTimerStates:(id)states
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  statesCopy = states;
+  if ([statesCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"TIMER_RUNNING"])
+  else if ([statesCopy isEqualToString:@"TIMER_RUNNING"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TIMER_PAUSED"])
+  else if ([statesCopy isEqualToString:@"TIMER_PAUSED"])
   {
     v4 = 2;
   }
@@ -15116,60 +15116,60 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadTimerState:(int)a3
+- (void)addPayloadTimerState:(int)state
 {
-  if (a3 != 0x7FFFFFFF)
+  if (state != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadTimer:(id)a3
+- (void)addPayloadTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   payloadTimers = self->_payloadTimers;
-  v8 = v4;
+  v8 = timerCopy;
   if (!payloadTimers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadTimers;
-    self->_payloadTimers = v6;
+    self->_payloadTimers = array;
 
-    v4 = v8;
+    timerCopy = v8;
     payloadTimers = self->_payloadTimers;
   }
 
-  [(NSArray *)payloadTimers addObject:v4];
+  [(NSArray *)payloadTimers addObject:timerCopy];
 }
 
-- (void)setPayloadTimers:(id)a3
+- (void)setPayloadTimers:(id)timers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [timers mutableCopy];
   payloadTimers = self->_payloadTimers;
   self->_payloadTimers = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadTimers);
 }
 
-- (int)StringAsPayloadTemporalEventTriggerTypes:(id)a3
+- (int)StringAsPayloadTemporalEventTriggerTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TEMPORAL_TRIGGER_TYPE"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"UNKNOWN_TEMPORAL_TRIGGER_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NOT_SCHEDULED"])
+  else if ([typesCopy isEqualToString:@"NOT_SCHEDULED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SCHEDULED_NON_RECURRING"])
+  else if ([typesCopy isEqualToString:@"SCHEDULED_NON_RECURRING"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SCHEDULED_RECURRING"])
+  else if ([typesCopy isEqualToString:@"SCHEDULED_RECURRING"])
   {
     v4 = 3;
   }
@@ -15182,109 +15182,109 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadTemporalEventTriggerType:(int)a3
+- (void)addPayloadTemporalEventTriggerType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadTemporalEventTrigger:(id)a3
+- (void)addPayloadTemporalEventTrigger:(id)trigger
 {
-  v4 = a3;
+  triggerCopy = trigger;
   payloadTemporalEventTriggers = self->_payloadTemporalEventTriggers;
-  v8 = v4;
+  v8 = triggerCopy;
   if (!payloadTemporalEventTriggers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadTemporalEventTriggers;
-    self->_payloadTemporalEventTriggers = v6;
+    self->_payloadTemporalEventTriggers = array;
 
-    v4 = v8;
+    triggerCopy = v8;
     payloadTemporalEventTriggers = self->_payloadTemporalEventTriggers;
   }
 
-  [(NSArray *)payloadTemporalEventTriggers addObject:v4];
+  [(NSArray *)payloadTemporalEventTriggers addObject:triggerCopy];
 }
 
-- (void)setPayloadTemporalEventTriggers:(id)a3
+- (void)setPayloadTemporalEventTriggers:(id)triggers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [triggers mutableCopy];
   payloadTemporalEventTriggers = self->_payloadTemporalEventTriggers;
   self->_payloadTemporalEventTriggers = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadTemporalEventTriggers);
 }
 
-- (void)addPayloadTemperatureValue:(id)a3
+- (void)addPayloadTemperatureValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadTemperatureValues = self->_payloadTemperatureValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadTemperatureValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadTemperatureValues;
-    self->_payloadTemperatureValues = v6;
+    self->_payloadTemperatureValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadTemperatureValues = self->_payloadTemperatureValues;
   }
 
-  [(NSArray *)payloadTemperatureValues addObject:v4];
+  [(NSArray *)payloadTemperatureValues addObject:valueCopy];
 }
 
-- (void)setPayloadTemperatureValues:(id)a3
+- (void)setPayloadTemperatureValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadTemperatureValues = self->_payloadTemperatureValues;
   self->_payloadTemperatureValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadTemperatureValues);
 }
 
-- (void)addPayloadTemperatureList:(id)a3
+- (void)addPayloadTemperatureList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   payloadTemperatureLists = self->_payloadTemperatureLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!payloadTemperatureLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadTemperatureLists;
-    self->_payloadTemperatureLists = v6;
+    self->_payloadTemperatureLists = array;
 
-    v4 = v8;
+    listCopy = v8;
     payloadTemperatureLists = self->_payloadTemperatureLists;
   }
 
-  [(NSArray *)payloadTemperatureLists addObject:v4];
+  [(NSArray *)payloadTemperatureLists addObject:listCopy];
 }
 
-- (void)setPayloadTemperatureLists:(id)a3
+- (void)setPayloadTemperatureLists:(id)lists
 {
-  v4 = [a3 mutableCopy];
+  v4 = [lists mutableCopy];
   payloadTemperatureLists = self->_payloadTemperatureLists;
   self->_payloadTemperatureLists = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadTemperatureLists);
 }
 
-- (int)StringAsPayloadTaskStatus:(id)a3
+- (int)StringAsPayloadTaskStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_STATUS"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"UNKNOWN_STATUS"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NOT_COMPLETED"])
+  else if ([statusCopy isEqualToString:@"NOT_COMPLETED"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"COMPLETED"])
+  else if ([statusCopy isEqualToString:@"COMPLETED"])
   {
     v4 = 20;
   }
@@ -15297,36 +15297,36 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadTaskStatus:(int)a3
+- (void)addPayloadTaskStatus:(int)status
 {
-  if (a3 != 0x7FFFFFFF)
+  if (status != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadTaskReference:(int)a3
+- (void)addPayloadTaskReference:(int)reference
 {
-  if (a3 != 0x7FFFFFFF)
+  if (reference != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadTaskPriorities:(id)a3
+- (int)StringAsPayloadTaskPriorities:(id)priorities
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_PRIORITY"])
+  prioritiesCopy = priorities;
+  if ([prioritiesCopy isEqualToString:@"UNKNOWN_PRIORITY"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NOT_FLAGGED"])
+  else if ([prioritiesCopy isEqualToString:@"NOT_FLAGGED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FLAGGED"])
+  else if ([prioritiesCopy isEqualToString:@"FLAGGED"])
   {
     v4 = 2;
   }
@@ -15339,325 +15339,325 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadTaskPriority:(int)a3
+- (void)addPayloadTaskPriority:(int)priority
 {
-  if (a3 != 0x7FFFFFFF)
+  if (priority != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadTaskList:(id)a3
+- (void)addPayloadTaskList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   payloadTaskLists = self->_payloadTaskLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!payloadTaskLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadTaskLists;
-    self->_payloadTaskLists = v6;
+    self->_payloadTaskLists = array;
 
-    v4 = v8;
+    listCopy = v8;
     payloadTaskLists = self->_payloadTaskLists;
   }
 
-  [(NSArray *)payloadTaskLists addObject:v4];
+  [(NSArray *)payloadTaskLists addObject:listCopy];
 }
 
-- (void)setPayloadTaskLists:(id)a3
+- (void)setPayloadTaskLists:(id)lists
 {
-  v4 = [a3 mutableCopy];
+  v4 = [lists mutableCopy];
   payloadTaskLists = self->_payloadTaskLists;
   self->_payloadTaskLists = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadTaskLists);
 }
 
-- (void)addPayloadTask:(id)a3
+- (void)addPayloadTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   payloadTasks = self->_payloadTasks;
-  v8 = v4;
+  v8 = taskCopy;
   if (!payloadTasks)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadTasks;
-    self->_payloadTasks = v6;
+    self->_payloadTasks = array;
 
-    v4 = v8;
+    taskCopy = v8;
     payloadTasks = self->_payloadTasks;
   }
 
-  [(NSArray *)payloadTasks addObject:v4];
+  [(NSArray *)payloadTasks addObject:taskCopy];
 }
 
-- (void)setPayloadTasks:(id)a3
+- (void)setPayloadTasks:(id)tasks
 {
-  v4 = [a3 mutableCopy];
+  v4 = [tasks mutableCopy];
   payloadTasks = self->_payloadTasks;
   self->_payloadTasks = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadTasks);
 }
 
-- (void)addPayloadSupportedTrafficIncidentType:(id)a3
+- (void)addPayloadSupportedTrafficIncidentType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   payloadSupportedTrafficIncidentTypes = self->_payloadSupportedTrafficIncidentTypes;
-  v8 = v4;
+  v8 = typeCopy;
   if (!payloadSupportedTrafficIncidentTypes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadSupportedTrafficIncidentTypes;
-    self->_payloadSupportedTrafficIncidentTypes = v6;
+    self->_payloadSupportedTrafficIncidentTypes = array;
 
-    v4 = v8;
+    typeCopy = v8;
     payloadSupportedTrafficIncidentTypes = self->_payloadSupportedTrafficIncidentTypes;
   }
 
-  [(NSArray *)payloadSupportedTrafficIncidentTypes addObject:v4];
+  [(NSArray *)payloadSupportedTrafficIncidentTypes addObject:typeCopy];
 }
 
-- (void)setPayloadSupportedTrafficIncidentTypes:(id)a3
+- (void)setPayloadSupportedTrafficIncidentTypes:(id)types
 {
-  v4 = [a3 mutableCopy];
+  v4 = [types mutableCopy];
   payloadSupportedTrafficIncidentTypes = self->_payloadSupportedTrafficIncidentTypes;
   self->_payloadSupportedTrafficIncidentTypes = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadSupportedTrafficIncidentTypes);
 }
 
-- (void)addPayloadStringValue:(id)a3
+- (void)addPayloadStringValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadStringValues = self->_payloadStringValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadStringValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadStringValues;
-    self->_payloadStringValues = v6;
+    self->_payloadStringValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadStringValues = self->_payloadStringValues;
   }
 
-  [(NSArray *)payloadStringValues addObject:v4];
+  [(NSArray *)payloadStringValues addObject:valueCopy];
 }
 
-- (void)setPayloadStringValues:(id)a3
+- (void)setPayloadStringValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadStringValues = self->_payloadStringValues;
   self->_payloadStringValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadStringValues);
 }
 
-- (void)addPayloadStringList:(id)a3
+- (void)addPayloadStringList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   payloadStringLists = self->_payloadStringLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!payloadStringLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadStringLists;
-    self->_payloadStringLists = v6;
+    self->_payloadStringLists = array;
 
-    v4 = v8;
+    listCopy = v8;
     payloadStringLists = self->_payloadStringLists;
   }
 
-  [(NSArray *)payloadStringLists addObject:v4];
+  [(NSArray *)payloadStringLists addObject:listCopy];
 }
 
-- (void)setPayloadStringLists:(id)a3
+- (void)setPayloadStringLists:(id)lists
 {
-  v4 = [a3 mutableCopy];
+  v4 = [lists mutableCopy];
   payloadStringLists = self->_payloadStringLists;
   self->_payloadStringLists = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadStringLists);
 }
 
-- (void)addPayloadStartCallRequestMetadata:(id)a3
+- (void)addPayloadStartCallRequestMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   payloadStartCallRequestMetadatas = self->_payloadStartCallRequestMetadatas;
-  v8 = v4;
+  v8 = metadataCopy;
   if (!payloadStartCallRequestMetadatas)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadStartCallRequestMetadatas;
-    self->_payloadStartCallRequestMetadatas = v6;
+    self->_payloadStartCallRequestMetadatas = array;
 
-    v4 = v8;
+    metadataCopy = v8;
     payloadStartCallRequestMetadatas = self->_payloadStartCallRequestMetadatas;
   }
 
-  [(NSArray *)payloadStartCallRequestMetadatas addObject:v4];
+  [(NSArray *)payloadStartCallRequestMetadatas addObject:metadataCopy];
 }
 
-- (void)setPayloadStartCallRequestMetadatas:(id)a3
+- (void)setPayloadStartCallRequestMetadatas:(id)metadatas
 {
-  v4 = [a3 mutableCopy];
+  v4 = [metadatas mutableCopy];
   payloadStartCallRequestMetadatas = self->_payloadStartCallRequestMetadatas;
   self->_payloadStartCallRequestMetadatas = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadStartCallRequestMetadatas);
 }
 
-- (void)addPayloadSpeedValue:(id)a3
+- (void)addPayloadSpeedValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadSpeedValues = self->_payloadSpeedValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadSpeedValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadSpeedValues;
-    self->_payloadSpeedValues = v6;
+    self->_payloadSpeedValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadSpeedValues = self->_payloadSpeedValues;
   }
 
-  [(NSArray *)payloadSpeedValues addObject:v4];
+  [(NSArray *)payloadSpeedValues addObject:valueCopy];
 }
 
-- (void)setPayloadSpeedValues:(id)a3
+- (void)setPayloadSpeedValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadSpeedValues = self->_payloadSpeedValues;
   self->_payloadSpeedValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadSpeedValues);
 }
 
-- (void)addPayloadSpatialEventTrigger:(id)a3
+- (void)addPayloadSpatialEventTrigger:(id)trigger
 {
-  v4 = a3;
+  triggerCopy = trigger;
   payloadSpatialEventTriggers = self->_payloadSpatialEventTriggers;
-  v8 = v4;
+  v8 = triggerCopy;
   if (!payloadSpatialEventTriggers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadSpatialEventTriggers;
-    self->_payloadSpatialEventTriggers = v6;
+    self->_payloadSpatialEventTriggers = array;
 
-    v4 = v8;
+    triggerCopy = v8;
     payloadSpatialEventTriggers = self->_payloadSpatialEventTriggers;
   }
 
-  [(NSArray *)payloadSpatialEventTriggers addObject:v4];
+  [(NSArray *)payloadSpatialEventTriggers addObject:triggerCopy];
 }
 
-- (void)setPayloadSpatialEventTriggers:(id)a3
+- (void)setPayloadSpatialEventTriggers:(id)triggers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [triggers mutableCopy];
   payloadSpatialEventTriggers = self->_payloadSpatialEventTriggers;
   self->_payloadSpatialEventTriggers = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadSpatialEventTriggers);
 }
 
-- (void)addPayloadSleepAlarmAttribute:(id)a3
+- (void)addPayloadSleepAlarmAttribute:(id)attribute
 {
-  v4 = a3;
+  attributeCopy = attribute;
   payloadSleepAlarmAttributes = self->_payloadSleepAlarmAttributes;
-  v8 = v4;
+  v8 = attributeCopy;
   if (!payloadSleepAlarmAttributes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadSleepAlarmAttributes;
-    self->_payloadSleepAlarmAttributes = v6;
+    self->_payloadSleepAlarmAttributes = array;
 
-    v4 = v8;
+    attributeCopy = v8;
     payloadSleepAlarmAttributes = self->_payloadSleepAlarmAttributes;
   }
 
-  [(NSArray *)payloadSleepAlarmAttributes addObject:v4];
+  [(NSArray *)payloadSleepAlarmAttributes addObject:attributeCopy];
 }
 
-- (void)setPayloadSleepAlarmAttributes:(id)a3
+- (void)setPayloadSleepAlarmAttributes:(id)attributes
 {
-  v4 = [a3 mutableCopy];
+  v4 = [attributes mutableCopy];
   payloadSleepAlarmAttributes = self->_payloadSleepAlarmAttributes;
   self->_payloadSleepAlarmAttributes = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadSleepAlarmAttributes);
 }
 
-- (void)addPayloadShareDestination:(id)a3
+- (void)addPayloadShareDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   payloadShareDestinations = self->_payloadShareDestinations;
-  v8 = v4;
+  v8 = destinationCopy;
   if (!payloadShareDestinations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadShareDestinations;
-    self->_payloadShareDestinations = v6;
+    self->_payloadShareDestinations = array;
 
-    v4 = v8;
+    destinationCopy = v8;
     payloadShareDestinations = self->_payloadShareDestinations;
   }
 
-  [(NSArray *)payloadShareDestinations addObject:v4];
+  [(NSArray *)payloadShareDestinations addObject:destinationCopy];
 }
 
-- (void)setPayloadShareDestinations:(id)a3
+- (void)setPayloadShareDestinations:(id)destinations
 {
-  v4 = [a3 mutableCopy];
+  v4 = [destinations mutableCopy];
   payloadShareDestinations = self->_payloadShareDestinations;
   self->_payloadShareDestinations = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadShareDestinations);
 }
 
-- (void)addPayloadSettingMetadata:(id)a3
+- (void)addPayloadSettingMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   payloadSettingMetadatas = self->_payloadSettingMetadatas;
-  v8 = v4;
+  v8 = metadataCopy;
   if (!payloadSettingMetadatas)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadSettingMetadatas;
-    self->_payloadSettingMetadatas = v6;
+    self->_payloadSettingMetadatas = array;
 
-    v4 = v8;
+    metadataCopy = v8;
     payloadSettingMetadatas = self->_payloadSettingMetadatas;
   }
 
-  [(NSArray *)payloadSettingMetadatas addObject:v4];
+  [(NSArray *)payloadSettingMetadatas addObject:metadataCopy];
 }
 
-- (void)setPayloadSettingMetadatas:(id)a3
+- (void)setPayloadSettingMetadatas:(id)metadatas
 {
-  v4 = [a3 mutableCopy];
+  v4 = [metadatas mutableCopy];
   payloadSettingMetadatas = self->_payloadSettingMetadatas;
   self->_payloadSettingMetadatas = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadSettingMetadatas);
 }
 
-- (int)StringAsPayloadSettingActions:(id)a3
+- (int)StringAsPayloadSettingActions:(id)actions
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SET"])
+  actionsCopy = actions;
+  if ([actionsCopy isEqualToString:@"SET"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"INCREASE"])
+  else if ([actionsCopy isEqualToString:@"INCREASE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DECREASE"])
+  else if ([actionsCopy isEqualToString:@"DECREASE"])
   {
     v4 = 3;
   }
@@ -15670,60 +15670,60 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadSettingAction:(int)a3
+- (void)addPayloadSettingAction:(int)action
 {
-  if (a3 != 0x7FFFFFFF)
+  if (action != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadSendMessageAttachment:(id)a3
+- (void)addPayloadSendMessageAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   payloadSendMessageAttachments = self->_payloadSendMessageAttachments;
-  v8 = v4;
+  v8 = attachmentCopy;
   if (!payloadSendMessageAttachments)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadSendMessageAttachments;
-    self->_payloadSendMessageAttachments = v6;
+    self->_payloadSendMessageAttachments = array;
 
-    v4 = v8;
+    attachmentCopy = v8;
     payloadSendMessageAttachments = self->_payloadSendMessageAttachments;
   }
 
-  [(NSArray *)payloadSendMessageAttachments addObject:v4];
+  [(NSArray *)payloadSendMessageAttachments addObject:attachmentCopy];
 }
 
-- (void)setPayloadSendMessageAttachments:(id)a3
+- (void)setPayloadSendMessageAttachments:(id)attachments
 {
-  v4 = [a3 mutableCopy];
+  v4 = [attachments mutableCopy];
   payloadSendMessageAttachments = self->_payloadSendMessageAttachments;
   self->_payloadSendMessageAttachments = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadSendMessageAttachments);
 }
 
-- (int)StringAsPayloadRelativeSettings:(id)a3
+- (int)StringAsPayloadRelativeSettings:(id)settings
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LOWEST"])
+  settingsCopy = settings;
+  if ([settingsCopy isEqualToString:@"LOWEST"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LOWER"])
+  else if ([settingsCopy isEqualToString:@"LOWER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"HIGHER"])
+  else if ([settingsCopy isEqualToString:@"HIGHER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HIGHEST"])
+  else if ([settingsCopy isEqualToString:@"HIGHEST"])
   {
     v4 = 4;
   }
@@ -15736,21 +15736,21 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadRelativeSetting:(int)a3
+- (void)addPayloadRelativeSetting:(int)setting
 {
-  if (a3 != 0x7FFFFFFF)
+  if (setting != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadRelativeReferences:(id)a3
+- (int)StringAsPayloadRelativeReferences:(id)references
 {
-  v3 = a3;
+  referencesCopy = references;
   v4 = 1;
-  if (([v3 isEqualToString:@"NEXT"] & 1) == 0)
+  if (([referencesCopy isEqualToString:@"NEXT"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"PREVIOUS"])
+    if ([referencesCopy isEqualToString:@"PREVIOUS"])
     {
       v4 = 2;
     }
@@ -15764,21 +15764,21 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadRelativeReference:(int)a3
+- (void)addPayloadRelativeReference:(int)reference
 {
-  if (a3 != 0x7FFFFFFF)
+  if (reference != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadReadActionTypes:(id)a3
+- (int)StringAsPayloadReadActionTypes:(id)types
 {
-  v3 = a3;
+  typesCopy = types;
   v4 = 1;
-  if (([v3 isEqualToString:@"READ"] & 1) == 0)
+  if (([typesCopy isEqualToString:@"READ"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"REPEAT"])
+    if ([typesCopy isEqualToString:@"REPEAT"])
     {
       v4 = 2;
     }
@@ -15792,38 +15792,38 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadReadActionType:(int)a3
+- (void)addPayloadReadActionType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadRadioTypes:(id)a3
+- (int)StringAsPayloadRadioTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AM"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"AM"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FM"])
+  else if ([typesCopy isEqualToString:@"FM"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"HD"])
+  else if ([typesCopy isEqualToString:@"HD"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SATELLITE"])
+  else if ([typesCopy isEqualToString:@"SATELLITE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"DAB"])
+  else if ([typesCopy isEqualToString:@"DAB"])
   {
     v4 = 5;
   }
@@ -15836,264 +15836,264 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadRadioType:(int)a3
+- (void)addPayloadRadioType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadPrivateUpdateMediaAffinityIntentData:(id)a3
+- (void)addPayloadPrivateUpdateMediaAffinityIntentData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   payloadPrivateUpdateMediaAffinityIntentDatas = self->_payloadPrivateUpdateMediaAffinityIntentDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!payloadPrivateUpdateMediaAffinityIntentDatas)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadPrivateUpdateMediaAffinityIntentDatas;
-    self->_payloadPrivateUpdateMediaAffinityIntentDatas = v6;
+    self->_payloadPrivateUpdateMediaAffinityIntentDatas = array;
 
-    v4 = v8;
+    dataCopy = v8;
     payloadPrivateUpdateMediaAffinityIntentDatas = self->_payloadPrivateUpdateMediaAffinityIntentDatas;
   }
 
-  [(NSArray *)payloadPrivateUpdateMediaAffinityIntentDatas addObject:v4];
+  [(NSArray *)payloadPrivateUpdateMediaAffinityIntentDatas addObject:dataCopy];
 }
 
-- (void)setPayloadPrivateUpdateMediaAffinityIntentDatas:(id)a3
+- (void)setPayloadPrivateUpdateMediaAffinityIntentDatas:(id)datas
 {
-  v4 = [a3 mutableCopy];
+  v4 = [datas mutableCopy];
   payloadPrivateUpdateMediaAffinityIntentDatas = self->_payloadPrivateUpdateMediaAffinityIntentDatas;
   self->_payloadPrivateUpdateMediaAffinityIntentDatas = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadPrivateUpdateMediaAffinityIntentDatas);
 }
 
-- (void)addPayloadPrivateSearchForMediaIntentData:(id)a3
+- (void)addPayloadPrivateSearchForMediaIntentData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   payloadPrivateSearchForMediaIntentDatas = self->_payloadPrivateSearchForMediaIntentDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!payloadPrivateSearchForMediaIntentDatas)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadPrivateSearchForMediaIntentDatas;
-    self->_payloadPrivateSearchForMediaIntentDatas = v6;
+    self->_payloadPrivateSearchForMediaIntentDatas = array;
 
-    v4 = v8;
+    dataCopy = v8;
     payloadPrivateSearchForMediaIntentDatas = self->_payloadPrivateSearchForMediaIntentDatas;
   }
 
-  [(NSArray *)payloadPrivateSearchForMediaIntentDatas addObject:v4];
+  [(NSArray *)payloadPrivateSearchForMediaIntentDatas addObject:dataCopy];
 }
 
-- (void)setPayloadPrivateSearchForMediaIntentDatas:(id)a3
+- (void)setPayloadPrivateSearchForMediaIntentDatas:(id)datas
 {
-  v4 = [a3 mutableCopy];
+  v4 = [datas mutableCopy];
   payloadPrivateSearchForMediaIntentDatas = self->_payloadPrivateSearchForMediaIntentDatas;
   self->_payloadPrivateSearchForMediaIntentDatas = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadPrivateSearchForMediaIntentDatas);
 }
 
-- (void)addPayloadPrivatePlayMediaIntentData:(id)a3
+- (void)addPayloadPrivatePlayMediaIntentData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   payloadPrivatePlayMediaIntentDatas = self->_payloadPrivatePlayMediaIntentDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!payloadPrivatePlayMediaIntentDatas)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadPrivatePlayMediaIntentDatas;
-    self->_payloadPrivatePlayMediaIntentDatas = v6;
+    self->_payloadPrivatePlayMediaIntentDatas = array;
 
-    v4 = v8;
+    dataCopy = v8;
     payloadPrivatePlayMediaIntentDatas = self->_payloadPrivatePlayMediaIntentDatas;
   }
 
-  [(NSArray *)payloadPrivatePlayMediaIntentDatas addObject:v4];
+  [(NSArray *)payloadPrivatePlayMediaIntentDatas addObject:dataCopy];
 }
 
-- (void)setPayloadPrivatePlayMediaIntentDatas:(id)a3
+- (void)setPayloadPrivatePlayMediaIntentDatas:(id)datas
 {
-  v4 = [a3 mutableCopy];
+  v4 = [datas mutableCopy];
   payloadPrivatePlayMediaIntentDatas = self->_payloadPrivatePlayMediaIntentDatas;
   self->_payloadPrivatePlayMediaIntentDatas = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadPrivatePlayMediaIntentDatas);
 }
 
-- (void)addPayloadPrivateAddMediaIntentData:(id)a3
+- (void)addPayloadPrivateAddMediaIntentData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   payloadPrivateAddMediaIntentDatas = self->_payloadPrivateAddMediaIntentDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!payloadPrivateAddMediaIntentDatas)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadPrivateAddMediaIntentDatas;
-    self->_payloadPrivateAddMediaIntentDatas = v6;
+    self->_payloadPrivateAddMediaIntentDatas = array;
 
-    v4 = v8;
+    dataCopy = v8;
     payloadPrivateAddMediaIntentDatas = self->_payloadPrivateAddMediaIntentDatas;
   }
 
-  [(NSArray *)payloadPrivateAddMediaIntentDatas addObject:v4];
+  [(NSArray *)payloadPrivateAddMediaIntentDatas addObject:dataCopy];
 }
 
-- (void)setPayloadPrivateAddMediaIntentDatas:(id)a3
+- (void)setPayloadPrivateAddMediaIntentDatas:(id)datas
 {
-  v4 = [a3 mutableCopy];
+  v4 = [datas mutableCopy];
   payloadPrivateAddMediaIntentDatas = self->_payloadPrivateAddMediaIntentDatas;
   self->_payloadPrivateAddMediaIntentDatas = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadPrivateAddMediaIntentDatas);
 }
 
-- (void)addPayloadPrimitiveString:(id)a3
+- (void)addPayloadPrimitiveString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   payloadPrimitiveStrings = self->_payloadPrimitiveStrings;
-  v8 = v4;
+  v8 = stringCopy;
   if (!payloadPrimitiveStrings)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadPrimitiveStrings;
-    self->_payloadPrimitiveStrings = v6;
+    self->_payloadPrimitiveStrings = array;
 
-    v4 = v8;
+    stringCopy = v8;
     payloadPrimitiveStrings = self->_payloadPrimitiveStrings;
   }
 
-  [(NSArray *)payloadPrimitiveStrings addObject:v4];
+  [(NSArray *)payloadPrimitiveStrings addObject:stringCopy];
 }
 
-- (void)setPayloadPrimitiveStrings:(id)a3
+- (void)setPayloadPrimitiveStrings:(id)strings
 {
-  v4 = [a3 mutableCopy];
+  v4 = [strings mutableCopy];
   payloadPrimitiveStrings = self->_payloadPrimitiveStrings;
   self->_payloadPrimitiveStrings = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadPrimitiveStrings);
 }
 
-- (int64_t)payloadPrimitiveLongAtIndex:(unint64_t)a3
+- (int64_t)payloadPrimitiveLongAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_payloadPrimitiveLongs objectAtIndexedSubscript:a3];
-  v4 = [v3 longLongValue];
+  v3 = [(NSArray *)self->_payloadPrimitiveLongs objectAtIndexedSubscript:index];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
-- (void)addPayloadPrimitiveLong:(int64_t)a3
+- (void)addPayloadPrimitiveLong:(int64_t)long
 {
   payloadPrimitiveLongs = self->_payloadPrimitiveLongs;
   if (!payloadPrimitiveLongs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadPrimitiveLongs;
-    self->_payloadPrimitiveLongs = v6;
+    self->_payloadPrimitiveLongs = array;
 
     payloadPrimitiveLongs = self->_payloadPrimitiveLongs;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:long];
   [(NSArray *)payloadPrimitiveLongs addObject:v8];
 }
 
-- (void)setPayloadPrimitiveLongs:(id)a3
+- (void)setPayloadPrimitiveLongs:(id)longs
 {
-  v4 = [a3 mutableCopy];
+  v4 = [longs mutableCopy];
   payloadPrimitiveLongs = self->_payloadPrimitiveLongs;
   self->_payloadPrimitiveLongs = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadPrimitiveLongs);
 }
 
-- (int)payloadPrimitiveIntAtIndex:(unint64_t)a3
+- (int)payloadPrimitiveIntAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_payloadPrimitiveInts objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_payloadPrimitiveInts objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)setPayloadPrimitiveInts:(id)a3
+- (void)setPayloadPrimitiveInts:(id)ints
 {
-  v4 = [a3 mutableCopy];
+  v4 = [ints mutableCopy];
   payloadPrimitiveInts = self->_payloadPrimitiveInts;
   self->_payloadPrimitiveInts = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadPrimitiveInts);
 }
 
-- (double)payloadPrimitiveDoubleAtIndex:(unint64_t)a3
+- (double)payloadPrimitiveDoubleAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_payloadPrimitiveDoubles objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_payloadPrimitiveDoubles objectAtIndexedSubscript:index];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addPayloadPrimitiveDouble:(double)a3
+- (void)addPayloadPrimitiveDouble:(double)double
 {
   payloadPrimitiveDoubles = self->_payloadPrimitiveDoubles;
   if (!payloadPrimitiveDoubles)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadPrimitiveDoubles;
-    self->_payloadPrimitiveDoubles = v6;
+    self->_payloadPrimitiveDoubles = array;
 
     payloadPrimitiveDoubles = self->_payloadPrimitiveDoubles;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:double];
   [(NSArray *)payloadPrimitiveDoubles addObject:v8];
 }
 
-- (void)setPayloadPrimitiveDoubles:(id)a3
+- (void)setPayloadPrimitiveDoubles:(id)doubles
 {
-  v4 = [a3 mutableCopy];
+  v4 = [doubles mutableCopy];
   payloadPrimitiveDoubles = self->_payloadPrimitiveDoubles;
   self->_payloadPrimitiveDoubles = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadPrimitiveDoubles);
 }
 
-- (BOOL)payloadPrimitiveBoolAtIndex:(unint64_t)a3
+- (BOOL)payloadPrimitiveBoolAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_payloadPrimitiveBools objectAtIndexedSubscript:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(NSArray *)self->_payloadPrimitiveBools objectAtIndexedSubscript:index];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setPayloadPrimitiveBools:(id)a3
+- (void)setPayloadPrimitiveBools:(id)bools
 {
-  v4 = [a3 mutableCopy];
+  v4 = [bools mutableCopy];
   payloadPrimitiveBools = self->_payloadPrimitiveBools;
   self->_payloadPrimitiveBools = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadPrimitiveBools);
 }
 
-- (int)StringAsPayloadPreferredCallProviders:(id)a3
+- (int)StringAsPayloadPreferredCallProviders:(id)providers
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"TELEPHONY_PROVIDER"])
+  providersCopy = providers;
+  if ([providersCopy isEqualToString:@"TELEPHONY_PROVIDER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FACETIME_PROVIDER"])
+  else if ([providersCopy isEqualToString:@"FACETIME_PROVIDER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"THIRD_PARTY_PROVIDER"])
+  else if ([providersCopy isEqualToString:@"THIRD_PARTY_PROVIDER"])
   {
     v4 = 4;
   }
@@ -16106,28 +16106,28 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadPreferredCallProvider:(int)a3
+- (void)addPayloadPreferredCallProvider:(int)provider
 {
-  if (a3 != 0x7FFFFFFF)
+  if (provider != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadPlaybackRepeatModes:(id)a3
+- (int)StringAsPayloadPlaybackRepeatModes:(id)modes
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NONE"])
+  modesCopy = modes;
+  if ([modesCopy isEqualToString:@"NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ALL"])
+  else if ([modesCopy isEqualToString:@"ALL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ONE"])
+  else if ([modesCopy isEqualToString:@"ONE"])
   {
     v4 = 2;
   }
@@ -16140,33 +16140,33 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadPlaybackRepeatMode:(int)a3
+- (void)addPayloadPlaybackRepeatMode:(int)mode
 {
-  if (a3 != 0x7FFFFFFF)
+  if (mode != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadPlaybackQueueLocations:(id)a3
+- (int)StringAsPayloadPlaybackQueueLocations:(id)locations
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_PLAYBACK_QUEUE_LOCATION"])
+  locationsCopy = locations;
+  if ([locationsCopy isEqualToString:@"UNKNOWN_PLAYBACK_QUEUE_LOCATION"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NOW"])
+  else if ([locationsCopy isEqualToString:@"NOW"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NEXT"])
+  else if ([locationsCopy isEqualToString:@"NEXT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LATER"])
+  else if ([locationsCopy isEqualToString:@"LATER"])
   {
     v4 = 3;
   }
@@ -16179,212 +16179,212 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadPlaybackQueueLocation:(int)a3
+- (void)addPayloadPlaybackQueueLocation:(int)location
 {
-  if (a3 != 0x7FFFFFFF)
+  if (location != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadPlaceList:(id)a3
+- (void)addPayloadPlaceList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   payloadPlaceLists = self->_payloadPlaceLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!payloadPlaceLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadPlaceLists;
-    self->_payloadPlaceLists = v6;
+    self->_payloadPlaceLists = array;
 
-    v4 = v8;
+    listCopy = v8;
     payloadPlaceLists = self->_payloadPlaceLists;
   }
 
-  [(NSArray *)payloadPlaceLists addObject:v4];
+  [(NSArray *)payloadPlaceLists addObject:listCopy];
 }
 
-- (void)setPayloadPlaceLists:(id)a3
+- (void)setPayloadPlaceLists:(id)lists
 {
-  v4 = [a3 mutableCopy];
+  v4 = [lists mutableCopy];
   payloadPlaceLists = self->_payloadPlaceLists;
   self->_payloadPlaceLists = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadPlaceLists);
 }
 
-- (void)addPayloadPlace:(id)a3
+- (void)addPayloadPlace:(id)place
 {
-  v4 = a3;
+  placeCopy = place;
   payloadPlaces = self->_payloadPlaces;
-  v8 = v4;
+  v8 = placeCopy;
   if (!payloadPlaces)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadPlaces;
-    self->_payloadPlaces = v6;
+    self->_payloadPlaces = array;
 
-    v4 = v8;
+    placeCopy = v8;
     payloadPlaces = self->_payloadPlaces;
   }
 
-  [(NSArray *)payloadPlaces addObject:v4];
+  [(NSArray *)payloadPlaces addObject:placeCopy];
 }
 
-- (void)setPayloadPlaces:(id)a3
+- (void)setPayloadPlaces:(id)places
 {
-  v4 = [a3 mutableCopy];
+  v4 = [places mutableCopy];
   payloadPlaces = self->_payloadPlaces;
   self->_payloadPlaces = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadPlaces);
 }
 
-- (int)StringAsPayloadPhotoAttributes:(id)a3
+- (int)StringAsPayloadPhotoAttributes:(id)attributes
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PHOTO"])
+  attributesCopy = attributes;
+  if ([attributesCopy isEqualToString:@"PHOTO"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"VIDEO"])
+  else if ([attributesCopy isEqualToString:@"VIDEO"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GIF"])
+  else if ([attributesCopy isEqualToString:@"GIF"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"FLASH"])
+  else if ([attributesCopy isEqualToString:@"FLASH"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"LANDSCAPE_ORIENTATION"])
+  else if ([attributesCopy isEqualToString:@"LANDSCAPE_ORIENTATION"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"PORTRAIT_ORIENTATION"])
+  else if ([attributesCopy isEqualToString:@"PORTRAIT_ORIENTATION"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"FAVORITE"])
+  else if ([attributesCopy isEqualToString:@"FAVORITE"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"SELFIE"])
+  else if ([attributesCopy isEqualToString:@"SELFIE"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"FRONT_FACING_CAMERA"])
+  else if ([attributesCopy isEqualToString:@"FRONT_FACING_CAMERA"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"SCREENSHOT"])
+  else if ([attributesCopy isEqualToString:@"SCREENSHOT"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"BURST_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"BURST_PHOTO"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"HDR_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"HDR_PHOTO"])
   {
     v4 = 51;
   }
 
-  else if ([v3 isEqualToString:@"SQUARE_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"SQUARE_PHOTO"])
   {
     v4 = 52;
   }
 
-  else if ([v3 isEqualToString:@"PANORAMA_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"PANORAMA_PHOTO"])
   {
     v4 = 53;
   }
 
-  else if ([v3 isEqualToString:@"TIME_LAPSE_VIDEO"])
+  else if ([attributesCopy isEqualToString:@"TIME_LAPSE_VIDEO"])
   {
     v4 = 80;
   }
 
-  else if ([v3 isEqualToString:@"SLOW_MOTION_VIDEO"])
+  else if ([attributesCopy isEqualToString:@"SLOW_MOTION_VIDEO"])
   {
     v4 = 81;
   }
 
-  else if ([v3 isEqualToString:@"NOIR_FILTER"])
+  else if ([attributesCopy isEqualToString:@"NOIR_FILTER"])
   {
     v4 = 300;
   }
 
-  else if ([v3 isEqualToString:@"CHROME_FILTER"])
+  else if ([attributesCopy isEqualToString:@"CHROME_FILTER"])
   {
     v4 = 301;
   }
 
-  else if ([v3 isEqualToString:@"INSTANT_FILTER"])
+  else if ([attributesCopy isEqualToString:@"INSTANT_FILTER"])
   {
     v4 = 302;
   }
 
-  else if ([v3 isEqualToString:@"TONAL_FILTER"])
+  else if ([attributesCopy isEqualToString:@"TONAL_FILTER"])
   {
     v4 = 303;
   }
 
-  else if ([v3 isEqualToString:@"TRANSFER_FILTER"])
+  else if ([attributesCopy isEqualToString:@"TRANSFER_FILTER"])
   {
     v4 = 304;
   }
 
-  else if ([v3 isEqualToString:@"MONO_FILTER"])
+  else if ([attributesCopy isEqualToString:@"MONO_FILTER"])
   {
     v4 = 305;
   }
 
-  else if ([v3 isEqualToString:@"FADE_FILTER"])
+  else if ([attributesCopy isEqualToString:@"FADE_FILTER"])
   {
     v4 = 306;
   }
 
-  else if ([v3 isEqualToString:@"PROCESS_FILTER"])
+  else if ([attributesCopy isEqualToString:@"PROCESS_FILTER"])
   {
     v4 = 307;
   }
 
-  else if ([v3 isEqualToString:@"PORTRAIT_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"PORTRAIT_PHOTO"])
   {
     v4 = 54;
   }
 
-  else if ([v3 isEqualToString:@"LIVE_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"LIVE_PHOTO"])
   {
     v4 = 55;
   }
 
-  else if ([v3 isEqualToString:@"LOOP_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"LOOP_PHOTO"])
   {
     v4 = 56;
   }
 
-  else if ([v3 isEqualToString:@"BOUNCE_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"BOUNCE_PHOTO"])
   {
     v4 = 57;
   }
 
-  else if ([v3 isEqualToString:@"LONG_EXPOSURE_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"LONG_EXPOSURE_PHOTO"])
   {
     v4 = 58;
   }
@@ -16397,21 +16397,21 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadPhotoAttribute:(int)a3
+- (void)addPayloadPhotoAttribute:(int)attribute
 {
-  if (a3 != 0x7FFFFFFF)
+  if (attribute != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadPersonalPlaceTypes:(id)a3
+- (int)StringAsPayloadPersonalPlaceTypes:(id)types
 {
-  v3 = a3;
+  typesCopy = types;
   v4 = 2;
-  if (([v3 isEqualToString:@"HOME"] & 1) == 0)
+  if (([typesCopy isEqualToString:@"HOME"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"WORK"])
+    if ([typesCopy isEqualToString:@"WORK"])
     {
       v4 = 3;
     }
@@ -16425,38 +16425,38 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadPersonalPlaceType:(int)a3
+- (void)addPayloadPersonalPlaceType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadPaymentStatus:(id)a3
+- (int)StringAsPayloadPaymentStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PENDING"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"PENDING"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"COMPLETED"])
+  else if ([statusCopy isEqualToString:@"COMPLETED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CANCELED"])
+  else if ([statusCopy isEqualToString:@"CANCELED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"FAILED"])
+  else if ([statusCopy isEqualToString:@"FAILED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"UNPAID"])
+  else if ([statusCopy isEqualToString:@"UNPAID"])
   {
     v4 = 5;
   }
@@ -16469,139 +16469,139 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadPaymentStatus:(int)a3
+- (void)addPayloadPaymentStatus:(int)status
 {
-  if (a3 != 0x7FFFFFFF)
+  if (status != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadPaymentMethodValue:(id)a3
+- (void)addPayloadPaymentMethodValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadPaymentMethodValues = self->_payloadPaymentMethodValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadPaymentMethodValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadPaymentMethodValues;
-    self->_payloadPaymentMethodValues = v6;
+    self->_payloadPaymentMethodValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadPaymentMethodValues = self->_payloadPaymentMethodValues;
   }
 
-  [(NSArray *)payloadPaymentMethodValues addObject:v4];
+  [(NSArray *)payloadPaymentMethodValues addObject:valueCopy];
 }
 
-- (void)setPayloadPaymentMethodValues:(id)a3
+- (void)setPayloadPaymentMethodValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadPaymentMethodValues = self->_payloadPaymentMethodValues;
   self->_payloadPaymentMethodValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadPaymentMethodValues);
 }
 
-- (void)addPayloadPaymentMethodList:(id)a3
+- (void)addPayloadPaymentMethodList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   payloadPaymentMethodLists = self->_payloadPaymentMethodLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!payloadPaymentMethodLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadPaymentMethodLists;
-    self->_payloadPaymentMethodLists = v6;
+    self->_payloadPaymentMethodLists = array;
 
-    v4 = v8;
+    listCopy = v8;
     payloadPaymentMethodLists = self->_payloadPaymentMethodLists;
   }
 
-  [(NSArray *)payloadPaymentMethodLists addObject:v4];
+  [(NSArray *)payloadPaymentMethodLists addObject:listCopy];
 }
 
-- (void)setPayloadPaymentMethodLists:(id)a3
+- (void)setPayloadPaymentMethodLists:(id)lists
 {
-  v4 = [a3 mutableCopy];
+  v4 = [lists mutableCopy];
   payloadPaymentMethodLists = self->_payloadPaymentMethodLists;
   self->_payloadPaymentMethodLists = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadPaymentMethodLists);
 }
 
-- (void)addPayloadPaymentAmountValue:(id)a3
+- (void)addPayloadPaymentAmountValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadPaymentAmountValues = self->_payloadPaymentAmountValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadPaymentAmountValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadPaymentAmountValues;
-    self->_payloadPaymentAmountValues = v6;
+    self->_payloadPaymentAmountValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadPaymentAmountValues = self->_payloadPaymentAmountValues;
   }
 
-  [(NSArray *)payloadPaymentAmountValues addObject:v4];
+  [(NSArray *)payloadPaymentAmountValues addObject:valueCopy];
 }
 
-- (void)setPayloadPaymentAmountValues:(id)a3
+- (void)setPayloadPaymentAmountValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadPaymentAmountValues = self->_payloadPaymentAmountValues;
   self->_payloadPaymentAmountValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadPaymentAmountValues);
 }
 
-- (int)StringAsPayloadParsecCategories:(id)a3
+- (int)StringAsPayloadParsecCategories:(id)categories
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  categoriesCopy = categories;
+  if ([categoriesCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MOVIE"])
+  else if ([categoriesCopy isEqualToString:@"MOVIE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TV"])
+  else if ([categoriesCopy isEqualToString:@"TV"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WEB_VIDEO"])
+  else if ([categoriesCopy isEqualToString:@"WEB_VIDEO"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MUSIC"])
+  else if ([categoriesCopy isEqualToString:@"MUSIC"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PODCAST"])
+  else if ([categoriesCopy isEqualToString:@"PODCAST"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"APP"])
+  else if ([categoriesCopy isEqualToString:@"APP"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"BOOK"])
+  else if ([categoriesCopy isEqualToString:@"BOOK"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"OTHER"])
+  else if ([categoriesCopy isEqualToString:@"OTHER"])
   {
     v4 = 8;
   }
@@ -16614,21 +16614,21 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadParsecCategory:(int)a3
+- (void)addPayloadParsecCategory:(int)category
 {
-  if (a3 != 0x7FFFFFFF)
+  if (category != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadOutgoingMessageTypes:(id)a3
+- (int)StringAsPayloadOutgoingMessageTypes:(id)types
 {
-  v3 = a3;
+  typesCopy = types;
   v4 = 1;
-  if (([v3 isEqualToString:@"OUTGOING_MESSAGE_TEXT"] & 1) == 0)
+  if (([typesCopy isEqualToString:@"OUTGOING_MESSAGE_TEXT"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"OUTGOING_MESSAGE_AUDIO"])
+    if ([typesCopy isEqualToString:@"OUTGOING_MESSAGE_AUDIO"])
     {
       v4 = 2;
     }
@@ -16642,68 +16642,68 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadOutgoingMessageType:(int)a3
+- (void)addPayloadOutgoingMessageType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadNumericSettingValue:(id)a3
+- (void)addPayloadNumericSettingValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadNumericSettingValues = self->_payloadNumericSettingValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadNumericSettingValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadNumericSettingValues;
-    self->_payloadNumericSettingValues = v6;
+    self->_payloadNumericSettingValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadNumericSettingValues = self->_payloadNumericSettingValues;
   }
 
-  [(NSArray *)payloadNumericSettingValues addObject:v4];
+  [(NSArray *)payloadNumericSettingValues addObject:valueCopy];
 }
 
-- (void)setPayloadNumericSettingValues:(id)a3
+- (void)setPayloadNumericSettingValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadNumericSettingValues = self->_payloadNumericSettingValues;
   self->_payloadNumericSettingValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadNumericSettingValues);
 }
 
-- (void)addPayloadNumericSettingUnit:(int)a3
+- (void)addPayloadNumericSettingUnit:(int)unit
 {
-  if (a3 != 0x7FFFFFFF)
+  if (unit != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadNotebookItemTypes:(id)a3
+- (int)StringAsPayloadNotebookItemTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_NOTE_TYPE"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"UNKNOWN_NOTE_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NOTE"])
+  else if ([typesCopy isEqualToString:@"NOTE"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"TASK_LIST"])
+  else if ([typesCopy isEqualToString:@"TASK_LIST"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"TASK"])
+  else if ([typesCopy isEqualToString:@"TASK"])
   {
     v4 = 30;
   }
@@ -16716,296 +16716,296 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadNotebookItemType:(int)a3
+- (void)addPayloadNotebookItemType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadNoteContent:(id)a3
+- (void)addPayloadNoteContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   payloadNoteContents = self->_payloadNoteContents;
-  v8 = v4;
+  v8 = contentCopy;
   if (!payloadNoteContents)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadNoteContents;
-    self->_payloadNoteContents = v6;
+    self->_payloadNoteContents = array;
 
-    v4 = v8;
+    contentCopy = v8;
     payloadNoteContents = self->_payloadNoteContents;
   }
 
-  [(NSArray *)payloadNoteContents addObject:v4];
+  [(NSArray *)payloadNoteContents addObject:contentCopy];
 }
 
-- (void)setPayloadNoteContents:(id)a3
+- (void)setPayloadNoteContents:(id)contents
 {
-  v4 = [a3 mutableCopy];
+  v4 = [contents mutableCopy];
   payloadNoteContents = self->_payloadNoteContents;
   self->_payloadNoteContents = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadNoteContents);
 }
 
-- (void)addPayloadNote:(id)a3
+- (void)addPayloadNote:(id)note
 {
-  v4 = a3;
+  noteCopy = note;
   payloadNotes = self->_payloadNotes;
-  v8 = v4;
+  v8 = noteCopy;
   if (!payloadNotes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadNotes;
-    self->_payloadNotes = v6;
+    self->_payloadNotes = array;
 
-    v4 = v8;
+    noteCopy = v8;
     payloadNotes = self->_payloadNotes;
   }
 
-  [(NSArray *)payloadNotes addObject:v4];
+  [(NSArray *)payloadNotes addObject:noteCopy];
 }
 
-- (void)setPayloadNotes:(id)a3
+- (void)setPayloadNotes:(id)notes
 {
-  v4 = [a3 mutableCopy];
+  v4 = [notes mutableCopy];
   payloadNotes = self->_payloadNotes;
   self->_payloadNotes = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadNotes);
 }
 
-- (void)addPayloadModifyRelationship:(id)a3
+- (void)addPayloadModifyRelationship:(id)relationship
 {
-  v4 = a3;
+  relationshipCopy = relationship;
   payloadModifyRelationships = self->_payloadModifyRelationships;
-  v8 = v4;
+  v8 = relationshipCopy;
   if (!payloadModifyRelationships)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadModifyRelationships;
-    self->_payloadModifyRelationships = v6;
+    self->_payloadModifyRelationships = array;
 
-    v4 = v8;
+    relationshipCopy = v8;
     payloadModifyRelationships = self->_payloadModifyRelationships;
   }
 
-  [(NSArray *)payloadModifyRelationships addObject:v4];
+  [(NSArray *)payloadModifyRelationships addObject:relationshipCopy];
 }
 
-- (void)setPayloadModifyRelationships:(id)a3
+- (void)setPayloadModifyRelationships:(id)relationships
 {
-  v4 = [a3 mutableCopy];
+  v4 = [relationships mutableCopy];
   payloadModifyRelationships = self->_payloadModifyRelationships;
   self->_payloadModifyRelationships = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadModifyRelationships);
 }
 
-- (void)addPayloadModifyNickname:(id)a3
+- (void)addPayloadModifyNickname:(id)nickname
 {
-  v4 = a3;
+  nicknameCopy = nickname;
   payloadModifyNicknames = self->_payloadModifyNicknames;
-  v8 = v4;
+  v8 = nicknameCopy;
   if (!payloadModifyNicknames)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadModifyNicknames;
-    self->_payloadModifyNicknames = v6;
+    self->_payloadModifyNicknames = array;
 
-    v4 = v8;
+    nicknameCopy = v8;
     payloadModifyNicknames = self->_payloadModifyNicknames;
   }
 
-  [(NSArray *)payloadModifyNicknames addObject:v4];
+  [(NSArray *)payloadModifyNicknames addObject:nicknameCopy];
 }
 
-- (void)setPayloadModifyNicknames:(id)a3
+- (void)setPayloadModifyNicknames:(id)nicknames
 {
-  v4 = [a3 mutableCopy];
+  v4 = [nicknames mutableCopy];
   payloadModifyNicknames = self->_payloadModifyNicknames;
   self->_payloadModifyNicknames = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadModifyNicknames);
 }
 
-- (int)StringAsPayloadMessageTypes:(id)a3
+- (int)StringAsPayloadMessageTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"TEXT"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"TEXT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AUDIO"])
+  else if ([typesCopy isEqualToString:@"AUDIO"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DIGITAL_TOUCH"])
+  else if ([typesCopy isEqualToString:@"DIGITAL_TOUCH"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HANDWRITING"])
+  else if ([typesCopy isEqualToString:@"HANDWRITING"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"STICKER"])
+  else if ([typesCopy isEqualToString:@"STICKER"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"TAPBACK_LIKED"])
+  else if ([typesCopy isEqualToString:@"TAPBACK_LIKED"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"TAPBACK_DISLIKED"])
+  else if ([typesCopy isEqualToString:@"TAPBACK_DISLIKED"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"TAPBACK_EMPHASIZED"])
+  else if ([typesCopy isEqualToString:@"TAPBACK_EMPHASIZED"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"TAPBACK_LOVED"])
+  else if ([typesCopy isEqualToString:@"TAPBACK_LOVED"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"TAPBACK_QUESTIONED"])
+  else if ([typesCopy isEqualToString:@"TAPBACK_QUESTIONED"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"TAPBACK_LAUGHED"])
+  else if ([typesCopy isEqualToString:@"TAPBACK_LAUGHED"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA_TYPE_CALENDAR"])
+  else if ([typesCopy isEqualToString:@"MEDIA_TYPE_CALENDAR"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA_TYPE_LOCATION"])
+  else if ([typesCopy isEqualToString:@"MEDIA_TYPE_LOCATION"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA_TYPE_ADDRESS_CARD"])
+  else if ([typesCopy isEqualToString:@"MEDIA_TYPE_ADDRESS_CARD"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA_TYPE_IMAGE"])
+  else if ([typesCopy isEqualToString:@"MEDIA_TYPE_IMAGE"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA_TYPE_VIDEO"])
+  else if ([typesCopy isEqualToString:@"MEDIA_TYPE_VIDEO"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA_TYPE_PASS"])
+  else if ([typesCopy isEqualToString:@"MEDIA_TYPE_PASS"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA_TYPE_AUDIO"])
+  else if ([typesCopy isEqualToString:@"MEDIA_TYPE_AUDIO"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"PAYMENT_SENT"])
+  else if ([typesCopy isEqualToString:@"PAYMENT_SENT"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"PAYMENT_REQUEST"])
+  else if ([typesCopy isEqualToString:@"PAYMENT_REQUEST"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"PAYMENT_NOTE"])
+  else if ([typesCopy isEqualToString:@"PAYMENT_NOTE"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"ANIMOJI"])
+  else if ([typesCopy isEqualToString:@"ANIMOJI"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"ACTIVITY_SNIPPET"])
+  else if ([typesCopy isEqualToString:@"ACTIVITY_SNIPPET"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"FILE"])
+  else if ([typesCopy isEqualToString:@"FILE"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"LINK"])
+  else if ([typesCopy isEqualToString:@"LINK"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"MESSAGE_REACTION"])
+  else if ([typesCopy isEqualToString:@"MESSAGE_REACTION"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"SAFETY_MONITOR"])
+  else if ([typesCopy isEqualToString:@"SAFETY_MONITOR"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"LOCATION_REQUEST"])
+  else if ([typesCopy isEqualToString:@"LOCATION_REQUEST"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"SHARED_LOCATION"])
+  else if ([typesCopy isEqualToString:@"SHARED_LOCATION"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"FIND_MY"])
+  else if ([typesCopy isEqualToString:@"FIND_MY"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"SCREEN_TIME_REQUEST"])
+  else if ([typesCopy isEqualToString:@"SCREEN_TIME_REQUEST"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"ASK_TO"])
+  else if ([typesCopy isEqualToString:@"ASK_TO"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA_TYPE_ANIMATED_IMAGE"])
+  else if ([typesCopy isEqualToString:@"MEDIA_TYPE_ANIMATED_IMAGE"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"THIRD_PARTY_ATTACHMENT"])
+  else if ([typesCopy isEqualToString:@"THIRD_PARTY_ATTACHMENT"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"POLL"])
+  else if ([typesCopy isEqualToString:@"POLL"])
   {
     v4 = 35;
   }
@@ -17018,78 +17018,78 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadMessageType:(int)a3
+- (void)addPayloadMessageType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadMessageEffects:(id)a3
+- (int)StringAsPayloadMessageEffects:(id)effects
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"HAPPY_BIRTHDAY"])
+  effectsCopy = effects;
+  if ([effectsCopy isEqualToString:@"HAPPY_BIRTHDAY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CONFETTI"])
+  else if ([effectsCopy isEqualToString:@"CONFETTI"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LASERS"])
+  else if ([effectsCopy isEqualToString:@"LASERS"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"FIREWORKS"])
+  else if ([effectsCopy isEqualToString:@"FIREWORKS"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SHOOTING_STAR"])
+  else if ([effectsCopy isEqualToString:@"SHOOTING_STAR"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"INVISBLE_INK"])
+  else if ([effectsCopy isEqualToString:@"INVISBLE_INK"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"GENTLE"])
+  else if ([effectsCopy isEqualToString:@"GENTLE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"LOUD"])
+  else if ([effectsCopy isEqualToString:@"LOUD"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"IMPACT"])
+  else if ([effectsCopy isEqualToString:@"IMPACT"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SPARKLES"])
+  else if ([effectsCopy isEqualToString:@"SPARKLES"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"HEART"])
+  else if ([effectsCopy isEqualToString:@"HEART"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"ECHO"])
+  else if ([effectsCopy isEqualToString:@"ECHO"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SPOTLIGHT"])
+  else if ([effectsCopy isEqualToString:@"SPOTLIGHT"])
   {
     v4 = 13;
   }
@@ -17102,38 +17102,38 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadMessageEffect:(int)a3
+- (void)addPayloadMessageEffect:(int)effect
 {
-  if (a3 != 0x7FFFFFFF)
+  if (effect != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadMessageAttributes:(id)a3
+- (int)StringAsPayloadMessageAttributes:(id)attributes
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"READ"])
+  attributesCopy = attributes;
+  if ([attributesCopy isEqualToString:@"READ"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UNREAD"])
+  else if ([attributesCopy isEqualToString:@"UNREAD"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FLAGGED"])
+  else if ([attributesCopy isEqualToString:@"FLAGGED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"UNFLAGGED"])
+  else if ([attributesCopy isEqualToString:@"UNFLAGGED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PLAYED"])
+  else if ([attributesCopy isEqualToString:@"PLAYED"])
   {
     v4 = 5;
   }
@@ -17146,136 +17146,136 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadMessageAttribute:(int)a3
+- (void)addPayloadMessageAttribute:(int)attribute
 {
-  if (a3 != 0x7FFFFFFF)
+  if (attribute != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadMediaSearch:(id)a3
+- (void)addPayloadMediaSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   payloadMediaSearchs = self->_payloadMediaSearchs;
-  v8 = v4;
+  v8 = searchCopy;
   if (!payloadMediaSearchs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadMediaSearchs;
-    self->_payloadMediaSearchs = v6;
+    self->_payloadMediaSearchs = array;
 
-    v4 = v8;
+    searchCopy = v8;
     payloadMediaSearchs = self->_payloadMediaSearchs;
   }
 
-  [(NSArray *)payloadMediaSearchs addObject:v4];
+  [(NSArray *)payloadMediaSearchs addObject:searchCopy];
 }
 
-- (void)setPayloadMediaSearchs:(id)a3
+- (void)setPayloadMediaSearchs:(id)searchs
 {
-  v4 = [a3 mutableCopy];
+  v4 = [searchs mutableCopy];
   payloadMediaSearchs = self->_payloadMediaSearchs;
   self->_payloadMediaSearchs = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadMediaSearchs);
 }
 
-- (void)addPayloadMediaItemValue:(id)a3
+- (void)addPayloadMediaItemValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadMediaItemValues = self->_payloadMediaItemValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadMediaItemValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadMediaItemValues;
-    self->_payloadMediaItemValues = v6;
+    self->_payloadMediaItemValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadMediaItemValues = self->_payloadMediaItemValues;
   }
 
-  [(NSArray *)payloadMediaItemValues addObject:v4];
+  [(NSArray *)payloadMediaItemValues addObject:valueCopy];
 }
 
-- (void)setPayloadMediaItemValues:(id)a3
+- (void)setPayloadMediaItemValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadMediaItemValues = self->_payloadMediaItemValues;
   self->_payloadMediaItemValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadMediaItemValues);
 }
 
-- (void)addPayloadMediaItemGroup:(id)a3
+- (void)addPayloadMediaItemGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   payloadMediaItemGroups = self->_payloadMediaItemGroups;
-  v8 = v4;
+  v8 = groupCopy;
   if (!payloadMediaItemGroups)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadMediaItemGroups;
-    self->_payloadMediaItemGroups = v6;
+    self->_payloadMediaItemGroups = array;
 
-    v4 = v8;
+    groupCopy = v8;
     payloadMediaItemGroups = self->_payloadMediaItemGroups;
   }
 
-  [(NSArray *)payloadMediaItemGroups addObject:v4];
+  [(NSArray *)payloadMediaItemGroups addObject:groupCopy];
 }
 
-- (void)setPayloadMediaItemGroups:(id)a3
+- (void)setPayloadMediaItemGroups:(id)groups
 {
-  v4 = [a3 mutableCopy];
+  v4 = [groups mutableCopy];
   payloadMediaItemGroups = self->_payloadMediaItemGroups;
   self->_payloadMediaItemGroups = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadMediaItemGroups);
 }
 
-- (void)addPayloadMediaDestination:(id)a3
+- (void)addPayloadMediaDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   payloadMediaDestinations = self->_payloadMediaDestinations;
-  v8 = v4;
+  v8 = destinationCopy;
   if (!payloadMediaDestinations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadMediaDestinations;
-    self->_payloadMediaDestinations = v6;
+    self->_payloadMediaDestinations = array;
 
-    v4 = v8;
+    destinationCopy = v8;
     payloadMediaDestinations = self->_payloadMediaDestinations;
   }
 
-  [(NSArray *)payloadMediaDestinations addObject:v4];
+  [(NSArray *)payloadMediaDestinations addObject:destinationCopy];
 }
 
-- (void)setPayloadMediaDestinations:(id)a3
+- (void)setPayloadMediaDestinations:(id)destinations
 {
-  v4 = [a3 mutableCopy];
+  v4 = [destinations mutableCopy];
   payloadMediaDestinations = self->_payloadMediaDestinations;
   self->_payloadMediaDestinations = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadMediaDestinations);
 }
 
-- (int)StringAsPayloadMediaAffinityTypes:(id)a3
+- (int)StringAsPayloadMediaAffinityTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_AFFINITY_TYPE"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"UNKNOWN_AFFINITY_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LIKE"])
+  else if ([typesCopy isEqualToString:@"LIKE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DISLIKE"])
+  else if ([typesCopy isEqualToString:@"DISLIKE"])
   {
     v4 = 2;
   }
@@ -17288,104 +17288,104 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadMediaAffinityType:(int)a3
+- (void)addPayloadMediaAffinityType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadMassValue:(id)a3
+- (void)addPayloadMassValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadMassValues = self->_payloadMassValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadMassValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadMassValues;
-    self->_payloadMassValues = v6;
+    self->_payloadMassValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadMassValues = self->_payloadMassValues;
   }
 
-  [(NSArray *)payloadMassValues addObject:v4];
+  [(NSArray *)payloadMassValues addObject:valueCopy];
 }
 
-- (void)setPayloadMassValues:(id)a3
+- (void)setPayloadMassValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadMassValues = self->_payloadMassValues;
   self->_payloadMassValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadMassValues);
 }
 
-- (void)addPayloadLongValue:(id)a3
+- (void)addPayloadLongValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadLongValues = self->_payloadLongValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadLongValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadLongValues;
-    self->_payloadLongValues = v6;
+    self->_payloadLongValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadLongValues = self->_payloadLongValues;
   }
 
-  [(NSArray *)payloadLongValues addObject:v4];
+  [(NSArray *)payloadLongValues addObject:valueCopy];
 }
 
-- (void)setPayloadLongValues:(id)a3
+- (void)setPayloadLongValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadLongValues = self->_payloadLongValues;
   self->_payloadLongValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadLongValues);
 }
 
-- (void)addPayloadLongList:(id)a3
+- (void)addPayloadLongList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   payloadLongLists = self->_payloadLongLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!payloadLongLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadLongLists;
-    self->_payloadLongLists = v6;
+    self->_payloadLongLists = array;
 
-    v4 = v8;
+    listCopy = v8;
     payloadLongLists = self->_payloadLongLists;
   }
 
-  [(NSArray *)payloadLongLists addObject:v4];
+  [(NSArray *)payloadLongLists addObject:listCopy];
 }
 
-- (void)setPayloadLongLists:(id)a3
+- (void)setPayloadLongLists:(id)lists
 {
-  v4 = [a3 mutableCopy];
+  v4 = [lists mutableCopy];
   payloadLongLists = self->_payloadLongLists;
   self->_payloadLongLists = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadLongLists);
 }
 
-- (int)StringAsPayloadLocationSearchTypes:(id)a3
+- (int)StringAsPayloadLocationSearchTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_LOCATION_SEARCH_TYPE"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"UNKNOWN_LOCATION_SEARCH_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BY_LOCATION_TRIGGER"])
+  else if ([typesCopy isEqualToString:@"BY_LOCATION_TRIGGER"])
   {
     v4 = 10;
   }
@@ -17398,264 +17398,264 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadLocationSearchType:(int)a3
+- (void)addPayloadLocationSearchType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadLocationList:(id)a3
+- (void)addPayloadLocationList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   payloadLocationLists = self->_payloadLocationLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!payloadLocationLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadLocationLists;
-    self->_payloadLocationLists = v6;
+    self->_payloadLocationLists = array;
 
-    v4 = v8;
+    listCopy = v8;
     payloadLocationLists = self->_payloadLocationLists;
   }
 
-  [(NSArray *)payloadLocationLists addObject:v4];
+  [(NSArray *)payloadLocationLists addObject:listCopy];
 }
 
-- (void)setPayloadLocationLists:(id)a3
+- (void)setPayloadLocationLists:(id)lists
 {
-  v4 = [a3 mutableCopy];
+  v4 = [lists mutableCopy];
   payloadLocationLists = self->_payloadLocationLists;
   self->_payloadLocationLists = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadLocationLists);
 }
 
-- (void)addPayloadLocation:(id)a3
+- (void)addPayloadLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   payloadLocations = self->_payloadLocations;
-  v8 = v4;
+  v8 = locationCopy;
   if (!payloadLocations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadLocations;
-    self->_payloadLocations = v6;
+    self->_payloadLocations = array;
 
-    v4 = v8;
+    locationCopy = v8;
     payloadLocations = self->_payloadLocations;
   }
 
-  [(NSArray *)payloadLocations addObject:v4];
+  [(NSArray *)payloadLocations addObject:locationCopy];
 }
 
-- (void)setPayloadLocations:(id)a3
+- (void)setPayloadLocations:(id)locations
 {
-  v4 = [a3 mutableCopy];
+  v4 = [locations mutableCopy];
   payloadLocations = self->_payloadLocations;
   self->_payloadLocations = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadLocations);
 }
 
-- (void)addPayloadIntentExecutionResult:(id)a3
+- (void)addPayloadIntentExecutionResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   payloadIntentExecutionResults = self->_payloadIntentExecutionResults;
-  v8 = v4;
+  v8 = resultCopy;
   if (!payloadIntentExecutionResults)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadIntentExecutionResults;
-    self->_payloadIntentExecutionResults = v6;
+    self->_payloadIntentExecutionResults = array;
 
-    v4 = v8;
+    resultCopy = v8;
     payloadIntentExecutionResults = self->_payloadIntentExecutionResults;
   }
 
-  [(NSArray *)payloadIntentExecutionResults addObject:v4];
+  [(NSArray *)payloadIntentExecutionResults addObject:resultCopy];
 }
 
-- (void)setPayloadIntentExecutionResults:(id)a3
+- (void)setPayloadIntentExecutionResults:(id)results
 {
-  v4 = [a3 mutableCopy];
+  v4 = [results mutableCopy];
   payloadIntentExecutionResults = self->_payloadIntentExecutionResults;
   self->_payloadIntentExecutionResults = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadIntentExecutionResults);
 }
 
-- (void)addPayloadIntent:(id)a3
+- (void)addPayloadIntent:(id)intent
 {
-  v4 = a3;
+  intentCopy = intent;
   payloadIntents = self->_payloadIntents;
-  v8 = v4;
+  v8 = intentCopy;
   if (!payloadIntents)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadIntents;
-    self->_payloadIntents = v6;
+    self->_payloadIntents = array;
 
-    v4 = v8;
+    intentCopy = v8;
     payloadIntents = self->_payloadIntents;
   }
 
-  [(NSArray *)payloadIntents addObject:v4];
+  [(NSArray *)payloadIntents addObject:intentCopy];
 }
 
-- (void)setPayloadIntents:(id)a3
+- (void)setPayloadIntents:(id)intents
 {
-  v4 = [a3 mutableCopy];
+  v4 = [intents mutableCopy];
   payloadIntents = self->_payloadIntents;
   self->_payloadIntents = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadIntents);
 }
 
-- (void)addPayloadIntegerValue:(id)a3
+- (void)addPayloadIntegerValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadIntegerValues = self->_payloadIntegerValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadIntegerValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadIntegerValues;
-    self->_payloadIntegerValues = v6;
+    self->_payloadIntegerValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadIntegerValues = self->_payloadIntegerValues;
   }
 
-  [(NSArray *)payloadIntegerValues addObject:v4];
+  [(NSArray *)payloadIntegerValues addObject:valueCopy];
 }
 
-- (void)setPayloadIntegerValues:(id)a3
+- (void)setPayloadIntegerValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadIntegerValues = self->_payloadIntegerValues;
   self->_payloadIntegerValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadIntegerValues);
 }
 
-- (void)addPayloadIntegerList:(id)a3
+- (void)addPayloadIntegerList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   payloadIntegerLists = self->_payloadIntegerLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!payloadIntegerLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadIntegerLists;
-    self->_payloadIntegerLists = v6;
+    self->_payloadIntegerLists = array;
 
-    v4 = v8;
+    listCopy = v8;
     payloadIntegerLists = self->_payloadIntegerLists;
   }
 
-  [(NSArray *)payloadIntegerLists addObject:v4];
+  [(NSArray *)payloadIntegerLists addObject:listCopy];
 }
 
-- (void)setPayloadIntegerLists:(id)a3
+- (void)setPayloadIntegerLists:(id)lists
 {
-  v4 = [a3 mutableCopy];
+  v4 = [lists mutableCopy];
   payloadIntegerLists = self->_payloadIntegerLists;
   self->_payloadIntegerLists = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadIntegerLists);
 }
 
-- (void)addPayloadHomeUserTask:(id)a3
+- (void)addPayloadHomeUserTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   payloadHomeUserTasks = self->_payloadHomeUserTasks;
-  v8 = v4;
+  v8 = taskCopy;
   if (!payloadHomeUserTasks)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadHomeUserTasks;
-    self->_payloadHomeUserTasks = v6;
+    self->_payloadHomeUserTasks = array;
 
-    v4 = v8;
+    taskCopy = v8;
     payloadHomeUserTasks = self->_payloadHomeUserTasks;
   }
 
-  [(NSArray *)payloadHomeUserTasks addObject:v4];
+  [(NSArray *)payloadHomeUserTasks addObject:taskCopy];
 }
 
-- (void)setPayloadHomeUserTasks:(id)a3
+- (void)setPayloadHomeUserTasks:(id)tasks
 {
-  v4 = [a3 mutableCopy];
+  v4 = [tasks mutableCopy];
   payloadHomeUserTasks = self->_payloadHomeUserTasks;
   self->_payloadHomeUserTasks = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadHomeUserTasks);
 }
 
-- (void)addPayloadHomeFilter:(id)a3
+- (void)addPayloadHomeFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   payloadHomeFilters = self->_payloadHomeFilters;
-  v8 = v4;
+  v8 = filterCopy;
   if (!payloadHomeFilters)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadHomeFilters;
-    self->_payloadHomeFilters = v6;
+    self->_payloadHomeFilters = array;
 
-    v4 = v8;
+    filterCopy = v8;
     payloadHomeFilters = self->_payloadHomeFilters;
   }
 
-  [(NSArray *)payloadHomeFilters addObject:v4];
+  [(NSArray *)payloadHomeFilters addObject:filterCopy];
 }
 
-- (void)setPayloadHomeFilters:(id)a3
+- (void)setPayloadHomeFilters:(id)filters
 {
-  v4 = [a3 mutableCopy];
+  v4 = [filters mutableCopy];
   payloadHomeFilters = self->_payloadHomeFilters;
   self->_payloadHomeFilters = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadHomeFilters);
 }
 
-- (int)StringAsPayloadHomeEntityTypes:(id)a3
+- (int)StringAsPayloadHomeEntityTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"HOME"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"HOME"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ZONE"])
+  else if ([typesCopy isEqualToString:@"ZONE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ROOM"])
+  else if ([typesCopy isEqualToString:@"ROOM"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"GROUP"])
+  else if ([typesCopy isEqualToString:@"GROUP"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SCENE"])
+  else if ([typesCopy isEqualToString:@"SCENE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"TRIGGER"])
+  else if ([typesCopy isEqualToString:@"TRIGGER"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"DEVICE"])
+  else if ([typesCopy isEqualToString:@"DEVICE"])
   {
     v4 = 4;
   }
@@ -17668,265 +17668,265 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadHomeEntityType:(int)a3
+- (void)addPayloadHomeEntityType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadHomeEntity:(id)a3
+- (void)addPayloadHomeEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   payloadHomeEntities = self->_payloadHomeEntities;
-  v8 = v4;
+  v8 = entityCopy;
   if (!payloadHomeEntities)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadHomeEntities;
-    self->_payloadHomeEntities = v6;
+    self->_payloadHomeEntities = array;
 
-    v4 = v8;
+    entityCopy = v8;
     payloadHomeEntities = self->_payloadHomeEntities;
   }
 
-  [(NSArray *)payloadHomeEntities addObject:v4];
+  [(NSArray *)payloadHomeEntities addObject:entityCopy];
 }
 
-- (void)setPayloadHomeEntities:(id)a3
+- (void)setPayloadHomeEntities:(id)entities
 {
-  v4 = [a3 mutableCopy];
+  v4 = [entities mutableCopy];
   payloadHomeEntities = self->_payloadHomeEntities;
   self->_payloadHomeEntities = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadHomeEntities);
 }
 
-- (int)StringAsPayloadHomeDeviceTypes:(id)a3
+- (int)StringAsPayloadHomeDeviceTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LIGHTBULB"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"LIGHTBULB"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SWITCH"])
+  else if ([typesCopy isEqualToString:@"SWITCH"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"THERMOSTAT"])
+  else if ([typesCopy isEqualToString:@"THERMOSTAT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"GARAGE_DOOR_OPENER"])
+  else if ([typesCopy isEqualToString:@"GARAGE_DOOR_OPENER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"FAN"])
+  else if ([typesCopy isEqualToString:@"FAN"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"OUTLET"])
+  else if ([typesCopy isEqualToString:@"OUTLET"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"DOOR_LOCK"])
+  else if ([typesCopy isEqualToString:@"DOOR_LOCK"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"AIR_QUALITY_SENSOR"])
+  else if ([typesCopy isEqualToString:@"AIR_QUALITY_SENSOR"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"BATTERY"])
+  else if ([typesCopy isEqualToString:@"BATTERY"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_DIOXIDE_SENSOR"])
+  else if ([typesCopy isEqualToString:@"CARBON_DIOXIDE_SENSOR"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_MONOXIDE_SENSOR"])
+  else if ([typesCopy isEqualToString:@"CARBON_MONOXIDE_SENSOR"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"CONTACT_SENSOR"])
+  else if ([typesCopy isEqualToString:@"CONTACT_SENSOR"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"DOOR"])
+  else if ([typesCopy isEqualToString:@"DOOR"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"HUMIDITY_SENSOR"])
+  else if ([typesCopy isEqualToString:@"HUMIDITY_SENSOR"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"LEAK_SENSOR"])
+  else if ([typesCopy isEqualToString:@"LEAK_SENSOR"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"LIGHT_SENSOR"])
+  else if ([typesCopy isEqualToString:@"LIGHT_SENSOR"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"MOTION_SENSOR"])
+  else if ([typesCopy isEqualToString:@"MOTION_SENSOR"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"OCCUPANCY_SENSOR"])
+  else if ([typesCopy isEqualToString:@"OCCUPANCY_SENSOR"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"SECURITY_SYSTEM"])
+  else if ([typesCopy isEqualToString:@"SECURITY_SYSTEM"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"SMOKE_SENSOR"])
+  else if ([typesCopy isEqualToString:@"SMOKE_SENSOR"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"TEMPERATURE_SENSOR"])
+  else if ([typesCopy isEqualToString:@"TEMPERATURE_SENSOR"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"WINDOW"])
+  else if ([typesCopy isEqualToString:@"WINDOW"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"SHADES"])
+  else if ([typesCopy isEqualToString:@"SHADES"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"IP_CAMERA"])
+  else if ([typesCopy isEqualToString:@"IP_CAMERA"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"MICROPHONE"])
+  else if ([typesCopy isEqualToString:@"MICROPHONE"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"SPEAKER"])
+  else if ([typesCopy isEqualToString:@"SPEAKER"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"MOTORIZED_DOOR"])
+  else if ([typesCopy isEqualToString:@"MOTORIZED_DOOR"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"MOTORIZED_WINDOW"])
+  else if ([typesCopy isEqualToString:@"MOTORIZED_WINDOW"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"HEATER_COOLER"])
+  else if ([typesCopy isEqualToString:@"HEATER_COOLER"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"HUMIDIFIER_DEHUMIDIFIER"])
+  else if ([typesCopy isEqualToString:@"HUMIDIFIER_DEHUMIDIFIER"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"SLAT"])
+  else if ([typesCopy isEqualToString:@"SLAT"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"SPRINKLER"])
+  else if ([typesCopy isEqualToString:@"SPRINKLER"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"VALVE"])
+  else if ([typesCopy isEqualToString:@"VALVE"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"FAUCET"])
+  else if ([typesCopy isEqualToString:@"FAUCET"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"SHOWER"])
+  else if ([typesCopy isEqualToString:@"SHOWER"])
   {
     v4 = 39;
   }
 
-  else if ([v3 isEqualToString:@"TELEVISION"])
+  else if ([typesCopy isEqualToString:@"TELEVISION"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"CUSTOM"])
+  else if ([typesCopy isEqualToString:@"CUSTOM"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"DOOR_BELL"])
+  else if ([typesCopy isEqualToString:@"DOOR_BELL"])
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqualToString:@"AIR_PURIFIER"])
+  else if ([typesCopy isEqualToString:@"AIR_PURIFIER"])
   {
     v4 = 43;
   }
 
-  else if ([v3 isEqualToString:@"FILTER"])
+  else if ([typesCopy isEqualToString:@"FILTER"])
   {
     v4 = 44;
   }
 
-  else if ([v3 isEqualToString:@"APPLE_TV"])
+  else if ([typesCopy isEqualToString:@"APPLE_TV"])
   {
     v4 = 45;
   }
 
-  else if ([v3 isEqualToString:@"CAMERA_RECORDING"])
+  else if ([typesCopy isEqualToString:@"CAMERA_RECORDING"])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:@"SENSOR"])
+  else if ([typesCopy isEqualToString:@"SENSOR"])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:@"AIRPORT_EXPRESS"])
+  else if ([typesCopy isEqualToString:@"AIRPORT_EXPRESS"])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:@"SINK"])
+  else if ([typesCopy isEqualToString:@"SINK"])
   {
     v4 = 49;
   }
@@ -17939,43 +17939,43 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadHomeDeviceType:(int)a3
+- (void)addPayloadHomeDeviceType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadHomeAttributeValueTypes:(id)a3
+- (int)StringAsPayloadHomeAttributeValueTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"BOOLEAN"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"BOOLEAN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DOUBLE"])
+  else if ([typesCopy isEqualToString:@"DOUBLE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"STRING"])
+  else if ([typesCopy isEqualToString:@"STRING"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"INTEGER"])
+  else if ([typesCopy isEqualToString:@"INTEGER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LIMIT"])
+  else if ([typesCopy isEqualToString:@"LIMIT"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RANGE"])
+  else if ([typesCopy isEqualToString:@"RANGE"])
   {
     v4 = 5;
   }
@@ -17988,370 +17988,370 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadHomeAttributeValueType:(int)a3
+- (void)addPayloadHomeAttributeValueType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadHomeAttributeValue:(id)a3
+- (void)addPayloadHomeAttributeValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadHomeAttributeValues = self->_payloadHomeAttributeValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadHomeAttributeValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadHomeAttributeValues;
-    self->_payloadHomeAttributeValues = v6;
+    self->_payloadHomeAttributeValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadHomeAttributeValues = self->_payloadHomeAttributeValues;
   }
 
-  [(NSArray *)payloadHomeAttributeValues addObject:v4];
+  [(NSArray *)payloadHomeAttributeValues addObject:valueCopy];
 }
 
-- (void)setPayloadHomeAttributeValues:(id)a3
+- (void)setPayloadHomeAttributeValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadHomeAttributeValues = self->_payloadHomeAttributeValues;
   self->_payloadHomeAttributeValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadHomeAttributeValues);
 }
 
-- (int)StringAsPayloadHomeAttributeTypes:(id)a3
+- (int)StringAsPayloadHomeAttributeTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ENABLED"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"ENABLED"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BRIGHTNESS"])
+  else if ([typesCopy isEqualToString:@"BRIGHTNESS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"HUE"])
+  else if ([typesCopy isEqualToString:@"HUE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SATURATION"])
+  else if ([typesCopy isEqualToString:@"SATURATION"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"COLOR_VALUE"])
+  else if ([typesCopy isEqualToString:@"COLOR_VALUE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"TEMPERATURE"])
+  else if ([typesCopy isEqualToString:@"TEMPERATURE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"HUMIDITY"])
+  else if ([typesCopy isEqualToString:@"HUMIDITY"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"LOCK"])
+  else if ([typesCopy isEqualToString:@"LOCK"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"POSITION"])
+  else if ([typesCopy isEqualToString:@"POSITION"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"RAISE"])
+  else if ([typesCopy isEqualToString:@"RAISE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ROTATION_SPEED"])
+  else if ([typesCopy isEqualToString:@"ROTATION_SPEED"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ROTATION_DIRECTION"])
+  else if ([typesCopy isEqualToString:@"ROTATION_DIRECTION"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SECURITY_SYSTEM_STATE"])
+  else if ([typesCopy isEqualToString:@"SECURITY_SYSTEM_STATE"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"HEATING_COOLING_MODE"])
+  else if ([typesCopy isEqualToString:@"HEATING_COOLING_MODE"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"HEATER_COOLER_MODE"])
+  else if ([typesCopy isEqualToString:@"HEATER_COOLER_MODE"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"CONTROL_LOCK"])
+  else if ([typesCopy isEqualToString:@"CONTROL_LOCK"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"COOLING_THRESHOLD"])
+  else if ([typesCopy isEqualToString:@"COOLING_THRESHOLD"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"FAN_OPERATING_MODE"])
+  else if ([typesCopy isEqualToString:@"FAN_OPERATING_MODE"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"HEATING_THRESHOLD"])
+  else if ([typesCopy isEqualToString:@"HEATING_THRESHOLD"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"HUMIDIFIER_DEHUMIDIFIER_MODE"])
+  else if ([typesCopy isEqualToString:@"HUMIDIFIER_DEHUMIDIFIER_MODE"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"SLAT_OPERATING_MODE"])
+  else if ([typesCopy isEqualToString:@"SLAT_OPERATING_MODE"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"SWING_MODE"])
+  else if ([typesCopy isEqualToString:@"SWING_MODE"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"HUMIDIFIER_THRESHOLD"])
+  else if ([typesCopy isEqualToString:@"HUMIDIFIER_THRESHOLD"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"DEHUMIDIFIER_THRESHOLD"])
+  else if ([typesCopy isEqualToString:@"DEHUMIDIFIER_THRESHOLD"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"PROGRAM_MODE"])
+  else if ([typesCopy isEqualToString:@"PROGRAM_MODE"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"DURATION"])
+  else if ([typesCopy isEqualToString:@"DURATION"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"POWER"])
+  else if ([typesCopy isEqualToString:@"POWER"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"AIR_QUALITY_RATING"])
+  else if ([typesCopy isEqualToString:@"AIR_QUALITY_RATING"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"AIR_PARTICULATE_DENSITY"])
+  else if ([typesCopy isEqualToString:@"AIR_PARTICULATE_DENSITY"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"AIR_PARTICULATE_SIZE"])
+  else if ([typesCopy isEqualToString:@"AIR_PARTICULATE_SIZE"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"SMOKE_DETECTED"])
+  else if ([typesCopy isEqualToString:@"SMOKE_DETECTED"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_MONOXIDE_DETECTED"])
+  else if ([typesCopy isEqualToString:@"CARBON_MONOXIDE_DETECTED"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_MONOXIDE_LEVEL"])
+  else if ([typesCopy isEqualToString:@"CARBON_MONOXIDE_LEVEL"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_MONOXIDE_PEAK_LEVEL"])
+  else if ([typesCopy isEqualToString:@"CARBON_MONOXIDE_PEAK_LEVEL"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_DIOXIDE_DETECTED"])
+  else if ([typesCopy isEqualToString:@"CARBON_DIOXIDE_DETECTED"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_DIOXIDE_LEVEL"])
+  else if ([typesCopy isEqualToString:@"CARBON_DIOXIDE_LEVEL"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_DIOXIDE_PEAK_LEVEL"])
+  else if ([typesCopy isEqualToString:@"CARBON_DIOXIDE_PEAK_LEVEL"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"CONTACT_DETECTED"])
+  else if ([typesCopy isEqualToString:@"CONTACT_DETECTED"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"OCCUPANCY_DETECTED"])
+  else if ([typesCopy isEqualToString:@"OCCUPANCY_DETECTED"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"LEAK_DETECTED"])
+  else if ([typesCopy isEqualToString:@"LEAK_DETECTED"])
   {
     v4 = 39;
   }
 
-  else if ([v3 isEqualToString:@"MOTION_DETECTED"])
+  else if ([typesCopy isEqualToString:@"MOTION_DETECTED"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"AMBIENT_LIGHT_LEVEL"])
+  else if ([typesCopy isEqualToString:@"AMBIENT_LIGHT_LEVEL"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"BATTERY_LEVEL"])
+  else if ([typesCopy isEqualToString:@"BATTERY_LEVEL"])
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqualToString:@"CHARGING_STATE"])
+  else if ([typesCopy isEqualToString:@"CHARGING_STATE"])
   {
     v4 = 43;
   }
 
-  else if ([v3 isEqualToString:@"LOW_BATTERY"])
+  else if ([typesCopy isEqualToString:@"LOW_BATTERY"])
   {
     v4 = 44;
   }
 
-  else if ([v3 isEqualToString:@"IN_USE"])
+  else if ([typesCopy isEqualToString:@"IN_USE"])
   {
     v4 = 45;
   }
 
-  else if ([v3 isEqualToString:@"AIR_PURIFIER_OPERATING_MODE"])
+  else if ([typesCopy isEqualToString:@"AIR_PURIFIER_OPERATING_MODE"])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:@"FILTER_CHANGE"])
+  else if ([typesCopy isEqualToString:@"FILTER_CHANGE"])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:@"FILTER_LIFE"])
+  else if ([typesCopy isEqualToString:@"FILTER_LIFE"])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:@"WATER_LEVEL"])
+  else if ([typesCopy isEqualToString:@"WATER_LEVEL"])
   {
     v4 = 49;
   }
 
-  else if ([v3 isEqualToString:@"REMAINING_DURATION"])
+  else if ([typesCopy isEqualToString:@"REMAINING_DURATION"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"STATUS_FAULT"])
+  else if ([typesCopy isEqualToString:@"STATUS_FAULT"])
   {
     v4 = 51;
   }
 
-  else if ([v3 isEqualToString:@"SULPHUR_DIOXIDE_DENSITY"])
+  else if ([typesCopy isEqualToString:@"SULPHUR_DIOXIDE_DENSITY"])
   {
     v4 = 52;
   }
 
-  else if ([v3 isEqualToString:@"NITROGEN_DIOXIDE_DENSITY"])
+  else if ([typesCopy isEqualToString:@"NITROGEN_DIOXIDE_DENSITY"])
   {
     v4 = 53;
   }
 
-  else if ([v3 isEqualToString:@"PARTICULATE_MATTER_2_5_DENSITY"])
+  else if ([typesCopy isEqualToString:@"PARTICULATE_MATTER_2_5_DENSITY"])
   {
     v4 = 54;
   }
 
-  else if ([v3 isEqualToString:@"PARTICULATE_MATTER_10_DENSITY"])
+  else if ([typesCopy isEqualToString:@"PARTICULATE_MATTER_10_DENSITY"])
   {
     v4 = 55;
   }
 
-  else if ([v3 isEqualToString:@"VOLATILE_ORGANIC_COMPOUND_DENSITY"])
+  else if ([typesCopy isEqualToString:@"VOLATILE_ORGANIC_COMPOUND_DENSITY"])
   {
     v4 = 56;
   }
 
-  else if ([v3 isEqualToString:@"OZONE_DENSITY"])
+  else if ([typesCopy isEqualToString:@"OZONE_DENSITY"])
   {
     v4 = 57;
   }
 
-  else if ([v3 isEqualToString:@"COLOR_TEMPERATURE"])
+  else if ([typesCopy isEqualToString:@"COLOR_TEMPERATURE"])
   {
     v4 = 58;
   }
 
-  else if ([v3 isEqualToString:@"COUNT"])
+  else if ([typesCopy isEqualToString:@"COUNT"])
   {
     v4 = 59;
   }
 
-  else if ([v3 isEqualToString:@"LOCATION"])
+  else if ([typesCopy isEqualToString:@"LOCATION"])
   {
     v4 = 60;
   }
 
-  else if ([v3 isEqualToString:@"INVENTORY"])
+  else if ([typesCopy isEqualToString:@"INVENTORY"])
   {
     v4 = 61;
   }
 
-  else if ([v3 isEqualToString:@"CAPABILITIES"])
+  else if ([typesCopy isEqualToString:@"CAPABILITIES"])
   {
     v4 = 62;
   }
 
-  else if ([v3 isEqualToString:@"OPEN"])
+  else if ([typesCopy isEqualToString:@"OPEN"])
   {
     v4 = 63;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA"])
+  else if ([typesCopy isEqualToString:@"MEDIA"])
   {
     v4 = 64;
   }
 
-  else if ([v3 isEqualToString:@"ADAPTIVE_LIGHTING"])
+  else if ([typesCopy isEqualToString:@"ADAPTIVE_LIGHTING"])
   {
     v4 = 65;
   }
@@ -18364,203 +18364,203 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadHomeAttributeType:(int)a3
+- (void)addPayloadHomeAttributeType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadHomeAttribute:(id)a3
+- (void)addPayloadHomeAttribute:(id)attribute
 {
-  v4 = a3;
+  attributeCopy = attribute;
   payloadHomeAttributes = self->_payloadHomeAttributes;
-  v8 = v4;
+  v8 = attributeCopy;
   if (!payloadHomeAttributes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadHomeAttributes;
-    self->_payloadHomeAttributes = v6;
+    self->_payloadHomeAttributes = array;
 
-    v4 = v8;
+    attributeCopy = v8;
     payloadHomeAttributes = self->_payloadHomeAttributes;
   }
 
-  [(NSArray *)payloadHomeAttributes addObject:v4];
+  [(NSArray *)payloadHomeAttributes addObject:attributeCopy];
 }
 
-- (void)setPayloadHomeAttributes:(id)a3
+- (void)setPayloadHomeAttributes:(id)attributes
 {
-  v4 = [a3 mutableCopy];
+  v4 = [attributes mutableCopy];
   payloadHomeAttributes = self->_payloadHomeAttributes;
   self->_payloadHomeAttributes = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadHomeAttributes);
 }
 
-- (void)addPayloadGetSettingResponseData:(id)a3
+- (void)addPayloadGetSettingResponseData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   payloadGetSettingResponseDatas = self->_payloadGetSettingResponseDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!payloadGetSettingResponseDatas)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadGetSettingResponseDatas;
-    self->_payloadGetSettingResponseDatas = v6;
+    self->_payloadGetSettingResponseDatas = array;
 
-    v4 = v8;
+    dataCopy = v8;
     payloadGetSettingResponseDatas = self->_payloadGetSettingResponseDatas;
   }
 
-  [(NSArray *)payloadGetSettingResponseDatas addObject:v4];
+  [(NSArray *)payloadGetSettingResponseDatas addObject:dataCopy];
 }
 
-- (void)setPayloadGetSettingResponseDatas:(id)a3
+- (void)setPayloadGetSettingResponseDatas:(id)datas
 {
-  v4 = [a3 mutableCopy];
+  v4 = [datas mutableCopy];
   payloadGetSettingResponseDatas = self->_payloadGetSettingResponseDatas;
   self->_payloadGetSettingResponseDatas = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadGetSettingResponseDatas);
 }
 
-- (void)addPayloadGeographicalFeatureList:(id)a3
+- (void)addPayloadGeographicalFeatureList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   payloadGeographicalFeatureLists = self->_payloadGeographicalFeatureLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!payloadGeographicalFeatureLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadGeographicalFeatureLists;
-    self->_payloadGeographicalFeatureLists = v6;
+    self->_payloadGeographicalFeatureLists = array;
 
-    v4 = v8;
+    listCopy = v8;
     payloadGeographicalFeatureLists = self->_payloadGeographicalFeatureLists;
   }
 
-  [(NSArray *)payloadGeographicalFeatureLists addObject:v4];
+  [(NSArray *)payloadGeographicalFeatureLists addObject:listCopy];
 }
 
-- (void)setPayloadGeographicalFeatureLists:(id)a3
+- (void)setPayloadGeographicalFeatureLists:(id)lists
 {
-  v4 = [a3 mutableCopy];
+  v4 = [lists mutableCopy];
   payloadGeographicalFeatureLists = self->_payloadGeographicalFeatureLists;
   self->_payloadGeographicalFeatureLists = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadGeographicalFeatureLists);
 }
 
-- (void)addPayloadGeographicalFeature:(id)a3
+- (void)addPayloadGeographicalFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   payloadGeographicalFeatures = self->_payloadGeographicalFeatures;
-  v8 = v4;
+  v8 = featureCopy;
   if (!payloadGeographicalFeatures)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadGeographicalFeatures;
-    self->_payloadGeographicalFeatures = v6;
+    self->_payloadGeographicalFeatures = array;
 
-    v4 = v8;
+    featureCopy = v8;
     payloadGeographicalFeatures = self->_payloadGeographicalFeatures;
   }
 
-  [(NSArray *)payloadGeographicalFeatures addObject:v4];
+  [(NSArray *)payloadGeographicalFeatures addObject:featureCopy];
 }
 
-- (void)setPayloadGeographicalFeatures:(id)a3
+- (void)setPayloadGeographicalFeatures:(id)features
 {
-  v4 = [a3 mutableCopy];
+  v4 = [features mutableCopy];
   payloadGeographicalFeatures = self->_payloadGeographicalFeatures;
   self->_payloadGeographicalFeatures = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadGeographicalFeatures);
 }
 
-- (void)addPayloadFinancialAccountValue:(id)a3
+- (void)addPayloadFinancialAccountValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadFinancialAccountValues = self->_payloadFinancialAccountValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadFinancialAccountValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadFinancialAccountValues;
-    self->_payloadFinancialAccountValues = v6;
+    self->_payloadFinancialAccountValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadFinancialAccountValues = self->_payloadFinancialAccountValues;
   }
 
-  [(NSArray *)payloadFinancialAccountValues addObject:v4];
+  [(NSArray *)payloadFinancialAccountValues addObject:valueCopy];
 }
 
-- (void)setPayloadFinancialAccountValues:(id)a3
+- (void)setPayloadFinancialAccountValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadFinancialAccountValues = self->_payloadFinancialAccountValues;
   self->_payloadFinancialAccountValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadFinancialAccountValues);
 }
 
-- (int)StringAsPayloadFileTypes:(id)a3
+- (int)StringAsPayloadFileTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"OTHER"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"OTHER"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"APPLICATION"])
+  else if ([typesCopy isEqualToString:@"APPLICATION"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DOCUMENT"])
+  else if ([typesCopy isEqualToString:@"DOCUMENT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MUSIC"])
+  else if ([typesCopy isEqualToString:@"MUSIC"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MOVIE"])
+  else if ([typesCopy isEqualToString:@"MOVIE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PDF"])
+  else if ([typesCopy isEqualToString:@"PDF"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PRESENTATION"])
+  else if ([typesCopy isEqualToString:@"PRESENTATION"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"IMAGE"])
+  else if ([typesCopy isEqualToString:@"IMAGE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SOURCE"])
+  else if ([typesCopy isEqualToString:@"SOURCE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SPREADSHEET"])
+  else if ([typesCopy isEqualToString:@"SPREADSHEET"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"TEXT"])
+  else if ([typesCopy isEqualToString:@"TEXT"])
   {
     v4 = 10;
   }
@@ -18573,28 +18573,28 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadFileType:(int)a3
+- (void)addPayloadFileType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadFileShareModes:(id)a3
+- (int)StringAsPayloadFileShareModes:(id)modes
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AIRDROP"])
+  modesCopy = modes;
+  if ([modesCopy isEqualToString:@"AIRDROP"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MESSAGE"])
+  else if ([modesCopy isEqualToString:@"MESSAGE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MAIL"])
+  else if ([modesCopy isEqualToString:@"MAIL"])
   {
     v4 = 2;
   }
@@ -18607,28 +18607,28 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadFileShareMode:(int)a3
+- (void)addPayloadFileShareMode:(int)mode
 {
-  if (a3 != 0x7FFFFFFF)
+  if (mode != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadFileSearchScopes:(id)a3
+- (int)StringAsPayloadFileSearchScopes:(id)scopes
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DIRECTORY"])
+  scopesCopy = scopes;
+  if ([scopesCopy isEqualToString:@"DIRECTORY"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"VOLUME"])
+  else if ([scopesCopy isEqualToString:@"VOLUME"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"COMPUTER"])
+  else if ([scopesCopy isEqualToString:@"COMPUTER"])
   {
     v4 = 2;
   }
@@ -18641,65 +18641,65 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadFileSearchScope:(int)a3
+- (void)addPayloadFileSearchScope:(int)scope
 {
-  if (a3 != 0x7FFFFFFF)
+  if (scope != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadFilePropertyValue:(id)a3
+- (void)addPayloadFilePropertyValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadFilePropertyValues = self->_payloadFilePropertyValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadFilePropertyValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadFilePropertyValues;
-    self->_payloadFilePropertyValues = v6;
+    self->_payloadFilePropertyValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadFilePropertyValues = self->_payloadFilePropertyValues;
   }
 
-  [(NSArray *)payloadFilePropertyValues addObject:v4];
+  [(NSArray *)payloadFilePropertyValues addObject:valueCopy];
 }
 
-- (void)setPayloadFilePropertyValues:(id)a3
+- (void)setPayloadFilePropertyValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadFilePropertyValues = self->_payloadFilePropertyValues;
   self->_payloadFilePropertyValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadFilePropertyValues);
 }
 
-- (int)StringAsPayloadFilePropertyQualifiers:(id)a3
+- (int)StringAsPayloadFilePropertyQualifiers:(id)qualifiers
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"EQUAL"])
+  qualifiersCopy = qualifiers;
+  if ([qualifiersCopy isEqualToString:@"EQUAL"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AT_LEAST"])
+  else if ([qualifiersCopy isEqualToString:@"AT_LEAST"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AT_MOST"])
+  else if ([qualifiersCopy isEqualToString:@"AT_MOST"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MIN"])
+  else if ([qualifiersCopy isEqualToString:@"MIN"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MAX"])
+  else if ([qualifiersCopy isEqualToString:@"MAX"])
   {
     v4 = 4;
   }
@@ -18712,73 +18712,73 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadFilePropertyQualifier:(int)a3
+- (void)addPayloadFilePropertyQualifier:(int)qualifier
 {
-  if (a3 != 0x7FFFFFFF)
+  if (qualifier != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadFilePropertyNames:(id)a3
+- (int)StringAsPayloadFilePropertyNames:(id)names
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SIZE"])
+  namesCopy = names;
+  if ([namesCopy isEqualToString:@"SIZE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CONTENTS"])
+  else if ([namesCopy isEqualToString:@"CONTENTS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AUTHOR"])
+  else if ([namesCopy isEqualToString:@"AUTHOR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CREATION_TIME"])
+  else if ([namesCopy isEqualToString:@"CREATION_TIME"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ACCESSED_TIME"])
+  else if ([namesCopy isEqualToString:@"ACCESSED_TIME"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"MODIFIED_TIME"])
+  else if ([namesCopy isEqualToString:@"MODIFIED_TIME"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PRINTED_TIME"])
+  else if ([namesCopy isEqualToString:@"PRINTED_TIME"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SENDER"])
+  else if ([namesCopy isEqualToString:@"SENDER"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"RECIPIENT"])
+  else if ([namesCopy isEqualToString:@"RECIPIENT"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"PAGE_COUNT"])
+  else if ([namesCopy isEqualToString:@"PAGE_COUNT"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"TAG"])
+  else if ([namesCopy isEqualToString:@"TAG"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"FILE_TYPE"])
+  else if ([namesCopy isEqualToString:@"FILE_TYPE"])
   {
     v4 = 11;
   }
@@ -18791,60 +18791,60 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadFilePropertyName:(int)a3
+- (void)addPayloadFilePropertyName:(int)name
 {
-  if (a3 != 0x7FFFFFFF)
+  if (name != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadFileProperty:(id)a3
+- (void)addPayloadFileProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   payloadFileProperties = self->_payloadFileProperties;
-  v8 = v4;
+  v8 = propertyCopy;
   if (!payloadFileProperties)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadFileProperties;
-    self->_payloadFileProperties = v6;
+    self->_payloadFileProperties = array;
 
-    v4 = v8;
+    propertyCopy = v8;
     payloadFileProperties = self->_payloadFileProperties;
   }
 
-  [(NSArray *)payloadFileProperties addObject:v4];
+  [(NSArray *)payloadFileProperties addObject:propertyCopy];
 }
 
-- (void)setPayloadFileProperties:(id)a3
+- (void)setPayloadFileProperties:(id)properties
 {
-  v4 = [a3 mutableCopy];
+  v4 = [properties mutableCopy];
   payloadFileProperties = self->_payloadFileProperties;
   self->_payloadFileProperties = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadFileProperties);
 }
 
-- (int)StringAsPayloadFileEntityTypes:(id)a3
+- (int)StringAsPayloadFileEntityTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FILE"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"FILE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"FOLDER"])
+  else if ([typesCopy isEqualToString:@"FOLDER"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"REFERENCE"])
+  else if ([typesCopy isEqualToString:@"REFERENCE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"URL"])
+  else if ([typesCopy isEqualToString:@"URL"])
   {
     v4 = 3;
   }
@@ -18857,109 +18857,109 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadFileEntityType:(int)a3
+- (void)addPayloadFileEntityType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadFile:(id)a3
+- (void)addPayloadFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   payloadFiles = self->_payloadFiles;
-  v8 = v4;
+  v8 = fileCopy;
   if (!payloadFiles)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadFiles;
-    self->_payloadFiles = v6;
+    self->_payloadFiles = array;
 
-    v4 = v8;
+    fileCopy = v8;
     payloadFiles = self->_payloadFiles;
   }
 
-  [(NSArray *)payloadFiles addObject:v4];
+  [(NSArray *)payloadFiles addObject:fileCopy];
 }
 
-- (void)setPayloadFiles:(id)a3
+- (void)setPayloadFiles:(id)files
 {
-  v4 = [a3 mutableCopy];
+  v4 = [files mutableCopy];
   payloadFiles = self->_payloadFiles;
   self->_payloadFiles = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadFiles);
 }
 
-- (void)addPayloadEventParticipant:(id)a3
+- (void)addPayloadEventParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   payloadEventParticipants = self->_payloadEventParticipants;
-  v8 = v4;
+  v8 = participantCopy;
   if (!payloadEventParticipants)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadEventParticipants;
-    self->_payloadEventParticipants = v6;
+    self->_payloadEventParticipants = array;
 
-    v4 = v8;
+    participantCopy = v8;
     payloadEventParticipants = self->_payloadEventParticipants;
   }
 
-  [(NSArray *)payloadEventParticipants addObject:v4];
+  [(NSArray *)payloadEventParticipants addObject:participantCopy];
 }
 
-- (void)setPayloadEventParticipants:(id)a3
+- (void)setPayloadEventParticipants:(id)participants
 {
-  v4 = [a3 mutableCopy];
+  v4 = [participants mutableCopy];
   payloadEventParticipants = self->_payloadEventParticipants;
   self->_payloadEventParticipants = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadEventParticipants);
 }
 
-- (void)addPayloadEventList:(id)a3
+- (void)addPayloadEventList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   payloadEventLists = self->_payloadEventLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!payloadEventLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadEventLists;
-    self->_payloadEventLists = v6;
+    self->_payloadEventLists = array;
 
-    v4 = v8;
+    listCopy = v8;
     payloadEventLists = self->_payloadEventLists;
   }
 
-  [(NSArray *)payloadEventLists addObject:v4];
+  [(NSArray *)payloadEventLists addObject:listCopy];
 }
 
-- (void)setPayloadEventLists:(id)a3
+- (void)setPayloadEventLists:(id)lists
 {
-  v4 = [a3 mutableCopy];
+  v4 = [lists mutableCopy];
   payloadEventLists = self->_payloadEventLists;
   self->_payloadEventLists = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadEventLists);
 }
 
-- (int)StringAsPayloadEventAttributes:(id)a3
+- (int)StringAsPayloadEventAttributes:(id)attributes
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"EVENT_LOCATION"])
+  attributesCopy = attributes;
+  if ([attributesCopy isEqualToString:@"EVENT_LOCATION"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PARTICIPANTS"])
+  else if ([attributesCopy isEqualToString:@"PARTICIPANTS"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DATETIME"])
+  else if ([attributesCopy isEqualToString:@"DATETIME"])
   {
     v4 = 3;
   }
@@ -18972,295 +18972,295 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadEventAttribute:(int)a3
+- (void)addPayloadEventAttribute:(int)attribute
 {
-  if (a3 != 0x7FFFFFFF)
+  if (attribute != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadEvent:(id)a3
+- (void)addPayloadEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   payloadEvents = self->_payloadEvents;
-  v8 = v4;
+  v8 = eventCopy;
   if (!payloadEvents)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadEvents;
-    self->_payloadEvents = v6;
+    self->_payloadEvents = array;
 
-    v4 = v8;
+    eventCopy = v8;
     payloadEvents = self->_payloadEvents;
   }
 
-  [(NSArray *)payloadEvents addObject:v4];
+  [(NSArray *)payloadEvents addObject:eventCopy];
 }
 
-- (void)setPayloadEvents:(id)a3
+- (void)setPayloadEvents:(id)events
 {
-  v4 = [a3 mutableCopy];
+  v4 = [events mutableCopy];
   payloadEvents = self->_payloadEvents;
   self->_payloadEvents = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadEvents);
 }
 
-- (int64_t)payloadEnumerationAtIndex:(unint64_t)a3
+- (int64_t)payloadEnumerationAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_payloadEnumerations objectAtIndexedSubscript:a3];
-  v4 = [v3 longLongValue];
+  v3 = [(NSArray *)self->_payloadEnumerations objectAtIndexedSubscript:index];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
-- (void)addPayloadEnumeration:(int64_t)a3
+- (void)addPayloadEnumeration:(int64_t)enumeration
 {
   payloadEnumerations = self->_payloadEnumerations;
   if (!payloadEnumerations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadEnumerations;
-    self->_payloadEnumerations = v6;
+    self->_payloadEnumerations = array;
 
     payloadEnumerations = self->_payloadEnumerations;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:enumeration];
   [(NSArray *)payloadEnumerations addObject:v8];
 }
 
-- (void)setPayloadEnumerations:(id)a3
+- (void)setPayloadEnumerations:(id)enumerations
 {
-  v4 = [a3 mutableCopy];
+  v4 = [enumerations mutableCopy];
   payloadEnumerations = self->_payloadEnumerations;
   self->_payloadEnumerations = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadEnumerations);
 }
 
-- (void)addPayloadEnergyValue:(id)a3
+- (void)addPayloadEnergyValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadEnergyValues = self->_payloadEnergyValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadEnergyValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadEnergyValues;
-    self->_payloadEnergyValues = v6;
+    self->_payloadEnergyValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadEnergyValues = self->_payloadEnergyValues;
   }
 
-  [(NSArray *)payloadEnergyValues addObject:v4];
+  [(NSArray *)payloadEnergyValues addObject:valueCopy];
 }
 
-- (void)setPayloadEnergyValues:(id)a3
+- (void)setPayloadEnergyValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadEnergyValues = self->_payloadEnergyValues;
   self->_payloadEnergyValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadEnergyValues);
 }
 
-- (void)addPayloadDoubleValue:(id)a3
+- (void)addPayloadDoubleValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadDoubleValues = self->_payloadDoubleValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadDoubleValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadDoubleValues;
-    self->_payloadDoubleValues = v6;
+    self->_payloadDoubleValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadDoubleValues = self->_payloadDoubleValues;
   }
 
-  [(NSArray *)payloadDoubleValues addObject:v4];
+  [(NSArray *)payloadDoubleValues addObject:valueCopy];
 }
 
-- (void)setPayloadDoubleValues:(id)a3
+- (void)setPayloadDoubleValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadDoubleValues = self->_payloadDoubleValues;
   self->_payloadDoubleValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadDoubleValues);
 }
 
-- (void)addPayloadDoubleList:(id)a3
+- (void)addPayloadDoubleList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   payloadDoubleLists = self->_payloadDoubleLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!payloadDoubleLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadDoubleLists;
-    self->_payloadDoubleLists = v6;
+    self->_payloadDoubleLists = array;
 
-    v4 = v8;
+    listCopy = v8;
     payloadDoubleLists = self->_payloadDoubleLists;
   }
 
-  [(NSArray *)payloadDoubleLists addObject:v4];
+  [(NSArray *)payloadDoubleLists addObject:listCopy];
 }
 
-- (void)setPayloadDoubleLists:(id)a3
+- (void)setPayloadDoubleLists:(id)lists
 {
-  v4 = [a3 mutableCopy];
+  v4 = [lists mutableCopy];
   payloadDoubleLists = self->_payloadDoubleLists;
   self->_payloadDoubleLists = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadDoubleLists);
 }
 
-- (void)addPayloadDistanceValue:(id)a3
+- (void)addPayloadDistanceValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadDistanceValues = self->_payloadDistanceValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadDistanceValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadDistanceValues;
-    self->_payloadDistanceValues = v6;
+    self->_payloadDistanceValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadDistanceValues = self->_payloadDistanceValues;
   }
 
-  [(NSArray *)payloadDistanceValues addObject:v4];
+  [(NSArray *)payloadDistanceValues addObject:valueCopy];
 }
 
-- (void)setPayloadDistanceValues:(id)a3
+- (void)setPayloadDistanceValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadDistanceValues = self->_payloadDistanceValues;
   self->_payloadDistanceValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadDistanceValues);
 }
 
-- (void)addPayloadDistanceList:(id)a3
+- (void)addPayloadDistanceList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   payloadDistanceLists = self->_payloadDistanceLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!payloadDistanceLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadDistanceLists;
-    self->_payloadDistanceLists = v6;
+    self->_payloadDistanceLists = array;
 
-    v4 = v8;
+    listCopy = v8;
     payloadDistanceLists = self->_payloadDistanceLists;
   }
 
-  [(NSArray *)payloadDistanceLists addObject:v4];
+  [(NSArray *)payloadDistanceLists addObject:listCopy];
 }
 
-- (void)setPayloadDistanceLists:(id)a3
+- (void)setPayloadDistanceLists:(id)lists
 {
-  v4 = [a3 mutableCopy];
+  v4 = [lists mutableCopy];
   payloadDistanceLists = self->_payloadDistanceLists;
   self->_payloadDistanceLists = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadDistanceLists);
 }
 
-- (void)addPayloadDialingContact:(id)a3
+- (void)addPayloadDialingContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   payloadDialingContacts = self->_payloadDialingContacts;
-  v8 = v4;
+  v8 = contactCopy;
   if (!payloadDialingContacts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadDialingContacts;
-    self->_payloadDialingContacts = v6;
+    self->_payloadDialingContacts = array;
 
-    v4 = v8;
+    contactCopy = v8;
     payloadDialingContacts = self->_payloadDialingContacts;
   }
 
-  [(NSArray *)payloadDialingContacts addObject:v4];
+  [(NSArray *)payloadDialingContacts addObject:contactCopy];
 }
 
-- (void)setPayloadDialingContacts:(id)a3
+- (void)setPayloadDialingContacts:(id)contacts
 {
-  v4 = [a3 mutableCopy];
+  v4 = [contacts mutableCopy];
   payloadDialingContacts = self->_payloadDialingContacts;
   self->_payloadDialingContacts = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadDialingContacts);
 }
 
-- (int)StringAsPayloadDeviceTypes:(id)a3
+- (int)StringAsPayloadDeviceTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"APPLE_TV"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"APPLE_TV"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"APPLE_WATCH"])
+  else if ([typesCopy isEqualToString:@"APPLE_WATCH"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"IPHONE"])
+  else if ([typesCopy isEqualToString:@"IPHONE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"IPAD"])
+  else if ([typesCopy isEqualToString:@"IPAD"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"IPOD"])
+  else if ([typesCopy isEqualToString:@"IPOD"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"IMAC"])
+  else if ([typesCopy isEqualToString:@"IMAC"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"MAC"])
+  else if ([typesCopy isEqualToString:@"MAC"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"MACBOOK"])
+  else if ([typesCopy isEqualToString:@"MACBOOK"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"MACBOOK_AIR"])
+  else if ([typesCopy isEqualToString:@"MACBOOK_AIR"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"MACBOOK_PRO"])
+  else if ([typesCopy isEqualToString:@"MACBOOK_PRO"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"MAC_MINI"])
+  else if ([typesCopy isEqualToString:@"MAC_MINI"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"MAC_PRO"])
+  else if ([typesCopy isEqualToString:@"MAC_PRO"])
   {
     v4 = 11;
   }
@@ -19273,168 +19273,168 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadDeviceType:(int)a3
+- (void)addPayloadDeviceType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadDeviceDetail:(id)a3
+- (void)addPayloadDeviceDetail:(id)detail
 {
-  v4 = a3;
+  detailCopy = detail;
   payloadDeviceDetails = self->_payloadDeviceDetails;
-  v8 = v4;
+  v8 = detailCopy;
   if (!payloadDeviceDetails)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadDeviceDetails;
-    self->_payloadDeviceDetails = v6;
+    self->_payloadDeviceDetails = array;
 
-    v4 = v8;
+    detailCopy = v8;
     payloadDeviceDetails = self->_payloadDeviceDetails;
   }
 
-  [(NSArray *)payloadDeviceDetails addObject:v4];
+  [(NSArray *)payloadDeviceDetails addObject:detailCopy];
 }
 
-- (void)setPayloadDeviceDetails:(id)a3
+- (void)setPayloadDeviceDetails:(id)details
 {
-  v4 = [a3 mutableCopy];
+  v4 = [details mutableCopy];
   payloadDeviceDetails = self->_payloadDeviceDetails;
   self->_payloadDeviceDetails = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadDeviceDetails);
 }
 
-- (void)addPayloadDevice:(id)a3
+- (void)addPayloadDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   payloadDevices = self->_payloadDevices;
-  v8 = v4;
+  v8 = deviceCopy;
   if (!payloadDevices)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadDevices;
-    self->_payloadDevices = v6;
+    self->_payloadDevices = array;
 
-    v4 = v8;
+    deviceCopy = v8;
     payloadDevices = self->_payloadDevices;
   }
 
-  [(NSArray *)payloadDevices addObject:v4];
+  [(NSArray *)payloadDevices addObject:deviceCopy];
 }
 
-- (void)setPayloadDevices:(id)a3
+- (void)setPayloadDevices:(id)devices
 {
-  v4 = [a3 mutableCopy];
+  v4 = [devices mutableCopy];
   payloadDevices = self->_payloadDevices;
   self->_payloadDevices = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadDevices);
 }
 
-- (void)addPayloadDateTimeValue:(id)a3
+- (void)addPayloadDateTimeValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadDateTimeValues = self->_payloadDateTimeValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadDateTimeValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadDateTimeValues;
-    self->_payloadDateTimeValues = v6;
+    self->_payloadDateTimeValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadDateTimeValues = self->_payloadDateTimeValues;
   }
 
-  [(NSArray *)payloadDateTimeValues addObject:v4];
+  [(NSArray *)payloadDateTimeValues addObject:valueCopy];
 }
 
-- (void)setPayloadDateTimeValues:(id)a3
+- (void)setPayloadDateTimeValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadDateTimeValues = self->_payloadDateTimeValues;
   self->_payloadDateTimeValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadDateTimeValues);
 }
 
-- (void)addPayloadDateTimeRangeValue:(id)a3
+- (void)addPayloadDateTimeRangeValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadDateTimeRangeValues = self->_payloadDateTimeRangeValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadDateTimeRangeValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadDateTimeRangeValues;
-    self->_payloadDateTimeRangeValues = v6;
+    self->_payloadDateTimeRangeValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadDateTimeRangeValues = self->_payloadDateTimeRangeValues;
   }
 
-  [(NSArray *)payloadDateTimeRangeValues addObject:v4];
+  [(NSArray *)payloadDateTimeRangeValues addObject:valueCopy];
 }
 
-- (void)setPayloadDateTimeRangeValues:(id)a3
+- (void)setPayloadDateTimeRangeValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadDateTimeRangeValues = self->_payloadDateTimeRangeValues;
   self->_payloadDateTimeRangeValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadDateTimeRangeValues);
 }
 
-- (void)addPayloadDateTimeRangeList:(id)a3
+- (void)addPayloadDateTimeRangeList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   payloadDateTimeRangeLists = self->_payloadDateTimeRangeLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!payloadDateTimeRangeLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadDateTimeRangeLists;
-    self->_payloadDateTimeRangeLists = v6;
+    self->_payloadDateTimeRangeLists = array;
 
-    v4 = v8;
+    listCopy = v8;
     payloadDateTimeRangeLists = self->_payloadDateTimeRangeLists;
   }
 
-  [(NSArray *)payloadDateTimeRangeLists addObject:v4];
+  [(NSArray *)payloadDateTimeRangeLists addObject:listCopy];
 }
 
-- (void)setPayloadDateTimeRangeLists:(id)a3
+- (void)setPayloadDateTimeRangeLists:(id)lists
 {
-  v4 = [a3 mutableCopy];
+  v4 = [lists mutableCopy];
   payloadDateTimeRangeLists = self->_payloadDateTimeRangeLists;
   self->_payloadDateTimeRangeLists = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadDateTimeRangeLists);
 }
 
-- (int)StringAsPayloadDateSearchTypes:(id)a3
+- (int)StringAsPayloadDateSearchTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_DATE_SEARCH_TYPE"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"UNKNOWN_DATE_SEARCH_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BY_DUE_DATE"])
+  else if ([typesCopy isEqualToString:@"BY_DUE_DATE"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"BY_MODIFIED_DATE"])
+  else if ([typesCopy isEqualToString:@"BY_MODIFIED_DATE"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"BY_CREATED_DATE"])
+  else if ([typesCopy isEqualToString:@"BY_CREATED_DATE"])
   {
     v4 = 30;
   }
@@ -19447,244 +19447,244 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadDateSearchType:(int)a3
+- (void)addPayloadDateSearchType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadDataStringList:(id)a3
+- (void)addPayloadDataStringList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   payloadDataStringLists = self->_payloadDataStringLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!payloadDataStringLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadDataStringLists;
-    self->_payloadDataStringLists = v6;
+    self->_payloadDataStringLists = array;
 
-    v4 = v8;
+    listCopy = v8;
     payloadDataStringLists = self->_payloadDataStringLists;
   }
 
-  [(NSArray *)payloadDataStringLists addObject:v4];
+  [(NSArray *)payloadDataStringLists addObject:listCopy];
 }
 
-- (void)setPayloadDataStringLists:(id)a3
+- (void)setPayloadDataStringLists:(id)lists
 {
-  v4 = [a3 mutableCopy];
+  v4 = [lists mutableCopy];
   payloadDataStringLists = self->_payloadDataStringLists;
   self->_payloadDataStringLists = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadDataStringLists);
 }
 
-- (void)addPayloadDataString:(id)a3
+- (void)addPayloadDataString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   payloadDataStrings = self->_payloadDataStrings;
-  v8 = v4;
+  v8 = stringCopy;
   if (!payloadDataStrings)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadDataStrings;
-    self->_payloadDataStrings = v6;
+    self->_payloadDataStrings = array;
 
-    v4 = v8;
+    stringCopy = v8;
     payloadDataStrings = self->_payloadDataStrings;
   }
 
-  [(NSArray *)payloadDataStrings addObject:v4];
+  [(NSArray *)payloadDataStrings addObject:stringCopy];
 }
 
-- (void)setPayloadDataStrings:(id)a3
+- (void)setPayloadDataStrings:(id)strings
 {
-  v4 = [a3 mutableCopy];
+  v4 = [strings mutableCopy];
   payloadDataStrings = self->_payloadDataStrings;
   self->_payloadDataStrings = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadDataStrings);
 }
 
-- (void)addPayloadCustomObject:(id)a3
+- (void)addPayloadCustomObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   payloadCustomObjects = self->_payloadCustomObjects;
-  v8 = v4;
+  v8 = objectCopy;
   if (!payloadCustomObjects)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadCustomObjects;
-    self->_payloadCustomObjects = v6;
+    self->_payloadCustomObjects = array;
 
-    v4 = v8;
+    objectCopy = v8;
     payloadCustomObjects = self->_payloadCustomObjects;
   }
 
-  [(NSArray *)payloadCustomObjects addObject:v4];
+  [(NSArray *)payloadCustomObjects addObject:objectCopy];
 }
 
-- (void)setPayloadCustomObjects:(id)a3
+- (void)setPayloadCustomObjects:(id)objects
 {
-  v4 = [a3 mutableCopy];
+  v4 = [objects mutableCopy];
   payloadCustomObjects = self->_payloadCustomObjects;
   self->_payloadCustomObjects = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadCustomObjects);
 }
 
-- (void)addPayloadCurrencyAmount:(id)a3
+- (void)addPayloadCurrencyAmount:(id)amount
 {
-  v4 = a3;
+  amountCopy = amount;
   payloadCurrencyAmounts = self->_payloadCurrencyAmounts;
-  v8 = v4;
+  v8 = amountCopy;
   if (!payloadCurrencyAmounts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadCurrencyAmounts;
-    self->_payloadCurrencyAmounts = v6;
+    self->_payloadCurrencyAmounts = array;
 
-    v4 = v8;
+    amountCopy = v8;
     payloadCurrencyAmounts = self->_payloadCurrencyAmounts;
   }
 
-  [(NSArray *)payloadCurrencyAmounts addObject:v4];
+  [(NSArray *)payloadCurrencyAmounts addObject:amountCopy];
 }
 
-- (void)setPayloadCurrencyAmounts:(id)a3
+- (void)setPayloadCurrencyAmounts:(id)amounts
 {
-  v4 = [a3 mutableCopy];
+  v4 = [amounts mutableCopy];
   payloadCurrencyAmounts = self->_payloadCurrencyAmounts;
   self->_payloadCurrencyAmounts = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadCurrencyAmounts);
 }
 
-- (void)addPayloadContactValue:(id)a3
+- (void)addPayloadContactValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadContactValues = self->_payloadContactValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadContactValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadContactValues;
-    self->_payloadContactValues = v6;
+    self->_payloadContactValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadContactValues = self->_payloadContactValues;
   }
 
-  [(NSArray *)payloadContactValues addObject:v4];
+  [(NSArray *)payloadContactValues addObject:valueCopy];
 }
 
-- (void)setPayloadContactValues:(id)a3
+- (void)setPayloadContactValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadContactValues = self->_payloadContactValues;
   self->_payloadContactValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadContactValues);
 }
 
-- (void)addPayloadContactList:(id)a3
+- (void)addPayloadContactList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   payloadContactLists = self->_payloadContactLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!payloadContactLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadContactLists;
-    self->_payloadContactLists = v6;
+    self->_payloadContactLists = array;
 
-    v4 = v8;
+    listCopy = v8;
     payloadContactLists = self->_payloadContactLists;
   }
 
-  [(NSArray *)payloadContactLists addObject:v4];
+  [(NSArray *)payloadContactLists addObject:listCopy];
 }
 
-- (void)setPayloadContactLists:(id)a3
+- (void)setPayloadContactLists:(id)lists
 {
-  v4 = [a3 mutableCopy];
+  v4 = [lists mutableCopy];
   payloadContactLists = self->_payloadContactLists;
   self->_payloadContactLists = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadContactLists);
 }
 
-- (void)addPayloadContactEventTrigger:(id)a3
+- (void)addPayloadContactEventTrigger:(id)trigger
 {
-  v4 = a3;
+  triggerCopy = trigger;
   payloadContactEventTriggers = self->_payloadContactEventTriggers;
-  v8 = v4;
+  v8 = triggerCopy;
   if (!payloadContactEventTriggers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadContactEventTriggers;
-    self->_payloadContactEventTriggers = v6;
+    self->_payloadContactEventTriggers = array;
 
-    v4 = v8;
+    triggerCopy = v8;
     payloadContactEventTriggers = self->_payloadContactEventTriggers;
   }
 
-  [(NSArray *)payloadContactEventTriggers addObject:v4];
+  [(NSArray *)payloadContactEventTriggers addObject:triggerCopy];
 }
 
-- (void)setPayloadContactEventTriggers:(id)a3
+- (void)setPayloadContactEventTriggers:(id)triggers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [triggers mutableCopy];
   payloadContactEventTriggers = self->_payloadContactEventTriggers;
   self->_payloadContactEventTriggers = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadContactEventTriggers);
 }
 
-- (void)addPayloadChargingConnectorType:(id)a3
+- (void)addPayloadChargingConnectorType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   payloadChargingConnectorTypes = self->_payloadChargingConnectorTypes;
-  v8 = v4;
+  v8 = typeCopy;
   if (!payloadChargingConnectorTypes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadChargingConnectorTypes;
-    self->_payloadChargingConnectorTypes = v6;
+    self->_payloadChargingConnectorTypes = array;
 
-    v4 = v8;
+    typeCopy = v8;
     payloadChargingConnectorTypes = self->_payloadChargingConnectorTypes;
   }
 
-  [(NSArray *)payloadChargingConnectorTypes addObject:v4];
+  [(NSArray *)payloadChargingConnectorTypes addObject:typeCopy];
 }
 
-- (void)setPayloadChargingConnectorTypes:(id)a3
+- (void)setPayloadChargingConnectorTypes:(id)types
 {
-  v4 = [a3 mutableCopy];
+  v4 = [types mutableCopy];
   payloadChargingConnectorTypes = self->_payloadChargingConnectorTypes;
   self->_payloadChargingConnectorTypes = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadChargingConnectorTypes);
 }
 
-- (int)StringAsPayloadChangeAlarmStatusOperations:(id)a3
+- (int)StringAsPayloadChangeAlarmStatusOperations:(id)operations
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ENABLE"])
+  operationsCopy = operations;
+  if ([operationsCopy isEqualToString:@"ENABLE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DISABLE"])
+  else if ([operationsCopy isEqualToString:@"DISABLE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DISMISS"])
+  else if ([operationsCopy isEqualToString:@"DISMISS"])
   {
     v4 = 3;
   }
@@ -19697,21 +19697,21 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadChangeAlarmStatusOperation:(int)a3
+- (void)addPayloadChangeAlarmStatusOperation:(int)operation
 {
-  if (a3 != 0x7FFFFFFF)
+  if (operation != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadCarSignalIdentifiers:(id)a3
+- (int)StringAsPayloadCarSignalIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = 1;
-  if (([v3 isEqualToString:@"AUDIBLE"] & 1) == 0)
+  if (([identifiersCopy isEqualToString:@"AUDIBLE"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"VISIBLE"])
+    if ([identifiersCopy isEqualToString:@"VISIBLE"])
     {
       v4 = 2;
     }
@@ -19725,73 +19725,73 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadCarSignalIdentifier:(int)a3
+- (void)addPayloadCarSignalIdentifier:(int)identifier
 {
-  if (a3 != 0x7FFFFFFF)
+  if (identifier != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadCarSeats:(id)a3
+- (int)StringAsPayloadCarSeats:(id)seats
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DRIVER"])
+  seatsCopy = seats;
+  if ([seatsCopy isEqualToString:@"DRIVER"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PASSENGER"])
+  else if ([seatsCopy isEqualToString:@"PASSENGER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FRONT_LEFT"])
+  else if ([seatsCopy isEqualToString:@"FRONT_LEFT"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"FRONT_RIGHT"])
+  else if ([seatsCopy isEqualToString:@"FRONT_RIGHT"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"FRONT"])
+  else if ([seatsCopy isEqualToString:@"FRONT"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"REAR_LEFT"])
+  else if ([seatsCopy isEqualToString:@"REAR_LEFT"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"REAR_RIGHT"])
+  else if ([seatsCopy isEqualToString:@"REAR_RIGHT"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"REAR"])
+  else if ([seatsCopy isEqualToString:@"REAR"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"THIRD_ROW_LEFT"])
+  else if ([seatsCopy isEqualToString:@"THIRD_ROW_LEFT"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"THIRD_ROW_RIGHT"])
+  else if ([seatsCopy isEqualToString:@"THIRD_ROW_RIGHT"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"THIRD_ROW"])
+  else if ([seatsCopy isEqualToString:@"THIRD_ROW"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"ALL"])
+  else if ([seatsCopy isEqualToString:@"ALL"])
   {
     v4 = 22;
   }
@@ -19804,28 +19804,28 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadCarSeat:(int)a3
+- (void)addPayloadCarSeat:(int)seat
 {
-  if (a3 != 0x7FFFFFFF)
+  if (seat != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadCarDefrosters:(id)a3
+- (int)StringAsPayloadCarDefrosters:(id)defrosters
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FRONT"])
+  defrostersCopy = defrosters;
+  if ([defrostersCopy isEqualToString:@"FRONT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"REAR"])
+  else if ([defrostersCopy isEqualToString:@"REAR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ALL"])
+  else if ([defrostersCopy isEqualToString:@"ALL"])
   {
     v4 = 3;
   }
@@ -19838,58 +19838,58 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadCarDefroster:(int)a3
+- (void)addPayloadCarDefroster:(int)defroster
 {
-  if (a3 != 0x7FFFFFFF)
+  if (defroster != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadCarAudioSources:(id)a3
+- (int)StringAsPayloadCarAudioSources:(id)sources
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CARPLAY"])
+  sourcesCopy = sources;
+  if ([sourcesCopy isEqualToString:@"CARPLAY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"IPOD"])
+  else if ([sourcesCopy isEqualToString:@"IPOD"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RADIO"])
+  else if ([sourcesCopy isEqualToString:@"RADIO"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"BLUETOOTH"])
+  else if ([sourcesCopy isEqualToString:@"BLUETOOTH"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"AUX"])
+  else if ([sourcesCopy isEqualToString:@"AUX"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"USB"])
+  else if ([sourcesCopy isEqualToString:@"USB"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"MEMORY_CARD"])
+  else if ([sourcesCopy isEqualToString:@"MEMORY_CARD"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"OPTICAL_DRIVE"])
+  else if ([sourcesCopy isEqualToString:@"OPTICAL_DRIVE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"HARD_DRIVE"])
+  else if ([sourcesCopy isEqualToString:@"HARD_DRIVE"])
   {
     v4 = 9;
   }
@@ -19902,21 +19902,21 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadCarAudioSource:(int)a3
+- (void)addPayloadCarAudioSource:(int)source
 {
-  if (a3 != 0x7FFFFFFF)
+  if (source != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadCarAirCirculationModes:(id)a3
+- (int)StringAsPayloadCarAirCirculationModes:(id)modes
 {
-  v3 = a3;
+  modesCopy = modes;
   v4 = 1;
-  if (([v3 isEqualToString:@"FRESH_AIR"] & 1) == 0)
+  if (([modesCopy isEqualToString:@"FRESH_AIR"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"RECIRCULATE_AIR"])
+    if ([modesCopy isEqualToString:@"RECIRCULATE_AIR"])
     {
       v4 = 2;
     }
@@ -19930,80 +19930,80 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadCarAirCirculationMode:(int)a3
+- (void)addPayloadCarAirCirculationMode:(int)mode
 {
-  if (a3 != 0x7FFFFFFF)
+  if (mode != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadCallRecordValue:(id)a3
+- (void)addPayloadCallRecordValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadCallRecordValues = self->_payloadCallRecordValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadCallRecordValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadCallRecordValues;
-    self->_payloadCallRecordValues = v6;
+    self->_payloadCallRecordValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadCallRecordValues = self->_payloadCallRecordValues;
   }
 
-  [(NSArray *)payloadCallRecordValues addObject:v4];
+  [(NSArray *)payloadCallRecordValues addObject:valueCopy];
 }
 
-- (void)setPayloadCallRecordValues:(id)a3
+- (void)setPayloadCallRecordValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadCallRecordValues = self->_payloadCallRecordValues;
   self->_payloadCallRecordValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadCallRecordValues);
 }
 
-- (int)StringAsPayloadCallRecordTypes:(id)a3
+- (int)StringAsPayloadCallRecordTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"OUTGOING"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"OUTGOING"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MISSED"])
+  else if ([typesCopy isEqualToString:@"MISSED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RECEIVED"])
+  else if ([typesCopy isEqualToString:@"RECEIVED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"LATEST"])
+  else if ([typesCopy isEqualToString:@"LATEST"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"VOICEMAIL"])
+  else if ([typesCopy isEqualToString:@"VOICEMAIL"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"RINGING"])
+  else if ([typesCopy isEqualToString:@"RINGING"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"IN_PROGRESS"])
+  else if ([typesCopy isEqualToString:@"IN_PROGRESS"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ON_HOLD"])
+  else if ([typesCopy isEqualToString:@"ON_HOLD"])
   {
     v4 = 10;
   }
@@ -20016,119 +20016,119 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadCallRecordType:(int)a3
+- (void)addPayloadCallRecordType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadCallRecordFilter:(id)a3
+- (void)addPayloadCallRecordFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   payloadCallRecordFilters = self->_payloadCallRecordFilters;
-  v8 = v4;
+  v8 = filterCopy;
   if (!payloadCallRecordFilters)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadCallRecordFilters;
-    self->_payloadCallRecordFilters = v6;
+    self->_payloadCallRecordFilters = array;
 
-    v4 = v8;
+    filterCopy = v8;
     payloadCallRecordFilters = self->_payloadCallRecordFilters;
   }
 
-  [(NSArray *)payloadCallRecordFilters addObject:v4];
+  [(NSArray *)payloadCallRecordFilters addObject:filterCopy];
 }
 
-- (void)setPayloadCallRecordFilters:(id)a3
+- (void)setPayloadCallRecordFilters:(id)filters
 {
-  v4 = [a3 mutableCopy];
+  v4 = [filters mutableCopy];
   payloadCallRecordFilters = self->_payloadCallRecordFilters;
   self->_payloadCallRecordFilters = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadCallRecordFilters);
 }
 
-- (void)addPayloadCallGroupConversation:(id)a3
+- (void)addPayloadCallGroupConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   payloadCallGroupConversations = self->_payloadCallGroupConversations;
-  v8 = v4;
+  v8 = conversationCopy;
   if (!payloadCallGroupConversations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadCallGroupConversations;
-    self->_payloadCallGroupConversations = v6;
+    self->_payloadCallGroupConversations = array;
 
-    v4 = v8;
+    conversationCopy = v8;
     payloadCallGroupConversations = self->_payloadCallGroupConversations;
   }
 
-  [(NSArray *)payloadCallGroupConversations addObject:v4];
+  [(NSArray *)payloadCallGroupConversations addObject:conversationCopy];
 }
 
-- (void)setPayloadCallGroupConversations:(id)a3
+- (void)setPayloadCallGroupConversations:(id)conversations
 {
-  v4 = [a3 mutableCopy];
+  v4 = [conversations mutableCopy];
   payloadCallGroupConversations = self->_payloadCallGroupConversations;
   self->_payloadCallGroupConversations = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadCallGroupConversations);
 }
 
-- (void)addPayloadCallGroup:(id)a3
+- (void)addPayloadCallGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   payloadCallGroups = self->_payloadCallGroups;
-  v8 = v4;
+  v8 = groupCopy;
   if (!payloadCallGroups)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadCallGroups;
-    self->_payloadCallGroups = v6;
+    self->_payloadCallGroups = array;
 
-    v4 = v8;
+    groupCopy = v8;
     payloadCallGroups = self->_payloadCallGroups;
   }
 
-  [(NSArray *)payloadCallGroups addObject:v4];
+  [(NSArray *)payloadCallGroups addObject:groupCopy];
 }
 
-- (void)setPayloadCallGroups:(id)a3
+- (void)setPayloadCallGroups:(id)groups
 {
-  v4 = [a3 mutableCopy];
+  v4 = [groups mutableCopy];
   payloadCallGroups = self->_payloadCallGroups;
   self->_payloadCallGroups = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadCallGroups);
 }
 
-- (int)StringAsPayloadCallDestinationTypes:(id)a3
+- (int)StringAsPayloadCallDestinationTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NORMAL_DESTINATION"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"NORMAL_DESTINATION"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"EMERGENCY_DESTINATION"])
+  else if ([typesCopy isEqualToString:@"EMERGENCY_DESTINATION"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"VOICEMAIL_DESTINATION"])
+  else if ([typesCopy isEqualToString:@"VOICEMAIL_DESTINATION"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"REDIAL_DESTINATION"])
+  else if ([typesCopy isEqualToString:@"REDIAL_DESTINATION"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CALL_BACK_DESTINATION"])
+  else if ([typesCopy isEqualToString:@"CALL_BACK_DESTINATION"])
   {
     v4 = 5;
   }
@@ -20141,21 +20141,21 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadCallDestinationType:(int)a3
+- (void)addPayloadCallDestinationType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadCallCapabilities:(id)a3
+- (int)StringAsPayloadCallCapabilities:(id)capabilities
 {
-  v3 = a3;
+  capabilitiesCopy = capabilities;
   v4 = 1;
-  if (([v3 isEqualToString:@"AUDIO_CALL"] & 1) == 0)
+  if (([capabilitiesCopy isEqualToString:@"AUDIO_CALL"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"VIDEO_CALL"])
+    if ([capabilitiesCopy isEqualToString:@"VIDEO_CALL"])
     {
       v4 = 2;
     }
@@ -20169,28 +20169,28 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadCallCapability:(int)a3
+- (void)addPayloadCallCapability:(int)capability
 {
-  if (a3 != 0x7FFFFFFF)
+  if (capability != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadCallAudioRoutes:(id)a3
+- (int)StringAsPayloadCallAudioRoutes:(id)routes
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SPEAKERPHONE_AUDIO_ROUTE"])
+  routesCopy = routes;
+  if ([routesCopy isEqualToString:@"SPEAKERPHONE_AUDIO_ROUTE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BLUETOOTH_AUDIO_ROUTE"])
+  else if ([routesCopy isEqualToString:@"BLUETOOTH_AUDIO_ROUTE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HEY_SIRI_AUDIO_ROUTE"])
+  else if ([routesCopy isEqualToString:@"HEY_SIRI_AUDIO_ROUTE"])
   {
     v4 = 4;
   }
@@ -20203,55 +20203,55 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadCallAudioRoute:(int)a3
+- (void)addPayloadCallAudioRoute:(int)route
 {
-  if (a3 != 0x7FFFFFFF)
+  if (route != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadCalendarEvent:(id)a3
+- (void)addPayloadCalendarEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   payloadCalendarEvents = self->_payloadCalendarEvents;
-  v8 = v4;
+  v8 = eventCopy;
   if (!payloadCalendarEvents)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadCalendarEvents;
-    self->_payloadCalendarEvents = v6;
+    self->_payloadCalendarEvents = array;
 
-    v4 = v8;
+    eventCopy = v8;
     payloadCalendarEvents = self->_payloadCalendarEvents;
   }
 
-  [(NSArray *)payloadCalendarEvents addObject:v4];
+  [(NSArray *)payloadCalendarEvents addObject:eventCopy];
 }
 
-- (void)setPayloadCalendarEvents:(id)a3
+- (void)setPayloadCalendarEvents:(id)events
 {
-  v4 = [a3 mutableCopy];
+  v4 = [events mutableCopy];
   payloadCalendarEvents = self->_payloadCalendarEvents;
   self->_payloadCalendarEvents = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadCalendarEvents);
 }
 
-- (int)StringAsPayloadBoundedSettingValues:(id)a3
+- (int)StringAsPayloadBoundedSettingValues:(id)values
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"MIN"])
+  valuesCopy = values;
+  if ([valuesCopy isEqualToString:@"MIN"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MEDIAN"])
+  else if ([valuesCopy isEqualToString:@"MEDIAN"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MAX"])
+  else if ([valuesCopy isEqualToString:@"MAX"])
   {
     v4 = 3;
   }
@@ -20264,28 +20264,28 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadBoundedSettingValue:(int)a3
+- (void)addPayloadBoundedSettingValue:(int)value
 {
-  if (a3 != 0x7FFFFFFF)
+  if (value != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadBinarySettingValues:(id)a3
+- (int)StringAsPayloadBinarySettingValues:(id)values
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ON"])
+  valuesCopy = values;
+  if ([valuesCopy isEqualToString:@"ON"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"OFF"])
+  else if ([valuesCopy isEqualToString:@"OFF"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TOGGLE"])
+  else if ([valuesCopy isEqualToString:@"TOGGLE"])
   {
     v4 = 3;
   }
@@ -20298,123 +20298,123 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadBinarySettingValue:(int)a3
+- (void)addPayloadBinarySettingValue:(int)value
 {
-  if (a3 != 0x7FFFFFFF)
+  if (value != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadBillTypes:(id)a3
+- (int)StringAsPayloadBillTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AUTO_INSURANCE"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"AUTO_INSURANCE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CABLE"])
+  else if ([typesCopy isEqualToString:@"CABLE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CAR_LEASE"])
+  else if ([typesCopy isEqualToString:@"CAR_LEASE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CAR_LOAN"])
+  else if ([typesCopy isEqualToString:@"CAR_LOAN"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CREDIT_CARD"])
+  else if ([typesCopy isEqualToString:@"CREDIT_CARD"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ELECTRICITY"])
+  else if ([typesCopy isEqualToString:@"ELECTRICITY"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"GAS"])
+  else if ([typesCopy isEqualToString:@"GAS"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"GARBAGE_AND_RECYCLING"])
+  else if ([typesCopy isEqualToString:@"GARBAGE_AND_RECYCLING"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"HEALTH_INSURANCE"])
+  else if ([typesCopy isEqualToString:@"HEALTH_INSURANCE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"HOME_INSURANCE"])
+  else if ([typesCopy isEqualToString:@"HOME_INSURANCE"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"INTERNET"])
+  else if ([typesCopy isEqualToString:@"INTERNET"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"LIFE_INSURANCE"])
+  else if ([typesCopy isEqualToString:@"LIFE_INSURANCE"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"MORTGAGE"])
+  else if ([typesCopy isEqualToString:@"MORTGAGE"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"MUSIC_STREAMING"])
+  else if ([typesCopy isEqualToString:@"MUSIC_STREAMING"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"PHONE"])
+  else if ([typesCopy isEqualToString:@"PHONE"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"RENT"])
+  else if ([typesCopy isEqualToString:@"RENT"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"SEWER"])
+  else if ([typesCopy isEqualToString:@"SEWER"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"STUDENT_LOAN"])
+  else if ([typesCopy isEqualToString:@"STUDENT_LOAN"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"TRAFFIC_TICKET"])
+  else if ([typesCopy isEqualToString:@"TRAFFIC_TICKET"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"TUITION"])
+  else if ([typesCopy isEqualToString:@"TUITION"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"UTILITIES"])
+  else if ([typesCopy isEqualToString:@"UTILITIES"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"WATER"])
+  else if ([typesCopy isEqualToString:@"WATER"])
   {
     v4 = 22;
   }
@@ -20427,82 +20427,82 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadBillType:(int)a3
+- (void)addPayloadBillType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadBillPayeeValue:(id)a3
+- (void)addPayloadBillPayeeValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadBillPayeeValues = self->_payloadBillPayeeValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadBillPayeeValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadBillPayeeValues;
-    self->_payloadBillPayeeValues = v6;
+    self->_payloadBillPayeeValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadBillPayeeValues = self->_payloadBillPayeeValues;
   }
 
-  [(NSArray *)payloadBillPayeeValues addObject:v4];
+  [(NSArray *)payloadBillPayeeValues addObject:valueCopy];
 }
 
-- (void)setPayloadBillPayeeValues:(id)a3
+- (void)setPayloadBillPayeeValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadBillPayeeValues = self->_payloadBillPayeeValues;
   self->_payloadBillPayeeValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadBillPayeeValues);
 }
 
-- (void)addPayloadBillDetailsValue:(id)a3
+- (void)addPayloadBillDetailsValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   payloadBillDetailsValues = self->_payloadBillDetailsValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!payloadBillDetailsValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadBillDetailsValues;
-    self->_payloadBillDetailsValues = v6;
+    self->_payloadBillDetailsValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     payloadBillDetailsValues = self->_payloadBillDetailsValues;
   }
 
-  [(NSArray *)payloadBillDetailsValues addObject:v4];
+  [(NSArray *)payloadBillDetailsValues addObject:valueCopy];
 }
 
-- (void)setPayloadBillDetailsValues:(id)a3
+- (void)setPayloadBillDetailsValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   payloadBillDetailsValues = self->_payloadBillDetailsValues;
   self->_payloadBillDetailsValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadBillDetailsValues);
 }
 
-- (int)StringAsPayloadBalanceTypes:(id)a3
+- (int)StringAsPayloadBalanceTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"MONEY"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"MONEY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"POINTS"])
+  else if ([typesCopy isEqualToString:@"POINTS"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MILES"])
+  else if ([typesCopy isEqualToString:@"MILES"])
   {
     v4 = 3;
   }
@@ -20515,119 +20515,119 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadBalanceType:(int)a3
+- (void)addPayloadBalanceType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadArchivedObject:(id)a3
+- (void)addPayloadArchivedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   payloadArchivedObjects = self->_payloadArchivedObjects;
-  v8 = v4;
+  v8 = objectCopy;
   if (!payloadArchivedObjects)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadArchivedObjects;
-    self->_payloadArchivedObjects = v6;
+    self->_payloadArchivedObjects = array;
 
-    v4 = v8;
+    objectCopy = v8;
     payloadArchivedObjects = self->_payloadArchivedObjects;
   }
 
-  [(NSArray *)payloadArchivedObjects addObject:v4];
+  [(NSArray *)payloadArchivedObjects addObject:objectCopy];
 }
 
-- (void)setPayloadArchivedObjects:(id)a3
+- (void)setPayloadArchivedObjects:(id)objects
 {
-  v4 = [a3 mutableCopy];
+  v4 = [objects mutableCopy];
   payloadArchivedObjects = self->_payloadArchivedObjects;
   self->_payloadArchivedObjects = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadArchivedObjects);
 }
 
-- (void)addPayloadAppIdentifier:(id)a3
+- (void)addPayloadAppIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   payloadAppIdentifiers = self->_payloadAppIdentifiers;
-  v8 = v4;
+  v8 = identifierCopy;
   if (!payloadAppIdentifiers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadAppIdentifiers;
-    self->_payloadAppIdentifiers = v6;
+    self->_payloadAppIdentifiers = array;
 
-    v4 = v8;
+    identifierCopy = v8;
     payloadAppIdentifiers = self->_payloadAppIdentifiers;
   }
 
-  [(NSArray *)payloadAppIdentifiers addObject:v4];
+  [(NSArray *)payloadAppIdentifiers addObject:identifierCopy];
 }
 
-- (void)setPayloadAppIdentifiers:(id)a3
+- (void)setPayloadAppIdentifiers:(id)identifiers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [identifiers mutableCopy];
   payloadAppIdentifiers = self->_payloadAppIdentifiers;
   self->_payloadAppIdentifiers = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadAppIdentifiers);
 }
 
-- (void)addPayloadAnnouncement:(id)a3
+- (void)addPayloadAnnouncement:(id)announcement
 {
-  v4 = a3;
+  announcementCopy = announcement;
   payloadAnnouncements = self->_payloadAnnouncements;
-  v8 = v4;
+  v8 = announcementCopy;
   if (!payloadAnnouncements)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadAnnouncements;
-    self->_payloadAnnouncements = v6;
+    self->_payloadAnnouncements = array;
 
-    v4 = v8;
+    announcementCopy = v8;
     payloadAnnouncements = self->_payloadAnnouncements;
   }
 
-  [(NSArray *)payloadAnnouncements addObject:v4];
+  [(NSArray *)payloadAnnouncements addObject:announcementCopy];
 }
 
-- (void)setPayloadAnnouncements:(id)a3
+- (void)setPayloadAnnouncements:(id)announcements
 {
-  v4 = [a3 mutableCopy];
+  v4 = [announcements mutableCopy];
   payloadAnnouncements = self->_payloadAnnouncements;
   self->_payloadAnnouncements = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadAnnouncements);
 }
 
-- (int)StringAsPayloadAlarmSearchTypes:(id)a3
+- (int)StringAsPayloadAlarmSearchTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FIND"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"FIND"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"WHEN_IS"])
+  else if ([typesCopy isEqualToString:@"WHEN_IS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"HOW_LONG_UNTIL"])
+  else if ([typesCopy isEqualToString:@"HOW_LONG_UNTIL"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"READ"])
+  else if ([typesCopy isEqualToString:@"READ"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HOW_MANY"])
+  else if ([typesCopy isEqualToString:@"HOW_MANY"])
   {
     v4 = 4;
   }
@@ -20640,80 +20640,80 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadAlarmSearchType:(int)a3
+- (void)addPayloadAlarmSearchType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadAlarmSearch:(id)a3
+- (void)addPayloadAlarmSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   payloadAlarmSearchs = self->_payloadAlarmSearchs;
-  v8 = v4;
+  v8 = searchCopy;
   if (!payloadAlarmSearchs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadAlarmSearchs;
-    self->_payloadAlarmSearchs = v6;
+    self->_payloadAlarmSearchs = array;
 
-    v4 = v8;
+    searchCopy = v8;
     payloadAlarmSearchs = self->_payloadAlarmSearchs;
   }
 
-  [(NSArray *)payloadAlarmSearchs addObject:v4];
+  [(NSArray *)payloadAlarmSearchs addObject:searchCopy];
 }
 
-- (void)setPayloadAlarmSearchs:(id)a3
+- (void)setPayloadAlarmSearchs:(id)searchs
 {
-  v4 = [a3 mutableCopy];
+  v4 = [searchs mutableCopy];
   payloadAlarmSearchs = self->_payloadAlarmSearchs;
   self->_payloadAlarmSearchs = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadAlarmSearchs);
 }
 
-- (int)StringAsPayloadAlarmRepeatSchedules:(id)a3
+- (int)StringAsPayloadAlarmRepeatSchedules:(id)schedules
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NONE"])
+  schedulesCopy = schedules;
+  if ([schedulesCopy isEqualToString:@"NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MONDAY"])
+  else if ([schedulesCopy isEqualToString:@"MONDAY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TUESDAY"])
+  else if ([schedulesCopy isEqualToString:@"TUESDAY"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WEDNESDAY"])
+  else if ([schedulesCopy isEqualToString:@"WEDNESDAY"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"THURSDAY"])
+  else if ([schedulesCopy isEqualToString:@"THURSDAY"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"FRIDAY"])
+  else if ([schedulesCopy isEqualToString:@"FRIDAY"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SATURDAY"])
+  else if ([schedulesCopy isEqualToString:@"SATURDAY"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SUNDAY"])
+  else if ([schedulesCopy isEqualToString:@"SUNDAY"])
   {
     v4 = 7;
   }
@@ -20726,58 +20726,58 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadAlarmRepeatSchedule:(int)a3
+- (void)addPayloadAlarmRepeatSchedule:(int)schedule
 {
-  if (a3 != 0x7FFFFFFF)
+  if (schedule != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsPayloadAlarmPeriods:(id)a3
+- (int)StringAsPayloadAlarmPeriods:(id)periods
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_PERIOD"])
+  periodsCopy = periods;
+  if ([periodsCopy isEqualToString:@"UNKNOWN_PERIOD"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MORNING"])
+  else if ([periodsCopy isEqualToString:@"MORNING"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AFTERNOON"])
+  else if ([periodsCopy isEqualToString:@"AFTERNOON"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"EVENING"])
+  else if ([periodsCopy isEqualToString:@"EVENING"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"NIGHT"])
+  else if ([periodsCopy isEqualToString:@"NIGHT"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NOON"])
+  else if ([periodsCopy isEqualToString:@"NOON"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"MIDNIGHT"])
+  else if ([periodsCopy isEqualToString:@"MIDNIGHT"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"TODAY"])
+  else if ([periodsCopy isEqualToString:@"TODAY"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"TOMORROW"])
+  else if ([periodsCopy isEqualToString:@"TOMORROW"])
   {
     v4 = 8;
   }
@@ -20790,129 +20790,129 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadAlarmPeriod:(int)a3
+- (void)addPayloadAlarmPeriod:(int)period
 {
-  if (a3 != 0x7FFFFFFF)
+  if (period != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addPayloadAlarm:(id)a3
+- (void)addPayloadAlarm:(id)alarm
 {
-  v4 = a3;
+  alarmCopy = alarm;
   payloadAlarms = self->_payloadAlarms;
-  v8 = v4;
+  v8 = alarmCopy;
   if (!payloadAlarms)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadAlarms;
-    self->_payloadAlarms = v6;
+    self->_payloadAlarms = array;
 
-    v4 = v8;
+    alarmCopy = v8;
     payloadAlarms = self->_payloadAlarms;
   }
 
-  [(NSArray *)payloadAlarms addObject:v4];
+  [(NSArray *)payloadAlarms addObject:alarmCopy];
 }
 
-- (void)setPayloadAlarms:(id)a3
+- (void)setPayloadAlarms:(id)alarms
 {
-  v4 = [a3 mutableCopy];
+  v4 = [alarms mutableCopy];
   payloadAlarms = self->_payloadAlarms;
   self->_payloadAlarms = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadAlarms);
 }
 
-- (void)addPayloadActivityList:(id)a3
+- (void)addPayloadActivityList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   payloadActivityLists = self->_payloadActivityLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!payloadActivityLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadActivityLists;
-    self->_payloadActivityLists = v6;
+    self->_payloadActivityLists = array;
 
-    v4 = v8;
+    listCopy = v8;
     payloadActivityLists = self->_payloadActivityLists;
   }
 
-  [(NSArray *)payloadActivityLists addObject:v4];
+  [(NSArray *)payloadActivityLists addObject:listCopy];
 }
 
-- (void)setPayloadActivityLists:(id)a3
+- (void)setPayloadActivityLists:(id)lists
 {
-  v4 = [a3 mutableCopy];
+  v4 = [lists mutableCopy];
   payloadActivityLists = self->_payloadActivityLists;
   self->_payloadActivityLists = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadActivityLists);
 }
 
-- (void)addPayloadActivity:(id)a3
+- (void)addPayloadActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   payloadActivities = self->_payloadActivities;
-  v8 = v4;
+  v8 = activityCopy;
   if (!payloadActivities)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_payloadActivities;
-    self->_payloadActivities = v6;
+    self->_payloadActivities = array;
 
-    v4 = v8;
+    activityCopy = v8;
     payloadActivities = self->_payloadActivities;
   }
 
-  [(NSArray *)payloadActivities addObject:v4];
+  [(NSArray *)payloadActivities addObject:activityCopy];
 }
 
-- (void)setPayloadActivities:(id)a3
+- (void)setPayloadActivities:(id)activities
 {
-  v4 = [a3 mutableCopy];
+  v4 = [activities mutableCopy];
   payloadActivities = self->_payloadActivities;
   self->_payloadActivities = v4;
 
   MEMORY[0x1EEE66BB8](v4, payloadActivities);
 }
 
-- (int)StringAsPayloadAccountTypes:(id)a3
+- (int)StringAsPayloadAccountTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CHECKING"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"CHECKING"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CREDIT"])
+  else if ([typesCopy isEqualToString:@"CREDIT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DEBIT"])
+  else if ([typesCopy isEqualToString:@"DEBIT"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"INVESTMENT"])
+  else if ([typesCopy isEqualToString:@"INVESTMENT"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"MORTGAGE"])
+  else if ([typesCopy isEqualToString:@"MORTGAGE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PREPAID"])
+  else if ([typesCopy isEqualToString:@"PREPAID"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SAVING"])
+  else if ([typesCopy isEqualToString:@"SAVING"])
   {
     v4 = 7;
   }
@@ -20925,9 +20925,9 @@ LABEL_596:
   return v4;
 }
 
-- (void)addPayloadAccountType:(int)a3
+- (void)addPayloadAccountType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }

@@ -3,20 +3,20 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)loopStartTime;
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)loopTimeRange;
 - (PXPhotoKitLivePhotoVideoContentProviderSpec)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)identifier;
-- (void)setCrossfadeDuration:(id *)a3;
-- (void)setLoopStartTime:(id *)a3;
-- (void)setLoopTimeRange:(id *)a3;
+- (void)setCrossfadeDuration:(id *)duration;
+- (void)setLoopStartTime:(id *)time;
+- (void)setLoopTimeRange:(id *)range;
 @end
 
 @implementation PXPhotoKitLivePhotoVideoContentProviderSpec
 
-- (void)setLoopTimeRange:(id *)a3
+- (void)setLoopTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *(&self->_loopTimeRange.duration.value + 4) = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *(&self->_loopTimeRange.duration.value + 4) = *&range->var1.var1;
   *&self->_loopTimeRange.start.flags = v4;
   *(&self->_loopStartTime.epoch + 4) = v3;
 }
@@ -30,10 +30,10 @@
   return self;
 }
 
-- (void)setLoopStartTime:(id *)a3
+- (void)setLoopStartTime:(id *)time
 {
-  v3 = *&a3->var0;
-  *&self->_loopStartTime.flags = a3->var3;
+  v3 = *&time->var0;
+  *&self->_loopStartTime.flags = time->var3;
   *(&self->_crossfadeDuration.epoch + 4) = v3;
 }
 
@@ -44,10 +44,10 @@
   return self;
 }
 
-- (void)setCrossfadeDuration:(id *)a3
+- (void)setCrossfadeDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  *&self->_crossfadeDuration.flags = a3->var3;
+  v3 = *&duration->var0;
+  *&self->_crossfadeDuration.flags = duration->var3;
   *(&self->_wantsAudio + 3) = v3;
 }
 
@@ -73,7 +73,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   v5 = *&self->_loopTimeRange.start.flags;

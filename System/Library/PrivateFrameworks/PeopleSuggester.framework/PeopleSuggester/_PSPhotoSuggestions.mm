@@ -1,9 +1,9 @@
 @interface _PSPhotoSuggestions
 + (id)allOutstandingRequestsLock;
-+ (id)peopleInSharedPhotoAttachments:(id)a3 forBundleID:(id)a4 shouldProcessPicturesLive:(BOOL)a5 shouldUseVIPModel:(BOOL)a6 withTraceID:(id)a7 withSpanID:(id)a8 shouldUseMDID:(BOOL)a9 withCompletion:(id)a10;
++ (id)peopleInSharedPhotoAttachments:(id)attachments forBundleID:(id)d shouldProcessPicturesLive:(BOOL)live shouldUseVIPModel:(BOOL)model withTraceID:(id)iD withSpanID:(id)spanID shouldUseMDID:(BOOL)dID withCompletion:(id)self0;
 + (id)sharedMADService;
-+ (id)suggestionTemplateForPhotoContactIdWithMessages:(id)a3 cdInteraction:(id)a4 reason:(id)a5 reasonType:(id)a6;
-+ (void)cancelRequestWithToken:(id)a3;
++ (id)suggestionTemplateForPhotoContactIdWithMessages:(id)messages cdInteraction:(id)interaction reason:(id)reason reasonType:(id)type;
++ (void)cancelRequestWithToken:(id)token;
 @end
 
 @implementation _PSPhotoSuggestions
@@ -32,16 +32,16 @@
   return v3;
 }
 
-+ (id)peopleInSharedPhotoAttachments:(id)a3 forBundleID:(id)a4 shouldProcessPicturesLive:(BOOL)a5 shouldUseVIPModel:(BOOL)a6 withTraceID:(id)a7 withSpanID:(id)a8 shouldUseMDID:(BOOL)a9 withCompletion:(id)a10
++ (id)peopleInSharedPhotoAttachments:(id)attachments forBundleID:(id)d shouldProcessPicturesLive:(BOOL)live shouldUseVIPModel:(BOOL)model withTraceID:(id)iD withSpanID:(id)spanID shouldUseMDID:(BOOL)dID withCompletion:(id)self0
 {
-  v51 = a6;
-  v52 = a5;
+  modelCopy = model;
+  liveCopy = live;
   v88 = *MEMORY[0x1E69E9840];
-  v46 = a4;
-  v58 = a7;
-  v57 = a8;
-  v56 = a10;
-  v47 = [_PSPhotoUtils attachmentsEligibleForPhotoProcessingFromAttachments:a3];
+  dCopy = d;
+  iDCopy = iD;
+  spanIDCopy = spanID;
+  completionCopy = completion;
+  v47 = [_PSPhotoUtils attachmentsEligibleForPhotoProcessingFromAttachments:attachments];
   if ([v47 count])
   {
     v13 = +[_PSPhotoSuggestions allOutstandingRequestsLock];
@@ -52,7 +52,7 @@
     v54 = [v14 initWithGuardedData:v15];
 
     v79 = 0;
-    v45 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v46 allowPlaceholder:0 error:&v79];
+    v45 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v79];
     v43 = v79;
     v16 = v45;
     if (!v45)
@@ -66,14 +66,14 @@
       v16 = 0;
     }
 
-    v18 = [v16 developerType];
+    developerType = [v16 developerType];
     v19 = +[_PSLogging heuristicsChannel];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138478083;
       *&buf[4] = v47;
       *&buf[12] = 1024;
-      *&buf[14] = v18 == 1;
+      *&buf[14] = developerType == 1;
       _os_log_impl(&dword_1B5ED1000, v19, OS_LOG_TYPE_DEFAULT, "IDsOfPeopleInSharedPhotoAssets with attachments %{private}@, isFirstParty: %d", buf, 0x12u);
     }
 
@@ -125,20 +125,20 @@
           _Block_object_dispose(&v80, 8);
           v26 = objc_alloc_init(v23);
           [v26 setMaximumFaceCount:4];
-          [v26 setAllowOnDemand:v52];
+          [v26 setAllowOnDemand:liveCopy];
           [v26 setAllowUnverifiedIdentity:1];
           [v26 setUseLowResolutionPicture:1];
           [v26 setIncludePets:1];
-          [v26 setUseVIPModel:v51];
+          [v26 setUseVIPModel:modelCopy];
           *buf = 0;
           *&buf[8] = buf;
           *&buf[16] = 0x2020000000;
           LODWORD(v86) = 0;
           v27 = [AeroMLTracerSession alloc];
           v28 = +[_PSConstants peopleSuggesterShareSheetProjectName];
-          if (v58)
+          if (iDCopy)
           {
-            v29 = [(AeroMLTracerSession *)v27 initWithTraceId:v58 projectName:v28];
+            v29 = [(AeroMLTracerSession *)v27 initWithTraceId:iDCopy projectName:v28];
           }
 
           else
@@ -148,7 +148,7 @@
 
           v30 = v29;
 
-          v31 = [v30 createSubSpanWithName:@"fetchingMADResultsSpan" parentSpanId:v57];
+          v31 = [v30 createSubSpanWithName:@"fetchingMADResultsSpan" parentSpanId:spanIDCopy];
           [v31 start];
           v66[0] = MEMORY[0x1E69E9820];
           v66[1] = 3221225472;
@@ -158,12 +158,12 @@
           v67 = v32;
           v33 = v31;
           v68 = v33;
-          v73 = a9;
+          dIDCopy = dID;
           v69 = v54;
           v34 = v53;
           v70 = v34;
           v72 = v78;
-          v71 = v56;
+          v71 = completionCopy;
           v35 = MEMORY[0x1B8C8C060](v66);
           v36 = +[_PSPhotoSuggestions allOutstandingRequestsLock];
           v59[0] = MEMORY[0x1E69E9820];
@@ -174,7 +174,7 @@
           v63 = v37;
           v64 = buf;
           v59[4] = v22;
-          v65 = a1;
+          selfCopy = self;
           v38 = v32;
           v60 = v38;
           v61 = v34;
@@ -191,14 +191,14 @@
     }
 
     _Block_object_dispose(v78, 8);
-    v39 = v56;
+    v39 = completionCopy;
   }
 
   else
   {
     v40 = [MEMORY[0x1E695DFD8] set];
-    v39 = v56;
-    (*(v56 + 2))(v56, v40);
+    v39 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, v40);
 
     v55 = MEMORY[0x1E695E0F0];
   }
@@ -208,15 +208,15 @@
   return v55;
 }
 
-+ (void)cancelRequestWithToken:(id)a3
++ (void)cancelRequestWithToken:(id)token
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   objc_opt_class();
-  v29 = v4;
+  v29 = tokenCopy;
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = tokenCopy;
     v28 = v5;
     if ([v5 count])
     {
@@ -283,28 +283,28 @@
             }
 
             v15 = *(*(&v32 + 1) + 8 * j);
-            v16 = [v15 integerValue];
+            integerValue = [v15 integerValue];
             *buf = 0;
             *&buf[8] = buf;
             *&buf[16] = 0x3032000000;
             v41 = __Block_byref_object_copy__303;
             v42 = __Block_byref_object_dispose__304;
             v43 = 0;
-            v17 = [a1 allOutstandingRequestsLock];
+            allOutstandingRequestsLock = [self allOutstandingRequestsLock];
             v31[0] = MEMORY[0x1E69E9820];
             v31[1] = 3221225472;
             v31[2] = __46___PSPhotoSuggestions_cancelRequestWithToken___block_invoke;
             v31[3] = &unk_1E7C26F48;
             v31[4] = v15;
             v31[5] = buf;
-            [v17 runWithLockAcquired:v31];
+            [allOutstandingRequestsLock runWithLockAcquired:v31];
 
             v18 = *(*&buf[8] + 40);
             if (v18)
             {
               (*(v18 + 16))();
-              v19 = [a1 sharedMADService];
-              [v19 cancelRequestID:v16];
+              sharedMADService = [self sharedMADService];
+              [sharedMADService cancelRequestID:integerValue];
 
               ++v11;
             }
@@ -367,26 +367,26 @@ LABEL_31:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)suggestionTemplateForPhotoContactIdWithMessages:(id)a3 cdInteraction:(id)a4 reason:(id)a5 reasonType:(id)a6
++ (id)suggestionTemplateForPhotoContactIdWithMessages:(id)messages cdInteraction:(id)interaction reason:(id)reason reasonType:(id)type
 {
   v51 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v40 = a5;
-  v39 = a6;
-  v11 = [v10 sender];
-  v12 = [v11 personId];
-  v13 = [v12 isEqualToString:v9];
+  messagesCopy = messages;
+  interactionCopy = interaction;
+  reasonCopy = reason;
+  typeCopy = type;
+  sender = [interactionCopy sender];
+  personId = [sender personId];
+  v13 = [personId isEqualToString:messagesCopy];
 
   if (v13)
   {
-    v14 = [v10 sender];
-    v15 = [v14 identifier];
+    sender2 = [interactionCopy sender];
+    identifier = [sender2 identifier];
 
-    v16 = [v10 sender];
-    v17 = v16;
+    sender3 = [interactionCopy sender];
+    recipients = sender3;
 LABEL_13:
-    v25 = [v16 type];
+    type = [sender3 type];
   }
 
   else
@@ -395,8 +395,8 @@ LABEL_13:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v17 = [v10 recipients];
-    v18 = [v17 countByEnumeratingWithState:&v41 objects:v50 count:16];
+    recipients = [interactionCopy recipients];
+    v18 = [recipients countByEnumeratingWithState:&v41 objects:v50 count:16];
     if (v18)
     {
       v19 = v18;
@@ -407,22 +407,22 @@ LABEL_13:
         {
           if (*v42 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(recipients);
           }
 
           v22 = *(*(&v41 + 1) + 8 * i);
-          v23 = [v22 personId];
-          v24 = [v23 isEqualToString:v9];
+          personId2 = [v22 personId];
+          v24 = [personId2 isEqualToString:messagesCopy];
 
           if (v24)
           {
-            v15 = [v22 identifier];
-            v16 = v22;
+            identifier = [v22 identifier];
+            sender3 = v22;
             goto LABEL_13;
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v41 objects:v50 count:16];
+        v19 = [recipients countByEnumeratingWithState:&v41 objects:v50 count:16];
         if (v19)
         {
           continue;
@@ -432,58 +432,58 @@ LABEL_13:
       }
     }
 
-    v15 = 0;
-    v25 = 0;
+    identifier = 0;
+    type = 0;
   }
 
-  if (!v15)
+  if (!identifier)
   {
     v32 = 0;
     goto LABEL_27;
   }
 
-  v37 = v10;
+  v37 = interactionCopy;
   v26 = [_PSSuggestionTemplate alloc];
   v38 = +[_PSConstants mobileMessagesBundleId];
-  v36 = [MEMORY[0x1E696AFB0] UUID];
-  v27 = [v36 UUIDString];
-  v49 = v9;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v49 = messagesCopy;
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:1];
-  v29 = v25 != 2;
-  if (v25 == 2)
+  v29 = type != 2;
+  if (type == 2)
   {
-    v48 = v15;
+    v48 = identifier;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1];
 LABEL_21:
     v30 = 0;
     goto LABEL_22;
   }
 
-  if (v25 != 1)
+  if (type != 1)
   {
     v29 = 0;
     v31 = 0;
     goto LABEL_21;
   }
 
-  v47 = v15;
+  v47 = identifier;
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
   v31 = 0;
 LABEL_22:
-  v45 = v9;
-  v46 = v15;
+  v45 = messagesCopy;
+  v46 = identifier;
   v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-  v32 = [(_PSSuggestionTemplate *)v26 initWithBundleID:v38 interactionRecipients:v27 image:0 groupName:0 recipientContactIDs:v28 recipientEmailAddresses:v31 recipientPhoneNumbers:v30 recipientDisplayNames:0 contactIdToHandleMapping:v33 reason:v40 reasonType:v39];
+  v32 = [(_PSSuggestionTemplate *)v26 initWithBundleID:v38 interactionRecipients:uUIDString image:0 groupName:0 recipientContactIDs:v28 recipientEmailAddresses:v31 recipientPhoneNumbers:v30 recipientDisplayNames:0 contactIdToHandleMapping:v33 reason:reasonCopy reasonType:typeCopy];
 
   if (v29)
   {
   }
 
-  if (v25 == 2)
+  if (type == 2)
   {
   }
 
-  v10 = v37;
+  interactionCopy = v37;
 LABEL_27:
 
   v34 = *MEMORY[0x1E69E9840];

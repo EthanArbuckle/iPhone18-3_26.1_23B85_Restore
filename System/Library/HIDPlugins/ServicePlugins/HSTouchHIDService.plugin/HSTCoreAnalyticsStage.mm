@@ -1,32 +1,32 @@
 @interface HSTCoreAnalyticsStage
-- (void)handleConsume:(id)a3;
+- (void)handleConsume:(id)consume;
 @end
 
 @implementation HSTCoreAnalyticsStage
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 name];
-    v7 = [v5 payload];
+    v5 = consumeCopy;
+    name = [v5 name];
+    payload = [v5 payload];
     AnalyticsSendEvent();
 
     v8 = MTLoggingPlugin();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [v5 name];
-      v10 = [v5 payload];
-      [(HSTCoreAnalyticsStage *)v9 handleConsume:v10, buf, v8];
+      name2 = [v5 name];
+      payload2 = [v5 payload];
+      [(HSTCoreAnalyticsStage *)name2 handleConsume:payload2, buf, v8];
     }
   }
 
   v11.receiver = self;
   v11.super_class = HSTCoreAnalyticsStage;
-  [(HSStage *)&v11 handleConsume:v4];
+  [(HSStage *)&v11 handleConsume:consumeCopy];
 }
 
 - (void)handleConsume:(uint8_t *)buf .cold.1(void *a1, void *a2, uint8_t *buf, os_log_t log)

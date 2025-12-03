@@ -1,27 +1,27 @@
 @interface SHSheetViewModel
 - (NSString)description;
-- (SHSheetViewModel)initWithSession:(id)a3;
+- (SHSheetViewModel)initWithSession:(id)session;
 @end
 
 @implementation SHSheetViewModel
 
-- (SHSheetViewModel)initWithSession:(id)a3
+- (SHSheetViewModel)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v77.receiver = self;
   v77.super_class = SHSheetViewModel;
   v6 = [(SHSheetViewModel *)&v77 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
-    v8 = [v5 configuration];
-    v9 = [v8 peopleSuggestions];
-    v10 = v9;
+    objc_storeStrong(&v6->_session, session);
+    configuration = [sessionCopy configuration];
+    peopleSuggestions = [configuration peopleSuggestions];
+    v10 = peopleSuggestions;
     v11 = MEMORY[0x1E695E0F0];
-    if (v9)
+    if (peopleSuggestions)
     {
-      v12 = v9;
+      v12 = peopleSuggestions;
     }
 
     else
@@ -31,12 +31,12 @@
 
     v13 = v12;
 
-    v14 = [v5 activitiesManager];
-    v15 = [v14 orderedActivities];
-    v16 = v15;
-    if (v15)
+    activitiesManager = [sessionCopy activitiesManager];
+    orderedActivities = [activitiesManager orderedActivities];
+    v16 = orderedActivities;
+    if (orderedActivities)
     {
-      v17 = v15;
+      v17 = orderedActivities;
     }
 
     else
@@ -54,93 +54,93 @@
     activities = v7->_activities;
     v7->_activities = v21;
 
-    v23 = [v5 metadataCollection];
-    v24 = [v23 metadatas];
+    metadataCollection = [sessionCopy metadataCollection];
+    metadatas = [metadataCollection metadatas];
     metadataValues = v7->_metadataValues;
-    v7->_metadataValues = v24;
+    v7->_metadataValues = metadatas;
 
-    v26 = [v5 activityItemsManager];
-    v27 = [v26 urlRequests];
+    activityItemsManager = [sessionCopy activityItemsManager];
+    urlRequests = [activityItemsManager urlRequests];
     urlRequests = v7->_urlRequests;
-    v7->_urlRequests = v27;
+    v7->_urlRequests = urlRequests;
 
     urlSandboxExtensions = v7->_urlSandboxExtensions;
     v7->_urlSandboxExtensions = 0;
 
-    v7->_showOptions = [v5 showOptions];
-    v30 = [v5 customOptionsTitle];
+    v7->_showOptions = [sessionCopy showOptions];
+    customOptionsTitle = [sessionCopy customOptionsTitle];
     customOptionsTitle = v7->_customOptionsTitle;
-    v7->_customOptionsTitle = v30;
+    v7->_customOptionsTitle = customOptionsTitle;
 
-    v7->_showCustomHeaderButton = [v5 showSharePlayProminently];
-    v7->_showHeaderSpecialization = [v5 showHeaderSpecialization];
-    v32 = SHSheetCustomHeaderButtonTitle([v5 showSharePlayProminently]);
+    v7->_showCustomHeaderButton = [sessionCopy showSharePlayProminently];
+    v7->_showHeaderSpecialization = [sessionCopy showHeaderSpecialization];
+    v32 = SHSheetCustomHeaderButtonTitle([sessionCopy showSharePlayProminently]);
     customHeaderButtonTitle = v7->_customHeaderButtonTitle;
     v7->_customHeaderButtonTitle = v32;
 
-    v34 = SHSheetCustomHeaderButtonColor([v5 showSharePlayProminently]);
+    v34 = SHSheetCustomHeaderButtonColor([sessionCopy showSharePlayProminently]);
     customHeaderButtonColor = v7->_customHeaderButtonColor;
     v7->_customHeaderButtonColor = v34;
 
-    v36 = [v5 activityViewController];
-    v37 = [v36 customViewController];
+    activityViewController = [sessionCopy activityViewController];
+    customViewController = [activityViewController customViewController];
     customViewController = v7->_customViewController;
-    v7->_customViewController = v37;
+    v7->_customViewController = customViewController;
 
-    v39 = [v5 activityViewController];
-    v40 = [v39 customViewControllerVerticalInsetWrapper];
+    activityViewController2 = [sessionCopy activityViewController];
+    customViewControllerVerticalInsetWrapper = [activityViewController2 customViewControllerVerticalInsetWrapper];
     customViewControllerVerticalInsetWrapper = v7->_customViewControllerVerticalInsetWrapper;
-    v7->_customViewControllerVerticalInsetWrapper = v40;
+    v7->_customViewControllerVerticalInsetWrapper = customViewControllerVerticalInsetWrapper;
 
-    v42 = [v5 activityViewController];
-    v43 = [v42 customViewControllerSectionHeightWrapper];
+    activityViewController3 = [sessionCopy activityViewController];
+    customViewControllerSectionHeightWrapper = [activityViewController3 customViewControllerSectionHeightWrapper];
     customViewControllerSectionHeightWrapper = v7->_customViewControllerSectionHeightWrapper;
-    v7->_customViewControllerSectionHeightWrapper = v43;
+    v7->_customViewControllerSectionHeightWrapper = customViewControllerSectionHeightWrapper;
 
-    v7->_isModeSwitchDisabled = [v5 isModeSwitchDisabled];
-    v45 = [v5 configuration];
-    v46 = [v45 peopleProxies];
+    v7->_isModeSwitchDisabled = [sessionCopy isModeSwitchDisabled];
+    configuration2 = [sessionCopy configuration];
+    peopleProxies = [configuration2 peopleProxies];
     peopleSuggestionProxies = v7->_peopleSuggestionProxies;
-    v7->_peopleSuggestionProxies = v46;
+    v7->_peopleSuggestionProxies = peopleProxies;
 
-    v48 = [v5 configuration];
-    v49 = [v48 shareProxies];
+    configuration3 = [sessionCopy configuration];
+    shareProxies = [configuration3 shareProxies];
     shareProxies = v7->_shareProxies;
-    v7->_shareProxies = v49;
+    v7->_shareProxies = shareProxies;
 
-    v51 = [v5 configuration];
-    v52 = [v51 actionProxies];
+    configuration4 = [sessionCopy configuration];
+    actionProxies = [configuration4 actionProxies];
     actionProxies = v7->_actionProxies;
-    v7->_actionProxies = v52;
+    v7->_actionProxies = actionProxies;
 
-    v54 = [v5 activitiesManager];
-    v55 = [v54 activitiesByUUID];
+    activitiesManager2 = [sessionCopy activitiesManager];
+    activitiesByUUID = [activitiesManager2 activitiesByUUID];
     activitiesByUUID = v7->_activitiesByUUID;
-    v7->_activitiesByUUID = v55;
+    v7->_activitiesByUUID = activitiesByUUID;
 
-    v57 = [v5 activitiesManager];
-    v58 = [v57 applicationActivityTypes];
+    activitiesManager3 = [sessionCopy activitiesManager];
+    applicationActivityTypes = [activitiesManager3 applicationActivityTypes];
     applicationActivityTypes = v7->_applicationActivityTypes;
-    v7->_applicationActivityTypes = v58;
+    v7->_applicationActivityTypes = applicationActivityTypes;
 
-    v60 = [v5 configuration];
-    v61 = [v60 nearbyCountSlotID];
+    configuration5 = [sessionCopy configuration];
+    nearbyCountSlotID = [configuration5 nearbyCountSlotID];
     nearbyCountSlotID = v7->_nearbyCountSlotID;
-    v7->_nearbyCountSlotID = v61;
+    v7->_nearbyCountSlotID = nearbyCountSlotID;
 
-    v63 = [v5 configuration];
-    v7->_reloadData = [v63 reloadData];
+    configuration6 = [sessionCopy configuration];
+    v7->_reloadData = [configuration6 reloadData];
 
-    v64 = [v5 configuration];
-    v7->_updateProxiesWithAnimation = [v64 wantsAnimation];
+    configuration7 = [sessionCopy configuration];
+    v7->_updateProxiesWithAnimation = [configuration7 wantsAnimation];
 
-    v7->_isSharingExpanded = [v5 isExpanded];
-    v65 = [v5 configuration];
-    v66 = [v65 restrictedActivityTypes];
-    v67 = v66;
-    if (v66)
+    v7->_isSharingExpanded = [sessionCopy isExpanded];
+    configuration8 = [sessionCopy configuration];
+    restrictedActivityTypes = [configuration8 restrictedActivityTypes];
+    v67 = restrictedActivityTypes;
+    if (restrictedActivityTypes)
     {
-      v68 = v66;
+      v68 = restrictedActivityTypes;
     }
 
     else
@@ -150,20 +150,20 @@
 
     objc_storeStrong(&v7->_restrictedActivityTypes, v68);
 
-    v7->_supportsCollaboration = [v5 supportsCollaboration];
-    v7->_supportsSendCopy = [v5 supportsSendCopy];
-    v7->_isCollaborative = [v5 isCollaborative];
-    v7->_showCollaborationOptions = [v5 showCollaborationOptions];
-    v69 = [v5 collaborationItem];
-    v70 = [v69 canAddPeople];
-    v71 = SHSheetCollaborationModeTitle(v70);
+    v7->_supportsCollaboration = [sessionCopy supportsCollaboration];
+    v7->_supportsSendCopy = [sessionCopy supportsSendCopy];
+    v7->_isCollaborative = [sessionCopy isCollaborative];
+    v7->_showCollaborationOptions = [sessionCopy showCollaborationOptions];
+    collaborationItem = [sessionCopy collaborationItem];
+    canAddPeople = [collaborationItem canAddPeople];
+    v71 = SHSheetCollaborationModeTitle(canAddPeople);
     collaborationModeTitle = v7->_collaborationModeTitle;
     v7->_collaborationModeTitle = v71;
 
-    v73 = [v5 collaborationItem];
-    v74 = [v73 createCollaborationFooterViewModel];
+    collaborationItem2 = [sessionCopy collaborationItem];
+    createCollaborationFooterViewModel = [collaborationItem2 createCollaborationFooterViewModel];
     collaborationFooterViewModel = v7->_collaborationFooterViewModel;
-    v7->_collaborationFooterViewModel = v74;
+    v7->_collaborationFooterViewModel = createCollaborationFooterViewModel;
   }
 
   return v7;
@@ -173,16 +173,16 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(SHSheetViewModel *)self peopleSuggestions];
-  v6 = [(SHSheetViewModel *)self peopleSuggestionProxies];
-  v7 = [(SHSheetViewModel *)self activities];
-  v8 = [(SHSheetViewModel *)self shareProxies];
-  v9 = [(SHSheetViewModel *)self actionProxies];
-  v10 = [(SHSheetViewModel *)self metadataValues];
+  peopleSuggestions = [(SHSheetViewModel *)self peopleSuggestions];
+  peopleSuggestionProxies = [(SHSheetViewModel *)self peopleSuggestionProxies];
+  activities = [(SHSheetViewModel *)self activities];
+  shareProxies = [(SHSheetViewModel *)self shareProxies];
+  actionProxies = [(SHSheetViewModel *)self actionProxies];
+  metadataValues = [(SHSheetViewModel *)self metadataValues];
   [(SHSheetViewModel *)self showOptions];
   v11 = NSStringFromBOOL();
-  v12 = [(SHSheetViewModel *)self restrictedActivityTypes];
-  v13 = [v3 stringWithFormat:@"<%@ peopleSuggestions:%@ peopleSuggestionProxies:%@ activities:%@ shareProxies:%@ actionProxies:%@ metadataValues:%@ showOptions:%@ restrictedActivityTypes:%@>", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  restrictedActivityTypes = [(SHSheetViewModel *)self restrictedActivityTypes];
+  v13 = [v3 stringWithFormat:@"<%@ peopleSuggestions:%@ peopleSuggestionProxies:%@ activities:%@ shareProxies:%@ actionProxies:%@ metadataValues:%@ showOptions:%@ restrictedActivityTypes:%@>", v4, peopleSuggestions, peopleSuggestionProxies, activities, shareProxies, actionProxies, metadataValues, v11, restrictedActivityTypes];
 
   return v13;
 }

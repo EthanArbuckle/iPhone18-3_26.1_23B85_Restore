@@ -1,29 +1,29 @@
 @interface NEKSourceAttributes
-+ (BOOL)configureAccount:(id)a3 accountChangeItemProvider:(id)a4 withAttributes:(id)a5;
-+ (BOOL)configureAccount:(id)a3 withSaveRequest:(id)a4 withAttributes:(id)a5;
-+ (BOOL)configureSource:(id)a3 inStore:(id)a4 withAttributes:(id)a5;
-+ (void)createAccountWithSaveRequest:(id)a3 withAttributes:(id)a4;
-+ (void)deleteWhatever:(unint64_t)a3 calendarsInSource:(id)a4 inStore:(id)a5;
-- (NEKSourceAttributes)initWithAccount:(id)a3;
-- (NEKSourceAttributes)initWithSource:(id)a3;
++ (BOOL)configureAccount:(id)account accountChangeItemProvider:(id)provider withAttributes:(id)attributes;
++ (BOOL)configureAccount:(id)account withSaveRequest:(id)request withAttributes:(id)attributes;
++ (BOOL)configureSource:(id)source inStore:(id)store withAttributes:(id)attributes;
++ (void)createAccountWithSaveRequest:(id)request withAttributes:(id)attributes;
++ (void)deleteWhatever:(unint64_t)whatever calendarsInSource:(id)source inStore:(id)store;
+- (NEKSourceAttributes)initWithAccount:(id)account;
+- (NEKSourceAttributes)initWithSource:(id)source;
 - (id)description;
 @end
 
 @implementation NEKSourceAttributes
 
-- (NEKSourceAttributes)initWithSource:(id)a3
+- (NEKSourceAttributes)initWithSource:(id)source
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sourceCopy = source;
+  v5 = sourceCopy;
+  if (sourceCopy)
   {
-    v6 = [v4 sourceIdentifier];
+    sourceIdentifier = [sourceCopy sourceIdentifier];
     if ([v5 sourceType])
     {
       if ([v5 sourceType] == 5)
       {
 
-        v6 = @"F519C070-44C7-467D-B560-7FEABDF9D3AC";
+        sourceIdentifier = @"F519C070-44C7-467D-B560-7FEABDF9D3AC";
         v7 = [[NSUUID alloc] initWithUUIDString:@"F519C070-44C7-467D-B560-7FEABDF9D3AC"];
         v8 = [REMAccount objectIDWithUUID:v7];
 
@@ -31,14 +31,14 @@
         goto LABEL_12;
       }
 
-      v11 = [v5 sourceIdentifier];
-      v12 = [[NSUUID alloc] initWithUUIDString:v11];
+      sourceIdentifier2 = [v5 sourceIdentifier];
+      v12 = [[NSUUID alloc] initWithUUIDString:sourceIdentifier2];
       if (!v12)
       {
         v13 = *(qword_1000D18A8 + 8);
         if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
         {
-          sub_1000718F0(v11, v13);
+          sub_1000718F0(sourceIdentifier2, v13);
         }
       }
 
@@ -63,16 +63,16 @@ LABEL_12:
 LABEL_21:
       if (!sub_10000A57C() && [v15 type] == 2)
       {
-        v20 = [v5 allowsEvents];
+        allowsEvents = [v5 allowsEvents];
         v21 = *(qword_1000D18A8 + 8);
-        if (!v20)
+        if (!allowsEvents)
         {
           if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_DEFAULT))
           {
             v36 = v21;
-            v37 = [v15 objectID];
+            objectID = [v15 objectID];
             *buf = 138543362;
-            v41 = v37;
+            v41 = objectID;
             _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Attempting to send source wrapper for CloudKit reminders account %{public}@ with allowsEvents=NO but the other side does not support CloudKit. Dropping this source wrapper and it will not be sent.", buf, 0xCu);
           }
 
@@ -95,32 +95,32 @@ LABEL_21:
         v22 = [(NEKSourceAttributes *)&v38 init];
         if (v22)
         {
-          v23 = [v5 title];
-          [(NEKSourceAttributes *)v22 setName:v23];
+          title = [v5 title];
+          [(NEKSourceAttributes *)v22 setName:title];
 
-          v24 = [v5 defaultAlarmOffset];
-          [(NEKSourceAttributes *)v22 setDefaultAlarmOffset:v24];
+          defaultAlarmOffset = [v5 defaultAlarmOffset];
+          [(NEKSourceAttributes *)v22 setDefaultAlarmOffset:defaultAlarmOffset];
 
           -[NEKSourceAttributes setType:](v22, "setType:", [v5 sourceType]);
           -[NEKSourceAttributes setIsEnabled:](v22, "setIsEnabled:", [v5 isEnabled]);
           -[NEKSourceAttributes setIsFacebook:](v22, "setIsFacebook:", [v5 isFacebookSource]);
           -[NEKSourceAttributes setUsesSelfAttendee:](v22, "setUsesSelfAttendee:", [v5 usesSelfAttendee]);
-          v25 = [v5 constraintsDescriptionPath];
-          [(NEKSourceAttributes *)v22 setConstraintsDescriptionPath:v25];
+          constraintsDescriptionPath = [v5 constraintsDescriptionPath];
+          [(NEKSourceAttributes *)v22 setConstraintsDescriptionPath:constraintsDescriptionPath];
 
-          v26 = [v5 externalID];
-          [(NEKSourceAttributes *)v22 setExternalID:v26];
+          externalID = [v5 externalID];
+          [(NEKSourceAttributes *)v22 setExternalID:externalID];
 
-          v27 = [v5 externalModificationTag];
-          [(NEKSourceAttributes *)v22 setExternalModificationTag:v27];
+          externalModificationTag = [v5 externalModificationTag];
+          [(NEKSourceAttributes *)v22 setExternalModificationTag:externalModificationTag];
 
-          v28 = [v5 creatorBundleID];
-          [(NEKSourceAttributes *)v22 setCreatorBundleID:v28];
+          creatorBundleID = [v5 creatorBundleID];
+          [(NEKSourceAttributes *)v22 setCreatorBundleID:creatorBundleID];
 
-          v29 = [v5 creatorCodeSigningIdentity];
-          [(NEKSourceAttributes *)v22 setCreatorCodeSigningIdentity:v29];
+          creatorCodeSigningIdentity = [v5 creatorCodeSigningIdentity];
+          [(NEKSourceAttributes *)v22 setCreatorCodeSigningIdentity:creatorCodeSigningIdentity];
 
-          [(NEKSourceAttributes *)v22 setAccountPersistentID:v6];
+          [(NEKSourceAttributes *)v22 setAccountPersistentID:sourceIdentifier];
           -[NEKSourceAttributes setSupportsSharedCalendars:](v22, "setSupportsSharedCalendars:", [v5 supportsSharedCalendars]);
           [(NEKSourceAttributes *)v22 setAllowsTasks:v17];
           -[NEKSourceAttributes setAllowsEvents:](v22, "setAllowsEvents:", [v5 allowsEvents] & (v9 ^ 1));
@@ -151,11 +151,11 @@ LABEL_21:
             v33 = @"non-CloudKit";
           }
 
-          v34 = [v5 sourceIdentifier];
+          sourceIdentifier3 = [v5 sourceIdentifier];
           *buf = 138543874;
           v41 = v33;
           v42 = 2114;
-          v43 = v34;
+          v43 = sourceIdentifier3;
           v44 = 2114;
           v45 = v8;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Sending %{public}@ reminder-only EKSource %{public}@ with REMAccount %{public}@", buf, 0x20u);
@@ -171,12 +171,12 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v18 = [v16 domain];
-    if ([v18 isEqualToString:REMErrorDomain])
+    domain = [v16 domain];
+    if ([domain isEqualToString:REMErrorDomain])
     {
-      v19 = [v16 code];
+      code = [v16 code];
 
-      if (v19 == -3000)
+      if (code == -3000)
       {
 LABEL_20:
         v17 = 0;
@@ -202,11 +202,11 @@ LABEL_39:
   return v10;
 }
 
-+ (void)deleteWhatever:(unint64_t)a3 calendarsInSource:(id)a4 inStore:(id)a5
++ (void)deleteWhatever:(unint64_t)whatever calendarsInSource:(id)source inStore:(id)store
 {
-  v7 = a4;
-  v8 = a5;
-  [v7 calendarsForEntityType:a3];
+  sourceCopy = source;
+  storeCopy = store;
+  [sourceCopy calendarsForEntityType:whatever];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -228,18 +228,18 @@ LABEL_39:
         }
 
         v15 = *(*(&v25 + 1) + 8 * i);
-        v16 = [v15 calendarIdentifier];
+        calendarIdentifier = [v15 calendarIdentifier];
         v17 = *(qword_1000D18A8 + 8);
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v30 = v16;
+          v30 = calendarIdentifier;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Performing a priori deletion of calendar %{public}@", buf, 0xCu);
         }
 
         [v15 setImmutable:0];
         v24 = v14;
-        [v8 removeCalendar:v15 commit:0 error:&v24];
+        [storeCopy removeCalendar:v15 commit:0 error:&v24];
         v11 = v24;
 
         if (v11)
@@ -248,7 +248,7 @@ LABEL_39:
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            v30 = v16;
+            v30 = calendarIdentifier;
             v31 = 2114;
             v32 = v11;
             _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Deletion of calendar %{public}@ didn't go so well: %{public}@", buf, 0x16u);
@@ -269,7 +269,7 @@ LABEL_39:
 
   v19 = objc_autoreleasePoolPush();
   v23 = v11;
-  [v8 commit:&v23];
+  [storeCopy commit:&v23];
   v20 = v23;
 
   objc_autoreleasePoolPop(v19);
@@ -289,36 +289,36 @@ LABEL_39:
   }
 }
 
-+ (BOOL)configureSource:(id)a3 inStore:(id)a4 withAttributes:(id)a5
++ (BOOL)configureSource:(id)source inStore:(id)store withAttributes:(id)attributes
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  sourceCopy = source;
+  storeCopy = store;
+  attributesCopy = attributes;
+  v10 = attributesCopy;
   v11 = 0;
-  if (!v7 || !v8 || !v9)
+  if (!sourceCopy || !storeCopy || !attributesCopy)
   {
     goto LABEL_173;
   }
 
-  v135 = v8;
-  v12 = [v9 accountPersistentID];
+  v135 = storeCopy;
+  accountPersistentID = [attributesCopy accountPersistentID];
   v13 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v141 = v12;
+    v141 = accountPersistentID;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Starting configuration of source with persistent ID: [%{public}@].", buf, 0xCu);
   }
 
-  v14 = [v7 title];
-  v15 = [v10 name];
-  v16 = v15;
-  v133 = v15;
-  v134 = v14;
-  if (v14)
+  title = [sourceCopy title];
+  name = [v10 name];
+  v16 = name;
+  v133 = name;
+  v134 = title;
+  if (title)
   {
-    if (([(__CFString *)v14 isEqualToString:v15]& 1) != 0)
+    if (([(__CFString *)title isEqualToString:name]& 1) != 0)
     {
 LABEL_8:
       v11 = 0;
@@ -326,92 +326,92 @@ LABEL_8:
     }
   }
 
-  else if (!v15)
+  else if (!name)
   {
     goto LABEL_8;
   }
 
-  [v7 setTitle:v16];
+  [sourceCopy setTitle:v16];
   v17 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v141 = v14;
+    v141 = title;
     v142 = 2112;
     v143 = v16;
     v144 = 2114;
-    v145 = v12;
+    v145 = accountPersistentID;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Source's 'name' has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
   }
 
   v11 = 1;
 LABEL_13:
-  v18 = [v7 defaultAlarmOffset];
-  v19 = [v10 defaultAlarmOffset];
-  v20 = v19;
-  if (v18)
+  defaultAlarmOffset = [sourceCopy defaultAlarmOffset];
+  defaultAlarmOffset2 = [v10 defaultAlarmOffset];
+  v20 = defaultAlarmOffset2;
+  if (defaultAlarmOffset)
   {
-    if (([(__CFString *)v18 isEqual:v19]& 1) != 0)
+    if (([(__CFString *)defaultAlarmOffset isEqual:defaultAlarmOffset2]& 1) != 0)
     {
       goto LABEL_20;
     }
   }
 
-  else if (!v19)
+  else if (!defaultAlarmOffset2)
   {
     goto LABEL_20;
   }
 
-  [v7 setDefaultAlarmOffset:v20];
+  [sourceCopy setDefaultAlarmOffset:v20];
   v21 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v141 = v18;
+    v141 = defaultAlarmOffset;
     v142 = 2112;
     v143 = v20;
     v144 = 2114;
-    v145 = v12;
+    v145 = accountPersistentID;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Source's 'defaultAlarmOffset' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
   }
 
   v11 = 1;
 LABEL_20:
   v131 = v20;
-  v132 = v18;
-  v22 = [v7 sourceType];
-  v23 = [v10 type];
-  if (v22 != v23)
+  v132 = defaultAlarmOffset;
+  sourceType = [sourceCopy sourceType];
+  type = [v10 type];
+  if (sourceType != type)
   {
-    v24 = v23;
-    [v7 setSourceType:v23];
+    v24 = type;
+    [sourceCopy setSourceType:type];
     v25 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [NSNumber numberWithInteger:v22];
+      v26 = [NSNumber numberWithInteger:sourceType];
       v27 = [NSNumber numberWithInteger:v24];
       *buf = 138412802;
       v141 = v26;
       v142 = 2112;
       v143 = v27;
       v144 = 2114;
-      v145 = v12;
+      v145 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Source's 'type' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
 
     v11 = 1;
   }
 
-  v28 = [v7 isEnabled];
-  v29 = [v10 isEnabled];
-  if (v28 != v29)
+  isEnabled = [sourceCopy isEnabled];
+  isEnabled2 = [v10 isEnabled];
+  if (isEnabled != isEnabled2)
   {
-    v30 = v29;
-    [v7 setEnabled:v29];
+    v30 = isEnabled2;
+    [sourceCopy setEnabled:isEnabled2];
     v31 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      if (v28)
+      if (isEnabled)
       {
         v32 = @"YES";
       }
@@ -438,23 +438,23 @@ LABEL_20:
       v142 = 2112;
       v143 = v35;
       v144 = 2114;
-      v145 = v12;
+      v145 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Source's 'enabled' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
 
     v11 = 1;
   }
 
-  v36 = [v7 isFacebook];
-  v37 = [v10 isFacebook];
-  if (v36 != v37)
+  isFacebook = [sourceCopy isFacebook];
+  isFacebook2 = [v10 isFacebook];
+  if (isFacebook != isFacebook2)
   {
-    v38 = v37;
-    [v7 setIsFacebook:v37];
+    v38 = isFacebook2;
+    [sourceCopy setIsFacebook:isFacebook2];
     v39 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
-      if (v36)
+      if (isFacebook)
       {
         v40 = @"YES";
       }
@@ -483,23 +483,23 @@ LABEL_20:
       v144 = 2112;
       v145 = v43;
       v146 = 2114;
-      v147 = v12;
+      v147 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Source's '%@' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x2Au);
     }
 
     v11 = 1;
   }
 
-  v44 = [v7 usesSelfAttendee];
-  v45 = [v10 usesSelfAttendee];
-  if (v44 != v45)
+  usesSelfAttendee = [sourceCopy usesSelfAttendee];
+  usesSelfAttendee2 = [v10 usesSelfAttendee];
+  if (usesSelfAttendee != usesSelfAttendee2)
   {
-    v46 = v45;
-    [v7 setUsesSelfAttendee:v45];
+    v46 = usesSelfAttendee2;
+    [sourceCopy setUsesSelfAttendee:usesSelfAttendee2];
     v47 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
-      if (v44)
+      if (usesSelfAttendee)
       {
         v48 = @"YES";
       }
@@ -526,25 +526,25 @@ LABEL_20:
       v142 = 2112;
       v143 = v51;
       v144 = 2114;
-      v145 = v12;
+      v145 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "Source's 'usesSelfAttendee' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
 
     v11 = 1;
   }
 
-  v52 = [v7 constraintsDescriptionPath];
-  v53 = [v10 constraintsDescriptionPath];
-  v54 = v53;
-  if (v52)
+  constraintsDescriptionPath = [sourceCopy constraintsDescriptionPath];
+  constraintsDescriptionPath2 = [v10 constraintsDescriptionPath];
+  v54 = constraintsDescriptionPath2;
+  if (constraintsDescriptionPath)
   {
-    if (([(__CFString *)v52 isEqualToString:v53]& 1) != 0)
+    if (([(__CFString *)constraintsDescriptionPath isEqualToString:constraintsDescriptionPath2]& 1) != 0)
     {
       goto LABEL_61;
     }
   }
 
-  else if (!v53)
+  else if (!constraintsDescriptionPath2)
   {
     goto LABEL_61;
   }
@@ -553,64 +553,64 @@ LABEL_20:
   if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v141 = v52;
+    v141 = constraintsDescriptionPath;
     v142 = 2112;
     v143 = v54;
     v144 = 2114;
-    v145 = v12;
+    v145 = accountPersistentID;
     _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Source's 'constraintsDescriptionPath' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
   }
 
 LABEL_61:
-  v56 = [v7 externalID];
-  v57 = [v10 externalID];
-  v58 = v57;
-  if (v56)
+  externalID = [sourceCopy externalID];
+  externalID2 = [v10 externalID];
+  v58 = externalID2;
+  if (externalID)
   {
-    if (([(__CFString *)v56 isEqualToString:v57]& 1) != 0)
+    if (([(__CFString *)externalID isEqualToString:externalID2]& 1) != 0)
     {
       goto LABEL_68;
     }
   }
 
-  else if (!v57)
+  else if (!externalID2)
   {
     goto LABEL_68;
   }
 
-  [v7 setExternalID:v58];
+  [sourceCopy setExternalID:v58];
   v59 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v141 = v56;
+    v141 = externalID;
     v142 = 2112;
     v143 = v58;
     v144 = 2114;
-    v145 = v12;
+    v145 = accountPersistentID;
     _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "Source's 'externalID' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
   }
 
   v11 = 1;
 LABEL_68:
-  v60 = [v7 creatorBundleID];
-  v61 = [v10 creatorBundleID];
-  v137 = v60;
-  v138 = v61;
-  if (v60)
+  creatorBundleID = [sourceCopy creatorBundleID];
+  creatorBundleID2 = [v10 creatorBundleID];
+  v137 = creatorBundleID;
+  v138 = creatorBundleID2;
+  if (creatorBundleID)
   {
-    if (([(__CFString *)v60 isEqualToString:v61]& 1) != 0)
+    if (([(__CFString *)creatorBundleID isEqualToString:creatorBundleID2]& 1) != 0)
     {
       goto LABEL_75;
     }
   }
 
-  else if (!v61)
+  else if (!creatorBundleID2)
   {
     goto LABEL_75;
   }
 
-  [v7 setCreatorBundleID:v138];
+  [sourceCopy setCreatorBundleID:v138];
   v62 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
   {
@@ -619,68 +619,68 @@ LABEL_68:
     v142 = 2112;
     v143 = v138;
     v144 = 2114;
-    v145 = v12;
+    v145 = accountPersistentID;
     _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEFAULT, "Source's 'creatorBundleID' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
   }
 
   v11 = 1;
 LABEL_75:
   v127 = v58;
-  v128 = v56;
-  v63 = [v7 creatorCodeSigningIdentity];
-  v64 = [v10 creatorCodeSigningIdentity];
-  v65 = v64;
-  if (v63)
+  v128 = externalID;
+  creatorCodeSigningIdentity = [sourceCopy creatorCodeSigningIdentity];
+  creatorCodeSigningIdentity2 = [v10 creatorCodeSigningIdentity];
+  v65 = creatorCodeSigningIdentity2;
+  if (creatorCodeSigningIdentity)
   {
-    if (([(__CFString *)v63 isEqualToString:v64]& 1) != 0)
+    if (([(__CFString *)creatorCodeSigningIdentity isEqualToString:creatorCodeSigningIdentity2]& 1) != 0)
     {
       goto LABEL_82;
     }
   }
 
-  else if (!v64)
+  else if (!creatorCodeSigningIdentity2)
   {
     goto LABEL_82;
   }
 
-  [v7 setCreatorCodeSigningIdentity:v65];
+  [sourceCopy setCreatorCodeSigningIdentity:v65];
   v66 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v141 = v63;
+    v141 = creatorCodeSigningIdentity;
     v142 = 2112;
     v143 = v65;
     v144 = 2114;
-    v145 = v12;
+    v145 = accountPersistentID;
     _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_DEFAULT, "Source's 'creatorCodeSigningIdentity' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
   }
 
   v11 = 1;
 LABEL_82:
-  v67 = [v7 sourceIdentifier];
-  v139 = [v10 accountPersistentID];
-  v136 = v67;
+  sourceIdentifier = [sourceCopy sourceIdentifier];
+  accountPersistentID2 = [v10 accountPersistentID];
+  v136 = sourceIdentifier;
   if (([v10 isBirthdayStore] & 1) == 0)
   {
-    if (v67)
+    if (sourceIdentifier)
     {
-      if (([(__CFString *)v67 isEqualToString:v139]& 1) != 0)
+      if (([(__CFString *)sourceIdentifier isEqualToString:accountPersistentID2]& 1) != 0)
       {
         goto LABEL_90;
       }
 
 LABEL_87:
-      [v7 setSourceIdentifier:v139];
+      [sourceCopy setSourceIdentifier:accountPersistentID2];
       v68 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
         v141 = v136;
         v142 = 2112;
-        v143 = v139;
+        v143 = accountPersistentID2;
         v144 = 2114;
-        v145 = v12;
+        v145 = accountPersistentID;
         _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_DEFAULT, "Source's 'accountPersistentID' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
       }
 
@@ -688,7 +688,7 @@ LABEL_87:
       goto LABEL_90;
     }
 
-    if (v139)
+    if (accountPersistentID2)
     {
       goto LABEL_87;
     }
@@ -696,17 +696,17 @@ LABEL_87:
 
 LABEL_90:
   v129 = v54;
-  v130 = v52;
-  v69 = [v7 supportsSharedCalendars];
-  v70 = [v10 supportsSharedCalendars];
-  if (v69 != v70)
+  v130 = constraintsDescriptionPath;
+  supportsSharedCalendars = [sourceCopy supportsSharedCalendars];
+  supportsSharedCalendars2 = [v10 supportsSharedCalendars];
+  if (supportsSharedCalendars != supportsSharedCalendars2)
   {
-    v71 = v70;
-    [v7 setSupportsSharedCalendars:v70];
+    v71 = supportsSharedCalendars2;
+    [sourceCopy setSupportsSharedCalendars:supportsSharedCalendars2];
     v72 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
     {
-      if (v69)
+      if (supportsSharedCalendars)
       {
         v73 = @"YES";
       }
@@ -733,21 +733,21 @@ LABEL_90:
       v142 = 2112;
       v143 = v76;
       v144 = 2114;
-      v145 = v12;
+      v145 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_DEFAULT, "Source's 'supportsSharedCalendars' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
 
     v11 = 1;
   }
 
-  v77 = [v7 allowsTasks];
-  v78 = [v10 allowsTasks];
-  if (![v10 isBirthdayStore] && v77 != v78)
+  allowsTasks = [sourceCopy allowsTasks];
+  allowsTasks2 = [v10 allowsTasks];
+  if (![v10 isBirthdayStore] && allowsTasks != allowsTasks2)
   {
     v79 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
     {
-      if (v77)
+      if (allowsTasks)
       {
         v80 = @"YES";
       }
@@ -758,7 +758,7 @@ LABEL_90:
       }
 
       v81 = v80;
-      if (v78)
+      if (allowsTasks2)
       {
         v82 = @"YES";
       }
@@ -774,11 +774,11 @@ LABEL_90:
       v142 = 2112;
       v143 = v83;
       v144 = 2114;
-      v145 = v12;
+      v145 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEFAULT, "Source's 'allowsTasks' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
 
-    if ((v78 & 1) == 0)
+    if ((allowsTasks2 & 1) == 0)
     {
       v84 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v84, OS_LOG_TYPE_ERROR))
@@ -787,18 +787,18 @@ LABEL_90:
       }
     }
 
-    [v7 setAllowsTasks:v78];
+    [sourceCopy setAllowsTasks:allowsTasks2];
     v11 = 1;
   }
 
-  v85 = [v7 allowsEvents];
-  v86 = [v10 allowsEvents];
-  if (![v10 isBirthdayStore] && v85 != v86)
+  allowsEvents = [sourceCopy allowsEvents];
+  allowsEvents2 = [v10 allowsEvents];
+  if (![v10 isBirthdayStore] && allowsEvents != allowsEvents2)
   {
     v87 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
     {
-      if (v85)
+      if (allowsEvents)
       {
         v88 = @"YES";
       }
@@ -809,7 +809,7 @@ LABEL_90:
       }
 
       v89 = v88;
-      if (v86)
+      if (allowsEvents2)
       {
         v90 = @"YES";
       }
@@ -825,11 +825,11 @@ LABEL_90:
       v142 = 2112;
       v143 = v91;
       v144 = 2114;
-      v145 = v12;
+      v145 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v87, OS_LOG_TYPE_DEFAULT, "Source's 'allowsEvents' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
 
-    if ((v86 & 1) == 0)
+    if ((allowsEvents2 & 1) == 0)
     {
       v92 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v92, OS_LOG_TYPE_ERROR))
@@ -838,20 +838,20 @@ LABEL_90:
       }
     }
 
-    [v7 setAllowsEvents:v86];
+    [sourceCopy setAllowsEvents:allowsEvents2];
     v11 = 1;
   }
 
-  v93 = [v7 allowsCalendarAddDeleteModify];
-  v94 = [v10 allowsCalendarAddDeleteModify];
-  if (v93 != v94)
+  allowsCalendarAddDeleteModify = [sourceCopy allowsCalendarAddDeleteModify];
+  allowsCalendarAddDeleteModify2 = [v10 allowsCalendarAddDeleteModify];
+  if (allowsCalendarAddDeleteModify != allowsCalendarAddDeleteModify2)
   {
-    v95 = v94;
-    [v7 setAllowsCalendarAddDeleteModify:v94];
+    v95 = allowsCalendarAddDeleteModify2;
+    [sourceCopy setAllowsCalendarAddDeleteModify:allowsCalendarAddDeleteModify2];
     v96 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
     {
-      if (v93)
+      if (allowsCalendarAddDeleteModify)
       {
         v97 = @"YES";
       }
@@ -878,23 +878,23 @@ LABEL_90:
       v142 = 2112;
       v143 = v100;
       v144 = 2114;
-      v145 = v12;
+      v145 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v96, OS_LOG_TYPE_DEFAULT, "Source's 'allowsCalendarAddDeleteModify' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
 
     v11 = 1;
   }
 
-  v101 = [v7 onlyCreatorCanModify];
-  v102 = [v10 onlyCreatorCanModify];
-  if (v101 != v102)
+  onlyCreatorCanModify = [sourceCopy onlyCreatorCanModify];
+  onlyCreatorCanModify2 = [v10 onlyCreatorCanModify];
+  if (onlyCreatorCanModify != onlyCreatorCanModify2)
   {
-    v103 = v102;
-    [v7 setOnlyCreatorCanModify:v102];
+    v103 = onlyCreatorCanModify2;
+    [sourceCopy setOnlyCreatorCanModify:onlyCreatorCanModify2];
     v104 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v104, OS_LOG_TYPE_DEFAULT))
     {
-      if (v101)
+      if (onlyCreatorCanModify)
       {
         v105 = @"YES";
       }
@@ -921,23 +921,23 @@ LABEL_90:
       v142 = 2112;
       v143 = v108;
       v144 = 2114;
-      v145 = v12;
+      v145 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v104, OS_LOG_TYPE_DEFAULT, "Source's 'onlyCreatorCanModify' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
 
     v11 = 1;
   }
 
-  v109 = [v7 snoozeAlarmRequiresDetach];
-  v110 = [v10 snoozeAlarmRequiresDetach];
-  if (v109 != v110)
+  snoozeAlarmRequiresDetach = [sourceCopy snoozeAlarmRequiresDetach];
+  snoozeAlarmRequiresDetach2 = [v10 snoozeAlarmRequiresDetach];
+  if (snoozeAlarmRequiresDetach != snoozeAlarmRequiresDetach2)
   {
-    v111 = v110;
-    [v7 setSnoozeAlarmRequiresDetach:v110];
+    v111 = snoozeAlarmRequiresDetach2;
+    [sourceCopy setSnoozeAlarmRequiresDetach:snoozeAlarmRequiresDetach2];
     v112 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v112, OS_LOG_TYPE_DEFAULT))
     {
-      if (v109)
+      if (snoozeAlarmRequiresDetach)
       {
         v113 = @"YES";
       }
@@ -964,23 +964,23 @@ LABEL_90:
       v142 = 2112;
       v143 = v116;
       v144 = 2114;
-      v145 = v12;
+      v145 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v112, OS_LOG_TYPE_DEFAULT, "Source's 'snoozeAlarmRequiresDetach' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
 
     v11 = 1;
   }
 
-  v117 = [v7 supportsAlarmAcknowledgedDate];
-  v118 = [v10 supportsAlarmAcknowledgedDate];
-  if (v117 != v118)
+  supportsAlarmAcknowledgedDate = [sourceCopy supportsAlarmAcknowledgedDate];
+  supportsAlarmAcknowledgedDate2 = [v10 supportsAlarmAcknowledgedDate];
+  if (supportsAlarmAcknowledgedDate != supportsAlarmAcknowledgedDate2)
   {
-    v119 = v118;
-    [v7 setSupportsAlarmAcknowledgedDate:v118];
+    v119 = supportsAlarmAcknowledgedDate2;
+    [sourceCopy setSupportsAlarmAcknowledgedDate:supportsAlarmAcknowledgedDate2];
     v120 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v120, OS_LOG_TYPE_DEFAULT))
     {
-      if (v117)
+      if (supportsAlarmAcknowledgedDate)
       {
         v121 = @"YES";
       }
@@ -1007,7 +1007,7 @@ LABEL_90:
       v142 = 2112;
       v143 = v124;
       v144 = 2114;
-      v145 = v12;
+      v145 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v120, OS_LOG_TYPE_DEFAULT, "Source's 'supportsAlarmAcknowledgedDate' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
 
@@ -1018,98 +1018,98 @@ LABEL_90:
   if (os_log_type_enabled(v125, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v141 = v12;
+    v141 = accountPersistentID;
     _os_log_impl(&_mh_execute_header, v125, OS_LOG_TYPE_DEFAULT, "Completed configuration of source with persistent ID: [%{public}@].", buf, 0xCu);
   }
 
-  v8 = v135;
+  storeCopy = v135;
 LABEL_173:
 
   return v11;
 }
 
-- (NEKSourceAttributes)initWithAccount:(id)a3
+- (NEKSourceAttributes)initWithAccount:(id)account
 {
-  v4 = a3;
-  if (v4)
+  accountCopy = account;
+  if (accountCopy)
   {
     v16.receiver = self;
     v16.super_class = NEKSourceAttributes;
     v5 = [(NEKSourceAttributes *)&v16 init];
     if (v5)
     {
-      v6 = [v4 name];
-      [(NEKSourceAttributes *)v5 setName:v6];
+      name = [accountCopy name];
+      [(NEKSourceAttributes *)v5 setName:name];
 
       [(NEKSourceAttributes *)v5 setDefaultAlarmOffset:0];
-      -[NEKSourceAttributes setType:](v5, "setType:", sub_100037290([v4 type]));
+      -[NEKSourceAttributes setType:](v5, "setType:", sub_100037290([accountCopy type]));
       [(NEKSourceAttributes *)v5 setIsEnabled:1];
       [(NEKSourceAttributes *)v5 setIsFacebook:0];
       [(NEKSourceAttributes *)v5 setUsesSelfAttendee:0];
-      v7 = [v4 daConstraintsDescriptionPath];
-      v8 = sub_100037310(v7);
+      daConstraintsDescriptionPath = [accountCopy daConstraintsDescriptionPath];
+      v8 = sub_100037310(daConstraintsDescriptionPath);
       [(NEKSourceAttributes *)v5 setConstraintsDescriptionPath:v8];
 
-      v9 = [v4 externalIdentifier];
-      [(NEKSourceAttributes *)v5 setExternalID:v9];
+      externalIdentifier = [accountCopy externalIdentifier];
+      [(NEKSourceAttributes *)v5 setExternalID:externalIdentifier];
 
-      v10 = [v4 externalModificationTag];
-      [(NEKSourceAttributes *)v5 setExternalModificationTag:v10];
+      externalModificationTag = [accountCopy externalModificationTag];
+      [(NEKSourceAttributes *)v5 setExternalModificationTag:externalModificationTag];
 
       [(NEKSourceAttributes *)v5 setCreatorBundleID:0];
       [(NEKSourceAttributes *)v5 setCreatorCodeSigningIdentity:0];
-      v11 = [v4 objectID];
-      v12 = [v11 uuid];
-      v13 = [v12 UUIDString];
-      [(NEKSourceAttributes *)v5 setAccountPersistentID:v13];
+      objectID = [accountCopy objectID];
+      uuid = [objectID uuid];
+      uUIDString = [uuid UUIDString];
+      [(NEKSourceAttributes *)v5 setAccountPersistentID:uUIDString];
 
-      -[NEKSourceAttributes setSupportsSharedCalendars:](v5, "setSupportsSharedCalendars:", [v4 daSupportsSharedCalendars]);
-      -[NEKSourceAttributes setAllowsTasks:](v5, "setAllowsTasks:", [v4 inactive] ^ 1);
+      -[NEKSourceAttributes setSupportsSharedCalendars:](v5, "setSupportsSharedCalendars:", [accountCopy daSupportsSharedCalendars]);
+      -[NEKSourceAttributes setAllowsTasks:](v5, "setAllowsTasks:", [accountCopy inactive] ^ 1);
       [(NEKSourceAttributes *)v5 setAllowsEvents:0];
       [(NEKSourceAttributes *)v5 setAllowsCalendarAddDeleteModify:1];
       [(NEKSourceAttributes *)v5 setOnlyCreatorCanModify:0];
       [(NEKSourceAttributes *)v5 setSnoozeAlarmRequiresDetach:0];
       [(NEKSourceAttributes *)v5 setSupportsAlarmAcknowledgedDate:0];
-      -[NEKSourceAttributes setIsLocalStore:](v5, "setIsLocalStore:", [v4 type] == 1);
+      -[NEKSourceAttributes setIsLocalStore:](v5, "setIsLocalStore:", [accountCopy type] == 1);
       [(NEKSourceAttributes *)v5 setIsBirthdayStore:0];
     }
 
     self = v5;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-+ (void)createAccountWithSaveRequest:(id)a3 withAttributes:(id)a4
++ (void)createAccountWithSaveRequest:(id)request withAttributes:(id)attributes
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 type];
-  if (v8 > 2)
+  attributesCopy = attributes;
+  requestCopy = request;
+  type = [attributesCopy type];
+  if (type > 2)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = qword_1000A27A8[v8];
+    v9 = qword_1000A27A8[type];
   }
 
-  v10 = [v6 name];
-  v11 = [v6 accountPersistentID];
-  v12 = [[NSUUID alloc] initWithUUIDString:v11];
+  name = [attributesCopy name];
+  accountPersistentID = [attributesCopy accountPersistentID];
+  v12 = [[NSUUID alloc] initWithUUIDString:accountPersistentID];
   if (!v12)
   {
     v13 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
-      sub_100072110(v11, v13);
+      sub_100072110(accountPersistentID, v13);
     }
   }
 
@@ -1124,19 +1124,19 @@ LABEL_173:
     v26 = 2112;
     v27 = v17;
     v28 = 2112;
-    v29 = v10;
+    v29 = name;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Creating REMAccount with id:%{public}@ type:%@ name:%@", buf, 0x20u);
   }
 
-  [v7 _addAccountWithType:v9 name:v10 accountObjectID:v14];
+  [requestCopy _addAccountWithType:v9 name:name accountObjectID:v14];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1000376E8;
   v18 = v22[3] = &unk_1000B56A0;
   v23 = v18;
-  [a1 configureAccount:0 accountChangeItemProvider:v22 withAttributes:v6];
+  [self configureAccount:0 accountChangeItemProvider:v22 withAttributes:attributesCopy];
   v21 = 0;
-  [v7 saveSynchronouslyWithError:&v21];
+  [requestCopy saveSynchronouslyWithError:&v21];
 
   v19 = v21;
   if (v19)
@@ -1144,71 +1144,71 @@ LABEL_173:
     v20 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      sub_10007219C(v11, v20);
+      sub_10007219C(accountPersistentID, v20);
     }
   }
 }
 
-+ (BOOL)configureAccount:(id)a3 withSaveRequest:(id)a4 withAttributes:(id)a5
++ (BOOL)configureAccount:(id)account withSaveRequest:(id)request withAttributes:(id)attributes
 {
-  v8 = a3;
+  accountCopy = account;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000377C4;
   v12[3] = &unk_1000B56C8;
-  v13 = a4;
-  v14 = v8;
-  v9 = v8;
-  v10 = v13;
-  LOBYTE(a5) = [a1 configureAccount:v9 accountChangeItemProvider:v12 withAttributes:a5];
+  requestCopy = request;
+  v14 = accountCopy;
+  v9 = accountCopy;
+  v10 = requestCopy;
+  LOBYTE(attributes) = [self configureAccount:v9 accountChangeItemProvider:v12 withAttributes:attributes];
 
-  return a5;
+  return attributes;
 }
 
-+ (BOOL)configureAccount:(id)a3 accountChangeItemProvider:(id)a4 withAttributes:(id)a5
++ (BOOL)configureAccount:(id)account accountChangeItemProvider:(id)provider withAttributes:(id)attributes
 {
-  v7 = a3;
-  v94 = a4;
-  v8 = a5;
-  v97 = [v8 accountPersistentID];
+  accountCopy = account;
+  providerCopy = provider;
+  attributesCopy = attributes;
+  accountPersistentID = [attributesCopy accountPersistentID];
   v9 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v99 = v97;
+    v99 = accountPersistentID;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Starting configuration of source with persistent ID: [%{public}@].", buf, 0xCu);
   }
 
-  v10 = [v7 name];
-  v11 = [v8 name];
-  v12 = v11;
+  name = [accountCopy name];
+  name2 = [attributesCopy name];
+  v12 = name2;
   v13 = &stru_1000B7928;
-  if (v11)
+  if (name2)
   {
-    v13 = v11;
+    v13 = name2;
   }
 
   v96 = v13;
 
-  v95 = v10;
-  if (v10 && ([(__CFString *)v10 isEqualToString:v96]& 1) != 0)
+  v95 = name;
+  if (name && ([(__CFString *)name isEqualToString:v96]& 1) != 0)
   {
     v86 = 0;
   }
 
   else
   {
-    if ([v7 type] == 1)
+    if ([accountCopy type] == 1)
     {
       v14 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v99 = v10;
+        v99 = name;
         v100 = 2112;
         v101 = v96;
         v102 = 2114;
-        v103 = v97;
+        v103 = accountPersistentID;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Local source's 'name' has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
       }
 
@@ -1217,7 +1217,7 @@ LABEL_173:
 
     else
     {
-      v15 = v94[2]();
+      v15 = providerCopy[2]();
 
       v86 = v15;
       [v15 setName:v96];
@@ -1225,18 +1225,18 @@ LABEL_173:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v99 = v10;
+        v99 = name;
         v100 = 2112;
         v101 = v96;
         v102 = 2114;
-        v103 = v97;
+        v103 = accountPersistentID;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Source's 'name' has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
       }
     }
   }
 
-  v16 = [v8 defaultAlarmOffset];
-  if (v16)
+  defaultAlarmOffset = [attributesCopy defaultAlarmOffset];
+  if (defaultAlarmOffset)
   {
     v17 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1244,18 +1244,18 @@ LABEL_173:
       *buf = 138412802;
       v99 = 0;
       v100 = 2112;
-      v101 = v16;
+      v101 = defaultAlarmOffset;
       v102 = 2114;
-      v103 = v97;
+      v103 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Source's 'defaultAlarmOffset' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
   }
 
-  v18 = sub_100037290([v7 type]);
-  v19 = [v8 type];
-  if (v18 != v19)
+  v18 = sub_100037290([accountCopy type]);
+  type = [attributesCopy type];
+  if (v18 != type)
   {
-    v20 = v19;
+    v20 = type;
     v21 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
@@ -1266,12 +1266,12 @@ LABEL_173:
       v100 = 2112;
       v101 = v23;
       v102 = 2114;
-      v103 = v97;
+      v103 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Source's 'type' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
   }
 
-  if (([v8 isEnabled] & 1) == 0)
+  if (([attributesCopy isEnabled] & 1) == 0)
   {
     v24 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -1281,12 +1281,12 @@ LABEL_173:
       v100 = 2112;
       v101 = @"NO";
       v102 = 2114;
-      v103 = v97;
+      v103 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Source's 'enabled' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
   }
 
-  if ([v8 isFacebook])
+  if ([attributesCopy isFacebook])
   {
     v25 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -1298,12 +1298,12 @@ LABEL_173:
       v102 = 2112;
       v103 = @"YES";
       v104 = 2114;
-      v105 = v97;
+      v105 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Source's '%@' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x2Au);
     }
   }
 
-  if ([v8 usesSelfAttendee])
+  if ([attributesCopy usesSelfAttendee])
   {
     v26 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -1313,25 +1313,25 @@ LABEL_173:
       v100 = 2112;
       v101 = @"YES";
       v102 = 2114;
-      v103 = v97;
+      v103 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Source's 'usesSelfAttendee' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
   }
 
-  v27 = [v7 daConstraintsDescriptionPath];
-  v28 = sub_100037310(v27);
+  daConstraintsDescriptionPath = [accountCopy daConstraintsDescriptionPath];
+  v28 = sub_100037310(daConstraintsDescriptionPath);
 
-  v29 = [v8 constraintsDescriptionPath];
-  v30 = v29;
+  constraintsDescriptionPath = [attributesCopy constraintsDescriptionPath];
+  v30 = constraintsDescriptionPath;
   if (v28)
   {
-    if (([(__CFString *)v28 isEqualToString:v29]& 1) != 0)
+    if (([(__CFString *)v28 isEqualToString:constraintsDescriptionPath]& 1) != 0)
     {
       goto LABEL_42;
     }
   }
 
-  else if (!v29)
+  else if (!constraintsDescriptionPath)
   {
     goto LABEL_42;
   }
@@ -1344,23 +1344,23 @@ LABEL_173:
     v100 = 2112;
     v101 = v30;
     v102 = 2114;
-    v103 = v97;
+    v103 = accountPersistentID;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Source's 'constraintsDescriptionPath' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
   }
 
 LABEL_42:
-  v32 = [v7 externalIdentifier];
-  v33 = [v8 externalID];
-  v91 = v33;
-  if (v32)
+  externalIdentifier = [accountCopy externalIdentifier];
+  externalID = [attributesCopy externalID];
+  v91 = externalID;
+  if (externalIdentifier)
   {
-    if (([(__CFString *)v32 isEqualToString:v33]& 1) != 0)
+    if (([(__CFString *)externalIdentifier isEqualToString:externalID]& 1) != 0)
     {
       goto LABEL_49;
     }
   }
 
-  else if (!v33)
+  else if (!externalID)
   {
     goto LABEL_49;
   }
@@ -1369,28 +1369,28 @@ LABEL_42:
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v99 = v32;
+    v99 = externalIdentifier;
     v100 = 2112;
     v101 = v91;
     v102 = 2114;
-    v103 = v97;
+    v103 = accountPersistentID;
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Source's 'externalID' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
   }
 
 LABEL_49:
-  v35 = [v7 externalModificationTag];
-  v36 = [v8 externalModificationTag];
-  v89 = v36;
-  v90 = v35;
-  if (v35)
+  externalModificationTag = [accountCopy externalModificationTag];
+  externalModificationTag2 = [attributesCopy externalModificationTag];
+  v89 = externalModificationTag2;
+  v90 = externalModificationTag;
+  if (externalModificationTag)
   {
-    if (([(__CFString *)v35 isEqualToString:v36]& 1) != 0)
+    if (([(__CFString *)externalModificationTag isEqualToString:externalModificationTag2]& 1) != 0)
     {
       goto LABEL_56;
     }
   }
 
-  else if (!v36)
+  else if (!externalModificationTag2)
   {
     goto LABEL_56;
   }
@@ -1403,13 +1403,13 @@ LABEL_49:
     v100 = 2112;
     v101 = v89;
     v102 = 2114;
-    v103 = v97;
+    v103 = accountPersistentID;
     _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Source's 'externalModificationTag' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
   }
 
 LABEL_56:
-  v93 = [v8 creatorBundleID];
-  if (v93)
+  creatorBundleID = [attributesCopy creatorBundleID];
+  if (creatorBundleID)
   {
     v38 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -1417,16 +1417,16 @@ LABEL_56:
       *buf = 138412802;
       v99 = 0;
       v100 = 2112;
-      v101 = v93;
+      v101 = creatorBundleID;
       v102 = 2114;
-      v103 = v97;
+      v103 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Source's 'creatorBundleID' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
   }
 
-  v39 = v16;
-  v92 = [v8 creatorCodeSigningIdentity];
-  if (v92)
+  v39 = defaultAlarmOffset;
+  creatorCodeSigningIdentity = [attributesCopy creatorCodeSigningIdentity];
+  if (creatorCodeSigningIdentity)
   {
     v40 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -1434,24 +1434,24 @@ LABEL_56:
       *buf = 138412802;
       v99 = 0;
       v100 = 2112;
-      v101 = v92;
+      v101 = creatorCodeSigningIdentity;
       v102 = 2114;
-      v103 = v97;
+      v103 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Source's 'creatorCodeSigningIdentity' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
   }
 
-  v85 = v32;
-  v41 = [v7 objectID];
-  v42 = [v41 uuid];
-  v43 = [v42 UUIDString];
+  v85 = externalIdentifier;
+  objectID = [accountCopy objectID];
+  uuid = [objectID uuid];
+  uUIDString = [uuid UUIDString];
 
-  v44 = v43;
-  v45 = [v8 accountPersistentID];
-  v88 = v45;
-  if (v43)
+  v44 = uUIDString;
+  accountPersistentID2 = [attributesCopy accountPersistentID];
+  v88 = accountPersistentID2;
+  if (uUIDString)
   {
-    v46 = [(__CFString *)v43 isEqualToString:v45];
+    v46 = [(__CFString *)uUIDString isEqualToString:accountPersistentID2];
     v47 = v39;
     v48 = v30;
     if (v46)
@@ -1464,7 +1464,7 @@ LABEL_56:
   {
     v47 = v39;
     v48 = v30;
-    if (!v45)
+    if (!accountPersistentID2)
     {
       goto LABEL_71;
     }
@@ -1478,21 +1478,21 @@ LABEL_56:
     v100 = 2112;
     v101 = v88;
     v102 = 2114;
-    v103 = v97;
+    v103 = accountPersistentID;
     _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Source's 'accountPersistentID' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
   }
 
 LABEL_71:
   v84 = v44;
-  v50 = [v7 daSupportsSharedCalendars];
-  v51 = [v8 supportsSharedCalendars];
-  if (v50 != v51)
+  daSupportsSharedCalendars = [accountCopy daSupportsSharedCalendars];
+  supportsSharedCalendars = [attributesCopy supportsSharedCalendars];
+  if (daSupportsSharedCalendars != supportsSharedCalendars)
   {
-    v52 = v51;
+    v52 = supportsSharedCalendars;
     v53 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
     {
-      if (v50)
+      if (daSupportsSharedCalendars)
       {
         v54 = @"YES";
       }
@@ -1519,23 +1519,23 @@ LABEL_71:
       v100 = 2112;
       v101 = v57;
       v102 = 2114;
-      v103 = v97;
+      v103 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Source's 'supportsSharedCalendars' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
   }
 
-  v58 = [v7 inactive];
-  v59 = [v8 allowsTasks];
-  if (v58 == v59)
+  inactive = [accountCopy inactive];
+  allowsTasks = [attributesCopy allowsTasks];
+  if (inactive == allowsTasks)
   {
-    v61 = v59;
+    v61 = allowsTasks;
     v83 = v48;
     v62 = v28;
     v63 = v47;
     v64 = v86;
     if (!v86)
     {
-      v64 = v94[2]();
+      v64 = providerCopy[2]();
     }
 
     v65 = v64;
@@ -1543,7 +1543,7 @@ LABEL_71:
     v66 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
     {
-      if (v58)
+      if (inactive)
       {
         v78 = @"NO";
       }
@@ -1572,11 +1572,11 @@ LABEL_71:
       v101 = v81;
       v82 = v81;
       v102 = 2114;
-      v103 = v97;
+      v103 = accountPersistentID;
       _os_log_error_impl(&_mh_execute_header, v66, OS_LOG_TYPE_ERROR, "UNSUPPORTED: Source's 'allowsTasks' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
 
-    if ([v7 type] == 1)
+    if ([accountCopy type] == 1)
     {
       v67 = *(qword_1000D18A8 + 8);
       v68 = v61 ^ 1;
@@ -1603,7 +1603,7 @@ LABEL_71:
       if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v99 = v97;
+        v99 = accountPersistentID;
         _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEFAULT, "Deleting account with identifier %{public}@.", buf, 0xCu);
       }
 
@@ -1621,11 +1621,11 @@ LABEL_71:
     v60 = v86;
   }
 
-  if ([v8 allowsEvents])
+  if ([attributesCopy allowsEvents])
   {
     if (!v60)
     {
-      v60 = v94[2]();
+      v60 = providerCopy[2]();
     }
 
     v60 = v60;
@@ -1633,11 +1633,11 @@ LABEL_71:
     v71 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
     {
-      sub_100072214(v97, v71);
+      sub_100072214(accountPersistentID, v71);
     }
   }
 
-  if (([v8 allowsCalendarAddDeleteModify] & 1) == 0)
+  if (([attributesCopy allowsCalendarAddDeleteModify] & 1) == 0)
   {
     v72 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
@@ -1647,12 +1647,12 @@ LABEL_71:
       v100 = 2112;
       v101 = @"NO";
       v102 = 2114;
-      v103 = v97;
+      v103 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Source's 'allowsCalendarAddDeleteModify' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
   }
 
-  if ([v8 onlyCreatorCanModify])
+  if ([attributesCopy onlyCreatorCanModify])
   {
     v73 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
@@ -1662,12 +1662,12 @@ LABEL_71:
       v100 = 2112;
       v101 = @"YES";
       v102 = 2114;
-      v103 = v97;
+      v103 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v73, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Source's 'onlyCreatorCanModify' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
   }
 
-  if ([v8 snoozeAlarmRequiresDetach])
+  if ([attributesCopy snoozeAlarmRequiresDetach])
   {
     v74 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
@@ -1677,12 +1677,12 @@ LABEL_71:
       v100 = 2112;
       v101 = @"YES";
       v102 = 2114;
-      v103 = v97;
+      v103 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Source's 'snoozeAlarmRequiresDetach' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
   }
 
-  if ([v8 supportsAlarmAcknowledgedDate])
+  if ([attributesCopy supportsAlarmAcknowledgedDate])
   {
     v75 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
@@ -1692,7 +1692,7 @@ LABEL_71:
       v100 = 2112;
       v101 = @"YES";
       v102 = 2114;
-      v103 = v97;
+      v103 = accountPersistentID;
       _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_DEFAULT, "UNSUPPORTED: Source's 'supportsAlarmAcknowledgedDate' property has changed from [%@] to [%@].  Source's persistent ID: [%{public}@]", buf, 0x20u);
     }
   }
@@ -1701,7 +1701,7 @@ LABEL_71:
   if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v99 = v97;
+    v99 = accountPersistentID;
     _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_DEFAULT, "Completed configuration of source with persistent ID: [%{public}@].", buf, 0xCu);
   }
 
@@ -1712,33 +1712,33 @@ LABEL_71:
 {
   v3 = objc_opt_new();
   [v3 appendFormat:@"<NEKSourceAttributes (%p)\n", self];
-  v4 = [(NEKSourceAttributes *)self name];
-  [v3 appendFormat:@"  name: %@\n", v4];
+  name = [(NEKSourceAttributes *)self name];
+  [v3 appendFormat:@"  name: %@\n", name];
 
-  v5 = [(NEKSourceAttributes *)self defaultAlarmOffset];
-  [v3 appendFormat:@"  defaultAlarmOffset: %@\n", v5];
+  defaultAlarmOffset = [(NEKSourceAttributes *)self defaultAlarmOffset];
+  [v3 appendFormat:@"  defaultAlarmOffset: %@\n", defaultAlarmOffset];
 
   [v3 appendFormat:@"  type: %d\n", -[NEKSourceAttributes type](self, "type")];
   [v3 appendFormat:@"  isEnabled: %d\n", -[NEKSourceAttributes isEnabled](self, "isEnabled")];
   [v3 appendFormat:@"  isFacebook: %d\n", -[NEKSourceAttributes isFacebook](self, "isFacebook")];
   [v3 appendFormat:@"  usesSelfAttendee: %d\n", -[NEKSourceAttributes usesSelfAttendee](self, "usesSelfAttendee")];
-  v6 = [(NEKSourceAttributes *)self constraintsDescriptionPath];
-  [v3 appendFormat:@"  constraintsDescriptionPath: %@\n", v6];
+  constraintsDescriptionPath = [(NEKSourceAttributes *)self constraintsDescriptionPath];
+  [v3 appendFormat:@"  constraintsDescriptionPath: %@\n", constraintsDescriptionPath];
 
-  v7 = [(NEKSourceAttributes *)self externalID];
-  [v3 appendFormat:@"  externalID: %@\n", v7];
+  externalID = [(NEKSourceAttributes *)self externalID];
+  [v3 appendFormat:@"  externalID: %@\n", externalID];
 
-  v8 = [(NEKSourceAttributes *)self externalModificationTag];
-  [v3 appendFormat:@"  externalModificationTag: %@\n", v8];
+  externalModificationTag = [(NEKSourceAttributes *)self externalModificationTag];
+  [v3 appendFormat:@"  externalModificationTag: %@\n", externalModificationTag];
 
-  v9 = [(NEKSourceAttributes *)self creatorBundleID];
-  [v3 appendFormat:@"  creatorBundleID: %@\n", v9];
+  creatorBundleID = [(NEKSourceAttributes *)self creatorBundleID];
+  [v3 appendFormat:@"  creatorBundleID: %@\n", creatorBundleID];
 
-  v10 = [(NEKSourceAttributes *)self creatorCodeSigningIdentity];
-  [v3 appendFormat:@"  creatorCodeSigningIdentity: %@\n", v10];
+  creatorCodeSigningIdentity = [(NEKSourceAttributes *)self creatorCodeSigningIdentity];
+  [v3 appendFormat:@"  creatorCodeSigningIdentity: %@\n", creatorCodeSigningIdentity];
 
-  v11 = [(NEKSourceAttributes *)self accountPersistentID];
-  [v3 appendFormat:@"  accountPersistentID: %@\n", v11];
+  accountPersistentID = [(NEKSourceAttributes *)self accountPersistentID];
+  [v3 appendFormat:@"  accountPersistentID: %@\n", accountPersistentID];
 
   [v3 appendFormat:@"  supportsSharedCalendars: %d\n", -[NEKSourceAttributes supportsSharedCalendars](self, "supportsSharedCalendars")];
   [v3 appendFormat:@"  allowsTasks: %d\n", -[NEKSourceAttributes allowsTasks](self, "allowsTasks")];

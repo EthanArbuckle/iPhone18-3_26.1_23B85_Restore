@@ -1,55 +1,55 @@
 @interface INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasBucketedDeviceMotionState:(BOOL)a3;
-- (void)setHasClientHourOfDay:(BOOL)a3;
-- (void)setHasClientLanguage:(BOOL)a3;
-- (void)setHasClientLocale:(BOOL)a3;
-- (void)setHasClientRegion:(BOOL)a3;
-- (void)setHasDeviceClass:(BOOL)a3;
-- (void)setHasDeviceMotionState:(BOOL)a3;
-- (void)setHasIntentType:(BOOL)a3;
-- (void)setHasNowPlayingState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasBucketedDeviceMotionState:(BOOL)state;
+- (void)setHasClientHourOfDay:(BOOL)day;
+- (void)setHasClientLanguage:(BOOL)language;
+- (void)setHasClientLocale:(BOOL)locale;
+- (void)setHasClientRegion:(BOOL)region;
+- (void)setHasDeviceClass:(BOOL)class;
+- (void)setHasDeviceMotionState:(BOOL)state;
+- (void)setHasIntentType:(BOOL)type;
+- (void)setHasNowPlayingState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals
 
-- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals;
   v5 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isDeviceLockStatus"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isDeviceLockStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals setIsDeviceLockStatus:](v5, "setIsDeviceLockStatus:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"deviceMotionState"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"deviceMotionState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals setDeviceMotionState:](v5, "setDeviceMotionState:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"intentType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"intentType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals setIntentType:](v5, "setIntentType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"nowPlayingState"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"nowPlayingState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,21 +57,21 @@
     }
 
     v19 = v9;
-    v10 = [v4 objectForKeyedSubscript:@"deviceClass"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"deviceClass"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals setDeviceClass:](v5, "setDeviceClass:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"clientHourOfDay"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"clientHourOfDay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals setClientHourOfDay:](v5, "setClientHourOfDay:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"clientLocale"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"clientLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,7 +80,7 @@
 
     v20 = v8;
     v21 = v6;
-    v13 = [v4 objectForKeyedSubscript:@"clientLanguage"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"clientLanguage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,14 +88,14 @@
     }
 
     v14 = v7;
-    v15 = [v4 objectForKeyedSubscript:@"clientRegion"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"clientRegion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals setClientRegion:](v5, "setClientRegion:", [v15 longLongValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"bucketedDeviceMotionState"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"bucketedDeviceMotionState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -108,30 +108,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -144,12 +144,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x200) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals bucketedDeviceMotionState](self, "bucketedDeviceMotionState")}];
-    [v3 setObject:v7 forKeyedSubscript:@"bucketedDeviceMotionState"];
+    [dictionary setObject:v7 forKeyedSubscript:@"bucketedDeviceMotionState"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -170,7 +170,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals clientHourOfDay](self, "clientHourOfDay")}];
-  [v3 setObject:v8 forKeyedSubscript:@"clientHourOfDay"];
+  [dictionary setObject:v8 forKeyedSubscript:@"clientHourOfDay"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -186,7 +186,7 @@ LABEL_4:
 
 LABEL_17:
   v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals clientLanguage](self, "clientLanguage")}];
-  [v3 setObject:v9 forKeyedSubscript:@"clientLanguage"];
+  [dictionary setObject:v9 forKeyedSubscript:@"clientLanguage"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -202,7 +202,7 @@ LABEL_5:
 
 LABEL_18:
   v10 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals clientLocale](self, "clientLocale")}];
-  [v3 setObject:v10 forKeyedSubscript:@"clientLocale"];
+  [dictionary setObject:v10 forKeyedSubscript:@"clientLocale"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -218,7 +218,7 @@ LABEL_6:
 
 LABEL_19:
   v11 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals clientRegion](self, "clientRegion")}];
-  [v3 setObject:v11 forKeyedSubscript:@"clientRegion"];
+  [dictionary setObject:v11 forKeyedSubscript:@"clientRegion"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -234,7 +234,7 @@ LABEL_7:
 
 LABEL_20:
   v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals deviceClass](self, "deviceClass")}];
-  [v3 setObject:v12 forKeyedSubscript:@"deviceClass"];
+  [dictionary setObject:v12 forKeyedSubscript:@"deviceClass"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -250,7 +250,7 @@ LABEL_8:
 
 LABEL_21:
   v13 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals deviceMotionState](self, "deviceMotionState")}];
-  [v3 setObject:v13 forKeyedSubscript:@"deviceMotionState"];
+  [dictionary setObject:v13 forKeyedSubscript:@"deviceMotionState"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -266,7 +266,7 @@ LABEL_9:
 
 LABEL_22:
   v14 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals intentType](self, "intentType")}];
-  [v3 setObject:v14 forKeyedSubscript:@"intentType"];
+  [dictionary setObject:v14 forKeyedSubscript:@"intentType"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -282,19 +282,19 @@ LABEL_10:
 
 LABEL_23:
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals isDeviceLockStatus](self, "isDeviceLockStatus")}];
-  [v3 setObject:v15 forKeyedSubscript:@"isDeviceLockStatus"];
+  [dictionary setObject:v15 forKeyedSubscript:@"isDeviceLockStatus"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
     v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppIndependentSignals nowPlayingState](self, "nowPlayingState")}];
-    [v3 setObject:v5 forKeyedSubscript:@"nowPlayingState"];
+    [dictionary setObject:v5 forKeyedSubscript:@"nowPlayingState"];
   }
 
 LABEL_12:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -436,16 +436,16 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
   has = self->_has;
-  v6 = v4[30];
+  v6 = equalCopy[30];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_42;
@@ -454,13 +454,13 @@ LABEL_11:
   if (*&has)
   {
     isDeviceLockStatus = self->_isDeviceLockStatus;
-    if (isDeviceLockStatus != [v4 isDeviceLockStatus])
+    if (isDeviceLockStatus != [equalCopy isDeviceLockStatus])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[30];
+    v6 = equalCopy[30];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -472,13 +472,13 @@ LABEL_11:
   if (v8)
   {
     deviceMotionState = self->_deviceMotionState;
-    if (deviceMotionState != [v4 deviceMotionState])
+    if (deviceMotionState != [equalCopy deviceMotionState])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[30];
+    v6 = equalCopy[30];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -490,13 +490,13 @@ LABEL_11:
   if (v10)
   {
     intentType = self->_intentType;
-    if (intentType != [v4 intentType])
+    if (intentType != [equalCopy intentType])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[30];
+    v6 = equalCopy[30];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -508,13 +508,13 @@ LABEL_11:
   if (v12)
   {
     nowPlayingState = self->_nowPlayingState;
-    if (nowPlayingState != [v4 nowPlayingState])
+    if (nowPlayingState != [equalCopy nowPlayingState])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[30];
+    v6 = equalCopy[30];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -526,13 +526,13 @@ LABEL_11:
   if (v14)
   {
     deviceClass = self->_deviceClass;
-    if (deviceClass != [v4 deviceClass])
+    if (deviceClass != [equalCopy deviceClass])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[30];
+    v6 = equalCopy[30];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -544,13 +544,13 @@ LABEL_11:
   if (v16)
   {
     clientHourOfDay = self->_clientHourOfDay;
-    if (clientHourOfDay != [v4 clientHourOfDay])
+    if (clientHourOfDay != [equalCopy clientHourOfDay])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[30];
+    v6 = equalCopy[30];
   }
 
   v18 = (*&has >> 6) & 1;
@@ -562,13 +562,13 @@ LABEL_11:
   if (v18)
   {
     clientLocale = self->_clientLocale;
-    if (clientLocale != [v4 clientLocale])
+    if (clientLocale != [equalCopy clientLocale])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[30];
+    v6 = equalCopy[30];
   }
 
   v20 = (*&has >> 7) & 1;
@@ -580,13 +580,13 @@ LABEL_11:
   if (v20)
   {
     clientLanguage = self->_clientLanguage;
-    if (clientLanguage != [v4 clientLanguage])
+    if (clientLanguage != [equalCopy clientLanguage])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[30];
+    v6 = equalCopy[30];
   }
 
   v22 = (*&has >> 8) & 1;
@@ -598,10 +598,10 @@ LABEL_11:
   if (v22)
   {
     clientRegion = self->_clientRegion;
-    if (clientRegion == [v4 clientRegion])
+    if (clientRegion == [equalCopy clientRegion])
     {
       has = self->_has;
-      v6 = v4[30];
+      v6 = equalCopy[30];
       goto LABEL_38;
     }
 
@@ -620,7 +620,7 @@ LABEL_38:
   if (v24)
   {
     bucketedDeviceMotionState = self->_bucketedDeviceMotionState;
-    if (bucketedDeviceMotionState != [v4 bucketedDeviceMotionState])
+    if (bucketedDeviceMotionState != [equalCopy bucketedDeviceMotionState])
     {
       goto LABEL_42;
     }
@@ -632,9 +632,9 @@ LABEL_43:
   return v26;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -765,9 +765,9 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)setHasBucketedDeviceMotionState:(BOOL)a3
+- (void)setHasBucketedDeviceMotionState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 512;
   }
@@ -780,9 +780,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasClientRegion:(BOOL)a3
+- (void)setHasClientRegion:(BOOL)region
 {
-  if (a3)
+  if (region)
   {
     v3 = 256;
   }
@@ -795,9 +795,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasClientLanguage:(BOOL)a3
+- (void)setHasClientLanguage:(BOOL)language
 {
-  if (a3)
+  if (language)
   {
     v3 = 128;
   }
@@ -810,9 +810,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasClientLocale:(BOOL)a3
+- (void)setHasClientLocale:(BOOL)locale
 {
-  if (a3)
+  if (locale)
   {
     v3 = 64;
   }
@@ -825,9 +825,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasClientHourOfDay:(BOOL)a3
+- (void)setHasClientHourOfDay:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 32;
   }
@@ -840,9 +840,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasDeviceClass:(BOOL)a3
+- (void)setHasDeviceClass:(BOOL)class
 {
-  if (a3)
+  if (class)
   {
     v3 = 16;
   }
@@ -855,9 +855,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasNowPlayingState:(BOOL)a3
+- (void)setHasNowPlayingState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 8;
   }
@@ -870,9 +870,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasIntentType:(BOOL)a3
+- (void)setHasIntentType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -885,9 +885,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasDeviceMotionState:(BOOL)a3
+- (void)setHasDeviceMotionState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }

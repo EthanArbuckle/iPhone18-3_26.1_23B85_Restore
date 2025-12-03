@@ -1,16 +1,16 @@
 @interface CalendarPickerTableViewCell
-- (_TtC16HealthMobilityUI27CalendarPickerTableViewCell)initWithCoder:(id)a3;
-- (_TtC16HealthMobilityUI27CalendarPickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)pickerDateChanged:(id)a3;
+- (_TtC16HealthMobilityUI27CalendarPickerTableViewCell)initWithCoder:(id)coder;
+- (_TtC16HealthMobilityUI27CalendarPickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)pickerDateChanged:(id)changed;
 @end
 
 @implementation CalendarPickerTableViewCell
 
-- (_TtC16HealthMobilityUI27CalendarPickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC16HealthMobilityUI27CalendarPickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_2519AEE38();
+    identifier = sub_2519AEE38();
     v6 = v5;
   }
 
@@ -19,10 +19,10 @@
     v6 = 0;
   }
 
-  return sub_25199D2E4(a3, a4, v6);
+  return sub_25199D2E4(style, identifier, v6);
 }
 
-- (_TtC16HealthMobilityUI27CalendarPickerTableViewCell)initWithCoder:(id)a3
+- (_TtC16HealthMobilityUI27CalendarPickerTableViewCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC16HealthMobilityUI27CalendarPickerTableViewCell_item;
   *v3 = 0u;
@@ -34,11 +34,11 @@
   return result;
 }
 
-- (void)pickerDateChanged:(id)a3
+- (void)pickerDateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_25199D4F4(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_25199D4F4(changedCopy);
 }
 
 @end

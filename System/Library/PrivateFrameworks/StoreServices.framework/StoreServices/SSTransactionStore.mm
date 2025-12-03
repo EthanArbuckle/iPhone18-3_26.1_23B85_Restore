@@ -1,8 +1,8 @@
 @interface SSTransactionStore
 + (id)defaultStore;
 - (SSTransactionStore)init;
-- (void)releaseKeepAliveWithTransactionID:(id)a3;
-- (void)takeKeepAliveWithTransactionID:(id)a3;
+- (void)releaseKeepAliveWithTransactionID:(id)d;
+- (void)takeKeepAliveWithTransactionID:(id)d;
 @end
 
 @implementation SSTransactionStore
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = __34__SSTransactionStore_defaultStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultStore_onceToken != -1)
   {
     dispatch_once(&defaultStore_onceToken, block);
@@ -55,17 +55,17 @@ void __34__SSTransactionStore_defaultStore__block_invoke()
   defaultStore_transactionStore = v0;
 }
 
-- (void)takeKeepAliveWithTransactionID:(id)a3
+- (void)takeKeepAliveWithTransactionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__SSTransactionStore_takeKeepAliveWithTransactionID___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -178,9 +178,9 @@ LABEL_13:
 LABEL_27:
 }
 
-- (void)releaseKeepAliveWithTransactionID:(id)a3
+- (void)releaseKeepAliveWithTransactionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = dispatch_time(0, 15000000000);
   dispatchQueue = self->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -188,8 +188,8 @@ LABEL_27:
   v8[2] = __56__SSTransactionStore_releaseKeepAliveWithTransactionID___block_invoke;
   v8[3] = &unk_1E84AC028;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = dCopy;
+  v7 = dCopy;
   dispatch_after(v5, dispatchQueue, v8);
 }
 

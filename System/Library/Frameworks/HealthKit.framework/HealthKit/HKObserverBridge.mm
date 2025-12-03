@@ -1,11 +1,11 @@
 @interface HKObserverBridge
-- (BOOL)notifyObserversOfChangeForKey:(id)a3 newValue:(id)a4;
+- (BOOL)notifyObserversOfChangeForKey:(id)key newValue:(id)value;
 - (HKObserverBridge)init;
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4;
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle;
 - (void)dealloc;
-- (void)registerObserver:(id)a3 forKey:(id)a4 newValueHandler:(id)a5;
-- (void)unregisterBridgedObserver:(id)a3 forKey:(id)a4;
-- (void)unregisterObserver:(id)a3 forKey:(id)a4;
+- (void)registerObserver:(id)observer forKey:(id)key newValueHandler:(id)handler;
+- (void)unregisterBridgedObserver:(id)observer forKey:(id)key;
+- (void)unregisterObserver:(id)observer forKey:(id)key;
 @end
 
 @implementation HKObserverBridge
@@ -17,13 +17,13 @@
   v2 = [(HKObserverBridge *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     observerBlocksByKeyByObserver = v2->_observerBlocksByKeyByObserver;
-    v2->_observerBlocksByKeyByObserver = v3;
+    v2->_observerBlocksByKeyByObserver = weakToStrongObjectsMapTable;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     observersByKey = v2->_observersByKey;
-    v2->_observersByKey = v5;
+    v2->_observersByKey = dictionary;
 
     v2->_lock._os_unfair_lock_opaque = 0;
   }
@@ -55,8 +55,8 @@
 
         v8 = *(*(&v13 + 1) + 8 * i);
         v9 = [(NSMutableDictionary *)self->_observersByKey objectForKeyedSubscript:v8];
-        v10 = [v9 bridgedObserver];
-        [(HKObserverBridge *)self unregisterBridgedObserver:v10 forKey:v8];
+        bridgedObserver = [v9 bridgedObserver];
+        [(HKObserverBridge *)self unregisterBridgedObserver:bridgedObserver forKey:v8];
       }
 
       v5 = [(NSMutableDictionary *)v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -71,14 +71,14 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerObserver:(id)a3 forKey:(id)a4 newValueHandler:(id)a5
+- (void)registerObserver:(id)observer forKey:(id)key newValueHandler:(id)handler
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  observerCopy = observer;
+  keyCopy = key;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  v11 = [(NSMutableDictionary *)self->_observersByKey objectForKeyedSubscript:v9];
+  v11 = [(NSMutableDictionary *)self->_observersByKey objectForKeyedSubscript:keyCopy];
 
   if (!v11)
   {
@@ -94,7 +94,7 @@
         *buf = 138543618;
         v42 = objc_opt_class();
         v43 = 2114;
-        v44 = v9;
+        v44 = keyCopy;
         v15 = v42;
         _os_log_impl(&dword_19197B000, v14, OS_LOG_TYPE_INFO, "[%{public}@] Beginning observation for key %{public}@", buf, 0x16u);
       }
@@ -102,55 +102,55 @@
 
     v16 = [[HKObserverBridgeHandle alloc] initWithBridge:self];
     v17 = objc_alloc_init(_HKBridgedObserverSet);
-    v18 = [(HKObserverBridge *)self makeAndRegisterBridgedObserverForKey:v9 handle:v16];
+    v18 = [(HKObserverBridge *)self makeAndRegisterBridgedObserverForKey:keyCopy handle:v16];
     [(_HKBridgedObserverSet *)v17 setBridgedObserver:v18];
 
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", objc_opt_class(), v9];
+    keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", objc_opt_class(), keyCopy];
     v20 = [HKObserverSet alloc];
     v21 = HKLogInfrastructure();
-    v22 = [(HKObserverSet *)v20 initWithName:v19 loggingCategory:v21];
+    v22 = [(HKObserverSet *)v20 initWithName:keyCopy loggingCategory:v21];
     [(_HKBridgedObserverSet *)v17 setObservers:v22];
 
-    [(NSMutableDictionary *)self->_observersByKey setObject:v17 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->_observersByKey setObject:v17 forKeyedSubscript:keyCopy];
   }
 
   v23 = objc_alloc_init(_HKObservationBlock);
-  objc_initWeak(buf, v8);
+  objc_initWeak(buf, observerCopy);
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __60__HKObserverBridge_registerObserver_forKey_newValueHandler___block_invoke;
   v38[3] = &unk_1E737F880;
   objc_copyWeak(&v40, buf);
-  v24 = v10;
+  v24 = handlerCopy;
   v39 = v24;
   [(_HKObservationBlock *)v23 setNewValueHandler:v38];
-  v25 = [(NSMutableDictionary *)self->_observersByKey objectForKeyedSubscript:v9];
-  v26 = [v25 observers];
-  [v26 registerObserver:v23];
+  v25 = [(NSMutableDictionary *)self->_observersByKey objectForKeyedSubscript:keyCopy];
+  observers = [v25 observers];
+  [observers registerObserver:v23];
 
-  v27 = [(NSMapTable *)self->_observerBlocksByKeyByObserver objectForKey:v8];
+  v27 = [(NSMapTable *)self->_observerBlocksByKeyByObserver objectForKey:observerCopy];
   LODWORD(v25) = v27 == 0;
 
   if (v25)
   {
     observerBlocksByKeyByObserver = self->_observerBlocksByKeyByObserver;
-    v29 = [MEMORY[0x1E695DF90] dictionary];
-    [(NSMapTable *)observerBlocksByKeyByObserver setObject:v29 forKey:v8];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(NSMapTable *)observerBlocksByKeyByObserver setObject:dictionary forKey:observerCopy];
   }
 
-  v30 = [(NSMapTable *)self->_observerBlocksByKeyByObserver objectForKey:v8];
-  v31 = [v30 objectForKeyedSubscript:v9];
+  v30 = [(NSMapTable *)self->_observerBlocksByKeyByObserver objectForKey:observerCopy];
+  v31 = [v30 objectForKeyedSubscript:keyCopy];
   v32 = v31 == 0;
 
   if (v32)
   {
-    v33 = [MEMORY[0x1E695DF70] array];
-    v34 = [(NSMapTable *)self->_observerBlocksByKeyByObserver objectForKey:v8];
-    [v34 setObject:v33 forKeyedSubscript:v9];
+    array = [MEMORY[0x1E695DF70] array];
+    v34 = [(NSMapTable *)self->_observerBlocksByKeyByObserver objectForKey:observerCopy];
+    [v34 setObject:array forKeyedSubscript:keyCopy];
   }
 
-  v35 = [(NSMapTable *)self->_observerBlocksByKeyByObserver objectForKey:v8];
-  v36 = [v35 objectForKeyedSubscript:v9];
+  v35 = [(NSMapTable *)self->_observerBlocksByKeyByObserver objectForKey:observerCopy];
+  v36 = [v35 objectForKeyedSubscript:keyCopy];
   [v36 addObject:v23];
 
   os_unfair_lock_unlock(&self->_lock);
@@ -170,16 +170,16 @@ void __60__HKObserverBridge_registerObserver_forKey_newValueHandler___block_invo
   }
 }
 
-- (void)unregisterObserver:(id)a3 forKey:(id)a4
+- (void)unregisterObserver:(id)observer forKey:(id)key
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMapTable *)self->_observerBlocksByKeyByObserver objectForKey:v6];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  v8 = [(NSMapTable *)self->_observerBlocksByKeyByObserver objectForKey:observerCopy];
+  v9 = [v8 objectForKeyedSubscript:keyCopy];
 
-  v10 = [(NSMutableDictionary *)self->_observersByKey objectForKeyedSubscript:v7];
+  v10 = [(NSMutableDictionary *)self->_observersByKey objectForKeyedSubscript:keyCopy];
   v11 = v10;
   if (v9)
   {
@@ -193,9 +193,9 @@ void __60__HKObserverBridge_registerObserver_forKey_newValueHandler___block_invo
 
   if (!v12)
   {
-    v22 = v6;
-    v13 = [(NSMapTable *)self->_observerBlocksByKeyByObserver objectForKey:v6];
-    [v13 removeObjectForKey:v7];
+    v22 = observerCopy;
+    v13 = [(NSMapTable *)self->_observerBlocksByKeyByObserver objectForKey:observerCopy];
+    [v13 removeObjectForKey:keyCopy];
 
     v29 = 0u;
     v30 = 0u;
@@ -219,15 +219,15 @@ void __60__HKObserverBridge_registerObserver_forKey_newValueHandler___block_invo
           }
 
           v18 = *(*(&v27 + 1) + 8 * v17);
-          v19 = [v11 observers];
+          observers = [v11 observers];
           v24[0] = MEMORY[0x1E69E9820];
           v24[1] = 3221225472;
           v24[2] = __46__HKObserverBridge_unregisterObserver_forKey___block_invoke;
           v24[3] = &unk_1E7376640;
           v24[4] = self;
-          v25 = v7;
+          v25 = keyCopy;
           v26 = v11;
-          [v19 unregisterObserver:v18 runIfLastObserver:v24];
+          [observers unregisterObserver:v18 runIfLastObserver:v24];
 
           ++v17;
         }
@@ -240,7 +240,7 @@ void __60__HKObserverBridge_registerObserver_forKey_newValueHandler___block_invo
     }
 
     v9 = v21;
-    v6 = v22;
+    observerCopy = v22;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -280,11 +280,11 @@ void __46__HKObserverBridge_unregisterObserver_forKey___block_invoke(uint64_t a1
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)notifyObserversOfChangeForKey:(id)a3 newValue:(id)a4
+- (BOOL)notifyObserversOfChangeForKey:(id)key newValue:(id)value
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   _HKInitializeLogging();
   v8 = HKLogInfrastructure();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
@@ -297,21 +297,21 @@ void __46__HKObserverBridge_unregisterObserver_forKey___block_invoke(uint64_t a1
       *buf = 138543618;
       v27 = objc_opt_class();
       v28 = 2114;
-      v29 = v6;
+      v29 = keyCopy;
       v11 = v27;
       _os_log_impl(&dword_19197B000, v10, OS_LOG_TYPE_INFO, "[%{public}@] Observed change to %{public}@", buf, 0x16u);
     }
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v12 = [(NSMutableDictionary *)self->_observersByKey objectForKeyedSubscript:v6];
-  v13 = [v12 observers];
+  v12 = [(NSMutableDictionary *)self->_observersByKey objectForKeyedSubscript:keyCopy];
+  observers = [v12 observers];
 
   os_unfair_lock_unlock(&self->_lock);
   _HKInitializeLogging();
   v14 = HKLogInfrastructure();
   v15 = v14;
-  if (v13)
+  if (observers)
   {
     v16 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
 
@@ -323,13 +323,13 @@ void __46__HKObserverBridge_unregisterObserver_forKey___block_invoke(uint64_t a1
         v18 = objc_opt_class();
         v19 = MEMORY[0x1E696AD98];
         v20 = v18;
-        v21 = [v19 numberWithUnsignedInteger:{objc_msgSend(v13, "count")}];
+        v21 = [v19 numberWithUnsignedInteger:{objc_msgSend(observers, "count")}];
         *buf = 138543874;
         v27 = v18;
         v28 = 2114;
         v29 = v21;
         v30 = 2114;
-        v31 = v6;
+        v31 = keyCopy;
         _os_log_impl(&dword_19197B000, v17, OS_LOG_TYPE_INFO, "[%{public}@] Notifying %{public}@ observers of key %{public}@", buf, 0x20u);
       }
     }
@@ -338,18 +338,18 @@ void __46__HKObserverBridge_unregisterObserver_forKey___block_invoke(uint64_t a1
     v24[1] = 3221225472;
     v24[2] = __59__HKObserverBridge_notifyObserversOfChangeForKey_newValue___block_invoke;
     v24[3] = &unk_1E737F8A8;
-    v25 = v7;
-    [v13 notifyObservers:v24];
+    v25 = valueCopy;
+    [observers notifyObservers:v24];
     v15 = v25;
   }
 
   else if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    [(HKObserverBridge *)self notifyObserversOfChangeForKey:v6 newValue:v15];
+    [(HKObserverBridge *)self notifyObserversOfChangeForKey:keyCopy newValue:v15];
   }
 
   v22 = *MEMORY[0x1E69E9840];
-  return v13 != 0;
+  return observers != 0;
 }
 
 void __59__HKObserverBridge_notifyObserversOfChangeForKey_newValue___block_invoke(uint64_t a1, void *a2)
@@ -358,14 +358,14 @@ void __59__HKObserverBridge_notifyObserversOfChangeForKey_newValue___block_invok
   v3[2](v3, *(a1 + 32));
 }
 
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (void)unregisterBridgedObserver:(id)a3 forKey:(id)a4
+- (void)unregisterBridgedObserver:(id)observer forKey:(id)key
 {
   objc_opt_class();
 

@@ -1,38 +1,38 @@
 @interface SBHLibraryCategoryMapProvider
 + (NSString)cacheDirectory;
 + (id)baseFilePath;
-+ (id)categoryMapCacheFilePathForVersion:(id)a3 source:(id)a4;
-+ (id)categoryMapFromURL:(id)a3 error:(id *)a4;
-+ (unint64_t)derivedOptionsFromArrayOfRequests:(id)a3;
-+ (void)clearCachesForReason:(id)a3;
-- (BOOL)_workQueue_updateLibraryCategoryMap:(id)a3 withSessionId:(unint64_t)a4 shouldPersist:(BOOL)a5 reason:(id)a6;
-- (BOOL)forbidApplicationIdentifier:(id)a3;
++ (id)categoryMapCacheFilePathForVersion:(id)version source:(id)source;
++ (id)categoryMapFromURL:(id)l error:(id *)error;
++ (unint64_t)derivedOptionsFromArrayOfRequests:(id)requests;
++ (void)clearCachesForReason:(id)reason;
+- (BOOL)_workQueue_updateLibraryCategoryMap:(id)map withSessionId:(unint64_t)id shouldPersist:(BOOL)persist reason:(id)reason;
+- (BOOL)forbidApplicationIdentifier:(id)identifier;
 - (BOOL)hasCachedLibraryCategoryMapOnFileSystem;
-- (BOOL)overrideCategoryMapForTestingAtURL:(id)a3 error:(id *)a4;
-- (BOOL)unforbidApplicationIdentifier:(id)a3;
+- (BOOL)overrideCategoryMapForTestingAtURL:(id)l error:(id *)error;
+- (BOOL)unforbidApplicationIdentifier:(id)identifier;
 - (SBHLibraryCategoryMap)libraryCategoryMap;
-- (SBHLibraryCategoryMapProvider)initWithSource:(id)a3;
+- (SBHLibraryCategoryMapProvider)initWithSource:(id)source;
 - (id)_copyOfObservers;
-- (id)requestLibraryCategoryMapRefreshWithOptions:(unint64_t)a3 reason:(id)a4;
+- (id)requestLibraryCategoryMapRefreshWithOptions:(unint64_t)options reason:(id)reason;
 - (unint64_t)_nextSessionIdentifier;
-- (void)_callbackQueue_notifyObserverCategoryMapWasRefreshedWithOptions:(unint64_t)a3 refreshedCategoryMap:(id)a4;
-- (void)_callbackQueue_notifyObserversBeginningRefreshSession:(int64_t)a3 requests:(id)a4;
+- (void)_callbackQueue_notifyObserverCategoryMapWasRefreshedWithOptions:(unint64_t)options refreshedCategoryMap:(id)map;
+- (void)_callbackQueue_notifyObserversBeginningRefreshSession:(int64_t)session requests:(id)requests;
 - (void)_callbackQueue_notifyObserversCategoryMapDidntNeedRefresh;
-- (void)_callbackQueue_notifyObserversCategoryMapRefreshFailedWithError:(id)a3;
-- (void)_callbackQueue_notifyObserversFinishedRefreshSession:(int64_t)a3 requests:(id)a4;
-- (void)_callbackQueue_notifyObserversWillReEnqueueFailedRequests:(id)a3;
-- (void)_callbackQueue_notifyObserversWillRefresh:(int64_t)a3 options:(unint64_t)a4;
-- (void)_callbackQueue_notifyObserversWillSunsetFailedRequests:(id)a3;
+- (void)_callbackQueue_notifyObserversCategoryMapRefreshFailedWithError:(id)error;
+- (void)_callbackQueue_notifyObserversFinishedRefreshSession:(int64_t)session requests:(id)requests;
+- (void)_callbackQueue_notifyObserversWillReEnqueueFailedRequests:(id)requests;
+- (void)_callbackQueue_notifyObserversWillRefresh:(int64_t)refresh options:(unint64_t)options;
+- (void)_callbackQueue_notifyObserversWillSunsetFailedRequests:(id)requests;
 - (void)_kickoffInitialHydration;
 - (void)_setupClearCacheNotification;
 - (void)_setupLocaleNotification;
 - (void)_workQueue_performNextRequest;
-- (void)_workQueue_queueUpNextRequests:(id)a3 runNow:(BOOL)a4;
+- (void)_workQueue_queueUpNextRequests:(id)requests runNow:(BOOL)now;
 - (void)_workQueue_scheduleRefreshIfNotScheduled;
-- (void)addObserver:(id)a3;
-- (void)overrideCategoryMapForTesting:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)requestLibraryCategoryMapUpdateWithRefreshOptions:(unint64_t)a3 source:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)overrideCategoryMapForTesting:(id)testing;
+- (void)removeObserver:(id)observer;
+- (void)requestLibraryCategoryMapUpdateWithRefreshOptions:(unint64_t)options source:(id)source;
 - (void)resetForbiddenApplicationIdentifiers;
 @end
 
@@ -92,10 +92,10 @@ void __62__SBHLibraryCategoryMapProvider__workQueue_performNextRequest__block_in
     v4 = [(NSMutableArray *)self->_pendingRefreshRequests copy];
     if ([v4 count])
     {
-      v5 = self;
-      objc_sync_enter(v5);
-      isCategoryMapOverriddenForTesting = v5->_isCategoryMapOverriddenForTesting;
-      objc_sync_exit(v5);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      isCategoryMapOverriddenForTesting = selfCopy->_isCategoryMapOverriddenForTesting;
+      objc_sync_exit(selfCopy);
 
       if (isCategoryMapOverriddenForTesting)
       {
@@ -113,19 +113,19 @@ void __62__SBHLibraryCategoryMapProvider__workQueue_performNextRequest__block_in
         [(NSMutableArray *)self->_pendingRefreshRequests removeAllObjects];
         objc_storeStrong(&self->_inflightRefreshRequests, v4);
         v9 = [objc_opt_class() derivedOptionsFromArrayOfRequests:v4];
-        v10 = [(SBHLibraryCategoryMapProvider *)v5 hasCachedLibraryCategoryMapOnFileSystem];
+        hasCachedLibraryCategoryMapOnFileSystem = [(SBHLibraryCategoryMapProvider *)selfCopy hasCachedLibraryCategoryMapOnFileSystem];
         v11 = v9 | 0x10;
-        if (v10)
+        if (hasCachedLibraryCategoryMapOnFileSystem)
         {
           v11 = v9;
         }
 
         v40 = v11;
-        v12 = [(SBHLibraryCategoryMapProvider *)v5 _nextSessionIdentifier];
-        v38 = [(SBHLibraryCategoryMapProvider *)v5 libraryCategoryMap];
+        _nextSessionIdentifier = [(SBHLibraryCategoryMapProvider *)selfCopy _nextSessionIdentifier];
+        libraryCategoryMap = [(SBHLibraryCategoryMapProvider *)selfCopy libraryCategoryMap];
         v13 = self->_workQueue;
-        v14 = v5->_callbackQueue;
-        objc_initWeak(location, v5);
+        v14 = selfCopy->_callbackQueue;
+        objc_initWeak(location, selfCopy);
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __62__SBHLibraryCategoryMapProvider__workQueue_performNextRequest__block_invoke;
@@ -135,7 +135,7 @@ void __62__SBHLibraryCategoryMapProvider__workQueue_performNextRequest__block_in
         objc_copyWeak(v67, location);
         v16 = v14;
         v65 = v16;
-        v67[1] = v12;
+        v67[1] = _nextSessionIdentifier;
         v17 = v4;
         v66 = v17;
         v67[2] = *&Current;
@@ -149,7 +149,7 @@ void __62__SBHLibraryCategoryMapProvider__workQueue_performNextRequest__block_in
         objc_copyWeak(v62, location);
         v35 = v36;
         v58 = v35;
-        v62[1] = v12;
+        v62[1] = _nextSessionIdentifier;
         v20 = v17;
         v59 = v20;
         v21 = v16;
@@ -164,8 +164,8 @@ void __62__SBHLibraryCategoryMapProvider__workQueue_performNextRequest__block_in
         v23 = v19;
         v51 = v23;
         objc_copyWeak(v55, location);
-        v55[1] = v12;
-        v39 = v38;
+        v55[1] = _nextSessionIdentifier;
+        v39 = libraryCategoryMap;
         v52 = v39;
         v24 = v21;
         v53 = v24;
@@ -178,14 +178,14 @@ void __62__SBHLibraryCategoryMapProvider__workQueue_performNextRequest__block_in
         block[2] = __62__SBHLibraryCategoryMapProvider__workQueue_performNextRequest__block_invoke_2_161;
         block[3] = &unk_1E808C6A0;
         objc_copyWeak(v49, location);
-        v49[1] = v12;
+        v49[1] = _nextSessionIdentifier;
         v26 = v20;
         v48 = v26;
         v49[2] = v40;
         v34 = v24;
         dispatch_async(v24, block);
-        libraryCategoryMapProviderSource = v5->_libraryCategoryMapProviderSource;
-        forbiddenApplicationIdentifiers = v5->_forbiddenApplicationIdentifiers;
+        libraryCategoryMapProviderSource = selfCopy->_libraryCategoryMapProviderSource;
+        forbiddenApplicationIdentifiers = selfCopy->_forbiddenApplicationIdentifiers;
         workQueue = self->_workQueue;
         v41[0] = MEMORY[0x1E69E9820];
         v41[1] = 3221225472;
@@ -196,10 +196,10 @@ void __62__SBHLibraryCategoryMapProvider__workQueue_performNextRequest__block_in
         v30 = v37;
         v44 = v30;
         v43 = v26;
-        v46 = v12;
+        v46 = _nextSessionIdentifier;
         v31 = v25;
         v45 = v31;
-        [(SBHLibraryCategoryMapProviderSource *)libraryCategoryMapProviderSource requestLibraryCategoryMapWithOptions:v40 existingLibraryCategoryMap:v39 forbiddenApplicationIdentifiers:forbiddenApplicationIdentifiers sessionId:v12 queue:workQueue completion:v41];
+        [(SBHLibraryCategoryMapProviderSource *)libraryCategoryMapProviderSource requestLibraryCategoryMapWithOptions:v40 existingLibraryCategoryMap:v39 forbiddenApplicationIdentifiers:forbiddenApplicationIdentifiers sessionId:_nextSessionIdentifier queue:workQueue completion:v41];
 
         objc_destroyWeak(v49);
         objc_destroyWeak(v55);
@@ -216,29 +216,29 @@ void __62__SBHLibraryCategoryMapProvider__workQueue_performNextRequest__block_in
 
 - (BOOL)hasCachedLibraryCategoryMapOnFileSystem
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  LOBYTE(self) = [v3 fileExistsAtPath:self->_cacheFilePath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  LOBYTE(self) = [defaultManager fileExistsAtPath:self->_cacheFilePath];
 
   return self;
 }
 
 - (unint64_t)_nextSessionIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_sessionIdentifier + 1;
-  v2->_sessionIdentifier = v3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_sessionIdentifier + 1;
+  selfCopy->_sessionIdentifier = v3;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (SBHLibraryCategoryMap)libraryCategoryMap
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_libraryCategoryMap;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_libraryCategoryMap;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -251,8 +251,8 @@ void __62__SBHLibraryCategoryMapProvider__workQueue_performNextRequest__block_in
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(SBHLibraryCategoryMapProvider *)self _copyOfObservers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _copyOfObservers = [(SBHLibraryCategoryMapProvider *)self _copyOfObservers];
+  v4 = [_copyOfObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -264,7 +264,7 @@ void __62__SBHLibraryCategoryMapProvider__workQueue_performNextRequest__block_in
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_copyOfObservers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -277,7 +277,7 @@ void __62__SBHLibraryCategoryMapProvider__workQueue_performNextRequest__block_in
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [_copyOfObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -558,23 +558,23 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)clearCachesForReason:(id)a3
++ (void)clearCachesForReason:(id)reason
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   os_unfair_lock_lock(&__lock);
   v5 = SBLogProactiveAppLibrary();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = reasonCopy;
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "Marking SBHLibraryCategoryMapProvider caches are needing to be wiped for reason: %@", buf, 0xCu);
   }
 
-  v6 = [a1 cacheDirectory];
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  cacheDirectory = [self cacheDirectory];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v13 = 0;
-  [v7 removeItemAtPath:v6 error:&v13];
+  [defaultManager removeItemAtPath:cacheDirectory error:&v13];
   v8 = v13;
 
   v9 = SBLogProactiveAppLibrary();
@@ -593,8 +593,8 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
     _os_log_impl(&dword_1BEB18000, v10, OS_LOG_TYPE_DEFAULT, "Success in deleting app library cache.", buf, 2u);
   }
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 postNotificationName:@"SBHLibraryCategoryMapProviderCachesWereClearedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SBHLibraryCategoryMapProviderCachesWereClearedNotification" object:0];
 
   v12 = SBLogProactiveAppLibrary();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -606,22 +606,22 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
   os_unfair_lock_unlock(&__lock);
 }
 
-+ (unint64_t)derivedOptionsFromArrayOfRequests:(id)a3
++ (unint64_t)derivedOptionsFromArrayOfRequests:(id)requests
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count] > 1)
+  requestsCopy = requests;
+  if ([requestsCopy count] > 1)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = v3;
-    v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    firstObject = requestsCopy;
+    v6 = [firstObject countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
-      v5 = 0;
+      options = 0;
       v8 = *v12;
       do
       {
@@ -629,13 +629,13 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(firstObject);
           }
 
-          v5 |= [*(*(&v11 + 1) + 8 * i) options] & 0xF;
+          options |= [*(*(&v11 + 1) + 8 * i) options] & 0xF;
         }
 
-        v7 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [firstObject countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -643,36 +643,36 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
 
     else
     {
-      v5 = 0;
+      options = 0;
     }
   }
 
   else
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 options];
+    firstObject = [requestsCopy firstObject];
+    options = [firstObject options];
   }
 
-  return v5;
+  return options;
 }
 
-+ (id)categoryMapFromURL:(id)a3 error:(id *)a4
++ (id)categoryMapFromURL:(id)l error:(id *)error
 {
   v5 = MEMORY[0x1E695DFD8];
-  v6 = a3;
+  lCopy = l;
   v7 = [v5 setWithObjects:{objc_opt_class(), 0}];
   v14 = 0;
-  v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v6 options:1 error:&v14];
+  v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:lCopy options:1 error:&v14];
 
   v9 = v14;
   v10 = v9;
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       v11 = v9;
       v12 = 0;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -683,22 +683,22 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
 
   else
   {
-    v12 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v7 fromData:v8 error:a4];
+    v12 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v7 fromData:v8 error:error];
   }
 
   return v12;
 }
 
-- (SBHLibraryCategoryMapProvider)initWithSource:(id)a3
+- (SBHLibraryCategoryMapProvider)initWithSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v21.receiver = self;
   v21.super_class = SBHLibraryCategoryMapProvider;
   v6 = [(SBHLibraryCategoryMapProvider *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_libraryCategoryMapProviderSource, a3);
+    objc_storeStrong(&v6->_libraryCategoryMapProviderSource, source);
     [(SBHLibraryCategoryMapProviderSource *)v7->_libraryCategoryMapProviderSource setDelegate:v7];
     v7->_workQueueCoalescingInterval = 1.0;
     SerialWithQoS = BSDispatchQueueCreateSerialWithQoS();
@@ -711,8 +711,8 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
 
     objc_storeStrong(&v7->_callbackQueue, MEMORY[0x1E69E96A0]);
     v12 = objc_opt_class();
-    v13 = [v5 sourceName];
-    v14 = [v12 categoryMapCacheFilePathForVersion:@"6" source:v13];
+    sourceName = [sourceCopy sourceName];
+    v14 = [v12 categoryMapCacheFilePathForVersion:@"6" source:sourceName];
     cacheFilePath = v7->_cacheFilePath;
     v7->_cacheFilePath = v14;
 
@@ -720,9 +720,9 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
     pendingRefreshRequests = v7->_pendingRefreshRequests;
     v7->_pendingRefreshRequests = v16;
 
-    v18 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v18;
+    v7->_observers = weakObjectsHashTable;
 
     [(SBHLibraryCategoryMapProvider *)v7 _setupLocaleNotification];
     [(SBHLibraryCategoryMapProvider *)v7 _setupClearCacheNotification];
@@ -744,57 +744,57 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
 
 + (id)baseFilePath
 {
-  v2 = [a1 cacheDirectory];
+  cacheDirectory = [self cacheDirectory];
   v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.springboardhome.categorymapcache."];
-  v4 = [v2 stringByAppendingPathComponent:v3];
+  v4 = [cacheDirectory stringByAppendingPathComponent:v3];
 
   return v4;
 }
 
-+ (id)categoryMapCacheFilePathForVersion:(id)a3 source:(id)a4
++ (id)categoryMapCacheFilePathForVersion:(id)version source:(id)source
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 baseFilePath];
-  v9 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  v10 = [v9 localeIdentifier];
+  sourceCopy = source;
+  versionCopy = version;
+  baseFilePath = [self baseFilePath];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  localeIdentifier = [autoupdatingCurrentLocale localeIdentifier];
 
-  v11 = [v8 stringByAppendingFormat:@"%@.%@.%@", v10, v6, v7];
+  versionCopy = [baseFilePath stringByAppendingFormat:@"%@.%@.%@", localeIdentifier, sourceCopy, versionCopy];
 
-  v12 = [v11 stringByAppendingPathExtension:@"plist"];
+  v12 = [versionCopy stringByAppendingPathExtension:@"plist"];
 
   return v12;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_observers addObject:v5];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_observers removeObject:v5];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)_callbackQueue_notifyObserverCategoryMapWasRefreshedWithOptions:(unint64_t)a3 refreshedCategoryMap:(id)a4
+- (void)_callbackQueue_notifyObserverCategoryMapWasRefreshedWithOptions:(unint64_t)options refreshedCategoryMap:(id)map
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  mapCopy = map;
   BSDispatchQueueAssert();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(SBHLibraryCategoryMapProvider *)self _copyOfObservers];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _copyOfObservers = [(SBHLibraryCategoryMapProvider *)self _copyOfObservers];
+  v8 = [_copyOfObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -806,37 +806,37 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_copyOfObservers);
         }
 
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 libraryCategoryMapProvider:self categoryMapWasRefreshed:a3 libraryCategoryMap:{v6, v13}];
+          [v12 libraryCategoryMapProvider:self categoryMapWasRefreshed:options libraryCategoryMap:{mapCopy, v13}];
         }
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [_copyOfObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_callbackQueue_notifyObserversCategoryMapRefreshFailedWithError:(id)a3
+- (void)_callbackQueue_notifyObserversCategoryMapRefreshFailedWithError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   BSDispatchQueueAssert();
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(SBHLibraryCategoryMapProvider *)self _copyOfObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _copyOfObservers = [(SBHLibraryCategoryMapProvider *)self _copyOfObservers];
+  v6 = [_copyOfObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -848,27 +848,27 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_copyOfObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 libraryCategoryMapProvider:self failedToRefreshWithError:{v4, v11}];
+          [v10 libraryCategoryMapProvider:self failedToRefreshWithError:{errorCopy, v11}];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [_copyOfObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_callbackQueue_notifyObserversWillRefresh:(int64_t)a3 options:(unint64_t)a4
+- (void)_callbackQueue_notifyObserversWillRefresh:(int64_t)refresh options:(unint64_t)options
 {
   v17 = *MEMORY[0x1E69E9840];
   BSDispatchQueueAssert();
@@ -876,8 +876,8 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(SBHLibraryCategoryMapProvider *)self _copyOfObservers];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _copyOfObservers = [(SBHLibraryCategoryMapProvider *)self _copyOfObservers];
+  v7 = [_copyOfObservers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -889,37 +889,37 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_copyOfObservers);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 libraryCategoryMapProvider:self willRefreshWithOptions:{a4, v12}];
+          [v11 libraryCategoryMapProvider:self willRefreshWithOptions:{options, v12}];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [_copyOfObservers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_callbackQueue_notifyObserversBeginningRefreshSession:(int64_t)a3 requests:(id)a4
+- (void)_callbackQueue_notifyObserversBeginningRefreshSession:(int64_t)session requests:(id)requests
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  requestsCopy = requests;
   BSDispatchQueueAssert();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(SBHLibraryCategoryMapProvider *)self _copyOfObservers];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _copyOfObservers = [(SBHLibraryCategoryMapProvider *)self _copyOfObservers];
+  v8 = [_copyOfObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -931,37 +931,37 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_copyOfObservers);
         }
 
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 libraryCategoryMapProvider:self beginningRefreshWithSessionID:a3 requests:{v6, v13}];
+          [v12 libraryCategoryMapProvider:self beginningRefreshWithSessionID:session requests:{requestsCopy, v13}];
         }
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [_copyOfObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_callbackQueue_notifyObserversFinishedRefreshSession:(int64_t)a3 requests:(id)a4
+- (void)_callbackQueue_notifyObserversFinishedRefreshSession:(int64_t)session requests:(id)requests
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  requestsCopy = requests;
   BSDispatchQueueAssert();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(SBHLibraryCategoryMapProvider *)self _copyOfObservers];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _copyOfObservers = [(SBHLibraryCategoryMapProvider *)self _copyOfObservers];
+  v8 = [_copyOfObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -973,37 +973,37 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_copyOfObservers);
         }
 
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 libraryCategoryMapProvider:self finishedRefreshWithSessionID:a3 requests:{v6, v13}];
+          [v12 libraryCategoryMapProvider:self finishedRefreshWithSessionID:session requests:{requestsCopy, v13}];
         }
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [_copyOfObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_callbackQueue_notifyObserversWillReEnqueueFailedRequests:(id)a3
+- (void)_callbackQueue_notifyObserversWillReEnqueueFailedRequests:(id)requests
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestsCopy = requests;
   BSDispatchQueueAssert();
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(SBHLibraryCategoryMapProvider *)self _copyOfObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _copyOfObservers = [(SBHLibraryCategoryMapProvider *)self _copyOfObservers];
+  v6 = [_copyOfObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1015,37 +1015,37 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_copyOfObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 libraryCategoryMapProvider:self willReEnqueueFailedRequests:{v4, v11}];
+          [v10 libraryCategoryMapProvider:self willReEnqueueFailedRequests:{requestsCopy, v11}];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [_copyOfObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_callbackQueue_notifyObserversWillSunsetFailedRequests:(id)a3
+- (void)_callbackQueue_notifyObserversWillSunsetFailedRequests:(id)requests
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestsCopy = requests;
   BSDispatchQueueAssert();
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(SBHLibraryCategoryMapProvider *)self _copyOfObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _copyOfObservers = [(SBHLibraryCategoryMapProvider *)self _copyOfObservers];
+  v6 = [_copyOfObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1057,30 +1057,30 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_copyOfObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 libraryCategoryMapProvider:self willSunsetFailedRequests:{v4, v11}];
+          [v10 libraryCategoryMapProvider:self willSunsetFailedRequests:{requestsCopy, v11}];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [_copyOfObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (BOOL)overrideCategoryMapForTestingAtURL:(id)a3 error:(id *)a4
+- (BOOL)overrideCategoryMapForTestingAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() categoryMapFromURL:v6 error:a4];
+  lCopy = l;
+  v7 = [objc_opt_class() categoryMapFromURL:lCopy error:error];
 
   if (v7)
   {
@@ -1090,24 +1090,24 @@ uint64_t __73__SBHLibraryCategoryMapProvider__workQueue_scheduleRefreshIfNotSche
   return v7 != 0;
 }
 
-- (void)overrideCategoryMapForTesting:(id)a3
+- (void)overrideCategoryMapForTesting:(id)testing
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v5->_isCategoryMapOverriddenForTesting = v4 != 0;
-  objc_sync_exit(v5);
+  testingCopy = testing;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_isCategoryMapOverriddenForTesting = testingCopy != 0;
+  objc_sync_exit(selfCopy);
 
-  if (v4)
+  if (testingCopy)
   {
-    v6 = v5->_callbackQueue;
-    workQueue = v5->_workQueue;
+    v6 = selfCopy->_callbackQueue;
+    workQueue = selfCopy->_workQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __63__SBHLibraryCategoryMapProvider_overrideCategoryMapForTesting___block_invoke;
     block[3] = &unk_1E8088F88;
-    block[4] = v5;
-    v11 = v4;
+    block[4] = selfCopy;
+    v11 = testingCopy;
     v12 = v6;
     v8 = v6;
     v9 = workQueue;
@@ -1140,10 +1140,10 @@ void __63__SBHLibraryCategoryMapProvider_overrideCategoryMapForTesting___block_i
   }
 }
 
-- (BOOL)forbidApplicationIdentifier:(id)a3
+- (BOOL)forbidApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     goto LABEL_4;
   }
@@ -1158,10 +1158,10 @@ void __63__SBHLibraryCategoryMapProvider_overrideCategoryMapForTesting___block_i
     goto LABEL_6;
   }
 
-  if (([(NSMutableSet *)forbiddenApplicationIdentifiers containsObject:v4]& 1) == 0)
+  if (([(NSMutableSet *)forbiddenApplicationIdentifiers containsObject:identifierCopy]& 1) == 0)
   {
 LABEL_6:
-    [(NSMutableSet *)self->_forbiddenApplicationIdentifiers bs_safeAddObject:v4];
+    [(NSMutableSet *)self->_forbiddenApplicationIdentifiers bs_safeAddObject:identifierCopy];
     v9 = [(SBHLibraryCategoryMapProvider *)self requestLibraryCategoryMapRefreshWithOptions:14 reason:@"[SBHLibraryCategoryMapProvider forbidApplicationIdentifier]"];
     v6 = 1;
     goto LABEL_7;
@@ -1174,13 +1174,13 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)unforbidApplicationIdentifier:(id)a3
+- (BOOL)unforbidApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableSet *)self->_forbiddenApplicationIdentifiers containsObject:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableSet *)self->_forbiddenApplicationIdentifiers containsObject:identifierCopy];
   if (v5)
   {
-    [(NSMutableSet *)self->_forbiddenApplicationIdentifiers removeObject:v4];
+    [(NSMutableSet *)self->_forbiddenApplicationIdentifiers removeObject:identifierCopy];
     if (![(NSMutableSet *)self->_forbiddenApplicationIdentifiers count])
     {
       forbiddenApplicationIdentifiers = self->_forbiddenApplicationIdentifiers;
@@ -1193,17 +1193,17 @@ LABEL_7:
   return v5;
 }
 
-- (id)requestLibraryCategoryMapRefreshWithOptions:(unint64_t)a3 reason:(id)a4
+- (id)requestLibraryCategoryMapRefreshWithOptions:(unint64_t)options reason:(id)reason
 {
-  v6 = a4;
-  v7 = [[SBHLibraryCategoryMapProviderRefreshRequest alloc] initWithOptions:a3 reason:v6];
+  reasonCopy = reason;
+  v7 = [[SBHLibraryCategoryMapProviderRefreshRequest alloc] initWithOptions:options reason:reasonCopy];
 
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__SBHLibraryCategoryMapProvider_requestLibraryCategoryMapRefreshWithOptions_reason___block_invoke;
   block[3] = &unk_1E808A090;
-  v15 = a3;
+  optionsCopy = options;
   block[4] = self;
   v9 = v7;
   v14 = v9;
@@ -1224,47 +1224,47 @@ void __84__SBHLibraryCategoryMapProvider_requestLibraryCategoryMapRefreshWithOpt
   [v2 _workQueue_queueUpNextRequests:v3 runNow:v1];
 }
 
-- (void)requestLibraryCategoryMapUpdateWithRefreshOptions:(unint64_t)a3 source:(id)a4
+- (void)requestLibraryCategoryMapUpdateWithRefreshOptions:(unint64_t)options source:(id)source
 {
   v6 = MEMORY[0x1E696AEC0];
   v7 = objc_opt_class();
   v10 = NSStringFromClass(v7);
   v8 = [v6 stringWithFormat:@"-[SBHLibraryCategoryMapProvider requestLibraryCategoryMapUpdateWithRefreshOptions:source:%@]", v10];
-  v9 = [(SBHLibraryCategoryMapProvider *)self requestLibraryCategoryMapRefreshWithOptions:a3 reason:v8];
+  v9 = [(SBHLibraryCategoryMapProvider *)self requestLibraryCategoryMapRefreshWithOptions:options reason:v8];
 }
 
-- (BOOL)_workQueue_updateLibraryCategoryMap:(id)a3 withSessionId:(unint64_t)a4 shouldPersist:(BOOL)a5 reason:(id)a6
+- (BOOL)_workQueue_updateLibraryCategoryMap:(id)map withSessionId:(unint64_t)id shouldPersist:(BOOL)persist reason:(id)reason
 {
-  v7 = a5;
+  persistCopy = persist;
   v35 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
+  mapCopy = map;
+  reasonCopy = reason;
   BSDispatchQueueAssert();
   v13 = self->_serializationQueue;
-  v14 = self;
-  objc_sync_enter(v14);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = SBLogProactiveAppLibrary();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v32 = a4;
+    idCopy7 = id;
     _os_log_impl(&dword_1BEB18000, v15, OS_LOG_TYPE_DEFAULT, "(%ld) Will update library category map", buf, 0xCu);
   }
 
-  objc_storeStrong(&v14->_libraryCategoryMap, a3);
-  isCategoryMapOverriddenForTesting = v14->_isCategoryMapOverriddenForTesting;
+  objc_storeStrong(&selfCopy->_libraryCategoryMap, map);
+  isCategoryMapOverriddenForTesting = selfCopy->_isCategoryMapOverriddenForTesting;
   v17 = SBLogProactiveAppLibrary();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v32 = a4;
+    idCopy7 = id;
     _os_log_impl(&dword_1BEB18000, v17, OS_LOG_TYPE_DEFAULT, "(%ld) Did update library category map", buf, 0xCu);
   }
 
-  objc_sync_exit(v14);
-  v18 = v14->_cacheFilePath;
+  objc_sync_exit(selfCopy);
+  v18 = selfCopy->_cacheFilePath;
   v19 = v18;
-  if (v7)
+  if (persistCopy)
   {
     if (isCategoryMapOverriddenForTesting)
     {
@@ -1272,7 +1272,7 @@ void __84__SBHLibraryCategoryMapProvider_requestLibraryCategoryMapRefreshWithOpt
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v32 = a4;
+        idCopy7 = id;
         v21 = "(%ld) Skipping library category map persistence; testing is running and so the data there is bupkis";
 LABEL_18:
         _os_log_impl(&dword_1BEB18000, v20, OS_LOG_TYPE_DEFAULT, v21, buf, 0xCu);
@@ -1290,7 +1290,7 @@ LABEL_18:
       if (v23)
       {
         *buf = 134217984;
-        v32 = a4;
+        idCopy7 = id;
         v21 = "(%ld) Skipping library category map persistence; no path specified";
         goto LABEL_18;
       }
@@ -1303,9 +1303,9 @@ LABEL_19:
     if (v23)
     {
       *buf = 134218242;
-      v32 = a4;
+      idCopy7 = id;
       v33 = 2112;
-      v34 = v12;
+      v34 = reasonCopy;
       _os_log_impl(&dword_1BEB18000, v20, OS_LOG_TYPE_DEFAULT, "(%ld) Attempting to persist library category map, updated for reason: %@", buf, 0x16u);
     }
 
@@ -1313,10 +1313,10 @@ LABEL_19:
     v26[1] = 3221225472;
     v26[2] = __104__SBHLibraryCategoryMapProvider__workQueue_updateLibraryCategoryMap_withSessionId_shouldPersist_reason___block_invoke;
     v26[3] = &unk_1E808B200;
-    v27 = v11;
+    v27 = mapCopy;
     v28 = v19;
-    v29 = v14;
-    v30 = a4;
+    v29 = selfCopy;
+    idCopy6 = id;
     dispatch_async(v13, v26);
 
     v20 = v27;
@@ -1328,9 +1328,9 @@ LABEL_19:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v32 = a4;
+      idCopy7 = id;
       v33 = 2112;
-      v34 = v12;
+      v34 = reasonCopy;
       _os_log_impl(&dword_1BEB18000, v20, OS_LOG_TYPE_DEFAULT, "(%ld) Skipping library category map persistence; reason '%@' didn't want it", buf, 0x16u);
     }
   }
@@ -1833,13 +1833,13 @@ LABEL_20:
 - (void)_setupClearCacheNotification
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__SBHLibraryCategoryMapProvider__setupClearCacheNotification__block_invoke;
   v6[3] = &unk_1E808C6F0;
   objc_copyWeak(&v7, &location);
-  v4 = [v3 addObserverForName:@"SBHLibraryCategoryMapProviderCachesWereClearedNotification" object:0 queue:0 usingBlock:v6];
+  v4 = [defaultCenter addObserverForName:@"SBHLibraryCategoryMapProviderCachesWereClearedNotification" object:0 queue:0 usingBlock:v6];
   clearCacheNotificationHandle = self->_clearCacheNotificationHandle;
   self->_clearCacheNotificationHandle = v4;
 
@@ -1873,8 +1873,8 @@ uint64_t __61__SBHLibraryCategoryMapProvider__setupClearCacheNotification__block
 
 - (void)_setupLocaleNotification
 {
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  v3 = [v5 addObserverForName:*MEMORY[0x1E695D8F0] object:0 queue:0 usingBlock:&__block_literal_global_39];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  v3 = [defaultCenter addObserverForName:*MEMORY[0x1E695D8F0] object:0 queue:0 usingBlock:&__block_literal_global_39];
   localeNotificationHandle = self->_localeNotificationHandle;
   self->_localeNotificationHandle = v3;
 }
@@ -1885,26 +1885,26 @@ void __57__SBHLibraryCategoryMapProvider__setupLocaleNotification__block_invoke(
   [SBHLibraryCategoryMapProvider clearCachesForReason:v2];
 }
 
-- (void)_workQueue_queueUpNextRequests:(id)a3 runNow:(BOOL)a4
+- (void)_workQueue_queueUpNextRequests:(id)requests runNow:(BOOL)now
 {
-  v4 = a4;
+  nowCopy = now;
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  requestsCopy = requests;
   BSDispatchQueueAssert();
-  if ([v6 count])
+  if ([requestsCopy count])
   {
     v7 = SBLogProactiveAppLibrary();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       pendingRefreshRequests = self->_pendingRefreshRequests;
       v10 = 138412546;
-      v11 = v6;
+      v11 = requestsCopy;
       v12 = 2112;
       v13 = pendingRefreshRequests;
       _os_log_impl(&dword_1BEB18000, v7, OS_LOG_TYPE_DEFAULT, "Accumulating pending requests: %@ / Current Request Queue: %@", &v10, 0x16u);
     }
 
-    [(NSMutableArray *)self->_pendingRefreshRequests addObjectsFromArray:v6];
+    [(NSMutableArray *)self->_pendingRefreshRequests addObjectsFromArray:requestsCopy];
   }
 
   if ([(NSArray *)self->_inflightRefreshRequests count])
@@ -1917,7 +1917,7 @@ void __57__SBHLibraryCategoryMapProvider__setupLocaleNotification__block_invoke(
     }
   }
 
-  else if (v4)
+  else if (nowCopy)
   {
     [(SBHLibraryCategoryMapProvider *)self _workQueue_cancelAnyScheduledRefresh];
     [(SBHLibraryCategoryMapProvider *)self _workQueue_performNextRequest];

@@ -12,16 +12,16 @@
   v11 = a5;
   if (!v10)
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:a1 file:@"LNEntityMetadata+Workflow.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"appBundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNEntityMetadata+Workflow.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"appBundleIdentifier"}];
   }
 
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
   v47[0] = v13;
   v47[1] = v10;
-  v14 = [a1 identifier];
-  v47[2] = v14;
+  identifier = [self identifier];
+  v47[2] = identifier;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:3];
 
   v16 = [v15 componentsJoinedByString:@"_"];
@@ -51,13 +51,13 @@ LABEL_5:
   aBlock[4] = v12;
   v36 = v9;
   v22 = _Block_copy(aBlock);
-  v23 = a1;
+  selfCopy = self;
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
   v44[2] = __116__LNEntityMetadata_Workflow__wf_contentItemClassWithQueryMetadata_appBundleIdentifier_displayedAppBundleIdentifier___block_invoke_2;
   v44[3] = &unk_1E837B948;
-  v45 = v23;
-  v35 = v23;
+  v45 = selfCopy;
+  v35 = selfCopy;
   v24 = _Block_copy(v44);
   v22[2](v22, v21, sel_entityMetadata, v24);
 
@@ -89,8 +89,8 @@ LABEL_5:
   v22[2](v22, v21, sel_displayedAppBundleIdentifier, v29);
 
   v30 = MEMORY[0x1E69AC800];
-  v31 = [v35 identifier];
-  [v30 wf_addDescriptionMethodsToClass:v21 withEntityType:v31 appBundleIdentifier:v28];
+  identifier2 = [v35 identifier];
+  [v30 wf_addDescriptionMethodsToClass:v21 withEntityType:identifier2 appBundleIdentifier:v28];
 
   objc_registerClassPair(v21);
   os_unfair_lock_unlock(&classRegistrationLock_52324);

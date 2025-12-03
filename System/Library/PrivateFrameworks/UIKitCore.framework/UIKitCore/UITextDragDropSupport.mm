@@ -1,18 +1,18 @@
 @interface UITextDragDropSupport
-+ (id)installTextDragDropOnView:(id)a3;
-+ (id)installTextDragOnView:(id)a3;
++ (id)installTextDragDropOnView:(id)view;
++ (id)installTextDragOnView:(id)view;
 @end
 
 @implementation UITextDragDropSupport
 
-+ (id)installTextDragOnView:(id)a3
++ (id)installTextDragOnView:(id)view
 {
-  v4 = a3;
-  v5 = objc_getAssociatedObject(v4, &textDragAssistantKey);
+  viewCopy = view;
+  v5 = objc_getAssociatedObject(viewCopy, &textDragAssistantKey);
   if (!v5)
   {
-    v5 = [[UITextDragAssistant alloc] initWithDraggableOnlyView:v4];
-    objc_setAssociatedObject(a1, &textDragAssistantKey, v5, 1);
+    v5 = [[UITextDragAssistant alloc] initWithDraggableOnlyView:viewCopy];
+    objc_setAssociatedObject(self, &textDragAssistantKey, v5, 1);
   }
 
   [(UITextDragAssistant *)v5 installDragInteractionIfNeeded];
@@ -20,14 +20,14 @@
   return v5;
 }
 
-+ (id)installTextDragDropOnView:(id)a3
++ (id)installTextDragDropOnView:(id)view
 {
-  v4 = a3;
-  v5 = objc_getAssociatedObject(v4, &textDragAssistantKey);
+  viewCopy = view;
+  v5 = objc_getAssociatedObject(viewCopy, &textDragAssistantKey);
   if (!v5)
   {
-    v5 = [[UITextDragAssistant alloc] initWithView:v4];
-    objc_setAssociatedObject(a1, &textDragAssistantKey, v5, 1);
+    v5 = [[UITextDragAssistant alloc] initWithView:viewCopy];
+    objc_setAssociatedObject(self, &textDragAssistantKey, v5, 1);
   }
 
   [(UITextDragAssistant *)v5 installDragInteractionIfNeeded];

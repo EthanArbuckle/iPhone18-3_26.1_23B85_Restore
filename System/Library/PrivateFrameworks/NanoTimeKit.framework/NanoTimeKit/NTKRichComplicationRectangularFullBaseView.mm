@@ -14,9 +14,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(NTKRichComplicationRectangularFullBaseView *)v2 content];
+    content = [(NTKRichComplicationRectangularFullBaseView *)v2 content];
     content = v3->_content;
-    v3->_content = v4;
+    v3->_content = content;
 
     [(NTKRichComplicationRectangularFullBaseView *)v3 addSubview:v3->_content];
   }
@@ -29,8 +29,8 @@
   v7.receiver = self;
   v7.super_class = NTKRichComplicationRectangularFullBaseView;
   [(NTKRichComplicationRectangularFullBaseView *)&v7 layoutSubviews];
-  v3 = [(CDRichComplicationView *)self device];
-  v4 = ___LayoutConstants_block_invoke_64(v3, v3);
+  device = [(CDRichComplicationView *)self device];
+  v4 = ___LayoutConstants_block_invoke_64(device, device);
   v6 = v5;
 
   [(UIView *)self->_content setFrame:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v4, v6];

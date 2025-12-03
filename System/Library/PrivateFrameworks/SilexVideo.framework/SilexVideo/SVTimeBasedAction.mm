@@ -1,37 +1,37 @@
 @interface SVTimeBasedAction
 - (double)time;
 - (uint64_t)block;
-- (void)initWithTime:(double)a3 block:;
+- (void)initWithTime:(double)time block:;
 @end
 
 @implementation SVTimeBasedAction
 
-- (void)initWithTime:(double)a3 block:
+- (void)initWithTime:(double)time block:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = SVTimeBasedAction;
     v6 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v6;
+    self = v6;
     if (v6)
     {
-      *(v6 + 1) = a3;
+      *(v6 + 1) = time;
       v7 = MEMORY[0x2667795A0](v5);
-      v8 = a1[2];
-      a1[2] = v7;
+      v8 = self[2];
+      self[2] = v7;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (double)time
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else

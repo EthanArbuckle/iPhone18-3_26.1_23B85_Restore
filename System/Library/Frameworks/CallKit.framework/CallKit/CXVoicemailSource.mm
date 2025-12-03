@@ -2,16 +2,16 @@
 - (CXVoicemailSource)init;
 - (CXVoicemailSourceDelegate)delegate;
 - (NSString)description;
-- (void)actionCompleted:(id)a3 completionHandler:(id)a4;
-- (void)beginWithCompletionHandler:(id)a3;
-- (void)commitTransaction:(id)a3;
-- (void)handleActionTimeout:(id)a3;
-- (void)registerWithConfiguration:(id)a3;
-- (void)reportNewVoicemailsWithUpdates:(id)a3;
-- (void)reportVoicemailsRemovedWithUUIDs:(id)a3;
-- (void)reportVoicemailsUpdated:(id)a3;
-- (void)requestTransaction:(id)a3 completionHandler:(id)a4;
-- (void)setConnected:(BOOL)a3;
+- (void)actionCompleted:(id)completed completionHandler:(id)handler;
+- (void)beginWithCompletionHandler:(id)handler;
+- (void)commitTransaction:(id)transaction;
+- (void)handleActionTimeout:(id)timeout;
+- (void)registerWithConfiguration:(id)configuration;
+- (void)reportNewVoicemailsWithUpdates:(id)updates;
+- (void)reportVoicemailsRemovedWithUUIDs:(id)ds;
+- (void)reportVoicemailsUpdated:(id)updated;
+- (void)requestTransaction:(id)transaction completionHandler:(id)handler;
+- (void)setConnected:(BOOL)connected;
 @end
 
 @implementation CXVoicemailSource
@@ -35,86 +35,86 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CXVoicemailSource *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@ %p identifier=%@ isConnected=%d processIdentifier=%d isPermittedToUsePrivateAPI=%d>", v4, self, v5, -[CXVoicemailSource isConnected](self, "isConnected"), -[CXVoicemailSource processIdentifier](self, "processIdentifier"), -[CXVoicemailSource isPermittedToUsePrivateAPI](self, "isPermittedToUsePrivateAPI")];
+  identifier = [(CXVoicemailSource *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@ %p identifier=%@ isConnected=%d processIdentifier=%d isPermittedToUsePrivateAPI=%d>", v4, self, identifier, -[CXVoicemailSource isConnected](self, "isConnected"), -[CXVoicemailSource processIdentifier](self, "processIdentifier"), -[CXVoicemailSource isPermittedToUsePrivateAPI](self, "isPermittedToUsePrivateAPI")];
 
   return v6;
 }
 
-- (void)setConnected:(BOOL)a3
+- (void)setConnected:(BOOL)connected
 {
-  if (self->_connected != a3)
+  if (self->_connected != connected)
   {
-    v4 = a3;
-    self->_connected = a3;
-    v6 = [(CXVoicemailSource *)self delegate];
-    v7 = v6;
-    if (v4)
+    connectedCopy = connected;
+    self->_connected = connected;
+    delegate = [(CXVoicemailSource *)self delegate];
+    v7 = delegate;
+    if (connectedCopy)
     {
-      [v6 voicemailSourceConnectionStarted:self];
+      [delegate voicemailSourceConnectionStarted:self];
     }
 
     else
     {
-      [v6 voicemailSourceConnectionEnded:self];
+      [delegate voicemailSourceConnectionEnded:self];
     }
   }
 }
 
-- (void)beginWithCompletionHandler:(id)a3
+- (void)beginWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)registerWithConfiguration:(id)a3
+- (void)registerWithConfiguration:(id)configuration
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[CXVoicemailSource registerWithConfiguration:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = configurationCopy;
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "Received %s with configuration: %@", &v9, 0x16u);
   }
 
   if (![(CXVoicemailSource *)self isPermittedToUsePrivateAPI])
   {
-    v6 = [v4 sanitizedCopy];
+    sanitizedCopy = [configurationCopy sanitizedCopy];
 
-    v4 = v6;
+    configurationCopy = sanitizedCopy;
   }
 
-  v7 = [(CXVoicemailSource *)self delegate];
-  [v7 voicemailSource:self registeredWithConfiguration:v4];
+  delegate = [(CXVoicemailSource *)self delegate];
+  [delegate voicemailSource:self registeredWithConfiguration:configurationCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestTransaction:(id)a3 completionHandler:(id)a4
+- (void)requestTransaction:(id)transaction completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  handlerCopy = handler;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v15 = "[CXVoicemailSource requestTransaction:completionHandler:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = transactionCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "Received %s with transaction: %@", buf, 0x16u);
   }
 
   if ([(CXVoicemailSource *)self isPermittedToUsePrivateAPI])
   {
-    v9 = [(CXVoicemailSource *)self delegate];
-    [v9 voicemailSource:self requestedTransaction:v6 completion:v7];
+    delegate = [(CXVoicemailSource *)self delegate];
+    [delegate voicemailSource:self requestedTransaction:transactionCopy completion:handlerCopy];
   }
 
   else
@@ -129,9 +129,9 @@
     v12[1] = 3221225472;
     v12[2] = __58__CXVoicemailSource_requestTransaction_completionHandler___block_invoke;
     v12[3] = &unk_1E7C07388;
-    v13 = v7;
+    v13 = handlerCopy;
     __58__CXVoicemailSource_requestTransaction_completionHandler___block_invoke(v12);
-    v9 = v13;
+    delegate = v13;
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -144,107 +144,107 @@ void __58__CXVoicemailSource_requestTransaction_completionHandler___block_invoke
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)reportNewVoicemailsWithUpdates:(id)a3
+- (void)reportNewVoicemailsWithUpdates:(id)updates
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatesCopy = updates;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[CXVoicemailSource reportNewVoicemailsWithUpdates:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = updatesCopy;
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "Received %s with updates: %@", &v8, 0x16u);
   }
 
-  v6 = [(CXVoicemailSource *)self delegate];
-  [v6 voicemailSource:self reportNewVoicemailsWithUpdates:v4];
+  delegate = [(CXVoicemailSource *)self delegate];
+  [delegate voicemailSource:self reportNewVoicemailsWithUpdates:updatesCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportVoicemailsUpdated:(id)a3
+- (void)reportVoicemailsUpdated:(id)updated
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatedCopy = updated;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[CXVoicemailSource reportVoicemailsUpdated:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = updatedCopy;
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "Received %s with updates: %@", &v8, 0x16u);
   }
 
-  v6 = [(CXVoicemailSource *)self delegate];
-  [v6 voicemailSource:self reportVoicemailsUpdated:v4];
+  delegate = [(CXVoicemailSource *)self delegate];
+  [delegate voicemailSource:self reportVoicemailsUpdated:updatedCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportVoicemailsRemovedWithUUIDs:(id)a3
+- (void)reportVoicemailsRemovedWithUUIDs:(id)ds
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[CXVoicemailSource reportVoicemailsRemovedWithUUIDs:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = dsCopy;
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "Received %s with UUIDs: %@", &v8, 0x16u);
   }
 
-  v6 = [(CXVoicemailSource *)self delegate];
-  [v6 voicemailSource:self reportVoicemailsRemovedWithUUIDs:v4];
+  delegate = [(CXVoicemailSource *)self delegate];
+  [delegate voicemailSource:self reportVoicemailsRemovedWithUUIDs:dsCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)actionCompleted:(id)a3 completionHandler:(id)a4
+- (void)actionCompleted:(id)completed completionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  completedCopy = completed;
+  handlerCopy = handler;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315394;
     v13 = "[CXVoicemailSource actionCompleted:completionHandler:]";
     v14 = 2112;
-    v15 = v6;
+    v15 = completedCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "Received %s with action: %@", &v12, 0x16u);
   }
 
   if (![(CXVoicemailSource *)self isPermittedToUsePrivateAPI])
   {
-    v9 = [v6 sanitizedCopy];
+    sanitizedCopy = [completedCopy sanitizedCopy];
 
-    v6 = v9;
+    completedCopy = sanitizedCopy;
   }
 
-  v10 = [(CXVoicemailSource *)self delegate];
-  [v10 voicemailSource:self actionCompleted:v6];
+  delegate = [(CXVoicemailSource *)self delegate];
+  [delegate voicemailSource:self actionCompleted:completedCopy];
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)commitTransaction:(id)a3
+- (void)commitTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(CXVoicemailSource *)self queue];
+  transactionCopy = transaction;
+  queue = [(CXVoicemailSource *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__CXVoicemailSource_commitTransaction___block_invoke;
   v7[3] = &unk_1E7C06BE0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = transactionCopy;
+  selfCopy = self;
+  v6 = transactionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __39__CXVoicemailSource_commitTransaction___block_invoke(uint64_t a1)
@@ -268,18 +268,18 @@ void __39__CXVoicemailSource_commitTransaction___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleActionTimeout:(id)a3
+- (void)handleActionTimeout:(id)timeout
 {
-  v4 = a3;
-  v5 = [(CXVoicemailSource *)self queue];
+  timeoutCopy = timeout;
+  queue = [(CXVoicemailSource *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__CXVoicemailSource_handleActionTimeout___block_invoke;
   v7[3] = &unk_1E7C06BE0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = timeoutCopy;
+  selfCopy = self;
+  v6 = timeoutCopy;
+  dispatch_async(queue, v7);
 }
 
 void __41__CXVoicemailSource_handleActionTimeout___block_invoke(uint64_t a1)

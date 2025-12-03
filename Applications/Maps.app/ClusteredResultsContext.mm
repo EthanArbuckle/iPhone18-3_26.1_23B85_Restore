@@ -1,25 +1,25 @@
 @interface ClusteredResultsContext
 - (BOOL)chromeDidClearMapSelection;
-- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)a3;
-- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)a3;
-- (BOOL)chromeDidSelectMarkerForMapItem:(id)a3;
+- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)marker;
+- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)annotation;
+- (BOOL)chromeDidSelectMarkerForMapItem:(id)item;
 - (ChromeViewController)chromeViewController;
 - (MapsWebLinkPresenter)webLinkPresenter;
 - (_TtC4Maps23ClusteredResultsContext)init;
 - (id)personalizedItemSources;
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4;
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)setConfiguration:(id)a3;
-- (void)setRoutingContainees:(id)a3;
-- (void)setSimpleResultsViewController:(id)a3;
-- (void)setWebLinkPresenter:(id)a3;
-- (void)shareItem:(id)a3 presentationOptions:(id)a4 completion:(id)a5;
-- (void)simpleResultsViewContoller:(id)a3 doAudioCallToSearchResult:(id)a4;
-- (void)simpleResultsViewContoller:(id)a3 doShareSheetForShareItem:(id)a4 completion:(id)a5;
-- (void)simpleResultsViewContoller:(id)a3 openWebsiteForSearchResult:(id)a4;
-- (void)simpleResultsViewContoller:(id)a3 selectClusteredLabelMarker:(id)a4;
-- (void)simpleResultsViewContoller:(id)a3 selectSearchResult:(id)a4;
-- (void)updateWithConfiguration:(id)a3;
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender;
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)setConfiguration:(id)configuration;
+- (void)setRoutingContainees:(id)containees;
+- (void)setSimpleResultsViewController:(id)controller;
+- (void)setWebLinkPresenter:(id)presenter;
+- (void)shareItem:(id)item presentationOptions:(id)options completion:(id)completion;
+- (void)simpleResultsViewContoller:(id)contoller doAudioCallToSearchResult:(id)result;
+- (void)simpleResultsViewContoller:(id)contoller doShareSheetForShareItem:(id)item completion:(id)completion;
+- (void)simpleResultsViewContoller:(id)contoller openWebsiteForSearchResult:(id)result;
+- (void)simpleResultsViewContoller:(id)contoller selectClusteredLabelMarker:(id)marker;
+- (void)simpleResultsViewContoller:(id)contoller selectSearchResult:(id)result;
+- (void)updateWithConfiguration:(id)configuration;
 @end
 
 @implementation ClusteredResultsContext
@@ -31,14 +31,14 @@
   return Strong;
 }
 
-- (void)setSimpleResultsViewController:(id)a3
+- (void)setSimpleResultsViewController:(id)controller
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps23ClusteredResultsContext_simpleResultsViewController);
-  *(self + OBJC_IVAR____TtC4Maps23ClusteredResultsContext_simpleResultsViewController) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps23ClusteredResultsContext_simpleResultsViewController) = controller;
+  controllerCopy = controller;
 }
 
-- (void)setRoutingContainees:(id)a3
+- (void)setRoutingContainees:(id)containees
 {
   sub_1000CE6B8(&unk_10190B260);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -47,35 +47,35 @@
   *(self + v5) = v4;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps23ClusteredResultsContext_configuration);
-  *(self + OBJC_IVAR____TtC4Maps23ClusteredResultsContext_configuration) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps23ClusteredResultsContext_configuration) = configuration;
+  configurationCopy = configuration;
 }
 
 - (MapsWebLinkPresenter)webLinkPresenter
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10010BE44();
 
   return v3;
 }
 
-- (void)setWebLinkPresenter:(id)a3
+- (void)setWebLinkPresenter:(id)presenter
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps23ClusteredResultsContext____lazy_storage___webLinkPresenter);
-  *(self + OBJC_IVAR____TtC4Maps23ClusteredResultsContext____lazy_storage___webLinkPresenter) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR____TtC4Maps23ClusteredResultsContext____lazy_storage___webLinkPresenter) = presenter;
+  presenterCopy = presenter;
+  selfCopy = self;
   sub_10005D280(v4);
 }
 
-- (void)updateWithConfiguration:(id)a3
+- (void)updateWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  sub_10010C178(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_10010C178(configurationCopy);
 }
 
 - (_TtC4Maps23ClusteredResultsContext)init
@@ -85,11 +85,11 @@
   return result;
 }
 
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v6 = swift_allocObject();
-  *(v6 + 16) = a3;
-  *(v6 + 24) = a4;
+  *(v6 + 16) = controller;
+  *(v6 + 24) = animation;
   v12[4] = sub_10010E4B0;
   v12[5] = v6;
   v12[0] = _NSConcreteStackBlock;
@@ -97,10 +97,10 @@
   v12[2] = sub_100039C64;
   v12[3] = &unk_101603BE8;
   v7 = _Block_copy(v12);
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
-  v11 = v9;
+  controllerCopy = controller;
+  animationCopy = animation;
+  v10 = controllerCopy;
+  v11 = animationCopy;
 
   [v11 addAnimations:v7];
 
@@ -109,7 +109,7 @@
 
 - (id)personalizedItemSources
 {
-  v2 = self;
+  selfCopy = self;
   sub_10010C904();
 
   sub_1000E2690();
@@ -118,12 +118,12 @@
   return v3.super.isa;
 }
 
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = a3;
-    v7 = self;
+    stateCopy = state;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -132,8 +132,8 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    stateCopy2 = state;
+    selfCopy2 = self;
   }
 
   sub_10010D6D0();
@@ -141,9 +141,9 @@
   sub_100024F64(v10, &unk_101908380);
 }
 
-- (void)shareItem:(id)a3 presentationOptions:(id)a4 completion:(id)a5
+- (void)shareItem:(id)item presentationOptions:(id)options completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -157,84 +157,84 @@
   }
 
   swift_unknownObjectRetain();
-  v10 = a4;
-  v11 = self;
-  sub_10010D934(a3, a4);
+  optionsCopy = options;
+  selfCopy = self;
+  sub_10010D934(item, options);
   sub_1000D3B90(v8, v9);
   swift_unknownObjectRelease();
 }
 
-- (BOOL)chromeDidSelectMarkerForMapItem:(id)a3
+- (BOOL)chromeDidSelectMarkerForMapItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_10010CCB4(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_10010CCB4(itemCopy);
 
   return 1;
 }
 
-- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)a3
+- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)annotation
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_10010CEA4(a3);
+  selfCopy = self;
+  v6 = sub_10010CEA4(annotation);
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)a3
+- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)marker
 {
-  v4 = a3;
-  v5 = self;
-  sub_10010D0C8(v4);
+  markerCopy = marker;
+  selfCopy = self;
+  sub_10010D0C8(markerCopy);
 
   return 1;
 }
 
 - (BOOL)chromeDidClearMapSelection
 {
-  v2 = self;
+  selfCopy = self;
   sub_10010D208();
 
   return 0;
 }
 
-- (void)simpleResultsViewContoller:(id)a3 selectClusteredLabelMarker:(id)a4
+- (void)simpleResultsViewContoller:(id)contoller selectClusteredLabelMarker:(id)marker
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10010DAC4(a4);
+  contollerCopy = contoller;
+  markerCopy = marker;
+  selfCopy = self;
+  sub_10010DAC4(marker);
 }
 
-- (void)simpleResultsViewContoller:(id)a3 selectSearchResult:(id)a4
+- (void)simpleResultsViewContoller:(id)contoller selectSearchResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10010DD14(a4);
+  contollerCopy = contoller;
+  resultCopy = result;
+  selfCopy = self;
+  sub_10010DD14(result);
 }
 
-- (void)simpleResultsViewContoller:(id)a3 openWebsiteForSearchResult:(id)a4
+- (void)simpleResultsViewContoller:(id)contoller openWebsiteForSearchResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10010DE94(a4);
+  contollerCopy = contoller;
+  resultCopy = result;
+  selfCopy = self;
+  sub_10010DE94(result);
 }
 
-- (void)simpleResultsViewContoller:(id)a3 doAudioCallToSearchResult:(id)a4
+- (void)simpleResultsViewContoller:(id)contoller doAudioCallToSearchResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10010E130(a4);
+  contollerCopy = contoller;
+  resultCopy = result;
+  selfCopy = self;
+  sub_10010E130(result);
 }
 
-- (void)simpleResultsViewContoller:(id)a3 doShareSheetForShareItem:(id)a4 completion:(id)a5
+- (void)simpleResultsViewContoller:(id)contoller doShareSheetForShareItem:(id)item completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -247,10 +247,10 @@
     v9 = 0;
   }
 
-  v10 = a3;
+  contollerCopy = contoller;
   swift_unknownObjectRetain();
-  v11 = self;
-  sub_10010E324(a4);
+  selfCopy = self;
+  sub_10010E324(item);
   sub_1000D3B90(v8, v9);
 
   swift_unknownObjectRelease();

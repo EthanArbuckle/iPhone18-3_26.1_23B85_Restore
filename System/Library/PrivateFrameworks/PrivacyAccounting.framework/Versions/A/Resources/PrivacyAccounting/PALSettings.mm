@@ -1,10 +1,10 @@
 @interface PALSettings
 + (id)sharedSettings;
-- (BOOL)persistenceEnabledForCategory:(id)a3;
+- (BOOL)persistenceEnabledForCategory:(id)category;
 - (NSData)saltForMetricsReduction;
-- (PALSettings)initWithSuiteName:(id)a3;
+- (PALSettings)initWithSuiteName:(id)name;
 - (int64_t)accessFilteringPolicy;
-- (void)migrateSettingsFromFile:(id)a3;
+- (void)migrateSettingsFromFile:(id)file;
 @end
 
 @implementation PALSettings
@@ -21,21 +21,21 @@
   return v3;
 }
 
-- (PALSettings)initWithSuiteName:(id)a3
+- (PALSettings)initWithSuiteName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = PALSettings;
   v5 = [(PALSettings *)&v14 init];
   if (v5)
   {
     v6 = [NSUserDefaults alloc];
-    v7 = [v4 stringByAppendingString:@".backup-enabled"];
+    v7 = [nameCopy stringByAppendingString:@".backup-enabled"];
     v8 = [v6 initWithSuiteName:v7];
     settingsBackupEnabled = v5->_settingsBackupEnabled;
     v5->_settingsBackupEnabled = v8;
 
-    v10 = [v4 stringByAppendingString:@".backup-disabled"];
+    v10 = [nameCopy stringByAppendingString:@".backup-disabled"];
     v11 = [[NSUserDefaults alloc] initWithSuiteName:v10];
     settingsBackupDisabled = v5->_settingsBackupDisabled;
     v5->_settingsBackupDisabled = v11;
@@ -50,14 +50,14 @@
   return v5;
 }
 
-- (void)migrateSettingsFromFile:(id)a3
+- (void)migrateSettingsFromFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5 = +[NSFileManager defaultManager];
-  if ([v5 fileExistsAtPath:v4])
+  if ([v5 fileExistsAtPath:fileCopy])
   {
     v13 = 0;
-    v6 = [PALSettingsPlist settingsFromFile:v4 withError:&v13];
+    v6 = [PALSettingsPlist settingsFromFile:fileCopy withError:&v13];
     v7 = v13;
     if (v6)
     {
@@ -68,12 +68,12 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v15 = v4;
+        v15 = fileCopy;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Migrated settings plist: %{public}@", buf, 0xCu);
       }
 
       v12 = v7;
-      v9 = [v5 removeItemAtPath:v4 error:&v12];
+      v9 = [v5 removeItemAtPath:fileCopy error:&v12];
       v10 = v12;
 
       if (v9)
@@ -108,7 +108,7 @@ LABEL_14:
   v10 = sub_100004C80();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    sub_100005240(v4, v10);
+    sub_100005240(fileCopy, v10);
   }
 
 LABEL_15:
@@ -119,22 +119,22 @@ LABEL_15:
   v2 = [(NSUserDefaults *)self->_settingsBackupDisabled objectForKey:@"PASettingsAccessFilteringPolicy"];
   if (_NSIsNSNumber())
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 2;
+    integerValue = 2;
   }
 
-  return v3;
+  return integerValue;
 }
 
-- (BOOL)persistenceEnabledForCategory:(id)a3
+- (BOOL)persistenceEnabledForCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   v5 = [(NSUserDefaults *)self->_settingsBackupDisabled dictionaryForKey:@"PASettingsCategoryPersistenceOverrides"];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:categoryCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -148,7 +148,7 @@ LABEL_15:
       sub_10000539C();
     }
 
-    v7 = [qword_10001ED20 containsObject:v4] ^ 1;
+    v7 = [qword_10001ED20 containsObject:categoryCopy] ^ 1;
   }
 
   return v7;
@@ -175,8 +175,8 @@ LABEL_15:
 
   else
   {
-    v9 = [NSMutableData dataWithLength:32, Current];
-    v10 = SecRandomCopyBytes(kSecRandomDefault, 0x20uLL, [v9 mutableBytes]);
+    current = [NSMutableData dataWithLength:32, Current];
+    v10 = SecRandomCopyBytes(kSecRandomDefault, 0x20uLL, [current mutableBytes]);
     if (v10)
     {
       v11 = v10;
@@ -191,12 +191,12 @@ LABEL_15:
 
     else
     {
-      v14 = [v9 copy];
+      v14 = [current copy];
       v15 = self->_saltForMetricsReduction;
       self->_saltForMetricsReduction = v14;
 
       self->_saltForMetricsReductionGenerationTimestamp = CFAbsoluteTimeGetCurrent();
-      [(NSUserDefaults *)self->_settingsBackupDisabled setObject:v9 forKey:@"PASettingsSaltForMetricsReduction"];
+      [(NSUserDefaults *)self->_settingsBackupDisabled setObject:current forKey:@"PASettingsSaltForMetricsReduction"];
       [(NSUserDefaults *)self->_settingsBackupDisabled setDouble:@"PASettingsSaltForMetricsReductionGenerationTimestamp" forKey:self->_saltForMetricsReductionGenerationTimestamp];
       v13 = self->_saltForMetricsReduction;
     }

@@ -1,39 +1,39 @@
 @interface PKSharingMessageExtensionOpenGraphPresenter
-+ (id)propertiesForMessage:(id)a3;
-- (PKSharingMessageExtensionOpenGraphPresenter)initWithTargetDevice:(id)a3 passLibrary:(id)a4;
++ (id)propertiesForMessage:(id)message;
+- (PKSharingMessageExtensionOpenGraphPresenter)initWithTargetDevice:(id)device passLibrary:(id)library;
 - (PKSharingMessageExtensionRenderer)renderer;
 - (void)didTapMessage;
 - (void)extensionWillAppear;
-- (void)setMessage:(id)a3;
-- (void)validateForRecipients:(id)a3 senderAddress:(id)a4 completion:(id)a5;
+- (void)setMessage:(id)message;
+- (void)validateForRecipients:(id)recipients senderAddress:(id)address completion:(id)completion;
 @end
 
 @implementation PKSharingMessageExtensionOpenGraphPresenter
 
-- (PKSharingMessageExtensionOpenGraphPresenter)initWithTargetDevice:(id)a3 passLibrary:(id)a4
+- (PKSharingMessageExtensionOpenGraphPresenter)initWithTargetDevice:(id)device passLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  libraryCopy = library;
   v12.receiver = self;
   v12.super_class = PKSharingMessageExtensionOpenGraphPresenter;
   v9 = [(PKSharingMessageExtensionOpenGraphPresenter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_targetDevice, a3);
-    objc_storeStrong(&v10->_passLibrary, a4);
+    objc_storeStrong(&v9->_targetDevice, device);
+    objc_storeStrong(&v10->_passLibrary, library);
   }
 
   return v10;
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_message, a3);
+    objc_storeStrong(&self->_message, message);
   }
 }
 
@@ -42,15 +42,15 @@
   v24 = *MEMORY[0x1E69E9840];
   if (![(PKSharingMessageExtensionOpenGraphMessage *)self->_message hasFetchedOpenGraphPreview])
   {
-    v3 = [(PKSharingMessageExtensionOpenGraphMessage *)self->_message isFromMe];
+    isFromMe = [(PKSharingMessageExtensionOpenGraphMessage *)self->_message isFromMe];
     message = self->_message;
-    if (v3)
+    if (isFromMe)
     {
-      v5 = [(PKSharingMessageExtensionOpenGraphMessage *)self->_message urlRepresentation];
+      urlRepresentation = [(PKSharingMessageExtensionOpenGraphMessage *)self->_message urlRepresentation];
       v6 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [v5 absoluteString];
+        absoluteString = [urlRepresentation absoluteString];
         v8 = PKSharingLoggableMailboxAddress();
         *buf = 138412290;
         v23 = v8;
@@ -62,11 +62,11 @@
       v18[1] = 3221225472;
       v18[2] = __66__PKSharingMessageExtensionOpenGraphPresenter_extensionWillAppear__block_invoke;
       v18[3] = &unk_1E80183E8;
-      v19 = v5;
-      v20 = self;
+      v19 = urlRepresentation;
+      selfCopy = self;
       v21 = v9;
       v10 = v9;
-      v11 = v5;
+      v11 = urlRepresentation;
       [v10 startFetchingMetadataForURL:v11 completionHandler:v18];
     }
 
@@ -169,9 +169,9 @@ LABEL_11:
   [WeakRetained messageDidUpdate];
 }
 
-- (void)validateForRecipients:(id)a3 senderAddress:(id)a4 completion:(id)a5
+- (void)validateForRecipients:(id)recipients senderAddress:(id)address completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -179,7 +179,7 @@ LABEL_11:
     _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "iMessage Extension: validateForRecipients called for open graph presenter. This shouldn't happen", v7, 2u);
   }
 
-  (*(v5 + 2))(v5, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 }
 
 - (void)didTapMessage
@@ -187,19 +187,19 @@ LABEL_11:
   if (![(PKSharingMessageExtensionOpenGraphMessage *)self->_message isFromMe])
   {
     WeakRetained = objc_loadWeakRetained(&self->_renderer);
-    v3 = [(PKSharingMessageExtensionOpenGraphMessage *)self->_message urlRepresentation];
-    [WeakRetained openAppURL:v3];
+    urlRepresentation = [(PKSharingMessageExtensionOpenGraphMessage *)self->_message urlRepresentation];
+    [WeakRetained openAppURL:urlRepresentation];
   }
 }
 
-+ (id)propertiesForMessage:(id)a3
++ (id)propertiesForMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_alloc_init(PKCredentialSharingMessageExtensionViewProperties);
-  v5 = [v3 title];
-  if (v5)
+  title = [messageCopy title];
+  if (title)
   {
-    [(PKCredentialSharingMessageExtensionViewProperties *)v4 setTitle:v5];
+    [(PKCredentialSharingMessageExtensionViewProperties *)v4 setTitle:title];
   }
 
   else
@@ -208,13 +208,13 @@ LABEL_11:
     [(PKCredentialSharingMessageExtensionViewProperties *)v4 setTitle:v6];
   }
 
-  v7 = [v3 subtitle];
-  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setSubtitle:v7];
+  subtitle = [messageCopy subtitle];
+  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setSubtitle:subtitle];
 
-  v8 = [v3 thumbnail];
-  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setCardImage:v8];
+  thumbnail = [messageCopy thumbnail];
+  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setCardImage:thumbnail];
 
-  if (([v3 isFromMe] & 1) == 0)
+  if (([messageCopy isFromMe] & 1) == 0)
   {
     v9 = PKLocalizedShareableCredentialString(&cfstr_ShareableMessa_0.isa);
     [(PKCredentialSharingMessageExtensionViewProperties *)v4 setButtonText:v9];

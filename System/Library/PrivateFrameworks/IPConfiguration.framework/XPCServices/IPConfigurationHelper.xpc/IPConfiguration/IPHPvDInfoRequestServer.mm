@@ -1,11 +1,11 @@
 @interface IPHPvDInfoRequestServer
 - (IPHPvDInfoRequestServer)init;
-- (__CFDictionary)createValidPvDAdditionalInfoDict:(id)a3 withID:(id)a4 andPrefixes:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
+- (__CFDictionary)createValidPvDAdditionalInfoDict:(id)dict withID:(id)d andPrefixes:(id)prefixes;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 - (void)cancelRequest;
-- (void)fetchPvDAdditionalInformationWithPvDID:(id)a3 prefixesArray:(id)a4 bindToInterface:(id)a5 andCompletionHandler:(id)a6;
+- (void)fetchPvDAdditionalInformationWithPvDID:(id)d prefixesArray:(id)array bindToInterface:(id)interface andCompletionHandler:(id)handler;
 - (void)scheduleParsingEventAbort;
-- (void)scheduleParsingEventCompleteWithParsedJSON:(id)a3 pvdID:(id)a4 ipv6Prefixes:(id)a5;
+- (void)scheduleParsingEventCompleteWithParsedJSON:(id)n pvdID:(id)d ipv6Prefixes:(id)prefixes;
 @end
 
 @implementation IPHPvDInfoRequestServer
@@ -26,9 +26,9 @@
 
 - (void)cancelRequest
 {
-  v3 = [(IPHPvDInfoRequestServer *)self urlSession];
+  urlSession = [(IPHPvDInfoRequestServer *)self urlSession];
 
-  if (v3)
+  if (urlSession)
   {
     v4 = sub_1000082A0();
     v5 = _SC_syslog_os_log_mapping();
@@ -44,16 +44,16 @@
       }
     }
 
-    v7 = [(IPHPvDInfoRequestServer *)self urlSession];
-    [v7 invalidateAndCancel];
+    urlSession2 = [(IPHPvDInfoRequestServer *)self urlSession];
+    [urlSession2 invalidateAndCancel];
 
     [(IPHPvDInfoRequestServer *)self setUrlSession:0];
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v6 = a6;
+  handlerCopy = handler;
   v7 = sub_1000082A0();
   v8 = _SC_syslog_os_log_mapping();
   if (__SC_log_enabled())
@@ -83,7 +83,7 @@
     }
   }
 
-  v6[2](v6, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
   v10 = sub_1000082A0();
   v11 = _SC_syslog_os_log_mapping();
   if (__SC_log_enabled())
@@ -114,28 +114,28 @@
   }
 }
 
-- (void)fetchPvDAdditionalInformationWithPvDID:(id)a3 prefixesArray:(id)a4 bindToInterface:(id)a5 andCompletionHandler:(id)a6
+- (void)fetchPvDAdditionalInformationWithPvDID:(id)d prefixesArray:(id)array bindToInterface:(id)interface andCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  [(IPHPvDInfoRequestServer *)self setXpcClientCompletionHandler:a6];
+  dCopy = d;
+  arrayCopy = array;
+  interfaceCopy = interface;
+  [(IPHPvDInfoRequestServer *)self setXpcClientCompletionHandler:handler];
   v13 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
   v14 = [NSURLSession sessionWithConfiguration:v13 delegate:self delegateQueue:0];
   [(IPHPvDInfoRequestServer *)self setUrlSession:v14];
 
-  v15 = [(IPHPvDInfoRequestServer *)self urlSession];
+  urlSession = [(IPHPvDInfoRequestServer *)self urlSession];
 
-  if (v15)
+  if (urlSession)
   {
-    v16 = [NSString stringWithFormat:@"%s%@%s", "https://", v10, "/.well-known/pvd"];
+    v16 = [NSString stringWithFormat:@"%s%@%s", "https://", dCopy, "/.well-known/pvd"];
     v17 = [NSURL URLWithString:v16];
     v18 = [[NSMutableURLRequest alloc] initWithURL:v17];
     [v18 setHTTPMethod:@"GET"];
     [v18 setValue:@"application/pvd+json" forHTTPHeaderField:@"Content-Type"];
     [v18 setValue:@"application/pvd+json" forHTTPHeaderField:@"Accept"];
-    [v18 setBoundInterfaceIdentifier:v12];
-    v19 = [(IPHPvDInfoRequestServer *)self urlSession];
+    [v18 setBoundInterfaceIdentifier:interfaceCopy];
+    urlSession2 = [(IPHPvDInfoRequestServer *)self urlSession];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_100001750;
@@ -143,9 +143,9 @@
     v27[4] = self;
     v20 = v16;
     v28 = v20;
-    v29 = v10;
-    v30 = v11;
-    v21 = [v19 dataTaskWithRequest:v18 completionHandler:v27];
+    v29 = dCopy;
+    v30 = arrayCopy;
+    v21 = [urlSession2 dataTaskWithRequest:v18 completionHandler:v27];
 
     v22 = sub_1000082A0();
     v23 = _SC_syslog_os_log_mapping();
@@ -215,19 +215,19 @@
   }
 }
 
-- (void)scheduleParsingEventCompleteWithParsedJSON:(id)a3 pvdID:(id)a4 ipv6Prefixes:(id)a5
+- (void)scheduleParsingEventCompleteWithParsedJSON:(id)n pvdID:(id)d ipv6Prefixes:(id)prefixes
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100002298;
   v10[3] = &unk_10000C3F8;
   v10[4] = self;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v7 = v13;
-  v8 = v12;
-  v9 = v11;
+  nCopy = n;
+  dCopy = d;
+  prefixesCopy = prefixes;
+  v7 = prefixesCopy;
+  v8 = dCopy;
+  v9 = nCopy;
   dispatch_async(&_dispatch_main_q, v10);
 }
 
@@ -241,13 +241,13 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (__CFDictionary)createValidPvDAdditionalInfoDict:(id)a3 withID:(id)a4 andPrefixes:(id)a5
+- (__CFDictionary)createValidPvDAdditionalInfoDict:(id)dict withID:(id)d andPrefixes:(id)prefixes
 {
-  v8 = a3;
-  v150 = a4;
-  v148 = v8;
-  v149 = a5;
-  if (!v8)
+  dictCopy = dict;
+  dCopy = d;
+  v148 = dictCopy;
+  prefixesCopy = prefixes;
+  if (!dictCopy)
   {
     v133 = sub_1000082A0();
     v134 = _SC_syslog_os_log_mapping();
@@ -300,16 +300,16 @@ LABEL_177:
   }
 
   theDict = Mutable;
-  if (!sub_1000046E4(Mutable, v8, v150, v149))
+  if (!sub_1000046E4(Mutable, dictCopy, dCopy, prefixesCopy))
   {
 LABEL_178:
-    v132 = 0;
+    allValues = 0;
 LABEL_179:
     v136 = sub_1000082A0();
     v137 = _SC_syslog_os_log_mapping();
     if (__SC_log_enabled())
     {
-      v138 = self;
+      selfCopy = self;
       v208 = 0u;
       v209 = 0u;
       v206 = 0u;
@@ -337,14 +337,14 @@ LABEL_179:
         free(v140);
       }
 
-      self = v138;
+      self = selfCopy;
     }
 
     [(IPHPvDInfoRequestServer *)self setValidFetch:0];
     goto LABEL_184;
   }
 
-  v10 = v8;
+  v10 = dictCopy;
   v177 = 0;
   v172 = 0;
   v181 = 0u;
@@ -352,7 +352,7 @@ LABEL_179:
   v183 = 0u;
   v184 = 0u;
   v11 = [&off_10000C780 countByEnumeratingWithState:&v181 objects:&v185 count:16];
-  v147 = self;
+  selfCopy2 = self;
   if (!v11)
   {
     goto LABEL_86;
@@ -1407,14 +1407,14 @@ LABEL_155:
 
   if (CFDictionaryGetCount(theDict) < 3)
   {
-    v132 = 0;
-    self = v147;
+    allValues = 0;
+    self = selfCopy2;
     goto LABEL_179;
   }
 
-  v132 = [(__CFDictionary *)theDict allValues];
-  self = v147;
-  if ((sub_100006AE8(v132, 0) & 1) == 0)
+  allValues = [(__CFDictionary *)theDict allValues];
+  self = selfCopy2;
+  if ((sub_100006AE8(allValues, 0) & 1) == 0)
   {
     goto LABEL_179;
   }

@@ -1,26 +1,26 @@
 @interface NTKParmesanPreviewProvider
 - (CGRect)Parmesan_screenBounds;
 - (CGSize)Parmesan_minimumNormalizedCropSize;
-- (NTKParmesanPreviewProvider)initWithEditor:(id)a3 selectedImageIndex:(int64_t)a4;
+- (NTKParmesanPreviewProvider)initWithEditor:(id)editor selectedImageIndex:(int64_t)index;
 - (NTKParmesanTypefaceMetrics)Parmesan_typefaceMetrics;
 - (double)Parmesan_screenCornerRadius;
-- (void)Parmesan_changePhotoWithAsset:(id)a3 completion:(id)a4;
-- (void)Parmesan_getPreviewWithCompletion:(id)a3;
+- (void)Parmesan_changePhotoWithAsset:(id)asset completion:(id)completion;
+- (void)Parmesan_getPreviewWithCompletion:(id)completion;
 @end
 
 @implementation NTKParmesanPreviewProvider
 
-- (NTKParmesanPreviewProvider)initWithEditor:(id)a3 selectedImageIndex:(int64_t)a4
+- (NTKParmesanPreviewProvider)initWithEditor:(id)editor selectedImageIndex:(int64_t)index
 {
-  v7 = a3;
+  editorCopy = editor;
   v11.receiver = self;
   v11.super_class = NTKParmesanPreviewProvider;
   v8 = [(NTKParmesanPreviewProvider *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_editor, a3);
-    v9->_selectedImageIndex = a4;
+    objc_storeStrong(&v8->_editor, editor);
+    v9->_selectedImageIndex = index;
   }
 
   return v9;
@@ -72,10 +72,10 @@
   return v10;
 }
 
-- (void)Parmesan_getPreviewWithCompletion:(id)a3
+- (void)Parmesan_getPreviewWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v8 = objc_msgSend_logObject(NTKParmesanFaceBundle, v5, v6, v7);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -88,7 +88,7 @@
   editor = self->_editor;
   if (editor)
   {
-    objc_msgSend_previewOfLibraryPhotoAtIndex_completion_(editor, v10, self->_selectedImageIndex, v4);
+    objc_msgSend_previewOfLibraryPhotoAtIndex_completion_(editor, v10, self->_selectedImageIndex, completionCopy);
   }
 
   else
@@ -99,31 +99,31 @@
       sub_23BFF8938(self, v14);
     }
 
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)Parmesan_changePhotoWithAsset:(id)a3 completion:(id)a4
+- (void)Parmesan_changePhotoWithAsset:(id)asset completion:(id)completion
 {
-  v14 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  completionCopy = completion;
   if (objc_msgSend_Parmesan_canAddPhotoAssets(self, v7, v8, v9))
   {
-    v13 = objc_msgSend_replaceAssetAtIndex_withAsset_(self->_editor, v10, self->_selectedImageIndex, v14);
+    v13 = objc_msgSend_replaceAssetAtIndex_withAsset_(self->_editor, v10, self->_selectedImageIndex, assetCopy);
     if (v13)
     {
-      v6[2](v6, 0, v13);
+      completionCopy[2](completionCopy, 0, v13);
     }
 
     else
     {
-      objc_msgSend_Parmesan_getPreviewWithCompletion_(self, v11, v6, v12);
+      objc_msgSend_Parmesan_getPreviewWithCompletion_(self, v11, completionCopy, v12);
     }
   }
 
   else
   {
-    v6[2](v6, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 

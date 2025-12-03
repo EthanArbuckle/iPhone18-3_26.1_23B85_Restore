@@ -9,29 +9,29 @@
 - (id)accessibilityLabel
 {
   v2 = [(SKUIBrowseItemCellAccessibility *)self safeValueForKey:@"_titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityHint
 {
   if (([(SKUIBrowseItemCellAccessibility *)self isSelected]& 1) != 0)
   {
-    v3 = 1;
+    isHighlighted = 1;
   }
 
   else
   {
-    v3 = [(SKUIBrowseItemCellAccessibility *)self isHighlighted];
+    isHighlighted = [(SKUIBrowseItemCellAccessibility *)self isHighlighted];
   }
 
   v4 = [(SKUIBrowseItemCellAccessibility *)self safeValueForKey:@"decorationImage"];
-  v5 = [v4 accessibilityIdentifier];
-  v6 = [v5 isEqualToString:@"AppStoreBrowseCategoryDownChevron"];
+  accessibilityIdentifier = [v4 accessibilityIdentifier];
+  v6 = [accessibilityIdentifier isEqualToString:@"AppStoreBrowseCategoryDownChevron"];
 
   v7 = 0;
-  if ((v3 & 1) == 0 && v6)
+  if ((isHighlighted & 1) == 0 && v6)
   {
     v7 = accessibilitySKUILocalizedString(@"explore.category.expand");
   }

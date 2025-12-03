@@ -1,9 +1,9 @@
 @interface TSCH3DBarChartDefaultAppearance
 + (BarExtrusionDetails)defaultDetails;
-- (TSCH3DBarChartDefaultAppearance)initWithProperties:(id)a3;
-- (float)chartMinZForScene:(id)a3;
-- (float)maxValueForSeries:(int64_t)a3;
-- (float)signedValueForSeries:(id)a3 index:(void *)a4;
+- (TSCH3DBarChartDefaultAppearance)initWithProperties:(id)properties;
+- (float)chartMinZForScene:(id)scene;
+- (float)maxValueForSeries:(int64_t)series;
+- (float)signedValueForSeries:(id)series index:(void *)index;
 @end
 
 @implementation TSCH3DBarChartDefaultAppearance
@@ -18,42 +18,42 @@
   return result;
 }
 
-- (TSCH3DBarChartDefaultAppearance)initWithProperties:(id)a3
+- (TSCH3DBarChartDefaultAppearance)initWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v8.receiver = self;
   v8.super_class = TSCH3DBarChartDefaultAppearance;
   v5 = [(TSCH3DBarChartDefaultAppearance *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_properties, v4);
+    objc_storeWeak(&v5->_properties, propertiesCopy);
   }
 
   return v6;
 }
 
-- (float)maxValueForSeries:(int64_t)a3
+- (float)maxValueForSeries:(int64_t)series
 {
   WeakRetained = objc_loadWeakRetained(&self->_properties);
-  objc_msgSend_maxValueForSeries_(WeakRetained, v5, v6, v7, v8, a3);
+  objc_msgSend_maxValueForSeries_(WeakRetained, v5, v6, v7, v8, series);
   v10 = v9;
 
   return v10;
 }
 
-- (float)signedValueForSeries:(id)a3 index:(void *)a4
+- (float)signedValueForSeries:(id)series index:(void *)index
 {
-  v6 = a3;
+  seriesCopy = series;
   WeakRetained = objc_loadWeakRetained(&self->_properties);
-  v12 = objc_msgSend_rangeForSeries_index_(WeakRetained, v8, v9, v10, v11, v6, a4);
+  v12 = objc_msgSend_rangeForSeries_index_(WeakRetained, v8, v9, v10, v11, seriesCopy, index);
   objc_msgSend_signedScale(v12, v13, v14, v15, v16);
   v18 = v17;
 
   return v18;
 }
 
-- (float)chartMinZForScene:(id)a3
+- (float)chartMinZForScene:(id)scene
 {
   WeakRetained = objc_loadWeakRetained(&self->_properties);
 

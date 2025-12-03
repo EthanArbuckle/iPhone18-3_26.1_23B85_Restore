@@ -1,5 +1,5 @@
 @interface IPFeatureData
-+ (IPFeatureData)featureDataWithType:(unint64_t)a3 value:(id)a4 matchRange:(_NSRange)a5;
++ (IPFeatureData)featureDataWithType:(unint64_t)type value:(id)value matchRange:(_NSRange)range;
 - (NSMutableDictionary)contextDictionary;
 - (id)description;
 - (id)nGramMarker;
@@ -7,14 +7,14 @@
 
 @implementation IPFeatureData
 
-+ (IPFeatureData)featureDataWithType:(unint64_t)a3 value:(id)a4 matchRange:(_NSRange)a5
++ (IPFeatureData)featureDataWithType:(unint64_t)type value:(id)value matchRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v8 = a4;
+  length = range.length;
+  location = range.location;
+  valueCopy = value;
   v9 = objc_alloc_init(IPFeatureData);
-  [(IPFeatureData *)v9 setType:a3];
-  [(IPFeatureData *)v9 setValue:v8];
+  [(IPFeatureData *)v9 setType:type];
+  [(IPFeatureData *)v9 setValue:valueCopy];
 
   [(IPFeature *)v9 setMatchRange:location, length];
 
@@ -26,9 +26,9 @@
   contextDictionary = self->_contextDictionary;
   if (!contextDictionary)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_contextDictionary;
-    self->_contextDictionary = v4;
+    self->_contextDictionary = dictionary;
 
     contextDictionary = self->_contextDictionary;
   }
@@ -43,18 +43,18 @@
   v9.super_class = IPFeatureData;
   v4 = [(IPFeature *)&v9 description];
   v5 = humanReadableFeatureType([(IPFeatureData *)self type]);
-  v6 = [(IPFeatureData *)self value];
-  v7 = [v3 stringWithFormat:@"%@ Type:%@ - Value: <%@>", v4, v5, v6];
+  value = [(IPFeatureData *)self value];
+  v7 = [v3 stringWithFormat:@"%@ Type:%@ - Value: <%@>", v4, v5, value];
 
   return v7;
 }
 
 - (id)nGramMarker
 {
-  v3 = [(IPFeatureData *)self type];
-  if (v3 < 0xE && ((0x30FFu >> v3) & 1) != 0)
+  type = [(IPFeatureData *)self type];
+  if (type < 0xE && ((0x30FFu >> type) & 1) != 0)
   {
-    return off_278F22FB8[v3];
+    return off_278F22FB8[type];
   }
 
   NSLog(&cfstr_FoundUnknownFe.isa, [(IPFeatureData *)self type]);

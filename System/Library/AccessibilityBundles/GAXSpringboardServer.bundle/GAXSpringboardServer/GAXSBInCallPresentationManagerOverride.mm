@@ -1,17 +1,17 @@
 @interface GAXSBInCallPresentationManagerOverride
-- (void)handleOpenApplicationRequest:(id)a3 clientWorkspace:(id)a4 actions:(id)a5 origin:(id)a6 options:(id)a7 withResult:(id)a8;
+- (void)handleOpenApplicationRequest:(id)request clientWorkspace:(id)workspace actions:(id)actions origin:(id)origin options:(id)options withResult:(id)result;
 @end
 
 @implementation GAXSBInCallPresentationManagerOverride
 
-- (void)handleOpenApplicationRequest:(id)a3 clientWorkspace:(id)a4 actions:(id)a5 origin:(id)a6 options:(id)a7 withResult:(id)a8
+- (void)handleOpenApplicationRequest:(id)request clientWorkspace:(id)workspace actions:(id)actions origin:(id)origin options:(id)options withResult:(id)result
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  requestCopy = request;
+  workspaceCopy = workspace;
+  actionsCopy = actions;
+  originCopy = origin;
+  optionsCopy = options;
+  resultCopy = result;
   v20 = +[GAXSpringboard sharedInstance];
   if ([v20 isActive] && (objc_msgSend(v20, "frontmostAppIdentifier"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", @"com.apple.ContactlessUIService"), v21, v22))
   {
@@ -47,7 +47,7 @@
   {
     v26.receiver = self;
     v26.super_class = GAXSBInCallPresentationManagerOverride;
-    [(GAXSBInCallPresentationManagerOverride *)&v26 handleOpenApplicationRequest:v14 clientWorkspace:v15 actions:v16 origin:v17 options:v18 withResult:v19];
+    [(GAXSBInCallPresentationManagerOverride *)&v26 handleOpenApplicationRequest:requestCopy clientWorkspace:workspaceCopy actions:actionsCopy origin:originCopy options:optionsCopy withResult:resultCopy];
   }
 }
 

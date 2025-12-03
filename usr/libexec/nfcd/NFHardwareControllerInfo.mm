@@ -1,108 +1,108 @@
 @interface NFHardwareControllerInfo
-- (NFHardwareControllerInfo)initWithCoder:(id)a3;
-- (NFHardwareControllerInfo)initWithDictionary:(id)a3;
+- (NFHardwareControllerInfo)initWithCoder:(id)coder;
+- (NFHardwareControllerInfo)initWithDictionary:(id)dictionary;
 - (id)asDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFHardwareControllerInfo
 
-- (NFHardwareControllerInfo)initWithDictionary:(id)a3
+- (NFHardwareControllerInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = NFHardwareControllerInfo;
   v5 = [(NFHardwareControllerInfo *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"siliconVersion"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"siliconVersion"];
     v5->_siliconVersion = [v6 unsignedIntegerValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"siliconName"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"siliconName"];
     v5->_siliconName = [v7 unsignedIntegerValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"ROMVersion"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ROMVersion"];
     v5->_ROMVersion = [v8 unsignedIntegerValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"firmwareVersion"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"firmwareVersion"];
     v5->_firmwareVersion = [v9 unsignedIntegerValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"firmwareRevision"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"firmwareRevision"];
     v5->_firmwareRevision = [v10 unsignedIntegerValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"middlewareVersion"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"middlewareVersion"];
     v5->_middlewareVersion = [v11 unsignedIntegerValue];
 
-    v12 = [v4 objectForKeyedSubscript:@"hasAntenna"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"hasAntenna"];
     v5->_hasAntenna = [v12 BOOLValue];
 
     v5->_hasIcfResistor = 0;
-    v13 = [v4 objectForKeyedSubscript:@"hasMFW"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"hasMFW"];
     v5->_hasMFW = [v13 BOOLValue];
 
-    v14 = [v4 objectForKeyedSubscript:@"hasHLMSupport"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"hasHLMSupport"];
     v5->_hasHLMSupport = [v14 BOOLValue];
 
-    v15 = [v4 objectForKeyedSubscript:@"hasLPEMSupport"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"hasLPEMSupport"];
     v5->_hasLPEMSupport = [v15 BOOLValue];
 
-    v16 = [v4 objectForKeyedSubscript:@"hasCarKeySupport"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"hasCarKeySupport"];
     v5->_hasCarKeySupport = [v16 BOOLValue];
 
-    v17 = [v4 objectForKeyedSubscript:@"hasReaderModeSupport"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"hasReaderModeSupport"];
     v5->_hasReaderModeSupport = [v17 BOOLValue];
 
-    v18 = [v4 objectForKeyedSubscript:@"poweredRunDuringSleep"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"poweredRunDuringSleep"];
     v5->_poweredRunDuringSleep = [v18 BOOLValue];
   }
 
   return v5;
 }
 
-- (NFHardwareControllerInfo)initWithCoder:(id)a3
+- (NFHardwareControllerInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = NFHardwareControllerInfo;
   v5 = [(NFHardwareControllerInfo *)&v7 init];
   if (v5)
   {
-    v5->_siliconVersion = [v4 decodeIntegerForKey:@"siliconVersion"];
-    v5->_siliconName = [v4 decodeIntegerForKey:@"siliconName"];
-    v5->_ROMVersion = [v4 decodeIntegerForKey:@"ROMVersion"];
-    v5->_firmwareVersion = [v4 decodeIntegerForKey:@"firmwareVersion"];
-    v5->_firmwareRevision = [v4 decodeIntegerForKey:@"firmwareRevision"];
-    v5->_middlewareVersion = [v4 decodeIntegerForKey:@"middlewareVersion"];
-    v5->_hasAntenna = [v4 decodeBoolForKey:@"hasAntenna"];
+    v5->_siliconVersion = [coderCopy decodeIntegerForKey:@"siliconVersion"];
+    v5->_siliconName = [coderCopy decodeIntegerForKey:@"siliconName"];
+    v5->_ROMVersion = [coderCopy decodeIntegerForKey:@"ROMVersion"];
+    v5->_firmwareVersion = [coderCopy decodeIntegerForKey:@"firmwareVersion"];
+    v5->_firmwareRevision = [coderCopy decodeIntegerForKey:@"firmwareRevision"];
+    v5->_middlewareVersion = [coderCopy decodeIntegerForKey:@"middlewareVersion"];
+    v5->_hasAntenna = [coderCopy decodeBoolForKey:@"hasAntenna"];
     v5->_hasIcfResistor = 0;
-    v5->_hasMFW = [v4 decodeBoolForKey:@"hasMFW"];
-    v5->_hasHLMSupport = [v4 decodeBoolForKey:@"hasHLMSupport"];
-    v5->_hasLPEMSupport = [v4 decodeBoolForKey:@"hasLPEMSupport"];
-    v5->_hasCarKeySupport = [v4 decodeBoolForKey:@"hasCarKeySupport"];
-    v5->_hasReaderModeSupport = [v4 decodeBoolForKey:@"hasReaderModeSupport"];
-    v5->_poweredRunDuringSleep = [v4 decodeBoolForKey:@"poweredRunDuringSleep"];
+    v5->_hasMFW = [coderCopy decodeBoolForKey:@"hasMFW"];
+    v5->_hasHLMSupport = [coderCopy decodeBoolForKey:@"hasHLMSupport"];
+    v5->_hasLPEMSupport = [coderCopy decodeBoolForKey:@"hasLPEMSupport"];
+    v5->_hasCarKeySupport = [coderCopy decodeBoolForKey:@"hasCarKeySupport"];
+    v5->_hasReaderModeSupport = [coderCopy decodeBoolForKey:@"hasReaderModeSupport"];
+    v5->_poweredRunDuringSleep = [coderCopy decodeBoolForKey:@"poweredRunDuringSleep"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   siliconVersion = self->_siliconVersion;
-  v5 = a3;
-  [v5 encodeInteger:siliconVersion forKey:@"siliconVersion"];
-  [v5 encodeInteger:self->_siliconName forKey:@"siliconName"];
-  [v5 encodeInteger:self->_ROMVersion forKey:@"ROMVersion"];
-  [v5 encodeInteger:self->_firmwareVersion forKey:@"firmwareVersion"];
-  [v5 encodeInteger:self->_firmwareRevision forKey:@"firmwareRevision"];
-  [v5 encodeInteger:self->_middlewareVersion forKey:@"middlewareVersion"];
-  [v5 encodeBool:self->_hasAntenna forKey:@"hasAntenna"];
-  [v5 encodeBool:self->_hasMFW forKey:@"hasMFW"];
-  [v5 encodeBool:self->_hasHLMSupport forKey:@"hasHLMSupport"];
-  [v5 encodeBool:self->_hasLPEMSupport forKey:@"hasLPEMSupport"];
-  [v5 encodeBool:self->_hasCarKeySupport forKey:@"hasCarKeySupport"];
-  [v5 encodeBool:self->_hasReaderModeSupport forKey:@"hasReaderModeSupport"];
-  [v5 encodeBool:self->_poweredRunDuringSleep forKey:@"poweredRunDuringSleep"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:siliconVersion forKey:@"siliconVersion"];
+  [coderCopy encodeInteger:self->_siliconName forKey:@"siliconName"];
+  [coderCopy encodeInteger:self->_ROMVersion forKey:@"ROMVersion"];
+  [coderCopy encodeInteger:self->_firmwareVersion forKey:@"firmwareVersion"];
+  [coderCopy encodeInteger:self->_firmwareRevision forKey:@"firmwareRevision"];
+  [coderCopy encodeInteger:self->_middlewareVersion forKey:@"middlewareVersion"];
+  [coderCopy encodeBool:self->_hasAntenna forKey:@"hasAntenna"];
+  [coderCopy encodeBool:self->_hasMFW forKey:@"hasMFW"];
+  [coderCopy encodeBool:self->_hasHLMSupport forKey:@"hasHLMSupport"];
+  [coderCopy encodeBool:self->_hasLPEMSupport forKey:@"hasLPEMSupport"];
+  [coderCopy encodeBool:self->_hasCarKeySupport forKey:@"hasCarKeySupport"];
+  [coderCopy encodeBool:self->_hasReaderModeSupport forKey:@"hasReaderModeSupport"];
+  [coderCopy encodeBool:self->_poweredRunDuringSleep forKey:@"poweredRunDuringSleep"];
 }
 
 - (id)asDictionary

@@ -1,20 +1,20 @@
 @interface UITabBarController
 - (UITabBarAppearance)bc_preferredTabBarScrollEdgeAppearance;
 - (id)im_visibleChildViewControllers;
-- (void)bc_setPreferredTabBarScrollEdgeAppearance:(id)a3;
-- (void)bc_setSelectedIndex:(int64_t)a3;
-- (void)im_updateTabBarVisibleWithTransitionCoordinator:(id)a3;
+- (void)bc_setPreferredTabBarScrollEdgeAppearance:(id)appearance;
+- (void)bc_setSelectedIndex:(int64_t)index;
+- (void)im_updateTabBarVisibleWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation UITabBarController
 
 - (id)im_visibleChildViewControllers
 {
-  v2 = [(UITabBarController *)self _selectedViewControllerInTabBar];
-  v3 = v2;
-  if (v2)
+  _selectedViewControllerInTabBar = [(UITabBarController *)self _selectedViewControllerInTabBar];
+  v3 = _selectedViewControllerInTabBar;
+  if (_selectedViewControllerInTabBar)
   {
-    v6 = v2;
+    v6 = _selectedViewControllerInTabBar;
     v4 = [NSArray arrayWithObjects:&v6 count:1];
   }
 
@@ -28,38 +28,38 @@
 
 - (UITabBarAppearance)bc_preferredTabBarScrollEdgeAppearance
 {
-  v2 = [(UITabBarController *)self tabBar];
-  v3 = [v2 scrollEdgeAppearance];
+  tabBar = [(UITabBarController *)self tabBar];
+  scrollEdgeAppearance = [tabBar scrollEdgeAppearance];
 
-  return v3;
+  return scrollEdgeAppearance;
 }
 
-- (void)bc_setPreferredTabBarScrollEdgeAppearance:(id)a3
+- (void)bc_setPreferredTabBarScrollEdgeAppearance:(id)appearance
 {
-  v4 = a3;
-  v5 = [(UITabBarController *)self tabBar];
-  [v5 setScrollEdgeAppearance:v4];
+  appearanceCopy = appearance;
+  tabBar = [(UITabBarController *)self tabBar];
+  [tabBar setScrollEdgeAppearance:appearanceCopy];
 }
 
-- (void)bc_setSelectedIndex:(int64_t)a3
+- (void)bc_setSelectedIndex:(int64_t)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     v7 = 0;
   }
 
   else
   {
-    v5 = [(UITabBarController *)self viewControllers];
-    if ([v5 count] <= a3)
+    viewControllers = [(UITabBarController *)self viewControllers];
+    if ([viewControllers count] <= index)
     {
       v7 = 0;
     }
 
     else
     {
-      v6 = [(UITabBarController *)self viewControllers];
-      v7 = [v6 objectAtIndexedSubscript:a3];
+      viewControllers2 = [(UITabBarController *)self viewControllers];
+      v7 = [viewControllers2 objectAtIndexedSubscript:index];
     }
   }
 
@@ -70,12 +70,12 @@
   v10 = v7;
   v8 = v7;
   [(UITabBarController *)self im_enumerateVisibleChildrenConformingToProtocol:0 block:v9];
-  [(UITabBarController *)self setSelectedIndex:a3];
+  [(UITabBarController *)self setSelectedIndex:index];
 }
 
-- (void)im_updateTabBarVisibleWithTransitionCoordinator:(id)a3
+- (void)im_updateTabBarVisibleWithTransitionCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_157818;
@@ -83,9 +83,9 @@
   v7[4] = self;
   v5 = objc_retainBlock(v7);
   v6 = v5;
-  if (v4)
+  if (coordinatorCopy)
   {
-    [v4 animateAlongsideTransition:0 completion:v5];
+    [coordinatorCopy animateAlongsideTransition:0 completion:v5];
   }
 
   else

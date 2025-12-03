@@ -1,6 +1,6 @@
 @interface ARNormalTechnique
 - (ARNormalTechnique)init;
-- (id)processData:(id)a3;
+- (id)processData:(id)data;
 - (void)dealloc;
 @end
 
@@ -21,12 +21,12 @@
   return v2;
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
   v53 = *MEMORY[0x1E69E9840];
   v46.receiver = self;
   v46.super_class = ARNormalTechnique;
-  v4 = [(ARTechnique *)&v46 processData:a3];
+  v4 = [(ARTechnique *)&v46 processData:data];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -44,13 +44,13 @@
       v11 = v10;
       [v7 timestamp];
       kdebug_trace();
-      v12 = [v7 sourceImageData];
-      [v12 cameraIntrinsics];
+      sourceImageData = [v7 sourceImageData];
+      [sourceImageData cameraIntrinsics];
       v44 = v14;
       v45 = v13;
       v42 = v15;
-      v16 = [v7 sourceImageData];
-      [v16 imageResolution];
+      sourceImageData2 = [v7 sourceImageData];
+      [sourceImageData2 imageResolution];
       v18 = v17;
       v20 = v19;
       [v7 depthBufferSize];
@@ -85,7 +85,7 @@ LABEL_29:
           *buf = 138543874;
           v48 = v36;
           v49 = 2048;
-          v50 = self;
+          selfCopy4 = self;
           v51 = 2112;
           v52 = 0;
           v37 = "%{public}@ <%p>: Failed to compute normals: %@";
@@ -103,7 +103,7 @@ LABEL_27:
         *buf = 138543874;
         v48 = v36;
         v49 = 2048;
-        v50 = self;
+        selfCopy4 = self;
         v51 = 2112;
         v52 = 0;
         v37 = "Error: %{public}@ <%p>: Failed to compute normals: %@";
@@ -132,7 +132,7 @@ LABEL_27:
         *buf = 138543618;
         v48 = v28;
         v49 = 2048;
-        v50 = self;
+        selfCopy4 = self;
         v29 = "%{public}@ <%p>: CVPixelBuffer to store normals could not be created from pool";
         v30 = v26;
         v31 = OS_LOG_TYPE_ERROR;
@@ -148,7 +148,7 @@ LABEL_23:
       *buf = 138543618;
       v48 = v28;
       v49 = 2048;
-      v50 = self;
+      selfCopy4 = self;
       v29 = "Error: %{public}@ <%p>: CVPixelBuffer to store normals could not be created from pool";
       v30 = v26;
       v31 = OS_LOG_TYPE_INFO;

@@ -2,11 +2,11 @@
 + (MARelation)memberOfSocialGroup;
 + (NSArray)importanceSortDescriptors;
 + (id)filter;
-+ (id)filterWithSocialGroupIdentifier:(int64_t)a3;
++ (id)filterWithSocialGroupIdentifier:(int64_t)identifier;
 + (id)memberSortDescriptors;
 + (id)momentOfSocialGroup;
-+ (int64_t)identifierForMemberNodes:(id)a3;
-- (BOOL)hasProperties:(id)a3;
++ (int64_t)identifierForMemberNodes:(id)nodes;
+- (BOOL)hasProperties:(id)properties;
 - (BOOL)isFrequentSocialGroup;
 - (NSArray)sortedMemberNodes;
 - (NSSet)memberNodes;
@@ -14,14 +14,14 @@
 - (NSSet)petNodes;
 - (NSString)description;
 - (NSString)featureIdentifier;
-- (PGGraphSocialGroupNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (PGGraphSocialGroupNode)initWithSocialGroupIdentifier:(int64_t)a3 importance:(double)a4 isUserVerified:(BOOL)a5;
+- (PGGraphSocialGroupNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (PGGraphSocialGroupNode)initWithSocialGroupIdentifier:(int64_t)identifier importance:(double)importance isUserVerified:(BOOL)verified;
 - (PGGraphSocialGroupNodeCollection)collection;
 - (id)persistedUUID;
 - (id)propertyDictionary;
-- (id)socialGroupNameWithServiceManager:(id)a3;
-- (unint64_t)rankInGraph:(id)a3;
-- (void)updatePropertiesWithPersistedSocialGroup:(id)a3 graph:(id)a4;
+- (id)socialGroupNameWithServiceManager:(id)manager;
+- (unint64_t)rankInGraph:(id)graph;
+- (void)updatePropertiesWithPersistedSocialGroup:(id)group graph:(id)graph;
 @end
 
 @implementation PGGraphSocialGroupNode
@@ -31,25 +31,25 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PGGraphSocialGroupNode *)self UUID];
-  v7 = [v3 stringWithFormat:@"%@|%@", v5, v6];
+  uUID = [(PGGraphSocialGroupNode *)self UUID];
+  v7 = [v3 stringWithFormat:@"%@|%@", v5, uUID];
 
   return v7;
 }
 
 - (BOOL)isFrequentSocialGroup
 {
-  v2 = [(PGGraphSocialGroupNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 temporarySet];
+  collection = [(PGGraphSocialGroupNode *)self collection];
+  momentNodes = [collection momentNodes];
+  temporarySet = [momentNodes temporarySet];
 
-  v5 = [PGGraphMomentNode firstAndLastMomentNodesInMomentNodes:v4];
-  v6 = [v5 firstObject];
-  v7 = [v5 lastObject];
-  v8 = [v4 count];
-  v9 = [v7 universalEndDate];
-  v10 = [v6 universalStartDate];
-  [v9 timeIntervalSinceDate:v10];
+  v5 = [PGGraphMomentNode firstAndLastMomentNodesInMomentNodes:temporarySet];
+  firstObject = [v5 firstObject];
+  lastObject = [v5 lastObject];
+  v8 = [temporarySet count];
+  universalEndDate = [lastObject universalEndDate];
+  universalStartDate = [firstObject universalStartDate];
+  [universalEndDate timeIntervalSinceDate:universalStartDate];
   v12 = v11;
 
   if (v12 >= 31536000.0)
@@ -67,11 +67,11 @@
   return v14;
 }
 
-- (id)socialGroupNameWithServiceManager:(id)a3
+- (id)socialGroupNameWithServiceManager:(id)manager
 {
   v31[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  managerCopy = manager;
   v6 = objc_alloc_init(v4);
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v29[0] = MEMORY[0x277D85DD0];
@@ -88,7 +88,7 @@
   v27[3] = &unk_278884E78;
   v10 = v9;
   v28 = v10;
-  [v5 enumeratePersonsForIdentifiers:v8 usingBlock:v27];
+  [managerCopy enumeratePersonsForIdentifiers:v8 usingBlock:v27];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -110,20 +110,20 @@
     if (v15 == 1)
     {
       v18 = MEMORY[0x277CCACA8];
-      v16 = [v12 firstObject];
-      v19 = [v16 objectForKey:@"name"];
+      firstObject = [v12 firstObject];
+      v19 = [firstObject objectForKey:@"name"];
       v17 = [v18 stringWithFormat:@"%@ and Me", v19];
     }
 
     else
     {
       v20 = +[PGLogging sharedLogging];
-      v16 = [v20 loggingConnection];
+      firstObject = [v20 loggingConnection];
 
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_error_impl(&dword_22F0FC000, v16, OS_LOG_TYPE_ERROR, "Social Group has no named people in it", buf, 2u);
+        _os_log_error_impl(&dword_22F0FC000, firstObject, OS_LOG_TYPE_ERROR, "Social Group has no named people in it", buf, 2u);
       }
 
       v17 = @"Unnamed Persons";
@@ -132,8 +132,8 @@
 
   else
   {
-    v16 = [v12 valueForKey:@"name"];
-    v17 = [v16 componentsJoinedByString:@", "];
+    firstObject = [v12 valueForKey:@"name"];
+    v17 = [firstObject componentsJoinedByString:@", "];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -241,30 +241,30 @@ LABEL_11:
 
 - (NSSet)petNodes
 {
-  v2 = [(PGGraphSocialGroupNode *)self collection];
-  v3 = [v2 petNodes];
-  v4 = [v3 temporarySet];
+  collection = [(PGGraphSocialGroupNode *)self collection];
+  petNodes = [collection petNodes];
+  temporarySet = [petNodes temporarySet];
 
-  return v4;
+  return temporarySet;
 }
 
 - (NSSet)personNodes
 {
-  v2 = [(PGGraphSocialGroupNode *)self collection];
-  v3 = [v2 personNodes];
-  v4 = [v3 temporarySet];
+  collection = [(PGGraphSocialGroupNode *)self collection];
+  personNodes = [collection personNodes];
+  temporarySet = [personNodes temporarySet];
 
-  return v4;
+  return temporarySet;
 }
 
 - (NSArray)sortedMemberNodes
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [(PGGraphSocialGroupNode *)self memberNodes];
+  memberNodes = [(PGGraphSocialGroupNode *)self memberNodes];
   v4 = [PGGraph socialGroupMemberSortDescriptorForSocialGroupNode:self];
   v9[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  v6 = [v3 sortedArrayUsingDescriptors:v5];
+  v6 = [memberNodes sortedArrayUsingDescriptors:v5];
 
   v7 = *MEMORY[0x277D85DE8];
 
@@ -273,26 +273,26 @@ LABEL_11:
 
 - (NSSet)memberNodes
 {
-  v2 = [(PGGraphSocialGroupNode *)self collection];
-  v3 = [v2 memberNodes];
-  v4 = [v3 temporarySet];
+  collection = [(PGGraphSocialGroupNode *)self collection];
+  memberNodes = [collection memberNodes];
+  temporarySet = [memberNodes temporarySet];
 
-  return v4;
+  return temporarySet;
 }
 
-- (unint64_t)rankInGraph:(id)a3
+- (unint64_t)rankInGraph:(id)graph
 {
-  v4 = [a3 socialGroupNodesSortedByImportance];
-  v5 = [v4 indexOfObject:self];
+  socialGroupNodesSortedByImportance = [graph socialGroupNodesSortedByImportance];
+  v5 = [socialGroupNodesSortedByImportance indexOfObject:self];
 
   return v5;
 }
 
-- (void)updatePropertiesWithPersistedSocialGroup:(id)a3 graph:(id)a4
+- (void)updatePropertiesWithPersistedSocialGroup:(id)group graph:(id)graph
 {
-  v6 = a4;
-  v7 = [a3 uuid];
-  [v6 persistModelProperty:v7 forKey:@"persistedUUID" forNodeWithIdentifier:{-[MANode identifier](self, "identifier")}];
+  graphCopy = graph;
+  uuid = [group uuid];
+  [graphCopy persistModelProperty:uuid forKey:@"persistedUUID" forNodeWithIdentifier:{-[MANode identifier](self, "identifier")}];
 }
 
 - (id)persistedUUID
@@ -355,11 +355,11 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ![v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (!propertiesCopy || ![propertiesCopy count])
   {
     goto LABEL_11;
   }
@@ -368,8 +368,8 @@ LABEL_11:
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 intValue];
-    if (v8 != [(NSNumber *)self->_uuid intValue])
+    intValue = [v6 intValue];
+    if (intValue != [(NSNumber *)self->_uuid intValue])
     {
       goto LABEL_12;
     }
@@ -403,8 +403,8 @@ LABEL_12:
   if (v12)
   {
     v13 = v12;
-    v14 = [v12 stringValue];
-    v15 = v14 == self->_persistedUUID;
+    stringValue = [v12 stringValue];
+    v15 = stringValue == self->_persistedUUID;
   }
 
   else
@@ -418,41 +418,41 @@ LABEL_13:
   return v15;
 }
 
-- (PGGraphSocialGroupNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphSocialGroupNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v6 = a5;
-  v7 = [v6 objectForKeyedSubscript:@"id"];
-  v8 = [v7 integerValue];
+  propertiesCopy = properties;
+  v7 = [propertiesCopy objectForKeyedSubscript:@"id"];
+  integerValue = [v7 integerValue];
 
-  v9 = [v6 objectForKeyedSubscript:@"importance"];
+  v9 = [propertiesCopy objectForKeyedSubscript:@"importance"];
   [v9 doubleValue];
   v11 = v10;
 
-  v12 = [v6 objectForKeyedSubscript:@"isUserVerified"];
-  v13 = [v12 BOOLValue];
+  v12 = [propertiesCopy objectForKeyedSubscript:@"isUserVerified"];
+  bOOLValue = [v12 BOOLValue];
 
-  v14 = [v6 objectForKeyedSubscript:@"persistedUUID"];
+  v14 = [propertiesCopy objectForKeyedSubscript:@"persistedUUID"];
 
-  v15 = [(PGGraphSocialGroupNode *)self initWithSocialGroupIdentifier:v8 importance:v13 isUserVerified:v11];
+  v15 = [(PGGraphSocialGroupNode *)self initWithSocialGroupIdentifier:integerValue importance:bOOLValue isUserVerified:v11];
   persistedUUID = v15->_persistedUUID;
   v15->_persistedUUID = v14;
 
   return v15;
 }
 
-- (PGGraphSocialGroupNode)initWithSocialGroupIdentifier:(int64_t)a3 importance:(double)a4 isUserVerified:(BOOL)a5
+- (PGGraphSocialGroupNode)initWithSocialGroupIdentifier:(int64_t)identifier importance:(double)importance isUserVerified:(BOOL)verified
 {
   v13.receiver = self;
   v13.super_class = PGGraphSocialGroupNode;
   v8 = [(PGGraphNode *)&v13 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:identifier];
     uuid = v8->_uuid;
     v8->_uuid = v9;
 
-    v8->_importance = a4;
-    v8->_isUserVerified = a5;
+    v8->_importance = importance;
+    v8->_isUserVerified = verified;
     persistedUUID = v8->_persistedUUID;
     v8->_persistedUUID = &stru_2843F5C58;
   }
@@ -463,26 +463,26 @@ LABEL_13:
 + (MARelation)memberOfSocialGroup
 {
   v2 = +[PGGraphBelongsToEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 + (id)momentOfSocialGroup
 {
   v2 = +[PGGraphSocialGroupEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
-+ (int64_t)identifierForMemberNodes:(id)a3
++ (int64_t)identifierForMemberNodes:(id)nodes
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nodesCopy = nodes;
   v4 = +[PGGraphSocialGroupNode memberSortDescriptors];
-  v18 = v3;
-  v5 = [v3 sortedArrayUsingDescriptors:v4];
+  v18 = nodesCopy;
+  v5 = [nodesCopy sortedArrayUsingDescriptors:v4];
 
   v21 = 0u;
   v22 = 0u;
@@ -505,22 +505,22 @@ LABEL_13:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 localIdentifier];
-        if ([v13 length])
+        localIdentifier = [v12 localIdentifier];
+        if ([localIdentifier length])
         {
-          v9 ^= [v13 hash];
+          v9 ^= [localIdentifier hash];
         }
 
         else
         {
           v14 = +[PGLogging sharedLogging];
-          v15 = [v14 loggingConnection];
+          loggingConnection = [v14 loggingConnection];
 
-          if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v24 = v12;
-            _os_log_error_impl(&dword_22F0FC000, v15, OS_LOG_TYPE_ERROR, "Error: Member node with no UUID: %@", buf, 0xCu);
+            _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Error: Member node with no UUID: %@", buf, 0xCu);
           }
         }
       }
@@ -569,15 +569,15 @@ LABEL_13:
   return v5;
 }
 
-+ (id)filterWithSocialGroupIdentifier:(int64_t)a3
++ (id)filterWithSocialGroupIdentifier:(int64_t)identifier
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = [a1 filter];
+  filter = [self filter];
   v10 = @"id";
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:identifier];
   v11[0] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v7 = [v4 filterBySettingProperties:v6];
+  v7 = [filter filterBySettingProperties:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 

@@ -1,22 +1,22 @@
 @interface _PXDetailsPlaybackRecord
 - (PXTileIdentifier)tileIdentifier;
-- (_PXDetailsPlaybackRecord)initWithDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5;
+- (_PXDetailsPlaybackRecord)initWithDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference;
 - (int64_t)desiredPlayState;
-- (void)setDesiredPlayState:(int64_t)a3;
-- (void)setTileIdentifier:(PXTileIdentifier *)a3;
+- (void)setDesiredPlayState:(int64_t)state;
+- (void)setTileIdentifier:(PXTileIdentifier *)identifier;
 @end
 
 @implementation _PXDetailsPlaybackRecord
 
-- (void)setTileIdentifier:(PXTileIdentifier *)a3
+- (void)setTileIdentifier:(PXTileIdentifier *)identifier
 {
-  v3 = *&a3->index[1];
-  *&self->_tileIdentifier.length = *&a3->length;
+  v3 = *&identifier->index[1];
+  *&self->_tileIdentifier.length = *&identifier->length;
   *&self->_tileIdentifier.index[1] = v3;
-  v5 = *&a3->index[5];
-  v4 = *&a3->index[7];
-  v6 = *&a3->index[3];
-  self->_tileIdentifier.index[9] = a3->index[9];
+  v5 = *&identifier->index[5];
+  v4 = *&identifier->index[7];
+  v6 = *&identifier->index[3];
+  self->_tileIdentifier.index[9] = identifier->index[9];
   *&self->_tileIdentifier.index[5] = v5;
   *&self->_tileIdentifier.index[7] = v4;
   *&self->_tileIdentifier.index[3] = v6;
@@ -37,44 +37,44 @@
 
 - (int64_t)desiredPlayState
 {
-  v2 = [(PXGridInlinePlaybackRecord *)self geometryReference];
-  v3 = [v2 desiredPlayState];
+  geometryReference = [(PXGridInlinePlaybackRecord *)self geometryReference];
+  desiredPlayState = [geometryReference desiredPlayState];
 
-  return v3 == 1;
+  return desiredPlayState == 1;
 }
 
-- (void)setDesiredPlayState:(int64_t)a3
+- (void)setDesiredPlayState:(int64_t)state
 {
-  if (a3 == 1)
+  if (state == 1)
   {
     [(PXGridInlinePlaybackRecord *)self bestVideoTimeRange];
-    v4 = [(PXGridInlinePlaybackRecord *)self geometryReference];
+    geometryReference = [(PXGridInlinePlaybackRecord *)self geometryReference];
     v7[0] = v7[3];
     v7[1] = v7[4];
     v7[2] = v7[5];
-    [v4 setBestPlaybackTimeRange:v7];
+    [geometryReference setBestPlaybackTimeRange:v7];
 
-    v5 = [(PXGridInlinePlaybackRecord *)self geometryReference];
-    [v5 setDesiredPlayState:1];
+    geometryReference2 = [(PXGridInlinePlaybackRecord *)self geometryReference];
+    [geometryReference2 setDesiredPlayState:1];
   }
 
-  else if (!a3)
+  else if (!state)
   {
-    v6 = [(PXGridInlinePlaybackRecord *)self geometryReference];
-    [v6 setDesiredPlayState:0];
+    geometryReference3 = [(PXGridInlinePlaybackRecord *)self geometryReference];
+    [geometryReference3 setDesiredPlayState:0];
   }
 }
 
-- (_PXDetailsPlaybackRecord)initWithDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5
+- (_PXDetailsPlaybackRecord)initWithDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference
 {
-  v8 = a3;
+  assetCopy = asset;
   v12.receiver = self;
   v12.super_class = _PXDetailsPlaybackRecord;
-  v9 = [(PXGridInlinePlaybackRecord *)&v12 initWithDisplayAsset:v8 mediaProvider:a4 geometryReference:a5];
+  v9 = [(PXGridInlinePlaybackRecord *)&v12 initWithDisplayAsset:assetCopy mediaProvider:provider geometryReference:reference];
   v10 = v9;
   if (v9)
   {
-    PXUpdateInlinePlaybackRecordForPhotoKit(v9, v8);
+    PXUpdateInlinePlaybackRecordForPhotoKit(v9, assetCopy);
   }
 
   return v10;

@@ -1,193 +1,193 @@
 @interface STConcreteCoreDataTransformer
-- (STConcreteCoreDataTransformer)initWithOrganizationControllerConfigurationAdapter:(id)a3 deviceInformationPrimitives:(id)a4 persistentContainer:(id)a5;
+- (STConcreteCoreDataTransformer)initWithOrganizationControllerConfigurationAdapter:(id)adapter deviceInformationPrimitives:(id)primitives persistentContainer:(id)container;
 - (id)communicationConfigurationForLocalUser;
-- (id)communicationConfigurationForUserID:(id)a3;
-- (id)configurationChangeForCoreDataChange:(id)a3 error:(id *)a4;
-- (id)configurationChangeForRelatedConfigurationChange:(id)a3;
-- (id)configurationChangesOfType:(int64_t)a3 userID:(id)a4;
-- (id)deviceStateChangeForCoreDataChanges:(id)a3 error:(id *)a4;
+- (id)communicationConfigurationForUserID:(id)d;
+- (id)configurationChangeForCoreDataChange:(id)change error:(id *)error;
+- (id)configurationChangeForRelatedConfigurationChange:(id)change;
+- (id)configurationChangesOfType:(int64_t)type userID:(id)d;
+- (id)deviceStateChangeForCoreDataChanges:(id)changes error:(id *)error;
 - (id)deviceStateChangeForLocalDevice;
-- (id)downtimeConfigurationForUserID:(id)a3;
-- (id)handleConfigurationChange:(id)a3;
-- (id)handleDeviceStateChange:(id)a3;
-- (id)handleOnDemandDowntimeToggleForUserID:(id)a3;
-- (id)handleSetupConfiguration:(id)a3;
-- (id)setupConfigurationFromSettingsConfigurationChange:(id)a3 familyProvider:(id)a4;
-- (id)updateDatabaseWithFamilyMembers:(id)a3;
+- (id)downtimeConfigurationForUserID:(id)d;
+- (id)handleConfigurationChange:(id)change;
+- (id)handleDeviceStateChange:(id)change;
+- (id)handleOnDemandDowntimeToggleForUserID:(id)d;
+- (id)handleSetupConfiguration:(id)configuration;
+- (id)setupConfigurationFromSettingsConfigurationChange:(id)change familyProvider:(id)provider;
+- (id)updateDatabaseWithFamilyMembers:(id)members;
 @end
 
 @implementation STConcreteCoreDataTransformer
 
 - (id)communicationConfigurationForLocalUser
 {
-  v2 = [(STConcreteCoreDataTransformer *)self persistentContainer];
-  v3 = [STConfigurationCoreDataTransformerComponent communicationConfigurationForLocalUserFromPersistentContainer:v2];
+  persistentContainer = [(STConcreteCoreDataTransformer *)self persistentContainer];
+  v3 = [STConfigurationCoreDataTransformerComponent communicationConfigurationForLocalUserFromPersistentContainer:persistentContainer];
 
   return v3;
 }
 
-- (STConcreteCoreDataTransformer)initWithOrganizationControllerConfigurationAdapter:(id)a3 deviceInformationPrimitives:(id)a4 persistentContainer:(id)a5
+- (STConcreteCoreDataTransformer)initWithOrganizationControllerConfigurationAdapter:(id)adapter deviceInformationPrimitives:(id)primitives persistentContainer:(id)container
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  adapterCopy = adapter;
+  primitivesCopy = primitives;
+  containerCopy = container;
   v18.receiver = self;
   v18.super_class = STConcreteCoreDataTransformer;
   v11 = [(STConcreteCoreDataTransformer *)&v18 init];
   organizationControllerConfigurationAdapter = v11->_organizationControllerConfigurationAdapter;
-  v11->_organizationControllerConfigurationAdapter = v8;
-  v13 = v8;
+  v11->_organizationControllerConfigurationAdapter = adapterCopy;
+  v13 = adapterCopy;
 
   deviceInformationPrimitives = v11->_deviceInformationPrimitives;
-  v11->_deviceInformationPrimitives = v9;
-  v15 = v9;
+  v11->_deviceInformationPrimitives = primitivesCopy;
+  v15 = primitivesCopy;
 
   persistentContainer = v11->_persistentContainer;
-  v11->_persistentContainer = v10;
+  v11->_persistentContainer = containerCopy;
 
   return v11;
 }
 
-- (id)configurationChangeForCoreDataChange:(id)a3 error:(id *)a4
+- (id)configurationChangeForCoreDataChange:(id)change error:(id *)error
 {
-  v6 = a3;
-  v7 = [(STConcreteCoreDataTransformer *)self persistentContainer];
-  v8 = [STConfigurationCoreDataTransformerComponent configurationChangeForCoreDataChange:v6 container:v7 error:a4];
+  changeCopy = change;
+  persistentContainer = [(STConcreteCoreDataTransformer *)self persistentContainer];
+  v8 = [STConfigurationCoreDataTransformerComponent configurationChangeForCoreDataChange:changeCopy container:persistentContainer error:error];
 
   return v8;
 }
 
-- (id)configurationChangeForRelatedConfigurationChange:(id)a3
+- (id)configurationChangeForRelatedConfigurationChange:(id)change
 {
-  v4 = a3;
-  v5 = [(STConcreteCoreDataTransformer *)self persistentContainer];
-  v6 = [STConfigurationCoreDataTransformerComponent configurationChangeForRelatedConfigurationChange:v4 container:v5];
+  changeCopy = change;
+  persistentContainer = [(STConcreteCoreDataTransformer *)self persistentContainer];
+  v6 = [STConfigurationCoreDataTransformerComponent configurationChangeForRelatedConfigurationChange:changeCopy container:persistentContainer];
 
   return v6;
 }
 
-- (id)configurationChangesOfType:(int64_t)a3 userID:(id)a4
+- (id)configurationChangesOfType:(int64_t)type userID:(id)d
 {
-  v6 = a4;
-  v7 = [(STConcreteCoreDataTransformer *)self persistentContainer];
-  v8 = [STConfigurationCoreDataTransformerComponent configurationChangesOfType:a3 userID:v6 containter:v7];
+  dCopy = d;
+  persistentContainer = [(STConcreteCoreDataTransformer *)self persistentContainer];
+  v8 = [STConfigurationCoreDataTransformerComponent configurationChangesOfType:type userID:dCopy containter:persistentContainer];
 
   return v8;
 }
 
-- (id)communicationConfigurationForUserID:(id)a3
+- (id)communicationConfigurationForUserID:(id)d
 {
-  v4 = a3;
-  v5 = [(STConcreteCoreDataTransformer *)self persistentContainer];
-  v6 = [STConfigurationCoreDataTransformerComponent communicationConfigurationForUserID:v4 container:v5];
+  dCopy = d;
+  persistentContainer = [(STConcreteCoreDataTransformer *)self persistentContainer];
+  v6 = [STConfigurationCoreDataTransformerComponent communicationConfigurationForUserID:dCopy container:persistentContainer];
 
   return v6;
 }
 
-- (id)downtimeConfigurationForUserID:(id)a3
+- (id)downtimeConfigurationForUserID:(id)d
 {
-  v4 = a3;
-  v5 = [(STConcreteCoreDataTransformer *)self persistentContainer];
-  v6 = [STConfigurationCoreDataTransformerComponent downtimeConfigurationForUserID:v4 container:v5];
+  dCopy = d;
+  persistentContainer = [(STConcreteCoreDataTransformer *)self persistentContainer];
+  v6 = [STConfigurationCoreDataTransformerComponent downtimeConfigurationForUserID:dCopy container:persistentContainer];
 
   return v6;
 }
 
-- (id)setupConfigurationFromSettingsConfigurationChange:(id)a3 familyProvider:(id)a4
+- (id)setupConfigurationFromSettingsConfigurationChange:(id)change familyProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcreteCoreDataTransformer *)self persistentContainer];
-  v9 = [STConfigurationCoreDataTransformerComponent setupConfigurationFromSettingsConfigurationChange:v7 familyProvider:v6 container:v8];
+  providerCopy = provider;
+  changeCopy = change;
+  persistentContainer = [(STConcreteCoreDataTransformer *)self persistentContainer];
+  v9 = [STConfigurationCoreDataTransformerComponent setupConfigurationFromSettingsConfigurationChange:changeCopy familyProvider:providerCopy container:persistentContainer];
 
   return v9;
 }
 
-- (id)handleConfigurationChange:(id)a3
+- (id)handleConfigurationChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = +[STLog coreDataTransformer];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = changeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handling configuration change: %@", &v9, 0xCu);
   }
 
-  v6 = [(STConcreteCoreDataTransformer *)self organizationControllerConfigurationAdapter];
-  v7 = [v6 handleConfigurationChange:v4];
+  organizationControllerConfigurationAdapter = [(STConcreteCoreDataTransformer *)self organizationControllerConfigurationAdapter];
+  v7 = [organizationControllerConfigurationAdapter handleConfigurationChange:changeCopy];
 
   return v7;
 }
 
-- (id)handleSetupConfiguration:(id)a3
+- (id)handleSetupConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = +[STLog coreDataTransformer];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = configurationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handling setup configuration: %@", &v9, 0xCu);
   }
 
-  v6 = [(STConcreteCoreDataTransformer *)self persistentContainer];
-  v7 = [STConfigurationCoreDataTransformerComponent handleSetupConfiguration:v4 persistentContainter:v6];
+  persistentContainer = [(STConcreteCoreDataTransformer *)self persistentContainer];
+  v7 = [STConfigurationCoreDataTransformerComponent handleSetupConfiguration:configurationCopy persistentContainter:persistentContainer];
 
   return v7;
 }
 
-- (id)handleOnDemandDowntimeToggleForUserID:(id)a3
+- (id)handleOnDemandDowntimeToggleForUserID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[STLog coreDataTransformer];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handling the on demand downtime toggle for userID: %{public}@", &v9, 0xCu);
   }
 
-  v6 = [(STConcreteCoreDataTransformer *)self persistentContainer];
-  v7 = [STConfigurationCoreDataTransformerComponent handleOnDemandDowntimeToggleForUserID:v4 persistentContainer:v6];
+  persistentContainer = [(STConcreteCoreDataTransformer *)self persistentContainer];
+  v7 = [STConfigurationCoreDataTransformerComponent handleOnDemandDowntimeToggleForUserID:dCopy persistentContainer:persistentContainer];
 
   return v7;
 }
 
-- (id)deviceStateChangeForCoreDataChanges:(id)a3 error:(id *)a4
+- (id)deviceStateChangeForCoreDataChanges:(id)changes error:(id *)error
 {
-  v6 = a3;
-  v7 = [(STConcreteCoreDataTransformer *)self deviceInformationPrimitives];
-  v8 = [(STConcreteCoreDataTransformer *)self persistentContainer];
-  v9 = [STDeviceStateCoreDataTransformerComponent deviceStateChangeForCoreDataChanges:v6 deviceInformationPrimitives:v7 container:v8 error:a4];
+  changesCopy = changes;
+  deviceInformationPrimitives = [(STConcreteCoreDataTransformer *)self deviceInformationPrimitives];
+  persistentContainer = [(STConcreteCoreDataTransformer *)self persistentContainer];
+  v9 = [STDeviceStateCoreDataTransformerComponent deviceStateChangeForCoreDataChanges:changesCopy deviceInformationPrimitives:deviceInformationPrimitives container:persistentContainer error:error];
 
   return v9;
 }
 
 - (id)deviceStateChangeForLocalDevice
 {
-  v3 = [(STConcreteCoreDataTransformer *)self deviceInformationPrimitives];
-  v4 = [(STConcreteCoreDataTransformer *)self persistentContainer];
-  v5 = [STDeviceStateCoreDataTransformerComponent deviceStateChangeForLocalDeviceUsingDeviceInformationPrimitives:v3 persistentContainer:v4];
+  deviceInformationPrimitives = [(STConcreteCoreDataTransformer *)self deviceInformationPrimitives];
+  persistentContainer = [(STConcreteCoreDataTransformer *)self persistentContainer];
+  v5 = [STDeviceStateCoreDataTransformerComponent deviceStateChangeForLocalDeviceUsingDeviceInformationPrimitives:deviceInformationPrimitives persistentContainer:persistentContainer];
 
   return v5;
 }
 
-- (id)handleDeviceStateChange:(id)a3
+- (id)handleDeviceStateChange:(id)change
 {
-  v4 = a3;
-  v5 = [(STConcreteCoreDataTransformer *)self deviceInformationPrimitives];
-  v6 = [(STConcreteCoreDataTransformer *)self persistentContainer];
-  v7 = [STDeviceStateCoreDataTransformerComponent handleDeviceStateChange:v4 deviceInformationPrimitives:v5 container:v6];
+  changeCopy = change;
+  deviceInformationPrimitives = [(STConcreteCoreDataTransformer *)self deviceInformationPrimitives];
+  persistentContainer = [(STConcreteCoreDataTransformer *)self persistentContainer];
+  v7 = [STDeviceStateCoreDataTransformerComponent handleDeviceStateChange:changeCopy deviceInformationPrimitives:deviceInformationPrimitives container:persistentContainer];
 
   return v7;
 }
 
-- (id)updateDatabaseWithFamilyMembers:(id)a3
+- (id)updateDatabaseWithFamilyMembers:(id)members
 {
-  v4 = a3;
-  v5 = [(STConcreteCoreDataTransformer *)self persistentContainer];
-  v6 = [STFamilyInformationCoreDataTransformerComponent persistFamilyInformationFromFamilyMembers:v4 container:v5];
+  membersCopy = members;
+  persistentContainer = [(STConcreteCoreDataTransformer *)self persistentContainer];
+  v6 = [STFamilyInformationCoreDataTransformerComponent persistFamilyInformationFromFamilyMembers:membersCopy container:persistentContainer];
 
   return v6;
 }

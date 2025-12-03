@@ -1,17 +1,17 @@
 @interface AVCAuditToken
-+ (id)deserializeAuditTokens:(id)a3;
-+ (id)processIdentifiersFromAuditTokens:(id)a3;
-+ (id)serializeAuditTokens:(id)a3;
++ (id)deserializeAuditTokens:(id)tokens;
++ (id)processIdentifiersFromAuditTokens:(id)tokens;
++ (id)serializeAuditTokens:(id)tokens;
 - ($115C4C562B26FF47E01F9F4EA65B5887)token;
-- (AVCAuditToken)initWithAuditToken:(id *)a3;
-- (AVCAuditToken)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AVCAuditToken)initWithAuditToken:(id *)token;
+- (AVCAuditToken)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVCAuditToken
 
-- (AVCAuditToken)initWithAuditToken:(id *)a3
+- (AVCAuditToken)initWithAuditToken:(id *)token
 {
   v23 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -25,7 +25,7 @@ LABEL_22:
     return 0;
   }
 
-  if (!VCUtil_AuditTokenValid(a3))
+  if (!VCUtil_AuditTokenValid(token))
   {
     if (objc_opt_class() == v4)
     {
@@ -103,19 +103,19 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v5 = *a3->var0;
-  *(v4 + 24) = *&a3->var0[4];
+  v5 = *token->var0;
+  *(v4 + 24) = *&token->var0[4];
   *(v4 + 8) = v5;
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:&self->_token length:32];
-  [a3 encodeObject:v4 forKey:@"auditToken"];
+  [coder encodeObject:v4 forKey:@"auditToken"];
 }
 
-- (AVCAuditToken)initWithCoder:(id)a3
+- (AVCAuditToken)initWithCoder:(id)coder
 {
   v23 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -129,7 +129,7 @@ LABEL_22:
     return 0;
   }
 
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"auditToken"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"auditToken"];
   if (!v5)
   {
     if (objc_opt_class() == v4)
@@ -212,11 +212,11 @@ LABEL_22:
   return v4;
 }
 
-+ (id)serializeAuditTokens:(id)a3
++ (id)serializeAuditTokens:(id)tokens
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v6[0] = 0;
-  v3 = [a3 copy];
+  v3 = [tokens copy];
   v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:v6];
 
   if (v6[0])
@@ -234,7 +234,7 @@ LABEL_22:
   return v4;
 }
 
-+ (id)deserializeAuditTokens:(id)a3
++ (id)deserializeAuditTokens:(id)tokens
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -242,7 +242,7 @@ LABEL_22:
   v9[0] = objc_opt_class();
   v9[1] = objc_opt_class();
   v5 = [v4 setWithArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v9, 2)}];
-  v6 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v5 fromData:a3 error:&v8];
+  v6 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v5 fromData:tokens error:&v8];
   if (v8)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -258,15 +258,15 @@ LABEL_22:
   return v6;
 }
 
-+ (id)processIdentifiersFromAuditTokens:(id)a3
++ (id)processIdentifiersFromAuditTokens:(id)tokens
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  v5 = [tokens countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v5)
   {
     v6 = v5;
@@ -278,7 +278,7 @@ LABEL_22:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(tokens);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
@@ -292,21 +292,21 @@ LABEL_22:
           memset(&v11, 0, sizeof(v11));
         }
 
-        [v4 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", audit_token_to_pid(&v11))}];
+        [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", audit_token_to_pid(&v11))}];
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      v6 = [tokens countByEnumeratingWithState:&v13 objects:v12 count:16];
     }
 
     while (v6);
   }
 
-  return v4;
+  return array;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v9 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -319,9 +319,9 @@ LABEL_22:
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
   v7 = v5;
   v8 = v5;
-  if (a3)
+  if (equal)
   {
-    [a3 token];
+    [equal token];
   }
 
   else

@@ -1,13 +1,13 @@
 @interface SUSUIServiceManager
 + (id)sharedInstance;
-- (BOOL)isServiceRegistered:(id)a3;
-- (Class)classForService:(Class)a3;
-- (Class)classForServiceName:(id)a3;
+- (BOOL)isServiceRegistered:(id)registered;
+- (Class)classForService:(Class)service;
+- (Class)classForServiceName:(id)name;
 - (SUSUIServiceManager)init;
 - (id)mockedServicesMap;
 - (void)initialize;
 - (void)registerMockClasses;
-- (void)registerServiceWithName:(id)a3 forServiceClass:(Class)a4;
+- (void)registerServiceWithName:(id)name forServiceClass:(Class)class;
 @end
 
 @implementation SUSUIServiceManager
@@ -47,9 +47,9 @@ uint64_t __37__SUSUIServiceManager_sharedInstance__block_invoke()
   objc_storeStrong(&v9, v6);
   if (v6)
   {
-    v2 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     registeredServices = v9->_registeredServices;
-    v9->_registeredServices = v2;
+    v9->_registeredServices = dictionary;
     MEMORY[0x277D82BD8](registeredServices);
   }
 
@@ -61,12 +61,12 @@ uint64_t __37__SUSUIServiceManager_sharedInstance__block_invoke()
 - (void)initialize
 {
   v14 = *MEMORY[0x277D85DE8];
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   if (![(SUSUIServiceManager *)self initialized])
   {
-    [(SUSUIServiceManager *)v11 setInitialized:1];
-    [(SUSUIServiceManager *)v11 reset];
+    [(SUSUIServiceManager *)selfCopy setInitialized:1];
+    [(SUSUIServiceManager *)selfCopy reset];
     v10[0] = _SUSUILoggingFacility();
     v9 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v10[0], OS_LOG_TYPE_DEFAULT))
@@ -106,23 +106,23 @@ uint64_t __37__SUSUIServiceManager_sharedInstance__block_invoke()
   *MEMORY[0x277D85DE8];
 }
 
-- (void)registerServiceWithName:(id)a3 forServiceClass:(Class)a4
+- (void)registerServiceWithName:(id)name forServiceClass:(Class)class
 {
   v17 = *MEMORY[0x277D85DE8];
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = a4;
-  if (location[0] && v11)
+  objc_storeStrong(location, name);
+  classCopy = class;
+  if (location[0] && classCopy)
   {
-    if ([(NSMutableDictionary *)v13->_registeredServices objectForKey:location[0]])
+    if ([(NSMutableDictionary *)selfCopy->_registeredServices objectForKey:location[0]])
     {
       v7 = _SUSUILoggingFacility();
       v6 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_2_2_8_64_8_64(v15, location[0], v11);
+        __os_log_helper_16_2_2_8_64_8_64(v15, location[0], classCopy);
         _os_log_error_impl(&dword_26AC94000, v7, v6, "Failed to register service with name '%@' for class '%@'. Service with this name is already registered.", v15, 0x16u);
       }
 
@@ -135,12 +135,12 @@ uint64_t __37__SUSUIServiceManager_sharedInstance__block_invoke()
       v5 = _SUSUILoggingFacility();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_2_2_8_64_8_64(v14, location[0], v11);
+        __os_log_helper_16_2_2_8_64_8_64(v14, location[0], classCopy);
         _os_log_impl(&dword_26AC94000, v5, OS_LOG_TYPE_DEFAULT, "Registering service with name '%@' for class '%@'.", v14, 0x16u);
       }
 
       objc_storeStrong(&v5, 0);
-      [(NSMutableDictionary *)v13->_registeredServices setObject:v11 forKeyedSubscript:location[0]];
+      [(NSMutableDictionary *)selfCopy->_registeredServices setObject:classCopy forKeyedSubscript:location[0]];
       v8 = 0;
     }
   }
@@ -151,7 +151,7 @@ uint64_t __37__SUSUIServiceManager_sharedInstance__block_invoke()
     type = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v16, location[0], v11);
+      __os_log_helper_16_2_2_8_64_8_64(v16, location[0], classCopy);
       _os_log_error_impl(&dword_26AC94000, oslog, type, "Failed to register service with name '%@' for class '%@'. Service name and class must not be nil.", v16, 0x16u);
     }
 
@@ -163,43 +163,43 @@ uint64_t __37__SUSUIServiceManager_sharedInstance__block_invoke()
   *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isServiceRegistered:(id)a3
+- (BOOL)isServiceRegistered:(id)registered
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(NSMutableDictionary *)v6->_registeredServices objectForKey:location[0]]!= 0;
+  objc_storeStrong(location, registered);
+  v4 = [(NSMutableDictionary *)selfCopy->_registeredServices objectForKey:location[0]]!= 0;
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (Class)classForService:(Class)a3
+- (Class)classForService:(Class)service
 {
   registeredServices = self->_registeredServices;
-  v6 = NSStringFromClass(a3);
+  v6 = NSStringFromClass(service);
   v7 = [(NSMutableDictionary *)registeredServices objectForKey:?];
   MEMORY[0x277D82BD8](v6);
   if (v7)
   {
-    v4 = v7;
+    serviceCopy = v7;
   }
 
   else
   {
-    v4 = a3;
+    serviceCopy = service;
   }
 
-  return v4;
+  return serviceCopy;
 }
 
-- (Class)classForServiceName:(id)a3
+- (Class)classForServiceName:(id)name
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(NSMutableDictionary *)v6->_registeredServices objectForKey:location[0]];
+  objc_storeStrong(location, name);
+  v4 = [(NSMutableDictionary *)selfCopy->_registeredServices objectForKey:location[0]];
   objc_storeStrong(location, 0);
 
   return v4;
@@ -208,7 +208,7 @@ uint64_t __37__SUSUIServiceManager_sharedInstance__block_invoke()
 - (void)registerMockClasses
 {
   v39 = *MEMORY[0x277D85DE8];
-  v35 = self;
+  selfCopy = self;
   v34[1] = a2;
   v34[0] = [(SUSUIServiceManager *)self mockedServicesMap];
   memset(__b, 0, sizeof(__b));
@@ -246,10 +246,10 @@ uint64_t __37__SUSUIServiceManager_sharedInstance__block_invoke()
           }
 
           v30 = *(v29[1] + 8 * v14);
-          v10 = v35;
-          v11 = [v30 resolvedServiceClassName];
-          -[SUSUIServiceManager registerServiceWithName:forServiceClass:](v10, "registerServiceWithName:forServiceClass:", v11, [v30 mockedServiceClass]);
-          MEMORY[0x277D82BD8](v11);
+          v10 = selfCopy;
+          resolvedServiceClassName = [v30 resolvedServiceClassName];
+          -[SUSUIServiceManager registerServiceWithName:forServiceClass:](v10, "registerServiceWithName:forServiceClass:", resolvedServiceClassName, [v30 mockedServiceClass]);
+          MEMORY[0x277D82BD8](resolvedServiceClassName);
           oslog = _SUSUILoggingFacility();
           type = OS_LOG_TYPE_DEFAULT;
           if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -260,15 +260,15 @@ uint64_t __37__SUSUIServiceManager_sharedInstance__block_invoke()
             v2 = MEMORY[0x277D82BE0](v9);
             v26 = v2;
             v3 = v33;
-            v8 = [v30 resolvedServiceClassName];
-            v4 = MEMORY[0x277D82BE0](v8);
+            resolvedServiceClassName2 = [v30 resolvedServiceClassName];
+            v4 = MEMORY[0x277D82BE0](resolvedServiceClassName2);
             v25 = v4;
             v7 = NSStringFromClass([v30 mockedServiceClass]);
             v24 = MEMORY[0x277D82BE0](v7);
             __os_log_helper_16_2_5_8_32_8_64_8_64_8_64_8_64(v36, "[SUSUIServiceManager(XCUI) registerMockClasses]", v2, v3, v4, v24);
             _os_log_impl(&dword_26AC94000, log, v6, "%s: Registering mock mapping for service %@ (%@): %@ -> %@", v36, 0x34u);
             MEMORY[0x277D82BD8](v7);
-            MEMORY[0x277D82BD8](v8);
+            MEMORY[0x277D82BD8](resolvedServiceClassName2);
             MEMORY[0x277D82BD8](v9);
             objc_storeStrong(&v24, 0);
             objc_storeStrong(&v25, 0);

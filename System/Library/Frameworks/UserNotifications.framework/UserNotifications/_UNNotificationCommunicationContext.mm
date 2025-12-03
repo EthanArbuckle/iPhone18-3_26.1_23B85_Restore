@@ -1,22 +1,22 @@
 @interface _UNNotificationCommunicationContext
 - (BOOL)isAvatarImagePossible;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)allContacts;
 - (NSString)preferredDescription;
 - (NSString)preferredRecipientsSummary;
 - (NSString)preferredSenderSummary;
-- (_UNNotificationCommunicationContext)initWithCoder:(id)a3;
-- (id)_initWithIdentifier:(id)a3 associatedObjectUri:(id)a4 bundleIdentifier:(id)a5 displayName:(id)a6 sender:(id)a7 recipients:(id)a8 contentURL:(id)a9 imageName:(id)a10 systemImage:(BOOL)a11 mentionsCurrentUser:(BOOL)a12 notifyRecipientAnyway:(BOOL)a13 replyToCurrentUser:(BOOL)a14 recipientCount:(unint64_t)a15 capabilities:(int64_t)a16 businessCorrespondence:(BOOL)a17;
-- (id)_summaryFromContacts:(id)a3 effectiveCount:(unint64_t)a4 includeMe:(BOOL)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (_UNNotificationCommunicationContext)initWithCoder:(id)coder;
+- (id)_initWithIdentifier:(id)identifier associatedObjectUri:(id)uri bundleIdentifier:(id)bundleIdentifier displayName:(id)name sender:(id)sender recipients:(id)recipients contentURL:(id)l imageName:(id)self0 systemImage:(BOOL)self1 mentionsCurrentUser:(BOOL)self2 notifyRecipientAnyway:(BOOL)self3 replyToCurrentUser:(BOOL)self4 recipientCount:(unint64_t)self5 capabilities:(int64_t)self6 businessCorrespondence:(BOOL)self7;
+- (id)_summaryFromContacts:(id)contacts effectiveCount:(unint64_t)count includeMe:(BOOL)me;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)_effectiveAllContactsCount;
 - (unint64_t)_effectiveRecipientCount;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UNNotificationCommunicationContext
@@ -37,20 +37,20 @@
 {
   if (self->_sender)
   {
-    v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v4 = [(_UNNotificationCommunicationContext *)self sender];
-    [v3 addObject:v4];
+    recipients2 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    sender = [(_UNNotificationCommunicationContext *)self sender];
+    [recipients2 addObject:sender];
 
-    v5 = [(_UNNotificationCommunicationContext *)self recipients];
-    [v3 addObjectsFromArray:v5];
+    recipients = [(_UNNotificationCommunicationContext *)self recipients];
+    [recipients2 addObjectsFromArray:recipients];
   }
 
   else
   {
-    v3 = [(_UNNotificationCommunicationContext *)self recipients];
+    recipients2 = [(_UNNotificationCommunicationContext *)self recipients];
   }
 
-  return v3;
+  return recipients2;
 }
 
 - (NSString)preferredSenderSummary
@@ -58,16 +58,16 @@
   sender = self->_sender;
   if (sender)
   {
-    v4 = [(_UNNotificationContact *)sender preferredName];
+    preferredName = [(_UNNotificationContact *)sender preferredName];
   }
 
   else
   {
-    v5 = [(_UNNotificationCommunicationContext *)self recipients];
-    v4 = [(_UNNotificationCommunicationContext *)self _summaryFromContacts:v5 effectiveCount:[(_UNNotificationCommunicationContext *)self _effectiveRecipientCount] includeMe:0];
+    recipients = [(_UNNotificationCommunicationContext *)self recipients];
+    preferredName = [(_UNNotificationCommunicationContext *)self _summaryFromContacts:recipients effectiveCount:[(_UNNotificationCommunicationContext *)self _effectiveRecipientCount] includeMe:0];
   }
 
-  return v4;
+  return preferredName;
 }
 
 - (NSString)preferredRecipientsSummary
@@ -97,11 +97,11 @@
   if (v5)
   {
     v6 = v5;
-    v7 = [(_UNNotificationCommunicationContext *)self preferredDescription];
-    if (v7)
+    preferredDescription = [(_UNNotificationCommunicationContext *)self preferredDescription];
+    if (preferredDescription)
     {
       v8 = UNLocalizedFormatStringForKey(@"%@%@", @"COMMUNICATION_CONTEXT_CONTACT_SUMMARY_WITH_ACTION_AND_GROUP_NAME");
-      v4 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v8, v6, v7];
+      v4 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v8, v6, preferredDescription];
 
 LABEL_16:
       goto LABEL_17;
@@ -114,16 +114,16 @@ LABEL_15:
   }
 
 LABEL_11:
-  v9 = [(_UNNotificationCommunicationContext *)self displayName];
-  v6 = v9;
-  if (!v9)
+  displayName = [(_UNNotificationCommunicationContext *)self displayName];
+  v6 = displayName;
+  if (!displayName)
   {
-    v7 = [(_UNNotificationCommunicationContext *)self recipients];
-    v10 = [(_UNNotificationCommunicationContext *)self _summaryFromContacts:v7 effectiveCount:[(_UNNotificationCommunicationContext *)self _effectiveRecipientCount] includeMe:1];
+    preferredDescription = [(_UNNotificationCommunicationContext *)self recipients];
+    v10 = [(_UNNotificationCommunicationContext *)self _summaryFromContacts:preferredDescription effectiveCount:[(_UNNotificationCommunicationContext *)self _effectiveRecipientCount] includeMe:1];
     goto LABEL_15;
   }
 
-  v6 = v9;
+  v6 = displayName;
   v4 = v6;
 LABEL_17:
 
@@ -134,16 +134,16 @@ LABEL_18:
 
 - (unint64_t)_effectiveAllContactsCount
 {
-  v3 = [(_UNNotificationCommunicationContext *)self _effectiveRecipientCount];
-  v4 = [(_UNNotificationCommunicationContext *)self sender];
-  if (v4)
+  _effectiveRecipientCount = [(_UNNotificationCommunicationContext *)self _effectiveRecipientCount];
+  sender = [(_UNNotificationCommunicationContext *)self sender];
+  if (sender)
   {
-    v5 = v3 + 1;
+    v5 = _effectiveRecipientCount + 1;
   }
 
   else
   {
-    v5 = v3;
+    v5 = _effectiveRecipientCount;
   }
 
   return v5;
@@ -151,112 +151,112 @@ LABEL_18:
 
 - (unint64_t)_effectiveRecipientCount
 {
-  v3 = [(_UNNotificationCommunicationContext *)self recipientCount];
-  v4 = [(_UNNotificationCommunicationContext *)self recipients];
-  v5 = [v4 count];
+  recipientCount = [(_UNNotificationCommunicationContext *)self recipientCount];
+  recipients = [(_UNNotificationCommunicationContext *)self recipients];
+  v5 = [recipients count];
 
-  if (v3 <= v5)
+  if (recipientCount <= v5)
   {
     return v5;
   }
 
   else
   {
-    return v3;
+    return recipientCount;
   }
 }
 
 - (NSString)preferredDescription
 {
-  v3 = [(_UNNotificationCommunicationContext *)self displayName];
-  if ([v3 length])
+  displayName = [(_UNNotificationCommunicationContext *)self displayName];
+  if ([displayName length])
   {
-    v4 = [(_UNNotificationCommunicationContext *)self displayName];
+    displayName2 = [(_UNNotificationCommunicationContext *)self displayName];
   }
 
   else
   {
-    v5 = [(_UNNotificationCommunicationContext *)self allContacts];
-    v6 = [(_UNNotificationCommunicationContext *)self _summaryFromContacts:v5 effectiveCount:[(_UNNotificationCommunicationContext *)self _effectiveAllContactsCount] includeMe:0];
+    allContacts = [(_UNNotificationCommunicationContext *)self allContacts];
+    v6 = [(_UNNotificationCommunicationContext *)self _summaryFromContacts:allContacts effectiveCount:[(_UNNotificationCommunicationContext *)self _effectiveAllContactsCount] includeMe:0];
     v7 = v6;
     if (v6)
     {
-      v4 = v6;
+      displayName2 = v6;
     }
 
     else
     {
-      v8 = [(_UNNotificationCommunicationContext *)self allContacts];
-      v9 = [v8 firstObject];
-      v4 = [v9 preferredName];
+      allContacts2 = [(_UNNotificationCommunicationContext *)self allContacts];
+      firstObject = [allContacts2 firstObject];
+      displayName2 = [firstObject preferredName];
     }
   }
 
-  return v4;
+  return displayName2;
 }
 
-- (id)_initWithIdentifier:(id)a3 associatedObjectUri:(id)a4 bundleIdentifier:(id)a5 displayName:(id)a6 sender:(id)a7 recipients:(id)a8 contentURL:(id)a9 imageName:(id)a10 systemImage:(BOOL)a11 mentionsCurrentUser:(BOOL)a12 notifyRecipientAnyway:(BOOL)a13 replyToCurrentUser:(BOOL)a14 recipientCount:(unint64_t)a15 capabilities:(int64_t)a16 businessCorrespondence:(BOOL)a17
+- (id)_initWithIdentifier:(id)identifier associatedObjectUri:(id)uri bundleIdentifier:(id)bundleIdentifier displayName:(id)name sender:(id)sender recipients:(id)recipients contentURL:(id)l imageName:(id)self0 systemImage:(BOOL)self1 mentionsCurrentUser:(BOOL)self2 notifyRecipientAnyway:(BOOL)self3 replyToCurrentUser:(BOOL)self4 recipientCount:(unint64_t)self5 capabilities:(int64_t)self6 businessCorrespondence:(BOOL)self7
 {
-  v23 = a3;
-  v24 = a4;
-  v25 = a5;
-  v26 = a6;
-  v27 = a7;
-  v28 = a8;
-  v29 = a9;
-  v30 = a10;
+  identifierCopy = identifier;
+  uriCopy = uri;
+  bundleIdentifierCopy = bundleIdentifier;
+  nameCopy = name;
+  senderCopy = sender;
+  recipientsCopy = recipients;
+  lCopy = l;
+  imageNameCopy = imageName;
   v49.receiver = self;
   v49.super_class = _UNNotificationCommunicationContext;
   v31 = [(_UNNotificationCommunicationContext *)&v49 init];
   if (v31)
   {
-    v32 = [v23 copy];
+    v32 = [identifierCopy copy];
     identifier = v31->_identifier;
     v31->_identifier = v32;
 
-    v34 = [v24 copy];
+    v34 = [uriCopy copy];
     associatedObjectUri = v31->_associatedObjectUri;
     v31->_associatedObjectUri = v34;
 
-    v36 = [v25 copy];
+    v36 = [bundleIdentifierCopy copy];
     bundleIdentifier = v31->_bundleIdentifier;
     v31->_bundleIdentifier = v36;
 
-    v38 = [v26 copy];
+    v38 = [nameCopy copy];
     displayName = v31->_displayName;
     v31->_displayName = v38;
 
-    v40 = [v27 copy];
+    v40 = [senderCopy copy];
     sender = v31->_sender;
     v31->_sender = v40;
 
-    v42 = [v28 copy];
+    v42 = [recipientsCopy copy];
     recipients = v31->_recipients;
     v31->_recipients = v42;
 
-    v44 = [v29 copy];
+    v44 = [lCopy copy];
     contentURL = v31->_contentURL;
     v31->_contentURL = v44;
 
-    v46 = [v30 copy];
+    v46 = [imageNameCopy copy];
     imageName = v31->_imageName;
     v31->_imageName = v46;
 
-    v31->_systemImage = a11;
-    v31->_mentionsCurrentUser = a12;
-    v31->_notifyRecipientAnyway = a13;
-    v31->_replyToCurrentUser = a14;
-    v31->_recipientCount = a15;
-    v31->_capabilities = a16;
-    v31->_businessCorrespondence = a17;
+    v31->_systemImage = image;
+    v31->_mentionsCurrentUser = user;
+    v31->_notifyRecipientAnyway = anyway;
+    v31->_replyToCurrentUser = currentUser;
+    v31->_recipientCount = count;
+    v31->_capabilities = capabilities;
+    v31->_businessCorrespondence = correspondence;
   }
 
   return v31;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -270,212 +270,212 @@ LABEL_20:
     }
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if (!v5)
   {
     goto LABEL_20;
   }
 
-  v6 = [(_UNNotificationCommunicationContext *)self identifier];
-  v7 = [v5 identifier];
-  v8 = UNEqualStrings(v6, v7);
+  identifier = [(_UNNotificationCommunicationContext *)self identifier];
+  identifier2 = [v5 identifier];
+  v8 = UNEqualStrings(identifier, identifier2);
 
   if (!v8)
   {
     goto LABEL_20;
   }
 
-  v9 = [(_UNNotificationCommunicationContext *)self associatedObjectUri];
-  v10 = [v5 associatedObjectUri];
-  v11 = UNEqualStrings(v9, v10);
+  associatedObjectUri = [(_UNNotificationCommunicationContext *)self associatedObjectUri];
+  associatedObjectUri2 = [v5 associatedObjectUri];
+  v11 = UNEqualStrings(associatedObjectUri, associatedObjectUri2);
 
   if (!v11)
   {
     goto LABEL_20;
   }
 
-  v12 = [(_UNNotificationCommunicationContext *)self bundleIdentifier];
-  v13 = [v5 bundleIdentifier];
-  v14 = UNEqualStrings(v12, v13);
+  bundleIdentifier = [(_UNNotificationCommunicationContext *)self bundleIdentifier];
+  bundleIdentifier2 = [v5 bundleIdentifier];
+  v14 = UNEqualStrings(bundleIdentifier, bundleIdentifier2);
 
   if (!v14)
   {
     goto LABEL_20;
   }
 
-  v15 = [(_UNNotificationCommunicationContext *)self displayName];
-  v16 = [v5 displayName];
-  v17 = UNEqualStrings(v15, v16);
+  displayName = [(_UNNotificationCommunicationContext *)self displayName];
+  displayName2 = [v5 displayName];
+  v17 = UNEqualStrings(displayName, displayName2);
 
   if (!v17)
   {
     goto LABEL_20;
   }
 
-  v18 = [(_UNNotificationCommunicationContext *)self sender];
-  v19 = [v5 sender];
-  v20 = UNEqualObjects(v18, v19);
+  sender = [(_UNNotificationCommunicationContext *)self sender];
+  sender2 = [v5 sender];
+  v20 = UNEqualObjects(sender, sender2);
 
   if (!v20)
   {
     goto LABEL_20;
   }
 
-  v21 = [(_UNNotificationCommunicationContext *)self recipients];
-  v22 = [v5 recipients];
-  v23 = UNEqualObjects(v21, v22);
+  recipients = [(_UNNotificationCommunicationContext *)self recipients];
+  recipients2 = [v5 recipients];
+  v23 = UNEqualObjects(recipients, recipients2);
 
   if (!v23)
   {
     goto LABEL_20;
   }
 
-  v24 = [(_UNNotificationCommunicationContext *)self contentURL];
-  v25 = [v5 contentURL];
-  v26 = UNEqualObjects(v24, v25);
+  contentURL = [(_UNNotificationCommunicationContext *)self contentURL];
+  contentURL2 = [v5 contentURL];
+  v26 = UNEqualObjects(contentURL, contentURL2);
 
   if (!v26)
   {
     goto LABEL_20;
   }
 
-  v27 = [(_UNNotificationCommunicationContext *)self imageName];
-  v28 = [v5 imageName];
-  v29 = UNEqualObjects(v27, v28);
+  imageName = [(_UNNotificationCommunicationContext *)self imageName];
+  imageName2 = [v5 imageName];
+  v29 = UNEqualObjects(imageName, imageName2);
 
   if (!v29)
   {
     goto LABEL_20;
   }
 
-  v30 = [(_UNNotificationCommunicationContext *)self isSystemImage];
-  if (v30 != [v5 isSystemImage])
+  isSystemImage = [(_UNNotificationCommunicationContext *)self isSystemImage];
+  if (isSystemImage != [v5 isSystemImage])
   {
     goto LABEL_20;
   }
 
-  v31 = [(_UNNotificationCommunicationContext *)self mentionsCurrentUser];
-  if (v31 != [v5 mentionsCurrentUser])
+  mentionsCurrentUser = [(_UNNotificationCommunicationContext *)self mentionsCurrentUser];
+  if (mentionsCurrentUser != [v5 mentionsCurrentUser])
   {
     goto LABEL_20;
   }
 
-  v32 = [(_UNNotificationCommunicationContext *)self notifyRecipientAnyway];
-  if (v32 != [v5 notifyRecipientAnyway])
+  notifyRecipientAnyway = [(_UNNotificationCommunicationContext *)self notifyRecipientAnyway];
+  if (notifyRecipientAnyway != [v5 notifyRecipientAnyway])
   {
     goto LABEL_20;
   }
 
-  v33 = [(_UNNotificationCommunicationContext *)self isReplyToCurrentUser];
-  if (v33 != [v5 isReplyToCurrentUser])
+  isReplyToCurrentUser = [(_UNNotificationCommunicationContext *)self isReplyToCurrentUser];
+  if (isReplyToCurrentUser != [v5 isReplyToCurrentUser])
   {
     goto LABEL_20;
   }
 
-  v34 = [(_UNNotificationCommunicationContext *)self recipientCount];
-  if (v34 != [v5 recipientCount])
+  recipientCount = [(_UNNotificationCommunicationContext *)self recipientCount];
+  if (recipientCount != [v5 recipientCount])
   {
     goto LABEL_20;
   }
 
-  v35 = [(_UNNotificationCommunicationContext *)self capabilities];
-  if (v35 != [v5 capabilities])
+  capabilities = [(_UNNotificationCommunicationContext *)self capabilities];
+  if (capabilities != [v5 capabilities])
   {
     goto LABEL_20;
   }
 
-  v36 = [(_UNNotificationCommunicationContext *)self isBusinessCorrespondence];
-  v37 = v36 ^ [v5 isBusinessCorrespondence] ^ 1;
+  isBusinessCorrespondence = [(_UNNotificationCommunicationContext *)self isBusinessCorrespondence];
+  v37 = isBusinessCorrespondence ^ [v5 isBusinessCorrespondence] ^ 1;
 LABEL_21:
 
   return v37;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v22 = [_UNMutableNotificationCommunicationContext allocWithZone:a3];
-  v21 = [(_UNNotificationCommunicationContext *)self identifier];
-  v20 = [(_UNNotificationCommunicationContext *)self associatedObjectUri];
-  v19 = [(_UNNotificationCommunicationContext *)self bundleIdentifier];
-  v18 = [(_UNNotificationCommunicationContext *)self displayName];
-  v17 = [(_UNNotificationCommunicationContext *)self sender];
-  v4 = [(_UNNotificationCommunicationContext *)self recipients];
-  v5 = [(_UNNotificationCommunicationContext *)self contentURL];
-  v6 = [(_UNNotificationCommunicationContext *)self imageName];
-  v7 = [(_UNNotificationCommunicationContext *)self isSystemImage];
-  v8 = [(_UNNotificationCommunicationContext *)self mentionsCurrentUser];
-  v9 = [(_UNNotificationCommunicationContext *)self notifyRecipientAnyway];
-  v10 = [(_UNNotificationCommunicationContext *)self isReplyToCurrentUser];
-  v11 = [(_UNNotificationCommunicationContext *)self recipientCount];
-  v12 = [(_UNNotificationCommunicationContext *)self capabilities];
+  v22 = [_UNMutableNotificationCommunicationContext allocWithZone:zone];
+  identifier = [(_UNNotificationCommunicationContext *)self identifier];
+  associatedObjectUri = [(_UNNotificationCommunicationContext *)self associatedObjectUri];
+  bundleIdentifier = [(_UNNotificationCommunicationContext *)self bundleIdentifier];
+  displayName = [(_UNNotificationCommunicationContext *)self displayName];
+  sender = [(_UNNotificationCommunicationContext *)self sender];
+  recipients = [(_UNNotificationCommunicationContext *)self recipients];
+  contentURL = [(_UNNotificationCommunicationContext *)self contentURL];
+  imageName = [(_UNNotificationCommunicationContext *)self imageName];
+  isSystemImage = [(_UNNotificationCommunicationContext *)self isSystemImage];
+  mentionsCurrentUser = [(_UNNotificationCommunicationContext *)self mentionsCurrentUser];
+  notifyRecipientAnyway = [(_UNNotificationCommunicationContext *)self notifyRecipientAnyway];
+  isReplyToCurrentUser = [(_UNNotificationCommunicationContext *)self isReplyToCurrentUser];
+  recipientCount = [(_UNNotificationCommunicationContext *)self recipientCount];
+  capabilities = [(_UNNotificationCommunicationContext *)self capabilities];
   LOBYTE(v16) = [(_UNNotificationCommunicationContext *)self isBusinessCorrespondence];
-  BYTE3(v15) = v10;
-  BYTE2(v15) = v9;
-  BYTE1(v15) = v8;
-  LOBYTE(v15) = v7;
-  v13 = [_UNNotificationCommunicationContext _initWithIdentifier:v22 associatedObjectUri:"_initWithIdentifier:associatedObjectUri:bundleIdentifier:displayName:sender:recipients:contentURL:imageName:systemImage:mentionsCurrentUser:notifyRecipientAnyway:replyToCurrentUser:recipientCount:capabilities:businessCorrespondence:" bundleIdentifier:v21 displayName:v20 sender:v19 recipients:v18 contentURL:v17 imageName:v4 systemImage:v5 mentionsCurrentUser:v6 notifyRecipientAnyway:v15 replyToCurrentUser:v11 recipientCount:v12 capabilities:v16 businessCorrespondence:?];
+  BYTE3(v15) = isReplyToCurrentUser;
+  BYTE2(v15) = notifyRecipientAnyway;
+  BYTE1(v15) = mentionsCurrentUser;
+  LOBYTE(v15) = isSystemImage;
+  v13 = [_UNNotificationCommunicationContext _initWithIdentifier:v22 associatedObjectUri:"_initWithIdentifier:associatedObjectUri:bundleIdentifier:displayName:sender:recipients:contentURL:imageName:systemImage:mentionsCurrentUser:notifyRecipientAnyway:replyToCurrentUser:recipientCount:capabilities:businessCorrespondence:" bundleIdentifier:identifier displayName:associatedObjectUri sender:bundleIdentifier recipients:displayName contentURL:sender imageName:recipients systemImage:contentURL mentionsCurrentUser:imageName notifyRecipientAnyway:v15 replyToCurrentUser:recipientCount recipientCount:capabilities capabilities:v16 businessCorrespondence:?];
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  v4 = [(_UNNotificationCommunicationContext *)self identifier];
-  [v12 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(_UNNotificationCommunicationContext *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(_UNNotificationCommunicationContext *)self associatedObjectUri];
-  [v12 encodeObject:v5 forKey:@"associatedObjectUri"];
+  associatedObjectUri = [(_UNNotificationCommunicationContext *)self associatedObjectUri];
+  [coderCopy encodeObject:associatedObjectUri forKey:@"associatedObjectUri"];
 
-  v6 = [(_UNNotificationCommunicationContext *)self bundleIdentifier];
-  [v12 encodeObject:v6 forKey:@"bundleIdentifier"];
+  bundleIdentifier = [(_UNNotificationCommunicationContext *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  v7 = [(_UNNotificationCommunicationContext *)self displayName];
-  [v12 encodeObject:v7 forKey:@"displayName"];
+  displayName = [(_UNNotificationCommunicationContext *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v8 = [(_UNNotificationCommunicationContext *)self recipients];
-  [v12 encodeObject:v8 forKey:@"recipients"];
+  recipients = [(_UNNotificationCommunicationContext *)self recipients];
+  [coderCopy encodeObject:recipients forKey:@"recipients"];
 
-  v9 = [(_UNNotificationCommunicationContext *)self sender];
-  [v12 encodeObject:v9 forKey:@"sender"];
+  sender = [(_UNNotificationCommunicationContext *)self sender];
+  [coderCopy encodeObject:sender forKey:@"sender"];
 
-  v10 = [(_UNNotificationCommunicationContext *)self contentURL];
-  [v12 encodeObject:v10 forKey:@"contentURL"];
+  contentURL = [(_UNNotificationCommunicationContext *)self contentURL];
+  [coderCopy encodeObject:contentURL forKey:@"contentURL"];
 
-  v11 = [(_UNNotificationCommunicationContext *)self imageName];
-  [v12 encodeObject:v11 forKey:@"imageName"];
+  imageName = [(_UNNotificationCommunicationContext *)self imageName];
+  [coderCopy encodeObject:imageName forKey:@"imageName"];
 
-  [v12 encodeBool:-[_UNNotificationCommunicationContext isSystemImage](self forKey:{"isSystemImage"), @"systemImage"}];
-  [v12 encodeBool:-[_UNNotificationCommunicationContext mentionsCurrentUser](self forKey:{"mentionsCurrentUser"), @"mentionsCurrentUser"}];
-  [v12 encodeBool:-[_UNNotificationCommunicationContext notifyRecipientAnyway](self forKey:{"notifyRecipientAnyway"), @"notifyRecipientAnyway"}];
-  [v12 encodeBool:-[_UNNotificationCommunicationContext isReplyToCurrentUser](self forKey:{"isReplyToCurrentUser"), @"replyToCurrentUser"}];
-  [v12 encodeInteger:-[_UNNotificationCommunicationContext recipientCount](self forKey:{"recipientCount"), @"recipientCount"}];
-  [v12 encodeInteger:-[_UNNotificationCommunicationContext capabilities](self forKey:{"capabilities"), @"capabilities"}];
-  [v12 encodeBool:-[_UNNotificationCommunicationContext isBusinessCorrespondence](self forKey:{"isBusinessCorrespondence"), @"businessCorrespondence"}];
+  [coderCopy encodeBool:-[_UNNotificationCommunicationContext isSystemImage](self forKey:{"isSystemImage"), @"systemImage"}];
+  [coderCopy encodeBool:-[_UNNotificationCommunicationContext mentionsCurrentUser](self forKey:{"mentionsCurrentUser"), @"mentionsCurrentUser"}];
+  [coderCopy encodeBool:-[_UNNotificationCommunicationContext notifyRecipientAnyway](self forKey:{"notifyRecipientAnyway"), @"notifyRecipientAnyway"}];
+  [coderCopy encodeBool:-[_UNNotificationCommunicationContext isReplyToCurrentUser](self forKey:{"isReplyToCurrentUser"), @"replyToCurrentUser"}];
+  [coderCopy encodeInteger:-[_UNNotificationCommunicationContext recipientCount](self forKey:{"recipientCount"), @"recipientCount"}];
+  [coderCopy encodeInteger:-[_UNNotificationCommunicationContext capabilities](self forKey:{"capabilities"), @"capabilities"}];
+  [coderCopy encodeBool:-[_UNNotificationCommunicationContext isBusinessCorrespondence](self forKey:{"isBusinessCorrespondence"), @"businessCorrespondence"}];
 }
 
-- (_UNNotificationCommunicationContext)initWithCoder:(id)a3
+- (_UNNotificationCommunicationContext)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"associatedObjectUri"];
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"sender"];
+  coderCopy = coder;
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedObjectUri"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sender"];
   v4 = MEMORY[0x1E695DFD8];
   v5 = objc_opt_class();
   v6 = [v4 setWithObjects:{v5, objc_opt_class(), 0}];
-  v19 = [v3 decodeObjectOfClasses:v6 forKey:@"recipients"];
+  v19 = [coderCopy decodeObjectOfClasses:v6 forKey:@"recipients"];
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"contentURL"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"imageName"];
-  v9 = [v3 decodeBoolForKey:@"systemImage"];
-  v10 = [v3 decodeBoolForKey:@"mentionsCurrentUser"];
-  v11 = [v3 decodeBoolForKey:@"notifyRecipientAnyway"];
-  v12 = [v3 decodeBoolForKey:@"replyToCurrentUser"];
-  v13 = [v3 decodeIntegerForKey:@"recipientCount"];
-  v14 = [v3 decodeIntegerForKey:@"capabilities"];
-  LOBYTE(v4) = [v3 decodeBoolForKey:@"businessCorrespondence"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentURL"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageName"];
+  v9 = [coderCopy decodeBoolForKey:@"systemImage"];
+  v10 = [coderCopy decodeBoolForKey:@"mentionsCurrentUser"];
+  v11 = [coderCopy decodeBoolForKey:@"notifyRecipientAnyway"];
+  v12 = [coderCopy decodeBoolForKey:@"replyToCurrentUser"];
+  v13 = [coderCopy decodeIntegerForKey:@"recipientCount"];
+  v14 = [coderCopy decodeIntegerForKey:@"capabilities"];
+  LOBYTE(v4) = [coderCopy decodeBoolForKey:@"businessCorrespondence"];
 
   LOBYTE(v18) = v4;
   BYTE3(v17) = v12;
@@ -487,18 +487,18 @@ LABEL_21:
   return v15;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UNNotificationCommunicationContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UNNotificationCommunicationContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x1E698E680];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -506,8 +506,8 @@ LABEL_21:
   v10[3] = &unk_1E7CFF910;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;
@@ -515,51 +515,51 @@ LABEL_21:
 
 - (id)succinctDescription
 {
-  v2 = [(_UNNotificationCommunicationContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UNNotificationCommunicationContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(_UNNotificationCommunicationContext *)self identifier];
-  v5 = [v4 un_logDigest];
-  v6 = [v3 appendObject:v5 withName:@"identifier"];
+  identifier = [(_UNNotificationCommunicationContext *)self identifier];
+  un_logDigest = [identifier un_logDigest];
+  v6 = [v3 appendObject:un_logDigest withName:@"identifier"];
 
-  v7 = [(_UNNotificationCommunicationContext *)self bundleIdentifier];
-  v8 = [v3 appendObject:v7 withName:@"bundleIdentifier"];
+  bundleIdentifier = [(_UNNotificationCommunicationContext *)self bundleIdentifier];
+  v8 = [v3 appendObject:bundleIdentifier withName:@"bundleIdentifier"];
 
-  v9 = [(_UNNotificationCommunicationContext *)self displayName];
-  v10 = [v9 un_logDigest];
-  v11 = [v3 appendObject:v10 withName:@"displayName"];
+  displayName = [(_UNNotificationCommunicationContext *)self displayName];
+  un_logDigest2 = [displayName un_logDigest];
+  v11 = [v3 appendObject:un_logDigest2 withName:@"displayName"];
 
-  v12 = [(_UNNotificationCommunicationContext *)self recipients];
-  v13 = [v3 appendInteger:objc_msgSend(v12 withName:{"count"), @"recipientsArrayCount"}];
+  recipients = [(_UNNotificationCommunicationContext *)self recipients];
+  v13 = [v3 appendInteger:objc_msgSend(recipients withName:{"count"), @"recipientsArrayCount"}];
 
-  v14 = [(_UNNotificationCommunicationContext *)self sender];
-  v15 = [v3 appendBool:v14 != 0 withName:@"hasSender"];
+  sender = [(_UNNotificationCommunicationContext *)self sender];
+  v15 = [v3 appendBool:sender != 0 withName:@"hasSender"];
 
-  v16 = [(_UNNotificationCommunicationContext *)self contentURL];
-  v17 = [v3 appendObject:v16 withName:@"contentURL"];
+  contentURL = [(_UNNotificationCommunicationContext *)self contentURL];
+  v17 = [v3 appendObject:contentURL withName:@"contentURL"];
 
-  v18 = [(_UNNotificationCommunicationContext *)self imageName];
-  v19 = [v3 appendObject:v18 withName:@"imageName"];
+  imageName = [(_UNNotificationCommunicationContext *)self imageName];
+  v19 = [v3 appendObject:imageName withName:@"imageName"];
 
   v20 = [v3 appendBool:-[_UNNotificationCommunicationContext isSystemImage](self withName:{"isSystemImage"), @"isSystemImage"}];
   v21 = [v3 appendBool:-[_UNNotificationCommunicationContext mentionsCurrentUser](self withName:{"mentionsCurrentUser"), @"mentionsCurrentUser"}];
   v22 = [v3 appendBool:-[_UNNotificationCommunicationContext notifyRecipientAnyway](self withName:{"notifyRecipientAnyway"), @"notifyRecipientAnyway"}];
   v23 = [v3 appendBool:-[_UNNotificationCommunicationContext isReplyToCurrentUser](self withName:{"isReplyToCurrentUser"), @"isReplyToCurrentUser"}];
   v24 = [v3 appendInteger:-[_UNNotificationCommunicationContext recipientCount](self withName:{"recipientCount"), @"recipientCount"}];
-  v25 = [(_UNNotificationCommunicationContext *)self capabilities];
+  capabilities = [(_UNNotificationCommunicationContext *)self capabilities];
   v26 = &stru_1F308F460;
-  if (!v25)
+  if (!capabilities)
   {
     v26 = @"Unspecified";
   }
 
-  if (v25)
+  if (capabilities)
   {
     v27 = @"Video";
   }
@@ -575,15 +575,15 @@ LABEL_21:
   return v3;
 }
 
-- (id)_summaryFromContacts:(id)a3 effectiveCount:(unint64_t)a4 includeMe:(BOOL)a5
+- (id)_summaryFromContacts:(id)contacts effectiveCount:(unint64_t)count includeMe:(BOOL)me
 {
-  v5 = a5;
+  meCopy = me;
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4 + v5;
+  contactsCopy = contacts;
+  v8 = count + meCopy;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v5)
+  if (meCopy)
   {
     v11 = UNLocalizedStringForKey(@"COMMUNICATION_CONTEXT_CONTACT_SUMMARY_TO_YOU");
     [v9 addObject:v11];
@@ -603,7 +603,7 @@ LABEL_21:
 
   v41 = 0uLL;
   v42 = 0uLL;
-  v13 = v7;
+  v13 = contactsCopy;
   v14 = [v13 countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v14)
   {
@@ -624,8 +624,8 @@ LABEL_8:
         break;
       }
 
-      v19 = [v18 preferredName];
-      if (v19)
+      preferredName = [v18 preferredName];
+      if (preferredName)
       {
         if ([v18 isPreferredNameReal])
         {
@@ -637,7 +637,7 @@ LABEL_8:
           v20 = v10;
         }
 
-        [v20 addObject:v19];
+        [v20 addObject:preferredName];
       }
 
       if (v15 == ++v17)
@@ -743,11 +743,11 @@ LABEL_41:
 
 - (BOOL)isAvatarImagePossible
 {
-  v2 = self;
-  v3 = [(_UNNotificationCommunicationContext *)self bundleIdentifier];
-  LOBYTE(v2) = [(_UNNotificationCommunicationContext *)v2 isAvatarImagePossibleForBundleIdentifier:v3];
+  selfCopy = self;
+  bundleIdentifier = [(_UNNotificationCommunicationContext *)self bundleIdentifier];
+  LOBYTE(selfCopy) = [(_UNNotificationCommunicationContext *)selfCopy isAvatarImagePossibleForBundleIdentifier:bundleIdentifier];
 
-  return v2;
+  return selfCopy;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface LineReader
 - (BOOL)_readNextChunk;
-- (LineReader)initWithFile:(id)a3 andReadingWindowSize:(unint64_t)a4;
+- (LineReader)initWithFile:(id)file andReadingWindowSize:(unint64_t)size;
 - (id)nextLine;
 - (void)dealloc;
 @end
@@ -79,11 +79,11 @@ LABEL_5:
 
         v33 = self->_cursor;
         end = self->_end;
-        v35 = [(NSMutableArray *)self->_lines lastObject];
-        v36 = v35;
+        lastObject = [(NSMutableArray *)self->_lines lastObject];
+        v36 = lastObject;
         if (v33 >= end)
         {
-          v38 = [v35 length];
+          v38 = [lastObject length];
 
           if (v38)
           {
@@ -96,7 +96,7 @@ LABEL_24:
         else
         {
           v37 = self->_leftovers;
-          self->_leftovers = v35;
+          self->_leftovers = lastObject;
         }
 
         [(NSMutableArray *)self->_lines removeLastObject];
@@ -110,19 +110,19 @@ LABEL_24:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v26 = [(NSString *)self->_path description];
-        v27 = [v26 UTF8String];
+        uTF8String = [v26 UTF8String];
         v29 = self->_window;
         v28 = self->_cursor;
         v30 = [v10 description];
-        v31 = [v30 UTF8String];
+        uTF8String2 = [v30 UTF8String];
         *buf = 136446978;
-        v42 = v27;
+        v42 = uTF8String;
         v43 = 2048;
         v44 = v28;
         v45 = 2048;
         v46 = v29;
         v47 = 2082;
-        v48 = v31;
+        v48 = uTF8String2;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Error while reading data chunk, file: %{public}s, offset: %llu, window: %lu, error: %{public}s", buf, 0x2Au);
       }
     }
@@ -137,16 +137,16 @@ LABEL_15:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v20 = [(NSString *)self->_path description];
-    v21 = [v20 UTF8String];
+    uTF8String3 = [v20 UTF8String];
     v22 = self->_cursor;
     v23 = [v6 description];
-    v24 = [v23 UTF8String];
+    uTF8String4 = [v23 UTF8String];
     *buf = 136446722;
-    v42 = v21;
+    v42 = uTF8String3;
     v43 = 2048;
     v44 = v22;
     v45 = 2082;
-    v46 = v24;
+    v46 = uTF8String4;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Error seeking while reading file, file: %{public}s, offset: %llu, error: %{public}s", buf, 0x20u);
   }
 
@@ -165,16 +165,16 @@ LABEL_17:
   [(LineReader *)&v3 dealloc];
 }
 
-- (LineReader)initWithFile:(id)a3 andReadingWindowSize:(unint64_t)a4
+- (LineReader)initWithFile:(id)file andReadingWindowSize:(unint64_t)size
 {
-  v7 = a3;
+  fileCopy = file;
   v31.receiver = self;
   v31.super_class = LineReader;
   v8 = [(LineReader *)&v31 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_path, a3);
+    objc_storeStrong(&v8->_path, file);
     v10 = [NSURL fileURLWithPath:v9->_path];
     v30 = 0;
     v11 = [NSFileHandle fileHandleForReadingFromURL:v10 error:&v30];
@@ -184,7 +184,7 @@ LABEL_17:
 
     if (v9->_handle)
     {
-      v9->_window = a4;
+      v9->_window = size;
       v9->_cursor = 0;
 
       v14 = v9->_handle;
@@ -210,13 +210,13 @@ LABEL_12:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         v21 = [(NSString *)v9->_path description];
-        v26 = [v21 UTF8String];
+        uTF8String = [v21 UTF8String];
         v23 = [v12 description];
-        v27 = [v23 UTF8String];
+        uTF8String2 = [v23 UTF8String];
         *buf = 136446466;
-        v33 = v26;
+        v33 = uTF8String;
         v34 = 2082;
-        v35 = v27;
+        v35 = uTF8String2;
         v25 = "Error trying to determine end of file, file: %{public}s, error: %{public}s";
         goto LABEL_10;
       }
@@ -228,13 +228,13 @@ LABEL_12:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         v21 = [(NSString *)v9->_path description];
-        v22 = [v21 UTF8String];
+        uTF8String3 = [v21 UTF8String];
         v23 = [v12 description];
-        v24 = [v23 UTF8String];
+        uTF8String4 = [v23 UTF8String];
         *buf = 136446466;
-        v33 = v22;
+        v33 = uTF8String3;
         v34 = 2082;
-        v35 = v24;
+        v35 = uTF8String4;
         v25 = "Error getting filehandle, file: %{public}s, error: %{public}s";
 LABEL_10:
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, v25, buf, 0x16u);

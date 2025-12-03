@@ -1,36 +1,36 @@
 @interface IDSGFTMetricsReferencePoint
-- (IDSGFTMetricsReferencePoint)initWithFromType:(id)a3 fromUniqueID:(id)a4 anonymizer:(id)a5 templateDictionary:(id)a6;
-- (id)collectForTimeBase:(double)a3 anonymize:(BOOL)a4;
-- (id)instanceForID:(id)a3;
-- (void)event:(id)a3 uniqueID:(id)a4 reason:(id)a5;
-- (void)event:(id)a3 uniqueID:(id)a4 reason:(id)a5 time:(double)a6;
+- (IDSGFTMetricsReferencePoint)initWithFromType:(id)type fromUniqueID:(id)d anonymizer:(id)anonymizer templateDictionary:(id)dictionary;
+- (id)collectForTimeBase:(double)base anonymize:(BOOL)anonymize;
+- (id)instanceForID:(id)d;
+- (void)event:(id)event uniqueID:(id)d reason:(id)reason;
+- (void)event:(id)event uniqueID:(id)d reason:(id)reason time:(double)time;
 @end
 
 @implementation IDSGFTMetricsReferencePoint
 
-- (IDSGFTMetricsReferencePoint)initWithFromType:(id)a3 fromUniqueID:(id)a4 anonymizer:(id)a5 templateDictionary:(id)a6
+- (IDSGFTMetricsReferencePoint)initWithFromType:(id)type fromUniqueID:(id)d anonymizer:(id)anonymizer templateDictionary:(id)dictionary
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  typeCopy = type;
+  dCopy = d;
+  anonymizerCopy = anonymizer;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = IDSGFTMetricsReferencePoint;
   v15 = [(IDSGFTMetricsReferencePoint *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_fromType, a3);
-    objc_storeStrong(&v16->_fromUniqueID, a4);
-    objc_storeStrong(&v16->_anonymizer, a5);
-    objc_storeStrong(&v16->_template, a6);
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v15->_fromType, type);
+    objc_storeStrong(&v16->_fromUniqueID, d);
+    objc_storeStrong(&v16->_anonymizer, anonymizer);
+    objc_storeStrong(&v16->_template, dictionary);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     attributes = v16->_attributes;
-    v16->_attributes = v17;
+    v16->_attributes = dictionary;
 
-    v19 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     times = v16->_times;
-    v16->_times = v19;
+    v16->_times = dictionary2;
 
     v16->_lock._os_unfair_lock_opaque = 0;
     v21 = v16;
@@ -39,59 +39,59 @@
   return v16;
 }
 
-- (id)instanceForID:(id)a3
+- (id)instanceForID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    dCopy = [MEMORY[0x1E695DFB0] null];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_times objectForKeyedSubscript:v4];
-  if (!v5)
+  dictionary = [(NSMutableDictionary *)self->_times objectForKeyedSubscript:dCopy];
+  if (!dictionary)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
-    [(NSMutableDictionary *)self->_times setObject:v5 forKeyedSubscript:v4];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(NSMutableDictionary *)self->_times setObject:dictionary forKeyedSubscript:dCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v5;
+  return dictionary;
 }
 
-- (void)event:(id)a3 uniqueID:(id)a4 reason:(id)a5
+- (void)event:(id)event uniqueID:(id)d reason:(id)reason
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(IDSGFTMetricsReferencePoint *)self event:v10 uniqueID:v9 reason:v8 time:ids_monotonic_time()];
+  reasonCopy = reason;
+  dCopy = d;
+  eventCopy = event;
+  [(IDSGFTMetricsReferencePoint *)self event:eventCopy uniqueID:dCopy reason:reasonCopy time:ids_monotonic_time()];
 }
 
-- (void)event:(id)a3 uniqueID:(id)a4 reason:(id)a5 time:(double)a6
+- (void)event:(id)event uniqueID:(id)d reason:(id)reason time:(double)time
 {
-  v16 = a3;
-  v10 = a5;
-  v11 = [(IDSGFTMetricsReferencePoint *)self instanceForID:a4];
+  eventCopy = event;
+  reasonCopy = reason;
+  v11 = [(IDSGFTMetricsReferencePoint *)self instanceForID:d];
   os_unfair_lock_lock(&self->_lock);
-  v12 = [v11 objectForKeyedSubscript:v16];
+  v12 = [v11 objectForKeyedSubscript:eventCopy];
 
   if (!v12)
   {
     v13 = [IDSGFTMetricsReferencePointEvent alloc];
-    v14 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
-    v15 = [(IDSGFTMetricsReferencePointEvent *)v13 initWithTime:v14 reason:v10];
-    [v11 setObject:v15 forKeyedSubscript:v16];
+    v14 = [MEMORY[0x1E696AD98] numberWithDouble:time];
+    v15 = [(IDSGFTMetricsReferencePointEvent *)v13 initWithTime:v14 reason:reasonCopy];
+    [v11 setObject:v15 forKeyedSubscript:eventCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)collectForTimeBase:(double)a3 anonymize:(BOOL)a4
+- (id)collectForTimeBase:(double)base anonymize:(BOOL)anonymize
 {
   v55 = *MEMORY[0x1E69E9840];
-  v37 = [MEMORY[0x1E695DF70] array];
-  [(IDSGFTMetricsReferencePoint *)self referenceTimeForTimeBase:a3];
+  array = [MEMORY[0x1E695DF70] array];
+  [(IDSGFTMetricsReferencePoint *)self referenceTimeForTimeBase:base];
   v7 = v6;
   os_unfair_lock_lock(&self->_lock);
   v49 = 0u;
@@ -118,7 +118,7 @@
         v11 = [(NSDictionary *)self->_template mutableCopy];
         [v11 addEntriesFromDictionary:self->_attributes];
         v39 = v9;
-        if (a4)
+        if (anonymize)
         {
           v12 = [(IDSGFTMetricsAnonymizer *)self->_anonymizer anonymizeID:self->_fromUniqueID];
           [v11 setObject:v12 forKeyedSubscript:@"fromID"];
@@ -133,8 +133,8 @@
           [v11 setObject:v10 forKeyedSubscript:@"toID"];
         }
 
-        v14 = [MEMORY[0x1E695DF70] array];
-        [v11 setObject:v14 forKeyedSubscript:@"events"];
+        array2 = [MEMORY[0x1E695DF70] array];
+        [v11 setObject:array2 forKeyedSubscript:@"events"];
 
         v15 = [(NSMutableDictionary *)self->_times objectForKeyedSubscript:v10];
         v43 = 0u;
@@ -156,8 +156,8 @@
 
               v17 = *(*(&v43 + 1) + 8 * i);
               v18 = [v15 objectForKeyedSubscript:v17];
-              v19 = [v18 time];
-              [v19 doubleValue];
+              time = [v18 time];
+              [time doubleValue];
               v21 = round((v20 - v7) * 1000.0 / 5.0) * 5.0;
 
               v42 = [*(v8 + 3776) stringWithFormat:@"%@.%@", self->_fromType, v17];
@@ -174,17 +174,17 @@
               [v26 addObject:v25];
 
               v27 = [v15 objectForKeyedSubscript:v17];
-              v28 = [v27 reason];
-              v29 = [v28 intValue];
+              reason = [v27 reason];
+              intValue = [reason intValue];
 
               self = v23;
               v8 = v22;
-              if (v29)
+              if (intValue)
               {
                 v30 = [*(v22 + 3776) stringWithFormat:@"%@.%@-reason", self->_fromType, v17];
                 v31 = [v15 objectForKeyedSubscript:v17];
-                v32 = [v31 reason];
-                [v11 setObject:v32 forKeyedSubscript:v30];
+                reason2 = [v31 reason];
+                [v11 setObject:reason2 forKeyedSubscript:v30];
               }
             }
 
@@ -194,7 +194,7 @@
           while (v41);
         }
 
-        [v37 addObject:v11];
+        [array addObject:v11];
 
         v9 = v39 + 1;
       }
@@ -208,7 +208,7 @@
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v37;
+  return array;
 }
 
 @end

@@ -1,58 +1,58 @@
 @interface STMutableStatusBarData
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)immutableCopy;
-- (void)_applyUpdate:(id)a3 keys:(id)a4;
-- (void)applyUpdate:(id)a3;
-- (void)makeUpdateFromData:(id)a3;
-- (void)setActivityEntry:(id)a3;
-- (void)setAdditionalEntries:(id)a3;
-- (void)setAirPlayEntry:(id)a3;
-- (void)setAirplaneModeEntry:(id)a3;
-- (void)setAlarmEntry:(id)a3;
-- (void)setAnnounceNotificationsEntry:(id)a3;
-- (void)setAssistantEntry:(id)a3;
-- (void)setAvatarEntry:(id)a3;
-- (void)setBackNavigationEntry:(id)a3;
-- (void)setBackgroundActivityEntry:(id)a3;
-- (void)setBluetoothEntry:(id)a3;
-- (void)setCarPlayEntry:(id)a3;
-- (void)setCellularEntry:(id)a3;
-- (void)setControlCenterEntry:(id)a3;
-- (void)setDateEntry:(id)a3;
-- (void)setDeviceNameEntry:(id)a3;
-- (void)setDisplayWarningEntry:(id)a3;
-- (void)setElectronicTollCollectionEntry:(id)a3;
-- (void)setEntry:(id)a3 forKey:(id)a4;
-- (void)setExternalBluetoothEntry:(id)a3;
-- (void)setExternalCellularEntry:(id)a3;
-- (void)setExternalPrivacyEntry:(id)a3;
-- (void)setExternalWifiEntry:(id)a3;
-- (void)setForwardNavigationEntry:(id)a3;
-- (void)setLiquidDetectionEntry:(id)a3;
-- (void)setLocationEntry:(id)a3;
-- (void)setLockEntry:(id)a3;
-- (void)setMainBatteryEntry:(id)a3;
-- (void)setNikeEntry:(id)a3;
-- (void)setPersonNameEntry:(id)a3;
-- (void)setQuietModeEntry:(id)a3;
-- (void)setRadarEntry:(id)a3;
-- (void)setRingerSilenceEntry:(id)a3;
-- (void)setRotationLockEntry:(id)a3;
-- (void)setSatelliteEntry:(id)a3;
-- (void)setSecondaryCellularEntry:(id)a3;
-- (void)setSensorActivityEntry:(id)a3;
-- (void)setShortTimeEntry:(id)a3;
-- (void)setStudentEntry:(id)a3;
-- (void)setTetheringEntry:(id)a3;
-- (void)setThermalEntry:(id)a3;
-- (void)setTimeEntry:(id)a3;
-- (void)setTtyEntry:(id)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
-- (void)setVoiceControlEntry:(id)a3;
-- (void)setVolumeEntry:(id)a3;
-- (void)setVpnEntry:(id)a3;
-- (void)setWeatherEntry:(id)a3;
-- (void)setWifiEntry:(id)a3;
+- (void)_applyUpdate:(id)update keys:(id)keys;
+- (void)applyUpdate:(id)update;
+- (void)makeUpdateFromData:(id)data;
+- (void)setActivityEntry:(id)entry;
+- (void)setAdditionalEntries:(id)entries;
+- (void)setAirPlayEntry:(id)entry;
+- (void)setAirplaneModeEntry:(id)entry;
+- (void)setAlarmEntry:(id)entry;
+- (void)setAnnounceNotificationsEntry:(id)entry;
+- (void)setAssistantEntry:(id)entry;
+- (void)setAvatarEntry:(id)entry;
+- (void)setBackNavigationEntry:(id)entry;
+- (void)setBackgroundActivityEntry:(id)entry;
+- (void)setBluetoothEntry:(id)entry;
+- (void)setCarPlayEntry:(id)entry;
+- (void)setCellularEntry:(id)entry;
+- (void)setControlCenterEntry:(id)entry;
+- (void)setDateEntry:(id)entry;
+- (void)setDeviceNameEntry:(id)entry;
+- (void)setDisplayWarningEntry:(id)entry;
+- (void)setElectronicTollCollectionEntry:(id)entry;
+- (void)setEntry:(id)entry forKey:(id)key;
+- (void)setExternalBluetoothEntry:(id)entry;
+- (void)setExternalCellularEntry:(id)entry;
+- (void)setExternalPrivacyEntry:(id)entry;
+- (void)setExternalWifiEntry:(id)entry;
+- (void)setForwardNavigationEntry:(id)entry;
+- (void)setLiquidDetectionEntry:(id)entry;
+- (void)setLocationEntry:(id)entry;
+- (void)setLockEntry:(id)entry;
+- (void)setMainBatteryEntry:(id)entry;
+- (void)setNikeEntry:(id)entry;
+- (void)setPersonNameEntry:(id)entry;
+- (void)setQuietModeEntry:(id)entry;
+- (void)setRadarEntry:(id)entry;
+- (void)setRingerSilenceEntry:(id)entry;
+- (void)setRotationLockEntry:(id)entry;
+- (void)setSatelliteEntry:(id)entry;
+- (void)setSecondaryCellularEntry:(id)entry;
+- (void)setSensorActivityEntry:(id)entry;
+- (void)setShortTimeEntry:(id)entry;
+- (void)setStudentEntry:(id)entry;
+- (void)setTetheringEntry:(id)entry;
+- (void)setThermalEntry:(id)entry;
+- (void)setTimeEntry:(id)entry;
+- (void)setTtyEntry:(id)entry;
+- (void)setValue:(id)value forKey:(id)key;
+- (void)setVoiceControlEntry:(id)entry;
+- (void)setVolumeEntry:(id)entry;
+- (void)setVpnEntry:(id)entry;
+- (void)setWeatherEntry:(id)entry;
+- (void)setWifiEntry:(id)entry;
 @end
 
 @implementation STMutableStatusBarData
@@ -65,23 +65,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   _copyValuesFromDataToData(&self->super.super.isa, v4);
   return v4;
 }
 
-- (void)_applyUpdate:(id)a3 keys:(id)a4
+- (void)_applyUpdate:(id)update keys:(id)keys
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  keysCopy = keys;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [keysCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -92,18 +92,18 @@
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(keysCopy);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v6 valueForKey:v12];
+        v13 = [updateCopy valueForKey:v12];
         if (v13)
         {
           [(STMutableStatusBarData *)self setEntry:v13 forKey:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [keysCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -112,18 +112,18 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applyUpdate:(id)a3
+- (void)applyUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = +[STStatusBarData entryKeys];
-  [(STMutableStatusBarData *)self _applyUpdate:v4 keys:v5];
+  [(STMutableStatusBarData *)self _applyUpdate:updateCopy keys:v5];
 }
 
-- (void)makeUpdateFromData:(id)a3
+- (void)makeUpdateFromData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v18 = 0u;
     v19 = 0u;
@@ -145,7 +145,7 @@
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [v4 valueForKey:v10];
+          v11 = [dataCopy valueForKey:v10];
           v12 = [(STMutableStatusBarData *)self valueForKey:v10];
           v13 = v12;
           if (v11)
@@ -174,598 +174,598 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setTimeEntry:(id)a3
+- (void)setTimeEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   timeEntry = self->super._timeEntry;
   p_timeEntry = &self->super._timeEntry;
-  if (timeEntry != v5)
+  if (timeEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_timeEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_timeEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setShortTimeEntry:(id)a3
+- (void)setShortTimeEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   shortTimeEntry = self->super._shortTimeEntry;
   p_shortTimeEntry = &self->super._shortTimeEntry;
-  if (shortTimeEntry != v5)
+  if (shortTimeEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_shortTimeEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_shortTimeEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setDateEntry:(id)a3
+- (void)setDateEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   dateEntry = self->super._dateEntry;
   p_dateEntry = &self->super._dateEntry;
-  if (dateEntry != v5)
+  if (dateEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_dateEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_dateEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setPersonNameEntry:(id)a3
+- (void)setPersonNameEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   personNameEntry = self->super._personNameEntry;
   p_personNameEntry = &self->super._personNameEntry;
-  if (personNameEntry != v5)
+  if (personNameEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_personNameEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_personNameEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setDeviceNameEntry:(id)a3
+- (void)setDeviceNameEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   deviceNameEntry = self->super._deviceNameEntry;
   p_deviceNameEntry = &self->super._deviceNameEntry;
-  if (deviceNameEntry != v5)
+  if (deviceNameEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_deviceNameEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_deviceNameEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setCellularEntry:(id)a3
+- (void)setCellularEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   cellularEntry = self->super._cellularEntry;
   p_cellularEntry = &self->super._cellularEntry;
-  if (cellularEntry != v5)
+  if (cellularEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_cellularEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_cellularEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setSecondaryCellularEntry:(id)a3
+- (void)setSecondaryCellularEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   secondaryCellularEntry = self->super._secondaryCellularEntry;
   p_secondaryCellularEntry = &self->super._secondaryCellularEntry;
-  if (secondaryCellularEntry != v5)
+  if (secondaryCellularEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_secondaryCellularEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_secondaryCellularEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setWifiEntry:(id)a3
+- (void)setWifiEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   wifiEntry = self->super._wifiEntry;
   p_wifiEntry = &self->super._wifiEntry;
-  if (wifiEntry != v5)
+  if (wifiEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_wifiEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_wifiEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setMainBatteryEntry:(id)a3
+- (void)setMainBatteryEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   mainBatteryEntry = self->super._mainBatteryEntry;
   p_mainBatteryEntry = &self->super._mainBatteryEntry;
-  if (mainBatteryEntry != v5)
+  if (mainBatteryEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mainBatteryEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_mainBatteryEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setBluetoothEntry:(id)a3
+- (void)setBluetoothEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   bluetoothEntry = self->super._bluetoothEntry;
   p_bluetoothEntry = &self->super._bluetoothEntry;
-  if (bluetoothEntry != v5)
+  if (bluetoothEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_bluetoothEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_bluetoothEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setExternalCellularEntry:(id)a3
+- (void)setExternalCellularEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   externalCellularEntry = self->super._externalCellularEntry;
   p_externalCellularEntry = &self->super._externalCellularEntry;
-  if (externalCellularEntry != v5)
+  if (externalCellularEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_externalCellularEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_externalCellularEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setExternalWifiEntry:(id)a3
+- (void)setExternalWifiEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   externalWifiEntry = self->super._externalWifiEntry;
   p_externalWifiEntry = &self->super._externalWifiEntry;
-  if (externalWifiEntry != v5)
+  if (externalWifiEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_externalWifiEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_externalWifiEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setExternalBluetoothEntry:(id)a3
+- (void)setExternalBluetoothEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   externalBluetoothEntry = self->super._externalBluetoothEntry;
   p_externalBluetoothEntry = &self->super._externalBluetoothEntry;
-  if (externalBluetoothEntry != v5)
+  if (externalBluetoothEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_externalBluetoothEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_externalBluetoothEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setExternalPrivacyEntry:(id)a3
+- (void)setExternalPrivacyEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   externalPrivacyEntry = self->super._externalPrivacyEntry;
   p_externalPrivacyEntry = &self->super._externalPrivacyEntry;
-  if (externalPrivacyEntry != v5)
+  if (externalPrivacyEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_externalPrivacyEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_externalPrivacyEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setThermalEntry:(id)a3
+- (void)setThermalEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   thermalEntry = self->super._thermalEntry;
   p_thermalEntry = &self->super._thermalEntry;
-  if (thermalEntry != v5)
+  if (thermalEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_thermalEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_thermalEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setActivityEntry:(id)a3
+- (void)setActivityEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   activityEntry = self->super._activityEntry;
   p_activityEntry = &self->super._activityEntry;
-  if (activityEntry != v5)
+  if (activityEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_activityEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_activityEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setTetheringEntry:(id)a3
+- (void)setTetheringEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   tetheringEntry = self->super._tetheringEntry;
   p_tetheringEntry = &self->super._tetheringEntry;
-  if (tetheringEntry != v5)
+  if (tetheringEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_tetheringEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_tetheringEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setLocationEntry:(id)a3
+- (void)setLocationEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   locationEntry = self->super._locationEntry;
   p_locationEntry = &self->super._locationEntry;
-  if (locationEntry != v5)
+  if (locationEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_locationEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_locationEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setLockEntry:(id)a3
+- (void)setLockEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   lockEntry = self->super._lockEntry;
   p_lockEntry = &self->super._lockEntry;
-  if (lockEntry != v5)
+  if (lockEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_lockEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_lockEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setQuietModeEntry:(id)a3
+- (void)setQuietModeEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   quietModeEntry = self->super._quietModeEntry;
   p_quietModeEntry = &self->super._quietModeEntry;
-  if (quietModeEntry != v5)
+  if (quietModeEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_quietModeEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_quietModeEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setElectronicTollCollectionEntry:(id)a3
+- (void)setElectronicTollCollectionEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   electronicTollCollectionEntry = self->super._electronicTollCollectionEntry;
   p_electronicTollCollectionEntry = &self->super._electronicTollCollectionEntry;
-  if (electronicTollCollectionEntry != v5)
+  if (electronicTollCollectionEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_electronicTollCollectionEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_electronicTollCollectionEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setRadarEntry:(id)a3
+- (void)setRadarEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   radarEntry = self->super._radarEntry;
   p_radarEntry = &self->super._radarEntry;
-  if (radarEntry != v5)
+  if (radarEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_radarEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_radarEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setRotationLockEntry:(id)a3
+- (void)setRotationLockEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   rotationLockEntry = self->super._rotationLockEntry;
   p_rotationLockEntry = &self->super._rotationLockEntry;
-  if (rotationLockEntry != v5)
+  if (rotationLockEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_rotationLockEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_rotationLockEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setAirplaneModeEntry:(id)a3
+- (void)setAirplaneModeEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   airplaneModeEntry = self->super._airplaneModeEntry;
   p_airplaneModeEntry = &self->super._airplaneModeEntry;
-  if (airplaneModeEntry != v5)
+  if (airplaneModeEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_airplaneModeEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_airplaneModeEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setTtyEntry:(id)a3
+- (void)setTtyEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   ttyEntry = self->super._ttyEntry;
   p_ttyEntry = &self->super._ttyEntry;
-  if (ttyEntry != v5)
+  if (ttyEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_ttyEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_ttyEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setNikeEntry:(id)a3
+- (void)setNikeEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   nikeEntry = self->super._nikeEntry;
   p_nikeEntry = &self->super._nikeEntry;
-  if (nikeEntry != v5)
+  if (nikeEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_nikeEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_nikeEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setAssistantEntry:(id)a3
+- (void)setAssistantEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   assistantEntry = self->super._assistantEntry;
   p_assistantEntry = &self->super._assistantEntry;
-  if (assistantEntry != v5)
+  if (assistantEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_assistantEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_assistantEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setStudentEntry:(id)a3
+- (void)setStudentEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   studentEntry = self->super._studentEntry;
   p_studentEntry = &self->super._studentEntry;
-  if (studentEntry != v5)
+  if (studentEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_studentEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_studentEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setVpnEntry:(id)a3
+- (void)setVpnEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   vpnEntry = self->super._vpnEntry;
   p_vpnEntry = &self->super._vpnEntry;
-  if (vpnEntry != v5)
+  if (vpnEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_vpnEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_vpnEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setLiquidDetectionEntry:(id)a3
+- (void)setLiquidDetectionEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   liquidDetectionEntry = self->super._liquidDetectionEntry;
   p_liquidDetectionEntry = &self->super._liquidDetectionEntry;
-  if (liquidDetectionEntry != v5)
+  if (liquidDetectionEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_liquidDetectionEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_liquidDetectionEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setDisplayWarningEntry:(id)a3
+- (void)setDisplayWarningEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   displayWarningEntry = self->super._displayWarningEntry;
   p_displayWarningEntry = &self->super._displayWarningEntry;
-  if (displayWarningEntry != v5)
+  if (displayWarningEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_displayWarningEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_displayWarningEntry, entry);
+    entryCopy = v8;
   }
 }
 
-- (void)setVoiceControlEntry:(id)a3
+- (void)setVoiceControlEntry:(id)entry
 {
-  v5 = a3;
-  if (self->super._voiceControlEntry != v5)
+  entryCopy = entry;
+  if (self->super._voiceControlEntry != entryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super._voiceControlEntry, a3);
-    v5 = v6;
+    v6 = entryCopy;
+    objc_storeStrong(&self->super._voiceControlEntry, entry);
+    entryCopy = v6;
   }
 }
 
-- (void)setAirPlayEntry:(id)a3
+- (void)setAirPlayEntry:(id)entry
 {
-  v5 = a3;
-  if (self->super._airPlayEntry != v5)
+  entryCopy = entry;
+  if (self->super._airPlayEntry != entryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super._airPlayEntry, a3);
-    v5 = v6;
+    v6 = entryCopy;
+    objc_storeStrong(&self->super._airPlayEntry, entry);
+    entryCopy = v6;
   }
 }
 
-- (void)setCarPlayEntry:(id)a3
+- (void)setCarPlayEntry:(id)entry
 {
-  v5 = a3;
-  if (self->super._carPlayEntry != v5)
+  entryCopy = entry;
+  if (self->super._carPlayEntry != entryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super._carPlayEntry, a3);
-    v5 = v6;
+    v6 = entryCopy;
+    objc_storeStrong(&self->super._carPlayEntry, entry);
+    entryCopy = v6;
   }
 }
 
-- (void)setAlarmEntry:(id)a3
+- (void)setAlarmEntry:(id)entry
 {
-  v5 = a3;
-  if (self->super._alarmEntry != v5)
+  entryCopy = entry;
+  if (self->super._alarmEntry != entryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super._alarmEntry, a3);
-    v5 = v6;
+    v6 = entryCopy;
+    objc_storeStrong(&self->super._alarmEntry, entry);
+    entryCopy = v6;
   }
 }
 
-- (void)setSatelliteEntry:(id)a3
+- (void)setSatelliteEntry:(id)entry
 {
-  v5 = a3;
-  if (self->super._satelliteEntry != v5)
+  entryCopy = entry;
+  if (self->super._satelliteEntry != entryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super._satelliteEntry, a3);
-    v5 = v6;
+    v6 = entryCopy;
+    objc_storeStrong(&self->super._satelliteEntry, entry);
+    entryCopy = v6;
   }
 }
 
-- (void)setSensorActivityEntry:(id)a3
+- (void)setSensorActivityEntry:(id)entry
 {
-  v5 = a3;
-  if (self->super._sensorActivityEntry != v5)
+  entryCopy = entry;
+  if (self->super._sensorActivityEntry != entryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super._sensorActivityEntry, a3);
-    v5 = v6;
+    v6 = entryCopy;
+    objc_storeStrong(&self->super._sensorActivityEntry, entry);
+    entryCopy = v6;
   }
 }
 
-- (void)setAnnounceNotificationsEntry:(id)a3
+- (void)setAnnounceNotificationsEntry:(id)entry
 {
-  v5 = a3;
-  if (self->super._announceNotificationsEntry != v5)
+  entryCopy = entry;
+  if (self->super._announceNotificationsEntry != entryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super._announceNotificationsEntry, a3);
-    v5 = v6;
+    v6 = entryCopy;
+    objc_storeStrong(&self->super._announceNotificationsEntry, entry);
+    entryCopy = v6;
   }
 }
 
-- (void)setVolumeEntry:(id)a3
+- (void)setVolumeEntry:(id)entry
 {
-  v5 = a3;
-  if (self->super._volumeEntry != v5)
+  entryCopy = entry;
+  if (self->super._volumeEntry != entryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super._volumeEntry, a3);
-    v5 = v6;
+    v6 = entryCopy;
+    objc_storeStrong(&self->super._volumeEntry, entry);
+    entryCopy = v6;
   }
 }
 
-- (void)setBackgroundActivityEntry:(id)a3
+- (void)setBackgroundActivityEntry:(id)entry
 {
-  v5 = a3;
-  if (self->super._backgroundActivityEntry != v5)
+  entryCopy = entry;
+  if (self->super._backgroundActivityEntry != entryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super._backgroundActivityEntry, a3);
-    v5 = v6;
+    v6 = entryCopy;
+    objc_storeStrong(&self->super._backgroundActivityEntry, entry);
+    entryCopy = v6;
   }
 }
 
-- (void)setBackNavigationEntry:(id)a3
+- (void)setBackNavigationEntry:(id)entry
 {
-  v5 = a3;
-  if (self->super._backNavigationEntry != v5)
+  entryCopy = entry;
+  if (self->super._backNavigationEntry != entryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super._backNavigationEntry, a3);
-    v5 = v6;
+    v6 = entryCopy;
+    objc_storeStrong(&self->super._backNavigationEntry, entry);
+    entryCopy = v6;
   }
 }
 
-- (void)setForwardNavigationEntry:(id)a3
+- (void)setForwardNavigationEntry:(id)entry
 {
-  v5 = a3;
-  if (self->super._forwardNavigationEntry != v5)
+  entryCopy = entry;
+  if (self->super._forwardNavigationEntry != entryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super._forwardNavigationEntry, a3);
-    v5 = v6;
+    v6 = entryCopy;
+    objc_storeStrong(&self->super._forwardNavigationEntry, entry);
+    entryCopy = v6;
   }
 }
 
-- (void)setControlCenterEntry:(id)a3
+- (void)setControlCenterEntry:(id)entry
 {
-  v5 = a3;
-  if (self->super._controlCenterEntry != v5)
+  entryCopy = entry;
+  if (self->super._controlCenterEntry != entryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super._controlCenterEntry, a3);
-    v5 = v6;
+    v6 = entryCopy;
+    objc_storeStrong(&self->super._controlCenterEntry, entry);
+    entryCopy = v6;
   }
 }
 
-- (void)setRingerSilenceEntry:(id)a3
+- (void)setRingerSilenceEntry:(id)entry
 {
-  v5 = a3;
-  if (self->super._ringerSilenceEntry != v5)
+  entryCopy = entry;
+  if (self->super._ringerSilenceEntry != entryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super._ringerSilenceEntry, a3);
-    v5 = v6;
+    v6 = entryCopy;
+    objc_storeStrong(&self->super._ringerSilenceEntry, entry);
+    entryCopy = v6;
   }
 }
 
-- (void)setWeatherEntry:(id)a3
+- (void)setWeatherEntry:(id)entry
 {
-  v5 = a3;
-  if (self->super._weatherEntry != v5)
+  entryCopy = entry;
+  if (self->super._weatherEntry != entryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super._weatherEntry, a3);
-    v5 = v6;
+    v6 = entryCopy;
+    objc_storeStrong(&self->super._weatherEntry, entry);
+    entryCopy = v6;
   }
 }
 
-- (void)setAdditionalEntries:(id)a3
+- (void)setAdditionalEntries:(id)entries
 {
-  v5 = a3;
-  if (self->super._additionalEntries != v5)
+  entriesCopy = entries;
+  if (self->super._additionalEntries != entriesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super._additionalEntries, a3);
-    v5 = v6;
+    v6 = entriesCopy;
+    objc_storeStrong(&self->super._additionalEntries, entries);
+    entriesCopy = v6;
   }
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   v4.receiver = self;
   v4.super_class = STMutableStatusBarData;
-  [(STStatusBarData *)&v4 _internal_setValue:a3 forKey:a4];
+  [(STStatusBarData *)&v4 _internal_setValue:value forKey:key];
 }
 
-- (void)setEntry:(id)a3 forKey:(id)a4
+- (void)setEntry:(id)entry forKey:(id)key
 {
   v4.receiver = self;
   v4.super_class = STMutableStatusBarData;
-  [(STStatusBarData *)&v4 _internal_setValue:a3 forKey:a4];
+  [(STStatusBarData *)&v4 _internal_setValue:entry forKey:key];
 }
 
-- (void)setAvatarEntry:(id)a3
+- (void)setAvatarEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   personNameEntry = self->super._personNameEntry;
   p_personNameEntry = &self->super._personNameEntry;
-  if (personNameEntry != v5)
+  if (personNameEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_personNameEntry, a3);
-    v5 = v8;
+    v8 = entryCopy;
+    objc_storeStrong(p_personNameEntry, entry);
+    entryCopy = v8;
   }
 }
 

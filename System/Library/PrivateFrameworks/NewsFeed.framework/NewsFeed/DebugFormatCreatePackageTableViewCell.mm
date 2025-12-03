@@ -1,18 +1,18 @@
 @interface DebugFormatCreatePackageTableViewCell
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (_TtC8NewsFeed37DebugFormatCreatePackageTableViewCell)initWithCoder:(id)a3;
-- (_TtC8NewsFeed37DebugFormatCreatePackageTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (_TtC8NewsFeed37DebugFormatCreatePackageTableViewCell)initWithCoder:(id)coder;
+- (_TtC8NewsFeed37DebugFormatCreatePackageTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)onTextChange;
 - (void)prepareForReuse;
 @end
 
 @implementation DebugFormatCreatePackageTableViewCell
 
-- (_TtC8NewsFeed37DebugFormatCreatePackageTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8NewsFeed37DebugFormatCreatePackageTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1D726207C();
+    identifier = sub_1D726207C();
     v6 = v5;
   }
 
@@ -21,10 +21,10 @@
     v6 = 0;
   }
 
-  return sub_1D60CFDF4(a3, a4, v6);
+  return sub_1D60CFDF4(style, identifier, v6);
 }
 
-- (_TtC8NewsFeed37DebugFormatCreatePackageTableViewCell)initWithCoder:(id)a3
+- (_TtC8NewsFeed37DebugFormatCreatePackageTableViewCell)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC8NewsFeed37DebugFormatCreatePackageTableViewCell_onChange);
   *v4 = 0;
@@ -41,22 +41,22 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D60D045C();
 }
 
 - (void)onTextChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D60D05D8();
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
   v7 = sub_1D726207C();
   v9 = v8;
-  v10 = a3;
-  v11 = self;
+  fieldCopy = field;
+  selfCopy = self;
   LOBYTE(v7) = sub_1D60D0AA8(v7, v9);
 
   return v7 & 1;

@@ -1,17 +1,17 @@
 @interface CIBlendKernel
-+ (CIBlendKernel)kernelWithInternalRepresentation:(const void *)a3;
++ (CIBlendKernel)kernelWithInternalRepresentation:(const void *)representation;
 + (CIBlendKernel)kernelWithString:(NSString *)string;
-+ (CIBlendKernel)kernelWithString:(id)a3 extentType:(int)a4;
-+ (id)cachedKernelWithString:(id)a3 extentType:(int)a4;
-- (CIBlendKernel)initWithString:(id)a3;
-- (CIBlendKernel)initWithString:(id)a3 extentType:(int)a4;
++ (CIBlendKernel)kernelWithString:(id)string extentType:(int)type;
++ (id)cachedKernelWithString:(id)string extentType:(int)type;
+- (CIBlendKernel)initWithString:(id)string;
+- (CIBlendKernel)initWithString:(id)string extentType:(int)type;
 - (CIImage)applyWithForeground:(CIImage *)foreground background:(CIImage *)background;
 - (CIImage)applyWithForeground:(CIImage *)foreground background:(CIImage *)background colorSpace:(CGColorSpaceRef)colorSpace;
 - (int)extentType;
-- (void)setIsBackIfForeIsClear:(BOOL)a3;
-- (void)setIsClearIfBackIsClear:(BOOL)a3;
-- (void)setIsClearIfForeIsClear:(BOOL)a3;
-- (void)setIsForeIfBackIsClear:(BOOL)a3;
+- (void)setIsBackIfForeIsClear:(BOOL)clear;
+- (void)setIsClearIfBackIsClear:(BOOL)clear;
+- (void)setIsClearIfForeIsClear:(BOOL)clear;
+- (void)setIsForeIfBackIsClear:(BOOL)clear;
 @end
 
 @implementation CIBlendKernel
@@ -23,7 +23,7 @@
   if (os_signpost_enabled(v5))
   {
     *buf = 138543362;
-    v14 = [a1 description];
+    v14 = [self description];
     _os_signpost_emit_with_name_impl(&dword_19CC36000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "kernelWithString", "%{public}@", buf, 0xCu);
   }
 
@@ -31,7 +31,7 @@
   v9[1] = 3221225472;
   v10 = __34__CIBlendKernel_kernelWithString___block_invoke;
   v11 = &unk_1E75C2AA0;
-  v12 = a1;
+  selfCopy = self;
   if (check_cikl_string(string, "+[CIBlendKernel kernelWithString:]"))
   {
     v6 = [[CIBlendKernel alloc] initWithString:string];
@@ -64,12 +64,12 @@ void __34__CIBlendKernel_kernelWithString___block_invoke(uint64_t a1)
   }
 }
 
-- (CIBlendKernel)initWithString:(id)a3
+- (CIBlendKernel)initWithString:(id)string
 {
-  if (check_cikl_string(a3, "[CIBlendKernel initWithString:]"))
+  if (check_cikl_string(string, "[CIBlendKernel initWithString:]"))
   {
 
-    return [(CIBlendKernel *)self initWithString:a3 extentType:0];
+    return [(CIBlendKernel *)self initWithString:string extentType:0];
   }
 
   else
@@ -79,15 +79,15 @@ void __34__CIBlendKernel_kernelWithString___block_invoke(uint64_t a1)
   }
 }
 
-+ (id)cachedKernelWithString:(id)a3 extentType:(int)a4
++ (id)cachedKernelWithString:(id)string extentType:(int)type
 {
-  v4 = *&a4;
+  v4 = *&type;
   v21 = *MEMORY[0x1E69E9840];
   v7 = ci_signpost_log_kernel();
   if (os_signpost_enabled(v7))
   {
     *buf = 138543362;
-    v20 = [a1 description];
+    v20 = [self description];
     _os_signpost_emit_with_name_impl(&dword_19CC36000, v7, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "cachedKernelWithString:extentType", "%{public}@", buf, 0xCu);
   }
 
@@ -95,10 +95,10 @@ void __34__CIBlendKernel_kernelWithString___block_invoke(uint64_t a1)
   v15[1] = 3221225472;
   v16 = __51__CIBlendKernel_cachedKernelWithString_extentType___block_invoke;
   v17 = &unk_1E75C2AA0;
-  v18 = a1;
-  v8 = [a1 cache];
-  objc_sync_enter(v8);
-  v9 = [v8 objectForKey:a3];
+  selfCopy = self;
+  cache = [self cache];
+  objc_sync_enter(cache);
+  v9 = [cache objectForKey:string];
   v10 = v9;
   if (v9)
   {
@@ -107,17 +107,17 @@ void __34__CIBlendKernel_kernelWithString___block_invoke(uint64_t a1)
 
   else
   {
-    v10 = [[a1 alloc] initWithString:a3 extentType:v4];
-    v12 = v10;
+    v10 = [[self alloc] initWithString:string extentType:v4];
+    null = v10;
     if (!v10)
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    [v8 setObject:v12 forKey:a3];
+    [cache setObject:null forKey:string];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(cache);
   if (v10 == [MEMORY[0x1E695DFB0] null])
   {
     v13 = 0;
@@ -145,35 +145,35 @@ void __51__CIBlendKernel_cachedKernelWithString_extentType___block_invoke(uint64
   }
 }
 
-+ (CIBlendKernel)kernelWithInternalRepresentation:(const void *)a3
++ (CIBlendKernel)kernelWithInternalRepresentation:(const void *)representation
 {
-  if ((*(*a3 + 16))(a3, a2) != 70)
+  if ((*(*representation + 16))(representation, a2) != 70)
   {
     return 0;
   }
 
-  v4 = [objc_alloc(objc_opt_class()) _initWithInternalRepresentation:a3];
+  v4 = [objc_alloc(objc_opt_class()) _initWithInternalRepresentation:representation];
 
   return v4;
 }
 
-+ (CIBlendKernel)kernelWithString:(id)a3 extentType:(int)a4
++ (CIBlendKernel)kernelWithString:(id)string extentType:(int)type
 {
-  v4 = *&a4;
+  v4 = *&type;
   v13 = *MEMORY[0x1E69E9840];
   v7 = ci_signpost_log_kernel();
   if (os_signpost_enabled(v7))
   {
     *buf = 138543362;
-    v12 = [a1 description];
+    v12 = [self description];
     _os_signpost_emit_with_name_impl(&dword_19CC36000, v7, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "kernelWithString:extentType", "%{public}@", buf, 0xCu);
   }
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[3] = &unk_1E75C2AA0;
-  v10[4] = a1;
-  v8 = [[CIBlendKernel alloc] initWithString:a3 extentType:v4];
+  v10[4] = self;
+  v8 = [[CIBlendKernel alloc] initWithString:string extentType:v4];
   __45__CIBlendKernel_kernelWithString_extentType___block_invoke(v10);
   return v8;
 }
@@ -191,10 +191,10 @@ void __45__CIBlendKernel_kernelWithString_extentType___block_invoke(uint64_t a1)
   }
 }
 
-- (CIBlendKernel)initWithString:(id)a3 extentType:(int)a4
+- (CIBlendKernel)initWithString:(id)string extentType:(int)type
 {
-  v4 = *&a4;
-  if (!check_cikl_string(a3, "[CIBlendKernel initWithString:extentType:]"))
+  v4 = *&type;
+  if (!check_cikl_string(string, "[CIBlendKernel initWithString:extentType:]"))
   {
 
     return 0;
@@ -202,12 +202,12 @@ void __45__CIBlendKernel_kernelWithString_extentType___block_invoke(uint64_t a1)
 
   v11.receiver = self;
   v11.super_class = CIBlendKernel;
-  v7 = [(CIColorKernel *)&v11 initWithString:a3];
+  v7 = [(CIColorKernel *)&v11 initWithString:string];
   v8 = v7;
   if (v7)
   {
-    v9 = [(CIKernel *)v7 parameters];
-    if ([v9 count] == 2 && objc_msgSend(objc_msgSend(objc_msgSend(v9, "objectAtIndex:", 0), "valueForKey:", @"CIAttributeClass"), "isEqual:", @"CISampler") && objc_msgSend(objc_msgSend(objc_msgSend(v9, "objectAtIndex:", 1), "valueForKey:", @"CIAttributeClass"), "isEqual:", @"CISampler"))
+    parameters = [(CIKernel *)v7 parameters];
+    if ([parameters count] == 2 && objc_msgSend(objc_msgSend(objc_msgSend(parameters, "objectAtIndex:", 0), "valueForKey:", @"CIAttributeClass"), "isEqual:", @"CISampler") && objc_msgSend(objc_msgSend(objc_msgSend(parameters, "objectAtIndex:", 1), "valueForKey:", @"CIAttributeClass"), "isEqual:", @"CISampler"))
     {
       (*(*v8->super.super._priv + 80))(v8->super.super._priv, v4);
       return v8;
@@ -233,7 +233,7 @@ void __45__CIBlendKernel_kernelWithString_extentType___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setIsBackIfForeIsClear:(BOOL)a3
+- (void)setIsBackIfForeIsClear:(BOOL)clear
 {
   v6 = *MEMORY[0x1E69E9840];
   v3 = ci_logger_api();
@@ -245,7 +245,7 @@ void __45__CIBlendKernel_kernelWithString_extentType___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setIsForeIfBackIsClear:(BOOL)a3
+- (void)setIsForeIfBackIsClear:(BOOL)clear
 {
   v6 = *MEMORY[0x1E69E9840];
   v3 = ci_logger_api();
@@ -257,7 +257,7 @@ void __45__CIBlendKernel_kernelWithString_extentType___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setIsClearIfForeIsClear:(BOOL)a3
+- (void)setIsClearIfForeIsClear:(BOOL)clear
 {
   v6 = *MEMORY[0x1E69E9840];
   v3 = ci_logger_api();
@@ -269,7 +269,7 @@ void __45__CIBlendKernel_kernelWithString_extentType___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setIsClearIfBackIsClear:(BOOL)a3
+- (void)setIsClearIfBackIsClear:(BOOL)clear
 {
   v6 = *MEMORY[0x1E69E9840];
   v3 = ci_logger_api();

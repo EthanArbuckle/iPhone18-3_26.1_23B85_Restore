@@ -1,35 +1,35 @@
 @interface EAWiFiUnconfiguredAccessory
-- (BOOL)isEqual:(id)a3;
-- (EAWiFiUnconfiguredAccessory)initWithAirPortAssistantWACDevice:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (EAWiFiUnconfiguredAccessory)initWithAirPortAssistantWACDevice:(id)device;
 @end
 
 @implementation EAWiFiUnconfiguredAccessory
 
-- (EAWiFiUnconfiguredAccessory)initWithAirPortAssistantWACDevice:(id)a3
+- (EAWiFiUnconfiguredAccessory)initWithAirPortAssistantWACDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v21.receiver = self;
   v21.super_class = EAWiFiUnconfiguredAccessory;
   v5 = [(EAWiFiUnconfiguredAccessory *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"wacFriendlyName"];
+    v6 = [deviceCopy objectForKey:@"wacFriendlyName"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 objectForKey:@"wacSSID"];
+    v8 = [deviceCopy objectForKey:@"wacSSID"];
     ssid = v5->_ssid;
     v5->_ssid = v8;
 
-    v10 = [v4 objectForKey:@"wacManufacturerName"];
+    v10 = [deviceCopy objectForKey:@"wacManufacturerName"];
     manufacturer = v5->_manufacturer;
     v5->_manufacturer = v10;
 
-    v12 = [v4 objectForKey:@"wacModelName"];
+    v12 = [deviceCopy objectForKey:@"wacModelName"];
     model = v5->_model;
     v5->_model = v12;
 
-    v14 = [v4 objectForKey:@"wacMACAddress"];
+    v14 = [deviceCopy objectForKey:@"wacMACAddress"];
     macAddress = v5->_macAddress;
     v5->_macAddress = v14;
 
@@ -59,18 +59,18 @@
     }
 
     v5->_properties = 0;
-    v16 = [v4 objectForKey:@"wacSupportsAirPlay"];
-    v17 = [v16 BOOLValue];
+    v16 = [deviceCopy objectForKey:@"wacSupportsAirPlay"];
+    bOOLValue = [v16 BOOLValue];
 
-    if (v17)
+    if (bOOLValue)
     {
       v5->_properties |= 1uLL;
     }
 
-    v18 = [v4 objectForKey:@"wacSupportsSpruce"];
-    v19 = [v18 BOOLValue];
+    v18 = [deviceCopy objectForKey:@"wacSupportsSpruce"];
+    bOOLValue2 = [v18 BOOLValue];
 
-    if (v19)
+    if (bOOLValue2)
     {
       v5->_properties |= 4uLL;
     }
@@ -79,32 +79,32 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     name = self->_name;
-    v7 = [v5 name];
-    if ([(NSString *)name isEqual:v7])
+    name = [v5 name];
+    if ([(NSString *)name isEqual:name])
     {
       ssid = self->_ssid;
-      v9 = [v5 ssid];
-      if ([(NSString *)ssid isEqual:v9])
+      ssid = [v5 ssid];
+      if ([(NSString *)ssid isEqual:ssid])
       {
         manufacturer = self->_manufacturer;
-        v11 = [v5 manufacturer];
-        if ([(NSString *)manufacturer isEqual:v11])
+        manufacturer = [v5 manufacturer];
+        if ([(NSString *)manufacturer isEqual:manufacturer])
         {
           model = self->_model;
-          v13 = [v5 model];
-          if ([(NSString *)model isEqual:v13])
+          model = [v5 model];
+          if ([(NSString *)model isEqual:model])
           {
             macAddress = self->_macAddress;
-            v15 = [v5 macAddress];
-            if ([(NSString *)macAddress isEqual:v15])
+            macAddress = [v5 macAddress];
+            if ([(NSString *)macAddress isEqual:macAddress])
             {
               properties = self->_properties;
               v17 = properties == [v5 properties];

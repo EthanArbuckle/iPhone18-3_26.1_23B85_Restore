@@ -1,44 +1,44 @@
 @interface HKInteractiveChartDataFormatter
 - (HKDisplayType)displayType;
-- (id)_formattedPercentageStringWithValue:(double)a3 unitString:(id)a4 showUnit:(BOOL)a5;
-- (id)attributedStringForValue:(id)a3;
-- (id)attributedStringWithValue:(double)a3 unit:(id)a4 showUnit:(BOOL)a5;
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
-- (id)formattedStringWithValue:(double)a3 unitString:(id)a4 showUnit:(BOOL)a5;
-- (id)unitStringFromUnit:(id)a3 number:(id)a4;
-- (id)valueStringFromNumber:(id)a3;
+- (id)_formattedPercentageStringWithValue:(double)value unitString:(id)string showUnit:(BOOL)unit;
+- (id)attributedStringForValue:(id)value;
+- (id)attributedStringWithValue:(double)value unit:(id)unit showUnit:(BOOL)showUnit;
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
+- (id)formattedStringWithValue:(double)value unitString:(id)string showUnit:(BOOL)unit;
+- (id)unitStringFromUnit:(id)unit number:(id)number;
+- (id)valueStringFromNumber:(id)number;
 @end
 
 @implementation HKInteractiveChartDataFormatter
 
-- (id)formattedStringWithValue:(double)a3 unitString:(id)a4 showUnit:(BOOL)a5
+- (id)formattedStringWithValue:(double)value unitString:(id)string showUnit:(BOOL)unit
 {
-  v5 = a5;
+  unitCopy = unit;
   v27[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [(HKInteractiveChartDataFormatter *)self displayType];
-  if (v9)
+  stringCopy = string;
+  displayType = [(HKInteractiveChartDataFormatter *)self displayType];
+  if (displayType)
   {
-    v10 = [(HKInteractiveChartDataFormatter *)self displayType];
-    v11 = [v10 presentation];
-    [v11 adjustedDoubleForDaemonDouble:a3];
-    a3 = v12;
+    displayType2 = [(HKInteractiveChartDataFormatter *)self displayType];
+    presentation = [displayType2 presentation];
+    [presentation adjustedDoubleForDaemonDouble:value];
+    value = v12;
   }
 
-  v13 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v13 = [MEMORY[0x1E696AD98] numberWithDouble:value];
   v14 = [(HKInteractiveChartDataFormatter *)self attributedStringForValue:v13];
 
-  if (v5 && [v8 length])
+  if (unitCopy && [stringCopy length])
   {
     v15 = objc_alloc(MEMORY[0x1E696AAB0]);
     v26[0] = *MEMORY[0x1E69DB648];
-    v16 = [(HKInteractiveChartDataFormatter *)self minorFont];
-    v27[0] = v16;
+    minorFont = [(HKInteractiveChartDataFormatter *)self minorFont];
+    v27[0] = minorFont;
     v26[1] = *MEMORY[0x1E69DB650];
-    v17 = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
-    v27[1] = v17;
+    hk_chartLollipopLabelColor = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
+    v27[1] = hk_chartLollipopLabelColor;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
-    v19 = [v15 initWithString:v8 attributes:v18];
+    v19 = [v15 initWithString:stringCopy attributes:v18];
 
     v25[0] = v14;
     v25[1] = v19;
@@ -56,33 +56,33 @@
   return v23;
 }
 
-- (id)_formattedPercentageStringWithValue:(double)a3 unitString:(id)a4 showUnit:(BOOL)a5
+- (id)_formattedPercentageStringWithValue:(double)value unitString:(id)string showUnit:(BOOL)unit
 {
-  v5 = a5;
+  unitCopy = unit;
   v28[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = v8;
-  if (v5 && [v8 length])
+  stringCopy = string;
+  v9 = stringCopy;
+  if (unitCopy && [stringCopy length])
   {
-    v10 = [(HKInteractiveChartDataFormatter *)self displayType];
-    if (v10)
+    displayType = [(HKInteractiveChartDataFormatter *)self displayType];
+    if (displayType)
     {
-      v11 = [(HKInteractiveChartDataFormatter *)self displayType];
-      v12 = [v11 presentation];
-      [v12 adjustedDoubleForDaemonDouble:a3];
-      a3 = v13;
+      displayType2 = [(HKInteractiveChartDataFormatter *)self displayType];
+      presentation = [displayType2 presentation];
+      [presentation adjustedDoubleForDaemonDouble:value];
+      value = v13;
     }
 
-    v14 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v14 = [MEMORY[0x1E696AD98] numberWithDouble:value];
     v15 = [(HKInteractiveChartDataFormatter *)self attributedStringForValue:v14];
 
     v16 = objc_alloc(MEMORY[0x1E696AAB0]);
     v27[0] = *MEMORY[0x1E69DB648];
-    v17 = [(HKInteractiveChartDataFormatter *)self minorFont];
-    v28[0] = v17;
+    minorFont = [(HKInteractiveChartDataFormatter *)self minorFont];
+    v28[0] = minorFont;
     v27[1] = *MEMORY[0x1E69DB650];
-    v18 = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
-    v28[1] = v18;
+    hk_chartLollipopLabelColor = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
+    v28[1] = hk_chartLollipopLabelColor;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
     v20 = [v16 initWithString:v9 attributes:v19];
 
@@ -96,79 +96,79 @@
 
   else
   {
-    v24 = [(HKInteractiveChartDataFormatter *)self formattedStringWithValue:v9 unitString:v5 showUnit:a3];
+    v24 = [(HKInteractiveChartDataFormatter *)self formattedStringWithValue:v9 unitString:unitCopy showUnit:value];
   }
 
   return v24;
 }
 
-- (id)unitStringFromUnit:(id)a3 number:(id)a4
+- (id)unitStringFromUnit:(id)unit number:(id)number
 {
-  v6 = a4;
-  v7 = [(HKInteractiveChartDataFormatter *)self unitController];
-  v8 = [(HKInteractiveChartDataFormatter *)self displayType];
-  if (a3)
+  numberCopy = number;
+  unitController = [(HKInteractiveChartDataFormatter *)self unitController];
+  displayType = [(HKInteractiveChartDataFormatter *)self displayType];
+  if (unit)
   {
-    [v7 localizedDisplayNameForDisplayType:v8 value:v6];
+    [unitController localizedDisplayNameForDisplayType:displayType value:numberCopy];
   }
 
   else
   {
-    HKUIUnitDisplayName(v7, v8, v6);
+    HKUIUnitDisplayName(unitController, displayType, numberCopy);
   }
   v9 = ;
 
   return v9;
 }
 
-- (id)attributedStringWithValue:(double)a3 unit:(id)a4 showUnit:(BOOL)a5
+- (id)attributedStringWithValue:(double)value unit:(id)unit showUnit:(BOOL)showUnit
 {
-  v5 = a5;
+  showUnitCopy = showUnit;
   v8 = MEMORY[0x1E696AD98];
-  v9 = a4;
-  v10 = [v8 numberWithDouble:a3];
-  v11 = [(HKInteractiveChartDataFormatter *)self unitStringFromUnit:v9 number:v10];
+  unitCopy = unit;
+  v10 = [v8 numberWithDouble:value];
+  v11 = [(HKInteractiveChartDataFormatter *)self unitStringFromUnit:unitCopy number:v10];
 
-  v12 = [MEMORY[0x1E696C510] percentUnit];
-  v13 = [v9 isEqual:v12];
+  percentUnit = [MEMORY[0x1E696C510] percentUnit];
+  v13 = [unitCopy isEqual:percentUnit];
 
   if (v13)
   {
-    [(HKInteractiveChartDataFormatter *)self _formattedPercentageStringWithValue:v11 unitString:v5 showUnit:a3];
+    [(HKInteractiveChartDataFormatter *)self _formattedPercentageStringWithValue:v11 unitString:showUnitCopy showUnit:value];
   }
 
   else
   {
-    [(HKInteractiveChartDataFormatter *)self formattedStringWithValue:v11 unitString:v5 showUnit:a3];
+    [(HKInteractiveChartDataFormatter *)self formattedStringWithValue:v11 unitString:showUnitCopy showUnit:value];
   }
   v14 = ;
 
   return v14;
 }
 
-- (id)attributedStringForValue:(id)a3
+- (id)attributedStringForValue:(id)value
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v4 = [(HKInteractiveChartDataFormatter *)self valueStringFromNumber:a3];
+  v4 = [(HKInteractiveChartDataFormatter *)self valueStringFromNumber:value];
   v5 = objc_alloc(MEMORY[0x1E696AAB0]);
   v11[0] = *MEMORY[0x1E69DB648];
-  v6 = [(HKInteractiveChartDataFormatter *)self majorFont];
-  v12[0] = v6;
+  majorFont = [(HKInteractiveChartDataFormatter *)self majorFont];
+  v12[0] = majorFont;
   v11[1] = *MEMORY[0x1E69DB650];
-  v7 = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
-  v12[1] = v7;
+  hk_chartLollipopValueColor = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
+  v12[1] = hk_chartLollipopValueColor;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v9 = [v5 initWithString:v4 attributes:v8];
 
   return v9;
 }
 
-- (id)valueStringFromNumber:(id)a3
+- (id)valueStringFromNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v6 = [(HKInteractiveChartDataFormatter *)self unitController];
-  v7 = HKFormattedStringFromValue(v4, v5, v6, 0, 0);
+  numberCopy = number;
+  displayType = [(HKInteractiveChartDataFormatter *)self displayType];
+  unitController = [(HKInteractiveChartDataFormatter *)self unitController];
+  v7 = HKFormattedStringFromValue(numberCopy, displayType, unitController, 0, 0);
 
   return v7;
 }
@@ -180,7 +180,7 @@
   return WeakRetained;
 }
 
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

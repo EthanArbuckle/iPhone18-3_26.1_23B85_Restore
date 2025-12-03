@@ -1,14 +1,14 @@
 @interface HDObserverQueryServer
-- (HDObserverQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (id)_sampleTypesToUpdateWithSamples:(uint64_t)a1;
-- (void)_deliverDataWasUpdatedForTypes:(void *)a3 withAnchor:;
+- (HDObserverQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (id)_sampleTypesToUpdateWithSamples:(uint64_t)samples;
+- (void)_deliverDataWasUpdatedForTypes:(void *)types withAnchor:;
 - (void)_queue_start;
 - (void)_queue_stop;
-- (void)associationsUpdatedForObject:(id)a3 subObject:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 objects:(id)a7 anchor:(id)a8;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
-- (void)profile:(id)a3 didDiscardSeriesOfType:(id)a4;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
+- (void)associationsUpdatedForObject:(id)object subObject:(id)subObject type:(unint64_t)type behavior:(unint64_t)behavior objects:(id)objects anchor:(id)anchor;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
+- (void)profile:(id)profile didDiscardSeriesOfType:(id)type;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
 @end
 
 @implementation HDObserverQueryServer
@@ -34,14 +34,14 @@
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v3 = [(HDObserverQueryServer *)self objectTypes];
-  v4 = [v3 countByEnumeratingWithState:&v45 objects:v66 count:16];
+  objectTypes = [(HDObserverQueryServer *)self objectTypes];
+  v4 = [objectTypes countByEnumeratingWithState:&v45 objects:v66 count:16];
   if (v4)
   {
     v5 = 0;
     v6 = *v46;
     v36 = *MEMORY[0x277D10A40];
-    obj = v3;
+    obj = objectTypes;
     do
     {
       for (i = 0; i != v4; ++i)
@@ -57,14 +57,14 @@
         v10 = [(HDQueryServer *)self authorizationStatusRecordForType:v9 error:&v44];
         if (v10)
         {
-          v11 = [(HDQueryServer *)self profile];
-          v12 = [HDSampleEntity entityEnumeratorWithType:v9 profile:v11];
+          profile = [(HDQueryServer *)self profile];
+          v12 = [HDSampleEntity entityEnumeratorWithType:v9 profile:profile];
 
-          v13 = [v10 restrictedSourceEntities];
-          [v12 setRestrictedSourceEntities:v13];
+          restrictedSourceEntities = [v10 restrictedSourceEntities];
+          [v12 setRestrictedSourceEntities:restrictedSourceEntities];
 
-          v14 = [(HDQueryServer *)self sampleAuthorizationFilter];
-          [v12 setAuthorizationFilter:v14];
+          sampleAuthorizationFilter = [(HDQueryServer *)self sampleAuthorizationFilter];
+          [v12 setAuthorizationFilter:sampleAuthorizationFilter];
 
           v15 = [(NSDictionary *)self->_sampleTypeToFilterMap objectForKeyedSubscript:v9];
           [v12 setFilter:v15];
@@ -131,17 +131,17 @@
     v5 = 0;
   }
 
-  v21 = [(HDQueryServer *)self profile];
-  v22 = [v21 dataManager];
-  v37 = [v22 quantitySeriesManager];
+  profile2 = [(HDQueryServer *)self profile];
+  dataManager = [profile2 dataManager];
+  quantitySeriesManager = [dataManager quantitySeriesManager];
 
-  v23 = [(HDQueryServer *)self queryQueue];
+  queryQueue = [(HDQueryServer *)self queryQueue];
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v24 = [(HDObserverQueryServer *)self objectTypes];
-  v25 = [v24 countByEnumeratingWithState:&v38 objects:v65 count:16];
+  objectTypes2 = [(HDObserverQueryServer *)self objectTypes];
+  v25 = [objectTypes2 countByEnumeratingWithState:&v38 objects:v65 count:16];
   if (v25)
   {
     v26 = *v39;
@@ -151,18 +151,18 @@
       {
         if (*v39 != v26)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(objectTypes2);
         }
 
         v28 = *(*(&v38 + 1) + 8 * j);
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && self->_observeUnfrozenSeries)
         {
-          [v37 addObserver:self forType:v28 queue:v23];
+          [quantitySeriesManager addObserver:self forType:v28 queue:queryQueue];
         }
       }
 
-      v25 = [v24 countByEnumeratingWithState:&v38 objects:v65 count:16];
+      v25 = [objectTypes2 countByEnumeratingWithState:&v38 objects:v65 count:16];
     }
 
     while (v25);
@@ -198,38 +198,38 @@
   v8.super_class = HDObserverQueryServer;
   [(HDQueryServer *)&v8 _queue_stop];
   self->_deliverOnUnlock = 0;
-  v3 = [(HDQueryServer *)self quantityType];
-  if (v3)
+  quantityType = [(HDQueryServer *)self quantityType];
+  if (quantityType)
   {
-    v4 = [(HDQueryServer *)self profile];
-    v5 = [v4 dataManager];
-    v6 = [v5 quantitySeriesManager];
-    v7 = [(HDQueryServer *)self quantityType];
-    [v6 removeObserver:self forType:v7];
+    profile = [(HDQueryServer *)self profile];
+    dataManager = [profile dataManager];
+    quantitySeriesManager = [dataManager quantitySeriesManager];
+    quantityType2 = [(HDQueryServer *)self quantityType];
+    [quantitySeriesManager removeObserver:self forType:quantityType2];
   }
 }
 
-- (HDObserverQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDObserverQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
-  v11 = a5;
+  configurationCopy = configuration;
+  clientCopy = client;
   v21.receiver = self;
   v21.super_class = HDObserverQueryServer;
-  v12 = [(HDQueryServer *)&v21 initWithUUID:a3 configuration:v10 client:v11 delegate:a6];
+  v12 = [(HDQueryServer *)&v21 initWithUUID:d configuration:configurationCopy client:clientCopy delegate:delegate];
   if (v12)
   {
-    v12->_observeUnfrozenSeries = [v10 observeUnfrozenSeries];
-    v13 = [v10 queryDescriptors];
+    v12->_observeUnfrozenSeries = [configurationCopy observeUnfrozenSeries];
+    queryDescriptors = [configurationCopy queryDescriptors];
     queryDescriptors = v12->_queryDescriptors;
-    v12->_queryDescriptors = v13;
+    v12->_queryDescriptors = queryDescriptors;
 
-    v15 = [v10 queryDescriptors];
+    queryDescriptors2 = [configurationCopy queryDescriptors];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __68__HDObserverQueryServer_initWithUUID_configuration_client_delegate___block_invoke;
     v19[3] = &unk_27861C4C8;
-    v20 = v11;
-    v16 = [v15 hk_mapToDictionary:v19];
+    v20 = clientCopy;
+    v16 = [queryDescriptors2 hk_mapToDictionary:v19];
     sampleTypeToFilterMap = v12->_sampleTypeToFilterMap;
     v12->_sampleTypeToFilterMap = v16;
   }
@@ -266,47 +266,47 @@ uint64_t __37__HDObserverQueryServer__queue_start__block_invoke(uint64_t a1, voi
   return 0;
 }
 
-- (void)_deliverDataWasUpdatedForTypes:(void *)a3 withAnchor:
+- (void)_deliverDataWasUpdatedForTypes:(void *)types withAnchor:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  typesCopy = types;
+  v7 = typesCopy;
+  if (self)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __67__HDObserverQueryServer__deliverDataWasUpdatedForTypes_withAnchor___block_invoke;
     v8[3] = &unk_278613830;
-    v8[4] = a1;
-    v9 = v6;
+    v8[4] = self;
+    v9 = typesCopy;
     v10 = v5;
-    [a1 onQueue:v8];
+    [self onQueue:v8];
   }
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  addedCopy = added;
+  anchorCopy = anchor;
   _HKInitializeLogging();
   v8 = MEMORY[0x277CCC308];
   v9 = *MEMORY[0x277CCC308];
   if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2114;
-    v21 = v6;
+    v21 = addedCopy;
     v22 = 2114;
-    v23 = v7;
+    v23 = anchorCopy;
     _os_log_impl(&dword_228986000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: samplesAdded: %{public}@, anchor: %{public}@", buf, 0x20u);
   }
 
-  v10 = [(HDQueryServer *)self client];
-  v11 = [v10 authorizationOracle];
+  client = [(HDQueryServer *)self client];
+  authorizationOracle = [client authorizationOracle];
   v17 = 0;
-  v12 = [v11 filteredObjectsForReadAuthorization:v6 anchor:v7 error:&v17];
+  v12 = [authorizationOracle filteredObjectsForReadAuthorization:addedCopy anchor:anchorCopy error:&v17];
   v13 = v17;
 
   if (v12)
@@ -314,7 +314,7 @@ uint64_t __37__HDObserverQueryServer__queue_start__block_invoke(uint64_t a1, voi
     v14 = [(HDObserverQueryServer *)self _sampleTypesToUpdateWithSamples:v12];
     if ([v14 count])
     {
-      [(HDObserverQueryServer *)self _deliverDataWasUpdatedForTypes:v14 withAnchor:v7];
+      [(HDObserverQueryServer *)self _deliverDataWasUpdatedForTypes:v14 withAnchor:anchorCopy];
     }
   }
 
@@ -325,7 +325,7 @@ uint64_t __37__HDObserverQueryServer__queue_start__block_invoke(uint64_t a1, voi
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2114;
       v21 = v13;
       _os_log_error_impl(&dword_228986000, v15, OS_LOG_TYPE_ERROR, "%{public}@: Failed to filter samples for authorization: %{public}@", buf, 0x16u);
@@ -335,12 +335,12 @@ uint64_t __37__HDObserverQueryServer__queue_start__block_invoke(uint64_t a1, voi
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_sampleTypesToUpdateWithSamples:(uint64_t)a1
+- (id)_sampleTypesToUpdateWithSamples:(uint64_t)samples
 {
   v26 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v20 = v3;
-  if (a1)
+  if (samples)
   {
     v4 = v3;
     v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -364,19 +364,19 @@ uint64_t __37__HDObserverQueryServer__queue_start__block_invoke(uint64_t a1, voi
           }
 
           v11 = *(*(&v21 + 1) + 8 * i);
-          v12 = [v11 sampleType];
-          v13 = [v5 containsObject:v12];
+          sampleType = [v11 sampleType];
+          v13 = [v5 containsObject:sampleType];
 
           if ((v13 & 1) == 0)
           {
-            v14 = *(a1 + 248);
-            v15 = [v11 sampleType];
-            v16 = [v14 objectForKeyedSubscript:v15];
+            v14 = *(samples + 248);
+            sampleType2 = [v11 sampleType];
+            v16 = [v14 objectForKeyedSubscript:sampleType2];
 
             if ([MEMORY[0x277CCDDB8] filter:v16 acceptsDataObject:v11])
             {
-              v17 = [v11 sampleType];
-              [v5 addObject:v17];
+              sampleType3 = [v11 sampleType];
+              [v5 addObject:sampleType3];
             }
           }
         }
@@ -398,39 +398,39 @@ uint64_t __37__HDObserverQueryServer__queue_start__block_invoke(uint64_t a1, voi
   return v5;
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithArray:v8];
+  anchorCopy = anchor;
+  removedCopy = removed;
+  v9 = [[v6 alloc] initWithArray:removedCopy];
 
-  [(HDObserverQueryServer *)self _deliverDataWasUpdatedForTypes:v9 withAnchor:v7];
+  [(HDObserverQueryServer *)self _deliverDataWasUpdatedForTypes:v9 withAnchor:anchorCopy];
 }
 
-- (void)associationsUpdatedForObject:(id)a3 subObject:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 objects:(id)a7 anchor:(id)a8
+- (void)associationsUpdatedForObject:(id)object subObject:(id)subObject type:(unint64_t)type behavior:(unint64_t)behavior objects:(id)objects anchor:(id)anchor
 {
   v32 = *MEMORY[0x277D85DE8];
-  v11 = a8;
-  v12 = [a7 arrayByAddingObject:a3];
+  anchorCopy = anchor;
+  v12 = [objects arrayByAddingObject:object];
   _HKInitializeLogging();
   v13 = MEMORY[0x277CCC308];
   v14 = *MEMORY[0x277CCC308];
   if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v27 = self;
+    selfCopy2 = self;
     v28 = 2114;
     v29 = v12;
     v30 = 2114;
-    v31 = v11;
+    v31 = anchorCopy;
     _os_log_impl(&dword_228986000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: associationsUpdated: %{public}@, anchor: %{public}@", buf, 0x20u);
   }
 
-  v15 = [(HDQueryServer *)self client];
-  v16 = [v15 authorizationOracle];
+  client = [(HDQueryServer *)self client];
+  authorizationOracle = [client authorizationOracle];
   v25 = 0;
-  v17 = [v16 filteredObjectsForReadAuthorization:v12 anchor:v11 error:&v25];
+  v17 = [authorizationOracle filteredObjectsForReadAuthorization:v12 anchor:anchorCopy error:&v25];
   v18 = v25;
 
   if (v17)
@@ -443,7 +443,7 @@ uint64_t __37__HDObserverQueryServer__queue_start__block_invoke(uint64_t a1, voi
       v22[2] = __93__HDObserverQueryServer_associationsUpdatedForObject_subObject_type_behavior_objects_anchor___block_invoke;
       v22[3] = &unk_278613830;
       v22[4] = self;
-      v23 = v11;
+      v23 = anchorCopy;
       v24 = v19;
       [(HDQueryServer *)self onQueue:v22];
     }
@@ -456,7 +456,7 @@ uint64_t __37__HDObserverQueryServer__queue_start__block_invoke(uint64_t a1, voi
     if (os_log_type_enabled(*v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2114;
       v29 = v18;
       _os_log_error_impl(&dword_228986000, v20, OS_LOG_TYPE_ERROR, "%{public}@: Failed to filter samples for authorization: %{public}@", buf, 0x16u);
@@ -553,18 +553,18 @@ void __86__HDObserverQueryServer_transactionalQuantityInsertHandlerForProfile_jo
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)profile:(id)a3 didDiscardSeriesOfType:(id)a4
+- (void)profile:(id)profile didDiscardSeriesOfType:(id)type
 {
   v5 = MEMORY[0x277CBEB98];
-  v6 = a4;
-  v7 = [[v5 alloc] initWithObjects:{v6, 0}];
+  typeCopy = type;
+  v7 = [[v5 alloc] initWithObjects:{typeCopy, 0}];
 
   [(HDObserverQueryServer *)self _deliverDataWasUpdatedForTypes:v7 withAnchor:0];
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  if (a4)
+  if (available)
   {
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;

@@ -1,29 +1,29 @@
 @interface TSUXmlUtilities
-+ (BOOL)examineXmlNodes:(_xmlNode *)a3 nodeHandler:(id)a4 continueExamining:(BOOL *)a5 walkChildren:(BOOL)a6;
-+ (BOOL)reloadXmlData:(id)a3 docPtr:(_xmlDoc *)a4;
-+ (BOOL)validateXml:(_xmlDoc *)a3 dtd:(id)a4 validateXmlHandler:(id)a5;
-+ (BOOL)validateXmlData:(id)a3 dtd:(id)a4 error:(id *)a5 validateXmlHandler:(id)a6;
-+ (void)loadXmlFromData:(id)a3 options:(int)a4 encoding:(int *)a5 loadXmlHandlier:(id)a6 completionHandler:(id)a7;
-+ (void)normalizeXml:(id)a3 nodeHandler:(id)a4 completionHandler:(id)a5 encoding:(int *)a6;
++ (BOOL)examineXmlNodes:(_xmlNode *)nodes nodeHandler:(id)handler continueExamining:(BOOL *)examining walkChildren:(BOOL)children;
++ (BOOL)reloadXmlData:(id)data docPtr:(_xmlDoc *)ptr;
++ (BOOL)validateXml:(_xmlDoc *)xml dtd:(id)dtd validateXmlHandler:(id)handler;
++ (BOOL)validateXmlData:(id)data dtd:(id)dtd error:(id *)error validateXmlHandler:(id)handler;
++ (void)loadXmlFromData:(id)data options:(int)options encoding:(int *)encoding loadXmlHandlier:(id)handlier completionHandler:(id)handler;
++ (void)normalizeXml:(id)xml nodeHandler:(id)handler completionHandler:(id)completionHandler encoding:(int *)encoding;
 @end
 
 @implementation TSUXmlUtilities
 
-+ (BOOL)validateXml:(_xmlDoc *)a3 dtd:(id)a4 validateXmlHandler:(id)a5
++ (BOOL)validateXml:(_xmlDoc *)xml dtd:(id)dtd validateXmlHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277CCA8D8] tsu_resourcesBundle];
-  v10 = [v9 pathForResource:v7 ofType:@"dtd"];
+  dtdCopy = dtd;
+  handlerCopy = handler;
+  tsu_resourcesBundle = [MEMORY[0x277CCA8D8] tsu_resourcesBundle];
+  v10 = [tsu_resourcesBundle pathForResource:dtdCopy ofType:@"dtd"];
   if (v10)
   {
     v11 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v10];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 bytes];
+      bytes = [v11 bytes];
       v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v12, "length")}];
-      Mem = xmlParserInputBufferCreateMem(v13, [v14 intValue], XML_CHAR_ENCODING_UTF8);
+      Mem = xmlParserInputBufferCreateMem(bytes, [v14 intValue], XML_CHAR_ENCODING_UTF8);
 
       if (Mem)
       {
@@ -33,7 +33,7 @@
           v17 = xmlNewValidCtxt();
           if (v17)
           {
-            v18 = v8[2](v8, v17, a3, v16);
+            v18 = handlerCopy[2](handlerCopy, v17, xml, v16);
             xmlFreeValidCtxt(v17);
             v19 = 0;
           }
@@ -68,16 +68,16 @@ LABEL_9:
   return v18;
 }
 
-+ (void)loadXmlFromData:(id)a3 options:(int)a4 encoding:(int *)a5 loadXmlHandlier:(id)a6 completionHandler:(id)a7
++ (void)loadXmlFromData:(id)data options:(int)options encoding:(int *)encoding loadXmlHandlier:(id)handlier completionHandler:(id)handler
 {
-  v20 = a3;
-  v11 = a6;
-  v12 = a7;
+  dataCopy = data;
+  handlierCopy = handlier;
+  handlerCopy = handler;
   v13 = xmlNewParserCtxt();
-  v14 = [v20 bytes];
-  if (a5)
+  bytes = [dataCopy bytes];
+  if (encoding)
   {
-    CharEncodingName = xmlGetCharEncodingName(*a5);
+    CharEncodingName = xmlGetCharEncodingName(*encoding);
   }
 
   else
@@ -85,12 +85,12 @@ LABEL_9:
     CharEncodingName = 0;
   }
 
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v20, "length")}];
-  Memory = xmlCtxtReadMemory(v13, v14, [v16 intValue], 0, CharEncodingName, a4);
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "length")}];
+  Memory = xmlCtxtReadMemory(v13, bytes, [v16 intValue], 0, CharEncodingName, options);
 
   if (Memory)
   {
-    v11[2](v11, Memory);
+    handlierCopy[2](handlierCopy, Memory);
     if (v13->wellFormed)
     {
       v18 = v13->valid != 0;
@@ -120,15 +120,15 @@ LABEL_10:
     xmlFreeDoc(Memory);
   }
 
-  v12[2](v12, v19);
+  handlerCopy[2](handlerCopy, v19);
 }
 
-+ (BOOL)validateXmlData:(id)a3 dtd:(id)a4 error:(id *)a5 validateXmlHandler:(id)a6
++ (BOOL)validateXmlData:(id)data dtd:(id)dtd error:(id *)error validateXmlHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  dataCopy = data;
+  dtdCopy = dtd;
+  handlerCopy = handler;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -142,17 +142,17 @@ LABEL_10:
   v17[2] = sub_27706EFFC;
   v17[3] = &unk_27A701E18;
   v20 = &v22;
-  v21 = a1;
-  v12 = v10;
+  selfCopy = self;
+  v12 = dtdCopy;
   v18 = v12;
-  v13 = v11;
+  v13 = handlerCopy;
   v19 = v13;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_27706F038;
   v16[3] = &unk_27A701E40;
   v16[4] = &v26;
-  [a1 loadXmlFromData:v9 options:1 encoding:0 loadXmlHandlier:v17 completionHandler:v16];
+  [self loadXmlFromData:dataCopy options:1 encoding:0 loadXmlHandlier:v17 completionHandler:v16];
 
   if (*(v27 + 24) == 1)
   {
@@ -170,35 +170,35 @@ LABEL_10:
   return v14 & 1;
 }
 
-+ (BOOL)examineXmlNodes:(_xmlNode *)a3 nodeHandler:(id)a4 continueExamining:(BOOL *)a5 walkChildren:(BOOL)a6
++ (BOOL)examineXmlNodes:(_xmlNode *)nodes nodeHandler:(id)handler continueExamining:(BOOL *)examining walkChildren:(BOOL)children
 {
-  v6 = a6;
-  v10 = a4;
+  childrenCopy = children;
+  handlerCopy = handler;
   v11 = 0;
-  if (a3)
+  if (nodes)
   {
     do
     {
-      if (!*a5)
+      if (!*examining)
       {
         break;
       }
 
-      next = a3->next;
-      children = a3->children;
+      next = nodes->next;
+      children = nodes->children;
       v15 = 0;
-      if (v10)
+      if (handlerCopy)
       {
-        v10[2](v10, a3, a5, &v15);
+        handlerCopy[2](handlerCopy, nodes, examining, &v15);
       }
 
       v11 |= v15;
-      if (v6)
+      if (childrenCopy)
       {
-        v11 |= [a1 examineXmlNodes:children nodeHandler:v10 continueExamining:a5 walkChildren:1];
+        v11 |= [self examineXmlNodes:children nodeHandler:handlerCopy continueExamining:examining walkChildren:1];
       }
 
-      a3 = next;
+      nodes = next;
     }
 
     while (next);
@@ -207,9 +207,9 @@ LABEL_10:
   return v11 & 1;
 }
 
-+ (BOOL)reloadXmlData:(id)a3 docPtr:(_xmlDoc *)a4
++ (BOOL)reloadXmlData:(id)data docPtr:(_xmlDoc *)ptr
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_autoreleasePoolPush();
   v32 = 0;
   v7 = [[TSUTemporaryDirectory alloc] initWithError:&v32];
@@ -228,18 +228,18 @@ LABEL_10:
   if (v10)
   {
     v14 = [(TSUTemporaryDirectory *)v7 URL];
-    v15 = [v14 path];
-    v12 = [v15 stringByAppendingPathComponent:@"temp.svg"];
+    path = [v14 path];
+    v12 = [path stringByAppendingPathComponent:@"temp.svg"];
 
-    v16 = xmlSaveFile([v12 UTF8String], a4);
+    v16 = xmlSaveFile([v12 UTF8String], ptr);
     if (v16 >= 1)
     {
-      v30 = v5;
+      v30 = dataCopy;
       v17 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v12];
       v18 = v17;
       if (v17 && ([MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v17, "length")}], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "intValue"), v19, v20 == v16))
       {
-        [v5 setData:v18];
+        [dataCopy setData:v18];
         v21 = 0;
         v22 = 1;
       }
@@ -250,9 +250,9 @@ LABEL_10:
         v21 = @"reloadXmlData failed to write modified xml";
       }
 
-      v23 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v31 = 0;
-      v24 = [v23 removeItemAtPath:v12 error:&v31];
+      v24 = [defaultManager removeItemAtPath:v12 error:&v31];
       v25 = v31;
 
       if ((v24 & 1) == 0)
@@ -264,7 +264,7 @@ LABEL_10:
         v21 = v28;
       }
 
-      v5 = v30;
+      dataCopy = v30;
       goto LABEL_18;
     }
 
@@ -299,12 +299,12 @@ LABEL_19:
   return v22;
 }
 
-+ (void)normalizeXml:(id)a3 nodeHandler:(id)a4 completionHandler:(id)a5 encoding:(int *)a6
++ (void)normalizeXml:(id)xml nodeHandler:(id)handler completionHandler:(id)completionHandler encoding:(int *)encoding
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  xmlCopy = xml;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -313,7 +313,7 @@ LABEL_19:
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (a6)
+  if (encoding)
   {
     v13 = 2173185;
   }
@@ -328,22 +328,22 @@ LABEL_19:
   v17[2] = sub_27706F864;
   v17[3] = &unk_27A701E68;
   v20 = &v23;
-  v22 = a1;
-  v14 = v11;
+  selfCopy = self;
+  v14 = handlerCopy;
   v19 = v14;
   v21 = &v27;
-  v15 = v10;
+  v15 = xmlCopy;
   v18 = v15;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_27706F8E8;
   v16[3] = &unk_27A701E40;
   v16[4] = &v27;
-  [a1 loadXmlFromData:v15 options:v13 encoding:a6 loadXmlHandlier:v17 completionHandler:v16];
+  [self loadXmlFromData:v15 options:v13 encoding:encoding loadXmlHandlier:v17 completionHandler:v16];
 
-  if (v12)
+  if (completionHandlerCopy)
   {
-    (*(v12 + 2))(v12, *(v28 + 24), *(v24 + 24), 0);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, *(v28 + 24), *(v24 + 24), 0);
   }
 
   _Block_object_dispose(&v23, 8);

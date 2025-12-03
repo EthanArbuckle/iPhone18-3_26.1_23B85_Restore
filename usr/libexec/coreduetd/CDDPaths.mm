@@ -2,44 +2,44 @@
 + (id)CDDConfigurationBundlePath;
 + (id)knowledgeDatabaseDirectory;
 + (id)peopleDatabaseDirectory;
-+ (id)simulatorHomePathFor:(id)a3;
-+ (id)simulatorSharedPathFor:(id)a3;
-+ (id)simulatorSystemPathFor:(id)a3 withEnvVar:(id)a4;
++ (id)simulatorHomePathFor:(id)for;
++ (id)simulatorSharedPathFor:(id)for;
++ (id)simulatorSystemPathFor:(id)for withEnvVar:(id)var;
 + (id)userLocalKnowledgeDatabaseDirectory;
 @end
 
 @implementation CDDPaths
 
-+ (id)simulatorSystemPathFor:(id)a3 withEnvVar:(id)a4
++ (id)simulatorSystemPathFor:(id)for withEnvVar:(id)var
 {
-  v5 = a4;
-  v6 = a3;
+  varCopy = var;
+  forCopy = for;
   v7 = +[NSProcessInfo processInfo];
-  v8 = [v7 environment];
-  v9 = [v8 objectForKey:v5];
+  environment = [v7 environment];
+  v9 = [environment objectForKey:varCopy];
 
-  v10 = [v9 stringByAppendingString:v6];
+  v10 = [v9 stringByAppendingString:forCopy];
 
   return v10;
 }
 
-+ (id)simulatorHomePathFor:(id)a3
++ (id)simulatorHomePathFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v4 = NSHomeDirectory();
-  v5 = [v4 stringByAppendingString:v3];
+  v5 = [v4 stringByAppendingString:forCopy];
 
   return v5;
 }
 
-+ (id)simulatorSharedPathFor:(id)a3
++ (id)simulatorSharedPathFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v4 = [NSMutableArray arrayWithObject:@"/tmp"];
   [v4 addObject:@"Developer/CoreSimulator/Shared/data"];
-  if (v3 && [v3 length])
+  if (forCopy && [forCopy length])
   {
-    [v4 addObject:v3];
+    [v4 addObject:forCopy];
   }
 
   v5 = [NSString pathWithComponents:v4];

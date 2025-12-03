@@ -1,6 +1,6 @@
 @interface MFQuickReplyAnimationContext
 + (OS_os_log)log;
-- (MFQuickReplyAnimationContext)initWithInsets:(UIEdgeInsets)a3 cornerRadius:(double)a4 compositionSnapshot:(id)a5 buttonsSnapshot:(id)a6 backgroundSnapshot:(id)a7;
+- (MFQuickReplyAnimationContext)initWithInsets:(UIEdgeInsets)insets cornerRadius:(double)radius compositionSnapshot:(id)snapshot buttonsSnapshot:(id)buttonsSnapshot backgroundSnapshot:(id)backgroundSnapshot;
 - (UIEdgeInsets)insets;
 @end
 
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __35__MFQuickReplyAnimationContext_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_11 != -1)
   {
     dispatch_once(&log_onceToken_11, block);
@@ -31,15 +31,15 @@ void __35__MFQuickReplyAnimationContext_log__block_invoke(uint64_t a1)
   log_log_11 = v1;
 }
 
-- (MFQuickReplyAnimationContext)initWithInsets:(UIEdgeInsets)a3 cornerRadius:(double)a4 compositionSnapshot:(id)a5 buttonsSnapshot:(id)a6 backgroundSnapshot:(id)a7
+- (MFQuickReplyAnimationContext)initWithInsets:(UIEdgeInsets)insets cornerRadius:(double)radius compositionSnapshot:(id)snapshot buttonsSnapshot:(id)buttonsSnapshot backgroundSnapshot:(id)backgroundSnapshot
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  snapshotCopy = snapshot;
+  buttonsSnapshotCopy = buttonsSnapshot;
+  backgroundSnapshotCopy = backgroundSnapshot;
   v22.receiver = self;
   v22.super_class = MFQuickReplyAnimationContext;
   v19 = [(MFQuickReplyAnimationContext *)&v22 init];
@@ -50,10 +50,10 @@ void __35__MFQuickReplyAnimationContext_log__block_invoke(uint64_t a1)
     v19->_insets.left = left;
     v19->_insets.bottom = bottom;
     v19->_insets.right = right;
-    v19->_cornerRadius = a4;
-    objc_storeStrong(&v19->_compositionSnapshot, a5);
-    objc_storeStrong(&v20->_buttonsSnapshot, a6);
-    objc_storeStrong(&v20->_backgroundSnapshot, a7);
+    v19->_cornerRadius = radius;
+    objc_storeStrong(&v19->_compositionSnapshot, snapshot);
+    objc_storeStrong(&v20->_buttonsSnapshot, buttonsSnapshot);
+    objc_storeStrong(&v20->_backgroundSnapshot, backgroundSnapshot);
   }
 
   return v20;

@@ -1,25 +1,25 @@
 @interface HKMCAnalysisQuery
-- (HKMCAnalysisQuery)initWithForceAnalysis:(BOOL)a3 updateHandler:(id)a4;
-- (void)client_deliverAnalysis:(id)a3 queryUUID:(id)a4;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (HKMCAnalysisQuery)initWithForceAnalysis:(BOOL)analysis updateHandler:(id)handler;
+- (void)client_deliverAnalysis:(id)analysis queryUUID:(id)d;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
 @implementation HKMCAnalysisQuery
 
-- (HKMCAnalysisQuery)initWithForceAnalysis:(BOOL)a3 updateHandler:(id)a4
+- (HKMCAnalysisQuery)initWithForceAnalysis:(BOOL)analysis updateHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = HKMCAnalysisQuery;
   v7 = [(HKQuery *)&v12 _initWithObjectType:0 predicate:0];
   v8 = v7;
   if (v7)
   {
-    v7->_forceAnalysis = a3;
-    v9 = [v6 copy];
+    v7->_forceAnalysis = analysis;
+    v9 = [handlerCopy copy];
     updateHandler = v8->_updateHandler;
     v8->_updateHandler = v9;
   }
@@ -27,21 +27,21 @@
   return v8;
 }
 
-- (void)client_deliverAnalysis:(id)a3 queryUUID:(id)a4
+- (void)client_deliverAnalysis:(id)analysis queryUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKQuery *)self queue];
+  analysisCopy = analysis;
+  dCopy = d;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__HKMCAnalysisQuery_client_deliverAnalysis_queryUUID___block_invoke;
   block[3] = &unk_2796D4E80;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = analysisCopy;
+  v9 = analysisCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __54__HKMCAnalysisQuery_client_deliverAnalysis_queryUUID___block_invoke(uint64_t a1)
@@ -89,14 +89,14 @@ uint64_t __54__HKMCAnalysisQuery_client_deliverAnalysis_queryUUID___block_invoke
   return result;
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v19 = *MEMORY[0x277D85DE8];
   v12.receiver = self;
   v12.super_class = HKMCAnalysisQuery;
-  v4 = a3;
-  [(HKQuery *)&v12 queue_populateConfiguration:v4];
-  [v4 setForceAnalysis:{self->_forceAnalysis, v12.receiver, v12.super_class}];
+  configurationCopy = configuration;
+  [(HKQuery *)&v12 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setForceAnalysis:{self->_forceAnalysis, v12.receiver, v12.super_class}];
 
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2E8];
@@ -105,12 +105,12 @@ uint64_t __54__HKMCAnalysisQuery_client_deliverAnalysis_queryUUID___block_invoke
     v6 = v5;
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(HKQuery *)self debugIdentifier];
+    debugIdentifier = [(HKQuery *)self debugIdentifier];
     v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_forceAnalysis];
     *buf = 138543874;
     v14 = v7;
     v15 = 2114;
-    v16 = v9;
+    v16 = debugIdentifier;
     v17 = 2114;
     v18 = v10;
     _os_log_impl(&dword_2518FC000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@:%{public}@] Configured with forced analysis: %{public}@", buf, 0x20u);
@@ -119,21 +119,21 @@ uint64_t __54__HKMCAnalysisQuery_client_deliverAnalysis_queryUUID___block_invoke
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x253087260](self->_updateHandler);
   if (v5)
   {
-    v6 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __40__HKMCAnalysisQuery_queue_deliverError___block_invoke;
     block[3] = &unk_2796D4BF8;
     v9 = v5;
     block[4] = self;
-    v8 = v4;
-    dispatch_async(v6, block);
+    v8 = errorCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 
@@ -148,7 +148,7 @@ uint64_t __54__HKMCAnalysisQuery_client_deliverAnalysis_queryUUID___block_invoke
   }
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   updateHandler = self->_updateHandler;
   self->_updateHandler = 0;

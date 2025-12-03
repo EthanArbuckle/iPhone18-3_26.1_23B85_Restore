@@ -1,12 +1,12 @@
 @interface StoreKitAppLaunchObserver
 - (StoreKitAppLaunchObserver)init;
 - (StoreKitAppLaunchObserverDelegate)delegate;
-- (void)_appDidLaunch:(id)a3;
+- (void)_appDidLaunch:(id)launch;
 - (void)_startObservingIfNecessary;
 - (void)_stopObserving;
 - (void)_stopObservingIfNecessary;
-- (void)observeAppLaunchForBundleIDs:(id)a3;
-- (void)removeObservationForBundleIDs:(id)a3;
+- (void)observeAppLaunchForBundleIDs:(id)ds;
+- (void)removeObservationForBundleIDs:(id)ds;
 - (void)stopObserving;
 @end
 
@@ -39,41 +39,41 @@
     v2->_sink = 0;
 
     v12 = +[NSUUID UUID];
-    v13 = [v12 UUIDString];
-    v14 = [v13 componentsSeparatedByString:@"-"];
-    v15 = [v14 firstObject];
+    uUIDString = [v12 UUIDString];
+    v14 = [uUIDString componentsSeparatedByString:@"-"];
+    firstObject = [v14 firstObject];
     logKey = v2->_logKey;
-    v2->_logKey = v15;
+    v2->_logKey = firstObject;
   }
 
   return v2;
 }
 
-- (void)observeAppLaunchForBundleIDs:(id)a3
+- (void)observeAppLaunchForBundleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   observerQueue = self->_observerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006B13C;
   v7[3] = &unk_10037F868;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dsCopy;
+  selfCopy = self;
+  v6 = dsCopy;
   dispatch_async(observerQueue, v7);
 }
 
-- (void)removeObservationForBundleIDs:(id)a3
+- (void)removeObservationForBundleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   observerQueue = self->_observerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006B388;
   v7[3] = &unk_10037F868;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dsCopy;
+  selfCopy = self;
+  v6 = dsCopy;
   dispatch_async(observerQueue, v7);
 }
 
@@ -138,8 +138,8 @@
     v3 = [(NSString *)self->_logKey copy];
     v4 = BiomeLibrary();
     v5 = [v4 App];
-    v6 = [v5 InFocus];
-    v7 = [v6 DSLPublisherWithUseCase:@"StoreKitMessages"];
+    inFocus = [v5 InFocus];
+    v7 = [inFocus DSLPublisherWithUseCase:@"StoreKitMessages"];
     v8 = [v7 filterWithKeyPath:@"eventBody.bundleID" comparison:3 value:self->_bundleIDsToObserve];
     v9 = [v8 filterWithKeyPath:@"eventBody.starting" value:&__kCFBooleanTrue];
     v10 = [v9 filterWithKeyPath:@"eventBody.type" value:&off_1003A14E0];
@@ -191,14 +191,14 @@
   }
 }
 
-- (void)_appDidLaunch:(id)a3
+- (void)_appDidLaunch:(id)launch
 {
-  v4 = a3;
-  v5 = [(StoreKitAppLaunchObserver *)self delegate];
-  if (v5 && (v6 = v5, [(StoreKitAppLaunchObserver *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  launchCopy = launch;
+  delegate = [(StoreKitAppLaunchObserver *)self delegate];
+  if (delegate && (v6 = delegate, [(StoreKitAppLaunchObserver *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(StoreKitAppLaunchObserver *)self delegate];
-    [v9 appDidLaunchWithBundleID:v4];
+    delegate2 = [(StoreKitAppLaunchObserver *)self delegate];
+    [delegate2 appDidLaunchWithBundleID:launchCopy];
   }
 
   else

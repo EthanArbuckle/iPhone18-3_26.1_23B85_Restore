@@ -1,25 +1,25 @@
 @interface CLSCurrentUser
-+ (unint64_t)userRolesFromUserLocationIDsByAXMRoleType:(id)a3;
-- (CLSCurrentUser)initWithCoder:(id)a3;
++ (unint64_t)userRolesFromUserLocationIDsByAXMRoleType:(id)type;
+- (CLSCurrentUser)initWithCoder:(id)coder;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)_useRoles;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLSCurrentUser
 
-+ (unint64_t)userRolesFromUserLocationIDsByAXMRoleType:(id)a3
++ (unint64_t)userRolesFromUserLocationIDsByAXMRoleType:(id)type
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = objc_msgSend_allKeys(a3, a2, a3, 0);
+  v3 = objc_msgSend_allKeys(type, a2, type, 0);
   v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v15, v19, 16);
   if (v5)
   {
@@ -86,10 +86,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v13 = objc_msgSend_person(self, v11, v12);
   v16 = objc_msgSend_copy(v13, v14, v15);
@@ -172,21 +172,21 @@
   return v10;
 }
 
-- (CLSCurrentUser)initWithCoder:(id)a3
+- (CLSCurrentUser)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v111.receiver = self;
   v111.super_class = CLSCurrentUser;
   v5 = [(CLSCurrentUser *)&v111 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"person");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"person");
     person = v5->_person;
     v5->_person = v8;
 
-    v5->_roles = objc_msgSend_decodeIntegerForKey_(v4, v10, @"roles");
-    v12 = objc_msgSend_decodeIntegerForKey_(v4, v11, @"devMode");
+    v5->_roles = objc_msgSend_decodeIntegerForKey_(coderCopy, v10, @"roles");
+    v12 = objc_msgSend_decodeIntegerForKey_(coderCopy, v11, @"devMode");
     if (v12 == 2)
     {
       v14 = 2;
@@ -198,47 +198,47 @@
     }
 
     v5->_devMode = v14;
-    v5->_catalogEnvironment = objc_msgSend_decodeIntegerForKey_(v4, v13, @"catalogEnvironment") == 1;
+    v5->_catalogEnvironment = objc_msgSend_decodeIntegerForKey_(coderCopy, v13, @"catalogEnvironment") == 1;
     v15 = MEMORY[0x277CBEB98];
     v16 = objc_opt_class();
     v17 = objc_opt_class();
     v18 = objc_opt_class();
     v19 = objc_opt_class();
     v21 = objc_msgSend_setWithObjects_(v15, v20, v16, v17, v18, v19, 0);
-    v23 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v22, v21, @"locationIDsByAXMRoleType");
+    v23 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v22, v21, @"locationIDsByAXMRoleType");
     locationIDsByAXMRoleType = v5->_locationIDsByAXMRoleType;
     v5->_locationIDsByAXMRoleType = v23;
 
     v25 = objc_opt_class();
-    v27 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v26, v25, @"accountIdentifier");
+    v27 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v26, v25, @"accountIdentifier");
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v27;
 
     v29 = objc_opt_class();
-    v31 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v30, v29, @"accountPersonaUniqueIdentifier");
+    v31 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v30, v29, @"accountPersonaUniqueIdentifier");
     accountPersonaUniqueIdentifier = v5->_accountPersonaUniqueIdentifier;
     v5->_accountPersonaUniqueIdentifier = v31;
 
     v33 = objc_opt_class();
-    v35 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v34, v33, @"clientPersonaUniqueIdentifier");
+    v35 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v34, v33, @"clientPersonaUniqueIdentifier");
     clientPersonaUniqueIdentifier = v5->_clientPersonaUniqueIdentifier;
     v5->_clientPersonaUniqueIdentifier = v35;
 
-    v5->_requiresPersonaMatch = objc_msgSend_decodeBoolForKey_(v4, v37, @"requiresPersonaMatch");
-    v5->_hasMatchingPersona = objc_msgSend_decodeBoolForKey_(v4, v38, @"hasMatchingPersona");
-    v5->_hasDataSeparatedAccount = objc_msgSend_decodeBoolForKey_(v4, v39, @"hasDataSeparatedAccount");
-    v5->_hasManagedAccount = objc_msgSend_decodeBoolForKey_(v4, v40, @"hasManagedAccount");
-    v5->_hasEDUAccount = objc_msgSend_decodeBoolForKey_(v4, v41, @"hasEDUAccount");
-    v5->_hasUbiquityEnabled = objc_msgSend_decodeBoolForKey_(v4, v42, @"hasUbiquityEnabled");
+    v5->_requiresPersonaMatch = objc_msgSend_decodeBoolForKey_(coderCopy, v37, @"requiresPersonaMatch");
+    v5->_hasMatchingPersona = objc_msgSend_decodeBoolForKey_(coderCopy, v38, @"hasMatchingPersona");
+    v5->_hasDataSeparatedAccount = objc_msgSend_decodeBoolForKey_(coderCopy, v39, @"hasDataSeparatedAccount");
+    v5->_hasManagedAccount = objc_msgSend_decodeBoolForKey_(coderCopy, v40, @"hasManagedAccount");
+    v5->_hasEDUAccount = objc_msgSend_decodeBoolForKey_(coderCopy, v41, @"hasEDUAccount");
+    v5->_hasUbiquityEnabled = objc_msgSend_decodeBoolForKey_(coderCopy, v42, @"hasUbiquityEnabled");
     v43 = objc_opt_class();
-    v45 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v44, v43, @"organizationName");
+    v45 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v44, v43, @"organizationName");
     organizationName = v5->_organizationName;
     v5->_organizationName = v45;
 
-    v5->_organizationProgressTrackingAllowed = objc_msgSend_decodeBoolForKey_(v4, v47, @"organizationProgressTrackingAllowed");
-    v5->_organizationMaidAnalyticsEnabled = objc_msgSend_decodeBoolForKey_(v4, v48, @"organizationMaidAnalyticsEnabled");
-    v5->_personMaidAnalyticsEnabled = objc_msgSend_decodeBoolForKey_(v4, v49, @"personMaidAnalyticsEnabled");
-    v51 = objc_msgSend_decodeIntegerForKey_(v4, v50, @"rosterServiceAuthenticationState");
+    v5->_organizationProgressTrackingAllowed = objc_msgSend_decodeBoolForKey_(coderCopy, v47, @"organizationProgressTrackingAllowed");
+    v5->_organizationMaidAnalyticsEnabled = objc_msgSend_decodeBoolForKey_(coderCopy, v48, @"organizationMaidAnalyticsEnabled");
+    v5->_personMaidAnalyticsEnabled = objc_msgSend_decodeBoolForKey_(coderCopy, v49, @"personMaidAnalyticsEnabled");
+    v51 = objc_msgSend_decodeIntegerForKey_(coderCopy, v50, @"rosterServiceAuthenticationState");
     if (v51 == 2)
     {
       v53 = 2;
@@ -250,7 +250,7 @@
     }
 
     v5->_rosterServiceAuthenticationState = v53;
-    v54 = objc_msgSend_decodeIntegerForKey_(v4, v52, @"handoutServiceAuthenticationState");
+    v54 = objc_msgSend_decodeIntegerForKey_(coderCopy, v52, @"handoutServiceAuthenticationState");
     if (v54 == 2)
     {
       v56 = 2;
@@ -262,7 +262,7 @@
     }
 
     v5->_handoutServiceAuthenticationState = v56;
-    v57 = objc_msgSend_decodeIntegerForKey_(v4, v55, @"iCloudDriveAuthenticationState");
+    v57 = objc_msgSend_decodeIntegerForKey_(coderCopy, v55, @"iCloudDriveAuthenticationState");
     v58 = v57 == 1;
     if (v57 == 2)
     {
@@ -271,37 +271,37 @@
 
     v5->_iCloudDriveAuthenticationState = v58;
     v59 = objc_opt_class();
-    v61 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v60, v59, @"schoolworkUbiquitousContainerURL");
+    v61 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v60, v59, @"schoolworkUbiquitousContainerURL");
     schoolworkUbiquitousContainerURL = v5->_schoolworkUbiquitousContainerURL;
     v5->_schoolworkUbiquitousContainerURL = v61;
 
     v63 = objc_opt_class();
-    v65 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v64, v63, @"schoolworkUbiquitousContainerError");
+    v65 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v64, v63, @"schoolworkUbiquitousContainerError");
     schoolworkUbiquitousContainerError = v5->_schoolworkUbiquitousContainerError;
     v5->_schoolworkUbiquitousContainerError = v65;
 
     v67 = objc_opt_class();
-    v69 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v68, v67, @"schoolworkUbiquitousContainerURLSandboxExtension");
+    v69 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v68, v67, @"schoolworkUbiquitousContainerURLSandboxExtension");
     schoolworkUbiquitousContainerURLSandboxExtension = v5->_schoolworkUbiquitousContainerURLSandboxExtension;
     v5->_schoolworkUbiquitousContainerURLSandboxExtension = v69;
 
     v71 = objc_opt_class();
-    v73 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v72, v71, @"orgAdminUserRecordID");
+    v73 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v72, v71, @"orgAdminUserRecordID");
     orgAdminUserRecordID = v5->_orgAdminUserRecordID;
     v5->_orgAdminUserRecordID = v73;
 
     v75 = objc_opt_class();
-    v77 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v76, v75, @"orgAdminUserFetchError");
+    v77 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v76, v75, @"orgAdminUserFetchError");
     orgAdminUserFetchError = v5->_orgAdminUserFetchError;
     v5->_orgAdminUserFetchError = v77;
 
     v79 = objc_opt_class();
-    v81 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v80, v79, @"userRecordID");
+    v81 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v80, v79, @"userRecordID");
     userRecordID = v5->_userRecordID;
     v5->_userRecordID = v81;
 
     v83 = objc_opt_class();
-    v85 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v84, v83, @"userFetchError");
+    v85 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v84, v83, @"userFetchError");
     userFetchError = v5->_userFetchError;
     v5->_userFetchError = v85;
 
@@ -317,17 +317,17 @@
     }
 
     v92 = objc_opt_class();
-    v94 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v93, v92, @"multimediaCacheDirectoryURL");
+    v94 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v93, v92, @"multimediaCacheDirectoryURL");
     multimediaCacheDirectoryURL = v5->_multimediaCacheDirectoryURL;
     v5->_multimediaCacheDirectoryURL = v94;
 
     v96 = objc_opt_class();
-    v98 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v97, v96, @"multimediaCacheDirectoryURLError");
+    v98 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v97, v96, @"multimediaCacheDirectoryURLError");
     multimediaCacheDirectoryURLError = v5->_multimediaCacheDirectoryURLError;
     v5->_multimediaCacheDirectoryURLError = v98;
 
     v100 = objc_opt_class();
-    v102 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v101, v100, @"multimediaCacheDirectoryURLSandboxExtension");
+    v102 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v101, v100, @"multimediaCacheDirectoryURLSandboxExtension");
     multimediaCacheDirectoryURLSandboxExtension = v5->_multimediaCacheDirectoryURLSandboxExtension;
     v5->_multimediaCacheDirectoryURLSandboxExtension = v102;
 
@@ -342,50 +342,50 @@
       }
     }
 
-    v5->_allowSharingOutsideOrg = objc_msgSend_decodeBoolForKey_(v4, v104, @"allowSharingOutsideOrg");
-    v5->_classroomClassicAdHocModeEnabled = objc_msgSend_decodeBoolForKey_(v4, v109, @"classroomClassicAdHocModeEnabled");
+    v5->_allowSharingOutsideOrg = objc_msgSend_decodeBoolForKey_(coderCopy, v104, @"allowSharingOutsideOrg");
+    v5->_classroomClassicAdHocModeEnabled = objc_msgSend_decodeBoolForKey_(coderCopy, v109, @"classroomClassicAdHocModeEnabled");
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   person = self->_person;
-  v38 = a3;
-  objc_msgSend_encodeObject_forKey_(v38, v5, person, @"person");
-  objc_msgSend_encodeInteger_forKey_(v38, v6, self->_roles, @"roles");
-  objc_msgSend_encodeInteger_forKey_(v38, v7, self->_devMode, @"devMode");
-  objc_msgSend_encodeInteger_forKey_(v38, v8, self->_catalogEnvironment, @"catalogEnvironment");
-  objc_msgSend_encodeObject_forKey_(v38, v9, self->_locationIDsByAXMRoleType, @"locationIDsByAXMRoleType");
-  objc_msgSend_encodeObject_forKey_(v38, v10, self->_accountIdentifier, @"accountIdentifier");
-  objc_msgSend_encodeObject_forKey_(v38, v11, self->_accountPersonaUniqueIdentifier, @"accountPersonaUniqueIdentifier");
-  objc_msgSend_encodeObject_forKey_(v38, v12, self->_clientPersonaUniqueIdentifier, @"clientPersonaUniqueIdentifier");
-  objc_msgSend_encodeBool_forKey_(v38, v13, self->_hasManagedAccount, @"hasManagedAccount");
-  objc_msgSend_encodeBool_forKey_(v38, v14, self->_hasEDUAccount, @"hasEDUAccount");
-  objc_msgSend_encodeBool_forKey_(v38, v15, self->_hasUbiquityEnabled, @"hasUbiquityEnabled");
-  objc_msgSend_encodeBool_forKey_(v38, v16, self->_requiresPersonaMatch, @"requiresPersonaMatch");
-  objc_msgSend_encodeBool_forKey_(v38, v17, self->_hasMatchingPersona, @"hasMatchingPersona");
-  objc_msgSend_encodeBool_forKey_(v38, v18, self->_hasDataSeparatedAccount, @"hasDataSeparatedAccount");
-  objc_msgSend_encodeObject_forKey_(v38, v19, self->_organizationName, @"organizationName");
-  objc_msgSend_encodeBool_forKey_(v38, v20, self->_organizationProgressTrackingAllowed, @"organizationProgressTrackingAllowed");
-  objc_msgSend_encodeBool_forKey_(v38, v21, self->_organizationMaidAnalyticsEnabled, @"organizationMaidAnalyticsEnabled");
-  objc_msgSend_encodeBool_forKey_(v38, v22, self->_personMaidAnalyticsEnabled, @"personMaidAnalyticsEnabled");
-  objc_msgSend_encodeInteger_forKey_(v38, v23, self->_rosterServiceAuthenticationState, @"rosterServiceAuthenticationState");
-  objc_msgSend_encodeInteger_forKey_(v38, v24, self->_handoutServiceAuthenticationState, @"handoutServiceAuthenticationState");
-  objc_msgSend_encodeInteger_forKey_(v38, v25, self->_iCloudDriveAuthenticationState, @"iCloudDriveAuthenticationState");
-  objc_msgSend_encodeObject_forKey_(v38, v26, self->_schoolworkUbiquitousContainerURL, @"schoolworkUbiquitousContainerURL");
-  objc_msgSend_encodeObject_forKey_(v38, v27, self->_schoolworkUbiquitousContainerError, @"schoolworkUbiquitousContainerError");
-  objc_msgSend_encodeObject_forKey_(v38, v28, self->_schoolworkUbiquitousContainerURLSandboxExtension, @"schoolworkUbiquitousContainerURLSandboxExtension");
-  objc_msgSend_encodeObject_forKey_(v38, v29, self->_orgAdminUserRecordID, @"orgAdminUserRecordID");
-  objc_msgSend_encodeObject_forKey_(v38, v30, self->_orgAdminUserFetchError, @"orgAdminUserFetchError");
-  objc_msgSend_encodeObject_forKey_(v38, v31, self->_userRecordID, @"userRecordID");
-  objc_msgSend_encodeObject_forKey_(v38, v32, self->_userFetchError, @"userFetchError");
-  objc_msgSend_encodeObject_forKey_(v38, v33, self->_multimediaCacheDirectoryURL, @"multimediaCacheDirectoryURL");
-  objc_msgSend_encodeObject_forKey_(v38, v34, self->_multimediaCacheDirectoryURLError, @"multimediaCacheDirectoryURLError");
-  objc_msgSend_encodeObject_forKey_(v38, v35, self->_multimediaCacheDirectoryURLSandboxExtension, @"multimediaCacheDirectoryURLSandboxExtension");
-  objc_msgSend_encodeBool_forKey_(v38, v36, self->_allowSharingOutsideOrg, @"allowSharingOutsideOrg");
-  objc_msgSend_encodeBool_forKey_(v38, v37, self->_classroomClassicAdHocModeEnabled, @"classroomClassicAdHocModeEnabled");
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, person, @"person");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v6, self->_roles, @"roles");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v7, self->_devMode, @"devMode");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v8, self->_catalogEnvironment, @"catalogEnvironment");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, self->_locationIDsByAXMRoleType, @"locationIDsByAXMRoleType");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v10, self->_accountIdentifier, @"accountIdentifier");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v11, self->_accountPersonaUniqueIdentifier, @"accountPersonaUniqueIdentifier");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, self->_clientPersonaUniqueIdentifier, @"clientPersonaUniqueIdentifier");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v13, self->_hasManagedAccount, @"hasManagedAccount");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v14, self->_hasEDUAccount, @"hasEDUAccount");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v15, self->_hasUbiquityEnabled, @"hasUbiquityEnabled");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v16, self->_requiresPersonaMatch, @"requiresPersonaMatch");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v17, self->_hasMatchingPersona, @"hasMatchingPersona");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v18, self->_hasDataSeparatedAccount, @"hasDataSeparatedAccount");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v19, self->_organizationName, @"organizationName");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v20, self->_organizationProgressTrackingAllowed, @"organizationProgressTrackingAllowed");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v21, self->_organizationMaidAnalyticsEnabled, @"organizationMaidAnalyticsEnabled");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v22, self->_personMaidAnalyticsEnabled, @"personMaidAnalyticsEnabled");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v23, self->_rosterServiceAuthenticationState, @"rosterServiceAuthenticationState");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v24, self->_handoutServiceAuthenticationState, @"handoutServiceAuthenticationState");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v25, self->_iCloudDriveAuthenticationState, @"iCloudDriveAuthenticationState");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v26, self->_schoolworkUbiquitousContainerURL, @"schoolworkUbiquitousContainerURL");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v27, self->_schoolworkUbiquitousContainerError, @"schoolworkUbiquitousContainerError");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v28, self->_schoolworkUbiquitousContainerURLSandboxExtension, @"schoolworkUbiquitousContainerURLSandboxExtension");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v29, self->_orgAdminUserRecordID, @"orgAdminUserRecordID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v30, self->_orgAdminUserFetchError, @"orgAdminUserFetchError");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v31, self->_userRecordID, @"userRecordID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v32, self->_userFetchError, @"userFetchError");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v33, self->_multimediaCacheDirectoryURL, @"multimediaCacheDirectoryURL");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v34, self->_multimediaCacheDirectoryURLError, @"multimediaCacheDirectoryURLError");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v35, self->_multimediaCacheDirectoryURLSandboxExtension, @"multimediaCacheDirectoryURLSandboxExtension");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v36, self->_allowSharingOutsideOrg, @"allowSharingOutsideOrg");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v37, self->_classroomClassicAdHocModeEnabled, @"classroomClassicAdHocModeEnabled");
 }
 
 - (void)dealloc

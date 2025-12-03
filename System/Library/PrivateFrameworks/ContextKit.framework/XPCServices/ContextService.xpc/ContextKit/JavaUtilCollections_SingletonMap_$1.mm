@@ -1,39 +1,39 @@
 @interface JavaUtilCollections_SingletonMap_$1
-- (BOOL)containsWithId:(id)a3;
-- (JavaUtilCollections_SingletonMap_$1)initWithJavaUtilCollections_SingletonMap:(id)a3;
+- (BOOL)containsWithId:(id)id;
+- (JavaUtilCollections_SingletonMap_$1)initWithJavaUtilCollections_SingletonMap:(id)map;
 - (id)iterator;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilCollections_SingletonMap_$1
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
-  if (![JavaUtilMap_Entry_class_() isInstance:a3])
+  if (![JavaUtilMap_Entry_class_() isInstance:id])
   {
     return 0;
   }
 
   v5 = JavaUtilMap_Entry_class_();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
 
-  if (([v5 isInstance:a3] & 1) == 0)
+  if (([v5 isInstance:id] & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  if (!-[JavaUtilCollections_SingletonMap containsKeyWithId:](self->this$0_, "containsKeyWithId:", [a3 getKey]))
+  if (!-[JavaUtilCollections_SingletonMap containsKeyWithId:](self->this$0_, "containsKeyWithId:", [id getKey]))
   {
     return 0;
   }
 
   v6 = self->this$0_;
-  v7 = [a3 getValue];
+  getValue = [id getValue];
 
-  return [(JavaUtilCollections_SingletonMap *)v6 containsValueWithId:v7];
+  return [(JavaUtilCollections_SingletonMap *)v6 containsValueWithId:getValue];
 }
 
 - (id)iterator
@@ -45,9 +45,9 @@
   return v3;
 }
 
-- (JavaUtilCollections_SingletonMap_$1)initWithJavaUtilCollections_SingletonMap:(id)a3
+- (JavaUtilCollections_SingletonMap_$1)initWithJavaUtilCollections_SingletonMap:(id)map
 {
-  JreStrongAssign(&self->this$0_, a3);
+  JreStrongAssign(&self->this$0_, map);
   JavaUtilAbstractSet_init(self, v4);
   return self;
 }

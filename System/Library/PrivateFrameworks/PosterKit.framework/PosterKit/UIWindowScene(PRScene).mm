@@ -8,25 +8,25 @@
 {
   v15 = a3;
   v16 = a4;
-  v17 = [a1 _FBSScene];
-  if (!v17)
+  _FBSScene = [self _FBSScene];
+  if (!_FBSScene)
   {
     [UIWindowScene(PRScene) pr_updatePreferences:a2 withTransition:? configuredSalientRect:?];
   }
 
-  v18 = v17;
+  v18 = _FBSScene;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __84__UIWindowScene_PRScene__pr_updatePreferences_withTransition_configuredSalientRect___block_invoke;
   v22[3] = &unk_1E7845870;
-  v23 = v17;
+  v23 = _FBSScene;
   v24 = v15;
   v27 = a5;
   v28 = a6;
   v29 = a7;
   v30 = a8;
   v25 = v16;
-  v26 = a1;
+  selfCopy = self;
   v19 = v16;
   v20 = v15;
   v21 = v18;

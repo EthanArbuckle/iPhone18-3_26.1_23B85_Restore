@@ -1,7 +1,7 @@
 @interface CHSWidgetExtensionContainer
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CHSWidgetExtensionContainer)init;
-- (CHSWidgetExtensionContainer)initWithExtensions:(id)a3 iconResolver:(id)a4;
+- (CHSWidgetExtensionContainer)initWithExtensions:(id)extensions iconResolver:(id)resolver;
 - (NSArray)localExtensions;
 - (NSDictionary)remoteExtensionsByDeviceIdentifier;
 - (NSSet)allExtensions;
@@ -9,16 +9,16 @@
 - (NSString)description;
 - (NSString)iconVersion;
 - (NSString)localizedContainerDisplayName;
-- (id)extensionForExtensionIdentity:(id)a3;
+- (id)extensionForExtensionIdentity:(id)identity;
 - (int64_t)hash;
-- (void)getIconWithCompletion:(id)a3;
+- (void)getIconWithCompletion:(id)completion;
 @end
 
 @implementation CHSWidgetExtensionContainer
 
 - (NSArray)localExtensions
 {
-  v2 = self;
+  selfCopy = self;
   CHSWidgetExtensionContainer.localExtensions.getter();
 
   sub_195EB4B30(0, &qword_1EAEEC4B8, off_1E7452788);
@@ -40,11 +40,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_195FA0E08();
     swift_unknownObjectRelease();
@@ -53,7 +53,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CHSWidgetExtensionContainer.isEqual(_:)(v8);
@@ -62,12 +62,12 @@
   return v6 & 1;
 }
 
-- (CHSWidgetExtensionContainer)initWithExtensions:(id)a3 iconResolver:(id)a4
+- (CHSWidgetExtensionContainer)initWithExtensions:(id)extensions iconResolver:(id)resolver
 {
   sub_195EB4B30(0, &qword_1EAEEC4B8, off_1E7452788);
   v5 = sub_195FA0B38();
   swift_unknownObjectRetain();
-  v6 = sub_195EC2C54(v5, a4);
+  v6 = sub_195EC2C54(v5, resolver);
   swift_unknownObjectRelease();
   return v6;
 }
@@ -87,11 +87,11 @@
 
 - (NSString)containerBundleIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_195EC327C();
-  v4 = [v3 identity];
+  identity = [v3 identity];
 
-  v5 = &v4[OBJC_IVAR___CHSExtensionIdentity_containerBundleIdentifier];
+  v5 = &identity[OBJC_IVAR___CHSExtensionIdentity_containerBundleIdentifier];
   result = swift_beginAccess();
   if (*(v5 + 1))
   {
@@ -110,11 +110,11 @@
   return result;
 }
 
-- (id)extensionForExtensionIdentity:(id)a3
+- (id)extensionForExtensionIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = self;
-  CHSWidgetExtensionContainer.extension(for:)(v6, v4);
+  identityCopy = identity;
+  selfCopy = self;
+  CHSWidgetExtensionContainer.extension(for:)(v6, identityCopy);
   v8 = v7;
 
   return v8;
@@ -122,22 +122,22 @@
 
 - (NSString)localizedContainerDisplayName
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_195EC327C();
-  v4 = [v3 containerBundleLocalizedDisplayName];
+  containerBundleLocalizedDisplayName = [v3 containerBundleLocalizedDisplayName];
 
-  if (!v4)
+  if (!containerBundleLocalizedDisplayName)
   {
     sub_195FA08B8();
-    v4 = sub_195FA0888();
+    containerBundleLocalizedDisplayName = sub_195FA0888();
   }
 
-  return v4;
+  return containerBundleLocalizedDisplayName;
 }
 
 - (NSDictionary)remoteExtensionsByDeviceIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   CHSWidgetExtensionContainer.remoteExtensionsByDeviceIdentifier.getter();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAEED9E0, &qword_195FAC928);
@@ -148,7 +148,7 @@
 
 - (NSString)iconVersion
 {
-  v2 = self;
+  selfCopy = self;
   CHSWidgetExtensionContainer.iconVersion.getter();
   v4 = v3;
 
@@ -165,9 +165,9 @@
   return v5;
 }
 
-- (void)getIconWithCompletion:(id)a3
+- (void)getIconWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -180,16 +180,16 @@
   v9[2] = sub_195F39F00;
   v9[3] = &block_descriptor_33;
   v7 = _Block_copy(v9);
-  v8 = self;
+  selfCopy = self;
 
-  [(CHSWidgetExtensionContainer *)v8 getWidgetIconWithCompletion:v7];
+  [(CHSWidgetExtensionContainer *)selfCopy getWidgetIconWithCompletion:v7];
 
   _Block_release(v7);
 }
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_195F37DFC();
 
   return v3;
@@ -197,7 +197,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   result = _sSo27CHSWidgetExtensionContainerC14ChronoServicesE18descriptionBuilder19withMultilinePrefixSo013BSDescriptionG0CSgSSSg_tF_0();
   if (!result)
   {
@@ -206,16 +206,16 @@
   }
 
   v4 = result;
-  v5 = [(NSString *)result build];
+  build = [(NSString *)result build];
 
-  if (!v5)
+  if (!build)
   {
 LABEL_7:
     __break(1u);
     return result;
   }
 
-  return v5;
+  return build;
 }
 
 @end

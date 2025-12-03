@@ -7,47 +7,47 @@
 - (BOOL)isPreviewRunning;
 - (BOOL)isReactionEffectGestureEnabled;
 - (BOOL)isStudioLightEnabled;
-- (BOOL)supportsCameraBlurForDevice:(id)a3;
+- (BOOL)supportsCameraBlurForDevice:(id)device;
 - (NSArray)availableVideoEffects;
 - (NSArray)inputDevices;
 - (NSString)localCameraUID;
 - (TUVideoDeviceControllerProvider)init;
 - (TUVideoDeviceControllerProviderDelegate)delegate;
 - (VideoAttributes)localVideoAttributes;
-- (id)localScreenAttributesForVideoAttributes:(id)a3;
-- (id)queryAVCaptureDeviceWithType:(id)a3 mediaType:(id)a4 position:(int64_t)a5;
-- (id)thumbnailImageForVideoEffectName:(id)a3;
+- (id)localScreenAttributesForVideoAttributes:(id)attributes;
+- (id)queryAVCaptureDeviceWithType:(id)type mediaType:(id)mediaType position:(int64_t)position;
+- (id)thumbnailImageForVideoEffectName:(id)name;
 - (int64_t)currentBackgroundBlurControlMode;
 - (void)beginPIPToPreviewAnimation;
 - (void)beginPreviewToPIPAnimation;
-- (void)cameraDidBecomeAvailableForUniqueID:(id)a3;
-- (void)cameraDidBecomeInterruptedForForUniqueID:(id)a3 reason:(int64_t)a4;
-- (void)captureDevicesChanged:(id)a3;
-- (void)centerStageAvailableChangedNotification:(id)a3;
+- (void)cameraDidBecomeAvailableForUniqueID:(id)d;
+- (void)cameraDidBecomeInterruptedForForUniqueID:(id)d reason:(int64_t)reason;
+- (void)captureDevicesChanged:(id)changed;
+- (void)centerStageAvailableChangedNotification:(id)notification;
 - (void)dealloc;
-- (void)didChangeLocalCameraUID:(id)a3;
-- (void)didChangeLocalVideoAttributes:(id)a3;
-- (void)didDetectSensitiveContentWithAnalysis:(id)a3;
-- (void)didGetSnapshot:(id)a3;
+- (void)didChangeLocalCameraUID:(id)d;
+- (void)didChangeLocalVideoAttributes:(id)attributes;
+- (void)didDetectSensitiveContentWithAnalysis:(id)analysis;
+- (void)didGetSnapshot:(id)snapshot;
 - (void)didPausePreview;
-- (void)didReceiveErrorFromCameraUniqueID:(id)a3 error:(id)a4;
-- (void)didReceiveFirstPreviewFrameFromCameraUniqueID:(id)a3;
+- (void)didReceiveErrorFromCameraUniqueID:(id)d error:(id)error;
+- (void)didReceiveFirstPreviewFrameFromCameraUniqueID:(id)d;
 - (void)didStartPreview;
 - (void)didStopPreview;
 - (void)endPIPToPreviewAnimation;
 - (void)endPreviewToPIPAnimation;
 - (void)getSnapshot;
 - (void)invalidateInputDevicesCache;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pausePreview;
 - (void)queryAVCaptureDeviceIfNeeded;
-- (void)rampCameraZoomFactor:(double)a3 withRate:(double)a4;
-- (void)setCameraZoomFactor:(double)a3;
-- (void)setCurrentBackgroundBlurControlMode:(int64_t)a3;
-- (void)setCurrentVideoEffect:(id)a3;
-- (void)setLocalCameraWithUID:(id)a3;
-- (void)setLocalScreenAttributes:(id)a3;
-- (void)setLocalVideoAttributes:(id)a3;
+- (void)rampCameraZoomFactor:(double)factor withRate:(double)rate;
+- (void)setCameraZoomFactor:(double)factor;
+- (void)setCurrentBackgroundBlurControlMode:(int64_t)mode;
+- (void)setCurrentVideoEffect:(id)effect;
+- (void)setLocalCameraWithUID:(id)d;
+- (void)setLocalScreenAttributes:(id)attributes;
+- (void)setLocalVideoAttributes:(id)attributes;
 - (void)startPreview;
 - (void)stopPreview;
 @end
@@ -102,9 +102,9 @@ void __42__TUVideoDeviceControllerProvider_prewarm__block_invoke()
   v2 = [(TUVideoDeviceControllerProvider *)&v12 init];
   if (v2)
   {
-    v3 = [CUTWeakLinkClass() AVConferencePreviewSingleton];
+    aVConferencePreviewSingleton = [CUTWeakLinkClass() AVConferencePreviewSingleton];
     preview = v2->_preview;
-    v2->_preview = v3;
+    v2->_preview = aVConferencePreviewSingleton;
 
     [(AVConferencePreview *)v2->_preview setDelegate:v2];
     if (init__pred__AVCaptureDeviceWasConnectedNotification != -1)
@@ -117,19 +117,19 @@ void __42__TUVideoDeviceControllerProvider_prewarm__block_invoke()
       [TUVideoDeviceControllerProvider init];
     }
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel_captureDevicesChanged_ name:init__AVCaptureDeviceWasConnectedNotification object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_captureDevicesChanged_ name:init__AVCaptureDeviceWasConnectedNotification object:0];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v2 selector:sel_captureDevicesChanged_ name:init__AVCaptureDeviceWasDisconnectedNotification object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_captureDevicesChanged_ name:init__AVCaptureDeviceWasDisconnectedNotification object:0];
 
     if (init__pred__AVControlCenterVideoEffectsUnavailableReasonsDidChangeNotification != -1)
     {
       [TUVideoDeviceControllerProvider init];
     }
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v2 selector:sel_centerStageAvailableChangedNotification_ name:init__AVControlCenterVideoEffectsUnavailableReasonsDidChangeNotification object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_centerStageAvailableChangedNotification_ name:init__AVControlCenterVideoEffectsUnavailableReasonsDidChangeNotification object:0];
 
     v8 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x1E69E9820];
@@ -161,10 +161,10 @@ void __39__TUVideoDeviceControllerProvider_init__block_invoke()
 
 - (NSString)localCameraUID
 {
-  v2 = [(TUVideoDeviceControllerProvider *)self preview];
-  v3 = [v2 localCameraUID];
+  preview = [(TUVideoDeviceControllerProvider *)self preview];
+  localCameraUID = [preview localCameraUID];
 
-  return v3;
+  return localCameraUID;
 }
 
 - (NSArray)inputDevices
@@ -185,7 +185,7 @@ void __39__TUVideoDeviceControllerProvider_init__block_invoke()
     goto LABEL_74;
   }
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (inputDevices__pred__AVMediaTypeVideo != -1)
   {
     [TUVideoDeviceControllerProvider inputDevices];
@@ -262,8 +262,8 @@ void __39__TUVideoDeviceControllerProvider_init__block_invoke()
     v14 = 1;
   }
 
-  v16 = [MEMORY[0x1E699BE70] sharedInstance];
-  v17 = [v16 deviceType];
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  deviceType = [mEMORY[0x1E699BE70] deviceType];
 
   if ((v14 & 1) == 0)
   {
@@ -272,9 +272,9 @@ void __39__TUVideoDeviceControllerProvider_init__block_invoke()
       v21 = TUDefaultLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v13 uniqueID];
+        uniqueID = [v13 uniqueID];
         *buf = 138412290;
-        v58 = v22;
+        v58 = uniqueID;
         _os_log_impl(&dword_1956FD000, v21, OS_LOG_TYPE_DEFAULT, "Found a system-preferred camera, using it as the front capture device: %@", buf, 0xCu);
       }
 
@@ -290,7 +290,7 @@ LABEL_38:
     }
   }
 
-  if (v17 == 2)
+  if (deviceType == 2)
   {
     v20 = [(TUVideoDeviceControllerProvider *)self queryAVCaptureDeviceWithType:inputDevices__AVCaptureDeviceTypeBuiltInUltraWideCamera mediaType:inputDevices__AVMediaTypeVideo position:2];
     goto LABEL_38;
@@ -381,12 +381,12 @@ LABEL_60:
   v37 = TUDefaultLog();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
-    v38 = [v23 uniqueID];
-    v39 = [v36 uniqueID];
+    uniqueID2 = [v23 uniqueID];
+    uniqueID3 = [v36 uniqueID];
     *buf = 138412546;
-    v58 = v38;
+    v58 = uniqueID2;
     v59 = 2112;
-    v60 = v39;
+    v60 = uniqueID3;
     _os_log_impl(&dword_1956FD000, v37, OS_LOG_TYPE_DEFAULT, "preferredFrontCaptureDevice: %@, preferredBackCaptureDevice: %@", buf, 0x16u);
   }
 
@@ -413,25 +413,25 @@ LABEL_68:
     goto LABEL_71;
   }
 
-  [(NSArray *)v6 addObject:v23];
+  [(NSArray *)array addObject:v23];
   if (!v36)
   {
     goto LABEL_68;
   }
 
 LABEL_64:
-  [(NSArray *)v6 addObject:v36];
+  [(NSArray *)array addObject:v36];
 LABEL_71:
   self->_isAVCaptureDeviceReady = 1;
   v42 = TUDefaultLog();
   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v58 = v6;
+    v58 = array;
     _os_log_impl(&dword_1956FD000, v42, OS_LOG_TYPE_DEFAULT, "inputDevices = %@", buf, 0xCu);
   }
 
-  v43 = [(NSArray *)v6 copy];
+  v43 = [(NSArray *)array copy];
   v44 = self->_cachedInputDevices;
   self->_cachedInputDevices = v43;
 
@@ -444,10 +444,10 @@ LABEL_74:
 
 - (VideoAttributes)localVideoAttributes
 {
-  v2 = [(TUVideoDeviceControllerProvider *)self preview];
-  v3 = [v2 localVideoAttributes];
+  preview = [(TUVideoDeviceControllerProvider *)self preview];
+  localVideoAttributes = [preview localVideoAttributes];
 
-  return v3;
+  return localVideoAttributes;
 }
 
 - (TUVideoDeviceControllerProviderDelegate)delegate
@@ -559,10 +559,10 @@ uint64_t __39__TUVideoDeviceControllerProvider_init__block_invoke_4(uint64_t a1)
 
 - (BOOL)isPreviewRunning
 {
-  v2 = [(TUVideoDeviceControllerProvider *)self preview];
-  v3 = [v2 isPreviewRunning];
+  preview = [(TUVideoDeviceControllerProvider *)self preview];
+  isPreviewRunning = [preview isPreviewRunning];
 
-  return v3;
+  return isPreviewRunning;
 }
 
 void __47__TUVideoDeviceControllerProvider_inputDevices__block_invoke()
@@ -716,23 +716,23 @@ void __47__TUVideoDeviceControllerProvider_inputDevices__block_invoke_9()
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)queryAVCaptureDeviceWithType:(id)a3 mediaType:(id)a4 position:(int64_t)a5
+- (id)queryAVCaptureDeviceWithType:(id)type mediaType:(id)mediaType position:(int64_t)position
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
+  mediaTypeCopy = mediaType;
+  typeCopy = type;
   v9 = CUTWeakLinkClass();
-  v16[0] = v8;
+  v16[0] = typeCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
 
-  v11 = [v9 discoverySessionWithDeviceTypes:v10 mediaType:v7 position:a5];
+  v11 = [v9 discoverySessionWithDeviceTypes:v10 mediaType:mediaTypeCopy position:position];
 
-  v12 = [v11 devices];
-  v13 = [v12 firstObject];
+  devices = [v11 devices];
+  firstObject = [devices firstObject];
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v13;
+  return firstObject;
 }
 
 void __42__TUVideoDeviceControllerProvider_prewarm__block_invoke_2()
@@ -799,51 +799,51 @@ void __42__TUVideoDeviceControllerProvider_prewarm__block_invoke_5()
   objc_storeStrong(&TUVideoDeviceControllerObserverKeyPathStudioLightEnabled_block_invoke__AVCaptureDeviceTypeBuiltInDualCamera, v1);
 }
 
-- (void)setLocalVideoAttributes:(id)a3
+- (void)setLocalVideoAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(TUVideoDeviceControllerProvider *)self preview];
-  [v5 setLocalVideoAttributes:v4];
+  attributesCopy = attributes;
+  preview = [(TUVideoDeviceControllerProvider *)self preview];
+  [preview setLocalVideoAttributes:attributesCopy];
 }
 
-- (void)setLocalCameraWithUID:(id)a3
+- (void)setLocalCameraWithUID:(id)d
 {
-  v4 = a3;
-  v5 = [(TUVideoDeviceControllerProvider *)self preview];
-  [v5 setLocalCameraWithUID:v4];
+  dCopy = d;
+  preview = [(TUVideoDeviceControllerProvider *)self preview];
+  [preview setLocalCameraWithUID:dCopy];
 }
 
 - (void)startPreview
 {
   [(TUVideoDeviceControllerProvider *)self setCinematicFramingEnabled:[(TUVideoDeviceControllerProvider *)self isCinematicFramingEnabled]];
-  v3 = [(TUVideoDeviceControllerProvider *)self preview];
-  [v3 startPreview];
+  preview = [(TUVideoDeviceControllerProvider *)self preview];
+  [preview startPreview];
 }
 
 - (void)pausePreview
 {
-  v2 = [(TUVideoDeviceControllerProvider *)self preview];
-  [v2 pausePreview];
+  preview = [(TUVideoDeviceControllerProvider *)self preview];
+  [preview pausePreview];
 }
 
 - (void)stopPreview
 {
-  v2 = [(TUVideoDeviceControllerProvider *)self preview];
-  [v2 stopPreview];
+  preview = [(TUVideoDeviceControllerProvider *)self preview];
+  [preview stopPreview];
 }
 
 - (void)getSnapshot
 {
   if ([(TUVideoDeviceControllerProvider *)self isPreviewRunning])
   {
-    v3 = [(TUVideoDeviceControllerProvider *)self preview];
-    [v3 getSnapshot];
+    preview = [(TUVideoDeviceControllerProvider *)self preview];
+    [preview getSnapshot];
   }
 
   else
   {
-    v3 = [(TUVideoDeviceControllerProvider *)self delegate];
-    [v3 provider:self didGetSnapshot:0];
+    preview = [(TUVideoDeviceControllerProvider *)self delegate];
+    [preview provider:self didGetSnapshot:0];
   }
 }
 
@@ -901,24 +901,24 @@ void __63__TUVideoDeviceControllerProvider_queryAVCaptureDeviceIfNeeded__block_i
   if (objc_opt_respondsToSelector())
   {
     [(TUVideoDeviceControllerProvider *)self queryAVCaptureDeviceIfNeeded];
-    v4 = [v3 isCinematicFramingEnabled];
+    isCinematicFramingEnabled = [v3 isCinematicFramingEnabled];
   }
 
   else
   {
-    v4 = 0;
+    isCinematicFramingEnabled = 0;
   }
 
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v4;
+    v8[1] = isCinematicFramingEnabled;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Center Stage is enabled: %d", v8, 8u);
   }
 
   v6 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isCinematicFramingEnabled;
 }
 
 - (BOOL)isReactionEffectGestureEnabled
@@ -926,17 +926,17 @@ void __63__TUVideoDeviceControllerProvider_queryAVCaptureDeviceIfNeeded__block_i
   v9 = *MEMORY[0x1E69E9840];
   v3 = CUTWeakLinkClass();
   [(TUVideoDeviceControllerProvider *)self queryAVCaptureDeviceIfNeeded];
-  v4 = [v3 reactionEffectGesturesEnabled];
+  reactionEffectGesturesEnabled = [v3 reactionEffectGesturesEnabled];
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v4;
+    v8[1] = reactionEffectGesturesEnabled;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Reaction Effect Gestures are enabled: %d", v8, 8u);
   }
 
   v6 = *MEMORY[0x1E69E9840];
-  return v4;
+  return reactionEffectGesturesEnabled;
 }
 
 - (BOOL)isStudioLightEnabled
@@ -944,25 +944,25 @@ void __63__TUVideoDeviceControllerProvider_queryAVCaptureDeviceIfNeeded__block_i
   v9 = *MEMORY[0x1E69E9840];
   v3 = CUTWeakLinkClass();
   [(TUVideoDeviceControllerProvider *)self queryAVCaptureDeviceIfNeeded];
-  v4 = [v3 isStudioLightingEnabled];
+  isStudioLightingEnabled = [v3 isStudioLightingEnabled];
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v4;
+    v8[1] = isStudioLightingEnabled;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Studio Lighting is enabled: %d", v8, 8u);
   }
 
   v6 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isStudioLightingEnabled;
 }
 
-- (BOOL)supportsCameraBlurForDevice:(id)a3
+- (BOOL)supportsCameraBlurForDevice:(id)device
 {
-  v3 = [a3 activeFormat];
-  v4 = [v3 isBackgroundBlurSupported];
+  activeFormat = [device activeFormat];
+  isBackgroundBlurSupported = [activeFormat isBackgroundBlurSupported];
 
-  return v4;
+  return isBackgroundBlurSupported;
 }
 
 - (int64_t)currentBackgroundBlurControlMode
@@ -972,11 +972,11 @@ void __63__TUVideoDeviceControllerProvider_queryAVCaptureDeviceIfNeeded__block_i
   return [v2 backgroundBlurControlMode];
 }
 
-- (void)setCurrentBackgroundBlurControlMode:(int64_t)a3
+- (void)setCurrentBackgroundBlurControlMode:(int64_t)mode
 {
   v4 = CUTWeakLinkClass();
 
-  [v4 setBackgroundBlurControlMode:a3];
+  [v4 setBackgroundBlurControlMode:mode];
 }
 
 - (BOOL)isCameraBlurEnabled
@@ -993,56 +993,56 @@ void __63__TUVideoDeviceControllerProvider_queryAVCaptureDeviceIfNeeded__block_i
   return [v2 isBackgroundReplacementEnabled];
 }
 
-- (id)localScreenAttributesForVideoAttributes:(id)a3
+- (id)localScreenAttributesForVideoAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(TUVideoDeviceControllerProvider *)self preview];
-  v6 = [v5 localScreenAttributesForVideoAttributes:v4];
+  attributesCopy = attributes;
+  preview = [(TUVideoDeviceControllerProvider *)self preview];
+  v6 = [preview localScreenAttributesForVideoAttributes:attributesCopy];
 
   return v6;
 }
 
-- (void)setLocalScreenAttributes:(id)a3
+- (void)setLocalScreenAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(TUVideoDeviceControllerProvider *)self preview];
-  [v5 setLocalScreenAttributes:v4];
+  attributesCopy = attributes;
+  preview = [(TUVideoDeviceControllerProvider *)self preview];
+  [preview setLocalScreenAttributes:attributesCopy];
 }
 
 - (void)beginPreviewToPIPAnimation
 {
-  v2 = [(TUVideoDeviceControllerProvider *)self preview];
-  [v2 beginPreviewToPIPAnimation];
+  preview = [(TUVideoDeviceControllerProvider *)self preview];
+  [preview beginPreviewToPIPAnimation];
 }
 
 - (void)endPreviewToPIPAnimation
 {
-  v2 = [(TUVideoDeviceControllerProvider *)self preview];
-  [v2 endPreviewToPIPAnimation];
+  preview = [(TUVideoDeviceControllerProvider *)self preview];
+  [preview endPreviewToPIPAnimation];
 }
 
 - (void)beginPIPToPreviewAnimation
 {
-  v2 = [(TUVideoDeviceControllerProvider *)self preview];
-  [v2 beginPIPToPreviewAnimation];
+  preview = [(TUVideoDeviceControllerProvider *)self preview];
+  [preview beginPIPToPreviewAnimation];
 }
 
 - (void)endPIPToPreviewAnimation
 {
-  v2 = [(TUVideoDeviceControllerProvider *)self preview];
-  [v2 endPIPToPreviewAnimation];
+  preview = [(TUVideoDeviceControllerProvider *)self preview];
+  [preview endPIPToPreviewAnimation];
 }
 
-- (void)rampCameraZoomFactor:(double)a3 withRate:(double)a4
+- (void)rampCameraZoomFactor:(double)factor withRate:(double)rate
 {
-  v6 = [(TUVideoDeviceControllerProvider *)self preview];
-  [v6 setCameraZoomFactor:a3 withRate:a4];
+  preview = [(TUVideoDeviceControllerProvider *)self preview];
+  [preview setCameraZoomFactor:factor withRate:rate];
 }
 
-- (void)setCameraZoomFactor:(double)a3
+- (void)setCameraZoomFactor:(double)factor
 {
-  v4 = [(TUVideoDeviceControllerProvider *)self preview];
-  [v4 setCameraZoomFactor:a3];
+  preview = [(TUVideoDeviceControllerProvider *)self preview];
+  [preview setCameraZoomFactor:factor];
 }
 
 - (BOOL)hasAvailableDeskViewCameras
@@ -1063,8 +1063,8 @@ void __63__TUVideoDeviceControllerProvider_queryAVCaptureDeviceIfNeeded__block_i
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v4 = [v2 discoverySessionWithDeviceTypes:v3 mediaType:hasAvailableDeskViewCameras__AVMediaTypeVideo position:0];
 
-  v5 = [v4 devices];
-  v6 = [v5 count] != 0;
+  devices = [v4 devices];
+  v6 = [devices count] != 0;
 
   v7 = *MEMORY[0x1E69E9840];
   return v6;
@@ -1102,112 +1102,112 @@ void __62__TUVideoDeviceControllerProvider_hasAvailableDeskViewCameras__block_in
   objc_storeStrong(&hasAvailableDeskViewCameras__AVMediaTypeVideo, v1);
 }
 
-- (void)didReceiveErrorFromCameraUniqueID:(id)a3 error:(id)a4
+- (void)didReceiveErrorFromCameraUniqueID:(id)d error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUVideoDeviceControllerProvider *)self delegate];
-  [v8 provider:self didReceiveErrorFromCameraUniqueID:v7 error:v6];
+  errorCopy = error;
+  dCopy = d;
+  delegate = [(TUVideoDeviceControllerProvider *)self delegate];
+  [delegate provider:self didReceiveErrorFromCameraUniqueID:dCopy error:errorCopy];
 }
 
-- (void)cameraDidBecomeAvailableForUniqueID:(id)a3
+- (void)cameraDidBecomeAvailableForUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = [(TUVideoDeviceControllerProvider *)self delegate];
-  [v5 provider:self cameraDidBecomeAvailableForUniqueID:v4];
+  dCopy = d;
+  delegate = [(TUVideoDeviceControllerProvider *)self delegate];
+  [delegate provider:self cameraDidBecomeAvailableForUniqueID:dCopy];
 }
 
 - (void)didStartPreview
 {
-  v3 = [(TUVideoDeviceControllerProvider *)self delegate];
-  [v3 didStartPreviewForProvider:self];
+  delegate = [(TUVideoDeviceControllerProvider *)self delegate];
+  [delegate didStartPreviewForProvider:self];
 }
 
-- (void)didReceiveFirstPreviewFrameFromCameraUniqueID:(id)a3
+- (void)didReceiveFirstPreviewFrameFromCameraUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = [(TUVideoDeviceControllerProvider *)self delegate];
-  [v5 provider:self didReceiveFirstPreviewFrameFromCameraUniqueID:v4];
+  dCopy = d;
+  delegate = [(TUVideoDeviceControllerProvider *)self delegate];
+  [delegate provider:self didReceiveFirstPreviewFrameFromCameraUniqueID:dCopy];
 }
 
-- (void)didChangeLocalCameraUID:(id)a3
+- (void)didChangeLocalCameraUID:(id)d
 {
-  v4 = a3;
-  v5 = [(TUVideoDeviceControllerProvider *)self delegate];
-  [v5 provider:self didChangeLocalCameraUID:v4];
+  dCopy = d;
+  delegate = [(TUVideoDeviceControllerProvider *)self delegate];
+  [delegate provider:self didChangeLocalCameraUID:dCopy];
 }
 
-- (void)didChangeLocalVideoAttributes:(id)a3
+- (void)didChangeLocalVideoAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(TUVideoDeviceControllerProvider *)self delegate];
-  [v5 provider:self didChangeLocalVideoAttributes:v4];
+  attributesCopy = attributes;
+  delegate = [(TUVideoDeviceControllerProvider *)self delegate];
+  [delegate provider:self didChangeLocalVideoAttributes:attributesCopy];
 }
 
 - (void)didStopPreview
 {
-  v3 = [(TUVideoDeviceControllerProvider *)self delegate];
-  [v3 didStopPreviewForProvider:self];
+  delegate = [(TUVideoDeviceControllerProvider *)self delegate];
+  [delegate didStopPreviewForProvider:self];
 }
 
 - (void)didPausePreview
 {
-  v3 = [(TUVideoDeviceControllerProvider *)self delegate];
-  [v3 didPausePreviewForProvider:self];
+  delegate = [(TUVideoDeviceControllerProvider *)self delegate];
+  [delegate didPausePreviewForProvider:self];
 }
 
-- (void)didGetSnapshot:(id)a3
+- (void)didGetSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [(TUVideoDeviceControllerProvider *)self delegate];
-  [v5 provider:self didGetSnapshot:v4];
+  snapshotCopy = snapshot;
+  delegate = [(TUVideoDeviceControllerProvider *)self delegate];
+  [delegate provider:self didGetSnapshot:snapshotCopy];
 }
 
-- (void)didDetectSensitiveContentWithAnalysis:(id)a3
+- (void)didDetectSensitiveContentWithAnalysis:(id)analysis
 {
-  v4 = a3;
-  v5 = [(TUVideoDeviceControllerProvider *)self delegate];
-  [v5 provider:self didDetectSensitiveContentWithAnalysis:v4];
+  analysisCopy = analysis;
+  delegate = [(TUVideoDeviceControllerProvider *)self delegate];
+  [delegate provider:self didDetectSensitiveContentWithAnalysis:analysisCopy];
 }
 
-- (void)cameraDidBecomeInterruptedForForUniqueID:(id)a3 reason:(int64_t)a4
+- (void)cameraDidBecomeInterruptedForForUniqueID:(id)d reason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [(TUVideoDeviceControllerProvider *)self delegate];
-  [v7 provider:self cameraDidBecomeInterruptedForForUniqueID:v6 reason:a4];
+  dCopy = d;
+  delegate = [(TUVideoDeviceControllerProvider *)self delegate];
+  [delegate provider:self cameraDidBecomeInterruptedForForUniqueID:dCopy reason:reason];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v50 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = TUDefaultLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v46 = 138412546;
-    v47 = v10;
+    v47 = pathCopy;
     v48 = 2112;
-    v49 = v11;
+    v49 = objectCopy;
     _os_log_impl(&dword_1956FD000, v13, OS_LOG_TYPE_DEFAULT, "Received a key-value observing notification for key path (%@) object (%@).", &v46, 0x16u);
   }
 
-  if (a6 == &TUVideoDeviceControllerProviderKeyValueObserverContext)
+  if (context == &TUVideoDeviceControllerProviderKeyValueObserverContext)
   {
-    v14 = [(TUVideoDeviceControllerProvider *)self delegate];
-    v15 = [(__CFString *)v10 isEqualToString:@"backgroundBlurEnabled"];
+    delegate = [(TUVideoDeviceControllerProvider *)self delegate];
+    v15 = [(__CFString *)pathCopy isEqualToString:@"backgroundBlurEnabled"];
     v16 = MEMORY[0x1E696A4F0];
     if (v15)
     {
-      v17 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
-      v18 = [v17 BOOLValue];
+      v17 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+      bOOLValue = [v17 BOOLValue];
 
       v19 = TUDefaultLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v20 = @"disabled";
-        if (v18)
+        if (bOOLValue)
         {
           v20 = @"enabled";
         }
@@ -1217,22 +1217,22 @@ void __62__TUVideoDeviceControllerProvider_hasAvailableDeskViewCameras__block_in
         _os_log_impl(&dword_1956FD000, v19, OS_LOG_TYPE_DEFAULT, "Camera blur changed to %@", &v46, 0xCu);
       }
 
-      [v14 provider:self cameraBlurEnabledDidChange:v18];
+      [delegate provider:self cameraBlurEnabledDidChange:bOOLValue];
     }
 
-    if ([(__CFString *)v10 isEqualToString:@"userPreferredCamera"])
+    if ([(__CFString *)pathCopy isEqualToString:@"userPreferredCamera"])
     {
-      v21 = [v12 objectForKeyedSubscript:*v16];
+      v21 = [changeCopy objectForKeyedSubscript:*v16];
       CUTWeakLinkClass();
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v22 = [(__CFString *)v21 uniqueID];
+        uniqueID = [(__CFString *)v21 uniqueID];
       }
 
       else
       {
-        v22 = 0;
+        uniqueID = 0;
       }
 
       v23 = TUDefaultLog();
@@ -1243,27 +1243,27 @@ void __62__TUVideoDeviceControllerProvider_hasAvailableDeskViewCameras__block_in
         _os_log_impl(&dword_1956FD000, v23, OS_LOG_TYPE_DEFAULT, "userPreferredCamera changed to %@", &v46, 0xCu);
       }
 
-      [v14 provider:self userPreferredCameraUIDDidChange:v22];
+      [delegate provider:self userPreferredCameraUIDDidChange:uniqueID];
     }
 
-    if ([(__CFString *)v10 isEqualToString:@"systemPreferredCamera"])
+    if ([(__CFString *)pathCopy isEqualToString:@"systemPreferredCamera"])
     {
-      v24 = [MEMORY[0x1E699BE70] sharedInstance];
-      v25 = [v24 deviceType];
+      mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+      deviceType = [mEMORY[0x1E699BE70] deviceType];
 
-      if (v25 != 2)
+      if (deviceType != 2)
       {
-        v26 = [v12 objectForKeyedSubscript:*v16];
+        v26 = [changeCopy objectForKeyedSubscript:*v16];
         CUTWeakLinkClass();
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v27 = [(__CFString *)v26 uniqueID];
+          uniqueID2 = [(__CFString *)v26 uniqueID];
         }
 
         else
         {
-          v27 = 0;
+          uniqueID2 = 0;
         }
 
         v28 = TUDefaultLog();
@@ -1274,20 +1274,20 @@ void __62__TUVideoDeviceControllerProvider_hasAvailableDeskViewCameras__block_in
           _os_log_impl(&dword_1956FD000, v28, OS_LOG_TYPE_DEFAULT, "systemPreferredCamera changed to %@", &v46, 0xCu);
         }
 
-        [v14 provider:self systemPreferredCameraUIDDidChange:v27];
+        [delegate provider:self systemPreferredCameraUIDDidChange:uniqueID2];
       }
     }
 
-    if ([(__CFString *)v10 isEqualToString:@"backgroundReplacementEnabled"])
+    if ([(__CFString *)pathCopy isEqualToString:@"backgroundReplacementEnabled"])
     {
-      v29 = [v12 objectForKeyedSubscript:*v16];
-      v30 = [v29 BOOLValue];
+      v29 = [changeCopy objectForKeyedSubscript:*v16];
+      bOOLValue2 = [v29 BOOLValue];
 
       v31 = TUDefaultLog();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
         v32 = @"disabled";
-        if (v30)
+        if (bOOLValue2)
         {
           v32 = @"enabled";
         }
@@ -1297,19 +1297,19 @@ void __62__TUVideoDeviceControllerProvider_hasAvailableDeskViewCameras__block_in
         _os_log_impl(&dword_1956FD000, v31, OS_LOG_TYPE_DEFAULT, "Background replacement changed to %@", &v46, 0xCu);
       }
 
-      [v14 provider:self backgroundReplacementEnabledDidChange:v30];
+      [delegate provider:self backgroundReplacementEnabledDidChange:bOOLValue2];
     }
 
-    if ([(__CFString *)v10 isEqualToString:@"centerStageEnabled"])
+    if ([(__CFString *)pathCopy isEqualToString:@"centerStageEnabled"])
     {
-      v33 = [v12 objectForKeyedSubscript:*v16];
-      v34 = [v33 BOOLValue];
+      v33 = [changeCopy objectForKeyedSubscript:*v16];
+      bOOLValue3 = [v33 BOOLValue];
 
       v35 = TUDefaultLog();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
         v36 = @"disabled";
-        if (v34)
+        if (bOOLValue3)
         {
           v36 = @"enabled";
         }
@@ -1319,20 +1319,20 @@ void __62__TUVideoDeviceControllerProvider_hasAvailableDeskViewCameras__block_in
         _os_log_impl(&dword_1956FD000, v35, OS_LOG_TYPE_DEFAULT, "Center Stage changed to %@", &v46, 0xCu);
       }
 
-      [(TUVideoDeviceControllerProvider *)self notifyCenterStageEnabled:v34];
-      [v14 provider:self cameraCinematicFramingEnabledDidChange:v34];
+      [(TUVideoDeviceControllerProvider *)self notifyCenterStageEnabled:bOOLValue3];
+      [delegate provider:self cameraCinematicFramingEnabledDidChange:bOOLValue3];
     }
 
-    if ([(__CFString *)v10 isEqualToString:@"reactionEffectGesturesEnabled"])
+    if ([(__CFString *)pathCopy isEqualToString:@"reactionEffectGesturesEnabled"])
     {
-      v37 = [v12 objectForKeyedSubscript:*v16];
-      v38 = [v37 BOOLValue];
+      v37 = [changeCopy objectForKeyedSubscript:*v16];
+      bOOLValue4 = [v37 BOOLValue];
 
       v39 = TUDefaultLog();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
         v40 = @"disabled";
-        if (v38)
+        if (bOOLValue4)
         {
           v40 = @"enabled";
         }
@@ -1342,19 +1342,19 @@ void __62__TUVideoDeviceControllerProvider_hasAvailableDeskViewCameras__block_in
         _os_log_impl(&dword_1956FD000, v39, OS_LOG_TYPE_DEFAULT, "Reaction Effects changed to %@", &v46, 0xCu);
       }
 
-      [v14 provider:self reactionEffectsEnabledDidChange:v38];
+      [delegate provider:self reactionEffectsEnabledDidChange:bOOLValue4];
     }
 
-    if ([(__CFString *)v10 isEqualToString:@"studioLightingEnabled"])
+    if ([(__CFString *)pathCopy isEqualToString:@"studioLightingEnabled"])
     {
-      v41 = [v12 objectForKeyedSubscript:*v16];
-      v42 = [v41 BOOLValue];
+      v41 = [changeCopy objectForKeyedSubscript:*v16];
+      bOOLValue5 = [v41 BOOLValue];
 
       v43 = TUDefaultLog();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
         v44 = @"disabled";
-        if (v42)
+        if (bOOLValue5)
         {
           v44 = @"enabled";
         }
@@ -1364,26 +1364,26 @@ void __62__TUVideoDeviceControllerProvider_hasAvailableDeskViewCameras__block_in
         _os_log_impl(&dword_1956FD000, v43, OS_LOG_TYPE_DEFAULT, "Studio Light changed to %@", &v46, 0xCu);
       }
 
-      [v14 provider:self studioLightEnabledDidChange:v42];
+      [delegate provider:self studioLightEnabledDidChange:bOOLValue5];
     }
   }
 
   v45 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCurrentVideoEffect:(id)a3
+- (void)setCurrentVideoEffect:(id)effect
 {
-  v5 = a3;
+  effectCopy = effect;
   p_currentVideoEffect = &self->_currentVideoEffect;
-  if (self->_currentVideoEffect != v5)
+  if (self->_currentVideoEffect != effectCopy)
   {
-    v9 = v5;
-    v7 = [(TUVideoDeviceControllerProvider *)self preview];
-    v8 = [(TUVideoEffect *)v9 name];
-    [v7 setAnimoji:v8];
+    v9 = effectCopy;
+    preview = [(TUVideoDeviceControllerProvider *)self preview];
+    name = [(TUVideoEffect *)v9 name];
+    [preview setAnimoji:name];
 
-    objc_storeStrong(p_currentVideoEffect, a3);
-    v5 = v9;
+    objc_storeStrong(p_currentVideoEffect, effect);
+    effectCopy = v9;
   }
 }
 
@@ -1394,26 +1394,26 @@ void __62__TUVideoDeviceControllerProvider_hasAvailableDeskViewCameras__block_in
   return [v2 animojiNames];
 }
 
-- (id)thumbnailImageForVideoEffectName:(id)a3
+- (id)thumbnailImageForVideoEffectName:(id)name
 {
-  v3 = a3;
-  v4 = [CUTWeakLinkClass() thumbnailForAnimojiNamed:v3 options:0];
+  nameCopy = name;
+  v4 = [CUTWeakLinkClass() thumbnailForAnimojiNamed:nameCopy options:0];
 
   return v4;
 }
 
-- (void)captureDevicesChanged:(id)a3
+- (void)captureDevicesChanged:(id)changed
 {
   [(TUVideoDeviceControllerProvider *)self invalidateInputDevicesCache];
-  v4 = [(TUVideoDeviceControllerProvider *)self delegate];
-  [v4 captureDevicesChangedForProvider:self];
+  delegate = [(TUVideoDeviceControllerProvider *)self delegate];
+  [delegate captureDevicesChangedForProvider:self];
 }
 
-- (void)centerStageAvailableChangedNotification:(id)a3
+- (void)centerStageAvailableChangedNotification:(id)notification
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E6986B88]];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E6986B88]];
   v6 = objc_opt_class();
   v7 = v5;
   if (v6)
@@ -1438,17 +1438,17 @@ void __62__TUVideoDeviceControllerProvider_hasAvailableDeskViewCameras__block_in
 
   if (v9)
   {
-    v10 = [v9 unsignedIntegerValue];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
     v11 = TUDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14[0] = 67109120;
-      v14[1] = v10 == 128;
+      v14[1] = unsignedIntegerValue == 128;
       _os_log_impl(&dword_1956FD000, v11, OS_LOG_TYPE_DEFAULT, "DockKit tracking changed to %d", v14, 8u);
     }
 
-    v12 = [(TUVideoDeviceControllerProvider *)self delegate];
-    [v12 provider:self dockKitTrackingDidChange:v10 == 128];
+    delegate = [(TUVideoDeviceControllerProvider *)self delegate];
+    [delegate provider:self dockKitTrackingDidChange:unsignedIntegerValue == 128];
   }
 
   v13 = *MEMORY[0x1E69E9840];

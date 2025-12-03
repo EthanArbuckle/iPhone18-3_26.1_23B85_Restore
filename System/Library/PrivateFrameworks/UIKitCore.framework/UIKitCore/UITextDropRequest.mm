@@ -1,23 +1,23 @@
 @interface UITextDropRequest
-- (UITextDropRequest)initWithPosition:(id)a3 range:(id)a4 inSession:(id)a5;
+- (UITextDropRequest)initWithPosition:(id)position range:(id)range inSession:(id)session;
 @end
 
 @implementation UITextDropRequest
 
-- (UITextDropRequest)initWithPosition:(id)a3 range:(id)a4 inSession:(id)a5
+- (UITextDropRequest)initWithPosition:(id)position range:(id)range inSession:(id)session
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  positionCopy = position;
+  rangeCopy = range;
+  sessionCopy = session;
   v15.receiver = self;
   v15.super_class = UITextDropRequest;
   v12 = [(UITextDropRequest *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dropPosition, a3);
-    objc_storeStrong(&v13->_dropRange, a4);
-    objc_storeStrong(&v13->_dropSession, a5);
+    objc_storeStrong(&v12->_dropPosition, position);
+    objc_storeStrong(&v13->_dropRange, range);
+    objc_storeStrong(&v13->_dropSession, session);
   }
 
   return v13;

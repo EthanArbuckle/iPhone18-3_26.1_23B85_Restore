@@ -1,11 +1,11 @@
 @interface PPPoEViewController
-- (BOOL)shouldChangeTextField:(id)a3 atIndexPath:(id)a4 forTextIndex:(unint64_t)a5 toString:(id)a6;
-- (id)valueForItemOfType:(id)a3 atTypeIndex:(unint64_t)a4 inCellWithTag:(int64_t)a5;
+- (BOOL)shouldChangeTextField:(id)field atIndexPath:(id)path forTextIndex:(unint64_t)index toString:(id)string;
+- (id)valueForItemOfType:(id)type atTypeIndex:(unint64_t)index inCellWithTag:(int64_t)tag;
 - (void)dealloc;
 - (void)loadView;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)setupInitialTableHeaderConfiguration;
-- (void)touchInCellAtIndexPath:(id)a3;
+- (void)touchInCellAtIndexPath:(id)path;
 @end
 
 @implementation PPPoEViewController
@@ -145,9 +145,9 @@
   [(AssistantSubUIViewController *)&v5 dealloc];
 }
 
-- (id)valueForItemOfType:(id)a3 atTypeIndex:(unint64_t)a4 inCellWithTag:(int64_t)a5
+- (id)valueForItemOfType:(id)type atTypeIndex:(unint64_t)index inCellWithTag:(int64_t)tag
 {
-  if (a5 != 1651724355)
+  if (tag != 1651724355)
   {
     return &stru_285145FE8;
   }
@@ -160,30 +160,30 @@
   return sub_23EB6D620(1651724355, v12);
 }
 
-- (BOOL)shouldChangeTextField:(id)a3 atIndexPath:(id)a4 forTextIndex:(unint64_t)a5 toString:(id)a6
+- (BOOL)shouldChangeTextField:(id)field atIndexPath:(id)path forTextIndex:(unint64_t)index toString:(id)string
 {
   v15 = 0;
-  v9 = objc_msgSend_tableManager(self, a2, a3, a4, a5);
-  if (objc_msgSend_tagOfCellAtIndexPath_tag_(v9, v10, a4, &v15))
+  v9 = objc_msgSend_tableManager(self, a2, field, path, index);
+  if (objc_msgSend_tagOfCellAtIndexPath_tag_(v9, v10, path, &v15))
   {
-    if (!a6)
+    if (!string)
     {
-      a6 = &stru_285145FE8;
+      string = &stru_285145FE8;
     }
 
     outResultsDict = self->super._outResultsDict;
     v12 = sub_23EB6CDF8(v15);
-    objc_msgSend_setObject_forKey_(outResultsDict, v13, a6, v12);
+    objc_msgSend_setObject_forKey_(outResultsDict, v13, string, v12);
   }
 
   return 1;
 }
 
-- (void)touchInCellAtIndexPath:(id)a3
+- (void)touchInCellAtIndexPath:(id)path
 {
   v37 = 0;
-  v5 = objc_msgSend_tableManager(self, a2, a3);
-  if (objc_msgSend_tagOfCellAtIndexPath_tag_(v5, v6, a3, &v37) && v37 == 1651724355)
+  v5 = objc_msgSend_tableManager(self, a2, path);
+  if (objc_msgSend_tagOfCellAtIndexPath_tag_(v5, v6, path, &v37) && v37 == 1651724355)
   {
     v7 = sub_23EB6CDF8(1651724355);
     v10 = objc_msgSend_objectForKey_(self->super._outResultsDict, v8, v7);
@@ -208,9 +208,9 @@
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  if (self->pppoeConnectionUIViewController != a4)
+  if (self->pppoeConnectionUIViewController != viewController)
   {
     v6 = sub_23EB6CDF8(1651724355);
     v9 = objc_msgSend_outResultsDict(self->pppoeConnectionUIViewController, v7, v8);

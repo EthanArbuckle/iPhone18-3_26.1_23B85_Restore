@@ -1,10 +1,10 @@
 @interface UIWindow
 + (id)fallback_debugHierarchyAdditionalGroupingIDs;
 + (id)fallback_debugHierarchyGroupingIDs;
-+ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)a3 onObject:(id)a4 outOptions:(id *)a5;
-+ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)a3 outOptions:(id *)a4;
++ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)d onObject:(id)object outOptions:(id *)options;
++ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)d outOptions:(id *)options;
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation UIWindow
@@ -17,9 +17,9 @@
   return v2;
 }
 
-+ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)a3 outOptions:(id *)a4
++ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)d outOptions:(id *)options
 {
-  if ([a3 isEqualToString:{@"com.apple.UIKit.UIWindow", a4}])
+  if ([d isEqualToString:{@"com.apple.UIKit.UIWindow", options}])
   {
     v4 = [UIWindow allWindowsIncludingInternalWindows:1 onlyVisibleWindows:0];
   }
@@ -42,18 +42,18 @@
   return v2;
 }
 
-+ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)a3 onObject:(id)a4 outOptions:(id *)a5
++ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)d onObject:(id)object outOptions:(id *)options
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"com.apple.UIKit.UIViewController"])
+  dCopy = d;
+  objectCopy = object;
+  if ([dCopy isEqualToString:@"com.apple.UIKit.UIViewController"])
   {
-    v8 = [v7 rootViewController];
+    rootViewController = [objectCopy rootViewController];
 
-    if (v8)
+    if (rootViewController)
     {
-      v9 = [v7 rootViewController];
-      v16 = v9;
+      rootViewController2 = [objectCopy rootViewController];
+      v16 = rootViewController2;
       v10 = &v16;
 LABEL_9:
       v12 = [NSArray arrayWithObjects:v10 count:1, v14, v15, v16];
@@ -62,23 +62,23 @@ LABEL_9:
     }
   }
 
-  else if ([v6 isEqualToString:@"com.apple.UIKit.UIScreen"])
+  else if ([dCopy isEqualToString:@"com.apple.UIKit.UIScreen"])
   {
-    v11 = [v7 screen];
+    screen = [objectCopy screen];
 
-    if (v11)
+    if (screen)
     {
-      v9 = [v7 screen];
-      v15 = v9;
+      rootViewController2 = [objectCopy screen];
+      v15 = rootViewController2;
       v10 = &v15;
       goto LABEL_9;
     }
   }
 
-  else if ([v6 isEqualToString:@"com.apple.UIKit.UIScene"])
+  else if ([dCopy isEqualToString:@"com.apple.UIKit.UIScene"])
   {
-    v9 = [v7 windowScene];
-    v14 = v9;
+    rootViewController2 = [objectCopy windowScene];
+    v14 = rootViewController2;
     v10 = &v14;
     goto LABEL_9;
   }
@@ -134,34 +134,34 @@ LABEL_11:
   return v9;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"internal"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"internal"])
   {
     v10 = [UIWindow allWindowsIncludingInternalWindows:0 onlyVisibleWindows:0];
-    v11 = [v10 containsObject:v9];
+    v11 = [v10 containsObject:objectCopy];
 
     v12 = (v11 ^ 1);
 LABEL_5:
-    a6 = [NSNumber numberWithBool:v12];
+    error = [NSNumber numberWithBool:v12];
     goto LABEL_30;
   }
 
-  if ([v8 isEqualToString:@"visible"])
+  if ([nameCopy isEqualToString:@"visible"])
   {
     v13 = [UIWindow allWindowsIncludingInternalWindows:1 onlyVisibleWindows:1];
-    v14 = [v13 containsObject:v9];
+    v14 = [v13 containsObject:objectCopy];
 
     v12 = v14;
     goto LABEL_5;
   }
 
-  if (![v8 isEqualToString:@"screenScale"])
+  if (![nameCopy isEqualToString:@"screenScale"])
   {
-    v15 = v9;
-    v16 = v8;
+    screen = objectCopy;
+    v16 = nameCopy;
     if ([(NSString *)v16 length])
     {
       NSSelectorFromString(v16);
@@ -171,7 +171,7 @@ LABEL_5:
         if (v17)
         {
 LABEL_11:
-          a6 = [v15 valueForKey:v17];
+          error = [screen valueForKey:v17];
 LABEL_28:
 
           goto LABEL_29;
@@ -182,18 +182,18 @@ LABEL_28:
       {
         if ([(NSString *)v16 length]< 2)
         {
-          v21 = [(NSString *)v16 uppercaseString];
+          uppercaseString = [(NSString *)v16 uppercaseString];
         }
 
         else
         {
           v18 = [(NSString *)v16 substringToIndex:1];
-          v19 = [v18 uppercaseString];
+          uppercaseString2 = [v18 uppercaseString];
           v20 = [(NSString *)v16 substringFromIndex:1];
-          v21 = [v19 stringByAppendingString:v20];
+          uppercaseString = [uppercaseString2 stringByAppendingString:v20];
         }
 
-        v22 = [@"is" stringByAppendingString:v21];
+        v22 = [@"is" stringByAppendingString:uppercaseString];
         NSSelectorFromString(v22);
         if (objc_opt_respondsToSelector())
         {
@@ -212,12 +212,12 @@ LABEL_28:
       }
     }
 
-    if (a6)
+    if (error)
     {
       v23 = v16;
-      if (v15)
+      if (screen)
       {
-        v24 = [NSString stringWithFormat:@"%@", v15];
+        v24 = [NSString stringWithFormat:@"%@", screen];
       }
 
       else
@@ -246,10 +246,10 @@ LABEL_28:
       v28 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v27];
 
       v29 = v28;
-      *a6 = v28;
+      *error = v28;
 
       v17 = 0;
-      a6 = 0;
+      error = 0;
     }
 
     else
@@ -260,14 +260,14 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v15 = [v9 screen];
-  [v15 scale];
-  a6 = [NSNumber numberWithDouble:?];
+  screen = [objectCopy screen];
+  [screen scale];
+  error = [NSNumber numberWithDouble:?];
 LABEL_29:
 
 LABEL_30:
 
-  return a6;
+  return error;
 }
 
 @end

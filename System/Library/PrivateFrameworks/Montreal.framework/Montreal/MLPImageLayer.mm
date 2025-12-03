@@ -1,28 +1,28 @@
 @interface MLPImageLayer
-- (MLPImageLayer)initWithLayerType:(unint64_t)a3 name:(id)a4 neuronType:(int)a5 neuronParams:(id)a6;
-- (MLPImageLayer)initWithLayerType:(unint64_t)a3 name:(id)a4 parameters:(id *)a5;
+- (MLPImageLayer)initWithLayerType:(unint64_t)type name:(id)name neuronType:(int)neuronType neuronParams:(id)params;
+- (MLPImageLayer)initWithLayerType:(unint64_t)type name:(id)name parameters:(id *)parameters;
 - (NSArray)inputToFirstKernel;
 - (NSArray)inputToSecondKernel;
 - (NSArray)primaryCurrentState;
 - (NSArray)secondaryCurrentState;
-- (id)generateNode:(id)a3 model:(id)a4 weightIter:(unint64_t *)a5 params:(id *)a6;
+- (id)generateNode:(id)node model:(id)model weightIter:(unint64_t *)iter params:(id *)params;
 - (void)allocateInputDictionaries;
-- (void)updateInputToFirstKernel:(id)a3 index:(id)a4 inference:(BOOL)a5;
-- (void)updateInputToSecondKernel:(id)a3 index:(id)a4 inference:(BOOL)a5;
-- (void)updatePrimaryCurrentState:(id)a3 index:(id)a4 inference:(BOOL)a5;
-- (void)updateSecondaryCurrentState:(id)a3 index:(id)a4 inference:(BOOL)a5;
+- (void)updateInputToFirstKernel:(id)kernel index:(id)index inference:(BOOL)inference;
+- (void)updateInputToSecondKernel:(id)kernel index:(id)index inference:(BOOL)inference;
+- (void)updatePrimaryCurrentState:(id)state index:(id)index inference:(BOOL)inference;
+- (void)updateSecondaryCurrentState:(id)state index:(id)index inference:(BOOL)inference;
 @end
 
 @implementation MLPImageLayer
 
-- (MLPImageLayer)initWithLayerType:(unint64_t)a3 name:(id)a4 neuronType:(int)a5 neuronParams:(id)a6
+- (MLPImageLayer)initWithLayerType:(unint64_t)type name:(id)name neuronType:(int)neuronType neuronParams:(id)params
 {
-  v7 = *&a5;
-  v10 = a4;
-  v11 = a6;
+  v7 = *&neuronType;
+  nameCopy = name;
+  paramsCopy = params;
   v18.receiver = self;
   v18.super_class = MLPImageLayer;
-  v12 = [(MLPLayer *)&v18 initWithLayerType:a3 name:v10 neuronType:v7 neuronParams:v11];
+  v12 = [(MLPLayer *)&v18 initWithLayerType:type name:nameCopy neuronType:v7 neuronParams:paramsCopy];
   v16 = v12;
   if (v12)
   {
@@ -32,12 +32,12 @@
   return v16;
 }
 
-- (MLPImageLayer)initWithLayerType:(unint64_t)a3 name:(id)a4 parameters:(id *)a5
+- (MLPImageLayer)initWithLayerType:(unint64_t)type name:(id)name parameters:(id *)parameters
 {
-  v8 = a4;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = MLPImageLayer;
-  v9 = [(MLPLayer *)&v15 initWithLayerType:a3 name:v8 parameters:a5];
+  v9 = [(MLPLayer *)&v15 initWithLayerType:type name:nameCopy parameters:parameters];
   v13 = v9;
   if (v9)
   {
@@ -98,11 +98,11 @@
   return v7;
 }
 
-- (void)updateInputToFirstKernel:(id)a3 index:(id)a4 inference:(BOOL)a5
+- (void)updateInputToFirstKernel:(id)kernel index:(id)index inference:(BOOL)inference
 {
-  batch = a3;
-  v10 = a4;
-  if (!a5)
+  batch = kernel;
+  indexCopy = index;
+  if (!inference)
   {
     v11 = objc_msgSend_objectAtIndex_(batch, v8, 0, v9);
     objc_opt_class();
@@ -114,15 +114,15 @@
     }
 
     v16 = objc_msgSend_inputImagesToFirstKernel(self, v13, v14, v15);
-    objc_msgSend_setObject_forKeyedSubscript_(v16, v17, batch, v10);
+    objc_msgSend_setObject_forKeyedSubscript_(v16, v17, batch, indexCopy);
   }
 }
 
-- (void)updateInputToSecondKernel:(id)a3 index:(id)a4 inference:(BOOL)a5
+- (void)updateInputToSecondKernel:(id)kernel index:(id)index inference:(BOOL)inference
 {
-  batch = a3;
-  v10 = a4;
-  if (!a5)
+  batch = kernel;
+  indexCopy = index;
+  if (!inference)
   {
     v11 = objc_msgSend_objectAtIndex_(batch, v8, 0, v9);
     objc_opt_class();
@@ -134,15 +134,15 @@
     }
 
     v16 = objc_msgSend_inputImagesToSecondKernel(self, v13, v14, v15);
-    objc_msgSend_setObject_forKeyedSubscript_(v16, v17, batch, v10);
+    objc_msgSend_setObject_forKeyedSubscript_(v16, v17, batch, indexCopy);
   }
 }
 
-- (void)updatePrimaryCurrentState:(id)a3 index:(id)a4 inference:(BOOL)a5
+- (void)updatePrimaryCurrentState:(id)state index:(id)index inference:(BOOL)inference
 {
-  batch = a3;
-  v11 = a4;
-  if (a5)
+  batch = state;
+  indexCopy = index;
+  if (inference)
   {
     MPSStateBatchIncrementReadCount(batch, -1);
   }
@@ -150,15 +150,15 @@
   else
   {
     v12 = objc_msgSend_primaryCurrentStates(self, v8, v9, v10);
-    objc_msgSend_setObject_forKeyedSubscript_(v12, v13, batch, v11);
+    objc_msgSend_setObject_forKeyedSubscript_(v12, v13, batch, indexCopy);
   }
 }
 
-- (void)updateSecondaryCurrentState:(id)a3 index:(id)a4 inference:(BOOL)a5
+- (void)updateSecondaryCurrentState:(id)state index:(id)index inference:(BOOL)inference
 {
-  batch = a3;
-  v11 = a4;
-  if (a5)
+  batch = state;
+  indexCopy = index;
+  if (inference)
   {
     MPSStateBatchIncrementReadCount(batch, -1);
   }
@@ -166,15 +166,15 @@
   else
   {
     v12 = objc_msgSend_secondaryCurrentStates(self, v8, v9, v10);
-    objc_msgSend_setObject_forKeyedSubscript_(v12, v13, batch, v11);
+    objc_msgSend_setObject_forKeyedSubscript_(v12, v13, batch, indexCopy);
   }
 }
 
-- (id)generateNode:(id)a3 model:(id)a4 weightIter:(unint64_t *)a5 params:(id *)a6
+- (id)generateNode:(id)node model:(id)model weightIter:(unint64_t *)iter params:(id *)params
 {
   v58[1] = *MEMORY[0x1E69E9840];
-  v53 = a3;
-  v54 = a4;
+  nodeCopy = node;
+  modelCopy = model;
   v10 = MEMORY[0x1E696AD98];
   v14 = objc_msgSend_inputLength(self, v11, v12, v13);
   v17 = objc_msgSend_numberWithUnsignedInteger_(v10, v15, v14, v16);
@@ -201,7 +201,7 @@
   v56 = v47;
   v49 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v48, &v56, 1);
 
-  v51 = objc_msgSend_generateNode_model_weightIter_params_inputChunks_outputChunks_(self, v50, v53, v54, a5, a6, v29, v49);
+  v51 = objc_msgSend_generateNode_model_weightIter_params_inputChunks_outputChunks_(self, v50, nodeCopy, modelCopy, iter, params, v29, v49);
 
   return v51;
 }

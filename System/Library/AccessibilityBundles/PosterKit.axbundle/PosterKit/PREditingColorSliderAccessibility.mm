@@ -1,19 +1,19 @@
 @interface PREditingColorSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
-- (void)_axAdjustSliderValue:(BOOL)a3;
+- (void)_axAdjustSliderValue:(BOOL)value;
 @end
 
 @implementation PREditingColorSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PREditingColorSlider" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"PREditingColorSlider" hasProperty:@"value" withType:"d"];
-  [v3 validateClass:@"PREditingColorSlider" hasProperty:@"displayCurrentColor" withType:"@"];
-  [v3 validateClass:@"PRPosterColor" hasProperty:@"color" withType:"@"];
-  [v3 validateClass:@"PREditingColorSlider" hasInstanceMethod:@"_setSliderValue:" withFullSignature:{"v", "d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PREditingColorSlider" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"PREditingColorSlider" hasProperty:@"value" withType:"d"];
+  [validationsCopy validateClass:@"PREditingColorSlider" hasProperty:@"displayCurrentColor" withType:"@"];
+  [validationsCopy validateClass:@"PRPosterColor" hasProperty:@"color" withType:"@"];
+  [validationsCopy validateClass:@"PREditingColorSlider" hasInstanceMethod:@"_setSliderValue:" withFullSignature:{"v", "d", 0}];
 }
 
 - (id)accessibilityValue
@@ -28,12 +28,12 @@
   return v7;
 }
 
-- (void)_axAdjustSliderValue:(BOOL)a3
+- (void)_axAdjustSliderValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   [(PREditingColorSliderAccessibility *)self safeCGFloatForKey:@"value"];
   v5 = -0.1;
-  if (v3)
+  if (valueCopy)
   {
     v5 = 0.1;
   }

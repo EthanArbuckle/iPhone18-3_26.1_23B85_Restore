@@ -1,18 +1,18 @@
 @interface SiriTTSServiceAudioAnalytics
-+ (void)reportAnalytics:(int64_t)a3 tailspin:(id)a4 reason:(id)a5;
++ (void)reportAnalytics:(int64_t)analytics tailspin:(id)tailspin reason:(id)reason;
 @end
 
 @implementation SiriTTSServiceAudioAnalytics
 
-+ (void)reportAnalytics:(int64_t)a3 tailspin:(id)a4 reason:(id)a5
++ (void)reportAnalytics:(int64_t)analytics tailspin:(id)tailspin reason:(id)reason
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v35 = a5;
-  v36 = v6;
-  std::string::basic_string[abi:ne200100](__dst, [v6 cStringUsingEncoding:4], objc_msgSend(v6, "lengthOfBytesUsingEncoding:", 4));
-  v7 = v35;
-  std::string::basic_string[abi:ne200100](v39, [v35 cStringUsingEncoding:4], objc_msgSend(v35, "lengthOfBytesUsingEncoding:", 4));
+  tailspinCopy = tailspin;
+  reasonCopy = reason;
+  v36 = tailspinCopy;
+  std::string::basic_string[abi:ne200100](__dst, [tailspinCopy cStringUsingEncoding:4], objc_msgSend(tailspinCopy, "lengthOfBytesUsingEncoding:", 4));
+  v7 = reasonCopy;
+  std::string::basic_string[abi:ne200100](v39, [reasonCopy cStringUsingEncoding:4], objc_msgSend(reasonCopy, "lengthOfBytesUsingEncoding:", 4));
   applesauce::CF::TypeRef::TypeRef(v49, "tailspin");
   if ((v42 & 0x80u) == 0)
   {

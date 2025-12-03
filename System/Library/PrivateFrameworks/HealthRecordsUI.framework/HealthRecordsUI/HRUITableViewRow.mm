@@ -1,6 +1,6 @@
 @interface HRUITableViewRow
 - (HRUITableViewRow)init;
-- (HRUITableViewRow)initWithReuseIdentifier:(id)a3;
+- (HRUITableViewRow)initWithReuseIdentifier:(id)identifier;
 - (NSString)reuseIdentifier;
 @end
 
@@ -14,7 +14,7 @@
   return v2;
 }
 
-- (HRUITableViewRow)initWithReuseIdentifier:(id)a3
+- (HRUITableViewRow)initWithReuseIdentifier:(id)identifier
 {
   v4 = sub_1D139016C();
   v5 = (self + OBJC_IVAR___HRUITableViewRow_reuseIdentifier);

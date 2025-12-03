@@ -1,22 +1,22 @@
 @interface ICMergeableDictionary
-- (ICMergeableDictionary)initWithData:(id)a3 replicaID:(id)a4;
+- (ICMergeableDictionary)initWithData:(id)data replicaID:(id)d;
 - (NSArray)allKeys;
 - (NSUUID)replicaID;
 - (id)description;
 - (id)encodedData;
-- (id)objectForKey:(id)a3;
-- (unint64_t)mergeWithDictionary:(id)a3;
+- (id)objectForKey:(id)key;
+- (unint64_t)mergeWithDictionary:(id)dictionary;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation ICMergeableDictionary
 
-- (ICMergeableDictionary)initWithData:(id)a3 replicaID:(id)a4
+- (ICMergeableDictionary)initWithData:(id)data replicaID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = ICMergeableDictionary;
   v8 = [(ICMergeableDictionary *)&v19 init];
@@ -25,9 +25,9 @@
     goto LABEL_6;
   }
 
-  if (!v6)
+  if (!dataCopy)
   {
-    v14 = [[ICCRDocument alloc] initWithReplica:v7];
+    v14 = [[ICCRDocument alloc] initWithReplica:dCopy];
     document = v8->_document;
     v8->_document = v14;
 
@@ -39,13 +39,13 @@
     goto LABEL_6;
   }
 
-  v9 = [ICCRCoderUnarchiver decodedDocumentFromData:v6 replica:v7];
+  v9 = [ICCRCoderUnarchiver decodedDocumentFromData:dataCopy replica:dCopy];
   v10 = v8->_document;
   v8->_document = v9;
 
-  v11 = [(ICCRDocument *)v8->_document rootObject];
+  rootObject = [(ICCRDocument *)v8->_document rootObject];
   v12 = v8->_dictionary;
-  v8->_dictionary = v11;
+  v8->_dictionary = rootObject;
 
   if (v8->_document)
   {
@@ -62,8 +62,8 @@ LABEL_7:
 
 - (id)description
 {
-  v2 = [(ICMergeableDictionary *)self dictionary];
-  v3 = [v2 description];
+  dictionary = [(ICMergeableDictionary *)self dictionary];
+  v3 = [dictionary description];
 
   return v3;
 }
@@ -72,17 +72,17 @@ LABEL_7:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(ICMergeableDictionary *)self dictionary];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  dictionary = [(ICMergeableDictionary *)self dictionary];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(dictionary, "count")}];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(ICMergeableDictionary *)self dictionary];
-  v7 = [v6 keyEnumerator];
+  dictionary2 = [(ICMergeableDictionary *)self dictionary];
+  keyEnumerator = [dictionary2 keyEnumerator];
 
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -93,13 +93,13 @@ LABEL_7:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         [v5 addObject:*(*(&v13 + 1) + 8 * i)];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -108,69 +108,69 @@ LABEL_7:
   return v5;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ICMergeableDictionary *)self dictionary];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  dictionary = [(ICMergeableDictionary *)self dictionary];
+  v6 = [dictionary objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(ICMergeableDictionary *)self objectForKey:v6];
+  objectCopy = object;
+  keyCopy = key;
+  v7 = [(ICMergeableDictionary *)self objectForKey:keyCopy];
 
   if (v7)
   {
-    [(ICMergeableDictionary *)self removeObjectForKey:v6];
+    [(ICMergeableDictionary *)self removeObjectForKey:keyCopy];
   }
 
-  if (v9)
+  if (objectCopy)
   {
-    v8 = [(ICMergeableDictionary *)self dictionary];
-    [v8 setObject:v9 forKey:v6];
+    dictionary = [(ICMergeableDictionary *)self dictionary];
+    [dictionary setObject:objectCopy forKey:keyCopy];
   }
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ICMergeableDictionary *)self dictionary];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  dictionary = [(ICMergeableDictionary *)self dictionary];
+  [dictionary removeObjectForKey:keyCopy];
 }
 
 - (void)removeAllObjects
 {
-  v2 = [(ICMergeableDictionary *)self dictionary];
-  [v2 removeAllObjects];
+  dictionary = [(ICMergeableDictionary *)self dictionary];
+  [dictionary removeAllObjects];
 }
 
 - (NSUUID)replicaID
 {
-  v2 = [(ICMergeableDictionary *)self document];
-  v3 = [v2 replica];
+  document = [(ICMergeableDictionary *)self document];
+  replica = [document replica];
 
-  return v3;
+  return replica;
 }
 
 - (id)encodedData
 {
-  v2 = [(ICMergeableDictionary *)self document];
-  v3 = [v2 archivedData];
+  document = [(ICMergeableDictionary *)self document];
+  archivedData = [document archivedData];
 
-  return v3;
+  return archivedData;
 }
 
-- (unint64_t)mergeWithDictionary:(id)a3
+- (unint64_t)mergeWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(ICMergeableDictionary *)self document];
-  v6 = [v4 document];
-  v7 = [v6 archivedData];
-  v8 = [v5 mergeWithData:v7];
+  dictionaryCopy = dictionary;
+  document = [(ICMergeableDictionary *)self document];
+  document2 = [dictionaryCopy document];
+  archivedData = [document2 archivedData];
+  v8 = [document mergeWithData:archivedData];
 
   if (v8 == 2)
   {
@@ -187,7 +187,7 @@ LABEL_7:
     v9 = os_log_create("com.apple.notes", "Topotext");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(ICMergeableDictionary *)self mergeWithDictionary:v4, v9];
+      [(ICMergeableDictionary *)self mergeWithDictionary:dictionaryCopy, v9];
     }
 
     v10 = 0;

@@ -1,7 +1,7 @@
 @interface PPSStorage
 - (PPSStorage)init;
 - (void)setupMetadataStorage;
-- (void)setupStorageForEntryKey:(id)a3;
+- (void)setupStorageForEntryKey:(id)key;
 - (void)startStorage;
 @end
 
@@ -28,7 +28,7 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setupStorageForEntryKey:(id)a3
+- (void)setupStorageForEntryKey:(id)key
 {
   v3 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG);
   if (v3)

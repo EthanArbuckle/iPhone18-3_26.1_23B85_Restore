@@ -1,8 +1,8 @@
 @interface PHAPrivateFederatedLearningRecipeOptions
-+ (id)_generateErrorWithErrorCode:(int64_t)a3 message:(id)a4 underlyingError:(id)a5;
-+ (id)validateRecipeOptions:(id)a3 error:(id *)a4;
-+ (int64_t)datasetPolicyForPolicyName:(id)a3;
-+ (int64_t)labelPolicyForLabelPolicyName:(id)a3;
++ (id)_generateErrorWithErrorCode:(int64_t)code message:(id)message underlyingError:(id)error;
++ (id)validateRecipeOptions:(id)options error:(id *)error;
++ (int64_t)datasetPolicyForPolicyName:(id)name;
++ (int64_t)labelPolicyForLabelPolicyName:(id)name;
 - (PHAPrivateFederatedLearningRecipeOptions)init;
 @end
 
@@ -63,98 +63,98 @@
   return v3;
 }
 
-+ (id)_generateErrorWithErrorCode:(int64_t)a3 message:(id)a4 underlyingError:(id)a5
++ (id)_generateErrorWithErrorCode:(int64_t)code message:(id)message underlyingError:(id)error
 {
-  v7 = a5;
+  errorCopy = error;
   v8 = MEMORY[0x277CBEB38];
-  v9 = a4;
+  messageCopy = message;
   v10 = objc_alloc_init(v8);
-  [v10 setObject:v9 forKey:*MEMORY[0x277CCA450]];
+  [v10 setObject:messageCopy forKey:*MEMORY[0x277CCA450]];
 
-  if (v7)
+  if (errorCopy)
   {
-    [v10 setObject:v7 forKey:*MEMORY[0x277CCA7E8]];
+    [v10 setObject:errorCopy forKey:*MEMORY[0x277CCA7E8]];
   }
 
-  v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.PhotoAnalysis.PHAPrivateFederatedLearningRecipeOptions" code:a3 userInfo:v10];
+  v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.PhotoAnalysis.PHAPrivateFederatedLearningRecipeOptions" code:code userInfo:v10];
 
   return v11;
 }
 
-+ (id)validateRecipeOptions:(id)a3 error:(id *)a4
++ (id)validateRecipeOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v7 = MEMORY[0x277D3B908];
-  v8 = [v6 fingerprintVersionName];
-  [v6 setFingerprintVersion:{objc_msgSend(v7, "fingerprintVersionForName:", v8)}];
+  fingerprintVersionName = [optionsCopy fingerprintVersionName];
+  [optionsCopy setFingerprintVersion:{objc_msgSend(v7, "fingerprintVersionForName:", fingerprintVersionName)}];
 
-  if (![v6 fingerprintVersion])
+  if (![optionsCopy fingerprintVersion])
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
 
     v15 = MEMORY[0x277CCACA8];
-    v16 = [v6 fingerprintVersionName];
-    v17 = [v15 stringWithFormat:@"Unknown fingerprint version name(%@)", v16];
-    v18 = a1;
+    fingerprintVersionName2 = [optionsCopy fingerprintVersionName];
+    v17 = [v15 stringWithFormat:@"Unknown fingerprint version name(%@)", fingerprintVersionName2];
+    selfCopy3 = self;
     v19 = 1;
 LABEL_16:
-    *a4 = [v18 _generateErrorWithErrorCode:v19 message:v17 underlyingError:0];
+    *error = [selfCopy3 _generateErrorWithErrorCode:v19 message:v17 underlyingError:0];
 
     goto LABEL_17;
   }
 
-  v9 = [v6 datasetPolicyString];
-  [v6 setDatasetPolicy:{+[PHAPrivateFederatedLearningRecipeOptions datasetPolicyForPolicyName:](PHAPrivateFederatedLearningRecipeOptions, "datasetPolicyForPolicyName:", v9)}];
+  datasetPolicyString = [optionsCopy datasetPolicyString];
+  [optionsCopy setDatasetPolicy:{+[PHAPrivateFederatedLearningRecipeOptions datasetPolicyForPolicyName:](PHAPrivateFederatedLearningRecipeOptions, "datasetPolicyForPolicyName:", datasetPolicyString)}];
 
-  if ([v6 datasetPolicy] == -1)
+  if ([optionsCopy datasetPolicy] == -1)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
 
     v20 = MEMORY[0x277CCACA8];
-    v16 = [v6 datasetPolicyString];
-    v17 = [v20 stringWithFormat:@"Unknown dataset policy(%@)", v16];
-    v18 = a1;
+    fingerprintVersionName2 = [optionsCopy datasetPolicyString];
+    v17 = [v20 stringWithFormat:@"Unknown dataset policy(%@)", fingerprintVersionName2];
+    selfCopy3 = self;
     v19 = 2;
     goto LABEL_16;
   }
 
-  v10 = [v6 labelPolicyString];
-  [v6 setLabelPolicy:{+[PHAPrivateFederatedLearningRecipeOptions labelPolicyForLabelPolicyName:](PHAPrivateFederatedLearningRecipeOptions, "labelPolicyForLabelPolicyName:", v10)}];
+  labelPolicyString = [optionsCopy labelPolicyString];
+  [optionsCopy setLabelPolicy:{+[PHAPrivateFederatedLearningRecipeOptions labelPolicyForLabelPolicyName:](PHAPrivateFederatedLearningRecipeOptions, "labelPolicyForLabelPolicyName:", labelPolicyString)}];
 
-  if ([v6 labelPolicy] == -1)
+  if ([optionsCopy labelPolicy] == -1)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
 
     v21 = MEMORY[0x277CCACA8];
-    v16 = [v6 labelPolicyString];
-    v17 = [v21 stringWithFormat:@"Unknown label policy(%@)", v16];
-    v18 = a1;
+    fingerprintVersionName2 = [optionsCopy labelPolicyString];
+    v17 = [v21 stringWithFormat:@"Unknown label policy(%@)", fingerprintVersionName2];
+    selfCopy3 = self;
     v19 = 3;
     goto LABEL_16;
   }
 
-  v11 = [v6 positivesDatasetName];
+  positivesDatasetName = [optionsCopy positivesDatasetName];
 
-  if (v11)
+  if (positivesDatasetName)
   {
-    if (([v6 totalNumberOfSamples] & 1) != 0 && (!objc_msgSend(v6, "datasetPolicy") || objc_msgSend(v6, "datasetPolicy") == 1))
+    if (([optionsCopy totalNumberOfSamples] & 1) != 0 && (!objc_msgSend(optionsCopy, "datasetPolicy") || objc_msgSend(optionsCopy, "datasetPolicy") == 1))
     {
-      if (a4)
+      if (error)
       {
-        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Value for totalNumberOfSamples (%lu) can't be odd when generator policy is 'balanced'", objc_msgSend(v6, "totalNumberOfSamples")];
-        v13 = a1;
+        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Value for totalNumberOfSamples (%lu) can't be odd when generator policy is 'balanced'", objc_msgSend(optionsCopy, "totalNumberOfSamples")];
+        selfCopy5 = self;
         v14 = 5;
 LABEL_29:
-        *a4 = [v13 _generateErrorWithErrorCode:v14 message:v12 underlyingError:0];
+        *error = [selfCopy5 _generateErrorWithErrorCode:v14 message:v12 underlyingError:0];
 
         goto LABEL_17;
       }
@@ -162,12 +162,12 @@ LABEL_29:
       goto LABEL_17;
     }
 
-    if (![v6 oversamplingRate])
+    if (![optionsCopy oversamplingRate])
     {
-      if (a4)
+      if (error)
       {
-        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Value for oversamplingRate (%lu) can't be <= 0", objc_msgSend(v6, "oversamplingRate")];
-        v13 = a1;
+        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Value for oversamplingRate (%lu) can't be <= 0", objc_msgSend(optionsCopy, "oversamplingRate")];
+        selfCopy5 = self;
         v14 = 6;
         goto LABEL_29;
       }
@@ -177,19 +177,19 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v24 = [v6 photoLibrary];
+    photoLibrary = [optionsCopy photoLibrary];
 
-    if (v24)
+    if (photoLibrary)
     {
-      v25 = [v6 graphManager];
+      graphManager = [optionsCopy graphManager];
 
-      if (v25)
+      if (graphManager)
       {
-        v22 = v6;
+        v22 = optionsCopy;
         goto LABEL_18;
       }
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_17;
       }
@@ -199,7 +199,7 @@ LABEL_17:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_17;
       }
@@ -207,36 +207,36 @@ LABEL_17:
       v26 = @"Photo library is nil";
     }
 
-    v27 = a1;
+    selfCopy7 = self;
     v28 = 7;
   }
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
 
     v26 = @"Positives dataset name is nil";
-    v27 = a1;
+    selfCopy7 = self;
     v28 = 4;
   }
 
-  [v27 _generateErrorWithErrorCode:v28 message:v26 underlyingError:0];
-  *a4 = v22 = 0;
+  [selfCopy7 _generateErrorWithErrorCode:v28 message:v26 underlyingError:0];
+  *error = v22 = 0;
 LABEL_18:
 
   return v22;
 }
 
-+ (int64_t)labelPolicyForLabelPolicyName:(id)a3
++ (int64_t)labelPolicyForLabelPolicyName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  nameCopy = name;
+  v4 = nameCopy;
+  if (nameCopy)
   {
-    if ([v3 isEqualToString:@"indexed"])
+    if ([nameCopy isEqualToString:@"indexed"])
     {
       v5 = 0;
     }
@@ -260,13 +260,13 @@ LABEL_18:
   return v5;
 }
 
-+ (int64_t)datasetPolicyForPolicyName:(id)a3
++ (int64_t)datasetPolicyForPolicyName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  nameCopy = name;
+  v4 = nameCopy;
+  if (nameCopy)
   {
-    if ([v3 isEqualToString:@"balanced"])
+    if ([nameCopy isEqualToString:@"balanced"])
     {
       v5 = 0;
     }

@@ -1,24 +1,24 @@
 @interface RTTransitMetricPeriod
-- (BOOL)stayAtHomeTogether:(id)a3;
-- (BOOL)travelTogether:(id)a3;
-- (RTTransitMetricPeriod)initWithJourneyPeriod:(id)a3 homeStayPeriod:(id)a4;
+- (BOOL)stayAtHomeTogether:(id)together;
+- (BOOL)travelTogether:(id)together;
+- (RTTransitMetricPeriod)initWithJourneyPeriod:(id)period homeStayPeriod:(id)stayPeriod;
 @end
 
 @implementation RTTransitMetricPeriod
 
-- (RTTransitMetricPeriod)initWithJourneyPeriod:(id)a3 homeStayPeriod:(id)a4
+- (RTTransitMetricPeriod)initWithJourneyPeriod:(id)period homeStayPeriod:(id)stayPeriod
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  periodCopy = period;
+  stayPeriodCopy = stayPeriod;
+  v9 = stayPeriodCopy;
+  if (!periodCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v12 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -29,7 +29,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!stayPeriodCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -48,29 +48,29 @@ LABEL_12:
   p_isa = &v10->super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_journeyPeriod, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v10->_journeyPeriod, period);
+    objc_storeStrong(p_isa + 2, stayPeriod);
   }
 
   self = p_isa;
-  v12 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v12;
+  return selfCopy;
 }
 
-- (BOOL)travelTogether:(id)a3
+- (BOOL)travelTogether:(id)together
 {
-  v4 = a3;
-  v5 = [(RTTransitMetricPeriod *)self journeyPeriod];
-  v6 = [v5 startDate];
-  v7 = [v4 exitDate];
-  if ([v6 isBeforeDate:v7])
+  togetherCopy = together;
+  journeyPeriod = [(RTTransitMetricPeriod *)self journeyPeriod];
+  startDate = [journeyPeriod startDate];
+  exitDate = [togetherCopy exitDate];
+  if ([startDate isBeforeDate:exitDate])
   {
-    v8 = [v4 entryDate];
-    v9 = [(RTTransitMetricPeriod *)self journeyPeriod];
-    v10 = [v9 endDate];
-    v11 = [v8 isBeforeDate:v10];
+    entryDate = [togetherCopy entryDate];
+    journeyPeriod2 = [(RTTransitMetricPeriod *)self journeyPeriod];
+    endDate = [journeyPeriod2 endDate];
+    v11 = [entryDate isBeforeDate:endDate];
   }
 
   else
@@ -81,18 +81,18 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)stayAtHomeTogether:(id)a3
+- (BOOL)stayAtHomeTogether:(id)together
 {
-  v4 = a3;
-  v5 = [(RTTransitMetricPeriod *)self homeStayPeriod];
-  v6 = [v5 startDate];
-  v7 = [v4 exitDate];
-  if ([v6 isBeforeDate:v7])
+  togetherCopy = together;
+  homeStayPeriod = [(RTTransitMetricPeriod *)self homeStayPeriod];
+  startDate = [homeStayPeriod startDate];
+  exitDate = [togetherCopy exitDate];
+  if ([startDate isBeforeDate:exitDate])
   {
-    v8 = [v4 entryDate];
-    v9 = [(RTTransitMetricPeriod *)self homeStayPeriod];
-    v10 = [v9 endDate];
-    v11 = [v8 isBeforeDate:v10];
+    entryDate = [togetherCopy entryDate];
+    homeStayPeriod2 = [(RTTransitMetricPeriod *)self homeStayPeriod];
+    endDate = [homeStayPeriod2 endDate];
+    v11 = [entryDate isBeforeDate:endDate];
   }
 
   else

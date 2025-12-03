@@ -2,7 +2,7 @@
 + (id)applicationCacheDirectory;
 + (id)applicationConfigurationDirectory;
 + (id)applicationDocumentsDirectory;
-+ (id)contextDirectoryForAssetWithID:(id)a3;
++ (id)contextDirectoryForAssetWithID:(id)d;
 @end
 
 @implementation UIApplication
@@ -10,9 +10,9 @@
 + (id)applicationCacheDirectory
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  v4 = v3;
+  v4 = lastObject;
   if (v4)
   {
     v5 = +[NSFileManager defaultManager];
@@ -25,15 +25,15 @@
 + (id)applicationDocumentsDirectory
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, 1uLL, 1);
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  if (v3)
+  if (lastObject)
   {
     v4 = +[NSFileManager defaultManager];
-    [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:0];
+    [v4 createDirectoryAtPath:lastObject withIntermediateDirectories:1 attributes:0 error:0];
   }
 
-  return v3;
+  return lastObject;
 }
 
 + (id)applicationConfigurationDirectory
@@ -49,11 +49,11 @@
   return v3;
 }
 
-+ (id)contextDirectoryForAssetWithID:(id)a3
++ (id)contextDirectoryForAssetWithID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 applicationDocumentsDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  dCopy = d;
+  applicationDocumentsDirectory = [self applicationDocumentsDirectory];
+  v6 = [applicationDocumentsDirectory stringByAppendingPathComponent:dCopy];
 
   return v6;
 }

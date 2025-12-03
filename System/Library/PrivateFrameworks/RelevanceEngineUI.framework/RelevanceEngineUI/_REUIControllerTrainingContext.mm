@@ -1,17 +1,17 @@
 @interface _REUIControllerTrainingContext
-- (BOOL)elementIsAvailable:(id)a3;
+- (BOOL)elementIsAvailable:(id)available;
 - (_REUIControllerTrainingContextDelegate)delegate;
-- (id)elementsOrdered:(unint64_t)a3 relativeToElement:(id)a4;
-- (id)interactionTypeForElement:(id)a3;
+- (id)elementsOrdered:(unint64_t)ordered relativeToElement:(id)element;
+- (id)interactionTypeForElement:(id)element;
 @end
 
 @implementation _REUIControllerTrainingContext
 
-- (id)elementsOrdered:(unint64_t)a3 relativeToElement:(id)a4
+- (id)elementsOrdered:(unint64_t)ordered relativeToElement:(id)element
 {
-  v6 = a4;
+  elementCopy = element;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [WeakRetained elementsOrdered:a3 relativeToElement:v6];
+  v8 = [WeakRetained elementsOrdered:ordered relativeToElement:elementCopy];
 
   if (v8)
   {
@@ -28,20 +28,20 @@
   return v9;
 }
 
-- (BOOL)elementIsAvailable:(id)a3
+- (BOOL)elementIsAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained elementIsAvailable:v4];
+  v6 = [WeakRetained elementIsAvailable:availableCopy];
 
   return v6;
 }
 
-- (id)interactionTypeForElement:(id)a3
+- (id)interactionTypeForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained interactionTypeForElement:v4];
+  v6 = [WeakRetained interactionTypeForElement:elementCopy];
 
   return v6;
 }

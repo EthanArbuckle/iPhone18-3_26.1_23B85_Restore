@@ -1,15 +1,15 @@
 @interface HangNoPreviewAvailablePane
-- (HangNoPreviewAvailablePane)initWithFrame:(CGRect)a3;
-- (void)setPreferenceSpecifier:(id)a3;
+- (HangNoPreviewAvailablePane)initWithFrame:(CGRect)frame;
+- (void)setPreferenceSpecifier:(id)specifier;
 @end
 
 @implementation HangNoPreviewAvailablePane
 
-- (HangNoPreviewAvailablePane)initWithFrame:(CGRect)a3
+- (HangNoPreviewAvailablePane)initWithFrame:(CGRect)frame
 {
   v56.receiver = self;
   v56.super_class = HangNoPreviewAvailablePane;
-  v3 = [(HangNoPreviewAvailablePane *)&v56 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HangNoPreviewAvailablePane *)&v56 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UILabel alloc];
@@ -45,56 +45,56 @@
     v3->_iconView = v15;
 
     [(UIImageView *)v3->_iconView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v17 = [(UIImageView *)v3->_iconView layer];
-    [v17 setCornerRadius:4.0];
+    layer = [(UIImageView *)v3->_iconView layer];
+    [layer setCornerRadius:4.0];
 
     [(UIImageView *)v3->_iconView setContentMode:1];
     [(HangNoPreviewAvailablePane *)v3 addSubview:v3->_iconView];
-    v54 = [(UILabel *)v3->_filenameLabel leadingAnchor];
-    v55 = [(HangNoPreviewAvailablePane *)v3 layoutMarginsGuide];
-    v53 = [v55 leadingAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53 constant:20.0];
+    leadingAnchor = [(UILabel *)v3->_filenameLabel leadingAnchor];
+    layoutMarginsGuide = [(HangNoPreviewAvailablePane *)v3 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v52 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
     v57[0] = v52;
-    v50 = [(UILabel *)v3->_filenameLabel trailingAnchor];
-    v51 = [(HangNoPreviewAvailablePane *)v3 layoutMarginsGuide];
-    v49 = [v51 trailingAnchor];
-    v48 = [v50 constraintEqualToAnchor:v49 constant:-20.0];
+    trailingAnchor = [(UILabel *)v3->_filenameLabel trailingAnchor];
+    layoutMarginsGuide2 = [(HangNoPreviewAvailablePane *)v3 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v48 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
     v57[1] = v48;
-    v46 = [(UILabel *)v3->_filenameLabel centerYAnchor];
-    v47 = [(HangNoPreviewAvailablePane *)v3 layoutMarginsGuide];
-    v45 = [v47 centerYAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45];
+    centerYAnchor = [(UILabel *)v3->_filenameLabel centerYAnchor];
+    layoutMarginsGuide3 = [(HangNoPreviewAvailablePane *)v3 layoutMarginsGuide];
+    centerYAnchor2 = [layoutMarginsGuide3 centerYAnchor];
+    v44 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v57[2] = v44;
-    v42 = [(UILabel *)v3->_filenameLabel centerXAnchor];
-    v43 = [(HangNoPreviewAvailablePane *)v3 layoutMarginsGuide];
-    v41 = [v43 centerXAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    centerXAnchor = [(UILabel *)v3->_filenameLabel centerXAnchor];
+    layoutMarginsGuide4 = [(HangNoPreviewAvailablePane *)v3 layoutMarginsGuide];
+    centerXAnchor2 = [layoutMarginsGuide4 centerXAnchor];
+    v40 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v57[3] = v40;
-    v39 = [(UIImageView *)v3->_iconView bottomAnchor];
-    v38 = [(UILabel *)v3->_filenameLabel topAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38 constant:-10.0];
+    bottomAnchor = [(UIImageView *)v3->_iconView bottomAnchor];
+    topAnchor = [(UILabel *)v3->_filenameLabel topAnchor];
+    v37 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:-10.0];
     v57[4] = v37;
-    v35 = [(UIImageView *)v3->_iconView centerXAnchor];
-    v36 = [(HangNoPreviewAvailablePane *)v3 layoutMarginsGuide];
-    v34 = [v36 centerXAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    centerXAnchor3 = [(UIImageView *)v3->_iconView centerXAnchor];
+    layoutMarginsGuide5 = [(HangNoPreviewAvailablePane *)v3 layoutMarginsGuide];
+    centerXAnchor4 = [layoutMarginsGuide5 centerXAnchor];
+    v33 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v57[5] = v33;
-    v32 = [(UIImageView *)v3->_iconView widthAnchor];
-    v31 = [(HangNoPreviewAvailablePane *)v3 widthAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31 multiplier:0.3];
+    widthAnchor = [(UIImageView *)v3->_iconView widthAnchor];
+    widthAnchor2 = [(HangNoPreviewAvailablePane *)v3 widthAnchor];
+    v30 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.3];
     v57[6] = v30;
-    v29 = [(UIImageView *)v3->_iconView heightAnchor];
-    v28 = [(UIImageView *)v3->_iconView widthAnchor];
-    v18 = [v29 constraintEqualToAnchor:v28];
+    heightAnchor = [(UIImageView *)v3->_iconView heightAnchor];
+    widthAnchor3 = [(UIImageView *)v3->_iconView widthAnchor];
+    v18 = [heightAnchor constraintEqualToAnchor:widthAnchor3];
     v57[7] = v18;
-    v19 = [(UILabel *)v3->_filesizeLabel topAnchor];
-    v20 = [(UILabel *)v3->_filenameLabel bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20 constant:10.0];
+    topAnchor2 = [(UILabel *)v3->_filesizeLabel topAnchor];
+    bottomAnchor2 = [(UILabel *)v3->_filenameLabel bottomAnchor];
+    v21 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:10.0];
     v57[8] = v21;
-    v22 = [(UILabel *)v3->_filesizeLabel centerXAnchor];
-    v23 = [(HangNoPreviewAvailablePane *)v3 layoutMarginsGuide];
-    v24 = [v23 centerXAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24];
+    centerXAnchor5 = [(UILabel *)v3->_filesizeLabel centerXAnchor];
+    layoutMarginsGuide6 = [(HangNoPreviewAvailablePane *)v3 layoutMarginsGuide];
+    centerXAnchor6 = [layoutMarginsGuide6 centerXAnchor];
+    v25 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v57[9] = v25;
     v26 = [NSArray arrayWithObjects:v57 count:10];
     [NSLayoutConstraint activateConstraints:v26];
@@ -103,42 +103,42 @@
   return v3;
 }
 
-- (void)setPreferenceSpecifier:(id)a3
+- (void)setPreferenceSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v23.receiver = self;
   v23.super_class = HangNoPreviewAvailablePane;
-  [(HangNoPreviewAvailablePane *)&v23 setPreferenceSpecifier:v4];
-  v5 = [v4 objectForKeyedSubscript:@"file-path"];
-  v6 = [v5 lastPathComponent];
-  [(UILabel *)self->_filenameLabel setText:v6];
+  [(HangNoPreviewAvailablePane *)&v23 setPreferenceSpecifier:specifierCopy];
+  v5 = [specifierCopy objectForKeyedSubscript:@"file-path"];
+  lastPathComponent = [v5 lastPathComponent];
+  [(UILabel *)self->_filenameLabel setText:lastPathComponent];
 
-  v7 = [v4 objectForKeyedSubscript:@"HangsDataControllerFileSize"];
-  v8 = [v7 unsignedLongLongValue];
+  v7 = [specifierCopy objectForKeyedSubscript:@"HangsDataControllerFileSize"];
+  unsignedLongLongValue = [v7 unsignedLongLongValue];
 
-  if (v8)
+  if (unsignedLongLongValue)
   {
-    v9 = [NSByteCountFormatter stringFromByteCount:v8 countStyle:0];
+    v9 = [NSByteCountFormatter stringFromByteCount:unsignedLongLongValue countStyle:0];
     p_filesizeLabel = &self->_filesizeLabel;
     [(UILabel *)self->_filesizeLabel setText:v9];
   }
 
   else
   {
-    v11 = [v4 objectForKeyedSubscript:@"file-path"];
+    v11 = [specifierCopy objectForKeyedSubscript:@"file-path"];
     NSLog(@"Unable to retrieve the size of file at path %@", v11);
 
     p_filesizeLabel = &self->_filesizeLabel;
   }
 
-  [(UILabel *)*p_filesizeLabel setHidden:v8 == 0];
+  [(UILabel *)*p_filesizeLabel setHidden:unsignedLongLongValue == 0];
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3042000000;
   v21[3] = sub_AF80;
   v21[4] = sub_AF8C;
   objc_initWeak(&v22, self);
-  v12 = [v4 objectForKeyedSubscript:@"file-path"];
+  v12 = [specifierCopy objectForKeyedSubscript:@"file-path"];
   v13 = [NSURL fileURLWithPath:v12];
 
   v14 = [QLThumbnailGenerationRequest alloc];
@@ -147,8 +147,8 @@
   v17 = [v14 initWithFileAtURL:v13 size:1 scale:200.0 representationTypes:{270.0, v16}];
 
   [v17 setIconVariant:1];
-  v18 = [UTTypeArchive identifier];
-  [v17 setContentTypeUTI:v18];
+  identifier = [UTTypeArchive identifier];
+  [v17 setContentTypeUTI:identifier];
 
   v19 = +[QLThumbnailGenerator sharedGenerator];
   v20[0] = _NSConcreteStackBlock;

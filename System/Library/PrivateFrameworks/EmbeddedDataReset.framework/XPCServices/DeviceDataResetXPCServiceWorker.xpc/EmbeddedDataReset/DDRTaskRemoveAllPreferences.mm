@@ -35,14 +35,14 @@
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 pathExtension];
-        v15 = [v14 isEqualToString:@"plist"];
+        pathExtension = [v13 pathExtension];
+        v15 = [pathExtension isEqualToString:@"plist"];
 
         if (v15 && ([&off_100015930 containsObject:v13] & 1) == 0)
         {
-          v16 = [v13 stringByDeletingPathExtension];
+          stringByDeletingPathExtension = [v13 stringByDeletingPathExtension];
           v17 = +[NSUserDefaults standardUserDefaults];
-          [v17 removePersistentDomainForName:v16];
+          [v17 removePersistentDomainForName:stringByDeletingPathExtension];
         }
       }
 

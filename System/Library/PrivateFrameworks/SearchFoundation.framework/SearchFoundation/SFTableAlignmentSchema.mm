@@ -1,42 +1,42 @@
 @interface SFTableAlignmentSchema
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFTableAlignmentSchema)initWithCoder:(id)a3;
-- (SFTableAlignmentSchema)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFTableAlignmentSchema)initWithCoder:(id)coder;
+- (SFTableAlignmentSchema)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFTableAlignmentSchema
 
 - (unint64_t)hash
 {
-  v3 = [(SFTableAlignmentSchema *)self tableColumnAlignment];
-  v4 = [v3 hash];
-  v5 = [(SFTableAlignmentSchema *)self metadata];
-  v6 = [v5 hash];
+  tableColumnAlignment = [(SFTableAlignmentSchema *)self tableColumnAlignment];
+  v4 = [tableColumnAlignment hash];
+  metadata = [(SFTableAlignmentSchema *)self metadata];
+  v6 = [metadata hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFTableAlignmentSchema *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFTableAlignmentSchema *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFTableAlignmentSchema *)self tableColumnAlignment];
-      v8 = [(SFTableAlignmentSchema *)v6 tableColumnAlignment];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      tableColumnAlignment = [(SFTableAlignmentSchema *)self tableColumnAlignment];
+      tableColumnAlignment2 = [(SFTableAlignmentSchema *)v6 tableColumnAlignment];
+      if ((tableColumnAlignment != 0) == (tableColumnAlignment2 == 0))
       {
         v11 = 0;
 LABEL_19:
@@ -44,12 +44,12 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v9 = [(SFTableAlignmentSchema *)self tableColumnAlignment];
-      if (v9)
+      tableColumnAlignment3 = [(SFTableAlignmentSchema *)self tableColumnAlignment];
+      if (tableColumnAlignment3)
       {
-        v3 = [(SFTableAlignmentSchema *)self tableColumnAlignment];
-        v10 = [(SFTableAlignmentSchema *)v6 tableColumnAlignment];
-        if (![v3 isEqual:v10])
+        tableColumnAlignment4 = [(SFTableAlignmentSchema *)self tableColumnAlignment];
+        tableColumnAlignment5 = [(SFTableAlignmentSchema *)v6 tableColumnAlignment];
+        if (![tableColumnAlignment4 isEqual:tableColumnAlignment5])
         {
           v11 = 0;
 LABEL_17:
@@ -58,13 +58,13 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v21 = v10;
+        v21 = tableColumnAlignment5;
       }
 
-      v12 = [(SFTableAlignmentSchema *)self metadata];
-      v13 = [(SFTableAlignmentSchema *)v6 metadata];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      metadata = [(SFTableAlignmentSchema *)self metadata];
+      metadata2 = [(SFTableAlignmentSchema *)v6 metadata];
+      v14 = metadata2;
+      if ((metadata != 0) == (metadata2 == 0))
       {
 
         v11 = 0;
@@ -72,16 +72,16 @@ LABEL_18:
 
       else
       {
-        v15 = [(SFTableAlignmentSchema *)self metadata];
-        if (v15)
+        metadata3 = [(SFTableAlignmentSchema *)self metadata];
+        if (metadata3)
         {
-          v16 = v15;
-          v19 = [(SFTableAlignmentSchema *)self metadata];
+          v16 = metadata3;
+          metadata4 = [(SFTableAlignmentSchema *)self metadata];
           [(SFTableAlignmentSchema *)v6 metadata];
-          v17 = v20 = v3;
-          v11 = [v19 isEqual:v17];
+          v17 = v20 = tableColumnAlignment4;
+          v11 = [metadata4 isEqual:v17];
 
-          v3 = v20;
+          tableColumnAlignment4 = v20;
         }
 
         else
@@ -91,8 +91,8 @@ LABEL_18:
         }
       }
 
-      v10 = v21;
-      if (!v9)
+      tableColumnAlignment5 = v21;
+      if (!tableColumnAlignment3)
       {
         goto LABEL_18;
       }
@@ -108,15 +108,15 @@ LABEL_20:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFTableAlignmentSchema *)self tableColumnAlignment];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  tableColumnAlignment = [(SFTableAlignmentSchema *)self tableColumnAlignment];
+  v6 = [tableColumnAlignment copy];
   [v4 setTableColumnAlignment:v6];
 
-  v7 = [(SFTableAlignmentSchema *)self metadata];
-  v8 = [v7 copy];
+  metadata = [(SFTableAlignmentSchema *)self metadata];
+  v8 = [metadata copy];
   [v4 setMetadata:v8];
 
   return v4;
@@ -125,31 +125,31 @@ LABEL_20:
 - (NSData)jsonData
 {
   v2 = [[_SFPBTableAlignmentSchema alloc] initWithFacade:self];
-  v3 = [(_SFPBTableAlignmentSchema *)v2 jsonData];
+  jsonData = [(_SFPBTableAlignmentSchema *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBTableAlignmentSchema alloc] initWithFacade:self];
-  v3 = [(_SFPBTableAlignmentSchema *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBTableAlignmentSchema *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBTableAlignmentSchema alloc] initWithFacade:self];
-  v5 = [(_SFPBTableAlignmentSchema *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBTableAlignmentSchema *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFTableAlignmentSchema)initWithCoder:(id)a3
+- (SFTableAlignmentSchema)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBTableAlignmentSchema alloc] initWithData:v5];
   v7 = [(SFTableAlignmentSchema *)self initWithProtobuf:v6];
@@ -157,17 +157,17 @@ LABEL_20:
   return v7;
 }
 
-- (SFTableAlignmentSchema)initWithProtobuf:(id)a3
+- (SFTableAlignmentSchema)initWithProtobuf:(id)protobuf
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v24.receiver = self;
   v24.super_class = SFTableAlignmentSchema;
   v5 = [(SFTableAlignmentSchema *)&v24 init];
   if (v5)
   {
-    v6 = [v4 tableColumnAlignments];
-    if (v6)
+    tableColumnAlignments = [protobufCopy tableColumnAlignments];
+    if (tableColumnAlignments)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -181,8 +181,8 @@ LABEL_20:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = [v4 tableColumnAlignments];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    tableColumnAlignments2 = [protobufCopy tableColumnAlignments];
+    v9 = [tableColumnAlignments2 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v9)
     {
       v10 = v9;
@@ -193,7 +193,7 @@ LABEL_20:
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(tableColumnAlignments2);
           }
 
           v13 = [[SFTableColumnAlignment alloc] initWithProtobuf:*(*(&v20 + 1) + 8 * i)];
@@ -203,19 +203,19 @@ LABEL_20:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v10 = [tableColumnAlignments2 countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v10);
     }
 
     [(SFTableAlignmentSchema *)v5 setTableColumnAlignment:v7];
-    v14 = [v4 metadata];
+    metadata = [protobufCopy metadata];
 
-    if (v14)
+    if (metadata)
     {
-      v15 = [v4 metadata];
-      v16 = _SFPBStringDictionaryHandwrittenTranslator(v15);
+      metadata2 = [protobufCopy metadata];
+      v16 = _SFPBStringDictionaryHandwrittenTranslator(metadata2);
       [(SFTableAlignmentSchema *)v5 setMetadata:v16];
     }
 

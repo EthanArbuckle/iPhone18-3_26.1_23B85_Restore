@@ -1,56 +1,56 @@
 @interface HDSleepPeriodSegmentArrayBuilder
-- (double)_timeIntervalForKey:(double)a3 defaultValue:;
-- (id)_computeStatisticsFromSamples:(void *)a3 sampleFilterBlock:;
-- (id)_sleepPeriodSegmentsFromStatistics:(uint64_t)a1;
-- (id)initProfile:(id)a3 morningIndex:(int64_t)a4 options:(unint64_t)a5 gregorianCalendar:(id)a6 sourceOrderProvider:(id)a7;
-- (id)sortedSleepPeriodSegmentsFromSamples:(id)a3;
+- (double)_timeIntervalForKey:(double)key defaultValue:;
+- (id)_computeStatisticsFromSamples:(void *)samples sampleFilterBlock:;
+- (id)_sleepPeriodSegmentsFromStatistics:(uint64_t)statistics;
+- (id)initProfile:(id)profile morningIndex:(int64_t)index options:(unint64_t)options gregorianCalendar:(id)calendar sourceOrderProvider:(id)provider;
+- (id)sortedSleepPeriodSegmentsFromSamples:(id)samples;
 @end
 
 @implementation HDSleepPeriodSegmentArrayBuilder
 
-- (id)initProfile:(id)a3 morningIndex:(int64_t)a4 options:(unint64_t)a5 gregorianCalendar:(id)a6 sourceOrderProvider:(id)a7
+- (id)initProfile:(id)profile morningIndex:(int64_t)index options:(unint64_t)options gregorianCalendar:(id)calendar sourceOrderProvider:(id)provider
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  profileCopy = profile;
+  calendarCopy = calendar;
+  providerCopy = provider;
   v18.receiver = self;
   v18.super_class = HDSleepPeriodSegmentArrayBuilder;
   v15 = [(HDSleepPeriodSegmentArrayBuilder *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_profile, v12);
-    v16->_morningIndex = a4;
-    v16->_options = a5;
-    objc_storeStrong(&v16->_gregorianCalendar, a6);
-    objc_storeWeak(&v16->_sourceOrderProvider, v14);
+    objc_storeWeak(&v15->_profile, profileCopy);
+    v16->_morningIndex = index;
+    v16->_options = options;
+    objc_storeStrong(&v16->_gregorianCalendar, calendar);
+    objc_storeWeak(&v16->_sourceOrderProvider, providerCopy);
   }
 
   return v16;
 }
 
-- (id)_computeStatisticsFromSamples:(void *)a3 sampleFilterBlock:
+- (id)_computeStatisticsFromSamples:(void *)samples sampleFilterBlock:
 {
   v37 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  samplesCopy = samples;
+  if (self)
   {
-    v7 = [MEMORY[0x277CBEAA8] hk_sleepDayStartForMorningIndex:*(a1 + 2) calendar:*(a1 + 4)];
+    v7 = [MEMORY[0x277CBEAA8] hk_sleepDayStartForMorningIndex:*(self + 2) calendar:*(self + 4)];
     v8 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    [v8 setCalendar:*(a1 + 4)];
-    [v8 setSecond:{-[HDSleepPeriodSegmentArrayBuilder _timeIntervalForKey:defaultValue:](a1, @"HDSleepStagesStatisticsBucketInterval", 60.0)}];
+    [v8 setCalendar:*(self + 4)];
+    [v8 setSecond:{-[HDSleepPeriodSegmentArrayBuilder _timeIntervalForKey:defaultValue:](self, @"HDSleepStagesStatisticsBucketInterval", 60.0)}];
     v9 = [objc_alloc(MEMORY[0x277CCDD78]) initWithAnchorDate:v7 intervalComponents:v8];
     [v9 setEnableRiskyFastMathOptimization:1];
     v10 = _HKStatisticsOptionSleepStages();
-    WeakRetained = objc_loadWeakRetained(a1 + 5);
+    WeakRetained = objc_loadWeakRetained(self + 5);
     v12 = WeakRetained != 0;
 
     v13 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCBAB8]];
     v14 = [HDStatisticsCollectionCalculator calculatorForCategoryType:v13 intervalCollection:v9 options:v10 | v12 mergeStrategy:0];
 
-    [v14 setMergeGranularity:{-[HDSleepPeriodSegmentArrayBuilder _timeIntervalForKey:defaultValue:](a1, @"HDSleepStagesSourceMergeInterval", 30.0)}];
-    v15 = objc_loadWeakRetained(a1 + 5);
+    [v14 setMergeGranularity:{-[HDSleepPeriodSegmentArrayBuilder _timeIntervalForKey:defaultValue:](self, @"HDSleepStagesSourceMergeInterval", 30.0)}];
+    v15 = objc_loadWeakRetained(self + 5);
     [v14 setSourceOrderProvider:v15];
 
     [v14 reset];
@@ -67,7 +67,7 @@
     v27[2] = __84__HDSleepPeriodSegmentArrayBuilder__computeStatisticsFromSamples_sampleFilterBlock___block_invoke_2;
     v27[3] = &unk_278614B08;
     v28 = v5;
-    v30 = v6;
+    v30 = samplesCopy;
     v18 = v14;
     v29 = v18;
     v26 = 0;
@@ -75,7 +75,7 @@
     v19 = v26;
     if (v9)
     {
-      a1 = v17;
+      self = v17;
     }
 
     else
@@ -94,13 +94,13 @@
         _os_log_error_impl(&dword_228986000, v23, OS_LOG_TYPE_ERROR, "[%{public}@] Error adding samples to statistics calculator: %{public}@", buf, 0x16u);
       }
 
-      a1 = MEMORY[0x277CBEBF8];
+      self = MEMORY[0x277CBEBF8];
     }
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
 uint64_t __84__HDSleepPeriodSegmentArrayBuilder__computeStatisticsFromSamples_sampleFilterBlock___block_invoke_2(uint64_t a1, uint64_t a2)
@@ -168,11 +168,11 @@ LABEL_12:
   return v20;
 }
 
-- (id)sortedSleepPeriodSegmentsFromSamples:(id)a3
+- (id)sortedSleepPeriodSegmentsFromSamples:(id)samples
 {
-  v4 = a3;
-  v5 = [(HDSleepPeriodSegmentArrayBuilder *)self _computeStatisticsFromSamples:v4 sampleFilterBlock:&__block_literal_global_10];
-  v6 = [(HDSleepPeriodSegmentArrayBuilder *)self _computeStatisticsFromSamples:v4 sampleFilterBlock:&__block_literal_global_305];
+  samplesCopy = samples;
+  v5 = [(HDSleepPeriodSegmentArrayBuilder *)self _computeStatisticsFromSamples:samplesCopy sampleFilterBlock:&__block_literal_global_10];
+  v6 = [(HDSleepPeriodSegmentArrayBuilder *)self _computeStatisticsFromSamples:samplesCopy sampleFilterBlock:&__block_literal_global_305];
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = [(HDSleepPeriodSegmentArrayBuilder *)self _sleepPeriodSegmentsFromStatistics:v5];
@@ -187,14 +187,14 @@ LABEL_12:
   return v10;
 }
 
-- (id)_sleepPeriodSegmentsFromStatistics:(uint64_t)a1
+- (id)_sleepPeriodSegmentsFromStatistics:(uint64_t)statistics
 {
   v40 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (statistics)
   {
     v33 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v4 = [(HDSleepPeriodSegmentArrayBuilder *)a1 _timeIntervalForKey:29.0 defaultValue:?];
+    v4 = [(HDSleepPeriodSegmentArrayBuilder *)statistics _timeIntervalForKey:29.0 defaultValue:?];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -205,7 +205,7 @@ LABEL_12:
     {
       v6 = v5;
       v29 = v3;
-      v30 = a1;
+      statisticsCopy = statistics;
       v7 = 0;
       v32 = *v35;
       do
@@ -219,36 +219,36 @@ LABEL_12:
           }
 
           v10 = *(*(&v34 + 1) + 8 * i);
-          v11 = [v10 categoryValue];
-          v12 = [v11 integerValue];
+          categoryValue = [v10 categoryValue];
+          integerValue = [categoryValue integerValue];
 
-          if (_HKCategoryValueSleepAnalysisIsAsleep() && (*(v30 + 24) & 1) == 0)
+          if (_HKCategoryValueSleepAnalysisIsAsleep() && (*(statisticsCopy + 24) & 1) == 0)
           {
-            v12 = _HKCategoryValueSleepAnalysisDefaultAsleepValue();
+            integerValue = _HKCategoryValueSleepAnalysisDefaultAsleepValue();
           }
 
           v13 = objc_alloc(MEMORY[0x277CCA970]);
-          v14 = [v10 startDate];
-          v15 = [v10 endDate];
-          v16 = [v13 initWithStartDate:v14 endDate:v15];
+          startDate = [v10 startDate];
+          endDate = [v10 endDate];
+          v16 = [v13 initWithStartDate:startDate endDate:endDate];
 
-          v17 = [v10 sources];
-          v18 = [v17 hk_firstObjectPassingTest:&__block_literal_global_317];
+          sources = [v10 sources];
+          v18 = [sources hk_firstObjectPassingTest:&__block_literal_global_317];
 
           v19 = MEMORY[0x277CCD9E0];
           v38 = v16;
           v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
-          v7 = [v19 sleepPeriodSegmentWithDateInterval:v16 sampleIntervals:v20 category:v12 containsAppleSleepTrackingData:v18 != 0];
+          v7 = [v19 sleepPeriodSegmentWithDateInterval:v16 sampleIntervals:v20 category:integerValue containsAppleSleepTrackingData:v18 != 0];
 
           if (v9)
           {
-            v21 = [v16 startDate];
-            v22 = [v9 dateInterval];
-            v23 = [v22 endDate];
-            [v21 timeIntervalSinceDate:v23];
+            startDate2 = [v16 startDate];
+            dateInterval = [v9 dateInterval];
+            endDate2 = [dateInterval endDate];
+            [startDate2 timeIntervalSinceDate:endDate2];
             v25 = v24;
 
-            if ([v9 category] == v12 && v25 <= v4)
+            if ([v9 category] == integerValue && v25 <= v4)
             {
               [v33 removeLastObject];
               v26 = [v9 mergingSleepPeriodSegment:v7];
@@ -292,12 +292,12 @@ uint64_t __73__HDSleepPeriodSegmentArrayBuilder_sortedSleepPeriodSegmentsFromSam
   return v9;
 }
 
-- (double)_timeIntervalForKey:(double)a3 defaultValue:
+- (double)_timeIntervalForKey:(double)key defaultValue:
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v7 = [v6 objectForKey:v5];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v7 = [standardUserDefaults objectForKey:v5];
 
   if (v7)
   {
@@ -308,7 +308,7 @@ uint64_t __73__HDSleepPeriodSegmentArrayBuilder_sortedSleepPeriodSegmentsFromSam
       v12 = v8;
       [v7 doubleValue];
       v14 = 138543874;
-      v15 = a1;
+      selfCopy = self;
       v16 = 2114;
       v17 = v5;
       v18 = 2050;
@@ -317,11 +317,11 @@ uint64_t __73__HDSleepPeriodSegmentArrayBuilder_sortedSleepPeriodSegmentsFromSam
     }
 
     [v7 doubleValue];
-    a3 = v9;
+    key = v9;
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return a3;
+  return key;
 }
 
 @end

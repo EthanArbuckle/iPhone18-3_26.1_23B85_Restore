@@ -1,32 +1,32 @@
 @interface TwoLinesBasicOutlineCellModel
-- (BOOL)isEqual:(id)a3;
-- (TwoLinesBasicOutlineCellModel)initWithBackgroundModel:(id)a3 contentModelBlock:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (TwoLinesBasicOutlineCellModel)initWithBackgroundModel:(id)model contentModelBlock:(id)block;
 - (TwoLinesContentViewModel)contentModel;
 @end
 
 @implementation TwoLinesBasicOutlineCellModel
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(TwoLinesBasicOutlineCellModel *)v5 backgroundModel];
-    v7 = v6;
-    if (v6 == self->_backgroundModel)
+    backgroundModel = [(TwoLinesBasicOutlineCellModel *)v5 backgroundModel];
+    v7 = backgroundModel;
+    if (backgroundModel == self->_backgroundModel)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [(SidebarOutlineCellBackgroundModel *)v6 isEqual:?];
+      v8 = [(SidebarOutlineCellBackgroundModel *)backgroundModel isEqual:?];
     }
   }
 
@@ -53,20 +53,20 @@
   return contentModel;
 }
 
-- (TwoLinesBasicOutlineCellModel)initWithBackgroundModel:(id)a3 contentModelBlock:(id)a4
+- (TwoLinesBasicOutlineCellModel)initWithBackgroundModel:(id)model contentModelBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  blockCopy = block;
   v13.receiver = self;
   v13.super_class = TwoLinesBasicOutlineCellModel;
   v9 = [(TwoLinesBasicOutlineCellModel *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [blockCopy copy];
     contentBlock = v9->_contentBlock;
     v9->_contentBlock = v10;
 
-    objc_storeStrong(&v9->_backgroundModel, a3);
+    objc_storeStrong(&v9->_backgroundModel, model);
   }
 
   return v9;

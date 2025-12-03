@@ -73,8 +73,8 @@
 + (id)escapedStringForString:()ISAdditions
 {
   v4 = a3;
-  v5 = [a1 _URLQueryParameterValueAllowedCharacterSet];
-  v6 = [v4 stringByAddingPercentEncodingWithAllowedCharacters:v5];
+  _URLQueryParameterValueAllowedCharacterSet = [self _URLQueryParameterValueAllowedCharacterSet];
+  v6 = [v4 stringByAddingPercentEncodingWithAllowedCharacters:_URLQueryParameterValueAllowedCharacterSet];
 
   return v6;
 }
@@ -82,12 +82,12 @@
 + (void)queryStringForDictionary:()ISAdditions escapedValues:
 {
   v5 = a3;
-  v6 = [MEMORY[0x277CCAB68] string];
-  v7 = [v5 keyEnumerator];
-  v8 = [v7 nextObject];
-  if (v8)
+  string = [MEMORY[0x277CCAB68] string];
+  keyEnumerator = [v5 keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v9 = v8;
+    v9 = nextObject;
     v10 = 0;
     do
     {
@@ -95,9 +95,9 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [v11 stringValue];
+        stringValue = [v11 stringValue];
 
-        v11 = v12;
+        v11 = stringValue;
       }
 
       objc_opt_class();
@@ -105,7 +105,7 @@
       {
         if (a4)
         {
-          v13 = [a1 escapedStringForString:v11];
+          v13 = [self escapedStringForString:v11];
 
           v11 = v13;
         }
@@ -121,22 +121,22 @@
         }
 
         v15 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v14 validFormatSpecifiers:@"%@%@" error:0, v9, v11];
-        [v6 appendString:v15];
+        [string appendString:v15];
 
         ++v10;
       }
 
-      v16 = [v7 nextObject];
+      nextObject2 = [keyEnumerator nextObject];
 
-      v9 = v16;
+      v9 = nextObject2;
     }
 
-    while (v16);
+    while (nextObject2);
   }
 
-  if ([v6 length])
+  if ([string length])
   {
-    v17 = v6;
+    v17 = string;
   }
 
   else
@@ -152,20 +152,20 @@
 + (id)unescapedStringForString:()ISAdditions
 {
   v3 = a3;
-  v4 = v3;
+  stringByRemovingPercentEncoding = v3;
   if ([v3 length])
   {
-    v4 = [v3 stringByRemovingPercentEncoding];
+    stringByRemovingPercentEncoding = [v3 stringByRemovingPercentEncoding];
   }
 
-  return v4;
+  return stringByRemovingPercentEncoding;
 }
 
 - (uint64_t)copyQueryStringDictionaryWithUnescapedValues:()ISAdditions
 {
   v4 = MEMORY[0x277CBEBC0];
-  v5 = [a1 query];
-  v6 = [v4 copyDictionaryForQueryString:v5 unescapedValues:a3];
+  query = [self query];
+  v6 = [v4 copyDictionaryForQueryString:query unescapedValues:a3];
 
   return v6;
 }
@@ -176,14 +176,14 @@
   v7 = a4;
   v8 = a3;
   v9 = [v6 alloc];
-  v10 = [a1 absoluteString];
-  v11 = [v9 initWithString:v10];
+  absoluteString = [self absoluteString];
+  v11 = [v9 initWithString:absoluteString];
 
-  v12 = [a1 query];
+  query = [self query];
 
   v13 = [MEMORY[0x277CBEBC0] escapedStringForString:v7];
 
-  if (v12)
+  if (query)
   {
     v14 = @"&%@=%@";
   }
@@ -205,13 +205,13 @@
   v45 = *MEMORY[0x277D85DE8];
   v4 = a3;
   v5 = objc_alloc(MEMORY[0x277CCAB68]);
-  v6 = [a1 absoluteString];
-  v7 = [v5 initWithString:v6];
+  absoluteString = [self absoluteString];
+  v7 = [v5 initWithString:absoluteString];
 
-  v8 = [a1 query];
-  if (v8)
+  query = [self query];
+  if (query)
   {
-    v9 = [v7 rangeOfString:v8 options:4];
+    v9 = [v7 rangeOfString:query options:4];
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [v7 deleteCharactersInRange:{v9, v10}];
@@ -223,14 +223,14 @@
     [v7 appendString:@"?"];
   }
 
-  v32 = v8;
+  v32 = query;
   v34 = v7;
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v12 = [a1 copyQueryStringDictionaryWithUnescapedValues:0];
+  v12 = [self copyQueryStringDictionaryWithUnescapedValues:0];
   v13 = [v12 countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v13)
   {
@@ -307,10 +307,10 @@
 
 - (uint64_t)isSafeExternalURL
 {
-  v1 = [a1 scheme];
-  v2 = [v1 lowercaseString];
+  scheme = [self scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if (v2)
+  if (lowercaseString)
   {
     v3 = [MEMORY[0x277D69C90] contextWithBagType:0];
     v4 = +[ISURLBagCache sharedCache];
@@ -318,7 +318,7 @@
 
     v6 = [v5 valueForKey:@"mobile-url-handlers"];
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 && ([v6 containsObject:v2])
+    if (objc_opt_isKindOfClass() & 1) != 0 && ([v6 containsObject:lowercaseString])
     {
       v7 = 1;
     }
@@ -326,7 +326,7 @@
     else
     {
       v8 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{@"http", @"https", @"itms", @"itms-apps", @"itms-books", @"its-music", @"its-videos", @"itmss", @"itms-appss", @"itms-bookss", @"mailto", @"prefs", @"fuse", @"music", @"musics", @"itms-gc", @"itms-gcs", @"itms-itunesu", @"itms-itunesus", @"its-musics", @"its-videoss", @"itms-podcasts", @"itms-podcastss", @"shoebox", @"itsradio", @"livenation", @"disneymoviesanywhere", 0}];
-      v7 = [v8 containsObject:v2];
+      v7 = [v8 containsObject:lowercaseString];
     }
   }
 
@@ -340,23 +340,23 @@
 
 - (id)schemeSwizzledURL
 {
-  v1 = a1;
-  v2 = [v1 scheme];
-  if ([v2 isEqualToString:@"itms"] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"itms-apps") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"itms-books") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"itms-news") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"itms-gc") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"itms-itunesu") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"its-music") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"its-videos") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"itms-podcasts"))
+  selfCopy = self;
+  scheme = [selfCopy scheme];
+  if ([scheme isEqualToString:@"itms"] & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"itms-apps") & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"itms-books") & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"itms-news") & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"itms-gc") & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"itms-itunesu") & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"its-music") & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"its-videos") & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"itms-podcasts"))
   {
     v3 = @"http";
 LABEL_11:
-    v4 = [v1 absoluteString];
-    v5 = [v4 substringFromIndex:{objc_msgSend(v2, "length")}];
+    absoluteString = [selfCopy absoluteString];
+    v5 = [absoluteString substringFromIndex:{objc_msgSend(scheme, "length")}];
     v6 = [(__CFString *)v3 stringByAppendingString:v5];
 
     v7 = [MEMORY[0x277CBEBC0] URLWithString:v6];
 
-    v1 = v7;
+    selfCopy = v7;
     goto LABEL_12;
   }
 
-  if (([v2 isEqualToString:@"itmss"] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"itms-appss") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"itms-bookss") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"itms-newss") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"itms-gcs") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"itms-itunesus") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"its-musics") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"its-videoss") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"itms-podcastss") & 1) != 0 || objc_msgSend(v2, "isEqualToString:", @"itms-ui"))
+  if (([scheme isEqualToString:@"itmss"] & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"itms-appss") & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"itms-bookss") & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"itms-newss") & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"itms-gcs") & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"itms-itunesus") & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"its-musics") & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"its-videoss") & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"itms-podcastss") & 1) != 0 || objc_msgSend(scheme, "isEqualToString:", @"itms-ui"))
   {
     v3 = @"https";
     goto LABEL_11;
@@ -364,15 +364,15 @@ LABEL_11:
 
 LABEL_12:
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)urlByReplacingSchemeWithScheme:()ISAdditions
 {
   v4 = a3;
-  v5 = [a1 scheme];
-  v6 = [a1 absoluteString];
-  v7 = [v6 substringFromIndex:{objc_msgSend(v5, "length")}];
+  scheme = [self scheme];
+  absoluteString = [self absoluteString];
+  v7 = [absoluteString substringFromIndex:{objc_msgSend(scheme, "length")}];
   v8 = [v4 stringByAppendingString:v7];
 
   v9 = [MEMORY[0x277CBEBC0] URLWithString:v8];
@@ -384,8 +384,8 @@ LABEL_12:
 {
   v23 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 query];
-  v6 = [v5 mutableCopy];
+  query = [self query];
+  v6 = [query mutableCopy];
 
   [v6 replaceOccurrencesOfString:@";" withString:@"&" options:0 range:{0, objc_msgSend(v6, "length")}];
   [v6 componentsSeparatedByString:@"&"];
@@ -411,12 +411,12 @@ LABEL_12:
         if ([v11 count] == 2)
         {
           v12 = [v11 objectAtIndex:0];
-          v13 = [v12 stringByRemovingPercentEncoding];
+          stringByRemovingPercentEncoding = [v12 stringByRemovingPercentEncoding];
 
           v14 = [v11 objectAtIndex:1];
-          v15 = [v14 stringByRemovingPercentEncoding];
+          stringByRemovingPercentEncoding2 = [v14 stringByRemovingPercentEncoding];
 
-          v4[2](v4, v13, v15);
+          v4[2](v4, stringByRemovingPercentEncoding, stringByRemovingPercentEncoding2);
         }
       }
 

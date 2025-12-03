@@ -10,8 +10,8 @@
 + (id)hkmh_requestForCategoryIdentifier:()HKMentalHealth date:
 {
   v6 = a3;
-  v7 = [a1 _notificationRequestIdentifierForCategoryIdentifier:v6 date:a4];
-  v8 = [a1 _contentForCategoryIdentifier:v6];
+  v7 = [self _notificationRequestIdentifierForCategoryIdentifier:v6 date:a4];
+  v8 = [self _contentForCategoryIdentifier:v6];
 
   v9 = [MEMORY[0x277CE1FC0] requestWithIdentifier:v7 content:v8 trigger:0];
 
@@ -21,7 +21,7 @@
 + (id)_notificationRequestIdentifierForCategoryIdentifier:()HKMentalHealth date:
 {
   v6 = a3;
-  v7 = [a1 _stringForEventDate:a4];
+  v7 = [self _stringForEventDate:a4];
   v8 = [v6 stringByAppendingFormat:@"_%@", v7];
 
   return v8;
@@ -100,11 +100,11 @@ LABEL_9:
 
   [v4 setBody:v10];
   [v4 setCategoryIdentifier:v8];
-  v11 = [MEMORY[0x277CE1FE0] defaultSound];
-  [v4 setSound:v11];
+  defaultSound = [MEMORY[0x277CE1FE0] defaultSound];
+  [v4 setSound:defaultSound];
 
-  v12 = [v4 userInfo];
-  v13 = [v12 mutableCopy];
+  userInfo = [v4 userInfo];
+  v13 = [userInfo mutableCopy];
 
   [v13 setObject:&unk_2869CD0C0 forKeyedSubscript:*MEMORY[0x277CCE4D0]];
   v14 = [v13 copy];

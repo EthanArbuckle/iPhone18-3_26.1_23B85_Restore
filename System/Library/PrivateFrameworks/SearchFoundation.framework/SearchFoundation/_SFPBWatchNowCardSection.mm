@@ -1,31 +1,31 @@
 @interface _SFPBWatchNowCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBWatchNowCardSection)initWithDictionary:(id)a3;
-- (_SFPBWatchNowCardSection)initWithFacade:(id)a3;
-- (_SFPBWatchNowCardSection)initWithJSON:(id)a3;
+- (_SFPBWatchNowCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBWatchNowCardSection)initWithFacade:(id)facade;
+- (_SFPBWatchNowCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPunchoutOptions:(id)a3;
-- (void)setPunchoutOptions:(id)a3;
-- (void)setPunchoutPickerDismissText:(id)a3;
-- (void)setPunchoutPickerTitle:(id)a3;
-- (void)setSectionTitle:(id)a3;
-- (void)setType:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPunchoutOptions:(id)options;
+- (void)setPunchoutOptions:(id)options;
+- (void)setPunchoutPickerDismissText:(id)text;
+- (void)setPunchoutPickerTitle:(id)title;
+- (void)setSectionTitle:(id)title;
+- (void)setType:(id)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBWatchNowCardSection
 
-- (_SFPBWatchNowCardSection)initWithFacade:(id)a3
+- (_SFPBWatchNowCardSection)initWithFacade:(id)facade
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBWatchNowCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 punchoutOptions];
-    if (v6)
+    punchoutOptions = [facadeCopy punchoutOptions];
+    if (punchoutOptions)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -39,8 +39,8 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v8 = [v4 punchoutOptions];
-    v9 = [v8 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    punchoutOptions2 = [facadeCopy punchoutOptions];
+    v9 = [punchoutOptions2 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v9)
     {
       v10 = v9;
@@ -51,7 +51,7 @@
         {
           if (*v34 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(punchoutOptions2);
           }
 
           v13 = [[_SFPBPunchout alloc] initWithFacade:*(*(&v33 + 1) + 8 * i)];
@@ -61,82 +61,82 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v10 = [punchoutOptions2 countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v10);
     }
 
     [(_SFPBWatchNowCardSection *)v5 setPunchoutOptions:v7];
-    v14 = [v4 punchoutPickerTitle];
+    punchoutPickerTitle = [facadeCopy punchoutPickerTitle];
 
-    if (v14)
+    if (punchoutPickerTitle)
     {
-      v15 = [v4 punchoutPickerTitle];
-      [(_SFPBWatchNowCardSection *)v5 setPunchoutPickerTitle:v15];
+      punchoutPickerTitle2 = [facadeCopy punchoutPickerTitle];
+      [(_SFPBWatchNowCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
     }
 
-    v16 = [v4 punchoutPickerDismissText];
+    punchoutPickerDismissText = [facadeCopy punchoutPickerDismissText];
 
-    if (v16)
+    if (punchoutPickerDismissText)
     {
-      v17 = [v4 punchoutPickerDismissText];
-      [(_SFPBWatchNowCardSection *)v5 setPunchoutPickerDismissText:v17];
+      punchoutPickerDismissText2 = [facadeCopy punchoutPickerDismissText];
+      [(_SFPBWatchNowCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
     }
 
-    if ([v4 hasCanBeHidden])
+    if ([facadeCopy hasCanBeHidden])
     {
-      -[_SFPBWatchNowCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v4 canBeHidden]);
+      -[_SFPBWatchNowCardSection setCanBeHidden:](v5, "setCanBeHidden:", [facadeCopy canBeHidden]);
     }
 
-    if ([v4 hasHasTopPadding])
+    if ([facadeCopy hasHasTopPadding])
     {
-      -[_SFPBWatchNowCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v4 hasTopPadding]);
+      -[_SFPBWatchNowCardSection setHasTopPadding:](v5, "setHasTopPadding:", [facadeCopy hasTopPadding]);
     }
 
-    if ([v4 hasHasBottomPadding])
+    if ([facadeCopy hasHasBottomPadding])
     {
-      -[_SFPBWatchNowCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v4 hasBottomPadding]);
+      -[_SFPBWatchNowCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [facadeCopy hasBottomPadding]);
     }
 
-    v18 = [v4 type];
+    type = [facadeCopy type];
 
-    if (v18)
+    if (type)
     {
-      v19 = [v4 type];
-      [(_SFPBWatchNowCardSection *)v5 setType:v19];
+      type2 = [facadeCopy type];
+      [(_SFPBWatchNowCardSection *)v5 setType:type2];
     }
 
-    if ([v4 hasSeparatorStyle])
+    if ([facadeCopy hasSeparatorStyle])
     {
-      -[_SFPBWatchNowCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v4 separatorStyle]);
+      -[_SFPBWatchNowCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [facadeCopy separatorStyle]);
     }
 
-    v20 = [v4 backgroundColor];
+    backgroundColor = [facadeCopy backgroundColor];
 
-    if (v20)
+    if (backgroundColor)
     {
       v21 = [_SFPBColor alloc];
-      v22 = [v4 backgroundColor];
-      v23 = [(_SFPBColor *)v21 initWithFacade:v22];
+      backgroundColor2 = [facadeCopy backgroundColor];
+      v23 = [(_SFPBColor *)v21 initWithFacade:backgroundColor2];
       [(_SFPBWatchNowCardSection *)v5 setBackgroundColor:v23];
     }
 
-    v24 = [v4 sectionTitle];
+    sectionTitle = [facadeCopy sectionTitle];
 
-    if (v24)
+    if (sectionTitle)
     {
-      v25 = [v4 sectionTitle];
-      [(_SFPBWatchNowCardSection *)v5 setSectionTitle:v25];
+      sectionTitle2 = [facadeCopy sectionTitle];
+      [(_SFPBWatchNowCardSection *)v5 setSectionTitle:sectionTitle2];
     }
 
-    v26 = [v4 watchListItem];
+    watchListItem = [facadeCopy watchListItem];
 
-    if (v26)
+    if (watchListItem)
     {
       v27 = [_SFPBWatchListItem alloc];
-      v28 = [v4 watchListItem];
-      v29 = [(_SFPBWatchListItem *)v27 initWithFacade:v28];
+      watchListItem2 = [facadeCopy watchListItem];
+      v29 = [(_SFPBWatchListItem *)v27 initWithFacade:watchListItem2];
       [(_SFPBWatchNowCardSection *)v5 setWatchListItem:v29];
     }
 
@@ -147,16 +147,16 @@
   return v5;
 }
 
-- (_SFPBWatchNowCardSection)initWithDictionary:(id)a3
+- (_SFPBWatchNowCardSection)initWithDictionary:(id)dictionary
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v41.receiver = self;
   v41.super_class = _SFPBWatchNowCardSection;
   v5 = [(_SFPBWatchNowCardSection *)&v41 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"punchoutOptions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"punchoutOptions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -199,7 +199,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"punchoutPickerTitle"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"punchoutPickerTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -208,7 +208,7 @@
     }
 
     v35 = v14;
-    v16 = [v4 objectForKeyedSubscript:@"punchoutPickerDismissText"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"punchoutPickerDismissText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -217,21 +217,21 @@
     }
 
     v34 = v16;
-    v18 = [v4 objectForKeyedSubscript:@"canBeHidden"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"canBeHidden"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBWatchNowCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v18 BOOLValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"hasTopPadding"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"hasTopPadding"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBWatchNowCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v19 BOOLValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"hasBottomPadding"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"hasBottomPadding"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -239,7 +239,7 @@
     }
 
     v36 = v6;
-    v21 = [v4 objectForKeyedSubscript:{@"type", v18}];
+    v21 = [dictionaryCopy objectForKeyedSubscript:{@"type", v18}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -247,14 +247,14 @@
       [(_SFPBWatchNowCardSection *)v5 setType:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"separatorStyle"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"separatorStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBWatchNowCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v23 intValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"backgroundColor"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"backgroundColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -262,7 +262,7 @@
       [(_SFPBWatchNowCardSection *)v5 setBackgroundColor:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"sectionTitle"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"sectionTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -270,7 +270,7 @@
       [(_SFPBWatchNowCardSection *)v5 setSectionTitle:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"watchListItem"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"watchListItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -285,30 +285,30 @@
   return v5;
 }
 
-- (_SFPBWatchNowCardSection)initWithJSON:(id)a3
+- (_SFPBWatchNowCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBWatchNowCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBWatchNowCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBWatchNowCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -322,44 +322,44 @@
 - (id)dictionaryRepresentation
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_backgroundColor)
   {
-    v4 = [(_SFPBWatchNowCardSection *)self backgroundColor];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    backgroundColor = [(_SFPBWatchNowCardSection *)self backgroundColor];
+    dictionaryRepresentation = [backgroundColor dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"backgroundColor"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"backgroundColor"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"backgroundColor"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"backgroundColor"];
     }
   }
 
   if (self->_canBeHidden)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBWatchNowCardSection canBeHidden](self, "canBeHidden")}];
-    [v3 setObject:v7 forKeyedSubscript:@"canBeHidden"];
+    [dictionary setObject:v7 forKeyedSubscript:@"canBeHidden"];
   }
 
   if (self->_hasBottomPadding)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBWatchNowCardSection hasBottomPadding](self, "hasBottomPadding")}];
-    [v3 setObject:v8 forKeyedSubscript:@"hasBottomPadding"];
+    [dictionary setObject:v8 forKeyedSubscript:@"hasBottomPadding"];
   }
 
   if (self->_hasTopPadding)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBWatchNowCardSection hasTopPadding](self, "hasTopPadding")}];
-    [v3 setObject:v9 forKeyedSubscript:@"hasTopPadding"];
+    [dictionary setObject:v9 forKeyedSubscript:@"hasTopPadding"];
   }
 
   if ([(NSArray *)self->_punchoutOptions count])
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -379,16 +379,16 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v33 + 1) + 8 * i) dictionaryRepresentation];
-          if (v16)
+          dictionaryRepresentation2 = [*(*(&v33 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v10 addObject:v16];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v17 = [MEMORY[0x1E695DFB0] null];
-            [v10 addObject:v17];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -398,72 +398,72 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"punchoutOptions"];
+    [dictionary setObject:array forKeyedSubscript:@"punchoutOptions"];
   }
 
   if (self->_punchoutPickerDismissText)
   {
-    v18 = [(_SFPBWatchNowCardSection *)self punchoutPickerDismissText];
-    v19 = [v18 copy];
-    [v3 setObject:v19 forKeyedSubscript:@"punchoutPickerDismissText"];
+    punchoutPickerDismissText = [(_SFPBWatchNowCardSection *)self punchoutPickerDismissText];
+    v19 = [punchoutPickerDismissText copy];
+    [dictionary setObject:v19 forKeyedSubscript:@"punchoutPickerDismissText"];
   }
 
   if (self->_punchoutPickerTitle)
   {
-    v20 = [(_SFPBWatchNowCardSection *)self punchoutPickerTitle];
-    v21 = [v20 copy];
-    [v3 setObject:v21 forKeyedSubscript:@"punchoutPickerTitle"];
+    punchoutPickerTitle = [(_SFPBWatchNowCardSection *)self punchoutPickerTitle];
+    v21 = [punchoutPickerTitle copy];
+    [dictionary setObject:v21 forKeyedSubscript:@"punchoutPickerTitle"];
   }
 
   if (self->_sectionTitle)
   {
-    v22 = [(_SFPBWatchNowCardSection *)self sectionTitle];
-    v23 = [v22 copy];
-    [v3 setObject:v23 forKeyedSubscript:@"sectionTitle"];
+    sectionTitle = [(_SFPBWatchNowCardSection *)self sectionTitle];
+    v23 = [sectionTitle copy];
+    [dictionary setObject:v23 forKeyedSubscript:@"sectionTitle"];
   }
 
   if (self->_separatorStyle)
   {
-    v24 = [(_SFPBWatchNowCardSection *)self separatorStyle];
-    if (v24 >= 6)
+    separatorStyle = [(_SFPBWatchNowCardSection *)self separatorStyle];
+    if (separatorStyle >= 6)
     {
-      v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v24];
+      v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", separatorStyle];
     }
 
     else
     {
-      v25 = off_1E7ACE580[v24];
+      v25 = off_1E7ACE580[separatorStyle];
     }
 
-    [v3 setObject:v25 forKeyedSubscript:@"separatorStyle"];
+    [dictionary setObject:v25 forKeyedSubscript:@"separatorStyle"];
   }
 
   if (self->_type)
   {
-    v26 = [(_SFPBWatchNowCardSection *)self type];
-    v27 = [v26 copy];
-    [v3 setObject:v27 forKeyedSubscript:@"type"];
+    type = [(_SFPBWatchNowCardSection *)self type];
+    v27 = [type copy];
+    [dictionary setObject:v27 forKeyedSubscript:@"type"];
   }
 
   if (self->_watchListItem)
   {
-    v28 = [(_SFPBWatchNowCardSection *)self watchListItem];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    watchListItem = [(_SFPBWatchNowCardSection *)self watchListItem];
+    dictionaryRepresentation3 = [watchListItem dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"watchListItem"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"watchListItem"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"watchListItem"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"watchListItem"];
     }
   }
 
   v31 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -507,28 +507,28 @@
   return v9 ^ v11 ^ [(_SFPBWatchListItem *)self->_watchListItem hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_41;
   }
 
-  v5 = [(_SFPBWatchNowCardSection *)self punchoutOptions];
-  v6 = [v4 punchoutOptions];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBWatchNowCardSection *)self punchoutOptions];
+  punchoutOptions2 = [equalCopy punchoutOptions];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_40;
   }
 
-  v7 = [(_SFPBWatchNowCardSection *)self punchoutOptions];
-  if (v7)
+  punchoutOptions3 = [(_SFPBWatchNowCardSection *)self punchoutOptions];
+  if (punchoutOptions3)
   {
-    v8 = v7;
-    v9 = [(_SFPBWatchNowCardSection *)self punchoutOptions];
-    v10 = [v4 punchoutOptions];
-    v11 = [v9 isEqual:v10];
+    v8 = punchoutOptions3;
+    punchoutOptions4 = [(_SFPBWatchNowCardSection *)self punchoutOptions];
+    punchoutOptions5 = [equalCopy punchoutOptions];
+    v11 = [punchoutOptions4 isEqual:punchoutOptions5];
 
     if (!v11)
     {
@@ -540,20 +540,20 @@
   {
   }
 
-  v5 = [(_SFPBWatchNowCardSection *)self punchoutPickerTitle];
-  v6 = [v4 punchoutPickerTitle];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBWatchNowCardSection *)self punchoutPickerTitle];
+  punchoutOptions2 = [equalCopy punchoutPickerTitle];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_40;
   }
 
-  v12 = [(_SFPBWatchNowCardSection *)self punchoutPickerTitle];
-  if (v12)
+  punchoutPickerTitle = [(_SFPBWatchNowCardSection *)self punchoutPickerTitle];
+  if (punchoutPickerTitle)
   {
-    v13 = v12;
-    v14 = [(_SFPBWatchNowCardSection *)self punchoutPickerTitle];
-    v15 = [v4 punchoutPickerTitle];
-    v16 = [v14 isEqual:v15];
+    v13 = punchoutPickerTitle;
+    punchoutPickerTitle2 = [(_SFPBWatchNowCardSection *)self punchoutPickerTitle];
+    punchoutPickerTitle3 = [equalCopy punchoutPickerTitle];
+    v16 = [punchoutPickerTitle2 isEqual:punchoutPickerTitle3];
 
     if (!v16)
     {
@@ -565,20 +565,20 @@
   {
   }
 
-  v5 = [(_SFPBWatchNowCardSection *)self punchoutPickerDismissText];
-  v6 = [v4 punchoutPickerDismissText];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBWatchNowCardSection *)self punchoutPickerDismissText];
+  punchoutOptions2 = [equalCopy punchoutPickerDismissText];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_40;
   }
 
-  v17 = [(_SFPBWatchNowCardSection *)self punchoutPickerDismissText];
-  if (v17)
+  punchoutPickerDismissText = [(_SFPBWatchNowCardSection *)self punchoutPickerDismissText];
+  if (punchoutPickerDismissText)
   {
-    v18 = v17;
-    v19 = [(_SFPBWatchNowCardSection *)self punchoutPickerDismissText];
-    v20 = [v4 punchoutPickerDismissText];
-    v21 = [v19 isEqual:v20];
+    v18 = punchoutPickerDismissText;
+    punchoutPickerDismissText2 = [(_SFPBWatchNowCardSection *)self punchoutPickerDismissText];
+    punchoutPickerDismissText3 = [equalCopy punchoutPickerDismissText];
+    v21 = [punchoutPickerDismissText2 isEqual:punchoutPickerDismissText3];
 
     if (!v21)
     {
@@ -591,37 +591,37 @@
   }
 
   canBeHidden = self->_canBeHidden;
-  if (canBeHidden != [v4 canBeHidden])
+  if (canBeHidden != [equalCopy canBeHidden])
   {
     goto LABEL_41;
   }
 
   hasTopPadding = self->_hasTopPadding;
-  if (hasTopPadding != [v4 hasTopPadding])
+  if (hasTopPadding != [equalCopy hasTopPadding])
   {
     goto LABEL_41;
   }
 
   hasBottomPadding = self->_hasBottomPadding;
-  if (hasBottomPadding != [v4 hasBottomPadding])
+  if (hasBottomPadding != [equalCopy hasBottomPadding])
   {
     goto LABEL_41;
   }
 
-  v5 = [(_SFPBWatchNowCardSection *)self type];
-  v6 = [v4 type];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBWatchNowCardSection *)self type];
+  punchoutOptions2 = [equalCopy type];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_40;
   }
 
-  v25 = [(_SFPBWatchNowCardSection *)self type];
-  if (v25)
+  type = [(_SFPBWatchNowCardSection *)self type];
+  if (type)
   {
-    v26 = v25;
-    v27 = [(_SFPBWatchNowCardSection *)self type];
-    v28 = [v4 type];
-    v29 = [v27 isEqual:v28];
+    v26 = type;
+    type2 = [(_SFPBWatchNowCardSection *)self type];
+    type3 = [equalCopy type];
+    v29 = [type2 isEqual:type3];
 
     if (!v29)
     {
@@ -634,25 +634,25 @@
   }
 
   separatorStyle = self->_separatorStyle;
-  if (separatorStyle != [v4 separatorStyle])
+  if (separatorStyle != [equalCopy separatorStyle])
   {
     goto LABEL_41;
   }
 
-  v5 = [(_SFPBWatchNowCardSection *)self backgroundColor];
-  v6 = [v4 backgroundColor];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBWatchNowCardSection *)self backgroundColor];
+  punchoutOptions2 = [equalCopy backgroundColor];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_40;
   }
 
-  v31 = [(_SFPBWatchNowCardSection *)self backgroundColor];
-  if (v31)
+  backgroundColor = [(_SFPBWatchNowCardSection *)self backgroundColor];
+  if (backgroundColor)
   {
-    v32 = v31;
-    v33 = [(_SFPBWatchNowCardSection *)self backgroundColor];
-    v34 = [v4 backgroundColor];
-    v35 = [v33 isEqual:v34];
+    v32 = backgroundColor;
+    backgroundColor2 = [(_SFPBWatchNowCardSection *)self backgroundColor];
+    backgroundColor3 = [equalCopy backgroundColor];
+    v35 = [backgroundColor2 isEqual:backgroundColor3];
 
     if (!v35)
     {
@@ -664,20 +664,20 @@
   {
   }
 
-  v5 = [(_SFPBWatchNowCardSection *)self sectionTitle];
-  v6 = [v4 sectionTitle];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBWatchNowCardSection *)self sectionTitle];
+  punchoutOptions2 = [equalCopy sectionTitle];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_40;
   }
 
-  v36 = [(_SFPBWatchNowCardSection *)self sectionTitle];
-  if (v36)
+  sectionTitle = [(_SFPBWatchNowCardSection *)self sectionTitle];
+  if (sectionTitle)
   {
-    v37 = v36;
-    v38 = [(_SFPBWatchNowCardSection *)self sectionTitle];
-    v39 = [v4 sectionTitle];
-    v40 = [v38 isEqual:v39];
+    v37 = sectionTitle;
+    sectionTitle2 = [(_SFPBWatchNowCardSection *)self sectionTitle];
+    sectionTitle3 = [equalCopy sectionTitle];
+    v40 = [sectionTitle2 isEqual:sectionTitle3];
 
     if (!v40)
     {
@@ -689,17 +689,17 @@
   {
   }
 
-  v5 = [(_SFPBWatchNowCardSection *)self watchListItem];
-  v6 = [v4 watchListItem];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBWatchNowCardSection *)self watchListItem];
+  punchoutOptions2 = [equalCopy watchListItem];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
 LABEL_40:
 
     goto LABEL_41;
   }
 
-  v41 = [(_SFPBWatchNowCardSection *)self watchListItem];
-  if (!v41)
+  watchListItem = [(_SFPBWatchNowCardSection *)self watchListItem];
+  if (!watchListItem)
   {
 
 LABEL_44:
@@ -707,10 +707,10 @@ LABEL_44:
     goto LABEL_42;
   }
 
-  v42 = v41;
-  v43 = [(_SFPBWatchNowCardSection *)self watchListItem];
-  v44 = [v4 watchListItem];
-  v45 = [v43 isEqual:v44];
+  v42 = watchListItem;
+  watchListItem2 = [(_SFPBWatchNowCardSection *)self watchListItem];
+  watchListItem3 = [equalCopy watchListItem];
+  v45 = [watchListItem2 isEqual:watchListItem3];
 
   if (v45)
   {
@@ -724,16 +724,16 @@ LABEL_42:
   return v46;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBWatchNowCardSection *)self punchoutOptions];
+  toCopy = to;
+  punchoutOptions = [(_SFPBWatchNowCardSection *)self punchoutOptions];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v6 = [punchoutOptions countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -745,7 +745,7 @@ LABEL_42:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(punchoutOptions);
         }
 
         v10 = *(*(&v18 + 1) + 8 * v9);
@@ -754,20 +754,20 @@ LABEL_42:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [punchoutOptions countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(_SFPBWatchNowCardSection *)self punchoutPickerTitle];
-  if (v11)
+  punchoutPickerTitle = [(_SFPBWatchNowCardSection *)self punchoutPickerTitle];
+  if (punchoutPickerTitle)
   {
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(_SFPBWatchNowCardSection *)self punchoutPickerDismissText];
-  if (v12)
+  punchoutPickerDismissText = [(_SFPBWatchNowCardSection *)self punchoutPickerDismissText];
+  if (punchoutPickerDismissText)
   {
     PBDataWriterWriteStringField();
   }
@@ -787,8 +787,8 @@ LABEL_42:
     PBDataWriterWriteBOOLField();
   }
 
-  v13 = [(_SFPBWatchNowCardSection *)self type];
-  if (v13)
+  type = [(_SFPBWatchNowCardSection *)self type];
+  if (type)
   {
     PBDataWriterWriteStringField();
   }
@@ -798,20 +798,20 @@ LABEL_42:
     PBDataWriterWriteInt32Field();
   }
 
-  v14 = [(_SFPBWatchNowCardSection *)self backgroundColor];
-  if (v14)
+  backgroundColor = [(_SFPBWatchNowCardSection *)self backgroundColor];
+  if (backgroundColor)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_SFPBWatchNowCardSection *)self sectionTitle];
-  if (v15)
+  sectionTitle = [(_SFPBWatchNowCardSection *)self sectionTitle];
+  if (sectionTitle)
   {
     PBDataWriterWriteStringField();
   }
 
-  v16 = [(_SFPBWatchNowCardSection *)self watchListItem];
-  if (v16)
+  watchListItem = [(_SFPBWatchNowCardSection *)self watchListItem];
+  if (watchListItem)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -819,63 +819,63 @@ LABEL_42:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSectionTitle:(id)a3
+- (void)setSectionTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   sectionTitle = self->_sectionTitle;
   self->_sectionTitle = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   type = self->_type;
   self->_type = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPunchoutPickerDismissText:(id)a3
+- (void)setPunchoutPickerDismissText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   punchoutPickerDismissText = self->_punchoutPickerDismissText;
   self->_punchoutPickerDismissText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPunchoutPickerTitle:(id)a3
+- (void)setPunchoutPickerTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   punchoutPickerTitle = self->_punchoutPickerTitle;
   self->_punchoutPickerTitle = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addPunchoutOptions:(id)a3
+- (void)addPunchoutOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   punchoutOptions = self->_punchoutOptions;
-  v8 = v4;
+  v8 = optionsCopy;
   if (!punchoutOptions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_punchoutOptions;
-    self->_punchoutOptions = v6;
+    self->_punchoutOptions = array;
 
-    v4 = v8;
+    optionsCopy = v8;
     punchoutOptions = self->_punchoutOptions;
   }
 
-  [(NSArray *)punchoutOptions addObject:v4];
+  [(NSArray *)punchoutOptions addObject:optionsCopy];
 }
 
-- (void)setPunchoutOptions:(id)a3
+- (void)setPunchoutOptions:(id)options
 {
-  v4 = [a3 copy];
+  v4 = [options copy];
   punchoutOptions = self->_punchoutOptions;
   self->_punchoutOptions = v4;
 

@@ -1,11 +1,11 @@
 @interface EPSagaUnpairHelper
-- (BOOL)startUnpairDueToError:(id)a3;
+- (BOOL)startUnpairDueToError:(id)error;
 - (EPSagaUnpairHelperDelegate)delegate;
 - (NRPairingReport)pairingReport;
 - (id)registry;
 - (id)routingSlipEntry;
 - (id)serviceRegistry;
-- (void)filePairingReportWithPairingID:(id)a3;
+- (void)filePairingReportWithPairingID:(id)d;
 - (void)savePairingReport;
 @end
 
@@ -14,30 +14,30 @@
 - (id)routingSlipEntry
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained routingSlipEntry];
+  routingSlipEntry = [WeakRetained routingSlipEntry];
 
-  return v3;
+  return routingSlipEntry;
 }
 
 - (id)serviceRegistry
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained serviceRegistry];
+  serviceRegistry = [WeakRetained serviceRegistry];
 
-  return v3;
+  return serviceRegistry;
 }
 
 - (id)registry
 {
-  v2 = [(EPSagaUnpairHelper *)self serviceRegistry];
-  v3 = [v2 serviceFromClass:objc_opt_class()];
+  serviceRegistry = [(EPSagaUnpairHelper *)self serviceRegistry];
+  v3 = [serviceRegistry serviceFromClass:objc_opt_class()];
 
   return v3;
 }
 
-- (BOOL)startUnpairDueToError:(id)a3
+- (BOOL)startUnpairDueToError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -46,12 +46,12 @@
     v7 = nr_daemon_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(EPSagaUnpairHelper *)self routingSlipEntry];
-      v9 = [v8 name];
+      routingSlipEntry = [(EPSagaUnpairHelper *)self routingSlipEntry];
+      name = [routingSlipEntry name];
       *buf = 138412546;
-      v42 = v9;
+      v42 = name;
       v43 = 2112;
-      v44 = v4;
+      v44 = errorCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "routingSlipEntry:%@ cancelWithError: %@", buf, 0x16u);
     }
   }
@@ -60,10 +60,10 @@
   if (!unpairing)
   {
     self->_unpairing = 1;
-    v14 = [(EPSagaUnpairHelper *)self routingSlipEntry];
+    routingSlipEntry2 = [(EPSagaUnpairHelper *)self routingSlipEntry];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v16 = [WeakRetained routingSlipEntryPairingIDKey];
-    v17 = [v14 objectForKeyedSubscript:v16];
+    routingSlipEntryPairingIDKey = [WeakRetained routingSlipEntryPairingIDKey];
+    v17 = [routingSlipEntry2 objectForKeyedSubscript:routingSlipEntryPairingIDKey];
 
     v18 = objc_loadWeakRetained(&self->_delegate);
     LOBYTE(WeakRetained) = objc_opt_respondsToSelector();
@@ -71,14 +71,14 @@
     if (WeakRetained)
     {
       v19 = objc_loadWeakRetained(&self->_delegate);
-      v20 = [v19 routingSlipEntryPairingStartedIDKey];
+      routingSlipEntryPairingStartedIDKey = [v19 routingSlipEntryPairingStartedIDKey];
 
-      v21 = [(EPSagaUnpairHelper *)self routingSlipEntry];
-      v22 = [v21 objectForKeyedSubscript:v20];
+      routingSlipEntry3 = [(EPSagaUnpairHelper *)self routingSlipEntry];
+      v22 = [routingSlipEntry3 objectForKeyedSubscript:routingSlipEntryPairingStartedIDKey];
 
-      LOBYTE(v21) = [v22 BOOLValue];
-      v23 = v21 ^ 1;
-      if (!v4)
+      LOBYTE(routingSlipEntry3) = [v22 BOOLValue];
+      v23 = routingSlipEntry3 ^ 1;
+      if (!errorCopy)
       {
         goto LABEL_13;
       }
@@ -87,43 +87,43 @@
     else
     {
       v23 = 0;
-      if (!v4)
+      if (!errorCopy)
       {
 LABEL_13:
-        v4 = nrGetPairingError();
+        errorCopy = nrGetPairingError();
       }
     }
 
-    v24 = [(EPSagaUnpairHelper *)self pairingReport];
-    v25 = [v24 isErrorSet];
+    pairingReport = [(EPSagaUnpairHelper *)self pairingReport];
+    isErrorSet = [pairingReport isErrorSet];
 
-    if ((v25 & 1) == 0)
+    if ((isErrorSet & 1) == 0)
     {
-      v26 = [(EPSagaUnpairHelper *)self pairingReport];
-      [v26 setOriginalError:v4];
+      pairingReport2 = [(EPSagaUnpairHelper *)self pairingReport];
+      [pairingReport2 setOriginalError:errorCopy];
     }
 
     if (!((v17 == 0) | v23 & 1))
     {
-      v27 = [(EPSagaUnpairHelper *)self pairingReport];
-      v28 = [v27 isErrorSet];
+      pairingReport3 = [(EPSagaUnpairHelper *)self pairingReport];
+      isErrorSet2 = [pairingReport3 isErrorSet];
 
-      if (v28)
+      if (isErrorSet2)
       {
-        v29 = [(EPSagaUnpairHelper *)self routingSlipEntry];
-        v30 = [v29 errors];
-        v31 = [(EPSagaUnpairHelper *)self pairingReport];
-        v32 = [v31 detailedError];
-        [v30 addObject:v32];
+        routingSlipEntry4 = [(EPSagaUnpairHelper *)self routingSlipEntry];
+        errors = [routingSlipEntry4 errors];
+        pairingReport4 = [(EPSagaUnpairHelper *)self pairingReport];
+        detailedError = [pairingReport4 detailedError];
+        [errors addObject:detailedError];
 
-        v33 = [(EPSagaUnpairHelper *)self pairingReport];
-        -[EPSagaUnpairHelper addToOrCapOffRTCPairingMetric:](self, "addToOrCapOffRTCPairingMetric:", [v33 subreason]);
+        pairingReport5 = [(EPSagaUnpairHelper *)self pairingReport];
+        -[EPSagaUnpairHelper addToOrCapOffRTCPairingMetric:](self, "addToOrCapOffRTCPairingMetric:", [pairingReport5 subreason]);
 
         [(EPSagaUnpairHelper *)self filePairingReportWithPairingID:v17];
       }
     }
 
-    v34 = [(EPSagaUnpairHelper *)self pairingReport];
+    pairingReport6 = [(EPSagaUnpairHelper *)self pairingReport];
     v35 = +[NRQueue registryDaemonQueue];
     v38[0] = _NSConcreteStackBlock;
     v38[1] = 3221225472;
@@ -131,8 +131,8 @@ LABEL_13:
     v38[3] = &unk_1001758F8;
     v38[4] = self;
     v39 = v17;
-    v40 = v34;
-    v36 = v34;
+    v40 = pairingReport6;
+    v36 = pairingReport6;
     v13 = v17;
     [v35 dispatchAsync:v38];
 
@@ -159,34 +159,34 @@ LABEL_20:
 
 - (NRPairingReport)pairingReport
 {
-  v3 = [(EPSagaUnpairHelper *)self serviceRegistry];
-  v4 = [v3 optionalServiceFromClass:objc_opt_class()];
+  serviceRegistry = [(EPSagaUnpairHelper *)self serviceRegistry];
+  v4 = [serviceRegistry optionalServiceFromClass:objc_opt_class()];
 
   if (!v4)
   {
     v4 = objc_opt_new();
-    v5 = [(EPSagaUnpairHelper *)self routingSlipEntry];
-    v6 = [v5 objectForKeyedSubscript:@"extensiblePairingGizmoPairingVersion"];
+    routingSlipEntry = [(EPSagaUnpairHelper *)self routingSlipEntry];
+    v6 = [routingSlipEntry objectForKeyedSubscript:@"extensiblePairingGizmoPairingVersion"];
     [v4 setGizmoMaxPairingVersion:{objc_msgSend(v6, "integerValue")}];
 
     v7 = [[EPSagaOperandPairingReport alloc] initWithPairingReport:v4];
-    v8 = [(EPSagaUnpairHelper *)self routingSlipEntry];
-    v9 = [v8 operands];
-    [v9 setObject:v7 forKeyedSubscript:@"pairingReport"];
+    routingSlipEntry2 = [(EPSagaUnpairHelper *)self routingSlipEntry];
+    operands = [routingSlipEntry2 operands];
+    [operands setObject:v7 forKeyedSubscript:@"pairingReport"];
 
-    v10 = [(EPSagaUnpairHelper *)self serviceRegistry];
-    [v10 addService:v4];
+    serviceRegistry2 = [(EPSagaUnpairHelper *)self serviceRegistry];
+    [serviceRegistry2 addService:v4];
   }
 
-  v11 = [(EPSagaUnpairHelper *)self routingSlipEntry];
-  v12 = [v11 objectForKeyedSubscript:@"pairingReport"];
+  routingSlipEntry3 = [(EPSagaUnpairHelper *)self routingSlipEntry];
+  v12 = [routingSlipEntry3 objectForKeyedSubscript:@"pairingReport"];
 
   if (v12 != v4)
   {
     v13 = [[EPSagaOperandPairingReport alloc] initWithPairingReport:v4];
-    v14 = [(EPSagaUnpairHelper *)self routingSlipEntry];
-    v15 = [v14 operands];
-    [v15 setObject:v13 forKeyedSubscript:@"pairingReport"];
+    routingSlipEntry4 = [(EPSagaUnpairHelper *)self routingSlipEntry];
+    operands2 = [routingSlipEntry4 operands];
+    [operands2 setObject:v13 forKeyedSubscript:@"pairingReport"];
 
     [(EPSagaUnpairHelper *)self savePairingReport];
   }
@@ -196,19 +196,19 @@ LABEL_20:
 
 - (void)savePairingReport
 {
-  v3 = [(EPSagaUnpairHelper *)self routingSlipEntry];
-  v5 = [v3 objectForKeyedSubscript:@"pairingReport"];
+  routingSlipEntry = [(EPSagaUnpairHelper *)self routingSlipEntry];
+  v5 = [routingSlipEntry objectForKeyedSubscript:@"pairingReport"];
 
   if (v5)
   {
-    v4 = [(EPSagaUnpairHelper *)self routingSlipEntry];
-    [v4 persist];
+    routingSlipEntry2 = [(EPSagaUnpairHelper *)self routingSlipEntry];
+    [routingSlipEntry2 persist];
   }
 }
 
-- (void)filePairingReportWithPairingID:(id)a3
+- (void)filePairingReportWithPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -217,10 +217,10 @@ LABEL_20:
     v7 = nr_daemon_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(EPSagaUnpairHelper *)self routingSlipEntry];
-      v9 = [v8 name];
+      routingSlipEntry = [(EPSagaUnpairHelper *)self routingSlipEntry];
+      name = [routingSlipEntry name];
       *buf = 138412290;
-      v14 = v9;
+      v14 = name;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Transaction: %@ file pairing report with pairing id called", buf, 0xCu);
     }
   }
@@ -233,7 +233,7 @@ LABEL_20:
     v11[2] = sub_10006D214;
     v11[3] = &unk_100175598;
     v11[4] = self;
-    v12 = v4;
+    v12 = dCopy;
     dispatch_async(v10, v11);
   }
 }

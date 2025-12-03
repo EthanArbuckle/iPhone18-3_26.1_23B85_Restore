@@ -1,35 +1,35 @@
 @interface DUSchemaDUEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (DUSchemaDUEvent)initWithDictionary:(id)a3;
-- (DUSchemaDUEvent)initWithJSON:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
+- (DUSchemaDUEvent)initWithDictionary:(id)dictionary;
+- (DUSchemaDUEvent)initWithJSON:(id)n;
 - (DUSchemaDUSearchSessionRecord)searchSessionRecord;
 - (DUSchemaDUSpeechAudioRecord)speechAudioRecord;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteSearchSessionRecord;
 - (void)deleteSpeechAudioRecord;
-- (void)setSearchSessionRecord:(id)a3;
-- (void)setSpeechAudioRecord:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setSearchSessionRecord:(id)record;
+- (void)setSpeechAudioRecord:(id)record;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DUSchemaDUEvent
 
-- (DUSchemaDUEvent)initWithDictionary:(id)a3
+- (DUSchemaDUEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = DUSchemaDUEvent;
   v5 = [(DUSchemaDUEvent *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"metadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"metadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(DUSchemaDUEvent *)v5 setMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"content"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"content"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(DUSchemaDUEvent *)v5 setContent:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"speechAudioRecord"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"speechAudioRecord"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
       [(DUSchemaDUEvent *)v5 setSpeechAudioRecord:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"searchSessionRecord"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"searchSessionRecord"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,30 +67,30 @@
   return v5;
 }
 
-- (DUSchemaDUEvent)initWithJSON:(id)a3
+- (DUSchemaDUEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DUSchemaDUEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DUSchemaDUEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DUSchemaDUEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -103,74 +103,74 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_content)
   {
-    v4 = [(DUSchemaDUEvent *)self content];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    content = [(DUSchemaDUEvent *)self content];
+    dictionaryRepresentation = [content dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"content"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"content"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"content"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"content"];
     }
   }
 
   if (self->_metadata)
   {
-    v7 = [(DUSchemaDUEvent *)self metadata];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    metadata = [(DUSchemaDUEvent *)self metadata];
+    dictionaryRepresentation2 = [metadata dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"metadata"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"metadata"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"metadata"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"metadata"];
     }
   }
 
   if (self->_searchSessionRecord)
   {
-    v10 = [(DUSchemaDUEvent *)self searchSessionRecord];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    searchSessionRecord = [(DUSchemaDUEvent *)self searchSessionRecord];
+    dictionaryRepresentation3 = [searchSessionRecord dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"searchSessionRecord"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"searchSessionRecord"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"searchSessionRecord"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"searchSessionRecord"];
     }
   }
 
   if (self->_speechAudioRecord)
   {
-    v13 = [(DUSchemaDUEvent *)self speechAudioRecord];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    speechAudioRecord = [(DUSchemaDUEvent *)self speechAudioRecord];
+    dictionaryRepresentation4 = [speechAudioRecord dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"speechAudioRecord"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"speechAudioRecord"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"speechAudioRecord"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"speechAudioRecord"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -181,34 +181,34 @@
   return v4 ^ v5 ^ [(DUSchemaDUSearchSessionRecord *)self->_searchSessionRecord hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_23;
   }
 
-  v6 = [(DUSchemaDUEvent *)self metadata];
-  v7 = [v4 metadata];
-  if ((v6 != 0) == (v7 == 0))
+  metadata = [(DUSchemaDUEvent *)self metadata];
+  metadata2 = [equalCopy metadata];
+  if ((metadata != 0) == (metadata2 == 0))
   {
     goto LABEL_22;
   }
 
-  v8 = [(DUSchemaDUEvent *)self metadata];
-  if (v8)
+  metadata3 = [(DUSchemaDUEvent *)self metadata];
+  if (metadata3)
   {
-    v9 = v8;
-    v10 = [(DUSchemaDUEvent *)self metadata];
-    v11 = [v4 metadata];
-    v12 = [v10 isEqual:v11];
+    v9 = metadata3;
+    metadata4 = [(DUSchemaDUEvent *)self metadata];
+    metadata5 = [equalCopy metadata];
+    v12 = [metadata4 isEqual:metadata5];
 
     if (!v12)
     {
@@ -220,20 +220,20 @@
   {
   }
 
-  v6 = [(DUSchemaDUEvent *)self content];
-  v7 = [v4 content];
-  if ((v6 != 0) == (v7 == 0))
+  metadata = [(DUSchemaDUEvent *)self content];
+  metadata2 = [equalCopy content];
+  if ((metadata != 0) == (metadata2 == 0))
   {
     goto LABEL_22;
   }
 
-  v13 = [(DUSchemaDUEvent *)self content];
-  if (v13)
+  content = [(DUSchemaDUEvent *)self content];
+  if (content)
   {
-    v14 = v13;
-    v15 = [(DUSchemaDUEvent *)self content];
-    v16 = [v4 content];
-    v17 = [v15 isEqual:v16];
+    v14 = content;
+    content2 = [(DUSchemaDUEvent *)self content];
+    content3 = [equalCopy content];
+    v17 = [content2 isEqual:content3];
 
     if (!v17)
     {
@@ -245,20 +245,20 @@
   {
   }
 
-  v6 = [(DUSchemaDUEvent *)self speechAudioRecord];
-  v7 = [v4 speechAudioRecord];
-  if ((v6 != 0) == (v7 == 0))
+  metadata = [(DUSchemaDUEvent *)self speechAudioRecord];
+  metadata2 = [equalCopy speechAudioRecord];
+  if ((metadata != 0) == (metadata2 == 0))
   {
     goto LABEL_22;
   }
 
-  v18 = [(DUSchemaDUEvent *)self speechAudioRecord];
-  if (v18)
+  speechAudioRecord = [(DUSchemaDUEvent *)self speechAudioRecord];
+  if (speechAudioRecord)
   {
-    v19 = v18;
-    v20 = [(DUSchemaDUEvent *)self speechAudioRecord];
-    v21 = [v4 speechAudioRecord];
-    v22 = [v20 isEqual:v21];
+    v19 = speechAudioRecord;
+    speechAudioRecord2 = [(DUSchemaDUEvent *)self speechAudioRecord];
+    speechAudioRecord3 = [equalCopy speechAudioRecord];
+    v22 = [speechAudioRecord2 isEqual:speechAudioRecord3];
 
     if (!v22)
     {
@@ -270,12 +270,12 @@
   {
   }
 
-  v6 = [(DUSchemaDUEvent *)self searchSessionRecord];
-  v7 = [v4 searchSessionRecord];
-  if ((v6 != 0) != (v7 == 0))
+  metadata = [(DUSchemaDUEvent *)self searchSessionRecord];
+  metadata2 = [equalCopy searchSessionRecord];
+  if ((metadata != 0) != (metadata2 == 0))
   {
-    v23 = [(DUSchemaDUEvent *)self searchSessionRecord];
-    if (!v23)
+    searchSessionRecord = [(DUSchemaDUEvent *)self searchSessionRecord];
+    if (!searchSessionRecord)
     {
 
 LABEL_26:
@@ -283,10 +283,10 @@ LABEL_26:
       goto LABEL_24;
     }
 
-    v24 = v23;
-    v25 = [(DUSchemaDUEvent *)self searchSessionRecord];
-    v26 = [v4 searchSessionRecord];
-    v27 = [v25 isEqual:v26];
+    v24 = searchSessionRecord;
+    searchSessionRecord2 = [(DUSchemaDUEvent *)self searchSessionRecord];
+    searchSessionRecord3 = [equalCopy searchSessionRecord];
+    v27 = [searchSessionRecord2 isEqual:searchSessionRecord3];
 
     if (v27)
     {
@@ -306,42 +306,42 @@ LABEL_24:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(DUSchemaDUEvent *)self metadata];
+  toCopy = to;
+  metadata = [(DUSchemaDUEvent *)self metadata];
 
-  if (v4)
+  if (metadata)
   {
-    v5 = [(DUSchemaDUEvent *)self metadata];
+    metadata2 = [(DUSchemaDUEvent *)self metadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(DUSchemaDUEvent *)self content];
+  content = [(DUSchemaDUEvent *)self content];
 
-  if (v6)
+  if (content)
   {
-    v7 = [(DUSchemaDUEvent *)self content];
+    content2 = [(DUSchemaDUEvent *)self content];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(DUSchemaDUEvent *)self speechAudioRecord];
+  speechAudioRecord = [(DUSchemaDUEvent *)self speechAudioRecord];
 
-  if (v8)
+  if (speechAudioRecord)
   {
-    v9 = [(DUSchemaDUEvent *)self speechAudioRecord];
+    speechAudioRecord2 = [(DUSchemaDUEvent *)self speechAudioRecord];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(DUSchemaDUEvent *)self searchSessionRecord];
+  searchSessionRecord = [(DUSchemaDUEvent *)self searchSessionRecord];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (searchSessionRecord)
   {
-    v12 = [(DUSchemaDUEvent *)self searchSessionRecord];
+    searchSessionRecord2 = [(DUSchemaDUEvent *)self searchSessionRecord];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
@@ -370,21 +370,21 @@ LABEL_24:
   return v3;
 }
 
-- (void)setSearchSessionRecord:(id)a3
+- (void)setSearchSessionRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   speechAudioRecord = self->_speechAudioRecord;
   self->_speechAudioRecord = 0;
 
   v6 = 102;
-  if (!v4)
+  if (!recordCopy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   searchSessionRecord = self->_searchSessionRecord;
-  self->_searchSessionRecord = v4;
+  self->_searchSessionRecord = recordCopy;
 }
 
 - (void)deleteSpeechAudioRecord
@@ -412,33 +412,33 @@ LABEL_24:
   return v3;
 }
 
-- (void)setSpeechAudioRecord:(id)a3
+- (void)setSpeechAudioRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   searchSessionRecord = self->_searchSessionRecord;
   self->_searchSessionRecord = 0;
 
   v6 = 101;
-  if (!v4)
+  if (!recordCopy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   speechAudioRecord = self->_speechAudioRecord;
-  self->_speechAudioRecord = v4;
+  self->_speechAudioRecord = recordCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(DUSchemaDUEvent *)self whichEvent_Type];
+  whichEvent_Type = [(DUSchemaDUEvent *)self whichEvent_Type];
   v3 = @"com.apple.aiml.dataupload.DUEvent";
-  if (v2 == 102)
+  if (whichEvent_Type == 102)
   {
     v3 = @"com.apple.aiml.dataupload.DUEvent.DUSearchSessionRecord";
   }
 
-  if (v2 == 101)
+  if (whichEvent_Type == 101)
   {
     return @"com.apple.aiml.dataupload.DUEvent.DUSpeechAudioRecord";
   }
@@ -449,69 +449,69 @@ LABEL_24:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = DUSchemaDUEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(DUSchemaDUEvent *)self deleteContent];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(DUSchemaDUEvent *)self deleteContent];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(DUSchemaDUEvent *)self deleteContent];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(DUSchemaDUEvent *)self deleteContent];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(DUSchemaDUEvent *)self deleteContent];
   }
 
-  v6 = [(DUSchemaDUEvent *)self metadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  metadata = [(DUSchemaDUEvent *)self metadata];
+  v7 = [metadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(DUSchemaDUEvent *)self deleteMetadata];
   }
 
-  v9 = [(DUSchemaDUEvent *)self content];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  content = [(DUSchemaDUEvent *)self content];
+  v10 = [content applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(DUSchemaDUEvent *)self deleteContent];
   }
 
-  v12 = [(DUSchemaDUEvent *)self speechAudioRecord];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  speechAudioRecord = [(DUSchemaDUEvent *)self speechAudioRecord];
+  v13 = [speechAudioRecord applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(DUSchemaDUEvent *)self deleteSpeechAudioRecord];
   }
 
-  v15 = [(DUSchemaDUEvent *)self searchSessionRecord];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  searchSessionRecord = [(DUSchemaDUEvent *)self searchSessionRecord];
+  v16 = [searchSessionRecord applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(DUSchemaDUEvent *)self deleteSearchSessionRecord];
   }
@@ -529,14 +529,14 @@ LABEL_24:
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(DUSchemaDUEvent *)self whichEvent_Type];
-  if (v3 == 101)
+  whichEvent_Type = [(DUSchemaDUEvent *)self whichEvent_Type];
+  if (whichEvent_Type == 101)
   {
     v4 = &OBJC_IVAR___DUSchemaDUEvent__speechAudioRecord;
     goto LABEL_5;
   }
 
-  if (v3 == 102)
+  if (whichEvent_Type == 102)
   {
     v4 = &OBJC_IVAR___DUSchemaDUEvent__searchSessionRecord;
 LABEL_5:
@@ -550,15 +550,15 @@ LABEL_7:
   return v5;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
   v3 = @"searchSessionRecord";
-  if (a3 != 102)
+  if (tag != 102)
   {
     v3 = 0;
   }
 
-  if (a3 == 101)
+  if (tag == 101)
   {
     return @"speechAudioRecord";
   }

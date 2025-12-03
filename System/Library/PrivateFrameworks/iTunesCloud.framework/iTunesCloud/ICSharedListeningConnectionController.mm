@@ -1,7 +1,7 @@
 @interface ICSharedListeningConnectionController
-+ (id)externalSharedListeningConnectionWithSessionIdentifier:(id)a3 identity:(id)a4 bundleID:(id)a5;
-+ (id)sharedListeningConnectionWithSessionIdentifier:(id)a3 identity:(id)a4 bundleID:(id)a5;
-- (ICSharedListeningConnectionController)initWithSessionIdentifier:(id)a3 identity:(id)a4 bundleID:(id)a5;
++ (id)externalSharedListeningConnectionWithSessionIdentifier:(id)identifier identity:(id)identity bundleID:(id)d;
++ (id)sharedListeningConnectionWithSessionIdentifier:(id)identifier identity:(id)identity bundleID:(id)d;
+- (ICSharedListeningConnectionController)initWithSessionIdentifier:(id)identifier identity:(id)identity bundleID:(id)d;
 - (ICSharedListeningConnectionControllerDelegate)delegate;
 @end
 
@@ -14,41 +14,41 @@
   return WeakRetained;
 }
 
-- (ICSharedListeningConnectionController)initWithSessionIdentifier:(id)a3 identity:(id)a4 bundleID:(id)a5
+- (ICSharedListeningConnectionController)initWithSessionIdentifier:(id)identifier identity:(id)identity bundleID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  identityCopy = identity;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = ICSharedListeningConnectionController;
   v12 = [(ICSharedListeningConnectionController *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sessionIdentifier, a3);
-    objc_storeStrong(&v13->_identity, a4);
-    objc_storeStrong(&v13->_bundleID, a5);
+    objc_storeStrong(&v12->_sessionIdentifier, identifier);
+    objc_storeStrong(&v13->_identity, identity);
+    objc_storeStrong(&v13->_bundleID, d);
   }
 
   return v13;
 }
 
-+ (id)sharedListeningConnectionWithSessionIdentifier:(id)a3 identity:(id)a4 bundleID:(id)a5
++ (id)sharedListeningConnectionWithSessionIdentifier:(id)identifier identity:(id)identity bundleID:(id)d
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[ICDirectSharedListeningConnectionController alloc] initWithSessionIdentifier:v9 identity:v8 bundleID:v7];
+  dCopy = d;
+  identityCopy = identity;
+  identifierCopy = identifier;
+  v10 = [[ICDirectSharedListeningConnectionController alloc] initWithSessionIdentifier:identifierCopy identity:identityCopy bundleID:dCopy];
 
   return v10;
 }
 
-+ (id)externalSharedListeningConnectionWithSessionIdentifier:(id)a3 identity:(id)a4 bundleID:(id)a5
++ (id)externalSharedListeningConnectionWithSessionIdentifier:(id)identifier identity:(id)identity bundleID:(id)d
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[ICExternalSharedListeningConnectionController alloc] initWithSessionIdentifier:v9 identity:v8 bundleID:v7];
+  dCopy = d;
+  identityCopy = identity;
+  identifierCopy = identifier;
+  v10 = [[ICExternalSharedListeningConnectionController alloc] initWithSessionIdentifier:identifierCopy identity:identityCopy bundleID:dCopy];
 
   return v10;
 }

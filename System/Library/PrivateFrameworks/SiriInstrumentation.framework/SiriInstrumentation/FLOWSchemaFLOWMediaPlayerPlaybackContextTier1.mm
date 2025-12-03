@@ -1,30 +1,30 @@
 @interface FLOWSchemaFLOWMediaPlayerPlaybackContextTier1
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWMediaPlayerPlaybackContextTier1)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWMediaPlayerPlaybackContextTier1)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWMediaPlayerPlaybackContextTier1)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWMediaPlayerPlaybackContextTier1)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addSearchResults:(id)a3;
-- (void)setHasIsNlsContainerResult:(BOOL)a3;
-- (void)setHasIsNlsResult:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSearchResults:(id)results;
+- (void)setHasIsNlsContainerResult:(BOOL)result;
+- (void)setHasIsNlsResult:(BOOL)result;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWMediaPlayerPlaybackContextTier1
 
-- (FLOWSchemaFLOWMediaPlayerPlaybackContextTier1)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWMediaPlayerPlaybackContextTier1)initWithDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = FLOWSchemaFLOWMediaPlayerPlaybackContextTier1;
   v5 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)&v37 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,7 +32,7 @@
       [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"contentTitle"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"contentTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)v5 setContentTitle:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"adamId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"adamId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
     }
 
     v32 = v10;
-    v11 = [v4 objectForKeyedSubscript:@"adamIdString"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"adamIdString"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)v5 setAdamIdString:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"searchResults"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"searchResults"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -101,7 +101,7 @@
       v11 = v29;
     }
 
-    v21 = [v4 objectForKeyedSubscript:{@"u2UsoGraph", v29, v30, v31}];
+    v21 = [dictionaryCopy objectForKeyedSubscript:{@"u2UsoGraph", v29, v30, v31}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,7 +109,7 @@
       [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)v5 setU2UsoGraph:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"u2UsoGraphTier1"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"u2UsoGraphTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -117,14 +117,14 @@
       [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)v5 setU2UsoGraphTier1:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"isNlsResult"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"isNlsResult"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 setIsNlsResult:](v5, "setIsNlsResult:", [v25 BOOLValue]);
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"isNlsContainerResult"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"isNlsContainerResult"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -137,30 +137,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWMediaPlayerPlaybackContextTier1)initWithJSON:(id)a3
+- (FLOWSchemaFLOWMediaPlayerPlaybackContextTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -174,32 +174,32 @@
 - (id)dictionaryRepresentation
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*(&self->_isNlsContainerResult + 1))
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 adamId](self, "adamId")}];
-    [v3 setObject:v4 forKeyedSubscript:@"adamId"];
+    [dictionary setObject:v4 forKeyedSubscript:@"adamId"];
   }
 
   if (self->_adamIdString)
   {
-    v5 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self adamIdString];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"adamIdString"];
+    adamIdString = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self adamIdString];
+    v6 = [adamIdString copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"adamIdString"];
   }
 
   if (self->_contentTitle)
   {
-    v7 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self contentTitle];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"contentTitle"];
+    contentTitle = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self contentTitle];
+    v8 = [contentTitle copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"contentTitle"];
   }
 
   v9 = *(&self->_isNlsContainerResult + 1);
   if ((v9 & 4) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 isNlsContainerResult](self, "isNlsContainerResult")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isNlsContainerResult"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isNlsContainerResult"];
 
     v9 = *(&self->_isNlsContainerResult + 1);
   }
@@ -207,28 +207,28 @@
   if ((v9 & 2) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 isNlsResult](self, "isNlsResult")}];
-    [v3 setObject:v11 forKeyedSubscript:@"isNlsResult"];
+    [dictionary setObject:v11 forKeyedSubscript:@"isNlsResult"];
   }
 
   if (self->_linkId)
   {
-    v12 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self linkId];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    linkId = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
   if ([(NSArray *)self->_searchResults count])
   {
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -248,16 +248,16 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
-          if (v21)
+          dictionaryRepresentation2 = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v15 addObject:v21];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v22 = [MEMORY[0x1E695DFB0] null];
-            [v15 addObject:v22];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -267,44 +267,44 @@
       while (v18);
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"searchResults"];
+    [dictionary setObject:array forKeyedSubscript:@"searchResults"];
   }
 
   if (self->_u2UsoGraph)
   {
-    v23 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraph];
-    v24 = [v23 dictionaryRepresentation];
-    if (v24)
+    u2UsoGraph = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraph];
+    dictionaryRepresentation3 = [u2UsoGraph dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v24 forKeyedSubscript:@"u2UsoGraph"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"u2UsoGraph"];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v25 forKeyedSubscript:@"u2UsoGraph"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"u2UsoGraph"];
     }
   }
 
   if (self->_u2UsoGraphTier1)
   {
-    v26 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraphTier1];
-    v27 = [v26 dictionaryRepresentation];
-    if (v27)
+    u2UsoGraphTier1 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraphTier1];
+    dictionaryRepresentation4 = [u2UsoGraphTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v27 forKeyedSubscript:@"u2UsoGraphTier1"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"u2UsoGraphTier1"];
     }
 
     else
     {
-      v28 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v28 forKeyedSubscript:@"u2UsoGraphTier1"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"u2UsoGraphTier1"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v30];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v30];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -349,28 +349,28 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
-  v5 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_34;
   }
 
-  v7 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self linkId];
-  if (v7)
+  linkId3 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self linkId];
+  if (linkId3)
   {
-    v8 = v7;
-    v9 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self linkId];
-    v10 = [v4 linkId];
-    v11 = [v9 isEqual:v10];
+    v8 = linkId3;
+    linkId4 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v11 = [linkId4 isEqual:linkId5];
 
     if (!v11)
     {
@@ -382,20 +382,20 @@ LABEL_6:
   {
   }
 
-  v5 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self contentTitle];
-  v6 = [v4 contentTitle];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self contentTitle];
+  linkId2 = [equalCopy contentTitle];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_34;
   }
 
-  v12 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self contentTitle];
-  if (v12)
+  contentTitle = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self contentTitle];
+  if (contentTitle)
   {
-    v13 = v12;
-    v14 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self contentTitle];
-    v15 = [v4 contentTitle];
-    v16 = [v14 isEqual:v15];
+    v13 = contentTitle;
+    contentTitle2 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self contentTitle];
+    contentTitle3 = [equalCopy contentTitle];
+    v16 = [contentTitle2 isEqual:contentTitle3];
 
     if (!v16)
     {
@@ -407,7 +407,7 @@ LABEL_6:
   {
   }
 
-  if (*(&self->_isNlsContainerResult + 1) != (v4[66] & 1))
+  if (*(&self->_isNlsContainerResult + 1) != (equalCopy[66] & 1))
   {
     goto LABEL_35;
   }
@@ -415,26 +415,26 @@ LABEL_6:
   if (*(&self->_isNlsContainerResult + 1))
   {
     adamId = self->_adamId;
-    if (adamId != [v4 adamId])
+    if (adamId != [equalCopy adamId])
     {
       goto LABEL_35;
     }
   }
 
-  v5 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self adamIdString];
-  v6 = [v4 adamIdString];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self adamIdString];
+  linkId2 = [equalCopy adamIdString];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_34;
   }
 
-  v18 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self adamIdString];
-  if (v18)
+  adamIdString = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self adamIdString];
+  if (adamIdString)
   {
-    v19 = v18;
-    v20 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self adamIdString];
-    v21 = [v4 adamIdString];
-    v22 = [v20 isEqual:v21];
+    v19 = adamIdString;
+    adamIdString2 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self adamIdString];
+    adamIdString3 = [equalCopy adamIdString];
+    v22 = [adamIdString2 isEqual:adamIdString3];
 
     if (!v22)
     {
@@ -446,20 +446,20 @@ LABEL_6:
   {
   }
 
-  v5 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self searchResults];
-  v6 = [v4 searchResults];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self searchResults];
+  linkId2 = [equalCopy searchResults];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_34;
   }
 
-  v23 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self searchResults];
-  if (v23)
+  searchResults = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self searchResults];
+  if (searchResults)
   {
-    v24 = v23;
-    v25 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self searchResults];
-    v26 = [v4 searchResults];
-    v27 = [v25 isEqual:v26];
+    v24 = searchResults;
+    searchResults2 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self searchResults];
+    searchResults3 = [equalCopy searchResults];
+    v27 = [searchResults2 isEqual:searchResults3];
 
     if (!v27)
     {
@@ -471,20 +471,20 @@ LABEL_6:
   {
   }
 
-  v5 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraph];
-  v6 = [v4 u2UsoGraph];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraph];
+  linkId2 = [equalCopy u2UsoGraph];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_34;
   }
 
-  v28 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraph];
-  if (v28)
+  u2UsoGraph = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraph];
+  if (u2UsoGraph)
   {
-    v29 = v28;
-    v30 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraph];
-    v31 = [v4 u2UsoGraph];
-    v32 = [v30 isEqual:v31];
+    v29 = u2UsoGraph;
+    u2UsoGraph2 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraph];
+    u2UsoGraph3 = [equalCopy u2UsoGraph];
+    v32 = [u2UsoGraph2 isEqual:u2UsoGraph3];
 
     if (!v32)
     {
@@ -496,22 +496,22 @@ LABEL_6:
   {
   }
 
-  v5 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraphTier1];
-  v6 = [v4 u2UsoGraphTier1];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraphTier1];
+  linkId2 = [equalCopy u2UsoGraphTier1];
+  if ((linkId != 0) == (linkId2 == 0))
   {
 LABEL_34:
 
     goto LABEL_35;
   }
 
-  v33 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraphTier1];
-  if (v33)
+  u2UsoGraphTier1 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraphTier1];
+  if (u2UsoGraphTier1)
   {
-    v34 = v33;
-    v35 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraphTier1];
-    v36 = [v4 u2UsoGraphTier1];
-    v37 = [v35 isEqual:v36];
+    v34 = u2UsoGraphTier1;
+    u2UsoGraphTier12 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraphTier1];
+    u2UsoGraphTier13 = [equalCopy u2UsoGraphTier1];
+    v37 = [u2UsoGraphTier12 isEqual:u2UsoGraphTier13];
 
     if (!v37)
     {
@@ -525,25 +525,25 @@ LABEL_34:
 
   v40 = *(&self->_isNlsContainerResult + 1);
   v41 = (v40 >> 1) & 1;
-  v42 = v4[66];
+  v42 = equalCopy[66];
   if (v41 == ((v42 >> 1) & 1))
   {
     if (v41)
     {
       isNlsResult = self->_isNlsResult;
-      if (isNlsResult != [v4 isNlsResult])
+      if (isNlsResult != [equalCopy isNlsResult])
       {
         goto LABEL_35;
       }
 
       v40 = *(&self->_isNlsContainerResult + 1);
-      v42 = v4[66];
+      v42 = equalCopy[66];
     }
 
     v44 = (v40 >> 2) & 1;
     if (v44 == ((v42 >> 2) & 1))
     {
-      if (!v44 || (isNlsContainerResult = self->_isNlsContainerResult, isNlsContainerResult == [v4 isNlsContainerResult]))
+      if (!v44 || (isNlsContainerResult = self->_isNlsContainerResult, isNlsContainerResult == [equalCopy isNlsContainerResult]))
       {
         v38 = 1;
         goto LABEL_36;
@@ -558,21 +558,21 @@ LABEL_36:
   return v38;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self linkId];
+  toCopy = to;
+  linkId = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self linkId];
 
-  if (v5)
+  if (linkId)
   {
-    v6 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self linkId];
+    linkId2 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self contentTitle];
+  contentTitle = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self contentTitle];
 
-  if (v7)
+  if (contentTitle)
   {
     PBDataWriterWriteStringField();
   }
@@ -582,9 +582,9 @@ LABEL_36:
     PBDataWriterWriteUint32Field();
   }
 
-  v8 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self adamIdString];
+  adamIdString = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self adamIdString];
 
-  if (v8)
+  if (adamIdString)
   {
     PBDataWriterWriteStringField();
   }
@@ -617,19 +617,19 @@ LABEL_36:
     while (v11);
   }
 
-  v14 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraph];
+  u2UsoGraph = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraph];
 
-  if (v14)
+  if (u2UsoGraph)
   {
-    v15 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraph];
+    u2UsoGraph2 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraph];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraphTier1];
+  u2UsoGraphTier1 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraphTier1];
 
-  if (v16)
+  if (u2UsoGraphTier1)
   {
-    v17 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraphTier1];
+    u2UsoGraphTier12 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraphTier1];
     PBDataWriterWriteSubmessage();
   }
 
@@ -646,9 +646,9 @@ LABEL_36:
   }
 }
 
-- (void)setHasIsNlsContainerResult:(BOOL)a3
+- (void)setHasIsNlsContainerResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 4;
   }
@@ -661,9 +661,9 @@ LABEL_36:
   *(&self->_isNlsContainerResult + 1) = *(&self->_isNlsContainerResult + 1) & 0xFB | v3;
 }
 
-- (void)setHasIsNlsResult:(BOOL)a3
+- (void)setHasIsNlsResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 2;
   }
@@ -676,31 +676,31 @@ LABEL_36:
   *(&self->_isNlsContainerResult + 1) = *(&self->_isNlsContainerResult + 1) & 0xFD | v3;
 }
 
-- (void)addSearchResults:(id)a3
+- (void)addSearchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   searchResults = self->_searchResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!searchResults)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_searchResults;
-    self->_searchResults = v6;
+    self->_searchResults = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     searchResults = self->_searchResults;
   }
 
-  [(NSArray *)searchResults addObject:v4];
+  [(NSArray *)searchResults addObject:resultsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v18.receiver = self;
   v18.super_class = FLOWSchemaFLOWMediaPlayerPlaybackContextTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteContentTitle];
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteAdamId];
@@ -710,7 +710,7 @@ LABEL_36:
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteU2UsoGraphTier1];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteContentTitle];
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteAdamId];
@@ -720,7 +720,7 @@ LABEL_36:
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteU2UsoGraphTier1];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteContentTitle];
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteAdamId];
@@ -730,7 +730,7 @@ LABEL_36:
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteU2UsoGraphTier1];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteContentTitle];
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteAdamId];
@@ -740,7 +740,7 @@ LABEL_36:
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteU2UsoGraphTier1];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteContentTitle];
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteAdamId];
@@ -750,33 +750,33 @@ LABEL_36:
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteU2UsoGraphTier1];
   }
 
-  v6 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  linkId = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteLinkId];
   }
 
-  v9 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self searchResults];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  searchResults = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self searchResults];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:searchResults underConditions:policyCopy];
   [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self setSearchResults:v10];
 
-  v11 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraph];
-  v12 = [v11 applySensitiveConditionsPolicy:v4];
-  v13 = [v12 suppressMessage];
+  u2UsoGraph = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraph];
+  v12 = [u2UsoGraph applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v12 suppressMessage];
 
-  if (v13)
+  if (suppressMessage2)
   {
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteU2UsoGraph];
   }
 
-  v14 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraphTier1];
-  v15 = [v14 applySensitiveConditionsPolicy:v4];
-  v16 = [v15 suppressMessage];
+  u2UsoGraphTier1 = [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self u2UsoGraphTier1];
+  v15 = [u2UsoGraphTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v15 suppressMessage];
 
-  if (v16)
+  if (suppressMessage3)
   {
     [(FLOWSchemaFLOWMediaPlayerPlaybackContextTier1 *)self deleteU2UsoGraphTier1];
   }

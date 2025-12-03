@@ -1,50 +1,50 @@
 @interface HKHRAFibBurdenSevenDayAnalysisScheduler
-- (HKHRAFibBurdenSevenDayAnalysisScheduler)initWithProfile:(id)a3 analysisManager:(id)a4 featureStatusManager:(id)a5 featureStatusInspector:(id)a6 alarm:(id)a7 scheduler:(id)a8 breadcrumbManager:(id)a9 syncedKeyValueDomain:(id)a10;
-- (HKHRAFibBurdenSevenDayAnalysisScheduler)initWithProfile:(id)a3 featureStatusManager:(id)a4 onboardingEligibilityDeterminer:(id)a5 analyzer:(id)a6;
+- (HKHRAFibBurdenSevenDayAnalysisScheduler)initWithProfile:(id)profile analysisManager:(id)manager featureStatusManager:(id)statusManager featureStatusInspector:(id)inspector alarm:(id)alarm scheduler:(id)scheduler breadcrumbManager:(id)breadcrumbManager syncedKeyValueDomain:(id)self0;
+- (HKHRAFibBurdenSevenDayAnalysisScheduler)initWithProfile:(id)profile featureStatusManager:(id)manager onboardingEligibilityDeterminer:(id)determiner analyzer:(id)analyzer;
 - (HKHRAFibBurdenSevenDayAnalysisSchedulerDelegate)delegate;
-- (id)_performAnalysisWithFeatureStatus:(id)a3 error:(id *)a4;
+- (id)_performAnalysisWithFeatureStatus:(id)status error:(id *)error;
 - (void)_forceAnalysis;
-- (void)_logAnalysisResult:(int64_t)a3 error:(id)a4;
-- (void)_reportAnalysisResultsToDelegate:(id)a3 featureStatus:(id)a4;
-- (void)_saveLastAnalysisCompletedDateForResult:(id)a3;
-- (void)analysisSchedulerDidFire:(id)a3 completion:(id)a4;
-- (void)initialAnalysisAlarmDidFireWithAlarm:(id)a3;
+- (void)_logAnalysisResult:(int64_t)result error:(id)error;
+- (void)_reportAnalysisResultsToDelegate:(id)delegate featureStatus:(id)status;
+- (void)_saveLastAnalysisCompletedDateForResult:(id)result;
+- (void)analysisSchedulerDidFire:(id)fire completion:(id)completion;
+- (void)initialAnalysisAlarmDidFireWithAlarm:(id)alarm;
 @end
 
 @implementation HKHRAFibBurdenSevenDayAnalysisScheduler
 
-- (HKHRAFibBurdenSevenDayAnalysisScheduler)initWithProfile:(id)a3 featureStatusManager:(id)a4 onboardingEligibilityDeterminer:(id)a5 analyzer:(id)a6
+- (HKHRAFibBurdenSevenDayAnalysisScheduler)initWithProfile:(id)profile featureStatusManager:(id)manager onboardingEligibilityDeterminer:(id)determiner analyzer:(id)analyzer
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[HDHRAFibBurdenSevenDayAnalysisBreadcrumbManager alloc] initWithProfile:v13];
-  v15 = [[HKHRAFibBurdenSevenDayAnalysisFeatureStatusInspector alloc] initWithOnboardingEligibilityDeterminer:v11 breadcrumbManager:v14];
+  analyzerCopy = analyzer;
+  determinerCopy = determiner;
+  managerCopy = manager;
+  profileCopy = profile;
+  v14 = [[HDHRAFibBurdenSevenDayAnalysisBreadcrumbManager alloc] initWithProfile:profileCopy];
+  v15 = [[HKHRAFibBurdenSevenDayAnalysisFeatureStatusInspector alloc] initWithOnboardingEligibilityDeterminer:determinerCopy breadcrumbManager:v14];
 
   v16 = [HKHRDatabaseAnalysisSchedulerImpl alloc];
   v17 = HKHRAFibBurdenLogForCategory();
   HKHRAFibBurdenSevenDayAnalysisMaximumXPCDelay();
-  v18 = [HKHRDatabaseAnalysisSchedulerImpl initWithProfile:v16 identifier:"initWithProfile:identifier:loggingCategory:maximumDelay:retryDelay:breadcrumbManager:" loggingCategory:v13 maximumDelay:@"HKHRAFibBurdenSevenDayAnalysisSchedulerIdentifier" retryDelay:v17 breadcrumbManager:v14];
+  v18 = [HKHRDatabaseAnalysisSchedulerImpl initWithProfile:v16 identifier:"initWithProfile:identifier:loggingCategory:maximumDelay:retryDelay:breadcrumbManager:" loggingCategory:profileCopy maximumDelay:@"HKHRAFibBurdenSevenDayAnalysisSchedulerIdentifier" retryDelay:v17 breadcrumbManager:v14];
 
-  v19 = [[HKHRAFibBurdenSevenDayAnalysisManager alloc] initWithProfile:v13 analyzer:v10];
-  v20 = [[HKHRAFibBurdenSevenDayAnalysisSchedulerXPCAlarm alloc] initWithProfile:v13];
-  v21 = [MEMORY[0x277D10718] hdhr_aFibBurdenProtectedSyncedDomainForProfile:v13];
-  v22 = [(HKHRAFibBurdenSevenDayAnalysisScheduler *)self initWithProfile:v13 analysisManager:v19 featureStatusManager:v12 featureStatusInspector:v15 alarm:v20 scheduler:v18 breadcrumbManager:v14 syncedKeyValueDomain:v21];
+  v19 = [[HKHRAFibBurdenSevenDayAnalysisManager alloc] initWithProfile:profileCopy analyzer:analyzerCopy];
+  v20 = [[HKHRAFibBurdenSevenDayAnalysisSchedulerXPCAlarm alloc] initWithProfile:profileCopy];
+  v21 = [MEMORY[0x277D10718] hdhr_aFibBurdenProtectedSyncedDomainForProfile:profileCopy];
+  v22 = [(HKHRAFibBurdenSevenDayAnalysisScheduler *)self initWithProfile:profileCopy analysisManager:v19 featureStatusManager:managerCopy featureStatusInspector:v15 alarm:v20 scheduler:v18 breadcrumbManager:v14 syncedKeyValueDomain:v21];
 
   return v22;
 }
 
-- (HKHRAFibBurdenSevenDayAnalysisScheduler)initWithProfile:(id)a3 analysisManager:(id)a4 featureStatusManager:(id)a5 featureStatusInspector:(id)a6 alarm:(id)a7 scheduler:(id)a8 breadcrumbManager:(id)a9 syncedKeyValueDomain:(id)a10
+- (HKHRAFibBurdenSevenDayAnalysisScheduler)initWithProfile:(id)profile analysisManager:(id)manager featureStatusManager:(id)statusManager featureStatusInspector:(id)inspector alarm:(id)alarm scheduler:(id)scheduler breadcrumbManager:(id)breadcrumbManager syncedKeyValueDomain:(id)self0
 {
-  obj = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v21 = a8;
-  v16 = a9;
-  v17 = a10;
+  obj = profile;
+  managerCopy = manager;
+  statusManagerCopy = statusManager;
+  inspectorCopy = inspector;
+  alarmCopy = alarm;
+  schedulerCopy = scheduler;
+  breadcrumbManagerCopy = breadcrumbManager;
+  domainCopy = domain;
   v27.receiver = self;
   v27.super_class = HKHRAFibBurdenSevenDayAnalysisScheduler;
   v18 = [(HKHRAFibBurdenSevenDayAnalysisScheduler *)&v27 init];
@@ -52,21 +52,21 @@
   if (v18)
   {
     objc_storeWeak(&v18->_profile, obj);
-    objc_storeStrong(&v19->_analysisManager, a4);
-    objc_storeStrong(&v19->_featureStatusManager, a5);
-    objc_storeStrong(&v19->_featureStatusInspector, a6);
-    objc_storeStrong(&v19->_alarm, a7);
-    objc_storeStrong(&v19->_scheduler, a8);
-    objc_storeStrong(&v19->_breadcrumbManager, a9);
-    objc_storeStrong(&v19->_syncedKeyValueDomain, a10);
-    [(HKHRAFibBurdenSevenDayAnalysisSchedulerAlarm *)v19->_alarm setDelegate:v19, v21, v22, v23, v24, v25];
+    objc_storeStrong(&v19->_analysisManager, manager);
+    objc_storeStrong(&v19->_featureStatusManager, statusManager);
+    objc_storeStrong(&v19->_featureStatusInspector, inspector);
+    objc_storeStrong(&v19->_alarm, alarm);
+    objc_storeStrong(&v19->_scheduler, scheduler);
+    objc_storeStrong(&v19->_breadcrumbManager, breadcrumbManager);
+    objc_storeStrong(&v19->_syncedKeyValueDomain, domain);
+    [(HKHRAFibBurdenSevenDayAnalysisSchedulerAlarm *)v19->_alarm setDelegate:v19, schedulerCopy, alarmCopy, inspectorCopy, statusManagerCopy, managerCopy];
     [(HKHRDatabaseAnalysisScheduler *)v19->_scheduler setDelegate:v19];
   }
 
   return v19;
 }
 
-- (void)initialAnalysisAlarmDidFireWithAlarm:(id)a3
+- (void)initialAnalysisAlarmDidFireWithAlarm:(id)alarm
 {
   [(HDHRAFibBurdenSevenDayAnalysisBreadcrumbManaging *)self->_breadcrumbManager dropBreadcrumb:0];
   scheduler = self->_scheduler;
@@ -74,9 +74,9 @@
   [(HKHRDatabaseAnalysisScheduler *)scheduler scheduleAnalysis];
 }
 
-- (void)analysisSchedulerDidFire:(id)a3 completion:(id)a4
+- (void)analysisSchedulerDidFire:(id)fire completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   featureStatusManager = self->_featureStatusManager;
   v13 = 0;
   v7 = [(HKFeatureStatusManager *)featureStatusManager featureStatusWithError:&v13];
@@ -92,14 +92,14 @@
       -[HKHRAFibBurdenSevenDayAnalysisScheduler _logAnalysisResult:error:](self, "_logAnalysisResult:error:", [v9 result], v10);
       [(HKHRAFibBurdenSevenDayAnalysisScheduler *)self _reportAnalysisResultsToDelegate:v9 featureStatus:v7];
       [(HKHRAFibBurdenSevenDayAnalysisScheduler *)self _saveLastAnalysisCompletedDateForResult:v9];
-      v5[2](v5, -[HKHRAFibBurdenSevenDayAnalysisScheduler _determineIfAnotherAnalysisRunIsNecessaryWithAnalysisResult:](self, "_determineIfAnotherAnalysisRunIsNecessaryWithAnalysisResult:", [v9 result]), v10);
+      completionCopy[2](completionCopy, -[HKHRAFibBurdenSevenDayAnalysisScheduler _determineIfAnotherAnalysisRunIsNecessaryWithAnalysisResult:](self, "_determineIfAnotherAnalysisRunIsNecessaryWithAnalysisResult:", [v9 result]), v10);
 
       v8 = v10;
     }
 
     else
     {
-      v5[2](v5, 0, 0);
+      completionCopy[2](completionCopy, 0, 0);
     }
   }
 
@@ -113,7 +113,7 @@
     }
 
     [(HDHRAFibBurdenSevenDayAnalysisBreadcrumbManaging *)self->_breadcrumbManager dropAnalysisResultBreadcrumbWithContext:@"Failed to retrieve feature status"];
-    v5[2](v5, 1, v8);
+    completionCopy[2](completionCopy, 1, v8);
   }
 }
 
@@ -125,7 +125,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_229486000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Analysis forced.", &v5, 0xCu);
   }
 
@@ -133,10 +133,10 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_performAnalysisWithFeatureStatus:(id)a3 error:(id *)a4
+- (id)_performAnalysisWithFeatureStatus:(id)status error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  statusCopy = status;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -148,19 +148,19 @@
   v26[2] = __83__HKHRAFibBurdenSevenDayAnalysisScheduler__performAnalysisWithFeatureStatus_error___block_invoke;
   v26[3] = &unk_27865F948;
   v26[4] = self;
-  v7 = v6;
+  v7 = statusCopy;
   v27 = v7;
   v28 = &v29;
   v8 = MEMORY[0x22AACDB50](v26);
   v9 = HKHRAFibBurdenLogForCategory();
   v10 = _HKLogSignpostIDGenerate();
-  v11 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v12 = [v11 showSensitiveLogItems];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  showSensitiveLogItems = [mEMORY[0x277CCDD30] showSensitiveLogItems];
 
-  if (v12)
+  if (showSensitiveLogItems)
   {
-    v13 = [MEMORY[0x277CBEAA8] date];
-    v14 = [MEMORY[0x277CBEA80] currentCalendar];
+    date = [MEMORY[0x277CBEAA8] date];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     HKHRAFibBurdenPreviousWeekDayIndexRange();
 
     v15 = NSStringFromHKDayIndexRange();
@@ -201,10 +201,10 @@
   v22 = v21;
   if (v21)
   {
-    if (a4)
+    if (error)
     {
       v23 = v21;
-      *a4 = v22;
+      *error = v22;
     }
 
     else
@@ -233,13 +233,13 @@ id __83__HKHRAFibBurdenSevenDayAnalysisScheduler__performAnalysisWithFeatureStat
   return v6;
 }
 
-- (void)_logAnalysisResult:(int64_t)a3 error:(id)a4
+- (void)_logAnalysisResult:(int64_t)result error:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3 > 2)
+  errorCopy = error;
+  if (result > 2)
   {
-    switch(a3)
+    switch(result)
     {
       case 3:
         _HKInitializeLogging();
@@ -247,7 +247,7 @@ id __83__HKHRAFibBurdenSevenDayAnalysisScheduler__performAnalysisWithFeatureStat
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           v12 = 138412290;
-          v13 = self;
+          selfCopy6 = self;
           v8 = "[%@] Burden analysis run, no sample created as there was not enough tachograms for the previous seven days";
           goto LABEL_20;
         }
@@ -259,7 +259,7 @@ id __83__HKHRAFibBurdenSevenDayAnalysisScheduler__performAnalysisWithFeatureStat
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           v12 = 138412290;
-          v13 = self;
+          selfCopy6 = self;
           v8 = "[%@] Burden analysis run, no sample created as there was not enough days in previous seven days with minimum tachogram threshold";
           goto LABEL_20;
         }
@@ -271,7 +271,7 @@ id __83__HKHRAFibBurdenSevenDayAnalysisScheduler__performAnalysisWithFeatureStat
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           v12 = 138412290;
-          v13 = self;
+          selfCopy6 = self;
           v8 = "[%@] Burden analysis run, no sample created as there was not enough segments";
           goto LABEL_20;
         }
@@ -284,7 +284,7 @@ LABEL_22:
 
   else
   {
-    switch(a3)
+    switch(result)
     {
       case 0:
         _HKInitializeLogging();
@@ -292,7 +292,7 @@ LABEL_22:
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           v12 = 138412290;
-          v13 = self;
+          selfCopy6 = self;
           v8 = "[%@] Burden analysis run and sample created";
           goto LABEL_20;
         }
@@ -304,9 +304,9 @@ LABEL_22:
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           v12 = 138412546;
-          v13 = self;
+          selfCopy6 = self;
           v14 = 2112;
-          v15 = v6;
+          v15 = errorCopy;
           v8 = "[%@] Burden analysis run, no sample created due to infrastructure error: %@";
           v9 = v7;
           v10 = 22;
@@ -322,7 +322,7 @@ LABEL_21:
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           v12 = 138412290;
-          v13 = self;
+          selfCopy6 = self;
           v8 = "[%@] Burden analysis run, no sample created as there was not enough time since last sample";
 LABEL_20:
           v9 = v7;
@@ -337,54 +337,54 @@ LABEL_20:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportAnalysisResultsToDelegate:(id)a3 featureStatus:(id)a4
+- (void)_reportAnalysisResultsToDelegate:(id)delegate featureStatus:(id)status
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 result];
-  if ((v7 - 3) >= 3)
+  delegateCopy = delegate;
+  statusCopy = status;
+  result = [delegateCopy result];
+  if ((result - 3) >= 3)
   {
-    if (v7)
+    if (result)
     {
       goto LABEL_6;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v9 = [v10 sampleCreated];
-    [WeakRetained sevenDayAnalysisScheduler:self didSuccessfullyCompleteAnalysisWithSample:v9 onboardedWithinAnalysisInterval:objc_msgSend(v10 featureStatus:{"onboardedWithinAnalysisInterval"), v6}];
+    sampleCreated = [delegateCopy sampleCreated];
+    [WeakRetained sevenDayAnalysisScheduler:self didSuccessfullyCompleteAnalysisWithSample:sampleCreated onboardedWithinAnalysisInterval:objc_msgSend(delegateCopy featureStatus:{"onboardedWithinAnalysisInterval"), statusCopy}];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained sevenDayAnalysisScheduler:self didSuccessfullyCompleteAnalysisWithSample:0 onboardedWithinAnalysisInterval:objc_msgSend(v10 featureStatus:{"onboardedWithinAnalysisInterval"), v6}];
+    [WeakRetained sevenDayAnalysisScheduler:self didSuccessfullyCompleteAnalysisWithSample:0 onboardedWithinAnalysisInterval:objc_msgSend(delegateCopy featureStatus:{"onboardedWithinAnalysisInterval"), statusCopy}];
   }
 
 LABEL_6:
 }
 
-- (void)_saveLastAnalysisCompletedDateForResult:(id)a3
+- (void)_saveLastAnalysisCompletedDateForResult:(id)result
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [a3 result];
-  if (v4 <= 5)
+  result = [result result];
+  if (result <= 5)
   {
-    if (((1 << v4) & 0x39) != 0)
+    if (((1 << result) & 0x39) != 0)
     {
       _HKInitializeLogging();
       v5 = HKHRAFibBurdenLogForCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v14 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_229486000, v5, OS_LOG_TYPE_DEFAULT, "[%@] Saving analysis completed date", buf, 0xCu);
       }
 
       syncedKeyValueDomain = self->_syncedKeyValueDomain;
-      v7 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       v8 = *MEMORY[0x277D12EB0];
       v12 = 0;
-      [(HDKeyValueDomain *)syncedKeyValueDomain setDate:v7 forKey:v8 error:&v12];
+      [(HDKeyValueDomain *)syncedKeyValueDomain setDate:date forKey:v8 error:&v12];
       v9 = v12;
 
       if (v9)
@@ -407,7 +407,7 @@ LABEL_6:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v14 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_229486000, v9, OS_LOG_TYPE_DEFAULT, "[%@] Skipping save analysis completed date - analysis not completed", buf, 0xCu);
       }
     }

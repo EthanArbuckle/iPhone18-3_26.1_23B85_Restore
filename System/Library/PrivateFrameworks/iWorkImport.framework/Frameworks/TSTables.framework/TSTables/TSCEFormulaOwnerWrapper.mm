@@ -1,14 +1,14 @@
 @interface TSCEFormulaOwnerWrapper
-- (BOOL)isEqual:(id)a3;
-- (TSCEFormulaOwnerWrapper)initWithFormulaOwnerUID:(const TSKUIDStruct *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSCEFormulaOwnerWrapper)initWithFormulaOwnerUID:(const TSKUIDStruct *)d;
 - (id)description;
 @end
 
 @implementation TSCEFormulaOwnerWrapper
 
-- (TSCEFormulaOwnerWrapper)initWithFormulaOwnerUID:(const TSKUIDStruct *)a3
+- (TSCEFormulaOwnerWrapper)initWithFormulaOwnerUID:(const TSKUIDStruct *)d
 {
-  if (*a3 == 0)
+  if (*d == 0)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEFormulaOwnerWrapper initWithFormulaOwnerUID:]", v3, v4);
@@ -23,22 +23,22 @@
   result = [(TSCEFormulaOwnerWrapper *)&v19 init];
   if (result)
   {
-    result->_ownerUID = *a3;
+    result->_ownerUID = *d;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     isEqualToTSCEFormulaOwnerWrapper = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     isEqualToTSCEFormulaOwnerWrapper = objc_msgSend_isEqualToTSCEFormulaOwnerWrapper_(self, v6, v5, v7, v8);
   }

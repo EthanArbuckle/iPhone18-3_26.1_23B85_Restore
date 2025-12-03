@@ -1,11 +1,11 @@
 @interface BuddyMigrationUpdateController
 - (BuddyMigrationUpdateController)init;
-- (void)_prepareForSoftwareUpdateToBuild:(id)a3 completion:(id)a4;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)softwareUpdateController:(id)a3 didFailToInstallUpdateWithError:(id)a4;
-- (void)softwareUpdateController:(id)a3 didStartInstallForUpdate:(id)a4;
-- (void)softwareUpdateController:(id)a3 prepareToInstallUpdate:(id)a4 completion:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_prepareForSoftwareUpdateToBuild:(id)build completion:(id)completion;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)softwareUpdateController:(id)controller didFailToInstallUpdateWithError:(id)error;
+- (void)softwareUpdateController:(id)controller didStartInstallForUpdate:(id)update;
+- (void)softwareUpdateController:(id)controller prepareToInstallUpdate:(id)update completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation BuddyMigrationUpdateController
@@ -29,39 +29,39 @@
   return v3;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  appearCopy = appear;
   v11.receiver = self;
   v11.super_class = BuddyMigrationUpdateController;
-  [(BuddySoftwareUpdateController *)&v11 viewDidAppear:a3];
-  if (![(BuddyMigrationUpdateController *)v14 ableToMigrateWithUpdate])
+  [(BuddySoftwareUpdateController *)&v11 viewDidAppear:appear];
+  if (![(BuddyMigrationUpdateController *)selfCopy ableToMigrateWithUpdate])
   {
     v4 = _NSConcreteStackBlock;
     v5 = -1073741824;
     v6 = 0;
     v7 = sub_1000BE170;
     v8 = &unk_10032B0D0;
-    v9 = v14;
+    v9 = selfCopy;
     location = [BuddyRestoreHelpers alertForBackupError:0 okButtonAction:&v4];
-    v3 = [(BuddyMigrationUpdateController *)v14 navigationController];
-    [v3 presentViewController:location animated:1 completion:0];
+    navigationController = [(BuddyMigrationUpdateController *)selfCopy navigationController];
+    [navigationController presentViewController:location animated:1 completion:0];
 
     objc_storeStrong(&location, 0);
     objc_storeStrong(&v9, 0);
   }
 }
 
-- (void)_prepareForSoftwareUpdateToBuild:(id)a3 completion:(id)a4
+- (void)_prepareForSoftwareUpdateToBuild:(id)build completion:(id)completion
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, build);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, completion);
   v33 = _BYLoggingFacility();
   v32 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -71,12 +71,12 @@
   }
 
   objc_storeStrong(&v33, 0);
-  v5 = [(BuddyMigrationUpdateController *)v36 willPerformSoftwareUpdateBlock];
+  willPerformSoftwareUpdateBlock = [(BuddyMigrationUpdateController *)selfCopy willPerformSoftwareUpdateBlock];
 
-  if (v5)
+  if (willPerformSoftwareUpdateBlock)
   {
-    v6 = [(BuddyMigrationUpdateController *)v36 willPerformSoftwareUpdateBlock];
-    v6[2](v6);
+    willPerformSoftwareUpdateBlock2 = [(BuddyMigrationUpdateController *)selfCopy willPerformSoftwareUpdateBlock];
+    willPerformSoftwareUpdateBlock2[2](willPerformSoftwareUpdateBlock2);
   }
 
   v7 = [BuddyMigrationState alloc];
@@ -102,14 +102,14 @@
 
   objc_storeStrong(&v27, 0);
   v10 = v31;
-  v11 = [(BuddyMigrationUpdateController *)v36 buddyPreferencesExcludedFromBackup];
-  [v10 persistUsingPreferences:v11];
+  buddyPreferencesExcludedFromBackup = [(BuddyMigrationUpdateController *)selfCopy buddyPreferencesExcludedFromBackup];
+  [v10 persistUsingPreferences:buddyPreferencesExcludedFromBackup];
 
-  v12 = [(BuddyMigrationUpdateController *)v36 buddyPreferences];
-  [(BYPreferencesController *)v12 persist];
+  buddyPreferences = [(BuddyMigrationUpdateController *)selfCopy buddyPreferences];
+  [(BYPreferencesController *)buddyPreferences persist];
 
-  v13 = [(BuddyMigrationUpdateController *)v36 settingsManager];
-  [(BFFSettingsManager *)v13 hideStashInSafeHavenAsProvisional:1];
+  settingsManager = [(BuddyMigrationUpdateController *)selfCopy settingsManager];
+  [(BFFSettingsManager *)settingsManager hideStashInSafeHavenAsProvisional:1];
 
   v25 = _BYLoggingFacility();
   v24 = OS_LOG_TYPE_DEFAULT;
@@ -122,14 +122,14 @@
   }
 
   objc_storeStrong(&v25, 0);
-  v16 = [(BuddyMigrationUpdateController *)v36 proximitySetupController];
+  proximitySetupController = [(BuddyMigrationUpdateController *)selfCopy proximitySetupController];
   v17 = _NSConcreteStackBlock;
   v18 = -1073741824;
   v19 = 0;
   v20 = sub_1000BE5A0;
   v21 = &unk_10032B120;
   v22 = v34;
-  [(ProximitySetupController *)v16 suspendConnectionForSoftwareUpdate:&v17];
+  [(ProximitySetupController *)proximitySetupController suspendConnectionForSoftwareUpdate:&v17];
 
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v31, 0);
@@ -137,18 +137,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyMigrationUpdateController *)v43 miscState];
-  v4 = [(BuddyMiscState *)v3 migrationManager];
-  v5 = [(BuddyTargetDeviceMigrationManager *)v4 forceUpdateToMigrate];
+  objc_storeStrong(location, completion);
+  miscState = [(BuddyMigrationUpdateController *)selfCopy miscState];
+  migrationManager = [(BuddyMiscState *)miscState migrationManager];
+  forceUpdateToMigrate = [(BuddyTargetDeviceMigrationManager *)migrationManager forceUpdateToMigrate];
 
-  v41 = v5 & 1;
-  if (v5)
+  v41 = forceUpdateToMigrate & 1;
+  if (forceUpdateToMigrate)
   {
     v40 = _BYLoggingFacility();
     v39 = OS_LOG_TYPE_DEFAULT;
@@ -165,25 +165,25 @@
     [v8 setObject:&__kCFBooleanFalse forKey:@"RequireSoftwareUpdateForMigration"];
   }
 
-  v9 = [(BuddyMigrationUpdateController *)v43 miscState];
-  v10 = [(BuddyMiscState *)v9 migrationManager];
-  v11 = [(BuddyTargetDeviceMigrationManager *)v10 requiresUpdateToMigrate];
+  miscState2 = [(BuddyMigrationUpdateController *)selfCopy miscState];
+  migrationManager2 = [(BuddyMiscState *)miscState2 migrationManager];
+  requiresUpdateToMigrate = [(BuddyTargetDeviceMigrationManager *)migrationManager2 requiresUpdateToMigrate];
 
-  v37 = v11 & 1;
-  if (v11 & 1) != 0 || (v41)
+  v37 = requiresUpdateToMigrate & 1;
+  if (requiresUpdateToMigrate & 1) != 0 || (v41)
   {
-    v12 = [(BuddyMigrationUpdateController *)v43 proximitySetupController];
-    v35 = [(ProximitySetupController *)v12 productVersion];
+    proximitySetupController = [(BuddyMigrationUpdateController *)selfCopy proximitySetupController];
+    productVersion = [(ProximitySetupController *)proximitySetupController productVersion];
 
-    v13 = [(BuddySoftwareUpdateController *)v43 update];
-    v14 = [(SUDescriptor *)v13 productVersion];
-    v15 = [SASSystemInformation compareProductVersion:v35 toProductVersion:v14]!= 1;
-    [(BuddyMigrationUpdateController *)v43 setAbleToMigrateWithUpdate:v15];
+    update = [(BuddySoftwareUpdateController *)selfCopy update];
+    productVersion2 = [(SUDescriptor *)update productVersion];
+    v15 = [SASSystemInformation compareProductVersion:productVersion toProductVersion:productVersion2]!= 1;
+    [(BuddyMigrationUpdateController *)selfCopy setAbleToMigrateWithUpdate:v15];
 
     if (v41)
     {
-      v16 = [(BuddySoftwareUpdateController *)v43 update];
-      [(BuddyMigrationUpdateController *)v43 setAbleToMigrateWithUpdate:v16 != 0];
+      update2 = [(BuddySoftwareUpdateController *)selfCopy update];
+      [(BuddyMigrationUpdateController *)selfCopy setAbleToMigrateWithUpdate:update2 != 0];
     }
 
     v17 = +[BYPreferencesController buddyPreferencesInternal];
@@ -191,7 +191,7 @@
 
     if (v18)
     {
-      [(BuddyMigrationUpdateController *)v43 _prepareForSoftwareUpdateToBuild:@"1A1" completion:&stru_10032C378];
+      [(BuddyMigrationUpdateController *)selfCopy _prepareForSoftwareUpdateToBuild:@"1A1" completion:&stru_10032C378];
       v36 = 1;
     }
 
@@ -204,7 +204,7 @@
       v32 = &unk_10032B120;
       v33 = location[0];
       v34 = objc_retainBlock(&v28);
-      if ([(BuddySoftwareUpdateController *)v43 scannedForUpdate]&& [(BuddyMigrationUpdateController *)v43 ableToMigrateWithUpdate])
+      if ([(BuddySoftwareUpdateController *)selfCopy scannedForUpdate]&& [(BuddyMigrationUpdateController *)selfCopy ableToMigrateWithUpdate])
       {
         (*(v34 + 2))();
         v36 = 1;
@@ -212,14 +212,14 @@
 
       else
       {
-        v19 = v43;
+        v19 = selfCopy;
         v20 = _NSConcreteStackBlock;
         v21 = -1073741824;
         v22 = 0;
         v23 = sub_1000BEF9C;
         v24 = &unk_10032C3A0;
-        v25 = v43;
-        v26 = v35;
+        v25 = selfCopy;
+        v26 = productVersion;
         v27 = v34;
         [(BuddySoftwareUpdateController *)v19 scanForUpdateCompletion:&v20];
         objc_storeStrong(&v27, 0);
@@ -232,7 +232,7 @@
       objc_storeStrong(&v33, 0);
     }
 
-    objc_storeStrong(&v35, 0);
+    objc_storeStrong(&productVersion, 0);
   }
 
   else
@@ -248,37 +248,37 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)softwareUpdateController:(id)a3 prepareToInstallUpdate:(id)a4 completion:(id)a5
+- (void)softwareUpdateController:(id)controller prepareToInstallUpdate:(id)update completion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, update);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
-  v7 = v12;
-  v8 = [v10 productBuildVersion];
-  [(BuddyMigrationUpdateController *)v7 _prepareForSoftwareUpdateToBuild:v8 completion:v9];
+  objc_storeStrong(&v9, completion);
+  v7 = selfCopy;
+  productBuildVersion = [v10 productBuildVersion];
+  [(BuddyMigrationUpdateController *)v7 _prepareForSoftwareUpdateToBuild:productBuildVersion completion:v9];
 
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)softwareUpdateController:(id)a3 didStartInstallForUpdate:(id)a4
+- (void)softwareUpdateController:(id)controller didStartInstallForUpdate:(id)update
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
-  v5 = [(BuddyMigrationUpdateController *)v20 buddyPreferencesExcludedFromBackup];
-  LOBYTE(a4) = ![BuddyMigrationState hasStateFromPreferences:v5];
+  objc_storeStrong(&v18, update);
+  buddyPreferencesExcludedFromBackup = [(BuddyMigrationUpdateController *)selfCopy buddyPreferencesExcludedFromBackup];
+  LOBYTE(update) = ![BuddyMigrationState hasStateFromPreferences:buddyPreferencesExcludedFromBackup];
 
-  if (a4)
+  if (update)
   {
     oslog = _BYLoggingFacility();
     v16 = OS_LOG_TYPE_DEFAULT;
@@ -291,9 +291,9 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    v8 = v20;
-    v9 = [v18 productBuildVersion];
-    [(BuddyMigrationUpdateController *)v8 _prepareForSoftwareUpdateToBuild:v9 completion:0];
+    v8 = selfCopy;
+    productBuildVersion = [v18 productBuildVersion];
+    [(BuddyMigrationUpdateController *)v8 _prepareForSoftwareUpdateToBuild:productBuildVersion completion:0];
   }
 
   else
@@ -315,14 +315,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)softwareUpdateController:(id)a3 didFailToInstallUpdateWithError:(id)a4
+- (void)softwareUpdateController:(id)controller didFailToInstallUpdateWithError:(id)error
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, error);
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
   {
@@ -335,9 +335,9 @@
 
     else if (v12)
     {
-      v10 = [v12 domain];
+      domain = [v12 domain];
       v9 = 1;
-      v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v10, [v12 code]);
+      v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v12 code]);
       v8 = v5;
       v7 = 1;
     }
@@ -359,8 +359,8 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v6 = [(BuddyMigrationUpdateController *)v14 buddyPreferencesExcludedFromBackup];
-  [BuddyMigrationState removeFromPreferences:v6];
+  buddyPreferencesExcludedFromBackup = [(BuddyMigrationUpdateController *)selfCopy buddyPreferencesExcludedFromBackup];
+  [BuddyMigrationState removeFromPreferences:buddyPreferencesExcludedFromBackup];
 
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);

@@ -5,7 +5,7 @@
 + (id)tailspinDirectory;
 + (id)tailspinPrefix;
 - (BOOL)canDump;
-- (BOOL)dumpTailspinSync:(int)a3;
+- (BOOL)dumpTailspinSync:(int)sync;
 - (SPEmbeddingTailspinDumper)init;
 - (void)cleanupOldDumps;
 - (void)dump;
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __32__SPEmbeddingTailspinDumper_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken != -1)
   {
     dispatch_once(&log_onceToken, block);
@@ -62,11 +62,11 @@ uint64_t __43__SPEmbeddingTailspinDumper_sharedInstance__block_invoke()
 {
   v11 = *MEMORY[0x277D85DE8];
   v2 = [@"/private/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Search" stringByAppendingPathComponent:@"Tailspin"];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  if (([v3 fileExistsAtPath:v2] & 1) == 0)
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if (([defaultManager fileExistsAtPath:v2] & 1) == 0)
   {
     v8 = 0;
-    [v3 createDirectoryAtPath:v2 withIntermediateDirectories:1 attributes:0 error:&v8];
+    [defaultManager createDirectoryAtPath:v2 withIntermediateDirectories:1 attributes:0 error:&v8];
     v4 = v8;
     if (v4)
     {
@@ -87,8 +87,8 @@ uint64_t __43__SPEmbeddingTailspinDumper_sharedInstance__block_invoke()
 
 + (id)lockFilePath
 {
-  v2 = [a1 tailspinDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"tailspin.lock"];
+  tailspinDirectory = [self tailspinDirectory];
+  v3 = [tailspinDirectory stringByAppendingPathComponent:@"tailspin.lock"];
 
   return v3;
 }
@@ -96,9 +96,9 @@ uint64_t __43__SPEmbeddingTailspinDumper_sharedInstance__block_invoke()
 + (id)tailspinPrefix
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [MEMORY[0x277CCAC38] processInfo];
-  v4 = [v3 processName];
-  v5 = [v2 stringWithFormat:@"%@_", v4];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  v5 = [v2 stringWithFormat:@"%@_", processName];
 
   return v5;
 }
@@ -126,23 +126,23 @@ uint64_t __43__SPEmbeddingTailspinDumper_sharedInstance__block_invoke()
 
 - (BOOL)canDump
 {
-  v2 = self;
+  selfCopy = self;
   v38 = *MEMORY[0x277D85DE8];
   if (self->_latestDumpDate)
   {
 LABEL_2:
-    v3 = [MEMORY[0x277CBEAA8] date];
-    [v3 timeIntervalSinceDate:v2->_latestDumpDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:selfCopy->_latestDumpDate];
     v5 = v4;
 
     result = v5 >= 43200.0;
     goto LABEL_20;
   }
 
-  v7 = [objc_opt_class() tailspinDirectory];
-  v31 = [MEMORY[0x277CCAA00] defaultManager];
-  v32 = v7;
-  v8 = [v31 contentsOfDirectoryAtPath:v7 error:0];
+  tailspinDirectory = [objc_opt_class() tailspinDirectory];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v32 = tailspinDirectory;
+  v8 = [defaultManager contentsOfDirectoryAtPath:tailspinDirectory error:0];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -168,8 +168,8 @@ LABEL_2:
       }
 
       v15 = *(*(&v33 + 1) + 8 * i);
-      v16 = [objc_opt_class() tailspinPrefix];
-      if ([v15 hasPrefix:v16])
+      tailspinPrefix = [objc_opt_class() tailspinPrefix];
+      if ([v15 hasPrefix:tailspinPrefix])
       {
         v17 = [v15 hasSuffix:v13];
 
@@ -178,15 +178,15 @@ LABEL_2:
           continue;
         }
 
-        v16 = [v32 stringByAppendingPathComponent:v15];
-        v18 = [v31 attributesOfItemAtPath:v16 error:0];
+        tailspinPrefix = [v32 stringByAppendingPathComponent:v15];
+        v18 = [defaultManager attributesOfItemAtPath:tailspinPrefix error:0];
         v19 = [v18 objectForKeyedSubscript:v30];
         v20 = v19;
         if (!v11 || [v19 compare:v11] == 1)
         {
           v21 = v20;
           v22 = v11;
-          v23 = v2;
+          v23 = selfCopy;
           v24 = v8;
           v25 = v13;
           v26 = v21;
@@ -194,7 +194,7 @@ LABEL_2:
           v27 = v26;
           v13 = v25;
           v8 = v24;
-          v2 = v23;
+          selfCopy = v23;
           v11 = v27;
         }
       }
@@ -206,8 +206,8 @@ LABEL_2:
   while (v10);
   if (v11)
   {
-    latestDumpDate = v2->_latestDumpDate;
-    v2->_latestDumpDate = v11;
+    latestDumpDate = selfCopy->_latestDumpDate;
+    selfCopy->_latestDumpDate = v11;
 
     goto LABEL_2;
   }
@@ -223,17 +223,17 @@ LABEL_20:
 - (void)cleanupOldDumps
 {
   v64 = *MEMORY[0x277D85DE8];
-  v2 = [objc_opt_class() tailspinDirectory];
-  v45 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v45 contentsOfDirectoryAtPath:v2 error:0];
-  v41 = [MEMORY[0x277CBEAA8] date];
+  tailspinDirectory = [objc_opt_class() tailspinDirectory];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager contentsOfDirectoryAtPath:tailspinDirectory error:0];
+  date = [MEMORY[0x277CBEAA8] date];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   obj = v3;
   v4 = [obj countByEnumeratingWithState:&v52 objects:v63 count:16];
-  v42 = v2;
+  v42 = tailspinDirectory;
   if (v4)
   {
     v6 = v4;
@@ -253,16 +253,16 @@ LABEL_20:
         v10 = *(*(&v52 + 1) + 8 * i);
         if ([v10 hasSuffix:{@".tailspin", v39}])
         {
-          v11 = [v2 stringByAppendingPathComponent:v10];
-          v12 = [v45 attributesOfItemAtPath:v11 error:0];
+          v11 = [tailspinDirectory stringByAppendingPathComponent:v10];
+          v12 = [defaultManager attributesOfItemAtPath:v11 error:0];
           v13 = [v12 objectForKeyedSubscript:v8];
           if (v13)
           {
-            [v41 timeIntervalSinceDate:v13];
+            [date timeIntervalSinceDate:v13];
             if (v14 > 2592000.0)
             {
               v51 = 0;
-              [v45 removeItemAtPath:v11 error:&v51];
+              [defaultManager removeItemAtPath:v11 error:&v51];
               v15 = v51;
               if (v15)
               {
@@ -276,7 +276,7 @@ LABEL_20:
                   _os_log_impl(&dword_26B793000, v16, OS_LOG_TYPE_ERROR, "Failed to remove outdated dump file at %@: %@", buf, 0x16u);
                 }
 
-                v2 = v42;
+                tailspinDirectory = v42;
               }
             }
           }
@@ -289,7 +289,7 @@ LABEL_20:
     while (v6);
   }
 
-  v17 = [v45 contentsOfDirectoryAtPath:v2 error:0];
+  v17 = [defaultManager contentsOfDirectoryAtPath:tailspinDirectory error:0];
 
   obja = [MEMORY[0x277CBEB18] array];
   v47 = 0u;
@@ -313,8 +313,8 @@ LABEL_20:
         }
 
         v24 = *(*(&v47 + 1) + 8 * j);
-        v25 = [objc_opt_class() tailspinPrefix];
-        if ([v24 hasPrefix:v25])
+        tailspinPrefix = [objc_opt_class() tailspinPrefix];
+        if ([v24 hasPrefix:tailspinPrefix])
         {
           v26 = [v24 hasSuffix:@".tailspin"];
 
@@ -323,15 +323,15 @@ LABEL_20:
             continue;
           }
 
-          v25 = [v42 stringByAppendingPathComponent:v24];
-          v27 = [v45 attributesOfItemAtPath:v25 error:0];
+          tailspinPrefix = [v42 stringByAppendingPathComponent:v24];
+          v27 = [defaultManager attributesOfItemAtPath:tailspinPrefix error:0];
           v28 = [v27 objectForKeyedSubscript:v22];
           v29 = v28;
           if (v28)
           {
             v56[0] = @"path";
             v56[1] = @"date";
-            v57[0] = v25;
+            v57[0] = tailspinPrefix;
             v57[1] = v28;
             v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:v56 count:2];
             [obja addObject:v30];
@@ -358,7 +358,7 @@ LABEL_20:
       v35 = [v34 objectForKeyedSubscript:@"path"];
 
       v46 = 0;
-      [v45 removeItemAtPath:v35 error:&v46];
+      [defaultManager removeItemAtPath:v35 error:&v46];
       v36 = v46;
       if (v36)
       {
@@ -394,7 +394,7 @@ uint64_t __44__SPEmbeddingTailspinDumper_cleanupOldDumps__block_invoke(uint64_t 
   return v7;
 }
 
-- (BOOL)dumpTailspinSync:(int)a3
+- (BOOL)dumpTailspinSync:(int)sync
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277D82D28];

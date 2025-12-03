@@ -1,23 +1,23 @@
 @interface AssetViewModel
 - (NSString)description;
 - (_TtC9MomentsUI14AssetViewModel)init;
-- (_TtC9MomentsUI14AssetViewModel)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC9MomentsUI14AssetViewModel)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AssetViewModel
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AssetViewModel.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AssetViewModel.encode(with:)(coderCopy);
 }
 
-- (_TtC9MomentsUI14AssetViewModel)initWithCoder:(id)a3
+- (_TtC9MomentsUI14AssetViewModel)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = specialized AssetViewModel.init(coder:)(v3);
+  coderCopy = coder;
+  v4 = specialized AssetViewModel.init(coder:)(coderCopy);
 
   return v4;
 }
@@ -31,7 +31,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UUID.uuidString.getter();
   v5 = v4;
 

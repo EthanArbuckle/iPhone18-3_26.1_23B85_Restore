@@ -1,15 +1,15 @@
 @interface FCCKContentQueryOperation
-+ (id)_requestOperationsForQuery:(id)a3 cursor:(id)a4 desiredKeys:(id)a5 resultsLimit:(unint64_t)a6;
-+ (void)streamRecordsWithDatabase:(void *)a3 query:(void *)a4 desiredKeys:(uint64_t)a5 resultsLimit:(uint64_t)a6 queryPriority:(int)a7 networkEventType:(void *)a8 edgeCacheHint:(void *)a9 recordHandler:(void *)a10 networkEventHandler:(void *)a11 completionHandler:;
++ (id)_requestOperationsForQuery:(id)query cursor:(id)cursor desiredKeys:(id)keys resultsLimit:(unint64_t)limit;
++ (void)streamRecordsWithDatabase:(void *)database query:(void *)query desiredKeys:(uint64_t)keys resultsLimit:(uint64_t)limit queryPriority:(int)priority networkEventType:(void *)type edgeCacheHint:(void *)hint recordHandler:(void *)self0 networkEventHandler:(void *)self1 completionHandler:;
 - (BOOL)validateOperation;
 - (FCCKContentQueryOperation)init;
-- (id)_ckCursorFromQueryResponse:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (id)_ckCursorFromQueryResponse:(id)response;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
-- (void)setCursor:(uint64_t)a1;
-- (void)setDatabase:(uint64_t)a1;
-- (void)setQuery:(uint64_t)a1;
+- (void)setCursor:(uint64_t)cursor;
+- (void)setDatabase:(uint64_t)database;
+- (void)setQuery:(uint64_t)query;
 @end
 
 @implementation FCCKContentQueryOperation
@@ -185,8 +185,8 @@ LABEL_19:
       recordFetchedBlock = 0;
 LABEL_34:
       [v6 setRecordFetchedBlock:recordFetchedBlock];
-      v32 = [v6 configuration];
-      v33 = [v32 copy];
+      configuration = [v6 configuration];
+      v33 = [configuration copy];
       v34 = v33;
       if (v33)
       {
@@ -234,8 +234,8 @@ LABEL_34:
     database = 0;
   }
 
-  v9 = [(FCCKContentDatabase *)database networkReachability];
-  v6 = [(FCCKDirectRequestOperation *)v7 initWithNetworkReachability:v9];
+  networkReachability = [(FCCKContentDatabase *)database networkReachability];
+  v6 = [(FCCKDirectRequestOperation *)v7 initWithNetworkReachability:networkReachability];
 
   if (v6)
   {
@@ -255,10 +255,10 @@ LABEL_34:
 
   if (self)
   {
-    v13 = [(FCCKContentDatabase *)self->_database containerIdentifier];
+    containerIdentifier = [(FCCKContentDatabase *)self->_database containerIdentifier];
     if (v6)
     {
-      objc_setProperty_nonatomic_copy(v6, v12, v13, 400);
+      objc_setProperty_nonatomic_copy(v6, v12, containerIdentifier, 400);
     }
 
     v14 = self->_database;
@@ -266,19 +266,19 @@ LABEL_34:
 
   else
   {
-    v40 = [0 containerIdentifier];
+    containerIdentifier2 = [0 containerIdentifier];
     if (v6)
     {
-      objc_setProperty_nonatomic_copy(v6, v39, v40, 400);
+      objc_setProperty_nonatomic_copy(v6, v39, containerIdentifier2, 400);
     }
 
     v14 = 0;
   }
 
-  v15 = [(FCCKContentDatabase *)v14 isProductionEnvironment];
+  isProductionEnvironment = [(FCCKContentDatabase *)v14 isProductionEnvironment];
   if (v6)
   {
-    *(v6 + 376) = v15;
+    *(v6 + 376) = isProductionEnvironment;
   }
 
   v16 = objc_opt_class();
@@ -306,8 +306,8 @@ LABEL_34:
 
   if (self)
   {
-    v23 = [(FCCKContentDatabase *)self->_database networkBehaviorMonitor];
-    [(FCCKDirectRequestOperation *)v6 setNetworkBehaviorMonitor:v23];
+    networkBehaviorMonitor = [(FCCKContentDatabase *)self->_database networkBehaviorMonitor];
+    [(FCCKDirectRequestOperation *)v6 setNetworkBehaviorMonitor:networkBehaviorMonitor];
 
     if (v6)
     {
@@ -337,8 +337,8 @@ LABEL_23:
 
   else
   {
-    v41 = [0 networkBehaviorMonitor];
-    [(FCCKDirectRequestOperation *)v6 setNetworkBehaviorMonitor:v41];
+    networkBehaviorMonitor2 = [0 networkBehaviorMonitor];
+    [(FCCKDirectRequestOperation *)v6 setNetworkBehaviorMonitor:networkBehaviorMonitor2];
 
     if (v6)
     {
@@ -364,17 +364,17 @@ LABEL_23:
   v44 = __45__FCCKContentQueryOperation_performOperation__block_invoke_3_35;
   v45 = &unk_1E7C449F0;
   objc_copyWeak(&v47, &location);
-  v46 = self;
+  selfCopy = self;
   if (v6)
   {
     objc_setProperty_nonatomic_copy(v6, v30, &v42, 464);
   }
 
-  [(FCOperation *)self associateChildOperation:v6, v42, v43, v44, v45, v46];
+  [(FCOperation *)self associateChildOperation:v6, v42, v43, v44, v45, selfCopy];
   if ([(FCOperation *)self relativePriority]< 1)
   {
-    v38 = [MEMORY[0x1E696ADC8] fc_throttledCKRequestOperationQueue];
-    [v38 addOperation:v6];
+    fc_throttledCKRequestOperationQueue = [MEMORY[0x1E696ADC8] fc_throttledCKRequestOperationQueue];
+    [fc_throttledCKRequestOperationQueue addOperation:v6];
   }
 
   else
@@ -691,7 +691,7 @@ void __45__FCCKContentQueryOperation_performOperation__block_invoke_3_35(uint64_
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
   if (self)
   {
@@ -703,9 +703,9 @@ void __45__FCCKContentQueryOperation_performOperation__block_invoke_3_35(uint64_
     database = 0;
   }
 
-  v5 = a3;
+  errorCopy = error;
   [(FCCKContentDatabase *)database maximumRetryAfterForCK];
-  v7 = [v5 fc_errorWithMaximumRetryAfter:?];
+  v7 = [errorCopy fc_errorWithMaximumRetryAfter:?];
 
   if (self)
   {
@@ -720,59 +720,59 @@ void __45__FCCKContentQueryOperation_performOperation__block_invoke_3_35(uint64_
   queryCompletionBlock[2](queryCompletionBlock, 0, v7);
 }
 
-+ (id)_requestOperationsForQuery:(id)a3 cursor:(id)a4 desiredKeys:(id)a5 resultsLimit:(unint64_t)a6
++ (id)_requestOperationsForQuery:(id)query cursor:(id)cursor desiredKeys:(id)keys resultsLimit:(unint64_t)limit
 {
   v49 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queryCopy = query;
+  cursorCopy = cursor;
+  keysCopy = keys;
   v12 = objc_opt_new();
   v13 = objc_opt_new();
   [v12 setRequest:v13];
 
   v14 = CKCreateGUID();
-  v15 = [v12 request];
-  [v15 setOperationUUID:v14];
+  request = [v12 request];
+  [request setOperationUUID:v14];
 
-  v16 = [v12 request];
-  [v16 setType:220];
+  request2 = [v12 request];
+  [request2 setType:220];
 
-  v17 = [v12 request];
-  [v17 setLast:1];
+  request3 = [v12 request];
+  [request3 setLast:1];
 
   v18 = objc_opt_new();
   [v12 setQueryRetrieveRequest:v18];
 
-  if (v10)
+  if (cursorCopy)
   {
-    v19 = [v10 data];
-    v20 = [v12 queryRetrieveRequest];
-    [v20 setContinuationMarker:v19];
+    data = [cursorCopy data];
+    queryRetrieveRequest = [v12 queryRetrieveRequest];
+    [queryRetrieveRequest setContinuationMarker:data];
   }
 
-  else if (v9)
+  else if (queryCopy)
   {
     v21 = +[FCCKProtocolTranslator sharedInstance];
     v46 = 0;
-    v22 = [(FCCKProtocolTranslator *)v21 pQueryFromQuery:v9 error:&v46];
+    v22 = [(FCCKProtocolTranslator *)v21 pQueryFromQuery:queryCopy error:&v46];
     v23 = v46;
-    v24 = [v12 queryRetrieveRequest];
-    [v24 setQuery:v22];
+    queryRetrieveRequest2 = [v12 queryRetrieveRequest];
+    [queryRetrieveRequest2 setQuery:v22];
   }
 
-  if (v11)
+  if (keysCopy)
   {
-    v40 = v10;
-    v41 = v9;
+    v40 = cursorCopy;
+    v41 = queryCopy;
     v25 = objc_opt_new();
-    v26 = [v12 queryRetrieveRequest];
-    [v26 setRequestedFields:v25];
+    queryRetrieveRequest3 = [v12 queryRetrieveRequest];
+    [queryRetrieveRequest3 setRequestedFields:v25];
 
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v27 = v11;
+    v27 = keysCopy;
     v28 = [v27 countByEnumeratingWithState:&v42 objects:v48 count:16];
     if (v28)
     {
@@ -790,9 +790,9 @@ void __45__FCCKContentQueryOperation_performOperation__block_invoke_3_35(uint64_
           v32 = *(*(&v42 + 1) + 8 * i);
           v33 = objc_opt_new();
           [v33 setName:v32];
-          v34 = [v12 queryRetrieveRequest];
-          v35 = [v34 requestedFields];
-          [v35 addFields:v33];
+          queryRetrieveRequest4 = [v12 queryRetrieveRequest];
+          requestedFields = [queryRetrieveRequest4 requestedFields];
+          [requestedFields addFields:v33];
         }
 
         v29 = [v27 countByEnumeratingWithState:&v42 objects:v48 count:16];
@@ -801,19 +801,19 @@ void __45__FCCKContentQueryOperation_performOperation__block_invoke_3_35(uint64_
       while (v29);
     }
 
-    v10 = v40;
-    v9 = v41;
+    cursorCopy = v40;
+    queryCopy = v41;
   }
 
-  if (a6)
+  if (limit)
   {
-    if (a6 >= 0x7FFFFFFF)
+    if (limit >= 0x7FFFFFFF)
     {
-      a6 = 0x7FFFFFFFLL;
+      limit = 0x7FFFFFFFLL;
     }
 
-    v36 = [v12 queryRetrieveRequest];
-    [v36 setLimit:a6];
+    queryRetrieveRequest5 = [v12 queryRetrieveRequest];
+    [queryRetrieveRequest5 setLimit:limit];
   }
 
   v47 = v12;
@@ -824,63 +824,63 @@ void __45__FCCKContentQueryOperation_performOperation__block_invoke_3_35(uint64_
   return v37;
 }
 
-- (id)_ckCursorFromQueryResponse:(id)a3
+- (id)_ckCursorFromQueryResponse:(id)response
 {
   v3 = MEMORY[0x1E695BA40];
-  v4 = a3;
+  responseCopy = response;
   v5 = [v3 alloc];
-  v6 = [v4 continuationMarker];
+  continuationMarker = [responseCopy continuationMarker];
 
   v7 = objc_alloc(MEMORY[0x1E695BA90]);
   v8 = [v7 initWithZoneName:*MEMORY[0x1E695B800] ownerName:*MEMORY[0x1E695B728]];
-  v9 = [v5 initWithData:v6 zoneID:v8];
+  v9 = [v5 initWithData:continuationMarker zoneID:v8];
 
   return v9;
 }
 
-- (void)setDatabase:(uint64_t)a1
+- (void)setDatabase:(uint64_t)database
 {
-  if (a1)
+  if (database)
   {
-    objc_storeStrong((a1 + 376), a2);
+    objc_storeStrong((database + 376), a2);
   }
 }
 
-- (void)setQuery:(uint64_t)a1
+- (void)setQuery:(uint64_t)query
 {
-  if (a1)
+  if (query)
   {
-    objc_storeStrong((a1 + 384), a2);
+    objc_storeStrong((query + 384), a2);
   }
 }
 
-- (void)setCursor:(uint64_t)a1
+- (void)setCursor:(uint64_t)cursor
 {
-  if (a1)
+  if (cursor)
   {
-    objc_storeStrong((a1 + 392), a2);
+    objc_storeStrong((cursor + 392), a2);
   }
 }
 
-+ (void)streamRecordsWithDatabase:(void *)a3 query:(void *)a4 desiredKeys:(uint64_t)a5 resultsLimit:(uint64_t)a6 queryPriority:(int)a7 networkEventType:(void *)a8 edgeCacheHint:(void *)a9 recordHandler:(void *)a10 networkEventHandler:(void *)a11 completionHandler:
++ (void)streamRecordsWithDatabase:(void *)database query:(void *)query desiredKeys:(uint64_t)keys resultsLimit:(uint64_t)limit queryPriority:(int)priority networkEventType:(void *)type edgeCacheHint:(void *)hint recordHandler:(void *)self0 networkEventHandler:(void *)self1 completionHandler:
 {
   v15 = a2;
-  v16 = a3;
-  v47 = a4;
-  v17 = a8;
-  v44 = a9;
-  v45 = a10;
-  v46 = a11;
+  databaseCopy = database;
+  queryCopy = query;
+  typeCopy = type;
+  hintCopy = hint;
+  handlerCopy = handler;
+  eventHandlerCopy = eventHandler;
   v18 = objc_opt_self();
   v59[0] = MEMORY[0x1E69E9820];
   v59[1] = 3221225472;
   v59[2] = __194__FCCKContentQueryOperation_Streaming__streamRecordsWithDatabase_query_desiredKeys_resultsLimit_queryPriority_networkEventType_edgeCacheHint_recordHandler_networkEventHandler_completionHandler___block_invoke;
   v59[3] = &__block_descriptor_40_e29_v16__0__NSMutableDictionary_8l;
-  v59[4] = a6;
+  v59[4] = limit;
   v19 = [MEMORY[0x1E695DF20] fc_dictionary:v59];
   v20 = [FCCKDirectRequestOperation alloc];
-  v21 = [v15 networkReachability];
-  v22 = [(FCCKDirectRequestOperation *)v20 initWithNetworkReachability:v21];
+  networkReachability = [v15 networkReachability];
+  v22 = [(FCCKDirectRequestOperation *)v20 initWithNetworkReachability:networkReachability];
 
   if (v22)
   {
@@ -891,9 +891,9 @@ void __45__FCCKContentQueryOperation_performOperation__block_invoke_3_35(uint64_
   v55[1] = 3221225472;
   v55[2] = __194__FCCKContentQueryOperation_Streaming__streamRecordsWithDatabase_query_desiredKeys_resultsLimit_queryPriority_networkEventType_edgeCacheHint_recordHandler_networkEventHandler_completionHandler___block_invoke_2;
   v55[3] = &unk_1E7C44A38;
-  v23 = v16;
+  v23 = databaseCopy;
   v56 = v23;
-  v24 = v17;
+  v24 = typeCopy;
   v57 = v24;
   v25 = v15;
   v58 = v25;
@@ -903,14 +903,14 @@ void __45__FCCKContentQueryOperation_performOperation__block_invoke_3_35(uint64_
     objc_setProperty_nonatomic_copy(v22, v26, v27, 392);
   }
 
-  v28 = [v25 containerIdentifier];
-  v30 = v28;
+  containerIdentifier = [v25 containerIdentifier];
+  v30 = containerIdentifier;
   if (v22)
   {
-    objc_setProperty_nonatomic_copy(v22, v29, v28, 400);
+    objc_setProperty_nonatomic_copy(v22, v29, containerIdentifier, 400);
 
     *(v22 + 376) = [v25 isProductionEnvironment];
-    v31 = [v18 _requestOperationsForQuery:v23 cursor:0 desiredKeys:v47 resultsLimit:a5];
+    v31 = [v18 _requestOperationsForQuery:v23 cursor:0 desiredKeys:queryCopy resultsLimit:keys];
     objc_setProperty_nonatomic_copy(v22, v32, v31, 384);
   }
 
@@ -918,15 +918,15 @@ void __45__FCCKContentQueryOperation_performOperation__block_invoke_3_35(uint64_
   {
 
     [v25 isProductionEnvironment];
-    v31 = [v18 _requestOperationsForQuery:v23 cursor:0 desiredKeys:v47 resultsLimit:a5];
+    v31 = [v18 _requestOperationsForQuery:v23 cursor:0 desiredKeys:queryCopy resultsLimit:keys];
   }
 
-  v33 = [v25 networkBehaviorMonitor];
-  [(FCCKDirectRequestOperation *)v22 setNetworkBehaviorMonitor:v33];
+  networkBehaviorMonitor = [v25 networkBehaviorMonitor];
+  [(FCCKDirectRequestOperation *)v22 setNetworkBehaviorMonitor:networkBehaviorMonitor];
 
   if (v22)
   {
-    *(v22 + 380) = a7;
+    *(v22 + 380) = priority;
     objc_setProperty_nonatomic_copy(v22, v34, v19, 416);
     objc_setProperty_nonatomic_copy(v22, v35, v24, 432);
     *(v22 + 440) = FCProcessIsMemoryConstrained();
@@ -942,7 +942,7 @@ void __45__FCCKContentQueryOperation_performOperation__block_invoke_3_35(uint64_
   newValue[1] = 3221225472;
   newValue[2] = __194__FCCKContentQueryOperation_Streaming__streamRecordsWithDatabase_query_desiredKeys_resultsLimit_queryPriority_networkEventType_edgeCacheHint_recordHandler_networkEventHandler_completionHandler___block_invoke_2_97;
   newValue[3] = &unk_1E7C44A60;
-  v38 = v44;
+  v38 = hintCopy;
   v54 = v38;
   if (v22)
   {
@@ -955,9 +955,9 @@ void __45__FCCKContentQueryOperation_performOperation__block_invoke_3_35(uint64_
   v48[2] = __194__FCCKContentQueryOperation_Streaming__streamRecordsWithDatabase_query_desiredKeys_resultsLimit_queryPriority_networkEventType_edgeCacheHint_recordHandler_networkEventHandler_completionHandler___block_invoke_3;
   v48[3] = &unk_1E7C44A88;
   objc_copyWeak(&v51, &location);
-  v39 = v45;
+  v39 = handlerCopy;
   v49 = v39;
-  v41 = v46;
+  v41 = eventHandlerCopy;
   v50 = v41;
   if (v22)
   {

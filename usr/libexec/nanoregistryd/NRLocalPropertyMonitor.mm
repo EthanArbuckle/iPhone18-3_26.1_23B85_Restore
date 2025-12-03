@@ -1,41 +1,41 @@
 @interface NRLocalPropertyMonitor
 + (BOOL)_supportsR2;
 + (NRLocalPropertyMonitor)sharedInstance;
-+ (id)_getGestaltData:(__CFString *)a3;
-+ (id)_getGestaltDictionary:(__CFString *)a3;
-+ (id)_getGestaltDmin:(__CFString *)a3;
-+ (id)_getGestaltNumber:(__CFString *)a3;
-+ (id)_getGestaltStringValue:(__CFString *)a3 withName:(id)a4;
++ (id)_getGestaltData:(__CFString *)data;
++ (id)_getGestaltDictionary:(__CFString *)dictionary;
++ (id)_getGestaltDmin:(__CFString *)dmin;
++ (id)_getGestaltNumber:(__CFString *)number;
++ (id)_getGestaltStringValue:(__CFString *)value withName:(id)name;
 + (id)remoteDeviceChipIDNumber;
 + (void)initializeGetters;
 - (NRLocalPropertyMonitor)init;
-- (NRLocalPropertyMonitor)initWithCoder:(id)a3;
+- (NRLocalPropertyMonitor)initWithCoder:(id)coder;
 - (NSDictionary)properties;
 - (NSObject)localeToken;
 - (NSObject)planToken;
-- (double)blockTimer:(id)a3;
-- (id)_readProperty:(id)a3 shouldUpdateCache:(BOOL)a4 isUpdated:(BOOL *)a5 forceLog:(BOOL)a6;
+- (double)blockTimer:(id)timer;
+- (id)_readProperty:(id)property shouldUpdateCache:(BOOL)cache isUpdated:(BOOL *)updated forceLog:(BOOL)log;
 - (id)description;
-- (id)objectForKeyedSubscript:(id)a3;
-- (void)_notifyObserversPropertiesDidChange:(id)a3 thisIsAllOfThem:(BOOL)a4;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (void)_notifyObserversPropertiesDidChange:(id)change thisIsAllOfThem:(BOOL)them;
 - (void)dealloc;
 - (void)handleMDMDistributedNotification;
-- (void)handleMDMNotification:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)handleMDMNotification:(id)notification;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pollProperties;
 - (void)refreshPropertyCache;
 - (void)registerForMDMNotifications;
 - (void)registerForNotifications;
-- (void)removePropertyObserver:(id)a3;
-- (void)setRemoteDeviceChipIDNumber:(id)a3;
+- (void)removePropertyObserver:(id)observer;
+- (void)setRemoteDeviceChipIDNumber:(id)number;
 - (void)unregisterFromNotifications;
 @end
 
 @implementation NRLocalPropertyMonitor
 
-- (NRLocalPropertyMonitor)initWithCoder:(id)a3
+- (NRLocalPropertyMonitor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NRLocalPropertyMonitor *)self init];
   if (v5)
   {
@@ -43,7 +43,7 @@
     v12[1] = objc_opt_class();
     v6 = [NSArray arrayWithObjects:v12 count:2];
     v7 = NRClassesForPropertiesWithArray(v6);
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"propertyCache"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"propertyCache"];
     v9 = [v8 mutableCopy];
     propertyCache = v5->_propertyCache;
     v5->_propertyCache = v9;
@@ -58,8 +58,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(NSMutableDictionary *)self->_propertyCache allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [(NSMutableDictionary *)self->_propertyCache allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -73,7 +73,7 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v8);
@@ -85,7 +85,7 @@
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -99,18 +99,18 @@
   return v7;
 }
 
-+ (id)_getGestaltNumber:(__CFString *)a3
++ (id)_getGestaltNumber:(__CFString *)number
 {
   v3 = MGCopyAnswer();
 
   return v3;
 }
 
-+ (id)_getGestaltStringValue:(__CFString *)a3 withName:(id)a4
++ (id)_getGestaltStringValue:(__CFString *)value withName:(id)name
 {
-  if (a4)
+  if (name)
   {
-    [qword_1001B39E8 setObject:a4 forKey:a3];
+    [qword_1001B39E8 setObject:name forKey:value];
   }
 
   v4 = MGCopyAnswer();
@@ -130,7 +130,7 @@
   return v6;
 }
 
-+ (id)_getGestaltData:(__CFString *)a3
++ (id)_getGestaltData:(__CFString *)data
 {
   v3 = MGCopyAnswer();
   v4 = v3;
@@ -149,7 +149,7 @@
   return v6;
 }
 
-+ (id)_getGestaltDictionary:(__CFString *)a3
++ (id)_getGestaltDictionary:(__CFString *)dictionary
 {
   v3 = MGCopyAnswer();
   v4 = v3;
@@ -168,24 +168,24 @@
   return v5;
 }
 
-+ (id)_getGestaltDmin:(__CFString *)a3
++ (id)_getGestaltDmin:(__CFString *)dmin
 {
   v3 = MGCopyAnswer();
 
   return v3;
 }
 
-- (void)setRemoteDeviceChipIDNumber:(id)a3
+- (void)setRemoteDeviceChipIDNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v5 = qword_1001B39F0;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000AC1CC;
   v7[3] = &unk_100175598;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = numberCopy;
+  selfCopy = self;
+  v6 = numberCopy;
   dispatch_async(v5, v7);
 }
 
@@ -282,8 +282,8 @@
 
     [(NRLocalPropertyMonitor *)self _pollPropertiesAllOfThem:1 dontSendChanges:1];
     objc_initWeak(&location, self);
-    v6 = [qword_1001B39E8 allKeys];
-    v7 = [v6 count] == 0;
+    allKeys = [qword_1001B39E8 allKeys];
+    v7 = [allKeys count] == 0;
 
     if (!v7)
     {
@@ -295,16 +295,16 @@
         v10 = nr_daemon_log();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [qword_1001B39E8 allKeys];
+          allKeys2 = [qword_1001B39E8 allKeys];
           *buf = 138543362;
-          v38 = v11;
+          v38 = allKeys2;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Registering for MobileGestalt updates %{public}@", buf, 0xCu);
         }
       }
 
       [qword_1001B39E8 allKeys];
       v12 = +[NRQueue registryDaemonQueue];
-      v13 = [v12 queue];
+      queue = [v12 queue];
       v34[1] = _NSConcreteStackBlock;
       v34[2] = 3221225472;
       v34[3] = sub_1000ACBA4;
@@ -353,17 +353,17 @@
     objc_storeWeak(&self->_planToken, v23);
 
     v24 = +[NRPairingDaemon sharedInstance];
-    v25 = [v24 history];
+    history = [v24 history];
 
-    if (v25)
+    if (history)
     {
-      v26 = [v25 deviceCollection];
+      deviceCollection = [history deviceCollection];
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_1000AD15C;
       v29[3] = &unk_100178B28;
       objc_copyWeak(&v30, &location);
-      v27 = [v26 addObserverQueue:0 withBlock:v29];
+      v27 = [deviceCollection addObserverQueue:0 withBlock:v29];
       deviceCollectionObserver = self->_deviceCollectionObserver;
       self->_deviceCollectionObserver = v27;
 
@@ -429,12 +429,12 @@
     }
 
     v12 = +[NRPairingDaemon sharedInstance];
-    v13 = [v12 history];
+    history = [v12 history];
 
-    if (v13 && self->_deviceCollectionObserver)
+    if (history && self->_deviceCollectionObserver)
     {
-      v14 = [v13 deviceCollection];
-      [v14 removeObserver:self->_deviceCollectionObserver];
+      deviceCollection = [history deviceCollection];
+      [deviceCollection removeObserver:self->_deviceCollectionObserver];
       deviceCollectionObserver = self->_deviceCollectionObserver;
       self->_deviceCollectionObserver = 0;
     }
@@ -446,49 +446,49 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = nr_daemon_log();
-  LODWORD(a4) = os_log_type_enabled(v13, OS_LOG_TYPE_ERROR);
+  LODWORD(object) = os_log_type_enabled(v13, OS_LOG_TYPE_ERROR);
 
-  if (a4)
+  if (object)
   {
     v14 = nr_daemon_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138413058;
-      v62 = v10;
+      v62 = pathCopy;
       v63 = 2112;
-      v64 = v11;
+      v64 = objectCopy;
       v65 = 2112;
-      v66 = v12;
+      v66 = changeCopy;
       v67 = 2112;
-      v68 = a6;
+      contextCopy = context;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "KVO:- keyPath:%@, object:%@, change:%@, context:%@", buf, 0x2Au);
     }
   }
 
-  if ([v10 isEqual:@"localPropertyOverride"])
+  if ([pathCopy isEqual:@"localPropertyOverride"])
   {
     p_propertiesToOverride = &self->_propertiesToOverride;
     v49 = self->_propertiesToOverride;
-    v16 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    v16 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
     if (!v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v46 = v12;
-      v47 = v11;
-      v48 = v10;
+      v46 = changeCopy;
+      v47 = objectCopy;
+      v48 = pathCopy;
       objc_storeStrong(&self->_propertiesToOverride, v16);
       v50 = objc_alloc_init(NSMutableDictionary);
       v55 = 0u;
       v56 = 0u;
       v57 = 0u;
       v58 = 0u;
-      v17 = [(NSDictionary *)*p_propertiesToOverride allKeys];
-      v18 = [v17 countByEnumeratingWithState:&v55 objects:v60 count:16];
+      allKeys = [(NSDictionary *)*p_propertiesToOverride allKeys];
+      v18 = [allKeys countByEnumeratingWithState:&v55 objects:v60 count:16];
       if (!v18)
       {
         goto LABEL_24;
@@ -502,7 +502,7 @@
         {
           if (*v56 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(allKeys);
           }
 
           v22 = *(*(&v55 + 1) + 8 * i);
@@ -548,7 +548,7 @@
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v55 objects:v60 count:16];
+        v19 = [allKeys countByEnumeratingWithState:&v55 objects:v60 count:16];
         if (!v19)
         {
 LABEL_24:
@@ -557,8 +557,8 @@ LABEL_24:
           v54 = 0u;
           v51 = 0u;
           v52 = 0u;
-          v29 = [(NSDictionary *)v49 allKeys];
-          v30 = [v29 countByEnumeratingWithState:&v51 objects:v59 count:16];
+          allKeys2 = [(NSDictionary *)v49 allKeys];
+          v30 = [allKeys2 countByEnumeratingWithState:&v51 objects:v59 count:16];
           if (v30)
           {
             v31 = v30;
@@ -569,7 +569,7 @@ LABEL_24:
               {
                 if (*v52 != v32)
                 {
-                  objc_enumerationMutation(v29);
+                  objc_enumerationMutation(allKeys2);
                 }
 
                 v34 = *(*(&v51 + 1) + 8 * j);
@@ -615,7 +615,7 @@ LABEL_24:
                 }
               }
 
-              v31 = [v29 countByEnumeratingWithState:&v51 objects:v59 count:16];
+              v31 = [allKeys2 countByEnumeratingWithState:&v51 objects:v59 count:16];
             }
 
             while (v31);
@@ -627,9 +627,9 @@ LABEL_24:
             [(NRLocalPropertyMonitor *)self _notifyObserversPropertiesDidChange:v50 thisIsAllOfThem:0];
           }
 
-          v11 = v47;
-          v10 = v48;
-          v12 = v46;
+          objectCopy = v47;
+          pathCopy = v48;
+          changeCopy = v46;
           goto LABEL_45;
         }
       }
@@ -651,9 +651,9 @@ LABEL_45:
   }
 }
 
-- (void)removePropertyObserver:(id)a3
+- (void)removePropertyObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = [NSPointerArray pointerArrayWithOptions:5];
   v14 = 0u;
   v15 = 0u;
@@ -678,7 +678,7 @@ LABEL_45:
         v11 = *(*(&v14 + 1) + 8 * v10);
         if (v11)
         {
-          v12 = v11 == v4;
+          v12 = v11 == observerCopy;
         }
 
         else
@@ -724,9 +724,9 @@ LABEL_45:
   [v7 addObserver:self selector:"handleMDMDistributedNotification" name:kMDMUprootedNotification object:0];
 }
 
-- (void)handleMDMNotification:(id)a3
+- (void)handleMDMNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -735,9 +735,9 @@ LABEL_45:
     v7 = nr_daemon_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 name];
+      name = [notificationCopy name];
       *buf = 138412290;
-      v12 = v8;
+      v12 = name;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received %@ notification, which could mean MDM status changes, polling properties.", buf, 0xCu);
     }
   }
@@ -1016,7 +1016,7 @@ LABEL_45:
   v28[1] = 3221225472;
   v28[2] = sub_1000AFA1C;
   v28[3] = &unk_100178C38;
-  v28[4] = a1;
+  v28[4] = self;
   v6 = objc_retainBlock(v28);
   v75[18] = v6;
   v74[19] = NRDevicePropertySerialNumber;
@@ -1082,7 +1082,7 @@ LABEL_45:
   v27[1] = 3221225472;
   v27[2] = sub_1000AFF80;
   v27[3] = &unk_100178C38;
-  v27[4] = a1;
+  v27[4] = self;
   v7 = objc_retainBlock(v27);
   v75[48] = v7;
   v74[49] = NRDevicePropertyIsInternalInstall;
@@ -1098,7 +1098,7 @@ LABEL_45:
   v26[1] = 3221225472;
   v26[2] = sub_1000B3818;
   v26[3] = &unk_100178C38;
-  v26[4] = a1;
+  v26[4] = self;
   v8 = objc_retainBlock(v26);
   v75[53] = v8;
   v74[54] = NRDevicePropertyCPUType;
@@ -1110,7 +1110,7 @@ LABEL_45:
   v25[1] = 3221225472;
   v25[2] = sub_1000B3850;
   v25[3] = &unk_100178C38;
-  v25[4] = a1;
+  v25[4] = self;
   v9 = objc_retainBlock(v25);
   v75[56] = v9;
   v74[57] = NRDevicePropertyChipID;
@@ -1118,7 +1118,7 @@ LABEL_45:
   v24[1] = 3221225472;
   v24[2] = sub_1000B3860;
   v24[3] = &unk_100178C38;
-  v24[4] = a1;
+  v24[4] = self;
   v10 = objc_retainBlock(v24);
   v75[57] = v10;
   v74[58] = NRDevicePropertyIsAltAccount;
@@ -1153,10 +1153,10 @@ LABEL_45:
   _Block_object_dispose(v72, 8);
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v3 = a3;
-  v4 = [qword_1001B3A20 objectForKey:v3];
+  subscriptCopy = subscript;
+  v4 = [qword_1001B3A20 objectForKey:subscriptCopy];
   v5 = v4;
   if (v4)
   {
@@ -1225,9 +1225,9 @@ LABEL_45:
   [(NRLocalPropertyMonitor *)self _pollPropertiesAllOfThem:0 dontSendChanges:0];
 }
 
-- (void)_notifyObserversPropertiesDidChange:(id)a3 thisIsAllOfThem:(BOOL)a4
+- (void)_notifyObserversPropertiesDidChange:(id)change thisIsAllOfThem:(BOOL)them
 {
-  v6 = a3;
+  changeCopy = change;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1258,8 +1258,8 @@ LABEL_45:
           v14[3] = &unk_100175CE0;
           v14[4] = v12;
           v14[5] = self;
-          v15 = v6;
-          v16 = a4;
+          v15 = changeCopy;
+          themCopy = them;
           [v13 dispatchAsync:v14];
         }
 
@@ -1274,12 +1274,12 @@ LABEL_45:
   }
 }
 
-- (id)_readProperty:(id)a3 shouldUpdateCache:(BOOL)a4 isUpdated:(BOOL *)a5 forceLog:(BOOL)a6
+- (id)_readProperty:(id)property shouldUpdateCache:(BOOL)cache isUpdated:(BOOL *)updated forceLog:(BOOL)log
 {
-  v7 = a4;
-  v9 = a3;
-  v10 = [(NSMutableDictionary *)self->_propertyCache objectForKey:v9];
-  v11 = [qword_1001B3A20 objectForKey:v9];
+  cacheCopy = cache;
+  propertyCopy = property;
+  v10 = [(NSMutableDictionary *)self->_propertyCache objectForKey:propertyCopy];
+  v11 = [qword_1001B3A20 objectForKey:propertyCopy];
   v12 = v11;
   if (!v11)
   {
@@ -1299,7 +1299,7 @@ LABEL_45:
   v38[3] = &unk_100176E20;
   v41 = &v42;
   v40 = v11;
-  v13 = v9;
+  v13 = propertyCopy;
   v39 = v13;
   [(NRLocalPropertyMonitor *)self blockTimer:v38];
   v15 = v14;
@@ -1385,7 +1385,7 @@ LABEL_45:
 
   v30 = v29;
 
-  if (v7)
+  if (cacheCopy)
   {
     propertyCache = self->_propertyCache;
     v32 = v43[5];
@@ -1406,7 +1406,7 @@ LABEL_45:
   {
     if (![v34 isEqual:v30])
     {
-      if (!a5)
+      if (!updated)
       {
         goto LABEL_37;
       }
@@ -1415,7 +1415,7 @@ LABEL_45:
     }
 
     v35 = v43[5] == 0;
-    if (!a5)
+    if (!updated)
     {
       goto LABEL_37;
     }
@@ -1427,12 +1427,12 @@ LABEL_34:
     }
 
 LABEL_36:
-    *a5 = 1;
+    *updated = 1;
     goto LABEL_37;
   }
 
   v35 = 1;
-  if (a5)
+  if (updated)
   {
     goto LABEL_34;
   }
@@ -1447,12 +1447,12 @@ LABEL_38:
   return v36;
 }
 
-- (double)blockTimer:(id)a3
+- (double)blockTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   [(NRLocalPropertyMonitor *)self abs_to_seconds:mach_absolute_time()];
   v6 = v5;
-  v4[2](v4);
+  timerCopy[2](timerCopy);
 
   [(NRLocalPropertyMonitor *)self abs_to_seconds:mach_absolute_time()];
   return v7 - v6;

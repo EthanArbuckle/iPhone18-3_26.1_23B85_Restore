@@ -1,9 +1,9 @@
 @interface DMCDictionaryWriter
 - (BOOL)didWriteSucceed;
-- (BOOL)repairAccessIfNecessaryWithError:(id *)a3;
+- (BOOL)repairAccessIfNecessaryWithError:(id *)error;
 - (BOOL)write;
-- (BOOL)writeData:(id)a3 error:(id *)a4;
-- (DMCDictionaryWriter)initWithDictionary:(id)a3 path:(id)a4 writeOptions:(unint64_t)a5;
+- (BOOL)writeData:(id)data error:(id *)error;
+- (DMCDictionaryWriter)initWithDictionary:(id)dictionary path:(id)path writeOptions:(unint64_t)options;
 - (DMCFileAccessRepairTool)repairTool;
 - (id)createRepairTool;
 - (id)serializedData;
@@ -15,22 +15,22 @@
 
 @implementation DMCDictionaryWriter
 
-- (DMCDictionaryWriter)initWithDictionary:(id)a3 path:(id)a4 writeOptions:(unint64_t)a5
+- (DMCDictionaryWriter)initWithDictionary:(id)dictionary path:(id)path writeOptions:(unint64_t)options
 {
-  v9 = a3;
-  v10 = a4;
+  dictionaryCopy = dictionary;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = DMCDictionaryWriter;
   v11 = [(DMCDictionaryWriter *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_dictionary, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_dictionary, dictionary);
+    v13 = [pathCopy copy];
     path = v12->_path;
     v12->_path = v13;
 
-    v12->_options = a5;
+    v12->_options = options;
     repairTool = v12->_repairTool;
     v12->_repairTool = 0;
 
@@ -60,9 +60,9 @@
   repairTool = self->_repairTool;
   if (!repairTool)
   {
-    v4 = [(DMCDictionaryWriter *)self createRepairTool];
+    createRepairTool = [(DMCDictionaryWriter *)self createRepairTool];
     v5 = self->_repairTool;
-    self->_repairTool = v4;
+    self->_repairTool = createRepairTool;
 
     repairTool = self->_repairTool;
   }
@@ -80,9 +80,9 @@
 - (id)serializedData
 {
   v3 = MEMORY[0x1E696AE40];
-  v4 = [(DMCDictionaryWriter *)self dictionary];
+  dictionary = [(DMCDictionaryWriter *)self dictionary];
   v8 = 0;
-  v5 = [v3 dataWithPropertyList:v4 format:200 options:0 error:&v8];
+  v5 = [v3 dataWithPropertyList:dictionary format:200 options:0 error:&v8];
   v6 = v8;
 
   if (!v5)
@@ -105,24 +105,24 @@
 
 - (BOOL)didWriteSucceed
 {
-  v3 = [(DMCDictionaryWriter *)self serializeError];
-  if (v3)
+  serializeError = [(DMCDictionaryWriter *)self serializeError];
+  if (serializeError)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(DMCDictionaryWriter *)self writeError];
-    if (v5)
+    writeError = [(DMCDictionaryWriter *)self writeError];
+    if (writeError)
     {
       v4 = 0;
     }
 
     else
     {
-      v6 = [(DMCDictionaryWriter *)self afterWriteRepairError];
-      v4 = v6 == 0;
+      afterWriteRepairError = [(DMCDictionaryWriter *)self afterWriteRepairError];
+      v4 = afterWriteRepairError == 0;
     }
   }
 
@@ -136,13 +136,13 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(DMCDictionaryWriter *)self dictionary];
-    v6 = [v5 count];
-    v7 = [(DMCDictionaryWriter *)self path];
+    dictionary = [(DMCDictionaryWriter *)self dictionary];
+    v6 = [dictionary count];
+    path = [(DMCDictionaryWriter *)self path];
     v9 = 134218242;
     v10 = v6;
     v11 = 2114;
-    v12 = v7;
+    v12 = path;
     _os_log_impl(&dword_1B1630000, v4, OS_LOG_TYPE_DEFAULT, "Attempting to write dictionary with %lu entries to path %{public}@...", &v9, 0x16u);
   }
 
@@ -152,20 +152,20 @@
 - (void)logResultOfWrite
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(DMCDictionaryWriter *)self serializeError];
+  serializeError = [(DMCDictionaryWriter *)self serializeError];
 
-  if (v3)
+  if (serializeError)
   {
     v4 = DMCLogObjects()[3];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       v5 = v4;
-      v6 = [(DMCDictionaryWriter *)self path];
-      v7 = [(DMCDictionaryWriter *)self serializeError];
+      path = [(DMCDictionaryWriter *)self path];
+      serializeError2 = [(DMCDictionaryWriter *)self serializeError];
       v20 = 138543618;
-      v21 = v6;
+      v21 = path;
       v22 = 2114;
-      v23 = v7;
+      v23 = serializeError2;
       v8 = "Dictionary could not be written to %{public}@, could not serialize data: %{public}@";
 LABEL_4:
       _os_log_impl(&dword_1B1630000, v5, OS_LOG_TYPE_ERROR, v8, &v20, 0x16u);
@@ -179,18 +179,18 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v9 = [(DMCDictionaryWriter *)self beforeWriteRepairError];
+  beforeWriteRepairError = [(DMCDictionaryWriter *)self beforeWriteRepairError];
 
-  v10 = [(DMCDictionaryWriter *)self writeError];
+  writeError = [(DMCDictionaryWriter *)self writeError];
 
-  if (!v9)
+  if (!beforeWriteRepairError)
   {
-    if (!v10)
+    if (!writeError)
     {
-      v17 = [(DMCDictionaryWriter *)self afterWriteRepairError];
+      afterWriteRepairError = [(DMCDictionaryWriter *)self afterWriteRepairError];
 
       v18 = DMCLogObjects()[3];
-      if (!v17)
+      if (!afterWriteRepairError)
       {
         if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
@@ -198,9 +198,9 @@ LABEL_14:
         }
 
         v5 = v18;
-        v19 = [(DMCDictionaryWriter *)self path];
+        path2 = [(DMCDictionaryWriter *)self path];
         v20 = 138543362;
-        v21 = v19;
+        v21 = path2;
         _os_log_impl(&dword_1B1630000, v5, OS_LOG_TYPE_DEFAULT, "Dictionary successfully written to %{public}@", &v20, 0xCu);
 
         goto LABEL_14;
@@ -212,12 +212,12 @@ LABEL_14:
       }
 
       v5 = v18;
-      v6 = [(DMCDictionaryWriter *)self path];
-      v7 = [(DMCDictionaryWriter *)self afterWriteRepairError];
+      path = [(DMCDictionaryWriter *)self path];
+      serializeError2 = [(DMCDictionaryWriter *)self afterWriteRepairError];
       v20 = 138543618;
-      v21 = v6;
+      v21 = path;
       v22 = 2114;
-      v23 = v7;
+      v23 = serializeError2;
       v8 = "Dictionary successfully written to %{public}@, could not make file readable after write: %{public}@";
       goto LABEL_4;
     }
@@ -229,14 +229,14 @@ LABEL_14:
     }
 
     v5 = v15;
-    v6 = [(DMCDictionaryWriter *)self path];
-    v13 = [(DMCDictionaryWriter *)self writeError];
+    path = [(DMCDictionaryWriter *)self path];
+    writeError2 = [(DMCDictionaryWriter *)self writeError];
     v20 = 138543874;
-    v21 = v6;
+    v21 = path;
     v22 = 2114;
-    v23 = v13;
+    v23 = writeError2;
     v24 = 2048;
-    v25 = [(DMCDictionaryWriter *)self options];
+    options = [(DMCDictionaryWriter *)self options];
     _os_log_impl(&dword_1B1630000, v5, OS_LOG_TYPE_ERROR, "Dictionary could not be written to %{public}@, could not write data: %{public}@. Write Options: %lu", &v20, 0x20u);
 LABEL_12:
 
@@ -245,7 +245,7 @@ LABEL_12:
 
   v11 = DMCLogObjects()[3];
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_ERROR);
-  if (!v10)
+  if (!writeError)
   {
     if (!v12)
     {
@@ -253,12 +253,12 @@ LABEL_12:
     }
 
     v5 = v11;
-    v6 = [(DMCDictionaryWriter *)self path];
-    v7 = [(DMCDictionaryWriter *)self beforeWriteRepairError];
+    path = [(DMCDictionaryWriter *)self path];
+    serializeError2 = [(DMCDictionaryWriter *)self beforeWriteRepairError];
     v20 = 138543618;
-    v21 = v6;
+    v21 = path;
     v22 = 2114;
-    v23 = v7;
+    v23 = serializeError2;
     v8 = "Dictionary successfully written to %{public}@, but there was a problem repairing the file before writing: %{public}@";
     goto LABEL_4;
   }
@@ -266,15 +266,15 @@ LABEL_12:
   if (v12)
   {
     v5 = v11;
-    v6 = [(DMCDictionaryWriter *)self path];
-    v13 = [(DMCDictionaryWriter *)self beforeWriteRepairError];
-    v14 = [(DMCDictionaryWriter *)self writeError];
+    path = [(DMCDictionaryWriter *)self path];
+    writeError2 = [(DMCDictionaryWriter *)self beforeWriteRepairError];
+    writeError3 = [(DMCDictionaryWriter *)self writeError];
     v20 = 138543874;
-    v21 = v6;
+    v21 = path;
     v22 = 2114;
-    v23 = v13;
+    v23 = writeError2;
     v24 = 2114;
-    v25 = v14;
+    options = writeError3;
     _os_log_impl(&dword_1B1630000, v5, OS_LOG_TYPE_ERROR, "Dictionary could not be written to %{public}@, file could not be repaired before writing: %{public}@ and could not write data: %{public}@", &v20, 0x20u);
 
     goto LABEL_12;
@@ -286,8 +286,8 @@ LABEL_15:
 
 - (void)serializeDataAndWriteToStorage
 {
-  v3 = [(DMCDictionaryWriter *)self serializedData];
-  if (v3)
+  serializedData = [(DMCDictionaryWriter *)self serializedData];
+  if (serializedData)
   {
     v12 = 0;
     v4 = [(DMCDictionaryWriter *)self repairAccessIfNecessaryWithError:&v12];
@@ -298,7 +298,7 @@ LABEL_15:
     }
 
     v11 = 0;
-    v6 = [(DMCDictionaryWriter *)self writeData:v3 error:&v11];
+    v6 = [(DMCDictionaryWriter *)self writeData:serializedData error:&v11];
     v7 = v11;
     if (v6)
     {
@@ -318,44 +318,44 @@ LABEL_15:
   }
 }
 
-- (BOOL)writeData:(id)a3 error:(id *)a4
+- (BOOL)writeData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [(DMCDictionaryWriter *)self path];
+  dataCopy = data;
+  path = [(DMCDictionaryWriter *)self path];
   v12 = 0;
-  v8 = [v6 DMCAtomicWriteToPath:v7 writeOptions:-[DMCDictionaryWriter options](self error:{"options"), &v12}];
+  v8 = [dataCopy DMCAtomicWriteToPath:path writeOptions:-[DMCDictionaryWriter options](self error:{"options"), &v12}];
 
   v9 = v12;
-  if (a4 && (v8 & 1) == 0)
+  if (error && (v8 & 1) == 0)
   {
     v10 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v8;
 }
 
-- (BOOL)repairAccessIfNecessaryWithError:(id *)a3
+- (BOOL)repairAccessIfNecessaryWithError:(id *)error
 {
-  v5 = [(DMCDictionaryWriter *)self repairTool];
-  v6 = [(DMCDictionaryWriter *)self path];
-  v7 = [v5 fileNeedsRepairAtPath:v6];
+  repairTool = [(DMCDictionaryWriter *)self repairTool];
+  path = [(DMCDictionaryWriter *)self path];
+  v7 = [repairTool fileNeedsRepairAtPath:path];
 
   if (!v7)
   {
     return 1;
   }
 
-  v8 = [(DMCDictionaryWriter *)self repairTool];
-  v9 = [(DMCDictionaryWriter *)self path];
+  repairTool2 = [(DMCDictionaryWriter *)self repairTool];
+  path2 = [(DMCDictionaryWriter *)self path];
   v14 = 0;
-  v10 = [v8 repairFileAtPath:v9 error:&v14];
+  v10 = [repairTool2 repairFileAtPath:path2 error:&v14];
   v11 = v14;
 
-  if (a3 && (v10 & 1) == 0)
+  if (error && (v10 & 1) == 0)
   {
     v12 = v11;
-    *a3 = v11;
+    *error = v11;
   }
 
   return v10;

@@ -1,21 +1,21 @@
 @interface THWAdornmentWPStyleProvider
-- (THWAdornmentWPStyleProvider)initWithStorage:(id)a3;
-- (id)modifiedCharacterStyle:(id)a3 atCharIndex:(unint64_t)a4;
+- (THWAdornmentWPStyleProvider)initWithStorage:(id)storage;
+- (id)modifiedCharacterStyle:(id)style atCharIndex:(unint64_t)index;
 - (id)p_textColor;
-- (id)paragraphStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
+- (id)paragraphStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
 - (void)dealloc;
 @end
 
 @implementation THWAdornmentWPStyleProvider
 
-- (THWAdornmentWPStyleProvider)initWithStorage:(id)a3
+- (THWAdornmentWPStyleProvider)initWithStorage:(id)storage
 {
   v6.receiver = self;
   v6.super_class = THWAdornmentWPStyleProvider;
   v4 = [(THWAdornmentWPStyleProvider *)&v6 init];
   if (v4)
   {
-    v4->_storage = a3;
+    v4->_storage = storage;
     v4->_fontSize = 10.0;
     v4->_textAlignment = 0;
     v4->_fontName = 0;
@@ -45,7 +45,7 @@
   }
 }
 
-- (id)paragraphStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)paragraphStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v7 = +[TSSPropertyMap propertyMap];
   fontSize = self->_fontSize;
@@ -75,15 +75,15 @@
   v13 = [[TSWPLineSpacing alloc] initWithMode:0 amount:1.1];
   [v7 setObject:v13 forProperty:85];
 
-  v14 = [+[TSWPStorageStyleProvider styleProviderForStorage:](TSWPStorageStyleProvider styleProviderForStorage:{self->_storage), "paragraphStyleAtParIndex:effectiveRange:", a3, a4}];
-  v15 = [v14 stylesheet];
+  v14 = [+[TSWPStorageStyleProvider styleProviderForStorage:](TSWPStorageStyleProvider styleProviderForStorage:{self->_storage), "paragraphStyleAtParIndex:effectiveRange:", index, range}];
+  stylesheet = [v14 stylesheet];
 
-  return [v15 variationOfStyle:v14 propertyMap:v7];
+  return [stylesheet variationOfStyle:v14 propertyMap:v7];
 }
 
-- (id)modifiedCharacterStyle:(id)a3 atCharIndex:(unint64_t)a4
+- (id)modifiedCharacterStyle:(id)style atCharIndex:(unint64_t)index
 {
-  v6 = [TSSPropertyMap propertyMap:a3];
+  v6 = [TSSPropertyMap propertyMap:style];
   [v6 setObject:-[THWAdornmentWPStyleProvider p_textColor](self forProperty:{"p_textColor"), 18}];
   fontSize = self->_fontSize;
   *&fontSize = fontSize;
@@ -94,9 +94,9 @@
     [v6 setObject:fontName forProperty:16];
   }
 
-  v9 = [a3 stylesheet];
+  stylesheet = [style stylesheet];
 
-  return [v9 variationOfStyle:a3 propertyMap:v6];
+  return [stylesheet variationOfStyle:style propertyMap:v6];
 }
 
 @end

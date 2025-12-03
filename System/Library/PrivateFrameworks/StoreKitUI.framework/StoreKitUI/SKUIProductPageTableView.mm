@@ -1,27 +1,27 @@
 @interface SKUIProductPageTableView
-- (void)_addContentSubview:(id)a3 atBack:(BOOL)a4;
-- (void)setProductPageHeaderView:(id)a3;
+- (void)_addContentSubview:(id)subview atBack:(BOOL)back;
+- (void)setProductPageHeaderView:(id)view;
 @end
 
 @implementation SKUIProductPageTableView
 
-- (void)setProductPageHeaderView:(id)a3
+- (void)setProductPageHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIProductPageTableView setProductPageHeaderView:];
   }
 
   productPageHeaderView = self->_productPageHeaderView;
-  if (productPageHeaderView != v5)
+  if (productPageHeaderView != viewCopy)
   {
     if ([(UIView *)productPageHeaderView isDescendantOfView:self])
     {
       [(UIView *)self->_productPageHeaderView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_productPageHeaderView, a3);
+    objc_storeStrong(&self->_productPageHeaderView, view);
     if (self->_productPageHeaderView)
     {
       [(SKUIProductPageTableView *)self addSubview:?];
@@ -29,18 +29,18 @@
   }
 }
 
-- (void)_addContentSubview:(id)a3 atBack:(BOOL)a4
+- (void)_addContentSubview:(id)subview atBack:(BOOL)back
 {
-  v4 = a4;
+  backCopy = back;
   v10.receiver = self;
   v10.super_class = SKUIProductPageTableView;
-  v6 = a3;
-  [(SKUIProductPageTableView *)&v10 _addContentSubview:v6 atBack:v4];
+  subviewCopy = subview;
+  [(SKUIProductPageTableView *)&v10 _addContentSubview:subviewCopy atBack:backCopy];
   productPageHeaderView = self->_productPageHeaderView;
 
   if (productPageHeaderView)
   {
-    v8 = productPageHeaderView == v6;
+    v8 = productPageHeaderView == subviewCopy;
   }
 
   else

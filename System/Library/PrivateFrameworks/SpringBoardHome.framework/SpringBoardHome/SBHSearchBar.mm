@@ -1,32 +1,32 @@
 @interface SBHSearchBar
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
-- (BOOL)textFieldShouldEndEditing:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
+- (BOOL)textFieldShouldEndEditing:(id)editing;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 forVisualConfiguration:(id)a4;
-- (SBHSearchBar)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits forVisualConfiguration:(id)configuration;
+- (SBHSearchBar)initWithFrame:(CGRect)frame;
 - (SBHSearchBarDelegate)delegate;
 - (SBIconListLayoutProvider)listLayoutProvider;
-- (double)_performHeightCalculationForVisualConfiguration:(id)a3;
+- (double)_performHeightCalculationForVisualConfiguration:(id)configuration;
 - (id)_currentVisualConfiguration;
-- (void)_accessibilityBoldStatusDidChange:(id)a3;
-- (void)_cancelButtonTapped:(id)a3;
+- (void)_accessibilityBoldStatusDidChange:(id)change;
+- (void)_cancelButtonTapped:(id)tapped;
 - (void)_invalidateIntrinsicContentSizeAndNotify;
 - (void)_preferredContentSizeCategoryDidChange;
-- (void)_searchBarTextFieldDidChangeText:(id)a3;
+- (void)_searchBarTextFieldDidChangeText:(id)text;
 - (void)_updateCancelButtonFont;
 - (void)layoutSubviews;
-- (void)setAlignsTextFieldOnPixelBoundaries:(BOOL)a3;
-- (void)setBackgroundViewBottomInsetToTextField:(double)a3;
-- (void)setInactiveSearchConfiguration:(id)a3;
-- (void)setListLayoutProvider:(id)a3;
-- (void)setPortraitOrientation:(BOOL)a3;
-- (void)setSearchTextField:(id)a3;
-- (void)setShowsCancelButton:(BOOL)a3 animated:(BOOL)a4;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)setAlignsTextFieldOnPixelBoundaries:(BOOL)boundaries;
+- (void)setBackgroundViewBottomInsetToTextField:(double)field;
+- (void)setInactiveSearchConfiguration:(id)configuration;
+- (void)setListLayoutProvider:(id)provider;
+- (void)setPortraitOrientation:(BOOL)orientation;
+- (void)setSearchTextField:(id)field;
+- (void)setShowsCancelButton:(BOOL)button animated:(BOOL)animated;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation SBHSearchBar
@@ -41,15 +41,15 @@
   v6 = v5;
   v76 = v7;
   v72 = v8;
-  v9 = [(SBHSearchBar *)self _currentVisualConfiguration];
-  v10 = [(SBHSearchBar *)self window];
-  v11 = [(SBHSearchBar *)self traitCollection];
-  [v11 displayScale];
+  _currentVisualConfiguration = [(SBHSearchBar *)self _currentVisualConfiguration];
+  window = [(SBHSearchBar *)self window];
+  traitCollection = [(SBHSearchBar *)self traitCollection];
+  [traitCollection displayScale];
 
-  v12 = [(SBHSearchBar *)self delegate];
+  delegate = [(SBHSearchBar *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v12 safeAreaInsetsForSearchBar:self];
+    [delegate safeAreaInsetsForSearchBar:self];
   }
 
   else
@@ -59,12 +59,12 @@
 
   if ([(SBHSearchBar *)self isPortraitOrientation])
   {
-    [v9 textFieldPortraitLayoutInsets];
+    [_currentVisualConfiguration textFieldPortraitLayoutInsets];
   }
 
   else
   {
-    [v9 textFieldLandscapeLayoutInsets];
+    [_currentVisualConfiguration textFieldLandscapeLayoutInsets];
   }
 
   UIEdgeInsetsAdd();
@@ -72,7 +72,7 @@
   v16 = v6 + v15;
   v18 = v76 - (v13 + v17);
   v20 = v72 - (v15 + v19);
-  [v9 textFieldWidth];
+  [_currentVisualConfiguration textFieldWidth];
   v22 = v21;
   v23 = (v76 - v21) * 0.5;
   if (v22 <= 0.0)
@@ -88,8 +88,8 @@
 
   [(UIButton *)self->_cancelButton frame];
   v71 = v25;
-  v26 = [(SBHSearchBar *)self searchTextField];
-  [v26 intrinsicContentSize];
+  searchTextField = [(SBHSearchBar *)self searchTextField];
+  [searchTextField intrinsicContentSize];
 
   textFieldCancelButtonSpacing = self->_textFieldCancelButtonSpacing;
   if (self->_alignsTextFieldOnPixelBoundaries)
@@ -122,9 +122,9 @@
   v43 = MEMORY[0x1E69DDA98];
   if (self->_showsCancelButton)
   {
-    v44 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
     v45 = v71 + textFieldCancelButtonSpacing;
-    if (v44 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v38 = v45 + v38;
     }
@@ -161,9 +161,9 @@
   [(SBFFeatherBlurView *)v52 setCenter:?];
   v53 = MEMORY[0x1E69D3FC0];
   [(SBFFeatherBlurView *)self->_backgroundView frame];
-  v54 = [v53 matchMoveAnimationForFrame:v10 relativeToView:?];
-  v55 = [(SBFFeatherBlurView *)self->_backgroundView layer];
-  [v55 addAnimation:v54 forKey:@"SBHSearchBarMatchMoveAnimation"];
+  v54 = [v53 matchMoveAnimationForFrame:window relativeToView:?];
+  layer = [(SBFFeatherBlurView *)self->_backgroundView layer];
+  [layer addAnimation:v54 forKey:@"SBHSearchBarMatchMoveAnimation"];
 
   [(UIButton *)self->_cancelButton frame];
   v80.origin.x = v75;
@@ -171,15 +171,15 @@
   v80.size.width = v73;
   v80.size.height = rect;
   CGRectGetMidY(v80);
-  LODWORD(v55) = self->_showsCancelButton;
-  v56 = [*v43 userInterfaceLayoutDirection];
-  if (v55 == 1)
+  LODWORD(layer) = self->_showsCancelButton;
+  userInterfaceLayoutDirection2 = [*v43 userInterfaceLayoutDirection];
+  if (layer == 1)
   {
     v57 = v75 + v67;
     v58 = v74 + v68;
     v59 = v73 - (v67 + v65);
     v60 = rect - (v68 + v66);
-    if (v56 == 1)
+    if (userInterfaceLayoutDirection2 == 1)
     {
       CGRectGetMinX(*&v57);
     }
@@ -190,7 +190,7 @@
     }
   }
 
-  else if (v56 == 1)
+  else if (userInterfaceLayoutDirection2 == 1)
   {
     v81.origin.x = v75;
     v81.origin.y = v74;
@@ -219,9 +219,9 @@
 
 - (id)_currentVisualConfiguration
 {
-  v3 = [(SBHSearchBar *)self showsCancelButton];
+  showsCancelButton = [(SBHSearchBar *)self showsCancelButton];
   v4 = &OBJC_IVAR___SBHSearchBar__inactiveSearchConfiguration;
-  if (v3)
+  if (showsCancelButton)
   {
     v4 = &OBJC_IVAR___SBHSearchBar__activeSearchConfiguration;
   }
@@ -238,12 +238,12 @@
   return WeakRetained;
 }
 
-- (SBHSearchBar)initWithFrame:(CGRect)a3
+- (SBHSearchBar)initWithFrame:(CGRect)frame
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v26.receiver = self;
   v26.super_class = SBHSearchBar;
-  v3 = [(SBHSearchBar *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBHSearchBar *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69D3FC0]) initWithRecipe:1];
@@ -265,8 +265,8 @@
     [(UIButton *)v3->_cancelButton setAlpha:0.0];
     [(UIButton *)v3->_cancelButton setPointerInteractionEnabled:1];
     [(UIButton *)v3->_cancelButton addTarget:v3 action:sel__cancelButtonTapped_ forControlEvents:64];
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v3 selector:sel__accessibilityBoldStatusDidChange_ name:*MEMORY[0x1E69DD898] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__accessibilityBoldStatusDidChange_ name:*MEMORY[0x1E69DD898] object:0];
 
     [(SBHSearchBar *)v3 addSubview:v3->_cancelButton];
     [(SBHSearchBar *)v3 _updateCancelButtonFont];
@@ -281,15 +281,15 @@
     v17 = [v16 localizedStringForKey:@"APP_LIBRARY_SEARCH_PLACEHOLDER" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
     [(SBHSearchTextField *)v15 setPlaceholder:v17];
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v3 selector:sel__searchBarTextFieldDidChangeText_ name:*MEMORY[0x1E69DE5C0] object:v3->_searchTextField];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v3 selector:sel__searchBarTextFieldDidChangeText_ name:*MEMORY[0x1E69DE5C0] object:v3->_searchTextField];
 
     [(SBHSearchBar *)v3 addSubview:v3->_searchTextField];
-    v19 = [MEMORY[0x1E69DC938] currentDevice];
-    v20 = [v19 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v21 = 16.0;
-    if ((v20 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v21 = 20.0;
     }
@@ -316,7 +316,7 @@
   [(SBHSearchBar *)self layoutIfNeeded];
 }
 
-- (void)_accessibilityBoldStatusDidChange:(id)a3
+- (void)_accessibilityBoldStatusDidChange:(id)change
 {
   [(SBHSearchBar *)self _updateCancelButtonFont];
   [(SBHSearchBar *)self setNeedsLayout];
@@ -324,33 +324,33 @@
   [(SBHSearchBar *)self layoutIfNeeded];
 }
 
-- (void)setShowsCancelButton:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowsCancelButton:(BOOL)button animated:(BOOL)animated
 {
-  if (self->_showsCancelButton != a3)
+  if (self->_showsCancelButton != button)
   {
-    v4 = a4;
-    v7 = [MEMORY[0x1E69DD250] _isInAnimationBlock];
+    animatedCopy = animated;
+    _isInAnimationBlock = [MEMORY[0x1E69DD250] _isInAnimationBlock];
     [(SBHSearchBar *)self frame];
     v9 = v8;
     v11 = v10;
     [(SBHSearchBar *)self sizeThatFits:v8, v10];
     v13 = v12;
     v15 = v14;
-    self->_showsCancelButton = a3;
+    self->_showsCancelButton = button;
     [(SBHSearchBar *)self sizeThatFits:v9, v11];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __46__SBHSearchBar_setShowsCancelButton_animated___block_invoke;
     v20[3] = &unk_1E808D638;
     v20[4] = self;
-    v21 = a3;
+    buttonCopy = button;
     v20[5] = v13;
     v20[6] = v15;
     v20[7] = v16;
     v20[8] = v17;
     v18 = _Block_copy(v20);
     v19 = v18;
-    if (v7 || !v4)
+    if (_isInAnimationBlock || !animatedCopy)
     {
       (*(v18 + 2))(v18);
     }
@@ -377,31 +377,31 @@ uint64_t __46__SBHSearchBar_setShowsCancelButton_animated___block_invoke(uint64_
   return [v4 layoutIfNeeded];
 }
 
-- (void)setSearchTextField:(id)a3
+- (void)setSearchTextField:(id)field
 {
-  v5 = a3;
+  fieldCopy = field;
   searchTextField = self->_searchTextField;
-  if (searchTextField != v5)
+  if (searchTextField != fieldCopy)
   {
-    v7 = v5;
+    v7 = fieldCopy;
     [(SBHSearchTextField *)searchTextField removeFromSuperview];
-    objc_storeStrong(&self->_searchTextField, a3);
+    objc_storeStrong(&self->_searchTextField, field);
     [(SBHSearchBar *)self addSubview:self->_searchTextField];
     [(SBHSearchBar *)self setNeedsLayout];
     [(SBHSearchBar *)self _invalidateIntrinsicContentSizeAndNotify];
     searchTextField = [(SBHSearchBar *)self layoutIfNeeded];
-    v5 = v7;
+    fieldCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](searchTextField, v5);
+  MEMORY[0x1EEE66BB8](searchTextField, fieldCopy);
 }
 
-- (void)setInactiveSearchConfiguration:(id)a3
+- (void)setInactiveSearchConfiguration:(id)configuration
 {
-  v6 = a3;
+  configurationCopy = configuration;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [configurationCopy copy];
     inactiveSearchConfiguration = self->_inactiveSearchConfiguration;
     self->_inactiveSearchConfiguration = v4;
 
@@ -410,29 +410,29 @@ uint64_t __46__SBHSearchBar_setShowsCancelButton_animated___block_invoke(uint64_
   }
 }
 
-- (void)setPortraitOrientation:(BOOL)a3
+- (void)setPortraitOrientation:(BOOL)orientation
 {
-  if (self->_portraitOrientation != a3)
+  if (self->_portraitOrientation != orientation)
   {
-    self->_portraitOrientation = a3;
+    self->_portraitOrientation = orientation;
     [(SBHSearchBar *)self setNeedsLayout];
 
     [(SBHSearchBar *)self _invalidateIntrinsicContentSizeAndNotify];
   }
 }
 
-- (void)setAlignsTextFieldOnPixelBoundaries:(BOOL)a3
+- (void)setAlignsTextFieldOnPixelBoundaries:(BOOL)boundaries
 {
-  if (self->_alignsTextFieldOnPixelBoundaries != a3)
+  if (self->_alignsTextFieldOnPixelBoundaries != boundaries)
   {
-    self->_alignsTextFieldOnPixelBoundaries = a3;
+    self->_alignsTextFieldOnPixelBoundaries = boundaries;
     [(SBHSearchBar *)self setNeedsLayout];
   }
 }
 
-- (void)setListLayoutProvider:(id)a3
+- (void)setListLayoutProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_listLayoutProvider);
 
   v6 = obj;
@@ -448,18 +448,18 @@ uint64_t __46__SBHSearchBar_setShowsCancelButton_animated___block_invoke(uint64_
     self->_textFieldHorizontalLayoutInsets.bottom = 0.0;
     self->_textFieldHorizontalLayoutInsets.right = v8;
     v9 = [obj layoutForIconLocation:@"SBIconLocationAppLibrary"];
-    v10 = [v9 appLibraryVisualConfiguration];
-    v11 = v10;
+    appLibraryVisualConfiguration = [v9 appLibraryVisualConfiguration];
+    v11 = appLibraryVisualConfiguration;
     if (!self->_inactiveSearchConfiguration)
     {
-      v12 = [v10 standardSearchVisualConfiguration];
+      standardSearchVisualConfiguration = [appLibraryVisualConfiguration standardSearchVisualConfiguration];
       inactiveSearchConfiguration = self->_inactiveSearchConfiguration;
-      self->_inactiveSearchConfiguration = v12;
+      self->_inactiveSearchConfiguration = standardSearchVisualConfiguration;
     }
 
-    v14 = [v11 activeSearchVisualConfiguration];
+    activeSearchVisualConfiguration = [v11 activeSearchVisualConfiguration];
     activeSearchConfiguration = self->_activeSearchConfiguration;
-    self->_activeSearchConfiguration = v14;
+    self->_activeSearchConfiguration = activeSearchVisualConfiguration;
 
     [(SBHSearchBar *)self setNeedsLayout];
     [(SBHSearchBar *)self layoutIfNeeded];
@@ -470,25 +470,25 @@ uint64_t __46__SBHSearchBar_setShowsCancelButton_animated___block_invoke(uint64_
   MEMORY[0x1EEE66BB8](v5, v6);
 }
 
-- (void)setBackgroundViewBottomInsetToTextField:(double)a3
+- (void)setBackgroundViewBottomInsetToTextField:(double)field
 {
-  if (self->_backgroundViewBottomInsetToTextField != a3)
+  if (self->_backgroundViewBottomInsetToTextField != field)
   {
-    self->_backgroundViewBottomInsetToTextField = a3;
+    self->_backgroundViewBottomInsetToTextField = field;
     [(SBHSearchBar *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forVisualConfiguration:(id)a4
+- (CGSize)sizeThatFits:(CGSize)fits forVisualConfiguration:(id)configuration
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(SBHSearchBar *)self searchTextField];
-  [v8 effectiveLayoutSizeFittingSize:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  configurationCopy = configuration;
+  searchTextField = [(SBHSearchBar *)self searchTextField];
+  [searchTextField effectiveLayoutSizeFittingSize:{width, height}];
   v10 = v9;
 
-  [(SBHSearchBar *)self _performHeightCalculationForVisualConfiguration:v7];
+  [(SBHSearchBar *)self _performHeightCalculationForVisualConfiguration:configurationCopy];
   v12 = v11;
 
   v13 = v10;
@@ -500,12 +500,12 @@ uint64_t __46__SBHSearchBar_setShowsCancelButton_animated___block_invoke(uint64_
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(SBHSearchBar *)self searchTextField];
-  [v3 intrinsicContentSize];
+  searchTextField = [(SBHSearchBar *)self searchTextField];
+  [searchTextField intrinsicContentSize];
   v5 = v4;
 
-  v6 = [(SBHSearchBar *)self _currentVisualConfiguration];
-  [(SBHSearchBar *)self _performHeightCalculationForVisualConfiguration:v6];
+  _currentVisualConfiguration = [(SBHSearchBar *)self _currentVisualConfiguration];
+  [(SBHSearchBar *)self _performHeightCalculationForVisualConfiguration:_currentVisualConfiguration];
   v8 = v7;
 
   v9 = v5;
@@ -515,12 +515,12 @@ uint64_t __46__SBHSearchBar_setShowsCancelButton_animated___block_invoke(uint64_
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SBHSearchBar *)self _currentVisualConfiguration];
-  [(SBHSearchBar *)self sizeThatFits:v6 forVisualConfiguration:width, height];
+  height = fits.height;
+  width = fits.width;
+  _currentVisualConfiguration = [(SBHSearchBar *)self _currentVisualConfiguration];
+  [(SBHSearchBar *)self sizeThatFits:_currentVisualConfiguration forVisualConfiguration:width, height];
   v8 = v7;
   v10 = v9;
 
@@ -531,10 +531,10 @@ uint64_t __46__SBHSearchBar_setShowsCancelButton_animated___block_invoke(uint64_
   return result;
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
-  v4 = [(SBHSearchBar *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v4 searchBarShouldBeginEditing:self])
+  delegate = [(SBHSearchBar *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate searchBarShouldBeginEditing:self])
   {
     v5 = 0;
   }
@@ -548,21 +548,21 @@ uint64_t __46__SBHSearchBar_setShowsCancelButton_animated___block_invoke(uint64_
   return v5;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = [(SBHSearchBar *)self delegate];
+  delegate = [(SBHSearchBar *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 searchBarTextDidBeginEditing:self];
+    [delegate searchBarTextDidBeginEditing:self];
   }
 }
 
-- (BOOL)textFieldShouldEndEditing:(id)a3
+- (BOOL)textFieldShouldEndEditing:(id)editing
 {
-  v4 = [(SBHSearchBar *)self delegate];
+  delegate = [(SBHSearchBar *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 searchBarShouldEndEditing:self];
+    v5 = [delegate searchBarShouldEndEditing:self];
   }
 
   else
@@ -573,24 +573,24 @@ uint64_t __46__SBHSearchBar_setShowsCancelButton_animated___block_invoke(uint64_
   return v5;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = [(SBHSearchBar *)self delegate];
+  delegate = [(SBHSearchBar *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 searchBarTextDidEndEditing:self];
+    [delegate searchBarTextDidEndEditing:self];
   }
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a5;
-  v9 = [(SBHSearchBar *)self delegate];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  delegate = [(SBHSearchBar *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 searchBar:self shouldChangeTextInRange:location replacementText:{length, v8}];
+    v10 = [delegate searchBar:self shouldChangeTextInRange:location replacementText:{length, stringCopy}];
   }
 
   else
@@ -601,13 +601,13 @@ uint64_t __46__SBHSearchBar_setShowsCancelButton_animated___block_invoke(uint64_
   return v10;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [(SBHSearchBar *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v5 searchBarShouldReturn:self])
+  returnCopy = return;
+  delegate = [(SBHSearchBar *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate searchBarShouldReturn:self])
   {
-    [v4 resignFirstResponder];
+    [returnCopy resignFirstResponder];
     v6 = 1;
   }
 
@@ -619,53 +619,53 @@ uint64_t __46__SBHSearchBar_setShowsCancelButton_animated___block_invoke(uint64_
   return v6;
 }
 
-- (void)_cancelButtonTapped:(id)a3
+- (void)_cancelButtonTapped:(id)tapped
 {
   [(UISearchTextField *)self->_searchTextField setText:&stru_1F3D472A8];
-  v4 = [(SBHSearchBar *)self delegate];
+  delegate = [(SBHSearchBar *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 searchBarCancelButtonClicked:self];
+    [delegate searchBarCancelButtonClicked:self];
   }
 
   [(SBHSearchBar *)self setShowsCancelButton:0 animated:1];
 }
 
-- (void)_searchBarTextFieldDidChangeText:(id)a3
+- (void)_searchBarTextFieldDidChangeText:(id)text
 {
-  v5 = [(SBHSearchBar *)self delegate];
+  delegate = [(SBHSearchBar *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(UISearchTextField *)self->_searchTextField text];
-    [v5 searchBar:self textDidChange:v4];
+    text = [(UISearchTextField *)self->_searchTextField text];
+    [delegate searchBar:self textDidChange:text];
   }
 }
 
 - (void)_invalidateIntrinsicContentSizeAndNotify
 {
   [(SBHSearchBar *)self invalidateIntrinsicContentSize];
-  v3 = [(SBHSearchBar *)self delegate];
+  delegate = [(SBHSearchBar *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 searchBarDidInvalidateIntrinsicContentSize:self];
+    [delegate searchBarDidInvalidateIntrinsicContentSize:self];
   }
 }
 
-- (double)_performHeightCalculationForVisualConfiguration:(id)a3
+- (double)_performHeightCalculationForVisualConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(SBHSearchBar *)self searchTextField];
-  [v5 intrinsicContentSize];
+  configurationCopy = configuration;
+  searchTextField = [(SBHSearchBar *)self searchTextField];
+  [searchTextField intrinsicContentSize];
   v7 = v6;
 
   if ([(SBHSearchBar *)self isPortraitOrientation])
   {
-    [v4 textFieldPortraitLayoutInsets];
+    [configurationCopy textFieldPortraitLayoutInsets];
   }
 
   else
   {
-    [v4 textFieldLandscapeLayoutInsets];
+    [configurationCopy textFieldLandscapeLayoutInsets];
   }
 
   v10 = v8;
@@ -677,14 +677,14 @@ uint64_t __46__SBHSearchBar_setShowsCancelButton_animated___block_invoke(uint64_
 - (void)_updateCancelButtonFont
 {
   v3 = MEMORY[0x1E69DD1B8];
-  v4 = [(SBHSearchBar *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
+  traitCollection = [(SBHSearchBar *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   v6 = UIContentSizeCategoryClip();
   v9 = [v3 traitCollectionWithPreferredContentSizeCategory:v6];
 
   v7 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] compatibleWithTraitCollection:v9];
-  v8 = [(UIButton *)self->_cancelButton titleLabel];
-  [v8 setFont:v7];
+  titleLabel = [(UIButton *)self->_cancelButton titleLabel];
+  [titleLabel setFont:v7];
 
   [(UIButton *)self->_cancelButton sizeToFit];
 }

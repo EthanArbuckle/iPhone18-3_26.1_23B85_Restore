@@ -11,10 +11,10 @@
   v12 = v7;
   if (a3 == -1)
   {
-    v8 = [a1 string];
-    v14.length = [a1 length];
+    string = [self string];
+    v14.length = [self length];
     v14.location = 0;
-    v9 = CFStringTokenizerCopyBestStringLanguage(v8, v14);
+    v9 = CFStringTokenizerCopyBestStringLanguage(string, v14);
 
     if (v9)
     {
@@ -42,8 +42,8 @@
   [v7 setAlignment:v10];
   [v12 setBaseWritingDirection:a3];
   v11 = *MEMORY[0x1E69DB688];
-  [a1 removeAttribute:*MEMORY[0x1E69DB688] range:{0, objc_msgSend(a1, "length")}];
-  [a1 addAttribute:v11 value:v12 range:{0, objc_msgSend(a1, "length")}];
+  [self removeAttribute:*MEMORY[0x1E69DB688] range:{0, objc_msgSend(self, "length")}];
+  [self addAttribute:v11 value:v12 range:{0, objc_msgSend(self, "length")}];
 }
 
 - (void)ic_addForegroundColorInRangesWhereNoColorAlreadyExists:()IC_UI
@@ -53,19 +53,19 @@
   {
     v5 = objc_alloc_init(MEMORY[0x1E696AD50]);
     v6 = *MEMORY[0x1E69DB650];
-    v7 = [a1 length];
+    v7 = [self length];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __91__NSMutableAttributedString_IC_UI__ic_addForegroundColorInRangesWhereNoColorAlreadyExists___block_invoke;
     v11[3] = &unk_1E846A170;
     v12 = v5;
     v8 = v5;
-    [a1 enumerateAttribute:v6 inRange:0 options:v7 usingBlock:{0, v11}];
+    [self enumerateAttribute:v6 inRange:0 options:v7 usingBlock:{0, v11}];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __91__NSMutableAttributedString_IC_UI__ic_addForegroundColorInRangesWhereNoColorAlreadyExists___block_invoke_2;
     v9[3] = &unk_1E846DA98;
-    v9[4] = a1;
+    v9[4] = self;
     v10 = v4;
     [v8 enumerateRangesUsingBlock:v9];
   }

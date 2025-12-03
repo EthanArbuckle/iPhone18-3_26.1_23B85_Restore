@@ -1,14 +1,14 @@
 @interface CIBitmapContext
 + (id)context;
-+ (id)contextWithBitmap:(void *)a3 rowBytes:(int64_t)a4 bounds:(CGRect)a5 format:(int)a6;
-+ (id)contextWithBitmap:(void *)a3 rowBytes:(int64_t)a4 bounds:(CGRect)a5 format:(int)a6 options:(id)a7;
-+ (id)contextWithOptions:(id)a3;
-- (BOOL)setBitmap:(void *)a3 rowBytes:(int64_t)a4 bounds:(CGRect)a5 format:(int)a6;
++ (id)contextWithBitmap:(void *)bitmap rowBytes:(int64_t)bytes bounds:(CGRect)bounds format:(int)format;
++ (id)contextWithBitmap:(void *)bitmap rowBytes:(int64_t)bytes bounds:(CGRect)bounds format:(int)format options:(id)options;
++ (id)contextWithOptions:(id)options;
+- (BOOL)setBitmap:(void *)bitmap rowBytes:(int64_t)bytes bounds:(CGRect)bounds format:(int)format;
 - (CGRect)bounds;
-- (CIBitmapContext)initWithBitmap:(void *)a3 rowBytes:(int64_t)a4 bounds:(CGRect)a5 format:(int)a6 options:(id)a7;
-- (CIBitmapContext)initWithOptions:(id)a3;
+- (CIBitmapContext)initWithBitmap:(void *)bitmap rowBytes:(int64_t)bytes bounds:(CGRect)bounds format:(int)format options:(id)options;
+- (CIBitmapContext)initWithOptions:(id)options;
 - (void)dealloc;
-- (void)drawImage:(id)a3 inRect:(CGRect)a4 fromRect:(CGRect)a5;
+- (void)drawImage:(id)image inRect:(CGRect)rect fromRect:(CGRect)fromRect;
 @end
 
 @implementation CIBitmapContext
@@ -20,49 +20,49 @@
   return v2;
 }
 
-+ (id)contextWithOptions:(id)a3
++ (id)contextWithOptions:(id)options
 {
-  v3 = [[CIBitmapContext alloc] initWithOptions:a3];
+  v3 = [[CIBitmapContext alloc] initWithOptions:options];
 
   return v3;
 }
 
-+ (id)contextWithBitmap:(void *)a3 rowBytes:(int64_t)a4 bounds:(CGRect)a5 format:(int)a6
++ (id)contextWithBitmap:(void *)bitmap rowBytes:(int64_t)bytes bounds:(CGRect)bounds format:(int)format
 {
-  v6 = [[CIBitmapContext alloc] initWithBitmap:a3 rowBytes:a4 bounds:*&a6 format:a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  v6 = [[CIBitmapContext alloc] initWithBitmap:bitmap rowBytes:bytes bounds:*&format format:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
 
   return v6;
 }
 
-+ (id)contextWithBitmap:(void *)a3 rowBytes:(int64_t)a4 bounds:(CGRect)a5 format:(int)a6 options:(id)a7
++ (id)contextWithBitmap:(void *)bitmap rowBytes:(int64_t)bytes bounds:(CGRect)bounds format:(int)format options:(id)options
 {
-  v7 = [[CIBitmapContext alloc] initWithBitmap:a3 rowBytes:a4 bounds:*&a6 format:a7 options:a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  v7 = [[CIBitmapContext alloc] initWithBitmap:bitmap rowBytes:bytes bounds:*&format format:options options:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
 
   return v7;
 }
 
-- (CIBitmapContext)initWithOptions:(id)a3
+- (CIBitmapContext)initWithOptions:(id)options
 {
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a3];
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:options];
   [v4 setValue:MEMORY[0x1E695E118] forKey:@"software_renderer"];
   v6.receiver = self;
   v6.super_class = CIBitmapContext;
   return [(CIContext *)&v6 initWithOptions:v4];
 }
 
-- (CIBitmapContext)initWithBitmap:(void *)a3 rowBytes:(int64_t)a4 bounds:(CGRect)a5 format:(int)a6 options:(id)a7
+- (CIBitmapContext)initWithBitmap:(void *)bitmap rowBytes:(int64_t)bytes bounds:(CGRect)bounds format:(int)format options:(id)options
 {
-  v7 = *&a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a7];
+  v7 = *&format;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v15 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:options];
   [v15 setValue:MEMORY[0x1E695E118] forKey:@"software_renderer"];
   v19.receiver = self;
   v19.super_class = CIBitmapContext;
   v17 = [(CIContext *)&v19 initWithOptions:v15];
-  if (v17 && ![(CIBitmapContext *)v17 setBitmap:a3 rowBytes:a4 bounds:CI::format_modernize(v7 format:"[CIBitmapContext initWithBitmap:rowBytes:bounds:format:options:]", v16), x, y, width, height])
+  if (v17 && ![(CIBitmapContext *)v17 setBitmap:bitmap rowBytes:bytes bounds:CI::format_modernize(v7 format:"[CIBitmapContext initWithBitmap:rowBytes:bounds:format:options:]", v16), x, y, width, height])
   {
 
     return 0;
@@ -71,13 +71,13 @@
   return v17;
 }
 
-- (BOOL)setBitmap:(void *)a3 rowBytes:(int64_t)a4 bounds:(CGRect)a5 format:(int)a6
+- (BOOL)setBitmap:(void *)bitmap rowBytes:(int64_t)bytes bounds:(CGRect)bounds format:(int)format
 {
-  v6 = *&a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  v6 = *&format;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   bcpriv = self->_bcpriv;
   if (bcpriv)
   {
@@ -90,7 +90,7 @@
   v31.size.width = width;
   v31.size.height = height;
   v32 = CGRectStandardize(v31);
-  if (!a3)
+  if (!bitmap)
   {
     goto LABEL_5;
   }
@@ -136,13 +136,13 @@
     if (CI::format_is_supported_render_to_bitmap(v22))
     {
       v23 = CI::format_destination_rowbytes_requirement(v22);
-      if (!(a4 % v23))
+      if (!(bytes % v23))
       {
         v28 = malloc_type_malloc(0x38uLL, 0x10800402C4B44A1uLL);
         self->_bcpriv = v28;
-        v28->var0 = a3;
+        v28->var0 = bitmap;
         v29 = self->_bcpriv;
-        v29->var1 = a4;
+        v29->var1 = bytes;
         v29->var2.origin.x = v15;
         v29->var2.origin.y = v16;
         v29->var2.size.width = v17;
@@ -195,18 +195,18 @@ LABEL_5:
   [(CIContext *)&v4 dealloc];
 }
 
-- (void)drawImage:(id)a3 inRect:(CGRect)a4 fromRect:(CGRect)a5
+- (void)drawImage:(id)image inRect:(CGRect)rect fromRect:(CGRect)fromRect
 {
   if (!self->_bcpriv)
   {
     return;
   }
 
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v39 = CGRectStandardize(a5);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v39 = CGRectStandardize(fromRect);
   v11 = v39.origin.x;
   v12 = v39.origin.y;
   v13 = v39.size.width;
@@ -220,13 +220,13 @@ LABEL_5:
   v16 = v40.origin.y;
   v17 = v40.size.width;
   v18 = v40.size.height;
-  v19 = [(CIContext *)self _internalContext];
-  if (!a3)
+  _internalContext = [(CIContext *)self _internalContext];
+  if (!image)
   {
     return;
   }
 
-  if (!v19)
+  if (!_internalContext)
   {
     return;
   }
@@ -240,7 +240,7 @@ LABEL_5:
     return;
   }
 
-  [a3 extent];
+  [image extent];
   v46.origin.x = v20;
   v46.origin.y = v21;
   v46.size.width = v22;
@@ -270,14 +270,14 @@ LABEL_5:
     return;
   }
 
-  v25 = [(CIContext *)self _outputColorSpace];
-  Model = CGColorSpaceGetModel(v25);
+  _outputColorSpace = [(CIContext *)self _outputColorSpace];
+  Model = CGColorSpaceGetModel(_outputColorSpace);
   var3 = self->_bcpriv->var3;
   if (!CI::format_is_luminance(var3))
   {
     if (Model != kCGColorSpaceModelRGB)
     {
-      v25 = +[CIContext defaultRGBColorSpace];
+      _outputColorSpace = +[CIContext defaultRGBColorSpace];
       v30 = ci_logger_api();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
@@ -297,7 +297,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v25 = +[CIContext defaultGrayColorSpace];
+  _outputColorSpace = +[CIContext defaultGrayColorSpace];
   v28 = ci_logger_api();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
   {
@@ -313,12 +313,12 @@ LABEL_20:
   v36 = v18 / v14;
   v37 = v15 - v17 / v13 * v11 - v35 * v12;
   v38 = v16 - v34 * v11 - v18 / v14 * v12;
-  v31 = [a3 imageByApplyingTransform:&v33];
+  v31 = [image imageByApplyingTransform:&v33];
   bcpriv = self->_bcpriv;
-  [(CIContext *)self render:v31 toBitmap:bcpriv->var0 rowBytes:bcpriv->var1 bounds:bcpriv->var3 format:v25 colorSpace:bcpriv->var2.origin.x, bcpriv->var2.origin.y, bcpriv->var2.size.width, bcpriv->var2.size.height];
+  [(CIContext *)self render:v31 toBitmap:bcpriv->var0 rowBytes:bcpriv->var1 bounds:bcpriv->var3 format:_outputColorSpace colorSpace:bcpriv->var2.origin.x, bcpriv->var2.origin.y, bcpriv->var2.size.width, bcpriv->var2.size.height];
   if (v29)
   {
-    CGColorSpaceRelease(v25);
+    CGColorSpaceRelease(_outputColorSpace);
   }
 }
 

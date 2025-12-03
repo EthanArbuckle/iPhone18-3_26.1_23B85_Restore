@@ -1,21 +1,21 @@
 @interface UISwipeAction
-+ (id)swipeActionWithStyle:(int64_t)a3 title:(id)a4 handler:(id)a5;
++ (id)swipeActionWithStyle:(int64_t)style title:(id)title handler:(id)handler;
 - (UISwipeAction)init;
 - (void)resetSwipedRow;
 @end
 
 @implementation UISwipeAction
 
-+ (id)swipeActionWithStyle:(int64_t)a3 title:(id)a4 handler:(id)a5
++ (id)swipeActionWithStyle:(int64_t)style title:(id)title handler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __52__UISwipeAction_swipeActionWithStyle_title_handler___block_invoke;
   v12[3] = &unk_1E70FEB88;
-  v13 = v8;
-  v9 = v8;
-  v10 = [a1 contextualActionWithStyle:a3 title:a4 handler:v12];
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [self contextualActionWithStyle:style title:title handler:v12];
 
   return v10;
 }
@@ -55,12 +55,12 @@ void __52__UISwipeAction_swipeActionWithStyle_title_handler___block_invoke(uint6
 
 - (void)resetSwipedRow
 {
-  v3 = [(UISwipeAction *)self completionHandler];
+  completionHandler = [(UISwipeAction *)self completionHandler];
 
-  if (v3)
+  if (completionHandler)
   {
-    v4 = [(UISwipeAction *)self completionHandler];
-    v4[2](v4, 1);
+    completionHandler2 = [(UISwipeAction *)self completionHandler];
+    completionHandler2[2](completionHandler2, 1);
 
     completionHandler = self->_completionHandler;
     self->_completionHandler = 0;

@@ -1,14 +1,14 @@
 @interface MusicPlaylistsViewControllerRestorationClass
-+ (id)viewControllerWithRestorationIdentifierPath:(id)a3 coder:(id)a4;
++ (id)viewControllerWithRestorationIdentifierPath:(id)path coder:(id)coder;
 - (MusicPlaylistsViewControllerRestorationClass)init;
 @end
 
 @implementation MusicPlaylistsViewControllerRestorationClass
 
-+ (id)viewControllerWithRestorationIdentifierPath:(id)a3 coder:(id)a4
++ (id)viewControllerWithRestorationIdentifierPath:(id)path coder:(id)coder
 {
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  coderCopy = coder;
   v7 = sub_4978D8();
 
   return v7;

@@ -1,45 +1,45 @@
 @interface VCPBackgroundProcessingMetrics
-+ (id)sharedMetricsWithPhotoLibrary:(id)a3;
-- (VCPBackgroundProcessingMetrics)initWithPhotoLibrary:(id)a3;
-- (int)_persistToMACDWithElapsedTime:(int64_t)a3;
-- (int)_persistWithLegacyDatabaseWithElapsedTime:(int64_t)a3;
++ (id)sharedMetricsWithPhotoLibrary:(id)library;
+- (VCPBackgroundProcessingMetrics)initWithPhotoLibrary:(id)library;
+- (int)_persistToMACDWithElapsedTime:(int64_t)time;
+- (int)_persistWithLegacyDatabaseWithElapsedTime:(int64_t)time;
 - (int)loadMetrics;
 - (int)persist;
-- (int)reportAnalyzedAsset:(id)a3 withAnalysis:(id)a4 andProcessingTime:(double)a5;
+- (int)reportAnalyzedAsset:(id)asset withAnalysis:(id)analysis andProcessingTime:(double)time;
 @end
 
 @implementation VCPBackgroundProcessingMetrics
 
-- (VCPBackgroundProcessingMetrics)initWithPhotoLibrary:(id)a3
+- (VCPBackgroundProcessingMetrics)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = VCPBackgroundProcessingMetrics;
   v6 = [(VCPBackgroundProcessingMetrics *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photolibrary, a3);
+    objc_storeStrong(&v6->_photolibrary, library);
   }
 
   return v7;
 }
 
-+ (id)sharedMetricsWithPhotoLibrary:(id)a3
++ (id)sharedMetricsWithPhotoLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [v3 photoLibraryURL];
-  v7 = [v6 absoluteString];
-  v8 = [NSString stringWithFormat:@"%@-%@", v5, v7];
+  photoLibraryURL = [libraryCopy photoLibraryURL];
+  absoluteString = [photoLibraryURL absoluteString];
+  v8 = [NSString stringWithFormat:@"%@-%@", v5, absoluteString];
 
   v9 = +[VCPSharedInstanceManager sharedManager];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000C1168;
   v13[3] = &unk_100285978;
-  v10 = v3;
+  v10 = libraryCopy;
   v14 = v10;
   v11 = [v9 sharedInstanceWithIdentifier:v8 andCreationBlock:v13];
 
@@ -71,9 +71,9 @@
   {
     if (+[MADManagedKeyValueStore isMACDReadEnabled])
     {
-      v7 = [(PHPhotoLibrary *)self->_photolibrary mad_fetchRequest];
+      mad_fetchRequest = [(PHPhotoLibrary *)self->_photolibrary mad_fetchRequest];
       v48 = 0;
-      v2 = [v7 fetchAllDataStoreKeyValuePairs:&v48];
+      v2 = [mad_fetchRequest fetchAllDataStoreKeyValuePairs:&v48];
       v8 = v48;
 
       if (v2)
@@ -237,27 +237,27 @@ LABEL_21:
   return -18;
 }
 
-- (int)reportAnalyzedAsset:(id)a3 withAnalysis:(id)a4 andProcessingTime:(double)a5
+- (int)reportAnalyzedAsset:(id)asset withAnalysis:(id)analysis andProcessingTime:(double)time
 {
-  v8 = a3;
-  v9 = a4;
+  assetCopy = asset;
+  analysisCopy = analysis;
   if (self->_isMetricsLoaded)
   {
-    if (v8)
+    if (assetCopy)
     {
       self->_hasPendingAnalysis = 1;
-      v10 = [PHAssetResource vcp_allAcceptableResourcesForAsset:v8];
-      v11 = [v8 vcp_fullAnalysisTypesForResources:v10];
-      if ([v8 vcp_fullAnalysisTypes] == v11)
+      v10 = [PHAssetResource vcp_allAcceptableResourcesForAsset:assetCopy];
+      v11 = [assetCopy vcp_fullAnalysisTypesForResources:v10];
+      if ([assetCopy vcp_fullAnalysisTypes] == v11)
       {
-        if ([v8 isVideo])
+        if ([assetCopy isVideo])
         {
           self->_hasFullyAnalyzedMovie = 1;
-          [v8 duration];
+          [assetCopy duration];
           self->_movieDurationFullyAnalyzedToday += vcvtpd_s64_f64(v12);
-          [v8 duration];
+          [assetCopy duration];
           self->_movieDurationFullyAnalyzedLatestVersion += vcvtpd_s64_f64(v13);
-          v14 = ceil(a5);
+          v14 = ceil(time);
           v15 = 56;
           v16 = 24;
           v17 = 88;
@@ -265,9 +265,9 @@ LABEL_21:
 
         else
         {
-          v22 = [v8 vcp_isLivePhoto];
-          v14 = ceil(a5);
-          if (v22)
+          vcp_isLivePhoto = [assetCopy vcp_isLivePhoto];
+          v14 = ceil(time);
+          if (vcp_isLivePhoto)
           {
             self->_hasFullyAnalyzedLivePhoto = 1;
             v15 = 48;
@@ -285,14 +285,14 @@ LABEL_21:
         }
       }
 
-      else if ([v8 isVideo])
+      else if ([assetCopy isVideo])
       {
         self->_hasPartiallyAnalyzedMovie = 1;
-        [v8 duration];
+        [assetCopy duration];
         self->_movieDurationPartiallyAnalyzedToday += vcvtpd_s64_f64(v20);
-        [v8 duration];
+        [assetCopy duration];
         self->_movieDurationPartiallyAnalyzedLatestVersion += vcvtpd_s64_f64(v21);
-        v14 = ceil(a5);
+        v14 = ceil(time);
         v15 = 144;
         v16 = 112;
         v17 = 176;
@@ -300,9 +300,9 @@ LABEL_21:
 
       else
       {
-        v23 = [v8 vcp_isLivePhoto];
-        v14 = ceil(a5);
-        if (v23)
+        vcp_isLivePhoto2 = [assetCopy vcp_isLivePhoto];
+        v14 = ceil(time);
+        if (vcp_isLivePhoto2)
         {
           self->_hasPartiallyAnalyzedLivePhoto = 1;
           v15 = 136;
@@ -350,7 +350,7 @@ LABEL_21:
   return v19;
 }
 
-- (int)_persistWithLegacyDatabaseWithElapsedTime:(int64_t)a3
+- (int)_persistWithLegacyDatabaseWithElapsedTime:(int64_t)time
 {
   v5 = [(VCPDatabaseWriter *)self->_database setValue:self->_numOfTimesScheduledDatabaseCreation + 1 forKey:@"NumberOfTimesScheduledDatabaseCreation"];
   if (v5)
@@ -358,7 +358,7 @@ LABEL_21:
     goto LABEL_3;
   }
 
-  v5 = [(VCPDatabaseWriter *)self->_database setValue:self->_analyzingTimeDatabaseCreation + a3 forKey:@"TotalAnalyzingTimeDatabaseCreation"];
+  v5 = [(VCPDatabaseWriter *)self->_database setValue:self->_analyzingTimeDatabaseCreation + time forKey:@"TotalAnalyzingTimeDatabaseCreation"];
   if (v5)
   {
     goto LABEL_3;
@@ -367,7 +367,7 @@ LABEL_21:
   database = self->_database;
   if (self->_hasPendingAnalysis)
   {
-    v5 = [(VCPDatabaseWriter *)database setValue:self->_timeRunningWithPendingToday + a3 forKey:@"TotalTimeRunningWithPendingAnalysisToday"];
+    v5 = [(VCPDatabaseWriter *)database setValue:self->_timeRunningWithPendingToday + time forKey:@"TotalTimeRunningWithPendingAnalysisToday"];
     if (v5)
     {
       goto LABEL_3;
@@ -379,7 +379,7 @@ LABEL_21:
       goto LABEL_3;
     }
 
-    v5 = [(VCPDatabaseWriter *)self->_database setValue:self->_timeRunningWithPendingLatestVersion + a3 forKey:@"TotalTimeRunningWithPendingAnalysisInLatestVersion"];
+    v5 = [(VCPDatabaseWriter *)self->_database setValue:self->_timeRunningWithPendingLatestVersion + time forKey:@"TotalTimeRunningWithPendingAnalysisInLatestVersion"];
     if (v5)
     {
       goto LABEL_3;
@@ -570,13 +570,13 @@ LABEL_53:
     goto LABEL_4;
   }
 
-  v5 = [(VCPDatabaseWriter *)database setValue:self->_timeRunningWithoutPendingToday + a3 forKey:@"TotalTimeRunningWithoutPendingAnalysisToday"];
+  v5 = [(VCPDatabaseWriter *)database setValue:self->_timeRunningWithoutPendingToday + time forKey:@"TotalTimeRunningWithoutPendingAnalysisToday"];
   if (!v5)
   {
     v5 = [(VCPDatabaseWriter *)self->_database setValue:self->_numOfTimesScheduledWithoutPendingToday + 1 forKey:@"NumberOfTimesScheduledWithoutPendingAnalysisToday"];
     if (!v5)
     {
-      v5 = [(VCPDatabaseWriter *)self->_database setValue:self->_timeRunningWithoutPendingLatestVersion + a3 forKey:@"TotalTimeRunningWithoutPendingAnalysisInLatestVersion"];
+      v5 = [(VCPDatabaseWriter *)self->_database setValue:self->_timeRunningWithoutPendingLatestVersion + time forKey:@"TotalTimeRunningWithoutPendingAnalysisInLatestVersion"];
       if (!v5)
       {
         v10 = self->_database;
@@ -604,7 +604,7 @@ LABEL_4:
   return [(VCPDatabaseWriter *)self->_database commit];
 }
 
-- (int)_persistToMACDWithElapsedTime:(int64_t)a3
+- (int)_persistToMACDWithElapsedTime:(int64_t)time
 {
   photolibrary = self->_photolibrary;
   v9 = 0;
@@ -613,21 +613,21 @@ LABEL_4:
   v10[2] = sub_1000C2190;
   v10[3] = &unk_100285478;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = time;
   v4 = [(PHPhotoLibrary *)photolibrary mad_performAnalysisDataStoreChanges:v10 error:&v9];
   v5 = v9;
   v6 = v5;
   if (v4)
   {
-    v7 = 0;
+    code = 0;
   }
 
   else
   {
-    v7 = [v5 code];
+    code = [v5 code];
   }
 
-  return v7;
+  return code;
 }
 
 - (int)persist

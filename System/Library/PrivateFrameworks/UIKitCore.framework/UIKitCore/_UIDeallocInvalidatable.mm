@@ -1,8 +1,8 @@
 @interface _UIDeallocInvalidatable
 - (_UIDeallocInvalidatable)init;
-- (id)initWithIdentifier:(char)a3 faultForDeallocInvalidation:(void *)a4 invalidationBlock:;
+- (id)initWithIdentifier:(char)identifier faultForDeallocInvalidation:(void *)invalidation invalidationBlock:;
 - (void)_invalidate;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
 - (void)dealloc;
 @end
 
@@ -12,8 +12,8 @@
 {
   if (pthread_main_np() != 1)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"_UIDeallocInvalidatable.m" lineNumber:56 description:@"Call must be made on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDeallocInvalidatable.m" lineNumber:56 description:@"Call must be made on main thread"];
   }
 
   if ([(BSAtomicSignal *)self->_invalidationSignal signal])
@@ -35,7 +35,7 @@
       if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v7 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_188A29000, v4, OS_LOG_TYPE_FAULT, "_UIInvalidatable deallocated without being invalidated: %@", buf, 0xCu);
       }
     }
@@ -46,7 +46,7 @@
       if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v7 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_188A29000, v3, OS_LOG_TYPE_ERROR, "_UIInvalidatable deallocated without being invalidated: %@", buf, 0xCu);
       }
     }
@@ -60,25 +60,25 @@
 
 - (_UIDeallocInvalidatable)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIDeallocInvalidatable.m" lineNumber:29 description:{@"%s: init is not allowed on %@", "-[_UIDeallocInvalidatable init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDeallocInvalidatable.m" lineNumber:29 description:{@"%s: init is not allowed on %@", "-[_UIDeallocInvalidatable init]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)initWithIdentifier:(char)a3 faultForDeallocInvalidation:(void *)a4 invalidationBlock:
+- (id)initWithIdentifier:(char)identifier faultForDeallocInvalidation:(void *)invalidation invalidationBlock:
 {
   v7 = a2;
-  v8 = a4;
-  v9 = v8;
-  if (!a1)
+  invalidationCopy = invalidation;
+  v9 = invalidationCopy;
+  if (!self)
   {
     goto LABEL_6;
   }
 
   if (v7)
   {
-    if (v8)
+    if (invalidationCopy)
     {
       goto LABEL_4;
     }
@@ -86,8 +86,8 @@
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:sel_initWithIdentifier_faultForDeallocInvalidation_invalidationBlock_ object:a1 file:@"_UIDeallocInvalidatable.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_initWithIdentifier_faultForDeallocInvalidation_invalidationBlock_ object:self file:@"_UIDeallocInvalidatable.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
     if (v9)
     {
@@ -95,44 +95,44 @@
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:sel_initWithIdentifier_faultForDeallocInvalidation_invalidationBlock_ object:a1 file:@"_UIDeallocInvalidatable.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"invalidationBlock"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:sel_initWithIdentifier_faultForDeallocInvalidation_invalidationBlock_ object:self file:@"_UIDeallocInvalidatable.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"invalidationBlock"}];
 
 LABEL_4:
-  v19.receiver = a1;
+  v19.receiver = self;
   v19.super_class = _UIDeallocInvalidatable;
-  a1 = objc_msgSendSuper2(&v19, sel_init);
-  if (a1)
+  self = objc_msgSendSuper2(&v19, sel_init);
+  if (self)
   {
     v10 = [v7 copy];
-    v11 = *(a1 + 4);
-    *(a1 + 4) = v10;
+    v11 = *(self + 4);
+    *(self + 4) = v10;
 
-    *(a1 + 8) = a3;
+    *(self + 8) = identifier;
     v12 = objc_opt_new();
-    v13 = *(a1 + 2);
-    *(a1 + 2) = v12;
+    v13 = *(self + 2);
+    *(self + 2) = v12;
 
     v14 = [v9 copy];
-    v15 = *(a1 + 3);
-    *(a1 + 3) = v14;
+    v15 = *(self + 3);
+    *(self + 3) = v14;
   }
 
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53___UIDeallocInvalidatable_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_1E70F35B8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = streamCopy;
+  selfCopy = self;
+  v5 = streamCopy;
   [v5 appendProem:self block:v6];
 }
 

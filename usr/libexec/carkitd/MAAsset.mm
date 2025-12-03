@@ -1,39 +1,39 @@
 @interface MAAsset
-+ (id)cr_highestContentVersionAssetInAssets:(id)a3;
-+ (id)cr_installedAssetsInAssets:(id)a3;
-+ (id)cr_themeAsset_filteredAssets:(id)a3 matchingAssetIdentifier:(id)a4 maximumSDKVersion:(id)a5 maximumCompatibilityVersion:(id)a6;
-+ (id)cr_themeAsset_highestVersionAssetInAssets:(id)a3;
++ (id)cr_highestContentVersionAssetInAssets:(id)assets;
++ (id)cr_installedAssetsInAssets:(id)assets;
++ (id)cr_themeAsset_filteredAssets:(id)assets matchingAssetIdentifier:(id)identifier maximumSDKVersion:(id)version maximumCompatibilityVersion:(id)compatibilityVersion;
++ (id)cr_themeAsset_highestVersionAssetInAssets:(id)assets;
 - (id)cr_assetVersion;
-- (id)cr_numberForAttributesKey:(id)a3;
-- (id)cr_stringForAttributesKey:(id)a3;
+- (id)cr_numberForAttributesKey:(id)key;
+- (id)cr_stringForAttributesKey:(id)key;
 - (id)cr_themeAsset_accessoryContentVersion;
 - (id)cr_themeAsset_iOSContentVersion;
-- (int64_t)cr_contentVersionCompare:(id)a3;
-- (int64_t)cr_themeAsset_versionCompare:(id)a3;
+- (int64_t)cr_contentVersionCompare:(id)compare;
+- (int64_t)cr_themeAsset_versionCompare:(id)compare;
 @end
 
 @implementation MAAsset
 
-+ (id)cr_highestContentVersionAssetInAssets:(id)a3
++ (id)cr_highestContentVersionAssetInAssets:(id)assets
 {
-  v3 = [a1 cr_contentVersionSortedAssetsFromAssets:a3];
-  v4 = [v3 lastObject];
+  v3 = [self cr_contentVersionSortedAssetsFromAssets:assets];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
-- (int64_t)cr_contentVersionCompare:(id)a3
+- (int64_t)cr_contentVersionCompare:(id)compare
 {
-  v4 = a3;
-  v5 = [(MAAsset *)self cr_contentVersion];
-  v6 = [v4 cr_contentVersion];
+  compareCopy = compare;
+  cr_contentVersion = [(MAAsset *)self cr_contentVersion];
+  cr_contentVersion2 = [compareCopy cr_contentVersion];
 
-  if (v5 && v6)
+  if (cr_contentVersion && cr_contentVersion2)
   {
-    v7 = [v5 compare:v6];
+    v7 = [cr_contentVersion compare:cr_contentVersion2];
   }
 
-  else if (v6)
+  else if (cr_contentVersion2)
   {
     v7 = -1;
   }
@@ -46,20 +46,20 @@
   return v7;
 }
 
-+ (id)cr_installedAssetsInAssets:(id)a3
++ (id)cr_installedAssetsInAssets:(id)assets
 {
-  v3 = a3;
+  assetsCopy = assets;
   v4 = [NSPredicate predicateWithBlock:&stru_1000DFD88];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [assetsCopy filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
-- (id)cr_stringForAttributesKey:(id)a3
+- (id)cr_stringForAttributesKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MAAsset *)self attributes];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  attributes = [(MAAsset *)self attributes];
+  v6 = [attributes objectForKey:keyCopy];
 
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -74,11 +74,11 @@
   return v7;
 }
 
-- (id)cr_numberForAttributesKey:(id)a3
+- (id)cr_numberForAttributesKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MAAsset *)self attributes];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  attributes = [(MAAsset *)self attributes];
+  v6 = [attributes objectForKey:keyCopy];
 
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -122,11 +122,11 @@
 
 - (id)cr_assetVersion
 {
-  v3 = [(MAAsset *)self cr_themeAsset_assetIdentifier];
-  if (v3)
+  cr_themeAsset_assetIdentifier = [(MAAsset *)self cr_themeAsset_assetIdentifier];
+  if (cr_themeAsset_assetIdentifier)
   {
-    v4 = [(MAAsset *)self cr_themeAsset_iOSContentVersion];
-    if (!v4)
+    cr_themeAsset_iOSContentVersion = [(MAAsset *)self cr_themeAsset_iOSContentVersion];
+    if (!cr_themeAsset_iOSContentVersion)
     {
       v5 = CarThemeAssetsLogging();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -134,11 +134,11 @@
         sub_100089D40(v5, v6, v7, v8, v9, v10, v11, v12);
       }
 
-      v4 = @"0";
+      cr_themeAsset_iOSContentVersion = @"0";
     }
 
-    v13 = [(MAAsset *)self cr_themeAsset_accessoryContentVersion];
-    if (!v13)
+    cr_themeAsset_accessoryContentVersion = [(MAAsset *)self cr_themeAsset_accessoryContentVersion];
+    if (!cr_themeAsset_accessoryContentVersion)
     {
       v14 = CarThemeAssetsLogging();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -146,18 +146,18 @@
         sub_100089D78(v14, v15, v16, v17, v18, v19, v20, v21);
       }
 
-      v13 = &off_1000E8230;
+      cr_themeAsset_accessoryContentVersion = &off_1000E8230;
     }
 
-    v22 = [[CARThemeAssetVersion alloc] initWithIdentifier:v3 iOSContentVersion:v4 accessoryContentVersion:v13];
+    v22 = [[CARThemeAssetVersion alloc] initWithIdentifier:cr_themeAsset_assetIdentifier iOSContentVersion:cr_themeAsset_iOSContentVersion accessoryContentVersion:cr_themeAsset_accessoryContentVersion];
   }
 
   else
   {
-    v4 = CarThemeAssetsLogging();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    cr_themeAsset_iOSContentVersion = CarThemeAssetsLogging();
+    if (os_log_type_enabled(cr_themeAsset_iOSContentVersion, OS_LOG_TYPE_ERROR))
     {
-      sub_100089DB0(v4, v23, v24, v25, v26, v27, v28, v29);
+      sub_100089DB0(cr_themeAsset_iOSContentVersion, v23, v24, v25, v26, v27, v28, v29);
     }
 
     v22 = 0;
@@ -166,42 +166,42 @@
   return v22;
 }
 
-+ (id)cr_themeAsset_highestVersionAssetInAssets:(id)a3
++ (id)cr_themeAsset_highestVersionAssetInAssets:(id)assets
 {
-  v3 = [a1 cr_themeAsset_versionSortedAssetsFromAssets:a3];
-  v4 = [v3 lastObject];
+  v3 = [self cr_themeAsset_versionSortedAssetsFromAssets:assets];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
-- (int64_t)cr_themeAsset_versionCompare:(id)a3
+- (int64_t)cr_themeAsset_versionCompare:(id)compare
 {
-  v4 = a3;
-  v5 = [(MAAsset *)self cr_assetVersion];
-  v6 = [v4 cr_assetVersion];
+  compareCopy = compare;
+  cr_assetVersion = [(MAAsset *)self cr_assetVersion];
+  cr_assetVersion2 = [compareCopy cr_assetVersion];
 
-  v7 = [v5 compare:v6];
+  v7 = [cr_assetVersion compare:cr_assetVersion2];
   return v7;
 }
 
-+ (id)cr_themeAsset_filteredAssets:(id)a3 matchingAssetIdentifier:(id)a4 maximumSDKVersion:(id)a5 maximumCompatibilityVersion:(id)a6
++ (id)cr_themeAsset_filteredAssets:(id)assets matchingAssetIdentifier:(id)identifier maximumSDKVersion:(id)version maximumCompatibilityVersion:(id)compatibilityVersion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  identifierCopy = identifier;
+  versionCopy = version;
+  compatibilityVersionCopy = compatibilityVersion;
   v12 = &__NSArray0__struct;
-  if (a3 && v9)
+  if (assets && identifierCopy)
   {
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10007565C;
     v16[3] = &unk_1000E01D8;
-    v17 = v9;
-    v18 = v10;
-    v19 = v11;
-    v13 = a3;
+    v17 = identifierCopy;
+    v18 = versionCopy;
+    v19 = compatibilityVersionCopy;
+    assetsCopy = assets;
     v14 = [NSPredicate predicateWithBlock:v16];
-    v12 = [v13 filteredArrayUsingPredicate:v14];
+    v12 = [assetsCopy filteredArrayUsingPredicate:v14];
   }
 
   return v12;

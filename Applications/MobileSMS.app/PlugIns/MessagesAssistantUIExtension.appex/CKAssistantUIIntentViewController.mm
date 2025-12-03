@@ -2,8 +2,8 @@
 + (void)connectIfNeeded;
 - (CGSize)desiredSize;
 - (void)_configureSnippetContentViewWithChatAndContactsForAvatarView;
-- (void)configureViewForParameters:(id)a3 ofInteraction:(id)a4 context:(unint64_t)a5 completion:(id)a6;
-- (void)configureWithInteraction:(id)a3 context:(unint64_t)a4 completion:(id)a5;
+- (void)configureViewForParameters:(id)parameters ofInteraction:(id)interaction context:(unint64_t)context completion:(id)completion;
+- (void)configureWithInteraction:(id)interaction context:(unint64_t)context completion:(id)completion;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -25,16 +25,16 @@
   snippetContentView = self->_snippetContentView;
   if (snippetContentView)
   {
-    v4 = [(CKAssistantUIIntentViewController *)self view];
-    [v4 bounds];
+    view = [(CKAssistantUIIntentViewController *)self view];
+    [view bounds];
     [(CKAssistantUIContentView *)snippetContentView setFrame:?];
   }
 }
 
-- (void)configureViewForParameters:(id)a3 ofInteraction:(id)a4 context:(unint64_t)a5 completion:(id)a6
+- (void)configureViewForParameters:(id)parameters ofInteraction:(id)interaction context:(unint64_t)context completion:(id)completion
 {
-  v9 = a6;
-  v10 = a4;
+  completionCopy = completion;
+  interactionCopy = interaction;
   v11 = [INParameter parameterForClass:objc_opt_class() keyPath:@"recipients"];
   v12 = [INParameter parameterForClass:objc_opt_class() keyPath:@"content"];
   v13 = [INParameter parameterForClass:objc_opt_class() keyPath:@"speakableGroupName"];
@@ -45,18 +45,18 @@
   v17[2] = sub_100001364;
   v17[3] = &unk_1000082B0;
   v18 = v14;
-  v19 = v9;
+  v19 = completionCopy;
   v15 = v14;
-  v16 = v9;
-  [(CKAssistantUIIntentViewController *)self configureWithInteraction:v10 context:a5 completion:v17];
+  v16 = completionCopy;
+  [(CKAssistantUIIntentViewController *)self configureWithInteraction:interactionCopy context:context completion:v17];
 }
 
-- (void)configureWithInteraction:(id)a3 context:(unint64_t)a4 completion:(id)a5
+- (void)configureWithInteraction:(id)interaction context:(unint64_t)context completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  obj = [v7 intent];
-  v27 = [v7 intentResponse];
+  interactionCopy = interaction;
+  completionCopy = completion;
+  obj = [interactionCopy intent];
+  intentResponse = [interactionCopy intentResponse];
   v9 = +[NSMutableArray array];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -64,12 +64,12 @@
     if (IMGetDomainBoolForKey())
     {
       objc_storeStrong(&self->_configuredIntent, obj);
-      v10 = [(INSendMessageIntent *)self->_configuredIntent recipients];
+      recipients = [(INSendMessageIntent *)self->_configuredIntent recipients];
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v11 = [v10 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v11 = [recipients countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v11)
       {
         v12 = *v30;
@@ -79,36 +79,36 @@
           {
             if (*v30 != v12)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(recipients);
             }
 
-            v14 = [*(*(&v29 + 1) + 8 * i) displayName];
-            [v9 addObject:v14];
+            displayName = [*(*(&v29 + 1) + 8 * i) displayName];
+            [v9 addObject:displayName];
           }
 
-          v11 = [v10 countByEnumeratingWithState:&v29 objects:v33 count:16];
+          v11 = [recipients countByEnumeratingWithState:&v29 objects:v33 count:16];
         }
 
         while (v11);
       }
 
-      v15 = [(INSendMessageIntent *)self->_configuredIntent speakableGroupName];
-      v16 = [v15 spokenPhrase];
+      speakableGroupName = [(INSendMessageIntent *)self->_configuredIntent speakableGroupName];
+      spokenPhrase = [speakableGroupName spokenPhrase];
 
-      v17 = [(INSendMessageIntent *)self->_configuredIntent content];
-      v18 = v17;
+      content = [(INSendMessageIntent *)self->_configuredIntent content];
+      v18 = content;
       v19 = &stru_100008390;
-      if (v17)
+      if (content)
       {
-        v19 = v17;
+        v19 = content;
       }
 
       v20 = v19;
 
-      v21 = v27 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v27 code] == 3;
-      if (v16)
+      v21 = intentResponse && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [intentResponse code] == 3;
+      if (spokenPhrase)
       {
-        v25 = [NSString stringWithFormat:@"%@", v16];
+        v25 = [NSString stringWithFormat:@"%@", spokenPhrase];
       }
 
       else
@@ -119,10 +119,10 @@
 
       [(CKAssistantUIIntentViewController *)self _configureSnippetContentViewWithToField:v25 contactsForAvatarView:0 messageContent:v20 sent:v21];
       [(CKAssistantUIContentView *)self->_snippetContentView setNeedsLayout];
-      if (v8)
+      if (completionCopy)
       {
         [(CKAssistantUIIntentViewController *)self desiredSize];
-        v8[2](v8);
+        completionCopy[2](completionCopy);
       }
 
       goto LABEL_34;
@@ -140,10 +140,10 @@
       }
     }
 
-    if (v8)
+    if (completionCopy)
     {
 LABEL_20:
-      (v8[2])(v8, CGSizeZero.width, CGSizeZero.height);
+      (completionCopy[2])(completionCopy, CGSizeZero.width, CGSizeZero.height);
     }
   }
 
@@ -160,7 +160,7 @@ LABEL_20:
       }
     }
 
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_20;
     }
@@ -171,8 +171,8 @@ LABEL_34:
 
 - (CGSize)desiredSize
 {
-  v3 = [(CKAssistantUIIntentViewController *)self extensionContext];
-  [v3 hostedViewMaximumAllowedSize];
+  extensionContext = [(CKAssistantUIIntentViewController *)self extensionContext];
+  [extensionContext hostedViewMaximumAllowedSize];
   v5 = v4;
   v7 = v6;
 
@@ -209,20 +209,20 @@ LABEL_34:
           }
 
           v9 = *(*(&v37 + 1) + 8 * i);
-          v10 = [v9 customIdentifier];
+          customIdentifier = [v9 customIdentifier];
 
-          if (v10)
+          if (customIdentifier)
           {
-            v11 = [v9 customIdentifier];
-            [v3 addObject:v11];
+            customIdentifier2 = [v9 customIdentifier];
+            [v3 addObject:customIdentifier2];
           }
 
-          v12 = [v9 contactIdentifier];
+          contactIdentifier = [v9 contactIdentifier];
 
-          if (v12)
+          if (contactIdentifier)
           {
-            v13 = [v9 contactIdentifier];
-            [v4 addObject:v13];
+            contactIdentifier2 = [v9 contactIdentifier];
+            [v4 addObject:contactIdentifier2];
           }
         }
 
@@ -233,12 +233,12 @@ LABEL_34:
     }
 
     [objc_opt_class() connectIfNeeded];
-    v34 = [(INSendMessageIntent *)self->_configuredIntent conversationIdentifier];
+    conversationIdentifier = [(INSendMessageIntent *)self->_configuredIntent conversationIdentifier];
     v14 = +[IMChatRegistry sharedRegistry];
     v15 = v14;
-    if (v34)
+    if (conversationIdentifier)
     {
-      [v14 existingChatWithChatIdentifier:v34];
+      [v14 existingChatWithChatIdentifier:conversationIdentifier];
     }
 
     else
@@ -258,8 +258,8 @@ LABEL_34:
     }
 
     v21 = +[IMChatRegistry sharedRegistry];
-    v22 = [v3 firstObject];
-    v35 = [v21 existingChatWithChatIdentifier:v22];
+    firstObject = [v3 firstObject];
+    v35 = [v21 existingChatWithChatIdentifier:firstObject];
 
     if (v35)
     {
@@ -268,21 +268,21 @@ LABEL_21:
       v18 = v17;
       if (v17)
       {
-        v19 = [v17 displayName];
-        v20 = v19 == 0;
+        displayName = [v17 displayName];
+        v20 = displayName == 0;
 
         if (!v20)
         {
-          v33 = [v18 orderedContactsForAvatarView];
-          [(CKAssistantUIContentView *)self->_snippetContentView setContactsForAvatarView:v33];
+          orderedContactsForAvatarView = [v18 orderedContactsForAvatarView];
+          [(CKAssistantUIContentView *)self->_snippetContentView setContactsForAvatarView:orderedContactsForAvatarView];
 LABEL_35:
           [v18 setLoadedMessageCount:10];
           v29 = [[CKAssistantUIChatController alloc] initWithConversation:v18];
           [(CKAssistantUIChatController *)v29 beginHoldingScrollGeometryUpdatesForReason:CKScrollViewHoldingScrollGeometryReasonTypeSiriKitUIExtensionPermanentHold];
           [(CKAssistantUIIntentViewController *)self setChatController:v29];
           snippetContentView = self->_snippetContentView;
-          v31 = [(CKAssistantUIChatController *)v29 view];
-          [(CKAssistantUIContentView *)snippetContentView setChatContent:v31];
+          view = [(CKAssistantUIChatController *)v29 view];
+          [(CKAssistantUIContentView *)snippetContentView setChatContent:view];
 
 LABEL_36:
           return;
@@ -296,7 +296,7 @@ LABEL_29:
         v45 = v25;
         v26 = [NSArray arrayWithObjects:&v45 count:1];
         v36 = 0;
-        v33 = [v23 unifiedContactsMatchingPredicate:v24 keysToFetch:v26 error:&v36];
+        orderedContactsForAvatarView = [v23 unifiedContactsMatchingPredicate:v24 keysToFetch:v26 error:&v36];
         v27 = v36;
 
         if (v27 && IMOSLoggingEnabled())
@@ -312,7 +312,7 @@ LABEL_29:
           }
         }
 
-        [(CKAssistantUIContentView *)self->_snippetContentView setContactsForAvatarView:v33];
+        [(CKAssistantUIContentView *)self->_snippetContentView setContactsForAvatarView:orderedContactsForAvatarView];
         if (v32)
         {
           goto LABEL_36;

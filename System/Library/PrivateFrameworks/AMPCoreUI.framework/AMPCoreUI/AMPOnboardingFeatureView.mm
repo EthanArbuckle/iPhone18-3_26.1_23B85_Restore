@@ -1,16 +1,16 @@
 @interface AMPOnboardingFeatureView
-- (AMPOnboardingFeatureView)initWithFeature:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (AMPOnboardingFeatureView)initWithFeature:(id)feature;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)baselineOffsetFromBottom;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation AMPOnboardingFeatureView
 
-- (AMPOnboardingFeatureView)initWithFeature:(id)a3
+- (AMPOnboardingFeatureView)initWithFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   v16.receiver = self;
   v16.super_class = AMPOnboardingFeatureView;
   v5 = [(AMPOnboardingFeatureView *)&v16 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -20,8 +20,8 @@
     imageView = v5->_imageView;
     v5->_imageView = v6;
 
-    v8 = [v4 image];
-    [(UIImageView *)v5->_imageView setImage:v8];
+    image = [featureCopy image];
+    [(UIImageView *)v5->_imageView setImage:image];
 
     [(UIImageView *)v5->_imageView setContentMode:4];
     [(AMPOnboardingFeatureView *)v5 addSubview:v5->_imageView];
@@ -31,8 +31,8 @@
 
     [(UILabel *)v5->_titleLabel setNumberOfLines:0];
     [(UILabel *)v5->_titleLabel setLineBreakMode:0];
-    v11 = [v4 titleText];
-    [(UILabel *)v5->_titleLabel setText:v11];
+    titleText = [featureCopy titleText];
+    [(UILabel *)v5->_titleLabel setText:titleText];
 
     [(AMPOnboardingFeatureView *)v5 addSubview:v5->_titleLabel];
     v12 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -41,8 +41,8 @@
 
     [(UILabel *)v5->_descriptionLabel setNumberOfLines:0];
     [(UILabel *)v5->_descriptionLabel setLineBreakMode:0];
-    v14 = [v4 descriptionText];
-    [(UILabel *)v5->_descriptionLabel setText:v14];
+    descriptionText = [featureCopy descriptionText];
+    [(UILabel *)v5->_descriptionLabel setText:descriptionText];
 
     [(AMPOnboardingFeatureView *)v5 addSubview:v5->_descriptionLabel];
   }
@@ -63,13 +63,13 @@
     v4 = CGRectGetWidth(v24) + -50.0;
   }
 
-  v5 = [(AMPOnboardingFeatureView *)self imageView];
-  [v5 setFrame:{v4, 0.0, 50.0, 50.0}];
+  imageView = [(AMPOnboardingFeatureView *)self imageView];
+  [imageView setFrame:{v4, 0.0, 50.0, 50.0}];
 
   [(AMPOnboardingFeatureView *)self bounds];
   v6 = CGRectGetWidth(v25) + -62.0;
-  v7 = [(AMPOnboardingFeatureView *)self titleLabel];
-  [v7 sizeThatFits:{v6, 3.40282347e38}];
+  titleLabel = [(AMPOnboardingFeatureView *)self titleLabel];
+  [titleLabel sizeThatFits:{v6, 3.40282347e38}];
   v9 = v8;
   v11 = v10;
 
@@ -84,11 +84,11 @@
     v12 = 62.0;
   }
 
-  v13 = [(AMPOnboardingFeatureView *)self titleLabel];
-  [v13 setFrame:{v12, 0.0, v9, v11}];
+  titleLabel2 = [(AMPOnboardingFeatureView *)self titleLabel];
+  [titleLabel2 setFrame:{v12, 0.0, v9, v11}];
 
-  v14 = [(AMPOnboardingFeatureView *)self descriptionLabel];
-  [v14 sizeThatFits:{v6, 3.40282347e38}];
+  descriptionLabel = [(AMPOnboardingFeatureView *)self descriptionLabel];
+  [descriptionLabel sizeThatFits:{v6, 3.40282347e38}];
   v16 = v15;
   v18 = v17;
 
@@ -103,22 +103,22 @@
     v19 = 62.0;
   }
 
-  v20 = [(AMPOnboardingFeatureView *)self titleLabel];
-  [v20 frame];
+  titleLabel3 = [(AMPOnboardingFeatureView *)self titleLabel];
+  [titleLabel3 frame];
   MaxY = CGRectGetMaxY(v28);
-  v22 = [(AMPOnboardingFeatureView *)self descriptionLabel];
-  [v22 setFrame:{v19, MaxY, v16, v18}];
+  descriptionLabel2 = [(AMPOnboardingFeatureView *)self descriptionLabel];
+  [descriptionLabel2 setFrame:{v19, MaxY, v16, v18}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(AMPOnboardingFeatureView *)self titleLabel];
-  [v5 sizeThatFits:{width + -62.0, 3.40282347e38}];
+  width = fits.width;
+  titleLabel = [(AMPOnboardingFeatureView *)self titleLabel];
+  [titleLabel sizeThatFits:{width + -62.0, 3.40282347e38}];
   v7 = v6;
 
-  v8 = [(AMPOnboardingFeatureView *)self descriptionLabel];
-  [v8 sizeThatFits:{width + -62.0, 3.40282347e38}];
+  descriptionLabel = [(AMPOnboardingFeatureView *)self descriptionLabel];
+  [descriptionLabel sizeThatFits:{width + -62.0, 3.40282347e38}];
   v10 = v9;
 
   v11 = v7 + v10;
@@ -135,30 +135,30 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v12.receiver = self;
   v12.super_class = AMPOnboardingFeatureView;
-  [(AMPOnboardingFeatureView *)&v12 traitCollectionDidChange:a3];
+  [(AMPOnboardingFeatureView *)&v12 traitCollectionDidChange:change];
   v4 = *MEMORY[0x277D769C0];
   v5 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D769C0] addingSymbolicTraits:2 options:0];
   v6 = [MEMORY[0x277D74300] fontWithDescriptor:v5 size:0.0];
-  v7 = [(AMPOnboardingFeatureView *)self titleLabel];
-  [v7 setFont:v6];
+  titleLabel = [(AMPOnboardingFeatureView *)self titleLabel];
+  [titleLabel setFont:v6];
 
   v8 = MEMORY[0x277D74300];
-  v9 = [(AMPOnboardingFeatureView *)self traitCollection];
-  v10 = [v8 preferredFontForTextStyle:v4 compatibleWithTraitCollection:v9];
-  v11 = [(AMPOnboardingFeatureView *)self descriptionLabel];
-  [v11 setFont:v10];
+  traitCollection = [(AMPOnboardingFeatureView *)self traitCollection];
+  v10 = [v8 preferredFontForTextStyle:v4 compatibleWithTraitCollection:traitCollection];
+  descriptionLabel = [(AMPOnboardingFeatureView *)self descriptionLabel];
+  [descriptionLabel setFont:v10];
 
   [(AMPOnboardingFeatureView *)self setNeedsLayout];
 }
 
 - (double)baselineOffsetFromBottom
 {
-  v2 = [(AMPOnboardingFeatureView *)self descriptionLabel];
-  [v2 _baselineOffsetFromBottom];
+  descriptionLabel = [(AMPOnboardingFeatureView *)self descriptionLabel];
+  [descriptionLabel _baselineOffsetFromBottom];
   v4 = v3;
 
   return v4;

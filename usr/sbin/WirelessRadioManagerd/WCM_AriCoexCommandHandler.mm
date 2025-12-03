@@ -1,42 +1,42 @@
 @interface WCM_AriCoexCommandHandler
-- (BOOL)cacheEvent:(id)a3;
-- (BOOL)cacheTunerTransparentMessage:(id)a3;
+- (BOOL)cacheEvent:(id)event;
+- (BOOL)cacheTunerTransparentMessage:(id)message;
 - (WCM_AriCoexCommandHandler)init;
 - (id).cxx_construct;
-- (id)assembleCellularConfigXpcMsg:(t_s_UtaIdcCellConfig *)a3;
-- (id)assembleDesenseCellularConfigXpcMsgwithDownlinkFreq:(IBIAccServingDLFreqBandwidthInfo *)a3 DownlinkFreqExt:(IBIAccServingDLFreqBandwidthInfo_ext *)a4 UlFreq:(IBIAccServingULFreqBandwidthInfo *)a5 UplinkFreqExt:(IBIAccServingULFreqBandwidthInfo_ext *)a6 SearchFreq:(IBIAccSearchFreqBandwidthInfo *)a7 HoppingFreq:(IBIAccHoppingFreqBandwidthInfo *)a8 NeighborFreq:(IBIAccNeighborFreqBandwidthInfo *)a9 RPLMNFreq:(IBIAccRPLMNFreqBandwidthInfo *)a10;
-- (id)createMessageWithMsgId:(unint64_t)a3 withArgs:(id)a4 withSubId:(id)a5;
-- (int)convertInternalCallType:(unint64_t)a3;
-- (int)convertInternalCoexTech:(unint64_t)a3;
-- (unint64_t)getSubIdFromInternalCoexTech:(unint64_t)a3;
-- (void)UtaIdcCellConfigEventIndHandle:(char *)a3 size:(unsigned int)a4;
-- (void)appendDesenseFreqToXpcArray:(id)a3 DesenseFreq:(IBIAccFreqBandwidthInfo *)a4 Size:(unsigned int)a5;
+- (id)assembleCellularConfigXpcMsg:(t_s_UtaIdcCellConfig *)msg;
+- (id)assembleDesenseCellularConfigXpcMsgwithDownlinkFreq:(IBIAccServingDLFreqBandwidthInfo *)freq DownlinkFreqExt:(IBIAccServingDLFreqBandwidthInfo_ext *)ext UlFreq:(IBIAccServingULFreqBandwidthInfo *)ulFreq UplinkFreqExt:(IBIAccServingULFreqBandwidthInfo_ext *)freqExt SearchFreq:(IBIAccSearchFreqBandwidthInfo *)searchFreq HoppingFreq:(IBIAccHoppingFreqBandwidthInfo *)hoppingFreq NeighborFreq:(IBIAccNeighborFreqBandwidthInfo *)neighborFreq RPLMNFreq:(IBIAccRPLMNFreqBandwidthInfo *)self0;
+- (id)createMessageWithMsgId:(unint64_t)id withArgs:(id)args withSubId:(id)subId;
+- (int)convertInternalCallType:(unint64_t)type;
+- (int)convertInternalCoexTech:(unint64_t)tech;
+- (unint64_t)getSubIdFromInternalCoexTech:(unint64_t)tech;
+- (void)UtaIdcCellConfigEventIndHandle:(char *)handle size:(unsigned int)size;
+- (void)appendDesenseFreqToXpcArray:(id)array DesenseFreq:(IBIAccFreqBandwidthInfo *)freq Size:(unsigned int)size;
 - (void)clientStarted;
 - (void)configureAccReportMode;
 - (void)connectBaseband;
-- (void)convertToAriType_BtState:(unint64_t)a3 userCase:(unint64_t)a4 AriState:(unint64_t *)a5 AriUseCase:(unint64_t *)a6;
-- (void)convertToAriType_FigaroState:(unint64_t)a3 userCase:(unint64_t)a4 AriState:(unint64_t *)a5 AriUseCase:(unint64_t *)a6;
-- (void)convertToAriType_GnssState:(unint64_t)a3 userCase:(unint64_t)a4 AriState:(unint64_t *)a5 AriUseCase:(unint64_t *)a6;
-- (void)convertToAriType_UwbState:(unint64_t)a3 userCase:(unint64_t)a4 AriState:(unint64_t *)a5 AriUseCase:(unint64_t *)a6;
-- (void)convertToAriType_WiFiState:(unint64_t)a3 userCase:(unint64_t)a4 AriState:(unint64_t *)a5 AriUseCase:(unint64_t *)a6;
-- (void)desenseCellConfigEventIndHandle:(char *)a3 size:(unsigned int)a4;
-- (void)fetchLegacyRatFrequency:(t_s_UtaIdcLegacyRatCarrierInfoSet *)a3 freqInfoXpc:(id)a4;
-- (void)fetchLteNrFrequency:(t_s_UtaIdcLteNrCarrierInfoSet *)a3 freqInfoXpc:(id)a4 carrierIdXpc:(id)a5;
-- (void)fetchLtePccFrequency:(t_s_UtaIdcLteNrCarrierInfoSet *)a3 pccUplinkFreq:(int64_t *)a4 pccUplinkBw:(double *)a5 pccDownlinkFreq:(int64_t *)a6 pccDownlinkBw:(double *)a7;
-- (void)getCellularLaaMeasInfo:(id)a3 SubId:(unsigned int)a4;
-- (void)getCellularNetworkConfig:(id)a3 SubId:(unsigned int)a4;
-- (void)handleCoexManagerEvent:(id)a3;
-- (void)handleEvent:(id)a3;
-- (void)handleGnssImdAntBlockPowerLimitConfig:(id)a3;
-- (void)printGnssImdConfig:(t_s_UtaIdcCellImdGnssMitigationPolicyConfig *)a3;
+- (void)convertToAriType_BtState:(unint64_t)state userCase:(unint64_t)case AriState:(unint64_t *)ariState AriUseCase:(unint64_t *)useCase;
+- (void)convertToAriType_FigaroState:(unint64_t)state userCase:(unint64_t)case AriState:(unint64_t *)ariState AriUseCase:(unint64_t *)useCase;
+- (void)convertToAriType_GnssState:(unint64_t)state userCase:(unint64_t)case AriState:(unint64_t *)ariState AriUseCase:(unint64_t *)useCase;
+- (void)convertToAriType_UwbState:(unint64_t)state userCase:(unint64_t)case AriState:(unint64_t *)ariState AriUseCase:(unint64_t *)useCase;
+- (void)convertToAriType_WiFiState:(unint64_t)state userCase:(unint64_t)case AriState:(unint64_t *)ariState AriUseCase:(unint64_t *)useCase;
+- (void)desenseCellConfigEventIndHandle:(char *)handle size:(unsigned int)size;
+- (void)fetchLegacyRatFrequency:(t_s_UtaIdcLegacyRatCarrierInfoSet *)frequency freqInfoXpc:(id)xpc;
+- (void)fetchLteNrFrequency:(t_s_UtaIdcLteNrCarrierInfoSet *)frequency freqInfoXpc:(id)xpc carrierIdXpc:(id)idXpc;
+- (void)fetchLtePccFrequency:(t_s_UtaIdcLteNrCarrierInfoSet *)frequency pccUplinkFreq:(int64_t *)freq pccUplinkBw:(double *)bw pccDownlinkFreq:(int64_t *)downlinkFreq pccDownlinkBw:(double *)downlinkBw;
+- (void)getCellularLaaMeasInfo:(id)info SubId:(unsigned int)id;
+- (void)getCellularNetworkConfig:(id)config SubId:(unsigned int)id;
+- (void)handleCoexManagerEvent:(id)event;
+- (void)handleEvent:(id)event;
+- (void)handleGnssImdAntBlockPowerLimitConfig:(id)config;
+- (void)printGnssImdConfig:(t_s_UtaIdcCellImdGnssMitigationPolicyConfig *)config;
 - (void)replayCachedEvent;
-- (void)sendMessage:(unint64_t)a3 withArgs:(id)a4 withSubId:(unint64_t)a5;
-- (void)setAntennaBlockingPolicyForPlatformId:(unint64_t)a3 activeSubId:(unint64_t)a4 AntBlockPowerLimitPlist:(id)a5;
+- (void)sendMessage:(unint64_t)message withArgs:(id)args withSubId:(unint64_t)id;
+- (void)setAntennaBlockingPolicyForPlatformId:(unint64_t)id activeSubId:(unint64_t)subId AntBlockPowerLimitPlist:(id)plist;
 - (void)setCoexOSFeatureFlag;
 - (void)setCoexPlatformFeatureFlag;
 - (void)setDefaultEvent;
 - (void)setDefaultMiscConfig;
-- (void)setE85AntBlockingPowerLimitingConfig:(id)a3 SubId:(unsigned int)a4;
+- (void)setE85AntBlockingPowerLimitingConfig:(id)config SubId:(unsigned int)id;
 - (void)updateBasebandPowerState;
 @end
 
@@ -135,104 +135,104 @@
   self->coexPlatformFeatureGroupEnabled[0] = 1;
   *&self->coexPlatformFeatureGroupEnabled[6] = 0;
   v31 = v3;
-  v4 = [v3 activeCoexFeatures];
-  v5 = [v4 containsObject:@"CoexFeatureGroupTimeSharingSupport"];
+  activeCoexFeatures = [v3 activeCoexFeatures];
+  v5 = [activeCoexFeatures containsObject:@"CoexFeatureGroupTimeSharingSupport"];
 
   if (v5)
   {
     self->coexPlatformFeatureGroupEnabled[1] = 1;
   }
 
-  v6 = [v31 activeCoexFeatures];
-  v7 = [v6 containsObject:@"CoexFeatureGroupRxActivityProtectSupport"];
+  activeCoexFeatures2 = [v31 activeCoexFeatures];
+  v7 = [activeCoexFeatures2 containsObject:@"CoexFeatureGroupRxActivityProtectSupport"];
 
   if (v7)
   {
     self->coexPlatformFeatureGroupEnabled[2] = 1;
   }
 
-  v8 = [v31 activeCoexFeatures];
-  v9 = [v8 containsObject:@"CoexFeatureGroupCameraSupport"];
+  activeCoexFeatures3 = [v31 activeCoexFeatures];
+  v9 = [activeCoexFeatures3 containsObject:@"CoexFeatureGroupCameraSupport"];
 
   if (v9)
   {
     self->coexPlatformFeatureGroupEnabled[3] = 1;
   }
 
-  v10 = [v31 activeCoexFeatures];
-  v11 = [v10 containsObject:@"CoexFeatureGroupConditionalMitigationSupport"];
+  activeCoexFeatures4 = [v31 activeCoexFeatures];
+  v11 = [activeCoexFeatures4 containsObject:@"CoexFeatureGroupConditionalMitigationSupport"];
 
   if (v11)
   {
     self->coexPlatformFeatureGroupEnabled[4] = 1;
   }
 
-  v12 = [v31 activeCoexFeatures];
-  v13 = [v12 containsObject:@"CoexFeatureGroupBtClockAlignmentSupport"];
+  activeCoexFeatures5 = [v31 activeCoexFeatures];
+  v13 = [activeCoexFeatures5 containsObject:@"CoexFeatureGroupBtClockAlignmentSupport"];
 
   if (v13)
   {
     self->coexPlatformFeatureGroupEnabled[5] = 1;
   }
 
-  v14 = [v31 activeCoexFeatures];
-  v15 = [v14 containsObject:@"CoexFeatureGroupHpCellularSupport"];
+  activeCoexFeatures6 = [v31 activeCoexFeatures];
+  v15 = [activeCoexFeatures6 containsObject:@"CoexFeatureGroupHpCellularSupport"];
 
   if (v15)
   {
     self->coexPlatformFeatureGroupEnabled[6] = 1;
   }
 
-  v16 = [v31 activeCoexFeatures];
-  v17 = [v16 containsObject:@"CoexFeatureGroupUwbSupport"];
+  activeCoexFeatures7 = [v31 activeCoexFeatures];
+  v17 = [activeCoexFeatures7 containsObject:@"CoexFeatureGroupUwbSupport"];
 
   if (v17)
   {
     self->coexPlatformFeatureGroupEnabled[7] = 1;
   }
 
-  v18 = [v31 activeCoexFeatures];
-  v19 = [v18 containsObject:@"CoexFeatureGroupNfcSupport"];
+  activeCoexFeatures8 = [v31 activeCoexFeatures];
+  v19 = [activeCoexFeatures8 containsObject:@"CoexFeatureGroupNfcSupport"];
 
   if (v19)
   {
     self->coexPlatformFeatureGroupEnabled[9] = 1;
   }
 
-  v20 = [v31 activeCoexFeatures];
-  v21 = [v20 containsObject:@"CoexFeatureGroupUsbCSupport"];
+  activeCoexFeatures9 = [v31 activeCoexFeatures];
+  v21 = [activeCoexFeatures9 containsObject:@"CoexFeatureGroupUsbCSupport"];
 
   if (v21)
   {
     self->coexPlatformFeatureGroupEnabled[8] = 1;
   }
 
-  v22 = [v31 activeCoexFeatures];
-  v23 = [v22 containsObject:@"CoexFeatureGroupGnssImdSupport"];
+  activeCoexFeatures10 = [v31 activeCoexFeatures];
+  v23 = [activeCoexFeatures10 containsObject:@"CoexFeatureGroupGnssImdSupport"];
 
   if (v23)
   {
     self->coexPlatformFeatureGroupEnabled[10] = 1;
   }
 
-  v24 = [v31 activeCoexFeatures];
-  v25 = [v24 containsObject:@"CoexFeatureGroupAntTunerSupport"];
+  activeCoexFeatures11 = [v31 activeCoexFeatures];
+  v25 = [activeCoexFeatures11 containsObject:@"CoexFeatureGroupAntTunerSupport"];
 
   if (v25)
   {
     self->coexPlatformFeatureGroupEnabled[11] = 1;
   }
 
-  v26 = [v31 activeCoexFeatures];
-  v27 = [v26 containsObject:@"CoexFeatureGroupStateIndSupport"];
+  activeCoexFeatures12 = [v31 activeCoexFeatures];
+  v27 = [activeCoexFeatures12 containsObject:@"CoexFeatureGroupStateIndSupport"];
 
   if (v27)
   {
     self->coexPlatformFeatureGroupEnabled[12] = 1;
   }
 
-  v28 = [v31 activeCoexFeatures];
-  v29 = [v28 containsObject:@"CoexFeatureGroupSFBMSupport"];
+  activeCoexFeatures13 = [v31 activeCoexFeatures];
+  v29 = [activeCoexFeatures13 containsObject:@"CoexFeatureGroupSFBMSupport"];
 
   if (v29)
   {
@@ -311,16 +311,16 @@
   [(WCM_AriCoexCommandHandler *)self setCellularMiscConfigToSubId:1 uwbInactThre_ms:100 cellOnTimer_ms:5000];
 }
 
-- (id)createMessageWithMsgId:(unint64_t)a3 withArgs:(id)a4 withSubId:(id)a5
+- (id)createMessageWithMsgId:(unint64_t)id withArgs:(id)args withSubId:(id)subId
 {
-  v7 = a4;
-  v8 = a5;
+  argsCopy = args;
+  subIdCopy = subId;
   *keys = *off_10023DA08;
   v16 = "kSubId";
-  values[0] = xpc_uint64_create(a3);
-  v9 = v7;
+  values[0] = xpc_uint64_create(id);
+  v9 = argsCopy;
   values[1] = v9;
-  v10 = v8;
+  v10 = subIdCopy;
   values[2] = v10;
   v11 = xpc_dictionary_create(keys, values, 3uLL);
   for (i = 2; i != -1; --i)
@@ -330,10 +330,10 @@
   return v11;
 }
 
-- (BOOL)cacheTunerTransparentMessage:(id)a3
+- (BOOL)cacheTunerTransparentMessage:(id)message
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_value(v4, "kMessageArgs");
+  messageCopy = message;
+  v5 = xpc_dictionary_get_value(messageCopy, "kMessageArgs");
   v6 = xpc_dictionary_get_value(v5, "kWCMCellularTransparentMessageInformationSet");
   v7 = v6;
   if (v6 && xpc_array_get_count(v6))
@@ -418,18 +418,18 @@ LABEL_22:
   return v15;
 }
 
-- (BOOL)cacheEvent:(id)a3
+- (BOOL)cacheEvent:(id)event
 {
-  v4 = a3;
-  uint64 = xpc_dictionary_get_uint64(v4, "kMessageId");
+  eventCopy = event;
+  uint64 = xpc_dictionary_get_uint64(eventCopy, "kMessageId");
   if (uint64 == 1223)
   {
-    v6 = [(WCM_AriCoexCommandHandler *)self cacheTunerTransparentMessage:v4];
+    v6 = [(WCM_AriCoexCommandHandler *)self cacheTunerTransparentMessage:eventCopy];
   }
 
   else if (uint64 == 1234)
   {
-    self->mCameraState = xpc_dictionary_get_uint64(v4, "kWCMCellularSetCameraState");
+    self->mCameraState = xpc_dictionary_get_uint64(eventCopy, "kWCMCellularSetCameraState");
     v6 = 1;
   }
 
@@ -452,14 +452,14 @@ LABEL_22:
   dispatch_async(mQueue, block);
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  v4 = a3;
-  uint64 = xpc_dictionary_get_uint64(v4, "kMessageId");
-  v6 = [(WCM_AriCoexCommandHandler *)self cacheEvent:v4];
+  eventCopy = event;
+  uint64 = xpc_dictionary_get_uint64(eventCopy, "kMessageId");
+  v6 = [(WCM_AriCoexCommandHandler *)self cacheEvent:eventCopy];
   if (self->basebandPowerOn)
   {
-    v7 = xpc_copy(v4);
+    v7 = xpc_copy(eventCopy);
     mQueue = self->mQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -487,11 +487,11 @@ LABEL_22:
   }
 }
 
-- (void)setAntennaBlockingPolicyForPlatformId:(unint64_t)a3 activeSubId:(unint64_t)a4 AntBlockPowerLimitPlist:(id)a5
+- (void)setAntennaBlockingPolicyForPlatformId:(unint64_t)id activeSubId:(unint64_t)subId AntBlockPowerLimitPlist:(id)plist
 {
-  v8 = a5;
-  [WCM_Logging logLevel:2 message:@"Initialize WCM_AntBlockPowerLimitPolicy on PlatformId(%llu)...", a3];
-  v9 = [[WCM_AntBlockPowerLimitPolicy alloc] initWithPlatformId:a3 AntBlockPowerLimitPlist:v8];
+  plistCopy = plist;
+  [WCM_Logging logLevel:2 message:@"Initialize WCM_AntBlockPowerLimitPolicy on PlatformId(%llu)...", id];
+  v9 = [[WCM_AntBlockPowerLimitPolicy alloc] initWithPlatformId:id AntBlockPowerLimitPlist:plistCopy];
   mAntBlockPolicy = self->mAntBlockPolicy;
   self->mAntBlockPolicy = v9;
 
@@ -501,7 +501,7 @@ LABEL_22:
     goto LABEL_35;
   }
 
-  v29 = v8;
+  v29 = plistCopy;
   v32 = [(WCM_AntBlockPowerLimitPolicy *)v11 getAntBlockConfigXpcMsgOnClient:0];
   v31 = [(WCM_AntBlockPowerLimitPolicy *)self->mAntBlockPolicy getAntBlockConfigXpcMsgOnClient:1];
   value = [(WCM_AntBlockPowerLimitPolicy *)self->mAntBlockPolicy getAntBlockConfigXpcMsgOnClient:2];
@@ -513,8 +513,8 @@ LABEL_22:
   v13 = [(WCM_AntBlockPowerLimitPolicy *)self->mAntBlockPolicy getAntBlockConfigXpcMsgOnClient:9];
   v14 = [(WCM_AntBlockPowerLimitPolicy *)self->mAntBlockPolicy getAntBlockConfigXpcMsgOnClient:10];
   v15 = [(WCM_AntBlockPowerLimitPolicy *)self->mAntBlockPolicy getAntBlockConfigXpcMsgOnClient:11];
-  v16 = xpc_uint64_create(a4);
-  v17 = [(WCM_AntBlockPowerLimitPolicy *)self->mAntBlockPolicy getAntBlockConfigGnssImdClient];
+  v16 = xpc_uint64_create(subId);
+  getAntBlockConfigGnssImdClient = [(WCM_AntBlockPowerLimitPolicy *)self->mAntBlockPolicy getAntBlockConfigGnssImdClient];
   if (v32)
   {
     v18 = [(WCM_AriCoexCommandHandler *)self createMessageWithMsgId:1225 withArgs:v32 withSubId:v16];
@@ -580,7 +580,7 @@ LABEL_25:
   }
 
 LABEL_26:
-  if (v17)
+  if (getAntBlockConfigGnssImdClient)
   {
     mQueue = self->mQueue;
     block[0] = _NSConcreteStackBlock;
@@ -588,7 +588,7 @@ LABEL_26:
     block[2] = sub_10001A990;
     block[3] = &unk_10023D980;
     block[4] = self;
-    v38 = v17;
+    v38 = getAntBlockConfigGnssImdClient;
     dispatch_async(mQueue, block);
   }
 
@@ -610,13 +610,13 @@ LABEL_26:
     [(WCM_AriCoexCommandHandler *)self handleEvent:v28];
   }
 
-  v8 = v29;
+  plistCopy = v29;
 LABEL_35:
 }
 
-- (void)handleCoexManagerEvent:(id)a3
+- (void)handleCoexManagerEvent:(id)event
 {
-  xdict = a3;
+  xdict = event;
   [WCM_Logging logLevel:3 message:@"Coex ARI Driver: Handling XPC Event : %@", xdict];
   uint64 = xpc_dictionary_get_uint64(xdict, "kMessageId");
   if (uint64)
@@ -702,9 +702,9 @@ LABEL_35:
   }
 }
 
-- (int)convertInternalCallType:(unint64_t)a3
+- (int)convertInternalCallType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return 2;
   }
@@ -715,47 +715,47 @@ LABEL_35:
   }
 }
 
-- (int)convertInternalCoexTech:(unint64_t)a3
+- (int)convertInternalCoexTech:(unint64_t)tech
 {
-  if (a3 > 0xB)
+  if (tech > 0xB)
   {
     return 127;
   }
 
   else
   {
-    return dword_100195714[a3];
+    return dword_100195714[tech];
   }
 }
 
-- (unint64_t)getSubIdFromInternalCoexTech:(unint64_t)a3
+- (unint64_t)getSubIdFromInternalCoexTech:(unint64_t)tech
 {
-  if (a3 - 6 > 5)
+  if (tech - 6 > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_100195748[a3 - 6];
+    return qword_100195748[tech - 6];
   }
 }
 
-- (void)sendMessage:(unint64_t)a3 withArgs:(id)a4 withSubId:(unint64_t)a5
+- (void)sendMessage:(unint64_t)message withArgs:(id)args withSubId:(unint64_t)id
 {
-  v8 = a4;
-  v9 = xpc_uint64_create(a5);
+  argsCopy = args;
+  v9 = xpc_uint64_create(id);
   *keys = *off_10023DA08;
   v18 = "kSubId";
-  values = xpc_uint64_create(a3);
-  v10 = v8;
+  values = xpc_uint64_create(message);
+  v10 = argsCopy;
   v15 = v10;
   v11 = v9;
   v16 = v11;
   v12 = xpc_dictionary_create(keys, &values, 3uLL);
   if (self->mCellularController)
   {
-    [WCM_Logging logLevel:3 message:@"Coex ARI Driver: Sending messageId(%lld) to Coex Manager", a3, values, v15];
+    [WCM_Logging logLevel:3 message:@"Coex ARI Driver: Sending messageId(%lld) to Coex Manager", message, values, v15];
     [(WCM_CellularController *)self->mCellularController handleMessage:v12];
   }
 
@@ -772,32 +772,32 @@ LABEL_35:
   sub_10001B2B0();
 }
 
-- (void)convertToAriType_WiFiState:(unint64_t)a3 userCase:(unint64_t)a4 AriState:(unint64_t *)a5 AriUseCase:(unint64_t *)a6
+- (void)convertToAriType_WiFiState:(unint64_t)state userCase:(unint64_t)case AriState:(unint64_t *)ariState AriUseCase:(unint64_t *)useCase
 {
-  if (a5)
+  if (ariState)
   {
-    if (a3 - 1 >= 4)
+    if (state - 1 >= 4)
     {
-      v6 = 0;
+      stateCopy = 0;
     }
 
     else
     {
-      v6 = a3;
+      stateCopy = state;
     }
 
-    *a5 = v6;
+    *ariState = stateCopy;
   }
 
-  if (a6)
+  if (useCase)
   {
-    *a6 = 0;
+    *useCase = 0;
   }
 }
 
-- (void)convertToAriType_BtState:(unint64_t)a3 userCase:(unint64_t)a4 AriState:(unint64_t *)a5 AriUseCase:(unint64_t *)a6
+- (void)convertToAriType_BtState:(unint64_t)state userCase:(unint64_t)case AriState:(unint64_t *)ariState AriUseCase:(unint64_t *)useCase
 {
-  if (a4 == 5)
+  if (case == 5)
   {
     v6 = 5;
   }
@@ -807,22 +807,22 @@ LABEL_35:
     v6 = 0;
   }
 
-  if (a4 == 4)
+  if (case == 4)
   {
     v6 = 4;
   }
 
-  if (a4 - 6 >= 2)
+  if (case - 6 >= 2)
   {
     v7 = v6;
   }
 
   else
   {
-    v7 = 4 * (a3 == 2);
+    v7 = 4 * (state == 2);
   }
 
-  if (a4 == 3)
+  if (case == 3)
   {
     v8 = 3;
   }
@@ -832,66 +832,66 @@ LABEL_35:
     v8 = 0;
   }
 
-  if (a4 == 2)
+  if (case == 2)
   {
     v8 = 2;
   }
 
-  if (a4 == 1)
+  if (case == 1)
   {
     v8 = 1;
   }
 
-  if (a4 <= 3)
+  if (case <= 3)
   {
     v7 = v8;
   }
 
-  if (a5)
+  if (ariState)
   {
-    *a5 = a3 == 2;
+    *ariState = state == 2;
   }
 
-  if (a6)
+  if (useCase)
   {
-    *a6 = v7;
+    *useCase = v7;
   }
 }
 
-- (void)convertToAriType_FigaroState:(unint64_t)a3 userCase:(unint64_t)a4 AriState:(unint64_t *)a5 AriUseCase:(unint64_t *)a6
+- (void)convertToAriType_FigaroState:(unint64_t)state userCase:(unint64_t)case AriState:(unint64_t *)ariState AriUseCase:(unint64_t *)useCase
 {
-  v6 = (a4 & 0xFFFFFFFFFFFFFFFELL) == 6 && a3 == 3;
+  v6 = (case & 0xFFFFFFFFFFFFFFFELL) == 6 && state == 3;
   v7 = 3;
   if (!v6)
   {
     v7 = 0;
   }
 
-  if (a5)
+  if (ariState)
   {
-    *a5 = a3 == 3;
+    *ariState = state == 3;
   }
 
-  if (a6)
+  if (useCase)
   {
-    *a6 = v7;
+    *useCase = v7;
   }
 }
 
-- (void)convertToAriType_GnssState:(unint64_t)a3 userCase:(unint64_t)a4 AriState:(unint64_t *)a5 AriUseCase:(unint64_t *)a6
+- (void)convertToAriType_GnssState:(unint64_t)state userCase:(unint64_t)case AriState:(unint64_t *)ariState AriUseCase:(unint64_t *)useCase
 {
-  v6 = a4 & 0xF;
-  if (a3 - 1 >= 3)
+  v6 = case & 0xF;
+  if (state - 1 >= 3)
   {
-    v7 = 0;
+    stateCopy = 0;
   }
 
   else
   {
-    v7 = a3;
+    stateCopy = state;
   }
 
-  if ((a4 & 0xF) <= 2)
+  if ((case & 0xF) <= 2)
   {
     if (v6 == 1)
     {
@@ -922,7 +922,7 @@ LABEL_35:
 
   v6 = 4;
 LABEL_14:
-  v8 = a4 >> 4;
+  v8 = case >> 4;
   v9 = v6 | 0x10100;
   v10 = v6 | 0x200;
   if (v8 == 1)
@@ -940,33 +940,33 @@ LABEL_14:
     v6 = v9;
   }
 
-  if (a5)
+  if (ariState)
   {
-    *a5 = v7;
+    *ariState = stateCopy;
   }
 
-  if (a6)
+  if (useCase)
   {
-    *a6 = v6;
+    *useCase = v6;
   }
 }
 
-- (void)convertToAriType_UwbState:(unint64_t)a3 userCase:(unint64_t)a4 AriState:(unint64_t *)a5 AriUseCase:(unint64_t *)a6
+- (void)convertToAriType_UwbState:(unint64_t)state userCase:(unint64_t)case AriState:(unint64_t *)ariState AriUseCase:(unint64_t *)useCase
 {
-  if (a5)
+  if (ariState)
   {
-    v6 = a3 == 5;
-    if (a3 == 9)
+    v6 = state == 5;
+    if (state == 9)
     {
       v6 = 2;
     }
 
-    *a5 = v6;
+    *ariState = v6;
   }
 
-  if (a6)
+  if (useCase)
   {
-    *a6 = 0;
+    *useCase = 0;
   }
 }
 
@@ -976,25 +976,25 @@ LABEL_14:
   [WCM_AriCoexCommandHandler sendMessage:"sendMessage:withArgs:withSubId:" withArgs:304 withSubId:?];
 }
 
-- (void)getCellularLaaMeasInfo:(id)a3 SubId:(unsigned int)a4
+- (void)getCellularLaaMeasInfo:(id)info SubId:(unsigned int)id
 {
   AriSdk::ARI_UtaIdcGetLaaMeasInfoReq_SDK::ARI_UtaIdcGetLaaMeasInfoReq_SDK(v6);
-  v5 = a4;
+  idCopy = id;
   sub_10001B2B0();
 }
 
-- (void)setE85AntBlockingPowerLimitingConfig:(id)a3 SubId:(unsigned int)a4
+- (void)setE85AntBlockingPowerLimitingConfig:(id)config SubId:(unsigned int)id
 {
-  v4 = a3;
-  uint64 = xpc_dictionary_get_uint64(v4, "kWCMCellularSetAntBlocking_LQMThreshold");
-  v6 = xpc_dictionary_get_BOOL(v4, "kWCMCellularSetAntBlocking_DenyProtectVoice");
-  v7 = xpc_dictionary_get_uint64(v4, "kWCMCellularSetAntBlocking_MitigationTimer");
+  configCopy = config;
+  uint64 = xpc_dictionary_get_uint64(configCopy, "kWCMCellularSetAntBlocking_LQMThreshold");
+  v6 = xpc_dictionary_get_BOOL(configCopy, "kWCMCellularSetAntBlocking_DenyProtectVoice");
+  v7 = xpc_dictionary_get_uint64(configCopy, "kWCMCellularSetAntBlocking_MitigationTimer");
   [WCM_Logging logLevel:3 message:@"Coex ARI driver: Set USB-C Antenna Blk Policy, lqmThreshold = %llu", uint64];
   [WCM_Logging logLevel:3 message:@"Coex ARI driver: Set USB-C Antenna Blk Policy, denyVoiceProtect = %d, mitigationTimer = %llu", v6, v7];
   if ([(WCM_AriCoexCommandHandler *)self LQMEnumCheck:uint64])
   {
-    v24 = v4;
-    v8 = xpc_dictionary_get_value(v4, "kWCMCellularSetAntBlocking_PolicySet");
+    v24 = configCopy;
+    v8 = xpc_dictionary_get_value(configCopy, "kWCMCellularSetAntBlocking_PolicySet");
     v9 = v8;
     if (v8)
     {
@@ -1073,7 +1073,7 @@ LABEL_14:
 
     [WCM_Logging logLevel:0 message:@"Coex ARI driver: Set USB-C Antenna Blk Policy, invalid mitigationType=%llu, API UtaIdcSetCnvAntBlockPwrLmtConfigReq failed", v19];
 
-    v4 = v24;
+    configCopy = v24;
   }
 
   else
@@ -1082,14 +1082,14 @@ LABEL_14:
   }
 }
 
-- (void)fetchLtePccFrequency:(t_s_UtaIdcLteNrCarrierInfoSet *)a3 pccUplinkFreq:(int64_t *)a4 pccUplinkBw:(double *)a5 pccDownlinkFreq:(int64_t *)a6 pccDownlinkBw:(double *)a7
+- (void)fetchLtePccFrequency:(t_s_UtaIdcLteNrCarrierInfoSet *)frequency pccUplinkFreq:(int64_t *)freq pccUplinkBw:(double *)bw pccDownlinkFreq:(int64_t *)downlinkFreq pccDownlinkBw:(double *)downlinkBw
 {
-  if (a3 && a4 && a6 && a7 && a3->var0)
+  if (frequency && freq && downlinkFreq && downlinkBw && frequency->var0)
   {
     v7 = 0;
     v8 = 0;
-    v9 = a3->var0 - 1;
-    p_var3 = &a3->var1[0].var3;
+    v9 = frequency->var0 - 1;
+    p_var3 = &frequency->var1[0].var3;
     do
     {
       v11 = v9;
@@ -1109,8 +1109,8 @@ LABEL_14:
 
       if (v16)
       {
-        *a6 = v12 / 0x3E8uLL;
-        *a7 = v14 / 1000.0;
+        *downlinkFreq = v12 / 0x3E8uLL;
+        *downlinkBw = v14 / 1000.0;
         v8 = 1;
       }
 
@@ -1127,8 +1127,8 @@ LABEL_14:
 
       if (v18)
       {
-        *a4 = v12 / 0x3E8uLL;
-        *a5 = v14 / 1000.0;
+        *freq = v12 / 0x3E8uLL;
+        *bw = v14 / 1000.0;
         v7 = 1;
       }
 
@@ -1145,14 +1145,14 @@ LABEL_14:
   }
 }
 
-- (void)fetchLteNrFrequency:(t_s_UtaIdcLteNrCarrierInfoSet *)a3 freqInfoXpc:(id)a4 carrierIdXpc:(id)a5
+- (void)fetchLteNrFrequency:(t_s_UtaIdcLteNrCarrierInfoSet *)frequency freqInfoXpc:(id)xpc carrierIdXpc:(id)idXpc
 {
-  xarray = a4;
-  v7 = a5;
-  if (a3 && xarray && v7 && a3->var0)
+  xarray = xpc;
+  idXpcCopy = idXpc;
+  if (frequency && xarray && idXpcCopy && frequency->var0)
   {
     v8 = 0;
-    p_var3 = &a3->var1[0].var3;
+    p_var3 = &frequency->var1[0].var3;
     do
     {
       v10 = *(p_var3 - 3);
@@ -1168,7 +1168,7 @@ LABEL_14:
         xpc_array_append_value(xarray, v14);
 
         v15 = xpc_int64_create(v10);
-        xpc_array_append_value(v7, v15);
+        xpc_array_append_value(idXpcCopy, v15);
       }
 
       if ((v12 & 0xFFFFFFFD) == 1)
@@ -1180,24 +1180,24 @@ LABEL_14:
         xpc_array_append_value(xarray, v16);
 
         v17 = xpc_int64_create(v10);
-        xpc_array_append_value(v7, v17);
+        xpc_array_append_value(idXpcCopy, v17);
       }
 
       p_var3 += 4;
       ++v8;
     }
 
-    while (v8 < a3->var0);
+    while (v8 < frequency->var0);
   }
 }
 
-- (void)fetchLegacyRatFrequency:(t_s_UtaIdcLegacyRatCarrierInfoSet *)a3 freqInfoXpc:(id)a4
+- (void)fetchLegacyRatFrequency:(t_s_UtaIdcLegacyRatCarrierInfoSet *)frequency freqInfoXpc:(id)xpc
 {
-  xarray = a4;
-  if (a3 && xarray && a3->var0)
+  xarray = xpc;
+  if (frequency && xarray && frequency->var0)
   {
     v5 = 0;
-    p_var3 = &a3->var1[0].var3;
+    p_var3 = &frequency->var1[0].var3;
     do
     {
       v7 = *(p_var3 - 2);
@@ -1225,67 +1225,67 @@ LABEL_14:
       ++v5;
     }
 
-    while (v5 < a3->var0);
+    while (v5 < frequency->var0);
   }
 }
 
-- (id)assembleCellularConfigXpcMsg:(t_s_UtaIdcCellConfig *)a3
+- (id)assembleCellularConfigXpcMsg:(t_s_UtaIdcCellConfig *)msg
 {
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v5, "kWCMCellularNetworkConfiguration_ULBandInfo_CenterFreq", 0);
   xpc_dictionary_set_double(v5, "kWCMCellularNetworkConfiguration_ULBandInfo_BandWidth", 0.0);
   xpc_dictionary_set_int64(v5, "kWCMCellularNetworkConfiguration_DLBandInfo_CenterFreq", 0);
   xpc_dictionary_set_double(v5, "kWCMCellularNetworkConfiguration_DLBandInfo_BandWidth", 0.0);
-  var0 = a3->var3.var0;
+  var0 = msg->var3.var0;
   if (var0 != 240)
   {
     xpc_dictionary_set_int64(v5, "kWCMCellularNetworkConfiguration_TTDUL_DL", var0);
-    xpc_dictionary_set_int64(v5, "kWCMCellularNetworkConfiguration_SubFrameFormat", a3->var3.var1);
+    xpc_dictionary_set_int64(v5, "kWCMCellularNetworkConfiguration_SubFrameFormat", msg->var3.var1);
     xpc_dictionary_set_int64(v5, "kWCMCellularNetworkConfiguration_FrameOffset", 0);
-    xpc_dictionary_set_int64(v5, "kWCMCellularNetworkConfiguration_ULCPConfig", a3->var3.var2);
-    xpc_dictionary_set_int64(v5, "kWCMCellularNetworkConfiguration_DLCPConfig", a3->var3.var3);
-    [WCM_Logging logLevel:3 message:@"Coex ARI driver: UtaIdcCellConfigEventIndCb DlUl_config=%u\n", a3->var3.var0];
-    [WCM_Logging logLevel:3 message:@"Coex ARI driver: UtaIdcCellConfigEventIndCb special_sub_frame=%u\n", a3->var3.var1];
-    [WCM_Logging logLevel:3 message:@"Coex ARI driver: UtaIdcCellConfigEventIndCb uplink_cyclic_prefix=%u\n", a3->var3.var2];
-    [WCM_Logging logLevel:3 message:@"Coex ARI driver: UtaIdcCellConfigEventIndCb downlink_cyclic_prefix=%u\n", a3->var3.var3];
+    xpc_dictionary_set_int64(v5, "kWCMCellularNetworkConfiguration_ULCPConfig", msg->var3.var2);
+    xpc_dictionary_set_int64(v5, "kWCMCellularNetworkConfiguration_DLCPConfig", msg->var3.var3);
+    [WCM_Logging logLevel:3 message:@"Coex ARI driver: UtaIdcCellConfigEventIndCb DlUl_config=%u\n", msg->var3.var0];
+    [WCM_Logging logLevel:3 message:@"Coex ARI driver: UtaIdcCellConfigEventIndCb special_sub_frame=%u\n", msg->var3.var1];
+    [WCM_Logging logLevel:3 message:@"Coex ARI driver: UtaIdcCellConfigEventIndCb uplink_cyclic_prefix=%u\n", msg->var3.var2];
+    [WCM_Logging logLevel:3 message:@"Coex ARI driver: UtaIdcCellConfigEventIndCb downlink_cyclic_prefix=%u\n", msg->var3.var3];
   }
 
-  if (a3->var2.var0)
+  if (msg->var2.var0)
   {
     v18 = 0;
     value = 0;
     v16 = 0.0;
     v17 = 0.0;
-    [(WCM_AriCoexCommandHandler *)self fetchLtePccFrequency:&a3->var2 pccUplinkFreq:&value pccUplinkBw:&v17 pccDownlinkFreq:&v18 pccDownlinkBw:&v16];
+    [(WCM_AriCoexCommandHandler *)self fetchLtePccFrequency:&msg->var2 pccUplinkFreq:&value pccUplinkBw:&v17 pccDownlinkFreq:&v18 pccDownlinkBw:&v16];
     xpc_dictionary_set_int64(v5, "kWCMCellularNetworkConfiguration_ULBandInfo_CenterFreq", value);
     xpc_dictionary_set_double(v5, "kWCMCellularNetworkConfiguration_ULBandInfo_BandWidth", v17);
     xpc_dictionary_set_int64(v5, "kWCMCellularNetworkConfiguration_DLBandInfo_CenterFreq", v18);
     xpc_dictionary_set_double(v5, "kWCMCellularNetworkConfiguration_DLBandInfo_BandWidth", v16);
     v7 = xpc_array_create(0, 0);
     v8 = xpc_array_create(0, 0);
-    [(WCM_AriCoexCommandHandler *)self fetchLteNrFrequency:&a3->var2 freqInfoXpc:v7 carrierIdXpc:v8];
+    [(WCM_AriCoexCommandHandler *)self fetchLteNrFrequency:&msg->var2 freqInfoXpc:v7 carrierIdXpc:v8];
     xpc_dictionary_set_value(v5, "kWCMCellularNetworkConfiguration_LTEBandInformationSet", v7);
     xpc_dictionary_set_value(v5, "kWCMCellularNetworkConfiguration_LTECarrierInformationSet", v8);
   }
 
-  if (a3->var4.var0)
+  if (msg->var4.var0)
   {
     v9 = xpc_array_create(0, 0);
     v10 = xpc_array_create(0, 0);
-    [(WCM_AriCoexCommandHandler *)self fetchLteNrFrequency:&a3->var4 freqInfoXpc:v9 carrierIdXpc:v10];
+    [(WCM_AriCoexCommandHandler *)self fetchLteNrFrequency:&msg->var4 freqInfoXpc:v9 carrierIdXpc:v10];
     xpc_dictionary_set_value(v5, "kWCMCellularNetworkConfiguration_NGCBandInformationSet", v9);
     xpc_dictionary_set_value(v5, "kWCMCellularNetworkConfiguration_NGCCarrierInformationSet", v10);
   }
 
-  if (a3->var0.var0)
+  if (msg->var0.var0)
   {
     v11 = xpc_array_create(0, 0);
-    [(WCM_AriCoexCommandHandler *)self fetchLegacyRatFrequency:a3 freqInfoXpc:v11];
+    [(WCM_AriCoexCommandHandler *)self fetchLegacyRatFrequency:msg freqInfoXpc:v11];
     xpc_dictionary_set_value(v5, "kWCMCellularNetworkConfiguration_GSMBandInformationSet", v11);
   }
 
-  v13 = a3->var1.var0;
-  p_var1 = &a3->var1;
+  v13 = msg->var1.var0;
+  p_var1 = &msg->var1;
   if (v13)
   {
     v14 = xpc_array_create(0, 0);
@@ -1296,16 +1296,16 @@ LABEL_14:
   return v5;
 }
 
-- (void)getCellularNetworkConfig:(id)a3 SubId:(unsigned int)a4
+- (void)getCellularNetworkConfig:(id)config SubId:(unsigned int)id
 {
   AriSdk::ARI_UtaIdcGetCellConfigReq_SDK::ARI_UtaIdcGetCellConfigReq_SDK(v6);
-  v5 = a4;
+  idCopy = id;
   sub_10001B2B0();
 }
 
-- (void)UtaIdcCellConfigEventIndHandle:(char *)a3 size:(unsigned int)a4
+- (void)UtaIdcCellConfigEventIndHandle:(char *)handle size:(unsigned int)size
 {
-  AriSdk::ARI_UtaIdcCellConfigEventIndCb_SDK::ARI_UtaIdcCellConfigEventIndCb_SDK(v10, a3, a4);
+  AriSdk::ARI_UtaIdcCellConfigEventIndCb_SDK::ARI_UtaIdcCellConfigEventIndCb_SDK(v10, handle, size);
   if (ice::isARIResponseValid(v10, 0x49830000, v5))
   {
     [WCM_Logging logLevel:3 message:@"Coex ARI driver: UtaIdcCellConfigEventIndCb received\n"];
@@ -1341,13 +1341,13 @@ LABEL_14:
   sub_10001B2B0();
 }
 
-- (void)appendDesenseFreqToXpcArray:(id)a3 DesenseFreq:(IBIAccFreqBandwidthInfo *)a4 Size:(unsigned int)a5
+- (void)appendDesenseFreqToXpcArray:(id)array DesenseFreq:(IBIAccFreqBandwidthInfo *)freq Size:(unsigned int)size
 {
-  xarray = a3;
-  if (xarray && a4 && a5)
+  xarray = array;
+  if (xarray && freq && size)
   {
     v7 = 0;
-    p_var1 = &a4->var1;
+    p_var1 = &freq->var1;
     do
     {
       v9 = xpc_dictionary_create(0, 0, 0);
@@ -1360,159 +1360,159 @@ LABEL_14:
       p_var1 += 3;
     }
 
-    while (a5 != v7);
+    while (size != v7);
   }
 }
 
-- (id)assembleDesenseCellularConfigXpcMsgwithDownlinkFreq:(IBIAccServingDLFreqBandwidthInfo *)a3 DownlinkFreqExt:(IBIAccServingDLFreqBandwidthInfo_ext *)a4 UlFreq:(IBIAccServingULFreqBandwidthInfo *)a5 UplinkFreqExt:(IBIAccServingULFreqBandwidthInfo_ext *)a6 SearchFreq:(IBIAccSearchFreqBandwidthInfo *)a7 HoppingFreq:(IBIAccHoppingFreqBandwidthInfo *)a8 NeighborFreq:(IBIAccNeighborFreqBandwidthInfo *)a9 RPLMNFreq:(IBIAccRPLMNFreqBandwidthInfo *)a10
+- (id)assembleDesenseCellularConfigXpcMsgwithDownlinkFreq:(IBIAccServingDLFreqBandwidthInfo *)freq DownlinkFreqExt:(IBIAccServingDLFreqBandwidthInfo_ext *)ext UlFreq:(IBIAccServingULFreqBandwidthInfo *)ulFreq UplinkFreqExt:(IBIAccServingULFreqBandwidthInfo_ext *)freqExt SearchFreq:(IBIAccSearchFreqBandwidthInfo *)searchFreq HoppingFreq:(IBIAccHoppingFreqBandwidthInfo *)hoppingFreq NeighborFreq:(IBIAccNeighborFreqBandwidthInfo *)neighborFreq RPLMNFreq:(IBIAccRPLMNFreqBandwidthInfo *)self0
 {
   v15 = xpc_dictionary_create(0, 0, 0);
-  if (a3->var0)
+  if (freq->var0)
   {
     v16 = xpc_array_create(0, 0);
-    if (a3->var0 >= 4u)
+    if (freq->var0 >= 4u)
     {
       var0 = 4;
     }
 
     else
     {
-      var0 = a3->var0;
+      var0 = freq->var0;
     }
 
     [WCM_Logging logLevel:3 message:@"Coex ARI driver: IBIMsAccCurrentFreqInfoIndCb Downlink Freq num = %u\n", var0];
-    [(WCM_AriCoexCommandHandler *)self appendDesenseFreqToXpcArray:v16 DesenseFreq:&a3->var0 + 4 Size:var0];
-    if (a4->var0)
+    [(WCM_AriCoexCommandHandler *)self appendDesenseFreqToXpcArray:v16 DesenseFreq:&freq->var0 + 4 Size:var0];
+    if (ext->var0)
     {
-      if (a4->var0 >= 0xAu)
+      if (ext->var0 >= 0xAu)
       {
         v18 = 10;
       }
 
       else
       {
-        v18 = a4->var0;
+        v18 = ext->var0;
       }
 
       [WCM_Logging logLevel:3 message:@"Coex ARI driver: IBIMsAccCurrentFreqInfoIndCb Downlink Freq Ext num = %u\n", v18];
-      [(WCM_AriCoexCommandHandler *)self appendDesenseFreqToXpcArray:v16 DesenseFreq:&a4->var0 + 4 Size:v18];
+      [(WCM_AriCoexCommandHandler *)self appendDesenseFreqToXpcArray:v16 DesenseFreq:&ext->var0 + 4 Size:v18];
     }
 
     xpc_dictionary_set_value(v15, "kWCMCellular_DesenseFreqReport_DownlinkFrequency", v16);
   }
 
-  if (a5->var0)
+  if (ulFreq->var0)
   {
     v19 = xpc_array_create(0, 0);
-    if (a5->var0 >= 2u)
+    if (ulFreq->var0 >= 2u)
     {
       v20 = 2;
     }
 
     else
     {
-      v20 = a5->var0;
+      v20 = ulFreq->var0;
     }
 
     [WCM_Logging logLevel:3 message:@"Coex ARI driver: IBIMsAccCurrentFreqInfoIndCb Uplink Freq num = %u\n", v20];
-    [(WCM_AriCoexCommandHandler *)self appendDesenseFreqToXpcArray:v19 DesenseFreq:&a5->var0 + 4 Size:v20];
-    if (a6->var0)
+    [(WCM_AriCoexCommandHandler *)self appendDesenseFreqToXpcArray:v19 DesenseFreq:&ulFreq->var0 + 4 Size:v20];
+    if (freqExt->var0)
     {
-      if (a6->var0 >= 0xAu)
+      if (freqExt->var0 >= 0xAu)
       {
         v21 = 10;
       }
 
       else
       {
-        v21 = a6->var0;
+        v21 = freqExt->var0;
       }
 
       [WCM_Logging logLevel:3 message:@"Coex ARI driver: IBIMsAccCurrentFreqInfoIndCb Uplink Freq Ext num = %u\n", v21];
-      [(WCM_AriCoexCommandHandler *)self appendDesenseFreqToXpcArray:v19 DesenseFreq:&a6->var0 + 4 Size:v21];
+      [(WCM_AriCoexCommandHandler *)self appendDesenseFreqToXpcArray:v19 DesenseFreq:&freqExt->var0 + 4 Size:v21];
     }
 
     xpc_dictionary_set_value(v15, "kWCMCellular_DesenseFreqReport_UplinkFrequency", v19);
   }
 
-  if (a7->var0)
+  if (searchFreq->var0)
   {
     v22 = xpc_array_create(0, 0);
-    if (a7->var0 >= 0x14u)
+    if (searchFreq->var0 >= 0x14u)
     {
       v23 = 20;
     }
 
     else
     {
-      v23 = a7->var0;
+      v23 = searchFreq->var0;
     }
 
     [WCM_Logging logLevel:3 message:@"Coex ARI driver: IBIMsAccCurrentFreqInfoIndCb Search Freq num = %u\n", v23];
-    [(WCM_AriCoexCommandHandler *)self appendDesenseFreqToXpcArray:v22 DesenseFreq:&a7->var0 + 4 Size:v23];
+    [(WCM_AriCoexCommandHandler *)self appendDesenseFreqToXpcArray:v22 DesenseFreq:&searchFreq->var0 + 4 Size:v23];
     xpc_dictionary_set_value(v15, "kWCMCellular_DesenseFreqReport_SearchFrequency", v22);
   }
 
-  if (a9->var0)
+  if (neighborFreq->var0)
   {
     v24 = xpc_array_create(0, 0);
-    if (a9->var0 >= 0x64u)
+    if (neighborFreq->var0 >= 0x64u)
     {
       v25 = 100;
     }
 
     else
     {
-      v25 = a9->var0;
+      v25 = neighborFreq->var0;
     }
 
     [WCM_Logging logLevel:3 message:@"Coex ARI driver: IBIMsAccCurrentFreqInfoIndCb Neighbor Freq num = %u\n", v25];
-    [(WCM_AriCoexCommandHandler *)self appendDesenseFreqToXpcArray:v24 DesenseFreq:&a9->var0 + 4 Size:v25];
+    [(WCM_AriCoexCommandHandler *)self appendDesenseFreqToXpcArray:v24 DesenseFreq:&neighborFreq->var0 + 4 Size:v25];
     xpc_dictionary_set_value(v15, "kWCMCellular_DesenseFreqReport_NeighborFrequency", v24);
   }
 
-  if (a8->var0)
+  if (hoppingFreq->var0)
   {
     v26 = xpc_array_create(0, 0);
-    if (a8->var0 >= 0x40u)
+    if (hoppingFreq->var0 >= 0x40u)
     {
       v27 = 64;
     }
 
     else
     {
-      v27 = a8->var0;
+      v27 = hoppingFreq->var0;
     }
 
     [WCM_Logging logLevel:3 message:@"Coex ARI driver: IBIMsAccCurrentFreqInfoIndCb GSM Hopping Freq num = %u\n", v27];
-    [(WCM_AriCoexCommandHandler *)self appendDesenseFreqToXpcArray:v26 DesenseFreq:&a8->var0 + 4 Size:v27];
+    [(WCM_AriCoexCommandHandler *)self appendDesenseFreqToXpcArray:v26 DesenseFreq:&hoppingFreq->var0 + 4 Size:v27];
     xpc_dictionary_set_value(v15, "kWCMCellular_DesenseFreqReport_HoppingFrequency", v26);
   }
 
-  if (a10->var0)
+  if (nFreq->var0)
   {
     v28 = xpc_array_create(0, 0);
-    if (a10->var0 >= 0x46u)
+    if (nFreq->var0 >= 0x46u)
     {
       v29 = 70;
     }
 
     else
     {
-      v29 = a10->var0;
+      v29 = nFreq->var0;
     }
 
     [WCM_Logging logLevel:3 message:@"Coex ARI driver: IBIMsAccCurrentFreqInfoIndCb RPLMN Freq num = %u\n", v29];
-    [(WCM_AriCoexCommandHandler *)self appendDesenseFreqToXpcArray:v28 DesenseFreq:&a10->var0 + 4 Size:v29];
+    [(WCM_AriCoexCommandHandler *)self appendDesenseFreqToXpcArray:v28 DesenseFreq:&nFreq->var0 + 4 Size:v29];
     xpc_dictionary_set_value(v15, "kWCMCellular_DesenseFreqReport_RplmnFrequency", v28);
   }
 
   return v15;
 }
 
-- (void)desenseCellConfigEventIndHandle:(char *)a3 size:(unsigned int)a4
+- (void)desenseCellConfigEventIndHandle:(char *)handle size:(unsigned int)size
 {
-  AriSdk::ARI_IBIMsAccCurrentFreqInfoIndCb_SDK::ARI_IBIMsAccCurrentFreqInfoIndCb_SDK(v9, a3, a4);
+  AriSdk::ARI_IBIMsAccCurrentFreqInfoIndCb_SDK::ARI_IBIMsAccCurrentFreqInfoIndCb_SDK(v9, handle, size);
   if (ice::isARIResponseValid(v9, 0x25900000, v5))
   {
     [WCM_Logging logLevel:3 message:@"Coex ARI driver: IBIMsAccCurrentFreqInfoIndCb received\n"];
@@ -1539,18 +1539,18 @@ LABEL_14:
   AriSdk::ARI_IBIMsAccCurrentFreqInfoIndCb_SDK::~ARI_IBIMsAccCurrentFreqInfoIndCb_SDK(v9);
 }
 
-- (void)printGnssImdConfig:(t_s_UtaIdcCellImdGnssMitigationPolicyConfig *)a3
+- (void)printGnssImdConfig:(t_s_UtaIdcCellImdGnssMitigationPolicyConfig *)config
 {
-  if (a3)
+  if (config)
   {
-    v3 = a3;
-    [WCM_Logging logLevel:3 message:@"Coex ARI driver(SubId 0 and 1): Set GNSS IMD Antenna Blk Policy, protect_low_priority_background_gnss=%d, deny_voice_call_protection=%d", a3->var1, a3->var2];
-    [WCM_Logging logLevel:3 message:@"Coex ARI driver(SubId 0 and 1): Set GNSS IMD Antenna Blk Policy, mitigation_timer_ms=%u, lqm_threshold=%d", v3->var3, v3->var4];
+    configCopy = config;
+    [WCM_Logging logLevel:3 message:@"Coex ARI driver(SubId 0 and 1): Set GNSS IMD Antenna Blk Policy, protect_low_priority_background_gnss=%d, deny_voice_call_protection=%d", config->var1, config->var2];
+    [WCM_Logging logLevel:3 message:@"Coex ARI driver(SubId 0 and 1): Set GNSS IMD Antenna Blk Policy, mitigation_timer_ms=%u, lqm_threshold=%d", configCopy->var3, configCopy->var4];
     v4 = 0;
-    v15 = v3;
+    v15 = configCopy;
     do
     {
-      v5 = &v3->var0[v4];
+      v5 = &configCopy->var0[v4];
       if (v5->var0 == 1)
       {
         [WCM_Logging logLevel:3 message:@"Coex ARI driver(SubId 0 and 1): Set GNSS IMD Antenna Blk Policy, policy[%d]: imd_type=%u, gnss_L5_preferred_tuner_allowed=%d, parallel_mitigation_allowed=%d", v4, v5->var3, v5->var5, v5->var6];
@@ -1577,7 +1577,7 @@ LABEL_14:
         v10 = 0;
         var1 = v5->var2.var1;
         v12 = 1;
-        v3 = v15;
+        configCopy = v15;
         do
         {
           v13 = v12;
@@ -1602,16 +1602,16 @@ LABEL_14:
   }
 }
 
-- (void)handleGnssImdAntBlockPowerLimitConfig:(id)a3
+- (void)handleGnssImdAntBlockPowerLimitConfig:(id)config
 {
-  v108 = __chkstk_darwin(self, a2, a3);
+  v108 = __chkstk_darwin(self, a2, config);
   v4 = v3;
   v5 = v4;
   if (v4)
   {
     v6 = 0;
     v110 = 0;
-    v114 = 0;
+    mLqmThreshold = 0;
     do
     {
       v7 = &v111[v6];
@@ -1632,9 +1632,9 @@ LABEL_14:
     v113[880] = [v5 mMitigationTimer_ms];
     if ([v108 LQMEnumCheck:{objc_msgSend(v5, "mLqmThreshold")}])
     {
-      v114 = [v5 mLqmThreshold];
-      v8 = [v5 mPolicy];
-      v9 = [v8 count];
+      mLqmThreshold = [v5 mLqmThreshold];
+      mPolicy = [v5 mPolicy];
+      v9 = [mPolicy count];
 
       if (v9 < 0x21)
       {
@@ -1659,8 +1659,8 @@ LABEL_26:
       v105 = &v112;
       while (1)
       {
-        v11 = [v5 mPolicy];
-        v12 = [v11 objectAtIndexedSubscript:v10];
+        mPolicy2 = [v5 mPolicy];
+        v12 = [mPolicy2 objectAtIndexedSubscript:v10];
         v13 = [v108 ImdTypeEnumCheck:{objc_msgSend(v12, "mImdType")}];
 
         if ((v13 & 1) == 0)
@@ -1670,37 +1670,37 @@ LABEL_26:
 
         v14 = &v111[112 * v10];
         *v14 = 1;
-        v15 = [v5 mPolicy];
-        v16 = [v15 objectAtIndexedSubscript:v10];
+        mPolicy3 = [v5 mPolicy];
+        v16 = [mPolicy3 objectAtIndexedSubscript:v10];
         *(v14 + 23) = [v16 mImdType];
 
-        v17 = [v5 mPolicy];
-        v18 = [v17 objectAtIndexedSubscript:v10];
+        mPolicy4 = [v5 mPolicy];
+        v18 = [mPolicy4 objectAtIndexedSubscript:v10];
         *(v14 + 26) = [v18 mGnssL5TunerAllowed];
 
-        v19 = [v5 mPolicy];
-        v20 = [v19 objectAtIndexedSubscript:v10];
+        mPolicy5 = [v5 mPolicy];
+        v20 = [mPolicy5 objectAtIndexedSubscript:v10];
         *(v14 + 27) = [v20 mParallelMitigationAllowed];
 
-        v21 = [v5 mPolicy];
-        v22 = [v21 objectAtIndexedSubscript:v10];
+        mPolicy6 = [v5 mPolicy];
+        v22 = [mPolicy6 objectAtIndexedSubscript:v10];
         *(v14 + 24) = [v22 mGnssVictimFreq_KHz];
 
-        v23 = [v5 mPolicy];
-        v24 = [v23 objectAtIndexedSubscript:v10];
+        mPolicy7 = [v5 mPolicy];
+        v24 = [mPolicy7 objectAtIndexedSubscript:v10];
         *(v14 + 25) = [v24 mGnssVictimBw_KHz];
 
-        v25 = [v5 mPolicy];
-        v26 = [v25 objectAtIndexedSubscript:v10];
-        v27 = [v26 mCellAggressor1];
-        v28 = [v27 mBandPolicy];
-        v29 = [v28 count];
+        mPolicy8 = [v5 mPolicy];
+        v26 = [mPolicy8 objectAtIndexedSubscript:v10];
+        mCellAggressor1 = [v26 mCellAggressor1];
+        mBandPolicy = [mCellAggressor1 mBandPolicy];
+        v29 = [mBandPolicy count];
 
-        v30 = [v5 mPolicy];
-        v31 = [v30 objectAtIndexedSubscript:v10];
-        v32 = [v31 mCellAggressor2];
-        v33 = [v32 mBandPolicy];
-        v34 = [v33 count];
+        mPolicy9 = [v5 mPolicy];
+        v31 = [mPolicy9 objectAtIndexedSubscript:v10];
+        mCellAggressor2 = [v31 mCellAggressor2];
+        mBandPolicy2 = [mCellAggressor2 mBandPolicy];
+        v34 = [mBandPolicy2 count];
 
         v35 = 2;
         if (v29 >= 2)
@@ -1721,35 +1721,35 @@ LABEL_26:
 
         v106 = v35;
         v107 = v36;
-        v37 = [v5 mPolicy];
-        v38 = [v37 objectAtIndexedSubscript:v10];
-        v39 = [v38 mCellAggressor1];
-        *(v14 + 2) = [v39 mCellularCoexTech];
+        mPolicy10 = [v5 mPolicy];
+        v38 = [mPolicy10 objectAtIndexedSubscript:v10];
+        mCellAggressor12 = [v38 mCellAggressor1];
+        *(v14 + 2) = [mCellAggressor12 mCellularCoexTech];
 
-        v40 = [v5 mPolicy];
-        v41 = [v40 objectAtIndexedSubscript:v10];
-        v42 = [v41 mCellAggressor1];
-        *(v14 + 2) = [v42 mCellularFrequencyKHz];
+        mPolicy11 = [v5 mPolicy];
+        v41 = [mPolicy11 objectAtIndexedSubscript:v10];
+        mCellAggressor13 = [v41 mCellAggressor1];
+        *(v14 + 2) = [mCellAggressor13 mCellularFrequencyKHz];
 
-        v43 = [v5 mPolicy];
-        v44 = [v43 objectAtIndexedSubscript:v10];
-        v45 = [v44 mCellAggressor1];
-        *(v14 + 3) = [v45 mCellularBandwidthKHz];
+        mPolicy12 = [v5 mPolicy];
+        v44 = [mPolicy12 objectAtIndexedSubscript:v10];
+        mCellAggressor14 = [v44 mCellAggressor1];
+        *(v14 + 3) = [mCellAggressor14 mCellularBandwidthKHz];
 
-        v46 = [v5 mPolicy];
-        v47 = [v46 objectAtIndexedSubscript:v10];
-        v48 = [v47 mCellAggressor2];
-        *(v14 + 24) = [v48 mCellularCoexTech];
+        mPolicy13 = [v5 mPolicy];
+        v47 = [mPolicy13 objectAtIndexedSubscript:v10];
+        mCellAggressor22 = [v47 mCellAggressor2];
+        *(v14 + 24) = [mCellAggressor22 mCellularCoexTech];
 
-        v49 = [v5 mPolicy];
-        v50 = [v49 objectAtIndexedSubscript:v10];
-        v51 = [v50 mCellAggressor2];
-        *(v14 + 13) = [v51 mCellularFrequencyKHz];
+        mPolicy14 = [v5 mPolicy];
+        v50 = [mPolicy14 objectAtIndexedSubscript:v10];
+        mCellAggressor23 = [v50 mCellAggressor2];
+        *(v14 + 13) = [mCellAggressor23 mCellularFrequencyKHz];
 
-        v52 = [v5 mPolicy];
-        v53 = [v52 objectAtIndexedSubscript:v10];
-        v54 = [v53 mCellAggressor2];
-        *(v14 + 14) = [v54 mCellularBandwidthKHz];
+        mPolicy15 = [v5 mPolicy];
+        v53 = [mPolicy15 objectAtIndexedSubscript:v10];
+        mCellAggressor24 = [v53 mCellAggressor2];
+        *(v14 + 14) = [mCellAggressor24 mCellularBandwidthKHz];
 
         if (v29)
         {
@@ -1757,38 +1757,38 @@ LABEL_26:
           v56 = v105;
           do
           {
-            v57 = [v5 mPolicy];
-            v58 = [v57 objectAtIndexedSubscript:v10];
-            v59 = [v58 mCellAggressor1];
-            v60 = [v59 mBandPolicy];
-            v61 = [v60 objectAtIndexedSubscript:v55];
-            v62 = [v61 mMitigationType];
+            mPolicy16 = [v5 mPolicy];
+            v58 = [mPolicy16 objectAtIndexedSubscript:v10];
+            mCellAggressor15 = [v58 mCellAggressor1];
+            mBandPolicy3 = [mCellAggressor15 mBandPolicy];
+            v61 = [mBandPolicy3 objectAtIndexedSubscript:v55];
+            mMitigationType = [v61 mMitigationType];
 
-            if (([v108 mitigationTypeEnumCheck:v62] & 1) == 0)
+            if (([v108 mitigationTypeEnumCheck:mMitigationType] & 1) == 0)
             {
               goto LABEL_27;
             }
 
             *(v56 - 3) = 1;
-            v63 = [v5 mPolicy];
-            v64 = [v63 objectAtIndexedSubscript:v10];
-            v65 = [v64 mCellAggressor1];
-            v66 = [v65 mBandPolicy];
-            v67 = [v66 objectAtIndexedSubscript:v55];
+            mPolicy17 = [v5 mPolicy];
+            v64 = [mPolicy17 objectAtIndexedSubscript:v10];
+            mCellAggressor16 = [v64 mCellAggressor1];
+            mBandPolicy4 = [mCellAggressor16 mBandPolicy];
+            v67 = [mBandPolicy4 objectAtIndexedSubscript:v55];
             *(v56 - 2) = [v67 mCellularAntBitmap];
 
-            v68 = [v5 mPolicy];
-            v69 = [v68 objectAtIndexedSubscript:v10];
-            v70 = [v69 mCellAggressor1];
-            v71 = [v70 mBandPolicy];
-            v72 = [v71 objectAtIndexedSubscript:v55];
+            mPolicy18 = [v5 mPolicy];
+            v69 = [mPolicy18 objectAtIndexedSubscript:v10];
+            mCellAggressor17 = [v69 mCellAggressor1];
+            mBandPolicy5 = [mCellAggressor17 mBandPolicy];
+            v72 = [mBandPolicy5 objectAtIndexedSubscript:v55];
             *(v56 - 1) = [v72 mCellularTxPowerCap];
 
-            v73 = [v5 mPolicy];
-            v74 = [v73 objectAtIndexedSubscript:v10];
-            v75 = [v74 mCellAggressor1];
-            v76 = [v75 mBandPolicy];
-            v77 = [v76 objectAtIndexedSubscript:v55];
+            mPolicy19 = [v5 mPolicy];
+            v74 = [mPolicy19 objectAtIndexedSubscript:v10];
+            mCellAggressor18 = [v74 mCellAggressor1];
+            mBandPolicy6 = [mCellAggressor18 mBandPolicy];
+            v77 = [mBandPolicy6 objectAtIndexedSubscript:v55];
             *v56 = [v77 mMitigationType];
             v56 += 4;
           }
@@ -1802,38 +1802,38 @@ LABEL_26:
           v79 = v104;
           while (1)
           {
-            v80 = [v5 mPolicy];
-            v81 = [v80 objectAtIndexedSubscript:v10];
-            v82 = [v81 mCellAggressor2];
-            v83 = [v82 mBandPolicy];
-            v84 = [v83 objectAtIndexedSubscript:v78];
-            v62 = [v84 mMitigationType];
+            mPolicy20 = [v5 mPolicy];
+            v81 = [mPolicy20 objectAtIndexedSubscript:v10];
+            mCellAggressor25 = [v81 mCellAggressor2];
+            mBandPolicy7 = [mCellAggressor25 mBandPolicy];
+            v84 = [mBandPolicy7 objectAtIndexedSubscript:v78];
+            mMitigationType = [v84 mMitigationType];
 
-            if (([v108 mitigationTypeEnumCheck:v62] & 1) == 0)
+            if (([v108 mitigationTypeEnumCheck:mMitigationType] & 1) == 0)
             {
               break;
             }
 
             *(v79 - 3) = 1;
-            v85 = [v5 mPolicy];
-            v86 = [v85 objectAtIndexedSubscript:v10];
-            v87 = [v86 mCellAggressor2];
-            v88 = [v87 mBandPolicy];
-            v89 = [v88 objectAtIndexedSubscript:v78];
+            mPolicy21 = [v5 mPolicy];
+            v86 = [mPolicy21 objectAtIndexedSubscript:v10];
+            mCellAggressor26 = [v86 mCellAggressor2];
+            mBandPolicy8 = [mCellAggressor26 mBandPolicy];
+            v89 = [mBandPolicy8 objectAtIndexedSubscript:v78];
             *(v79 - 2) = [v89 mCellularAntBitmap];
 
-            v90 = [v5 mPolicy];
-            v91 = [v90 objectAtIndexedSubscript:v10];
-            v92 = [v91 mCellAggressor2];
-            v93 = [v92 mBandPolicy];
-            v94 = [v93 objectAtIndexedSubscript:v78];
+            mPolicy22 = [v5 mPolicy];
+            v91 = [mPolicy22 objectAtIndexedSubscript:v10];
+            mCellAggressor27 = [v91 mCellAggressor2];
+            mBandPolicy9 = [mCellAggressor27 mBandPolicy];
+            v94 = [mBandPolicy9 objectAtIndexedSubscript:v78];
             *(v79 - 1) = [v94 mCellularTxPowerCap];
 
-            v95 = [v5 mPolicy];
-            v96 = [v95 objectAtIndexedSubscript:v10];
-            v97 = [v96 mCellAggressor2];
-            v98 = [v97 mBandPolicy];
-            v99 = [v98 objectAtIndexedSubscript:v78];
+            mPolicy23 = [v5 mPolicy];
+            v96 = [mPolicy23 objectAtIndexedSubscript:v10];
+            mCellAggressor28 = [v96 mCellAggressor2];
+            mBandPolicy10 = [mCellAggressor28 mBandPolicy];
+            v99 = [mBandPolicy10 objectAtIndexedSubscript:v78];
             *v79 = [v99 mMitigationType];
             v79 += 4;
 
@@ -1844,7 +1844,7 @@ LABEL_26:
           }
 
 LABEL_27:
-          [WCM_Logging logLevel:0 message:@"Coex ARI driver: Set GNSS IMD Antenna Blk Policy, invalid mitigationType=%u, API UtaIdcSetCellImdGnssMitigationConfigReq failed", v62];
+          [WCM_Logging logLevel:0 message:@"Coex ARI driver: Set GNSS IMD Antenna Blk Policy, invalid mitigationType=%u, API UtaIdcSetCellImdGnssMitigationConfigReq failed", mMitigationType];
           goto LABEL_30;
         }
 
@@ -1858,8 +1858,8 @@ LABEL_25:
         }
       }
 
-      v100 = [v5 mPolicy];
-      v101 = [v100 objectAtIndexedSubscript:v10];
+      mPolicy24 = [v5 mPolicy];
+      v101 = [mPolicy24 objectAtIndexedSubscript:v10];
       +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 0, @"Coex ARI driver(SubId 0 and 1): Set GNSS IMD Antenna Blk Policy, invalid imdType=%u, API UtaIdcSetCellImdGnssMitigationConfigReq failed", [v101 mImdType]);
     }
 

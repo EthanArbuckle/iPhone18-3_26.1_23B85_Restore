@@ -1,27 +1,27 @@
 @interface UIPresentationController
 + (BOOL)_shouldDeferTransitions;
-+ (UIEdgeInsets)_statusBarOverlapAndMarginInfoForView:(id)a3 inWindow:(id)a4;
-+ (void)_scheduleTransition:(id)a3;
++ (UIEdgeInsets)_statusBarOverlapAndMarginInfoForView:(id)view inWindow:(id)window;
++ (void)_scheduleTransition:(id)transition;
 + (void)initialize;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)__sizeClassPair;
 - (BOOL)_canPresentInSeparateScene;
 - (BOOL)_containerViewShouldIgnoreDirectTouchEvents;
-- (BOOL)_gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)_gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)_isAdapted;
 - (BOOL)_isModal;
 - (BOOL)_isPresentedInFullScreen;
 - (BOOL)_presentedViewControllerProvidesContentScrollView;
 - (BOOL)_presentingOrPresented;
-- (BOOL)_shouldAdaptFromTraitCollection:(id)a3 toTraitCollection:(id)a4;
-- (BOOL)_shouldCallAppearanceCallbacksFor:(id)a3;
+- (BOOL)_shouldAdaptFromTraitCollection:(id)collection toTraitCollection:(id)traitCollection;
+- (BOOL)_shouldCallAppearanceCallbacksFor:(id)for;
 - (BOOL)_shouldDismiss;
 - (BOOL)_shouldGrabPresentersView;
-- (BOOL)_shouldPerformWillTransitionToTraitCollectionForParent:(id)a3;
+- (BOOL)_shouldPerformWillTransitionToTraitCollectionForParent:(id)parent;
 - (BOOL)_shouldPresentedViewControllerControlStatusBarAppearance;
 - (BOOL)_shouldRespectDefinesPresentationContext;
 - (CGAffineTransform)transformOfPresentedViewInContainerView;
-- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)a3;
-- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)a3 inWindow:(id)a4;
+- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)superview;
+- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)superview inWindow:(id)window;
 - (CGRect)_frameOfPresentedViewControllerViewInSuperview;
 - (CGRect)frameOfPresentedViewInContainerView;
 - (CGRect)sourceRect;
@@ -30,7 +30,7 @@
 - (NSArray)preferredFocusEnvironments;
 - (UIBarButtonItem)barButtonItem;
 - (UIEdgeInsets)_additionalSafeAreaInsets;
-- (UIEdgeInsets)_baseContentInsetsWithLeftMargin:(double *)a3 rightMargin:(double *)a4;
+- (UIEdgeInsets)_baseContentInsetsWithLeftMargin:(double *)margin rightMargin:(double *)rightMargin;
 - (UIFocusEnvironment)parentFocusEnvironment;
 - (UIFocusItemContainer)focusItemContainer;
 - (UIModalPresentationStyle)adaptivePresentationStyle;
@@ -56,40 +56,40 @@
 - (_UITypedStorage)_typedStorage;
 - (_UIViewControllerTransitionContext)_transitionContext;
 - (id)_activePresentationController;
-- (id)_adaptiveWillTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (id)_adaptiveWillTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 - (id)_appearanceContainer;
 - (id)_childPresentationController;
 - (id)_compatibleParentTraitEnvironment;
 - (id)_currentContextPresentationSuperview;
 - (id)_descriptionForPrintingViewControllerHierarchy;
 - (id)_fullscreenPresentationSuperview;
-- (id)_parentPresentationControllerImmediate:(BOOL)a3;
+- (id)_parentPresentationControllerImmediate:(BOOL)immediate;
 - (id)_parentTraitCollection;
 - (id)_parentTraitEnvironment;
 - (id)_preferredAnimationControllerForDismissal;
 - (id)_preferredAnimationControllerForPresentation;
-- (id)_presentationControllerForTraitCollection:(id)a3;
-- (id)_presentedViewControllerForPresentationController:(id)a3 traitCollection:(id)a4;
-- (id)_registerForTraitTokenChanges:(id)a3 withHandler:(id)a4;
-- (id)_registerForTraitTokenChanges:(id)a3 withTarget:(id)a4 action:(SEL)a5;
+- (id)_presentationControllerForTraitCollection:(id)collection;
+- (id)_presentedViewControllerForPresentationController:(id)controller traitCollection:(id)collection;
+- (id)_registerForTraitTokenChanges:(id)changes withHandler:(id)handler;
+- (id)_registerForTraitTokenChanges:(id)changes withTarget:(id)target action:(SEL)action;
 - (id)_rootPresentingViewControllerForNestedPresentation;
-- (id)_traitCollectionForCherryPickingToPresentedViewController:(id)a3;
-- (id)_traitCollectionForChildEnvironment:(id)a3;
-- (id)_traitCollectionForPresentedViewController:(id)a3 defaultTraitCollectionForChildEnvironment:(id)a4;
+- (id)_traitCollectionForCherryPickingToPresentedViewController:(id)controller;
+- (id)_traitCollectionForChildEnvironment:(id)environment;
+- (id)_traitCollectionForPresentedViewController:(id)controller defaultTraitCollectionForChildEnvironment:(id)environment;
 - (id)_viewsParticipatingInNavigationControllerTransition;
 - (id)delegate;
 - (id)presentedContentContainer;
-- (id)registerForTraitChanges:(id)a3 withAction:(SEL)a4;
-- (id)registerForTraitChanges:(id)a3 withHandler:(id)a4;
-- (id)registerForTraitChanges:(id)a3 withTarget:(id)a4 action:(SEL)a5;
+- (id)registerForTraitChanges:(id)changes withAction:(SEL)action;
+- (id)registerForTraitChanges:(id)changes withHandler:(id)handler;
+- (id)registerForTraitChanges:(id)changes withTarget:(id)target action:(SEL)action;
 - (int64_t)_subclassPreferredFocusedViewPrioritizationType;
-- (void)_applyDefaultTraitCollectionOverridesWithProvider:(id)a3 mutableTraitCollectionProvider:(id)a4;
-- (void)_beginOcclusionIfNecessary:(BOOL)a3;
+- (void)_applyDefaultTraitCollectionOverridesWithProvider:(id)provider mutableTraitCollectionProvider:(id)collectionProvider;
+- (void)_beginOcclusionIfNecessary:(BOOL)necessary;
 - (void)_beginSubduing;
-- (void)_beginSubduingIfNecessary:(BOOL)a3;
+- (void)_beginSubduingIfNecessary:(BOOL)necessary;
 - (void)_childTraitTransformDidChange;
 - (void)_cleanup;
-- (void)_collectExistingTraitCollectionsForTraitTracking:(id)a3;
+- (void)_collectExistingTraitCollectionsForTraitTracking:(id)tracking;
 - (void)_compatibleUpdateTraitsIfNecessary;
 - (void)_containedViewControllerModalStateChanged;
 - (void)_containerViewDidLayoutSubviewsWithObservationTracking;
@@ -97,61 +97,61 @@
 - (void)_containerViewWillLayoutSubviewsWithObservationTracking;
 - (void)_coverWithSnapshot;
 - (void)_disableMenuPressForBackGesture;
-- (void)_dismissWithAnimationController:(id)a3 interactionController:(id)a4 animated:(BOOL)a5 handoffData:(id)a6;
-- (void)_dismissalTransitionDidEnd:(void *)a1;
+- (void)_dismissWithAnimationController:(id)controller interactionController:(id)interactionController animated:(BOOL)animated handoffData:(id)data;
+- (void)_dismissalTransitionDidEnd:(void *)end;
 - (void)_dismissalTransitionWillBegin;
-- (void)_enableOcclusion:(BOOL)a3;
-- (void)_enableSubduing:(BOOL)a3;
+- (void)_enableOcclusion:(BOOL)occlusion;
+- (void)_enableSubduing:(BOOL)subduing;
 - (void)_endSubduing;
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4;
-- (void)_initViewHierarchyForPresentationSuperview:(id)a3 inWindow:(id)a4;
-- (void)_invalidateTraitCollectionsOfDescendants:(void *)a1;
-- (void)_parent:(id)a3 willTransitionToTraitCollection:(id)a4 withTransitionCoordinator:(id)a5;
-- (void)_performBackGesture:(id)a3;
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor;
+- (void)_initViewHierarchyForPresentationSuperview:(id)superview inWindow:(id)window;
+- (void)_invalidateTraitCollectionsOfDescendants:(void *)descendants;
+- (void)_parent:(id)_parent willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
+- (void)_performBackGesture:(id)gesture;
 - (void)_populateInitialTraitCollection;
-- (void)_prepareForWindowDeallocRecursively:(BOOL)a3;
-- (void)_presentWithAnimationController:(id)a3 inWindow:(id)a4 interactionController:(id)a5 animated:(BOOL)a6 handoffData:(id)a7;
-- (void)_presentationTransitionDidEnd:(void *)a1;
+- (void)_prepareForWindowDeallocRecursively:(BOOL)recursively;
+- (void)_presentWithAnimationController:(id)controller inWindow:(id)window interactionController:(id)interactionController animated:(BOOL)animated handoffData:(id)data;
+- (void)_presentationTransitionDidEnd:(void *)end;
 - (void)_presentationTransitionWillBegin;
-- (void)_recordTraitUsage:(__int128 *)a3 trackedStateDiff:(unint64_t)a4 insideMethod:(const char *)a5 withInvalidationAction:;
-- (void)_registerAuxiliaryChildEnvironmentForTraitInvalidations:(id)a3;
+- (void)_recordTraitUsage:(__int128 *)usage trackedStateDiff:(unint64_t)diff insideMethod:(const char *)method withInvalidationAction:;
+- (void)_registerAuxiliaryChildEnvironmentForTraitInvalidations:(id)invalidations;
 - (void)_releaseSnapshot;
-- (void)_sendDelegateWillPresentWithAdaptiveStyle:(int64_t)a3 transitionCoordinator:(id)a4;
+- (void)_sendDelegateWillPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator;
 - (void)_sendDidAttemptToDismiss;
 - (void)_sendDidDismiss;
 - (void)_sendDismissalsAsNeeded;
-- (void)_sendPresentationControllerNotification:(id)a3 userInfo:(id)a4;
+- (void)_sendPresentationControllerNotification:(id)notification userInfo:(id)info;
 - (void)_sendWillDismiss;
-- (void)_setContainerIgnoresDirectTouchEvents:(BOOL)a3;
-- (void)_setInternalOverrideTraitCollection:(id)a3;
-- (void)_setPendingFocusEnvironmentUnlock:(id)a3;
-- (void)_setPreferredContentSize:(CGSize)a3;
-- (void)_setPresentedViewController:(id)a3;
-- (void)_setPresentedViewControllerStoredWeakly:(BOOL)a3;
-- (void)_setPresentingViewController:(id)a3;
-- (void)_setRealSourceView:(id)a3;
+- (void)_setContainerIgnoresDirectTouchEvents:(BOOL)events;
+- (void)_setInternalOverrideTraitCollection:(id)collection;
+- (void)_setPendingFocusEnvironmentUnlock:(id)unlock;
+- (void)_setPreferredContentSize:(CGSize)size;
+- (void)_setPresentedViewController:(id)controller;
+- (void)_setPresentedViewControllerStoredWeakly:(BOOL)weakly;
+- (void)_setPresentingViewController:(id)controller;
+- (void)_setRealSourceView:(id)view;
 - (void)_traitOverrides;
 - (void)_traitOverridesDidChange;
-- (void)_transitionToPresentationController:(id)a3 withTransitionCoordinator:(id)a4;
-- (void)_transplantView:(id)a3 toSuperview:(id)a4;
-- (void)_transplantView:(id)a3 toSuperview:(id)a4 atIndex:(unint64_t)a5;
+- (void)_transitionToPresentationController:(id)controller withTransitionCoordinator:(id)coordinator;
+- (void)_transplantView:(id)view toSuperview:(id)superview;
+- (void)_transplantView:(id)view toSuperview:(id)superview atIndex:(unint64_t)index;
 - (void)_updateRealSourceView;
-- (void)_updateTraitsIfNecessaryInitiatingPropagation:(BOOL)a3;
-- (void)_window:(id)a3 willTransitionToTraitCollection:(id)a4 withTransitionCoordinator:(id)a5;
-- (void)_windowSceneDidUpdateEffectiveGeometry:(id)a3;
+- (void)_updateTraitsIfNecessaryInitiatingPropagation:(BOOL)propagation;
+- (void)_window:(id)_window willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
+- (void)_windowSceneDidUpdateEffectiveGeometry:(id)geometry;
 - (void)completeCurrentTransitionImmediately;
 - (void)dealloc;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)runTransitionForCurrentStateAnimated:(BOOL)a3 handoffData:(id)a4;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)runTransitionForCurrentStateAnimated:(BOOL)animated handoffData:(id)data;
 - (void)setNeedsFocusUpdate;
 - (void)setOverrideTraitCollection:(UITraitCollection *)overrideTraitCollection;
-- (void)setSourceItem:(id)a3;
-- (void)setSourceView:(id)a3;
-- (void)transitionDidFinish:(BOOL)a3;
+- (void)setSourceItem:(id)item;
+- (void)setSourceView:(id)view;
+- (void)transitionDidFinish:(BOOL)finish;
 - (void)transitionDidStart;
 - (void)updateFocusIfNeeded;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation UIPresentationController
@@ -161,13 +161,13 @@
   TraitCollectionTSD = GetTraitCollectionTSD();
   v4 = TraitCollectionTSD[9];
   TraitCollectionTSD[9] = 1;
-  v5 = [(UIPresentationController *)self _parentTraitCollection];
+  _parentTraitCollection = [(UIPresentationController *)self _parentTraitCollection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__UIPresentationController_traitCollection__block_invoke;
   v8[3] = &unk_1E7101B20;
   v8[4] = self;
-  v6 = [(UITraitCollection *)v5 _traitCollectionByModifyingTraitsCopyOnWrite:v8];
+  v6 = [(UITraitCollection *)_parentTraitCollection _traitCollectionByModifyingTraitsCopyOnWrite:v8];
   *(GetTraitCollectionTSD() + 9) = v4;
   _UITraitEnvironmentGeneratedTraitCollection(self, v6);
 
@@ -176,11 +176,11 @@
 
 - (id)_parentTraitCollection
 {
-  v3 = [(UIPresentationController *)self _parentTraitEnvironment];
-  v4 = v3;
-  if (v3)
+  _parentTraitEnvironment = [(UIPresentationController *)self _parentTraitEnvironment];
+  v4 = _parentTraitEnvironment;
+  if (_parentTraitEnvironment)
   {
-    v5 = [v3 _traitCollectionForChildEnvironment:self];
+    v5 = [_parentTraitEnvironment _traitCollectionForChildEnvironment:self];
   }
 
   else if (dyld_program_sdk_at_least())
@@ -250,12 +250,12 @@ void __43__UIPresentationController_traitCollection__block_invoke(uint64_t a1, v
 + (void)initialize
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() != a1)
+  if (objc_opt_class() != self)
   {
     v3 = objc_opt_self();
     [v3 instanceMethodForSelector:sel_traitCollection];
     v4 = dyld_image_header_containing_address();
-    [a1 instanceMethodForSelector:sel_traitCollection];
+    [self instanceMethodForSelector:sel_traitCollection];
     v5 = dyld_image_header_containing_address();
 
     if (v4 != v5)
@@ -264,7 +264,7 @@ void __43__UIPresentationController_traitCollection__block_invoke(uint64_t a1, v
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         v7 = v6;
-        v8 = NSStringFromClass(a1);
+        v8 = NSStringFromClass(self);
         v9 = 138412290;
         v10 = v8;
         _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_ERROR, "Class %@ overrides the -traitCollection getter, which is not supported. If you're trying to override traits, you must use the appropriate API.", &v9, 0xCu);
@@ -291,7 +291,7 @@ void __43__UIPresentationController_traitCollection__block_invoke(uint64_t a1, v
   if (v3)
   {
 
-    LOBYTE(v3) = [a1 _allowsDeferredTransitions];
+    LOBYTE(v3) = [self _allowsDeferredTransitions];
   }
 
   return v3;
@@ -312,12 +312,12 @@ void __43__UIPresentationController_traitCollection__block_invoke(uint64_t a1, v
   return WeakRetained;
 }
 
-- (id)_traitCollectionForPresentedViewController:(id)a3 defaultTraitCollectionForChildEnvironment:(id)a4
+- (id)_traitCollectionForPresentedViewController:(id)controller defaultTraitCollectionForChildEnvironment:(id)environment
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = [(UIPresentationController *)v8 _traitCollectionForCherryPickingToPresentedViewController:v6];
+  controllerCopy = controller;
+  environmentCopy = environment;
+  selfCopy = self;
+  v9 = [(UIPresentationController *)selfCopy _traitCollectionForCherryPickingToPresentedViewController:controllerCopy];
   if (!v9)
   {
 
@@ -341,7 +341,7 @@ void __43__UIPresentationController_traitCollection__block_invoke(uint64_t a1, v
   aBlock[3] = &block_descriptor_90;
   v14 = _Block_copy(aBlock);
 
-  v15 = [(UITraitCollection *)v7 _traitCollectionByModifyingTraitsCopyOnWrite:v14];
+  v15 = [(UITraitCollection *)environmentCopy _traitCollectionByModifyingTraitsCopyOnWrite:v14];
   _Block_release(v14);
   if (!v15)
   {
@@ -358,34 +358,34 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v7 = v15;
+  environmentCopy = v15;
 LABEL_6:
 
-  return v7;
+  return environmentCopy;
 }
 
 - (_BYTE)_presentedViewWithReentrancyGuard
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[9];
+    selfCopy = self;
+    v3 = self[9];
     if (v3)
     {
-      a1 = 0;
+      self = 0;
     }
 
     else
     {
-      a1[9] = 1;
-      a1 = [a1 presentedView];
-      v2[9] = v3;
+      self[9] = 1;
+      self = [self presentedView];
+      selfCopy[9] = v3;
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (UIView)_currentPresentationSuperview
@@ -399,21 +399,21 @@ LABEL_6:
 {
   if (dyld_program_sdk_at_least())
   {
-    v3 = [(UIPresentationController *)self presentedViewController];
-    v4 = [v3 viewIfLoaded];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    viewIfLoaded = [presentedViewController viewIfLoaded];
 
-    if (v4)
+    if (viewIfLoaded)
     {
-      v5 = [(UIPresentationController *)self _presentedViewWithReentrancyGuard];
-      v6 = v5;
-      if (v5 == v4)
+      _presentedViewWithReentrancyGuard = [(UIPresentationController *)self _presentedViewWithReentrancyGuard];
+      v6 = _presentedViewWithReentrancyGuard;
+      if (_presentedViewWithReentrancyGuard == viewIfLoaded)
       {
         v7 = 0;
       }
 
       else
       {
-        v7 = v5;
+        v7 = _presentedViewWithReentrancyGuard;
       }
 
       v8 = v7;
@@ -446,45 +446,45 @@ LABEL_6:
 
 - (id)_childPresentationController
 {
-  v2 = [(UIPresentationController *)self presentedViewController];
-  v3 = [v2 _presentationController];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  _presentationController = [presentedViewController _presentationController];
 
-  return v3;
+  return _presentationController;
 }
 
 - (BOOL)_shouldGrabPresentersView
 {
-  v3 = [(UIPresentationController *)self shouldRemovePresentersView];
+  shouldRemovePresentersView = [(UIPresentationController *)self shouldRemovePresentersView];
   if (dyld_program_sdk_at_least())
   {
-    v4 = [(UIPresentationController *)self presentingViewController];
-    v5 = [v4 _existingPresentationControllerImmediate:1 effective:1 includesRoot:1];
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
+    v5 = [presentingViewController _existingPresentationControllerImmediate:1 effective:1 includesRoot:1];
 
     if (v5 && [(UIPresentationController *)self shouldPresentInFullscreen])
     {
-      v6 = [v5 _mayChildGrabPresentedViewControllerView];
-      if (v6)
+      _mayChildGrabPresentedViewControllerView = [v5 _mayChildGrabPresentedViewControllerView];
+      if (_mayChildGrabPresentedViewControllerView)
       {
-        LOBYTE(v6) = [v5 shouldPresentInFullscreen];
+        LOBYTE(_mayChildGrabPresentedViewControllerView) = [v5 shouldPresentInFullscreen];
       }
 
-      v3 &= v6;
+      shouldRemovePresentersView &= _mayChildGrabPresentedViewControllerView;
     }
   }
 
-  return v3;
+  return shouldRemovePresentersView;
 }
 
 - (_UITypedStorage)_typedStorage
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 136);
+    v2 = *(self + 136);
     if (!v2)
     {
       v2 = objc_alloc_init(_UITypedStorage);
-      v3 = *(a1 + 136);
-      *(a1 + 136) = v2;
+      v3 = *(self + 136);
+      *(self + 136) = v2;
     }
   }
 
@@ -503,8 +503,8 @@ LABEL_6:
     if (!self->_didUpdateLayoutForStatusBarAndInterfaceOrientation)
     {
       self->_didUpdateLayoutForStatusBarAndInterfaceOrientation = 1;
-      v3 = [(UIPresentationController *)self presentedViewController];
-      [v3 _updateLayoutForStatusBarAndInterfaceOrientation];
+      presentedViewController = [(UIPresentationController *)self presentedViewController];
+      [presentedViewController _updateLayoutForStatusBarAndInterfaceOrientation];
     }
 
     [(UIPresentationController *)self containerViewWillLayoutSubviews];
@@ -513,47 +513,47 @@ LABEL_6:
 
 - (void)_containerViewWillLayoutSubviewsWithObservationTracking
 {
-  v2 = self;
+  selfCopy = self;
   sub_188ADE68C();
 }
 
 - (_UITraitOverrides)_internalTraitOverrides
 {
-  v2 = [(UIPresentationController *)self _traitOverrides];
-  v3 = [(_UITraitOverrides *)v2 _overridesAppliedBefore];
+  _traitOverrides = [(UIPresentationController *)self _traitOverrides];
+  _overridesAppliedBefore = [(_UITraitOverrides *)_traitOverrides _overridesAppliedBefore];
 
-  return v3;
+  return _overridesAppliedBefore;
 }
 
 - (void)_traitOverrides
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[3];
+    selfCopy = self;
+    v3 = self[3];
     if (!v3)
     {
-      v4 = [[_UITraitOverrides alloc] initWithDelegate:a1];
-      v5 = v2[3];
-      v2[3] = v4;
+      v4 = [[_UITraitOverrides alloc] initWithDelegate:self];
+      v5 = selfCopy[3];
+      selfCopy[3] = v4;
 
-      v3 = v2[3];
+      v3 = selfCopy[3];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_presentationTransitionWillBegin
 {
-  if (a1)
+  if (self)
   {
-    [a1 presentationTransitionWillBegin];
-    v2 = [a1 _transitionDelegate];
-    [v2 _presentationControllerWillBeginPresentationTransition:a1];
+    [self presentationTransitionWillBegin];
+    _transitionDelegate = [self _transitionDelegate];
+    [_transitionDelegate _presentationControllerWillBeginPresentationTransition:self];
   }
 }
 
@@ -573,40 +573,40 @@ LABEL_6:
 
 - (void)_containerViewDidLayoutSubviewsWithObservationTracking
 {
-  v2 = self;
+  selfCopy = self;
   sub_188AE32B0();
 }
 
 - (UIViewControllerTransitionCoordinator)_definiteTransitionCoordinator
 {
-  v3 = [(UIPresentationController *)self _transitionCoordinator];
-  if (!v3)
+  _transitionCoordinator = [(UIPresentationController *)self _transitionCoordinator];
+  if (!_transitionCoordinator)
   {
     v4 = [_UIViewControllerImmediateAnimationTransitionCoordinator alloc];
-    v5 = [(UIPresentationController *)self containerView];
-    v3 = [(_UIViewControllerImmediateAnimationTransitionCoordinator *)v4 initWithContainerView:v5];
+    containerView = [(UIPresentationController *)self containerView];
+    _transitionCoordinator = [(_UIViewControllerImmediateAnimationTransitionCoordinator *)v4 initWithContainerView:containerView];
   }
 
-  return v3;
+  return _transitionCoordinator;
 }
 
 - (BOOL)_isPresentedInFullScreen
 {
-  v3 = [(UIPresentationController *)self containerView];
-  v4 = [v3 superview];
-  v5 = [(UIPresentationController *)self containerView];
-  v6 = [v5 window];
-  v7 = v4 == v6;
+  containerView = [(UIPresentationController *)self containerView];
+  superview = [containerView superview];
+  containerView2 = [(UIPresentationController *)self containerView];
+  window = [containerView2 window];
+  v7 = superview == window;
 
   return v7;
 }
 
 - (_UIViewControllerTransitionContext)_transitionContext
 {
-  v2 = [(UIPresentationController *)self _currentTransitionController];
-  if (v2)
+  _currentTransitionController = [(UIPresentationController *)self _currentTransitionController];
+  if (_currentTransitionController)
   {
-    v3 = [_UIViewControllerTransitionContext _associatedTransitionContextForAnimationController:v2];
+    v3 = [_UIViewControllerTransitionContext _associatedTransitionContextForAnimationController:_currentTransitionController];
   }
 
   else
@@ -643,11 +643,11 @@ LABEL_6:
 
 - (void)_dismissalTransitionWillBegin
 {
-  if (a1)
+  if (self)
   {
-    [a1 dismissalTransitionWillBegin];
-    v2 = [a1 _transitionDelegate];
-    [v2 _presentationControllerWillBeginDismissalTransition:a1];
+    [self dismissalTransitionWillBegin];
+    _transitionDelegate = [self _transitionDelegate];
+    [_transitionDelegate _presentationControllerWillBeginDismissalTransition:self];
   }
 }
 
@@ -660,11 +660,11 @@ LABEL_6:
   {
     v4 = objc_opt_class();
     Name = class_getName(v4);
-    v6 = [(UIPresentationController *)self presentingViewController];
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
     v7 = objc_opt_class();
     class_getName(v7);
 
-    v8 = [(UIPresentationController *)self presentedViewController];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
     v9 = objc_opt_class();
     class_getName(v9);
 
@@ -717,33 +717,33 @@ LABEL_6:
 
 - (id)_fullscreenPresentationSuperview
 {
-  v3 = [(UIPresentationController *)self _containerSuperviewForCurrentTransition];
+  _containerSuperviewForCurrentTransition = [(UIPresentationController *)self _containerSuperviewForCurrentTransition];
 
-  if (!v3 || ([(UIPresentationController *)self _containerSuperviewForCurrentTransition], v4 = objc_claimAutoreleasedReturnValue(), v4[2](), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  if (!_containerSuperviewForCurrentTransition || ([(UIPresentationController *)self _containerSuperviewForCurrentTransition], v4 = objc_claimAutoreleasedReturnValue(), v4[2](), window = objc_claimAutoreleasedReturnValue(), v4, !window))
   {
-    v6 = [(UIPresentationController *)self presentingViewController];
-    v7 = [v6 view];
-    v5 = [v7 window];
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
+    view = [presentingViewController view];
+    window = [view window];
   }
 
-  return v5;
+  return window;
 }
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)__sizeClassPair
 {
-  v3 = [(UIPresentationController *)self presentingViewController];
-  v4 = [v3 view];
-  v5 = [v4 window];
+  presentingViewController = [(UIPresentationController *)self presentingViewController];
+  view = [presentingViewController view];
+  window = [view window];
 
   v6 = dyld_program_sdk_at_least();
   v7 = v6;
-  if (v5)
+  if (window)
   {
-    v3 = [(UIPresentationController *)self presentingViewController];
-    v4 = [v5 rootViewController];
-    if ((v3 != v4) | v7 & 1)
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
+    view = [window rootViewController];
+    if ((presentingViewController != view) | v7 & 1)
     {
-      v8 = [v5 __sizeClassPair];
+      __sizeClassPair = [window __sizeClassPair];
       v10 = v9;
 LABEL_7:
 
@@ -753,23 +753,23 @@ LABEL_7:
 
   else if (v6)
   {
-    v8 = [0 __sizeClassPair];
+    __sizeClassPair = [0 __sizeClassPair];
     v10 = v11;
     goto LABEL_8;
   }
 
-  v12 = [(UIPresentationController *)self presentingViewController];
-  v8 = [v12 __sizeClassPair];
+  presentingViewController2 = [(UIPresentationController *)self presentingViewController];
+  __sizeClassPair = [presentingViewController2 __sizeClassPair];
   v10 = v13;
 
-  if (v5)
+  if (window)
   {
     goto LABEL_7;
   }
 
 LABEL_8:
 
-  v14 = v8;
+  v14 = __sizeClassPair;
   v15 = v10;
   result.var1 = v15;
   result.var0 = v14;
@@ -778,25 +778,25 @@ LABEL_8:
 
 - (void)_containedViewControllerModalStateChanged
 {
-  v2 = [(UIPresentationController *)self _parentPresentationController];
-  [v2 _containedViewControllerModalStateChanged];
+  _parentPresentationController = [(UIPresentationController *)self _parentPresentationController];
+  [_parentPresentationController _containedViewControllerModalStateChanged];
 }
 
 - (UIViewControllerTransitionCoordinator)_transitionCoordinator
 {
-  v2 = [(UIPresentationController *)self _transitionContext];
-  v3 = [v2 _transitionCoordinator];
+  _transitionContext = [(UIPresentationController *)self _transitionContext];
+  _transitionCoordinator = [_transitionContext _transitionCoordinator];
 
-  return v3;
+  return _transitionCoordinator;
 }
 
 - (id)_currentContextPresentationSuperview
 {
-  v3 = [(UIPresentationController *)self _parentPresentationController];
-  v4 = v3;
-  if (v3)
+  _parentPresentationController = [(UIPresentationController *)self _parentPresentationController];
+  v4 = _parentPresentationController;
+  if (_parentPresentationController)
   {
-    [v3 _presentationView];
+    [_parentPresentationController _presentationView];
   }
 
   else
@@ -817,12 +817,12 @@ LABEL_8:
     v5 = v4;
     do
     {
-      v6 = [v5 presentingViewController];
+      presentingViewController = [v5 presentingViewController];
 
-      v7 = [(UIViewController *)v6 _existingPresentationControllerImmediate:0 effective:1];
+      v7 = [(UIViewController *)presentingViewController _existingPresentationControllerImmediate:0 effective:1];
 
       v5 = v7;
-      v3 = v6;
+      v3 = presentingViewController;
     }
 
     while (v7);
@@ -830,24 +830,24 @@ LABEL_8:
 
   else
   {
-    v6 = v3;
+    presentingViewController = v3;
   }
 
-  return v6;
+  return presentingViewController;
 }
 
 - (UIEdgeInsets)_additionalSafeAreaInsets
 {
-  v3 = [(UIPresentationController *)self _parentPresentationController];
+  _parentPresentationController = [(UIPresentationController *)self _parentPresentationController];
   v4 = 0.0;
-  if (v3)
+  if (_parentPresentationController)
   {
     v5 = 0.0;
     v6 = 0.0;
     v7 = 0.0;
     if (![(UIPresentationController *)self shouldPresentInFullscreen])
     {
-      [v3 _additionalSafeAreaInsets];
+      [_parentPresentationController _additionalSafeAreaInsets];
       v7 = v8;
       v6 = v9;
       v5 = v10;
@@ -875,8 +875,8 @@ LABEL_8:
 
 - (void)_beginSubduing
 {
-  v3 = [(UIPresentationController *)self containerView];
-  v4 = [v3 superview];
+  containerView = [(UIPresentationController *)self containerView];
+  superview = [containerView superview];
 
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   subduingInvalidation = self->_subduingInvalidation;
@@ -903,43 +903,43 @@ LABEL_8:
     }
   }
 
-  v7 = [(UIPresentationController *)self containerView];
-  v8 = [v4 setSubduesSiblings:1 belowView:v7];
+  containerView2 = [(UIPresentationController *)self containerView];
+  v8 = [superview setSubduesSiblings:1 belowView:containerView2];
   v9 = self->_subduingInvalidation;
   self->_subduingInvalidation = v8;
 }
 
 - (id)presentedContentContainer
 {
-  v3 = [(UIPresentationController *)self _childPresentationController];
-  v4 = v3;
-  if (v3)
+  _childPresentationController = [(UIPresentationController *)self _childPresentationController];
+  v4 = _childPresentationController;
+  if (_childPresentationController)
   {
-    v5 = v3;
+    presentedViewController = _childPresentationController;
   }
 
   else
   {
-    v5 = [(UIPresentationController *)self presentedViewController];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
   }
 
-  v6 = v5;
+  v6 = presentedViewController;
 
   return v6;
 }
 
 - (UIView)presentedView
 {
-  v2 = [(UIPresentationController *)self presentedViewController];
-  v3 = [v2 view];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  view = [presentedViewController view];
 
-  return v3;
+  return view;
 }
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v2 = [(UIPresentationController *)self containerView];
-  [v2 bounds];
+  containerView = [(UIPresentationController *)self containerView];
+  [containerView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -968,11 +968,11 @@ LABEL_8:
 
 - (BOOL)_containerViewShouldIgnoreDirectTouchEvents
 {
-  v3 = [(UIPresentationController *)self _transitionContext];
-  v4 = [v3 _animator];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 prefersPreemptionEnabledForPresentations] && -[UIPresentationController dismissing](self, "dismissing") && (objc_msgSend(v3, "isInteractive") & 1) == 0)
+  _transitionContext = [(UIPresentationController *)self _transitionContext];
+  _animator = [_transitionContext _animator];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [_animator prefersPreemptionEnabledForPresentations] && -[UIPresentationController dismissing](self, "dismissing") && (objc_msgSend(_transitionContext, "isInteractive") & 1) == 0)
   {
-    v5 = [v3 transitionWasCancelled] ^ 1;
+    v5 = [_transitionContext transitionWasCancelled] ^ 1;
   }
 
   else
@@ -985,14 +985,14 @@ LABEL_8:
 
 - (UIView)_realSourceView
 {
-  v3 = [(UIPresentationController *)self sourceItem];
-  v4 = _UIPopoverPresentationControllerSourceItemUpCast(v3);
+  sourceItem = [(UIPresentationController *)self sourceItem];
+  v4 = _UIPopoverPresentationControllerSourceItemUpCast(sourceItem);
 
   if (v4)
   {
-    v5 = [(UIPresentationController *)self containerView];
-    v6 = [v5 _window];
-    v7 = [v4 _sourceViewForPresentationInWindow:v6];
+    containerView = [(UIPresentationController *)self containerView];
+    _window = [containerView _window];
+    v7 = [v4 _sourceViewForPresentationInWindow:_window];
 
     if (v7 != self->_observedRealSourceView)
     {
@@ -1021,21 +1021,21 @@ LABEL_8:
 
 - (BOOL)_isAdapted
 {
-  v2 = self;
-  v3 = [(UIPresentationController *)self presentingViewController];
-  v4 = [v3 _presentationController];
-  LOBYTE(v2) = v4 != v2;
+  selfCopy = self;
+  presentingViewController = [(UIPresentationController *)self presentingViewController];
+  _presentationController = [presentingViewController _presentationController];
+  LOBYTE(selfCopy) = _presentationController != selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 - (UIBarButtonItem)barButtonItem
 {
-  v2 = [(UIPresentationController *)self sourceItem];
+  sourceItem = [(UIPresentationController *)self sourceItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = sourceItem;
   }
 
   else
@@ -1049,20 +1049,20 @@ LABEL_8:
 - (void)_updateRealSourceView
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(UIPresentationController *)self sourceItem];
-  v4 = _UIPopoverPresentationControllerSourceItemUpCast(v3);
+  sourceItem = [(UIPresentationController *)self sourceItem];
+  v4 = _UIPopoverPresentationControllerSourceItemUpCast(sourceItem);
 
   if (v4)
   {
-    v5 = [(UIPresentationController *)self containerView];
-    v6 = [v5 _window];
+    containerView = [(UIPresentationController *)self containerView];
+    _window = [containerView _window];
 
-    v7 = [v4 _sourceViewForPresentationInWindow:v6];
-    if (v6)
+    sourceView = [v4 _sourceViewForPresentationInWindow:_window];
+    if (_window)
     {
       if (os_variant_has_internal_diagnostics())
       {
-        if (!v7)
+        if (!sourceView)
         {
           v8 = __UIFaultDebugAssertLog();
           if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -1074,7 +1074,7 @@ LABEL_8:
         }
       }
 
-      else if (!v7)
+      else if (!sourceView)
       {
         v9 = *(__UILogGetCategoryCachedImpl("Assert", &_updateRealSourceView___s_category) + 8);
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1089,73 +1089,73 @@ LABEL_8:
 
   else
   {
-    v7 = [(UIPresentationController *)self sourceView];
+    sourceView = [(UIPresentationController *)self sourceView];
   }
 
-  [(UIPresentationController *)self _setRealSourceView:v7];
+  [(UIPresentationController *)self _setRealSourceView:sourceView];
 }
 
 - (UIFocusEnvironment)parentFocusEnvironment
 {
-  v2 = [(UIPresentationController *)self containerView];
-  v3 = [v2 superview];
+  containerView = [(UIPresentationController *)self containerView];
+  superview = [containerView superview];
 
-  return v3;
+  return superview;
 }
 
-- (void)_applyDefaultTraitCollectionOverridesWithProvider:(id)a3 mutableTraitCollectionProvider:(id)a4
+- (void)_applyDefaultTraitCollectionOverridesWithProvider:(id)provider mutableTraitCollectionProvider:(id)collectionProvider
 {
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(provider);
   v10 = v6;
-  v8 = _Block_copy(a4);
-  v7 = self;
+  v8 = _Block_copy(collectionProvider);
+  selfCopy = self;
   sub_189071A30(sub_188A854F4, v9, sub_188A7A460);
   _Block_release(v8);
   _Block_release(v6);
 }
 
-- (id)_traitCollectionForCherryPickingToPresentedViewController:(id)a3
+- (id)_traitCollectionForCherryPickingToPresentedViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_189071728(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v6 = sub_189071728(controllerCopy);
 
   return v6;
 }
 
-- (void)setSourceView:(id)a3
+- (void)setSourceView:(id)view
 {
-  v6 = a3;
-  v9 = v6;
-  if (v6)
+  viewCopy = view;
+  v9 = viewCopy;
+  if (viewCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v6 = v9;
+    viewCopy = v9;
     if ((isKindOfClass & 1) == 0)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"UIPresentationController.m" lineNumber:193 description:{@"Tried to set %@ as sourceView of %@, even though it is not a kind of UIView.", v9, self}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIPresentationController.m" lineNumber:193 description:{@"Tried to set %@ as sourceView of %@, even though it is not a kind of UIView.", v9, self}];
 
-      v6 = v9;
+      viewCopy = v9;
     }
   }
 
-  if (self->_sourceView != v6)
+  if (self->_sourceView != viewCopy)
   {
-    objc_storeStrong(&self->_sourceView, a3);
+    objc_storeStrong(&self->_sourceView, view);
     [(UIPresentationController *)self _updateRealSourceView];
-    v6 = v9;
+    viewCopy = v9;
   }
 }
 
-- (void)setSourceItem:(id)a3
+- (void)setSourceItem:(id)item
 {
-  v5 = a3;
-  if (v5)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v6 = v5;
-    v9 = _UIPopoverPresentationControllerSourceItemUpCast(v5);
+    v6 = itemCopy;
+    v9 = _UIPopoverPresentationControllerSourceItemUpCast(itemCopy);
 
     v7 = v9;
     if (v9)
@@ -1163,8 +1163,8 @@ LABEL_8:
       goto LABEL_5;
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIPresentationController.m" lineNumber:208 description:{@"Tried to set %@ as sourceItem of %@, which is not a supported class", 0, self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPresentationController.m" lineNumber:208 description:{@"Tried to set %@ as sourceItem of %@, which is not a supported class", 0, self}];
   }
 
   v7 = 0;
@@ -1178,16 +1178,16 @@ LABEL_5:
   }
 }
 
-- (void)_setRealSourceView:(id)a3
+- (void)_setRealSourceView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   p_observedRealSourceView = &self->_observedRealSourceView;
   observedRealSourceView = self->_observedRealSourceView;
-  if (observedRealSourceView != v5)
+  if (observedRealSourceView != viewCopy)
   {
-    v10 = v5;
+    v10 = viewCopy;
     v8 = observedRealSourceView;
-    objc_storeStrong(&self->_observedRealSourceView, a3);
+    objc_storeStrong(&self->_observedRealSourceView, view);
     if (v8)
     {
       [(UIView *)v8 _removeGeometryChangeObserver:?];
@@ -1206,13 +1206,13 @@ LABEL_5:
 
     [(UIPresentationController *)self _realSourceViewDidChangeFromView:v8 toView:v9];
 
-    v5 = v10;
+    viewCopy = v10;
   }
 }
 
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor
 {
-  v5 = [(UIPresentationController *)self containerView:a3];
+  v5 = [(UIPresentationController *)self containerView:changed];
   [v5 setNeedsLayout];
 
   [(UIPresentationController *)self _realSourceViewGeometryDidChange];
@@ -1266,22 +1266,22 @@ LABEL_5:
   return 0;
 }
 
-- (void)_transplantView:(id)a3 toSuperview:(id)a4 atIndex:(unint64_t)a5
+- (void)_transplantView:(id)view toSuperview:(id)superview atIndex:(unint64_t)index
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  superviewCopy = superview;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__UIPresentationController__transplantView_toSuperview_atIndex___block_invoke;
   v13[3] = &unk_1E7101900;
-  v14 = v7;
-  v15 = v8;
-  v16 = a5;
-  v9 = v8;
-  v10 = v7;
-  v11 = [v10 _window];
-  v12 = [v11 windowScene];
-  [UIView _performBlockDelayingTriggeringResponderEvents:v13 forScene:v12];
+  v14 = viewCopy;
+  v15 = superviewCopy;
+  indexCopy = index;
+  v9 = superviewCopy;
+  v10 = viewCopy;
+  _window = [v10 _window];
+  windowScene = [_window windowScene];
+  [UIView _performBlockDelayingTriggeringResponderEvents:v13 forScene:windowScene];
 }
 
 uint64_t __64__UIPresentationController__transplantView_toSuperview_atIndex___block_invoke(uint64_t a1)
@@ -1300,18 +1300,18 @@ uint64_t __64__UIPresentationController__transplantView_toSuperview_atIndex___bl
   return 0;
 }
 
-- (void)_transplantView:(id)a3 toSuperview:(id)a4
+- (void)_transplantView:(id)view toSuperview:(id)superview
 {
-  v5 = a3;
-  v6 = a4;
+  viewCopy = view;
+  superviewCopy = superview;
   v11 = MEMORY[0x1E69E9820];
-  v12 = v5;
-  v13 = v6;
-  v7 = v6;
-  v8 = v5;
-  v9 = [v8 _window];
-  v10 = [v9 windowScene];
-  [UIView _performBlockDelayingTriggeringResponderEvents:v10 forScene:?];
+  v12 = viewCopy;
+  v13 = superviewCopy;
+  v7 = superviewCopy;
+  v8 = viewCopy;
+  _window = [v8 _window];
+  windowScene = [_window windowScene];
+  [UIView _performBlockDelayingTriggeringResponderEvents:windowScene forScene:?];
 }
 
 uint64_t __56__UIPresentationController__transplantView_toSuperview___block_invoke(uint64_t a1)
@@ -1332,10 +1332,10 @@ uint64_t __56__UIPresentationController__transplantView_toSuperview___block_invo
 
 - (void)transitionDidStart
 {
-  v3 = [(UIPresentationController *)self presentedViewController];
-  if (-[UIPresentationController _shouldMakePresentedViewControllerFirstResponder](self, "_shouldMakePresentedViewControllerFirstResponder") && ([v3 _containsFirstResponder] & 1) == 0)
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  if (-[UIPresentationController _shouldMakePresentedViewControllerFirstResponder](self, "_shouldMakePresentedViewControllerFirstResponder") && ([presentedViewController _containsFirstResponder] & 1) == 0)
   {
-    [v3 becomeFirstResponder];
+    [presentedViewController becomeFirstResponder];
   }
 }
 
@@ -1351,10 +1351,10 @@ uint64_t __56__UIPresentationController__transplantView_toSuperview___block_invo
 
 - (id)_activePresentationController
 {
-  v2 = [(UIPresentationController *)self presentingViewController];
-  v3 = [v2 _presentationController];
+  presentingViewController = [(UIPresentationController *)self presentingViewController];
+  _presentationController = [presentingViewController _presentationController];
 
-  return v3;
+  return _presentationController;
 }
 
 - (BOOL)_shouldPresentedViewControllerControlStatusBarAppearance
@@ -1367,50 +1367,50 @@ uint64_t __56__UIPresentationController__transplantView_toSuperview___block_invo
 
   else
   {
-    v5 = [v4 _shouldPresentedViewControllerControlStatusBarAppearance];
+    _shouldPresentedViewControllerControlStatusBarAppearance = [v4 _shouldPresentedViewControllerControlStatusBarAppearance];
 
-    return v5;
+    return _shouldPresentedViewControllerControlStatusBarAppearance;
   }
 }
 
-- (void)transitionDidFinish:(BOOL)a3
+- (void)transitionDidFinish:(BOOL)finish
 {
-  v3 = a3;
+  finishCopy = finish;
   v50 = *MEMORY[0x1E69E9840];
-  v5 = [(UIPresentationController *)self presenting];
-  v6 = [(UIPresentationController *)self dismissing];
-  v7 = [(UIPresentationController *)self presentingViewController];
-  v8 = [(UIPresentationController *)self presentedViewController];
-  if (v5)
+  presenting = [(UIPresentationController *)self presenting];
+  dismissing = [(UIPresentationController *)self dismissing];
+  presentingViewController = [(UIPresentationController *)self presentingViewController];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  if (presenting)
   {
-    v9 = v8;
+    v9 = presentedViewController;
   }
 
   else
   {
-    v9 = v7;
+    v9 = presentingViewController;
   }
 
-  v33 = v8;
-  if (v5)
+  v33 = presentedViewController;
+  if (presenting)
   {
-    v10 = v7;
+    v10 = presentingViewController;
   }
 
   else
   {
-    v10 = v8;
+    v10 = presentedViewController;
   }
 
   v11 = v9;
   v12 = v10;
-  v13 = [(UIPresentationController *)self _transitionContext];
-  v14 = [(UIPresentationController *)self _currentTransitionDidComplete];
-  v31 = v14;
-  if (v14)
+  _transitionContext = [(UIPresentationController *)self _transitionContext];
+  _currentTransitionDidComplete = [(UIPresentationController *)self _currentTransitionDidComplete];
+  v31 = _currentTransitionDidComplete;
+  if (_currentTransitionDidComplete)
   {
-    (*(v14 + 16))(v14, v3);
-    if (!v3)
+    (*(_currentTransitionDidComplete + 16))(_currentTransitionDidComplete, finishCopy);
+    if (!finishCopy)
     {
       goto LABEL_18;
     }
@@ -1424,15 +1424,15 @@ uint64_t __56__UIPresentationController__transplantView_toSuperview___block_invo
     if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412802;
-      v45 = self;
+      selfCopy2 = self;
       v46 = 2112;
       v47 = v33;
       v48 = 2112;
-      v49 = v7;
+      v49 = presentingViewController;
       _os_log_fault_impl(&dword_188A29000, v30, OS_LOG_TYPE_FAULT, "self._currentTransitionDidComplete is nil! for self: %@; presentedViewController: %@; presentingViewController: %@", buf, 0x20u);
     }
 
-    if (v3)
+    if (finishCopy)
     {
       goto LABEL_14;
     }
@@ -1444,25 +1444,25 @@ uint64_t __56__UIPresentationController__transplantView_toSuperview___block_invo
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v45 = self;
+      selfCopy2 = self;
       v46 = 2112;
       v47 = v33;
       v48 = 2112;
-      v49 = v7;
+      v49 = presentingViewController;
       _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_ERROR, "self._currentTransitionDidComplete is nil! for self: %@; presentedViewController: %@; presentingViewController: %@", buf, 0x20u);
     }
 
-    if (v3)
+    if (finishCopy)
     {
 LABEL_14:
-      if (v5)
+      if (presenting)
       {
-        v16 = [v33 view];
-        v17 = [v16 superview];
-        [(UIPresentationController *)self _setPresentationView:v17];
+        view = [v33 view];
+        superview = [view superview];
+        [(UIPresentationController *)self _setPresentationView:superview];
       }
 
-      else if (v6)
+      else if (dismissing)
       {
         [(UIPresentationController *)self _setPresentationView:0, v31];
       }
@@ -1470,32 +1470,32 @@ LABEL_14:
   }
 
 LABEL_18:
-  [v13 _setContainerView:{0, v31}];
+  [_transitionContext _setContainerView:{0, v31}];
   [(UIPresentationController *)self _setCurrentInteractionController:0];
-  v18 = [v7 _completionBlock];
-  if (v7)
+  _completionBlock = [presentingViewController _completionBlock];
+  if (presentingViewController)
   {
-    if (v3)
+    if (finishCopy)
     {
-      if (v5)
+      if (presenting)
       {
-        [v7 _didFinishPresentTransition];
+        [presentingViewController _didFinishPresentTransition];
       }
 
       else
       {
-        [v7 _didFinishDismissTransition];
+        [presentingViewController _didFinishDismissTransition];
       }
     }
 
-    else if (v5)
+    else if (presenting)
     {
-      [v7 _didCancelPresentTransition:v13];
+      [presentingViewController _didCancelPresentTransition:_transitionContext];
     }
 
     else
     {
-      [v7 _didCancelDismissTransition:v13];
+      [presentingViewController _didCancelDismissTransition:_transitionContext];
     }
   }
 
@@ -1506,19 +1506,19 @@ LABEL_18:
   aBlock[4] = self;
   v19 = v11;
   v38 = v19;
-  v20 = v7;
+  v20 = presentingViewController;
   v39 = v20;
-  v21 = v13;
+  v21 = _transitionContext;
   v40 = v21;
-  v42 = v3;
+  v42 = finishCopy;
   v22 = v12;
   v41 = v22;
-  v43 = v5;
+  v43 = presenting;
   v23 = _Block_copy(aBlock);
   if (([objc_opt_class() _allowsDeferredTransitions] & 1) != 0 || !+[UIApplication _isCertainCheckpointInAppLaunchReached](UIApplication, "_isCertainCheckpointInAppLaunchReached"))
   {
     v23[2](v23);
-    if (!v18)
+    if (!_completionBlock)
     {
       goto LABEL_32;
     }
@@ -1535,24 +1535,24 @@ LABEL_18:
   v35 = v23;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
-  if (v18)
+  if (_completionBlock)
   {
 LABEL_31:
-    v18[2](v18, v3);
+    _completionBlock[2](_completionBlock, finishCopy);
   }
 
 LABEL_32:
   [(UIPresentationController *)self executeTransitionCompletionBlock];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v25 = 0;
-    if ([(UIPresentationController *)self dismissing]&& v3)
+    forcePresentationControllerDelegate = 0;
+    if ([(UIPresentationController *)self dismissing]&& finishCopy)
     {
       goto LABEL_43;
     }
 
 LABEL_38:
-    if (![(UIPresentationController *)self presenting]|| v3)
+    if (![(UIPresentationController *)self presenting]|| finishCopy)
     {
       goto LABEL_43;
     }
@@ -1560,21 +1560,21 @@ LABEL_38:
     goto LABEL_40;
   }
 
-  v25 = [(UIPresentationController *)self forcePresentationControllerDelegate];
-  if (![(UIPresentationController *)self dismissing]|| !v3)
+  forcePresentationControllerDelegate = [(UIPresentationController *)self forcePresentationControllerDelegate];
+  if (![(UIPresentationController *)self dismissing]|| !finishCopy)
   {
     goto LABEL_38;
   }
 
 LABEL_40:
-  if (v25 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (forcePresentationControllerDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v25 forcePresentationControllerDidDismiss:self];
+    [forcePresentationControllerDelegate forcePresentationControllerDidDismiss:self];
   }
 
 LABEL_43:
   [(UIPresentationController *)self _setCurrentTransitionController:0];
-  if ([(UIPresentationController *)self dismissing]&& v3 || [(UIPresentationController *)self presenting]&& !v3)
+  if ([(UIPresentationController *)self dismissing]&& finishCopy || [(UIPresentationController *)self presenting]&& !finishCopy)
   {
     [(UIPresentationController *)self _cleanup];
   }
@@ -1688,9 +1688,9 @@ LABEL_25:
   }
 }
 
-- (void)_setPendingFocusEnvironmentUnlock:(id)a3
+- (void)_setPendingFocusEnvironmentUnlock:(id)unlock
 {
-  aBlock = a3;
+  aBlock = unlock;
   pendingFocusEnvironmentUnlock = self->__pendingFocusEnvironmentUnlock;
   if (pendingFocusEnvironmentUnlock)
   {
@@ -1702,37 +1702,37 @@ LABEL_25:
   self->__pendingFocusEnvironmentUnlock = v5;
 }
 
-- (void)_prepareForWindowDeallocRecursively:(BOOL)a3
+- (void)_prepareForWindowDeallocRecursively:(BOOL)recursively
 {
-  v3 = a3;
-  v9 = [(UIPresentationController *)self presentedViewController];
-  v5 = [(UIPresentationController *)self containerView];
-  if (v3)
+  recursivelyCopy = recursively;
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  containerView = [(UIPresentationController *)self containerView];
+  if (recursivelyCopy)
   {
-    [v9 _prepareForWindowDealloc];
+    [presentedViewController _prepareForWindowDealloc];
   }
 
-  if (v9 && (v9[94] & 3u) - 1 <= 1)
+  if (presentedViewController && (presentedViewController[94] & 3u) - 1 <= 1)
   {
-    [v9 beginAppearanceTransition:0 animated:0];
-    v6 = [v9 view];
-    [v6 removeFromSuperview];
+    [presentedViewController beginAppearanceTransition:0 animated:0];
+    view = [presentedViewController view];
+    [view removeFromSuperview];
 
-    [v9 endAppearanceTransition];
+    [presentedViewController endAppearanceTransition];
   }
 
-  v7 = [(UIPresentationController *)self presentingViewController];
-  v8 = [v7 _originalPresentationController];
-  [v8 _setPresentingViewController:0];
+  presentingViewController = [(UIPresentationController *)self presentingViewController];
+  _originalPresentationController = [presentingViewController _originalPresentationController];
+  [_originalPresentationController _setPresentingViewController:0];
 
   [(UIPresentationController *)self _setPresentingViewController:0];
 }
 
-- (void)_setContainerIgnoresDirectTouchEvents:(BOOL)a3
+- (void)_setContainerIgnoresDirectTouchEvents:(BOOL)events
 {
-  if (self->_containerIgnoresDirectTouchEvents != a3)
+  if (self->_containerIgnoresDirectTouchEvents != events)
   {
-    self->_containerIgnoresDirectTouchEvents = a3;
+    self->_containerIgnoresDirectTouchEvents = events;
     if (self->_containerView)
     {
       objc_opt_class();
@@ -1747,22 +1747,22 @@ LABEL_25:
   }
 }
 
-- (void)_presentWithAnimationController:(id)a3 inWindow:(id)a4 interactionController:(id)a5 animated:(BOOL)a6 handoffData:(id)a7
+- (void)_presentWithAnimationController:(id)controller inWindow:(id)window interactionController:(id)interactionController animated:(BOOL)animated handoffData:(id)data
 {
-  v33 = a6;
+  animatedCopy = animated;
   v36 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v31 = a4;
-  v13 = a5;
-  v14 = a7;
+  controllerCopy = controller;
+  windowCopy = window;
+  interactionControllerCopy = interactionController;
+  dataCopy = data;
   v15 = objc_opt_class();
   if (v15 == objc_opt_class())
   {
-    [v12 setDelegate:self];
+    [controllerCopy setDelegate:self];
   }
 
-  [(UIPresentationController *)self _setCurrentTransitionController:v12, v31];
-  [(UIPresentationController *)self _setCurrentInteractionController:v13];
+  [(UIPresentationController *)self _setCurrentTransitionController:controllerCopy, windowCopy];
+  [(UIPresentationController *)self _setCurrentInteractionController:interactionControllerCopy];
   if (self->_state)
   {
     if (os_variant_has_internal_diagnostics())
@@ -1771,7 +1771,7 @@ LABEL_25:
       if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v35 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_188A29000, v30, OS_LOG_TYPE_FAULT, "Trying to present the presentation controller while transitioning already. (%@)", buf, 0xCu);
       }
     }
@@ -1782,7 +1782,7 @@ LABEL_25:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v35 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_188A29000, v28, OS_LOG_TYPE_ERROR, "Trying to present the presentation controller while transitioning already. (%@)", buf, 0xCu);
       }
     }
@@ -1801,83 +1801,83 @@ LABEL_25:
   v16 = ;
   if ([(UIPresentationController *)self _shouldRespectDefinesPresentationContext])
   {
-    v17 = [(UIPresentationController *)self presentingViewController];
-    if (v17)
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
+    if (presentingViewController)
     {
       do
       {
-        if ([v17 definesPresentationContext])
+        if ([presentingViewController definesPresentationContext])
         {
           break;
         }
 
-        v18 = [v17 parentViewController];
+        parentViewController = [presentingViewController parentViewController];
 
-        v17 = v18;
+        presentingViewController = parentViewController;
       }
 
-      while (v18);
+      while (parentViewController);
     }
 
-    if ([v17 definesPresentationContext])
+    if ([presentingViewController definesPresentationContext])
     {
-      v19 = [v17 view];
-      v20 = [v19 superview];
+      view = [presentingViewController view];
+      superview = [view superview];
 
-      if (!v20)
+      if (!superview)
       {
-        v29 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v29 handleFailureInMethod:a2 object:self file:@"UIPresentationController.m" lineNumber:808 description:@"The view defining presentation context doesn't have a superview"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UIPresentationController.m" lineNumber:808 description:@"The view defining presentation context doesn't have a superview"];
       }
 
-      v21 = [v17 view];
-      v22 = [v21 superview];
+      view2 = [presentingViewController view];
+      superview2 = [view2 superview];
 
-      v16 = v22;
+      v16 = superview2;
     }
   }
 
   [(UIPresentationController *)self _setCurrentPresentationSuperview:v16];
-  v23 = [(UIPresentationController *)self presentingViewController];
-  v24 = [v23 _existingView];
-  v25 = [v24 window];
-  v26 = [(UIPresentationController *)self presentedViewController];
-  v27 = [(UIPresentationController *)self presentingViewController];
-  [(UIPresentationController *)self _adjustOrientationIfNecessaryInWindow:v25 forViewController:v26 preservingViewController:v27];
+  presentingViewController2 = [(UIPresentationController *)self presentingViewController];
+  _existingView = [presentingViewController2 _existingView];
+  window = [_existingView window];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  presentingViewController3 = [(UIPresentationController *)self presentingViewController];
+  [(UIPresentationController *)self _adjustOrientationIfNecessaryInWindow:window forViewController:presentedViewController preservingViewController:presentingViewController3];
 
   [(UIPresentationController *)self _initViewHierarchyForPresentationSuperview:v16 inWindow:v32];
-  [(UIPresentationController *)self runTransitionForCurrentStateAnimated:v33 handoffData:v14];
+  [(UIPresentationController *)self runTransitionForCurrentStateAnimated:animatedCopy handoffData:dataCopy];
 }
 
-- (void)_dismissWithAnimationController:(id)a3 interactionController:(id)a4 animated:(BOOL)a5 handoffData:(id)a6
+- (void)_dismissWithAnimationController:(id)controller interactionController:(id)interactionController animated:(BOOL)animated handoffData:(id)data
 {
-  v7 = a5;
+  animatedCopy = animated;
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
+  controllerCopy = controller;
+  dataCopy = data;
+  interactionControllerCopy = interactionController;
   if (objc_opt_respondsToSelector())
   {
-    v13 = [(UIPresentationController *)self forcePresentationControllerDelegate];
-    if (v13 && (objc_opt_respondsToSelector() & 1) != 0)
+    forcePresentationControllerDelegate = [(UIPresentationController *)self forcePresentationControllerDelegate];
+    if (forcePresentationControllerDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v13 forcePresentationControllerWillDismiss:self];
+      [forcePresentationControllerDelegate forcePresentationControllerWillDismiss:self];
     }
   }
 
   else
   {
-    v13 = 0;
+    forcePresentationControllerDelegate = 0;
   }
 
   v14 = objc_opt_class();
   if (v14 == objc_opt_class())
   {
-    [v10 setDelegate:self];
+    [controllerCopy setDelegate:self];
   }
 
-  [(UIPresentationController *)self _setCurrentTransitionController:v10];
-  [(UIPresentationController *)self _setCurrentInteractionController:v12];
+  [(UIPresentationController *)self _setCurrentTransitionController:controllerCopy];
+  [(UIPresentationController *)self _setCurrentInteractionController:interactionControllerCopy];
 
   if (self->_state != 2)
   {
@@ -1887,7 +1887,7 @@ LABEL_25:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
       {
         v22 = 138412290;
-        v23 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_188A29000, v21, OS_LOG_TYPE_FAULT, "Trying to dismiss the presentation controller while transitioning already. (%@)", &v22, 0xCu);
       }
     }
@@ -1898,50 +1898,50 @@ LABEL_25:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         v22 = 138412290;
-        v23 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_188A29000, v20, OS_LOG_TYPE_ERROR, "Trying to dismiss the presentation controller while transitioning already. (%@)", &v22, 0xCu);
       }
     }
   }
 
   self->_state = 3;
-  v15 = [(UIPresentationController *)self presentedViewController];
-  v16 = [v15 _existingView];
-  v17 = [v16 window];
-  v18 = [(UIPresentationController *)self presentingViewController];
-  v19 = [(UIPresentationController *)self presentedViewController];
-  [(UIPresentationController *)self _adjustOrientationIfNecessaryInWindow:v17 forViewController:v18 preservingViewController:v19];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  _existingView = [presentedViewController _existingView];
+  window = [_existingView window];
+  presentingViewController = [(UIPresentationController *)self presentingViewController];
+  presentedViewController2 = [(UIPresentationController *)self presentedViewController];
+  [(UIPresentationController *)self _adjustOrientationIfNecessaryInWindow:window forViewController:presentingViewController preservingViewController:presentedViewController2];
 
-  [(UIPresentationController *)self runTransitionForCurrentStateAnimated:v7 handoffData:v11];
+  [(UIPresentationController *)self runTransitionForCurrentStateAnimated:animatedCopy handoffData:dataCopy];
 }
 
-- (void)_transitionToPresentationController:(id)a3 withTransitionCoordinator:(id)a4
+- (void)_transitionToPresentationController:(id)controller withTransitionCoordinator:(id)coordinator
 {
   v70 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  coordinatorCopy = coordinator;
   [(UIPresentationController *)self completeCurrentTransitionImmediately];
   if (!self->_state)
   {
     goto LABEL_46;
   }
 
-  v49 = v8;
+  v49 = coordinatorCopy;
   self->_state = 4;
-  v9 = [(UIPresentationController *)self presentedViewController];
-  v10 = [v7 presentedViewController];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  presentedViewController2 = [controllerCopy presentedViewController];
 
-  v11 = [(UIPresentationController *)self _changedPresentingViewControllerDuringAdaptation];
+  _changedPresentingViewControllerDuringAdaptation = [(UIPresentationController *)self _changedPresentingViewControllerDuringAdaptation];
   [(UIPresentationController *)self _setChangedPresentingViewControllerDuringAdaptation:0];
-  if (v11)
+  if (_changedPresentingViewControllerDuringAdaptation)
   {
-    if (([v7 shouldRemovePresentersView] & 1) == 0)
+    if (([controllerCopy shouldRemovePresentersView] & 1) == 0)
     {
-      v12 = [(UIPresentationController *)self presentingViewController];
-      v11 = v12;
+      presentingViewController = [(UIPresentationController *)self presentingViewController];
+      _changedPresentingViewControllerDuringAdaptation = presentingViewController;
       v13 = 1;
 LABEL_7:
-      [v12 beginAppearanceTransition:v13 animated:1];
+      [presentingViewController beginAppearanceTransition:v13 animated:1];
 
       v47 = 1;
       goto LABEL_9;
@@ -1950,19 +1950,19 @@ LABEL_7:
 
   else
   {
-    v11 = [(UIPresentationController *)self shouldRemovePresentersView];
-    if (v11 != [v7 shouldRemovePresentersView])
+    _changedPresentingViewControllerDuringAdaptation = [(UIPresentationController *)self shouldRemovePresentersView];
+    if (_changedPresentingViewControllerDuringAdaptation != [controllerCopy shouldRemovePresentersView])
     {
-      v11 = [(UIPresentationController *)self presentingViewController];
-      v13 = [v7 shouldRemovePresentersView] ^ 1;
-      v12 = v11;
+      _changedPresentingViewControllerDuringAdaptation = [(UIPresentationController *)self presentingViewController];
+      v13 = [controllerCopy shouldRemovePresentersView] ^ 1;
+      presentingViewController = _changedPresentingViewControllerDuringAdaptation;
       goto LABEL_7;
     }
   }
 
   v47 = 0;
 LABEL_9:
-  if (v9 == v10)
+  if (presentedViewController == presentedViewController2)
   {
     v17 = 0;
     LOBYTE(v48) = 0;
@@ -1971,14 +1971,14 @@ LABEL_9:
     goto LABEL_37;
   }
 
-  v14 = [(UIPresentationController *)self presentedViewController];
+  presentedViewController3 = [(UIPresentationController *)self presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(UIPresentationController *)self presentedViewController];
-    v11 = [v10 topViewController];
-    v15 = [v7 presentedViewController];
-    v16 = v11 == v15;
+    presentedViewController2 = [(UIPresentationController *)self presentedViewController];
+    _changedPresentingViewControllerDuringAdaptation = [presentedViewController2 topViewController];
+    presentedViewController4 = [controllerCopy presentedViewController];
+    v16 = _changedPresentingViewControllerDuringAdaptation == presentedViewController4;
   }
 
   else
@@ -1986,24 +1986,24 @@ LABEL_9:
     v16 = 0;
   }
 
-  v20 = [v7 presentedViewController];
+  presentedViewController5 = [controllerCopy presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v48 = v16;
   if (isKindOfClass)
   {
-    v10 = [v7 presentedViewController];
-    v11 = [v10 topViewController];
-    v22 = [(UIPresentationController *)self presentedViewController];
-    v4 = v22;
-    if (v11 == v22)
+    presentedViewController2 = [controllerCopy presentedViewController];
+    _changedPresentingViewControllerDuringAdaptation = [presentedViewController2 topViewController];
+    presentedViewController6 = [(UIPresentationController *)self presentedViewController];
+    v4 = presentedViewController6;
+    if (_changedPresentingViewControllerDuringAdaptation == presentedViewController6)
     {
 
       goto LABEL_26;
     }
   }
 
-  v23 = [(UIPresentationController *)self presentedViewController];
+  presentedViewController7 = [(UIPresentationController *)self presentedViewController];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2023,19 +2023,19 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v24 = [(UIPresentationController *)self presentedViewController];
-  v25 = [v24 topViewController];
+  presentedViewController8 = [(UIPresentationController *)self presentedViewController];
+  topViewController = [presentedViewController8 topViewController];
 
   if (isKindOfClass)
   {
   }
 
-  if (!v25)
+  if (!topViewController)
   {
 LABEL_26:
-    v20 = [v7 presentedViewController];
+    presentedViewController5 = [controllerCopy presentedViewController];
     v17 = 1;
-    [v20 _setIsWrappingDuringAdaptation:1];
+    [presentedViewController5 _setIsWrappingDuringAdaptation:1];
     v16 = v48;
     goto LABEL_27;
   }
@@ -2045,35 +2045,35 @@ LABEL_26:
   if (v48)
   {
 LABEL_28:
-    v26 = [(UIPresentationController *)self presentedViewController];
-    [v26 _setIsWrappingDuringAdaptation:1];
+    presentedViewController9 = [(UIPresentationController *)self presentedViewController];
+    [presentedViewController9 _setIsWrappingDuringAdaptation:1];
   }
 
 LABEL_29:
-  v27 = [(UIPresentationController *)self _childPresentationController];
+  _childPresentationController = [(UIPresentationController *)self _childPresentationController];
 
-  v18 = v27 != 0;
-  if (v27)
+  v18 = _childPresentationController != 0;
+  if (_childPresentationController)
   {
-    v28 = [(UIPresentationController *)self _childPresentationController];
-    [v28 _setChangedPresentingViewControllerDuringAdaptation:1];
+    _childPresentationController2 = [(UIPresentationController *)self _childPresentationController];
+    [_childPresentationController2 _setChangedPresentingViewControllerDuringAdaptation:1];
 LABEL_34:
-    v19 = v27 == 0;
+    v19 = _childPresentationController == 0;
 
     goto LABEL_35;
   }
 
   if (!v16)
   {
-    v28 = [v7 presentedViewController];
-    [v28 beginAppearanceTransition:1 animated:1];
+    _childPresentationController2 = [controllerCopy presentedViewController];
+    [_childPresentationController2 beginAppearanceTransition:1 animated:1];
     goto LABEL_34;
   }
 
   v19 = 0;
 LABEL_35:
-  v29 = [(UIPresentationController *)self _childPresentationController];
-  if (!v29 || (v30 = v29, -[UIPresentationController _childPresentationController](self, "_childPresentationController"), v31 = objc_claimAutoreleasedReturnValue(), v32 = [v31 shouldRemovePresentersView], v31, v30, (v32 & 1) == 0))
+  _childPresentationController3 = [(UIPresentationController *)self _childPresentationController];
+  if (!_childPresentationController3 || (v30 = _childPresentationController3, -[UIPresentationController _childPresentationController](self, "_childPresentationController"), v31 = objc_claimAutoreleasedReturnValue(), v32 = [v31 shouldRemovePresentersView], v31, v30, (v32 & 1) == 0))
   {
     if (v17)
     {
@@ -2083,9 +2083,9 @@ LABEL_35:
 
     else
     {
-      v34 = [(UIPresentationController *)self presentedViewController];
+      presentedViewController10 = [(UIPresentationController *)self presentedViewController];
       v33 = 1;
-      [v34 beginAppearanceTransition:0 animated:1];
+      [presentedViewController10 beginAppearanceTransition:0 animated:1];
 
       v17 = 0;
     }
@@ -2097,59 +2097,59 @@ LABEL_37:
   v33 = 0;
 LABEL_41:
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v36 = [(UIPresentationController *)self _transitionViewForCurrentTransition];
+  _transitionViewForCurrentTransition = [(UIPresentationController *)self _transitionViewForCurrentTransition];
 
   if (has_internal_diagnostics)
   {
-    if (!v36)
+    if (!_transitionViewForCurrentTransition)
     {
       v45 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v69 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_188A29000, v45, OS_LOG_TYPE_FAULT, "transitionViewForCurrentTransition is not set! (%@)", buf, 0xCu);
       }
     }
   }
 
-  else if (!v36)
+  else if (!_transitionViewForCurrentTransition)
   {
     v46 = *(__UILogGetCategoryCachedImpl("Assert", &_transitionToPresentationController_withTransitionCoordinator____s_category) + 8);
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v69 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_188A29000, v46, OS_LOG_TYPE_ERROR, "transitionViewForCurrentTransition is not set! (%@)", buf, 0xCu);
     }
   }
 
-  v37 = [(UIPresentationController *)self _transitionViewForCurrentTransition];
+  _transitionViewForCurrentTransition2 = [(UIPresentationController *)self _transitionViewForCurrentTransition];
 
-  if (v37)
+  if (_transitionViewForCurrentTransition2)
   {
-    v38 = [(UIPresentationController *)self _transitionViewForCurrentTransition];
-    v39 = v38[2]();
+    _transitionViewForCurrentTransition3 = [(UIPresentationController *)self _transitionViewForCurrentTransition];
+    v39 = _transitionViewForCurrentTransition3[2]();
 
-    [v7 setState:5];
-    v40 = [(UIPresentationController *)self _currentPresentationSuperview];
-    [v7 _setCurrentPresentationSuperview:v40];
+    [controllerCopy setState:5];
+    _currentPresentationSuperview = [(UIPresentationController *)self _currentPresentationSuperview];
+    [controllerCopy _setCurrentPresentationSuperview:_currentPresentationSuperview];
     v62[0] = MEMORY[0x1E69E9820];
     v62[1] = 3221225472;
     v62[2] = __90__UIPresentationController__transitionToPresentationController_withTransitionCoordinator___block_invoke;
     v62[3] = &unk_1E70F43C8;
-    v41 = v7;
+    v41 = controllerCopy;
     v63 = v41;
-    v42 = v40;
+    v42 = _currentPresentationSuperview;
     v66 = v18;
     v67 = v48;
     v64 = v42;
-    v65 = self;
+    selfCopy3 = self;
     [UIView performWithoutAnimation:v62];
-    v8 = v49;
+    coordinatorCopy = v49;
     [(_UIPresentationControllerVisualStyle *)self->_visualStyle runAlongsideTransitionToPresentationController:v41 transitionCoordinator:v49];
-    v43 = [v41 _visualStyle];
-    [v43 runAlongsideTransitionFromPresentationController:self transitionCoordinator:v49];
+    _visualStyle = [v41 _visualStyle];
+    [_visualStyle runAlongsideTransitionFromPresentationController:self transitionCoordinator:v49];
 
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
@@ -2157,13 +2157,13 @@ LABEL_41:
     v58[3] = &unk_1E7101978;
     v59 = v41;
     v60 = v42;
-    v61 = self;
+    selfCopy4 = self;
     v50[0] = MEMORY[0x1E69E9820];
     v50[1] = 3221225472;
     v50[2] = __90__UIPresentationController__transitionToPresentationController_withTransitionCoordinator___block_invoke_4;
     v50[3] = &unk_1E71019A0;
     v51 = v59;
-    v52 = self;
+    selfCopy5 = self;
     v53 = v19;
     v54 = v33;
     v55 = v47;
@@ -2176,7 +2176,7 @@ LABEL_41:
   else
   {
     NSLog(&cfstr_NullTransition.isa, "[UIPresentationController _transitionToPresentationController:withTransitionCoordinator:]");
-    v8 = v49;
+    coordinatorCopy = v49;
   }
 
 LABEL_46:
@@ -2441,21 +2441,21 @@ LABEL_3:
   }
 }
 
-- (id)_parentPresentationControllerImmediate:(BOOL)a3
+- (id)_parentPresentationControllerImmediate:(BOOL)immediate
 {
-  v3 = a3;
-  v4 = [(UIPresentationController *)self presentingViewController];
-  v5 = [v4 _existingPresentationControllerImmediate:v3 effective:1 includesRoot:1];
+  immediateCopy = immediate;
+  presentingViewController = [(UIPresentationController *)self presentingViewController];
+  v5 = [presentingViewController _existingPresentationControllerImmediate:immediateCopy effective:1 includesRoot:1];
 
   return v5;
 }
 
 - (BOOL)_presentedViewControllerProvidesContentScrollView
 {
-  v3 = [(UIPresentationController *)self presentedViewController];
-  v4 = [v3 _isTVSearchControllerContainer];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  _isTVSearchControllerContainer = [presentedViewController _isTVSearchControllerContainer];
 
-  if (v4)
+  if (_isTVSearchControllerContainer)
   {
     LOBYTE(v5) = 1;
   }
@@ -2481,28 +2481,28 @@ LABEL_3:
   return v5;
 }
 
-- (void)_windowSceneDidUpdateEffectiveGeometry:(id)a3
+- (void)_windowSceneDidUpdateEffectiveGeometry:(id)geometry
 {
-  v18 = a3;
-  v4 = [v18 object];
+  geometryCopy = geometry;
+  object = [geometryCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = v18;
+  v6 = geometryCopy;
   if (isKindOfClass)
   {
-    v7 = [v18 object];
-    v8 = [(UIPresentationController *)self presentingViewController];
-    if ([v8 isViewLoaded])
+    object2 = [geometryCopy object];
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
+    if ([presentingViewController isViewLoaded])
     {
-      v9 = [(UIPresentationController *)self presentingViewController];
-      v10 = [v9 view];
-      v11 = [v10 _window];
-      v12 = [v11 windowScene];
+      presentingViewController2 = [(UIPresentationController *)self presentingViewController];
+      view = [presentingViewController2 view];
+      _window = [view _window];
+      windowScene = [_window windowScene];
 
-      if (v12 == v7)
+      if (windowScene == object2)
       {
-        [(UIPresentationController *)self _presentingViewControllerWindowSceneDidUpdateEffectiveGeometry:v7];
+        [(UIPresentationController *)self _presentingViewControllerWindowSceneDidUpdateEffectiveGeometry:object2];
       }
     }
 
@@ -2510,17 +2510,17 @@ LABEL_3:
     {
     }
 
-    v13 = [(UIPresentationController *)self presentedViewController];
-    if ([v13 isViewLoaded])
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    if ([presentedViewController isViewLoaded])
     {
-      v14 = [(UIPresentationController *)self presentedViewController];
-      v15 = [v14 view];
-      v16 = [v15 _window];
-      v17 = [v16 windowScene];
+      presentedViewController2 = [(UIPresentationController *)self presentedViewController];
+      view2 = [presentedViewController2 view];
+      _window2 = [view2 _window];
+      windowScene2 = [_window2 windowScene];
 
-      if (v17 == v7)
+      if (windowScene2 == object2)
       {
-        [(UIPresentationController *)self _presentedViewControllerWindowSceneDidUpdateEffectiveGeometry:v7];
+        [(UIPresentationController *)self _presentedViewControllerWindowSceneDidUpdateEffectiveGeometry:object2];
       }
     }
 
@@ -2528,21 +2528,21 @@ LABEL_3:
     {
     }
 
-    v6 = v18;
+    v6 = geometryCopy;
   }
 }
 
-+ (UIEdgeInsets)_statusBarOverlapAndMarginInfoForView:(id)a3 inWindow:(id)a4
++ (UIEdgeInsets)_statusBarOverlapAndMarginInfoForView:(id)view inWindow:(id)window
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 traitCollection];
-  v8 = [v7 userInterfaceIdiom];
+  viewCopy = view;
+  windowCopy = window;
+  traitCollection = [viewCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v9 = [v6 windowScene];
-  v10 = [v9 _usesSceneSettingBasedSafeAreaInsets];
+  windowScene = [windowCopy windowScene];
+  _usesSceneSettingBasedSafeAreaInsets = [windowScene _usesSceneSettingBasedSafeAreaInsets];
 
-  if (v6)
+  if (windowCopy)
   {
     v11 = *&__SplashBoardOverrideStatusBarHeight;
     if (*&__SplashBoardOverrideStatusBarHeight != 1.79769313e308)
@@ -2553,7 +2553,7 @@ LABEL_3:
 
   else
   {
-    v12 = [UIApp _appAdoptsUISceneLifecycle];
+    _appAdoptsUISceneLifecycle = [UIApp _appAdoptsUISceneLifecycle];
     if (*&__SplashBoardOverrideStatusBarHeight == 1.79769313e308)
     {
       v11 = 0.0;
@@ -2564,41 +2564,41 @@ LABEL_3:
       v11 = *&__SplashBoardOverrideStatusBarHeight;
     }
 
-    if (*&__SplashBoardOverrideStatusBarHeight != 1.79769313e308 || (v12 & 1) != 0)
+    if (*&__SplashBoardOverrideStatusBarHeight != 1.79769313e308 || (_appAdoptsUISceneLifecycle & 1) != 0)
     {
       goto LABEL_26;
     }
   }
 
   v11 = 0.0;
-  if (([UIApp _isStatusBarEffectivelyHiddenForContentOverlayInsetsForWindow:v6] & 1) == 0 && v8 != 3)
+  if (([UIApp _isStatusBarEffectivelyHiddenForContentOverlayInsetsForWindow:windowCopy] & 1) == 0 && userInterfaceIdiom != 3)
   {
-    v13 = [(UIView *)v5 __viewDelegate];
-    v14 = v13;
-    if (v13)
+    __viewDelegate = [(UIView *)viewCopy __viewDelegate];
+    v14 = __viewDelegate;
+    if (__viewDelegate)
     {
-      [v13 _viewFrameInWindowForContentOverlayInsetsCalculation];
+      [__viewDelegate _viewFrameInWindowForContentOverlayInsetsCalculation];
     }
 
     else
     {
-      [v5 bounds];
-      [v5 convertRect:v6 toView:?];
+      [viewCopy bounds];
+      [viewCopy convertRect:windowCopy toView:?];
     }
 
     v19 = v15;
     v20 = v16;
     v21 = v17;
     v22 = v18;
-    v23 = [v6 windowScene];
-    [v23 _safeAreaInsetsForInterfaceOrientation:1];
+    windowScene2 = [windowCopy windowScene];
+    [windowScene2 _safeAreaInsetsForInterfaceOrientation:1];
     v25 = v24;
 
     if (_UIViewControllerModernContentOverlayInsetsPropagation())
     {
-      if ((v10 & 1) == 0)
+      if ((_usesSceneSettingBasedSafeAreaInsets & 1) == 0)
       {
-        v26 = __UIStatusBarManagerForWindow(v6);
+        v26 = __UIStatusBarManagerForWindow(windowCopy);
         [v26 statusBarHeight];
         v25 = v27;
       }
@@ -2617,7 +2617,7 @@ LABEL_3:
       v40.size.width = v21;
       v40.size.height = v22;
       MinY = CGRectGetMinY(v40);
-      [v6 bounds];
+      [windowCopy bounds];
       if (MinY >= CGRectGetMinY(v41))
       {
         v42.origin.x = v19;
@@ -2625,12 +2625,12 @@ LABEL_3:
         v42.size.width = v21;
         v42.size.height = v22;
         MaxY = CGRectGetMaxY(v42);
-        [v6 bounds];
+        [windowCopy bounds];
         if (MaxY <= CGRectGetMaxY(v43))
         {
-          if ((v10 & 1) == 0)
+          if ((_usesSceneSettingBasedSafeAreaInsets & 1) == 0)
           {
-            v30 = __UIStatusBarManagerForWindow(v6);
+            v30 = __UIStatusBarManagerForWindow(windowCopy);
             [v30 statusBarHeight];
             v25 = v31;
           }
@@ -2655,7 +2655,7 @@ LABEL_3:
   }
 
 LABEL_26:
-  [UIViewController _horizontalContentMarginForView:v5];
+  [UIViewController _horizontalContentMarginForView:viewCopy];
   v34 = v33;
 
   v35 = 0.0;
@@ -2669,35 +2669,35 @@ LABEL_26:
   return result;
 }
 
-- (UIEdgeInsets)_baseContentInsetsWithLeftMargin:(double *)a3 rightMargin:(double *)a4
+- (UIEdgeInsets)_baseContentInsetsWithLeftMargin:(double *)margin rightMargin:(double *)rightMargin
 {
-  v7 = [(UIPresentationController *)self _rootPresentingViewControllerForNestedPresentation];
-  if ([v7 _providesCustomBasePresentationInsets])
+  _rootPresentingViewControllerForNestedPresentation = [(UIPresentationController *)self _rootPresentingViewControllerForNestedPresentation];
+  if ([_rootPresentingViewControllerForNestedPresentation _providesCustomBasePresentationInsets])
   {
-    v8 = v7;
+    presentedViewController = _rootPresentingViewControllerForNestedPresentation;
   }
 
   else
   {
-    v8 = [(UIPresentationController *)self presentedViewController];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
   }
 
-  v9 = v8;
-  v10 = [(UIPresentationController *)self presentedView];
-  v11 = [v10 window];
-  v12 = v11;
-  if (v11)
+  v9 = presentedViewController;
+  presentedView = [(UIPresentationController *)self presentedView];
+  window = [presentedView window];
+  v12 = window;
+  if (window)
   {
-    v13 = v11;
+    _window = window;
   }
 
   else
   {
-    v14 = [(UIPresentationController *)self presentingViewController];
-    v13 = [v14 _window];
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
+    _window = [presentingViewController _window];
   }
 
-  v15 = _UIPresentationControllerBaseContentInsetsForControllersAndViewInWindow(self, v9, v10, v13, a3, a4);
+  v15 = _UIPresentationControllerBaseContentInsetsForControllersAndViewInWindow(self, v9, presentedView, _window, margin, rightMargin);
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -2724,11 +2724,11 @@ LABEL_26:
   return result;
 }
 
-- (void)runTransitionForCurrentStateAnimated:(BOOL)a3 handoffData:(id)a4
+- (void)runTransitionForCurrentStateAnimated:(BOOL)animated handoffData:(id)data
 {
-  v4 = a3;
+  animatedCopy = animated;
   v87 = *MEMORY[0x1E69E9840];
-  v58 = a4;
+  dataCopy = data;
   if ((self->_state | 2) == 2)
   {
     if (os_variant_has_internal_diagnostics())
@@ -2754,19 +2754,19 @@ LABEL_26:
     }
   }
 
-  v64 = [(UIPresentationController *)self presentedViewController];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
   state = self->_state;
   v57 = state == 1;
   if (state == 1)
   {
-    v65 = v64;
+    v65 = presentedViewController;
     presentingViewController = self->_presentingViewController;
   }
 
   else
   {
     v65 = self->_presentingViewController;
-    presentingViewController = v64;
+    presentingViewController = presentedViewController;
   }
 
   v66 = presentingViewController;
@@ -2800,12 +2800,12 @@ LABEL_26:
   }
 
   v17 = state == 1;
-  v18 = [(UIViewController *)v66 _window];
-  v60 = [v18 _delegateViewController];
+  _window = [(UIViewController *)v66 _window];
+  _delegateViewController = [_window _delegateViewController];
   if (v17)
   {
-    v19 = [(UIViewController *)self->_presentingViewController presentingViewController];
-    if (v19)
+    presentingViewController = [(UIViewController *)self->_presentingViewController presentingViewController];
+    if (presentingViewController)
     {
       self->_isDisconnectedRoot = 0;
       p_isDisconnectedRoot = &self->_isDisconnectedRoot;
@@ -2813,8 +2813,8 @@ LABEL_26:
 
     else
     {
-      v23 = [(UIViewController *)self->_presentingViewController _rootAncestorViewController];
-      if (v60 == v23)
+      _rootAncestorViewController = [(UIViewController *)self->_presentingViewController _rootAncestorViewController];
+      if (_delegateViewController == _rootAncestorViewController)
       {
         isKindOfClass = 0;
       }
@@ -2831,24 +2831,24 @@ LABEL_26:
 
     if (*p_isDisconnectedRoot)
     {
-      v25 = [v64 splitViewController];
-      v26 = v25 == 0;
+      splitViewController = [presentedViewController splitViewController];
+      v26 = splitViewController == 0;
 
       if (v26)
       {
         if (*p_isDisconnectedRoot)
         {
-          v27 = v60;
-          [v18 _addRotationViewController:v27];
-          if (v64)
+          v27 = _delegateViewController;
+          [_window _addRotationViewController:v27];
+          if (presentedViewController)
           {
-            objc_storeWeak((v64 + 120), v27);
+            objc_storeWeak((presentedViewController + 120), v27);
           }
 
-          [v18 _setDelegateViewController:?];
+          [_window _setDelegateViewController:?];
           v27[47] &= ~0x80uLL;
 
-          *(v64 + 376) |= 0x80uLL;
+          *(presentedViewController + 376) |= 0x80uLL;
         }
       }
 
@@ -2861,24 +2861,24 @@ LABEL_26:
 
   else if (self->_isDisconnectedRoot)
   {
-    v21 = v64;
-    if (v60 == v64)
+    v21 = presentedViewController;
+    if (_delegateViewController == presentedViewController)
     {
-      v22 = [(UIViewController *)v64 _previousRootViewController];
-      [v18 _removeRotationViewController:v22];
-      [v18 _setDelegateViewController:v22];
-      if (v22)
+      _previousRootViewController = [(UIViewController *)presentedViewController _previousRootViewController];
+      [_window _removeRotationViewController:_previousRootViewController];
+      [_window _setDelegateViewController:_previousRootViewController];
+      if (_previousRootViewController)
       {
-        v22[47] |= 0x80uLL;
+        _previousRootViewController[47] |= 0x80uLL;
       }
 
-      v21 = v64;
+      v21 = presentedViewController;
     }
 
     if (v21)
     {
       objc_storeWeak((v21 + 120), 0);
-      v21 = v64;
+      v21 = presentedViewController;
     }
 
     *(v21 + 376) &= ~0x80uLL;
@@ -2886,16 +2886,16 @@ LABEL_26:
 
   v28 = objc_alloc_init(_UIViewControllerOneToOneTransitionContext);
   [(_UIViewControllerTransitionContext *)v28 _setAnimator:self->_currentTransitionController];
-  [(_UIViewControllerTransitionContext *)v28 _setIsAnimated:v4];
+  [(_UIViewControllerTransitionContext *)v28 _setIsAnimated:animatedCopy];
   [(_UIViewControllerOneToOneTransitionContext *)v28 _setFromViewController:v66];
   [(_UIViewControllerOneToOneTransitionContext *)v28 _setToViewController:v65];
-  v29 = [(UIPresentationController *)self _currentInteractionController];
-  [(_UIViewControllerTransitionContext *)v28 _setInteractor:v29];
+  _currentInteractionController = [(UIPresentationController *)self _currentInteractionController];
+  [(_UIViewControllerTransitionContext *)v28 _setInteractor:_currentInteractionController];
 
   [(_UIViewControllerTransitionContext *)v28 _setPresentationStyle:[(UIPresentationController *)self presentationStyle]];
   -[_UIViewControllerOneToOneTransitionContext _setIsDeferred:](v28, "_setIsDeferred:", [objc_opt_class() _shouldDeferTransitions]);
-  v30 = [(UIPresentationController *)self _currentInteractionController];
-  v61 = v30 != 0;
+  _currentInteractionController2 = [(UIPresentationController *)self _currentInteractionController];
+  v61 = _currentInteractionController2 != 0;
 
   v31 = objc_opt_class();
   v59 = class_getName(v31);
@@ -2906,8 +2906,8 @@ LABEL_26:
 
   else
   {
-    v33 = [v18 windowScene];
-    objc_storeWeak(&self->_windowSceneIgnoringEvents, v33);
+    windowScene = [_window windowScene];
+    objc_storeWeak(&self->_windowSceneIgnoringEvents, windowScene);
 
     v34 = objc_opt_class();
     v35 = class_getName(v34);
@@ -2917,16 +2917,16 @@ LABEL_26:
     v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"from: <%s: %p> to: <%s: %p>", v35, v66, v37, v65];;
     v39 = MEMORY[0x1E696AEC0];
     v40 = v38;
-    v41 = [v38 UTF8String];
+    uTF8String = [v38 UTF8String];
     v42 = v32;
-    v43 = [v39 stringWithFormat:@"%s %s", v41, objc_msgSend(v32, "UTF8String")];
+    v43 = [v39 stringWithFormat:@"%s %s", uTF8String, objc_msgSend(v32, "UTF8String")];
     WeakRetained = objc_loadWeakRetained(&self->_windowSceneIgnoringEvents);
     [WeakRetained _beginIgnoringInteractionEventsForReason:v43];
   }
 
-  [v18 beginDisablingInterfaceAutorotation];
-  v45 = [v18 windowScene];
-  v46 = [UITextEffectsWindow activeTextEffectsWindowForWindowScene:v45];
+  [_window beginDisablingInterfaceAutorotation];
+  windowScene2 = [_window windowScene];
+  v46 = [UITextEffectsWindow activeTextEffectsWindowForWindowScene:windowScene2];
 
   [v46 beginDisablingInterfaceAutorotation];
   objc_initWeak(buf, v46);
@@ -2942,14 +2942,14 @@ LABEL_26:
     v47 = _Block_copy(aBlock);
     if ([(_UIViewControllerTransitionContext *)v28 isInteractive])
     {
-      v48 = [(_UIViewControllerTransitionContext *)v28 _transitionCoordinator];
+      _transitionCoordinator = [(_UIViewControllerTransitionContext *)v28 _transitionCoordinator];
       v78[0] = MEMORY[0x1E69E9820];
       v78[1] = 3221225472;
       v78[2] = __77__UIPresentationController_runTransitionForCurrentStateAnimated_handoffData___block_invoke_2;
       v78[3] = &unk_1E7101880;
       v79 = v28;
       v80 = v47;
-      [v48 notifyWhenInteractionChangesUsingBlock:v78];
+      [_transitionCoordinator notifyWhenInteractionChangesUsingBlock:v78];
     }
 
     else
@@ -2966,7 +2966,7 @@ LABEL_26:
   v67[4] = self;
   v50 = v28;
   v68 = v50;
-  v51 = v18;
+  v51 = _window;
   v69 = v51;
   v52 = v66;
   v70 = v52;
@@ -2979,7 +2979,7 @@ LABEL_26:
   v72 = v54;
   objc_copyWeak(v74, buf);
   v77 = v57;
-  v55 = v58;
+  v55 = dataCopy;
   v73 = v55;
   [v49 _scheduleTransition:v67];
 
@@ -3455,24 +3455,24 @@ LABEL_6:
   [v15 _setAnimator:0];
 }
 
-- (BOOL)_shouldCallAppearanceCallbacksFor:(id)a3
+- (BOOL)_shouldCallAppearanceCallbacksFor:(id)for
 {
-  v4 = a3;
-  v5 = [(UIPresentationController *)self presentedViewController];
+  forCopy = for;
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
 
-  if (v5 == v4)
+  if (presentedViewController == forCopy)
   {
-    v8 = [(UIPresentationController *)self _shouldDisableAppearanceCallbacksForPresentedViewController];
+    _shouldDisableAppearanceCallbacksForPresentedViewController = [(UIPresentationController *)self _shouldDisableAppearanceCallbacksForPresentedViewController];
 LABEL_6:
-    v7 = !v8;
+    v7 = !_shouldDisableAppearanceCallbacksForPresentedViewController;
     goto LABEL_7;
   }
 
-  v6 = [(UIPresentationController *)self presentingViewController];
+  presentingViewController = [(UIPresentationController *)self presentingViewController];
 
-  if (v6 == v4)
+  if (presentingViewController == forCopy)
   {
-    v8 = [(UIPresentationController *)self _shouldDisablePresentersAppearanceCallbacks];
+    _shouldDisableAppearanceCallbacksForPresentedViewController = [(UIPresentationController *)self _shouldDisablePresentersAppearanceCallbacks];
     goto LABEL_6;
   }
 
@@ -3517,59 +3517,59 @@ LABEL_7:
   if (self)
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = self;
+    selfCopy = self;
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [v3 stringWithFormat:@"<%@: %p>", v6, v4];
+    selfCopy = [v3 stringWithFormat:@"<%@: %p>", v6, selfCopy];
   }
 
   else
   {
-    v7 = @"(nil)";
+    selfCopy = @"(nil)";
   }
 
-  v8 = [v2 stringWithString:v7];
+  v8 = [v2 stringWithString:selfCopy];
 
   return v8;
 }
 
-- (void)_enableOcclusion:(BOOL)a3
+- (void)_enableOcclusion:(BOOL)occlusion
 {
-  v3 = a3;
+  occlusionCopy = occlusion;
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [(UIPresentationController *)self presentedViewController];
-  v6 = [v5 view];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  view = [presentedViewController view];
 
-  v7 = [(UIPresentationController *)self presentingViewController];
-  v8 = [v7 view];
+  presentingViewController = [(UIPresentationController *)self presentingViewController];
+  view2 = [presentingViewController view];
 
-  v9 = [(UIPresentationController *)self _parentPresentationController];
-  v10 = [v9 presentingViewController];
+  _parentPresentationController = [(UIPresentationController *)self _parentPresentationController];
+  presentingViewController2 = [_parentPresentationController presentingViewController];
 
-  if (v10)
+  if (presentingViewController2)
   {
-    [v8 setTintAdjustmentMode:!v3];
+    [view2 setTintAdjustmentMode:!occlusionCopy];
     v11 = +[_UIHDRUsageCoordinator sharedInstance];
-    [(_UIHDRUsageCoordinator *)v11 enableHDRSuppression:v3 inViewHierarchy:v8];
+    [(_UIHDRUsageCoordinator *)v11 enableHDRSuppression:occlusionCopy inViewHierarchy:view2];
   }
 
-  else if (v3)
+  else if (occlusionCopy)
   {
-    [v8 _beginOcclusion:self suppressHDRIfNecessary:{-[UIPresentationController _shouldSuppressHDRDuringPresentation](self, "_shouldSuppressHDRDuringPresentation")}];
+    [view2 _beginOcclusion:self suppressHDRIfNecessary:{-[UIPresentationController _shouldSuppressHDRDuringPresentation](self, "_shouldSuppressHDRDuringPresentation")}];
   }
 
   else
   {
-    [v8 _endOcclusion:self];
+    [view2 _endOcclusion:self];
   }
 
-  [v6 setTintAdjustmentMode:v3];
+  [view setTintAdjustmentMode:occlusionCopy];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = [(UIPresentationController *)self _passthroughViews];
-  v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  _passthroughViews = [(UIPresentationController *)self _passthroughViews];
+  v13 = [_passthroughViews countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v13)
   {
     v14 = v13;
@@ -3581,50 +3581,50 @@ LABEL_7:
       {
         if (*v18 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(_passthroughViews);
         }
 
-        [*(*(&v17 + 1) + 8 * v16++) setTintAdjustmentMode:v3];
+        [*(*(&v17 + 1) + 8 * v16++) setTintAdjustmentMode:occlusionCopy];
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v14 = [_passthroughViews countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v14);
   }
 }
 
-- (void)_beginOcclusionIfNecessary:(BOOL)a3
+- (void)_beginOcclusionIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   if ([(UIPresentationController *)self _shouldOccludeDuringPresentation])
   {
-    v5 = [(UIPresentationController *)self presentingViewController];
-    v6 = [v5 _transitionCoordinator];
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
+    _transitionCoordinator = [presentingViewController _transitionCoordinator];
 
-    if (v6)
+    if (_transitionCoordinator)
     {
-      v7 = [(UIPresentationController *)self presentingViewController];
-      v8 = [v7 view];
+      presentingViewController2 = [(UIPresentationController *)self presentingViewController];
+      view = [presentingViewController2 view];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __55__UIPresentationController__beginOcclusionIfNecessary___block_invoke;
       v11[3] = &unk_1E71018A8;
       v11[4] = self;
-      v12 = v3;
+      v12 = necessaryCopy;
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __55__UIPresentationController__beginOcclusionIfNecessary___block_invoke_2;
       v9[3] = &unk_1E71018A8;
       v9[4] = self;
-      v10 = v3;
-      [v6 animateAlongsideTransitionInView:v8 animation:v11 completion:v9];
+      v10 = necessaryCopy;
+      [_transitionCoordinator animateAlongsideTransitionInView:view animation:v11 completion:v9];
     }
 
     else
     {
-      [(UIPresentationController *)self _enableOcclusion:v3];
+      [(UIPresentationController *)self _enableOcclusion:necessaryCopy];
     }
   }
 }
@@ -3645,18 +3645,18 @@ uint64_t __55__UIPresentationController__beginOcclusionIfNecessary___block_invok
 
 - (void)_coverWithSnapshot
 {
-  v3 = [(UIPresentationController *)self _presentationView];
-  v4 = [v3 snapshotViewAfterScreenUpdates:0];
+  _presentationView = [(UIPresentationController *)self _presentationView];
+  v4 = [_presentationView snapshotViewAfterScreenUpdates:0];
   snapshotOverlayView = self->_snapshotOverlayView;
   self->_snapshotOverlayView = v4;
 
-  v6 = [(UIPresentationController *)self _presentationView];
-  [v6 addSubview:self->_snapshotOverlayView];
+  _presentationView2 = [(UIPresentationController *)self _presentationView];
+  [_presentationView2 addSubview:self->_snapshotOverlayView];
 }
 
-- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)a3
+- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)superview
 {
-  [(UIPresentationController *)self _frameForTransitionViewInPresentationSuperview:a3 inWindow:0];
+  [(UIPresentationController *)self _frameForTransitionViewInPresentationSuperview:superview inWindow:0];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -3664,9 +3664,9 @@ uint64_t __55__UIPresentationController__beginOcclusionIfNecessary___block_invok
   return result;
 }
 
-- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)a3 inWindow:(id)a4
+- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)superview inWindow:(id)window
 {
-  [a3 bounds];
+  [superview bounds];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -3674,36 +3674,36 @@ uint64_t __55__UIPresentationController__beginOcclusionIfNecessary___block_invok
   return result;
 }
 
-- (void)_initViewHierarchyForPresentationSuperview:(id)a3 inWindow:(id)a4
+- (void)_initViewHierarchyForPresentationSuperview:(id)superview inWindow:(id)window
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIPresentationController *)self presentingViewController];
-  v9 = [v8 view];
+  superviewCopy = superview;
+  windowCopy = window;
+  presentingViewController = [(UIPresentationController *)self presentingViewController];
+  view = [presentingViewController view];
 
-  v10 = [v9 superview];
-  v11 = [v10 subviews];
-  v25 = [v11 indexOfObjectIdenticalTo:v9];
+  superview = [view superview];
+  subviews = [superview subviews];
+  v25 = [subviews indexOfObjectIdenticalTo:view];
 
   v12 = [UITransitionView alloc];
-  v24 = v6;
-  [(UIPresentationController *)self _frameForTransitionViewInPresentationSuperview:v6 inWindow:v7];
+  v24 = superviewCopy;
+  [(UIPresentationController *)self _frameForTransitionViewInPresentationSuperview:superviewCopy inWindow:windowCopy];
   v13 = [(UITransitionView *)v12 initWithFrame:?];
   [(UITransitionView *)v13 setDelegate:self];
   [(UIView *)v13 setAutoresizingMask:18];
   [(UITransitionView *)v13 setIgnoreDirectTouchEvents:[(UIPresentationController *)self _containerIgnoresDirectTouchEvents]];
   [(UIView *)v13 setClipsToBounds:0];
   [(UIView *)v13 _setCanBeParentTraitEnvironment:0];
-  v23 = v7;
-  objc_initWeak(location, v7);
+  v23 = windowCopy;
+  objc_initWeak(location, windowCopy);
   objc_initWeak(&from, self);
-  objc_initWeak(&v32, v10);
+  objc_initWeak(&v32, superview);
   v14 = MEMORY[0x1E696AEC0];
   v15 = [(UIPresentationController *)self description];
-  v16 = [(UIPresentationController *)self presentedViewController];
-  v17 = [v16 description];
-  v18 = [(UIPresentationController *)self presentingViewController];
-  v19 = [v18 description];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  v17 = [presentedViewController description];
+  presentingViewController2 = [(UIPresentationController *)self presentingViewController];
+  v19 = [presentingViewController2 description];
   v20 = [v14 stringWithFormat:@"presentationController : %@ presentedViewController : %@ presentingViewController : %@", v15, v17, v19];
 
   v26[0] = MEMORY[0x1E69E9820];
@@ -4371,40 +4371,40 @@ LABEL_26:
 LABEL_16:
 }
 
-- (void)_presentationTransitionDidEnd:(void *)a1
+- (void)_presentationTransitionDidEnd:(void *)end
 {
-  if (a1)
+  if (end)
   {
-    [a1 presentationTransitionDidEnd:a2];
-    v4 = [a1 _transitionDelegate];
-    [v4 _presentationControllerDidEndPresentationTransition:a1 completed:a2];
+    [end presentationTransitionDidEnd:a2];
+    _transitionDelegate = [end _transitionDelegate];
+    [_transitionDelegate _presentationControllerDidEndPresentationTransition:end completed:a2];
   }
 }
 
-- (void)_dismissalTransitionDidEnd:(void *)a1
+- (void)_dismissalTransitionDidEnd:(void *)end
 {
-  if (a1)
+  if (end)
   {
-    [a1 dismissalTransitionDidEnd:a2];
-    v4 = [a1 _transitionDelegate];
-    [v4 _presentationControllerDidEndDismissalTransition:a1 completed:a2];
+    [end dismissalTransitionDidEnd:a2];
+    _transitionDelegate = [end _transitionDelegate];
+    [_transitionDelegate _presentationControllerDidEndDismissalTransition:end completed:a2];
   }
 }
 
-- (void)_sendPresentationControllerNotification:(id)a3 userInfo:(id)a4
+- (void)_sendPresentationControllerNotification:(id)notification userInfo:(id)info
 {
   v6 = MEMORY[0x1E696AD88];
-  v7 = a4;
-  v8 = a3;
-  v10 = [v6 defaultCenter];
-  v9 = [(UIPresentationController *)self presentedViewController];
-  [v10 postNotificationName:v8 object:v9 userInfo:v7];
+  infoCopy = info;
+  notificationCopy = notification;
+  defaultCenter = [v6 defaultCenter];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  [defaultCenter postNotificationName:notificationCopy object:presentedViewController userInfo:infoCopy];
 }
 
 - (CGRect)_frameOfPresentedViewControllerViewInSuperview
 {
-  v2 = [(UIPresentationController *)self _presentationView];
-  [v2 bounds];
+  _presentationView = [(UIPresentationController *)self _presentationView];
+  [_presentationView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -4423,44 +4423,44 @@ LABEL_16:
 
 - (id)_preferredAnimationControllerForPresentation
 {
-  v2 = [(UIPresentationController *)self _visualStyle];
-  v3 = [v2 preferredAnimationControllerForPresentation:1];
+  _visualStyle = [(UIPresentationController *)self _visualStyle];
+  v3 = [_visualStyle preferredAnimationControllerForPresentation:1];
 
   return v3;
 }
 
 - (id)_preferredAnimationControllerForDismissal
 {
-  v2 = [(UIPresentationController *)self _visualStyle];
-  v3 = [v2 preferredAnimationControllerForPresentation:0];
+  _visualStyle = [(UIPresentationController *)self _visualStyle];
+  v3 = [_visualStyle preferredAnimationControllerForPresentation:0];
 
   return v3;
 }
 
 - (UIModalPresentationStyle)presentationStyle
 {
-  v2 = [(UIPresentationController *)self presentedViewController];
-  v3 = v2;
-  if (v2)
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  v3 = presentedViewController;
+  if (presentedViewController)
   {
-    v4 = [v2 modalPresentationStyle];
+    modalPresentationStyle = [presentedViewController modalPresentationStyle];
   }
 
   else
   {
-    v4 = UIModalPresentationNone;
+    modalPresentationStyle = UIModalPresentationNone;
   }
 
-  return v4;
+  return modalPresentationStyle;
 }
 
 - (UIModalPresentationStyle)adaptivePresentationStyle
 {
-  v3 = [(UIPresentationController *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ((v4 = [v3 adaptivePresentationStyleForPresentationController:self], (v4 + 1) <= 6) ? (v5 = ((1 << (v4 + 1)) & 0x43) == 0) : (v5 = 1), v5))
+  delegate = [(UIPresentationController *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ((v4 = [delegate adaptivePresentationStyleForPresentationController:self], (v4 + 1) <= 6) ? (v5 = ((1 << (v4 + 1)) & 0x43) == 0) : (v5 = 1), v5))
   {
-    v6 = [(UIPresentationController *)self traitCollection];
-    v7 = [v6 traitCollectionByModifyingTraits:&__block_literal_global_149];
+    traitCollection = [(UIPresentationController *)self traitCollection];
+    v7 = [traitCollection traitCollectionByModifyingTraits:&__block_literal_global_149];
 
     v4 = [(UIPresentationController *)self _defaultPresentationStyleForTraitCollection:v7];
   }
@@ -4478,10 +4478,10 @@ void __53__UIPresentationController_adaptivePresentationStyle__block_invoke(uint
 - (UIModalPresentationStyle)adaptivePresentationStyleForTraitCollection:(UITraitCollection *)traitCollection
 {
   v4 = traitCollection;
-  v5 = [(UIPresentationController *)self delegate];
+  delegate = [(UIPresentationController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 adaptivePresentationStyleForPresentationController:self traitCollection:v4] + 1;
+    v6 = [delegate adaptivePresentationStyleForPresentationController:self traitCollection:v4] + 1;
     if (v6 < 7 && ((0x4Bu >> v6) & 1) != 0)
     {
       v7 = qword_18A6791E0[v6];
@@ -4503,7 +4503,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = [v5 adaptivePresentationStyleForPresentationController:self];
+  v8 = [delegate adaptivePresentationStyleForPresentationController:self];
   if ((v8 + 1) > 6)
   {
     goto LABEL_9;
@@ -4520,13 +4520,13 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)_shouldAdaptFromTraitCollection:(id)a3 toTraitCollection:(id)a4
+- (BOOL)_shouldAdaptFromTraitCollection:(id)collection toTraitCollection:(id)traitCollection
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  traitCollectionCopy = traitCollection;
   if (dyld_program_sdk_at_least())
   {
-    v8 = [(UIPresentationController *)self adaptivePresentationStyleForTraitCollection:v7];
+    v8 = [(UIPresentationController *)self adaptivePresentationStyleForTraitCollection:traitCollectionCopy];
     if (([(UIPresentationController *)self _isAdapted]^ (v8 != UIModalPresentationNone)))
     {
       v9 = 1;
@@ -4534,39 +4534,39 @@ LABEL_10:
 
     else
     {
-      v11 = [(UIPresentationController *)self _activePresentationController];
-      v9 = v8 != [v11 presentationStyle];
+      _activePresentationController = [(UIPresentationController *)self _activePresentationController];
+      v9 = v8 != [_activePresentationController presentationStyle];
     }
   }
 
   else
   {
-    v10 = [v6 horizontalSizeClass];
-    v9 = v10 != [v7 horizontalSizeClass];
+    horizontalSizeClass = [collectionCopy horizontalSizeClass];
+    v9 = horizontalSizeClass != [traitCollectionCopy horizontalSizeClass];
   }
 
   return v9;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v19 = a4;
-  v7 = [(UIPresentationController *)self presentedViewController];
-  v8 = v7;
-  if ((*(v7 + 382) & 0x20) != 0)
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  v8 = presentedViewController;
+  if ((*(presentedViewController + 382) & 0x20) != 0)
   {
-    v11 = [v7 _existingView];
-    [v11 frame];
+    _existingView = [presentedViewController _existingView];
+    [_existingView frame];
     v9 = v12;
     v10 = v13;
   }
 
   else
   {
-    v9 = *(v7 + 440);
-    v10 = *(v7 + 448);
+    v9 = *(presentedViewController + 440);
+    v10 = *(presentedViewController + 448);
   }
 
   [(UIPresentationController *)self sizeForChildContentContainer:v8 withParentContainerSize:width, height];
@@ -4577,9 +4577,9 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  if (v19)
+  if (coordinatorCopy)
   {
-    [v19 targetTransform];
+    [coordinatorCopy targetTransform];
   }
 
   else
@@ -4590,51 +4590,51 @@ LABEL_10:
   if (!CGAffineTransformIsIdentity(&v20))
   {
 LABEL_13:
-    [v8 viewWillTransitionToSize:v19 withTransitionCoordinator:{v16, v17}];
+    [v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:{v16, v17}];
     *(v8 + 55) = v16;
     *(v8 + 56) = v17;
   }
 }
 
-- (void)_setPreferredContentSize:(CGSize)a3
+- (void)_setPreferredContentSize:(CGSize)size
 {
-  if (self->_preferredContentSize.width != a3.width || self->_preferredContentSize.height != a3.height)
+  if (self->_preferredContentSize.width != size.width || self->_preferredContentSize.height != size.height)
   {
-    self->_preferredContentSize = a3;
-    v6 = [(UIPresentationController *)self _parentPresentationController];
-    if (v6)
+    self->_preferredContentSize = size;
+    _parentPresentationController = [(UIPresentationController *)self _parentPresentationController];
+    if (_parentPresentationController)
     {
-      v8 = v6;
-      v7 = [(UIPresentationController *)self shouldPresentInFullscreen];
-      v6 = v8;
-      if (!v7)
+      v8 = _parentPresentationController;
+      shouldPresentInFullscreen = [(UIPresentationController *)self shouldPresentInFullscreen];
+      _parentPresentationController = v8;
+      if (!shouldPresentInFullscreen)
       {
         [v8 preferredContentSizeDidChangeForChildContentContainer:self];
-        v6 = v8;
+        _parentPresentationController = v8;
       }
     }
   }
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = [(UIPresentationController *)self presentedContentContainer];
-  [v4 preferredContentSize];
+  presentedContentContainer = [(UIPresentationController *)self presentedContentContainer];
+  [presentedContentContainer preferredContentSize];
   v6 = v5;
   v8 = v7;
 
   if (![(UIPresentationController *)self shouldRemovePresentersView])
   {
-    v9 = [(UIPresentationController *)self presentingViewController];
-    [v9 preferredContentSize];
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
+    [presentingViewController preferredContentSize];
     v11 = v10;
     v13 = v12;
 
     if (v11 == *MEMORY[0x1E695F060] && v13 == *(MEMORY[0x1E695F060] + 8))
     {
-      v15 = [(UIPresentationController *)self presentingViewController];
-      v16 = [v15 view];
-      [v16 bounds];
+      presentingViewController2 = [(UIPresentationController *)self presentingViewController];
+      view = [presentingViewController2 view];
+      [view bounds];
       v18 = v17;
       v20 = v19;
 
@@ -4666,39 +4666,39 @@ LABEL_13:
   return result;
 }
 
-- (void)_setPresentingViewController:(id)a3
+- (void)_setPresentingViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_presentingViewController != v5)
+  controllerCopy = controller;
+  if (self->_presentingViewController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_presentingViewController, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_presentingViewController, controller);
     [(UIPresentationController *)self _updateTraitsIfNecessary];
-    v5 = v6;
+    controllerCopy = v6;
   }
 }
 
-- (void)_setPresentedViewController:(id)a3
+- (void)_setPresentedViewController:(id)controller
 {
-  v5 = a3;
-  v6 = v5;
+  controllerCopy = controller;
+  v6 = controllerCopy;
   if (self->__presentedViewControllerStoredWeakly)
   {
-    objc_storeWeak(&self->_weakPresentedViewController, v5);
+    objc_storeWeak(&self->_weakPresentedViewController, controllerCopy);
   }
 
   else
   {
-    objc_storeStrong(&self->_presentedViewController, a3);
+    objc_storeStrong(&self->_presentedViewController, controller);
   }
 }
 
-- (void)_setPresentedViewControllerStoredWeakly:(BOOL)a3
+- (void)_setPresentedViewControllerStoredWeakly:(BOOL)weakly
 {
-  if (self->__presentedViewControllerStoredWeakly != a3)
+  if (self->__presentedViewControllerStoredWeakly != weakly)
   {
-    self->__presentedViewControllerStoredWeakly = a3;
-    if (a3)
+    self->__presentedViewControllerStoredWeakly = weakly;
+    if (weakly)
     {
       objc_storeWeak(&self->_weakPresentedViewController, self->_presentedViewController);
       presentedViewController = self->_presentedViewController;
@@ -4716,37 +4716,37 @@ LABEL_13:
   }
 }
 
-- (id)_presentationControllerForTraitCollection:(id)a3
+- (id)_presentationControllerForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   if (dyld_program_sdk_at_least())
   {
-    v5 = [(UIPresentationController *)self adaptivePresentationStyleForTraitCollection:v4];
+    adaptivePresentationStyle = [(UIPresentationController *)self adaptivePresentationStyleForTraitCollection:collectionCopy];
   }
 
   else
   {
-    v6 = [v4 horizontalSizeClass];
+    horizontalSizeClass = [collectionCopy horizontalSizeClass];
 
-    if (v6 != 1)
+    if (horizontalSizeClass != 1)
     {
 LABEL_25:
-      v7 = self;
+      selfCopy = self;
       goto LABEL_26;
     }
 
-    v5 = [(UIPresentationController *)self adaptivePresentationStyle];
+    adaptivePresentationStyle = [(UIPresentationController *)self adaptivePresentationStyle];
   }
 
-  if (v5 == UIModalPresentationNone || [(UIPresentationController *)self presentationStyle]== UIModalPresentationFullScreen || [(UIPresentationController *)self presentationStyle]== UIModalPresentationOverFullScreen || [(UIPresentationController *)self presentationStyle]== 17)
+  if (adaptivePresentationStyle == UIModalPresentationNone || [(UIPresentationController *)self presentationStyle]== UIModalPresentationFullScreen || [(UIPresentationController *)self presentationStyle]== UIModalPresentationOverFullScreen || [(UIPresentationController *)self presentationStyle]== 17)
   {
     goto LABEL_25;
   }
 
-  v7 = 0;
-  if (v5 > UIModalPresentationCustom)
+  selfCopy = 0;
+  if (adaptivePresentationStyle > UIModalPresentationCustom)
   {
-    if (v5 != UIModalPresentationOverFullScreen && v5 != 17)
+    if (adaptivePresentationStyle != UIModalPresentationOverFullScreen && adaptivePresentationStyle != 17)
     {
       goto LABEL_24;
     }
@@ -4755,34 +4755,34 @@ LABEL_25:
     goto LABEL_18;
   }
 
-  if (v5 == UIModalPresentationFullScreen)
+  if (adaptivePresentationStyle == UIModalPresentationFullScreen)
   {
     v12 = _UIFullscreenPresentationController;
 LABEL_18:
     v13 = [v12 alloc];
-    v14 = [(UIPresentationController *)self presentedViewController];
-    v15 = [(UIPresentationController *)self presentingViewController];
-    v7 = [v13 initWithPresentedViewController:v14 presentingViewController:v15];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
+    selfCopy = [v13 initWithPresentedViewController:presentedViewController presentingViewController:presentingViewController];
     goto LABEL_19;
   }
 
-  if (v5 != UIModalPresentationFormSheet)
+  if (adaptivePresentationStyle != UIModalPresentationFormSheet)
   {
     goto LABEL_24;
   }
 
-  v8 = [(UIPresentationController *)self _adaptiveFormSheetPresentationController];
-  if (!v8)
+  _adaptiveFormSheetPresentationController = [(UIPresentationController *)self _adaptiveFormSheetPresentationController];
+  if (!_adaptiveFormSheetPresentationController)
   {
     v22 = [_UIFormSheetPresentationController alloc];
-    v15 = [(UIPresentationController *)self presentedViewController];
-    v23 = [(UIPresentationController *)self presentingViewController];
-    v7 = [(UISheetPresentationController *)v22 initWithPresentedViewController:v15 presentingViewController:v23];
+    presentingViewController = [(UIPresentationController *)self presentedViewController];
+    presentingViewController2 = [(UIPresentationController *)self presentingViewController];
+    selfCopy = [(UISheetPresentationController *)v22 initWithPresentedViewController:presentingViewController presentingViewController:presentingViewController2];
 
-    v14 = 0;
+    presentedViewController = 0;
 LABEL_19:
 
-    if (v7)
+    if (selfCopy)
     {
       goto LABEL_20;
     }
@@ -4792,17 +4792,17 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v9 = v8;
-  v10 = [(UIPresentationController *)self presentingViewController];
-  [v9 _setPresentingViewController:v10];
+  v9 = _adaptiveFormSheetPresentationController;
+  presentingViewController3 = [(UIPresentationController *)self presentingViewController];
+  [v9 _setPresentingViewController:presentingViewController3];
 
-  v11 = [(UIPresentationController *)self presentedViewController];
-  [v9 _setPresentedViewController:v11];
+  presentedViewController2 = [(UIPresentationController *)self presentedViewController];
+  [v9 _setPresentedViewController:presentedViewController2];
 
-  v7 = v9;
+  selfCopy = v9;
 LABEL_20:
-  v16 = [(UIPresentationController *)self shouldPresentInFullscreen];
-  if (v16 != [(UIPresentationController *)v7 shouldPresentInFullscreen])
+  shouldPresentInFullscreen = [(UIPresentationController *)self shouldPresentInFullscreen];
+  if (shouldPresentInFullscreen != [(UIPresentationController *)selfCopy shouldPresentInFullscreen])
   {
     goto LABEL_24;
   }
@@ -4813,72 +4813,72 @@ LABEL_20:
     goto LABEL_24;
   }
 
-  v18 = [(UIPresentationController *)self _sourceViewController];
-  [(UIPresentationController *)v7 _setSourceViewController:v18];
+  _sourceViewController = [(UIPresentationController *)self _sourceViewController];
+  [(UIPresentationController *)selfCopy _setSourceViewController:_sourceViewController];
 
-  v19 = [(UIPresentationController *)self delegate];
-  [(UIPresentationController *)v7 setDelegate:v19];
-  v20 = [(UIPresentationController *)self presentedViewController];
-  [v20 _presentationController:self prepareAdaptivePresentationController:v7];
+  delegate = [(UIPresentationController *)self delegate];
+  [(UIPresentationController *)selfCopy setDelegate:delegate];
+  presentedViewController3 = [(UIPresentationController *)self presentedViewController];
+  [presentedViewController3 _presentationController:self prepareAdaptivePresentationController:selfCopy];
 
   if (objc_opt_respondsToSelector())
   {
-    [v19 presentationController:self prepareAdaptivePresentationController:v7];
+    [delegate presentationController:self prepareAdaptivePresentationController:selfCopy];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v19 _presentationController:self prepareAdaptivePresentationController:v7];
+    [delegate _presentationController:self prepareAdaptivePresentationController:selfCopy];
   }
 
 LABEL_26:
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)_sendDelegateWillPresentWithAdaptiveStyle:(int64_t)a3 transitionCoordinator:(id)a4
+- (void)_sendDelegateWillPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
-  v7 = a4;
+  coordinatorCopy = coordinator;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained presentationController:self willPresentWithAdaptiveStyle:a3 transitionCoordinator:v7];
+    [WeakRetained presentationController:self willPresentWithAdaptiveStyle:style transitionCoordinator:coordinatorCopy];
   }
 }
 
-- (id)_presentedViewControllerForPresentationController:(id)a3 traitCollection:(id)a4
+- (id)_presentedViewControllerForPresentationController:(id)controller traitCollection:(id)collection
 {
-  v5 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([WeakRetained presentationController:self viewControllerForAdaptivePresentationStyle:{objc_msgSend(v5, "presentationStyle")}], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([WeakRetained presentationController:self viewControllerForAdaptivePresentationStyle:{objc_msgSend(controllerCopy, "presentationStyle")}], (presentedViewController = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v7 = [(UIPresentationController *)self presentedViewController];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
   }
 
-  return v7;
+  return presentedViewController;
 }
 
 - (id)_appearanceContainer
 {
   if ([(UIPresentationController *)self shouldPresentInFullscreen])
   {
-    v3 = [(UIPresentationController *)self containerView];
-    v4 = [v3 _window];
+    containerView = [(UIPresentationController *)self containerView];
+    _window = [containerView _window];
   }
 
   else
   {
-    v4 = [(UIPresentationController *)self presentingViewController];
+    _window = [(UIPresentationController *)self presentingViewController];
   }
 
-  return v4;
+  return _window;
 }
 
-- (void)_collectExistingTraitCollectionsForTraitTracking:(id)a3
+- (void)_collectExistingTraitCollectionsForTraitTracking:(id)tracking
 {
   if (self->_lastNotifiedTraitCollection)
   {
-    (*(a3 + 2))(a3);
+    (*(tracking + 2))(tracking);
   }
 }
 
@@ -4886,33 +4886,33 @@ LABEL_26:
 {
   if ([(UIPresentationController *)self shouldPresentInFullscreen])
   {
-    v3 = [(UIPresentationController *)self presentedViewController];
-    v4 = [v3 _window];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    _window = [presentedViewController _window];
   }
 
   else
   {
-    v4 = [(UIPresentationController *)self presentingViewController];
+    _window = [(UIPresentationController *)self presentingViewController];
   }
 
-  return v4;
+  return _window;
 }
 
-- (id)_traitCollectionForChildEnvironment:(id)a3
+- (id)_traitCollectionForChildEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [(UIPresentationController *)self traitCollection];
+  environmentCopy = environment;
+  traitCollection = [(UIPresentationController *)self traitCollection];
   if (dyld_program_sdk_at_least())
   {
-    if ([v4 __isKindOfUIViewController])
+    if ([environmentCopy __isKindOfUIViewController])
     {
-      v6 = [(UIPresentationController *)self presentedViewController];
+      presentedViewController = [(UIPresentationController *)self presentedViewController];
 
-      if (v6 == v4)
+      if (presentedViewController == environmentCopy)
       {
-        v7 = [(UIPresentationController *)self _traitCollectionForPresentedViewController:v4 defaultTraitCollectionForChildEnvironment:v5];
+        v7 = [(UIPresentationController *)self _traitCollectionForPresentedViewController:environmentCopy defaultTraitCollectionForChildEnvironment:traitCollection];
 
-        v5 = v7;
+        traitCollection = v7;
       }
     }
   }
@@ -4924,13 +4924,13 @@ LABEL_26:
     v10[2] = __64__UIPresentationController__traitCollectionForChildEnvironment___block_invoke;
     v10[3] = &unk_1E7101B48;
     v10[4] = self;
-    v11 = v4;
-    v8 = [(UITraitCollection *)v5 _traitCollectionByModifyingTraitsCopyOnWrite:v10];
+    v11 = environmentCopy;
+    v8 = [(UITraitCollection *)traitCollection _traitCollectionByModifyingTraitsCopyOnWrite:v10];
 
-    v5 = v8;
+    traitCollection = v8;
   }
 
-  return v5;
+  return traitCollection;
 }
 
 - (void)_childTraitTransformDidChange
@@ -4941,30 +4941,30 @@ LABEL_26:
   [(_UITraitChangeRegistry *)traitChangeRegistry invalidateAuxiliaryChildren];
 }
 
-- (void)_invalidateTraitCollectionsOfDescendants:(void *)a1
+- (void)_invalidateTraitCollectionsOfDescendants:(void *)descendants
 {
-  if (!a1)
+  if (!descendants)
   {
     return;
   }
 
-  v14 = [a1 _presentedViewForOverrideTraits];
-  if (v14)
+  _presentedViewForOverrideTraits = [descendants _presentedViewForOverrideTraits];
+  if (_presentedViewForOverrideTraits)
   {
-    _UIViewInvalidateTraitCollectionAndSchedulePropagation(v14, 0, v4, v5);
+    _UIViewInvalidateTraitCollectionAndSchedulePropagation(_presentedViewForOverrideTraits, 0, v4, v5);
   }
 
-  v6 = [a1 presentedViewController];
-  v7 = [v6 _existingView];
-  if (v7)
+  presentedViewController = [descendants presentedViewController];
+  _existingView = [presentedViewController _existingView];
+  if (_existingView)
   {
     v10 = a2 ^ 1;
-    if (!v14)
+    if (!_presentedViewForOverrideTraits)
     {
       v10 = 0;
     }
 
-    if (v7 == v14)
+    if (_existingView == _presentedViewForOverrideTraits)
     {
       v11 = 0;
     }
@@ -4974,7 +4974,7 @@ LABEL_26:
       v11 = v10;
     }
 
-    _UIViewInvalidateTraitCollectionAndSchedulePropagation(v7, v11, v8, v9);
+    _UIViewInvalidateTraitCollectionAndSchedulePropagation(_existingView, v11, v8, v9);
     if (!a2)
     {
       goto LABEL_20;
@@ -4983,29 +4983,29 @@ LABEL_26:
     goto LABEL_13;
   }
 
-  [(UIViewController *)v6 _updateTraitsIfNecessarySchedulingPropagation:?];
+  [(UIViewController *)presentedViewController _updateTraitsIfNecessarySchedulingPropagation:?];
   if (a2)
   {
 LABEL_13:
-    if (v14)
+    if (_presentedViewForOverrideTraits)
     {
-      v12 = [(int8x16_t *)v14 _window];
+      _window = [(int8x16_t *)_presentedViewForOverrideTraits _window];
 
-      if (v12)
+      if (_window)
       {
-        [(UIView *)v14 _updateTraitsIfNeededWithBehavior:?];
+        [(UIView *)_presentedViewForOverrideTraits _updateTraitsIfNeededWithBehavior:?];
       }
     }
 
-    if (v7)
+    if (_existingView)
     {
-      if (v7 != v14)
+      if (_existingView != _presentedViewForOverrideTraits)
       {
-        v13 = [(int8x16_t *)v7 _window];
+        _window2 = [(int8x16_t *)_existingView _window];
 
-        if (v13)
+        if (_window2)
         {
-          [(UIView *)v7 _updateTraitsIfNeededWithBehavior:?];
+          [(UIView *)_existingView _updateTraitsIfNeededWithBehavior:?];
         }
       }
     }
@@ -5014,57 +5014,57 @@ LABEL_13:
 LABEL_20:
 }
 
-- (void)_recordTraitUsage:(__int128 *)a3 trackedStateDiff:(unint64_t)a4 insideMethod:(const char *)a5 withInvalidationAction:
+- (void)_recordTraitUsage:(__int128 *)usage trackedStateDiff:(unint64_t)diff insideMethod:(const char *)method withInvalidationAction:
 {
-  if (a1)
+  if (self)
   {
-    if (!a1[4])
+    if (!self[4])
     {
       if (_UITraitTokenSetCount(a2))
       {
         v10 = objc_alloc_init(_UITraitChangeRegistry);
-        v11 = a1[4];
-        a1[4] = v10;
+        v11 = self[4];
+        self[4] = v10;
       }
     }
 
-    [(_UITraitChangeRegistry *)a1[4] recordTraitUsage:a2 forTraitEnvironment:a1 insideMethod:a4 withInvalidationAction:a5];
-    v12 = *a3;
-    v13 = *(a3 + 2);
-    _UILogStateTracking(a2, a1, &v12, a4, a5);
+    [(_UITraitChangeRegistry *)self[4] recordTraitUsage:a2 forTraitEnvironment:self insideMethod:diff withInvalidationAction:method];
+    v12 = *usage;
+    v13 = *(usage + 2);
+    _UILogStateTracking(a2, self, &v12, diff, method);
   }
 }
 
-- (id)registerForTraitChanges:(id)a3 withHandler:(id)a4
+- (id)registerForTraitChanges:(id)changes withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [UITraitCollection _traitTokensIncludingPlaceholdersForTraits:a3];
-  v8 = [(UIPresentationController *)self _registerForTraitTokenChanges:v7 withHandler:v6];
+  handlerCopy = handler;
+  v7 = [UITraitCollection _traitTokensIncludingPlaceholdersForTraits:changes];
+  v8 = [(UIPresentationController *)self _registerForTraitTokenChanges:v7 withHandler:handlerCopy];
 
   return v8;
 }
 
-- (id)registerForTraitChanges:(id)a3 withTarget:(id)a4 action:(SEL)a5
+- (id)registerForTraitChanges:(id)changes withTarget:(id)target action:(SEL)action
 {
-  v8 = a4;
-  v9 = [UITraitCollection _traitTokensIncludingPlaceholdersForTraits:a3];
-  v10 = [(UIPresentationController *)self _registerForTraitTokenChanges:v9 withTarget:v8 action:a5];
+  targetCopy = target;
+  v9 = [UITraitCollection _traitTokensIncludingPlaceholdersForTraits:changes];
+  v10 = [(UIPresentationController *)self _registerForTraitTokenChanges:v9 withTarget:targetCopy action:action];
 
   return v10;
 }
 
-- (id)registerForTraitChanges:(id)a3 withAction:(SEL)a4
+- (id)registerForTraitChanges:(id)changes withAction:(SEL)action
 {
-  v6 = [UITraitCollection _traitTokensIncludingPlaceholdersForTraits:a3];
-  v7 = [(UIPresentationController *)self _registerForTraitTokenChanges:v6 withTarget:self action:a4];
+  v6 = [UITraitCollection _traitTokensIncludingPlaceholdersForTraits:changes];
+  v7 = [(UIPresentationController *)self _registerForTraitTokenChanges:v6 withTarget:self action:action];
 
   return v7;
 }
 
-- (id)_registerForTraitTokenChanges:(id)a3 withHandler:(id)a4
+- (id)_registerForTraitTokenChanges:(id)changes withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  handlerCopy = handler;
   traitChangeRegistry = self->_traitChangeRegistry;
   if (!traitChangeRegistry)
   {
@@ -5075,15 +5075,15 @@ LABEL_20:
     traitChangeRegistry = self->_traitChangeRegistry;
   }
 
-  v11 = [(_UITraitChangeRegistry *)traitChangeRegistry registerForTraitTokenChanges:v6 withHandler:v7];
+  v11 = [(_UITraitChangeRegistry *)traitChangeRegistry registerForTraitTokenChanges:changesCopy withHandler:handlerCopy];
 
   return v11;
 }
 
-- (id)_registerForTraitTokenChanges:(id)a3 withTarget:(id)a4 action:(SEL)a5
+- (id)_registerForTraitTokenChanges:(id)changes withTarget:(id)target action:(SEL)action
 {
-  v8 = a3;
-  v9 = a4;
+  changesCopy = changes;
+  targetCopy = target;
   traitChangeRegistry = self->_traitChangeRegistry;
   if (!traitChangeRegistry)
   {
@@ -5094,57 +5094,57 @@ LABEL_20:
     traitChangeRegistry = self->_traitChangeRegistry;
   }
 
-  v13 = [(_UITraitChangeRegistry *)traitChangeRegistry registerForTraitTokenChanges:v8 withTarget:v9 action:a5 targetIsSender:v9 == self];
+  v13 = [(_UITraitChangeRegistry *)traitChangeRegistry registerForTraitTokenChanges:changesCopy withTarget:targetCopy action:action targetIsSender:targetCopy == self];
 
   return v13;
 }
 
-- (void)_registerAuxiliaryChildEnvironmentForTraitInvalidations:(id)a3
+- (void)_registerAuxiliaryChildEnvironmentForTraitInvalidations:(id)invalidations
 {
-  v4 = a3;
+  invalidationsCopy = invalidations;
   traitChangeRegistry = self->_traitChangeRegistry;
-  v8 = v4;
+  v8 = invalidationsCopy;
   if (!traitChangeRegistry)
   {
     v6 = objc_alloc_init(_UITraitChangeRegistry);
     v7 = self->_traitChangeRegistry;
     self->_traitChangeRegistry = v6;
 
-    v4 = v8;
+    invalidationsCopy = v8;
     traitChangeRegistry = self->_traitChangeRegistry;
   }
 
-  [(_UITraitChangeRegistry *)traitChangeRegistry registerAuxiliaryChildEnvironmentForTraitInvalidations:v4];
+  [(_UITraitChangeRegistry *)traitChangeRegistry registerAuxiliaryChildEnvironmentForTraitInvalidations:invalidationsCopy];
 }
 
 - (void)_compatibleUpdateTraitsIfNecessary
 {
-  v7 = [(UIPresentationController *)self presentedViewController];
-  if (v7 && dyld_program_sdk_at_least())
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  if (presentedViewController && dyld_program_sdk_at_least())
   {
-    v3 = [(UIPresentationController *)self _presentedViewForOverrideTraits];
-    [(UIView *)v3 _invalidateTraitCollectionAsRoot];
+    _presentedViewForOverrideTraits = [(UIPresentationController *)self _presentedViewForOverrideTraits];
+    [(UIView *)_presentedViewForOverrideTraits _invalidateTraitCollectionAsRoot];
 
-    v6 = v7;
+    selfCopy = presentedViewController;
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  [(UIPresentationController *)v6 _updateTraitsIfNecessary];
+  [(UIPresentationController *)selfCopy _updateTraitsIfNecessary];
 }
 
-- (void)_updateTraitsIfNecessaryInitiatingPropagation:(BOOL)a3
+- (void)_updateTraitsIfNecessaryInitiatingPropagation:(BOOL)propagation
 {
-  v3 = a3;
+  propagationCopy = propagation;
   v21 = *MEMORY[0x1E69E9840];
   p_lastNotifiedTraitCollection = &self->_lastNotifiedTraitCollection;
   v6 = self->_lastNotifiedTraitCollection;
-  v7 = [(UIPresentationController *)self traitCollection];
-  v8 = v7;
-  if (v6 != v7 && ![(UITraitCollection *)v7 isEqual:v6])
+  traitCollection = [(UIPresentationController *)self traitCollection];
+  v8 = traitCollection;
+  if (v6 != traitCollection && ![(UITraitCollection *)traitCollection isEqual:v6])
   {
     objc_storeStrong(p_lastNotifiedTraitCollection, v8);
     v9 = _UISetCurrentFallbackEnvironment(self);
@@ -5191,7 +5191,7 @@ LABEL_20:
     _UIRestorePreviousFallbackEnvironment(v9);
     if (_UIPresentationControllersInheritTraitsFromViewHierarchy())
     {
-      [(UIPresentationController *)self _invalidateTraitCollectionsOfDescendants:v3];
+      [(UIPresentationController *)self _invalidateTraitCollectionsOfDescendants:propagationCopy];
     }
   }
 }
@@ -5202,49 +5202,49 @@ LABEL_20:
   if (v4 || self->_traitOverrides)
   {
     v6 = v4;
-    v5 = [(UIPresentationController *)self _traitOverrides];
-    [(_UITraitOverrides *)v5 _replaceOverrideTraitCollection:v6];
+    _traitOverrides = [(UIPresentationController *)self _traitOverrides];
+    [(_UITraitOverrides *)_traitOverrides _replaceOverrideTraitCollection:v6];
 
     v4 = v6;
   }
 }
 
-- (void)_setInternalOverrideTraitCollection:(id)a3
+- (void)_setInternalOverrideTraitCollection:(id)collection
 {
-  v4 = a3;
-  if (v4 || self->_traitOverrides)
+  collectionCopy = collection;
+  if (collectionCopy || self->_traitOverrides)
   {
-    v7 = v4;
-    v5 = [(UIPresentationController *)self _traitOverrides];
-    v6 = [(_UITraitOverrides *)v5 _overridesAppliedBefore];
-    [(_UITraitOverrides *)v6 _replaceOverrideTraitCollection:v7];
+    v7 = collectionCopy;
+    _traitOverrides = [(UIPresentationController *)self _traitOverrides];
+    _overridesAppliedBefore = [(_UITraitOverrides *)_traitOverrides _overridesAppliedBefore];
+    [(_UITraitOverrides *)_overridesAppliedBefore _replaceOverrideTraitCollection:v7];
 
-    v4 = v7;
+    collectionCopy = v7;
   }
 }
 
 - (UITraitCollection)_internalOverrideTraitCollection
 {
-  v2 = [(_UITraitOverrides *)&self->_traitOverrides->super.isa _overridesAppliedBefore];
-  v3 = [(_UILabelConfiguration *)v2 _content];
+  _overridesAppliedBefore = [(_UITraitOverrides *)&self->_traitOverrides->super.isa _overridesAppliedBefore];
+  _content = [(_UILabelConfiguration *)_overridesAppliedBefore _content];
 
-  return v3;
+  return _content;
 }
 
-- (BOOL)_shouldPerformWillTransitionToTraitCollectionForParent:(id)a3
+- (BOOL)_shouldPerformWillTransitionToTraitCollectionForParent:(id)parent
 {
-  v4 = a3;
-  v5 = [(UIPresentationController *)self _parentTraitEnvironment];
+  parentCopy = parent;
+  _parentTraitEnvironment = [(UIPresentationController *)self _parentTraitEnvironment];
 
-  if (v5 == v4)
+  if (_parentTraitEnvironment == parentCopy)
   {
     v7 = 1;
   }
 
   else if (_UIPresentationControllersInheritTraitsFromViewHierarchy())
   {
-    v6 = [(UIPresentationController *)self _compatibleParentTraitEnvironment];
-    v7 = v6 == v4;
+    _compatibleParentTraitEnvironment = [(UIPresentationController *)self _compatibleParentTraitEnvironment];
+    v7 = _compatibleParentTraitEnvironment == parentCopy;
   }
 
   else
@@ -5255,24 +5255,24 @@ LABEL_20:
   return v7;
 }
 
-- (void)_parent:(id)a3 willTransitionToTraitCollection:(id)a4 withTransitionCoordinator:(id)a5
+- (void)_parent:(id)_parent willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v10 = a4;
-  v8 = a5;
-  if ([(UIPresentationController *)self _shouldPerformWillTransitionToTraitCollectionForParent:a3])
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
+  if ([(UIPresentationController *)self _shouldPerformWillTransitionToTraitCollectionForParent:_parent])
   {
-    v9 = [(UIPresentationController *)self _adaptiveWillTransitionToTraitCollection:v10 withTransitionCoordinator:v8];
+    v9 = [(UIPresentationController *)self _adaptiveWillTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
   }
 }
 
-- (void)_window:(id)a3 willTransitionToTraitCollection:(id)a4 withTransitionCoordinator:(id)a5
+- (void)_window:(id)_window willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  if ([(UIPresentationController *)self _shouldPerformWillTransitionToTraitCollectionForParent:v10])
+  coordinatorCopy = coordinator;
+  collectionCopy = collection;
+  _windowCopy = _window;
+  if ([(UIPresentationController *)self _shouldPerformWillTransitionToTraitCollectionForParent:_windowCopy])
   {
-    [(UIPresentationController *)self _adaptiveWillTransitionToTraitCollection:v9 withTransitionCoordinator:v8];
+    [(UIPresentationController *)self _adaptiveWillTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
   }
 
   else
@@ -5280,29 +5280,29 @@ LABEL_20:
     [(UIPresentationController *)self _childPresentationController];
   }
   v11 = ;
-  [v11 _window:v10 willTransitionToTraitCollection:v9 withTransitionCoordinator:v8];
+  [v11 _window:_windowCopy willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
 }
 
-- (id)_adaptiveWillTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (id)_adaptiveWillTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIPresentationController *)self traitCollection];
-  v9 = [(UIPresentationController *)self presentingViewController];
-  v10 = [v9 _adaptedPresentationControllerForTraitCollection:v6 withTransitionCoordinator:v7];
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
+  traitCollection = [(UIPresentationController *)self traitCollection];
+  presentingViewController = [(UIPresentationController *)self presentingViewController];
+  v10 = [presentingViewController _adaptedPresentationControllerForTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
 
   if (v10)
   {
-    v11 = v10;
+    selfCopy = v10;
   }
 
   else
   {
-    v11 = self;
+    selfCopy = self;
   }
 
-  v12 = v11;
-  v13 = v6;
+  v12 = selfCopy;
+  v13 = collectionCopy;
   p_isa = &v12->_traitOverrides->super.isa;
   v15 = v13;
   if (p_isa)
@@ -5310,16 +5310,16 @@ LABEL_20:
     v15 = [(_UITraitOverrides *)p_isa _traitCollectionByApplyingOverridesToTraitCollection:v13];
   }
 
-  if (v15 != v8 && ([v8 isEqual:v15] & 1) == 0)
+  if (v15 != traitCollection && ([traitCollection isEqual:v15] & 1) == 0)
   {
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __95__UIPresentationController__adaptiveWillTransitionToTraitCollection_withTransitionCoordinator___block_invoke;
     v21 = &unk_1E70F6B40;
     v22 = v12;
-    v23 = v8;
+    v23 = traitCollection;
     v24 = v15;
-    v25 = v7;
+    v25 = coordinatorCopy;
     [UIViewController _performWithoutDeferringTransitions:&v18];
   }
 
@@ -5362,20 +5362,20 @@ uint64_t __95__UIPresentationController__adaptiveWillTransitionToTraitCollection
   return [a1[4] willTransitionToTraitCollection:a1[6] withTransitionCoordinator:a1[7]];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIPresentationController *)self presentedViewController];
-  [v8 _parent:self willTransitionToTraitCollection:v7 withTransitionCoordinator:v6];
+  coordinatorCopy = coordinator;
+  collectionCopy = collection;
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  [presentedViewController _parent:self willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
 }
 
 - (id)_viewsParticipatingInNavigationControllerTransition
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(UIPresentationController *)self presentedViewController];
-  v3 = [v2 view];
-  v6[0] = v3;
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  view = [presentedViewController view];
+  v6[0] = view;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   return v4;
@@ -5383,18 +5383,18 @@ uint64_t __95__UIPresentationController__adaptiveWillTransitionToTraitCollection
 
 - (UIFocusItemContainer)focusItemContainer
 {
-  v2 = [(UIPresentationController *)self containerView];
-  v3 = [v2 superview];
+  containerView = [(UIPresentationController *)self containerView];
+  superview = [containerView superview];
 
-  return v3;
+  return superview;
 }
 
 - (UIView)preferredFocusedView
 {
-  v2 = [(UIPresentationController *)self presentedViewController];
-  v3 = [v2 preferredFocusedView];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  preferredFocusedView = [presentedViewController preferredFocusedView];
 
-  return v3;
+  return preferredFocusedView;
 }
 
 - (int64_t)_subclassPreferredFocusedViewPrioritizationType
@@ -5446,11 +5446,11 @@ uint64_t __95__UIPresentationController__adaptiveWillTransitionToTraitCollection
 - (NSArray)preferredFocusEnvironments
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UIPresentationController *)self presentedViewController];
-  v4 = v3;
-  if (v3)
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  v4 = presentedViewController;
+  if (presentedViewController)
   {
-    v8[0] = v3;
+    v8[0] = presentedViewController;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   }
 
@@ -5470,36 +5470,36 @@ uint64_t __95__UIPresentationController__adaptiveWillTransitionToTraitCollection
   [v2 updateFocusIfNeeded];
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = self->_backGestureRecognizer == v6 && ([v7 _isGestureType:8] & 1) != 0;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  v8 = gestureRecognizerCopy;
+  v9 = self->_backGestureRecognizer == recognizerCopy && ([gestureRecognizerCopy _isGestureType:8] & 1) != 0;
 
   return v9;
 }
 
-- (void)_performBackGesture:(id)a3
+- (void)_performBackGesture:(id)gesture
 {
-  v4 = [(UIPresentationController *)self containerView];
-  v5 = [v4 _window];
-  v8 = [v5 _focusResponder];
+  containerView = [(UIPresentationController *)self containerView];
+  _window = [containerView _window];
+  _focusResponder = [_window _focusResponder];
 
-  v6 = [(UIPresentationController *)self presentedViewController];
-  LODWORD(v5) = [v6 _containsResponder:v8];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  LODWORD(_window) = [presentedViewController _containsResponder:_focusResponder];
 
-  if (v5)
+  if (_window)
   {
-    v7 = [(UIPresentationController *)self presentedViewController];
-    [v7 dismissViewControllerAnimated:1 completion:0];
+    presentedViewController2 = [(UIPresentationController *)self presentedViewController];
+    [presentedViewController2 dismissViewControllerAnimated:1 completion:0];
   }
 }
 
 - (void)_disableMenuPressForBackGesture
 {
-  v3 = [(UIGestureRecognizer *)self->_backGestureRecognizer view];
-  [v3 removeGestureRecognizer:self->_backGestureRecognizer];
+  view = [(UIGestureRecognizer *)self->_backGestureRecognizer view];
+  [view removeGestureRecognizer:self->_backGestureRecognizer];
 
   backGestureRecognizer = self->_backGestureRecognizer;
   self->_backGestureRecognizer = 0;
@@ -5507,14 +5507,14 @@ uint64_t __95__UIPresentationController__adaptiveWillTransitionToTraitCollection
 
 - (BOOL)_isModal
 {
-  v3 = [(UIPresentationController *)self _childPresentationController];
-  v4 = v3;
-  if (!v3 || ![v3 _presentingOrPresented])
+  _childPresentationController = [(UIPresentationController *)self _childPresentationController];
+  v4 = _childPresentationController;
+  if (!_childPresentationController || ![_childPresentationController _presentingOrPresented])
   {
-    v6 = [(UIPresentationController *)self presentedViewController];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
 LABEL_6:
-    v7 = v6;
-    v5 = [v6 isModalInPresentation];
+    v7 = presentedViewController;
+    isModalInPresentation = [presentedViewController isModalInPresentation];
 
     goto LABEL_7;
   }
@@ -5523,30 +5523,30 @@ LABEL_6:
   {
     if ([(UIPresentationController *)self shouldRemovePresentersView])
     {
-      v5 = 0;
+      isModalInPresentation = 0;
       goto LABEL_7;
     }
 
-    v6 = [(UIPresentationController *)self presentingViewController];
+    presentedViewController = [(UIPresentationController *)self presentingViewController];
     goto LABEL_6;
   }
 
-  v5 = 1;
+  isModalInPresentation = 1;
 LABEL_7:
 
-  return v5;
+  return isModalInPresentation;
 }
 
 - (void)_sendDismissalsAsNeeded
 {
   [(UIPresentationController *)self _sendWillDismiss];
-  v3 = [(UIPresentationController *)self _definiteTransitionCoordinator];
+  _definiteTransitionCoordinator = [(UIPresentationController *)self _definiteTransitionCoordinator];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __51__UIPresentationController__sendDismissalsAsNeeded__block_invoke;
   v4[3] = &unk_1E70F3B98;
   v4[4] = self;
-  [v3 animateAlongsideTransition:0 completion:v4];
+  [_definiteTransitionCoordinator animateAlongsideTransition:0 completion:v4];
 }
 
 uint64_t __51__UIPresentationController__sendDismissalsAsNeeded__block_invoke(uint64_t a1, void *a2)
@@ -5569,13 +5569,13 @@ uint64_t __51__UIPresentationController__sendDismissalsAsNeeded__block_invoke(ui
     return 0;
   }
 
-  v4 = [(UIPresentationController *)self delegate];
+  delegate = [(UIPresentationController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIPresentationController *)self delegate];
-    v7 = [v6 presentationControllerShouldDismiss:self];
+    delegate2 = [(UIPresentationController *)self delegate];
+    v7 = [delegate2 presentationControllerShouldDismiss:self];
 
     return v7;
   }
@@ -5589,16 +5589,16 @@ uint64_t __51__UIPresentationController__sendDismissalsAsNeeded__block_invoke(ui
 
 - (void)_sendWillDismiss
 {
-  v3 = [(UIPresentationController *)self presentedViewController];
-  [v3 _presentationControllerWillDismiss:self];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  [presentedViewController _presentationControllerWillDismiss:self];
 
-  v4 = [(UIPresentationController *)self delegate];
+  delegate = [(UIPresentationController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIPresentationController *)self delegate];
-    [v6 presentationControllerWillDismiss:self];
+    delegate2 = [(UIPresentationController *)self delegate];
+    [delegate2 presentationControllerWillDismiss:self];
   }
 
   else
@@ -5610,16 +5610,16 @@ uint64_t __51__UIPresentationController__sendDismissalsAsNeeded__block_invoke(ui
 
 - (void)_sendDidDismiss
 {
-  v3 = [(UIPresentationController *)self presentedViewController];
-  [v3 _presentationControllerDidDismiss:self];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  [presentedViewController _presentationControllerDidDismiss:self];
 
-  v4 = [(UIPresentationController *)self delegate];
+  delegate = [(UIPresentationController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIPresentationController *)self delegate];
-    [v6 presentationControllerDidDismiss:self];
+    delegate2 = [(UIPresentationController *)self delegate];
+    [delegate2 presentationControllerDidDismiss:self];
   }
 
   else
@@ -5631,27 +5631,27 @@ uint64_t __51__UIPresentationController__sendDismissalsAsNeeded__block_invoke(ui
 
 - (void)_sendDidAttemptToDismiss
 {
-  v3 = [(UIPresentationController *)self delegate];
+  delegate = [(UIPresentationController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(UIPresentationController *)self delegate];
-    [v5 presentationControllerDidAttemptToDismiss:self];
+    delegate2 = [(UIPresentationController *)self delegate];
+    [delegate2 presentationControllerDidAttemptToDismiss:self];
   }
 }
 
-+ (void)_scheduleTransition:(id)a3
++ (void)_scheduleTransition:(id)transition
 {
-  v4 = a3;
-  if ([a1 _shouldDeferTransitions])
+  transitionCopy = transition;
+  if ([self _shouldDeferTransitions])
   {
-    [UIViewController _scheduleTransition:v4];
+    [UIViewController _scheduleTransition:transitionCopy];
   }
 
   else
   {
-    v4[2]();
+    transitionCopy[2]();
   }
 }
 
@@ -5700,9 +5700,9 @@ uint64_t __51__UIPresentationController__sendDismissalsAsNeeded__block_invoke(ui
   self->_subduingInvalidation = 0;
 }
 
-- (void)_enableSubduing:(BOOL)a3
+- (void)_enableSubduing:(BOOL)subduing
 {
-  if (a3)
+  if (subduing)
   {
     [(UIPresentationController *)self _beginSubduing];
   }
@@ -5713,36 +5713,36 @@ uint64_t __51__UIPresentationController__sendDismissalsAsNeeded__block_invoke(ui
   }
 }
 
-- (void)_beginSubduingIfNecessary:(BOOL)a3
+- (void)_beginSubduingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   if (_UISolariumEnabled() && [(UIPresentationController *)self _shouldSubduePresentingViewControllerDuringPresentation])
   {
-    v5 = [(UIPresentationController *)self presentingViewController];
-    v6 = [v5 _transitionCoordinator];
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
+    _transitionCoordinator = [presentingViewController _transitionCoordinator];
 
-    if (v6)
+    if (_transitionCoordinator)
     {
-      v7 = [(UIPresentationController *)self presentingViewController];
-      v8 = [v7 view];
+      presentingViewController2 = [(UIPresentationController *)self presentingViewController];
+      view = [presentingViewController2 view];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __54__UIPresentationController__beginSubduingIfNecessary___block_invoke;
       v11[3] = &unk_1E71018A8;
       v11[4] = self;
-      v12 = v3;
+      v12 = necessaryCopy;
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __54__UIPresentationController__beginSubduingIfNecessary___block_invoke_2;
       v9[3] = &unk_1E71018A8;
       v9[4] = self;
-      v10 = v3;
-      [v6 animateAlongsideTransitionInView:v8 animation:v11 completion:v9];
+      v10 = necessaryCopy;
+      [_transitionCoordinator animateAlongsideTransitionInView:view animation:v11 completion:v9];
     }
 
     else
     {
-      [(UIPresentationController *)self _enableSubduing:v3];
+      [(UIPresentationController *)self _enableSubduing:necessaryCopy];
     }
   }
 }

@@ -1,39 +1,39 @@
 @interface KeepAlive
-+ (KeepAlive)keepAliveWithFormat:(id)a3;
-+ (KeepAlive)keepAliveWithName:(id)a3;
-- (KeepAlive)initWithName:(id)a3;
++ (KeepAlive)keepAliveWithFormat:(id)format;
++ (KeepAlive)keepAliveWithName:(id)name;
+- (KeepAlive)initWithName:(id)name;
 - (void)dealloc;
 @end
 
 @implementation KeepAlive
 
-+ (KeepAlive)keepAliveWithFormat:(id)a3
++ (KeepAlive)keepAliveWithFormat:(id)format
 {
-  v3 = a3;
-  v4 = [[NSString alloc] initWithFormat:v3 locale:0 arguments:&v8];
+  formatCopy = format;
+  v4 = [[NSString alloc] initWithFormat:formatCopy locale:0 arguments:&v8];
 
   v5 = [[KeepAlive alloc] initWithName:v4];
 
   return v5;
 }
 
-+ (KeepAlive)keepAliveWithName:(id)a3
++ (KeepAlive)keepAliveWithName:(id)name
 {
-  v3 = a3;
-  v4 = [[KeepAlive alloc] initWithName:v3];
+  nameCopy = name;
+  v4 = [[KeepAlive alloc] initWithName:nameCopy];
 
   return v4;
 }
 
-- (KeepAlive)initWithName:(id)a3
+- (KeepAlive)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = KeepAlive;
   v5 = [(KeepAlive *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
 

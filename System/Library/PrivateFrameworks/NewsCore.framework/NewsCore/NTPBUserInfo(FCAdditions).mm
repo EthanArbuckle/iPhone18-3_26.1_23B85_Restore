@@ -8,7 +8,7 @@
 {
   v8 = a3;
   v9 = a4;
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = &off_1F2EE7978;
   v10 = objc_msgSendSuper2(&v14, sel_init);
   v11 = v10;

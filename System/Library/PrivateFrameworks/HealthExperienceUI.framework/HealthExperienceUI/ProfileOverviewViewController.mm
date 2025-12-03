@@ -1,17 +1,17 @@
 @interface ProfileOverviewViewController
-- (_TtC18HealthExperienceUI29ProfileOverviewViewController)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI29ProfileOverviewViewController)initWithCollectionViewLayout:(id)a3;
-- (void)backButtonTapped:(id)a3;
-- (void)restoreUserActivityState:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC18HealthExperienceUI29ProfileOverviewViewController)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI29ProfileOverviewViewController)initWithCollectionViewLayout:(id)layout;
+- (void)backButtonTapped:(id)tapped;
+- (void)restoreUserActivityState:(id)state;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ProfileOverviewViewController
 
-- (_TtC18HealthExperienceUI29ProfileOverviewViewController)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI29ProfileOverviewViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI29ProfileOverviewViewController_navigationBarTitleView) = 0;
   v4 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI29ProfileOverviewViewController_gradientView);
@@ -26,70 +26,70 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA17D618();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BA17E070(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1BA17E070(change);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ProfileOverviewViewController();
   v4 = v8.receiver;
-  [(ProfileOverviewViewController *)&v8 viewWillDisappear:v3];
-  v5 = [v4 navigationController];
-  if (v5)
+  [(ProfileOverviewViewController *)&v8 viewWillDisappear:disappearCopy];
+  navigationController = [v4 navigationController];
+  if (navigationController)
   {
-    v6 = v5;
-    v7 = [v5 navigationBar];
+    v6 = navigationController;
+    navigationBar = [navigationController navigationBar];
 
-    [v7 _setBackgroundOpacity_];
+    [navigationBar _setBackgroundOpacity_];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for ProfileOverviewViewController();
-  v4 = a3;
+  scrollCopy = scroll;
   v5 = v6.receiver;
-  [(CompoundDataSourceCollectionViewController *)&v6 scrollViewDidScroll:v4];
+  [(CompoundDataSourceCollectionViewController *)&v6 scrollViewDidScroll:scrollCopy];
   sub_1BA17FD14();
 }
 
-- (void)backButtonTapped:(id)a3
+- (void)backButtonTapped:(id)tapped
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1BA4A7BF8();
   swift_unknownObjectRelease();
-  v5 = [(ProfileOverviewViewController *)v4 navigationController];
-  if (v5)
+  navigationController = [(ProfileOverviewViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v6 = v5;
-    v7 = [(ProfileOverviewViewController *)v5 popViewControllerAnimated:1];
+    v6 = navigationController;
+    v7 = [(ProfileOverviewViewController *)navigationController popViewControllerAnimated:1];
 
-    v4 = v6;
+    selfCopy = v6;
   }
 
   __swift_destroy_boxed_opaque_existential_1(&v8);
 }
 
-- (void)restoreUserActivityState:(id)a3
+- (void)restoreUserActivityState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BA17E894(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_1BA17E894(stateCopy);
 }
 
-- (_TtC18HealthExperienceUI29ProfileOverviewViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC18HealthExperienceUI29ProfileOverviewViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

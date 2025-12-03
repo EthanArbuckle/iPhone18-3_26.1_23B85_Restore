@@ -1,21 +1,21 @@
 @interface Notice
 - (NSString)debugDescription;
 - (_TtC24FaceTimeNotificationCore6Notice)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation Notice
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  Notice.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  Notice.encode(with:)(coderCopy);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   Notice.debugDescription.getter();
 
   v3 = sub_24A9FEC30();

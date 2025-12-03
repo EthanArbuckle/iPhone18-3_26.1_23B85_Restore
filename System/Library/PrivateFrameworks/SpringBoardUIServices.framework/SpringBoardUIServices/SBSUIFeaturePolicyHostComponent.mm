@@ -9,151 +9,151 @@
 - (NSSet)desiredBackgroundActivities;
 - (SBSUIFeaturePolicyHostComponentDelegate)delegate;
 - (unint64_t)desiredHardwareButtonEvents;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)sendActions:(id)a3;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)sendActions:(id)actions;
 @end
 
 @implementation SBSUIFeaturePolicyHostComponent
 
 - (BOOL)shouldDisableBanners
 {
-  v2 = [(FBSSceneComponent *)self hostScene];
-  v3 = [v2 clientSettings];
-  v4 = [v3 disablesBanners];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  clientSettings = [hostScene clientSettings];
+  disablesBanners = [clientSettings disablesBanners];
 
-  return v4;
+  return disablesBanners;
 }
 
 - (BOOL)shouldDisableAlertItems
 {
-  v2 = [(FBSSceneComponent *)self hostScene];
-  v3 = [v2 clientSettings];
-  v4 = [v3 disablesAlertItems];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  clientSettings = [hostScene clientSettings];
+  disablesAlertItems = [clientSettings disablesAlertItems];
 
-  return v4;
+  return disablesAlertItems;
 }
 
 - (BOOL)shouldDisableControlCenter
 {
-  v2 = [(FBSSceneComponent *)self hostScene];
-  v3 = [v2 clientSettings];
-  v4 = [v3 disablesControlCenter];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  clientSettings = [hostScene clientSettings];
+  disablesControlCenter = [clientSettings disablesControlCenter];
 
-  return v4;
+  return disablesControlCenter;
 }
 
 - (BOOL)shouldDisableSiri
 {
-  v2 = [(FBSSceneComponent *)self hostScene];
-  v3 = [v2 clientSettings];
-  v4 = [v3 disablesSiri];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  clientSettings = [hostScene clientSettings];
+  disablesSiri = [clientSettings disablesSiri];
 
-  return v4;
+  return disablesSiri;
 }
 
 - (BOOL)shouldDisableInteractiveScreenshotGesture
 {
-  v2 = [(FBSSceneComponent *)self hostScene];
-  v3 = [v2 clientSettings];
-  v4 = [v3 disablesInteractiveScreenshotGesture];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  clientSettings = [hostScene clientSettings];
+  disablesInteractiveScreenshotGesture = [clientSettings disablesInteractiveScreenshotGesture];
 
-  return v4;
+  return disablesInteractiveScreenshotGesture;
 }
 
 - (BOOL)shouldDisableReachability
 {
-  v2 = [(FBSSceneComponent *)self hostScene];
-  v3 = [v2 clientSettings];
-  v4 = [v3 disablesReachability];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  clientSettings = [hostScene clientSettings];
+  disablesReachability = [clientSettings disablesReachability];
 
-  return v4;
+  return disablesReachability;
 }
 
 - (BOOL)allowsMenuButtonDismissal
 {
-  v2 = [(FBSSceneComponent *)self hostScene];
-  v3 = [v2 clientSettings];
-  v4 = [v3 allowsMenuButtonDismissal];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  clientSettings = [hostScene clientSettings];
+  allowsMenuButtonDismissal = [clientSettings allowsMenuButtonDismissal];
 
-  return v4;
+  return allowsMenuButtonDismissal;
 }
 
 - (unint64_t)desiredHardwareButtonEvents
 {
-  v2 = [(FBSSceneComponent *)self hostScene];
-  v3 = [v2 clientSettings];
-  v4 = [v3 desiredHardwareButtonEvents];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  clientSettings = [hostScene clientSettings];
+  desiredHardwareButtonEvents = [clientSettings desiredHardwareButtonEvents];
 
-  return v4;
+  return desiredHardwareButtonEvents;
 }
 
 - (NSSet)desiredBackgroundActivities
 {
-  v2 = [(FBSSceneComponent *)self hostScene];
-  v3 = [v2 clientSettings];
-  v4 = [v3 desiredBackgroundActivities];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  clientSettings = [hostScene clientSettings];
+  desiredBackgroundActivities = [clientSettings desiredBackgroundActivities];
 
-  return v4;
+  return desiredBackgroundActivities;
 }
 
-- (void)sendActions:(id)a3
+- (void)sendActions:(id)actions
 {
-  v4 = a3;
-  v5 = [(FBSSceneComponent *)self hostScene];
+  actionsCopy = actions;
+  hostScene = [(FBSSceneComponent *)self hostScene];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__SBSUIFeaturePolicyHostComponent_sendActions___block_invoke;
   v7[3] = &unk_1E789EDF8;
-  v8 = v4;
-  v6 = v4;
-  [v5 performUpdate:v7];
+  v8 = actionsCopy;
+  v6 = actionsCopy;
+  [hostScene performUpdate:v7];
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v6 = [a4 settingsDiff];
+  settingsDiff = [settings settingsDiff];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if ([v6 containsProperty:sel_disablesBanners])
+  if ([settingsDiff containsProperty:sel_disablesBanners])
   {
     [WeakRetained featurePolicyHostComponentDidChangeShouldDisableBanners:self];
   }
 
-  if ([v6 containsProperty:sel_disablesAlertItems])
+  if ([settingsDiff containsProperty:sel_disablesAlertItems])
   {
     [WeakRetained featurePolicyHostComponentDidChangeShouldDisableAlertItems:self];
   }
 
-  if ([v6 containsProperty:sel_disablesControlCenter])
+  if ([settingsDiff containsProperty:sel_disablesControlCenter])
   {
     [WeakRetained featurePolicyHostComponentDidChangeShouldDisableControlCenter:self];
   }
 
-  if ([v6 containsProperty:sel_disablesSiri])
+  if ([settingsDiff containsProperty:sel_disablesSiri])
   {
     [WeakRetained featurePolicyHostComponentDidChangeShouldDisableSiri:self];
   }
 
-  if ([v6 containsProperty:sel_disablesInteractiveScreenshotGesture])
+  if ([settingsDiff containsProperty:sel_disablesInteractiveScreenshotGesture])
   {
     [WeakRetained featurePolicyHostComponentDidChangeShouldDisableInteractiveScreenshotGesture:self];
   }
 
-  if ([v6 containsProperty:sel_disablesReachability])
+  if ([settingsDiff containsProperty:sel_disablesReachability])
   {
     [WeakRetained featurePolicyHostComponentDidChangeShouldDisableReachability:self];
   }
 
-  if ([v6 containsProperty:sel_allowsMenuButtonDismissal])
+  if ([settingsDiff containsProperty:sel_allowsMenuButtonDismissal])
   {
     [WeakRetained featurePolicyHostComponentDidChangeAllowsMenuButtonDismissal:self];
   }
 
-  if ([v6 containsProperty:sel_desiredHardwareButtonEvents])
+  if ([settingsDiff containsProperty:sel_desiredHardwareButtonEvents])
   {
     [WeakRetained featurePolicyHostComponentDidChangeDesiredHardwareButtonEvents:self];
   }
 
-  if ([v6 containsProperty:sel_desiredBackgroundActivities])
+  if ([settingsDiff containsProperty:sel_desiredBackgroundActivities])
   {
     [WeakRetained featurePolicyHostComponentDidChangeDesiredBackgroundActivities:self];
   }

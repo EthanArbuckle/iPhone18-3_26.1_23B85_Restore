@@ -1,15 +1,15 @@
 @interface ConcreteCategoriesPrimitives
-- (id)resolveBundleIdentifier:(id)a3 from:(int64_t)a4 to:(int64_t)a5;
+- (id)resolveBundleIdentifier:(id)identifier from:(int64_t)from to:(int64_t)to;
 @end
 
 @implementation ConcreteCategoriesPrimitives
 
-- (id)resolveBundleIdentifier:(id)a3 from:(int64_t)a4 to:(int64_t)a5
+- (id)resolveBundleIdentifier:(id)identifier from:(int64_t)from to:(int64_t)to
 {
   v7 = sub_195FA08B8();
   v9 = v8;
 
-  sub_195EC3F78(v7, v9, a4, a5);
+  sub_195EC3F78(v7, v9, from, to);
   v11 = v10;
 
   if (v11)

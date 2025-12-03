@@ -1,20 +1,20 @@
 @interface UIZoomTransitionAlignmentRectContext
-+ (id)_contextSourceView:(id)a3 zoomedViewController:(id)a4;
++ (id)_contextSourceView:(id)view zoomedViewController:(id)controller;
 @end
 
 @implementation UIZoomTransitionAlignmentRectContext
 
-+ (id)_contextSourceView:(id)a3 zoomedViewController:(id)a4
++ (id)_contextSourceView:(id)view zoomedViewController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
+  viewCopy = view;
+  controllerCopy = controller;
   v7 = objc_opt_new();
   v8 = v7[1];
-  v7[1] = v5;
-  v9 = v5;
+  v7[1] = viewCopy;
+  v9 = viewCopy;
 
   v10 = v7[2];
-  v7[2] = v6;
+  v7[2] = controllerCopy;
 
   return v7;
 }

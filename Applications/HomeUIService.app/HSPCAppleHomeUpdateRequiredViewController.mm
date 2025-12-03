@@ -1,15 +1,15 @@
 @interface HSPCAppleHomeUpdateRequiredViewController
-- (HSPCAppleHomeUpdateRequiredViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCAppleHomeUpdateRequiredViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)commitConfiguration;
 - (void)_optionalButtonTapped;
 @end
 
 @implementation HSPCAppleHomeUpdateRequiredViewController
 
-- (HSPCAppleHomeUpdateRequiredViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCAppleHomeUpdateRequiredViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v9 = [UIImageView alloc];
   v10 = [UIImage systemImageNamed:@"homekit"];
   v11 = [v9 initWithImage:v10];
@@ -24,8 +24,8 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_config, a4);
-    objc_storeStrong(&v14->_coordinator, a3);
+    objc_storeStrong(&v13->_config, config);
+    objc_storeStrong(&v14->_coordinator, coordinator);
     v15 = sub_100063A44(@"HSProximityCardAppleHomeUpdateRequiredTitle");
     [(HSPCAppleHomeUpdateRequiredViewController *)v14 setTitle:v15];
 
@@ -35,8 +35,8 @@
     v17 = [(HSPCAppleHomeUpdateRequiredViewController *)v14 addProminentButtonWithTitleKey:@"HSProximityCardAppleHomeUpdateRequiredUpdateNow" target:v14 futureSelector:"commitConfiguration"];
     v18 = [(HSPCAppleHomeUpdateRequiredViewController *)v14 addOptionalButtonWithTitleKey:@"HSProximityCardAppleHomeUpdateRequiredLearnMore" target:v14 futureSelector:"_optionalButtonTapped"];
     v19 = +[UIColor hu_keyColor];
-    v20 = [(HSPCAppleHomeUpdateRequiredViewController *)v14 view];
-    [v20 setTintColor:v19];
+    view = [(HSPCAppleHomeUpdateRequiredViewController *)v14 view];
+    [view setTintColor:v19];
   }
 
   return v14;

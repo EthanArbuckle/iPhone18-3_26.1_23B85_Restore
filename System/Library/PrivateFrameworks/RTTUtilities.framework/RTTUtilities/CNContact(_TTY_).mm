@@ -8,10 +8,10 @@
 - (uint64_t)ttyIsMe
 {
   v2 = +[RTTTelephonyUtilities sharedUtilityProvider];
-  v3 = [v2 ttyMeContact];
-  v4 = [v3 identifier];
-  v5 = [a1 identifier];
-  v6 = [v4 isEqualToString:v5];
+  ttyMeContact = [v2 ttyMeContact];
+  identifier = [ttyMeContact identifier];
+  identifier2 = [self identifier];
+  v6 = [identifier isEqualToString:identifier2];
 
   return v6;
 }
@@ -32,18 +32,18 @@
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:5];
 
   v9 = +[RTTTelephonyUtilities sharedUtilityProvider];
-  v10 = [v9 contactStore];
+  contactStore = [v9 contactStore];
   v11 = MEMORY[0x277CBDA58];
   v12 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:v4];
 
   v13 = [v11 predicateForContactsMatchingPhoneNumber:v12];
-  v14 = [v10 unifiedContactsMatchingPredicate:v13 keysToFetch:v8 error:0];
+  v14 = [contactStore unifiedContactsMatchingPredicate:v13 keysToFetch:v8 error:0];
 
-  v15 = [v14 firstObject];
+  firstObject = [v14 firstObject];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return firstObject;
 }
 
 @end

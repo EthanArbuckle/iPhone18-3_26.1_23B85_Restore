@@ -1,49 +1,49 @@
 @interface BKMLAudiobookTrack
 - (BKAudiobook)audiobook;
 - (BKMLAudiobook)containingAudiobook;
-- (BKMLAudiobookTrack)initWithAudiobook:(id)a3 mediaItem:(id)a4 startTime:(double)a5 startChapterNumber:(unint64_t)a6 trackNumber:(unint64_t)a7 trackCount:(unint64_t)a8 storeDemoMode:(BOOL)a9;
-- (BOOL)incrementPlayCountForStopTime:(double)a3;
+- (BKMLAudiobookTrack)initWithAudiobook:(id)audiobook mediaItem:(id)item startTime:(double)time startChapterNumber:(unint64_t)number trackNumber:(unint64_t)trackNumber trackCount:(unint64_t)count storeDemoMode:(BOOL)mode;
+- (BOOL)incrementPlayCountForStopTime:(double)time;
 - (CGImage)artwork;
-- (CGImage)artworkForTime:(double)a3;
+- (CGImage)artworkForTime:(double)time;
 - (NSDate)dateLastOpened;
 - (NSString)description;
 - (UIImage)coverArt;
 - (double)bookmarkTime;
 - (id)alternateArtworkTimes;
-- (void)_lookupRacGUIDFromHLSPlaylistWithCompletion:(id)a3;
-- (void)lookupRacGUIDWithCompletion:(id)a3;
-- (void)setBookmarkTime:(double)a3;
+- (void)_lookupRacGUIDFromHLSPlaylistWithCompletion:(id)completion;
+- (void)lookupRacGUIDWithCompletion:(id)completion;
+- (void)setBookmarkTime:(double)time;
 @end
 
 @implementation BKMLAudiobookTrack
 
-- (BKMLAudiobookTrack)initWithAudiobook:(id)a3 mediaItem:(id)a4 startTime:(double)a5 startChapterNumber:(unint64_t)a6 trackNumber:(unint64_t)a7 trackCount:(unint64_t)a8 storeDemoMode:(BOOL)a9
+- (BKMLAudiobookTrack)initWithAudiobook:(id)audiobook mediaItem:(id)item startTime:(double)time startChapterNumber:(unint64_t)number trackNumber:(unint64_t)trackNumber trackCount:(unint64_t)count storeDemoMode:(BOOL)mode
 {
-  v14 = a3;
-  v15 = a4;
+  audiobookCopy = audiobook;
+  itemCopy = item;
   v62.receiver = self;
   v62.super_class = BKMLAudiobookTrack;
   v16 = [(BKMLAudiobookTrack *)&v62 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_containingAudiobook, v14);
-    objc_storeStrong(&v17->_mediaItem, a4);
-    v18 = [v15 valueForProperty:MPMediaItemPropertyTitle];
+    objc_storeWeak(&v16->_containingAudiobook, audiobookCopy);
+    objc_storeStrong(&v17->_mediaItem, item);
+    v18 = [itemCopy valueForProperty:MPMediaItemPropertyTitle];
     v19 = [v18 copy];
     title = v17->_title;
     v17->_title = v19;
 
-    v21 = [v15 valueForProperty:MPMediaItemPropertyArtist];
+    v21 = [itemCopy valueForProperty:MPMediaItemPropertyArtist];
     v22 = [v21 copy];
     author = v17->_author;
     v17->_author = v22;
 
-    v24 = [v15 valueForProperty:MPMediaItemPropertyPlaybackDuration];
+    v24 = [itemCopy valueForProperty:MPMediaItemPropertyPlaybackDuration];
     [v24 doubleValue];
     v17->_duration = v25;
 
-    v17->_startTime = a5;
+    v17->_startTime = time;
     v17->_hasAlternateArtwork = 0;
     if ([(MPMediaItem *)v17->_mediaItem countOfChaptersOfType:2])
     {
@@ -66,9 +66,9 @@
               objc_enumerationMutation(v26);
             }
 
-            v31 = [*(*(&v58 + 1) + 8 * i) artworkCatalog];
-            v32 = [v31 bestImageFromDisk];
-            if (v32)
+            artworkCatalog = [*(*(&v58 + 1) + 8 * i) artworkCatalog];
+            bestImageFromDisk = [artworkCatalog bestImageFromDisk];
+            if (bestImageFromDisk)
             {
               v17->_hasAlternateArtwork = 1;
 
@@ -90,7 +90,7 @@ LABEL_13:
     }
 
     mediaItem = v17->_mediaItem;
-    if (a9)
+    if (mode)
     {
       [(MPMediaItem *)mediaItem bk_storeDemoAssetURL];
     }
@@ -107,7 +107,7 @@ LABEL_13:
     v37 = [(MPMediaItem *)v17->_mediaItem chaptersOfType:1];
     if ([v37 count])
     {
-      v51 = v15;
+      v51 = itemCopy;
       v56 = 0u;
       v57 = 0u;
       v54 = 0u;
@@ -118,12 +118,12 @@ LABEL_13:
       {
         v40 = v39;
         v49 = v37;
-        v50 = v14;
+        v50 = audiobookCopy;
         v41 = *v55;
         do
         {
           v42 = 0;
-          v43 = a6;
+          numberCopy = number;
           do
           {
             if (*v55 != v41)
@@ -131,12 +131,12 @@ LABEL_13:
               objc_enumerationMutation(v38);
             }
 
-            a6 = v43 + 1;
-            v44 = [[BKMLAudiobookChapter alloc] initWithMediaChapter:*(*(&v54 + 1) + 8 * v42) track:v17 number:v43 trackNumber:a7 trackCount:a8];
+            number = numberCopy + 1;
+            v44 = [[BKMLAudiobookChapter alloc] initWithMediaChapter:*(*(&v54 + 1) + 8 * v42) track:v17 number:numberCopy trackNumber:trackNumber trackCount:count];
             [v36 addObject:v44];
 
             v42 = v42 + 1;
-            ++v43;
+            ++numberCopy;
           }
 
           while (v40 != v42);
@@ -144,8 +144,8 @@ LABEL_13:
         }
 
         while (v40);
-        v14 = v50;
-        v15 = v51;
+        audiobookCopy = v50;
+        itemCopy = v51;
         v37 = v49;
       }
     }
@@ -158,7 +158,7 @@ LABEL_13:
         sub_21680(&v17->_mediaItem, v45);
       }
 
-      v38 = [[BKMLAudiobookChapter alloc] initWithMediaChapter:0 track:v17 number:a6 trackNumber:a7 trackCount:a8];
+      v38 = [[BKMLAudiobookChapter alloc] initWithMediaChapter:0 track:v17 number:number trackNumber:trackNumber trackCount:count];
       [v36 addObject:v38];
     }
 
@@ -181,12 +181,12 @@ LABEL_13:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BKMLAudiobookTrack *)self assetURL];
-  v6 = [(BKMLAudiobookTrack *)self title];
-  v7 = [(BKMLAudiobookTrack *)self author];
-  v8 = [(BKMLAudiobookTrack *)self artwork];
+  assetURL = [(BKMLAudiobookTrack *)self assetURL];
+  title = [(BKMLAudiobookTrack *)self title];
+  author = [(BKMLAudiobookTrack *)self author];
+  artwork = [(BKMLAudiobookTrack *)self artwork];
   [(BKMLAudiobookTrack *)self duration];
-  v10 = [NSMutableString stringWithFormat:@"<%@:%p url=%@ title=%@ author=%@ artwork=%p duration=%lf chapters=\n", v4, self, v5, v6, v7, v8, v9];
+  v10 = [NSMutableString stringWithFormat:@"<%@:%p url=%@ title=%@ author=%@ artwork=%p duration=%lf chapters=\n", v4, self, assetURL, title, author, artwork, v9];
 
   v11 = [(NSArray *)self->_chapters count];
   if (v11)
@@ -236,14 +236,14 @@ LABEL_13:
   return result;
 }
 
-- (void)setBookmarkTime:(double)a3
+- (void)setBookmarkTime:(double)time
 {
   [(MPMediaItem *)self->_mediaItem setHasBeenPlayed:1];
   v5 = +[NSDate date];
   [(MPMediaItem *)self->_mediaItem setLastPlayedDate:v5];
 
   mediaItem = self->_mediaItem;
-  v7 = [NSNumber numberWithDouble:a3];
+  v7 = [NSNumber numberWithDouble:time];
   [(MPMediaItem *)mediaItem setValue:v7 forProperty:MPMediaItemPropertyBookmarkTime withCompletionBlock:0];
 }
 
@@ -301,19 +301,19 @@ LABEL_13:
   return v11;
 }
 
-- (CGImage)artworkForTime:(double)a3
+- (CGImage)artworkForTime:(double)time
 {
   if (![(BKMLAudiobookTrack *)self hasAlternateArtwork])
   {
     return 0;
   }
 
-  v5 = [(MPMediaItem *)self->_mediaItem chapterOfType:2 atTime:a3];
-  v6 = [v5 artworkCatalog];
-  v7 = [v6 bestImageFromDisk];
-  v8 = [v7 CGImage];
+  v5 = [(MPMediaItem *)self->_mediaItem chapterOfType:2 atTime:time];
+  artworkCatalog = [v5 artworkCatalog];
+  bestImageFromDisk = [artworkCatalog bestImageFromDisk];
+  cGImage = [bestImageFromDisk CGImage];
 
-  return v8;
+  return cGImage;
 }
 
 - (UIImage)coverArt
@@ -321,8 +321,8 @@ LABEL_13:
   coverArt = self->_coverArt;
   if (!coverArt)
   {
-    v4 = [(BKMLAudiobookTrack *)self mediaItem];
-    v5 = [v4 valueForProperty:MPMediaItemPropertyArtwork];
+    mediaItem = [(BKMLAudiobookTrack *)self mediaItem];
+    v5 = [mediaItem valueForProperty:MPMediaItemPropertyArtwork];
 
     if (v5)
     {
@@ -340,61 +340,61 @@ LABEL_13:
 
 - (CGImage)artwork
 {
-  v2 = [(BKMLAudiobookTrack *)self coverArt];
-  v3 = [v2 CGImage];
+  coverArt = [(BKMLAudiobookTrack *)self coverArt];
+  cGImage = [coverArt CGImage];
 
-  return v3;
+  return cGImage;
 }
 
-- (BOOL)incrementPlayCountForStopTime:(double)a3
+- (BOOL)incrementPlayCountForStopTime:(double)time
 {
-  v3 = [(BKMLAudiobookTrack *)self mediaItem];
-  [v3 startTime];
-  [v3 effectiveStopTime];
+  mediaItem = [(BKMLAudiobookTrack *)self mediaItem];
+  [mediaItem startTime];
+  [mediaItem effectiveStopTime];
   v4 = MPShouldIncrementPlayCountForElapsedTime();
   if (v4)
   {
-    [v3 setPlayCount:{objc_msgSend(v3, "playCount") + 1}];
-    [v3 setPlayCountSinceSync:{objc_msgSend(v3, "playCountSinceSync") + 1}];
+    [mediaItem setPlayCount:{objc_msgSend(mediaItem, "playCount") + 1}];
+    [mediaItem setPlayCountSinceSync:{objc_msgSend(mediaItem, "playCountSinceSync") + 1}];
     v5 = +[NSDate date];
-    [v3 setLastPlayedDate:v5];
+    [mediaItem setLastPlayedDate:v5];
   }
 
   return v4;
 }
 
-- (void)lookupRacGUIDWithCompletion:(id)a3
+- (void)lookupRacGUIDWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKMLAudiobookTrack *)self assetURL];
-  v6 = [v5 bk_isStreamingAssetURL];
+  completionCopy = completion;
+  assetURL = [(BKMLAudiobookTrack *)self assetURL];
+  bk_isStreamingAssetURL = [assetURL bk_isStreamingAssetURL];
 
-  if (v6)
+  if (bk_isStreamingAssetURL)
   {
-    [(BKMLAudiobookTrack *)self _lookupRacGUIDFromHLSPlaylistWithCompletion:v4];
+    [(BKMLAudiobookTrack *)self _lookupRacGUIDFromHLSPlaylistWithCompletion:completionCopy];
   }
 
   else
   {
     v7 = objc_alloc_init(BLMetadataStore);
-    v8 = [(BKMLAudiobookTrack *)self mediaItem];
-    v9 = [v8 bk_storePlaylistID];
-    v10 = [v9 longLongValue];
+    mediaItem = [(BKMLAudiobookTrack *)self mediaItem];
+    bk_storePlaylistID = [mediaItem bk_storePlaylistID];
+    longLongValue = [bk_storePlaylistID longLongValue];
 
-    if (v10)
+    if (longLongValue)
     {
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_1368C;
       v13[3] = &unk_3CFC0;
       v13[4] = self;
-      v14 = v4;
-      [v7 racGUIDForStoreID:v10 result:v13];
+      v14 = completionCopy;
+      [v7 racGUIDForStoreID:longLongValue result:v13];
     }
 
     else
     {
-      v11 = objc_retainBlock(v4);
+      v11 = objc_retainBlock(completionCopy);
       v12 = v11;
       if (v11)
       {
@@ -404,18 +404,18 @@ LABEL_13:
   }
 }
 
-- (void)_lookupRacGUIDFromHLSPlaylistWithCompletion:(id)a3
+- (void)_lookupRacGUIDFromHLSPlaylistWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[BLHLSAudiobookFetcher alloc] initCanUseCellularData:1 powerRequired:0 bundleID:0];
-  v6 = [(BKMLAudiobookTrack *)self assetURL];
+  assetURL = [(BKMLAudiobookTrack *)self assetURL];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1382C;
   v8[3] = &unk_3CFE8;
-  v9 = v4;
-  v7 = v4;
-  [v5 getRacGUIDFromMasterPlaylistURL:v6 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [v5 getRacGUIDFromMasterPlaylistURL:assetURL completion:v8];
 }
 
 - (BKMLAudiobook)containingAudiobook

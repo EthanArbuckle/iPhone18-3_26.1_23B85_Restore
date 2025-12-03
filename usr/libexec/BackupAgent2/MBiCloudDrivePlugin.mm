@@ -1,18 +1,18 @@
 @interface MBiCloudDrivePlugin
-+ (id)_backupManagerForSnapshotURL:(id)a3 liveFSURL:(id)a4;
-+ (id)_restoreManagerForRestoreDirURL:(id)a3;
-+ (id)backUpFPFSDatabaseManifestForUserVolume:(id)a3 snapshotMountPoint:(id)a4;
-+ (id)backUpiCloudDriveDatabaseManifestForUserVolume:(id)a3 snapshotMountPoint:(id)a4;
-- (id)endingRestoreWithPolicy:(id)a3 engine:(id)a4;
++ (id)_backupManagerForSnapshotURL:(id)l liveFSURL:(id)rL;
++ (id)_restoreManagerForRestoreDirURL:(id)l;
++ (id)backUpFPFSDatabaseManifestForUserVolume:(id)volume snapshotMountPoint:(id)point;
++ (id)backUpiCloudDriveDatabaseManifestForUserVolume:(id)volume snapshotMountPoint:(id)point;
+- (id)endingRestoreWithPolicy:(id)policy engine:(id)engine;
 @end
 
 @implementation MBiCloudDrivePlugin
 
-- (id)endingRestoreWithPolicy:(id)a3 engine:(id)a4
+- (id)endingRestoreWithPolicy:(id)policy engine:(id)engine
 {
-  v4 = [a4 persona];
-  v5 = [v4 userIncompleteRestoreDirectory];
-  v6 = [NSURL fileURLWithPath:v5 isDirectory:1];
+  persona = [engine persona];
+  userIncompleteRestoreDirectory = [persona userIncompleteRestoreDirectory];
+  v6 = [NSURL fileURLWithPath:userIncompleteRestoreDirectory isDirectory:1];
 
   v7 = [v6 URLByAppendingPathComponent:@"var/mobile" isDirectory:1];
   v8 = MBGetDefaultLog();
@@ -42,10 +42,10 @@
   return 0;
 }
 
-+ (id)backUpiCloudDriveDatabaseManifestForUserVolume:(id)a3 snapshotMountPoint:(id)a4
++ (id)backUpiCloudDriveDatabaseManifestForUserVolume:(id)volume snapshotMountPoint:(id)point
 {
-  v6 = a3;
-  v7 = a4;
+  volumeCopy = volume;
+  pointCopy = point;
   if (FPIsCloudDocsWithFPFSEnabled())
   {
     v8 = MBGetDefaultLog();
@@ -61,7 +61,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v6)
+  if (!volumeCopy)
   {
     v8 = MBGetDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -74,7 +74,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!v7)
+  if (!pointCopy)
   {
     v8 = MBGetDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -87,8 +87,8 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v8 = [NSURL fileURLWithPath:v7 isDirectory:1];
-  v9 = [NSURL fileURLWithPath:v6 isDirectory:1];
+  v8 = [NSURL fileURLWithPath:pointCopy isDirectory:1];
+  v9 = [NSURL fileURLWithPath:volumeCopy isDirectory:1];
   v10 = MBGetDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -113,7 +113,7 @@ LABEL_18:
   v23[4] = sub_1000840C0;
   v24 = 0;
   v11 = dispatch_semaphore_create(0);
-  v12 = [a1 _backupManagerForSnapshotURL:v8 liveFSURL:v9];
+  v12 = [self _backupManagerForSnapshotURL:v8 liveFSURL:v9];
   if (v12)
   {
     v19[0] = _NSConcreteStackBlock;
@@ -157,18 +157,18 @@ LABEL_19:
   return v16;
 }
 
-+ (id)backUpFPFSDatabaseManifestForUserVolume:(id)a3 snapshotMountPoint:(id)a4
++ (id)backUpFPFSDatabaseManifestForUserVolume:(id)volume snapshotMountPoint:(id)point
 {
-  v5 = a3;
-  v6 = a4;
+  volumeCopy = volume;
+  pointCopy = point;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = sub_1000840B0;
   v25 = sub_1000840C0;
   v26 = 0;
-  v7 = [NSURL fileURLWithPath:v6 isDirectory:1];
-  v8 = [NSURL fileURLWithPath:v5 isDirectory:1];
+  v7 = [NSURL fileURLWithPath:pointCopy isDirectory:1];
+  v8 = [NSURL fileURLWithPath:volumeCopy isDirectory:1];
   v9 = MBGetDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -218,14 +218,14 @@ LABEL_19:
   return v15;
 }
 
-+ (id)_backupManagerForSnapshotURL:(id)a3 liveFSURL:(id)a4
++ (id)_backupManagerForSnapshotURL:(id)l liveFSURL:(id)rL
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v7 = MBWeakLinkSymbol();
   if (v7)
   {
-    v8 = v7(v5, v6);
+    v8 = v7(lCopy, rLCopy);
 LABEL_5:
     v10 = v8;
     goto LABEL_6;
@@ -234,7 +234,7 @@ LABEL_5:
   v9 = MBWeakLinkClass();
   if (v9)
   {
-    v8 = [[v9 alloc] initWithUserURL:v5 outputUserURL:v6];
+    v8 = [[v9 alloc] initWithUserURL:lCopy outputUserURL:rLCopy];
     goto LABEL_5;
   }
 
@@ -252,13 +252,13 @@ LABEL_6:
   return v10;
 }
 
-+ (id)_restoreManagerForRestoreDirURL:(id)a3
++ (id)_restoreManagerForRestoreDirURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = MBWeakLinkSymbol();
   if (v4)
   {
-    v5 = v4(v3);
+    v5 = v4(lCopy);
 LABEL_5:
     v7 = v5;
     goto LABEL_6;
@@ -267,7 +267,7 @@ LABEL_5:
   v6 = MBWeakLinkClass();
   if (v6)
   {
-    v5 = [[v6 alloc] initWithUserURL:v3];
+    v5 = [[v6 alloc] initWithUserURL:lCopy];
     goto LABEL_5;
   }
 

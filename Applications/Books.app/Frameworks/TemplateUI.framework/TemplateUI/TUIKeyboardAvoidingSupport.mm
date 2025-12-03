@@ -1,11 +1,11 @@
 @interface TUIKeyboardAvoidingSupport
-- (TUIKeyboardAvoidingSupport)initWithViewController:(id)a3;
+- (TUIKeyboardAvoidingSupport)initWithViewController:(id)controller;
 - (TUIKeyboardAvoidingSupportViewController)viewController;
-- (double)_keyboardOverlapInView:(id)a3 usingKeyboardInfo:(id)a4;
-- (void)_adjustScrollViewForKeyboardInfo:(id)a3;
-- (void)_keyboardWillChangeFrame:(id)a3;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
+- (double)_keyboardOverlapInView:(id)view usingKeyboardInfo:(id)info;
+- (void)_adjustScrollViewForKeyboardInfo:(id)info;
+- (void)_keyboardWillChangeFrame:(id)frame;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
 - (void)dealloc;
 - (void)registerForNotifications;
 - (void)unregisterForNotifications;
@@ -13,16 +13,16 @@
 
 @implementation TUIKeyboardAvoidingSupport
 
-- (TUIKeyboardAvoidingSupport)initWithViewController:(id)a3
+- (TUIKeyboardAvoidingSupport)initWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = TUIKeyboardAvoidingSupport;
   v5 = [(TUIKeyboardAvoidingSupport *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_viewController, v4);
+    objc_storeWeak(&v5->_viewController, controllerCopy);
   }
 
   return v6;
@@ -44,13 +44,13 @@
   {
     v8 = +[NSNotificationCenter defaultCenter];
     WeakRetained = objc_loadWeakRetained(&self->_viewController);
-    v5 = [WeakRetained tui_keyboardAvoidingScrollView];
-    v6 = [v5 window];
-    v7 = [v6 screen];
+    tui_keyboardAvoidingScrollView = [WeakRetained tui_keyboardAvoidingScrollView];
+    window = [tui_keyboardAvoidingScrollView window];
+    screen = [window screen];
 
-    [v8 addObserver:self selector:"_keyboardWillShow:" name:UIKeyboardWillShowNotification object:v7];
-    [v8 addObserver:self selector:"_keyboardWillHide:" name:UIKeyboardWillHideNotification object:v7];
-    [v8 addObserver:self selector:"_keyboardWillChangeFrame:" name:UIKeyboardWillChangeFrameNotification object:v7];
+    [v8 addObserver:self selector:"_keyboardWillShow:" name:UIKeyboardWillShowNotification object:screen];
+    [v8 addObserver:self selector:"_keyboardWillHide:" name:UIKeyboardWillHideNotification object:screen];
+    [v8 addObserver:self selector:"_keyboardWillChangeFrame:" name:UIKeyboardWillChangeFrameNotification object:screen];
     self->_registeredForNotifications = 1;
   }
 }
@@ -66,73 +66,73 @@
   }
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  [(TUIKeyboardAvoidingSupport *)self _adjustScrollViewForKeyboardInfo:v4];
+  userInfo = [show userInfo];
+  [(TUIKeyboardAvoidingSupport *)self _adjustScrollViewForKeyboardInfo:userInfo];
 
   v5 = objc_opt_class();
 
   [v5 cancelPreviousPerformRequestsWithTarget:self selector:"_adjustScrollViewForKeyboardInfo:" object:0];
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
   v4 = [NSArray arrayWithObject:NSRunLoopCommonModes];
   [(TUIKeyboardAvoidingSupport *)self performSelector:"_adjustScrollViewForKeyboardInfo:" withObject:0 afterDelay:v4 inModes:0.0];
 }
 
-- (void)_keyboardWillChangeFrame:(id)a3
+- (void)_keyboardWillChangeFrame:(id)frame
 {
-  v4 = [a3 userInfo];
-  [(TUIKeyboardAvoidingSupport *)self _adjustScrollViewForKeyboardInfo:v4];
+  userInfo = [frame userInfo];
+  [(TUIKeyboardAvoidingSupport *)self _adjustScrollViewForKeyboardInfo:userInfo];
 
   v5 = objc_opt_class();
 
   [v5 cancelPreviousPerformRequestsWithTarget:self selector:"_adjustScrollViewForKeyboardInfo:" object:0];
 }
 
-- (void)_adjustScrollViewForKeyboardInfo:(id)a3
+- (void)_adjustScrollViewForKeyboardInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_viewController);
-    v6 = [WeakRetained tui_keyboardAvoidingScrollView];
+    tui_keyboardAvoidingScrollView = [WeakRetained tui_keyboardAvoidingScrollView];
 
     if (!self->_viewIsDisappearing)
     {
-      v7 = [v6 window];
+      window = [tui_keyboardAvoidingScrollView window];
 
-      if (v7)
+      if (window)
       {
         adjustmentForKeyboard = self->_adjustmentForKeyboard;
-        [(TUIKeyboardAvoidingSupport *)self _keyboardOverlapInView:v6 usingKeyboardInfo:v4];
+        [(TUIKeyboardAvoidingSupport *)self _keyboardOverlapInView:tui_keyboardAvoidingScrollView usingKeyboardInfo:infoCopy];
         if (adjustmentForKeyboard != v9)
         {
           v10 = v9;
-          [v6 contentInset];
+          [tui_keyboardAvoidingScrollView contentInset];
           v32 = v12;
           v33 = v11;
           v14 = v13;
           v16 = v15;
-          [v6 verticalScrollIndicatorInsets];
+          [tui_keyboardAvoidingScrollView verticalScrollIndicatorInsets];
           v18 = v17;
           v20 = v19;
           v22 = v21;
           v23 = v10 - adjustmentForKeyboard;
           v24 = v10 - adjustmentForKeyboard + v14;
           v26 = v23 + v25;
-          v27 = [v4 objectForKeyedSubscript:UIKeyboardAnimationDurationUserInfoKey];
+          v27 = [infoCopy objectForKeyedSubscript:UIKeyboardAnimationDurationUserInfoKey];
           [v27 doubleValue];
           v29 = v28;
-          v30 = [v4 objectForKeyedSubscript:UIKeyboardAnimationCurveUserInfoKey];
-          v31 = [v30 integerValue];
+          v30 = [infoCopy objectForKeyedSubscript:UIKeyboardAnimationCurveUserInfoKey];
+          integerValue = [v30 integerValue];
           v34[0] = _NSConcreteStackBlock;
           v34[1] = 3221225472;
           v34[2] = sub_127F1C;
           v34[3] = &unk_260758;
-          v35 = v6;
+          v35 = tui_keyboardAvoidingScrollView;
           v36 = v33;
           v37 = v32;
           v38 = v24;
@@ -141,7 +141,7 @@
           v41 = v20;
           v42 = v26;
           v43 = v22;
-          [UIView animateWithDuration:v31 | 4 delay:v34 options:0 animations:v29 completion:0.0];
+          [UIView animateWithDuration:integerValue | 4 delay:v34 options:0 animations:v29 completion:0.0];
 
           adjustmentForKeyboard = v10;
         }
@@ -152,29 +152,29 @@
   }
 }
 
-- (double)_keyboardOverlapInView:(id)a3 usingKeyboardInfo:(id)a4
+- (double)_keyboardOverlapInView:(id)view usingKeyboardInfo:(id)info
 {
-  v5 = a3;
-  v6 = [a4 objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
+  viewCopy = view;
+  v6 = [info objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
   if (v6)
   {
-    v7 = [v5 window];
+    window = [viewCopy window];
     [v6 CGRectValue];
-    [v7 convertRect:0 fromWindow:?];
-    [v5 convertRect:0 fromView:?];
+    [window convertRect:0 fromWindow:?];
+    [viewCopy convertRect:0 fromView:?];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
-    [v5 bounds];
+    [viewCopy bounds];
     MaxY = CGRectGetMaxY(v21);
     v22.origin.x = v9;
     v22.origin.y = v11;
     v22.size.width = v13;
     v22.size.height = v15;
     v17 = MaxY - CGRectGetMinY(v22);
-    [v5 safeAreaInsets];
+    [viewCopy safeAreaInsets];
     v19 = fmax(v17 - v18, 0.0);
   }
 

@@ -1,20 +1,20 @@
 @interface FKApplePayBarcodeRowViewModel
-- (FKApplePayBarcodeRowViewModel)initWithCellConfigurationHandler:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)configureCell:(id)a3;
+- (FKApplePayBarcodeRowViewModel)initWithCellConfigurationHandler:(id)handler;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)configureCell:(id)cell;
 @end
 
 @implementation FKApplePayBarcodeRowViewModel
 
-- (FKApplePayBarcodeRowViewModel)initWithCellConfigurationHandler:(id)a3
+- (FKApplePayBarcodeRowViewModel)initWithCellConfigurationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = FKApplePayBarcodeRowViewModel;
   v5 = [(FKApplePayBarcodeRowViewModel *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     cellConfigurationHandler = v5->_cellConfigurationHandler;
     v5->_cellConfigurationHandler = v6;
   }
@@ -22,16 +22,16 @@
   return v5;
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(FKApplePayBarcodeRowViewModel *)self cellConfigurationHandler];
-  v5[2](v5, v4);
+  cellCopy = cell;
+  cellConfigurationHandler = [(FKApplePayBarcodeRowViewModel *)self cellConfigurationHandler];
+  cellConfigurationHandler[2](cellConfigurationHandler, cellCopy);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [self->_cellConfigurationHandler copy];
   v6 = v4[1];
   v4[1] = v5;

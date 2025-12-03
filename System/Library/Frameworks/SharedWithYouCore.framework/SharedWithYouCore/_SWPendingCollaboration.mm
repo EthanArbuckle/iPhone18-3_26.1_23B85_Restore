@@ -1,20 +1,20 @@
 @interface _SWPendingCollaboration
 + (NSArray)readableTypeIdentifiersForItemProvider;
 + (NSArray)writableTypeIdentifiersForItemProvider;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCollaborationContent:(id)a3;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCollaborationContent:(id)content;
 - (NSArray)writableTypeIdentifiersForItemProvider;
 - (NSString)description;
-- (_SWPendingCollaboration)initWithCoder:(id)a3;
-- (_SWPendingCollaboration)initWithFileAtURL:(id)a3;
-- (_SWPendingCollaboration)initWithMetadata:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
+- (_SWPendingCollaboration)initWithCoder:(id)coder;
+- (_SWPendingCollaboration)initWithFileAtURL:(id)l;
+- (_SWPendingCollaboration)initWithMetadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
 - (id)processSigningQueue;
 - (id)softSigningController;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SWPendingCollaboration
@@ -41,14 +41,14 @@
   return v2;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
-  if (![a4 isEqualToString:@"com.apple.SharedWithYou.SWPendingCollaboration"])
+  dataCopy = data;
+  if (![identifier isEqualToString:@"com.apple.SharedWithYou.SWPendingCollaboration"])
   {
     v8 = 0;
     v9 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -57,13 +57,13 @@
   }
 
   v11 = 0;
-  v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v7 error:&v11];
+  v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v11];
   v9 = v11;
-  if (a5)
+  if (error)
   {
 LABEL_5:
     v9 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
 LABEL_6:
@@ -76,8 +76,8 @@ LABEL_6:
   if (getSLCollaborationSigningControllerClass() && [getSLCollaborationSigningControllerClass() instancesRespondToSelector:sel_initWithTargetSerialQueue_synchronous_])
   {
     v3 = objc_alloc(getSLCollaborationSigningControllerClass());
-    v4 = [(_SWPendingCollaboration *)self processSigningQueue];
-    v5 = [v3 initWithTargetSerialQueue:v4 synchronous:1];
+    processSigningQueue = [(_SWPendingCollaboration *)self processSigningQueue];
+    v5 = [v3 initWithTargetSerialQueue:processSigningQueue synchronous:1];
 
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
@@ -118,65 +118,65 @@ LABEL_6:
   return v2;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __103___SWPendingCollaboration_NSItemProvider__loadDataWithTypeIdentifier_forItemProviderCompletionHandler___block_invoke;
   v17[3] = &unk_1E84125D0;
   v17[4] = self;
-  v18 = v6;
-  v19 = v7;
-  v8 = v7;
-  v9 = v6;
+  v18 = identifierCopy;
+  v19 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = identifierCopy;
   v10 = MEMORY[0x1D38AA3C0](v17);
-  v11 = [(_SWPendingCollaboration *)self collaborationMetadata];
-  v12 = [v11 sourceProcessData];
+  collaborationMetadata = [(_SWPendingCollaboration *)self collaborationMetadata];
+  sourceProcessData = [collaborationMetadata sourceProcessData];
 
-  if (v12 || ([(_SWPendingCollaboration *)self softSigningController], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (sourceProcessData || ([(_SWPendingCollaboration *)self softSigningController], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v13 = [(_SWPendingCollaboration *)self collaborationMetadata];
-    v14 = [v13 sourceProcessData];
-    (v10)[2](v10, v14, 0);
+    collaborationMetadata2 = [(_SWPendingCollaboration *)self collaborationMetadata];
+    sourceProcessData2 = [collaborationMetadata2 sourceProcessData];
+    (v10)[2](v10, sourceProcessData2, 0);
   }
 
   else
   {
-    v13 = v15;
-    v14 = [(_SWPendingCollaboration *)self collaborationMetadata];
-    [v13 signSourceProcessWithMetadata:v14 timeout:v10 completion:5.0];
+    collaborationMetadata2 = v15;
+    sourceProcessData2 = [(_SWPendingCollaboration *)self collaborationMetadata];
+    [collaborationMetadata2 signSourceProcessWithMetadata:sourceProcessData2 timeout:v10 completion:5.0];
   }
 
   return 0;
 }
 
-- (_SWPendingCollaboration)initWithFileAtURL:(id)a3
+- (_SWPendingCollaboration)initWithFileAtURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = _SWPendingCollaboration;
   v6 = [(_SWPendingCollaboration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fileURL, a3);
+    objc_storeStrong(&v6->_fileURL, l);
   }
 
   return v7;
 }
 
-- (_SWPendingCollaboration)initWithMetadata:(id)a3
+- (_SWPendingCollaboration)initWithMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   v9.receiver = self;
   v9.super_class = _SWPendingCollaboration;
   v6 = [(_SWPendingCollaboration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collaborationMetadata, a3);
+    objc_storeStrong(&v6->_collaborationMetadata, metadata);
   }
 
   return v7;
@@ -185,11 +185,11 @@ LABEL_6:
 - (NSString)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(_SWPendingCollaboration *)self fileURL];
-  [v3 appendFormat:@" fileURL=%@", v4];
+  fileURL = [(_SWPendingCollaboration *)self fileURL];
+  [v3 appendFormat:@" fileURL=%@", fileURL];
 
-  v5 = [(_SWPendingCollaboration *)self collaborationMetadata];
-  [v3 appendFormat:@" collaborationMetadata=%@", v5];
+  collaborationMetadata = [(_SWPendingCollaboration *)self collaborationMetadata];
+  [v3 appendFormat:@" collaborationMetadata=%@", collaborationMetadata];
 
   [v3 appendString:@">"];
   v6 = [v3 copy];
@@ -197,44 +197,44 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_SWPendingCollaboration *)self isEqualToCollaborationContent:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_SWPendingCollaboration *)self isEqualToCollaborationContent:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToCollaborationContent:(id)a3
+- (BOOL)isEqualToCollaborationContent:(id)content
 {
-  v7 = a3;
-  v8 = [(_SWPendingCollaboration *)self fileURL];
-  if (!v8)
+  contentCopy = content;
+  fileURL = [(_SWPendingCollaboration *)self fileURL];
+  if (!fileURL)
   {
-    v15 = [v7 fileURL];
-    if (!v15)
+    fileURL2 = [contentCopy fileURL];
+    if (!fileURL2)
     {
-      v15 = 0;
+      fileURL2 = 0;
       v9 = 0;
       goto LABEL_7;
     }
   }
 
-  v3 = [(_SWPendingCollaboration *)self fileURL];
-  v4 = [v7 fileURL];
-  if ([v3 isEqual:v4])
+  fileURL3 = [(_SWPendingCollaboration *)self fileURL];
+  fileURL4 = [contentCopy fileURL];
+  if ([fileURL3 isEqual:fileURL4])
   {
     v9 = 1;
 LABEL_7:
-    v11 = [(_SWPendingCollaboration *)self collaborationMetadata];
-    if (v11 || ([v7 collaborationMetadata], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+    collaborationMetadata = [(_SWPendingCollaboration *)self collaborationMetadata];
+    if (collaborationMetadata || ([contentCopy collaborationMetadata], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v12 = [(_SWPendingCollaboration *)self collaborationMetadata];
-      v13 = [v7 collaborationMetadata];
-      v10 = [v12 isEqual:v13];
+      collaborationMetadata2 = [(_SWPendingCollaboration *)self collaborationMetadata];
+      collaborationMetadata3 = [contentCopy collaborationMetadata];
+      v10 = [collaborationMetadata2 isEqual:collaborationMetadata3];
 
-      if (v11)
+      if (collaborationMetadata)
       {
         goto LABEL_13;
       }
@@ -258,7 +258,7 @@ LABEL_13:
 LABEL_14:
 
 LABEL_15:
-  if (!v8)
+  if (!fileURL)
   {
   }
 
@@ -267,29 +267,29 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [(_SWPendingCollaboration *)self fileURL];
-  v4 = [v3 hash];
-  v5 = [(_SWPendingCollaboration *)self collaborationMetadata];
-  v6 = [v5 hash];
+  fileURL = [(_SWPendingCollaboration *)self fileURL];
+  v4 = [fileURL hash];
+  collaborationMetadata = [(_SWPendingCollaboration *)self collaborationMetadata];
+  v6 = [collaborationMetadata hash];
 
   return v6 ^ v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(_SWPendingCollaboration *)self fileURL];
+  fileURL = [(_SWPendingCollaboration *)self fileURL];
 
   v5 = objc_alloc(objc_opt_class());
-  if (v4)
+  if (fileURL)
   {
-    v6 = [(_SWPendingCollaboration *)self fileURL];
-    v7 = [v5 initWithFileAtURL:v6];
+    fileURL2 = [(_SWPendingCollaboration *)self fileURL];
+    v7 = [v5 initWithFileAtURL:fileURL2];
   }
 
   else
   {
-    v6 = [(_SWPendingCollaboration *)self collaborationMetadata];
-    v7 = [v5 initWithMetadata:v6];
+    fileURL2 = [(_SWPendingCollaboration *)self collaborationMetadata];
+    v7 = [v5 initWithMetadata:fileURL2];
   }
 
   v8 = v7;
@@ -297,16 +297,16 @@ LABEL_15:
   return v8;
 }
 
-- (_SWPendingCollaboration)initWithCoder:(id)a3
+- (_SWPendingCollaboration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_fileURL);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_collaborationMetadata);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   if (v7)
   {
@@ -323,16 +323,16 @@ LABEL_15:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_SWPendingCollaboration *)self fileURL];
+  coderCopy = coder;
+  fileURL = [(_SWPendingCollaboration *)self fileURL];
   v6 = NSStringFromSelector(sel_fileURL);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:fileURL forKey:v6];
 
-  v8 = [(_SWPendingCollaboration *)self collaborationMetadata];
+  collaborationMetadata = [(_SWPendingCollaboration *)self collaborationMetadata];
   v7 = NSStringFromSelector(sel_collaborationMetadata);
-  [v4 encodeObject:v8 forKey:v7];
+  [coderCopy encodeObject:collaborationMetadata forKey:v7];
 }
 
 @end

@@ -1,108 +1,108 @@
 @interface CPLPersonChange
-+ (id)ckValueForRelatedRecord:(id)a3;
-- (void)fillCKRecordBuilder:(id)a3 scopeProvider:(id)a4;
-- (void)fillWithCKRecord:(id)a3;
++ (id)ckValueForRelatedRecord:(id)record;
+- (void)fillCKRecordBuilder:(id)builder scopeProvider:(id)provider;
+- (void)fillWithCKRecord:(id)record;
 @end
 
 @implementation CPLPersonChange
 
-+ (id)ckValueForRelatedRecord:(id)a3
++ (id)ckValueForRelatedRecord:(id)record
 {
-  v3 = a3;
-  v4 = [[CKReference alloc] initWithRecord:v3 action:0];
+  recordCopy = record;
+  v4 = [[CKReference alloc] initWithRecord:recordCopy action:0];
 
   return v4;
 }
 
-- (void)fillWithCKRecord:(id)a3
+- (void)fillWithCKRecord:(id)record
 {
-  v21 = a3;
-  v4 = self;
-  v5 = [v21 cpl_legacyDecryptedObjectForKey:@"personFullNameEnc" validateClass:objc_opt_class()];
-  [(CPLPersonChange *)v4 setFullName:v5];
+  recordCopy = record;
+  selfCopy = self;
+  v5 = [recordCopy cpl_legacyDecryptedObjectForKey:@"personFullNameEnc" validateClass:objc_opt_class()];
+  [(CPLPersonChange *)selfCopy setFullName:v5];
 
-  v6 = [v21 cpl_objectForKey:@"personType" validateClass:objc_opt_class()];
+  v6 = [recordCopy cpl_objectForKey:@"personType" validateClass:objc_opt_class()];
   v7 = v6;
   if (!v6)
   {
     v6 = &off_10028EE30;
   }
 
-  -[CPLPersonChange setPersonType:](v4, "setPersonType:", [v6 integerValue]);
+  -[CPLPersonChange setPersonType:](selfCopy, "setPersonType:", [v6 integerValue]);
 
-  v8 = [v21 cpl_objectForKey:@"manualSortOrder" validateClass:objc_opt_class()];
+  v8 = [recordCopy cpl_objectForKey:@"manualSortOrder" validateClass:objc_opt_class()];
   v9 = v8;
   if (!v8)
   {
     v8 = &off_10028EE30;
   }
 
-  -[CPLPersonChange setManualSortOrder:](v4, "setManualSortOrder:", [v8 integerValue]);
+  -[CPLPersonChange setManualSortOrder:](selfCopy, "setManualSortOrder:", [v8 integerValue]);
 
   if (+[CPLPersonChange serverSupportsAssetSortOrder])
   {
-    v10 = [v21 cpl_legacyDecryptedObjectForKey:@"sortAscendingEnc" validateClass:objc_opt_class()];
+    v10 = [recordCopy cpl_legacyDecryptedObjectForKey:@"sortAscendingEnc" validateClass:objc_opt_class()];
     v11 = v10;
     if (!v10)
     {
       v10 = &off_10028EE30;
     }
 
-    -[CPLPersonChange setAssetSortOrder:](v4, "setAssetSortOrder:", [v10 integerValue]);
+    -[CPLPersonChange setAssetSortOrder:](selfCopy, "setAssetSortOrder:", [v10 integerValue]);
   }
 
-  v12 = [v21 cpl_legacyDecryptedObjectForKey:@"displayName" validateClass:objc_opt_class()];
-  [(CPLPersonChange *)v4 setDisplayName:v12];
+  v12 = [recordCopy cpl_legacyDecryptedObjectForKey:@"displayName" validateClass:objc_opt_class()];
+  [(CPLPersonChange *)selfCopy setDisplayName:v12];
 
-  v13 = [v21 cpl_legacyDecryptedObjectForKey:@"contactDescriptor" validateClass:objc_opt_class()];
-  [(CPLPersonChange *)v4 setContactDescriptor:v13];
+  v13 = [recordCopy cpl_legacyDecryptedObjectForKey:@"contactDescriptor" validateClass:objc_opt_class()];
+  [(CPLPersonChange *)selfCopy setContactDescriptor:v13];
 
   if (+[CPLPersonChange serverSupportsGraphPeopleHome])
   {
-    v14 = [v21 objectForKey:@"verifiedType"];
-    -[CPLPersonChange setVerifiedType:](v4, "setVerifiedType:", [v14 integerValue]);
+    v14 = [recordCopy objectForKey:@"verifiedType"];
+    -[CPLPersonChange setVerifiedType:](selfCopy, "setVerifiedType:", [v14 integerValue]);
   }
 
   if (+[CPLPersonChange serverSupportsDetectionType])
   {
-    v15 = [v21 cpl_legacyDecryptedObjectForKey:@"detectionTypeEnc" validateClass:objc_opt_class()];
+    v15 = [recordCopy cpl_legacyDecryptedObjectForKey:@"detectionTypeEnc" validateClass:objc_opt_class()];
     v16 = v15;
     if (!v15)
     {
       v15 = &off_10028EE30;
     }
 
-    -[CPLPersonChange setDetectionType:](v4, "setDetectionType:", [v15 integerValue]);
+    -[CPLPersonChange setDetectionType:](selfCopy, "setDetectionType:", [v15 integerValue]);
   }
 
   if (+[CPLPersonChange serverSupportsMergeTargetRef])
   {
-    v17 = [v21 objectForKey:@"mergeTargetRef"];
+    v17 = [recordCopy objectForKey:@"mergeTargetRef"];
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 recordID];
-      v20 = [v19 recordName];
+      recordID = [v17 recordID];
+      recordName = [recordID recordName];
 
-      [(CPLPersonChange *)v4 setMergeTargetPersonIdentifier:v20];
+      [(CPLPersonChange *)selfCopy setMergeTargetPersonIdentifier:recordName];
     }
   }
 }
 
-- (void)fillCKRecordBuilder:(id)a3 scopeProvider:(id)a4
+- (void)fillCKRecordBuilder:(id)builder scopeProvider:(id)provider
 {
-  v27 = a3;
-  v6 = self;
-  v7 = [a4 fingerprintContext];
-  if ([(CPLPersonChange *)v6 hasChangeType:2])
+  builderCopy = builder;
+  selfCopy = self;
+  fingerprintContext = [provider fingerprintContext];
+  if ([(CPLPersonChange *)selfCopy hasChangeType:2])
   {
-    if ([(CPLPersonChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"fullName")])
+    if ([(CPLPersonChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"fullName")])
     {
-      v8 = [(CPLPersonChange *)v6 fullName];
-      v9 = v8;
-      if (v8)
+      fullName = [(CPLPersonChange *)selfCopy fullName];
+      v9 = fullName;
+      if (fullName)
       {
-        v10 = v8;
+        v10 = fullName;
       }
 
       else
@@ -112,34 +112,34 @@
 
       v11 = v10;
 
-      [v27 setLegacyEncryptedObject:v11 forKey:@"personFullNameEnc"];
+      [builderCopy setLegacyEncryptedObject:v11 forKey:@"personFullNameEnc"];
     }
 
-    if ([(CPLPersonChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"personType")])
+    if ([(CPLPersonChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"personType")])
     {
-      v12 = [NSNumber numberWithInteger:[(CPLPersonChange *)v6 personType]];
-      [v27 setObject:v12 forKey:@"personType"];
+      v12 = [NSNumber numberWithInteger:[(CPLPersonChange *)selfCopy personType]];
+      [builderCopy setObject:v12 forKey:@"personType"];
     }
 
-    if ([(CPLPersonChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"manualSortOrder")])
+    if ([(CPLPersonChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"manualSortOrder")])
     {
-      v13 = [NSNumber numberWithInteger:[(CPLPersonChange *)v6 manualSortOrder]];
-      [v27 setObject:v13 forKey:@"manualSortOrder"];
+      v13 = [NSNumber numberWithInteger:[(CPLPersonChange *)selfCopy manualSortOrder]];
+      [builderCopy setObject:v13 forKey:@"manualSortOrder"];
     }
 
-    if (+[CPLPersonChange serverSupportsAssetSortOrder]&& [(CPLPersonChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"assetSortOrder")])
+    if (+[CPLPersonChange serverSupportsAssetSortOrder]&& [(CPLPersonChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"assetSortOrder")])
     {
-      v14 = [NSNumber numberWithInteger:[(CPLPersonChange *)v6 assetSortOrder]];
-      [v27 setLegacyEncryptedObject:v14 forKey:@"sortAscendingEnc"];
+      v14 = [NSNumber numberWithInteger:[(CPLPersonChange *)selfCopy assetSortOrder]];
+      [builderCopy setLegacyEncryptedObject:v14 forKey:@"sortAscendingEnc"];
     }
 
-    if ([(CPLPersonChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"displayName")])
+    if ([(CPLPersonChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"displayName")])
     {
-      v15 = [(CPLPersonChange *)v6 displayName];
-      v16 = v15;
-      if (v15)
+      displayName = [(CPLPersonChange *)selfCopy displayName];
+      v16 = displayName;
+      if (displayName)
       {
-        v17 = v15;
+        v17 = displayName;
       }
 
       else
@@ -149,45 +149,45 @@
 
       v18 = v17;
 
-      [v27 setLegacyEncryptedObject:v18 forKey:@"displayName"];
+      [builderCopy setLegacyEncryptedObject:v18 forKey:@"displayName"];
     }
 
-    if ([(CPLPersonChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"contactDescriptor")])
+    if ([(CPLPersonChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"contactDescriptor")])
     {
-      v19 = [(CPLPersonChange *)v6 contactDescriptor];
-      if (v19)
+      contactDescriptor = [(CPLPersonChange *)selfCopy contactDescriptor];
+      if (contactDescriptor)
       {
-        [v27 setLegacyEncryptedObject:v19 forKey:@"contactDescriptor"];
+        [builderCopy setLegacyEncryptedObject:contactDescriptor forKey:@"contactDescriptor"];
       }
     }
 
-    if ([(CPLPersonChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"verifiedType")]&& +[CPLPersonChange serverSupportsGraphPeopleHome]&& [(CPLPersonChange *)v6 verifiedType])
+    if ([(CPLPersonChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"verifiedType")]&& +[CPLPersonChange serverSupportsGraphPeopleHome]&& [(CPLPersonChange *)selfCopy verifiedType])
     {
-      v20 = [NSNumber numberWithInteger:[(CPLPersonChange *)v6 verifiedType]];
-      [v27 setObject:v20 forKey:@"verifiedType"];
+      v20 = [NSNumber numberWithInteger:[(CPLPersonChange *)selfCopy verifiedType]];
+      [builderCopy setObject:v20 forKey:@"verifiedType"];
     }
 
-    if (+[CPLPersonChange serverSupportsDetectionType]&& [(CPLPersonChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"detectionType")])
+    if (+[CPLPersonChange serverSupportsDetectionType]&& [(CPLPersonChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"detectionType")])
     {
-      v21 = [NSNumber numberWithShort:[(CPLPersonChange *)v6 detectionType]];
-      [v27 setLegacyEncryptedObject:v21 forKey:@"detectionTypeEnc"];
+      v21 = [NSNumber numberWithShort:[(CPLPersonChange *)selfCopy detectionType]];
+      [builderCopy setLegacyEncryptedObject:v21 forKey:@"detectionTypeEnc"];
     }
 
-    if ([(CPLPersonChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"mergeTargetPersonIdentifier")])
+    if ([(CPLPersonChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"mergeTargetPersonIdentifier")])
     {
       if (+[CPLPersonChange serverSupportsMergeTargetRef])
       {
-        v22 = [(CPLPersonChange *)v6 mergeTargetPersonIdentifier];
-        if (v22)
+        mergeTargetPersonIdentifier = [(CPLPersonChange *)selfCopy mergeTargetPersonIdentifier];
+        if (mergeTargetPersonIdentifier)
         {
-          v23 = v22;
+          v23 = mergeTargetPersonIdentifier;
           v24 = [CPLScopedIdentifier alloc];
-          v25 = [(CPLPersonChange *)v6 scopedIdentifier];
-          v26 = [v24 initRelativeToScopedIdentifier:v25 identifier:v23];
+          scopedIdentifier = [(CPLPersonChange *)selfCopy scopedIdentifier];
+          v26 = [v24 initRelativeToScopedIdentifier:scopedIdentifier identifier:v23];
 
           if (v26)
           {
-            [v27 setCKReferenceWithScopedIdentifier:v26 forKey:@"mergeTargetRef" referenceAction:0];
+            [builderCopy setCKReferenceWithScopedIdentifier:v26 forKey:@"mergeTargetRef" referenceAction:0];
           }
         }
       }

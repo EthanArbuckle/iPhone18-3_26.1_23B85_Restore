@@ -1,15 +1,15 @@
 @interface SKUISeparatorView
-- (void)drawRect:(CGRect)a3;
-- (void)setColor1:(id)a3;
-- (void)setColor2:(id)a3;
-- (void)setSeparatorStyle:(int64_t)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setColor1:(id)color1;
+- (void)setColor2:(id)color2;
+- (void)setSeparatorStyle:(int64_t)style;
 @end
 
 @implementation SKUISeparatorView
 
-- (void)setColor1:(id)a3
+- (void)setColor1:(id)color1
 {
-  v4 = a3;
+  color1Copy = color1;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -22,9 +22,9 @@
     }
   }
 
-  if (self->_color1 != v4)
+  if (self->_color1 != color1Copy)
   {
-    v13 = [(UIColor *)v4 copy];
+    v13 = [(UIColor *)color1Copy copy];
     color1 = self->_color1;
     self->_color1 = v13;
 
@@ -32,9 +32,9 @@
   }
 }
 
-- (void)setColor2:(id)a3
+- (void)setColor2:(id)color2
 {
-  v4 = a3;
+  color2Copy = color2;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -47,9 +47,9 @@
     }
   }
 
-  if (self->_color2 != v4)
+  if (self->_color2 != color2Copy)
   {
-    v13 = [(UIColor *)v4 copy];
+    v13 = [(UIColor *)color2Copy copy];
     color2 = self->_color2;
     self->_color2 = v13;
 
@@ -57,7 +57,7 @@
   }
 }
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
   if (os_variant_has_internal_content())
   {
@@ -71,14 +71,14 @@
     }
   }
 
-  if (self->_separatorStyle != a3)
+  if (self->_separatorStyle != style)
   {
-    self->_separatorStyle = a3;
+    self->_separatorStyle = style;
     [(SKUISeparatorView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {

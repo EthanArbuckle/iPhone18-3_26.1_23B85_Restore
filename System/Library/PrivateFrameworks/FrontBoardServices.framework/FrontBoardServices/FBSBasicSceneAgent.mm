@@ -1,11 +1,11 @@
 @interface FBSBasicSceneAgent
 - (FBSSceneHandle)scene;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)didReceiveMessage:(id)a3 fromCounterpartAgent:(id)a4 withResponseSender:(id)a5;
-- (void)scene:(id)a3 reviewEvent:(id)a4 withCompletion:(id)a5;
+- (void)didReceiveMessage:(id)message fromCounterpartAgent:(id)agent withResponseSender:(id)sender;
+- (void)scene:(id)scene reviewEvent:(id)event withCompletion:(id)completion;
 @end
 
 @implementation FBSBasicSceneAgent
@@ -14,69 +14,69 @@
 {
   v3 = [off_1E76BC9B0 builderWithObject:self];
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v5 = [WeakRetained identifier];
-  v6 = [v3 appendObject:v5 withName:@"sceneID" skipIfNil:1];
+  identifier = [WeakRetained identifier];
+  v6 = [v3 appendObject:identifier withName:@"sceneID" skipIfNil:1];
 
   return v3;
 }
 
-- (void)didReceiveMessage:(id)a3 fromCounterpartAgent:(id)a4 withResponseSender:(id)a5
+- (void)didReceiveMessage:(id)message fromCounterpartAgent:(id)agent withResponseSender:(id)sender
 {
-  if (a5)
+  if (sender)
   {
-    (*(a5 + 2))(a5, 0);
+    (*(sender + 2))(sender, 0);
   }
 }
 
-- (void)scene:(id)a3 reviewEvent:(id)a4 withCompletion:(id)a5
+- (void)scene:(id)scene reviewEvent:(id)event withCompletion:(id)completion
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  eventCopy = event;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
 
-  if (WeakRetained != v12)
+  if (WeakRetained != sceneCopy)
   {
     [FBSBasicSceneAgent scene:a2 reviewEvent:? withCompletion:?];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(FBSBasicSceneAgent *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSBasicSceneAgent *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSBasicSceneAgent *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSBasicSceneAgent *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v6 = [(FBSBasicSceneAgent *)self succinctDescriptionBuilder];
-  v7 = v6;
+  succinctDescriptionBuilder = [(FBSBasicSceneAgent *)self succinctDescriptionBuilder];
+  v7 = succinctDescriptionBuilder;
   if (WeakRetained)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __60__FBSBasicSceneAgent_descriptionBuilderWithMultilinePrefix___block_invoke;
     v9[3] = &unk_1E76BCD60;
-    v10 = v6;
+    v10 = succinctDescriptionBuilder;
     v11 = WeakRetained;
-    [v10 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+    [v10 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
   }
 
   return v7;

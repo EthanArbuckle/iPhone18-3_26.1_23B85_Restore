@@ -1,39 +1,39 @@
 @interface HAPSRPPairSetupSession
-+ (BOOL)isValidSetupCode:(id)a3;
++ (BOOL)isValidSetupCode:(id)code;
 + (id)logCategory;
 + (void)initialize;
 - (BOOL)_initializeSession;
-- (BOOL)handleSavePeerRequestWithPeerIdentity:(id)a3 error:(id *)a4;
+- (BOOL)handleSavePeerRequestWithPeerIdentity:(id)identity error:(id *)error;
 - (BOOL)isSecureSession;
 - (HAPPairSetupSessionDelegate)delegate;
 - (HAPSRPPairSetupSession)init;
-- (HAPSRPPairSetupSession)initWithRole:(int64_t)a3 pairSetupType:(unint64_t)a4 delegate:(id)a5;
-- (id)_handleLocalPairingIdentityRequestWithStatus:(int *)a3;
-- (id)_showSetupCodeWithError:(id *)a3;
-- (id)decryptData:(id)a3 additionalAuthenticatedData:(id)a4 error:(id *)a5;
-- (id)descriptionWithPointer:(BOOL)a3;
-- (id)encryptData:(id)a3 additionalAuthenticatedData:(id)a4 error:(id *)a5;
+- (HAPSRPPairSetupSession)initWithRole:(int64_t)role pairSetupType:(unint64_t)type delegate:(id)delegate;
+- (id)_handleLocalPairingIdentityRequestWithStatus:(int *)status;
+- (id)_showSetupCodeWithError:(id *)error;
+- (id)decryptData:(id)data additionalAuthenticatedData:(id)authenticatedData error:(id *)error;
+- (id)descriptionWithPointer:(BOOL)pointer;
+- (id)encryptData:(id)data additionalAuthenticatedData:(id)authenticatedData error:(id *)error;
 - (id)getCertificate;
 - (id)logIdentifier;
 - (id)shortDescription;
 - (void)_handleBackoffExpiration;
 - (void)_handlePairSetupExchangeComplete;
-- (void)_handleProductData:(id)a3;
+- (void)_handleProductData:(id)data;
 - (void)_initializeServer;
 - (void)_initiateClientPairSetupExchange;
 - (void)_invalidate;
-- (void)_processSetupCode:(id)a3 error:(id)a4;
-- (void)_processSetupExchangeData:(id)a3 error:(id)a4;
-- (void)_stopWithError:(id)a3;
+- (void)_processSetupCode:(id)code error:(id)error;
+- (void)_processSetupExchangeData:(id)data error:(id)error;
+- (void)_stopWithError:(id)error;
 - (void)dealloc;
 - (void)generateSessionKeys;
-- (void)handleBackoffRequestWithTimeout:(double)a3;
-- (void)handleInvalidSetupCodeAndRestart:(BOOL)a3;
+- (void)handleBackoffRequestWithTimeout:(double)timeout;
+- (void)handleInvalidSetupCodeAndRestart:(BOOL)restart;
 - (void)handleSetupCodeRequest;
-- (void)receivedSetupExchangeData:(id)a3 error:(id)a4;
+- (void)receivedSetupExchangeData:(id)data error:(id)error;
 - (void)start;
-- (void)stopWithError:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)stopWithError:(id)error;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HAPSRPPairSetupSession
@@ -47,11 +47,11 @@
 
 - (id)logIdentifier
 {
-  v3 = [(HAPSRPPairSetupSession *)self delegate];
+  delegate = [(HAPSRPPairSetupSession *)self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = delegate;
   }
 
   else
@@ -63,48 +63,48 @@
 
   v6 = MEMORY[0x277CCACA8];
   v7 = objc_opt_class();
-  v8 = [v5 identifier];
+  identifier = [v5 identifier];
 
-  v9 = [(HAPSRPPairSetupSession *)self state];
-  if (v9 > 2)
+  state = [(HAPSRPPairSetupSession *)self state];
+  if (state > 2)
   {
     v10 = @"unknown";
   }
 
   else
   {
-    v10 = off_2786D50C0[v9];
+    v10 = off_2786D50C0[state];
   }
 
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HAPSRPPairSetupSession pairSetupType](self, "pairSetupType")}];
-  v12 = [v6 stringWithFormat:@"%@ %@(%@ %@)", v7, v8, v10, v11];
+  v12 = [v6 stringWithFormat:@"%@ %@(%@ %@)", v7, identifier, v10, v11];
 
   return v12;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HAPSRPPairSetupSession *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  clientQueue = [(HAPSRPPairSetupSession *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v6 = [(HAPSRPPairSetupSession *)self backoffTimer];
+  backoffTimer = [(HAPSRPPairSetupSession *)self backoffTimer];
 
-  if (v6 == v4)
+  if (backoffTimer == fireCopy)
   {
 
     [(HAPSRPPairSetupSession *)self _handleBackoffExpiration];
   }
 }
 
-- (id)decryptData:(id)a3 additionalAuthenticatedData:(id)a4 error:(id *)a5
+- (id)decryptData:(id)data additionalAuthenticatedData:(id)authenticatedData error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  dataCopy = data;
+  authenticatedDataCopy = authenticatedData;
+  if (!dataCopy)
   {
-    if (a5)
+    if (error)
     {
       v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:-6705 userInfo:0];
       goto LABEL_9;
@@ -113,10 +113,10 @@
     goto LABEL_13;
   }
 
-  if ([v8 length] <= 0xF)
+  if ([dataCopy length] <= 0xF)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -124,17 +124,17 @@
       *buf = 138543618;
       *&buf[4] = v13;
       *&buf[12] = 2048;
-      *&buf[14] = [v8 length];
+      *&buf[14] = [dataCopy length];
       _os_log_impl(&dword_22AADC000, v12, OS_LOG_TYPE_ERROR, "%{public}@The encrypted data has an invalid length of %tu bytes", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
-    if (a5)
+    if (error)
     {
       v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:-6743 userInfo:0];
 LABEL_9:
       v15 = 0;
-      *a5 = v14;
+      *error = v14;
       goto LABEL_14;
     }
 
@@ -155,21 +155,21 @@ LABEL_13:
   v27 = __Block_byref_object_copy__15106;
   v28 = __Block_byref_object_dispose__15107;
   v29 = 0;
-  v16 = [(HAPSRPPairSetupSession *)self clientQueue];
+  clientQueue = [(HAPSRPPairSetupSession *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__HAPSRPPairSetupSession_decryptData_additionalAuthenticatedData_error___block_invoke;
   block[3] = &unk_2786D50A0;
   block[4] = self;
   v22 = &v24;
-  v20 = v8;
+  v20 = dataCopy;
   v23 = buf;
-  v21 = v9;
-  dispatch_sync(v16, block);
+  v21 = authenticatedDataCopy;
+  dispatch_sync(clientQueue, block);
 
-  if (a5)
+  if (error)
   {
-    *a5 = v25[5];
+    *error = v25[5];
   }
 
   v15 = *(*&buf[8] + 40);
@@ -274,11 +274,11 @@ void __72__HAPSRPPairSetupSession_decryptData_additionalAuthenticatedData_error_
   }
 }
 
-- (id)encryptData:(id)a3 additionalAuthenticatedData:(id)a4 error:(id *)a5
+- (id)encryptData:(id)data additionalAuthenticatedData:(id)authenticatedData error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  dataCopy = data;
+  authenticatedDataCopy = authenticatedData;
+  if (dataCopy)
   {
     v24 = 0;
     v25 = &v24;
@@ -292,7 +292,7 @@ void __72__HAPSRPPairSetupSession_decryptData_additionalAuthenticatedData_error_
     v21 = __Block_byref_object_copy__15106;
     v22 = __Block_byref_object_dispose__15107;
     v23 = 0;
-    v10 = [(HAPSRPPairSetupSession *)self clientQueue];
+    clientQueue = [(HAPSRPPairSetupSession *)self clientQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __72__HAPSRPPairSetupSession_encryptData_additionalAuthenticatedData_error___block_invoke;
@@ -300,13 +300,13 @@ void __72__HAPSRPPairSetupSession_decryptData_additionalAuthenticatedData_error_
     block[4] = self;
     v16 = &v18;
     v17 = &v24;
-    v14 = v8;
-    v15 = v9;
-    dispatch_sync(v10, block);
+    v14 = dataCopy;
+    v15 = authenticatedDataCopy;
+    dispatch_sync(clientQueue, block);
 
-    if (a5)
+    if (error)
     {
-      *a5 = v19[5];
+      *error = v19[5];
     }
 
     v11 = v25[5];
@@ -315,10 +315,10 @@ void __72__HAPSRPPairSetupSession_decryptData_additionalAuthenticatedData_error_
     _Block_object_dispose(&v24, 8);
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:-6705 userInfo:0];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -409,23 +409,23 @@ void __72__HAPSRPPairSetupSession_encryptData_additionalAuthenticatedData_error_
 
 - (BOOL)isSecureSession
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(HAPSRPPairSetupSession *)self clientQueue];
+  clientQueue = [(HAPSRPPairSetupSession *)self clientQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __41__HAPSRPPairSetupSession_isSecureSession__block_invoke;
   v5[3] = &unk_2786D6E60;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(clientQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __41__HAPSRPPairSetupSession_isSecureSession__block_invoke(uint64_t a1)
@@ -451,14 +451,14 @@ void __41__HAPSRPPairSetupSession_isSecureSession__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__15106;
   v11 = __Block_byref_object_dispose__15107;
   v12 = 0;
-  v3 = [(HAPSRPPairSetupSession *)self clientQueue];
+  clientQueue = [(HAPSRPPairSetupSession *)self clientQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__HAPSRPPairSetupSession_getCertificate__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(clientQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -478,13 +478,13 @@ uint64_t __40__HAPSRPPairSetupSession_getCertificate__block_invoke(uint64_t a1)
 
 - (void)generateSessionKeys
 {
-  v3 = [(HAPSRPPairSetupSession *)self clientQueue];
+  clientQueue = [(HAPSRPPairSetupSession *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__HAPSRPPairSetupSession_generateSessionKeys__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
 void __45__HAPSRPPairSetupSession_generateSessionKeys__block_invoke(uint64_t a1)
@@ -552,11 +552,11 @@ void __45__HAPSRPPairSetupSession_generateSessionKeys__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopWithError:(id)a3
+- (void)_stopWithError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     v9 = 0;
     if ([(HAPSRPPairSetupSession *)self pairSetupType]!= 5)
@@ -569,7 +569,7 @@ void __45__HAPSRPPairSetupSession_generateSessionKeys__block_invoke(uint64_t a1)
       [(HAPSRPPairSetupSession *)self pairingSession];
       v10 = PairingSessionCopyProperty();
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
@@ -586,7 +586,7 @@ void __45__HAPSRPPairSetupSession_generateSessionKeys__block_invoke(uint64_t a1)
       objc_autoreleasePoolPop(v11);
       if (v10)
       {
-        [(HAPSRPPairSetupSession *)v12 setCertificate:v10];
+        [(HAPSRPPairSetupSession *)selfCopy setCertificate:v10];
         CFRelease(v10);
       }
     }
@@ -599,41 +599,41 @@ void __45__HAPSRPPairSetupSession_generateSessionKeys__block_invoke(uint64_t a1)
   }
 
   [(HAPSRPPairSetupSession *)self setState:2];
-  v5 = [(HAPSRPPairSetupSession *)self delegate];
+  delegate = [(HAPSRPPairSetupSession *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(HAPSRPPairSetupSession *)self delegate];
-    [v7 pairSetupSession:self didStopWithError:v4];
+    delegate2 = [(HAPSRPPairSetupSession *)self delegate];
+    [delegate2 pairSetupSession:self didStopWithError:errorCopy];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopWithError:(id)a3
+- (void)stopWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HAPSRPPairSetupSession *)self clientQueue];
+  errorCopy = error;
+  clientQueue = [(HAPSRPPairSetupSession *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__HAPSRPPairSetupSession_stopWithError___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = errorCopy;
+  v6 = errorCopy;
+  dispatch_async(clientQueue, v7);
 }
 
 - (void)start
 {
-  v3 = [(HAPSRPPairSetupSession *)self clientQueue];
+  clientQueue = [(HAPSRPPairSetupSession *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__HAPSRPPairSetupSession_start__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
 uint64_t __31__HAPSRPPairSetupSession_start__block_invoke(uint64_t a1)
@@ -668,20 +668,20 @@ uint64_t __31__HAPSRPPairSetupSession_start__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_handleProductData:(id)a3
+- (void)_handleProductData:(id)data
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAPSRPPairSetupSession *)self delegate];
-  if ([v5 conformsToProtocol:&unk_283EBEC68])
+  dataCopy = data;
+  delegate = [(HAPSRPPairSetupSession *)self delegate];
+  if ([delegate conformsToProtocol:&unk_283EBEC68])
   {
-    v6 = [(HAPSRPPairSetupSession *)self delegate];
+    delegate2 = [(HAPSRPPairSetupSession *)self delegate];
 
-    if (v6)
+    if (delegate2)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v6 pairSetupSession:self didReceiveProductData:v4];
+        [delegate2 pairSetupSession:self didReceiveProductData:dataCopy];
       }
 
       goto LABEL_9;
@@ -693,7 +693,7 @@ uint64_t __31__HAPSRPPairSetupSession_start__block_invoke(uint64_t a1)
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -704,13 +704,13 @@ uint64_t __31__HAPSRPPairSetupSession_start__block_invoke(uint64_t a1)
   }
 
   objc_autoreleasePoolPop(v7);
-  v6 = 0;
+  delegate2 = 0;
 LABEL_9:
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_showSetupCodeWithError:(id *)a3
+- (id)_showSetupCodeWithError:(id *)error
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -723,12 +723,12 @@ LABEL_9:
   objc_exception_throw(v8);
 }
 
-- (BOOL)handleSavePeerRequestWithPeerIdentity:(id)a3 error:(id *)a4
+- (BOOL)handleSavePeerRequestWithPeerIdentity:(id)identity error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identityCopy = identity;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -736,17 +736,17 @@ LABEL_9:
     *buf = 138543618;
     v28 = v10;
     v29 = 2112;
-    v30 = v6;
+    v30 = identityCopy;
     _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_INFO, "%{public}@Received request to save peer '%@'", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [(HAPSRPPairSetupSession *)v8 delegate];
-  v12 = v11;
-  if (v11)
+  delegate = [(HAPSRPPairSetupSession *)selfCopy delegate];
+  v12 = delegate;
+  if (delegate)
   {
     v26 = 0;
-    v13 = [v11 pairSetupSession:v8 didPairWithPeer:v6 error:&v26];
+    v13 = [delegate pairSetupSession:selfCopy didPairWithPeer:identityCopy error:&v26];
     v14 = v26;
     if (v13)
     {
@@ -755,7 +755,7 @@ LABEL_9:
     }
 
     v20 = objc_autoreleasePoolPush();
-    v17 = v8;
+    v17 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -773,7 +773,7 @@ LABEL_9:
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = v8;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -788,11 +788,11 @@ LABEL_9:
   }
 
   [(HAPSRPPairSetupSession *)v17 stopWithError:v14];
-  if (a4)
+  if (error)
   {
     v23 = v14;
     v15 = 0;
-    *a4 = v14;
+    *error = v14;
   }
 
   else
@@ -810,7 +810,7 @@ LABEL_15:
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -821,21 +821,21 @@ LABEL_15:
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HAPSRPPairSetupSession *)v4 setBackoffTimer:0];
-  [(HAPSRPPairSetupSession *)v4 handleSetupCodeRequest];
+  [(HAPSRPPairSetupSession *)selfCopy setBackoffTimer:0];
+  [(HAPSRPPairSetupSession *)selfCopy handleSetupCodeRequest];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleBackoffRequestWithTimeout:(double)a3
+- (void)handleBackoffRequestWithTimeout:(double)timeout
 {
-  v5 = [(HAPSRPPairSetupSession *)self clientQueue];
+  clientQueue = [(HAPSRPPairSetupSession *)self clientQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__HAPSRPPairSetupSession_handleBackoffRequestWithTimeout___block_invoke;
   v6[3] = &unk_2786D63C8;
   v6[4] = self;
-  *&v6[5] = a3;
-  dispatch_async(v5, v6);
+  *&v6[5] = timeout;
+  dispatch_async(clientQueue, v6);
 }
 
 void __58__HAPSRPPairSetupSession_handleBackoffRequestWithTimeout___block_invoke(uint64_t a1)
@@ -910,16 +910,16 @@ void __58__HAPSRPPairSetupSession_handleBackoffRequestWithTimeout___block_invoke
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleInvalidSetupCodeAndRestart:(BOOL)a3
+- (void)handleInvalidSetupCodeAndRestart:(BOOL)restart
 {
-  v5 = [(HAPSRPPairSetupSession *)self clientQueue];
+  clientQueue = [(HAPSRPPairSetupSession *)self clientQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__HAPSRPPairSetupSession_handleInvalidSetupCodeAndRestart___block_invoke;
   v6[3] = &unk_2786D6768;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  restartCopy = restart;
+  dispatch_async(clientQueue, v6);
 }
 
 void __59__HAPSRPPairSetupSession_handleInvalidSetupCodeAndRestart___block_invoke(uint64_t a1)
@@ -962,15 +962,15 @@ void __59__HAPSRPPairSetupSession_handleInvalidSetupCodeAndRestart___block_invok
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processSetupCode:(id)a3 error:(id)a4
+- (void)_processSetupCode:(id)code error:(id)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  codeCopy = code;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -978,22 +978,22 @@ void __59__HAPSRPPairSetupSession_handleInvalidSetupCodeAndRestart___block_invok
       v27 = 138543618;
       v28 = v11;
       v29 = 2112;
-      v30 = v7;
+      v30 = errorCopy;
       _os_log_impl(&dword_22AADC000, v10, OS_LOG_TYPE_ERROR, "%{public}@Failed to get setup code with error: %@", &v27, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v12 = [MEMORY[0x277CCA9B8] hapErrorWithCode:2 description:@"Pair Setup failed." reason:@"An error occurred getting the setup code." suggestion:0 underlyingError:v7];
-    [(HAPSRPPairSetupSession *)v9 _stopWithError:v12];
+    v12 = [MEMORY[0x277CCA9B8] hapErrorWithCode:2 description:@"Pair Setup failed." reason:@"An error occurred getting the setup code." suggestion:0 underlyingError:errorCopy];
+    [(HAPSRPPairSetupSession *)selfCopy _stopWithError:v12];
 LABEL_5:
 
     goto LABEL_17;
   }
 
   [(HAPSRPPairSetupSession *)self setHandlingInvalidSetupCode:0];
-  v13 = [HAPSRPPairSetupSession isValidSetupCode:v6];
+  v13 = [HAPSRPPairSetupSession isValidSetupCode:codeCopy];
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy2 = self;
   v16 = HMFGetOSLogHandle();
   v17 = v16;
   if (v13)
@@ -1004,23 +1004,23 @@ LABEL_5:
       v27 = 138543618;
       v28 = v18;
       v29 = 2112;
-      v30 = v6;
+      v30 = codeCopy;
       _os_log_impl(&dword_22AADC000, v17, OS_LOG_TYPE_INFO, "%{public}@Processing received setup code: %@", &v27, 0x16u);
     }
 
     objc_autoreleasePoolPop(v14);
-    [(HAPSRPPairSetupSession *)v15 pairingSession];
-    [v6 UTF8String];
+    [(HAPSRPPairSetupSession *)selfCopy2 pairingSession];
+    [codeCopy UTF8String];
     v19 = PairingSessionSetSetupCode();
     if (!v19)
     {
-      [(HAPSRPPairSetupSession *)v15 _processSetupExchangeData:0 error:0];
+      [(HAPSRPPairSetupSession *)selfCopy2 _processSetupExchangeData:0 error:0];
       goto LABEL_17;
     }
 
     v12 = [MEMORY[0x277CCA9B8] errorWithOSStatus:v19];
     v20 = objc_autoreleasePoolPush();
-    v21 = v15;
+    v21 = selfCopy2;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -1045,13 +1045,13 @@ LABEL_5:
     v27 = 138543618;
     v28 = v25;
     v29 = 2112;
-    v30 = v6;
+    v30 = codeCopy;
     _os_log_impl(&dword_22AADC000, v17, OS_LOG_TYPE_ERROR, "%{public}@Received invalid setup code '%@'", &v27, 0x16u);
   }
 
   objc_autoreleasePoolPop(v14);
-  [(HAPSRPPairSetupSession *)v15 handleInvalidSetupCodeAndRestart:0];
-  [(HAPSRPPairSetupSession *)v15 handleSetupCodeRequest];
+  [(HAPSRPPairSetupSession *)selfCopy2 handleInvalidSetupCodeAndRestart:0];
+  [(HAPSRPPairSetupSession *)selfCopy2 handleSetupCodeRequest];
 LABEL_17:
 
   v26 = *MEMORY[0x277D85DE8];
@@ -1059,13 +1059,13 @@ LABEL_17:
 
 - (void)handleSetupCodeRequest
 {
-  v3 = [(HAPSRPPairSetupSession *)self clientQueue];
+  clientQueue = [(HAPSRPPairSetupSession *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__HAPSRPPairSetupSession_handleSetupCodeRequest__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
 void __48__HAPSRPPairSetupSession_handleSetupCodeRequest__block_invoke(uint64_t a1)
@@ -1128,7 +1128,7 @@ void __48__HAPSRPPairSetupSession_handleSetupCodeRequest__block_invoke_2(uint64_
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1139,32 +1139,32 @@ void __48__HAPSRPPairSetupSession_handleSetupCodeRequest__block_invoke_2(uint64_
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HAPSRPPairSetupSession *)v4 _stopWithError:0];
+  [(HAPSRPPairSetupSession *)selfCopy _stopWithError:0];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processSetupExchangeData:(id)a3 error:(id)a4
+- (void)_processSetupExchangeData:(id)data error:(id)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  errorCopy = error;
   if ([(HAPSRPPairSetupSession *)self state]!= 1)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [(HAPSRPPairSetupSession *)v13 state];
-      if (v16 > 2)
+      state = [(HAPSRPPairSetupSession *)selfCopy3 state];
+      if (state > 2)
       {
         v17 = @"unknown";
       }
 
       else
       {
-        v17 = off_2786D50C0[v16];
+        v17 = off_2786D50C0[state];
       }
 
       *buf = 138543618;
@@ -1184,10 +1184,10 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v7)
+  if (errorCopy)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -1195,25 +1195,25 @@ LABEL_16:
       *buf = 138543618;
       v34 = v11;
       v35 = 2112;
-      v36 = v7;
+      v36 = errorCopy;
       _os_log_impl(&dword_22AADC000, v10, OS_LOG_TYPE_ERROR, "%{public}@Closing session due to exchange error: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    [(HAPSRPPairSetupSession *)v9 _stopWithError:v7];
+    [(HAPSRPPairSetupSession *)selfCopy2 _stopWithError:errorCopy];
     goto LABEL_17;
   }
 
   [(HAPSRPPairSetupSession *)self pairingSession];
-  [v6 bytes];
-  [v6 length];
+  [dataCopy bytes];
+  [dataCopy length];
   v18 = PairingSessionExchange();
   if (v18)
   {
     if (v18 == -6771)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy3 = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
@@ -1238,7 +1238,7 @@ LABEL_15:
     v26 = [v24 hapErrorWithCode:12 description:@"Failed to process exchange data" reason:0 suggestion:0 underlyingError:v25];
 
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy4 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -1251,35 +1251,35 @@ LABEL_15:
     }
 
     objc_autoreleasePoolPop(v27);
-    [(HAPSRPPairSetupSession *)v28 _stopWithError:v26];
+    [(HAPSRPPairSetupSession *)selfCopy4 _stopWithError:v26];
   }
 
   v31 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:0 length:0];
   if ([v31 length])
   {
-    v32 = [(HAPSRPPairSetupSession *)self delegate];
-    [v32 pairSetupSession:self didReceiveSetupExchangeData:v31];
+    delegate = [(HAPSRPPairSetupSession *)self delegate];
+    [delegate pairSetupSession:self didReceiveSetupExchangeData:v31];
   }
 
 LABEL_17:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedSetupExchangeData:(id)a3 error:(id)a4
+- (void)receivedSetupExchangeData:(id)data error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAPSRPPairSetupSession *)self clientQueue];
+  dataCopy = data;
+  errorCopy = error;
+  clientQueue = [(HAPSRPPairSetupSession *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__HAPSRPPairSetupSession_receivedSetupExchangeData_error___block_invoke;
   block[3] = &unk_2786D7078;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dataCopy;
+  v13 = errorCopy;
+  selfCopy = self;
+  v9 = errorCopy;
+  v10 = dataCopy;
+  dispatch_async(clientQueue, block);
 }
 
 void __58__HAPSRPPairSetupSession_receivedSetupExchangeData_error___block_invoke(uint64_t a1)
@@ -1343,7 +1343,7 @@ void __58__HAPSRPPairSetupSession_receivedSetupExchangeData_error___block_invoke
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1354,15 +1354,15 @@ void __58__HAPSRPPairSetupSession_receivedSetupExchangeData_error___block_invoke
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HAPSRPPairSetupSession *)v4 _processSetupExchangeData:0 error:0];
+  [(HAPSRPPairSetupSession *)selfCopy _processSetupExchangeData:0 error:0];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_handleLocalPairingIdentityRequestWithStatus:(int *)a3
+- (id)_handleLocalPairingIdentityRequestWithStatus:(int *)status
 {
   v28 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1373,17 +1373,17 @@ void __58__HAPSRPPairSetupSession_receivedSetupExchangeData_error___block_invoke
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HAPSRPPairSetupSession *)v6 delegate];
-  v10 = v9;
-  if (v9)
+  delegate = [(HAPSRPPairSetupSession *)selfCopy delegate];
+  v10 = delegate;
+  if (delegate)
   {
     v23 = 0;
-    v11 = [v9 pairSetupSession:v6 didReceiveLocalPairingIdentityRequestWithError:&v23];
+    v11 = [delegate pairSetupSession:selfCopy didReceiveLocalPairingIdentityRequestWithError:&v23];
     v12 = v23;
     if (!v11)
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = v6;
+      v14 = selfCopy;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
@@ -1396,9 +1396,9 @@ void __58__HAPSRPPairSetupSession_receivedSetupExchangeData_error___block_invoke
       }
 
       objc_autoreleasePoolPop(v13);
-      if (a3)
+      if (status)
       {
-        *a3 = -6727;
+        *status = -6727;
       }
     }
   }
@@ -1406,7 +1406,7 @@ void __58__HAPSRPPairSetupSession_receivedSetupExchangeData_error___block_invoke
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v6;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -1418,9 +1418,9 @@ void __58__HAPSRPPairSetupSession_receivedSetupExchangeData_error___block_invoke
 
     objc_autoreleasePoolPop(v17);
     v11 = 0;
-    if (a3)
+    if (status)
     {
-      *a3 = -6705;
+      *status = -6705;
     }
   }
 
@@ -1438,11 +1438,11 @@ void __58__HAPSRPPairSetupSession_receivedSetupExchangeData_error___block_invoke
   v13 = 0u;
   v14[1] = _CopyPairingIdentityDelegateCallback_f_15205;
   v14[3] = _SavePairedPeerDelegateCallback_f_15196;
-  v3 = [(HAPSRPPairSetupSession *)self role];
+  role = [(HAPSRPPairSetupSession *)self role];
   v4 = _PromptForSetupCodeDelegateCallback_f;
-  if (v3)
+  if (role)
   {
-    if (v3 != 1)
+    if (role != 1)
     {
       goto LABEL_6;
     }
@@ -1463,7 +1463,7 @@ LABEL_6:
   if (v6)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -1499,12 +1499,12 @@ LABEL_6:
   return result;
 }
 
-- (id)descriptionWithPointer:(BOOL)a3
+- (id)descriptionWithPointer:(BOOL)pointer
 {
-  v3 = a3;
+  pointerCopy = pointer;
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(HAPSRPPairSetupSession *)self shortDescription];
-  if (v3)
+  shortDescription = [(HAPSRPPairSetupSession *)self shortDescription];
+  if (pointerCopy)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@" %p", self];
   }
@@ -1514,29 +1514,29 @@ LABEL_6:
     v7 = &stru_283E79C60;
   }
 
-  v8 = [(HAPSRPPairSetupSession *)self role];
+  role = [(HAPSRPPairSetupSession *)self role];
   v9 = @"unknown";
   v10 = @"server";
-  if (v8 != 1)
+  if (role != 1)
   {
     v10 = @"unknown";
   }
 
-  if (!v8)
+  if (!role)
   {
     v10 = @"client";
   }
 
   v11 = v10;
-  v12 = [(HAPSRPPairSetupSession *)self state];
-  if (v12 <= 2)
+  state = [(HAPSRPPairSetupSession *)self state];
+  if (state <= 2)
   {
-    v9 = off_2786D50C0[v12];
+    v9 = off_2786D50C0[state];
   }
 
-  v13 = [v5 stringWithFormat:@"<%@%@, Role = %@, State = %@, Type: %tu>", v6, v7, v11, v9, -[HAPSRPPairSetupSession pairSetupType](self, "pairSetupType")];
+  v13 = [v5 stringWithFormat:@"<%@%@, Role = %@, State = %@, Type: %tu>", shortDescription, v7, v11, v9, -[HAPSRPPairSetupSession pairSetupType](self, "pairSetupType")];
 
-  if (v3)
+  if (pointerCopy)
   {
   }
 
@@ -1568,24 +1568,24 @@ LABEL_6:
   [(HAPSRPPairSetupSession *)&v3 dealloc];
 }
 
-- (HAPSRPPairSetupSession)initWithRole:(int64_t)a3 pairSetupType:(unint64_t)a4 delegate:(id)a5
+- (HAPSRPPairSetupSession)initWithRole:(int64_t)role pairSetupType:(unint64_t)type delegate:(id)delegate
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  if (v8)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    if (a3)
+    if (role)
     {
-      if (a3 != 1)
+      if (role != 1)
       {
         v15 = 0;
 LABEL_11:
-        if ([v8 conformsToProtocol:v15])
+        if ([delegateCopy conformsToProtocol:v15])
         {
           v29.receiver = self;
           v29.super_class = HAPSRPPairSetupSession;
           v16 = [(HAPSRPPairSetupSession *)&v29 init];
-          v11 = v16;
+          selfCopy2 = v16;
           if (!v16)
           {
             goto LABEL_14;
@@ -1594,18 +1594,18 @@ LABEL_11:
           v17 = HAPDispatchQueueName(v16, 0);
           v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
           v19 = dispatch_queue_create(v17, v18);
-          clientQueue = v11->_clientQueue;
-          v11->_clientQueue = v19;
+          clientQueue = selfCopy2->_clientQueue;
+          selfCopy2->_clientQueue = v19;
 
-          v11->_role = a3;
-          v11->_handlingInvalidSetupCode = 0;
-          v11->_pairSetupType = a4;
-          objc_storeWeak(&v11->_delegate, v8);
-          if ([(HAPSRPPairSetupSession *)v11 _initializeSession])
+          selfCopy2->_role = role;
+          selfCopy2->_handlingInvalidSetupCode = 0;
+          selfCopy2->_pairSetupType = type;
+          objc_storeWeak(&selfCopy2->_delegate, delegateCopy);
+          if ([(HAPSRPPairSetupSession *)selfCopy2 _initializeSession])
           {
 LABEL_14:
-            v11 = v11;
-            v14 = v11;
+            selfCopy2 = selfCopy2;
+            v14 = selfCopy2;
 LABEL_23:
 
             goto LABEL_24;
@@ -1615,19 +1615,19 @@ LABEL_23:
         else
         {
           v21 = objc_autoreleasePoolPush();
-          v11 = self;
+          selfCopy2 = self;
           v22 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
             v23 = HMFGetLogIdentifier();
             v24 = v23;
             v25 = @"unknown";
-            if (a3 == 1)
+            if (role == 1)
             {
               v25 = @"server";
             }
 
-            if (!a3)
+            if (!role)
             {
               v25 = @"client";
             }
@@ -1660,7 +1660,7 @@ LABEL_23:
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy2 = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
@@ -1711,17 +1711,17 @@ uint64_t __37__HAPSRPPairSetupSession_logCategory__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)isValidSetupCode:(id)a3
++ (BOOL)isValidSetupCode:(id)code
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  codeCopy = code;
   v14 = 0;
   v5 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"^[0-9]{3}-[0-9]{2}-[0-9]{3}$" options:0 error:&v14];
   v6 = v14;
   if (!v5)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -1737,14 +1737,14 @@ uint64_t __37__HAPSRPPairSetupSession_logCategory__block_invoke()
     goto LABEL_7;
   }
 
-  if ([v5 numberOfMatchesInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}] != 1)
+  if ([v5 numberOfMatchesInString:codeCopy options:0 range:{0, objc_msgSend(codeCopy, "length")}] != 1)
   {
 LABEL_7:
     LOBYTE(v7) = 0;
     goto LABEL_8;
   }
 
-  v7 = [_denylistedSetupCodes containsObject:v4] ^ 1;
+  v7 = [_denylistedSetupCodes containsObject:codeCopy] ^ 1;
 LABEL_8:
 
   v12 = *MEMORY[0x277D85DE8];

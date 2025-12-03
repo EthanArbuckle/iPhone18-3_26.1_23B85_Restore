@@ -1,17 +1,17 @@
 @interface TSULRUCache
 - (NSArray)allValues;
-- (TSULRUCache)initWithMaxSize:(unint64_t)a3;
+- (TSULRUCache)initWithMaxSize:(unint64_t)size;
 - (id)callbackTarget;
 - (id)description;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (void)dealloc;
 - (void)p_removeOldestObject;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation TSULRUCache
 
-- (TSULRUCache)initWithMaxSize:(unint64_t)a3
+- (TSULRUCache)initWithMaxSize:(unint64_t)size
 {
   v10.receiver = self;
   v10.super_class = TSULRUCache;
@@ -19,9 +19,9 @@
   v5 = v4;
   if (v4)
   {
-    v4->_maxSize = a3;
+    v4->_maxSize = size;
     v4->_lastUsedCounter.__a_.__a_value = 0;
-    v6 = [[TSUNoCopyDictionary alloc] initWithCapacity:a3];
+    v6 = [[TSUNoCopyDictionary alloc] initWithCapacity:size];
     data = v5->_data;
     v5->_data = v6;
 
@@ -68,49 +68,49 @@ LABEL_5:
   return v5;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [[TSULRUCacheElement alloc] initWithObject:v8 counter:atomic_fetch_add_explicit(&self->_lastUsedCounter, 1uLL, memory_order_relaxed)];
+  objectCopy = object;
+  keyCopy = key;
+  v7 = [[TSULRUCacheElement alloc] initWithObject:objectCopy counter:atomic_fetch_add_explicit(&self->_lastUsedCounter, 1uLL, memory_order_relaxed)];
   if ([(TSUNoCopyDictionary *)self->_data count]>= self->_maxSize)
   {
     [(TSULRUCache *)self p_removeOldestObject];
   }
 
-  [(TSUNoCopyDictionary *)self->_data setObject:v7 forKey:v6];
+  [(TSUNoCopyDictionary *)self->_data setObject:v7 forKey:keyCopy];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = [(TSUNoCopyDictionary *)self->_data objectForKey:a3];
+  v4 = [(TSUNoCopyDictionary *)self->_data objectForKey:key];
   v5 = v4;
   if (v4)
   {
     atomic_fetch_add_explicit(&self->_lastUsedCounter, 1uLL, memory_order_relaxed);
     [v4 p_updateCounter:?];
-    v6 = [v5 object];
+    object = [v5 object];
   }
 
   else
   {
-    v6 = 0;
+    object = 0;
   }
 
-  return v6;
+  return object;
 }
 
 - (NSArray)allValues
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(TSUNoCopyDictionary *)self->_data allValues];
+  array = [MEMORY[0x277CBEB18] array];
+  allValues = [(TSUNoCopyDictionary *)self->_data allValues];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_27706FE84;
   v7[3] = &unk_27A701E90;
-  v5 = v3;
+  v5 = array;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [allValues enumerateObjectsUsingBlock:v7];
 
   return v5;
 }

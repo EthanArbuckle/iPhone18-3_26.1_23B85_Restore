@@ -1,102 +1,102 @@
 @interface ImageTools
-+ (BOOL)writeImage:(CGImage *)a3 toFile:(id)a4 error:(id *)a5;
-+ (CGContext)createARGBBitmapContextWithImage:(CGImage *)a3;
-+ (CGImage)loadCGImageEXIFRotatedFromData:(id)a3 error:(id *)a4;
-+ (CGImage)loadCGImageEXIFRotatedFromSource:(CGImageSource *)a3 error:(id *)a4;
-+ (CGImage)loadCGImageEXIFRotatedFromURL:(id)a3 error:(id *)a4;
-+ (CGImage)loadCGImageFromURL:(id)a3 error:(id *)ImageAtIndex;
-+ (CGImage)newCGImageFromPlanar8VImageBuffer:(const vImage_Buffer *)a3 error:(id *)a4;
-+ (CGImage)newCGImageFromRGBA8VImageBuffer:(const vImage_Buffer *)a3 error:(id *)a4;
-+ (CGImage)rotateImage:(CGImage *)a3 accordingToEXIFOrientation:(int)a4;
-+ (CGImage)rotateImage:(CGImage *)a3 withAngle:(float)a4 andXFlip:(BOOL)a5 andYFlip:(BOOL)a6;
-+ (__CFString)guessType:(id)a3;
-+ (__CVBuffer)loadCVPixelBuffer420YpCbCr8FromURL:(id)a3 error:(id *)a4;
-+ (__CVBuffer)loadCVPixelBufferARGB8FromURL:(id)a3 error:(id *)a4;
-+ (id)getValueForTag:(id)a3 inObject:(id)a4 depth:(int)a5 parent:(id)a6;
-+ (id)numberOfChannelsInImageData:(id)a3 error:(id *)a4;
-+ (id)saveCGImage:(const CGImage *)a3 withName:(id)a4 inFolder:(id)a5 error:(id *)a6;
-+ (id)saveCVPixelBuffer420YpCbCr8:(__CVBuffer *)a3 withName:(id)a4 inFolder:(id)a5 error:(id *)a6;
-+ (id)saveCVPixelBufferPlane8:(int)a3 from:(__CVBuffer *)a4 withName:(id)a5 inFolder:(id)a6 error:(id *)a7;
-+ (id)saveCVPixelBufferRGBA8:(__CVBuffer *)a3 withName:(id)a4 inFolder:(id)a5 error:(id *)a6;
-+ (id)saveRawBuffer:(void *)a3 withWidth:(unsigned int)a4 andHeight:(unsigned int)a5 andRowBytes:(unsigned int)a6 withName:(id)a7 inFolder:(id)a8 error:(id *)a9;
-+ (id)saveVImageBufferPlanar8:(const vImage_Buffer *)a3 withName:(id)a4 inFolder:(id)a5 error:(id *)a6;
-+ (id)saveVImageBufferPlanar8ToData:(const vImage_Buffer *)a3 deriveTypeFromFileName:(id)a4 error:(id *)a5;
-+ (id)saveVImageBufferPlanar8ToJPEGData:(const vImage_Buffer *)a3 withCompressionQuality:(float)a4 error:(id *)a5;
-+ (id)saveVImageBufferRGBA8:(const vImage_Buffer *)a3 withName:(id)a4 inFolder:(id)a5 error:(id *)a6;
-+ (id)saveVImageBufferRGBA8ToData:(const vImage_Buffer *)a3 deriveTypeFromFileName:(id)a4 error:(id *)a5;
-+ (id)saveVImageBufferRGBA8ToJPEGData:(const vImage_Buffer *)a3 withCompressionQuality:(float)a4 error:(id *)a5;
-+ (id)writeImageToData:(CGImage *)a3 type:(__CFString *)a4 error:(id *)a5;
-+ (int64_t)create420YCbCr8BufferFromPlanar8Buffer:(void *)a3 withWidth:(int)a4 andWithHeight:(int)a5 andWithBytesPerRow:(unint64_t)a6 toLumaBuffer:(void *)a7 withBytesPerRowLuma:(unint64_t)a8 andToChromaBuffer:(void *)a9 withBytesPerRowChroma:(unint64_t)a10;
-+ (int64_t)create420YCbCr8BufferFromRGB8Buffer:(void *)a3 withWidth:(int)a4 andWithHeight:(int)a5 andWithBytesPerRow:(unint64_t)a6 andAlphaFirst:(BOOL)a7 toLumaBuffer:(void *)a8 withBytesPerRowLuma:(unint64_t)a9 andToChromaBuffer:(void *)a10 withBytesPerRowChroma:(unint64_t)a11;
-+ (int64_t)createRGB8BufferFrom420Y8BiPlanarBuffer:(void *)a3 withBytesPerRowLuma:(unint64_t)a4 andFrom420CbCr8Buffer:(void *)a5 withBytesPerRowChroma:(unint64_t)a6 andWithWidth:(int)a7 andWithHeight:(int)a8 andAlphaFirst:(BOOL)a9 toRGB8Buffer:(void *)__b withBytesPerRowDst:(unint64_t)a11;
-+ (int64_t)createRGB8BufferFrom420Y8PlanarBuffer:(void *)a3 withBytesPerRowY:(unint64_t)a4 andFrom420Cb8Buffer:(void *)a5 withBytesPerRowCb:(unint64_t)a6 andFrom420Cr8Buffer:(void *)a7 withBytesPerRowCr:(unint64_t)a8 andWithWidth:(int)a9 andWithHeight:(int)a10 andAlphaFirst:(BOOL)a11 toRGB8Buffer:(void *)__b withBytesPerRowDst:(unint64_t)a13;
-+ (int64_t)extractLumaFromBGRA8Buffer:(void *)a3 withWidth:(int)a4 andWithHeight:(int)a5 andWithBytesPerRow:(unint64_t)a6 toBuffer:(void *)a7 withBytesPerRow:(unint64_t)a8;
-+ (vImage_Buffer)getVImageBufferFromCGImage:(SEL)a3 error:(CGImage *)a4;
-+ (vImage_Buffer)getVImageBufferFromCGImageLuma:(SEL)a3 error:(CGImage *)a4;
-+ (vImage_Buffer)getVImageBufferFromCVPixelBuffer:(SEL)a3 channel:(__CVBuffer *)a4 error:(int)a5;
-+ (vImage_Buffer)loadVImageBufferEXIFRotatedFromData:(id)a3 error:(id *)a4;
-+ (vImage_Buffer)loadVImageBufferEXIFRotatedFromURL:(id)a3 error:(id *)a4;
-+ (vImage_Buffer)loadVImageBufferFromData:(id)a3 isRaw:(BOOL)a4 lumaOnly:(BOOL)a5 error:(id *)a6;
-+ (vImage_Buffer)loadVImageBufferFromURL:(id)a3 lumaOnly:(BOOL)a4 error:(id *)a5;
-+ (void)loadRawBufferFromData:(id)a3 width:(unsigned int *)a4 height:(unsigned int *)a5 rowBytes:(unsigned int *)a6 error:(id *)a7;
-+ (void)loadRawBufferFromURL:(id)a3 width:(unsigned int *)a4 height:(unsigned int *)a5 rowBytes:(unsigned int *)a6 error:(id *)a7;
++ (BOOL)writeImage:(CGImage *)image toFile:(id)file error:(id *)error;
++ (CGContext)createARGBBitmapContextWithImage:(CGImage *)image;
++ (CGImage)loadCGImageEXIFRotatedFromData:(id)data error:(id *)error;
++ (CGImage)loadCGImageEXIFRotatedFromSource:(CGImageSource *)source error:(id *)error;
++ (CGImage)loadCGImageEXIFRotatedFromURL:(id)l error:(id *)error;
++ (CGImage)loadCGImageFromURL:(id)l error:(id *)ImageAtIndex;
++ (CGImage)newCGImageFromPlanar8VImageBuffer:(const vImage_Buffer *)buffer error:(id *)error;
++ (CGImage)newCGImageFromRGBA8VImageBuffer:(const vImage_Buffer *)buffer error:(id *)error;
++ (CGImage)rotateImage:(CGImage *)image accordingToEXIFOrientation:(int)orientation;
++ (CGImage)rotateImage:(CGImage *)image withAngle:(float)angle andXFlip:(BOOL)flip andYFlip:(BOOL)yFlip;
++ (__CFString)guessType:(id)type;
++ (__CVBuffer)loadCVPixelBuffer420YpCbCr8FromURL:(id)l error:(id *)error;
++ (__CVBuffer)loadCVPixelBufferARGB8FromURL:(id)l error:(id *)error;
++ (id)getValueForTag:(id)tag inObject:(id)object depth:(int)depth parent:(id)parent;
++ (id)numberOfChannelsInImageData:(id)data error:(id *)error;
++ (id)saveCGImage:(const CGImage *)image withName:(id)name inFolder:(id)folder error:(id *)error;
++ (id)saveCVPixelBuffer420YpCbCr8:(__CVBuffer *)cr8 withName:(id)name inFolder:(id)folder error:(id *)error;
++ (id)saveCVPixelBufferPlane8:(int)plane8 from:(__CVBuffer *)from withName:(id)name inFolder:(id)folder error:(id *)error;
++ (id)saveCVPixelBufferRGBA8:(__CVBuffer *)a8 withName:(id)name inFolder:(id)folder error:(id *)error;
++ (id)saveRawBuffer:(void *)buffer withWidth:(unsigned int)width andHeight:(unsigned int)height andRowBytes:(unsigned int)bytes withName:(id)name inFolder:(id)folder error:(id *)error;
++ (id)saveVImageBufferPlanar8:(const vImage_Buffer *)planar8 withName:(id)name inFolder:(id)folder error:(id *)error;
++ (id)saveVImageBufferPlanar8ToData:(const vImage_Buffer *)data deriveTypeFromFileName:(id)name error:(id *)error;
++ (id)saveVImageBufferPlanar8ToJPEGData:(const vImage_Buffer *)data withCompressionQuality:(float)quality error:(id *)error;
++ (id)saveVImageBufferRGBA8:(const vImage_Buffer *)a8 withName:(id)name inFolder:(id)folder error:(id *)error;
++ (id)saveVImageBufferRGBA8ToData:(const vImage_Buffer *)data deriveTypeFromFileName:(id)name error:(id *)error;
++ (id)saveVImageBufferRGBA8ToJPEGData:(const vImage_Buffer *)data withCompressionQuality:(float)quality error:(id *)error;
++ (id)writeImageToData:(CGImage *)data type:(__CFString *)type error:(id *)error;
++ (int64_t)create420YCbCr8BufferFromPlanar8Buffer:(void *)buffer withWidth:(int)width andWithHeight:(int)height andWithBytesPerRow:(unint64_t)row toLumaBuffer:(void *)lumaBuffer withBytesPerRowLuma:(unint64_t)luma andToChromaBuffer:(void *)chromaBuffer withBytesPerRowChroma:(unint64_t)self0;
++ (int64_t)create420YCbCr8BufferFromRGB8Buffer:(void *)buffer withWidth:(int)width andWithHeight:(int)height andWithBytesPerRow:(unint64_t)row andAlphaFirst:(BOOL)first toLumaBuffer:(void *)lumaBuffer withBytesPerRowLuma:(unint64_t)luma andToChromaBuffer:(void *)self0 withBytesPerRowChroma:(unint64_t)self1;
++ (int64_t)createRGB8BufferFrom420Y8BiPlanarBuffer:(void *)buffer withBytesPerRowLuma:(unint64_t)luma andFrom420CbCr8Buffer:(void *)cr8Buffer withBytesPerRowChroma:(unint64_t)chroma andWithWidth:(int)width andWithHeight:(int)height andAlphaFirst:(BOOL)first toRGB8Buffer:(void *)__b withBytesPerRowDst:(unint64_t)self1;
++ (int64_t)createRGB8BufferFrom420Y8PlanarBuffer:(void *)buffer withBytesPerRowY:(unint64_t)y andFrom420Cb8Buffer:(void *)cb8Buffer withBytesPerRowCb:(unint64_t)cb andFrom420Cr8Buffer:(void *)cr8Buffer withBytesPerRowCr:(unint64_t)cr andWithWidth:(int)width andWithHeight:(int)self0 andAlphaFirst:(BOOL)self1 toRGB8Buffer:(void *)__b withBytesPerRowDst:(unint64_t)self3;
++ (int64_t)extractLumaFromBGRA8Buffer:(void *)buffer withWidth:(int)width andWithHeight:(int)height andWithBytesPerRow:(unint64_t)row toBuffer:(void *)toBuffer withBytesPerRow:(unint64_t)perRow;
++ (vImage_Buffer)getVImageBufferFromCGImage:(SEL)image error:(CGImage *)error;
++ (vImage_Buffer)getVImageBufferFromCGImageLuma:(SEL)luma error:(CGImage *)error;
++ (vImage_Buffer)getVImageBufferFromCVPixelBuffer:(SEL)buffer channel:(__CVBuffer *)channel error:(int)error;
++ (vImage_Buffer)loadVImageBufferEXIFRotatedFromData:(id)data error:(id *)error;
++ (vImage_Buffer)loadVImageBufferEXIFRotatedFromURL:(id)l error:(id *)error;
++ (vImage_Buffer)loadVImageBufferFromData:(id)data isRaw:(BOOL)raw lumaOnly:(BOOL)only error:(id *)error;
++ (vImage_Buffer)loadVImageBufferFromURL:(id)l lumaOnly:(BOOL)only error:(id *)error;
++ (void)loadRawBufferFromData:(id)data width:(unsigned int *)width height:(unsigned int *)height rowBytes:(unsigned int *)bytes error:(id *)error;
++ (void)loadRawBufferFromURL:(id)l width:(unsigned int *)width height:(unsigned int *)height rowBytes:(unsigned int *)bytes error:(id *)error;
 @end
 
 @implementation ImageTools
 
-+ (__CFString)guessType:(id)a3
++ (__CFString)guessType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 pathExtension];
-  if (![v4 length])
+  typeCopy = type;
+  pathExtension = [typeCopy pathExtension];
+  if (![pathExtension length])
   {
-    v5 = v3;
+    v5 = typeCopy;
 
-    v4 = v5;
+    pathExtension = v5;
   }
 
-  if ([v4 isEqualToString:@"png"])
+  if ([pathExtension isEqualToString:@"png"])
   {
     v6 = MEMORY[0x1E6982F28];
   }
 
-  else if ([v4 isEqualToString:@"jpg"])
+  else if ([pathExtension isEqualToString:@"jpg"])
   {
     v6 = MEMORY[0x1E6982E58];
   }
 
-  else if ([v4 isEqualToString:@"tiff"])
+  else if ([pathExtension isEqualToString:@"tiff"])
   {
     v6 = MEMORY[0x1E6983008];
   }
 
-  else if ([v4 isEqualToString:@"bmp"])
+  else if ([pathExtension isEqualToString:@"bmp"])
   {
     v6 = MEMORY[0x1E6982CE0];
   }
 
   else
   {
-    if (![v4 isEqualToString:@"raw"])
+    if (![pathExtension isEqualToString:@"raw"])
     {
-      v7 = 0;
+      identifier = 0;
       goto LABEL_14;
     }
 
     v6 = MEMORY[0x1E6982F88];
   }
 
-  v7 = [*v6 identifier];
+  identifier = [*v6 identifier];
 
 LABEL_14:
-  return v7;
+  return identifier;
 }
 
-+ (id)getValueForTag:(id)a3 inObject:(id)a4 depth:(int)a5 parent:(id)a6
++ (id)getValueForTag:(id)tag inObject:(id)object depth:(int)depth parent:(id)parent
 {
   v36 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  tagCopy = tag;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -104,8 +104,8 @@ LABEL_14:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v11 = [v10 allKeys];
-    v12 = [v11 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    allKeys = [objectCopy allKeys];
+    v12 = [allKeys countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v12)
     {
       v13 = v12;
@@ -116,21 +116,21 @@ LABEL_14:
         {
           if (*v31 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allKeys);
           }
 
           v16 = *(*(&v30 + 1) + 8 * i);
-          if ([v16 isEqualToString:v9])
+          if ([v16 isEqualToString:tagCopy])
           {
-            v24 = [v10 objectForKeyedSubscript:v16];
+            v24 = [objectCopy objectForKeyedSubscript:v16];
             goto LABEL_21;
           }
 
-          v17 = [v10 objectForKey:v16];
-          v18 = [a1 getValueForTag:v9 inObject:v17 depth:(a5 + 1) parent:v10];
+          v17 = [objectCopy objectForKey:v16];
+          v18 = [self getValueForTag:tagCopy inObject:v17 depth:(depth + 1) parent:objectCopy];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v13 = [allKeys countByEnumeratingWithState:&v30 objects:v35 count:16];
         if (v13)
         {
           continue;
@@ -154,8 +154,8 @@ LABEL_14:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = v10;
-    v19 = [v11 countByEnumeratingWithState:&v26 objects:v34 count:16];
+    allKeys = objectCopy;
+    v19 = [allKeys countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v19)
     {
       v20 = v19;
@@ -166,13 +166,13 @@ LABEL_14:
         {
           if (*v27 != v21)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allKeys);
           }
 
-          v23 = [a1 getValueForTag:v9 inObject:*(*(&v26 + 1) + 8 * j) depth:(a5 + 1) parent:{v11, v26}];
+          v23 = [self getValueForTag:tagCopy inObject:*(*(&v26 + 1) + 8 * j) depth:(depth + 1) parent:{allKeys, v26}];
         }
 
-        v20 = [v11 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        v20 = [allKeys countByEnumeratingWithState:&v26 objects:v34 count:16];
       }
 
       while (v20);
@@ -187,21 +187,21 @@ LABEL_23:
   return v24;
 }
 
-+ (CGImage)rotateImage:(CGImage *)a3 withAngle:(float)a4 andXFlip:(BOOL)a5 andYFlip:(BOOL)a6
++ (CGImage)rotateImage:(CGImage *)image withAngle:(float)angle andXFlip:(BOOL)flip andYFlip:(BOOL)yFlip
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = (a4 * 3.1416) / 180.0;
+  yFlipCopy = yFlip;
+  flipCopy = flip;
+  v10 = (angle * 3.1416) / 180.0;
   v11 = __sincosf_stret(v10);
   v12 = fabsf(v11.__cosval);
   v13 = fabsf(v11.__sinval);
-  Width = CGImageGetWidth(a3);
-  v15 = (v13 * CGImageGetHeight(a3)) + (Width * v12);
-  v16 = CGImageGetWidth(a3);
-  v17 = (v12 * CGImageGetHeight(a3)) + (v16 * v13);
-  AlphaInfo = CGImageGetAlphaInfo(a3);
-  BitsPerComponent = CGImageGetBitsPerComponent(a3);
-  ColorSpace = CGImageGetColorSpace(a3);
+  Width = CGImageGetWidth(image);
+  v15 = (v13 * CGImageGetHeight(image)) + (Width * v12);
+  v16 = CGImageGetWidth(image);
+  v17 = (v12 * CGImageGetHeight(image)) + (v16 * v13);
+  AlphaInfo = CGImageGetAlphaInfo(image);
+  BitsPerComponent = CGImageGetBitsPerComponent(image);
+  ColorSpace = CGImageGetColorSpace(image);
   v21 = CGBitmapContextCreate(0, v15, v17, BitsPerComponent, 0, ColorSpace, AlphaInfo);
   CGContextSetAllowsAntialiasing(v21, 0);
   CGContextSetShouldAntialias(v21, 0);
@@ -209,7 +209,7 @@ LABEL_23:
   memset(&v33, 0, sizeof(v33));
   v22 = v15;
   v23 = v17;
-  if (v6)
+  if (yFlipCopy)
   {
     v24 = -1.0;
   }
@@ -220,7 +220,7 @@ LABEL_23:
     v24 = 1.0;
   }
 
-  if (v7)
+  if (flipCopy)
   {
     v25 = -1.0;
   }
@@ -235,7 +235,7 @@ LABEL_23:
   v31 = v33;
   CGAffineTransformScale(&transform, &v31, v25, v24);
   v33 = transform;
-  if (a4 != 0.0)
+  if (angle != 0.0)
   {
     memset(&transform, 0, sizeof(transform));
     CGAffineTransformMakeTranslation(&transform, (v15 * 0.5), (v17 * 0.5));
@@ -253,41 +253,41 @@ LABEL_23:
 
   transform = v33;
   CGContextConcatCTM(v21, &transform);
-  v26 = CGImageGetWidth(a3);
-  v34.size.height = CGImageGetHeight(a3);
+  v26 = CGImageGetWidth(image);
+  v34.size.height = CGImageGetHeight(image);
   v34.origin.x = 0.0;
   v34.origin.y = 0.0;
   v34.size.width = v26;
-  CGContextDrawImage(v21, v34, a3);
+  CGContextDrawImage(v21, v34, image);
   CGContextFlush(v21);
   Image = CGBitmapContextCreateImage(v21);
   CGContextRelease(v21);
   return Image;
 }
 
-+ (CGImage)rotateImage:(CGImage *)a3 accordingToEXIFOrientation:(int)a4
++ (CGImage)rotateImage:(CGImage *)image accordingToEXIFOrientation:(int)orientation
 {
-  if (a4 <= 4)
+  if (orientation <= 4)
   {
-    if (a4 != 2)
+    if (orientation != 2)
     {
-      if (a4 == 3)
+      if (orientation == 3)
       {
         v4 = 0.0;
         goto LABEL_21;
       }
 
-      if (a4 == 4)
+      if (orientation == 4)
       {
         v4 = 0.0;
 LABEL_15:
         v5 = 0;
 LABEL_22:
         v7 = 1;
-        return [ImageTools rotateImage:a3 withAngle:v5 andXFlip:v7 andYFlip:v4];
+        return [ImageTools rotateImage:image withAngle:v5 andXFlip:v7 andYFlip:v4];
       }
 
-      return CGImageCreateCopy(a3);
+      return CGImageCreateCopy(image);
     }
 
     v4 = 0.0;
@@ -296,11 +296,11 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (a4 > 6)
+  if (orientation > 6)
   {
-    if (a4 != 7)
+    if (orientation != 7)
     {
-      if (a4 == 8)
+      if (orientation == 8)
       {
         LODWORD(v4) = -1028390912;
 LABEL_21:
@@ -308,14 +308,14 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      return CGImageCreateCopy(a3);
+      return CGImageCreateCopy(image);
     }
 
     LODWORD(v4) = 1119092736;
     goto LABEL_17;
   }
 
-  if (a4 == 5)
+  if (orientation == 5)
   {
     LODWORD(v4) = 1119092736;
     goto LABEL_15;
@@ -325,14 +325,14 @@ LABEL_21:
   v5 = 0;
 LABEL_18:
   v7 = 0;
-  return [ImageTools rotateImage:a3 withAngle:v5 andXFlip:v7 andYFlip:v4];
+  return [ImageTools rotateImage:image withAngle:v5 andXFlip:v7 andYFlip:v4];
 }
 
-+ (CGContext)createARGBBitmapContextWithImage:(CGImage *)a3
++ (CGContext)createARGBBitmapContextWithImage:(CGImage *)image
 {
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
-  ColorSpace = CGImageGetColorSpace(a3);
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
+  ColorSpace = CGImageGetColorSpace(image);
   if (CGColorSpaceGetModel(ColorSpace))
   {
     DeviceGray = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1C0]);
@@ -382,10 +382,10 @@ LABEL_10:
   return v11;
 }
 
-+ (CGImage)loadCGImageFromURL:(id)a3 error:(id *)ImageAtIndex
++ (CGImage)loadCGImageFromURL:(id)l error:(id *)ImageAtIndex
 {
-  v5 = a3;
-  v6 = CGImageSourceCreateWithURL(v5, 0);
+  lCopy = l;
+  v6 = CGImageSourceCreateWithURL(lCopy, 0);
   if (v6)
   {
     v7 = v6;
@@ -395,8 +395,8 @@ LABEL_10:
 
   else if (ImageAtIndex)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ERROR: Could not create image from URL %@", v5];
-    *ImageAtIndex = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:v8];
+    lCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"ERROR: Could not create image from URL %@", lCopy];
+    *ImageAtIndex = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:lCopy];
 
     ImageAtIndex = 0;
   }
@@ -404,30 +404,30 @@ LABEL_10:
   return ImageAtIndex;
 }
 
-+ (CGImage)loadCGImageEXIFRotatedFromSource:(CGImageSource *)a3 error:(id *)a4
++ (CGImage)loadCGImageEXIFRotatedFromSource:(CGImageSource *)source error:(id *)error
 {
-  if (a3)
+  if (source)
   {
-    ImageAtIndex = CGImageSourceCreateImageAtIndex(a3, 0, 0);
-    v6 = CGImageSourceCopyPropertiesAtIndex(a3, 0, 0);
+    ImageAtIndex = CGImageSourceCreateImageAtIndex(source, 0, 0);
+    v6 = CGImageSourceCopyPropertiesAtIndex(source, 0, 0);
     v7 = [ImageTools getValueForTag:@"Orientation" inObject:v6];
     if (v7)
     {
       v8 = [ImageTools getValueForTag:@"Orientation" inObject:v6];
-      v9 = [v8 intValue];
+      intValue = [v8 intValue];
 
-      v10 = [ImageTools rotateImage:ImageAtIndex accordingToEXIFOrientation:v9];
+      v10 = [ImageTools rotateImage:ImageAtIndex accordingToEXIFOrientation:intValue];
       CFRelease(ImageAtIndex);
       ImageAtIndex = v10;
     }
 
-    CFRelease(a3);
+    CFRelease(source);
   }
 
-  else if (a4)
+  else if (error)
   {
     [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"could not create image from data"];
-    *a4 = ImageAtIndex = 0;
+    *error = ImageAtIndex = 0;
   }
 
   else
@@ -438,78 +438,78 @@ LABEL_10:
   return ImageAtIndex;
 }
 
-+ (CGImage)loadCGImageEXIFRotatedFromURL:(id)a3 error:(id *)a4
++ (CGImage)loadCGImageEXIFRotatedFromURL:(id)l error:(id *)error
 {
-  v6 = CGImageSourceCreateWithURL(a3, 0);
-  v7 = [a1 loadCGImageEXIFRotatedFromSource:v6 error:a4];
+  v6 = CGImageSourceCreateWithURL(l, 0);
+  v7 = [self loadCGImageEXIFRotatedFromSource:v6 error:error];
   CFRelease(v6);
   return v7;
 }
 
-+ (CGImage)loadCGImageEXIFRotatedFromData:(id)a3 error:(id *)a4
++ (CGImage)loadCGImageEXIFRotatedFromData:(id)data error:(id *)error
 {
-  v6 = CGImageSourceCreateWithData(a3, 0);
-  v7 = [a1 loadCGImageEXIFRotatedFromSource:v6 error:a4];
+  v6 = CGImageSourceCreateWithData(data, 0);
+  v7 = [self loadCGImageEXIFRotatedFromSource:v6 error:error];
   CFRelease(v6);
   return v7;
 }
 
-+ (void)loadRawBufferFromData:(id)a3 width:(unsigned int *)a4 height:(unsigned int *)a5 rowBytes:(unsigned int *)a6 error:(id *)a7
++ (void)loadRawBufferFromData:(id)data width:(unsigned int *)width height:(unsigned int *)height rowBytes:(unsigned int *)bytes error:(id *)error
 {
-  v11 = a3;
-  v12 = v11;
-  if (v11)
+  dataCopy = data;
+  v12 = dataCopy;
+  if (dataCopy)
   {
-    [v11 getBytes:a4 range:{0, 4}];
-    [v12 getBytes:a5 range:{4, 4}];
-    [v12 getBytes:a6 range:{8, 4}];
-    v13 = *a5 * *a6;
+    [dataCopy getBytes:width range:{0, 4}];
+    [v12 getBytes:height range:{4, 4}];
+    [v12 getBytes:bytes range:{8, 4}];
+    v13 = *height * *bytes;
     v14 = malloc_type_malloc(v13, 0x6EFA000CuLL);
     [v12 getBytes:v14 range:{12, v13}];
   }
 
   else
   {
-    if (a7)
+    if (error)
     {
-      *a7 = [AX_CVML_Error createNSErrorWithStatus:16757 andMessage:@"Failed to load raw buffer"];
+      *error = [AX_CVML_Error createNSErrorWithStatus:16757 andMessage:@"Failed to load raw buffer"];
     }
 
     v14 = 0;
-    *a4 = 0;
-    *a5 = 0;
-    *a6 = 0;
+    *width = 0;
+    *height = 0;
+    *bytes = 0;
   }
 
   return v14;
 }
 
-+ (void)loadRawBufferFromURL:(id)a3 width:(unsigned int *)a4 height:(unsigned int *)a5 rowBytes:(unsigned int *)a6 error:(id *)a7
++ (void)loadRawBufferFromURL:(id)l width:(unsigned int *)width height:(unsigned int *)height rowBytes:(unsigned int *)bytes error:(id *)error
 {
   v11 = MEMORY[0x1E695DEF0];
-  v12 = [a3 path];
-  v13 = [v11 dataWithContentsOfFile:v12];
+  path = [l path];
+  v13 = [v11 dataWithContentsOfFile:path];
 
-  v14 = [ImageTools loadRawBufferFromData:v13 width:a4 height:a5 rowBytes:a6 error:a7];
+  v14 = [ImageTools loadRawBufferFromData:v13 width:width height:height rowBytes:bytes error:error];
   return v14;
 }
 
-+ (id)numberOfChannelsInImageData:(id)a3 error:(id *)a4
++ (id)numberOfChannelsInImageData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  dataCopy = data;
+  v6 = dataCopy;
+  if (!dataCopy)
   {
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ERROR: data is nil"];
-    if (a4)
+    if (error)
     {
-      *a4 = [AX_CVML_Error createNSErrorWithStatus:16765 andMessage:v11];
+      *error = [AX_CVML_Error createNSErrorWithStatus:16765 andMessage:v11];
     }
 
     goto LABEL_9;
   }
 
-  v7 = CGImageSourceCreateWithData(v5, 0);
+  v7 = CGImageSourceCreateWithData(dataCopy, 0);
   if (!v7 || (v8 = v7, ImageAtIndex = CGImageSourceCreateImageAtIndex(v7, 0, 0), CFRelease(v8), !ImageAtIndex))
   {
 LABEL_9:
@@ -526,10 +526,10 @@ LABEL_9:
   {
     if (CGImageGetBitsPerPixel(ImageAtIndex) != 8)
     {
-      if (a4)
+      if (error)
       {
         [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Format not supported (input image must be 32 or 8 bits per pixels)"];
-        *a4 = v13 = 0;
+        *error = v13 = 0;
       }
 
       else
@@ -555,20 +555,20 @@ LABEL_14:
   return v15;
 }
 
-+ (vImage_Buffer)loadVImageBufferFromData:(id)a3 isRaw:(BOOL)a4 lumaOnly:(BOOL)a5 error:(id *)a6
++ (vImage_Buffer)loadVImageBufferFromData:(id)data isRaw:(BOOL)raw lumaOnly:(BOOL)only error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = v9;
-  if (a6)
+  onlyCopy = only;
+  rawCopy = raw;
+  dataCopy = data;
+  v10 = dataCopy;
+  if (error)
   {
-    if (v9)
+    if (dataCopy)
     {
-      if (v8)
+      if (rawCopy)
       {
 LABEL_4:
-        if (v7)
+        if (onlyCopy)
         {
           NSLog(&cfstr_IgnoringLumaon.isa);
         }
@@ -576,7 +576,7 @@ LABEL_4:
         v11 = malloc_type_malloc(0x20uLL, 0x1080040ABB4582EuLL);
         v12 = 0;
         v13 = 0;
-        v11->data = [ImageTools loadRawBufferFromData:v10 width:&v11->width height:&v11->height rowBytes:&v11->rowBytes error:a6];
+        v11->data = [ImageTools loadRawBufferFromData:v10 width:&v11->width height:&v11->height rowBytes:&v11->rowBytes error:error];
         goto LABEL_41;
       }
     }
@@ -584,9 +584,9 @@ LABEL_4:
     else
     {
       v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ERROR: data is nil"];
-      *a6 = [AX_CVML_Error createNSErrorWithStatus:16765 andMessage:v14];
+      *error = [AX_CVML_Error createNSErrorWithStatus:16765 andMessage:v14];
 
-      if (v8)
+      if (rawCopy)
       {
         goto LABEL_4;
       }
@@ -609,7 +609,7 @@ LABEL_4:
           v18 = Width;
           height = v11->height;
           v20 = height;
-          if (v7)
+          if (onlyCopy)
           {
             v21 = (Width + 15) & 0xFFFFFFFFFFFFFFF0;
             v11->rowBytes = v21;
@@ -634,7 +634,7 @@ LABEL_4:
 
               else
               {
-                *a6 = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Failed to create the context"];
+                *error = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Failed to create the context"];
               }
 
               Data = CGBitmapContextGetData(v13);
@@ -643,7 +643,7 @@ LABEL_4:
               {
                 v49 = v48;
                 v50 = [MEMORY[0x1E696AEC0] stringWithUTF8String:CVML_getStatusDescription(v48)];
-                *a6 = [AX_CVML_Error createNSErrorWithStatus:v49 andMessage:v50];
+                *error = [AX_CVML_Error createNSErrorWithStatus:v49 andMessage:v50];
               }
 
               goto LABEL_40;
@@ -728,7 +728,7 @@ LABEL_4:
 
             else
             {
-              *a6 = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Failed to create the context"];
+              *error = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Failed to create the context"];
             }
 
             v51 = CGBitmapContextGetData(v13);
@@ -760,7 +760,7 @@ LABEL_28:
         v12 = 0;
         v13 = 0;
 LABEL_29:
-        *a6 = v46;
+        *error = v46;
 LABEL_40:
         CFRelease(ImageAtIndex);
         goto LABEL_41;
@@ -777,7 +777,7 @@ LABEL_40:
 
     v12 = 0;
     v13 = 0;
-    *a6 = v27;
+    *error = v27;
 LABEL_41:
     CGContextRelease(v13);
     CGColorSpaceRelease(v12);
@@ -790,85 +790,85 @@ LABEL_42:
   return v11;
 }
 
-+ (vImage_Buffer)loadVImageBufferFromURL:(id)a3 lumaOnly:(BOOL)a4 error:(id *)a5
++ (vImage_Buffer)loadVImageBufferFromURL:(id)l lumaOnly:(BOOL)only error:(id *)error
 {
-  v6 = a4;
-  if (a5)
+  onlyCopy = only;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v7 = a3;
-  v8 = [v7 absoluteString];
-  v9 = [ImageTools guessType:v8];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  v9 = [ImageTools guessType:absoluteString];
 
-  v10 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v7];
+  v10 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy];
 
-  v11 = [ImageTools loadVImageBufferFromData:v10 isRaw:CFEqual(v9 lumaOnly:*MEMORY[0x1E6982F88]) != 0 error:v6, a5];
-  return v11;
+  error = [ImageTools loadVImageBufferFromData:v10 isRaw:CFEqual(v9 lumaOnly:*MEMORY[0x1E6982F88]) != 0 error:onlyCopy, error];
+  return error;
 }
 
-+ (vImage_Buffer)loadVImageBufferEXIFRotatedFromURL:(id)a3 error:(id *)a4
++ (vImage_Buffer)loadVImageBufferEXIFRotatedFromURL:(id)l error:(id *)error
 {
-  v5 = [ImageTools loadCGImageEXIFRotatedFromURL:a3 error:?];
-  if (a4)
+  v5 = [ImageTools loadCGImageEXIFRotatedFromURL:l error:?];
+  if (error)
   {
-    if (*a4)
+    if (*error)
     {
-      a4 = 0;
+      error = 0;
     }
 
     else
     {
       memset(v7, 0, sizeof(v7));
-      [ImageTools getVImageBufferFromCGImage:v5 error:a4];
-      a4 = malloc_type_malloc(0x20uLL, 0x1080040ABB4582EuLL);
-      *a4 = *&v7[0];
-      *(a4 + 1) = *(v7 + 8);
-      a4[3] = *(&v7[1] + 1);
+      [ImageTools getVImageBufferFromCGImage:v5 error:error];
+      error = malloc_type_malloc(0x20uLL, 0x1080040ABB4582EuLL);
+      *error = *&v7[0];
+      *(error + 1) = *(v7 + 8);
+      error[3] = *(&v7[1] + 1);
     }
   }
 
   CGImageRelease(v5);
-  return a4;
+  return error;
 }
 
-+ (vImage_Buffer)loadVImageBufferEXIFRotatedFromData:(id)a3 error:(id *)a4
++ (vImage_Buffer)loadVImageBufferEXIFRotatedFromData:(id)data error:(id *)error
 {
-  v5 = [ImageTools loadCGImageEXIFRotatedFromData:a3 error:?];
-  if (a4)
+  v5 = [ImageTools loadCGImageEXIFRotatedFromData:data error:?];
+  if (error)
   {
-    if (*a4)
+    if (*error)
     {
-      a4 = 0;
+      error = 0;
     }
 
     else
     {
       memset(v7, 0, sizeof(v7));
-      [ImageTools getVImageBufferFromCGImage:v5 error:a4];
-      a4 = malloc_type_malloc(0x20uLL, 0x1080040ABB4582EuLL);
-      *a4 = *&v7[0];
-      *(a4 + 1) = *(v7 + 8);
-      a4[3] = *(&v7[1] + 1);
+      [ImageTools getVImageBufferFromCGImage:v5 error:error];
+      error = malloc_type_malloc(0x20uLL, 0x1080040ABB4582EuLL);
+      *error = *&v7[0];
+      *(error + 1) = *(v7 + 8);
+      error[3] = *(&v7[1] + 1);
     }
   }
 
   CGImageRelease(v5);
-  return a4;
+  return error;
 }
 
-+ (__CVBuffer)loadCVPixelBufferARGB8FromURL:(id)a3 error:(id *)a4
++ (__CVBuffer)loadCVPixelBufferARGB8FromURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   pixelBufferOut = 0;
-  v6 = CGImageSourceCreateWithURL(v5, 0);
+  v6 = CGImageSourceCreateWithURL(lCopy, 0);
   if (!v6)
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ERROR: Could not create image from URL %@", v5];
-    if (a4)
+    lCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"ERROR: Could not create image from URL %@", lCopy];
+    if (error)
     {
-      *a4 = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:v14];
+      *error = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:lCopy];
     }
 
     goto LABEL_9;
@@ -879,13 +879,13 @@ LABEL_42:
   CFRelease(v7);
   if (!ImageAtIndex)
   {
-    if (a4)
+    if (error)
     {
       [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not extract first image from bundle"];
       v15 = 0;
       v16 = 0;
       v13 = 0;
-      *a4 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_31;
     }
 
@@ -931,10 +931,10 @@ LABEL_9:
           CGContextDrawImage(v28, v34, ImageAtIndex);
         }
 
-        else if (a4)
+        else if (error)
         {
           [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Failed to create the context"];
-          *a4 = v16 = 0;
+          *error = v16 = 0;
         }
 
         else
@@ -946,7 +946,7 @@ LABEL_9:
         goto LABEL_30;
       }
 
-      if (a4)
+      if (error)
       {
         v18 = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Failed to create the CVPixelBuffer"];
         v17 = 0;
@@ -960,9 +960,9 @@ LABEL_25:
       goto LABEL_30;
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Failed to create the IOSurface properties"];
+      *error = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Failed to create the IOSurface properties"];
     }
 
     ModuleDescription = CVML_getModuleDescription(16766);
@@ -974,7 +974,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_24;
   }
@@ -985,7 +985,7 @@ LABEL_24:
 LABEL_20:
   v16 = 0;
   v15 = 0;
-  *a4 = v18;
+  *error = v18;
 LABEL_30:
   CFRelease(ImageAtIndex);
 LABEL_31:
@@ -1001,18 +1001,18 @@ LABEL_31:
   return v31;
 }
 
-+ (__CVBuffer)loadCVPixelBuffer420YpCbCr8FromURL:(id)a3 error:(id *)a4
++ (__CVBuffer)loadCVPixelBuffer420YpCbCr8FromURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v6 = 16768;
   pixelBufferOut = 0;
-  v7 = CGImageSourceCreateWithURL(v5, 0);
+  v7 = CGImageSourceCreateWithURL(lCopy, 0);
   if (!v7)
   {
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ERROR: Could not create image from URL %@", v5];
-    if (a4)
+    lCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"ERROR: Could not create image from URL %@", lCopy];
+    if (error)
     {
-      *a4 = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:v17];
+      *error = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:lCopy];
     }
 
     v16 = 0;
@@ -1098,9 +1098,9 @@ LABEL_31:
 
         else
         {
-          if (a4)
+          if (error)
           {
-            *a4 = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"unexpected number of bytes per pixels"];
+            *error = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"unexpected number of bytes per pixels"];
           }
 
           v6 = 16747;
@@ -1130,9 +1130,9 @@ LABEL_35:
       }
 
       v6 = 16766;
-      if (a4)
+      if (error)
       {
-        *a4 = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Failed to create the IOSurface properties"];
+        *error = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Failed to create the IOSurface properties"];
       }
 
       v34 = CVML_getModuleDescription(16766);
@@ -1140,11 +1140,11 @@ LABEL_35:
       syslog(3, "%s error %lld:%s in %s @ %s:%d\n", v34, -2, v35, "+[ImageTools loadCVPixelBuffer420YpCbCr8FromURL:error:]", "/Library/Caches/com.apple.xbs/Sources/AccessibilityMediaUtilities/AXMediaUtilities/source/ImageTools.m", 828);
     }
 
-    else if (a4)
+    else if (error)
     {
       [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Format not supported (input image must be 32 bits per pixels)"];
       v18 = 0;
-      *a4 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_34;
     }
 
@@ -1153,11 +1153,11 @@ LABEL_35:
     goto LABEL_34;
   }
 
-  if (a4)
+  if (error)
   {
     [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not extract first image from bundle"];
     v16 = 0;
-    *a4 = v18 = 0;
+    *error = v18 = 0;
     if (v11)
     {
       goto LABEL_35;
@@ -1185,9 +1185,9 @@ LABEL_37:
   if (v6 != 128)
   {
     v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ERROR: Could not load 420YpCbCr8 buffer"];
-    if (a4)
+    if (error)
     {
-      *a4 = [AX_CVML_Error createNSErrorWithStatus:v6 andMessage:v42];
+      *error = [AX_CVML_Error createNSErrorWithStatus:v6 andMessage:v42];
     }
   }
 
@@ -1196,35 +1196,35 @@ LABEL_37:
   return v43;
 }
 
-+ (id)saveCVPixelBufferPlane8:(int)a3 from:(__CVBuffer *)a4 withName:(id)a5 inFolder:(id)a6 error:(id *)a7
++ (id)saveCVPixelBufferPlane8:(int)plane8 from:(__CVBuffer *)from withName:(id)name inFolder:(id)folder error:(id *)error
 {
-  v10 = a5;
-  v11 = a6;
-  if ([v10 length])
+  nameCopy = name;
+  folderCopy = folder;
+  if ([nameCopy length])
   {
-    if (v11)
+    if (folderCopy)
     {
-      v12 = [v11 stringByAppendingPathComponent:v10];
+      v12 = [folderCopy stringByAppendingPathComponent:nameCopy];
     }
 
     else
     {
       v13 = NSTemporaryDirectory();
-      v12 = [v13 stringByAppendingPathComponent:v10];
+      v12 = [v13 stringByAppendingPathComponent:nameCopy];
     }
 
-    CVPixelBufferLockBaseAddress(a4, 1uLL);
-    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a4, a3);
-    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a4, a3);
-    WidthOfPlane = CVPixelBufferGetWidthOfPlane(a4, a3);
-    HeightOfPlane = CVPixelBufferGetHeightOfPlane(a4, a3);
+    CVPixelBufferLockBaseAddress(from, 1uLL);
+    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(from, plane8);
+    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(from, plane8);
+    WidthOfPlane = CVPixelBufferGetWidthOfPlane(from, plane8);
+    HeightOfPlane = CVPixelBufferGetHeightOfPlane(from, plane8);
     v18 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F128]);
     v19 = CGDataProviderCreateWithData(0, BaseAddressOfPlane, HeightOfPlane * BytesPerRowOfPlane, 0);
     v20 = CGImageCreate(WidthOfPlane, HeightOfPlane, 8uLL, 8uLL, BytesPerRowOfPlane, v18, 0, v19, 0, 0, kCGRenderingIntentDefault);
-    v21 = CGImageDestinationCreateWithURL([MEMORY[0x1E695DFF8] fileURLWithPath:v12], +[ImageTools guessType:](ImageTools, "guessType:", v10), 1uLL, 0);
+    v21 = CGImageDestinationCreateWithURL([MEMORY[0x1E695DFF8] fileURLWithPath:v12], +[ImageTools guessType:](ImageTools, "guessType:", nameCopy), 1uLL, 0);
     CGImageDestinationAddImage(v21, v20, 0);
     CGImageDestinationFinalize(v21);
-    CVPixelBufferUnlockBaseAddress(a4, 1uLL);
+    CVPixelBufferUnlockBaseAddress(from, 1uLL);
     CGImageRelease(v20);
     CGDataProviderRelease(v19);
     CGColorSpaceRelease(v18);
@@ -1239,35 +1239,35 @@ LABEL_37:
   return v12;
 }
 
-+ (id)saveCVPixelBufferRGBA8:(__CVBuffer *)a3 withName:(id)a4 inFolder:(id)a5 error:(id *)a6
++ (id)saveCVPixelBufferRGBA8:(__CVBuffer *)a8 withName:(id)name inFolder:(id)folder error:(id *)error
 {
-  v8 = a4;
-  v9 = a5;
-  if ([v8 length])
+  nameCopy = name;
+  folderCopy = folder;
+  if ([nameCopy length])
   {
-    if (v9)
+    if (folderCopy)
     {
-      v10 = [v9 stringByAppendingPathComponent:v8];
+      v10 = [folderCopy stringByAppendingPathComponent:nameCopy];
     }
 
     else
     {
       v11 = NSTemporaryDirectory();
-      v10 = [v11 stringByAppendingPathComponent:v8];
+      v10 = [v11 stringByAppendingPathComponent:nameCopy];
     }
 
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    CVPixelBufferLockBaseAddress(a8, 1uLL);
+    BaseAddress = CVPixelBufferGetBaseAddress(a8);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(a8);
+    Width = CVPixelBufferGetWidth(a8);
+    Height = CVPixelBufferGetHeight(a8);
     v16 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1C0]);
     v17 = CGDataProviderCreateWithData(0, BaseAddress, Height * BytesPerRow, 0);
     v18 = CGImageCreate(Width, Height, 8uLL, 0x20uLL, BytesPerRow, v16, 0, v17, 0, 0, kCGRenderingIntentDefault);
-    v19 = CGImageDestinationCreateWithURL([MEMORY[0x1E695DFF8] fileURLWithPath:v10], +[ImageTools guessType:](ImageTools, "guessType:", v8), 1uLL, 0);
+    v19 = CGImageDestinationCreateWithURL([MEMORY[0x1E695DFF8] fileURLWithPath:v10], +[ImageTools guessType:](ImageTools, "guessType:", nameCopy), 1uLL, 0);
     CGImageDestinationAddImage(v19, v18, 0);
     CGImageDestinationFinalize(v19);
-    CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+    CVPixelBufferUnlockBaseAddress(a8, 1uLL);
     CGImageRelease(v18);
     CGDataProviderRelease(v17);
     CGColorSpaceRelease(v16);
@@ -1282,23 +1282,23 @@ LABEL_37:
   return v10;
 }
 
-+ (id)saveCVPixelBuffer420YpCbCr8:(__CVBuffer *)a3 withName:(id)a4 inFolder:(id)a5 error:(id *)a6
++ (id)saveCVPixelBuffer420YpCbCr8:(__CVBuffer *)cr8 withName:(id)name inFolder:(id)folder error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  folderCopy = folder;
   pixelBufferOut = 0;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(cr8);
+  Height = CVPixelBufferGetHeight(cr8);
   IOSurfacePropertiesDictionary = ImageTools_fcssCreateIOSurfacePropertiesDictionary(Width, Height, 32);
   if (IOSurfacePropertiesDictionary)
   {
     v14 = IOSurfacePropertiesDictionary;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{IOSurfacePropertiesDictionary, *MEMORY[0x1E69660D8], 0}];
     CFRelease(v14);
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
+    CVPixelBufferLockBaseAddress(cr8, 1uLL);
     v16 = *MEMORY[0x1E695E480];
-    v17 = CVPixelBufferGetWidth(a3);
-    v18 = CVPixelBufferGetHeight(a3);
+    v17 = CVPixelBufferGetWidth(cr8);
+    v18 = CVPixelBufferGetHeight(cr8);
     if (CVPixelBufferCreate(v16, v17, v18, 0x20u, v15, &pixelBufferOut))
     {
       v42 = 16766;
@@ -1311,22 +1311,22 @@ LABEL_18:
     }
 
     CVPixelBufferLockBaseAddress(pixelBufferOut, 1uLL);
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(cr8);
     if (PixelFormatType > 1714696751)
     {
       if (PixelFormatType == 2033463856 || PixelFormatType == 1714696752)
       {
-        v54 = v10;
-        v55 = a6;
-        v56 = v9;
-        BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-        BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-        v33 = CVPixelBufferGetBaseAddressOfPlane(a3, 1uLL);
-        v34 = CVPixelBufferGetBytesPerRowOfPlane(a3, 1uLL);
-        v35 = CVPixelBufferGetBaseAddressOfPlane(a3, 2uLL);
-        v36 = CVPixelBufferGetBytesPerRowOfPlane(a3, 2uLL);
-        v37 = CVPixelBufferGetWidth(a3);
-        v38 = CVPixelBufferGetHeight(a3);
+        v54 = folderCopy;
+        errorCopy2 = error;
+        v56 = nameCopy;
+        BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(cr8, 0);
+        BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(cr8, 0);
+        v33 = CVPixelBufferGetBaseAddressOfPlane(cr8, 1uLL);
+        v34 = CVPixelBufferGetBytesPerRowOfPlane(cr8, 1uLL);
+        v35 = CVPixelBufferGetBaseAddressOfPlane(cr8, 2uLL);
+        v36 = CVPixelBufferGetBytesPerRowOfPlane(cr8, 2uLL);
+        v37 = CVPixelBufferGetWidth(cr8);
+        v38 = CVPixelBufferGetHeight(cr8);
         BaseAddress = CVPixelBufferGetBaseAddress(pixelBufferOut);
         LOBYTE(v50) = 0;
         v40 = [ImageTools createRGB8BufferFrom420Y8PlanarBuffer:BaseAddressOfPlane withBytesPerRowY:BytesPerRowOfPlane andFrom420Cb8Buffer:v33 withBytesPerRowCb:v34 andFrom420Cr8Buffer:v35 withBytesPerRowCr:v36 andWithWidth:__PAIR64__(v38 andWithHeight:v37) andAlphaFirst:v50 toRGB8Buffer:BaseAddress withBytesPerRowDst:CVPixelBufferGetBytesPerRow(pixelBufferOut)];
@@ -1341,12 +1341,12 @@ LABEL_18:
         }
 
 LABEL_19:
-        a6 = v55;
-        v9 = v56;
-        v10 = v54;
-        v45 = [ImageTools saveCVPixelBufferRGBA8:pixelBufferOut withName:v56 inFolder:v54 error:v55];
+        error = errorCopy2;
+        nameCopy = v56;
+        folderCopy = v54;
+        v45 = [ImageTools saveCVPixelBufferRGBA8:pixelBufferOut withName:v56 inFolder:v54 error:errorCopy2];
 LABEL_20:
-        CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+        CVPixelBufferUnlockBaseAddress(cr8, 1uLL);
         if (pixelBufferOut)
         {
           CVPixelBufferRelease(pixelBufferOut);
@@ -1358,15 +1358,15 @@ LABEL_20:
 
     else if (PixelFormatType == 875704422 || PixelFormatType == 875704438)
     {
-      v54 = v10;
-      v55 = a6;
-      v56 = v9;
-      v20 = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-      v21 = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-      v22 = CVPixelBufferGetBaseAddressOfPlane(a3, 1uLL);
-      v23 = CVPixelBufferGetBytesPerRowOfPlane(a3, 1uLL);
-      v24 = CVPixelBufferGetWidth(a3);
-      v25 = CVPixelBufferGetHeight(a3);
+      v54 = folderCopy;
+      errorCopy2 = error;
+      v56 = nameCopy;
+      v20 = CVPixelBufferGetBaseAddressOfPlane(cr8, 0);
+      v21 = CVPixelBufferGetBytesPerRowOfPlane(cr8, 0);
+      v22 = CVPixelBufferGetBaseAddressOfPlane(cr8, 1uLL);
+      v23 = CVPixelBufferGetBytesPerRowOfPlane(cr8, 1uLL);
+      v24 = CVPixelBufferGetWidth(cr8);
+      v25 = CVPixelBufferGetHeight(cr8);
       v26 = CVPixelBufferGetBaseAddress(pixelBufferOut);
       LOBYTE(v49) = 0;
       v27 = [ImageTools createRGB8BufferFrom420Y8BiPlanarBuffer:v20 withBytesPerRowLuma:v21 andFrom420CbCr8Buffer:v22 withBytesPerRowChroma:v23 andWithWidth:v24 andWithHeight:v25 andAlphaFirst:v49 toRGB8Buffer:v26 withBytesPerRowDst:CVPixelBufferGetBytesPerRow(pixelBufferOut)];
@@ -1380,9 +1380,9 @@ LABEL_20:
 LABEL_17:
         syslog(3, "%s error %lld:%s in %s @ %s:%d\n", v29, v28, v30, "+[ImageTools saveCVPixelBuffer420YpCbCr8:withName:inFolder:error:]", "/Library/Caches/com.apple.xbs/Sources/AccessibilityMediaUtilities/AXMediaUtilities/source/ImageTools.m", v31);
         v45 = 0;
-        a6 = v55;
-        v9 = v56;
-        v10 = v54;
+        error = errorCopy2;
+        nameCopy = v56;
+        folderCopy = v54;
         goto LABEL_20;
       }
 
@@ -1396,9 +1396,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Failed to create the IOSurface properties"];
+    *error = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Failed to create the IOSurface properties"];
   }
 
   v42 = 16766;
@@ -1411,25 +1411,25 @@ LABEL_22:
   if (v42 != 128)
   {
     v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ERROR: Could not save 420YpCbCr8 buffer"];
-    if (a6)
+    if (error)
     {
-      *a6 = [AX_CVML_Error createNSErrorWithStatus:v42 andMessage:v46];
+      *error = [AX_CVML_Error createNSErrorWithStatus:v42 andMessage:v46];
     }
   }
 
   return v45;
 }
 
-+ (CGImage)newCGImageFromPlanar8VImageBuffer:(const vImage_Buffer *)a3 error:(id *)a4
++ (CGImage)newCGImageFromPlanar8VImageBuffer:(const vImage_Buffer *)buffer error:(id *)error
 {
   v6 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F128]);
-  v7 = CGDataProviderCreateWithData(0, a3->data, a3->height * a3->rowBytes, 0);
+  v7 = CGDataProviderCreateWithData(0, buffer->data, buffer->height * buffer->rowBytes, 0);
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not create data provider."];
-      *a4 = v10 = 0;
+      *error = v10 = 0;
       if (!v6)
       {
         return v10;
@@ -1451,11 +1451,11 @@ LABEL_9:
   }
 
   v8 = v7;
-  v9 = CGImageCreate(a3->width, a3->height, 8uLL, 8uLL, a3->rowBytes, v6, 0, v7, 0, 0, kCGRenderingIntentDefault);
+  v9 = CGImageCreate(buffer->width, buffer->height, 8uLL, 8uLL, buffer->rowBytes, v6, 0, v7, 0, 0, kCGRenderingIntentDefault);
   v10 = v9;
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not create image."];
+    *error = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not create image."];
   }
 
   CGDataProviderRelease(v8);
@@ -1467,44 +1467,44 @@ LABEL_9:
   return v10;
 }
 
-+ (id)saveVImageBufferPlanar8ToJPEGData:(const vImage_Buffer *)a3 withCompressionQuality:(float)a4 error:(id *)a5
++ (id)saveVImageBufferPlanar8ToJPEGData:(const vImage_Buffer *)data withCompressionQuality:(float)quality error:(id *)error
 {
-  v7 = [ImageTools newCGImageFromPlanar8VImageBuffer:a3 error:?];
+  v7 = [ImageTools newCGImageFromPlanar8VImageBuffer:data error:?];
   if (v7)
   {
-    v8 = [MEMORY[0x1E695DF88] data];
-    v9 = [*MEMORY[0x1E6982E58] identifier];
-    v10 = CGImageDestinationCreateWithData(v8, v9, 1uLL, 0);
+    data = [MEMORY[0x1E695DF88] data];
+    identifier = [*MEMORY[0x1E6982E58] identifier];
+    v10 = CGImageDestinationCreateWithData(data, identifier, 1uLL, 0);
 
     if (v10)
     {
       v12 = MEMORY[0x1E695DF20];
-      *&v11 = a4;
+      *&v11 = quality;
       v13 = [MEMORY[0x1E696AD98] numberWithFloat:v11];
       CGImageDestinationSetProperties(v10, [v12 dictionaryWithObjectsAndKeys:{v13, *MEMORY[0x1E696D338], 0}]);
 
       CGImageDestinationAddImage(v10, v7, 0);
       if (!CGImageDestinationFinalize(v10))
       {
-        if (a5)
+        if (error)
         {
-          *a5 = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not finalize image."];
+          *error = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not finalize image."];
         }
 
-        v8 = 0;
+        data = 0;
       }
 
       CFRelease(v10);
       CGImageRelease(v7);
-      v8 = v8;
-      v7 = v8;
+      data = data;
+      v7 = data;
     }
 
     else
     {
-      if (a5)
+      if (error)
       {
-        *a5 = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not create image destination."];
+        *error = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not create image destination."];
       }
 
       CGImageRelease(v7);
@@ -1515,14 +1515,14 @@ LABEL_9:
   return v7;
 }
 
-+ (id)saveVImageBufferPlanar8ToData:(const vImage_Buffer *)a3 deriveTypeFromFileName:(id)a4 error:(id *)a5
++ (id)saveVImageBufferPlanar8ToData:(const vImage_Buffer *)data deriveTypeFromFileName:(id)name error:(id *)error
 {
-  v7 = a4;
-  v8 = [ImageTools newCGImageFromPlanar8VImageBuffer:a3 error:a5];
+  nameCopy = name;
+  v8 = [ImageTools newCGImageFromPlanar8VImageBuffer:data error:error];
   if (v8)
   {
     v9 = v8;
-    v10 = [ImageTools writeImageToData:v8 type:[ImageTools guessType:v7] error:a5];
+    v10 = [ImageTools writeImageToData:v8 type:[ImageTools guessType:nameCopy] error:error];
     CGImageRelease(v9);
   }
 
@@ -1535,11 +1535,11 @@ LABEL_9:
   return v10;
 }
 
-+ (id)saveVImageBufferPlanar8:(const vImage_Buffer *)a3 withName:(id)a4 inFolder:(id)a5 error:(id *)a6
++ (id)saveVImageBufferPlanar8:(const vImage_Buffer *)planar8 withName:(id)name inFolder:(id)folder error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
-  if (![v9 length])
+  nameCopy = name;
+  folderCopy = folder;
+  if (![nameCopy length])
   {
     v11 = 0;
 LABEL_8:
@@ -1548,25 +1548,25 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v10)
+  if (folderCopy)
   {
-    v11 = [v10 stringByAppendingPathComponent:v9];
+    v11 = [folderCopy stringByAppendingPathComponent:nameCopy];
   }
 
   else
   {
     v12 = NSTemporaryDirectory();
-    v11 = [v12 stringByAppendingPathComponent:v9];
+    v11 = [v12 stringByAppendingPathComponent:nameCopy];
   }
 
-  v13 = [ImageTools newCGImageFromPlanar8VImageBuffer:a3 error:a6];
+  v13 = [ImageTools newCGImageFromPlanar8VImageBuffer:planar8 error:error];
   if (!v13)
   {
     goto LABEL_8;
   }
 
   v14 = v13;
-  v15 = [ImageTools writeImage:v13 toFile:v11 error:a6];
+  v15 = [ImageTools writeImage:v13 toFile:v11 error:error];
   CGImageRelease(v14);
   if (v15)
   {
@@ -1579,16 +1579,16 @@ LABEL_9:
   return v16;
 }
 
-+ (CGImage)newCGImageFromRGBA8VImageBuffer:(const vImage_Buffer *)a3 error:(id *)a4
++ (CGImage)newCGImageFromRGBA8VImageBuffer:(const vImage_Buffer *)buffer error:(id *)error
 {
   v6 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1C0]);
-  v7 = CGDataProviderCreateWithData(0, a3->data, a3->height * a3->rowBytes, 0);
+  v7 = CGDataProviderCreateWithData(0, buffer->data, buffer->height * buffer->rowBytes, 0);
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not create data provider."];
-      *a4 = v10 = 0;
+      *error = v10 = 0;
       if (!v6)
       {
         return v10;
@@ -1610,11 +1610,11 @@ LABEL_9:
   }
 
   v8 = v7;
-  v9 = CGImageCreate(a3->width, a3->height, 8uLL, 0x20uLL, a3->rowBytes, v6, 0, v7, 0, 0, kCGRenderingIntentDefault);
+  v9 = CGImageCreate(buffer->width, buffer->height, 8uLL, 0x20uLL, buffer->rowBytes, v6, 0, v7, 0, 0, kCGRenderingIntentDefault);
   v10 = v9;
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not create image."];
+    *error = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not create image."];
   }
 
   CGDataProviderRelease(v8);
@@ -1626,33 +1626,33 @@ LABEL_9:
   return v10;
 }
 
-+ (id)writeImageToData:(CGImage *)a3 type:(__CFString *)a4 error:(id *)a5
++ (id)writeImageToData:(CGImage *)data type:(__CFString *)type error:(id *)error
 {
-  v8 = [MEMORY[0x1E695DF88] data];
-  v9 = CGImageDestinationCreateWithData(v8, a4, 1uLL, 0);
+  data = [MEMORY[0x1E695DF88] data];
+  v9 = CGImageDestinationCreateWithData(data, type, 1uLL, 0);
   if (v9)
   {
     v10 = v9;
-    CGImageDestinationAddImage(v9, a3, 0);
+    CGImageDestinationAddImage(v9, data, 0);
     if (!CGImageDestinationFinalize(v10))
     {
-      if (a5)
+      if (error)
       {
-        *a5 = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not finalize image."];
+        *error = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not finalize image."];
       }
 
-      v8 = 0;
+      data = 0;
     }
 
     CFRelease(v10);
-    v8 = v8;
-    v11 = v8;
+    data = data;
+    v11 = data;
   }
 
-  else if (a5)
+  else if (error)
   {
     [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not create image destination."];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -1663,44 +1663,44 @@ LABEL_9:
   return v11;
 }
 
-+ (id)saveVImageBufferRGBA8ToJPEGData:(const vImage_Buffer *)a3 withCompressionQuality:(float)a4 error:(id *)a5
++ (id)saveVImageBufferRGBA8ToJPEGData:(const vImage_Buffer *)data withCompressionQuality:(float)quality error:(id *)error
 {
-  v7 = [ImageTools newCGImageFromRGBA8VImageBuffer:a3 error:?];
+  v7 = [ImageTools newCGImageFromRGBA8VImageBuffer:data error:?];
   if (v7)
   {
-    v8 = [MEMORY[0x1E695DF88] data];
-    v9 = [*MEMORY[0x1E6982E58] identifier];
-    v10 = CGImageDestinationCreateWithData(v8, v9, 1uLL, 0);
+    data = [MEMORY[0x1E695DF88] data];
+    identifier = [*MEMORY[0x1E6982E58] identifier];
+    v10 = CGImageDestinationCreateWithData(data, identifier, 1uLL, 0);
 
     if (v10)
     {
       v12 = MEMORY[0x1E695DF20];
-      *&v11 = a4;
+      *&v11 = quality;
       v13 = [MEMORY[0x1E696AD98] numberWithFloat:v11];
       CGImageDestinationSetProperties(v10, [v12 dictionaryWithObjectsAndKeys:{v13, *MEMORY[0x1E696D338], 0}]);
 
       CGImageDestinationAddImage(v10, v7, 0);
       if (!CGImageDestinationFinalize(v10))
       {
-        if (a5)
+        if (error)
         {
-          *a5 = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not finalize image."];
+          *error = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not finalize image."];
         }
 
-        v8 = 0;
+        data = 0;
       }
 
       CFRelease(v10);
       CGImageRelease(v7);
-      v8 = v8;
-      v7 = v8;
+      data = data;
+      v7 = data;
     }
 
     else
     {
-      if (a5)
+      if (error)
       {
-        *a5 = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not create image destination."];
+        *error = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not create image destination."];
       }
 
       CGImageRelease(v7);
@@ -1711,14 +1711,14 @@ LABEL_9:
   return v7;
 }
 
-+ (id)saveVImageBufferRGBA8ToData:(const vImage_Buffer *)a3 deriveTypeFromFileName:(id)a4 error:(id *)a5
++ (id)saveVImageBufferRGBA8ToData:(const vImage_Buffer *)data deriveTypeFromFileName:(id)name error:(id *)error
 {
-  v7 = a4;
-  v8 = [ImageTools newCGImageFromRGBA8VImageBuffer:a3 error:a5];
+  nameCopy = name;
+  v8 = [ImageTools newCGImageFromRGBA8VImageBuffer:data error:error];
   if (v8)
   {
     v9 = v8;
-    v10 = [ImageTools writeImageToData:v8 type:[ImageTools guessType:v7] error:a5];
+    v10 = [ImageTools writeImageToData:v8 type:[ImageTools guessType:nameCopy] error:error];
     CGImageRelease(v9);
   }
 
@@ -1730,32 +1730,32 @@ LABEL_9:
   return v10;
 }
 
-+ (BOOL)writeImage:(CGImage *)a3 toFile:(id)a4 error:(id *)a5
++ (BOOL)writeImage:(CGImage *)image toFile:(id)file error:(id *)error
 {
   v7 = MEMORY[0x1E695DFF8];
-  v8 = a4;
-  v9 = [v7 fileURLWithPath:v8];
-  v10 = [ImageTools guessType:v8];
+  fileCopy = file;
+  v9 = [v7 fileURLWithPath:fileCopy];
+  v10 = [ImageTools guessType:fileCopy];
 
   v11 = CGImageDestinationCreateWithURL(v9, v10, 1uLL, 0);
   if (v11)
   {
     v12 = v11;
-    CGImageDestinationAddImage(v11, a3, 0);
+    CGImageDestinationAddImage(v11, image, 0);
     v13 = CGImageDestinationFinalize(v12);
     v14 = v13;
-    if (a5 && !v13)
+    if (error && !v13)
     {
-      *a5 = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not finalize image."];
+      *error = [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not finalize image."];
     }
 
     CFRelease(v12);
   }
 
-  else if (a5)
+  else if (error)
   {
     [AX_CVML_Error createNSErrorWithStatus:16766 andMessage:@"Could not finalize image."];
-    *a5 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -1766,11 +1766,11 @@ LABEL_9:
   return v14;
 }
 
-+ (id)saveVImageBufferRGBA8:(const vImage_Buffer *)a3 withName:(id)a4 inFolder:(id)a5 error:(id *)a6
++ (id)saveVImageBufferRGBA8:(const vImage_Buffer *)a8 withName:(id)name inFolder:(id)folder error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
-  if (![v9 length])
+  nameCopy = name;
+  folderCopy = folder;
+  if (![nameCopy length])
   {
     v11 = 0;
 LABEL_10:
@@ -1779,22 +1779,22 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if (v10)
+  if (folderCopy)
   {
-    v11 = [v10 stringByAppendingPathComponent:v9];
+    v11 = [folderCopy stringByAppendingPathComponent:nameCopy];
   }
 
   else
   {
     v12 = NSTemporaryDirectory();
-    v11 = [v12 stringByAppendingPathComponent:v9];
+    v11 = [v12 stringByAppendingPathComponent:nameCopy];
   }
 
-  v13 = [ImageTools newCGImageFromRGBA8VImageBuffer:a3 error:a6];
+  v13 = [ImageTools newCGImageFromRGBA8VImageBuffer:a8 error:error];
   if (v13)
   {
     v14 = v13;
-    if (![ImageTools writeImage:v13 toFile:v11 error:a6])
+    if (![ImageTools writeImage:v13 toFile:v11 error:error])
     {
 
       v11 = 0;
@@ -1810,22 +1810,22 @@ LABEL_12:
   return v15;
 }
 
-+ (id)saveCGImage:(const CGImage *)a3 withName:(id)a4 inFolder:(id)a5 error:(id *)a6
++ (id)saveCGImage:(const CGImage *)image withName:(id)name inFolder:(id)folder error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if ([v8 length])
+  nameCopy = name;
+  folderCopy = folder;
+  if ([nameCopy length])
   {
-    if (v9)
+    if (folderCopy)
     {
-      v10 = [v9 stringByAppendingPathComponent:v8];
+      v10 = [folderCopy stringByAppendingPathComponent:nameCopy];
     }
 
     else
     {
       v11 = NSTemporaryDirectory();
-      v10 = [v11 stringByAppendingPathComponent:v8];
+      v10 = [v11 stringByAppendingPathComponent:nameCopy];
     }
 
     v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:v10];
@@ -1837,11 +1837,11 @@ LABEL_12:
       _os_log_impl(&dword_1AE37B000, v13, OS_LOG_TYPE_DEFAULT, "Saving image to URL: %@", &v20, 0xCu);
     }
 
-    v14 = CGImageDestinationCreateWithURL(v12, [ImageTools guessType:v8], 1uLL, 0);
+    v14 = CGImageDestinationCreateWithURL(v12, [ImageTools guessType:nameCopy], 1uLL, 0);
     if (v14)
     {
       v15 = v14;
-      CGImageDestinationAddImage(v14, a3, 0);
+      CGImageDestinationAddImage(v14, image, 0);
       v16 = CGImageDestinationFinalize(v15);
       v17 = AXLogCommon();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1864,32 +1864,32 @@ LABEL_12:
   return v10;
 }
 
-+ (id)saveRawBuffer:(void *)a3 withWidth:(unsigned int)a4 andHeight:(unsigned int)a5 andRowBytes:(unsigned int)a6 withName:(id)a7 inFolder:(id)a8 error:(id *)a9
++ (id)saveRawBuffer:(void *)buffer withWidth:(unsigned int)width andHeight:(unsigned int)height andRowBytes:(unsigned int)bytes withName:(id)name inFolder:(id)folder error:(id *)error
 {
-  v21 = a5;
-  v22 = a4;
-  v20 = a6;
-  v13 = a7;
-  v14 = a8;
-  if ([v13 length])
+  heightCopy = height;
+  widthCopy = width;
+  bytesCopy = bytes;
+  nameCopy = name;
+  folderCopy = folder;
+  if ([nameCopy length])
   {
-    if (v14)
+    if (folderCopy)
     {
-      v15 = [v14 stringByAppendingPathComponent:v13];
+      v15 = [folderCopy stringByAppendingPathComponent:nameCopy];
     }
 
     else
     {
       v16 = NSTemporaryDirectory();
-      v15 = [v16 stringByAppendingPathComponent:v13];
+      v15 = [v16 stringByAppendingPathComponent:nameCopy];
     }
 
-    v17 = a5 * a6;
+    v17 = height * bytes;
     v18 = [MEMORY[0x1E695DF88] dataWithLength:v17 + 12];
-    [v18 replaceBytesInRange:0 withBytes:{4, &v22}];
-    [v18 replaceBytesInRange:4 withBytes:{4, &v20}];
-    [v18 replaceBytesInRange:8 withBytes:{4, &v21}];
-    [v18 replaceBytesInRange:12 withBytes:{v17, a3}];
+    [v18 replaceBytesInRange:0 withBytes:{4, &widthCopy}];
+    [v18 replaceBytesInRange:4 withBytes:{4, &bytesCopy}];
+    [v18 replaceBytesInRange:8 withBytes:{4, &heightCopy}];
+    [v18 replaceBytesInRange:12 withBytes:{v17, buffer}];
     [v18 writeToFile:v15 atomically:1];
   }
 
@@ -1901,41 +1901,41 @@ LABEL_12:
   return v15;
 }
 
-+ (vImage_Buffer)getVImageBufferFromCVPixelBuffer:(SEL)a3 channel:(__CVBuffer *)a4 error:(int)a5
++ (vImage_Buffer)getVImageBufferFromCVPixelBuffer:(SEL)buffer channel:(__CVBuffer *)channel error:(int)error
 {
   retstr->data = 0;
   retstr->height = 0;
   retstr->width = 0;
-  if (CVPixelBufferGetPlaneCount(a4))
+  if (CVPixelBufferGetPlaneCount(channel))
   {
-    retstr->data = CVPixelBufferGetBaseAddressOfPlane(a4, a5);
-    retstr->height = CVPixelBufferGetHeightOfPlane(a4, a5);
-    retstr->width = CVPixelBufferGetWidthOfPlane(a4, a5);
-    result = CVPixelBufferGetBytesPerRowOfPlane(a4, a5);
+    retstr->data = CVPixelBufferGetBaseAddressOfPlane(channel, error);
+    retstr->height = CVPixelBufferGetHeightOfPlane(channel, error);
+    retstr->width = CVPixelBufferGetWidthOfPlane(channel, error);
+    result = CVPixelBufferGetBytesPerRowOfPlane(channel, error);
   }
 
   else
   {
-    retstr->data = CVPixelBufferGetBaseAddress(a4);
-    retstr->height = CVPixelBufferGetHeight(a4);
-    retstr->width = CVPixelBufferGetWidth(a4);
-    result = CVPixelBufferGetBytesPerRow(a4);
+    retstr->data = CVPixelBufferGetBaseAddress(channel);
+    retstr->height = CVPixelBufferGetHeight(channel);
+    retstr->width = CVPixelBufferGetWidth(channel);
+    result = CVPixelBufferGetBytesPerRow(channel);
   }
 
   retstr->rowBytes = result;
   return result;
 }
 
-+ (vImage_Buffer)getVImageBufferFromCGImageLuma:(SEL)a3 error:(CGImage *)a4
++ (vImage_Buffer)getVImageBufferFromCGImageLuma:(SEL)luma error:(CGImage *)error
 {
-  v7 = [ImageTools createARGBBitmapContextWithImage:a4, a5];
-  Width = CGImageGetWidth(a4);
-  Height = CGImageGetHeight(a4);
+  v7 = [ImageTools createARGBBitmapContextWithImage:error, a5];
+  Width = CGImageGetWidth(error);
+  Height = CGImageGetHeight(error);
   v30.size.width = Width;
   v30.size.height = Height;
   v30.origin.x = 0.0;
   v30.origin.y = 0.0;
-  CGContextDrawImage(v7, v30, a4);
+  CGContextDrawImage(v7, v30, error);
   Data = CGBitmapContextGetData(v7);
   retstr->height = Height;
   retstr->width = Width;
@@ -1961,7 +1961,7 @@ LABEL_12:
         LODWORD(v18) = 0;
         do
         {
-          ColorSpace = CGImageGetColorSpace(a4);
+          ColorSpace = CGImageGetColorSpace(error);
           Model = CGColorSpaceGetModel(ColorSpace);
           v21 = v18;
           v18 = v18 + 1;
@@ -1997,13 +1997,13 @@ LABEL_12:
   return result;
 }
 
-+ (vImage_Buffer)getVImageBufferFromCGImage:(SEL)a3 error:(CGImage *)a4
++ (vImage_Buffer)getVImageBufferFromCGImage:(SEL)image error:(CGImage *)error
 {
-  DataProvider = CGImageGetDataProvider(a4);
+  DataProvider = CGImageGetDataProvider(error);
   v8 = CGDataProviderCopyData(DataProvider);
-  retstr->width = CGImageGetWidth(a4);
-  retstr->height = CGImageGetHeight(a4);
-  retstr->rowBytes = CGImageGetBytesPerRow(a4);
+  retstr->width = CGImageGetWidth(error);
+  retstr->height = CGImageGetHeight(error);
+  retstr->rowBytes = CGImageGetBytesPerRow(error);
   Length = CFDataGetLength(v8);
   v10 = malloc_type_malloc(Length, 0x22E126BEuLL);
   retstr->data = v10;
@@ -2015,41 +2015,41 @@ LABEL_12:
   return result;
 }
 
-+ (int64_t)extractLumaFromBGRA8Buffer:(void *)a3 withWidth:(int)a4 andWithHeight:(int)a5 andWithBytesPerRow:(unint64_t)a6 toBuffer:(void *)a7 withBytesPerRow:(unint64_t)a8
++ (int64_t)extractLumaFromBGRA8Buffer:(void *)buffer withWidth:(int)width andWithHeight:(int)height andWithBytesPerRow:(unint64_t)row toBuffer:(void *)toBuffer withBytesPerRow:(unint64_t)perRow
 {
-  if (a3 && a7)
+  if (buffer && toBuffer)
   {
     v8 = 16768;
-    if (a5)
+    if (height)
     {
       v9 = 0;
-      v10 = a5;
-      v11 = a4 - 8;
-      v12 = a4;
-      v13 = a4 - 8;
-      v14 = a7 + 8;
-      v15 = a3;
+      heightCopy = height;
+      v11 = width - 8;
+      widthCopy = width;
+      v13 = width - 8;
+      v14 = toBuffer + 8;
+      bufferCopy = buffer;
       do
       {
         v16 = 0;
         v17 = v14;
         do
         {
-          v25 = vld4_s8(a3);
-          a3 = a3 + 32;
+          v25 = vld4_s8(buffer);
+          buffer = buffer + 32;
           v18 = v16;
           v19 = v17;
-          *a7 = vaddhn_s16(vmlal_u8(vmull_u8(v25.val[1], 0x9696969696969696), v25.val[0], 0x1D1D1D1D1D1D1D1DLL), vmull_u8(v25.val[2], 0x4C4C4C4C4C4C4C4CLL));
-          a7 = a7 + 8;
+          *toBuffer = vaddhn_s16(vmlal_u8(vmull_u8(v25.val[1], 0x9696969696969696), v25.val[0], 0x1D1D1D1D1D1D1D1DLL), vmull_u8(v25.val[2], 0x4C4C4C4C4C4C4C4CLL));
+          toBuffer = toBuffer + 8;
           v16 += 8;
           v17 += 8;
         }
 
         while (v16 <= v11);
-        if (v16 < v12)
+        if (v16 < widthCopy)
         {
           v20 = v13 - v18;
-          v21 = v15;
+          v21 = bufferCopy;
           do
           {
             *v19++ = (29 * *v21 + 150 * v21[1] + 76 * v21[2]) >> 8;
@@ -2060,12 +2060,12 @@ LABEL_12:
           while (v20);
         }
 
-        v15 += a6;
+        bufferCopy += row;
         ++v9;
-        v14 += a8;
+        v14 += perRow;
       }
 
-      while (v9 != v10);
+      while (v9 != heightCopy);
     }
   }
 
@@ -2080,29 +2080,29 @@ LABEL_12:
   return v8;
 }
 
-+ (int64_t)create420YCbCr8BufferFromPlanar8Buffer:(void *)a3 withWidth:(int)a4 andWithHeight:(int)a5 andWithBytesPerRow:(unint64_t)a6 toLumaBuffer:(void *)a7 withBytesPerRowLuma:(unint64_t)a8 andToChromaBuffer:(void *)a9 withBytesPerRowChroma:(unint64_t)a10
++ (int64_t)create420YCbCr8BufferFromPlanar8Buffer:(void *)buffer withWidth:(int)width andWithHeight:(int)height andWithBytesPerRow:(unint64_t)row toLumaBuffer:(void *)lumaBuffer withBytesPerRowLuma:(unint64_t)luma andToChromaBuffer:(void *)chromaBuffer withBytesPerRowChroma:(unint64_t)self0
 {
-  v11 = a7;
-  v15 = a3;
-  v16 = a9;
-  if (a3 && a7 && a9)
+  lumaBufferCopy = lumaBuffer;
+  bufferCopy = buffer;
+  chromaBufferCopy = chromaBuffer;
+  if (buffer && lumaBuffer && chromaBuffer)
   {
-    if (a5 >= 1)
+    if (height >= 1)
     {
-      v18 = a5;
-      v19 = a3;
+      heightCopy = height;
+      bufferCopy2 = buffer;
       do
       {
-        memcpy(v11, v19, a4);
-        v19 += a6;
-        v11 += a8;
-        --v18;
+        memcpy(lumaBufferCopy, bufferCopy2, width);
+        bufferCopy2 += row;
+        lumaBufferCopy += luma;
+        --heightCopy;
       }
 
-      while (v18);
+      while (heightCopy);
     }
 
-    if (a5 >> 1 < 1)
+    if (height >> 1 < 1)
     {
       return 16768;
     }
@@ -2110,32 +2110,32 @@ LABEL_12:
     else
     {
       v20 = 0;
-      v21 = &v15[a6];
-      v22 = 2 * a6;
+      v21 = &bufferCopy[row];
+      v22 = 2 * row;
       v17 = 16768;
       do
       {
-        if (a4 >= 1)
+        if (width >= 1)
         {
           v23 = 1;
-          v24 = v16;
+          v24 = chromaBufferCopy;
           do
           {
-            *v24++ = (v15[v23] + v15[v23 - 1] + v21[v23 - 1] + v21[v23]) >> 2;
+            *v24++ = (bufferCopy[v23] + bufferCopy[v23 - 1] + v21[v23 - 1] + v21[v23]) >> 2;
             v25 = v23 + 1;
             v23 += 2;
           }
 
-          while (v25 < a4);
+          while (v25 < width);
         }
 
         v21 += v22;
-        v15 += v22;
-        v16 += a10;
+        bufferCopy += v22;
+        chromaBufferCopy += chroma;
         ++v20;
       }
 
-      while (v20 != a5 >> 1);
+      while (v20 != height >> 1);
     }
   }
 
@@ -2150,17 +2150,17 @@ LABEL_12:
   return v17;
 }
 
-+ (int64_t)create420YCbCr8BufferFromRGB8Buffer:(void *)a3 withWidth:(int)a4 andWithHeight:(int)a5 andWithBytesPerRow:(unint64_t)a6 andAlphaFirst:(BOOL)a7 toLumaBuffer:(void *)a8 withBytesPerRowLuma:(unint64_t)a9 andToChromaBuffer:(void *)a10 withBytesPerRowChroma:(unint64_t)a11
++ (int64_t)create420YCbCr8BufferFromRGB8Buffer:(void *)buffer withWidth:(int)width andWithHeight:(int)height andWithBytesPerRow:(unint64_t)row andAlphaFirst:(BOOL)first toLumaBuffer:(void *)lumaBuffer withBytesPerRowLuma:(unint64_t)luma andToChromaBuffer:(void *)self0 withBytesPerRowChroma:(unint64_t)self1
 {
-  v13 = a10;
-  if (a3 && a8 && a10)
+  chromaBufferCopy = chromaBuffer;
+  if (buffer && lumaBuffer && chromaBuffer)
   {
     v14 = 16768;
-    v15 = a5 >> 1;
-    v16 = a4 >> 1;
-    v17 = 2 * (a6 - 4 * a4) + 8;
-    v18 = (a6 - 4 * a4) + 12;
-    v19 = a3 + a7;
+    v15 = height >> 1;
+    v16 = width >> 1;
+    v17 = 2 * (row - 4 * width) + 8;
+    v18 = (row - 4 * width) + 12;
+    v19 = buffer + first;
     do
     {
       v20 = 0;
@@ -2172,8 +2172,8 @@ LABEL_12:
       {
         v19 = v21;
         v25 = v22;
-        v26 = a8 + v20;
-        v27 = &v13[v20];
+        v26 = lumaBuffer + v20;
+        v27 = &chromaBufferCopy[v20];
         LOBYTE(v11) = *v23;
         LOBYTE(v12) = v23[1];
         *&v28 = LODWORD(v12) * 0.5872;
@@ -2309,11 +2309,11 @@ LABEL_12:
       }
 
       while (v24);
-      v60 = a9;
+      lumaCopy = luma;
       v61 = v16;
       do
       {
-        v62 = a8 + v60;
+        v62 = lumaBuffer + lumaCopy;
         LOBYTE(v11) = *(v25 - 2);
         LOBYTE(v12) = *(v25 - 3);
         *&v63 = LODWORD(v12) * 0.5872;
@@ -2331,14 +2331,14 @@ LABEL_12:
         v11 = (v68 + (v12 * 0.114)) + 0.5;
         v62[1] = v11;
         v19 += 8;
-        v60 += 2;
+        lumaCopy += 2;
         v25 += 8;
         --v61;
       }
 
       while (v61);
-      a8 = a8 + a9 + a9;
-      v13 += a11;
+      lumaBuffer = lumaBuffer + luma + luma;
+      chromaBufferCopy += chroma;
       --v15;
     }
 
@@ -2356,28 +2356,28 @@ LABEL_12:
   return v14;
 }
 
-+ (int64_t)createRGB8BufferFrom420Y8PlanarBuffer:(void *)a3 withBytesPerRowY:(unint64_t)a4 andFrom420Cb8Buffer:(void *)a5 withBytesPerRowCb:(unint64_t)a6 andFrom420Cr8Buffer:(void *)a7 withBytesPerRowCr:(unint64_t)a8 andWithWidth:(int)a9 andWithHeight:(int)a10 andAlphaFirst:(BOOL)a11 toRGB8Buffer:(void *)__b withBytesPerRowDst:(unint64_t)a13
++ (int64_t)createRGB8BufferFrom420Y8PlanarBuffer:(void *)buffer withBytesPerRowY:(unint64_t)y andFrom420Cb8Buffer:(void *)cb8Buffer withBytesPerRowCb:(unint64_t)cb andFrom420Cr8Buffer:(void *)cr8Buffer withBytesPerRowCr:(unint64_t)cr andWithWidth:(int)width andWithHeight:(int)self0 andAlphaFirst:(BOOL)self1 toRGB8Buffer:(void *)__b withBytesPerRowDst:(unint64_t)self3
 {
-  if (a7 && a5 && a3 && __b)
+  if (cr8Buffer && cb8Buffer && buffer && __b)
   {
-    v19 = a10 >> 1;
-    memset(__b, 255, a10 * a13);
+    v19 = height >> 1;
+    memset(__b, 255, height * dst);
     v20 = 0;
-    v21 = __b + a11 + 4;
-    v22 = a3 + 1;
+    v21 = __b + first + 4;
+    v22 = buffer + 1;
     do
     {
-      if (a9 >= 1)
+      if (width >= 1)
       {
         v23 = 0;
-        v24 = &v21[a13 * v20];
+        v24 = &v21[dst * v20];
         v25 = v20 + 1;
-        v26 = &v22[a4 * v25];
-        v27 = &v22[a4 * v20];
-        v28 = &v21[a13 * v25];
+        v26 = &v22[y * v25];
+        v27 = &v22[y * v20];
+        v28 = &v21[dst * v25];
         v29 = v20 >> 1;
-        v30 = a7 + v29 * a8;
-        v31 = a5 + v29 * a6;
+        v30 = cr8Buffer + v29 * cr;
+        v31 = cb8Buffer + v29 * cb;
         do
         {
           v32 = *v31++;
@@ -2484,7 +2484,7 @@ LABEL_12:
           v28 += 8;
         }
 
-        while (v23 < a9);
+        while (v23 < width);
       }
 
       v20 += 2;
@@ -2506,26 +2506,26 @@ LABEL_12:
   return v18;
 }
 
-+ (int64_t)createRGB8BufferFrom420Y8BiPlanarBuffer:(void *)a3 withBytesPerRowLuma:(unint64_t)a4 andFrom420CbCr8Buffer:(void *)a5 withBytesPerRowChroma:(unint64_t)a6 andWithWidth:(int)a7 andWithHeight:(int)a8 andAlphaFirst:(BOOL)a9 toRGB8Buffer:(void *)__b withBytesPerRowDst:(unint64_t)a11
++ (int64_t)createRGB8BufferFrom420Y8BiPlanarBuffer:(void *)buffer withBytesPerRowLuma:(unint64_t)luma andFrom420CbCr8Buffer:(void *)cr8Buffer withBytesPerRowChroma:(unint64_t)chroma andWithWidth:(int)width andWithHeight:(int)height andAlphaFirst:(BOOL)first toRGB8Buffer:(void *)__b withBytesPerRowDst:(unint64_t)self1
 {
-  if (a5 && a3 && __b)
+  if (cr8Buffer && buffer && __b)
   {
-    v17 = a8 >> 1;
-    memset(__b, 255, a8 * a11);
+    v17 = height >> 1;
+    memset(__b, 255, height * dst);
     v18 = 0;
-    v19 = __b + a9 + 4;
-    v20 = a3 + 1;
+    v19 = __b + first + 4;
+    v20 = buffer + 1;
     do
     {
-      if (a7 >= 1)
+      if (width >= 1)
       {
         v21 = 0;
-        v22 = &v19[a11 * v18];
+        v22 = &v19[dst * v18];
         v23 = v18 + 1;
-        v24 = &v20[a4 * v23];
-        v25 = &v20[a4 * v18];
-        v26 = &v19[a11 * v23];
-        v27 = a5 + (v18 >> 1) * a6;
+        v24 = &v20[luma * v23];
+        v25 = &v20[luma * v18];
+        v26 = &v19[dst * v23];
+        v27 = cr8Buffer + (v18 >> 1) * chroma;
         do
         {
           v28 = *v27 - 128;
@@ -2631,7 +2631,7 @@ LABEL_12:
           v27 += 2;
         }
 
-        while (v21 < a7);
+        while (v21 < width);
       }
 
       v18 += 2;

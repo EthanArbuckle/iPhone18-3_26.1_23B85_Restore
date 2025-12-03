@@ -1,39 +1,39 @@
 @interface _INPBLodgingReservation
-- (BOOL)isEqual:(id)a3;
-- (_INPBLodgingReservation)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBLodgingReservation)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBLodgingReservation
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBLodgingReservation *)self lodgingBusinessLocation];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"lodgingBusinessLocation"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  lodgingBusinessLocation = [(_INPBLodgingReservation *)self lodgingBusinessLocation];
+  dictionaryRepresentation = [lodgingBusinessLocation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"lodgingBusinessLocation"];
 
-  v6 = [(_INPBLodgingReservation *)self numberOfAdults];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"numberOfAdults"];
+  numberOfAdults = [(_INPBLodgingReservation *)self numberOfAdults];
+  dictionaryRepresentation2 = [numberOfAdults dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"numberOfAdults"];
 
-  v8 = [(_INPBLodgingReservation *)self numberOfChildren];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"numberOfChildren"];
+  numberOfChildren = [(_INPBLodgingReservation *)self numberOfChildren];
+  dictionaryRepresentation3 = [numberOfChildren dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"numberOfChildren"];
 
-  v10 = [(_INPBLodgingReservation *)self reservation];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"reservation"];
+  reservation = [(_INPBLodgingReservation *)self reservation];
+  dictionaryRepresentation4 = [reservation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"reservation"];
 
-  v12 = [(_INPBLodgingReservation *)self reservationDuration];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"reservationDuration"];
+  reservationDuration = [(_INPBLodgingReservation *)self reservationDuration];
+  dictionaryRepresentation5 = [reservationDuration dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"reservationDuration"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -45,28 +45,28 @@
   return v6 ^ [(_INPBDateTimeRange *)self->_reservationDuration hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(_INPBLodgingReservation *)self lodgingBusinessLocation];
-  v6 = [v4 lodgingBusinessLocation];
-  if ((v5 != 0) == (v6 == 0))
+  lodgingBusinessLocation = [(_INPBLodgingReservation *)self lodgingBusinessLocation];
+  lodgingBusinessLocation2 = [equalCopy lodgingBusinessLocation];
+  if ((lodgingBusinessLocation != 0) == (lodgingBusinessLocation2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(_INPBLodgingReservation *)self lodgingBusinessLocation];
-  if (v7)
+  lodgingBusinessLocation3 = [(_INPBLodgingReservation *)self lodgingBusinessLocation];
+  if (lodgingBusinessLocation3)
   {
-    v8 = v7;
-    v9 = [(_INPBLodgingReservation *)self lodgingBusinessLocation];
-    v10 = [v4 lodgingBusinessLocation];
-    v11 = [v9 isEqual:v10];
+    v8 = lodgingBusinessLocation3;
+    lodgingBusinessLocation4 = [(_INPBLodgingReservation *)self lodgingBusinessLocation];
+    lodgingBusinessLocation5 = [equalCopy lodgingBusinessLocation];
+    v11 = [lodgingBusinessLocation4 isEqual:lodgingBusinessLocation5];
 
     if (!v11)
     {
@@ -78,20 +78,20 @@
   {
   }
 
-  v5 = [(_INPBLodgingReservation *)self numberOfAdults];
-  v6 = [v4 numberOfAdults];
-  if ((v5 != 0) == (v6 == 0))
+  lodgingBusinessLocation = [(_INPBLodgingReservation *)self numberOfAdults];
+  lodgingBusinessLocation2 = [equalCopy numberOfAdults];
+  if ((lodgingBusinessLocation != 0) == (lodgingBusinessLocation2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(_INPBLodgingReservation *)self numberOfAdults];
-  if (v12)
+  numberOfAdults = [(_INPBLodgingReservation *)self numberOfAdults];
+  if (numberOfAdults)
   {
-    v13 = v12;
-    v14 = [(_INPBLodgingReservation *)self numberOfAdults];
-    v15 = [v4 numberOfAdults];
-    v16 = [v14 isEqual:v15];
+    v13 = numberOfAdults;
+    numberOfAdults2 = [(_INPBLodgingReservation *)self numberOfAdults];
+    numberOfAdults3 = [equalCopy numberOfAdults];
+    v16 = [numberOfAdults2 isEqual:numberOfAdults3];
 
     if (!v16)
     {
@@ -103,20 +103,20 @@
   {
   }
 
-  v5 = [(_INPBLodgingReservation *)self numberOfChildren];
-  v6 = [v4 numberOfChildren];
-  if ((v5 != 0) == (v6 == 0))
+  lodgingBusinessLocation = [(_INPBLodgingReservation *)self numberOfChildren];
+  lodgingBusinessLocation2 = [equalCopy numberOfChildren];
+  if ((lodgingBusinessLocation != 0) == (lodgingBusinessLocation2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(_INPBLodgingReservation *)self numberOfChildren];
-  if (v17)
+  numberOfChildren = [(_INPBLodgingReservation *)self numberOfChildren];
+  if (numberOfChildren)
   {
-    v18 = v17;
-    v19 = [(_INPBLodgingReservation *)self numberOfChildren];
-    v20 = [v4 numberOfChildren];
-    v21 = [v19 isEqual:v20];
+    v18 = numberOfChildren;
+    numberOfChildren2 = [(_INPBLodgingReservation *)self numberOfChildren];
+    numberOfChildren3 = [equalCopy numberOfChildren];
+    v21 = [numberOfChildren2 isEqual:numberOfChildren3];
 
     if (!v21)
     {
@@ -128,20 +128,20 @@
   {
   }
 
-  v5 = [(_INPBLodgingReservation *)self reservation];
-  v6 = [v4 reservation];
-  if ((v5 != 0) == (v6 == 0))
+  lodgingBusinessLocation = [(_INPBLodgingReservation *)self reservation];
+  lodgingBusinessLocation2 = [equalCopy reservation];
+  if ((lodgingBusinessLocation != 0) == (lodgingBusinessLocation2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(_INPBLodgingReservation *)self reservation];
-  if (v22)
+  reservation = [(_INPBLodgingReservation *)self reservation];
+  if (reservation)
   {
-    v23 = v22;
-    v24 = [(_INPBLodgingReservation *)self reservation];
-    v25 = [v4 reservation];
-    v26 = [v24 isEqual:v25];
+    v23 = reservation;
+    reservation2 = [(_INPBLodgingReservation *)self reservation];
+    reservation3 = [equalCopy reservation];
+    v26 = [reservation2 isEqual:reservation3];
 
     if (!v26)
     {
@@ -153,12 +153,12 @@
   {
   }
 
-  v5 = [(_INPBLodgingReservation *)self reservationDuration];
-  v6 = [v4 reservationDuration];
-  if ((v5 != 0) != (v6 == 0))
+  lodgingBusinessLocation = [(_INPBLodgingReservation *)self reservationDuration];
+  lodgingBusinessLocation2 = [equalCopy reservationDuration];
+  if ((lodgingBusinessLocation != 0) != (lodgingBusinessLocation2 == 0))
   {
-    v27 = [(_INPBLodgingReservation *)self reservationDuration];
-    if (!v27)
+    reservationDuration = [(_INPBLodgingReservation *)self reservationDuration];
+    if (!reservationDuration)
     {
 
 LABEL_30:
@@ -166,10 +166,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(_INPBLodgingReservation *)self reservationDuration];
-    v30 = [v4 reservationDuration];
-    v31 = [v29 isEqual:v30];
+    v28 = reservationDuration;
+    reservationDuration2 = [(_INPBLodgingReservation *)self reservationDuration];
+    reservationDuration3 = [equalCopy reservationDuration];
+    v31 = [reservationDuration2 isEqual:reservationDuration3];
 
     if (v31)
     {
@@ -189,95 +189,95 @@ LABEL_28:
   return v32;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBLodgingReservation allocWithZone:](_INPBLodgingReservation init];
-  v6 = [(_INPBLocation *)self->_lodgingBusinessLocation copyWithZone:a3];
+  v6 = [(_INPBLocation *)self->_lodgingBusinessLocation copyWithZone:zone];
   [(_INPBLodgingReservation *)v5 setLodgingBusinessLocation:v6];
 
-  v7 = [(_INPBInteger *)self->_numberOfAdults copyWithZone:a3];
+  v7 = [(_INPBInteger *)self->_numberOfAdults copyWithZone:zone];
   [(_INPBLodgingReservation *)v5 setNumberOfAdults:v7];
 
-  v8 = [(_INPBInteger *)self->_numberOfChildren copyWithZone:a3];
+  v8 = [(_INPBInteger *)self->_numberOfChildren copyWithZone:zone];
   [(_INPBLodgingReservation *)v5 setNumberOfChildren:v8];
 
-  v9 = [(_INPBReservation *)self->_reservation copyWithZone:a3];
+  v9 = [(_INPBReservation *)self->_reservation copyWithZone:zone];
   [(_INPBLodgingReservation *)v5 setReservation:v9];
 
-  v10 = [(_INPBDateTimeRange *)self->_reservationDuration copyWithZone:a3];
+  v10 = [(_INPBDateTimeRange *)self->_reservationDuration copyWithZone:zone];
   [(_INPBLodgingReservation *)v5 setReservationDuration:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBLodgingReservation *)self data];
+  coderCopy = coder;
+  data = [(_INPBLodgingReservation *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBLodgingReservation)initWithCoder:(id)a3
+- (_INPBLodgingReservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBLodgingReservation *)self initWithData:v6];
+    self = [(_INPBLodgingReservation *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(_INPBLodgingReservation *)self lodgingBusinessLocation];
+  toCopy = to;
+  lodgingBusinessLocation = [(_INPBLodgingReservation *)self lodgingBusinessLocation];
 
-  if (v4)
+  if (lodgingBusinessLocation)
   {
-    v5 = [(_INPBLodgingReservation *)self lodgingBusinessLocation];
+    lodgingBusinessLocation2 = [(_INPBLodgingReservation *)self lodgingBusinessLocation];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBLodgingReservation *)self numberOfAdults];
+  numberOfAdults = [(_INPBLodgingReservation *)self numberOfAdults];
 
-  if (v6)
+  if (numberOfAdults)
   {
-    v7 = [(_INPBLodgingReservation *)self numberOfAdults];
+    numberOfAdults2 = [(_INPBLodgingReservation *)self numberOfAdults];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBLodgingReservation *)self numberOfChildren];
+  numberOfChildren = [(_INPBLodgingReservation *)self numberOfChildren];
 
-  if (v8)
+  if (numberOfChildren)
   {
-    v9 = [(_INPBLodgingReservation *)self numberOfChildren];
+    numberOfChildren2 = [(_INPBLodgingReservation *)self numberOfChildren];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBLodgingReservation *)self reservation];
+  reservation = [(_INPBLodgingReservation *)self reservation];
 
-  if (v10)
+  if (reservation)
   {
-    v11 = [(_INPBLodgingReservation *)self reservation];
+    reservation2 = [(_INPBLodgingReservation *)self reservation];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_INPBLodgingReservation *)self reservationDuration];
+  reservationDuration = [(_INPBLodgingReservation *)self reservationDuration];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (reservationDuration)
   {
-    v14 = [(_INPBLodgingReservation *)self reservationDuration];
+    reservationDuration2 = [(_INPBLodgingReservation *)self reservationDuration];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 

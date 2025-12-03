@@ -1,20 +1,20 @@
 @interface ICPaperStyleCell
-- (ICPaperStyleCell)initWithFrame:(CGRect)a3;
+- (ICPaperStyleCell)initWithFrame:(CGRect)frame;
 - (unint64_t)accessibilityTraits;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 - (void)setupCell;
 - (void)updateColors;
 @end
 
 @implementation ICPaperStyleCell
 
-- (ICPaperStyleCell)initWithFrame:(CGRect)a3
+- (ICPaperStyleCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ICPaperStyleCell;
-  v3 = [(ICPaperStyleCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICPaperStyleCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -28,77 +28,77 @@
 {
   v82 = [MEMORY[0x1E695DF70] arrayWithCapacity:8];
   [(ICPaperStyleCell *)self setClipsToBounds:0];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [(ICPaperStyleCell *)self setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(ICPaperStyleCell *)self setBackgroundColor:clearColor];
 
   v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [(ICPaperStyleCell *)self setSelectionView:v4];
 
-  v5 = [(ICPaperStyleCell *)self selectionView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  selectionView = [(ICPaperStyleCell *)self selectionView];
+  [selectionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(ICPaperStyleCell *)self selectionView];
-  [(ICPaperStyleCell *)self addSubview:v6];
+  selectionView2 = [(ICPaperStyleCell *)self selectionView];
+  [(ICPaperStyleCell *)self addSubview:selectionView2];
 
-  v7 = [(ICPaperStyleCell *)self selectionView];
-  [v7 setHidden:1];
+  selectionView3 = [(ICPaperStyleCell *)self selectionView];
+  [selectionView3 setHidden:1];
 
-  v8 = [MEMORY[0x1E69DC938] ic_isVision];
-  v9 = [(ICPaperStyleCell *)self selectionView];
-  v10 = [v9 layer];
-  v11 = v10;
+  ic_isVision = [MEMORY[0x1E69DC938] ic_isVision];
+  selectionView4 = [(ICPaperStyleCell *)self selectionView];
+  layer = [selectionView4 layer];
+  layer3 = layer;
   v12 = MEMORY[0x1E69796E8];
-  if (v8)
+  if (ic_isVision)
   {
-    [v10 setCornerRadius:23.0];
+    [layer setCornerRadius:23.0];
 
     v13 = *v12;
-    v14 = [(ICPaperStyleCell *)self selectionView];
-    v15 = [v14 layer];
-    [v15 setCornerCurve:v13];
+    selectionView5 = [(ICPaperStyleCell *)self selectionView];
+    layer2 = [selectionView5 layer];
+    [layer2 setCornerCurve:v13];
 
-    v9 = [(ICPaperStyleCell *)self selectionView];
-    v11 = [v9 layer];
-    [v11 setBorderWidth:4.0];
+    selectionView4 = [(ICPaperStyleCell *)self selectionView];
+    layer3 = [selectionView4 layer];
+    [layer3 setBorderWidth:4.0];
   }
 
   else
   {
-    [v10 setCornerRadius:6.0];
+    [layer setCornerRadius:6.0];
   }
 
-  v16 = [(ICPaperStyleCell *)self leadingAnchor];
-  v17 = [(ICPaperStyleCell *)self selectionView];
-  v18 = [v17 leadingAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  leadingAnchor = [(ICPaperStyleCell *)self leadingAnchor];
+  selectionView6 = [(ICPaperStyleCell *)self selectionView];
+  leadingAnchor2 = [selectionView6 leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v82 addObject:v19];
 
-  v20 = [(ICPaperStyleCell *)self trailingAnchor];
-  v21 = [(ICPaperStyleCell *)self selectionView];
-  v22 = [v21 trailingAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  trailingAnchor = [(ICPaperStyleCell *)self trailingAnchor];
+  selectionView7 = [(ICPaperStyleCell *)self selectionView];
+  trailingAnchor2 = [selectionView7 trailingAnchor];
+  v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v82 addObject:v23];
 
-  v24 = [(ICPaperStyleCell *)self topAnchor];
-  v25 = [(ICPaperStyleCell *)self selectionView];
-  v26 = [v25 topAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  topAnchor = [(ICPaperStyleCell *)self topAnchor];
+  selectionView8 = [(ICPaperStyleCell *)self selectionView];
+  topAnchor2 = [selectionView8 topAnchor];
+  v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v82 addObject:v27];
 
-  v28 = [(ICPaperStyleCell *)self bottomAnchor];
-  v29 = [(ICPaperStyleCell *)self selectionView];
-  v30 = [v29 bottomAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30];
+  bottomAnchor = [(ICPaperStyleCell *)self bottomAnchor];
+  selectionView9 = [(ICPaperStyleCell *)self selectionView];
+  bottomAnchor2 = [selectionView9 bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v82 addObject:v31];
 
   v32 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
   [(ICPaperStyleCell *)self setImageView:v32];
 
-  v33 = [(ICPaperStyleCell *)self imageView];
-  [v33 setContentMode:0];
+  imageView = [(ICPaperStyleCell *)self imageView];
+  [imageView setContentMode:0];
 
-  v34 = [(ICPaperStyleCell *)self imageView];
-  [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
+  imageView2 = [(ICPaperStyleCell *)self imageView];
+  [imageView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   if ([MEMORY[0x1E69DC938] ic_isVision])
   {
@@ -110,19 +110,19 @@
     [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
   }
   v35 = ;
-  v36 = [(ICPaperStyleCell *)self imageView];
-  [v36 setBackgroundColor:v35];
+  imageView3 = [(ICPaperStyleCell *)self imageView];
+  [imageView3 setBackgroundColor:v35];
 
-  v37 = [MEMORY[0x1E69DC888] lightGrayColor];
-  v38 = [(ICPaperStyleCell *)self imageView];
-  [v38 setTintColor:v37];
+  lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+  imageView4 = [(ICPaperStyleCell *)self imageView];
+  [imageView4 setTintColor:lightGrayColor];
 
-  v39 = [(ICPaperStyleCell *)self imageView];
-  [(ICPaperStyleCell *)self addSubview:v39];
+  imageView5 = [(ICPaperStyleCell *)self imageView];
+  [(ICPaperStyleCell *)self addSubview:imageView5];
 
-  v40 = [(ICPaperStyleCell *)self leadingAnchor];
-  v41 = [(ICPaperStyleCell *)self imageView];
-  v42 = [v41 leadingAnchor];
+  leadingAnchor3 = [(ICPaperStyleCell *)self leadingAnchor];
+  imageView6 = [(ICPaperStyleCell *)self imageView];
+  leadingAnchor4 = [imageView6 leadingAnchor];
   if ([MEMORY[0x1E69DC938] ic_isVision])
   {
     v43 = -7.0;
@@ -133,12 +133,12 @@
     v43 = -2.0;
   }
 
-  v44 = [v40 constraintEqualToAnchor:v42 constant:v43];
+  v44 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v43];
   [v82 addObject:v44];
 
-  v45 = [(ICPaperStyleCell *)self topAnchor];
-  v46 = [(ICPaperStyleCell *)self imageView];
-  v47 = [v46 topAnchor];
+  topAnchor3 = [(ICPaperStyleCell *)self topAnchor];
+  imageView7 = [(ICPaperStyleCell *)self imageView];
+  topAnchor4 = [imageView7 topAnchor];
   if ([MEMORY[0x1E69DC938] ic_isVision])
   {
     v48 = -7.0;
@@ -149,12 +149,12 @@
     v48 = -2.0;
   }
 
-  v49 = [v45 constraintEqualToAnchor:v47 constant:v48];
+  v49 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:v48];
   [v82 addObject:v49];
 
-  v50 = [(ICPaperStyleCell *)self trailingAnchor];
-  v51 = [(ICPaperStyleCell *)self imageView];
-  v52 = [v51 trailingAnchor];
+  trailingAnchor3 = [(ICPaperStyleCell *)self trailingAnchor];
+  imageView8 = [(ICPaperStyleCell *)self imageView];
+  trailingAnchor4 = [imageView8 trailingAnchor];
   if ([MEMORY[0x1E69DC938] ic_isVision])
   {
     v53 = 7.0;
@@ -165,12 +165,12 @@
     v53 = 2.0;
   }
 
-  v54 = [v50 constraintEqualToAnchor:v52 constant:v53];
+  v54 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:v53];
   [v82 addObject:v54];
 
-  v55 = [(ICPaperStyleCell *)self bottomAnchor];
-  v56 = [(ICPaperStyleCell *)self imageView];
-  v57 = [v56 bottomAnchor];
+  bottomAnchor3 = [(ICPaperStyleCell *)self bottomAnchor];
+  imageView9 = [(ICPaperStyleCell *)self imageView];
+  bottomAnchor4 = [imageView9 bottomAnchor];
   if ([MEMORY[0x1E69DC938] ic_isVision])
   {
     v58 = 7.0;
@@ -181,62 +181,62 @@
     v58 = 2.0;
   }
 
-  v59 = [v55 constraintEqualToAnchor:v57 constant:v58];
+  v59 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:v58];
   [v82 addObject:v59];
 
   [MEMORY[0x1E696ACD8] activateConstraints:v82];
-  v60 = [(ICPaperStyleCell *)self imageView];
-  v61 = [v60 layer];
-  [v61 setMasksToBounds:0];
+  imageView10 = [(ICPaperStyleCell *)self imageView];
+  layer4 = [imageView10 layer];
+  [layer4 setMasksToBounds:0];
 
-  v62 = [MEMORY[0x1E69DC938] ic_isVision];
-  v63 = [(ICPaperStyleCell *)self imageView];
-  v64 = [v63 layer];
-  v65 = v64;
-  if (v62)
+  ic_isVision2 = [MEMORY[0x1E69DC938] ic_isVision];
+  imageView11 = [(ICPaperStyleCell *)self imageView];
+  layer5 = [imageView11 layer];
+  v65 = layer5;
+  if (ic_isVision2)
   {
-    [v64 setCornerRadius:16.0];
+    [layer5 setCornerRadius:16.0];
 
     v66 = *v12;
-    v67 = [(ICPaperStyleCell *)self imageView];
-    v68 = [v67 layer];
-    [v68 setCornerCurve:v66];
+    imageView12 = [(ICPaperStyleCell *)self imageView];
+    layer6 = [imageView12 layer];
+    [layer6 setCornerCurve:v66];
   }
 
   else
   {
-    [v64 setCornerRadius:4.0];
+    [layer5 setCornerRadius:4.0];
 
     v69 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:1.0];
-    v70 = [v69 CGColor];
-    v71 = [(ICPaperStyleCell *)self imageView];
-    v72 = [v71 layer];
-    [v72 setShadowColor:v70];
+    cGColor = [v69 CGColor];
+    imageView13 = [(ICPaperStyleCell *)self imageView];
+    layer7 = [imageView13 layer];
+    [layer7 setShadowColor:cGColor];
 
-    v73 = [(ICPaperStyleCell *)self imageView];
-    v74 = [v73 layer];
-    [v74 setShadowOffset:{0.0, 1.0}];
+    imageView14 = [(ICPaperStyleCell *)self imageView];
+    layer8 = [imageView14 layer];
+    [layer8 setShadowOffset:{0.0, 1.0}];
 
-    v75 = [(ICPaperStyleCell *)self imageView];
-    v76 = [v75 layer];
-    [v76 setShadowRadius:6.0];
+    imageView15 = [(ICPaperStyleCell *)self imageView];
+    layer9 = [imageView15 layer];
+    [layer9 setShadowRadius:6.0];
 
-    v67 = [(ICPaperStyleCell *)self imageView];
-    v68 = [v67 layer];
+    imageView12 = [(ICPaperStyleCell *)self imageView];
+    layer6 = [imageView12 layer];
     LODWORD(v77) = 1022739087;
-    [v68 setShadowOpacity:v77];
+    [layer6 setShadowOpacity:v77];
   }
 
-  v78 = [(ICPaperStyleCell *)self layer];
-  [v78 setBorderWidth:0.0];
+  layer10 = [(ICPaperStyleCell *)self layer];
+  [layer10 setBorderWidth:0.0];
 
-  v79 = [MEMORY[0x1E69DC6E8] clearConfiguration];
-  v80 = [(ICPaperStyleCell *)self selectionView];
-  v81 = [v80 layer];
-  [v81 cornerRadius];
-  [v79 setCornerRadius:?];
+  clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
+  selectionView10 = [(ICPaperStyleCell *)self selectionView];
+  layer11 = [selectionView10 layer];
+  [layer11 cornerRadius];
+  [clearConfiguration setCornerRadius:?];
 
-  [(ICPaperStyleCell *)self setBackgroundConfiguration:v79];
+  [(ICPaperStyleCell *)self setBackgroundConfiguration:clearConfiguration];
 }
 
 - (void)prepareForReuse
@@ -244,11 +244,11 @@
   v5.receiver = self;
   v5.super_class = ICPaperStyleCell;
   [(ICPaperStyleCell *)&v5 prepareForReuse];
-  v3 = [(ICPaperStyleCell *)self selectionView];
-  [v3 setHidden:1];
+  selectionView = [(ICPaperStyleCell *)self selectionView];
+  [selectionView setHidden:1];
 
-  v4 = [(ICPaperStyleCell *)self imageView];
-  [v4 setImage:0];
+  imageView = [(ICPaperStyleCell *)self imageView];
+  [imageView setImage:0];
 }
 
 - (void)layoutSubviews
@@ -261,45 +261,45 @@
 
 - (void)updateColors
 {
-  v3 = [MEMORY[0x1E69DC938] ic_isVision];
-  v7 = [(ICPaperStyleCell *)self tintColor];
-  if (v3)
+  ic_isVision = [MEMORY[0x1E69DC938] ic_isVision];
+  tintColor = [(ICPaperStyleCell *)self tintColor];
+  if (ic_isVision)
   {
-    v4 = [v7 CGColor];
-    v5 = [(ICPaperStyleCell *)self selectionView];
-    v6 = [v5 layer];
-    [v6 setBorderColor:v4];
+    cGColor = [tintColor CGColor];
+    selectionView = [(ICPaperStyleCell *)self selectionView];
+    layer = [selectionView layer];
+    [layer setBorderColor:cGColor];
   }
 
   else
   {
-    v5 = [(ICPaperStyleCell *)self selectionView];
-    [v5 setBackgroundColor:v7];
+    selectionView = [(ICPaperStyleCell *)self selectionView];
+    [selectionView setBackgroundColor:tintColor];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  v4 = [(ICPaperStyleCell *)self selectionView];
-  [v4 setHidden:!v3];
+  selectedCopy = selected;
+  selectionView = [(ICPaperStyleCell *)self selectionView];
+  [selectionView setHidden:!selectedCopy];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v8.receiver = self;
   v8.super_class = ICPaperStyleCell;
-  v3 = [(ICPaperStyleCell *)&v8 accessibilityTraits];
-  v4 = [(ICPaperStyleCell *)self selectionView];
-  v5 = [v4 isHidden];
+  accessibilityTraits = [(ICPaperStyleCell *)&v8 accessibilityTraits];
+  selectionView = [(ICPaperStyleCell *)self selectionView];
+  isHidden = [selectionView isHidden];
 
   v6 = *MEMORY[0x1E69DDA08];
-  if (v5)
+  if (isHidden)
   {
     v6 = 0;
   }
 
-  return v6 | v3;
+  return v6 | accessibilityTraits;
 }
 
 @end

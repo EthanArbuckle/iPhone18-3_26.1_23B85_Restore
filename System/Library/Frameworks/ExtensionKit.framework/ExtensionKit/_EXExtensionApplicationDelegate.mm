@@ -1,25 +1,25 @@
 @interface _EXExtensionApplicationDelegate
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (void)applicationDidFinishLaunching:(id)a3;
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (void)applicationDidFinishLaunching:(id)launching;
 @end
 
 @implementation _EXExtensionApplicationDelegate
 
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options
 {
-  v4 = a4;
-  if (a4)
+  optionsCopy = options;
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_1D29EACB0(&qword_1EC700A88, type metadata accessor for LaunchOptionsKey);
-    v4 = sub_1D2A003A8();
+    optionsCopy = sub_1D2A003A8();
   }
 
   type metadata accessor for _EXRunningUIExtension(0);
-  v6 = a3;
+  applicationCopy = application;
   v7 = sub_1D29FFCC8();
-  if (v4)
+  if (optionsCopy)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_1D29EACB0(&qword_1EC700A88, type metadata accessor for LaunchOptionsKey);
@@ -31,27 +31,27 @@
     v8 = 0;
   }
 
-  v9 = [v7 application:v6 willFinishLaunchingWithOptions:v8];
+  v9 = [v7 application:applicationCopy willFinishLaunchingWithOptions:v8];
 
   return v9;
 }
 
-- (void)applicationDidFinishLaunching:(id)a3
+- (void)applicationDidFinishLaunching:(id)launching
 {
   type metadata accessor for _EXRunningUIExtension(0);
-  v5 = a3;
+  launchingCopy = launching;
   v4 = sub_1D29FFCC8();
   [v4 applicationDidFinishLaunching_];
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
   type metadata accessor for _EXRunningUIExtension(0);
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  applicationCopy = application;
+  sessionCopy = session;
+  optionsCopy = options;
   v11 = sub_1D29FFCC8();
-  v12 = [v11 application:v8 configurationForConnectingSceneSession:v9 options:v10];
+  v12 = [v11 application:applicationCopy configurationForConnectingSceneSession:sessionCopy options:optionsCopy];
 
   return v12;
 }

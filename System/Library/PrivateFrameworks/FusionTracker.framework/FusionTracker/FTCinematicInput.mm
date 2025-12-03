@@ -2,7 +2,7 @@
 - (CGPoint)tapPosition;
 - (FTCinematicInput)init;
 - (vector<ft::Observation,)mapToInternalObservations;
-- (void)setSourceFrameTimestamp:(id *)a3;
+- (void)setSourceFrameTimestamp:(id *)timestamp;
 @end
 
 @implementation FTCinematicInput
@@ -29,8 +29,8 @@
   retstr->var0 = 0;
   retstr->var1 = 0;
   retstr->var2 = 0;
-  v4 = [(FTCinematicInput *)self observations];
-  v5 = [v4 count];
+  observations = [(FTCinematicInput *)self observations];
+  v5 = [observations count];
   if (v5)
   {
     if (v5 < 0x1AF286BCA1AF287)
@@ -83,13 +83,13 @@
         }
 
         v16 = objc_opt_respondsToSelector();
-        v17 = -1;
+        identifier = -1;
         if (v16)
         {
-          v17 = [v10 identifier];
+          identifier = [v10 identifier];
         }
 
-        v28 = v17;
+        v28 = identifier;
         v29 = 1;
         [(FTCinematicInput *)self sourceFrameTimestamp];
         *(&v22 + 1) = v7;
@@ -109,10 +109,10 @@
   return result;
 }
 
-- (void)setSourceFrameTimestamp:(id *)a3
+- (void)setSourceFrameTimestamp:(id *)timestamp
 {
-  v3 = *&a3->var0;
-  self->_sourceFrameTimestamp.epoch = a3->var3;
+  v3 = *&timestamp->var0;
+  self->_sourceFrameTimestamp.epoch = timestamp->var3;
   *&self->_sourceFrameTimestamp.value = v3;
 }
 

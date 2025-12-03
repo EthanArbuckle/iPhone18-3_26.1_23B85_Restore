@@ -1,20 +1,20 @@
 @interface StoreKitExternalNotificationPresentationTask
-- (void)mainWithCompletionHandler:(id)a3;
-- (void)processMessageActions:(NSArray *)a3 with:(id)a4 completionHandler:;
+- (void)mainWithCompletionHandler:(id)handler;
+- (void)processMessageActions:(NSArray *)actions with:(id)with completionHandler:;
 @end
 
 @implementation StoreKitExternalNotificationPresentationTask
 
-- (void)processMessageActions:(NSArray *)a3 with:(id)a4 completionHandler:
+- (void)processMessageActions:(NSArray *)actions with:(id)with completionHandler:
 {
   v5 = v4;
   v9 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v9 - 8);
   v11 = &v20 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(with);
   v13 = _Block_copy(v5);
   v14 = swift_allocObject();
-  v14[2] = a3;
+  v14[2] = actions;
   v14[3] = v12;
   v14[4] = v13;
   v14[5] = self;
@@ -30,14 +30,14 @@
   v17[3] = 0;
   v17[4] = &unk_1004366D0;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  actionsCopy = actions;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v11, &unk_1004344E0, v17);
 }
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -57,11 +57,11 @@
 
     v9 = v6;
     v10 = v8;
-    v11 = [v9 bundleIdentifier];
+    bundleIdentifier = [v9 bundleIdentifier];
     *buf = 138412546;
     v36 = v7;
     v37 = 2114;
-    v38 = v11;
+    v38 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%@] Running external notification sheet task for %{public}@", buf, 0x16u);
   }
 
@@ -95,8 +95,8 @@
   v32[2] = sub_1001D1F20;
   v32[3] = &unk_10051B8A8;
   v32[4] = self;
-  v33 = v4;
-  v21 = v4;
+  v33 = handlerCopy;
+  v21 = handlerCopy;
   v22 = objc_retainBlock(v32);
   v23 = +[BagService appstoredService];
   v27[0] = _NSConcreteStackBlock;
@@ -105,7 +105,7 @@
   v27[3] = &unk_10051B920;
   v28 = v20;
   v29 = v13;
-  v30 = self;
+  selfCopy = self;
   v31 = v22;
   v24 = v13;
   v25 = v20;

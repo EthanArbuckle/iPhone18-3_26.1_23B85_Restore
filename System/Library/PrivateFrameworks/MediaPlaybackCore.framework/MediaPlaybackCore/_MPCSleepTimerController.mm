@@ -1,42 +1,42 @@
 @interface _MPCSleepTimerController
 - (double)fireDate;
-- (void)didChangeItemElapsedTime:(double)a3;
+- (void)didChangeItemElapsedTime:(double)time;
 - (void)didEndPlaybackForCurrentItem;
 - (void)reset;
 - (void)startSleepTimerForChapterEnd;
 - (void)startSleepTimerForItemEnd;
-- (void)startSleepTimerWithTimeRemaining:(double)a3;
+- (void)startSleepTimerWithTimeRemaining:(double)remaining;
 @end
 
 @implementation _MPCSleepTimerController
 
 - (void)startSleepTimerForItemEnd
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5D2BBF0();
 }
 
-- (void)startSleepTimerWithTimeRemaining:(double)a3
+- (void)startSleepTimerWithTimeRemaining:(double)remaining
 {
-  v4 = self;
-  sub_1C5D2BC68(a3);
+  selfCopy = self;
+  sub_1C5D2BC68(remaining);
 }
 
 - (void)startSleepTimerForChapterEnd
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5D2BD08();
 }
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5D2BDA8();
 }
 
 - (double)fireDate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C5D2BF18();
 
   return v3;
@@ -44,13 +44,13 @@
 
 - (void)didEndPlaybackForCurrentItem
 {
-  v2 = self;
+  selfCopy = self;
   SleepTimerController.didEndPlaybackForCurrentItem()();
 }
 
-- (void)didChangeItemElapsedTime:(double)a3
+- (void)didChangeItemElapsedTime:(double)time
 {
-  v4 = self;
+  selfCopy = self;
   SleepTimerController.didChangeItemElapsedTime(_:)(v3);
 }
 

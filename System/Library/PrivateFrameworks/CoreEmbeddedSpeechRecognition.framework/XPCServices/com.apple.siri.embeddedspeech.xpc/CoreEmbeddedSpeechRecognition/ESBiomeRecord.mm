@@ -12,8 +12,8 @@
     if (v3)
     {
       v4 = [[BMSiriDictationEvent alloc] initWithAbsoluteTimestamp:self->_recognitionEndTime];
-      v5 = [v3 source];
-      [v5 sendEvent:v4];
+      source = [v3 source];
+      [source sendEvent:v4];
 
       v6 = AFSiriLogContextSpeech;
       if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))

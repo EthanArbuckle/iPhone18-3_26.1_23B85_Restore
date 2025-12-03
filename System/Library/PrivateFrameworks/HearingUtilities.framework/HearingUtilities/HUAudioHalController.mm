@@ -1,8 +1,8 @@
 @interface HUAudioHalController
-- (BOOL)processUpdateDescription:(id)a3;
+- (BOOL)processUpdateDescription:(id)description;
 - (HUAudioHalController)init;
 - (void)clearAudioHalDevice;
-- (void)hearingAidConnectionDidChange:(BOOL)a3;
+- (void)hearingAidConnectionDidChange:(BOOL)change;
 - (void)hearingAidReachabilityDidChange;
 - (void)registerForPropertyUpdate;
 @end
@@ -106,23 +106,23 @@ void __49__HUAudioHalController_registerForPropertyUpdate__block_invoke_2(uint64
   *a4 = v9;
 }
 
-- (BOOL)processUpdateDescription:(id)a3
+- (BOOL)processUpdateDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 objectForKey:&unk_1F5623FB0], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([descriptionCopy objectForKey:&unk_1F5623FB0], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
-    v7 = [v5 firstObject];
-    if ([v7 intValue] == 2)
+    firstObject = [v5 firstObject];
+    if ([firstObject intValue] == 2)
     {
       [(HUAudioHalController *)self hearingAidConnectionDidChange:1];
     }
 
     else
     {
-      v9 = [v6 lastObject];
-      -[HUAudioHalController hearingAidConnectionDidChange:](self, "hearingAidConnectionDidChange:", [v9 intValue] == 2);
+      lastObject = [v6 lastObject];
+      -[HUAudioHalController hearingAidConnectionDidChange:](self, "hearingAidConnectionDidChange:", [lastObject intValue] == 2);
     }
 
     v8 = 1;
@@ -136,15 +136,15 @@ void __49__HUAudioHalController_registerForPropertyUpdate__block_invoke_2(uint64
   return v8;
 }
 
-- (void)hearingAidConnectionDidChange:(BOOL)a3
+- (void)hearingAidConnectionDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v7 = *MEMORY[0x1E69E9840];
   v4 = AXLogHearingHalPlugin();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = changeCopy;
     _os_log_impl(&dword_1DA5E2000, v4, OS_LOG_TYPE_DEFAULT, "AXAudioHalController hearingAidConnectionDidChange connected: %d", v6, 8u);
   }
 

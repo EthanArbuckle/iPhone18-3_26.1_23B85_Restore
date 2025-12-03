@@ -1,19 +1,19 @@
 @interface IMDCNPersonAliasResolver
 + (IMDCNPersonAliasResolver)sharedResolver;
-- (BOOL)isCNContactFavorited:(id)a3;
-- (BOOL)isFavoritedContact:(id)a3;
+- (BOOL)isCNContactFavorited:(id)favorited;
+- (BOOL)isFavoritedContact:(id)contact;
 - (CNContactStore)acceptedContactStore;
 - (CNContactStore)contactStore;
 - (IMDCNPersonAliasResolver)init;
-- (id)_batchFetchContactRecordIDForAliases:(id)a3;
-- (id)_fetchAliasToCNIDMapForAliases:(id)a3;
-- (id)_fetchContactIdentifierForAlias:(id)a3;
-- (id)_predicateForAlias:(id)a3;
-- (id)_predicateForPhoneNumber:(id)a3;
-- (id)_preferCuratedContactFromFetchResults:(id)a3;
-- (id)_updateAcceptedContactsInAliasToCNIDMap:(id)a3;
-- (id)_updateAliasToCNIDMap:(id)a3 withHistoryToken:(id)a4;
-- (void)CNRecordIDForAliases:(id)a3 completionHandler:(id)a4;
+- (id)_batchFetchContactRecordIDForAliases:(id)aliases;
+- (id)_fetchAliasToCNIDMapForAliases:(id)aliases;
+- (id)_fetchContactIdentifierForAlias:(id)alias;
+- (id)_predicateForAlias:(id)alias;
+- (id)_predicateForPhoneNumber:(id)number;
+- (id)_preferCuratedContactFromFetchResults:(id)results;
+- (id)_updateAcceptedContactsInAliasToCNIDMap:(id)map;
+- (id)_updateAliasToCNIDMap:(id)map withHistoryToken:(id)token;
+- (void)CNRecordIDForAliases:(id)aliases completionHandler:(id)handler;
 @end
 
 @implementation IMDCNPersonAliasResolver
@@ -31,7 +31,7 @@
     }
 
     self = v3;
-    v4 = self;
+    selfCopy = self;
   }
 
   else
@@ -46,10 +46,10 @@
       }
     }
 
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 + (IMDCNPersonAliasResolver)sharedResolver
@@ -146,39 +146,39 @@
   return v17;
 }
 
-- (id)_predicateForPhoneNumber:(id)a3
+- (id)_predicateForPhoneNumber:(id)number
 {
   v3 = qword_1EDBE5CC0;
-  v4 = objc_msgSend_phoneNumberWithStringValue_(qword_1EDBE5C98, a2, a3);
+  v4 = objc_msgSend_phoneNumberWithStringValue_(qword_1EDBE5C98, a2, number);
   v6 = objc_msgSend_predicateForContactsMatchingPhoneNumber_(v3, v5, v4);
 
   return v6;
 }
 
-- (id)_predicateForAlias:(id)a3
+- (id)_predicateForAlias:(id)alias
 {
-  v4 = a3;
-  if (objc_msgSend__appearsToBeEmail(v4, v5, v6))
+  aliasCopy = alias;
+  if (objc_msgSend__appearsToBeEmail(aliasCopy, v5, v6))
   {
-    objc_msgSend__predicateForEmailAddress_(self, v7, v4);
+    objc_msgSend__predicateForEmailAddress_(self, v7, aliasCopy);
   }
 
   else
   {
-    objc_msgSend__predicateForPhoneNumber_(self, v7, v4);
+    objc_msgSend__predicateForPhoneNumber_(self, v7, aliasCopy);
   }
   v8 = ;
 
   return v8;
 }
 
-- (id)_fetchContactIdentifierForAlias:(id)a3
+- (id)_fetchContactIdentifierForAlias:(id)alias
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6))
+  aliasCopy = alias;
+  if (objc_msgSend_length(aliasCopy, v5, v6))
   {
-    v8 = objc_msgSend__predicateForAlias_(self, v7, v4);
+    v8 = objc_msgSend__predicateForAlias_(self, v7, aliasCopy);
     v9 = IMAdditionalContactsLoggingEnabled();
     if (v8)
     {
@@ -188,7 +188,7 @@
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v42 = v4;
+          v42 = aliasCopy;
           v43 = 2112;
           v44 = v8;
           _os_log_impl(&dword_1B7AD5000, v12, OS_LOG_TYPE_INFO, "IMDCNPersonAliasResolver: Requesting a CNContact from Contact Store for Alias %@ and Predicate %@", buf, 0x16u);
@@ -212,7 +212,7 @@
           {
             v24 = objc_msgSend_description(v18, v22, v23);
             *buf = 138412546;
-            v42 = v4;
+            v42 = aliasCopy;
             v43 = 2112;
             v44 = v24;
             _os_log_impl(&dword_1B7AD5000, v21, OS_LOG_TYPE_INFO, "IMDCNPersonAliasResolver: Error getting contact from Contact Store for alias %@ error %@", buf, 0x16u);
@@ -234,7 +234,7 @@
             *buf = 138412546;
             v42 = v32;
             v43 = 2112;
-            v44 = v4;
+            v44 = aliasCopy;
             _os_log_impl(&dword_1B7AD5000, v29, OS_LOG_TYPE_INFO, "IMDCNPersonAliasResolver: CNContact Identifier %@ for alias %@", buf, 0x16u);
           }
         }
@@ -250,7 +250,7 @@
           if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v42 = v4;
+            v42 = aliasCopy;
             _os_log_impl(&dword_1B7AD5000, v36, OS_LOG_TYPE_INFO, "IMDCNPersonAliasResolver: No contact for alias %@", buf, 0xCu);
           }
         }
@@ -267,7 +267,7 @@
         if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v42 = v4;
+          v42 = aliasCopy;
           _os_log_impl(&dword_1B7AD5000, v35, OS_LOG_TYPE_INFO, "IMDCNPersonAliasResolver: Could not get predicate for alias %@", buf, 0xCu);
         }
       }
@@ -296,13 +296,13 @@
   return v33;
 }
 
-- (id)_preferCuratedContactFromFetchResults:(id)a3
+- (id)_preferCuratedContactFromFetchResults:(id)results
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (objc_msgSend_count(v3, v4, v5) == 1)
+  resultsCopy = results;
+  if (objc_msgSend_count(resultsCopy, v4, v5) == 1)
   {
-    v8 = objc_msgSend_firstObject(v3, v6, v7);
+    v8 = objc_msgSend_firstObject(resultsCopy, v6, v7);
   }
 
   else
@@ -311,7 +311,7 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = v3;
+    v9 = resultsCopy;
     v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v21, v25, 16);
     if (v11)
     {
@@ -361,11 +361,11 @@ LABEL_5:
   return v8;
 }
 
-- (id)_batchFetchContactRecordIDForAliases:(id)a3
+- (id)_batchFetchContactRecordIDForAliases:(id)aliases
 {
   v84[2] = *MEMORY[0x1E69E9840];
-  v64 = a3;
-  if (objc_msgSend_count(v64, v3, v4))
+  aliasesCopy = aliases;
+  if (objc_msgSend_count(aliasesCopy, v3, v4))
   {
     v5 = [qword_1EDBE5CB8 alloc];
     v84[0] = qword_1EDBE5C68;
@@ -373,7 +373,7 @@ LABEL_5:
     v7 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v6, v84, 2);
     v63 = objc_msgSend_initWithKeysToFetch_(v5, v8, v7);
 
-    v59 = objc_msgSend_predicateForContactsMatchingHandleStrings_(qword_1EDBE5CC0, v9, v64);
+    v59 = objc_msgSend_predicateForContactsMatchingHandleStrings_(qword_1EDBE5CC0, v9, aliasesCopy);
     objc_msgSend_setPredicate_(v63, v10, v59);
     if (IMOSLoggingEnabled())
     {
@@ -381,7 +381,7 @@ LABEL_5:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         LODWORD(buf) = 134217984;
-        *(&buf + 4) = objc_msgSend_count(v64, v12, v13);
+        *(&buf + 4) = objc_msgSend_count(aliasesCopy, v12, v13);
         _os_log_impl(&dword_1B7AD5000, v11, OS_LOG_TYPE_INFO, "IMDCNPersonAliasResolver: Dispatching a contacts batch query for %lu aliases.", &buf, 0xCu);
       }
     }
@@ -423,7 +423,7 @@ LABEL_5:
       block[3] = &unk_1E7CBC428;
       v28 = v61;
       v72 = v28;
-      v29 = v64;
+      v29 = aliasesCopy;
       v73 = v29;
       p_buf = &buf;
       dispatch_async(MEMORY[0x1E69E96A0], block);
@@ -518,13 +518,13 @@ LABEL_5:
   return v54;
 }
 
-- (id)_fetchAliasToCNIDMapForAliases:(id)a3
+- (id)_fetchAliasToCNIDMapForAliases:(id)aliases
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  aliasesCopy = aliases;
   v5 = objc_alloc_init(MEMORY[0x1E69A6170]);
   objc_msgSend_startTimingForKey_(v5, v6, @"_fetchAliasToCNIDMapForAliases");
-  v8 = objc_msgSend__batchFetchContactRecordIDForAliases_(self, v7, v4);
+  v8 = objc_msgSend__batchFetchContactRecordIDForAliases_(self, v7, aliasesCopy);
   if (IMAdditionalContactsLoggingEnabled())
   {
     if (IMOSLoggingEnabled())
@@ -558,14 +558,14 @@ LABEL_5:
   return v8;
 }
 
-- (id)_updateAliasToCNIDMap:(id)a3 withHistoryToken:(id)a4
+- (id)_updateAliasToCNIDMap:(id)map withHistoryToken:(id)token
 {
   v81[2] = *MEMORY[0x1E69E9840];
-  v72 = a3;
-  v6 = a4;
+  mapCopy = map;
+  tokenCopy = token;
   v7 = objc_alloc_init(qword_1EDBE5CC8);
-  v70 = v6;
-  objc_msgSend_setStartingToken_(v7, v8, v6);
+  v70 = tokenCopy;
+  objc_msgSend_setStartingToken_(v7, v8, tokenCopy);
   v81[0] = qword_1EDBE5C68;
   v81[1] = qword_1EDBE5C58;
   v10 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v9, v81, 2);
@@ -583,7 +583,7 @@ LABEL_5:
 
   if (IMAdditionalContactsLoggingEnabled())
   {
-    objc_msgSend_logDictionary_(MEMORY[0x1E69A7FD0], v13, v72);
+    objc_msgSend_logDictionary_(MEMORY[0x1E69A7FD0], v13, mapCopy);
   }
 
   v15 = objc_msgSend_contactStore(self, v13, v14);
@@ -612,7 +612,7 @@ LABEL_5:
     if ((IMIsRunningInUnitTesting() & 1) == 0)
     {
       v31 = objc_alloc(MEMORY[0x1E69A8000]);
-      v34 = objc_msgSend_mutableCopy(v72, v32, v33);
+      v34 = objc_msgSend_mutableCopy(mapCopy, v32, v33);
       v36 = objc_msgSend_initWithAliasToCNIDMap_(v31, v35, v34);
       contactsEventhandler = self->_contactsEventhandler;
       self->_contactsEventhandler = v36;
@@ -704,7 +704,7 @@ LABEL_28:
         }
       }
 
-      v66 = objc_msgSend_allKeys(v72, v63, v64);
+      v66 = objc_msgSend_allKeys(mapCopy, v63, v64);
       v56 = objc_msgSend__fetchAliasToCNIDMapForAliases_(self, v67, v66);
     }
   }
@@ -723,7 +723,7 @@ LABEL_28:
       }
     }
 
-    v56 = v72;
+    v56 = mapCopy;
   }
 
   v68 = *MEMORY[0x1E69E9840];
@@ -731,11 +731,11 @@ LABEL_28:
   return v56;
 }
 
-- (id)_updateAcceptedContactsInAliasToCNIDMap:(id)a3
+- (id)_updateAcceptedContactsInAliasToCNIDMap:(id)map
 {
   v71[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v7 = objc_msgSend_allKeys(v4, v5, v6);
+  mapCopy = map;
+  v7 = objc_msgSend_allKeys(mapCopy, v5, v6);
   if (objc_msgSend_count(v7, v8, v9))
   {
     v10 = [qword_1EDBE5CB8 alloc];
@@ -758,7 +758,7 @@ LABEL_28:
 
     if (IMAdditionalContactsLoggingEnabled())
     {
-      objc_msgSend_logDictionary_(MEMORY[0x1E69A7FD0], v17, v4);
+      objc_msgSend_logDictionary_(MEMORY[0x1E69A7FD0], v17, mapCopy);
     }
 
     v19 = objc_msgSend_acceptedContactStore(self, v17, v18);
@@ -772,7 +772,7 @@ LABEL_28:
       if ((IMIsRunningInUnitTesting() & 1) == 0)
       {
         v27 = objc_alloc(MEMORY[0x1E69A8000]);
-        v30 = objc_msgSend_mutableCopy(v4, v28, v29);
+        v30 = objc_msgSend_mutableCopy(mapCopy, v28, v29);
         v32 = objc_msgSend_initWithAliasToCNIDMap_(v27, v31, v30);
         contactsEventhandler = self->_contactsEventhandler;
         self->_contactsEventhandler = v32;
@@ -825,7 +825,7 @@ LABEL_28:
           }
         }
 
-        v61 = objc_msgSend_allKeys(v4, v58, v59);
+        v61 = objc_msgSend_allKeys(mapCopy, v58, v59);
         v49 = objc_msgSend__fetchAliasToCNIDMapForAliases_(self, v62, v61);
       }
     }
@@ -844,7 +844,7 @@ LABEL_28:
         }
       }
 
-      v49 = v4;
+      v49 = mapCopy;
     }
   }
 
@@ -857,9 +857,9 @@ LABEL_28:
     }
 
     v53 = MEMORY[0x1E695E0F8];
-    if (v4)
+    if (mapCopy)
     {
-      v53 = v4;
+      v53 = mapCopy;
     }
 
     v49 = v53;
@@ -870,45 +870,45 @@ LABEL_28:
   return v49;
 }
 
-- (void)CNRecordIDForAliases:(id)a3 completionHandler:(id)a4
+- (void)CNRecordIDForAliases:(id)aliases completionHandler:(id)handler
 {
-  v8 = a4;
-  v7 = objc_msgSend__fetchAliasToCNIDMapForAliases_(self, v6, a3);
-  if (v8)
+  handlerCopy = handler;
+  v7 = objc_msgSend__fetchAliasToCNIDMapForAliases_(self, v6, aliases);
+  if (handlerCopy)
   {
-    v8[2](v8, v7, 0);
+    handlerCopy[2](handlerCopy, v7, 0);
   }
 }
 
-- (BOOL)isFavoritedContact:(id)a3
+- (BOOL)isFavoritedContact:(id)contact
 {
-  if (!a3)
+  if (!contact)
   {
     return 0;
   }
 
-  v4 = a3;
+  contactCopy = contact;
   v7 = objc_msgSend_contactStore(self, v5, v6);
-  v9 = objc_msgSend_unifiedContactWithIdentifier_keysToFetch_error_(v7, v8, v4, MEMORY[0x1E695E0F0], 0);
+  v9 = objc_msgSend_unifiedContactWithIdentifier_keysToFetch_error_(v7, v8, contactCopy, MEMORY[0x1E695E0F0], 0);
 
   LOBYTE(self) = objc_msgSend_isCNContactFavorited_(self, v10, v9);
   return self;
 }
 
-- (BOOL)isCNContactFavorited:(id)a3
+- (BOOL)isCNContactFavorited:(id)favorited
 {
-  if (!a3)
+  if (!favorited)
   {
     return 0;
   }
 
   v4 = qword_1EDBE5CA0;
-  v5 = a3;
+  favoritedCopy = favorited;
   v6 = [v4 alloc];
   v9 = objc_msgSend_contactStore(self, v7, v8);
   v11 = objc_msgSend_initWithContactStore_(v6, v10, v9);
 
-  v13 = objc_msgSend_entriesForContact_(v11, v12, v5);
+  v13 = objc_msgSend_entriesForContact_(v11, v12, favoritedCopy);
 
   v16 = objc_msgSend_count(v13, v14, v15) != 0;
   return v16;

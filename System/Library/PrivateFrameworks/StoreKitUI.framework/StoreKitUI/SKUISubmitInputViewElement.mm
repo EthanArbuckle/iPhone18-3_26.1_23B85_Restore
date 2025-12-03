@@ -1,14 +1,14 @@
 @interface SKUISubmitInputViewElement
-- (SKUISubmitInputViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUISubmitInputViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation SKUISubmitInputViewElement
 
-- (SKUISubmitInputViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUISubmitInputViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISubmitInputViewElement initWithDOMElement:parent:elementFactory:];
@@ -16,10 +16,10 @@
 
   v14.receiver = self;
   v14.super_class = SKUISubmitInputViewElement;
-  v11 = [(SKUIInputViewElement *)&v14 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIInputViewElement *)&v14 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"value"];
+    v12 = [elementCopy getAttribute:@"value"];
     if (v12)
     {
       objc_storeStrong(&v11->_label, v12);

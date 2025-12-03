@@ -1,53 +1,53 @@
 @interface WFLinkActionParameterDefinition
-- (BOOL)BOOLForTypeSpecificMetadataKey:(id)a3 defaultValue:(BOOL)a4;
+- (BOOL)BOOLForTypeSpecificMetadataKey:(id)key defaultValue:(BOOL)value;
 - (Class)parameterClass;
 - (NSDictionary)typeSpecificMetadata;
-- (WFLinkActionParameterDefinition)initWithValueType:(id)a3 parameterMetadata:(id)a4;
+- (WFLinkActionParameterDefinition)initWithValueType:(id)type parameterMetadata:(id)metadata;
 - (WFParameterDefinition)parameterDefinitionDictionary;
-- (id)defaultSerializedRepresentationFromParameterMetadataDefaultValue:(id)a3;
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4;
-- (id)linkValueWithValue:(id)a3;
-- (id)localizedTitleForLinkValue:(id)a3;
-- (id)objectForTypeSpecificMetadataKey:(id)a3 ofClass:(Class)a4;
-- (id)parameterStateFromLinkValue:(id)a3;
-- (int64_t)integerForTypeSpecificMetadataKey:(id)a3 defaultValue:(int64_t)a4;
-- (void)getLinkValueFromProcessedParameterValue:(id)a3 parameterState:(id)a4 permissionRequestor:(id)a5 runningFromToolKit:(BOOL)a6 action:(id)a7 parameterKey:(id)a8 completionHandler:(id)a9;
+- (id)defaultSerializedRepresentationFromParameterMetadataDefaultValue:(id)value;
+- (id)linkValueFromParameterState:(id)state action:(id)action;
+- (id)linkValueWithValue:(id)value;
+- (id)localizedTitleForLinkValue:(id)value;
+- (id)objectForTypeSpecificMetadataKey:(id)key ofClass:(Class)class;
+- (id)parameterStateFromLinkValue:(id)value;
+- (int64_t)integerForTypeSpecificMetadataKey:(id)key defaultValue:(int64_t)value;
+- (void)getLinkValueFromProcessedParameterValue:(id)value parameterState:(id)state permissionRequestor:(id)requestor runningFromToolKit:(BOOL)kit action:(id)action parameterKey:(id)key completionHandler:(id)handler;
 @end
 
 @implementation WFLinkActionParameterDefinition
 
 - (NSDictionary)typeSpecificMetadata
 {
-  v2 = [(WFLinkActionParameterDefinition *)self parameterMetadata];
-  v3 = [v2 typeSpecificMetadata];
+  parameterMetadata = [(WFLinkActionParameterDefinition *)self parameterMetadata];
+  typeSpecificMetadata = [parameterMetadata typeSpecificMetadata];
 
-  return v3;
+  return typeSpecificMetadata;
 }
 
 - (WFParameterDefinition)parameterDefinitionDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(WFLinkActionParameterDefinition *)self parameterMetadata];
-  v5 = [v4 name];
-  [v3 if_setObjectIfNonNil:v5 forKey:@"Key"];
+  parameterMetadata = [(WFLinkActionParameterDefinition *)self parameterMetadata];
+  name = [parameterMetadata name];
+  [v3 if_setObjectIfNonNil:name forKey:@"Key"];
 
-  v6 = [(WFLinkActionParameterDefinition *)self parameterMetadata];
-  v7 = [v6 wf_localizedTitle];
-  [v3 if_setObjectIfNonNil:v7 forKey:@"Label"];
+  parameterMetadata2 = [(WFLinkActionParameterDefinition *)self parameterMetadata];
+  wf_localizedTitle = [parameterMetadata2 wf_localizedTitle];
+  [v3 if_setObjectIfNonNil:wf_localizedTitle forKey:@"Label"];
 
-  v8 = [(WFLinkActionParameterDefinition *)self parameterMetadata];
-  v9 = [v8 wf_localizedTitle];
-  [v3 if_setObjectIfNonNil:v9 forKey:@"Placeholder"];
+  parameterMetadata3 = [(WFLinkActionParameterDefinition *)self parameterMetadata];
+  wf_localizedTitle2 = [parameterMetadata3 wf_localizedTitle];
+  [v3 if_setObjectIfNonNil:wf_localizedTitle2 forKey:@"Placeholder"];
 
-  v10 = [(WFLinkActionParameterDefinition *)self parameterMetadata];
-  v11 = [v10 wf_localizedDescription];
-  [v3 if_setObjectIfNonNil:v11 forKey:@"Description"];
+  parameterMetadata4 = [(WFLinkActionParameterDefinition *)self parameterMetadata];
+  wf_localizedDescription = [parameterMetadata4 wf_localizedDescription];
+  [v3 if_setObjectIfNonNil:wf_localizedDescription forKey:@"Description"];
 
   v12 = NSStringFromClass([(WFLinkActionParameterDefinition *)self parameterClass]);
   [v3 if_setObjectIfNonNil:v12 forKey:@"Class"];
 
-  v13 = [(WFLinkActionParameterDefinition *)self typeSpecificMetadata];
-  v14 = [v13 objectForKey:*MEMORY[0x1E69AC590]];
+  typeSpecificMetadata = [(WFLinkActionParameterDefinition *)self typeSpecificMetadata];
+  v14 = [typeSpecificMetadata objectForKey:*MEMORY[0x1E69AC590]];
 
   v15 = [(WFLinkActionParameterDefinition *)self defaultSerializedRepresentationFromParameterMetadataDefaultValue:v14];
   [v3 if_setObjectIfNonNil:v15 forKey:@"DefaultValue"];
@@ -57,38 +57,38 @@
   return v16;
 }
 
-- (BOOL)BOOLForTypeSpecificMetadataKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)BOOLForTypeSpecificMetadataKey:(id)key defaultValue:(BOOL)value
 {
-  v6 = a3;
-  v7 = [(WFLinkActionParameterDefinition *)self objectForTypeSpecificMetadataKey:v6 ofClass:objc_opt_class()];
+  keyCopy = key;
+  v7 = [(WFLinkActionParameterDefinition *)self objectForTypeSpecificMetadataKey:keyCopy ofClass:objc_opt_class()];
 
   if (v7)
   {
-    a4 = [v7 BOOLValue];
+    value = [v7 BOOLValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (int64_t)integerForTypeSpecificMetadataKey:(id)a3 defaultValue:(int64_t)a4
+- (int64_t)integerForTypeSpecificMetadataKey:(id)key defaultValue:(int64_t)value
 {
-  v6 = a3;
-  v7 = [(WFLinkActionParameterDefinition *)self objectForTypeSpecificMetadataKey:v6 ofClass:objc_opt_class()];
+  keyCopy = key;
+  v7 = [(WFLinkActionParameterDefinition *)self objectForTypeSpecificMetadataKey:keyCopy ofClass:objc_opt_class()];
 
   if (v7)
   {
-    a4 = [v7 integerValue];
+    value = [v7 integerValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (id)objectForTypeSpecificMetadataKey:(id)a3 ofClass:(Class)a4
+- (id)objectForTypeSpecificMetadataKey:(id)key ofClass:(Class)class
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(WFLinkActionParameterDefinition *)self typeSpecificMetadata];
-  v8 = [v7 objectForKey:v6];
+  keyCopy = key;
+  typeSpecificMetadata = [(WFLinkActionParameterDefinition *)self typeSpecificMetadata];
+  v8 = [typeSpecificMetadata objectForKey:keyCopy];
 
   v9 = v8;
   if (v9 && (objc_opt_isKindOfClass() & 1) == 0)
@@ -103,7 +103,7 @@
       v19 = 2114;
       v20 = objc_opt_class();
       v21 = 2114;
-      v22 = a4;
+      classCopy = class;
       v12 = v20;
     }
 
@@ -120,32 +120,32 @@
   return v10;
 }
 
-- (id)localizedTitleForLinkValue:(id)a3
+- (id)localizedTitleForLinkValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   result = [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"-[WFLinkActionParameterDefinition localizedTitleForValue:parameterMetadata:] must be overridden"];
   __break(1u);
   return result;
 }
 
-- (id)parameterStateFromLinkValue:(id)a3
+- (id)parameterStateFromLinkValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   result = [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"-[WFLinkActionParameterDefinition parameterStateFromLinkValue:] must be overridden"];
   __break(1u);
   return result;
 }
 
-- (id)defaultSerializedRepresentationFromParameterMetadataDefaultValue:(id)a3
+- (id)defaultSerializedRepresentationFromParameterMetadataDefaultValue:(id)value
 {
-  v4 = a3;
-  v5 = [(WFLinkActionParameterDefinition *)self valueType];
-  [v5 objectClass];
+  valueCopy = value;
+  valueType = [(WFLinkActionParameterDefinition *)self valueType];
+  [valueType objectClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = v4;
+    v7 = valueCopy;
   }
 
   else
@@ -163,18 +163,18 @@
   return result;
 }
 
-- (void)getLinkValueFromProcessedParameterValue:(id)a3 parameterState:(id)a4 permissionRequestor:(id)a5 runningFromToolKit:(BOOL)a6 action:(id)a7 parameterKey:(id)a8 completionHandler:(id)a9
+- (void)getLinkValueFromProcessedParameterValue:(id)value parameterState:(id)state permissionRequestor:(id)requestor runningFromToolKit:(BOOL)kit action:(id)action parameterKey:(id)key completionHandler:(id)handler
 {
-  v11 = a9;
-  v12 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:a3];
-  (*(a9 + 2))(v11, v12, 0);
+  handlerCopy = handler;
+  v12 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:value];
+  (*(handler + 2))(handlerCopy, v12, 0);
 }
 
-- (id)linkValueWithValue:(id)a3
+- (id)linkValueWithValue:(id)value
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  valueCopy = value;
+  if (!valueCopy)
   {
     v5 = 0;
     goto LABEL_30;
@@ -183,11 +183,11 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = valueCopy;
     goto LABEL_30;
   }
 
-  v6 = v4;
+  v6 = valueCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -204,8 +204,8 @@
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x1E69ACA90]);
-    v10 = [MEMORY[0x1E69AC888] fileValueType];
-    v5 = [v9 initWithValue:v8 valueType:v10];
+    fileValueType = [MEMORY[0x1E69AC888] fileValueType];
+    v5 = [v9 initWithValue:v8 valueType:fileValueType];
     goto LABEL_28;
   }
 
@@ -224,35 +224,35 @@
       v15 = 0;
     }
 
-    v10 = v15;
+    fileValueType = v15;
 
-    if ([v10 count])
+    if ([fileValueType count])
     {
       v16 = objc_alloc(MEMORY[0x1E69ACA90]);
       v17 = objc_alloc(MEMORY[0x1E69AC6C0]);
-      v18 = [v10 firstObject];
-      v19 = [v18 valueType];
-      v20 = [v17 initWithMemberValueType:v19];
+      firstObject = [fileValueType firstObject];
+      valueType = [firstObject valueType];
+      v20 = [v17 initWithMemberValueType:valueType];
       v5 = [v16 initWithValue:v14 valueType:v20];
     }
 
     else
     {
-      v21 = [(WFLinkActionParameterDefinition *)self valueType];
-      v22 = [v21 objectIsMemberOfType:v14];
+      valueType2 = [(WFLinkActionParameterDefinition *)self valueType];
+      v22 = [valueType2 objectIsMemberOfType:v14];
 
       if ((v22 & 1) == 0)
       {
         v23 = getWFAppIntentsLogObject();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
         {
-          v24 = [(WFLinkActionParameterDefinition *)self valueType];
+          valueType3 = [(WFLinkActionParameterDefinition *)self valueType];
           v29 = 136315650;
           v30 = "[WFLinkActionParameterDefinition linkValueWithValue:]";
           v31 = 2112;
           v32 = v14;
           v33 = 2112;
-          v34 = v24;
+          v34 = valueType3;
         }
       }
 
@@ -272,8 +272,8 @@
       }
 
       v26 = objc_alloc(MEMORY[0x1E69ACA90]);
-      v18 = [(WFLinkActionParameterDefinition *)self valueType];
-      v5 = [v26 initWithValue:v14 valueType:v18];
+      firstObject = [(WFLinkActionParameterDefinition *)self valueType];
+      v5 = [v26 initWithValue:v14 valueType:firstObject];
     }
 
 LABEL_28:
@@ -289,15 +289,15 @@ LABEL_30:
   return v5;
 }
 
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4
+- (id)linkValueFromParameterState:(id)state action:(id)action
 {
-  v5 = a3;
-  if (v5)
+  stateCopy = state;
+  if (stateCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = stateCopy;
     }
 
     else
@@ -312,21 +312,21 @@ LABEL_30:
   }
 
   v7 = v6;
-  v8 = [v7 value];
+  value = [v7 value];
 
-  v9 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:v8];
+  v9 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:value];
 
   return v9;
 }
 
-- (WFLinkActionParameterDefinition)initWithValueType:(id)a3 parameterMetadata:(id)a4
+- (WFLinkActionParameterDefinition)initWithValueType:(id)type parameterMetadata:(id)metadata
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  typeCopy = type;
+  metadataCopy = metadata;
+  v10 = metadataCopy;
+  if (typeCopy)
   {
-    if (v9)
+    if (metadataCopy)
     {
       goto LABEL_3;
     }
@@ -334,8 +334,8 @@ LABEL_30:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFLinkActionParameterDefinition.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"valueType"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFLinkActionParameterDefinition.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"valueType"}];
 
     if (v10)
     {
@@ -343,8 +343,8 @@ LABEL_30:
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"WFLinkActionParameterDefinition.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"parameterMetadata"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFLinkActionParameterDefinition.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"parameterMetadata"}];
 
 LABEL_3:
   v17.receiver = self;
@@ -353,8 +353,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_valueType, a3);
-    objc_storeStrong(&v12->_parameterMetadata, a4);
+    objc_storeStrong(&v11->_valueType, type);
+    objc_storeStrong(&v12->_parameterMetadata, metadata);
     v13 = v12;
   }
 

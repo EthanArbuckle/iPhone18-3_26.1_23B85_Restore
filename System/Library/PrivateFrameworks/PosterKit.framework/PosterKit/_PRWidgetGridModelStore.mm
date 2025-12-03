@@ -1,35 +1,35 @@
 @interface _PRWidgetGridModelStore
-- (BOOL)containsComplication:(id)a3;
-- (BOOL)containsComplicationForIdentifier:(id)a3;
-- (BOOL)containsComplicationPassingTest:(id)a3;
-- (BOOL)deleteCurrentIconStateWithOptions:(unint64_t)a3 error:(id *)a4;
-- (BOOL)saveCurrentIconState:(id)a3 error:(id *)a4;
-- (BOOL)updateComplicationsWithArray:(id)a3;
-- (BOOL)updateIntent:(id)a3 forComplicationDescriptor:(id)a4;
-- (_PRWidgetGridModelStore)initWithComplicationDescriptors:(id)a3 iconLayout:(id)a4;
+- (BOOL)containsComplication:(id)complication;
+- (BOOL)containsComplicationForIdentifier:(id)identifier;
+- (BOOL)containsComplicationPassingTest:(id)test;
+- (BOOL)deleteCurrentIconStateWithOptions:(unint64_t)options error:(id *)error;
+- (BOOL)saveCurrentIconState:(id)state error:(id *)error;
+- (BOOL)updateComplicationsWithArray:(id)array;
+- (BOOL)updateIntent:(id)intent forComplicationDescriptor:(id)descriptor;
+- (_PRWidgetGridModelStore)initWithComplicationDescriptors:(id)descriptors iconLayout:(id)layout;
 - (_PRWidgetGridModelStoreDelegate)delegate;
-- (id)applicationRecordForComplication:(id)a3 error:(id *)a4;
-- (id)containerBundleIdentifierForComplicationDescriptor:(id)a3 error:(id *)a4;
-- (id)intentForDescriptor:(id)a3;
-- (id)intentForDescriptorIdentifier:(id)a3;
-- (unint64_t)indexOfComplicationDescriptor:(id)a3;
-- (void)addComplicationDescriptor:(id)a3;
-- (void)removeComplicationDescriptor:(id)a3;
-- (void)removeComplicationDescriptorForIdentifier:(id)a3;
+- (id)applicationRecordForComplication:(id)complication error:(id *)error;
+- (id)containerBundleIdentifierForComplicationDescriptor:(id)descriptor error:(id *)error;
+- (id)intentForDescriptor:(id)descriptor;
+- (id)intentForDescriptorIdentifier:(id)identifier;
+- (unint64_t)indexOfComplicationDescriptor:(id)descriptor;
+- (void)addComplicationDescriptor:(id)descriptor;
+- (void)removeComplicationDescriptor:(id)descriptor;
+- (void)removeComplicationDescriptorForIdentifier:(id)identifier;
 @end
 
 @implementation _PRWidgetGridModelStore
 
-- (_PRWidgetGridModelStore)initWithComplicationDescriptors:(id)a3 iconLayout:(id)a4
+- (_PRWidgetGridModelStore)initWithComplicationDescriptors:(id)descriptors iconLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorsCopy = descriptors;
+  layoutCopy = layout;
   v18.receiver = self;
   v18.super_class = _PRWidgetGridModelStore;
   v8 = [(_PRWidgetGridModelStore *)&v18 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [layoutCopy copy];
     iconLayout = v8->_iconLayout;
     v8->_iconLayout = v9;
 
@@ -45,22 +45,22 @@
     applicationRecordsByWidgetBundleIdentifier = v8->_applicationRecordsByWidgetBundleIdentifier;
     v8->_applicationRecordsByWidgetBundleIdentifier = v15;
 
-    [(_PRWidgetGridModelStore *)v8 updateComplicationsWithArray:v6];
+    [(_PRWidgetGridModelStore *)v8 updateComplicationsWithArray:descriptorsCopy];
   }
 
   return v8;
 }
 
-- (BOOL)updateComplicationsWithArray:(id)a3
+- (BOOL)updateComplicationsWithArray:(id)array
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  arrayCopy = array;
   v6 = objc_opt_new();
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v7 = v5;
+  v7 = arrayCopy;
   v8 = [v7 countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v8)
   {
@@ -76,14 +76,14 @@
         }
 
         v12 = *(*(&v37 + 1) + 8 * i);
-        v13 = [v12 uniqueIdentifier];
-        if (!v13)
+        uniqueIdentifier = [v12 uniqueIdentifier];
+        if (!uniqueIdentifier)
         {
           [(_PRWidgetGridModelStore *)a2 updateComplicationsWithArray:?];
         }
 
-        v14 = v13;
-        [v6 setObject:v12 forKey:v13];
+        v14 = uniqueIdentifier;
+        [v6 setObject:v12 forKey:uniqueIdentifier];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v37 objects:v42 count:16];
@@ -136,14 +136,14 @@
           [(NSMutableDictionary *)self->_applicationRecordsByWidgetBundleIdentifier removeObjectForKey:v23];
         }
 
-        v25 = [v22 uniqueIdentifier];
-        v26 = [v22 widget];
-        v27 = [v26 intentReference];
-        v28 = [v27 intent];
+        uniqueIdentifier2 = [v22 uniqueIdentifier];
+        widget = [v22 widget];
+        intentReference = [widget intentReference];
+        intent = [intentReference intent];
 
-        if (v28)
+        if (intent)
         {
-          [(NSMutableDictionary *)self->_intentsByDescriptorIdentifier setObject:v28 forKeyedSubscript:v25];
+          [(NSMutableDictionary *)self->_intentsByDescriptorIdentifier setObject:intent forKeyedSubscript:uniqueIdentifier2];
         }
       }
 
@@ -162,46 +162,46 @@ LABEL_23:
   return v16 ^ 1;
 }
 
-- (BOOL)containsComplicationPassingTest:(id)a3
+- (BOOL)containsComplicationPassingTest:(id)test
 {
-  v4 = a3;
-  v5 = [(_PRWidgetGridModelStore *)self complicationDescriptors];
-  v6 = [v5 bs_containsObjectPassingTest:v4];
+  testCopy = test;
+  complicationDescriptors = [(_PRWidgetGridModelStore *)self complicationDescriptors];
+  v6 = [complicationDescriptors bs_containsObjectPassingTest:testCopy];
 
   return v6;
 }
 
-- (void)addComplicationDescriptor:(id)a3
+- (void)addComplicationDescriptor:(id)descriptor
 {
-  v8 = a3;
-  if (v8)
+  descriptorCopy = descriptor;
+  if (descriptorCopy)
   {
-    if ([(_PRWidgetGridModelStore *)self containsComplication:v8])
+    if ([(_PRWidgetGridModelStore *)self containsComplication:descriptorCopy])
     {
-      [(_PRWidgetGridModelStore *)self removeComplicationDescriptor:v8];
+      [(_PRWidgetGridModelStore *)self removeComplicationDescriptor:descriptorCopy];
     }
 
-    v4 = [v8 uniqueIdentifier];
-    [(BSMutableOrderedDictionary *)self->_complicationDescriptorsByUniqueIdentifier setObject:v8 forKey:v4];
-    v5 = [v8 widget];
-    v6 = [v5 intentReference];
-    v7 = [v6 intent];
+    uniqueIdentifier = [descriptorCopy uniqueIdentifier];
+    [(BSMutableOrderedDictionary *)self->_complicationDescriptorsByUniqueIdentifier setObject:descriptorCopy forKey:uniqueIdentifier];
+    widget = [descriptorCopy widget];
+    intentReference = [widget intentReference];
+    intent = [intentReference intent];
 
-    [(NSMutableDictionary *)self->_intentsByDescriptorIdentifier bs_setSafeObject:v7 forKey:v4];
+    [(NSMutableDictionary *)self->_intentsByDescriptorIdentifier bs_setSafeObject:intent forKey:uniqueIdentifier];
   }
 }
 
-- (void)removeComplicationDescriptor:(id)a3
+- (void)removeComplicationDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v4 = [v6 uniqueIdentifier];
-  if ([(_PRWidgetGridModelStore *)self containsComplicationForIdentifier:v4])
+  descriptorCopy = descriptor;
+  uniqueIdentifier = [descriptorCopy uniqueIdentifier];
+  if ([(_PRWidgetGridModelStore *)self containsComplicationForIdentifier:uniqueIdentifier])
   {
-    [(BSMutableOrderedDictionary *)self->_complicationDescriptorsByUniqueIdentifier removeObjectForKey:v4];
-    [(NSMutableDictionary *)self->_intentsByDescriptorIdentifier removeObjectForKey:v4];
+    [(BSMutableOrderedDictionary *)self->_complicationDescriptorsByUniqueIdentifier removeObjectForKey:uniqueIdentifier];
+    [(NSMutableDictionary *)self->_intentsByDescriptorIdentifier removeObjectForKey:uniqueIdentifier];
     if ([(NSMutableDictionary *)self->_applicationRecordsByWidgetBundleIdentifier count])
     {
-      v5 = [(_PRWidgetGridModelStore *)self containerBundleIdentifierForComplicationDescriptor:v6 error:0];
+      v5 = [(_PRWidgetGridModelStore *)self containerBundleIdentifierForComplicationDescriptor:descriptorCopy error:0];
       if (v5)
       {
         [(NSMutableDictionary *)self->_applicationRecordsByWidgetBundleIdentifier removeObjectForKey:v5];
@@ -210,9 +210,9 @@ LABEL_23:
   }
 }
 
-- (void)removeComplicationDescriptorForIdentifier:(id)a3
+- (void)removeComplicationDescriptorForIdentifier:(id)identifier
 {
-  v4 = [(BSMutableOrderedDictionary *)self->_complicationDescriptorsByUniqueIdentifier objectForKey:a3];
+  v4 = [(BSMutableOrderedDictionary *)self->_complicationDescriptorsByUniqueIdentifier objectForKey:identifier];
   v5 = v4;
   if (v4)
   {
@@ -224,78 +224,78 @@ LABEL_23:
   MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (id)intentForDescriptor:(id)a3
+- (id)intentForDescriptor:(id)descriptor
 {
-  v4 = [a3 uniqueIdentifier];
-  v5 = [(_PRWidgetGridModelStore *)self intentForDescriptorIdentifier:v4];
+  uniqueIdentifier = [descriptor uniqueIdentifier];
+  v5 = [(_PRWidgetGridModelStore *)self intentForDescriptorIdentifier:uniqueIdentifier];
 
   return v5;
 }
 
-- (id)intentForDescriptorIdentifier:(id)a3
+- (id)intentForDescriptorIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_intentsByDescriptorIdentifier objectForKey:v4];
-  if (!v5)
+  identifierCopy = identifier;
+  intent = [(NSMutableDictionary *)self->_intentsByDescriptorIdentifier objectForKey:identifierCopy];
+  if (!intent)
   {
-    v6 = [(_PRWidgetGridModelStore *)self complicationDescriptorForIdentifier:v4];
+    v6 = [(_PRWidgetGridModelStore *)self complicationDescriptorForIdentifier:identifierCopy];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 widget];
-      v9 = [v8 intentReference];
-      v5 = [v9 intent];
+      widget = [v6 widget];
+      intentReference = [widget intentReference];
+      intent = [intentReference intent];
 
-      [(NSMutableDictionary *)self->_intentsByDescriptorIdentifier bs_setSafeObject:v5 forKey:v4];
+      [(NSMutableDictionary *)self->_intentsByDescriptorIdentifier bs_setSafeObject:intent forKey:identifierCopy];
     }
 
     else
     {
-      v5 = 0;
+      intent = 0;
     }
   }
 
-  return v5;
+  return intent;
 }
 
-- (BOOL)updateIntent:(id)a3 forComplicationDescriptor:(id)a4
+- (BOOL)updateIntent:(id)intent forComplicationDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_PRWidgetGridModelStore *)self containsComplication:v7];
+  intentCopy = intent;
+  descriptorCopy = descriptor;
+  v8 = [(_PRWidgetGridModelStore *)self containsComplication:descriptorCopy];
   if (v8)
   {
-    v9 = [v7 uniqueIdentifier];
-    v10 = [v7 widget];
-    v11 = [v10 widgetByReplacingIntent:v6];
+    uniqueIdentifier = [descriptorCopy uniqueIdentifier];
+    widget = [descriptorCopy widget];
+    v11 = [widget widgetByReplacingIntent:intentCopy];
 
-    v12 = [v7 copy];
+    v12 = [descriptorCopy copy];
     [v12 setWidget:v11];
-    [(BSMutableOrderedDictionary *)self->_complicationDescriptorsByUniqueIdentifier setObject:v12 forKey:v9];
+    [(BSMutableOrderedDictionary *)self->_complicationDescriptorsByUniqueIdentifier setObject:v12 forKey:uniqueIdentifier];
     intentsByDescriptorIdentifier = self->_intentsByDescriptorIdentifier;
-    if (v6)
+    if (intentCopy)
     {
-      [(NSMutableDictionary *)intentsByDescriptorIdentifier setObject:v6 forKey:v9];
+      [(NSMutableDictionary *)intentsByDescriptorIdentifier setObject:intentCopy forKey:uniqueIdentifier];
     }
 
     else
     {
-      [(NSMutableDictionary *)intentsByDescriptorIdentifier removeObjectForKey:v9];
+      [(NSMutableDictionary *)intentsByDescriptorIdentifier removeObjectForKey:uniqueIdentifier];
     }
   }
 
   return v8;
 }
 
-- (id)applicationRecordForComplication:(id)a3 error:(id *)a4
+- (id)applicationRecordForComplication:(id)complication error:(id *)error
 {
-  if (a3)
+  if (complication)
   {
     v6 = [_PRWidgetGridModelStore containerBundleIdentifierForComplicationDescriptor:"containerBundleIdentifierForComplicationDescriptor:error:" error:?];
     if (v6 && ([(NSMutableDictionary *)self->_applicationRecordsByWidgetBundleIdentifier objectForKey:v6], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v8 = v7;
-      v9 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v6 allowPlaceholder:0 error:a4];
+      v9 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v6 allowPlaceholder:0 error:error];
 
       [(NSMutableDictionary *)self->_applicationRecordsByWidgetBundleIdentifier bs_setSafeObject:v9 forKey:v6];
     }
@@ -314,27 +314,27 @@ LABEL_23:
   return v9;
 }
 
-- (id)containerBundleIdentifierForComplicationDescriptor:(id)a3 error:(id *)a4
+- (id)containerBundleIdentifierForComplicationDescriptor:(id)descriptor error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 widget];
-  v7 = [v6 extensionIdentity];
-  v8 = [v7 containerBundleIdentifier];
-  v9 = v8;
-  if (v8)
+  descriptorCopy = descriptor;
+  widget = [descriptorCopy widget];
+  extensionIdentity = [widget extensionIdentity];
+  containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+  v9 = containerBundleIdentifier;
+  if (containerBundleIdentifier)
   {
-    v10 = v8;
+    v10 = containerBundleIdentifier;
   }
 
-  else if (a4)
+  else if (error)
   {
     v17 = *MEMORY[0x1E696A588];
     v18[0] = @"containerBundleIdentifier could not be looked up for complicationDescriptor";
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v12 = [v11 mutableCopy];
 
-    v13 = [v5 description];
+    v13 = [descriptorCopy description];
     v14 = v13;
     if (v13)
     {
@@ -348,45 +348,45 @@ LABEL_23:
 
     [v12 setObject:v15 forKeyedSubscript:@"complicationDescriptor"];
 
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.PosterKit.PRWidgetGridModel" code:-1 userInfo:v12];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.PosterKit.PRWidgetGridModel" code:-1 userInfo:v12];
   }
 
   return v9;
 }
 
-- (BOOL)containsComplicationForIdentifier:(id)a3
+- (BOOL)containsComplicationForIdentifier:(id)identifier
 {
-  v3 = [(BSMutableOrderedDictionary *)self->_complicationDescriptorsByUniqueIdentifier objectForKey:a3];
+  v3 = [(BSMutableOrderedDictionary *)self->_complicationDescriptorsByUniqueIdentifier objectForKey:identifier];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)containsComplication:(id)a3
+- (BOOL)containsComplication:(id)complication
 {
-  v4 = [a3 uniqueIdentifier];
-  LOBYTE(self) = [(_PRWidgetGridModelStore *)self containsComplicationForIdentifier:v4];
+  uniqueIdentifier = [complication uniqueIdentifier];
+  LOBYTE(self) = [(_PRWidgetGridModelStore *)self containsComplicationForIdentifier:uniqueIdentifier];
 
   return self;
 }
 
-- (unint64_t)indexOfComplicationDescriptor:(id)a3
+- (unint64_t)indexOfComplicationDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(_PRWidgetGridModelStore *)self complicationDescriptors];
-  v6 = [v5 indexOfObject:v4];
+  descriptorCopy = descriptor;
+  complicationDescriptors = [(_PRWidgetGridModelStore *)self complicationDescriptors];
+  v6 = [complicationDescriptors indexOfObject:descriptorCopy];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v4 uniqueIdentifier];
-    if ([(_PRWidgetGridModelStore *)self containsComplicationForIdentifier:v7])
+    uniqueIdentifier = [descriptorCopy uniqueIdentifier];
+    if ([(_PRWidgetGridModelStore *)self containsComplicationForIdentifier:uniqueIdentifier])
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __57___PRWidgetGridModelStore_indexOfComplicationDescriptor___block_invoke;
       v11[3] = &unk_1E7845218;
-      v12 = v7;
-      v8 = v7;
-      v9 = [v5 indexOfObjectPassingTest:v11];
+      v12 = uniqueIdentifier;
+      v8 = uniqueIdentifier;
+      v9 = [complicationDescriptors indexOfObjectPassingTest:v11];
 
       if (v9 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -409,22 +409,22 @@ LABEL_23:
   return v9;
 }
 
-- (BOOL)saveCurrentIconState:(id)a3 error:(id *)a4
+- (BOOL)saveCurrentIconState:(id)state error:(id *)error
 {
-  objc_storeStrong(&self->_iconLayout, a3);
-  v5 = [(_PRWidgetGridModelStore *)self delegate];
-  [v5 widgetGridModelStoreDidUpdateContent:self];
+  objc_storeStrong(&self->_iconLayout, state);
+  delegate = [(_PRWidgetGridModelStore *)self delegate];
+  [delegate widgetGridModelStoreDidUpdateContent:self];
 
   return 1;
 }
 
-- (BOOL)deleteCurrentIconStateWithOptions:(unint64_t)a3 error:(id *)a4
+- (BOOL)deleteCurrentIconStateWithOptions:(unint64_t)options error:(id *)error
 {
   iconLayout = self->_iconLayout;
   self->_iconLayout = 0;
 
-  v6 = [(_PRWidgetGridModelStore *)self delegate];
-  [v6 widgetGridModelStoreDidUpdateContent:self];
+  delegate = [(_PRWidgetGridModelStore *)self delegate];
+  [delegate widgetGridModelStoreDidUpdateContent:self];
 
   return 1;
 }

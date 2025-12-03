@@ -8,19 +8,19 @@
 {
   v4 = a3;
   v5 = v4;
-  if (a1 == v4)
+  if (self == v4)
   {
     v10 = 1;
   }
 
-  else if (v4 && [a1 isEqual:v4])
+  else if (v4 && [self isEqual:v4])
   {
-    v6 = [a1 title];
-    v7 = [v5 title];
+    title = [self title];
+    title2 = [v5 title];
     if (BSEqualStrings())
     {
-      v8 = [a1 discoverabilityTitle];
-      v9 = [v5 discoverabilityTitle];
+      discoverabilityTitle = [self discoverabilityTitle];
+      discoverabilityTitle2 = [v5 discoverabilityTitle];
       v10 = BSEqualStrings();
     }
 

@@ -1,7 +1,7 @@
 @interface FRNewsAppRemovalService
 + (void)initialize;
 - (FRNewsAppRemovalService)init;
-- (void)removeAppWithReply:(id)a3;
+- (void)removeAppWithReply:(id)reply;
 @end
 
 @implementation FRNewsAppRemovalService
@@ -20,9 +20,9 @@
   return [(FRNewsAppRemovalService *)&v3 init];
 }
 
-- (void)removeAppWithReply:(id)a3
+- (void)removeAppWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = [[NSSNewsTerminationItem alloc] initWithProcessType:1 bundleID:@"UNUSED"];
   v5 = [[NSSNewsTerminationItem alloc] initWithProcessType:0 bundleID:@"com.apple.stocks"];
   v7[0] = v4;
@@ -30,7 +30,7 @@
   v6 = [NSArray arrayWithObjects:v7 count:2];
   NSSTerminateNewsProcessesWithItems();
 
-  v3[2](v3, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
 @end

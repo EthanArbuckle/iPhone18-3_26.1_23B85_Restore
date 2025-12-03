@@ -1,23 +1,23 @@
 @interface PGUpNextMusicCurator
-+ (id)_appleMusicCurationWithFeaturesByMemory:(id)a3 musicCuratorContext:(id)a4 managerContext:(id)a5 progressReporter:(id)a6 error:(id *)a7;
-+ (id)_baseMemoryFetchOptionsWithPhotoLibrary:(id)a3;
-+ (id)_flexMusicCurationWithFeaturesByMemory:(id)a3 musicCurationOptions:(id)a4 musicCuratorContext:(id)a5 progressReporter:(id)a6 error:(id *)a7;
-- (BOOL)curateMusicForUpNextMemoriesWithLocalIdentifiers:(id)a3 musicCurationOptions:(id)a4 photoLibrary:(id)a5 managerContext:(id)a6 error:(id *)a7;
-- (PGUpNextMusicCurator)initWithLoggingConnection:(id)a3;
-- (id)_appleMusicCurationForMemories:(id)a3 curatorContext:(id)a4 managerContext:(id)a5 progressReporter:(id)a6 error:(id *)a7;
-- (id)_flexMusicCurationForMemories:(id)a3 curatorContext:(id)a4 musicCurationOptions:(id)a5 managerContext:(id)a6 progressReporter:(id)a7 error:(id *)a8;
-- (id)_musicCurationFeaturesForMemories:(id)a3 musicExtractionContext:(id)a4 managerContext:(id)a5 progressReporter:(id)a6 error:(id *)a7;
++ (id)_appleMusicCurationWithFeaturesByMemory:(id)memory musicCuratorContext:(id)context managerContext:(id)managerContext progressReporter:(id)reporter error:(id *)error;
++ (id)_baseMemoryFetchOptionsWithPhotoLibrary:(id)library;
++ (id)_flexMusicCurationWithFeaturesByMemory:(id)memory musicCurationOptions:(id)options musicCuratorContext:(id)context progressReporter:(id)reporter error:(id *)error;
+- (BOOL)curateMusicForUpNextMemoriesWithLocalIdentifiers:(id)identifiers musicCurationOptions:(id)options photoLibrary:(id)library managerContext:(id)context error:(id *)error;
+- (PGUpNextMusicCurator)initWithLoggingConnection:(id)connection;
+- (id)_appleMusicCurationForMemories:(id)memories curatorContext:(id)context managerContext:(id)managerContext progressReporter:(id)reporter error:(id *)error;
+- (id)_flexMusicCurationForMemories:(id)memories curatorContext:(id)context musicCurationOptions:(id)options managerContext:(id)managerContext progressReporter:(id)reporter error:(id *)error;
+- (id)_musicCurationFeaturesForMemories:(id)memories musicExtractionContext:(id)context managerContext:(id)managerContext progressReporter:(id)reporter error:(id *)error;
 @end
 
 @implementation PGUpNextMusicCurator
 
-- (id)_musicCurationFeaturesForMemories:(id)a3 musicExtractionContext:(id)a4 managerContext:(id)a5 progressReporter:(id)a6 error:(id *)a7
+- (id)_musicCurationFeaturesForMemories:(id)memories musicExtractionContext:(id)context managerContext:(id)managerContext progressReporter:(id)reporter error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  memoriesCopy = memories;
+  contextCopy = context;
+  managerContextCopy = managerContext;
+  reporterCopy = reporter;
   v15 = self->_loggingConnection;
   v16 = os_signpost_id_generate(v15);
   v17 = v15;
@@ -36,7 +36,7 @@
   v47 = 0x3032000000;
   v48 = __Block_byref_object_copy__16965;
   v49 = __Block_byref_object_dispose__16966;
-  v50 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -47,23 +47,23 @@
   v33[1] = 3221225472;
   v33[2] = __119__PGUpNextMusicCurator__musicCurationFeaturesForMemories_musicExtractionContext_managerContext_progressReporter_error___block_invoke;
   v33[3] = &unk_2788826E0;
-  v20 = v11;
+  v20 = memoriesCopy;
   v34 = v20;
-  v21 = v14;
+  v21 = reporterCopy;
   v35 = v21;
-  v22 = v12;
+  v22 = contextCopy;
   v36 = v22;
   v37 = &v39;
   v38 = buf;
-  [v13 performSynchronousConcurrentGraphReadUsingBlock:v33];
+  [managerContextCopy performSynchronousConcurrentGraphReadUsingBlock:v33];
   if (!*(v46 + 5))
   {
-    if (a7)
+    if (error)
     {
       v23 = v40[5];
       if (v23)
       {
-        *a7 = v23;
+        *error = v23;
       }
     }
   }
@@ -134,26 +134,26 @@ void __119__PGUpNextMusicCurator__musicCurationFeaturesForMemories_musicExtracti
 LABEL_7:
 }
 
-- (id)_flexMusicCurationForMemories:(id)a3 curatorContext:(id)a4 musicCurationOptions:(id)a5 managerContext:(id)a6 progressReporter:(id)a7 error:(id *)a8
+- (id)_flexMusicCurationForMemories:(id)memories curatorContext:(id)context musicCurationOptions:(id)options managerContext:(id)managerContext progressReporter:(id)reporter error:(id *)error
 {
   v60 = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  contextCopy = context;
+  optionsCopy = options;
+  reporterCopy = reporter;
   v17 = MEMORY[0x277D22C88];
-  v18 = a6;
-  v19 = a3;
-  v20 = [[v17 alloc] initWithProgressReporter:v16];
+  managerContextCopy = managerContext;
+  memoriesCopy = memories;
+  v20 = [[v17 alloc] initWithProgressReporter:reporterCopy];
   v21 = [v20 childProgressReporterToCheckpoint:0.7];
   v51 = [v20 childProgressReporterToCheckpoint:0.95];
-  v22 = [objc_opt_class() flexMusicFeatureExtractionContextWithCuratorContext:v14];
+  v22 = [objc_opt_class() flexMusicFeatureExtractionContextWithCuratorContext:contextCopy];
   v50 = v21;
-  v23 = [(PGUpNextMusicCurator *)self _musicCurationFeaturesForMemories:v19 musicExtractionContext:v22 managerContext:v18 progressReporter:v21 error:a8];
+  v23 = [(PGUpNextMusicCurator *)self _musicCurationFeaturesForMemories:memoriesCopy musicExtractionContext:v22 managerContext:managerContextCopy progressReporter:v21 error:error];
 
   if (v23)
   {
-    v48 = v16;
-    v49 = v15;
+    v48 = reporterCopy;
+    v49 = optionsCopy;
     v24 = self->_loggingConnection;
     v25 = os_signpost_id_generate(v24);
     v26 = v24;
@@ -170,7 +170,7 @@ LABEL_7:
     info = 0;
     mach_timebase_info(&info);
     v47 = mach_absolute_time();
-    v29 = [objc_opt_class() _flexMusicCurationWithFeaturesByMemory:v23 musicCurationOptions:v49 musicCuratorContext:v14 progressReporter:v51 error:a8];
+    v29 = [objc_opt_class() _flexMusicCurationWithFeaturesByMemory:v23 musicCurationOptions:v49 musicCuratorContext:contextCopy progressReporter:v51 error:error];
     if (v29)
     {
       v30 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v29, "count")}];
@@ -206,7 +206,7 @@ LABEL_7:
       v37 = v54;
       v38 = v31;
 
-      v15 = v49;
+      optionsCopy = v49;
     }
 
     else
@@ -222,7 +222,7 @@ LABEL_7:
         _os_signpost_emit_with_name_impl(&dword_22F0FC000, v43, OS_SIGNPOST_INTERVAL_END, spid, "PGUpNextMusicCurator_FlexMusicCuration", "", buf, 2u);
       }
 
-      v15 = v49;
+      optionsCopy = v49;
       if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
       {
         *buf = 136315394;
@@ -235,7 +235,7 @@ LABEL_7:
       v38 = 0;
     }
 
-    v16 = v48;
+    reporterCopy = v48;
   }
 
   else
@@ -259,21 +259,21 @@ void __128__PGUpNextMusicCurator__flexMusicCurationForMemories_curatorContext_mu
   [*(a1 + 40) setObject:v8 forKeyedSubscript:v7];
 }
 
-- (id)_appleMusicCurationForMemories:(id)a3 curatorContext:(id)a4 managerContext:(id)a5 progressReporter:(id)a6 error:(id *)a7
+- (id)_appleMusicCurationForMemories:(id)memories curatorContext:(id)context managerContext:(id)managerContext progressReporter:(id)reporter error:(id *)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  managerContextCopy = managerContext;
+  reporterCopy = reporter;
   v15 = MEMORY[0x277D22C88];
-  v16 = a3;
+  memoriesCopy = memories;
   v17 = v15;
-  v18 = v14;
-  v19 = [[v17 alloc] initWithProgressReporter:v14];
+  v18 = reporterCopy;
+  v19 = [[v17 alloc] initWithProgressReporter:reporterCopy];
   v20 = [v19 childProgressReporterToCheckpoint:0.7];
   v21 = [v19 childProgressReporterToCheckpoint:0.95];
-  v50 = [objc_opt_class() appleMusicFeatureExtractionContextWithCuratorContext:v12];
-  v22 = [PGUpNextMusicCurator _musicCurationFeaturesForMemories:"_musicCurationFeaturesForMemories:musicExtractionContext:managerContext:progressReporter:error:" musicExtractionContext:v16 managerContext:? progressReporter:? error:?];
+  v50 = [objc_opt_class() appleMusicFeatureExtractionContextWithCuratorContext:contextCopy];
+  v22 = [PGUpNextMusicCurator _musicCurationFeaturesForMemories:"_musicCurationFeaturesForMemories:musicExtractionContext:managerContext:progressReporter:error:" musicExtractionContext:memoriesCopy managerContext:? progressReporter:? error:?];
 
   if (v22)
   {
@@ -294,7 +294,7 @@ void __128__PGUpNextMusicCurator__flexMusicCurationForMemories_curatorContext_mu
     info = 0;
     mach_timebase_info(&info);
     v46 = mach_absolute_time();
-    v28 = [objc_opt_class() _appleMusicCurationWithFeaturesByMemory:v22 musicCuratorContext:v12 managerContext:v13 progressReporter:v49 error:a7];
+    v28 = [objc_opt_class() _appleMusicCurationWithFeaturesByMemory:v22 musicCuratorContext:contextCopy managerContext:managerContextCopy progressReporter:v49 error:error];
     if (v28)
     {
       v29 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v28, "count")}];
@@ -385,13 +385,13 @@ void __108__PGUpNextMusicCurator__appleMusicCurationForMemories_curatorContext_m
   [*(a1 + 40) setObject:v8 forKeyedSubscript:v7];
 }
 
-- (BOOL)curateMusicForUpNextMemoriesWithLocalIdentifiers:(id)a3 musicCurationOptions:(id)a4 photoLibrary:(id)a5 managerContext:(id)a6 error:(id *)a7
+- (BOOL)curateMusicForUpNextMemoriesWithLocalIdentifiers:(id)identifiers musicCurationOptions:(id)options photoLibrary:(id)library managerContext:(id)context error:(id *)error
 {
   v148 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v124 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifiersCopy = identifiers;
+  optionsCopy = options;
+  libraryCopy = library;
+  contextCopy = context;
   v14 = self->_loggingConnection;
   v15 = os_signpost_id_generate(v14);
   v16 = v14;
@@ -408,10 +408,10 @@ void __108__PGUpNextMusicCurator__appleMusicCurationForMemories_curatorContext_m
   info = 0;
   mach_timebase_info(&info);
   v115 = mach_absolute_time();
-  v126 = self;
-  v123 = v12;
-  v121 = [objc_opt_class() _baseMemoryFetchOptionsWithPhotoLibrary:v12];
-  v18 = [MEMORY[0x277CD98D8] fetchAssetCollectionsWithLocalIdentifiers:v11 options:?];
+  selfCopy = self;
+  v123 = libraryCopy;
+  v121 = [objc_opt_class() _baseMemoryFetchOptionsWithPhotoLibrary:libraryCopy];
+  v18 = [MEMORY[0x277CD98D8] fetchAssetCollectionsWithLocalIdentifiers:identifiersCopy options:?];
   v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v18, "count")}];
   v137 = 0u;
   v138 = 0u;
@@ -448,19 +448,19 @@ void __108__PGUpNextMusicCurator__appleMusicCurationForMemories_curatorContext_m
 
   if ([v19 count])
   {
-    v26 = [MEMORY[0x277D22C80] ignoreProgress];
-    v27 = v124;
-    v28 = [v13 musicCuratorContextWithCurationOptions:v124 error:a7];
+    ignoreProgress = [MEMORY[0x277D22C80] ignoreProgress];
+    v27 = optionsCopy;
+    v28 = [contextCopy musicCuratorContextWithCurationOptions:optionsCopy error:error];
     v112 = v28;
     if (v28)
     {
       v29 = v28;
-      v125 = [(PGUpNextMusicCurator *)v126 _appleMusicCurationForMemories:v19 curatorContext:v28 managerContext:v13 progressReporter:v26 error:a7];
+      v125 = [(PGUpNextMusicCurator *)selfCopy _appleMusicCurationForMemories:v19 curatorContext:v28 managerContext:contextCopy progressReporter:ignoreProgress error:error];
       if (v125)
       {
-        v108 = v26;
-        v30 = [(PGUpNextMusicCurator *)v126 _flexMusicCurationForMemories:v19 curatorContext:v29 musicCurationOptions:v124 managerContext:v13 progressReporter:v26 error:a7];
-        loggingConnection = v126->_loggingConnection;
+        v108 = ignoreProgress;
+        v30 = [(PGUpNextMusicCurator *)selfCopy _flexMusicCurationForMemories:v19 curatorContext:v29 musicCurationOptions:optionsCopy managerContext:contextCopy progressReporter:ignoreProgress error:error];
+        loggingConnection = selfCopy->_loggingConnection;
         v122 = v30;
         if (v30)
         {
@@ -492,10 +492,10 @@ void __108__PGUpNextMusicCurator__appleMusicCurationForMemories_curatorContext_m
           if (v120)
           {
             obj = v36;
-            v104 = v11;
+            v104 = identifiersCopy;
             v117 = *v133;
             v109 = 1;
-            v116 = v13;
+            v116 = contextCopy;
             v118 = v17;
 LABEL_22:
             v37 = 0;
@@ -508,17 +508,17 @@ LABEL_22:
 
               v38 = *(*(&v132 + 1) + 8 * v37);
               v39 = [v125 objectForKeyedSubscript:v38];
-              v40 = [v39 appleMusicCuration];
+              appleMusicCuration = [v39 appleMusicCuration];
 
               v41 = [v122 objectForKeyedSubscript:v38];
-              v42 = [v41 flexMusicCuration];
+              flexMusicCuration = [v41 flexMusicCuration];
 
               v43 = [v125 objectForKeyedSubscript:v38];
-              v44 = [v43 features];
+              features = [v43 features];
 
-              if (v40)
+              if (appleMusicCuration)
               {
-                v45 = v42 == 0;
+                v45 = flexMusicCuration == 0;
               }
 
               else
@@ -526,35 +526,35 @@ LABEL_22:
                 v45 = 1;
               }
 
-              if (v45 || v44 == 0)
+              if (v45 || features == 0)
               {
-                v82 = v40;
-                v83 = v126->_loggingConnection;
+                v82 = appleMusicCuration;
+                v83 = selfCopy->_loggingConnection;
                 if (os_log_type_enabled(v83, OS_LOG_TYPE_ERROR))
                 {
                   v101 = v83;
-                  v102 = [v38 uuid];
+                  uuid = [v38 uuid];
                   *buf = 138412290;
-                  v144 = v102;
+                  v144 = uuid;
                   _os_log_error_impl(&dword_22F0FC000, v101, OS_LOG_TYPE_ERROR, "[MemoriesMusic] one or both music curations or music features missing for memory (%@)", buf, 0xCu);
                 }
 
-                v11 = v104;
-                if (a7)
+                identifiersCopy = v104;
+                if (error)
                 {
                   v84 = MEMORY[0x277CCACA8];
-                  v85 = [v38 uuid];
-                  v86 = [v84 stringWithFormat:@"One or both music curations missing for asset collection (%@)", v85];
-                  *a7 = [PGError errorWithCode:-1 description:v86];
+                  uuid2 = [v38 uuid];
+                  v86 = [v84 stringWithFormat:@"One or both music curations missing for asset collection (%@)", uuid2];
+                  *error = [PGError errorWithCode:-1 description:v86];
                 }
 
                 v17 = v118;
                 goto LABEL_83;
               }
 
-              v127 = v40;
-              v47 = [objc_opt_class() _photosGraphPropertiesForMemory:v38 musicCurationFeatures:v44 appleMusicCuration:v40 flexMusicCuration:v42 isAppleMusicSubscriber:v126->_isAppleMusicSubscriber error:a7];
-              v48 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v47 requiringSecureCoding:1 error:a7];
+              v127 = appleMusicCuration;
+              v47 = [objc_opt_class() _photosGraphPropertiesForMemory:v38 musicCurationFeatures:features appleMusicCuration:appleMusicCuration flexMusicCuration:flexMusicCuration isAppleMusicSubscriber:selfCopy->_isAppleMusicSubscriber error:error];
+              v48 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v47 requiringSecureCoding:1 error:error];
               if (v48)
               {
                 [v114 setObject:v48 forKeyedSubscript:v38];
@@ -563,19 +563,19 @@ LABEL_22:
 
               else
               {
-                v49 = v126->_loggingConnection;
+                v49 = selfCopy->_loggingConnection;
                 if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
                 {
-                  v50 = [v38 uuid];
-                  v51 = v50;
+                  uuid3 = [v38 uuid];
+                  v51 = uuid3;
                   *&v52 = COERCE_DOUBLE(@"no error");
-                  if (a7)
+                  if (error)
                   {
-                    v52 = *a7;
+                    v52 = *error;
                   }
 
                   *buf = 138412546;
-                  v144 = v50;
+                  v144 = uuid3;
                   v145 = 2112;
                   v146 = *&v52;
                   _os_log_error_impl(&dword_22F0FC000, v49, OS_LOG_TYPE_ERROR, "[MemoriesMusic] Unable to create photosGraphData for memory (%@), error: %@", buf, 0x16u);
@@ -584,7 +584,7 @@ LABEL_22:
                 v109 = 0;
               }
 
-              v13 = v116;
+              contextCopy = v116;
               v17 = v118;
               if (!v48)
               {
@@ -604,7 +604,7 @@ LABEL_22:
               }
             }
 
-            v11 = v104;
+            identifiersCopy = v104;
             if (v109)
             {
               goto LABEL_67;
@@ -636,7 +636,7 @@ LABEL_83:
             v94 = info.denom;
             v95 = v17;
             v96 = v95;
-            v27 = v124;
+            v27 = optionsCopy;
             if (v119 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v95))
             {
               *buf = 0;
@@ -665,7 +665,7 @@ LABEL_67:
             v129[3] = &unk_278880B88;
             v130 = v114;
             v131 = v113;
-            v54 = [v123 performChangesAndWait:v129 error:a7];
+            v54 = [v123 performChangesAndWait:v129 error:error];
             v72 = mach_absolute_time();
             v73 = v136.numer;
             v74 = v136.denom;
@@ -706,7 +706,7 @@ LABEL_67:
               _os_log_impl(&dword_22F0FC000, v81, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
             }
 
-            v27 = v124;
+            v27 = optionsCopy;
           }
         }
 
@@ -714,9 +714,9 @@ LABEL_67:
         {
           if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
           {
-            if (a7)
+            if (error)
             {
-              v100 = *a7;
+              v100 = *error;
             }
 
             else
@@ -757,13 +757,13 @@ LABEL_67:
 
       else
       {
-        v55 = v26;
-        v61 = v126->_loggingConnection;
+        v55 = ignoreProgress;
+        v61 = selfCopy->_loggingConnection;
         if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
         {
-          if (a7)
+          if (error)
           {
-            v99 = *a7;
+            v99 = *error;
           }
 
           else
@@ -802,7 +802,7 @@ LABEL_67:
 
     else
     {
-      v55 = v26;
+      v55 = ignoreProgress;
       v56 = mach_absolute_time();
       v57 = info.numer;
       v58 = info.denom;
@@ -830,7 +830,7 @@ LABEL_67:
   else
   {
     v54 = 1;
-    v27 = v124;
+    v27 = optionsCopy;
   }
 
   v97 = *MEMORY[0x277D85DE8];
@@ -876,56 +876,56 @@ void __128__PGUpNextMusicCurator_curateMusicForUpNextMemoriesWithLocalIdentifier
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (PGUpNextMusicCurator)initWithLoggingConnection:(id)a3
+- (PGUpNextMusicCurator)initWithLoggingConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = PGUpNextMusicCurator;
   v6 = [(PGUpNextMusicCurator *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_loggingConnection, a3);
-    v8 = [MEMORY[0x277D22C80] ignoreProgress];
-    v7->_isAppleMusicSubscriber = [PGMusicCatalogMonitor checkMusicCatalogEligibilityWithProgressReporter:v8];
+    objc_storeStrong(&v6->_loggingConnection, connection);
+    ignoreProgress = [MEMORY[0x277D22C80] ignoreProgress];
+    v7->_isAppleMusicSubscriber = [PGMusicCatalogMonitor checkMusicCatalogEligibilityWithProgressReporter:ignoreProgress];
   }
 
   return v7;
 }
 
-+ (id)_baseMemoryFetchOptionsWithPhotoLibrary:(id)a3
++ (id)_baseMemoryFetchOptionsWithPhotoLibrary:(id)library
 {
-  v3 = [a3 librarySpecificFetchOptions];
-  [v3 setWantsIncrementalChangeDetails:0];
-  [v3 setIncludeLocalMemories:1];
-  [v3 setIncludePendingMemories:1];
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+  [librarySpecificFetchOptions setIncludeLocalMemories:1];
+  [librarySpecificFetchOptions setIncludePendingMemories:1];
 
-  return v3;
+  return librarySpecificFetchOptions;
 }
 
-+ (id)_flexMusicCurationWithFeaturesByMemory:(id)a3 musicCurationOptions:(id)a4 musicCuratorContext:(id)a5 progressReporter:(id)a6 error:(id *)a7
++ (id)_flexMusicCurationWithFeaturesByMemory:(id)memory musicCurationOptions:(id)options musicCuratorContext:(id)context progressReporter:(id)reporter error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if ([v11 count])
+  memoryCopy = memory;
+  optionsCopy = options;
+  contextCopy = context;
+  reporterCopy = reporter;
+  if ([memoryCopy count])
   {
-    v15 = [v11 allKeys];
-    v16 = [v15 firstObject];
-    v17 = [v16 photoLibrary];
+    allKeys = [memoryCopy allKeys];
+    firstObject = [allKeys firstObject];
+    photoLibrary = [firstObject photoLibrary];
 
-    v18 = [MEMORY[0x277CBEAA8] date];
-    v19 = [PGMusicCurationRecentlyUsedSongs recentlyUsedFlexMusicSongsFromPhotoLibrary:v17];
-    v20 = [v12 recentlyUsedBundledSongIDs];
-    [v19 addSongIDs:v20 date:v18];
+    date = [MEMORY[0x277CBEAA8] date];
+    v19 = [PGMusicCurationRecentlyUsedSongs recentlyUsedFlexMusicSongsFromPhotoLibrary:photoLibrary];
+    recentlyUsedBundledSongIDs = [optionsCopy recentlyUsedBundledSongIDs];
+    [v19 addSongIDs:recentlyUsedBundledSongIDs date:date];
 
     v39 = 0;
     v40 = &v39;
     v41 = 0x3032000000;
     v42 = __Block_byref_object_copy__16965;
     v43 = __Block_byref_object_dispose__16966;
-    v44 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v11, "count")}];
+    v44 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(memoryCopy, "count")}];
     v33 = 0;
     v34 = &v33;
     v35 = 0x3032000000;
@@ -938,19 +938,19 @@ void __128__PGUpNextMusicCurator_curateMusicForUpNextMemoriesWithLocalIdentifier
     v26[3] = &unk_278880BD8;
     v21 = v19;
     v27 = v21;
-    v28 = v13;
-    v29 = v14;
+    v28 = contextCopy;
+    v29 = reporterCopy;
     v31 = &v33;
     v32 = &v39;
-    v22 = v18;
+    v22 = date;
     v30 = v22;
-    [v11 enumerateKeysAndObjectsUsingBlock:v26];
-    if (a7)
+    [memoryCopy enumerateKeysAndObjectsUsingBlock:v26];
+    if (error)
     {
       v23 = v34[5];
       if (v23)
       {
-        *a7 = v23;
+        *error = v23;
       }
     }
 
@@ -1009,21 +1009,21 @@ void __127__PGUpNextMusicCurator__flexMusicCurationWithFeaturesByMemory_musicCur
   }
 }
 
-+ (id)_appleMusicCurationWithFeaturesByMemory:(id)a3 musicCuratorContext:(id)a4 managerContext:(id)a5 progressReporter:(id)a6 error:(id *)a7
++ (id)_appleMusicCurationWithFeaturesByMemory:(id)memory musicCuratorContext:(id)context managerContext:(id)managerContext progressReporter:(id)reporter error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if ([v11 count])
+  memoryCopy = memory;
+  contextCopy = context;
+  managerContextCopy = managerContext;
+  reporterCopy = reporter;
+  if ([memoryCopy count])
   {
     v32 = 0;
     v33 = &v32;
     v34 = 0x3032000000;
     v35 = __Block_byref_object_copy__16965;
     v36 = __Block_byref_object_dispose__16966;
-    v37 = [MEMORY[0x277CBEB38] dictionary];
-    v15 = [MEMORY[0x277CBEAA8] date];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    date = [MEMORY[0x277CBEAA8] date];
     v26 = 0;
     v27 = &v26;
     v28 = 0x3032000000;
@@ -1034,19 +1034,19 @@ void __127__PGUpNextMusicCurator__flexMusicCurationWithFeaturesByMemory_musicCur
     v20[1] = 3221225472;
     v20[2] = __122__PGUpNextMusicCurator__appleMusicCurationWithFeaturesByMemory_musicCuratorContext_managerContext_progressReporter_error___block_invoke;
     v20[3] = &unk_278880BB0;
-    v21 = v12;
-    v22 = v14;
+    v21 = contextCopy;
+    v22 = reporterCopy;
     v24 = &v26;
     v25 = &v32;
-    v16 = v15;
+    v16 = date;
     v23 = v16;
-    [v11 enumerateKeysAndObjectsUsingBlock:v20];
-    if (a7)
+    [memoryCopy enumerateKeysAndObjectsUsingBlock:v20];
+    if (error)
     {
       v17 = v27[5];
       if (v17)
       {
-        *a7 = v17;
+        *error = v17;
       }
     }
 

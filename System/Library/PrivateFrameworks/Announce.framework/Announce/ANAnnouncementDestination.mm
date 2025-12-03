@@ -1,12 +1,12 @@
 @interface ANAnnouncementDestination
-+ (ANAnnouncementDestination)destinationWithHomeIdentifier:(id)a3 zoneIdentifiers:(id)a4 roomIdentifiers:(id)a5;
-+ (ANAnnouncementDestination)destinationWithHomeName:(id)a3 zoneNames:(id)a4 roomNames:(id)a5;
-+ (ANAnnouncementDestination)destinationWithReplyToAnnouncementIdentifier:(id)a3;
-+ (id)stringFromAnnouncementDestinationType:(unint64_t)a3;
++ (ANAnnouncementDestination)destinationWithHomeIdentifier:(id)identifier zoneIdentifiers:(id)identifiers roomIdentifiers:(id)roomIdentifiers;
++ (ANAnnouncementDestination)destinationWithHomeName:(id)name zoneNames:(id)names roomNames:(id)roomNames;
++ (ANAnnouncementDestination)destinationWithReplyToAnnouncementIdentifier:(id)identifier;
++ (id)stringFromAnnouncementDestinationType:(unint64_t)type;
 - (ANAnnouncementDestination)init;
-- (ANAnnouncementDestination)initWithCoder:(id)a3;
+- (ANAnnouncementDestination)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANAnnouncementDestination
@@ -18,46 +18,46 @@
   return [(ANAnnouncementDestination *)&v3 init];
 }
 
-+ (ANAnnouncementDestination)destinationWithHomeName:(id)a3 zoneNames:(id)a4 roomNames:(id)a5
++ (ANAnnouncementDestination)destinationWithHomeName:(id)name zoneNames:(id)names roomNames:(id)roomNames
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  roomNamesCopy = roomNames;
+  namesCopy = names;
+  nameCopy = name;
   v10 = objc_opt_new();
   [v10 setType:0];
-  [v10 setHomeObject:v9];
+  [v10 setHomeObject:nameCopy];
 
-  [v10 setZoneObjects:v8];
-  [v10 setRoomObjects:v7];
+  [v10 setZoneObjects:namesCopy];
+  [v10 setRoomObjects:roomNamesCopy];
 
   return v10;
 }
 
-+ (ANAnnouncementDestination)destinationWithHomeIdentifier:(id)a3 zoneIdentifiers:(id)a4 roomIdentifiers:(id)a5
++ (ANAnnouncementDestination)destinationWithHomeIdentifier:(id)identifier zoneIdentifiers:(id)identifiers roomIdentifiers:(id)roomIdentifiers
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  roomIdentifiersCopy = roomIdentifiers;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
   v10 = objc_opt_new();
   [v10 setType:1];
-  [v10 setHomeObject:v9];
+  [v10 setHomeObject:identifierCopy];
 
-  [v10 setZoneObjects:v8];
-  [v10 setRoomObjects:v7];
+  [v10 setZoneObjects:identifiersCopy];
+  [v10 setRoomObjects:roomIdentifiersCopy];
 
   return v10;
 }
 
-+ (ANAnnouncementDestination)destinationWithReplyToAnnouncementIdentifier:(id)a3
++ (ANAnnouncementDestination)destinationWithReplyToAnnouncementIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
   [v4 setType:2];
   [v4 setHomeObject:&stru_2836DAA20];
   v5 = MEMORY[0x277CBEBF8];
   [v4 setZoneObjects:MEMORY[0x277CBEBF8]];
   [v4 setRoomObjects:v5];
-  [v4 setAnnouncementIdentifier:v3];
+  [v4 setAnnouncementIdentifier:identifierCopy];
 
   return v4;
 }
@@ -65,70 +65,70 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ANAnnouncementDestination *)self type];
+  type = [(ANAnnouncementDestination *)self type];
   v5 = [ANAnnouncementDestination stringFromAnnouncementDestinationType:[(ANAnnouncementDestination *)self type]];
-  v6 = [(ANAnnouncementDestination *)self homeObject];
-  v7 = [(ANAnnouncementDestination *)self zoneObjects];
-  v8 = [(ANAnnouncementDestination *)self roomObjects];
-  v9 = [(ANAnnouncementDestination *)self announcementIdentifier];
-  v10 = [v3 stringWithFormat:@"Type = [%lu - %@], Home = %@, Zones = %@, Rooms = %@, Replying to AnnouncementID = %@, Replying to Sender = %d", v4, v5, v6, v7, v8, v9, -[ANAnnouncementDestination replyToSender](self, "replyToSender")];
+  homeObject = [(ANAnnouncementDestination *)self homeObject];
+  zoneObjects = [(ANAnnouncementDestination *)self zoneObjects];
+  roomObjects = [(ANAnnouncementDestination *)self roomObjects];
+  announcementIdentifier = [(ANAnnouncementDestination *)self announcementIdentifier];
+  v10 = [v3 stringWithFormat:@"Type = [%lu - %@], Home = %@, Zones = %@, Rooms = %@, Replying to AnnouncementID = %@, Replying to Sender = %d", type, v5, homeObject, zoneObjects, roomObjects, announcementIdentifier, -[ANAnnouncementDestination replyToSender](self, "replyToSender")];
 
   return v10;
 }
 
-+ (id)stringFromAnnouncementDestinationType:(unint64_t)a3
++ (id)stringFromAnnouncementDestinationType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2784E22F0[a3];
+    return off_2784E22F0[type];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:{-[ANAnnouncementDestination type](self, "type")}];
-  [v5 encodeObject:v6 forKey:@"Type"];
+  [coderCopy encodeObject:v6 forKey:@"Type"];
 
-  v7 = [(ANAnnouncementDestination *)self homeObject];
-  [v5 encodeObject:v7 forKey:@"Home"];
+  homeObject = [(ANAnnouncementDestination *)self homeObject];
+  [coderCopy encodeObject:homeObject forKey:@"Home"];
 
-  v8 = [(ANAnnouncementDestination *)self zoneObjects];
-  [v5 encodeObject:v8 forKey:@"Zones"];
+  zoneObjects = [(ANAnnouncementDestination *)self zoneObjects];
+  [coderCopy encodeObject:zoneObjects forKey:@"Zones"];
 
-  v9 = [(ANAnnouncementDestination *)self roomObjects];
-  [v5 encodeObject:v9 forKey:@"Rooms"];
+  roomObjects = [(ANAnnouncementDestination *)self roomObjects];
+  [coderCopy encodeObject:roomObjects forKey:@"Rooms"];
 
-  v10 = [(ANAnnouncementDestination *)self announcementIdentifier];
-  [v5 encodeObject:v10 forKey:@"AnnouncementIdentifier"];
+  announcementIdentifier = [(ANAnnouncementDestination *)self announcementIdentifier];
+  [coderCopy encodeObject:announcementIdentifier forKey:@"AnnouncementIdentifier"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[ANAnnouncementDestination replyToSender](self, "replyToSender")}];
-  [v5 encodeObject:v11 forKey:@"ReplyToSender"];
+  [coderCopy encodeObject:v11 forKey:@"ReplyToSender"];
 }
 
-- (ANAnnouncementDestination)initWithCoder:(id)a3
+- (ANAnnouncementDestination)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = ANAnnouncementDestination;
   v5 = [(ANAnnouncementDestination *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Type"];
     v7 = v6;
     if (v6)
     {
       v5->_type = [v6 unsignedIntValue];
     }
 
-    v8 = [(ANAnnouncementDestination *)v5 type];
-    if (v8 == 2)
+    type = [(ANAnnouncementDestination *)v5 type];
+    if (type == 2)
     {
       homeObject = v5->_homeObject;
       v5->_homeObject = &stru_2836DAA20;
@@ -143,21 +143,21 @@
 
     else
     {
-      if (v8 > 1)
+      if (type > 1)
       {
 
         v27 = 0;
         goto LABEL_16;
       }
 
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Home"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Home"];
       v10 = v5->_homeObject;
       v5->_homeObject = v9;
 
       v11 = MEMORY[0x277CBEB98];
       v12 = objc_opt_class();
       roomObjects = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-      v14 = [v4 decodeObjectOfClasses:roomObjects forKey:@"Zones"];
+      v14 = [coderCopy decodeObjectOfClasses:roomObjects forKey:@"Zones"];
       v15 = v14;
       v16 = MEMORY[0x277CBEBF8];
       if (v14)
@@ -172,7 +172,7 @@
 
       objc_storeStrong(&v5->_zoneObjects, v17);
 
-      v18 = [v4 decodeObjectOfClasses:roomObjects forKey:@"Rooms"];
+      v18 = [coderCopy decodeObjectOfClasses:roomObjects forKey:@"Rooms"];
       v19 = v18;
       if (v18)
       {
@@ -187,11 +187,11 @@
       objc_storeStrong(&v5->_roomObjects, v20);
     }
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AnnouncementIdentifier"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AnnouncementIdentifier"];
     announcementIdentifier = v5->_announcementIdentifier;
     v5->_announcementIdentifier = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ReplyToSender"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ReplyToSender"];
     v5->_replyToSender = [v26 BOOLValue];
   }
 

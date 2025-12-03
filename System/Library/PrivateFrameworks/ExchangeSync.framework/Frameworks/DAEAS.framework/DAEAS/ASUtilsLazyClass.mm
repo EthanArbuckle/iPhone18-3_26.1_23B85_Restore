@@ -54,9 +54,9 @@
             }
 
             v16 = [MEMORY[0x277D079E8] esAccountSubclassWithBackingAccountInfo:*(*(&v26 + 1) + 8 * i)];
-            v17 = [v16 folderHierarchy];
-            v18 = [v17 _deviceIdInCache];
-            if (v18 && [v4 isEqualToString:v18])
+            folderHierarchy = [v16 folderHierarchy];
+            _deviceIdInCache = [folderHierarchy _deviceIdInCache];
+            if (_deviceIdInCache && [v4 isEqualToString:_deviceIdInCache])
             {
               v20 = DALoggingwithCategory();
               v21 = *(MEMORY[0x277D03988] + 6);

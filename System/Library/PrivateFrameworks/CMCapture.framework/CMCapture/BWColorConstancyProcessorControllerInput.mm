@@ -1,5 +1,5 @@
 @interface BWColorConstancyProcessorControllerInput
-- (void)addFrame:(opaqueCMSampleBuffer *)a3;
+- (void)addFrame:(opaqueCMSampleBuffer *)frame;
 - (void)dealloc;
 @end
 
@@ -24,15 +24,15 @@
   [(BWStillImageProcessorControllerInput *)&v5 dealloc];
 }
 
-- (void)addFrame:(opaqueCMSampleBuffer *)a3
+- (void)addFrame:(opaqueCMSampleBuffer *)frame
 {
-  v6 = [(BWStillImageProcessorControllerInput *)self delegate];
+  delegate = [(BWStillImageProcessorControllerInput *)self delegate];
   if (self->_addFrameFailed)
   {
     goto LABEL_11;
   }
 
-  if (a3 && (v7 = CMGetAttachment(a3, *off_1E798A3C8, 0)) != 0)
+  if (frame && (v7 = CMGetAttachment(frame, *off_1E798A3C8, 0)) != 0)
   {
     v8 = v7;
     v9 = [objc_msgSend(v7 objectForKeyedSubscript:{*off_1E798B150), "BOOLValue"}];
@@ -41,9 +41,9 @@
     {
       if (!self->_ambientFrame)
       {
-        self->_ambientFrame = a3;
-        CFRetain(a3);
-        [(BWStillImageProcessorControllerInputUpdatesDelegate *)v6 input:self addAmbientFrame:self->_ambientFrame];
+        self->_ambientFrame = frame;
+        CFRetain(frame);
+        [(BWStillImageProcessorControllerInputUpdatesDelegate *)delegate input:self addAmbientFrame:self->_ambientFrame];
         goto LABEL_11;
       }
 
@@ -54,13 +54,13 @@
       OUTLINED_FUNCTION_6_34();
       if (v3)
       {
-        BWStillImageSampleBufferToDisplayString(a3);
+        BWStillImageSampleBufferToDisplayString(frame);
         OUTLINED_FUNCTION_1_17();
         OUTLINED_FUNCTION_4_37();
       }
 
       OUTLINED_FUNCTION_3_40();
-      BWStillImageSampleBufferToDisplayString(a3);
+      BWStillImageSampleBufferToDisplayString(frame);
       OUTLINED_FUNCTION_5_39();
       v16 = OUTLINED_FUNCTION_6_0();
       v17 = OUTLINED_FUNCTION_7_28();
@@ -84,9 +84,9 @@
 
       if (!self->_flashFrame)
       {
-        self->_flashFrame = a3;
-        CFRetain(a3);
-        [(BWStillImageProcessorControllerInputUpdatesDelegate *)v6 input:self addFlashFrame:self->_flashFrame];
+        self->_flashFrame = frame;
+        CFRetain(frame);
+        [(BWStillImageProcessorControllerInputUpdatesDelegate *)delegate input:self addFlashFrame:self->_flashFrame];
         goto LABEL_11;
       }
 
@@ -97,13 +97,13 @@
       OUTLINED_FUNCTION_6_34();
       if (v3)
       {
-        BWStillImageSampleBufferToDisplayString(a3);
+        BWStillImageSampleBufferToDisplayString(frame);
         OUTLINED_FUNCTION_1_17();
         OUTLINED_FUNCTION_4_37();
       }
 
       OUTLINED_FUNCTION_3_40();
-      BWStillImageSampleBufferToDisplayString(a3);
+      BWStillImageSampleBufferToDisplayString(frame);
       OUTLINED_FUNCTION_5_39();
       v16 = OUTLINED_FUNCTION_6_0();
       v17 = OUTLINED_FUNCTION_7_28();
@@ -122,7 +122,7 @@
 LABEL_11:
   if (self->_addFrameFailed)
   {
-    [(BWStillImageProcessorControllerInputUpdatesDelegate *)v6 inputAddFrameFailed:self];
+    [(BWStillImageProcessorControllerInputUpdatesDelegate *)delegate inputAddFrameFailed:self];
   }
 }
 

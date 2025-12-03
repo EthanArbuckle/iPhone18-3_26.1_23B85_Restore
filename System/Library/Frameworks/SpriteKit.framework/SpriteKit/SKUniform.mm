@@ -14,14 +14,14 @@
 + (SKUniform)uniformWithName:(NSString *)name vectorFloat2:(vector_float2)value;
 + (SKUniform)uniformWithName:(NSString *)name vectorFloat3:(vector_float3)value;
 + (SKUniform)uniformWithName:(NSString *)name vectorFloat4:(vector_float4)value;
-- (BOOL)isEqualToUniform:(id)a3;
+- (BOOL)isEqualToUniform:(id)uniform;
 - (GLKMatrix2)floatMatrix2Value;
 - (GLKMatrix3)floatMatrix3Value;
 - (GLKMatrix4)floatMatrix4Value;
 - (GLKVector3)floatVector3Value;
 - (GLKVector4)floatVector4Value;
 - (SKTexture)textureValue;
-- (SKUniform)initWithCoder:(id)a3;
+- (SKUniform)initWithCoder:(id)coder;
 - (SKUniform)initWithName:(NSString *)name;
 - (SKUniform)initWithName:(NSString *)name float:(float)value;
 - (SKUniform)initWithName:(NSString *)name floatMatrix2:(GLKMatrix2)value;
@@ -38,7 +38,7 @@
 - (SKUniform)initWithName:(NSString *)name vectorFloat3:(vector_float3)value;
 - (SKUniform)initWithName:(NSString *)name vectorFloat4:(vector_float4)value;
 - (float)floatValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (matrix_float2x2)matrixFloat2x2Value;
 - (matrix_float3x3)matrixFloat3x3Value;
@@ -46,10 +46,10 @@
 - (vector_float2)vectorFloat2Value;
 - (vector_float3)vectorFloat3Value;
 - (vector_float4)vectorFloat4Value;
-- (void)_addTargetShader:(id)a3;
+- (void)_addTargetShader:(id)shader;
 - (void)_propagateChange;
-- (void)_removeTargetShader:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_removeTargetShader:(id)shader;
+- (void)encodeWithCoder:(id)coder;
 - (void)setFloatValue:(float)floatValue;
 - (void)setFloatVector2Value:(GLKVector2)floatVector2Value;
 - (void)setFloatVector3Value:(GLKVector3)floatVector3Value;
@@ -116,11 +116,11 @@
         v5 = 0;
         if (type == 8)
         {
-          v32 = [(SKUniform *)self textureValue];
-          if (v32)
+          textureValue = [(SKUniform *)self textureValue];
+          if (textureValue)
           {
-            v33 = [(SKUniform *)self textureValue];
-            v3 = [v33 description];
+            textureValue2 = [(SKUniform *)self textureValue];
+            v3 = [textureValue2 description];
           }
 
           else
@@ -663,21 +663,21 @@ LABEL_22:
 
 - (GLKVector3)floatVector3Value
 {
-  v2 = [(SKUniform *)self vectorFloat3Value];
+  vectorFloat3Value = [(SKUniform *)self vectorFloat3Value];
   for (i = 0; i != 3; ++i)
   {
     *v6 = v4;
     *(&v6[2] + i + 1) = *(v6 & 0xFFFFFFFFFFFFFFF3 | (4 * (i & 3)));
   }
 
-  *&result.x = v2;
+  *&result.x = vectorFloat3Value;
   result.z = v3;
   return result;
 }
 
 - (GLKVector4)floatVector4Value
 {
-  v2 = [(SKUniform *)self vectorFloat4Value];
+  vectorFloat4Value = [(SKUniform *)self vectorFloat4Value];
   for (i = 0; i != 4; ++i)
   {
     *v6 = v4;
@@ -685,16 +685,16 @@ LABEL_22:
   }
 
   *&result.v[2] = v3;
-  *&result.x = v2;
+  *&result.x = vectorFloat4Value;
   return result;
 }
 
 - (GLKMatrix2)floatMatrix2Value
 {
-  v2 = [(SKUniform *)self matrixFloat2x2Value];
+  matrixFloat2x2Value = [(SKUniform *)self matrixFloat2x2Value];
   __break(1u);
   *&result.m[2] = v3;
-  *&result.m00 = v2;
+  *&result.m00 = matrixFloat2x2Value;
   return result;
 }
 
@@ -1043,13 +1043,13 @@ LABEL_22:
   return 0.0;
 }
 
-- (SKUniform)initWithCoder:(id)a3
+- (SKUniform)initWithCoder:(id)coder
 {
   v87[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   [(SKUniform *)self set_seed:0];
-  self->_type = [v4 decodeIntegerForKey:@"_type"];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+  self->_type = [coderCopy decodeIntegerForKey:@"_type"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
   name = self->_name;
   self->_name = v5;
 
@@ -1066,7 +1066,7 @@ LABEL_22:
         v82[2] = objc_opt_class();
         v67 = [MEMORY[0x277CBEA60] arrayWithObjects:v82 count:3];
         v68 = [v66 setWithArray:v67];
-        v69 = [v4 decodeObjectOfClasses:v68 forKey:@"_floatMatrix4Value"];
+        v69 = [coderCopy decodeObjectOfClasses:v68 forKey:@"_floatMatrix4Value"];
 
         v70 = 0;
         for (i = 0; i != 4; ++i)
@@ -1084,7 +1084,7 @@ LABEL_22:
 
       else if (type == 8)
       {
-        v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_textureValue"];
+        v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_textureValue"];
         textureValue = self->_textureValue;
         self->_textureValue = v39;
       }
@@ -1098,7 +1098,7 @@ LABEL_22:
       v84[2] = objc_opt_class();
       v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v84 count:3];
       v44 = [v42 setWithArray:v43];
-      v45 = [v4 decodeObjectOfClasses:v44 forKey:@"_floatMatrix2Value"];
+      v45 = [coderCopy decodeObjectOfClasses:v44 forKey:@"_floatMatrix2Value"];
 
       v46 = 0;
       v47 = 1;
@@ -1136,7 +1136,7 @@ LABEL_22:
       v83[2] = objc_opt_class();
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v83 count:3];
       v18 = [v16 setWithArray:v17];
-      v19 = [v4 decodeObjectOfClasses:v18 forKey:@"_floatMatrix3Value"];
+      v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"_floatMatrix3Value"];
 
       v20 = 0;
       for (k = 0; k != 3; ++k)
@@ -1169,7 +1169,7 @@ LABEL_22:
       v86[2] = objc_opt_class();
       v56 = [MEMORY[0x277CBEA60] arrayWithObjects:v86 count:3];
       v57 = [v26 setWithArray:v56];
-      v58 = [v4 decodeObjectOfClasses:v57 forKey:@"_floatVector3Value"];
+      v58 = [coderCopy decodeObjectOfClasses:v57 forKey:@"_floatVector3Value"];
 
       v59 = [v58 objectAtIndexedSubscript:0];
       [v59 floatValue];
@@ -1192,7 +1192,7 @@ LABEL_22:
       v85[2] = objc_opt_class();
       v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v85 count:3];
       v28 = [v26 setWithArray:v27];
-      v29 = [v4 decodeObjectOfClasses:v28 forKey:@"_floatVector3Value"];
+      v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"_floatVector3Value"];
 
       v30 = [v29 objectAtIndexedSubscript:0];
       [v30 floatValue];
@@ -1213,7 +1213,7 @@ LABEL_22:
 
   else if (type == 1)
   {
-    [v4 decodeFloatForKey:@"_floatValue"];
+    [coderCopy decodeFloatForKey:@"_floatValue"];
     self->_value._floatValue = v41;
   }
 
@@ -1225,7 +1225,7 @@ LABEL_22:
     v87[2] = objc_opt_class();
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v87 count:3];
     v10 = [v8 setWithArray:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"_floatVector2Value"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"_floatVector2Value"];
 
     v12 = [v11 objectAtIndexedSubscript:0];
     [v12 floatValue];
@@ -1238,12 +1238,12 @@ LABEL_22:
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v48[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 encodeObject:self->_name forKey:@"_name"];
-  [v4 encodeInteger:self->_type forKey:@"_type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_name forKey:@"_name"];
+  [coderCopy encodeInteger:self->_type forKey:@"_type"];
   type = self->_type;
   if (type <= 4)
   {
@@ -1261,7 +1261,7 @@ LABEL_22:
         v39 = [MEMORY[0x277CCABB0] numberWithFloat:v38];
         v47[2] = v39;
         v40 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:3];
-        [v4 encodeObject:v40 forKey:@"_floatVector3Value"];
+        [coderCopy encodeObject:v40 forKey:@"_floatVector3Value"];
       }
 
       else
@@ -1278,14 +1278,14 @@ LABEL_22:
         v23 = [MEMORY[0x277CCABB0] numberWithFloat:v22];
         v46[3] = v23;
         v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:4];
-        [v4 encodeObject:v24 forKey:@"_floatVector4Value"];
+        [coderCopy encodeObject:v24 forKey:@"_floatVector4Value"];
       }
     }
 
     else if (type == 1)
     {
       *&v5 = self->_value._floatValue;
-      [v4 encodeFloat:@"_floatValue" forKey:v5];
+      [coderCopy encodeFloat:@"_floatValue" forKey:v5];
     }
 
     else if (type == 2)
@@ -1296,7 +1296,7 @@ LABEL_22:
       v9 = [MEMORY[0x277CCABB0] numberWithFloat:v8];
       v48[1] = v9;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:2];
-      [v4 encodeObject:v10 forKey:@"_floatVector2Value"];
+      [coderCopy encodeObject:v10 forKey:@"_floatVector2Value"];
     }
 
     goto LABEL_31;
@@ -1306,7 +1306,7 @@ LABEL_22:
   {
     if (type == 5)
     {
-      v11 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v26 = 0;
       p_value = &self->_value;
       v28 = 1;
@@ -1321,7 +1321,7 @@ LABEL_22:
           v33 = v31;
           LODWORD(v25) = v32[v29 & 1];
           v34 = [MEMORY[0x277CCABB0] numberWithFloat:v25];
-          [v11 addObject:v34];
+          [array addObject:v34];
 
           v31 = 0;
           v29 = 1;
@@ -1333,12 +1333,12 @@ LABEL_22:
       }
 
       while ((v30 & 1) != 0);
-      [v4 encodeObject:v11 forKey:@"_floatMatrix2Value"];
+      [coderCopy encodeObject:array forKey:@"_floatMatrix2Value"];
     }
 
     else
     {
-      v11 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v13 = 0;
       v14 = &self->_value;
       do
@@ -1347,14 +1347,14 @@ LABEL_22:
         {
           LODWORD(v12) = v14[4 * v13 + (i & 3)];
           v16 = [MEMORY[0x277CCABB0] numberWithFloat:v12];
-          [v11 addObject:v16];
+          [array addObject:v16];
         }
 
         ++v13;
       }
 
       while (v13 != 3);
-      [v4 encodeObject:v11 forKey:@"_floatMatrix3Value"];
+      [coderCopy encodeObject:array forKey:@"_floatMatrix3Value"];
     }
 
 LABEL_30:
@@ -1364,7 +1364,7 @@ LABEL_30:
 
   if (type == 7)
   {
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v42 = 0;
     v43 = &self->_value;
     do
@@ -1373,40 +1373,40 @@ LABEL_30:
       {
         LODWORD(v41) = v43[4 * v42 + (j & 3)];
         v45 = [MEMORY[0x277CCABB0] numberWithFloat:v41];
-        [v11 addObject:v45];
+        [array addObject:v45];
       }
 
       ++v42;
     }
 
     while (v42 != 4);
-    [v4 encodeObject:v11 forKey:@"_floatMatrix4Value"];
+    [coderCopy encodeObject:array forKey:@"_floatMatrix4Value"];
     goto LABEL_30;
   }
 
   if (type == 8)
   {
-    [v4 encodeObject:self->_textureValue forKey:@"_textureValue"];
+    [coderCopy encodeObject:self->_textureValue forKey:@"_textureValue"];
   }
 
 LABEL_31:
 }
 
-- (BOOL)isEqualToUniform:(id)a3
+- (BOOL)isEqualToUniform:(id)uniform
 {
-  v4 = a3;
-  if (self == v4)
+  uniformCopy = uniform;
+  if (self == uniformCopy)
   {
     goto LABEL_44;
   }
 
-  if (![(NSString *)self->_name isEqualToString:v4[1].i64[0]])
+  if (![(NSString *)self->_name isEqualToString:uniformCopy[1].i64[0]])
   {
     goto LABEL_45;
   }
 
   type = self->_type;
-  if (type != v4->i64[1])
+  if (type != uniformCopy->i64[1])
   {
     goto LABEL_45;
   }
@@ -1422,7 +1422,7 @@ LABEL_31:
 LABEL_35:
         v21 = 0;
         v22 = v20;
-        v23 = v4[3].i64[v19];
+        v23 = uniformCopy[3].i64[v19];
         v24 = *(&self->_value._floatValue + v19);
         v25 = 1;
         while (1)
@@ -1457,7 +1457,7 @@ LABEL_35:
         v8 = 0;
 LABEL_13:
         v9 = 0;
-        v10 = v4[v8 + 3];
+        v10 = uniformCopy[v8 + 3];
         v11 = *(&self->_value._floatValue + v8);
         while (1)
         {
@@ -1486,7 +1486,7 @@ LABEL_13:
 
     if (type == 8)
     {
-      if (![(SKTexture *)self->_textureValue isEqualToTexture:v4[2].i64[0]])
+      if (![(SKTexture *)self->_textureValue isEqualToTexture:uniformCopy[2].i64[0]])
       {
         goto LABEL_45;
       }
@@ -1497,7 +1497,7 @@ LABEL_13:
       v14 = 0;
 LABEL_26:
       v15 = 0;
-      v16 = v4[v14 + 3];
+      v16 = uniformCopy[v14 + 3];
       v17 = *(&self->_value._floatValue + v14);
       while (1)
       {
@@ -1528,7 +1528,7 @@ LABEL_26:
   {
     if (type == 3)
     {
-      v28 = vsubq_f32(*&self->_value._floatValue, v4[3]);
+      v28 = vsubq_f32(*&self->_value._floatValue, uniformCopy[3]);
       if ((v28.i32[0] & 0x60000000) != 0 || (v28.i32[1] & 0x60000000) != 0)
       {
         goto LABEL_45;
@@ -1539,7 +1539,7 @@ LABEL_26:
 
     else
     {
-      v13 = vsubq_f32(*&self->_value._floatValue, v4[3]);
+      v13 = vsubq_f32(*&self->_value._floatValue, uniformCopy[3]);
       if ((v13.i32[0] & 0x60000000) != 0 || (v13.i32[1] & 0x60000000) != 0 || (v13.i32[2] & 0x60000000) != 0)
       {
         goto LABEL_45;
@@ -1553,7 +1553,7 @@ LABEL_26:
 
   if (type == 1)
   {
-    v7 = self->_value._floatValue - v4[3].f32[0];
+    v7 = self->_value._floatValue - uniformCopy[3].f32[0];
 LABEL_32:
     if ((LODWORD(v7) & 0x60000000) == 0)
     {
@@ -1567,7 +1567,7 @@ LABEL_45:
 
   if (type == 2)
   {
-    v6 = vsub_f32(*&self->_value._floatValue, *v4[3].f32);
+    v6 = vsub_f32(*&self->_value._floatValue, *uniformCopy[3].f32);
     if ((v6.i32[0] & 0x60000000) != 0)
     {
       goto LABEL_45;
@@ -1584,7 +1584,7 @@ LABEL_46:
   return v29;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SKUniform);
   v4->_type = self->_type;
@@ -1596,9 +1596,9 @@ LABEL_46:
   *&v4->_value._floatValue = v5;
   *&v4[1]._type = v6;
   objc_storeStrong(&v4->_textureValue, self->_textureValue);
-  v8 = [(SKUniform *)self name];
+  name = [(SKUniform *)self name];
   name = v4->_name;
-  v4->_name = v8;
+  v4->_name = name;
 
   return v4;
 }
@@ -1625,8 +1625,8 @@ LABEL_46:
           objc_enumerationMutation(v2);
         }
 
-        v6 = [*(*(&v7 + 1) + 8 * v5) targetShader];
-        [v6 _setUniformsDirty];
+        targetShader = [*(*(&v7 + 1) + 8 * v5) targetShader];
+        [targetShader _setUniformsDirty];
 
         ++v5;
       }
@@ -1639,16 +1639,16 @@ LABEL_46:
   }
 }
 
-- (void)_addTargetShader:(id)a3
+- (void)_addTargetShader:(id)shader
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  shaderCopy = shader;
   targetShaders = self->_targetShaders;
   if (!targetShaders)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v7 = self->_targetShaders;
-    self->_targetShaders = v6;
+    self->_targetShaders = array;
 
     targetShaders = self->_targetShaders;
   }
@@ -1671,8 +1671,8 @@ LABEL_5:
         objc_enumerationMutation(v8);
       }
 
-      v12 = [*(*(&v14 + 1) + 8 * v11) targetShader];
-      v13 = v12 == v4;
+      targetShader = [*(*(&v14 + 1) + 8 * v11) targetShader];
+      v13 = targetShader == shaderCopy;
 
       if (v13)
       {
@@ -1697,22 +1697,22 @@ LABEL_5:
 LABEL_11:
 
     v8 = objc_opt_new();
-    [(NSMutableArray *)v8 setTargetShader:v4];
+    [(NSMutableArray *)v8 setTargetShader:shaderCopy];
     [(NSMutableArray *)self->_targetShaders addObject:v8];
   }
 }
 
-- (void)_removeTargetShader:(id)a3
+- (void)_removeTargetShader:(id)shader
 {
-  v4 = a3;
+  shaderCopy = shader;
   targetShaders = self->_targetShaders;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__SKUniform__removeTargetShader___block_invoke;
   v7[3] = &unk_27830FFE0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = shaderCopy;
+  selfCopy = self;
+  v6 = shaderCopy;
   [(NSMutableArray *)targetShaders enumerateObjectsUsingBlock:v7];
 }
 

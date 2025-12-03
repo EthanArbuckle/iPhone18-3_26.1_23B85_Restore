@@ -1,21 +1,21 @@
 @interface CPLScopeChange
 - (BOOL)canAcceptShareWithCloudKit;
-- (void)updateCKShare:(id)a3;
-- (void)updateWithCKShare:(id)a3 currentUserID:(id)a4;
-- (void)updateWithLibraryInfoCKRecord:(id)a3 zone:(id)a4 userRecordID:(id)a5;
+- (void)updateCKShare:(id)share;
+- (void)updateWithCKShare:(id)share currentUserID:(id)d;
+- (void)updateWithLibraryInfoCKRecord:(id)record zone:(id)zone userRecordID:(id)d;
 @end
 
 @implementation CPLScopeChange
 
 - (BOOL)canAcceptShareWithCloudKit
 {
-  v2 = [(CPLScopeChange *)self scopeType];
-  if (v2 <= 3)
+  scopeType = [(CPLScopeChange *)self scopeType];
+  if (scopeType <= 3)
   {
-    return v2 == 2 || v2 == 3;
+    return scopeType == 2 || scopeType == 3;
   }
 
-  switch(v2)
+  switch(scopeType)
   {
     case 8:
 
@@ -32,13 +32,13 @@
   }
 }
 
-- (void)updateWithCKShare:(id)a3 currentUserID:(id)a4
+- (void)updateWithCKShare:(id)share currentUserID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [[CPLShare alloc] initWithCKShare:v7 currentUserID:v6];
+  dCopy = d;
+  shareCopy = share;
+  v9 = [[CPLShare alloc] initWithCKShare:shareCopy currentUserID:dCopy];
 
-  v8 = [v7 objectForKey:CKShareTitleKey];
+  v8 = [shareCopy objectForKey:CKShareTitleKey];
 
   if (v8)
   {
@@ -48,38 +48,38 @@
   [(CPLScopeChange *)self setShare:v9];
 }
 
-- (void)updateWithLibraryInfoCKRecord:(id)a3 zone:(id)a4 userRecordID:(id)a5
+- (void)updateWithLibraryInfoCKRecord:(id)record zone:(id)zone userRecordID:(id)d
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[CPLLibraryInfo alloc] initWithCKRecord:v8 zone:v7];
+  zoneCopy = zone;
+  recordCopy = record;
+  v9 = [[CPLLibraryInfo alloc] initWithCKRecord:recordCopy zone:zoneCopy];
 
   [(CPLScopeChange *)self setLibraryInfo:v9];
 }
 
-- (void)updateCKShare:(id)a3
+- (void)updateCKShare:(id)share
 {
-  v9 = a3;
-  v4 = [(CPLScopeChange *)self share];
-  v5 = v4;
-  if (v4)
+  shareCopy = share;
+  share = [(CPLScopeChange *)self share];
+  v5 = share;
+  if (share)
   {
-    v6 = [v4 publicPermission];
-    if ((v6 - 1) >= 3)
+    publicPermission = [share publicPermission];
+    if ((publicPermission - 1) >= 3)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = v6;
+      v7 = publicPermission;
     }
 
-    [v9 setPublicPermission:v7];
+    [shareCopy setPublicPermission:v7];
   }
 
-  v8 = [(CPLScopeChange *)self title];
-  [v9 setObject:v8 forKey:CKShareTitleKey];
+  title = [(CPLScopeChange *)self title];
+  [shareCopy setObject:title forKey:CKShareTitleKey];
 }
 
 @end

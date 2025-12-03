@@ -1,39 +1,39 @@
 @interface PKApplePayTrustSession
-- (BOOL)deleteKeyWithIdentifier:(id)a3;
-- (PKApplePayTrustSession)initWithInternalSession:(id)a3 targetQueue:(id)a4;
-- (id)createKeyWithRequest:(id)a3 error:(id *)a4;
-- (id)keyWithIdentifier:(id)a3;
-- (id)signatureForRequest:(id)a3 withAuthorization:(id)a4;
+- (BOOL)deleteKeyWithIdentifier:(id)identifier;
+- (PKApplePayTrustSession)initWithInternalSession:(id)session targetQueue:(id)queue;
+- (id)createKeyWithRequest:(id)request error:(id *)error;
+- (id)keyWithIdentifier:(id)identifier;
+- (id)signatureForRequest:(id)request withAuthorization:(id)authorization;
 @end
 
 @implementation PKApplePayTrustSession
 
-- (PKApplePayTrustSession)initWithInternalSession:(id)a3 targetQueue:(id)a4
+- (PKApplePayTrustSession)initWithInternalSession:(id)session targetQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 nfSession];
+  sessionCopy = session;
+  queueCopy = queue;
+  nfSession = [sessionCopy nfSession];
   PKGetClassNFTrustSession();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    [v6 endSession];
+    [sessionCopy endSession];
 
-    v6 = 0;
+    sessionCopy = 0;
   }
 
   v12.receiver = self;
   v12.super_class = PKApplePayTrustSession;
-  v10 = [(PKPaymentSession *)&v12 initWithInternalSession:v6 targetQueue:v7];
+  v10 = [(PKPaymentSession *)&v12 initWithInternalSession:sessionCopy targetQueue:queueCopy];
 
   return v10;
 }
 
-- (id)createKeyWithRequest:(id)a3 error:(id *)a4
+- (id)createKeyWithRequest:(id)request error:(id *)error
 {
   v43[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -48,27 +48,27 @@
   v33 = 0;
   v5 = PKGetClassNFTrustLocalValidation();
   v6 = PKGetClassNFTrustKeyRequest();
-  v7 = [v4 subjectIdentifier];
-  v8 = [v5 localValidationWithPassCode];
-  v42 = v8;
+  subjectIdentifier = [requestCopy subjectIdentifier];
+  localValidationWithPassCode = [v5 localValidationWithPassCode];
+  v42 = localValidationWithPassCode;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1];
   v43[0] = v9;
-  v10 = [v5 localValidationWithTouchID];
-  v41 = v10;
+  localValidationWithTouchID = [v5 localValidationWithTouchID];
+  v41 = localValidationWithTouchID;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v41 count:1];
   v43[1] = v11;
-  v12 = [v5 localValidationWithFaceID];
-  v40 = v12;
+  localValidationWithFaceID = [v5 localValidationWithFaceID];
+  v40 = localValidationWithFaceID;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v40 count:1];
   v43[2] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:3];
-  v15 = [v6 keyRequestWithSubjectIdentifier:v7 discretionaryData:0 localValidations:v14 counterLimit:&unk_1F23B5198];
+  v15 = [v6 keyRequestWithSubjectIdentifier:subjectIdentifier discretionaryData:0 localValidations:v14 counterLimit:&unk_1F23B5198];
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __53__PKApplePayTrustSession_createKeyWithRequest_error___block_invoke;
   v23[3] = &unk_1E79DA270;
-  v16 = v4;
+  v16 = requestCopy;
   v24 = v16;
   v17 = v15;
   v25 = v17;
@@ -76,9 +76,9 @@
   v27 = &v28;
   [(PKPaymentSession *)self performBlockSyncOnInternalSession:v23];
   v18 = v35;
-  if (a4 && !v35[5])
+  if (error && !v35[5])
   {
-    *a4 = v29[5];
+    *error = v29[5];
     v18 = v35;
   }
 
@@ -129,23 +129,23 @@ void __53__PKApplePayTrustSession_createKeyWithRequest_error___block_invoke(uint
   *(v13 + 40) = v8;
 }
 
-- (id)keyWithIdentifier:(id)a3
+- (id)keyWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__48;
   v16 = __Block_byref_object_dispose__48;
   v17 = 0;
-  if (v4)
+  if (identifierCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __44__PKApplePayTrustSession_keyWithIdentifier___block_invoke;
     v9[3] = &unk_1E79C7B30;
-    v10 = v4;
+    v10 = identifierCopy;
     v11 = &v12;
     [(PKPaymentSession *)self performBlockSyncOnInternalSession:v9];
 
@@ -205,22 +205,22 @@ void __44__PKApplePayTrustSession_keyWithIdentifier___block_invoke(uint64_t a1, 
   }
 }
 
-- (BOOL)deleteKeyWithIdentifier:(id)a3
+- (BOOL)deleteKeyWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if (v4)
+  if (identifierCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __50__PKApplePayTrustSession_deleteKeyWithIdentifier___block_invoke;
     v8[3] = &unk_1E79C7BD0;
     v10 = &v11;
-    v9 = v4;
+    v9 = identifierCopy;
     [(PKPaymentSession *)self performBlockSyncOnInternalSession:v8];
 
     v6 = *(v12 + 24);
@@ -273,11 +273,11 @@ LABEL_6:
   }
 }
 
-- (id)signatureForRequest:(id)a3 withAuthorization:(id)a4
+- (id)signatureForRequest:(id)request withAuthorization:(id)authorization
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -295,7 +295,7 @@ LABEL_6:
 
     v9 = [PKApplePayTrustSignature alloc];
     v10 = [@"000000000000000000000000000000000000000000000000" dataUsingEncoding:4];
-    v11 = [(PKApplePayTrustSignature *)v9 initWithSignatureRequest:v6 signature:v10];
+    v11 = [(PKApplePayTrustSignature *)v9 initWithSignatureRequest:requestCopy signature:v10];
     v12 = v30[5];
     v30[5] = v11;
 
@@ -304,24 +304,24 @@ LABEL_6:
 
   else
   {
-    v14 = [v6 nonce];
-    v15 = [v14 length];
+    nonce = [requestCopy nonce];
+    v15 = [nonce length];
     if (v15 > 7)
     {
-      v17 = v14;
+      v17 = nonce;
     }
 
     else
     {
       v16 = objc_alloc_init(MEMORY[0x1E695DF88]);
       [v16 increaseLengthBy:8 - v15];
-      [v16 appendData:v14];
+      [v16 appendData:nonce];
       v17 = [v16 copy];
     }
 
     v18 = PKGetClassNFTrustSignRequest();
-    v19 = [v6 manifestHash];
-    v20 = [v18 signRequestWithChallenge:v17 data:v19];
+    manifestHash = [requestCopy manifestHash];
+    v20 = [v18 signRequestWithChallenge:v17 data:manifestHash];
 
     v21 = PKLogFacilityTypeGetObject(0x10uLL);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -335,10 +335,10 @@ LABEL_6:
     v24[1] = 3221225472;
     v24[2] = __64__PKApplePayTrustSession_signatureForRequest_withAuthorization___block_invoke;
     v24[3] = &unk_1E79DA298;
-    v25 = v6;
+    v25 = requestCopy;
     v22 = v20;
     v26 = v22;
-    v27 = v7;
+    v27 = authorizationCopy;
     v28 = &v29;
     [(PKPaymentSession *)self performBlockSyncOnInternalSession:v24];
     v13 = v30[5];

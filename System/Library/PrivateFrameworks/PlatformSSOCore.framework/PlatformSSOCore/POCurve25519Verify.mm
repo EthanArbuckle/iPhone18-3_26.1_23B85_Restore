@@ -1,15 +1,15 @@
 @interface POCurve25519Verify
-- (BOOL)verifyKey:(__SecKey *)a3;
+- (BOOL)verifyKey:(__SecKey *)key;
 - (_TtC15PlatformSSOCore18POCurve25519Verify)init;
 @end
 
 @implementation POCurve25519Verify
 
-- (BOOL)verifyKey:(__SecKey *)a3
+- (BOOL)verifyKey:(__SecKey *)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = _s15PlatformSSOCore18POCurve25519VerifyC9verifyKeyySbSo03SecF3RefaF_0(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = _s15PlatformSSOCore18POCurve25519VerifyC9verifyKeyySbSo03SecF3RefaF_0(keyCopy);
 
   return v6 & 1;
 }

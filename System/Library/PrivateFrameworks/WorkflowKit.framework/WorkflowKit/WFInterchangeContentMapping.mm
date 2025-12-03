@@ -8,26 +8,26 @@
 - (NSString)destinationType;
 - (NSString)sourceKey;
 - (NSString)sourceType;
-- (WFInterchangeContentMapping)initWithDefinition:(id)a3;
+- (WFInterchangeContentMapping)initWithDefinition:(id)definition;
 - (WFParameterDefinition)parameterUI;
 - (id)parameterDefault;
-- (void)getContentCollection:(id)a3 withInput:(id)a4 parameters:(id)a5;
-- (void)getStringRepresentation:(id)a3 withInput:(id)a4 parameters:(id)a5;
+- (void)getContentCollection:(id)collection withInput:(id)input parameters:(id)parameters;
+- (void)getStringRepresentation:(id)representation withInput:(id)input parameters:(id)parameters;
 @end
 
 @implementation WFInterchangeContentMapping
 
-- (void)getStringRepresentation:(id)a3 withInput:(id)a4 parameters:(id)a5
+- (void)getStringRepresentation:(id)representation withInput:(id)input parameters:(id)parameters
 {
-  v8 = a3;
+  representationCopy = representation;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __76__WFInterchangeContentMapping_getStringRepresentation_withInput_parameters___block_invoke;
   v10[3] = &unk_1E8378930;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
-  [(WFInterchangeContentMapping *)self getContentCollection:v10 withInput:a4 parameters:a5];
+  v11 = representationCopy;
+  v9 = representationCopy;
+  [(WFInterchangeContentMapping *)self getContentCollection:v10 withInput:input parameters:parameters];
 }
 
 void __76__WFInterchangeContentMapping_getStringRepresentation_withInput_parameters___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -120,22 +120,22 @@ void __76__WFInterchangeContentMapping_getStringRepresentation_withInput_paramet
   }
 }
 
-- (void)getContentCollection:(id)a3 withInput:(id)a4 parameters:(id)a5
+- (void)getContentCollection:(id)collection withInput:(id)input parameters:(id)parameters
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFInterchangeContentMapping *)self sourceType];
-  if (![v11 isEqualToString:@"Input"])
+  collectionCopy = collection;
+  inputCopy = input;
+  parametersCopy = parameters;
+  sourceType = [(WFInterchangeContentMapping *)self sourceType];
+  if (![sourceType isEqualToString:@"Input"])
   {
-    if (![v11 isEqualToString:@"Parameter"])
+    if (![sourceType isEqualToString:@"Parameter"])
     {
       goto LABEL_20;
     }
 
-    v13 = [(WFInterchangeContentMapping *)self sourceKey];
-    v14 = [v10 objectForKey:v13];
+    sourceKey = [(WFInterchangeContentMapping *)self sourceKey];
+    v14 = [parametersCopy objectForKey:sourceKey];
 
     v15 = v14;
     if (v15)
@@ -162,9 +162,9 @@ void __76__WFInterchangeContentMapping_getStringRepresentation_withInput_paramet
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = v15;
+      contentCollection = v15;
 LABEL_17:
-      v12 = v18;
+      v12 = contentCollection;
       goto LABEL_18;
     }
 
@@ -181,7 +181,7 @@ LABEL_17:
     {
       if (v17)
       {
-        v18 = [v17 contentCollection];
+        contentCollection = [v17 contentCollection];
         goto LABEL_17;
       }
 
@@ -196,7 +196,7 @@ LABEL_18:
         }
 
 LABEL_20:
-        (*(v8 + 2))(v8, 0, 0, 0);
+        (*(collectionCopy + 2))(collectionCopy, 0, 0, 0);
         goto LABEL_21;
       }
 
@@ -210,16 +210,16 @@ LABEL_20:
     goto LABEL_18;
   }
 
-  v12 = v9;
+  v12 = inputCopy;
   if (!v12)
   {
     goto LABEL_20;
   }
 
 LABEL_19:
-  v21 = [(WFInterchangeContentMapping *)self contentItemClasses];
-  v22 = [v21 array];
-  [v12 generateCollectionByCoercingToItemClasses:v22 completionHandler:v8];
+  contentItemClasses = [(WFInterchangeContentMapping *)self contentItemClasses];
+  array = [contentItemClasses array];
+  [v12 generateCollectionByCoercingToItemClasses:array completionHandler:collectionCopy];
 
 LABEL_21:
   v23 = *MEMORY[0x1E69E9840];
@@ -229,11 +229,11 @@ LABEL_21:
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(WFInterchangeContentMapping *)self definition];
-  v5 = [v4 objectForKey:@"ItemClasses"];
+  definition = [(WFInterchangeContentMapping *)self definition];
+  v5 = [definition objectForKey:@"ItemClasses"];
 
-  v6 = [(WFInterchangeContentMapping *)self definition];
-  v7 = [v6 objectForKey:@"ItemClass"];
+  definition2 = [(WFInterchangeContentMapping *)self definition];
+  v7 = [definition2 objectForKey:@"ItemClass"];
 
   if (v5)
   {
@@ -277,8 +277,8 @@ LABEL_15:
 
   if (v7)
   {
-    v14 = [(WFInterchangeContentMapping *)self definition];
-    v8 = [v14 objectForKey:@"ItemClass"];
+    definition3 = [(WFInterchangeContentMapping *)self definition];
+    v8 = [definition3 objectForKey:@"ItemClass"];
 
     v15 = NSClassFromString(v8);
     if (v15)
@@ -300,118 +300,118 @@ LABEL_16:
 
 - (BOOL)inputRequired
 {
-  v3 = [(WFInterchangeContentMapping *)self definition];
-  v4 = [v3 objectForKey:@"InputRequired"];
+  definition = [(WFInterchangeContentMapping *)self definition];
+  v4 = [definition objectForKey:@"InputRequired"];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v6 = [(WFInterchangeContentMapping *)self sourceType];
-    v5 = [v6 isEqualToString:@"Input"];
+    sourceType = [(WFInterchangeContentMapping *)self sourceType];
+    bOOLValue = [sourceType isEqualToString:@"Input"];
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)supportsMultipleItems
 {
-  v2 = [(WFInterchangeContentMapping *)self definition];
-  v3 = [v2 objectForKey:@"MultipleItems"];
-  v4 = [v3 BOOLValue];
+  definition = [(WFInterchangeContentMapping *)self definition];
+  v3 = [definition objectForKey:@"MultipleItems"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)parameterDefault
 {
-  v2 = [(WFInterchangeContentMapping *)self definition];
-  v3 = [v2 objectForKey:@"ParameterDefault"];
+  definition = [(WFInterchangeContentMapping *)self definition];
+  v3 = [definition objectForKey:@"ParameterDefault"];
 
   return v3;
 }
 
 - (WFParameterDefinition)parameterUI
 {
-  v2 = [(WFInterchangeContentMapping *)self definition];
-  v3 = [v2 objectForKey:@"ParameterUI"];
+  definition = [(WFInterchangeContentMapping *)self definition];
+  v3 = [definition objectForKey:@"ParameterUI"];
 
   return v3;
 }
 
 - (BOOL)skipURLEncoding
 {
-  v2 = [(WFInterchangeContentMapping *)self definition];
-  v3 = [v2 objectForKey:@"SkipURLEncoding"];
-  v4 = [v3 BOOLValue];
+  definition = [(WFInterchangeContentMapping *)self definition];
+  v3 = [definition objectForKey:@"SkipURLEncoding"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSDictionary)valueMapping
 {
-  v2 = [(WFInterchangeContentMapping *)self definition];
-  v3 = [v2 objectForKey:@"ValueMapping"];
+  definition = [(WFInterchangeContentMapping *)self definition];
+  v3 = [definition objectForKey:@"ValueMapping"];
 
   return v3;
 }
 
 - (NSString)destinationKey
 {
-  v2 = [(WFInterchangeContentMapping *)self definition];
-  v3 = [v2 objectForKey:@"DestinationKey"];
+  definition = [(WFInterchangeContentMapping *)self definition];
+  v3 = [definition objectForKey:@"DestinationKey"];
 
   return v3;
 }
 
 - (NSString)sourceKey
 {
-  v2 = [(WFInterchangeContentMapping *)self definition];
-  v3 = [v2 objectForKey:@"SourceKey"];
+  definition = [(WFInterchangeContentMapping *)self definition];
+  v3 = [definition objectForKey:@"SourceKey"];
 
   return v3;
 }
 
 - (NSString)destinationType
 {
-  v2 = [(WFInterchangeContentMapping *)self definition];
-  v3 = [v2 objectForKey:@"DestinationType"];
+  definition = [(WFInterchangeContentMapping *)self definition];
+  v3 = [definition objectForKey:@"DestinationType"];
 
   return v3;
 }
 
 - (NSString)sourceType
 {
-  v2 = [(WFInterchangeContentMapping *)self definition];
-  v3 = [v2 objectForKey:@"SourceType"];
+  definition = [(WFInterchangeContentMapping *)self definition];
+  v3 = [definition objectForKey:@"SourceType"];
 
   return v3;
 }
 
-- (WFInterchangeContentMapping)initWithDefinition:(id)a3
+- (WFInterchangeContentMapping)initWithDefinition:(id)definition
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"ContentMappingClass"];
+  definitionCopy = definition;
+  v5 = [definitionCopy objectForKey:@"ContentMappingClass"];
   v6 = v5;
   if ((!v5 || NSClassFromString(v5)) && (self = [(WFInterchangeContentMapping *)self init]) != 0)
   {
-    v7 = [v4 copy];
+    v7 = [definitionCopy copy];
     definition = self->_definition;
     self->_definition = v7;
 
     self = self;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

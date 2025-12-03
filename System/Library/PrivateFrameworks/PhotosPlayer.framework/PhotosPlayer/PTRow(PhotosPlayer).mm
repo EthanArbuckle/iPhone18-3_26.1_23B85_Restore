@@ -11,8 +11,8 @@
   v4[2] = __36__PTRow_PhotosPlayer__is_increment___block_invoke;
   v4[3] = &__block_descriptor_40_e11__24__0_8_16l;
   *&v4[4] = a2;
-  [a1 setValueValidatator:v4];
-  return a1;
+  [self setValueValidatator:v4];
+  return self;
 }
 
 @end

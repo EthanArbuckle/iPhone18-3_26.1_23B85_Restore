@@ -1,17 +1,17 @@
 @interface HUCameraErrorContent
-+ (id)errorWithTitle:(id)a3 description:(id)a4;
++ (id)errorWithTitle:(id)title description:(id)description;
 @end
 
 @implementation HUCameraErrorContent
 
-+ (id)errorWithTitle:(id)a3 description:(id)a4
++ (id)errorWithTitle:(id)title description:(id)description
 {
-  v5 = a4;
-  v6 = a3;
+  descriptionCopy = description;
+  titleCopy = title;
   v7 = objc_alloc_init(HUCameraErrorContent);
-  [(HUCameraErrorContent *)v7 setTitleText:v6];
+  [(HUCameraErrorContent *)v7 setTitleText:titleCopy];
 
-  [(HUCameraErrorContent *)v7 setDescriptionText:v5];
+  [(HUCameraErrorContent *)v7 setDescriptionText:descriptionCopy];
 
   return v7;
 }

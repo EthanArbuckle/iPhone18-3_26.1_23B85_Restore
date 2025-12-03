@@ -1,23 +1,23 @@
 @interface MTLSAnimatablePathCollection
-- (MTLSAnimatablePathCollection)initWithDefaultPath:(id)a3;
+- (MTLSAnimatablePathCollection)initWithDefaultPath:(id)path;
 - (id).cxx_construct;
 @end
 
 @implementation MTLSAnimatablePathCollection
 
-- (MTLSAnimatablePathCollection)initWithDefaultPath:(id)a3
+- (MTLSAnimatablePathCollection)initWithDefaultPath:(id)path
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = MTLSAnimatablePathCollection;
   v6 = [(MTLSAnimatablePathCollection *)&v12 init];
   if (v6)
   {
     v13 = @"default";
-    v14[0] = v5;
+    v14[0] = pathCopy;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    objc_storeStrong(&v6->_defaultPath, a3);
+    objc_storeStrong(&v6->_defaultPath, path);
     v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v7 copyItems:0];
     paths = v6->_paths;
     v6->_paths = v8;

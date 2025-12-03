@@ -1,32 +1,32 @@
 @interface CSDMessagingSharePlayAvailable
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsState:(id)a3;
+- (int)StringAsState:(id)state;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSupportsRequestToScreenShare:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSupportsRequestToScreenShare:(BOOL)share;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingSharePlayAvailable
 
-- (int)StringAsState:(id)a3
+- (int)StringAsState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Available"])
+  else if ([stateCopy isEqualToString:@"Available"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UnavailableSinceConferenced"])
+  else if ([stateCopy isEqualToString:@"UnavailableSinceConferenced"])
   {
     v4 = 2;
   }
@@ -39,9 +39,9 @@
   return v4;
 }
 
-- (void)setHasSupportsRequestToScreenShare:(BOOL)a3
+- (void)setHasSupportsRequestToScreenShare:(BOOL)share
 {
-  if (a3)
+  if (share)
   {
     v3 = 2;
   }
@@ -59,8 +59,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingSharePlayAvailable;
   v3 = [(CSDMessagingSharePlayAvailable *)&v7 description];
-  v4 = [(CSDMessagingSharePlayAvailable *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingSharePlayAvailable *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -96,9 +96,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     version = self->_version;
@@ -114,26 +114,26 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[3] = self->_version;
-    *(v4 + 20) |= 1u;
+    toCopy[3] = self->_version;
+    *(toCopy + 20) |= 1u;
   }
 
-  v4[2] = self->_state;
+  toCopy[2] = self->_state;
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 16) = self->_supportsRequestToScreenShare;
-    *(v4 + 20) |= 2u;
+    *(toCopy + 16) = self->_supportsRequestToScreenShare;
+    *(toCopy + 20) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (*&self->_has)
   {
     *(result + 3) = self->_version;
@@ -150,46 +150,46 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_version != *(v4 + 3))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_version != *(equalCopy + 3))
     {
       goto LABEL_10;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
     goto LABEL_10;
   }
 
-  if (self->_state != *(v4 + 2))
+  if (self->_state != *(equalCopy + 2))
   {
     goto LABEL_10;
   }
 
-  v5 = (*(v4 + 20) & 2) == 0;
+  v5 = (*(equalCopy + 20) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) != 0)
+    if ((*(equalCopy + 20) & 2) != 0)
     {
       if (self->_supportsRequestToScreenShare)
       {
-        if ((*(v4 + 16) & 1) == 0)
+        if ((*(equalCopy + 16) & 1) == 0)
         {
           goto LABEL_10;
         }
       }
 
-      else if (*(v4 + 16))
+      else if (*(equalCopy + 16))
       {
         goto LABEL_10;
       }
@@ -232,19 +232,19 @@ LABEL_11:
   return (2654435761 * self->_state) ^ v2 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 20))
+  fromCopy = from;
+  if (*(fromCopy + 20))
   {
-    self->_version = *(v4 + 3);
+    self->_version = *(fromCopy + 3);
     *&self->_has |= 1u;
   }
 
-  self->_state = *(v4 + 2);
-  if ((*(v4 + 20) & 2) != 0)
+  self->_state = *(fromCopy + 2);
+  if ((*(fromCopy + 20) & 2) != 0)
   {
-    self->_supportsRequestToScreenShare = *(v4 + 16);
+    self->_supportsRequestToScreenShare = *(fromCopy + 16);
     *&self->_has |= 2u;
   }
 }

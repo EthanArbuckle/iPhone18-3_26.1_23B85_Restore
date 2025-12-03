@@ -1,45 +1,45 @@
 @interface KPFSession
 - (BOOL)decrementCurrentSlideIndex;
 - (BOOL)incrementCurrentSlideIndex;
-- (CGImage)CGImageForTextureName:(id)a3;
-- (CGSize)textureSizeForName:(id)a3;
+- (CGImage)CGImageForTextureName:(id)name;
+- (CGSize)textureSizeForName:(id)name;
 - (KPFGingerSlide)currentSlide;
 - (KPFGingerSlide)nextSlide;
-- (KPFSession)initWithKPFDocument:(id)a3 showLayer:(id)a4;
+- (KPFSession)initWithKPFDocument:(id)document showLayer:(id)layer;
 - (MTLDevice)metalDevice;
 - (TSDMetalLayer)sharedMetalLayer;
-- (id)cachedDataForKPFFileURL:(id)a3;
-- (id)movieNameForTextureName:(id)a3;
+- (id)cachedDataForKPFFileURL:(id)l;
+- (id)movieNameForTextureName:(id)name;
 - (void)dealloc;
-- (void)makeSharedMetalLayerVisible:(BOOL)a3;
+- (void)makeSharedMetalLayerVisible:(BOOL)visible;
 - (void)p_setupSoundtrack;
 - (void)pauseMediaPlayback;
 - (void)resumeMediaPlayback;
-- (void)setCachedData:(id)a3 forKPFFileURL:(id)a4;
-- (void)setSlideIndex:(unint64_t)a3;
-- (void)setSlideWithSlideTag:(id)a3;
-- (void)setupAndPlaySoundtrackAfterDelay:(double)a3;
+- (void)setCachedData:(id)data forKPFFileURL:(id)l;
+- (void)setSlideIndex:(unint64_t)index;
+- (void)setSlideWithSlideTag:(id)tag;
+- (void)setupAndPlaySoundtrackAfterDelay:(double)delay;
 - (void)stopAllAnimations;
 @end
 
 @implementation KPFSession
 
-- (KPFSession)initWithKPFDocument:(id)a3 showLayer:(id)a4
+- (KPFSession)initWithKPFDocument:(id)document showLayer:(id)layer
 {
   v23.receiver = self;
   v23.super_class = KPFSession;
   v6 = [(KPFSession *)&v23 init];
   if (v6)
   {
-    v7 = a4;
-    v6->_showLayer = v7;
-    [(CALayer *)v7 setName:@"showLayer"];
+    layerCopy = layer;
+    v6->_showLayer = layerCopy;
+    [(CALayer *)layerCopy setName:@"showLayer"];
     [(CALayer *)v6->_showLayer setMasksToBounds:1];
-    v8 = a3;
-    v6->mDocument = v8;
-    v9 = [(KPFGingerDocument *)v8 slidesDictionary];
-    v10 = [(KPFGingerDocument *)v6->mDocument slideList];
-    v11 = [(KPFGingerDocument *)v6->mDocument documentPath];
+    documentCopy = document;
+    v6->mDocument = documentCopy;
+    slidesDictionary = [(KPFGingerDocument *)documentCopy slidesDictionary];
+    slideList = [(KPFGingerDocument *)v6->mDocument slideList];
+    documentPath = [(KPFGingerDocument *)v6->mDocument documentPath];
     v6->mKPFSlideList = objc_alloc_init(NSMutableArray);
     v6->_animationRegistry = objc_alloc_init(KPFGingerAnimationRegistry);
     v6->_isMetalEnabled = 1;
@@ -47,7 +47,7 @@
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [(NSArray *)v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    v12 = [(NSArray *)slideList countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -58,14 +58,14 @@
         {
           if (*v20 != v14)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(slideList);
           }
 
-          v16 = -[KPFGingerSlide initWithSlideDictionary:slideTag:baseResourcePath:drmContext:]([KPFGingerSlide alloc], "initWithSlideDictionary:slideTag:baseResourcePath:drmContext:", -[NSMutableDictionary objectForKey:](v9, "objectForKey:", *(*(&v19 + 1) + 8 * i)), *(*(&v19 + 1) + 8 * i), v11, [a3 drmContext]);
+          v16 = -[KPFGingerSlide initWithSlideDictionary:slideTag:baseResourcePath:drmContext:]([KPFGingerSlide alloc], "initWithSlideDictionary:slideTag:baseResourcePath:drmContext:", -[NSMutableDictionary objectForKey:](slidesDictionary, "objectForKey:", *(*(&v19 + 1) + 8 * i)), *(*(&v19 + 1) + 8 * i), documentPath, [document drmContext]);
           [(NSMutableArray *)v6->mKPFSlideList addObject:v16];
         }
 
-        v13 = [(NSArray *)v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v13 = [(NSArray *)slideList countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v13);
@@ -164,20 +164,20 @@
   return mCurrentSlideIndex != 0;
 }
 
-- (void)setSlideIndex:(unint64_t)a3
+- (void)setSlideIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->mKPFSlideList count]> a3)
+  if ([(NSMutableArray *)self->mKPFSlideList count]> index)
   {
     mCurrentSlide = self->mCurrentSlide;
     mCurrentSlideIndex = self->mCurrentSlideIndex;
-    self->mCurrentSlideIndex = a3;
+    self->mCurrentSlideIndex = index;
     self->mPreviousSlideIndex = mCurrentSlideIndex;
     [(KPFGingerSlide *)mCurrentSlide teardown];
     self->mCurrentSlide = 0;
   }
 }
 
-- (void)setSlideWithSlideTag:(id)a3
+- (void)setSlideWithSlideTag:(id)tag
 {
   v12 = 0u;
   v13 = 0u;
@@ -199,7 +199,7 @@
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        if ([a3 isEqualToString:{objc_msgSend(v10, "slideTag")}])
+        if ([tag isEqualToString:{objc_msgSend(v10, "slideTag")}])
         {
           mCurrentSlide = self->mCurrentSlide;
           self->mPreviousSlideIndex = self->mCurrentSlideIndex;
@@ -218,16 +218,16 @@
 
 - (void)p_setupSoundtrack
 {
-  v3 = [(KPFGingerDocument *)self->mDocument soundtrackPath];
-  if (v3)
+  soundtrackPath = [(KPFGingerDocument *)self->mDocument soundtrackPath];
+  if (soundtrackPath)
   {
-    v4 = v3;
+    v4 = soundtrackPath;
 
     self->mSoundtrack = 0;
-    v5 = [(KPFGingerDocument *)self->mDocument soundtrackMode];
+    soundtrackMode = [(KPFGingerDocument *)self->mDocument soundtrackMode];
     v6 = [NSURL fileURLWithPath:v4 isDirectory:0];
     v7 = [KPFMovie alloc];
-    if (v5 == 1)
+    if (soundtrackMode == 1)
     {
       v8 = @"looping";
     }
@@ -242,7 +242,7 @@
   }
 }
 
-- (void)setupAndPlaySoundtrackAfterDelay:(double)a3
+- (void)setupAndPlaySoundtrackAfterDelay:(double)delay
 {
   if ([(KPFGingerDocument *)self->mDocument soundtrackPath])
   {
@@ -261,7 +261,7 @@
     {
       v6 = self->mSoundtrack;
 
-      [(KPFMovie *)v6 playAfterDelay:a3];
+      [(KPFMovie *)v6 playAfterDelay:delay];
     }
   }
 }
@@ -269,17 +269,17 @@
 - (void)pauseMediaPlayback
 {
   [(KPFMovie *)self->mSoundtrack pause];
-  v3 = [(KPFSession *)self currentSlide];
+  currentSlide = [(KPFSession *)self currentSlide];
 
-  [(KPFGingerSlide *)v3 pauseMediaPlayback];
+  [(KPFGingerSlide *)currentSlide pauseMediaPlayback];
 }
 
 - (void)resumeMediaPlayback
 {
   [(KPFMovie *)self->mSoundtrack resume];
-  v3 = [(KPFSession *)self currentSlide];
+  currentSlide = [(KPFSession *)self currentSlide];
 
-  [(KPFGingerSlide *)v3 resumeMediaPlayback];
+  [(KPFGingerSlide *)currentSlide resumeMediaPlayback];
 }
 
 - (void)stopAllAnimations
@@ -287,60 +287,60 @@
   [(KPFMovie *)self->mSoundtrack stop];
 
   self->mSoundtrack = 0;
-  v3 = [(KPFSession *)self currentSlide];
+  currentSlide = [(KPFSession *)self currentSlide];
 
-  [(KPFGingerSlide *)v3 teardown];
+  [(KPFGingerSlide *)currentSlide teardown];
 }
 
-- (CGImage)CGImageForTextureName:(id)a3
+- (CGImage)CGImageForTextureName:(id)name
 {
-  v5 = [(KPFSession *)self currentSlide];
+  currentSlide = [(KPFSession *)self currentSlide];
 
-  return [(KPFGingerSlide *)v5 CGImageForTextureName:a3 session:self];
+  return [(KPFGingerSlide *)currentSlide CGImageForTextureName:name session:self];
 }
 
-- (id)movieNameForTextureName:(id)a3
+- (id)movieNameForTextureName:(id)name
 {
-  v4 = [(KPFSession *)self currentSlide];
+  currentSlide = [(KPFSession *)self currentSlide];
 
-  return [(KPFGingerSlide *)v4 movieNameForTextureName:a3];
+  return [(KPFGingerSlide *)currentSlide movieNameForTextureName:name];
 }
 
-- (CGSize)textureSizeForName:(id)a3
+- (CGSize)textureSizeForName:(id)name
 {
-  v4 = [(KPFSession *)self currentSlide];
+  currentSlide = [(KPFSession *)self currentSlide];
 
-  [(KPFGingerSlide *)v4 textureSizeForName:a3];
+  [(KPFGingerSlide *)currentSlide textureSizeForName:name];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (id)cachedDataForKPFFileURL:(id)a3
+- (id)cachedDataForKPFFileURL:(id)l
 {
-  v4 = [(KPFSession *)self fileCache];
-  v5 = [a3 standardizedURL];
+  fileCache = [(KPFSession *)self fileCache];
+  standardizedURL = [l standardizedURL];
 
-  return [(NSCache *)v4 objectForKey:v5];
+  return [(NSCache *)fileCache objectForKey:standardizedURL];
 }
 
-- (void)setCachedData:(id)a3 forKPFFileURL:(id)a4
+- (void)setCachedData:(id)data forKPFFileURL:(id)l
 {
-  v6 = [(KPFSession *)self fileCache];
-  v7 = [a4 standardizedURL];
-  v8 = [a3 length];
+  fileCache = [(KPFSession *)self fileCache];
+  standardizedURL = [l standardizedURL];
+  v8 = [data length];
 
-  [(NSCache *)v6 setObject:a3 forKey:v7 cost:v8];
+  [(NSCache *)fileCache setObject:data forKey:standardizedURL cost:v8];
 }
 
-- (void)makeSharedMetalLayerVisible:(BOOL)a3
+- (void)makeSharedMetalLayerVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   if ([(KPFSession *)self isMetalEnabled])
   {
-    v5 = [(KPFSession *)self sharedMetalLayer];
+    sharedMetalLayer = [(KPFSession *)self sharedMetalLayer];
 
-    [(TSDMetalLayer *)v5 setHidden:!v3];
+    [(TSDMetalLayer *)sharedMetalLayer setHidden:!visibleCopy];
   }
 }
 

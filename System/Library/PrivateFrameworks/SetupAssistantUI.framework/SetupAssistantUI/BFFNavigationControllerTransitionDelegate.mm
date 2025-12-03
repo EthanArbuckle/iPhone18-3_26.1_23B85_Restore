@@ -1,17 +1,17 @@
 @interface BFFNavigationControllerTransitionDelegate
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
 @end
 
 @implementation BFFNavigationControllerTransitionDelegate
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v7 = [(BFFNavigationControllerTransitionDelegate *)self customAnimatorBlock:a3];
+  v7 = [(BFFNavigationControllerTransitionDelegate *)self customAnimatorBlock:controller];
 
   if (v7)
   {
-    v8 = [(BFFNavigationControllerTransitionDelegate *)self customAnimatorBlock];
-    v9 = v8[2]();
+    customAnimatorBlock = [(BFFNavigationControllerTransitionDelegate *)self customAnimatorBlock];
+    v9 = customAnimatorBlock[2]();
   }
 
   else

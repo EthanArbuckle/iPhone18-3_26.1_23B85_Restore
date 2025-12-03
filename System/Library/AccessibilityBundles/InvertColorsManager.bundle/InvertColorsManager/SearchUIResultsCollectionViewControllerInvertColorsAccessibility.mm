@@ -1,5 +1,5 @@
 @interface SearchUIResultsCollectionViewControllerInvertColorsAccessibility
-- (id)cellForRowModel:(id)a3 atIndexPath:(id)a4;
+- (id)cellForRowModel:(id)model atIndexPath:(id)path;
 - (void)_accessibilityLoadInvertColors;
 - (void)viewDidLoad;
 @end
@@ -35,11 +35,11 @@
   [v4 setAccessibilityIgnoresInvertColors:_AXSInvertColorsEnabledGlobalCached() != 0];
 }
 
-- (id)cellForRowModel:(id)a3 atIndexPath:(id)a4
+- (id)cellForRowModel:(id)model atIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = SearchUIResultsCollectionViewControllerInvertColorsAccessibility;
-  v5 = [(SearchUIResultsCollectionViewControllerInvertColorsAccessibility *)&v7 cellForRowModel:a3 atIndexPath:a4];
+  v5 = [(SearchUIResultsCollectionViewControllerInvertColorsAccessibility *)&v7 cellForRowModel:model atIndexPath:path];
   if (_AXSInvertColorsEnabledGlobalCached())
   {
     [(SearchUIResultsCollectionViewControllerInvertColorsAccessibility *)self _accessibilityLoadInvertColors];

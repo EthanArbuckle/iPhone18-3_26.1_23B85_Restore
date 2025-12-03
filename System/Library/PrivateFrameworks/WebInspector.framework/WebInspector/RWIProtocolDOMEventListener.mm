@@ -11,9 +11,9 @@
 - (RWIProtocolDebuggerLocation)location;
 - (int)eventListenerId;
 - (int)nodeId;
-- (void)setHandlerName:(id)a3;
-- (void)setLocation:(id)a3;
-- (void)setType:(id)a3;
+- (void)setHandlerName:(id)name;
+- (void)setLocation:(id)location;
+- (void)setType:(id)type;
 @end
 
 @implementation RWIProtocolDOMEventListener
@@ -25,11 +25,11 @@
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"eventListenerId"];
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMEventListener;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"type"];
+  [(RWIProtocolJSONObject *)&v3 setString:type forKey:@"type"];
 }
 
 - (NSString)type
@@ -69,11 +69,11 @@
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"onWindow"];
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMEventListener;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"location"];
+  [(RWIProtocolJSONObject *)&v3 setObject:location forKey:@"location"];
 }
 
 - (RWIProtocolDebuggerLocation)location
@@ -131,11 +131,11 @@
   return v7;
 }
 
-- (void)setHandlerName:(id)a3
+- (void)setHandlerName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMEventListener;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"handlerName"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"handlerName"];
 }
 
 - (NSString)handlerName

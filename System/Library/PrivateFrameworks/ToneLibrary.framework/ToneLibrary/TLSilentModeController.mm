@@ -2,14 +2,14 @@
 + (TLSilentModeController)sharedSilentModeController;
 - (BOOL)_registerRingerSwitchChangedNotifyToken;
 - (TLSilentModeController)init;
-- (int64_t)_silentModeStatusForRingerSwitchChangedNotifyToken:(int)a3;
+- (int64_t)_silentModeStatusForRingerSwitchChangedNotifyToken:(int)token;
 - (int64_t)silentModeStatus;
 - (void)_assertNotRunningOnAccessQueue;
 - (void)_assertRunningOnAccessQueue;
 - (void)_cancelRingerSwitchChangedNotifyToken;
-- (void)_performBlockOnAccessQueue:(id)a3;
+- (void)_performBlockOnAccessQueue:(id)queue;
 - (void)_registerRingerSwitchChangedNotifyToken;
-- (void)_setSilentModeStatus:(int64_t)a3;
+- (void)_setSilentModeStatus:(int64_t)status;
 - (void)dealloc;
 @end
 
@@ -44,9 +44,9 @@ uint64_t __52__TLSilentModeController_sharedSilentModeController__block_invoke()
     v3 = objc_opt_class();
     v4 = MEMORY[0x1E696AEC0];
     v5 = [MEMORY[0x1E696AAE8] bundleForClass:v3];
-    v6 = [v5 bundleIdentifier];
+    bundleIdentifier = [v5 bundleIdentifier];
     v7 = NSStringFromClass(v3);
-    v8 = [v4 stringWithFormat:@"%@.%@-%@", v6, v7, @"AccessQueue"];
+    v8 = [v4 stringWithFormat:@"%@.%@-%@", bundleIdentifier, v7, @"AccessQueue"];
     accessQueueLabel = v2->_accessQueueLabel;
     v2->_accessQueueLabel = v8;
 
@@ -108,21 +108,21 @@ uint64_t __52__TLSilentModeController_sharedSilentModeController__block_invoke()
   return v2;
 }
 
-- (void)_setSilentModeStatus:(int64_t)a3
+- (void)_setSilentModeStatus:(int64_t)status
 {
   [(TLSilentModeController *)self _assertRunningOnAccessQueue];
-  if (self->_silentModeStatus != a3)
+  if (self->_silentModeStatus != status)
   {
-    self->_silentModeStatus = a3;
+    self->_silentModeStatus = status;
   }
 }
 
-- (void)_performBlockOnAccessQueue:(id)a3
+- (void)_performBlockOnAccessQueue:(id)queue
 {
   accessQueue = self->_accessQueue;
   if (accessQueue)
   {
-    dispatch_sync(accessQueue, a3);
+    dispatch_sync(accessQueue, queue);
   }
 }
 
@@ -151,16 +151,16 @@ uint64_t __52__TLSilentModeController_sharedSilentModeController__block_invoke()
         v9 = TLLogGeneral();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v8 lastPathComponent];
-          v11 = [MEMORY[0x1E696AF00] callStackSymbols];
+          lastPathComponent = [v8 lastPathComponent];
+          callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
           v14 = 136381443;
           v15 = "[TLSilentModeController _assertRunningOnAccessQueue]";
           v16 = 2113;
-          v17 = v10;
+          v17 = lastPathComponent;
           v18 = 2049;
           v19 = 114;
           v20 = 2113;
-          v21 = v11;
+          v21 = callStackSymbols;
           _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", &v14, 0x2Au);
         }
       }
@@ -210,16 +210,16 @@ uint64_t __52__TLSilentModeController_sharedSilentModeController__block_invoke()
         v9 = TLLogGeneral();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v8 lastPathComponent];
-          v11 = [MEMORY[0x1E696AF00] callStackSymbols];
+          lastPathComponent = [v8 lastPathComponent];
+          callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
           v14 = 136381443;
           v15 = "[TLSilentModeController _assertNotRunningOnAccessQueue]";
           v16 = 2113;
-          v17 = v10;
+          v17 = lastPathComponent;
           v18 = 2049;
           v19 = 122;
           v20 = 2113;
-          v21 = v11;
+          v21 = callStackSymbols;
           _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", &v14, 0x2Au);
         }
       }
@@ -289,10 +289,10 @@ void __65__TLSilentModeController__registerRingerSwitchChangedNotifyToken__block
   }
 }
 
-- (int64_t)_silentModeStatusForRingerSwitchChangedNotifyToken:(int)a3
+- (int64_t)_silentModeStatusForRingerSwitchChangedNotifyToken:(int)token
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a3 == -1)
+  if (token == -1)
   {
     v6 = TLLogGeneral();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -306,7 +306,7 @@ void __65__TLSilentModeController__registerRingerSwitchChangedNotifyToken__block
   else
   {
     state64 = -1;
-    if (notify_get_state(a3, &state64))
+    if (notify_get_state(token, &state64))
     {
       v4 = TLLogGeneral();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -371,7 +371,7 @@ void __65__TLSilentModeController__registerRingerSwitchChangedNotifyToken__block
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138544386;
-        v16 = self;
+        selfCopy = self;
         v17 = 2048;
         v18 = state64;
         v19 = 2114;

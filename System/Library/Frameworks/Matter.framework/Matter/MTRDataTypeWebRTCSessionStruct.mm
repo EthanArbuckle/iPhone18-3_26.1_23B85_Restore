@@ -1,6 +1,6 @@
 @interface MTRDataTypeWebRTCSessionStruct
 - (MTRDataTypeWebRTCSessionStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -42,32 +42,32 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDataTypeWebRTCSessionStruct);
   v5 = [(MTRDataTypeWebRTCSessionStruct *)self id];
   [(MTRDataTypeWebRTCSessionStruct *)v4 setId:v5];
 
-  v6 = [(MTRDataTypeWebRTCSessionStruct *)self peerNodeID];
-  [(MTRDataTypeWebRTCSessionStruct *)v4 setPeerNodeID:v6];
+  peerNodeID = [(MTRDataTypeWebRTCSessionStruct *)self peerNodeID];
+  [(MTRDataTypeWebRTCSessionStruct *)v4 setPeerNodeID:peerNodeID];
 
-  v7 = [(MTRDataTypeWebRTCSessionStruct *)self peerEndpointID];
-  [(MTRDataTypeWebRTCSessionStruct *)v4 setPeerEndpointID:v7];
+  peerEndpointID = [(MTRDataTypeWebRTCSessionStruct *)self peerEndpointID];
+  [(MTRDataTypeWebRTCSessionStruct *)v4 setPeerEndpointID:peerEndpointID];
 
-  v8 = [(MTRDataTypeWebRTCSessionStruct *)self streamUsage];
-  [(MTRDataTypeWebRTCSessionStruct *)v4 setStreamUsage:v8];
+  streamUsage = [(MTRDataTypeWebRTCSessionStruct *)self streamUsage];
+  [(MTRDataTypeWebRTCSessionStruct *)v4 setStreamUsage:streamUsage];
 
-  v9 = [(MTRDataTypeWebRTCSessionStruct *)self videoStreamID];
-  [(MTRDataTypeWebRTCSessionStruct *)v4 setVideoStreamID:v9];
+  videoStreamID = [(MTRDataTypeWebRTCSessionStruct *)self videoStreamID];
+  [(MTRDataTypeWebRTCSessionStruct *)v4 setVideoStreamID:videoStreamID];
 
-  v10 = [(MTRDataTypeWebRTCSessionStruct *)self audioStreamID];
-  [(MTRDataTypeWebRTCSessionStruct *)v4 setAudioStreamID:v10];
+  audioStreamID = [(MTRDataTypeWebRTCSessionStruct *)self audioStreamID];
+  [(MTRDataTypeWebRTCSessionStruct *)v4 setAudioStreamID:audioStreamID];
 
-  v11 = [(MTRDataTypeWebRTCSessionStruct *)self metadataEnabled];
-  [(MTRDataTypeWebRTCSessionStruct *)v4 setMetadataEnabled:v11];
+  metadataEnabled = [(MTRDataTypeWebRTCSessionStruct *)self metadataEnabled];
+  [(MTRDataTypeWebRTCSessionStruct *)v4 setMetadataEnabled:metadataEnabled];
 
-  v12 = [(MTRDataTypeWebRTCSessionStruct *)self fabricIndex];
-  [(MTRDataTypeWebRTCSessionStruct *)v4 setFabricIndex:v12];
+  fabricIndex = [(MTRDataTypeWebRTCSessionStruct *)self fabricIndex];
+  [(MTRDataTypeWebRTCSessionStruct *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

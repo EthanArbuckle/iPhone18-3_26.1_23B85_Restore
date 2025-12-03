@@ -1,9 +1,9 @@
 @interface TSDRenderable
 + (id)renderable;
-+ (id)renderableFromLayer:(id)a3;
++ (id)renderableFromLayer:(id)layer;
 - (BOOL)allowsGroupOpacity;
-- (BOOL)containsPoint:(CGPoint)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsPoint:(CGPoint)point;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHidden;
 - (BOOL)masksToBounds;
 - (BOOL)shouldRasterize;
@@ -17,8 +17,8 @@
 - (CGColor)shadowColor;
 - (CGPath)shadowPath;
 - (CGPoint)anchorPoint;
-- (CGPoint)convertPoint:(CGPoint)a3 fromLayer:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toLayer:(id)a4;
+- (CGPoint)convertPoint:(CGPoint)point fromLayer:(id)layer;
+- (CGPoint)convertPoint:(CGPoint)point toLayer:(id)layer;
 - (CGPoint)position;
 - (CGRect)bounds;
 - (CGRect)contentsRect;
@@ -30,7 +30,7 @@
 - (NSString)contentsGravity;
 - (NSString)magnificationFilter;
 - (NSString)name;
-- (TSDRenderable)initWithCALayer:(id)a3;
+- (TSDRenderable)initWithCALayer:(id)layer;
 - (TSDRenderable)presentationRenderable;
 - (double)borderWidth;
 - (double)contentsScale;
@@ -40,67 +40,67 @@
 - (double)zPosition;
 - (float)opacity;
 - (float)shadowOpacity;
-- (id)animationForKey:(id)a3;
+- (id)animationForKey:(id)key;
 - (id)contents;
 - (id)description;
 - (unsigned)edgeAntialiasingMask;
-- (void)addAnimation:(id)a3 forKey:(id)a4;
-- (void)addSublayer:(id)a3;
-- (void)addSubrenderable:(id)a3;
-- (void)removeAnimationForKey:(id)a3;
+- (void)addAnimation:(id)animation forKey:(id)key;
+- (void)addSublayer:(id)sublayer;
+- (void)addSubrenderable:(id)subrenderable;
+- (void)removeAnimationForKey:(id)key;
 - (void)removeFromSuperlayer;
-- (void)setAffineTransform:(CGAffineTransform *)a3;
-- (void)setAllowsGroupOpacity:(BOOL)a3;
-- (void)setAnchorPoint:(CGPoint)a3;
-- (void)setBackgroundColor:(CGColor *)a3;
-- (void)setBorderColor:(CGColor *)a3;
-- (void)setBorderWidth:(double)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setContents:(id)a3;
-- (void)setContentsGravity:(id)a3;
-- (void)setContentsRect:(CGRect)a3;
-- (void)setContentsScale:(double)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEdgeAntialiasingMask:(unsigned int)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setIfDifferentFrame:(CGRect)a3 orTransform:(CGAffineTransform *)a4;
-- (void)setMagnificationFilter:(id)a3;
-- (void)setMask:(id)a3;
-- (void)setMaskRenderable:(id)a3;
-- (void)setMasksToBounds:(BOOL)a3;
-- (void)setName:(id)a3;
+- (void)setAffineTransform:(CGAffineTransform *)transform;
+- (void)setAllowsGroupOpacity:(BOOL)opacity;
+- (void)setAnchorPoint:(CGPoint)point;
+- (void)setBackgroundColor:(CGColor *)color;
+- (void)setBorderColor:(CGColor *)color;
+- (void)setBorderWidth:(double)width;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContents:(id)contents;
+- (void)setContentsGravity:(id)gravity;
+- (void)setContentsRect:(CGRect)rect;
+- (void)setContentsScale:(double)scale;
+- (void)setCornerRadius:(double)radius;
+- (void)setDelegate:(id)delegate;
+- (void)setEdgeAntialiasingMask:(unsigned int)mask;
+- (void)setFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
+- (void)setIfDifferentFrame:(CGRect)frame orTransform:(CGAffineTransform *)transform;
+- (void)setMagnificationFilter:(id)filter;
+- (void)setMask:(id)mask;
+- (void)setMaskRenderable:(id)renderable;
+- (void)setMasksToBounds:(BOOL)bounds;
+- (void)setName:(id)name;
 - (void)setNeedsDisplay;
-- (void)setOpacity:(float)a3;
-- (void)setPosition:(CGPoint)a3;
-- (void)setRasterizationScale:(double)a3;
-- (void)setShadowColor:(CGColor *)a3;
-- (void)setShadowOffset:(CGSize)a3;
-- (void)setShadowOpacity:(float)a3;
-- (void)setShadowPath:(CGPath *)a3;
-- (void)setShadowRadius:(double)a3;
-- (void)setShouldRasterize:(BOOL)a3;
-- (void)setSublayers:(id)a3;
-- (void)setSubrenderables:(id)a3;
-- (void)setZPosition:(double)a3;
+- (void)setOpacity:(float)opacity;
+- (void)setPosition:(CGPoint)position;
+- (void)setRasterizationScale:(double)scale;
+- (void)setShadowColor:(CGColor *)color;
+- (void)setShadowOffset:(CGSize)offset;
+- (void)setShadowOpacity:(float)opacity;
+- (void)setShadowPath:(CGPath *)path;
+- (void)setShadowRadius:(double)radius;
+- (void)setShouldRasterize:(BOOL)rasterize;
+- (void)setSublayers:(id)sublayers;
+- (void)setSubrenderables:(id)subrenderables;
+- (void)setZPosition:(double)position;
 @end
 
 @implementation TSDRenderable
 
-- (TSDRenderable)initWithCALayer:(id)a3
+- (TSDRenderable)initWithCALayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   if ((-[TSDRenderable isMemberOfClass:](self, "isMemberOfClass:", [objc_opt_class() tsd_renderableClass]) & 1) == 0)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDRenderable initWithCALayer:]"];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRenderable.m"];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v6 handleFailureInFunction:v7 file:v8 lineNumber:30 description:{@"Wrong renderable class (%@) for layer class (%@)!", v10, v12}];
+    [currentHandler handleFailureInFunction:v7 file:v8 lineNumber:30 description:{@"Wrong renderable class (%@) for layer class (%@)!", v10, v12}];
   }
 
   v16.receiver = self;
@@ -109,16 +109,16 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_layer, a3);
+    objc_storeStrong(&v13->_layer, layer);
   }
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -128,7 +128,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CALayer *)self->_layer isEqual:v4->_layer];
+      v5 = [(CALayer *)self->_layer isEqual:equalCopy->_layer];
     }
 
     else
@@ -140,9 +140,9 @@
   return v5;
 }
 
-+ (id)renderableFromLayer:(id)a3
++ (id)renderableFromLayer:(id)layer
 {
-  v3 = a3;
+  layerCopy = layer;
   v4 = [objc_alloc(objc_msgSend(objc_opt_class() "tsd_renderableClass"))];
 
   return v4;
@@ -150,9 +150,9 @@
 
 + (id)renderable
 {
-  v2 = [a1 alloc];
-  v3 = [MEMORY[0x277CD9ED0] layer];
-  v4 = [v2 initWithCALayer:v3];
+  v2 = [self alloc];
+  layer = [MEMORY[0x277CD9ED0] layer];
+  v4 = [v2 initWithCALayer:layer];
 
   return v4;
 }
@@ -162,33 +162,33 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(TSDRenderable *)self layer];
-  v7 = [v3 stringWithFormat:@"<%@: %@>", v5, v6];
+  layer = [(TSDRenderable *)self layer];
+  v7 = [v3 stringWithFormat:@"<%@: %@>", v5, layer];
 
   return v7;
 }
 
-- (void)addSubrenderable:(id)a3
+- (void)addSubrenderable:(id)subrenderable
 {
-  v4 = a3;
-  v6 = [(TSDRenderable *)self layer];
-  v5 = [v4 layer];
+  subrenderableCopy = subrenderable;
+  layer = [(TSDRenderable *)self layer];
+  layer2 = [subrenderableCopy layer];
 
-  [v6 addSublayer:v5];
+  [layer addSublayer:layer2];
 }
 
-- (void)setSubrenderables:(id)a3
+- (void)setSubrenderables:(id)subrenderables
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  subrenderablesCopy = subrenderables;
+  if (subrenderablesCopy)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = subrenderablesCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -203,8 +203,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) layer];
-          [v5 addObject:v11];
+          layer = [*(*(&v14 + 1) + 8 * i) layer];
+          [array addObject:layer];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -213,29 +213,29 @@
       while (v8);
     }
 
-    v12 = [(TSDRenderable *)self layer];
-    [v12 setSublayers:v5];
+    layer2 = [(TSDRenderable *)self layer];
+    [layer2 setSublayers:array];
   }
 
   else
   {
-    v13 = [(TSDRenderable *)self layer];
-    [v13 setSublayers:0];
+    layer3 = [(TSDRenderable *)self layer];
+    [layer3 setSublayers:0];
   }
 }
 
 - (NSArray)subrenderables
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(TSDRenderable *)self layer];
-  v5 = [v4 sublayers];
+  layer = [(TSDRenderable *)self layer];
+  sublayers = [layer sublayers];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [sublayers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -247,25 +247,25 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sublayers);
         }
 
         v10 = [TSDRenderable renderableFromLayer:*(*(&v14 + 1) + 8 * v9)];
-        [(NSArray *)v3 addObject:v10];
+        [(NSArray *)array addObject:v10];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [sublayers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  if ([(NSArray *)v3 count])
+  if ([(NSArray *)array count])
   {
-    v11 = v3;
+    v11 = array;
   }
 
   else
@@ -278,23 +278,23 @@
   return v11;
 }
 
-- (void)setMaskRenderable:(id)a3
+- (void)setMaskRenderable:(id)renderable
 {
-  v5 = [a3 layer];
-  v4 = [(TSDRenderable *)self layer];
-  [v4 setMask:v5];
+  layer = [renderable layer];
+  layer2 = [(TSDRenderable *)self layer];
+  [layer2 setMask:layer];
 }
 
 - (TSDRenderable)presentationRenderable
 {
-  v3 = [(TSDRenderable *)self layer];
-  v4 = [v3 presentationLayer];
+  layer = [(TSDRenderable *)self layer];
+  presentationLayer = [layer presentationLayer];
 
-  if (v4)
+  if (presentationLayer)
   {
-    v5 = [(TSDRenderable *)self layer];
-    v6 = [v5 presentationLayer];
-    v7 = [TSDRenderable renderableFromLayer:v6];
+    layer2 = [(TSDRenderable *)self layer];
+    presentationLayer2 = [layer2 presentationLayer];
+    v7 = [TSDRenderable renderableFromLayer:presentationLayer2];
   }
 
   else
@@ -307,61 +307,61 @@
 
 - (CALayerDelegate)delegate
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 delegate];
+  layer = [(TSDRenderable *)self layer];
+  delegate = [layer delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(TSDRenderable *)self layer];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  layer = [(TSDRenderable *)self layer];
+  [layer setDelegate:delegateCopy];
 }
 
 - (id)contents
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 contents];
+  layer = [(TSDRenderable *)self layer];
+  contents = [layer contents];
 
-  return v3;
+  return contents;
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
-  v4 = a3;
-  v5 = [(TSDRenderable *)self layer];
-  [v5 setContents:v4];
+  contentsCopy = contents;
+  layer = [(TSDRenderable *)self layer];
+  [layer setContents:contentsCopy];
 }
 
 - (CALayer)superlayer
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 superlayer];
+  layer = [(TSDRenderable *)self layer];
+  superlayer = [layer superlayer];
 
-  return v3;
+  return superlayer;
 }
 
 - (NSArray)sublayers
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 sublayers];
+  layer = [(TSDRenderable *)self layer];
+  sublayers = [layer sublayers];
 
-  return v3;
+  return sublayers;
 }
 
-- (void)setSublayers:(id)a3
+- (void)setSublayers:(id)sublayers
 {
-  v4 = a3;
-  v5 = [(TSDRenderable *)self layer];
-  [v5 setSublayers:v4];
+  sublayersCopy = sublayers;
+  layer = [(TSDRenderable *)self layer];
+  [layer setSublayers:sublayersCopy];
 }
 
 - (CGPoint)anchorPoint
 {
-  v2 = [(TSDRenderable *)self layer];
-  [v2 anchorPoint];
+  layer = [(TSDRenderable *)self layer];
+  [layer anchorPoint];
   v4 = v3;
   v6 = v5;
 
@@ -372,64 +372,64 @@
   return result;
 }
 
-- (void)setAnchorPoint:(CGPoint)a3
+- (void)setAnchorPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(TSDRenderable *)self layer];
-  [v5 setAnchorPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  layer = [(TSDRenderable *)self layer];
+  [layer setAnchorPoint:{x, y}];
 }
 
 - (CALayer)mask
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 mask];
+  layer = [(TSDRenderable *)self layer];
+  mask = [layer mask];
 
-  return v3;
+  return mask;
 }
 
-- (void)setMask:(id)a3
+- (void)setMask:(id)mask
 {
-  v4 = a3;
-  v5 = [(TSDRenderable *)self layer];
-  [v5 setMask:v4];
+  maskCopy = mask;
+  layer = [(TSDRenderable *)self layer];
+  [layer setMask:maskCopy];
 }
 
 - (BOOL)isHidden
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 isHidden];
+  layer = [(TSDRenderable *)self layer];
+  isHidden = [layer isHidden];
 
-  return v3;
+  return isHidden;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(TSDRenderable *)self layer];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  layer = [(TSDRenderable *)self layer];
+  [layer setHidden:hiddenCopy];
 }
 
 - (float)opacity
 {
-  v2 = [(TSDRenderable *)self layer];
-  [v2 opacity];
+  layer = [(TSDRenderable *)self layer];
+  [layer opacity];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setOpacity:(float)a3
+- (void)setOpacity:(float)opacity
 {
-  v5 = [(TSDRenderable *)self layer];
-  *&v4 = a3;
-  [v5 setOpacity:v4];
+  layer = [(TSDRenderable *)self layer];
+  *&v4 = opacity;
+  [layer setOpacity:v4];
 }
 
 - (CGRect)bounds
 {
-  v2 = [(TSDRenderable *)self layer];
-  [v2 bounds];
+  layer = [(TSDRenderable *)self layer];
+  [layer bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -446,20 +446,20 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(TSDRenderable *)self layer];
-  [v7 setBounds:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layer = [(TSDRenderable *)self layer];
+  [layer setBounds:{x, y, width, height}];
 }
 
 - (CGRect)frame
 {
-  v2 = [(TSDRenderable *)self layer];
-  [v2 frame];
+  layer = [(TSDRenderable *)self layer];
+  [layer frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -476,20 +476,20 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(TSDRenderable *)self layer];
-  [v7 setFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layer = [(TSDRenderable *)self layer];
+  [layer setFrame:{x, y, width, height}];
 }
 
 - (CGPoint)position
 {
-  v2 = [(TSDRenderable *)self layer];
-  [v2 position];
+  layer = [(TSDRenderable *)self layer];
+  [layer position];
   v4 = v3;
   v6 = v5;
 
@@ -500,22 +500,22 @@
   return result;
 }
 
-- (void)setPosition:(CGPoint)a3
+- (void)setPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(TSDRenderable *)self layer];
-  [v5 setPosition:{x, y}];
+  y = position.y;
+  x = position.x;
+  layer = [(TSDRenderable *)self layer];
+  [layer setPosition:{x, y}];
 }
 
 - (CGAffineTransform)affineTransform
 {
-  v4 = [(TSDRenderable *)self layer];
-  if (v4)
+  layer = [(TSDRenderable *)self layer];
+  if (layer)
   {
-    v6 = v4;
-    [v4 affineTransform];
-    v4 = v6;
+    v6 = layer;
+    [layer affineTransform];
+    layer = v6;
   }
 
   else
@@ -528,119 +528,119 @@
   return result;
 }
 
-- (void)setAffineTransform:(CGAffineTransform *)a3
+- (void)setAffineTransform:(CGAffineTransform *)transform
 {
-  v3 = [(TSDRenderable *)self layer:*&a3->a];
+  v3 = [(TSDRenderable *)self layer:*&transform->a];
   [v3 setAffineTransform:&v4];
 }
 
 - (double)contentsScale
 {
-  v2 = [(TSDRenderable *)self layer];
-  [v2 contentsScale];
+  layer = [(TSDRenderable *)self layer];
+  [layer contentsScale];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
-  v4 = [(TSDRenderable *)self layer];
-  [v4 setContentsScale:a3];
+  layer = [(TSDRenderable *)self layer];
+  [layer setContentsScale:scale];
 }
 
 - (CGColor)backgroundColor
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 backgroundColor];
+  layer = [(TSDRenderable *)self layer];
+  backgroundColor = [layer backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(CGColor *)a3
+- (void)setBackgroundColor:(CGColor *)color
 {
-  v4 = [(TSDRenderable *)self layer];
-  [v4 setBackgroundColor:a3];
+  layer = [(TSDRenderable *)self layer];
+  [layer setBackgroundColor:color];
 }
 
 - (double)cornerRadius
 {
-  v2 = [(TSDRenderable *)self layer];
-  [v2 cornerRadius];
+  layer = [(TSDRenderable *)self layer];
+  [layer cornerRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = [(TSDRenderable *)self layer];
-  [v4 setCornerRadius:a3];
+  layer = [(TSDRenderable *)self layer];
+  [layer setCornerRadius:radius];
 }
 
 - (unsigned)edgeAntialiasingMask
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 edgeAntialiasingMask];
+  layer = [(TSDRenderable *)self layer];
+  edgeAntialiasingMask = [layer edgeAntialiasingMask];
 
-  return v3;
+  return edgeAntialiasingMask;
 }
 
-- (void)setEdgeAntialiasingMask:(unsigned int)a3
+- (void)setEdgeAntialiasingMask:(unsigned int)mask
 {
-  v3 = *&a3;
-  v4 = [(TSDRenderable *)self layer];
-  [v4 setEdgeAntialiasingMask:v3];
+  v3 = *&mask;
+  layer = [(TSDRenderable *)self layer];
+  [layer setEdgeAntialiasingMask:v3];
 }
 
 - (double)borderWidth
 {
-  v2 = [(TSDRenderable *)self layer];
-  [v2 borderWidth];
+  layer = [(TSDRenderable *)self layer];
+  [layer borderWidth];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setBorderWidth:(double)a3
+- (void)setBorderWidth:(double)width
 {
-  v4 = [(TSDRenderable *)self layer];
-  [v4 setBorderWidth:a3];
+  layer = [(TSDRenderable *)self layer];
+  [layer setBorderWidth:width];
 }
 
 - (CGColor)borderColor
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 borderColor];
+  layer = [(TSDRenderable *)self layer];
+  borderColor = [layer borderColor];
 
-  return v3;
+  return borderColor;
 }
 
-- (void)setBorderColor:(CGColor *)a3
+- (void)setBorderColor:(CGColor *)color
 {
-  v4 = [(TSDRenderable *)self layer];
-  [v4 setBorderColor:a3];
+  layer = [(TSDRenderable *)self layer];
+  [layer setBorderColor:color];
 }
 
 - (NSString)name
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 name];
+  layer = [(TSDRenderable *)self layer];
+  name = [layer name];
 
-  return v3;
+  return name;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [(TSDRenderable *)self layer];
-  [v5 setName:v4];
+  nameCopy = name;
+  layer = [(TSDRenderable *)self layer];
+  [layer setName:nameCopy];
 }
 
 - (CGRect)contentsRect
 {
-  v2 = [(TSDRenderable *)self layer];
-  [v2 contentsRect];
+  layer = [(TSDRenderable *)self layer];
+  [layer contentsRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -657,125 +657,125 @@
   return result;
 }
 
-- (void)setContentsRect:(CGRect)a3
+- (void)setContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(TSDRenderable *)self layer];
-  [v7 setContentsRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layer = [(TSDRenderable *)self layer];
+  [layer setContentsRect:{x, y, width, height}];
 }
 
 - (BOOL)allowsGroupOpacity
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 allowsGroupOpacity];
+  layer = [(TSDRenderable *)self layer];
+  allowsGroupOpacity = [layer allowsGroupOpacity];
 
-  return v3;
+  return allowsGroupOpacity;
 }
 
-- (void)setAllowsGroupOpacity:(BOOL)a3
+- (void)setAllowsGroupOpacity:(BOOL)opacity
 {
-  v3 = a3;
-  v4 = [(TSDRenderable *)self layer];
-  [v4 setAllowsGroupOpacity:v3];
+  opacityCopy = opacity;
+  layer = [(TSDRenderable *)self layer];
+  [layer setAllowsGroupOpacity:opacityCopy];
 }
 
 - (BOOL)masksToBounds
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 masksToBounds];
+  layer = [(TSDRenderable *)self layer];
+  masksToBounds = [layer masksToBounds];
 
-  return v3;
+  return masksToBounds;
 }
 
-- (void)setMasksToBounds:(BOOL)a3
+- (void)setMasksToBounds:(BOOL)bounds
 {
-  v3 = a3;
-  v4 = [(TSDRenderable *)self layer];
-  [v4 setMasksToBounds:v3];
+  boundsCopy = bounds;
+  layer = [(TSDRenderable *)self layer];
+  [layer setMasksToBounds:boundsCopy];
 }
 
 - (NSString)magnificationFilter
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 magnificationFilter];
+  layer = [(TSDRenderable *)self layer];
+  magnificationFilter = [layer magnificationFilter];
 
-  return v3;
+  return magnificationFilter;
 }
 
-- (void)setMagnificationFilter:(id)a3
+- (void)setMagnificationFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(TSDRenderable *)self layer];
-  [v5 setMagnificationFilter:v4];
+  filterCopy = filter;
+  layer = [(TSDRenderable *)self layer];
+  [layer setMagnificationFilter:filterCopy];
 }
 
 - (double)zPosition
 {
-  v2 = [(TSDRenderable *)self layer];
-  [v2 zPosition];
+  layer = [(TSDRenderable *)self layer];
+  [layer zPosition];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setZPosition:(double)a3
+- (void)setZPosition:(double)position
 {
-  v4 = [(TSDRenderable *)self layer];
-  [v4 setZPosition:a3];
+  layer = [(TSDRenderable *)self layer];
+  [layer setZPosition:position];
 }
 
 - (NSString)contentsGravity
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 contentsGravity];
+  layer = [(TSDRenderable *)self layer];
+  contentsGravity = [layer contentsGravity];
 
-  return v3;
+  return contentsGravity;
 }
 
-- (void)setContentsGravity:(id)a3
+- (void)setContentsGravity:(id)gravity
 {
-  v4 = a3;
-  v5 = [(TSDRenderable *)self layer];
-  [v5 setContentsGravity:v4];
+  gravityCopy = gravity;
+  layer = [(TSDRenderable *)self layer];
+  [layer setContentsGravity:gravityCopy];
 }
 
 - (CGColor)shadowColor
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 shadowColor];
+  layer = [(TSDRenderable *)self layer];
+  shadowColor = [layer shadowColor];
 
-  return v3;
+  return shadowColor;
 }
 
-- (void)setShadowColor:(CGColor *)a3
+- (void)setShadowColor:(CGColor *)color
 {
-  v4 = [(TSDRenderable *)self layer];
-  [v4 setShadowColor:a3];
+  layer = [(TSDRenderable *)self layer];
+  [layer setShadowColor:color];
 }
 
 - (float)shadowOpacity
 {
-  v2 = [(TSDRenderable *)self layer];
-  [v2 shadowOpacity];
+  layer = [(TSDRenderable *)self layer];
+  [layer shadowOpacity];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setShadowOpacity:(float)a3
+- (void)setShadowOpacity:(float)opacity
 {
-  v5 = [(TSDRenderable *)self layer];
-  *&v4 = a3;
-  [v5 setShadowOpacity:v4];
+  layer = [(TSDRenderable *)self layer];
+  *&v4 = opacity;
+  [layer setShadowOpacity:v4];
 }
 
 - (CGSize)shadowOffset
 {
-  v2 = [(TSDRenderable *)self layer];
-  [v2 shadowOffset];
+  layer = [(TSDRenderable *)self layer];
+  [layer shadowOffset];
   v4 = v3;
   v6 = v5;
 
@@ -786,77 +786,77 @@
   return result;
 }
 
-- (void)setShadowOffset:(CGSize)a3
+- (void)setShadowOffset:(CGSize)offset
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(TSDRenderable *)self layer];
-  [v5 setShadowOffset:{width, height}];
+  height = offset.height;
+  width = offset.width;
+  layer = [(TSDRenderable *)self layer];
+  [layer setShadowOffset:{width, height}];
 }
 
 - (double)shadowRadius
 {
-  v2 = [(TSDRenderable *)self layer];
-  [v2 shadowRadius];
+  layer = [(TSDRenderable *)self layer];
+  [layer shadowRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setShadowRadius:(double)a3
+- (void)setShadowRadius:(double)radius
 {
-  v4 = [(TSDRenderable *)self layer];
-  [v4 setShadowRadius:a3];
+  layer = [(TSDRenderable *)self layer];
+  [layer setShadowRadius:radius];
 }
 
 - (CGPath)shadowPath
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 shadowPath];
+  layer = [(TSDRenderable *)self layer];
+  shadowPath = [layer shadowPath];
 
-  return v3;
+  return shadowPath;
 }
 
-- (void)setShadowPath:(CGPath *)a3
+- (void)setShadowPath:(CGPath *)path
 {
-  v4 = [(TSDRenderable *)self layer];
-  [v4 setShadowPath:a3];
+  layer = [(TSDRenderable *)self layer];
+  [layer setShadowPath:path];
 }
 
 - (BOOL)shouldRasterize
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 shouldRasterize];
+  layer = [(TSDRenderable *)self layer];
+  shouldRasterize = [layer shouldRasterize];
 
-  return v3;
+  return shouldRasterize;
 }
 
-- (void)setShouldRasterize:(BOOL)a3
+- (void)setShouldRasterize:(BOOL)rasterize
 {
-  v3 = a3;
-  v4 = [(TSDRenderable *)self layer];
-  [v4 setShouldRasterize:v3];
+  rasterizeCopy = rasterize;
+  layer = [(TSDRenderable *)self layer];
+  [layer setShouldRasterize:rasterizeCopy];
 }
 
 - (double)rasterizationScale
 {
-  v2 = [(TSDRenderable *)self layer];
-  [v2 rasterizationScale];
+  layer = [(TSDRenderable *)self layer];
+  [layer rasterizationScale];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setRasterizationScale:(double)a3
+- (void)setRasterizationScale:(double)scale
 {
-  v4 = [(TSDRenderable *)self layer];
-  [v4 setRasterizationScale:a3];
+  layer = [(TSDRenderable *)self layer];
+  [layer setRasterizationScale:scale];
 }
 
 - (CGSize)preferredFrameSize
 {
-  v2 = [(TSDRenderable *)self layer];
-  [v2 preferredFrameSize];
+  layer = [(TSDRenderable *)self layer];
+  [layer preferredFrameSize];
   v4 = v3;
   v6 = v5;
 
@@ -869,72 +869,72 @@
 
 - (BOOL)tsd_tilingSafeHasContents
 {
-  v2 = [(TSDRenderable *)self layer];
-  v3 = [v2 tilingSafeHasContents];
+  layer = [(TSDRenderable *)self layer];
+  tilingSafeHasContents = [layer tilingSafeHasContents];
 
-  return v3;
+  return tilingSafeHasContents;
 }
 
 - (void)removeFromSuperlayer
 {
-  v2 = [(TSDRenderable *)self layer];
-  [v2 removeFromSuperlayer];
+  layer = [(TSDRenderable *)self layer];
+  [layer removeFromSuperlayer];
 }
 
 - (void)setNeedsDisplay
 {
-  v2 = [(TSDRenderable *)self layer];
-  [v2 setNeedsDisplay];
+  layer = [(TSDRenderable *)self layer];
+  [layer setNeedsDisplay];
 }
 
-- (void)addSublayer:(id)a3
+- (void)addSublayer:(id)sublayer
 {
-  v4 = a3;
-  v5 = [(TSDRenderable *)self layer];
-  [v5 addSublayer:v4];
+  sublayerCopy = sublayer;
+  layer = [(TSDRenderable *)self layer];
+  [layer addSublayer:sublayerCopy];
 }
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TSDRenderable *)self layer];
-  [v8 addAnimation:v7 forKey:v6];
+  keyCopy = key;
+  animationCopy = animation;
+  layer = [(TSDRenderable *)self layer];
+  [layer addAnimation:animationCopy forKey:keyCopy];
 }
 
-- (id)animationForKey:(id)a3
+- (id)animationForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(TSDRenderable *)self layer];
-  v6 = [v5 animationForKey:v4];
+  keyCopy = key;
+  layer = [(TSDRenderable *)self layer];
+  v6 = [layer animationForKey:keyCopy];
 
   return v6;
 }
 
-- (void)removeAnimationForKey:(id)a3
+- (void)removeAnimationForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(TSDRenderable *)self layer];
-  [v5 removeAnimationForKey:v4];
+  keyCopy = key;
+  layer = [(TSDRenderable *)self layer];
+  [layer removeAnimationForKey:keyCopy];
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(TSDRenderable *)self layer];
-  v6 = [v5 containsPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  layer = [(TSDRenderable *)self layer];
+  v6 = [layer containsPoint:{x, y}];
 
   return v6;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromLayer:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromLayer:(id)layer
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(TSDRenderable *)self layer];
-  [v8 convertPoint:v7 fromLayer:{x, y}];
+  y = point.y;
+  x = point.x;
+  layerCopy = layer;
+  layer = [(TSDRenderable *)self layer];
+  [layer convertPoint:layerCopy fromLayer:{x, y}];
   v10 = v9;
   v12 = v11;
 
@@ -945,13 +945,13 @@
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toLayer:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toLayer:(id)layer
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(TSDRenderable *)self layer];
-  [v8 convertPoint:v7 toLayer:{x, y}];
+  y = point.y;
+  x = point.x;
+  layerCopy = layer;
+  layer = [(TSDRenderable *)self layer];
+  [layer convertPoint:layerCopy toLayer:{x, y}];
   v10 = v9;
   v12 = v11;
 
@@ -962,18 +962,18 @@
   return result;
 }
 
-- (void)setIfDifferentFrame:(CGRect)a3 orTransform:(CGAffineTransform *)a4
+- (void)setIfDifferentFrame:(CGRect)frame orTransform:(CGAffineTransform *)transform
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(TSDRenderable *)self layer];
-  v10 = *&a4->c;
-  v11[0] = *&a4->a;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layer = [(TSDRenderable *)self layer];
+  v10 = *&transform->c;
+  v11[0] = *&transform->a;
   v11[1] = v10;
-  v11[2] = *&a4->tx;
-  [v9 setIfDifferentFrame:v11 orTransform:{x, y, width, height}];
+  v11[2] = *&transform->tx;
+  [layer setIfDifferentFrame:v11 orTransform:{x, y, width, height}];
 }
 
 @end

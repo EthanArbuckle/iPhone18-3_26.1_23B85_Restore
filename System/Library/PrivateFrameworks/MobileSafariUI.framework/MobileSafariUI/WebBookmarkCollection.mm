@@ -1,22 +1,22 @@
 @interface WebBookmarkCollection
 + (PPTWebBookmarkCollection)bookmarkCollectionForPPTTest;
-+ (id)leadImageURLForBookmark:(uint64_t)a1;
++ (id)leadImageURLForBookmark:(uint64_t)bookmark;
 + (void)_startBookmarkCollectionOpenRetryTimer;
 + (void)_stopBookmarkCollectionOpenRetryTimer;
 + (void)observeDatabaseVacuumNotification;
 + (void)stopObservingDatabaseVacuumNotification;
 + (void)test_overrideMainBookmarkCollection;
 - (uint64_t)dropOperationForReadingListDropSession:(uint64_t)result;
-- (uint64_t)markReadingListBookmark:(char)a3 asRead:(int)a4 postNotification:;
-- (uint64_t)saveReadingListBookmarkWithTitle:(void *)a3 address:(void *)a4 previewText:(void *)a5 thumbnailURL:(void *)a6 siteName:(void *)a7 tabDocument:(int)a8 didFetchPage:(void *)a9 updateController:(_DWORD *)a10 savedBookmarkID:(char)a11 shouldFetchMetadata:;
-- (uint64_t)updateBookmark:(void *)a3 withLeadImageURL:;
-- (uint64_t)updateReadingListBookmarkWithID:(void *)a3 setTitle:(void *)a4 address:(void *)a5 previewText:(void *)a6 thumbnailURL:(void *)a7 siteName:;
-- (void)_markDuplicateReadingListBookmarkUnread:(void *)a3 updatingController:;
-- (void)_saveWebArchiveForTabDocument:(void *)a3 bookmark:;
-- (void)dropBookmarks:(uint64_t)a3 inFolderWithID:(void *)a4 presentingViewController:(int)a5 isAddingBookmark:;
-- (void)dropDragItemsInReadingList:(uint64_t)a1;
-- (void)dropDragItemsInReadingList:(void *)a3 updatingController:;
-- (void)saveReadingListBookmarkWithTitle:(void *)a3 address:;
+- (uint64_t)markReadingListBookmark:(char)bookmark asRead:(int)read postNotification:;
+- (uint64_t)saveReadingListBookmarkWithTitle:(void *)title address:(void *)address previewText:(void *)text thumbnailURL:(void *)l siteName:(void *)name tabDocument:(int)document didFetchPage:(void *)page updateController:(_DWORD *)self0 savedBookmarkID:(char)self1 shouldFetchMetadata:;
+- (uint64_t)updateBookmark:(void *)bookmark withLeadImageURL:;
+- (uint64_t)updateReadingListBookmarkWithID:(void *)d setTitle:(void *)title address:(void *)address previewText:(void *)text thumbnailURL:(void *)l siteName:;
+- (void)_markDuplicateReadingListBookmarkUnread:(void *)unread updatingController:;
+- (void)_saveWebArchiveForTabDocument:(void *)document bookmark:;
+- (void)dropBookmarks:(uint64_t)bookmarks inFolderWithID:(void *)d presentingViewController:(int)controller isAddingBookmark:;
+- (void)dropDragItemsInReadingList:(uint64_t)list;
+- (void)dropDragItemsInReadingList:(void *)list updatingController:;
+- (void)saveReadingListBookmarkWithTitle:(void *)title address:;
 @end
 
 @implementation WebBookmarkCollection
@@ -27,15 +27,15 @@
   if (!databaseVacuumDistributedNotificationToken)
   {
     v1 = v0;
-    v2 = [MEMORY[0x277CCA9A0] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
     v3 = *MEMORY[0x277D7B610];
-    v4 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __72__WebBookmarkCollection_SafariExtras__observeDatabaseVacuumNotification__block_invoke;
     v7[3] = &__block_descriptor_40_e24_v16__0__NSNotification_8l;
     v7[4] = v1;
-    v5 = [v2 addObserverForName:v3 object:0 queue:v4 usingBlock:v7];
+    v5 = [defaultCenter addObserverForName:v3 object:0 queue:mainQueue usingBlock:v7];
     v6 = databaseVacuumDistributedNotificationToken;
     databaseVacuumDistributedNotificationToken = v5;
   }
@@ -98,8 +98,8 @@ void __72__WebBookmarkCollection_SafariExtras__observeDatabaseVacuumNotification
   objc_opt_self();
   if (databaseVacuumDistributedNotificationToken)
   {
-    v0 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v0 removeObserver:databaseVacuumDistributedNotificationToken name:*MEMORY[0x277D7B610] object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter removeObserver:databaseVacuumDistributedNotificationToken name:*MEMORY[0x277D7B610] object:0];
 
     v1 = databaseVacuumDistributedNotificationToken;
     databaseVacuumDistributedNotificationToken = 0;
@@ -138,15 +138,15 @@ void __77__WebBookmarkCollection_SafariExtras___startBookmarkCollectionOpenRetry
   objc_opt_self();
   [objc_opt_class() lockSync];
   v0 = [PPTWebBookmarkCollection alloc];
-  v1 = [MEMORY[0x277D7B520] inMemoryBookmarkCollectionConfiguration];
-  v2 = [(PPTWebBookmarkCollection *)v0 initWithConfiguration:v1];
+  inMemoryBookmarkCollectionConfiguration = [MEMORY[0x277D7B520] inMemoryBookmarkCollectionConfiguration];
+  v2 = [(PPTWebBookmarkCollection *)v0 initWithConfiguration:inMemoryBookmarkCollectionConfiguration];
 
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"DidImportBuiltinBookmarks"];
-  [v3 setBool:0 forKey:@"DidImportBuiltinBookmarks"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"DidImportBuiltinBookmarks"];
+  [standardUserDefaults setBool:0 forKey:@"DidImportBuiltinBookmarks"];
   v5 = [[BookmarkImporter alloc] initWithBookmarkCollection:v2];
   [(BookmarkImporter *)v5 importBuiltinBookmarks];
-  [v3 setBool:v4 forKey:@"DidImportBuiltinBookmarks"];
+  [standardUserDefaults setBool:v4 forKey:@"DidImportBuiltinBookmarks"];
   [(PPTWebBookmarkCollection *)v2 test_restoreMissingSpecialBookmarks];
   [objc_opt_class() unlockSync];
 
@@ -158,34 +158,34 @@ void __77__WebBookmarkCollection_SafariExtras___startBookmarkCollectionOpenRetry
   v0 = [MEMORY[0x277CCACA8] stringWithFormat:&stru_2827BF158];
   v1 = MEMORY[0x277CCACA8];
   v2 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Safari/iOS/MobileSafari/SafariWebBookmarkCollectionExtras.m"];
-  v3 = [v2 lastPathComponent];
+  lastPathComponent = [v2 lastPathComponent];
   if ([v0 length])
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@", %@", v0];
-    v4 = [v1 stringWithFormat:@"ASSERTION FAILURE: %s in %s, %@:%d%@", "[UIApplication sharedApplication].launchedToTest", "+[WebBookmarkCollection(SafariExtras) test_overrideMainBookmarkCollection]", v3, 189, v5];
+    v4 = [v1 stringWithFormat:@"ASSERTION FAILURE: %s in %s, %@:%d%@", "[UIApplication sharedApplication].launchedToTest", "+[WebBookmarkCollection(SafariExtras) test_overrideMainBookmarkCollection]", lastPathComponent, 189, v5];
   }
 
   else
   {
-    v4 = [v1 stringWithFormat:@"ASSERTION FAILURE: %s in %s, %@:%d%@", "[UIApplication sharedApplication].launchedToTest", "+[WebBookmarkCollection(SafariExtras) test_overrideMainBookmarkCollection]", v3, 189, &stru_2827BF158];
+    v4 = [v1 stringWithFormat:@"ASSERTION FAILURE: %s in %s, %@:%d%@", "[UIApplication sharedApplication].launchedToTest", "+[WebBookmarkCollection(SafariExtras) test_overrideMainBookmarkCollection]", lastPathComponent, 189, &stru_2827BF158];
   }
 
-  v6 = [MEMORY[0x277CCACC8] callStackSymbols];
-  NSLog(@"%@\n%@", v4, v6);
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+  NSLog(@"%@\n%@", v4, callStackSymbols);
 
   abort();
 }
 
-- (uint64_t)saveReadingListBookmarkWithTitle:(void *)a3 address:(void *)a4 previewText:(void *)a5 thumbnailURL:(void *)a6 siteName:(void *)a7 tabDocument:(int)a8 didFetchPage:(void *)a9 updateController:(_DWORD *)a10 savedBookmarkID:(char)a11 shouldFetchMetadata:
+- (uint64_t)saveReadingListBookmarkWithTitle:(void *)title address:(void *)address previewText:(void *)text thumbnailURL:(void *)l siteName:(void *)name tabDocument:(int)document didFetchPage:(void *)page updateController:(_DWORD *)self0 savedBookmarkID:(char)self1 shouldFetchMetadata:
 {
   v17 = a2;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a9;
-  if (!a1)
+  titleCopy = title;
+  addressCopy = address;
+  textCopy = text;
+  lCopy = l;
+  nameCopy = name;
+  pageCopy = page;
+  if (!self)
   {
     v51 = 0;
     goto LABEL_26;
@@ -193,8 +193,8 @@ void __77__WebBookmarkCollection_SafariExtras___startBookmarkCollectionOpenRetry
 
   if (([objc_opt_class() lockSync] & 1) == 0)
   {
-    v44 = [MEMORY[0x277D7B558] defaultReadingList];
-    v51 = [v44 addReadingListItemWithURL:v18 title:v17 previewText:v19 error:0];
+    defaultReadingList = [MEMORY[0x277D7B558] defaultReadingList];
+    v51 = [defaultReadingList addReadingListItemWithURL:titleCopy title:v17 previewText:addressCopy error:0];
 
 LABEL_26:
     v24 = v17;
@@ -203,71 +203,71 @@ LABEL_26:
 
   v24 = [MEMORY[0x277D7B5A0] _trimmedTitle:v17];
 
-  v48 = v22;
-  if (v19)
+  v48 = nameCopy;
+  if (addressCopy)
   {
-    v25 = [MEMORY[0x277D7B5A0] _trimmedPreviewText:v19];
+    v25 = [MEMORY[0x277D7B5A0] _trimmedPreviewText:addressCopy];
 
-    v19 = v25;
+    addressCopy = v25;
   }
 
-  v26 = [v18 absoluteString];
-  v27 = [a1 firstReadingListBookmarkWithURLMatchingString:v26 prefixMatch:0];
+  absoluteString = [titleCopy absoluteString];
+  v27 = [self firstReadingListBookmarkWithURLMatchingString:absoluteString prefixMatch:0];
 
   if (v27)
   {
     v43 = v27;
-    [(WebBookmarkCollection *)a1 _markDuplicateReadingListBookmarkUnread:v27 updatingController:v23];
+    [(WebBookmarkCollection *)self _markDuplicateReadingListBookmarkUnread:v27 updatingController:pageCopy];
     [objc_opt_class() unlockSync];
-    if (a10)
+    if (controller)
     {
-      *a10 = [v27 identifier];
+      *controller = [v27 identifier];
     }
 
     v51 = 1;
-    v22 = v48;
+    nameCopy = v48;
   }
 
   else
   {
-    v47 = v23;
+    v47 = pageCopy;
     v28 = objc_alloc(MEMORY[0x277D7B5A0]);
-    v29 = [v18 absoluteString];
-    v30 = [v28 initReadingListBookmarkWithTitle:v24 address:v29 previewText:v19];
+    absoluteString2 = [titleCopy absoluteString];
+    v30 = [v28 initReadingListBookmarkWithTitle:v24 address:absoluteString2 previewText:addressCopy];
 
-    v31 = [a1 readingListFolder];
-    [a1 moveBookmark:v30 toFolderWithID:{objc_msgSend(v31, "identifier")}];
+    readingListFolder = [self readingListFolder];
+    [self moveBookmark:v30 toFolderWithID:{objc_msgSend(readingListFolder, "identifier")}];
 
-    if (a8)
+    if (document)
     {
-      v32 = [MEMORY[0x277CBEAA8] date];
-      [v30 setDateLastFetched:v32];
+      date = [MEMORY[0x277CBEAA8] date];
+      [v30 setDateLastFetched:date];
     }
 
-    v33 = v21;
+    v33 = lCopy;
     [v30 setAddedLocally:{1, v24}];
-    v22 = v48;
-    if (v20)
+    nameCopy = v48;
+    if (textCopy)
     {
-      v34 = [v20 safari_originalDataAsString];
-      [v30 setReadingListIconURL:v34];
+      safari_originalDataAsString = [textCopy safari_originalDataAsString];
+      [v30 setReadingListIconURL:safari_originalDataAsString];
     }
 
-    v35 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    v36 = [v35 safari_shouldAutomaticallyDownloadReadingListItems];
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    safari_shouldAutomaticallyDownloadReadingListItems = [safari_browserDefaults safari_shouldAutomaticallyDownloadReadingListItems];
 
-    if (v48 && ([v48 isReaderAvailable] & 1) == 0 && ((v36 ^ 1) & 1) == 0)
+    if (v48 && ([v48 isReaderAvailable] & 1) == 0 && ((safari_shouldAutomaticallyDownloadReadingListItems ^ 1) & 1) == 0)
     {
-      [(WebBookmarkCollection *)a1 _saveWebArchiveForTabDocument:v48 bookmark:v30];
+      [(WebBookmarkCollection *)self _saveWebArchiveForTabDocument:v48 bookmark:v30];
     }
 
-    [a1 saveBookmark:v30];
-    v21 = v33;
-    if (!(v36 & 1 | ((a11 & 1) == 0)))
+    [self saveBookmark:v30];
+    lCopy = v33;
+    if (!(safari_shouldAutomaticallyDownloadReadingListItems & 1 | ((d & 1) == 0)))
     {
       v37 = +[ReadingListMetadataFetcher sharedMetadataFetcher];
       v38 = v37;
-      if (a8)
+      if (document)
       {
         v39 = v48;
       }
@@ -280,14 +280,14 @@ LABEL_26:
       [v37 fetchMetadataForReadingListBookmark:v30 withProvider:v39];
     }
 
-    v40 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v40 postNotificationName:@"ReadingListBookmarkAddedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"ReadingListBookmarkAddedNotification" object:0];
 
     v41 = +[Application sharedApplication];
     [v41 setReadingListWidgetNeedsReload];
 
     v42 = WBS_LOG_CHANNEL_PREFIXWidgets();
-    v23 = v47;
+    pageCopy = v47;
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -296,9 +296,9 @@ LABEL_26:
 
     [objc_opt_class() unlockSync];
     v24 = v46;
-    if (a10)
+    if (controller)
     {
-      *a10 = [v30 identifier];
+      *controller = [v30 identifier];
     }
 
     v51 = 1;
@@ -310,17 +310,17 @@ LABEL_27:
   return v51;
 }
 
-- (void)_saveWebArchiveForTabDocument:(void *)a3 bookmark:
+- (void)_saveWebArchiveForTabDocument:(void *)document bookmark:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  documentCopy = document;
+  v7 = documentCopy;
+  if (self)
   {
-    v8 = [v6 webarchivePathInReaderForm:0 fileExists:0];
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
-    v10 = [v8 stringByDeletingLastPathComponent];
-    v11 = [v9 _web_createDirectoryAtPathWithIntermediateDirectories:v10 attributes:0];
+    v8 = [documentCopy webarchivePathInReaderForm:0 fileExists:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    stringByDeletingLastPathComponent = [v8 stringByDeletingLastPathComponent];
+    v11 = [defaultManager _web_createDirectoryAtPathWithIntermediateDirectories:stringByDeletingLastPathComponent attributes:0];
 
     if (v11)
     {
@@ -341,7 +341,7 @@ LABEL_27:
       v14[2] = __78__WebBookmarkCollection_SafariExtras___saveWebArchiveForTabDocument_bookmark___block_invoke_2;
       v14[3] = &unk_2781DB820;
       v15 = v7;
-      v16 = a1;
+      selfCopy = self;
       v17 = &v19;
       [v5 saveWebArchiveToPath:v8 completion:v14];
 
@@ -387,13 +387,13 @@ uint64_t __78__WebBookmarkCollection_SafariExtras___saveWebArchiveForTabDocument
   return result;
 }
 
-+ (id)leadImageURLForBookmark:(uint64_t)a1
++ (id)leadImageURLForBookmark:(uint64_t)bookmark
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 localAttributes];
+  localAttributes = [v2 localAttributes];
 
-  v4 = [v3 objectForKeyedSubscript:@"leadImageURL"];
+  v4 = [localAttributes objectForKeyedSubscript:@"leadImageURL"];
 
   if ([v4 length])
   {
@@ -460,27 +460,27 @@ void __85__WebBookmarkCollection_SafariExtras__dropDragItemsInReadingList_updati
   }
 }
 
-- (void)saveReadingListBookmarkWithTitle:(void *)a3 address:
+- (void)saveReadingListBookmarkWithTitle:(void *)title address:
 {
   if (result)
   {
-    return [(WebBookmarkCollection *)result saveReadingListBookmarkWithTitle:a2 address:a3 previewText:0 thumbnailURL:0 siteName:0 tabDocument:0 didFetchPage:0 updateController:0 savedBookmarkID:0 shouldFetchMetadata:1];
+    return [(WebBookmarkCollection *)result saveReadingListBookmarkWithTitle:a2 address:title previewText:0 thumbnailURL:0 siteName:0 tabDocument:0 didFetchPage:0 updateController:0 savedBookmarkID:0 shouldFetchMetadata:1];
   }
 
   return result;
 }
 
-- (void)_markDuplicateReadingListBookmarkUnread:(void *)a3 updatingController:
+- (void)_markDuplicateReadingListBookmarkUnread:(void *)unread updatingController:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v12 = v5;
-    v6 = a3;
-    v7 = [v6 showingAllBookmarks];
-    if ((v7 & 1) != 0 || v6 && ([v12 dateLastViewed], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+    unreadCopy = unread;
+    showingAllBookmarks = [unreadCopy showingAllBookmarks];
+    if ((showingAllBookmarks & 1) != 0 || unreadCopy && ([v12 dateLastViewed], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
     {
-      v8 = [a1 indexOfReadingListBookmark:v12 countingOnlyUnread:v7 ^ 1u];
+      v8 = [self indexOfReadingListBookmark:v12 countingOnlyUnread:showingAllBookmarks ^ 1u];
     }
 
     else
@@ -488,40 +488,40 @@ void __85__WebBookmarkCollection_SafariExtras__dropDragItemsInReadingList_updati
       v8 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v10 = [MEMORY[0x277CBEAA8] date];
-    [v12 setDateAdded:v10];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v12 setDateAdded:date];
 
     [v12 setReadingListDateLastViewed:0];
-    [a1 saveBookmark:v12];
-    v11 = [a1 readingListWithUnreadOnly:0];
-    [a1 reorderBookmark:v12 toIndex:{objc_msgSend(v11, "bookmarkCount") - 1}];
+    [self saveBookmark:v12];
+    v11 = [self readingListWithUnreadOnly:0];
+    [self reorderBookmark:v12 toIndex:{objc_msgSend(v11, "bookmarkCount") - 1}];
 
-    [v6 didMarkBookmarkUnreadAtIndex:v8];
+    [unreadCopy didMarkBookmarkUnreadAtIndex:v8];
     v5 = v12;
   }
 }
 
-- (uint64_t)updateBookmark:(void *)a3 withLeadImageURL:
+- (uint64_t)updateBookmark:(void *)bookmark withLeadImageURL:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  bookmarkCopy = bookmark;
+  if (self)
   {
-    v7 = [v5 localAttributes];
-    v8 = [v7 mutableCopy];
+    localAttributes = [v5 localAttributes];
+    dictionary = [localAttributes mutableCopy];
 
-    if (!v8)
+    if (!dictionary)
     {
-      v8 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
-    v9 = [v6 safari_originalDataAsString];
-    [v8 setObject:v9 forKeyedSubscript:@"leadImageURL"];
+    safari_originalDataAsString = [bookmarkCopy safari_originalDataAsString];
+    [dictionary setObject:safari_originalDataAsString forKeyedSubscript:@"leadImageURL"];
 
-    [v5 setLocalAttributes:v8];
+    [v5 setLocalAttributes:dictionary];
     if ([objc_opt_class() lockSync])
     {
-      v10 = [a1 saveBookmark:v5];
+      v10 = [self saveBookmark:v5];
       [objc_opt_class() unlockSync];
     }
 
@@ -539,17 +539,17 @@ void __85__WebBookmarkCollection_SafariExtras__dropDragItemsInReadingList_updati
   return v10;
 }
 
-- (uint64_t)markReadingListBookmark:(char)a3 asRead:(int)a4 postNotification:
+- (uint64_t)markReadingListBookmark:(char)bookmark asRead:(int)read postNotification:
 {
   v7 = a2;
   v8 = v7;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_21;
   }
 
-  v9 = [v7 dateLastViewed];
-  v10 = (v9 == 0) ^ a3;
+  dateLastViewed = [v7 dateLastViewed];
+  v10 = (dateLastViewed == 0) ^ bookmark;
 
   if (v10)
   {
@@ -558,10 +558,10 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  if (a3)
+  if (bookmark)
   {
-    v13 = [MEMORY[0x277CBEAA8] date];
-    [v8 setReadingListDateLastViewed:v13];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v8 setReadingListDateLastViewed:date];
   }
 
   else
@@ -572,15 +572,15 @@ LABEL_3:
   if (([objc_opt_class() lockSync] & 1) == 0)
   {
     v22 = +[FeatureManager sharedFeatureManager];
-    v23 = [v22 isInMemoryBookmarkChangeTrackingAvailable];
+    isInMemoryBookmarkChangeTrackingAvailable = [v22 isInMemoryBookmarkChangeTrackingAvailable];
 
-    if (v23)
+    if (isInMemoryBookmarkChangeTrackingAvailable)
     {
-      [a1 modifyBookmarkInMemory:v8];
-      if (a4)
+      [self modifyBookmarkInMemory:v8];
+      if (read)
       {
-        v24 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v24 postNotificationName:@"ReadingListBookmarkDidUpdateNotification" object:v8];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter postNotificationName:@"ReadingListBookmarkDidUpdateNotification" object:v8];
       }
 
       v25 = +[Application sharedApplication];
@@ -609,11 +609,11 @@ LABEL_21:
     goto LABEL_4;
   }
 
-  v11 = [a1 saveBookmark:v8];
-  if (v11 && a4)
+  v11 = [self saveBookmark:v8];
+  if (v11 && read)
   {
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 postNotificationName:@"ReadingListBookmarkDidUpdateNotification" object:v8];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 postNotificationName:@"ReadingListBookmarkDidUpdateNotification" object:v8];
   }
 
   [objc_opt_class() unlockSync];
@@ -629,44 +629,44 @@ LABEL_4:
   return v11;
 }
 
-- (uint64_t)updateReadingListBookmarkWithID:(void *)a3 setTitle:(void *)a4 address:(void *)a5 previewText:(void *)a6 thumbnailURL:(void *)a7 siteName:
+- (uint64_t)updateReadingListBookmarkWithID:(void *)d setTitle:(void *)title address:(void *)address previewText:(void *)text thumbnailURL:(void *)l siteName:
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (a1 && [objc_opt_class() lockSync])
+  dCopy = d;
+  titleCopy = title;
+  addressCopy = address;
+  textCopy = text;
+  lCopy = l;
+  if (self && [objc_opt_class() lockSync])
   {
-    v18 = [a1 bookmarkWithID:a2];
+    v18 = [self bookmarkWithID:a2];
     v19 = v18;
     if (v18)
     {
       v28 = 0;
       v20 = [v18 webarchivePathInReaderForm:0 fileExists:&v28];
-      v21 = [v20 stringByDeletingPathExtension];
+      stringByDeletingPathExtension = [v20 stringByDeletingPathExtension];
 
-      if (v28 == 1 && ([v21 stringByRemovingPercentEncoding], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v14, "containsString:", v22), v22, (v23 & 1) != 0))
+      if (v28 == 1 && ([stringByDeletingPathExtension stringByRemovingPercentEncoding], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(titleCopy, "containsString:", v22), v22, (v23 & 1) != 0))
       {
         v24 = 0;
       }
 
       else
       {
-        v25 = [MEMORY[0x277CBEAA8] date];
-        [v19 setTitle:v13 previewText:v15 dateLastFetched:v25];
+        date = [MEMORY[0x277CBEAA8] date];
+        [v19 setTitle:dCopy previewText:addressCopy dateLastFetched:date];
 
-        [v19 setAddress:v14];
-        if (v16)
+        [v19 setAddress:titleCopy];
+        if (textCopy)
         {
-          [v19 setReadingListIconURL:v16];
+          [v19 setReadingListIconURL:textCopy];
         }
 
-        v24 = [a1 saveBookmark:v19];
+        v24 = [self saveBookmark:v19];
         if (v24)
         {
-          v26 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v26 postNotificationName:@"ReadingListBookmarkDidUpdateNotification" object:v19];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter postNotificationName:@"ReadingListBookmarkDidUpdateNotification" object:v19];
         }
       }
 
@@ -688,24 +688,24 @@ LABEL_4:
   return v24;
 }
 
-- (void)dropBookmarks:(uint64_t)a3 inFolderWithID:(void *)a4 presentingViewController:(int)a5 isAddingBookmark:
+- (void)dropBookmarks:(uint64_t)bookmarks inFolderWithID:(void *)d presentingViewController:(int)controller isAddingBookmark:
 {
   v26 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a4;
-  if (a1 && [v9 count])
+  dCopy = d;
+  if (self && [v9 count])
   {
-    v11 = [MEMORY[0x277D28BE0] sharedCoordinator];
-    if ([v11 lockBookmarks])
+    mEMORY[0x277D28BE0] = [MEMORY[0x277D28BE0] sharedCoordinator];
+    if ([mEMORY[0x277D28BE0] lockBookmarks])
     {
-      if (([v10 isEditing] & 1) == 0)
+      if (([dCopy isEditing] & 1) == 0)
       {
         v12 = objc_alloc_init(MEMORY[0x277D49B60]);
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __110__WebBookmarkCollection_SafariExtras__dropBookmarks_inFolderWithID_presentingViewController_isAddingBookmark___block_invoke;
         v23[3] = &unk_2781D4D40;
-        v24 = v11;
+        v24 = mEMORY[0x277D28BE0];
         [v12 setHandler:v23];
       }
 
@@ -729,7 +729,7 @@ LABEL_4:
               objc_enumerationMutation(v13);
             }
 
-            [a1 saveAndMoveBookmark:*(*(&v19 + 1) + 8 * v17++) toFolderID:{a3, v19}];
+            [self saveAndMoveBookmark:*(*(&v19 + 1) + 8 * v17++) toFolderID:{bookmarks, v19}];
           }
 
           while (v15 != v17);
@@ -739,20 +739,20 @@ LABEL_4:
         while (v15);
       }
 
-      if (!a5)
+      if (!controller)
       {
         goto LABEL_17;
       }
 
-      v18 = [MEMORY[0x277D499B8] sharedLogger];
-      [v18 didAddBookmarkWithMethod:2];
+      mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+      [mEMORY[0x277D499B8] didAddBookmarkWithMethod:2];
     }
 
     else
     {
-      [MEMORY[0x277D28BE0] showLockedDatabaseAlertForAction:0 fromViewController:v10];
-      v18 = [MEMORY[0x277D499B8] sharedLogger];
-      [v18 didPreventBookmarkActionWithBookmarkType:0 actionType:3];
+      [MEMORY[0x277D28BE0] showLockedDatabaseAlertForAction:0 fromViewController:dCopy];
+      mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+      [mEMORY[0x277D499B8] didPreventBookmarkActionWithBookmarkType:0 actionType:3];
     }
 
 LABEL_17:
@@ -763,8 +763,8 @@ LABEL_17:
 {
   if (result)
   {
-    v2 = [a2 items];
-    v3 = [v2 safari_containsObjectPassingTest:&__block_literal_global_60];
+    items = [a2 items];
+    v3 = [items safari_containsObjectPassingTest:&__block_literal_global_60];
 
     if (v3)
     {
@@ -780,10 +780,10 @@ LABEL_17:
   return result;
 }
 
-- (void)dropDragItemsInReadingList:(void *)a3 updatingController:
+- (void)dropDragItemsInReadingList:(void *)list updatingController:
 {
-  v5 = a3;
-  if (a1)
+  listCopy = list;
+  if (self)
   {
     v6 = MEMORY[0x277CBEBC0];
     v7 = [a2 safari_filterObjectsUsingBlock:&__block_literal_global_82_0];
@@ -791,17 +791,17 @@ LABEL_17:
     v8[1] = 3221225472;
     v8[2] = __85__WebBookmarkCollection_SafariExtras__dropDragItemsInReadingList_updatingController___block_invoke;
     v8[3] = &unk_2781D85C0;
-    v8[4] = a1;
-    v9 = v5;
+    v8[4] = self;
+    v9 = listCopy;
     [v6 _sf_urlsFromDragItems:v7 completionHandler:v8];
   }
 }
 
-- (void)dropDragItemsInReadingList:(uint64_t)a1
+- (void)dropDragItemsInReadingList:(uint64_t)list
 {
-  if (a1)
+  if (list)
   {
-    [(WebBookmarkCollection *)a1 dropDragItemsInReadingList:a2 updatingController:0];
+    [(WebBookmarkCollection *)list dropDragItemsInReadingList:a2 updatingController:0];
   }
 }
 

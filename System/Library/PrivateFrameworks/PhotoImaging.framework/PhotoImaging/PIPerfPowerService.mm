@@ -1,18 +1,18 @@
 @interface PIPerfPowerService
 - (PIPerfPowerService)init;
-- (PIPerfPowerService)initWithIdentifier:(id)a3 operation:(int64_t)a4;
+- (PIPerfPowerService)initWithIdentifier:(id)identifier operation:(int64_t)operation;
 - (void)beginMeasuring;
 - (void)endMeasuring;
-- (void)measureBlock:(id)a3;
+- (void)measureBlock:(id)block;
 @end
 
 @implementation PIPerfPowerService
 
-- (void)measureBlock:(id)a3
+- (void)measureBlock:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  if (!v17)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v4 = NUAssertLogger_16186();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -34,8 +34,8 @@
         v12 = dispatch_get_specific(*v6);
         v13 = MEMORY[0x1E696AF00];
         v14 = v12;
-        v15 = [v13 callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v13 callStackSymbols];
+        v16 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v19 = v12;
         v20 = 2114;
@@ -46,8 +46,8 @@
 
     else if (v9)
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v19 = v11;
       _os_log_error_impl(&dword_1C7694000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -57,22 +57,22 @@
   }
 
   [(PIPerfPowerService *)self beginMeasuring];
-  v17[2]();
+  blockCopy[2]();
   [(PIPerfPowerService *)self endMeasuring];
 }
 
 - (void)endMeasuring
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = [(PIPerfPowerService *)self identifier];
+  identifier = [(PIPerfPowerService *)self identifier];
 
-  if (!v3)
+  if (!identifier)
   {
     return;
   }
 
-  v39 = [(PIPerfPowerService *)self record];
-  if (!v39)
+  record = [(PIPerfPowerService *)self record];
+  if (!record)
   {
     v8 = NUAssertLogger_16186();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -83,7 +83,7 @@
       _os_log_error_impl(&dword_1C7694000, v8, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v10 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v12 = NUAssertLogger_16186();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_ERROR);
@@ -91,11 +91,11 @@
     {
       if (v13)
       {
-        v26 = dispatch_get_specific(*v10);
+        v26 = dispatch_get_specific(*callStackSymbols);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v10 = [v27 callStackSymbols];
-        v29 = [v10 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v41 = v26;
         v42 = 2114;
@@ -106,10 +106,10 @@
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v10 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v41 = v10;
+      v41 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -117,9 +117,9 @@
     goto LABEL_27;
   }
 
-  v4 = [v39 startTime];
+  startTime = [record startTime];
 
-  if (!v4)
+  if (!startTime)
   {
     v15 = NUAssertLogger_16186();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -130,7 +130,7 @@
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v10 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v17 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v12 = NUAssertLogger_16186();
     v18 = os_log_type_enabled(v12, OS_LOG_TYPE_ERROR);
@@ -138,10 +138,10 @@
     {
       if (v18)
       {
-        v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v10 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v41 = v10;
+        v41 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -154,11 +154,11 @@ LABEL_29:
 LABEL_27:
     if (v18)
     {
-      v30 = dispatch_get_specific(*v10);
+      v30 = dispatch_get_specific(*callStackSymbols);
       v31 = MEMORY[0x1E696AF00];
       v32 = v30;
-      v10 = [v31 callStackSymbols];
-      v33 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v31 callStackSymbols];
+      v33 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v41 = v30;
       v42 = 2114;
@@ -169,9 +169,9 @@ LABEL_27:
     goto LABEL_29;
   }
 
-  v5 = [v39 endTime];
+  endTime = [record endTime];
 
-  if (v5)
+  if (endTime)
   {
     v20 = NUAssertLogger_16186();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -182,7 +182,7 @@ LABEL_27:
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v10 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v22 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v12 = NUAssertLogger_16186();
     v23 = os_log_type_enabled(v12, OS_LOG_TYPE_ERROR);
@@ -190,8 +190,8 @@ LABEL_27:
     {
       if (v23)
       {
-        v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v25 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v41 = v25;
         _os_log_error_impl(&dword_1C7694000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -203,11 +203,11 @@ LABEL_27:
 LABEL_30:
     if (v23)
     {
-      v34 = dispatch_get_specific(*v10);
+      v34 = dispatch_get_specific(*callStackSymbols);
       v35 = MEMORY[0x1E696AF00];
       v36 = v34;
-      v37 = [v35 callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [v35 callStackSymbols];
+      v38 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v41 = v34;
       v42 = 2114;
@@ -221,10 +221,10 @@ LABEL_32:
   }
 
   v6 = [MEMORY[0x1E695DF00] now];
-  [v39 setEndTime:v6];
+  [record setEndTime:v6];
 
-  [v39 identifier];
-  v7 = [v39 payload];
+  [record identifier];
+  payload = [record payload];
   PPSSendTelemetry();
 
   [(PIPerfPowerService *)self setRecord:0];
@@ -233,13 +233,13 @@ LABEL_32:
 - (void)beginMeasuring
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(PIPerfPowerService *)self identifier];
+  identifier = [(PIPerfPowerService *)self identifier];
 
-  if (v3)
+  if (identifier)
   {
-    v4 = [(PIPerfPowerService *)self record];
+    record = [(PIPerfPowerService *)self record];
 
-    if (v4)
+    if (record)
     {
       v12 = NUAssertLogger_16186();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -261,8 +261,8 @@ LABEL_32:
           v20 = dispatch_get_specific(*v14);
           v21 = MEMORY[0x1E696AF00];
           v22 = v20;
-          v23 = [v21 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v21 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = v20;
           v28 = 2114;
@@ -273,8 +273,8 @@ LABEL_32:
 
       else if (v17)
       {
-        v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v19 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v27 = v19;
         _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -286,26 +286,26 @@ LABEL_32:
     v5 = objc_alloc_init(PIPerfPowerRecord);
     [(PIPerfPowerService *)self setRecord:v5];
 
-    v6 = [(PIPerfPowerService *)self identifier];
-    v7 = [v6 telemetryId];
-    v8 = [(PIPerfPowerService *)self record];
-    [v8 setIdentifier:v7];
+    identifier2 = [(PIPerfPowerService *)self identifier];
+    telemetryId = [identifier2 telemetryId];
+    record2 = [(PIPerfPowerService *)self record];
+    [record2 setIdentifier:telemetryId];
 
-    v9 = [(PIPerfPowerService *)self operation];
-    v10 = [(PIPerfPowerService *)self record];
-    [v10 setOperation:v9];
+    operation = [(PIPerfPowerService *)self operation];
+    record3 = [(PIPerfPowerService *)self record];
+    [record3 setOperation:operation];
 
     v25 = [MEMORY[0x1E695DF00] now];
-    v11 = [(PIPerfPowerService *)self record];
-    [v11 setStartTime:v25];
+    record4 = [(PIPerfPowerService *)self record];
+    [record4 setStartTime:v25];
   }
 }
 
-- (PIPerfPowerService)initWithIdentifier:(id)a3 operation:(int64_t)a4
+- (PIPerfPowerService)initWithIdentifier:(id)identifier operation:(int64_t)operation
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4 <= 0)
+  identifierCopy = identifier;
+  if (operation <= 0)
   {
     v11 = NUAssertLogger_16186();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -327,8 +327,8 @@ LABEL_32:
         v19 = dispatch_get_specific(*v13);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v19;
         v27 = 2114;
@@ -339,8 +339,8 @@ LABEL_32:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v18;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -349,14 +349,14 @@ LABEL_32:
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
+  v7 = identifierCopy;
   v24.receiver = self;
   v24.super_class = PIPerfPowerService;
   v8 = [(PIPerfPowerService *)&v24 init];
   identifier = v8->_identifier;
   v8->_identifier = v7;
 
-  v8->_operation = a4;
+  v8->_operation = operation;
   return v8;
 }
 
@@ -401,8 +401,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -429,8 +429,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

@@ -1,13 +1,13 @@
 @interface PHImageRequest
 - (CGSize)desiredImageSize;
-- (PHImageRequest)initWithRequestID:(int)a3 requestIndex:(unint64_t)a4 contextType:(int64_t)a5 managerID:(unint64_t)a6 asset:(id)a7 displaySpec:(id)a8 behaviorSpec:(id)a9 chooser:(id)a10 delegate:(id)a11;
+- (PHImageRequest)initWithRequestID:(int)d requestIndex:(unint64_t)index contextType:(int64_t)type managerID:(unint64_t)iD asset:(id)asset displaySpec:(id)spec behaviorSpec:(id)behaviorSpec chooser:(id)self0 delegate:(id)self1;
 - (PHImageRequestDelegate)imageDelegate;
 - (id)description;
-- (void)_decodeImageConfiguredWithURL:(id)a3 isPrimaryFormat:(BOOL)a4;
+- (void)_decodeImageConfiguredWithURL:(id)l isPrimaryFormat:(BOOL)format;
 - (void)cancel;
-- (void)configureWithError:(id)a3;
-- (void)configureWithURL:(id)a3 uniformTypeIdentifier:(id)a4 exifOrientation:(int)a5;
-- (void)handleAvailabilityChangeForResource:(id)a3 url:(id)a4 info:(id)a5 error:(id)a6;
+- (void)configureWithError:(id)error;
+- (void)configureWithURL:(id)l uniformTypeIdentifier:(id)identifier exifOrientation:(int)orientation;
+- (void)handleAvailabilityChangeForResource:(id)resource url:(id)url info:(id)info error:(id)error;
 - (void)startRequest;
 @end
 
@@ -23,17 +23,17 @@
     return;
   }
 
-  v3 = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec shouldLoadURL];
-  v4 = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec shouldLoadData];
-  v5 = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec shouldLoadImage];
-  if ([(PHImageRequestBehaviorSpec *)self->_behaviorSpec choosingPolicy]< 3 && (v4 || v3) || !v5 && !v4 && !v3)
+  shouldLoadURL = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec shouldLoadURL];
+  shouldLoadData = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec shouldLoadData];
+  shouldLoadImage = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec shouldLoadImage];
+  if ([(PHImageRequestBehaviorSpec *)self->_behaviorSpec choosingPolicy]< 3 && (shouldLoadData || shouldLoadURL) || !shouldLoadImage && !shouldLoadData && !shouldLoadURL)
   {
     v15 = PLImageManagerGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [(PHMediaRequest *)self identifierString];
+      identifierString = [(PHMediaRequest *)self identifierString];
       *buf = 138412290;
-      v95 = v16;
+      v95 = identifierString;
       _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_ERROR, "Invalid loading mode for image request %@ is a no-op", buf, 0xCu);
     }
 
@@ -42,9 +42,9 @@
       goto LABEL_23;
     }
 
-    v17 = [(PHMediaRequest *)self requestID];
-    v18 = [(PHMediaRequest *)self identifierString];
-    [PHImageManagerRequestTracer traceMessageForRequestID:v17 message:@"Invalid loading mode for image request %@ is a no-op", v18];
+    requestID = [(PHMediaRequest *)self requestID];
+    identifierString2 = [(PHMediaRequest *)self identifierString];
+    [PHImageManagerRequestTracer traceMessageForRequestID:requestID message:@"Invalid loading mode for image request %@ is a no-op", identifierString2];
 LABEL_71:
 
     goto LABEL_23;
@@ -55,9 +55,9 @@ LABEL_71:
     v19 = PLImageManagerGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [(PHMediaRequest *)self identifierString];
+      identifierString3 = [(PHMediaRequest *)self identifierString];
       *buf = 138412290;
-      v95 = v20;
+      v95 = identifierString3;
       _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_ERROR, "Image request %@ running without chooser is a no-op", buf, 0xCu);
     }
 
@@ -66,33 +66,33 @@ LABEL_71:
       goto LABEL_23;
     }
 
-    v75 = [(PHMediaRequest *)self requestID];
-    v18 = [(PHMediaRequest *)self identifierString];
-    [PHImageManagerRequestTracer traceMessageForRequestID:v75 message:@"Image request %@ running without chooser is a no-op", v18];
+    requestID2 = [(PHMediaRequest *)self requestID];
+    identifierString2 = [(PHMediaRequest *)self identifierString];
+    [PHImageManagerRequestTracer traceMessageForRequestID:requestID2 message:@"Image request %@ running without chooser is a no-op", identifierString2];
     goto LABEL_71;
   }
 
-  if (!self->_forceIgnoreCache && v5 && !v4 && !v3)
+  if (!self->_forceIgnoreCache && shouldLoadImage && !shouldLoadData && !shouldLoadURL)
   {
-    v21 = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec choosingPolicy];
+    choosingPolicy = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec choosingPolicy];
     v93 = 0;
-    v22 = [(PHImageRequest *)self imageDelegate];
-    v23 = v22;
-    v24 = v21 == 3 ? &v93 + 1 : 0;
+    imageDelegate = [(PHImageRequest *)self imageDelegate];
+    v23 = imageDelegate;
+    v24 = choosingPolicy == 3 ? &v93 + 1 : 0;
     v92[0] = MEMORY[0x1E69E9820];
     v92[1] = 3221225472;
     v92[2] = __30__PHImageRequest_startRequest__block_invoke;
     v92[3] = &unk_1E75A3D78;
     v92[4] = self;
-    [v22 imageRequest:self isQueryingCacheAndDidWait:v24 didFindImage:&v93 resultHandler:v92];
+    [imageDelegate imageRequest:self isQueryingCacheAndDidWait:v24 didFindImage:&v93 resultHandler:v92];
 
     if ((v93 & 0x100) != 0 || v93 == 1)
     {
       v25 = PLImageManagerGetLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
-        v26 = [(PHMediaRequest *)self identifierString];
-        v27 = v26;
+        identifierString4 = [(PHMediaRequest *)self identifierString];
+        v27 = identifierString4;
         v28 = @"waiting for in-flight request";
         if (v93)
         {
@@ -100,17 +100,17 @@ LABEL_71:
         }
 
         *buf = 138412546;
-        v95 = v26;
+        v95 = identifierString4;
         v96 = 2112;
-        v97 = v28;
+        selfCopy = v28;
         _os_log_impl(&dword_19C86F000, v25, OS_LOG_TYPE_DEBUG, "[RM][cache]: %@ early return from image cache, reason: %@", buf, 0x16u);
       }
 
       if (PHImageManagerRecordEnabled())
       {
-        v29 = [(PHMediaRequest *)self requestID];
-        v30 = [(PHMediaRequest *)self identifierString];
-        v31 = v30;
+        requestID3 = [(PHMediaRequest *)self requestID];
+        identifierString5 = [(PHMediaRequest *)self identifierString];
+        v31 = identifierString5;
         if (v93)
         {
           v32 = @"found image";
@@ -121,7 +121,7 @@ LABEL_71:
           v32 = @"waiting for in-flight request";
         }
 
-        [PHImageManagerRequestTracer traceMessageForRequestID:v29 message:@"[RM][cache]: %@ early return from image cache, reason: %@", v30, v32];
+        [PHImageManagerRequestTracer traceMessageForRequestID:requestID3 message:@"[RM][cache]: %@ early return from image cache, reason: %@", identifierString5, v32];
       }
 
       return;
@@ -131,29 +131,29 @@ LABEL_71:
   v6 = PLImageManagerGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(PHMediaRequest *)self identifierString];
+    identifierString6 = [(PHMediaRequest *)self identifierString];
     *buf = 138412546;
-    v95 = v7;
+    v95 = identifierString6;
     v96 = 2112;
-    v97 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_DEBUG, "[RM]: %@ Image request: %@", buf, 0x16u);
   }
 
   if (PHImageManagerRecordEnabled())
   {
-    v69 = [(PHMediaRequest *)self requestID];
-    v70 = [(PHMediaRequest *)self identifierString];
-    [PHImageManagerRequestTracer traceMessageForRequestID:v69 message:@"[RM]: %@ Image request: %@", v70, self];
+    requestID4 = [(PHMediaRequest *)self requestID];
+    identifierString7 = [(PHMediaRequest *)self identifierString];
+    [PHImageManagerRequestTracer traceMessageForRequestID:requestID4 message:@"[RM]: %@ Image request: %@", identifierString7, self];
   }
 
   p_desiredImageSize = &self->_desiredImageSize;
   displaySpec = self->_displaySpec;
   if (displaySpec)
   {
-    v10 = [(PHMediaRequest *)self asset];
-    v11 = [v10 pixelWidth];
-    v12 = [(PHMediaRequest *)self asset];
-    -[PHImageDisplaySpec requestSizeFromFullSizedWidth:height:resizeMode:](displaySpec, "requestSizeFromFullSizedWidth:height:resizeMode:", v11, [v12 pixelHeight], -[PHImageRequestBehaviorSpec resizeMode](self->_behaviorSpec, "resizeMode"));
+    asset = [(PHMediaRequest *)self asset];
+    pixelWidth = [asset pixelWidth];
+    asset2 = [(PHMediaRequest *)self asset];
+    -[PHImageDisplaySpec requestSizeFromFullSizedWidth:height:resizeMode:](displaySpec, "requestSizeFromFullSizedWidth:height:resizeMode:", pixelWidth, [asset2 pixelHeight], -[PHImageRequestBehaviorSpec resizeMode](self->_behaviorSpec, "resizeMode"));
     p_desiredImageSize->width = v13;
     self->_desiredImageSize.height = v14;
   }
@@ -166,25 +166,25 @@ LABEL_71:
   v33 = PLImageManagerGetLog();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
   {
-    v34 = [(PHMediaRequest *)self identifierString];
+    identifierString8 = [(PHMediaRequest *)self identifierString];
     v35 = DCIM_NSStringFromCGSize();
-    v36 = [(PHImageDisplaySpec *)self->_displaySpec shortDescription];
+    shortDescription = [(PHImageDisplaySpec *)self->_displaySpec shortDescription];
     *buf = 138412802;
-    v95 = v34;
+    v95 = identifierString8;
     v96 = 2112;
-    v97 = v35;
+    selfCopy = v35;
     v98 = 2112;
-    v99 = v36;
+    v99 = shortDescription;
     _os_log_impl(&dword_19C86F000, v33, OS_LOG_TYPE_DEBUG, "[RM]: %@ request sized to %@, for display spec: %@", buf, 0x20u);
   }
 
   if (PHImageManagerRecordEnabled())
   {
-    v71 = [(PHMediaRequest *)self requestID];
-    v72 = [(PHMediaRequest *)self identifierString];
+    requestID5 = [(PHMediaRequest *)self requestID];
+    identifierString9 = [(PHMediaRequest *)self identifierString];
     v73 = DCIM_NSStringFromCGSize();
-    v74 = [(PHImageDisplaySpec *)self->_displaySpec shortDescription];
-    [PHImageManagerRequestTracer traceMessageForRequestID:v71 message:@"[RM]: %@ request sized to %@, for display spec: %@", v72, v73, v74];
+    shortDescription2 = [(PHImageDisplaySpec *)self->_displaySpec shortDescription];
+    [PHImageManagerRequestTracer traceMessageForRequestID:requestID5 message:@"[RM]: %@ request sized to %@, for display spec: %@", identifierString9, v73, shortDescription2];
   }
 
   if (self->_configuredImageURL)
@@ -213,48 +213,48 @@ LABEL_23:
   v38 = PLImageManagerGetLog();
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
   {
-    v89 = [(PHMediaRequest *)self identifierString];
+    identifierString10 = [(PHMediaRequest *)self identifierString];
     v39 = MEMORY[0x1E69BE540];
-    v91 = [(PHMediaRequest *)self asset];
-    v40 = [v91 imageRequestHints];
-    v41 = [(PHMediaRequest *)self asset];
-    v42 = [v41 pixelWidth];
-    v43 = [(PHMediaRequest *)self asset];
-    v44 = [v43 pixelHeight];
-    v45 = [(PHMediaRequest *)self asset];
-    v46 = [v39 debugDescriptionForHintData:v40 assetWidth:v42 assetHeight:v44 assetID:v45];
+    asset3 = [(PHMediaRequest *)self asset];
+    imageRequestHints = [asset3 imageRequestHints];
+    asset4 = [(PHMediaRequest *)self asset];
+    pixelWidth2 = [asset4 pixelWidth];
+    asset5 = [(PHMediaRequest *)self asset];
+    pixelHeight = [asset5 pixelHeight];
+    asset6 = [(PHMediaRequest *)self asset];
+    v46 = [v39 debugDescriptionForHintData:imageRequestHints assetWidth:pixelWidth2 assetHeight:pixelHeight assetID:asset6];
     *buf = 138412546;
-    v95 = v89;
+    v95 = identifierString10;
     v96 = 2112;
-    v97 = v46;
+    selfCopy = v46;
     _os_log_impl(&dword_19C86F000, v38, OS_LOG_TYPE_DEBUG, "[RM]: %@ choosing image resource, hints are: %@", buf, 0x16u);
   }
 
   if (PHImageManagerRecordEnabled())
   {
-    v90 = [(PHMediaRequest *)self requestID];
-    v88 = [(PHMediaRequest *)self identifierString];
+    requestID6 = [(PHMediaRequest *)self requestID];
+    identifierString11 = [(PHMediaRequest *)self identifierString];
     v76 = MEMORY[0x1E69BE540];
-    v77 = [(PHMediaRequest *)self asset];
-    v78 = [v77 imageRequestHints];
-    v79 = [(PHMediaRequest *)self asset];
-    v80 = [v79 pixelWidth];
-    v81 = [(PHMediaRequest *)self asset];
-    v82 = [v81 pixelHeight];
-    v83 = [(PHMediaRequest *)self asset];
-    v84 = [v76 debugDescriptionForHintData:v78 assetWidth:v80 assetHeight:v82 assetID:v83];
-    [PHImageManagerRequestTracer traceMessageForRequestID:v90 message:@"[RM]: %@ choosing image resource, hints are: %@", v88, v84];
+    asset7 = [(PHMediaRequest *)self asset];
+    imageRequestHints2 = [asset7 imageRequestHints];
+    asset8 = [(PHMediaRequest *)self asset];
+    pixelWidth3 = [asset8 pixelWidth];
+    asset9 = [(PHMediaRequest *)self asset];
+    pixelHeight2 = [asset9 pixelHeight];
+    asset10 = [(PHMediaRequest *)self asset];
+    v84 = [v76 debugDescriptionForHintData:imageRequestHints2 assetWidth:pixelWidth3 assetHeight:pixelHeight2 assetID:asset10];
+    [PHImageManagerRequestTracer traceMessageForRequestID:requestID6 message:@"[RM]: %@ choosing image resource, hints are: %@", identifierString11, v84];
   }
 
   v47 = self->_chooser;
-  v48 = [(PHImageRequest *)self behaviorSpec];
-  [(PHImageResourceChooser *)v47 setBehaviorSpec:v48];
+  behaviorSpec = [(PHImageRequest *)self behaviorSpec];
+  [(PHImageResourceChooser *)v47 setBehaviorSpec:behaviorSpec];
 
   [(PHImageRequest *)self desiredImageSize];
   [(PHImageResourceChooser *)v47 setDesiredSize:?];
   [(PHImageResourceChooser *)v47 setContext:self];
-  v49 = [(PHMediaRequest *)self identifierString];
-  [(PHImageResourceChooser *)v47 setLoggingPrefix:v49];
+  identifierString12 = [(PHMediaRequest *)self identifierString];
+  [(PHImageResourceChooser *)v47 setLoggingPrefix:identifierString12];
 
   [(PHImageResourceChooser *)v47 setResourceHandler:&__block_literal_global_3000];
   if ([(PHImageRequest *)self downloadIntent]== 2)
@@ -274,10 +274,10 @@ LABEL_23:
     [(PHImageDisplaySpec *)self->_displaySpec targetSize];
     if (v56 < v58 * v59 || ([(PHImageDisplaySpec *)self->_displaySpec targetSize], v61 == v52) && v60 == v51)
     {
-      v62 = [(PHMediaRequest *)self asset];
-      v63 = [v62 pixelWidth];
-      v64 = [(PHMediaRequest *)self asset];
-      v65 = v56 / ([v64 pixelHeight] * v63);
+      asset11 = [(PHMediaRequest *)self asset];
+      pixelWidth4 = [asset11 pixelWidth];
+      asset12 = [(PHMediaRequest *)self asset];
+      v65 = v56 / ([asset12 pixelHeight] * pixelWidth4);
 
       if (v65 < 0.000000238418579)
       {
@@ -288,12 +288,12 @@ LABEL_23:
       v66 = PLImageManagerGetLog();
       if (os_log_type_enabled(v66, OS_LOG_TYPE_DEBUG))
       {
-        v67 = [(PHMediaRequest *)self identifierString];
+        identifierString13 = [(PHMediaRequest *)self identifierString];
         v68 = DCIM_NSStringFromCGSize();
         *buf = 138412802;
-        v95 = v67;
+        v95 = identifierString13;
         v96 = 2048;
-        v97 = *&v65;
+        selfCopy = *&v65;
         v98 = 2112;
         v99 = v68;
         _os_log_impl(&dword_19C86F000, v66, OS_LOG_TYPE_DEBUG, "[RM]: %@ enabling fallback-best scale: %f based on fallback size: %@", buf, 0x20u);
@@ -301,10 +301,10 @@ LABEL_23:
 
       if (PHImageManagerRecordEnabled())
       {
-        v85 = [(PHMediaRequest *)self requestID];
-        v86 = [(PHMediaRequest *)self identifierString];
+        requestID7 = [(PHMediaRequest *)self requestID];
+        identifierString14 = [(PHMediaRequest *)self identifierString];
         v87 = DCIM_NSStringFromCGSize();
-        [PHImageManagerRequestTracer traceMessageForRequestID:v85 message:@"[RM]: %@ enabling fallback-best scale: %f based on fallback size: %@", v86, *&v65, v87];
+        [PHImageManagerRequestTracer traceMessageForRequestID:requestID7 message:@"[RM]: %@ enabling fallback-best scale: %f based on fallback size: %@", identifierString14, *&v65, v87];
       }
     }
   }
@@ -705,9 +705,9 @@ LABEL_71:
   v15 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(PHMediaRequest *)self identifierString];
-  v6 = [(PHMediaRequest *)self asset];
-  v7 = [v6 uuid];
+  identifierString = [(PHMediaRequest *)self identifierString];
+  asset = [(PHMediaRequest *)self asset];
+  uuid = [asset uuid];
   if ([(PHImageRequest *)self isSynchronous])
   {
     v8 = @"Y";
@@ -718,37 +718,37 @@ LABEL_71:
     v8 = @"N";
   }
 
-  v9 = [(PHImageRequest *)self displaySpec];
-  v10 = [v9 shortDescription];
-  v11 = [(PHImageRequest *)self behaviorSpec];
-  v12 = [v11 shortDescription];
-  v13 = [v15 stringWithFormat:@"<%@ %p> %@ - asset: %@, sync: %@, display: (%@), behavior: (%@)", v4, self, v5, v7, v8, v10, v12];
+  displaySpec = [(PHImageRequest *)self displaySpec];
+  shortDescription = [displaySpec shortDescription];
+  behaviorSpec = [(PHImageRequest *)self behaviorSpec];
+  shortDescription2 = [behaviorSpec shortDescription];
+  v13 = [v15 stringWithFormat:@"<%@ %p> %@ - asset: %@, sync: %@, display: (%@), behavior: (%@)", v4, self, identifierString, uuid, v8, shortDescription, shortDescription2];
 
   return v13;
 }
 
-- (void)configureWithURL:(id)a3 uniformTypeIdentifier:(id)a4 exifOrientation:(int)a5
+- (void)configureWithURL:(id)l uniformTypeIdentifier:(id)identifier exifOrientation:(int)orientation
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  identifierCopy = identifier;
   configuredImageURL = self->_configuredImageURL;
-  self->_configuredImageURL = v8;
-  v11 = v8;
+  self->_configuredImageURL = lCopy;
+  v11 = lCopy;
 
   configuredImageUTI = self->_configuredImageUTI;
-  self->_configuredImageUTI = v9;
+  self->_configuredImageUTI = identifierCopy;
 
-  self->_configuredExifOrientation = a5;
+  self->_configuredExifOrientation = orientation;
 }
 
-- (void)handleAvailabilityChangeForResource:(id)a3 url:(id)a4 info:(id)a5 error:(id)a6
+- (void)handleAvailabilityChangeForResource:(id)resource url:(id)url info:(id)info error:(id)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  resourceCopy = resource;
+  urlCopy = url;
+  infoCopy = info;
   behaviorSpec = self->_behaviorSpec;
-  v14 = a6;
+  errorCopy = error;
   if ([(PHImageRequestBehaviorSpec *)behaviorSpec isSynchronous])
   {
     v15 = v38;
@@ -769,33 +769,33 @@ LABEL_71:
   v15[3] = &unk_1E75AB270;
   v15[4] = self;
   v17 = _Block_copy(v15);
-  [(PHCompositeMediaResult *)self->_imageResult setError:v14];
+  [(PHCompositeMediaResult *)self->_imageResult setError:errorCopy];
 
-  [(PHCompositeMediaResult *)self->_imageResult addInfoFromDictionary:v12];
+  [(PHCompositeMediaResult *)self->_imageResult addInfoFromDictionary:infoCopy];
   v18 = PLImageManagerGetLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [(PHMediaRequest *)self identifierString];
+    identifierString = [(PHMediaRequest *)self identifierString];
     *buf = 138412546;
-    v40 = v19;
+    v40 = identifierString;
     v41 = 2112;
-    v42 = v11;
+    v42 = urlCopy;
     _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_DEBUG, "[RM]: %@ Image request handling resource availabilty at url: %@", buf, 0x16u);
   }
 
   if (PHImageManagerRecordEnabled())
   {
-    v32 = [(PHMediaRequest *)self requestID];
-    v33 = [(PHMediaRequest *)self identifierString];
-    [PHImageManagerRequestTracer traceMessageForRequestID:v32 message:@"[RM]: %@ Image request handling resource availabilty at url: %@", v33, v11];
+    requestID = [(PHMediaRequest *)self requestID];
+    identifierString2 = [(PHMediaRequest *)self identifierString];
+    [PHImageManagerRequestTracer traceMessageForRequestID:requestID message:@"[RM]: %@ Image request handling resource availabilty at url: %@", identifierString2, urlCopy];
 
-    if (!v11)
+    if (!urlCopy)
     {
       goto LABEL_16;
     }
   }
 
-  else if (!v11)
+  else if (!urlCopy)
   {
     goto LABEL_16;
   }
@@ -805,13 +805,13 @@ LABEL_71:
     goto LABEL_13;
   }
 
-  v20 = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec shouldLoadURL];
-  v21 = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec shouldLoadData];
-  v22 = [v12 objectForKeyedSubscript:@"PHImageFileUTIKey"];
-  v23 = [v12 objectForKeyedSubscript:@"PHImageFileOrientationKey"];
+  shouldLoadURL = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec shouldLoadURL];
+  shouldLoadData = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec shouldLoadData];
+  v22 = [infoCopy objectForKeyedSubscript:@"PHImageFileUTIKey"];
+  v23 = [infoCopy objectForKeyedSubscript:@"PHImageFileOrientationKey"];
   if (!v23)
   {
-    URLIntoResult = _loadURLIntoResult(v20, v21, v11, v22, -1, self);
+    URLIntoResult = _loadURLIntoResult(shouldLoadURL, shouldLoadData, urlCopy, v22, -1, self);
 
     if (URLIntoResult)
     {
@@ -824,13 +824,13 @@ LABEL_16:
   }
 
   v24 = v23;
-  [v12 objectForKeyedSubscript:@"PHImageFileOrientationKey"];
-  v25 = v34 = v10;
+  [infoCopy objectForKeyedSubscript:@"PHImageFileOrientationKey"];
+  v25 = v34 = resourceCopy;
   [v25 integerValue];
   v26 = PLExifOrientationFromImageOrientation();
-  v27 = _loadURLIntoResult(v20, v21, v11, v22, v26, self);
+  v27 = _loadURLIntoResult(shouldLoadURL, shouldLoadData, urlCopy, v22, v26, self);
 
-  v10 = v34;
+  resourceCopy = v34;
   if (!v27)
   {
     goto LABEL_16;
@@ -843,9 +843,9 @@ LABEL_13:
   }
 
   v29 = MEMORY[0x1E69BE540];
-  v30 = [v10 uniformTypeIdentifier];
-  v31 = [v30 identifier];
-  LODWORD(v29) = [v29 isPrimaryImageFormatForUTI:v31];
+  uniformTypeIdentifier = [resourceCopy uniformTypeIdentifier];
+  identifier = [uniformTypeIdentifier identifier];
+  LODWORD(v29) = [v29 isPrimaryImageFormatForUTI:identifier];
 
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
@@ -853,7 +853,7 @@ LABEL_13:
   v35[3] = &unk_1E75A3DC0;
   v35[4] = self;
   v36 = v17;
-  PHDecodeImageFromURLForRequest(v11, v29, self, v35, self->_desiredImageSize.width, self->_desiredImageSize.height);
+  PHDecodeImageFromURLForRequest(urlCopy, v29, self, v35, self->_desiredImageSize.width, self->_desiredImageSize.height);
 
 LABEL_17:
 }
@@ -952,13 +952,13 @@ void __30__PHImageRequest_startRequest__block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (void)configureWithError:(id)a3
+- (void)configureWithError:(id)error
 {
   v5.receiver = self;
   v5.super_class = PHImageRequest;
-  v4 = a3;
-  [(PHMediaRequest *)&v5 configureWithError:v4];
-  [(PHCompositeMediaResult *)self->_imageResult setError:v4, v5.receiver, v5.super_class];
+  errorCopy = error;
+  [(PHMediaRequest *)&v5 configureWithError:errorCopy];
+  [(PHCompositeMediaResult *)self->_imageResult setError:errorCopy, v5.receiver, v5.super_class];
 }
 
 - (void)cancel
@@ -971,30 +971,30 @@ void __30__PHImageRequest_startRequest__block_invoke(uint64_t a1, uint64_t a2)
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (PHImageRequest)initWithRequestID:(int)a3 requestIndex:(unint64_t)a4 contextType:(int64_t)a5 managerID:(unint64_t)a6 asset:(id)a7 displaySpec:(id)a8 behaviorSpec:(id)a9 chooser:(id)a10 delegate:(id)a11
+- (PHImageRequest)initWithRequestID:(int)d requestIndex:(unint64_t)index contextType:(int64_t)type managerID:(unint64_t)iD asset:(id)asset displaySpec:(id)spec behaviorSpec:(id)behaviorSpec chooser:(id)self0 delegate:(id)self1
 {
-  v15 = *&a3;
-  v29 = a8;
-  v17 = a9;
-  v28 = a10;
-  v18 = a11;
+  v15 = *&d;
+  specCopy = spec;
+  behaviorSpecCopy = behaviorSpec;
+  chooserCopy = chooser;
+  delegateCopy = delegate;
   v30.receiver = self;
   v30.super_class = PHImageRequest;
   v19 = v15;
-  v20 = [(PHMediaRequest *)&v30 initWithRequestID:v15 requestIndex:a4 contextType:a5 managerID:a6 asset:a7 delegate:v18];
+  v20 = [(PHMediaRequest *)&v30 initWithRequestID:v15 requestIndex:index contextType:type managerID:iD asset:asset delegate:delegateCopy];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_displaySpec, a8);
-    objc_storeStrong(&v21->_behaviorSpec, a9);
+    objc_storeStrong(&v20->_displaySpec, spec);
+    objc_storeStrong(&v21->_behaviorSpec, behaviorSpec);
     v21->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v21->_imageDelegate, v18);
+    objc_storeWeak(&v21->_imageDelegate, delegateCopy);
     v22 = [(PHCompositeMediaResult *)[PHImageResult alloc] initWithRequestID:v19];
     imageResult = v21->_imageResult;
     v21->_imageResult = v22;
 
-    objc_storeStrong(&v21->_chooser, a10);
-    if ([v17 isSynchronous])
+    objc_storeStrong(&v21->_chooser, chooser);
+    if ([behaviorSpecCopy isSynchronous])
     {
       v24 = dispatch_semaphore_create(0);
       syncDownloadWaitSemaphore = v21->_syncDownloadWaitSemaphore;
@@ -1005,14 +1005,14 @@ void __30__PHImageRequest_startRequest__block_invoke(uint64_t a1, uint64_t a2)
   return v21;
 }
 
-- (void)_decodeImageConfiguredWithURL:(id)a3 isPrimaryFormat:(BOOL)a4
+- (void)_decodeImageConfiguredWithURL:(id)l isPrimaryFormat:(BOOL)format
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __64__PHImageRequest__decodeImageConfiguredWithURL_isPrimaryFormat___block_invoke;
   v4[3] = &unk_1E75A3D50;
   v4[4] = self;
-  PHDecodeImageFromURLForRequest(a3, a4, self, v4, self->_desiredImageSize.width, self->_desiredImageSize.height);
+  PHDecodeImageFromURLForRequest(l, format, self, v4, self->_desiredImageSize.width, self->_desiredImageSize.height);
 }
 
 void __64__PHImageRequest__decodeImageConfiguredWithURL_isPrimaryFormat___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, void *a5)

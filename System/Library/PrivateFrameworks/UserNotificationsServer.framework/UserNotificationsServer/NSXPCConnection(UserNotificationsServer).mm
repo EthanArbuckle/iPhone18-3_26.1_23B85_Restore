@@ -18,7 +18,7 @@
 
 - (uint64_t)uns_isAllowedFromDaemon
 {
-  v1 = [a1 _xpcConnection];
+  _xpcConnection = [self _xpcConnection];
   HasEntitlement = BSXPCConnectionHasEntitlement();
 
   if ((HasEntitlement & 1) == 0 && _os_feature_enabled_impl() && os_log_type_enabled(*MEMORY[0x277CE2078], OS_LOG_TYPE_ERROR))
@@ -31,18 +31,18 @@
 
 - (id)uns_clientAuditToken
 {
-  v2 = [a1 uns_getClientConnectionDetails];
-  v3 = [v2 auditToken];
-  v4 = v3;
-  if (v3)
+  uns_getClientConnectionDetails = [self uns_getClientConnectionDetails];
+  auditToken = [uns_getClientConnectionDetails auditToken];
+  v4 = auditToken;
+  if (auditToken)
   {
-    v5 = v3;
+    v5 = auditToken;
   }
 
   else
   {
     v6 = MEMORY[0x277CF0B98];
-    [a1 auditToken];
+    [self auditToken];
     v5 = [v6 tokenFromAuditToken:&v9];
   }
 
@@ -53,16 +53,16 @@
 
 - (id)uns_clientBundleProxy
 {
-  v2 = [a1 uns_clientAuditToken];
-  v3 = v2;
-  if (v2)
+  uns_clientAuditToken = [self uns_clientAuditToken];
+  v3 = uns_clientAuditToken;
+  if (uns_clientAuditToken)
   {
-    [v2 pid];
+    [uns_clientAuditToken pid];
   }
 
   else
   {
-    [a1 processIdentifier];
+    [self processIdentifier];
   }
 
   v4 = BSBundleIDForPID();
@@ -73,7 +73,7 @@
 
 - (uint64_t)uns_isAllowedToReadSettings
 {
-  v1 = [a1 uns_hasEntitlement:@"com.apple.private.usernotifications.settings" capability:@"read"];
+  v1 = [self uns_hasEntitlement:@"com.apple.private.usernotifications.settings" capability:@"read"];
   if ((v1 & 1) == 0 && os_log_type_enabled(*MEMORY[0x277CE2078], OS_LOG_TYPE_ERROR))
   {
     [NSXPCConnection(UserNotificationsServer) uns_isAllowedToReadSettings];
@@ -84,8 +84,8 @@
 
 - (BOOL)uns_requestContainsDisallowedPrivateUserInfo:()UserNotificationsServer
 {
-  v4 = [a3 allKeys];
-  v5 = [v4 containsObject:@"com.apple.private.untool.override"];
+  allKeys = [a3 allKeys];
+  v5 = [allKeys containsObject:@"com.apple.private.untool.override"];
 
   if (!v5)
   {
@@ -100,9 +100,9 @@
     _os_log_impl(&dword_270AA8000, v7, OS_LOG_TYPE_DEFAULT, "Request contains Apple private userInfo, checking request's entitlement...", buf, 2u);
   }
 
-  v8 = [a1 uns_isInternalUserNotificationsTool];
+  uns_isInternalUserNotificationsTool = [self uns_isInternalUserNotificationsTool];
   v9 = *v6;
-  if (v8)
+  if (uns_isInternalUserNotificationsTool)
   {
     result = os_log_type_enabled(*v6, OS_LOG_TYPE_DEFAULT);
     if (!result)
@@ -126,9 +126,9 @@
 - (uint64_t)uns_isAllowedToRequestUserNotificationsForBundleIdentifier:()UserNotificationsServer
 {
   v4 = a3;
-  if (([a1 uns_isAllowedFromDaemon] & 1) == 0)
+  if (([self uns_isAllowedFromDaemon] & 1) == 0)
   {
-    [a1 processIdentifier];
+    [self processIdentifier];
     v6 = BSBundleIDForPID();
     if ([v6 isEqual:v4])
     {
@@ -138,47 +138,47 @@
     else
     {
       v7 = [MEMORY[0x277CC1ED8] pluginKitProxyForIdentifier:v6];
-      v8 = [v7 containingBundle];
-      v9 = [v8 bundleIdentifier];
-      v10 = [v9 isEqual:v4];
+      containingBundle = [v7 containingBundle];
+      bundleIdentifier = [containingBundle bundleIdentifier];
+      v10 = [bundleIdentifier isEqual:v4];
 
       if ((v10 & 1) == 0)
       {
         v11 = MEMORY[0x277CF0B98];
-        v12 = [a1 _xpcConnection];
-        v13 = [v11 tokenFromXPCConnection:v12];
+        _xpcConnection = [self _xpcConnection];
+        v13 = [v11 tokenFromXPCConnection:_xpcConnection];
 
-        if ([a1 _uns_connection:v13 isAuthorizedToSendNotificationsForBundleIdentifier:v4])
+        if ([self _uns_connection:v13 isAuthorizedToSendNotificationsForBundleIdentifier:v4])
         {
         }
 
         else
         {
-          v14 = [a1 _uns_connection:v13 isAuthorizedToSendNotificationsForManagementDomainOfBundleIdentifier:v4];
+          v14 = [self _uns_connection:v13 isAuthorizedToSendNotificationsForManagementDomainOfBundleIdentifier:v4];
 
           if ((v14 & 1) == 0)
           {
-            v15 = [a1 _xpcConnection];
+            _xpcConnection2 = [self _xpcConnection];
             HasEntitlement = BSXPCConnectionHasEntitlement();
 
             if ((HasEntitlement & 1) == 0)
             {
-              v17 = [a1 _xpcConnection];
+              _xpcConnection3 = [self _xpcConnection];
               v18 = BSXPCConnectionHasEntitlement();
 
               if ((v18 & 1) == 0)
               {
-                v19 = [a1 _xpcConnection];
+                _xpcConnection4 = [self _xpcConnection];
                 v20 = BSXPCConnectionHasEntitlement();
 
                 if ((v20 & 1) == 0)
                 {
-                  v21 = [a1 _xpcConnection];
+                  _xpcConnection5 = [self _xpcConnection];
                   v22 = BSXPCConnectionHasEntitlement();
 
                   if ((v22 & 1) == 0)
                   {
-                    v23 = [a1 _xpcConnection];
+                    _xpcConnection6 = [self _xpcConnection];
                     v24 = BSXPCConnectionHasEntitlement();
 
                     if ((v24 & 1) == 0)
@@ -200,13 +200,13 @@
       }
     }
 
-    v25 = [v7 protocol];
-    v26 = [v25 isEqualToString:*MEMORY[0x277D77D48]];
+    protocol = [v7 protocol];
+    v26 = [protocol isEqualToString:*MEMORY[0x277D77D48]];
 
     if (v26)
     {
-      v27 = [v7 bundleIdentifier];
-      v5 = [MEMORY[0x277D77CB0] isAccessToNotificationCenterAllowedForServiceExtensionWithIdentifier:v27];
+      bundleIdentifier2 = [v7 bundleIdentifier];
+      v5 = [MEMORY[0x277D77CB0] isAccessToNotificationCenterAllowedForServiceExtensionWithIdentifier:bundleIdentifier2];
       if ((v5 & 1) == 0 && os_log_type_enabled(*MEMORY[0x277CE2078], OS_LOG_TYPE_ERROR))
       {
         [NSXPCConnection(UserNotificationsServer) uns_isAllowedToRequestUserNotificationsForBundleIdentifier:];
@@ -231,7 +231,7 @@ LABEL_21:
 
 - (uint64_t)uns_isAllowedToWriteSettings
 {
-  v1 = [a1 uns_hasEntitlement:@"com.apple.private.usernotifications.settings" capability:@"write"];
+  v1 = [self uns_hasEntitlement:@"com.apple.private.usernotifications.settings" capability:@"write"];
   if ((v1 & 1) == 0 && os_log_type_enabled(*MEMORY[0x277CE2078], OS_LOG_TYPE_ERROR))
   {
     [NSXPCConnection(UserNotificationsServer) uns_isAllowedToWriteSettings];
@@ -244,7 +244,7 @@ LABEL_21:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 valueForEntitlement:v6];
+  v8 = [self valueForEntitlement:v6];
   if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v12 = *MEMORY[0x277CE2078];
@@ -273,22 +273,22 @@ LABEL_8:
 
 - (uint64_t)uns_isInternalUserNotificationsTool
 {
-  if ([a1 uns_isAllowedFromDaemon] && (objc_msgSend(a1, "uns_getClientConnectionDetails"), (v2 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ([self uns_isAllowedFromDaemon] && (objc_msgSend(self, "uns_getClientConnectionDetails"), (v2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v3 = v2;
-    v4 = [v2 isInternalTool];
+    isInternalTool = [v2 isInternalTool];
   }
 
   else
   {
     v5 = MEMORY[0x277CF0B98];
-    v6 = [a1 _xpcConnection];
-    v3 = [v5 tokenFromXPCConnection:v6];
+    _xpcConnection = [self _xpcConnection];
+    v3 = [v5 tokenFromXPCConnection:_xpcConnection];
 
-    v4 = [v3 unc_isInternalUserNotificationsTool];
+    isInternalTool = [v3 unc_isInternalUserNotificationsTool];
   }
 
-  v7 = v4;
+  v7 = isInternalTool;
 
   return v7;
 }
@@ -300,7 +300,7 @@ LABEL_8:
   v14 = 0;
   v8 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v7 allowPlaceholder:1 error:&v14];
   v9 = v14;
-  v10 = [v8 managementDomain];
+  managementDomain = [v8 managementDomain];
   if (v9)
   {
     v11 = *MEMORY[0x277CE2078];
@@ -314,7 +314,7 @@ LABEL_8:
 
   else
   {
-    v12 = [a1 _uns_connection:v6 valueForEntitlementKey:@"com.apple.private.usernotifications.app-management-domains" matchesValue:v10];
+    v12 = [self _uns_connection:v6 valueForEntitlementKey:@"com.apple.private.usernotifications.app-management-domains" matchesValue:managementDomain];
   }
 
   return v12;

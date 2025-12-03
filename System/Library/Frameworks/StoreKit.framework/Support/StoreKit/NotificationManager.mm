@@ -2,8 +2,8 @@
 + (id)_notificationCategories;
 + (id)sharedManager;
 - (NotificationManager)init;
-- (void)postNotificationRequest:(id)a3 withCompletionHandler:(id)a4;
-- (void)removeNotificationRequestWithIdentifier:(id)a3;
+- (void)postNotificationRequest:(id)request withCompletionHandler:(id)handler;
+- (void)removeNotificationRequestWithIdentifier:(id)identifier;
 @end
 
 @implementation NotificationManager
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = sub_100069868;
   block[3] = &unk_10037F9B0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1003D4768 != -1)
   {
     dispatch_once(&qword_1003D4768, block);
@@ -47,10 +47,10 @@
   return v2;
 }
 
-- (void)postNotificationRequest:(id)a3 withCompletionHandler:(id)a4
+- (void)postNotificationRequest:(id)request withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   notificationCenter = self->_notificationCenter;
   v11[0] = _NSConcreteStackBlock;
@@ -58,9 +58,9 @@
   v11[2] = sub_1000699B8;
   v11[3] = &unk_100382BB8;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = requestCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v13 = v10;
   [(UNUserNotificationCenter *)notificationCenter addNotificationRequest:v9 withCompletionHandler:v11];
 
@@ -68,13 +68,13 @@
   objc_destroyWeak(&location);
 }
 
-- (void)removeNotificationRequestWithIdentifier:(id)a3
+- (void)removeNotificationRequestWithIdentifier:(id)identifier
 {
   notificationCenter = self->_notificationCenter;
-  v6 = a3;
-  v4 = a3;
-  v5 = [NSArray arrayWithObjects:&v6 count:1];
-  [(UNUserNotificationCenter *)notificationCenter removeDeliveredNotificationsWithIdentifiers:v5, v6];
+  identifierCopy = identifier;
+  identifierCopy2 = identifier;
+  v5 = [NSArray arrayWithObjects:&identifierCopy count:1];
+  [(UNUserNotificationCenter *)notificationCenter removeDeliveredNotificationsWithIdentifiers:v5, identifierCopy];
 }
 
 + (id)_notificationCategories

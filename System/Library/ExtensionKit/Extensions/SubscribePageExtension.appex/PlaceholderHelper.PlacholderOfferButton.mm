@@ -1,37 +1,37 @@
 @interface PlaceholderHelper.PlacholderOfferButton
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtCV22SubscribePageExtension17PlaceholderHelperP33_4A9A4D8787D6A1CEAEBA94C8789E237C21PlacholderOfferButton)initWithCoder:(id)a3;
-- (_TtCV22SubscribePageExtension17PlaceholderHelperP33_4A9A4D8787D6A1CEAEBA94C8789E237C21PlacholderOfferButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtCV22SubscribePageExtension17PlaceholderHelperP33_4A9A4D8787D6A1CEAEBA94C8789E237C21PlacholderOfferButton)initWithCoder:(id)coder;
+- (_TtCV22SubscribePageExtension17PlaceholderHelperP33_4A9A4D8787D6A1CEAEBA94C8789E237C21PlacholderOfferButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation PlaceholderHelper.PlacholderOfferButton
 
-- (_TtCV22SubscribePageExtension17PlaceholderHelperP33_4A9A4D8787D6A1CEAEBA94C8789E237C21PlacholderOfferButton)initWithFrame:(CGRect)a3
+- (_TtCV22SubscribePageExtension17PlaceholderHelperP33_4A9A4D8787D6A1CEAEBA94C8789E237C21PlacholderOfferButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtCV22SubscribePageExtension17PlaceholderHelperP33_4A9A4D8787D6A1CEAEBA94C8789E237C21PlacholderOfferButton_button;
   v9 = [objc_allocWithZone(UIView) init];
-  v10 = [objc_opt_self() secondarySystemBackgroundColor];
-  [v9 setBackgroundColor:v10];
+  secondarySystemBackgroundColor = [objc_opt_self() secondarySystemBackgroundColor];
+  [v9 setBackgroundColor:secondarySystemBackgroundColor];
 
   *(&self->super.super.super.isa + v8) = v9;
   v13.receiver = self;
   v13.super_class = type metadata accessor for PlaceholderHelper.PlacholderOfferButton();
-  v11 = [(PlaceholderHelper.PlacholderOfferButton *)&v13 initWithFrame:x, y, width, height];
-  [(PlaceholderHelper.PlacholderOfferButton *)v11 addSubview:*(&v11->super.super.super.isa + OBJC_IVAR____TtCV22SubscribePageExtension17PlaceholderHelperP33_4A9A4D8787D6A1CEAEBA94C8789E237C21PlacholderOfferButton_button)];
-  return v11;
+  height = [(PlaceholderHelper.PlacholderOfferButton *)&v13 initWithFrame:x, y, width, height];
+  [(PlaceholderHelper.PlacholderOfferButton *)height addSubview:*(&height->super.super.super.isa + OBJC_IVAR____TtCV22SubscribePageExtension17PlaceholderHelperP33_4A9A4D8787D6A1CEAEBA94C8789E237C21PlacholderOfferButton_button)];
+  return height;
 }
 
-- (_TtCV22SubscribePageExtension17PlaceholderHelperP33_4A9A4D8787D6A1CEAEBA94C8789E237C21PlacholderOfferButton)initWithCoder:(id)a3
+- (_TtCV22SubscribePageExtension17PlaceholderHelperP33_4A9A4D8787D6A1CEAEBA94C8789E237C21PlacholderOfferButton)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtCV22SubscribePageExtension17PlaceholderHelperP33_4A9A4D8787D6A1CEAEBA94C8789E237C21PlacholderOfferButton_button;
   v5 = [objc_allocWithZone(UIView) init];
-  v6 = [objc_opt_self() secondarySystemBackgroundColor];
-  [v5 setBackgroundColor:v6];
+  secondarySystemBackgroundColor = [objc_opt_self() secondarySystemBackgroundColor];
+  [v5 setBackgroundColor:secondarySystemBackgroundColor];
 
   *(&self->super.super.super.isa + v4) = v5;
   result = sub_100754644();
@@ -39,9 +39,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_10071B8D8();
   v6 = v5;
 
@@ -54,7 +54,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10071AFD0();
 }
 

@@ -1,11 +1,11 @@
 @interface HMTelevisionProfile
 - (BOOL)mediaSourceDisplayOrderModifiable;
-- (BOOL)mergeFromNewObject:(id)a3;
-- (HMTelevisionProfile)initWithTelevisionService:(id)a3 linkedServices:(id)a4;
+- (BOOL)mergeFromNewObject:(id)object;
+- (HMTelevisionProfile)initWithTelevisionService:(id)service linkedServices:(id)services;
 - (HMTelevisionProfileDelegate)delegate;
 - (NSArray)mediaSourceDisplayOrder;
-- (void)televisionProfileDidUpdateSourceDisplayOrder:(id)a3;
-- (void)updateMediaSourceDisplayOrder:(id)a3 completionHandler:(id)a4;
+- (void)televisionProfileDidUpdateSourceDisplayOrder:(id)order;
+- (void)updateMediaSourceDisplayOrder:(id)order completionHandler:(id)handler;
 @end
 
 @implementation HMTelevisionProfile
@@ -127,13 +127,13 @@ void __72___HMTelevisionProfile_updateMediaSourceDisplayOrder_completionHandler_
   return WeakRetained;
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v16.receiver = self;
   v16.super_class = HMTelevisionProfile;
-  v5 = [(HMAccessoryProfile *)&v16 mergeFromNewObject:v4];
-  v6 = v4;
+  v5 = [(HMAccessoryProfile *)&v16 mergeFromNewObject:objectCopy];
+  v6 = objectCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -149,12 +149,12 @@ void __72___HMTelevisionProfile_updateMediaSourceDisplayOrder_completionHandler_
 
   if (v8)
   {
-    v9 = [v8 mediaSourceDisplayOrder];
-    v10 = [(HMAccessoryProfile *)self accessoryProfile];
+    mediaSourceDisplayOrder = [v8 mediaSourceDisplayOrder];
+    accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = accessoryProfile;
     }
 
     else
@@ -164,12 +164,12 @@ void __72___HMTelevisionProfile_updateMediaSourceDisplayOrder_completionHandler_
 
     v12 = v11;
 
-    v13 = [(HMTelevisionProfile *)self mediaSourceDisplayOrder];
-    v14 = [v9 isEqualToArray:v13];
+    mediaSourceDisplayOrder2 = [(HMTelevisionProfile *)self mediaSourceDisplayOrder];
+    v14 = [mediaSourceDisplayOrder isEqualToArray:mediaSourceDisplayOrder2];
 
     if ((v14 & 1) == 0)
     {
-      [v12 setMediaSourceDisplayOrder:v9];
+      [v12 setMediaSourceDisplayOrder:mediaSourceDisplayOrder];
       [(HMTelevisionProfile *)self televisionProfileDidUpdateSourceDisplayOrder:v12];
       v5 = 1;
     }
@@ -178,37 +178,37 @@ void __72___HMTelevisionProfile_updateMediaSourceDisplayOrder_completionHandler_
   return v5;
 }
 
-- (void)televisionProfileDidUpdateSourceDisplayOrder:(id)a3
+- (void)televisionProfileDidUpdateSourceDisplayOrder:(id)order
 {
-  v4 = [(HMTelevisionProfile *)self delegate];
+  delegate = [(HMTelevisionProfile *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(HMTelevisionProfile *)self delegate];
-    v7 = [(HMAccessoryProfile *)self accessoryProfile];
-    v8 = [v7 context];
-    v9 = [v8 delegateCaller];
+    delegate2 = [(HMTelevisionProfile *)self delegate];
+    accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
+    context = [accessoryProfile context];
+    delegateCaller = [context delegateCaller];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __68__HMTelevisionProfile_televisionProfileDidUpdateSourceDisplayOrder___block_invoke;
     v11[3] = &unk_1E754E5C0;
-    v12 = v6;
-    v13 = self;
-    v10 = v6;
-    [v9 invokeBlock:v11];
+    v12 = delegate2;
+    selfCopy = self;
+    v10 = delegate2;
+    [delegateCaller invokeBlock:v11];
   }
 }
 
-- (void)updateMediaSourceDisplayOrder:(id)a3 completionHandler:(id)a4
+- (void)updateMediaSourceDisplayOrder:(id)order completionHandler:(id)handler
 {
-  v6 = a4;
-  v10 = a3;
-  v7 = [(HMAccessoryProfile *)self accessoryProfile];
+  handlerCopy = handler;
+  orderCopy = order;
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = accessoryProfile;
   }
 
   else
@@ -218,16 +218,16 @@ void __72___HMTelevisionProfile_updateMediaSourceDisplayOrder_completionHandler_
 
   v9 = v8;
 
-  [v9 updateMediaSourceDisplayOrder:v10 completionHandler:v6];
+  [v9 updateMediaSourceDisplayOrder:orderCopy completionHandler:handlerCopy];
 }
 
 - (BOOL)mediaSourceDisplayOrderModifiable
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = accessoryProfile;
   }
 
   else
@@ -237,17 +237,17 @@ void __72___HMTelevisionProfile_updateMediaSourceDisplayOrder_completionHandler_
 
   v4 = v3;
 
-  v5 = [v4 mediaSourceDisplayOrderModifiable];
-  return v5;
+  mediaSourceDisplayOrderModifiable = [v4 mediaSourceDisplayOrderModifiable];
+  return mediaSourceDisplayOrderModifiable;
 }
 
 - (NSArray)mediaSourceDisplayOrder
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = accessoryProfile;
   }
 
   else
@@ -257,16 +257,16 @@ void __72___HMTelevisionProfile_updateMediaSourceDisplayOrder_completionHandler_
 
   v4 = v3;
 
-  v5 = [v4 mediaSourceDisplayOrder];
+  mediaSourceDisplayOrder = [v4 mediaSourceDisplayOrder];
 
-  return v5;
+  return mediaSourceDisplayOrder;
 }
 
-- (HMTelevisionProfile)initWithTelevisionService:(id)a3 linkedServices:(id)a4
+- (HMTelevisionProfile)initWithTelevisionService:(id)service linkedServices:(id)services
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_HMTelevisionProfile alloc] initWithTelevisionService:v7 linkedServices:v6];
+  servicesCopy = services;
+  serviceCopy = service;
+  v8 = [[_HMTelevisionProfile alloc] initWithTelevisionService:serviceCopy linkedServices:servicesCopy];
 
   v11.receiver = self;
   v11.super_class = HMTelevisionProfile;

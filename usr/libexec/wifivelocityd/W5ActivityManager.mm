@@ -5,8 +5,8 @@
 - (unint64_t)osTransactionsActive;
 - (void)_executeTimerBlock;
 - (void)debugTimer;
-- (void)osTransactionComplete:(id)a3;
-- (void)osTransactionCreate:(const char *)a3 transaction:(id)a4;
+- (void)osTransactionComplete:(id)complete;
+- (void)osTransactionCreate:(const char *)create transaction:(id)transaction;
 @end
 
 @implementation W5ActivityManager
@@ -62,15 +62,15 @@
   if (v4)
   {
     NSLog(@"%s: Found preference value in domain: %@ key: %@", "[W5ActivityManager debugTimerEnabled]", @"com.apple.wifivelocity", @"eager-exit-debug");
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (void)debugTimer
@@ -103,24 +103,24 @@
   }
 }
 
-- (void)osTransactionCreate:(const char *)a3 transaction:(id)a4
+- (void)osTransactionCreate:(const char *)create transaction:(id)transaction
 {
-  v6 = a4;
+  transactionCopy = transaction;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000179E0;
   block[3] = &unk_1000E1768;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = transactionCopy;
+  createCopy = create;
+  v8 = transactionCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)osTransactionComplete:(id)a3
+- (void)osTransactionComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -130,9 +130,9 @@
   block[1] = 3221225472;
   block[2] = sub_100017CA0;
   block[3] = &unk_1000E17E0;
-  v6 = v4;
+  v6 = completeCopy;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   dispatch_sync(queue, block);
   if (*(v13 + 24) == 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -146,12 +146,12 @@
 
 - (void)_executeTimerBlock
 {
-  v3 = [(W5ActivityManager *)self alternateExecutionBlockForCleanExit];
+  alternateExecutionBlockForCleanExit = [(W5ActivityManager *)self alternateExecutionBlockForCleanExit];
 
-  if (v3)
+  if (alternateExecutionBlockForCleanExit)
   {
-    v4 = [(W5ActivityManager *)self alternateExecutionBlockForCleanExit];
-    v4[2]();
+    alternateExecutionBlockForCleanExit2 = [(W5ActivityManager *)self alternateExecutionBlockForCleanExit];
+    alternateExecutionBlockForCleanExit2[2]();
   }
 }
 

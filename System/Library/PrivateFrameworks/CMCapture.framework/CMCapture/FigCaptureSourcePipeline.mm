@@ -1,18 +1,18 @@
 @interface FigCaptureSourcePipeline
-- (FigCaptureSourcePipeline)initWithGraph:(id)a3 name:(id)a4 sourceID:(id)a5;
+- (FigCaptureSourcePipeline)initWithGraph:(id)graph name:(id)name sourceID:(id)d;
 - (void)dealloc;
 @end
 
 @implementation FigCaptureSourcePipeline
 
-- (FigCaptureSourcePipeline)initWithGraph:(id)a3 name:(id)a4 sourceID:(id)a5
+- (FigCaptureSourcePipeline)initWithGraph:(id)graph name:(id)name sourceID:(id)d
 {
   v8.receiver = self;
   v8.super_class = FigCaptureSourcePipeline;
-  v6 = [(FigCapturePipeline *)&v8 initWithGraph:a3 name:a4];
+  v6 = [(FigCapturePipeline *)&v8 initWithGraph:graph name:name];
   if (v6)
   {
-    v6->_sourceID = a5;
+    v6->_sourceID = d;
   }
 
   return v6;

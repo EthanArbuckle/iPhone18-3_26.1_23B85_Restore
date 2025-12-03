@@ -1,29 +1,29 @@
 @interface _CTFontFallbacksArray
-- (uint64_t)objectAtIndex:(int)a3 shouldLock:(uint64_t)a4 addRanges:;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (uint64_t)objectAtIndex:(int)index shouldLock:(uint64_t)lock addRanges:;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)dealloc;
-- (void)getObjects:(id *)a3 range:(_NSRange)a4;
+- (void)getObjects:(id *)objects range:(_NSRange)range;
 @end
 
 @implementation _CTFontFallbacksArray
 
-- (uint64_t)objectAtIndex:(int)a3 shouldLock:(uint64_t)a4 addRanges:
+- (uint64_t)objectAtIndex:(int)index shouldLock:(uint64_t)lock addRanges:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (a3)
+  if (index)
   {
     os_unfair_lock_lock_with_options();
   }
 
   v8 = 0x1ED566000uLL;
-  v9 = [*(a1 + 48) objectAtIndex:a2];
+  v9 = [*(self + 48) objectAtIndex:a2];
   if (v9 != [MEMORY[0x1E695DFB0] null])
   {
-    if (a3)
+    if (index)
     {
       goto LABEL_118;
     }
@@ -32,7 +32,7 @@
   }
 
   v77 = 0;
-  v10 = [*(a1 + 40) objectAtIndex:a2];
+  v10 = [*(self + 40) objectAtIndex:a2];
   if (!v10)
   {
     goto LABEL_81;
@@ -44,14 +44,14 @@
     goto LABEL_81;
   }
 
-  if (a3)
+  if (index)
   {
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((self + 8));
   }
 
-  v75 = *(a1 + 16);
-  v12 = *(a1 + 24);
-  v13 = *(a1 + 64);
+  v75 = *(self + 16);
+  v12 = *(self + 24);
+  v13 = *(self + 64);
   v79 = v11;
   v14 = v11[5];
   if ((*(v14 + 16) & 0x80000000) == 0)
@@ -346,14 +346,14 @@ LABEL_61:
 LABEL_78:
 
 LABEL_79:
-  if (a3)
+  if (index)
   {
     os_unfair_lock_lock_with_options();
   }
 
 LABEL_81:
-  [*(a1 + 40) replaceObjectAtIndex:a2 withObject:{objc_msgSend(MEMORY[0x1E695DFB0], "null", v67)}];
-  v9 = [*(a1 + 48) objectAtIndex:a2];
+  [*(self + 40) replaceObjectAtIndex:a2 withObject:{objc_msgSend(MEMORY[0x1E695DFB0], "null", v67)}];
+  v9 = [*(self + 48) objectAtIndex:a2];
   if (v9 != [MEMORY[0x1E695DFB0] null])
   {
     goto LABEL_117;
@@ -379,7 +379,7 @@ LABEL_81:
 LABEL_90:
     if (a2)
     {
-      v9 = [(_CTFontFallbacksArray *)a1 objectAtIndex:0 shouldLock:a4 addRanges:?];
+      v9 = [(_CTFontFallbacksArray *)self objectAtIndex:0 shouldLock:lock addRanges:?];
       if (!v9)
       {
         goto LABEL_115;
@@ -388,21 +388,21 @@ LABEL_90:
       goto LABEL_116;
     }
 
-    if (a3)
+    if (index)
     {
-      os_unfair_lock_unlock((a1 + 8));
+      os_unfair_lock_unlock((self + 8));
     }
 
     return 0;
   }
 
   os_unfair_lock_lock_with_options();
-  if (a4)
+  if (lock)
   {
     v52 = (*(*v51 + 16))(v51);
     if (v52 == 1414743620 && (v52 = (*(*v51 + 848))(v51), (v52 & 1) == 0))
     {
-      v55 = *(a1 + 56);
+      v55 = *(self + 56);
       TDescriptorSource::EnsureFontFallbacksCache(v52);
       CharRangeMapForKey = TFontFallbacks::GetCharRangeMapForKey(TDescriptorSource::sFontFallbacksCache, v55);
       v81.isa = 0xAAAAAAAAAAAAAAAALL;
@@ -438,7 +438,7 @@ LABEL_90:
         }
 
         v65 = atomic_load_explicit((v64 + 32), memory_order_acquire);
-        if (v65 && ((*(*v65 + 32))(v65, *(a1 + 16)) & 1) == 0)
+        if (v65 && ((*(*v65 + 32))(v65, *(self + 16)) & 1) == 0)
         {
           v85[0] = 0xAAAAAAAAAAAAAAAALL;
           (*(*v65 + 176))(v85, v65);
@@ -458,7 +458,7 @@ LABEL_90:
 
     else
     {
-      v53 = *(a1 + 56);
+      v53 = *(self + 56);
       TDescriptorSource::EnsureFontFallbacksCache(v52);
       v54 = TFontFallbacks::GetCharRangeMapForKey(TDescriptorSource::sFontFallbacksCache, v53);
       v81.isa = 0xAAAAAAAAAAAAAAAALL;
@@ -479,13 +479,13 @@ LABEL_115:
   }
 
 LABEL_116:
-  [*(a1 + *(v8 + 3068)) replaceObjectAtIndex:a2 withObject:v9];
+  [*(self + *(v8 + 3068)) replaceObjectAtIndex:a2 withObject:v9];
 LABEL_117:
 
-  if (a3)
+  if (index)
   {
 LABEL_118:
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((self + 8));
   }
 
   return v9;
@@ -498,24 +498,24 @@ LABEL_118:
   [(_CTFontFallbacksArray *)&v3 dealloc];
 }
 
-- (void)getObjects:(id *)a3 range:(_NSRange)a4
+- (void)getObjects:(id *)objects range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   os_unfair_lock_lock_with_options();
   for (; length; --length)
   {
-    *a3++ = [(_CTFontFallbacksArray *)self objectAtIndex:0 shouldLock:0 addRanges:?];
+    *objects++ = [(_CTFontFallbacksArray *)self objectAtIndex:0 shouldLock:0 addRanges:?];
   }
 
   os_unfair_lock_unlock(&self->_lock.fLock);
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   v6.receiver = self;
   v6.super_class = _CTFontFallbacksArray;
-  return [(_CTFontFallbacksArray *)&v6 countByEnumeratingWithState:a3 objects:a4 count:1];
+  return [(_CTFontFallbacksArray *)&v6 countByEnumeratingWithState:state objects:objects count:1];
 }
 
 @end

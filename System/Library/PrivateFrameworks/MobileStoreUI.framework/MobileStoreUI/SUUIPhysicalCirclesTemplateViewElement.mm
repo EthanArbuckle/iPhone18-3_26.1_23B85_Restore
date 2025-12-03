@@ -3,17 +3,17 @@
 - (NSArray)circleItemElements;
 - (SUUILabelViewElement)subtitleElement;
 - (SUUILabelViewElement)titleElement;
-- (SUUIPhysicalCirclesTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (void)dispatchRemovedEventWithChildViewElement:(id)a3;
+- (SUUIPhysicalCirclesTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (void)dispatchRemovedEventWithChildViewElement:(id)element;
 @end
 
 @implementation SUUIPhysicalCirclesTemplateViewElement
 
-- (SUUIPhysicalCirclesTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIPhysicalCirclesTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
   v10.receiver = self;
   v10.super_class = SUUIPhysicalCirclesTemplateViewElement;
-  v5 = [(SUUIViewElement *)&v10 initWithDOMElement:a3 parent:a4 elementFactory:a5];
+  v5 = [(SUUIViewElement *)&v10 initWithDOMElement:element parent:parent elementFactory:factory];
   v6 = v5;
   if (v5)
   {
@@ -27,12 +27,12 @@
 
 - (NSArray)circleItemElements
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__SUUIPhysicalCirclesTemplateViewElement_circleItemElements__block_invoke;
   v6[3] = &unk_2798F5B20;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(SUUIViewElement *)self enumerateChildrenUsingBlock:v6];
 
@@ -48,21 +48,21 @@ void __60__SUUIPhysicalCirclesTemplateViewElement_circleItemElements__block_invo
   }
 }
 
-- (void)dispatchRemovedEventWithChildViewElement:(id)a3
+- (void)dispatchRemovedEventWithChildViewElement:(id)element
 {
-  v4 = a3;
-  v5 = [(SUUIPhysicalCirclesTemplateDOMFeature *)self->_scriptInterface appContext];
-  v6 = [(SUUIPhysicalCirclesTemplateViewElement *)self appDocument];
+  elementCopy = element;
+  appContext = [(SUUIPhysicalCirclesTemplateDOMFeature *)self->_scriptInterface appContext];
+  appDocument = [(SUUIPhysicalCirclesTemplateViewElement *)self appDocument];
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __83__SUUIPhysicalCirclesTemplateViewElement_dispatchRemovedEventWithChildViewElement___block_invoke;
   v10[3] = &unk_2798FD500;
-  v7 = v6;
+  v7 = appDocument;
   v11 = v7;
-  v8 = v4;
+  v8 = elementCopy;
   v12 = v8;
-  v9 = v5;
+  v9 = appContext;
   v13 = v9;
   objc_copyWeak(&v14, &location);
   [v9 evaluate:v10 completionBlock:0];

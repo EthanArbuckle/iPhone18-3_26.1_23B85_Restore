@@ -1,102 +1,102 @@
 @interface MSPTransitStorageIncident
-- (BOOL)isEqual:(id)a3;
-- (MSPTransitStorageIncident)initWithIncident:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MSPTransitStorageIncident)initWithIncident:(id)incident;
 - (NSDate)creationDate;
 - (NSDate)endDate;
 - (NSDate)lastUpdated;
 - (NSDate)startDate;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (id)iconTypeAsString:(int)a3;
-- (int)StringAsIconType:(id)a3;
+- (id)iconTypeAsString:(int)string;
+- (int)StringAsIconType:(id)type;
 - (unint64_t)hash;
-- (void)addAffectedEntities:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBlockingIncident:(BOOL)a3;
-- (void)setHasCreationDatetime:(BOOL)a3;
-- (void)setHasEndDatetime:(BOOL)a3;
-- (void)setHasIconType:(BOOL)a3;
-- (void)setHasLastUpdatedDatetime:(BOOL)a3;
-- (void)setHasStartDatetime:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAffectedEntities:(id)entities;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBlockingIncident:(BOOL)incident;
+- (void)setHasCreationDatetime:(BOOL)datetime;
+- (void)setHasEndDatetime:(BOOL)datetime;
+- (void)setHasIconType:(BOOL)type;
+- (void)setHasLastUpdatedDatetime:(BOOL)datetime;
+- (void)setHasStartDatetime:(BOOL)datetime;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPTransitStorageIncident
 
-- (MSPTransitStorageIncident)initWithIncident:(id)a3
+- (MSPTransitStorageIncident)initWithIncident:(id)incident
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  incidentCopy = incident;
   v36.receiver = self;
   v36.super_class = MSPTransitStorageIncident;
   v5 = [(MSPTransitStorageIncident *)&v36 init];
   if (v5)
   {
-    -[MSPTransitStorageIncident setMuid:](v5, "setMuid:", [v4 muid]);
-    v6 = [v4 title];
-    [(MSPTransitStorageIncident *)v5 setTitle:v6];
+    -[MSPTransitStorageIncident setMuid:](v5, "setMuid:", [incidentCopy muid]);
+    title = [incidentCopy title];
+    [(MSPTransitStorageIncident *)v5 setTitle:title];
 
-    v7 = [v4 summary];
-    [(MSPTransitStorageIncident *)v5 setSummary:v7];
+    summary = [incidentCopy summary];
+    [(MSPTransitStorageIncident *)v5 setSummary:summary];
 
-    v8 = [v4 fullDescription];
-    [(MSPTransitStorageIncident *)v5 setFullDescription:v8];
+    fullDescription = [incidentCopy fullDescription];
+    [(MSPTransitStorageIncident *)v5 setFullDescription:fullDescription];
 
-    v9 = [v4 messageForRoutePlanning];
-    [(MSPTransitStorageIncident *)v5 setMessageForRoutePlanning:v9];
+    messageForRoutePlanning = [incidentCopy messageForRoutePlanning];
+    [(MSPTransitStorageIncident *)v5 setMessageForRoutePlanning:messageForRoutePlanning];
 
-    v10 = [v4 messageForRouteStepping];
-    [(MSPTransitStorageIncident *)v5 setMessageForRouteStepping:v10];
+    messageForRouteStepping = [incidentCopy messageForRouteStepping];
+    [(MSPTransitStorageIncident *)v5 setMessageForRouteStepping:messageForRouteStepping];
 
-    v11 = [v4 messageForNonRoutable];
-    [(MSPTransitStorageIncident *)v5 setMessageForNonRoutable:v11];
+    messageForNonRoutable = [incidentCopy messageForNonRoutable];
+    [(MSPTransitStorageIncident *)v5 setMessageForNonRoutable:messageForNonRoutable];
 
-    v12 = [v4 startDate];
+    startDate = [incidentCopy startDate];
 
-    if (v12)
+    if (startDate)
     {
-      v13 = [v4 startDate];
-      [v13 timeIntervalSinceReferenceDate];
+      startDate2 = [incidentCopy startDate];
+      [startDate2 timeIntervalSinceReferenceDate];
       [(MSPTransitStorageIncident *)v5 setStartDatetime:v14];
     }
 
-    v15 = [v4 endDate];
+    endDate = [incidentCopy endDate];
 
-    if (v15)
+    if (endDate)
     {
-      v16 = [v4 endDate];
-      [v16 timeIntervalSinceReferenceDate];
+      endDate2 = [incidentCopy endDate];
+      [endDate2 timeIntervalSinceReferenceDate];
       [(MSPTransitStorageIncident *)v5 setEndDatetime:v17];
     }
 
-    -[MSPTransitStorageIncident setIconType:](v5, "setIconType:", [v4 iconType]);
-    v18 = [v4 creationDate];
+    -[MSPTransitStorageIncident setIconType:](v5, "setIconType:", [incidentCopy iconType]);
+    creationDate = [incidentCopy creationDate];
 
-    if (v18)
+    if (creationDate)
     {
-      v19 = [v4 creationDate];
-      [v19 timeIntervalSinceReferenceDate];
+      creationDate2 = [incidentCopy creationDate];
+      [creationDate2 timeIntervalSinceReferenceDate];
       [(MSPTransitStorageIncident *)v5 setCreationDatetime:v20];
     }
 
-    v21 = [v4 lastUpdated];
+    lastUpdated = [incidentCopy lastUpdated];
 
-    if (v21)
+    if (lastUpdated)
     {
-      v22 = [v4 lastUpdated];
-      [v22 timeIntervalSinceReferenceDate];
+      lastUpdated2 = [incidentCopy lastUpdated];
+      [lastUpdated2 timeIntervalSinceReferenceDate];
       [(MSPTransitStorageIncident *)v5 setLastUpdatedDatetime:v23];
     }
 
-    -[MSPTransitStorageIncident setBlockingIncident:](v5, "setBlockingIncident:", [v4 isBlockingIncident]);
+    -[MSPTransitStorageIncident setBlockingIncident:](v5, "setBlockingIncident:", [incidentCopy isBlockingIncident]);
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v24 = [v4 affectedEntities];
-    v25 = [v24 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    affectedEntities = [incidentCopy affectedEntities];
+    v25 = [affectedEntities countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v25)
     {
       v26 = v25;
@@ -108,7 +108,7 @@
         {
           if (*v33 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(affectedEntities);
           }
 
           v29 = [[MSPTransitStorageIncidentEntity alloc] initWithIncidentEntity:*(*(&v32 + 1) + 8 * v28)];
@@ -118,7 +118,7 @@
         }
 
         while (v26 != v28);
-        v26 = [v24 countByEnumeratingWithState:&v32 objects:v37 count:16];
+        v26 = [affectedEntities countByEnumeratingWithState:&v32 objects:v37 count:16];
       }
 
       while (v26);
@@ -189,9 +189,9 @@
   return v3;
 }
 
-- (void)setHasStartDatetime:(BOOL)a3
+- (void)setHasStartDatetime:(BOOL)datetime
 {
-  if (a3)
+  if (datetime)
   {
     v3 = 32;
   }
@@ -204,9 +204,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasEndDatetime:(BOOL)a3
+- (void)setHasEndDatetime:(BOOL)datetime
 {
-  if (a3)
+  if (datetime)
   {
     v3 = 4;
   }
@@ -219,9 +219,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIconType:(BOOL)a3
+- (void)setHasIconType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -234,35 +234,35 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (id)iconTypeAsString:(int)a3
+- (id)iconTypeAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %ld)", a3];
+    string = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %ld)", string];
   }
 
   else
   {
-    v4 = off_2798666D0[a3];
+    string = off_2798666D0[string];
   }
 
-  return v4;
+  return string;
 }
 
-- (int)StringAsIconType:(id)a3
+- (int)StringAsIconType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"GEOTransitIncidentIconTypeUnknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"GEOTransitIncidentIconTypeUnknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitIncidentIconTypeWarning"])
+  else if ([typeCopy isEqualToString:@"GEOTransitIncidentIconTypeWarning"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitIncidentIconTypeConstruction"])
+  else if ([typeCopy isEqualToString:@"GEOTransitIncidentIconTypeConstruction"])
   {
     v4 = 2;
   }
@@ -275,9 +275,9 @@
   return v4;
 }
 
-- (void)setHasCreationDatetime:(BOOL)a3
+- (void)setHasCreationDatetime:(BOOL)datetime
 {
-  if (a3)
+  if (datetime)
   {
     v3 = 2;
   }
@@ -290,9 +290,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasLastUpdatedDatetime:(BOOL)a3
+- (void)setHasLastUpdatedDatetime:(BOOL)datetime
 {
-  if (a3)
+  if (datetime)
   {
     v3 = 16;
   }
@@ -305,9 +305,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasBlockingIncident:(BOOL)a3
+- (void)setHasBlockingIncident:(BOOL)incident
 {
-  if (a3)
+  if (incident)
   {
     v3 = 64;
   }
@@ -320,22 +320,22 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)addAffectedEntities:(id)a3
+- (void)addAffectedEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   affectedEntities = self->_affectedEntities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!affectedEntities)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_affectedEntities;
     self->_affectedEntities = v6;
 
-    v4 = v8;
+    entitiesCopy = v8;
     affectedEntities = self->_affectedEntities;
   }
 
-  [(NSMutableArray *)affectedEntities addObject:v4];
+  [(NSMutableArray *)affectedEntities addObject:entitiesCopy];
 }
 
 - (NSString)description
@@ -344,8 +344,8 @@
   v8.receiver = self;
   v8.super_class = MSPTransitStorageIncident;
   v4 = [(MSPTransitStorageIncident *)&v8 description];
-  v5 = [(MSPTransitStorageIncident *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MSPTransitStorageIncident *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -353,54 +353,54 @@
 - (id)dictionaryRepresentation
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_muid];
-    [v3 setObject:v4 forKey:@"muid"];
+    [dictionary setObject:v4 forKey:@"muid"];
   }
 
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   summary = self->_summary;
   if (summary)
   {
-    [v3 setObject:summary forKey:@"summary"];
+    [dictionary setObject:summary forKey:@"summary"];
   }
 
   fullDescription = self->_fullDescription;
   if (fullDescription)
   {
-    [v3 setObject:fullDescription forKey:@"full_description"];
+    [dictionary setObject:fullDescription forKey:@"full_description"];
   }
 
   messageForRoutePlanning = self->_messageForRoutePlanning;
   if (messageForRoutePlanning)
   {
-    [v3 setObject:messageForRoutePlanning forKey:@"message_for_route_planning"];
+    [dictionary setObject:messageForRoutePlanning forKey:@"message_for_route_planning"];
   }
 
   messageForRouteStepping = self->_messageForRouteStepping;
   if (messageForRouteStepping)
   {
-    [v3 setObject:messageForRouteStepping forKey:@"message_for_route_stepping"];
+    [dictionary setObject:messageForRouteStepping forKey:@"message_for_route_stepping"];
   }
 
   messageForNonRoutable = self->_messageForNonRoutable;
   if (messageForNonRoutable)
   {
-    [v3 setObject:messageForNonRoutable forKey:@"message_for_non_routable"];
+    [dictionary setObject:messageForNonRoutable forKey:@"message_for_non_routable"];
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_startDatetime];
-    [v3 setObject:v24 forKey:@"start_datetime"];
+    [dictionary setObject:v24 forKey:@"start_datetime"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -421,7 +421,7 @@ LABEL_17:
   }
 
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_endDatetime];
-  [v3 setObject:v25 forKey:@"end_datetime"];
+  [dictionary setObject:v25 forKey:@"end_datetime"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -447,7 +447,7 @@ LABEL_38:
     v27 = off_2798666D0[iconType];
   }
 
-  [v3 setObject:v27 forKey:@"icon_type"];
+  [dictionary setObject:v27 forKey:@"icon_type"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -463,7 +463,7 @@ LABEL_19:
 
 LABEL_42:
   v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_creationDatetime];
-  [v3 setObject:v28 forKey:@"creation_datetime"];
+  [dictionary setObject:v28 forKey:@"creation_datetime"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -479,13 +479,13 @@ LABEL_20:
 
 LABEL_43:
   v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_lastUpdatedDatetime];
-  [v3 setObject:v29 forKey:@"last_updated_datetime"];
+  [dictionary setObject:v29 forKey:@"last_updated_datetime"];
 
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_21:
     v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_blockingIncident];
-    [v3 setObject:v12 forKey:@"blocking_incident"];
+    [dictionary setObject:v12 forKey:@"blocking_incident"];
   }
 
 LABEL_22:
@@ -511,8 +511,8 @@ LABEL_22:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -521,25 +521,25 @@ LABEL_22:
       while (v16);
     }
 
-    [v3 setObject:v13 forKey:@"affected_entities"];
+    [dictionary setObject:v13 forKey:@"affected_entities"];
   }
 
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v21 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v3 setObject:v21 forKey:@"Unknown Fields"];
+    dictionaryRepresentation2 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"Unknown Fields"];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     muid = self->_muid;
@@ -683,61 +683,61 @@ LABEL_22:
     while (v10);
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4, v20];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy, v20];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_muid;
-    *(v4 + 108) |= 1u;
+    toCopy[2] = self->_muid;
+    *(toCopy + 108) |= 1u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if (self->_title)
   {
-    [v4 setTitle:?];
-    v4 = v10;
+    [toCopy setTitle:?];
+    toCopy = v10;
   }
 
   if (self->_summary)
   {
     [v10 setSummary:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_fullDescription)
   {
     [v10 setFullDescription:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_messageForRoutePlanning)
   {
     [v10 setMessageForRoutePlanning:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_messageForRouteStepping)
   {
     [v10 setMessageForRouteStepping:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_messageForNonRoutable)
   {
     [v10 setMessageForNonRoutable:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    *(v4 + 20) = self->_startDatetime;
-    *(v4 + 108) |= 0x20u;
+    *(toCopy + 20) = self->_startDatetime;
+    *(toCopy + 108) |= 0x20u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -756,8 +756,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  *(v4 + 9) = self->_endDatetime;
-  *(v4 + 108) |= 4u;
+  *(toCopy + 9) = self->_endDatetime;
+  *(toCopy + 108) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -771,8 +771,8 @@ LABEL_18:
   }
 
 LABEL_31:
-  *(v4 + 12) = self->_iconType;
-  *(v4 + 108) |= 8u;
+  *(toCopy + 12) = self->_iconType;
+  *(toCopy + 108) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -783,8 +783,8 @@ LABEL_19:
     }
 
 LABEL_33:
-    *(v4 + 13) = self->_lastUpdatedDatetime;
-    *(v4 + 108) |= 0x10u;
+    *(toCopy + 13) = self->_lastUpdatedDatetime;
+    *(toCopy + 108) |= 0x10u;
     if ((*&self->_has & 0x40) == 0)
     {
       goto LABEL_22;
@@ -794,8 +794,8 @@ LABEL_33:
   }
 
 LABEL_32:
-  *(v4 + 8) = self->_creationDatetime;
-  *(v4 + 108) |= 2u;
+  *(toCopy + 8) = self->_creationDatetime;
+  *(toCopy + 108) |= 2u;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -806,18 +806,18 @@ LABEL_20:
   if ((has & 0x40) != 0)
   {
 LABEL_21:
-    *(v4 + 104) = self->_blockingIncident;
-    *(v4 + 108) |= 0x40u;
+    *(toCopy + 104) = self->_blockingIncident;
+    *(toCopy + 108) |= 0x40u;
   }
 
 LABEL_22:
   if ([(MSPTransitStorageIncident *)self affectedEntitiesCount])
   {
     [v10 clearAffectedEntities];
-    v6 = [(MSPTransitStorageIncident *)self affectedEntitiesCount];
-    if (v6)
+    affectedEntitiesCount = [(MSPTransitStorageIncident *)self affectedEntitiesCount];
+    if (affectedEntitiesCount)
     {
-      v7 = v6;
+      v7 = affectedEntitiesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(MSPTransitStorageIncident *)self affectedEntitiesAtIndex:i];
@@ -827,10 +827,10 @@ LABEL_22:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -838,27 +838,27 @@ LABEL_22:
     *(v5 + 108) |= 1u;
   }
 
-  v7 = [(NSString *)self->_title copyWithZone:a3];
+  v7 = [(NSString *)self->_title copyWithZone:zone];
   v8 = *(v6 + 96);
   *(v6 + 96) = v7;
 
-  v9 = [(NSString *)self->_summary copyWithZone:a3];
+  v9 = [(NSString *)self->_summary copyWithZone:zone];
   v10 = *(v6 + 88);
   *(v6 + 88) = v9;
 
-  v11 = [(NSString *)self->_fullDescription copyWithZone:a3];
+  v11 = [(NSString *)self->_fullDescription copyWithZone:zone];
   v12 = *(v6 + 40);
   *(v6 + 40) = v11;
 
-  v13 = [(NSString *)self->_messageForRoutePlanning copyWithZone:a3];
+  v13 = [(NSString *)self->_messageForRoutePlanning copyWithZone:zone];
   v14 = *(v6 + 64);
   *(v6 + 64) = v13;
 
-  v15 = [(NSString *)self->_messageForRouteStepping copyWithZone:a3];
+  v15 = [(NSString *)self->_messageForRouteStepping copyWithZone:zone];
   v16 = *(v6 + 72);
   *(v6 + 72) = v15;
 
-  v17 = [(NSString *)self->_messageForNonRoutable copyWithZone:a3];
+  v17 = [(NSString *)self->_messageForNonRoutable copyWithZone:zone];
   v18 = *(v6 + 56);
   *(v6 + 56) = v17;
 
@@ -959,7 +959,7 @@ LABEL_10:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v28 + 1) + 8 * i) copyWithZone:{a3, v28}];
+        v25 = [*(*(&v28 + 1) + 8 * i) copyWithZone:{zone, v28}];
         [v6 addAffectedEntities:v25];
       }
 
@@ -974,36 +974,36 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_49;
   }
 
-  v5 = *(v4 + 108);
+  v5 = *(equalCopy + 108);
   if (*&self->_has)
   {
-    if ((*(v4 + 108) & 1) == 0 || self->_muid != *(v4 + 2))
+    if ((*(equalCopy + 108) & 1) == 0 || self->_muid != *(equalCopy + 2))
     {
       goto LABEL_49;
     }
   }
 
-  else if (*(v4 + 108))
+  else if (*(equalCopy + 108))
   {
     goto LABEL_49;
   }
 
   title = self->_title;
-  if (title | *(v4 + 12) && ![(NSString *)title isEqual:?])
+  if (title | *(equalCopy + 12) && ![(NSString *)title isEqual:?])
   {
     goto LABEL_49;
   }
 
   summary = self->_summary;
-  if (summary | *(v4 + 11))
+  if (summary | *(equalCopy + 11))
   {
     if (![(NSString *)summary isEqual:?])
     {
@@ -1012,7 +1012,7 @@ LABEL_10:
   }
 
   fullDescription = self->_fullDescription;
-  if (fullDescription | *(v4 + 5))
+  if (fullDescription | *(equalCopy + 5))
   {
     if (![(NSString *)fullDescription isEqual:?])
     {
@@ -1021,7 +1021,7 @@ LABEL_10:
   }
 
   messageForRoutePlanning = self->_messageForRoutePlanning;
-  if (messageForRoutePlanning | *(v4 + 8))
+  if (messageForRoutePlanning | *(equalCopy + 8))
   {
     if (![(NSString *)messageForRoutePlanning isEqual:?])
     {
@@ -1030,7 +1030,7 @@ LABEL_10:
   }
 
   messageForRouteStepping = self->_messageForRouteStepping;
-  if (messageForRouteStepping | *(v4 + 9))
+  if (messageForRouteStepping | *(equalCopy + 9))
   {
     if (![(NSString *)messageForRouteStepping isEqual:?])
     {
@@ -1039,7 +1039,7 @@ LABEL_10:
   }
 
   messageForNonRoutable = self->_messageForNonRoutable;
-  if (messageForNonRoutable | *(v4 + 7))
+  if (messageForNonRoutable | *(equalCopy + 7))
   {
     if (![(NSString *)messageForNonRoutable isEqual:?])
     {
@@ -1047,75 +1047,75 @@ LABEL_10:
     }
   }
 
-  v12 = *(v4 + 108);
+  v12 = *(equalCopy + 108);
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 108) & 0x20) == 0 || self->_startDatetime != *(v4 + 20))
+    if ((*(equalCopy + 108) & 0x20) == 0 || self->_startDatetime != *(equalCopy + 20))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 108) & 0x20) != 0)
+  else if ((*(equalCopy + 108) & 0x20) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 108) & 4) == 0 || self->_endDatetime != *(v4 + 9))
+    if ((*(equalCopy + 108) & 4) == 0 || self->_endDatetime != *(equalCopy + 9))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 108) & 4) != 0)
+  else if ((*(equalCopy + 108) & 4) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 108) & 8) == 0 || self->_iconType != *(v4 + 12))
+    if ((*(equalCopy + 108) & 8) == 0 || self->_iconType != *(equalCopy + 12))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 108) & 8) != 0)
+  else if ((*(equalCopy + 108) & 8) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 108) & 2) == 0 || self->_creationDatetime != *(v4 + 8))
+    if ((*(equalCopy + 108) & 2) == 0 || self->_creationDatetime != *(equalCopy + 8))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 108) & 2) != 0)
+  else if ((*(equalCopy + 108) & 2) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 108) & 0x10) == 0 || self->_lastUpdatedDatetime != *(v4 + 13))
+    if ((*(equalCopy + 108) & 0x10) == 0 || self->_lastUpdatedDatetime != *(equalCopy + 13))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 108) & 0x10) != 0)
+  else if ((*(equalCopy + 108) & 0x10) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 0x40) == 0)
   {
-    if ((*(v4 + 108) & 0x40) == 0)
+    if ((*(equalCopy + 108) & 0x40) == 0)
     {
       goto LABEL_46;
     }
@@ -1125,28 +1125,28 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  if ((*(v4 + 108) & 0x40) == 0)
+  if ((*(equalCopy + 108) & 0x40) == 0)
   {
     goto LABEL_49;
   }
 
-  v16 = *(v4 + 104);
+  v16 = *(equalCopy + 104);
   if (self->_blockingIncident)
   {
-    if ((*(v4 + 104) & 1) == 0)
+    if ((*(equalCopy + 104) & 1) == 0)
     {
       goto LABEL_49;
     }
   }
 
-  else if (*(v4 + 104))
+  else if (*(equalCopy + 104))
   {
     goto LABEL_49;
   }
 
 LABEL_46:
   affectedEntities = self->_affectedEntities;
-  if (affectedEntities | *(v4 + 3))
+  if (affectedEntities | *(equalCopy + 3))
   {
     v14 = [(NSMutableArray *)affectedEntities isEqual:?];
   }
@@ -1259,18 +1259,18 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ [(NSMutableArray *)self->_affectedEntities hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 108))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 108))
   {
-    self->_muid = v4[2];
+    self->_muid = fromCopy[2];
     *&self->_has |= 1u;
   }
 
-  if (v4[12])
+  if (fromCopy[12])
   {
     [(MSPTransitStorageIncident *)self setTitle:?];
   }

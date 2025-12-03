@@ -1,10 +1,10 @@
 @interface _MTL4CommandAllocator
-- (BOOL)getPrivateDataAndOffset:(id *)a3 privateDataOffset:(unint64_t *)a4;
-- (_MTL4CommandAllocator)initWithDevice:(id)a3;
-- (_MTL4CommandAllocator)initWithDevice:(id)a3 descriptor:(id)a4;
+- (BOOL)getPrivateDataAndOffset:(id *)offset privateDataOffset:(unint64_t *)dataOffset;
+- (_MTL4CommandAllocator)initWithDevice:(id)device;
+- (_MTL4CommandAllocator)initWithDevice:(id)device descriptor:(id)descriptor;
 - (id).cxx_construct;
 - (void)_executeResetHandlers;
-- (void)addResetHandler:(id)a3;
+- (void)addResetHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -18,14 +18,14 @@
   return self;
 }
 
-- (_MTL4CommandAllocator)initWithDevice:(id)a3
+- (_MTL4CommandAllocator)initWithDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = _MTL4CommandAllocator;
   v4 = [(_MTLObjectWithLabel *)&v6 init];
   if (v4)
   {
-    *(v4 + 3) = a3;
+    *(v4 + 3) = device;
     *(v4 + 5) = objc_alloc_init(MTLPrivateDataTable);
     [*(v4 + 3) _incrementAcquireCount];
   }
@@ -33,18 +33,18 @@
   return v4;
 }
 
-- (_MTL4CommandAllocator)initWithDevice:(id)a3 descriptor:(id)a4
+- (_MTL4CommandAllocator)initWithDevice:(id)device descriptor:(id)descriptor
 {
   v8.receiver = self;
   v8.super_class = _MTL4CommandAllocator;
   v6 = [(_MTLObjectWithLabel *)&v8 init];
   if (v6)
   {
-    *(v6 + 3) = a3;
+    *(v6 + 3) = device;
     *(v6 + 5) = objc_alloc_init(MTLPrivateDataTable);
-    if ([a4 label])
+    if ([descriptor label])
     {
-      [v6 setLabel:{objc_msgSend(a4, "label")}];
+      [v6 setLabel:{objc_msgSend(descriptor, "label")}];
     }
 
     [*(v6 + 3) _incrementAcquireCount];
@@ -79,18 +79,18 @@
   [(_MTLObjectWithLabel *)&v6 dealloc];
 }
 
-- (BOOL)getPrivateDataAndOffset:(id *)a3 privateDataOffset:(unint64_t *)a4
+- (BOOL)getPrivateDataAndOffset:(id *)offset privateDataOffset:(unint64_t *)dataOffset
 {
   v6 = *(self + 5);
-  v7 = [(_MTL4CommandAllocator *)self device];
+  device = [(_MTL4CommandAllocator *)self device];
 
-  return [v6 getPrivateDataAndOffset:v7 privateData:a3 privateDataOffset:a4];
+  return [v6 getPrivateDataAndOffset:device privateData:offset privateDataOffset:dataOffset];
 }
 
-- (void)addResetHandler:(id)a3
+- (void)addResetHandler:(id)handler
 {
   v3 = self + 48;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v6 = *(v3 + 1);
   v5 = *(v3 + 2);
   if (v6 >= v5)

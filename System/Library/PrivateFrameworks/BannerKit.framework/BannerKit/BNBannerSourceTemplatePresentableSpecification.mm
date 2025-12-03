@@ -1,16 +1,16 @@
 @interface BNBannerSourceTemplatePresentableSpecification
-- (BNBannerSourceTemplatePresentableSpecification)initWithBSXPCCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (BNBannerSourceTemplatePresentableSpecification)initWithBSXPCCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation BNBannerSourceTemplatePresentableSpecification
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = BNBannerSourceTemplatePresentableSpecification;
-  [(BNBannerSourcePresentableSpecification *)&v25 encodeWithBSXPCCoder:v4];
+  [(BNBannerSourcePresentableSpecification *)&v25 encodeWithBSXPCCoder:coderCopy];
   leadingTemplateViewProvider = self->_leadingTemplateViewProvider;
   if (leadingTemplateViewProvider)
   {
@@ -36,7 +36,7 @@
 
     v9 = v8;
 
-    [v4 encodeObject:v9 forKey:@"leadingTemplateViewProvider"];
+    [coderCopy encodeObject:v9 forKey:@"leadingTemplateViewProvider"];
   }
 
   trailingTemplateViewProvider = self->_trailingTemplateViewProvider;
@@ -64,7 +64,7 @@
 
     v14 = v13;
 
-    [v4 encodeObject:v14 forKey:@"trailingTemplateViewProvider"];
+    [coderCopy encodeObject:v14 forKey:@"trailingTemplateViewProvider"];
   }
 
   primaryTemplateItemProvider = self->_primaryTemplateItemProvider;
@@ -92,7 +92,7 @@
 
     v19 = v18;
 
-    [v4 encodeObject:v19 forKey:@"primaryTemplateItemProvider"];
+    [coderCopy encodeObject:v19 forKey:@"primaryTemplateItemProvider"];
   }
 
   secondaryTemplateItemProvider = self->_secondaryTemplateItemProvider;
@@ -120,40 +120,40 @@
 
     v24 = v23;
 
-    [v4 encodeObject:v24 forKey:@"secondaryTemplateItemProvider"];
+    [coderCopy encodeObject:v24 forKey:@"secondaryTemplateItemProvider"];
   }
 
   if ([(NSString *)self->_presentableAccessibilityIdentifier length])
   {
-    [v4 encodeObject:self->_presentableAccessibilityIdentifier forKey:@"presentableAccessibilityIdentifier"];
+    [coderCopy encodeObject:self->_presentableAccessibilityIdentifier forKey:@"presentableAccessibilityIdentifier"];
   }
 }
 
-- (BNBannerSourceTemplatePresentableSpecification)initWithBSXPCCoder:(id)a3
+- (BNBannerSourceTemplatePresentableSpecification)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = BNBannerSourceTemplatePresentableSpecification;
-  v5 = [(BNBannerSourcePresentableSpecification *)&v17 initWithBSXPCCoder:v4];
+  v5 = [(BNBannerSourcePresentableSpecification *)&v17 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"leadingTemplateViewProvider"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"leadingTemplateViewProvider"];
     leadingTemplateViewProvider = v5->_leadingTemplateViewProvider;
     v5->_leadingTemplateViewProvider = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trailingTemplateViewProvider"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trailingTemplateViewProvider"];
     trailingTemplateViewProvider = v5->_trailingTemplateViewProvider;
     v5->_trailingTemplateViewProvider = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryTemplateItemProvider"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryTemplateItemProvider"];
     primaryTemplateItemProvider = v5->_primaryTemplateItemProvider;
     v5->_primaryTemplateItemProvider = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryTemplateItemProvider"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryTemplateItemProvider"];
     secondaryTemplateItemProvider = v5->_secondaryTemplateItemProvider;
     v5->_secondaryTemplateItemProvider = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"presentableAccessibilityIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"presentableAccessibilityIdentifier"];
     presentableAccessibilityIdentifier = v5->_presentableAccessibilityIdentifier;
     v5->_presentableAccessibilityIdentifier = v14;
   }

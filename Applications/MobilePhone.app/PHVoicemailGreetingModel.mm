@@ -11,26 +11,26 @@
 - (NSUUID)liveVoicMailAccountUUID;
 - (PHAudioRecorder)greetingRecorder;
 - (PHVoicemailGreetingModel)init;
-- (PHVoicemailGreetingModel)initWithAccount:(id)a3;
+- (PHVoicemailGreetingModel)initWithAccount:(id)account;
 - (PHVoicemailGreetingModelDelegate)delegate;
 - (VMVoicemailManager)voicemailManager;
 - (double)maximumGreetingDuration;
-- (double)maximumGreetingDurationForAccount:(id)a3;
-- (void)_mediaserverReset:(id)a3;
-- (void)audioRecorderContinuedWithFile:(id)a3 duration:(double)a4;
-- (void)audioRecorderEndedWithFile:(id)a3 duration:(double)a4 error:(id)a5;
-- (void)audioRecorderStartedWithFile:(id)a3;
+- (double)maximumGreetingDurationForAccount:(id)account;
+- (void)_mediaserverReset:(id)reset;
+- (void)audioRecorderContinuedWithFile:(id)file duration:(double)duration;
+- (void)audioRecorderEndedWithFile:(id)file duration:(double)duration error:(id)error;
+- (void)audioRecorderStartedWithFile:(id)file;
 - (void)dealloc;
 - (void)didSelectCustomizedGreeting;
 - (void)didSelectDefaultGreeting;
 - (void)fetchGreeting;
-- (void)loadGreeting:(id)a3;
+- (void)loadGreeting:(id)greeting;
 - (void)pauseGreeting;
 - (void)playGreeting;
 - (void)resetPlayerToBeginning;
 - (void)saveGreeting;
-- (void)setDelegate:(id)a3;
-- (void)setGreetingState:(int64_t)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setGreetingState:(int64_t)state;
 - (void)startRecording;
 - (void)stopRecording;
 @end
@@ -44,16 +44,16 @@
   return 0;
 }
 
-- (PHVoicemailGreetingModel)initWithAccount:(id)a3
+- (PHVoicemailGreetingModel)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v10.receiver = self;
   v10.super_class = PHVoicemailGreetingModel;
   v6 = [(PHVoicemailGreetingModel *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
     v7->_maximumGreetingDuration = -1.0;
     v7->_greetingState = 0;
     v8 = +[NSNotificationCenter defaultCenter];
@@ -82,8 +82,8 @@
   result = self->_maximumGreetingDuration;
   if (result < 0.0)
   {
-    v4 = [(PHVoicemailGreetingModel *)self account];
-    [(PHVoicemailGreetingModel *)self maximumGreetingDurationForAccount:v4];
+    account = [(PHVoicemailGreetingModel *)self account];
+    [(PHVoicemailGreetingModel *)self maximumGreetingDurationForAccount:account];
     v6 = v5;
 
     result = fmax(v6, 0.0);
@@ -96,15 +96,15 @@
 - (VMVoicemailManager)voicemailManager
 {
   v2 = +[(PHApplicationServices *)MPApplicationServices];
-  v3 = [v2 accountManager];
+  accountManager = [v2 accountManager];
 
-  return v3;
+  return accountManager;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
-  if (!a3)
+  objc_storeWeak(&self->_delegate, delegate);
+  if (!delegate)
   {
     v5 = +[PHVoicemailPlayerController sharedPlayerController];
     [v5 endInterruption];
@@ -119,34 +119,34 @@
   }
 }
 
-- (void)setGreetingState:(int64_t)a3
+- (void)setGreetingState:(int64_t)state
 {
   if (!+[NSThread isMainThread])
   {
-    v6 = [NSString stringWithFormat:@"Attempted to change to greeting state: %li from a background thread. You must set the greeting state from the main thread.", a3];
-    NSLog(@"** TUAssertion failure: %@", v6);
+    state = [NSString stringWithFormat:@"Attempted to change to greeting state: %li from a background thread. You must set the greeting state from the main thread.", state];
+    NSLog(@"** TUAssertion failure: %@", state);
 
     if (_TUAssertShouldCrashApplication())
     {
       if (!+[NSThread isMainThread])
       {
-        [(PHVoicemailGreetingModel *)a2 setGreetingState:a3];
+        [(PHVoicemailGreetingModel *)a2 setGreetingState:state];
       }
     }
   }
 
-  if (self->_greetingState != a3)
+  if (self->_greetingState != state)
   {
-    self->_greetingState = a3;
-    v7 = [(PHVoicemailGreetingModel *)self delegate];
-    [v7 voicemailGreetingAudioControllerDidChangeState:a3];
+    self->_greetingState = state;
+    delegate = [(PHVoicemailGreetingModel *)self delegate];
+    [delegate voicemailGreetingAudioControllerDidChangeState:state];
   }
 }
 
 - (void)startRecording
 {
-  v14 = [objc_opt_class() greetingTempFileLocation];
-  if (!v14)
+  greetingTempFileLocation = [objc_opt_class() greetingTempFileLocation];
+  if (!greetingTempFileLocation)
   {
     v4 = [NSString stringWithFormat:@"Unable to start recording, output file is nil"];
     NSLog(@"** TUAssertion failure: %@", v4);
@@ -158,16 +158,16 @@
     }
   }
 
-  v6 = [(PHVoicemailGreetingModel *)self greetingRecorder];
-  [v6 setOutputFile:v14];
+  greetingRecorder = [(PHVoicemailGreetingModel *)self greetingRecorder];
+  [greetingRecorder setOutputFile:greetingTempFileLocation];
 
   [(PHVoicemailGreetingModel *)self maximumGreetingDuration];
   v8 = v7;
-  v9 = [(PHVoicemailGreetingModel *)self greetingRecorder];
-  [v9 setMaxRecordedDuration:v8];
+  greetingRecorder2 = [(PHVoicemailGreetingModel *)self greetingRecorder];
+  [greetingRecorder2 setMaxRecordedDuration:v8];
 
-  v10 = [(PHVoicemailGreetingModel *)self greetingRecorder];
-  v11 = [v10 startWithError:0];
+  greetingRecorder3 = [(PHVoicemailGreetingModel *)self greetingRecorder];
+  v11 = [greetingRecorder3 startWithError:0];
 
   if ((v11 & 1) == 0)
   {
@@ -186,15 +186,15 @@
 
 - (void)stopRecording
 {
-  v3 = [(PHVoicemailGreetingModel *)self greetingRecorder];
-  [v3 stop];
+  greetingRecorder = [(PHVoicemailGreetingModel *)self greetingRecorder];
+  [greetingRecorder stop];
 
   [(PHVoicemailGreetingModel *)self setGreetingState:2];
 }
 
-- (void)loadGreeting:(id)a3
+- (void)loadGreeting:(id)greeting
 {
-  v4 = a3;
+  greetingCopy = greeting;
   v5 = +[PHVoicemailPlayerController sharedPlayerController];
   CMTimeMake(&v10, 1, 100);
   v9[0] = _NSConcreteStackBlock;
@@ -202,7 +202,7 @@
   v9[2] = __41__PHVoicemailGreetingModel_loadGreeting___block_invoke;
   v9[3] = &unk_1002868F8;
   v9[4] = self;
-  [v5 loadAudio:v4 withObserverForInterval:&v10 usingBlock:v9];
+  [v5 loadAudio:greetingCopy withObserverForInterval:&v10 usingBlock:v9];
 
   v6 = +[PHVoicemailPlayerController sharedPlayerController];
   v10 = kCMTimeZero;
@@ -244,14 +244,14 @@ void __41__PHVoicemailGreetingModel_loadGreeting___block_invoke_3(uint64_t a1)
   [v2 voicemailGreetingDurationChanged:CMTimeGetSeconds(&v3)];
 }
 
-- (void)_mediaserverReset:(id)a3
+- (void)_mediaserverReset:(id)reset
 {
-  v4 = [(PHVoicemailGreetingModel *)self existingGreeting];
+  existingGreeting = [(PHVoicemailGreetingModel *)self existingGreeting];
 
-  if (v4)
+  if (existingGreeting)
   {
-    v5 = [(PHVoicemailGreetingModel *)self existingGreeting];
-    v6 = [v5 url];
+    existingGreeting2 = [(PHVoicemailGreetingModel *)self existingGreeting];
+    v6 = [existingGreeting2 url];
     v7 = [AVAsset assetWithURL:v6];
     [(PHVoicemailGreetingModel *)self loadGreeting:v7];
 
@@ -270,9 +270,9 @@ void __41__PHVoicemailGreetingModel_loadGreeting___block_invoke_3(uint64_t a1)
 - (void)playGreeting
 {
   v3 = +[PHVoicemailPlayerController sharedPlayerController];
-  v4 = [v3 isAtEnd];
+  isAtEnd = [v3 isAtEnd];
 
-  if (v4)
+  if (isAtEnd)
   {
     v5 = +[PHVoicemailPlayerController sharedPlayerController];
     v7 = *&kCMTimeZero.value;
@@ -310,7 +310,7 @@ void __41__PHVoicemailGreetingModel_loadGreeting___block_invoke_3(uint64_t a1)
   return greetingRecorder;
 }
 
-- (void)audioRecorderStartedWithFile:(id)a3
+- (void)audioRecorderStartedWithFile:(id)file
 {
   if ([(PHVoicemailGreetingModel *)self greetingState]== 4)
   {
@@ -329,7 +329,7 @@ void __41__PHVoicemailGreetingModel_loadGreeting___block_invoke_3(uint64_t a1)
   [(PHVoicemailGreetingModel *)self setGreetingState:4];
 }
 
-- (void)audioRecorderContinuedWithFile:(id)a3 duration:(double)a4
+- (void)audioRecorderContinuedWithFile:(id)file duration:(double)duration
 {
   if ([(PHVoicemailGreetingModel *)self greetingState]!= 4)
   {
@@ -345,15 +345,15 @@ void __41__PHVoicemailGreetingModel_loadGreeting___block_invoke_3(uint64_t a1)
     }
   }
 
-  v8 = [(PHVoicemailGreetingModel *)self delegate];
+  delegate = [(PHVoicemailGreetingModel *)self delegate];
   [(PHVoicemailGreetingModel *)self maximumGreetingDuration];
-  [v8 voicemailGreetingRecordingProgressChanged:a4 / v7];
+  [delegate voicemailGreetingRecordingProgressChanged:duration / v7];
 }
 
-- (void)audioRecorderEndedWithFile:(id)a3 duration:(double)a4 error:(id)a5
+- (void)audioRecorderEndedWithFile:(id)file duration:(double)duration error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  fileCopy = file;
+  errorCopy = error;
   if ([(PHVoicemailGreetingModel *)self greetingState]!= 4)
   {
     v10 = [NSString stringWithFormat:@"audioRecorderEndedWithFile:duration:error: called, but we were not recording!  State was %ld.", [(PHVoicemailGreetingModel *)self greetingState]];
@@ -364,15 +364,15 @@ void __41__PHVoicemailGreetingModel_loadGreeting___block_invoke_3(uint64_t a1)
       if ([(PHVoicemailGreetingModel *)self greetingState]!= 4)
       {
         [PHVoicemailGreetingModel audioRecorderEndedWithFile:duration:error:];
-        if (v9)
+        if (errorCopy)
         {
           goto LABEL_5;
         }
 
 LABEL_13:
         v16 = objc_alloc_init(VMVoicemailGreeting);
-        [v16 setDuration:a4];
-        v22 = [NSURL fileURLWithPath:v8];
+        [v16 setDuration:duration];
+        v22 = [NSURL fileURLWithPath:fileCopy];
         [v16 setUrl:v22];
 
         [v16 setType:2];
@@ -381,24 +381,24 @@ LABEL_13:
         [(PHVoicemailGreetingModel *)self loadGreeting:v24];
 
         [(PHVoicemailGreetingModel *)self setSelectedGreeting:v16];
-        v25 = [(PHVoicemailGreetingModel *)self delegate];
-        [v25 voicemailGreetingDidFinishRecording];
+        delegate = [(PHVoicemailGreetingModel *)self delegate];
+        [delegate voicemailGreetingDidFinishRecording];
 
         goto LABEL_14;
       }
     }
   }
 
-  if (!v9)
+  if (!errorCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_5:
-  v11 = [v9 code];
+  code = [errorCopy code];
   v12 = +[NSBundle mainBundle];
   v13 = v12;
-  if (v11 == -11810)
+  if (code == -11810)
   {
     v14 = @"GREETING_TOO_LONG";
   }
@@ -408,7 +408,7 @@ LABEL_5:
     v14 = @"GREETING_FAILED";
   }
 
-  if (v11 == -11810)
+  if (code == -11810)
   {
     v15 = @"GREETING_TOO_LONG_DETAIL";
   }
@@ -430,8 +430,8 @@ LABEL_5:
   v19 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:2];
   v20 = [NSError errorWithDomain:@"com.apple.mobilephone" code:-1 userInfo:v19];
 
-  v21 = [(PHVoicemailGreetingModel *)self delegate];
-  [v21 voicemailGreetingFailedWithError:v20];
+  delegate2 = [(PHVoicemailGreetingModel *)self delegate];
+  [delegate2 voicemailGreetingFailedWithError:v20];
 
   [(PHVoicemailGreetingModel *)self setGreetingState:2];
 LABEL_14:
@@ -478,10 +478,10 @@ LABEL_8:
 
 - (BOOL)shouldShowSaveButton
 {
-  v2 = self;
-  v3 = [(PHVoicemailGreetingModel *)v2 selectedGreeting];
-  v4 = [(PHVoicemailGreetingModel *)v2 existingGreeting];
-  v5 = [(VMVoicemailGreeting *)v3 isEqual:v4];
+  selfCopy = self;
+  selectedGreeting = [(PHVoicemailGreetingModel *)selfCopy selectedGreeting];
+  existingGreeting = [(PHVoicemailGreetingModel *)selfCopy existingGreeting];
+  v5 = [(VMVoicemailGreeting *)selectedGreeting isEqual:existingGreeting];
 
   return v5 ^ 1;
 }
@@ -494,11 +494,11 @@ LABEL_8:
   __chkstk_darwin(v4);
   v8 = &v20 - v7;
   v9 = objc_opt_self();
-  v10 = self;
-  v11 = [v9 sharedInstance];
-  v12 = [v11 defaultGreeting];
+  selfCopy = self;
+  sharedInstance = [v9 sharedInstance];
+  defaultGreeting = [sharedInstance defaultGreeting];
 
-  if (v12)
+  if (defaultGreeting)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -531,7 +531,7 @@ LABEL_8:
 
 - (BOOL)greetingExists
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PHVoicemailGreetingModel.greetingExists.getter();
 
   return v3 & 1;
@@ -539,36 +539,36 @@ LABEL_8:
 
 - (BOOL)isCustomized
 {
-  v2 = self;
-  v3 = [(PHVoicemailGreetingModel *)v2 selectedGreeting];
-  v4 = [(VMVoicemailGreeting *)v3 type];
+  selfCopy = self;
+  selectedGreeting = [(PHVoicemailGreetingModel *)selfCopy selectedGreeting];
+  type = [(VMVoicemailGreeting *)selectedGreeting type];
 
-  return v4 == 2;
+  return type == 2;
 }
 
 - (BOOL)isDefault
 {
-  v2 = self;
-  v3 = [(PHVoicemailGreetingModel *)v2 selectedGreeting];
-  v4 = [(VMVoicemailGreeting *)v3 type];
+  selfCopy = self;
+  selectedGreeting = [(PHVoicemailGreetingModel *)selfCopy selectedGreeting];
+  type = [(VMVoicemailGreeting *)selectedGreeting type];
 
-  return v4 == 0;
+  return type == 0;
 }
 
 - (BOOL)shouldShowPlayButtonForDefaultGreeting
 {
-  v2 = self;
-  if ([(PHVoicemailGreetingModel *)v2 isCallScreeningEnabled])
+  selfCopy = self;
+  if ([(PHVoicemailGreetingModel *)selfCopy isCallScreeningEnabled])
   {
-    v3 = [(PHVoicemailGreetingModel *)v2 greetingExists];
+    greetingExists = [(PHVoicemailGreetingModel *)selfCopy greetingExists];
   }
 
   else
   {
-    v3 = 0;
+    greetingExists = 0;
   }
 
-  return v3;
+  return greetingExists;
 }
 
 - (BOOL)isCallScreeningEnabled
@@ -596,40 +596,40 @@ LABEL_8:
 
 - (void)saveGreeting
 {
-  v2 = self;
+  selfCopy = self;
   PHVoicemailGreetingModel.saveGreeting()();
 }
 
 - (void)fetchGreeting
 {
-  v2 = self;
+  selfCopy = self;
   PHVoicemailGreetingModel.fetchGreeting()();
 }
 
 - (void)didSelectDefaultGreeting
 {
-  v2 = self;
+  selfCopy = self;
   PHVoicemailGreetingModel.didSelectDefaultGreeting()();
 }
 
 - (void)didSelectCustomizedGreeting
 {
-  v2 = self;
+  selfCopy = self;
   PHVoicemailGreetingModel.didSelectCustomizedGreeting()();
 }
 
-- (double)maximumGreetingDurationForAccount:(id)a3
+- (double)maximumGreetingDurationForAccount:(id)account
 {
-  if (*(a3 + OBJC_IVAR___MPGreetingAccount_accountType + 8))
+  if (*(account + OBJC_IVAR___MPGreetingAccount_accountType + 8))
   {
     return 120.0;
   }
 
-  v5 = a3;
-  v6 = self;
-  v7 = [(PHVoicemailGreetingModel *)v6 voicemailManager];
+  accountCopy = account;
+  selfCopy = self;
+  voicemailManager = [(PHVoicemailGreetingModel *)selfCopy voicemailManager];
   isa = UUID._bridgeToObjectiveC()().super.isa;
-  [(VMVoicemailManager *)v7 maximumGreetingDurationForAccountUUID:isa];
+  [(VMVoicemailManager *)voicemailManager maximumGreetingDurationForAccountUUID:isa];
   v10 = v9;
 
   return v10;

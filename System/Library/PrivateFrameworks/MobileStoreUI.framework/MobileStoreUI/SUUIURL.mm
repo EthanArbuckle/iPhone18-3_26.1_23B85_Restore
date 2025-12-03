@@ -1,48 +1,48 @@
 @interface SUUIURL
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)queryStringDictionary;
 - (NSString)URLBagKey;
 - (NSString)actionString;
 - (NSString)redeemCode;
 - (NSString)searchTerm;
-- (SUUIURL)initWithURL:(id)a3;
-- (SUUIURL)initWithURL:(id)a3 sourceApplication:(id)a4 annotation:(id)a5;
-- (SUUIURL)initWithURLBagKey:(id)a3;
+- (SUUIURL)initWithURL:(id)l;
+- (SUUIURL)initWithURL:(id)l sourceApplication:(id)application annotation:(id)annotation;
+- (SUUIURL)initWithURLBagKey:(id)key;
 - (id)_appStoreSearchURLBagKey;
-- (id)_decodedQueryParameter:(id)a3;
+- (id)_decodedQueryParameter:(id)parameter;
 - (id)_queryDictionary;
-- (id)_searchGroupForSearchKind:(id)a3;
+- (id)_searchGroupForSearchKind:(id)kind;
 - (id)_searchURLBagKey;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)newURLRequestWithBaseURL:(id)a3;
-- (id)valueForQueryParameter:(id)a3;
+- (id)newURLRequestWithBaseURL:(id)l;
+- (id)valueForQueryParameter:(id)parameter;
 - (unint64_t)hash;
 @end
 
 @implementation SUUIURL
 
-- (SUUIURL)initWithURL:(id)a3
+- (SUUIURL)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = SUUIURL;
   v5 = [(SUUIURL *)&v14 init];
   if (v5)
   {
-    v6 = [v4 scheme];
-    if ([v6 isEqualToString:@"https"])
+    scheme = [lCopy scheme];
+    if ([scheme isEqualToString:@"https"])
     {
-      v7 = [v4 copy];
+      v7 = [lCopy copy];
       url = v5->_url;
       v5->_url = v7;
     }
 
     else
     {
-      v9 = [v6 length];
-      v10 = [v4 absoluteString];
-      url = [v10 stringByReplacingCharactersInRange:0 withString:{v9, @"https"}];
+      v9 = [scheme length];
+      absoluteString = [lCopy absoluteString];
+      url = [absoluteString stringByReplacingCharactersInRange:0 withString:{v9, @"https"}];
 
       v11 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:url];
       v12 = v5->_url;
@@ -53,11 +53,11 @@
   return v5;
 }
 
-- (SUUIURL)initWithURL:(id)a3 sourceApplication:(id)a4 annotation:(id)a5
+- (SUUIURL)initWithURL:(id)l sourceApplication:(id)application annotation:(id)annotation
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SUUIURL *)self initWithURL:a3];
+  applicationCopy = application;
+  annotationCopy = annotation;
+  v10 = [(SUUIURL *)self initWithURL:l];
   if (v10)
   {
     objc_opt_class();
@@ -67,7 +67,7 @@
       v12 = *SUUIWeakLinkedSymbolForString("LSReferrerURLKey", v11);
       if (v12)
       {
-        v13 = [v9 objectForKey:v12];
+        v13 = [annotationCopy objectForKey:v12];
       }
 
       else
@@ -86,29 +86,29 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [v13 absoluteString];
-          [(SUUIURL *)v10 setReferrerURLString:v14];
+          absoluteString = [v13 absoluteString];
+          [(SUUIURL *)v10 setReferrerURLString:absoluteString];
         }
       }
     }
 
-    [(SUUIURL *)v10 setReferrerApplicationName:v8];
+    [(SUUIURL *)v10 setReferrerApplicationName:applicationCopy];
   }
 
   return v10;
 }
 
-- (SUUIURL)initWithURLBagKey:(id)a3
+- (SUUIURL)initWithURLBagKey:(id)key
 {
   v4 = MEMORY[0x277CCACE0];
-  v5 = a3;
+  keyCopy = key;
   v6 = objc_alloc_init(v4);
   [v6 setScheme:@"https"];
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = [MEMORY[0x277CCAD18] queryItemWithName:@"action" value:@"bagurl"];
   [v7 addObject:v8];
 
-  v9 = [MEMORY[0x277CCAD18] queryItemWithName:@"bagkey" value:v5];
+  v9 = [MEMORY[0x277CCAD18] queryItemWithName:@"bagkey" value:keyCopy];
 
   [v7 addObject:v9];
   [v6 setQueryItems:v7];
@@ -123,18 +123,18 @@
   v3 = [(SUUIURL *)self valueForQueryParameter:@"action"];
   if (!v3)
   {
-    v4 = [(NSURL *)self->_url absoluteString];
-    if ([v4 rangeOfString:@"MZSearch.woa"] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "rangeOfString:", @"/search?") == 0x7FFFFFFFFFFFFFFFLL)
+    absoluteString = [(NSURL *)self->_url absoluteString];
+    if ([absoluteString rangeOfString:@"MZSearch.woa"] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(absoluteString, "rangeOfString:", @"/search?") == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if ([v4 rangeOfString:@"freeProductCodeWizard"] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "rangeOfString:", @"redeemLandingPage") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "rangeOfString:", @"showDialogForRedeem") == 0x7FFFFFFFFFFFFFFFLL)
+      if ([absoluteString rangeOfString:@"freeProductCodeWizard"] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(absoluteString, "rangeOfString:", @"redeemLandingPage") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(absoluteString, "rangeOfString:", @"showDialogForRedeem") == 0x7FFFFFFFFFFFFFFFLL)
       {
-        if ([v4 rangeOfString:@"buyLandingPage"] == 0x7FFFFFFFFFFFFFFFLL)
+        if ([absoluteString rangeOfString:@"buyLandingPage"] == 0x7FFFFFFFFFFFFFFFLL)
         {
-          if ([v4 rangeOfString:@"buyCharityGiftWizard"] == 0x7FFFFFFFFFFFFFFFLL)
+          if ([absoluteString rangeOfString:@"buyCharityGiftWizard"] == 0x7FFFFFFFFFFFFFFFLL)
           {
-            if ([v4 rangeOfString:@"MZFinance.woa"] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "rangeOfString:", @"finance-app") == 0x7FFFFFFFFFFFFFFFLL)
+            if ([absoluteString rangeOfString:@"MZFinance.woa"] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(absoluteString, "rangeOfString:", @"finance-app") == 0x7FFFFFFFFFFFFFFFLL)
             {
-              if ([v4 rangeOfString:@"viewEula"] == 0x7FFFFFFFFFFFFFFFLL)
+              if ([absoluteString rangeOfString:@"viewEula"] == 0x7FFFFFFFFFFFFFFFLL)
               {
                 v3 = 0;
               }
@@ -145,7 +145,7 @@
               }
             }
 
-            else if ([v4 rangeOfString:@"getPass"] == 0x7FFFFFFFFFFFFFFFLL)
+            else if ([absoluteString rangeOfString:@"getPass"] == 0x7FFFFFFFFFFFFFFFLL)
             {
               v3 = @"account";
             }
@@ -183,25 +183,25 @@
   return v3;
 }
 
-- (id)newURLRequestWithBaseURL:(id)a3
+- (id)newURLRequestWithBaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(MEMORY[0x277CBAB50]);
-  v6 = [(SUUIURL *)self _queryDictionary];
-  v7 = [v6 objectForKey:@"serialNumber"];
+  _queryDictionary = [(SUUIURL *)self _queryDictionary];
+  v7 = [_queryDictionary objectForKey:@"serialNumber"];
   if (v7)
   {
     [v5 setValue:v7 forHTTPHeaderField:@"x-apple-serial-number"];
   }
 
-  v8 = [(NSURL *)v4 host];
+  host = [(NSURL *)lCopy host];
 
-  if (v8)
+  if (host)
   {
-    if (v7 || self->_url != v4)
+    if (v7 || self->_url != lCopy)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v10 = [v6 objectForKey:@"action"];
+      v10 = [_queryDictionary objectForKey:@"action"];
       v11 = [v10 isEqualToString:@"search"];
 
       v29 = 0;
@@ -225,10 +225,10 @@
       v27 = &v29;
       v14 = v13;
       v24 = v14;
-      v25 = self;
+      selfCopy = self;
       v15 = v9;
       v26 = v15;
-      [v6 enumerateKeysAndObjectsUsingBlock:v23];
+      [_queryDictionary enumerateKeysAndObjectsUsingBlock:v23];
       if (v30[5])
       {
         v16 = [(SUUIURL *)self _searchGroupForSearchKind:?];
@@ -238,7 +238,7 @@
         }
       }
 
-      v17 = [(NSURL *)v4 copyQueryStringDictionaryWithUnescapedValues:1];
+      v17 = [(NSURL *)lCopy copyQueryStringDictionaryWithUnescapedValues:1];
       if (v17)
       {
         [v15 addEntriesFromDictionary:v17];
@@ -254,26 +254,26 @@
         }
       }
 
-      v19 = [(NSURL *)v4 urlBySettingQueryStringDictionary:v15];
+      v19 = [(NSURL *)lCopy urlBySettingQueryStringDictionary:v15];
 
       _Block_object_dispose(&v29, 8);
-      v4 = v19;
+      lCopy = v19;
     }
 
-    [v5 setURL:v4];
+    [v5 setURL:lCopy];
   }
 
-  v20 = [(SUUIURL *)self referrerApplicationName];
-  if (v20)
+  referrerApplicationName = [(SUUIURL *)self referrerApplicationName];
+  if (referrerApplicationName)
   {
-    [v5 setValue:v20 forHTTPHeaderField:@"ref-user-agent"];
+    [v5 setValue:referrerApplicationName forHTTPHeaderField:@"ref-user-agent"];
   }
 
-  v21 = [(SUUIURL *)self referrerURLString];
+  referrerURLString = [(SUUIURL *)self referrerURLString];
 
-  if (v21)
+  if (referrerURLString)
   {
-    [v5 setValue:v21 forHTTPHeaderField:@"referer"];
+    [v5 setValue:referrerURLString forHTTPHeaderField:@"referer"];
   }
 
   return v5;
@@ -299,19 +299,19 @@ void __36__SUUIURL_newURLRequestWithBaseURL___block_invoke(uint64_t a1, void *a2
 
 - (NSDictionary)queryStringDictionary
 {
-  v2 = [(SUUIURL *)self _queryDictionary];
-  v3 = [v2 copy];
+  _queryDictionary = [(SUUIURL *)self _queryDictionary];
+  v3 = [_queryDictionary copy];
 
   return v3;
 }
 
 - (NSString)redeemCode
 {
-  v2 = [(SUUIURL *)self _queryDictionary];
-  v3 = [v2 objectForKey:@"code"];
+  _queryDictionary = [(SUUIURL *)self _queryDictionary];
+  v3 = [_queryDictionary objectForKey:@"code"];
   if (!v3)
   {
-    v3 = [v2 objectForKey:@"certId"];
+    v3 = [_queryDictionary objectForKey:@"certId"];
   }
 
   return v3;
@@ -325,13 +325,13 @@ void __36__SUUIURL_newURLRequestWithBaseURL___block_invoke(uint64_t a1, void *a2
   v12 = __Block_byref_object_copy__3;
   v13 = __Block_byref_object_dispose__3;
   v14 = 0;
-  v3 = [(SUUIURL *)self _queryDictionary];
+  _queryDictionary = [(SUUIURL *)self _queryDictionary];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __21__SUUIURL_searchTerm__block_invoke;
   v8[3] = &unk_2798F6490;
   v8[4] = &v9;
-  [v3 enumerateKeysAndObjectsUsingBlock:v8];
+  [_queryDictionary enumerateKeysAndObjectsUsingBlock:v8];
   v4 = [(SUUIURL *)self _decodedQueryParameter:v10[5]];
   v5 = v10[5];
   v10[5] = v4;
@@ -367,39 +367,39 @@ void __21__SUUIURL_searchTerm__block_invoke(uint64_t a1, void *a2, void *a3, _BY
 
 - (NSString)URLBagKey
 {
-  v3 = [(SUUIURL *)self _queryDictionary];
-  v4 = [v3 objectForKey:@"bagkey"];
+  _queryDictionary = [(SUUIURL *)self _queryDictionary];
+  _searchURLBagKey = [_queryDictionary objectForKey:@"bagkey"];
 
-  if (!v4)
+  if (!_searchURLBagKey)
   {
-    v5 = [(SUUIURL *)self actionString];
-    v4 = @"library-link";
-    if (([v5 isEqualToString:@"library-link"] & 1) == 0)
+    actionString = [(SUUIURL *)self actionString];
+    _searchURLBagKey = @"library-link";
+    if (([actionString isEqualToString:@"library-link"] & 1) == 0)
     {
-      if ([v5 isEqualToString:@"search"])
+      if ([actionString isEqualToString:@"search"])
       {
-        v4 = [(SUUIURL *)self _searchURLBagKey];
+        _searchURLBagKey = [(SUUIURL *)self _searchURLBagKey];
       }
 
       else
       {
-        v4 = @"newsstand";
-        if (([v5 isEqualToString:@"newsstand"] & 1) == 0)
+        _searchURLBagKey = @"newsstand";
+        if (([actionString isEqualToString:@"newsstand"] & 1) == 0)
         {
-          v4 = @"passbook";
-          if (([v5 isEqualToString:@"passbook"] & 1) == 0)
+          _searchURLBagKey = @"passbook";
+          if (([actionString isEqualToString:@"passbook"] & 1) == 0)
           {
-            v4 = @"ringtones";
-            if (([v5 isEqualToString:@"ringtones"] & 1) == 0)
+            _searchURLBagKey = @"ringtones";
+            if (([actionString isEqualToString:@"ringtones"] & 1) == 0)
             {
-              if ([v5 isEqualToString:@"accessory-lookup"])
+              if ([actionString isEqualToString:@"accessory-lookup"])
               {
-                v4 = @"p2-accessory-room";
+                _searchURLBagKey = @"p2-accessory-room";
               }
 
               else
               {
-                v4 = 0;
+                _searchURLBagKey = 0;
               }
             }
           }
@@ -408,14 +408,14 @@ void __21__SUUIURL_searchTerm__block_invoke(uint64_t a1, void *a2, void *a3, _BY
     }
   }
 
-  return v4;
+  return _searchURLBagKey;
 }
 
-- (id)valueForQueryParameter:(id)a3
+- (id)valueForQueryParameter:(id)parameter
 {
-  v4 = a3;
-  v5 = [(SUUIURL *)self _queryDictionary];
-  v6 = [v5 objectForKey:v4];
+  parameterCopy = parameter;
+  _queryDictionary = [(SUUIURL *)self _queryDictionary];
+  v6 = [_queryDictionary objectForKey:parameterCopy];
 
   return v6;
 }
@@ -426,8 +426,8 @@ void __21__SUUIURL_searchTerm__block_invoke(uint64_t a1, void *a2, void *a3, _BY
   queryDictionary = self->_queryDictionary;
   if (!queryDictionary)
   {
-    v4 = [(NSURL *)self->_url query];
-    v5 = [v4 componentsSeparatedByString:@"&"];
+    query = [(NSURL *)self->_url query];
+    v5 = [query componentsSeparatedByString:@"&"];
 
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v7 = self->_queryDictionary;
@@ -478,18 +478,18 @@ void __21__SUUIURL_searchTerm__block_invoke(uint64_t a1, void *a2, void *a3, _BY
   return queryDictionary;
 }
 
-- (id)_decodedQueryParameter:(id)a3
+- (id)_decodedQueryParameter:(id)parameter
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-  v4 = [v3 stringByRemovingPercentEncoding];
+  v3 = [parameter stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+  stringByRemovingPercentEncoding = [v3 stringByRemovingPercentEncoding];
 
-  return v4;
+  return stringByRemovingPercentEncoding;
 }
 
-- (id)_searchGroupForSearchKind:(id)a3
+- (id)_searchGroupForSearchKind:(id)kind
 {
-  v3 = a3;
-  if (([(__CFString *)v3 isEqualToString:@"epubBook"]& 1) != 0 || ([(__CFString *)v3 isEqualToString:@"metaEbook"]& 1) != 0 || ([(__CFString *)v3 isEqualToString:@"ibook"]& 1) != 0 || ([(__CFString *)v3 isEqualToString:@"ibookTextbook"]& 1) != 0)
+  kindCopy = kind;
+  if (([(__CFString *)kindCopy isEqualToString:@"epubBook"]& 1) != 0 || ([(__CFString *)kindCopy isEqualToString:@"metaEbook"]& 1) != 0 || ([(__CFString *)kindCopy isEqualToString:@"ibook"]& 1) != 0 || ([(__CFString *)kindCopy isEqualToString:@"ibookTextbook"]& 1) != 0)
   {
     v4 = @"ebook";
 LABEL_6:
@@ -497,44 +497,44 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (([(__CFString *)v3 isEqualToString:@"book"]& 1) != 0)
+  if (([(__CFString *)kindCopy isEqualToString:@"book"]& 1) != 0)
   {
     v4 = @"audiobook";
     goto LABEL_6;
   }
 
-  if (([(__CFString *)v3 isEqualToString:@"iMix"]& 1) != 0 || ([(__CFString *)v3 isEqualToString:@"itunesMix"]& 1) != 0 || ([(__CFString *)v3 isEqualToString:@"mix"]& 1) != 0 || ([(__CFString *)v3 isEqualToString:@"preorderAlbum"]& 1) != 0)
+  if (([(__CFString *)kindCopy isEqualToString:@"iMix"]& 1) != 0 || ([(__CFString *)kindCopy isEqualToString:@"itunesMix"]& 1) != 0 || ([(__CFString *)kindCopy isEqualToString:@"mix"]& 1) != 0 || ([(__CFString *)kindCopy isEqualToString:@"preorderAlbum"]& 1) != 0)
   {
     v4 = @"album";
     goto LABEL_6;
   }
 
-  if (([(__CFString *)v3 isEqualToString:@"shortFilm"]& 1) != 0)
+  if (([(__CFString *)kindCopy isEqualToString:@"shortFilm"]& 1) != 0)
   {
     v4 = @"movie";
     goto LABEL_6;
   }
 
-  if (([(__CFString *)v3 isEqualToString:@"tvEpisode"]& 1) != 0)
+  if (([(__CFString *)kindCopy isEqualToString:@"tvEpisode"]& 1) != 0)
   {
     v4 = @"tvSeason";
     goto LABEL_6;
   }
 
-  if (([(__CFString *)v3 isEqualToString:@"tone"]& 1) != 0)
+  if (([(__CFString *)kindCopy isEqualToString:@"tone"]& 1) != 0)
   {
     v4 = @"ringtone";
     goto LABEL_6;
   }
 
-  if (([(__CFString *)v3 isEqualToString:@"course"]& 1) != 0)
+  if (([(__CFString *)kindCopy isEqualToString:@"course"]& 1) != 0)
   {
     v4 = @"iTunesUCourse";
     goto LABEL_6;
   }
 
-  v4 = v3;
-  if ([(__CFString *)v3 isEqualToString:@"any-audio"])
+  v4 = kindCopy;
+  if ([(__CFString *)kindCopy isEqualToString:@"any-audio"])
   {
     v4 = 0;
     goto LABEL_6;
@@ -547,49 +547,49 @@ LABEL_7:
 
 - (id)_searchURLBagKey
 {
-  v3 = [(NSURL *)self->_url host];
-  v4 = [v3 length];
+  host = [(NSURL *)self->_url host];
+  v4 = [host length];
 
   if (v4)
   {
-    v5 = 0;
+    _appStoreSearchURLBagKey = 0;
     goto LABEL_30;
   }
 
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (![v7 isEqualToString:@"com.apple.AppStore"])
+  if (![bundleIdentifier isEqualToString:@"com.apple.AppStore"])
   {
-    if ([v7 isEqualToString:@"com.apple.MobileStore"])
+    if ([bundleIdentifier isEqualToString:@"com.apple.MobileStore"])
     {
-      v5 = @"p2-music-search";
+      _appStoreSearchURLBagKey = @"p2-music-search";
       goto LABEL_29;
     }
 
-    if ([v7 isEqualToString:@"com.apple.iBooks"])
+    if ([bundleIdentifier isEqualToString:@"com.apple.iBooks"])
     {
-      v5 = @"p2-book-search";
+      _appStoreSearchURLBagKey = @"p2-book-search";
       goto LABEL_29;
     }
 
-    if ([v7 isEqualToString:@"com.apple.podcasts"])
+    if ([bundleIdentifier isEqualToString:@"com.apple.podcasts"])
     {
-      v5 = @"p2-podcasts-search";
+      _appStoreSearchURLBagKey = @"p2-podcasts-search";
       goto LABEL_29;
     }
 
-    if ([v7 isEqualToString:@"com.apple.itunesu"])
+    if ([bundleIdentifier isEqualToString:@"com.apple.itunesu"])
     {
-      v5 = @"p2-itunesu-search";
+      _appStoreSearchURLBagKey = @"p2-itunesu-search";
       goto LABEL_29;
     }
 
-    v8 = [(SUUIURL *)self _queryDictionary];
-    v9 = [v8 objectForKey:@"kind"];
+    _queryDictionary = [(SUUIURL *)self _queryDictionary];
+    v9 = [_queryDictionary objectForKey:@"kind"];
 
     v10 = SUUIItemKindForString(v9);
-    v5 = 0;
+    _appStoreSearchURLBagKey = 0;
     if (v10 > 3)
     {
       if (v10 <= 0x11)
@@ -597,7 +597,7 @@ LABEL_7:
         if (((1 << v10) & 0x1E9C0) != 0)
         {
 LABEL_16:
-          v5 = @"p2-music-search";
+          _appStoreSearchURLBagKey = @"p2-music-search";
 LABEL_28:
 
           goto LABEL_29;
@@ -605,20 +605,20 @@ LABEL_28:
 
         if (((1 << v10) & 0x21020) != 0)
         {
-          v5 = [(SUUIURL *)self _appStoreSearchURLBagKey];
+          _appStoreSearchURLBagKey = [(SUUIURL *)self _appStoreSearchURLBagKey];
           goto LABEL_28;
         }
 
         if (((1 << v10) & 0x600) != 0)
         {
-          v5 = @"p2-podcasts-search";
+          _appStoreSearchURLBagKey = @"p2-podcasts-search";
           goto LABEL_28;
         }
       }
 
       if (v10 == 4)
       {
-        v5 = @"p2-itunesu-search";
+        _appStoreSearchURLBagKey = @"p2-itunesu-search";
       }
 
       goto LABEL_28;
@@ -628,7 +628,7 @@ LABEL_28:
     {
       if (v10 == 2)
       {
-        v5 = @"p2-book-search";
+        _appStoreSearchURLBagKey = @"p2-book-search";
         goto LABEL_28;
       }
 
@@ -641,18 +641,18 @@ LABEL_28:
     goto LABEL_16;
   }
 
-  v5 = [(SUUIURL *)self _appStoreSearchURLBagKey];
+  _appStoreSearchURLBagKey = [(SUUIURL *)self _appStoreSearchURLBagKey];
 LABEL_29:
 
 LABEL_30:
 
-  return v5;
+  return _appStoreSearchURLBagKey;
 }
 
 - (id)_appStoreSearchURLBagKey
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 stringForKey:@"AppStoreSearchKeyOverride"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"AppStoreSearchKeyOverride"];
 
   if (v3)
   {
@@ -667,22 +667,22 @@ LABEL_30:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSMutableDictionary *)self->_queryDictionary mutableCopyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSMutableDictionary *)self->_queryDictionary mutableCopyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_referrerApplicationName copyWithZone:a3];
+  v8 = [(NSString *)self->_referrerApplicationName copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_referrerURLString copyWithZone:a3];
+  v10 = [(NSString *)self->_referrerURLString copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSURL *)self->_url copyWithZone:a3];
+  v12 = [(NSURL *)self->_url copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
@@ -702,21 +702,21 @@ LABEL_30:
 
 - (unint64_t)hash
 {
-  v2 = [(SUUIURL *)self underlyingURL];
-  v3 = [v2 hash];
+  underlyingURL = [(SUUIURL *)self underlyingURL];
+  v3 = [underlyingURL hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [(SUUIURL *)self underlyingURL];
-    v8 = [v4 underlyingURL];
-    v6 = [v7 isEqual:v8];
+    underlyingURL = [(SUUIURL *)self underlyingURL];
+    underlyingURL2 = [equalCopy underlyingURL];
+    v6 = [underlyingURL isEqual:underlyingURL2];
   }
 
   else

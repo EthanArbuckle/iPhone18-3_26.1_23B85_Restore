@@ -1,42 +1,42 @@
 @interface TransitSteppingCameraFramer
-- (void)_rectForTransitOrWalkingSegment:(id)a3 currentStepIndex:(unint64_t)a4 handler:(id)a5;
-- (void)rectForStep:(id)a3 currentStepIndex:(unint64_t)a4 handler:(id)a5;
+- (void)_rectForTransitOrWalkingSegment:(id)segment currentStepIndex:(unint64_t)index handler:(id)handler;
+- (void)rectForStep:(id)step currentStepIndex:(unint64_t)index handler:(id)handler;
 @end
 
 @implementation TransitSteppingCameraFramer
 
-- (void)_rectForTransitOrWalkingSegment:(id)a3 currentStepIndex:(unint64_t)a4 handler:(id)a5
+- (void)_rectForTransitOrWalkingSegment:(id)segment currentStepIndex:(unint64_t)index handler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  segmentCopy = segment;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (handlerCopy)
   {
-    if (v7)
+    if (segmentCopy)
     {
-      v10 = [v7 startStepIndex] <= a4 && objc_msgSend(v7, "endStepIndex") >= a4;
-      v11 = [v7 steps];
-      v12 = [v11 firstObject];
+      v10 = [segmentCopy startStepIndex] <= index && objc_msgSend(segmentCopy, "endStepIndex") >= index;
+      steps = [segmentCopy steps];
+      firstObject = [steps firstObject];
 
-      v13 = [v7 steps];
-      v14 = [v13 lastObject];
+      steps2 = [segmentCopy steps];
+      lastObject = [steps2 lastObject];
 
       if (v10)
       {
-        if ([v14 stepIndex] - 1 <= a4)
+        if ([lastObject stepIndex] - 1 <= index)
         {
-          a4 = [v14 stepIndex] - 1;
+          index = [lastObject stepIndex] - 1;
         }
 
-        v15 = [v7 composedRoute];
-        v16 = [v15 stepAtIndex:a4];
+        composedRoute = [segmentCopy composedRoute];
+        v16 = [composedRoute stepAtIndex:index];
 
-        v12 = v16;
+        firstObject = v16;
       }
 
-      if (v12 == v14)
+      if (firstObject == lastObject)
       {
-        sub_100AF1CAC(v12, v9);
+        sub_100AF1CAC(firstObject, v9);
       }
 
       else
@@ -48,44 +48,44 @@
         size = MKMapRectNull.size;
         origin = MKMapRectNull.origin;
         v50 = size;
-        if ([v7 type] == 2)
+        if ([segmentCopy type] == 2)
         {
-          v18 = [v12 previousAlightingStep];
-          v19 = v18;
-          if (v18)
+          previousAlightingStep = [firstObject previousAlightingStep];
+          v19 = previousAlightingStep;
+          if (previousAlightingStep)
           {
-            v20 = v18;
+            v20 = previousAlightingStep;
           }
 
           else
           {
-            v20 = v12;
+            v20 = firstObject;
           }
 
           v21 = v20;
 
-          v22 = [v14 nextBoardingStep];
-          v23 = v22;
-          if (v22)
+          nextBoardingStep = [lastObject nextBoardingStep];
+          v23 = nextBoardingStep;
+          if (nextBoardingStep)
           {
-            v24 = v22;
+            v24 = nextBoardingStep;
           }
 
           else
           {
-            v24 = v14;
+            v24 = lastObject;
           }
 
           v25 = v24;
 
-          v14 = v25;
-          v12 = v21;
+          lastObject = v25;
+          firstObject = v21;
         }
 
-        for (i = [v12 stepIndex]; i < objc_msgSend(v14, "stepIndex"); ++i)
+        for (i = [firstObject stepIndex]; i < objc_msgSend(lastObject, "stepIndex"); ++i)
         {
-          v27 = [v7 composedRoute];
-          v28 = [v27 stepAtIndex:i];
+          composedRoute2 = [segmentCopy composedRoute];
+          v28 = [composedRoute2 stepAtIndex:i];
 
           v29 = v46;
           v52.origin.x = sub_100AF171C(v28);
@@ -105,7 +105,7 @@
         v44 = &v45;
         v34 = v33;
         v43 = v34;
-        sub_100AF1CAC(v12, v42);
+        sub_100AF1CAC(firstObject, v42);
         dispatch_group_enter(v34);
         v39[0] = _NSConcreteStackBlock;
         v39[1] = 3221225472;
@@ -114,7 +114,7 @@
         v41 = &v45;
         v35 = v34;
         v40 = v35;
-        sub_100AF1CAC(v14, v39);
+        sub_100AF1CAC(lastObject, v39);
         v36[0] = _NSConcreteStackBlock;
         v36[1] = 3221225472;
         v36[2] = sub_10086819C;
@@ -129,28 +129,28 @@
 
     else
     {
-      (*(v8 + 2))(v8, MKMapRectNull.origin.x, MKMapRectNull.origin.y, MKMapRectNull.size.width, MKMapRectNull.size.height);
+      (*(handlerCopy + 2))(handlerCopy, MKMapRectNull.origin.x, MKMapRectNull.origin.y, MKMapRectNull.size.width, MKMapRectNull.size.height);
     }
   }
 }
 
-- (void)rectForStep:(id)a3 currentStepIndex:(unint64_t)a4 handler:(id)a5
+- (void)rectForStep:(id)step currentStepIndex:(unint64_t)index handler:(id)handler
 {
-  v17 = a3;
-  v8 = a5;
-  if (v8)
+  stepCopy = step;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v17)
+    if (stepCopy)
     {
-      v9 = v17;
-      v10 = [v9 composedRoute];
-      v11 = [v10 segmentForStepIndex:{objc_msgSend(v9, "stepIndex")}];
+      v9 = stepCopy;
+      composedRoute = [v9 composedRoute];
+      v11 = [composedRoute segmentForStepIndex:{objc_msgSend(v9, "stepIndex")}];
 
       if ([v9 routeSegmentType] == 5)
       {
         v12.n128_f64[0] = sub_100AF171C(v9);
 LABEL_5:
-        v8[2](v8, v12);
+        handlerCopy[2](handlerCopy, v12);
 LABEL_6:
 
         goto LABEL_8;
@@ -160,17 +160,17 @@ LABEL_6:
       {
         if ([v9 maneuver] == 3)
         {
-          sub_100AF1CAC(v9, v8);
+          sub_100AF1CAC(v9, handlerCopy);
           goto LABEL_6;
         }
 
         if ([v9 maneuver] == 9)
         {
-          v13 = [v9 composedRoute];
-          v14 = [v9 getPreviousStep];
-          v15 = [v13 segmentForStepIndex:{objc_msgSend(v14, "stepIndex")}];
+          composedRoute2 = [v9 composedRoute];
+          getPreviousStep = [v9 getPreviousStep];
+          v15 = [composedRoute2 segmentForStepIndex:{objc_msgSend(getPreviousStep, "stepIndex")}];
 
-          [(TransitSteppingCameraFramer *)self _rectForTransitOrWalkingSegment:v15 currentStepIndex:a4 handler:v8];
+          [(TransitSteppingCameraFramer *)self _rectForTransitOrWalkingSegment:v15 currentStepIndex:index handler:handlerCopy];
           goto LABEL_6;
         }
 
@@ -193,17 +193,17 @@ LABEL_6:
         if ([v9 routeSegmentType] == 2)
         {
 LABEL_22:
-          [(TransitSteppingCameraFramer *)self _rectForTransitOrWalkingSegment:v11 currentStepIndex:a4 handler:v8];
+          [(TransitSteppingCameraFramer *)self _rectForTransitOrWalkingSegment:v11 currentStepIndex:index handler:handlerCopy];
           goto LABEL_6;
         }
       }
 
       v16.n128_u64[0] = *&MKMapRectNull.origin.x;
-      v8[2](v8, v16);
+      handlerCopy[2](handlerCopy, v16);
       goto LABEL_6;
     }
 
-    (v8[2])(v8, MKMapRectNull.origin.x, MKMapRectNull.origin.y, MKMapRectNull.size.width, MKMapRectNull.size.height);
+    (handlerCopy[2])(handlerCopy, MKMapRectNull.origin.x, MKMapRectNull.origin.y, MKMapRectNull.size.width, MKMapRectNull.size.height);
   }
 
 LABEL_8:

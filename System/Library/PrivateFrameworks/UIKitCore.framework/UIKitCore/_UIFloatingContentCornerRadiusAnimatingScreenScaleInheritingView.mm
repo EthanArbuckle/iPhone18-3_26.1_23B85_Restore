@@ -1,23 +1,23 @@
 @interface _UIFloatingContentCornerRadiusAnimatingScreenScaleInheritingView
-- (void)setContentScaleFactor:(double)a3;
+- (void)setContentScaleFactor:(double)factor;
 @end
 
 @implementation _UIFloatingContentCornerRadiusAnimatingScreenScaleInheritingView
 
-- (void)setContentScaleFactor:(double)a3
+- (void)setContentScaleFactor:(double)factor
 {
-  if (a3 == 0.0)
+  if (factor == 0.0)
   {
     [(UIView *)self _currentScreenScale];
     if (!self)
     {
-      a3 = 0.0;
+      factor = 0.0;
     }
   }
 
   v4.receiver = self;
   v4.super_class = _UIFloatingContentCornerRadiusAnimatingScreenScaleInheritingView;
-  [(UIView *)&v4 setContentScaleFactor:a3];
+  [(UIView *)&v4 setContentScaleFactor:factor];
 }
 
 @end

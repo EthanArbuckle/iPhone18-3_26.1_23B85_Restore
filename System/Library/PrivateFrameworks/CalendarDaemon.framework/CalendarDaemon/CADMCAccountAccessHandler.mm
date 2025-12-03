@@ -1,60 +1,60 @@
 @interface CADMCAccountAccessHandler
-- (BOOL)_areLocalStoresRestrictedForAction:(unint64_t)a3;
-- (BOOL)_isAccount:(id)a3 restrictedForAction:(unint64_t)a4;
-- (BOOL)_isDisabledForAction:(unint64_t)a3;
-- (BOOL)_mayShowLocalAccountsForAction:(unint64_t)a3;
-- (BOOL)isActionAllowed:(unint64_t)a3 forStore:(void *)a4 inDatabase:(CalDatabase *)a5;
-- (CADMCAccountAccessHandler)initWithDatabaseDataProvider:(id)a3 accountsProvider:(id)a4 managedConfigHandler:(id)a5 accountManagement:(unint64_t)a6 bundleIdentifier:(id)a7;
+- (BOOL)_areLocalStoresRestrictedForAction:(unint64_t)action;
+- (BOOL)_isAccount:(id)account restrictedForAction:(unint64_t)action;
+- (BOOL)_isDisabledForAction:(unint64_t)action;
+- (BOOL)_mayShowLocalAccountsForAction:(unint64_t)action;
+- (BOOL)isActionAllowed:(unint64_t)allowed forStore:(void *)store inDatabase:(CalDatabase *)database;
+- (CADMCAccountAccessHandler)initWithDatabaseDataProvider:(id)provider accountsProvider:(id)accountsProvider managedConfigHandler:(id)handler accountManagement:(unint64_t)management bundleIdentifier:(id)identifier;
 - (id)_cachedAccounts;
-- (id)_filteredAccountsForAction:(unint64_t)a3 withUnfilteredAccounts:(id)a4;
-- (id)_loadAllowedAccountIdentifiersForAction:(unint64_t)a3;
-- (void)gatherRestrictedCalendarRowIDs:(id)a3 forAction:(unint64_t)a4 inDatabase:(CalDatabase *)a5;
+- (id)_filteredAccountsForAction:(unint64_t)action withUnfilteredAccounts:(id)accounts;
+- (id)_loadAllowedAccountIdentifiersForAction:(unint64_t)action;
+- (void)gatherRestrictedCalendarRowIDs:(id)ds forAction:(unint64_t)action inDatabase:(CalDatabase *)database;
 - (void)reset;
 @end
 
 @implementation CADMCAccountAccessHandler
 
-- (CADMCAccountAccessHandler)initWithDatabaseDataProvider:(id)a3 accountsProvider:(id)a4 managedConfigHandler:(id)a5 accountManagement:(unint64_t)a6 bundleIdentifier:(id)a7
+- (CADMCAccountAccessHandler)initWithDatabaseDataProvider:(id)provider accountsProvider:(id)accountsProvider managedConfigHandler:(id)handler accountManagement:(unint64_t)management bundleIdentifier:(id)identifier
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  accountsProviderCopy = accountsProvider;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v21.receiver = self;
   v21.super_class = CADMCAccountAccessHandler;
-  v16 = [(CADAccountAccessHandler *)&v21 initWithDatabaseDataProvider:a3];
+  v16 = [(CADAccountAccessHandler *)&v21 initWithDatabaseDataProvider:provider];
   v17 = v16;
   if (v16)
   {
-    v16->_accountManagement = a6;
-    v18 = [v15 copy];
+    v16->_accountManagement = management;
+    v18 = [identifierCopy copy];
     bundleIdentifier = v17->_bundleIdentifier;
     v17->_bundleIdentifier = v18;
 
-    objc_storeStrong(&v17->_accountsProvider, a4);
-    objc_storeStrong(&v17->_managedConfigHandler, a5);
+    objc_storeStrong(&v17->_accountsProvider, accountsProvider);
+    objc_storeStrong(&v17->_managedConfigHandler, handler);
     v17->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v17;
 }
 
-- (BOOL)isActionAllowed:(unint64_t)a3 forStore:(void *)a4 inDatabase:(CalDatabase *)a5
+- (BOOL)isActionAllowed:(unint64_t)allowed forStore:(void *)store inDatabase:(CalDatabase *)database
 {
   if ([(CADMCAccountAccessHandler *)self _isDisabledForAction:?])
   {
     return 1;
   }
 
-  v10 = [(CADAccountAccessHandler *)self dataProvider];
-  if ([v10 isLocalStore:a4 inDatabase:a5])
+  dataProvider = [(CADAccountAccessHandler *)self dataProvider];
+  if ([dataProvider isLocalStore:store inDatabase:database])
   {
-    v11 = [(CADMCAccountAccessHandler *)self _areLocalStoresRestrictedForAction:a3];
+    v11 = [(CADMCAccountAccessHandler *)self _areLocalStoresRestrictedForAction:allowed];
   }
 
   else
   {
-    v12 = [v10 accountIDForStore:a4 inDatabase:a5];
-    v11 = [(CADMCAccountAccessHandler *)self _isAccount:v12 restrictedForAction:a3];
+    v12 = [dataProvider accountIDForStore:store inDatabase:database];
+    v11 = [(CADMCAccountAccessHandler *)self _isAccount:v12 restrictedForAction:allowed];
   }
 
   v9 = !v11;
@@ -62,14 +62,14 @@
   return v9;
 }
 
-- (void)gatherRestrictedCalendarRowIDs:(id)a3 forAction:(unint64_t)a4 inDatabase:(CalDatabase *)a5
+- (void)gatherRestrictedCalendarRowIDs:(id)ds forAction:(unint64_t)action inDatabase:(CalDatabase *)database
 {
-  v8 = a3;
-  if (![(CADMCAccountAccessHandler *)self _isDisabledForAction:a4])
+  dsCopy = ds;
+  if (![(CADMCAccountAccessHandler *)self _isDisabledForAction:action])
   {
     v9.receiver = self;
     v9.super_class = CADMCAccountAccessHandler;
-    [(CADAccountAccessHandler *)&v9 gatherRestrictedCalendarRowIDs:v8 forAction:a4 inDatabase:a5];
+    [(CADAccountAccessHandler *)&v9 gatherRestrictedCalendarRowIDs:dsCopy forAction:action inDatabase:database];
   }
 }
 
@@ -88,12 +88,12 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)_isDisabledForAction:(unint64_t)a3
+- (BOOL)_isDisabledForAction:(unint64_t)action
 {
-  v3 = [(CADMCAccountAccessHandler *)self managedConfigHandler];
-  v4 = [v3 isOpenInRestrictionInEffect];
+  managedConfigHandler = [(CADMCAccountAccessHandler *)self managedConfigHandler];
+  isOpenInRestrictionInEffect = [managedConfigHandler isOpenInRestrictionInEffect];
 
-  return v4 ^ 1;
+  return isOpenInRestrictionInEffect ^ 1;
 }
 
 - (id)_cachedAccounts
@@ -101,10 +101,10 @@
   cachedAccounts = self->_cachedAccounts;
   if (!cachedAccounts)
   {
-    v4 = [(CADMCAccountAccessHandler *)self accountsProvider];
-    v5 = [v4 accounts];
+    accountsProvider = [(CADMCAccountAccessHandler *)self accountsProvider];
+    accounts = [accountsProvider accounts];
     v6 = self->_cachedAccounts;
-    self->_cachedAccounts = v5;
+    self->_cachedAccounts = accounts;
 
     cachedAccounts = self->_cachedAccounts;
   }
@@ -112,7 +112,7 @@
   return cachedAccounts;
 }
 
-- (BOOL)_areLocalStoresRestrictedForAction:(unint64_t)a3
+- (BOOL)_areLocalStoresRestrictedForAction:(unint64_t)action
 {
   v16[2] = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -132,23 +132,23 @@
     localAccountRestrictionsByAction = self->_localAccountRestrictionsByAction;
   }
 
-  v12 = [(NSArray *)localAccountRestrictionsByAction objectAtIndexedSubscript:a3];
+  v12 = [(NSArray *)localAccountRestrictionsByAction objectAtIndexedSubscript:action];
   os_unfair_lock_unlock(&self->_lock);
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
 
   v14 = *MEMORY[0x277D85DE8];
-  return v13;
+  return bOOLValue;
 }
 
-- (BOOL)_isAccount:(id)a3 restrictedForAction:(unint64_t)a4
+- (BOOL)_isAccount:(id)account restrictedForAction:(unint64_t)action
 {
-  v6 = a3;
+  accountCopy = account;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:action];
   v8 = [(NSMutableDictionary *)self->_allowedAccountIdentifiersByAction objectForKeyedSubscript:v7];
   if (!v8)
   {
-    v8 = [(CADMCAccountAccessHandler *)self _loadAllowedAccountIdentifiersForAction:a4];
+    v8 = [(CADMCAccountAccessHandler *)self _loadAllowedAccountIdentifiersForAction:action];
     allowedAccountIdentifiersByAction = self->_allowedAccountIdentifiersByAction;
     if (!allowedAccountIdentifiersByAction)
     {
@@ -163,78 +163,78 @@
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v12 = [v8 containsObject:v6];
+  v12 = [v8 containsObject:accountCopy];
 
   return v12 ^ 1;
 }
 
-- (id)_loadAllowedAccountIdentifiersForAction:(unint64_t)a3
+- (id)_loadAllowedAccountIdentifiersForAction:(unint64_t)action
 {
-  v5 = [(CADMCAccountAccessHandler *)self _cachedAccounts];
-  v6 = [(CADMCAccountAccessHandler *)self _filteredAccountsForAction:a3 withUnfilteredAccounts:v5];
+  _cachedAccounts = [(CADMCAccountAccessHandler *)self _cachedAccounts];
+  v6 = [(CADMCAccountAccessHandler *)self _filteredAccountsForAction:action withUnfilteredAccounts:_cachedAccounts];
   v7 = [v6 valueForKey:@"identifier"];
   v8 = [MEMORY[0x277CBEB98] setWithArray:v7];
 
   return v8;
 }
 
-- (id)_filteredAccountsForAction:(unint64_t)a3 withUnfilteredAccounts:(id)a4
+- (id)_filteredAccountsForAction:(unint64_t)action withUnfilteredAccounts:(id)accounts
 {
-  v7 = a4;
-  if (!a3)
+  accountsCopy = accounts;
+  if (!action)
   {
     v12 = CADTargetFromAccountManagement([(CADMCAccountAccessHandler *)self accountManagement]);
-    v9 = [(CADMCAccountAccessHandler *)self managedConfigHandler];
-    v10 = [(CADMCAccountAccessHandler *)self bundleIdentifier];
-    v11 = [v9 filteredOpenInOriginatingAccounts:v7 targetAppBundleID:v10 targetAccountManagement:v12];
+    managedConfigHandler = [(CADMCAccountAccessHandler *)self managedConfigHandler];
+    bundleIdentifier = [(CADMCAccountAccessHandler *)self bundleIdentifier];
+    v11 = [managedConfigHandler filteredOpenInOriginatingAccounts:accountsCopy targetAppBundleID:bundleIdentifier targetAccountManagement:v12];
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (action == 1)
   {
     v8 = CADSourceFromAccountManagement([(CADMCAccountAccessHandler *)self accountManagement]);
-    v9 = [(CADMCAccountAccessHandler *)self managedConfigHandler];
-    v10 = [(CADMCAccountAccessHandler *)self bundleIdentifier];
-    v11 = [v9 filteredOpenInAccounts:v7 originatingAppBundleID:v10 sourceAccountManagement:v8];
+    managedConfigHandler = [(CADMCAccountAccessHandler *)self managedConfigHandler];
+    bundleIdentifier = [(CADMCAccountAccessHandler *)self bundleIdentifier];
+    v11 = [managedConfigHandler filteredOpenInAccounts:accountsCopy originatingAppBundleID:bundleIdentifier sourceAccountManagement:v8];
 LABEL_5:
     v13 = v11;
     goto LABEL_7;
   }
 
-  v9 = CADAccountActionDescription(a3);
-  v10 = [MEMORY[0x277CCA890] currentHandler];
-  [v10 handleFailureInMethod:a2 object:self file:@"CADMCAccountAccessHandler.m" lineNumber:172 description:{@"Unsupported CADAccountAction: [%@]", v9}];
+  managedConfigHandler = CADAccountActionDescription(action);
+  bundleIdentifier = [MEMORY[0x277CCA890] currentHandler];
+  [bundleIdentifier handleFailureInMethod:a2 object:self file:@"CADMCAccountAccessHandler.m" lineNumber:172 description:{@"Unsupported CADAccountAction: [%@]", managedConfigHandler}];
   v13 = 0;
 LABEL_7:
 
   return v13;
 }
 
-- (BOOL)_mayShowLocalAccountsForAction:(unint64_t)a3
+- (BOOL)_mayShowLocalAccountsForAction:(unint64_t)action
 {
-  if (a3)
+  if (action)
   {
-    if (a3 != 1)
+    if (action != 1)
     {
-      v5 = CADAccountActionDescription(a3);
-      v6 = [MEMORY[0x277CCA890] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"CADMCAccountAccessHandler.m" lineNumber:190 description:{@"Unsupported CADAccountAction: [%@]", v5}];
+      managedConfigHandler = CADAccountActionDescription(action);
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"CADMCAccountAccessHandler.m" lineNumber:190 description:{@"Unsupported CADAccountAction: [%@]", managedConfigHandler}];
       v9 = 0;
       goto LABEL_7;
     }
 
     v4 = CADSourceFromAccountManagement([(CADMCAccountAccessHandler *)self accountManagement]);
-    v5 = [(CADMCAccountAccessHandler *)self managedConfigHandler];
-    v6 = [(CADMCAccountAccessHandler *)self bundleIdentifier];
-    v7 = [v5 mayShowLocalAccountsForBundleID:v6 sourceAccountManagement:v4];
+    managedConfigHandler = [(CADMCAccountAccessHandler *)self managedConfigHandler];
+    currentHandler = [(CADMCAccountAccessHandler *)self bundleIdentifier];
+    v7 = [managedConfigHandler mayShowLocalAccountsForBundleID:currentHandler sourceAccountManagement:v4];
   }
 
   else
   {
     v8 = CADTargetFromAccountManagement([(CADMCAccountAccessHandler *)self accountManagement]);
-    v5 = [(CADMCAccountAccessHandler *)self managedConfigHandler];
-    v6 = [(CADMCAccountAccessHandler *)self bundleIdentifier];
-    v7 = [v5 mayShowLocalAccountsForTargetBundleID:v6 targetAccountManagement:v8];
+    managedConfigHandler = [(CADMCAccountAccessHandler *)self managedConfigHandler];
+    currentHandler = [(CADMCAccountAccessHandler *)self bundleIdentifier];
+    v7 = [managedConfigHandler mayShowLocalAccountsForTargetBundleID:currentHandler targetAccountManagement:v8];
   }
 
   v9 = v7;

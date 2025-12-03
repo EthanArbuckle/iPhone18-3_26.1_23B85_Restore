@@ -1,9 +1,9 @@
 @interface TSSourceAutoReconnectTransferFlow
 - (TSSourceAutoReconnectTransferFlow)init;
-- (id)nextViewControllerFrom:(id)a3;
-- (void)firstViewController:(id)a3;
-- (void)proxSetupAuthEventUpdate:(id)a3;
-- (void)transferEventUpdate:(id)a3;
+- (id)nextViewControllerFrom:(id)from;
+- (void)firstViewController:(id)controller;
+- (void)proxSetupAuthEventUpdate:(id)update;
+- (void)transferEventUpdate:(id)update;
 @end
 
 @implementation TSSourceAutoReconnectTransferFlow
@@ -26,10 +26,10 @@
   return v2;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     objc_initWeak(&location, self);
     ctClient = self->_ctClient;
@@ -39,7 +39,7 @@
     v6[3] = &unk_279B442A0;
     objc_copyWeak(&v8, &location);
     v6[4] = self;
-    v7 = v4;
+    v7 = controllerCopy;
     [(CoreTelephonyClient *)ctClient isPreSharedKeyForReconnectionPresent:0 completion:v6];
 
     objc_destroyWeak(&v8);
@@ -77,9 +77,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -96,47 +96,47 @@ LABEL_8:
   return v6;
 }
 
-- (void)transferEventUpdate:(id)a3
+- (void)transferEventUpdate:(id)update
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = _TSLogDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v4;
+    v12 = updateCopy;
     v13 = 2080;
     v14 = "[TSSourceAutoReconnectTransferFlow transferEventUpdate:]";
     _os_log_impl(&dword_262AA8000, v5, OS_LOG_TYPE_DEFAULT, "transfer event : %@ @%s", &v11, 0x16u);
   }
 
-  v6 = [v4 objectForKey:@"kTransferConfirmation"];
+  v6 = [updateCopy objectForKey:@"kTransferConfirmation"];
 
   if (v6)
   {
-    v7 = [(TSSIMSetupFlow *)self topViewController];
+    topViewController = [(TSSIMSetupFlow *)self topViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
       self->_isTransferCompleted = 1;
-      v9 = [(TSSIMSetupFlow *)self topViewController];
-      [(TSSIMSetupFlow *)self viewControllerDidComplete:v9];
+      topViewController2 = [(TSSIMSetupFlow *)self topViewController];
+      [(TSSIMSetupFlow *)self viewControllerDidComplete:topViewController2];
     }
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)proxSetupAuthEventUpdate:(id)a3
+- (void)proxSetupAuthEventUpdate:(id)update
 {
-  v5 = [TSUtilities skEventFromDictionary:a3];
+  v5 = [TSUtilities skEventFromDictionary:update];
   if ([v5 eventType] == 41)
   {
     [(TSSIMSetupFlow *)self setIdleTimerDisabled:0];
-    v4 = [(TSSIMSetupFlow *)self topViewController];
-    [(TSSIMSetupFlow *)self viewControllerDidComplete:v4];
+    topViewController = [(TSSIMSetupFlow *)self topViewController];
+    [(TSSIMSetupFlow *)self viewControllerDidComplete:topViewController];
   }
 }
 

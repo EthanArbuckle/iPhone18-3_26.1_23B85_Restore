@@ -1,19 +1,19 @@
 @interface TVObservableEventController
-- (void)addObserver:(id)a3 forEvent:(id)a4;
-- (void)dispatchEvent:(id)a3 sender:(id)a4 withUserInfo:(id)a5;
-- (void)removeObserver:(id)a3;
-- (void)removeObserver:(id)a3 forEvent:(id)a4;
+- (void)addObserver:(id)observer forEvent:(id)event;
+- (void)dispatchEvent:(id)event sender:(id)sender withUserInfo:(id)info;
+- (void)removeObserver:(id)observer;
+- (void)removeObserver:(id)observer forEvent:(id)event;
 @end
 
 @implementation TVObservableEventController
 
-- (void)dispatchEvent:(id)a3 sender:(id)a4 withUserInfo:(id)a5
+- (void)dispatchEvent:(id)event sender:(id)sender withUserInfo:(id)info
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NSMutableDictionary *)self->_observerRecords objectForKeyedSubscript:v8];
+  eventCopy = event;
+  senderCopy = sender;
+  infoCopy = info;
+  v11 = [(NSMutableDictionary *)self->_observerRecords objectForKeyedSubscript:eventCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -33,7 +33,7 @@
           objc_enumerationMutation(v11);
         }
 
-        [*(*(&v16 + 1) + 8 * v15++) handleEvent:v8 sender:v9 withUserInfo:v10];
+        [*(*(&v16 + 1) + 8 * v15++) handleEvent:eventCopy sender:senderCopy withUserInfo:infoCopy];
       }
 
       while (v13 != v15);
@@ -44,10 +44,10 @@
   }
 }
 
-- (void)addObserver:(id)a3 forEvent:(id)a4
+- (void)addObserver:(id)observer forEvent:(id)event
 {
-  v15 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  eventCopy = event;
   observerRecords = self->_observerRecords;
   if (!observerRecords)
   {
@@ -55,45 +55,45 @@
     v9 = self->_observerRecords;
     self->_observerRecords = v8;
 
-    v10 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     eventsByObserver = self->_eventsByObserver;
-    self->_eventsByObserver = v10;
+    self->_eventsByObserver = weakToStrongObjectsMapTable;
 
     observerRecords = self->_observerRecords;
   }
 
-  v12 = [(NSMutableDictionary *)observerRecords objectForKeyedSubscript:v6];
-  if (!v12)
+  weakObjectsHashTable = [(NSMutableDictionary *)observerRecords objectForKeyedSubscript:eventCopy];
+  if (!weakObjectsHashTable)
   {
-    v12 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(NSMutableDictionary *)self->_observerRecords setObject:v12 forKeyedSubscript:v6];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(NSMutableDictionary *)self->_observerRecords setObject:weakObjectsHashTable forKeyedSubscript:eventCopy];
   }
 
-  [v12 addObject:v15];
-  v13 = [(NSMapTable *)self->_eventsByObserver objectForKey:v15];
+  [weakObjectsHashTable addObject:observerCopy];
+  v13 = [(NSMapTable *)self->_eventsByObserver objectForKey:observerCopy];
   if (!v13)
   {
     v14 = self->_eventsByObserver;
     v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
-    [(NSMapTable *)v14 setObject:v13 forKey:v15];
+    [(NSMapTable *)v14 setObject:v13 forKey:observerCopy];
   }
 
-  [v13 addObject:v6];
+  [v13 addObject:eventCopy];
 }
 
-- (void)removeObserver:(id)a3 forEvent:(id)a4
+- (void)removeObserver:(id)observer forEvent:(id)event
 {
   observerRecords = self->_observerRecords;
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)observerRecords objectForKeyedSubscript:a4];
-  [v7 removeObject:v6];
+  observerCopy = observer;
+  v7 = [(NSMutableDictionary *)observerRecords objectForKeyedSubscript:event];
+  [v7 removeObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_eventsByObserver objectForKey:v4];
+  observerCopy = observer;
+  v5 = [(NSMapTable *)self->_eventsByObserver objectForKey:observerCopy];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -113,7 +113,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [(TVObservableEventController *)self removeObserver:v4 forEvent:*(*(&v10 + 1) + 8 * v9++)];
+        [(TVObservableEventController *)self removeObserver:observerCopy forEvent:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);

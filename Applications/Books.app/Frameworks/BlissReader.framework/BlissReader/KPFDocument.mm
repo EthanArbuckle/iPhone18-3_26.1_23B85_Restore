@@ -1,51 +1,51 @@
 @interface KPFDocument
-- (CGImage)newImageForTextureName:(id)a3;
+- (CGImage)newImageForTextureName:(id)name;
 - (CGImage)thumbnailImage;
-- (CGImageSource)newImageSourceForTextureName:(id)a3;
+- (CGImageSource)newImageSourceForTextureName:(id)name;
 - (CGSize)showSize;
-- (CGSize)textureSizeForName:(id)a3;
-- (KPFDocument)initWithKPFBundle:(id)a3 kpfDictionary:(id)a4 drmContext:(id)a5;
-- (id)eventDictAtIndex:(unint64_t)a3;
-- (id)movieURLForTextureName:(id)a3;
-- (id)newEventAtIndex:(unint64_t)a3;
-- (id)newMovieForTextureName:(id)a3;
+- (CGSize)textureSizeForName:(id)name;
+- (KPFDocument)initWithKPFBundle:(id)bundle kpfDictionary:(id)dictionary drmContext:(id)context;
+- (id)eventDictAtIndex:(unint64_t)index;
+- (id)movieURLForTextureName:(id)name;
+- (id)newEventAtIndex:(unint64_t)index;
+- (id)newMovieForTextureName:(id)name;
 - (id)newSoundtrack;
 - (id)p_eventsArray;
 - (id)p_texturesDictionary;
-- (id)p_urlForResource:(id)a3;
+- (id)p_urlForResource:(id)resource;
 - (id)soundtrackName;
 - (int)showMode;
-- (unint64_t)eventIndexForPreviousSlideGivenEventIndex:(unint64_t)a3;
-- (unint64_t)eventIndexForSlideIndex:(unint64_t)a3;
-- (unint64_t)slideIndexForEventIndex:(unint64_t)a3;
+- (unint64_t)eventIndexForPreviousSlideGivenEventIndex:(unint64_t)index;
+- (unint64_t)eventIndexForSlideIndex:(unint64_t)index;
+- (unint64_t)slideIndexForEventIndex:(unint64_t)index;
 - (void)dealloc;
 @end
 
 @implementation KPFDocument
 
-- (KPFDocument)initWithKPFBundle:(id)a3 kpfDictionary:(id)a4 drmContext:(id)a5
+- (KPFDocument)initWithKPFBundle:(id)bundle kpfDictionary:(id)dictionary drmContext:(id)context
 {
   v25.receiver = self;
   v25.super_class = KPFDocument;
   v8 = [(KPFDocument *)&v25 init];
   if (v8)
   {
-    v8->mKPFBundle = a3;
-    v8->mDrmContext = a5;
-    v9 = a4;
-    v8->mKPFDictionary = v9;
-    v10 = [(NSDictionary *)v9 objectForKey:@"slideCount"];
+    v8->mKPFBundle = bundle;
+    v8->mDrmContext = context;
+    dictionaryCopy = dictionary;
+    v8->mKPFDictionary = dictionaryCopy;
+    v10 = [(NSDictionary *)dictionaryCopy objectForKey:@"slideCount"];
     if (v10)
     {
-      v11 = [v10 intValue];
-      if (v11 >= 100000)
+      intValue = [v10 intValue];
+      if (intValue >= 100000)
       {
         LODWORD(mSlideCount) = 100000;
       }
 
       else
       {
-        LODWORD(mSlideCount) = v11;
+        LODWORD(mSlideCount) = intValue;
       }
 
       mSlideCount = mSlideCount;
@@ -174,7 +174,7 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)textureSizeForName:(id)a3
+- (CGSize)textureSizeForName:(id)name
 {
   v3 = [-[KPFDocument p_texturesDictionary](self "p_texturesDictionary")];
   [objc_msgSend(v3 objectForKey:{@"width", "floatValue"}];
@@ -187,9 +187,9 @@ LABEL_12:
   return result;
 }
 
-- (CGImage)newImageForTextureName:(id)a3
+- (CGImage)newImageForTextureName:(id)name
 {
-  result = [(KPFDocument *)self newImageSourceForTextureName:a3];
+  result = [(KPFDocument *)self newImageSourceForTextureName:name];
   if (result)
   {
     v4 = result;
@@ -201,7 +201,7 @@ LABEL_12:
   return result;
 }
 
-- (CGImageSource)newImageSourceForTextureName:(id)a3
+- (CGImageSource)newImageSourceForTextureName:(id)name
 {
   v4 = -[KPFDocument p_urlForResource:](self, "p_urlForResource:", [objc_msgSend(-[KPFDocument p_texturesDictionary](self "p_texturesDictionary")]);
   mDrmContext = self->mDrmContext;
@@ -219,14 +219,14 @@ LABEL_12:
   }
 }
 
-- (id)movieURLForTextureName:(id)a3
+- (id)movieURLForTextureName:(id)name
 {
   v3 = [-[KPFDocument p_texturesDictionary](self "p_texturesDictionary")];
 
   return [v3 objectForKey:@"movieUrl"];
 }
 
-- (id)newMovieForTextureName:(id)a3
+- (id)newMovieForTextureName:(id)name
 {
   v5 = [-[KPFDocument p_texturesDictionary](self "p_texturesDictionary")];
   v6 = -[KPFDocument p_urlForResource:](self, "p_urlForResource:", [v5 objectForKey:@"movieUrl"]);
@@ -246,38 +246,38 @@ LABEL_12:
   v11 = [v5 objectForKey:@"movieLooping"];
   mDrmContext = self->mDrmContext;
 
-  return [(KPFMovie *)v10 initWithURL:v6 looping:v11 volume:a3 name:0 audioOnly:mDrmContext drmContext:v9];
+  return [(KPFMovie *)v10 initWithURL:v6 looping:v11 volume:name name:0 audioOnly:mDrmContext drmContext:v9];
 }
 
-- (id)eventDictAtIndex:(unint64_t)a3
+- (id)eventDictAtIndex:(unint64_t)index
 {
-  v4 = [(KPFDocument *)self p_eventsArray];
+  p_eventsArray = [(KPFDocument *)self p_eventsArray];
 
-  return [v4 objectAtIndex:a3];
+  return [p_eventsArray objectAtIndex:index];
 }
 
-- (id)newEventAtIndex:(unint64_t)a3
+- (id)newEventAtIndex:(unint64_t)index
 {
-  v3 = [(KPFDocument *)self eventDictAtIndex:a3];
+  v3 = [(KPFDocument *)self eventDictAtIndex:index];
   v4 = [KPFEvent alloc];
 
   return [(KPFEvent *)v4 initWithDictionary:v3];
 }
 
-- (unint64_t)eventIndexForSlideIndex:(unint64_t)a3
+- (unint64_t)eventIndexForSlideIndex:(unint64_t)index
 {
-  if (self->mSlideCount <= a3)
+  if (self->mSlideCount <= index)
   {
     return 0;
   }
 
   else
   {
-    return self->mSlidesEventMap[a3];
+    return self->mSlidesEventMap[index];
   }
 }
 
-- (unint64_t)slideIndexForEventIndex:(unint64_t)a3
+- (unint64_t)slideIndexForEventIndex:(unint64_t)index
 {
   v3 = self->mSlideCount - 1;
   do
@@ -291,24 +291,24 @@ LABEL_12:
     v5 = self->mSlidesEventMap[v3--];
   }
 
-  while (v5 > a3);
+  while (v5 > index);
   return v4;
 }
 
-- (unint64_t)eventIndexForPreviousSlideGivenEventIndex:(unint64_t)a3
+- (unint64_t)eventIndexForPreviousSlideGivenEventIndex:(unint64_t)index
 {
   v3 = self->mSlideCount - 1;
   while (v3)
   {
     mSlidesEventMap = self->mSlidesEventMap;
     v5 = mSlidesEventMap[v3--];
-    if (v5 <= a3)
+    if (v5 <= index)
     {
       return mSlidesEventMap[v3];
     }
   }
 
-  return a3;
+  return index;
 }
 
 - (id)soundtrackName
@@ -357,17 +357,17 @@ LABEL_12:
   return [v2 intValue];
 }
 
-- (id)p_urlForResource:(id)a3
+- (id)p_urlForResource:(id)resource
 {
-  if (!a3)
+  if (!resource)
   {
     return 0;
   }
 
-  v4 = [[(NSURL *)[(NSBundle *)self->mKPFBundle bundleURL] URLByAppendingPathComponent:a3 isDirectory:0] standardizedURL];
-  if ([(NSString *)[(NSURL *)v4 path] hasPrefix:[(NSBundle *)self->mKPFBundle bundlePath]])
+  standardizedURL = [[(NSURL *)[(NSBundle *)self->mKPFBundle bundleURL] URLByAppendingPathComponent:resource isDirectory:0] standardizedURL];
+  if ([(NSString *)[(NSURL *)standardizedURL path] hasPrefix:[(NSBundle *)self->mKPFBundle bundlePath]])
   {
-    return v4;
+    return standardizedURL;
   }
 
   else

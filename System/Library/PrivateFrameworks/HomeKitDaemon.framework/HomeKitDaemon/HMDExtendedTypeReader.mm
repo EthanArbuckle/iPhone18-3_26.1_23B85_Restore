@@ -1,13 +1,13 @@
 @interface HMDExtendedTypeReader
-- (HMDExtendedTypeReader)initWithReader:(id)a3;
-- (_HMDStructuredDataToken)nextTokenAfterToken:(const _HMDStructuredDataToken *)a3;
+- (HMDExtendedTypeReader)initWithReader:(id)reader;
+- (_HMDStructuredDataToken)nextTokenAfterToken:(const _HMDStructuredDataToken *)token;
 - (uint64_t)_bufferPeekAtOffset:(uint64_t)result;
-- (void)_bufferConsumeTokens:(uint64_t)a1;
+- (void)_bufferConsumeTokens:(uint64_t)tokens;
 @end
 
 @implementation HMDExtendedTypeReader
 
-- (_HMDStructuredDataToken)nextTokenAfterToken:(const _HMDStructuredDataToken *)a3
+- (_HMDStructuredDataToken)nextTokenAfterToken:(const _HMDStructuredDataToken *)token
 {
   v4 = [(HMDExtendedTypeReader *)self _bufferPeekAtOffset:?];
   if (*v4 != 3)
@@ -91,7 +91,7 @@ LABEL_12:
           v24 = 6;
 LABEL_31:
 
-          v25 = self;
+          selfCopy2 = self;
           v26 = 4;
           goto LABEL_20;
         }
@@ -140,10 +140,10 @@ LABEL_31:
 LABEL_19:
   v24 = *v4;
   v23 = *(v4 + 8);
-  v25 = self;
+  selfCopy2 = self;
   v26 = 1;
 LABEL_20:
-  [(HMDExtendedTypeReader *)v25 _bufferConsumeTokens:v26];
+  [(HMDExtendedTypeReader *)selfCopy2 _bufferConsumeTokens:v26];
   v27 = v24;
   v28 = v23;
   result.value = v28;
@@ -161,9 +161,9 @@ LABEL_20:
     {
       *v4 = i + 1;
       v6 = (v3 + 32 + 16 * ((*(v3 + 96) + i) & 3));
-      v7 = [*(v3 + 24) readToken];
+      readToken = [*(v3 + 24) readToken];
       v8 = v6[1];
-      *v6 = v7;
+      *v6 = readToken;
       v6[1] = v9;
 
       v4 = (v3 + 104);
@@ -175,19 +175,19 @@ LABEL_20:
   return result;
 }
 
-- (void)_bufferConsumeTokens:(uint64_t)a1
+- (void)_bufferConsumeTokens:(uint64_t)tokens
 {
-  if (a1)
+  if (tokens)
   {
     do
     {
-      v4 = (a1 + 32 + 16 * (*(a1 + 96) & 3));
+      v4 = (tokens + 32 + 16 * (*(tokens + 96) & 3));
       v5 = v4[1];
       *v4 = 0;
       v4[1] = 0;
 
-      *(a1 + 96) = (*(a1 + 96) + 1) & 3;
-      --*(a1 + 104);
+      *(tokens + 96) = (*(tokens + 96) + 1) & 3;
+      --*(tokens + 104);
       --a2;
     }
 
@@ -195,16 +195,16 @@ LABEL_20:
   }
 }
 
-- (HMDExtendedTypeReader)initWithReader:(id)a3
+- (HMDExtendedTypeReader)initWithReader:(id)reader
 {
-  v5 = a3;
+  readerCopy = reader;
   v9.receiver = self;
   v9.super_class = HMDExtendedTypeReader;
   v6 = [(HMDExtendedTypeReader *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reader, a3);
+    objc_storeStrong(&v6->_reader, reader);
   }
 
   return v7;

@@ -1,14 +1,14 @@
 @interface NRRestoreFromBackupTracker
 + (id)sharedInstance;
-+ (void)_markFileForFullSync:(id)a3;
-- (BOOL)_writeToDisk:(id)a3;
++ (void)_markFileForFullSync:(id)sync;
+- (BOOL)_writeToDisk:(id)disk;
 - (BOOL)didRestoredFromBackup;
 - (BOOL)isTracked;
 - (NRRestoreFromBackupTracker)init;
 - (unsigned)lastKnownState;
 - (void)refresh;
 - (void)stopTracking;
-- (void)updateState:(unsigned __int8)a3;
+- (void)updateState:(unsigned __int8)state;
 @end
 
 @implementation NRRestoreFromBackupTracker
@@ -74,18 +74,18 @@
 
 - (BOOL)didRestoredFromBackup
 {
-  v3 = [(NRRestoreFromBackupTracker *)self lastKnownState];
+  lastKnownState = [(NRRestoreFromBackupTracker *)self lastKnownState];
   v4 = +[NSFileManager defaultManager];
   v5 = [v4 fileExistsAtPath:self->_restoreTrackerPath];
 
-  if ((v5 & 1) != 0 || v3)
+  if ((v5 & 1) != 0 || lastKnownState)
   {
     v8 = [(NRPreferences *)self->_preferences objectForKeyedSubscript:@"lastRestoreIdentifier"];
     restoreTrackerPath = self->_restoreTrackerPath;
     v19 = 0;
     v11 = [NSString stringWithContentsOfFile:restoreTrackerPath encoding:4 error:&v19];
     v12 = v19;
-    if (v3)
+    if (lastKnownState)
     {
       v9 = 0;
     }
@@ -103,14 +103,14 @@
       v15 = nr_daemon_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        if (v3 > 3)
+        if (lastKnownState > 3)
         {
           v16 = @"NRRestoreTrackerStateUnknown";
         }
 
         else
         {
-          v16 = off_100178880[v3];
+          v16 = off_100178880[lastKnownState];
         }
 
         v17 = @"NO";
@@ -161,9 +161,9 @@ LABEL_21:
   return v9;
 }
 
-- (BOOL)_writeToDisk:(id)a3
+- (BOOL)_writeToDisk:(id)disk
 {
-  v4 = a3;
+  diskCopy = disk;
   v5 = [NSURL fileURLWithPath:self->_restoreTrackerPath isDirectory:0];
   v6 = +[NSFileManager defaultManager];
   v7 = +[NRDataFilePaths _pathToNanoRegistryUnpairTriggerFileDirectory];
@@ -185,14 +185,14 @@ LABEL_21:
         *buf = 136446466;
         v39 = "[NRRestoreFromBackupTracker _writeToDisk:]";
         v40 = 2112;
-        v41 = v4;
+        v41 = diskCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}s: Creating unpair trigger file with content %@", buf, 0x16u);
       }
     }
 
     [(NRRestoreFromBackupTracker *)self updateState:1];
     v34 = v9;
-    v14 = [v4 writeToURL:v5 atomically:1 encoding:4 error:&v34];
+    v14 = [diskCopy writeToURL:v5 atomically:1 encoding:4 error:&v34];
     v15 = v34;
 
     if (v14)
@@ -293,13 +293,13 @@ LABEL_21:
     v3 = os_transaction_create();
     v4 = [(NRPreferences *)self->_preferences objectForKeyedSubscript:@"lastRestoreIdentifier"];
     v5 = +[NSUUID UUID];
-    v6 = [v5 UUIDString];
+    uUIDString = [v5 UUIDString];
 
     [(NRRestoreFromBackupTracker *)self updateState:2];
-    [(NRPreferences *)self->_preferences setObject:v6 forKeyedSubscript:@"lastRestoreIdentifier"];
+    [(NRPreferences *)self->_preferences setObject:uUIDString forKeyedSubscript:@"lastRestoreIdentifier"];
     if ([(NRPreferences *)self->_preferences synchronize])
     {
-      v7 = [(NRRestoreFromBackupTracker *)self _writeToDisk:v6];
+      v7 = [(NRRestoreFromBackupTracker *)self _writeToDisk:uUIDString];
       v8 = nr_daemon_log();
       v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -313,12 +313,12 @@ LABEL_21:
             v19 = 136446466;
             v20 = "[NRRestoreFromBackupTracker refresh]";
             v21 = 2112;
-            v22 = v6;
+            v22 = uUIDString;
             _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}s: Created unpair trigger file with content %@", &v19, 0x16u);
           }
         }
 
-        v11 = self;
+        selfCopy2 = self;
         v12 = 0;
       }
 
@@ -339,11 +339,11 @@ LABEL_21:
 
         [(NRPreferences *)self->_preferences setObject:v4 forKeyedSubscript:@"lastRestoreIdentifier"];
         [(NRPreferences *)self->_preferences synchronize];
-        v11 = self;
+        selfCopy2 = self;
         v12 = 3;
       }
 
-      [(NRRestoreFromBackupTracker *)v11 updateState:v12];
+      [(NRRestoreFromBackupTracker *)selfCopy2 updateState:v12];
     }
 
     else
@@ -429,9 +429,9 @@ LABEL_21:
   }
 }
 
-- (void)updateState:(unsigned __int8)a3
+- (void)updateState:(unsigned __int8)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = [NSNumber numberWithUnsignedChar:?];
   [(NRPreferences *)self->_preferences setObject:v5 forKeyedSubscript:@"lastRestoreIdentifier_state"];
 
@@ -444,14 +444,14 @@ LABEL_21:
     v7 = nr_daemon_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      if (v3 > 3)
+      if (stateCopy > 3)
       {
         v8 = @"NRRestoreTrackerStateUnknown";
       }
 
       else
       {
-        v8 = off_100178880[v3];
+        v8 = off_100178880[stateCopy];
       }
 
       v9 = 136446466;
@@ -467,7 +467,7 @@ LABEL_21:
 {
   [(NRPreferences *)self->_preferences synchronize];
   v3 = [(NRPreferences *)self->_preferences objectForKeyedSubscript:@"lastRestoreIdentifier_state"];
-  v4 = [v3 unsignedIntValue];
+  unsignedIntValue = [v3 unsignedIntValue];
 
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -477,14 +477,14 @@ LABEL_21:
     v7 = nr_daemon_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      if (v4 > 3u)
+      if (unsignedIntValue > 3u)
       {
         v8 = @"NRRestoreTrackerStateUnknown";
       }
 
       else
       {
-        v8 = off_100178880[v4 & 3];
+        v8 = off_100178880[unsignedIntValue & 3];
       }
 
       v10 = 136446466;
@@ -495,20 +495,20 @@ LABEL_21:
     }
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
-+ (void)_markFileForFullSync:(id)a3
++ (void)_markFileForFullSync:(id)sync
 {
-  v3 = a3;
-  if (!v3)
+  syncCopy = sync;
+  if (!syncCopy)
   {
     v10 = [NSException exceptionWithName:@"NPSPrefPlistProtectedUtil" reason:@"Path cannot be nil" userInfo:0];
     objc_exception_throw(v10);
   }
 
-  v4 = v3;
-  v5 = open([v3 UTF8String], 2, 0);
+  v4 = syncCopy;
+  v5 = open([syncCopy UTF8String], 2, 0);
   if (v5 != -1)
   {
     v6 = v5;

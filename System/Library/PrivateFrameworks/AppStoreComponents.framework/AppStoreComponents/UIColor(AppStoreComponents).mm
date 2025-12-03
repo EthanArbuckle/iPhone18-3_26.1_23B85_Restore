@@ -30,15 +30,15 @@
   v14 = v6;
   v8 = v6;
   v9 = v7;
-  v10 = [a1 colorWithDynamicProvider:v12];
+  v10 = [self colorWithDynamicProvider:v12];
 
   return v10;
 }
 
 - (id)asc_highlightedColor
 {
-  v2 = [MEMORY[0x277D75348] _asc_highlightBlendColor];
-  v3 = [a1 _colorBlendedWithColor:v2];
+  _asc_highlightBlendColor = [MEMORY[0x277D75348] _asc_highlightBlendColor];
+  v3 = [self _colorBlendedWithColor:_asc_highlightBlendColor];
 
   return v3;
 }

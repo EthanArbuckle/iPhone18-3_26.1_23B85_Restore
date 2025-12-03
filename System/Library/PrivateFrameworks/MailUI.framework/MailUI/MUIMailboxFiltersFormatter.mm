@@ -1,16 +1,16 @@
 @interface MUIMailboxFiltersFormatter
-- (id)_stringForFilters:(id)a3;
-- (id)stringForObjectValue:(id)a3;
+- (id)_stringForFilters:(id)filters;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation MUIMailboxFiltersFormatter
 
-- (id)_stringForFilters:(id)a3
+- (id)_stringForFilters:(id)filters
 {
-  v3 = a3;
-  if ([v3 count])
+  filtersCopy = filters;
+  if ([filtersCopy count])
   {
-    v4 = [v3 ef_map:&__block_literal_global_25];
+    v4 = [filtersCopy ef_map:&__block_literal_global_25];
     v5 = _EFLocalizedString();
     v6 = [v4 componentsJoinedByString:v5];
   }
@@ -23,13 +23,13 @@
   return v6;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 ef_all:&__block_literal_global_4_1])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy ef_all:&__block_literal_global_4_1])
   {
-    v5 = [(MUIMailboxFiltersFormatter *)self _stringForFilters:v4];
+    v5 = [(MUIMailboxFiltersFormatter *)self _stringForFilters:valueCopy];
   }
 
   else

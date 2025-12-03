@@ -1,24 +1,24 @@
 @interface OSADiagnosticsReporter
-+ (void)launchAppWith:(int64_t)a3 options:(id)a4 completion:(id)a5;
++ (void)launchAppWith:(int64_t)with options:(id)options completion:(id)completion;
 @end
 
 @implementation OSADiagnosticsReporter
 
-+ (void)launchAppWith:(int64_t)a3 options:(id)a4 completion:(id)a5
++ (void)launchAppWith:(int64_t)with options:(id)options completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  optionsCopy = options;
   v12 = objc_opt_new();
-  v9 = [v8 files_to_attach];
-  [v12 setFiles_to_attach:v9];
+  files_to_attach = [optionsCopy files_to_attach];
+  [v12 setFiles_to_attach:files_to_attach];
 
-  v10 = [v8 log_path];
-  [v12 setLog_path:v10];
+  log_path = [optionsCopy log_path];
+  [v12 setLog_path:log_path];
 
-  v11 = [v8 panic_string];
+  panic_string = [optionsCopy panic_string];
 
-  [v12 setPanic_string:v11];
-  [ObjcDiagnosticsReporter launchAppWith:a3 options:v12 completion:v7];
+  [v12 setPanic_string:panic_string];
+  [ObjcDiagnosticsReporter launchAppWith:with options:v12 completion:completionCopy];
 }
 
 @end

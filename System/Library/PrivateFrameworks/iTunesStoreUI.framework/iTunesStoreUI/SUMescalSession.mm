@@ -1,11 +1,11 @@
 @interface SUMescalSession
 - (BOOL)isComplete;
-- (BOOL)verifyPrimeSignature:(id)a3 error:(id *)a4;
+- (BOOL)verifyPrimeSignature:(id)signature error:(id *)error;
 - (SUMescalSession)init;
-- (id)_newDataWithBytes:(char *)a3 length:(unsigned int)a4;
-- (id)exchangeData:(id)a3 error:(id *)a4;
-- (id)primeForAccountCreationWithData:(id)a3 error:(id *)a4;
-- (id)signData:(id)a3 error:(id *)a4;
+- (id)_newDataWithBytes:(char *)bytes length:(unsigned int)length;
+- (id)exchangeData:(id)data error:(id *)error;
+- (id)primeForAccountCreationWithData:(id)data error:(id *)error;
+- (id)signData:(id)data error:(id *)error;
 - (void)_teardownSession;
 - (void)dealloc;
 @end
@@ -53,19 +53,19 @@
       if (v12)
       {
         v13 = v12;
-        v14 = [MEMORY[0x1E69D4938] sharedConfig];
-        v15 = [v14 shouldLog];
-        if ([v14 shouldLogToDisk])
+        mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+        shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+        if ([mEMORY[0x1E69D4938] shouldLogToDisk])
         {
-          v16 = v15 | 2;
+          v16 = shouldLog | 2;
         }
 
         else
         {
-          v16 = v15;
+          v16 = shouldLog;
         }
 
-        if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_DEFAULT))
+        if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
         {
           v16 &= 2u;
         }
@@ -116,7 +116,7 @@
   [(SUMescalSession *)&v5 dealloc];
 }
 
-- (id)exchangeData:(id)a3 error:(id *)a4
+- (id)exchangeData:(id)data error:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -136,16 +136,16 @@
   v11[2] = __38__SUMescalSession_exchangeData_error___block_invoke;
   v11[3] = &unk_1E8167400;
   v11[4] = self;
-  v11[5] = a3;
+  v11[5] = data;
   v11[6] = &v12;
   v11[7] = &v18;
   dispatch_sync(dispatchQueue, v11);
   v6 = v13[5];
   v7 = v19;
   v8 = v19[5];
-  if (a4 && !v8)
+  if (error && !v8)
   {
-    *a4 = v13[5];
+    *error = v13[5];
     v8 = v7[5];
   }
 
@@ -252,7 +252,7 @@ id __38__SUMescalSession_exchangeData_error___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)primeForAccountCreationWithData:(id)a3 error:(id *)a4
+- (id)primeForAccountCreationWithData:(id)data error:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -272,16 +272,16 @@ id __38__SUMescalSession_exchangeData_error___block_invoke(uint64_t a1)
   v11[2] = __57__SUMescalSession_primeForAccountCreationWithData_error___block_invoke;
   v11[3] = &unk_1E8167400;
   v11[4] = self;
-  v11[5] = a3;
+  v11[5] = data;
   v11[6] = &v12;
   v11[7] = &v18;
   dispatch_sync(dispatchQueue, v11);
   v6 = v13[5];
   v7 = v19;
   v8 = v19[5];
-  if (a4 && !v8)
+  if (error && !v8)
   {
-    *a4 = v13[5];
+    *error = v13[5];
     v8 = v7[5];
   }
 
@@ -369,7 +369,7 @@ id __57__SUMescalSession_primeForAccountCreationWithData_error___block_invoke(ui
   return *(*(*(a1 + 48) + 8) + 40);
 }
 
-- (id)signData:(id)a3 error:(id *)a4
+- (id)signData:(id)data error:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -389,16 +389,16 @@ id __57__SUMescalSession_primeForAccountCreationWithData_error___block_invoke(ui
   v11[2] = __34__SUMescalSession_signData_error___block_invoke;
   v11[3] = &unk_1E8167400;
   v11[4] = self;
-  v11[5] = a3;
+  v11[5] = data;
   v11[6] = &v12;
   v11[7] = &v18;
   dispatch_sync(dispatchQueue, v11);
   v6 = v13[5];
   v7 = v19;
   v8 = v19[5];
-  if (a4 && !v8)
+  if (error && !v8)
   {
-    *a4 = v13[5];
+    *error = v13[5];
     v8 = v7[5];
   }
 
@@ -480,7 +480,7 @@ LABEL_13:
   return *(*(*(a1 + 48) + 8) + 40);
 }
 
-- (BOOL)verifyPrimeSignature:(id)a3 error:(id *)a4
+- (BOOL)verifyPrimeSignature:(id)signature error:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -498,16 +498,16 @@ LABEL_13:
   v10[2] = __46__SUMescalSession_verifyPrimeSignature_error___block_invoke;
   v10[3] = &unk_1E8167400;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = signature;
   v10[6] = &v11;
   v10[7] = &v17;
   dispatch_sync(dispatchQueue, v10);
   v6 = v12[5];
   v7 = v18;
   v8 = *(v18 + 24);
-  if (a4 && (v18[3] & 1) == 0)
+  if (error && (v18[3] & 1) == 0)
   {
-    *a4 = v12[5];
+    *error = v12[5];
     v8 = *(v7 + 24);
   }
 
@@ -587,11 +587,11 @@ id __46__SUMescalSession_verifyPrimeSignature_error___block_invoke(uint64_t a1)
   return *(*(*(a1 + 48) + 8) + 40);
 }
 
-- (id)_newDataWithBytes:(char *)a3 length:(unsigned int)a4
+- (id)_newDataWithBytes:(char *)bytes length:(unsigned int)length
 {
   v9 = *byte_1F41ACE48;
   v6 = CFAllocatorCreate(0, &v9);
-  v7 = CFDataCreateWithBytesNoCopy(0, a3, a4, v6);
+  v7 = CFDataCreateWithBytesNoCopy(0, bytes, length, v6);
   CFRelease(v6);
   return v7;
 }

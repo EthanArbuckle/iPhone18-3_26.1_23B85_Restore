@@ -1,5 +1,5 @@
 @interface PXGMetalRenderPassState
-- (PXGMetalRenderPassState)initWithDevice:(id)a3 capacity:(int64_t)a4;
+- (PXGMetalRenderPassState)initWithDevice:(id)device capacity:(int64_t)capacity;
 - (id)description;
 @end
 
@@ -15,22 +15,22 @@
   return v6;
 }
 
-- (PXGMetalRenderPassState)initWithDevice:(id)a3 capacity:(int64_t)a4
+- (PXGMetalRenderPassState)initWithDevice:(id)device capacity:(int64_t)capacity
 {
-  v7 = a3;
+  deviceCopy = device;
   v17.receiver = self;
   v17.super_class = PXGMetalRenderPassState;
   v8 = [(PXGMetalRenderPassState *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_device, a3);
-    v9->_capacity = a4;
-    v10 = [v7 newBufferWithLength:4 * a4 options:0];
+    objc_storeStrong(&v8->_device, device);
+    v9->_capacity = capacity;
+    v10 = [deviceCopy newBufferWithLength:4 * capacity options:0];
     spriteIndexesMetalBuffer = v9->_spriteIndexesMetalBuffer;
     v9->_spriteIndexesMetalBuffer = v10;
 
-    v12 = [v7 newBufferWithLength:a4 << 6 options:0];
+    v12 = [deviceCopy newBufferWithLength:capacity << 6 options:0];
     spriteTextureInfosMetalBuffer = v9->_spriteTextureInfosMetalBuffer;
     v9->_spriteTextureInfosMetalBuffer = v12;
 

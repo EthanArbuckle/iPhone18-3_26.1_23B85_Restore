@@ -6,8 +6,8 @@
 - (int)_checkAuthorizationStatus;
 - (int)_setupExternalStorageDeviceDiscoverySession;
 - (void)_reconnectToServer;
-- (void)_requestAuthorization:(id)a3;
-- (void)_tearDownExternalStorageDeviceDiscoverySessionToReconnectToServer:(BOOL)a3;
+- (void)_requestAuthorization:(id)authorization;
+- (void)_tearDownExternalStorageDeviceDiscoverySessionToReconnectToServer:(BOOL)server;
 - (void)dealloc;
 @end
 
@@ -61,7 +61,7 @@ uint64_t __54__AVExternalStorageDeviceDiscoverySession_isSupported__block_invoke
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -97,7 +97,7 @@ uint64_t __54__AVExternalStorageDeviceDiscoverySession_isSupported__block_invoke
   [(AVExternalStorageDeviceDiscoverySession *)&v3 dealloc];
 }
 
-- (void)_tearDownExternalStorageDeviceDiscoverySessionToReconnectToServer:(BOOL)a3
+- (void)_tearDownExternalStorageDeviceDiscoverySessionToReconnectToServer:(BOOL)server
 {
   FigSimpleMutexCheckIsLockedOnThisThread();
   [objc_msgSend(MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:{CMNotificationCenterGetDefaultLocalCenter()), "removeListenerWithWeakReference:callback:name:object:", self->_weakReference, avExternalStorageDeviceNotification, *MEMORY[0x1E6990988], self->_externalStorageDeviceManager}];
@@ -110,7 +110,7 @@ uint64_t __54__AVExternalStorageDeviceDiscoverySession_isSupported__block_invoke
     self->_externalStorageDeviceManager = 0;
   }
 
-  if (!a3)
+  if (!server)
   {
 
     self->_externalStorageDevices = 0;
@@ -147,7 +147,7 @@ uint64_t __54__AVExternalStorageDeviceDiscoverySession_isSupported__block_invoke
   return v5;
 }
 
-- (void)_requestAuthorization:(id)a3
+- (void)_requestAuthorization:(id)authorization
 {
   if (self->_externalStorageDeviceManager && *(*(CMBaseObjectGetVTable() + 16) + 48))
   {

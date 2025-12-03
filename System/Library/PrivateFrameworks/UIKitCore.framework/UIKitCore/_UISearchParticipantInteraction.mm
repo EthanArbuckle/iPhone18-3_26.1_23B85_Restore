@@ -4,32 +4,32 @@
 - (void)_teardown;
 - (void)_updateActiveSearchParticipationIfNeeded;
 - (void)dealloc;
-- (void)didMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
 @end
 
 @implementation _UISearchParticipantInteraction
 
 - (void)_updateActiveSearchParticipationIfNeeded
 {
-  v10 = [(_UISearchParticipantInteraction *)self _windowScene];
-  v3 = [(_UISearchParticipantInteraction *)self view];
-  v4 = [v3 window];
+  _windowScene = [(_UISearchParticipantInteraction *)self _windowScene];
+  view = [(_UISearchParticipantInteraction *)self view];
+  window = [view window];
 
-  v5 = [v4 windowScene];
-  if (v5 != v10)
+  windowScene = [window windowScene];
+  if (windowScene != _windowScene)
   {
     [(_UISearchParticipantInteraction *)self _teardown];
-    if (v5)
+    if (windowScene)
     {
-      v6 = [v5 _searchActivityManager];
-      v7 = [(_UISearchParticipantInteraction *)self view];
-      v8 = [v6 beginTrackingActiveSearchParticipant:v7];
+      _searchActivityManager = [windowScene _searchActivityManager];
+      view2 = [(_UISearchParticipantInteraction *)self view];
+      v8 = [_searchActivityManager beginTrackingActiveSearchParticipant:view2];
       [(_UISearchParticipantInteraction *)self set_searchParticipantToken:v8];
 
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 addObserver:self selector:sel__updateActiveSearchParticipationIfNeeded name:@"_UIWindowDidMoveToSceneNotification" object:v4];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__updateActiveSearchParticipationIfNeeded name:@"_UIWindowDidMoveToSceneNotification" object:window];
 
-      [(_UISearchParticipantInteraction *)self set_windowScene:v5];
+      [(_UISearchParticipantInteraction *)self set_windowScene:windowScene];
     }
   }
 }
@@ -37,11 +37,11 @@
 - (void)_teardown
 {
   [(_UISearchParticipantInteraction *)self set_windowScene:0];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(_UISearchParticipantInteraction *)self _searchParticipantToken];
-  [v4 invalidate];
+  _searchParticipantToken = [(_UISearchParticipantInteraction *)self _searchParticipantToken];
+  [_searchParticipantToken invalidate];
 
   [(_UISearchParticipantInteraction *)self set_searchParticipantToken:0];
 }
@@ -54,9 +54,9 @@
   [(_UISearchParticipantInteraction *)&v3 dealloc];
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  objc_storeWeak(&self->_view, a3);
+  objc_storeWeak(&self->_view, view);
 
   [(_UISearchParticipantInteraction *)self _updateActiveSearchParticipationIfNeeded];
 }

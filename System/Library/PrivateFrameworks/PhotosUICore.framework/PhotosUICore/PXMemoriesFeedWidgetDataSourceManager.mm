@@ -1,20 +1,20 @@
 @interface PXMemoriesFeedWidgetDataSourceManager
-- (id)_generateEntryFromMemories:(id)a3;
+- (id)_generateEntryFromMemories:(id)memories;
 - (id)fetchOptions;
-- (void)_regenerateMemoriesWithChange:(id)a3;
-- (void)handleChangedKeyAssetsForMemories:(id)a3;
-- (void)handleIncrementalFetchResultChange:(id)a3 updatedFetchResultsForMemoriesWithChangedKeyAssets:(id)a4;
-- (void)handleNonIncrementalFetchResultChange:(id)a3;
-- (void)setMaxCount:(unint64_t)a3;
+- (void)_regenerateMemoriesWithChange:(id)change;
+- (void)handleChangedKeyAssetsForMemories:(id)memories;
+- (void)handleIncrementalFetchResultChange:(id)change updatedFetchResultsForMemoriesWithChangedKeyAssets:(id)assets;
+- (void)handleNonIncrementalFetchResultChange:(id)change;
+- (void)setMaxCount:(unint64_t)count;
 - (void)startGeneratingMemories;
 @end
 
 @implementation PXMemoriesFeedWidgetDataSourceManager
 
-- (void)handleChangedKeyAssetsForMemories:(id)a3
+- (void)handleChangedKeyAssetsForMemories:(id)memories
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = [a3 count];
+  v4 = [memories count];
   if (v4)
   {
     v5 = v4;
@@ -30,12 +30,12 @@
   }
 }
 
-- (void)handleNonIncrementalFetchResultChange:(id)a3
+- (void)handleNonIncrementalFetchResultChange:(id)change
 {
-  v4 = [a3 fetchResultAfterChanges];
-  v5 = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
+  fetchResultAfterChanges = [change fetchResultAfterChanges];
+  memoriesFetchResult = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
 
-  if (v4 != v5)
+  if (fetchResultAfterChanges != memoriesFetchResult)
   {
     v6 = PLMemoriesGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -44,22 +44,22 @@
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEBUG, "[Widget] Handling non-incremental update.", v7, 2u);
     }
 
-    [(PXMemoriesFeedDataSourceManagerBase *)self setMemoriesFetchResult:v4];
+    [(PXMemoriesFeedDataSourceManagerBase *)self setMemoriesFetchResult:fetchResultAfterChanges];
     [(PXMemoriesFeedWidgetDataSourceManager *)self _regenerateMemoriesWithChange:0];
   }
 }
 
-- (void)handleIncrementalFetchResultChange:(id)a3 updatedFetchResultsForMemoriesWithChangedKeyAssets:(id)a4
+- (void)handleIncrementalFetchResultChange:(id)change updatedFetchResultsForMemoriesWithChangedKeyAssets:(id)assets
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
-  v9 = [v7 changeDetailsForFetchResult:v8];
+  assetsCopy = assets;
+  changeCopy = change;
+  memoriesFetchResult = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
+  v9 = [changeCopy changeDetailsForFetchResult:memoriesFetchResult];
 
-  v10 = [v6 count];
-  v11 = [v9 fetchResultAfterChanges];
-  if (v10 || ([(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult], v12 = objc_claimAutoreleasedReturnValue(), v12, v11 != v12))
+  v10 = [assetsCopy count];
+  fetchResultAfterChanges = [v9 fetchResultAfterChanges];
+  if (v10 || ([(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult], v12 = objc_claimAutoreleasedReturnValue(), v12, fetchResultAfterChanges != v12))
   {
     v13 = PLMemoriesGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -69,36 +69,36 @@
       _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_DEBUG, "[Widget] Handling incremental update. Key assets changed: %lu.", &v14, 0xCu);
     }
 
-    [(PXMemoriesFeedDataSourceManagerBase *)self setMemoriesFetchResult:v11];
+    [(PXMemoriesFeedDataSourceManagerBase *)self setMemoriesFetchResult:fetchResultAfterChanges];
     [(PXMemoriesFeedWidgetDataSourceManager *)self _regenerateMemoriesWithChange:v9];
   }
 }
 
-- (void)setMaxCount:(unint64_t)a3
+- (void)setMaxCount:(unint64_t)count
 {
-  if (self->_maxCount != a3)
+  if (self->_maxCount != count)
   {
-    self->_maxCount = a3;
+    self->_maxCount = count;
     [(PXMemoriesFeedDataSourceManagerBase *)self resetMemoriesFetchResult];
 
     [(PXMemoriesFeedWidgetDataSourceManager *)self _regenerateMemoriesWithChange:0];
   }
 }
 
-- (void)_regenerateMemoriesWithChange:(id)a3
+- (void)_regenerateMemoriesWithChange:(id)change
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   if (![(PXMemoriesFeedWidgetDataSourceManager *)self maxCount])
   {
     goto LABEL_21;
   }
 
-  v5 = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
-  v25 = v5;
-  if ([v5 count])
+  memoriesFetchResult = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
+  v25 = memoriesFetchResult;
+  if ([memoriesFetchResult count])
   {
-    v6 = [(PXMemoriesFeedWidgetDataSourceManager *)self _generateEntryFromMemories:v5];
+    v6 = [(PXMemoriesFeedWidgetDataSourceManager *)self _generateEntryFromMemories:memoriesFetchResult];
     v7 = [PXMemoriesFeedDataSource alloc];
     v28[0] = v6;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
@@ -110,8 +110,8 @@
     v9 = 0;
   }
 
-  v10 = [(PXSectionedDataSourceManager *)self dataSource];
-  if ([v10 numberOfSections])
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  if ([dataSource numberOfSections])
   {
     v11 = [(PXMemoriesFeedDataSource *)v9 numberOfSections]== 0;
   }
@@ -121,7 +121,7 @@
     v11 = 0;
   }
 
-  if ([v10 numberOfSections])
+  if ([dataSource numberOfSections])
   {
     v12 = 0;
   }
@@ -139,7 +139,7 @@
 LABEL_14:
       v14 = 0;
 LABEL_17:
-      v15 = [off_1E7721450 changeDetailsFromFetchResultChangeDetails:v4];
+      v15 = [off_1E7721450 changeDetailsFromFetchResultChangeDetails:changeCopy];
       if ([v15 hasAnyChanges])
       {
         [MEMORY[0x1E696AC90] indexSet];
@@ -153,14 +153,14 @@ LABEL_17:
       v17 = [[off_1E7721450 alloc] initWithIncrementalChangeDetailsRemovedIndexes:v13 insertedIndexes:v14 movesToIndexes:0 movesFromIndexes:0 changedIndexes:v16];
       v18 = [off_1E77218B0 alloc];
       v23 = v13;
-      v24 = v10;
-      v19 = [v10 identifier];
+      v24 = dataSource;
+      identifier = [dataSource identifier];
       v20 = v14;
-      v21 = [(PXMemoriesFeedDataSource *)v9 identifier];
+      identifier2 = [(PXMemoriesFeedDataSource *)v9 identifier];
       v26 = &unk_1F190C238;
       v27 = v15;
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-      [v18 initWithFromDataSourceIdentifier:v19 toDataSourceIdentifier:v21 sectionChanges:v17 itemChangeDetailsBySection:v22 subitemChangeDetailsByItemBySection:0];
+      [v18 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier2 sectionChanges:v17 itemChangeDetailsBySection:v22 subitemChangeDetailsByItemBySection:0];
 
       [v25 count];
 LABEL_21:
@@ -181,20 +181,20 @@ LABEL_21:
   goto LABEL_17;
 }
 
-- (id)_generateEntryFromMemories:(id)a3
+- (id)_generateEntryFromMemories:(id)memories
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  memoriesCopy = memories;
   v5 = PLMemoriesGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v21 = [v4 count];
+    v21 = [memoriesCopy count];
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEBUG, "[Widget] Generate a feed entry from %lu memories...", buf, 0xCu);
   }
 
-  v6 = [objc_opt_class() generateEntriesFromMemories:v4 startingFromIndex:0 maximumNumberOfEntries:-[PXMemoriesFeedWidgetDataSourceManager _extendedMaxCount](self finalMemoryIndex:{"_extendedMaxCount"), 0}];
-  v7 = [(PXMemoriesFeedWidgetDataSourceManager *)self maxCount];
+  v6 = [objc_opt_class() generateEntriesFromMemories:memoriesCopy startingFromIndex:0 maximumNumberOfEntries:-[PXMemoriesFeedWidgetDataSourceManager _extendedMaxCount](self finalMemoryIndex:{"_extendedMaxCount"), 0}];
+  maxCount = [(PXMemoriesFeedWidgetDataSourceManager *)self maxCount];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
@@ -202,7 +202,7 @@ LABEL_21:
   v17 = &unk_1E7739EB8;
   v9 = v8;
   v18 = v9;
-  v19 = v7;
+  v19 = maxCount;
   [v6 enumerateObjectsUsingBlock:&v14];
   v10 = [PXMemoryEntryInfo alloc];
   v11 = [(PXMemoryEntryInfo *)v10 initWithSortedMemories:v9, v14, v15, v16, v17];
@@ -257,12 +257,12 @@ void __68__PXMemoriesFeedWidgetDataSourceManager__generateEntryFromMemories___bl
 {
   v13.receiver = self;
   v13.super_class = PXMemoriesFeedWidgetDataSourceManager;
-  v3 = [(PXMemoriesFeedDataSourceManagerBase *)&v13 fetchOptions];
+  fetchOptions = [(PXMemoriesFeedDataSourceManagerBase *)&v13 fetchOptions];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __53__PXMemoriesFeedWidgetDataSourceManager_fetchOptions__block_invoke;
   aBlock[3] = &unk_1E7747718;
-  v4 = v3;
+  v4 = fetchOptions;
   v12 = v4;
   v5 = _Block_copy(aBlock);
   if ([(PXMemoriesFeedWidgetDataSourceManager *)self maxCount])
@@ -275,9 +275,9 @@ void __68__PXMemoriesFeedWidgetDataSourceManager__generateEntryFromMemories___bl
   if (PFOSVariantHasInternalUI())
   {
     v6 = +[PXMemoriesRelatedSettings sharedInstance];
-    v7 = [v6 showLocalMemories];
+    showLocalMemories = [v6 showLocalMemories];
 
-    if (v7)
+    if (showLocalMemories)
     {
       [v4 setIncludeLocalMemories:1];
     }

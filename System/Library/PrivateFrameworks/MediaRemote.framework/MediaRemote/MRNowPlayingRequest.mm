@@ -1,5 +1,5 @@
 @interface MRNowPlayingRequest
-+ (BOOL)isMostRecentMediaPlaybackRelevantWithinInterval:(double)a3;
++ (BOOL)isMostRecentMediaPlaybackRelevantWithinInterval:(double)interval;
 + (BOOL)localIsPlaying;
 + (MRContentItem)localNowPlayingItem;
 + (MRPlaybackQueue)localPlaybackQueue;
@@ -7,60 +7,60 @@
 + (MSVPair)isMostRecentMediaPlaybackRelevantReason;
 + (NSArray)localSupportedCommands;
 + (NSDate)localLastPlayingDate;
-+ (id)isMostRecentMediaPlaybackRelevantReasonWithinInternal:(double)a3;
++ (id)isMostRecentMediaPlaybackRelevantReasonWithinInternal:(double)internal;
 + (unsigned)localPlaybackState;
-+ (void)homePlatterPreferredRouteIdentifier:(id)a3;
-+ (void)shouldUseQuickControlsToDisplayPlatterForRouteIdentifier:(id)a3 completion:(id)a4;
++ (void)homePlatterPreferredRouteIdentifier:(id)identifier;
++ (void)shouldUseQuickControlsToDisplayPlatterForRouteIdentifier:(id)identifier completion:(id)completion;
 - (MRNowPlayingRequest)init;
-- (MRNowPlayingRequest)initWithDestination:(id)a3;
-- (MRNowPlayingRequest)initWithOrigin:(id)a3;
-- (MRNowPlayingRequest)initWithPlayerPath:(id)a3;
-- (void)nowPlayingPlayerPathOnQueue:(id)a3 completion:(id)a4;
-- (void)nowPlayingPlayerPathWithCompletion:(id)a3;
-- (void)requestClientPropertiesOnQueue:(id)a3 completion:(id)a4;
-- (void)requestClientPropertiesWithCompletion:(id)a3;
-- (void)requestDeviceLastPlayingDateOnQueue:(id)a3 completion:(id)a4;
-- (void)requestDeviceLastPlayingDateWithCompletion:(id)a3;
-- (void)requestIsPlayingOnQueue:(id)a3 completion:(id)a4;
-- (void)requestLastPlayingDateOnQueue:(id)a3 completion:(id)a4;
-- (void)requestLastPlayingDateWithCompletion:(id)a3;
-- (void)requestNowPlayingInfoOnQueue:(id)a3 completion:(id)a4;
-- (void)requestNowPlayingInfoWithCompletion:(id)a3;
-- (void)requestNowPlayingItemArtworkOnQueue:(id)a3 completion:(id)a4;
-- (void)requestNowPlayingItemArtworkWithCompletion:(id)a3;
-- (void)requestNowPlayingItemLanguageOptionsOnQueue:(id)a3 completion:(id)a4;
-- (void)requestNowPlayingItemMetadataOnQueue:(id)a3 completion:(id)a4;
-- (void)requestNowPlayingItemMetadataWithCompletion:(id)a3;
-- (void)requestPlaybackRateOnQueue:(id)a3 completion:(id)a4;
-- (void)requestPlaybackStateOnQueue:(id)a3 completion:(id)a4;
-- (void)requestProxiableSupportedCommandsOnQueue:(id)a3 completion:(id)a4;
-- (void)requestProxiableSupportedCommandsWithCompletion:(id)a3;
-- (void)requestShuffleAndRepeatModeOnQueue:(id)a3 completion:(id)a4;
-- (void)requestSupportedCommandsOnQueue:(id)a3 completion:(id)a4;
-- (void)requestSupportedCommandsWithCompletion:(id)a3;
-- (void)suspendDisconnectionPauseForConfiguration:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)triggerAudioFadeInWithReplyQueue:(id)a3 completion:(id)a4;
-- (void)triggerAudioFadeOutForNowPlayingApplicationWithReplyQueue:(id)a3 completion:(id)a4;
+- (MRNowPlayingRequest)initWithDestination:(id)destination;
+- (MRNowPlayingRequest)initWithOrigin:(id)origin;
+- (MRNowPlayingRequest)initWithPlayerPath:(id)path;
+- (void)nowPlayingPlayerPathOnQueue:(id)queue completion:(id)completion;
+- (void)nowPlayingPlayerPathWithCompletion:(id)completion;
+- (void)requestClientPropertiesOnQueue:(id)queue completion:(id)completion;
+- (void)requestClientPropertiesWithCompletion:(id)completion;
+- (void)requestDeviceLastPlayingDateOnQueue:(id)queue completion:(id)completion;
+- (void)requestDeviceLastPlayingDateWithCompletion:(id)completion;
+- (void)requestIsPlayingOnQueue:(id)queue completion:(id)completion;
+- (void)requestLastPlayingDateOnQueue:(id)queue completion:(id)completion;
+- (void)requestLastPlayingDateWithCompletion:(id)completion;
+- (void)requestNowPlayingInfoOnQueue:(id)queue completion:(id)completion;
+- (void)requestNowPlayingInfoWithCompletion:(id)completion;
+- (void)requestNowPlayingItemArtworkOnQueue:(id)queue completion:(id)completion;
+- (void)requestNowPlayingItemArtworkWithCompletion:(id)completion;
+- (void)requestNowPlayingItemLanguageOptionsOnQueue:(id)queue completion:(id)completion;
+- (void)requestNowPlayingItemMetadataOnQueue:(id)queue completion:(id)completion;
+- (void)requestNowPlayingItemMetadataWithCompletion:(id)completion;
+- (void)requestPlaybackRateOnQueue:(id)queue completion:(id)completion;
+- (void)requestPlaybackStateOnQueue:(id)queue completion:(id)completion;
+- (void)requestProxiableSupportedCommandsOnQueue:(id)queue completion:(id)completion;
+- (void)requestProxiableSupportedCommandsWithCompletion:(id)completion;
+- (void)requestShuffleAndRepeatModeOnQueue:(id)queue completion:(id)completion;
+- (void)requestSupportedCommandsOnQueue:(id)queue completion:(id)completion;
+- (void)requestSupportedCommandsWithCompletion:(id)completion;
+- (void)suspendDisconnectionPauseForConfiguration:(id)configuration queue:(id)queue completion:(id)completion;
+- (void)triggerAudioFadeInWithReplyQueue:(id)queue completion:(id)completion;
+- (void)triggerAudioFadeOutForNowPlayingApplicationWithReplyQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation MRNowPlayingRequest
 
-- (void)triggerAudioFadeOutForNowPlayingApplicationWithReplyQueue:(id)a3 completion:(id)a4
+- (void)triggerAudioFadeOutForNowPlayingApplicationWithReplyQueue:(id)queue completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  v9 = [v8 UUIDString];
+  queueCopy = queue;
+  completionCopy = completion;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v10 = [MEMORY[0x1E695DF00] date];
-  v11 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"[MRNowPlaying triggerAudioFadeOut]", v9];
-  v12 = [(MRNowPlayingRequest *)self destination];
+  date = [MEMORY[0x1E695DF00] date];
+  v11 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"[MRNowPlaying triggerAudioFadeOut]", uUIDString];
+  destination = [(MRNowPlayingRequest *)self destination];
 
-  if (v12)
+  if (destination)
   {
-    v13 = [(MRNowPlayingRequest *)self destination];
-    [v11 appendFormat:@" for %@", v13];
+    destination2 = [(MRNowPlayingRequest *)self destination];
+    [v11 appendFormat:@" for %@", destination2];
   }
 
   v14 = _MRLogForCategory(0xAuLL);
@@ -71,21 +71,21 @@
     _os_log_impl(&dword_1A2860000, v14, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
   }
 
-  v15 = [(MRNowPlayingRequest *)self destination];
+  destination3 = [(MRNowPlayingRequest *)self destination];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __103__MRNowPlayingRequest_AudioFade__triggerAudioFadeOutForNowPlayingApplicationWithReplyQueue_completion___block_invoke;
   v21[3] = &unk_1E769C068;
-  v25 = v10;
-  v26 = v7;
+  v25 = date;
+  v26 = completionCopy;
   v22 = @"[MRNowPlaying triggerAudioFadeOut]";
-  v23 = v9;
-  v24 = v6;
-  v16 = v10;
-  v17 = v6;
-  v18 = v9;
-  v19 = v7;
-  [MRDestinationResolver resolveDestination:v15 level:2 timeout:v21 completion:5.0];
+  v23 = uUIDString;
+  v24 = queueCopy;
+  v16 = date;
+  v17 = queueCopy;
+  v18 = uUIDString;
+  v19 = completionCopy;
+  [MRDestinationResolver resolveDestination:destination3 level:2 timeout:v21 completion:5.0];
 
   v20 = *MEMORY[0x1E69E9840];
 }
@@ -256,22 +256,22 @@ LABEL_18:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)triggerAudioFadeInWithReplyQueue:(id)a3 completion:(id)a4
+- (void)triggerAudioFadeInWithReplyQueue:(id)queue completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  v9 = [v8 UUIDString];
+  queueCopy = queue;
+  completionCopy = completion;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v10 = [MEMORY[0x1E695DF00] date];
-  v11 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"[MRNowPlaying triggerAudioFadeIn]", v9];
-  v12 = [(MRNowPlayingRequest *)self destination];
+  date = [MEMORY[0x1E695DF00] date];
+  v11 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"[MRNowPlaying triggerAudioFadeIn]", uUIDString];
+  destination = [(MRNowPlayingRequest *)self destination];
 
-  if (v12)
+  if (destination)
   {
-    v13 = [(MRNowPlayingRequest *)self destination];
-    [v11 appendFormat:@" for %@", v13];
+    destination2 = [(MRNowPlayingRequest *)self destination];
+    [v11 appendFormat:@" for %@", destination2];
   }
 
   v14 = _MRLogForCategory(0xAuLL);
@@ -282,21 +282,21 @@ LABEL_18:
     _os_log_impl(&dword_1A2860000, v14, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
   }
 
-  v15 = [(MRNowPlayingRequest *)self destination];
+  destination3 = [(MRNowPlayingRequest *)self destination];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __78__MRNowPlayingRequest_AudioFade__triggerAudioFadeInWithReplyQueue_completion___block_invoke;
   v21[3] = &unk_1E769C068;
-  v25 = v10;
-  v26 = v7;
+  v25 = date;
+  v26 = completionCopy;
   v22 = @"[MRNowPlaying triggerAudioFadeIn]";
-  v23 = v9;
-  v24 = v6;
-  v16 = v10;
-  v17 = v6;
-  v18 = v9;
-  v19 = v7;
-  [MRDestinationResolver resolveDestination:v15 level:2 timeout:v21 completion:5.0];
+  v23 = uUIDString;
+  v24 = queueCopy;
+  v16 = date;
+  v17 = queueCopy;
+  v18 = uUIDString;
+  v19 = completionCopy;
+  [MRDestinationResolver resolveDestination:destination3 level:2 timeout:v21 completion:5.0];
 
   v20 = *MEMORY[0x1E69E9840];
 }
@@ -470,15 +470,15 @@ LABEL_16:
   return v4;
 }
 
-- (MRNowPlayingRequest)initWithDestination:(id)a3
+- (MRNowPlayingRequest)initWithDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   v9.receiver = self;
   v9.super_class = MRNowPlayingRequest;
   v5 = [(MRNowPlayingRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [destinationCopy copy];
     destination = v5->_destination;
     v5->_destination = v6;
   }
@@ -486,34 +486,34 @@ LABEL_16:
   return v5;
 }
 
-- (MRNowPlayingRequest)initWithPlayerPath:(id)a3
+- (MRNowPlayingRequest)initWithPlayerPath:(id)path
 {
-  v4 = a3;
-  v5 = [[MRDestination alloc] initWithPlayerPath:v4];
+  pathCopy = path;
+  v5 = [[MRDestination alloc] initWithPlayerPath:pathCopy];
 
   v6 = [(MRNowPlayingRequest *)self initWithDestination:v5];
   return v6;
 }
 
-- (MRNowPlayingRequest)initWithOrigin:(id)a3
+- (MRNowPlayingRequest)initWithOrigin:(id)origin
 {
-  v4 = a3;
-  v5 = [[MRPlayerPath alloc] initWithOrigin:v4 client:0 player:0];
+  originCopy = origin;
+  v5 = [[MRPlayerPath alloc] initWithOrigin:originCopy client:0 player:0];
 
   v6 = [(MRNowPlayingRequest *)self initWithPlayerPath:v5];
   return v6;
 }
 
-- (void)requestIsPlayingOnQueue:(id)a3 completion:(id)a4
+- (void)requestIsPlayingOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__MRNowPlayingRequest_requestIsPlayingOnQueue_completion___block_invoke;
   v8[3] = &unk_1E769E1B8;
-  v9 = v6;
-  v7 = v6;
-  [(MRNowPlayingRequest *)self requestPlaybackStateOnQueue:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(MRNowPlayingRequest *)self requestPlaybackStateOnQueue:queue completion:v8];
 }
 
 void __58__MRNowPlayingRequest_requestIsPlayingOnQueue_completion___block_invoke(uint64_t a1, int a2, void *a3)
@@ -524,18 +524,18 @@ void __58__MRNowPlayingRequest_requestIsPlayingOnQueue_completion___block_invoke
   (*(v4 + 16))(v4, IsAdvancing, v6);
 }
 
-- (void)requestPlaybackStateOnQueue:(id)a3 completion:(id)a4
+- (void)requestPlaybackStateOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MRNowPlayingRequest requestPlaybackStateOnQueue:completion:];
   }
 
   v8 = [MRNowPlayingControllerConfiguration alloc];
-  v9 = [(MRNowPlayingRequest *)self destination];
-  v10 = [(MRNowPlayingControllerConfiguration *)v8 initWithDestination:v9];
+  destination = [(MRNowPlayingRequest *)self destination];
+  v10 = [(MRNowPlayingControllerConfiguration *)v8 initWithDestination:destination];
 
   [(MRNowPlayingControllerConfiguration *)v10 setRequestPlaybackState:1];
   [(MRNowPlayingControllerConfiguration *)v10 setLabel:@"requestPlaybackState"];
@@ -544,10 +544,10 @@ void __58__MRNowPlayingRequest_requestIsPlayingOnQueue_completion___block_invoke
   v14[1] = 3221225472;
   v14[2] = __62__MRNowPlayingRequest_requestPlaybackStateOnQueue_completion___block_invoke;
   v14[3] = &unk_1E769E1E0;
-  v15 = v6;
-  v16 = v7;
-  v12 = v7;
-  v13 = v6;
+  v15 = queueCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = queueCopy;
   [(MRNowPlayingController *)v11 performRequestWithCompletion:v14];
 }
 
@@ -579,18 +579,18 @@ uint64_t __62__MRNowPlayingRequest_requestPlaybackStateOnQueue_completion___bloc
   return v5(v2, v3, v4);
 }
 
-- (void)requestPlaybackRateOnQueue:(id)a3 completion:(id)a4
+- (void)requestPlaybackRateOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MRNowPlayingRequest requestPlaybackRateOnQueue:completion:];
   }
 
   v8 = [MRNowPlayingControllerConfiguration alloc];
-  v9 = [(MRNowPlayingRequest *)self destination];
-  v10 = [(MRNowPlayingControllerConfiguration *)v8 initWithDestination:v9];
+  destination = [(MRNowPlayingRequest *)self destination];
+  v10 = [(MRNowPlayingControllerConfiguration *)v8 initWithDestination:destination];
 
   [(MRNowPlayingControllerConfiguration *)v10 setRequestPlaybackQueue:1];
   [(MRNowPlayingControllerConfiguration *)v10 setLabel:@"requestPlaybackRate"];
@@ -599,10 +599,10 @@ uint64_t __62__MRNowPlayingRequest_requestPlaybackStateOnQueue_completion___bloc
   v14[1] = 3221225472;
   v14[2] = __61__MRNowPlayingRequest_requestPlaybackRateOnQueue_completion___block_invoke;
   v14[3] = &unk_1E769E1E0;
-  v15 = v6;
-  v16 = v7;
-  v12 = v7;
-  v13 = v6;
+  v15 = queueCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = queueCopy;
   [(MRNowPlayingController *)v11 performRequestWithCompletion:v14];
 }
 
@@ -634,18 +634,18 @@ uint64_t __61__MRNowPlayingRequest_requestPlaybackRateOnQueue_completion___block
   return v4(v2, v3);
 }
 
-- (void)requestNowPlayingItemMetadataOnQueue:(id)a3 completion:(id)a4
+- (void)requestNowPlayingItemMetadataOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __71__MRNowPlayingRequest_requestNowPlayingItemMetadataOnQueue_completion___block_invoke;
   v10[3] = &unk_1E769E208;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = queueCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = queueCopy;
   [(MRNowPlayingRequest *)self requestNowPlayingItemMetadataWithCompletion:v10];
 }
 
@@ -667,17 +667,17 @@ void __71__MRNowPlayingRequest_requestNowPlayingItemMetadataOnQueue_completion__
   dispatch_async(v7, block);
 }
 
-- (void)requestNowPlayingItemMetadataWithCompletion:(id)a3
+- (void)requestNowPlayingItemMetadataWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MRNowPlayingRequest requestNowPlayingItemMetadataWithCompletion:];
   }
 
   v5 = [MRNowPlayingControllerConfiguration alloc];
-  v6 = [(MRNowPlayingRequest *)self destination];
-  v7 = [(MRNowPlayingControllerConfiguration *)v5 initWithDestination:v6];
+  destination = [(MRNowPlayingRequest *)self destination];
+  v7 = [(MRNowPlayingControllerConfiguration *)v5 initWithDestination:destination];
 
   v8 = +[MRPlaybackQueueRequest defaultPlaybackQueueRequest];
   [(MRNowPlayingControllerConfiguration *)v7 setPlaybackQueueRequest:v8];
@@ -688,8 +688,8 @@ void __71__MRNowPlayingRequest_requestNowPlayingItemMetadataOnQueue_completion__
   v11[1] = 3221225472;
   v11[2] = __67__MRNowPlayingRequest_requestNowPlayingItemMetadataWithCompletion___block_invoke;
   v11[3] = &unk_1E769E230;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [(MRNowPlayingController *)v9 performRequestWithCompletion:v11];
 }
 
@@ -703,24 +703,24 @@ void __67__MRNowPlayingRequest_requestNowPlayingItemMetadataWithCompletion___blo
   (*(v4 + 16))(v4, v7, v5);
 }
 
-- (void)requestNowPlayingItemLanguageOptionsOnQueue:(id)a3 completion:(id)a4
+- (void)requestNowPlayingItemLanguageOptionsOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MRNowPlayingRequest requestNowPlayingItemLanguageOptionsOnQueue:completion:];
   }
 
   v8 = [MRNowPlayingControllerConfiguration alloc];
-  v9 = [(MRNowPlayingRequest *)self destination];
-  v10 = [(MRNowPlayingControllerConfiguration *)v8 initWithDestination:v9];
+  destination = [(MRNowPlayingRequest *)self destination];
+  v10 = [(MRNowPlayingControllerConfiguration *)v8 initWithDestination:destination];
 
   v11 = +[MRPlaybackQueueRequest defaultPlaybackQueueRequest];
   [(MRNowPlayingControllerConfiguration *)v10 setPlaybackQueueRequest:v11];
 
-  v12 = [(MRNowPlayingControllerConfiguration *)v10 playbackQueueRequest];
-  [v12 setIncludeLanguageOptions:1];
+  playbackQueueRequest = [(MRNowPlayingControllerConfiguration *)v10 playbackQueueRequest];
+  [playbackQueueRequest setIncludeLanguageOptions:1];
 
   [(MRNowPlayingControllerConfiguration *)v10 setLabel:@"requestNowPlayingItemLanguageOptions"];
   v13 = [[MRNowPlayingController alloc] initWithConfiguration:v10];
@@ -728,10 +728,10 @@ void __67__MRNowPlayingRequest_requestNowPlayingItemMetadataWithCompletion___blo
   v16[1] = 3221225472;
   v16[2] = __78__MRNowPlayingRequest_requestNowPlayingItemLanguageOptionsOnQueue_completion___block_invoke;
   v16[3] = &unk_1E769E1E0;
-  v17 = v6;
-  v18 = v7;
-  v14 = v7;
-  v15 = v6;
+  v17 = queueCopy;
+  v18 = completionCopy;
+  v14 = completionCopy;
+  v15 = queueCopy;
   [(MRNowPlayingController *)v13 performRequestWithCompletion:v16];
 }
 
@@ -764,18 +764,18 @@ void __78__MRNowPlayingRequest_requestNowPlayingItemLanguageOptionsOnQueue_compl
   (*(v3 + 16))(v3, v4, v5, *(a1 + 40));
 }
 
-- (void)requestNowPlayingItemArtworkOnQueue:(id)a3 completion:(id)a4
+- (void)requestNowPlayingItemArtworkOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__MRNowPlayingRequest_requestNowPlayingItemArtworkOnQueue_completion___block_invoke;
   v10[3] = &unk_1E769E258;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = queueCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = queueCopy;
   [(MRNowPlayingRequest *)self requestNowPlayingItemArtworkWithCompletion:v10];
 }
 
@@ -797,17 +797,17 @@ void __70__MRNowPlayingRequest_requestNowPlayingItemArtworkOnQueue_completion___
   dispatch_async(v7, block);
 }
 
-- (void)requestNowPlayingItemArtworkWithCompletion:(id)a3
+- (void)requestNowPlayingItemArtworkWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MRNowPlayingRequest requestNowPlayingItemArtworkWithCompletion:];
   }
 
   v5 = [MRNowPlayingControllerConfiguration alloc];
-  v6 = [(MRNowPlayingRequest *)self destination];
-  v7 = [(MRNowPlayingControllerConfiguration *)v5 initWithDestination:v6];
+  destination = [(MRNowPlayingRequest *)self destination];
+  v7 = [(MRNowPlayingControllerConfiguration *)v5 initWithDestination:destination];
 
   v8 = [[MRPlaybackQueueRequest alloc] initWithRange:0, 1];
   [(MRPlaybackQueueRequest *)v8 setArtworkHeight:600.0];
@@ -819,8 +819,8 @@ void __70__MRNowPlayingRequest_requestNowPlayingItemArtworkOnQueue_completion___
   v11[1] = 3221225472;
   v11[2] = __66__MRNowPlayingRequest_requestNowPlayingItemArtworkWithCompletion___block_invoke;
   v11[3] = &unk_1E769E230;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [(MRNowPlayingController *)v9 performRequestWithCompletion:v11];
 }
 
@@ -834,18 +834,18 @@ void __66__MRNowPlayingRequest_requestNowPlayingItemArtworkWithCompletion___bloc
   (*(v4 + 16))(v4, v7, v5);
 }
 
-- (void)requestNowPlayingInfoOnQueue:(id)a3 completion:(id)a4
+- (void)requestNowPlayingInfoOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __63__MRNowPlayingRequest_requestNowPlayingInfoOnQueue_completion___block_invoke;
   v10[3] = &unk_1E769E280;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = queueCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = queueCopy;
   [(MRNowPlayingRequest *)self requestNowPlayingInfoWithCompletion:v10];
 }
 
@@ -867,17 +867,17 @@ void __63__MRNowPlayingRequest_requestNowPlayingInfoOnQueue_completion___block_i
   dispatch_async(v7, block);
 }
 
-- (void)requestNowPlayingInfoWithCompletion:(id)a3
+- (void)requestNowPlayingInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MRNowPlayingRequest requestNowPlayingInfoWithCompletion:];
   }
 
   v5 = [MRNowPlayingControllerConfiguration alloc];
-  v6 = [(MRNowPlayingRequest *)self destination];
-  v7 = [(MRNowPlayingControllerConfiguration *)v5 initWithDestination:v6];
+  destination = [(MRNowPlayingRequest *)self destination];
+  v7 = [(MRNowPlayingControllerConfiguration *)v5 initWithDestination:destination];
 
   v8 = +[MRPlaybackQueueRequest defaultPlaybackQueueRequest];
   [(MRNowPlayingControllerConfiguration *)v7 setPlaybackQueueRequest:v8];
@@ -888,8 +888,8 @@ void __63__MRNowPlayingRequest_requestNowPlayingInfoOnQueue_completion___block_i
   v11[1] = 3221225472;
   v11[2] = __59__MRNowPlayingRequest_requestNowPlayingInfoWithCompletion___block_invoke;
   v11[3] = &unk_1E769E230;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [(MRNowPlayingController *)v9 performRequestWithCompletion:v11];
 }
 
@@ -902,18 +902,18 @@ void __59__MRNowPlayingRequest_requestNowPlayingInfoWithCompletion___block_invok
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)requestSupportedCommandsOnQueue:(id)a3 completion:(id)a4
+- (void)requestSupportedCommandsOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __66__MRNowPlayingRequest_requestSupportedCommandsOnQueue_completion___block_invoke;
   v10[3] = &unk_1E769E2A8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = queueCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = queueCopy;
   [(MRNowPlayingRequest *)self requestSupportedCommandsWithCompletion:v10];
 }
 
@@ -935,17 +935,17 @@ void __66__MRNowPlayingRequest_requestSupportedCommandsOnQueue_completion___bloc
   dispatch_async(v7, block);
 }
 
-- (void)requestSupportedCommandsWithCompletion:(id)a3
+- (void)requestSupportedCommandsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MRNowPlayingRequest requestSupportedCommandsWithCompletion:];
   }
 
   v5 = [MRNowPlayingControllerConfiguration alloc];
-  v6 = [(MRNowPlayingRequest *)self destination];
-  v7 = [(MRNowPlayingControllerConfiguration *)v5 initWithDestination:v6];
+  destination = [(MRNowPlayingRequest *)self destination];
+  v7 = [(MRNowPlayingControllerConfiguration *)v5 initWithDestination:destination];
 
   [(MRNowPlayingControllerConfiguration *)v7 setRequestSupportedCommands:1];
   [(MRNowPlayingControllerConfiguration *)v7 setLabel:@"requestSupportedCommands"];
@@ -954,8 +954,8 @@ void __66__MRNowPlayingRequest_requestSupportedCommandsOnQueue_completion___bloc
   v10[1] = 3221225472;
   v10[2] = __62__MRNowPlayingRequest_requestSupportedCommandsWithCompletion___block_invoke;
   v10[3] = &unk_1E769E230;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(MRNowPlayingController *)v8 performRequestWithCompletion:v10];
 }
 
@@ -967,18 +967,18 @@ void __62__MRNowPlayingRequest_requestSupportedCommandsWithCompletion___block_in
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)requestShuffleAndRepeatModeOnQueue:(id)a3 completion:(id)a4
+- (void)requestShuffleAndRepeatModeOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MRNowPlayingRequest requestShuffleAndRepeatModeOnQueue:completion:];
   }
 
   v8 = [MRNowPlayingControllerConfiguration alloc];
-  v9 = [(MRNowPlayingRequest *)self destination];
-  v10 = [(MRNowPlayingControllerConfiguration *)v8 initWithDestination:v9];
+  destination = [(MRNowPlayingRequest *)self destination];
+  v10 = [(MRNowPlayingControllerConfiguration *)v8 initWithDestination:destination];
 
   [(MRNowPlayingControllerConfiguration *)v10 setRequestSupportedCommands:1];
   [(MRNowPlayingControllerConfiguration *)v10 setRequestPlaybackQueue:1];
@@ -988,10 +988,10 @@ void __62__MRNowPlayingRequest_requestSupportedCommandsWithCompletion___block_in
   v14[1] = 3221225472;
   v14[2] = __69__MRNowPlayingRequest_requestShuffleAndRepeatModeOnQueue_completion___block_invoke;
   v14[3] = &unk_1E769E1E0;
-  v15 = v6;
-  v16 = v7;
-  v12 = v7;
-  v13 = v6;
+  v15 = queueCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = queueCopy;
   [(MRNowPlayingController *)v11 performRequestWithCompletion:v14];
 }
 
@@ -1024,18 +1024,18 @@ uint64_t __69__MRNowPlayingRequest_requestShuffleAndRepeatModeOnQueue_completion
   return v6(v2, v3, v4, v5);
 }
 
-- (void)requestProxiableSupportedCommandsOnQueue:(id)a3 completion:(id)a4
+- (void)requestProxiableSupportedCommandsOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __75__MRNowPlayingRequest_requestProxiableSupportedCommandsOnQueue_completion___block_invoke;
   v10[3] = &unk_1E769E2A8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = queueCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = queueCopy;
   [(MRNowPlayingRequest *)self requestProxiableSupportedCommandsWithCompletion:v10];
 }
 
@@ -1057,17 +1057,17 @@ void __75__MRNowPlayingRequest_requestProxiableSupportedCommandsOnQueue_completi
   dispatch_async(v7, block);
 }
 
-- (void)requestProxiableSupportedCommandsWithCompletion:(id)a3
+- (void)requestProxiableSupportedCommandsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MRNowPlayingRequest requestProxiableSupportedCommandsWithCompletion:];
   }
 
   v5 = [MRNowPlayingControllerConfiguration alloc];
-  v6 = [(MRNowPlayingRequest *)self destination];
-  v7 = [(MRNowPlayingControllerConfiguration *)v5 initWithDestination:v6];
+  destination = [(MRNowPlayingRequest *)self destination];
+  v7 = [(MRNowPlayingControllerConfiguration *)v5 initWithDestination:destination];
 
   [(MRNowPlayingControllerConfiguration *)v7 setRequestSupportedCommands:1];
   [(MRNowPlayingControllerConfiguration *)v7 setLabel:@"requestProxiableSupportedCommands"];
@@ -1076,8 +1076,8 @@ void __75__MRNowPlayingRequest_requestProxiableSupportedCommandsOnQueue_completi
   v10[1] = 3221225472;
   v10[2] = __71__MRNowPlayingRequest_requestProxiableSupportedCommandsWithCompletion___block_invoke;
   v10[3] = &unk_1E769E230;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(MRNowPlayingController *)v8 performRequestWithCompletion:v10];
 }
 
@@ -1089,18 +1089,18 @@ void __71__MRNowPlayingRequest_requestProxiableSupportedCommandsWithCompletion__
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)requestLastPlayingDateOnQueue:(id)a3 completion:(id)a4
+- (void)requestLastPlayingDateOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__MRNowPlayingRequest_requestLastPlayingDateOnQueue_completion___block_invoke;
   v10[3] = &unk_1E769E2D0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = queueCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = queueCopy;
   [(MRNowPlayingRequest *)self requestLastPlayingDateWithCompletion:v10];
 }
 
@@ -1122,26 +1122,26 @@ void __64__MRNowPlayingRequest_requestLastPlayingDateOnQueue_completion___block_
   dispatch_async(v7, block);
 }
 
-- (void)requestLastPlayingDateWithCompletion:(id)a3
+- (void)requestLastPlayingDateWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MRNowPlayingRequest requestLastPlayingDateWithCompletion:];
   }
 
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [v5 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"[MRNowPlaying requestLastPlayingDate]", v6];
-  v9 = [(MRNowPlayingRequest *)self destination];
+  date = [MEMORY[0x1E695DF00] date];
+  v8 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"[MRNowPlaying requestLastPlayingDate]", uUIDString];
+  destination = [(MRNowPlayingRequest *)self destination];
 
-  if (v9)
+  if (destination)
   {
-    v10 = [(MRNowPlayingRequest *)self destination];
-    [v8 appendFormat:@" for %@", v10];
+    destination2 = [(MRNowPlayingRequest *)self destination];
+    [v8 appendFormat:@" for %@", destination2];
   }
 
   v11 = _MRLogForCategory(0xAuLL);
@@ -1152,19 +1152,19 @@ void __64__MRNowPlayingRequest_requestLastPlayingDateOnQueue_completion___block_
     _os_log_impl(&dword_1A2860000, v11, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
   }
 
-  v12 = [(MRNowPlayingRequest *)self destination];
+  destination3 = [(MRNowPlayingRequest *)self destination];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __60__MRNowPlayingRequest_requestLastPlayingDateWithCompletion___block_invoke;
   v17[3] = &unk_1E769E320;
   v18 = @"[MRNowPlaying requestLastPlayingDate]";
-  v19 = v6;
-  v20 = v7;
-  v21 = v4;
-  v13 = v4;
-  v14 = v7;
-  v15 = v6;
-  [MRDestinationResolver resolveDestination:v12 level:2 timeout:v17 completion:5.0];
+  v19 = uUIDString;
+  v20 = date;
+  v21 = completionCopy;
+  v13 = completionCopy;
+  v14 = date;
+  v15 = uUIDString;
+  [MRDestinationResolver resolveDestination:destination3 level:2 timeout:v17 completion:5.0];
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -1384,18 +1384,18 @@ LABEL_22:
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestDeviceLastPlayingDateOnQueue:(id)a3 completion:(id)a4
+- (void)requestDeviceLastPlayingDateOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__MRNowPlayingRequest_requestDeviceLastPlayingDateOnQueue_completion___block_invoke;
   v10[3] = &unk_1E769E2D0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = queueCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = queueCopy;
   [(MRNowPlayingRequest *)self requestDeviceLastPlayingDateWithCompletion:v10];
 }
 
@@ -1417,26 +1417,26 @@ void __70__MRNowPlayingRequest_requestDeviceLastPlayingDateOnQueue_completion___
   dispatch_async(v7, block);
 }
 
-- (void)requestDeviceLastPlayingDateWithCompletion:(id)a3
+- (void)requestDeviceLastPlayingDateWithCompletion:(id)completion
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MRNowPlayingRequest requestDeviceLastPlayingDateWithCompletion:];
   }
 
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [v5 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"[MRNowPlaying requestDeviceLastPlayingDate]", v6];
-  v9 = [(MRNowPlayingRequest *)self destination];
+  date = [MEMORY[0x1E695DF00] date];
+  v8 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"[MRNowPlaying requestDeviceLastPlayingDate]", uUIDString];
+  destination = [(MRNowPlayingRequest *)self destination];
 
-  if (v9)
+  if (destination)
   {
-    v10 = [(MRNowPlayingRequest *)self destination];
-    [v8 appendFormat:@" for %@", v10];
+    destination2 = [(MRNowPlayingRequest *)self destination];
+    [v8 appendFormat:@" for %@", destination2];
   }
 
   v11 = _MRLogForCategory(0xAuLL);
@@ -1459,17 +1459,17 @@ void __70__MRNowPlayingRequest_requestDeviceLastPlayingDateOnQueue_completion___
   v33[3] = &unk_1E769E348;
   p_buf = &buf;
   v34 = @"[MRNowPlaying requestDeviceLastPlayingDate]";
-  v12 = v6;
+  v12 = uUIDString;
   v35 = v12;
-  v13 = v7;
+  v13 = date;
   v36 = v13;
-  v14 = v4;
+  v14 = completionCopy;
   v37 = v14;
   v15 = MEMORY[0x1A58E3570](v33);
-  v16 = [(MRNowPlayingRequest *)self destination];
-  v17 = [v16 isLocal];
+  destination3 = [(MRNowPlayingRequest *)self destination];
+  isLocal = [destination3 isLocal];
 
-  if (v17)
+  if (isLocal)
   {
     v18 = [MRPlayerPath alloc];
     v19 = +[MROrigin localOrigin];
@@ -1494,7 +1494,7 @@ void __70__MRNowPlayingRequest_requestDeviceLastPlayingDateOnQueue_completion___
 
   else
   {
-    v25 = [(MRNowPlayingRequest *)self destination];
+    destination4 = [(MRNowPlayingRequest *)self destination];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __66__MRNowPlayingRequest_requestDeviceLastPlayingDateWithCompletion___block_invoke_86;
@@ -1502,7 +1502,7 @@ void __70__MRNowPlayingRequest_requestDeviceLastPlayingDateOnQueue_completion___
     v28[0] = v15;
     v28[1] = &buf;
     v27[4] = self;
-    [MRDestinationResolver resolveDestination:v25 level:0 timeout:v27 completion:5.0];
+    [MRDestinationResolver resolveDestination:destination4 level:0 timeout:v27 completion:5.0];
 
     v24 = v28;
   }
@@ -1761,18 +1761,18 @@ void __66__MRNowPlayingRequest_requestDeviceLastPlayingDateWithCompletion___bloc
   }
 }
 
-- (void)requestClientPropertiesOnQueue:(id)a3 completion:(id)a4
+- (void)requestClientPropertiesOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__MRNowPlayingRequest_requestClientPropertiesOnQueue_completion___block_invoke;
   v10[3] = &unk_1E769E3C0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = queueCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = queueCopy;
   [(MRNowPlayingRequest *)self requestClientPropertiesWithCompletion:v10];
 }
 
@@ -1794,17 +1794,17 @@ void __65__MRNowPlayingRequest_requestClientPropertiesOnQueue_completion___block
   dispatch_async(v7, block);
 }
 
-- (void)requestClientPropertiesWithCompletion:(id)a3
+- (void)requestClientPropertiesWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MRNowPlayingRequest requestClientPropertiesWithCompletion:];
   }
 
   v5 = [MRNowPlayingControllerConfiguration alloc];
-  v6 = [(MRNowPlayingRequest *)self destination];
-  v7 = [(MRNowPlayingControllerConfiguration *)v5 initWithDestination:v6];
+  destination = [(MRNowPlayingRequest *)self destination];
+  v7 = [(MRNowPlayingControllerConfiguration *)v5 initWithDestination:destination];
 
   [(MRNowPlayingControllerConfiguration *)v7 setRequestClientProperties:1];
   [(MRNowPlayingControllerConfiguration *)v7 setLabel:@"requestClientProperties"];
@@ -1813,8 +1813,8 @@ void __65__MRNowPlayingRequest_requestClientPropertiesOnQueue_completion___block
   v10[1] = 3221225472;
   v10[2] = __61__MRNowPlayingRequest_requestClientPropertiesWithCompletion___block_invoke;
   v10[3] = &unk_1E769E230;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(MRNowPlayingController *)v8 performRequestWithCompletion:v10];
 }
 
@@ -1826,18 +1826,18 @@ void __61__MRNowPlayingRequest_requestClientPropertiesWithCompletion___block_inv
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)nowPlayingPlayerPathOnQueue:(id)a3 completion:(id)a4
+- (void)nowPlayingPlayerPathOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__MRNowPlayingRequest_nowPlayingPlayerPathOnQueue_completion___block_invoke;
   v10[3] = &unk_1E769C130;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = queueCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = queueCopy;
   [(MRNowPlayingRequest *)self nowPlayingPlayerPathWithCompletion:v10];
 }
 
@@ -1859,17 +1859,17 @@ void __62__MRNowPlayingRequest_nowPlayingPlayerPathOnQueue_completion___block_in
   dispatch_async(v7, block);
 }
 
-- (void)nowPlayingPlayerPathWithCompletion:(id)a3
+- (void)nowPlayingPlayerPathWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MRNowPlayingRequest nowPlayingPlayerPathWithCompletion:];
   }
 
   v5 = [MRNowPlayingControllerConfiguration alloc];
-  v6 = [(MRNowPlayingRequest *)self destination];
-  v7 = [(MRNowPlayingControllerConfiguration *)v5 initWithDestination:v6];
+  destination = [(MRNowPlayingRequest *)self destination];
+  v7 = [(MRNowPlayingControllerConfiguration *)v5 initWithDestination:destination];
 
   [(MRNowPlayingControllerConfiguration *)v7 setLabel:@"requestNowPlayingClient"];
   v8 = [[MRNowPlayingController alloc] initWithConfiguration:v7];
@@ -1877,8 +1877,8 @@ void __62__MRNowPlayingRequest_nowPlayingPlayerPathOnQueue_completion___block_in
   v10[1] = 3221225472;
   v10[2] = __58__MRNowPlayingRequest_nowPlayingPlayerPathWithCompletion___block_invoke;
   v10[3] = &unk_1E769E230;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(MRNowPlayingController *)v8 performRequestWithCompletion:v10];
 }
 
@@ -1909,20 +1909,20 @@ void __71__MRNowPlayingRequest_sendCommand_options_appOptions_queue_completion__
 
 + (BOOL)localIsPlaying
 {
-  v2 = [a1 localPlaybackState];
+  localPlaybackState = [self localPlaybackState];
 
-  return MRMediaRemotePlaybackStateIsAdvancing(v2);
+  return MRMediaRemotePlaybackStateIsAdvancing(localPlaybackState);
 }
 
 + (unsigned)localPlaybackState
 {
   v58 = *MEMORY[0x1E69E9840];
   v3 = 0x1E695D000uLL;
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [v5 UUIDString];
+  date = [MEMORY[0x1E695DF00] date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v7 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"NowPlayingRequest.localPlaybackState", v6];
+  v7 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"NowPlayingRequest.localPlaybackState", uUIDString];
   v8 = +[MROrigin localOrigin];
 
   if (v8)
@@ -1939,20 +1939,20 @@ void __71__MRNowPlayingRequest_sendCommand_options_appOptions_queue_completion__
     _os_log_impl(&dword_1A2860000, v10, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
   }
 
-  v11 = [a1 localNowPlayingPlayerPath];
-  if (![v11 isResolved])
+  localNowPlayingPlayerPath = [self localNowPlayingPlayerPath];
+  if (![localNowPlayingPlayerPath isResolved])
   {
     LODWORD(uint64) = 0;
     goto LABEL_9;
   }
 
   v12 = +[MRNowPlayingOriginClientManager sharedManager];
-  v13 = [v12 playerClientRequestsForPlayerPath:v11];
+  v13 = [v12 playerClientRequestsForPlayerPath:localNowPlayingPlayerPath];
 
-  v14 = [v13 playbackState];
-  if (v14)
+  playbackState = [v13 playbackState];
+  if (playbackState)
   {
-    LODWORD(uint64) = v14;
+    LODWORD(uint64) = playbackState;
 
     goto LABEL_9;
   }
@@ -1963,21 +1963,21 @@ void __71__MRNowPlayingRequest_sendCommand_options_appOptions_queue_completion__
     *buf = 138544130;
     v49 = @"NowPlayingRequest.localPlaybackState";
     v50 = 2114;
-    v51 = v6;
+    v51 = uUIDString;
     v52 = 2112;
     v53 = 0;
     v54 = 2112;
-    v55 = v4;
+    v55 = date;
     _os_log_impl(&dword_1A2860000, v30, OS_LOG_TYPE_DEFAULT, "Cache Miss: Request: %{public}@<%{public}@> for %@ %@", buf, 0x2Au);
   }
 
   v31 = MRCreateXPCMessage(0x200000000000012uLL);
-  MRAddPlayerPathToXPCMessage(v31, v11);
+  MRAddPlayerPathToXPCMessage(v31, localNowPlayingPlayerPath);
   v32 = +[MRMediaRemoteServiceClient sharedServiceClient];
-  v33 = [v32 service];
-  v34 = [v33 mrXPCConnection];
+  service = [v32 service];
+  mrXPCConnection = [service mrXPCConnection];
   v47 = 0;
-  v35 = [v34 sendSyncMessage:v31 error:&v47];
+  v35 = [mrXPCConnection sendSyncMessage:v31 error:&v47];
   v36 = v47;
 
   uint64 = xpc_dictionary_get_uint64(v35, "MRXPC_PLAYBACK_STATE_KEY");
@@ -1993,21 +1993,21 @@ LABEL_9:
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
     if (v16)
     {
-      if (v11)
+      if (localNowPlayingPlayerPath)
       {
         if (v18)
         {
-          v19 = MRMediaRemoteCopyPlaybackStateDescription(uint64);
-          v20 = [*(v3 + 3840) date];
-          [v20 timeIntervalSinceDate:v4];
+          date3 = MRMediaRemoteCopyPlaybackStateDescription(uint64);
+          date2 = [*(v3 + 3840) date];
+          [date2 timeIntervalSinceDate:date];
           *buf = 138544386;
           v49 = @"NowPlayingRequest.localPlaybackState";
           v50 = 2114;
-          v51 = v6;
+          v51 = uUIDString;
           v52 = 2112;
-          v53 = v19;
+          v53 = date3;
           v54 = 2114;
-          v55 = v11;
+          v55 = localNowPlayingPlayerPath;
           v56 = 2048;
           v57 = v21;
           v22 = "Response: %{public}@<%{public}@> returned <%@> for %{public}@ in %.4lf seconds";
@@ -2022,15 +2022,15 @@ LABEL_28:
 
       else if (v18)
       {
-        v19 = MRMediaRemoteCopyPlaybackStateDescription(uint64);
-        v20 = [*(v3 + 3840) date];
-        [v20 timeIntervalSinceDate:v4];
+        date3 = MRMediaRemoteCopyPlaybackStateDescription(uint64);
+        date2 = [*(v3 + 3840) date];
+        [date2 timeIntervalSinceDate:date];
         *buf = 138544130;
         v49 = @"NowPlayingRequest.localPlaybackState";
         v50 = 2114;
-        v51 = v6;
+        v51 = uUIDString;
         v52 = 2112;
-        v53 = v19;
+        v53 = date3;
         v54 = 2048;
         v55 = v29;
         v22 = "Response: %{public}@<%{public}@> returned <%@> in %.4lf seconds";
@@ -2044,21 +2044,21 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    if (v11)
+    if (localNowPlayingPlayerPath)
     {
       if (!v18)
       {
         goto LABEL_29;
       }
 
-      v19 = [*(v3 + 3840) date];
-      [v19 timeIntervalSinceDate:v4];
+      date3 = [*(v3 + 3840) date];
+      [date3 timeIntervalSinceDate:date];
       *buf = 138544130;
       v49 = @"NowPlayingRequest.localPlaybackState";
       v50 = 2114;
-      v51 = v6;
+      v51 = uUIDString;
       v52 = 2114;
-      v53 = v11;
+      v53 = localNowPlayingPlayerPath;
       v54 = 2048;
       v55 = v25;
       v26 = "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds";
@@ -2073,12 +2073,12 @@ LABEL_29:
         goto LABEL_29;
       }
 
-      v19 = [*(v3 + 3840) date];
-      [v19 timeIntervalSinceDate:v4];
+      date3 = [*(v3 + 3840) date];
+      [date3 timeIntervalSinceDate:date];
       *buf = 138543874;
       v49 = @"NowPlayingRequest.localPlaybackState";
       v50 = 2114;
-      v51 = v6;
+      v51 = uUIDString;
       v52 = 2048;
       v53 = v43;
       v26 = "Response: %{public}@<%{public}@> returned in %.4lf seconds";
@@ -2092,19 +2092,19 @@ LABEL_29:
 
   v17 = _MRLogForCategory(0xAuLL);
   v37 = os_log_type_enabled(v17, OS_LOG_TYPE_ERROR);
-  if (!v11)
+  if (!localNowPlayingPlayerPath)
   {
     if (!v37)
     {
       goto LABEL_30;
     }
 
-    v38 = [MEMORY[0x1E695DF00] date];
-    [v38 timeIntervalSinceDate:v4];
+    date4 = [MEMORY[0x1E695DF00] date];
+    [date4 timeIntervalSinceDate:date];
     *buf = 138544130;
     v49 = @"NowPlayingRequest.localPlaybackState";
     v50 = 2114;
-    v51 = v6;
+    v51 = uUIDString;
     v52 = 2114;
     v53 = v36;
     v54 = 2048;
@@ -2120,16 +2120,16 @@ LABEL_34:
 
   if (v37)
   {
-    v38 = [MEMORY[0x1E695DF00] date];
-    [v38 timeIntervalSinceDate:v4];
+    date4 = [MEMORY[0x1E695DF00] date];
+    [date4 timeIntervalSinceDate:date];
     *buf = 138544386;
     v49 = @"NowPlayingRequest.localPlaybackState";
     v50 = 2114;
-    v51 = v6;
+    v51 = uUIDString;
     v52 = 2114;
     v53 = v36;
     v54 = 2114;
-    v55 = v11;
+    v55 = localNowPlayingPlayerPath;
     v56 = 2048;
     v57 = v39;
     v40 = "Response: %{public}@<%{public}@> returned with error <%{public}@> for %{public}@ in %.4lf seconds";
@@ -2148,11 +2148,11 @@ LABEL_30:
 {
   v58 = *MEMORY[0x1E69E9840];
   v3 = 0x1E695D000uLL;
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [v5 UUIDString];
+  date = [MEMORY[0x1E695DF00] date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v7 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"NowPlayingRequest.localSupportedCommands", v6];
+  v7 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"NowPlayingRequest.localSupportedCommands", uUIDString];
   v8 = +[MROrigin localOrigin];
 
   if (v8)
@@ -2169,20 +2169,20 @@ LABEL_30:
     _os_log_impl(&dword_1A2860000, v10, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
   }
 
-  v11 = [a1 localNowPlayingPlayerPath];
-  if (![v11 isResolved])
+  localNowPlayingPlayerPath = [self localNowPlayingPlayerPath];
+  if (![localNowPlayingPlayerPath isResolved])
   {
     v15 = 0;
     goto LABEL_9;
   }
 
   v12 = +[MRNowPlayingOriginClientManager sharedManager];
-  v13 = [v12 playerClientRequestsForPlayerPath:v11];
+  v13 = [v12 playerClientRequestsForPlayerPath:localNowPlayingPlayerPath];
 
-  v14 = [v13 supportedCommands];
-  if (v14)
+  supportedCommands = [v13 supportedCommands];
+  if (supportedCommands)
   {
-    v15 = v14;
+    v15 = supportedCommands;
 
     goto LABEL_9;
   }
@@ -2193,21 +2193,21 @@ LABEL_30:
     *buf = 138544130;
     v49 = @"NowPlayingRequest.localSupportedCommands";
     v50 = 2114;
-    v51 = v6;
+    v51 = uUIDString;
     v52 = 2112;
     v53 = 0;
     v54 = 2112;
-    v55 = v4;
+    v55 = date;
     _os_log_impl(&dword_1A2860000, v30, OS_LOG_TYPE_DEFAULT, "Cache Miss: Request: %{public}@<%{public}@> for %@ %@", buf, 0x2Au);
   }
 
   v31 = MRCreateXPCMessage(0x200000000000031uLL);
-  MRAddPlayerPathToXPCMessage(v31, v11);
+  MRAddPlayerPathToXPCMessage(v31, localNowPlayingPlayerPath);
   v32 = +[MRMediaRemoteServiceClient sharedServiceClient];
-  v33 = [v32 service];
-  v34 = [v33 mrXPCConnection];
+  service = [v32 service];
+  mrXPCConnection = [service mrXPCConnection];
   v47 = 0;
-  v35 = [v34 sendSyncMessage:v31 error:&v47];
+  v35 = [mrXPCConnection sendSyncMessage:v31 error:&v47];
   v36 = v47;
 
   v15 = MRCreateSupportedCommandsFromXPCMessage(v35);
@@ -2223,21 +2223,21 @@ LABEL_9:
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
     if (v16)
     {
-      if (v11)
+      if (localNowPlayingPlayerPath)
       {
         if (v18)
         {
-          v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
-          v20 = [*(v3 + 3840) date];
-          [v20 timeIntervalSinceDate:v4];
+          date3 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
+          date2 = [*(v3 + 3840) date];
+          [date2 timeIntervalSinceDate:date];
           *buf = 138544386;
           v49 = @"NowPlayingRequest.localSupportedCommands";
           v50 = 2114;
-          v51 = v6;
+          v51 = uUIDString;
           v52 = 2112;
-          v53 = v19;
+          v53 = date3;
           v54 = 2114;
-          v55 = v11;
+          v55 = localNowPlayingPlayerPath;
           v56 = 2048;
           v57 = v21;
           v22 = "Response: %{public}@<%{public}@> returned <%@> for %{public}@ in %.4lf seconds";
@@ -2252,15 +2252,15 @@ LABEL_28:
 
       else if (v18)
       {
-        v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
-        v20 = [*(v3 + 3840) date];
-        [v20 timeIntervalSinceDate:v4];
+        date3 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
+        date2 = [*(v3 + 3840) date];
+        [date2 timeIntervalSinceDate:date];
         *buf = 138544130;
         v49 = @"NowPlayingRequest.localSupportedCommands";
         v50 = 2114;
-        v51 = v6;
+        v51 = uUIDString;
         v52 = 2112;
-        v53 = v19;
+        v53 = date3;
         v54 = 2048;
         v55 = v29;
         v22 = "Response: %{public}@<%{public}@> returned <%@> in %.4lf seconds";
@@ -2274,21 +2274,21 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    if (v11)
+    if (localNowPlayingPlayerPath)
     {
       if (!v18)
       {
         goto LABEL_29;
       }
 
-      v19 = [*(v3 + 3840) date];
-      [v19 timeIntervalSinceDate:v4];
+      date3 = [*(v3 + 3840) date];
+      [date3 timeIntervalSinceDate:date];
       *buf = 138544130;
       v49 = @"NowPlayingRequest.localSupportedCommands";
       v50 = 2114;
-      v51 = v6;
+      v51 = uUIDString;
       v52 = 2114;
-      v53 = v11;
+      v53 = localNowPlayingPlayerPath;
       v54 = 2048;
       v55 = v25;
       v26 = "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds";
@@ -2303,12 +2303,12 @@ LABEL_29:
         goto LABEL_29;
       }
 
-      v19 = [*(v3 + 3840) date];
-      [v19 timeIntervalSinceDate:v4];
+      date3 = [*(v3 + 3840) date];
+      [date3 timeIntervalSinceDate:date];
       *buf = 138543874;
       v49 = @"NowPlayingRequest.localSupportedCommands";
       v50 = 2114;
-      v51 = v6;
+      v51 = uUIDString;
       v52 = 2048;
       v53 = v43;
       v26 = "Response: %{public}@<%{public}@> returned in %.4lf seconds";
@@ -2322,23 +2322,23 @@ LABEL_29:
 
   v17 = _MRLogForCategory(0xAuLL);
   v37 = os_log_type_enabled(v17, OS_LOG_TYPE_ERROR);
-  if (v11)
+  if (localNowPlayingPlayerPath)
   {
     if (!v37)
     {
       goto LABEL_30;
     }
 
-    v38 = [MEMORY[0x1E695DF00] date];
-    [v38 timeIntervalSinceDate:v4];
+    date4 = [MEMORY[0x1E695DF00] date];
+    [date4 timeIntervalSinceDate:date];
     *buf = 138544386;
     v49 = @"NowPlayingRequest.localSupportedCommands";
     v50 = 2114;
-    v51 = v6;
+    v51 = uUIDString;
     v52 = 2114;
     v53 = v36;
     v54 = 2114;
-    v55 = v11;
+    v55 = localNowPlayingPlayerPath;
     v56 = 2048;
     v57 = v39;
     v40 = "Response: %{public}@<%{public}@> returned with error <%{public}@> for %{public}@ in %.4lf seconds";
@@ -2353,12 +2353,12 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v38 = [MEMORY[0x1E695DF00] date];
-    [v38 timeIntervalSinceDate:v4];
+    date4 = [MEMORY[0x1E695DF00] date];
+    [date4 timeIntervalSinceDate:date];
     *buf = 138544130;
     v49 = @"NowPlayingRequest.localSupportedCommands";
     v50 = 2114;
-    v51 = v6;
+    v51 = uUIDString;
     v52 = 2114;
     v53 = v36;
     v54 = 2048;
@@ -2379,11 +2379,11 @@ LABEL_30:
 + (MRContentItem)localNowPlayingItem
 {
   v70 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [MEMORY[0x1E696AFB0] UUID];
-  v5 = [v4 UUIDString];
+  date = [MEMORY[0x1E695DF00] date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v6 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"NowPlayingRequest.localNowPlayingItem", v5];
+  v6 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"NowPlayingRequest.localNowPlayingItem", uUIDString];
   v7 = +[MROrigin localOrigin];
 
   if (v7)
@@ -2400,30 +2400,30 @@ LABEL_30:
     _os_log_impl(&dword_1A2860000, v9, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
   }
 
-  v10 = [a1 localNowPlayingPlayerPath];
-  if (![v10 isResolved])
+  localNowPlayingPlayerPath = [self localNowPlayingPlayerPath];
+  if (![localNowPlayingPlayerPath isResolved])
   {
     v24 = 0;
     goto LABEL_17;
   }
 
-  v58 = v5;
+  v58 = uUIDString;
   v11 = +[MRPlaybackQueueRequest defaultPlaybackQueueRequest];
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [v12 UUIDString];
-  [v11 setRequestIdentifier:v13];
+  uUID2 = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString2 = [uUID2 UUIDString];
+  [v11 setRequestIdentifier:uUIDString2];
 
   v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v15 = [MEMORY[0x1E696AE30] processInfo];
-  v16 = [v15 processName];
-  v17 = [v14 initWithFormat:@"sync-%@-%d", v16, getpid()];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  v17 = [v14 initWithFormat:@"sync-%@-%d", processName, getpid()];
   [v11 setLabel:v17];
 
   v18 = +[MRNowPlayingOriginClientManager sharedManager];
-  v19 = [v18 playerClientRequestsForPlayerPath:v10];
+  v19 = [v18 playerClientRequestsForPlayerPath:localNowPlayingPlayerPath];
 
-  v20 = [v19 playbackQueue];
-  v21 = MRPlaybackQueueCreateFromCache(v20, v11, 3, v10);
+  playbackQueue = [v19 playbackQueue];
+  v21 = MRPlaybackQueueCreateFromCache(playbackQueue, v11, 3, localNowPlayingPlayerPath);
 
   v22 = [v21 contentItemWithOffset:0];
   v23 = v22;
@@ -2445,31 +2445,31 @@ LABEL_30:
       v64 = 2112;
       v65 = 0;
       v66 = 2112;
-      v67 = v3;
+      v67 = date;
       _os_log_impl(&dword_1A2860000, v26, OS_LOG_TYPE_DEFAULT, "Cache Miss: Request: %{public}@<%{public}@> for %@ %@", buf, 0x2Au);
     }
 
     MRCreateXPCMessage(0x200000000000007uLL);
-    v27 = v57 = v3;
-    MRAddPlayerPathToXPCMessage(v27, v10);
+    v27 = v57 = date;
+    MRAddPlayerPathToXPCMessage(v27, localNowPlayingPlayerPath);
     MRAddPlaybackQueueRequestToXPCMessage(v27, v11);
     v56 = +[MRMediaRemoteServiceClient sharedServiceClient];
-    v28 = [v56 service];
-    v29 = [v28 mrXPCConnection];
+    service = [v56 service];
+    mrXPCConnection = [service mrXPCConnection];
     v59 = 0;
-    v30 = [v29 sendSyncMessage:v27 error:&v59];
+    v30 = [mrXPCConnection sendSyncMessage:v27 error:&v59];
     v25 = v59;
 
     v31 = MRCreatePlaybackQueueFromXPCMessage(v30);
     v24 = [(MRPlaybackQueue *)v31 contentItemWithOffset:0];
     [v19 updatePlaybackQueueIfUninitialized:v31];
 
-    v3 = v57;
+    date = v57;
   }
 
   if (!v25)
   {
-    v5 = v58;
+    uUIDString = v58;
 LABEL_17:
     v39 = MRContentItemCopyMinimalReadableDescription(v24);
 
@@ -2477,21 +2477,21 @@ LABEL_17:
     v40 = os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT);
     if (v39)
     {
-      if (v10)
+      if (localNowPlayingPlayerPath)
       {
         if (v40)
         {
-          v41 = MRContentItemCopyMinimalReadableDescription(v24);
-          v42 = [MEMORY[0x1E695DF00] date];
-          [v42 timeIntervalSinceDate:v3];
+          date3 = MRContentItemCopyMinimalReadableDescription(v24);
+          date2 = [MEMORY[0x1E695DF00] date];
+          [date2 timeIntervalSinceDate:date];
           *buf = 138544386;
           v61 = @"NowPlayingRequest.localNowPlayingItem";
           v62 = 2114;
-          v63 = v5;
+          v63 = uUIDString;
           v64 = 2112;
-          v65 = v41;
+          v65 = date3;
           v66 = 2114;
-          v67 = v10;
+          v67 = localNowPlayingPlayerPath;
           v68 = 2048;
           v69 = v43;
           v44 = "Response: %{public}@<%{public}@> returned <%@> for %{public}@ in %.4lf seconds";
@@ -2506,15 +2506,15 @@ LABEL_33:
 
       else if (v40)
       {
-        v41 = MRContentItemCopyMinimalReadableDescription(v24);
-        v42 = [MEMORY[0x1E695DF00] date];
-        [v42 timeIntervalSinceDate:v3];
+        date3 = MRContentItemCopyMinimalReadableDescription(v24);
+        date2 = [MEMORY[0x1E695DF00] date];
+        [date2 timeIntervalSinceDate:date];
         *buf = 138544130;
         v61 = @"NowPlayingRequest.localNowPlayingItem";
         v62 = 2114;
-        v63 = v5;
+        v63 = uUIDString;
         v64 = 2112;
-        v65 = v41;
+        v65 = date3;
         v66 = 2048;
         v67 = v51;
         v44 = "Response: %{public}@<%{public}@> returned <%@> in %.4lf seconds";
@@ -2528,21 +2528,21 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    if (v10)
+    if (localNowPlayingPlayerPath)
     {
       if (!v40)
       {
         goto LABEL_34;
       }
 
-      v41 = [MEMORY[0x1E695DF00] date];
-      [v41 timeIntervalSinceDate:v3];
+      date3 = [MEMORY[0x1E695DF00] date];
+      [date3 timeIntervalSinceDate:date];
       *buf = 138544130;
       v61 = @"NowPlayingRequest.localNowPlayingItem";
       v62 = 2114;
-      v63 = v5;
+      v63 = uUIDString;
       v64 = 2114;
-      v65 = v10;
+      v65 = localNowPlayingPlayerPath;
       v66 = 2048;
       v67 = v47;
       v48 = "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds";
@@ -2557,12 +2557,12 @@ LABEL_34:
         goto LABEL_34;
       }
 
-      v41 = [MEMORY[0x1E695DF00] date];
-      [v41 timeIntervalSinceDate:v3];
+      date3 = [MEMORY[0x1E695DF00] date];
+      [date3 timeIntervalSinceDate:date];
       *buf = 138543874;
       v61 = @"NowPlayingRequest.localNowPlayingItem";
       v62 = 2114;
-      v63 = v5;
+      v63 = uUIDString;
       v64 = 2048;
       v65 = v53;
       v48 = "Response: %{public}@<%{public}@> returned in %.4lf seconds";
@@ -2576,16 +2576,16 @@ LABEL_34:
 
   v32 = _MRLogForCategory(0xAuLL);
   v33 = os_log_type_enabled(v32, OS_LOG_TYPE_ERROR);
-  v5 = v58;
-  if (v10)
+  uUIDString = v58;
+  if (localNowPlayingPlayerPath)
   {
     if (!v33)
     {
       goto LABEL_35;
     }
 
-    v34 = [MEMORY[0x1E695DF00] date];
-    [v34 timeIntervalSinceDate:v3];
+    date4 = [MEMORY[0x1E695DF00] date];
+    [date4 timeIntervalSinceDate:date];
     *buf = 138544386;
     v61 = @"NowPlayingRequest.localNowPlayingItem";
     v62 = 2114;
@@ -2593,7 +2593,7 @@ LABEL_34:
     v64 = 2114;
     v65 = v25;
     v66 = 2114;
-    v67 = v10;
+    v67 = localNowPlayingPlayerPath;
     v68 = 2048;
     v69 = v35;
     v36 = "Response: %{public}@<%{public}@> returned with error <%{public}@> for %{public}@ in %.4lf seconds";
@@ -2608,8 +2608,8 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    v34 = [MEMORY[0x1E695DF00] date];
-    [v34 timeIntervalSinceDate:v3];
+    date4 = [MEMORY[0x1E695DF00] date];
+    [date4 timeIntervalSinceDate:date];
     *buf = 138544130;
     v61 = @"NowPlayingRequest.localNowPlayingItem";
     v62 = 2114;
@@ -2634,11 +2634,11 @@ LABEL_35:
 + (MRPlaybackQueue)localPlaybackQueue
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 localNowPlayingItem];
-  if (v2)
+  localNowPlayingItem = [self localNowPlayingItem];
+  if (localNowPlayingItem)
   {
     v3 = [MRPlaybackQueue alloc];
-    v8[0] = v2;
+    v8[0] = localNowPlayingItem;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
     v5 = [(MRPlaybackQueue *)v3 initWithContentItems:v4 location:0];
   }
@@ -2656,11 +2656,11 @@ LABEL_35:
 + (NSDate)localLastPlayingDate
 {
   v54 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
+  date = [MEMORY[0x1E695DF00] date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"NowPlayingRequest.localLastPlayingDate", v4];
+  v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"NowPlayingRequest.localLastPlayingDate", uUIDString];
   v6 = +[MROrigin localOrigin];
 
   if (v6)
@@ -2700,12 +2700,12 @@ LABEL_35:
     {
       if (v22)
       {
-        v23 = [MEMORY[0x1E695DF00] date];
-        [v23 timeIntervalSinceDate:v2];
+        date2 = [MEMORY[0x1E695DF00] date];
+        [date2 timeIntervalSinceDate:date];
         *buf = 138544386;
         v45 = @"NowPlayingRequest.localLastPlayingDate";
         v46 = 2114;
-        v47 = v4;
+        v47 = uUIDString;
         v48 = 2112;
         v49 = v19;
         v50 = 2114;
@@ -2721,7 +2721,7 @@ LABEL_20:
 
 LABEL_21:
 
-      v37 = v13;
+      distantPast = v13;
       goto LABEL_24;
     }
 
@@ -2730,12 +2730,12 @@ LABEL_21:
       goto LABEL_21;
     }
 
-    v23 = [MEMORY[0x1E695DF00] date];
-    [v23 timeIntervalSinceDate:v2];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSinceDate:date];
     *buf = 138544130;
     v45 = @"NowPlayingRequest.localLastPlayingDate";
     v46 = 2114;
-    v47 = v4;
+    v47 = uUIDString;
     v48 = 2112;
     v49 = v19;
     v50 = 2048;
@@ -2757,12 +2757,12 @@ LABEL_19:
         goto LABEL_21;
       }
 
-      v23 = [MEMORY[0x1E695DF00] date];
-      [v23 timeIntervalSinceDate:v2];
+      date2 = [MEMORY[0x1E695DF00] date];
+      [date2 timeIntervalSinceDate:date];
       *buf = 138543874;
       v45 = @"NowPlayingRequest.localLastPlayingDate";
       v46 = 2114;
-      v47 = v4;
+      v47 = uUIDString;
       v48 = 2048;
       v49 = v41;
       v25 = "Response: %{public}@<%{public}@> returned in %.4lf seconds";
@@ -2776,12 +2776,12 @@ LABEL_19:
       goto LABEL_21;
     }
 
-    v23 = [MEMORY[0x1E695DF00] date];
-    [v23 timeIntervalSinceDate:v2];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSinceDate:date];
     *buf = 138544130;
     v45 = @"NowPlayingRequest.localLastPlayingDate";
     v46 = 2114;
-    v47 = v4;
+    v47 = uUIDString;
     v48 = 2114;
     v49 = v11;
     v50 = 2048;
@@ -2795,12 +2795,12 @@ LABEL_19:
   {
     if (v28)
     {
-      v29 = [MEMORY[0x1E695DF00] date];
-      [v29 timeIntervalSinceDate:v2];
+      date3 = [MEMORY[0x1E695DF00] date];
+      [date3 timeIntervalSinceDate:date];
       *buf = 138544386;
       v45 = @"NowPlayingRequest.localLastPlayingDate";
       v46 = 2114;
-      v47 = v4;
+      v47 = uUIDString;
       v48 = 2114;
       v49 = v14;
       v50 = 2114;
@@ -2817,12 +2817,12 @@ LABEL_30:
 
   else if (v28)
   {
-    v29 = [MEMORY[0x1E695DF00] date];
-    [v29 timeIntervalSinceDate:v2];
+    date3 = [MEMORY[0x1E695DF00] date];
+    [date3 timeIntervalSinceDate:date];
     *buf = 138544130;
     v45 = @"NowPlayingRequest.localLastPlayingDate";
     v46 = 2114;
-    v47 = v4;
+    v47 = uUIDString;
     v48 = 2114;
     v49 = v14;
     v50 = 2048;
@@ -2833,9 +2833,9 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v37 = [MEMORY[0x1E695DF00] distantPast];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
 LABEL_24:
-  v38 = v37;
+  v38 = distantPast;
 
   v39 = *MEMORY[0x1E69E9840];
 
@@ -2849,20 +2849,20 @@ LABEL_24:
   v4 = +[MROrigin localOrigin];
   v5 = [(MRPlayerPath *)v3 initWithOrigin:v4 client:0 player:0];
 
-  v6 = [v2 activePlayerPath];
-  if (v6 && (-[MRPlayerPath origin](v5, "origin"), v7 = objc_claimAutoreleasedReturnValue(), [v6 origin], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqual:", v8), v8, v7, v9))
+  activePlayerPath = [v2 activePlayerPath];
+  if (activePlayerPath && (-[MRPlayerPath origin](v5, "origin"), v7 = objc_claimAutoreleasedReturnValue(), [activePlayerPath origin], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqual:", v8), v8, v7, v9))
   {
-    v10 = v6;
+    v10 = activePlayerPath;
   }
 
   else
   {
     v11 = MRCreateXPCMessage(0x200000000000018uLL);
     MRAddPlayerPathToXPCMessage(v11, v5);
-    v12 = [v2 service];
-    v13 = [v12 mrXPCConnection];
+    service = [v2 service];
+    mrXPCConnection = [service mrXPCConnection];
     v17 = 0;
-    v14 = [v13 sendSyncMessage:v11 error:&v17];
+    v14 = [mrXPCConnection sendSyncMessage:v11 error:&v17];
     v15 = v17;
 
     v10 = MRCreatePlayerPathFromXPCMessage(v14);
@@ -2875,28 +2875,28 @@ LABEL_24:
 {
   v3 = +[MRUserSettings currentSettings];
   [v3 mediaRecentlyPlayedInterval];
-  v4 = [a1 isMostRecentMediaPlaybackRelevantReasonWithinInternal:?];
+  v4 = [self isMostRecentMediaPlaybackRelevantReasonWithinInternal:?];
 
   return v4;
 }
 
-+ (BOOL)isMostRecentMediaPlaybackRelevantWithinInterval:(double)a3
++ (BOOL)isMostRecentMediaPlaybackRelevantWithinInterval:(double)interval
 {
-  v3 = [a1 isMostRecentMediaPlaybackRelevantReasonWithinInternal:a3];
-  v4 = [v3 first];
-  v5 = [v4 BOOLValue];
+  v3 = [self isMostRecentMediaPlaybackRelevantReasonWithinInternal:interval];
+  first = [v3 first];
+  bOOLValue = [first BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (id)isMostRecentMediaPlaybackRelevantReasonWithinInternal:(double)a3
++ (id)isMostRecentMediaPlaybackRelevantReasonWithinInternal:(double)internal
 {
   v59 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
+  date = [MEMORY[0x1E695DF00] date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v8 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"NowPlayingRequest.isMostRecentMediaPlaybackRelevant", v7];
+  v8 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"NowPlayingRequest.isMostRecentMediaPlaybackRelevant", uUIDString];
   v9 = +[MROrigin localOrigin];
 
   if (v9)
@@ -2913,34 +2913,34 @@ LABEL_24:
     _os_log_impl(&dword_1A2860000, v11, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
   }
 
-  v12 = [a1 localNowPlayingPlayerPath];
-  v13 = [(__CFString *)v12 client];
+  localNowPlayingPlayerPath = [self localNowPlayingPlayerPath];
+  client = [(__CFString *)localNowPlayingPlayerPath client];
 
-  if (v13)
+  if (client)
   {
-    v14 = [(__CFString *)v12 client];
-    if ([v14 isAirPlay])
+    client2 = [(__CFString *)localNowPlayingPlayerPath client];
+    if ([client2 isAirPlay])
     {
     }
 
     else
     {
-      v15 = [a1 localNowPlayingItem];
+      localNowPlayingItem = [self localNowPlayingItem];
 
-      if (!v15)
+      if (!localNowPlayingItem)
       {
         v16 = @"no now playing item";
         goto LABEL_19;
       }
     }
 
-    v17 = [a1 localLastPlayingDate];
-    [v17 timeIntervalSinceNow];
+    localLastPlayingDate = [self localLastPlayingDate];
+    [localLastPlayingDate timeIntervalSinceNow];
     v19 = v18;
 
-    if (a3 <= 0.0 || (v20 = -v19, v20 <= a3))
+    if (internal <= 0.0 || (v20 = -v19, v20 <= internal))
     {
-      if ([a1 localIsPlaying])
+      if ([self localIsPlaying])
       {
         v16 = @"local is playing";
       }
@@ -2950,7 +2950,7 @@ LABEL_24:
         v16 = @"local was playing recently";
       }
 
-      v15 = 1;
+      localNowPlayingItem = 1;
       goto LABEL_19;
     }
 
@@ -2958,7 +2958,7 @@ LABEL_24:
     if (v21)
     {
       v16 = v21;
-      v15 = 0;
+      localNowPlayingItem = 0;
       goto LABEL_19;
     }
 
@@ -2968,21 +2968,21 @@ LABEL_24:
     v31 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
     if (v30)
     {
-      if (v12)
+      if (localNowPlayingPlayerPath)
       {
         if (v31)
         {
-          v32 = [MEMORY[0x1E696AD98] numberWithBool:0];
-          v33 = [MEMORY[0x1E695DF00] date];
-          [v33 timeIntervalSinceDate:v5];
+          date3 = [MEMORY[0x1E696AD98] numberWithBool:0];
+          date2 = [MEMORY[0x1E695DF00] date];
+          [date2 timeIntervalSinceDate:date];
           *buf = 138544386;
           v50 = @"NowPlayingRequest.isMostRecentMediaPlaybackRelevant";
           v51 = 2114;
-          v52 = v7;
+          v52 = uUIDString;
           v53 = 2112;
-          v54 = v32;
+          v54 = date3;
           v55 = 2114;
-          v56 = v12;
+          v56 = localNowPlayingPlayerPath;
           v57 = 2048;
           v58 = v34;
           v35 = "Response: %{public}@<%{public}@> returned <%@> for %{public}@ in %.4lf seconds";
@@ -2997,15 +2997,15 @@ LABEL_38:
 
       else if (v31)
       {
-        v32 = [MEMORY[0x1E696AD98] numberWithBool:0];
-        v33 = [MEMORY[0x1E695DF00] date];
-        [v33 timeIntervalSinceDate:v5];
+        date3 = [MEMORY[0x1E696AD98] numberWithBool:0];
+        date2 = [MEMORY[0x1E695DF00] date];
+        [date2 timeIntervalSinceDate:date];
         *buf = 138544130;
         v50 = @"NowPlayingRequest.isMostRecentMediaPlaybackRelevant";
         v51 = 2114;
-        v52 = v7;
+        v52 = uUIDString;
         v53 = 2112;
-        v54 = v32;
+        v54 = date3;
         v55 = 2048;
         v56 = v42;
         v35 = "Response: %{public}@<%{public}@> returned <%@> in %.4lf seconds";
@@ -3016,25 +3016,25 @@ LABEL_38:
 
 LABEL_39:
       v16 = 0;
-      v15 = 0;
+      localNowPlayingItem = 0;
       goto LABEL_40;
     }
 
-    if (v12)
+    if (localNowPlayingPlayerPath)
     {
       if (!v31)
       {
         goto LABEL_39;
       }
 
-      v32 = [MEMORY[0x1E695DF00] date];
-      [(__CFString *)v32 timeIntervalSinceDate:v5];
+      date3 = [MEMORY[0x1E695DF00] date];
+      [(__CFString *)date3 timeIntervalSinceDate:date];
       *buf = 138544130;
       v50 = @"NowPlayingRequest.isMostRecentMediaPlaybackRelevant";
       v51 = 2114;
-      v52 = v7;
+      v52 = uUIDString;
       v53 = 2114;
-      v54 = v12;
+      v54 = localNowPlayingPlayerPath;
       v55 = 2048;
       v56 = v38;
       v39 = "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds";
@@ -3049,12 +3049,12 @@ LABEL_39:
         goto LABEL_39;
       }
 
-      v32 = [MEMORY[0x1E695DF00] date];
-      [(__CFString *)v32 timeIntervalSinceDate:v5];
+      date3 = [MEMORY[0x1E695DF00] date];
+      [(__CFString *)date3 timeIntervalSinceDate:date];
       *buf = 138543874;
       v50 = @"NowPlayingRequest.isMostRecentMediaPlaybackRelevant";
       v51 = 2114;
-      v52 = v7;
+      v52 = uUIDString;
       v53 = 2048;
       v54 = v43;
       v39 = "Response: %{public}@<%{public}@> returned in %.4lf seconds";
@@ -3066,28 +3066,28 @@ LABEL_39:
     goto LABEL_38;
   }
 
-  v15 = 0;
+  localNowPlayingItem = 0;
   v16 = @"no now playing app";
 LABEL_19:
   v22 = _MRLogForCategory(0xAuLL);
   v23 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
-  if (v12)
+  if (localNowPlayingPlayerPath)
   {
     if (!v23)
     {
       goto LABEL_40;
     }
 
-    v24 = [MEMORY[0x1E695DF00] date];
-    [v24 timeIntervalSinceDate:v5];
+    date4 = [MEMORY[0x1E695DF00] date];
+    [date4 timeIntervalSinceDate:date];
     *buf = 138544386;
     v50 = @"NowPlayingRequest.isMostRecentMediaPlaybackRelevant";
     v51 = 2114;
-    v52 = v7;
+    v52 = uUIDString;
     v53 = 2114;
     v54 = v16;
     v55 = 2114;
-    v56 = v12;
+    v56 = localNowPlayingPlayerPath;
     v57 = 2048;
     v58 = v25;
     v26 = "Response: %{public}@<%{public}@> returned with error <%{public}@> for %{public}@ in %.4lf seconds";
@@ -3102,12 +3102,12 @@ LABEL_19:
       goto LABEL_40;
     }
 
-    v24 = [MEMORY[0x1E695DF00] date];
-    [v24 timeIntervalSinceDate:v5];
+    date4 = [MEMORY[0x1E695DF00] date];
+    [date4 timeIntervalSinceDate:date];
     *buf = 138544130;
     v50 = @"NowPlayingRequest.isMostRecentMediaPlaybackRelevant";
     v51 = 2114;
-    v52 = v7;
+    v52 = uUIDString;
     v53 = 2114;
     v54 = v16;
     v55 = 2048;
@@ -3121,7 +3121,7 @@ LABEL_19:
 
 LABEL_40:
   v44 = objc_alloc(MEMORY[0x1E69B1470]);
-  v45 = [MEMORY[0x1E696AD98] numberWithBool:v15];
+  v45 = [MEMORY[0x1E696AD98] numberWithBool:localNowPlayingItem];
   v46 = [v44 initWithFirst:v45 second:v16];
 
   v47 = *MEMORY[0x1E69E9840];
@@ -3129,21 +3129,21 @@ LABEL_40:
   return v46;
 }
 
-+ (void)shouldUseQuickControlsToDisplayPlatterForRouteIdentifier:(id)a3 completion:(id)a4
++ (void)shouldUseQuickControlsToDisplayPlatterForRouteIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF00] date];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  date = [MEMORY[0x1E695DF00] date];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __97__MRNowPlayingRequest_Siri__shouldUseQuickControlsToDisplayPlatterForRouteIdentifier_completion___block_invoke;
   v18[3] = &unk_1E76A0920;
-  v8 = v5;
+  v8 = identifierCopy;
   v19 = v8;
-  v20 = v7;
-  v21 = v6;
-  v9 = v6;
-  v10 = v7;
+  v20 = date;
+  v21 = completionCopy;
+  v9 = completionCopy;
+  v10 = date;
   v11 = MEMORY[0x1A58E3570](v18);
   v12 = +[MRNowPlayingOriginClientManager sharedManager];
   v15[0] = MEMORY[0x1E69E9820];
@@ -3203,12 +3203,12 @@ uint64_t __97__MRNowPlayingRequest_Siri__shouldUseQuickControlsToDisplayPlatterF
   return v9(v6, v8);
 }
 
-+ (void)homePlatterPreferredRouteIdentifier:(id)a3
++ (void)homePlatterPreferredRouteIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF00];
-  v4 = a3;
-  v5 = [v3 date];
+  identifierCopy = identifier;
+  date = [v3 date];
   v6 = +[MRNowPlayingOriginClientManager sharedManager];
   v7 = [v6 activeSystemEndpointOutputDeviceUIDForType:0];
 
@@ -3224,8 +3224,8 @@ uint64_t __97__MRNowPlayingRequest_Siri__shouldUseQuickControlsToDisplayPlatterF
   v10 = _MRLogForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [MEMORY[0x1E695DF00] date];
-    [v11 timeIntervalSinceDate:v5];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSinceDate:date];
     v14 = 138543618;
     v15 = v7;
     v16 = 2048;
@@ -3233,19 +3233,19 @@ uint64_t __97__MRNowPlayingRequest_Siri__shouldUseQuickControlsToDisplayPlatterF
     _os_log_impl(&dword_1A2860000, v10, OS_LOG_TYPE_DEFAULT, "[MRNowPlayingRequest] homePlatterPreferredRouteIdentifier returned %{public}@ in %lf seconds.", &v14, 0x16u);
   }
 
-  v4[2](v4, v7);
+  identifierCopy[2](identifierCopy, v7);
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)suspendDisconnectionPauseForConfiguration:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)suspendDisconnectionPauseForConfiguration:(id)configuration queue:(id)queue completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  configurationCopy = configuration;
   v10 = +[MRMediaRemoteServiceClient sharedServiceClient];
-  v11 = [v10 service];
+  service = [v10 service];
 
-  [v11 suspendDisconnectionPauseForConfiguration:v9 queue:v8 completion:v7];
+  [service suspendDisconnectionPauseForConfiguration:configurationCopy queue:queueCopy completion:completionCopy];
 }
 
 void __103__MRNowPlayingRequest_AudioFade__triggerAudioFadeOutForNowPlayingApplicationWithReplyQueue_completion___block_invoke_14_cold_1(void *a1)

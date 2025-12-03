@@ -1,33 +1,33 @@
 @interface MKMapSnapshotOptions
-- ($F9C4767691F2EDF2F3162F5FE7B1523A)_resolvedCartographicConfigurationWithAuditToken:(SEL)a3;
+- ($F9C4767691F2EDF2F3162F5FE7B1523A)_resolvedCartographicConfigurationWithAuditToken:(SEL)token;
 - (BOOL)_overlaysRequireModernMap;
 - (BOOL)_overlaysSupportElevation;
 - (BOOL)_showsPointsOfInterest;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
 - (MKCoordinateRegion)region;
 - (MKMapRect)mapRect;
 - (MKMapSnapshotOptions)init;
-- (MKMapSnapshotOptions)initWithCoder:(id)a3;
+- (MKMapSnapshotOptions)initWithCoder:(id)coder;
 - (UIEdgeInsets)_edgeInsets;
 - (id)_allOverlayRenderers;
 - (id)_allOverlays;
 - (id)_encodableOverlayRenderers;
-- (id)_overlayRenderersForOverlayLevel:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_overlayRenderersForOverlayLevel:(int64_t)level;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_addCameraKVO;
-- (void)_mkObserveValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)_mkObserveValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)_prepareToSubmit;
 - (void)_removeCameraKVO;
-- (void)_setCamera:(id)a3;
-- (void)_setCartographicConfiguration:(id *)a3;
-- (void)_setComposedRouteForRouteLine:(id)a3;
-- (void)_setOverlayRenderers:(id)a3 forOverlayLevel:(int64_t)a4;
-- (void)_setSelectedTrailWithId:(id)a3 name:(id)a4 locale:(id)a5;
-- (void)_setShowsNightMode:(BOOL)a3;
-- (void)_setUseSnapshotService:(BOOL)a3;
+- (void)_setCamera:(id)camera;
+- (void)_setCartographicConfiguration:(id *)configuration;
+- (void)_setComposedRouteForRouteLine:(id)line;
+- (void)_setOverlayRenderers:(id)renderers forOverlayLevel:(int64_t)level;
+- (void)_setSelectedTrailWithId:(id)id name:(id)name locale:(id)locale;
+- (void)_setShowsNightMode:(BOOL)mode;
+- (void)_setUseSnapshotService:(BOOL)service;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setCamera:(MKMapCamera *)camera;
 - (void)setMapRect:(MKMapRect)mapRect;
 - (void)setMapType:(MKMapType)mapType;
@@ -98,15 +98,15 @@
   return result;
 }
 
-- (void)_mkObserveValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)_mkObserveValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (MKCameraKVOContext == a6)
+  if (MKCameraKVOContext == context)
   {
     width = self->_size.width;
     *&width = width;
     height = self->_size.height;
     *&width = *&width / height;
-    [(MKMapCamera *)self->_camera _enclosingGEOMapRectForAspectRatio:a3, a4, a5, width];
+    [(MKMapCamera *)self->_camera _enclosingGEOMapRectForAspectRatio:path, object, change, width];
     self->_mapRect = v9;
     self->_region = MKCoordinateRegionForMapRect(v9);
     self->_mode = 2;
@@ -117,9 +117,9 @@
 {
   if (([(UITraitCollection *)self->_traitCollection userInterfaceStyle]- 1) >= 2 && !self->_allowsSimultaneousLightDarkSnapshots)
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v4 = [v3 traitCollection];
-    if ([v4 userInterfaceStyle] == 2)
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
       v5 = 2;
     }
@@ -151,33 +151,33 @@
   }
 }
 
-- (void)_setSelectedTrailWithId:(id)a3 name:(id)a4 locale:(id)a5
+- (void)_setSelectedTrailWithId:(id)id name:(id)name locale:(id)locale
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  nameCopy = name;
+  localeCopy = locale;
   selectedTrailID = self->_selectedTrailID;
-  self->_selectedTrailID = v8;
-  v15 = v8;
+  self->_selectedTrailID = idCopy;
+  v15 = idCopy;
 
   selectedTrailName = self->_selectedTrailName;
-  self->_selectedTrailName = v9;
-  v13 = v9;
+  self->_selectedTrailName = nameCopy;
+  v13 = nameCopy;
 
   selectedTrailLocale = self->_selectedTrailLocale;
-  self->_selectedTrailLocale = v10;
+  self->_selectedTrailLocale = localeCopy;
 }
 
 - (id)_allOverlays
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(MKMapSnapshotOptions *)self _allOverlayRenderers];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _allOverlayRenderers = [(MKMapSnapshotOptions *)self _allOverlayRenderers];
+  v5 = [_allOverlayRenderers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -188,26 +188,26 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allOverlayRenderers);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) overlay];
-        [v3 addObject:v9];
+        overlay = [*(*(&v11 + 1) + 8 * i) overlay];
+        [array addObject:overlay];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [_allOverlayRenderers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (id)_overlayRenderersForOverlayLevel:(int64_t)a3
+- (id)_overlayRenderersForOverlayLevel:(int64_t)level
 {
   overlayRenderers = self->_overlayRenderers;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:level];
   v5 = [(NSMutableDictionary *)overlayRenderers objectForKeyedSubscript:v4];
   v6 = v5;
   if (v5)
@@ -225,32 +225,32 @@
   return v7;
 }
 
-- (void)_setOverlayRenderers:(id)a3 forOverlayLevel:(int64_t)a4
+- (void)_setOverlayRenderers:(id)renderers forOverlayLevel:(int64_t)level
 {
-  v10 = a3;
+  renderersCopy = renderers;
   overlayRenderers = self->_overlayRenderers;
   if (!overlayRenderers)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v8 = self->_overlayRenderers;
-    self->_overlayRenderers = v7;
+    self->_overlayRenderers = dictionary;
 
     overlayRenderers = self->_overlayRenderers;
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [(NSMutableDictionary *)overlayRenderers setObject:v10 forKeyedSubscript:v9];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:level];
+  [(NSMutableDictionary *)overlayRenderers setObject:renderersCopy forKeyedSubscript:v9];
 }
 
-- (void)_setComposedRouteForRouteLine:(id)a3
+- (void)_setComposedRouteForRouteLine:(id)line
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  lineCopy = line;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v7 count:1];
+  lineCopy2 = line;
+  v6 = [v4 arrayWithObjects:&lineCopy count:1];
 
-  [(MKMapSnapshotOptions *)self _setComposedRoutesForRouteLines:v6 selectedRouteIndex:0, v7, v8];
+  [(MKMapSnapshotOptions *)self _setComposedRoutesForRouteLines:v6 selectedRouteIndex:0, lineCopy, v8];
 }
 
 - (void)setShowsBuildings:(BOOL)showsBuildings
@@ -297,12 +297,12 @@ LABEL_11:
   self->_showsBuildings = showsBuildings;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
-    LOBYTE(v11) = 1;
+    LOBYTE(_selectedTrailLocale) = 1;
   }
 
   else
@@ -310,107 +310,107 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MKMapSnapshotOptions *)self camera];
-      v7 = [(MKMapSnapshotOptions *)v5 camera];
-      if (![v6 isEqual:v7])
+      v5 = equalCopy;
+      camera = [(MKMapSnapshotOptions *)self camera];
+      camera2 = [(MKMapSnapshotOptions *)v5 camera];
+      if (![camera isEqual:camera2])
       {
-        LOBYTE(v11) = 0;
+        LOBYTE(_selectedTrailLocale) = 0;
 LABEL_28:
 
         goto LABEL_29;
       }
 
-      v8 = [(MKMapSnapshotOptions *)self preferredConfiguration];
-      v9 = [(MKMapSnapshotOptions *)v5 preferredConfiguration];
-      if (![v8 isEqual:v9] || (v10 = -[MKMapSnapshotOptions showsBuildings](self, "showsBuildings"), v10 != -[MKMapSnapshotOptions showsBuildings](v5, "showsBuildings")))
+      preferredConfiguration = [(MKMapSnapshotOptions *)self preferredConfiguration];
+      preferredConfiguration2 = [(MKMapSnapshotOptions *)v5 preferredConfiguration];
+      if (![preferredConfiguration isEqual:preferredConfiguration2] || (v10 = -[MKMapSnapshotOptions showsBuildings](self, "showsBuildings"), v10 != -[MKMapSnapshotOptions showsBuildings](v5, "showsBuildings")))
       {
-        LOBYTE(v11) = 0;
+        LOBYTE(_selectedTrailLocale) = 0;
 LABEL_27:
 
         goto LABEL_28;
       }
 
-      v12 = [(MKMapSnapshotOptions *)self pointOfInterestFilter];
-      v13 = [(MKMapSnapshotOptions *)v5 pointOfInterestFilter];
-      v14 = v12;
-      v15 = v13;
-      if (v14 | v15 && (LODWORD(v11) = [v14 isEqual:v15], v15, v14, !v11) || (-[MKMapSnapshotOptions size](self, "size"), v17 = v16, v19 = v18, -[MKMapSnapshotOptions size](v5, "size"), LOBYTE(v11) = 0, v17 != v21) || v19 != v20)
+      pointOfInterestFilter = [(MKMapSnapshotOptions *)self pointOfInterestFilter];
+      pointOfInterestFilter2 = [(MKMapSnapshotOptions *)v5 pointOfInterestFilter];
+      v14 = pointOfInterestFilter;
+      v15 = pointOfInterestFilter2;
+      if (v14 | v15 && (LODWORD(_selectedTrailLocale) = [v14 isEqual:v15], v15, v14, !_selectedTrailLocale) || (-[MKMapSnapshotOptions size](self, "size"), v17 = v16, v19 = v18, -[MKMapSnapshotOptions size](v5, "size"), LOBYTE(_selectedTrailLocale) = 0, v17 != v21) || v19 != v20)
       {
 LABEL_26:
 
         goto LABEL_27;
       }
 
-      v54 = [(MKMapSnapshotOptions *)self traitCollection];
-      [v54 displayScale];
+      traitCollection = [(MKMapSnapshotOptions *)self traitCollection];
+      [traitCollection displayScale];
       v23 = v22;
-      v53 = [(MKMapSnapshotOptions *)v5 traitCollection];
-      [v53 displayScale];
+      traitCollection2 = [(MKMapSnapshotOptions *)v5 traitCollection];
+      [traitCollection2 displayScale];
       if (v23 != v24)
       {
-        LOBYTE(v11) = 0;
-        v34 = v54;
+        LOBYTE(_selectedTrailLocale) = 0;
+        v34 = traitCollection;
         goto LABEL_25;
       }
 
-      v52 = [(MKMapSnapshotOptions *)self traitCollection];
-      v25 = [v52 userInterfaceStyle];
-      v51 = [(MKMapSnapshotOptions *)v5 traitCollection];
-      if (v25 != [v51 userInterfaceStyle] || (-[MKMapSnapshotOptions _edgeInsets](v5, "_edgeInsets"), v27.f64[1] = v26, v29.f64[1] = v28, (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_edgeInsets.top, v27), vceqq_f64(*&self->_edgeInsets.bottom, v29)))) & 1) == 0) || (allowsSimultaneousLightDarkSnapshots = self->_allowsSimultaneousLightDarkSnapshots, allowsSimultaneousLightDarkSnapshots != -[MKMapSnapshotOptions _allowsSimultaneousLightDarkSnapshots](v5, "_allowsSimultaneousLightDarkSnapshots")) || (networkUsageMode = self->_networkUsageMode, networkUsageMode != -[MKMapSnapshotOptions _networkUsageMode](v5, "_networkUsageMode")))
+      traitCollection3 = [(MKMapSnapshotOptions *)self traitCollection];
+      userInterfaceStyle = [traitCollection3 userInterfaceStyle];
+      traitCollection4 = [(MKMapSnapshotOptions *)v5 traitCollection];
+      if (userInterfaceStyle != [traitCollection4 userInterfaceStyle] || (-[MKMapSnapshotOptions _edgeInsets](v5, "_edgeInsets"), v27.f64[1] = v26, v29.f64[1] = v28, (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_edgeInsets.top, v27), vceqq_f64(*&self->_edgeInsets.bottom, v29)))) & 1) == 0) || (allowsSimultaneousLightDarkSnapshots = self->_allowsSimultaneousLightDarkSnapshots, allowsSimultaneousLightDarkSnapshots != -[MKMapSnapshotOptions _allowsSimultaneousLightDarkSnapshots](v5, "_allowsSimultaneousLightDarkSnapshots")) || (networkUsageMode = self->_networkUsageMode, networkUsageMode != -[MKMapSnapshotOptions _networkUsageMode](v5, "_networkUsageMode")))
       {
-        LOBYTE(v11) = 0;
-        v34 = v54;
+        LOBYTE(_selectedTrailLocale) = 0;
+        v34 = traitCollection;
 LABEL_23:
 
 LABEL_25:
         goto LABEL_26;
       }
 
-      v32 = [(MKMapSnapshotOptions *)self _selectedTrailID];
-      v49 = [(MKMapSnapshotOptions *)v5 _selectedTrailID];
-      v50 = v32;
-      if (v32 != v49)
+      _selectedTrailID = [(MKMapSnapshotOptions *)self _selectedTrailID];
+      _selectedTrailID2 = [(MKMapSnapshotOptions *)v5 _selectedTrailID];
+      v50 = _selectedTrailID;
+      if (_selectedTrailID != _selectedTrailID2)
       {
-        v33 = [(MKMapSnapshotOptions *)self _selectedTrailID];
-        v45 = [(MKMapSnapshotOptions *)v5 _selectedTrailID];
-        v46 = v33;
-        if (![v33 isEqual:?])
+        _selectedTrailID3 = [(MKMapSnapshotOptions *)self _selectedTrailID];
+        _selectedTrailID4 = [(MKMapSnapshotOptions *)v5 _selectedTrailID];
+        v46 = _selectedTrailID3;
+        if (![_selectedTrailID3 isEqual:?])
         {
-          LOBYTE(v11) = 0;
-          v34 = v54;
+          LOBYTE(_selectedTrailLocale) = 0;
+          v34 = traitCollection;
           goto LABEL_40;
         }
       }
 
-      v36 = [(MKMapSnapshotOptions *)self _selectedTrailName];
-      v47 = [(MKMapSnapshotOptions *)v5 _selectedTrailName];
-      v48 = v36;
-      if (v36 == v47 || (-[MKMapSnapshotOptions _selectedTrailName](self, "_selectedTrailName"), v37 = objc_claimAutoreleasedReturnValue(), -[MKMapSnapshotOptions _selectedTrailName](v5, "_selectedTrailName"), v42 = objc_claimAutoreleasedReturnValue(), v43 = v37, [v37 isEqualToString:?]))
+      _selectedTrailName = [(MKMapSnapshotOptions *)self _selectedTrailName];
+      _selectedTrailName2 = [(MKMapSnapshotOptions *)v5 _selectedTrailName];
+      v48 = _selectedTrailName;
+      if (_selectedTrailName == _selectedTrailName2 || (-[MKMapSnapshotOptions _selectedTrailName](self, "_selectedTrailName"), v37 = objc_claimAutoreleasedReturnValue(), -[MKMapSnapshotOptions _selectedTrailName](v5, "_selectedTrailName"), v42 = objc_claimAutoreleasedReturnValue(), v43 = v37, [v37 isEqualToString:?]))
       {
-        v11 = [(MKMapSnapshotOptions *)self _selectedTrailLocale];
-        v38 = [(MKMapSnapshotOptions *)v5 _selectedTrailLocale];
-        v44 = v11;
-        if (v11 == v38)
+        _selectedTrailLocale = [(MKMapSnapshotOptions *)self _selectedTrailLocale];
+        _selectedTrailLocale2 = [(MKMapSnapshotOptions *)v5 _selectedTrailLocale];
+        v44 = _selectedTrailLocale;
+        if (_selectedTrailLocale == _selectedTrailLocale2)
         {
 
-          LOBYTE(v11) = 1;
+          LOBYTE(_selectedTrailLocale) = 1;
         }
 
         else
         {
-          v41 = v38;
-          v40 = [(MKMapSnapshotOptions *)self _selectedTrailLocale];
-          v39 = [(MKMapSnapshotOptions *)v5 _selectedTrailLocale];
-          LOBYTE(v11) = [v40 isEqualToString:v39];
+          v41 = _selectedTrailLocale2;
+          _selectedTrailLocale3 = [(MKMapSnapshotOptions *)self _selectedTrailLocale];
+          _selectedTrailLocale4 = [(MKMapSnapshotOptions *)v5 _selectedTrailLocale];
+          LOBYTE(_selectedTrailLocale) = [_selectedTrailLocale3 isEqualToString:_selectedTrailLocale4];
         }
 
-        v34 = v54;
-        if (v48 == v47)
+        v34 = traitCollection;
+        if (v48 == _selectedTrailName2)
         {
 
 LABEL_39:
-          if (v50 == v49)
+          if (v50 == _selectedTrailID2)
           {
 LABEL_41:
 
@@ -425,29 +425,29 @@ LABEL_40:
 
       else
       {
-        LOBYTE(v11) = 0;
-        v34 = v54;
+        LOBYTE(_selectedTrailLocale) = 0;
+        v34 = traitCollection;
       }
 
       goto LABEL_39;
     }
 
-    LOBYTE(v11) = 0;
+    LOBYTE(_selectedTrailLocale) = 0;
   }
 
 LABEL_29:
 
-  return v11;
+  return _selectedTrailLocale;
 }
 
-- (void)_setShowsNightMode:(BOOL)a3
+- (void)_setShowsNightMode:(BOOL)mode
 {
   traitCollection = self->_traitCollection;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__MKMapSnapshotOptions__setShowsNightMode___block_invoke;
   v7[3] = &__block_descriptor_33_e27_v16__0___UIMutableTraits__8l;
-  v8 = a3;
+  modeCopy = mode;
   v5 = [(UITraitCollection *)traitCollection traitCollectionByModifyingTraits:v7];
   v6 = self->_traitCollection;
   self->_traitCollection = v5;
@@ -486,11 +486,11 @@ uint64_t __43__MKMapSnapshotOptions__setShowsNightMode___block_invoke(uint64_t a
 
 - (BOOL)_showsPointsOfInterest
 {
-  v2 = [(MKMapConfiguration *)self->_preferredConfiguration _pointOfInterestFilter];
-  v3 = v2;
-  if (v2)
+  _pointOfInterestFilter = [(MKMapConfiguration *)self->_preferredConfiguration _pointOfInterestFilter];
+  v3 = _pointOfInterestFilter;
+  if (_pointOfInterestFilter)
   {
-    v4 = [v2 _excludesAllCategories] ^ 1;
+    v4 = [_pointOfInterestFilter _excludesAllCategories] ^ 1;
   }
 
   else
@@ -517,19 +517,19 @@ uint64_t __43__MKMapSnapshotOptions__setShowsNightMode___block_invoke(uint64_t a
   [(MKMapSnapshotOptions *)self setPreferredConfiguration:v4];
 }
 
-- (void)_setCartographicConfiguration:(id *)a3
+- (void)_setCartographicConfiguration:(id *)configuration
 {
-  v4 = *&a3->var2;
-  v6[0] = *&a3->var0;
+  v4 = *&configuration->var2;
+  v6[0] = *&configuration->var0;
   v6[1] = v4;
-  v6[2] = *&a3->var4;
-  v7 = *&a3->var6;
+  v6[2] = *&configuration->var4;
+  v7 = *&configuration->var6;
   v5 = [MKMapConfiguration _mapConfigurationWithCartographicConfiguration:v6];
   [v5 _setInternalStateFromMapConfiguration:self->_preferredConfiguration];
   [(MKMapSnapshotOptions *)self setPreferredConfiguration:v5];
 }
 
-- ($F9C4767691F2EDF2F3162F5FE7B1523A)_resolvedCartographicConfigurationWithAuditToken:(SEL)a3
+- ($F9C4767691F2EDF2F3162F5FE7B1523A)_resolvedCartographicConfigurationWithAuditToken:(SEL)token
 {
   v26 = *MEMORY[0x1E69E9840];
   v6 = a4;
@@ -547,29 +547,29 @@ uint64_t __43__MKMapSnapshotOptions__setShowsNightMode___block_invoke(uint64_t a
 
   if ((MapKitFeature_IsEnabled_SPRForMapSnapshots() & 1) == 0)
   {
-    v9 = [(MKMapSnapshotOptions *)self _overlaysRequireModernMap];
-    v8 = 0;
+    _overlaysRequireModernMap = [(MKMapSnapshotOptions *)self _overlaysRequireModernMap];
+    _allowsTerrainModePromotion = 0;
     goto LABEL_8;
   }
 
-  v8 = [(MKMapConfiguration *)v7 _allowsTerrainModePromotion];
-  v9 = [(MKMapSnapshotOptions *)self _overlaysRequireModernMap];
-  if (!v8 || (v10 = [(MKMapConfiguration *)v7 elevationStyle], v8 = _MKLinkedOnOrAfterReleaseSet(3595), v10 != 1))
+  _allowsTerrainModePromotion = [(MKMapConfiguration *)v7 _allowsTerrainModePromotion];
+  _overlaysRequireModernMap = [(MKMapSnapshotOptions *)self _overlaysRequireModernMap];
+  if (!_allowsTerrainModePromotion || (v10 = [(MKMapConfiguration *)v7 elevationStyle], _allowsTerrainModePromotion = _MKLinkedOnOrAfterReleaseSet(3595), v10 != 1))
   {
 LABEL_8:
     v12 = 0;
-    v11 = 0;
+    _overlaysSupportElevation = 0;
     if (!v6)
     {
       goto LABEL_6;
     }
 
 LABEL_9:
-    v13 = v6;
+    currentProcessAuditToken = v6;
     goto LABEL_10;
   }
 
-  v11 = [(MKMapSnapshotOptions *)self _overlaysSupportElevation];
+  _overlaysSupportElevation = [(MKMapSnapshotOptions *)self _overlaysSupportElevation];
   v12 = 1;
   if (v6)
   {
@@ -577,12 +577,12 @@ LABEL_9:
   }
 
 LABEL_6:
-  v13 = [MEMORY[0x1E69A1B68] currentProcessAuditToken];
+  currentProcessAuditToken = [MEMORY[0x1E69A1B68] currentProcessAuditToken];
 LABEL_10:
-  v14 = v13;
+  v14 = currentProcessAuditToken;
   v15 = MEMORY[0x1E69A22E8];
-  v16 = [v13 offlineCohortId];
-  v17 = [v15 activeStateForCohortId:v16];
+  offlineCohortId = [currentProcessAuditToken offlineCohortId];
+  v17 = [v15 activeStateForCohortId:offlineCohortId];
 
   if (v17 >= 3u)
   {
@@ -625,7 +625,7 @@ LABEL_10:
     v23 = 1;
   }
 
-  else if ((v18 | v9))
+  else if ((v18 | _overlaysRequireModernMap))
   {
     v23 = 0;
   }
@@ -633,12 +633,12 @@ LABEL_10:
   else
   {
     v23 = 3;
-    if (!v8)
+    if (!_allowsTerrainModePromotion)
     {
       v23 = var3;
     }
 
-    if ((v11 & v12) != 0)
+    if ((_overlaysSupportElevation & v12) != 0)
     {
       v23 = 1;
     }
@@ -652,8 +652,8 @@ LABEL_29:
 
 - (BOOL)_overlaysRequireModernMap
 {
-  v2 = [(MKMapSnapshotOptions *)self _allOverlays];
-  v3 = [MKStandardMapConfiguration _overlaysRequireModernMap:v2];
+  _allOverlays = [(MKMapSnapshotOptions *)self _allOverlays];
+  v3 = [MKStandardMapConfiguration _overlaysRequireModernMap:_allOverlays];
 
   return v3;
 }
@@ -663,8 +663,8 @@ LABEL_29:
   v3 = _MKLinkedOnOrAfterReleaseSet(3595);
   if (v3)
   {
-    v4 = [(MKMapSnapshotOptions *)self _allOverlays];
-    v5 = [MKStandardMapConfiguration _overlaysSupportElevation:v4];
+    _allOverlays = [(MKMapSnapshotOptions *)self _allOverlays];
+    v5 = [MKStandardMapConfiguration _overlaysSupportElevation:_allOverlays];
 
     LOBYTE(v3) = v5;
   }
@@ -672,11 +672,11 @@ LABEL_29:
   return v3;
 }
 
-- (void)_setUseSnapshotService:(BOOL)a3
+- (void)_setUseSnapshotService:(BOOL)service
 {
-  if (self->_useSnapshotService != a3)
+  if (self->_useSnapshotService != service)
   {
-    self->_useSnapshotService = a3;
+    self->_useSnapshotService = service;
   }
 }
 
@@ -763,9 +763,9 @@ LABEL_29:
   [(_MKKVOProxy *)kvoProxy removeObserverForObject:camera forKeyPath:@"centerCoordinateDistance" context:v5];
 }
 
-- (void)_setCamera:(id)a3
+- (void)_setCamera:(id)camera
 {
-  v4 = a3;
+  cameraCopy = camera;
   if (!self->_kvoProxy)
   {
     v5 = [[_MKKVOProxy alloc] initWithDelegate:self];
@@ -775,7 +775,7 @@ LABEL_29:
 
   [(MKMapSnapshotOptions *)self _removeCameraKVO];
   camera = self->_camera;
-  self->_camera = v4;
+  self->_camera = cameraCopy;
 
   [(MKMapSnapshotOptions *)self _addCameraKVO];
 }
@@ -892,9 +892,9 @@ void __43__MKMapSnapshotOptions_setTraitCollection___block_invoke(uint64_t a1, v
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   span = self->_region.span;
   *(v4 + 48) = self->_region.center;
   *(v4 + 64) = span;
@@ -1035,90 +1035,90 @@ void __50__MKMapSnapshotOptions__encodableOverlayRenderers__block_invoke(uint64_
   [*(v15 + 32) setObject:v5 forKeyedSubscript:v16];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_camera forKey:@"camera"];
-  [v4 encodeObject:self->_traitCollection forKey:@"traitCollection"];
-  [v4 encodeBool:self->_snapshotServiceSerialPerProcess forKey:@"snapshotServiceSerialPerProcess"];
-  v5 = [(MKMapConfiguration *)self->_preferredConfiguration _pointOfInterestFilter];
-  [v4 encodeObject:v5 forKey:@"pointOfInterestFilter"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_camera forKey:@"camera"];
+  [coderCopy encodeObject:self->_traitCollection forKey:@"traitCollection"];
+  [coderCopy encodeBool:self->_snapshotServiceSerialPerProcess forKey:@"snapshotServiceSerialPerProcess"];
+  _pointOfInterestFilter = [(MKMapConfiguration *)self->_preferredConfiguration _pointOfInterestFilter];
+  [coderCopy encodeObject:_pointOfInterestFilter forKey:@"pointOfInterestFilter"];
 
-  [v4 encodeBool:self->_showsPointLabels forKey:@"showsPointLabels"];
-  [v4 encodeBool:self->_showsRoadLabels forKey:@"showsRoadLabels"];
-  [v4 encodeBool:self->_showsRoadShields forKey:@"showsRoadShields"];
-  [v4 encodeBool:self->_showsBuildings forKey:@"showsBuildings"];
-  [v4 encodeBool:self->_showsVenues forKey:@"showsVenues"];
-  [v4 encodeBool:self->_allowsSimultaneousLightDarkSnapshots forKey:@"allowsSimultaneousLightDarkSnapshots"];
-  [v4 encodeInteger:self->_networkUsageMode forKey:@"networkUsageMode"];
+  [coderCopy encodeBool:self->_showsPointLabels forKey:@"showsPointLabels"];
+  [coderCopy encodeBool:self->_showsRoadLabels forKey:@"showsRoadLabels"];
+  [coderCopy encodeBool:self->_showsRoadShields forKey:@"showsRoadShields"];
+  [coderCopy encodeBool:self->_showsBuildings forKey:@"showsBuildings"];
+  [coderCopy encodeBool:self->_showsVenues forKey:@"showsVenues"];
+  [coderCopy encodeBool:self->_allowsSimultaneousLightDarkSnapshots forKey:@"allowsSimultaneousLightDarkSnapshots"];
+  [coderCopy encodeInteger:self->_networkUsageMode forKey:@"networkUsageMode"];
   v17 = 0;
   v15 = 0u;
   v16 = 0u;
   v14 = 0u;
   [(MKMapSnapshotOptions *)self _cartographicConfiguration];
-  [v4 encodeInteger:v14 forKey:@"mapStyle"];
-  [v4 encodeInteger:*(&v14 + 1) forKey:@"mapEmphasis"];
-  [v4 encodeInteger:v15 forKey:@"mapProjection"];
-  [v4 encodeBool:v17 forKey:@"gridOnly"];
-  [v4 encodeInteger:*(&v15 + 1) forKey:@"terrainMode"];
-  [v4 encodeInteger:v16 forKey:@"mapkitUsage"];
-  [v4 encodeInteger:*(&v16 + 1) forKey:@"mapkitClientMode"];
-  [v4 encodeInteger:_MKMapTypeForCartographicConfiguration(&v14) forKey:@"mapType"];
-  [v4 encodeObject:self->_preferredConfiguration forKey:@"preferredConfiguration"];
-  [v4 encodeBool:self->_showsAppleLogo forKey:@"showsAppleLogo"];
+  [coderCopy encodeInteger:v14 forKey:@"mapStyle"];
+  [coderCopy encodeInteger:*(&v14 + 1) forKey:@"mapEmphasis"];
+  [coderCopy encodeInteger:v15 forKey:@"mapProjection"];
+  [coderCopy encodeBool:v17 forKey:@"gridOnly"];
+  [coderCopy encodeInteger:*(&v15 + 1) forKey:@"terrainMode"];
+  [coderCopy encodeInteger:v16 forKey:@"mapkitUsage"];
+  [coderCopy encodeInteger:*(&v16 + 1) forKey:@"mapkitClientMode"];
+  [coderCopy encodeInteger:_MKMapTypeForCartographicConfiguration(&v14) forKey:@"mapType"];
+  [coderCopy encodeObject:self->_preferredConfiguration forKey:@"preferredConfiguration"];
+  [coderCopy encodeBool:self->_showsAppleLogo forKey:@"showsAppleLogo"];
   v6 = [MEMORY[0x1E696B098] valueWithCGSize:{self->_size.width, self->_size.height}];
-  [v4 encodeObject:v6 forKey:@"size"];
+  [coderCopy encodeObject:v6 forKey:@"size"];
 
   v7 = [MEMORY[0x1E696B098] valueWithBytes:&self->_edgeInsets objCType:"{UIEdgeInsets=dddd}"];
-  [v4 encodeObject:v7 forKey:@"edgeInsets"];
+  [coderCopy encodeObject:v7 forKey:@"edgeInsets"];
 
-  [v4 encodeDouble:@"mapRectOriginX" forKey:self->_mapRect.origin.x];
-  [v4 encodeDouble:@"mapRectOriginY" forKey:self->_mapRect.origin.y];
-  [v4 encodeDouble:@"mapRectSizeWidth" forKey:self->_mapRect.size.width];
-  [v4 encodeDouble:@"mapRectSizeHeight" forKey:self->_mapRect.size.height];
-  [v4 encodeDouble:@"regionCenterLat" forKey:self->_region.center.latitude];
-  [v4 encodeDouble:@"regionCenterLong" forKey:self->_region.center.longitude];
-  [v4 encodeDouble:@"regionSpanLatDelta" forKey:self->_region.span.latitudeDelta];
-  [v4 encodeDouble:@"regionSpanLongDelta" forKey:self->_region.span.longitudeDelta];
-  [v4 encodeInt:LODWORD(self->_mode) forKey:@"mode"];
-  [v4 encodeInteger:self->_searchResultsType forKey:@"searchResultsType"];
-  [v4 encodeObject:self->_customFeatureAnnotations forKey:@"customFeatureAnnotations"];
+  [coderCopy encodeDouble:@"mapRectOriginX" forKey:self->_mapRect.origin.x];
+  [coderCopy encodeDouble:@"mapRectOriginY" forKey:self->_mapRect.origin.y];
+  [coderCopy encodeDouble:@"mapRectSizeWidth" forKey:self->_mapRect.size.width];
+  [coderCopy encodeDouble:@"mapRectSizeHeight" forKey:self->_mapRect.size.height];
+  [coderCopy encodeDouble:@"regionCenterLat" forKey:self->_region.center.latitude];
+  [coderCopy encodeDouble:@"regionCenterLong" forKey:self->_region.center.longitude];
+  [coderCopy encodeDouble:@"regionSpanLatDelta" forKey:self->_region.span.latitudeDelta];
+  [coderCopy encodeDouble:@"regionSpanLongDelta" forKey:self->_region.span.longitudeDelta];
+  [coderCopy encodeInt:LODWORD(self->_mode) forKey:@"mode"];
+  [coderCopy encodeInteger:self->_searchResultsType forKey:@"searchResultsType"];
+  [coderCopy encodeObject:self->_customFeatureAnnotations forKey:@"customFeatureAnnotations"];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_signpostId];
-  [v4 encodeObject:v8 forKey:@"signpostId"];
+  [coderCopy encodeObject:v8 forKey:@"signpostId"];
 
-  [v4 encodeObject:self->_auditToken forKey:@"auditToken"];
+  [coderCopy encodeObject:self->_auditToken forKey:@"auditToken"];
   if ([(NSArray *)self->_composedRoutesForRouteLines count])
   {
-    [v4 encodeObject:self->_composedRoutesForRouteLines forKey:@"composedRoutesForRouteLines"];
+    [coderCopy encodeObject:self->_composedRoutesForRouteLines forKey:@"composedRoutesForRouteLines"];
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_selectedRouteIndex];
-    [v4 encodeObject:v9 forKey:@"selectedRouteIndex"];
+    [coderCopy encodeObject:v9 forKey:@"selectedRouteIndex"];
   }
 
-  v10 = [(MKMapSnapshotOptions *)self _encodableOverlayRenderers];
-  if (v10)
+  _encodableOverlayRenderers = [(MKMapSnapshotOptions *)self _encodableOverlayRenderers];
+  if (_encodableOverlayRenderers)
   {
-    [v4 encodeObject:v10 forKey:@"overlayRenderers"];
+    [coderCopy encodeObject:_encodableOverlayRenderers forKey:@"overlayRenderers"];
   }
 
   selectedTrailID = self->_selectedTrailID;
   if (selectedTrailID)
   {
-    [v4 encodeInt64:-[NSNumber unsignedLongLongValue](selectedTrailID forKey:{"unsignedLongLongValue"), @"selectedTrailID"}];
+    [coderCopy encodeInt64:-[NSNumber unsignedLongLongValue](selectedTrailID forKey:{"unsignedLongLongValue"), @"selectedTrailID"}];
   }
 
   selectedTrailName = self->_selectedTrailName;
   if (selectedTrailName)
   {
-    [v4 encodeObject:selectedTrailName forKey:@"selectedTrailName"];
+    [coderCopy encodeObject:selectedTrailName forKey:@"selectedTrailName"];
   }
 
   selectedTrailLocale = self->_selectedTrailLocale;
   if (selectedTrailLocale)
   {
-    [v4 encodeObject:selectedTrailLocale forKey:@"selectedTrailLocale"];
+    [coderCopy encodeObject:selectedTrailLocale forKey:@"selectedTrailLocale"];
   }
 
-  [v4 encodeBool:self->_captureMemoryStatistics forKey:@"captureMemoryStatistics"];
+  [coderCopy encodeBool:self->_captureMemoryStatistics forKey:@"captureMemoryStatistics"];
 }
 
 - (void)dealloc
@@ -1129,32 +1129,32 @@ void __50__MKMapSnapshotOptions__encodableOverlayRenderers__block_invoke(uint64_
   [(MKMapSnapshotOptions *)&v3 dealloc];
 }
 
-- (MKMapSnapshotOptions)initWithCoder:(id)a3
+- (MKMapSnapshotOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v87.receiver = self;
   v87.super_class = MKMapSnapshotOptions;
   v5 = [(MKMapSnapshotOptions *)&v87 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"traitCollection"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"traitCollection"];
     v7 = *(v5 + 16);
     *(v5 + 16) = v6;
 
     if (!*(v5 + 16))
     {
       v8 = MEMORY[0x1E69DD1B8];
-      [v4 decodeDoubleForKey:@"scale"];
+      [coderCopy decodeDoubleForKey:@"scale"];
       v9 = [v8 traitCollectionWithDisplayScale:?];
       v10 = *(v5 + 16);
       *(v5 + 16) = v9;
     }
 
-    v5[104] = [v4 decodeBoolForKey:@"snapshotServiceSerialPerProcess"];
-    v5[96] = [v4 decodeBoolForKey:@"showsPointLabels"];
-    if ([v4 containsValueForKey:@"showsRoadLabels"])
+    v5[104] = [coderCopy decodeBoolForKey:@"snapshotServiceSerialPerProcess"];
+    v5[96] = [coderCopy decodeBoolForKey:@"showsPointLabels"];
+    if ([coderCopy containsValueForKey:@"showsRoadLabels"])
     {
-      v11 = [v4 decodeBoolForKey:@"showsRoadLabels"];
+      v11 = [coderCopy decodeBoolForKey:@"showsRoadLabels"];
     }
 
     else
@@ -1163,9 +1163,9 @@ void __50__MKMapSnapshotOptions__encodableOverlayRenderers__block_invoke(uint64_
     }
 
     v5[97] = v11;
-    if ([v4 containsValueForKey:@"showsRoadShields"])
+    if ([coderCopy containsValueForKey:@"showsRoadShields"])
     {
-      v13 = [v4 decodeBoolForKey:@"showsRoadShields"];
+      v13 = [coderCopy decodeBoolForKey:@"showsRoadShields"];
     }
 
     else
@@ -1174,12 +1174,12 @@ void __50__MKMapSnapshotOptions__encodableOverlayRenderers__block_invoke(uint64_
     }
 
     v5[98] = v13;
-    [v5 setShowsBuildings:{objc_msgSend(v4, "decodeBoolForKey:", @"showsBuildings"}];
-    v5[100] = [v4 decodeBoolForKey:@"showsVenues"];
-    v5[224] = [v4 decodeBoolForKey:@"allowsSimultaneousLightDarkSnapshots"];
-    *(v5 + 29) = [v4 decodeIntegerForKey:@"networkUsageMode"];
-    v5[101] = [v4 decodeBoolForKey:@"showsAppleLogo"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"size"];
+    [v5 setShowsBuildings:{objc_msgSend(coderCopy, "decodeBoolForKey:", @"showsBuildings"}];
+    v5[100] = [coderCopy decodeBoolForKey:@"showsVenues"];
+    v5[224] = [coderCopy decodeBoolForKey:@"allowsSimultaneousLightDarkSnapshots"];
+    *(v5 + 29) = [coderCopy decodeIntegerForKey:@"networkUsageMode"];
+    v5[101] = [coderCopy decodeBoolForKey:@"showsAppleLogo"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"size"];
     v15 = v14;
     if (v14)
     {
@@ -1188,7 +1188,7 @@ void __50__MKMapSnapshotOptions__encodableOverlayRenderers__block_invoke(uint64_
       if (sizep[0] != 16)
       {
         v23 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4864 userInfo:0];
-        [v4 failWithError:v23];
+        [coderCopy failWithError:v23];
 
         v12 = 0;
 LABEL_46:
@@ -1200,7 +1200,7 @@ LABEL_46:
     [v15 CGSizeValue];
     *(v5 + 14) = v16;
     *(v5 + 15) = v17;
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"edgeInsets"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"edgeInsets"];
     v19 = v18;
     if (v18)
     {
@@ -1209,7 +1209,7 @@ LABEL_46:
       if (v86 != 32)
       {
         v40 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4864 userInfo:0];
-        [v4 failWithError:v40];
+        [coderCopy failWithError:v40];
 
         v12 = 0;
 LABEL_45:
@@ -1233,37 +1233,37 @@ LABEL_45:
 
     *(v5 + 136) = v21;
     *(v5 + 152) = v22;
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"camera"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"camera"];
     [v5 setCamera:v24];
 
-    [v4 decodeDoubleForKey:@"mapRectOriginX"];
+    [coderCopy decodeDoubleForKey:@"mapRectOriginX"];
     *(v5 + 2) = v25;
-    [v4 decodeDoubleForKey:@"mapRectOriginY"];
+    [coderCopy decodeDoubleForKey:@"mapRectOriginY"];
     *(v5 + 3) = v26;
-    [v4 decodeDoubleForKey:@"mapRectSizeWidth"];
+    [coderCopy decodeDoubleForKey:@"mapRectSizeWidth"];
     *(v5 + 4) = v27;
-    [v4 decodeDoubleForKey:@"mapRectSizeHeight"];
+    [coderCopy decodeDoubleForKey:@"mapRectSizeHeight"];
     *(v5 + 5) = v28;
-    [v4 decodeDoubleForKey:@"regionCenterLat"];
+    [coderCopy decodeDoubleForKey:@"regionCenterLat"];
     *(v5 + 6) = v29;
-    [v4 decodeDoubleForKey:@"regionCenterLong"];
+    [coderCopy decodeDoubleForKey:@"regionCenterLong"];
     *(v5 + 7) = v30;
-    [v4 decodeDoubleForKey:@"regionSpanLatDelta"];
+    [coderCopy decodeDoubleForKey:@"regionSpanLatDelta"];
     *(v5 + 8) = v31;
-    [v4 decodeDoubleForKey:@"regionSpanLongDelta"];
+    [coderCopy decodeDoubleForKey:@"regionSpanLongDelta"];
     *(v5 + 9) = v32;
     *(&v86 + 3) = 0;
     LODWORD(v86) = 0;
     v79 = v19;
-    if ([v4 containsValueForKey:@"mapStyle"])
+    if ([coderCopy containsValueForKey:@"mapStyle"])
     {
-      v33 = [v4 decodeIntegerForKey:@"mapStyle"];
-      v34 = [v4 decodeIntegerForKey:@"mapEmphasis"];
-      v35 = [v4 decodeIntegerForKey:@"mapProjection"];
-      v36 = [v4 decodeIntegerForKey:@"terrainMode"];
-      if ([v4 containsValueForKey:@"mapkitUsage"])
+      v33 = [coderCopy decodeIntegerForKey:@"mapStyle"];
+      v34 = [coderCopy decodeIntegerForKey:@"mapEmphasis"];
+      v35 = [coderCopy decodeIntegerForKey:@"mapProjection"];
+      v36 = [coderCopy decodeIntegerForKey:@"terrainMode"];
+      if ([coderCopy containsValueForKey:@"mapkitUsage"])
       {
-        v37 = [v4 decodeIntegerForKey:@"mapkitUsage"];
+        v37 = [coderCopy decodeIntegerForKey:@"mapkitUsage"];
       }
 
       else
@@ -1271,9 +1271,9 @@ LABEL_45:
         v37 = 1;
       }
 
-      if ([v4 containsValueForKey:@"mapkitClientMode"])
+      if ([coderCopy containsValueForKey:@"mapkitClientMode"])
       {
-        v38 = [v4 decodeIntegerForKey:@"mapkitClientMode"];
+        v38 = [coderCopy decodeIntegerForKey:@"mapkitClientMode"];
       }
 
       else
@@ -1281,12 +1281,12 @@ LABEL_45:
         v38 = 0;
       }
 
-      v39 = [v4 decodeBoolForKey:@"gridOnly"];
+      v39 = [coderCopy decodeBoolForKey:@"gridOnly"];
     }
 
-    else if ([v4 containsValueForKey:@"mapType"])
+    else if ([coderCopy containsValueForKey:@"mapType"])
     {
-      _MKCartographicConfigurationForMapType([v4 decodeIntegerForKey:@"mapType"], sizep);
+      _MKCartographicConfigurationForMapType([coderCopy decodeIntegerForKey:@"mapType"], sizep);
       v33 = sizep[0];
       v34 = sizep[1];
       v36 = *(&v81 + 1);
@@ -1309,9 +1309,9 @@ LABEL_45:
       v34 = 1;
     }
 
-    if ([v4 containsValueForKey:@"preferredConfiguration"])
+    if ([coderCopy containsValueForKey:@"preferredConfiguration"])
     {
-      v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredConfiguration"];
+      v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredConfiguration"];
       v42 = *(v5 + 10);
       *(v5 + 10) = v41;
     }
@@ -1331,14 +1331,14 @@ LABEL_45:
       v44 = *(v5 + 10);
       *(v5 + 10) = v43;
 
-      if ([v4 containsValueForKey:@"pointOfInterestFilter"])
+      if ([coderCopy containsValueForKey:@"pointOfInterestFilter"])
       {
-        v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pointOfInterestFilter"];
+        v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pointOfInterestFilter"];
       }
 
       else
       {
-        if (![v4 containsValueForKey:@"showsPointsOfInterest"] || (objc_msgSend(v4, "decodeBoolForKey:", @"showsPointsOfInterest") & 1) != 0)
+        if (![coderCopy containsValueForKey:@"showsPointsOfInterest"] || (objc_msgSend(coderCopy, "decodeBoolForKey:", @"showsPointsOfInterest") & 1) != 0)
         {
           goto LABEL_36;
         }
@@ -1351,8 +1351,8 @@ LABEL_45:
     }
 
 LABEL_36:
-    *(v5 + 11) = [v4 decodeIntegerForKey:@"mode"];
-    v5[281] = [v4 decodeIntegerForKey:@"searchResultsType"];
+    *(v5 + 11) = [coderCopy decodeIntegerForKey:@"mode"];
+    v5[281] = [coderCopy decodeIntegerForKey:@"searchResultsType"];
     v46 = MEMORY[0x1E695DFD8];
     v47 = objc_opt_class();
     v48 = objc_opt_class();
@@ -1360,17 +1360,17 @@ LABEL_36:
     v50 = objc_opt_class();
     v51 = objc_opt_class();
     v52 = [v46 setWithObjects:{v47, v48, v49, v50, v51, objc_opt_class(), 0}];
-    v53 = [v4 decodeObjectOfClasses:v52 forKey:@"customFeatureAnnotations"];
+    v53 = [coderCopy decodeObjectOfClasses:v52 forKey:@"customFeatureAnnotations"];
     [v5 _setCustomFeatureAnnotations:v53];
 
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signpostId"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signpostId"];
     v55 = v54;
     if (v54)
     {
       *(v5 + 21) = [v54 unsignedLongLongValue];
     }
 
-    v56 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"auditToken"];
+    v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"auditToken"];
     v57 = *(v5 + 27);
     *(v5 + 27) = v56;
 
@@ -1378,11 +1378,11 @@ LABEL_36:
     v59 = objc_opt_class();
     v60 = [v58 setWithObjects:{v59, objc_opt_class(), 0}];
 
-    v61 = [v4 decodeObjectOfClasses:v60 forKey:@"composedRoutesForRouteLines"];
+    v61 = [coderCopy decodeObjectOfClasses:v60 forKey:@"composedRoutesForRouteLines"];
     v62 = *(v5 + 25);
     *(v5 + 25) = v61;
 
-    v63 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectedRouteIndex"];
+    v63 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedRouteIndex"];
     *(v5 + 26) = [v63 unsignedIntegerValue];
 
     v64 = MEMORY[0x1E695DFD8];
@@ -1391,33 +1391,33 @@ LABEL_36:
     v67 = objc_opt_class();
     v68 = [v64 setWithObjects:{v65, v66, v67, objc_opt_class(), 0}];
 
-    v69 = [v4 decodeObjectOfClasses:v68 forKey:@"overlayRenderers"];
+    v69 = [coderCopy decodeObjectOfClasses:v68 forKey:@"overlayRenderers"];
     v70 = *(v5 + 30);
     *(v5 + 30) = v69;
 
-    if ([v4 containsValueForKey:@"selectedTrailID"])
+    if ([coderCopy containsValueForKey:@"selectedTrailID"])
     {
-      v71 = [v4 decodeInt64ForKey:@"selectedTrailID"];
+      v71 = [coderCopy decodeInt64ForKey:@"selectedTrailID"];
       v72 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v71];
       v73 = *(v5 + 31);
       *(v5 + 31) = v72;
     }
 
-    if ([v4 containsValueForKey:@"selectedTrailName"])
+    if ([coderCopy containsValueForKey:@"selectedTrailName"])
     {
-      v74 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectedTrailName"];
+      v74 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedTrailName"];
       v75 = *(v5 + 32);
       *(v5 + 32) = v74;
     }
 
-    if ([v4 containsValueForKey:@"selectedTrailLocale"])
+    if ([coderCopy containsValueForKey:@"selectedTrailLocale"])
     {
-      v76 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectedTrailLocale"];
+      v76 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedTrailLocale"];
       v77 = *(v5 + 33);
       *(v5 + 33) = v76;
     }
 
-    v5[176] = [v4 decodeBoolForKey:@"captureMemoryStatistics"];
+    v5[176] = [coderCopy decodeBoolForKey:@"captureMemoryStatistics"];
     v12 = v5;
 
     v19 = v79;

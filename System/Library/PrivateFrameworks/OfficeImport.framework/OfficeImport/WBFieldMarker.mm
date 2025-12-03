@@ -1,34 +1,34 @@
 @interface WBFieldMarker
-+ (void)readFrom:(id)a3 position:(const WrdFieldPosition *)a4 paragraph:(id)a5 fieldMarker:(id)a6;
++ (void)readFrom:(id)from position:(const WrdFieldPosition *)position paragraph:(id)paragraph fieldMarker:(id)marker;
 @end
 
 @implementation WBFieldMarker
 
-+ (void)readFrom:(id)a3 position:(const WrdFieldPosition *)a4 paragraph:(id)a5 fieldMarker:(id)a6
++ (void)readFrom:(id)from position:(const WrdFieldPosition *)position paragraph:(id)paragraph fieldMarker:(id)marker
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  fromCopy = from;
+  paragraphCopy = paragraph;
+  markerCopy = marker;
   WrdCharacterTextRun::WrdCharacterTextRun(&v20);
-  v12 = [v10 textType];
-  var1 = a4->var1;
-  v20.var1 = v12;
+  textType = [paragraphCopy textType];
+  var1 = position->var1;
+  v20.var1 = textType;
   v20.var2 = var1;
-  v14 = [v9 wrdReader];
-  (*(*v14 + 192))(v14, &v20);
+  wrdReader = [fromCopy wrdReader];
+  (*(*wrdReader + 192))(wrdReader, &v20);
   var4 = v20.var4;
   var5 = v20.var5;
-  v17 = [v10 document];
-  v18 = [v11 properties];
-  [WBCharacterProperties readFrom:v9 wrdProperties:var4 tracked:var5 document:v17 properties:v18];
+  document = [paragraphCopy document];
+  properties = [markerCopy properties];
+  [WBCharacterProperties readFrom:fromCopy wrdProperties:var4 tracked:var5 document:document properties:properties];
 
-  [v11 setFieldPosition:a4->var1];
-  var2 = a4->var2;
-  LODWORD(v17) = *(var2 + 2);
-  [v11 setFieldMarkerType:v17];
-  if (v17 != 21)
+  [markerCopy setFieldPosition:position->var1];
+  var2 = position->var2;
+  LODWORD(document) = *(var2 + 2);
+  [markerCopy setFieldMarkerType:document];
+  if (document != 21)
   {
-    [v11 setFieldType:EshRecord::getDataLength(var2)];
+    [markerCopy setFieldType:EshRecord::getDataLength(var2)];
   }
 
   WrdCharacterTextRun::~WrdCharacterTextRun(&v20);

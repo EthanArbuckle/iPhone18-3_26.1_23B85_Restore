@@ -1,24 +1,24 @@
 @interface ATXInteractionSuggestionRequest
-- (ATXInteractionSuggestionRequest)initWithCoder:(id)a3;
-- (ATXInteractionSuggestionRequest)initWithProto:(id)a3;
-- (ATXInteractionSuggestionRequest)initWithProtoData:(id)a3;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
+- (ATXInteractionSuggestionRequest)initWithCoder:(id)coder;
+- (ATXInteractionSuggestionRequest)initWithProto:(id)proto;
+- (ATXInteractionSuggestionRequest)initWithProtoData:(id)data;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
 - (id)archivePredictionContext;
 - (id)encodeAsProto;
 - (id)proto;
 - (void)archivePredictionContext;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXInteractionSuggestionRequest
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXInteractionSuggestionRequest *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXInteractionSuggestionRequest *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
 - (id)proto
@@ -27,15 +27,15 @@
   v4 = [MEMORY[0x1E698B028] stringForConsumerSubtype:{-[ATXSuggestionRequest consumerSubType](self, "consumerSubType")}];
   [v3 setConsumerSubTypeString:v4];
 
-  v5 = [(ATXSuggestionRequest *)self originatorId];
-  [v3 setOriginatorId:v5];
+  originatorId = [(ATXSuggestionRequest *)self originatorId];
+  [v3 setOriginatorId:originatorId];
 
-  v6 = [(ATXSuggestionRequest *)self requestUUID];
-  v7 = [v6 UUIDString];
-  [v3 setUuidString:v7];
+  requestUUID = [(ATXSuggestionRequest *)self requestUUID];
+  uUIDString = [requestUUID UUIDString];
+  [v3 setUuidString:uUIDString];
 
-  v8 = [(ATXInteractionSuggestionRequest *)self archivePredictionContext];
-  [v3 setPsPredictionContext:v8];
+  archivePredictionContext = [(ATXInteractionSuggestionRequest *)self archivePredictionContext];
+  [v3 setPsPredictionContext:archivePredictionContext];
 
   [(ATXSuggestionRequest *)self timeout];
   [v3 setTimeout:?];
@@ -78,10 +78,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -91,10 +91,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ATXSuggestionRequest *)self requestUUID];
-      v7 = [(ATXSuggestionRequest *)v5 requestUUID];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      requestUUID = [(ATXSuggestionRequest *)self requestUUID];
+      requestUUID2 = [(ATXSuggestionRequest *)v5 requestUUID];
+      v8 = [requestUUID isEqual:requestUUID2];
 
       if (v8 && (-[ATXSuggestionRequest originatorId](self, "originatorId"), v9 = objc_claimAutoreleasedReturnValue(), -[ATXSuggestionRequest originatorId](v5, "originatorId"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v9 isEqualToString:v10], v10, v9, v11))
       {
@@ -126,33 +126,33 @@
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -164,64 +164,64 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXInteractionSuggestionRequest *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXInteractionSuggestionRequest *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXInteractionSuggestionRequest)initWithCoder:(id)a3
+- (ATXInteractionSuggestionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXInteractionSuggestionRequest *)self initWithProtoData:v5];
   return v6;
 }
 
-- (ATXInteractionSuggestionRequest)initWithProtoData:(id)a3
+- (ATXInteractionSuggestionRequest)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBRequestForInteractionSuggestions alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBRequestForInteractionSuggestions alloc] initWithData:dataCopy];
 
     self = [(ATXInteractionSuggestionRequest *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXInteractionSuggestionRequest)initWithProto:(id)a3
+- (ATXInteractionSuggestionRequest)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 consumerSubTypeString];
+      v5 = protoCopy;
+      consumerSubTypeString = [v5 consumerSubTypeString];
       v27 = 0;
-      v7 = [MEMORY[0x1E698B028] consumerSubtypeForString:v6 found:&v27];
+      v7 = [MEMORY[0x1E698B028] consumerSubtypeForString:consumerSubTypeString found:&v27];
       if (v27 == 1)
       {
         v8 = v7;
-        v9 = 0;
+        selfCopy = 0;
         if (v7 && v7 != 50)
         {
-          v10 = [v5 uuidString];
-          v11 = [v5 originatorId];
+          uuidString = [v5 uuidString];
+          originatorId = [v5 originatorId];
           if ([v5 hasPsPredictionContext])
           {
-            v12 = [v5 psPredictionContext];
+            psPredictionContext = [v5 psPredictionContext];
             v13 = NSClassFromString(&cfstr_Pspredictionco_0.isa);
             if (v13)
             {
@@ -229,16 +229,16 @@ LABEL_7:
               v23 = MEMORY[0x1E696ACD0];
               v24 = v14;
               v15 = objc_autoreleasePoolPush();
-              v25 = v10;
-              v16 = v12;
+              v25 = uuidString;
+              v16 = psPredictionContext;
               v17 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v13, 0}];
               objc_autoreleasePoolPop(v15);
               v26 = 0;
               v13 = [v23 unarchivedObjectOfClasses:v17 fromData:v16 error:&v26];
               v18 = v26;
 
-              v12 = v16;
-              v10 = v25;
+              psPredictionContext = v16;
+              uuidString = v25;
               objc_autoreleasePoolPop(v24);
             }
           }
@@ -255,16 +255,16 @@ LABEL_7:
             v19 = v20;
           }
 
-          v21 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v10];
-          self = [(ATXInteractionSuggestionRequest *)self initWithUUID:v21 originatorId:v11 consumerSubType:v8 psPredictionContext:v13 timeout:v19];
+          v21 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:uuidString];
+          self = [(ATXInteractionSuggestionRequest *)self initWithUUID:v21 originatorId:originatorId consumerSubType:v8 psPredictionContext:v13 timeout:v19];
 
-          v9 = self;
+          selfCopy = self;
         }
       }
 
       else
       {
-        v9 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -276,23 +276,23 @@ LABEL_7:
         [(ATXSuggestionRequestResponse *)self initWithProto:v5];
       }
 
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)archivePredictionContext
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_1DEFC4000, a2, OS_LOG_TYPE_FAULT, "Error when archiving psPredictionContext in ATXInteractionSuggestionRequest. Error: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

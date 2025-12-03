@@ -1,5 +1,5 @@
 @interface CAMBadgeTray
-- (CAMBadgeTray)initWithFrame:(CGRect)a3;
+- (CAMBadgeTray)initWithFrame:(CGRect)frame;
 - (CAMBadgeTrayDelegate)delegate;
 - (CAMElapsedTimeView)elapsedTimeView;
 - (CAMFocusLockBadge)focusLockBadge;
@@ -7,30 +7,30 @@
 - (CAMTextBadge)controlChangeBadge;
 - (CAMVideoPausedBadge)videoPausedBadge;
 - (CAMVideoStabilizationBadge)videoStabilizationBadge;
-- (id)_createControlForType:(unint64_t)a3;
+- (id)_createControlForType:(unint64_t)type;
 - (unint64_t)_badgeFontStyle;
-- (void)_forBadgeTypeInBadgeTypes:(unint64_t)a3 do:(id)a4;
-- (void)_layoutBadges:(unint64_t)a3 withVisibleBadges:(unint64_t)a4;
-- (void)_loadBadgesIfNeededForTypes:(unint64_t)a3 initialAlpha:(double)a4;
-- (void)_updateBadgesVisibilityForVisibleBadges:(unint64_t)a3;
-- (void)badgeViewDidChangeIntrinsicContentSize:(id)a3;
+- (void)_forBadgeTypeInBadgeTypes:(unint64_t)types do:(id)do;
+- (void)_layoutBadges:(unint64_t)badges withVisibleBadges:(unint64_t)visibleBadges;
+- (void)_loadBadgesIfNeededForTypes:(unint64_t)types initialAlpha:(double)alpha;
+- (void)_updateBadgesVisibilityForVisibleBadges:(unint64_t)badges;
+- (void)badgeViewDidChangeIntrinsicContentSize:(id)size;
 - (void)layoutSubviews;
-- (void)setVisibleBadges:(unint64_t)a3 animated:(BOOL)a4;
+- (void)setVisibleBadges:(unint64_t)badges animated:(BOOL)animated;
 @end
 
 @implementation CAMBadgeTray
 
-- (CAMBadgeTray)initWithFrame:(CGRect)a3
+- (CAMBadgeTray)initWithFrame:(CGRect)frame
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = CAMBadgeTray;
-  v3 = [(CAMBadgeTray *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMBadgeTray *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     badgeMap = v3->__badgeMap;
-    v3->__badgeMap = v4;
+    v3->__badgeMap = dictionary;
 
     v10[0] = objc_opt_class();
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
@@ -42,13 +42,13 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(CAMBadgeTray *)self visibleBadges];
-  [(CAMBadgeTray *)self _layoutBadges:v3 withVisibleBadges:v3];
+  visibleBadges = [(CAMBadgeTray *)self visibleBadges];
+  [(CAMBadgeTray *)self _layoutBadges:visibleBadges withVisibleBadges:visibleBadges];
 
-  [(CAMBadgeTray *)self _updateBadgesVisibilityForVisibleBadges:v3];
+  [(CAMBadgeTray *)self _updateBadgesVisibilityForVisibleBadges:visibleBadges];
 }
 
-- (void)_layoutBadges:(unint64_t)a3 withVisibleBadges:(unint64_t)a4
+- (void)_layoutBadges:(unint64_t)badges withVisibleBadges:(unint64_t)visibleBadges
 {
   v17 = 0;
   v18 = &v17;
@@ -65,7 +65,7 @@
   v12[4] = self;
   v12[5] = &v17;
   v12[6] = &v13;
-  [(CAMBadgeTray *)self _forBadgeTypeInBadgeTypes:a4 do:v12];
+  [(CAMBadgeTray *)self _forBadgeTypeInBadgeTypes:visibleBadges do:v12];
   v7 = v18[3];
   v8 = v14[3];
   v11[0] = 0;
@@ -78,9 +78,9 @@
   v10[2] = __48__CAMBadgeTray__layoutBadges_withVisibleBadges___block_invoke_2;
   v10[3] = &unk_1E76FCE78;
   v10[5] = v11;
-  v10[6] = a3;
+  v10[6] = badges;
   v10[4] = self;
-  [(CAMBadgeTray *)self _forBadgeTypeInBadgeTypes:a4 do:v10];
+  [(CAMBadgeTray *)self _forBadgeTypeInBadgeTypes:visibleBadges do:v10];
   _Block_object_dispose(v11, 8);
   _Block_object_dispose(&v13, 8);
   _Block_object_dispose(&v17, 8);
@@ -131,22 +131,22 @@ void __48__CAMBadgeTray__layoutBadges_withVisibleBadges___block_invoke_2(uint64_
   *(*(*(a1 + 40) + 8) + 24) = v8 + 5.0 + *(*(*(a1 + 40) + 8) + 24);
 }
 
-- (void)setVisibleBadges:(unint64_t)a3 animated:(BOOL)a4
+- (void)setVisibleBadges:(unint64_t)badges animated:(BOOL)animated
 {
   visibleBadges = self->_visibleBadges;
-  if (visibleBadges != a3)
+  if (visibleBadges != badges)
   {
-    v5 = a4;
-    v8 = a3 & ~visibleBadges;
+    animatedCopy = animated;
+    v8 = badges & ~visibleBadges;
     v9 = 1.0;
-    if (a4)
+    if (animated)
     {
       v9 = 0.0;
     }
 
-    [(CAMBadgeTray *)self _loadBadgesIfNeededForTypes:a3 & ~visibleBadges initialAlpha:v9];
-    self->_visibleBadges = a3;
-    if (v5)
+    [(CAMBadgeTray *)self _loadBadgesIfNeededForTypes:badges & ~visibleBadges initialAlpha:v9];
+    self->_visibleBadges = badges;
+    if (animatedCopy)
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
@@ -154,7 +154,7 @@ void __48__CAMBadgeTray__layoutBadges_withVisibleBadges___block_invoke_2(uint64_
       v11[3] = &unk_1E76F9B50;
       v11[4] = self;
       v11[5] = v8;
-      v11[6] = a3;
+      v11[6] = badges;
       v11[7] = visibleBadges;
       [MEMORY[0x1E69DD250] performWithoutAnimation:v11];
       [(CAMBadgeTray *)self setNeedsLayout];
@@ -199,58 +199,58 @@ void __42__CAMBadgeTray_setVisibleBadges_animated___block_invoke_2(uint64_t a1, 
 
 - (CAMTextBadge)controlChangeBadge
 {
-  v2 = [(CAMBadgeTray *)self _badgeMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C8450];
+  _badgeMap = [(CAMBadgeTray *)self _badgeMap];
+  v3 = [_badgeMap objectForKeyedSubscript:&unk_1F16C8450];
 
   return v3;
 }
 
 - (CAMFocusLockBadge)focusLockBadge
 {
-  v2 = [(CAMBadgeTray *)self _badgeMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C8468];
+  _badgeMap = [(CAMBadgeTray *)self _badgeMap];
+  v3 = [_badgeMap objectForKeyedSubscript:&unk_1F16C8468];
 
   return v3;
 }
 
 - (CAMElapsedTimeView)elapsedTimeView
 {
-  v2 = [(CAMBadgeTray *)self _badgeMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C8480];
+  _badgeMap = [(CAMBadgeTray *)self _badgeMap];
+  v3 = [_badgeMap objectForKeyedSubscript:&unk_1F16C8480];
 
   return v3;
 }
 
 - (CAMVideoStabilizationBadge)videoStabilizationBadge
 {
-  v2 = [(CAMBadgeTray *)self _badgeMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C8498];
+  _badgeMap = [(CAMBadgeTray *)self _badgeMap];
+  v3 = [_badgeMap objectForKeyedSubscript:&unk_1F16C8498];
 
   return v3;
 }
 
 - (CAMVideoPausedBadge)videoPausedBadge
 {
-  v2 = [(CAMBadgeTray *)self _badgeMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C84B0];
+  _badgeMap = [(CAMBadgeTray *)self _badgeMap];
+  v3 = [_badgeMap objectForKeyedSubscript:&unk_1F16C84B0];
 
   return v3;
 }
 
 - (CAMSpatialBadge)spatialBadge
 {
-  v2 = [(CAMBadgeTray *)self _badgeMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C84C8];
+  _badgeMap = [(CAMBadgeTray *)self _badgeMap];
+  v3 = [_badgeMap objectForKeyedSubscript:&unk_1F16C84C8];
 
   return v3;
 }
 
-- (id)_createControlForType:(unint64_t)a3
+- (id)_createControlForType:(unint64_t)type
 {
   v4 = 0;
-  if (a3 <= 15)
+  if (type <= 15)
   {
-    switch(a3)
+    switch(type)
     {
       case 2uLL:
         v5 = CAMFocusLockBadge;
@@ -268,7 +268,7 @@ void __42__CAMBadgeTray_setVisibleBadges_animated___block_invoke_2(uint64_t a1, 
     goto LABEL_14;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 0x10uLL:
       v5 = CAMVideoPausedBadge;
@@ -294,22 +294,22 @@ LABEL_15:
 - (unint64_t)_badgeFontStyle
 {
   v2 = +[CAMCaptureCapabilities capabilities];
-  v3 = [v2 sfCameraFontSupported];
+  sfCameraFontSupported = [v2 sfCameraFontSupported];
 
-  return v3;
+  return sfCameraFontSupported;
 }
 
-- (void)_forBadgeTypeInBadgeTypes:(unint64_t)a3 do:(id)a4
+- (void)_forBadgeTypeInBadgeTypes:(unint64_t)types do:(id)do
 {
-  v4 = a3;
-  v5 = a4;
-  if (v4 < 0)
+  typesCopy = types;
+  doCopy = do;
+  if (typesCopy < 0)
   {
-    v5[2](v5, 128);
-    if ((v4 & 4) == 0)
+    doCopy[2](doCopy, 128);
+    if ((typesCopy & 4) == 0)
     {
 LABEL_3:
-      if ((v4 & 2) == 0)
+      if ((typesCopy & 2) == 0)
       {
         goto LABEL_4;
       }
@@ -318,16 +318,16 @@ LABEL_3:
     }
   }
 
-  else if ((v4 & 4) == 0)
+  else if ((typesCopy & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  v5[2](v5, 4);
-  if ((v4 & 2) == 0)
+  doCopy[2](doCopy, 4);
+  if ((typesCopy & 2) == 0)
   {
 LABEL_4:
-    if ((v4 & 8) == 0)
+    if ((typesCopy & 8) == 0)
     {
       goto LABEL_5;
     }
@@ -336,11 +336,11 @@ LABEL_4:
   }
 
 LABEL_13:
-  v5[2](v5, 2);
-  if ((v4 & 8) == 0)
+  doCopy[2](doCopy, 2);
+  if ((typesCopy & 8) == 0)
   {
 LABEL_5:
-    if ((v4 & 0x10) == 0)
+    if ((typesCopy & 0x10) == 0)
     {
       goto LABEL_6;
     }
@@ -349,11 +349,11 @@ LABEL_5:
   }
 
 LABEL_14:
-  v5[2](v5, 8);
-  if ((v4 & 0x10) == 0)
+  doCopy[2](doCopy, 8);
+  if ((typesCopy & 0x10) == 0)
   {
 LABEL_6:
-    if ((v4 & 0x40) == 0)
+    if ((typesCopy & 0x40) == 0)
     {
       goto LABEL_8;
     }
@@ -362,25 +362,25 @@ LABEL_6:
   }
 
 LABEL_15:
-  v5[2](v5, 16);
-  if ((v4 & 0x40) != 0)
+  doCopy[2](doCopy, 16);
+  if ((typesCopy & 0x40) != 0)
   {
 LABEL_7:
-    v5[2](v5, 64);
+    doCopy[2](doCopy, 64);
   }
 
 LABEL_8:
 }
 
-- (void)_loadBadgesIfNeededForTypes:(unint64_t)a3 initialAlpha:(double)a4
+- (void)_loadBadgesIfNeededForTypes:(unint64_t)types initialAlpha:(double)alpha
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __57__CAMBadgeTray__loadBadgesIfNeededForTypes_initialAlpha___block_invoke;
   v4[3] = &unk_1E76FCEA0;
   v4[4] = self;
-  *&v4[5] = a4;
-  [(CAMBadgeTray *)self _forBadgeTypeInBadgeTypes:a3 do:v4];
+  *&v4[5] = alpha;
+  [(CAMBadgeTray *)self _forBadgeTypeInBadgeTypes:types do:v4];
 }
 
 void __57__CAMBadgeTray__loadBadgesIfNeededForTypes_initialAlpha___block_invoke(uint64_t a1, uint64_t a2)
@@ -402,15 +402,15 @@ void __57__CAMBadgeTray__loadBadgesIfNeededForTypes_initialAlpha___block_invoke(
   }
 }
 
-- (void)_updateBadgesVisibilityForVisibleBadges:(unint64_t)a3
+- (void)_updateBadgesVisibilityForVisibleBadges:(unint64_t)badges
 {
-  v4 = [(CAMBadgeTray *)self _badgeMap];
+  _badgeMap = [(CAMBadgeTray *)self _badgeMap];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __56__CAMBadgeTray__updateBadgesVisibilityForVisibleBadges___block_invoke;
   v5[3] = &__block_descriptor_40_e33_v32__0__NSNumber_8__UIView_16_B24l;
-  v5[4] = a3;
-  [v4 enumerateKeysAndObjectsUsingBlock:v5];
+  v5[4] = badges;
+  [_badgeMap enumerateKeysAndObjectsUsingBlock:v5];
 }
 
 void __56__CAMBadgeTray__updateBadgesVisibilityForVisibleBadges___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -426,7 +426,7 @@ void __56__CAMBadgeTray__updateBadgesVisibilityForVisibleBadges___block_invoke(u
   [v7 setAlpha:v6];
 }
 
-- (void)badgeViewDidChangeIntrinsicContentSize:(id)a3
+- (void)badgeViewDidChangeIntrinsicContentSize:(id)size
 {
   [(CAMBadgeTray *)self setNeedsLayout];
   v4[0] = MEMORY[0x1E69E9820];

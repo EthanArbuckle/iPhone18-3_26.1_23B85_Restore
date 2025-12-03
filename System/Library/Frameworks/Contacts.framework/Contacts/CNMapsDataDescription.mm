@@ -1,20 +1,20 @@
 @interface CNMapsDataDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNMapsDataDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mapsData];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  mapsData = [contactCopy mapsData];
+  if (!mapsData)
   {
-    v4 = [v7 mapsData];
-    if (!v4)
+    mapsData2 = [otherCopy mapsData];
+    if (!mapsData2)
     {
       v11 = 1;
 LABEL_6:
@@ -23,11 +23,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 mapsData];
-  v10 = [v7 mapsData];
-  v11 = [v9 isEqual:v10];
+  mapsData3 = [contactCopy mapsData];
+  mapsData4 = [otherCopy mapsData];
+  v11 = [mapsData3 isEqual:mapsData4];
 
-  if (!v8)
+  if (!mapsData)
   {
     goto LABEL_6;
   }
@@ -37,25 +37,25 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_mapsData"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_mapsData"];
 
   v7 = [v9 copy];
-  v8 = v5[71];
-  v5[71] = v7;
+  v8 = contactCopy[71];
+  contactCopy[71] = v7;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A498];
+    *d = *MEMORY[0x1E698A498];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

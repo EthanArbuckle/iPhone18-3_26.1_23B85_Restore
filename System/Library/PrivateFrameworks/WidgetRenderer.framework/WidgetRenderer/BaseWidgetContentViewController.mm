@@ -1,6 +1,6 @@
 @interface BaseWidgetContentViewController
-- (_TtC14WidgetRenderer31BaseWidgetContentViewController)initWithCoder:(id)a3;
-- (_TtC14WidgetRenderer31BaseWidgetContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC14WidgetRenderer31BaseWidgetContentViewController)initWithCoder:(id)coder;
+- (_TtC14WidgetRenderer31BaseWidgetContentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -8,11 +8,11 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1DADB50F4();
 }
 
-- (_TtC14WidgetRenderer31BaseWidgetContentViewController)initWithCoder:(id)a3
+- (_TtC14WidgetRenderer31BaseWidgetContentViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC14WidgetRenderer31BaseWidgetContentViewController_contentShape) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC14WidgetRenderer31BaseWidgetContentViewController_isContentTransparent) = 0;
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (_TtC14WidgetRenderer31BaseWidgetContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14WidgetRenderer31BaseWidgetContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

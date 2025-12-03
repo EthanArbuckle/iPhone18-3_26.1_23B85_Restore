@@ -1,15 +1,15 @@
 @interface ULCoreDuetPublisher
 + (void)clearMicroLocationVisitStream;
 + (void)saveEventForDebugInitialBringUp;
-+ (void)saveEventsToDuetStream:(id)a3;
++ (void)saveEventsToDuetStream:(id)stream;
 @end
 
 @implementation ULCoreDuetPublisher
 
-+ (void)saveEventsToDuetStream:(id)a3
++ (void)saveEventsToDuetStream:(id)stream
 {
-  v3 = a3;
-  if ([v3 count])
+  streamCopy = stream;
+  if ([streamCopy count])
   {
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v5 = dispatch_queue_create("com.apple.milod.ULCoreDuetPublisher.saveEventsToDuetStream", v4);
@@ -18,7 +18,7 @@
     block[1] = 3221225472;
     block[2] = __46__ULCoreDuetPublisher_saveEventsToDuetStream___block_invoke;
     block[3] = &unk_2798D41D8;
-    v7 = v3;
+    v7 = streamCopy;
     dispatch_async(v5, block);
   }
 }
@@ -145,18 +145,18 @@ void __52__ULCoreDuetPublisher_clearMicroLocationVisitStream__block_invoke()
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CFE1D8];
-  v4 = [MEMORY[0x277CFE298] microLocationVisitStream];
+  microLocationVisitStream = [MEMORY[0x277CFE298] microLocationVisitStream];
   v5 = [MEMORY[0x277CBEAA8] now];
   v6 = [MEMORY[0x277CBEAA8] now];
   v7 = [v6 dateByAddingTimeInterval:1000.0];
   v8 = MEMORY[0x277CFE2B8];
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  v10 = [v8 withUUID:v9];
-  v11 = [v3 eventWithStream:v4 startDate:v5 endDate:v7 value:v10];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v10 = [v8 withUUID:uUID];
+  v11 = [v3 eventWithStream:microLocationVisitStream startDate:v5 endDate:v7 value:v10];
 
   v14[0] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  [a1 saveEventsToDuetStream:v12];
+  [self saveEventsToDuetStream:v12];
 
   v13 = *MEMORY[0x277D85DE8];
 }

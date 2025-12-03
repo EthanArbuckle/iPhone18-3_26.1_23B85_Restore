@@ -1,49 +1,49 @@
 @interface ATXHomeScreenShortcut
-- (ATXHomeScreenShortcut)initWithCoder:(id)a3;
-- (ATXHomeScreenShortcut)initWithIdentifier:(id)a3 name:(id)a4 bundleIdentifierForDisplay:(id)a5 isAppLaunchWorkflow:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXHomeScreenShortcut:(id)a3;
+- (ATXHomeScreenShortcut)initWithCoder:(id)coder;
+- (ATXHomeScreenShortcut)initWithIdentifier:(id)identifier name:(id)name bundleIdentifierForDisplay:(id)display isAppLaunchWorkflow:(BOOL)workflow;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXHomeScreenShortcut:(id)shortcut;
 - (id)dictionaryRepresentationForIntrospection;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIcon:(CGImage *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIcon:(CGImage *)icon;
 @end
 
 @implementation ATXHomeScreenShortcut
 
-- (ATXHomeScreenShortcut)initWithIdentifier:(id)a3 name:(id)a4 bundleIdentifierForDisplay:(id)a5 isAppLaunchWorkflow:(BOOL)a6
+- (ATXHomeScreenShortcut)initWithIdentifier:(id)identifier name:(id)name bundleIdentifierForDisplay:(id)display isAppLaunchWorkflow:(BOOL)workflow
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
+  displayCopy = display;
   v21.receiver = self;
   v21.super_class = ATXHomeScreenShortcut;
   v13 = [(ATXHomeScreenShortcut *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [identifierCopy copy];
     identifier = v13->_identifier;
     v13->_identifier = v14;
 
-    v16 = [v11 copy];
+    v16 = [nameCopy copy];
     name = v13->_name;
     v13->_name = v16;
 
-    v18 = [v12 copy];
+    v18 = [displayCopy copy];
     bundleIdentifierForDisplay = v13->_bundleIdentifierForDisplay;
     v13->_bundleIdentifierForDisplay = v18;
 
-    v13->_isAppLaunchWorkflow = a6;
+    v13->_isAppLaunchWorkflow = workflow;
   }
 
   return v13;
 }
 
-- (void)setIcon:(CGImage *)a3
+- (void)setIcon:(CGImage *)icon
 {
   icon = self->_icon;
-  if (icon != a3)
+  if (icon != icon)
   {
     if (icon)
     {
@@ -51,7 +51,7 @@
       self->_icon = 0;
     }
 
-    self->_icon = CGImageRetain(a3);
+    self->_icon = CGImageRetain(icon);
   }
 }
 
@@ -69,13 +69,13 @@
   [(ATXHomeScreenShortcut *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_name forKey:@"name"];
-  [v6 encodeObject:self->_bundleIdentifierForDisplay forKey:@"bundleId"];
-  [v6 encodeObject:self->_identifier forKey:@"uuid"];
-  [v6 encodeBool:self->_isAppLaunchWorkflow forKey:@"isAppLaunchWorkflow"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_bundleIdentifierForDisplay forKey:@"bundleId"];
+  [coderCopy encodeObject:self->_identifier forKey:@"uuid"];
+  [coderCopy encodeBool:self->_isAppLaunchWorkflow forKey:@"isAppLaunchWorkflow"];
   if (self->_icon)
   {
     v4 = objc_opt_new();
@@ -85,33 +85,33 @@
     CFRelease(v5);
     if ([(__CFData *)v4 length])
     {
-      [v6 encodeObject:v4 forKey:@"icon"];
+      [coderCopy encodeObject:v4 forKey:@"icon"];
     }
   }
 }
 
-- (ATXHomeScreenShortcut)initWithCoder:(id)a3
+- (ATXHomeScreenShortcut)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = ATXHomeScreenShortcut;
   v5 = [(ATXHomeScreenShortcut *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
     bundleIdentifierForDisplay = v5->_bundleIdentifierForDisplay;
     v5->_bundleIdentifierForDisplay = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     identifier = v5->_identifier;
     v5->_identifier = v10;
 
-    v5->_isAppLaunchWorkflow = [v4 decodeBoolForKey:@"isAppLaunchWorkflow"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
+    v5->_isAppLaunchWorkflow = [coderCopy decodeBoolForKey:@"isAppLaunchWorkflow"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
     if ([(__CFData *)v12 length])
     {
       v13 = CGDataProviderCreateWithCFData(v12);
@@ -134,29 +134,29 @@
   return [(NSString *)self->_bundleIdentifierForDisplay hash]- v4 + 32 * v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXHomeScreenShortcut *)self isEqualToATXHomeScreenShortcut:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXHomeScreenShortcut *)self isEqualToATXHomeScreenShortcut:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXHomeScreenShortcut:(id)a3
+- (BOOL)isEqualToATXHomeScreenShortcut:(id)shortcut
 {
-  v4 = a3;
+  shortcutCopy = shortcut;
   v5 = self->_identifier;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == shortcutCopy[2])
   {
   }
 
@@ -172,7 +172,7 @@
 
   v8 = self->_name;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == shortcutCopy[3])
   {
   }
 
@@ -190,7 +190,7 @@ LABEL_7:
 
   v12 = self->_bundleIdentifierForDisplay;
   v13 = v12;
-  if (v12 == v4[4])
+  if (v12 == shortcutCopy[4])
   {
     v11 = 1;
   }
